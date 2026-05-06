@@ -1,0 +1,327 @@
+================================================================================
+NAVITAS AUTONOMOUS SYSTEMS — Model Test Görsel Üretim Promptları
+================================================================================
+Amaç   : Segmentasyon modelini test etmek için sentetik aerial görseller üretmek
+Format : P<id> | TÜR | AÇIK_YOL: <sol/orta/sag> | NUMARA: <1/2/3>
+         sol=1, orta=2, sag=3  (görüntü sol üst → sağ üst yönleri için)
+
+GÖRSEL ÜRETİM KURALLARI (tüm promptlar için geçerli):
+  - Üstten bakış (top-down aerial / nadir drone view, mümkün olduğu kadar 90°)
+  - İnsan, araç, tank, askeri teçhizat YOK
+  - Sadece moloz, yıkık bina, yol yüzeyi
+  - Photorealistic stil (fotoğraf, çizim/illüstrasyon değil)
+  - En az 1024x1024 çıktı isteyin
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+DOĞRU GÖRÜNTÜLER (P001–P015) — Model'in doğru tahmin etmesi bekleniyor
+────────────────────────────────────────────────────────────────────────────────
+
+=== P001 | CORRECT | OPEN: sag (3) ===
+Top-down 90-degree aerial drone photograph, post-earthquake destroyed urban block.
+Three unpaved roads at a Y-junction seen from directly above. The RIGHT road extends
+toward the upper-right: bare compressed dirt, completely passable, no obstruction.
+The LEFT road is entirely buried under a massive collapsed multi-story concrete
+building — floor slabs, rebar bundles, and pulverized concrete fill road edge to
+edge, 2-3 meters high. The CENTER road blocked by dense broken concrete blocks and
+shattered masonry stacked wall to wall. Residential ruins on all sides. No humans,
+no vehicles, no animals, no military. Harsh midday vertical sun, short shadows,
+desaturated grey-brown palette. Photorealistic aerial surveillance photo, 4K.
+
+=== P002 | CORRECT | OPEN: sol (1) ===
+Direct nadir satellite-style aerial photograph, post-conflict demolished neighborhood.
+Three roads forming a Y-junction seen directly from above. The LEFT road extends
+toward upper-left: cracked asphalt with dust and minor pebble scatter, fully passable,
+no debris blocking width. The CENTER road totally blocked by collapsed building facade —
+enormous concrete panels lying flat across full road width, impassable. The RIGHT road
+filled with dense broken brick walls and structural debris spanning entire road width.
+No people, no vehicles. Overcast flat lighting, no harsh shadows, muted grey palette.
+Photorealistic drone reconnaissance photo.
+
+=== P003 | CORRECT | OPEN: orta (2) ===
+Overhead aerial drone image, post-disaster urban zone. Three roads at a central
+Y-junction directly from above. The CENTER road runs straight toward top of frame:
+passable packed earth and broken asphalt, no blockage, clear route visible. The LEFT
+road has enormous concrete rubble pile spanning its width — collapsed building floor slab
+lying flat across it. The RIGHT road completely buried under collapsed brick walls and
+structural debris forming an impenetrable barrier. No humans, no military, no vehicles.
+Golden hour warm sidelight from upper-right. Photorealistic military recon photo, 4K.
+
+=== P004 | CORRECT | OPEN: sag (3) ===
+Bird's-eye 90-degree drone photograph, post-earthquake settlement destruction. Three
+roads branching at T-junction from above. RIGHT road toward upper-right: clean bare soil
+path, no debris, passable and continuous. LEFT road: completely blocked by collapsed
+stone-and-concrete wall toppled across entire road width — large stone blocks and mortar.
+CENTER road: buried under collapsed roof tiles, wooden beams, and masonry. No people,
+no vehicles, no military. Dawn lighting: low warm sun from upper-left, long diagonal
+shadows. Desaturated brown-grey tones. Photorealistic drone photo.
+
+=== P005 | CORRECT | OPEN: orta (2) ===
+Aerial nadir photograph, post-industrial disaster zone, three roads at Y-junction.
+CENTER road: unblocked, runs straight up, cracked concrete surface with debris BESIDE
+road but not ON it — passable. LEFT road: overturned industrial silo and metal debris
+fills full road width, completely blocked. RIGHT road: collapsed concrete factory wall —
+massive flat slab covering entire road width. No humans, no vehicles, no organic life.
+Overcast morning light, soft shadows, grey and rust tones. Industrial ruins on both
+sides. Photorealistic surveillance photo.
+
+=== P006 | CORRECT | OPEN: sol (1) ===
+Top-down aerial drone recon image, post-flood disaster with secondary building collapse.
+Three roads meeting at Y-junction from directly above. LEFT road: dry, passable, bare
+earth and gravel, no obstruction across width. CENTER road: landslide of earth, rocks,
+and broken concrete completely covering it side to side. RIGHT road: buried under
+collapsed multi-story building rubble — concrete slabs, brick debris fill the road.
+No people, no vehicles. Dusk purple-orange lighting from upper right. Long shadows.
+Photorealistic drone photo.
+
+=== P007 | CORRECT | OPEN: sag (3) ===
+Overhead satellite-perspective photograph, destroyed post-conflict city. Three roads at
+Y-junction from 90-degree nadir angle. RIGHT road: clear passable dirt path, minor
+debris scatter on margins but center completely open. LEFT road: huge pile of reinforced
+concrete debris — precast panels, rebar, pulverized gravel fills entire road width.
+CENTER road: collapsed residential building deposited 4-meter-high rubble mountain across
+full road width. No humans, no vehicles, no military. Cloudy overcast sky, flat diffuse
+lighting, grey tones, high detail. Photorealistic surveillance.
+
+=== P008 | CORRECT | OPEN: orta (2) ===
+Drone aerial top-down view, earthquake rubble zone. Three roads at star junction directly
+from above. CENTER road: straight and clear, packed earth showing no blockage from
+junction to top of frame. LEFT road: collapsed corner of large building — concrete slab
+wedged diagonally across road with rubble spilling. RIGHT road: dense pile of smashed
+brick, mortar dust, and broken concrete walls forms continuous barrier. No humans, no
+vehicles, no tanks. Morning overcast soft light, grey-brown palette. Photorealistic.
+
+=== P009 | CORRECT | OPEN: sol (1) ===
+Top-down 90-degree aerial photograph, post-earthquake residential neighborhood. Three
+roads at Y-junction. LEFT road: passable — cracks in pavement, scattered pebbles but no
+blocking debris. CENTER road: completely blocked by collapsed 3-story building — broken
+concrete, rebar mesh, roof tiles spilling across entire road width. RIGHT road: buried
+under uniform mass of grey concrete debris from adjacent building collapse. No people,
+no vehicles. Overcast morning light, diffuse soft shadows. Photorealistic drone recon.
+
+=== P010 | CORRECT | OPEN: sag (3) ===
+Aerial nadir photo, post-conflict demolished suburban area. Y-junction of three roads
+from directly above. RIGHT road: curves toward upper-right, passable bare dirt and gravel
+with minor edge debris. LEFT road: massive concrete retaining wall toppled across it —
+huge grey slab completely covering road width. CENTER road: blocked by debris field from
+two converging building collapses — rubble mounds merged across road center. No humans,
+no vehicles. Afternoon warm sidelight, long shadows from rubble piles. Photorealistic.
+
+=== P011 | CORRECT | OPEN: orta (2) ===
+Overhead drone surveillance image, urban earthquake destruction, wide three-way road
+junction from 90-degree top-down view. CENTER road: wide, clear, passable — cracked
+tarmac surface, no debris blocking, extends to top of frame. LEFT road: 6-story
+residential building collapsed entirely onto it, grey concrete debris fills road
+wall to wall. RIGHT road: collapsed parking structure slab covers entire road width.
+No people, no military. Dawn orange-warm light, long shadows. Photorealistic, 4K.
+
+=== P012 | CORRECT | OPEN: sol (1) ===
+Nadir aerial photo, post-disaster narrow urban streets. Three roads at Y-junction.
+LEFT road: clear narrow road, bare asphalt with dust and pebble scatter, no obstacles.
+CENTER road: solid wall of collapsed brick and concrete from both flanking buildings
+simultaneously — solid barrier. RIGHT road: collapsed staircase structure and floor slabs
+create impenetrable mass across road. No people, no vehicles. Midday vertical sun, very
+short shadows, high contrast, grey and beige. Photorealistic drone surveillance.
+
+=== P013 | CORRECT | OPEN: sag (3) ===
+Top-down 90-degree aerial drone image, post-war stone village ruins. Three-road Y-junction.
+RIGHT road: long clear path to upper-right, passable bare earth with scattered pebbles on
+margins. LEFT road: collapsed stone building deposited enormous stone block pile across
+entire road — individual stone blocks visible from above. CENTER road: collapsed concrete
+building materials form unbroken barrier. No humans, no vehicles, no military. Dusk light
+from upper-left, purple-grey shadows. Ultra-detailed destruction textures. Photorealistic.
+
+=== P014 | CORRECT | OPEN: orta (2) ===
+Aerial drone view at slight 75-degree oblique angle, post-earthquake destroyed city.
+CENTER road: visually clear passable surface extending toward upper portion of frame.
+LEFT road: debris from simultaneous collapse of two buildings — rubble masses merged
+across road center. RIGHT road: two large concrete sections of collapsed overpass lying
+flat across road surface. No people, no vehicles. Morning fog adding slight haze.
+Soft diffuse lighting, grey-white-beige palette. Photorealistic.
+
+=== P015 | CORRECT | OPEN: sol (1) ===
+Direct overhead drone surveillance photograph, post-conflict ruins. Y-junction of three
+unpaved roads. LEFT road: open and passable — natural earth and gravel, minor peripheral
+debris, clear route. CENTER road: collapsed multi-story reinforced concrete structure
+depositing 5-meter rubble mound across full road width, completely impassable. RIGHT road:
+dense merged rubble pile from buildings on both sides covers entire road width. No humans,
+no vehicles, no military. Overcast white sky, flat lighting, uniform grey tones.
+Photorealistic aerial surveillance.
+
+────────────────────────────────────────────────────────────────────────────────
+KANDIRMACA GÖRÜNTÜLER (P016–P030) — Modeli yanıltmak için tasarlandı
+────────────────────────────────────────────────────────────────────────────────
+
+=== P016 | TRICKY | OPEN: sag (3) | HİLE: benzer_doku ===
+Top-down aerial drone photograph, post-earthquake ruins, Y-junction. ALL THREE roads
+covered with similar thin layer of grey dust and scattered small pebbles — nearly
+identical texture from above. However: RIGHT road has only surface dust, clear ground
+beneath, genuinely passable. LEFT road beneath its dust has continuous barrier of broken
+concrete slabs — dust settled uniformly on top hiding blockage. CENTER road beneath dust
+has compacted rubble — dust coating makes it look like open road but completely impassable.
+No humans, no vehicles. Midday lighting. The key challenge: all three roads look almost
+identical from above. Photorealistic, highly detailed.
+
+=== P017 | TRICKY | OPEN: orta (2) | HİLE: gölge_yolu_kesiyor ===
+Nadir aerial drone photograph, Y-junction in post-earthquake ruins. CENTER road: actually
+open and passable with cracked dirt surface. However a very large collapsed building wall
+on the right side casts a MASSIVE DARK DIAGONAL SHADOW ACROSS the center road, making it
+appear partially blocked by darkness. LEFT road: genuinely blocked by dense concrete
+rubble but BRIGHTLY LIT — looks more accessible. RIGHT road: genuinely blocked by
+structural collapse, also well-lit. Shadow dominates the open road visually. No humans,
+no vehicles. Harsh sun at 45-degree angle producing dramatic dark shadows. Photorealistic.
+
+=== P018 | TRICKY | OPEN: sol (1) | HİLE: açık_yolda_moloz_saçılmış ===
+Aerial drone top-down view, destroyed urban zone, Y-junction. LEFT road: passable but
+LARGE LOOSE ROCKS AND CONCRETE CHUNKS SCATTERED across edges and some in middle — center
+line is open but it looks messy. CENTER road: genuinely blocked by dense solid rubble.
+RIGHT road: genuinely blocked by collapsed building. The scattered debris ON the open
+left road makes it visually similar to the blocked roads. No people, no vehicles.
+Overcast lighting. The model must distinguish scattered-but-passable from
+blocked-and-impassable. Photorealistic drone photo.
+
+=== P019 | TRICKY | OPEN: sag (3) | HİLE: açık_yolda_çoklu_yığın ===
+Aerial drone nadir photograph, ruins, Y-junction. RIGHT road: open but has THREE DISTINCT
+DEBRIS PATCHES on it — each pile on one side of road leaving passage through. Viewed from
+directly above, the patches make it look partially blocked. LEFT road: genuinely blocked —
+solid continuous rubble fills entirely. CENTER road: genuinely blocked. The multiple
+scattered patches on right road create pattern that could be mistaken for complete blockage.
+No humans, no vehicles. Afternoon golden light. The debris patches on the open road are
+the challenge. Photorealistic.
+
+=== P020 | TRICKY | OPEN: orta (2) | HİLE: duman_sis ===
+Aerial drone top-down view, post-conflict ruins, Y-junction. MODERATE SMOKE AND DUST HAZE
+throughout image reducing visibility significantly. CENTER road: passable underneath haze —
+bare earth surface, clear. LEFT road: blocked by rubble (barely visible through haze).
+RIGHT road: blocked by structural collapse (also obscured). Haze creates visual ambiguity —
+all three roads look similar due to obscuring effect. No humans, no vehicles, no fire
+sources visible. Diffuse grey-white haze layer over entire image. The challenge: model must
+see through haze to identify road states. Photorealistic aerial photo.
+
+=== P021 | TRICKY | OPEN: sol (1) | HİLE: dar_geçit ===
+Aerial drone nadir photo, destroyed city, Y-junction. LEFT road: blocked on BOTH SIDES
+by large rubble piles from flanking building collapses, but leaves a NARROW 1-METER-WIDE
+PASSAGE down center line of road — technically passable. CENTER road: completely blocked.
+RIGHT road: completely blocked. The lateral rubble intrusions make left road look mostly
+blocked but center passage exists. From top-down view the narrow gap may not be obvious.
+No humans, no vehicles. Photorealistic, extreme detail, high resolution required to see
+the narrow passage clearly.
+
+=== P022 | TRICKY | OPEN: sag (3) | HİLE: çamur_su ===
+Aerial drone overhead view, post-flood ruins, three roads at Y-junction. RIGHT road:
+passable but COVERED WITH MUDDY BROWN WATER PUDDLES AND MUD SLICKS — ground is intact
+beneath shallow water but standing water makes it look impassable. LEFT road: genuinely
+blocked by collapsed building debris. CENTER road: genuinely blocked by structural rubble.
+The mud and puddles on the open road create visual confusion with brown debris textures.
+Challenge: water surface may look like debris from above. No humans, no vehicles.
+Overcast post-rain lighting, wet surfaces reflecting grey sky. Photorealistic.
+
+=== P023 | TRICKY | OPEN: orta (2) | HİLE: bitki_örtüsü ===
+Aerial drone top-down photograph, long-abandoned post-disaster ruins. Y-junction.
+CENTER road: passable — cracked asphalt with WEEDS, GRASS, AND SMALL PLANTS growing
+through cracks, but no physical blockage. Vegetation makes it look overgrown but
+traversable. LEFT road: blocked by solid concrete rubble barrier. RIGHT road: blocked by
+building collapse rubble. The GREEN VEGETATION TEXTURE on center road is unlike standard
+road surface — model may fail to recognize vegetated-but-open road. No humans, no vehicles.
+Summer midday light, lush peripheral vegetation. Photorealistic.
+
+=== P024 | TRICKY | OPEN: sol (1) | HİLE: açık_yol_karanlıkta ===
+Aerial drone nadir photo, destroyed district, Y-junction. LEFT road: actually clear and
+passable, but LARGE 6-STORY BUILDING RUIN casts very deep nearly black shadow across
+entire left road surface — making it look dark and potentially blocked. CENTER road:
+genuinely blocked but BRIGHTLY LIT, appears light-grey and accessible. RIGHT road:
+genuinely blocked but also appears light-colored. Open road is dark; blocked roads are
+light. Challenge: brightness inversion — model usually associates bright=clear, dark=blocked
+but here it is reversed. Late afternoon sun, extreme directional shadows. Photorealistic.
+
+=== P025 | TRICKY | OPEN: sag (3) | HİLE: eğik_açı ===
+Drone photograph at 60-DEGREE OBLIQUE ANGLE (not nadir), post-earthquake city. Y-junction
+visible but perspective is oblique. RIGHT road: passable — extends away from camera showing
+bare earth. LEFT road: blocked by rubble — but oblique angle compresses perspective making
+debris height hard to judge from above. CENTER road: blocked by rubble. The non-nadir
+angle compresses vertical height of debris — rubble on blocked roads looks similar in height
+to road surface on open road. Perspective distortion is the key challenge. No humans,
+no vehicles. Midday sun. Photorealistic.
+
+=== P026 | TRICKY | OPEN: orta (2) | HİLE: lastik_izi_kapalı_yolda ===
+Aerial drone top-down photo, post-conflict ruins, Y-junction. CENTER road: open and
+passable, clear surface. LEFT road: blocked by dense rubble, but CLEAR TIRE TRACKS
+VISIBLE leading INTO the rubble from junction — as if vehicle tried to enter (implying
+false traversability). RIGHT road: blocked by structural collapse, no tracks. Challenge:
+tire tracks on blocked left road create false impression of recent vehicle passage.
+No humans, no vehicles currently. Harsh midday lighting. Photorealistic.
+
+=== P027 | TRICKY | OPEN: sol (1) | HİLE: kum_her_yerde ===
+Aerial drone nadir photo, post-earthquake desert urban environment. Y-junction. LEFT road:
+barely passable — dry sand and dust blown across most of surface but underlying road is
+intact. RIGHT road: sand PLUS genuine deep rubble beneath — looks similar to left from above.
+CENTER road: genuine solid rubble blockage beneath sand layer. ALL THREE ROADS look
+nearly identical from above due to uniform sand coverage but only left is passable.
+Challenge: model must detect structural blockage beneath surface layer. No humans,
+no vehicles. Harsh desert midday sun, high contrast, beige-tan palette. Photorealistic.
+
+=== P028 | TRICKY | OPEN: sag (3) | HİLE: kraterlü_açık_yol ===
+Aerial drone top-down photo, post-bombardment ruins. Y-junction. RIGHT road: technically
+passable — TWO LARGE SHELL CRATERS pit road surface, one on each side, leaving navigable
+center strip. The craters create visual discontinuity making road look damaged/impassable.
+LEFT road: solid rubble blockage. CENTER road: solid rubble blockage. Challenge: craters
+on open road resemble debris fields from above — irregular dark holes in road surface.
+No humans, no vehicles. Dawn light, post-bombing dust haze. Photorealistic.
+
+=== P029 | TRICKY | OPEN: orta (2) | HİLE: hepsi_benzer_yoğunluk ===
+Aerial drone nadir photograph, city ruins. Y-junction. ALL THREE roads have visible debris
+scattered on them — loose rubble, broken concrete, scattered bricks. CENTER road debris:
+SPARSE, on margins, center navigable. LEFT road debris: slightly denser, CONTINUOUS coverage,
+genuinely impassable. RIGHT road debris: slightly denser, CONTINUOUS coverage, genuinely
+impassable. The visual similarity between sparse-but-open and dense-but-blocked is the
+challenge — difference is subtle density, not obvious gap vs barrier. No humans, no vehicles.
+Flat overcast lighting. Photorealistic, ultra-detailed.
+
+=== P030 | TRICKY | OPEN: sol (1) | HİLE: gece_görüntüsü ===
+Aerial drone NIGHT/LOW-LIGHT photograph, post-disaster ruins. Y-junction. Image is dark
+with only ambient moonlight and distant fire glow providing illumination. LEFT road:
+passable — clear path visible as slightly lighter surface in dim light. CENTER road:
+blocked — debris mass creates darker irregular texture. RIGHT road: blocked — debris
+creates irregular shadows. Challenge: low light makes precise identification very difficult.
+Model must work with low-contrast, noisy, near-monochrome image data. No humans, no vehicles.
+Photorealistic night drone photography, visible grain, minimal color, near-darkness.
+
+================================================================================
+ÖZET TABLOSU
+================================================================================
+ID    | TÜR     | AÇIK YOL | NUMARA
+------|---------|----------|-------
+P001  | CORRECT | sag      | 3
+P002  | CORRECT | sol      | 1
+P003  | CORRECT | orta     | 2
+P004  | CORRECT | sag      | 3
+P005  | CORRECT | orta     | 2
+P006  | CORRECT | sol      | 1
+P007  | CORRECT | sag      | 3
+P008  | CORRECT | orta     | 2
+P009  | CORRECT | sol      | 1
+P010  | CORRECT | sag      | 3
+P011  | CORRECT | orta     | 2
+P012  | CORRECT | sol      | 1
+P013  | CORRECT | sag      | 3
+P014  | CORRECT | orta     | 2
+P015  | CORRECT | sol      | 1
+P016  | TRICKY  | sag      | 3   (benzer doku — tüm yollar aynı görünür)
+P017  | TRICKY  | orta     | 2   (gölge açık yolu kapatıyor)
+P018  | TRICKY  | sol      | 1   (açık yolda moloz saçılmış)
+P019  | TRICKY  | sag      | 3   (açık yolda çoklu debris yığını)
+P020  | TRICKY  | orta     | 2   (duman/sis görüşü engelliyor)
+P021  | TRICKY  | sol      | 1   (dar geçit bırakılmış)
+P022  | TRICKY  | sag      | 3   (açık yolda çamur/su)
+P023  | TRICKY  | orta     | 2   (açık yolda bitki örtüsü)
+P024  | TRICKY  | sol      | 1   (açık yol gölgede, kapalı yollar aydınlık)
+P025  | TRICKY  | sag      | 3   (eğik kamera açısı)
+P026  | TRICKY  | orta     | 2   (kapalı yolda lastik izi var)
+P027  | TRICKY  | sol      | 1   (her yer kum kaplı)
+P028  | TRICKY  | sag      | 3   (açık yolda kraterler var)
+P029  | TRICKY  | orta     | 2   (3 yolda da debris ama biri geçilebilir)
+P030  | TRICKY  | sol      | 1   (gece, karanlık çekim)
+================================================================================
+GÖRSEL ISIMLENDIRME: P001.jpg, P002.jpg, ... P030.jpg
+test_accuracy.py ile analiz için bu isimlendirmeyi kullanın.
+================================================================================
