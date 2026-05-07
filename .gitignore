@@ -3,35 +3,48 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
 *.egg-info/
 dist/
 build/
-.env
 
-# Dataset — büyük, git'e girmiyor (download_and_convert.py ile yeniden indirilebilir)
+# Environment
+.env
+.env*
+
+# Dataset — download_and_convert.py ile yeniden indirilebilir
 dataset/rescuenet_yolo/
 
 # Eğitim çıktıları — yeniden üretilebilir
 codes/runs/
 runs/
 
-# Eski/kullanılmayan dataset
+# Eski dataset
 codes/Rubble-Detection-1/
 
-# Model ağırlıkları — GitHub 100MB limitini aşabiliyor
-# Sadece NCNN modeli push edilecek (RPi için), .pt dosyaları hariç
+# Model ağırlıkları — GitHub 100MB limitini aşıyor (.pt)
 models/rescuenet_seg_v1_best.pt
 models/rescuenet_seg_v1_ncnn/
 yolov8n-seg.pt
 codes/yolov8n.pt
 
-# Inference çıktıları
+# Inference ve test çıktıları
 codes/results/
 codes/test_results/
 
-# API anahtarları
-codes/.env
+# Video dosyaları
+codes/video/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+
+# Görsel dosyalar
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.gif
 
 # IDE
 .vscode/
@@ -43,14 +56,16 @@ codes/.env
 .DS_Store
 Thumbs.db
 
+# Claude Code
 .claude/
-codes/results/video
-!runs/segment/runs/segment/rescuenet_seg_v1/*.jpg
-runs/segment/runs/segment/rescuenet_seg_v1/*.png
-
-.env*
-
 CLAUDE.md
-*.png
-*.jpg
+
+# Eski/kullanılmayan scriptler
+codes/tes_camera.py
+codes/test_image.py
+codes/test_laptop.py
+codes/train.py
+
+# Diğer
 python-dersleri/
+images/
