@@ -1,0 +1,1412 @@
+================================================================================
+NAVITAS — HİLELİ PROMPTLAR (Modeli Zorlamak İçin)
+================================================================================
+Dosya  : prompts_tricky.txt
+Toplam : 50 prompt (H001–H050)
+Etiket : dataset/test_labels_tricky.json
+
+ÖNCELIK SIRASI (gerçek test sonuçlarına göre):
+  1. GÖLGE         — model gölgeli açık yolu kapalı sanıyor  ★★★ KRİTİK
+  2. YAN BAKIŞ     — kamera açısı model için yıkıcı          ★★★ KRİTİK
+  3. BOZUK AMA AÇIK— hasarlı yüzey modeli yanıltıyor        ★★ ÖNEMLİ
+  4. GECE / KARANLIK— düşük ışık ciddi sorun                ★★ ÖNEMLİ
+  5. DİĞER         — duman, çamur, dar geçit, benzer doku   ★ EKSTRA
+
+GÖRSEL İSİMLENDİRME:
+  GPT    → H001_gpt.png, H002_gpt.png, ...
+  Banana → H001_bnk.png, H002_bnk.png, ...
+
+YÖN KURALI (aynı kural):
+  sol  (1) = fotoğrafın SOL-ÜST köşesi
+  orta (2) = fotoğrafın TAM ÜSTÜ
+  sag  (3) = fotoğrafın SAĞ-ÜST köşesi
+
+NANO-BANANA GENEL NEGATİF (her prompta ekle):
+  humans, people, cars, vehicles, military, tanks, soldiers, animals,
+  birds, text, watermark, cartoon, illustration, painting, drawing,
+  3d render, cgi, blurry, low quality, ugly, deformed
+
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+GÖLGE (H001–H012) — ★★★ KRİTİK ÖNCELİK
+Açık yol gölge altında → model kapalı sanıyor
+────────────────────────────────────────────────────────────────────────────────
+
+=== H001 | HILELI | ACIK: sol (1) | HILE: golge_acik_yolu_kesiyor | ORAN: 1:1 ===
+DESCRIPTION: Massive shadow cuts across the OPEN left road making it look dark/blocked.
+
+GPT:
+90-degree top-down nadir aerial photograph. Three roads at Y-junction from directly
+above. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — but a MASSIVE DARK
+SHADOW from a tall collapsed building on the right side falls DIAGONALLY ACROSS the
+entire left road surface, making it appear very dark, almost black, from above.
+The actual road surface beneath the shadow is completely clear and passable — no
+debris. THE ROAD TOWARD TOP-CENTER IS GENUINELY BLOCKED by bright-lit rubble — grey
+concrete debris fully visible, well illuminated. THE ROAD TOWARD UPPER-RIGHT IS
+GENUINELY BLOCKED by bright-lit brick rubble — well illuminated. CHALLENGE: Open
+road is dark (shadow), blocked roads are bright. Harsh late afternoon sun from upper-
+right, 30-degree angle, extremely long shadows. No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, Y-junction three roads, LEFT ROAD OPEN
+but covered by massive diagonal dark shadow from tall building, shadow makes open
+left road appear very dark almost black, center road BLOCKED bright lit grey concrete
+rubble, right road BLOCKED bright lit brick rubble, harsh low sun extreme shadows,
+open=dark blocked=bright, post-earthquake aerial photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, low quality
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H002 | HILELI | ACIK: orta (2) | HILE: golge_tam_orta | ORAN: 1:1 ===
+DESCRIPTION: Deep shadow covers open center road, lateral roads are bright.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — a VERY DEEP DARK SHADOW
+from twin tall building ruins on both sides of center road falls INTO the road
+channel, creating near-black shadow corridor. The center road surface is completely
+passable underneath but appears very dark. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+GENUINELY BLOCKED — brightly sunlit, light grey concrete rubble visible clearly.
+THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS GENUINELY BLOCKED — brightly sunlit, light
+beige brick debris clearly visible. The open center channel appears darkest of all
+three. Early morning low sun from upper-right, extremely long shadows. No humans,
+no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree top-down aerial, Y-junction three roads, CENTER ROAD ONLY
+OPEN but deep dark shadow channel from flanking building ruins, center appears very
+dark near-black corridor, left road BLOCKED bright sunlit concrete rubble, right
+road BLOCKED bright sunlit brick debris, open=darkest blocked=brightest, early
+morning low sun, dramatic shadows, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H003 | HILELI | ACIK: sag (3) | HILE: golge_sag_yol | ORAN: 1:1 ===
+DESCRIPTION: Right open road covered by shadow from left building ruins.
+
+GPT:
+90-degree top-down nadir aerial photo. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD — a tall destroyed building
+on the left casts a MASSIVE SHADOW across the right road surface, covering most of
+it with darkness. The road surface itself is clear beneath shadow. THE LEFT ROAD
+(TOWARD UPPER-LEFT) IS GENUINELY BLOCKED by brightly lit mixed concrete rubble —
+well illuminated, looks "open" due to uniform brightness. THE CENTER ROAD (TOWARD
+TOP) IS GENUINELY BLOCKED by brightly lit brick rubble — also well lit. CHALLENGE:
+Shadow reverses normal visual cues — open road is darkest, both blocked roads appear
+lighter and more accessible. Very low sun from upper-left. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, Y-junction three roads, RIGHT ROAD ONLY
+OPEN covered by massive shadow from tall building on left, right road dark from shadow
+but clear beneath, left road BLOCKED bright lit uniform concrete rubble, center road
+BLOCKED bright lit brick rubble, low sun upper-left, shadow reversal open=dark
+blocked=bright, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H004 | HILELI | ACIK: sol (1) | HILE: dappled_shadow | ORAN: 1:1 ===
+DESCRIPTION: Dappled broken shadow pattern on open left road from destroyed lattice roof.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — a destroyed metal lattice
+roof structure hanging at road edge casts COMPLEX DAPPLED SHADOW PATTERN across
+the open road: alternating dark patches and bright spots creating broken, irregular
+visual texture on clear road surface. THE CENTER ROAD (TOWARD TOP) IS GENUINELY
+BLOCKED by dense concrete rubble with uniform grey texture. THE RIGHT ROAD (TOWARD
+UPPER-RIGHT) IS GENUINELY BLOCKED by brick wall collapse. CHALLENGE: Complex shadow
+pattern on open road creates visual texture similar to debris scatter. Harsh midday
+sun filtered through broken lattice. No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial top-down, Y-junction three roads, LEFT ROAD ONLY
+OPEN with complex dappled shadow pattern from destroyed lattice structure, alternating
+dark bright patches on clear road surface, center road BLOCKED uniform grey concrete
+rubble, right road BLOCKED brick wall collapse, harsh sun through broken lattice
+dappled shadows, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H005 | HILELI | ACIK: orta (2) | HILE: partial_shadow | ORAN: 4:3 ===
+DESCRIPTION: Half of open center road in deep shadow, half in full sun.
+
+GPT:
+90-degree nadir aerial photograph, wider frame. Three roads at Y-junction from
+directly above. THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — a large
+collapsed building wall on the right side casts shadow that covers EXACTLY HALF
+of the center road from edge to centerline: left half of road in full sun, right
+half in deep shadow. The entire road is clear and passable but visually split into
+light and dark halves. THE LEFT ROAD (TOWARD UPPER-LEFT) IS GENUINELY BLOCKED by
+fully sunlit concrete rubble. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS GENUINELY
+BLOCKED by fully sunlit brick debris. CHALLENGE: Partial shadow bisects the open
+road, making it look partially blocked. Sharp shadow edge. No humans, no vehicles.
+Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial wider, Y-junction three roads, CENTER ROAD ONLY
+OPEN but partial shadow covers half road from edge to centerline creating dark-bright
+split, left half sunny right half in shadow both clear, left road BLOCKED fully
+sunlit concrete rubble, right road BLOCKED fully sunlit brick debris, sharp shadow
+edge, photorealistic 4K wider frame
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7.5 | Size: 1536x1024
+
+---
+
+=== H006 | HILELI | ACIK: sag (3) | HILE: shadow_stripe | ORAN: 1:1 ===
+DESCRIPTION: Multiple shadow stripes across open right road from collapsed fence posts.
+
+GPT:
+90-degree top-down nadir aerial photograph. Three roads at Y-junction from directly
+above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD — destroyed fence and
+pole structures on both road margins cast MULTIPLE PARALLEL DARK SHADOW STRIPES
+across the road surface: 5-6 dark stripe shadows crossing the open road perpendicular
+to road direction. The road surface is clear and passable between shadow stripes.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS GENUINELY BLOCKED by dense continuous rubble.
+THE CENTER ROAD (TOWARD TOP) IS GENUINELY BLOCKED by debris field. CHALLENGE: Striped
+shadow pattern resembles fence/barrier across road. Afternoon sun at 45 degrees.
+No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree top-down aerial, Y-junction three roads, RIGHT ROAD ONLY
+OPEN with multiple parallel dark shadow stripes from fence poles across road surface,
+5-6 stripe shadows crossing open right road, road clear between stripes, left road
+BLOCKED dense continuous rubble, center road BLOCKED debris field, afternoon 45
+degree sun, stripe shadows, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H007 | HILELI | ACIK: sol (1) | HILE: golge_sis | ORAN: 1:1 ===
+DESCRIPTION: Dust haze combined with shadow on open left road.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — a COMBINATION OF SHADOW
+from adjacent ruins AND LIGHT DUST HAZE reduces visibility on the open left road:
+road appears very dark grey, slightly blurred by haze, but physically completely
+clear. THE CENTER ROAD (TOWARD TOP) IS GENUINELY BLOCKED — brightly lit through
+haze, rubble visible. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS GENUINELY BLOCKED —
+also brightly lit, debris clearly visible. CHALLENGE: Shadow + haze makes open road
+least visible of the three. Dramatic directional afternoon light. No humans, no
+vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, LEFT ROAD ONLY OPEN but
+shadow combined with dust haze makes it appear very dark grey low visibility, road
+physically clear underneath, center road BLOCKED brightly lit rubble through haze,
+right road BLOCKED brightly lit debris, shadow plus haze on open road only, afternoon
+directional light, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, low quality
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H008 | HILELI | ACIK: orta (2) | HILE: golge_gecici | ORAN: 1:1 ===
+DESCRIPTION: Open center road in cloud shadow, others in bright sunlight.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — a passing cloud shadow falls
+exactly over the center road area, reducing illumination significantly: center road
+appears darker, lower contrast, slightly grey. THE LEFT ROAD (TOWARD UPPER-LEFT)
+IS GENUINELY BLOCKED by rubble — in full bright sunlight, clearly visible high-
+contrast rubble pile. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS GENUINELY BLOCKED by
+debris — also in full sunlight, clearly visible. CHALLENGE: The open road is in
+cloud shadow, appears duller; blocked roads are vivid and bright. The cloud shadow
+boundary is visible as a tone shift in the image. No humans, no vehicles. Photorealistic.
+Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir top-down 90 degree aerial, Y-junction three roads, CENTER ROAD ONLY
+OPEN under cloud shadow area darker grey lower contrast, left road BLOCKED in full
+bright sunlight high-contrast rubble, right road BLOCKED in full bright sunlight
+debris, cloud shadow boundary visible tone shift, open=darker blocked=brighter,
+photorealistic 4K aerial photo
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H009 | HILELI | ACIK: sag (3) | HILE: deep_narrow_shadow | ORAN: 1:1 ===
+DESCRIPTION: Deep gorge-like shadow on open right road from tall walls.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD — two very tall destroyed
+building walls flank the right road like a canyon, creating an extremely deep shadow
+in the road channel: the road appears nearly black from above, only a faint texture
+visible at center. THE LEFT ROAD (TOWARD UPPER-LEFT) IS GENUINELY BLOCKED — in full
+sun, uniform light grey rubble pile. THE CENTER ROAD (TOWARD TOP) IS GENUINELY
+BLOCKED — in full sun, light beige debris. The open road appears as the darkest
+element. Noon sun from directly above, but road is shaded by tall flanking walls.
+No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial overhead, Y-junction three roads, RIGHT ROAD ONLY
+OPEN between tall canyon-like destroyed building walls, deep shadow nearly black
+channel barely visible, left road BLOCKED full sun light grey rubble, center road
+BLOCKED full sun light beige debris, open road=darkest element, noon sun tall wall
+shadows, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H010 | HILELI | ACIK: sol (1) | HILE: golge_tek_serit | ORAN: 4:3 ===
+DESCRIPTION: Single very wide diagonal shadow band covers most of open left road.
+
+GPT:
+90-degree nadir aerial photograph, wider frame. Three roads at Y-junction from directly
+above. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — a single very wide
+dark diagonal shadow band from one large collapsed building covers APPROXIMATELY 80%
+of the open left road surface, leaving only a bright strip at one edge. Road is
+completely clear under shadow. THE CENTER ROAD (TOWARD TOP) IS GENUINELY BLOCKED by
+brightly lit rubble field. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS GENUINELY BLOCKED
+by brightly lit structural debris. The open road has a dominant dark zone. Dramatic
+late afternoon sun. No humans, no vehicles. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial wider, Y-junction three roads, LEFT ROAD ONLY OPEN
+with wide dark diagonal shadow band covering 80 percent of road, small bright strip
+remaining, road fully clear under shadow, center road BLOCKED brightly lit rubble,
+right road BLOCKED brightly lit structural debris, dramatic late afternoon sun,
+photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1536x1024
+
+---
+
+=== H011 | HILELI | ACIK: orta (2) | HILE: golge_degrade | ORAN: 1:1 ===
+DESCRIPTION: Gradient shadow from bright (top) to very dark (bottom junction) on open center road.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — a gradual shadow gradient
+runs along its length: the road appears progressively darker from the top (bright)
+toward the junction area (very dark), as if the road "disappears" into shadow near
+the junction. Road is completely passable. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+GENUINELY BLOCKED by uniformly bright rubble. THE RIGHT ROAD (TOWARD UPPER-RIGHT)
+IS GENUINELY BLOCKED by uniformly bright debris. The open road has a striking dark-to-
+bright gradient. Long afternoon shadows producing directional gradient. No humans,
+no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, CENTER ROAD ONLY OPEN with
+gradient shadow dark near junction bright toward top frame, road passable but darkening
+gradient, left road BLOCKED uniformly bright lit rubble, right road BLOCKED uniformly
+bright debris, long afternoon shadow gradient effect, open road gradient dark-to-bright,
+photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H012 | HILELI | ACIK: sag (3) | HILE: golge_benzer_doku | ORAN: 1:1 ===
+DESCRIPTION: Shadow on open right road creates texture that looks like rubble from above.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD — broken collapsed structures
+at road margins cast COMPLEX IRREGULAR SHADOWS that create a mottled dark texture ON
+the open road surface: the shadow pattern resembles irregular rubble texture from
+above. The road itself has no debris but the shadow makes it look blocked. THE LEFT
+ROAD (TOWARD UPPER-LEFT) IS GENUINELY BLOCKED by concrete rubble — slightly different
+texture than shadow. THE CENTER ROAD (TOWARD TOP) IS GENUINELY BLOCKED by brick debris.
+CHALLENGE: Shadow texture on open road visually similar to rubble texture on blocked
+roads. Harsh angular afternoon sun. No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, RIGHT ROAD ONLY OPEN with
+complex irregular shadow mottled texture resembling rubble from above, road clear but
+shadow looks like debris, left road BLOCKED concrete rubble slightly different texture,
+center road BLOCKED brick debris, shadow vs real debris texture challenge, harsh
+angular afternoon sun, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+────────────────────────────────────────────────────────────────────────────────
+YAN BAKIŞ / EĞİK AÇI (H013–H022) — ★★★ KRİTİK ÖNCELİK
+Kamera açısı perspektif bozukluğu → model başarısız
+────────────────────────────────────────────────────────────────────────────────
+
+=== H013 | HILELI | ACIK: sol (1) | HILE: 60_derece_oblik | ORAN: 16:9 ===
+DESCRIPTION: 60-degree oblique angle, perspective compression confuses depth cues.
+
+GPT:
+Drone photograph at 60-DEGREE OBLIQUE ANGLE — camera tilted, partial horizon
+visible at top. Y-junction of three roads visible from oblique perspective, wider
+frame. THE ROAD TOWARD THE LEFT SIDE OF FRAME (which goes upper-left in true aerial)
+IS THE ONLY OPEN ROAD: passable dirt surface, perspective foreshortening makes it
+appear compressed but clear. THE ROAD TOWARD CENTER-TOP IS COMPLETELY BLOCKED by
+rubble — perspective makes debris pile look flatter and possibly negotiable from
+this angle. THE ROAD TOWARD RIGHT IS COMPLETELY BLOCKED by building collapse —
+debris pile visible from the side, height apparent. CHALLENGE: Oblique perspective
+makes height of debris ambiguous. Ruins visible with depth. Midday sun. No humans,
+no vehicles. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone oblique 60 degree angle photograph, partial horizon visible, Y-junction
+three roads perspective view, ONLY LEFT ROAD OPEN foreshortened but passable, center
+road BLOCKED rubble looks flat from oblique, right road BLOCKED building collapse pile
+visible from side, oblique perspective depth ambiguity, midday sun, wider frame,
+photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry, nadir
+90 degree, top-down only, watermark
+Steps: 35 | CFG: 7 | Size: 1792x1024
+
+---
+
+=== H014 | HILELI | ACIK: orta (2) | HILE: 45_derece_oblik | ORAN: 16:9 ===
+DESCRIPTION: 45-degree oblique angle, one road appears clear in perspective.
+
+GPT:
+Drone photograph at 45-DEGREE OBLIQUE ANGLE. Horizon partially visible at top of
+frame. Y-junction visible in oblique perspective view, wider frame. THE CENTER ROAD
+(which runs toward the upper-center in true aerial) IS THE ONLY OPEN ROAD: road
+extends away from camera in perspective, passable surface, foreshortened. THE LEFT
+ROAD IS COMPLETELY BLOCKED by rubble at camera side — debris pile is clear from
+this angle. THE RIGHT ROAD IS COMPLETELY BLOCKED by structural collapse — visible
+from oblique side. CHALLENGE: Perspective view makes all three roads seem to
+"converge" and relative scale is distorted. Afternoon warm light. No humans, no
+vehicles. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 45 degree oblique angle photograph, partial horizon visible wider
+frame, Y-junction perspective view, ONLY CENTER ROAD OPEN extending away in
+perspective, left road BLOCKED rubble visible from side, right road BLOCKED
+structural collapse visible oblique, perspective distortion convergence, afternoon
+warm light, photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+nadir only, 90 degree top-down, watermark
+Steps: 35 | CFG: 7 | Size: 1792x1024
+
+---
+
+=== H015 | HILELI | ACIK: sag (3) | HILE: yan_bakis_dusuk | ORAN: 16:9 ===
+DESCRIPTION: Low oblique angle (30°), perspective creates false depth impression.
+
+GPT:
+Drone photograph at 30-DEGREE LOW OBLIQUE ANGLE — significant perspective, most
+of horizon visible. Y-junction visible from very low angle, wider frame. THE ROAD
+TOWARD THE RIGHT SIDE (upper-right in true aerial) IS THE ONLY OPEN ROAD: extends
+away from camera, perspective makes it look like a corridor. THE LEFT ROAD IS
+COMPLETELY BLOCKED by debris — but from this low angle, debris pile appears as
+a compact bump rather than impassable barrier. THE CENTER ROAD IS COMPLETELY
+BLOCKED by building collapse — from this angle, collapsed building visible as
+facades/walls rather than flat rubble. CHALLENGE: Very low angle makes depth cues
+unreliable, height underestimated. No humans, no vehicles. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 30 degree low oblique angle, significant perspective horizon visible,
+wider frame, Y-junction side view, ONLY RIGHT ROAD OPEN extending corridor away,
+left road BLOCKED debris appears compact bump from low angle, center road BLOCKED
+building visible as facades not flat rubble, low angle depth confusion, photorealistic
+aerial wider
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+nadir, top-down, watermark, text
+Steps: 35 | CFG: 7 | Size: 1792x1024
+
+---
+
+=== H016 | HILELI | ACIK: sol (1) | HILE: yan_bakis_golge | ORAN: 16:9 ===
+DESCRIPTION: Oblique angle PLUS shadow on open road — double challenge.
+
+GPT:
+Drone photograph at 55-DEGREE OBLIQUE ANGLE. Partial horizon visible. Three roads at
+Y-junction in oblique perspective, wider frame. THE ROAD TOWARD THE LEFT IS THE ONLY
+OPEN ROAD — AND it is ALSO in deep shadow due to adjacent tall building blocking sun
+from this oblique direction. Shadow makes the already perspective-distorted open road
+appear even more ambiguous — very dark, barely visible surface. THE CENTER ROAD IS
+GENUINELY BLOCKED — debris well lit from oblique angle. THE RIGHT ROAD IS GENUINELY
+BLOCKED — debris also well lit. CHALLENGE: Oblique angle + shadow = double challenge,
+open road nearly invisible. No humans, no vehicles. Afternoon sun. Photorealistic.
+Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 55 degree oblique angle partial horizon, wider frame, Y-junction,
+ONLY LEFT ROAD OPEN but also in deep shadow from tall building, open road very dark
+barely visible oblique plus shadow, center road BLOCKED well lit debris oblique,
+right road BLOCKED well lit, double challenge oblique plus shadow, afternoon sun,
+photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+watermark, nadir view
+Steps: 35 | CFG: 8 | Size: 1792x1024
+
+---
+
+=== H017 | HILELI | ACIK: orta (2) | HILE: yan_bakis_debris_yuksekligi | ORAN: 16:9 ===
+DESCRIPTION: Oblique angle makes tall rubble piles on blocked roads look short.
+
+GPT:
+Drone photograph at 50-DEGREE OBLIQUE ANGLE. Horizon visible. Three roads at
+Y-junction from oblique view, wider frame. THE CENTER ROAD IS THE ONLY OPEN ROAD:
+extends away from camera, low flat surface clearly visible as passable. THE LEFT ROAD
+IS COMPLETELY BLOCKED by 4-METER-HIGH RUBBLE PILE — but from this oblique angle
+the height is foreshortened and the pile appears as merely a textured surface, not
+a tall impassable barrier. THE RIGHT ROAD IS COMPLETELY BLOCKED by structural remains
+— again, from oblique angle height is compressed and the blockage looks like low
+obstacles. CHALLENGE: Height foreshortening makes serious blockages look minor.
+No humans, no vehicles. Midday sun. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 50 degree oblique angle horizon visible wider, Y-junction, CENTER
+ROAD ONLY OPEN flat low surface passable, left road BLOCKED 4-meter rubble pile
+appearing short from foreshortening, right road BLOCKED structural remains height
+compressed, oblique height foreshortening makes serious blockage look minor,
+midday sun, photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+watermark, nadir, top-down only
+Steps: 35 | CFG: 7.5 | Size: 1792x1024
+
+---
+
+=== H018 | HILELI | ACIK: sag (3) | HILE: yan_kus_bakisi | ORAN: 16:9 ===
+DESCRIPTION: Bird's-eye at slight tilt (75°), subtle perspective with misleading cue.
+
+GPT:
+Drone photograph at 75-DEGREE ANGLE — almost nadir but slightly oblique, minimal
+horizon visible. Three roads at Y-junction, slight perspective. Wider frame. THE
+ROAD TOWARD THE RIGHT IS THE ONLY OPEN ROAD: slight perspective makes it appear
+to "narrow" into distance which could be misread. THE LEFT ROAD IS COMPLETELY
+BLOCKED: debris pile visible from slight angle shows both top surface and a slight
+side face — might look like it has height but the top texture is confusing. THE
+CENTER ROAD IS COMPLETELY BLOCKED: similar slight side-angle view of rubble.
+CHALLENGE: Slight tilt creates subtle false cues in all three roads. No humans,
+no vehicles. Morning light. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 75 degree near-nadir slight tilt, minimal horizon visible wider,
+Y-junction slight perspective, ONLY RIGHT ROAD OPEN appearing narrow in perspective,
+left road BLOCKED rubble slight side face visible, center road BLOCKED rubble slight
+angle, subtle tilt false depth cues, morning light, photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+watermark, full nadir, text
+Steps: 35 | CFG: 7.5 | Size: 1792x1024
+
+---
+
+=== H019 | HILELI | ACIK: sol (1) | HILE: perspektif_ego_noktasi | ORAN: 16:9 ===
+DESCRIPTION: Strong perspective vanishing point view — all roads converge.
+
+GPT:
+Drone photograph at 40-DEGREE LOW OBLIQUE angle. Strong perspective with clear vanishing
+point. Three roads at Y-junction converge toward a single vanishing point in mid-frame.
+Wider frame. THE ROAD TOWARD THE LEFT IS THE ONLY OPEN ROAD: extends toward vanishing
+point on left side, clear surface in perspective. THE CENTER ROAD IS COMPLETELY BLOCKED:
+debris fills it but in perspective view looks like a textured convergence. THE RIGHT
+ROAD IS COMPLETELY BLOCKED: structural collapse in perspective view. CHALLENGE: Strong
+perspective with vanishing point creates visual complexity, all roads appear to converge
+and compress. No humans, no vehicles. Afternoon sun. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 40 degree oblique strong perspective vanishing point wider frame,
+Y-junction roads converging to vanishing point, ONLY LEFT ROAD OPEN clear surface
+perspective, center road BLOCKED debris textured convergence, right road BLOCKED
+structural collapse perspective, strong perspective vanishing point complexity,
+afternoon sun, photorealistic aerial wider
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+watermark, nadir top-down only
+Steps: 35 | CFG: 7 | Size: 1792x1024
+
+---
+
+=== H020 | HILELI | ACIK: orta (2) | HILE: yan_bakis_sisli | ORAN: 16:9 ===
+DESCRIPTION: Oblique angle with atmospheric haze reducing depth cues.
+
+GPT:
+Drone photograph at 55-DEGREE OBLIQUE ANGLE with LIGHT ATMOSPHERIC HAZE. Partial
+horizon visible through haze. Three roads at Y-junction in oblique perspective with
+added haze, wider frame. THE CENTER ROAD IS THE ONLY OPEN ROAD: extends into the
+hazy distance, surface visible as slightly blurred clear path. THE LEFT ROAD IS
+COMPLETELY BLOCKED: debris present but haze and perspective combine to make it
+harder to read as a solid barrier. THE RIGHT ROAD IS COMPLETELY BLOCKED: building
+collapse partially obscured by haze at distance. CHALLENGE: Oblique angle + haze
+creates maximum depth cue ambiguity. No humans, no vehicles. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 55 degree oblique haze atmospheric wider, Y-junction perspective haze,
+CENTER ROAD ONLY OPEN extending hazy distance clear path, left road BLOCKED debris
+haze plus perspective barrier ambiguous, right road BLOCKED building collapse obscured
+haze, oblique plus atmospheric haze depth cues removed, photorealistic aerial wider
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry excessively,
+watermark, nadir, top-down only
+Steps: 35 | CFG: 7.5 | Size: 1792x1024
+
+---
+
+=== H021 | HILELI | ACIK: sag (3) | HILE: yan_bakis_karmasik | ORAN: 16:9 ===
+DESCRIPTION: Oblique view with complex ruins creating visual noise.
+
+GPT:
+Drone photograph at 65-DEGREE OBLIQUE ANGLE. Partial horizon. Three roads at
+Y-junction in oblique perspective, complex ruins visible. Wider frame. THE ROAD
+TOWARD THE RIGHT IS THE ONLY OPEN ROAD: visible as relatively clear corridor in
+complex oblique scene. THE LEFT ROAD IS COMPLETELY BLOCKED: debris visible from
+angle but visually merges with surrounding ruins. THE CENTER ROAD IS COMPLETELY
+BLOCKED: structural collapse partially hides blockage behind standing walls from
+this angle. CHALLENGE: Complex visual scene, standing walls partially hide road
+status from oblique angle. No humans, no vehicles. Overcast. Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 65 degree oblique partial horizon wider, complex ruins Y-junction
+perspective, ONLY RIGHT ROAD OPEN clear corridor oblique, left road BLOCKED debris
+merges visually with surrounding ruins, center road BLOCKED collapse hidden behind
+standing walls from angle, complex visual noise oblique, overcast, photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+watermark, nadir only, text
+Steps: 35 | CFG: 7 | Size: 1792x1024
+
+---
+
+=== H022 | HILELI | ACIK: sol (1) | HILE: yan_bakis_alacakaranlik | ORAN: 16:9 ===
+DESCRIPTION: Oblique angle at dusk — low light combined with perspective.
+
+GPT:
+Drone photograph at 60-DEGREE OBLIQUE ANGLE at DUSK — very low sun at horizon
+creates extreme directional lighting. Partial horizon visible, orange-purple sky
+strip. Three roads at Y-junction in oblique perspective. Wider frame. THE ROAD
+TOWARD THE LEFT IS THE ONLY OPEN ROAD: extreme dusk sidelight creates dramatic
+shadows and highlights in the perspective view, road surface alternates light and
+dark from oblique angle in dusk light. THE CENTER ROAD IS COMPLETELY BLOCKED:
+rubble lit dramatically from one side in dusk light. THE RIGHT ROAD IS COMPLETELY
+BLOCKED: structural collapse with strong directional shadows. CHALLENGE: Oblique
+view + extreme dusk lighting = severe visual confusion. No humans, no vehicles.
+Photorealistic. Output: 1792×1024 PNG.
+
+NANO-BANANA:
+Positive: drone 60 degree oblique dusk extreme low sun, orange-purple horizon strip,
+wider frame, Y-junction perspective dusk light, ONLY LEFT ROAD OPEN dramatic dusk
+sidelight shadows highlights oblique, center road BLOCKED rubble dramatic dusk lit,
+right road BLOCKED collapse strong directional shadows, oblique plus dusk extreme
+challenge, photorealistic aerial
+Negative: humans, vehicles, military, animals, cartoon, illustration, blurry,
+watermark, nadir only
+Steps: 35 | CFG: 8 | Size: 1792x1024
+
+────────────────────────────────────────────────────────────────────────────────
+BOZUK AMA AÇIK (H023–H032) — ★★ ÖNEMLİ
+Hasarlı/kirli yüzey ama geçilebilir → model kapalı sanıyor
+────────────────────────────────────────────────────────────────────────────────
+
+=== H023 | HILELI | ACIK: sol (1) | HILE: krater_acik_yolda | ORAN: 1:1 ===
+DESCRIPTION: Open left road has 3 shell craters on it but center strip passable.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — but it has THREE SHELL
+CRATERS pitting its surface: one large crater on the left side, one medium on the
+right side, one small near center — all slightly off-center, leaving a navigable
+strip between them. Dark irregular crater holes are prominent from above. THE
+CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED by solid rubble. THE RIGHT ROAD
+(TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by building collapse. CHALLENGE: Crater
+holes on open road look like impassable damage from above. Post-bombardment zone.
+No humans, no vehicles. Midday sun. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial top-down, Y-junction three roads, LEFT ROAD ONLY
+OPEN with three shell craters pitting surface off-center navigable strip between
+craters, dark irregular holes visible from above, center road BLOCKED solid rubble,
+right road BLOCKED building collapse, craters on open road look like damage,
+post-bombardment, midday sun, photorealistic 4K
+Negative: humans, vehicles, military, animals, active explosion, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H024 | HILELI | ACIK: orta (2) | HILE: agir_hasar_gecebilir | ORAN: 1:1 ===
+DESCRIPTION: Center road has severe surface damage (deep cracks, buckled asphalt) but is passable.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — but it has SEVERE SURFACE
+DAMAGE: deep cracks running across road, buckled and heaved asphalt sections, some
+small debris fragments on surface, edge sections crumbled — but the CORE ROUTE IS
+STILL TRAVERSABLE, no total blockage. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+COMPLETELY BLOCKED by smooth uniform concrete slab lying flat — ironically looks
+"cleaner" than the damaged open road. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS
+COMPLETELY BLOCKED by brick rubble. CHALLENGE: Heavily damaged but passable center
+vs. smooth but impassable left. No humans, no vehicles. Overcast. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, CENTER ROAD ONLY OPEN
+but severely damaged deep cracks buckled asphalt small debris edge crumbled but
+passable, left road BLOCKED smooth concrete slab lying flat looks cleaner,
+right road BLOCKED brick rubble, damaged passable vs smooth impassable challenge,
+overcast, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H025 | HILELI | ACIK: sag (3) | HILE: moloz_kenar_acik_merkez | ORAN: 1:1 ===
+DESCRIPTION: Large rubble masses on BOTH SIDES of open right road but center strip clear.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD — but LARGE RUBBLE MASSES
+have encroached from BOTH SIDES of the road: left side intrusion and right side
+intrusion each consume ~35% of road width, leaving ~30% center strip passable.
+From above, the road looks mostly blocked at first glance. THE LEFT ROAD (TOWARD
+UPPER-LEFT) IS COMPLETELY BLOCKED by continuous rubble with NO gap. THE CENTER
+ROAD (TOWARD TOP) IS COMPLETELY BLOCKED by structural debris. CHALLENGE: Partial
+intrusions from both sides look like total blockage. No humans, no vehicles.
+Afternoon sun. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial top-down, Y-junction three roads, RIGHT ROAD ONLY
+OPEN but large rubble masses from both sides leaving only 30 percent center strip,
+looks mostly blocked but center gap exists, left road COMPLETELY BLOCKED no gap
+continuous rubble, center road COMPLETELY BLOCKED structural debris, partial
+intrusions vs total blockage, afternoon sun, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H026 | HILELI | ACIK: sol (1) | HILE: yuzey_yanmis | ORAN: 1:1 ===
+DESCRIPTION: Open left road has fire-burned black surface, looks dangerous/closed.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — but its surface is FIRE-
+SCORCHED: completely black asphalt from recent fire, some smoke residue, burned
+texture across full road width but no physical blockage. THE CENTER ROAD (TOWARD
+TOP) IS COMPLETELY BLOCKED by concrete rubble — normal grey-brown color. THE RIGHT
+ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by brick debris — normal red-brown
+color. CHALLENGE: Black burned surface on open road looks impassable; normal-colored
+rubble on blocked roads looks more "standard" and even traversable. No active fire.
+No humans, no vehicles. Post-fire midday. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, LEFT ROAD ONLY OPEN but
+completely black fire-scorched asphalt surface smoke residue burned texture passable,
+center road BLOCKED grey-brown concrete rubble, right road BLOCKED red-brown brick
+debris, burned open road vs normal-color blocked roads, post-fire midday, no active
+fire, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, active fire, flames, smoke active,
+sky, horizon, oblique, perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H027 | HILELI | ACIK: orta (2) | HILE: asphalt_bozuk_parcali | ORAN: 1:1 ===
+DESCRIPTION: Center road has broken-up asphalt slabs (heaved) but passable between pieces.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — earthquake heaving has broken
+the asphalt into LARGE TILTED SLABS: sections of road surface are lifted and tilted
+at angles, creating a rough broken-tile appearance from above. Between the tilted
+slabs, gaps exist that allow passage. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+COMPLETELY BLOCKED by dense structural rubble. THE RIGHT ROAD (TOWARD UPPER-RIGHT)
+IS COMPLETELY BLOCKED by building collapse. CHALLENGE: Broken-slab road surface
+looks like rubble from above. No humans, no vehicles. Noon sun, clear. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, CENTER ROAD ONLY OPEN
+but earthquake heaved asphalt broken into large tilted slabs lifted surface looks
+like rubble from above with gaps between for passage, left road BLOCKED dense
+structural rubble, right road BLOCKED building collapse, broken-slab road vs real
+rubble challenge, noon sun clear, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H028 | HILELI | ACIK: sag (3) | HILE: kumu_acik_yol | ORAN: 1:1 ===
+DESCRIPTION: Open right road covered by thick sand layer disguising road surface.
+
+GPT:
+90-degree nadir aerial photograph, desert urban zone. Three roads at Y-junction
+from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD —
+but THICK SAND AND DUST has blown across its surface creating a uniform tan layer:
+the road beneath is intact but the sand makes all three roads look similar from
+above. THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by rubble buried
+under similar sand — looks IDENTICAL to the open right road with sand on top. THE
+CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED by structural debris under sand.
+CHALLENGE: All three roads look nearly identical (sand-covered), only right road
+is actually passable beneath the sand. No humans, no vehicles. Harsh desert sun.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial desert urban, Y-junction three roads, RIGHT ROAD
+ONLY OPEN beneath thick sand dust layer road intact, left road BLOCKED rubble
+buried under same sand looks identical, center road BLOCKED debris under sand, all
+three roads look same sand-covered only right passable, harsh desert sun, uniform
+tan palette, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H029 | HILELI | ACIK: sol (1) | HILE: sulanmis_camurlu | ORAN: 1:1 ===
+DESCRIPTION: Open left road flooded with shallow muddy water, looks impassable.
+
+GPT:
+90-degree nadir aerial photograph, post-flood urban zone. Three roads at Y-junction
+from directly above. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD —
+completely covered by SHALLOW MUDDY BROWN WATER: standing floodwater ~10cm deep,
+brown and opaque, road surface intact underneath, actually passable — but from
+above looks like a brown mud pool. THE CENTER ROAD (TOWARD TOP) IS COMPLETELY
+BLOCKED by concrete debris and mud combined — also brown-colored but more irregular
+texture. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by structural
+rubble. CHALLENGE: Brown muddy water on open road looks similar to mud-and-rubble
+blockage. No humans, no vehicles. Overcast post-flood. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial post-flood, Y-junction three roads, LEFT ROAD
+ONLY OPEN covered by shallow muddy brown water 10cm flood road intact under,
+looks like brown mud pool from above, center road BLOCKED concrete debris plus
+mud brown irregular, right road BLOCKED structural rubble, muddy water vs mud-
+rubble visual confusion, overcast post-flood, photorealistic 4K
+Negative: humans, vehicles, military, animals, active rain, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H030 | HILELI | ACIK: orta (2) | HILE: bitki_kapli_acik | ORAN: 1:1 ===
+DESCRIPTION: Long-abandoned center road with heavy weed/grass growth through cracks.
+
+GPT:
+90-degree nadir aerial photograph, long-abandoned disaster zone. Three roads at
+Y-junction from directly above. THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD
+— but it is long-abandoned: DENSE WEEDS, GRASS, AND VEGETATION have grown through
+every crack, creating a GREEN-TEXTURED road surface. The vegetation covers most of
+road surface but road structure is intact beneath, traversable. THE LEFT ROAD
+(TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by solid concrete rubble — no vegetation,
+grey. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by building
+collapse debris. CHALLENGE: Green vegetation on open road looks like organic
+blockage; grey rubble on blocked roads looks like a different kind of surface.
+No humans, no vehicles. Summer midday. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial abandoned zone, Y-junction three roads, CENTER
+ROAD ONLY OPEN but dense weeds grass vegetation through cracks green texture surface
+traversable beneath, left road BLOCKED solid grey concrete rubble no vegetation,
+right road BLOCKED building collapse debris, green vegetation on open vs grey rubble
+blocked, summer midday, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H031 | HILELI | ACIK: sag (3) | HILE: dar_gecit_kenarda | ORAN: 1:1 ===
+DESCRIPTION: Right road has only one narrow passable lane at far edge, rest blocked by intrusion.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD — but a massive concrete
+slab intrusion from the left has pushed into road from junction side, occupying
+approximately 70% of road width: only a NARROW PASSABLE STRIP along the RIGHT EDGE
+of road remains open. From above, road looks largely blocked. THE LEFT ROAD (TOWARD
+UPPER-LEFT) IS COMPLETELY BLOCKED with NO gap. THE CENTER ROAD (TOWARD TOP) IS
+COMPLETELY BLOCKED. CHALLENGE: The narrow edge strip looks like just a margin, not
+a passable route. No humans, no vehicles. Noon sun. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, RIGHT ROAD ONLY OPEN but
+massive concrete slab intrusion occupies 70 percent of width, only narrow strip at
+right edge passable, looks largely blocked from above, left road COMPLETELY BLOCKED
+no gap, center road COMPLETELY BLOCKED, narrow edge strip challenge, noon sun,
+photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H032 | HILELI | ACIK: sol (1) | HILE: duman_yangin_sonrasi | ORAN: 1:1 ===
+DESCRIPTION: Post-fire scene, open left road has heavy soot and ash but is passable.
+
+GPT:
+90-degree nadir aerial photograph, post-fire disaster zone. Three roads at Y-junction
+from directly above. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — but
+post-fire soot, ash, and charred debris scatter covers the entire surface: dark
+grey-black scattered ash with irregular texture across road, making it look like
+a charred rubble field from above. Road structure intact underneath. THE CENTER ROAD
+(TOWARD TOP) IS COMPLETELY BLOCKED by actual structural rubble — also dark from
+fire but solid continuous barrier. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS
+COMPLETELY BLOCKED by fire-blackened building collapse. CHALLENGE: Ash scatter on
+open road looks similar to actual rubble on blocked roads. No active fire. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial post-fire zone, Y-junction three roads, LEFT ROAD
+ONLY OPEN covered by soot ash charred debris scatter dark grey-black textured looks
+like rubble from above road intact underneath, center road BLOCKED actual structural
+rubble dark from fire solid barrier, right road BLOCKED fire-blackened building
+collapse, ash scatter vs real rubble challenge, no active fire, photorealistic 4K
+Negative: humans, vehicles, military, animals, active fire, flames, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+────────────────────────────────────────────────────────────────────────────────
+GECE / DÜŞÜK IŞIK (H033–H040) — ★★ ÖNEMLİ
+────────────────────────────────────────────────────────────────────────────────
+
+=== H033 | HILELI | ACIK: orta (2) | HILE: gece_ay_isigi | ORAN: 1:1 ===
+DESCRIPTION: Moonlit night scene, very low contrast nadir view.
+
+GPT:
+90-degree nadir aerial drone photograph at NIGHT. Very low ambient light from
+full moon only. Three roads at Y-junction from directly above. Night photography:
+nearly monochrome, high grain/noise, very low contrast. THE CENTER ROAD (TOWARD
+TOP) IS THE ONLY OPEN ROAD: slightly lighter grey tone visible where moonlight
+reflects off clear road surface, barely distinguishable. THE LEFT ROAD (TOWARD
+UPPER-LEFT) IS COMPLETELY BLOCKED by dark rubble mass — slightly different texture
+in near-darkness. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by
+structural debris — very dark. All three roads appear very similar in near-darkness.
+Cold blue-grey moonlight, maximum image noise. No artificial lighting. No humans,
+no vehicles. Photorealistic night drone. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial night photography, full moon only light, Y-junction
+three roads, CENTER ROAD ONLY OPEN slightly lighter grey moonlight reflection barely
+visible, left road BLOCKED dark rubble mass, right road BLOCKED structural debris
+dark, near-monochrome high grain noise very low contrast, cold blue-grey moonlight,
+night aerial drone photorealistic 4K
+Negative: humans, vehicles, military, animals, artificial lights streetlights,
+horizon, oblique, perspective, cartoon, illustration, text, watermark
+Steps: 40 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H034 | HILELI | ACIK: sag (3) | HILE: gece_uzak_ates_isigi | ORAN: 1:1 ===
+DESCRIPTION: Night scene with distant fire glow as only light source.
+
+GPT:
+90-degree nadir aerial drone photograph at NIGHT. The only illumination is a DISTANT
+FIRE GLOW from off-frame, creating warm orange-red tinted, extremely uneven lighting.
+Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS
+THE ONLY OPEN ROAD: receives slight fire-glow illumination on its surface, appears
+as warm dark-orange clear surface, barely visible. THE LEFT ROAD (TOWARD UPPER-LEFT)
+IS COMPLETELY BLOCKED: rubble pile catches more of the fire-glow from one side,
+appears lighter/brighter than the open road. THE CENTER ROAD (TOWARD TOP) IS
+COMPLETELY BLOCKED: building collapse partially lit by distant glow. CHALLENGE:
+Uneven fire-glow illumination reverses brightness cues. No humans, no vehicles, no
+visible fire. Photorealistic night scene. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial night, distant fire glow off-frame only light
+source, warm orange-red uneven tinted illumination, Y-junction three roads, RIGHT
+ROAD ONLY OPEN slight fire glow warm dark-orange barely visible, left road BLOCKED
+rubble pile catches more glow appears brighter, center road BLOCKED partially lit,
+fire glow reverses brightness cues, night photorealistic 4K
+Negative: humans, vehicles, military, animals, visible fire in frame, streetlights,
+horizon, oblique, perspective, cartoon, illustration, blurry, watermark
+Steps: 40 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H035 | HILELI | ACIK: sol (1) | HILE: gece_termal_simulasyon | ORAN: 1:1 ===
+DESCRIPTION: Thermal-camera-style night image simulation — temperature-based colormap.
+
+GPT:
+90-degree nadir aerial photograph simulating a THERMAL/INFRARED CAMERA at night.
+Colormap: cold surfaces appear dark blue-purple, warm surfaces appear yellow-orange-
+white. Three roads at Y-junction from directly above in thermal simulation. THE ROAD
+TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD: road surface has intermediate temperature,
+appears greenish-yellow in thermal colormap. THE CENTER ROAD (TOWARD TOP) IS
+COMPLETELY BLOCKED by rubble: concrete rubble retains different heat, appears as
+mottled blue-orange patches. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY
+BLOCKED by building debris: thermal mottled appearance. CHALLENGE: Thermal colormap
+is unfamiliar to model trained on RGB images. False-color rendering. No humans, no
+vehicles (which would appear very bright in thermal). Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: thermal infrared camera simulation nadir 90 degree aerial night, false
+color thermal colormap cold=dark blue warm=yellow orange white, Y-junction three
+roads, LEFT ROAD ONLY OPEN intermediate temperature greenish-yellow thermal, center
+road BLOCKED concrete rubble mottled blue-orange thermal patches, right road BLOCKED
+debris thermal mottled, thermal false-color unfamiliar rendering, photorealistic
+thermal simulation 4K
+Negative: humans, vehicles, military, animals, RGB normal color, horizon, oblique,
+perspective, cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H036 | HILELI | ACIK: orta (2) | HILE: alacakaranlik_siluet | ORAN: 1:1 ===
+DESCRIPTION: Very early dawn, silhouette-like very low light nadir view.
+
+GPT:
+90-degree nadir aerial drone photograph at VERY EARLY PRE-DAWN — extreme low light,
+nearly night but slight blue-grey pre-dawn illumination beginning. Three roads at
+Y-junction from directly above. THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD:
+slightly lighter grey strip, barely distinguishable from very low illumination. THE
+LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by rubble — dark irregular mass.
+THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by structural debris —
+dark. All three roads barely visible. The scene has extreme low contrast, near-
+silhouette quality. No artificial lights. No humans, no vehicles. Photorealistic
+extreme low-light drone photography, heavy grain. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial pre-dawn extreme low light, barely illuminated
+blue-grey early morning, Y-junction three roads, CENTER ROAD ONLY OPEN slightly
+lighter grey barely distinguishable, left road BLOCKED dark irregular rubble mass,
+right road BLOCKED dark structural debris, extreme low contrast near-silhouette
+heavy grain, no artificial lights, photorealistic extreme low-light 4K
+Negative: humans, vehicles, military, animals, bright light, artificial lights,
+streetlights, horizon visible, oblique, perspective, cartoon, illustration
+Steps: 40 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H037 | HILELI | ACIK: sag (3) | HILE: gece_dugme_isigi | ORAN: 1:1 ===
+DESCRIPTION: Night scene with single weak artificial light source, uneven illumination.
+
+GPT:
+90-degree nadir aerial drone photograph at NIGHT. A single weak emergency light source
+(lantern or generator light) is positioned at the junction itself, creating UNEVEN
+CIRCULAR ILLUMINATION: areas near junction are brightest, areas farther from junction
+darker. Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT
+IS THE ONLY OPEN ROAD: somewhat illuminated near junction but gets dark toward frame
+edge. THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by rubble — the rubble
+near junction catches the light and appears relatively bright. THE CENTER ROAD (TOWARD
+TOP) IS COMPLETELY BLOCKED by structural debris — debris near junction also lit.
+CHALLENGE: All three roads are lit near junction, but only the open right road is
+actually passable. No humans, no vehicles visible. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial night, single weak light at junction uneven circular
+illumination, Y-junction three roads, RIGHT ROAD ONLY OPEN illuminated near junction
+darkens toward edge, left road BLOCKED rubble near junction catches light appears
+bright, center road BLOCKED debris near junction also lit, all lit near junction
+only right passable, photorealistic night drone 4K
+Negative: humans, vehicles, military, animals, horizon, oblique, perspective, cartoon,
+illustration, blurry, watermark, many lights
+Steps: 40 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H038 | HILELI | ACIK: sol (1) | HILE: gece_pus | ORAN: 1:1 ===
+DESCRIPTION: Night fog reduces all visibility, open road barely distinguishable.
+
+GPT:
+90-degree nadir aerial drone photograph at NIGHT with DENSE FOG. The fog reduces
+all illumination further, creating a uniformly dark, low-contrast scene with soft
+fog diffusion. Three roads at Y-junction from directly above. THE ROAD TOWARD THE
+UPPER-LEFT IS THE ONLY OPEN ROAD: in the fog and darkness, appears as a barely
+perceptible slightly lighter zone. THE CENTER ROAD (TOWARD TOP) IS COMPLETELY
+BLOCKED: rubble under fog appears as slightly different textured dark zone. THE
+RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: debris under fog similarly
+very dark. Maximum visual ambiguity: night + fog + nadir. No humans, no vehicles.
+No artificial light. Moonlight diffused by fog. Photorealistic extreme low
+visibility. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial night with dense fog, fog diffusion all dark low
+contrast uniform, Y-junction three roads barely visible, LEFT ROAD ONLY OPEN barely
+perceptible lighter zone through fog night, center road BLOCKED rubble dark textured
+zone fog, right road BLOCKED debris dark fog, maximum visual ambiguity night plus fog,
+moon diffused by fog, photorealistic extreme low visibility 4K
+Negative: humans, vehicles, military, animals, bright lights, clear sky, horizon,
+oblique, perspective, cartoon, illustration, blurry deliberately
+Steps: 40 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H039 | HILELI | ACIK: orta (2) | HILE: gun_batimi_yanlis_renk | ORAN: 1:1 ===
+DESCRIPTION: Extreme sunset — orange sky reflection makes road surfaces look colored/confusing.
+
+GPT:
+90-degree nadir aerial drone photograph at EXTREME SUNSET — very low sun, entire
+scene bathed in intense orange-red light. Road and rubble surfaces all reflect
+orange-red sunset colors, desaturating normal grey-brown color cues. Three roads
+at Y-junction from directly above. THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN
+ROAD: orange-tinted clear surface, slightly reflective in extreme orange light.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by orange-lit rubble —
+extreme orange makes texture harder to read. THE RIGHT ROAD (TOWARD UPPER-RIGHT)
+IS COMPLETELY BLOCKED by orange-red lit structural debris. CHALLENGE: Extreme
+orange light removes normal color coding, all surfaces appear similarly orange.
+No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial extreme sunset, intense orange-red light entire
+scene, Y-junction three roads all orange tinted, CENTER ROAD ONLY OPEN slightly
+reflective orange clear surface, left road BLOCKED orange-lit rubble texture hard
+to read, right road BLOCKED orange-red structural debris, extreme orange removes
+normal color cues, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky visible, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H040 | HILELI | ACIK: sag (3) | HILE: gece_yildiz_isigi | ORAN: 1:1 ===
+DESCRIPTION: No moon, only starlight — barely any illumination at all.
+
+GPT:
+90-degree nadir aerial drone photograph using highly sensitive camera at NIGHT with
+NO MOON — only faint starlight illumination. Near-total darkness. Three roads at
+Y-junction barely visible from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS
+THE ONLY OPEN ROAD: almost invisible, extremely faint lighter area, extreme noise.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: dark mass, almost indistinguishable.
+THE CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED: similarly dark. Maximum grain
+and noise, near-total darkness, some hot pixels, extreme low-light camera simulation.
+No humans, no vehicles, no artificial light. Photorealistic extreme darkness. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial no moon starlight only extreme darkness, highly
+sensitive camera simulation, Y-junction barely visible, RIGHT ROAD ONLY OPEN
+almost invisible extremely faint lighter area, left road BLOCKED dark mass barely
+distinguishable, center road BLOCKED dark similar, maximum grain noise near-total
+darkness hot pixels, extreme low-light simulation photorealistic 4K
+Negative: humans, vehicles, military, animals, moon visible, streetlights, bright
+areas, horizon, oblique, perspective, cartoon, illustration, blurry clear
+Steps: 40 | CFG: 7 | Size: 1024x1024
+
+────────────────────────────────────────────────────────────────────────────────
+DİĞER HİLELER (H041–H050) — ★ EKSTRA
+────────────────────────────────────────────────────────────────────────────────
+
+=== H041 | HILELI | ACIK: sol (1) | HILE: benzer_yogunluk_tum | ORAN: 1:1 ===
+DESCRIPTION: All three roads have nearly identical debris density — only subtle difference.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+ALL THREE ROADS appear to have debris scattered on them — the visual density is
+very similar across all three. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD:
+debris at margins only, thin scatter, CENTER LINE CLEAR despite appearances. THE
+CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED: debris slightly denser, CONTINUOUS
+coverage — no gap, impassable. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY
+BLOCKED: also dense continuous coverage — slightly different texture but impassable.
+CHALLENGE: Subtle density difference between sparse-but-open and dense-but-closed.
+All three roads look nearly the same. Flat overcast. No humans, no vehicles.
+Photorealistic, extreme detail. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads all appearing similar debris
+density, LEFT ROAD ONLY OPEN sparse debris margins only center line clear, center
+road BLOCKED continuous dense debris no gap, right road BLOCKED dense coverage
+different texture, subtle density difference challenge all roads look similar, flat
+overcast, photorealistic 4K ultra-detailed extreme detail
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H042 | HILELI | ACIK: orta (2) | HILE: duman_yogun | ORAN: 1:1 ===
+DESCRIPTION: Heavy smoke/dust haze reduces all visibility, all roads look blocked.
+
+GPT:
+90-degree nadir aerial photograph with HEAVY SMOKE AND DUST HAZE layer. The haze
+is dense enough to significantly obscure all road surfaces. Three roads at Y-junction
+from directly above. THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD: through
+haze, the clear road surface appears as a slightly lighter blurred zone. THE LEFT
+ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: rubble beneath haze appears as dark
+irregular blur. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: structural
+debris under haze appears as darker irregular zone. CHALLENGE: Heavy haze makes all
+three roads look similarly grey-white and obscured. No humans, no vehicles, no active
+fire. Post-explosion dust. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial heavy smoke dust haze dense, Y-junction three roads
+heavily obscured, CENTER ROAD ONLY OPEN slightly lighter blurred zone through haze,
+left road BLOCKED rubble dark irregular blur under haze, right road BLOCKED debris
+darker zone, heavy haze all roads grey-white obscured post-explosion dust, photorealistic
+4K ultra-detailed
+Negative: humans, vehicles, military, animals, active fire flames, sky clear, horizon,
+oblique, perspective, cartoon, illustration, blurry only
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H043 | HILELI | ACIK: sag (3) | HILE: lastik_izi_kapali | ORAN: 1:1 ===
+DESCRIPTION: Blocked roads have vehicle tire tracks leading into them (false traversal cue).
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD: clear surface, no tire tracks,
+passable. THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by rubble —
+but CLEAR TIRE TRACKS are visible in the approach area leading INTO the rubble, as
+if a vehicle tried to enter and turned back: creates false impression of recent
+traversal. THE CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED by structural debris
+— also with faint tire tracks leading to the debris edge, implying vehicles once
+passed. CHALLENGE: Tire tracks on blocked roads suggest false accessibility. No
+current vehicles visible. Midday lighting. No humans. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, RIGHT ROAD ONLY OPEN clear
+no tire tracks, left road BLOCKED rubble but clear tire tracks leading into it false
+traversal impression, center road BLOCKED structural debris with faint tire tracks
+also, tire tracks false accessibility cue on blocked roads, midday, photorealistic 4K
+Negative: humans, vehicles currently present, military, animals, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H044 | HILELI | ACIK: sol (1) | HILE: parlak_kapali_karanlik_acik | ORAN: 1:1 ===
+DESCRIPTION: Blocked roads are bright/reflective, open road appears dark — inverted brightness.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD — but it is in DEEP SHADOW:
+the road surface appears very dark, almost black. THE CENTER ROAD (TOWARD TOP) IS
+COMPLETELY BLOCKED by light-colored concrete rubble — highly reflective, appears
+bright white-grey, looks very "open" visually. THE RIGHT ROAD (TOWARD UPPER-RIGHT)
+IS COMPLETELY BLOCKED by bright sand-colored rubble — also light and reflective,
+appears pale and clear-looking. CHALLENGE: Inverted brightness — open road is
+darkest, both blocked roads are lightest. Extreme directional sun creating deep
+shadow on left road. No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, LEFT ROAD ONLY OPEN but
+in deep shadow very dark almost black, center road BLOCKED light-colored concrete
+rubble highly reflective bright white-grey, right road BLOCKED sand-colored rubble
+pale reflective, inverted brightness open=darkest blocked=lightest, extreme directional
+sun, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H045 | HILELI | ACIK: orta (2) | HILE: su_yansimasi | ORAN: 1:1 ===
+DESCRIPTION: Open center road flooded with clear water showing confusing reflections.
+
+GPT:
+90-degree nadir aerial photograph, post-flood zone. Three roads at Y-junction from
+directly above. THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD — but it is
+covered by CLEAR STANDING WATER that reflects the sky and surroundings: water surface
+shows reflections and appears semi-transparent, possibly hiding road surface beneath.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by dense concrete rubble.
+THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED by structural debris.
+CHALLENGE: Clear water reflections on open road create visual confusion — the road
+appears to have an irregular, reflective surface that could be mistaken for debris
+or water damage. No humans, no vehicles. Overcast post-flood. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial post-flood, Y-junction three roads, CENTER ROAD
+ONLY OPEN covered by clear standing water reflections semi-transparent, left road
+BLOCKED dense concrete rubble, right road BLOCKED structural debris, clear water
+reflections confusing open road surface, overcast post-flood, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, muddy water
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H046 | HILELI | ACIK: sag (3) | HILE: gri_skala | ORAN: 1:1 ===
+DESCRIPTION: Desaturated near-greyscale image reduces color distinction between road types.
+
+GPT:
+90-degree nadir aerial photograph, post-nuclear or heavy dust disaster. The entire
+image is NEAR-GREYSCALE: extreme desaturation, all surfaces appear in shades of
+grey from near-white to near-black, no color information. Three roads at Y-junction
+from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ROAD: medium
+grey clear road surface, distinguishable only by texture from surrounding rubble.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: slightly different grey
+texture of rubble pile. THE CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED: similar
+grey texture of debris. CHALLENGE: Without color, only texture differences remain —
+extremely subtle. No humans, no vehicles. No sunlight, flat diffuse grey. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial extreme desaturation greyscale, Y-junction three
+roads all grey shades, RIGHT ROAD ONLY OPEN medium grey clear surface texture, left
+road BLOCKED slightly different grey rubble texture, center road BLOCKED similar grey
+debris, no color information only texture cues, flat diffuse grey lighting, post-nuclear
+dust disaster, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, color saturated, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H047 | HILELI | ACIK: sol (1) | HILE: cakil_benzer | ORAN: 1:1 ===
+DESCRIPTION: All roads covered with same type of rubble — only one has a passable gap.
+
+GPT:
+90-degree nadir aerial photograph. Three roads at Y-junction from directly above.
+ALL THREE ROADS appear to be covered with THE SAME TYPE AND COLOR of rubble material:
+uniform grey concrete fragment scatter. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY
+OPEN ROAD: the grey scatter is THIN AND SPARSE — road surface visible underneath,
+passable, but looks very similar to blocked roads. THE CENTER ROAD (TOWARD TOP) IS
+COMPLETELY BLOCKED: THICK CONTINUOUS layer of same grey material, genuinely
+impassable but same color/texture as the thin scatter. THE RIGHT ROAD (TOWARD
+UPPER-RIGHT) IS COMPLETELY BLOCKED: same thick grey material. CHALLENGE: Same
+material, different depth/density — extremely hard to distinguish from above.
+Flat overcast. No humans, no vehicles. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads all covered same grey
+concrete fragment material, LEFT ROAD ONLY OPEN thin sparse scatter road visible
+beneath passable, center road BLOCKED thick continuous same grey material, right
+road BLOCKED same thick grey material, same material different depth density
+challenge, flat overcast, photorealistic 4K extreme detail
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 8 | Size: 1024x1024
+
+---
+
+=== H048 | HILELI | ACIK: orta (2) | HILE: kuzey_gunes_acisi | ORAN: 1:1 ===
+DESCRIPTION: Sun directly behind drone (nadir but north sun), creates odd flat shadowless image.
+
+GPT:
+90-degree nadir aerial photograph with SUN DIRECTLY BEHIND/ABOVE CAMERA (zenith sun
+angle) — the photo is COMPLETELY SHADOWLESS: no shadows cast anywhere, all surfaces
+uniformly lit from directly above. Three roads at Y-junction from directly above.
+THE CENTER ROAD (TOWARD TOP) IS THE ONLY OPEN ROAD: without shadows, road surface
+appears as flat even texture, slightly lighter than surroundings. THE LEFT ROAD
+(TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by rubble: without shadows, the rubble
+lacks depth cues and appears as flat texture. THE RIGHT ROAD (TOWARD UPPER-RIGHT)
+IS COMPLETELY BLOCKED: similar flat shadowless rubble. CHALLENGE: Complete absence
+of shadows removes important depth and height cues for identifying blockages.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial zenith sun directly above, completely shadowless
+image no shadows anywhere, Y-junction three roads uniformly lit, CENTER ROAD ONLY
+OPEN flat even texture slightly lighter, left road BLOCKED rubble no depth cues flat
+texture, right road BLOCKED flat shadowless rubble, complete absence shadows removes
+height cues, photorealistic 4K
+Negative: humans, vehicles, military, animals, shadows, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== H049 | HILELI | ACIK: sag (3) | HILE: asfalt_yansima_kapali | ORAN: 1:1 ===
+DESCRIPTION: Blocked roads have fresh asphalt color (dark, looks passable). Open road pale.
+
+GPT:
+90-degree nadir aerial photograph, unusual post-reconstruction disaster zone. Three
+roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE
+ONLY OPEN ROAD — but the surface has become pale/bleached from weathering and dust:
+appears pale grey-white, looks "worn out" and potentially collapsed. THE LEFT ROAD
+(TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED by fresh-looking rubble: the collapsed
+building had fresh dark asphalt paving that now lies flat — dark, looks like a
+drivable surface from above. THE CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED:
+dark concrete slab surface — also looks drivable from above. CHALLENGE: Dark
+"drivable-looking" blocked roads vs. pale looking open road. No humans, no vehicles.
+Midday. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial, Y-junction three roads, RIGHT ROAD ONLY OPEN
+pale bleached weathered surface looks worn, left road BLOCKED fresh dark asphalt
+from collapsed building looks drivable from above, center road BLOCKED dark concrete
+slab looks drivable, dark blocked looks drivable pale open looks worn, midday,
+photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== H050 | HILELI | ACIK: sol (1) | HILE: tum_zorluk | ORAN: 1:1 ===
+DESCRIPTION: MAXIMUM CHALLENGE — gölge + bozuk yüzey + benzer doku üçlüsü.
+
+GPT:
+90-degree nadir aerial photograph. MAXIMUM CHALLENGE COMBINATION. Three roads at
+Y-junction from directly above. THE ROAD TOWARD THE UPPER-LEFT IS THE ONLY OPEN
+ROAD — BUT: (1) a large diagonal SHADOW covers 60% of its surface making it dark,
+(2) the remaining lit portion shows HEAVY SURFACE DAMAGE (cracked, buckled asphalt),
+(3) scattered debris at road margins makes it LOOK similar to the blocked roads.
+THE CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED by brightly lit smooth concrete
+rubble — looks clean and relatively uniform. THE RIGHT ROAD (TOWARD UPPER-RIGHT)
+IS COMPLETELY BLOCKED by brightly lit brick debris — also uniform and well-lit.
+TRIPLE CHALLENGE: shadow + surface damage + similar textures. No humans, no vehicles.
+Harsh afternoon sun. Photorealistic, ultra-detailed. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial maximum challenge combination, Y-junction three
+roads, LEFT ROAD ONLY OPEN but large diagonal shadow 60 percent coverage plus heavy
+surface damage cracked buckled plus scattered debris margins, center road BLOCKED
+bright smooth concrete rubble clean, right road BLOCKED bright brick debris uniform,
+triple challenge shadow plus damage plus similar texture, harsh afternoon sun,
+photorealistic 4K ultra-detailed extreme
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark, text
+Steps: 40 | CFG: 8 | Size: 1024x1024
+
+================================================================================
+ÖZET TABLOSU — HİLELİ PROMPTLAR
+================================================================================
+ID    | ACIK | NUMARA | HİLE KATEGORİSİ
+------|------|--------|----------------
+H001  | sol  | 1      | GOLGE: dev diagonal golge acik yolda
+H002  | orta | 2      | GOLGE: derin golge kanal orta yol
+H003  | sag  | 3      | GOLGE: sol binadan sag yola golge
+H004  | sol  | 1      | GOLGE: dappled shadow latice cerceve
+H005  | orta | 2      | GOLGE: yarim yolda golge
+H006  | sag  | 3      | GOLGE: paralel golge cizgileri
+H007  | sol  | 1      | GOLGE: golge + sis kombinasyonu
+H008  | orta | 2      | GOLGE: bulut golgesi yalniz orta yolda
+H009  | sag  | 3      | GOLGE: derin kanyon golgesi sag yol
+H010  | sol  | 1      | GOLGE: genis diagonal golge bandi
+H011  | orta | 2      | GOLGE: gradient golge orta yolda
+H012  | sag  | 3      | GOLGE: golge dokusu moloz gibi
+H013  | sol  | 1      | YAN BAKIS: 60 derece oblik
+H014  | orta | 2      | YAN BAKIS: 45 derece oblik
+H015  | sag  | 3      | YAN BAKIS: 30 derece dusuk oblik
+H016  | sol  | 1      | YAN BAKIS: 55 derece + golge
+H017  | orta | 2      | YAN BAKIS: 50 derece yukseklik foreshorten
+H018  | sag  | 3      | YAN BAKIS: 75 derece hafif tilt
+H019  | sol  | 1      | YAN BAKIS: 40 derece vanihing point
+H020  | orta | 2      | YAN BAKIS: 55 derece + sis
+H021  | sag  | 3      | YAN BAKIS: 65 derece karmasik harabeler
+H022  | sol  | 1      | YAN BAKIS: 60 derece alacakaranlik
+H023  | sol  | 1      | BOZUK ACIK: krater sag yolda gecit var
+H024  | orta | 2      | BOZUK ACIK: agir yuzey hasari ama gecebilir
+H025  | sag  | 3      | BOZUK ACIK: her iki yandan moloz girisi dar gecit
+H026  | sol  | 1      | BOZUK ACIK: yanmis kara yuzey acik yol
+H027  | orta | 2      | BOZUK ACIK: asphalt parcalari kaldirilmis
+H028  | sag  | 3      | BOZUK ACIK: kum ortulu acik yol
+H029  | sol  | 1      | BOZUK ACIK: cAMURLU su kaplı geçilebilir
+H030  | orta | 2      | BOZUK ACIK: bitki kapli terk edilmis yol
+H031  | sag  | 3      | BOZUK ACIK: dar serit kenarda
+H032  | sol  | 1      | BOZUK ACIK: is kupkuru kul acik yol
+H033  | orta | 2      | GECE: ay isigi monochrome
+H034  | sag  | 3      | GECE: uzak ates glow tek kaynak
+H035  | sol  | 1      | GECE: termal kamera simulasyonu
+H036  | orta | 2      | GECE: pre-dawn siluet
+H037  | sag  | 3      | GECE: tek zayif isik kaynagi junction
+H038  | sol  | 1      | GECE: gece pus (fog)
+H039  | orta | 2      | GECE: extreme sunset yanlis renk
+H040  | sag  | 3      | GECE: yildiz isigi neredeyse karanlik
+H041  | sol  | 1      | DIGER: benzer yogunluk tum yollar
+H042  | orta | 2      | DIGER: yogun duman sis
+H043  | sag  | 3      | DIGER: lastik izi kapali yollarda
+H044  | sol  | 1      | DIGER: parlak kapali karanlik acik ters parlaklik
+H045  | orta | 2      | DIGER: su yansimasi acik yolda
+H046  | sag  | 3      | DIGER: gri skala renksiz
+H047  | sol  | 1      | DIGER: ayni malzeme deger fark
+H048  | orta | 2      | DIGER: tam ust gunes golgesi yok
+H049  | sag  | 3      | DIGER: ters renk asfalt
+H050  | sol  | 1      | TRIPLE: golge + hasar + benzer doku (max zorluk)
+================================================================================
+GORSEL ISIMLENDIRME:
+  GPT    → H001_gpt.png, ..., H050_gpt.png
+  Banana → H001_bnk.png, ..., H050_bnk.png
+================================================================================

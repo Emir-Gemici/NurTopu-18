@@ -1,0 +1,302 @@
+{
+  "E001": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E002": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E003": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E004": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E005": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E006": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E007": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E008": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E009": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E010": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E011": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E012": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E013": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E014": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E015": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E016": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E017": {
+    "type": "training",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "E018": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E019": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E020": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E021": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E022": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E023": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E024": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E025": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E026": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E027": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E028": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E029": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E030": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E031": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E032": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E033": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E034": {
+    "type": "training",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "E035": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E036": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E037": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E038": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E039": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E040": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E041": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E042": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E043": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E044": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E045": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E046": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E047": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E048": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E049": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "E050": {
+    "type": "training",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  }
+}

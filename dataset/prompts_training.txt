@@ -1,0 +1,1386 @@
+================================================================================
+NAVITAS — EĞİTİCİ PROMPTLAR (Temiz / Kolaydan Orta Zorluk)
+================================================================================
+Amaç    : Modeli test etmek için net, yanıltmaca olmayan aerial görsel üretmek
+Dosya   : prompts_training.txt
+Toplam  : 50 prompt (E001–E050)
+Etiket  : dataset/test_labels_training.json
+
+GÖRSEL İSİMLENDİRME:
+  GPT    → E001_gpt.png, E002_gpt.png, ...
+  Banana → E001_bnk.png, E002_bnk.png, ...
+
+YÖN KURALI (KARIŞIKLIĞI ÖNLEMEK İÇİN):
+  sol  (1) = fotoğrafın SOL-ÜST köşesine giden yol
+  orta (2) = fotoğrafın TAM ÜSTÜNE doğru giden yol
+  sag  (3) = fotoğrafın SAĞ-ÜST köşesine giden yol
+  HER PROMPTTA sadece 1 yol açıktır. Diğer 2 tamamen kapalı.
+
+GÖRSEL ÜRETİM KURALLARI (tüm promptlar):
+  - Üstten bakış: 90° nadir, yani tam dikey aşağı bakış
+  - Ufuk çizgisi görünmez, perspektif yok
+  - İnsan, araç, askeri ekipman YOK
+  - Photorealistic fotoğraf stili
+  - Çıktı formatı: PNG önerilir
+  - GPT boyutları: 1:1 → 1024×1024 | 4:3 → 1536×1024 | 16:9 → 1792×1024
+  - Nano-banana: boyutu negative prompt bölümünde belirt
+
+NANO-BANANA GENEL NEGATİF PROMPT (her prompta ekle):
+  humans, people, cars, vehicles, military, tanks, soldiers, animals,
+  birds, text, watermark, cartoon, illustration, painting, drawing,
+  3d render, cgi, oblique angle, perspective view, horizon, sky visible,
+  blurry, low quality, bad quality, ugly, deformed
+
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+SOL (1) AÇIK — E001–E017
+────────────────────────────────────────────────────────────────────────────────
+
+=== E001 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Classic earthquake rubble, clear left road.
+
+GPT:
+Strict 90-degree top-down nadir aerial drone photograph. Three roads meet at a
+Y-junction viewed directly from above — no horizon, no perspective distortion.
+THE ROAD TOWARD THE UPPER-LEFT CORNER OF THE FRAME is the ONLY OPEN ROAD:
+clean packed earth, minor dust scatter, completely traversable from junction to
+frame edge. THE ROAD TOWARD TOP-CENTER is COMPLETELY BLOCKED: collapsed
+5-story reinforced concrete building deposited massive rubble pile across full
+road width — broken slabs, rebar bundles, pulverized grey concrete. THE ROAD
+TOWARD UPPER-RIGHT is COMPLETELY BLOCKED: collapsed brick facade with dense
+broken masonry filling road wall to wall. Destroyed urban residential zone on
+all sides. No humans, no vehicles, no military. Flat overcast lighting, no
+harsh shadows, muted grey-brown palette. Photorealistic aerial surveillance
+photograph. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir drone photo, aerial 90 degree overhead view, Y-junction
+three roads, ONLY LEFT ROAD OPEN toward upper-left, clear packed earth path,
+center road completely blocked by collapsed concrete building rubble, right road
+completely blocked by brick collapse, post-earthquake disaster zone, photorealistic,
+4K, ultra detailed, overcast lighting, grey-brown palette
+Negative: humans, vehicles, military, animals, horizon, perspective, oblique,
+cartoon, illustration, watermark, text, blurry, bad quality
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E002 | EGITICI | ACIK: sol (1) | ORAN: 4:3 ===
+DESCRIPTION: Post-flood debris, left road dry and clear.
+
+GPT:
+Strict top-down 90-degree aerial drone photograph, wider format. Three roads at
+Y-junction seen directly from above. THE ROAD TOWARD THE UPPER-LEFT CORNER is
+THE ONLY PASSABLE ROAD: dry bare gravel and compressed earth, no obstacles,
+clearly traversable. THE ROAD TOWARD THE TOP-CENTER is TOTALLY BLOCKED: muddy
+landslide deposit — earth, rocks, and broken concrete merged into impassable
+barrier across full road width. THE ROAD TOWARD THE UPPER-RIGHT is TOTALLY
+BLOCKED: collapsed two-story building deposited concrete slab and brick debris
+covering entire road width. Post-flood disaster zone, wet surroundings. No
+humans, no vehicles. Overcast post-rain lighting, damp grey-brown surface
+textures. Photorealistic drone recon photo. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down aerial nadir photograph, 90 degree overhead, three roads
+Y-junction, LEFT ROAD ONLY OPEN upper-left direction, dry gravel clear path,
+center road blocked by landslide mud and rocks, right road blocked by building
+collapse concrete slabs, post-flood disaster ruins, overcast lighting, wet
+surfaces, photorealistic, ultra-detailed 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique view,
+perspective, cartoon, drawing, watermark, blurry
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E003 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Desert conflict zone, left road bare sand path.
+
+GPT:
+90-degree nadir aerial photograph, post-conflict desert urban zone. Three roads
+at Y-junction directly from above. THE ROAD TOWARD THE UPPER-LEFT CORNER IS THE
+ONLY OPEN ROAD: dry desert sand and compressed gravel, no debris, passable.
+THE CENTER ROAD (TOWARD TOP) IS COMPLETELY BLOCKED: collapsed concrete wall —
+enormous flat slab toppled across entire road width, impassable. THE RIGHT ROAD
+(TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: dense pile of broken mud-brick and
+stone rubble spans full road width from edge to edge. Desert ruins, sand dunes
+at margins. No humans, no vehicles, no military. Harsh midday vertical sun, very
+short shadows, high contrast beige-tan palette. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: aerial nadir 90 degree drone photo, overhead Y-junction three roads,
+ONLY LEFT ROAD OPEN toward upper-left corner, dry sand desert path clear, center
+road blocked by collapsed concrete wall slab, right road blocked by mud-brick
+rubble pile, post-conflict desert ruins, midday harsh sun, high contrast,
+beige tan palette, photorealistic 4K
+Negative: humans, vehicles, military, soldiers, animals, sky, horizon, perspective,
+oblique angle, cartoon, illustration, blurry, low resolution
+Steps: 30 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E004 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Industrial disaster, left road intact.
+
+GPT:
+Top-down 90-degree aerial drone photograph, post-industrial disaster zone.
+Three roads at Y-junction seen from directly above. THE ROAD TOWARD THE UPPER-LEFT
+IS THE ONLY PASSABLE ROAD: cracked industrial concrete surface, oil stains and
+small debris scatter at margins but center line completely open. THE ROAD TOWARD
+TOP-CENTER IS COMPLETELY BLOCKED: overturned industrial machinery and steel girders
+lie flat across full road width, completely impassable. THE ROAD TOWARD UPPER-RIGHT
+IS COMPLETELY BLOCKED: collapsed factory wall — massive precast concrete panels
+lying flat covering entire road from edge to edge. Industrial ruins, rusted metal
+debris visible at margins. No humans, no vehicles. Overcast grey sky light,
+industrial grey palette. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir aerial photo, overhead Y-junction 3 roads, LEFT ROAD
+ONLY OPEN toward upper-left, cracked industrial concrete path, center road blocked
+by industrial machinery steel girders, right road blocked by collapsed factory
+wall concrete panels, post-industrial disaster, overcast grey lighting,
+photorealistic ultra-detailed 4K
+Negative: humans, workers, vehicles, cars, military, animals, sky visible,
+horizon, perspective view, cartoon, illustration, text, blurry
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E005 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Stone village ruins, left path clear.
+
+GPT:
+90-degree overhead nadir drone photograph, destroyed stone village. Three narrow
+roads at Y-junction viewed directly from above. THE ROAD TOWARD THE UPPER-LEFT
+IS THE ONLY OPEN ROAD: bare natural stone path with dust and pebble scatter,
+completely passable. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: collapsed
+ancient stone building deposited enormous irregular stone blocks across full road
+width. THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: collapsed stone walls —
+large irregular limestone blocks forming solid barrier. Stone village ruins in all
+directions, crumbling walls visible. No humans, no vehicles. Dawn warm orange
+light from upper-left, long gentle shadows. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: overhead nadir 90 degree aerial photo, stone village ruins Y-junction
+three narrow roads, ONLY LEFT ROAD OPEN upper-left direction, natural stone
+path clear, center road completely blocked ancient stone building collapse,
+right road blocked by limestone wall collapse, dawn warm orange light,
+long shadows, photorealistic 4K ultra detailed
+Negative: humans, people, vehicles, military, animals, sky, horizon, oblique,
+perspective, cartoon, drawing, watermark, blurry, low quality
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E006 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Post-earthquake narrow streets, left road clear asphalt.
+
+GPT:
+Strict top-down 90-degree aerial photograph, dense urban post-earthquake zone.
+Three narrow urban roads at Y-junction from directly above. THE ROAD TOWARD THE
+UPPER-LEFT IS THE ONLY PASSABLE ROAD: cracked asphalt with dust and small stone
+scatter, but fully clear along entire width. THE ROAD TOWARD TOP-CENTER IS
+COMPLETELY BLOCKED: reinforced concrete building collapsed diagonally across road
+— concrete slabs and rebar fill road completely. THE ROAD TOWARD UPPER-RIGHT IS
+COMPLETELY BLOCKED: brick residential building deposited uniform rubble mass
+covering road wall to wall. Dense urban destruction visible on all sides. No
+humans, no vehicles. Midday overcast, flat diffuse light, grey-beige palette.
+Photorealistic surveillance drone photo. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, dense urban Y-junction three narrow
+roads, ONLY LEFT ROAD OPEN upper-left direction, cracked asphalt clear passable,
+center road blocked by reinforced concrete building collapse rebar slabs, right
+road blocked by brick rubble uniform mass, post-earthquake urban zone, overcast
+midday, grey-beige, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, perspective,
+oblique, cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E007 | EGITICI | ACIK: sol (1) | ORAN: 4:3 ===
+DESCRIPTION: Suburban destruction, left dirt road open.
+
+GPT:
+Top-down 90-degree drone aerial photograph, post-earthquake suburban destruction.
+Three roads at Y-junction seen directly from above, wider format. THE ROAD TOWARD
+THE UPPER-LEFT CORNER IS THE ONLY OPEN ROAD: natural dirt and compressed gravel,
+minor edge debris but center fully clear, passable. THE ROAD TOWARD TOP-CENTER IS
+COMPLETELY BLOCKED: collapsed two-story suburban house deposited floor slabs, roof
+tiles, and structural timber across entire road. THE ROAD TOWARD UPPER-RIGHT IS
+COMPLETELY BLOCKED: retaining wall toppled — large concrete blocks and rebar mesh
+fill road from edge to edge. Suburban ruins visible. No humans, no vehicles.
+Afternoon warm golden light, moderate side shadows. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down 90 degree overhead aerial drone, suburban destruction Y-junction
+three roads, ONLY LEFT ROAD OPEN toward upper-left, dirt gravel clear path, center
+road blocked by collapsed house floor slabs roof tiles, right road blocked by
+retaining wall concrete blocks, post-earthquake suburban ruins, afternoon golden
+light, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, watermark, blurry, low quality
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E008 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: War rubble, clearly open left path through ruins.
+
+GPT:
+90-degree nadir aerial drone photograph, post-war devastated urban area. Three
+roads meet at Y-junction directly from above. THE ROAD EXTENDING TOWARD THE
+UPPER-LEFT IS THE ONLY TRAVERSABLE ROAD: bare compressed earth with cracked
+surface, wide enough to drive through, completely unblocked. THE CENTER ROAD
+(TOWARD TOP) IS COMPLETELY BLOCKED: massive concrete building collapse — 6-story
+structure deposited dense rubble field across full road width, rubble pile several
+meters high. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: collapsed
+military structure deposited precast concrete elements covering road completely.
+War-destroyed city visible. No humans, no vehicles, no military. Dusk light,
+orange-purple gradient from upper-right. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial top-down drone, war-destroyed city Y-junction
+three roads, ONLY LEFT ROAD OPEN upper-left direction, bare compressed earth
+traversable, center road 6-story building collapse rubble blocked, right road
+collapsed military structure blocked, dusk orange purple light, photorealistic
+ultra-detailed 4K
+Negative: humans, vehicles, military, soldiers, animals, sky, horizon, perspective,
+oblique angle, cartoon, drawing, blurry, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E009 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Tsunami debris field, left road visible path.
+
+GPT:
+Top-down strict 90-degree aerial drone photograph, post-tsunami coastal urban zone.
+Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-LEFT IS
+THE ONLY OPEN ROAD: wet asphalt with salt deposits and fine debris scatter at
+margins, but center completely open and traversable. THE ROAD TOWARD TOP-CENTER IS
+COMPLETELY BLOCKED: tsunami-deposited debris field — wooden planks, household items,
+sand, and concrete chunks merged into solid impassable barrier across full road
+width. THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: collapsed structure
+deposited concrete and steel rubble filling entire road. Coastal disaster zone,
+wet mud surfaces. No humans, no vehicles. Overcast post-storm grey light.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, post-tsunami coastal urban Y-junction
+three roads, ONLY LEFT ROAD OPEN toward upper-left, wet asphalt salt deposits
+passable, center road tsunami debris field blocked wooden planks concrete, right
+road building collapse rubble blocked, overcast grey post-storm lighting,
+photorealistic ultra-detailed
+Negative: humans, vehicles, military, animals, fire, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, low quality
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E010 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Mine collapse zone, left road untouched.
+
+GPT:
+90-degree nadir aerial photograph, post-mine-collapse industrial zone. Three roads
+at Y-junction viewed from directly above. THE ROAD LEADING TOWARD THE UPPER-LEFT
+IS THE ONLY PASSABLE ROAD: grey industrial gravel surface, clean and open across
+full width. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: ground subsidence
+created large sinkhole and depression filled with rubble and earth, impassable.
+THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: industrial building collapse
+deposited iron beams, machinery parts, and concrete debris across road. Industrial
+ruins, grey earth tones. No humans, no vehicles. Noon vertical sunlight, short
+crisp shadows. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: aerial nadir 90 degree overhead drone, industrial zone Y-junction three
+roads, ONLY LEFT ROAD OPEN upper-left, grey industrial gravel clear, center road
+ground sinkhole subsidence blocked, right road industrial building collapse
+iron beams machinery blocked, midday vertical sun crisp shadows, grey industrial
+tones, photorealistic 4K
+Negative: humans, workers, vehicles, military, animals, sky visible, horizon,
+oblique angle, cartoon, illustration, blurry, text
+Steps: 30 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E011 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Snowmelt flood aftermath, left road dry.
+
+GPT:
+Strict 90-degree overhead aerial photograph, post-snowmelt flood disaster zone.
+Three roads at Y-junction directly from above. THE ROAD TOWARD THE UPPER-LEFT
+IS THE ONLY OPEN ROAD: dry dusty earth, slightly lighter texture from drainage,
+completely passable. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: thick
+mud and silt deposit from flood — grey-brown uniform layer covering road from
+edge to edge, completely impassable surface. THE ROAD TOWARD UPPER-RIGHT IS
+COMPLETELY BLOCKED: collapsed embankment — earth, rocks, and tree debris from
+hillside deposited across full road width. Mountain disaster zone, mixed earth
+tones. No humans, no vehicles. Morning light from upper-right, soft shadows.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: overhead nadir 90 degree aerial, post-flood disaster Y-junction three
+roads, ONLY LEFT ROAD OPEN toward upper-left, dry earth passable, center road
+thick mud silt flood deposit blocked, right road collapsed embankment earth rocks
+blocked, mountain disaster zone, morning light, soft shadows, mixed earth tones,
+photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, snow visible, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E012 | EGITICI | ACIK: sol (1) | ORAN: 4:3 ===
+DESCRIPTION: Mixed disaster, clearly open left road with concrete surface.
+
+GPT:
+Top-down 90-degree drone aerial photograph, mixed earthquake and fire disaster
+zone. Three roads at Y-junction from directly above, wider frame. THE ROAD TOWARD
+THE UPPER-LEFT IS THE ONLY PASSABLE ROAD: solid concrete slab surface, cracked
+but intact, no debris blocking path, visibly clear from junction to frame edge.
+THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: fire-burned building collapsed
+— charred structural timber, blackened concrete blocks, and debris covering entire
+road. THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: adjacent building
+collapse deposited multiple floor slabs flat across road, solid barrier. Mixed
+grey and charred black palette. No humans, no vehicles, no fire. Post-fire dawn
+light. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: 90 degree nadir aerial drone photo wider frame, mixed disaster zone
+Y-junction three roads, ONLY LEFT ROAD OPEN upper-left corner, concrete slab
+surface intact clear passable, center road fire-burned building charred rubble
+blocked, right road multiple floor slabs collapsed blocked, post-fire dawn light,
+charred black grey palette, photorealistic 4K
+Negative: humans, vehicles, military, animals, active fire, smoke active, sky,
+horizon, perspective, oblique, cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E013 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Brick housing district, only left road usable.
+
+GPT:
+Nadir 90-degree aerial photograph, destroyed brick housing district. Three roads
+at Y-junction seen from directly above. THE ROAD TOWARD THE UPPER-LEFT IS THE
+ONLY ROAD THAT IS OPEN: bare earth and fine pebble surface, a few scattered small
+stones at road edge but center line clear and traversable. THE ROAD TOWARD
+TOP-CENTER IS COMPLETELY BLOCKED: entire collapsed brick facade of 3-story building
+— uniform red-orange brick rubble fills road wall to wall, solid barrier. THE ROAD
+TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: collapsed reinforced concrete structural
+frame with brick infill deposited dense mixed rubble across full road width. Brick
+ruins visible on all sides, red-brown palette. No humans, no vehicles. Midday
+overcast lighting. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial overhead 90 degree drone photo, brick housing district
+ruins Y-junction three roads, ONLY LEFT ROAD OPEN upper-left direction, bare earth
+pebble clear path, center road brick facade rubble wall-to-wall red blocked,
+right road reinforced concrete brick mixed rubble blocked, red-brown palette,
+midday overcast, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, drawing, illustration, blurry, watermark, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E014 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Coastal village rubble, left road running along shore visible.
+
+GPT:
+Strict top-down 90-degree aerial drone photograph, post-disaster coastal village.
+Three roads at Y-junction viewed from directly above. THE ROAD TOWARD THE UPPER-LEFT
+IS THE ONLY OPEN ROAD: packed coastal sand and gravel, completely traversable, no
+obstruction. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: wave-deposited
+debris — sand, rocks, fishing equipment, structural timber merged into solid
+barrier across full road width. THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED:
+collapsed coastal structure deposited concrete and stone rubble filling road
+completely. Coastal disaster zone, dark wet sand surroundings. No humans, no
+vehicles. Post-storm afternoon light from upper-left. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial drone, coastal village disaster Y-junction
+three roads, ONLY LEFT ROAD OPEN upper-left, packed coastal sand gravel clear,
+center road wave-deposited debris blocked, right road coastal building collapse
+blocked, post-storm afternoon light, dark wet sand surroundings, photorealistic 4K
+Negative: humans, vehicles, military, sea visible, horizon, perspective, oblique,
+sky large, cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E015 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Wide three-lane road, only left lane open.
+
+GPT:
+90-degree nadir aerial photograph, wide urban road destroyed by earthquake. Three
+wide road branches at a star-shaped junction, viewed directly from above. THE
+BRANCH TOWARD THE UPPER-LEFT IS THE ONLY OPEN ROAD: three clear lanes, asphalt
+surface with crack patterns but no debris blocking any lane, fully traversable.
+THE BRANCH TOWARD TOP-CENTER IS COMPLETELY BLOCKED: overpass section collapsed —
+enormous reinforced concrete deck lying flat on road below, total blockage. THE
+BRANCH TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: adjacent high-rise building shed
+its entire facade onto road — precast panels cover road wall to wall. Urban
+highway ruins. No humans, no vehicles. Afternoon side light from right.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial overhead wide urban road junction, ONLY LEFT BRANCH
+OPEN upper-left three clear lanes, center branch overpass collapse concrete deck
+blocked, right branch high-rise facade precast panels blocked, post-earthquake
+urban highway ruins, afternoon sidelight, photorealistic 4K
+Negative: humans, vehicles, traffic, military, animals, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E016 | EGITICI | ACIK: sol (1) | ORAN: 1:1 ===
+DESCRIPTION: Remote rural road, left track visible through ruins.
+
+GPT:
+Top-down strict 90-degree aerial photograph, rural post-earthquake destruction.
+Three unpaved rural roads at Y-junction from directly above. THE ROAD TOWARD THE
+UPPER-LEFT IS THE ONLY PASSABLE ROAD: dirt track, compressed earth, no obstruction
+across its width, passable. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED:
+collapsed adobe structure — mud-brick pile spanning full road width, solid barrier.
+THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: hillside rockslide deposited
+large boulders and earth across full road width, impassable. Rural ruins, dry
+vegetation at margins. No humans, no vehicles, no animals. Early morning soft
+overcast light. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: aerial nadir top-down 90 degree drone, rural post-earthquake Y-junction
+three unpaved roads, ONLY LEFT ROAD OPEN upper-left direction, dirt track compressed
+earth clear, center road adobe mud-brick collapse blocked, right road rockslide
+boulders earth blocked, early morning overcast soft light, rural ruins, photorealistic 4K
+Negative: humans, vehicles, animals, military, sky large, horizon, oblique, perspective,
+cartoon, illustration, blurry, text, watermark
+Steps: 30 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E017 | EGITICI | ACIK: sol (1) | ORAN: 4:3 ===
+DESCRIPTION: Multi-building collapse, left escape road visible.
+
+GPT:
+90-degree nadir aerial drone photograph, urban zone with multiple building collapses.
+Three roads at Y-junction seen from directly above, wider frame. THE ROAD TOWARD
+THE UPPER-LEFT IS THE ONLY OPEN ROAD: narrow but clear, asphalt with fine dust
+coating, no obstruction. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: TWO
+buildings collapsed simultaneously from both sides — rubble masses from opposite
+buildings merged in road center forming solid mountain of debris, impassable. THE
+ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: parking structure partially collapsed
+— concrete deck sections lying flat on road surface, complete blockage. Dense urban
+destruction. No humans, no vehicles. Overcast grey sky light. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial 90 degree overhead wider frame, urban multiple building
+collapse Y-junction three roads, ONLY LEFT ROAD OPEN toward upper-left narrow
+clear asphalt, center road two buildings collapsed from both sides merged rubble
+mountain blocked, right road parking structure deck sections collapsed blocked,
+overcast grey lighting, dense urban destruction, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+────────────────────────────────────────────────────────────────────────────────
+ORTA (2) AÇIK — E018–E034
+────────────────────────────────────────────────────────────────────────────────
+
+=== E018 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Earthquake zone, center road perfectly clear.
+
+GPT:
+Strict 90-degree top-down nadir aerial drone photograph. Three roads meet at
+Y-junction viewed from directly above. THE ROAD RUNNING STRAIGHT TOWARD THE TOP
+CENTER OF THE FRAME is THE ONLY OPEN ROAD: packed earth and cracked asphalt,
+completely traversable, no debris on road surface. THE ROAD TOWARD THE UPPER-LEFT
+IS COMPLETELY BLOCKED: collapsed 4-story residential building deposited grey
+concrete rubble across full road width, wall to wall, impassable. THE ROAD TOWARD
+THE UPPER-RIGHT IS COMPLETELY BLOCKED: collapsed factory wall — precast concrete
+panels lying flat across full road width, solid barrier. Destroyed urban zone.
+No humans, no vehicles. Flat overcast lighting, muted grey tones. Photorealistic.
+Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial drone, Y-junction three roads, ONLY
+CENTER ROAD OPEN toward top of frame, packed earth cracked asphalt clear, left
+road collapsed building concrete rubble blocked, right road factory wall precast
+panels blocked, urban destruction overcast grey, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, perspective, oblique,
+cartoon, illustration, blurry, watermark, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E019 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: War zone, center escape route clear.
+
+GPT:
+90-degree nadir aerial drone photograph, post-conflict destroyed city. Three
+roads at Y-junction from directly above. THE CENTER ROAD (RUNNING TOWARD THE
+TOP OF THE FRAME) IS THE ONLY PASSABLE ROAD: clear dirt and cracked concrete
+path, no obstruction, extends continuously to frame edge. THE LEFT ROAD (TOWARD
+UPPER-LEFT) IS COMPLETELY BLOCKED: massive concrete columns and floor slabs from
+collapsed multi-story structure lie across full road width. THE RIGHT ROAD (TOWARD
+UPPER-RIGHT) IS COMPLETELY BLOCKED: bomb-damaged building shed its entire exterior
+wall — precast block wall collapsed across full road. War ruins. No humans, no
+vehicles, no military. Dusk warm orange from upper-right. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir overhead 90 degree aerial drone photo, post-conflict city Y-junction
+three roads, ONLY CENTER ROAD OPEN running top of frame, dirt concrete clear path,
+left road concrete columns floor slabs blocked, right road bomb-damaged building
+wall collapsed blocked, dusk warm orange light, war ruins, photorealistic 4K
+Negative: humans, vehicles, military soldiers active, animals, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry, low resolution
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E020 | EGITICI | ACIK: orta (2) | ORAN: 4:3 ===
+DESCRIPTION: Flood aftermath zone, center road drained and clear.
+
+GPT:
+Top-down 90-degree aerial photograph, post-flood disaster urban area. Wider frame.
+Three roads at Y-junction from directly above. THE CENTER ROAD (TOWARD TOP OF
+FRAME) IS THE ONLY OPEN ROAD: drained surface, wet asphalt with minor silt
+deposits at edges, center completely clear and traversable. THE LEFT ROAD (TOWARD
+UPPER-LEFT) IS COMPLETELY BLOCKED: flood-deposited debris — sand, mud, wood
+debris, and broken concrete merged into continuous solid barrier across full road.
+THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: collapsed building
+added structural rubble to flood debris — mixed concrete and organic debris
+filling road completely. Post-flood zone, damp surfaces. No humans, no vehicles.
+Overcast post-flood grey light. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: 90 degree nadir aerial overhead wider frame, post-flood urban Y-junction
+three roads, ONLY CENTER ROAD OPEN toward top, drained wet asphalt clear, left
+road flood debris sand mud wood blocked, right road flood plus building collapse
+mixed debris blocked, overcast grey post-flood light, damp surfaces, photorealistic
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E021 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Desert ruins, center path open.
+
+GPT:
+Strict 90-degree overhead nadir aerial drone photograph, desert ruins. Three roads
+at Y-junction from directly above. THE ROAD RUNNING TOWARD THE TOP CENTER IS THE
+ONLY PASSABLE ROAD: dry sand compacted surface, slight ruts but no blockage, clear.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: collapsed adobe wall —
+mud-brick pile spanning entire road width, wall to wall solid barrier. THE RIGHT
+ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: windblown sand mound on top of
+collapsed structure — sand dune and debris merged into impassable barrier. Desert
+ruins, warm tan-orange palette. No humans, no vehicles, no animals. Late afternoon
+warm sidelight from left. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial overhead, desert ruins Y-junction three roads,
+ONLY CENTER ROAD OPEN toward top center, dry sand compacted surface passable,
+left road adobe mud-brick wall collapse blocked, right road sand dune debris
+merged blocked, desert warm tan orange palette, late afternoon sidelight,
+photorealistic 4K ultra-detailed
+Negative: humans, vehicles, animals, military, sky large, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 30 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E022 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Apartment block collapse, center road survives.
+
+GPT:
+90-degree nadir aerial photograph, collapsed apartment blocks. Three roads at
+Y-junction seen from directly above. THE CENTER ROAD (TOWARD TOP OF FRAME) IS
+THE ONLY OPEN ROAD: intact asphalt, some crack patterns but no debris on road
+surface, fully traversable. THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY
+BLOCKED: 8-story apartment block pancake collapse — flat stacked floor slabs
+deposited across full road width, massive grey concrete pile. THE RIGHT ROAD
+(TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: adjacent apartment building collapse
+deposited similar dense rubble across full road. Two symmetric collapses flank
+the open center road. No humans, no vehicles. Morning light from upper-right.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial 90 degree overhead, collapsed apartment blocks Y-junction
+three roads, ONLY CENTER ROAD OPEN top direction intact asphalt, left road 8-story
+pancake collapse flat slabs blocked, right road adjacent apartment collapse symmetric
+blocked, morning light upper-right, grey concrete ruins, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E023 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Rockslide disaster, center road below slide path clear.
+
+GPT:
+Top-down strict 90-degree aerial drone photograph, post-rockslide mountain road.
+Three roads at Y-junction from directly above. THE CENTER ROAD (TOWARD TOP) IS
+THE ONLY PASSABLE ROAD: rocky mountain road, some pebbles at margins from nearby
+slide but center line completely open. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+COMPLETELY BLOCKED: major rockslide deposited enormous boulders and earth across
+full road width, continuous barrier. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS
+COMPLETELY BLOCKED: secondary rockslide filled road with mixed rocks and earth,
+impassable. Mountain disaster, rocky terrain. No humans, no vehicles. Overcast
+mountain light, diffuse grey. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree overhead aerial, mountain rockslide disaster Y-junction
+three mountain roads, ONLY CENTER ROAD OPEN toward top pebbles but passable, left
+road major rockslide boulders earth blocked, right road secondary rockslide rocks
+blocked, overcast mountain grey light, rocky terrain, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, low quality
+Steps: 30 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E024 | EGITICI | ACIK: orta (2) | ORAN: 4:3 ===
+DESCRIPTION: Port disaster, center dock road open.
+
+GPT:
+90-degree nadir aerial drone photograph, post-disaster port/industrial zone.
+Wider frame. Three roads at Y-junction from directly above. THE CENTER ROAD
+(RUNNING TOWARD TOP CENTER) IS THE ONLY OPEN ROAD: concrete dock surface,
+minor debris scatter at margins, center clear and traversable. THE LEFT ROAD
+(TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: collapsed port crane structure —
+steel girders and machinery lying flat across full road width, impassable. THE
+RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: warehouse roof collapse
+deposited corrugated steel panels and concrete across road, solid barrier. Port
+industrial ruins, dark concrete surfaces. No humans, no vehicles. Overcast sky
+light. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial 90 degree overhead wider, port industrial disaster zone
+Y-junction three roads, ONLY CENTER ROAD OPEN toward top dock surface clear,
+left road port crane steel girders collapsed blocked, right road warehouse roof
+corrugated steel collapsed blocked, overcast port industrial, concrete surfaces,
+photorealistic 4K
+Negative: humans, workers, vehicles, cranes active, military, animals, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E025 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Three-way intersection, center passes through untouched.
+
+GPT:
+Strict top-down 90-degree aerial photograph, major urban intersection after
+earthquake. Three roads at Y-junction from directly above. THE CENTER ROAD
+(TOWARD TOP OF IMAGE) IS THE ONLY PASSABLE ROAD: wide multi-lane road, asphalt
+intact with dust, no debris in road area, fully open. THE LEFT ROAD (TOWARD
+UPPER-LEFT) IS COMPLETELY BLOCKED: collapsed pedestrian overpass structure — steel
+and concrete beams across full road, completely impassable. THE RIGHT ROAD (TOWARD
+UPPER-RIGHT) IS COMPLETELY BLOCKED: multi-story commercial building facade collapsed
+— glass, steel frame, and concrete rubble fills road completely. Urban commercial
+district ruins. No humans, no vehicles. Noon vertical sun. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, major urban intersection earthquake,
+three roads Y-junction, ONLY CENTER ROAD OPEN toward top multi-lane asphalt intact
+passable, left road pedestrian overpass steel concrete blocked, right road commercial
+building facade glass steel rubble blocked, urban commercial ruins, noon vertical sun,
+photorealistic 4K
+Negative: humans, vehicles, traffic, military, animals, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E026 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Earthquake damage, center road passable between ruins.
+
+GPT:
+90-degree overhead nadir drone photograph, earthquake-damaged residential zone.
+Three roads at Y-junction from directly above. THE ROAD RUNNING DIRECTLY TOWARD
+THE TOP OF THE IMAGE IS THE ONLY OPEN ROAD: cracked asphalt with scattered pebbles
+and dust at edges, but center lane fully clear and traversable. THE ROAD TOWARD
+UPPER-LEFT IS COMPLETELY BLOCKED: three-story building collapsed at corner —
+corner rubble mass of brick and concrete filling road from edge to edge, no gap.
+THE ROAD TOWARD UPPER-RIGHT IS COMPLETELY BLOCKED: roof structure from adjacent
+building slid into road — heavy reinforced concrete roof slab covers full road
+width. Residential ruins. No humans, no vehicles. Dawn light from upper-left,
+long gentle shadows. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir overhead 90 degree aerial drone photo, earthquake residential zone
+Y-junction three roads, ONLY CENTER ROAD OPEN toward top cracked asphalt pebbles
+passable, left road corner building brick concrete rubble blocked, right road roof
+slab collapsed blocked, dawn light upper-left long shadows, residential ruins,
+photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, drawing, blurry, low quality, text
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E027 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Volcano ash zone, center road clear of ash mounds.
+
+GPT:
+Top-down 90-degree aerial photograph, post-volcanic-ashfall disaster zone. Three
+roads at Y-junction from directly above. THE CENTER ROAD (TOWARD TOP OF FRAME)
+IS THE ONLY PASSABLE ROAD: covered with thin uniform ash layer but road surface
+intact beneath, no structural blockage. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+COMPLETELY BLOCKED: collapsed ash-laden building deposited debris and ash mounds
+across full road width, road buried. THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS
+COMPLETELY BLOCKED: volcanic debris flow deposited rock and ash aggregate across
+full road width, solid barrier. Volcanic ash grey landscape. No humans, no
+vehicles. Overcast volcanic haze, grey monochrome palette. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, volcanic ashfall disaster zone Y-junction
+three roads, ONLY CENTER ROAD OPEN toward top thin ash layer surface intact passable,
+left road building collapse ash mounds blocked, right road volcanic debris flow rocks
+ash blocked, grey monochrome volcanic landscape, overcast haze, photorealistic 4K
+Negative: humans, vehicles, military, animals, active volcano, fire, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E028 | EGITICI | ACIK: orta (2) | ORAN: 4:3 ===
+DESCRIPTION: Narrow alley junction, center alley open.
+
+GPT:
+Strict 90-degree overhead nadir aerial drone photograph, narrow urban alley
+network, post-earthquake. Three narrow alleys at Y-junction from directly above.
+Wider frame. THE CENTER ALLEY (TOWARD TOP CENTER) IS THE ONLY PASSABLE ALLEY:
+bare stone and dirt surface, clearly open across full width. THE LEFT ALLEY
+(TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: crumbled stone wall deposited rubble
+mound across full alley width, solid barrier. THE RIGHT ALLEY (TOWARD UPPER-RIGHT)
+IS COMPLETELY BLOCKED: collapsed building corner deposited brick and mortar rubble
+across alley, impassable. Historic stone district ruins. No humans, no vehicles.
+Midday vertical sun, short shadows. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: overhead nadir 90 degree aerial wider, narrow urban alley network
+post-earthquake Y-junction, ONLY CENTER ALLEY OPEN toward top bare stone dirt,
+left alley stone wall rubble blocked, right alley building corner brick mortar
+blocked, historic stone district ruins, midday sun short shadows, photorealistic 4K
+Negative: humans, vehicles, animals, military, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 30 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E029 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Highway exit, center route survives.
+
+GPT:
+90-degree nadir aerial photograph, major highway damaged by earthquake. Three
+highway lanes/roads splitting at junction from directly above. THE CENTER ROUTE
+(TOWARD TOP) IS THE ONLY OPEN ROUTE: highway asphalt, slight surface cracking
+but no debris blocking, traversable. THE LEFT ROUTE (TOWARD UPPER-LEFT) IS
+COMPLETELY BLOCKED: highway overpass section pancake-collapsed — enormous slab
+of road surface lying in several pieces across the road below. THE RIGHT ROUTE
+(TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: large concrete retaining wall toppled
+across road from hillside cut. Highway disaster, large-scale concrete surfaces.
+No humans, no vehicles. Afternoon warm light from left. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial overhead, major highway earthquake damage Y-junction
+three routes, ONLY CENTER ROUTE OPEN toward top asphalt cracked but traversable,
+left route overpass pancake collapse slabs below blocked, right route retaining wall
+toppled blocked, large-scale concrete highway, afternoon warm light, photorealistic
+Negative: humans, vehicles, traffic, military, animals, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, low quality
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E030 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Mixed material ruins, center path through.
+
+GPT:
+Top-down 90-degree aerial drone photograph, mixed material ruins from earthquake.
+Three roads at Y-junction viewed from directly above. THE CENTER ROAD (TOWARD TOP
+OF FRAME) IS THE ONLY PASSABLE ROAD: mixed earth and broken asphalt, visible
+passage from junction to top edge. THE LEFT ROAD (TOWARD UPPER-LEFT) IS
+COMPLETELY BLOCKED: collapsed mixed-use building — concrete, brick, steel,
+and wood debris merged into solid mass across full road. THE RIGHT ROAD (TOWARD
+UPPER-RIGHT) IS COMPLETELY BLOCKED: collapsed residential building deposited
+similar dense mixed rubble. Mixed grey-brown palette. No humans, no vehicles.
+Overcast soft light. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, mixed ruins earthquake Y-junction three
+roads, ONLY CENTER ROAD OPEN toward top passable, left road mixed concrete brick
+steel wood merged blocked, right road residential mixed rubble blocked, mixed
+grey-brown palette, overcast soft light, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E031 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Symmetric ruin walls, center opening.
+
+GPT:
+90-degree overhead nadir drone photograph, symmetrically collapsed walls flanking
+roads. Three roads at Y-junction from directly above. THE CENTER ROAD (TOWARD
+TOP CENTER) IS THE ONLY PASSABLE ROAD: clear dirt path, open and traversable.
+LEFT ROAD (TOWARD UPPER-LEFT): thick collapsed compound wall — uniform dense stone
+rubble from edge to edge, completely blocked. RIGHT ROAD (TOWARD UPPER-RIGHT):
+identical compound wall from other side collapsed — symmetric dense stone rubble
+blocking. The scene is symmetric: two massive collapsed walls flanking the single
+open center road. No humans, no vehicles. Midday harsh sun, short shadows.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir overhead 90 degree aerial, symmetric collapsed compound walls
+Y-junction three roads, ONLY CENTER ROAD OPEN toward top dirt path, left road
+thick stone wall uniform rubble blocked, right road symmetric stone wall blocked,
+midday harsh sun short shadows, symmetric ruin scene, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text, watermark
+Steps: 30 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E032 | EGITICI | ACIK: orta (2) | ORAN: 4:3 ===
+DESCRIPTION: Collapsed bridge approaches, center road intact.
+
+GPT:
+Strict top-down 90-degree aerial, post-earthquake bridge zone. Three roads at
+junction from directly above, wider frame. THE CENTER ROAD (TOWARD TOP) IS THE
+ONLY OPEN ROAD: intact road surface leading toward standing bridge span, passable.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: bridge approach ramp
+collapsed — sections of road and support structure lying flat, impassable. THE
+RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: embankment failed —
+earth and road material slid down creating barrier across road. Bridge disaster
+zone, concrete and earth. No humans, no vehicles. Morning light from upper-right.
+Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial wider, earthquake bridge zone Y-junction three
+roads, ONLY CENTER ROAD OPEN toward top intact surface, left road bridge approach
+ramp collapsed sections lying flat blocked, right road embankment failure earth
+slide blocked, bridge disaster concrete earth, morning light, photorealistic 4K
+Negative: humans, vehicles, traffic, military, animals, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E033 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Collapsed market district, center lane clear.
+
+GPT:
+90-degree nadir aerial photograph, destroyed traditional market district. Three
+lanes at Y-junction from directly above. THE CENTER LANE (TOWARD TOP) IS THE ONLY
+OPEN ROAD: market street surface, scattered small market debris at margins but
+center clear. THE LEFT LANE (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: market
+stall structure collapsed inward — metal frame, wooden planks, and merchandise
+rubble filling road. THE RIGHT LANE (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED:
+two-story market building facade collapsed outward — brick and concrete rubble
+spanning road. Traditional market ruins, chaotic surfaces. No humans, no vehicles.
+Midday overcast. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree overhead aerial, traditional market district collapse
+Y-junction three lanes, ONLY CENTER LANE OPEN toward top market street clear,
+left lane market stall metal frame wood rubble blocked, right lane market building
+facade brick concrete blocked, chaotic market surfaces, midday overcast, photorealistic
+Negative: humans, merchants, vehicles, animals, military, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E034 | EGITICI | ACIK: orta (2) | ORAN: 1:1 ===
+DESCRIPTION: Power station disaster, center access road open.
+
+GPT:
+Top-down strict 90-degree aerial drone photograph, destroyed power station zone.
+Three roads at Y-junction from directly above. THE CENTER ACCESS ROAD (TOWARD TOP)
+IS THE ONLY PASSABLE ROAD: paved service road, intact surface, no obstruction.
+THE LEFT ROAD (TOWARD UPPER-LEFT) IS COMPLETELY BLOCKED: transformer explosion
+deposited steel, porcelain insulator fragments, and concrete across full road width.
+THE RIGHT ROAD (TOWARD UPPER-RIGHT) IS COMPLETELY BLOCKED: collapsed power station
+building — reinforced concrete structure deposited rubble across road. Industrial
+ruin, dark grey concrete surfaces. No humans, no vehicles. Post-explosion overcast
+haze. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, power station disaster zone Y-junction
+three roads, ONLY CENTER ROAD OPEN toward top paved service road intact, left road
+transformer explosion steel porcelain concrete blocked, right road power station
+building collapse rubble blocked, industrial ruin grey concrete, overcast haze,
+photorealistic 4K
+Negative: humans, workers, vehicles, military, animals, active electricity, fire,
+sky, horizon, oblique, perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+────────────────────────────────────────────────────────────────────────────────
+SAĞ (3) AÇIK — E035–E050
+────────────────────────────────────────────────────────────────────────────────
+
+=== E035 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Post-earthquake ruins, right road clear.
+
+GPT:
+Strict 90-degree top-down nadir aerial drone photograph. Three roads meet at
+Y-junction viewed directly from above. THE ROAD TOWARD THE UPPER-RIGHT CORNER IS
+THE ONLY OPEN ROAD: bare compressed dirt, completely traversable, no obstruction
+from junction to frame edge. THE ROAD TOWARD THE UPPER-LEFT IS COMPLETELY BLOCKED:
+collapsed residential building deposited grey concrete rubble across full road
+width — floor slabs, brick chunks, rebar mesh. THE ROAD TOWARD TOP-CENTER IS
+COMPLETELY BLOCKED: dense collapsed building wall — uniform brick rubble spanning
+road wall to wall. Destroyed urban zone. No humans, no vehicles. Overcast midday.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial drone, Y-junction three roads, ONLY
+RIGHT ROAD OPEN toward upper-right corner, bare compressed dirt traversable,
+left road collapsed building concrete rubble blocked, center road brick wall
+rubble blocked, urban ruins overcast midday, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, perspective, oblique,
+cartoon, illustration, blurry, watermark, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E036 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Flood zone, right road elevated and dry.
+
+GPT:
+90-degree nadir aerial photograph, post-flood disaster. Three roads at Y-junction
+from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY PASSABLE ROAD:
+elevated road surface, dry, some silt at margins but center passable. THE ROAD
+TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: deep flood silt deposit — thick grey mud
+layer covers road from edge to edge, solidified, impassable surface. THE ROAD
+TOWARD TOP-CENTER IS COMPLETELY BLOCKED: structural collapse added concrete rubble
+to flood debris — mixed mud and concrete filling road completely. Post-flood zone,
+grey-brown palette. No humans, no vehicles. Post-storm overcast. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial 90 degree overhead, post-flood disaster Y-junction three
+roads, ONLY RIGHT ROAD OPEN toward upper-right elevated dry surface, left road
+flood silt thick mud grey solidified blocked, center road collapse plus flood mixed
+rubble blocked, grey-brown post-flood, overcast light, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E037 | EGITICI | ACIK: sag (3) | ORAN: 4:3 ===
+DESCRIPTION: War-destroyed suburb, right street intact.
+
+GPT:
+Top-down 90-degree aerial drone photograph, post-war suburb. Three residential
+streets at Y-junction from directly above, wider frame. THE STREET TOWARD THE
+UPPER-RIGHT IS THE ONLY OPEN STREET: suburban asphalt surface, some cracks and
+dust, but completely traversable. THE STREET TOWARD UPPER-LEFT IS COMPLETELY
+BLOCKED: two-story suburban house collapsed entirely onto road — concrete structure
+deposited dense rubble across full street width. THE STREET TOWARD TOP-CENTER IS
+COMPLETELY BLOCKED: adjacent house collapsed from roof down — tile, timber, and
+concrete rubble merged across street. Suburban ruins, varying greys. No humans,
+no vehicles. Afternoon warm golden light. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down 90 degree aerial wider, post-war suburban streets Y-junction,
+ONLY RIGHT STREET OPEN toward upper-right asphalt cracked traversable, left street
+two-story house collapse concrete rubble blocked, center street house roof tiles
+timber concrete blocked, suburban ruins warm afternoon golden light, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, low quality
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E038 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Factory district, right service road clear.
+
+GPT:
+90-degree nadir aerial photograph, industrial factory disaster zone. Three roads
+at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY
+PASSABLE ROAD: industrial concrete paving, cracked and dusty but clear, passable.
+THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: factory roof collapse deposited
+corrugated metal sheets, heavy concrete beams, and machinery across full road.
+THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: large industrial storage tank
+exploded and collapsed — tank shell fragments and debris fill road completely.
+Industrial disaster, grey and rust palette. No humans, no vehicles. Noon sun.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree overhead aerial, industrial factory disaster Y-junction
+three roads, ONLY RIGHT ROAD OPEN toward upper-right industrial concrete clear,
+left road factory roof corrugated metal concrete machinery blocked, center road
+storage tank explosion debris blocked, grey rust industrial palette, noon sun,
+photorealistic 4K
+Negative: humans, workers, vehicles, military, animals, active fire, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry
+Steps: 30 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E039 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Mountain town, right road curves away open.
+
+GPT:
+Strict top-down 90-degree aerial photograph, post-earthquake mountain town. Three
+mountain roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT
+IS THE ONLY OPEN ROAD: winding mountain road visible, bare rock and compressed
+earth, clear passage. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: landslide
+from adjacent cliff — massive boulders and earth completely cover road from edge
+to edge. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: collapsed stone building
+deposited large stone blocks across full road width. Mountain ruins, varied rock
+tones. No humans, no vehicles. Overcast mountain light. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, mountain town earthquake Y-junction three
+roads, ONLY RIGHT ROAD OPEN toward upper-right mountain road bare rock clear, left
+road massive landslide boulders earth blocked, center road stone building stone blocks
+blocked, mountain ruins overcast light, varied rock tones, photorealistic 4K
+Negative: humans, vehicles, animals, military, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, text, watermark
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E040 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Residential collapse, right exit road free.
+
+GPT:
+90-degree nadir aerial drone photograph, dense residential zone after earthquake.
+Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT
+IS THE ONLY TRAVERSABLE ROAD: narrow asphalt lane, dust and small gravel scatter
+but center completely open. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED:
+4-story residential building collapsed inward — floor slab stack and concrete
+debris piled across road. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED:
+collapsed building wall from corner building deposited brick and mortar barrier
+across full road. Dense housing ruins. No humans, no vehicles. Morning overcast.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial 90 degree overhead drone, dense residential earthquake
+Y-junction three roads, ONLY RIGHT ROAD OPEN toward upper-right narrow asphalt
+passable, left road 4-story building floor slab stack concrete blocked, center
+road corner building brick mortar wall blocked, dense housing ruins morning
+overcast, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E041 | EGITICI | ACIK: sag (3) | ORAN: 4:3 ===
+DESCRIPTION: Tsunami zone, right road on higher ground.
+
+GPT:
+Top-down 90-degree aerial photograph, post-tsunami disaster zone. Three roads at
+Y-junction from directly above, wider frame. THE ROAD TOWARD THE UPPER-RIGHT IS
+THE ONLY PASSABLE ROAD: road on higher ground, surface intact with some wet debris
+scatter but center clear. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED:
+tsunami debris field — mixed household materials, sand, wood, metal, and organic
+matter forms dense impassable barrier across full road. THE ROAD TOWARD TOP-CENTER
+IS COMPLETELY BLOCKED: tsunami-pushed structure deposited building fragment debris
+across full road. Coastal disaster, wet surfaces, grey-tan. No humans, no vehicles.
+Post-storm overcast. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial wider, post-tsunami disaster zone Y-junction three
+roads, ONLY RIGHT ROAD OPEN toward upper-right higher ground surface clear, left
+road tsunami debris field household materials sand wood metal blocked, center road
+tsunami-pushed building fragments blocked, coastal wet surfaces grey-tan, overcast,
+photorealistic 4K
+Negative: humans, vehicles, military, animals, active waves, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E042 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Concrete frame ruin, right road below open structure.
+
+GPT:
+90-degree nadir aerial photograph, destroyed reinforced concrete frame buildings.
+Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS
+THE ONLY OPEN ROAD: road surface visible and clear beneath still-standing but
+damaged concrete frame, no debris on road itself. THE ROAD TOWARD UPPER-LEFT IS
+COMPLETELY BLOCKED: concrete frame building pancake-collapsed — flat stacked
+floors covering full road, wall to wall. THE ROAD TOWARD TOP-CENTER IS COMPLETELY
+BLOCKED: second building pancake collapse created similar dense slab stack across
+road. Two symmetric pancake collapses. No humans, no vehicles. Noon sun, clear sky
+light. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree overhead aerial, concrete frame buildings collapse
+Y-junction three roads, ONLY RIGHT ROAD OPEN toward upper-right clear surface, left
+road pancake collapse flat stacked floors blocked, center road second pancake collapse
+slab stack blocked, noon sun, grey concrete palette, photorealistic 4K
+Negative: humans, vehicles, military, animals, sky visible large, horizon, oblique,
+perspective, cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E043 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Bombed city block, right road untouched.
+
+GPT:
+Strict top-down 90-degree aerial drone photograph, post-bombing urban block. Three
+roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE
+ONLY PASSABLE ROAD: clear asphalt, bomb debris only at margins, center lane fully
+open. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: direct bomb hit created
+crater and rubble field — structural debris and earth fill road completely, plus
+crater depression. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: adjacent
+building bomb damage — collapsed facade and structural elements cover road. Post-
+bombing ruins. No humans, no vehicles, no military activity. Dawn light. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, post-bombing urban Y-junction three roads,
+ONLY RIGHT ROAD OPEN toward upper-right asphalt center clear, left road bomb crater
+rubble earth field blocked, center road bomb-collapsed building facade blocked, post-
+bombing ruins dawn light, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, active explosion, fire, animals, sky, horizon,
+oblique, perspective, cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E044 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Narrow historic alley, right alley open.
+
+GPT:
+90-degree overhead nadir aerial photograph, historic stone city, post-earthquake.
+Three narrow historic stone alleys at Y-junction from directly above. THE ALLEY
+TOWARD THE UPPER-RIGHT IS THE ONLY OPEN ALLEY: ancient stone paving, some pebbles
+and dust but fully traversable. THE ALLEY TOWARD UPPER-LEFT IS COMPLETELY BLOCKED:
+stone arch and wall collapsed — irregular stone block pile fills alley completely.
+THE ALLEY TOWARD TOP-CENTER IS COMPLETELY BLOCKED: historic building facade
+collapsed outward — stone blocks and mortar fill alley wall to wall. Historic
+stone ruins, warm beige-brown. No humans, no vehicles. Late afternoon warm light.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: overhead nadir 90 degree aerial, historic stone city earthquake Y-junction
+three narrow alleys, ONLY RIGHT ALLEY OPEN toward upper-right stone paving clear,
+left alley stone arch wall collapse blocks blocked, center alley historic facade
+stone blocks mortar blocked, warm beige-brown historic ruins, late afternoon light,
+photorealistic 4K
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, watermark
+Steps: 30 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E045 | EGITICI | ACIK: sag (3) | ORAN: 4:3 ===
+DESCRIPTION: Urban landslide, right road survives.
+
+GPT:
+Top-down 90-degree aerial photograph, urban landslide disaster zone. Wider frame.
+Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS
+THE ONLY PASSABLE ROAD: intact asphalt, missed by landslide path, clear. THE ROAD
+TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: main landslide path — thick earth, rock,
+and vegetation debris deposited across full road width. THE ROAD TOWARD TOP-CENTER
+IS COMPLETELY BLOCKED: secondary slide lobe deposited earth and rock debris across
+road, also impassable. Urban hillside disaster, brown-grey earth tones. No humans,
+no vehicles. Overcast after rain. Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial wider, urban landslide disaster Y-junction
+three roads, ONLY RIGHT ROAD OPEN toward upper-right intact asphalt passable, left
+road main landslide path earth rock vegetation blocked, center road secondary slide
+earth rock blocked, urban hillside brown-grey, overcast after rain, photorealistic
+Negative: humans, vehicles, military, animals, active slide, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E046 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Railway zone, right road clear.
+
+GPT:
+90-degree nadir aerial photograph, post-disaster railway zone. Three roads at
+Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY OPEN
+ROAD: gravel and dirt service road, clear and traversable. THE ROAD TOWARD UPPER-LEFT
+IS COMPLETELY BLOCKED: derailed train cars (empty) piled on road surface — metal
+debris and rail car structure cover full road. THE ROAD TOWARD TOP-CENTER IS
+COMPLETELY BLOCKED: railway bridge section collapsed onto road — heavy steel girder
+sections across full road width. Railway disaster, metal and concrete. No humans,
+no vehicles. Morning overcast. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree aerial overhead, railway disaster zone Y-junction three
+roads, ONLY RIGHT ROAD OPEN toward upper-right gravel dirt service road clear, left
+road derailed train cars metal debris blocked, center road railway bridge girder
+sections collapsed blocked, railway metal concrete disaster, morning overcast,
+photorealistic 4K
+Negative: humans, vehicles, military, animals, active train, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E047 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Hospital zone, right road for emergency.
+
+GPT:
+Strict top-down 90-degree aerial photograph, destroyed hospital complex. Three
+roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE
+ONLY PASSABLE ROAD: hospital service lane, concrete surface intact, clear, no
+debris. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: hospital wing collapsed
+— reinforced concrete structure deposited dense rubble including medical equipment
+remnants across full road. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED:
+hospital main building partial collapse shed facade onto road — concrete and glass
+debris fills road completely. Medical zone ruins. No humans. Noon vertical sun.
+Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down nadir 90 degree aerial, destroyed hospital complex Y-junction
+three roads, ONLY RIGHT ROAD OPEN toward upper-right service lane concrete clear,
+left road hospital wing collapse reinforced concrete rubble blocked, center road
+hospital facade glass concrete blocked, medical zone ruins noon sun, photorealistic
+Negative: humans, patients, medical workers, vehicles, ambulances, military, animals,
+sky, horizon, oblique, perspective, cartoon, illustration, blurry
+Steps: 30 | CFG: 7 | Size: 1024x1024
+
+---
+
+=== E048 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Earthquake coastal city, right harbor road open.
+
+GPT:
+90-degree nadir aerial drone photograph, post-earthquake coastal city. Three roads
+at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS THE ONLY
+OPEN ROAD: coastal road surface, some sand and small debris at margins from sea
+spray, but center clear and traversable. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY
+BLOCKED: building collapse deposited concrete rubble across full road. THE ROAD
+TOWARD TOP-CENTER IS COMPLETELY BLOCKED: liquefaction-caused subsidence and rubble
+field blocking road completely. Coastal urban ruin, grey-brown-tan. No humans, no
+vehicles. Overcast post-earthquake. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir 90 degree overhead aerial drone, coastal city earthquake Y-junction
+three roads, ONLY RIGHT ROAD OPEN toward upper-right coastal road clear center,
+left road building collapse concrete rubble blocked, center road liquefaction
+subsidence rubble blocked, coastal grey-brown-tan, overcast, photorealistic 4K
+Negative: humans, vehicles, military, animals, active sea, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, text
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+---
+
+=== E049 | EGITICI | ACIK: sag (3) | ORAN: 4:3 ===
+DESCRIPTION: Wide format, right road visible from above.
+
+GPT:
+Top-down 90-degree aerial drone photograph, wide format, post-earthquake urban zone.
+Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT IS
+THE ONLY PASSABLE ROAD: wide asphalt surface, cracks and dust, but no debris in
+road area, clearly traversable. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED:
+overpass ramp section collapsed — segments of elevated road section lying flat on
+road below, multiple slab pieces. THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED:
+commercial building facade fell across road — dense uniform concrete and glass debris.
+Urban infrastructure disaster. No humans, no vehicles. Afternoon light from left.
+Photorealistic. Output: 1536×1024 PNG.
+
+NANO-BANANA:
+Positive: top-down 90 degree aerial wider frame, urban earthquake infrastructure
+disaster Y-junction three roads, ONLY RIGHT ROAD OPEN toward upper-right wide
+asphalt cracked traversable, left road overpass ramp segments collapsed lying flat
+blocked, center road commercial building facade concrete glass blocked, afternoon
+light from left, photorealistic 4K
+Negative: humans, vehicles, traffic, military, animals, sky, horizon, oblique,
+perspective, cartoon, illustration, blurry, watermark
+Steps: 35 | CFG: 7 | Size: 1536x1024
+
+---
+
+=== E050 | EGITICI | ACIK: sag (3) | ORAN: 1:1 ===
+DESCRIPTION: Three-building collapse zone, right escape.
+
+GPT:
+90-degree nadir aerial photograph, three simultaneous building collapses in urban
+zone. Three roads at Y-junction from directly above. THE ROAD TOWARD THE UPPER-RIGHT
+IS THE ONLY OPEN ROAD: road between collapsed buildings survived intact, bare
+concrete, passable. THE ROAD TOWARD UPPER-LEFT IS COMPLETELY BLOCKED: first
+building collapsed toward left road — entire building mass deposited across road.
+THE ROAD TOWARD TOP-CENTER IS COMPLETELY BLOCKED: second building collapsed toward
+center road — dense rubble filling road completely. Three ruins visible. No humans,
+no vehicles. Overcast grey. Photorealistic. Output: 1024×1024 PNG.
+
+NANO-BANANA:
+Positive: nadir aerial 90 degree overhead, three building collapse urban zone
+Y-junction three roads, ONLY RIGHT ROAD OPEN toward upper-right intact road between
+ruins, left road first building mass collapse blocked, center road second building
+rubble blocked, three ruins visible, overcast grey, photorealistic 4K ultra-detailed
+Negative: humans, vehicles, military, animals, sky, horizon, oblique, perspective,
+cartoon, illustration, blurry, low quality
+Steps: 35 | CFG: 7.5 | Size: 1024x1024
+
+================================================================================
+ÖZET TABLOSU — EĞİTİCİ PROMPTLAR
+================================================================================
+ID    | ACIK YOL | NUMARA | ORAN
+------|----------|--------|------
+E001  | sol      | 1      | 1:1
+E002  | sol      | 1      | 4:3
+E003  | sol      | 1      | 1:1
+E004  | sol      | 1      | 1:1
+E005  | sol      | 1      | 1:1
+E006  | sol      | 1      | 1:1
+E007  | sol      | 1      | 4:3
+E008  | sol      | 1      | 1:1
+E009  | sol      | 1      | 1:1
+E010  | sol      | 1      | 1:1
+E011  | sol      | 1      | 1:1
+E012  | sol      | 1      | 4:3
+E013  | sol      | 1      | 1:1
+E014  | sol      | 1      | 1:1
+E015  | sol      | 1      | 1:1
+E016  | sol      | 1      | 1:1
+E017  | sol      | 1      | 4:3
+E018  | orta     | 2      | 1:1
+E019  | orta     | 2      | 1:1
+E020  | orta     | 2      | 4:3
+E021  | orta     | 2      | 1:1
+E022  | orta     | 2      | 1:1
+E023  | orta     | 2      | 1:1
+E024  | orta     | 2      | 4:3
+E025  | orta     | 2      | 1:1
+E026  | orta     | 2      | 1:1
+E027  | orta     | 2      | 1:1
+E028  | orta     | 2      | 4:3
+E029  | orta     | 2      | 1:1
+E030  | orta     | 2      | 1:1
+E031  | orta     | 2      | 1:1
+E032  | orta     | 2      | 4:3
+E033  | orta     | 2      | 1:1
+E034  | orta     | 2      | 1:1
+E035  | sag      | 3      | 1:1
+E036  | sag      | 3      | 1:1
+E037  | sag      | 3      | 4:3
+E038  | sag      | 3      | 1:1
+E039  | sag      | 3      | 1:1
+E040  | sag      | 3      | 1:1
+E041  | sag      | 3      | 4:3
+E042  | sag      | 3      | 1:1
+E043  | sag      | 3      | 1:1
+E044  | sag      | 3      | 1:1
+E045  | sag      | 3      | 4:3
+E046  | sag      | 3      | 1:1
+E047  | sag      | 3      | 1:1
+E048  | sag      | 3      | 1:1
+E049  | sag      | 3      | 4:3
+E050  | sag      | 3      | 1:1
+================================================================================
+GÖRSEL İSİMLENDİRME:
+  GPT    → E001_gpt.png, ..., E050_gpt.png
+  Banana → E001_bnk.png, ..., E050_bnk.png
+================================================================================

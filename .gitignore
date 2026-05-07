@@ -13,6 +13,11 @@ build/
 
 # Dataset — download_and_convert.py ile yeniden indirilebilir
 dataset/rescuenet_yolo/
+dataset/rescuenet_yolo_aug/
+dataset/floodnet_yolo/
+dataset/dubai_yolo/
+dataset/semantic_drone_yolo/
+dataset/merged_data.yaml
 
 # Eğitim çıktıları — yeniden üretilebilir
 codes/runs/
@@ -69,3 +74,4 @@ codes/train.py
 # Diğer
 python-dersleri/
 images/
+dataset/floodnet_filtered/

@@ -1,0 +1,302 @@
+{
+  "H001": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "golge_acik_yolu_kesiyor"
+  },
+  "H002": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "golge_tam_orta"
+  },
+  "H003": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "golge_sag_yol"
+  },
+  "H004": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "dappled_shadow"
+  },
+  "H005": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "partial_shadow"
+  },
+  "H006": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "shadow_stripe"
+  },
+  "H007": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "golge_sis"
+  },
+  "H008": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "golge_gecici"
+  },
+  "H009": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "deep_narrow_shadow"
+  },
+  "H010": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "golge_tek_serit"
+  },
+  "H011": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "golge_degrade"
+  },
+  "H012": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "golge_benzer_doku"
+  },
+  "H013": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "60_derece_oblik"
+  },
+  "H014": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "45_derece_oblik"
+  },
+  "H015": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "30_derece_dusuk_oblik"
+  },
+  "H016": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "yan_bakis_golge"
+  },
+  "H017": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "yan_bakis_debris_yuksekligi"
+  },
+  "H018": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "yan_kus_bakisi"
+  },
+  "H019": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "perspektif_ego_noktasi"
+  },
+  "H020": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "yan_bakis_sisli"
+  },
+  "H021": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "yan_bakis_karmasik"
+  },
+  "H022": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "yan_bakis_alacakaranlik"
+  },
+  "H023": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "krater_acik_yolda"
+  },
+  "H024": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "agir_hasar_gecebilir"
+  },
+  "H025": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "moloz_kenar_acik_merkez"
+  },
+  "H026": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "yuzey_yanmis"
+  },
+  "H027": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "asphalt_bozuk_parcali"
+  },
+  "H028": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "kumu_acik_yol"
+  },
+  "H029": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "sulanmis_camurlu"
+  },
+  "H030": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "bitki_kapli_acik"
+  },
+  "H031": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "dar_gecit_kenarda"
+  },
+  "H032": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "duman_yangin_sonrasi"
+  },
+  "H033": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "gece_ay_isigi"
+  },
+  "H034": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "gece_uzak_ates_isigi"
+  },
+  "H035": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "gece_termal_simulasyon"
+  },
+  "H036": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "alacakaranlik_siluet"
+  },
+  "H037": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "gece_dugme_isigi"
+  },
+  "H038": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "gece_pus"
+  },
+  "H039": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "gun_batimi_yanlis_renk"
+  },
+  "H040": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "gece_yildiz_isigi"
+  },
+  "H041": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "benzer_yogunluk_tum"
+  },
+  "H042": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "duman_yogun"
+  },
+  "H043": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "lastik_izi_kapali"
+  },
+  "H044": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "parlak_kapali_karanlik_acik"
+  },
+  "H045": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "su_yansimasi"
+  },
+  "H046": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "gri_skala"
+  },
+  "H047": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "cakil_benzer"
+  },
+  "H048": {
+    "type": "tricky",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": "kuzey_gunes_acisi"
+  },
+  "H049": {
+    "type": "tricky",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": "asfalt_yansima_kapali"
+  },
+  "H050": {
+    "type": "tricky",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": "tum_zorluk"
+  }
+}
