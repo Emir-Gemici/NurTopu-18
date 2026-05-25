@@ -29,26 +29,34 @@ Paraşüt sistemi              GNSS + IMU + Encoder
 ## Dizin Yapısı
 
 ```
-teknofest/
+navitas/
 ├── codes/
-│   ├── rpi_inference.py        ← ANA KOD — inference, IKA haritası, RPi deployment
+│   ├── rpi_inference.py        ← ANA KOD — inference, İKA haritası, RPi deployment
 │   ├── test_accuracy.py        ← Görsel test & doğruluk (image/video/camera/--test)
+│   ├── test_batch.py           ← Toplu test (roboflow/floodnet/rescuenet kaynakları)
 │   ├── train_seg.py            ← YOLOv8-seg eğitim scripti
-│   ├── image-test/             ← Test görselleri (gpt-images/, banana-images/)
-│   │   ├── gpt-images/
-│   │   └── banana-images/
-│   └── requirements_rpi.txt    ← RPi kurulum bağımlılıkları
+│   ├── download_roboflow.py    ← Roboflow test dataset'lerini indir (ROBOFLOW_API_KEY)
+│   └── requirements_rpi.txt   ← RPi kurulum bağımlılıkları
 │
 ├── models/
-│   └── rescuenet_seg_v1_ncnn_model/   ← Aktif NCNN modeli (RPi deployment)
+│   ├── best_ncnn_model/               ← En güncel model (aktif deployment)
+│   │   ├── model.ncnn.bin
+│   │   ├── model.ncnn.param
+│   │   ├── metadata.yaml
+│   │   └── model_ncnn.py
+│   └── rescuenet_seg_v1_ncnn_model/   ← v1 referans modeli
 │       ├── model.ncnn.bin
 │       ├── model.ncnn.param
-│       └── metadata.yaml
+│       ├── metadata.yaml
+│       └── model_ncnn.py
 │
 ├── dataset/
 │   ├── combined_data.yaml           ← Birleşik eğitim config (RescueNet + FloodNet)
 │   ├── download_and_convert.py      ← RescueNet indir + YOLO formatına dönüştür
-│   ├── convert_floodnet.py          ← FloodNet manuel dönüştürücü
+│   ├── download_floodnet.py         ← FloodNet indirme yardımcısı
+│   ├── convert_floodnet.py          ← FloodNet → YOLO format dönüştürücü
+│   ├── download_semantic_drone.py   ← Semantic Drone dataset
+│   ├── download_extra_datasets.py   ← Ek dataset'ler
 │   ├── augment_dataset.py           ← Dataset augmentasyonu (flip, rotate, renk)
 │   ├── merge_datasets.py            ← Birden fazla dataset'i birleştir
 │   ├── prompts_training.txt         ← 50 eğitici görsel üretim promptu (E001-E050)
@@ -57,13 +65,26 @@ teknofest/
 │   ├── test_labels_training.json    ← E001-E050 etiketleri
 │   └── test_labels_tricky.json      ← H001-H050 etiketleri
 │
+├── simulation/                      ← Gazebo simülasyon ortamı
+│   ├── worlds/                      ← .world dosyaları (kolay/orta/zor)
+│   ├── models/                      ← Gazebo modelleri (iha, ika, catapult, debris)
+│   ├── scripts/                     ← Simülasyon kontrol scriptleri
+│   ├── launch/navitas.launch        ← ROS launch dosyası
+│   ├── generate_world.py            ← Dinamik world oluşturucu
+│   ├── score.py                     ← Şartname V2 puan hesaplayıcı
+│   └── launch.sh                    ← Simülasyonu başlatma scripti
+│
+├── test_images/
+│   └── gemini/                      ← 12 referans test görseli (Gemini üretimi)
+│
 └── doc/
-    └── model_analiz.md
+    ├── model_analiz.md
+    └── İleri_Otonom_Sistemler_...pdf
 ```
 
-> **Gitignore'da olanlar (büyük, yeniden üretilebilir):**
-> `dataset/rescuenet_yolo/`, `dataset/floodnet_yolo/`, `dataset/floodnet_filtered/`,
-> `dataset/rescuenet_yolo_aug/`, `codes/results/`, `runs/`, `models/*.pt`
+> **Gitignore'da olanlar (büyük / yeniden üretilebilir):**
+> `FloodNet/` (13GB), `codes/results-zip.zip` (20GB), `test_images/roboflow/` (500MB+),
+> `dataset/*_yolo/`, `codes/results/`, `runs/`, `models/*.pt`, `models/*.zip`
 
 ---
 
@@ -80,7 +101,6 @@ pip install ultralytics opencv-python numpy tqdm datasets
 ```
 
 > **Not:** `datasets` paketi sadece HuggingFace'den otomatik indirme için gerekli.
-> Eğer dataset'leri manuel indirdiysen gerekmez.
 
 ### Wayland (Fedora) — kamera/video görüntüsü için
 
@@ -96,10 +116,10 @@ QT_QPA_PLATFORM=xcb python3 codes/rpi_inference.py --camera
 
 ```bash
 # Tek görsel
-python3 codes/rpi_inference.py --image codes/images/4.jpg
+python3 codes/rpi_inference.py --image test_images/gemini/1.png
 
 # Klasördeki tüm görseller
-python3 codes/rpi_inference.py --image codes/images/
+python3 codes/rpi_inference.py --image test_images/gemini/
 
 # Video
 python3 codes/rpi_inference.py --video video.mp4
@@ -119,13 +139,13 @@ python3 codes/rpi_inference.py --fps
 
 ```bash
 # Laptop'ta: gerekli dosyaları bir araya getir
-mkdir -p navitas
-cp codes/rpi_inference.py navitas/
-cp -r models/rescuenet_seg_v1_ncnn_model navitas/
+mkdir -p navitas_deploy
+cp codes/rpi_inference.py navitas_deploy/
+cp -r models/best_ncnn_model navitas_deploy/
+cp codes/requirements_rpi.txt navitas_deploy/
 
 # RPi'ye gönder
-scp -r navitas/ pi@<RPI_IP>:~/
-scp codes/requirements_rpi.txt pi@<RPI_IP>:~/navitas/
+scp -r navitas_deploy/ pi@<RPI_IP>:~/
 
 # RPi'de
 pip install -r requirements_rpi.txt
@@ -143,7 +163,7 @@ python3 rpi_inference.py --camera
 |---------|---------------|--------|
 | RescueNet-Roads | 2.365 | `asolodin/rescuenet-roads` (HuggingFace) |
 | FloodNet Supervised v1.0 | 798 (filtered) | Manuel indirme |
-| **Birleşik (combined)** | **3.163** | combined_data.yaml |
+| **Birleşik (combined)** | **3.163** | `combined_data.yaml` |
 
 ### Dataset İndirme / Hazırlama
 
@@ -152,7 +172,7 @@ python3 rpi_inference.py --camera
 python3 dataset/download_and_convert.py
 
 # FloodNet (manuel indirildikten sonra)
-# 1. https://github.com/BinaLab/FloodNet-Supervised_v1.0 → Google Drive'dan indir
+# https://github.com/BinaLab/FloodNet-Supervised_v1.0 → Google Drive'dan indir
 python3 dataset/convert_floodnet.py --src ~/Downloads/FloodNet/FloodNet-Supervised_v1.0
 
 # Hangi dataset'ler hazır?
@@ -160,6 +180,10 @@ python3 dataset/merge_datasets.py --check
 
 # Augmentasyon (mevcut dataset'i genişlet)
 python3 dataset/augment_dataset.py --factor 4   # 2365 → ~11.825 görsel
+
+# Roboflow test dataset'leri (API anahtarı gerekli)
+export ROBOFLOW_API_KEY=<api_key>
+python3 codes/download_roboflow.py
 ```
 
 ---
@@ -176,7 +200,7 @@ python3 codes/train_seg.py --model yolov8s-seg.pt                    # daha büy
 python3 codes/train_seg.py --epochs 200 --no-export                  # export yapma
 ```
 
-Eğitim bittikten sonra NCNN export otomatik yapılır, `models/navitas_seg_v2_ncnn_model/` altına kopyalanır.
+Eğitim bittikten sonra NCNN export otomatik yapılır, `models/best_ncnn_model/` altına kopyalanır.
 
 ### Eğitim Ayarları (Özet)
 
@@ -228,23 +252,46 @@ Girdi → merkezi kare crop → 512×512 inference
 
 ---
 
+## Toplu Test
+
+```bash
+# Tüm kaynakları test et
+python3 codes/test_batch.py --all
+
+# Belirli kaynak
+python3 codes/test_batch.py --source roboflow
+python3 codes/test_batch.py --source floodnet
+python3 codes/test_batch.py --source rescuenet
+```
+
+---
+
+## Simülasyon (Gazebo)
+
+```bash
+# Simülasyonu başlat
+cd simulation && bash launch.sh
+
+# Puan hesapla (şartname V2)
+python3 simulation/score.py
+```
+
+Simülasyon ortamı üç zorluk seviyesinde world dosyası içerir: kolay, orta, zor.
+
+---
+
 ## Model Doğruluk Testi
 
 ```bash
 # Görsel klasörü test et (--test: doğruluk karşılaştırması + görsel çıktı)
-python3 codes/test_accuracy.py --test codes/image-test/gpt-images/
+python3 codes/test_accuracy.py --test test_images/gemini/
 
 # Tek görsel veya klasör
-python3 codes/test_accuracy.py --image codes/image-test/gpt-images/
-
-# Video
-python3 codes/test_accuracy.py --video video.mp4
+python3 codes/test_accuracy.py --image test_images/gemini/
 
 # Kamera
 QT_QPA_PLATFORM=xcb python3 codes/test_accuracy.py --camera
 ```
-
-Çıktılar `codes/test_results/` altına yazar.
 
 ### Prompt Setleri
 
@@ -254,8 +301,6 @@ QT_QPA_PLATFORM=xcb python3 codes/test_accuracy.py --camera
 | `prompts_tricky.txt` | 50 (H001–H050) | Gölge, yan bakış, gece, bozuk yüzey |
 | `test_prompts.txt` | 30 (P001–P030) | Eski set |
 
-Her promptta **GPT** ve **nano-banana** formatları ayrı ayrı yazılmıştır.
-
 ---
 
 ## Haberleşme
@@ -263,7 +308,7 @@ Her promptta **GPT** ve **nano-banana** formatları ayrı ayrı yazılmıştır.
 - Protokol: MAVLink over UDP
 - Frekans: 915 MHz RF modül
 - Güncelleme süresi: ≤200ms
-- Mesafe: 300m operasyon alanı
+- Mesaje: 300m operasyon alanı
 
 ---
 

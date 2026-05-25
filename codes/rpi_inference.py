@@ -15,7 +15,7 @@ Cikti (--video): results/<ad>_result.mp4  (annotated video)
 Dizin yapisi:
   navitas/
     rpi_inference.py
-    rescuenet_seg_v1_ncnn_model/
+    best_ncnn_model/
 """
 
 import argparse
@@ -31,12 +31,12 @@ from ultralytics import YOLO
 _here = Path(__file__).parent
 MODEL_DIR = next(
     (p for p in [
-        _here / "rescuenet_seg_v1_ncnn_model",
-        _here.parent / "models" / "rescuenet_seg_v1_ncnn_model",
+        _here / "best_ncnn_model",
+        _here.parent / "models" / "best_ncnn_model",
         _here / "rescuenet_seg_v1_ncnn",
         _here.parent / "models" / "rescuenet_seg_v1_ncnn",
     ] if p.exists()),
-    _here / "rescuenet_seg_v1_ncnn_model",
+    _here / "best_ncnn_model",
 )
 RESULTS_DIR = _here / "results"
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp"}
@@ -52,7 +52,7 @@ CLASS_COLORS = {
 def load_model():
     if not MODEL_DIR.exists():
         print(f"HATA: Model klasoru bulunamadi: {MODEL_DIR}")
-        print("rescuenet_seg_v1_ncnn_model/ klasorunu bu scriptle ayni dizine koy.")
+        print("best_ncnn_model/ klasorunu bu scriptle ayni dizine koy.")
         sys.exit(1)
     return YOLO(str(MODEL_DIR), task="segment")
 

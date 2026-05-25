@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# Navitas TEKNOFEST 2026 — Tam Simülasyon Başlatıcı
+#
+# Kullanım:
+#   ./launch/navitas.launch [kolay|orta|zor|rastgele] [--open-path] [--seed N] [--headless]
+#
+# Örnekler:
+#   ./launch/navitas.launch
+#   ./launch/navitas.launch zor --seed 123
+#   ./launch/navitas.launch orta --open-path --headless
+
+set -e
+cd "$(dirname "$0")/.."
+
+SCENARIO="${1:-kolay}"
+WORLD_FILE="worlds/navitas_arena.world"
+SEED=42
+OPEN_PATH=""
+HEADLESS=false
+
+# Argümanları ayrıştır
+shift || true
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --open-path) OPEN_PATH="--open-path" ;;
+        --headless)  HEADLESS=true ;;
+        --seed)      SEED="$2"; shift ;;
+        --seed=*)    SEED="${1#--seed=}" ;;
+    esac
+    shift
+done
+
+export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-xcb}"
+export GAZEBO_MODEL_PATH="$(pwd)/models:${GAZEBO_MODEL_PATH:-}"
+
+echo "════════════════════════════════════════════"
+echo "  Navitas TEKNOFEST 2026 Simülasyon Başlatıcı"
+echo "  Senaryo   : $SCENARIO"
+echo "  Seed      : $SEED"
+echo "  Açık yol  : ${OPEN_PATH:-hayır}"
+echo "  Headless  : $HEADLESS"
+echo "════════════════════════════════════════════"
+
+# Önceki süreçleri temizle
+echo "[launch] Önceki Gazebo süreçleri temizleniyor..."
+pkill -f gzserver 2>/dev/null || true
+pkill -f gzclient 2>/dev/null || true
+sleep 0.5
+
+# Dünya dosyasını üret
+echo "[launch] Dünya dosyası üretiliyor..."
+python3 scripts/world_generator.py \
+    --difficulty "$SCENARIO" \
+    --seed "$SEED" \
+    --output "$WORLD_FILE" \
+    $OPEN_PATH
+
+# gzserver arka planda başlat
+echo "[launch] gzserver başlatılıyor..."
+gzserver "$WORLD_FILE" &
+GZSERVER_PID=$!
+echo "[launch] gzserver PID: $GZSERVER_PID"
+
+# Sunucunun hazır olmasını bekle
+echo "[launch] Sunucu hazır olana dek bekleniyor..."
+for i in $(seq 1 20); do
+    sleep 1
+    if gz stats 2>/dev/null | grep -q "Sim"; then
+        echo "[launch] Sunucu hazır! ($i saniye)"
+        break
+    fi
+    echo "[launch]   ... bekleniyor ($i/20)"
+done
+
+# gzclient başlat (headless modda başlatma)
+if [ "$HEADLESS" = false ]; then
+    echo "[launch] GUI başlatılıyor..."
+    gzclient &
+    GZCLIENT_PID=$!
+    echo "[launch] gzclient PID: $GZCLIENT_PID"
+else
+    GZCLIENT_PID=0
+    echo "[launch] Headless mod — GUI başlatılmadı"
+fi
+
+echo ""
+echo "════════════════════════════════════════════"
+echo "  Navitas Simülasyonu Çalışıyor"
+echo "  Senaryo : $SCENARIO | Seed: $SEED"
+echo "  Server  : PID $GZSERVER_PID"
+if [ "$HEADLESS" = false ]; then
+    echo "  GUI     : PID $GZCLIENT_PID"
+fi
+echo "════════════════════════════════════════════"
+echo ""
+echo "Kontrol komutları (yeni terminalde):"
+echo "  gz world -p 0   → ▶ Başlat"
+echo "  gz world -p 1   → ⏸ Duraklat"
+echo "  gz world -s     → ⏭ Tek adım"
+echo "  gz world -r     → ↺ Sıfırla"
+echo "  gz stats        → İstatistikler"
+echo ""
+echo "Model konumlarını kontrol et:"
+echo "  gz model -m iha  -p   → İHA pozisyonu"
+echo "  gz model -m ika  -p   → İKA pozisyonu"
+echo ""
+echo "Simülasyonu durdurmak:"
+echo "  kill $GZSERVER_PID ${GZCLIENT_PID:-}"
+echo "  veya: pkill -f gzserver; pkill -f gzclient"
+echo ""
+
+echo "$GZSERVER_PID $GZCLIENT_PID" > /tmp/navitas_gazebo.pid
+
+wait $GZSERVER_PID 2>/dev/null || true

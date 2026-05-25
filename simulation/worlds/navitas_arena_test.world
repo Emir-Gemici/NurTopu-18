@@ -1,0 +1,417 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="navitas_arena">
+
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Senaryo: orta | Seed: 42 | Açık yol: True -->
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 100 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation><range>1000</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>300 300</size></plane></geometry>
+          <surface><friction><ode><mu>0.8</mu><mu2>0.8</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <cast_shadows>false</cast_shadows>
+          <geometry><plane><normal>0 0 1</normal><size>300 300</size></plane></geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="boundary_N">
+      <static>true</static>
+      <pose>0 40.0 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>220.0 0.4 3.0</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>220.0 0.4 3.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="boundary_S">
+      <static>true</static>
+      <pose>0 -40.0 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>220.0 0.4 3.0</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>220.0 0.4 3.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="boundary_W">
+      <static>true</static>
+      <pose>-110.0 0 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>0.4 80.0 3.0</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>0.4 80.0 3.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="boundary_E">
+      <static>true</static>
+      <pose>110.0 0 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>0.4 80.0 3.0</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>0.4 80.0 3.0</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="iha_fb_marker">
+      <static>true</static>
+      <pose>-105.0 0.0 0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>3.0</radius><length>0.1</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>3.0</radius><length>0.1</length></cylinder></geometry>
+          <material><ambient>0.9 0.1 0.1 1</ambient><diffuse>0.9 0.1 0.1 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="iha_ib_marker">
+      <static>true</static>
+      <pose>85.0 0.0 0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>4.0</radius><length>0.1</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>4.0</radius><length>0.1</length></cylinder></geometry>
+          <material><ambient>0.9 0.8 0.0 1</ambient><diffuse>0.9 0.8 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_kb_marker">
+      <static>true</static>
+      <pose>-23.0 -23.0 0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>2.5</radius><length>0.1</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>2.5</radius><length>0.1</length></cylinder></geometry>
+          <material><ambient>0.1 0.8 0.1 1</ambient><diffuse>0.1 0.8 0.1 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="hb_marker">
+      <static>true</static>
+      <pose>23.0 23.0 0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>3.5</radius><length>0.1</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>3.5</radius><length>0.1</length></cylinder></geometry>
+          <material><ambient>0.9 0.7 0.0 1</ambient><diffuse>0.9 0.7 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="hb_sign">
+      <static>true</static>
+      <pose>23.0 23.0 1.2 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>0.5 0.05 2.0</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>0.5 0.05 2.0</size></box></geometry>
+          <material><ambient>0.9 0.9 0.0 1</ambient><diffuse>0.9 0.9 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="landing_ground">
+      <static>true</static>
+      <pose>85.0 0.0 0.01 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>12.0 12.0 0.02</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>12.0 12.0 0.02</size></box></geometry>
+          <material><ambient>0.9 0.8 0.0 1</ambient><diffuse>0.9 0.8 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="landing_cone_0">
+      <static>true</static>
+      <pose>80.0 -5.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1.0 0.2 0.0 1</ambient><diffuse>1.0 0.2 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="landing_cone_1">
+      <static>true</static>
+      <pose>80.0 5.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1.0 0.2 0.0 1</ambient><diffuse>1.0 0.2 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="landing_cone_2">
+      <static>true</static>
+      <pose>90.0 -5.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1.0 0.2 0.0 1</ambient><diffuse>1.0 0.2 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="landing_cone_3">
+      <static>true</static>
+      <pose>90.0 5.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry></collision>
+        <visual name="vis">
+          <geometry><cylinder><radius>0.15</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1.0 0.2 0.0 1</ambient><diffuse>1.0 0.2 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://catapult</uri>
+      <name>catapult_main</name>
+      <pose>-101.0 0.0 0.08 0 0 0.0</pose>
+    </include>
+
+    <model name="ika_wall_L_0">
+      <static>true</static>
+      <pose>-23.21601618245911 -15.156796763508178 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>15.297058540778355 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>15.297058540778355 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_R_0">
+      <static>true</static>
+      <pose>-19.78398381754089 -15.843203236491822 1.25 0 0 1.373400766945016</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>15.297058540778355 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>15.297058540778355 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L2_0">
+      <static>true</static>
+      <pose>-23.21601618245911 -15.156796763508178 1.25 0 0 1.373400766945016</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>15.297058540778355 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>15.297058540778355 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L_1">
+      <static>true</static>
+      <pose>-15.12032269941284 -1.6556127607045923 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>15.620499351813308 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>15.620499351813308 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_R_1">
+      <static>true</static>
+      <pose>-12.87967730058716 -4.344387239295408 1.25 0 0 0.6947382761967031</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>15.620499351813308 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>15.620499351813308 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L2_1">
+      <static>true</static>
+      <pose>-15.12032269941284 -1.6556127607045923 1.25 0 0 0.6947382761967031</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>15.620499351813308 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>15.620499351813308 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L_2">
+      <static>true</static>
+      <pose>-2.233351810558057 6.58892892287579 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>14.317821063276353 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>14.317821063276353 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_R_2">
+      <static>true</static>
+      <pose>-0.7666481894419429 3.41107107712421 1.25 0 0 0.43240777557053783</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>14.317821063276353 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>14.317821063276353 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L2_2">
+      <static>true</static>
+      <pose>-2.233351810558057 6.58892892287579 1.25 0 0 0.43240777557053783</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>14.317821063276353 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>14.317821063276353 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L_3">
+      <static>true</static>
+      <pose>8.762563132923542 14.237436867076458 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>14.142135623730951 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>14.142135623730951 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_R_3">
+      <static>true</static>
+      <pose>11.237436867076458 11.762563132923542 1.25 0 0 0.7853981633974483</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>14.142135623730951 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>14.142135623730951 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L2_3">
+      <static>true</static>
+      <pose>8.762563132923542 14.237436867076458 1.25 0 0 0.7853981633974483</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>14.142135623730951 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>14.142135623730951 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L_4">
+      <static>true</static>
+      <pose>18.072501854994435 21.983997032008904 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>9.433981132056603 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>9.433981132056603 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_R_4">
+      <static>true</static>
+      <pose>19.927498145005565 19.016002967991096 1.25 0 0 0.5585993153435624</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>9.433981132056603 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>9.433981132056603 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ika_wall_L2_4">
+      <static>true</static>
+      <pose>18.072501854994435 21.983997032008904 1.25 0 0 0.5585993153435624</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>9.433981132056603 0.2 2.5</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>9.433981132056603 0.2 2.5</size></box></geometry>
+          <material><ambient>0.8 0.6 0.0 1</ambient><diffuse>0.8 0.6 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+
+    <include>
+      <uri>model://iha</uri>
+      <name>iha</name>
+      <pose>-105.0 0.0 1.7 0 0 0.0</pose>
+    </include>
+
+    <include>
+      <uri>model://ika</uri>
+      <name>ika</name>
+      <pose>-23.0 -23.0 0.12 0 0 0.0</pose>
+    </include>
+
+  </world>
+</sdf>

@@ -11,29 +11,33 @@ build/
 .env
 .env*
 
-# Dataset — download_and_convert.py ile yeniden indirilebilir
+# Büyük dataset dosyaları — script ile yeniden indirilebilir
+FloodNet/
 dataset/rescuenet_yolo/
 dataset/rescuenet_yolo_aug/
 dataset/floodnet_yolo/
+dataset/floodnet_filtered/
 dataset/dubai_yolo/
 dataset/semantic_drone_yolo/
 dataset/merged_data.yaml
+
+# Test görselleri — script ile yeniden indirilebilir
+test_images/roboflow/
 
 # Eğitim çıktıları — yeniden üretilebilir
 codes/runs/
 runs/
 
-# Eski dataset
-codes/Rubble-Detection-1/
-
-# Model ağırlıkları — GitHub 100MB limitini aşıyor (.pt)
-models/rescuenet_seg_v1_best.pt
-models/rescuenet_seg_v1_ncnn/
+# Model arşivleri ve ham ağırlıklar
+models/*.pt
+models/*.zip
 yolov8n-seg.pt
 codes/yolov8n.pt
 
 # Inference ve test çıktıları
 codes/results/
+codes/results-zip/
+codes/results-zip.zip
 codes/test_results/
 
 # Video dosyaları
@@ -50,6 +54,8 @@ codes/video/
 *.png
 *.bmp
 *.gif
+# test_images/gemini/ küçük referans görselleri — izin ver
+!test_images/gemini/*.png
 
 # IDE
 .vscode/
@@ -64,6 +70,10 @@ Thumbs.db
 # Claude Code
 .claude/
 CLAUDE.md
+simulation/SESSION_CONTEXT.md
+
+# İlgisiz iç içe git projesi
+rtk/
 
 # Eski/kullanılmayan scriptler
 codes/tes_camera.py
@@ -74,4 +84,3 @@ codes/train.py
 # Diğer
 python-dersleri/
 images/
-dataset/floodnet_filtered/
