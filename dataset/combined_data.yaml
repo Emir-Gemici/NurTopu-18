@@ -1,16 +1,23 @@
 # RescueNet + FloodNet (filtered) — birleşik eğitim seti
 # train: 2365 + 798 = 3163 görsel
 # val  : 294  + 257 = 551  görsel
+#
+# Yollar `path:` köküne görelidir; proje dizini taşınsa bile çalışır.
+# Dataset'ler gitignore'da — önce indirilmeli:
+#   python3 dataset/download_and_convert.py      → rescuenet_yolo/
+#   python3 dataset/convert_floodnet.py ...       → floodnet_yolo/ (filtreli alt küme: floodnet_filtered/)
+
+path: /home/trs/trs/github/navitas/dataset
 
 train:
-  - /home/trs/trs/github/teknofest/dataset/rescuenet_yolo/images/train
-  - /home/trs/trs/github/teknofest/dataset/floodnet_filtered/images/train
+  - rescuenet_yolo/images/train
+  - floodnet_filtered/images/train
 
 val:
-  - /home/trs/trs/github/teknofest/dataset/rescuenet_yolo/images/val
-  - /home/trs/trs/github/teknofest/dataset/floodnet_filtered/images/val
+  - rescuenet_yolo/images/val
+  - floodnet_filtered/images/val
 
-test: /home/trs/trs/github/teknofest/dataset/rescuenet_yolo/images/test
+test: rescuenet_yolo/images/test
 
 nc: 2
 names:

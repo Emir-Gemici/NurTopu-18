@@ -125,9 +125,9 @@ def fly(fps: float = 20.0, speed_mult: float = 1.0, verbose: bool = True):
 
 
 if __name__ == "__main__":
-    fps   = 20.0
-    speed = 1.0
-    for i, arg in enumerate(sys.argv[1:]):
-        if arg == "--fps"   and i+2 <= len(sys.argv[1:]): fps   = float(sys.argv[i+2])
-        if arg == "--speed" and i+2 <= len(sys.argv[1:]): speed = float(sys.argv[i+2])
-    fly(fps=fps, speed_mult=speed)
+    import argparse
+    p = argparse.ArgumentParser(description="İHA uçuş animasyonu")
+    p.add_argument("--fps", type=float, default=20.0)
+    p.add_argument("--speed", type=float, default=1.0)
+    a = p.parse_args()
+    fly(fps=a.fps, speed_mult=a.speed)

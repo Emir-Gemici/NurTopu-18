@@ -48,14 +48,9 @@ codes/video/
 *.mkv
 *.webm
 
-# Görsel dosyalar
-*.jpg
-*.jpeg
-*.png
-*.bmp
-*.gif
-# test_images/gemini/ küçük referans görselleri — izin ver
-!test_images/gemini/*.png
+# Görseller: repo private olduğu için artık serbest (doc, README, referans
+# ve simülasyon model görselleri commit edilebilir). Büyük dataset görselleri
+# yukarıdaki *_yolo / *_filtered / roboflow yollarıyla zaten hariç tutuluyor.
 
 # IDE
 .vscode/
@@ -84,3 +79,7 @@ codes/train.py
 # Diğer
 python-dersleri/
 images/
+
+# Simülasyon kayıtları ve üretilen dünyalar
+simulation/recordings/
+simulation/worlds/rec_*.world

@@ -9,6 +9,7 @@ Kullanım:
 
 import argparse
 import math
+import os
 import random
 import sys
 from pathlib import Path
@@ -56,6 +57,90 @@ IKA_WAYPOINTS = {
         HB[:2],
     ],
 }
+
+
+# ── Animasyon trajectory'leri (kayıt modu — libnavitas_anim.so) ───────────────
+# İHA uçuş profili (x, y, z) — batıdan doğuya geçiş + iniş
+IHA_FLIGHT = [
+    (-105.0, 0.0,  1.5),
+    ( -90.0, 0.0,  5.0),
+    ( -60.0, 0.0, 15.0),
+    ( -20.0, 0.0, 20.0),
+    (  30.0, 0.0, 20.0),
+    (  65.0, 0.0, 10.0),
+    (  80.0, 0.0,  3.0),
+    (  85.0, 0.0,  0.0),
+]
+IHA_TOTAL_T = 12.0    # sn — toplam uçuş süresi
+IKA_START_T = 11.0    # sn — İKA, İHA geçişiyle hafif örtüşerek başlar
+IKA_SPEED   = 2.5     # m/s — animasyon hızı
+IKA_Z       = 0.12    # m — zemin üstü gövde yüksekliği
+
+
+def _timed_iha():
+    """FLIGHT_PATH → zaman damgalı (t,x,y,z,yaw); mesafeye orantılı süre."""
+    pts = IHA_FLIGHT
+    seglen = [math.dist(pts[i], pts[i + 1]) for i in range(len(pts) - 1)]
+    total = sum(seglen) or 1.0
+    wps = [(0.0, pts[0][0], pts[0][1], pts[0][2], 0.0)]
+    t = 0.0
+    for i in range(len(pts) - 1):
+        t += IHA_TOTAL_T * seglen[i] / total
+        x, y, z = pts[i + 1]
+        wps.append((t, x, y, z, 0.0))
+    return wps
+
+
+def _timed_ika(scenario):
+    """İKA waypoint'leri → zaman damgalı; her noktada hedefe bakan yaw."""
+    pts = IKA_WAYPOINTS.get(scenario, IKA_WAYPOINTS["kolay"])
+    seglen = [math.dist(pts[i], pts[i + 1]) for i in range(len(pts) - 1)]
+
+    def yaw_at(i):
+        j = min(i, len(pts) - 2)
+        return math.atan2(pts[j + 1][1] - pts[j][1], pts[j + 1][0] - pts[j][0])
+
+    wps = [(IKA_START_T, pts[0][0], pts[0][1], IKA_Z, yaw_at(0))]
+    t = IKA_START_T
+    for i in range(len(pts) - 1):
+        t += seglen[i] / IKA_SPEED
+        wps.append((t, pts[i + 1][0], pts[i + 1][1], IKA_Z, yaw_at(i + 1)))
+    return wps
+
+
+BEACON_Z = 2.2     # m — İKA işaret direği merkez yüksekliği (duvarların üzerinde)
+
+
+def make_anim_plugin(scenario):
+    """Kayıt modu animasyon plugin bloğu + önerilen kayıt süresi döndürür.
+    İKA için ayrıca, duvarların üzerine çıkan parlak işaret direği animasyonu."""
+    iha = _timed_iha()
+    ika = _timed_ika(scenario)
+    # Beacon: İKA ile aynı x,y; yükseltilmiş z (görünürlük için)
+    beacon = [(t, x, y, BEACON_Z, yaw) for (t, x, y, z, yaw) in ika]
+    duration = max(iha[-1][0], ika[-1][0])
+
+    def block(name, wps):
+        lines = "\n".join(
+            f"        <waypoint>{t:.2f} {x:.3f} {y:.3f} {z:.3f} {yaw:.4f}</waypoint>"
+            for (t, x, y, z, yaw) in wps)
+        return f"      <model name=\"{name}\">\n{lines}\n      </model>"
+
+    plugin = (
+        '    <plugin name="navitas_anim" filename="libnavitas_anim.so">\n'
+        f"{block('iha', iha)}\n{block('ika', ika)}\n{block('ika_beacon', beacon)}\n"
+        "    </plugin>"
+    )
+    return plugin, duration
+
+
+def make_ika_beacon():
+    """İKA üstünde yükselen parlak işaret direği (sadece kayıt modunda).
+    Duvarların üzerinden İKA'nın yerini gösterir."""
+    x, y = IKA_KB[0], IKA_KB[1]
+    # İnce parlak camgöbeği direk
+    pole = _box("ika_beacon", x, y, BEACON_Z, 0.5, 0.5, 4.0, 0.0, 0.9, 1.0, static=True)
+    return pole
 
 
 # ── SDF yardımcıları ──────────────────────────────────────────────────────────
@@ -291,10 +376,26 @@ def make_vehicle_includes():
 
 # ── Işık kaynakları ───────────────────────────────────────────────────────────
 
-def make_lights():
-    return """
+def make_gui_camera(record=False):
+    """gzclient açılış kamerası. Kayıt modunda fullscreen + İKA köşegenine
+    bakan sinematik kuş bakışı (İKA hedefe ilerler, İHA arkada soldan sağa geçer).
+    Pose: (x y z roll pitch yaw). GAZEBO_GUI_CAM env'i ile geçersiz kılınabilir."""
+    pose = os.environ.get("GAZEBO_GUI_CAM") or "-40 -40 38 0 0.5 0.785"
+    fs = "1" if record else "0"
+    return f"""
+    <gui fullscreen="{fs}">
+      <camera name="user_camera">
+        <pose>{pose}</pose>
+      </camera>
+    </gui>"""
+
+
+def make_lights(record=False):
+    # Kayıt modu: gölgeler kapalı (yazılımsal render FPS'ini ciddi artırır)
+    shadows = "false" if record else "true"
+    return f"""
     <light name="sun" type="directional">
-      <cast_shadows>true</cast_shadows>
+      <cast_shadows>{shadows}</cast_shadows>
       <pose>0 0 100 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.1 0.1 0.1 1</specular>
@@ -305,11 +406,11 @@ def make_lights():
 
 # ── Tam dünya SDF ─────────────────────────────────────────────────────────────
 
-def build_world(scenario, seed, open_path):
+def build_world(scenario, seed, open_path, record=False):
     rng = random.Random(seed)
 
     parts = [
-        make_lights(),
+        make_lights(record=record),
         _ground_plane(),
         make_arena_boundary(),
         make_zone_markers(),
@@ -320,11 +421,19 @@ def build_world(scenario, seed, open_path):
         make_vehicle_includes(),
     ]
 
+    # Kayıt modu: İKA işaret direği + kinematik animasyon plugin'i (CLI yerine)
+    if record:
+        parts.append(make_ika_beacon())
+        plugin, _ = make_anim_plugin(scenario)
+        parts.append(plugin)
+
     body = "\n".join(parts)
+    gui = make_gui_camera(record=record)
 
     world_sdf = f"""<?xml version="1.0"?>
 <sdf version="1.6">
   <world name="navitas_arena">
+{gui}
 
     <physics type="ode">
       <max_step_size>0.001</max_step_size>
@@ -336,7 +445,7 @@ def build_world(scenario, seed, open_path):
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.7 0.7 0.7 1</background>
-      <shadows>true</shadows>
+      <shadows>{"false" if record else "true"}</shadows>
     </scene>
 
     <!-- Senaryo: {scenario} | Seed: {seed} | Açık yol: {open_path} -->
@@ -362,6 +471,8 @@ def main():
                         help="Çıktı .world dosyası yolu")
     parser.add_argument("--open-path", action="store_true",
                         help="Engel koymadan açık yol (test modu)")
+    parser.add_argument("--record", action="store_true",
+                        help="Kayıt modu: kinematik animasyon plugin'i ekle")
     args = parser.parse_args()
 
     scenario = args.difficulty
@@ -369,8 +480,8 @@ def main():
         scenario = random.choice(["kolay", "orta", "zor"])
         print(f"[world_gen] Rastgele senaryo seçildi: {scenario}")
 
-    print(f"[world_gen] Senaryo={scenario} | Seed={args.seed} | Açık yol={args.open_path}")
-    world = build_world(scenario, args.seed, args.open_path)
+    print(f"[world_gen] Senaryo={scenario} | Seed={args.seed} | Açık yol={args.open_path} | Kayıt={args.record}")
+    world = build_world(scenario, args.seed, args.open_path, record=args.record)
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -378,6 +489,11 @@ def main():
     print(f"[world_gen] Dünya yazıldı: {out_path}")
     print(f"[world_gen] İHA-FB: {IHA_FB} | İHA-İB: {IHA_IB}")
     print(f"[world_gen] İKA-KB: {IKA_KB} | HB: {HB}")
+
+    if args.record:
+        _, duration = make_anim_plugin(scenario)
+        # record_in_container.sh bu satırı parse eder
+        print(f"[world_gen] RECORD_SECONDS={duration + 5:.0f}")
 
 
 if __name__ == "__main__":

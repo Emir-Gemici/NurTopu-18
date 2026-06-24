@@ -1,0 +1,33 @@
+# Navitas TEKNOFEST 2026 — Gazebo Classic 11 + kayıt araçları + animasyon plugin'i
+# Taban imaj: resmi OSRF Gazebo 11 (Ubuntu 20.04)
+# Build context: simulation/  (podman build -f docker/Containerfile simulation/)
+FROM docker.io/library/gazebo:libgazebo11
+
+# Kayıt + derleme araçları
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        xvfb \
+        ffmpeg \
+        xdotool \
+        openbox \
+        x11-utils \
+        libgl1-mesa-dri \
+        procps \
+        libgazebo11-dev \
+        build-essential \
+        cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+# Animasyon plugin'ini derle (kinematik trajectory hareketi için)
+COPY plugins /opt/navitas/plugins
+RUN cd /opt/navitas/plugins \
+    && mkdir -p build && cd build \
+    && cmake .. && make \
+    && mkdir -p /opt/navitas/lib \
+    && cp libnavitas_anim.so /opt/navitas/lib/
+
+# Yazılımsal OpenGL (Xvfb'de donanım GLX yok) + plugin yolu
+ENV LIBGL_ALWAYS_SOFTWARE=1 \
+    GALLIUM_DRIVER=llvmpipe \
+    GAZEBO_PLUGIN_PATH=/opt/navitas/lib
+
+# Taban imajın entrypoint'i ($GAZEBO ortamını source eder) korunur.

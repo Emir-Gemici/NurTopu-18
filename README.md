@@ -269,7 +269,7 @@ python3 codes/test_batch.py --source rescuenet
 ## Simülasyon (Gazebo)
 
 ```bash
-# Simülasyonu başlat
+# Simülasyonu başlat (host'ta Gazebo Classic gerektirir)
 cd simulation && bash launch.sh
 
 # Puan hesapla (şartname V2)
@@ -277,6 +277,22 @@ python3 simulation/score.py
 ```
 
 Simülasyon ortamı üç zorluk seviyesinde world dosyası içerir: kolay, orta, zor.
+
+### Video kaydı (Podman — Gazebo kurulumu gerektirmez)
+
+İHA + İKA görevini oynatıp **mp4 video** olarak kaydeder. Host'a Gazebo/ROS kurmaya
+gerek yoktur; her şey Podman konteynerinde çalışır (Gazebo Classic 11 + sanal ekran +
+ffmpeg). Ayrıntı: `simulation/docker/README.md`.
+
+```bash
+cd simulation
+./docker/record.sh             # kolay, orta, zor → üç video
+./docker/record.sh orta        # tek senaryo
+```
+
+Çıktı: `simulation/recordings/navitas_<senaryo>.mp4` (1280×720, ~45 sn).
+Hareket, kinematik animasyon plugin'i (`simulation/plugins/navitas_anim.cc`) ile
+sürülür — `world_generator.py --record` senaryoya göre trajectory üretir.
 
 ---
 
