@@ -1,0 +1,35 @@
+{
+  "dosya": "/content/navitas/models/navitas_seg_v2_best.pt",
+  "sha256": "c7ce71a4fe140c810d8bb4f5e0edcac9da937c2c051ca800633c608a5d9d2d0c",
+  "boyut_bayt": 6772852,
+  "egitim_tarihi": "2026-06-24T18:47:57.929056",
+  "ultralytics_surumu": "8.4.76",
+  "gomulu_val_metrikleri": {
+    "metrics/precision(B)": 0.67553,
+    "metrics/recall(B)": 0.4914,
+    "metrics/mAP50(B)": 0.56497,
+    "metrics/mAP50-95(B)": 0.40081,
+    "metrics/precision(M)": 0.72196,
+    "metrics/recall(M)": 0.51615,
+    "metrics/mAP50(M)": 0.59478,
+    "metrics/mAP50-95(M)": 0.34368,
+    "val/box_loss": 1.00472,
+    "val/seg_loss": 1.65321,
+    "val/cls_loss": 1.17006,
+    "val/dfl_loss": 1.02706,
+    "val/sem_loss": 0.0,
+    "fitness": 0.74449
+  },
+  "egitim_ayarlari": {
+    "data": "/content/navitas/dataset/combined_data.yaml",
+    "epochs": 100,
+    "imgsz": 512,
+    "batch": 16,
+    "optimizer": "AdamW",
+    "lr0": 0.001,
+    "lrf": 0.005,
+    "patience": 40,
+    "cos_lr": true,
+    "seed": 0
+  }
+}

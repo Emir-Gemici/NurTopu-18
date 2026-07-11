@@ -98,3 +98,4 @@ navitas_model.zip
 # Python çöpü
 __pycache__/
 *.pyc
+navitas_v2_val_*.zip
