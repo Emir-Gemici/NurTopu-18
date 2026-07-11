@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>bolum4_test_yazilim</title></head>
+<body style="font-family: Liberation Serif, serif; font-size: 12pt;">
+<h1>Bölüm 4 — Test Faaliyetleri (YAZILIM / ALGI / HABERLEŞME / SİMÜLASYON kısmı)</h1>
+<blockquote>
+<p>Şablon isteri: her testin amacı + uygulanma yöntemi + başarı kriteri +
+gereksinim ilişkisi; YAPILMIŞ kabul testleri GÖRSELLERLE + sonuçlar;
+gelecek test programı. Mekanik/aviyonik testleri (motor itki, batarya,
+paraşüt açılma, mancınık) ekibin ilgili birimleri ekleyecek — buradaki tablo
+yazılım tarafının GERÇEKLEŞMİŞ testleridir.</p>
+</blockquote>
+<h2>4.x Gerçekleştirilen Yazılım/Algı/Haberleşme Testleri</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+<thead>
+<tr>
+<th>Test</th>
+<th>Amaç</th>
+<th>Yöntem</th>
+<th>Başarı kriteri</th>
+<th>Sonuç</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model doğrulama (val seti)</td>
+<td>Segmentasyonun görev yeterliliği</td>
+<td>294 görüntülük doğrulama setinde standart mAP ölçümü</td>
+<td>Mask mAP50 ≥ 0,60</td>
+<td>✅ 0,619 (traversable 0,874)</td>
+</tr>
+<tr>
+<td>Ölçek bağımsızlık</td>
+<td>Kararın kamera çözünürlüğünden bağımsızlığı</td>
+<td>Aynı sahne 0,6×–3,3× ölçeklerde işlendi</td>
+<td>Tüm ölçeklerde aynı yol kararı</td>
+<td>✅ (tek sapma: 410 px aşırı bulanık girdi — saha altı çözünürlük)</td>
+</tr>
+<tr>
+<td>Işık dayanıklılığı</td>
+<td>Gölge/loş ışıkta kararlılık</td>
+<td>Gamma 2,2/3,0 karartma + gölge gradyanı sentetik varyantları</td>
+<td>Karar değişmemeli</td>
+<td>✅ gamma 2,2 ve gölgede korunur; aşırı karanlık (gamma 3) sınır durumu — iyileştirme planlı</td>
+</tr>
+<tr>
+<td>Haberleşme birim testi</td>
+<td>Protokol çerçeveleme + ACK + tekrar gönderim</td>
+<td>UDP loopback üzerinde OPEN_ROUTE/HEARTBEAT/ACK alışverişi (test_comms)</td>
+<td>Tüm mesajlar doğrulanmış, ACK döngüsü tamam</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Gerçek donanım canlı yayın</td>
+<td>İKA işlemcisinde uçtan uca video + AI katmanı</td>
+<td>RPi 5 + kamera, systemd servisi; kablolu ve kablosuz ağda paket kaybı ölçümü</td>
+<td>Kesintisiz H.264 yayın + AI bindirme</td>
+<td>✅ kablolu %0 kayıp; kablosuz ~%17 (adaptif kalite modu eklendi); kamera kablosu çekme testinde servis kendini toparladı</td>
+</tr>
+<tr>
+<td>Simülasyon uçtan uca görev</td>
+<td>Tüm zincirin bütünleşik doğrulaması (SITL yaklaşımı)</td>
+<td>Gazebo 11: mancınık→serpantin tarama→ortomozaik→model tespiti→rota aktarımı→İKA sürüşü→HB</td>
+<td>Model GİZLİ açık yolu bulmalı, İKA HB'ye şartname süresinde ulaşmalı</td>
+<td>✅ model, İHA'nın kendi tarama mozaiğinde doğru yolu tespit etti; İKA rotayı izleyip HB'de durdu; süreler limit içinde</td>
+</tr>
+<tr>
+<td>Fizik çarpışma testi</td>
+<td>İKA'nın engelden GEÇEMEMESİ (gerçekçilik)</td>
+<td>Simülasyonda sınırlı traksiyon kuvveti + katı moloz; duvara sürüş denemesi</td>
+<td>Araç engel önünde durmalı, devrilmemeli</td>
+<td>✅ engel önünde durdu, gövde stabil</td>
+</tr>
+<tr>
+<td>Gerçek dron video analizi</td>
+<td>Boru hattının gerçek kamera görüntüsüyle mekanik doğrulaması</td>
+<td>2:15 dk gerçek uçuş videosu kare kare işlendi (~540 ms/kare)</td>
+<td>Boru hattı çökmesiz, karar+rota üretimi çalışmalı</td>
+<td>✅ mekanik olarak çalıştı (içerik kapalı mekân olduğundan kararlar anlamlı değil — saha görüntüsü testi planlandı)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Görseller (rapora eklenecek):</strong> doğrulama eğrileri/metrik tablosu; ortomozaik +
+algı bindirme (simülasyon); İKA navigasyon haritası çıktısı; RPi 5 canlı yayın
+ekran görüntüsü; simülasyon görev videosu karesi (hakem HUD'lu); 5 saha
+düzeninin kuşbakışı önizlemeleri.</p>
+<h2>4.y Test Metodolojisi Notu</h2>
+<p>Simülasyon testlerinde <strong>dürüst zincir</strong> ilkesi uygulanır: saha, modele
+kapalı/gizli kurulur; algı yalnızca İHA'nın kendi kamera karelerinden çalışır;
+İKA yalnızca İHA'nın ürettiği rotayı sürer. Model yanılırsa görev simülasyonda
+da BAŞARISIZ sonuçlanır — böylece testler gerçek yarış riskini ölçer, maskelenmez.
+Ayrıca 5 farklı gerçekçi saha düzeni (kıvrımlı 3'er yol, rastgele KB/HB
+yerleşimi) üretilmiş olup her düzen otomatik geometri denetiminden geçirilir
+(dümdüz koridor yasağı, yol ayrıklığı, başlangıç-hedef hizasızlığı).</p>
+<h2>4.z Gelecek Test Programı (yazılım)</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+<thead>
+<tr>
+<th>Test</th>
+<th>Planlanan dönem</th>
+<th>Başarı kriteri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jetson Orin NX çıkarım FPS</td>
+<td>Entegrasyon fazı</td>
+<td>≥15 FPS (TensorRT)</td>
+</tr>
+<tr>
+<td>RPi 5 NCNN FPS ölçümü</td>
+<td>Entegrasyon fazı</td>
+<td>≥10 FPS @512</td>
+</tr>
+<tr>
+<td>915 MHz RF menzil + aktarım doğruluğu</td>
+<td>Saha testleri</td>
+<td>300 m'de &gt;%95 doğruluk, &lt;100 ms gecikme</td>
+</tr>
+<tr>
+<td>Gerçek saha (moloz benzeri) algı testi</td>
+<td>Saha testleri</td>
+<td>Açık yol doğru tespiti ≥%90</td>
+</tr>
+<tr>
+<td>Perspektif-augmentasyonlu model v3 eğitimi + regresyon</td>
+<td>Entegrasyon fazı</td>
+<td>Eğik açı senaryosunda karar kararlılığı</td>
+</tr>
+<tr>
+<td>Tam görev provası (İHA+İKA+mancınık)</td>
+<td>Faz 8–9</td>
+<td>15 dk İHA + 10 dk İKA limitlerinde uçtan uca başarı</td>
+</tr>
+</tbody>
+</table>
+</body></html>
