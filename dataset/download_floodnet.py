@@ -1,12 +1,22 @@
 """
 FloodNet → YOLOv8-seg format dönüştürücü
 
-Dataset: takara-ai/FloodNet_2021-Track_2_Dataset_HF (HuggingFace)
-  ~2343 görsel, yüksek çözünürlük, aerial UAV (Hurricane Harvey sonrası)
+⚠️ BİLİNEN HATA (2026-07-11 teşhis) — bu script ŞU AN GÖRÜNTÜ ÜRETMEZ:
+  1. `takara-ai/FloodNet_2021-Track_2_Dataset_HF` = **Track 2 (VQA)**; sadece
+     metin döndürür (description/tags/size/objects), GÖRÜNTÜ/MASKE YOK. Semantik
+     segmentasyon **Track 1**'dedir ve HuggingFace'te temiz halde yoktur
+     (~400 etiketli maske, yarı-denetimli).
+  2. Aşağıdaki sınıf indeksleri de yanlıştı; gerçek FloodNet:
+     background=1, building-flooded=2, building-non-flooded=3, road-flooded=4,
+     road-non-flooded=5, water=6, tree=7, vehicle=8, pool=9, grass=10.
+  Bu yüzden v1/v2 fiilen RescueNet-only eğitildi. Detay + plan:
+  doc/ddr/v3_MODEL_GUCLENDIRME/00_PLAN_DURUM_DEVIR.md (Bölüm 3, TODO-7).
+  Script artık görüntü bulamazsa SESSİZCE 0 üretmek yerine HATA VERİR.
 
-FloodNet sınıf eşlemesi → bizim 2 sınıf:
-  4 (road-non-flooded) → 0: traversable
-  3 (road-flooded)     → 1: blocked
+Dataset (DOĞRUSU, entegre edilecek): FloodNet 2021 Track 1 semantik segmentasyon.
+FloodNet sınıf eşlemesi → bizim 2 sınıf (DÜZELTİLMİŞ indeksler):
+  5 (road-non-flooded) → 0: traversable
+  4 (road-flooded)     → 1: blocked
   Diğer sınıflar ignore edilir.
 
 Çıktı: dataset/floodnet_yolo/
@@ -31,10 +41,10 @@ EPSILON_RATIO = 0.003
 IMG_SIZE     = 512
 
 # FloodNet piksel etiket değerleri
-FLOODNET_TRAVERSABLE = {4}   # road-non-flooded
-FLOODNET_BLOCKED     = {3}   # road-flooded
-# 1=background 2=building-flooded 3=road-flooded 4=road-non-flooded
-# 5=water 6=tree 7=vehicle 8=pool 9=grass
+FLOODNET_TRAVERSABLE = {5}   # road-non-flooded  (DÜZELTİLDİ: eski yanlış=4)
+FLOODNET_BLOCKED     = {4}   # road-flooded      (DÜZELTİLDİ: eski yanlış=3)
+# 1=background 2=building-flooded 3=building-non-flooded 4=road-flooded
+# 5=road-non-flooded 6=water 7=tree 8=vehicle 9=pool 10=grass
 
 
 def mask_to_yolo_polygons(mask: np.ndarray, class_id: int, min_area: int = MIN_AREA):
@@ -206,7 +216,21 @@ def main():
     first_split = list(ds.keys())[0]
     try:
         sample = ds[first_split][0]
-        print(f"Örnek anahtarlar: {list(sample.keys())}\n")
+        anahtarlar = list(sample.keys())
+        print(f"Örnek anahtarlar: {anahtarlar}\n")
+        # GUARD: görüntü/maske anahtarı yoksa SESSİZCE 0 üretme — HATA VER
+        img_keys = {"image", "img", "pixel_values", "photo"}
+        lbl_keys = {"label", "mask", "annotation",
+                    "segmentation_mask", "semantic_segmentation"}
+        if not (img_keys & set(anahtarlar)) or not (lbl_keys & set(anahtarlar)):
+            print("❌ HATA: Bu dataset görüntü/maske içermiyor "
+                  f"(anahtarlar: {anahtarlar}).")
+            print("   Muhtemelen Track 2 (VQA) yüklendi. Semantik segmentasyon "
+                  "Track 1 gerekir.")
+            print("   Bkz. doc/ddr/v3_MODEL_GUCLENDIRME/00_PLAN_DURUM_DEVIR.md")
+            sys.exit(2)
+    except SystemExit:
+        raise
     except Exception as e:
         print(f"İlk örnek decode edilemedi: {e}")
         print("Script yine de devam ediyor...\n")
