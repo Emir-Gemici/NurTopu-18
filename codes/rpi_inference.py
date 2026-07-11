@@ -57,16 +57,21 @@ def load_model():
     return YOLO(str(MODEL_DIR), task="segment")
 
 
-def get_masks(results, h, w):
-    """Her sinif icin (h, w) cozunurlugunde binary mask doner."""
+def get_masks(results, h, w, min_conf=None):
+    """Her sinif icin (h, w) cozunurlugunde binary mask doner.
+    min_conf verilirse yalniz guveni >= min_conf tespitler dahil edilir → model DUSUK
+    esikle BIR KEZ kosturulup ayni sonuctan farkli esikler suzulebilir (2. predict yok)."""
     masks = {0: np.zeros((h, w), dtype=np.uint8),
              1: np.zeros((h, w), dtype=np.uint8)}
     r = results[0]
     if r.masks is None:
         return masks
+    confs = r.boxes.conf
     for i, cls in enumerate(r.boxes.cls):
         cls_id = int(cls)
         if cls_id not in masks:
+            continue
+        if min_conf is not None and float(confs[i]) < min_conf:
             continue
         m = r.masks.data[i].cpu().numpy()
         m_up = cv2.resize(m, (w, h))
@@ -109,25 +114,26 @@ def analyze_path(trav_mask, n_waypoints=8):
     if clean.sum() == 0:
         return None, 0.0, []
 
-    # Ust %40: cikmak istenen yonu belirle
-    top = clean[:int(h * 0.4), :]
-    thirds = [
-        int(top[:, :w // 3].sum()),
-        int(top[:, w // 3:2 * w // 3].sum()),
-        int(top[:, 2 * w // 3:].sum()),
-    ]
-    total_top = sum(thirds)
+    # EN BUYUK bagli bileseni ANA KORIDOR say → kopuk gurultu bloblari lane kararini
+    # ceviremez (girdi cozunurlugu degisince sol/orta/sag ziplamasini onler).
+    n_lbl, labels, stats, _ = cv2.connectedComponentsWithStats(clean, 8)
+    if n_lbl > 2:  # >1 gercek bilesen (0=arkaplan)
+        largest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+        clean = (labels == largest).astype(np.uint8)
 
-    if total_top == 0:
-        thirds = [
-            int(clean[:, :w // 3].sum()),
-            int(clean[:, w // 3:2 * w // 3].sum()),
-            int(clean[:, 2 * w // 3:].sum()),
-        ]
-        total_top = sum(thirds)
-
-    open_path = int(np.argmax(thirds)) + 1
-    confidence = round(thirds[open_path - 1] / total_top, 3) if total_top > 0 else 0.0
+    # Acik yol = koridorun HEDEFE (ust) ulastigi taraf. Ust banttaki YATAY MERKEZ
+    # (centroid) -> lane. Piksel-argmax yerine centroid: girdi cozunurlugu/kalitesi
+    # degisince sol/orta/sag ziplamasini onler (kararli, boyuttan bagimsiz).
+    ys, xs = np.nonzero(clean)
+    ymin, ymax = int(ys.min()), int(ys.max())
+    band = ys <= ymin + 0.30 * (ymax - ymin + 1)   # koridorun ust %30'u
+    bx = xs[band] if band.any() else xs
+    cx = float(bx.mean())
+    open_path = 1 if cx < w / 3 else (2 if cx < 2 * w / 3 else 3)
+    # Guven: ust banttaki piksellerin secilen ucte-bire dusen orani (netlik olcusu).
+    lo, hi = (open_path - 1) * w / 3.0, open_path * w / 3.0
+    in_third = int(((bx >= lo) & (bx < hi)).sum())
+    confidence = round(in_third / max(1, bx.size), 3)
 
     # Distance transform centerline
     dist = cv2.distanceTransform(clean, cv2.DIST_L2, 5)
@@ -214,12 +220,39 @@ def generate_ika_map(waypoints, open_path, confidence, src_h, src_w, map_size=51
     return canvas
 
 
+DARK_L_MEAN = 80.0   # LAB L ortalamasi bunun altindaysa goruntu KARANLIK sayilir
+
+
+def is_dark(img):
+    """Goruntu los/golgeli mi? (LAB L ortalamasina gore)"""
+    return float(cv2.cvtColor(img, cv2.COLOR_BGR2LAB)[:, :, 0].mean()) < DARK_L_MEAN
+
+
+def normalize_light(img):
+    """Isik normalizasyonu — model golge/los isikta cokuyor (bilinen zayiflik).
+    Karanlik goruntuyu acar: gamma (ortalamayi ~125'e ceker) + CLAHE (LAB L —
+    golge altindaki dokuyu lokal esitler). Normal pozlanmis goruntu AYNEN doner.
+    NOT: tek basina kullanma — normalizasyon bazi goruntulerde tespiti BOZAR;
+    dogru kullanim orijinalle YARISTIRMAK (bkz. iha_perceive._infer)."""
+    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+    mean = float(lab[:, :, 0].mean())
+    if mean >= DARK_L_MEAN:
+        return img
+    # gamma = log(hedef)/log(mevcut) → ortalamayi ~125'e tasi (asiri patlatmaz)
+    gamma = max(0.35, min(1.0, np.log(125.0 / 255.0) / np.log(max(mean, 1.0) / 255.0)))
+    lut = ((np.arange(256) / 255.0) ** gamma * 255.0).clip(0, 255).astype(np.uint8)
+    out = cv2.LUT(img, lut)
+    lab = cv2.cvtColor(out, cv2.COLOR_BGR2LAB)
+    lab[:, :, 0] = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(8, 8)).apply(lab[:, :, 0])
+    return cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+
+
 def _preprocess(img):
-    """Merkezi kare crop. (orijinal_kare, 512x512_infer) doner."""
+    """Merkezi kare crop + isik normalizasyonu. (orijinal_kare, 512x512_infer) doner."""
     h, w = img.shape[:2]
     side = min(h, w)
     y0, x0 = (h - side) // 2, (w - side) // 2
-    sq = img[y0:y0 + side, x0:x0 + side]
+    sq = normalize_light(img[y0:y0 + side, x0:x0 + side])
     small = cv2.resize(sq, (INFER_SIZE, INFER_SIZE))
     return sq, small
 

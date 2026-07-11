@@ -56,13 +56,14 @@ CLASS_COLORS = {
 
 # ─── Model ──────────────────────────────────────────────────────────────────
 
-def load_model():
-    if not MODEL_DIR.exists():
-        print(f"HATA: Model klasoru bulunamadi: {MODEL_DIR}")
+def load_model(model_dir=None):
+    model_dir = Path(model_dir) if model_dir else MODEL_DIR
+    if not model_dir.exists():
+        print(f"HATA: Model bulunamadi: {model_dir}")
         print("rescuenet_seg_v1_ncnn_model/ klasorunu ayni dizine veya models/ altina koy.")
         sys.exit(1)
-    print(f"Model yukleniyor: {MODEL_DIR}")
-    return YOLO(str(MODEL_DIR), task="segment")
+    print(f"Model yukleniyor: {model_dir}")
+    return YOLO(str(model_dir), task="segment")
 
 
 # ─── Inference Temel Fonksiyonlari ──────────────────────────────────────────
@@ -415,18 +416,19 @@ def run_camera(model, conf):
     cv2.destroyAllWindows()
 
 
-def run_test(model, images_dir, conf):
+def run_test(model, images_dir, conf, labels_file=None):
     """Dogruluk testi: P001-P030 gorsel + etiket karsilastirma + gorsel cikti."""
     images_dir = Path(images_dir)
     if not images_dir.exists():
         print(f"HATA: Klasor bulunamadi: {images_dir}")
         sys.exit(1)
 
-    if not LABELS_FILE.exists():
-        print(f"HATA: Label dosyasi bulunamadi: {LABELS_FILE}")
+    labels_file = Path(labels_file) if labels_file else LABELS_FILE
+    if not labels_file.exists():
+        print(f"HATA: Label dosyasi bulunamadi: {labels_file}")
         sys.exit(1)
 
-    with open(LABELS_FILE) as f:
+    with open(labels_file) as f:
         labels = json.load(f)
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -558,12 +560,14 @@ def main():
     grp.add_argument("--camera", action="store_true", help="Canli kamera")
     parser.add_argument("--conf",    type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
     parser.add_argument("--no-save", action="store_true",      help="Video modunda kaydetme")
+    parser.add_argument("--model",   metavar="PATH", help="Model yolu (.pt veya ncnn klasoru). Varsayilan: models/rescuenet_seg_v1")
+    parser.add_argument("--labels",  metavar="JSON", help="Etiket dosyasi (--test ile). Varsayilan: dataset/test_labels.json")
     args = parser.parse_args()
 
-    model = load_model()
+    model = load_model(args.model)
 
     if args.test:
-        run_test(model, args.test, args.conf)
+        run_test(model, args.test, args.conf, args.labels)
     elif args.image:
         run_image(model, args.image, args.conf)
     elif args.video:
