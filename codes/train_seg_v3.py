@@ -38,7 +38,8 @@ DEFAULT_EPOCHS = 200
 RUN_NAME       = "navitas_seg_v3"
 
 
-def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False):
+def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False,
+          project=None):
     model = YOLO(model_name)
     results = model.train(
         data=str(data),
@@ -48,7 +49,7 @@ def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False)
         device=device,
         workers=(2 if smoke else 8),
         name=run_name,
-        project=str(_here / "runs/segment"),
+        project=(project or str(_here / "runs/segment")),
         exist_ok=True,
 
         # ── Optimizer ──
@@ -103,9 +104,10 @@ def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False)
     return results
 
 
-def per_class_report(run_name, data, imgsz, device):
+def per_class_report(run_name, data, imgsz, device, project=None):
     """Eğitim sonrası best.pt'yi val edip SINIF BAZLI mAP döndür (dict)."""
-    best = _here / f"runs/segment/{run_name}/weights/best.pt"
+    base = Path(project) if project else (_here / "runs/segment")
+    best = base / run_name / "weights" / "best.pt"
     if not best.exists():
         print(f"UYARI: best.pt yok: {best}")
         return None
@@ -133,6 +135,9 @@ def main():
     ap.add_argument("--device", default="0", help="'0' GPU, 'cpu' CPU")
     ap.add_argument("--batch",  type=int, default=16)
     ap.add_argument("--imgsz",  type=int, default=512)
+    ap.add_argument("--project", default=None,
+                    help="çıktı kökü; Colab'da Drive verilirse kesintide KAYBOLMAZ "
+                         "(örn. /content/drive/MyDrive/navitas_runs)")
     ap.add_argument("--smoke",  action="store_true", help="hızlı kod-yolu doğrulama")
     args = ap.parse_args()
 
@@ -143,12 +148,13 @@ def main():
     print("=" * 60)
     print(f"NAVITAS v3 GÜÇLENDİRME  ·  model={args.model}  epochs={args.epochs}")
     print(f"data={data}  device={args.device}  batch={args.batch}  imgsz={args.imgsz}")
+    print(f"project={args.project or '(yerel runs/segment)'}")
     print("=" * 60)
 
     train(data, args.model, args.epochs, args.name,
-          args.device, args.batch, args.imgsz, smoke=args.smoke)
+          args.device, args.batch, args.imgsz, smoke=args.smoke, project=args.project)
 
-    rapor = per_class_report(args.name, data, args.imgsz, args.device)
+    rapor = per_class_report(args.name, data, args.imgsz, args.device, project=args.project)
     if rapor:
         print("\n=== SINIF BAZLI SONUÇ ===")
         print(rapor)
