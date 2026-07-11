@@ -10,6 +10,9 @@ build/
 # Environment
 .env
 .env*
+.venv/
+venv/
+env/
 
 # Büyük dataset dosyaları — script ile yeniden indirilebilir
 FloodNet/
@@ -83,3 +86,15 @@ images/
 # Simülasyon kayıtları ve üretilen dünyalar
 simulation/recordings/
 simulation/worlds/rec_*.world
+
+# Büyük videolar — GitHub 100MB sınırı; orijinaller yerel/Drive'da
+drone/test_videos/
+results/**/*.mp4
+
+# Yedek model kopyaları — asıl kopya models/ altında (tracked)
+navitas_model/
+navitas_model.zip
+
+# Python çöpü
+__pycache__/
+*.pyc
