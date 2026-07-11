@@ -10,7 +10,7 @@
 
 | Test | Amaç | Yöntem | Başarı kriteri | Sonuç |
 |---|---|---|---|---|
-| Model doğrulama (val seti) | Segmentasyonun görev yeterliliği | Doğrulama setinde standart mAP ölçümü (v1: 294 görüntü; v2: RescueNet+FloodNet birleşik val) | Mask mAP50 ≥ 0,60 | v1: 0,619 — hedef sağlandı; v2 (saha modeli): 0,595 — hedefin hemen altında, v3 iyileştirme planlı |
+| Model doğrulama (val seti) | Segmentasyonun görev yeterliliği | Aynı 294 görüntülük doğrulama setinde standart mAP ölçümü; v2 için bağımsız yeniden ölçüm (11.07.2026, model SHA kayıtlı) | Mask mAP50 ≥ 0,60 | v1: 0,619 — hedef sağlandı; v2: 0,595 (traversable 0,868 / blocked 0,322) — v3 planlı; kanıt: results/v2_val_20260711 |
 | Ölçek bağımsızlık | Kararın kamera çözünürlüğünden bağımsızlığı | Aynı sahne 0,6×–3,3× ölçeklerde işlendi | Tüm ölçeklerde aynı yol kararı | Başarılı (tek sapma: 410 px aşırı bulanık girdi — saha altı çözünürlük) |
 | Işık dayanıklılığı | Gölge/loş ışıkta kararlılık | Gamma 2,2/3,0 karartma + gölge gradyanı sentetik varyantları | Karar değişmemeli | Başarılı — gamma 2,2 ve gölgede korunur; aşırı karanlık (gamma 3) sınır durumu — iyileştirme planlı |
 | Haberleşme birim testi | Protokol çerçeveleme + ACK + tekrar gönderim + bağlantı-kaybı arıza emniyeti | UDP loopback üzerinde OPEN_ROUTE (referans noktası + yerel waypoint'ler) / HEARTBEAT / ACK alışverişi + bağlantı kesme-toparlanma senaryosu (test_comms) | Mesajlar bozulmadan iletilmeli; kesintide güvenli durma tetiklenmeli, dönüşte kaldığı noktadan devam | Başarılı — rota önbelleği kesintide korunuyor; 11.07.2026'da 3 ardışık koşuda geçti (test zamanlama marjı sağlamlaştırıldı) |

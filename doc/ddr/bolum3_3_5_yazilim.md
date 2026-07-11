@@ -100,7 +100,7 @@ uyumludur.
 | Parametre | v1 (temel) | v2 (güncel) |
 |---|---|---|
 | Model | YOLOv8n-seg | YOLOv8n-seg |
-| Veri | RescueNet | RescueNet + FloodNet |
+| Veri | RescueNet | RescueNet (+FloodNet hedeflendi; fiilî katkı doğrulanamadı — bkz. not) |
 | Epoch | 100 (early stop patience 20, en iyi: 85) | 100 (patience 40, cosine lr) |
 | Görüntü boyutu | 512 | 512 (eğitim); çıkarımda 1024 letterbox |
 | Optimizer / lr0 | AdamW / 0,001 | AdamW / 0,001 (lrf 0,005) |
@@ -117,22 +117,27 @@ Doğrulama seti (v1, best.pt):
 | Mask mAP50 — blocked | 0,363 | sınıf dengesizliği; iyileştirme planlı |
 | Precision / Recall (mask) | 0,674 / 0,604 | — |
 
-Doğrulama seti (v2 — sahaya konan model; değerler eğitim koşusunun model
-dosyasına gömülü son doğrulama ölçümleridir — `torch.load(best.pt)['train_metrics']`):
+Doğrulama seti (v2 — sahaya konan model). Değerler 11.07.2026 BAĞIMSIZ
+yeniden ölçümü (Colab, Ultralytics 8.4.92; model SHA-256 c7ce71a4…; 294
+görüntülük RescueNet val — v1 ile AYNI set). Gömülü eğitim-sonu değerleriyle
+üçüncü haneye kadar örtüştü; ham log/grafikler: `results/v2_val_20260711/`:
 
 | Metrik | Değer | Hedef |
 |---|---|---|
 | Mask mAP50 (genel) | **0,595** | ≥ 0,60 — hedefin hemen altında (bkz. not) |
-| Box mAP50 | 0,565 | — |
+| Mask mAP50 — traversable | **0,868** | görevin kritik sınıfı (v1: 0,874 — pratikte eşit) |
+| Mask mAP50 — blocked | 0,322 | zayıf nokta (v1: 0,363); v3 hedefi |
+| Box mAP50 | 0,561 | — |
 | Mask mAP50-95 | 0,344 | — |
 | Precision / Recall (mask) | 0,722 / 0,516 | — |
 
-Not: v1 hedefi karşılamıştır (0,619); v2, daha geniş ve çeşitli veriyle
-(RescueNet+FloodNet) ve daha ağır augmentasyonla eğitildiğinden genel mAP
-değeri hafifçe hedef altındadır (0,595). Buna karşılık v2'nin saha benzeri
-simülasyon görüntülerinde doğru karar verdiği Bölüm 4'teki uçtan uca testte
-gözlenmiştir. Sınıf bazında yeniden ölçüm ve v3 iyileştirme eğitimi
-(perspektif augmentasyonu + sınıf dengeleme) FDR öncesinde planlıdır.
+Not: Aynı doğrulama setinde v1 hedefi karşılar (0,619), v2 hemen altında kalır
+(0,595). Fark tümüyle blocked sınıfından gelir: kritik sınıf traversable'da iki
+model pratikte eşittir (0,874 ↔ 0,868). Karışıklık matrisi blocked zayıflığını
+netler: gerçek molozun yalnızca %28'i yakalanıyor, %12'si geçilebilir zemin
+sanılıyor — iyileştirme önceliği budur. v3 planı: sınıf dengeleme + perspektif
+augmentasyonu + FloodNet veri hattının sürümlenerek yeniden kurulması
+(11.07 doğrulamasında FloodNet kaynağı görüntü vermedi; fiilî katkı teyide muhtaç).
 
 Sistem seviyesi doğrulamalar: (i) ölçek bağımsızlık testi — aynı sahne
 0,6×–3,3× çözünürlükte aynı karar; (ii) ışık dayanıklılığı — gamma 2,2 karartma

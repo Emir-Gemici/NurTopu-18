@@ -41,7 +41,9 @@ Teslim: **15 Temmuz 2026** · DDR = rapor puanının %25'i · Bölüm 3 = 60/100
 - Bölüm 5'e pasta grafik şart (hazır: `gorseller/moc_pasta.png` — 5 karşılandı / 6 sürüyor / 1 planlandı; v2 metrik düzeltmesi sonrası güncellendi).
 
 ## Sürüm düzeni (11 Tem itibarıyla)
-- Her sürüm kendi klasöründe: `word/v4/`, `word/v4.1/`, ... (bir sonraki: v4.2).
-- **GÜNCEL TESLİMAT: `word/v4.1/Navitas_DDR_Yazilim_v4.1.odt`** (21 sf; .html
-  kaynak + .pdf önizleme yanında). v4'ten farkı: gerçek v2 metrikleri, REQ
-  numaraları, düzeltilmiş pasta grafik, taze haberleşme test kanıtı.
+- Her sürüm kendi klasöründe: `word/v4/`, `word/v4.1/`, `word/v4.2/` ...
+- **GÜNCEL TESLİMAT: `word/v4.2/Navitas_DDR_Yazilim_v4.2.odt`** (20 sf; .html
+  kaynak + .pdf önizleme yanında). v4.2 = bağımsız v2 yeniden ölçümü
+  (11.07.2026, Colab): sınıf bazlı metrikler (traversable 0,868 / blocked
+  0,322), FloodNet dürüstlük notu, kanıt klasörü `results/v2_val_20260711/`.
+  v4.1 farkı: gerçek v2 metrikleri, REQ numaraları, oran-korumalı görseller.

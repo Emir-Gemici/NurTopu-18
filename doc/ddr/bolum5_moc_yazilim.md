@@ -20,7 +20,7 @@
 | REQ-19 | İKA'nın İHA verisiyle otonom navigasyonu (görü haritası olmadan koordinatla) | Demonstrasyon | Referans-noktalı rota aktarımı + takip | Karşılandı (sim) | Referans-noktalı OPEN_ROUTE aktarımı UDP üzerinde doğrulandı; İKA'nın rotayı sürüşü (sim) |
 | REQ-4 | İKA'nın HB'ye ≤ 10 dk ulaşması | Test | Görev kronometresi | Karşılandı (sim ~1–2 dk) | Sim süre raporu |
 | REQ-__ | İKA İHA inişinden önce hareket etmemeli | Muayene + Demonstrasyon | Yazılım kilidi (iniş teyidi + manuel başlat) | Karşılandı | Kod muayenesi + sim davranışı |
-| Takım hedefi (REQ-13'ü destekler) | Segmentasyon başarımı (takım hedefi mAP50 ≥ 0,60) | Test | Val seti metrik ölçümü | Sürüyor (v1 karşıladı; v2 hedefin hemen altında) | v1: 0,619; v2: 0,595 (eğitim kaydı) — v3 iyileştirme planlı |
+| Takım hedefi (REQ-13'ü destekler) | Segmentasyon başarımı (takım hedefi mAP50 ≥ 0,60) | Test | Val seti metrik ölçümü | Sürüyor (v1 karşıladı; v2 hedefin hemen altında) | v1: 0,619; v2: 0,595 — bağımsız yeniden ölçüm 11.07.2026 (traversable 0,868 / blocked 0,322; results/v2_val_20260711); v3 planlı |
 | REQ-__ | Arıza emniyet: bağlantı kaybında güvenli durma | Test | HEARTBEAT kesme simülasyonu | Sürüyor | Protokol + bağlantı-kaybı failsafe birim testleri tamam; araç üstü tatbikat planlı |
 | REQ-__ | Araç üstü yazılımın kesinti sonrası kendiliğinden toparlanması | Demonstrasyon | Güç/kablo kesme tatbikatı | Karşılandı (İKA işlemcisi) | RPi 5 systemd servisi gerçek donanım testi |
 

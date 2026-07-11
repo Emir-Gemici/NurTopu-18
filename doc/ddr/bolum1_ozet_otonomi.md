@@ -9,7 +9,7 @@ tasarlanmıştır: mancınıkla fırlatılan sabit kanatlı İHA, 30 m irtifadan
 görev alanını serpantin desenle tarar; 1 Hz nadir kamera kareleri, çekim
 anındaki araç pozuyla birleştirilerek kuzey referanslı bir ortomozaik saha
 haritasına dönüştürülür. YOLOv8 tabanlı segmentasyon modeli (gerçek afet
-görüntüleriyle eğitilmiş; v1 doğrulamasında geçilebilir zemin sınıfında 0,874 mAP50; v2 genel 0,595) açık
+görüntüleriyle eğitilmiş; geçilebilir zemin sınıfında v1: 0,874 / v2: 0,868 mAP50; v2 genel 0,595) açık
 güzergâhı bu harita üzerinde tespit eder; koridor merkez hattından üretilen
 rota, sağlamlık süzgecinden geçirilip başlangıç referans noktalı yerel
 koordinatlar hâlinde, ACK'li ve tekrar-gönderimli hafif bir JSON protokolüyle
