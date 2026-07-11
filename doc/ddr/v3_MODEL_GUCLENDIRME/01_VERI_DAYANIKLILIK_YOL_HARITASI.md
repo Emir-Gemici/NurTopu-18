@@ -59,6 +59,15 @@ yapabilirim — ama önce DDR."
   2. **AI ile görsel üretimi:** labirent yol + moloz + değişken ışık/gölge/açı
      (kullanıcı yapacak; model AI-üretimi arena görsellerini zaten tanıyor — kanıtlı).
   3. **Gerçek arena/maket fotoğrafı:** varsa birkaç düzine bile ince ayarda çok işe yarar.
+  4. **FloodNet Track 1 (opsiyonel, en zayıf/en zahmetli):** flooded-road = tıkalı yol,
+     blocked'a YENİ örnek katar (oversampling'in tekrarından iyi). AMA 2026-07-11 canlı
+     kontrol: Colab'da tek satırla çekilebilecek çalışan kaynak YOK — takara=Track2/VQA
+     (maskesiz), torchgeo=imagefolder (sınıflandırma, maske değil), PumeTu=gated (giriş
+     ister). Gerçek ~400 maske BinaLab GitHub/Google Drive'da, elle indirme + dönüştürme
+     gerektirir. Ayrıca kasırga-sel domaini, temiz labirent DEĞİL → sim/AI'den daha az
+     uyumlu. Sıralama: **sim render > AI arena > FloodNet.** `download_floodnet.py`'nin
+     sınıf indeksleri + sessiz-hata guardı DÜZELTİLDİ; kalan iş: gerçek Track 1 kaynağı
+     bulup ÜRETİLEN GÖRÜNTÜYÜ DOĞRULAMAK (hayalet FloodNet hatasını tekrarlama).
 
 ---
 
