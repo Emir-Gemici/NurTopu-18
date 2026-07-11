@@ -1,24 +1,28 @@
-// Navitas TEKNOFEST 2026 — Kinematik Animasyon Dünya Plugin'i
+// Navitas TEKNOFEST 2026 — Animasyon + İKA FİZİK Sürüş Dünya Plugin'i
 //
-// Modelleri (İHA, İKA) zamana bağlı yol noktaları boyunca pürüzsüz hareket
-// ettirir. Her simülasyon adımında SetWorldPose çağrılır → video fps'inden
-// bağımsız akıcı, deterministik, her zaman tamamlanan hareket.
+// İHA / paraşüt : KİNEMATİK — zaman-interp yol noktaları boyunca SetWorldPose
+//                 (uçuş; yer çarpışması gerekmez, deterministik akıcı hareket).
+//                 "iha" modeli ayrıca GERÇEKÇİ TAVIR alır: tırmanışta burun yukarı /
+//                 alçalmada aşağı (pitch) ve dönüşte koordineli YATIŞ (bank,
+//                 phi = atan(v·yawRate/g)) — yörüngeden türetilir, alçak-geçiren
+//                 filtreyle yumuşatılır.
+// İKA (ika*)    : FİZİK — SINIRLI KUVVET kontrolüyle waypoint takibi (AddForce/AddTorque).
+//                 Hız DOĞRUDAN atanmaz (SetLinearVel temas kuvvetlerini EZER → engelden
+//                 geçer). Bunun yerine motor traksiyonu gibi SINIRLI kuvvet uygulanır:
+//                 katı (static) moloza çarpınca temas kuvveti bizimkini yener → İKA DURUR,
+//                 içinden GEÇEMEZ. Gerçek fizik. Alçak ağırlık merkezi → devrilmez.
 //
-// CLI tabanlı kontrolün (~0.8s/çağrı) aksine kayıt için güvenilirdir.
-// Sadece kayıt dünyalarında kullanılır (world_generator.py --record).
-//
-// SDF kullanımı:
+// SDF:
 //   <plugin name="navitas_anim" filename="libnavitas_anim.so">
-//     <model name="iha">
-//       <waypoint>t x y z yaw</waypoint>
-//       ...
-//     </model>
-//     <model name="ika"> ... </model>
+//     <model name="iha">       <waypoint>t x y z yaw</waypoint> ... </model>
+//     <model name="ika_kolay"> <waypoint>t x y z yaw</waypoint> ... </model>
 //   </plugin>
 
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <ignition/math/Pose3.hh>
+#include <ignition/math/Vector3.hh>
+#include <fstream>
 #include <functional>
 #include <sstream>
 #include <string>
@@ -35,22 +39,46 @@ namespace gazebo
     private: physics::WorldPtr world;
     private: event::ConnectionPtr updateConn;
     private: std::map<std::string, std::vector<Waypoint>> traj;
+    private: std::map<std::string, size_t> ikaIdx;     // İKA waypoint takip indeksi
+    private: double ihaRoll = 0.0, ihaPitch = 0.0;     // İHA tavır (alçak-geçiren durum)
+
+    // İKA ROTA KAYNAĞI — dürüst haritalandırma zinciri:
+    //   İHA tarama kareleri → host'ta iha_haritala.py (mozaik + model) → /tmp/navitas_route
+    //   (satır başına "x y" DÜNYA koordinatı, güney→kuzey). Dosya gelirse İKA MODELİN
+    //   haritasını sürer; ROUTE_WAIT içinde gelmezse SDF-gömülü ground-truth waypoint'lere
+    //   düşer (model/venv yoksa kayıt yine biter — fallback LOG'lanır, başarı sayılmaz).
+    private: std::map<std::string, std::string> ikaRouteSrc;   // "bekliyor"|"model"|"fallback"
+    private: const char *ROUTE_FILE = "/tmp/navitas_route";
+    private: const double ROUTE_WAIT = 45.0;   // s — İHA inişinden sonra rota bekleme süresi
+
+    // İHA tavır limitleri (gerçekçi küçük sabit kanat)
+    private: const double PITCH_MAX = 0.45;   // rad (~26°) burun yukarı/aşağı
+    private: const double ROLL_MAX  = 0.70;   // rad (~40°) yatış
+    private: const double ATT_TAU   = 0.25;   // s — tavır yumuşatma zaman sabiti
+
+    // İKA sürüş parametreleri
+    // İLERİ: SINIRLI KUVVET (AddForce) → katı engeli aşamaz, içinden geçemez (gerçek fizik).
+    // DÖNÜŞ: SetAngularVel (doğrudan) → skid-steer 4 sabit teker yüksek sürtünmede tork ile
+    //        dönemeyeceği için yaw doğrudan atanır (çarpışma bütünlüğü ileri eksende korunur).
+    private: const double IKA_SPEED    = 1.1;   // m/s — gerçekçi rover seyir hızı
+    private: const double WP_RADIUS    = 1.2;   // m — bu mesafede sonraki waypoint'e geç
+    private: const double YAW_GAIN     = 2.5;   // hedef yaw hatasından açısal hıza kazanç
+    private: const double YAW_RATE_MAX = 1.6;   // rad/s — dönüş hız limiti
+    private: const double FORCE_GAIN   = 60.0;  // (v_hedef - v) → kuvvet kazancı (N/(m/s))
+    private: const double FORCE_MAX    = 80.0;  // N — motor traksiyon limiti (engeli AŞAMAZ)
 
     public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override
     {
       this->world = _world;
-
       if (_sdf->HasElement("model"))
       {
-        for (auto m = _sdf->GetElement("model"); m;
-             m = m->GetNextElement("model"))
+        for (auto m = _sdf->GetElement("model"); m; m = m->GetNextElement("model"))
         {
           std::string name = m->Get<std::string>("name");
           std::vector<Waypoint> wps;
           if (m->HasElement("waypoint"))
           {
-            for (auto w = m->GetElement("waypoint"); w;
-                 w = w->GetNextElement("waypoint"))
+            for (auto w = m->GetElement("waypoint"); w; w = w->GetNextElement("waypoint"))
             {
               std::stringstream ss(w->Get<std::string>());
               Waypoint wp{0, 0, 0, 0, 0};
@@ -61,62 +89,224 @@ namespace gazebo
           if (!wps.empty())
           {
             this->traj[name] = wps;
-            gzmsg << "[navitas_anim] '" << name << "' için "
-                  << wps.size() << " yol noktası yüklendi.\n";
+            this->ikaIdx[name] = 1;
+            if (isIka(name)) this->ikaRouteSrc[name] = "bekliyor";
+            gzmsg << "[navitas_anim] '" << name << "' " << wps.size()
+                  << " yol noktası.\n";
           }
         }
       }
-
       this->updateConn = event::Events::ConnectWorldUpdateBegin(
           std::bind(&NavitasAnim::OnUpdate, this));
     }
+
+    private: static bool isIka(const std::string &n)
+    {
+      return n.rfind("ika", 0) == 0;        // "ika" ile başlıyorsa İKA
+    }
+
+    // MODEL rotasını dene: /tmp/navitas_route, satır başına "x y" (DÜNYA koordinatı,
+    // güney→kuzey). Başarıyla ≥2 nokta okunursa İKA'nın waypoint'leri BUNLARLA değişir
+    // (başlangıç zamanı/noktası SDF'ten kalır — İHA inişini bekleme davranışı bozulmaz).
+    private: bool tryLoadRoute(const std::string &name)
+    {
+      std::ifstream f(ROUTE_FILE);
+      if (!f.good()) return false;
+      auto &sdfWps = this->traj[name];
+      std::vector<Waypoint> wps{sdfWps.front()};
+      std::string line;
+      double x, y;
+      while (std::getline(f, line))
+      {
+        std::stringstream ss(line);
+        if (ss >> x >> y)
+          wps.push_back(Waypoint{0, x, y, sdfWps.front().z, 0});
+      }
+      if (wps.size() < 3) return false;      // bozuk/yarım dosya — sonraki tick tekrar
+      this->traj[name] = wps;
+      this->ikaIdx[name] = 1;
+      this->ikaRouteSrc[name] = "model";
+      gzmsg << "[navitas_anim] '" << name << "' İHA MODEL haritası yüklendi: "
+            << (wps.size() - 1) << " rota noktası (" << ROUTE_FILE << ")\n";
+      return true;
+    }
+
+    private: static double wrap(double a)
+    {
+      while (a >  M_PI) a -= 2 * M_PI;
+      while (a < -M_PI) a += 2 * M_PI;
+      return a;
+    }
+
+    private: double lastSimWrite = -1e9;
 
     private: void OnUpdate()
     {
       double t = this->world->SimTime().Double();
 
+      // SİM SAATİ → dosya (kayıt betiği okur). gz stats/transport GÜVENİLMEZ
+      // (yük altında sessiz, ara sıra SIGABRT) — dosya deterministik.
+      if (t - this->lastSimWrite >= 1.0)
+      {
+        std::ofstream f("/tmp/navitas_simtime");
+        f << static_cast<long>(t) << "\n";
+        // İKA telemetrisi (hata ayıklama + hakem logu): konum, hız, hedef wp, rota kaynağı
+        for (auto &kv : this->traj)
+          if (isIka(kv.first))
+            if (auto m = this->world->ModelByName(kv.first))
+            {
+              auto p = m->WorldPose().Pos();
+              auto v = m->WorldLinearVel();
+              f << kv.first << " x=" << p.X() << " y=" << p.Y()
+                << " v=" << std::hypot(v.X(), v.Y())
+                << " wp=" << this->ikaIdx[kv.first]
+                << " rota=" << this->ikaRouteSrc[kv.first]
+                // rota bitti (son wp'ye ulaşıldı) → kayıt betiği klibi erken keser
+                << (this->ikaIdx[kv.first] >= kv.second.size() ? " durum=BITTI" : "")
+                << "\n";
+            }
+        // (İHA poz logu artık navitas_scan_cam plugin'inde — kareyle AYNI olayda
+        //  yazılır, birebir senkron; buradaki 1 Hz kopya kaldırıldı.)
+        this->lastSimWrite = t;
+      }
+
       for (auto &kv : this->traj)
       {
         auto model = this->world->ModelByName(kv.first);
-        if (!model)
-          continue;
-
+        if (!model) continue;
         const auto &wps = kv.second;
-        double x, y, z, yaw;
 
-        if (t <= wps.front().t)
+        // ── İKA: FİZİK — SINIRLI KUVVET kontrolü (engelden GEÇEMEZ) ──
+        if (isIka(kv.first))
         {
-          x = wps.front().x; y = wps.front().y;
-          z = wps.front().z; yaw = wps.front().yaw;
-        }
-        else if (t >= wps.back().t)
-        {
-          x = wps.back().x; y = wps.back().y;
-          z = wps.back().z; yaw = wps.back().yaw;
-        }
-        else
-        {
-          x = wps.back().x; y = wps.back().y;
-          z = wps.back().z; yaw = wps.back().yaw;
-          for (size_t i = 0; i + 1 < wps.size(); ++i)
+          auto link = model->GetLink("base_link");
+          double startT = wps.front().t;
+          if (t < startT)
           {
-            if (t >= wps[i].t && t <= wps[i + 1].t)
+            // İHA inişini bekle — yerinde dur (fizik yerçekimi oturtur)
+            model->SetLinearVel(ignition::math::Vector3d::Zero);
+            model->SetAngularVel(ignition::math::Vector3d::Zero);
+            this->ikaIdx[kv.first] = 1;
+            continue;
+          }
+
+          // ── ROTA KAYNAĞI: önce MODEL haritası (/tmp/navitas_route), yoksa bekle,
+          //    ROUTE_WAIT dolarsa SDF ground-truth'a düş (dürüst zincir; bkz. üst not) ──
+          std::string &src = this->ikaRouteSrc[kv.first];
+          if (src == "bekliyor")
+          {
+            if (!this->tryLoadRoute(kv.first))
             {
-              double dt = wps[i + 1].t - wps[i].t;
-              double f = (dt > 1e-9) ? (t - wps[i].t) / dt : 0.0;
-              x = wps[i].x + (wps[i + 1].x - wps[i].x) * f;
-              y = wps[i].y + (wps[i + 1].y - wps[i].y) * f;
-              z = wps[i].z + (wps[i + 1].z - wps[i].z) * f;
-              double dyaw = wps[i + 1].yaw - wps[i].yaw;
-              while (dyaw > M_PI)  dyaw -= 2 * M_PI;
-              while (dyaw < -M_PI) dyaw += 2 * M_PI;
-              yaw = wps[i].yaw + dyaw * f;
-              break;
+              if (t < startT + ROUTE_WAIT)
+              {
+                model->SetLinearVel(ignition::math::Vector3d::Zero);
+                model->SetAngularVel(ignition::math::Vector3d::Zero);
+                continue;                        // İHA haritası henüz gelmedi — bekle
+              }
+              src = "fallback";
+              gzmsg << "[navitas_anim] '" << kv.first << "' MODEL rotası "
+                    << ROUTE_WAIT << "s içinde gelmedi → SDF ground-truth FALLBACK "
+                       "(model başarısı SAYILMAZ).\n";
             }
           }
+          size_t &idx = this->ikaIdx[kv.first];
+          if (idx < 1) idx = 1;
+          if (idx >= wps.size())
+          {
+            model->SetLinearVel(ignition::math::Vector3d::Zero);   // HB'ye ulaştı, dur
+            model->SetAngularVel(ignition::math::Vector3d::Zero);
+            continue;
+          }
+          if (!link) continue;
+          auto pose = model->WorldPose();
+          double cx = pose.Pos().X(), cy = pose.Pos().Y();
+          double dx = wps[idx].x - cx, dy = wps[idx].y - cy;
+          double dist = std::hypot(dx, dy);
+          if (dist < WP_RADIUS) { idx++; continue; }   // sonraki waypoint
+
+          // Hedef hız (XY) → istenen hız vektörü
+          double inv = 1.0 / dist;
+          double vdx = dx * inv * IKA_SPEED, vdy = dy * inv * IKA_SPEED;
+
+          // İLERİ — SINIRLI traksiyon kuvveti = clamp((v_hedef - v_mevcut) * kazanç).
+          // Engel katıysa (static moloz) temas kuvveti bunu yener → İKA durur, GEÇEMEZ.
+          // (Tekerler serbest döner; diff_drive eklentisi YOK ki fren yapıp kilitlemesin.)
+          auto vel = model->WorldLinearVel();
+          double fx = (vdx - vel.X()) * FORCE_GAIN;
+          double fy = (vdy - vel.Y()) * FORCE_GAIN;
+          double fmag = std::hypot(fx, fy);
+          if (fmag > FORCE_MAX) { fx *= FORCE_MAX / fmag; fy *= FORCE_MAX / fmag; }
+          link->AddForce(ignition::math::Vector3d(fx, fy, 0));
+
+          // DÖNÜŞ — burnu hareket yönüne çevir (doğrudan açısal hız, limitli).
+          // DİKKAT: model->SetAngularVel TÜM link'lere (tekerlekler dahil) hız
+          // dayatır → tekerlek dönemez, araç sürtünerek 0.2 m/s'ye saplanır.
+          // Sadece GÖVDEYE uygula: tekerlekler akslarında serbest yuvarlanır.
+          double desiredYaw = std::atan2(dy, dx);
+          double dyaw = wrap(desiredYaw - pose.Rot().Yaw());
+          double wz = YAW_GAIN * dyaw;
+          if (wz >  YAW_RATE_MAX) wz =  YAW_RATE_MAX;
+          if (wz < -YAW_RATE_MAX) wz = -YAW_RATE_MAX;
+          link->SetAngularVel(ignition::math::Vector3d(0, 0, wz));
+          continue;
         }
 
-        model->SetWorldPose(ignition::math::Pose3d(x, y, z, 0, 0, yaw));
+        // ── İHA / paraşüt: KİNEMATİK interp (SetWorldPose) ──
+        double x, y, z, yaw;
+        samplePose(wps, t, x, y, z, yaw);
+
+        double roll = 0.0, pitch = 0.0;
+        if (kv.first == "iha")
+        {
+          // Yörüngeden hız + yaw hızı türet (ileri fark) → gerçekçi tavır:
+          //   pitch = -atan2(vz, v_yatay)  (tırmanışta burun YUKARI)
+          //   roll  = atan(v·yawRate / g)  (koordineli dönüş yatışı)
+          const double DT = 0.10;
+          double x2, y2, z2, yaw2;
+          samplePose(wps, t + DT, x2, y2, z2, yaw2);
+          double vx = (x2 - x) / DT, vy = (y2 - y) / DT, vz = (z2 - z) / DT;
+          double vxy = std::hypot(vx, vy);
+          double yawRate = wrap(yaw2 - yaw) / DT;
+
+          double pT = -std::atan2(vz, std::max(vxy, 1.0));
+          double rT = std::atan((vxy * yawRate) / 9.8);
+          if (pT >  PITCH_MAX) pT =  PITCH_MAX;
+          if (pT < -PITCH_MAX) pT = -PITCH_MAX;
+          if (rT >  ROLL_MAX)  rT =  ROLL_MAX;
+          if (rT < -ROLL_MAX)  rT = -ROLL_MAX;
+
+          // alçak-geçiren yumuşatma (ani tavır zıplaması olmaz)
+          double step = this->world->Physics()->GetMaxStepSize();
+          double a = std::min(1.0, step / ATT_TAU);
+          this->ihaPitch += a * (pT - this->ihaPitch);
+          this->ihaRoll  += a * (rT - this->ihaRoll);
+          roll = this->ihaRoll; pitch = this->ihaPitch;
+        }
+        model->SetWorldPose(ignition::math::Pose3d(x, y, z, roll, pitch, yaw));
+      }
+    }
+
+    // Zaman-interp: t anındaki (x,y,z,yaw). Yaw en kısa açı farkıyla interp edilir.
+    private: static void samplePose(const std::vector<Waypoint> &wps, double t,
+                                    double &x, double &y, double &z, double &yaw)
+    {
+      if (t <= wps.front().t)
+      { x = wps.front().x; y = wps.front().y; z = wps.front().z; yaw = wps.front().yaw; return; }
+      if (t >= wps.back().t)
+      { x = wps.back().x; y = wps.back().y; z = wps.back().z; yaw = wps.back().yaw; return; }
+      x = wps.back().x; y = wps.back().y; z = wps.back().z; yaw = wps.back().yaw;
+      for (size_t i = 0; i + 1 < wps.size(); ++i)
+      {
+        if (t >= wps[i].t && t <= wps[i + 1].t)
+        {
+          double dt = wps[i + 1].t - wps[i].t;
+          double f = (dt > 1e-9) ? (t - wps[i].t) / dt : 0.0;
+          x = wps[i].x + (wps[i + 1].x - wps[i].x) * f;
+          y = wps[i].y + (wps[i + 1].y - wps[i].y) * f;
+          z = wps[i].z + (wps[i + 1].z - wps[i].z) * f;
+          yaw = wps[i].yaw + wrap(wps[i + 1].yaw - wps[i].yaw) * f;
+          return;
+        }
       }
     }
   };

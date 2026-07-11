@@ -12,35 +12,13 @@ import math
 import time
 import re
 import sys
+from pathlib import Path
 
-# ── Waypoint haritası ─────────────────────────────────────────────────────────
-WAYPOINTS = {
-    "kolay": [
-        (-23.0, -23.0),
-        (-23.0, -10.0),
-        (-15.0,   0.0),
-        ( -5.0,  10.0),
-        (  5.0,  15.0),
-        ( 15.0,  20.0),
-        ( 23.0,  23.0),
-    ],
-    "orta": [
-        (-23.0, -23.0),
-        (-20.0,  -8.0),
-        ( -8.0,   2.0),
-        (  5.0,   8.0),
-        ( 15.0,  18.0),
-        ( 23.0,  23.0),
-    ],
-    "zor": [
-        (-23.0, -23.0),
-        (-18.0, -15.0),
-        ( -5.0,  -5.0),
-        (  5.0,   5.0),
-        ( 18.0,  20.0),
-        ( 23.0,  23.0),
-    ],
-}
+# arena (waypoint kaynağı) + comms (açık yolu İHA'dan al)
+sys.path.insert(0, str(Path(__file__).parent))            # scripts/
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
+import arena
+from arena import route_waypoints, open_road, ROAD_LABEL
 
 # ── Kontrol parametreleri ─────────────────────────────────────────────────────
 MAX_SPEED   = 2.0   # m/s
@@ -128,8 +106,7 @@ def steer(heading_err, base=MAX_SPEED):
     return r, l
 
 
-def navigate(scenario="kolay", verbose=True):
-    wps = WAYPOINTS.get(scenario, WAYPOINTS["kolay"])
+def navigate(wps, label="rota", verbose=True):
     dt = 1.0 / CTRL_HZ
 
     # Heading'i konum geçmişinden tahmin edeceğiz
@@ -139,7 +116,7 @@ def navigate(scenario="kolay", verbose=True):
         wps[1][0] - wps[0][0]
     )  # başlangıç tahmini: ilk hedefe doğru
 
-    print(f"\n[ika_nav] Senaryo: {scenario} | {len(wps)-1} segment")
+    print(f"\n[ika_nav] {label} | {len(wps)-1} segment")
     print(f"[ika_nav] Başlangıç: {wps[0]} → Hedef: {wps[-1]}")
 
     for idx, (wx, wy) in enumerate(wps[1:], 1):
@@ -190,9 +167,55 @@ def navigate(scenario="kolay", verbose=True):
     return True
 
 
+def navigate_road(road, verbose=True):
+    """İHA'dan gelen açık yol (1/2/3) → arena rotası ile navigate."""
+    return navigate(route_waypoints(road),
+                    f"Açık yol: {ROAD_LABEL[road].upper()} ({road})", verbose)
+
+
+def navigate_scenario(scenario, verbose=True):
+    return navigate_road(open_road(scenario), verbose)
+
+
+def wait_open_road_from_comms(bind="0.0.0.0:5006", timeout=60):
+    """Şartname §2.2.5: İKA, İHA'dan açık yol verisi GELENE kadar bekler, sonra hareket eder."""
+    from link import UDPLink
+    from ika_receiver import IkaReceiver
+    h, p = bind.split(":")
+    rx = IkaReceiver(UDPLink(bind=(h, int(p)))).start()
+    print(f"[ika_nav] comms dinleniyor ({bind}) — İHA açık yolu gönderecek...")
+    t0 = time.time()
+    while rx.latest is None and time.time() - t0 < timeout:
+        time.sleep(0.2)
+    rx.stop()
+    if rx.latest is None:
+        return None
+    road = rx.latest["road"]
+    print(f"[ika_nav] ✓ İHA'dan açık yol ALINDI: {ROAD_LABEL[road].upper()} ({road}) "
+          f"conf={rx.latest.get('conf')}")
+    return road
+
+
 if __name__ == "__main__":
-    sc = sys.argv[1] if len(sys.argv) > 1 else "kolay"
-    if sc not in WAYPOINTS:
-        print(f"Bilinmeyen senaryo: {sc}  →  kolay|orta|zor")
+    import argparse
+    ap = argparse.ArgumentParser(description="İKA navigasyon (arena + comms)")
+    ap.add_argument("mode", nargs="?", default="kolay",
+                    help="senaryo: kolay|orta|zor  ·  veya 'comms' (İHA'dan bekle)")
+    ap.add_argument("--road", type=int, choices=[1, 2, 3], help="açık yolu doğrudan ver")
+    ap.add_argument("--bind", default="0.0.0.0:5006", help="comms modu dinleme adresi")
+    ap.add_argument("--timeout", type=float, default=60)
+    args = ap.parse_args()
+
+    if args.road:
+        navigate_road(args.road)
+    elif args.mode == "comms":
+        road = wait_open_road_from_comms(args.bind, args.timeout)
+        if road is None:
+            print("[ika_nav] ✗ açık yol gelmedi (timeout) — İKA hareket etmez")
+            sys.exit(1)
+        navigate_road(road)
+    elif args.mode in ("kolay", "orta", "zor"):
+        navigate_scenario(args.mode)
+    else:
+        print("Kullanım: ika_nav.py [kolay|orta|zor|comms] [--road N]")
         sys.exit(1)
-    navigate(sc)

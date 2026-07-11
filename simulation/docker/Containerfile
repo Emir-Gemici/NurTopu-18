@@ -23,7 +23,7 @@ RUN cd /opt/navitas/plugins \
     && mkdir -p build && cd build \
     && cmake .. && make \
     && mkdir -p /opt/navitas/lib \
-    && cp libnavitas_anim.so /opt/navitas/lib/
+    && cp libnavitas_*.so /opt/navitas/lib/
 
 # Yazılımsal OpenGL (Xvfb'de donanım GLX yok) + plugin yolu
 ENV LIBGL_ALWAYS_SOFTWARE=1 \

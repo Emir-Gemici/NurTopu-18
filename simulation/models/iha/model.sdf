@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
+<!--
+  Navitas İHA — sabit kanatlı (fixed-wing), mancınıkla fırlatma + paraşüt (şartname).
+  Gelişmiş primitif tasarım: silindir gövde + burun konisi + pervane + süpürülmüş kanat
+  + konvansiyonel kuyruk. Görsel iyileştirme; static=true (kayıt anim plugin'i hareket ettirir).
+-->
 <sdf version="1.6">
   <model name="iha">
     <static>true</static>
 
-    <!-- ── Gövde (fuselage) ─────────────────────────────────────── -->
     <link name="base_link">
       <inertial>
         <mass>4.0</mass>
@@ -14,61 +18,90 @@
         </inertia>
       </inertial>
 
+      <!-- ── Gövde (fuselage) — silindir, X ekseni boyunca ───────────── -->
       <collision name="fuselage_col">
-        <geometry><box><size>1.2 0.15 0.12</size></box></geometry>
+        <pose>0 0 0 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.10</radius><length>1.25</length></cylinder></geometry>
       </collision>
       <visual name="fuselage_vis">
-        <geometry><box><size>1.2 0.15 0.12</size></box></geometry>
-        <material><ambient>0.2 0.2 0.8 1</ambient><diffuse>0.2 0.2 0.8 1</diffuse></material>
+        <pose>0 0 0 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.10</radius><length>1.25</length></cylinder></geometry>
+        <material><ambient>0.12 0.20 0.55 1</ambient><diffuse>0.15 0.30 0.85 1</diffuse></material>
       </visual>
 
-      <!-- Sol kanat -->
-      <collision name="left_wing_col">
-        <pose>0 0.65 0 0 0 0</pose>
-        <geometry><box><size>0.8 1.1 0.04</size></box></geometry>
+      <!-- Burun konisi (sphere ile yumuşatılmış uç) -->
+      <visual name="nose_vis">
+        <pose>0.60 0 0 0 0 0</pose>
+        <geometry><sphere><radius>0.115</radius></sphere></geometry>
+        <material><ambient>0.05 0.05 0.10 1</ambient><diffuse>0.08 0.08 0.15 1</diffuse></material>
+      </visual>
+
+      <!-- Kanopi (kabin camı) -->
+      <visual name="canopy_vis">
+        <pose>0.18 0 0.09 0 0 0</pose>
+        <geometry><sphere><radius>0.09</radius></sphere></geometry>
+        <material><ambient>0.1 0.15 0.2 0.7</ambient><diffuse>0.2 0.4 0.6 0.7</diffuse></material>
+      </visual>
+
+      <!-- ── Ana kanat — tek süpürülmüş panel (span Y) ───────────────── -->
+      <collision name="wing_col">
+        <pose>-0.02 0 0.02 0 0 0</pose>
+        <geometry><box><size>0.42 2.60 0.035</size></box></geometry>
       </collision>
-      <visual name="left_wing_vis">
-        <pose>0 0.65 0 0 0 0</pose>
-        <geometry><box><size>0.8 1.1 0.04</size></box></geometry>
-        <material><ambient>0.3 0.3 0.9 1</ambient><diffuse>0.3 0.3 0.9 1</diffuse></material>
+      <visual name="wing_vis">
+        <pose>-0.02 0 0.02 0 0 0</pose>
+        <geometry><box><size>0.42 2.60 0.035</size></box></geometry>
+        <material><ambient>0.18 0.28 0.70 1</ambient><diffuse>0.25 0.40 0.90 1</diffuse></material>
       </visual>
 
-      <!-- Sağ kanat -->
-      <collision name="right_wing_col">
-        <pose>0 -0.65 0 0 0 0</pose>
-        <geometry><box><size>0.8 1.1 0.04</size></box></geometry>
-      </collision>
-      <visual name="right_wing_vis">
-        <pose>0 -0.65 0 0 0 0</pose>
-        <geometry><box><size>0.8 1.1 0.04</size></box></geometry>
-        <material><ambient>0.3 0.3 0.9 1</ambient><diffuse>0.3 0.3 0.9 1</diffuse></material>
+      <!-- Kanat uçları (winglet) -->
+      <visual name="winglet_L">
+        <pose>-0.02 1.30 0.07 0 0 0</pose>
+        <geometry><box><size>0.30 0.03 0.12</size></box></geometry>
+        <material><ambient>0.1 0.1 0.5 1</ambient><diffuse>0.15 0.2 0.7 1</diffuse></material>
+      </visual>
+      <visual name="winglet_R">
+        <pose>-0.02 -1.30 0.07 0 0 0</pose>
+        <geometry><box><size>0.30 0.03 0.12</size></box></geometry>
+        <material><ambient>0.1 0.1 0.5 1</ambient><diffuse>0.15 0.2 0.7 1</diffuse></material>
       </visual>
 
-      <!-- Kuyruk dikey -->
-      <collision name="vtail_col">
-        <pose>-0.52 0 0.12 0 0 0</pose>
-        <geometry><box><size>0.28 0.03 0.22</size></box></geometry>
+      <!-- ── Kuyruk — yatay stabilizatör + dikey dümen ───────────────── -->
+      <visual name="htail_vis">
+        <pose>-0.56 0 0.03 0 0 0</pose>
+        <geometry><box><size>0.26 0.95 0.03</size></box></geometry>
+        <material><ambient>0.18 0.28 0.70 1</ambient><diffuse>0.25 0.40 0.90 1</diffuse></material>
+      </visual>
+      <collision name="htail_col">
+        <pose>-0.56 0 0.03 0 0 0</pose>
+        <geometry><box><size>0.26 0.95 0.03</size></box></geometry>
       </collision>
       <visual name="vtail_vis">
-        <pose>-0.52 0 0.12 0 0 0</pose>
-        <geometry><box><size>0.28 0.03 0.22</size></box></geometry>
-        <material><ambient>0.1 0.1 0.7 1</ambient><diffuse>0.1 0.1 0.7 1</diffuse></material>
+        <pose>-0.56 0 0.18 0 0 0</pose>
+        <geometry><box><size>0.26 0.03 0.30</size></box></geometry>
+        <material><ambient>0.1 0.1 0.6 1</ambient><diffuse>0.15 0.2 0.8 1</diffuse></material>
       </visual>
 
-      <!-- Kuyruk yatay -->
-      <collision name="htail_col">
-        <pose>-0.52 0 0.04 0 0 0</pose>
-        <geometry><box><size>0.26 0.52 0.03</size></box></geometry>
-      </collision>
-      <visual name="htail_vis">
-        <pose>-0.52 0 0.04 0 0 0</pose>
-        <geometry><box><size>0.26 0.52 0.03</size></box></geometry>
-        <material><ambient>0.1 0.1 0.7 1</ambient><diffuse>0.1 0.1 0.7 1</diffuse></material>
+      <!-- ── Pervane (traktör, burun önü) — göbek + 2 kanat ──────────── -->
+      <visual name="prop_hub">
+        <pose>0.69 0 0 0 1.5708 0</pose>
+        <geometry><cylinder><radius>0.03</radius><length>0.05</length></cylinder></geometry>
+        <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse></material>
+      </visual>
+      <visual name="prop_blade_v">
+        <pose>0.70 0 0 0 0 0</pose>
+        <geometry><box><size>0.02 0.04 0.62</size></box></geometry>
+        <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.1 0.1 0.1 0.9</diffuse></material>
+      </visual>
+      <visual name="prop_blade_h">
+        <pose>0.70 0 0 0 0 0</pose>
+        <geometry><box><size>0.02 0.62 0.04</size></box></geometry>
+        <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.1 0.1 0.1 0.9</diffuse></material>
       </visual>
 
-      <!-- Kamera sensörü (burun altı) -->
+      <!-- ── Kamera (burun altı, hafif aşağı bakan) ──────────────────── -->
       <sensor name="front_camera" type="camera">
-        <pose>0.62 0 -0.09 0 0.3 0</pose>
+        <pose>0.55 0 -0.10 0 0.3 0</pose>
         <camera>
           <horizontal_fov>1.047</horizontal_fov>
           <image><width>640</width><height>480</height><format>R8G8B8</format></image>
@@ -79,9 +112,26 @@
         <visualize>true</visualize>
       </sensor>
 
+      <!-- ── TARAMA kamerası — NADİR (dik aşağı), HER SANİYE kare kaydeder ──
+           Şartname: 30m irtifadan 50×50 alanı tarar. Kare + İHA pozu AYNI olayda
+           navitas_scan_cam plugin'iyle kaydedilir (/tmp/iha_scan/scan_N.jpg +
+           poses.csv, BİREBİR senkron) → host'ta iha_haritala.py ortomozaik kurar,
+           GERÇEK model bu taramada karar verir. -->
+      <sensor name="scan_camera" type="camera">
+        <pose>0 0 -0.12 0 1.5708 1.5708</pose>
+        <camera>
+          <horizontal_fov>1.3</horizontal_fov>
+          <image><width>640</width><height>640</height><format>R8G8B8</format></image>
+          <clip><near>0.1</near><far>120</far></clip>
+        </camera>
+        <always_on>true</always_on>
+        <update_rate>1</update_rate>
+        <visualize>false</visualize>
+        <plugin name="navitas_scan_cam" filename="libnavitas_scan_cam.so"/>
+      </sensor>
+
       <!-- IMU -->
       <sensor name="imu" type="imu">
-        <pose>0 0 0 0 0 0</pose>
         <always_on>true</always_on>
         <update_rate>100</update_rate>
         <imu>

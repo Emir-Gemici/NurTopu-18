@@ -2,49 +2,101 @@
 # Navitas TEKNOFEST 2026 — Konteynerli Simülasyon Video Kayıtçısı (HOST tarafı)
 #
 # Gazebo Classic 11'i Podman konteynerinde çalıştırır, sanal ekranda render eder,
-# İHA + İKA görevini oynatır ve mp4 olarak kaydeder. Host'un masaüstüne dokunmaz.
+# İHA + İKA görevini oynatır, mp4 kaydeder + hakem/model logu tutar. Host'a dokunmaz.
 #
 # Kullanım:
-#   ./record.sh                 → kolay, orta, zor (üçü de)
-#   ./record.sh orta            → sadece orta
-#   ./record.sh kolay zor       → seçili senaryolar
+#   ./record.sh             → 3 seviye SIRAYLA (kolay→orta→zor) TEK videoda
+#   ./record.sh orta        → SADECE o seviye
+#   ./record.sh zor --seed 7
+#   ./record.sh orta 1 --layout field   → moloz sahası düzeni (vars: clean = 3 net koridor)
 #
-# Çıktı: simulation/recordings/navitas_<senaryo>.mp4
+# Çıktı: simulation/recordings/v<id>/  (navitas.mp4 + hakem_log.txt) — her çalıştırma yeni v<id>
 set -e
 
 cd "$(dirname "$0")"
 SIM="$(cd .. && pwd)"               # navitas/simulation
+REPO="$(dirname "$SIM")"            # navitas/  (comms/ burada)
 OUTDIR="$SIM/recordings"
 IMAGE="navitas-gazebo:11"
 mkdir -p "$OUTDIR"
 
-# 1) İmaj yoksa derle
+# Argümanlar: seviye + --seed N + süre modu (1/0) + --layout + --map 1..5 (gerçekçi harita)
+SEED=42; SINGLE=""; LEVELS="kolay orta zor"; RT=0; LAYOUT=field; MAP=1
+while [ $# -gt 0 ]; do
+    case "$1" in
+        kolay|orta|zor) SINGLE="$1"; LEVELS="$1" ;;
+        0|1) RT="$1" ;;                          # süre modu: 1=gerçekçi, 0=süresiz
+        --realtime) RT="${2:-0}"; shift ;;
+        --realtime=*) RT="${1#--realtime=}" ;;
+        --seed) SEED="${2:-42}"; shift ;;
+        --seed=*) SEED="${1#--seed=}" ;;
+        --layout) LAYOUT="${2:-field}"; shift ;; # field=gerçekçi saha (vars.), clean=seyrek
+        --layout=*) LAYOUT="${1#--layout=}" ;;
+        --map) MAP="${2:-1}"; shift ;;           # gerçekçi harita no (1-5)
+        --map=*) MAP="${1#--map=}" ;;
+        *) echo "Bilinmeyen argüman: $1"; exit 1 ;;
+    esac
+    shift
+done
+case "$LAYOUT" in clean|field) ;; *) echo "Bilinmeyen layout: $LAYOUT (clean|field)"; exit 1 ;; esac
+case "$MAP" in 1|2|3|4|5) ;; *) echo "Bilinmeyen harita: $MAP (1-5)"; exit 1 ;; esac
+
+# İmaj yoksa derle
 if ! podman image exists "$IMAGE"; then
-    echo "[record] İmaj derleniyor: $IMAGE (ilk sefer ~2-4 dk, plugin derlemesi dahil)"
+    echo "[record] İmaj derleniyor: $IMAGE (ilk sefer ~2-4 dk)"
     podman build -t "$IMAGE" -f docker/Containerfile "$SIM"
 fi
 
-# 2) Senaryolar
-SCENARIOS=("$@")
-[ ${#SCENARIOS[@]} -eq 0 ] && SCENARIOS=(kolay orta zor)
+# Sıradaki versiyon (v1 yok say, en yüksek vN → vN+1)
+LAST=$(ls -d "$OUTDIR"/v[0-9]* 2>/dev/null | sed 's#.*/v##' | sort -n | tail -1)
+V=$(( ${LAST:-0} + 1 ))
+VDIR="$OUTDIR/v$V"; mkdir -p "$VDIR"
 
-# 3) Her senaryo için konteynerde kaydet
-for sc in "${SCENARIOS[@]}"; do
-    echo ""
-    echo "╔══════════════════════════════════════════╗"
-    echo "║  KAYIT: $sc"
-    echo "╚══════════════════════════════════════════╝"
-    podman run --rm \
-        -v "$SIM":/sim:Z \
-        -v "$OUTDIR":/out:Z \
-        --shm-size=1g \
-        -e GAZEBO_GUI_CAM="${GAZEBO_GUI_CAM:-}" \
-        "$IMAGE" \
-        bash /sim/docker/record_in_container.sh "$sc" 42 "/out/navitas_${sc}.mp4"
-done
+if [ -n "$SINGLE" ]; then OUTNAME="navitas_${SINGLE}.mp4"; else OUTNAME="navitas.mp4"; fi
+
+# İHA-HARİTALAMA İZLEYİCİSİ (DÜRÜST ZİNCİR) — host .venv'de ARKA PLANDA çalışır:
+# konteyner İHA tarama karelerini + poz logunu v$V/iha_scan_<seviye>/'ye canlı senkronlar;
+# tarama bitince (SCAN_DONE) izleyici ORTOMOZAİK kurar, GERÇEK modeli (best.pt) sim
+# taramasında koşar, İKA rotasını route.txt'ye yazar; konteyner rotayı İKA'ya verir.
+# Model yanılırsa İKA yanlış yola gider — sonuç DÜRÜSTTÜR (eski akıştaki gibi dünya
+# modelin kararına göre KURULMAZ). .venv yoksa İKA ground-truth fallback ile sürer
+# (plugin loglar; model başarısı sayılmaz).
+VENV="$REPO/.venv/bin/python"
+WATCHER_PID=""
+if [ -x "$VENV" ]; then
+    echo "[record] İHA-haritalama izleyicisi başlatıldı (host .venv, arka plan)"
+    "$VENV" "$SIM/scripts/iha_haritala.py" --watch "$VDIR" --levels "$LEVELS" \
+        > "$VDIR/iha_haritala.log" 2>&1 &
+    WATCHER_PID=$!
+else
+    echo "[record] (.venv yok — model koşamaz; İKA ground-truth FALLBACK ile sürecek)"
+fi
+
+echo ""
+echo "╔══════════════════════════════════════════╗"
+echo "║  KAYIT → v$V   seviye: $LEVELS   seed=$SEED   süre modu: $RT   layout: $LAYOUT   harita: $MAP"
+echo "╚══════════════════════════════════════════╝"
+# /sim (simulation) + /comms (haberleşme) mount; recordings /sim içinde (:z paylaşımlı).
+podman run --rm \
+    -v "$SIM":/sim:z \
+    -v "$REPO/comms":/comms:z \
+    --shm-size=1g \
+    -e GAZEBO_GUI_CAM="${GAZEBO_GUI_CAM:-}" \
+    -e NAVITAS_MAP="$MAP" \
+    "$IMAGE" \
+    bash /sim/docker/record_in_container.sh "$SEED" "/sim/recordings/v$V/$OUTNAME" "$LEVELS" "$RT" "$LAYOUT"
+
+# izleyiciyi kapat (normalde seviyeler bitince kendisi çıkar)
+if [ -n "$WATCHER_PID" ]; then
+    wait_s=0
+    while kill -0 "$WATCHER_PID" 2>/dev/null && [ "$wait_s" -lt 60 ]; do
+        sleep 2; wait_s=$(( wait_s + 2 ))
+    done
+    kill "$WATCHER_PID" 2>/dev/null || true
+fi
 
 echo ""
 echo "════════════════════════════════════════════"
-echo "  Tüm kayıtlar tamam → $OUTDIR"
-ls -lh "$OUTDIR"/*.mp4 2>/dev/null || echo "  (mp4 bulunamadı)"
+echo "  Kayıt tamam → $VDIR/"
+ls -lh "$VDIR"/ 2>/dev/null
 echo "════════════════════════════════════════════"

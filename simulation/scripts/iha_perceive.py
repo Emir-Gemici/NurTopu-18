@@ -1,0 +1,356 @@
+"""
+İHA ALGI — GERÇEK model çıkarımı (senin Colab'da eğittiğin best.pt).
+
+İHA kamerası gibi bir aerial görseli (ya da KLASÖR dolusu görseli) alır, YOLOv8-seg
+modelini çalıştırır, `codes/rpi_inference.py`'daki GERÇEK yol-karar mantığını
+(analyze_path) uygular ve açık yolu (1=sol/2=orta/3=sag) + güveni döndürür. Ground-truth
+DEĞİL — modelin gerçek çıktısı (yanlış da olabilir; gerçek simülasyon böyledir).
+
+Girdi önce KAREYE letterbox edilir → sonuç görsel boyutundan/oranından bağımsızdır.
+
+ÇIKTILAR (--save veya klasör verilince otomatik) → results/iha_algi/ altına:
+  <ad>_algi.jpg       : aerial görsel + traversable/blocked maske + waypoint + açık yol etiketi
+  <ad>_ika_harita.jpg : İKA navigasyon haritası (grid + sol/orta/sag + waypoint KOORDİNATLARI + hedef)
+  detections.json     : tüm görsellerin {road, label, conf, waypoints=[(x,y)...]} özeti (İKA için)
+
+VİDEO da verilebilir (mp4/mov/avi/mkv) → results/iha_algi/<ad>/ altına:
+  <ad>_algi.mp4       : overlay video (maske + karar + waypoint, gerçek süreyle oynar)
+  detections.json     : örneklenen her karenin {t_sn, road, label, conf, waypoints} kaydı
+                        + "ozet" (karar dağılımı, hakim karar, ort. güven) — İKA'ya
+                        comms.open_route(road, conf, waypoints) ile gidecek verinin aynısı.
+  --adim N            : her N. kare işlenir (vars. 15 → 30fps videoda sn'de 2 kare).
+
+Not: torch/ultralytics gerektirir → host .venv'de çalışır (Gazebo container'da değil).
+
+Kullanım:
+  .venv/bin/python simulation/scripts/iha_perceive.py --image test_images/ai/        # KLASÖR
+  .venv/bin/python simulation/scripts/iha_perceive.py --image foto.png               # tek görsel
+  .venv/bin/python simulation/scripts/iha_perceive.py --image ucus.mp4               # VİDEO
+  .venv/bin/python simulation/scripts/iha_perceive.py --image foto.png --json        # makine-okur
+  .venv/bin/python simulation/scripts/iha_perceive.py --image foto.png --no-save     # kaydetme
+"""
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "codes"))     # get_masks, analyze_path, draw_masks, generate_ika_map
+
+DEFAULT_MODEL = ROOT / "models" / "navitas_seg_v2_best.pt"
+OUT_DIR = ROOT / "results" / "iha_algi"
+LABEL = {1: "sol", 2: "orta", 3: "sag"}
+SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+VIDEO_EXT = {".mp4", ".mov", ".avi", ".mkv"}
+
+# Kanonik çıkarım boyutu — girdi ÇÖZÜNÜRLÜĞÜNDEN BAĞIMSIZ aynı sonuç için sabit.
+# (Ham görsel doğrudan verilince YOLO onu imgsz'e göre letterbox'lardı → 16:9'da
+#  ince yol 512'ye sıkışıp kaybolurdu. Biz önce KAREYE letterbox ediyoruz → determinist.)
+CANON = 1024
+
+
+def _letterbox_square(img, size, color=114):
+    """En-boy oranını KORUYARAK size×size kareye pad'ler (crop YOK → 3 şerit de korunur).
+    Döner: (kare_canvas, (x0, y0, nw, nh)) — gerçek içeriğin canvas'taki yeri."""
+    import cv2
+    import numpy as np
+    h, w = img.shape[:2]
+    s = size / max(h, w)
+    nw, nh = max(1, int(round(w * s))), max(1, int(round(h * s)))
+    resized = cv2.resize(img, (nw, nh), interpolation=cv2.INTER_AREA)
+    canvas = np.full((size, size, 3), color, dtype=img.dtype)
+    x0, y0 = (size - nw) // 2, (size - nh) // 2
+    canvas[y0:y0 + nh, x0:x0 + nw] = resized
+    return canvas, (x0, y0, nw, nh)
+
+
+CONF_FLOOR = 0.05   # tespit çıkmazsa otomatik inilecek alt eşik (düşük kontrastlı görsel)
+
+
+def _infer(img, model, conf, imgsz, dark_mode=None):
+    """Tek BGR görseli işle → (content_bgr, masks{0,1}, road, conf, waypoints, kazanan).
+    content = letterbox'un gerçek (pad'siz) bölgesi; waypoints content-piksel koordinatında.
+
+    HIZ: model CONF_FLOOR eşiğiyle BİR KEZ koşturulur; istenen conf ve (gerekirse)
+    taban eşik AYNI sonuçtan süzülür → eski 2-predict'lik fallback tek predict oldu.
+
+    Görüntü KARANLIKSA (gölge/loş — modelin bilinen zayıflığı) ışık-normalize edilmiş
+    kopya da denenir; DAHA ÇOK geçilebilir piksel bulan sonuç kazanır. Bu yarış
+    dark_mode ile yönetilir (video için — ardışık kareler benzer, her karede yarışmak
+    israf): None = otomatik yarış (görsel davranışı), "raw"/"norm" = tek yol zorla.
+    Dönen `kazanan` ("raw"|"norm") video döngüsünün kararı önbelleklemesi içindir."""
+    from rpi_inference import get_masks, analyze_path, normalize_light, is_dark
+
+    def run_full(im):
+        canvas, (x0, y0, nw, nh) = _letterbox_square(im, imgsz)
+        results = model.predict(canvas, imgsz=imgsz, conf=CONF_FLOOR, verbose=False)
+        masks = get_masks(results, imgsz, imgsz, min_conf=conf)
+        if int(masks[0][y0:y0 + nh, x0:x0 + nw].sum()) == 0 and conf > CONF_FLOOR:
+            masks = get_masks(results, imgsz, imgsz)   # taban eşik, predict TEKRARI YOK
+        content = canvas[y0:y0 + nh, x0:x0 + nw]
+        return content, {0: masks[0][y0:y0 + nh, x0:x0 + nw],
+                         1: masks[1][y0:y0 + nh, x0:x0 + nw]}
+
+    if dark_mode == "norm":
+        content, masks = run_full(normalize_light(img))
+        kazanan = "norm"
+    elif dark_mode == "raw" or not is_dark(img):
+        content, masks = run_full(img)
+        kazanan = "raw"
+    else:   # otomatik yarış (tek görseller + videonun periyodik yeniden-değerlendirmesi)
+        content, masks = run_full(img)
+        content2, masks2 = run_full(normalize_light(img))
+        kazanan = "raw"
+        if int(masks2[0].sum()) > int(masks[0].sum()):
+            content, masks, kazanan = content2, masks2, "norm"
+    road, confidence, wps = analyze_path(masks[0])
+    return content, masks, road, confidence, wps, kazanan
+
+
+def perceive(image_path, model_path=None, conf=0.15, imgsz=CANON):
+    """Görseli modelden geçir → (road|None, confidence, n_traversable_px). GERÇEK çıktı.
+    Geriye-uyumlu sade arayüz (iha_perceive_all, hakem_log bunu kullanır)."""
+    import cv2
+    from ultralytics import YOLO
+    model = YOLO(str(model_path or DEFAULT_MODEL), task="segment")
+    img = cv2.imread(str(image_path))
+    if img is None:
+        raise FileNotFoundError(image_path)
+    _content, masks, road, confidence, _wps, _kazanan = _infer(img, model, conf, imgsz)
+    return road, confidence, int(masks[0].sum())
+
+
+def _overlay(content, masks, road, confidence, wps, extra=""):
+    """Maske + waypoint + karar etiketini çiz → görselleştirilmiş kare (BGR)."""
+    import cv2
+    from rpi_inference import draw_masks, _draw_waypoints
+    vis = draw_masks(content, masks)
+    if road:
+        vis = _draw_waypoints(vis, wps)
+        info = f"ACIK YOL: {LABEL.get(road, '?').upper()} ({road})  guven: {confidence:.2f}"
+    else:
+        info = "TESPIT YOK"
+    cv2.putText(vis, info + extra, (12, 34), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
+    return vis
+
+
+def _save_outputs(name, content, masks, road, confidence, wps, out_dir):
+    """Algı overlay + İKA koordinat haritası kaydet. Döner: (algi_path, harita_path|None)."""
+    import cv2
+    from rpi_inference import generate_ika_map
+    out_dir.mkdir(parents=True, exist_ok=True)
+    h, w = content.shape[:2]
+
+    vis = _overlay(content, masks, road, confidence, wps)
+    algi_path = out_dir / f"{name}_algi.jpg"
+    cv2.imwrite(str(algi_path), vis)
+
+    harita_path = None
+    if road:
+        ika_map = generate_ika_map(wps, road, confidence, h, w)
+        harita_path = out_dir / f"{name}_ika_harita.jpg"
+        cv2.imwrite(str(harita_path), ika_map)
+    return algi_path, harita_path
+
+
+DARK_YENIDEN = 50   # video: raw/norm yarışı kaç işlenen karede bir tazelensin
+KARAR_PENCERE = 9   # video: karar yumuşatma penceresi (işlenen kare sayısı)
+
+
+class _FfmpegYazici:
+    """cv2.VideoWriter(mp4v) yerine ffmpeg/libx264 (crf 16) — belirgin daha kaliteli
+    ve daha küçük çıktı. ffmpeg yoksa çağıran cv2'ye düşer."""
+
+    def __init__(self, path, fps, w, h):
+        import subprocess
+        self.proc = subprocess.Popen(
+            ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "bgr24",
+             "-s", f"{w}x{h}", "-r", f"{fps:.3f}", "-i", "-",
+             "-c:v", "libx264", "-preset", "veryfast", "-crf", "16",
+             "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(path)],
+            stdin=subprocess.PIPE)
+
+    def write(self, frame):
+        self.proc.stdin.write(frame.tobytes())
+
+    def release(self):
+        self.proc.stdin.close()
+        self.proc.wait()
+
+
+def _yazici_ac(path, fps, w, h):
+    import shutil
+    import cv2
+    if shutil.which("ffmpeg"):
+        return _FfmpegYazici(path, fps, w, h)
+    vw = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+    vw.set(cv2.VIDEOWRITER_PROP_QUALITY, 100)
+    return vw
+
+
+def _process_video(video_path, model, conf, imgsz, out_dir, adim, save, json_mode):
+    """Videoyu karelere ayırıp modeli koşar → overlay mp4 + detections.json (İKA verisi).
+    Her `adim`. kare işlenir; çıktı video kaynak süresiyle aynı hızda oynar.
+
+    HIZ: karanlık raw/norm yarışı her karede değil DARK_YENIDEN karede bir yapılır
+    (ardışık kareler benzer ışıktadır), aradaki kareler kazanan yolla TEK predict koşar.
+    KALİTE: karar KARAR_PENCERE karelik çoğunluk oyuyla yumuşatılır (tek karelik
+    yanlış tespit ekranda SOL↔SAG diye titremez); JSON'da ham karar da durur."""
+    import time
+    from collections import Counter, deque
+    import cv2
+
+    cap = cv2.VideoCapture(str(video_path))
+    if not cap.isOpened():
+        raise FileNotFoundError(video_path)
+    src_fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    n_total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    out_dir = out_dir / video_path.stem
+    if save:
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+    writer, records, sayac = None, {}, {"sol": 0, "orta": 0, "sag": 0, "yok": 0}
+    conf_toplam, conf_n, i, islenen = 0.0, 0, 0, 0
+    dark_mode, son_kararlar = None, deque(maxlen=KARAR_PENCERE)
+    t_bas = time.time()
+    algi_path = out_dir / f"{video_path.stem}_algi.mp4"
+
+    while True:
+        ok, frame = cap.read()
+        if not ok:
+            break
+        if i % adim:
+            i += 1
+            continue
+        t_sn = i / src_fps
+        if islenen % DARK_YENIDEN == 0:
+            dark_mode = None    # yarışı tazele (ışık değişmiş olabilir)
+        content, masks, road, c, wps, dark_mode = _infer(frame, model, conf, imgsz,
+                                                         dark_mode=dark_mode)
+        label = LABEL.get(road, "yok")
+        sayac[label] += 1
+        son_kararlar.append(label)
+        duz_label = Counter(son_kararlar).most_common(1)[0][0]   # çoğunluk oyu
+        if road:
+            conf_toplam, conf_n = conf_toplam + c, conf_n + 1
+        records[f"{t_sn:08.2f}s"] = {"t_sn": round(t_sn, 2), "kare": i, "road": road,
+                                     "label": label, "label_yumusak": duz_label,
+                                     "conf": c,
+                                     "trav_px": int(masks[0].sum()), "waypoints": wps}
+        if save:
+            vis = _overlay(content, masks, road, c, wps,
+                           extra=f"  t={t_sn:.1f}s  akis: {duz_label.upper()}")
+            if writer is None:
+                h, w = vis.shape[:2]
+                writer = _yazici_ac(algi_path, max(src_fps / adim, 1.0), w, h)
+            writer.write(vis)
+        islenen += 1
+        if not json_mode and islenen % 20 == 0:
+            hiz = (time.time() - t_bas) / islenen
+            kalan = (n_total - i) / adim * hiz
+            print(f"[İHA-ALGI] {islenen} kare işlendi (video {t_sn:.0f}/"
+                  f"{n_total / src_fps:.0f}sn)  {hiz * 1000:.0f} ms/kare  "
+                  f"kalan ~{kalan / 60:.1f} dk  son: {label} {c}", flush=True)
+        i += 1
+    cap.release()
+    if writer:
+        writer.release()
+
+    hakim = max(sayac, key=sayac.get)
+    ozet = {"video": video_path.name, "kare_islendi": islenen, "adim": adim,
+            "karar_dagilimi": sayac, "hakim_karar": hakim,
+            "ort_guven": round(conf_toplam / conf_n, 3) if conf_n else None,
+            "sure_sn": round(time.time() - t_bas, 1)}
+    if save:
+        det_path = out_dir / "detections.json"
+        det_path.write_text(json.dumps({"ozet": ozet, "kareler": records},
+                                       ensure_ascii=False, indent=2), encoding="utf-8")
+    if json_mode:
+        print(json.dumps({"ozet": ozet, "kareler": records}, ensure_ascii=False, indent=2))
+    else:
+        print(f"[İHA-ALGI] BİTTİ ({ozet['sure_sn']}sn): {islenen} kare — karar dağılımı: "
+              f"{sayac}  hakim: {hakim.upper()}  ort.güven: {ozet['ort_guven']}")
+        if save:
+            print(f"[İHA-ALGI] çıktılar → {out_dir}/  ({algi_path.name} + detections.json)")
+    return ozet
+
+
+def _collect(path):
+    """Dosya veya klasörden desteklenen görselleri topla (sıralı)."""
+    p = Path(path)
+    if p.is_dir():
+        files = sorted(f for f in p.iterdir() if f.suffix.lower() in SUPPORTED_EXT)
+        if not files:
+            raise FileNotFoundError(f"Klasörde görsel yok: {p}")
+        return files
+    if p.is_file():
+        return [p]
+    raise FileNotFoundError(path)
+
+
+def main():
+    ap = argparse.ArgumentParser(description="İHA algı — gerçek model tespiti (dosya veya klasör)")
+    ap.add_argument("--image", required=True, help="görsel dosyası, klasör VEYA video (mp4/mov/avi/mkv)")
+    ap.add_argument("--model", default=None)
+    ap.add_argument("--conf", type=float, default=0.15)
+    ap.add_argument("--imgsz", type=int, default=CANON)
+    ap.add_argument("--out", default=str(OUT_DIR), help=f"çıktı klasörü (vars: {OUT_DIR})")
+    ap.add_argument("--no-save", action="store_true", help="görsel/harita kaydetme, sadece yazdır")
+    ap.add_argument("--json", action="store_true", help="makine-okur JSON çıktı")
+    ap.add_argument("--adim", type=int, default=15,
+                    help="video: her N. kareyi işle (vars. 15 → 30fps'te sn'de 2 kare)")
+    args = ap.parse_args()
+
+    import cv2
+    from ultralytics import YOLO
+
+    girdi = Path(args.image)
+    if girdi.suffix.lower() in VIDEO_EXT:
+        model = YOLO(str(args.model or DEFAULT_MODEL), task="segment")
+        _process_video(girdi, model, args.conf, args.imgsz, Path(args.out),
+                       max(1, args.adim), not args.no_save, args.json)
+        return
+
+    files = _collect(args.image)
+    model = YOLO(str(args.model or DEFAULT_MODEL), task="segment")   # bir kez yükle
+    out_dir = Path(args.out)
+    save = not args.no_save
+
+    records = {}
+    for f in files:
+        img = cv2.imread(str(f))
+        if img is None:
+            print(f"[İHA-ALGI] {f.name}: OKUNAMADI", file=sys.stderr)
+            continue
+        content, masks, road, conf, wps, _ = _infer(img, model, args.conf, args.imgsz)
+        label = LABEL.get(road, "yok")
+        trav_px = int(masks[0].sum())
+        rec = {"road": road, "label": label, "conf": conf,
+               "trav_px": trav_px, "waypoints": wps, "image": f.name}
+
+        if save:
+            algi_p, harita_p = _save_outputs(f.stem, content, masks, road, conf, wps, out_dir)
+            rec["algi"] = str(algi_p)
+            rec["ika_harita"] = str(harita_p) if harita_p else None
+        records[f.name] = rec
+
+        if not args.json:
+            if road:
+                extra = f"  → {Path(rec['ika_harita']).name}" if save and rec.get("ika_harita") else ""
+                print(f"[İHA-ALGI] {f.name} → AÇIK YOL: {label.upper()} ({road})  "
+                      f"güven={conf}  wp={len(wps)}  trav_px={trav_px}{extra}")
+            else:
+                print(f"[İHA-ALGI] {f.name} → TESPİT YOK (model yol bulamadı)  trav_px={trav_px}")
+
+    if save:
+        det_path = out_dir / "detections.json"
+        det_path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
+        if not args.json:
+            print(f"[İHA-ALGI] {len(records)} görsel işlendi → {out_dir}/  (özet: {det_path.name})")
+
+    if args.json:
+        print(json.dumps(records, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
