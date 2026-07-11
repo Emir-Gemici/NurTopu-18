@@ -1,0 +1,1385 @@
+{
+  "ozet": {
+    "video": "WhatsApp Video 2026-07-06 at 2.23.32 PM.mp4",
+    "kare_islendi": 69,
+    "adim": 60,
+    "karar_dagilimi": {
+      "sol": 19,
+      "orta": 9,
+      "sag": 21,
+      "yok": 20
+    },
+    "hakim_karar": "sag",
+    "ort_guven": 0.929,
+    "sure_sn": 38.4
+  },
+  "kareler": {
+    "00000.00s": {
+      "t_sn": 0.0,
+      "kare": 0,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00002.00s": {
+      "t_sn": 2.0,
+      "kare": 60,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 8930,
+      "waypoints": [
+        [
+          926,
+          0
+        ]
+      ]
+    },
+    "00004.00s": {
+      "t_sn": 4.0,
+      "kare": 120,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "yok",
+      "conf": 0.835,
+      "trav_px": 17277,
+      "waypoints": [
+        [
+          427,
+          144
+        ],
+        [
+          372,
+          105
+        ],
+        [
+          357,
+          71
+        ]
+      ]
+    },
+    "00006.00s": {
+      "t_sn": 6.0,
+      "kare": 180,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "yok",
+      "conf": 0.959,
+      "trav_px": 43106,
+      "waypoints": [
+        [
+          98,
+          144
+        ],
+        [
+          169,
+          72
+        ],
+        [
+          145,
+          0
+        ]
+      ]
+    },
+    "00008.00s": {
+      "t_sn": 8.0,
+      "kare": 240,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 835,
+      "waypoints": [
+        [
+          1023,
+          0
+        ]
+      ]
+    },
+    "00010.00s": {
+      "t_sn": 10.0,
+      "kare": 300,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 1872,
+      "waypoints": [
+        [
+          794,
+          360
+        ],
+        [
+          800,
+          351
+        ]
+      ]
+    },
+    "00012.00s": {
+      "t_sn": 12.0,
+      "kare": 360,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 2447,
+      "waypoints": [
+        [
+          572,
+          85
+        ],
+        [
+          577,
+          55
+        ]
+      ]
+    },
+    "00014.00s": {
+      "t_sn": 14.0,
+      "kare": 420,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 7592,
+      "waypoints": [
+        [
+          13,
+          0
+        ]
+      ]
+    },
+    "00016.00s": {
+      "t_sn": 16.0,
+      "kare": 480,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00018.00s": {
+      "t_sn": 18.0,
+      "kare": 540,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "sag",
+      "conf": 0.909,
+      "trav_px": 10627,
+      "waypoints": [
+        [
+          569,
+          575
+        ]
+      ]
+    },
+    "00020.00s": {
+      "t_sn": 20.0,
+      "kare": 600,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "orta",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00022.00s": {
+      "t_sn": 22.0,
+      "kare": 660,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 3920,
+      "waypoints": [
+        [
+          842,
+          72
+        ],
+        [
+          868,
+          46
+        ]
+      ]
+    },
+    "00024.00s": {
+      "t_sn": 24.0,
+      "kare": 720,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 0.714,
+      "trav_px": 224176,
+      "waypoints": [
+        [
+          554,
+          575
+        ],
+        [
+          921,
+          475
+        ],
+        [
+          926,
+          431
+        ],
+        [
+          491,
+          337
+        ],
+        [
+          727,
+          232
+        ],
+        [
+          727,
+          215
+        ],
+        [
+          729,
+          143
+        ]
+      ]
+    },
+    "00026.00s": {
+      "t_sn": 26.0,
+      "kare": 780,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00028.00s": {
+      "t_sn": 28.0,
+      "kare": 840,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 28226,
+      "waypoints": [
+        [
+          194,
+          144
+        ],
+        [
+          213,
+          137
+        ],
+        [
+          105,
+          44
+        ]
+      ]
+    },
+    "00030.00s": {
+      "t_sn": 30.0,
+      "kare": 900,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 52866,
+      "waypoints": [
+        [
+          263,
+          360
+        ],
+        [
+          176,
+          326
+        ],
+        [
+          140,
+          287
+        ],
+        [
+          50,
+          215
+        ]
+      ]
+    },
+    "00032.00s": {
+      "t_sn": 32.0,
+      "kare": 960,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "yok",
+      "conf": 0.859,
+      "trav_px": 27419,
+      "waypoints": [
+        [
+          591,
+          575
+        ],
+        [
+          574,
+          503
+        ]
+      ]
+    },
+    "00034.00s": {
+      "t_sn": 34.0,
+      "kare": 1020,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 36215,
+      "waypoints": [
+        [
+          76,
+          288
+        ],
+        [
+          108,
+          264
+        ],
+        [
+          0,
+          211
+        ],
+        [
+          0,
+          143
+        ]
+      ]
+    },
+    "00036.00s": {
+      "t_sn": 36.0,
+      "kare": 1080,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 45314,
+      "waypoints": [
+        [
+          134,
+          360
+        ],
+        [
+          134,
+          315
+        ],
+        [
+          83,
+          287
+        ]
+      ]
+    },
+    "00038.00s": {
+      "t_sn": 38.0,
+      "kare": 1140,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sol",
+      "conf": 0.868,
+      "trav_px": 157637,
+      "waypoints": [
+        [
+          438,
+          360
+        ],
+        [
+          437,
+          311
+        ],
+        [
+          555,
+          216
+        ],
+        [
+          769,
+          146
+        ],
+        [
+          767,
+          143
+        ],
+        [
+          734,
+          70
+        ]
+      ]
+    },
+    "00040.00s": {
+      "t_sn": 40.0,
+      "kare": 1200,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 0.941,
+      "trav_px": 138382,
+      "waypoints": [
+        [
+          60,
+          504
+        ],
+        [
+          45,
+          432
+        ],
+        [
+          0,
+          395
+        ],
+        [
+          0,
+          288
+        ],
+        [
+          0,
+          252
+        ],
+        [
+          20,
+          215
+        ],
+        [
+          32,
+          143
+        ],
+        [
+          173,
+          71
+        ]
+      ]
+    },
+    "00042.00s": {
+      "t_sn": 42.0,
+      "kare": 1260,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 80374,
+      "waypoints": [
+        [
+          1014,
+          144
+        ],
+        [
+          804,
+          72
+        ],
+        [
+          808,
+          67
+        ]
+      ]
+    },
+    "00044.00s": {
+      "t_sn": 44.0,
+      "kare": 1320,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 30831,
+      "waypoints": [
+        [
+          335,
+          288
+        ],
+        [
+          253,
+          245
+        ],
+        [
+          194,
+          194
+        ],
+        [
+          135,
+          143
+        ]
+      ]
+    },
+    "00046.00s": {
+      "t_sn": 46.0,
+      "kare": 1380,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 56195,
+      "waypoints": [
+        [
+          151,
+          288
+        ],
+        [
+          183,
+          237
+        ],
+        [
+          165,
+          215
+        ],
+        [
+          76,
+          143
+        ],
+        [
+          47,
+          71
+        ]
+      ]
+    },
+    "00048.00s": {
+      "t_sn": 48.0,
+      "kare": 1440,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 4688,
+      "waypoints": [
+        [
+          11,
+          72
+        ],
+        [
+          0,
+          49
+        ]
+      ]
+    },
+    "00050.00s": {
+      "t_sn": 50.0,
+      "kare": 1500,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sol",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00052.00s": {
+      "t_sn": 52.0,
+      "kare": 1560,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 7179,
+      "waypoints": [
+        [
+          412,
+          538
+        ],
+        [
+          410,
+          499
+        ]
+      ]
+    },
+    "00054.00s": {
+      "t_sn": 54.0,
+      "kare": 1620,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sol",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00056.00s": {
+      "t_sn": 56.0,
+      "kare": 1680,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 11990,
+      "waypoints": [
+        [
+          1023,
+          72
+        ],
+        [
+          919,
+          0
+        ]
+      ]
+    },
+    "00058.00s": {
+      "t_sn": 58.0,
+      "kare": 1740,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 0.877,
+      "trav_px": 40586,
+      "waypoints": [
+        [
+          521,
+          72
+        ],
+        [
+          818,
+          0
+        ]
+      ]
+    },
+    "00060.00s": {
+      "t_sn": 60.0,
+      "kare": 1800,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sol",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00062.00s": {
+      "t_sn": 62.0,
+      "kare": 1860,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 34850,
+      "waypoints": [
+        [
+          101,
+          504
+        ],
+        [
+          5,
+          432
+        ],
+        [
+          0,
+          427
+        ],
+        [
+          0,
+          356
+        ],
+        [
+          0,
+          287
+        ]
+      ]
+    },
+    "00064.00s": {
+      "t_sn": 64.0,
+      "kare": 1920,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 1480,
+      "waypoints": [
+        [
+          0,
+          575
+        ]
+      ]
+    },
+    "00066.00s": {
+      "t_sn": 66.0,
+      "kare": 1980,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 45787,
+      "waypoints": [
+        [
+          67,
+          504
+        ],
+        [
+          0,
+          432
+        ],
+        [
+          0,
+          431
+        ],
+        [
+          0,
+          339
+        ],
+        [
+          0,
+          287
+        ],
+        [
+          0,
+          215
+        ]
+      ]
+    },
+    "00068.00s": {
+      "t_sn": 68.0,
+      "kare": 2040,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 8958,
+      "waypoints": [
+        [
+          997,
+          72
+        ],
+        [
+          954,
+          27
+        ]
+      ]
+    },
+    "00070.00s": {
+      "t_sn": 70.0,
+      "kare": 2100,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 0.878,
+      "trav_px": 20824,
+      "waypoints": [
+        [
+          1007,
+          97
+        ],
+        [
+          811,
+          0
+        ]
+      ]
+    },
+    "00072.00s": {
+      "t_sn": 72.0,
+      "kare": 2160,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00074.00s": {
+      "t_sn": 74.0,
+      "kare": 2220,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "sag",
+      "conf": 0.824,
+      "trav_px": 82272,
+      "waypoints": [
+        [
+          637,
+          144
+        ],
+        [
+          642,
+          72
+        ],
+        [
+          439,
+          0
+        ]
+      ]
+    },
+    "00076.00s": {
+      "t_sn": 76.0,
+      "kare": 2280,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 0.673,
+      "trav_px": 25771,
+      "waypoints": [
+        [
+          734,
+          72
+        ],
+        [
+          314,
+          0
+        ]
+      ]
+    },
+    "00078.00s": {
+      "t_sn": 78.0,
+      "kare": 2340,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sol",
+      "conf": 0.841,
+      "trav_px": 186365,
+      "waypoints": [
+        [
+          740,
+          504
+        ],
+        [
+          745,
+          432
+        ],
+        [
+          762,
+          361
+        ],
+        [
+          760,
+          350
+        ],
+        [
+          696,
+          267
+        ],
+        [
+          731,
+          215
+        ],
+        [
+          780,
+          142
+        ],
+        [
+          908,
+          0
+        ]
+      ]
+    },
+    "00080.00s": {
+      "t_sn": 80.0,
+      "kare": 2400,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 0.787,
+      "trav_px": 244701,
+      "waypoints": [
+        [
+          480,
+          504
+        ],
+        [
+          552,
+          432
+        ],
+        [
+          624,
+          360
+        ],
+        [
+          717,
+          334
+        ],
+        [
+          730,
+          287
+        ],
+        [
+          751,
+          215
+        ],
+        [
+          750,
+          143
+        ],
+        [
+          737,
+          71
+        ]
+      ]
+    },
+    "00082.00s": {
+      "t_sn": 82.0,
+      "kare": 2460,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 0.731,
+      "trav_px": 21690,
+      "waypoints": [
+        [
+          760,
+          575
+        ]
+      ]
+    },
+    "00084.00s": {
+      "t_sn": 84.0,
+      "kare": 2520,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00086.00s": {
+      "t_sn": 86.0,
+      "kare": 2580,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 11337,
+      "waypoints": [
+        [
+          535,
+          72
+        ],
+        [
+          582,
+          14
+        ]
+      ]
+    },
+    "00088.00s": {
+      "t_sn": 88.0,
+      "kare": 2640,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 0.844,
+      "trav_px": 20475,
+      "waypoints": [
+        [
+          889,
+          144
+        ],
+        [
+          898,
+          139
+        ]
+      ]
+    },
+    "00090.00s": {
+      "t_sn": 90.0,
+      "kare": 2700,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00092.00s": {
+      "t_sn": 92.0,
+      "kare": 2760,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 25845,
+      "waypoints": [
+        [
+          88,
+          216
+        ],
+        [
+          99,
+          167
+        ],
+        [
+          199,
+          143
+        ]
+      ]
+    },
+    "00094.00s": {
+      "t_sn": 94.0,
+      "kare": 2820,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 1548,
+      "waypoints": [
+        [
+          704,
+          511
+        ],
+        [
+          698,
+          503
+        ]
+      ]
+    },
+    "00096.00s": {
+      "t_sn": 96.0,
+      "kare": 2880,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sag",
+      "conf": 0.925,
+      "trav_px": 95149,
+      "waypoints": [
+        [
+          78,
+          504
+        ],
+        [
+          31,
+          432
+        ],
+        [
+          0,
+          360
+        ],
+        [
+          0,
+          359
+        ],
+        [
+          0,
+          234
+        ],
+        [
+          20,
+          215
+        ],
+        [
+          137,
+          143
+        ],
+        [
+          370,
+          71
+        ]
+      ]
+    },
+    "00098.00s": {
+      "t_sn": 98.0,
+      "kare": 2940,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00100.00s": {
+      "t_sn": 100.0,
+      "kare": 3000,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 19690,
+      "waypoints": [
+        [
+          16,
+          144
+        ],
+        [
+          97,
+          113
+        ],
+        [
+          120,
+          71
+        ]
+      ]
+    },
+    "00102.00s": {
+      "t_sn": 102.0,
+      "kare": 3060,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sag",
+      "conf": 1.0,
+      "trav_px": 2231,
+      "waypoints": [
+        [
+          928,
+          447
+        ],
+        [
+          919,
+          431
+        ]
+      ]
+    },
+    "00104.00s": {
+      "t_sn": 104.0,
+      "kare": 3120,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 28258,
+      "waypoints": [
+        [
+          15,
+          144
+        ],
+        [
+          0,
+          108
+        ],
+        [
+          0,
+          71
+        ]
+      ]
+    },
+    "00106.00s": {
+      "t_sn": 106.0,
+      "kare": 3180,
+      "road": 1,
+      "label": "sol",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 35174,
+      "waypoints": [
+        [
+          0,
+          360
+        ],
+        [
+          0,
+          313
+        ],
+        [
+          0,
+          287
+        ],
+        [
+          26,
+          215
+        ]
+      ]
+    },
+    "00108.00s": {
+      "t_sn": 108.0,
+      "kare": 3240,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sol",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00110.00s": {
+      "t_sn": 110.0,
+      "kare": 3300,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sol",
+      "conf": 0.517,
+      "trav_px": 152129,
+      "waypoints": [
+        [
+          740,
+          549
+        ],
+        [
+          713,
+          503
+        ],
+        [
+          699,
+          431
+        ],
+        [
+          693,
+          359
+        ],
+        [
+          682,
+          287
+        ]
+      ]
+    },
+    "00112.00s": {
+      "t_sn": 112.0,
+      "kare": 3360,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sol",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00114.00s": {
+      "t_sn": 114.0,
+      "kare": 3420,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "yok",
+      "conf": 0.533,
+      "trav_px": 21781,
+      "waypoints": [
+        [
+          521,
+          0
+        ]
+      ]
+    },
+    "00116.00s": {
+      "t_sn": 116.0,
+      "kare": 3480,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "sol",
+      "conf": 1.0,
+      "trav_px": 12517,
+      "waypoints": [
+        [
+          731,
+          575
+        ],
+        [
+          747,
+          503
+        ]
+      ]
+    },
+    "00118.00s": {
+      "t_sn": 118.0,
+      "kare": 3540,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "sag",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00120.00s": {
+      "t_sn": 120.0,
+      "kare": 3600,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00122.00s": {
+      "t_sn": 122.0,
+      "kare": 3660,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00124.00s": {
+      "t_sn": 124.0,
+      "kare": 3720,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00126.00s": {
+      "t_sn": 126.0,
+      "kare": 3780,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00128.00s": {
+      "t_sn": 128.0,
+      "kare": 3840,
+      "road": 2,
+      "label": "orta",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 5356,
+      "waypoints": [
+        [
+          488,
+          72
+        ],
+        [
+          486,
+          63
+        ]
+      ]
+    },
+    "00130.00s": {
+      "t_sn": 130.0,
+      "kare": 3900,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    },
+    "00132.00s": {
+      "t_sn": 132.0,
+      "kare": 3960,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 15503,
+      "waypoints": [
+        [
+          745,
+          527
+        ],
+        [
+          741,
+          502
+        ],
+        [
+          732,
+          412
+        ],
+        [
+          708,
+          359
+        ]
+      ]
+    },
+    "00134.00s": {
+      "t_sn": 134.0,
+      "kare": 4020,
+      "road": 3,
+      "label": "sag",
+      "label_yumusak": "yok",
+      "conf": 1.0,
+      "trav_px": 20988,
+      "waypoints": [
+        [
+          1023,
+          532
+        ],
+        [
+          989,
+          503
+        ],
+        [
+          952,
+          431
+        ]
+      ]
+    },
+    "00136.00s": {
+      "t_sn": 136.0,
+      "kare": 4080,
+      "road": null,
+      "label": "yok",
+      "label_yumusak": "yok",
+      "conf": 0.0,
+      "trav_px": 0,
+      "waypoints": []
+    }
+  }
+}

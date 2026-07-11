@@ -1,0 +1,84 @@
+{
+  "1.jpg": {
+    "road": 2,
+    "label": "orta",
+    "conf": 0.402,
+    "trav_px": 699163,
+    "waypoints": [
+      [
+        169,
+        896
+      ],
+      [
+        277,
+        768
+      ],
+      [
+        302,
+        640
+      ],
+      [
+        303,
+        512
+      ],
+      [
+        303,
+        461
+      ],
+      [
+        356,
+        383
+      ],
+      [
+        605,
+        255
+      ],
+      [
+        690,
+        127
+      ]
+    ],
+    "image": "1.jpg",
+    "algi": "/home/trs/trs/github/navitas/results/iha_algi/1_algi.jpg",
+    "ika_harita": "/home/trs/trs/github/navitas/results/iha_algi/1_ika_harita.jpg"
+  },
+  "2.png": {
+    "road": 2,
+    "label": "orta",
+    "conf": 0.617,
+    "trav_px": 219227,
+    "waypoints": [
+      [
+        546,
+        504
+      ],
+      [
+        510,
+        432
+      ],
+      [
+        461,
+        366
+      ],
+      [
+        462,
+        356
+      ],
+      [
+        431,
+        287
+      ],
+      [
+        387,
+        215
+      ],
+      [
+        188,
+        143
+      ]
+    ],
+    "image": "2.png",
+    "algi": "/home/trs/trs/github/navitas/results/iha_algi/2_algi.jpg",
+    "ika_harita": "/home/trs/trs/github/navitas/results/iha_algi/2_ika_harita.jpg"
+  }
+}

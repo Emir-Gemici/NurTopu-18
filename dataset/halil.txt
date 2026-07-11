@@ -1,0 +1,115 @@
+================================================================================
+NAVITAS — TAKIM GÖRSEL ÜRETİM PAKETİ  A  (Standart / Net sahneler)
+================================================================================
+PROJE : Navitas — Otonom navigasyon & engel tespiti için aerial görsel üretimi
+DOSYA : takim_promptlar_A.txt   |   ID: TA01–TA10
+KULLANIM: Her promptu GPT/Gemini'ye ver, çıkan görseli ID ile kaydet → TA01.png ...
+
+────────────────────────────────────────────────────────────────────────────────
+⚠️  İLK 5 (TA01–TA05) KESİNLİKLE KUSURSUZ OLMALI
+    Test sürecinde önce bu 5'i inceliyorlar. İlk 5 tamsa gerisi de tam sayılıyor.
+    Bu 5'te HİÇBİR belirsizlik olmayacak: net 3 yol, net 1 açık, net 2 kapalı.
+────────────────────────────────────────────────────────────────────────────────
+
+ŞABLON (zorunlu format):
+    TA<id> | TÜR | ACIK_YOL: <sol/orta/sag> | NUMARA: <1/2/3>
+
+ZORUNLU KURALLAR (her görsel):
+  • Açı: TAM tepeden, 90° nadir (dümdüz aşağı). Ufuk YOK, gökyüzü YOK, perspektif YOK.
+  • Çözünürlük: 1024×1024.  Tarz: fotogerçekçi (çizim/illüstrasyon değil).
+  • İçerik: SADECE moloz, yıkık bina, yol yüzeyi. İnsan / araç / hayvan / askeri teçhizat YOK.
+  • YÖN: sol(1)=sol-üst köşeye giden yol, orta(2)=tam üste, sag(3)=sağ-üst köşeye.
+
+❌ YAPILMAZ (geçmiş hatalar — modeli şaşırtıyor):
+  • ASLA 2 yol olmasın → HER görselde TAM 3 yol (Y veya T kavşağı).
+  • ASLA iki yol birden açık olmasın → TAM 1 yol açık, diğer 2 TAMAMEN kapalı.
+  • Açık yol baştan sona sürülebilir; kapalı yollar moloz ile uçtan uca tıkalı (kısmi değil).
+  • Fazladan ara yol / sokak / patika ekleme. Sadece 3 yol.
+================================================================================
+
+
+────────────────── İLK 5 — KUSURSUZ / NET (TA01–TA05) ──────────────────
+
+=== TA01 | NET | ACIK_YOL: sag | NUMARA: 3 ===
+Exactly 90-degree top-down nadir aerial photograph, camera pointing straight down, no
+horizon, no sky, no perspective. Post-earthquake destroyed city block. Exactly THREE roads
+meet at one central Y-junction — no fourth road, no side alleys. The RIGHT road leads
+toward the upper-right corner: clean bare compressed dirt, fully passable end to end, no
+debris. The LEFT road (toward upper-left) is COMPLETELY buried wall-to-wall under a
+collapsed concrete building — slabs and rebar, impassable. The CENTER road (toward top) is
+COMPLETELY blocked wall-to-wall by stacked broken masonry, impassable. Even daytime light,
+no strong shadows on roads. Only rubble, ruined buildings, road surfaces — no people, no
+vehicles, no military. Photorealistic aerial photo, 1024x1024.
+
+=== TA02 | NET | ACIK_YOL: sol | NUMARA: 1 ===
+Exact 90-degree nadir top-down aerial photo, straight down, no horizon, no perspective.
+Post-disaster demolished neighborhood. Exactly THREE roads at one central Y-junction. The
+LEFT road toward the upper-left corner: clear cracked asphalt, fully passable, no blockage.
+The CENTER road (toward top) COMPLETELY blocked wall-to-wall by a fallen concrete facade.
+The RIGHT road (toward upper-right) COMPLETELY blocked wall-to-wall by dense broken brick
+rubble. Flat even daylight, no confusing shadows. Only debris, ruins, road surfaces — no
+humans, vehicles, animals, military. Photorealistic, 1024x1024.
+
+=== TA03 | NET | ACIK_YOL: orta | NUMARA: 2 ===
+Direct 90-degree overhead nadir aerial photograph, pointing straight down, no horizon, no
+sky. Post-conflict ruined urban zone. Exactly THREE roads at one central Y-junction. The
+CENTER road runs straight toward the top of the frame: passable packed earth and broken
+asphalt, clear and continuous. The LEFT road (upper-left) COMPLETELY blocked wall-to-wall
+by an enormous collapsed floor slab. The RIGHT road (upper-right) COMPLETELY buried
+wall-to-wall under collapsed walls. Even midday light, minimal shadow. Only rubble and
+roads, no people/vehicles/military. Photorealistic aerial, 1024x1024.
+
+=== TA04 | NET | ACIK_YOL: sag | NUMARA: 3 ===
+Top-down 90-degree nadir drone photograph, straight down, no horizon, no perspective.
+Earthquake-flattened settlement. Exactly THREE roads at one central T-junction. The RIGHT
+road toward the upper-right: clean continuous bare soil path, fully passable. The LEFT road
+(upper-left) COMPLETELY blocked wall-to-wall by a toppled stone-and-concrete wall. The
+CENTER road (top) COMPLETELY buried wall-to-wall under collapsed roof tiles and beams.
+Soft even daylight, no harsh shadows across roads. Only debris/ruins/roads — no humans,
+vehicles, animals, military. Photorealistic, 1024x1024.
+
+=== TA05 | NET | ACIK_YOL: sol | NUMARA: 1 ===
+Exact nadir 90-degree top-down aerial photo, camera straight down, no horizon. Post-flood
+ruined district, dried mud. Exactly THREE roads at one central Y-junction. The LEFT road
+toward the upper-left corner: clear passable road surface, continuous, no debris. The
+CENTER road (top) COMPLETELY blocked wall-to-wall by collapsed building rubble. The RIGHT
+road (upper-right) COMPLETELY blocked wall-to-wall by piled broken concrete. Even overcast
+daylight, no strong shadows. Only rubble, ruins, road surfaces — no people, vehicles,
+military. Photorealistic aerial photo, 1024x1024.
+
+
+────────────── EK KOMBİNASYONLAR (TA06–TA10) — farklı sahneler ──────────────
+
+=== TA06 | NET | ACIK_YOL: orta | NUMARA: 2 ===
+90-degree nadir top-down aerial, straight down. Destroyed industrial zone. Exactly THREE
+roads at a central Y-junction. CENTER road open and passable toward top (clear concrete).
+LEFT and RIGHT roads COMPLETELY blocked wall-to-wall by collapsed steel and concrete
+debris. Even daylight. Only debris/roads, no people/vehicles/military. Photorealistic,
+1024x1024.
+
+=== TA07 | NET | ACIK_YOL: sag | NUMARA: 3 ===
+Exact overhead 90-degree nadir photo, straight down, no horizon. Ruined residential block.
+Exactly THREE roads at a T-junction. RIGHT road toward upper-right open and passable (bare
+dirt). LEFT and CENTER roads COMPLETELY blocked wall-to-wall by heavy concrete rubble.
+Even light. Only rubble/ruins/roads, no humans/vehicles/military. Photorealistic,
+1024x1024.
+
+=== TA08 | NET | ACIK_YOL: sol | NUMARA: 1 ===
+Top-down 90-degree nadir aerial, straight down. Collapsed town center. Exactly THREE roads
+at a Y-junction. LEFT road toward upper-left open, passable cracked asphalt. CENTER and
+RIGHT roads COMPLETELY blocked wall-to-wall by collapsed facades and brick rubble. Flat
+even daylight. Only debris/roads, no people/vehicles/military. Photorealistic, 1024x1024.
+
+=== TA09 | NET | ACIK_YOL: orta | NUMARA: 2 ===
+Direct nadir 90-degree top-down photo, straight down, no horizon. Earthquake-destroyed
+quarter. Exactly THREE roads at a Y-junction. CENTER road toward top open and passable
+(packed earth). LEFT and RIGHT roads COMPLETELY blocked wall-to-wall by collapsed masonry.
+Even daylight. Only rubble/ruins/roads, no humans/vehicles/military. Photorealistic,
+1024x1024.
+
+=== TA10 | NET | ACIK_YOL: sag | NUMARA: 3 ===
+Exact 90-degree nadir overhead aerial, straight down. Post-disaster urban ruins. Exactly
+THREE roads at a T-junction. RIGHT road toward upper-right open, continuous passable dirt.
+LEFT and CENTER roads COMPLETELY blocked wall-to-wall by collapsed concrete and rubble.
+Even light, no strong road shadows. Only debris/roads, no people/vehicles/military.
+Photorealistic, 1024x1024.

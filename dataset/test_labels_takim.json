@@ -1,0 +1,182 @@
+{
+  "TA01": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TA02": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TA03": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TA04": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TA05": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TA06": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TA07": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TA08": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TA09": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TA10": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TB01": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TB02": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TB03": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TB04": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TB05": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TB06": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TB07": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TB08": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TB09": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TB10": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TC01": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TC02": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TC03": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TC04": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TC05": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TC06": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TC07": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  },
+  "TC08": {
+    "type": "takim",
+    "open_road": 2,
+    "direction": "orta",
+    "trick": null
+  },
+  "TC09": {
+    "type": "takim",
+    "open_road": 3,
+    "direction": "sag",
+    "trick": null
+  },
+  "TC10": {
+    "type": "takim",
+    "open_road": 1,
+    "direction": "sol",
+    "trick": null
+  }
+}
