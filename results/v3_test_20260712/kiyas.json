@@ -1,0 +1,17 @@
+{
+  "v1 (rescuenet_seg_v1)": {
+    "genel": 0.619,
+    "traversable": 0.874,
+    "blocked": 0.363
+  },
+  "v2 (navitas_seg_v2)": {
+    "genel": 0.595,
+    "traversable": 0.868,
+    "blocked": 0.322
+  },
+  "v3 (navitas_seg_v3) ⭐": {
+    "genel": 0.6273,
+    "traversable": 0.8521,
+    "blocked": 0.4026
+  }
+}

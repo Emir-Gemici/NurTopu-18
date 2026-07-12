@@ -95,7 +95,14 @@ results/**/*.mp4
 navitas_model/
 navitas_model.zip
 
+# Yerel eğitim çalışma alanı (asıl kopya O:\navitas-local-train — repo dışı)
+navitas-local-train/
+
 # Python çöpü
 __pycache__/
 *.pyc
 navitas_v2_val_*.zip
+navitas_v3_*.zip
+yolov8s-seg.pt
+yolov8m-seg.pt
+yolo26n.pt

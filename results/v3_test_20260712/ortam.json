@@ -1,0 +1,9 @@
+{
+  "tarih": "2026-07-12T00:58:18.319359",
+  "python": "3.13.7",
+  "torch": "2.11.0+cu128",
+  "ultralytics": "8.4.92",
+  "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "vram_gb": 17.1,
+  "makine": "yerel — Yunus"
+}

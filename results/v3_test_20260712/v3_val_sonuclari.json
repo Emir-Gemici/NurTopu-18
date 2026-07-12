@@ -1,0 +1,25 @@
+{
+  "genel": {
+    "mask_mAP50": 0.6273,
+    "mask_mAP50_95": 0.4037,
+    "box_mAP50": 0.6461,
+    "mask_precision": 0.6453,
+    "mask_recall": 0.62
+  },
+  "sinif": {
+    "traversable": {
+      "mask_mAP50": 0.8521,
+      "mask_mAP50_95": 0.5444
+    },
+    "blocked": {
+      "mask_mAP50": 0.4026,
+      "mask_mAP50_95": 0.263
+    }
+  },
+  "hiz_ms": {
+    "preprocess": 0.8432911558482213,
+    "inference": 2.873871428733628,
+    "loss": 0.00031700565283294437,
+    "postprocess": 1.4084908164099974
+  }
+}

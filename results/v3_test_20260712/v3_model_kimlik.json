@@ -1,0 +1,7 @@
+{
+  "sha256": "8e8d46a6fc32b20c65c64234066c696c529ba9df7a62eba756a07fef8b9e43e5",
+  "kaynak": "O:\\navitas\\codes\\runs\\segment\\navitas_seg_v3\\weights\\best.pt",
+  "boyut_mb": 23.9,
+  "tarih": "2026-07-12T02:58:00.441608",
+  "recete": "yolov8s-seg · degrees 15 · copy_paste 0.30 · blocked ovs +2 · 200ep"
+}
