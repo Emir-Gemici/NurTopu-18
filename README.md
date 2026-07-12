@@ -322,7 +322,7 @@ QT_QPA_PLATFORM=xcb python3 codes/test_accuracy.py --camera
 ## Haberleşme
 
 - Protokol: MAVLink over UDP
-- Frekans: 915 MHz RF modül
+- Frekans: 433 MHz RF modül (SiK; şartname bant belirtmez, BTK uyumlu)
 - Güncelleme süresi: ≤200ms
 - Mesaje: 300m operasyon alanı
 

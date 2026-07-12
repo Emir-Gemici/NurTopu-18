@@ -171,7 +171,7 @@ geliştirme/simülasyonda UDP, sahada RF telsiz modülün transparan seri kanal�
 - Her mesajda **protokol sürümü, artan sıra numarası (seq) ve zaman damgası**;
   alıcı eksik/yinelenen mesajı ayırt eder.
 - `OPEN_ROUTE`, her iki alıcıdan **ACK alınana dek tekrar gönderilir**
-  (RF paket kaybına dayanıklılık; şartnamedeki >%95 aktarım doğruluğu hedefi).
+  (RF paket kaybına dayanıklılık; ÖDR'de beyan edilen >%95 aktarım doğruluğu hedefi).
 - JSON çerçeveleme, seri akışta bozuk baytların tek satırı feda etmesini sağlar;
   satır bütünlüğü ayrıştırıcıda doğrulanır (hatalı satır atılır).
 - HEARTBEAT kesilirse İKA **güvenli durma** moduna geçer (arıza emniyet, bkz.
@@ -183,6 +183,6 @@ geliştirme/simülasyonda UDP, sahada RF telsiz modülün transparan seri kanal�
 Uçuş kontrol telemetrisi (konum/tutum/batarya) için otopilot tarafında MAVLink
 kullanılır; görev verisi yukarıdaki hafif JSON protokolüyle ayrıştırılmıştır
 (tek RF kanalında iki akışın çakışmaması ve hakem ekranında insan-okur veri).
-Saha telsizi şartname uyarınca **915 MHz** bandındadır [not: geliştirme
-testleri 433 MHz SiK modülle yapılmıştır; saha konfigürasyonu 915 MHz modülle
-birebir aynı transparan seri arayüzü kullanır].
+Saha telsizi **433 MHz** bandında SiK modüldür (şartname frekans bandı
+belirtmez; 433 MHz, BTK kısa mesafe erişimli telsiz düzenlemesine uygundur ve
+geliştirme testleri de aynı modüllerle yapılmıştır).

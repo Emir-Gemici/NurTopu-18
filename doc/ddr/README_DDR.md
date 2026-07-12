@@ -35,7 +35,8 @@ Teslim: **15 Temmuz 2026** · DDR = rapor puanının %25'i · Bölüm 3 = 60/100
 5. Bitmiş Word'ü PDF yap → **Drive'a yükle** → takım kontrolü → teslim sistemine.
 
 ## Dikkat (puan yakmasın)
-- Haberleşme frekansı raporda **915 MHz** yazacak (433 test düzeneğiydi).
+- Haberleşme frekansı raporda **433 MHz** yazacak (takım kararı 12.07; resmî
+  şartname bant belirtmiyor — eski "şartname uyarınca 915" ifadeleri düzeltildi).
 - Bölüm 2.2'de "ÖDR takvimine uygunluk teyit edilmiştir" cümlesi + varsa
   değişiklikler gerekçeli.
 - Bölüm 5'e pasta grafik şart (hazır: `gorseller/moc_pasta.png` — 5 karşılandı / 6 sürüyor / 1 planlandı; v2 metrik düzeltmesi sonrası güncellendi).

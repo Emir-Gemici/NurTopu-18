@@ -10,7 +10,7 @@
 
 | Test | Amaç | Yöntem | Başarı kriteri | Sonuç |
 |---|---|---|---|---|
-| Model doğrulama (val seti) | Segmentasyonun görev yeterliliği | Aynı 294 görüntülük doğrulama setinde standart mAP ölçümü; v2 için bağımsız yeniden ölçüm (11.07.2026, model SHA kayıtlı) | Mask mAP50 ≥ 0,60 | v1: 0,619 — hedef sağlandı; v2: 0,595 (traversable 0,868 / blocked 0,322) — v3 planlı; kanıt: results/v2_val_20260711 |
+| Model doğrulama (val seti) | Segmentasyonun görev yeterliliği | Aynı 294 görüntülük doğrulama setinde standart mAP ölçümü; v2 bağımsız yeniden ölçüm (11.07.2026), v3 eğitim + ölçüm yerel GPU (12.07.2026; model SHA kayıtlı) | Mask mAP50 ≥ 0,60 | **v3: 0,627 — hedef sağlandı** (traversable 0,852 / blocked 0,403; kanıt: results/v3_test_20260712); önceki: v1 0,619, v2 0,595 (results/v2_val_20260711) |
 | Ölçek bağımsızlık | Kararın kamera çözünürlüğünden bağımsızlığı | Aynı sahne 0,6×–3,3× ölçeklerde işlendi | Tüm ölçeklerde aynı yol kararı | Başarılı (tek sapma: 410 px aşırı bulanık girdi — saha altı çözünürlük) |
 | Işık dayanıklılığı | Gölge/loş ışıkta kararlılık | Gamma 2,2/3,0 karartma + gölge gradyanı sentetik varyantları | Karar değişmemeli | Başarılı — gamma 2,2 ve gölgede korunur; aşırı karanlık (gamma 3) sınır durumu — iyileştirme planlı |
 | Haberleşme birim testi | Protokol çerçeveleme + ACK + tekrar gönderim + bağlantı-kaybı arıza emniyeti | UDP loopback üzerinde OPEN_ROUTE (referans noktası + yerel waypoint'ler) / HEARTBEAT / ACK alışverişi + bağlantı kesme-toparlanma senaryosu (test_comms) | Mesajlar bozulmadan iletilmeli; kesintide güvenli durma tetiklenmeli, dönüşte kaldığı noktadan devam | Başarılı — rota önbelleği kesintide korunuyor; 11.07.2026'da 3 ardışık koşuda geçti (test zamanlama marjı sağlamlaştırıldı) |
@@ -35,7 +35,7 @@ yerleşimi) üretilmiş olup her düzen otomatik geometri denetiminden geçirili
 |---|---|---|
 | Jetson Orin NX çıkarım FPS | Entegrasyon fazı | ≥15 FPS (TensorRT) |
 | RPi 5 NCNN FPS ölçümü | Entegrasyon fazı | ≥10 FPS @512 |
-| 915 MHz RF menzil + aktarım doğruluğu | Saha testleri | 300 m'de >%95 doğruluk, <100 ms gecikme |
+| 433 MHz RF menzil + aktarım doğruluğu | Saha testleri | 300 m'de >%95 doğruluk, <100 ms gecikme (ÖDR kabul kriterleri; şartname sayısal eşik vermez) |
 | Gerçek saha (moloz benzeri) algı testi | Saha testleri | Açık yol doğru tespiti ≥%90 |
-| Perspektif-augmentasyonlu model v3 eğitimi + regresyon | Entegrasyon fazı | Eğik açı senaryosunda karar kararlılığı |
+| Işık/gölge + domain verili model v4 eğitimi (sim render + AI görsel; v3 12.07'de tamamlandı) | Faz 1 (DDR sonrası) | Karanlık/labirent koşulunda karar kararlılığı |
 | Tam görev provası (İHA+İKA+mancınık) | Faz 8–9 | 15 dk İHA + 10 dk İKA limitlerinde uçtan uca başarı |

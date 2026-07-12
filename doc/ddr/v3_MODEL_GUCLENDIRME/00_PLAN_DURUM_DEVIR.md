@@ -2,7 +2,7 @@
 
 > **Bu dosya kalıcı hafızadır.** Amaç: token/oturum biterse başka bir AI (codex,
 > başka Claude Code hesabı) buradan devam edip işi yarıda bırakmasın. Her önemli
-> adımdan sonra bu dosyayı güncelle. Son güncelleme: **2026-07-11**.
+> adımdan sonra bu dosyayı güncelle. Son güncelleme: **2026-07-12**.
 
 ---
 
@@ -111,12 +111,23 @@ Referans/kaynak scriptler:
 - [x] **T3** v3 eğitim scripti + oversampling — TAMAM (yerel smoke test geçti).
 - [x] **T4** 2 bölümlü Colab notebook — TAMAM (derlendi).
 - [x] **T5** Bu handoff dokümanı — TAMAM.
-- [ ] **T6** ⏳ KULLANICI: `navitas-model-guclendirme.ipynb`'yi Colab'da koş
-      (GPU), iki zip'i (weights + test) repoya koy. **← ŞU AN BURADAYIZ**
-- [ ] **T7** AI: v3 sonuç zip'i gelince DDR v4.3'e işle (Bölüm 8 prosedürü).
+- [x] **T6** TAMAM (12.07) — PLANDAN FARKLI: Colab değil YEREL GPU (yeni üye
+      Yunus'un RTX 5080 Laptop'ı; akış `O:\navitas-local-train\` — notebook'un
+      birebir yerel karşılığı, aynı kanıt formatı). SONUÇ: genel mask mAP50
+      **0,6273** ✅ (0,60 hedefi GEÇİLDİ), traversable 0,852 / blocked **0,403**
+      (0,322'den). Model: `models/navitas_seg_v3_best.pt` (SHA 8e8d46a6…,
+      23,9 MB). Kanıt: `results/v3_test_20260712/` + repo kökünde test zip.
+- [ ] **T7** AI: v3 sonuçlarını DDR v4.3'e işle (Bölüm 8 prosedürü). **← ŞU AN
+      BURADAYIZ** — kaynak md'ler 12.07'de güncellendi: bolum4/bolum5 v3
+      sonuçları, MoC dağılımı 6/5/1, tüm "şartname uyarınca 915 MHz" ifadeleri
+      433'e düzeltildi (resmî şartname bant BELİRTMİYOR — takım kararı 433).
+      Kalan: v4.3 HTML→ODT→PDF üretimi (LibreOffice gerekli).
 - [ ] **T8** AI: v3 modelini sahaya al (models/ + NCNN/TensorRT export, DDR "sahadaki model" güncelle).
 - [ ] **T9** (opsiyonel/stretch) FloodNet Track 1 seg kaynağını düzelt → blocked veri genişletme → v4 eğitimi.
-- [ ] **T10** (mevcut backlog) 4 adet REQ-__ hücresi resmî şartnameden doldurulacak; RPi FPS ölçümü.
+- [x] **T10a** (12.07) Resmî şartname V2 repoya geldi; PDF'te REQ numarası YOK
+      (numaralar T3KYS'teki ayrı gereksinim setinden). 4 boş hücre şartname madde
+      referanslarıyla dolduruldu (bolum5); numaralı resmî set gelince son eşleme.
+- [ ] **T10b** RPi FPS ölçümü (donanım gerektirir).
 
 ---
 

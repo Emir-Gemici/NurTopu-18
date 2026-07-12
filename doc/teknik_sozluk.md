@@ -56,13 +56,13 @@
 
 - **UDP** => Posta kutusuna zarf atmak: hızlı, ama "ulaştı mı?" garantisi yok. Garanti işini üstte biz çözüyoruz (ACK). Geliştirme/simülasyon taşıyıcımız.
 - **Seri (serial) hat** => Tek telden byte'ların sıra sıra akması. Telsiz modülle konuşma biçimi.
-- **SiK telsiz** => Uçuş dünyasının yaygın telsiz modülü; "şeffaf seri köprü" — bir uçtan yazdığın diğer uçtan çıkar. Testlerde 433 MHz kullandık, sahada 915 MHz olacak (raporda hep 915 yazıyor).
-- **915 MHz** => Radyo frekans bandı; şartnamenin istediği bant.
+- **SiK telsiz** => Uçuş dünyasının yaygın telsiz modülü; "şeffaf seri köprü" — bir uçtan yazdığın diğer uçtan çıkar. Testlerde de sahada da 433 MHz (takım kararı 12.07.2026; raporlar 433'e güncellendi).
+- **433 MHz** => Kullandığımız radyo frekans bandı. Şartname bant belirtmez; 433 MHz hem BTK kısa mesafe düzenlemesine uygun hem satın alınan SiK modüllerin bandı.
 - **JSON** => Verinin insan da okuyabildiği yazımı: `{"road":2,"conf":0.91}`. Mesajlarımızın dili — hakem ekranda çıplak gözle doğrulayabilir.
 - **Newline çerçeveleme** => Her mesaj = tek satır. Satır bozuk geldiyse sadece o satır çöpe gider, akış devam eder. Telsiz parazitine dayanıklılık.
 - **seq (sıra numarası)** => Her mesaja artan numara. Alıcı "5'ten sonra 7 geldi, 6 kayıp" veya "5 iki kez geldi, birini at" diyebilir.
 - **ACK** => "Aldım" makbuzu. İKA ve YKS, açık yol mesajını alınca İHA'ya makbuz döner.
-- **Tekrar gönderim** => Makbuz gelmediyse mesajı tekrar at (8 deneme, 0,25 sn arayla). Şartnamenin >%95 aktarım doğruluğu hedefi böyle tutturulur.
+- **Tekrar gönderim** => Makbuz gelmediyse mesajı tekrar at (8 deneme, 0,25 sn arayla). ÖDR'de beyan ettiğimiz >%95 aktarım doğruluğu hedefi böyle tutturulur.
 - **HEARTBEAT** => "Yaşıyorum" sinyali, kalp atışı gibi düzenli atılır. Atışlar kesilirse karşı taraf bağlantının koptuğunu anlar.
 - **Timeout (zaman aşımı)** => "Bu kadar bekledim, yeter" süresi. İKA'da 3 sn hiç mesaj gelmezse bağlantı KAYIP sayılır.
 - **Failsafe (arıza emniyeti)** => Bir şey ters gidince aracın kendini güvene alması. Bizde: bağlantı koparsa İKA DURUR, rota hafızada tutulur, bağlantı dönünce kaldığı waypoint'ten devam (test_comms ile birim testli).

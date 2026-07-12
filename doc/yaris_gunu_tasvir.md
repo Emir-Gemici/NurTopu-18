@@ -64,7 +64,7 @@ Kareografi önceden ezberlenmiş olmalı (roller kişiye atanmış, kim ne taş�
 2. **İHA hazırlığı** (2 kişi): Çıkartmalı-takmalı modüler kanatlar gövdeye kilitlenir
    (tüm erişim panelleri kilitli — REQ-62), paraşüt bölmesi kontrol, batarya takılır.
 3. **Aviyonik/yazılım** (2 kişi): Jetson Orin NX açılır, kamera pipeline'ı canlı doğrulanır,
-   Pixhawk 6x GNSS fix bekler, 915 MHz RF telemetri YKS ile el sıkışır (<100 ms gecikme,
+   Pixhawk 6x GNSS fix bekler, 433 MHz RF telemetri YKS ile el sıkışır (<100 ms gecikme,
    300 m menzil). İKA tarafında RPi5 + GNSS+IMU+encoder füzyonu ayağa kalkar.
 4. **İKA yerleştirme** (1 kişi): İKA, 1×1 m İKA-KB karesine konur, 200 gr yük kilitlenir,
    bekleme modunda (İHA inmeden hareket YASAK).
@@ -113,7 +113,7 @@ Kritik kural: **veri aktarımı İHA HAVADAYKEN yapılmalı ve hakem canlı olar
 doğrulamalıdır.** İnişten sonra aktarılan veri geçersizdir; hakem tespit teyidini/veri
 akışını göremezse uçuş **GEÇERSİZ** (§6.4-3).
 
-İHA, açık yol kararını + koordinat haritasını **915 MHz RF üzerinden MAVLink** ile hem
+İHA, açık yol kararını + koordinat haritasını **433 MHz RF üzerinden JSON görev protokolüyle** hem
 **YKS'ye** hem **İKA'ya** yayınlar (>%95 aktarım doğruluğu; hedef >%98). YKS ekranında
 hakem şunu görür: açık yol etiketi, güven skoru, waypoint listesi, canlı telemetri
 (≤200 ms güncelleme — REQ-22,23,24). Hakem "veri alındı" onayını verir.

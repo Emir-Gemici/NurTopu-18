@@ -85,7 +85,7 @@ kutu(ax, 5.0, 6.1, 4.6, 1.15,
 kutu(ax, 1.9, 3.4, 3.1, 1.0, "YKS\nhakem ekranı, canlı doğrulama", "islem", 10)
 kutu(ax, 8.1, 3.4, 3.1, 1.0, "İKA (RPi 5)\nrota takibi", "islem", 10)
 kutu(ax, 5.0, 0.9, 8.8, 0.95,
-     "Taşıyıcı: geliştirme/sim = UDP · saha = 915 MHz RF (transparan seri) · çerçeve: newline-JSON",
+     "Taşıyıcı: geliştirme/sim = UDP · saha = 433 MHz RF (transparan seri) · çerçeve: newline-JSON",
      "veri", 9.5)
 ok(ax, 5.0, 8.25, 5.0, 6.85, "yayın", ldx=0.2)
 ok(ax, 3.9, 5.35, 2.3, 4.05, "OPEN_ROUTE", ldx=-1.75, lha="left")
