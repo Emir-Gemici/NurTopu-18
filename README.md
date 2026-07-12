@@ -12,7 +12,7 @@
 NVIDIA Jetson Orin NX        Raspberry Pi 5               Laptop
 Geniş açı kamera             Pi Kamera                    MAVLink
 YOLOv8-seg / NCNN            A* Path Planning             Telemetri
-MAVLink TX (915MHz RF)       PID Motor Kontrolü           Monitör
+MAVLink TX (433MHz RF)       PID Motor Kontrolü           Monitör
 Paraşüt sistemi              GNSS + IMU + Encoder
 ```
 
