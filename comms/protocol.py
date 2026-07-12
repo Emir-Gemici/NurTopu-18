@@ -55,6 +55,17 @@ def ack(ref_seq, node):
             "node": node, "t": round(time.time(), 3)}
 
 
+def command(cmd, hedef, seq=None):
+    """YKS → İHA/İKA operatör komutu (ör. ARM / DISARM / IKA_GO).
+
+    Şartname §2.2.5: İKA intikali YKS'deki takım üyesince manuel tetiklenir —
+    IKA_GO bu tetik içindir. Alıcılar bilmedikleri tipi yok sayar (geriye uyumlu).
+    """
+    return {"v": PROTOCOL_VERSION, "type": "CMD", "cmd": str(cmd),
+            "hedef": hedef, "seq": next(_seq) if seq is None else int(seq),
+            "t": round(time.time(), 3)}
+
+
 # ── Çerçeveleme (encode/decode) ───────────────────────────────────────────────
 
 def encode(msg) -> bytes:
