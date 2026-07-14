@@ -26,6 +26,10 @@ dataset/merged_data.yaml
 
 # Test görselleri — script ile yeniden indirilebilir
 test_images/roboflow/
+test_images/rescuenet_ornek/
+
+# Roboflow yükleme çalışma alanı — scratch + model kopyası (asıl kopya models/ altında)
+roboflow_v3_run/
 
 # Eğitim çıktıları — yeniden üretilebilir
 codes/runs/
