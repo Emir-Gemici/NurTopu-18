@@ -1,0 +1,5 @@
+{
+  "sha256": "6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4",
+  "recete": "v3 ile birebir aynı (ovs×2) + v3'ten fine-tune; TEK fark imgsz 512→640",
+  "tarih": "2026-07-15T09:32:19.168480"
+}
