@@ -39,7 +39,7 @@ RUN_NAME       = "navitas_seg_v3"
 
 
 def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False,
-          project=None):
+          project=None, seed=0, cls_pw=0.0, copy_paste_mode="flip"):
     model = YOLO(model_name)
     results = model.train(
         data=str(data),
@@ -51,6 +51,7 @@ def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False,
         name=run_name,
         project=(project or str(_here / "runs/segment")),
         exist_ok=True,
+        seed=seed,             # aynı reçetenin koşular arası gürültü bandını ölçmek için
 
         # ── Optimizer ──
         optimizer="AdamW",
@@ -84,12 +85,16 @@ def train(data, model_name, epochs, run_name, device, batch, imgsz, smoke=False,
 
         # ── Segmentasyon özel (v3: copy_paste artırıldı) ──
         copy_paste=0.30,        # v2: 0.15 → 0.30 (azınlık sınıf boost)
+        # 'flip' (varsayılan) yalnız görüntünün KENDİ aynasından yapıştırır;
+        # 'mixup' başka sahnelerden yapıştırır — çeşitlilik için asıl olan bu.
+        copy_paste_mode=copy_paste_mode,
         erasing=0.2,
         mixup=0.0,
 
         # ── Kayıp ağırlıkları ──
         box=7.5,
         cls=0.5,
+        cls_pw=cls_pw,          # sınıf pozitif ağırlığı: azınlık 'blocked' için
         dfl=1.5,
         overlap_mask=True,
         mask_ratio=4,
@@ -138,6 +143,15 @@ def main():
     ap.add_argument("--project", default=None,
                     help="çıktı kökü; Colab'da Drive verilirse kesintide KAYBOLMAZ "
                          "(örn. /content/drive/MyDrive/navitas_runs)")
+    ap.add_argument("--seed",   type=int, default=0,
+                    help="rastgelelik tohumu; aynı reçeteyi farklı tohumla koşmak "
+                         "sonuçların gürültü bandını ölçer (v1-v5 hep 0 kullandı)")
+    ap.add_argument("--cls_pw", type=float, default=0.0,
+                    help="sınıf pozitif ağırlığı (azınlık blocked'ı güçlendirir); "
+                         "v1-v5 boyunca hiç kullanılmadı")
+    ap.add_argument("--copy_paste_mode", default="flip", choices=["flip", "mixup"],
+                    help="'flip' görüntünün kendi aynasından, 'mixup' başka "
+                         "sahnelerden yapıştırır")
     ap.add_argument("--smoke",  action="store_true", help="hızlı kod-yolu doğrulama")
     args = ap.parse_args()
 
@@ -148,11 +162,13 @@ def main():
     print("=" * 60)
     print(f"NAVITAS v3 GÜÇLENDİRME  ·  model={args.model}  epochs={args.epochs}")
     print(f"data={data}  device={args.device}  batch={args.batch}  imgsz={args.imgsz}")
-    print(f"project={args.project or '(yerel runs/segment)'}")
+    print(f"project={args.project or '(yerel runs/segment)'}  seed={args.seed}")
     print("=" * 60)
 
     train(data, args.model, args.epochs, args.name,
-          args.device, args.batch, args.imgsz, smoke=args.smoke, project=args.project)
+          args.device, args.batch, args.imgsz, smoke=args.smoke,
+          project=args.project, seed=args.seed,
+          cls_pw=args.cls_pw, copy_paste_mode=args.copy_paste_mode)
 
     rapor = per_class_report(args.name, data, args.imgsz, args.device, project=args.project)
     if rapor:
