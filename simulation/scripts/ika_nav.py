@@ -107,6 +107,8 @@ def steer(heading_err, base=MAX_SPEED):
 
 
 def navigate(wps, label="rota", verbose=True):
+    if len(wps) < 2:
+        raise ValueError("navigasyon için en az iki waypoint gerekli")
     dt = 1.0 / CTRL_HZ
 
     # Heading'i konum geçmişinden tahmin edeceğiz
@@ -167,18 +169,22 @@ def navigate(wps, label="rota", verbose=True):
     return True
 
 
-def navigate_road(road, verbose=True):
+def navigate_road(road, scenario="kolay", harita_id=1, origin=None, verbose=True):
     """İHA'dan gelen açık yol (1/2/3) → arena rotası ile navigate."""
-    return navigate(route_waypoints(road),
+    origin = arena.ZONE_POS[scenario] if origin is None else origin
+    local_wps = route_waypoints(road, scenario, harita_id)
+    world_wps = [arena.to_world(point, origin) for point in local_wps]
+    return navigate(world_wps,
                     f"Açık yol: {ROAD_LABEL[road].upper()} ({road})", verbose)
 
 
-def navigate_scenario(scenario, verbose=True):
-    return navigate_road(open_road(scenario), verbose)
+def navigate_scenario(scenario, harita_id=1, verbose=True):
+    return navigate_road(open_road(scenario, harita_id), scenario, harita_id,
+                         verbose=verbose)
 
 
-def wait_open_road_from_comms(bind="0.0.0.0:5006", timeout=60):
-    """Şartname §2.2.5: İKA, İHA'dan açık yol verisi GELENE kadar bekler, sonra hareket eder."""
+def wait_open_route_from_comms(bind="0.0.0.0:5006", timeout=60):
+    """İHA'nın doğrulanmış OPEN_ROUTE mesajını bekle ve tamamını döndür."""
     from link import UDPLink
     from ika_receiver import IkaReceiver
     h, p = bind.split(":")
@@ -188,12 +194,25 @@ def wait_open_road_from_comms(bind="0.0.0.0:5006", timeout=60):
     while rx.latest is None and time.time() - t0 < timeout:
         time.sleep(0.2)
     rx.stop()
+    rx.link.close()
     if rx.latest is None:
         return None
-    road = rx.latest["road"]
+    route = rx.latest
+    road = route["road"]
     print(f"[ika_nav] ✓ İHA'dan açık yol ALINDI: {ROAD_LABEL[road].upper()} ({road}) "
-          f"conf={rx.latest.get('conf')}")
-    return road
+          f"conf={route.get('conf')} wp={len(route.get('waypoints') or [])}")
+    return route
+
+
+def navigate_route_message(route, fallback_scenario="kolay", harita_id=1, verbose=True):
+    """Use transmitted coordinates; arena geometry is only a compatibility fallback."""
+    local_wps = route.get("waypoints") or []
+    ref = route.get("ref_xy")
+    if local_wps and ref:
+        world_wps = [(float(ref[0]) + float(point[0]),
+                      float(ref[1]) + float(point[1])) for point in local_wps]
+        return navigate(world_wps, f"İHA rota seq={route['seq']}", verbose)
+    return navigate_road(route["road"], fallback_scenario, harita_id, verbose=verbose)
 
 
 if __name__ == "__main__":
@@ -204,18 +223,19 @@ if __name__ == "__main__":
     ap.add_argument("--road", type=int, choices=[1, 2, 3], help="açık yolu doğrudan ver")
     ap.add_argument("--bind", default="0.0.0.0:5006", help="comms modu dinleme adresi")
     ap.add_argument("--timeout", type=float, default=60)
+    ap.add_argument("--map", type=int, choices=range(1, arena.HARITA_N + 1), default=1)
     args = ap.parse_args()
 
     if args.road:
-        navigate_road(args.road)
+        navigate_road(args.road, args.mode if args.mode in arena.SCENARIOS else "kolay", args.map)
     elif args.mode == "comms":
-        road = wait_open_road_from_comms(args.bind, args.timeout)
-        if road is None:
+        route = wait_open_route_from_comms(args.bind, args.timeout)
+        if route is None:
             print("[ika_nav] ✗ açık yol gelmedi (timeout) — İKA hareket etmez")
             sys.exit(1)
-        navigate_road(road)
+        navigate_route_message(route, "kolay", args.map)
     elif args.mode in ("kolay", "orta", "zor"):
-        navigate_scenario(args.mode)
+        navigate_scenario(args.mode, args.map)
     else:
         print("Kullanım: ika_nav.py [kolay|orta|zor|comms] [--road N]")
         sys.exit(1)

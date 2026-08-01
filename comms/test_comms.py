@@ -4,11 +4,16 @@ Comms loopback testi — İHA → (YKS + İKA) açık yol aktarımı, localhost 
 
 Çalıştır:  python3 test_comms.py
 """
-from link import UDPLink
-from iha_sender import IhaSender
-from ika_receiver import IkaReceiver
-from yks_monitor import FrameReader  # noqa (paket içi tutarlılık)
-from protocol import encode, ack, FrameReader as FR
+try:
+    from .link import UDPLink
+    from .iha_sender import IhaSender
+    from .ika_receiver import IkaReceiver
+    from .protocol import encode, ack, heartbeat, FrameReader as FR
+except ImportError:
+    from link import UDPLink
+    from iha_sender import IhaSender
+    from ika_receiver import IkaReceiver
+    from protocol import encode, ack, heartbeat, FrameReader as FR
 
 
 def _make_acker(link, node):
@@ -21,7 +26,7 @@ def _make_acker(link, node):
         for m in reader.feed(d) if d else []:
             if m.get("type") == "OPEN_ROUTE":
                 box["latest"] = m
-                link.send(encode(ack(m["seq"], node)), addr)
+                link.send(encode(ack(m["seq"], node, m.get("session"))), addr)
     return poll, box
 
 
@@ -81,7 +86,6 @@ def main():
     ika.on_link_lost = lambda: olaylar.append("KAYIP")
     ika.on_link_back = lambda: olaylar.append("GERİ")
 
-    from protocol import heartbeat
     iha_link.send(encode(heartbeat("iha")), ("127.0.0.1", 5006))
     time.sleep(0.2)
     assert ika.link_ok, "HEARTBEAT geldi ama link_ok değil"

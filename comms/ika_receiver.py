@@ -17,8 +17,12 @@ import argparse
 import threading
 import time
 
-from link import UDPLink, SerialLink
-from protocol import encode, ack, FrameReader
+try:
+    from .link import UDPLink, SerialLink
+    from .protocol import encode, ack, FrameReader, ReplayGuard
+except ImportError:
+    from link import UDPLink, SerialLink
+    from protocol import encode, ack, FrameReader, ReplayGuard
 
 
 class IkaReceiver:
@@ -28,6 +32,7 @@ class IkaReceiver:
         self.send_ack = send_ack
         self.hb_timeout = hb_timeout    # sn: bu süre mesaj gelmezse bağlantı KAYIP
         self.reader = FrameReader()
+        self.replay = ReplayGuard()
         self.latest = None              # son OPEN_ROUTE mesajı (kayıpta KORUNUR)
         self.last_rx = None             # son mesajın (HEARTBEAT dahil) zamanı
         self.link_lost = False
@@ -49,9 +54,11 @@ class IkaReceiver:
             if self.on_link_back:
                 self.on_link_back()
         if msg.get("type") == "OPEN_ROUTE":
+            if self.send_ack:
+                self.link.send(encode(ack(msg["seq"], self.node, msg.get("session"))), addr)
+            if not self.replay.accept(msg):
+                return
             self.latest = msg
-            if self.send_ack and addr is not None:
-                self.link.send(encode(ack(msg["seq"], self.node)), addr)
             if self.on_route:
                 self.on_route(msg)
 

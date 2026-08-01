@@ -10,8 +10,12 @@ Kullanım:
 import argparse
 import time
 
-from link import UDPLink, SerialLink
-from protocol import encode, ack, FrameReader
+try:
+    from .link import UDPLink, SerialLink
+    from .protocol import encode, ack, FrameReader
+except ImportError:
+    from link import UDPLink, SerialLink
+    from protocol import encode, ack, FrameReader
 
 
 def main():
@@ -39,7 +43,7 @@ def main():
                     print(f"      güven={m['conf']}  seq={m['seq']}  t={m['t']}")
                     print(f"      HAKEM ONAYI: ✓ (otomatik)  →  İKA'ya aktarım onaylandı")
                     if addr is not None:
-                        link.send(encode(ack(m["seq"], "yks")), addr)
+                        link.send(encode(ack(m["seq"], "yks", m.get("session"))), addr)
     except KeyboardInterrupt:
         print("\n[YKS] kapatılıyor")
     finally:

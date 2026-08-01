@@ -17,17 +17,10 @@ from pathlib import Path
 import cv2
 import numpy as np
 from ultralytics import YOLO
+from model_registry import describe, resolve_model
 
 # ── Yollar ──────────────────────────────────────────────────────────────────
 _root = Path(__file__).parent.parent
-
-MODEL_DIR = next(
-    (p for p in [
-        _root / "models" / "best_ncnn_model",
-        Path(__file__).parent / "best_ncnn_model",
-    ] if p.exists()),
-    _root / "models" / "best_ncnn_model",
-)
 
 TEST_SOURCES = {
     "roboflow":  _root / "test_images" / "roboflow",
@@ -42,11 +35,17 @@ CLASS_COLORS = {0: (0, 200, 0), 1: (0, 0, 200)}
 
 
 # ── Model ────────────────────────────────────────────────────────────────────
-def load_model():
-    if not MODEL_DIR.exists():
-        raise FileNotFoundError(f"Model bulunamadı: {MODEL_DIR}")
-    print(f"Model yükleniyor: {MODEL_DIR}")
-    return YOLO(str(MODEL_DIR), task="segment")
+def load_model(profile=None, model_path=None):
+    global INFER_SIZE
+    if model_path:
+        path, spec = Path(model_path), None
+    else:
+        path, spec = resolve_model(profile)
+        INFER_SIZE = int(spec["imgsz"])
+    if not path.exists():
+        raise FileNotFoundError(f"Model bulunamadı: {path}")
+    print(f"Model yükleniyor: {describe(spec) if spec else path}")
+    return YOLO(str(path), task="segment")
 
 
 # ── Görsel toplama ───────────────────────────────────────────────────────────
@@ -124,7 +123,7 @@ def run_inference(model, img_path, out_dir, conf=0.30):
 
     trav_pct = round(float(masks[0].sum()) / (side * side) * 100, 2)
     blk_pct  = round(float(masks[1].sum()) / (side * side) * 100, 2)
-    detected = bool(trav_pct > 1 or blk_pct > 1)
+    coverage_detected = bool(trav_pct > 1 or blk_pct > 1)
 
     label = f"T:{trav_pct}%  B:{blk_pct}%  {ms:.0f}ms"
     cv2.putText(vis, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
@@ -136,14 +135,14 @@ def run_inference(model, img_path, out_dir, conf=0.30):
         "file": img_path.name,
         "traversable_pct": trav_pct,
         "blocked_pct": blk_pct,
-        "detected": detected,
+        "coverage_detected": coverage_detected,
         "ms": round(ms, 1),
     }
 
 
 # ── Ana döngü ────────────────────────────────────────────────────────────────
-def run_batch(sources, conf=0.30):
-    model = load_model()
+def run_batch(sources, conf=0.30, profile=None, model_path=None):
+    model = load_model(profile, model_path)
 
     run_id = datetime.now().strftime("%Y-%m-%d_%H%M%S") + "_" + uuid.uuid4().hex[:6]
     run_dir = RESULTS_DIR / run_id
@@ -180,28 +179,28 @@ def run_batch(sources, conf=0.30):
                 if result:
                     group_results.append(result)
                     total_images += 1
-                    if result["detected"]:
+                    if result["coverage_detected"]:
                         total_detected += 1
 
                 if (i + 1) % 50 == 0:
                     print(f"  {i+1}/{len(files)} tamamlandı")
 
-            detected_count = sum(1 for r in group_results if r["detected"])
+            detected_count = sum(1 for r in group_results if r["coverage_detected"])
             avg_ms = round(sum(r["ms"] for r in group_results) / len(group_results), 1) if group_results else 0
 
             summary["sources"][source_name][group_name] = {
                 "total": len(group_results),
-                "detected": detected_count,
-                "detection_rate": round(detected_count / len(group_results) * 100, 1) if group_results else 0,
+                "coverage_detected": detected_count,
+                "coverage_rate": round(detected_count / len(group_results) * 100, 1) if group_results else 0,
                 "avg_ms": avg_ms,
                 "results": group_results,
             }
 
-            print(f"  ✓ Tespit: {detected_count}/{len(group_results)}  Ort: {avg_ms}ms")
+            print(f"  Maske kapsamı: {detected_count}/{len(group_results)}  Ort: {avg_ms}ms")
 
     summary["total_images"] = total_images
-    summary["total_detected"] = total_detected
-    summary["overall_detection_rate"] = round(total_detected / total_images * 100, 1) if total_images else 0
+    summary["total_with_mask_coverage"] = total_detected
+    summary["overall_coverage_rate"] = round(total_detected / total_images * 100, 1) if total_images else 0
 
     summary_path = run_dir / "summary.json"
     summary_path.write_text(
@@ -211,7 +210,7 @@ def run_batch(sources, conf=0.30):
 
     print(f"\n{'='*50}")
     print(f"TOPLAM  : {total_images} görsel")
-    print(f"TESPİT  : {total_detected} ({summary['overall_detection_rate']}%)")
+    print(f"MASKE   : {total_detected} ({summary['overall_coverage_rate']}%) — doğruluk değildir")
     print(f"ÖZET    : {summary_path}")
     print(f"{'='*50}")
 
@@ -222,6 +221,8 @@ def main():
     parser.add_argument("--all", action="store_true", help="Tüm kaynakları test et")
     parser.add_argument("--source", type=str, help="Belirli kaynak: roboflow, floodnet, rescuenet")
     parser.add_argument("--conf", type=float, default=0.30, help="Güven eşiği")
+    parser.add_argument("--profile", choices=["competition", "rpi_ncnn"], default=None)
+    parser.add_argument("--model", metavar="PATH", help="Registry yerine açık model yolu")
     args = parser.parse_args()
 
     if args.all:
@@ -232,7 +233,7 @@ def main():
         parser.print_help()
         return
 
-    run_batch(sources, conf=args.conf)
+    run_batch(sources, conf=args.conf, profile=args.profile, model_path=args.model)
 
 
 if __name__ == "__main__":

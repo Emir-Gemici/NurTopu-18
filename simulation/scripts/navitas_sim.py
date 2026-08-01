@@ -63,10 +63,11 @@ def main():
                         help="Senaryo (varsayılan: kolay)")
     parser.add_argument("--speed", type=float, default=1.0,
                         help="Zaman hızlandırma katsayısı (varsayılan: 1.0)")
-    parser.add_argument("--iha-only", action="store_true",
-                        help="Sadece İHA uçuşunu çalıştır")
-    parser.add_argument("--ika-only", action="store_true",
-                        help="Sadece İKA navigasyonunu çalıştır")
+    vehicle = parser.add_mutually_exclusive_group()
+    vehicle.add_argument("--iha-only", action="store_true",
+                         help="Sadece İHA uçuşunu çalıştır")
+    vehicle.add_argument("--ika-only", action="store_true",
+                         help="Sadece İKA navigasyonunu çalıştır")
     parser.add_argument("--no-wait", action="store_true",
                         help="Gazebo hazırlık beklemesini atla")
     args = parser.parse_args()
@@ -88,20 +89,27 @@ def main():
 
     threads = []
     results = {}
+    errors = {}
 
     # İHA thread
     if not args.ika_only:
         def run_iha():
-            print("\n[sim] İHA uçuşu başlıyor...")
-            results["iha"] = iha_flight.fly(fps=20.0, speed_mult=args.speed)
+            try:
+                print("\n[sim] İHA uçuşu başlıyor...")
+                results["iha"] = iha_flight.fly(fps=20.0, speed_mult=args.speed)
+            except Exception as exc:
+                errors["iha"] = exc
         t_iha = threading.Thread(target=run_iha, name="iha-flight", daemon=True)
         threads.append(t_iha)
 
     # İKA thread
     if not args.iha_only:
         def run_ika():
-            print("\n[sim] İKA navigasyonu başlıyor...")
-            results["ika"] = ika_nav.navigate(args.scenario)
+            try:
+                print("\n[sim] İKA navigasyonu başlıyor...")
+                results["ika"] = ika_nav.navigate_scenario(args.scenario)
+            except Exception as exc:
+                errors["ika"] = exc
         t_ika = threading.Thread(target=run_ika, name="ika-nav", daemon=True)
         threads.append(t_ika)
 
@@ -116,6 +124,11 @@ def main():
     except KeyboardInterrupt:
         print("\n[sim] Kullanıcı durdurdu (Ctrl+C)")
         ika_nav.send_vel(0, 0)
+        return 130
+
+    if errors:
+        for vehicle, exc in errors.items():
+            print(f"[sim] HATA: {vehicle.upper()} worker çöktü: {type(exc).__name__}: {exc}")
 
     # Sonuç raporu
     print("\n" + "═"*50)
@@ -126,10 +139,11 @@ def main():
     if "ika" in results:
         print(f"  İKA görevi: {'✓ TAMAMLANDI' if results.get('ika') else '✗ BAŞARISIZ'}")
     print("═"*50)
+    return 1 if errors or any(value is not True for value in results.values()) else 0
 
 
 if __name__ == "__main__":
     # scripts/ klasöründen çalıştır ki import'lar çalışsın
     import os
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    main()
+    sys.exit(main())

@@ -36,8 +36,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "codes"))     # get_masks, analyze_path, draw_masks, generate_ika_map
+from model_registry import resolve_model
 
-DEFAULT_MODEL = ROOT / "models" / "navitas_seg_v2_best.pt"
+DEFAULT_MODEL, DEFAULT_MODEL_SPEC = resolve_model(verify=False)
 OUT_DIR = ROOT / "results" / "iha_algi"
 LABEL = {1: "sol", 2: "orta", 3: "sag"}
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
@@ -46,7 +47,7 @@ VIDEO_EXT = {".mp4", ".mov", ".avi", ".mkv"}
 # Kanonik çıkarım boyutu — girdi ÇÖZÜNÜRLÜĞÜNDEN BAĞIMSIZ aynı sonuç için sabit.
 # (Ham görsel doğrudan verilince YOLO onu imgsz'e göre letterbox'lardı → 16:9'da
 #  ince yol 512'ye sıkışıp kaybolurdu. Biz önce KAREYE letterbox ediyoruz → determinist.)
-CANON = 1024
+CANON = int(DEFAULT_MODEL_SPEC["imgsz"])
 
 
 def _letterbox_square(img, size, color=114):
@@ -103,7 +104,7 @@ def _infer(img, model, conf, imgsz, dark_mode=None):
         kazanan = "raw"
         if int(masks2[0].sum()) > int(masks[0].sum()):
             content, masks, kazanan = content2, masks2, "norm"
-    road, confidence, wps = analyze_path(masks[0])
+    road, confidence, wps = analyze_path(masks[0], masks[1])
     return content, masks, road, confidence, wps, kazanan
 
 

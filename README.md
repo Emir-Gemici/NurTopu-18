@@ -39,7 +39,8 @@ navitas/
 │   └── requirements_rpi.txt   ← RPi kurulum bağımlılıkları
 │
 ├── models/
-│   ├── best_ncnn_model/               ← En güncel model (aktif deployment)
+│   ├── navitas_seg_v4_best.pt          ← Yarışma profili (YOLOv8s-seg, 640)
+│   ├── navitas_seg_v2_ncnn_model/      ← RPi fallback profili (eski, 512)
 │   │   ├── model.ncnn.bin
 │   │   ├── model.ncnn.param
 │   │   ├── metadata.yaml
@@ -129,6 +130,9 @@ QT_QPA_PLATFORM=xcb python3 codes/rpi_inference.py --camera
 
 # FPS ölçümü
 python3 codes/rpi_inference.py --fps
+
+# RPi düşük güç fallback'i (v4 ile metrik-eşdeğer değildir)
+python3 codes/rpi_inference.py --profile rpi_ncnn --fps
 ```
 
 Çıktılar `codes/results/` altına yazar:
@@ -139,18 +143,19 @@ python3 codes/rpi_inference.py --fps
 
 ```bash
 # Laptop'ta: gerekli dosyaları bir araya getir
-mkdir -p navitas_deploy
-cp codes/rpi_inference.py navitas_deploy/
-cp -r models/best_ncnn_model navitas_deploy/
+mkdir -p navitas_deploy/{codes,models,config}
+cp codes/{rpi_inference.py,model_registry.py,path_planning.py,requirements_rpi.txt} navitas_deploy/codes/
+cp -r models/navitas_seg_v2_ncnn_model navitas_deploy/models/
+cp config/model_registry.json navitas_deploy/config/
 cp codes/requirements_rpi.txt navitas_deploy/
 
 # RPi'ye gönder
 scp -r navitas_deploy/ pi@<RPI_IP>:~/
 
 # RPi'de
-pip install -r requirements_rpi.txt
-python3 rpi_inference.py --fps      # hedef: ≥10 FPS
-python3 rpi_inference.py --camera
+pip install -r codes/requirements_rpi.txt
+python3 codes/rpi_inference.py --profile rpi_ncnn --fps      # hedef: ≥10 FPS
+python3 codes/rpi_inference.py --profile rpi_ncnn --camera
 ```
 
 ---
@@ -216,23 +221,25 @@ Eğitim bittikten sonra NCNN export otomatik yapılır, `models/best_ncnn_model/
 
 ---
 
-## Model
+## Model profilleri ve güvenlik
 
 | Parametre | Değer |
 |-----------|-------|
-| Mimari | YOLOv8n-seg |
+| Yarışma profili | `navitas-seg-v4-640` / YOLOv8s-seg / mask mAP50 0.6751 |
+| RPi fallback | `navitas-seg-v2-ncnn-512` (v4 ile metrik-eşdeğer değildir) |
 | Sınıflar | `traversable` (0), `blocked` (1) |
-| Export | NCNN (RPi 5 için optimize) |
+| Kimlik | `config/model_registry.json` + SHA-256 doğrulaması |
 | Hedef FPS | ≥10 FPS (RPi 5, NCNN) |
 
 ### Algoritma
 
 ```
-Girdi → merkezi kare crop → 512×512 inference
+Girdi → profil çözünürlüğünde inference (v4: 640)
       → mask upscale (orijinal çözünürlüğe)
-      → morphological clean
+      → blocked maskeyi araç açıklığı kadar genişlet ve traversable'dan çıkar
+      → başlangıç ve hedef bantlarına bağlı güvenli bileşeni seç
       → distance transform centerline
-      → üst %40'ta hangi üçte birde daha fazla traversable px → open_path (1/2/3)
+      → hedef bandı centroid'i → open_path (1/2/3)
       → waypoint örnekleme (alt→üst, 8 nokta)
       → *_result.jpg  (görsel çıktı)
       → *_ika_map.jpg (navigasyon haritası)

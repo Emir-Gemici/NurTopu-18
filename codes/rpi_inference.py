@@ -28,16 +28,10 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
+from model_registry import ModelRegistryError, describe, resolve_model
+from path_planning import analyze_safe_path
+
 _here = Path(__file__).parent
-MODEL_DIR = next(
-    (p for p in [
-        _here / "best_ncnn_model",
-        _here.parent / "models" / "best_ncnn_model",
-        _here / "rescuenet_seg_v1_ncnn",
-        _here.parent / "models" / "rescuenet_seg_v1_ncnn",
-    ] if p.exists()),
-    _here / "best_ncnn_model",
-)
 RESULTS_DIR = _here / "results"
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp"}
 SUPPORTED_VIDEO_EXT = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
@@ -49,12 +43,22 @@ CLASS_COLORS = {
 }
 
 
-def load_model():
-    if not MODEL_DIR.exists():
-        print(f"HATA: Model klasoru bulunamadi: {MODEL_DIR}")
-        print("best_ncnn_model/ klasorunu bu scriptle ayni dizine koy.")
-        sys.exit(1)
-    return YOLO(str(MODEL_DIR), task="segment")
+def load_model(profile=None, model_path=None, verify=True):
+    """Load an explicit model or a verified registry profile."""
+    global INFER_SIZE
+    if model_path:
+        path = Path(model_path)
+        if not path.exists():
+            raise ModelRegistryError(f"model bulunamadı: {path}")
+        spec = {"model_id": path.stem, "backend": "explicit", "imgsz": INFER_SIZE,
+                "sha256": "verification-disabled", "profile": "explicit"}
+    else:
+        path, spec = resolve_model(profile, verify=verify)
+        INFER_SIZE = int(spec["imgsz"])
+    print(f"Model: {describe(spec)}")
+    if spec.get("warning"):
+        print(f"UYARI: {spec['warning']}")
+    return YOLO(str(path), task="segment")
 
 
 def get_masks(results, h, w, min_conf=None):
@@ -91,7 +95,7 @@ def draw_masks(image_bgr, masks):
     return cv2.addWeighted(vis, 0.5, overlay, 0.5, 0)
 
 
-def analyze_path(trav_mask, n_waypoints=8):
+def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
@@ -104,6 +108,9 @@ def analyze_path(trav_mask, n_waypoints=8):
       confidence : acik yol piksel orani (0.0-1.0)
       waypoints  : [(x, y), ...] alt→ust sirali, goruntu koordinatlari
     """
+    if blocked_mask is not None:
+        return analyze_safe_path(trav_mask, blocked_mask, n_waypoints=n_waypoints)
+
     h, w = trav_mask.shape
 
     k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
@@ -319,7 +326,7 @@ def run_image(model, path_str, conf):
         results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
         masks = get_masks(results, orig_h, orig_w)
 
-        open_path, path_conf, waypoints = analyze_path(masks[0])
+        open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -398,7 +405,7 @@ def run_video(model, path_str, conf, save=True):
             fps_buf.pop(0)
 
         masks = get_masks(results, orig_h, orig_w)
-        open_path, path_conf, waypoints = analyze_path(masks[0])
+        open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -457,7 +464,7 @@ def run_camera(model, conf):
             fps_buf.pop(0)
 
         masks = get_masks(results, orig_h, orig_w)
-        open_path, path_conf, waypoints = analyze_path(masks[0])
+        open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -486,13 +493,22 @@ def main():
     parser.add_argument("--camera", action="store_true", help="Canli kamera")
     parser.add_argument("--no-save", action="store_true", help="Video modunda ciktiyi kaydetme")
     parser.add_argument("--conf", type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
+    parser.add_argument("--profile", choices=["competition", "rpi_ncnn"],
+                        default=None, help="config/model_registry.json model profili")
+    parser.add_argument("--model", metavar="PATH",
+                        help="registry yerine açık model yolu (deneysel kullanım)")
+    parser.add_argument("--no-verify-model", action="store_true",
+                        help="registry SHA-256 kontrolünü atla (önerilmez)")
     args = parser.parse_args()
 
     if not any([args.fps, args.image, args.video, args.camera]):
         parser.print_help()
         return
 
-    model = load_model()
+    try:
+        model = load_model(args.profile, args.model, verify=not args.no_verify_model)
+    except ModelRegistryError as exc:
+        parser.error(str(exc))
 
     if args.fps:
         run_fps(model)

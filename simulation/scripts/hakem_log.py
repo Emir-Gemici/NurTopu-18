@@ -31,10 +31,10 @@ from protocol import encode, ack, FrameReader
 CONF = {"kolay": 0.94, "orta": 0.88, "zor": 0.79}
 
 # Teknik künye (model_analiz.md + şartname + sim parametreleri)
-MODEL_NAME = "navitas_seg_v2_best.pt (YOLOv8n-seg)"
-MODEL_IMGSZ = 1024          # iha_perceive.CANON (letterbox kare)
+MODEL_NAME = "navitas_seg_v4_best.pt (YOLOv8s-seg, SHA 6b93f200…)"
+MODEL_IMGSZ = 640           # config/model_registry.json competition profili
 MODEL_CONF_THR = 0.15       # iha_perceive vars. eşik (CONF_FLOOR 0.05 fallback)
-MODEL_MAP = "mask mAP50=0.619 (traversable 0.874 / blocked 0.363)"
+MODEL_MAP = "mask mAP50=0.6751 (blocked 0.4937; RescueNet val)"
 
 
 class Log:
@@ -68,7 +68,7 @@ def _yks(link, stop, box, log):
                 log("YKS/HAKEM", f"tespit ekranda: {m['label'].upper()} (yol {m['road']}) "
                                  f"güven={m['conf']} → HAKEM ONAYI ✓")
                 if addr:
-                    link.send(encode(ack(m["seq"], "yks")), addr)
+                    link.send(encode(ack(m["seq"], "yks", m.get("session"))), addr)
 
 
 def run_level(level, log, det=None, realtime=False, harita_id=1):
@@ -76,6 +76,12 @@ def run_level(level, log, det=None, realtime=False, harita_id=1):
     if det and det.get("road") in (1, 2, 3):
         road = det["road"]; conf = det.get("conf", 0.0)
         src = "best.pt / İHA TARAMA MOZAİĞİ" if det.get("kaynak") == "sim-tarama" else "best.pt"
+    elif det is not None:
+        log.raw("")
+        log.raw(f"  ─────────── SEVİYE: {level.upper()} ───────────")
+        log("ALGI", "ALGILAMA_BASARISIZ — model güvenilir rota üretmedi; "
+                    "ground-truth fallback yasak, görev hareket ettirilmedi")
+        return False
     else:
         road = arena.open_road(level, harita_id); conf = CONF.get(level, 0.85); src = "ground-truth"
     log.raw("")

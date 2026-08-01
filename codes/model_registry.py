@@ -1,0 +1,67 @@
+"""Single source of truth for Navitas runtime model selection and identity."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_REGISTRY = ROOT / "config" / "model_registry.json"
+
+
+class ModelRegistryError(RuntimeError):
+    pass
+
+
+def load_registry(path: str | Path = DEFAULT_REGISTRY) -> dict:
+    registry_path = Path(path)
+    try:
+        data = json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ModelRegistryError(f"model registry okunamadı: {registry_path}: {exc}") from exc
+    if data.get("schema_version") != 1 or not isinstance(data.get("profiles"), dict):
+        raise ModelRegistryError("desteklenmeyen/bozuk model registry şeması")
+    return data
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def resolve_model(profile: str | None = None, *, registry_path: str | Path = DEFAULT_REGISTRY,
+                  verify: bool = True) -> tuple[Path, dict]:
+    registry = load_registry(registry_path)
+    name = profile or registry.get("default_profile")
+    try:
+        spec = dict(registry["profiles"][name])
+    except KeyError as exc:
+        choices = ", ".join(sorted(registry["profiles"]))
+        raise ModelRegistryError(f"bilinmeyen model profili {name!r}; seçenekler: {choices}") from exc
+    model_path = ROOT / spec["path"]
+    artifact = model_path / spec.get("artifact", "") if model_path.is_dir() else model_path
+    if not model_path.exists() or not artifact.exists():
+        raise ModelRegistryError(f"model artefaktı yok: {artifact}")
+    if int(spec.get("imgsz", 0)) <= 0:
+        raise ModelRegistryError(f"{name}: geçersiz imgsz")
+    if verify:
+        actual = _sha256(artifact)
+        if actual != spec.get("sha256"):
+            raise ModelRegistryError(
+                f"{name}: SHA-256 uyuşmuyor; beklenen={spec.get('sha256')} gerçek={actual}"
+            )
+    spec["profile"] = name
+    spec["resolved_artifact"] = str(artifact)
+    return model_path, spec
+
+
+def describe(spec: dict) -> str:
+    metrics = spec.get("metrics") or {}
+    score = f" mAP50={metrics['mask_map50']:.4f}" if "mask_map50" in metrics else ""
+    return (f"{spec['model_id']} [{spec['backend']}, imgsz={spec['imgsz']}, "
+            f"sha256={spec['sha256'][:12]}…{score}]")

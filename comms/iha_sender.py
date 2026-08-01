@@ -13,8 +13,12 @@ Saha (SiK telsiz):
 import argparse
 import time
 
-from link import UDPLink, SerialLink
-from protocol import open_route, encode, FrameReader
+try:
+    from .link import UDPLink, SerialLink
+    from .protocol import open_route, encode, FrameReader
+except ImportError:
+    from link import UDPLink, SerialLink
+    from protocol import open_route, encode, FrameReader
 
 
 class IhaSender:
@@ -39,10 +43,15 @@ class IhaSender:
                 continue
             t0 = time.time()
             while time.time() - t0 < interval:
-                d, _addr = self.link.recv()
+                d, addr = self.link.recv()
                 for m in self.reader.feed(d) if d else []:
-                    if m.get("type") == "ACK" and m.get("ref") == msg["seq"]:
-                        acked.add(m.get("node"))
+                    node = m.get("node")
+                    expected_peer = self.peers.get(node)
+                    valid_source = expected_peer is None or addr == expected_peer
+                    if (m.get("type") == "ACK" and m.get("ref") == msg["seq"]
+                            and m.get("ref_session") in (None, msg.get("session"))
+                            and node in self.peers and valid_source):
+                        acked.add(node)
             if self.peers and acked >= set(self.peers):
                 break
         return msg["seq"], acked
@@ -84,7 +93,7 @@ def main():
 
     if args.serial:
         link = SerialLink(args.serial, args.baud)
-        peers = {"broadcast": None}        # telsiz: tek hatta yayın
+        peers = {"ika": None}              # İKA ACK'i aynı seri hattan döner
     else:
         link = UDPLink()
         peers = {}
@@ -96,10 +105,10 @@ def main():
     sender = IhaSender(link, peers)
     print(f"[İHA] Açık yol gönderiliyor: road={road} conf={conf} "
           f"ref={ref_xy} wp={len(waypoints or [])}")
-    seq, acked = sender.send_open_route(road, conf, waypoints, ref_xy,
-                                        wait_ack=not args.serial)
+    seq, acked = sender.send_open_route(road, conf, waypoints, ref_xy)
     if args.serial:
-        print(f"[İHA] Gönderildi (seq={seq}) — telsiz yayın")
+        print(f"[İHA] {'✓ İKA tarafından onaylandı' if 'ika' in acked else '⚠ ACK alınamadı'} "
+              f"(seq={seq}) — telsiz")
     elif acked:
         print(f"[İHA] ✓ Onaylandı (seq={seq}) — ACK: {sorted(acked)}")
     else:

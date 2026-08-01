@@ -2,12 +2,12 @@
 # Navitas TEKNOFEST 2026 — Tam Simülasyon Başlatıcı
 #
 # Kullanım:
-#   ./launch/navitas.launch [kolay|orta|zor|rastgele] [--open-path] [--seed N] [--headless]
+#   ./launch/navitas.launch [kolay|orta|zor] [--road 1|2|3] [--map 1..5] [--seed N] [--headless]
 #
 # Örnekler:
 #   ./launch/navitas.launch
 #   ./launch/navitas.launch zor --seed 123
-#   ./launch/navitas.launch orta --open-path --headless
+#   ./launch/navitas.launch orta --road 2 --headless
 
 set -e
 cd "$(dirname "$0")/.."
@@ -15,14 +15,18 @@ cd "$(dirname "$0")/.."
 SCENARIO="${1:-kolay}"
 WORLD_FILE="worlds/navitas_arena.world"
 SEED=42
-OPEN_PATH=""
+ROAD=""
+MAP=1
 HEADLESS=false
 
 # Argümanları ayrıştır
 shift || true
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --open-path) OPEN_PATH="--open-path" ;;
+        --road)       ROAD="$2"; shift ;;
+        --road=*)     ROAD="${1#--road=}" ;;
+        --map)        MAP="$2"; shift ;;
+        --map=*)      MAP="${1#--map=}" ;;
         --headless)  HEADLESS=true ;;
         --seed)      SEED="$2"; shift ;;
         --seed=*)    SEED="${1#--seed=}" ;;
@@ -37,7 +41,8 @@ echo "════════════════════════�
 echo "  Navitas TEKNOFEST 2026 Simülasyon Başlatıcı"
 echo "  Senaryo   : $SCENARIO"
 echo "  Seed      : $SEED"
-echo "  Açık yol  : ${OPEN_PATH:-hayır}"
+echo "  Yol       : ${ROAD:-otomatik}"
+echo "  Harita    : $MAP"
 echo "  Headless  : $HEADLESS"
 echo "════════════════════════════════════════════"
 
@@ -49,11 +54,11 @@ sleep 0.5
 
 # Dünya dosyasını üret
 echo "[launch] Dünya dosyası üretiliyor..."
-python3 scripts/world_generator.py \
-    --difficulty "$SCENARIO" \
-    --seed "$SEED" \
-    --output "$WORLD_FILE" \
-    $OPEN_PATH
+WORLD_ARGS=(--focus "$SCENARIO" --seed "$SEED" --map "$MAP" --output "$WORLD_FILE")
+if [[ -n "$ROAD" ]]; then
+    WORLD_ARGS+=(--road "$ROAD")
+fi
+python3 scripts/world_generator.py "${WORLD_ARGS[@]}"
 
 # gzserver arka planda başlat
 echo "[launch] gzserver başlatılıyor..."

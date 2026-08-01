@@ -34,7 +34,7 @@ def _yks_acker(link, stop, box):
                 print(f"   [YKS] 📡 tespit alındı: {m['label'].upper()} ({m['road']}) "
                       f"conf={m['conf']} — HAKEM ONAYI ✓")
                 if addr:
-                    link.send(encode(ack(m["seq"], "yks")), addr)
+                    link.send(encode(ack(m["seq"], "yks", m.get("session"))), addr)
 
 
 def run(scenario="kolay"):
@@ -71,7 +71,7 @@ def run(scenario="kolay"):
     road = ika.latest["road"]
     wps = arena.route_waypoints(road)
     print(f"[4] İKA açık yolu ALDI ({arena.ROAD_LABEL[road].upper()}) → "
-          f"rota planlandı: {len(wps)} waypoint, HB={arena.hb(road)}")
+          f"rota planlandı: {len(wps)} waypoint, HB={arena.hb_yeri(scenario)}")
     for i, (x, y) in enumerate(wps):
         print(f"       wp{i}: ({x:+.1f}, {y:+.1f})")
 

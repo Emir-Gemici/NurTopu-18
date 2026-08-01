@@ -276,7 +276,7 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
     else:
         det.update({"road": None, "label": "yok"})
         print("[İHA-HARİTA] GÜVENİLİR ROTA YOK (sağlamlık süzgeci geçilemedi) — "
-              "rota yazılmadı, İKA ground-truth fallback'e düşecek (dürüst sonuç)")
+              "rota yazılmadı, İKA hareket etmeyecek (fail-safe)")
 
     (level_dir / "detection.json").write_text(
         json.dumps(det, ensure_ascii=False, indent=2), encoding="utf-8")

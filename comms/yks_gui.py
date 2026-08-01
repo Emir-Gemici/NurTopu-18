@@ -28,9 +28,14 @@ import time
 import tkinter as tk
 from tkinter import font as tkfont
 
-from link import UDPLink, SerialLink
-from protocol import (encode, ack, command, heartbeat, open_route,
-                      FrameReader, ROAD_LABEL)
+try:
+    from .link import UDPLink, SerialLink
+    from .protocol import (encode, ack, command, heartbeat, open_route,
+                           FrameReader, ROAD_LABEL)
+except ImportError:
+    from link import UDPLink, SerialLink
+    from protocol import (encode, ack, command, heartbeat, open_route,
+                          FrameReader, ROAD_LABEL)
 
 # ── Renkler (koyu tema) ──────────────────────────────────────────────────────
 BG      = "#0f1419"   # zemin
@@ -470,9 +475,9 @@ class YksArayuz:
         if not self.rota or self.onaylandi:
             return
         if self.rota_adr is not None:
-            self.link.send(encode(ack(self.rota["seq"], "yks")), self.rota_adr)
+            self.link.send(encode(ack(self.rota["seq"], "yks", self.rota.get("session"))), self.rota_adr)
         else:                                   # seri hat: adres kavramı yok
-            self.link.send(encode(ack(self.rota["seq"], "yks")))
+            self.link.send(encode(ack(self.rota["seq"], "yks", self.rota.get("session"))))
         self.onaylandi = True
         self.sayac["ACK_TX"] += 1
         self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓")
@@ -643,7 +648,7 @@ class YksArayuz:
             if maskeler[0].sum() == 0:
                 esik = 0.05
                 maskeler = get_masks(sonuc, h, w, min_conf=esik)
-            yol_no, guven, wps = analyze_path(maskeler[0])
+            yol_no, guven, wps = analyze_path(maskeler[0], maskeler[1])
 
             gorsel = draw_masks(img, maskeler)
             # şerit sınırları + waypoint zinciri (saha karar zinciri görünür olsun)
