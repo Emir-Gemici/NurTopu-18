@@ -29,6 +29,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <limits>
 
 namespace gazebo
 {
@@ -40,6 +41,9 @@ namespace gazebo
     private: event::ConnectionPtr updateConn;
     private: std::map<std::string, std::vector<Waypoint>> traj;
     private: std::map<std::string, size_t> ikaIdx;     // İKA waypoint takip indeksi
+    private: std::map<std::string, double> ikaBestDist;
+    private: std::map<std::string, double> ikaLastProgressT;
+    private: std::map<std::string, bool> ikaStuck;
     private: double ihaRoll = 0.0, ihaPitch = 0.0;     // İHA tavır (alçak-geçiren durum)
 
     // İKA ROTA KAYNAĞI — dürüst haritalandırma zinciri:
@@ -50,6 +54,9 @@ namespace gazebo
     private: std::map<std::string, std::string> ikaRouteSrc;   // "bekliyor"|"model"|"fallback"
     private: const char *ROUTE_FILE = "/tmp/navitas_route";
     private: const double ROUTE_WAIT = 45.0;   // s — İHA inişinden sonra rota bekleme süresi
+    private: bool requireManualTrigger = true;
+    private: bool allowGroundTruthFallback = false;
+    private: std::string triggerFile = "/tmp/navitas_ika_trigger";
 
     // İHA tavır limitleri (gerçekçi küçük sabit kanat)
     private: const double PITCH_MAX = 0.45;   // rad (~26°) burun yukarı/aşağı
@@ -70,6 +77,12 @@ namespace gazebo
     public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override
     {
       this->world = _world;
+      if (_sdf->HasElement("require_manual_trigger"))
+        this->requireManualTrigger = _sdf->Get<bool>("require_manual_trigger");
+      if (_sdf->HasElement("allow_ground_truth_fallback"))
+        this->allowGroundTruthFallback = _sdf->Get<bool>("allow_ground_truth_fallback");
+      if (_sdf->HasElement("trigger_file"))
+        this->triggerFile = _sdf->Get<std::string>("trigger_file");
       if (_sdf->HasElement("model"))
       {
         for (auto m = _sdf->GetElement("model"); m; m = m->GetNextElement("model"))
@@ -90,7 +103,13 @@ namespace gazebo
           {
             this->traj[name] = wps;
             this->ikaIdx[name] = 1;
-            if (isIka(name)) this->ikaRouteSrc[name] = "bekliyor";
+            if (isIka(name))
+            {
+              this->ikaRouteSrc[name] = "bekliyor";
+              this->ikaBestDist[name] = std::numeric_limits<double>::infinity();
+              this->ikaLastProgressT[name] = 0.0;
+              this->ikaStuck[name] = false;
+            }
             gzmsg << "[navitas_anim] '" << name << "' " << wps.size()
                   << " yol noktası.\n";
           }
@@ -98,6 +117,9 @@ namespace gazebo
       }
       this->updateConn = event::Events::ConnectWorldUpdateBegin(
           std::bind(&NavitasAnim::OnUpdate, this));
+      gzmsg << "[navitas_anim] manuel İKA tetik=" << this->requireManualTrigger
+            << " fallback=" << this->allowGroundTruthFallback
+            << " dosya=" << this->triggerFile << "\n";
     }
 
     private: static bool isIka(const std::string &n)
@@ -126,6 +148,9 @@ namespace gazebo
       this->traj[name] = wps;
       this->ikaIdx[name] = 1;
       this->ikaRouteSrc[name] = "model";
+      this->ikaBestDist[name] = std::numeric_limits<double>::infinity();
+      this->ikaLastProgressT[name] = this->world->SimTime().Double();
+      this->ikaStuck[name] = false;
       gzmsg << "[navitas_anim] '" << name << "' İHA MODEL haritası yüklendi: "
             << (wps.size() - 1) << " rota noktası (" << ROUTE_FILE << ")\n";
       return true;
@@ -152,7 +177,9 @@ namespace gazebo
         f << static_cast<long>(t) << "\n";
         // İKA telemetrisi (hata ayıklama + hakem logu): konum, hız, hedef wp, rota kaynağı
         for (auto &kv : this->traj)
+        {
           if (isIka(kv.first))
+          {
             if (auto m = this->world->ModelByName(kv.first))
             {
               auto p = m->WorldPose().Pos();
@@ -161,10 +188,25 @@ namespace gazebo
                 << " v=" << std::hypot(v.X(), v.Y())
                 << " wp=" << this->ikaIdx[kv.first]
                 << " rota=" << this->ikaRouteSrc[kv.first]
+                << " tetik=" << ((!this->requireManualTrigger ||
+                                   std::ifstream(this->triggerFile).good()) ? "hazir" : "bekliyor")
                 // rota bitti (son wp'ye ulaşıldı) → kayıt betiği klibi erken keser
-                << (this->ikaIdx[kv.first] >= kv.second.size() ? " durum=BITTI" : "")
+                << (this->ikaIdx[kv.first] >= kv.second.size() ? " durum=BITTI" :
+                    (this->ikaStuck[kv.first] ? " durum=TIKANDI" :
+                     (this->ikaRouteSrc[kv.first] == "yok" ? " durum=ROTA_YOK" : "")))
                 << "\n";
             }
+          }
+          else if (kv.first == "aftershock_barrier")
+          {
+            if (auto m = this->world->ModelByName(kv.first))
+            {
+              auto p = m->WorldPose().Pos();
+              f << "aftershock_barrier x=" << p.X() << " y=" << p.Y()
+                << " z=" << p.Z() << "\n";
+            }
+          }
+        }
         // (İHA poz logu artık navitas_scan_cam plugin'inde — kareyle AYNI olayda
         //  yazılır, birebir senkron; buradaki 1 Hz kopya kaldırıldı.)
         this->lastSimWrite = t;
@@ -197,20 +239,58 @@ namespace gazebo
           {
             if (!this->tryLoadRoute(kv.first))
             {
-              if (t < startT + ROUTE_WAIT)
+              // Yarışma profili: rota İHA havadayken gelmiş olmalıdır; inişten sonra
+              // ek bekleme yok. Yalnız açık demo fallback modunda 45 s beklenir.
+              const double routeWait = this->allowGroundTruthFallback ? ROUTE_WAIT : 0.0;
+              if (t < startT + routeWait)
               {
                 model->SetLinearVel(ignition::math::Vector3d::Zero);
                 model->SetAngularVel(ignition::math::Vector3d::Zero);
                 continue;                        // İHA haritası henüz gelmedi — bekle
               }
+              if (!this->allowGroundTruthFallback)
+              {
+                src = "yok";
+                gzerr << "[navitas_anim] '" << kv.first << "' MODEL rotası "
+                      << "İHA inişine kadar gelmedi → ROTA_YOK, araç güvenli duruşta.\n";
+                model->SetLinearVel(ignition::math::Vector3d::Zero);
+                model->SetAngularVel(ignition::math::Vector3d::Zero);
+                continue;
+              }
               src = "fallback";
+              this->ikaBestDist[kv.first] = std::numeric_limits<double>::infinity();
+              this->ikaLastProgressT[kv.first] = t;
               gzmsg << "[navitas_anim] '" << kv.first << "' MODEL rotası "
-                    << ROUTE_WAIT << "s içinde gelmedi → SDF ground-truth FALLBACK "
+                    << ROUTE_WAIT << "s içinde gelmedi → DEMO ground-truth FALLBACK "
                        "(model başarısı SAYILMAZ).\n";
             }
           }
+
+          if (src == "yok")
+          {
+            model->SetLinearVel(ignition::math::Vector3d::Zero);
+            model->SetAngularVel(ignition::math::Vector3d::Zero);
+            continue;
+          }
+
+          // Şartname §2.2.5: İHA yere indikten sonra YKS operatörü görevi manuel
+          // tetikler; tetikten sonra sürüş bütünüyle otonomdur. Dosya, kayıt/YKS
+          // sürecinin açık bir olay üretmesini sağlar ve otomatik zaman başlangıcını önler.
+          if (this->requireManualTrigger && !std::ifstream(this->triggerFile).good())
+          {
+            model->SetLinearVel(ignition::math::Vector3d::Zero);
+            model->SetAngularVel(ignition::math::Vector3d::Zero);
+            continue;
+          }
+
           size_t &idx = this->ikaIdx[kv.first];
           if (idx < 1) idx = 1;
+          if (this->ikaStuck[kv.first])
+          {
+            model->SetLinearVel(ignition::math::Vector3d::Zero);
+            model->SetAngularVel(ignition::math::Vector3d::Zero);
+            continue;
+          }
           if (idx >= wps.size())
           {
             model->SetLinearVel(ignition::math::Vector3d::Zero);   // HB'ye ulaştı, dur
@@ -222,7 +302,26 @@ namespace gazebo
           double cx = pose.Pos().X(), cy = pose.Pos().Y();
           double dx = wps[idx].x - cx, dy = wps[idx].y - cy;
           double dist = std::hypot(dx, dy);
-          if (dist < WP_RADIUS) { idx++; continue; }   // sonraki waypoint
+          if (dist + 0.05 < this->ikaBestDist[kv.first])
+          {
+            this->ikaBestDist[kv.first] = dist;
+            this->ikaLastProgressT[kv.first] = t;
+          }
+          if (t - this->ikaLastProgressT[kv.first] > 15.0)
+          {
+            this->ikaStuck[kv.first] = true;
+            gzerr << "[navitas_anim] '" << kv.first << "' 15s ilerleme yok → TIKANDI\n";
+            model->SetLinearVel(ignition::math::Vector3d::Zero);
+            model->SetAngularVel(ignition::math::Vector3d::Zero);
+            continue;
+          }
+          if (dist < WP_RADIUS)
+          {
+            idx++;
+            this->ikaBestDist[kv.first] = std::numeric_limits<double>::infinity();
+            this->ikaLastProgressT[kv.first] = t;
+            continue;
+          }
 
           // Hedef hız (XY) → istenen hız vektörü
           double inv = 1.0 / dist;
@@ -306,9 +405,10 @@ namespace gazebo
           z = wps[i].z + (wps[i + 1].z - wps[i].z) * f;
           yaw = wps[i].yaw + wrap(wps[i + 1].yaw - wps[i].yaw) * f;
           return;
-        }
-      }
-    }
+              }
+            }
+          }
+
   };
 
   GZ_REGISTER_WORLD_PLUGIN(NavitasAnim)

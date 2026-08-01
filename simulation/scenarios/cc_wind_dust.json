@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "cc_wind_dust",
+  "author": "Claude Code",
+  "title_tr": "Gündüz Rüzgârı, Toz Bulutu ve Açık Deprem Sahası",
+  "description_tr": "Güçlü yanal rüzgâr ve toz/sis karışımı altında, geniş açık deprem sahasında İHA rota sağlamlığını ve İKA zemin tutuşunu sınar.",
+  "seed": 2302,
+  "active_zone": "orta",
+  "map_ids": {"kolay": 111, "orta": 112, "zor": 113},
+  "environment": {"ambient": [0.55, 0.55, 0.52, 1.0], "background": [0.68, 0.62, 0.52, 1.0], "sun_diffuse": [0.88, 0.82, 0.68, 1.0], "sun_direction": [-0.35, 0.3, -0.85], "fog": {"enabled": true, "type": "exp", "color": [0.62, 0.56, 0.46, 1.0], "start": 20.0, "end": 110.0, "density": 0.012}, "wind": [7.5, -3.0, 0.4], "ground_friction": 0.55, "ground_color": [0.45, 0.40, 0.32]},
+  "terrain": {"layout": "field", "lane_width_multiplier": 1.1, "debris_multiplier": 0.9, "rubble_height_multiplier": 0.8, "chicane_count": 4},
+  "flight": {"scan_altitude_m": 34.0, "scan_tilt_deg": 6.0, "lateral_jitter_m": 1.1},
+  "mission": {"require_manual_trigger": true, "route_delivery_delay_s": 1.0, "packet_loss_percent": 8, "dynamic_obstacle": "none"},
+  "acceptance": ["Rüzgar/toz stresi ayrı bir dinamik engel yerine ortam parametreleriyle temsil edilir (wind=[7.5,-3.0,0.4], fog density 0.012, ground_friction=0.55)", "Seed=2302 ile world üretimi deterministiktir (iki çalıştırma birebir aynı XML) ve İHA uçuşu UB sınırları içinde kalıp HB pedine iner", "İKA rotayı tamamlayıp HB'ye ulaşır ya da kapalı koridorda molozda TIKANDI olarak loglanır (SONUÇ BAŞARILI/BAŞARISIZ); toz altında algı yanlış-pozitif oranı ve rota sapma mesafesi için ölçüm altyapısı yok — kanıtlanmadı, sayısal hedef verilmiyor", "Gazebo NaN üretmeden çalışır, real_time_factor/telemetri loglanır"]
+}

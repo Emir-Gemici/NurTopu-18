@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "cx_aftershock_dynamic",
+  "author": "Codex",
+  "title_tr": "Artçı Sarsıntı ve Sonradan Kapanan Koridor",
+  "description_tr": "Görev sırasında devrilen hafif enkaz ve değişen geçiş açıklığıyla fizik ve güvenli duruş davranışını sınar.",
+  "seed": 2203,
+  "active_zone": "kolay",
+  "map_ids": {"kolay": 221, "orta": 222, "zor": 223},
+  "environment": {"ambient": [0.42, 0.40, 0.38, 1.0], "background": [0.52, 0.48, 0.44, 1.0], "sun_diffuse": [0.72, 0.66, 0.58, 1.0], "sun_direction": [0.45, -0.15, -0.88], "wind": [4.0, 1.5, 0.0], "ground_friction": 0.62, "ground_color": [0.25, 0.23, 0.20]},
+  "terrain": {"layout": "field", "lane_width_multiplier": 0.82, "debris_multiplier": 1.35, "rubble_height_multiplier": 1.35, "chicane_count": 8},
+  "flight": {"scan_altitude_m": 28.0, "scan_tilt_deg": 8.0, "lateral_jitter_m": 0.65},
+  "mission": {"require_manual_trigger": true, "route_delivery_delay_s": 1.0, "packet_loss_percent": 5, "dynamic_obstacle": "aftershock_barrier"},
+  "acceptance": ["Dinamik engel katı çarpışma üretir", "İKA engelin içinden geçmez", "Tıkanma sessiz sonsuz döngü yerine açık durum koduyla biter"]
+}

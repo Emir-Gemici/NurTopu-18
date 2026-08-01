@@ -21,7 +21,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
 import arena
-from world_generator import ZONE_POS, IKA_SPEED, SCAN_Z
+from world_generator import ZONE_POS, IKA_SPEED
+from scenario_profiles import available_profiles, load_profile
 from link import UDPLink
 from iha_sender import IhaSender
 from ika_receiver import IkaReceiver
@@ -71,7 +72,7 @@ def _yks(link, stop, box, log):
                     link.send(encode(ack(m["seq"], "yks", m.get("session"))), addr)
 
 
-def run_level(level, log, det=None, realtime=False, harita_id=1):
+def run_level(level, log, det=None, realtime=False, harita_id=1, scan_altitude_m=30.0):
     # det = İHA modelinin GERÇEK tespiti (detections.json); yoksa ground-truth.
     if det and det.get("road") in (1, 2, 3):
         road = det["road"]; conf = det.get("conf", 0.0)
@@ -99,7 +100,7 @@ def run_level(level, log, det=None, realtime=False, harita_id=1):
     # ── İHA ALGI KATMANI (serpantin tarama + model) ──
     log("İHA", "mancınıkla fırlatıldı (stall×1.15) → tam otonom uçuş (İHA-UB)")
     time.sleep(0.4)
-    log("İHA", f"tarama irtifası {SCAN_Z:.0f} m → 50×50 HTAB SERPANTİN tarama (4 sütun, "
+    log("İHA", f"tarama irtifası {scan_altitude_m:.0f} m → 50×50 HTAB SERPANTİN tarama (4 sütun, "
                f"nadir kamera 1 kare/sn → /tmp/iha_scan)")
     time.sleep(0.4)
     log("ALGI", f"model={MODEL_NAME} imgsz={MODEL_IMGSZ} conf_thr={MODEL_CONF_THR} | {MODEL_MAP}")
@@ -187,8 +188,9 @@ def main():
     ap.add_argument("--detections", help="İHA modelinin tespitleri (detections.json)")
     ap.add_argument("--realtime", type=int, default=0, choices=[0, 1],
                     help="1=gerçekçi süreler+limitler, 0=süresiz (mevcut)")
-    ap.add_argument("--map", type=int, default=1, choices=range(1, arena.HARITA_N + 1),
-                    help="gerçekçi harita no (world_generator --map ile aynı)")
+    ap.add_argument("--map", type=int, default=None,
+                    help="profil map_ids yerine açık pozitif harita ID override")
+    ap.add_argument("--profile", choices=["baseline"] + available_profiles(), default="baseline")
     args = ap.parse_args()
 
     dets = {}
@@ -204,9 +206,14 @@ def main():
     log.raw("  (model çıktısı + görev telemetrisi — gerçek comms ile üretildi)")
     log.raw("=" * 64)
 
+    profile = load_profile(args.profile)
+    if args.map is not None and args.map < 1:
+        ap.error("--map pozitif olmalı")
     levels = ["kolay", "orta", "zor"] if args.all or not args.level else [args.level]
     for lv in levels:
-        run_level(lv, log, dets.get(lv), realtime=bool(args.realtime), harita_id=args.map)
+        map_id = args.map if args.map is not None else profile["map_ids"][lv]
+        run_level(lv, log, dets.get(lv), realtime=bool(args.realtime), harita_id=map_id,
+                  scan_altitude_m=profile["flight"]["scan_altitude_m"])
     end = datetime.now()
     log.raw("\n" + "=" * 64)
     log.raw(f"  GÖREV OTURUMU TAMAMLANDI   Bitiş: {end:%H:%M:%S}   "

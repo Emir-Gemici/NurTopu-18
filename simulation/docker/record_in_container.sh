@@ -15,7 +15,8 @@ LEVELS="${3:-kolay orta zor}"
 RT="${4:-0}"                   # süre modu: 1=gerçekçi+limit, 0=süresiz
 LAYOUT="${5:-field}"          # arena: field=gerçekçi saha (vars.), clean=seyrek
 CLIP_LIMIT="${6:-1500}"        # klip başına güvenlik üst sınırı (sn) — şartname: İHA 15dk + İKA 10dk
-MAP="${NAVITAS_MAP:-1}"        # gerçekçi harita no (record.sh --map ile gelir)
+MAP="${NAVITAS_MAP:-}"         # yalnız açık --map override verilirse dolu
+PROFILE="${NAVITAS_PROFILE:-baseline}"
 
 W=1280; H=720; FPS=30
 SIMDIR=/sim
@@ -37,7 +38,7 @@ cleanup() {
 trap cleanup EXIT
 
 echo "════════════════════════════════════════════"
-echo "  Navitas SIRALI kayıt — seviyeler: $LEVELS | seed=$SEED | layout=$LAYOUT"
+echo "  Navitas SIRALI kayıt — profil=$PROFILE | seviyeler: $LEVELS | seed=$SEED | layout=${LAYOUT:-profil}"
 echo "  ${W}x${H}@${FPS}  →  $OUT"
 echo "════════════════════════════════════════════"
 
@@ -61,24 +62,36 @@ record_one() {
     # Modelin kararı KAYIT SIRASINDA, İHA'nın kendi tarama karelerinden verilir
     # (host: iha_haritala.py) ve İKA'ya /tmp/navitas_route ile ulaşır.
     local gen
+    local layout_args=()
+    local map_args=()
+    [ -n "$LAYOUT" ] && layout_args=(--layout "$LAYOUT")
+    [ -n "$MAP" ] && map_args=(--map "$MAP")
     gen=$(python3 scripts/world_generator.py --focus "$level" --seed "$SEED" --record \
-          --layout "$LAYOUT" --map "$MAP" --output "$world")
+          --profile "$PROFILE" "${layout_args[@]}" "${map_args[@]}" --output "$world")
     echo "$gen"
-    local secs open scan_end htab kbxy hbxy
+    local secs open actual_map actual_seed scan_altitude scan_end land_t route_delay packet_loss htab kbxy hbxy
     secs=$(echo "$gen" | sed -n 's/.*RECORD_SECONDS=\([0-9]*\).*/\1/p'); [ -z "$secs" ] && secs=30
     [ "$secs" -gt "$CLIP_LIMIT" ] && secs="$CLIP_LIMIT"
     open=$(echo "$gen" | sed -n 's/.*OPEN_ROAD=\([a-z]*\).*/\1/p'); [ -z "$open" ] && open="?"
+    actual_map=$(echo "$gen" | sed -n 's/.*MAP=\([0-9]*\).*/\1/p'); [ -z "$actual_map" ] && { echo "MAP metadata yok"; return 1; }
+    actual_seed=$(echo "$gen" | sed -n 's/.*SEED=\([0-9-]*\).*/\1/p'); [ -z "$actual_seed" ] && { echo "SEED metadata yok"; return 1; }
+    scan_altitude=$(echo "$gen" | sed -n 's/.*SCAN_ALTITUDE_M=\([0-9.]*\).*/\1/p'); [ -z "$scan_altitude" ] && { echo "SCAN_ALTITUDE_M metadata yok"; return 1; }
     scan_end=$(echo "$gen" | sed -n 's/.*SCAN_END_T=\([0-9]*\).*/\1/p'); [ -z "$scan_end" ] && scan_end=9999
+    land_t=$(echo "$gen" | sed -n 's/.*LAND_T=\([0-9]*\).*/\1/p'); [ -z "$land_t" ] && land_t=9999
+    route_delay=$(echo "$gen" | sed -n 's/.*ROUTE_DELAY_S=\([0-9.]*\).*/\1/p'); [ -z "$route_delay" ] && route_delay=0
+    packet_loss=$(echo "$gen" | sed -n 's/.*PACKET_LOSS_PERCENT=\([0-9]*\).*/\1/p'); [ -z "$packet_loss" ] && packet_loss=0
     htab=$(echo "$gen" | sed -n 's/.*HTAB_CENTER=\([0-9.,-]*\).*/\1/p')
     kbxy=$(echo "$gen" | sed -n 's/.*KB_XY=\([0-9.,-]*\).*/\1/p')
     hbxy=$(echo "$gen" | sed -n 's/.*HB_XY=\([0-9.,-]*\).*/\1/p')
-    echo "[rec] $level: harita=$MAP ground-truth açık yol=${open} (GİZLİ — model kendisi bulacak), tarama bitişi ~${scan_end}s"
+    echo "[rec] $level: harita=$actual_map seed=$actual_seed ground-truth açık yol=${open} (GİZLİ), tarama bitişi ~${scan_end}s"
 
     # İHA-haritalama köprü dizini (host'taki iha_haritala.py buradan okur/buraya yazar)
     local L="$OUTDIR/iha_scan_${level}"
     rm -rf "$L"; mkdir -p "$L/kareler"
     { echo "LEVEL=$level"; echo "HTAB_CENTER=$htab"; echo "SCAN_END_T=$scan_end"
-      echo "SEED=$SEED"; echo "LAYOUT=$LAYOUT"; echo "MAP=$MAP"
+      echo "SEED=$actual_seed"; echo "LAYOUT=${LAYOUT:-profil}"; echo "MAP=$actual_map"; echo "PROFILE=$PROFILE"
+      echo "SCAN_ALTITUDE_M=$scan_altitude"
+      echo "LAND_T=$land_t"; echo "ROUTE_DELAY_S=$route_delay"; echo "PACKET_LOSS_PERCENT=$packet_loss"
       echo "KB_XY=$kbxy"; echo "HB_XY=$hbxy"; } > "$L/meta.txt"
 
     # gzserver SADECE (gzclient YOK) — dünyadaki top-down kamera SENSÖRÜ kareleri
@@ -86,7 +99,7 @@ record_one() {
     # İHA tarama kamerası navitas_scan_cam plugin'iyle kare+pozu SENKRON yazar:
     # /tmp/iha_scan/scan_N.jpg + /tmp/iha_scan/poses.csv (n,t,x,y,z,yaw — birebir).
     # İKA rotası /tmp/navitas_route'tan okunur.
-    rm -rf /tmp/frames /tmp/iha_scan /tmp/navitas_simtime /tmp/navitas_route
+    rm -rf /tmp/frames /tmp/iha_scan /tmp/navitas_simtime /tmp/navitas_route /tmp/navitas_ika_trigger
     mkdir -p /tmp/frames /tmp/iha_scan
     gzserver --pause "$world" >/dev/null 2>&1 &
     # NOT: gz stats DURAKLATILMIŞ dünyada çıktı vermez — hazır olmayı topic listesiyle anla
@@ -101,7 +114,10 @@ record_one() {
     # kalmasın. Üst sınır: 5× duvar süresi.
     # SİM saatini plugin'in yazdığı /tmp/navitas_simtime'dan izle (gz stats yük
     # altında sessiz kalıyor / SIGABRT veriyordu — dosya güvenilir).
-    local wall_max=$(( secs * 6 + 90 )) waited=0 simt=0 bitti_pad=0
+    local wall_max=$(( secs * 6 + 90 )) waited=0 simt=0 bitti_pad=0 route_attempt=0
+    local route_ready_at route_drop_n
+    route_ready_at=$(python3 -c "print(int(float('$scan_end') + float('$route_delay')))" 2>/dev/null); route_ready_at=${route_ready_at:-$scan_end}
+    route_drop_n=$(( (packet_loss + 19) / 20 ))
     while [ "$waited" -lt "$wall_max" ]; do
         pgrep gzserver >/dev/null || break
         simt=$(cat /tmp/navitas_simtime 2>/dev/null | head -1); simt=${simt:-0}
@@ -113,6 +129,16 @@ record_one() {
                 break
             fi
         fi
+        if grep -q "durum=TIKANDI" /tmp/navitas_simtime 2>/dev/null; then
+            touch "$L/TIKANDI"
+            echo "[rec] görev başarısız: İKA 15 sim-saniye ilerleme göstermedi (TIKANDI)"
+            break
+        fi
+        if grep -q "durum=ROTA_YOK" /tmp/navitas_simtime 2>/dev/null; then
+            touch "$L/ROTA_YOK"
+            echo "[rec] görev başarısız: güvenilir model rotası alınamadı, İKA güvenli duruşta (ROTA_YOK)"
+            break
+        fi
         # ── İHA-HARİTALAMA KÖPRÜSÜ (canlı): kareler+pozlar DIŞARI, model rotası İÇERİ ──
         cp -u /tmp/iha_scan/scan_*.jpg "$L/kareler/" 2>/dev/null
         cp -f /tmp/iha_scan/poses.csv "$L/poses.csv" 2>/dev/null
@@ -120,9 +146,28 @@ record_one() {
             touch "$L/SCAN_DONE"
             echo "[rec] tarama bitti (sim ${simt}s) → host İHA-haritalama tetiklendi"
         fi
-        if [ -f "$L/route.txt" ] && [ ! -f /tmp/navitas_route ]; then
-            cp -f "$L/route.txt" /tmp/navitas_route
-            echo "[rec] MODEL rotası alındı → İKA modelin haritasını sürecek"
+        if [ -f "$L/route.txt" ] && [ ! -f /tmp/navitas_route ] && [ "$simt" -ge "$route_ready_at" ] 2>/dev/null; then
+            route_attempt=$(( route_attempt + 1 ))
+            if [ "$packet_loss" -ge 100 ]; then
+                touch "$L/COMMS_TOTAL_LOSS"
+                echo "[rec] haberleşme stresi: %100 kayıp, rota paketi #$route_attempt teslim edilmedi"
+            elif [ "$route_attempt" -le "$route_drop_n" ]; then
+                echo "[rec] haberleşme stresi: rota paketi #$route_attempt deterministik düşürüldü"
+            else
+                cp -f "$L/route.txt" /tmp/navitas_route
+                echo "[rec] MODEL rotası deneme #$route_attempt ile teslim edildi → İKA model haritasını sürecek"
+                if [ "$simt" -ge "$land_t" ] 2>/dev/null; then
+                    touch "$L/COMMS_LATE"
+                    echo "[rec] GÖREV İHLALİ: rota İHA inişinden sonra teslim edildi (sim=${simt}, iniş=${land_t})"
+                else
+                    touch "$L/COMMS_BEFORE_LANDING"
+                    echo "[rec] haberleşme sırası uygun: rota İHA havadayken teslim edildi"
+                fi
+            fi
+        fi
+        if [ "$simt" -ge $(( land_t + 2 )) ] 2>/dev/null && [ ! -f /tmp/navitas_ika_trigger ]; then
+            touch /tmp/navitas_ika_trigger
+            echo "[rec] YKS operatörü manuel İKA görev tetikleme olayı verdi (sim ${simt}s)"
         fi
         [ "$simt" -ge "$secs" ] 2>/dev/null && break
         sleep 2; waited=$(( waited + 2 ))
@@ -166,7 +211,7 @@ record_one() {
     read -r IHAT IKAT <<EOF2
 $(python3 -c "import sys;sys.path.insert(0,'scripts');import mission_time as mt
 r=${mroad:-0}
-T=mt.realistic('$level', r if r in (1,2,3) else None, harita_id=$MAP)
+T=mt.realistic('$level', r if r in (1,2,3) else None, harita_id=$actual_map)
 print(mt.fmt(T['iha']), mt.fmt(T['ika']))" 2>/dev/null)
 EOF2
     [ -z "$IHAT" ] && IHAT="--.--"; [ -z "$IKAT" ] && IKAT="--.--"
@@ -202,13 +247,15 @@ for lv in $LEVELS; do
     [ -f "$clip" ] && CLIPS+=("$clip")
 done
 
-# Hakem/model logu (tek oturum — kaydedilen seviyeler için)
+# Hakem/model logu (tek oturum — profil zon-map kimliklerini kendi çözer)
 echo "[rec] hakem/model logu üretiliyor → $LOG"
 DET="$OUTDIR/detections.json"
+LOG_MAP_ARGS=()
+[ -n "$MAP" ] && LOG_MAP_ARGS=(--map "$MAP")
 if [ "$(echo $LEVELS | wc -w)" -eq 1 ]; then
-    python3 scripts/hakem_log.py --level "$LEVELS" --map "$MAP" --detections "$DET" --realtime "$RT" --out "$LOG" >/dev/null 2>&1 || echo "[rec] (log üretilemedi)"
+    python3 scripts/hakem_log.py --level "$LEVELS" --profile "$PROFILE" "${LOG_MAP_ARGS[@]}" --detections "$DET" --realtime "$RT" --out "$LOG" >/dev/null 2>&1 || echo "[rec] (log üretilemedi)"
 else
-    python3 scripts/hakem_log.py --all --map "$MAP" --detections "$DET" --realtime "$RT" --out "$LOG" >/dev/null 2>&1 || echo "[rec] (log üretilemedi)"
+    python3 scripts/hakem_log.py --all --profile "$PROFILE" "${LOG_MAP_ARGS[@]}" --detections "$DET" --realtime "$RT" --out "$LOG" >/dev/null 2>&1 || echo "[rec] (log üretilemedi)"
 fi
 
 # ── Birleştir ─────────────────────────────────────────────────────────────────

@@ -5,7 +5,7 @@ Dürüst haritalandırma zincirinin HOST tarafı (torch/ultralytics .venv'de):
 
   Gazebo (konteyner)                           Bu betik (host .venv)
   ──────────────────                           ─────────────────────
-  İHA 30 m'de serpantin uçar                   kareler + poz logu senkronlanır
+  İHA profil irtifasında serpantin uçar          kareler + poz logu senkronlanır
   scan_camera 1 Hz kare kaydeder     ──────►   1) ORTOMOZAİK: her kare, çekildiği
   plugin İHA pozunu 1 Hz loglar                   andaki İHA pozuna göre döndürülüp
   (t,x,y,z,yaw → iha_scan_poses.csv)              kuzey-yukarı saha haritasına oturtulur
@@ -54,12 +54,12 @@ MOZ_PX   = 1024            # mozaik kenarı (px) — iha_perceive CANON ile ayn�
 MOZ_M    = 56.0            # mozaiğin kapladığı alan (m) — HTAB 50 + 3 m kenar payı
 MPP      = MOZ_M / MOZ_PX  # metre/piksel (~0.055)
 HFOV     = 1.3             # scan_camera horizontal_fov (models/iha/model.sdf ile AYNI)
-SCAN_Z   = 30.0            # tarama irtifası (world_generator.SCAN_Z ile AYNI)
+DEFAULT_SCAN_Z = 30.0      # eski kayıt/meta yokluğu için geriye uyumlu varsayılan
 BG_GRI   = 114             # boş mozaik zemini (YOLO letterbox nötr grisi)
 
 # Kare filtresi: sadece DÜZ tarama bacakları (kuzey/güney uçuş, yatay kanat).
 # Dönüşlerde İHA 40°'ye dek yatar → kare eğik, mozaiğe koyma.
-Z_TOL    = 0.6             # |z − 30| < 0.6 m
+Z_TOL    = 0.6             # |z − profil tarama irtifası| < 0.6 m
 YAW_TOL  = 0.15            # |beklenen ±90°'den sapma| < ~8.6°
 HTAB_HALF_MARJ = 26.0      # İHA bu sınırın dışındayken kare mozaiğe alınmaz
 
@@ -84,8 +84,8 @@ def poz_oku(csv_path):
     return pozlar
 
 
-def mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, kare_ofset=0, rot_isaret=1.0,
-               debug=False):
+def mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, scan_z=DEFAULT_SCAN_Z,
+               kare_ofset=0, rot_isaret=1.0, debug=False):
     """Tarama karelerini kuzey-yukarı saha haritasına diz → (mozaik BGR, kullanılan_n).
 
     Her karenin yer kapsama genişliği: 2·z·tan(hfov/2)  (z=30, hfov=1.3 → ~45.6 m).
@@ -108,8 +108,8 @@ def mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, kare_ofset=0, rot_isaret=1.0,
         if poz is None:
             continue
         x, y, z, yaw = poz
-        # Sadece düz tarama bacakları: irtifa 30 m ve yaw ≈ ±90° (kuzey/güney uçuş)
-        if abs(z - SCAN_Z) > Z_TOL or abs(abs(yaw) - math.pi / 2) > YAW_TOL:
+        # Sadece düz tarama bacakları: profil irtifası ve yaw ≈ ±90°.
+        if abs(z - scan_z) > Z_TOL or abs(abs(yaw) - math.pi / 2) > YAW_TOL:
             continue
         # İHA HTAB dışındayken çekilen kare mozaiğe girmez (v15: İHA-İB'ye sokulma
         # bacağının karesi sağ üstte 'hayalet' yama bırakmıştı)
@@ -204,7 +204,7 @@ def _etiket_orta_bant(rota, htab_cx):
     return 1 if m < -8 else (3 if m > 8 else 2)
 
 
-def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
+def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15, scan_z=DEFAULT_SCAN_Z,
              kare_ofset=0, rot_isaret=1.0, debug=False, kb_xy=None, hb_xy=None):
     """Bir seviyenin tarama klasörünü işle: mozaik → model → sağlamlık süzgeci → rota.
     kb_xy = İKA başlangıç REFERANS noktası (dünya), hb_xy = HB (dünya, önceden bilinir).
@@ -223,7 +223,7 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15,
         return det
 
     pozlar = poz_oku(poses)
-    mozaik, n = mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy,
+    mozaik, n = mozaik_kur(kare_dir, pozlar, htab_cx, htab_cy, scan_z=scan_z,
                            kare_ofset=kare_ofset, rot_isaret=rot_isaret, debug=debug)
     det["kare_n"] = n
     cv2.imwrite(str(level_dir / "ortomozaik.jpg"), mozaik)
@@ -329,6 +329,16 @@ def _meta_xy(meta, anahtar):
     return None
 
 
+def _tarama_irtifasi(meta, cli_scan_z=None):
+    """Gerçek profil irtifasını kullan; yalnız eski kayıtlarda 30 m'ye dön."""
+    if cli_scan_z is not None:
+        return float(cli_scan_z)
+    try:
+        return float(meta.get("SCAN_ALTITUDE_M", DEFAULT_SCAN_Z))
+    except (TypeError, ValueError):
+        raise SystemExit("Geçersiz SCAN_ALTITUDE_M meta değeri")
+
+
 def watch(vdir, levels, model_path, conf, kare_ofset, rot_isaret, bekle_sn=1800):
     """record.sh akışı: her seviyenin SCAN_DONE işaretini bekle → haritala → rota yaz.
     Konteyner route.txt'yi /tmp/navitas_route'a kopyalar, İKA sürmeye başlar."""
@@ -352,6 +362,7 @@ def watch(vdir, levels, model_path, conf, kare_ofset, rot_isaret, bekle_sn=1800)
         meta = _meta_oku(ldir)
         cx, cy = _htab_merkez(meta, None)
         det = haritala(ldir, model, cx, cy, conf=conf,
+                       scan_z=_tarama_irtifasi(meta),
                        kare_ofset=kare_ofset, rot_isaret=rot_isaret,
                        kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"))
         _detections_birlestir(vdir, level, det)
@@ -367,6 +378,8 @@ def main():
     ap.add_argument("--model", default=str(DEFAULT_MODEL))
     ap.add_argument("--conf", type=float, default=0.15)
     ap.add_argument("--htab", default=None, help="HTAB merkezi 'cx,cy' (--once + meta yoksa)")
+    ap.add_argument("--scan-altitude", type=float, default=None,
+                    help="tarama irtifası (vars. meta.txt SCAN_ALTITUDE_M; eski kayıtta 30 m)")
     ap.add_argument("--kare-ofset", type=int, default=0,
                     help="kare index → poz t kayması (kalibrasyon, vars. 0)")
     ap.add_argument("--rot-isaret", type=float, default=1.0, choices=[1.0, -1.0],
@@ -385,6 +398,7 @@ def main():
     cx, cy = _htab_merkez(meta, args.htab)
     model = YOLO(str(args.model), task="segment")
     det = haritala(ldir, model, cx, cy, conf=args.conf,
+                   scan_z=_tarama_irtifasi(meta, args.scan_altitude),
                    kare_ofset=args.kare_ofset, rot_isaret=args.rot_isaret, debug=args.debug,
                    kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"))
     print(json.dumps(det, ensure_ascii=False, indent=2))

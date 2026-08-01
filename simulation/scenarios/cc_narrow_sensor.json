@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "cc_narrow_sensor",
+  "author": "Claude Code",
+  "title_tr": "Dar Geçit ve Sensör Stres Testi",
+  "description_tr": "Daraltılmış şeritler ve sık kıvrımlarla İKA sensör menzilini ve manevra/füzyon hassasiyetini sınar.",
+  "seed": 2303,
+  "active_zone": "kolay",
+  "map_ids": {"kolay": 121, "orta": 122, "zor": 123},
+  "environment": {"ambient": [0.50, 0.50, 0.50, 1.0], "background": [0.70, 0.75, 0.80, 1.0], "sun_diffuse": [0.85, 0.85, 0.80, 1.0], "sun_direction": [-0.4, 0.2, -0.9], "wind": [1.0, 0.5, 0.0], "ground_friction": 0.8, "ground_color": [0.30, 0.29, 0.27]},
+  "terrain": {"layout": "field", "lane_width_multiplier": 0.5, "debris_multiplier": 1.6, "rubble_height_multiplier": 1.2, "chicane_count": 12},
+  "flight": {"scan_altitude_m": 22.0, "scan_tilt_deg": 3.0, "lateral_jitter_m": 0.15},
+  "mission": {"require_manual_trigger": true, "route_delivery_delay_s": 0.6, "packet_loss_percent": 3, "dynamic_obstacle": "none"},
+  "acceptance": ["lane_width_multiplier=0.5 dar şeritte rota UB sınırları içinde kalır ve seed=2303 ile deterministik üretilir (iki çalıştırma birebir aynı XML)", "İKA HB'ye ulaşır ya da 12 kıvrımlı chicane dizisinde moloz fiziğiyle (collision, ground_friction=0.8) kapalı koridorda TIKANDI olarak loglanır (SONUÇ BAŞARILI/BAŞARISIZ)", "GNSS/IMU sensör füzyonu ve ani fren sayısı sim'de ölçülmüyor (İKA konumu doğrudan Gazebo ground-truth pose'dan okunur; gerçek sensör modeli veya füzyon yok) — kanıtlanmadı, sayısal hedef verilmiyor", "Gazebo NaN üretmeden çalışır, real_time_factor/telemetri loglanır"]
+}

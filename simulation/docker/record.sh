@@ -17,29 +17,36 @@ cd "$(dirname "$0")"
 SIM="$(cd .. && pwd)"               # navitas/simulation
 REPO="$(dirname "$SIM")"            # navitas/  (comms/ burada)
 OUTDIR="$SIM/recordings"
-IMAGE="navitas-gazebo:11"
+IMAGE="${NAVITAS_GAZEBO_IMAGE:-navitas-gazebo:11-six-scenarios}"
 mkdir -p "$OUTDIR"
 
 # Argümanlar: seviye + --seed N + süre modu (1/0) + --layout + --map 1..5 (gerçekçi harita)
-SEED=42; SINGLE=""; LEVELS="kolay orta zor"; RT=0; LAYOUT=field; MAP=1
+SEED=""; SINGLE=""; LEVELS="kolay orta zor"; RT=0; LAYOUT=""; MAP=""; PROFILE=baseline
 while [ $# -gt 0 ]; do
     case "$1" in
         kolay|orta|zor) SINGLE="$1"; LEVELS="$1" ;;
         0|1) RT="$1" ;;                          # süre modu: 1=gerçekçi, 0=süresiz
         --realtime) RT="${2:-0}"; shift ;;
         --realtime=*) RT="${1#--realtime=}" ;;
-        --seed) SEED="${2:-42}"; shift ;;
+        --seed) SEED="${2:-}"; shift ;;
         --seed=*) SEED="${1#--seed=}" ;;
         --layout) LAYOUT="${2:-field}"; shift ;; # field=gerçekçi saha (vars.), clean=seyrek
         --layout=*) LAYOUT="${1#--layout=}" ;;
         --map) MAP="${2:-1}"; shift ;;           # gerçekçi harita no (1-5)
         --map=*) MAP="${1#--map=}" ;;
+        --profile) PROFILE="${2:-baseline}"; shift ;;
+        --profile=*) PROFILE="${1#--profile=}" ;;
         *) echo "Bilinmeyen argüman: $1"; exit 1 ;;
     esac
     shift
 done
-case "$LAYOUT" in clean|field) ;; *) echo "Bilinmeyen layout: $LAYOUT (clean|field)"; exit 1 ;; esac
-case "$MAP" in 1|2|3|4|5) ;; *) echo "Bilinmeyen harita: $MAP (1-5)"; exit 1 ;; esac
+case "$LAYOUT" in ""|clean|field) ;; *) echo "Bilinmeyen layout: $LAYOUT (clean|field)"; exit 1 ;; esac
+if [ -n "$MAP" ] && ! [[ "$MAP" =~ ^[1-9][0-9]*$ ]]; then echo "--map pozitif tam sayı olmalı"; exit 1; fi
+PROFILE_TO_VALIDATE="$PROFILE" SIM_SCRIPTS="$SIM/scripts" python3 -c 'import os,sys;sys.path.insert(0,os.environ["SIM_SCRIPTS"]);from scenario_profiles import load_profile;load_profile(os.environ["PROFILE_TO_VALIDATE"])' \
+    || { echo "Bilinmeyen/geçersiz profil: $PROFILE"; exit 1; }
+if [ -z "$SEED" ]; then
+    SEED=$(PROFILE_TO_VALIDATE="$PROFILE" SIM_SCRIPTS="$SIM/scripts" python3 -c 'import os,sys;sys.path.insert(0,os.environ["SIM_SCRIPTS"]);from scenario_profiles import load_profile;print(load_profile(os.environ["PROFILE_TO_VALIDATE"])["seed"])')
+fi
 
 # İmaj yoksa derle
 if ! podman image exists "$IMAGE"; then
@@ -74,7 +81,7 @@ fi
 
 echo ""
 echo "╔══════════════════════════════════════════╗"
-echo "║  KAYIT → v$V   seviye: $LEVELS   seed=$SEED   süre modu: $RT   layout: $LAYOUT   harita: $MAP"
+echo "║  KAYIT → v$V   profil: $PROFILE   seviye: $LEVELS   seed=$SEED   süre modu: $RT"
 echo "╚══════════════════════════════════════════╝"
 # /sim (simulation) + /comms (haberleşme) mount; recordings /sim içinde (:z paylaşımlı).
 podman run --rm \
@@ -83,6 +90,7 @@ podman run --rm \
     --shm-size=1g \
     -e GAZEBO_GUI_CAM="${GAZEBO_GUI_CAM:-}" \
     -e NAVITAS_MAP="$MAP" \
+    -e NAVITAS_PROFILE="$PROFILE" \
     "$IMAGE" \
     bash /sim/docker/record_in_container.sh "$SEED" "/sim/recordings/v$V/$OUTNAME" "$LEVELS" "$RT" "$LAYOUT"
 

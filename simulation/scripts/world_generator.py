@@ -26,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import arena
 from arena import (UB, UB_HALF, HTAB, HTAB_HALF, dist_to_path, dist_to_all_paths)
+from scenario_profiles import available_profiles, load_profile
 
 ZONE_ORDER = ["kolay", "orta", "zor"]
 ZONE_POS = arena.ZONE_POS
@@ -47,13 +48,15 @@ PAD_SEC     = 4
 #  Tarama 10 m/s → 50×50 serpantin ~20 s = şartname "20-30 s tarama" bandı.)
 PHASE_SPEED = {"rampa": 6.0, "kalkis": 18.0, "tirmanis": 18.0,
                "tarama": 10.0, "donus": 10.0, "sokulma": 12.0, "parasut": 5.5}
-SCAN_Z      = 30.0    # şartname: 30 m tarama irtifası
 
 
-def make_zone(scenario, seed, road=None, harita_id=1):
+def make_zone(scenario, seed, road=None, harita_id=None, profile=None):
     """Zon verisi — GERÇEKÇİ KIVRIMLI harita (arena.harita TEK KAYNAK).
     road: SADECE hata ayıklama (açık yolu elle zorla); normalde gizli seed kararı."""
+    profile = profile or load_profile()
     cx, cy = ZONE_POS[scenario]
+    if harita_id is None:
+        harita_id = profile["map_ids"][scenario]
     H = arena.harita(harita_id, scenario)
     if road not in (1, 2, 3):
         road = H["open"]
@@ -62,12 +65,14 @@ def make_zone(scenario, seed, road=None, harita_id=1):
     return {
         "cx": cx, "cy": cy, "scenario": scenario, "sfx": scenario,
         "harita": H, "harita_id": harita_id,
-        "road": road, "lane_w": DIFF[scenario]["lane_w"],
+        "road": road,
+        "lane_w": DIFF[scenario]["lane_w"] * profile["terrain"]["lane_width_multiplier"],
         "color": ZONE_COLOR[scenario],
         "wp_local": wl, "wp_world": [(cx + x, cy + y) for (x, y) in wl],
         "start_world": (cx + kb[0], cy + kb[1]),
         "hb_world": (cx + hb[0], cy + hb[1]),
-        "rng": random.Random(f"{seed}-{scenario}-{harita_id}"),
+        "rng": random.Random(f"{seed}-{scenario}-{harita_id}-{profile['id']}"),
+        "profile": profile,
     }
 
 
@@ -84,14 +89,21 @@ def _arc(ax, ay, r, a0, a1, z0, z1, phase):
              z0 + (z1 - z0) * (i / n), phase) for i in range(1, n + 1)]
 
 
-def iha_flight(cx, cy):
+def iha_flight(cx, cy, profile=None):
     """Gerçekçi sabit-kanat İHA profili — (x, y, z, faz) yoğun örneklenmiş yol:
       mancınık fırlatma (doğuya) → düz tırmanış → SOLA tırmanışlı 180° raketrak dönüş
       → kuzey kenardan tarama girişi → 50×50 SERPANTİN (4 sütun, uçlarda YARIM DAİRE
       U-dönüşleri, arena kenarından hafif taşar — gerçek harita uçuşu gibi)
       → sağa çıkış dönüşüyle İHA-İB hattına → sokulma alçalması → PARAŞÜT açılır,
       süzülerek pede iner. Her nokta yol yönüne bakar (yaw), plugin roll/pitch ekler."""
+    profile = profile or load_profile()
     C = math.pi
+    scan_z = float(profile["flight"]["scan_altitude_m"])
+    scan_tilt = math.radians(float(profile["flight"]["scan_tilt_deg"]))
+    jitter = float(profile["flight"]["lateral_jitter_m"])
+
+    def tilted_z(local_x):
+        return scan_z + math.tan(scan_tilt) * local_x
     pts = [
         (cx - 26.0, cy, 0.5, "rampa"),            # mancınıkta (yer)
         (cx - 23.0, cy, 1.4, "kalkis"),           # fırlatma çıkışı (uçuş hızında)
@@ -103,22 +115,28 @@ def iha_flight(cx, cy):
     pts += _arc(cx + 20.0, cy + 12.0, 12.0, -C / 2, C / 2, 14.0, 22.0, "tirmanis")
     pts += [(cx - 10.0, cy + 27.0, 27.0, "tirmanis")]      # kuzey kenar boyunca batıya
     # çeyrek SOL dönüş → 1. sütuna güneye giriş (27→30 m)
-    pts += _arc(cx - 10.0, cy + 19.0, 8.0, C / 2, C, 27.0, SCAN_Z, "tirmanis")
+    pts += _arc(cx - 10.0, cy + 19.0, 8.0, C / 2, C, 27.0,
+                tilted_z(-18.0), "tirmanis")
 
     cols = [-18.0, -6.0, 6.0, 18.0]
     ys = 20.0
-    for i, lx in enumerate(cols):                  # SERPANTİN (30 m sabit)
+    for i, lx in enumerate(cols):                  # SERPANTİN (profil irtifası)
         south = (i % 2 == 0)                       # çift sütun: kuzey→güney
         y_end = -ys if south else ys
-        pts.append((cx + lx, cy + y_end, SCAN_Z, "tarama"))
+        jx = jitter * math.sin((i + 1) * 1.7)
+        jy = jitter * math.cos((i + 1) * 1.3)
+        pts.append((cx + lx + jx, cy + y_end + jy, tilted_z(lx), "tarama"))
         if i < len(cols) - 1:                      # uçta YARIM DAİRE U-dönüşü (R=6)
             mid = lx + 6.0
             if south:                              # güney uçta SOLA (CCW) dön
-                pts += _arc(cx + mid, cy - ys, 6.0, C, 2 * C, SCAN_Z, SCAN_Z, "donus")
+                pts += _arc(cx + mid, cy - ys, 6.0, C, 2 * C,
+                            tilted_z(lx), tilted_z(cols[i + 1]), "donus")
             else:                                  # kuzey uçta SAĞA (CW) dön
-                pts += _arc(cx + mid, cy + ys, 6.0, C, 0.0, SCAN_Z, SCAN_Z, "donus")
+                pts += _arc(cx + mid, cy + ys, 6.0, C, 0.0,
+                            tilted_z(lx), tilted_z(cols[i + 1]), "donus")
     # tarama bitti (son sütun kuzey ucu) → SAĞ U-dönüş ile İHA-İB hattına (x=+32, güneye)
-    pts += _arc(cx + 25.0, cy + ys, 7.0, C, 0.0, SCAN_Z, SCAN_Z, "donus")
+    pts += _arc(cx + 25.0, cy + ys, 7.0, C, 0.0,
+                tilted_z(cols[-1]), tilted_z(cols[-1]), "donus")
     pts += [
         (cx + 32.0, cy + 13.0, 26.0, "sokulma"),  # güneye sokulma, alçalma
         (cx + 32.0, cy + 6.0,  21.0, "sokulma"),
@@ -171,7 +189,7 @@ def _timed_flight(fp, t0=0.0):
 
 def make_anim_plugin(zone):
     cx, cy = zone["cx"], zone["cy"]
-    fp = iha_flight(cx, cy)
+    fp = iha_flight(cx, cy, zone["profile"])
     iha = _timed_flight(fp)
     land_t = iha[-1][0]
     # Tarama bitişi (sim sn): son 'tarama'/'donus' fazlı nokta — kayıt betiği bu anda
@@ -208,22 +226,43 @@ def make_anim_plugin(zone):
             for (tt, x, y, z, yw) in wps)
         return f'      <model name="{name}">\n{lines}\n      </model>'
 
+    require_trigger = str(zone["profile"]["mission"]["require_manual_trigger"]).lower()
+    allow_fallback = str(zone["profile"]["mission"]["allow_ground_truth_fallback"]).lower()
+    dynamic_block = ""
+    if zone["profile"]["mission"]["dynamic_obstacle"] == "aftershock_barrier":
+        path = zone["harita"]["paths"][zone["road"]]
+        pi = min(len(path) - 2, int(len(path) * 0.68))
+        (lx, ly), (nx, ny) = path[pi], path[pi + 1]
+        yaw = math.atan2(ny - ly, nx - lx) + math.pi / 2
+        wx, wy = zone["cx"] + lx, zone["cy"] + ly
+        obstacle = [(0.0, wx, wy, 8.0, yaw),
+                    (land_t + 7.9, wx, wy, 8.0, yaw),
+                    (land_t + 10.0, wx, wy, 0.65, yaw),
+                    (duration, wx, wy, 0.65, yaw)]
+        dynamic_block = "\n" + block("aftershock_barrier", obstacle)
+
     plugin = ('    <plugin name="navitas_anim" filename="libnavitas_anim.so">\n'
+              + f'      <require_manual_trigger>{require_trigger}</require_manual_trigger>\n'
+              + f'      <allow_ground_truth_fallback>{allow_fallback}</allow_ground_truth_fallback>\n'
+              + '      <trigger_file>/tmp/navitas_ika_trigger</trigger_file>\n'
               + block("iha", iha) + "\n"
               + block("parachute", para) + "\n"
-              + block(f"ika_{zone['sfx']}", ika) + "\n    </plugin>")
+              + block(f"ika_{zone['sfx']}", ika) + dynamic_block + "\n    </plugin>")
     return plugin, duration, scan_end_t, land_t
 
 
 # ── SDF yardımcıları ──────────────────────────────────────────────────────────
 
-def _box(name, px, py, pz, sx, sy, sz, r, g, b, yaw=0.0, static=True):
+def _box(name, px, py, pz, sx, sy, sz, r, g, b, yaw=0.0, static=True,
+         gravity=True, kinematic=False):
     st = "<static>true</static>" if static else ""
+    grav = "" if gravity else "<gravity>false</gravity>"
+    kine = "<kinematic>true</kinematic>" if kinematic else ""
     return f"""
     <model name="{name}">
       {st}
       <pose>{px:.3f} {py:.3f} {pz:.3f} 0 0 {yaw:.3f}</pose>
-      <link name="link">
+      <link name="link">{grav}{kine}
         <collision name="col"><geometry><box><size>{sx:.3f} {sy:.3f} {sz:.3f}</size></box></geometry></collision>
         <visual name="vis">
           <geometry><box><size>{sx:.3f} {sy:.3f} {sz:.3f}</size></box></geometry>
@@ -254,14 +293,16 @@ def _include(name, model_name, px, py, pz, yaw=0.0):
       <pose>{px:.3f} {py:.3f} {pz:.3f} 0 0 {yaw:.3f}</pose></include>"""
 
 
-def _ground_plane():
-    return """
+def _ground_plane(profile):
+    friction = float(profile["environment"]["ground_friction"])
+    r, g, b = profile["environment"]["ground_color"]
+    return f"""
     <model name="ground_plane"><static>true</static><link name="link">
       <collision name="collision"><geometry><plane><normal>0 0 1</normal><size>400 400</size></plane></geometry>
-        <surface><friction><ode><mu>0.8</mu><mu2>0.8</mu2></ode></friction></surface></collision>
+        <surface><friction><ode><mu>{friction:.3f}</mu><mu2>{friction:.3f}</mu2></ode></friction></surface></collision>
       <visual name="visual"><cast_shadows>false</cast_shadows>
         <geometry><plane><normal>0 0 1</normal><size>400 400</size></plane></geometry>
-        <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material>
+        <material><ambient>{r:.3f} {g:.3f} {b:.3f} 1</ambient><diffuse>{r:.3f} {g:.3f} {b:.3f} 1</diffuse></material>
       </visual></link></model>"""
 
 
@@ -320,7 +361,7 @@ def _rubble_color(rng):
     g = rng.uniform(0.4, 0.62); return (g, g, g*0.98)
 
 
-def _rubble(name, lx, ly, rng, big=False):
+def _rubble(name, lx, ly, rng, big=False, height_multiplier=1.0):
     k = rng.random()
     if k < 0.30:
         sx, sy, sz = rng.uniform(1.8, 3.6), rng.uniform(1.0, 2.2), rng.uniform(0.2, 0.4)
@@ -332,6 +373,7 @@ def _rubble(name, lx, ly, rng, big=False):
         sx = sy = rng.uniform(0.4, 0.8); sz = rng.uniform(0.3, 0.7)
     if big:
         sx *= 1.4; sy *= 1.4; sz = max(sz, 1.0)
+    sz *= height_multiplier
     r, g, b = _rubble_color(rng)
     return _box(name, lx, ly, sz/2.0, sx, sy, sz, r, g, b, yaw=rng.uniform(0, 3.14))
 
@@ -350,6 +392,8 @@ def make_zone_debris(z, layout="field"):
     p = []
 
     # ── 2 KAPALI yol: giriş bariyeri + rota üzerinde tıkama kümeleri ──
+    profile = z["profile"]
+    height_multiplier = float(profile["terrain"]["rubble_height_multiplier"])
     tikama_n = DIFF[z["scenario"]]["tikama_n"]
     for road in (1, 2, 3):
         if road == z["road"]:
@@ -373,10 +417,11 @@ def make_zone_debris(z, layout="field"):
                 v = rng.uniform(-1.8, 1.8)                              # yol boyu eksen
                 ox = px + v * math.cos(tyaw) - u * math.sin(tyaw)
                 oy = py + v * math.sin(tyaw) + u * math.cos(tyaw)
-                p.append(_rubble(f"blk_{s}_{road}_{k}_{j}", cx + ox, cy + oy, rng, big=True))
+                p.append(_rubble(f"blk_{s}_{road}_{k}_{j}", cx + ox, cy + oy, rng,
+                                 big=True, height_multiplier=height_multiplier))
 
     # ── Saha geneli dağınık moloz (koridorlara ve işaret alanlarına GİRMEZ) ──
-    n = DIFF[z["scenario"]]["debris_n"]
+    n = int(DIFF[z["scenario"]]["debris_n"] * profile["terrain"]["debris_multiplier"])
     if layout == "clean":
         n //= 3
     placed = tries = 0
@@ -390,12 +435,15 @@ def make_zone_debris(z, layout="field"):
             continue
         if math.hypot(lx - hb[0], ly - hb[1]) < 4.0:     # HB temiz
             continue
-        p.append(_rubble(f"deb_{s}_{placed}", cx + lx, cy + ly, rng))
+        p.append(_rubble(f"deb_{s}_{placed}", cx + lx, cy + ly, rng,
+                         height_multiplier=height_multiplier))
         placed += 1
 
     # ── Chicane: açık yolun kenarına, sağlı sollu (kıvrımı vurgular) ──
     op = H["paths"][z["road"]]
-    for wi, t in enumerate((0.25, 0.40, 0.55, 0.70, 0.85)):
+    chicane_n = int(profile["terrain"]["chicane_count"])
+    chicane_t = [(i + 1) / (chicane_n + 1) for i in range(chicane_n)]
+    for wi, t in enumerate(chicane_t):
         ti = min(len(op) - 2, int(len(op) * t))
         (px, py), (qx, qy) = op[ti], op[ti + 1]
         tyaw = math.atan2(qy - py, qx - px)
@@ -403,7 +451,8 @@ def make_zone_debris(z, layout="field"):
         off = side * (clear + rng.uniform(0.4, 1.1))
         ox = px - off * math.sin(tyaw)
         oy = py + off * math.cos(tyaw)
-        p.append(_rubble(f"chic_{s}_{wi}", cx + ox, cy + oy, rng, big=True))
+        p.append(_rubble(f"chic_{s}_{wi}", cx + ox, cy + oy, rng, big=True,
+                         height_multiplier=height_multiplier))
     return "\n".join(p)
 
 
@@ -411,11 +460,12 @@ def make_zone_markers(z):
     """Başlangıç halkası + HB pad + H — yol zemininin (Z_ROAD) ÜSTÜNDE (görünür kalsın)."""
     s = z["sfx"]; sx, sy = z["start_world"]; hx, hy = z["hb_world"]
     cr, cg, cb = z["color"]
-    p = [_cyl(f"kb_{s}", sx, sy, Z_PAD, 1.8, 0.06, cr, cg, cb),     # başlangıç = seviye rengi
-         _box(f"hbpad_{s}", hx, hy, Z_PAD, 4.0, 4.0, 0.04, 0.1, 0.2, 0.6),
-         _box(f"H_{s}_l", hx-1.0, hy, Z_H, 0.4, 2.4, 0.1, 1, 1, 1),
-         _box(f"H_{s}_r", hx+1.0, hy, Z_H, 0.4, 2.4, 0.1, 1, 1, 1),
-         _box(f"H_{s}_b", hx, hy, Z_H, 2.0, 0.4, 0.1, 1, 1, 1)]
+    # Şartname: İKA-KB tam 1×1 m; HB tam 2×2 m ve kırmızı H.
+    p = [_box(f"kb_{s}", sx, sy, Z_PAD, 1.0, 1.0, 0.04, cr, cg, cb),
+         _box(f"hbpad_{s}", hx, hy, Z_PAD, 2.0, 2.0, 0.04, 0.82, 0.82, 0.82),
+         _box(f"H_{s}_l", hx-0.55, hy, Z_H, 0.22, 1.55, 0.1, 0.9, 0.05, 0.05),
+         _box(f"H_{s}_r", hx+0.55, hy, Z_H, 0.22, 1.55, 0.1, 0.9, 0.05, 0.05),
+         _box(f"H_{s}_b", hx, hy, Z_H, 1.1, 0.22, 0.1, 0.9, 0.05, 0.05)]
     return "\n".join(p)
 
 
@@ -429,14 +479,15 @@ def make_zone_ika(z):
 
 
 def make_iha_vehicle(focus_zone):
-    fx, fy, fz, _ = iha_flight(focus_zone["cx"], focus_zone["cy"])[0]
+    fx, fy, fz, _ = iha_flight(focus_zone["cx"], focus_zone["cy"], focus_zone["profile"])[0]
     return _include("iha", "iha", fx, fy, fz + 0.2)
 
 
 def make_iha_landing(focus_zone):
     # İHA-İB: HTAB'ın doğusunda mavi iniş bölgesi (paraşütle iniş, kare içinde)
     cx, cy = focus_zone["cx"], focus_zone["cy"]
-    return _flat("landing", cx + 32, cy, 8.0, 8.0, 0.1, 0.25, 0.7)
+    # Şartname: İHA-İB 30×30 m ve mavi.
+    return _flat("landing", cx + 38, cy, 30.0, 30.0, 0.1, 0.25, 0.7)
 
 
 def make_catapult(focus_zone):
@@ -480,6 +531,16 @@ def make_parachute():
     </model>"""
 
 
+def make_dynamic_obstacle(profile):
+    if profile["mission"]["dynamic_obstacle"] != "aftershock_barrier":
+        return ""
+    # Statik modelin SetWorldPose ile taşınmasında collision pozu geride kalabilir.
+    # Yerçekimsiz kinematik link hem askıda bekler, collision'ı plugin pozuyla izler
+    # hem de İKA tarafından itilip koridorun dışına sürüklenmez.
+    return _box("aftershock_barrier", 0, 0, 8.0, 5.5, 0.7, 1.3,
+                0.35, 0.18, 0.08, static=False, gravity=False, kinematic=True)
+
+
 def make_gui_camera(focus_zone, record=False):
     cx, cy = focus_zone["cx"], focus_zone["cy"]
     if record:
@@ -513,35 +574,69 @@ def make_rec_camera(z):
     </model>"""
 
 
-def make_lights(record=False):
+def _vec(values):
+    return " ".join(f"{float(v):.4f}" for v in values)
+
+
+def make_lights(profile, record=False):
     sh = "false" if record else "true"
+    diffuse = _vec(profile["environment"]["sun_diffuse"])
+    direction = _vec(profile["environment"]["sun_direction"])
     return f"""
     <light name="sun" type="directional"><cast_shadows>{sh}</cast_shadows>
-      <pose>0 0 120 0 -0 0</pose><diffuse>0.9 0.9 0.85 1</diffuse><specular>0.1 0.1 0.1 1</specular>
+      <pose>0 0 120 0 0 0</pose><diffuse>{diffuse}</diffuse><specular>0.1 0.1 0.1 1</specular>
       <attenuation><range>1200</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
-      <direction>-0.4 0.2 -0.9</direction></light>"""
+      <direction>{direction}</direction></light>"""
+
+
+def make_environment(profile, record=False):
+    env = profile["environment"]
+    fog = env["fog"]
+    fog_xml = ""
+    if fog["enabled"]:
+        fog_xml = (f'<fog><type>{fog["type"]}</type><color>{_vec(fog["color"])}</color>'
+                   f'<start>{float(fog["start"]):.2f}</start><end>{float(fog["end"]):.2f}</end>'
+                   f'<density>{float(fog["density"]):.5f}</density></fog>')
+    wind = _vec(env["wind"])
+    return f"""
+    <wind><linear_velocity>{wind}</linear_velocity></wind>
+    <scene><ambient>{_vec(env['ambient'])}</ambient>
+      <background>{_vec(env['background'])}</background>
+      <shadows>{"false" if record else "true"}</shadows>{fog_xml}</scene>"""
 
 
 # ── Tam dünya (odak zon: zemin + 3 yol + moloz + animasyon) ───────────────────
 
-def build_world(seed, focus, record=False, road=None, layout="field", harita_id=1):
+def build_world(seed, focus, record=False, road=None, layout=None, harita_id=None,
+                profile_id=None):
     # road = SADECE hata ayıklama; normalde açık yol gizli (arena.harita seed'i).
-    # Her klip SADECE odak zonu içerir (hafif dünya → 90° dik kamera güvenilir).
-    fz = make_zone(focus, seed, road, harita_id)
+    # Üç HTAB aynı 300×300 İHA-UB içinde fiziksel olarak birlikte bulunur. Yalnız odak
+    # zonun İHA/İKA'sı aktiftir; diğer ikisi güçlü, statik test sahası bağlamıdır.
+    profile = load_profile(profile_id)
+    if layout is None:
+        layout = profile["terrain"]["layout"]
+    zones = {name: make_zone(name, seed, road if name == focus else None,
+                             harita_id, profile) for name in ZONE_ORDER}
+    fz = zones[focus]
 
-    parts = [make_lights(record), _ground_plane(), make_ub(),
+    parts = [make_lights(profile, record), _ground_plane(profile), make_ub(),
              make_iha_landing(fz), make_catapult(fz)]
-    parts += [make_zone_ground(fz), make_road_surfaces(fz),
-              make_zone_debris(fz, layout), make_zone_markers(fz)]
+    for zone in zones.values():
+        parts += [make_zone_ground(zone), make_road_surfaces(zone),
+                  make_zone_debris(zone, layout), make_zone_markers(zone)]
     parts += [make_iha_vehicle(fz), make_zone_ika(fz)]
     if record:
         parts.append(make_parachute())             # İHA paraşütü (anim ile açılır)
         parts.append(make_rec_camera(fz))          # top-down kayıt kamerası (sensör)
+        dynamic = make_dynamic_obstacle(profile)
+        if dynamic:
+            parts.append(dynamic)
         plugin, _, _, _ = make_anim_plugin(fz)
         parts.append(plugin)
 
     body = "\n".join(parts)
     gui = make_gui_camera(fz, record)
+    environment = make_environment(profile, record)
     return f"""<?xml version="1.0"?>
 <sdf version="1.6">
   <world name="navitas_arena">
@@ -549,9 +644,9 @@ def build_world(seed, focus, record=False, road=None, layout="field", harita_id=
     <physics type="ode"><max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor><real_time_update_rate>1000</real_time_update_rate>
       <gravity>0 0 -9.8</gravity></physics>
-    <scene><ambient>0.5 0.5 0.5 1</ambient><background>0.75 0.8 0.85 1</background>
-      <shadows>{"false" if record else "true"}</shadows></scene>
-    <!-- Seed: {seed} | Odak: {focus} | layout: {layout} | açık yol: {arena.ROAD_LABEL[fz['road']]} -->
+{environment}
+    <!-- Profile: {profile['id']} | Seed: {seed} | Odak: {focus} | layout: {layout}
+         Üç HTAB: kolay/orta/zor | aktif açık yol: {arena.ROAD_LABEL[fz['road']]} -->
 {body}
   </world>
 </sdf>
@@ -560,32 +655,47 @@ def build_world(seed, focus, record=False, road=None, layout="field", harita_id=
 
 def main():
     ap = argparse.ArgumentParser(description="Navitas 3-zon sıralı dünya üreticisi")
-    ap.add_argument("--focus", choices=ZONE_ORDER, default="kolay",
+    ap.add_argument("--focus", choices=ZONE_ORDER, default=None,
                     help="bu kayıtta odaklanılacak seviye")
-    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--seed", type=int, default=None,
+                    help="verilmezse profil içindeki deterministik seed kullanılır")
     ap.add_argument("--output", default="worlds/navitas_arena.world")
     ap.add_argument("--record", action="store_true")
-    ap.add_argument("--layout", choices=["clean", "field"], default="field",
-                    help="field=gerçekçi moloz sahası (vars.), clean=seyrek/net sunum")
-    ap.add_argument("--map", type=int, choices=range(1, arena.HARITA_N + 1), default=1,
-                    help=f"gerçekçi harita no (1-{arena.HARITA_N}) — her biri farklı "
-                         "kıvrım/KB/HB düzeni")
+    ap.add_argument("--layout", choices=["clean", "field"], default=None,
+                    help="profil değerini geçersiz kıl: field veya clean")
+    ap.add_argument("--profile", choices=["baseline"] + available_profiles(), default="baseline",
+                    help="altı yarışma senaryosundan biri")
+    ap.add_argument("--map", type=int, default=None,
+                    help="profildeki zon map_ids değerlerini açıkça geçersiz kılan pozitif ID")
     ap.add_argument("--road", type=int, choices=[1, 2, 3], default=None,
                     help="SADECE HATA AYIKLAMA: açık yolu elle seç. Normal akışta dünya "
                          "her zaman ground-truth ile kurulur; model tespiti dünyaya GERİ "
                          "BESLENMEZ (tersine nedensellik yasak).")
     args = ap.parse_args()
 
-    world, fz = build_world(args.seed, args.focus, record=args.record,
-                            road=args.road, layout=args.layout, harita_id=args.map)
+    profile = load_profile(args.profile)
+    if args.map is not None and args.map < 1:
+        ap.error("--map pozitif tam sayı olmalı")
+    seed = profile["seed"] if args.seed is None else args.seed
+    focus = args.focus or profile["active_zone"]
+    world, fz = build_world(seed, focus, record=args.record,
+                            road=args.road, layout=args.layout, harita_id=args.map,
+                            profile_id=args.profile)
     out = Path(args.output); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(world, encoding="utf-8")
-    print(f"[world_gen] Odak={args.focus} @({fz['cx']},{fz['cy']}) harita={args.map} "
-          f"layout={args.layout} açık yol={arena.ROAD_LABEL[fz['road']]} | yazıldı: {out}")
+    print(f"[world_gen] Profil={profile['id']} odak={focus} @({fz['cx']},{fz['cy']}) "
+          f"harita={fz['harita_id']} layout={args.layout or profile['terrain']['layout']} "
+          f"açık yol={arena.ROAD_LABEL[fz['road']]} | yazıldı: {out}")
+    print(f"[world_gen] SEED={seed}")
     print(f"[world_gen] OPEN_ROAD={arena.ROAD_LABEL[fz['road']]}")   # record_in_container parse eder
     # İHA-haritalama (iha_haritala.py) için makine-okur meta:
     print(f"[world_gen] HTAB_CENTER={fz['cx']},{fz['cy']}")
-    print(f"[world_gen] MAP={args.map}")
+    print(f"[world_gen] MAP={fz['harita_id']}")
+    print(f"[world_gen] PROFILE={profile['id']}")
+    print(f"[world_gen] SCAN_ALTITUDE_M={profile['flight']['scan_altitude_m']}")
+    print(f"[world_gen] REQUIRE_MANUAL_TRIGGER={int(profile['mission']['require_manual_trigger'])}")
+    print(f"[world_gen] ROUTE_DELAY_S={profile['mission']['route_delivery_delay_s']}")
+    print(f"[world_gen] PACKET_LOSS_PERCENT={profile['mission']['packet_loss_percent']}")
     print(f"[world_gen] KB_XY={fz['start_world'][0]:.2f},{fz['start_world'][1]:.2f}")
     print(f"[world_gen] HB_XY={fz['hb_world'][0]:.2f},{fz['hb_world'][1]:.2f}")
     if args.record:

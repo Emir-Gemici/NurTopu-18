@@ -1,7 +1,9 @@
 # Navitas Simülasyon — Kullanım Kılavuzu
 
-Gazebo Classic 11 tabanlı İHA + İKA görev simülasyonu. Bu makinede Gazebo **host'a
-kurulu değil** — her şey **Podman konteyneri** içinde çalışır (host masaüstüne dokunmaz).
+Gazebo Classic 11 tabanlı İHA + İKA görev simülasyonu. Tekrarlanabilir kayıt ve plugin
+derleme yolu izole `navitas-gazebo:11-six-scenarios` Podman imajını kullanır.
+
+Altı karşılaştırmalı profil için [SENARYO_PAKETI.md](SENARYO_PAKETI.md) belgesine bakın.
 
 ---
 
@@ -11,9 +13,8 @@ kurulu değil** — her şey **Podman konteyneri** içinde çalışır (host mas
 - `simulation/` dizini (konteynere mount edilir)
 - ~3.5 GB disk (Gazebo imajı, ilk derlemede bir kez)
 
-> Not: `simulation/launch.sh` doğrudan `gzserver`/`gzclient` çağırır → **sadece Gazebo
-> host'a kuruluysa** çalışır. Bu makinede Gazebo native yok, o yüzden **kayıt için
-> aşağıdaki `record.sh` (konteyner) yolunu kullan.**
+> `simulation/launch.sh` yerel Gazebo kurulumunu kullanabilir; kanıt videosu ve CI için
+> aşağıdaki container kayıt yolu tercih edilir.
 
 ---
 
@@ -21,15 +22,15 @@ kurulu değil** — her şey **Podman konteyneri** içinde çalışır (host mas
 
 ```bash
 cd simulation
-                # 3-zonlu 300×300 dünyayı kaydeder → recordings/v<id>/
-./docker/record.sh --seed 7       # farklı zon yerleşimi (rastgele 50×50 konumları)
+./docker/record.sh zor --profile cx_comms_latency
+./docker/record.sh orta --profile cc_wind_dust
 ```
 
 - **Çıktı:** `simulation/recordings/v<id>/navitas.mp4` (1280×720). Her çalıştırma **yeni v<id>**
   (en yüksek vN → vN+1).
-- Dünya: TEK 300×300 İHA-UB içinde rastgele konumlu **3 adet 50×50 HTAB** (kolay/orta/zor),
-  her biri kendi 3-yol moloz challenge'ı. İHA sol→sağ tarar; her zonun İKA'sı alttan üste
-  açık yolu kıvrılarak izler.
+- Dünya: tek 300×300 İHA-UB içinde sabit, birbirinden ayrık **3 adet 50×50 HTAB**
+  (kolay/orta/zor). Üçü de fiziksel olarak aynı dünyadadır; seçilen odak zonun İHA/İKA
+  görevi aktiftir, diğer iki zon karşılaştırma/stres sahası olarak görünür.
 - İlk çalıştırmada imaj derlenir (~3-4 dk). Sonraki çalıştırmalar imajı yeniden kullanır.
 
 ### Kamera açısını değiştirme
@@ -44,7 +45,7 @@ GAZEBO_GUI_CAM="0 -55 50 0 0.7 1.5708" ./docker/record.sh orta
 
 ```bash
 cd simulation
-podman run --rm -v "$(pwd)/recordings":/r:Z navitas-gazebo:11 \
+podman run --rm -v "$(pwd)/recordings":/r:Z navitas-gazebo:11-six-scenarios \
   ffmpeg -y -ss 20 -i /r/navitas_kolay.mp4 -frames:v 1 /r/kare.png
 ```
 `-ss 20` = 20. saniye. Çıktı: `recordings/kare.png`.
@@ -94,26 +95,22 @@ Modeller **SDF** (XML) formatında, `simulation/models/<ad>/model.sdf` içinde.
 > Değişiklik sonrası ekstra adım yok: `record.sh` `GAZEBO_MODEL_PATH=models` ile çalışır,
 > bir sonraki kayıtta yeni model otomatik kullanılır.
 
-**Mevcut durum (iyileştirme bekliyor):**
-- İHA = mavi kutulardan kaba uçak; İKA = yeşil kutu + silindir tekerlekler.
-- Şartname hedefi: İHA fixed-wing (gövde+kanat+kuyruk+pervane), İKA 4-6 tekerlekli rover.
+Mevcut İHA sabit-kanat gövde/kanat/kuyruk/pervane görselleştirmesine; İKA ise alçak
+ağırlık merkezli dört teker rover, 200 g yük temsili, kamera/LiDAR/GPS/IMU sensörlerine
+sahiptir. Kinematik İHA sunum yörüngesi aerodinamik uçuş modeli değildir.
 
 ---
 
 ## 5. Arenayı/senaryoyu düzenleme
 
-`scripts/world_generator.py` dünyayı üretir. Önemli sabitler (başta):
-- `IHA_FB / IHA_IB` — İHA fırlatma/iniş; `IKA_KB / HB` — İKA kalkış/hedef.
-- `CORRIDORS` — senaryo başına koridor genişliği/duvar yüksekliği/renk.
-- `IKA_WAYPOINTS` — İKA'nın izlediği rota noktaları.
-
-> ⚠️ Şu an arena, İKA rotası boyunca **duvarlı koridor (labirent)** üretiyor. Şartname
-> **50×50m moloz sahası** istiyor (3 yol: 1 açık 2 kapalı). Bu uyumsuzluk düzeltilecek.
+`scripts/arena.py` kıvrımlı üç yolu ve tek-açık-yol ground-truth'unu üretir;
+`scripts/world_generator.py` resmî boyutları, molozu, hava/ışığı ve görev animasyonunu
+SDF dünyasına dönüştürür. `scenarios/*.json` yalnız veri profilleridir.
 
 Tek başına dünya üretmek (kayıt almadan):
 ```bash
-python3 scripts/world_generator.py --difficulty orta --seed 42 \
-    --output worlds/test.world --record
+python3 scripts/world_generator.py --profile cc_night_fog --focus zor \
+    --output /tmp/cc_night_fog.world --record
 ```
 
 ---
