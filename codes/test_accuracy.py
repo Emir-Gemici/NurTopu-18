@@ -26,6 +26,8 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
+from rpi_inference import _maskeleri_icerige_kirp, _preprocess
+
 _here = Path(__file__).parent
 MODEL_DIR = next(
     (p for p in [
@@ -67,16 +69,6 @@ def load_model(model_dir=None):
 
 
 # ─── Inference Temel Fonksiyonlari ──────────────────────────────────────────
-
-def preprocess(img):
-    """Merkezi kare crop. (kare_img, 512x512_infer) doner."""
-    h, w = img.shape[:2]
-    side = min(h, w)
-    y0, x0 = (h - side) // 2, (w - side) // 2
-    sq = img[y0:y0 + side, x0:x0 + side]
-    small = cv2.resize(sq, (INFER_SIZE, INFER_SIZE))
-    return sq, small
-
 
 def get_masks(results, h, w):
     """Her sinif icin (h, w) boyutunda binary mask doner."""
@@ -235,14 +227,16 @@ def _infer_frame(model, img, conf):
     Tek kare icin tam pipeline.
     Returns: (vis, ika_map_or_None, open_path, path_conf, waypoints, orig_h, orig_w)
     """
-    sq, small = preprocess(img)
-    orig_h, orig_w = sq.shape[:2]
+    # Uretim hatti ile birebir ayni: merkez crop yok, tam goruntu letterbox
+    # ile kare tuvale konur ve dolgu bolgesindeki maskeler sonradan temizlenir.
+    tuval, small, icerik = _preprocess(img)
+    orig_h, orig_w = tuval.shape[:2]
 
     results    = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
-    masks      = get_masks(results, orig_h, orig_w)
+    masks      = _maskeleri_icerige_kirp(get_masks(results, orig_h, orig_w), icerik)
     open_path, path_conf, waypoints = analyze_path(masks[0])
 
-    vis = draw_masks(sq, masks)
+    vis = draw_masks(tuval, masks)
 
     direction = {1: "SOL", 2: "ORTA", 3: "SAG"}.get(open_path, "?")
     if open_path:
@@ -330,7 +324,7 @@ def run_video(model, path_str, conf, save=True):
     src_fps  = cap.get(cv2.CAP_PROP_FPS) or 30.0
     src_w    = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     src_h    = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    side     = min(src_w, src_h)
+    yan      = max(src_w, src_h)
 
     writer = None
     out_path = None
@@ -338,7 +332,7 @@ def run_video(model, path_str, conf, save=True):
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         out_path = RESULTS_DIR / f"{path.stem}_result.mp4"
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        writer = cv2.VideoWriter(str(out_path), fourcc, src_fps, (side, side))
+        writer = cv2.VideoWriter(str(out_path), fourcc, src_fps, (yan, yan))
 
     print(f"Video: {path.name}  {src_w}x{src_h}  {src_fps:.1f}fps  {total_frames} kare")
     if save:

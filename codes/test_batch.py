@@ -18,6 +18,8 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
+from rpi_inference import _maskeleri_icerige_kirp, _preprocess
+
 # ── Yollar ──────────────────────────────────────────────────────────────────
 _root = Path(__file__).parent.parent
 
@@ -110,20 +112,22 @@ def run_inference(model, img_path, out_dir, conf=0.30):
     if img is None:
         return None
 
-    h, w = img.shape[:2]
-    side = min(h, w)
-    sq = img[(h-side)//2:(h-side)//2+side, (w-side)//2:(w-side)//2+side]
-    small = cv2.resize(sq, (INFER_SIZE, INFER_SIZE))
+    # Uretimle ayni letterbox akisi: sol/sag guzergahlar crop ile atilmaz.
+    tuval, small, icerik = _preprocess(img)
+    h, w = tuval.shape[:2]
 
     t0 = time.perf_counter()
     results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
     ms = (time.perf_counter() - t0) * 1000
 
-    masks = get_masks(results, side, side)
-    vis = draw_masks(sq, masks)
+    masks = _maskeleri_icerige_kirp(get_masks(results, h, w), icerik)
+    vis = draw_masks(tuval, masks)
 
-    trav_pct = round(float(masks[0].sum()) / (side * side) * 100, 2)
-    blk_pct  = round(float(masks[1].sum()) / (side * side) * 100, 2)
+    # Dolgu, maske kirpmayla sifirlanir ama paydada yer alirsa oranlari yapay
+    # olarak dusurur. Olcum yalniz gercek drone icerigi uzerinden yapilir.
+    icerik_alan = icerik[2] * icerik[3]
+    trav_pct = round(float(masks[0].sum()) / icerik_alan * 100, 2)
+    blk_pct  = round(float(masks[1].sum()) / icerik_alan * 100, 2)
     detected = bool(trav_pct > 1 or blk_pct > 1)
 
     label = f"T:{trav_pct}%  B:{blk_pct}%  {ms:.0f}ms"
