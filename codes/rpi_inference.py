@@ -248,13 +248,40 @@ def normalize_light(img):
 
 
 def _preprocess(img):
-    """Merkezi kare crop + isik normalizasyonu. (orijinal_kare, 512x512_infer) doner."""
+    """Kare LETTERBOX (dolgu) + isik normalizasyonu.
+    (kare_tuval, 512x512_infer, icerik_dikdortgeni) doner.
+
+    NEDEN CROP DEGIL PAD: onceki surum MERKEZI KARE CROP yapiyordu. 1024x576 bir
+    drone karesinde bu x=[224,800] araligini birakip genisligin %56'sini ATIYORDU
+    → soldaki ve sagdaki guzergah, karar verilmeden once yok oluyordu. Sartname
+    HTAB icinde 3 guzergah tanimliyor ve gunun birinde SOL veya SAG acik olabilir;
+    o yuzden kenarlari atmak gorevi dogrudan kaybettirir.
+    Ayni cozumu simulation/scripts/iha_perceive.py:52 zaten uyguluyordu.
+
+    icerik_dikdortgeni = (x0, y0, w, h): gercek goruntunun tuval icindeki yeri.
+    Dolgu bolgesinden gelen sahte tespitleri elemek icin
+    _maskeleri_icerige_kirp() ile birlikte kullanilir.
+    """
     h, w = img.shape[:2]
-    side = min(h, w)
-    y0, x0 = (h - side) // 2, (w - side) // 2
-    sq = normalize_light(img[y0:y0 + side, x0:x0 + side])
-    small = cv2.resize(sq, (INFER_SIZE, INFER_SIZE))
-    return sq, small
+    # Isik normalizasyonu DOLGUDAN ONCE: gri dolgu LAB ortalamasini kaydirip
+    # is_dark() kararini bozardi.
+    norm = normalize_light(img)
+    yan = max(h, w)
+    tuval = np.full((yan, yan, 3), 114, dtype=np.uint8)
+    x0, y0 = (yan - w) // 2, (yan - h) // 2
+    tuval[y0:y0 + h, x0:x0 + w] = norm
+    small = cv2.resize(tuval, (INFER_SIZE, INFER_SIZE))
+    return tuval, small, (x0, y0, w, h)
+
+
+def _maskeleri_icerige_kirp(masks, icerik):
+    """Letterbox dolgusuna dusen maske pikselleri sifirlanir (sahte tespit onlemi)."""
+    x0, y0, w, h = icerik
+    for k in list(masks):
+        kirpik = np.zeros_like(masks[k])
+        kirpik[y0:y0 + h, x0:x0 + w] = masks[k][y0:y0 + h, x0:x0 + w]
+        masks[k] = kirpik
+    return masks
 
 
 def _draw_waypoints(vis, waypoints):
@@ -313,11 +340,12 @@ def run_image(model, path_str, conf):
             print(f"Okunamadi: {img_path}")
             continue
 
-        sq, small = _preprocess(img)
+        sq, small, icerik = _preprocess(img)
         orig_h, orig_w = sq.shape[:2]
 
         results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
         masks = get_masks(results, orig_h, orig_w)
+        masks = _maskeleri_icerige_kirp(masks, icerik)
 
         open_path, path_conf, waypoints = analyze_path(masks[0])
         vis = draw_masks(sq, masks)
@@ -367,7 +395,7 @@ def run_video(model, path_str, conf, save=True):
     src_fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     src_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     src_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    side = min(src_w, src_h)
+    side = max(src_w, src_h)   # letterbox KARE tuval — crop degil, pad (bkz. _preprocess)
 
     writer = None
     if save:
@@ -388,7 +416,7 @@ def run_video(model, path_str, conf, save=True):
             break
 
         frame_idx += 1
-        sq, small = _preprocess(frame)
+        sq, small, icerik = _preprocess(frame)
         orig_h, orig_w = sq.shape[:2]
 
         t0 = time.perf_counter()
@@ -398,6 +426,7 @@ def run_video(model, path_str, conf, save=True):
             fps_buf.pop(0)
 
         masks = get_masks(results, orig_h, orig_w)
+        masks = _maskeleri_icerige_kirp(masks, icerik)
         open_path, path_conf, waypoints = analyze_path(masks[0])
         vis = draw_masks(sq, masks)
 
@@ -447,7 +476,7 @@ def run_camera(model, conf):
             break
 
         frame = cv2.flip(frame, 1)
-        sq, small = _preprocess(frame)
+        sq, small, icerik = _preprocess(frame)
         orig_h, orig_w = sq.shape[:2]
 
         t0 = time.perf_counter()
@@ -457,6 +486,7 @@ def run_camera(model, conf):
             fps_buf.pop(0)
 
         masks = get_masks(results, orig_h, orig_w)
+        masks = _maskeleri_icerige_kirp(masks, icerik)
         open_path, path_conf, waypoints = analyze_path(masks[0])
         vis = draw_masks(sq, masks)
 
