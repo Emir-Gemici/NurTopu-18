@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "default_profile": "competition",
+  "profiles": {
+    "competition": {
+      "model_id": "navitas-seg-v4-640",
+      "path": "models/navitas_seg_v4_best.pt",
+      "backend": "pytorch",
+      "imgsz": 640,
+      "sha256": "6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4",
+      "classes": {"0": "traversable", "1": "blocked"},
+      "metrics": {"mask_map50": 0.6751, "blocked_map50": 0.4937},
+      "status": "competition"
+    },
+    "rpi_ncnn": {
+      "model_id": "navitas-seg-v2-ncnn-512",
+      "path": "models/navitas_seg_v2_ncnn_model",
+      "artifact": "model.ncnn.bin",
+      "backend": "ncnn",
+      "imgsz": 512,
+      "sha256": "16a3974f22508c2ea9f9831c98322bc8eb1a944d53c1d98476276b474aed2a7f",
+      "classes": {"0": "traversable", "1": "blocked"},
+      "status": "legacy-fallback",
+      "warning": "v4 NCNN export is not checked in; this is not metric-equivalent to competition"
+    }
+  }
+}
