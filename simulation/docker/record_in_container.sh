@@ -121,8 +121,15 @@ record_one() {
             echo "[rec] tarama bitti (sim ${simt}s) → host İHA-haritalama tetiklendi"
         fi
         if [ -f "$L/route.txt" ] && [ ! -f /tmp/navitas_route ]; then
-            cp -f "$L/route.txt" /tmp/navitas_route
-            echo "[rec] MODEL rotası alındı → İKA modelin haritasını sürecek"
+            # Host rota dosyasini atomik yayinlar; yine de konteyner tarafinda
+            # ara hedefe kopyalayip tek hamlede yayinla ki plugin yarim dosya
+            # okumaya baslamasin.
+            route_tmp="/tmp/navitas_route.$$"
+            if cp -f "$L/route.txt" "$route_tmp" && mv -f "$route_tmp" /tmp/navitas_route; then
+                echo "[rec] MODEL A* rotası alındı → İKA yalnız dinamik waypoint'leri sürecek"
+            else
+                rm -f "$route_tmp"
+            fi
         fi
         [ "$simt" -ge "$secs" ] 2>/dev/null && break
         sleep 2; waited=$(( waited + 2 ))
@@ -153,7 +160,7 @@ record_one() {
     fi
 
     # MODEL kararı (host iha_haritala.py'nin SİM TARAMASINDAN verdiği gerçek karar)
-    local mlabel="YOK" mconf="?" mroad=0 m_ika="IKA rotasi FALLBACK (ground-truth; model rota veremedi)"
+    local mlabel="YOK" mconf="?" mroad=0 m_ika="IKA GUVENLI DURMA (dinamik model rotasi yok)"
     if [ -f "$L/detection.json" ]; then
         mlabel=$(python3 -c "import json;print((json.load(open('$L/detection.json')).get('label') or 'yok').upper())" 2>/dev/null); mlabel=${mlabel:-YOK}
         mconf=$(python3 -c "import json;c=json.load(open('$L/detection.json')).get('conf');print(c if c is not None else '?')" 2>/dev/null); mconf=${mconf:-?}

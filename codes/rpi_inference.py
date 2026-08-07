@@ -57,12 +57,16 @@ def load_model():
     return YOLO(str(MODEL_DIR), task="segment")
 
 
-def get_masks(results, h, w, min_conf=None):
+def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
     """Her sinif icin (h, w) cozunurlugunde binary mask doner.
     min_conf verilirse yalniz guveni >= min_conf tespitler dahil edilir → model DUSUK
-    esikle BIR KEZ kosturulup ayni sonuctan farkli esikler suzulebilir (2. predict yok)."""
-    masks = {0: np.zeros((h, w), dtype=np.uint8),
-             1: np.zeros((h, w), dtype=np.uint8)}
+    esikle BIR KEZ kosturulup ayni sonuctan farkli esikler suzulebilir (2. predict yok).
+
+    sinif_idler: maskesi uretilecek sinif idleri. Varsayilan (0, 1) ESKI DAVRANISIN
+    BIREBIR AYNISIDIR — hicbir mevcut cagri yeri degismez. Costmap hatti ek engel
+    siniflari icin genisletir (or. COCO araba/kamyon: sinif_idler=(0,1,2,5,7)).
+    Eskiden {0,1} sabit kodluydu ve id >= 2 olan her maske SESSIZCE atiliyordu."""
+    masks = {int(c): np.zeros((h, w), dtype=np.uint8) for c in sinif_idler}
     r = results[0]
     if r.masks is None:
         return masks
@@ -91,7 +95,8 @@ def draw_masks(image_bgr, masks):
     return cv2.addWeighted(vis, 0.5, overlay, 0.5, 0)
 
 
-def analyze_path(trav_mask, n_waypoints=8):
+def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
+                 min_area_ratio=0.01, *, icerik=None):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
@@ -99,12 +104,34 @@ def analyze_path(trav_mask, n_waypoints=8):
       3. Yatay bantlarda alt→ust waypoint ornekleme
       4. Ust %40'a bakarak hangi ucte birden cikildigi → open_path
 
+    min_area_ratio: ana koridor letterbox'taki gercek icerik alaninin bu
+      oranindan KUCUKse karar VERME (None doner). Dusuk-esik fallback'te
+      gurultuden yol uydurmayi onler — yanlis yonlendirmektense "tespit yok"
+      demek gorev guvenligi geregi.
+
+    icerik: letterbox tuvalindeki gercek goruntu dikdortgeni ``(x0,y0,w,h)``.
+      Sol/orta/sag sinirlari kare tuvalden degil bu yatay icerik araligindan
+      hesaplanir. ``None`` geriye uyumlu olarak tum maskeyi icerik sayar.
+
     Returns:
-      open_path  : 1=sol, 2=orta, 3=sag (None = tespit yok)
+      open_path  : 1=sol, 2=orta, 3=sag (None = tespit yok / alan yetersiz)
       confidence : acik yol piksel orani (0.0-1.0)
       waypoints  : [(x, y), ...] alt→ust sirali, goruntu koordinatlari
+      (return_clean=True ise 4. eleman: kararin kullandigi TEMIZ koridor
+       maskesi — gorsellestirme ham maske yerine bunu basmali)
     """
     h, w = trav_mask.shape
+    if icerik is None:
+        icerik_x0, icerik_y0, icerik_w, icerik_h = 0, 0, w, h
+    else:
+        icerik_x0 = max(0, min(w, int(icerik[0])))
+        icerik_y0 = max(0, min(h, int(icerik[1])))
+        icerik_w = max(0, min(w - icerik_x0, int(icerik[2])))
+        icerik_h = max(0, min(h - icerik_y0, int(icerik[3])))
+        if icerik_w == 0 or icerik_h == 0:
+            if return_clean:
+                return None, 0.0, [], np.zeros_like(trav_mask)
+            return None, 0.0, []
 
     k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
     k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
@@ -112,6 +139,8 @@ def analyze_path(trav_mask, n_waypoints=8):
     clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
 
     if clean.sum() == 0:
+        if return_clean:
+            return None, 0.0, [], clean
         return None, 0.0, []
 
     # EN BUYUK bagli bileseni ANA KORIDOR say → kopuk gurultu bloblari lane kararini
@@ -121,6 +150,12 @@ def analyze_path(trav_mask, n_waypoints=8):
         largest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
         clean = (labels == largest).astype(np.uint8)
 
+    # ALAN DENETIMI: dolgu degil, gercek letterbox icerigi paydaya girer.
+    if clean.sum() < min_area_ratio * icerik_w * icerik_h:
+        if return_clean:
+            return None, 0.0, [], np.zeros_like(clean)
+        return None, 0.0, []
+
     # Acik yol = koridorun HEDEFE (ust) ulastigi taraf. Ust banttaki YATAY MERKEZ
     # (centroid) -> lane. Piksel-argmax yerine centroid: girdi cozunurlugu/kalitesi
     # degisince sol/orta/sag ziplamasini onler (kararli, boyuttan bagimsiz).
@@ -129,9 +164,12 @@ def analyze_path(trav_mask, n_waypoints=8):
     band = ys <= ymin + 0.30 * (ymax - ymin + 1)   # koridorun ust %30'u
     bx = xs[band] if band.any() else xs
     cx = float(bx.mean())
-    open_path = 1 if cx < w / 3 else (2 if cx < 2 * w / 3 else 3)
+    sinir_1 = icerik_x0 + icerik_w / 3.0
+    sinir_2 = icerik_x0 + 2.0 * icerik_w / 3.0
+    open_path = 1 if cx < sinir_1 else (2 if cx < sinir_2 else 3)
     # Guven: ust banttaki piksellerin secilen ucte-bire dusen orani (netlik olcusu).
-    lo, hi = (open_path - 1) * w / 3.0, open_path * w / 3.0
+    lo = icerik_x0 + (open_path - 1) * icerik_w / 3.0
+    hi = icerik_x0 + open_path * icerik_w / 3.0
     in_third = int(((bx >= lo) & (bx < hi)).sum())
     confidence = round(in_third / max(1, bx.size), 3)
 
@@ -147,6 +185,8 @@ def analyze_path(trav_mask, n_waypoints=8):
             ly, lx = np.unravel_index(band.argmax(), band.shape)
             waypoints.append((int(lx), int(y0 + ly)))
 
+    if return_clean:
+        return open_path, confidence, waypoints, clean
     return open_path, confidence, waypoints
 
 
@@ -347,7 +387,7 @@ def run_image(model, path_str, conf):
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
 
-        open_path, path_conf, waypoints = analyze_path(masks[0])
+        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -427,7 +467,7 @@ def run_video(model, path_str, conf, save=True):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
-        open_path, path_conf, waypoints = analyze_path(masks[0])
+        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -487,7 +527,7 @@ def run_camera(model, conf):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
-        open_path, path_conf, waypoints = analyze_path(masks[0])
+        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
         vis = draw_masks(sq, masks)
 
         if open_path:

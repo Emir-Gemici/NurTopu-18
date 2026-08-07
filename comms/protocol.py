@@ -1,4 +1,6 @@
-"""
+"""NEDEN: Rota, canlılık, manuel izin ve İHA iniş kanıtı UDP/seri taşıyıcıdan
+bağımsız, çerçeveli ve ACK ile ilişkilendirilebilir mesajlar olmalıdır.
+
 Navitas haberleşme protokolü — taşıyıcıdan BAĞIMSIZ çerçeveli JSON mesajları.
 
 Aynı mesajlar hem dev/sim'de UDP üzerinden, hem sahada SiK Radio 433 MHz
@@ -9,6 +11,8 @@ Mesaj tipleri:
   OPEN_ROUTE — İHA'nın tespit ettiği açık yol (asıl görev verisi)
   HEARTBEAT  — bağlantı canlılığı (failsafe için)
   ACK        — alındı onayı (YKS/İKA → İHA)
+  CMD        — YKS operatör komutu (ör. IKA_GO)
+  IHA_LANDED — İHA uçuş yazılımının doğruladığı iniş tamam olayı
 """
 import itertools
 import json
@@ -45,6 +49,26 @@ def open_route(road, conf, waypoints=None, ref_xy=None, seq=None):
     }
 
 
+def rota_yok(sebep, detay=None, seq=None):
+    """İHA → (YKS, İKA): doğrulanmış rota üretilemedi bilgisini gönder.
+
+    NEDEN ayrı bir mesaj türü: ``OPEN_ROUTE`` yalnız hareket edilecek yol
+    kimliği ve geometri taşır. Costmap rota üretemediğinde sessizlik, bağlantı
+    kesintisiyle güvenli ret kararını ayırt edilemez yapar.
+    """
+    sebep = str(sebep).strip()
+    if not sebep:
+        raise ValueError("NO_ROUTE için sebep gerekli")
+    msg = {
+        "v": PROTOCOL_VERSION, "type": "NO_ROUTE", "sebep": sebep,
+        "seq": next(_seq) if seq is None else int(seq),
+        "t": round(time.time(), 3),
+    }
+    if detay is not None:
+        msg["detay"] = str(detay)
+    return msg
+
+
 def heartbeat(node, seq=None):
     return {"v": PROTOCOL_VERSION, "type": "HEARTBEAT", "node": node,
             "seq": next(_seq) if seq is None else int(seq), "t": round(time.time(), 3)}
@@ -64,6 +88,22 @@ def command(cmd, hedef, seq=None):
     return {"v": PROTOCOL_VERSION, "type": "CMD", "cmd": str(cmd),
             "hedef": hedef, "seq": next(_seq) if seq is None else int(seq),
             "t": round(time.time(), 3)}
+
+
+def iha_landed(seq=None):
+    """İHA → (YKS, İKA): üretim uçuşu başarıyla tamamlanıp yere temas edildi.
+
+    Bu olay operatör komutu değildir; YKS'deki manuel ``İHA İNDİ`` düğmesi
+    güvenlik latch'ini kuramaz. Alıcı, ``node`` ve ``seq`` alanlarını latch'ten
+    önce doğrular.
+    """
+    return {
+        "v": PROTOCOL_VERSION,
+        "type": "IHA_LANDED",
+        "node": "iha",
+        "seq": next(_seq) if seq is None else int(seq),
+        "t": round(time.time(), 3),
+    }
 
 
 # ── Çerçeveleme (encode/decode) ───────────────────────────────────────────────

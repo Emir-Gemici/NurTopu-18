@@ -1,4 +1,6 @@
 """
+NEDEN: Dogruluk olcumu sevk edilen algi ve karar yoluyla birebir ayni olmali.
+
 Navitas — Gorsel Test & Dogruluk
 Kullanim:
   # Dogruluk testi — P001..P030 gorsel + etiket karsilastirma + gorsel cikti
@@ -26,7 +28,12 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-from rpi_inference import _maskeleri_icerige_kirp, _preprocess
+from rpi_inference import (
+    _maskeleri_icerige_kirp,
+    _preprocess,
+    analyze_path,
+    get_masks as _get_masks_paylasilan,
+)
 
 _here = Path(__file__).parent
 MODEL_DIR = next(
@@ -71,71 +78,9 @@ def load_model(model_dir=None):
 # ─── Inference Temel Fonksiyonlari ──────────────────────────────────────────
 
 def get_masks(results, h, w):
-    """Her sinif icin (h, w) boyutunda binary mask doner."""
-    masks = {0: np.zeros((h, w), dtype=np.uint8),
-             1: np.zeros((h, w), dtype=np.uint8)}
-    r = results[0]
-    if r.masks is None:
-        return masks
-    for i, cls in enumerate(r.boxes.cls):
-        cls_id = int(cls)
-        if cls_id not in masks:
-            continue
-        m = r.masks.data[i].cpu().numpy()
-        m_up = cv2.resize(m, (w, h))
-        masks[cls_id] = np.maximum(masks[cls_id], (m_up > 0.5).astype(np.uint8))
-    return masks
-
-
-def analyze_path(trav_mask, n_waypoints=8):
-    """
-    Traversable maskinden:
-      - open_path  : 1=sol  2=orta  3=sag  (None=tespit yok)
-      - confidence : [0,1]
-      - waypoints  : [(x,y), ...] alt→ust, goruntu koordinatlari
-    """
-    h, w = trav_mask.shape
-
-    k_open  = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
-    k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
-    clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN,  k_open)
-    clean = cv2.morphologyEx(clean,     cv2.MORPH_CLOSE, k_close)
-
-    if clean.sum() == 0:
-        return None, 0.0, []
-
-    top = clean[:int(h * 0.4), :]
-    thirds = [
-        int(top[:, :w // 3].sum()),
-        int(top[:, w // 3:2 * w // 3].sum()),
-        int(top[:, 2 * w // 3:].sum()),
-    ]
-    total = sum(thirds)
-    if total == 0:
-        thirds = [
-            int(clean[:, :w // 3].sum()),
-            int(clean[:, w // 3:2 * w // 3].sum()),
-            int(clean[:, 2 * w // 3:].sum()),
-        ]
-        total = sum(thirds)
-
-    if total == 0:
-        return None, 0.0, []
-
-    open_path  = int(np.argmax(thirds)) + 1
-    confidence = round(thirds[open_path - 1] / total, 3)
-
-    dist = cv2.distanceTransform(clean, cv2.DIST_L2, 5)
-    waypoints = []
-    for i in range(n_waypoints - 1, -1, -1):
-        y0 = i * h // n_waypoints
-        y1 = (i + 1) * h // n_waypoints
-        band = dist[y0:y1, :]
-        if band.max() > 0.5:
-            ly, lx = np.unravel_index(band.argmax(), band.shape)
-            waypoints.append((int(lx), int(y0 + ly)))
-
-    return open_path, confidence, waypoints
+    """Her sinif icin (h, w) boyutunda binary mask doner.
+    Ucuncu kopya silindi — rpi_inference.get_masks'e delege eder (identik davranis)."""
+    return _get_masks_paylasilan(results, h, w)
 
 
 # ─── Gorsel Cizim ───────────────────────────────────────────────────────────
@@ -234,7 +179,7 @@ def _infer_frame(model, img, conf):
 
     results    = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
     masks      = _maskeleri_icerige_kirp(get_masks(results, orig_h, orig_w), icerik)
-    open_path, path_conf, waypoints = analyze_path(masks[0])
+    open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
 
     vis = draw_masks(tuval, masks)
 

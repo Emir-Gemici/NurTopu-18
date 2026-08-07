@@ -45,9 +45,9 @@ namespace gazebo
     // İKA ROTA KAYNAĞI — dürüst haritalandırma zinciri:
     //   İHA tarama kareleri → host'ta iha_haritala.py (mozaik + model) → /tmp/navitas_route
     //   (satır başına "x y" DÜNYA koordinatı, güney→kuzey). Dosya gelirse İKA MODELİN
-    //   haritasını sürer; ROUTE_WAIT içinde gelmezse SDF-gömülü ground-truth waypoint'lere
-    //   düşer (model/venv yoksa kayıt yine biter — fallback LOG'lanır, başarı sayılmaz).
-    private: std::map<std::string, std::string> ikaRouteSrc;   // "bekliyor"|"model"|"fallback"
+    //   haritasını sürer. Geçerli dinamik rota gelmezse SDF'deki geometrinin
+    //   kullanılması yasaktır; İKA güvenli şekilde yerinde bekler.
+    private: std::map<std::string, std::string> ikaRouteSrc;   // "bekliyor"|"model"|"rota_yok"
     private: const char *ROUTE_FILE = "/tmp/navitas_route";
     private: const double ROUTE_WAIT = 45.0;   // s — İHA inişinden sonra rota bekleme süresi
 
@@ -61,7 +61,8 @@ namespace gazebo
     // DÖNÜŞ: SetAngularVel (doğrudan) → skid-steer 4 sabit teker yüksek sürtünmede tork ile
     //        dönemeyeceği için yaw doğrudan atanır (çarpışma bütünlüğü ileri eksende korunur).
     private: const double IKA_SPEED    = 1.1;   // m/s — gerçekçi rover seyir hızı
-    private: const double WP_RADIUS    = 1.2;   // m — bu mesafede sonraki waypoint'e geç
+    private: const double WP_RADIUS    = 0.5;   // m — costmap takip payını aşmaz
+    private: const double FINAL_WP_RADIUS = 0.3; // m — HB son yaklaşım toleransı
     private: const double YAW_GAIN     = 2.5;   // hedef yaw hatasından açısal hıza kazanç
     private: const double YAW_RATE_MAX = 1.6;   // rad/s — dönüş hız limiti
     private: const double FORCE_GAIN   = 60.0;  // (v_hedef - v) → kuvvet kazancı (N/(m/s))
@@ -190,23 +191,23 @@ namespace gazebo
             continue;
           }
 
-          // ── ROTA KAYNAĞI: önce MODEL haritası (/tmp/navitas_route), yoksa bekle,
-          //    ROUTE_WAIT dolarsa SDF ground-truth'a düş (dürüst zincir; bkz. üst not) ──
+          // ── ROTA KAYNAĞI: yalnız MODEL haritası (/tmp/navitas_route). ──
+          // Geçerli A* waypoint dizisi yoksa SDF'deki sabit rota asla sürülmez.
           std::string &src = this->ikaRouteSrc[kv.first];
-          if (src == "bekliyor")
+          if (src != "model")
           {
             if (!this->tryLoadRoute(kv.first))
             {
-              if (t < startT + ROUTE_WAIT)
+              if (src == "bekliyor" && t >= startT + ROUTE_WAIT)
               {
-                model->SetLinearVel(ignition::math::Vector3d::Zero);
-                model->SetAngularVel(ignition::math::Vector3d::Zero);
-                continue;                        // İHA haritası henüz gelmedi — bekle
+                src = "rota_yok";
+                gzmsg << "[navitas_anim] '" << kv.first << "' MODEL rotası "
+                      << ROUTE_WAIT << "s içinde gelmedi → GÜVENLİ DURMA; "
+                         "SDF ground-truth rota KULLANILMADI.\n";
               }
-              src = "fallback";
-              gzmsg << "[navitas_anim] '" << kv.first << "' MODEL rotası "
-                    << ROUTE_WAIT << "s içinde gelmedi → SDF ground-truth FALLBACK "
-                       "(model başarısı SAYILMAZ).\n";
+              model->SetLinearVel(ignition::math::Vector3d::Zero);
+              model->SetAngularVel(ignition::math::Vector3d::Zero);
+              continue;                            // dinamik rota gelene dek bekle
             }
           }
           size_t &idx = this->ikaIdx[kv.first];
@@ -222,7 +223,8 @@ namespace gazebo
           double cx = pose.Pos().X(), cy = pose.Pos().Y();
           double dx = wps[idx].x - cx, dy = wps[idx].y - cy;
           double dist = std::hypot(dx, dy);
-          if (dist < WP_RADIUS) { idx++; continue; }   // sonraki waypoint
+          double hedefRadius = (idx + 1 >= wps.size()) ? FINAL_WP_RADIUS : WP_RADIUS;
+          if (dist < hedefRadius) { idx++; continue; } // sonraki waypoint/HB
 
           // Hedef hız (XY) → istenen hız vektörü
           double inv = 1.0 / dist;

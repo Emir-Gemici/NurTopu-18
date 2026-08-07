@@ -1,19 +1,21 @@
-"""
+"""NEDEN: YKS, hakem onayını ve manuel İKA komutunu gerçek haberleşme
+hedefine fail-closed biçimde ileterek şartname kilitlerini görünür kılmalıdır.
+
 YKS (Yer Kontrol İstasyonu) — hakem ekranı GUI'si.
 
 Şartname §2.2.3/§6.2: İHA'nın tespit ettiği güzergâh YKS'de CANLI görünmeli,
 Alan Hakemi monitörden izleyip onaylamalı. Bu arayüz, yks_monitor.py'nin
 terminal sürümünün yerini alan gerçek hakem ekranıdır:
 
-  · gerçek protokol trafiği dinler (OPEN_ROUTE / HEARTBEAT — comms.protocol)
+  · gerçek protokol trafiği dinler (OPEN_ROUTE / IHA_LANDED / HEARTBEAT)
   · saha haritasında (50×50 m HTAB) rotayı ve açık yolu çizer
   · İHA/İKA bağlantı canlılığını gösterir (heartbeat yaşı)
   · hakem onayı BUTONLA verilir → ACK ancak o zaman döner
     (yks_monitor.py'deki "otomatik onay" bu ekranda kaldırıldı)
 
 Kullanım:
-  python yks_gui.py                          # 0.0.0.0:5005 dinler (UDP)
-  python yks_gui.py --bind 0.0.0.0:5005
+  python yks_gui.py --ika 127.0.0.1:5006    # 0.0.0.0:5005 dinler (UDP)
+  python yks_gui.py --bind 0.0.0.0:5005 --ika 127.0.0.1:5006
   python yks_gui.py --serial COM5            # SiK telsiz (saha)
   python yks_gui.py --demo                   # dahili İHA/İKA beslemesiyle tanıtım
   python yks_gui.py --demo --otokaydet 6     # 6 sn sonra pencere SS'i kaydet (rapor)
@@ -29,6 +31,7 @@ import tkinter as tk
 from tkinter import font as tkfont
 
 from link import UDPLink, SerialLink
+from ika_receiver import IkaReceiver
 from protocol import (encode, ack, command, heartbeat, open_route,
                       FrameReader, ROAD_LABEL)
 
@@ -52,11 +55,24 @@ def S(px):
     return int(px * OLCEK)
 
 
+def _udp_adres(deger):
+    """Argparse için IPv4/host:port hedefini doğrula ve tuple'a dönüştür."""
+    try:
+        host, port_metni = deger.rsplit(":", 1)
+        port = int(port_metni)
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise argparse.ArgumentTypeError("HOST:PORT biçimi gerekli") from exc
+    if not host or not 1 <= port <= 65535:
+        raise argparse.ArgumentTypeError("HOST dolu, PORT 1..65535 olmalı")
+    return host, port
+
+
 class YksArayuz:
     IHA_LIMIT = 900     # şartname: fırlatma → paraşütle iniş ≤ 15 dk
     IKA_LIMIT = 600     # şartname: teker dönüşü → HB temas ≤ 10 dk
 
-    def __init__(self, kok, link, otomatik_onay=False, demo=False):
+    def __init__(
+            self, kok, link, otomatik_onay=False, demo=False, ika_peer=None):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -66,14 +82,33 @@ class YksArayuz:
         self.demo_durum = {"iha_hb": True, "ika_hb": True}   # senaryo anahtarları
 
         self.rota = None            # son OPEN_ROUTE mesajı
+        self.rota_yok = None        # son NO_ROUTE; kırmızı güvenlik bandı için
         self.rota_adr = None        # ACK dönülecek adres
         self.onaylandi = False
         self.son_hb = {}            # node -> zaman
         self.son_adr = {}           # node -> adres (CMD gönderimi için)
-        self.sayac = {"OPEN_ROUTE": 0, "HEARTBEAT": 0, "ACK_TX": 0}
+        self.sabit_adr = {}         # CLI ile pinlenen adres heartbeat ile değişmez
+        if ika_peer is not None:
+            self.son_adr["ika"] = ika_peer
+            self.sabit_adr["ika"] = ika_peer
+        self.sayac = {
+            "OPEN_ROUTE": 0,
+            "NO_ROUTE": 0,
+            "IHA_LANDED": 0,
+            "HEARTBEAT": 0,
+            "ACK_TX": 0,
+        }
+        self.iha_landed_seq = None       # üretim İHA'sından gelen son iniş olayı
         self.arm_acik = False
+        self.tespit_onayli = False          # §2.2.3 iki aşamalı onayın 1. adımı
         self.t_iha0 = self.t_iha1 = None    # İHA görev kronometresi
         self.t_ika0 = self.t_ika1 = None    # İKA görev kronometresi
+        self.t_haz0 = self.t_haz1 = None    # hazırlık kronometresi (§6.2)
+        self.ceza_toplam = 0                # birikmiş ceza puanı
+        self.parasut_teyit = 0.0            # iki adımlı paraşüt emniyeti
+        self.mod = {}                       # node -> uçuş modu (AUTO/MANUEL)
+        self._manuel_uyarildi = False
+        self.iha_iz = []                    # İHA-UB (300×300) içindeki konum izi
         self.tel = {}                       # node -> son telemetri alanları
         self.rx_alim = {}                   # seq -> kaç kez alındı (tekrar gönderim)
         self._detay_base = ""
@@ -132,8 +167,10 @@ class YksArayuz:
         govde.pack(fill="both", expand=True, padx=14, pady=4)
 
         # Sol: iki görünüm — saha haritası / canlı algı (v3)
+        _m = self.ALGI_MODEL_DOSYA.rsplit(".", 1)[0]
         sol = self._panel(govde, "SAHA HARİTASI — HTAB 50×50 m   |   "
-                                 "CANLI ALGI — navitas_seg_v3 (GERÇEK çıkarım)")
+                                 f"CANLI ALGI — {_m} (GERÇEK çıkarım)")
+        sol.pack(side="left", fill="both", expand=True, padx=(0, 8))
         sol.pack(side="left", fill="both", expand=True, padx=(0, 8))
 
         anahtar = tk.Frame(sol, bg=PANEL)
@@ -143,7 +180,7 @@ class YksArayuz:
                                         relief="flat", padx=8, pady=3,
                                         command=lambda: self.gorunum("harita"))
         self.btn_gor_harita.pack(side="left", padx=(0, 6))
-        self.btn_gor_algi = tk.Button(anahtar, text="◉ Canlı Algı — v3 (V)",
+        self.btn_gor_algi = tk.Button(anahtar, text="◉ Canlı Algı — v17 (V)",
                                       font=self.f_kucuk, fg=METIN, bg="#232e3a",
                                       relief="flat", padx=8, pady=3,
                                       command=lambda: self.gorunum("algi"))
@@ -156,7 +193,7 @@ class YksArayuz:
         # canlı algı görünümü (başta gizli)
         self.algi_cerceve = tk.Frame(sol, bg=PANEL)
         self.lbl_algi_img = tk.Label(self.algi_cerceve, bg="#121920",
-                                     text="v3 modeli ilk geçişte yüklenecek…",
+                                     text="v17 modeli ilk geçişte yüklenecek…",
                                      fg=SOLUK, font=self.f_kucuk)
         self.lbl_algi_img.pack(padx=10, pady=(4, 4), fill="both", expand=True)
         arow = tk.Frame(self.algi_cerceve, bg=PANEL)
@@ -238,6 +275,19 @@ class YksArayuz:
                                  justify="center")
         self.lbl_onay.pack(pady=(0, 8))
 
+        # Sağ 2b: rota analizi (segment eksen değişimleri)
+        p2b = self._panel(sag, "ROTA ANALİZİ — segment / eksen değişimleri")
+        p2b.pack(fill="x", pady=(0, 8))
+        rkap = tk.Frame(p2b, bg=PANEL)
+        rkap.pack(fill="x", padx=10, pady=(2, 8))
+        rkay = tk.Scrollbar(rkap, width=S(12))
+        rkay.pack(side="right", fill="y")
+        self.rota_metin = tk.Text(rkap, height=6, bg="#121920", fg=METIN, bd=0,
+                                  font=self.f_mono, state="disabled", wrap="none",
+                                  yscrollcommand=rkay.set)
+        self.rota_metin.pack(side="left", fill="both", expand=True)
+        rkay.config(command=self.rota_metin.yview)
+
         # Sağ 3: bağlantı durumu
         p3 = self._panel(sag, "BAĞLANTI / DÜĞÜM DURUMU")
         p3.pack(fill="x", pady=(0, 8))
@@ -280,37 +330,57 @@ class YksArayuz:
         tasiyici = "SiK 433 MHz (seri)" if isinstance(self.link, SerialLink) \
             else f"UDP :{self.link.port}"
         tk.Label(alt, text=f"  Taşıyıcı: {tasiyici}   ·   Protokol: newline-JSON v1"
-                           f"   ·   Çerçeve: OPEN_ROUTE / HEARTBEAT / ACK / CMD",
+                           f"   ·   Çerçeve: OPEN_ROUTE / IHA_LANDED / "
+                           f"HEARTBEAT / ACK / CMD",
                  font=self.f_kucuk, fg=SOLUK, bg=PANEL, wraplength=S(1150),
                  justify="left").pack(side="left", pady=3)
 
-        # Görev kontrol & kronometre şeridi (şartname süreleri + §2.2.5 kilidi)
+        # Görev kontrol & kronometre şeridi — 2 satır:
+        # 1) hazırlık akışı (§6.2 hands-off), 2) uçuş/intikal akışı + paraşüt
         gorev = tk.Frame(self.kok, bg=PANEL, highlightbackground=CIZGI,
                          highlightthickness=1)
         gorev.pack(fill="x", side="bottom", padx=14, pady=(0, 4))
+        satir1 = tk.Frame(gorev, bg=PANEL)
+        satir1.pack(fill="x")
+        satir2 = tk.Frame(gorev, bg=PANEL)
+        satir2.pack(fill="x")
 
-        def gbuton(metin, komut, aktif=True):
-            b = tk.Button(gorev, text=metin, font=self.f_kucuk, fg=METIN,
+        def gbuton(ana, metin, komut, aktif=True):
+            b = tk.Button(ana, text=metin, font=self.f_kucuk, fg=METIN,
                           bg="#232e3a", activebackground=SARI, activeforeground=BG,
-                          relief="flat", padx=8, pady=4, command=komut,
+                          relief="flat", padx=8, pady=3, command=komut,
                           state=("normal" if aktif else "disabled"))
-            b.pack(side="left", padx=5, pady=5)
+            b.pack(side="left", padx=5, pady=3)
             return b
 
-        self.btn_arm = gbuton("ARM (A)", self.arm_degistir)
-        self.btn_firlat = gbuton("FIRLATMA", self.firlatma, aktif=False)
-        self.btn_iha_indi = gbuton("İHA İNDİ", self.iha_indi, aktif=False)
-        # §2.2.5 kilidini GÖSTERMEK için hep tıklanabilir — erken basılırsa reddeder
-        self.btn_ika_go = gbuton("İKA BAŞLAT", self.ika_baslat)
-        self.btn_hb = gbuton("HB TEMAS", self.hb_temas, aktif=False)
+        # satır 1 — hazırlık (§6.2: 15 dk, Takım Hazır'la durur; müdahale +100 ceza)
+        self.btn_alan = gbuton(satir1, "ALAN GİRİŞİ", self.alan_girisi)
+        self.btn_hazir = gbuton(satir1, "TAKIM HAZIR", self.takim_hazir, aktif=False)
+        self.btn_mudahale = gbuton(satir1, "MÜDAHALE (−100)", self.mudahale,
+                                   aktif=False)
+        self.lbl_kron_haz = tk.Label(satir1, text="HAZIRLIK ⏱ --:-- / 15:00",
+                                     font=self.f_orta, fg=SOLUK, bg=PANEL)
+        self.lbl_kron_haz.pack(side="right", padx=10)
+        self.lbl_ceza = tk.Label(satir1, text="CEZA Σ 0", font=self.f_orta,
+                                 fg=SOLUK, bg=PANEL)
+        self.lbl_ceza.pack(side="right", padx=10)
 
-        self.lbl_arm = tk.Label(gorev, text="SİSTEM: DISARM — güvenli",
+        # satır 2 — uçuş/intikal
+        self.btn_arm = gbuton(satir2, "ARM (A)", self.arm_degistir)
+        self.btn_firlat = gbuton(satir2, "FIRLATMA", self.firlatma, aktif=False)
+        self.btn_iha_indi = gbuton(satir2, "İHA İNDİ", self.iha_indi, aktif=False)
+        self.btn_parasut = gbuton(satir2, "PARAŞÜT (manuel −50)", self.parasut)
+        # §2.2.5 kilidini GÖSTERMEK için hep tıklanabilir — erken basılırsa reddeder
+        self.btn_ika_go = gbuton(satir2, "İKA BAŞLAT", self.ika_baslat)
+        self.btn_hb = gbuton(satir2, "HB TEMAS", self.hb_temas, aktif=False)
+
+        self.lbl_arm = tk.Label(satir2, text="SİSTEM: DISARM — güvenli",
                                 font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_arm.pack(side="left", padx=10)
-        self.lbl_kron_ika = tk.Label(gorev, text="İKA ⏱ --:-- / 10:00",
+        self.lbl_kron_ika = tk.Label(satir2, text="İKA ⏱ --:-- / 10:00",
                                      font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_kron_ika.pack(side="right", padx=10)
-        self.lbl_kron_iha = tk.Label(gorev, text="İHA ⏱ --:-- / 15:00",
+        self.lbl_kron_iha = tk.Label(satir2, text="İHA ⏱ --:-- / 15:00",
                                      font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_kron_iha.pack(side="right", padx=10)
 
@@ -361,22 +431,39 @@ class YksArayuz:
         x1, y1 = self._mxy(50, 50)
         c.create_rectangle(x0, y0, x1, y1, outline=CIZGI, width=2)
 
-        # 3 yol koridoru (stilize) — sol/orta/sağ
-        acik = self.rota["road"] if self.rota else None
+        # 3 yol koridoru — tespit sonrası: açık yol YEŞİL, geri kalan HER YER
+        # (kapalı koridorlar + moloz sahası) KIRMIZI = gidilemez
+        # Yeni NO_ROUTE, eski OPEN_ROUTE önbelleğini görsel olarak geçersiz
+        # kılar: hakem ekranda yeşil bir rota görüp yanlış onay vermemelidir.
+        acik = self.rota["road"] if self.rota and not self.rota_yok else None
+        if acik is not None:
+            c.create_rectangle(x0, y0, x1, y1, fill=KIRMIZI, stipple="gray12",
+                               outline="")
+            lx, ly = self._mxy(0.8, 51.8)
+            c.create_text(lx, ly, text="■ yeşil = geçilebilir açık yol   "
+                                       "■ kırmızı = gidilemez (moloz / kapalı)",
+                          fill=SOLUK, font=self.f_kucuk, anchor="w")
         for yol, xm in ((1, 12.5), (2, 25.0), (3, 37.5)):
-            renk = YESIL if yol == acik else "#25303c"
-            for (ax, ay, bx, by) in [(xm - 3, 4, xm + 3, 46)]:
-                px0, py0 = self._mxy(ax, ay)
-                px1, py1 = self._mxy(bx, by)
-                c.create_rectangle(px0, py0, px1, py1, outline=renk,
-                                   width=2 if yol == acik else 1,
-                                   dash=None if yol == acik else (3, 3))
+            secili = (yol == acik)
+            px0, py0 = self._mxy(xm - 3, 4)
+            px1, py1 = self._mxy(xm + 3, 46)
+            if secili:
+                c.create_rectangle(px0, py0, px1, py1, fill=YESIL,
+                                   stipple="gray25", outline=YESIL, width=2)
+            elif acik is not None:
+                c.create_rectangle(px0, py0, px1, py1, fill=KIRMIZI,
+                                   stipple="gray25", outline=KIRMIZI,
+                                   width=1, dash=(3, 3))
+            else:
+                c.create_rectangle(px0, py0, px1, py1, outline="#25303c",
+                                   width=1, dash=(3, 3))
             tx, ty = self._mxy(xm, -2.4)          # arena çerçevesinin ALTINA yaz
             c.create_text(tx, ty, text=f"{yol}·{ROAD_LABEL[yol].upper()}",
-                          fill=renk if yol == acik else SOLUK, font=self.f_kucuk)
-            if yol != acik and acik is not None:
+                          fill=YESIL if secili else SOLUK, font=self.f_kucuk)
+            if not secili and acik is not None:
                 kx, ky = self._mxy(xm, 25)
-                c.create_text(kx, ky, text="✕ KAPALI", fill=KIRMIZI, font=self.f_kucuk)
+                c.create_text(kx, ky, text="✕ KAPALI", fill="#ff8878",
+                              font=self.f_kucuk)
 
         # İKA-KB (başlangıç, güney) ve HB (hedef, kuzey)
         kx, ky = self._mxy(25, 2)
@@ -389,7 +476,7 @@ class YksArayuz:
         c.create_text(hx, hy - 20, text="HB (hedef)", fill=KIRMIZI, font=self.f_kucuk)
 
         # rota: ref_xy + yerel waypoint'ler
-        if self.rota and self.rota.get("waypoints"):
+        if self.rota and not self.rota_yok and self.rota.get("waypoints"):
             ref = self.rota.get("ref_xy") or [25.0, 2.0]
             noktalar = [(ref[0] + dx, ref[1] + dy) for dx, dy in self.rota["waypoints"]]
             noktalar.insert(0, (ref[0], ref[1]))
@@ -399,6 +486,55 @@ class YksArayuz:
             rx, ry = self._mxy(ref[0], ref[1])
             c.create_oval(rx - 5, ry - 5, rx + 5, ry + 5, fill=SARI, outline="")
             c.create_text(rx - 16, ry, text="ref", fill=SARI, font=self.f_kucuk, anchor="e")
+
+        if self.rota_yok:
+            sebep = self.rota_yok.get("sebep", "bilinmeyen neden")
+            detay = self.rota_yok.get("detay")
+            w, h = c.winfo_width() or S(480), c.winfo_height() or S(420)
+            bant_h = max(S(42), h // 10)
+            c.create_rectangle(0, 0, w, bant_h, fill=KIRMIZI, outline="")
+            metin = f"ROTA YOK — {sebep} · İKA GÜVENLİ DURUŞTA"
+            if detay:
+                metin += f"\n{detay}"
+            c.create_text(S(12), bant_h // 2, text=metin, fill="white",
+                          font=self.f_kucuk, anchor="w", width=w - S(24))
+
+    def _inset_ciz(self):
+        """Mini genel-saha: İHA-UB 300×300 m çerçevesi + HTAB + İHA-İB (mavi)
+        + İHA canlı konum izi (heartbeat x,y alanlarından)."""
+        c = self.harita
+        c.delete("inset")
+        gw = int(c.winfo_width() or S(480))
+        b = S(132)
+        x1, y0 = gw - 8, 8
+        x0, y1 = x1 - b, y0 + b
+        c.create_rectangle(x0, y0, x1, y1, fill="#0d1318", outline=CIZGI,
+                           tags="inset")
+
+        def ub(px, py):        # İHA-UB metre (0-300, y kuzey) → inset pikseli
+            return (x0 + px / 300 * b, y1 - py / 300 * b)
+
+        c.create_text(x0 + 4, y0 + 8, text="İHA-UB 300×300 m", fill=SOLUK,
+                      font=self.f_kucuk, anchor="w", tags="inset")
+        hx0, hy0 = ub(125, 125)
+        hx1, hy1 = ub(175, 175)
+        c.create_rectangle(hx0, hy0, hx1, hy1, outline=SARI, tags="inset")
+        c.create_text(*ub(150, 110), text="HTAB", fill=SARI,
+                      font=self.f_kucuk, tags="inset")
+        ix0, iy0 = ub(40, 230)
+        ix1, iy1 = ub(70, 260)
+        c.create_rectangle(ix0, iy0, ix1, iy1, outline=MAVI, fill=MAVI,
+                           stipple="gray25", tags="inset")
+        c.create_text(*ub(55, 215), text="İHA-İB", fill=MAVI,
+                      font=self.f_kucuk, tags="inset")
+        if len(self.iha_iz) >= 2:
+            pts = []
+            for mx, my in self.iha_iz:
+                pts.extend(ub(mx, my))
+            c.create_line(*pts, fill=YESIL, width=1, tags="inset")
+            sx, sy = ub(*self.iha_iz[-1])
+            c.create_oval(sx - 3, sy - 3, sx + 3, sy + 3, fill=YESIL,
+                          outline="", tags="inset")
 
     # ── Ağ dinleyici (arka plan iş parçacığı) ────────────────────────────────
     def _dinle(self):
@@ -431,21 +567,28 @@ class YksArayuz:
     def _mesaj_isle(self, m, adr):
         tip = m.get("type")
         if tip == "OPEN_ROUTE":
-            self.son_adr["iha"] = adr
+            self._dugum_adresini_ogren("iha", adr)
             yeni = (self.rota is None) or (m["seq"] != self.rota["seq"])
             self.rota, self.rota_adr = m, adr
+            self.rota_yok = None
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
             if yeni:
                 self.onaylandi = False
+                self.tespit_onayli = False
                 self.sayac["OPEN_ROUTE"] += 1
                 self._logla(f"OPEN_ROUTE  yol={m['road']}({m['label']}) "
                             f"güven={m['conf']} seq={m['seq']} wp={len(m['waypoints'])}",
                             "yesil")
+                if self.t_iha1:
+                    self._logla("⚠ GEÇERSİZLİK RİSKİ: aktarım İHA inişinden SONRA "
+                                "geldi — şartname §6.4: aktarım HAVADA tamamlanmalı!",
+                                "sari")
                 self.lbl_karar.config(text=f"{m['road']} · {m['label'].upper()}", fg=YESIL)
                 self._detay_base = (f"seq={m['seq']} · ref=({m['ref_xy'][0]}, "
                                     f"{m['ref_xy'][1]}) m · {len(m['waypoints'])} waypoint")
+                self._rota_analiz(m)
                 self.btn_onay.config(state="normal", bg=SARI,
-                                     text="TESPİTİ ONAYLA → ACK GÖNDER")
+                                     text="1) TESPİTİ DOĞRULA (§2.2.3)")
                 self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
                                           "gönderimde (ACK yok)", fg=SARI)
                 self._guven_ciz(m["conf"])
@@ -457,17 +600,92 @@ class YksArayuz:
             # tekrar-gönderim mekanizması canlı izlensin (jüri: ACK'siz teslim yok)
             self.lbl_detay.config(
                 text=f"{self._detay_base} · alım #{self.rx_alim[m['seq']]}")
+        elif tip == "NO_ROUTE":
+            self._dugum_adresini_ogren("iha", adr)
+            onceki_seq = self.rota_yok.get("seq") if self.rota_yok else None
+            yeni = m.get("seq") != onceki_seq
+            self.rota_yok = m
+            self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
+            # NO_ROUTE da aktarımın teslim edildiğini kanıtlamalıdır. Bu bir
+            # rota onayı değil, İKA'nın hareket etmeyeceği güvenlik bildirimidir.
+            if adr is not None:
+                self.link.send(encode(ack(m["seq"], "yks")), adr)
+            elif isinstance(self.link, SerialLink):
+                self.link.send(encode(ack(m["seq"], "yks")))
+            self.sayac["ACK_TX"] += 1
+            if yeni:
+                sebep = m.get("sebep", "bilinmeyen neden")
+                detay = m.get("detay")
+                self.onaylandi = False
+                self.tespit_onayli = False
+                self.sayac["NO_ROUTE"] += 1
+                self.lbl_karar.config(text="ROTA YOK", fg=KIRMIZI)
+                self._detay_base = f"seq={m['seq']} · {sebep}"
+                self.lbl_detay.config(text=self._detay_base +
+                                      (f" · {detay}" if detay else ""))
+                self.btn_onay.config(state="disabled", bg="#232e3a",
+                                     text="ROTA YOK — ACK OTOMATİK GÖNDERİLDİ")
+                self.lbl_onay.config(text="Costmap güvenli rota üretmedi; İKA hareket etmez.",
+                                      fg=KIRMIZI)
+                self._guven_ciz(0.0)
+                self._harita_ciz()
+                self._logla(f"NO_ROUTE · {sebep}"
+                            + (f" · {detay}" if detay else "")
+                            + " → güvenli duruş ACK'i gönderildi", "sari")
+        elif tip == "IHA_LANDED":
+            seq = m.get("seq")
+            if (m.get("node") != "iha" or isinstance(seq, bool)
+                    or not isinstance(seq, int)):
+                return
+            if adr is not None:
+                self.link.send(encode(ack(seq, "yks")), adr)
+            elif isinstance(self.link, SerialLink):
+                self.link.send(encode(ack(seq, "yks")))
+            self.sayac["ACK_TX"] += 1
+            if seq != self.iha_landed_seq:
+                self.iha_landed_seq = seq
+                self.sayac["IHA_LANDED"] += 1
+                self._logla(
+                    f"IHA_LANDED · üretim uçuşu iniş kanıtı alındı → ACK ref={seq}",
+                    "yesil",
+                )
+                # Operatör düğmesi güvenlik sinyali üretmez; tersine gerçek
+                # protokol olayı mevcut UI/kronometre kaydını besler.
+                self.iha_indi()
         elif tip == "HEARTBEAT":
             dugum = m.get("node", "?")
             self.son_hb[dugum] = time.time()
-            self.son_adr[dugum] = adr
+            self._dugum_adresini_ogren(dugum, adr)
             tel = {k: m[k] for k in ("alt", "hiz", "bat", "uydu") if k in m}
             if tel:
                 self.tel[dugum] = tel
+            if "mod" in m:
+                self.mod[dugum] = m["mod"]
+                if m["mod"] != "AUTO" and not self._manuel_uyarildi:
+                    self._manuel_uyarildi = True
+                    self._logla(f"⚠ {dugum.upper()} MANUEL MODA GEÇTİ — tam otonomi "
+                                "ihlali: UÇUŞ GEÇERSİZ sayılır (§6.4)", "sari")
+            if dugum == "iha" and "x" in m and "y" in m:
+                self.iha_iz.append((float(m["x"]), float(m["y"])))
+                del self.iha_iz[:-150]         # son 150 nokta
+                # geofence: İHA-UB 300×300 dışına taşma = alan ihlali (§6.4)
+                if not (0 <= m["x"] <= 300 and 0 <= m["y"] <= 300):
+                    self._logla("⚠ ALAN İHLALİ: İHA-UB (300×300 m) dışına çıkıldı "
+                                "— uçuş başarısız sayılır (§6.4)", "sari")
             self.sayac["HEARTBEAT"] += 1
 
     def onayla(self):
+        """Şartname §2.2.3 İKİ AŞAMALI hakem onayı: (1) güzergâh tespitinin
+        doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
         if not self.rota or self.onaylandi:
+            return
+        if not self.tespit_onayli:
+            self.tespit_onayli = True
+            self._logla("HAKEM 1/2: güzergâh TESPİTİ doğrulandı (§2.2.3)", "sari")
+            self.btn_onay.config(text="2) İKA'YA AKTARIMI ONAYLA → ACK", bg=SARI)
+            self.lbl_onay.config(text="Tespit doğrulandı ✓ — İKA'ya aktarımın da "
+                                      "onaylanması gerekiyor (§2.2.3 ikinci onay)",
+                                 fg=SARI)
             return
         if self.rota_adr is not None:
             self.link.send(encode(ack(self.rota["seq"], "yks")), self.rota_adr)
@@ -475,10 +693,13 @@ class YksArayuz:
             self.link.send(encode(ack(self.rota["seq"], "yks")))
         self.onaylandi = True
         self.sayac["ACK_TX"] += 1
-        self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓")
-        self.lbl_onay.config(text=f"Hakem onayı verildi — ACK(seq={self.rota['seq']}) "
-                                  f"İHA'ya iletildi", fg=YESIL)
-        self._logla(f"ACK → iha   ref={self.rota['seq']} (HAKEM ONAYI)", "sari")
+        havada = (" · AKTARIM HAVADA TAMAMLANDI ✓ (§2.2.3)" if not self.t_iha1
+                  else " · ⚠ aktarım İHA inişinden SONRA (§6.4 geçersizlik riski)")
+        self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓✓")
+        self.lbl_onay.config(text=f"Hakem onayı tam — ACK(seq={self.rota['seq']}) "
+                                  f"İHA'ya iletildi{havada}", fg=YESIL)
+        self._logla(f"HAKEM 2/2: İKA'ya aktarım doğrulandı → ACK ref={self.rota['seq']}",
+                    "sari")
         self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
                       "433 MHz TX", "YKS (bu ekran)", "İKA"))
 
@@ -538,6 +759,37 @@ class YksArayuz:
             self._ucus("ALGI ZAMAN AŞIMI — TARAMA YİNELENİYOR", SARI)
             self.kok.after(7000, self._ucus_normal)
 
+    def _rota_analiz(self, m):
+        """Segment bazlı eksen değişimi tablosu: Δx/Δy, uzunluk, yön, dönüş."""
+        wps = m.get("waypoints") or []
+        satirlar = []
+        onceki = (0.0, 0.0)                 # referans noktasına göre yerel
+        onceki_yon = None
+        toplam = yanal = 0.0
+        keskin = 0.0
+        for i, (x, y) in enumerate(wps, 1):
+            dx, dy = x - onceki[0], y - onceki[1]
+            uz = math.hypot(dx, dy)
+            toplam += uz
+            yanal += abs(dx)
+            yon = math.degrees(math.atan2(dx, dy))       # 0° = kuzey (ileri)
+            kimden = "ref " if i == 1 else f"wp{i-1:<2}"
+            satir = (f"{kimden}→wp{i:<2} Δx{dx:+5.1f} Δy{dy:+5.1f} · "
+                     f"{uz:4.1f} m · yön {yon:+6.1f}°")
+            if onceki_yon is not None:
+                donus = (yon - onceki_yon + 180) % 360 - 180
+                keskin = max(keskin, abs(donus))
+                satir += f" · dönüş {donus:+5.1f}°"
+            satirlar.append(satir)
+            onceki, onceki_yon = (x, y), yon
+        if satirlar:
+            satirlar.append(f"TOPLAM {toplam:.1f} m yol · yanal |Δx| {yanal:.1f} m "
+                            f"· en keskin dönüş {keskin:.0f}°")
+        self.rota_metin.config(state="normal")
+        self.rota_metin.delete("1.0", "end")
+        self.rota_metin.insert("end", "\n".join(satirlar) or "rota verisi yok")
+        self.rota_metin.config(state="disabled")
+
     def _ucus(self, metin, renk):
         self.lbl_ucus.config(text=f"İHA UÇUŞ DURUMU: {metin}", fg=renk)
 
@@ -547,15 +799,21 @@ class YksArayuz:
     # ── Canlı algı: v3 modeliyle GERÇEK çıkarım ──────────────────────────────
     # Karar zinciri sahadakiyle AYNI: codes/rpi_inference.py'nin get_masks +
     # analyze_path fonksiyonları kullanılır (kopya algoritma yok).
+    ALGI_KAYNAKLAR = ("gemini", "test", "val")
+    ALGI_MODEL_DOSYA = "navitas_seg_v21_best.pt"
     def _algi_gorseller(self):
         import pathlib
         kok_dizin = pathlib.Path(__file__).resolve().parents[1]
-        if self.algi_kaynak == "gemini":
-            d = kok_dizin / "test_images" / "gemini"
-            return sorted(d.glob("*.png"), key=lambda p: int(p.stem)) \
-                if d.is_dir() else []
-        d = kok_dizin / "dataset" / "rescuenet_yolo" / "images" / "val"
-        return sorted(d.glob("*.jpg")) if d.is_dir() else []
+        dizinler = {
+            "gemini": kok_dizin / "test_images" / "gemini",
+            "test": kok_dizin / "test_images" / "test" / "images",
+            "val": kok_dizin / "dataset" / "rescuenet_yolo" / "images" / "val",
+        }
+        d = dizinler[self.algi_kaynak]
+        if not d.is_dir():
+            return []
+        return sorted(p for p in d.iterdir()
+                      if p.suffix.lower() in (".png", ".jpg", ".jpeg"))
 
     def gorunum(self, ad):
         self.gorunum_adi = ad
@@ -587,11 +845,13 @@ class YksArayuz:
     def algi_kaynak_degistir(self):
         if self.gorunum_adi != "algi":
             return
-        self.algi_kaynak = "val" if self.algi_kaynak == "gemini" else "gemini"
+        sira = self.ALGI_KAYNAKLAR
+        self.algi_kaynak = sira[(sira.index(self.algi_kaynak) + 1) % len(sira)]
         self.algi_idx = 0
-        self._logla(f"ALGI kaynağı: {self.algi_kaynak} "
-                    f"({'arena tipi sentetik' if self.algi_kaynak == 'gemini' else 'RescueNet doğrulama seti'})",
-                    "mavi")
+        aciklama = {"gemini": "arena tipi görseller",
+                    "test": "takım test seti (test_images/test)",
+                    "val": "RescueNet doğrulama seti"}[self.algi_kaynak]
+        self._logla(f"ALGI kaynağı: {self.algi_kaynak} ({aciklama})", "mavi")
         self._algi_iste()
 
     def _algi_iste(self):
@@ -606,13 +866,13 @@ class YksArayuz:
         yol = gorseller[self.algi_idx % len(gorseller)]
         self.algi_mesgul = True
         self.lbl_algi_bilgi.config(text=f"{yol.name} işleniyor… "
-                                        + ("(v3 modeli yükleniyor — ilk sefer "
+                                        + ("( modeli yükleniyor — ilk sefer "
                                            "birkaç sn)" if self.algi_model is None
                                            else ""))
         threading.Thread(target=self._algi_kos, args=(yol,), daemon=True).start()
 
     def _algi_kos(self, yol):
-        """Arka plan iş parçacığı: v3 ile gerçek çıkarım + saha karar zinciri."""
+        """Arka plan iş parçacığı: v ile gerçek çıkarım + saha karar zinciri."""
         try:
             import pathlib
             import sys as _sys
@@ -620,52 +880,123 @@ class YksArayuz:
             import numpy as np
             kok_dizin = pathlib.Path(__file__).resolve().parents[1]
             _sys.path.insert(0, str(kok_dizin / "codes"))
-            from rpi_inference import analyze_path, draw_masks, get_masks
+            from rpi_inference import analyze_path, get_masks
 
             if self.algi_model is None:
                 from ultralytics import YOLO
-                model_yolu = kok_dizin / "models" / "navitas_seg_v3_best.pt"
+                model_yolu = kok_dizin / "models" / self.ALGI_MODEL_DOSYA
                 self.algi_model = YOLO(str(model_yolu))
                 self.algi_kuyruk.put(("log",
-                    f"v3 modeli yüklendi: {model_yolu.name} (SHA 8e8d46a6…)"))
+                    f"v17 modeli yüklendi: {model_yolu.name} (SHA 8e8d46a6…)"))
 
             img = cv2.imread(str(yol))
             h, w = img.shape[:2]
             t0 = time.perf_counter()
-            # saha/sim zinciriyle aynı strateji: TEK düşük eşikli çıkarım,
-            # önce 0,30 ile süz; traversable boşsa 0,05'e düş (iha_perceive
-            # CONF_FLOOR fallback'inin buradaki karşılığı)
-            sonuc = self.algi_model.predict(img, imgsz=512, conf=0.05,
-                                            verbose=False)
-            ms = (time.perf_counter() - t0) * 1000
-            esik = 0.30
-            maskeler = get_masks(sonuc, h, w, min_conf=esik)
-            if maskeler[0].sum() == 0:
-                esik = 0.05
+            trav = np.zeros((h, w), np.uint8)
+            blok = np.zeros((h, w), np.uint8)
+            if max(h, w) > 1400:
+                # KAROLU çıkarım: dev görüntü tek atışta 512'ye sıkışınca doku
+                # kaybolup moloz yola karışıyordu; model eğitildiği 512'lik
+                # karo ölçeğinde koşturulur (SAHI benzeri), maskeler dikilir.
+                KARO, BIND = 768, 128
+                karo_n = 0
+                for ky in range(0, max(1, h - BIND), KARO - BIND):
+                    for kx in range(0, max(1, w - BIND), KARO - BIND):
+                        y2, x2 = min(ky + KARO, h), min(kx + KARO, w)
+                        r = self.algi_model.predict(img[ky:y2, kx:x2],
+                                                    imgsz=512, conf=0.10,
+                                                    verbose=False)
+                        mt = get_masks(r, y2 - ky, x2 - kx, min_conf=0.25)
+                        mb = get_masks(r, y2 - ky, x2 - kx, min_conf=0.10)
+                        trav[ky:y2, kx:x2] = np.maximum(trav[ky:y2, kx:x2], mt[0])
+                        blok[ky:y2, kx:x2] = np.maximum(blok[ky:y2, kx:x2], mb[1])
+                        karo_n += 1
+                cikarim = f"karolu ({karo_n}×{KARO}px)"
+                esik = 0.25
+            else:
+                # tek atış + düşük-eşik fallback (iha_perceive CONF_FLOOR eşdeğeri)
+                sonuc = self.algi_model.predict(img, imgsz=512, conf=0.05,
+                                                verbose=False)
+                esik = 0.30
                 maskeler = get_masks(sonuc, h, w, min_conf=esik)
-            yol_no, guven, wps = analyze_path(maskeler[0])
+                if maskeler[0].sum() == 0:
+                    esik = 0.05
+                    maskeler = get_masks(sonuc, h, w, min_conf=esik)
+                trav = maskeler[0]
+                blok = get_masks(sonuc, h, w, min_conf=0.10)[1]
+                cikarim = "tek atış"
+            ms = (time.perf_counter() - t0) * 1000
+            # blocked-aware karar: model tespitli moloz koridordan OYULUR
+            trav[blok > 0] = 0
+            # karar + kararın kullandığı TEMİZ koridor; min_area_ratio:
+            # gürültüden yol uydurma koruması (failsafe)
+            yol_no, guven, wps, koridor = analyze_path(
+                trav, return_clean=True, min_area_ratio=0.02)
 
-            gorsel = draw_masks(img, maskeler)
-            # şerit sınırları + waypoint zinciri (saha karar zinciri görünür olsun)
+            # Görselleştirme İLKESİ: yalnızca kararın KULLANDIĞI temiz koridor
+            # basılır (ham maskedeki gürültü blobları çizilmez — onlar kararı
+            # zaten etkilemiyor). Koridor ORİJİNAL renkte kalır; geri kalan her
+            # yer KIRMIZI (geçilemez), tespitli moloz KOYU kırmızı; sınır +
+            # rota SARI. Yeşil kullanılmaz.
+            gorsel = img.copy()
+            kirmizi = np.zeros_like(img)
+            kirmizi[:] = (40, 40, 210)                      # BGR kırmızı
+            if yol_no is not None and wps:
+                acik_ton = cv2.addWeighted(img, 0.45, kirmizi, 0.55, 0)
+                koyu_ton = cv2.addWeighted(img, 0.20, kirmizi, 0.80, 0)
+                # SÜRÜŞ KORİDORU: rota merkez hattı ± ölçülen yol yarıçapı
+                # (distance transform medyanı), geçilebilir alanla kesişik —
+                # İKA'nın gerçekten süreceği bant. Bilgi satırında etiketli.
+                dist = cv2.distanceTransform(koridor, cv2.DIST_L2, 5)
+                yarich = [dist[py, px] for (px, py) in wps if dist[py, px] > 0]
+                yr = int(np.median(yarich)) if yarich else max(8, w // 20)
+                band = np.zeros((h, w), np.uint8)
+                cv2.polylines(band, [np.array(wps, np.int32)], False, 1,
+                              thickness=max(4, 2 * yr))
+                band &= koridor
+                gorsel[band == 0] = acik_ton[band == 0]     # bant dışı → kırmızı
+                gorsel[blok > 0] = koyu_ton[blok > 0]       # moloz → koyu kırmızı
+                # bant sınırı: yumuşatılmış, sadeleştirilmiş SARI kontur
+                yumusak = cv2.GaussianBlur(band * 255, (0, 0),
+                                           max(2.0, w / 500))
+                yumusak = (yumusak > 127).astype(np.uint8)
+                konturlar, _ = cv2.findContours(yumusak, cv2.RETR_EXTERNAL,
+                                                cv2.CHAIN_APPROX_SIMPLE)
+                for k in konturlar:
+                    k = cv2.approxPolyDP(k, 0.002 * cv2.arcLength(k, True), True)
+                    cv2.drawContours(gorsel, [k], -1, (0, 220, 255),
+                                     max(3, w // 250))
+            else:
+                # TESPİT YOK: kırmızı sele boğma — dürüst uyarı bandı bas
+                bant_h = max(60, h // 10)
+                gorsel[:bant_h] = cv2.addWeighted(
+                    img[:bant_h], 0.25, kirmizi[:bant_h], 0.75, 0)
+                cv2.putText(gorsel, "ACIK YOL TESPIT EDILEMEDI (guvenli: rota "
+                            "gonderilmez)", (16, int(bant_h * 0.65)),
+                            cv2.FONT_HERSHEY_SIMPLEX, max(0.6, w / 1800),
+                            (255, 255, 255), max(1, w // 900))
+            # şerit sınırları + sarı waypoint zinciri
             for x in (w // 3, 2 * w // 3):
-                cv2.line(gorsel, (x, 0), (x, h), (90, 90, 90), 1)
+                cv2.line(gorsel, (x, 0), (x, h), (110, 110, 110), 1)
             if wps:
                 pts = np.array(wps, dtype=np.int32)
                 cv2.polylines(gorsel, [pts], False, (0, 220, 255), max(2, w // 300))
                 for (px, py) in wps:
                     cv2.circle(gorsel, (px, py), max(3, w // 150), (0, 220, 255), -1)
 
-            trav_oran = 100.0 * maskeler[0].mean()
-            blok_oran = 100.0 * maskeler[1].mean()
+            trav_oran = 100.0 * trav.mean()
+            blok_oran = 100.0 * blok.mean()
             karar = (f"{yol_no}·{ROAD_LABEL[yol_no].upper()}" if yol_no
                      else "TESPİT YOK")
             bilgi = (f"{self.algi_kaynak}/{yol.name} → karar: {karar} · "
-                     f"güven {guven:.2f} · çıkarım {ms:.0f} ms · eşik {esik:.2f}"
-                     + (" (düşük-eşik fallback)" if esik < 0.30 else "")
+                     f"güven {guven:.2f} · {ms:.0f} ms · çıkarım: {cikarim} · "
+                     f"eşik {esik:.2f}"
+                     + (" (düşük-eşik fallback)" if esik <= 0.05 else "")
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
-                     f" · model: navitas_seg_v3 (mAP50 0,627)")
+                     f" · gösterim: sürüş koridoru · model: navitas_seg_v21_best.pt "
+                     f"(mAP50 0.6751)")
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
-                                  f"ALGI(v3) {yol.name} → {karar} "
+                                  f"ALGI(v17) {yol.name} → {karar} "
                                   f"güven={guven:.2f} · {ms:.0f} ms"))
         except Exception as e:
             self.algi_kuyruk.put(("log", f"ALGI HATASI: {e}"))
@@ -678,7 +1009,8 @@ class YksArayuz:
         h, w = gorsel_bgr.shape[:2]
         hedef_w, hedef_h = S(660), S(430)
         olcek = min(hedef_w / w, hedef_h / h)
-        yeni = cv2.resize(gorsel_bgr, (int(w * olcek), int(h * olcek)))
+        yeni = cv2.resize(gorsel_bgr, (int(w * olcek), int(h * olcek)),
+                          interpolation=cv2.INTER_AREA)   # keskin küçültme
         rgb = cv2.cvtColor(yeni, cv2.COLOR_BGR2RGB)
         self._algi_foto = ImageTk.PhotoImage(Image.fromarray(rgb))
         self.lbl_algi_img.config(image=self._algi_foto, text="")
@@ -707,20 +1039,40 @@ class YksArayuz:
         if not self.demo or not self.rota:
             return
         self.onaylandi = False
+        self.tespit_onayli = False
         self.btn_onay.config(state="normal", bg=SARI,
-                             text="TESPİTİ ONAYLA → ACK GÖNDER")
+                             text="1) TESPİTİ DOĞRULA (§2.2.3)")
         self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
                                   "gönderimde (ACK yok)", fg=SARI)
         self._logla("(demo) hakem onayı sıfırlandı — akış baştan izlenebilir", "mavi")
 
     # ── Görev kontrol & kronometre (şartname süreleri + §2.2.5 kilidi) ───────
+    def _dugum_adresini_ogren(self, dugum, adr):
+        """Dinamik adresi öğren; CLI ile pinlenen hedefi asla ezme."""
+        if adr is not None and dugum not in self.sabit_adr:
+            self.son_adr[dugum] = adr
+
     def _cmd_gonder(self, cmd, hedef_dugum):
         adr = self.son_adr.get(hedef_dugum)
-        if adr is not None and adr[1]:
-            self.link.send(encode(command(cmd, hedef_dugum)), adr)
-        elif isinstance(self.link, SerialLink):
-            self.link.send(encode(command(cmd, hedef_dugum)))
+        komut_mesaji = command(cmd, hedef_dugum)
+        mesaj = encode(komut_mesaji)
+        try:
+            if isinstance(self.link, SerialLink):
+                self.link.send(mesaj)
+            elif adr is not None and adr[1]:
+                self.link.send(mesaj, adr)
+            else:
+                self._logla(
+                    f"CMD GÖNDERİLEMEDİ → {hedef_dugum}: {cmd} — UDP adresi yok",
+                    "sari",
+                )
+                return False
+        except (OSError, TypeError, ValueError) as exc:
+            self._logla(
+                f"CMD GÖNDERİLEMEDİ → {hedef_dugum}: {cmd} — {exc}", "sari")
+            return False
         self._logla(f"CMD → {hedef_dugum}: {cmd}", "mavi")
+        return komut_mesaji["seq"]
 
     def arm_degistir(self):
         self.arm_acik = not self.arm_acik
@@ -761,9 +1113,10 @@ class YksArayuz:
     def ika_baslat(self):
         # YAZILIM KİLİDİ — şartname §2.2.5: "İHA yere temas etmeden İKA
         # hareket edemez"; §6.2: intikal ancak onaylı veri sonrası.
-        if not self.t_iha1:
-            self._logla("KİLİT ✋ İHA inişi tamamlanmadan İKA hareket EDEMEZ "
-                        "(şartname §2.2.5) — komut REDDEDİLDİ", "sari")
+        if not self.t_iha1 or self.iha_landed_seq is None:
+            self._logla("KİLİT ✋ Üretim IHA_LANDED kanıtı alınmadan İKA "
+                        "hareket EDEMEZ (şartname §2.2.5) — komut REDDEDİLDİ",
+                        "sari")
             return
         if not self.onaylandi:
             self._logla("KİLİT ✋ Hakem onayı (ACK) olmadan İKA intikali "
@@ -771,8 +1124,9 @@ class YksArayuz:
             return
         if self.t_ika0:
             return
+        if not self._cmd_gonder("IKA_GO", "ika"):
+            return
         self.t_ika0 = time.time()
-        self._cmd_gonder("IKA_GO", "ika")
         self._logla("GÖREV · İKA İNTİKALİ BAŞLADI — kronometre limit 10:00 "
                     "(kilit koşulları sağlandı ✓)", "mavi")
         self.btn_ika_go.config(state="disabled", bg="#232e3a")
@@ -789,6 +1143,59 @@ class YksArayuz:
                        else "SÜRE AŞIMI — İKA görevi BAŞARISIZ"),
                     "yesil" if ok else "sari")
         self.btn_hb.config(state="disabled", bg=YESIL if ok else KIRMIZI)
+
+    # ── Hazırlık akışı (§6.2) + ceza + manuel paraşüt (§2.2.4) ───────────────
+    def _ceza_ekle(self, puan, sebep):
+        self.ceza_toplam += puan
+        self.lbl_ceza.config(text=f"CEZA Σ −{self.ceza_toplam}", fg=KIRMIZI)
+        self._logla(f"CEZA −{puan}: {sebep} (toplam −{self.ceza_toplam})", "sari")
+
+    def alan_girisi(self):
+        if self.t_haz0:
+            return
+        self.t_haz0 = time.time()
+        self._logla("HAZIRLIK · Alan girişi — 15:00 hazırlık süresi başladı (§6.2)",
+                    "mavi")
+        self.btn_alan.config(state="disabled", bg="#232e3a")
+        self.btn_hazir.config(state="normal", bg=SARI)
+
+    def takim_hazir(self):
+        if not self.t_haz0 or self.t_haz1:
+            return
+        self.t_haz1 = time.time()
+        s = self.t_haz1 - self.t_haz0
+        puan = max(0, int((900 - s) / 30))
+        self._logla(f"HAZIRLIK · 'TAKIM HAZIR' — süre {s/60:.1f} dk (hands-off); "
+                    f"tasarruf puanı ≈ +{puan} (§7 t_hazırlık)", "yesil")
+        self.btn_hazir.config(state="disabled", bg="#232e3a")
+        self.btn_mudahale.config(state="normal", bg=SARI)
+
+    def mudahale(self):
+        # §6.2: hands-off sonrası müdahale = −100 ceza + süre hazırlığa eklenir
+        if not self.t_haz1:
+            return
+        self.t_haz0 += time.time() - self.t_haz1   # kronometre kaldığı yerden sürer
+        self.t_haz1 = None
+        self._ceza_ekle(100, "hands-off sonrası sisteme müdahale (§6.2)")
+        self._logla("HAZIRLIK · kronometre DEVAM EDİYOR — müdahale süresi "
+                    "hazırlığa ekleniyor; bitince tekrar TAKIM HAZIR verin", "sari")
+        self.btn_hazir.config(state="normal", bg=SARI)
+        self.btn_mudahale.config(state="disabled", bg="#232e3a")
+
+    def parasut(self):
+        # İki adımlı emniyet: yanlışlıkla tek tık paraşüt açamaz
+        simdi = time.time()
+        if simdi - self.parasut_teyit > 3.0:
+            self.parasut_teyit = simdi
+            self.btn_parasut.config(bg=KIRMIZI, text="EMİN MİSİN? tekrar bas (3 sn)")
+            self.kok.after(3200, lambda: self.btn_parasut.config(
+                bg="#232e3a", text="PARAŞÜT (manuel −50)"))
+            return
+        self._cmd_gonder("PARACHUTE", "iha")
+        self._ceza_ekle(50, "manuel paraşüt tetikleme (§2.2.4)")
+        self._ucus("PARAŞÜT — MANUEL TETİKLENDİ (−50)", KIRMIZI)
+        self.btn_parasut.config(state="disabled", bg=KIRMIZI,
+                                text="PARAŞÜT AÇILDI (manuel)")
 
     def _kron_metin(self, t0, t1, limit):
         if not t0:
@@ -838,16 +1245,25 @@ class YksArayuz:
                 if "uydu" in tel:
                     parcalar.append(f"{tel['uydu']} uydu")
                 ek = (" · " + " · ".join(parcalar)) if parcalar else ""
+                mod = self.mod.get(ad)
+                if mod:
+                    ek += f" · mod {mod}" + ("" if mod == "AUTO" else " ⚠GEÇERSİZ")
                 metin.config(text=f"{ad.upper()} — hb {yas:.1f} sn{ek}"
                                   + ("" if canli else "  (BAĞLANTI KAYBI!)"))
         self.lbl_sayac.config(
             text=f"OPEN_ROUTE {self.sayac['OPEN_ROUTE']} · "
+                 f"NO_ROUTE {self.sayac['NO_ROUTE']} · "
+                 f"LANDED {self.sayac['IHA_LANDED']} · "
                  f"HB {self.sayac['HEARTBEAT']} · "
                  f"ACK {self.sayac['ACK_TX']}")
         m1, r1 = self._kron_metin(self.t_iha0, self.t_iha1, self.IHA_LIMIT)
         self.lbl_kron_iha.config(text=f"İHA ⏱ {m1} / 15:00", fg=r1)
         m2, r2 = self._kron_metin(self.t_ika0, self.t_ika1, self.IKA_LIMIT)
         self.lbl_kron_ika.config(text=f"İKA ⏱ {m2} / 10:00", fg=r2)
+        m3, r3 = self._kron_metin(self.t_haz0, self.t_haz1, 900)
+        self.lbl_kron_haz.config(text=f"HAZIRLIK ⏱ {m3} / 15:00", fg=r3)
+        if self.gorunum_adi == "harita":
+            self._inset_ciz()
 
     def _logla(self, satir, renk="soluk"):
         self.gunluk.config(state="normal")
@@ -881,7 +1297,10 @@ def demo_besle(yks_port, durum):
                 hb.update(alt=round(30 + 1.8 * math.sin(sn / 5), 1),
                           hiz=round(16.5 + 1.2 * math.sin(sn / 3.7), 1),
                           bat=round(12.6 - 0.0012 * sn, 2),
-                          uydu=14 + int(sn / 7) % 3)       # (alıcılar yok sayar)
+                          uydu=14 + int(sn / 7) % 3,
+                          mod="AUTO",                      # tam otonomi (§6.2)
+                          x=round(150 + 85 * math.cos(sn / 11), 1),
+                          y=round(150 + 62 * math.sin(sn / 11), 1))
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:
                     link.send(encode(rota), hedef)         # ACK yok → tekrar
@@ -894,14 +1313,18 @@ def demo_besle(yks_port, durum):
 
     def ika():
         link = UDPLink()
+        receiver = IkaReceiver(link)
         t0 = time.time()
         while time.time() - t0 < 600:
             if durum["ika_hb"]:                            # İKA-kaybı senaryosu keser
                 sn = time.time() - t0
                 hb = heartbeat("ika")
                 hb.update(hiz=0.0, bat=round(11.9 - 0.0008 * sn, 2),
-                          uydu=12 + int(sn / 9) % 3)
+                          uydu=12 + int(sn / 9) % 3, mod="AUTO")
                 link.send(encode(hb), hedef)
+            # Demo da gerçek alıcı yolunu kullanır; IKA_GO latch + ACK yalnız
+            # ekranda görünmekle kalmaz, aynı UDP soketinde gerçekten tüketilir.
+            receiver.poll()
             time.sleep(1.0)
 
     threading.Thread(target=iha, daemon=True).start()
@@ -911,6 +1334,8 @@ def demo_besle(yks_port, durum):
 def main():
     ap = argparse.ArgumentParser(description="Navitas YKS hakem ekranı")
     ap.add_argument("--bind", default="0.0.0.0:5005")
+    ap.add_argument("--ika", type=_udp_adres,
+                    help="İKA komut hedefi host:port (UDP için zorunlu)")
     ap.add_argument("--serial", help="SiK telsiz seri portu (örn. COM5)")
     ap.add_argument("--baud", type=int, default=57600)
     ap.add_argument("--demo", action="store_true",
@@ -920,6 +1345,13 @@ def main():
     ap.add_argument("--kaydet-yolu", default="yks_ekran.png")
     ap.add_argument("--kapat", action="store_true", help="otokaydet sonrası çık")
     args = ap.parse_args()
+
+    if args.serial and args.demo:
+        ap.error("--demo yalnız UDP kipinde kullanılabilir")
+    if args.serial and args.ika:
+        ap.error("--serial ile --ika birlikte kullanılamaz")
+    if not args.serial and not args.demo and not args.ika:
+        ap.error("UDP kipinde --ika HOST:PORT zorunlu")
 
     global OLCEK
     try:  # yüksek DPI: netlik + piksel ölçülerini ekrana göre büyüt (Windows)
@@ -931,13 +1363,16 @@ def main():
 
     if args.serial:
         link = SerialLink(args.serial, args.baud)
+        ika_peer = None
     else:
         h, p = args.bind.split(":")
         link = UDPLink(bind=(h, int(p)))
+        ika_peer = args.ika
 
     kok = tk.Tk()
     # otomatik onay YOK: hakem onay akışı elle incelenebilsin (buton/R kısayolu)
-    app = YksArayuz(kok, link, otomatik_onay=False, demo=args.demo)
+    app = YksArayuz(
+        kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer)
     app._logla(f"YKS hazır — dinleniyor: "
                f"{args.serial or args.bind}", "mavi")
 

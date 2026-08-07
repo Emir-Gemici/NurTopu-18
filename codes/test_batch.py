@@ -18,7 +18,7 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-from rpi_inference import _maskeleri_icerige_kirp, _preprocess
+from rpi_inference import _maskeleri_icerige_kirp, _preprocess, get_masks
 
 # ── Yollar ──────────────────────────────────────────────────────────────────
 _root = Path(__file__).parent.parent
@@ -83,19 +83,8 @@ def collect_images(source_name, source_path):
 
 
 # ── Inference ─────────────────────────────────────────────────────────────────
-def get_masks(results, h, w):
-    masks = {0: np.zeros((h, w), np.uint8), 1: np.zeros((h, w), np.uint8)}
-    r = results[0]
-    if r.masks is None:
-        return masks
-    for i, cls in enumerate(r.boxes.cls):
-        cid = int(cls)
-        if cid not in masks:
-            continue
-        m = cv2.resize(r.masks.data[i].cpu().numpy(), (w, h))
-        masks[cid] = np.maximum(masks[cid], (m > 0.5).astype(np.uint8))
-    return masks
-
+# get_masks artik rpi_inference'dan geliyor — ucuncu kopya silindi (identik davranis,
+# sinif_idler=(0,1) varsayilani ile).
 
 def draw_masks(img, masks):
     vis = img.copy()

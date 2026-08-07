@@ -12,15 +12,20 @@ from protocol import encode, ack, FrameReader as FR
 
 
 def _make_acker(link, node):
-    """Basit alıcı: OPEN_ROUTE'a ACK döner, son mesajı saklar (YKS taklidi)."""
+    """Basit alıcı: rota/rota-yok bildirimini ACK'ler (YKS taklidi)."""
     reader = FR()
-    box = {"latest": None}
+    box = {"latest": None, "no_route": None}
 
     def poll():
         d, addr = link.recv()
         for m in reader.feed(d) if d else []:
             if m.get("type") == "OPEN_ROUTE":
                 box["latest"] = m
+            elif m.get("type") == "NO_ROUTE":
+                box["no_route"] = m
+            else:
+                continue
+            if m.get("seq") is not None:
                 link.send(encode(ack(m["seq"], node)), addr)
     return poll, box
 
@@ -41,7 +46,8 @@ def main():
     def yks_loop():
         while not stop.is_set():
             yks_poll()
-    threading.Thread(target=yks_loop, daemon=True).start()
+    yks_thread = threading.Thread(target=yks_loop, daemon=True)
+    yks_thread.start()
 
     # İHA gönderici
     iha_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
@@ -51,7 +57,9 @@ def main():
     })
 
     ref = [-20.0, -24.5]
-    wps = [[0.0, 0.0], [1.2, 8.4], [-2.6, 17.1], [0.4, 49.0]]
+    # Costmap transport contract: first point is the source anchor and every
+    # segment is at most 2.1 m, so the rover cannot skip a distant corner.
+    wps = [[0.0, 0.0], [0.3, 1.8], [-0.4, 3.5], [0.4, 5.0]]
     print("İHA → açık yol gönderiliyor (road=2 / orta, conf=0.91, "
           f"ref={ref}, {len(wps)} yerel wp)...")
     seq, acked = sender.send_open_route(road=2, conf=0.91,
@@ -81,8 +89,7 @@ def main():
     ika.on_link_lost = lambda: olaylar.append("KAYIP")
     ika.on_link_back = lambda: olaylar.append("GERİ")
 
-    from protocol import heartbeat
-    iha_link.send(encode(heartbeat("iha")), ("127.0.0.1", 5006))
+    sender.send_heartbeat()
     time.sleep(0.2)
     assert ika.link_ok, "HEARTBEAT geldi ama link_ok değil"
     assert olaylar == [], f"heartbeat akarken sahte olay: {olaylar}"
@@ -93,14 +100,31 @@ def main():
     assert ika.latest is not None, "rota önbelleği kayıpta silinmemeli"
     print("HEARTBEAT kesilince: link_ok=False → GÜVENLİ DURMA tetiklendi, rota önbellekte")
 
-    iha_link.send(encode(heartbeat("iha")), ("127.0.0.1", 5006))
+    sender.send_heartbeat()
     time.sleep(0.2)
     assert ika.link_ok and olaylar == ["KAYIP", "GERİ"], f"toparlanma olmadı: {olaylar}"
     print("HEARTBEAT dönünce: link_ok=True → kaldığı waypoint'ten devam")
 
+    # ── NO_ROUTE: sessizlik değil, ACK'li güvenli ret kararı ────────────────
+    print("\n=== SONUÇ (ROTA YOK bildirimi) ===")
+    onceki_rota = ika.latest
+    no_seq, no_acked = sender.send_no_route(
+        "KAPALI_DAR", "araç/moloz sonrası gerekli açıklık yok")
+    time.sleep(0.2)
+    assert no_acked == {"ika", "yks"}, f"NO_ROUTE eksik ACK: {no_acked}"
+    assert ika.latest is onceki_rota, "NO_ROUTE son OPEN_ROUTE önbelleğini ezmemeli"
+    assert ika.last_no_route and ika.last_no_route["seq"] == no_seq, "İKA NO_ROUTE almadı"
+    assert yks_box["no_route"] and yks_box["no_route"]["sebep"] == "KAPALI_DAR", \
+        "YKS NO_ROUTE almadı"
+    print(f"NO_ROUTE ACK: {sorted(no_acked)} · İKA rota önbelleği korundu · "
+          f"sebep={ika.last_no_route['sebep']}")
+
     stop.set()
     ika.stop()
-    print("\n✓ TEST GEÇTİ — aktarım (ref+wp) + ACK + bağlantı-kaybı failsafe çalışıyor")
+    # Let the YKS polling loop leave its socket timeout before closing the link.
+    # Closing first can race with recv() and emit a spurious OSError traceback.
+    yks_thread.join(timeout=1)
+    print("\n✓ TEST GEÇTİ — aktarım + NO_ROUTE ACK + bağlantı-kaybı failsafe çalışıyor")
 
     for l in (ika_link, yks_link, iha_link):
         l.close()
