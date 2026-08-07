@@ -50,6 +50,93 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 
 ---
 
+## FAZ 5 — SAHA KURU KOŞUSU · **EN YÜKSEK ÖNCELİK**
+
+> **Kanıt:** `REVIEW_LOG.md` D-22 · **Karar 7 Ağustos 2026** (13 ajanlı tam depo taraması).
+>
+> Depodaki 58 testin tamamı ya simülasyon yolunu ya kütüphane sözleşmesini ölçüyor.
+> **Saha kod yolunu uçtan uca sınayan tek bir test yok.** Bu yüzden dört ayrı kopukluk
+> aynı anda görünmüyor; her biri tek başına `P_görev = 0` demek:
+>
+> 1. `jetson_paket/kod/` içinde hiçbir haberleşme kodu yok → İHA rota gönderemez
+> 2. HB koordinatının tek kaynağı Gazebo `meta.txt` → sahada her karede `HEDEF_YOK`
+> 3. `IHA_LANDED` yalnız `navitas_sim.py:95`'te üretiliyor → İKA sürüş izni hiç açılmaz
+> 4. `ika_nav.send_vel` yalnız `gz` subprocess'i → kapı açılsa bile tekerlek dönmez
+>
+> ⛔ **Sıra zorunludur: T21 → T22 → T23.** Kopuklukları onarma işi (FAZ 6) T23 geçmeden
+> başlamaz. Gerekçe: onarım önce yapılırsa **neyin düzeldiği ölçülemez**; bu depoda
+> aynı hata iki kez yaşandı (D-15 sahte geçiş, D-03 → D-17 şekil değiştiren kusur).
+>
+> ⚠ Dördü de **sessiz** kusurlardır — hiçbiri istisna fırlatmaz, log basmaz.
+> `navitas_sim.py` dördünü de maskeler: `gz` vardır, `meta.txt` vardır, `IHA_LANDED`'i
+> sim'in kendisi üretir, haberleşme kodu `comms/` altındadır. **Simülasyon çıktısı bu
+> fazda kanıt sayılmaz.**
+
+- [ ] **T21 — Saha zinciri halka sözleşmesi** · `CONTRACTS.md` yeni § · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-22
+  - **Neden önce bu:** T22 bir koşucu yazacak. Hangi halkaların hangi sırayla ve hangi
+    ölçütle sınanacağı yazılı değilse koşucu keyfi olur ve "geçti" dediği şey
+    tanımsız kalır. Bu görev **kod değil sözleşme** üretir.
+  - **Yap:** `CONTRACTS.md`'ye "§ Saha zinciri" bölümü ekle. Zinciri halka halka tanımla —
+    asgari sekiz halka: **kamera kaynağı → model yükleme → çıkarım → maske çıkarımı →
+    ölçek (`mpp`) → rota üretimi → aktarım (OPEN_ROUTE/NO_ROUTE + ACK) → İKA sürüş izni
+    (rota ∧ IKA_GO ∧ IHA_LANDED) → motor komutu.**
+  - Her halka için **dört alan** zorunlu: `girdi` · `çıktı` · `sahip dosya:satır` ·
+    `başarı ölçütü`. Sahip dosyası **saha yolundan** gösterilecek; `simulation/` altındaki
+    bir dosya sahip olarak yazılamaz — o halka **SAHİPSİZ** işaretlenir.
+  - Sabit sayı yazma (madde 16): port, eşik ve sınıf id'leri mevcut sözleşme
+    bölümlerine atıfla ver.
+  - **Kapı:** Her halkanın satırında ya gerçek bir `dosya:satır` ya da `SAHİPSİZ` var;
+    ikisi de olmayan halka bırakılamaz. D-22'deki dört kopukluğun **dördü de** sözleşmede
+    SAHİPSİZ ya da `simulation/` sahipli olarak görünmeli — görünmüyorsa sözleşme eksiktir.
+
+- [ ] **T22 — `scripts/saha_kuru_kosu.py`: Gazebo'suz, donanımsız uçtan uca koşucu** · **TIKAYICI** · bağımlı: **T21** · kanıt: `REVIEW_LOG.md` D-22
+  - **Yap:** T21'deki halkaları **sırayla** koşan tek bir betik. Kesin yasaklar:
+    **Gazebo YOK, ROS YOK, gerçek donanım YOK, `gz` çağrısı YOK.** İkame:
+    - kamera → `data/raw_frames` altından gerçek bir kare (rglob; kareler video başına alt klasörde)
+    - aktarım → loopback UDP (`127.0.0.1:0`) **ve** ayrıca sahte seri (`SerialLink` ikamesi)
+    - motor → çağrıları kaydeden bir sahte sürücü (sıfır/sıfır olmayan komut sayısı raporlansın)
+  - **Düşen halkada DURMA.** Sonraki halkaları `ATLANDI (önceki halka düştü: <halka>)`
+    diye işaretle ve **tam tabloyu** bas. Amaç dört kopukluğu **aynı koşuda** görmek;
+    ilk düşüşte çıkmak bu görevin bütün değerini yok eder.
+  - Her halka için `GECTI` / `DUSTU` / `SAHIPSIZ` / `ATLANDI` + **sebep** + `dosya:satır`.
+  - `results/saha_kuru_kosu_<tarih>/ozet.json` yaz: halka listesi, durumlar, sebepler,
+    süreler. Elle kopyalanan sayı bırakma (S7'nin aynı hatası).
+  - Çıkış kodu: en az bir halka `DUSTU`/`SAHIPSIZ` ise **1**.
+  - **Kapı:** Bugünkü kodda koş. Beklenen: **exit 1** ve `ozet.json`'da **en az dört**
+    halka `DUSTU`/`SAHIPSIZ`. Gerçek çıktıyı bu göreve yapıştır.
+    ⚠ Koşu "hepsi GECTI" derse görev **başarısızdır** — koşucu ölçmüyor demektir.
+
+- [ ] **T23 — Kuru koşunun pozitif kontrolü ve mutasyon kanıtı** · KRİTİK · bağımlı: **T22** · kanıt: `REVIEW_LOG.md` D-22, D-15
+  - **Neden ayrı görev:** T22 tek başına "boş kapı" riski taşır. D-15'te anayasa madde 4
+    kapısının **hiçbir zaman çalışmadığı** (sahte geçiş) ortaya çıktı; aynı hata burada
+    tekrarlanmamalı. Bu görev, koşucunun gerçekten ölçtüğünün kanıtıdır.
+  - **Yap:** `tests/test_saha_kuru_kosu.py`.
+    1. **Pozitif kontrol:** D-22'deki dört kopukluğun **isim isim** yakalandığını assert et —
+       `jetson_paket haberlesme` · `HB kaynagi` · `IHA_LANDED uretici` · `IKA motor surucusu`.
+       Sadece "4 halka düştü" saymak yetmez; **hangi** halkanın düştüğü assert edilecek.
+    2. **Mutasyon kanıtı:** her kopukluk için, o halkayı sahte biçimde tatmin eden bir
+       enjeksiyonla (monkeypatch / geçici sahte modül) ilgili satırın `DUSTU` → `GECTI`'ye
+       döndüğünü, **diğer üçünün değişmediğini** göster. Bu, halkaların birbirine
+       sızmadığını kanıtlar.
+  - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_saha_kuru_kosu.py -v` → hepsi OK, exit 0.
+  - **Değişmez genel kapı:** `codes/test_rota_sentetik.py` → **15/15**. Düşerse görevi geri al.
+
+---
+
+## FAZ 6 — SAHA KOPUKLUKLARININ ONARIMI
+
+> ⛔ **T23 geçmeden bu fazda görev açılmaz.** Kırılım bilerek yapılmadı: onarımın
+> kapsamı, T22'nin gerçek çıktısına göre belirlenecek. Bugün kopukluk sayısı **dört
+> olarak biliniyor** ama koşucu beşincisini bulabilir — kırılımı şimdi dondurmak
+> ölçümü kırılıma uydurmak olur.
+>
+> Bilinen yön (görev değil, not): saha paketine haberleşme kodu + `pyserial` ·
+> `--hb`/`--kb` CLI girişi (hedef tespiti gelene kadar köprü; kalıcı çözüm D-23) ·
+> `iha_detect_send.py`'ye iniş tespiti + `send_iha_landed()` (T20) · İKA motor
+> sürücüsü soyutlaması (`gz` yalnızca bir arka uç olacak).
+
+---
+
 ## FAZ 1 — DOĞRULANMIŞ KUSURLAR
 
 > Çekişmeli denetimden **11 kusur ayakta kaldı, 0 tanesi çürütüldü.**

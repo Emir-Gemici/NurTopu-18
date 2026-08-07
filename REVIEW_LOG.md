@@ -1287,3 +1287,212 @@ yalnizca arena tipi goruntude sinanabilir ve orada v21 ~ v20.
 TURETILECEK (elle yazilmayacak); `:888` SHA gercekten hesaplanacak veya
 kaldirilacak; `:994-995` bayat mAP kaldirilacak; `_algi_gorseller()` sozluguene
 `data/raw_frames` eklenecek (rglob — kareler video basina alt klasorde).
+
+---
+
+## Kayit 2026-08-07 · Cok ajanli tam depo taramasi (13 ajan, 86 kanitli bulgu)
+
+Kapsam: algi/rota cekirdegi · haberlesme · simulasyon-saha ucurumu · test ve kapi
+altyapisi · belge tutarliligi · veri ve model · sartname uyumu · depo hijyeni.
+Asagida yalniz **yeni** ve **tikayici** kayitlar var; onceden kayitli kusurlar
+(D-17, S1, S2, K-12 vb.) tekrar edilmedi, yalniz dogrulanma durumlari not edildi.
+
+### D-22 · TIKAYICI · Saha kod yolu DORT ayri yerden kopuk ve hicbir test bunu gormuyor
+Bulan: Claude 1 (cok ajanli tarama) · 2026-08-07
+
+Depodaki 58 testin tamami ya simulasyon yolunu ya kutuphane sozlesmesini olcuyor.
+**Saha kod yolunu (Gazebo'suz, ROS'suz, Jetson + SiK telsiz) ucu uca sinayan tek
+bir test yok.** Bu yuzden asagidaki dort kopukluk ayni anda gorunmuyor; her biri
+tek basina `P_gorev = 0` demek.
+
+**Kopukluk 1 — Saha paketinde hicbir haberlesme kodu yok.**
+
+    ls jetson_paket/kod/
+    costmap_path_finder.py  jetson_fps.py  kamera_dogrula.py
+    karisim_arena.yaml  requirements_rpi.txt  rpi_inference.py
+    -> protocol.py / iha_sender.py / link.py / ika_receiver.py YOK
+
+    jetson_paket/kod/requirements_rpi.txt (tam icerik):
+    ultralytics
+    opencv-python
+    numpy
+    -> pyserial YOK
+
+Jetson'a takilan USB paketiyle IHA algi yapar ama sonucu **iletemez**.
+
+**Kopukluk 2 — Hedef (HB) koordinatinin tek kaynagi Gazebo `meta.txt`.**
+
+`simulation/scripts/iha_haritala.py:507` → `hb_xy=_meta_xy(meta, "HB_XY")`.
+`HB_XY`'yi yazan tek yer `simulation/scripts/world_generator.py:590`, yani
+**Gazebo dunya ureteci**. argparse'ta (`:471-488`) `--hb` / `--kb` yok.
+Sahada `meta.txt` olmaz → `hb_xy=None` → `:296-306`:
+
+    "rota_durum": "HEDEF_YOK",
+    "rota_sebep": "HB koordinati bulunamadi; dinamik rota yayinlanmadi."
+
+Yani sahada **her karede NO_ROUTE**. Kok neden asagida (D-23).
+
+**Kopukluk 3 — `IHA_LANDED` saha yolunda uretilmiyor.** D-17 dogrulandi, kapanmadi:
+
+    grep -rn 'send_iha_landed' --include=*.py .
+    comms/iha_sender.py:135   (tanim)
+    comms/iha_sender.py:137   (msg = iha_landed())
+    simulation/scripts/navitas_sim.py:95   (TEK cagri)
+    -> drone/ ve jetson_paket/ altinda SIFIR
+
+**Kopukluk 4 — IKA aktuasyonu Gazebo'ya cakili, gercek motor surucusu yok.**
+
+`simulation/scripts/ika_nav.py:90-100`:
+
+    def send_vel(...):
+        msg = f'position {{ x: {right_spd:.3f} ... }}'
+        subprocess.run(['gz','topic','-p',topic,'-m',msg],
+                       capture_output=True, timeout=1)
+
+Depo genelinde `grep -E 'Serial|GPIO|pwm|arduino|pixhawk|mavlink|CAN'` →
+`ika_nav.py` icinde **sifir eslesme**. Uc kosullu surus kapisi sahada saglansa
+BILE, kapi acildiginda cagrilan `send_vel()` gercek tekerlegi dondurmez: arenada
+`gz` ikilisi yoktur, `subprocess` `FileNotFoundError` verir ve `capture_output=True`
+sayesinde hata **yutulur**. IKA fiziksel olarak hareketsiz kalir, hicbir uyari basilmaz.
+
+**Neden TIKAYICI:** dordu de sahada gorev puanini sifirlar. Daha kotusu, hepsi
+**sessizdir** — hicbiri istisna firlatmaz, log basmaz. Simulasyon kosumu
+(`navitas_sim.py`) dordunu de maskeler cunku `gz` vardir, `meta.txt` vardir,
+`IHA_LANDED`i sim'in kendisi uretir ve haberlesme kodu `comms/` altindadir.
+
+**Yapilmasi gereken:** `TASK_QUEUE.md` FAZ 5 (T21-T23). Once **olcen** bir kuru
+kosu, sonra onarim. Onarim once yapilirsa neyin duzeldigi olculemez.
+
+### D-23 · KRITIK · Uretim modeli 2 sinifli — hedefi (kirmizi H) goren bilesen YOK
+Bulan: Claude 1 (cok ajanli tarama) · 2026-08-07
+
+`config/model_registry.json` competition profili: `"classes": {"0": "traversable",
+"1": "blocked"}`. `dataset/combined_data.yaml:22`, `dataset/karisim_arena.yaml:25`,
+`dataset/karisim_arena_gercek.yaml:51` → hepsi `nc: 2`.
+
+`grep -E 'kirmizi|brand|hedef tespit'` → yalniz yorum satirlari; **tespit kodu yok.**
+`codes/costmap_path_finder.py:233` hedefi geometrik varsayiyor: *"baslangic/hedef=None
+ise varsayilan tohum: alt/ust %8 seridi."*
+
+Sartname §2.2.6 gorevi *"IKA'nin HB sinirlari icerisine girmesi"* ile tanimliyor;
+§6.2 hedef tespitini zorunlu kiliyor. Hedefi goren bilesen olmadigi icin sistem HB
+konumunu **disaridan** almak zorunda — D-22 Kopukluk 2'nin kok nedeni budur.
+
+`CONTRACTS.md §1.1` bunu zaten yaziyor: *"2 = hedef — 2 m x 2 m kirmizi H brandasi"*
+ama *"Uretimdeki 2 sinifli modeller {0, 1} alt kumesini kullanir."* Yani sozlesme
+ucuncu sinifi tanimliyor, uretim onu hic uretmiyor.
+
+### D-24 · KRITIK · `analyze_path` MORPH_CLOSE oyulmus engeli geri kapatiyor — madde 15 ihlali
+Bulan: Claude 1 (cok ajanli tarama) · 2026-08-07 · `codes/rpi_inference.py:139`
+
+    clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
+    # k_close = ELLIPSE(max(7, w//30), max(7, h//30))
+
+Kapama (close) **extensive**tir: `A ⊆ close(A)`. Yani serbest alani BUYUTUR.
+CLAUDE.md madde 15'in dogrudan ihlali. Olculdu (600x600, k_close=20x20, dikey
+koridor + yatay engel oyugu):
+
+| engel kalinligi | geri kapatilan | oran |
+|---:|---:|---:|
+| 3 px | 594 / 600 | **%99,0** |
+| 7 px | 1386 / 1400 | **%99,0** |
+| 12 px | 2311 / 2400 | %96,3 |
+| 19 px | 3332 / 3800 | %87,7 |
+| 25 px | 374 / 5000 | %7,5 |
+
+Cekirdek `w//30` ile olcekleniyor: 4000 px genisliginde bir sahne fotografinda
+cekirdek 133 px olur.
+
+**Neden KRITIK:** `comms/yks_gui.py:929` molozu DOGRU sekilde oyuyor
+(`trav[blok > 0] = 0`), sonra `:940` bu fonksiyonu cagirip donen maskeyi `:955-960`
+**hakemin gordugu surus koridorunu cizmek icin** kullaniyor. Yani juriye gosterilen
+koridor, tespit edilmis molozun ustunden gecebilir.
+
+Karsit kanit — `costmap_path_finder.serbest_alan()` hatti TEMIZ: cikarma en son
+islem (`:213`), sonrasinda yalniz anti-extensive baglantili-bilesen filtresi
+(`:216-221`). `codes/test_monotonluk.py` 5/5 GECTI; olculdu:
+`serbest(K1 ∧ ¬K2) \ serbest(K1) = 0 px`. Sorun tek hatta degil, **iki hattin bir
+arada yasamasinda** (acik kusur S4).
+
+### D-25 · TIKAYICI · `rota_bul()` letterbox dolgusunu bilmiyor: pad'lenmis her kare KAPALI_DAR
+Bulan: Claude 1 (cok ajanli tarama) · 2026-08-07 · `codes/costmap_path_finder.py:232-242`
+
+    grep -n "icerik" codes/costmap_path_finder.py   ->  0 satir
+
+`_tohum_maske` bandi tam maske yuksekliginden hesapliyor: `pay = max(1, int(h * 0.08))`.
+Olculdu (1024x1024 tuval, icerik y=[224,800), 3 koridor, sol kapali):
+
+    varsayilan alt tohum bandi y = 943..1023   (icerik 224..799)
+    alt tohum ile zemin kesisimi = 0
+    ust tohum ile zemin kesisimi = 0
+    mpp=None        durum=KAPALI_DAR  yol_no=None
+    mpp=0.0546875   durum=KAPALI_DAR  yol_no=None
+    KIRPIK mpp=None       durum=ACIK  yol_no=2
+    KIRPIK mpp=0.0546875  durum=ACIK  yol_no=2
+
+Etkilenen cagri yerleri (hepsi `rpi_inference._preprocess` ile pad'leyip varsayilan
+tohumla cagiriyor): `scripts/jetson_fps.py:162`, `jetson_paket/kod/jetson_fps.py:162`,
+`jetson_paket/kod/kamera_dogrula.py:118`, `scripts/v21_degerlendir_ve_paketle.py:71`.
+
+**Neden TIKAYICI:** `kamera_dogrula.py` Jetson saha dogrulamasidir — gercek kamerada
+**asla ACIK goremez**. Ayrica bu, D-20'de v21'in gercek karelerde `67/67 KAPALI_DAR`
+vermesinin muhtemel gercek nedenidir; yani **model degil, tohum bandi** kusurlu
+olabilir. Model secimi bu sayiya dayandirildi (ARCHITECT_PLAN K-8) — yeniden
+olculmeden v21/v20 karsilastirmasi guvenilir sayilmamalidir.
+
+Etkilenmeyenler ve nedeni: `iha_haritala` (mozaik zaten kare + acik KB/HB tohumu
+geciriyor), `codes/test_rota_sentetik.py` (sentetik sahne zaten kare). **Genel kapi
+15/15 bu yuzden kusuru yakalamiyor.**
+
+### D-26 · TIKAYICI · v21'in "gercek kare kapisi" kendi egitim verisinde kosuluyor + val %100 sizintili
+Bulan: Claude 1 (cok ajanli tarama) · 2026-08-07
+
+**(a) Kapi ezberleme testi.** `scripts/v21_degerlendir_ve_paketle.py:46` →
+`GERCEK_KARE = KOK / "data" / "raw_frames"`. Ayni dizin uretecin girdisi:
+`scripts/copy_paste_augmentation.py:375` → `default=KOK / "data" / "raw_frames"`,
+`dataset/copy_paste_gercek/manifest.json` → `"girdi": "data\\raw_frames"`.
+Manifest ozeti: essiz kaynak kare **67**, uretime giren **56**, yazilan ornek **448**.
+Yani v21 kendi egitim verisinin kaynak fotograflarinda sinaniyor.
+
+**(b) Val bolumu foto duzeyinde %100 sizintili.**
+`scripts/copy_paste_augmentation.py:327-331`:
+
+    def bolum_sec(kaynak, cesit, tohum, val_oran):
+        anahtar = f"{kaynak.as_posix()}:{cesit}:{tohum}".encode("utf-8")
+        #                               ^^^^^ kopya indeksi anahtarda
+        return "val" if deger < val_oran else "train"
+
+Bolme anahtarina **kopya indeksi** girdigi icin ayni fotograf hem train hem val'e
+dusuyor. Manifest uzerinden olculdu:
+
+    train essiz kaynak 56 · val essiz kaynak 41 · KESISIM 41 · sadece val 0
+    kopya sayisi/kare: Counter({8: 67})
+
+**Neden TIKAYICI:** `best.pt` **sizintili val ile secildi**. D-20'de raporlanan
+"karisik val mask mAP50 = 0,960" bu sizintiyi iceriyor. D-25 ile birlikte
+degerlendirildiginde: v21'in v20'den ustun oldugu iddiasinin **iki bagimsiz
+dayanagi da sarsilmis** durumda. TASK_QUEUE H10 (bakir ikinci cekim) hala gercek
+anlamda acik — `[HUMAN_COMPLETED]` isaretli ama veri diskte yok.
+
+### D-27 · ONEMLI · REVIEW_LOG kayitlarinin yarisi yetim; tek TIKAYICI yetim kayip goreve isaret ediyor
+Bulan: Claude 1 (cok ajanli tarama) · 2026-08-07
+
+40 kayittan **21'i yetim** (bir goreve baglanmamis): 1 TIKAYICI, 6 KRITIK, kalani
+ONEMLI/KUCUK. Tek TIKAYICI yetim:
+
+`REVIEW_LOG.md:592-593` → *"H-R4 · TIKAYICI · Orkestrator Turkce Windows'ta cikti
+yonlendirilince cokuyor · `auto_orchestrator.py:9,11,12,13,48` · **Gorev T0**"*.
+`ARCHITECT_PLAN.md:382` ayni kusuru T0 satiriyla listeliyor.
+
+    grep -n "T0\b" TASK_QUEUE.md
+    -> yalniz :10 ve :24 (auto_orchestrator gecmesi); T0 baslikli GOREV SATIRI YOK
+
+**Neden onemli:** orkestrator coktugunde hicbir insan gorevi yuzeye cikmaz →
+FAZ 0/0-B sessizce durur. H1/H7 (VTOL drone, 30 Eylul, FDA'nin %15'lik bacagi)
+tam da bu kanaldan izleniyor. Yani izleme mekanizmasinin kendisi kirik ve bu
+kiriklik kuyrukta gorunmuyor.
+
+**Ikinci tutarsizlik:** `TASK_QUEUE.md:27` VTOL drone satiri `[HUMAN_COMPLETED]`
+isaretli; ayni gorevin ikizi `:42` (H7) yine `[HUMAN_COMPLETED]` ama notu
+*"Kullanici 3 Agustos'ta 'yok / belirsiz' bildirdi"* diyor. Durum "tamamlandi",
+kanit "yok". `:36-38` bolum basligi bunu itiraf ediyor ama satirlar duzeltilmemis.
