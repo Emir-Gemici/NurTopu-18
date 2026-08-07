@@ -1,0 +1,46 @@
+{
+  "agirlik": "O:\\navitas\\codes\\runs\\segment\\v21_gercek_doku\\weights\\best.pt",
+  "zaman": "20260805_175327",
+  "kapi_gercek_kare": {
+    "kare": 67,
+    "kullanilabilir": 67,
+    "ort_zemin_yuzde": 81.24,
+    "rota_durumlari": {
+      "KAPALI_DAR": 67
+    },
+    "v17_referans": 10,
+    "gecti": true
+  },
+  "kapi_arena": {
+    "kare": 30,
+    "rota_durumlari": {
+      "BELIRSIZ_TEK_KAPI": 15,
+      "KAPALI_DAR": 12,
+      "BELIRSIZ_COKLU": 2,
+      "ACIK": 1
+    },
+    "maske_yok_yuzde": 0.0,
+    "ort_zemin_yuzde": 13.61,
+    "gecti": true
+  },
+  "kapilar_gecti": true,
+  "parite": {
+    "kare": 30,
+    "ayni_karar": 30,
+    "pt_dagilim": {
+      "BELIRSIZ_TEK_KAPI": 15,
+      "KAPALI_DAR": 12,
+      "BELIRSIZ_COKLU": 2,
+      "ACIK": 1
+    },
+    "onnx_dagilim": {
+      "BELIRSIZ_TEK_KAPI": 15,
+      "KAPALI_DAR": 12,
+      "BELIRSIZ_COKLU": 2,
+      "ACIK": 1
+    },
+    "karar_cesidi": 4,
+    "gecti": true,
+    "not": "karar_cesidi < 2 ise parite BOS-DOGRU olabilir"
+  }
+}

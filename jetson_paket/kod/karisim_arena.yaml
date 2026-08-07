@@ -1,0 +1,28 @@
+# KARIŞIM VERİ SETİ — RescueNet (gerçek) + Sentetik Arena (51_sentetik_arena.py)
+#
+# NEDEN: RescueNet mAP'i doygunlaştı (15 model, kanıtlanmış tek kazanç yolov8s→m)
+# ve arena benzeri sahnelere transfer OLMUYOR (en iyi arena IoU 0,077 — tahminin
+# %92'si yol değil). Arena kurallarla tanımlı bir domain olduğu için sentetik
+# üretilebiliyor; yer gerçeği piksel piksel kusursuz.
+#
+# KARIŞIM ŞART: yalnız sentetikle eğitim gerçek veriyi unutturur (catastrophic
+# forgetting) ve sentetik hilelerine aşırı uyar. Gerçek RescueNet karışımda
+# kalarak hem bakir test mAP'ini korur hem sentetiği regülerize eder.
+#
+# val de karışıktır: best.pt seçimi yalnız RescueNet'e bakarsa arena öğrenimini
+# ödüllendirmez. Bakir RescueNet testi AYRICA 11_capraz_dogrulama.py ile ölçülür.
+
+path: O:\navitas\dataset
+
+train:
+  - O:\navitas\dataset\rescuenet_yolo\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+
+val:
+  - O:\navitas\dataset\rescuenet_yolo\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked
