@@ -69,10 +69,12 @@ codes/video/
 .DS_Store
 Thumbs.db
 
-# Claude Code
+# Claude Code oturum verisi (CLAUDE.md artık proje anayasası — repoda tutulur)
 .claude/
-CLAUDE.md
 simulation/SESSION_CONTEXT.md
+
+# IDE ajan yapılandırmaları
+.continue/
 
 # İlgisiz iç içe git projesi
 rtk/
@@ -120,6 +122,16 @@ dataset/rescuenet_kirpik/
 dataset/rescuenet_ham/
 dataset/rescuenet_yolo_256/
 rescuenet-roads/
+
+# Ağır ikili varlıklar — yerelde tutulur, betiklerle yeniden üretilir.
+# Kaynak kod ve belgeler repoda; ağırlıklar ve görsel çıktı repo dışında.
+models/*.onnx
+yolov8m-obb.pt
+jetson_paket/models/*.pt
+jetson_paket/models/*.onnx
+jetson_paket/test_goruntuleri/
+jetson_paket/results/
+rapor/
 
 # Visual Studio
 .vs/

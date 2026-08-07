@@ -1,0 +1,16 @@
+# CODEX EXECUTION RULES
+
+> **Tam sistem prompt'u: `CODEX_WORKERS.md`.** Çelişki olursa **o dosya geçerlidir.**
+> Bu dosya yalnız en kritik dört kuralın kısa hatırlatıcısıdır.
+
+1. `TASK_QUEUE.md` dosyasını oku. Sadece `[ ]` durumundaki **ilk** görevi al ve durumunu
+   `[IN_PROGRESS: Codex-<N>]` yap. **Dosyayı hemen kaydet** — kaydetmeden kod yazma.
+2. İnsan etiketli görevlere ve başka bir ajanın `[IN_PROGRESS]` görevine **KESİNLİKLE
+   DOKUNMA**. Kilit protokolü: `AGENTS.md` §3.
+3. Görevi `[STATUS: READY_FOR_REVIEW]` yapmadan **ÖNCE** görevin "Kapı" komutunu
+   **GERÇEKTEN ÇALIŞTIR** ve **gerçek çıktısını** göreve yapıştır. Çalıştırmadığın kapıyı
+   geçti sayma. Kapı düşüyorsa görevi `[ ]` bırak ve nedenini `REVIEW_LOG.md`'ye yaz.
+4. Yorumlayıcı: `O:\navitas-local-train\venv\Scripts\python.exe`
+   (`python` Windows Store saplamasıdır — sessizce hiçbir şey yapmaz.)
+   Genel kapı: `codes/test_rota_sentetik.py` → **15/15**.
+   Bağımlılık: yalnız OpenCV, NumPy, saf Python `heapq`. **SciPy/scikit-image YASAK.**
