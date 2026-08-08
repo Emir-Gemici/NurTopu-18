@@ -171,7 +171,6 @@ class YksArayuz:
         sol = self._panel(govde, "SAHA HARİTASI — HTAB 50×50 m   |   "
                                  f"CANLI ALGI — {_m} (GERÇEK çıkarım)")
         sol.pack(side="left", fill="both", expand=True, padx=(0, 8))
-        sol.pack(side="left", fill="both", expand=True, padx=(0, 8))
 
         anahtar = tk.Frame(sol, bg=PANEL)
         anahtar.pack(fill="x", padx=10, pady=(4, 0))
@@ -180,7 +179,7 @@ class YksArayuz:
                                         relief="flat", padx=8, pady=3,
                                         command=lambda: self.gorunum("harita"))
         self.btn_gor_harita.pack(side="left", padx=(0, 6))
-        self.btn_gor_algi = tk.Button(anahtar, text="◉ Canlı Algı — v17 (V)",
+        self.btn_gor_algi = tk.Button(anahtar, text=f"◉ Canlı Algı — {_m} (V)",
                                       font=self.f_kucuk, fg=METIN, bg="#232e3a",
                                       relief="flat", padx=8, pady=3,
                                       command=lambda: self.gorunum("algi"))
@@ -193,7 +192,7 @@ class YksArayuz:
         # canlı algı görünümü (başta gizli)
         self.algi_cerceve = tk.Frame(sol, bg=PANEL)
         self.lbl_algi_img = tk.Label(self.algi_cerceve, bg="#121920",
-                                     text="v17 modeli ilk geçişte yüklenecek…",
+                                      text=f"{_m} modeli ilk geçişte yüklenecek…",
                                      fg=SOLUK, font=self.f_kucuk)
         self.lbl_algi_img.pack(padx=10, pady=(4, 4), fill="both", expand=True)
         arow = tk.Frame(self.algi_cerceve, bg=PANEL)
@@ -541,8 +540,18 @@ class YksArayuz:
         while True:
             try:
                 d, adr = self.link.recv()
-            except OSError:
-                return                     # pencere kapanırken soket kapanır
+            except OSError as exc:
+                # Soket GERÇEKTEN kapandıysa (pencere kapanıyor) çık. Aksi hâlde
+                # bu geçici bir ağ hatasıdır ve dinleyiciyi KALICI öldürmemeli:
+                # eskiden tek bir ölü akran hakem ekranını sessizce sağırlaştırıyordu
+                # (ekran donmuyor ama hiçbir çerçeve işlenmiyordu).
+                soket = getattr(self.link, "sock", None)
+                if soket is None or soket.fileno() == -1:
+                    return
+                # Tk thread-güvenli değil; günlüğe ana döngü kuyruğundan yazılır.
+                self.algi_kuyruk.put(
+                    ("log", f"⚠ ağ hatası yok sayıldı: {type(exc).__name__}: {exc}"))
+                continue
             if not d:
                 continue
             for m in self.reader.feed(d):
@@ -552,7 +561,17 @@ class YksArayuz:
     def _tik(self):
         while not self.gelen.empty():
             m, adr = self.gelen.get()
-            self._mesaj_isle(m, adr)
+            # Tek bir BOZUK çerçeve hakem ekranını KALICI dondurmamalı: _tik
+            # kendi zincirini `after(120)` ile kuruyor, burada fırlayan bir
+            # istisna o zinciri kopartıyor ve saat, günlük, kronometreler,
+            # butonlar hepsi ölüyordu. Ölçüldü: `ref_xy=None` taşıyan geçerli
+            # bir OPEN_ROUTE (protokol buna izin veriyor, protocol.py:44-45)
+            # `m['ref_xy'][0]` ile TypeError üretiyordu.
+            try:
+                self._mesaj_isle(m, adr)
+            except Exception as exc:
+                self._logla(f"⚠ BOZUK ÇERÇEVE yok sayıldı — "
+                            f"{type(exc).__name__}: {exc}", "sari")
         while not self.algi_kuyruk.empty():
             paket = self.algi_kuyruk.get()
             if paket[0] == "sonuc":
@@ -584,8 +603,12 @@ class YksArayuz:
                                 "geldi — şartname §6.4: aktarım HAVADA tamamlanmalı!",
                                 "sari")
                 self.lbl_karar.config(text=f"{m['road']} · {m['label'].upper()}", fg=YESIL)
-                self._detay_base = (f"seq={m['seq']} · ref=({m['ref_xy'][0]}, "
-                                    f"{m['ref_xy'][1]}) m · {len(m['waypoints'])} waypoint")
+                # ref_xy protokolce None OLABILIR (protocol.py:44-45) ve
+                # iha_sender geometri dogrulamasini yalniz ika/broadcast akrani
+                # varken kosar — yani "--yks" tek hedefliyken None gelir.
+                _ref = m.get("ref_xy") or ("—", "—")
+                self._detay_base = (f"seq={m['seq']} · ref=({_ref[0]}, "
+                                    f"{_ref[1]}) m · {len(m.get('waypoints') or [])} waypoint")
                 self._rota_analiz(m)
                 self.btn_onay.config(state="normal", bg=SARI,
                                      text="1) TESPİTİ DOĞRULA (§2.2.3)")
@@ -799,7 +822,7 @@ class YksArayuz:
     # ── Canlı algı: v3 modeliyle GERÇEK çıkarım ──────────────────────────────
     # Karar zinciri sahadakiyle AYNI: codes/rpi_inference.py'nin get_masks +
     # analyze_path fonksiyonları kullanılır (kopya algoritma yok).
-    ALGI_KAYNAKLAR = ("gemini", "test", "val")
+    ALGI_KAYNAKLAR = ("gemini", "test", "val", "drone")
     ALGI_MODEL_DOSYA = "navitas_seg_v21_best.pt"
     def _algi_gorseller(self):
         import pathlib
@@ -808,11 +831,12 @@ class YksArayuz:
             "gemini": kok_dizin / "test_images" / "gemini",
             "test": kok_dizin / "test_images" / "test" / "images",
             "val": kok_dizin / "dataset" / "rescuenet_yolo" / "images" / "val",
+            "drone": kok_dizin / "data" / "raw_frames",
         }
         d = dizinler[self.algi_kaynak]
         if not d.is_dir():
             return []
-        return sorted(p for p in d.iterdir()
+        return sorted(p for p in d.rglob("*")
                       if p.suffix.lower() in (".png", ".jpg", ".jpeg"))
 
     def gorunum(self, ad):
@@ -850,7 +874,8 @@ class YksArayuz:
         self.algi_idx = 0
         aciklama = {"gemini": "arena tipi görseller",
                     "test": "takım test seti (test_images/test)",
-                    "val": "RescueNet doğrulama seti"}[self.algi_kaynak]
+                    "val": "RescueNet doğrulama seti",
+                    "drone": "gerçek nadir drone kareleri"}[self.algi_kaynak]
         self._logla(f"ALGI kaynağı: {self.algi_kaynak} ({aciklama})", "mavi")
         self._algi_iste()
 
@@ -886,8 +911,14 @@ class YksArayuz:
                 from ultralytics import YOLO
                 model_yolu = kok_dizin / "models" / self.ALGI_MODEL_DOSYA
                 self.algi_model = YOLO(str(model_yolu))
+                import hashlib
+                _h = hashlib.sha256()
+                with open(model_yolu, "rb") as _fh:
+                    for _blok in iter(lambda: _fh.read(1 << 20), b""):
+                        _h.update(_blok)
                 self.algi_kuyruk.put(("log",
-                    f"v17 modeli yüklendi: {model_yolu.name} (SHA 8e8d46a6…)"))
+                    f"{model_yolu.stem} modeli yüklendi: {model_yolu.name} "
+                    f"(SHA {_h.hexdigest()[:8]})"))
 
             img = cv2.imread(str(yol))
             h, w = img.shape[:2]
@@ -993,10 +1024,10 @@ class YksArayuz:
                      f"eşik {esik:.2f}"
                      + (" (düşük-eşik fallback)" if esik <= 0.05 else "")
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
-                     f" · gösterim: sürüş koridoru · model: navitas_seg_v21_best.pt "
-                     f"(mAP50 0.6751)")
+                      f" · gösterim: sürüş koridoru · model: {self.ALGI_MODEL_DOSYA}")
+            _ad = self.ALGI_MODEL_DOSYA.rsplit(".", 1)[0]
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
-                                  f"ALGI(v17) {yol.name} → {karar} "
+                                  f"ALGI({_ad}) {yol.name} → {karar} "
                                   f"güven={guven:.2f} · {ms:.0f} ms"))
         except Exception as e:
             self.algi_kuyruk.put(("log", f"ALGI HATASI: {e}"))

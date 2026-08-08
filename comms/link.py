@@ -29,10 +29,21 @@ class UDPLink:
         self.sock.sendto(data, peer or self.peer)
 
     def recv(self, bufsize=4096):
-        """(data, addr) döndürür; zaman aşımında (None, None)."""
+        """(data, addr) döndürür; zaman aşımında (None, None).
+
+        ConnectionResetError de zaman aşımı gibi yutulur. NEDEN: bağlantısız bir
+        UDP soketinde bu hata KARŞI TARAFIN sorunudur — dinlemeyen bir akrana
+        gönderim yapılınca Windows bir sonraki `recvfrom`'da WinError 10054
+        üretir. Yutulmazsa iki gerçek kusur doğuyordu:
+          · YKS dinleyici thread'i tek bir ölü akran yüzünden KALICI ölüyor,
+            hakem ekranı donmadan sessizce sağırlaşıyordu;
+          · `iha_sender` dinlemeyen bir hedefe gönderimde ham traceback ile
+            çöküyor, rota aktarımı yarıda kalıyordu.
+        Her ikisi de ölçüldü; kayıt: REVIEW_LOG D-06 ve 2026-08-07 taraması.
+        """
         try:
             return self.sock.recvfrom(bufsize)
-        except socket.timeout:
+        except (socket.timeout, ConnectionResetError, ConnectionRefusedError):
             return None, None
 
     def close(self):

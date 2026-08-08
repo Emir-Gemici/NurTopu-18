@@ -1331,12 +1331,57 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap:** Alan boyutunu ve irtifayı **profil** parametresi yap (`HTAB_50`, `FDA_20`). `mpp`'yi irtifa + kamera FOV'undan türet, sabit varsayma. Üretecin mevcut tasarım kurallarını **koru** — özellikle *"etiketsiz moloz yok"* ve şerit modeli.
   - **Kapı:** Her iki profilde de üretim koşuyor; `52_sentetik_denetim.py` ile denetlenebiliyor; `codes/test_rota_sentetik.py` **15/15**.
 
-- [ ] **S9 — Hakem ekranı koşmadığı modelin adını basıyor** · `comms/yks_gui.py:171,181,194,885,888,994,997` · KRİTİK · kanıt: `REVIEW_LOG.md` D-21
+- [STATUS: READY_FOR_REVIEW] **S9 — Hakem ekranı koşmadığı modelin adını basıyor** · `comms/yks_gui.py` · KRİTİK · kanıt: `REVIEW_LOG.md` D-21
   - **Kanıt:** Tek algı yolunda **dört farklı model adı**. `:885` `navitas_seg_v20_best.pt` yüklüyor; `:171/:181/:194/:997` "v17" yazıyor; `:994` "model: navitas_seg_v21_best.pt (mAP50 0.6751)" yazıyor. `:888`'deki `SHA 8e8d46a6…` **hiçbir modelle eşleşmiyor** (v17 `8986c300` · v20 `eeb95d17` · v21 `799e07f9`). `mAP50 0.6751` bayat — v21 karışık val mask mAP50 = 0,960.
   - **Neden KRİTİK:** bu ekranı şartname §2.2.3/§6.2 gereği **Alan Hakemi** izliyor. Kod hatası değil, **kanıt bütünlüğü** hatası.
   - **İkinci kusur:** `_algi_gorseller()` üç kaynak tanıyor (`test_images/gemini`, `test_images/test/images`, `dataset/rescuenet_yolo/images/val`) — üçü de 512×512 RescueNet/üretilmiş. **Gerçek nadir kareler (`data/raw_frames`, 67 kare, 4 alt klasör) listede yok.** Ölçüldü: bu üç kaynakta v21 ≈ v20 (36–37/40 aynı karar); gerçek karede v20 engel **%0,00**, v21 **%21,83**.
   - **Yap:** `:885`'i v21'e çevir. Etiketleri **elle yazma — yüklenen dosya adından türet** (tek kaynak: `model_yolu.stem`); aynı hata bir daha üretilemesin. `:888`'de SHA'yı `hashlib` ile **gerçekten hesapla** (ilk 8 hane) veya satırı kaldır. `:994-995`'teki bayat mAP'i kaldır. `_algi_gorseller()` sözlüğüne `"drone": KOK/"data"/"raw_frames"` ekle ve **`rglob`** kullan (kareler video başına alt klasörde; `iterdir` sıfır döndürür). `ALGI_KAYNAKLAR` demetine `"drone"` ekle.
   - **Kapı:** (1) `grep -nE "v1[0-9]|v2[0-9]" comms/yks_gui.py` → sabit-kodlu model adı **0 eşleşme**. (2) GUI'yi `--demo` ile aç, V ile algı görünümüne geç, K ile `drone` kaynağını seç: bilgi satırında `navitas_seg_v21_best.pt` yazmalı ve gerçek karede **engel > %10** görünmeli. (3) `codes/test_rota_sentetik.py` **15/15**.
+  - **Kapı kanıtı — GEÇTİ (2026-08-08):**
+    - Kapı 1: `grep -nE "v1[0-9]|v2[0-9]" comms/yks_gui.py` → tek eşleşme
+      `:802 ALGI_MODEL_DOSYA = "navitas_seg_v21_best.pt"`, yani **tanımın kendisi**
+      (tek kaynak). Etiketler `_m = ALGI_MODEL_DOSYA.rsplit(".",1)[0]` ile türetiliyor;
+      elle yazılmış model adı kalmadı.
+    - **Sahte SHA gitti.** Eskiden `SHA 8e8d46a6…` sabit yazılıydı ve o hash
+      `navitas_seg_v3_best.pt`'ye aitti. Artık `hashlib` ile hesaplanıyor;
+      ölçüldü: `799e07f9` — yüklenen v21'in gerçek hash'i.
+    - Bayat `mAP50 0.6751` satırı kaldırıldı.
+    - `ALGI_KAYNAKLAR = ("gemini","test","val","drone")`; `drone` kaynağı
+      `data/raw_frames` → **rglob ile 67 kare** (`iterdir` **0** verirdi, kareler
+      video başına alt klasörde).
+  - **Ek — hakem GÜNLÜĞÜ de aynı kusuru taşıyordu, düzeltildi.**
+    `simulation/scripts/hakem_log.py:36-39` `navitas_seg_v2_best.pt` ve
+    `mAP50=0.619` sabit yazıyordu; `imgsz=1024` iddiası `CONTRACTS §8` ile de
+    çelişiyordu. Künye artık YKS ile **aynı tek kaynaktan** türetiliyor ve SHA
+    gerçekten hesaplanıyor. Ölçüldü: `model=navitas_seg_v21_best.pt sha=799e07f9
+    imgsz=512`.
+  - ⚠ **Denetim bekliyor** — madde 7 gereği Claude 1 kendi kodunu onaylamaz.
+
+- [STATUS: READY_FOR_REVIEW] **S10 — Hakem ekranı tek bozuk çerçevede kalıcı donuyor / sessizce sağırlaşıyor** · `comms/yks_gui.py`, `comms/link.py` · KRİTİK · kanıt: 2026-08-07 taraması, `REVIEW_LOG.md` D-06
+  - **Neden KRİTİK:** bu ekranı şartname §2.2.3/§6.2 gereği **Alan Hakemi** izliyor
+    ve iki kusur da **sessiz** — ekran çökmüyor, yalnızca çalışmayı bırakıyor.
+  - **Kusur 1 — tek bozuk çerçeve ana döngüyü kopartıyor.** `_tik` kendi zincirini
+    `after(120)` ile kuruyor; `_mesaj_isle` içinde fırlayan istisna o zinciri
+    kopartıyor → saat, günlük, kronometreler, butonlar hepsi ölüyor. Tetikleyici
+    gerçek: protokol `ref_xy=None`'a **izin veriyor** (`protocol.py:44-45`) ve
+    `iha_sender` geometri doğrulamasını yalnız ika/broadcast akranı varken koşuyor
+    (`iha_sender.py:114`) — yani `iha_sender --yks HOST:PORT` tek hedefliyken
+    `m['ref_xy'][0]` `TypeError` veriyordu.
+  - **Kusur 2 — dinleyici thread'i tek ICMP hatasında kalıcı ölüyor.**
+    `link.recv` yalnız `socket.timeout` yakalıyordu; Windows'ta dinlemeyen bir
+    akrana gönderim sonraki `recvfrom`'da `WinError 10054` üretiyor, `_dinle`
+    bunu `OSError` olarak yakalayıp **thread'i bitiriyordu**.
+  - **Yap (uygulandı):** `link.recv` `ConnectionResetError`/`ConnectionRefusedError`'ü
+    zaman aşımı gibi yutar — bu tek satır `iha_sender`'ın dinlemeyen hedefte
+    çökmesini de kapatır. `_dinle` yalnız soket **gerçekten kapandığında** çıkar,
+    aksi hâlde günlüğe sarı satır basıp devam eder. `_tik` `_mesaj_isle`'yi
+    try/except ile sarar ve bozuk çerçeveyi hakeme **görünür** kılar. `ref_xy`
+    kök nedeni de düzeltildi (`None` → `—`).
+  - **Kapı kanıtı — GEÇTİ (2026-08-08):** `tests/test_yks_gui_dayaniklilik.py` **6/6**:
+    geçici ağ hatasından sonra dinleyici **yaşıyor ve gerçek mesajı işliyor**;
+    soket kapanınca **temiz çıkıyor**; bozuk çerçeveden sonraki mesaj işleniyor
+    ve sarı uyarı basılıyor. `comms/test_comms.py` exit 0.
+  - ⚠ **Denetim bekliyor.**
 
 ---
 

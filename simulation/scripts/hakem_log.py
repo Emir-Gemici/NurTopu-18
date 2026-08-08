@@ -11,6 +11,7 @@ Kullanım:
   python3 scripts/hakem_log.py --all --detections recordings/vX/detections.json --out recordings/vX/hakem_log.txt
 """
 import argparse
+import hashlib
 import math
 import json
 import sys
@@ -19,8 +20,9 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+KOK = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).parent))
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
+sys.path.insert(0, str(KOK / "comms"))
 import arena
 from world_generator import ZONE_POS, IKA_SPEED, SCAN_Z
 from link import UDPLink
@@ -32,11 +34,39 @@ from ika_nav import route_to_world_waypoints
 # Seviyeye göre gerçekçi model güveni (zor sahnede daha düşük)
 CONF = {"kolay": 0.94, "orta": 0.88, "zor": 0.79}
 
-# Teknik künye (model_analiz.md + şartname + sim parametreleri)
-MODEL_NAME = "navitas_seg_v2_best.pt (YOLOv8n-seg)"
-MODEL_IMGSZ = 1024          # iha_perceive.CANON (letterbox kare)
+# Teknik künye — ELLE YAZILMAZ, çalışan modelden TÜRETİLİR.
+# NEDEN (REVIEW_LOG D-21 ailesi): burası hakemin okuduğu kanıt dosyasıdır.
+# Eskiden `navitas_seg_v2_best.pt` ve `mAP50=0.619` sabit yazılıydı; üretim
+# v21 yüklüyordu ve imgsz=1024 iddiası CONTRACTS §8 ile de çelişiyordu.
+# Yanlış künye kod hatası değil, KANIT BÜTÜNLÜĞÜ hatasıdır.
+def _model_kunyesi():
+    """(ad, imgsz, sha8) — YKS ile AYNI tek kaynaktan."""
+    try:
+        sys.path.insert(0, str(KOK / "comms"))
+        from yks_gui import YksArayuz
+        ad = YksArayuz.ALGI_MODEL_DOSYA
+    except Exception:
+        ad = None
+    yol = (KOK / "models" / ad) if ad else None
+    sha8 = "?"
+    if yol is not None and yol.exists():
+        _h = hashlib.sha256()
+        with open(yol, "rb") as _fh:
+            for _blok in iter(lambda: _fh.read(1 << 20), b""):
+                _h.update(_blok)
+        sha8 = _h.hexdigest()[:8]
+    else:
+        ad = ad or "BILINMIYOR"
+    try:
+        sys.path.insert(0, str(KOK / "codes"))
+        from rpi_inference import INFER_SIZE as _imgsz
+    except Exception:
+        _imgsz = "?"
+    return ad, _imgsz, sha8
+
+
+MODEL_NAME, MODEL_IMGSZ, MODEL_SHA8 = _model_kunyesi()
 MODEL_CONF_THR = 0.15       # iha_perceive vars. eşik (CONF_FLOOR 0.05 fallback)
-MODEL_MAP = "mask mAP50=0.619 (traversable 0.874 / blocked 0.363)"
 
 
 class Log:
@@ -115,7 +145,8 @@ def run_level(level, log, det=None, realtime=False, harita_id=1):
     log("İHA", f"tarama irtifası {SCAN_Z:.0f} m → 50×50 HTAB SERPANTİN tarama (4 sütun, "
                f"nadir kamera 1 kare/sn → /tmp/iha_scan)")
     time.sleep(0.4)
-    log("ALGI", f"model={MODEL_NAME} imgsz={MODEL_IMGSZ} conf_thr={MODEL_CONF_THR} | {MODEL_MAP}")
+    log("ALGI", f"model={MODEL_NAME} sha={MODEL_SHA8} imgsz={MODEL_IMGSZ} "
+                f"conf_thr={MODEL_CONF_THR}")
     log("MODEL", f"YOLOv8-seg ({src}) → 3 yol segmentlendi (traversable/blocked) → "
                  f"AÇIK YOL: {arena.ROAD_LABEL[road].upper()} (yol {road})  güven={conf:.3f}")
 
