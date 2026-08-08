@@ -272,7 +272,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 > ve FAZ 6'daki saha onarımlarından **bağımsızdır** — saha zinciri düzelse bile bu
 > kusur yerinde kalır.
 
-- [ ] **T24 — `analyze_path` waypoint'leri bağlantısız: kenar engelin üstünden geçiyor** · `codes/rpi_inference.py:179-186` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-28
+- [STATUS: READY_FOR_REVIEW] **T24 — `analyze_path` waypoint'leri bağlantısız: kenar engelin üstünden geçiyor** · `codes/rpi_inference.py:179-186` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-28
   - **Ölçüldü:** 8 waypoint'in 3. ve 4.'sü iki ayrı koridorda (`x=122` → `x=520`);
     iki uç da zemin, aradaki kenar **119 engel pikselinin** üstünden geçiyor.
     Aynı sahnede `rota_bul` doğru davranıp `BELIRSIZ_COKLU` diyerek reddediyor.
@@ -294,6 +294,83 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     "tespit yok" demek görev güvenliği gereğidir. (2) Aynı sahnede eski yolun
     **1/7 ihlal**, yeni yolun **0/7** verdiği önce/sonra tablosu yapıştırılacak.
     (3) `codes/test_rota_sentetik.py` → **15/15** düşmeyecek.
+  - **Uygulama (2026-08-08 · Claude 1, madde 7 istisnası):**
+    - ⚠ **Kalıcı çözüm (migrasyon) ŞU AN MÜMKÜN DEĞİL — yeni bağımlılık bulundu.**
+      `analyze_path_uyumlu` (`:954`) `**kw`'yi `rota_bul`'a geçiriyor; `rota_bul`'un
+      **`icerik` parametresi yok** (D-25). Altı çağrı yeri `icerik=icerik` gönderdiği
+      için migrasyon `TypeError` verirdi ve letterbox kusuru yüzünden üretim her
+      karede `KAPALI_DAR` derdi. **Migrasyon D-25'in kapanmasına bağlıdır** —
+      bu FAZ 7'ye eklenmeli. Kuyruğun izin verdiği ara çözüm uygulandı.
+    - `_gorus_hatti` **tek kaynaktan** içe aktarıldı (kopyalanmadı) — kopyalama
+      `rota_dogrula` ile farklı yuvarlama üretip çelişki yaratırdı; aynı hata
+      bu depoda zaten kayıtlı (`test_rota_sentetik`'in `_tohum_merkezi` kopyası).
+    - Waypoint seçimi kör argmax yerine **görüş hattı kısıtlı** hâle getirildi:
+      her bantta açıklık sırasına göre adaylar denenir, önceki waypoint'ten
+      **görünen** ilki seçilir; hiçbiri görünmüyorsa karar **yok** döner.
+    - Bantlar tam tuval yerine **içerik kutusu** üzerinden bölünüyor (D-25 ailesi).
+    - Engel maskesi opsiyonel parametre olarak eklendi ve **kapamadan SONRA**
+      düşülüyor — çıkarma en son işlemdir (madde 15, D-24).
+  - **Kapı kanıtı — GEÇTİ (2026-08-08):**
+    - **D-28 sahnesi (önce/sonra):**
+
+      | | waypoint | ihlalli segment |
+      |---|---:|---:|
+      | önce | 8 | **1/7** — `(122,399) → (520,240)`, 119 engel pikseli |
+      | sonra | 0 (karar yok) | **0/0** |
+
+    - **Gerçek 67 drone karesinde ölçüm** (asıl kanıt — sentetik değil):
+
+      | | karar üreten kare | ihlalli kare | ihlalli segment |
+      |---|---:|---:|---:|
+      | önce | 66/67 | **13/67** | — |
+      | sonra | **63/67** | **0/63** | **0/440** |
+
+      Çekimserlik %1,5 → %6,0; karşılığında geçersiz rota **tamamen** bitti.
+      13 ihlalli karenin çoğu **onarıldı** (görünür aday seçimi geçerli rota buldu),
+      kalanı güvenli biçimde reddedildi.
+    - `tests/test_analyze_path_kenar.py` → **10/10, exit 0.**
+    - `jetson_paket/kod/rpi_inference.py` senkronlandı; iki kopya **md5 aynı**.
+    - Tam regresyon **95/95**, genel kapı **15/15**, ikisi de exit 0.
+  - **BAĞIMSIZ DENETİM — 2026-08-08 · `code-review high`:** doğrulama turu kotaya
+    takıldı (27 doğrulayıcının hepsi düştü), ama **4 bulucu koştu ve 34 aday
+    üretti**. Doğrulanmamış olsalar da bağımsız bulucularda tekrar eden dördü
+    okununca gerçek çıktı ve **düzeltildi**:
+    1. **`engel_mask` üretimde ölüydü** — parametre eklenmiş ama hiçbir çağrı
+       yerine bağlanmamıştı, yani D-24 düzeltmesi sahada aktif değildi.
+       Üç çağrı yeri `engel_mask=masks.get(1)` ile bağlandı.
+    2. **İki test boştu** — `_ihlal_sayisi([])` her zaman 0 döndüğü için "0 ihlal"
+       diyerek geçiyor ama hiçbir şey kanıtlamıyorlardı. Güvenlik değişmezi
+       yüklemine çevrildi ve her testte **eski algoritmanın aynı sahnede değişmezi
+       ihlal ettiği** ayrıca assert edildi.
+    3. **Maske değer alanı bozuluyordu** — `bitwise_not(engel*255)//255` kalıbı
+       0/255 girdiyi sessizce 0/1'e indiriyordu; doğrudan sıfırlamaya çevrildi.
+    4. **top-K=24 yanlış negatif üretiyordu** — K 64'e çıkarıldı ve "önceki
+       waypoint'e x'te en yakın koridor pikseli" geri dönüşü eklendi. Ölçüldü:
+       gerçek karelerde karar 60/67 → **63/67**, ihlal yine **0**.
+    - ⚠ Kalan 30 aday **doğrulanmadı**; kota açılınca doğrulama turu sürdürülmeli.
+      Aday listesi: `scratchpad/t24_dogrulanmamis_adaylar.json`. Bunlardan biri
+      (`open_path` centroid'i ile waypoint'lerin uyuşmaması) D-29/T26'da zaten
+      kayıtlı ve bu koşumda somutlandı: çatallı sahnede tüm waypoint'ler `x≈121`
+      (sol üçte bir) iken karar `yol=2` (orta) dönüyor.
+  - ⚠ **Denetim TAMAMLANMADI** — doğrulama turu kotada düştü; madde 7 gereği bu
+    görev hâlâ onaylanmış sayılmaz.
+
+- [ ] **T26 — Koridorun hedefe ULAŞTIĞI doğrulanmıyor: kapalı şerit açık raporlanabilir** · `codes/rpi_inference.py:162-169` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-29
+  - **Kanıt (T24 sırasında ölçüldü):** düz bir koridorun ortasına yatay bariyer
+    konduğunda `analyze_path` `yol=2, guven=1.0, wp=4` döndü — yani koridor
+    kareyi baştan başa geçmediği hâlde "orta şerit açık" dedi. Şerit kararı en
+    büyük bağlı bileşenin **üst %30 bandının centroid'i** ile veriliyor; o
+    bileşenin görüntünün üst kenarına **ulaşıp ulaşmadığı hiç sorulmuyor**.
+  - **Neden önemli:** şartname §5.3.2/§6.2 yanlış güzergâh tespitini **0 puan**
+    sayıyor. `rota_bul` bu durumu `KAPALI_KOPUK` ile doğru yakalıyor; üretim yolu
+    yakalamıyor. Kullanıcının "açık yolu seçme konusunda yeterli mi emin değilim"
+    sorusunun ölçülmüş cevabı budur: **yeterli değil.**
+  - **Yap:** Karar vermeden önce bileşenin hedef kenara (içerik kutusunun üst
+    şeridine) temas ettiğini doğrula; etmiyorsa `None` dön. Eşiği `CONTRACTS.md`'ye
+    sözleşme olarak yaz, çıplak sabit yazma (madde 16).
+  - **Kapı:** Bariyerli sahnede karar `None`; bariyersiz aynı sahnede `yol=2`.
+    Gerçek 67 karede çekimserlik artışını önce/sonra tablosuyla raporla —
+    aşırı çekimserlik sahada kullanılamaz demektir.
 
 - [ ] **T25 — Güven eşiği hiçbir çağrı yerinde uygulanmıyor** · `codes/rpi_inference.py`, `comms/yks_gui.py`, `simulation/scripts/iha_perceive.py` · ÖNEMLİ · bağımlı: **T24** · kanıt: `REVIEW_LOG.md` D-28
   - **Kanıt:** `grep -rnE "conf *[<>]=?|guven *[<>]=?"` üretim kodunda tek eşleşme

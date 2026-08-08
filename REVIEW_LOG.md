@@ -1570,6 +1570,41 @@ cagri yerlerini `costmap_path_finder.analyze_path_uyumlu`'ya (`:954`, su an
 hicbir yerden cagrilmiyor) gecirmektir; ara cozum olarak `analyze_path`'e engel
 maskesi + `_gorus_hatti` denetimi eklenebilir.
 
+### D-29 · ONEMLI · Koridorun hedefe ULASTIGI dogrulanmiyor: kapali serit acik raporlanabilir
+Bulan: Claude 1 (T24 uygulamasi sirasinda) · 2026-08-08 · `codes/rpi_inference.py:162-169`
+
+Kullanici sordu: *"acik yolu secme konusunda yeterli mi emin degilim."* T24
+uygulanirken olculdu: **yeterli degil.**
+
+Duz bir koridorun ortasina yatay bariyer konuldu (koridor artik kareyi bastan
+basa gecmiyor):
+
+```text
+z[:, 260:380] = 1          # duz dikey koridor
+e[300:340, :]  = 1         # yatay bariyer
+analyze_path(z, engel_mask=e)  ->  yol=2  guven=1.0  wp=4
+```
+
+Karar **`yol=2`, guven `1.0`** — yani "orta serit acik, tam guvenle". Oysa
+koridor hedefe ulasmiyor.
+
+**Neden:** serit karari, en buyuk bagli bilesenin **ust %30 bandinin centroid'i**
+ile veriliyor (`:162-169`). O bilesenin goruntunun ust kenarina (hedef tarafa)
+**ULASIP ULASMADIGI hic sorulmuyor.** Bariyer bileseni ikiye boluyor, en buyuk
+parca aliniyor ve o parcanin kendi ust bandi "cikis" sayiliyor.
+
+`rota_bul` bu durumu dogru yakaliyor: `KAPALI_KOPUK` durumu tam da bunun icin
+var (`:732`). Uretim yolu bu makineyi kullanmiyor — S4/D-28 ile ayni kok neden.
+
+**Neden T24 bunu kapatmadi:** T24 KENAR guvenligini onardi (ardisik waypoint'ler
+arasindaki dogru artik denetleniyor). Bu ise UC NOKTA sorunudur: butun kenarlar
+gecerli olabilir ama zincir hedefe varmayabilir. Iki ayri kusur.
+
+**Etki:** sartname §5.3.2/§6.2 yanlis guzergah tespitini **0 puan** sayiyor.
+IKA kapali bir seride yonlendirilir ve molozun onunde durur.
+
+**Yapilmasi gereken:** `TASK_QUEUE.md` T26.
+
 ---
 
 **Ikinci tutarsizlik:** `TASK_QUEUE.md:27` VTOL drone satiri `[HUMAN_COMPLETED]`

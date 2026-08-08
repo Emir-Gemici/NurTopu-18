@@ -28,6 +28,13 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
+# Gorus hatti rasterizasyonu TEK KAYNAKTAN alinir. Kopyalamak, rota_dogrula ile
+# farkli yuvarlama uretip "burada guvenli, orada ihlal" celiskisine yol acardi;
+# ayni kopyala-yapistir kusuru bu depoda zaten kayitli (test_rota_sentetik'in
+# _tohum_merkezi kopyasi). costmap_path_finder yalniz cv2/numpy/heapq kullanir,
+# dairesel import yoktur.
+from costmap_path_finder import _gorus_hatti
+
 _here = Path(__file__).parent
 MODEL_DIR = next(
     (p for p in [
@@ -95,14 +102,93 @@ def draw_masks(image_bgr, masks):
     return cv2.addWeighted(vis, 0.5, overlay, 0.5, 0)
 
 
+def _bandda_gorunur_en_genis(band, y0, onceki, gecilebilir, k=64):
+    """Bantta, ONCEKI waypoint'ten GORUNEN en genis noktayi sec.
+
+    NEDEN (REVIEW_LOG D-28): eski kod her bandin distance-transform argmax'ini
+    korlemesine waypoint yapiyordu. Ardisik iki bandin maksimumu iki AYRI
+    koridora dusebiliyor ve aralarindaki dogru engelin ustunden geciyordu —
+    olculdu: waypoint 3 (122,399) sol koridorda, waypoint 4 (520,240) sag
+    koridorda, aradaki kenar 119 engel pikselinin uzerinden geciyordu.
+
+    Adaylar aciklik sirasina gore denenir; ilk GORUNEN secilir. Hicbiri gorunmuyorsa
+    None doner — bu bant onceki waypoint'e bagli degildir.
+    """
+    duz = band.ravel()
+    n = min(int(k), duz.size)
+    if n <= 0:
+        return None
+    idx = np.argpartition(duz, -n)[-n:]
+    idx = idx[np.argsort(duz[idx])[::-1]]      # aciklik: buyukten kucuge
+    genislik = band.shape[1]
+    for j in idx:
+        if duz[j] <= 0.5:
+            break                               # kalanlar zaten koridor disi
+        ly, lx = divmod(int(j), genislik)
+        aday = (int(lx), int(y0 + ly))
+        if _gorus_hatti(onceki, aday, gecilebilir):
+            return aday
+
+    # top-K YANLIS NEGATIF olabilir: bandin en genis k pikseli uzak bir koridorda
+    # toplanmissa, onceki waypoint'in tam ustundeki gecerli nokta kacirilir ve
+    # halka gereksiz yere "karar yok" der. Duz devam eden koridor icin ucuz bir
+    # ikinci sans: onceki waypoint'e x'te EN YAKIN koridor pikselini dene.
+    satir = int(np.argmax(band.max(axis=1) > 0.5)) if (band > 0.5).any() else None
+    if satir is None:
+        return None
+    for satir_no in (satir, band.shape[0] // 2, band.shape[0] - 1):
+        sutunlar = np.flatnonzero(band[satir_no] > 0.5)
+        if sutunlar.size == 0:
+            continue
+        en_yakin = int(sutunlar[np.argmin(np.abs(sutunlar - onceki[0]))])
+        aday = (en_yakin, int(y0 + satir_no))
+        if _gorus_hatti(onceki, aday, gecilebilir):
+            return aday
+    return None
+
+
+def _kenarlar_guvenli(waypoints, gecilebilir, engel_ham=None):
+    """Her ARDISIK waypoint cifti gercekten baglantili mi?
+
+    D-28'in son kapisi: iki ucu serbest olan bir kenar yine de engelin ustunden
+    gecebilir. `_gorus_hatti` cizgideki HER pikselin serbest oldugunu dogrular;
+    engel maskesi verilmisse ayrica HAM engele temas denetlenir (rota_dogrula
+    ile ayni olcut).
+    """
+    for a, b in zip(waypoints, waypoints[1:]):
+        if not _gorus_hatti(a, b, gecilebilir):
+            return False
+        if engel_ham is None:
+            continue
+        h, w = engel_ham.shape
+        sol, sag = min(a[0], b[0]), max(a[0], b[0])
+        ust, alt = min(a[1], b[1]), max(a[1], b[1])
+        if not (0 <= sol and sag < w and 0 <= ust and alt < h):
+            return False
+        cizgi = np.zeros((alt - ust + 1, sag - sol + 1), np.uint8)
+        cv2.line(cizgi, (a[0] - sol, a[1] - ust), (b[0] - sol, b[1] - ust),
+                 1, thickness=1, lineType=cv2.LINE_8)
+        if bool((engel_ham[ust:alt + 1, sol:sag + 1][cizgi > 0] > 0).any()):
+            return False
+    return True
+
+
 def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
-                 min_area_ratio=0.01, *, icerik=None):
+                 min_area_ratio=0.01, *, icerik=None, engel_mask=None):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
+      1b. engel_mask verilmisse CIKARMA — kapama sonrasi, EN SON (madde 15)
       2. Distance transform → centerline (medial axis approximation)
-      3. Yatay bantlarda alt→ust waypoint ornekleme
+      3. Yatay bantlarda alt→ust waypoint ornekleme, her adimda GORUS HATTI ile
       4. Ust %40'a bakarak hangi ucte birden cikildigi → open_path
+      5. Kenar guvenligi: ardisik waypoint'ler baglantili degilse KARAR YOK
+
+    engel_mask: engel sinifi maskesi (opsiyonel, geriye uyumlu). Verilirse
+      morfolojiden SONRA cikarilir — cikarma en son islemdir, sonrasinda serbest
+      alani buyuten hicbir sey yapilmaz (CLAUDE.md madde 15). Verilmezse eski
+      davranis korunur; kenar denetimi yine de kosar (D-28 kusuru engel zaten
+      zeminden dusulmus olsa bile olusabiliyordu).
 
     min_area_ratio: ana koridor letterbox'taki gercek icerik alaninin bu
       oranindan KUCUKse karar VERME (None doner). Dusuk-esik fallback'te
@@ -137,6 +223,20 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
     k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
     clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN, k_open)
     clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
+
+    # CIKARMA EN SON (CLAUDE.md madde 15). MORPH_CLOSE extensive'dir ve oyulmus
+    # engelin ustunu geri kapatir (REVIEW_LOG D-24: 7 px engelin %99'u geri
+    # doldu). Bu yuzden engel maskesi kapamadan SONRA dusulur; bundan sonra
+    # serbest alani buyuten hicbir islem yapilmaz.
+    if engel_mask is not None:
+        engel_mask = (np.asarray(engel_mask) > 0)
+        if engel_mask.shape != clean.shape:
+            raise ValueError(
+                f"engel_mask sekli {engel_mask.shape} trav_mask {clean.shape} ile uyusmuyor")
+        # Dogrudan sifirlama: maskenin DEGER ALANINI korur. bitwise_not(...)//255
+        # kalibi 0/255 bir girdiyi sessizce 0/1'e indiriyordu.
+        clean = clean.copy()
+        clean[engel_mask] = 0
 
     if clean.sum() == 0:
         if return_clean:
@@ -176,14 +276,37 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
     # Distance transform centerline
     dist = cv2.distanceTransform(clean, cv2.DIST_L2, 5)
 
+    # Bantlar ICERIK kutusu uzerinden bolunur; letterbox dolgusundaki bantlar
+    # zaten bos olurdu ve denetlenmemis atlamayi uzatirdi (D-25 ailesi).
+    bant_ust, bant_alt = icerik_y0, icerik_y0 + icerik_h
     waypoints = []
     for i in range(n_waypoints - 1, -1, -1):  # alt → ust
-        y0 = i * h // n_waypoints
-        y1 = (i + 1) * h // n_waypoints
+        y0 = bant_ust + i * (bant_alt - bant_ust) // n_waypoints
+        y1 = bant_ust + (i + 1) * (bant_alt - bant_ust) // n_waypoints
+        if y1 <= y0:
+            continue
         band = dist[y0:y1, :]
-        if band.max() > 0.5:
+        if band.size == 0 or band.max() <= 0.5:
+            continue
+        if not waypoints:
             ly, lx = np.unravel_index(band.argmax(), band.shape)
             waypoints.append((int(lx), int(y0 + ly)))
+            continue
+        aday = _bandda_gorunur_en_genis(band, y0, waypoints[-1], clean)
+        if aday is None:
+            # Bu bant onceki waypoint'ten GORUNMUYOR. Koridor tek parca degil;
+            # bant-argmax sezgisi burada gecersizdir. Yanlis guzergah uretmektense
+            # "tespit yok" demek gorev guvenligi geregidir (sartname §5.3.2).
+            if return_clean:
+                return None, 0.0, [], clean
+            return None, 0.0, []
+        waypoints.append(aday)
+
+    # SON KAPI: iki ucu serbest olan bir kenar yine de engelin ustunden gecebilir.
+    if len(waypoints) >= 2 and not _kenarlar_guvenli(waypoints, clean, engel_mask):
+        if return_clean:
+            return None, 0.0, [], clean
+        return None, 0.0, []
 
     if return_clean:
         return open_path, confidence, waypoints, clean
@@ -387,7 +510,8 @@ def run_image(model, path_str, conf):
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
 
-        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
+        open_path, path_conf, waypoints = analyze_path(
+            masks[0], icerik=icerik, engel_mask=masks.get(1))
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -467,7 +591,8 @@ def run_video(model, path_str, conf, save=True):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
-        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
+        open_path, path_conf, waypoints = analyze_path(
+            masks[0], icerik=icerik, engel_mask=masks.get(1))
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -527,7 +652,8 @@ def run_camera(model, conf):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
-        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
+        open_path, path_conf, waypoints = analyze_path(
+            masks[0], icerik=icerik, engel_mask=masks.get(1))
         vis = draw_masks(sq, masks)
 
         if open_path:
