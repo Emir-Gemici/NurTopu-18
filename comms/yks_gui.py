@@ -21,6 +21,7 @@ Kullanım:
 Sadece stdlib + (SS için) Pillow kullanır; tkinter Python ile gelir.
 """
 import argparse
+from pathlib import Path
 import math
 import queue
 import threading
@@ -82,7 +83,7 @@ class YksArayuz:
         self.tel = {}                       # node -> son telemetri alanları
         self.rx_alim = {}                   # seq -> kaç kez alındı (tekrar gönderim)
         self._detay_base = ""
-        # canlı algı (v3 modeli ile gerçek çıkarım)
+        # canlı algı (v4 modeli ile gerçek çıkarım)
         self.algi_kuyruk = queue.Queue()
         self.algi_model = None
         self.algi_mesgul = False
@@ -136,9 +137,9 @@ class YksArayuz:
         govde = tk.Frame(self.kok, bg=BG)
         govde.pack(fill="both", expand=True, padx=14, pady=4)
 
-        # Sol: iki görünüm — saha haritası / canlı algı (v3)
+        # Sol: iki görünüm — saha haritası / canlı algı (v4)
         sol = self._panel(govde, "SAHA HARİTASI — HTAB 50×50 m   |   "
-                                 "CANLI ALGI — navitas_seg_v3 (GERÇEK çıkarım)")
+                                 "CANLI ALGI — navitas_seg_v4 (GERÇEK çıkarım)")
         sol.pack(side="left", fill="both", expand=True, padx=(0, 8))
 
         anahtar = tk.Frame(sol, bg=PANEL)
@@ -148,7 +149,7 @@ class YksArayuz:
                                         relief="flat", padx=8, pady=3,
                                         command=lambda: self.gorunum("harita"))
         self.btn_gor_harita.pack(side="left", padx=(0, 6))
-        self.btn_gor_algi = tk.Button(anahtar, text="◉ Canlı Algı — v3 (V)",
+        self.btn_gor_algi = tk.Button(anahtar, text="◉ Canlı Algı — v4 (V)",
                                       font=self.f_kucuk, fg=METIN, bg="#232e3a",
                                       relief="flat", padx=8, pady=3,
                                       command=lambda: self.gorunum("algi"))
@@ -161,7 +162,7 @@ class YksArayuz:
         # canlı algı görünümü (başta gizli)
         self.algi_cerceve = tk.Frame(sol, bg=PANEL)
         self.lbl_algi_img = tk.Label(self.algi_cerceve, bg="#121920",
-                                     text="v3 modeli ilk geçişte yüklenecek…",
+                                     text="v4 modeli ilk geçişte yüklenecek…",
                                      fg=SOLUK, font=self.f_kucuk)
         self.lbl_algi_img.pack(padx=10, pady=(4, 4), fill="both", expand=True)
         arow = tk.Frame(self.algi_cerceve, bg=PANEL)
@@ -549,7 +550,7 @@ class YksArayuz:
     def _ucus_normal(self):
         self.lbl_ucus.config(text="İHA UÇUŞ DURUMU: OTONOM GÖREV (AUTO)", fg=YESIL)
 
-    # ── Canlı algı: v3 modeliyle GERÇEK çıkarım ──────────────────────────────
+    # ── Canlı algı: v4 modeliyle GERÇEK çıkarım ──────────────────────────────
     # Karar zinciri sahadakiyle AYNI: codes/rpi_inference.py'nin get_masks +
     # analyze_path fonksiyonları kullanılır (kopya algoritma yok).
     def _algi_gorseller(self):
@@ -611,13 +612,13 @@ class YksArayuz:
         yol = gorseller[self.algi_idx % len(gorseller)]
         self.algi_mesgul = True
         self.lbl_algi_bilgi.config(text=f"{yol.name} işleniyor… "
-                                        + ("(v3 modeli yükleniyor — ilk sefer "
+                                        + ("(v4 modeli yükleniyor — ilk sefer "
                                            "birkaç sn)" if self.algi_model is None
                                            else ""))
         threading.Thread(target=self._algi_kos, args=(yol,), daemon=True).start()
 
     def _algi_kos(self, yol):
-        """Arka plan iş parçacığı: v3 ile gerçek çıkarım + saha karar zinciri."""
+        """Arka plan iş parçacığı: v4 ile gerçek çıkarım + saha karar zinciri."""
         try:
             import pathlib
             import sys as _sys
@@ -629,10 +630,10 @@ class YksArayuz:
 
             if self.algi_model is None:
                 from ultralytics import YOLO
-                model_yolu = kok_dizin / "models" / "navitas_seg_v3_best.pt"
+                model_yolu = kok_dizin / "models" / "navitas_seg_v4_best.pt"
                 self.algi_model = YOLO(str(model_yolu))
                 self.algi_kuyruk.put(("log",
-                    f"v3 modeli yüklendi: {model_yolu.name} (SHA 8e8d46a6…)"))
+                    f"v4 modeli yüklendi: {model_yolu.name} (SHA 6b93f200…)"))
 
             img = cv2.imread(str(yol))
             h, w = img.shape[:2]
@@ -668,9 +669,9 @@ class YksArayuz:
                      f"güven {guven:.2f} · çıkarım {ms:.0f} ms · eşik {esik:.2f}"
                      + (" (düşük-eşik fallback)" if esik < 0.30 else "")
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
-                     f" · model: navitas_seg_v3 (mAP50 0,627)")
+                     f" · model: navitas_seg_v4 (mAP50 0,675)")
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
-                                  f"ALGI(v3) {yol.name} → {karar} "
+                                  f"ALGI(v4) {yol.name} → {karar} "
                                   f"güven={guven:.2f} · {ms:.0f} ms"))
         except Exception as e:
             self.algi_kuyruk.put(("log", f"ALGI HATASI: {e}"))
@@ -955,15 +956,30 @@ def main():
         # SS modunda pencere HEP önde olsun — yoksa arkadaki pencere yakalanır
         kok.attributes("-topmost", True)
         kok.lift()
+        # SS canlı algı görünümünde çekilsin (rapor şekli bu görünümü kullanıyor);
+        # kaynak: RescueNet val (temsilî molozlu kare)
+        def _ss_hazirla():
+            if app._algi_gorseller.__self__ and (Path(__file__).resolve().parents[1]
+                    / "dataset" / "rescuenet_yolo" / "images" / "val").is_dir():
+                app.algi_kaynak = "val"
+                app.algi_idx = 263
+        kok.after(1400, _ss_hazirla)
+        kok.after(1500, lambda: app.gorunum("algi"))
 
         def kaydet():
-            from PIL import ImageGrab
             kok.lift()
             kok.focus_force()
             kok.update()
             x, y = kok.winfo_rootx(), kok.winfo_rooty()
             w, h = kok.winfo_width(), kok.winfo_height()
-            ImageGrab.grab(bbox=(x, y, x + w, y + h)).save(args.kaydet_yolu)
+            try:
+                from PIL import ImageGrab
+                ImageGrab.grab(bbox=(x, y, x + w, y + h)).save(args.kaydet_yolu)
+            except Exception:
+                # Wayland'da ImageGrab çalışmayabilir → X11 penceresini import ile yakala
+                import subprocess
+                subprocess.run(["import", "-window", str(kok.winfo_id()),
+                                args.kaydet_yolu], check=True)
             print(f"SS kaydedildi: {args.kaydet_yolu}")
             if args.kapat:
                 kok.destroy()

@@ -90,6 +90,8 @@ images/
 # Simülasyon kayıtları ve üretilen dünyalar
 simulation/recordings/
 simulation/worlds/rec_*.world
+simulation/worlds/canli_*.world
+simulation/harita_gecmisi/
 
 # Büyük videolar — GitHub 100MB sınırı; orijinaller yerel/Drive'da
 drone/test_videos/

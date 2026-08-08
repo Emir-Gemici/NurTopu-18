@@ -642,7 +642,11 @@ def build_world(seed, focus, record=False, road=None, layout=None, harita_id=Non
   <world name="navitas_arena">
 {gui}
     <physics type="ode"><max_step_size>0.001</max_step_size>
-      <real_time_factor>1</real_time_factor><real_time_update_rate>1000</real_time_update_rate>
+      <!-- real_time_update_rate elle YAZILMAZ: Gazebo11 varsayılanı zaten 1000, ama
+           max_step_size+real_time_factor+real_time_update_rate üçü birden gravity ile
+           aynı anda verilince PresetManager "SetParam(gravity) bad any_cast" hatası
+           atıyor (upstream Gazebo11 kusuru). Etiketi atlamak davranışı DEĞİŞTİRMEZ. -->
+      <real_time_factor>1</real_time_factor>
       <gravity>0 0 -9.8</gravity></physics>
 {environment}
     <!-- Profile: {profile['id']} | Seed: {seed} | Odak: {focus} | layout: {layout}
