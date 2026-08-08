@@ -29,7 +29,7 @@ class ScenarioContractTest(unittest.TestCase):
 
     def test_three_distinct_50m_htab_inside_300m_ub(self):
         boxes = []
-        for name, (cx, cy) in arena.ZONE_POS.items():
+        for name, (cx, cy) in world_generator.ZONE_POS.items():
             box = (cx - 25.0, cy - 25.0, cx + 25.0, cy + 25.0)
             boxes.append((name, box))
             self.assertGreaterEqual(box[0], -arena.UB_HALF)
@@ -77,7 +77,7 @@ class ScenarioContractTest(unittest.TestCase):
         for profile_id in self.profile_ids():
             profile = scenario_profiles.load_profile(profile_id)
             level = profile["active_zone"]
-            cx, cy = arena.ZONE_POS[level]
+            cx, cy = world_generator.ZONE_POS[level]
             flight = world_generator.iha_flight(cx, cy, profile)
             for x, y, z, _ in flight:
                 self.assertLessEqual(abs(x), arena.UB_HALF)
