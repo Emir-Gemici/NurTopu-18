@@ -7,6 +7,63 @@
 
 ---
 
+## 0-A. GÜNCELLEME 2026-08-08 — koşmadan önce bu dört maddeyi oku
+
+> Kılavuzun geri kalanı 5 Ağustos'ta yazıldı. O günden beri kod değişti ve
+> **varsayılan komutlar bu paket için yanlış**. Aşağıdakileri atlarsan test
+> yanlış sonuç verir ya da hiç koşmaz.
+
+### G1 · `jetson_fps.py` varsayılanları bu pakette ÇALIŞMAZ — yol vermek ZORUNLU
+
+`KOK = parents[1]` yani `jetson_paket/`. Varsayılanlar oraya bakıyor:
+
+| argüman | varsayılan | bu pakette |
+|---|---|---|
+| `--girdi` | `jetson_paket/data/raw_frames` | **YOK** (görüntüler `test_goruntuleri/` altında) |
+| `--pt` | `jetson_paket/models/navitas_seg_v20_best.pt` | var ama **v20** — kılavuzun kendi önerisi v21 |
+| `--onnx` | `jetson_paket/models/navitas_seg_v20_best.onnx` | **YOK** (yalnız v17 ve v21 ONNX var) |
+
+Yani argümansız çalıştırırsan ya boş girdiyle koşar ya da v20 ölçersin.
+**Her koşuda `--girdi`, `--pt`, `--onnx` açıkça verilecek.**
+
+### G2 · `rota_bul` durumu bu zincirde ANLAMSIZ — "KAPALI_DAR" görürsen panikleme
+
+`kamera_dogrula.py:118` ve `jetson_fps.py:162` maskeleri `rota_bul`'a
+**tuval boyutunda** veriyor. `_maskeleri_icerige_kirp` dolguyu sıfırlıyor ama
+**boyutu küçültmüyor**; `rota_bul`'un tohum bantları (alt/üst %8) tam da o
+sıfırlanmış dolguya düşüyor. Ölçüldü (`REVIEW_LOG.md` D-25):
+
+```
+letterbox'lı  -> durum=KAPALI_DAR
+aynı maske kırpık -> durum=ACIK, yol_no=2
+```
+
+**Sonuç:** `--zincir` çıktısındaki `durum` ve FPS raporundaki "karar dağılımı"
+bu koşumda **kanıt değildir**. Modeli ya da Jetson'u suçlama — bilinen depo kusuru.
+FPS sayıları geçerli sayılır, ama tohum boş çıkınca `koridor_adaylari` erken
+döndüğü için **bir miktar iyimser** olabilir; raporda böyle not düş.
+
+### G3 · Paketten rota GÖNDEREMEZSİN — bu test algı testidir, uçtan uca değil
+
+`jetson_paket/kod/` içinde `protocol.py`, `iha_sender.py`, `link.py` **yok**;
+`requirements_rpi.txt`'te `pyserial` de yok. Yani İHA bu paketle görüntüyü
+işler ama sonucu İKA'ya **iletemez** (`REVIEW_LOG.md` D-22, kopukluk 1).
+
+Bugünkü Jetson testi şunları kanıtlayabilir: **kamera açılıyor mu · model
+yükleniyor mu · çıkarım hızı ne · TensorRT engine derleniyor mu.**
+Şunları kanıtlayamaz: rota aktarımı · ACK · İKA'nın hareket etmesi.
+
+### G4 · `rpi_inference.py` artık `costmap_path_finder.py` olmadan çalışmaz
+
+T24 ile görüş hattı denetimi eklendi ve `_gorus_hatti` tek kaynaktan
+alınıyor. İkisi de `jetson_paket/kod/` içinde — **aynı klasörde tuttuğun sürece
+sorun yok.** Yalnız `rpi_inference.py`'yi kopyalarsan `ImportError` alırsın.
+
+`analyze_path` artık engel maskesini de okuyabiliyor ve birbirine bağlı olmayan
+waypoint üretmiyor; gerçek 67 karede ihlalli rota **13 → 0** oldu.
+
+---
+
 ## 0. ÖNCE OKU — bugünün testini değiştiren üç bulgu
 
 > ## ⚡ GÜNCELLEME 2026-08-05 akşamı — **v21 geldi, B1'i çözüyor**
