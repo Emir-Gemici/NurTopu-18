@@ -72,7 +72,10 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 > sim'in kendisi üretir, haberleşme kodu `comms/` altındadır. **Simülasyon çıktısı bu
 > fazda kanıt sayılmaz.**
 
-- [ ] **T21 — Saha zinciri halka sözleşmesi** · `CONTRACTS.md` yeni § · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-22
+- [STATUS: READY_FOR_REVIEW] **T21 — Saha zinciri halka sözleşmesi** · `CONTRACTS.md` §11 · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-22
+  - ⚠ **Anayasa madde 7 istisnası.** Codex-1 kotada, iş TIKAYICI, insan onayı 2026-08-07'de
+    açıkça verildi. Madde 7 gereği bu görevin çıktısını **Claude 1 kendisi onaylamaz** —
+    ayrı bir denetim koşulacak ve sonucu buraya yapıştırılacak.
   - **Neden önce bu:** T22 bir koşucu yazacak. Hangi halkaların hangi sırayla ve hangi
     ölçütle sınanacağı yazılı değilse koşucu keyfi olur ve "geçti" dediği şey
     tanımsız kalır. Bu görev **kod değil sözleşme** üretir.
@@ -88,8 +91,35 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı:** Her halkanın satırında ya gerçek bir `dosya:satır` ya da `SAHİPSİZ` var;
     ikisi de olmayan halka bırakılamaz. D-22'deki dört kopukluğun **dördü de** sözleşmede
     SAHİPSİZ ya da `simulation/` sahipli olarak görünmeli — görünmüyorsa sözleşme eksiktir.
+  - **Uygulama (2026-08-07 · Claude 1, madde 7 istisnası):** `CONTRACTS.md` §11 eklendi.
+    Zincir **dokuz değil on halka** çıktı: tasarım sırasında hedef konumu (HB) rota
+    halkasının içinde eriyordu ve o hâliyle kapı geçmiyordu — D-22'nin 2. kopukluğu
+    görünmez kalıyordu. `hedef_konumu` ayrı halka olarak açıldı (§11.2 satır 6).
+  - **Kapı kanıtı — GEÇTİ (2026-08-07):**
+    - Kapı 1 — her halkada sahip ya da SAHİPSİZ:
 
-- [ ] **T22 — `scripts/saha_kuru_kosu.py`: Gazebo'suz, donanımsız uçtan uca koşucu** · **TIKAYICI** · bağımlı: **T21** · kanıt: `REVIEW_LOG.md` D-22
+      ```text
+      OK   halka 1     OK   halka 6
+      OK   halka 2     OK   halka 7
+      OK   halka 3     OK   halka 8
+      OK   halka 4     OK   halka 9
+      OK   halka 5     OK   halka 10
+      ```
+
+    - Kapı 2 — D-22'nin dört kopukluğu sözleşmede görünüyor:
+
+      | kopukluk | §11.2 halkası | durum |
+      |---|---|---|
+      | `jetson_paket/kod/` içinde haberleşme yok | 8 `aktarim` | SAHİPSİZ (`:273`) |
+      | HB yalnız Gazebo `meta.txt` | 6 `hedef_konumu` | SAHİPSİZ |
+      | `IHA_LANDED` üreticisi `navitas_sim.py:95` | 9 `surus_izni` | `simulation/` sahipli |
+      | motor yalnız `gz` subprocess'i | 10 `motor` | SAHİPSİZ |
+
+    - Halka anahtarları (T22 bunları birebir kullanacak): `kamera · model_yukleme ·
+      cikarim · maske · olcek · hedef_konumu · rota · aktarim · surus_izni · motor`
+  - ⚠ **Denetim bekliyor** — madde 7 gereği Claude 1 kendi çıktısını onaylamaz.
+
+- [STATUS: READY_FOR_REVIEW] **T22 — `scripts/saha_kuru_kosu.py`: Gazebo'suz, donanımsız uçtan uca koşucu** · **TIKAYICI** · bağımlı: **T21** · kanıt: `REVIEW_LOG.md` D-22
   - **Yap:** T21'deki halkaları **sırayla** koşan tek bir betik. Kesin yasaklar:
     **Gazebo YOK, ROS YOK, gerçek donanım YOK, `gz` çağrısı YOK.** İkame:
     - kamera → `data/raw_frames` altından gerçek bir kare (rglob; kareler video başına alt klasörde)
@@ -105,8 +135,46 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı:** Bugünkü kodda koş. Beklenen: **exit 1** ve `ozet.json`'da **en az dört**
     halka `DUSTU`/`SAHIPSIZ`. Gerçek çıktıyı bu göreve yapıştır.
     ⚠ Koşu "hepsi GECTI" derse görev **başarısızdır** — koşucu ölçmüyor demektir.
+  - **Kapı kanıtı — GEÇTİ (2026-08-07 · Claude 1, madde 7 istisnası):**
+    - Komut: `O:\navitas-local-train\venv\Scripts\python.exe -B scripts/saha_kuru_kosu.py --cikti O:\navitas\results\saha_kuru_kosu_20260807`
+    - Gerçek çıktı (**exit 1**):
 
-- [ ] **T23 — Kuru koşunun pozitif kontrolü ve mutasyon kanıtı** · KRİTİK · bağımlı: **T22** · kanıt: `REVIEW_LOG.md` D-22, D-15
+      ```text
+      ==============================================================================
+      SAHA KURU KOSUSU — CONTRACTS.md §11 · Gazebo YOK · donanim YOK
+      ==============================================================================
+        kamera         DUSTU      uretim girisi kaynagi PARAMETRIK almiyor: cv2.VideoCapture(0) sabit  [15 ms]
+                                  -> codes/rpi_inference.py:505
+        model_yukleme  DUSTU      yuklenen agirlik kayit defterindeki profille eslesmiyor ve --model argumani yok  [2113 ms]
+                                  -> codes/rpi_inference.py:32-40
+        cikarim        GECTI      tek kare cikarimi tamamlandi  [2199 ms]
+                                  -> codes/rpi_inference.py:57
+        maske          GECTI      {0,1} anahtarli maskeler uretildi  [5 ms]
+                                  -> codes/rpi_inference.py:60-83
+        olcek          SAHIPSIZ   sahada mpp ureten kod yok; iha_haritala.py:66 sabiti simulation/ altinda
+        hedef_konumu   SAHIPSIZ   HB'nin tek kaynagi Gazebo meta.txt; --hb CLI girisi yok ve uretim modeli 2 sinifli
+        rota           DUSTU      letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK — tohum bandi dolguya dusuyor  [45 ms]
+                                  -> codes/costmap_path_finder.py:232-242
+        aktarim        SAHIPSIZ   saha paketinde haberlesme kodu yok (eksik: iha_sender.py, link.py, protocol.py; pyserial bagimliligi da yok)
+        surus_izni     DUSTU      kapi dogru ama beslemesi kopuk: IHA_LANDED yalnizca simulation/ altinda uretiliyor
+                                  -> comms/ika_receiver.py:119-121
+        motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i
+      ------------------------------------------------------------------------------
+      GECTI 2 · DUSTU 4 · SAHIPSIZ 4 · ATLANDI 0
+      KOPUK HALKALAR (8): kamera, model_yukleme, olcek, hedef_konumu, rota, aktarim, surus_izni, motor
+      Zincir saha kosumunda TAMAMLANMAZ.
+      ```
+
+    - `ozet.json` çapraz kontrolü: `cikis_kodu=1`, `kopuk=8`, `halka_sirasi` §11.4 ile birebir aynı.
+    - **Yan ürün — D-25 gerçek karede canlı doğrulandı.** `rota` halkası aynı maskeyi
+      hem letterbox'lı hem kırpık koşuyor: `{"durum": "KAPALI_DAR", "kirpik_durum": "ACIK",
+      "icerik_parametresi_var": false}`. Yani v21'in gerçek karelerde `67/67 KAPALI_DAR`
+      vermesinin nedeni **model değil tohum bandı**. Model seçimi bu sayıya dayandırılmıştı.
+    - **Yan ürün — `aktarim` kopukluğu paketlemede, kütüphanede değil.** Loopback probu:
+      `{"seq": 1, "ack": ["ika"], "alindi": true}`. `comms/` çalışıyor, saha paketi taşımıyor.
+    - **Yan ürün — `olcek` ölçüldü:** `mpp=None` → `r_gerekli_px=1.1`; `mpp=0.0547` → `20.114`.
+
+- [STATUS: READY_FOR_REVIEW] **T23 — Kuru koşunun pozitif kontrolü ve mutasyon kanıtı** · KRİTİK · bağımlı: **T22** · kanıt: `REVIEW_LOG.md` D-22, D-15
   - **Neden ayrı görev:** T22 tek başına "boş kapı" riski taşır. D-15'te anayasa madde 4
     kapısının **hiçbir zaman çalışmadığı** (sahte geçiş) ortaya çıktı; aynı hata burada
     tekrarlanmamalı. Bu görev, koşucunun gerçekten ölçtüğünün kanıtıdır.
@@ -120,6 +188,121 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
        sızmadığını kanıtlar.
   - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_saha_kuru_kosu.py -v` → hepsi OK, exit 0.
   - **Değişmez genel kapı:** `codes/test_rota_sentetik.py` → **15/15**. Düşerse görevi geri al.
+  - **Kapı kanıtı — GEÇTİ (2026-08-07 · Claude 1, madde 7 istisnası):**
+    - Gerçek çıktı (**13/13, exit 0**):
+
+      ```text
+      test_aktarim_onarilinca_yalniz_aktarim_gecer ... ok
+      test_hedef_konumu_onarilinca_yalniz_o_gecer ... ok
+      test_motor_onarilinca_yalniz_o_gecer ... ok
+      test_surus_izni_onarilinca_yalniz_o_gecer ... ok
+      test_taban_agacinda_dort_kopukluk_da_var ... ok
+      test_gercek_fonksiyon_halkayi_gecirir ... ok
+      test_yorumda_gecen_kelimeler_halkayi_gecirmez ... ok
+      test_aktarim_kutuphanesi_calisiyor_ama_paket_eksik ... ok
+      test_cikis_kodu_kopuk_varken_sifir_degil ... ok
+      test_dort_kopukluk_isim_isim_yakalaniyor ... ok
+      test_iha_landed_ureticisi_yalniz_simulasyonda ... ok
+      test_kosu_dusen_halkada_durmuyor ... ok
+      test_sozlesmedeki_on_halkanin_hepsi_raporlaniyor ... ok
+
+      Ran 13 tests in 7.094s
+      OK
+      ```
+
+    - **T23 iki gerçek kusur yakaladı ve ikisi de düzeltildi** — görevin var olma
+      sebebi budur, bu yüzden ayrıntısı kaydedilmiştir:
+      1. `halka_surus_izni` düz metin araması yapıyordu; **kendi test dosyasının
+         fixture metnini** saha üreticisi saydı (`tests/test_saha_kuru_kosu.py:60`).
+         Tarama üretim dizinleriyle sınırlandı.
+      2. Aynı arama sonra **kendi açıklama yorumunu** buldu
+         (`scripts/saha_kuru_kosu.py:439`). Metin araması AST `ast.Call` düğüm
+         aramasıyla değiştirildi. `OlcekHalkasiTests` bu sınıf hatayı kalıcı olarak
+         kilitler: yorumda geçen `irtifa/fov/mpp` kelimeleri halkayı geçiremez.
+    - Mutasyon kanıtı gerçekten ayırt ediyor: dört onarımın her birinde **yalnız**
+      ilgili halka `GECTI`'ye döndü, diğer üçü değişmedi (`_mutasyonu_dogrula`).
+  - **BAĞIMSIZ DENETİM — 2026-08-08 · `code-review high` (4 bulucu, 42 aday, 38 doğrulayıcı):**
+    - **6 kusur onaylandı, 0 çürütüldü.** Madde 7 gereği yazarın kendi onayı geçersiz
+      olduğu için bu denetim koşuldu ve **kusur buldu** — istisnanın ikinci yarısı işini yaptı.
+    - Üçü tam olarak yazarın iki kez düştüğü sınıftı, başka halkalarda kalmıştı:
+      1. `halka_motor` düz metin araması — kusuru **itiraf eden bir yorum satırı**
+         (`# TODO: mavlink eklenecek`) halkayı `GECTI` yapıyordu; ayrıca `"CAN"`
+         altdizgisi `scan`/`canli` gibi masum kelimelerde eşleşiyordu.
+      2. `halka_aktarim` yalnız **dosya adına** bakıyordu; tamamen boş stub'lar
+         halkayı geçiriyordu. Loopback alanının adı da saha paketini ölçtüğü
+         izlenimi veriyordu (aslında depo `comms/`'unu ölçüyor).
+      3. `halka_hedef` `simulation/` altındaki bir dosyayı sahip kabul ediyordu
+         (**§11.1/1 ihlali**) ve etkin profil yerine **tüm** profilleri tarıyordu.
+    - Üçü yeni sınıftı:
+      4. `halka_surus_izni` probu **tautolojikti**: `IkaReceiver` hiç `.start()`
+         edilmiyor, mesaj enjekte edilmiyordu. Kapı güvenlik kontrolü tümüyle
+         kaldırılsa bile prob aynı sonucu basıyordu — hiçbir şey ölçmüyordu.
+      5. `halka_cikarim_ve_maske` istisna demeti dardı; `ncnn` wheel'i olmayan
+         **taze bir Jetson'da** — yani betiğin tasarlandığı ortamda — tüm koşu
+         traceback ile ölüyor, `ozet.json` hiç yazılmıyordu.
+      6. `halka_kamera` belgelenmiş `--kare` seçeneğiyle göreli/depo dışı yol
+         verilince `relative_to` `ValueError`'ü ile tüm koşuyu çökertiyordu.
+    - **Altısı da düzeltildi.** Düzeltme sırasında `motor` halkasında **yeni bir
+      yanlış pozitif** üretildi ve ölçülerek yakalandı: sürücü import'unu tek
+      ölçüt yapmak `comms/link.py`'yi (SiK telsiz taşıyıcısı, `import serial`
+      yapar ama tekerlek döndürmez) motor sürücüsü saydı. Ölçüt iki koşula
+      çıkarıldı: **aynı dosyada** sürücü import'u **ve** motor komut fonksiyonu.
+    - Denetim ayrıca T23'ün **kendi mutasyon testlerinin üçünün yanlış davranışı
+      kilitlediğini** gösterdi (onarımları `simulation/` altına yazıyorlardı).
+      Onarımlar saha dizinlerine taşındı; ayrıca `DenetimRegresyonTests` ile altı
+      kusur sınıfı kalıcı olarak kilitlendi (11 yeni test).
+  - **Nihai kapı kanıtı — GEÇTİ (2026-08-08):**
+    - `-m unittest discover -s tests -p test_saha_kuru_kosu.py` → **24 test, OK, exit 0**
+    - Sürüş kapısı probu artık gerçekten ölçüyor (gerçek loopback UDP, üç gözlem):
+      `{"bos_kapali": true, "ika_go_alindi": true, "yalniz_ika_go_kapali": true,
+      "iha_landed_alindi": true, "iki_latch_ile_acik": true, "prob_gecerli": true}`
+    - Kuru koşu (çıkarım dahil): **exit 1**, `GECTI 2 · DUSTU 4 · SAHIPSIZ 4 · ATLANDI 0`
+    - Tam regresyon: `-m unittest discover -s tests -p "test*.py"` → **85 test, OK, exit 0**
+      (58 → 85: +24 T23, +3 devralınan `test_model_registry`).
+    - Genel kapı: `codes/test_rota_sentetik.py` → **15/15, exit 0**.
+
+---
+
+## FAZ 7 — ÜRETİM KARAR YOLUNUN GÜVENLİĞİ
+
+> **Kanıt:** `REVIEW_LOG.md` D-28 · **Bulan: kullanıcı (saha testi), 8 Ağustos 2026.**
+>
+> Genel kapı `rota_bul`'u ölçüyor, üretim `analyze_path`'i koşuyor. 15/15 geçerken
+> sahada koşan kod denetlenmemiş kalıyor. Bu, S4'ün ölçülmüş ve somutlanmış hâlidir
+> ve FAZ 6'daki saha onarımlarından **bağımsızdır** — saha zinciri düzelse bile bu
+> kusur yerinde kalır.
+
+- [ ] **T24 — `analyze_path` waypoint'leri bağlantısız: kenar engelin üstünden geçiyor** · `codes/rpi_inference.py:179-186` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-28
+  - **Ölçüldü:** 8 waypoint'in 3. ve 4.'sü iki ayrı koridorda (`x=122` → `x=520`);
+    iki uç da zemin, aradaki kenar **119 engel pikselinin** üstünden geçiyor.
+    Aynı sahnede `rota_bul` doğru davranıp `BELIRSIZ_COKLU` diyerek reddediyor.
+  - **Dört kusur üst üste:** (1) ardışık waypoint'ler arasında görüş hattı denetimi
+    yok · (2) engel maskesi imzada bile yok (S4) · (3) boş bant sessizce atlanıyor,
+    denetlenmemiş atlama uzuyor · (4) bantlar içerik kutusu değil tam tuval
+    yüksekliği üzerinden (D-25 ailesi).
+  - **Ayrıca:** ölçümde `guven=0.0` dönerken `yol=2` üretildi. `analyze_path`'in
+    **altı çağrı yerinin hiçbirinde güven eşiği yok** — sıfır güvenli karar doğrudan
+    `OPEN_ROUTE`'a gidiyor.
+  - **Yap:** Kalıcı çözüm, çağrı yerlerini `costmap_path_finder.analyze_path_uyumlu`'ya
+    (`:954` — bu amaçla yazılmış, şu an **hiçbir yerden çağrılmıyor**) geçirmektir;
+    o yol `_gorus_hatti`, `_maks_aralikla_bol` ve `rota_dogrula` segment denetimini
+    zaten taşıyor. **Yeniden yazma, mevcut makineyi kullan.** Ara çözüm kabul
+    edilebilir: `analyze_path`'e engel maskesi parametresi + ardışık waypoint görüş
+    hattı denetimi. Geçiş bitmeden `analyze_path` **silinmez** (6 çağrı yeri).
+  - **Kapı:** (1) D-28'deki sentetik sahnede segment ihlali **0** olmalı; ihlal
+    üretilemiyorsa karar `None`/`NO_ROUTE` dönmeli — yanlış güzergâh üretmektense
+    "tespit yok" demek görev güvenliği gereğidir. (2) Aynı sahnede eski yolun
+    **1/7 ihlal**, yeni yolun **0/7** verdiği önce/sonra tablosu yapıştırılacak.
+    (3) `codes/test_rota_sentetik.py` → **15/15** düşmeyecek.
+
+- [ ] **T25 — Güven eşiği hiçbir çağrı yerinde uygulanmıyor** · `codes/rpi_inference.py`, `comms/yks_gui.py`, `simulation/scripts/iha_perceive.py` · ÖNEMLİ · bağımlı: **T24** · kanıt: `REVIEW_LOG.md` D-28
+  - **Kanıt:** `grep -rnE "conf *[<>]=?|guven *[<>]=?"` üretim kodunda tek eşleşme
+    veriyor (`iha_perceive.py:88`) ve o da **model tespit eşiği**, rota güveni değil.
+    Ölçümde `guven=0.0` olan karar `OPEN_ROUTE` olarak yayınlanabiliyor.
+  - **Yap:** Güven eşiğini `CONTRACTS.md`'ye sözleşme olarak ekle (çıplak sabit
+    yazma — madde 16), altında kalan kararı `NO_ROUTE` sebebiyle bildir.
+  - **Kapı:** Eşiğin altındaki bir kararın `OPEN_ROUTE` olarak **yayınlanmadığını**
+    gerçek çıktıyla göster.
 
 ---
 

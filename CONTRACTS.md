@@ -237,3 +237,144 @@ Ayrıştırıcı `TASK_QUEUE.md`'yi **satır satır** okur. Sözleşme kodun ken
 
 Eşleştirilmiş test olmadan (n=40, galibiyet ≥35/40) fark iddia edilmez.
 Kör bir model %0 moloza basar — **bu bedava bir sıfırdır, başarı değildir.**
+
+---
+
+## 11. Saha zinciri sözleşmesi
+
+> **Neden var:** `REVIEW_LOG.md` D-22 — saha kod yolunu uçtan uca sınayan tek bir
+> test yok; dört ayrı kopukluk aynı anda görünmüyor. `TASK_QUEUE.md` T21.
+>
+> **Saha** = Jetson/Pi + kamera + SiK 433 MHz telsiz. **Gazebo YOK, ROS YOK, `gz` YOK.**
+
+### 11.1 Sahiplik kuralı — bağlayıcı
+
+Bir halkanın **sahibi**, o halkayı sahada gerçekten koşturan dosyadır.
+
+1. `simulation/` altındaki hiçbir dosya sahip **yazılamaz**. Gerekçe: `navitas_sim.py`
+   `gz` ikilisinin, `meta.txt`'in ve kendi ürettiği `IHA_LANDED`'in varlığını
+   varsayar; sahada üçü de yoktur. Simülasyon çıktısı bu sözleşmede **kanıt sayılmaz**.
+2. Sahibi yoksa halka **`SAHİPSİZ`** işaretlenir. Boş bırakılamaz.
+3. Sahibi var ama sahada yanlış davranıyorsa **`KUSURLU`** + kusur kaydı numarası.
+4. `jetson_paket/` altındaki bir dosya sahip olabilir — saha paketi odur. Ancak
+   paket **eksikse** (bkz. §11.3 Halka 7) halka `SAHİPSİZ`'dir.
+
+### 11.2 Halka tablosu
+
+| # | Halka | Girdi | Çıktı | Sahip `dosya:satır` | Durum |
+|---|---|---|---|---|---|
+| 1 | Kamera kaynağı | cihaz/URL | BGR kare | `codes/rpi_inference.py:505` — `cv2.VideoCapture(0)` **sabit** | **KUSURLU** · D-13 |
+| 2 | Model yükleme | model yolu | YOLO nesnesi | `codes/rpi_inference.py:32-40,52-57` → `best_ncnn_model` | **KUSURLU** · D-13 |
+| 3 | Çıkarım | BGR kare | `results` | `codes/rpi_inference.py:57` (`YOLO.predict`) | **GEÇERLİ** |
+| 4 | Maske çıkarımı | `results` | `{0: zemin, 1: engel}` | `codes/rpi_inference.py:60-83` (`get_masks`) | **GEÇERLİ** |
+| 5 | Ölçek (`mpp`) | irtifa + FOV | m/piksel | — | **SAHİPSİZ** · D-22 |
+| 6 | Hedef konumu (HB) | kare / dış girdi | `hb_xy` | — (yalnız Gazebo `meta.txt`) | **SAHİPSİZ** · D-22, D-23 |
+| 7 | Rota üretimi | maskeler + `mpp` + `hb_xy` | `road`, `waypoints`, `durum` | `codes/costmap_path_finder.py:729` (`rota_bul`) | **KUSURLU** · D-25 |
+| 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK | — (`jetson_paket/kod/` içinde yok) | **SAHİPSİZ** · D-22 |
+| 9 | İKA sürüş izni | rota ∧ IKA_GO ∧ IHA_LANDED | izin `bool` | kapı: `comms/ika_receiver.py:119-121` · `IHA_LANDED` üreticisi: **yalnız `simulation/scripts/navitas_sim.py:95`** | **KUSURLU** · D-22 |
+| 10 | Motor komutu | izin + waypoint | tekerlek hızı | — (`gz` subprocess'i sahip değil) | **SAHİPSİZ** · D-22 |
+
+### 11.3 Halka başına başarı ölçütü ve kanıt
+
+**Halka 1 — Kamera kaynağı.** Ölçüt: kaynak **parametrik** olacak (indeks / `/dev/videoN` /
+`http://…:4747/video`) ve ilk kare `None` dönmeden okunacak.
+Kanıt: `codes/rpi_inference.py:505` → `cap = cv2.VideoCapture(0)`; argparse'ta (`:551-559`)
+kaynak argümanı **yok**. Çalışan referans kalıp `jetson_paket/kod/kamera_dogrula.py:57`'de
+var (`--kaynak`) ama o bir doğrulama aracıdır, **üretim yolu değildir**.
+
+**Halka 2 — Model yükleme.** Ölçüt: yüklenen ağırlık `config/model_registry.json`'daki
+etkin profille **eşleşecek** ve SHA doğrulanacak.
+Kanıt: `codes/rpi_inference.py:32-40` `MODEL_DIR`'i `best_ncnn_model`'e çözüyor —
+11 Temmuz tarihli **v2 dönemi NCNN**. `--model` argümanı yok, `INFER_SIZE = 512`
+sabit (`:44`). Üretimde olması gereken v21'dir. Ayrıca `config/model_registry.json`
+"competition" profili `navitas_seg_v4_best.pt` gösteriyor — **kayıt defteri de bayat**.
+
+**Halka 3 — Çıkarım.** Ölçüt: tek kare çıkarımı istisnasız tamamlanacak. Geçerli.
+
+**Halka 4 — Maske çıkarımı.** Ölçüt: `{0, 1}` anahtarlı, kare boyutuna ölçeklenmiş
+ikili maske. `get_masks` `sinif_idler` ile genişletilebilir. Geçerli.
+
+**Halka 5 — Ölçek.** Ölçüt: `mpp` **irtifa + kamera FOV'undan türetilecek**; türetilemiyorsa
+halka `ÖLÇEK_YOK` döndürecek ve **rota üretilmeyecek**.
+Kanıt: sahada `mpp` üreten hiçbir kod yok. Simülasyonda `simulation/scripts/iha_haritala.py:66`
+`MPP = MOZ_M / MOZ_PX` sabiti var — §11.1/1 gereği sahip sayılmaz.
+`codes/costmap_path_finder.py:107` `m = 1.0 if mpp is None else float(mpp)` ile
+**sessizce 1 m/piksel** varsayıyor; `r_gerekli_px` 20,11 yerine 1,10 oluyor ve
+**hiçbir uyarı basılmıyor**. Bu, §5'in (Ölçek sözleşmesi) ihlalidir.
+
+**Halka 6 — Hedef konumu (HB).** Ölçüt: hedef bölgesinin konumu **saha kaynağından**
+gelecek — ya algıdan (kırmızı H tespiti) ya da açık bir dış girdiden (`--hb`).
+Kanıt: `simulation/scripts/iha_haritala.py:507` → `hb_xy=_meta_xy(meta, "HB_XY")`.
+`HB_XY`'yi yazan tek yer `simulation/scripts/world_generator.py:590`, yani **Gazebo
+dünya üreteci**. argparse'ta (`:471-488`) `--hb` / `--kb` **yok**. Sahada `meta.txt`
+olmadığı için `hb_xy=None` → `:296-306`:
+
+    "rota_durum": "HEDEF_YOK",
+    "rota_sebep": "HB koordinati bulunamadi; dinamik rota yayinlanmadi."
+
+Yani sahada **her karede NO_ROUTE**. Kalıcı çözüm algı katmanındadır: üretim modeli
+2 sınıflı (`{0: traversable, 1: blocked}`), 2×2 m kırmızı H'yi gören **hiçbir bileşen
+yok** (D-23). §1.1 üçüncü sınıfı tanımlıyor ama üretim onu hiç üretmiyor.
+
+**Halka 7 — Rota üretimi.** Ölçüt: letterbox'lı girdide de içerik kutusuna göre karar.
+Kanıt: `grep -n "icerik" codes/costmap_path_finder.py` → **0 satır**. `_tohum_maske`
+(`:232-242`) bandı tam maske yüksekliğinden hesaplıyor; pad'lenmiş karede tohum
+tamamen gri dolguya düşüyor → `durum=KAPALI_DAR`. Aynı sahne kırpıkken `durum=ACIK`.
+
+**Halka 8 — Aktarım.** Ölçüt: saha paketinden OPEN_ROUTE/NO_ROUTE gönderilebilecek
+ve ACK alınabilecek; seri (SiK) yolu da çalışacak.
+
+    ls jetson_paket/kod/
+    costmap_path_finder.py  jetson_fps.py  kamera_dogrula.py
+    karisim_arena.yaml  requirements_rpi.txt  rpi_inference.py
+    -> protocol.py / iha_sender.py / link.py YOK
+
+    jetson_paket/kod/requirements_rpi.txt: ultralytics, opencv-python, numpy
+    -> pyserial YOK
+
+`simulation/scripts/iha_detect_send.py` `--serial` destekliyor ama §11.1/1 gereği
+sahip değildir; ayrıca `:30-34` `detect_open_road` hâlâ arena **yer gerçeği** okuyor
+ve `--ika/--serial` yolu `--rota-json` zorunlu kılıyor — o dosyayı `iha_haritala`
+(simülasyon) üretiyor.
+
+**Halka 9 — İKA sürüş izni.** Ölçüt: üç koşul da **saha kaynağından** gelecek.
+Kanıt: kapı doğru yazılmış — `comms/ika_receiver.py:119-121`
+`if not self.ika_go or not self.iha_landed: return False`. Ama girdilerinden biri
+sahipsiz: `send_iha_landed` çağrısı tüm depoda tek yerde, `simulation/scripts/navitas_sim.py:95`.
+Yani **kapının kendisi sağlam, beslemesi kopuk**.
+
+**Halka 10 — Motor komutu.** Ölçüt: gerçek sürücüye (seri/GPIO/PWM/MAVLink) komut
+gidecek; `gz` yalnızca bir arka uç olacak.
+Kanıt: `simulation/scripts/ika_nav.py:90-99` `subprocess.run(["gz","topic",…],
+capture_output=True, timeout=1)`. Arenada `gz` yoktur → `FileNotFoundError` →
+`capture_output=True` sayesinde **hata yutulur, uyarı basılmaz**.
+`grep -E 'Serial|GPIO|pwm|arduino|pixhawk|mavlink|CAN'` → `ika_nav.py` içinde **0 eşleşme**.
+
+### 11.4 Sözleşmenin doğrulanması
+
+Bu tablo elle güncellenmez. `TASK_QUEUE.md` T22'nin ürettiği
+`results/saha_kuru_kosu_<tarih>/ozet.json` tabloyla **birebir aynı halka adlarını**
+kullanır; sapma varsa sözleşme değil koşucu düzeltilir (halka adı sözleşmede tanımlıdır).
+
+Halka adları (koşucunun kullanacağı anahtarlar, değişmez):
+
+    kamera · model_yukleme · cikarim · maske · olcek · hedef_konumu
+    rota · aktarim · surus_izni · motor
+
+**Bugünkü beklenen durum** (T22'nin üretmesi gereken tablo):
+
+| Halka | Beklenen | Gerekçe |
+|---|---|---|
+| `kamera` | KUSURLU | kaynak sabit `VideoCapture(0)` |
+| `model_yukleme` | KUSURLU | v21 yerine v2 dönemi NCNN |
+| `cikarim` | GECTI | — |
+| `maske` | GECTI | — |
+| `olcek` | **SAHİPSİZ** | saha `mpp` üreticisi yok |
+| `hedef_konumu` | **SAHİPSİZ** | yalnız Gazebo `meta.txt` |
+| `rota` | KUSURLU | letterbox tohum bandı |
+| `aktarim` | **SAHİPSİZ** | saha paketinde comms yok |
+| `surus_izni` | KUSURLU | `IHA_LANDED` beslemesi kopuk |
+| `motor` | **SAHİPSİZ** | gerçek sürücü yok |
+
+Dört `SAHİPSİZ` halka D-22'nin dört kopukluğudur. **T22 bu tabloyu tek koşuda
+üretmelidir**; ilk düşüşte çıkan bir koşucu bu görevi karşılamaz.

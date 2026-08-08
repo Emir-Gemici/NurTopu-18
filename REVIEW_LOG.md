@@ -1492,6 +1492,86 @@ FAZ 0/0-B sessizce durur. H1/H7 (VTOL drone, 30 Eylul, FDA'nin %15'lik bacagi)
 tam da bu kanaldan izleniyor. Yani izleme mekanizmasinin kendisi kirik ve bu
 kiriklik kuyrukta gorunmuyor.
 
+### D-28 · KRITIK · `analyze_path` waypoint'leri baglantisiz: iki ucu zemin olan KENAR engelin ustunden geciyor
+Bulan: Kullanici (saha testi) · dogrulayan: Claude 1 · 2026-08-08 · `codes/rpi_inference.py:179-186`
+
+Kullanici sahada test edip bildirdi: *"node sayisi cok az oldugu icin 2 node zemin
+olsa bile arasindaki kenarlar engelin ustunden gecebiliyor."* **Dogrulandi ve
+olculdu.**
+
+Waypoint uretimi (`codes/rpi_inference.py:179-186`):
+
+```python
+for i in range(n_waypoints - 1, -1, -1):     # n_waypoints = 8
+    y0 = i * h // n_waypoints
+    y1 = (i + 1) * h // n_waypoints
+    band = dist[y0:y1, :]
+    if band.max() > 0.5:
+        ly, lx = np.unravel_index(band.argmax(), band.shape)
+        waypoints.append((int(lx), int(y0 + ly)))
+```
+
+Goruntu 8 yatay banda bolunuyor ve her bandin **distance-transform maksimumu**
+waypoint yapiliyor. Ardisik iki bandin maksimumu goruntunun bambaska yerlerinde
+olabilir ve **aralarindaki dogru hic denetlenmiyor**.
+
+**Olcum** (640x640, iki dikey koridor + aralarinda engel duvari; alt yarida sol,
+ust yarida sag koridor genis — `scratchpad/wp_kenar_probu.py`):
+
+```text
+analyze_path -> yol=2 guven=0.0 waypoint=8
+waypointler (alt->ust): [(120,560), (120,480), (121,402), (122,399),
+                         (520,240), (520,160), (520,80), (520,0)]
+  IHLAL segment 3: (122,399) -> (520,240)  engel uzerinde 119 piksel
+SONUC: 1/7 segment ENGELIN USTUNDEN geciyor
+analyze_path imzasinda engel maskesi parametresi var mi: False
+
+rota_bul -> durum=BELIRSIZ_COKLU yol_no=None wp=0
+rota_bul segment ihlali: 0/0
+```
+
+Waypoint 3 sol koridorda (`x=122`), waypoint 4 sag koridorda (`x=520`); iki ucu da
+zemin, aradaki kenar **119 engel pikselinin** ustunden geciyor.
+
+**Dort ayri kusur ust uste biniyor:**
+
+1. **Kenar denetimi yok.** Ardisik waypoint'ler arasinda gorus hatti kontrolu
+   yapilmiyor. `costmap_path_finder` bu isi dogru yapiyor — `_gorus_hatti`,
+   `_maks_aralikla_bol` (`:571-628`) ve `rota_dogrula` (`:696-716`) her segmenti
+   `cv2.polylines` ile rasterize edip hem acikliga hem HAM engel maskesine
+   bakiyor. Uretim yolu bu makinenin **hicbirini** kullanmiyor.
+2. **Engel maskesi hic okunmuyor.** Imzada parametre yok (acik kusur S4).
+   Kenar denetlense bile karsilastirilacak engel yok.
+3. **Bant bos ise waypoint SESSIZCE atlaniyor** (`if band.max() > 0.5`), bu da
+   kalan waypoint'ler arasindaki denetlenmemis atlamayi daha da uzatiyor.
+4. **Bantlar tam tuval yuksekligi `h` uzerinden** hesaplaniyor, icerik kutusu
+   uzerinden degil — letterbox'li girdide ust/alt bantlar gri dolguya dusuyor
+   (D-25 ailesi).
+
+**Ayrica: guven esigi hicbir yerde uygulanmiyor.** Yukaridaki olcumde
+`guven=0.0` donmesine ragmen `yol=2` uretildi. `analyze_path`'in alti cagri
+yerinin (`rpi_inference.py:390,470,530` · `test_accuracy.py:182` ·
+`yks_gui.py:940` · `iha_perceive.py:106`) **hicbirinde** guven esigi yok;
+`grep -rnE "conf *[<>]=?|guven *[<>]=?"` uretim kodunda tek eslesme veriyor
+(`iha_perceive.py:88`) ve o da model tespit esigi, rota guveni degil.
+Yani sifir guvenli bir karar dogrudan `OPEN_ROUTE`'a gidiyor.
+
+**Neden KRITIK:** sartname §5.3.2/§6.2 yanlis guzergah tespitini **0 puan**
+sayiyor; §2.2.6 IKA'nin yapisal butunlugunu sart kosuyor. Bu kusur her ikisini
+de tetikleyebilir ve **sessizdir** — ne istisna ne uyari uretir.
+
+**Neden simdiye kadar yakalanmadi:** genel kapi `codes/test_rota_sentetik.py`
+`rota_bul`'u olcuyor, `analyze_path`'i degil. 15/15 gecerken uretimde kosan kod
+denetlenmemis kaliyor. Bu, S4'un ("iki iraksak karar yolu") olculmus ve
+somutlanmis halidir.
+
+**Yapilmasi gereken:** `TASK_QUEUE.md` FAZ 7 (T24). Kalici cozum `analyze_path`
+cagri yerlerini `costmap_path_finder.analyze_path_uyumlu`'ya (`:954`, su an
+hicbir yerden cagrilmiyor) gecirmektir; ara cozum olarak `analyze_path`'e engel
+maskesi + `_gorus_hatti` denetimi eklenebilir.
+
+---
+
 **Ikinci tutarsizlik:** `TASK_QUEUE.md:27` VTOL drone satiri `[HUMAN_COMPLETED]`
 isaretli; ayni gorevin ikizi `:42` (H7) yine `[HUMAN_COMPLETED]` ama notu
 *"Kullanici 3 Agustos'ta 'yok / belirsiz' bildirdi"* diyor. Durum "tamamlandi",
