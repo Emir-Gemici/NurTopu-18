@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""
+"""NEDEN: IHA_LANDED yalnız Gazebo'nun son yer teması pose komutunu başarıyla
+kabul ettiği üretim uçuş yolundan sonra yayımlanmalıdır.
+
 Navitas — İHA Uçuş Animasyonu
 İHA statik model; bu script ~/model/modify topic'i aracılığıyla pose'unu
 güncelleyerek uçuş simüle eder. ROS gerektirmez.
@@ -46,10 +48,16 @@ def set_pose(x: float, y: float, z: float, yaw_rad: float = 0.0):
         f"  orientation {{ x: 0 y: 0 z: {qz:.4f} w: {qw:.4f} }} "
         f"}}"
     )
-    subprocess.run(
+    sonuc = subprocess.run(
         ["gz", "topic", "-p", MODIFY_TOPIC, "-m", msg],
         capture_output=True, timeout=1
     )
+    if sonuc.returncode != 0:
+        hata = (sonuc.stderr or b"").decode("utf-8", errors="replace").strip()
+        raise RuntimeError(
+            f"Gazebo pose komutu başarısız (exit={sonuc.returncode})"
+            + (f": {hata}" if hata else ""))
+    return True
 
 
 def lerp(a, b, t):

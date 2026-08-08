@@ -35,11 +35,12 @@ def path_len(road, level, harita_id=1):
 
 
 def realistic(level, road=None, harita_id=1):
-    """Ham gerçekçi süreleri döndür; limit ihlalini gizlemek için kırpma yapma."""
+    """Gerçekçi süreler (s) — şartname limitleri içinde."""
     if road not in (1, 2, 3):
         road = arena.open_road(level, harita_id)
     iha = IHA_SCAN.get(level, 180)
     ika = round(path_len(road, level, harita_id) / IKA_REAL_SPEED)
+    ika = min(ika, IKA_LIMIT - 8)            # limit içinde tut
     haz = HAZIRLIK.get(level, 600)
     return {"iha": iha, "ika": ika, "hazirlik": haz}
 

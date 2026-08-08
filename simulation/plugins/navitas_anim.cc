@@ -49,9 +49,10 @@ namespace gazebo
     // İKA ROTA KAYNAĞI — dürüst haritalandırma zinciri:
     //   İHA tarama kareleri → host'ta iha_haritala.py (mozaik + model) → /tmp/navitas_route
     //   (satır başına "x y" DÜNYA koordinatı, güney→kuzey). Dosya gelirse İKA MODELİN
-    //   haritasını sürer; ROUTE_WAIT içinde gelmezse SDF-gömülü ground-truth waypoint'lere
-    //   düşer (model/venv yoksa kayıt yine biter — fallback LOG'lanır, başarı sayılmaz).
-    private: std::map<std::string, std::string> ikaRouteSrc;   // "bekliyor"|"model"|"fallback"
+    //   haritasını sürer. Yarışma profilinde (allowGroundTruthFallback=false) geçerli
+    //   dinamik rota gelmezse SDF'deki geometrinin kullanılması yasaktır; İKA güvenli
+    //   şekilde yerinde bekler. Açık demo modunda ROUTE_WAIT sonunda ground-truth'a düşülür.
+    private: std::map<std::string, std::string> ikaRouteSrc;   // "bekliyor"|"model"|"yok"|"fallback"
     private: const char *ROUTE_FILE = "/tmp/navitas_route";
     private: const double ROUTE_WAIT = 45.0;   // s — İHA inişinden sonra rota bekleme süresi
     private: bool requireManualTrigger = true;
@@ -68,7 +69,8 @@ namespace gazebo
     // DÖNÜŞ: SetAngularVel (doğrudan) → skid-steer 4 sabit teker yüksek sürtünmede tork ile
     //        dönemeyeceği için yaw doğrudan atanır (çarpışma bütünlüğü ileri eksende korunur).
     private: const double IKA_SPEED    = 1.1;   // m/s — gerçekçi rover seyir hızı
-    private: const double WP_RADIUS    = 1.2;   // m — bu mesafede sonraki waypoint'e geç
+    private: const double WP_RADIUS    = 0.5;   // m — costmap takip payını aşmaz
+    private: const double FINAL_WP_RADIUS = 0.3; // m — HB son yaklaşım toleransı
     private: const double YAW_GAIN     = 2.5;   // hedef yaw hatasından açısal hıza kazanç
     private: const double YAW_RATE_MAX = 1.6;   // rad/s — dönüş hız limiti
     private: const double FORCE_GAIN   = 60.0;  // (v_hedef - v) → kuvvet kazancı (N/(m/s))
@@ -232,15 +234,17 @@ namespace gazebo
             continue;
           }
 
-          // ── ROTA KAYNAĞI: önce MODEL haritası (/tmp/navitas_route), yoksa bekle,
-          //    ROUTE_WAIT dolarsa SDF ground-truth'a düş (dürüst zincir; bkz. üst not) ──
+          // ── ROTA KAYNAĞI: önce MODEL haritası (/tmp/navitas_route). Yarışma
+          // profilinde (allowGroundTruthFallback=false) rota inişe kadar gelmezse
+          // SDF ground-truth ASLA sürülmez, İKA kalıcı olarak güvenli durur; yalnız
+          // açık demo modunda ROUTE_WAIT kadar beklenip ground-truth'a düşülür. ──
           std::string &src = this->ikaRouteSrc[kv.first];
           if (src == "bekliyor")
           {
             if (!this->tryLoadRoute(kv.first))
             {
               // Yarışma profili: rota İHA havadayken gelmiş olmalıdır; inişten sonra
-              // ek bekleme yok. Yalnız açık demo fallback modunda 45 s beklenir.
+              // ek bekleme yok. Yalnız açık demo fallback modunda ROUTE_WAIT beklenir.
               const double routeWait = this->allowGroundTruthFallback ? ROUTE_WAIT : 0.0;
               if (t < startT + routeWait)
               {
@@ -252,7 +256,8 @@ namespace gazebo
               {
                 src = "yok";
                 gzerr << "[navitas_anim] '" << kv.first << "' MODEL rotası "
-                      << "İHA inişine kadar gelmedi → ROTA_YOK, araç güvenli duruşta.\n";
+                      << "İHA inişine kadar gelmedi → ROTA_YOK, araç güvenli duruşta "
+                         "(SDF ground-truth rota KULLANILMADI).\n";
                 model->SetLinearVel(ignition::math::Vector3d::Zero);
                 model->SetAngularVel(ignition::math::Vector3d::Zero);
                 continue;
@@ -315,7 +320,8 @@ namespace gazebo
             model->SetAngularVel(ignition::math::Vector3d::Zero);
             continue;
           }
-          if (dist < WP_RADIUS)
+          double hedefRadius = (idx + 1 >= wps.size()) ? FINAL_WP_RADIUS : WP_RADIUS;
+          if (dist < hedefRadius)
           {
             idx++;
             this->ikaBestDist[kv.first] = std::numeric_limits<double>::infinity();

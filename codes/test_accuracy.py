@@ -1,4 +1,6 @@
 """
+NEDEN: Dogruluk olcumu sevk edilen algi ve karar yoluyla birebir ayni olmali.
+
 Navitas — Gorsel Test & Dogruluk
 Kullanim:
   # Dogruluk testi — P001..P030 gorsel + etiket karsilastirma + gorsel cikti
@@ -26,8 +28,12 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-from path_planning import analyze_safe_path
-from model_registry import ModelRegistryError, describe, resolve_model
+from rpi_inference import (
+    _maskeleri_icerige_kirp,
+    _preprocess,
+    analyze_path,
+    get_masks as _get_masks_paylasilan,
+)
 
 _here = Path(__file__).parent
 MODEL_DIR = next(
@@ -59,102 +65,22 @@ CLASS_COLORS = {
 
 # ─── Model ──────────────────────────────────────────────────────────────────
 
-def load_model(model_dir=None, profile=None, verify=True):
-    global INFER_SIZE
-    if model_dir:
-        model_dir = Path(model_dir)
-        spec = None
-    else:
-        model_dir, spec = resolve_model(profile, verify=verify)
-        INFER_SIZE = int(spec["imgsz"])
+def load_model(model_dir=None):
+    model_dir = Path(model_dir) if model_dir else MODEL_DIR
     if not model_dir.exists():
         print(f"HATA: Model bulunamadi: {model_dir}")
+        print("rescuenet_seg_v1_ncnn_model/ klasorunu ayni dizine veya models/ altina koy.")
         sys.exit(1)
-    print(f"Model yukleniyor: {describe(spec) if spec else model_dir}")
+    print(f"Model yukleniyor: {model_dir}")
     return YOLO(str(model_dir), task="segment")
 
 
 # ─── Inference Temel Fonksiyonlari ──────────────────────────────────────────
 
-def preprocess(img):
-    """Merkezi kare crop. (kare_img, 512x512_infer) doner."""
-    h, w = img.shape[:2]
-    side = min(h, w)
-    y0, x0 = (h - side) // 2, (w - side) // 2
-    sq = img[y0:y0 + side, x0:x0 + side]
-    small = cv2.resize(sq, (INFER_SIZE, INFER_SIZE))
-    return sq, small
-
-
 def get_masks(results, h, w):
-    """Her sinif icin (h, w) boyutunda binary mask doner."""
-    masks = {0: np.zeros((h, w), dtype=np.uint8),
-             1: np.zeros((h, w), dtype=np.uint8)}
-    r = results[0]
-    if r.masks is None:
-        return masks
-    for i, cls in enumerate(r.boxes.cls):
-        cls_id = int(cls)
-        if cls_id not in masks:
-            continue
-        m = r.masks.data[i].cpu().numpy()
-        m_up = cv2.resize(m, (w, h))
-        masks[cls_id] = np.maximum(masks[cls_id], (m_up > 0.5).astype(np.uint8))
-    return masks
-
-
-def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
-    """
-    Traversable maskinden:
-      - open_path  : 1=sol  2=orta  3=sag  (None=tespit yok)
-      - confidence : [0,1]
-      - waypoints  : [(x,y), ...] alt→ust, goruntu koordinatlari
-    """
-    if blocked_mask is not None:
-        return analyze_safe_path(trav_mask, blocked_mask, n_waypoints=n_waypoints)
-
-    h, w = trav_mask.shape
-
-    k_open  = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
-    k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
-    clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN,  k_open)
-    clean = cv2.morphologyEx(clean,     cv2.MORPH_CLOSE, k_close)
-
-    if clean.sum() == 0:
-        return None, 0.0, []
-
-    top = clean[:int(h * 0.4), :]
-    thirds = [
-        int(top[:, :w // 3].sum()),
-        int(top[:, w // 3:2 * w // 3].sum()),
-        int(top[:, 2 * w // 3:].sum()),
-    ]
-    total = sum(thirds)
-    if total == 0:
-        thirds = [
-            int(clean[:, :w // 3].sum()),
-            int(clean[:, w // 3:2 * w // 3].sum()),
-            int(clean[:, 2 * w // 3:].sum()),
-        ]
-        total = sum(thirds)
-
-    if total == 0:
-        return None, 0.0, []
-
-    open_path  = int(np.argmax(thirds)) + 1
-    confidence = round(thirds[open_path - 1] / total, 3)
-
-    dist = cv2.distanceTransform(clean, cv2.DIST_L2, 5)
-    waypoints = []
-    for i in range(n_waypoints - 1, -1, -1):
-        y0 = i * h // n_waypoints
-        y1 = (i + 1) * h // n_waypoints
-        band = dist[y0:y1, :]
-        if band.max() > 0.5:
-            ly, lx = np.unravel_index(band.argmax(), band.shape)
-            waypoints.append((int(lx), int(y0 + ly)))
-
-    return open_path, confidence, waypoints
+    """Her sinif icin (h, w) boyutunda binary mask doner.
+    Ucuncu kopya silindi — rpi_inference.get_masks'e delege eder (identik davranis)."""
+    return _get_masks_paylasilan(results, h, w)
 
 
 # ─── Gorsel Cizim ───────────────────────────────────────────────────────────
@@ -246,14 +172,16 @@ def _infer_frame(model, img, conf):
     Tek kare icin tam pipeline.
     Returns: (vis, ika_map_or_None, open_path, path_conf, waypoints, orig_h, orig_w)
     """
-    sq, small = preprocess(img)
-    orig_h, orig_w = sq.shape[:2]
+    # Uretim hatti ile birebir ayni: merkez crop yok, tam goruntu letterbox
+    # ile kare tuvale konur ve dolgu bolgesindeki maskeler sonradan temizlenir.
+    tuval, small, icerik = _preprocess(img)
+    orig_h, orig_w = tuval.shape[:2]
 
     results    = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
-    masks      = get_masks(results, orig_h, orig_w)
-    open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
+    masks      = _maskeleri_icerige_kirp(get_masks(results, orig_h, orig_w), icerik)
+    open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
 
-    vis = draw_masks(sq, masks)
+    vis = draw_masks(tuval, masks)
 
     direction = {1: "SOL", 2: "ORTA", 3: "SAG"}.get(open_path, "?")
     if open_path:
@@ -341,7 +269,7 @@ def run_video(model, path_str, conf, save=True):
     src_fps  = cap.get(cv2.CAP_PROP_FPS) or 30.0
     src_w    = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     src_h    = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    side     = min(src_w, src_h)
+    yan      = max(src_w, src_h)
 
     writer = None
     out_path = None
@@ -349,7 +277,7 @@ def run_video(model, path_str, conf, save=True):
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         out_path = RESULTS_DIR / f"{path.stem}_result.mp4"
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        writer = cv2.VideoWriter(str(out_path), fourcc, src_fps, (side, side))
+        writer = cv2.VideoWriter(str(out_path), fourcc, src_fps, (yan, yan))
 
     print(f"Video: {path.name}  {src_w}x{src_h}  {src_fps:.1f}fps  {total_frames} kare")
     if save:
@@ -461,8 +389,6 @@ def run_test(model, images_dir, conf, labels_file=None):
 
     for img_path in files:
         prompt_id = img_path.stem.upper()
-        if prompt_id not in labels and prompt_id.isdigit():
-            prompt_id = f"P{int(prompt_id):03d}"
         if prompt_id not in labels:
             print(f"{prompt_id:6}  label yok — atlandi")
             continue
@@ -494,18 +420,13 @@ def run_test(model, images_dir, conf, labels_file=None):
                 correct_tricky += 1
                 correct_total  += 1
 
-        results_log.append({
-            "id": prompt_id, "file": img_path.name, "type": label["type"],
-            "expected": expected, "predicted": open_path,
-            "confidence": path_conf, "correct": is_correct,
-            "trick": trick, "resolution": f"{ow}x{oh}",
-        })
-
         pred_str = str(open_path) if open_path else "?"
         dim_str  = f"{ow}x{oh}"
         print(f"{prompt_id:6} {img_type:8} {expected:<10} {pred_str:<10} {path_conf:<8.2f} {symbol:<6} {dim_str:<12} {trick}")
 
-    total = len(results_log)
+    total = len(results_log) if results_log else (correct_easy + correct_tricky +
+            (count_easy - correct_easy) + (count_tricky - correct_tricky))
+    total = count_easy + count_tricky
 
     if total == 0:
         print("Sonuc yok.")
@@ -518,6 +439,25 @@ def run_test(model, images_dir, conf, labels_file=None):
     if count_tricky:
         print(f"KANDIRMACA(tricky): {correct_tricky}/{count_tricky}  ({100 * correct_tricky / count_tricky:.1f}%)")
     print(f"\nGorsel ciktilar   : {RESULTS_DIR}/")
+
+    # Hile tipine gore breakdown
+    for img_path in files:
+        prompt_id = img_path.stem.upper()
+        if prompt_id not in labels:
+            continue
+        label      = labels[prompt_id]
+        img        = cv2.imread(str(img_path))
+        if img is None:
+            continue
+        _, _, open_path, path_conf, waypoints, oh, ow = _infer_frame(model, img, conf)
+        is_correct = (open_path == labels[prompt_id]["open_road"])
+        results_log.append({
+            "id": prompt_id, "type": label["type"],
+            "expected": label["open_road"], "predicted": open_path,
+            "confidence": path_conf, "correct": is_correct,
+            "trick": label.get("trick") or "-",
+            "resolution": f"{ow}x{oh}",
+        })
 
     trick_stats: dict = {}
     for r in results_log:
@@ -559,18 +499,11 @@ def main():
     grp.add_argument("--camera", action="store_true", help="Canli kamera")
     parser.add_argument("--conf",    type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
     parser.add_argument("--no-save", action="store_true",      help="Video modunda kaydetme")
-    parser.add_argument("--model",   metavar="PATH", help="Registry yerine açık model yolu")
-    parser.add_argument("--profile", choices=["competition", "rpi_ncnn"], default=None,
-                        help="Model profili (varsayılan: registry competition)")
-    parser.add_argument("--no-verify-model", action="store_true",
-                        help="Model SHA-256 doğrulamasını atla (önerilmez)")
+    parser.add_argument("--model",   metavar="PATH", help="Model yolu (.pt veya ncnn klasoru). Varsayilan: models/rescuenet_seg_v1")
     parser.add_argument("--labels",  metavar="JSON", help="Etiket dosyasi (--test ile). Varsayilan: dataset/test_labels.json")
     args = parser.parse_args()
 
-    try:
-        model = load_model(args.model, args.profile, verify=not args.no_verify_model)
-    except ModelRegistryError as exc:
-        parser.error(str(exc))
+    model = load_model(args.model)
 
     if args.test:
         run_test(model, args.test, args.conf, args.labels)

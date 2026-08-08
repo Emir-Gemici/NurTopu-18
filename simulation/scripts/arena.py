@@ -31,9 +31,6 @@ SCENARIOS = ("kolay", "orta", "zor")
 HARITA_N  = 5              # üretilen gerçekçi harita sayısı (--map 1..5)
 
 ROAD_LABEL = {1: "sol", 2: "orta", 3: "sag"}
-# Üç HTAB zonunun Gazebo dünya koordinatları. World üretimi ve navigasyon aynı
-# kaynağı kullanır; yerel waypoint'in yanlış zona sürüklenmesi böylece engellenir.
-ZONE_POS = {"kolay": (-90.0, 0.0), "orta": (0.0, 0.0), "zor": (90.0, 0.0)}
 
 # Yol koridor omurgaları (yerel X) — meander bu eksen etrafında salınır
 KORIDOR = {1: -16.0, 2: 0.0, 3: 16.0}

@@ -1,0 +1,180 @@
+# NAVITAS — SÜRÜ İLETİŞİM VE ÇAKIŞMA ÖNLEME PROTOKOLÜ
+
+> Anayasa: `CLAUDE.md` · Sözleşmeler: `CONTRACTS.md` · Kapılar: `TEST_SPECS.md`
+> Bu dosya **kimin nereye yazabileceğini** ve **çakışmanın nasıl önlendiğini** tanımlar.
+
+---
+
+## 1. Sürü kadrosu
+
+| # | Ajan | Rol | Yöneten | Sistem prompt'u |
+|---|---|---|---|---|
+| 1 | **Claude 1** (Opus 5) | Başmimar, araştırmacı, denetçi | Kullanıcı | `CLAUDE.md` |
+| 2 | **Codex 1** | Amele kodlayıcı | Claude 1 | `CODEX_WORKERS.md` |
+| 3 | **Codex 2** | Amele kodlayıcı (Codex 1 ile **eş yetkili yedek**) | Claude 1 | `CODEX_WORKERS.md` |
+| 4 | **gpt-oss-120b** MXFP4 (yerel) | Red team, debugger, insan raporlayıcı | Claude 1 | `REDTEAM.md` |
+| 5 | **Qwen3-Coder-Next Q6_K** (yerel) | Temizlik ve refactoring | Claude 1 | `QWEN_CLEANUP.md` |
+| 6 | Claude 2 (Joker) | — | **Kullanıcı (manuel)** | bu protokolün dışında |
+| 7 | Gemini 3.6 Flash | — | **Kullanıcı (manuel)** | bu protokolün dışında |
+| 8 | Qwopus 35B | — | **Kullanıcı (manuel)** | bu protokolün dışında |
+
+**6–8 numaralı ajanlara Claude 1 müdahale etmez.** Onların ürettiği iş repoya girerse
+Claude 1 yalnız **denetler**, yönlendirmez.
+
+⚠ **4 ve 5 numaralı yerel modeller ASLA aynı anda yüklenmez.** Roller zaten ardışıktır
+ve makine ikisini birden kaldırmıyor. Donanım ölçümleri ve çalıştırma ayarları:
+`LOCAL_LLM.md`.
+
+---
+
+## 2. Dosya yazma matrisi
+
+`Y` = yazabilir · `E` = yalnız **ekleyebilir** (mevcut satırı değiştiremez) · `D` = yalnız durum satırı · `—` = salt okuma
+
+| Yol | Claude 1 | Codex 1/2 | Red team | Qwen3-Coder |
+|---|---|---|---|---|
+| `CLAUDE.md`, `AGENTS.md`, `CONTRACTS.md`, `ARCHITECT_PLAN.md`, `RESEARCH_NOTES.md`, `TEST_SPECS.md` | **Y** | — | — | — |
+| `CODEX_WORKERS.md`, `REDTEAM.md`, `QWEN_CLEANUP.md`, `LOCAL_LLM.md` | **Y** | — | — | — |
+| `TASK_QUEUE.md` | **Y** | **D** | — | **D** |
+| `REVIEW_LOG.md` | **E** | **E** | **E** | **E** |
+| `HANDOFF.md` | **Y** | **Y** | **Y** | **Y** |
+| `codes/`, `comms/`, `simulation/`, `scripts/`, `drone/` | *(madde 7 istisnası)* | **Y** | — | **Y** |
+| `tests/` | *(istisna)* | **Y** | — | **Y** |
+| `models/`, `dataset/`, `data/`, `results/` | — | **Y** | — | — |
+| `auto_orchestrator.py`, `.codexrules` | **Y** | **Y** (görevle) | — | — |
+| Kullanıcının belgeleri (`rapor/`, `*.docx`, `*.pdf`, `*.jpeg`, `*.mp4`) | — | — | — | — |
+
+### Geçici rol devri
+
+Bir ajan kotada veya erişilemez durumdayken **kullanıcı** başka bir ajana onun rolünü
+geçici olarak verebilir. Devralan ajan, devraldığı rolün yazma yetkilerini **o görev
+boyunca** kullanır — matris satırı değişmez, yetki **görev bazında** genişler.
+
+⚠ **Devralan kendi ürettiği işi kendi denetleyemez.** Red team modeli amele rolünde
+kod yazarsa o iş `PENDING_REDTEAM_REVIEW`'a **girmez** (kendi kendini onaylamış olurdu);
+doğrudan `[STATUS: READY_FOR_REVIEW]` olur ve denetimi **Claude 1** yapar.
+Aynı model o kodu ileride red team olarak da denetleyemez — bağımsızlık kalıcı olarak kaybolur.
+
+Kayıt biçimi, görev satırının altına:
+`- **Rol devri:** <tarih> · <ajan> ← <rol> · sebep: <ne> · denetim: <kim>`
+
+**Mutlak yasaklar (istisnasız, herkes için):**
+- Kullanıcının dosyalarını **silmek**.
+- `REVIEW_LOG.md` içindeki mevcut kayıtları **değiştirmek veya silmek** — yalnız sona eklenir.
+- Başka bir ajanın `[IN_PROGRESS]` görevine dokunmak (bkz. §3).
+- İzinsiz `git commit` / `git push`.
+
+---
+
+## 3. Kilit protokolü
+
+**Kilit birimi görevdir, dosya değil.** `TASK_QUEUE.md` içindeki durum işareti kilittir.
+
+```
+[ ]                          serbest — alınabilir
+[IN_PROGRESS: <AI_Adı>]      KİLİTLİ — sahibi dışında kimse dokunamaz
+[STATUS: PENDING_REDTEAM_REVIEW]    Qwen çıktısı, red team onayı bekliyor
+[STATUS: READY_FOR_REVIEW]   mimarın denetimini bekliyor
+[x]                          kapatıldı (mimar denetiminden geçti)
+```
+
+### İş alma
+1. `TASK_QUEUE.md`'yi oku, **ilk** `[ ]` görevi seç.
+2. Durumu `[IN_PROGRESS: <Senin_Adın>]` yap ve **hemen kaydet** — kaydetmeden kod yazma.
+3. Görevin dokunduğu dosyalar o andan itibaren senin sorumluluğundadır.
+
+### Çakışma önleme
+- Bir görev `[IN_PROGRESS]` iken, o görevin **dosyalarına** başka ajan yazamaz.
+- İki görev aynı dosyaya dokunuyorsa, ikincisi birincisi kapanana kadar **alınmaz**.
+- Kuyruk yazarken Claude 1 bunu gözetir; aynı dosyaya dokunan görevleri **ardışık** dizer.
+
+### ⚠ Bayat kilit serbest bırakma
+Bir ajan kotaya takılır veya çökerse görevi sonsuza kadar kilitli kalır.
+**Bu gerçekten yaşandı** (Codex-1 token'ı biterken T14 zimmetli kaldı).
+
+- Kilidi **yalnız kullanıcı** veya **kullanıcının açık onayıyla Claude 1** serbest bırakır.
+- Serbest bırakırken kilidin altına şu satır eklenir:
+  `- **Kilit serbest bırakıldı:** <tarih> · önceki sahip <AI> · sebep: <kota/çökme> · yarım kalan iş: <ne>`
+- Kilit alındığında yarım kalan işin **durumu doğrulanır**: genel kapı koşulur, çalışma ağacı bozuksa önce onarılır.
+
+---
+
+## 4. Yedekli çalışma (Codex 1 ↔ Codex 2)
+
+Codex 1 ve Codex 2 **eş yetkilidir**. Biri kotaya takıldığında diğeri devralır:
+
+1. Devralan ajan `HANDOFF.md`'yi okur.
+2. Genel kapıyı koşar (`codes/test_rota_sentetik.py` → 15/15). Düşüyorsa **önce onu onarır**.
+3. Bayat kilit varsa §3'e göre serbest bırakılmasını **ister** — kendi başına açmaz.
+4. Sonraki `[ ]` görevi alır.
+
+**Aynı görevi iki Codex asla paralel almaz.** Kuyruk tek sıradır; kilit tektir.
+
+---
+
+## 5. İş akışı zinciri
+
+```
+        Claude 1  ──►  TASK_QUEUE.md  ──►  Codex 1 / Codex 2
+        (mimar)         (tek kuyruk)          (kod yazar)
+            ▲                                      │
+            │                                      ▼
+            │                          [STATUS: READY_FOR_REVIEW]
+            │                                      │
+            └──────── denetim ◄────────────────────┘
+                         │
+                         ├─ kapı geçti ──► [x]
+                         └─ kapı düştü ──► [ ] + REVIEW_LOG.md kaydı
+
+
+   Bulut kotası bitti ──► Qwen3-Coder (refactoring)
+                                 │
+                                 ▼
+                    [STATUS: PENDING_REDTEAM_REVIEW]
+                                 │
+                                 ▼
+                 MODEL TAKASI (Qwen boşalt → gpt-oss yükle)
+                                 │
+                                 ▼
+                       gpt-oss-120b (red team)
+                                 │
+                     ┌───────────┴───────────┐
+                  onaylandı              reddedildi
+                     │                       │
+                     ▼                       ▼
+          [STATUS: READY_FOR_REVIEW]   [ ] + REVIEW_LOG.md
+```
+
+**Qwen doğrudan master'a iş veremez.** Red team onayı zorunlu geçittir.
+
+⚠ **Geçit bir model takası içerir.** İki yerel model aynı anda yüklenemez.
+*Ölçüldü:* eşzamanlı yükleme makineyi %99,3 doluluğa itiyor, verimi **3,1× düşürüyor**
+ve saniyede 77 bin hard fault üretiyor (`LOCAL_LLM.md` §3). Takas ~1–3 dk sürdüğü için
+iş **toplu** yapılır: Qwen N görevi bitirir → takas → red team N görevi birden denetler.
+Görev başına takas **yapılmaz**.
+
+---
+
+## 6. İnsan müdahalesi
+
+- Fiziki insan emeği gerektiren işleri **yalnız Claude 1** kuyruğa ekler (anayasa madde 9).
+- Etiket biçimi ve tuzakları: bkz. `CONTRACTS.md` § Orkestratör sözleşmesi.
+  **Özet:** tek satır · metin içinde `]` **olamaz** · bu etiket `TASK_QUEUE.md` içinde
+  yalnız **gerçek görev satırlarında** geçebilir. Düz yazıda örnek olarak yazılırsa
+  orkestratör onu **hayalet görev** sanıp operatörü bloke eder (bu tuzağa bir kez düşüldü).
+- Diğer ajanlar bu etiketli satırlara **dokunmaz**, onları **görev olarak almaz**.
+
+---
+
+## 7. Raporlama sözleşmesi
+
+Her ajan işini bitirdiğinde şunu üretir:
+
+| Ajan | Nereye | Ne |
+|---|---|---|
+| Codex 1/2 | `TASK_QUEUE.md` | Kapı komutu + **gerçek çıktı** + çıkış kodu |
+| gpt-oss-120b (red team) | `REVIEW_LOG.md` | Kanıtlı bulgular + **HUMAN REPORT** (3 madde) |
+| Qwen3-Coder | `TASK_QUEUE.md` | Değişiklik özeti + 15/15 kanıtı + `PENDING_REDTEAM_REVIEW` |
+| Claude 1 | kullanıcıya | Denetim sonucu + hangi kapıların **gerçekten** koşulduğu |
+
+**Ortak kural:** Çalıştırılmayan bir kapı "geçti" sayılmaz. Kanıt = komut + gerçek çıktı + çıkış kodu.

@@ -28,10 +28,16 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-from model_registry import ModelRegistryError, describe, resolve_model
-from path_planning import analyze_safe_path
-
 _here = Path(__file__).parent
+MODEL_DIR = next(
+    (p for p in [
+        _here / "best_ncnn_model",
+        _here.parent / "models" / "best_ncnn_model",
+        _here / "rescuenet_seg_v1_ncnn",
+        _here.parent / "models" / "rescuenet_seg_v1_ncnn",
+    ] if p.exists()),
+    _here / "best_ncnn_model",
+)
 RESULTS_DIR = _here / "results"
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp"}
 SUPPORTED_VIDEO_EXT = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
@@ -43,30 +49,24 @@ CLASS_COLORS = {
 }
 
 
-def load_model(profile=None, model_path=None, verify=True):
-    """Load an explicit model or a verified registry profile."""
-    global INFER_SIZE
-    if model_path:
-        path = Path(model_path)
-        if not path.exists():
-            raise ModelRegistryError(f"model bulunamadı: {path}")
-        spec = {"model_id": path.stem, "backend": "explicit", "imgsz": INFER_SIZE,
-                "sha256": "verification-disabled", "profile": "explicit"}
-    else:
-        path, spec = resolve_model(profile, verify=verify)
-        INFER_SIZE = int(spec["imgsz"])
-    print(f"Model: {describe(spec)}")
-    if spec.get("warning"):
-        print(f"UYARI: {spec['warning']}")
-    return YOLO(str(path), task="segment")
+def load_model():
+    if not MODEL_DIR.exists():
+        print(f"HATA: Model klasoru bulunamadi: {MODEL_DIR}")
+        print("best_ncnn_model/ klasorunu bu scriptle ayni dizine koy.")
+        sys.exit(1)
+    return YOLO(str(MODEL_DIR), task="segment")
 
 
-def get_masks(results, h, w, min_conf=None):
+def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
     """Her sinif icin (h, w) cozunurlugunde binary mask doner.
     min_conf verilirse yalniz guveni >= min_conf tespitler dahil edilir → model DUSUK
-    esikle BIR KEZ kosturulup ayni sonuctan farkli esikler suzulebilir (2. predict yok)."""
-    masks = {0: np.zeros((h, w), dtype=np.uint8),
-             1: np.zeros((h, w), dtype=np.uint8)}
+    esikle BIR KEZ kosturulup ayni sonuctan farkli esikler suzulebilir (2. predict yok).
+
+    sinif_idler: maskesi uretilecek sinif idleri. Varsayilan (0, 1) ESKI DAVRANISIN
+    BIREBIR AYNISIDIR — hicbir mevcut cagri yeri degismez. Costmap hatti ek engel
+    siniflari icin genisletir (or. COCO araba/kamyon: sinif_idler=(0,1,2,5,7)).
+    Eskiden {0,1} sabit kodluydu ve id >= 2 olan her maske SESSIZCE atiliyordu."""
+    masks = {int(c): np.zeros((h, w), dtype=np.uint8) for c in sinif_idler}
     r = results[0]
     if r.masks is None:
         return masks
@@ -95,7 +95,8 @@ def draw_masks(image_bgr, masks):
     return cv2.addWeighted(vis, 0.5, overlay, 0.5, 0)
 
 
-def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
+def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
+                 min_area_ratio=0.01, *, icerik=None):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
@@ -103,15 +104,34 @@ def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
       3. Yatay bantlarda alt→ust waypoint ornekleme
       4. Ust %40'a bakarak hangi ucte birden cikildigi → open_path
 
+    min_area_ratio: ana koridor letterbox'taki gercek icerik alaninin bu
+      oranindan KUCUKse karar VERME (None doner). Dusuk-esik fallback'te
+      gurultuden yol uydurmayi onler — yanlis yonlendirmektense "tespit yok"
+      demek gorev guvenligi geregi.
+
+    icerik: letterbox tuvalindeki gercek goruntu dikdortgeni ``(x0,y0,w,h)``.
+      Sol/orta/sag sinirlari kare tuvalden degil bu yatay icerik araligindan
+      hesaplanir. ``None`` geriye uyumlu olarak tum maskeyi icerik sayar.
+
     Returns:
-      open_path  : 1=sol, 2=orta, 3=sag (None = tespit yok)
+      open_path  : 1=sol, 2=orta, 3=sag (None = tespit yok / alan yetersiz)
       confidence : acik yol piksel orani (0.0-1.0)
       waypoints  : [(x, y), ...] alt→ust sirali, goruntu koordinatlari
+      (return_clean=True ise 4. eleman: kararin kullandigi TEMIZ koridor
+       maskesi — gorsellestirme ham maske yerine bunu basmali)
     """
-    if blocked_mask is not None:
-        return analyze_safe_path(trav_mask, blocked_mask, n_waypoints=n_waypoints)
-
     h, w = trav_mask.shape
+    if icerik is None:
+        icerik_x0, icerik_y0, icerik_w, icerik_h = 0, 0, w, h
+    else:
+        icerik_x0 = max(0, min(w, int(icerik[0])))
+        icerik_y0 = max(0, min(h, int(icerik[1])))
+        icerik_w = max(0, min(w - icerik_x0, int(icerik[2])))
+        icerik_h = max(0, min(h - icerik_y0, int(icerik[3])))
+        if icerik_w == 0 or icerik_h == 0:
+            if return_clean:
+                return None, 0.0, [], np.zeros_like(trav_mask)
+            return None, 0.0, []
 
     k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
     k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
@@ -119,6 +139,8 @@ def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
     clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
 
     if clean.sum() == 0:
+        if return_clean:
+            return None, 0.0, [], clean
         return None, 0.0, []
 
     # EN BUYUK bagli bileseni ANA KORIDOR say → kopuk gurultu bloblari lane kararini
@@ -128,6 +150,12 @@ def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
         largest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
         clean = (labels == largest).astype(np.uint8)
 
+    # ALAN DENETIMI: dolgu degil, gercek letterbox icerigi paydaya girer.
+    if clean.sum() < min_area_ratio * icerik_w * icerik_h:
+        if return_clean:
+            return None, 0.0, [], np.zeros_like(clean)
+        return None, 0.0, []
+
     # Acik yol = koridorun HEDEFE (ust) ulastigi taraf. Ust banttaki YATAY MERKEZ
     # (centroid) -> lane. Piksel-argmax yerine centroid: girdi cozunurlugu/kalitesi
     # degisince sol/orta/sag ziplamasini onler (kararli, boyuttan bagimsiz).
@@ -136,9 +164,12 @@ def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
     band = ys <= ymin + 0.30 * (ymax - ymin + 1)   # koridorun ust %30'u
     bx = xs[band] if band.any() else xs
     cx = float(bx.mean())
-    open_path = 1 if cx < w / 3 else (2 if cx < 2 * w / 3 else 3)
+    sinir_1 = icerik_x0 + icerik_w / 3.0
+    sinir_2 = icerik_x0 + 2.0 * icerik_w / 3.0
+    open_path = 1 if cx < sinir_1 else (2 if cx < sinir_2 else 3)
     # Guven: ust banttaki piksellerin secilen ucte-bire dusen orani (netlik olcusu).
-    lo, hi = (open_path - 1) * w / 3.0, open_path * w / 3.0
+    lo = icerik_x0 + (open_path - 1) * icerik_w / 3.0
+    hi = icerik_x0 + open_path * icerik_w / 3.0
     in_third = int(((bx >= lo) & (bx < hi)).sum())
     confidence = round(in_third / max(1, bx.size), 3)
 
@@ -154,6 +185,8 @@ def analyze_path(trav_mask, blocked_mask=None, n_waypoints=8):
             ly, lx = np.unravel_index(band.argmax(), band.shape)
             waypoints.append((int(lx), int(y0 + ly)))
 
+    if return_clean:
+        return open_path, confidence, waypoints, clean
     return open_path, confidence, waypoints
 
 
@@ -255,13 +288,40 @@ def normalize_light(img):
 
 
 def _preprocess(img):
-    """Merkezi kare crop + isik normalizasyonu. (orijinal_kare, 512x512_infer) doner."""
+    """Kare LETTERBOX (dolgu) + isik normalizasyonu.
+    (kare_tuval, 512x512_infer, icerik_dikdortgeni) doner.
+
+    NEDEN CROP DEGIL PAD: onceki surum MERKEZI KARE CROP yapiyordu. 1024x576 bir
+    drone karesinde bu x=[224,800] araligini birakip genisligin %56'sini ATIYORDU
+    → soldaki ve sagdaki guzergah, karar verilmeden once yok oluyordu. Sartname
+    HTAB icinde 3 guzergah tanimliyor ve gunun birinde SOL veya SAG acik olabilir;
+    o yuzden kenarlari atmak gorevi dogrudan kaybettirir.
+    Ayni cozumu simulation/scripts/iha_perceive.py:52 zaten uyguluyordu.
+
+    icerik_dikdortgeni = (x0, y0, w, h): gercek goruntunun tuval icindeki yeri.
+    Dolgu bolgesinden gelen sahte tespitleri elemek icin
+    _maskeleri_icerige_kirp() ile birlikte kullanilir.
+    """
     h, w = img.shape[:2]
-    side = min(h, w)
-    y0, x0 = (h - side) // 2, (w - side) // 2
-    sq = normalize_light(img[y0:y0 + side, x0:x0 + side])
-    small = cv2.resize(sq, (INFER_SIZE, INFER_SIZE))
-    return sq, small
+    # Isik normalizasyonu DOLGUDAN ONCE: gri dolgu LAB ortalamasini kaydirip
+    # is_dark() kararini bozardi.
+    norm = normalize_light(img)
+    yan = max(h, w)
+    tuval = np.full((yan, yan, 3), 114, dtype=np.uint8)
+    x0, y0 = (yan - w) // 2, (yan - h) // 2
+    tuval[y0:y0 + h, x0:x0 + w] = norm
+    small = cv2.resize(tuval, (INFER_SIZE, INFER_SIZE))
+    return tuval, small, (x0, y0, w, h)
+
+
+def _maskeleri_icerige_kirp(masks, icerik):
+    """Letterbox dolgusuna dusen maske pikselleri sifirlanir (sahte tespit onlemi)."""
+    x0, y0, w, h = icerik
+    for k in list(masks):
+        kirpik = np.zeros_like(masks[k])
+        kirpik[y0:y0 + h, x0:x0 + w] = masks[k][y0:y0 + h, x0:x0 + w]
+        masks[k] = kirpik
+    return masks
 
 
 def _draw_waypoints(vis, waypoints):
@@ -320,13 +380,14 @@ def run_image(model, path_str, conf):
             print(f"Okunamadi: {img_path}")
             continue
 
-        sq, small = _preprocess(img)
+        sq, small, icerik = _preprocess(img)
         orig_h, orig_w = sq.shape[:2]
 
         results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
         masks = get_masks(results, orig_h, orig_w)
+        masks = _maskeleri_icerige_kirp(masks, icerik)
 
-        open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
+        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -374,7 +435,7 @@ def run_video(model, path_str, conf, save=True):
     src_fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     src_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     src_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    side = min(src_w, src_h)
+    side = max(src_w, src_h)   # letterbox KARE tuval — crop degil, pad (bkz. _preprocess)
 
     writer = None
     if save:
@@ -395,7 +456,7 @@ def run_video(model, path_str, conf, save=True):
             break
 
         frame_idx += 1
-        sq, small = _preprocess(frame)
+        sq, small, icerik = _preprocess(frame)
         orig_h, orig_w = sq.shape[:2]
 
         t0 = time.perf_counter()
@@ -405,7 +466,8 @@ def run_video(model, path_str, conf, save=True):
             fps_buf.pop(0)
 
         masks = get_masks(results, orig_h, orig_w)
-        open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
+        masks = _maskeleri_icerige_kirp(masks, icerik)
+        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -454,7 +516,7 @@ def run_camera(model, conf):
             break
 
         frame = cv2.flip(frame, 1)
-        sq, small = _preprocess(frame)
+        sq, small, icerik = _preprocess(frame)
         orig_h, orig_w = sq.shape[:2]
 
         t0 = time.perf_counter()
@@ -464,7 +526,8 @@ def run_camera(model, conf):
             fps_buf.pop(0)
 
         masks = get_masks(results, orig_h, orig_w)
-        open_path, path_conf, waypoints = analyze_path(masks[0], masks[1])
+        masks = _maskeleri_icerige_kirp(masks, icerik)
+        open_path, path_conf, waypoints = analyze_path(masks[0], icerik=icerik)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -493,22 +556,13 @@ def main():
     parser.add_argument("--camera", action="store_true", help="Canli kamera")
     parser.add_argument("--no-save", action="store_true", help="Video modunda ciktiyi kaydetme")
     parser.add_argument("--conf", type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
-    parser.add_argument("--profile", choices=["competition", "rpi_ncnn"],
-                        default=None, help="config/model_registry.json model profili")
-    parser.add_argument("--model", metavar="PATH",
-                        help="registry yerine açık model yolu (deneysel kullanım)")
-    parser.add_argument("--no-verify-model", action="store_true",
-                        help="registry SHA-256 kontrolünü atla (önerilmez)")
     args = parser.parse_args()
 
     if not any([args.fps, args.image, args.video, args.camera]):
         parser.print_help()
         return
 
-    try:
-        model = load_model(args.profile, args.model, verify=not args.no_verify_model)
-    except ModelRegistryError as exc:
-        parser.error(str(exc))
+    model = load_model()
 
     if args.fps:
         run_fps(model)

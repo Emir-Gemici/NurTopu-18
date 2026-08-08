@@ -154,14 +154,19 @@ record_one() {
             elif [ "$route_attempt" -le "$route_drop_n" ]; then
                 echo "[rec] haberleşme stresi: rota paketi #$route_attempt deterministik düşürüldü"
             else
-                cp -f "$L/route.txt" /tmp/navitas_route
-                echo "[rec] MODEL rotası deneme #$route_attempt ile teslim edildi → İKA model haritasını sürecek"
-                if [ "$simt" -ge "$land_t" ] 2>/dev/null; then
-                    touch "$L/COMMS_LATE"
-                    echo "[rec] GÖREV İHLALİ: rota İHA inişinden sonra teslim edildi (sim=${simt}, iniş=${land_t})"
+                # Host rota dosyasini atomik yayinlar; plugin yarim dosya okumaya baslamasin.
+                route_tmp="/tmp/navitas_route.$$"
+                if cp -f "$L/route.txt" "$route_tmp" && mv -f "$route_tmp" /tmp/navitas_route; then
+                    echo "[rec] MODEL rotası deneme #$route_attempt ile teslim edildi → İKA model haritasını sürecek"
+                    if [ "$simt" -ge "$land_t" ] 2>/dev/null; then
+                        touch "$L/COMMS_LATE"
+                        echo "[rec] GÖREV İHLALİ: rota İHA inişinden sonra teslim edildi (sim=${simt}, iniş=${land_t})"
+                    else
+                        touch "$L/COMMS_BEFORE_LANDING"
+                        echo "[rec] haberleşme sırası uygun: rota İHA havadayken teslim edildi"
+                    fi
                 else
-                    touch "$L/COMMS_BEFORE_LANDING"
-                    echo "[rec] haberleşme sırası uygun: rota İHA havadayken teslim edildi"
+                    rm -f "$route_tmp"
                 fi
             fi
         fi
@@ -198,7 +203,7 @@ record_one() {
     fi
 
     # MODEL kararı (host iha_haritala.py'nin SİM TARAMASINDAN verdiği gerçek karar)
-    local mlabel="YOK" mconf="?" mroad=0 m_ika="IKA rotasi FALLBACK (ground-truth; model rota veremedi)"
+    local mlabel="YOK" mconf="?" mroad=0 m_ika="IKA GUVENLI DURMA (dinamik model rotasi yok)"
     if [ -f "$L/detection.json" ]; then
         mlabel=$(python3 -c "import json;print((json.load(open('$L/detection.json')).get('label') or 'yok').upper())" 2>/dev/null); mlabel=${mlabel:-YOK}
         mconf=$(python3 -c "import json;c=json.load(open('$L/detection.json')).get('conf');print(c if c is not None else '?')" 2>/dev/null); mconf=${mconf:-?}

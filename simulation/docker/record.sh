@@ -66,8 +66,8 @@ if [ -n "$SINGLE" ]; then OUTNAME="navitas_${SINGLE}.mp4"; else OUTNAME="navitas
 # tarama bitince (SCAN_DONE) izleyici ORTOMOZAİK kurar, GERÇEK modeli (best.pt) sim
 # taramasında koşar, İKA rotasını route.txt'ye yazar; konteyner rotayı İKA'ya verir.
 # Model yanılırsa İKA yanlış yola gider — sonuç DÜRÜSTTÜR (eski akıştaki gibi dünya
-# modelin kararına göre KURULMAZ). .venv yoksa İKA ground-truth fallback ile sürer
-# (plugin loglar; model başarısı sayılmaz).
+# modelin kararına göre KURULMAZ). .venv/model rotası yoksa İKA güvenli durur;
+# SDF'deki ground-truth waypoint'lere düşülmez.
 VENV="$REPO/.venv/bin/python"
 WATCHER_PID=""
 if [ -x "$VENV" ]; then
@@ -76,7 +76,7 @@ if [ -x "$VENV" ]; then
         > "$VDIR/iha_haritala.log" 2>&1 &
     WATCHER_PID=$!
 else
-    echo "[record] (.venv yok — model koşamaz; İKA ground-truth FALLBACK ile sürecek)"
+    echo "[record] (.venv yok — model koşamaz; İKA dinamik rota olmadan GÜVENLİ DURUR)"
 fi
 
 echo ""

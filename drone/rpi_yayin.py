@@ -21,6 +21,9 @@ Yerel test (kamerasiz, herhangi bir makinede):
   python3 drone/rpi_yayin.py --sim test_images/ai   # klasor/video/gorsel kaynak
 
 Gereksinim: RPi OS Bookworm, python3-picamera2, ffmpeg, ultralytics (README_KURULUM.md)
+
+NEDEN: AI yayininda her tekil cikarim hatasi yalniz o kareyi atlamali; donus
+sozlesmesindeki bir uyusmazlik tum yayini sessizce sifir kareye dusurmemelidir.
 """
 
 import argparse
@@ -381,7 +384,10 @@ def _ai_bir_kare(kamera, model, _infer, draw_masks, conf, imgsz, kalite):
     bgr = kamera.kare_al()
     cekim = time.time()
     t1 = time.time()
-    content, masks, open_path, guven, wps = _infer(bgr, model, conf, imgsz)
+    # iha_perceive._infer son eleman olarak karanlik-kare kazananini da doner.
+    # Yayin overlay'i bu tani bilgisini kullanmaz; yine de arayuzu tam acmak
+    # ValueError'un her karede yutulup sifir kare uretilmesini engeller.
+    content, masks, open_path, guven, wps, _kazanan = _infer(bgr, model, conf, imgsz)
     cikarim_ms = (time.time() - t1) * 1000
 
     vis = draw_masks(content, masks)

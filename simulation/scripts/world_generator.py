@@ -29,7 +29,7 @@ from arena import (UB, UB_HALF, HTAB, HTAB_HALF, dist_to_path, dist_to_all_paths
 from scenario_profiles import available_profiles, load_profile
 
 ZONE_ORDER = ["kolay", "orta", "zor"]
-ZONE_POS = arena.ZONE_POS
+ZONE_POS = {"kolay": (-90.0, 0.0), "orta": (0.0, 0.0), "zor": (90.0, 0.0)}
 # Seviye ayırt edici renk (zon sınır şeridi + İKA başlangıç halkası)
 ZONE_COLOR = {"kolay": (0.10, 0.75, 0.20), "orta": (0.90, 0.70, 0.10), "zor": (0.85, 0.15, 0.15)}
 

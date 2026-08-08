@@ -3,11 +3,12 @@ Navitas — Hakem/YKS ekranı logu (model çıktısı + görev telemetrisi simü
 
 Gerçek hayatta YKS monitöründe hakemin gördüğü her şey: İHA tespiti (MODEL çıktısı:
 açık yol + güven), comms aktarımı, hakem onayı, İKA navigasyon ilerlemesi, sonuç + süre.
-Burada GERÇEK comms akışı (UDP loopback) ile üretilir; arena tek kaynak.
+Burada GERÇEK comms akışı (UDP loopback) ile üretilir; İKA yalnız
+``detections.json`` içindeki doğrulanmış dinamik rota varsa hareket eder.
 
 Kullanım:
-  python3 scripts/hakem_log.py --level kolay
-  python3 scripts/hakem_log.py --all --out recordings/v5/hakem_log.txt
+  python3 scripts/hakem_log.py --level kolay --detections recordings/vX/detections.json
+  python3 scripts/hakem_log.py --all --detections recordings/vX/detections.json --out recordings/vX/hakem_log.txt
 """
 import argparse
 import math
@@ -24,18 +25,19 @@ import arena
 from world_generator import ZONE_POS, IKA_SPEED
 from scenario_profiles import available_profiles, load_profile
 from link import UDPLink
-from iha_sender import IhaSender
+from iha_sender import IhaSender, rota_geometrisini_dogrula
 from ika_receiver import IkaReceiver
 from protocol import encode, ack, FrameReader
+from ika_nav import route_to_world_waypoints
 
 # Seviyeye göre gerçekçi model güveni (zor sahnede daha düşük)
 CONF = {"kolay": 0.94, "orta": 0.88, "zor": 0.79}
 
 # Teknik künye (model_analiz.md + şartname + sim parametreleri)
-MODEL_NAME = "navitas_seg_v4_best.pt (YOLOv8s-seg, SHA 6b93f200…)"
-MODEL_IMGSZ = 640           # config/model_registry.json competition profili
+MODEL_NAME = "navitas_seg_v2_best.pt (YOLOv8n-seg)"
+MODEL_IMGSZ = 1024          # iha_perceive.CANON (letterbox kare)
 MODEL_CONF_THR = 0.15       # iha_perceive vars. eşik (CONF_FLOOR 0.05 fallback)
-MODEL_MAP = "mask mAP50=0.6751 (blocked 0.4937; RescueNet val)"
+MODEL_MAP = "mask mAP50=0.619 (traversable 0.874 / blocked 0.363)"
 
 
 class Log:
@@ -69,31 +71,42 @@ def _yks(link, stop, box, log):
                 log("YKS/HAKEM", f"tespit ekranda: {m['label'].upper()} (yol {m['road']}) "
                                  f"güven={m['conf']} → HAKEM ONAYI ✓")
                 if addr:
-                    link.send(encode(ack(m["seq"], "yks", m.get("session"))), addr)
+                    link.send(encode(ack(m["seq"], "yks")), addr)
+
+
+def _dinamik_rota(det):
+    """İHA haritasının dünya rotasını OPEN_ROUTE yerel geometriye çevir."""
+    if not det or det.get("road") not in (1, 2, 3) or not det.get("rota"):
+        return None
+    try:
+        rota = [(float(p[0]), float(p[1])) for p in det["rota"]]
+        if len(rota) < 2:
+            return None
+        ref = [round(rota[0][0], 2), round(rota[0][1], 2)]
+        yerel = [[round(x - ref[0], 2), round(y - ref[1], 2)] for x, y in rota]
+        yerel = rota_geometrisini_dogrula(ref, yerel)
+    except (TypeError, ValueError, IndexError):
+        return None
+    return int(det["road"]), float(det.get("conf", 0.0)), ref, yerel
 
 
 def run_level(level, log, det=None, realtime=False, harita_id=1, scan_altitude_m=30.0):
-    # det = İHA modelinin GERÇEK tespiti (detections.json); yoksa ground-truth.
-    if det and det.get("road") in (1, 2, 3):
-        road = det["road"]; conf = det.get("conf", 0.0)
-        src = "best.pt / İHA TARAMA MOZAİĞİ" if det.get("kaynak") == "sim-tarama" else "best.pt"
-    elif det is not None:
-        log.raw("")
-        log.raw(f"  ─────────── SEVİYE: {level.upper()} ───────────")
-        log("ALGI", "ALGILAMA_BASARISIZ — model güvenilir rota üretmedi; "
-                    "ground-truth fallback yasak, görev hareket ettirilmedi")
-        return False
-    else:
-        road = arena.open_road(level, harita_id); conf = CONF.get(level, 0.85); src = "ground-truth"
     log.raw("")
     log.raw(f"  ─────────── SEVİYE: {level.upper()} ───────────")
+    dinamik = _dinamik_rota(det)
+    if dinamik is None:
+        log("MODEL", "Doğrulanmış dinamik A* rota yok → İKA GÜVENLİ DURMA (sabit arena rotası kullanılmadı)")
+        return False
+    road, conf, ref_xy, yerel_wps = dinamik
+    src = "best.pt / İHA TARAMA MOZAİĞİ" if det.get("kaynak") == "sim-tarama" else "best.pt"
 
     ika_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
     yks_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
     ika_port, yks_port = ika_link.port, yks_link.port
     ika = IkaReceiver(ika_link).start()
     stop = threading.Event(); box = {"latest": None}
-    threading.Thread(target=_yks, args=(yks_link, stop, box, log), daemon=True).start()
+    yks_thread = threading.Thread(target=_yks, args=(yks_link, stop, box, log), daemon=True)
+    yks_thread.start()
 
     origin = ZONE_POS.get(level, (0.0, 0.0))
 
@@ -110,7 +123,7 @@ def run_level(level, log, det=None, realtime=False, harita_id=1, scan_altitude_m
     # ── HABERLEŞME KATMANI ──
     sender = IhaSender(UDPLink(bind=("127.0.0.1", 0), timeout=0.1),
                        peers={"ika": ("127.0.0.1", ika_port), "yks": ("127.0.0.1", yks_port)})
-    seq, acked = sender.send_open_route(road, conf)
+    seq, acked = sender.send_open_route(road, conf, waypoints=yerel_wps, ref_xy=ref_xy)
     log("COMMS", f"OPEN_ROUTE(seq={seq}) → SiK Radio V3 433MHz / MAVLink-UDP → "
                  f"ACK: {sorted(acked)} (newline-JSON, RF kaybına karşı tekrar gönderim) | "
                  f"hedef gecikme<100ms, aktarım doğruluğu>%98 (şartname)")
@@ -119,18 +132,18 @@ def run_level(level, log, det=None, realtime=False, harita_id=1, scan_altitude_m
     log("İHA", f"alçalma → PARAŞÜT otonom açıldı → İHA-İB'ye iniş (<7 m/s çöküş)")
 
     # ── İKA PLANLAMA KATMANI (koordinat referans — görü modeli YOK) ──
-    road_rx = (box["latest"] or {}).get("road", road)
+    if ika.latest is None:
+        log("İKA", "Geçerli OPEN_ROUTE alınamadı → GÜVENLİ DURMA")
+        stop.set(); ika.stop(); yks_thread.join(timeout=1)
+        for l in (ika_link, yks_link):
+            l.close()
+        return False
+    road_rx = ika.latest["road"]
     sx, sy, sz = arena.start_xyz(origin, level, harita_id)
     hx, hy, hz = arena.hb_xyz(origin, level, harita_id)
-    # Rota: MODELİN ürettiği harita (iha_haritala → det["rota"], DÜNYA koordinatı).
-    # Yoksa (eski kayıt / model rota verememiş) ground-truth waypoint'e düşülür.
-    if det and det.get("rota"):
-        wps_w = [tuple(p) for p in det["rota"]]
-        rota_src = "İHA MODEL HARİTASI (ortomozaik → piksel→metre)"
-    else:
-        wps_w = [arena.to_world(p, origin)
-                 for p in arena.route_waypoints(road_rx, level, harita_id)]
-        rota_src = "ground-truth fallback"
+    # Rota yalnız İHA'nın costmap doğrulamalı OPEN_ROUTE geometrisinden gelir.
+    wps_w = route_to_world_waypoints(ika.latest)
+    rota_src = "İHA MODEL HARİTASI (ortomozaik → piksel→metre)"
     log("İKA", f"açık yol ALINDI ({arena.ROAD_LABEL[road_rx].upper()}) — görü modeli YOK → "
                f"İHA koordinat haritasıyla nav [{rota_src}]")
     log("İKA", f"referans çerçeve: HTAB origin=({origin[0]:+.1f},{origin[1]:+.1f},0) | "
@@ -174,7 +187,7 @@ def run_level(level, log, det=None, realtime=False, harita_id=1, scan_altitude_m
     else:
         log.raw("    (süre modu KAPALI — süresiz/hızlı sistem)")
 
-    stop.set(); ika.stop()
+    stop.set(); ika.stop(); yks_thread.join(timeout=1)
     for l in (ika_link, yks_link):
         l.close()
     return True

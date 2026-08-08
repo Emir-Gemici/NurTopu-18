@@ -39,15 +39,26 @@ Kullanım:
 import argparse
 import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
+
+for _akim in (sys.stdout, sys.stderr):
+    try:
+        _akim.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(ROOT / "codes"))
 
 from iha_perceive import _infer, _overlay, DEFAULT_MODEL, LABEL   # noqa: E402
+from costmap_path_finder import rota_bul                          # noqa: E402
+from arac_maskesi import ARAC_SINIFLERI, obb_arac_maskesi         # noqa: E402
+from sinif_semasi import (COSTMAP_ENGEL_KATMANLARI,               # noqa: E402
+                          COSTMAP_YOL_KATMANLARI, costmap_katmanlari)
 
 # ── Mozaik sabitleri ──────────────────────────────────────────────────────────
 MOZ_PX   = 1024            # mozaik kenarı (px) — iha_perceive CANON ile aynı → ölçeksiz infer
@@ -56,6 +67,9 @@ MPP      = MOZ_M / MOZ_PX  # metre/piksel (~0.055)
 HFOV     = 1.3             # scan_camera horizontal_fov (models/iha/model.sdf ile AYNI)
 DEFAULT_SCAN_Z = 30.0      # eski kayıt/meta yokluğu için geriye uyumlu varsayılan
 BG_GRI   = 114             # boş mozaik zemini (YOLO letterbox nötr grisi)
+DEFAULT_ARAC_MODEL = ROOT / "yolov8m-obb.pt"
+# ARAC_SINIFLERI artik `codes/arac_maskesi.py`'den import ediliyor (S1).
+# Buradaki yerel kopya import'u GOLGELIYORDU: iki kaynak, sessiz sapma riski.
 
 # Kare filtresi: sadece DÜZ tarama bacakları (kuzey/güney uçuş, yatay kanat).
 # Dönüşlerde İHA 40°'ye dek yatar → kare eğik, mozaiğe koyma.
@@ -159,54 +173,79 @@ def piksel_to_dunya(wps_px, htab_cx, htab_cy):
     return out
 
 
-def _seyrekle(wps, min_m=1.5):
-    """1.5 m'den yakın ardışık noktaları at (İKA WP_RADIUS 1.2 — sıkışık wp titretir)."""
-    if not wps:
-        return wps
-    out = [wps[0]]
-    for p in wps[1:]:
-        if math.hypot(p[0] - out[-1][0], p[1] - out[-1][1]) >= min_m:
-            out.append(p)
-    return out
-
-
-def _rota_saglamlik(rota, htab_cx, htab_cy, kb_xy):
-    """ROTA SAĞLAMLIK SÜZGECİ — v15 dersi: model 2 noktalık, HTAB DIŞINA işaret eden
-    rota üretti; İKA kestirmeden moloz duvarına sürdü. Kurallar:
-      1) HTAB sınırı dışındaki noktalar ATILIR (saha 50×50 + 0.5 m tolerans).
-      2) İKA başlangıcının (KB) gerisindeki (güneyindeki) noktalar ATILIR.
-      3) Rota KUZEYE akmalı: o ana dek ulaşılan en kuzey noktadan 3 m'den fazla
-         GERİYE giden nokta atılır (model maskesindeki gürültü zikzakları).
-    Döner: temizlenmiş rota (yetersizse boş liste → rota YAZILMAZ, dürüst fallback)."""
-    S = 25.5
-    temiz, en_kuzey = [], -1e9
-    kb_y = kb_xy[1] if kb_xy else htab_cy - 23.0
-    for (x, y) in rota:
-        if abs(x - htab_cx) > S or abs(y - htab_cy) > S:
-            continue                                   # 1) saha dışı
-        if y < kb_y + 0.5:
-            continue                                   # 2) başlangıcın gerisi
-        if y < en_kuzey - 3.0:
-            continue                                   # 3) güneye zikzak
-        en_kuzey = max(en_kuzey, y)
-        temiz.append((x, y))
-    return temiz if len(temiz) >= 3 else []
-
-
-def _etiket_orta_bant(rota, htab_cx):
-    """sol/orta/sag etiketini rotanın ORTA bandındaki (|y-cy|≤10) ortalama x'inden türet
-    — 3 yol HB'de birleştiği için üst-bant kararı ayırt edici değil; orta bant ayırt eder."""
-    if not rota:
+def dunya_to_piksel(xy, htab_cx, htab_cy):
+    """Dunya ``(x, y)`` koordinatini kuzey-yukari mozaik pikseline cevir."""
+    if xy is None:
         return None
-    xs = [x - htab_cx for (x, y) in rota]
-    orta = xs[len(xs) // 3: max(len(xs) // 3 + 1, 2 * len(xs) // 3)] or xs
-    m = sum(orta) / len(orta)
-    return 1 if m < -8 else (3 if m > 8 else 2)
+    wx, wy = float(xy[0]), float(xy[1])
+    if not math.isfinite(wx) or not math.isfinite(wy):
+        return None
+    return (int(round((wx - htab_cx) / MPP + MOZ_PX / 2)),
+            int(round(MOZ_PX / 2 - (wy - htab_cy) / MPP)))
+
+
+def _tohum_maskesi(xy, htab_cx, htab_cy, sekil, yaricap_m=0.0):
+    """KB/HB dunya konumundan costmap icin tohum maskesi uret.
+
+    Varsayilan tek piksel, rotanin gercek baslangic/hedefe sabitlenmesini
+    saglar. Daha genis bir tolerans ancak cagirici acikca isterse kullanilir.
+    """
+    import cv2
+    import numpy as np
+
+    maske = np.zeros(sekil, np.uint8)
+    nokta = dunya_to_piksel(xy, htab_cx, htab_cy)
+    if nokta is None:
+        return maske
+    x, y = nokta
+    h, w = sekil
+    if not (0 <= x < w and 0 <= y < h):
+        return maske
+    if yaricap_m <= 0:
+        maske[y, x] = 1
+    else:
+        yaricap_px = max(1, int(round(yaricap_m / MPP)))
+        cv2.circle(maske, (x, y), yaricap_px, 1, -1)
+    return maske
+
+
+def _atomik_yaz(path, metin):
+    """Tam yazilmamis bir rota dosyasinin tuketicilerce gorulmesini engelle."""
+    path = Path(path)
+    gecici = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        gecici.write_text(metin, encoding="utf-8")
+        gecici.replace(path)
+    finally:
+        if gecici.exists():
+            gecici.unlink()
+
+
+def _rota_artiklarini_sil(level_dir):
+    """Basarisiz yeni algi sonucunun onceki rota artefaktini kullanmasini onle."""
+    for ad in ("route.txt", "rota.json"):
+        yol = Path(level_dir) / ad
+        if yol.is_file():
+            yol.unlink()
+
+
+def _arac_maskesi(bgr, arac_model, conf=0.25):
+    """Ayni mozaik koordinatinda OBB arac maskesi uret.
+
+    S1: govde `codes/arac_maskesi.py`'ye TASINDI ve sentetik veri ureteciyle
+    PAYLASILIYOR. Eskiden iki ayri kopya vardi ve ureteci COCO seg kullaniyordu
+    (olculdu: COCO 2 arac / DOTA OBB 93 arac ayni fotografta). Tek kaynak,
+    kahin sapmasini yapisal olarak imkansiz kilar.
+
+    Bu sarmalayici cagri yerlerini bozmamak icin durur.
+    """
+    return obb_arac_maskesi(bgr, arac_model, conf=conf)
 
 
 def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15, scan_z=DEFAULT_SCAN_Z,
-             kare_ofset=0, rot_isaret=1.0, debug=False, kb_xy=None, hb_xy=None):
-    """Bir seviyenin tarama klasörünü işle: mozaik → model → sağlamlık süzgeci → rota.
+             kare_ofset=0, rot_isaret=1.0, debug=False, kb_xy=None, hb_xy=None,
+             arac_model=None, arac_conf=0.25):
+    """Bir seviyenin tarama klasörünü işle: mozaik → algı → costmap → rota.
     kb_xy = İKA başlangıç REFERANS noktası (dünya), hb_xy = HB (dünya, önceden bilinir).
     Çıktılar level_dir'e: ortomozaik/algi jpg + route.txt (plugin) + rota.json (İKA'ya
     JSON aktarım formatı: referans + yerel koordinatlar). Döner: detection dict."""
@@ -219,6 +258,7 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15, scan_z=DEFAULT_SCAN_
            "kaynak": "sim-tarama", "kare_n": 0}
 
     if not kare_dir.is_dir() or not poses.is_file():
+        _rota_artiklarini_sil(level_dir)
         print(f"[İHA-HARİTA] eksik girdi: {kare_dir} / {poses}", file=sys.stderr)
         return det
 
@@ -229,54 +269,121 @@ def haritala(level_dir, model, htab_cx, htab_cy, conf=0.15, scan_z=DEFAULT_SCAN_
     cv2.imwrite(str(level_dir / "ortomozaik.jpg"), mozaik)
     print(f"[İHA-HARİTA] mozaik: {n} tarama karesi → {level_dir / 'ortomozaik.jpg'}")
     if n == 0:
+        _rota_artiklarini_sil(level_dir)
         print("[İHA-HARİTA] hiç kare oturtulamadı (poz eşleşmesi?) — rota YOK", file=sys.stderr)
         (level_dir / "detection.json").write_text(json.dumps(det, ensure_ascii=False, indent=2))
         return det
 
     # ── MODEL: gerçek best.pt mozaikte (İHA'nın kendi taramasında!) karar verir ──
-    content, masks, road, confidence, wps_px, _ = _infer(mozaik, model, conf, MOZ_PX)
-    det.update({"road": road, "label": LABEL.get(road, "yok"), "conf": confidence,
-                "trav_px": int(masks[0].sum()), "wp_n": len(wps_px)})
+    # Model maskeleri tek basina rota degildir. Kalibre mozaik olceginde
+    # serbest alan = zemin - (arac|moloz|engel) kurulur; A* KB'den HB'ye
+    # sadece bu C-uzayinda rota uretirse IKA'ya rota verilir.
+    content, masks, _model_road, _model_conf, _old_wps, _ = _infer(
+        mozaik, model, conf, MOZ_PX)
+    # Free_Space = Road - (Rubble/blocked | Car).  Segmentasyonun blocked
+    # sinifi molozu tasir; OBB arac poligonlari ayni mozaik piksel sisteminde
+    # ek bir engel kanali olur. Costmap bu iki kanali OR'layarak C-uzayini kurar.
+    arac = _arac_maskesi(content, arac_model, arac_conf)
+    # S2: katman kimlikleri EGITIM sinif id'lerinden AYRI bir ad alanindadir.
+    # Eskiden burada `{0:.., 1:.., 2: arac}` yaziliyordu; 3 sinifli bir model bu
+    # yola verildiginde 2 = HEDEF ile 2 = ARAC cakisir ve hedef ENGEL sayilirdi.
+    costmap_maskeleri = costmap_katmanlari(masks[0], masks[1], arac)
+    # Dinamik rota, fiziksel hedefe (HB) kadar dogrulanmis olmalidir. HB meta
+    # verisi yokken costmap'in varsayilan ust bant tohumuna plan yapmak, IKA'yi
+    # gercek hedefe gitmeyen ama geometri olarak gecerli gorunen bir rotaya
+    # baslatabilirdi. Bu durumda algiyi kaydet, onceki rota artefaktlarini sil
+    # ve IKA'nin guvenli durmasini sagla.
+    if hb_xy is None:
+        det.update({
+            "trav_px": int(masks[0].sum()),
+            "moloz_px": int(masks[1].sum()),
+            "arac_px": int(arac.sum()),
+            "engel_px": int((masks[1] | arac).sum()),
+            "arac_model": (str(getattr(arac_model, "ckpt_path", DEFAULT_ARAC_MODEL))
+                           if arac_model is not None else None),
+            "wp_n": 0,
+            "rota_durum": "HEDEF_YOK",
+            "rota_sebep": "HB koordinati bulunamadi; dinamik rota yayinlanmadi.",
+            "darbogaz_m": None,
+            "rota_ihlalleri": [],
+        })
+        vis = _overlay(content, costmap_maskeleri, None, 0.0, [],
+                       extra="  [SIM TARAMA MOZAIK]")
+        cv2.imwrite(str(level_dir / "algi.jpg"), vis)
+        _rota_artiklarini_sil(level_dir)
+        print("[IHA-HARITA] HB koordinati yok — IKA guvenli durur")
+        (level_dir / "detection.json").write_text(
+            json.dumps(det, ensure_ascii=False, indent=2), encoding="utf-8")
+        return det
 
-    vis = _overlay(content, masks, road, confidence, wps_px, extra="  [SIM TARAMA MOZAIK]")
+    baslangic_xy = kb_xy or (htab_cx, htab_cy - 23.0)
+    baslangic = _tohum_maskesi(baslangic_xy, htab_cx, htab_cy,
+                               costmap_maskeleri[0].shape)
+    hedef = _tohum_maskesi(hb_xy, htab_cx, htab_cy,
+                            costmap_maskeleri[0].shape)
+    plan_sonucu = rota_bul(costmap_maskeleri, mpp=MPP,
+                           baslangic=baslangic, hedef=hedef, plan=True,
+                           yol_sinif_idler=COSTMAP_YOL_KATMANLARI,
+                           engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI,
+                           gorsel_cikti=True)
+    road = plan_sonucu["yol_no"]
+    confidence = plan_sonucu["guven"]
+    wps_px = plan_sonucu["waypoints_px"]
+    det.update({
+        "road": road,
+        "label": LABEL.get(road, "yok"),
+        "conf": confidence,
+        "trav_px": int(masks[0].sum()),
+        "moloz_px": int(masks[1].sum()),
+        "arac_px": int(arac.sum()),
+        "engel_px": int((masks[1] | arac).sum()),
+        "arac_model": (str(getattr(arac_model, "ckpt_path", DEFAULT_ARAC_MODEL))
+                       if arac_model is not None else None),
+        "wp_n": len(wps_px),
+        "rota_durum": plan_sonucu["durum"],
+        "rota_sebep": plan_sonucu["sebep"],
+        "darbogaz_m": plan_sonucu["darbogaz_m"],
+        "rota_ihlalleri": plan_sonucu["ihlaller"],
+    })
+
+    vis = _overlay(content, costmap_maskeleri, road, confidence, wps_px,
+                   extra="  [SIM TARAMA MOZAIK]")
     cv2.imwrite(str(level_dir / "algi.jpg"), vis)
 
-    # ── ROTA: piksel→dünya → SAĞLAMLIK SÜZGECİ (v15 dersi) → İKA'ya aktarım ──
+    # ── ROTA: costmap'in DOGRULADIGI waypoint dizisini degistirmeden aktar ──
+    # Waypoint silmek, yeniden etiketlemek veya dogrudan HB eklemek yeni ve
+    # dogrulanmamis segmentler uretir. KB/HB ankorlari rota_bul() icinde
+    # C-uzayinda dogrulanmistir; burada yalniz koordinat sistemi cevrilir.
     rota = []
-    if road:
-        rota = _rota_saglamlik(
-            _seyrekle(piksel_to_dunya(wps_px, htab_cx, htab_cy)), htab_cx, htab_cy, kb_xy)
+    if plan_sonucu["durum"] == "ACIK" and road and len(wps_px) >= 2:
+        rota = piksel_to_dunya(wps_px, htab_cx, htab_cy)
     if rota:
-        # Etiketi ORTA banttan yeniden türet (3 yol HB'de birleşir; üst bant yanıltır)
-        r2 = _etiket_orta_bant(rota, htab_cx)
-        if r2 and r2 != road:
-            road = r2
-            det.update({"road": road, "label": LABEL.get(road, "yok"),
-                        "etiket_kaynak": "orta-bant"})
-        # HB yarışmada ÖNCEDEN bilinir (işaretli pad); bilinmeyen HANGİ yol açık.
-        # Son hedef olarak HB'yi ekle (meta'dan; yoksa rota son noktası kalır).
-        if hb_xy and math.hypot(rota[-1][0] - hb_xy[0], rota[-1][1] - hb_xy[1]) > 2.0:
-            rota.append((round(hb_xy[0], 2), round(hb_xy[1], 2)))
-        (level_dir / "route.txt").write_text(
-            "".join(f"{x} {y}\n" for x, y in rota), encoding="utf-8")
-        # İHA→İKA JSON aktarımı: İHA'nın BAŞLANGIÇ REFERANS noktası (KB, dünya xy) +
-        # rotanın hem dünya hem REFERANSA GÖRE yerel koordinatları (İKA yerel farkları
-        # kendi konumuna ekleyerek sürer — gerçek sistemdeki comms.open_route içeriği).
-        ref = kb_xy or (htab_cx, htab_cy - 23.0)
-        (level_dir / "rota.json").write_text(json.dumps({
+        # Referans, costmap'in dogruladigi ilk fiziksel ankor noktadir. Ilk
+        # yerel waypoint daima [0,0] olur; IKA sahte bir KB->rota segmenti
+        # eklemeden bu diziyi aynen takip eder.
+        ref = rota[0]
+        rota_json = json.dumps({
             "referans_xy": [round(ref[0], 2), round(ref[1], 2)],
+            "kb_xy": [round(baslangic_xy[0], 2), round(baslangic_xy[1], 2)],
             "acik_yol": det["label"], "yol_no": road, "guven": confidence,
             "hb_xy": [round(hb_xy[0], 2), round(hb_xy[1], 2)] if hb_xy else None,
             "rota_dunya": [[round(x, 2), round(y, 2)] for x, y in rota],
-            "rota_yerel": [[round(x - ref[0], 2), round(y - ref[1], 2)] for x, y in rota],
-        }, ensure_ascii=False, indent=2), encoding="utf-8")
+            "rota_yerel": [[round(x - ref[0], 2), round(y - ref[1], 2)]
+                           for x, y in rota],
+        }, ensure_ascii=False, indent=2)
+        # Tuketici route.txt gorur gormez okumaya baslar; once JSON'u, sonra
+        # route.txt'yi atomik olarak yayinla ki hicbir zaman yarim rota tasinmasin.
+        _atomik_yaz(level_dir / "rota.json", rota_json)
+        _atomik_yaz(level_dir / "route.txt", "".join(f"{x:.2f} {y:.2f}\n" for x, y in rota))
         det["rota"] = rota
         print(f"[İHA-HARİTA] MODEL KARARI: AÇIK YOL {det['label'].upper()} ({road}) "
               f"güven={confidence}  rota {len(rota)} nokta → route.txt + rota.json")
     else:
+        # Yeniden calistirilan bir seviyede eski rota dosyasi kalirsa IKA'nin
+        # yeni, basarisiz algi sonucuna ragmen onu surmesi tehlikelidir.
+        _rota_artiklarini_sil(level_dir)
         det.update({"road": None, "label": "yok"})
-        print("[İHA-HARİTA] GÜVENİLİR ROTA YOK (sağlamlık süzgeci geçilemedi) — "
-              "rota yazılmadı, İKA hareket etmeyecek (fail-safe)")
+        print("[İHA-HARİTA] GÜVENİLİR COSTMAP ROTASI YOK — İKA güvenli durur")
 
     (level_dir / "detection.json").write_text(
         json.dumps(det, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -339,11 +446,13 @@ def _tarama_irtifasi(meta, cli_scan_z=None):
         raise SystemExit("Geçersiz SCAN_ALTITUDE_M meta değeri")
 
 
-def watch(vdir, levels, model_path, conf, kare_ofset, rot_isaret, bekle_sn=1800):
+def watch(vdir, levels, model_path, arac_model_path, conf, arac_conf,
+          kare_ofset, rot_isaret, bekle_sn=1800):
     """record.sh akışı: her seviyenin SCAN_DONE işaretini bekle → haritala → rota yaz.
     Konteyner route.txt'yi /tmp/navitas_route'a kopyalar, İKA sürmeye başlar."""
     from ultralytics import YOLO
     model = YOLO(str(model_path), task="segment")     # BİR KEZ yükle (seviyeler arası)
+    arac_model = YOLO(str(arac_model_path), task="obb")
     print(f"[İHA-HARİTA] izleme: {vdir}  seviyeler: {levels}")
 
     for level in levels.split():
@@ -364,7 +473,8 @@ def watch(vdir, levels, model_path, conf, kare_ofset, rot_isaret, bekle_sn=1800)
         det = haritala(ldir, model, cx, cy, conf=conf,
                        scan_z=_tarama_irtifasi(meta),
                        kare_ofset=kare_ofset, rot_isaret=rot_isaret,
-                       kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"))
+                       kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"),
+                       arac_model=arac_model, arac_conf=arac_conf)
         _detections_birlestir(vdir, level, det)
     print("[İHA-HARİTA] izleme bitti.")
 
@@ -376,7 +486,10 @@ def main():
     g.add_argument("--once", help="tek iha_scan_<seviye> klasörünü offline işle")
     ap.add_argument("--levels", default="kolay orta zor")
     ap.add_argument("--model", default=str(DEFAULT_MODEL))
+    ap.add_argument("--arac-model", default=str(DEFAULT_ARAC_MODEL),
+                    help="OBB araç modeli (small/large vehicle); engel costmapine OR edilir")
     ap.add_argument("--conf", type=float, default=0.15)
+    ap.add_argument("--arac-conf", type=float, default=0.25)
     ap.add_argument("--htab", default=None, help="HTAB merkezi 'cx,cy' (--once + meta yoksa)")
     ap.add_argument("--scan-altitude", type=float, default=None,
                     help="tarama irtifası (vars. meta.txt SCAN_ALTITUDE_M; eski kayıtta 30 m)")
@@ -387,9 +500,13 @@ def main():
     ap.add_argument("--debug", action="store_true", help="kare yerleşimini satır satır bas")
     args = ap.parse_args()
 
+    arac_model_path = Path(args.arac_model)
+    if not arac_model_path.is_file():
+        ap.error(f"araç modeli bulunamadı: {arac_model_path}")
+
     if args.watch:
-        watch(args.watch, args.levels, args.model, args.conf,
-              args.kare_ofset, args.rot_isaret)
+        watch(args.watch, args.levels, args.model, arac_model_path,
+              args.conf, args.arac_conf, args.kare_ofset, args.rot_isaret)
         return
 
     from ultralytics import YOLO
@@ -397,10 +514,12 @@ def main():
     meta = _meta_oku(ldir)
     cx, cy = _htab_merkez(meta, args.htab)
     model = YOLO(str(args.model), task="segment")
+    arac_model = YOLO(str(arac_model_path), task="obb")
     det = haritala(ldir, model, cx, cy, conf=args.conf,
                    scan_z=_tarama_irtifasi(meta, args.scan_altitude),
                    kare_ofset=args.kare_ofset, rot_isaret=args.rot_isaret, debug=args.debug,
-                   kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"))
+                   kb_xy=_meta_xy(meta, "KB_XY"), hb_xy=_meta_xy(meta, "HB_XY"),
+                   arac_model=arac_model, arac_conf=args.arac_conf)
     print(json.dumps(det, ensure_ascii=False, indent=2))
 
 
