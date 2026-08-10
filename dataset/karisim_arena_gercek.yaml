@@ -1,0 +1,54 @@
+# KARIŞIM v2 — RescueNet (gerçek afet) + Sentetik Arena + GERÇEK NADİR DRONE KARELERİ
+#
+# NEDEN bu dosya var (ölçüldü 2026-08-05, REVIEW_LOG D-12 / D-18):
+# `karisim_arena.yaml` ile eğitilen v17 ve v20, gerçek nadir drone karelerinde
+# KÖR. conf 0,25 → 0,02'ye indirildi, v17 üçünde de SIFIR tespit verdi.
+#
+#   model          kullanılabilir kare (67'de)   ort zemin
+#   v15_ft2sinif        23/67                      %24,07     ← taban
+#   v17                 10/67                      %1,04      ← v15'ten fine-tune
+#   v20                 10/67                      %4,11      ← v15'ten fine-tune
+#   v5c                 58/67                      %48,65     ← arena GÖRMEDİ
+#
+# Körlük tabanda değil, sentetik arena fine-tune ADIMINDA oluşuyor. `karisim_arena.yaml`
+# kendi yorumunda bu riski yazıyordu ("yalnız sentetikle eğitim gerçek veriyi
+# unutturur"); karışım yapıldı ama YETMEDİ — çünkü karışımdaki "gerçek" veri
+# RescueNet'ti: afet sahnesi, arena değil, otopark/asfalt hiç değil.
+#
+# EKLENEN ÜÇÜNCÜ KAYNAK: `copy_paste_gercek`
+#   Gerçek drone karelerinin (90° nadir, ~1024×576) üzerine etiket maskesi bilinen
+#   moloz yapıştırılarak üretildi. Görüntünün kendisi GERÇEK FOTOĞRAFTIR; yalnız
+#   moloz sentetiktir. Böylece model gerçek asfalt/gölge/araç dokusunu görür.
+#
+#   Üretim kâhinleri (manifest.json'da kayıtlı):
+#     zemin : aday_v5c_m640.pt @ conf 0,05   (D-18: gerçek karede çalışan tek model)
+#     araç  : yolov8m-obb.pt (DOTA OBB)      (S1: COCO 2 araç / DOTA 93 araç)
+#
+# ⚠ ARAÇ KÂHİNİ NEDEN ÖNEMLİ (S1): üreteç zemin satırını TAM KARE dikdörtgen yazar,
+# engel poligonları üstüne biner. ENGEL maskesine girmeyen her araç otomatik olarak
+# ZEMİN etiketi alır. COCO kâhini ile araçların ~%98'i "sürülebilir zemin"
+# öğretiliyordu — v16'yı moloza basmada %2,7 → %31,6 çökerten hatanın aynısı.
+#
+# DENGE (görüntü sayısı, train):
+#   rescuenet_yolo     3449   gerçek afet, mAP tabanı
+#   sentetik_arena     3003   arena geometrisi (kural tabanlı, piksel-kusursuz)
+#   copy_paste_gercek   393   gerçek nadir doku  (~%5,7)
+#
+# val de karışıktır: best.pt seçimi yalnız tek kaynağa bakarsa diğerini ödüllendirmez.
+
+path: O:\navitas\dataset
+
+train:
+  - O:\navitas\dataset\rescuenet_yolo\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+
+val:
+  - O:\navitas\dataset\rescuenet_yolo\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_gercek\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

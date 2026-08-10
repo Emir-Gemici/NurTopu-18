@@ -495,3 +495,33 @@ model. Eşleştirmeli, havuz metriği değil **görev bazında** rapor:
 
 3. satır elemeyi tek başına yapar: kanıtsız bulgu yazan model bu projede
 red team olamaz (anayasa madde 6).
+
+---
+
+## 11. Yerel modele iş yaptırma — ÖLÇÜLMÜŞ harness dersleri
+
+> Kaynak: 2026-08-09, gpt-oss-120b (N4) ile **S9** görevi. İlk üç harness tasarımı
+> düştü; dördüncüsü işi bitirdi. Aşağıdakiler tahmin değil, o koşumun kayıtları.
+> **Yerel modele kod yazdırmadan önce bu bölüm okunur.**
+
+| # | Ölçülen davranış | Tasarım kuralı |
+|---|---|---|
+| 1 | Tek büyük görevde (6 düzenleme) model **3 turda da aynı planı baştan kurdu**, hiçbirine başlamadı | Görevi **tek değişikliklik adımlara böl**; her adım **temiz bağlamla** başlasın |
+| 2 | `max_tokens: 2500` + `effort: high` → bütçe reasoning'in ortasında bitti, `finish=length`, **sıfır araç çağrısı** (5 tur boşa) | `max_tokens` reasoning **ve** araç çağrısını birlikte kapsamalı. high effort'ta **≥32K** |
+| 3 | Birebir metin eşleyen `degistir(eski, yeni)` aracı **art arda 4 kez** `BULUNAMADI` döndü (dosya CRLF; model `satırno<TAB>` önekini temizlerken girintiyi bozuyor) | **Satır aralığıyla** çalışan araç kullan: `satir_degistir(bas, son, beklenen_ilk, yeni)`. `beklenen_ilk` yanlış satırı ezmeyi önler |
+| 4 | Model dosyayı bulmak için **3 tur okumaya** harcadı; içerik zaten prompt'taydı | İlgili kodu **taze ve satır numaralı** olarak prompt'a göm. Prefill üretimden çok daha hızlı — okuma turu en pahalı israf |
+| 5 | Başarı ölçütü `bitir()` çağrısına bağlıydı; model **işi doğru yaptı ama** `bitir` çağırmadan tur sınırına çarptı → "BAŞARISIZ" sayıldı | Ölçüt **dosyanın gerçek içeriği** olmalı, modelin beyanı değil. Doğru koşul sağlanınca adım tur harcamadan kapanır |
+| 6 | Model satır silmek için `yeni=""` gönderdi — bu **silmez, boş satır bırakır** | Prompt'ta açıkça söyle: silinecek satırı **aralığa dahil et**, `yeni` içinde ona yer verme |
+| 7 | Bir düzenleme sözdizimini bozdu (`f"…{x})"`); model bunu **göremediği için** 3 tur aynı bölgede döndü | Her değişiklikten sonra **derle ve sonucu modele geri ver**. Görmediği hatayı düzeltemez |
+| 8 | "Dosya bozuksa dur" koruması, **onarımı yapacak döngüyü** hiç başlatmadı | Bozuk durumda durma — **onarım adımını başa al** |
+| 9 | Sözdizimi hatası mesajının **başı** gösteriliyordu; `SyntaxError … line N` traceback'in **sonunda** | Traceback'in son satırlarını ver |
+| 10 | `_h.update(_blk)` — sözdizimi geçerli, içerik koşulu sağlandı, **kod çalışmıyor** (bkz. `REVIEW_LOG.md` D-32) | İçerik araması "bir şeyler yazıldı" der, "çalışıyor" demez. **Değişen kod yolunu gerçekten koşturan** bir kapı şart |
+
+**Maliyet muhasebesi (dürüst).** Görev ~6 saatte bitti; bunun büyük kısmı model
+hızı değil, **harness tasarım hatalarımdı** — 1, 2, 3, 5, 7, 8, 9 doğrudan bana ait.
+6,67 tok/s'de her tasarım hatası 3–20 dakika. Yerel modelle çalışmanın gerçek
+maliyeti token değil, **yanlış araç tasarımının tur cinsinden bedeli**.
+
+**Ne iyi çalıştı:** N4 doğru araç verildiğinde adım başına **tek turda** iş
+bitirdi (A3, A4, A5-onarım, A8). Planlaması ilk turdan itibaren doğruydu —
+düşen şey plan değil, plana ulaşma yolu oldu.
