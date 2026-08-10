@@ -272,7 +272,21 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 > ve FAZ 6'daki saha onarımlarından **bağımsızdır** — saha zinciri düzelse bile bu
 > kusur yerinde kalır.
 
-- [STATUS: READY_FOR_REVIEW] **T24 — `analyze_path` waypoint'leri bağlantısız: kenar engelin üstünden geçiyor** · `codes/rpi_inference.py:179-186` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-28
+- [x] **T24 — `analyze_path` waypoint'leri bağlantısız: kenar engelin üstünden geçiyor** · `codes/rpi_inference.py:179-186` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-28
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** Düzeltme `557366a` commit'inde.
+  - **Kapı — bağımsız koşuldu:** `tests/test_analyze_path_kenar.py` → `Ran 10 tests` ·
+    `OK` · EXIT=0. Genel kapı `codes/test_rota_sentetik.py` **15/15**.
+  - **Madde 15 invariantı — özellikle denetlendi ve KORUNUYOR.** `MORPH_CLOSE` (`:260`)
+    serbest alanı büyütür, ama engel çıkarma (`:266-274` `clean[engel_mask] = 0`)
+    ondan **sonra** yapılıyor ve sonrasında büyüten hiçbir işlem yok. Koddaki gerekçe
+    ölçüme dayanıyor (D-24): *"MORPH_CLOSE extensive'dir ve oyulmuş engelin üstünü
+    geri kapatır — 7 px engelin %99'u geri doldu"*. Sıra doğru:
+    `serbest(K1 ∧ ¬K2) ⊆ serbest(K1)` sağlanıyor.
+  - **Yan düzeltme değerli:** `:271-272` — `bitwise_not(...)//255` kalıbı `0/255` bir
+    girdiyi sessizce `0/1`'e indiriyormuş; doğrudan sıfırlamaya çevrilmiş, maskenin
+    değer alanı korunuyor.
+  - ℹ️ T24 commit'i `jetson_paket/kod/rpi_inference.py`'yi **de** güncellemiş (aynı 142
+    satır). Yani senkron disiplini vardı; T25/T26 turunda düştü → **T27**.
   - **Ölçüldü:** 8 waypoint'in 3. ve 4.'sü iki ayrı koridorda (`x=122` → `x=520`);
     iki uç da zemin, aradaki kenar **119 engel pikselinin** üstünden geçiyor.
     Aynı sahnede `rota_bul` doğru davranıp `BELIRSIZ_COKLU` diyerek reddediyor.
@@ -355,7 +369,25 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ **Denetim TAMAMLANMADI** — doğrulama turu kotada düştü; madde 7 gereği bu
     görev hâlâ onaylanmış sayılmaz.
 
-- [ ] **T26 — Koridorun hedefe ULAŞTIĞI doğrulanmıyor: kapalı şerit açık raporlanabilir** · `codes/rpi_inference.py:162-169` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-29
+- [x] **T26 — Koridorun hedefe ULAŞTIĞI doğrulanmıyor: kapalı şerit açık raporlanabilir** · `codes/rpi_inference.py:162-169` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-29
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** Kodu Codex-2 yazdı.
+  - **Kapı — bağımsız koşuldu:** `tests/test_analyze_path_uc_bant.py` → `Ran 7 tests` ·
+    `OK` · EXIT=0. İçinde **mutasyon (pozitif kontrol)** testi var:
+    `test_mutasyon_uc_kapisi_kaldirilirsa_eski_kusur_geri_doner` — düzeltme
+    etkisizleştirilince sahne yeniden `yol=2` diyor. Genel kapı **15/15**.
+  - 🔴 **Codex sözleşmedeki EKSİĞİ ölçümle buldu — sözleşme ona göre düzeltildi.**
+    K-A'yı yalnız *hedef* bandı olarak yazmıştım. Ölçüm: ortadaki bariyerle kopmuş
+    koridorda OpenCV eşit parçalardan **üst** olanı seçiyor → hedefe temas var,
+    başlangıca yok, kusur `yol=2` olarak geri dönüyor. Kod **hem alt hem üst** bandı,
+    **aynı bileşen** üzerinden şart koşuyor. `CONTRACTS.md` §6.3/K-A güncellendi.
+  - **Madde 15 kontrolü:** `_uc_bant_temasi_yeterli` yalnız **okur**, maske
+    değiştirmez → `serbest(K1 ∧ ¬K2) ⊆ serbest(K1)` invariantı korunuyor.
+  - **Yan iyileştirme:** `_koridor_alani_yeterli` alan eşiğini letterbox tuvaliyle
+    değil **gerçek içerikle** karşılaştırıyor (T7'nin kusur sınıfıyla tutarlı).
+  - ⚠ **Kapının istediği "gerçek 67 karede çekimserlik önce/sonra tablosu"**
+    K-B kalibrasyonuyla birlikte ölçüldü: K-A sonrası **45 karar / 22 çekimser
+    (%32,8)**. Bu oran K-A'nın kendi çekimserliğidir; K-B (0,20) ek eleme yapmaz.
+    Ayrıntı: `REVIEW_LOG.md` **D-38**.
   - **Kanıt (T24 sırasında ölçüldü):** düz bir koridorun ortasına yatay bariyer
     konduğunda `analyze_path` `yol=2, guven=1.0, wp=4` döndü — yani koridor
     kareyi baştan başa geçmediği hâlde "orta şerit açık" dedi. Şerit kararı en
@@ -368,11 +400,53 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap:** Karar vermeden önce bileşenin hedef kenara (içerik kutusunun üst
     şeridine) temas ettiğini doğrula; etmiyorsa `None` dön. Eşiği `CONTRACTS.md`'ye
     sözleşme olarak yaz, çıplak sabit yazma (madde 16).
+  - ✅ **SÖZLEŞME HAZIR · 2026-08-10 · Claude 1 — engel kalktı.** `CONTRACTS.md`
+    **§6.3 / K-A** yazıldı. Değerler mimar kararıdır, türetme:
+    `HEDEF_BANT_ORANI = 0.08` — **`costmap_path_finder._tohum_maske:237` ile aynı oran**
+    (`pay = max(1, int(h * 0.08))`). `rota_bul` bu bantla `_bagli_mi()` sınayıp kapalı
+    koridoru `KAPALI_KOPUK` ile zaten doğru yakalıyor; iki karar yolu **aynı bandı**
+    kullanacak, ikinci bir sayı türetilmeyecek (S4 ıraksama kusuru).
+    `BANT_TEMAS_MIN_ORANI = 0.02` — tek piksel gürültüsü "temas" sayılmasın; mutlak
+    piksel değil **oran**, çözünürlük değişince kaymasın (§8).
+    ⚠ `analyze_path`'in mevcut üst **%30** bandı (`rpi_inference.py:264`) *şerit seçimi*
+    içindir, **kalır**; K-A ondan ayrı bir **ek** kapıdır. Sabitler
+    `codes/karar_sozlesmesi.py`'ye konur, çağrı yerlerine çıplak sayı yazılmaz.
   - **Kapı:** Bariyerli sahnede karar `None`; bariyersiz aynı sahnede `yol=2`.
     Gerçek 67 karede çekimserlik artışını önce/sonra tablosuyla raporla —
     aşırı çekimserlik sahada kullanılamaz demektir.
+  - **Uygulama · 2026-08-10 · Codex-2:** `codes/karar_sozlesmesi.py` tek-kaynak
+    sabitleri eklendi. En büyük koridor bileşeni, içerik kutusunun alt başlangıç
+    ve üst hedef bantlarına aynı etiketle, sözleşmedeki asgari genişlikte temas
+    etmiyorsa `analyze_path` fail-closed `None` döndürüyor. Üst `%30` şerit seçimi
+    değiştirilmedi. T7 alan-payda testi üretim yardımcısına ayrıldı; uç kapısı
+    gevşetilmedi.
+  - **Hedefli kapı komutu:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_analyze_path_uc_bant.py -v`
+  - **Gerçek çıktı (exit 0):** `Ran 7 tests in 0.097s` · `OK`. Bariyerli sahne
+    `None`; bariyersiz aynı sahne `yol=2`; letterbox içerik uçları geçti. Pozitif
+    mutasyon kontrolünde uç kapısı etkisizleştirilince eski kusur birebir geri
+    geldi: `yol=2 · guven=1.0 · wp=4`.
+  - **Gerçek 67 kare kapısı — GUI drone yolu, v21, imgsz=512 (exit 0):**
+    `ÖNCE karar=52 · çekimser=15 · oran=0.224` →
+    `SONRA karar=52 · çekimser=15 · oran=0.224` · `EK_RET=0` ·
+    `KARAR_DEGİŞİMİ=0`. Aşırı çekimserlik regresyonu yok.
+  - **Genel kapı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py`
+    → `SONUC: 15/15 dogru` · `[OK] TUM DETERMINISTIK SAHNELER GECTI` · exit `0`.
 
-- [ ] **T25 — Güven eşiği hiçbir çağrı yerinde uygulanmıyor** · `codes/rpi_inference.py`, `comms/yks_gui.py`, `simulation/scripts/iha_perceive.py` · ÖNEMLİ · bağımlı: **T24** · kanıt: `REVIEW_LOG.md` D-28
+- [x] **T25 (+T28 birleşik) — Güven eşiği hiçbir çağrı yerinde uygulanmıyor** · `codes/rpi_inference.py`, `comms/yks_gui.py`, `simulation/scripts/iha_perceive.py` · ÖNEMLİ · bağımlı: **T24** · kanıt: `REVIEW_LOG.md` D-28
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** Kodu Codex-2 yazdı.
+  - **Kapı:** tam paket `Ran 143 tests · OK` · genel kapı **15/15**. Yeni test
+    dosyaları: `test_rota_guven_esigi.py`, `test_rota_ret_nedenleri.py`,
+    `test_karar_sozlesmesi.py`, `test_analyze_path_uc_bant.py`,
+    `test_analyze_path_kararlilik.py`, `test_yks_gui_rota_engel.py`.
+  - **Madde 16 ihlali düzeltildi:** testlerde çıplak `0.499` / `= 0.50` → **0 satır**;
+    `ROTA_GUVEN_ESIGI` **4 test dosyasında** sabitten türetiliyor. Artık bir sonraki
+    kalibrasyon testleri kırmaz.
+  - **T28 buraya birleşti** (izin: Claude 1, aynı dosya kümesi). Sebep sözleşmesi
+    `CONTRACTS.md` §6.4 uygulandı; kullanıcı GUI'de sebepleri **gerçekten gördü**
+    (`KENAR_GUVENSIZ`, `UC_BANT_TEMAS_YOK`) — bu bildirimin kendisi T30'un
+    bulunmasını sağladı.
   - **Kanıt:** `grep -rnE "conf *[<>]=?|guven *[<>]=?"` üretim kodunda tek eşleşme
     veriyor (`iha_perceive.py:88`) ve o da **model tespit eşiği**, rota güveni değil.
     Ölçümde `guven=0.0` olan karar `OPEN_ROUTE` olarak yayınlanabiliyor.
@@ -380,6 +454,295 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     yazma — madde 16), altında kalan kararı `NO_ROUTE` sebebiyle bildir.
   - **Kapı:** Eşiğin altındaki bir kararın `OPEN_ROUTE` olarak **yayınlanmadığını**
     gerçek çıktıyla göster.
+  - ~~**SÖZLEŞME HAZIR · 2026-08-10 — `ROTA_GUVEN_ESIGI = 0.50`**~~ ⛔ **GERİ ALINDI.**
+    Bu ilk değer **sentetik** sahne güveninden (`0,797` / `1,000`) türetilmişti ve
+    gerçek veride ölçülmemişti. Codex gerçek GUI yolunda ölçtü (D-37): **%100
+    çekimserlik**. Geçerli değer aşağıdaki kalibrasyon maddesindedir — **`0.20`**.
+    *(Eski satır silinmedi: bir sözleşme değerinin nasıl yanlış konduğu iz olarak kalsın.)*
+  - ✅ **D-31'in mimara bıraktığı "nerede uygulanacak" sorusu KARARA BAĞLANDI:
+    ikisinde birden.** Çağrı yerleri (`rpi_inference`, `iha_perceive`, `yks_gui`)
+    erken kararı verir ve **anlamlı sebep** yazar; `IhaSender.send_open_route`
+    **son savunmadır** — eşik altı `conf` ile çağrılırsa yayınlamaz. Yalnız çağrı
+    yerleri yetmez (yeni çağrı yeri eklenince unutulur, kusur sessizce döner);
+    yalnız `IhaSender` da yetmez (operatör *neden* yayınlanmadığını göremez).
+  - ✅ **KALİBRASYON TAMAMLANDI · 2026-08-10 · `ROTA_GUVEN_ESIGI = 0.20`.**
+    İlk değer (`0.50`) **sentetik** sahne güveninden türetilmişti ve Codex gerçek GUI
+    yolunda ölçtü (D-37): **%100 çekimserlik**. Bağımsız ölçümüm (D-38) doğruladı ve
+    tam dağılımı çıkardı: `min 0,244 · p50 0,307 · max 0,352 · std 0,030`.
+    Metrik gerçek veride **ayırt edici değil** (tüm kütle 1/3 çevresinde), bu yüzden
+    K-B **seçici kapı değil, taban koruyucusudur**: `guven=0.0` yayınını engeller
+    (D-28), gerçek kararları elemez. Güvenliğin ağırlığı **K-A**'dadır.
+    `CONTRACTS.md` §6.3/K-B ve `codes/karar_sozlesmesi.py` güncellendi.
+  - 🔴 **KODA DOKUNULACAK — Codex'e:** eşik değişikliği **7 testi düşürdü**, çünkü
+    testler eşiği **çıplak yazmış** (`guven=0.499` vb.), sözleşme sabitinden
+    türetmemiş — madde 16'nın test tarafındaki ihlali. Testler
+    `ROTA_GUVEN_ESIGI`'nden türetilecek (`ROTA_GUVEN_ESIGI - epsilon` gibi) ki bir
+    sonraki kalibrasyonda kırılmasınlar. Düşenler: `test_karar_sozlesmesi` (1 hata),
+    `test_rota_guven_esigi` (4), `test_iha_sender_cli` (1), `test_yks_gui` (1).
+    ⚠ Genel kapı `codes/test_rota_sentetik.py` **15/15 etkilenmedi**.
+  - ⚠ **Açık ölçüm borcu (ayrı görev olmalı):** 45 kararın **hepsi `yol=2`**. Ya
+    kareler geniş açık alan (koridor üç şeride eşit yayılıyor, centroid ortaya düşüyor)
+    ya da metrik körlüğü. Ayırt etmek için **margin tabanlı** güven gerekir (seçilen
+    şerit ile ikinci en iyi arasındaki fark); `in_third` mutlak oranı bu işi görmüyor.
+  - 🔗 **KAPSAM GENİŞLETİLDİ · 2026-08-10 · T28 buraya birleştirildi (Claude 1 izni).**
+    T24 kapatıldı, önündeki ardışıklık engeli kalktı. T25 artık **sebep sözleşmesini**
+    de kapsıyor: `CONTRACTS.md` **§6.4** — `MASKE_YOK` · `BILESEN_YOK` ·
+    `UC_BANT_TEMAS_YOK` · `ALAN_YETERSIZ` · `KENAR_GUVENSIZ` · `DUSUK_GUVEN`.
+    Sebep kodları `codes/karar_sozlesmesi.py`'de **sabit** olarak tanımlanır; çağrı
+    yerlerine çıplak string yazılmaz (madde 16). `detay` alanı **ölçülen değeri**
+    taşır (hangi uç, ölçülen güven, ölçülen alan oranı).
+  - **Genişletilmiş kapı — üçü birden gösterilecek:** (1) maske üretilmeyen kare →
+    `MASKE_YOK`; (2) bariyerli koridor → `UC_BANT_TEMAS_YOK`; (3) eşik altı güven →
+    `DUSUK_GUVEN`. Üçü **farklı** metin üretmeli — aynı metin çıkıyorsa kapı çalışmıyor
+    demektir. Ayrıca eşik altı kararın `OPEN_ROUTE` olarak **yayınlanmadığı** gerçek
+    çıktıyla gösterilecek. Fail-closed korunur: sebep bildirmek reddi yumuşatmaz.
+  - **0,20 sonrası uygulama · 2026-08-10 · Codex-2:** Testlerdeki eski `0.499`
+    eşik-altı örnekleri `ROTA_GUVEN_ESIGI - 0.001`, sınır örnekleri doğrudan
+    `ROTA_GUVEN_ESIGI` olacak şekilde tek kaynağa bağlandı. Eşik-hemen-altı ret
+    metni eşikle aynı değere yuvarlanmıyor. GUI regresyonu artık `geçerli rota →
+    düşük güvenli rota → iki onay denemesi` sırasını sınayıp eski rotaya ACK
+    üretilmediğini kanıtlıyor.
+  - **Hedefli kapılar:**
+    - `...python.exe -B -m unittest discover -s tests -p test_karar_sozlesmesi.py -v`
+      → `Ran 4 tests in 0.001s` · `OK` · exit `0`.
+    - `...python.exe -B -m unittest discover -s tests -p test_rota_guven_esigi.py -v`
+      → `Ran 8 tests in 0.317s` · `OK` · exit `0`.
+    - `...python.exe -B -m unittest discover -s tests -p test_iha_sender_cli.py -v`
+      → `Ran 3 tests in 1.553s` · `OK` · exit `0`. Gerçek subprocess + UDP'de
+      `ESIK_ALTI` yalnız `NO_ROUTE/DUSUK_GUVEN`, tam eşik yalnız `OPEN_ROUTE`.
+  - **Genel kapılar:**
+    - `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py`
+      → `SONUC: 15/15 dogru` · `[OK] TUM DETERMINISTIK SAHNELER GECTI` · exit `0`.
+    - `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q`
+      → `Ran 121 tests in 28.482s` · `OK` · exit `0`.
+  - **Gerçek 67 kare · güncel GUI yolu:** v21 SHA `799e07f9...`, `imgsz=512`,
+    GUI eşik/fallback zinciri: K-A sonrası `52 karar / 15 çekimser` → K-B `0,20`
+    sonrası `52 / 15`, `EK_RET=0`; güven `min=0,243 · p50=0,3185 · max=0,363`.
+    D-38'deki `45 / 22`, engeli `analyze_path(..., engel_mask=...)` ile morfolojiden
+    sonra çıkaran ayrı yoldur; iki yolun ayrımı `REVIEW_LOG.md` D-39'da ölçüldü.
+  - ⚠ **Durum:** Kod ve kapılar hazır; T25 durum satırı değiştirilmedi. Açık bağımlı
+    T24 hâlâ `[STATUS: READY_FOR_REVIEW]` ve aynı `codes/rpi_inference.py` dosyasını
+    taşıyor. Ayrıca `CONTRACTS.md` içindeki eski `0,50` kalibrasyon-borcu paragrafı
+    ile yanlış görev altına düşen tarihsel kanıtları yalnız Claude 1 düzeltebilir.
+  - **T25/T28 genişletilmiş uygulama · 2026-08-10 · Codex-2:** `analyze_path`,
+    varsayılan 3/4 elemanlı API'yi bozmayan `return_reason=True` seçeneğiyle §6.4'ün
+    altı kanonik ret kodunu ve ölçümlü ayrıntıyı döndürüyor. Yapısal ret K-B ile
+    ezilmiyor. GUI ham zemin ile ham engeli ayrı geçiriyor; panel, günlük ve görsel
+    bantta ret kodunu gösteriyor. `iha_perceive` de engel maskesini analizöre bağlayıp
+    aynı nedeni JSON/NO_ROUTE yoluna taşıyor. Eşik altı `0,199`, ekranda `0,20` diye
+    yuvarlanmıyor; üç hane gösteriliyor.
+  - **Sebep/ekran/yayın kapısı (exit 0):**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_rota_ret_nedenleri.py -v`
+    → `Ran 10 tests in 0.032s` · `OK`. `MASKE_YOK`, `UC_BANT_TEMAS_YOK` ve
+    `DUSUK_GUVEN` üç farklı panel/günlük/banner metni üretti; yapısal retin
+    `sebep`/`detay` alanları encode/decode edilen tek `NO_ROUTE` mesajında aynen
+    korundu, `OPEN_ROUTE` üretilmedi.
+  - **Çağrı-yeri ve güven kapıları (exit 0):**
+    `... -p test_yks_gui_rota_engel.py -v` → `Ran 7 tests` · `OK`;
+    `... -p test_rota_guven_esigi.py -v` → `Ran 8 tests` · `OK`;
+    `... -p 'test_*rota*.py' -v` → `Ran 36 tests` · `OK`. GUI'nin analizöre
+    oyulmamış ham zemini ve sınıf-1 engel maskesini verdiği argüman düzeyinde,
+    `iha_perceive` bariyerinin `UC_BANT_TEMAS_YOK` verdiği gerçek analizörle kilitlendi.
+  - **Gerçek 67 kare · güncel GUI karar zinciri (exit 0):** v21 SHA
+    `799e07f9cef3820c3ad9f0365b0052fd8ee2edfc6df1b706830a0a9d3bc5be7d`,
+    `imgsz=512`, zemin `0,30→0,05` fallback, engel `0,10`, ham zemin + son engel
+    çıkarma + K-A/K-B: `45 karar / 22 ret / 0 hata`; retlerin tamamı ölçümlü
+    `KENAR_GUVENSIZ`; sebepsiz ret `0`. Kabul güveni `min=0,247 · p50=0,307 ·
+    max=0,351`; toplam hesap `67/67`.
+  - **Tam ve genel kapılar:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q`
+    → `Ran 138 tests in 27.683s` · `OK` · exit `0`.
+    `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py`
+    → `SONUC: 15/15 dogru` · `[OK] TUM DETERMINISTIK SAHNELER GECTI` · exit `0`.
+    `py_compile` ve `git diff --check` → çıktı yok · exit `0`.
+
+- [BIRLESTIRILDI → T25] **T28 — Hakem ekranı "karar yok" ile "kapı reddetti"yi ayırt ETMİYOR** · `comms/yks_gui.py`, `codes/rpi_inference.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-39
+  - 🔗 **2026-08-10 · Claude 1 kararı: T28, T25'e BİRLEŞTİRİLDİ.** Codex-2 açıkça izin
+    istedi (aynı dosyalara dokunan görevler `AGENTS.md` §3 gereği ardışık olmalı).
+    **İzin verildi.** Gerekçe: (1) dosya kümesi birebir aynı — `rpi_inference.py`,
+    `yks_gui.py`, `iha_perceive.py`; (2) aynı kusur sınıfı — kararın **neden**
+    reddedildiğinin bildirilmesi; (3) T25 zaten `DUSUK_GUVEN` sebebini üretiyor, T28
+    tabloyu tamamlıyor — sebep sözleşmesini parça parça kurmak tutarsızlık üretir;
+    (4) ardışıklık beklemek gereksiz gecikme, çünkü ikinci geçiş aynı satırlara dönecek.
+  - ⚠ Bu satır **iz olarak** duruyor; iş **T25 altında** yürür ve orada kapanır.
+    Sebep tablosu artık sözleşmedir: `CONTRACTS.md` **§6.4**.
+  - **Kanıt (kullanıcı bildirdi, ölçüldü):** GUI "yol algılamıyor" göründü. Gerçekte
+    iki sebep üst üste binmişti ve **ekran ikisini de aynı** gösteriyordu:
+    ```
+    kaynak    maske boş   K-A/K-B öncesi karar   sonrası   ekranda
+    gemini      8/12              4                 1      hepsi "TESPİT YOK"
+    val         7/12              3                 1      hepsi "TESPİT YOK"
+    drone       0/12              9                 6      hepsi "TESPİT YOK"
+    ```
+  - **Neden KRİTİK:** bu ekranı şartname §2.2.3/§6.2 gereği **Alan Hakemi** izliyor.
+    Hakem *"model bulamadı"* ile *"güvenlik kapısı reddetti"* arasındaki farkı
+    göremiyor — S9 ile **aynı kusur sınıfı: kanıt bütünlüğü.** Operatör de sistemi
+    "bozuk" sanıp yanlış müdahale eder.
+  - **Yap:** `analyze_path` K-A reddinde sessizce `None` dönmesin; K-B'deki gibi
+    kanonik `(sebep, detay)` üretsin — ör. `UC_BANT_TEMAS_YOK` (hangi uç: alt/üst).
+    Maske hiç üretilmediğinde ayrı sebep: `MASKE_YOK`. GUI bilgi satırında sebebi
+    **yazsın**; `NO_ROUTE` yayınında da aynı sebep taşınsın (`comms/protocol.py`
+    sebep alanı zaten var, T25'te kullanıldı).
+  - **Kapı:** Üç ayrı sahne — (1) maske üretilmeyen kare → ekranda `MASKE_YOK`;
+    (2) bariyerli koridor → `UC_BANT_TEMAS_YOK`; (3) eşik altı güven →
+    `DUSUK_GUVEN`. Üçü de **farklı** metin göstermeli. `codes/test_rota_sentetik.py`
+    **15/15**.
+
+- [x] **T30 — `KENAR_GUVENSIZ` kapısı örnekleme parametresine duyarlı: karar KARARSIZ** · `codes/rpi_inference.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-40
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** Kodu Codex-2 yazdı.
+  - **Bağımsız ölçüm** (Codex'in testine değil, kendi betiğime bakarak):
+    ```
+    ÖNCE   14 karenin 5'inde salınım (%36) · drone kümesinde KENAR_GUVENSIZ %55
+    SONRA  14/14 kare · n_waypoints ∈ {8,16,24,32} → HEPSİNDE aynı karar · salınım 0
+    ```
+  - **Kapı:** `tests/test_analyze_path_kararlilik.py` eski salınımı **pozitif
+    kontrolle yeniden üretiyor** ve yeni yolun dört örnekleme değerinde aynı kararı
+    verdiğini kanıtlıyor. Tam paket `Ran 143 tests · OK`, genel kapı **15/15**.
+  - **Sebep etiketi düzeltildi:** `GORUS_HATTI_KOPUK_SEBEBI` eklendi — *"zincir hiç
+    kurulamadı"* artık *"kurulan zincirin kenarı engelden geçiyor"*dan ayrı.
+  - ⚠ **DOĞRULAMA BORCU — çekimserlik %55 → %0.** Düşüş beklenen yönde ama
+    **büyüklüğü doğrulanmadı**. T24/D-28 pozitif kontrolü hâlâ geçiyor (kusur geri
+    gelmemiş), ancak gerçek karelerde artık **hiç** çekimserlik yok. Kapının fazla
+    gevşeyip gevşemediği bariyerli **gerçek** bir sahnede gözle doğrulanmalı.
+    `rota_bul` aynı karelerde hâlâ 13/14 `BELIRSIZ_COKLU` diyor — iki karar yolu
+    arasındaki ayrışma (**S4**) sürüyor ve artık daha görünür.
+  - **Rol devri:** 2026-08-10 · Codex-2 ← Claude 1 · sebep: kullanıcı, T25 ortak-dosya beklemesini aşarak T30 kapsamının yürütülmesine açık yetki verdi · denetim: Claude 1
+  - **Kanıt (ölçüldü):** aynı görüntü, aynı maske, yalnız `n_waypoints` değişti:
+    ```
+    kare            8wp    16wp   24wp   32wp  | rota_bul (bağımsız)
+    frame_000002   KENAR  yol2   KENAR  yol2   | BELIRSIZ_COKLU
+    frame_000003   yol2   KENAR  KENAR  yol2   | BELIRSIZ_COKLU
+    frame_000007   KENAR  KENAR  yol2   KENAR  | BELIRSIZ_COKLU
+    14 karenin 5'inde (%36) karar örnekleme sayısına bağlı DEĞİŞİYOR.
+    drone kümesinde ret oranı: KENAR_GUVENSIZ %55
+    ```
+  - **Neden KRİTİK:** `n_waypoints` bir **çözünürlük** parametresidir; güvenlik
+    kararını belirlememelidir. Aynı sahnede farklı karar sahada kabul edilemez —
+    şartname §5.3.2/§6.2 yanlış güzergâhı 0 puan sayar.
+  - **Kök neden:** waypoint'ler bantlardan **örnekleniyor**, sonra aralarındaki düz
+    çizgi engelle sınanıyor. Koridor kıvrımlıysa iki bant arasındaki düz çizgi
+    engelden geçer; bant sayısı değişince kesişim de değişir. Kapı, koridorun
+    **geçilebilirliğini** değil **örnekleme geometrisini** ölçüyor.
+  - **Yap:** Kenar güvenliğini waypoint çiftleri üzerinden değil, koridorun
+    **bağlantılılığı** üzerinden sına. `costmap_path_finder._bagli_mi` bunu zaten
+    yapıyor ve **kararlı** sonuç veriyor (13/14 karede tutarlı `BELIRSIZ_COKLU`).
+    Waypoint'ler bağlantısı **kanıtlanmış** bir yol üzerinde üretilirse (A* ya da
+    centerline takibi) sonradan kenar denetimine gerek kalmaz.
+  - ⚠ **T24'ü geri alma.** D-28 kusuru gerçekti (iki ucu zemin olan kenar engelin
+    üstünden geçiyordu) ve düzeltme doğru yöndeydi. Sorun kapının **kararlılığı**.
+  - **Ek — sebep etiketi yanlış:** `KENAR_GUVENSIZ` dönen vakaların **hepsinde
+    üretilen waypoint 0**. Kenar yokken "kenar güvensiz" denemez. *"Zincir hiç
+    kurulamadı"* ile *"kurulan zincirin bir kenarı engelden geçiyor"* ayrı
+    sebeplerdir; ilki için yeni kod (`GORUS_HATTI_KOPUK`) `CONTRACTS.md` §6.4'e eklenir.
+  - **Kapı:** `n_waypoints` ∈ {8, 16, 24, 32} için **aynı** karar; 14 karelik
+    kümede salınım **0**. `codes/test_rota_sentetik.py` **15/15**. D-28'in pozitif
+    kontrolü (mutasyon testi) hâlâ düşüyor olmalı — kusur geri gelmemeli.
+  - **Uygulama (Codex-2):** Güvenlik kararı yatay bant örneklerinden ayrıldı.
+    Tam çözünürlükte uç bağlantısı doğrulanıyor; muhafazakâr MIN-havuzlu A* bu
+    bağlantının somut witness yolunu çıkarıyor. Bütün A* denemeleri toplam
+    `32768` plan hücresiyle sınırlı; daha ince ızgara bütçeyi aşarsa saniyelerce
+    bloklamak yerine fail-closed dönüyor. Zincirin ilk/son waypoint'i gerçek alt/üst
+    tohum pikseline ankrajlıdır. `n_waypoints` yalnız doğrulanmış kanonik yolun çıktı
+    yoğunluğunu değiştiriyor. Witness kurulamazsa yeni `GORUS_HATTI_KOPUK`;
+    kurulmuş zincirin son postcondition'ı düşerse `KENAR_GUVENSIZ`. T24 son kapısı
+    korunmuştur. Güncel kaynak SHA `AF75CE176B313B8B...`.
+  - **Gerçek 14-kare kapısı:** `& 'O:\navitas-local-train\venv\Scripts\python.exe' -B -`
+    (v21 SHA `799e07f9...`; imgsz=512; ground `.30`, block `.10`; ham ground +
+    `engel_mask`; aynı maskede `n={8,16,24,32}`) → `56 çağrı · 0 hata · salınım
+    0/14 · 0/42 komşu geçiş · her n için 14/14 yol2 · endpoint-band ihlali 0/56
+    · 1059 segmentte LOS/ham engel ihlali 0`; analyze p50/p95/max
+    `88.299/111.716/144.223 ms`; exit `0`.
+    Dört n birlikte sayıldığında düzeltme öncesi gerçek salınım `10/14` idi;
+    tarihsel `5/14` yalnız 8↔32 uçlarını karşılaştırıyordu.
+  - **Gerçek 67-kare GUI zinciri:** aynı komut ve eşik zinciri, `n=8` → `67/67
+    karar · 0 ret · 0 exception · yol2=67`; GUI densify sonrası endpoint-band
+    ihlali `0/67`, `1333` segmentte LOS/ham engel ihlali `0`, waypoint min/p50/max
+    `20/21/21`, en uzun edge `45.967 px < 48 px`; analyze p50/p95/max
+    `81.666/100.423/144.223 ms`; plan bütçesi azami `30692/32768`;
+    `road_104.jpg → yol1, güven .465, 20 wp, 0 ihlal`; exit `0`.
+  - **Bütçe regresyonu:** 512² tek-piksel dar-geçit tam çözünürlük A* ile
+    `5.941 s` sürüyordu; güncel kod `233.6 ms` içinde ölçülü
+    `GORUS_HATTI_KOPUK` döndürdü (`20480/32768` plan hücresi), güvenlikten
+    taviz vermeden worker blokajını sınırladı.
+  - **Hedefli kapılar:**
+    `python.exe -B -m unittest discover -s tests -p 'test_analyze_path*.py' -v`
+    → `Ran 22 tests · OK`; `-p test_rota_ret_nedenleri.py` → `10/10 OK`;
+    `-p test_rpi_letterbox.py` → `5/5 OK`; `-p test_yks_gui_rota_engel.py`
+    → `7/7 OK`; `-p test_rota_guven_esigi.py` → `8/8 OK`; tümü exit `0`.
+  - **Genel kapılar:** `python.exe -B codes/test_rota_sentetik.py` → `SONUC:
+    15/15 dogru · [OK]`, exit `0`; `python.exe -B -m unittest discover -s tests -q`
+    → `Ran 143 tests in 28.172s · OK`, exit `0`; `py_compile` → çıktı yok,
+    `git diff --check` → yalnız LF→CRLF çalışma-ağacı uyarıları, exit `0`.
+  - **Sınır:** T30 waypoint örnekleme kararsızlığını ve piksel-segment güvenliğini
+    kapatır. Çoklu koridorun görev-semantik seçimi ile metrik İKA gövde açıklığı
+    mevcut S4/D-25 mimari kapsamındadır; bu görev o kararları sessizce üstlenmez.
+
+- [ ] **T29 — GUI varsayılan algı kaynağı modelin çalışmadığı kümede** · `comms/yks_gui.py:119` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-39
+  - **Kanıt:** varsayılan `self.algi_kaynak = "gemini"`. Ölçüldü: v21 o kümede
+    **zemin %0,00** (12 karenin 8'i tamamen boş). Aynı model `drone` karelerinde
+    **zemin %76,8–78,7**. S9'da `drone` kaynağı tam bu yüzden eklendi ama
+    **varsayılan değiştirilmedi** — kullanıcı GUI'yi açtığında modelin çalışmadığı
+    kümeye bakıyor.
+  - **Yap:** Varsayılanı `"drone"` yap. `gemini`/`val` kaynakları listede kalsın
+    (domain boşluğunu göstermek için değerli), yalnız açılış kümesi değişsin.
+  - **Kapı:** GUI `--demo` ile açıldığında ilk algı karesi `drone` kümesinden gelir
+    ve bilgi satırında `blocked > %10` görünür (v20'de bu değer %0,00'dır).
+  - ⚠ **Bu bir çözüm değil, semptom yönetimidir.** Asıl mesele v21'in arena/RescueNet
+    görsellerinde zemin bulamaması (D-21 domain boşluğu). Model tarafı ayrı iştir.
+
+- [ ] **T27 — Jetson saha paketi karar güvenliği düzeltmelerini TAŞIMIYOR** · `jetson_paket/kod/` · **KRİTİK**
+  - **Kanıt (2026-08-10 ölçüldü):**
+    ```
+    codes/rpi_inference.py            779 satır  6C229CD51619
+    jetson_paket/kod/rpi_inference.py 704 satır  0C98EFEA14E8   FARKLI
+    jetson_paket/kod/ içinde: karar_sozlesmesi -> 0 eşleşme
+                              _uc_bant_temasi_yeterli -> 0 eşleşme
+                              ROTA_GUVEN_ESIGI -> 0 eşleşme
+    ```
+    (`costmap_path_finder.py` iki tarafta **aynı** — sorun yalnız algı/karar yolunda.)
+  - **Neden KRİTİK:** saha paketi **eski karar mantığını** taşıyor. Sahada koşan kod
+    bariyerle kopmuş koridoru hâlâ "açık" diyebilir (T26/D-29 kusuru) ve `guven=0.0`
+    kararı yayınlayabilir (T25/D-28). Yani düzeltmeler **sahaya ulaşmıyor.**
+  - **Yap:** `karar_sozlesmesi.py`'yi pakete ekle ve `rpi_inference.py`'yi eşitle.
+  - 🔴 **Asıl mimari sorun — kopya dosya yaklaşımı kırılgan.** Her düzeltmenin iki yere
+    yazılması gerekiyor ve bu tur unutuldu. Elle eşitleme yerine paket bir **betikle
+    üretilmeli** (tek kaynak: `codes/`), ve bir kapı iki tarafın sha'sını karşılaştırıp
+    ayrışmayı yakalamalı. Bu, D-35'in (belge–kod ayrışması) kod–kod karşılığıdır.
+  - **Kapı:** `jetson_paket/kod/rpi_inference.py` ile `codes/rpi_inference.py` sha'sı
+    **aynı**; pakette `karar_sozlesmesi.py` var; `tests/` içinde ayrışmayı yakalayan
+    bir kapı testi bulunuyor ve **kasten ayrıştırılınca düşüyor** (mutasyon kanıtı).
+  - **Uygulama · 2026-08-10 · Codex-2:** `codes/karar_sozlesmesi.py` içindeki tek
+    kaynak K-B politikası `rpi_inference`, `iha_perceive` ve `yks_gui` erken karar
+    yollarına uygulandı. Eşik altı kararın yol/waypoint'i temizleniyor ve operatöre
+    `DUSUK_GUVEN` nedeni gösteriliyor. `IhaSender.send_open_route` son savunmada
+    eşik altı/NaN/sonsuz/geçersiz güveni ACK'li `NO_ROUTE`a çeviriyor. GUI, dışarıdan
+    gelen düşük güvenli `OPEN_ROUTE`u onaya açmıyor ve ACK üretmiyor. Protokol güveni
+    eşik üstüne yuvarlamıyor; JSON NaN/sonsuzu fail-closed reddediyor.
+  - **Hedefli yayın kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_rota_guven_esigi.py -v`
+    → `Ran 8 tests in 0.313s` · `OK` · exit `0`. Gerçek UDP loopback'te `0.499`
+    yalnız `NO_ROUTE/DUSUK_GUVEN+ACK`, tam `0.500` yalnız `OPEN_ROUTE+ACK`; eşik
+    hemen altı JSON gidiş-dönüşünde yukarı yuvarlanmadı. NaN/±sonsuz/bool/aralık
+    dışı değerlerde `OPEN_ROUTE` sayısı `0`.
+  - **Gerçek CLI kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_iha_sender_cli.py -v`
+    → `Ran 3 tests in 1.431s` · `OK` · exit `0`. Normal `0.9`, düşük `0.499` ve
+    açık `--no-route` yolları gerçek subprocess + geçici UDP YKS ile sınandı;
+    sırasıyla yalnız `OPEN_ROUTE`, yalnız `NO_ROUTE/DUSUK_GUVEN`, yalnız
+    `NO_ROUTE/KAPALI_DAR` alındı.
+  - **Sözleşme birim kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_karar_sozlesmesi.py -v`
+    → `Ran 3 tests in 0.000s` · `OK` · exit `0`.
+  - **Tam keşif kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q`
+    → `Ran 120 tests in 28.750s` · `OK` · exit `0`.
+  - ⚠ **GERÇEK 67 KARE KALİBRASYON ENGELİ · D-37:** GUI v21/imgsz=512 üretim
+    zincirinde ham `52 karar / 15 çekimser`; güven `min=0.243 · p50=0.319 ·
+    max=0.363`. Bağlayıcı `0.50` eşiği 52 kararın tamamını reddetti: son
+    `0 karar / 67 çekimser` (**%100**). Yayın güvenliği doğru, fakat §6.3'ün kendi
+    hükmüne göre aşırı çekimserlik sahada kullanılamaz. Codex sözleşmeyi
+    değiştiremez; Claude 1 K-B'yi gerçek veriyle yeniden değerlendirmeden ve
+    ortak dosyalı T26 mimar denetiminde kapanmadan T25 `READY_FOR_REVIEW` yapılmadı.
 
 ---
 
@@ -1110,7 +1473,19 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 
 ## FAZ 2 — ŞARTNAME UYUMU
 
-- [STATUS: READY_FOR_REVIEW] **T12 — `IKA_GO` gönderiliyor ama hiçbir yerde tüketilmiyor** · `comms/ika_receiver.py` · KRİTİK
+- [x] **T12 — `IKA_GO` gönderiliyor ama hiçbir yerde tüketilmiyor** · `comms/ika_receiver.py` · KRİTİK
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** Düzeltme `91010be` commit'inde.
+    `IKA_GO` `comms/ika_receiver.py:242-256`'da tüketiliyor; kritik olarak kapı yalnız
+    başlangıçta değil **her sıfır-olmayan motor komutunda** `run_if_route_valid`
+    (`:82-93`) ile yeniden denetleniyor.
+  - **Kapı — bağımsız koşuldu:** `unittest ... -p test_ika_go_gate.py -v` → `Ran 9 tests` · `OK` ·
+    `[T12_KAPI] IHA_LANDED_onceden=1 YKS_UDP_TX=1 IKA_GO_oncesi_hareket=0 IKA_GO_sonrasi_nonzero_motor=1 ACK=ika exit=0`
+  - ⚠ **Ölü kod tuzağı (düşük şiddet, kapatmayı engellemez):** `simulation/scripts/ika_nav.py:259-267`
+    `receiver_ika_go_bekle()` yalnız **tek bacağı** bekliyor ("sürüş izni açık" diyor ama
+    iniş bacağını hiç sormuyor). Üretimde çağıran yok; ileride çağrılırsa T13 kapısının
+    yanlış tarafına geçmiş görünür. Silinmeli ya da docstring'ine uyarı eklenmeli.
+  - ⚠ Bu maddeye yapıştırılmış eski kapı çıktısı bir revizyon bayattı (T13 testi
+    güçlendirmiş); yukarıdaki çıktı bugünün gerçek koşumudur.
   - **Kanıt:** `grep -rn "IKA_GO"` tüm repoda yalnız 2 yer buluyor: `comms/protocol.py:79` (docstring) ve `comms/yks_gui.py:1058` (gönderim). **Alıcı tarafı yok.**
   - **Şartname §2.2.5:** *"İKA'nın intikal süreci yer kontrol istasyonunda görevli takım üyesi tarafından manuel olarak tetiklenir."* Bu tetik **zorunludur**.
   - **Yap:** `IkaReceiver`'a `CMD` tipini işle; `cmd == "IKA_GO"` ve `hedef == "ika"` olduğunda `self.ika_go = True` kur. `ika_nav` sürüşe başlamadan önce bu bayrağı beklesin. Bilinmeyen `cmd` değerleri sessizce yok sayılsın (geriye uyumluluk).
@@ -1171,7 +1546,22 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     EXIT_CODE=0
     ```
 
-- [STATUS: READY_FOR_REVIEW] **T13 — İKA, İHA'nın inişini beklemiyor** · `simulation/scripts/navitas_sim.py` · KRİTİK
+- [x] **T13 — İKA, İHA'nın inişini beklemiyor** · `simulation/scripts/navitas_sim.py` · KRİTİK
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** `IHA_LANDED`
+    `comms/ika_receiver.py:233-241`'de latch'leniyor; `:122` `if not self.ika_go or not
+    self.iha_landed: return False` — şartname §2.2.5 **tüketici tarafında** kapatıldı.
+  - **Kapı — bağımsız koşuldu:** `unittest ... -p test_iha_landed_gate.py -v` → `Ran 10 tests` · `OK`
+    · `[T13_KAPI] IKA_GO=1 LANDED_oncesi_nonzero=0 LANDED_sonrasi_nonzero=1 ACK=ika exit=0`
+    · `[T13_DEADLINE] timeout_sonrasi_latch=2 navigate_calls=0 sonuc=guvenli_ret`
+  - **Genel kapı + regresyon:** `codes/test_rota_sentetik.py` → **15/15** ·
+    `unittest discover -s tests` → `Ran 101 tests` · `OK`
+  - ⚠ **Protokol notu (T13 kusuru değil):** `IHA_LANDED`/`IKA_GO` için kimlik doğrulama
+    yok; `node`/`hedef`/`seq` alan kontrolünden ibaret. Aynı ağda sahte bir UDP çerçevesi
+    latch'i açabilir. Latch kalıcı olduğundan replay zarar vermiyor. Tasarım notu olarak
+    kayda geçti.
+  - 🔗 **T20 ile ilişki:** çelişkili **değil** — aynı zincirin iki ucu. T13 tüketici ucunu
+    fail-closed kapattığı **için** T20 artık "eksik özellik" değil, sahada `P_görev = 0`
+    üreten tıkayıcıdır. Kök neden: `REVIEW_LOG.md` **D-34**.
   - **Şartname §2.2.5:** *"İKA, harekete geçmek için İHA'nın inişini tamamlamasını beklemek zorundadır. İHA yere temas etmeden İKA hareket edemez. İHA iniş yapmadan harekete geçen takımların görevi başarısız sayılacaktır."*
   - **Kanıt:** `dinamik_ika_gorevi` yalnız OPEN_ROUTE bekliyor. Kodda "iniş tamamlandı" diye bir durum **yok**; `grep -i "landed\|inis"` İKA kapısına bağlı hiçbir şey bulmuyor.
   - **Yap:** Protokole `IHA_LANDED` bildirimi ekle (`protocol.command("IHA_LANDED", "yks")` veya ayrı mesaj tipi). İKA sürüş kapısı **iki koşula** bağlansın: geçerli rota **ve** İHA inişi. T12'deki `IKA_GO` bu kapının manuel bacağıdır.
@@ -1265,6 +1655,31 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 - [ ] **T17 — Jetson'da gerçek uçtan uca FPS ölçümü** · `scripts/jetson_fps.py` · bağımlı: **T16**
   - **Yap:** Isınma karelerini ölçüm dışı bırak. p50 ve p95 **ayrı** raporla. `rota_bul` çağrısı zaman ölçümünün **içinde** olmalı — yalnız model çıkarımı ölçmek yanıltıcıdır.
   - **Kapı:** `results/jetson_fps_<tarih>/` altında ölçülmüş sayılar; `ARCHITECT_PLAN.md`'deki tüm tahmin FPS değerleri bunlarla değiştirilir.
+  - 🟡 **2026-08-10 · İLK KOŞUM YAPILDI, KANIT EKSİK — kapı kapanmadı.** Kullanıcı
+    bildirdi: **14 FPS**, donanım **Jetson Nano 4GB**. Sayı umut verici (gereken hız
+    0,9–2,6 FPS) ama **dört bilinmeyen** yüzünden kayda geçirilemiyor:
+    (a) çıktı dosyası yok, yalnız ekranda görüldü;
+    (b) girdi kümesi bilinmiyor — `--girdi` **varsayılanı `data/raw_frames`**, ve
+    `JETSON_KILAVUZ` **G3** bunun *"FPS'i yanıltıcı yüksek"* gösterdiğini yazıyor
+    (boş maske → boş costmap). Kural: ölçüm `test_goruntuleri/sentetik_arena/` ile;
+    (c) model/format/imgsz bilinmiyor — **G1**: `--pt` varsayılanı **v20**, öneri **v21**;
+    (d) güç modu kayıtsız (*"maksimum yapılmazsa ölçüm yalan söyler"*).
+    Ayrıntı ve donanım değişikliğinin sonuçları: `REVIEW_LOG.md` **D-36**.
+  - ℹ️ **Donanım hedefi DEĞİŞMEDİ — ölçüm vekil kartta yapıldı.** Üretim hedefi
+    **Jetson Orin NX 16 GB**; Nano 4GB elde olan **test kartıdır**. Belgelerin
+    Orin NX varsayması doğrudur, değiştirilmeyecek. Aradaki fark mertebe düzeyinde
+    olduğu için Nano'da ölçülen her sayı hedef kart için bir **ALT SINIR**dır —
+    yani hız tarafında durum bildirilenden **daha iyi** olacaktır.
+  - ⚠ **Vekil kart şunları kapatmaz:** (1) hedef kartın gerçek FPS'i; (2) **T16
+    engine derlemesi** — `.engine` hem TensorRT sürümüne hem GPU mimarisine
+    kilitlidir, Nano'da derlenen engine Orin NX'te de çalışmaz; (3) **H2 künyesi**
+    (JetPack + TensorRT + Python sürümü) hedef kartta toplanmalı.
+  - ✅ **Vekil kartın kapatabileceği sorular (Orin NX gelmeden):** model yükleniyor
+    mu · kamera açılıyor mu · zincir uçtan uca çöküyor mu · 4 GB'da bellek yetiyor mu.
+    Bunlar değerlidir ve şimdi koşulabilir.
+  - ⚠ **Kapsam sınırı (ölçüm düzgün tekrarlansa bile):** `jetson_fps.py:162`
+    `rota_bul(..., plan=False)` — **A\* rota planlama ölçüm dışında.** Kılavuzun kendi
+    ifadesiyle bu test *"rota aktarımını, ACK'i ve İKA'nın hareket etmesini kanıtlayamaz."*
 
 - [ ] **T18 — DroidCam kamera kaynağının algı hattına bağlanması** · `codes/rpi_inference.py` · bağımlı: **H3**
   - **Yap:** Kamera kaynağını CLI parametresi yap (dosya / video düğümü / RTSP). Bağlantı koparsa yeniden deneme mantığı zaten var, kaynak değişimiyle bozulmadığını doğrula.
@@ -1272,11 +1687,55 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap (hazır referans):** `jetson_paket/kod/kamera_dogrula.py` kaynağı parametrik alan çalışan bir örnektir (indeks / `/dev/videoN` / `http://…:4747/video`); kalıbı oradan al.
   - **Kapı:** DroidCam kaynağıyla 60 saniyelik kesintisiz çıkarım, düşen kare sayısı raporlanmış; ayrıca `--model` ile v17 `.engine` yüklenip tek kare çıkarım hatasız.
 
-- [ ] **T20 — IHA_LANDED saha uçuşunda üretilmiyor: İKA hiç hareket etmez** · `simulation/scripts/iha_detect_send.py` · **TIKAYICI · KRİTİK** · kanıt: `REVIEW_LOG.md` D-17
+- [IN_PROGRESS: Codex-2] **T20 — IHA_LANDED saha uçuşunda üretilmiyor: İKA hiç hareket etmez** · `simulation/scripts/iha_detect_send.py` · **TIKAYICI · KRİTİK** · kanıt: `REVIEW_LOG.md` D-17
   - **Kanıt:** Kilit `comms/yks_gui.py:1111-1118` ve `comms/ika_receiver.py:233` `IHA_LANDED` bekliyor. Zincirin 3. halkası (`send_iha_landed` çağrısı) git'in takip ettiği 47 `.py` içinde **tek yerde** var: `simulation/scripts/navitas_sim.py:95` — kendi başlığıyla *"Ana Simülasyon Kontrolcüsü"*. Saha betiği `iha_detect_send.py` (`Saha (SiK telsiz): --serial /dev/ttyUSB0`) yalnız `send_open_route` ve `send_no_route` gönderiyor. Gerçek Pi yazılımı `drone/*.py` comms protokolünü **hiç** kullanmıyor (`git ls-files "drone/*.py" | xargs grep -nE "IhaSender|from comms|protocol"` → boş).
   - **Neden tıkayıcı:** Saha görev uçuşunda `IHA_LANDED` hiç üretilmez → `ika_baslat()` her çağrıda REDDEDİLDİ döner → İKA hiçbir zaman hareket etmez → **P_görev = 0**. Şartname §2.2.5'i korumak için konan kilit, görevi engelliyor. FDA görev test uçuşu **30 Eylül** — bu tarihe kadar kapanmazsa uçuş bacağı sıfırlanır.
-  - **Yap:** İniş olayını **saha kod yolunda** üret. İki seçenek var, biri seçilip gerekçesi yazılacak: (a) `iha_detect_send.py`'ye iniş tespiti + `sender.send_iha_landed()` ekle; (b) `drone/rpi_yayin.py`'yi comms protokolüne bağla ve iniş sinyalini oradan üret. Simülasyon yolu (`navitas_sim.py:95`) **kanıt sayılmaz** — kapı saha yolunu ister.
-  - **Kapı:** `--serial` (ya da UDP) modunda saha betiği koşulduğunda `ika_receiver` `IHA_LANDED` alıp latch'i açıyor; `yks_gui.ika_baslat()` REDDEDİLDİ **dönmüyor**. Gerçek çıktı yapıştırılacak. Ayrıca `git ls-files "*.py" | xargs grep -n "send_iha_landed"` çıktısında `simulation/` **dışında** en az bir üretim çağrısı görünecek.
+  - 🔴 **KÖK NEDEN DERİNLEŞTİRİLDİ · 2026-08-10 · Claude 1 denetimi · `REVIEW_LOG.md` D-34.**
+    Eksik olan **taşıma çağrısı değil, KANIT KAYNAĞI.** Simülasyonda iniş kanıtı
+    `iha_flight.fly()` → Gazebo'nun son yer teması pose komutunu kabul etmesidir
+    (`iha_flight.py:51-59` returncode). **Sahada bunun yerine geçecek hiçbir kaynak yok:**
+    `grep -rniE "pymavlink|mavutil|dronekit|pixhawk|LANDED_STATE|relative_alt" --include=*.py`
+    → üretim kodunda **SIFIR**. `drone/rpi_yayin.py:479-496` telemetrisi yalnız
+    `t/calisma_sn/cpu_c` taşıyor — **irtifa alanı bile yok** — ve `drone/` kendi HELLO/ACK
+    protokolünü kullanıp `comms/protocol.py`'yi hiç import etmiyor.
+  - ⛔ **Eski (a) seçeneği MİMARİ OLARAK YANLIŞ, iptal.** `iha_detect_send.py` tek atımlık
+    bir süreçtir: tespit + gönderim yapıp `:144 link.close()` ile çıkar, ve görev kuralı
+    gereği **İHA havadayken** koşar. İniş, o süreç bittikten **sonra** gerçekleşir.
+  - **Yap — üç parça, sırayla:**
+    - **D1 · kanıt kaynağı** — yeni `comms/inis_kaniti.py`:
+      `yerde_mi(mav, ardisik=3, tavan_m=1.0) -> bool`. Pixhawk
+      `EXTENDED_SYS_STATE.landed_state == MAV_LANDED_STATE_ON_GROUND (1)` **ardışık N kez**
+      **ve** `GLOBAL_POSITION_INT.relative_alt/1000 < tavan_m`. Her okuma hatasında `False`
+      — **fail-closed**. Operatör düğmesi dâhil başka hiçbir kaynak kabul edilmez.
+    - **D2 · saha yayıncısı** — yeni `comms/iha_inis_yayinci.py`: `--serial/--baud` veya
+      `--ika/--yks`, `--mavlink udp:127.0.0.1:14550`. Gövde `navitas_sim.py:87-112`
+      `iha_inisini_yayinla`'nın **birebir yeniden kullanımı** olsun; yeniden yazılmasın.
+    - **D3 · paket** — `jetson_paket`'e `comms/` modülleri + `pyserial` bağımlılığı
+      (şu an halka 8 eksik: `eksik_moduller=[iha_sender.py, link.py, protocol.py]`).
+  - **Kapı:** (1) `git ls-files "*.py" | xargs grep -n "send_iha_landed"` çıktısında
+    `simulation/` **dışında** en az bir **üretim** çağrısı görünecek (AST dedektörü ve
+    test fixture'ı sayılmaz). (2) `scripts/saha_kuru_kosu.py` halka `surus_izni` →
+    `saha_ureticileri` **boş olmayacak**, halka **GEÇTİ** dönecek. Gerçek çıktı yapıştırılacak.
+  - ⚠ **İLAN SINIRI:** T20'nin kapı çıktısı **"İKA hareket etti" diye ilan edilmeyecek.**
+    Kanıt yalnızca *"IHA_LANDED latch'i SAHA kaynağından açıldı"* olabilir. T20 kapansa
+    bile İKA sahada hareket etmez: halka **10** (gerçek motor sürücüsü) **SAHİPSİZ**,
+    halka **8** (aktarım) jetson paketinde yok — `CONTRACTS.md:273-275`.
+
+- [ ] **T20-b — Kilit, telsizden gelen GEÇERLİ inişi bile operatör dizisi olmadan reddediyor** · `comms/yks_gui.py:1148` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-34
+  - **Kanıt:** `:1148` `if not self.t_iha1 or self.iha_landed_seq is None:` — latch
+    `t_iha1`'e de bağlı. `t_iha1` **yalnız** `iha_indi()` içinde kuruluyor (`:1130`), o da
+    `t_iha0` yoksa `:1131`'de **erken dönüyor**. Yani operatör ARM → FIRLATMA dizisini
+    basmadıysa `t_iha0` `None`'dır → `t_iha1` `None` kalır → koşulun ilk bacağı hâlâ
+    `True`'dur → **telsizden gelen geçerli bir `IHA_LANDED` bile kilidi açamaz.**
+  - **Neden KRİTİK ve T20'den bağımsız:** D1-D3 uygulanıp sahadan gerçek iniş kanıtı gelse
+    **bile** komut reddedilir. T20 kapanır ama görev yine çalışmaz.
+  - **Yap:** Sürüş izninin otoritesi **protokol kanıtı** olmalı (`iha_landed_seq`), operatör
+    UI kronometresi (`t_iha1`) değil. `t_iha1` göstergede kalabilir; **kilit koşulundan
+    çıkarılmalı.** Şartname §2.2.5 iniş **kanıtı** ister, düğme dizisi değil.
+  - **Kapı:** `t_iha0`/`t_iha1` hiç kurulmadan protokol `IHA_LANDED` enjekte edildiğinde
+    `ika_baslat()` **REDDEDİLDİ dönmeyecek** ve `IKA_GO` yayınlanacak; ARM/FIRLATMA
+    basılmadan da geçmeli. Ters yönde: `IHA_LANDED` **yokken** komut hâlâ reddedilmeli
+    (fail-closed korunmalı). `codes/test_rota_sentetik.py` **15/15**.
 
 ---
 
@@ -1289,13 +1748,52 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 > ⛔ **S1 düzeltilmeden hiçbir veri üretimi veya eğitim koşusu başlatılmaz.**
 > Zorunlu sıra: `S1 → S2 → veri üretimi → eğitim`.
 
-- [STATUS: READY_FOR_REVIEW] **S1 — Veri üreteci araçları ZEMİN olarak etiketliyor** · `scripts/copy_paste_augmentation.py:37,151,340` · **TIKAYICI**
+- [x] **S1 — Veri üreteci araçları ZEMİN olarak etiketliyor** · `scripts/copy_paste_augmentation.py:37,151,340` · **TIKAYICI**
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** Araç kâhini **DOTA OBB**'ye
+    geçmiş; `COCO_ARAC_SINIFLARI` yalnız geriye-uyum fonksiyonunda kalmış.
+    Commit'ler: `11eed4a`, `33abcd3`, `e05ee88`.
+  - **Kapı — bağımsız koşuldu** (üretim fonksiyonu `arac_maskesi()` olduğu gibi çağrıldı;
+    depo dosyası değiştirilmedi). Ölçüt: *"aynı ham fotoğrafta engel maskesindeki araç
+    piksel sayısı COCO'ya göre ≥10× artmalı"*:
+    ```
+    obb_modeli_mi(coco) = False        obb_modeli_mi(obb) = True
+    kare                          COCO_px    OBB_px      kat
+    frame_000000_000000000.jpg          0    114410      inf
+    frame_000001_000000600.jpg       4916    117157    23.8x
+    frame_000002_000000672.jpg          0    115689      inf
+    frame_000003_...                    0    112437      inf
+    ```
+    Ölçüt **fazlasıyla** sağlanıyor. (Bu sayı bugüne dek depoda hiçbir yerde yoktu;
+    `REVIEW_LOG` D-20 yalnız dolaylı ölçümü taşıyordu: araç üstünde zemin %70,2 → %2,0.)
+  - ⚠ **Ölü düğme (kapatmayı engellemez):** `--arac-imgsz` OBB yolunda hiçbir işe
+    yaramıyor. `:389` tanımlı, `:416` doğrulanıyor, ama `:170`
+    `obb_arac_maskesi(..., imgsz=max(bgr.shape[:2]))` — parametre OBB dalında **atılıyor**.
+    Kullanıcı değeri değiştirir, hiçbir şey değişmez, uyarı da yok. Ya gerçekten
+    geçirilsin ya CLI'dan kaldırılsın.
+  - ⚠ **Bayat yorum:** `:503` *"...ve COCO araçları class-1'dir"* — artık DOTA OBB.
+  - ⚠ `dataset/copy_paste_smoke` COCO döneminden kalma yanlış etiketli artık; hiçbir
+    `yaml`'dan referans verilmiyor, eğitim riski yok.
   - **Kanıt:** Aynı hava fotoğrafında COCO `yolov8m-seg.pt` **2 araç**, DOTA `yolov8m-obb.pt` **93 araç** buluyor. COCO güven eşiği 0,35 → 0,02 indirildi, 18 karede yine **sıfır** kesişim — eşik ayarı çözüm değil, domain uyumsuzluğu (COCO yer seviyesi; şartname §5.3.2 ≥30 m nadir).
   - **Neden tıkayıcı:** Etiket yazımı `:295-300` — sınıf **0 (zemin) daima TAM KARE dikdörtgen**, 1 ve 2 üstüne poligon. `engel` maskesine girmeyen her araç yalnız bu dikdörtgenin altında kalır → **"zemin" etiketi alır.** Yani araçların ~%98'i sürülebilir zemin olarak öğretiliyor. Bu, v16'yı **%2,7 → %31,6** çökerten *etiketsiz engel* hatasının birebir aynısı.
   - **Yap:** `--arac-model` varsayılanını `yolov8m-obb.pt` yap ve OBB poligon → maske dönüşümünü **`simulation/scripts/iha_haritala.py:228-255` `_arac_maskesi`'nden al** (`obb.xyxyxyxy` → `cv2.fillPoly`, `ARAC_SINIFLERI = {"small vehicle", "large vehicle"}`). **Yeniden yazma, yeniden kullan.** Eski COCO yolu `--arac-model` ile hâlâ verilebilsin (geriye uyum), ama varsayılan olmasın.
   - **Kapı:** Aynı ham fotoğrafta üretilen `engel` maskesindeki araç piksel sayısı, COCO'ya göre **en az 10×** artmalı; sayıyı gerçek çıktıyla yapıştır.
 
-- [STATUS: READY_FOR_REVIEW] **S2 — Sınıf-id çakışması: `2` bir yerde hedef, bir yerde araç** · `scripts/copy_paste_augmentation.py:318-321` ↔ `simulation/scripts/iha_haritala.py:300,336` · KRİTİK
+- [x] **S2 — Sınıf-id çakışması: `2` bir yerde hedef, bir yerde araç** · `scripts/copy_paste_augmentation.py:318-321` ↔ `simulation/scripts/iha_haritala.py:300,336` · KRİTİK
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** İki ad alanı `codes/sinif_semasi.py`
+    ile ayrıldı: eğitim `ZEMIN=0 · ENGEL=1 · HEDEF=2`, costmap `KATMAN_ZEMIN=0 ·
+    KATMAN_MOLOZ=1 · **KATMAN_ARAC=10**`. `iha_haritala.py:60` sabitleri import ediyor,
+    `:327` `engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI` — **çıplak sayı kalmadı.**
+    `sinif_semasi` **import anında** `dogrula()` koşar: sabitler çakışırsa modül yüklenmez.
+  - **Kapı — bağımsız koşuldu:** `codes/test_sinif_semasi.py` → **8 GEÇTİ / 0 DÜŞTÜ**,
+    pozitif kontrol dahil (*"eski şemada hedef ENGEL sayılıyordu"* — kusur yeniden üretildi).
+    Genel kapı `codes/test_rota_sentetik.py` → **15/15**. Anayasa madde 4 taraması → **0 eşleşme**.
+  - 🔴 **Denetimde bulunan asıl risk KODDA DEĞİL BELGEDEYDİ — düzeltildi.**
+    `CONTRACTS.md` §1.2 hâlâ *"⛔ ÇAKIŞMA — çözülene kadar geçerli uyarı"* başlığıyla
+    **çözülmüş** çakışmayı yürürlükteki kod gibi gösteriyordu ve `KATMAN_ARAC=10`
+    ad alanını hiç tanımlamıyordu; §1.3 `engel_sinif_idler = (1,)` diyordu (gerçek: `(1, 10)`).
+    Madde 16 sözleşmeyi o dosyadan okumayı emrettiği için bu **aktif bir tuzaktı** —
+    özellikle S6 (hedef tohumu) açıkça "S2 sözleşmesinden sonra" diye işaretli.
+    §1.2/§1.3 yeniden yazıldı. Kayıt: `REVIEW_LOG.md` **D-35**.
   - **Kanıt:** `copy_paste_augmentation.py` `2 = hedef` (H brandası) üretiyor; `iha_haritala.py:300` `{0: masks[0], 1: masks[1], 2: arac}` kuruyor ve `:336` `engel_sinif_idler=(1, 2)` geçiyor.
   - **Neden kritik:** 3 sınıflı veriyle eğitilmiş bir model `iha_haritala` yoluna verilirse **H brandası ENGEL sayılır** → İKA hedefe hiçbir zaman ulaşamaz → `P_görev = 0` (şartname Tablo 6: 600 puan, K_zorluk ile 1200'e kadar).
   - **Yap:** Sınıf-id sözleşmesini **tek bir modülde** sabitle (ör. `codes/sinif_semasi.py`): `ZEMIN=0, ENGEL=1, HEDEF=2` ve costmap katmanları için ayrı bir ad alanı (araç maskesi `iha_haritala` içinde **runtime** katmanıdır, eğitim sınıfı değil — ikisini karıştırma). Her iki dosya da bu modülden okusun. Sabit sayı (`2`) yazmayı bırak.
@@ -1356,6 +1854,33 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     gerçekten hesaplanıyor. Ölçüldü: `model=navitas_seg_v21_best.pt sha=799e07f9
     imgsz=512`.
   - ⚠ **Denetim bekliyor** — madde 7 gereği Claude 1 kendi kodunu onaylamaz.
+  - **2026-08-09 · BAĞIMSIZ DENETİM — Claude 1.** Denetim borcu kapatıldı.
+    ⚠ **Önce bir yanlışın kaydı:** bu görev, kuyrukta `- [ ]` göründüğü ve çalışma
+    ağacındaki dosya commit'ten **geride** olduğu için (1406 satır, hâlâ `v20`/`v17`)
+    yeniden yapılmak üzere gpt-oss-120b'ye (N4) verildi. Oysa S9 **zaten
+    `40859b3` commit'inde tamamlanmıştı**. N4'ün ürettiği kod koşum ortasında
+    kayboldu ve depodaki sürüm geri geldi; `git diff HEAD` bunu doğruluyor —
+    depoyla aramda N4'ün yazdığı **tek satır yok**. Kök neden ve bağlayıcı kural:
+    `REVIEW_LOG.md` **D-33**. (N4 koşumundan çıkan `_blk` bulgusu: **D-32**.)
+    - **Denetlenen kod `40859b3`'ün kodudur**, dolayısıyla madde 7 çakışması yok.
+    - **Bulgu, düzeltildi — üç biçim kusuru** (commit'te mevcuttu): `:195` ve
+      `:1027` bir boşluk fazla girintili; `ALGI_MODEL_DOSYA` ile
+      `def _algi_gorseller` arasında PEP8 boş satırı yok. Davranış değişmedi;
+      çalışma ağacının commit'ten tek farkı budur.
+    - **Koşulan kapılar — gerçek çıktı:**
+      ```
+      headless algı kapısı   sabit-kodlu sürüm adı: 1 satır (:826, tanımın kendisi)
+                             ALGI_KAYNAKLAR ('gemini','test','val','drone')
+                             gemini 320 · test 305 · val 294 · drone 67 kare
+      test_rota_sentetik.py  SONUC: 15/15 dogru · [OK] TUM DETERMINISTIK SAHNELER GECTI
+      unittest discover      Ran 101 tests in 27.546s · OK
+      GUI --demo, 9 s ayakta _arayuz_kur çalıştı · NameError yok · stderr boş
+      SHA doğrulaması        hesaplanan 799e07f9 == D-21'deki v21 · EŞLEŞTİ
+      ```
+    - **DOĞRULANAMADI — GUI görsel kapısı.** (`V` → `K` ile `drone` → bilgi
+      satırında `navitas_seg_v21_best` **ve** gerçek karede `blocked` > %10.)
+      İnteraktif olduğu için otomatik koşulamaz; v20'de bu değer **%0,00**'dır,
+      kapı v21'e geçişi bu yüzden ayırt eder. **İnsan koşmalı.**
 
 - [STATUS: READY_FOR_REVIEW] **S10 — Hakem ekranı tek bozuk çerçevede kalıcı donuyor / sessizce sağırlaşıyor** · `comms/yks_gui.py`, `comms/link.py` · KRİTİK · kanıt: 2026-08-07 taraması, `REVIEW_LOG.md` D-06
   - **Neden KRİTİK:** bu ekranı şartname §2.2.3/§6.2 gereği **Alan Hakemi** izliyor

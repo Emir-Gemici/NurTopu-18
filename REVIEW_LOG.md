@@ -1611,3 +1611,741 @@ IKA kapali bir seride yonlendirilir ve molozun onunde durur.
 isaretli; ayni gorevin ikizi `:42` (H7) yine `[HUMAN_COMPLETED]` ama notu
 *"Kullanici 3 Agustos'ta 'yok / belirsiz' bildirdi"* diyor. Durum "tamamlandi",
 kanit "yok". `:36-38` bolum basligi bunu itiraf ediyor ama satirlar duzeltilmemis.
+
+---
+
+### D-30 · KRITIK · T26'nin tarif ettigi yalniz-hedef kapisi kendi sentetik kapisini dusurmuyor
+Bulan: Codex-2 (T26 uygulama-oncesi pozitif kontrol) · 2026-08-09 ·
+`codes/rpi_inference.py:246-306`
+
+T26, en buyuk bagli bilesenin icerik kutusunun ust hedef seridine temasini
+dogrulamayi istiyor. Ancak gorevin kendi bariyerli sahnesinde secilen bilesen zaten
+**ust kenara temas ediyor**; eksik olan baslangic (alt kenar) baglantisi:
+
+```text
+BARIYER yol=2 guven=1.0 wp=4 y_min=0 y_max=299 ust_temas=True alt_temas=False
+ACIK    yol=2 guven=1.0 wp=8 y_min=0 y_max=639 ust_temas=True alt_temas=True
+```
+
+Komut, T26'daki sahneyi birebir kurdu: `z[:,260:380]=1`,
+`e[300:340,:]=1`, ardindan `analyze_path(..., engel_mask=e,
+return_clean=True)`. Bariyer iki esit parca urettigi icin
+`connectedComponentsWithStats` ilk etiket olan **ust parcayi** seciyor. Yalniz
+"hedef bandina temas" denetimi eklenirse bu parca yine gecer ve T26 kapisi hala
+`yol=2` doner.
+
+**Gerekli invariant:** karar bileseni, icerik kutusundaki baslangic bandina bagli
+olmali ve **ayni etiket** hedef bandina da ulasmali. Baslangic/hedef bant oranlari
+`CONTRACTS.md`'de tek kaynak olarak tanimlanmadan uygulayicinin sayi secmesi
+sozlesme ihlalidir. Mevcut `CONTRACTS.md` bu oranlari tanimlamiyor; yalniz eski
+%8 tuval kusurunu tarihsel bulgu olarak aniyor.
+
+---
+
+### D-31 · KRITIK · T25 dosya kapsami OPEN_ROUTE yayin kapisini kapsamiyor
+Bulan: Codex-2 (T25 uygulama-oncesi cagri haritasi) · 2026-08-09 ·
+`comms/iha_sender.py:108-118,202-213`
+
+T25 yalniz `codes/rpi_inference.py`, `comms/yks_gui.py` ve
+`simulation/scripts/iha_perceive.py` dosyalarini listeliyor. Bunlarin hicbiri
+protokol `OPEN_ROUTE` mesaji yayinlamiyor: ilki yerel JSON/gorsel, ikincisi GUI
+gosterimi, ucuncusu JSON/overlay uretiyor. Gercek yayin noktasi
+`IhaSender.send_open_route`; ayrica `iha_sender.py` CLI herhangi bir `conf`
+degerini dogrudan bu metoda geciriyor:
+
+```text
+comms/iha_sender.py:108  def send_open_route(...)
+comms/iha_sender.py:212  sender.send_open_route(road, conf, ...)
+simulation/scripts/iha_detect_send.py:134  sender.send_open_route(...)
+simulation/scripts/hakem_log.py:156  sender.send_open_route(...)
+simulation/scripts/mission_demo.py:66  sender.send_open_route(...)
+```
+
+Bu nedenle yalniz T25'te listelenen uc dosyayi degistiren bir test, "esik alti
+karar OPEN_ROUTE olarak **yayinlanmadi**" kapisini uctan uca kanitlayamaz.
+Guven esigi de `CONTRACTS.md`'de tanimli degil ve Codex'in bu dosyaya yazma
+yetkisi yok. Mimar once esik degerini ve kapinin `IhaSender` seviyesinde mi,
+cagri yerlerinde mi (ya da ikisinde birden mi) uygulanacagini belirlemelidir.
+
+---
+
+### D-32 · ONEMLI · Sozdizimi kapisini gecen ama CALISMAYAN kod: `_h.update(_blk)`
+Bulan: Claude 1 · 2026-08-09 · gpt-oss-120b (N4) kosum ciktisi
+
+> ⚠ **BU KAYIT YAZILDIKTAN SONRA DUZELTILDI (ayni gun).** Ilk yazimda hata
+> "`comms/yks_gui.py` icinde bulundu ve duzeltildi" deniyordu. **Yanlisti.**
+> Hata N4'un uretti(gi) **gecici surumde** vardi; o surum kosum ortasinda
+> kayboldu (bkz. D-33) ve depodaki dosya `40859b3` commit'indeki temiz haline
+> dondu. Depoya **hicbir zaman girmedi.** Asagidaki ders yine de gecerlidir:
+> kanit N4'un kosum kayitlarinda ve bagimsiz `ast` taramasindadir.
+
+S9'un SHA hesabi blogunu gpt-oss-120b (N4) yazdi. Uretilen kod:
+
+    for _blok in iter(lambda: _fh.read(1 << 20), b""):
+        _h.update(_blk)          # <- _blok DEGIL _blk
+
+Dongu degiskeninin adi `_blok`, govdede `_blk`. Calisma zamaninda **NameError**.
+
+**Hicbir otomatik kapi yakalamadi:**
+
+| kapi | neden goremedi |
+|---|---|
+| `ast.parse` (harness her degisiklikten sonra kosuyordu) | sozdizimi GECERLI; tanimsiz isim calisma zamani hatasidir |
+| headless algi kapisi (`s9_kapi.py`) | yalniz `_algi_gorseller` cagriliyor; `_algi_kos` yolu hic calismiyor |
+| `codes/test_rota_sentetik.py` 15/15 | GUI'ye hic dokunmuyor |
+| `unittest discover` 101 test | model yukleme yolu test edilmiyor |
+| icerik dogrulamasi (`"hashlib.sha256()" in src`) | ifade vardi; degisken adi kontrol edilmiyordu |
+
+Saha etkisi **(eger o surum commit edilseydi)**: hakem `V` ile algi gorunumune
+gecince, model yuklenirken `ALGI HATASI: name '_blk' is not defined` basilacakti
+— yani S9'un duzeltmeye calistigi **kanit butunlugu ekrani hic acilmayacakti.**
+
+Gozle denetimde bulundu; `ast` tabanli tanimsiz-isim taramasiyla bagimsiz
+dogrulandi:
+
+    SUPHELI: _algi_kos() satir 894: '_blk' kullanilmis ama ATANMAMIS
+
+Duzeltildikten sonra, blogun birebir kopyasi ayri kosuldu:
+
+    hesaplanan SHA (ilk 8) : 799e07f9
+    D-21 kaydindaki v21    : 799e07f9   -> ESLESTI
+
+**Ders — kapi tasarimi.** "Sozdizimi OK" bir kapi degil, yalnizca on kosuldur.
+Yerel modele yazdirilan kodda, **degistirilen kod yolunu gercekten kosturan**
+bir kapi sart. Ayrica metin aramasiyla yapilan icerik dogrulamasi ("su ifade
+dosyada var mi") *"birseyler yazildi"* der, *"dogru calisiyor"* demez.
+Dogrulama degisen davranisi olcmelidir.
+
+---
+
+### D-33 · KRITIK · ZATEN COMMIT EDILMIS bir gorev, calisma agaci geride oldugu icin bastan yapildi
+Bulan: Claude 1 · 2026-08-09 · `comms/yks_gui.py`, `TASK_QUEUE.md`
+
+> ⚠ Bu kayit once "ayni dosyada eszamanli iki calisma" olarak yazilmisti.
+> `git show` ile **yanlislandi**; asagidaki hali olculmus gercektir.
+
+S9 gorevi N4'e verilirken iki sey dogru sanildi, ikisi de yanlisti:
+
+| sanilan | olculen gercek |
+|---|---|
+| "S9 acik" — `TASK_QUEUE.md:987` satiri `- [ ]` idi | S9 **dun tamamlanmis ve commit edilmis**: `40859b3 yks: hakem ekrani kanit butunlugu ve dayaniklilik (S9 + S10)` |
+| "calisma agacindaki dosya guncel" | Dosya **commit'ten GERIDE** idi: 1406 satir / sha `A05C9224…`, icinde hala `navitas_seg_v20_best.pt`, `v17`, `SHA 8e8d46a6…`, `d.iterdir()` |
+
+`git show 40859b3:comms/yks_gui.py` olcumu (1438 satir):
+
+    ALGI_MODEL_DOSYA -> 5     navitas_seg_v20_best -> 0     8e8d46a6 -> 0
+    d.rglob -> 1              d.iterdir -> 0                "drone" -> 3
+    mAP50 0.6751 -> 0         _blk -> 0
+
+Yani S9'un **tamami** commit'te zaten vardi. `git status` dosyayi `M` gosteriyordu
+ama bu "ilerlemis" degil, **"gerilemis"** anlamina geliyordu — ve kimse bakmadi.
+
+**Ne oldu:** N4 ~6 saat boyunca zaten yapilmis bir isi bastan yapti. Kosumun
+ortasinda calisma agaci commit'teki haline dondu; N4'un urettigi kod (ve
+icindeki `_blk` hatasi, D-32) **sessizce kayboldu**. Son `git diff HEAD` bunu
+kanitliyor: calisma agaci ile commit arasinda yalniz **3 bicim duzeltmesi** var,
+N4'un yazdigi tek satir yok.
+
+**Kok neden — gorev secimi `git`'e bakmiyor.** Kuyruk durumu (`- [ ]`) tek
+otorite sayildi. Oysa gorevin gercekten yapilip yapilmadiginin otoritesi
+**depodur**. Kuyruk ile depo ayrisabilir ve bu turda ayristi.
+
+**Kural (bundan sonra baglayicidir):** Bir goreve baslamadan once
+1. `git log --oneline -15` icinde gorev kodu (T*/S*) araniir;
+2. hedef dosya icin `git status` **ve** `git diff HEAD --stat` bakilir;
+3. calisma agaci commit'ten **geride** ise once bu ayrisma cozulur, is baslatilmaz.
+Uzun kosumlarda hedef dosyanin sha'si baslangicta kaydedilip bitiste
+karsilastirilmalidir; bu turda fark ancak tam `difflib` dokumuyle gorulebildi.
+
+---
+
+### D-34 · TIKAYICI · T20'nin kok nedeni kuyrugun tarif ettiginden BIR KATMAN DERIN
+Bulan: Claude 1 (4 ajanli denetim kosumu) · 2026-08-10 · saha inis kaniti zinciri
+
+T20 kuyrukta "iha_detect_send.py `send_iha_landed()` cagirmiyor" diye tarif
+edilmisti. Denetim bunu **yetersiz** buldu: eksik olan TASIMA cagrisi degil,
+**KANIT KAYNAGI**.
+
+**Uretici zinciri — 3 halkanin 3'u saha disinda:**
+
+    comms/protocol.py:93-106    def iha_landed(seq=None)                    VAR
+    comms/iha_sender.py:135-139 def send_iha_landed(...)                    VAR
+    TEK CAGIRAN: simulation/scripts/navitas_sim.py:95                       SIM-ONLY
+
+`git ls-files "*.py" | xargs grep -n "send_iha_landed"` -> `simulation/` disinda
+tek bir **uretim** cagrisi yok (`scripts/saha_kuru_kosu.py` eslesmeleri AST
+dedektoru, `tests/` fixture).
+
+**Kanit kaynagi asimetrisi:**
+
+| yol | inis kaniti nereden | durum |
+|---|---|---|
+| simulasyon | `iha_flight.fly()` -> Gazebo son yer temasi pose komutunun KABULU (`iha_flight.py:51-59` returncode) | VAR |
+| saha | — | **HIC YOK** |
+
+`grep -rniE "pymavlink|mavutil|dronekit|pixhawk|LANDED_STATE|relative_alt" --include=*.py`
+-> uretim kodunda **SIFIR**. `drone/rpi_yayin.py:479-496` telemetrisi yalniz
+`t/calisma_sn/cpu_c` tasiyor; **irtifa alani bile yok** ve `drone/` kendi
+HELLO/ACK protokolunu kullanip `comms/protocol.py`'yi hic import etmiyor.
+
+**Kuyrugun onerdigi (a) secenegi MIMARI OLARAK YANLIS.** `iha_detect_send.py`
+tek atimlik bir surectir: tespit + gonderim yapip `:144 link.close()` ile cikar,
+ve gorev kurali geregi **IHA HAVADAYKEN** kosar. Inis, o surec BITTIKTEN sonra
+gerceklesir. O dosyaya `send_iha_landed()` eklemek ancak ayri bir mod/dongu
+eklenirse anlamlidir.
+
+**Canli kapi kosumu (2026-08-10), `scripts/saha_kuru_kosu.halka_surus_izni`:**
+
+    DURUM: DUSTU
+    sebep : "kapi dogru ama beslemesi kopuk"
+    tum_ureticiler   : ["simulation/scripts/navitas_sim.py:95"]
+    saha_ureticileri : []
+    kapi_probu       : bos_kapali=true · yalniz_ika_go_kapali=true
+                       iki_latch_ile_acik=true · prob_gecerli=true
+
+Yani **kapinin kendisi dogru calisiyor**; kopuk olan besleme.
+
+**T13 ile CELISKI YOK — ayni zincirin iki ucu.** T13 tuketici ucunu fail-closed
+kapatti (dogru is); tam bu yuzden T20 artik "eksik ozellik" degil, sahada
+**P_gorev = 0** ureten tikayicidir.
+
+**Kapsam uyarisi:** T20 tek basina kapansa bile IKA sahada YINE hareket etmez.
+`results/saha_kuru_kosu_20260808/ozet.json` halka 10 (gercek motor surucusu)
+**SAHIPSIZ**, halka 8 (aktarim) jetson paketinde yok (`eksik_moduller =
+[iha_sender.py, link.py, protocol.py]`, `pyserial_bagimliligi=false`);
+`CONTRACTS.md:273-275` ikisini de sahipsiz gosteriyor. T20'nin kapi ciktisi
+**"IKA hareket etti" diye ILAN EDILMEMELIDIR** — kanit yalnizca "IHA_LANDED
+latch'i SAHA kaynagindan acildi" olabilir.
+
+---
+
+### D-35 · KRITIK · Sozlesme belgesi cozulmus bir cakismayi YURURLUKTE gosteriyordu
+Bulan: Claude 1 (4 ajanli denetim kosumu) · 2026-08-10 · `CONTRACTS.md` §1.2-§1.3
+
+S2 (sinif-id cakismasi) **kodda cozulmus** ve commit edilmisti
+(`codes/sinif_semasi.py`: egitim ad alani `0/1/2`, costmap ad alani `0/1/10`;
+`iha_haritala.py:60,327` sabitten okuyor, ciplak sayi yok). Ama `CONTRACTS.md`
+§1.2 hala **"⛔ CAKISMA — cozulene kadar gecerli uyari"** basligiyla eski kodu
+(`{0,1,2: arac}`, `engel_sinif_idler=(1, 2)`) **yururlukteki kod** diye
+gosteriyordu ve `KATMAN_ARAC=10` ad alanini hic tanimlamiyordu. §1.3 de
+`engel_sinif_idler = (1,)` diyordu — gercek deger `(1, 10)`.
+
+**Neden KRITIK:** `CLAUDE.md` madde 16 *"Sozlesmeler CONTRACTS.md'den okunur"*
+diyor. Bu belgeyi okuyup yeni bir costmap tuketicisi yazan bir sonraki ajan
+`{0,1,2}` semasini **geri getirirdi**. Kuyruk S6'yi (hedef tohumu) acikca
+"S2 sozlesmesinden sonra" diye isaretliyor — yani tuzak bir sonraki gorev icin
+kurulmus durumdaydi.
+
+`sinif_semasi.dogrula()` bunu ancak KATMAN sabitleri degistirilirse yakalar;
+yeni bir cagri yeri ciplak `(1, 2)` yazarsa **sessizce gecer** — CONTRACTS.md'nin
+kendi uyardigi gibi: *"Sozlukte olmayan id sessizce atlanir ... sessizce
+guvenligi dusurur."*
+
+**Duzeltildi (2026-08-10):** §1.2 "✅ CAKISMA COZULDU" olarak yeniden yazildi,
+iki ad alani tablosu ve `KATMAN_ARAC=10` gerekcesi eklendi; §1.3 sabitleri
+`sinif_semasi`'den okuyacak sekilde guncellendi.
+
+**Ders:** kod duzeltilince **sozlesme belgesi ayni commit'te guncellenmeli.**
+Belge ile kod ayristiginda tehlikeli olan taraf koddaki kusur degil, **belgedeki
+bayat dogrudur** — cunku bir sonraki yazar ona uyar. Denetimde artik su soru da
+sorulur: *"bu gorev bir sozlesmeyi degistirdi mi; degistirdiyse CONTRACTS.md
+guncellendi mi?"*
+
+---
+
+### D-36 · ONEMLI · Ilk Jetson FPS sayisi VEKIL DONANIMDA alindi ve KANITSIZ
+Bildiren: kullanici · 2026-08-10 · kayit: Claude 1
+
+> ⚠ **BU KAYIT YAZILDIKTAN SONRA DUZELTILDI (ayni gun).** Ilk yazimda "Jetson
+> donanimi DEGISTI (Orin NX -> Nano 4GB)" deniyordu. **Yanlisti.** Kullanici
+> netlestirdi: uretim hedefi **Orin NX 16 GB** olarak KORUNUYOR; Nano 4GB yalnizca
+> elde olan **vekil test kartidir**. Belgelerin Orin NX varsaymasi dogrudur,
+> degistirilmeyecektir.
+
+**1) Olcum vekil donanimda yapildi — uretim hedefi degismedi.**
+
+| | test (bugun) | uretim hedefi |
+|---|---|---|
+| kart | **Jetson Nano 4GB** | **Jetson Orin NX 16GB** |
+| GPU | Maxwell · 128 CUDA cekirdek | Ampere · Tensor cekirdekli |
+| CPU | 4x Cortex-A57 | 8x Cortex-A78AE |
+| RAM | 4 GB paylasimli | 16 GB |
+| JetPack hatti | 4.6 (Ubuntu 18.04 / Python 3.6 / TRT 8.2) | 5.x/6.x (Python 3.8+) |
+
+Aradaki fark **mertebe duzeyindedir**. Sonuc olarak Nano'da olculen her sayi
+Orin NX icin bir **ALT SINIR**dir. Bu, FPS tarafinda rahatlatici bir isarettir:
+kapsama hesabindan gereken hiz **0,9-2,6 FPS**; zayif kartta bile bunun katbekat
+ustu goruluyorsa hedef kartta hiz **risk maddesi olmaktan cikar**.
+
+**Kalan bagimliliklar (Orin NX icin hala gecerli):**
+  - T16'nin `.engine` adimi Orin NX'in TensorRT surumunde derlenmelidir — engine
+    hem TensorRT surumune hem GPU mimarisine kilitlidir. **Nano'da derlenen engine
+    de Orin NX'te calismaz**; vekil kart bu adimi kapatmaz.
+  - H2 kunyesi (JetPack + TensorRT + Python surumu) hala kayitsiz. Kunye **hedef
+    kartta** toplanmalidir; Nano kunyesi yalnizca vekil kosumu belgelemek icindir.
+  - `ultralytics` Python 3.8+ ister; Nano'nun JetPack 4.6 hatti Python 3.6 tasir.
+    Vekil kosumun hangi yiginla yapildigi **kayda gecmemistir** — bu, 14 FPS'in
+    dogrulanmasi gereken bir baska yonudur.
+
+**2) Bildirilen sayi: 14 FPS. Su an KANIT DEGIL — sebep tek degil, dort.**
+
+| # | Eksik | Neden onemli |
+|---|---|---|
+| a | **Cikti dosyasi yok** (yalniz ekranda gorulmus) | T17'nin kapisi acikca `results/jetson_fps_<tarih>/` altinda olculmus sayi istiyor |
+| b | **Girdi kumesi bilinmiyor** | `jetson_fps.py --girdi` VARSAYILANI `data/raw_frames` yani **drone kareleri**. Kilavuz G3: *"drone kareleriyle olcersen model bos maske dondurur, costmap neredeyse bos izgarada calisir ve FPS YANILTICI YUKSEK cikar."* Kural: olcum `test_goruntuleri/sentetik_arena/` ile yapilir |
+| c | **Model/format/imgsz bilinmiyor** | Kilavuz G1: varsayilan `--pt` **v20**'dir, kilavuzun kendi onerisi **v21**; `--onnx` varsayilani pakette **YOK** |
+| d | **Guc modu kayitsiz** | Kilavuz: *"Guc modunu MAKSIMUM yap — yoksa olcum yalan soyler"* (Nano'da 5W vs 10W ciddi fark) |
+
+Ek olarak kilavuz G2, bu zincirde FPS'in **"bir miktar iyimser"** olabilecegini
+zaten not ediyor: `rota_bul` tohum bantlari letterbox dolgusuna dustugu icin
+`koridor_adaylari` erken donuyor (D-25).
+
+**3) Ihtiyati not — sayinin yonu.** Nano 4GB'da segmentasyon + costmap zinciriyle
+14 FPS, PC referansiyla (RTX 5080, 60 ornek, imgsz 640: **34,04 FPS**) yan yana
+konunca yalniz ~2,4x yavas demektir. Donanim mertebe farki dusunuldugunde bu oran
+**(b) siki ile tutarlidir**: bos maske -> bos costmap -> erken donus. Sayi yanlis
+demiyorum; **hangi kosulda alindigi bilinmedigi icin kullanilamaz** diyorum.
+
+**4) Kapsam sinirlari (olcum duzgun tekrarlansa bile gecerli).**
+`jetson_fps.py:162` `rota_bul(..., plan=False)` cagiriyor — yani **A\* rota
+planlama olcum disinda**. Ayrica kilavuz kendi kapsamini soyle yaziyor:
+*"Bugunku Jetson testi sunlari kanitlayabilir: kamera aciliyor mu, model
+yukleniyor mu, cikarim hizi ne, TensorRT engine derleniyor mu. Sunlari
+kanitlayamaz: rota aktarimi, ACK, IKA'nin hareket etmesi."*
+
+**5) Perspektif — panige gerek yok.** Kapsama hesabindan gereken hiz
+**0,9-2,6 FPS**. 14 FPS bunun 5-15 kati; olcum duzgun tekrarlandiginda deger
+yariya inse bile sartname tarafinda sikinti gorunmuyor. Ustelik sayi **vekil
+(zayif) kartta** alindi ve hedef kart Orin NX 16GB — yani gercek deger bunun
+ustundedir. Bu yuzden T17 "acik" kalir ama **risk maddesi degildir**; yalnizca
+kanit borcudur.
+
+**6) Vekil kartin ASIL degeri hiz degil, YIGIN dogrulamasi.** Nano kosumu su
+sorulari zaten cevapladi ya da cevaplayabilir: model yukleniyor mu, kamera
+aciliyor mu, zincir uctan uca cokuyor mu, 4 GB'da bellek yetiyor mu. Bunlar
+Orin NX gelmeden kapatilabilecek sorulardir ve degerlidir. Kapatamadigi tek sey
+**hedef kartin gercek FPS'i** ve **engine derlemesi**dir (T16).
+
+**7) KARSILASTIRMA TABANI DA COKUK — uc PC referansi 48x celisiyor.**
+Ayni makinede (RTX 5080), ayni zincirde, ayni imgsz=640:
+
+| dosya | ornek | toplam p50 | FPS |
+|---|---:|---:|---:|
+| `jetson_paket/PC_REFERANS.md` | **60** | 27,380 ms | **34,04** |
+| `results/jetson_fps_pc_smoke/rapor.md` | 3 | 84,535 ms | 11,96 |
+| `results/jetson_fps_pc_smoke_dogrulanmis/rapor.md` | **2** | **1402,872 ms** | **0,713** |
+
+**48x fark** ve en kotu sonuc **"dogrulanmis"** adini tasiyor — ad yaniltici,
+icerik en guvenilmez olani. Sebep ornek sayisi: 2-3 karelik kosumlar model
+yukleme + CUDA baslatma maliyetini olcuyor, kararli hizi degil. `jetson_fps.py`
+varsayilanlari **`--isinma 15 --tekrar 120`** ile bunu zaten cozuyor; bu uc kosum
+varsayilanin ALTINDA degerlerle yapilmis.
+
+**Sonuc — baglayici:** Jetson sayilari yalniz **60+ ornekli, isinmali** PC
+referansiyla (34,04 FPS @640) karsilastirilir. Diger iki dosya karsilastirma
+tabani olarak **kullanilmaz**; silinmezler (olcum gecmisi) ama
+`ARCHITECT_PLAN.md`'ye taban olarak girmezler. Vekil Nano kosumu da `--isinma`
+ve `--tekrar` degerleri kayda gecmeden gecerli sayilmaz — 14 FPS'in dorduncu
+bilinmeyeni budur.
+
+---
+
+### D-37 · KRİTİK · K-B güven eşiği gerçek GUI yolunda %100 çekimserlik üretiyor
+Bildiren: Codex-2 · 2026-08-10 · T25 uygulama kapısı
+
+`CONTRACTS.md` §6.3/K-B'deki bağlayıcı `ROTA_GUVEN_ESIGI = 0.50`, GUI'nin
+gerçek 67-kare zincirinde (`navitas_seg_v21_best.pt`, `imgsz=512`, GUI eşik ve
+fallback'leri) ölçüldü. Ham sonuç `52` karar / `15` çekimserdi. Ham kararların
+güven dağılımı `min=0.243`, `p50=0.319`, `max=0.363`; eşik sonrası 52 kararın
+tamamı `DUSUK_GUVEN` ile reddedildi: `0` karar / `67` çekimser (**%100**).
+
+Yayın güvenliği kapısı doğru çalışıyor: eşik altı karar telde `OPEN_ROUTE`
+olmuyor, ACK'li `NO_ROUTE/DUSUK_GUVEN` oluyor. Ancak sözleşmenin kendi
+kalibrasyon hükmüne göre bu aşırı çekimserlik **sahada kullanılamaz**. Codex
+eşik değerini değiştiremez; Claude 1 gerçek veriyle K-B'yi yeniden
+değerlendirip önce `CONTRACTS.md`'yi güncellemeden T25 kapanmamalıdır.
+
+T26 altındaki `52 → 52` tablosu yalnız K-A uç-band kapısını ölçer; K-B güven
+eşiğinin önce/sonra sonucu olarak kullanılamaz.
+
+---
+
+### D-38 · ONEMLI · K-B yeniden kalibre edildi (0,50 -> 0,20); metrik gercek veride AYIRT EDICI DEGIL
+Bulan: Claude 1 · 2026-08-10 · D-37'nin uzerine, bagimsiz olcum
+
+Codex'in bulgusu (D-37) dogrulandi ve **tam dagilim** cikarildi. Ayni zincir
+(v21, `imgsz=512`, GUI esikleri), gercek 67 kare, `data/raw_frames`:
+
+    ham karar: 45 / 67   cekimser: 22   (K-A uc-band kapisi sonrasi)
+
+    GUVEN DAGILIMI (45 kararli kare)
+      min 0,2440 · p05 0,2510 · p10 0,2572 · p25 0,2790
+      p50 0,3070 · p75 0,3250 · p90 0,3386 · max 0,3520
+      ortalama 0,3018   std 0,0304        1/3 tabani = 0,3333
+
+    ESIK SUPURMESI
+      esik    gecen  cekimserlik
+      0,20      45      %32,8     <- K-A'nin kendi cekimserligi
+      0,26      39      %41,8
+      0,28      33      %50,7
+      0,30      26      %61,2
+      0,3333     9      %86,6
+      0,3600     0     %100,0
+
+**1) Benim ilk esigim (0,50) olcumsuzdu.** Dayanagi SENTETIK sahne guveniydi
+(`0,797` / `1,000`). Gercek karelerde guven **hicbir zaman 0,352'yi gecmiyor**.
+Sentetik ile gercek arasindaki bu ayrisma, arena domain boslugunun (bkz. v13/v17
+olcumleri) guven metrigindeki karsiligidir.
+
+**2) Asil bulgu: metrik gercek veride ayirt edici DEGIL.** `std = 0,0304` ve tum
+kutle 1/3 cevresinde. Esik suurmesinde yumusak gecis yok — 0,30'dan 0,36'ya
+%61'den %100'e sicriyor. Buraya secici bir esik koymak kotu karari elemek degil,
+**rastgele kare elemektir.**
+
+**3) Ek gozlem: 45 kararin HEPSI `yol=2`.** En dusuk (0,2440) ve en yuksek
+(0,3520) kareler dahil. Iki aciklama var ve ayrilmadi:
+  (a) kareler genis acik alan gosteriyor; koridor uc seride esit yayiliyor,
+      centroid hep ortaya dusuyor — yani dusuk guven "belirsizlik" degil,
+      "her yer gecilebilir" demek;
+  (b) metrik korlugu.
+Ayirt etmek icin **margin tabanli** guven gerekir (secilen serit ile ikinci en
+iyi arasindaki fark). `in_third / bx.size` mutlak orani bu isi gormuyor.
+Ayri gorev olarak acilmali.
+
+**4) Karar.** `ROTA_GUVEN_ESIGI = 0.20`. K-B artik **secici kapi degil, TABAN
+KORUYUCUSU**: olculen en dusuk gecerli karar (0,244) altinda kalir, gercek
+kararlari elemez; `guven=0.0` yayinini engelleyerek D-28 kusurunu kapatir;
+sentetik yolu (0,797) etkilemez. Guvenligin agirligi **K-A**'dadir — koridorun
+uc bantlara temasi olculebilir geometrik bir olgudur.
+
+**5) YAN BULGU — testler sozlesme sabitini CIPLAK yazmis (madde 16 ihlali).**
+Esik 0,50 -> 0,20 yapilinca 7 test dustu:
+
+    ERROR: test_karar_sozlesmesi.test_ret_detayi_olculen_deger_ve_esigi_tasir
+    FAIL : test_rota_guven_esigi (4 test, ornek: guven=0.499)
+    FAIL : test_iha_sender_cli.test_cli_normal_dusuk_ve_acik_no_route_yollari
+    FAIL : test_yks_gui ... dusuk_guven_onaya_acilmaz
+    Ran 120 tests -> FAILED (failures=6, errors=1)
+    (genel kapi codes/test_rota_sentetik.py 15/15 ETKILENMEDI)
+
+Testler `0.499` gibi degerleri **elle** tasiyor. Sabit `ROTA_GUVEN_ESIGI`'nden
+turetilseydi esik degisikligi testleri kendiliginden takip ederdi. Bu, madde
+16'nin ("ciplak sabit yazilmaz") test tarafindaki karsiligidir ve esigin
+kalibrasyon borcu oldugu bilinen bir sozlesmede **ozellikle** onemlidir.
+Duzeltme T25 kapsaminda Codex'e birakildi: testler esigi sabitten turetecek
+(`ROTA_GUVEN_ESIGI - epsilon` gibi), boylece bir sonraki kalibrasyonda kirilmaz.
+
+---
+
+### D-39 · KRITIK · "yks_gui yol algilamiyor" — IKI AYRI SEBEP, biri K-A/K-B DEGIL
+Bildiren: kullanici · 2026-08-10 · olcum: Claude 1
+
+Kullanici GUI'nin hic yol algilamadigini bildirdi. Olculdu: **iki bagimsiz sebep
+ust uste biniyor** ve buyuk olani K-A/K-B ile ilgisiz.
+
+**SEBEP 1 (baskin, REGRESYON DEGIL) — model varsayilan kaynakta zemin BULAMIYOR.**
+GUI varsayilan kaynagi `gemini` (`yks_gui.py:119`). v21, `imgsz=512`, GUI zinciri:
+
+    [gemini]                zemin%  engel%  silme sonrasi
+      1.png                   0,00    0,00   BOS   2816x1536
+      10.png 12.png 4.png     0,00    0,00   BOS   1024x559
+      2.png                   0,00    1,21   BOS   2048x2048
+      11.png 6.png 14.png     0,00   0-1,2   BOS
+      -> 8 / 12 kare BOS
+    [val]  7 / 12 kare BOS (bircogunda engel VAR ama zemin 0,00)
+    [drone] 0 / 12 BOS · zemin %76,8-78,7 · engel ~%25 · silme sonrasi ~%73
+
+Blok maskesi trav'i silmiyor; **zemin maskesi zaten uretilmiyor**. Ayni model
+`drone` karelerinde kusursuz calisiyor. Bu, D-21'de kayitli domain boslugunun
+GUI'deki dogrudan sonucudur ve K-A/K-B'den ONCE de vardi.
+
+**SEBEP 2 (ikincil, benim degisikligim) — K-A/K-B eleme yapiyor.**
+Ayni karelerde HEAD (K-A/K-B oncesi) ile calisma agaci karsilastirildi; girdi
+(predict + get_masks) TEK SEFER uretilip iki `analyze_path`'e verildi:
+
+    kaynak    maske bos   ESKI karar   YENI karar   kaybedilen
+    gemini      8/12          4            1            3
+    val         7/12          3            1            2
+    drone       0/12          9            6            3   (%33)
+
+Yani `gemini`'de kullanicinin gordugu sey: 12 karenin 8'inde zaten maske yok,
+kalan 4 karardan 3'u de kapidan donuyor -> ekran tamamen olu gorunuyor.
+
+**Degerlendirme.** K-A **dogru calisiyor**: T26'nin amaci "kareyi bastan basa
+gecmeyen koridoru acik sayma"ydi ve gemini/val goruntulerinin geometrisi
+(kismi koridor, kenara degmeyen alan) bu kapidan dogal olarak donuyor. Kapinin
+gevsetilmesi T26 kusurunu geri getirir — YAPILMAYACAK. Ancak:
+
+  a) GUI **red sebebini gostermiyor.** `_rota_kararini_esikle` K-B icin
+     `(sebep, detay)` uretiyor ama K-A reddi sessizce `None` donuyor ve ekranda
+     yalnizca "TESPIT YOK" yaziliyor. Kullanici "bozuk" ile "kapi kapatti"yi
+     ayirt edemiyor. **Hakem ekraninda bu bir kanit butunlugu sorunudur** (S9
+     ile ayni sinif).
+  b) GUI **varsayilan kaynagi `gemini`** — model orada calismiyor. `drone`
+     kaynagi S9'da tam bu yuzden eklenmisti ama varsayilan degistirilmedi.
+
+**OLCUM SINIRI (durustluk notu):** bu olcumde GUI'nin **karolu cikarim** dali
+(`yks_gui.py:895-909`, `max(h,w) > 1400` ise 768'lik karolar) taklit EDILMEDI;
+dogrudan `predict(imgsz=512)` kullanildi. Bu yalniz buyuk kareleri (2816x1536,
+2048x2048, 1600x900) etkiler; **1024x559 gibi karolanmayan kareler de BOS
+cikti**, dolayisiyla sonuc karolamadan bagimsiz olarak gecerlidir.
+
+---
+
+### D-40 · KRITIK · `KENAR_GUVENSIZ` kapisi ORNEKLEME PARAMETRESINE duyarli — karar KARARSIZ
+Bulan: Claude 1 · 2026-08-10 · kullanici bildirimi uzerine ("2 guzel fotoda kenar guvensiz")
+
+T25/T28 sebep bildirimi calisir hale gelince retlerin dagilimi olculdu:
+
+    [drone]  20 kare :  KENAR_GUVENSIZ 11 (%55) · KARAR 9 (%45)
+    [gemini] 20 kare :  MASKE_YOK 14 (%70) · UC_BANT_TEMAS_YOK 3 · KARAR 2 · KENAR 1
+    [test]   20 kare :  MASKE_YOK 7 · KARAR 7 · UC_BANT_TEMAS_YOK 4 · BILESEN_YOK 2
+
+**BULGU 1 — sebep etiketi yanlis.** `KENAR_GUVENSIZ` donen vakalarin
+**hepsinde uretilen waypoint sayisi 0**. Kenar yokken "kenar guvensiz" denemez.
+Dogru ayrim: *"waypoint zinciri hic kurulamadi"* ile *"kurulan zincirin bir
+kenari engelden geciyor"* ayri sebeplerdir. Ilki icin ayri bir kod gerekir
+(ornegin `GORUS_HATTI_KOPUK` / `WAYPOINT_URETILEMEDI`).
+
+**BULGU 2 (asil) — karar ornekleme parametresine gore SALINIYOR.**
+Ayni goruntu, ayni maske; yalniz `n_waypoints` degistirildi:
+
+    kare                8wp    16wp   24wp   32wp  | rota_bul (bagimsiz)
+    frame_000002       KENAR  yol2   KENAR  yol2   | BELIRSIZ_COKLU
+    frame_000003       yol2   KENAR  KENAR  yol2   | BELIRSIZ_COKLU
+    frame_000005       yol2   KENAR  yol2   yol2   | BELIRSIZ_COKLU
+    frame_000007       KENAR  KENAR  yol2   KENAR  | BELIRSIZ_COKLU
+    frame_000012       KENAR  yol2   KENAR  yol2   | BELIRSIZ_COKLU
+
+    8wp KARAR / 32wp KARAR:  4 kare tutarli ACIK · 5 kare tutarli RET
+                             3 kare RET->KARAR · 2 kare KARAR->RET
+    -> 14 karenin 5'inde (%36) karar ornekleme sayisina bagli DEGISIYOR.
+
+Sahada kabul edilemez: ayni sahne, ayni maske, farkli karar. `n_waypoints`
+bir **performans/cozunurluk** parametresidir; **guvenlik kararini belirlememelidir.**
+
+**BULGU 3 — bagimsiz ikinci gorus tutarli.** `costmap_path_finder.rota_bul`
+ayni maskelerde 13/14 karede `BELIRSIZ_COKLU`, 1'inde `ACIK` dedi. Yani
+`rota_bul` **kararli**; salinim yalniz `analyze_path`'in kenar kapisinda.
+Iki yolun ayni sahnede farkli gerekcelerle reddetmesi S4'un (iki iraksak karar
+yolu) somut sonucudur.
+
+**Degerlendirme.** T24 kusuru GERCEKTI ve duzeltme dogru yondeydi (D-28: iki ucu
+zemin olan kenar engelin ustunden geciyordu). Ancak duzeltme, kararliligi
+ornekleme adimina baglayan bir kapi uretti. Kok neden: waypoint'ler once
+bantlardan **ornekleniyor**, sonra aralarindaki duz cizgi engelle sinaniyor.
+Koridor kivrimliysa iki bant arasindaki duz cizgi engelden gecebilir — bant
+sayisi degisince kesisim de degisir. Yani kapi, koridorun **gecilebilirligini**
+degil, **ornekleme geometrisini** olcuyor.
+
+**Yon (mimar onerisi, T30 olarak acildi):** kenar guvenligi waypoint ciftleri
+uzerinden degil, koridorun **baglantililigi** uzerinden sinanmalidir —
+`rota_bul._bagli_mi` bunu zaten yapiyor ve kararli sonuc veriyor. Waypoint'ler
+baglantisi KANITLANMIS bir yol uzerinde uretilirse (A* ya da centerline takibi),
+sonradan kenar denetimine gerek kalmaz ve `n_waypoints` yalniz cikti
+yogunlugunu etkiler — karari degil.
+
+---
+
+### D-39 · ÖNEMLİ · D-38'deki 45/67 ölçümü güncel GUI karar yolu değil
+Bildiren: Codex-2 · 2026-08-10 · T25 kapanış ölçümü
+
+Aynı model (`799e07f9...`), aynı 67 kare, `imgsz=512` ve aynı maskelerle iki karar
+yolu tek koşumda karşılaştırıldı:
+
+| karar yolu | karar | çekimser | güven min / p50 / max |
+|---|---:|---:|---|
+| Güncel GUI: `trav[blok > 0] = 0` → `analyze_path(trav)` | **52** | 15 | `0,243 / 0,3185 / 0,363` |
+| Engel son çıkarılır: `analyze_path(zemin, engel_mask=blok)` | **45** | 22 | `0,247 / 0,307 / 0,351` |
+
+D-38'deki `45` ve `p50=0,307` ikinci yolla örtüşüyor; kayıt bunu “GUI zinciri”
+diye etiketliyor, fakat `comms/yks_gui.py::_algi_kos` birinci yolu kullanıyor.
+`ROTA_GUVEN_ESIGI=0,20` sonucu değişmiyor: **iki yolda da K-B ek ret = 0**.
+Bu nedenle eşik kararı geçerli, fakat 67-kare kanıtı iki yolu ayrı adlandıracak
+şekilde düzeltilmelidir. Engel çıkarma sırası zaten açık S4 kapsamındadır; T25
+içinde sessizce değiştirilmedi.
+
+---
+
+### D-40 · KRİTİK · YKS GUI ham araç maskesini kenar kapısına bağlamıyordu
+Bildiren: kullanıcı · doğrulayan/düzelten: Codex-2 · 2026-08-10
+
+Kullanıcı, model araçları doğru etiketlediği hâlde sarı waypoint kenarlarının
+araçların üstünden geçtiğini ve düğümler arası mesafenin aşırı uzun olduğunu
+bildirdi. Kök neden `comms/yks_gui.py::_algi_kos` çağrı zincirindeydi:
+
+1. `trav[blok > 0] = 0` aracı morfolojiden **önce** oyuyordu.
+2. `analyze_path` daha sonra `MORPH_CLOSE` çalıştırıp ince araç boşluğunu geri
+   doldurabiliyordu.
+3. GUI `engel_mask=blok` vermediği için hem son çıkarma hem ham-engel kenar
+   denetimi bu çağrı yerinde devre dışı kalıyordu.
+4. Sekiz yatay bant azami edge uzunluğu koymuyordu; gerçek karede tek edge
+   `1025,5 px` olabiliyordu.
+
+**Düzeltme:** GUI artık ham `blok` maskesini `analyze_path(...,
+engel_mask=blok)` ile son kapıya bağlıyor, 12 aday bandı kullanıyor ve güvenli
+segmentleri mevcut `costmap_path_finder._maks_aralikla_bol` yardımcısıyla bir
+bant yüksekliğini aşmayacak ara düğümlere bölüyor. Kalın sarı çizginin yalnız
+görselleştirme nedeniyle araç etiketinin üstünü boyamaması için engel katmanı
+en son çiziliyor.
+
+**Gerçek 67 kare, v21 SHA `799e07f9...`, imgsz=512:**
+
+| | karar | ihlalli kare | ihlalli edge | wp medyan | edge medyan / max |
+|---|---:|---:|---:|---:|---:|
+| önce | 52 | **13** | **14/364** | 8 | `72,0 / 1025,5 px` |
+| sonra | 45 | **0** | **0/1202** | 24 | `33,0 / 46,7 px` |
+
+Yeni `tests/test_yks_gui_rota_engel.py` dört kapı taşır: gerçek `_algi_kos`
+çağrı bağını, eski kusurun pozitif kontrolünü, ince tam bariyer fail-closed
+reddini, edge bölmeyi ve kalın çizgi/araç katman sırasını doğrular. Hedefli
+çıktı `Ran 4 tests · OK`; tam keşif `Ran 125 tests · OK`; genel sentetik kapı
+`15/15`, tümü exit `0`.
+
+⚠ **Sınır:** Bu düzeltme etiketlenmiş araç pikseliyle kesişimi sıfırlar. Gerçek
+İKA gövde açıklığı için `mpp` ve `R_GEREKLI_M=1,10 m` tabanlı C-space gerekir;
+bu mekanizma costmap yolundadır ve açık S4/D-25 mimari migrasyonunun kapsamıdır.
+YKS'nin bu görünümü yerel hakem görselleştirmesidir, doğrudan `OPEN_ROUTE`
+yayınlamaz.
+
+---
+
+### D-41 · KRİTİK · D-40'ın 12-bant değişikliği geçerli rotayı reddediyor, tam maskede worker sessizce çöküyordu
+Bildiren: kullanıcı · doğrulayan/düzelten: Codex-2 · 2026-08-10
+
+D-40 sonrasında kullanıcı "şimdi hiç çalışmıyor" bildirdi. İki bağımsız regresyon
+somut olarak yeniden üretildi:
+
+1. `n_waypoints=12`, kenar uzunluğu sınırı değildir ve ara-bant görünürlük
+   sezgisini değiştirir. Araçsız gerçek `road_104.jpg` maskesinde 8 bant
+   `yol=1, guven=0,465` üretirken 12 bant `None` döndürdü. D-40'ın "12 aday
+   bandı" değişikliği geri alındı; üretimle aynı 8 bant korundu. Azami edge
+   uzunluğu bundan bağımsız `ALGI_MAKS_KENAR_ORANI=1/12` ile uygulanır.
+2. Tamamı geçilebilir maskede OpenCV `distanceTransform` değeri `FLT_MAX`
+   olabiliyor; `int(median)` çizgi kalınlığına çevrilince worker
+   `int too big to convert` ile düşüyor, dış `except` yalnız günlüğe yazdığı
+   için panel sonsuza dek "işleniyor" görünüyordu. Koridor 1 px kapalı sınırla
+   pad edilip kırpıldı ve yarıçap görüntü boyutuyla sınırlandı.
+
+Ek savunmalar: panoramik görüntüde waypoint aralığı, geometriyi kesmeden
+`MAKS_WP=64` içine sığacak en küçük değere uyarlanır; bölünmüş rota ham engel
+maskesine karşı yeniden denetlenir. Geçersiz güven değerinin yazı formatlaması
+worker'ı düşüremez. Her beklenmeyen worker hatası artık ayrı `hata` paketiyle
+ALGİ panelinde görünür; yalnız loga gömülmez.
+
+**Güncel gerçek 67 kare:** 45 karar / 22 çekimser / **0 runtime hata**;
+başarılı rotalarda edge max `43,28 px` (limit `48 px`), waypoint max `52`
+(limit `64`). `road_104.jpg` yeniden `1·SOL, güven 0,47`; ilk gerçek drone
+karesi `2·ORTA, güven 0,33` üretir.
+
+**Kapılar:** `test_yks_gui_rota_engel.py` → `Ran 7 tests · OK`; tam keşif →
+`Ran 128 tests · OK`; `codes/test_rota_sentetik.py` → `15/15`; GUI `--help`
+exit `0`; `git diff --check` exit `0`. D-40'taki 12-bant ve 4/125 test kaydı bu
+ek kayıtla düzeltilmiştir; D-40'ın ham araç maskesi kök nedeni geçerliliğini korur.
+
+---
+
+### D-42 · KAPATILDI · Rota reddi artık hakem ekranı, artefakt ve NO_ROUTE yolunda kanonik
+Bildiren/düzelten: Codex-2 · 2026-08-10 · T25/T28
+
+`analyze_path` önceden bütün yapısal retleri sessiz `None` ile birleştiriyordu.
+Geriye uyumlu `return_reason=True` seçeneği eklendi; varsayılan 3 eleman ve
+`return_clean=True` 4 eleman ariteleri değişmedi. Opt-in dönüşün son elemanı
+§6.4'teki `MASKE_YOK`, `BILESEN_YOK`, `UC_BANT_TEMAS_YOK`,
+`ALAN_YETERSIZ`, `KENAR_GUVENSIZ` veya K-B `DUSUK_GUVEN` kodunu, ölçülen
+ayrıntısıyla taşıyor. Yapısal ret, güven eşiği tarafından ezilmiyor.
+
+İki çağrı-yeri kopukluğu da ölçülerek kapatıldı: GUI analizden önce zemini
+engelle oyup kaynak bilgisini kaybetmiyor; ham zemin ve engeli ayrı geçiriyor.
+`iha_perceive` sınıf-1 engel maskesini analizöre iletiyor. Sentetik yatay bariyer
+bu bağlantıdan önce `road=2` üretirken artık `UC_BANT_TEMAS_YOK`, `road=None`,
+`waypoints=[]` üretiyor. GUI'de boş maske, bariyer ve düşük güven üç ayrı panel,
+günlük ve banner metnidir. Yapısal sebep/detay, `IhaSender` + protokol
+encode/decode yolunda tek `NO_ROUTE` olarak değişmeden korunur.
+
+**Gerçek veri:** v21 SHA `799e07f9cef3820c3ad9f0365b0052fd8ee2edfc6df1b706830a0a9d3bc5be7d`,
+67 drone karesi, GUI `imgsz=512` eşik zinciriyle `45 karar / 22 ret / 0 hata`;
+22 retin tamamı `KENAR_GUVENSIZ`, sebepsiz ret yoktur. Kabul güveni
+`0,247 / 0,307 / 0,351` (min/p50/max).
+
+**Koşulan kapılar (tümü exit 0):** `test_rota_ret_nedenleri.py` 10/10,
+`test_yks_gui_rota_engel.py` 7/7, `test_rota_guven_esigi.py` 8/8,
+`test_*rota*.py` 36/36, tam keşif 138/138, sentetik rota 15/15,
+`py_compile` ve `git diff --check` temiz.
+
+---
+
+### D-43 · KRİTİK · Rota kararı waypoint örnekleme sayısından ayrıldı
+Bildiren: Claude 1 · düzelten: Codex-2 · 2026-08-10 · T30
+
+T30 öncesi güvenlik kararı yatay bantlardan seçilen waypoint geometrisine bağlıydı.
+Aynı 14 gerçek maskede `n_waypoints={8,16,24,32}` karşılaştırıldığında dört ayarın
+tamamı hesaba katılınca **10/14 kare salınıyordu**; tarihsel `5/14` yalnız 8 ile 32
+uçlarını karşılaştırıyordu. Toplam 29/56 retin tamamı ara bant adayının bulunamaması
+nedeniyle oluştu; henüz kenar yokken yanlış `KENAR_GUVENSIZ` etiketi veriliyordu.
+
+**Düzeltme:** `analyze_path`, en büyük koridorun başlangıç–hedef bağlantısını tam
+çözünürlükte doğruladıktan sonra muhafazakâr MIN-havuzlu A* ile somut bir witness
+yolu çıkarır. Kaba ızgara yol bulamazsa adım tam çözünürlüğe kadar küçülür; üretilen
+zincirin bütün segmentleri tekrar tam maskede doğrulanır. `n_waypoints` ancak bu
+kanıtlanmış kanonik yol üzerinde çıktı yoğunluğu olarak kullanılır ve karara girmez.
+Witness kurulamaması `GORUS_HATTI_KOPUK`, kurulmuş zincirin son doğrulamadan
+geçememesi `KENAR_GUVENSIZ` olur. T24'ün ham engel ve segment postcondition'ı
+kaldırılmadı; mutasyon testi ihlalli witness'ı hâlâ reddediyor.
+
+**Gerçek 14 kare, v21 SHA `799e07f9...`, imgsz=512:** 56 analyze çağrısında
+karar/reason salınımı **0/14**, komşu ayarlar arasında **0/42**; her n için 14/14
+`yol2`. Toplam 1.053 segmentte LOS ihlali ve ham engel teması **0**. Analyze
+p50/p95/max `82,272 / 101,806 / 105,012 ms`.
+
+**Gerçek 67-kare GUI zinciri:** 67/67 karar, 0 ret, 0 exception, yol2=67. GUI'nin
+son densify zincirindeki 1.329 segmentte LOS/ham engel ihlali **0**; waypoint
+min/p50/max `19/21/21`, en uzun edge `45,967 px` (`h/12=48 px`). Analyze
+p50/p95/max `78,892 / 112,268 / 131,167 ms`. `road_104.jpg` yol1, güven `0,465`,
+20 waypoint ve 0 ihlal üretir.
+
+**Kapılar (tümü exit 0):** `test_analyze_path*.py` 20/20,
+`test_rota_ret_nedenleri.py` 10/10, `test_rpi_letterbox.py` 5/5,
+`test_yks_gui_rota_engel.py` 7/7, `test_rota_guven_esigi.py` 8/8;
+tam keşif `Ran 141 tests in 27.333s · OK`; sentetik rota `15/15`; `py_compile`
+ve `git diff --check` temiz.
+
+⚠ **Sınır:** Bu düzeltme waypoint kararlılığı ile piksel-segment güvenliğini kapatır.
+Çoklu koridorun görev-semantik seçimi ve `mpp/R_GEREKLI_M` tabanlı fiziksel İKA
+gövde açıklığı mevcut S4/D-25 mimari kapsamındadır.
+
+---
+
+### D-44 · DÜZELTME · D-43'ün sınırsız A* ve uç-ankraj kapanış kayıtları güncellendi
+Bildiren: bağımsız Codex denetimi · düzelten: Codex-2 · 2026-08-10 · T30
+
+D-43 ilk uygulama ölçümüdür; kök neden ve `n_waypoints` ayrımı geçerlidir, ancak
+kapanıştan önce iki ek kusur bulundu. Kaba plan hücresinin merkezi gerçek hedef
+bandının dışında kalabiliyor, koşulsuz tam-çözünürlük fallback'i ise 512² dar-geçit
+sahnesinde worker'ı **5,941 s** bloke ediyordu. D-43'teki “tam çözünürlüğe kadar”
+ifadesi, performans ve endpoint güvenliği bakımından yürürlükte değildir.
+
+**Son düzeltme:** A* zincirinin ilk ve son waypoint'i plan hücresi merkezine değil,
+aynı hücredeki gerçek alt/üst tohum pikseline ankrajlanır ve kanonik dönüşten önce
+üyelik yeniden doğrulanır. Bütün A* denemelerinin toplam bütçesi sözleşmeli
+`ROTA_PLAN_MAKS_HUCRE=32768` plan hücresidir. Daha ince ızgara bütçeye sığmıyorsa
+algoritma `GORUS_HATTI_KOPUK` ile fail-closed döner. Dar-geçit reprosu güncel kodda
+`233,6 ms`, `20480/32768` hücre ve güvenli ret üretir.
+
+**Güncel kaynak SHA `AF75CE176B313B8B...`; gerçek 14 kare:** 56/56 çağrı `yol2`,
+karar/reason salınımı `0/14`, komşu geçiş `0/42`, endpoint-band ihlali `0/56`;
+1.059 segmentte LOS/ham engel ihlali `0`. Analyze p50/p95/max
+`88,299 / 111,716 / 144,223 ms`.
+
+**Güncel 67-kare GUI zinciri:** 67/67 karar, 0 ret/hata, endpoint-band ihlali
+`0/67`; 1.333 segmentte LOS/ham engel ihlali `0`; waypoint min/p50/max
+`20/21/21`, en uzun edge `45,967 < 48 px`. Analyze p50/p95/max
+`81,666 / 100,423 / 144,223 ms`; plan listesi azami `30692/32768` hücre.
+`road_104.jpg` yine yol1, güven `0,465`, 20 waypoint ve 0 ihlal üretir.
+
+**Güncel kapılar (tümü exit 0):** `test_analyze_path*.py` 22/22,
+`test_rota_ret_nedenleri.py` 10/10, `test_rpi_letterbox.py` 5/5,
+`test_yks_gui_rota_engel.py` 7/7, `test_rota_guven_esigi.py` 8/8;
+tam keşif `Ran 143 tests in 28.172s · OK`; sentetik rota `15/15`; `py_compile`
+ve `git diff --check` temiz. D-43'teki 20/141 test sayıları ile eski süre/segment
+sayıları bu ek kayıtla düzeltilmiştir.

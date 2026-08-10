@@ -23,37 +23,54 @@
 Bu şema `dataset/*/data.yaml` ve `scripts/copy_paste_augmentation.py` çıktısının
 sözleşmesidir. Üretimdeki 2 sınıflı modeller `{0, 1}` alt kümesini kullanır.
 
-### 1.2 ⛔ ÇAKIŞMA — çözülene kadar geçerli uyarı
+### 1.2 ✅ ÇAKIŞMA ÇÖZÜLDÜ — iki ad alanı ayrıldı (S2)
 
-`simulation/scripts/iha_haritala.py` **çalışma anında** ayrı bir katman sözlüğü kuruyor:
+> *Bu bölüm 2026-08-10'a kadar "⛔ çözülene kadar geçerli uyarı" olarak duruyordu ve
+> **çözülmüş** bir çakışmayı yürürlükteki kod gibi gösteriyordu. Madde 16 sözleşmeyi
+> bu dosyadan okumayı emrettiği için bu, çakışmayı geri getirebilecek **aktif bir
+> tuzaktı.** Kayıt: `REVIEW_LOG.md` D-35.*
 
-```python
-costmap_maskeleri = {0: masks[0], 1: masks[1], 2: arac}   # :300  -> 2 = ARAÇ
-rota_bul(..., engel_sinif_idler=(1, 2), ...)              # :336
-```
+**Eski kusur (ölçülmüş, KRİTİK).** `iha_haritala.py` çalışma anında
+`{0: zemin, 1: moloz, 2: araç}` kuruyor ve `engel_sinif_idler=(1, 2)` veriyordu.
+Eğitim şemasında `2 = hedef` olduğu için 3 sınıflı bir model bu yola verilseydi
+**H brandası engel sayılacaktı** → İKA hedefe hiç ulaşamaz → `P_görev = 0`.
 
-Yani **`2` orada araç**, eğitim şemasında **hedef**. 3 sınıflı bir model bu yola
-verilirse **H brandası engel sayılır** → İKA hedefe hiç ulaşamaz → `P_görev = 0`.
+**Çözüm — tek otorite `codes/sinif_semasi.py`.** İki ad alanı ayrıldı, sayıları
+artık çakışmıyor:
 
-**Doğru ayrım:**
-
-| Kavram | Ad alanı | Kim üretir |
+| Ad alanı | Sabitler | Kim üretir |
 |---|---|---|
-| **Eğitim sınıfı** | `0=zemin, 1=engel, 2=hedef` | model / etiket |
-| **Costmap katmanı** | ayrı sözlük, model sınıfı **değil** | çalışma anı (araç dedektörü vb.) |
+| **Eğitim sınıfı** | `ZEMIN=0` · `ENGEL=1` · `HEDEF=2` | model çıktısı / YOLO etiketi |
+| **Costmap katmanı** | `KATMAN_ZEMIN=0` · `KATMAN_MOLOZ=1` · **`KATMAN_ARAC=10`** | çalışma anı; araç maskesi **ayrı** bir DOTA OBB modelinden gelir |
 
-Araç maskesi bir **çalışma anı katmanıdır**, eğitim sınıfı değildir. İkisi aynı sayı
-uzayını paylaşmamalıdır. Düzeltme görevi: `TASK_QUEUE.md` **S2**.
+Araç katmanı **10**'dan başlar: eğitim sınıf uzayıyla (0..9) çarpışmasın diye seçildi.
+Böylece 3 sınıflı bir model bu yola verilse bile `HEDEF (2)` hiçbir zaman bir costmap
+engel katmanına denk gelmez.
 
-### 1.3 Costmap rolleri
+`serbest_alan()` sözlük **anahtarlarını** kullanır (`if c in maskeler`); id'nin sayısal
+değeri önemli değildir — yalnızca **çakışmaması** önemlidir.
+
+**Doğrulama:** `codes/test_sinif_semasi.py` → **8 GEÇTİ / 0 DÜŞTÜ**, pozitif kontrol
+dahil (*"eski şemada hedef ENGEL sayılıyordu"* testi kusuru yeniden üretiyor).
+`sinif_semasi` **import anında** `dogrula()` koşar: sabitler çakışırsa modül yüklenmez.
+
+### 1.3 Costmap rolleri — sabitler `sinif_semasi`'den okunur
 
 ```python
-yol_sinif_idler   = (0,)        # serbest alanı OLUŞTURAN katmanlar
-engel_sinif_idler = (1,)        # serbest alandan ÇIKARILAN katmanlar
+from sinif_semasi import COSTMAP_YOL_KATMANLARI, COSTMAP_ENGEL_KATMANLARI
+
+yol_sinif_idler   = COSTMAP_YOL_KATMANLARI     # (KATMAN_ZEMIN,)              = (0,)
+engel_sinif_idler = COSTMAP_ENGEL_KATMANLARI   # (KATMAN_MOLOZ, KATMAN_ARAC)  = (1, 10)
 ```
 
-`codes/costmap_path_finder.py:165, 730` varsayılanları. Sözlükte olmayan id **sessizce
-atlanır** — bu yüzden yanlış id vermek hata üretmez, **sessizce güvenliği düşürür**.
+Yürürlükteki kullanım: `simulation/scripts/iha_haritala.py:60` (import), `:327` (çağrı).
+
+⛔ **Çağrı yerlerine çıplak sayı yazılmaz** (madde 16). Yeni bir engel kaynağı
+eklenecekse **yalnız** `COSTMAP_ENGEL_KATMANLARI` genişletilir — çağrı yerleri
+değişmez.
+
+Sözlükte olmayan id **sessizce atlanır**: yanlış id vermek hata üretmez,
+**sessizce güvenliği düşürür.** Sabitten okumanın nedeni tam olarak budur.
 
 ---
 
@@ -169,6 +186,154 @@ Bilinen kaynaklar: `iha_haritala.py` → `MOZ_M / MOZ_PX = 56.0 / 1024 ≈ 0.054
 
 `{1: "sol", 2: "orta", 3: "sag"}` — `open_route()` bu aralık dışında `ValueError` fırlatır.
 Rota yoksa `NO_ROUTE` gönderilir; `open_route`'a `None` geçilmez.
+
+### 6.3 Karar geçerliliği sözleşmesi — uç-band teması ve güven eşiği
+
+> Bir `OPEN_ROUTE` yayınlanmadan önce **iki bağımsız kapıdan** geçer. İkisi de
+> **fail-closed**: şüphe varsa `NO_ROUTE`. Gerekçe: şartname §5.3.2/§6.2 yanlış
+> güzergâhı **0 puan** sayar. Çekimserlik puan kaybettirir, yanlış karar **sıfırlar**.
+>
+> Sabitler `codes/karar_sozlesmesi.py`'de tanımlanır; çağrı yerlerine çıplak sayı
+> **yazılmaz** (madde 16).
+
+#### K-A · Uç-band teması (T26 · `REVIEW_LOG.md` D-29)
+
+Seçilen koridor bileşeni **HEM başlangıç (alt) HEM hedef (üst) uç bandına** yeterli
+genişlikte temas etmelidir. Etmiyorsa koridor kareyi baştan başa geçmiyor demektir →
+karar `None`. Temas ölçütü **aynı bileşen** üzerinden değerlendirilir.
+
+> ⚠ **Bu madde bir kez EKSİK yazıldı.** İlk sürümde yalnız *hedef* bandı şart
+> koşuluyordu. Codex ölçtü: ortadaki bariyerle kopmuş bir koridorda OpenCV eşit
+> parçalardan **üst** olanı seçiyor → *hedefe temas VAR, başlangıca temas YOK*, ve
+> kusur `yol=2` olarak geri dönüyor. Tek uç yetmez; **iki uç birden** şarttır.
+
+```python
+HEDEF_BANT_ORANI     = 0.08   # içerik kutusu yüksekliğinin üst %8'i
+BANT_TEMAS_MIN_ORANI = 0.02   # bileşenin bant içindeki genişliği ≥ içerik genişliğinin %2'si
+```
+
+**`0.08` neden bu değer:** `costmap_path_finder._tohum_maske` **aynı** oranı kullanıyor
+(`:237` `pay = max(1, int(h * 0.08))`). `rota_bul` o bantla `_bagli_mi()` sınayıp kapalı
+koridoru `KAPALI_KOPUK` ile **doğru** yakalıyor; `analyze_path` yakalamıyordu. İki karar
+yolu **aynı bandı** kullanır — ikinci bir sayı türetilmez (S4'ün ıraksama kusuru).
+
+**`0.02` neden:** tek piksellik gürültü "temas" sayılmasın. Mutlak piksel değil **oran** —
+çözünürlük değişince ölçüt kaymasın (§8).
+
+⚠ `analyze_path`'in mevcut üst **%30** bandı (`rpi_inference.py:264`) *şerit seçimi*
+içindir ve **kalır**. K-A ondan ayrı, **ek** bir geçerlilik kapısıdır.
+
+#### K-B · Güven eşiği (T25 · `REVIEW_LOG.md` D-28, D-31, **D-37**, **D-38**)
+
+```python
+ROTA_GUVEN_ESIGI = 0.20
+```
+
+Bu eşiğin **altındaki** karar `OPEN_ROUTE` olarak **yayınlanmaz**; `NO_ROUTE` sebebiyle
+bildirilir.
+
+> ⚠ **Bu değer bir kez YANLIŞ konuldu.** İlk sürümde `0.50` yazılmıştı ve dayanağı
+> **sentetik** sahnelerin güveniydi (`0,797` / `1,000`). Codex gerçek GUI yolunda ölçtü
+> (D-37): eşik **52 kararın tamamını** reddetti → **%100 çekimserlik**. Sözleşmeyi
+> ölçmediğim bir dağılıma göre yazmıştım. Aşağıdaki değer **ölçümden** türetilmiştir.
+
+**Gerçek 67 karede ölçülen dağılım** (v21, `imgsz=512`, GUI zinciri; D-38):
+
+| min | p25 | p50 | p90 | max | ortalama | **std** |
+|---|---|---|---|---|---|---|
+| 0,2440 | 0,2790 | 0,3070 | 0,3386 | 0,3520 | 0,3018 | **0,0304** |
+
+**Eşik süpürmesi** (67 kare):
+
+| eşik | geçen | çekimserlik |
+|---|---:|---:|
+| **0,20** | **45** | **%32,8** ← K-A'nın kendi çekimserliği; K-B ek eleme yapmaz |
+| 0,28 | 33 | %50,7 |
+| 0,3333 | 9 | %86,6 |
+| 0,50 | 0 | %100 |
+
+**`0.20` neden — ve K-B'nin gerçek rolü.** Metriğin gerçek veride **ayırt edici gücü
+yok**: `std = 0,030`, tüm kütle 1/3 çevresinde. Buraya seçici bir eşik koymak kötü kararı
+elemek değil, **rastgele kare elemek** olur — süpürme tablosundaki sert düşüş bunu
+gösteriyor. Bu yüzden K-B **seçici bir kapı değil, taban koruyucusudur**:
+
+- ölçülen en düşük geçerli karar `0,244`'ün **altında** → gerçek kararları elemez;
+- `0,0` ve yakınını **eler** → D-28'de ölçülen *"`guven=0.0` olan karar `OPEN_ROUTE`
+  yayınlanabiliyor"* kusurunu kapatır;
+- sentetik yol (`0,797`) etkilenmez;
+- `karar_sozlesmesi.rota_guven_reddi` ayrıca **bool / NaN / sonsuz / `[0,1]` dışı**
+  değerleri fail-closed reddeder — asıl bozuk-değer koruması budur.
+
+🔴 **Güvenliğin ağırlığı K-A'dadır, K-B'de değil.** Koridorun uç bantlara teması
+ölçülebilir bir geometrik olgudur; `in_third / bx.size` oranı ise gerçek karelerde
+sabite yakındır ve karar kalitesini ayırt etmez.
+
+⚠ **Açık ölçüm borcu (T25 sonrası ayrı görev):** gerçek 67 karede **45 kararın hepsi
+`yol=2`** çıktı. Bu ya doğru (kareler geniş açık alan; koridor üç şeride eşit yayılıyor,
+centroid ortaya düşüyor) ya da metrik körlüğüdür. Ayırt etmek için **margin tabanlı**
+bir güven (seçilen şerit ile ikinci en iyi arasındaki fark) ölçülmeli; `in_third` mutlak
+oranı bu işi görmüyor. Değer değişecekse **önce burası** değişir.
+
+### 6.4 Karar reddi sebep sözleşmesi (T28 · `REVIEW_LOG.md` D-39)
+
+> **Neden var:** `analyze_path` reddi sessizce `None` dönüyordu. Ekranda *"model
+> bulamadı"*, *"uç-bant kapısı reddetti"* ve *"güven eşiği reddetti"* **aynı**
+> görünüyor — hakem ayırt edemiyor, operatör sistemi bozuk sanıyor. Ölçülmüş olay:
+> kullanıcı GUI'yi "yol algılamıyor" diye bildirdi; gerçekte 12 karenin 8'inde maske
+> yoktu, kalan 4'ün 3'ünü kapı elemişti. **S9 ile aynı sınıf: kanıt bütünlüğü.**
+
+Ret üreten her yol, kanonik bir `(sebep, detay)` çifti döndürür. `sebep` kodları
+`codes/karar_sozlesmesi.py`'de sabit olarak tanımlanır — **çağrı yerlerine çıplak
+string yazılmaz** (madde 16).
+
+| `sebep` | Ne zaman | Nerede |
+|---|---|---|
+| `MASKE_YOK` | Zemin maskesi hiç üretilmedi (`trav.sum() == 0`) | `analyze_path` girişi |
+| `BILESEN_YOK` | Maske var, bağlı bileşen yok | bileşen etiketleme sonrası |
+| `UC_BANT_TEMAS_YOK` | **K-A**: koridor alt ve/veya üst uç bandına temas etmiyor | `_uc_bant_temasi_yeterli` |
+| `ALAN_YETERSIZ` | Koridor alanı `min_area_ratio` altında | `_koridor_alani_yeterli` |
+| `GORUS_HATTI_KOPUK` | Başlangıç–hedef bağlantısı veya bu bağlantı üzerinde doğrulanmış waypoint zinciri kurulamıyor | `_bagli_mi` / A* rota üretimi |
+| `KENAR_GUVENSIZ` | **T24**: ardışık waypoint'ler arası görüş hattı engelden geçiyor | `_kenarlar_guvenli` |
+| `DUSUK_GUVEN` | **K-B**: güven `ROTA_GUVEN_ESIGI` altında | `rota_guven_reddi` |
+
+**`detay`** insan-okur ve **ölçülen değeri taşır** — hangi uç (`alt`/`üst`), ölçülen
+güven, ölçülen alan oranı. Örnek: `"Rota guveni 0.180; gereken >= 0.200."`
+
+**Bağlayıcı kurallar:**
+
+1. **Yayın yolu:** `NO_ROUTE` mesajının `sebep` alanı bu tablodan gelir (`protocol.py`
+   `sebep`'i zaten zorunlu tutuyor, boş kabul etmiyor); `detay` opsiyonel alana yazılır.
+2. **Ekran yolu:** hakem ekranı `TESPİT YOK` yerine **sebebi** gösterir. Üç farklı ret
+   üç farklı metin üretmelidir — aynı metin görünüyorsa kapı çalışmıyor demektir.
+3. **Fail-closed korunur:** sebep bildirmek reddi yumuşatmaz. Ret yine `yol=None`,
+   `waypoints=[]`.
+4. Yeni bir ret yolu eklenirse **önce bu tabloya** satır eklenir, sonra kod yazılır.
+5. **Örnekleme kararı değiştirmez:** `n_waypoints` yalnız doğrulanmış rota üzerindeki
+   çıktı yoğunluğudur. Aynı maske ve aynı karar parametrelerinde `n_waypoints`
+   değişince `yol`/ret sebebi değişemez. Koridor bağlantısı `_bagli_mi` ile,
+   yayınlanan zincir ise bağlantısı kanıtlanmış A* yolu üzerinde doğrulanır.
+6. **Planlama bütçesi:** `ROTA_PLAN_MAKS_HUCRE = 32768`, bir `analyze_path`
+   çağrısındaki bütün witness A* denemelerinin toplam plan-hücresi bütçesidir.
+   Bütçeyi aşan daha ince ızgara denenmez; doğrulanmış zincir kurulamıyorsa
+   `GORUS_HATTI_KOPUK` ile fail-closed dönülür. Tam çözünürlük A*'a koşulsuz
+   düşüp GUI worker'ını saniyelerce bloke etmek yasaktır. A* zincirinin ilk
+   waypoint'i alt başlangıç tohumu, son waypoint'i üst hedef tohumu içinde olmalıdır.
+
+#### Nerede uygulanır — **ikisinde birden** (D-31'in mimara bıraktığı karar)
+
+| katman | rol |
+|---|---|
+| **Çağrı yerleri** — `rpi_inference`, `iha_perceive`, `yks_gui` | Erken karar: operatöre ve günlüğe **anlamlı sebep** yazar |
+| **`IhaSender.send_open_route`** | **Son savunma.** Eşik altı `conf` ile çağrılırsa yayınlamaz — kaçak imkânsız |
+
+Yalnız çağrı yerlerinde uygulamak **yetmez**: yeni bir çağrı yeri eklendiğinde unutulur
+ve kusur sessizce geri gelir — D-31'in tam da uyardığı şey. Yalnız `IhaSender`'da
+uygulamak da **yetmez**: operatör *neden* yayınlanmadığını göremez.
+
+⚠ **Kalibrasyon borcu.** `0.50` sentetik sahne ölçümünden türetildi. Gerçek **67 karede**
+güven dağılımı ölçülüp eşik yeniden değerlendirilecek — *aşırı çekimserlik sahada
+kullanılamaz demektir* (T26 kapısının istediği önce/sonra tablosu). Değer değişecekse
+**önce burası** değişir, sonra kod.
 
 ---
 
