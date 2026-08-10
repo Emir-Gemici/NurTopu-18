@@ -17,10 +17,16 @@ import json
 import math
 import sys
 import time
+from pathlib import Path
 
 from link import UDPLink, SerialLink
 from protocol import (open_route, rota_yok, heartbeat, iha_landed, encode,
                       FrameReader)
+
+_KOK = Path(__file__).resolve().parents[1]
+if str(_KOK / "codes") not in sys.path:
+    sys.path.insert(0, str(_KOK / "codes"))
+from karar_sozlesmesi import rota_guven_reddi
 
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -89,9 +95,12 @@ class IhaSender:
         acked = set()
         targets = list(self.peers.items()) or [(None, None)]
         for _ in range(repeat):
+            gonderilen_hedefler = []
             for name, peer in targets:
-                if name not in acked:
-                    self.link.send(data, peer)
+                if name in acked or peer in gonderilen_hedefler:
+                    continue
+                self.link.send(data, peer)
+                gonderilen_hedefler.append(peer)
             if not wait_ack:
                 time.sleep(interval)
                 continue
@@ -107,7 +116,16 @@ class IhaSender:
 
     def send_open_route(self, road, conf, waypoints=None, ref_xy=None,
                         repeat=8, interval=0.25, wait_ack=True):
-        """Açık dinamik rotayı gönder; ACK gelene dek tekrarla."""
+        """Geçerli dinamik rotayı gönder; düşük güvende ACK'li NO_ROUTE gönder.
+
+        CONTRACTS.md §6.3/K-B son savunmasıdır: unutulmuş/yeni bir çağrı yeri
+        eşik altı kararı bu katmandan OPEN_ROUTE olarak kaçıramaz.
+        """
+        guven_reddi = rota_guven_reddi(conf)
+        if guven_reddi is not None:
+            return self.send_no_route(
+                *guven_reddi, repeat=repeat, interval=interval,
+                wait_ack=wait_ack)
         # İKA/broadcast hattında yol kimliği tek başına hareket komutu değildir.
         # Geometriyi burada da denetlemek eski statik üreticilerin sessizce
         # çalışmasını engeller.
@@ -128,8 +146,12 @@ class IhaSender:
         """Bağlantı-failsafe için tüm alıcılara tek bir canlılık çerçevesi yayınla."""
         msg = heartbeat(node)
         data = encode(msg)
+        gonderilen_hedefler = []
         for _name, peer in (list(self.peers.items()) or [(None, None)]):
+            if peer in gonderilen_hedefler:
+                continue
             self.link.send(data, peer)
+            gonderilen_hedefler.append(peer)
         return msg["seq"]
 
     def send_iha_landed(self, repeat=8, interval=0.25, wait_ack=True):
@@ -200,12 +222,14 @@ def main():
             peers["yks"] = _addr(args.yks)
 
     sender = IhaSender(link, peers)
+    yayin_no_route = ((args.no_route, args.detay) if no_route
+                      else rota_guven_reddi(conf))
     try:
-        if no_route:
-            print(f"[İHA] ROTA YOK gönderiliyor: {args.no_route}"
-                  + (f" · {args.detay}" if args.detay else ""))
+        if yayin_no_route is not None:
+            print(f"[İHA] ROTA YOK gönderiliyor: {yayin_no_route[0]}"
+                  + (f" · {yayin_no_route[1]}" if yayin_no_route[1] else ""))
             seq, acked = sender.send_no_route(
-                args.no_route, args.detay, wait_ack=not args.serial)
+                *yayin_no_route, wait_ack=not args.serial)
         else:
             print(f"[İHA] Açık yol gönderiliyor: road={road} conf={conf} "
                   f"ref={ref_xy} wp={len(waypoints or [])}")
@@ -215,7 +239,8 @@ def main():
         link.close()
         ap.error(f"protokol mesajı geçersiz: {exc}")
     if args.serial:
-        print(f"[İHA] {'NO_ROUTE' if no_route else 'Rota'} gönderildi (seq={seq}) — telsiz yayın")
+        print(f"[İHA] {'NO_ROUTE' if yayin_no_route is not None else 'Rota'} "
+              f"gönderildi (seq={seq}) — telsiz yayın")
     elif acked:
         print(f"[İHA] ✓ Onaylandı (seq={seq}) — ACK: {sorted(acked)}")
     else:

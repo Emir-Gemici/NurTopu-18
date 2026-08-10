@@ -37,6 +37,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "codes"))     # get_masks, analyze_path, draw_masks, generate_ika_map
 
+from karar_sozlesmesi import rota_guven_reddi
+
 DEFAULT_MODEL = ROOT / "models" / "navitas_seg_v2_best.pt"
 OUT_DIR = ROOT / "results" / "iha_algi"
 LABEL = {1: "sol", 2: "orta", 3: "sag"}
@@ -67,7 +69,7 @@ def _letterbox_square(img, size, color=114):
 CONF_FLOOR = 0.05   # tespit çıkmazsa otomatik inilecek alt eşik (düşük kontrastlı görsel)
 
 
-def _infer(img, model, conf, imgsz, dark_mode=None):
+def _infer(img, model, conf, imgsz, dark_mode=None, return_reason=False):
     """Tek BGR görseli işle → (content_bgr, masks{0,1}, road, conf, waypoints, kazanan).
     content = letterbox'un gerçek (pad'siz) bölgesi; waypoints content-piksel koordinatında.
 
@@ -103,8 +105,14 @@ def _infer(img, model, conf, imgsz, dark_mode=None):
         kazanan = "raw"
         if int(masks2[0].sum()) > int(masks[0].sum()):
             content, masks, kazanan = content2, masks2, "norm"
-    road, confidence, wps = analyze_path(masks[0])
-    return content, masks, road, confidence, wps, kazanan
+    road, confidence, wps, karar_reddi = analyze_path(
+        masks[0], engel_mask=masks.get(1), return_reason=True)
+    guven_reddi = rota_guven_reddi(confidence) if road is not None else None
+    if guven_reddi is not None:
+        karar_reddi = guven_reddi
+        road, wps = None, []
+    sonuc = (content, masks, road, confidence, wps, kazanan)
+    return sonuc + (karar_reddi,) if return_reason else sonuc
 
 
 def perceive(image_path, model_path=None, conf=0.15, imgsz=CANON):
@@ -120,7 +128,7 @@ def perceive(image_path, model_path=None, conf=0.15, imgsz=CANON):
     return road, confidence, int(masks[0].sum())
 
 
-def _overlay(content, masks, road, confidence, wps, extra=""):
+def _overlay(content, masks, road, confidence, wps, extra="", no_route=None):
     """Maske + waypoint + karar etiketini çiz → görselleştirilmiş kare (BGR)."""
     import cv2
     from rpi_inference import draw_masks, _draw_waypoints
@@ -128,20 +136,23 @@ def _overlay(content, masks, road, confidence, wps, extra=""):
     if road:
         vis = _draw_waypoints(vis, wps)
         info = f"ACIK YOL: {LABEL.get(road, '?').upper()} ({road})  guven: {confidence:.2f}"
+    elif no_route is not None:
+        info = f"ROTA YOK: {no_route[0]} ({confidence:.3f})"
     else:
         info = "TESPIT YOK"
     cv2.putText(vis, info + extra, (12, 34), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
     return vis
 
 
-def _save_outputs(name, content, masks, road, confidence, wps, out_dir):
+def _save_outputs(name, content, masks, road, confidence, wps, out_dir,
+                  no_route=None):
     """Algı overlay + İKA koordinat haritası kaydet. Döner: (algi_path, harita_path|None)."""
     import cv2
     from rpi_inference import generate_ika_map
     out_dir.mkdir(parents=True, exist_ok=True)
     h, w = content.shape[:2]
 
-    vis = _overlay(content, masks, road, confidence, wps)
+    vis = _overlay(content, masks, road, confidence, wps, no_route=no_route)
     algi_path = out_dir / f"{name}_algi.jpg"
     cv2.imwrite(str(algi_path), vis)
 
@@ -225,8 +236,8 @@ def _process_video(video_path, model, conf, imgsz, out_dir, adim, save, json_mod
         t_sn = i / src_fps
         if islenen % DARK_YENIDEN == 0:
             dark_mode = None    # yarışı tazele (ışık değişmiş olabilir)
-        content, masks, road, c, wps, dark_mode = _infer(frame, model, conf, imgsz,
-                                                         dark_mode=dark_mode)
+        content, masks, road, c, wps, dark_mode, karar_reddi = _infer(
+            frame, model, conf, imgsz, dark_mode=dark_mode, return_reason=True)
         label = LABEL.get(road, "yok")
         sayac[label] += 1
         son_kararlar.append(label)
@@ -236,10 +247,15 @@ def _process_video(video_path, model, conf, imgsz, out_dir, adim, save, json_mod
         records[f"{t_sn:08.2f}s"] = {"t_sn": round(t_sn, 2), "kare": i, "road": road,
                                      "label": label, "label_yumusak": duz_label,
                                      "conf": c,
+                                     "no_route": (karar_reddi[0]
+                                                  if karar_reddi else None),
+                                     "no_route_detay": (karar_reddi[1]
+                                                        if karar_reddi else None),
                                      "trav_px": int(masks[0].sum()), "waypoints": wps}
         if save:
             vis = _overlay(content, masks, road, c, wps,
-                           extra=f"  t={t_sn:.1f}s  akis: {duz_label.upper()}")
+                           extra=f"  t={t_sn:.1f}s  akis: {duz_label.upper()}",
+                           no_route=karar_reddi)
             if writer is None:
                 h, w = vis.shape[:2]
                 writer = _yazici_ac(algi_path, max(src_fps / adim, 1.0), w, h)
@@ -322,14 +338,19 @@ def main():
         if img is None:
             print(f"[İHA-ALGI] {f.name}: OKUNAMADI", file=sys.stderr)
             continue
-        content, masks, road, conf, wps, _ = _infer(img, model, args.conf, args.imgsz)
+        content, masks, road, conf, wps, _, karar_reddi = _infer(
+            img, model, args.conf, args.imgsz, return_reason=True)
         label = LABEL.get(road, "yok")
         trav_px = int(masks[0].sum())
         rec = {"road": road, "label": label, "conf": conf,
+               "no_route": karar_reddi[0] if karar_reddi else None,
+               "no_route_detay": karar_reddi[1] if karar_reddi else None,
                "trav_px": trav_px, "waypoints": wps, "image": f.name}
 
         if save:
-            algi_p, harita_p = _save_outputs(f.stem, content, masks, road, conf, wps, out_dir)
+            algi_p, harita_p = _save_outputs(
+                f.stem, content, masks, road, conf, wps, out_dir,
+                no_route=karar_reddi)
             rec["algi"] = str(algi_p)
             rec["ika_harita"] = str(harita_p) if harita_p else None
         records[f.name] = rec
@@ -339,6 +360,9 @@ def main():
                 extra = f"  → {Path(rec['ika_harita']).name}" if save and rec.get("ika_harita") else ""
                 print(f"[İHA-ALGI] {f.name} → AÇIK YOL: {label.upper()} ({road})  "
                       f"güven={conf}  wp={len(wps)}  trav_px={trav_px}{extra}")
+            elif karar_reddi is not None:
+                print(f"[İHA-ALGI] {f.name} → ROTA YOK: {karar_reddi[0]} · "
+                      f"{karar_reddi[1]}  trav_px={trav_px}")
             else:
                 print(f"[İHA-ALGI] {f.name} → TESPİT YOK (model yol bulamadı)  trav_px={trav_px}")
 

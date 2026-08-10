@@ -17,6 +17,7 @@ from __future__ import annotations
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import cv2
 import numpy as np
@@ -26,6 +27,8 @@ if str(KOK / "codes") not in sys.path:
     sys.path.insert(0, str(KOK / "codes"))
 
 from costmap_path_finder import _gorus_hatti
+from karar_sozlesmesi import KENAR_GUVENSIZ_SEBEBI
+import rpi_inference
 from rpi_inference import analyze_path
 
 
@@ -178,6 +181,25 @@ class KenarDenetimiTests(unittest.TestCase):
         clean = _temizle(zemin)
         clean[engel > 0] = 0
         self.assertEqual(0, _ihlal_sayisi(wp, clean, engel))
+
+    def test_witness_ihlalli_zincir_verirse_son_kapi_reddeder(self):
+        """T30, T24'un son segment savunmasini geri alamaz."""
+        zemin, engel = _catalli_sahne()
+        clean = _temizle(zemin)
+        eski = _eski_waypointler(clean)
+        self.assertGreater(_ihlal_sayisi(eski, clean, engel), 0)
+
+        with mock.patch.object(
+                rpi_inference, "_bagli_koridor_yolu",
+                return_value=(eski, None)), \
+             mock.patch.object(
+                rpi_inference, "_rotayi_ornekle", return_value=eski):
+            yol, _guven, wps, ret = analyze_path(
+                zemin, engel_mask=engel, return_reason=True)
+
+        self.assertIsNone(yol)
+        self.assertEqual([], wps)
+        self.assertEqual(KENAR_GUVENSIZ_SEBEBI, ret[0])
 
 
 class RegresyonTests(unittest.TestCase):

@@ -25,15 +25,22 @@ Sadece stdlib + (SS için) Pillow kullanır; tkinter Python ile gelir.
 import argparse
 import math
 import queue
+import sys
 import threading
 import time
 import tkinter as tk
+from pathlib import Path
 from tkinter import font as tkfont
 
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
 from protocol import (encode, ack, command, heartbeat, open_route,
                       FrameReader, ROAD_LABEL)
+
+_PROJE_KOKU = Path(__file__).resolve().parents[1]
+if str(_PROJE_KOKU / "codes") not in sys.path:
+    sys.path.insert(0, str(_PROJE_KOKU / "codes"))
+from karar_sozlesmesi import rota_guven_reddi
 
 # ── Renkler (koyu tema) ──────────────────────────────────────────────────────
 BG      = "#0f1419"   # zemin
@@ -93,6 +100,7 @@ class YksArayuz:
             self.sabit_adr["ika"] = ika_peer
         self.sayac = {
             "OPEN_ROUTE": 0,
+            "OPEN_ROUTE_RED": 0,
             "NO_ROUTE": 0,
             "IHA_LANDED": 0,
             "HEARTBEAT": 0,
@@ -192,7 +200,7 @@ class YksArayuz:
         # canlı algı görünümü (başta gizli)
         self.algi_cerceve = tk.Frame(sol, bg=PANEL)
         self.lbl_algi_img = tk.Label(self.algi_cerceve, bg="#121920",
-                                      text=f"{_m} modeli ilk geçişte yüklenecek…",
+                                     text=f"{_m} modeli ilk geçişte yüklenecek…",
                                      fg=SOLUK, font=self.f_kucuk)
         self.lbl_algi_img.pack(padx=10, pady=(4, 4), fill="both", expand=True)
         arow = tk.Frame(self.algi_cerceve, bg=PANEL)
@@ -578,6 +586,13 @@ class YksArayuz:
                 _, gorsel, bilgi, log_satiri = paket
                 self._algi_sonucu_goster(gorsel, bilgi)
                 self._logla(log_satiri, "yesil")
+            elif paket[0] == "hata":
+                # Worker hatasi yalniz gunluge dusunce algi paneli sonsuza dek
+                # "isleniyor" gorunuyordu. Hatayi ayni panelde gorunur kil.
+                self.lbl_algi_img.config(
+                    image="", text="ALGİ HATASI — ayrıntı aşağıda")
+                self.lbl_algi_bilgi.config(text=paket[1])
+                self._logla(paket[1], "sari")
             else:
                 self._logla(paket[1], "mavi")
         self._durum_tazele()
@@ -586,6 +601,10 @@ class YksArayuz:
     def _mesaj_isle(self, m, adr):
         tip = m.get("type")
         if tip == "OPEN_ROUTE":
+            guven_reddi = rota_guven_reddi(m.get("conf"))
+            if guven_reddi is not None:
+                self._open_route_guven_reddini_goster(m, guven_reddi)
+                return
             self._dugum_adresini_ogren("iha", adr)
             yeni = (self.rota is None) or (m["seq"] != self.rota["seq"])
             self.rota, self.rota_adr = m, adr
@@ -697,10 +716,42 @@ class YksArayuz:
                                 "— uçuş başarısız sayılır (§6.4)", "sari")
             self.sayac["HEARTBEAT"] += 1
 
+    def _open_route_guven_reddini_goster(self, m, guven_reddi):
+        """Eşik altı OPEN_ROUTE'u hakeme görünür kıl; rota ACK'i ASLA üretme."""
+        sebep, detay = guven_reddi
+        seq = m.get("seq")
+        onceki_seq = (self.rota_yok.get("seq") if self.rota_yok else None)
+        yeni = seq != onceki_seq
+        self.rota_yok = {
+            "type": "NO_ROUTE", "sebep": sebep, "detay": detay, "seq": seq,
+            "kaynak_type": "OPEN_ROUTE",
+        }
+        self.rx_alim[seq] = self.rx_alim.get(seq, 0) + 1
+        self.onaylandi = False
+        self.tespit_onayli = False
+        if yeni:
+            self.sayac["OPEN_ROUTE_RED"] += 1
+            self.lbl_karar.config(text="ROTA YOK", fg=KIRMIZI)
+            self._detay_base = f"seq={seq} · {sebep}"
+            self.lbl_detay.config(text=f"{self._detay_base} · {detay}")
+            self.btn_onay.config(
+                state="disabled", bg="#232e3a",
+                text="DÜŞÜK GÜVEN — OPEN_ROUTE REDDEDİLDİ")
+            self.lbl_onay.config(
+                text="Rota güven eşiğinin altında; ACK gönderilmedi, İKA hareket etmez.",
+                fg=KIRMIZI)
+            self._guven_ciz(0.0)
+            self._harita_ciz()
+            self._logla(
+                f"OPEN_ROUTE REDDEDİLDİ · {sebep} · {detay} · ACK YOK",
+                "sari")
+        self.lbl_detay.config(
+            text=f"{self._detay_base} · alım #{self.rx_alim[seq]} · ACK YOK")
+
     def onayla(self):
         """Şartname §2.2.3 İKİ AŞAMALI hakem onayı: (1) güzergâh tespitinin
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
-        if not self.rota or self.onaylandi:
+        if not self.rota or self.rota_yok or self.onaylandi:
             return
         if not self.tespit_onayli:
             self.tespit_onayli = True
@@ -824,6 +875,13 @@ class YksArayuz:
     # analyze_path fonksiyonları kullanılır (kopya algoritma yok).
     ALGI_KAYNAKLAR = ("gemini", "test", "val", "drone")
     ALGI_MODEL_DOSYA = "navitas_seg_v21_best.pt"
+    # analyze_path'in bant sayisi rota ornekleme davranisidir; azami kenar
+    # uzunlugu degildir. 12 banda cikarmak bazi gecerli kivrimli koridorlari
+    # yanlis-negatif yapiyor (road_104.jpg: 8 -> yol=1, 12 -> None). Uretimle
+    # ayni 8 bant korunur; uzun kenar siniri ayri sabitle uygulanir.
+    ALGI_WAYPOINT_BANT_SAYISI = 8
+    ALGI_MAKS_KENAR_ORANI = 1.0 / 12.0
+
     def _algi_gorseller(self):
         import pathlib
         kok_dizin = pathlib.Path(__file__).resolve().parents[1]
@@ -905,7 +963,8 @@ class YksArayuz:
             import numpy as np
             kok_dizin = pathlib.Path(__file__).resolve().parents[1]
             _sys.path.insert(0, str(kok_dizin / "codes"))
-            from rpi_inference import analyze_path, get_masks
+            from costmap_path_finder import MAKS_WP, _maks_aralikla_bol
+            from rpi_inference import _kenarlar_guvenli, analyze_path, get_masks
 
             if self.algi_model is None:
                 from ultralytics import YOLO
@@ -957,12 +1016,61 @@ class YksArayuz:
                 blok = get_masks(sonuc, h, w, min_conf=0.10)[1]
                 cikarim = "tek atış"
             ms = (time.perf_counter() - t0) * 1000
-            # blocked-aware karar: model tespitli moloz koridordan OYULUR
-            trav[blok > 0] = 0
+            # Ham zemin maskesini koru: SS6.4'te MASKE_YOK, modelin hic zemin
+            # uretmemesi demektir. Engeli burada girdiden oyarsak model zemin
+            # bulmus olsa bile tam ortulen sahneyi yanlis MASKE_YOK raporlariz.
+            # analyze_path ham engeli morfolojiden SONRA zaten cikarir.
+            trav_serbest = trav.copy()
+            trav_serbest[blok > 0] = 0
             # karar + kararın kullandığı TEMİZ koridor; min_area_ratio:
             # gürültüden yol uydurma koruması (failsafe)
-            yol_no, guven, wps, koridor = analyze_path(
-                trav, return_clean=True, min_area_ratio=0.02)
+            yol_no, guven, wps, koridor, karar_reddi = analyze_path(
+                trav, n_waypoints=self.ALGI_WAYPOINT_BANT_SAYISI,
+                return_clean=True, return_reason=True,
+                min_area_ratio=0.02, engel_mask=blok)
+            guven_reddi = rota_guven_reddi(guven) if yol_no is not None else None
+            if guven_reddi is not None:
+                karar_reddi = guven_reddi
+                yol_no, wps = None, []
+            elif yol_no is not None and len(wps) >= 2:
+                # Bant sayisi tek basina azami edge uzunlugu koymaz: yatay bir
+                # kacis iki uzak dugumu baglayabilir. Zaten gorus-hatti gecmis
+                # segmentleri, bir bant yuksekliginden uzun olmayacak sekilde
+                # mevcut costmap yardimcisiyla bol; geometri degismez.
+                maks_kenar_px = max(1.0, h * self.ALGI_MAKS_KENAR_ORANI)
+                ham_wps = list(wps)
+
+                # Cok genis/panoramik karede h/12, MAKS_WP icinde
+                # tasinamayacak kadar cok ara nokta isteyebilir. Kenar araligini
+                # yalniz zorunlu oldugu kadar buyut; noktayi korlemesine kesme.
+                adimlar = [max(abs(b[0] - a[0]), abs(b[1] - a[1]))
+                           for a, b in zip(ham_wps, ham_wps[1:])]
+                hedef_adim = max(
+                    1, int(math.floor(maks_kenar_px / math.sqrt(2.0))))
+
+                def _wp_sayisi(adim):
+                    return 1 + sum(
+                        int(math.ceil(uzunluk / float(adim)))
+                        for uzunluk in adimlar if uzunluk > 0)
+
+                if adimlar and _wp_sayisi(hedef_adim) > MAKS_WP:
+                    alt, ust = hedef_adim, max(adimlar)
+                    while alt < ust:
+                        orta = (alt + ust) // 2
+                        if _wp_sayisi(orta) <= MAKS_WP:
+                            ust = orta
+                        else:
+                            alt = orta + 1
+                    maks_kenar_px = max(
+                        maks_kenar_px, (alt + 1e-6) * math.sqrt(2.0))
+
+                bolunmus = _maks_aralikla_bol(
+                    ham_wps, maks_kenar_px, MAKS_WP, koridor)
+                # Yardimci farkli raster yuvarlamasi yaparsa analyze_path'in
+                # zaten dogruladigi ham rotayi koru; guvensiz ara kenar cizme.
+                if (len(bolunmus) <= MAKS_WP
+                        and _kenarlar_guvenli(bolunmus, koridor, blok)):
+                    wps = bolunmus
 
             # Görselleştirme İLKESİ: yalnızca kararın KULLANDIĞI temiz koridor
             # basılır (ham maskedeki gürültü blobları çizilmez — onlar kararı
@@ -978,9 +1086,18 @@ class YksArayuz:
                 # SÜRÜŞ KORİDORU: rota merkez hattı ± ölçülen yol yarıçapı
                 # (distance transform medyanı), geçilebilir alanla kesişik —
                 # İKA'nın gerçekten süreceği bant. Bilgi satırında etiketli.
-                dist = cv2.distanceTransform(koridor, cv2.DIST_L2, 5)
+                # Tamami gecilebilir bir maskede OpenCV, goruntu disinda
+                # sifir sinir gormedigi icin FLT_MAX dondurebilir. Bu deger
+                # ``int(median)`` ile cizgi kalinligina cevrilince ALGİ worker'i
+                # sessizce dusuruyordu. Goruntu disini kapali sayan 1 px cerceve
+                # hem geometrik olarak dogru hem de mesafeyi sonlu tutar.
+                sinirli_koridor = cv2.copyMakeBorder(
+                    koridor, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)
+                dist = cv2.distanceTransform(
+                    sinirli_koridor, cv2.DIST_L2, 5)[1:-1, 1:-1]
                 yarich = [dist[py, px] for (px, py) in wps if dist[py, px] > 0]
                 yr = int(np.median(yarich)) if yarich else max(8, w // 20)
+                yr = max(1, min(yr, max(1, min(h, w) // 2)))
                 band = np.zeros((h, w), np.uint8)
                 cv2.polylines(band, [np.array(wps, np.int32)], False, 1,
                               thickness=max(4, 2 * yr))
@@ -1002,8 +1119,11 @@ class YksArayuz:
                 bant_h = max(60, h // 10)
                 gorsel[:bant_h] = cv2.addWeighted(
                     img[:bant_h], 0.25, kirmizi[:bant_h], 0.75, 0)
-                cv2.putText(gorsel, "ACIK YOL TESPIT EDILEMEDI (guvenli: rota "
-                            "gonderilmez)", (16, int(bant_h * 0.65)),
+                ret_metin = (f"ROTA YOK: {karar_reddi[0]}"
+                             if karar_reddi else
+                             "ACIK YOL TESPIT EDILEMEDI")
+                cv2.putText(gorsel, ret_metin + " (guvenli: rota gonderilmez)",
+                            (16, int(bant_h * 0.65)),
                             cv2.FONT_HERSHEY_SIMPLEX, max(0.6, w / 1800),
                             (255, 255, 255), max(1, w // 900))
             # şerit sınırları + sarı waypoint zinciri
@@ -1014,23 +1134,42 @@ class YksArayuz:
                 cv2.polylines(gorsel, [pts], False, (0, 220, 255), max(2, w // 300))
                 for (px, py) in wps:
                     cv2.circle(gorsel, (px, py), max(3, w // 150), (0, 220, 255), -1)
+                # Kalin sari cizgi merkez hatti guvenli olsa bile arac
+                # konturuna tasabilir. Engel katmanini en son basarak arac
+                # etiketini rota cizgisinin altinda birakma.
+                gorsel[blok > 0] = koyu_ton[blok > 0]
 
-            trav_oran = 100.0 * trav.mean()
+            trav_oran = 100.0 * trav_serbest.mean()
             blok_oran = 100.0 * blok.mean()
-            karar = (f"{yol_no}·{ROAD_LABEL[yol_no].upper()}" if yol_no
-                     else "TESPİT YOK")
+            karar = (f"{yol_no}·{ROAD_LABEL[yol_no].upper()}" if yol_no else
+                     (f"ROTA YOK · {karar_reddi[0]}" if karar_reddi
+                      else "TESPİT YOK"))
+            try:
+                guven_sayi = float(guven)
+                if isinstance(guven, bool) or not math.isfinite(guven_sayi):
+                    raise ValueError("gecersiz rota guveni")
+                # K-B sinirinda iki hane, 0.199 gibi bir reddi 0.20 diye
+                # gosterip operatoru yaniltir. Sozlesme esigi de uc hanelidir.
+                guven_metin = f"{guven_sayi:.3f}"
+            except (TypeError, ValueError, OverflowError):
+                # Fail-closed guven reddi, hata metnini gosterirken tekrar
+                # bicimlendirme istisnasiyla worker'i dusurmemeli.
+                guven_metin = repr(guven)
             bilgi = (f"{self.algi_kaynak}/{yol.name} → karar: {karar} · "
-                     f"güven {guven:.2f} · {ms:.0f} ms · çıkarım: {cikarim} · "
+                     f"güven {guven_metin} · {ms:.0f} ms · çıkarım: {cikarim} · "
                      f"eşik {esik:.2f}"
                      + (" (düşük-eşik fallback)" if esik <= 0.05 else "")
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
                       f" · gösterim: sürüş koridoru · model: {self.ALGI_MODEL_DOSYA}")
+            if karar_reddi is not None:
+                bilgi += f" · {karar_reddi[1]}"
             _ad = self.ALGI_MODEL_DOSYA.rsplit(".", 1)[0]
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
                                   f"ALGI({_ad}) {yol.name} → {karar} "
-                                  f"güven={guven:.2f} · {ms:.0f} ms"))
+                                  f"güven={guven_metin} · {ms:.0f} ms"))
         except Exception as e:
-            self.algi_kuyruk.put(("log", f"ALGI HATASI: {e}"))
+            self.algi_kuyruk.put(
+                ("hata", f"ALGI HATASI: {type(e).__name__}: {e}"))
         finally:
             self.algi_mesgul = False
 
@@ -1283,6 +1422,7 @@ class YksArayuz:
                                   + ("" if canli else "  (BAĞLANTI KAYBI!)"))
         self.lbl_sayac.config(
             text=f"OPEN_ROUTE {self.sayac['OPEN_ROUTE']} · "
+                 f"RED {self.sayac['OPEN_ROUTE_RED']} · "
                  f"NO_ROUTE {self.sayac['NO_ROUTE']} · "
                  f"LANDED {self.sayac['IHA_LANDED']} · "
                  f"HB {self.sayac['HEARTBEAT']} · "

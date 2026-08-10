@@ -16,6 +16,7 @@ Mesaj tipleri:
 """
 import itertools
 import json
+import math
 import time
 
 PROTOCOL_VERSION = 1
@@ -37,10 +38,20 @@ def open_route(road, conf, waypoints=None, ref_xy=None, seq=None):
     """
     if road not in ROAD_LABEL:
         raise ValueError(f"road 1-3 olmalı, gelen: {road}")
+    if isinstance(conf, bool):
+        raise ValueError("conf sonlu ve 0..1 aralığında sayısal olmalı")
+    try:
+        conf = float(conf)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("conf sonlu ve 0..1 aralığında sayısal olmalı") from exc
+    if not math.isfinite(conf) or not 0.0 <= conf <= 1.0:
+        raise ValueError("conf sonlu ve 0..1 aralığında olmalı")
     return {
         "v": PROTOCOL_VERSION, "type": "OPEN_ROUTE",
         "road": int(road), "label": ROAD_LABEL[road],
-        "conf": round(float(conf), 3),
+        # Guven kapisi esigin hemen altini ayirt edebilmelidir. Burada sabit
+        # ondaliga yuvarlamak esik-altini esigin kendisine tasiyabiliyordu.
+        "conf": conf,
         "ref_xy": ([round(float(ref_xy[0]), 2), round(float(ref_xy[1]), 2)]
                    if ref_xy else None),
         "waypoints": waypoints or [],          # [[x,y], ...] ref_xy'ye göre yerel
@@ -110,7 +121,8 @@ def iha_landed(seq=None):
 
 def encode(msg) -> bytes:
     """Mesaj dict → tek satır JSON + '\\n' (çerçeve)."""
-    return (json.dumps(msg, separators=(",", ":"), ensure_ascii=False) + "\n").encode("utf-8")
+    return (json.dumps(msg, separators=(",", ":"), ensure_ascii=False,
+                       allow_nan=False) + "\n").encode("utf-8")
 
 
 def decode(line: bytes) -> dict:

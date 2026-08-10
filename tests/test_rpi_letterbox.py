@@ -1,11 +1,13 @@
 """RPi çıkarım hattındaki letterbox ön işlemesinin regresyon testleri."""
 
 import unittest
+from unittest import mock
 
 import numpy as np
 
 from codes.rpi_inference import (
     INFER_SIZE,
+    _koridor_alani_yeterli,
     _maskeleri_icerige_kirp,
     _preprocess,
     analyze_path,
@@ -69,23 +71,36 @@ class LetterboxPreprocessTests(unittest.TestCase):
     def test_minimum_alan_esigi_letterbox_icerik_alanini_kullanir(self):
         # Portre içerik 576x1024'tür. 28x316 koridor gerçek içeriğin %1,5001'i,
         # fakat 1024x1024 tuvalin yalnız %0,844'üdür. Eski tuval paydası %1
-        # eşiğinde kararı reddederken içerik paydası karar üretmelidir.
+        # eşiğinde alan kapısını reddederken içerik paydası geçirmelidir.
+        # T26 sonrasında bu blob iki uca ulaşmadığı için analyze_path'in nihai
+        # kararı yine None'dır; alan sözleşmesi üretimde kullanılan yardımcıyla
+        # ayrı sınanır, uç-band güvenlik kapısı gevşetilmez.
         maske = np.zeros((1024, 1024), dtype=np.uint8)
         icerik = (224, 0, 576, 1024)
         maske[300:616, 636:664] = 1
-
-        tuval_karari, _, _ = analyze_path(maske, min_area_ratio=0.01)
-        icerik_karari, guven, waypoints = analyze_path(
-            maske,
-            min_area_ratio=0.01,
-            icerik=icerik,
-        )
 
         self.assertAlmostEqual(
             0.015,
             float(maske.sum()) / (icerik[2] * icerik[3]),
             places=5,
         )
+        self.assertFalse(_koridor_alani_yeterli(
+            maske, 1024, 1024, min_area_ratio=0.01))
+        self.assertTrue(_koridor_alani_yeterli(
+            maske, icerik[2], icerik[3], min_area_ratio=0.01))
+        # Bu test T7 alan paydasini olcer; T26'nin uc kapisini ve T30'un
+        # baslangic-hedef witness kapisini etkisizlestirerek analyze_path
+        # entegrasyon kanitini korur. Maske bilerek uclara ulasmadigi icin bu
+        # iki bagimsiz guvenlik kapisi alan paydasi testini perdelememelidir.
+        with mock.patch(
+                "codes.rpi_inference._uc_bant_temasi_yeterli",
+                return_value=True), \
+             mock.patch(
+                "codes.rpi_inference._bagli_koridor_yolu",
+                return_value=([(650, 600), (650, 320)], None)):
+            tuval_karari, _, _ = analyze_path(maske, min_area_ratio=0.01)
+            icerik_karari, guven, waypoints = analyze_path(
+                maske, min_area_ratio=0.01, icerik=icerik)
         self.assertIsNone(tuval_karari)
         self.assertEqual(3, icerik_karari)
         self.assertGreater(guven, 0.0)
