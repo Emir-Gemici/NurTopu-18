@@ -2433,7 +2433,86 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     `Ran 242 tests · OK`; `codes/test_rota_sentetik.py` → **15/15**;
     `yks_gui.py --help` exit 0.
 
-- [ ] **T44 — T43 hakem ekranının hizasını BOZDU: GUI `mpp` geçirmiyor, ölçek kapısı yok** · `comms/yks_gui.py` · **KRİTİK** · kanıt: bu görevdeki ölçüm · bağımlı: **T43** (bitti)
+- [x] **T44 — T43 hakem ekranının hizasını BOZDU: GUI `mpp` geçirmiyor, ölçek kapısı yok**
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-11 · Claude 1.** Kodu Claude-2 yazdı.
+  - **Kapı 1 — kendi ölçümüm (16 otopark karesi, kaynak=drone):**
+    ```text
+    HAKEM EKRANI : {'RED/OLCEK_YOK': 16}
+    URETIM GOREV : {'RED/OLCEK_YOK': 16}
+    AYRISAN      : 0/16   -> GECTI
+    ```
+    Ayrışma kapandı **ve doğru sebeple**: ekran artık sistem kısıtını sahne
+    kusuru gibi göstermiyor. Üretimin kendi kapısı (`rota_olcek_reddi`)
+    çağrılıyor, kopyalanmıyor.
+  - **Kapı 2 — T36b KAPANMADI, zorlanmadı. Ablasyon doğru yapılmış:**
+    ```text
+    A  GUI bugun (letterbox icerik + MODEL maskesi + C-uzayi) : 1/7
+    B  + ARENA icerik kutusu (manifest ROI)                   : 3/7  (+2)
+    C  + YER GERCEGI maskesi                                  : 6/7  (+3)
+    ```
+    Her adımda **tek değişken** değişmiş — sebep ayrımı bu yüzden geçerli.
+  - **İki kutu farkını kendim doğruladım:**
+    ```text
+    _preprocess icerik : (0, 224, 1024, 576)  -> serit sinirlari [341, 682]
+    manifest arena ROI : (224, 0,  576, 576)  -> serit sinirlari [416, 608]
+    AYNI MI            : False
+    ```
+    Arena **576×576 kare bir alt bölgeye** yerleştirilmiş; GUI'nin şeritleri ise
+    1024 genişlikteki tam içerik kutusuna göre. Şerit tanımları **hiçbir zaman
+    uyuşamaz**. Kusur GUI'de değil, **T40 üretecinde** → yeni **T45**.
+  - 🔴 **Doğru reddetme:** GUI manifest ROI'sini karara sokarsa 3/7'ye çıkardı —
+    ama bu **yer gerçeği sızıntısı** olurdu ve `test_beklenen_serit_KARARA_
+    SIZMIYOR` bunu zaten yasaklıyor. Kolay yolu seçmemiş.
+  - **Kapı 3:** T36'nın hizalama testleri ayakta (`test_gui_kendi_cikarim_hattini_
+    KURMUYOR` dâhil, 23/23), üstelik ölçekli **ve** ölçeksiz kip birden sınanıyor.
+  - **Kapı 4:** `codes/test_rota_sentetik.py` **15/15** · tam paket **266 OK**.
+
+- [STATUS: KAPANDI] **T44 — özgün kayıt** · `comms/yks_gui.py` · **KRİTİK** · kanıt: bu görevdeki ölçüm · bağımlı: **T43** (bitti)
+  - **✅ YAPILDI · 2026-08-11 · Claude-2** · çözüm kaydı `REVIEW_LOG.md` **D-61**.
+  - `_kaynak_olcegi(yol)` eklendi: **kompozit** → manifest `arena.mpp`;
+    **diğerleri** → ölçek YOK. `_algi_kos` üretimin kapısını kopyalamaz,
+    `karar_sozlesmesi.rota_olcek_reddi`'yi çağırır ve `analyze_path(..., mpp=)`
+    geçirir. Manifest bozuksa fail-closed (günlüğe yazar, ölçeksiz sayar).
+    Bilgi satırı artık `ölçek … m/px · gövde açıklığı … px · C-uzayı UYGULANDI`
+    ya da `ölçek YOK (sebep) · C-uzayı UYGULANAMADI` gösteriyor.
+  - **KAPI 1 — 16 otopark karesi (gerçek çıktı):**
+    ```text
+    ONCE   HAKEM EKRANI : {'YOL/1': 5, 'YOL/3': 8, 'RED/DUSUK_GUVEN': 3}
+           URETIM GOREV : {'RED/OLCEK_YOK': 16}
+           AYRISAN      : 16/16
+    SONRA  HAKEM EKRANI : {'RED/OLCEK_YOK': 16}
+           URETIM GOREV : {'RED/OLCEK_YOK': 16}
+           AYRISAN      : 0/16      -> GECTI
+    ```
+  - **KAPI 2 — T36b KAPANMADI (zorlanmadı).** İki nedeni ölçerek ayırdım;
+    her adımda tek değişken değişti:
+    ```text
+    A  GUI bugun (letterbox icerik + MODEL maskesi + C-uzayi)  : 1/7
+    B  + ARENA icerik kutusu (manifest ROI)                    : 3/7   (+2)
+    C  + YER GERCEGI maskesi (manifest maskesi)                : 6/7   (+3)
+    Neden 1 — icerik kutusu tanimi uyusmuyor : 2 kare
+    Neden 2 — model algisi kompozitte zayif  : 3 kare
+    ```
+    **Beşinin hiçbiri `comms/yks_gui.py` içinde değil.** İki ayrı `icerik`
+    kavramı var: `_preprocess` letterbox kutusu `(0,224,1024,576)` (şerit
+    sınırları 341/683) ve manifest arena ROI'si `(224,224,576,576)` (416/608).
+    Manifest şeritleri ikincisine göre tanımlı. GUI'nin manifest ROI'sini
+    karara sokması **yer gerçeği sızıntısı** olurdu — T36b'nin kendi kapısı
+    (`test_beklenen_serit_KARARA_SIZMIYOR`) bunu yasaklıyor. Çözüm ya kompozit
+    üretecin arenayı tam kareye yayması, ya da ROI'nin saha yolunda üretilebilir
+    bir sinyalden türetilmesi (D-23'e bağlı).
+  - **KAPI 3 — T36 hizalama testleri geçiyor:** `test_gui_kendi_cikarim_hattini_
+    KURMUYOR` ve `test_gui_karari_uretim_yolunun_karariyla_AYNI` dâhil 23/23 OK.
+    Hizalama testi genişletildi: artık **ölçekli ve ölçeksiz kipi birden**
+    sınıyor ve referans taraf da `rota_olcek_reddi` çalıştırıyor.
+  - **KAPI 4:** `codes/test_rota_sentetik.py` **15/15** ·
+    `unittest discover -s tests -q` → **Ran 266 tests · OK** ·
+    `git diff --check` exit 0.
+  - **Kalıcı kapı:** `tests/test_yks_gui_uretim_hizasi.py::OlcekKapisiTests`
+    (7 test) — ölçeksiz kaynakta `OLCEK_YOK`, kompozitte manifest ölçeği,
+    `mpp`'nin gerçekten geçirildiği, C-uzayı kanıtının ekranda olduğu,
+    üretimin kapısının **kopyalanmadığı**, fail-closed manifest ve
+    "ölçek yoksa rota yayınlanmaz".
   - **Kanıt — kendim ölçtüm, 16 otopark karesi, ölçek verilmeden:**
     ```text
     HAKEM EKRANI : {'RED/UC_BANT_TEMAS_YOK': 16}
@@ -2461,6 +2540,429 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı:** (1) 16 otopark karesinde GUI ile üretim görev yolunun **sebebi
     aynı** (ayrışan 0/16); (2) kompozit kaynakta T36b ölçümü **7/7**;
     (3) `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
+
+- [STATUS: READY_FOR_REVIEW] **T48 — Zemin maskesi sağlamlık kapısı: kaplama çöküşünde rota YAYINLANMAZ** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `comms/yks_gui.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-61
+  - **✅ YAPILDI · 2026-08-11 · Claude-2** · çözüm kaydı `REVIEW_LOG.md` **D-62**.
+  - **Eşik ölçümle türetildi — üç bağımsız meşru kaynak, iki çökmüş küme:**
+    ```text
+    MESRU (kapi ATESLEMEMELI)                        n     p50    p95    MAKS
+      sentetik arena YER GERCEGI (etiket poligonu)  60   %11,7  %22,1  %39,0
+      sentetik arena, v17 + v21 model ciktisi      120   %11,8  %23,2  %38,7
+      genel kapinin KENDI 15 sahnesi                15   %36,4    —    %42,6
+    COKMUS (kapi ATESLEMELI)                         n     p50           MIN
+      v21 otopark (cati/cim yesil)                  67   %79,9         %76,7
+      v21 kompozit arena                             7   %82,7         %76,0
+    ```
+    `%42,6`–`%76,0` arası **boş**. `ZEMIN_KAPLAMA_TAVANI = 0.55` — meşru
+    azaminin **1,29 katı**, çökmüş asgarisinin **0,72 katı**; 194 model karesi
+    + 60 yer gerçeği + 15 kapı sahnesinde **yanlış pozitif 0, kaçırma 0**.
+  - 🔴 **Görevdeki v13 satırı kullanılamadı.** v13 ağırlığı depoda yok; satırın
+    kendi iki sayısı tutarsız (%43,4 vs "%84,7'sini boyuyor"); **ve asıl sorun**
+    %43,4, genel kapının kendi meşru sahnelerinin azamisinin (%42,6) yalnız
+    **0,8 puan** üstünde — o değeri yakalayan tavan `test_rota_sentetik.py`
+    15/15'i kırardı. Tablonun istediği eşik deponun kendi referans sahneleriyle
+    çelişiyor. ⚠ Kapının bilinen sınırı: bu bir **kaplama** kapısıdır; v13
+    benzeri orta şiddetli çökme buradan **geçer** (doku kapısı ayrı görev).
+  - **KAPILAR (gerçek çıktı):**
+    ```text
+    KAPI 1  otopark 12 kare, hakem ekrani
+              ONCE  : {'OLCEK_YOK': 12}                  (yapisal ret eziliyordu)
+              SONRA : {'ZEMIN_MASKESI_SUPHELI': 12}  ->  12/12  GECTI
+              ekran : "⚠ ZEMİN MASKESİ ŞÜPHELİ · kaplama %78 (tavan %55)"
+    KAPI 2  sentetik arena 40 kare -> YANLIS POZITIF 0/40
+              {'UC_BANT_TEMAS_YOK': 33, 'YOL/2': 4, 'YOL/3': 2, 'YOL/1': 1}
+    KAPI 3  POZITIF KONTROL (cokme supurmesi)
+              %20 %40 %50 %54 -> KARAR VAR (kapi susuyor)
+              %56 %70 %95     -> ZEMIN_MASKESI_SUPHELI (kapi atesliyor)
+    KAPI 4  codes/test_rota_sentetik.py 15/15 ·
+            unittest discover -s tests -q -> Ran 281 tests OK ·
+            git diff --check exit 0 · Jetson ikizleri BIREBIR
+    ```
+  - **Yan düzeltme — ret önceliği.** Otoparkta iki ret aynı anda geçerliydi ve
+    ölçek kapısı yapısal reti **eziyordu**. §6.4/3 zaten "yapısal ret ezilmez"
+    diyor; kural üç üretim çağrı yerinde ve GUI'de düzeltildi
+    (`if olcek_reddi is not None and karar_reddi is None`). Gerekçe: ölçek
+    eksikliği **yapılandırma** boşluğu, `ZEMIN_MASKESI_SUPHELI` **algı arızası**.
+  - **Test fikstürleri gerçekçileştirildi (kapı gevşetilMEDİ).** Üç dosya
+    `trav = np.ones(...)` kuruyordu. İlk denemem kaplamayı düşürdü ama
+    `test_rota_serit_etiketi`'nin **pozitif kontrolünü boşalttı** (eski centroid
+    3/3 doğru çıktı); kum saati fikstürüyle hem tavanın altına indi (%51,1) hem
+    ayırt edici kaldı.
+  - **Kalıcı kapı:** `tests/test_zemin_kaplama_kapisi.py` (15 test) — eşiğin
+    sözleşmeden okunduğu, sınırın kendisinin geçerli olduğu, kapının **rotadan
+    önce** çalıştığı, içerik kutusunu kullandığı, **madde 15 nötrlüğü** ve genel
+    kapının 15 sahnesinin reddedilmediği.
+  - ⚠ **Açık:** kompozit kaynak artık 7/7 `ZEMIN_MASKESI_SUPHELI` dönüyor
+    (v21 kaplaması orada %76–84). **T36b'nin durumu değişti:** ekran artık
+    yanlış şerit göstermiyor, doğru sebeple çekimser kalıyor. Kapanması hâlâ
+    model/veri tarafına bağlı (D-61 neden 2).
+  - **Neden:** Kullanıcının gördüğü asıl kusur, ekranın **çatı ve çim üzerinden
+    geçen bir rotayı kendinden emin çizmesi**. Sistem maskenin çöktüğünü
+    anlamıyor; rotayı yine de üretiyor. Karar zinciri bunu yakalayamaz çünkü
+    maske "dolu" görünüyor.
+  - **Ölçülmüş taban — eşik uydurulmuyor:**
+    ```text
+    v17 (iyi, arena IoU 0,861)   kaplama %4,2   (yer gercegi %3,6)
+    v13 (cokmus, moloza basma %37,7) kaplama %43,4  (goruntunun %84,7'sini boyuyor)
+    v21 otopark (cokmus, cati yesil) kaplama %73,5
+    v21 sentetik arena (makul)       kaplama %15,7
+    v21 kompozit arena               kaplama %77,6
+    ```
+    İyi ve çökmüş kipler **kaplamada net ayrışıyor**.
+  - **Yap:** `karar_sozlesmesi.py`'ye `ZEMIN_KAPLAMA_TAVANI` sabiti + `zemin_
+    maskesi_reddi(trav, icerik)` fonksiyonu ekle; `CONTRACTS.md` §6.4'e yeni ret
+    sebebi **`ZEMIN_MASKESI_SUPHELI`** yaz. Kapı `analyze_path` karar yolunda
+    **rotadan önce** çalışsın: kaplama tavanı aşarsa **fail-closed** ret.
+    Eşiği yukarıdaki tablodan türet ve **gerekçesini yorumda ölçümle yaz**.
+  - **GUI tarafı:** Ret hâlinde ekran rota çizmesin; bilgi satırında
+    `⚠ ZEMİN MASKESİ ŞÜPHELİ · kaplama %74 (tavan %X)` yazsın. Hakem, sistemin
+    **neden** karar vermediğini görsün.
+  - ⚠ **Madde 15 uyumlu:** bu kapı serbest alanı yalnız **reddeder**, asla
+    büyütmez. Kapı ret verdiğinde rota yayınlanmaz — sessizce daraltma yok.
+  - **Kapı:** (1) otopark 12 karesinde **12/12** `ZEMIN_MASKESI_SUPHELI`;
+    (2) sentetik arena karelerinde kapı **ateşlemiyor** (kaplama %15,7 → yanlış
+    pozitif yok); (3) sentetik bir çökme sahnesiyle pozitif kontrol;
+    (4) `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
+
+- [STATUS: READY_FOR_REVIEW] **T49 — Sentetik arenada 11/12 kare `UC_BANT_TEMAS_YOK`: modelin EĞİTİLDİĞİ alanda rota çıkmıyor** · `codes/rpi_inference.py` (tanı) · **KRİTİK** · kanıt: aşağıdaki ölçüm
+  - **Kanıt — kendim ölçtüm (v21, 12 sentetik arena karesi):**
+    ```text
+    sentetik arena  kaplama %15,7 (min 6 max 25)
+                    {'RED/UC_BANT_TEMAS_YOK': 11, '1': 1}
+    ```
+    Kaplama **makul** — yani maske çökmüş değil. Buna rağmen 11/12 karede
+    başlangıç/hedef uç bandına temas eden koridor bulunamıyor.
+  - **Neden KRİTİK:** Bu, modelin **eğitildiği ve IoU 0,861 ölçtüğümüz** alan.
+    Burada rota çıkmıyorsa kusur modelde değil, **karar yolunun sentetik arena
+    geometrisiyle uyuşmamasında** olabilir (kare tuval → `_preprocess` dolgu
+    eklemez, `icerik` tam kare; K-A bantları yine de temas bulamıyor).
+  - **Yap — ÖNCE TANI, düzeltme sonra.** Üç ihtimali ölçerek ayır:
+    (a) uç bant oranı (`HEDEF_BANT_ORANI = 0.08`) sentetik arena ölçeğine uymuyor;
+    (b) sentetik arena sahneleri zaten 3 şeritli koridor değil (üreteç farklı
+    yerleştiriyor); (c) maske parçalı, bant temas ediyor ama bileşen kopuk.
+    Her ihtimal için sayı + gözle doğrulanmış 2 görsel.
+  - **Kapı:** Üç ihtimalin hangisinin doğru olduğu **sayıyla** ayrılmış olacak.
+    Tanı bitmeden hiçbir eşik değiştirilmeyecek.
+  - **TANI TAMAMLANDI · Codex-2 · 2026-08-11.** Üretim koduna yazılmadı;
+    eşik değiştirilmedi. Ölçülen kaynak `rpi_inference.py` SHA256:
+    `dbf9cd100382f91a35e12cdafc7f672b7109b6bf3caff3b82058b107b72f24ec`.
+    Başka görev sahibinin eşzamanlı T48 değişikliklerine dokunulmadı; o kapı bu
+    kümede ateşlemedi (zemin kaplaması en çok `%25,238`, tavan `%55`).
+  - **Ana ölçüm komutu ve gerçek çıktı (exit 0):**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B results/t49_sentetik_arena_tani_20260811/t49_tani.py`
+    ```text
+    [T49_KUME] kare=24 ilk=sa_000297.jpg son=sa_000320.jpg imgsz=512 conf_arg=VERILMEDI etkin_conf=0.25
+    [T49_KAPLAMA] ilk12_ort=15.902% min=5.874% maks=25.238% tam24_ort=16.634%
+    [T49_REPRO_ILK12] {'ACIK_1': 1, 'UC_BANT_TEMAS_YOK': 11}
+    EXIT_CODE=0
+    ```
+  - **(a) Uç bant oranı — kısmen doğru, tek kök neden değil.** Tam süpürme;
+    hücreler `ACIK_1 / ACIK_2 / ACIK_3 / UC_BANT_TEMAS_YOK`:
+    ```text
+    oran  bant_px   karar dağılımı
+    0.02     12     1 / 1 / 0 / 22
+    0.03     19     1 / 1 / 0 / 22
+    0.04     25     1 / 0 / 1 / 22
+    0.05     32     2 / 0 / 1 / 21
+    0.06     38     2 / 0 / 1 / 21
+    0.07     44     2 / 0 / 1 / 21
+    0.08     51     2 / 0 / 1 / 21
+    0.09     57     2 / 0 / 1 / 21
+    0.10     64     2 / 1 / 1 / 20
+    0.11     70     2 / 2 / 1 / 19
+    0.12     76     2 / 2 / 1 / 19
+    0.13     83     3 / 3 / 1 / 17
+    0.14     89     3 / 4 / 1 / 16
+    0.15     96     4 / 3 / 1 / 16
+    0.16    102     4 / 5 / 2 / 13
+    0.17    108     3 / 6 / 2 / 13
+    0.18    115     5 / 5 / 2 / 12
+    0.19    121     4 / 6 / 2 / 12
+    0.20    128     4 / 5 / 3 / 12
+    ```
+    `%8 → %20`, 21 reddin 9'unu açıyor; 12/24 kare `%20`'de de ret. Sonuç:
+    bant `%8` bu iç-arena geometrisine göre bazı karelerde **çok dar**, fakat
+    eşiği büyütmek tek başına çözüm değil. Süpürme yalnız tanı sürecinde bellekte
+    yapıldı, `finally` ile geri yüklendi; üretim eşiği bu görevde **değiştirilmedi**.
+  - **(b) Yer gerçeği/geometri — doğru ve baskın açıklama.** Üreteç kaynağı
+    seed=7, `ayni_malzeme=0.0`, `dar=0.0` ile 0..320 yeniden oynatıldı; ilk 24
+    JPEG disk kümesiyle **24/24 bayt-eşit**. Gerçek çıktı:
+    ```text
+    [T49_B_REPLAY] n_ser={2: 5, 3: 13, 4: 2, 5: 4}
+    [T49_B_PROVENANCE] jpeg_bayt_esit=24/24 seed=7 ayni_malzeme=0.0 dar=0.0
+    [T49_B_LABEL] bos_etiket=0
+    EXIT_CODE=0
+    ```
+    ```text
+    fiziksel şerit sayısı             {2:5, 3:13, 4:2, 5:4}
+    class-0 poligon sayısı             {1:15, 2:5, 3:1, 4:2, 5:1}
+    class-0 bağlı bileşen sayısı       {1:20, 2:3, 3:1}
+    GT analyze_path, %8                ACIK=2, UC_BANT_TEMAS_YOK=22
+    GT analyze_path, %20               ACIK=12, UC_BANT_TEMAS_YOK=12
+    aynı GT bileşeni iki %8 uca değer  2/24
+    GT üst boşluk                      medyan=101 px, maks=328 px; 20/24 bant dışında
+    GT alt boşluk                      medyan=74,5 px, maks=159 px; 16/24 bant dışında
+    ```
+    Yalnız **13/24** sahne üç şeritli; yalnız **1/24** etiket maskesinde tam üç
+    traversable bileşen var. Üreteç ayrıca arenayı görüntü içinde `%0–28` dikey
+    payla, dönüş/perspektifle ve `kısmi` şerit olasılığıyla yerleştiriyor. Kusursuz
+    GT'nin 22/24 reddedilmesi model kusurunu dışlar: karar yolunun **tam görüntü
+    uçlarına uzanan koridor** varsayımı bu veri geometrisiyle uyuşmuyor. Gerçek
+    `n_ser` salt YOLO etiketinden birebir geri kazanılamazdı — etiket-only sonuç
+    **DOĞRULANAMADI**; 24/24 bayt-eşit kaynak replay'iyle ayrıca doğrulandı.
+  - **(c) Maske parçalanması — ölçülen retlerin nedeni değil.** Morfoloji ve
+    engel çıkarma sonrasındaki **tüm** bileşenler, en büyük bileşen seçilmeden
+    ölçüldü:
+    ```text
+    model bağlı bileşen sayısı dağılımı   {1:20, 2:3, 6:1}
+    %8 UC ret atfı                         iki bant yetersiz=14
+                                             yalnız üst yetersiz=5
+                                             yalnız alt yetersiz=2
+                                             uçlar farklı bileşenlerde=0
+                                             küçük bileşen span kaybı=0
+    uç bant zemin px (tüm / en büyük)     üst 24954 / 24954
+                                           alt 31008 / 30740
+    görsel c1, sa_000306 (6 bileşen)       üst 0 / 0, alt 0 / 0
+    görsel c2, sa_000310 (2 bileşen)       üst 0 / 0, alt 268 / 0
+    ```
+    Sonuç: 21 `UC_BANT` reddinin **0/21**'i bileşen kopukluğundan; **21/21**'inde
+    tüm model maskesi dahi bir veya iki uçta yeterli zemin taşımıyor.
+  - **Gözle doğrulama — 6/6 görsel açıldı ve incelendi.** Her dosyada ham kare,
+    maske/bileşen, uç bantlar ve varsa sarı rota aynı panelde:
+    - (a) `results/t49_sentetik_arena_tani_20260811/gorseller/a1_bant_duyarli_sa_000297.png`
+    - (a) `results/t49_sentetik_arena_tani_20260811/gorseller/a2_bant_yetersiz_sa_000301.png`
+    - (b) `results/t49_sentetik_arena_tani_20260811/gorseller/b1_gt_iki_serit_sa_000300.png`
+    - (b) `results/t49_sentetik_arena_tani_20260811/gorseller/b2_gt_cok_koridor_sa_000306.png`
+    - (c) `results/t49_sentetik_arena_tani_20260811/gorseller/c1_bilesen_sa_000306.png`
+    - (c) `results/t49_sentetik_arena_tani_20260811/gorseller/c2_bilesen_sa_000310.png`
+  - **Artefakt doğrulama komutu gerçek çıktı (exit 0):** rapordaki altı yol
+    OpenCV ile tekrar okundu.
+    ```text
+    [T49_ARTEFAKT] rapor_json=OK gorsel=6/6 okunur=6/6
+    [T49_ARTEFAKT] rapor_md=VAR csv=VAR
+    EXIT_CODE=0
+    ```
+    Tam rapor: `results/t49_sentetik_arena_tani_20260811/rapor.md` · ham JSON:
+    `rapor.json` · kare tablosu: `kare_olcumleri.csv`.
+  - **NET HÜKÜM:** **(b) doğru/kök uyumsuzluk**; **(a) etkili fakat kısmi belirti**;
+    **(c) bu 24 karede yanlış hipotez**. Düzeltme/threshold değişikliği bu tanı
+    görevinde yapılmadı.
+
+- [ ] **T51 — Sentetik arena kadraja oturmuyor: karar yoluyla uyumlu TEK zemini kazanıyoruz** · `O:\navitas-local-train\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-62, T49 tanısı
+  - **Ölçülmüş kazanç — kendim koştum, 24 kare:**
+    ```text
+    TAM KARE          : UC_BANT_TEMAS_YOK 21 · rota  3/24
+    ARENAYA KIRPILMIS : rota 14/24 (ZEMIN_SUPHELI 7 · UC_BANT 2 · GORUS 1)
+    ```
+    Arenaya kırpmak rotayı **3/24 → 14/24** çıkarıyor; T49 tanısıyla birebir
+    örtüşüyor. Kusur modelde değil, **üretecin yerleşiminde**.
+  - **Neden değerli:** Sentetik arenanın kaplaması **zaten temkinli (%15,7)**,
+    T48 kapısını geçiyor. Tek eksiği geometri. Düzeltilirse karar yolunun
+    geometrisiyle **uyumlu tek zemin** olur (otopark alan dışı, kompozit
+    otoparkın maskesini miras alıyor).
+  - **Yap:** Arena yerleşimini kadraja oturt — koridorlar içerik kutusunun üst ve
+    alt uçlarına ulaşsın. Dikey pay (`%0–28`), dönüş ve "kısmi şerit" olasılığı
+    **kapatılabilir ayrı bir kip** olsun; **mevcut eğitim kipini BOZMA** (pay ve
+    dönüş eğitim çeşitliliği için değerli). Yeni kip yalnız demo/doğrulama
+    kümesi üretir — 200-300 kare yeter.
+  - **Kapı:** (1) tam karede rota oranı ≥ **12/24** (kırpmasız) — ⚠ 24/24 zorunlu
+    değil, fail-closed retler meşru, **zorlama**; (2) yer gerçeği ile şerit
+    uyumsuzluk sayısı yazılacak; (3) **pozitif kontrol**: açık şerit kapatılınca
+    `ACIK` kalmayacak; (4) eski komutla üretilen çıktı **bayt-eşit** (eğitim kipi
+    bozulmadı).
+  - **Bağlı:** T48'in tavanı bu kümede yeniden ölçülmeli (D-62 yan bulgusu).
+
+- [STATUS: READY_FOR_REVIEW] **T50 — Zemin sınıfı otorite değil: model seçimi mimarinin değişmezine göre yeniden yapılacak** · `O:\navitas-local-train` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-61 + aşağıdaki ölçüm
+  - **✅ FAZ 1 BİTTİ · 2026-08-11 · Claude-2 · GPU'ya DOKUNULMADI** · kayıt `REVIEW_LOG.md` **D-63**.
+  - ⚠ **KAMERA YOK (kullanıcı bildirdi): gerçek arena karesi ALINAMIYOR. Bu görev
+    modelin ARENADAKİ başarımını doğrulamaz ve doğrulayamaz; yalnız alan-içi
+    doğruluğu ve ALAN DIŞI TEMKİNİ iyileştirir.**
+  - **11 model × 3 kapı — tam tablo (gerçek çıktı):**
+    ```text
+    model                       K1 IoU  K1 kesinlik  K1 duyar  K2 ort  K2 maks  K3 D/Y/R
+    navitas_seg_v2_best.pt       0.366        0.760     0.414   70.4%    86.1%   0/0/9
+    navitas_seg_v3_best.pt       0.412        0.744     0.481   18.2%    78.7%   0/1/8
+    navitas_seg_v4_best.pt       0.351        0.827     0.379   13.5%    76.6%   0/1/8
+    navitas_seg_v5_best.pt       0.384        0.775     0.432   35.8%    68.2%   1/3/5
+    aday_v5a_s640.pt             0.384        0.775     0.432   35.8%    68.2%   1/3/5
+    aday_v5b_s640ft.pt           0.352        0.781     0.390   32.9%    78.3%   0/1/8
+    aday_v5c_m640.pt             0.372        0.689     0.448   46.9%    82.6%   0/0/9
+    aday_v9_mixup_m640.pt        0.365        0.631     0.463   50.2%    92.6%   1/0/8
+    navitas_seg_v17_best.pt      0.315        0.807     0.341    0.9%     7.0%   0/0/9
+    navitas_seg_v20_best.pt      0.267        0.795     0.287    2.9%    52.9%   0/0/9
+    navitas_seg_v21_best.pt      0.311        0.813     0.335   81.0%    86.3%   0/0/9
+    (K1 n=120 rescuenet_1024 val · K2 n=67 otopark · K3 n=9 kompozit · conf=0.30
+     mikro-ortalama · D/Y/R = doğru/yanlış/ret)
+    ```
+  - 🔴 **KAZANAN YOK.**
+    - **KAPI 3 kimseyi geçirmiyor:** en iyi 1/9 (v5, v5a, v9 — üçü de K2'de
+      %35–50 ile çökmüş). Üretim adaylarının üçü de **0/9**. Ayrıca K3 yer
+      gerçeğinde **şerit 2 hiç yok** (5×şerit1, 4×şerit3) — "hep 1" diyen kod
+      şansla 5/9 alırdı.
+    - **KAPI 2 tek başına KUSURLU:** temkin ile körlüğü ayırt etmiyor. İki ek
+      ölçümle gösterildi:
+      ```text
+      ARENA BENZERI SENTETIK (n=60, GT %12,4)   KOMPOZIT: GERCEK DOKU (n=9, GT %28,6)
+        v17  IoU 0.896  55/60                     v17  kaplama %0.4  duyar 0.010  1/9
+        v20  IoU 0.929  59/60                     v20  kaplama %0.1  duyar 0.000  0/9
+        v4   IoU 0.094  21/60  <- KOR             v21  kaplama %82.5 duyar 0.890  9/9
+        v3   IoU 0.122  14/60  <- KOR
+      ```
+      v4/v3 kapı 2'yi **hiçbir şey görmedikleri için** geçmiş. v17'nin %0,9'u da
+      temkin değil, **gerçek dokuda körlük** — 9 karenin 8'inde hiçbir şey yok.
+    - Üç eksenin özeti: `v21 görür ama çöker (0.890 / %81,0)` ·
+      `v17 çökmez ama görmez (0.010 / %0,9)` · `v20 çökmez ama görmez (0.000 / %2,9)`.
+      **"Gerçek dokuda görür VE alan dışında çökmez" çeyreğinde hiçbir model yok.**
+  - **Görsel doğrulama — sayıyı değiştirdi** (`O:
+avitas-local-trainesults	50_uc_kapi\`):
+    v21 otoparkta bina **çatısını ve çimi parlak yeşil** boyuyor (kullanıcının
+    bildirdiği kusur gözle doğrulandı); v17 aynı karede **tek piksel bile**
+    işaretlemiyor. GT'si zengin val karesinde (%37,3) ikisi de yol yüzeyini
+    doğru veriyor; sentetik arenada v17 üç koridoru temiz ayırıyor (%38,4).
+    İlk üretilen v17 val görseli GT'si boş bir kareydi, ayırt edici olmadığı
+    için GT'si zengin kareyle yeniden üretildi.
+  - **FAZ 2 GEREKÇELİ — ama önce ÖLÇÜT düzeltilmeli.** Aynı ölçütle eğitilen
+    model yine yanlış seçilir. **Önerilen KAPI 0 — TESPİT TABANI:** kompozit
+    (gerçek doku) kümede `duyarlılık ≥ 0,50` ve `kare>%1 ≥ 8/9`. Bugün bunu
+    **yalnız v21** geçiyor. Seçim "KAPI 0'ı geçenler arasında KAPI 2'si en düşük
+    olan" olur; hem körlüğü hem çöküşü eler.
+  - **DOĞRULANAMADI:** (1) hiçbir modelin gerçek arena başarımı — kamera yok;
+    (2) kompozitin gerçek arenayı ne kadar temsil ettiği; (3) sentetik arena
+    sonuçları v17/v20/v21 için **dağılım içi** (üçü de o kümeyle eğitildi),
+    genelleme kanıtı sayılmaz; (4) v13 diskte yok, ölçülemedi.
+  - **Kök neden (Claude 1 ölçtü, 2026-08-11):** Mimari *"Serbest alan OTORİTEDİR;
+    zemin değil → engel"* (fail-safe) diyor. Üretim modeli bunun **tersini**
+    yapıyor: her şeye zemin diyor, dolayısıyla kural hiç ateşlenmiyor.
+    ```text
+    model                     kaplama  yer gercegi     IoU  kesinlik   OTOPARK
+    navitas_seg_v17_best.pt      1.9%         3.2%   0.161     0.170      %0.0
+    navitas_seg_v20_best.pt      2.1%         3.2%   0.222     0.284     %16.3
+    navitas_seg_v21_best.pt      2.3%         3.2%   0.227     0.280     %73.7
+    ```
+    v21 **alan-kırılgan**: kendi alanında uslu, alan dışında (otopark) %73,7'ye
+    patlıyor ve çatıyı/çimi zemin sayıyor. Seçim mAP ile yapılmış; K-3 zaten
+    *"mAP arena sıralamasını tersine çeviriyor"* diyordu.
+  - 🔴 **FAZ 1 — GPU YOK, ÖNCE BU.** Diskte **11 eğitilmiş model** var ve hiçbiri
+    mimarinin ölçütüyle sıralanmadı. Belki eğitime hiç gerek yok.
+    **Üç kapılı seçim ölçütü** (mAP DEĞİL):
+    1. **Alan içi doğruluk:** RescueNet val'de zemin IoU + **kesinlik**.
+       Kesinlik önceliklidir — yanlış-pozitif zemin, kaçırılan zeminden
+       tehlikelidir (fail-safe).
+    2. **ALAN DIŞI TEMKİN (negatif kontrol, kamera gerekmez):** otopark
+       karelerinde kaplama. Model burayı arena zemini **sanmamalı**. `%73,7`
+       çöküş, `%0-20` kabul. Bu ölçüt bugüne kadar hiç kullanılmadı ve kusuru
+       tam olarak o yakalıyor. `45_alan_disi_test.py` zaten var.
+    3. **Karar doğruluğu:** `data/arena_kompozit` yer gerçeğiyle doğru şerit
+       sayısı (9 kare, manifest'te `acik_serit`).
+    - **Gürültü tabanı:** 0,04'ten küçük farklar gürültüdür — sıralama bu farkla
+      yapılmaz (ölçülmüş: mask sd 0,025–0,032).
+    - **Çıktı:** 11 model × 3 kapı tablosu + her aday için **gözle doğrulanmış**
+      2 görsel (otopark + RescueNet). Kazanan varsa üretime alınır, FAZ 2 iptal.
+  - **FAZ 2 — yalnız FAZ 1'de kazanan çıkmazsa.** Reçete ölçülmüş:
+    **11 sınıfla ön-eğit → 2 sınıfa fine-tune** (`42_cok_sinifli_onegitim.py` +
+    `43_zincir.py`; `dataset/rescuenet_11sinif` hazır). Kanıt: v15 bu reçeteyle
+    arena moloza basma **%2,7**; v13 (ön-eğitimsiz, en yüksek mAP) **%37,7**.
+    Seçim yine yukarıdaki üç kapıyla yapılır.
+  - ⚠ **Eğitimi FAZ 1 bitmeden başlatma** — bozuk ölçütle eğitim GPU-günü israfıdır.
+  - ⚠ **Uzun koşu uyarısı:** `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` ortam değişkeni
+    olmadan başlatma; konsol kapanınca eğitim **izsiz ölüyor** (ölçülmüş olay).
+  - ⚠ **Kamera yok (kullanıcı bildirdi):** gerçek arena karesi ALINAMIYOR. Bu
+    görev modelin **arenadaki** başarımını doğrulamaz ve doğrulayamaz; yalnız
+    alan-içi doğruluğu ve **alan dışı temkini** iyileştirir. Rapora bu cümle
+    aynen yazılacak.
+
+- [ ] **T47 — v21'in "geçilebilir" sınıfı bu alanda anlamsız: çatı ve çim yol sayılıyor** · model / veri · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-61 + görsel
+  - **Kullanıcı bildirdi, gözle doğrulandı.** v21 bu karelerde pratikte
+    **"araç mı, değil mi"** ayırıcısı: bina çatısı, çim, toprak — hepsi zemin
+    sınıfında; yalnız araçlar engel. Kaplama **%74** (v13'ün çöküş imzası).
+  - **Üç şikâyet tek kök:** çatı yol sayılıyor · rota kenardaki çim şeridinden
+    geçiyor (her yer serbest olunca en geniş kanal orası) · bazen hiç rota yok
+    (serbest alan anlamsız olduğu için retler gelişigüzel).
+  - ⚠ **Bu bulgu modelin ARENADA çökeceğini KANITLAMAZ.** Kareler bir otopark
+    (D-53); model RescueNet + sentetik arena ile eğitildi, burası alan dışı.
+    Ama **tersini de kanıtlayamıyoruz: tek bir gerçek arena karemiz yok**
+    (arena çekimi iptal, D-56). **Ölçüm zemini yok.**
+  - **Yap — sıra bağlayıcı:**
+    1. **Önce ölç, eğitme.** v21'in zemin sınıfını *alan bazında* raporla:
+       otopark kareleri · sentetik arena · kompozit arena. Her biri için
+       kaplama yüzdesi ve gözle doğrulanmış 2 örnek görsel. Hangi alanda
+       çalışıp hangisinde çökdüğünü **sayıyla** ayır.
+    2. Çökme yalnız otoparkta ise: bu **görev dışı alandır**, ilan et ve GUI'nin
+       varsayılan kaynağını buna göre seç. Sentetik/kompozit arenada da
+       çöküyorsa **eğitim verisi işidir** ve S1→S2→veri→eğitim sırası geçerlidir.
+    3. Karar öncesi hiçbir eğitim koşusu başlatma (GPU-gün israfı).
+  - **Kapı:** Üç alan için kaplama tablosu + her alandan gözle doğrulanmış 2
+    görsel. "Model bozuk/sağlam" ilanı **tek başına mAP ile yapılmayacak** (K-3).
+
+- [ ] **T46 — [BLOKE · D-61] Hakem ekranı HİÇBİR kaynakta rota göstermiyor: `OLCEK_YOK` politikası ekranı öldürdü**
+  - 🔴 **BLOKE EDİLDİ · 2026-08-11 · Claude 1.** Bu görevi ben açtım ve teşhisim
+    yanlıştı. Varsayılan ölçekle rotaları geri getirmek, hakem ekranında **çatı
+    ve çim üzerinden geçen, kendinden emin ve yanlış** rotalar gösterir —
+    hiçbir şey göstermemekten **daha kötüdür** (D-61).
+  - **Bağımlı: T47.** Zemin sınıfının hangi alanda geçerli olduğu belirlenmeden
+    bu görev açılmaz. `OLCEK_YOK` şu an ekranı ölü gösteriyor ama **yanlış rota
+    yayınlamıyor**; bu sırayla daha güvenli. · `comms/yks_gui.py` · **KRİTİK** · kanıt: bu görevdeki ölçüm · **kullanıcı bildirdi**
+  - **Kullanıcı bildirimi (2026-08-11):** *"kesinlikle doğru çalışmıyor hiçbir
+    türlü... asla ama asla düzgün çalışmıyor."* İlk gerçek insan kullanımı.
+  - **Kanıt — algı ve karar SAĞLAM, sorun politikada:**
+    ```text
+    GUI gercek yolu, 16 drone karesi
+      ortalama zemin : %74.0  (min %72.5 / max %78.1)
+      karar, mpp YOK : {'1': 5, '3': 8, RED/DUSUK_GUVEN: 3}    -> 13/16 rota
+      karar, mpp VAR : {'1': 6, '3': 8, RED/GORUS_HATTI_KOPUK: 2} -> 14/16 rota
+    EKRANDA GORULEN : RED/OLCEK_YOK x16
+    ```
+    `analyze_path` rotayı **buluyor**; `olcek_reddi` sonra onu siliyor
+    (`yks_gui.py:1128-1131`). Kompozitte de `UC_BANT_TEMAS_YOK` (→ T45).
+    Yani hakem ekranı **hiçbir kaynakta tek bir rota göstermiyor.**
+  - 🔴 **Bu benim değerlendirme hatam.** T44'te *"drone/gemini/val'de `OLCEK_YOK`
+    görünecek, bu gerileme değil dürüstlük"* dedim ve kapattım. Her kapı tek tek
+    savunulabilir ama sonuç **kullanılamaz bir hakem ekranı**. Kapıların geçmesi
+    sistemin çalıştığı anlamına gelmiyor.
+  - **Yap — ölçek kapısını KALDIRMA.** Kaldırmak D-60'ta açığa çıkarılan sessiz
+    varsayımı (gövde açıklığı ~11 kat küçülüyor) geri getirir. Doğru ayrım
+    **sessiz varsayılan** ile **ilan edilmiş varsayım** arasındadır:
+    1. Görüntü kaynakları için operatörün belirlediği bir **varsayılan irtifa**
+       olsun (şartname §5.3.2 tabanı ≥30 m); `mpp_irtifadan()` ile ölçeğe
+       çevrilsin. Değer `karar_sozlesmesi`den okunacak, çıplak yazılmayacak.
+    2. Ekranda **açıkça** yazılsın: `ÖLÇEK VARSAYIM (telemetri yok) · irtifa
+       30 m → mpp X` — hakem neyin varsayım olduğunu görsün.
+    3. Canlı görevde telemetri varsa **o kazanır**; varsayım yalnız telemetrisiz
+       görüntü kaynakları içindir.
+    4. `kompozit` kaynağı manifest `mpp`'sini kullanmaya devam etsin.
+    5. Varsayım **kapatılabilir** olsun (tuşla); kapalıyken davranış bugünkü
+       `OLCEK_YOK` olsun — dürüst kip kaybolmasın.
+  - **Kapı:** (1) `drone` kaynağında ekran **en az 12/16 karede rota gösteriyor**
+    ve bilgi satırında ölçeğin VARSAYIM olduğu yazıyor; (2) varsayım kapalıyken
+    `OLCEK_YOK` dönüyor; (3) telemetrili yolda varsayım **kullanılmıyor** (test);
+    (4) T36'nın hizalama testleri ayakta; (5) `codes/test_rota_sentetik.py`
+    **15/15** · tam paket **OK**.
+
+- [ ] **T45 — Kompozit arena TAM İÇERİK KUTUSUNA yayılmıyor: şerit tanımları uyuşamıyor** · `scripts/copy_paste_augmentation.py` · **KRİTİK** · **T36b'yi tıkıyor** · kanıt: T44 ablasyonu
+  - **Kanıt — kendim ölçtüm:**
+    ```text
+    _preprocess icerik : (0, 224, 1024, 576)  -> serit sinirlari [341, 682]
+    manifest arena ROI : (224, 0,  576, 576)  -> serit sinirlari [416, 608]
+    AYNI MI            : False
+    ```
+    T40 arenayı **576×576 kare bir alt bölgeye** kuruyor; üretim yolu şeritleri
+    **tam içerik kutusuna** göre hesaplıyor. İki tanım hiçbir zaman uyuşamaz →
+    kompozit karelerde ret `UC_BANT_TEMAS_YOK`.
+  - **Neden GUI'de çözülemez:** GUI'nin manifest ROI'sini karara sokması **yer
+    gerçeği sızıntısı** olur; `test_beklenen_serit_KARARA_SIZMIYOR` bunu
+    yasaklıyor ve haklı — saha yolunda böyle bir kutu yok.
+  - **Yap:** Üretecin arena kipi şeritleri ve bariyerleri **`_preprocess`'in
+    içerik kutusuna** göre yerleştirsin (kare alt bölgeye değil). Şerit
+    sınırları yine yalnız `karar_sozlesmesi.serit_no()`'dan gelsin. Manifest'e
+    kullanılan içerik kutusunu da yaz ki ölçüm tekrar edilebilsin.
+  - ⚠ **Yan etki beklenir:** arena tam kareye yayılınca uygun zemin şartı
+    zorlaşabilir ve **verim daha da düşebilir** (şu an 67 → 7). Düşerse sayıyı
+    ve sebep dağılımını yapıştır; verimi kurtarmak için arena geometrisini
+    bozma.
+  - **Kapı:** Üretilen her karede `_preprocess(kompozit)` içerik kutusu ile
+    manifest'in içerik kutusu **aynı**; GUI kompozit kaynağında uyumsuzluk
+    ölçümü yeniden koşulacak (T36b kapısı). `codes/test_rota_sentetik.py`
+    **15/15** · tam paket **OK**.
 
 - [ ] **T36b — Kompozit arena kaynağı: yer gerçeği uyumu 1/7 · KAPI DÜŞTÜ** · `comms/yks_gui.py` (GUI tarafı bitti) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-59**
   - **✅ GUI tarafı YAPILDI · 2026-08-11 · Claude-2.** `kompozit` kaynağı eklendi
@@ -2803,7 +3305,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ```
 
 - [STATUS: READY_FOR_REVIEW] **T43 — Ölçek halkası (Halka 5) sahipsiz ve `analyze_path` kolunda C-uzayı yok** · `codes/rpi_inference.py`, `codes/costmap_path_finder.py`, `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-59, D-22
-  - **✅ YAPILDI · 2026-08-11 · Claude-2** · çözüm kaydı `REVIEW_LOG.md` **D-60**.
+  - **✅ YAPILDI · 2026-08-11 · Claude-2** · çözüm kaydı `REVIEW_LOG.md` **D-60b**.
   - **Görev 1 — Halka 5 SAHİPSİZ → GEÇERLİ.** İki kaynak ölçülerek seçildi:
     **(a) irtifa + FOV/odak → ÜRETİLEBİLİR** (irtifa saha yolunda zaten
     okunuyor: MAVLink `relative_alt`, `comms/inis_kaniti.py:143`);

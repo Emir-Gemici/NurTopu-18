@@ -37,6 +37,8 @@ for _alt in ("codes", "comms"):
 
 import rpi_inference  # noqa: E402
 import yks_gui  # noqa: E402
+from karar_sozlesmesi import (OLCEK_YOK_SEBEBI,  # noqa: E402
+                              olcek_gecerli_mi, rota_olcek_reddi)
 from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            _preprocess, _rota_kararini_esikle, analyze_path,
                            get_masks)
@@ -147,29 +149,46 @@ class UretimHizasiTests(unittest.TestCase):
                          "K-B uretimin esikleyicisiyle uygulanmiyor")
 
     def test_gui_karari_uretim_yolunun_karariyla_AYNI(self):
-        """Cikti denkligi: ayni maskede GUI ile `run_image` govdesi ayni der."""
-        for serit in (1, 2, 3):
-            for genislik in (60, 200, 340):
-                with self.subTest(serit=serit, genislik=genislik):
-                    maskeler = _koridor_maskeleri(serit, genislik)
-                    g = _kos(_gui(), maskeler=maskeler)
-                    ekran = _karar_metni(_sonuc_bilgisi(g))
+        """Cikti denkligi: ayni maskede GUI ile `run_image` govdesi ayni der.
 
-                    # URETIM (codes/rpi_inference.py::run_image govdesi)
-                    img = np.zeros((H, W, 3), np.uint8)
-                    sq, _small, icerik = _preprocess(img)
-                    m = {k: v.copy() for k, v in maskeler.items()}
-                    m = _maskeleri_icerige_kirp(m, icerik)
-                    yol, guv, wps, ret = analyze_path(
-                        m[0], icerik=icerik, engel_mask=m.get(1),
-                        return_reason=True)
-                    yol, guv, wps, ret = _rota_kararini_esikle(
-                        yol, guv, wps, ret)
-                    beklenen = (f"{yol}·{yks_gui.ROAD_LABEL[yol].upper()}"
-                                if yol else
-                                (f"ROTA YOK · {ret[0]}" if ret
-                                 else "TESPİT YOK"))
-                    self.assertEqual(beklenen, ekran)
+        T44: uretim govdesi ARTIK olcek kapisini de tasiyor
+        (`rota_olcek_reddi`). Referans tarafi da onu icermelidir; yoksa test
+        GUI'yi olcegi YOK SAYAN bir uretime hizalamis olur.
+
+        Iki kip birden sinanir:
+          · olceksiz (`mpp=None`)  -> iki taraf da OLCEK_YOK demeli
+          · olcekli  (`mpp` VAR)   -> iki taraf da AYNI seridi vermeli
+        """
+        for mpp in (None, 0.05):
+            for serit in (1, 2, 3):
+                for genislik in (60, 200, 340):
+                    with self.subTest(mpp=mpp, serit=serit, genislik=genislik):
+                        maskeler = _koridor_maskeleri(serit, genislik)
+                        g = _gui()
+                        with mock.patch.object(
+                                yks_gui.YksArayuz, "_kaynak_olcegi",
+                                return_value=(mpp, "test")):
+                            _kos(g, maskeler=maskeler)
+                        ekran = _karar_metni(_sonuc_bilgisi(g))
+
+                        # URETIM (codes/rpi_inference.py::run_image govdesi)
+                        img = np.zeros((H, W, 3), np.uint8)
+                        sq, _small, icerik = _preprocess(img)
+                        m = {k: v.copy() for k, v in maskeler.items()}
+                        m = _maskeleri_icerige_kirp(m, icerik)
+                        olcek_reddi = rota_olcek_reddi(mpp)
+                        yol, guv, wps, ret = analyze_path(
+                            m[0], icerik=icerik, engel_mask=m.get(1), mpp=mpp,
+                            return_reason=True)
+                        if olcek_reddi is not None:
+                            yol, guv, wps, ret = None, 0.0, [], olcek_reddi
+                        yol, guv, wps, ret = _rota_kararini_esikle(
+                            yol, guv, wps, ret)
+                        beklenen = (f"{yol}·{yks_gui.ROAD_LABEL[yol].upper()}"
+                                    if yol else
+                                    (f"ROTA YOK · {ret[0]}" if ret
+                                     else "TESPİT YOK"))
+                        self.assertEqual(beklenen, ekran)
 
     def test_predict_conf_uretim_varsayilanindan_KOPYALANMIS(self):
         """Ciplak sabit kilidi: deger `run_image`'in `--conf` varsayilanidir.
@@ -283,6 +302,92 @@ class KompozitKaynakTests(unittest.TestCase):
     def test_kompozit_disinda_beklenen_serit_gosterilmez(self):
         g = _kos(_gui("drone"))
         self.assertNotIn("beklenen şerit", _sonuc_bilgisi(g))
+
+
+class OlcekKapisiTests(unittest.TestCase):
+    """T44 · Halka 5 hakem ekraninda: olcek kaynagindan mi geliyor?"""
+
+    def test_olceksiz_kaynakta_OLCEK_YOK_gosterilir(self):
+        """`drone`/`gemini`/`val`/`test`: telemetri yok -> olcek yok.
+
+        Ekran "sahnede koridor yok" DEMEZ; sistem kisitini oldugu gibi yazar.
+        """
+        for kaynak in ("drone", "gemini", "val", "test"):
+            with self.subTest(kaynak=kaynak):
+                g = _kos(_gui(kaynak))
+                bilgi = _sonuc_bilgisi(g)
+                self.assertIn(OLCEK_YOK_SEBEBI, bilgi)
+                self.assertIn("ölçek YOK", bilgi)
+                self.assertIn("C-uzayı UYGULANAMADI", bilgi)
+
+    def test_kompozit_kaynakta_manifest_olcegi_kullanilir(self):
+        olcekler = _gui("kompozit")._kompozit_olcekleri()
+        self.assertTrue(olcekler)
+        ad = sorted(olcekler)[0]
+        g = _gui("kompozit")
+        mpp, not_ = g._kaynak_olcegi(Path(ad))
+        self.assertTrue(olcek_gecerli_mi(mpp))
+        self.assertEqual(olcekler[ad], mpp)
+        self.assertIn("manifest", not_)
+
+    def test_olcek_analyze_path_e_GERCEKTEN_geciriliyor(self):
+        gercek_ap = rpi_inference.analyze_path
+        cagri = {}
+
+        def sarmal(*args, **kwargs):
+            cagri.update(kwargs)
+            return gercek_ap(*args, **kwargs)
+
+        g = _gui()
+        with mock.patch.object(yks_gui.YksArayuz, "_kaynak_olcegi",
+                               return_value=(0.05, "test")),              mock.patch.object(rpi_inference, "analyze_path",
+                               side_effect=sarmal):
+            _kos(g)
+        self.assertIn("mpp", cagri, "analyze_path'e mpp GECIRILMEDI")
+        self.assertEqual(0.05, cagri["mpp"])
+
+    def test_olcek_varken_C_UZAYI_kaniti_ekranda(self):
+        g = _gui()
+        with mock.patch.object(yks_gui.YksArayuz, "_kaynak_olcegi",
+                               return_value=(0.05, "test")):
+            _kos(g, maskeler=_koridor_maskeleri(1, 340))
+        bilgi = _sonuc_bilgisi(g)
+        self.assertIn("C-uzayı UYGULANDI", bilgi)
+        self.assertIn("gövde açıklığı", bilgi)
+        self.assertIn("ölçek 0.0500 m/px", bilgi)
+
+    def test_uretimin_olcek_kapisi_KOPYALANMADI(self):
+        """GUI kendi esigini yazmaz; sozlesmenin fonksiyonunu cagirir."""
+        govde = (KOK / "comms" / "yks_gui.py").read_text(
+            encoding="utf-8").split("def _algi_kos", 1)[1].split(
+                "def _algi_sonucu_goster", 1)[0]
+        self.assertIn("rota_olcek_reddi(mpp)", govde)
+        for yasak in ('"OLCEK_YOK"', "olcek_gecerli_mi(mpp)",
+                      "R_GEREKLI_M", "r_gerekli_piksel("):
+            self.assertNotIn(
+                yasak, govde,
+                f"GUI uretimin olcek kapisini KOPYALIYOR: {yasak}")
+
+    def test_manifest_bozuksa_FAIL_CLOSED_olceksiz_sayilir(self):
+        g = _gui("kompozit")
+        with mock.patch.object(yks_gui.YksArayuz, "_kaynak_olcegi",
+                               side_effect=FileNotFoundError("manifest yok")):
+            _kos(g, ad="olmayan.jpg")
+        bilgi = _sonuc_bilgisi(g)
+        self.assertIn(OLCEK_YOK_SEBEBI, bilgi)
+        gunlukler = [x[1] for x in _paketler(g) if x[0] == "log"]
+        self.assertTrue(
+            any("ÖLÇEK OKUNAMADI" in x for x in gunlukler),
+            f"fail-closed gunluk satiri yok: {gunlukler}")
+
+    def test_olcek_yoksa_rota_YAYINLANMAZ(self):
+        """Fail-closed: karar None, waypoint yok — 'sadece uyari' degil."""
+        g = _gui("drone")
+        with mock.patch.object(yks_gui.YksArayuz, "_kaynak_olcegi",
+                               return_value=(None, "telemetri yok")):
+            _kos(g, maskeler=_koridor_maskeleri(2, 340))
+        self.assertEqual(f"ROTA YOK · {OLCEK_YOK_SEBEBI}",
+                         _karar_metni(_sonuc_bilgisi(g)))
 
 
 if __name__ == "__main__":

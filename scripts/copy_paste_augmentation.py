@@ -63,7 +63,7 @@ ARENA_HEDEF_KENAR_M = 2.0
 ARENA_ARAC_KAPSAMA_ESIGI = 0.95
 ARENA_OLCEK_KAYNAGI = (
     "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / "
-    "kaynak karenin kisa kenari; gercek kamera mpp olcumu degildir"
+    "kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir"
 )
 
 
@@ -342,18 +342,29 @@ def moloz_yapistir(
 
 
 def arena_icerik_ve_mpp(sekil: tuple[int, int]) -> tuple[tuple[int, int, int, int], float]:
-    """Gercek kare icinde kare HTAB kompozit kutusunu ve kontrollu olcegi kur.
+    """Arena kutusunu KARAR YOLUNUN icerik kutusuyla ayni tanimla kur.
 
-    Ham karelerde irtifa/FOV yoktur; dolayisiyla bu deger bir kamera olcumu
-    degildir. `arena.HTAB` kisa kenara eslenir ve bu varsayim manifeste yazilir.
+    NEDEN TAM KARE, ICTEGET KARE DEGIL (T45): karar yolu icerik kutusunu
+    ARENA sanar — `serit_no()` seritleri icerik GENISLIGINI ucе bolerek uretir
+    ve `_preprocess` icerik olarak GORUNTUNUN TAMAMINI dondurur. Onceki surum
+    arenayi ictegs kareye kuruyordu; 1024x576 bir karede iki tanim asla
+    ortusmuyordu ve kompozit kareler `UC_BANT_TEMAS_YOK` ile reddediliyordu:
+
+        _preprocess icerik : (0, 224, 1024, 576) -> serit sinirlari [341, 682]
+        eski arena ROI     : (224, 0,  576, 576) -> serit sinirlari [416, 608]
+
+    Kompozit kumenin isi karar mantigini SINAMAKTIR; bu yuzden karar yolunun
+    varsayimina uymak zorundadir. Arenanin gercekte kare olmasi, kameranin onu
+    16:9 kadraja tam oturtamayacagi anlamina gelir — bu ayri ve daha buyuk bir
+    acik sorudur (TASK_QUEUE T50), burada kapatilmaz.
+
+    Ham karelerde irtifa/FOV yoktur; dolayisiyla mpp bir kamera olcumu DEGILDIR.
+    `arena.HTAB` kare GENISLIGINE eslenir ve bu varsayim manifeste yazilir.
     """
     yukseklik, genislik = map(int, sekil)
-    yan = min(yukseklik, genislik)
-    if yan < 1:
+    if yukseklik < 1 or genislik < 1:
         raise ValueError("Arena icerigi icin bos goruntu boyutu")
-    x0 = (genislik - yan) // 2
-    y0 = (yukseklik - yan) // 2
-    return (x0, y0, yan, yan), float(HTAB / yan)
+    return (0, 0, genislik, yukseklik), float(HTAB / genislik)
 
 
 def arena_serit_haritasi(

@@ -40,7 +40,10 @@ from protocol import (encode, ack, command, heartbeat, open_route,
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
 if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
-from karar_sozlesmesi import rota_guven_reddi
+from karar_sozlesmesi import (ZEMIN_KAPLAMA_TAVANI,
+                              ZEMIN_MASKESI_SUPHELI_SEBEBI,
+                              olcek_gecerli_mi, rota_guven_reddi,
+                              rota_olcek_reddi, zemin_kaplamasi)
 
 # ── Renkler (koyu tema) ──────────────────────────────────────────────────────
 BG      = "#0f1419"   # zemin
@@ -943,6 +946,49 @@ class YksArayuz:
             raise ValueError(f"manifest'te acik_serit taşıyan örnek yok: {mf}")
         return gercek
 
+    def _kompozit_olcekleri(self):
+        """Kompozit kümenin manifest'inden {dosya_adı: mpp}.
+
+        T44 · Halka 5: ekran, ölçeği kaynağından okur. Kompozit küme
+        `arena.mpp` taşır (kontrollü kompozit varsayımı — gerçek kamera
+        ölçümü DEĞİL, manifest kendi böyle beyan ediyor).
+
+        Fail-closed: manifest okunamaz/bozuksa yükseltir; çağıran hatayı
+        hakem günlüğüne yazar ve ölçeksiz sayar. Sessiz varsayılan YOK.
+        """
+        import json
+        import pathlib
+        kok_dizin = pathlib.Path(__file__).resolve().parents[1]
+        mf = kok_dizin.joinpath(*self.ALGI_KOMPOZIT_DIZIN) / "manifest.json"
+        veri = json.loads(mf.read_text(encoding="utf-8"))
+        olcekler = {}
+        for ornek in veri.get("ornekler", []):
+            arena = ornek.get("arena")
+            cikti = ornek.get("cikti")
+            if not arena or not cikti:
+                continue
+            mpp = arena.get("mpp")
+            if olcek_gecerli_mi(mpp):
+                olcekler[pathlib.Path(cikti).name] = float(mpp)
+        if not olcekler:
+            raise ValueError(f"manifest'te gecerli mpp tasiyan ornek yok: {mf}")
+        return olcekler
+
+    def _kaynak_olcegi(self, yol):
+        """Kaynağa göre `(mpp, açıklama)`. Ölçek yoksa `(None, sebep)`.
+
+        ⚠ **Ölçek uydurulmaz.** `drone` / `gemini` / `val` / `test` kümelerinde
+        telemetri yok; ölçek de yok. Orada `mpp=None` dönmek "kısıt yok" değil,
+        `rota_olcek_reddi` ile `OLCEK_YOK` demektir (CONTRACTS §5.2/1).
+        """
+        if self.algi_kaynak != "kompozit":
+            return None, (f"{self.algi_kaynak} kümesinde telemetri/ölçek yok "
+                          "— irtifa+FOV bilinmiyor")
+        mpp = self._kompozit_olcekleri().get(yol.name)
+        if mpp is None:
+            return None, f"manifest'te {yol.name} için mpp yok"
+        return mpp, "manifest (kontrollü kompozit varsayımı)"
+
     def gorunum(self, ad):
         self.gorunum_adi = ad
         if ad == "harita":
@@ -1058,13 +1104,38 @@ class YksArayuz:
             # bulmuş olsa bile tam örtülen sahneyi yanlış MASKE_YOK raporlarız.
             trav_serbest = trav.copy()
             trav_serbest[blok > 0] = 0
+            # ── ÖLÇEK (Halka 5) — T44 · CONTRACTS §5 ───────────────────────
+            # T43 ölçek kapısını üç GÖREV çağrı yerine koydu; GUI onları
+            # çağırmıyordu ve 16 otopark karesinin 16'sında ekran karar
+            # verirken üretim `OLCEK_YOK` diyordu. İki ayrı kusur:
+            #   (1) hakeme SİSTEM KISITI sahne kusuru gibi gösteriliyordu;
+            #   (2) C-uzayı ekrana hiç ulaşmıyordu (mpp yok -> r_gerekli_px yok).
+            # Üretimin kapısı KOPYALANMAZ, `rota_olcek_reddi` çağrılır.
+            mpp, olcek_notu = None, None
+            try:
+                mpp, olcek_notu = self._kaynak_olcegi(yol)
+            except Exception as _oe:      # fail-closed: sessiz varsayılan YOK
+                olcek_notu = f"manifest okunamadı: {type(_oe).__name__}: {_oe}"
+                self.algi_kuyruk.put(("log",
+                    f"⚠ ÖLÇEK OKUNAMADI: {olcek_notu} — ölçeksiz sayılıyor, "
+                    "rota yayınlanmaz"))
+            olcek_reddi = rota_olcek_reddi(mpp)
+
             # Karar üretimin KENDİ çağrısıdır; `return_clean/reason/olcum`
             # yalnız GÖSTERİM için ek dönüşlerdir — aynı saf fonksiyon, aynı
             # girdi, aynı karar. İkinci bir predict yapılmaz.
             (ham_yol, guven, ham_wps, koridor,
              karar_reddi, rota_olcumu) = analyze_path(
-                trav, icerik=icerik, engel_mask=blok, return_clean=True,
-                return_reason=True, return_olcum=True)
+                trav, icerik=icerik, engel_mask=blok, mpp=mpp,
+                return_clean=True, return_reason=True, return_olcum=True)
+            # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. `analyze_path`
+            # zaten reddettiyse sebebi KORUNUR — olcek eksikligi bir yapilandirma
+            # boslugu, `ZEMIN_MASKESI_SUPHELI` ise ALGI ARIZASIDIR; hakeme
+            # gosterilmesi gereken daha derin olandir.
+            if olcek_reddi is not None and karar_reddi is None:
+                # Ölçek yoksa gövde açıklığı doğrulanamaz -> rota YAYINLANMAZ.
+                ham_yol, guven, ham_wps = None, 0.0, []
+                karar_reddi = olcek_reddi
             # K-B üretimin kendi eşikleyicisiyle uygulanır — kopya eşik yok.
             yol_no, guven, wps, karar_reddi = _rota_kararini_esikle(
                 ham_yol, guven, ham_wps, karar_reddi)
@@ -1184,6 +1255,21 @@ class YksArayuz:
                                        else "UYUMSUZ"))
                         bilgi += (f" · beklenen şerit {_beklenen}"
                                   f" → {_uyum}")
+            # T48 — ZEMİN MASKESİ ŞÜPHELİ: hakem sistemin NEDEN karar
+            # vermediğini görmeli. Eşik sözleşmeden okunur, çıplak yazılmaz.
+            if karar_reddi is not None                     and karar_reddi[0] == ZEMIN_MASKESI_SUPHELI_SEBEBI:
+                _kap = 100.0 * zemin_kaplamasi(trav, icerik)
+                bilgi += (f" · ⚠ ZEMİN MASKESİ ŞÜPHELİ · kaplama %{_kap:.0f}"
+                          f" (tavan %{100.0 * ZEMIN_KAPLAMA_TAVANI:.0f})")
+            # ÖLÇEK KANITI: hakem "C-uzayı uygulandı mı" sorusunu ekrandan
+            # cevaplayabilmeli. Ölçeksiz kip SESSİZ kalamaz (§5.2/3).
+            if mpp is not None and rota_olcumu is not None                     and rota_olcumu.get("r_gerekli_px"):
+                bilgi += (f" · ölçek {mpp:.4f} m/px ({olcek_notu})"
+                          f" · gövde açıklığı {rota_olcumu['r_gerekli_px']:.1f} px"
+                          " · C-uzayı UYGULANDI")
+            else:
+                bilgi += (f" · ölçek YOK ({olcek_notu})"
+                          " · C-uzayı UYGULANAMADI")
             if rota_olcumu is not None:
                 # Kanıt satırı: güvenin NEREDEN geldiği ekranda görünür olmalı.
                 n1, n2, n3 = rota_olcumu["seritler"]

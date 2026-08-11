@@ -46,7 +46,11 @@ def _dar_gecitli_sahne(gecit_px=30, mpp=0.05):
     `r_gerekli_px = 1,10 / mpp`. `gecit_px` yari-genisligi bundan kucukse
     C-uzayi bu gecidi kapatmak ZORUNDADIR.
     """
-    trav = np.ones((H, W), np.uint8)
+    # ⚠ T48: eskiden `np.ones(...)` idi (kaplama %100) ve zemin kaplama kapisi
+    # onu HAKLI OLARAK supheli sayiyor. Alan 450 px genisligindeki tek koridora
+    # indirildi -> kaplama %50, tavanin altinda; testin olctugu sey degismedi.
+    trav = np.zeros((H, W), np.uint8)
+    trav[:, 60:510] = 1
     engel = np.zeros((H, W), np.uint8)
     engel[290:310, :] = 1
     kx = W // 6

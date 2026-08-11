@@ -371,6 +371,7 @@ string yazılmaz** (madde 16).
 | `sebep` | Ne zaman | Nerede |
 |---|---|---|
 | `OLCEK_YOK` | **Halka 5**: `mpp` türetilemedi — görev yolunda rota üretilmez (§5.2) | `rota_olcek_reddi` |
+| `ZEMIN_MASKESI_SUPHELI` | **T48**: zemin maskesi içeriğin `ZEMIN_KAPLAMA_TAVANI`'ndan fazlasını kaplıyor — maske sahneyi ayırt etmiyor | `zemin_maskesi_reddi` |
 | `MASKE_YOK` | Zemin maskesi hiç üretilmedi (`trav.sum() == 0`) | `analyze_path` girişi |
 | `BILESEN_YOK` | Maske var, bağlı bileşen yok | bileşen etiketleme sonrası |
 | `UC_BANT_TEMAS_YOK` | **K-A**: koridor alt ve/veya üst uç bandına temas etmiyor | `_uc_bant_temasi_yeterli` |
@@ -378,6 +379,40 @@ string yazılmaz** (madde 16).
 | `GORUS_HATTI_KOPUK` | Başlangıç–hedef bağlantısı veya bu bağlantı üzerinde doğrulanmış waypoint zinciri kurulamıyor | `_bagli_mi` / A* rota üretimi |
 | `KENAR_GUVENSIZ` | **T24**: ardışık waypoint'ler arası görüş hattı engelden geçiyor | `_kenarlar_guvenli` |
 | `DUSUK_GUVEN` | **K-B**: güven `ROTA_GUVEN_ESIGI` altında | `rota_guven_reddi` |
+
+#### `ZEMIN_MASKESI_SUPHELI` — kaplama tavanı (T48)
+
+> **Neden var:** üretim modeli bu alanda pratikte *"araç mı, değil mi"* ayırıcısıdır;
+> **çatı, çim ve toprak** zemin sınıfına düşer. Maske "dolu" göründüğü için K-A,
+> C-uzayı ve K-B'nin **hiçbiri** bunu yakalayamaz — hakem ekranı bina çatısı
+> üzerinden geçen bir rotayı kendinden emin çizebiliyordu.
+
+`kaplama` := zemin (sınıf 0) maskesinin **içerik kutusundaki** piksel oranı; ham
+maske üzerinde, morfoloji ve engel çıkarmadan **önce** ölçülür.
+
+```python
+ZEMIN_KAPLAMA_TAVANI = 0.55
+```
+
+**Ölçüm** (üretim zinciri, `conf=0.30`) — üç bağımsız meşru kaynak, iki çökmüş küme:
+
+| küme | n | p50 | p95 | **maks / min** |
+|---|---:|---:|---:|---:|
+| sentetik arena **yer gerçeği** (etiket poligonları) | 60 | %11,7 | %22,1 | **maks %39,0** |
+| sentetik arena, v17 + v21 **model çıktısı** | 120 | %11,8 | %23,2 | **maks %38,7** |
+| genel kapının **kendi 15 sahnesi** | 15 | %36,4 | — | **maks %42,6** |
+| v21 **otopark** (çatı/çim yeşil) — çökmüş | 67 | %79,9 | — | **min %76,7** |
+| v21 **kompozit arena** — çökmüş | 7 | %82,7 | — | **min %76,0** |
+
+Meşru ile çökmüş arasında `%42,6 – %76,0` **boş** aralığı var. `0.55` seçildi:
+en yüksek meşru kaplamanın **1,29 katı** (gürültü payı), en düşük çökmüş
+kaplamanın **0,72 katı**; 194 model karesi + 60 yer gerçeği + 15 kapı sahnesinde
+**yanlış pozitif 0, kaçırma 0**.
+
+⚠ **Kapının bilinen sınırı.** Bu bir *kaplama* kapısıdır, doku kapısı değil.
+Orta şiddetli bir çökme (içeriğin ~%43'ünü boyayan) **bu kapıdan geçer**;
+yakalamak için maskenin **yapısı** gerekir. Kapı madde 15 açısından nötrdür:
+yalnız reddeder, hiçbir piksel eklemez.
 
 **`detay`** insan-okur ve **ölçülen değeri taşır** — hangi uç (`alt`/`üst`), ölçülen
 güven, ölçülen alan oranı. Örnek: `"Rota guveni 0.180; gereken >= 0.200."`

@@ -3295,7 +3295,11 @@ tablosuna bakmadım; P'nin adı "perceive" olduğu için üretim sandım.
 
 ---
 
-### D-60 · COZULDU · T43: Halka 5 sahiplendi, C-uzayi analyze_path koluna tasindi
+### D-60b · COZULDU · T43: Halka 5 sahiplendi, C-uzayi analyze_path koluna tasindi
+> ⚠ **Numara duzeltmesi (T44):** bu kayit once `D-60` yazilmisti; ayni
+> numarayi Claude 1'in "uretim yolu referansi" kaydi (`:3259`) zaten
+> kullaniyordu. D-39/D-40/D-41'de yasanan cakismanin tekrari. Kayitlar
+> silinmez (madde 6) — bu kayit `D-60b` oldu, atiflari guncellendi.
 Bulan/duzelten: Claude 2 · 2026-08-11 · kanit: D-59, D-22 · gorev T43
 
 **GOREV 1 — Halka 5 (olcek) artik SAHIPSIZ degil.**
@@ -3407,3 +3411,390 @@ kapaliyken darbogazin gercekten kucuk kaldigi — yoksa kapilar vakum olurdu).
    ile reddedilir. Gercek sayi ancak telemetrili saha ucusundan gelir.
 3. Kompozit kumenin `mpp`'si de manifest'in kendi beyanidir
    ("kontrollu kompozit varsayimi ... gercek kamera mpp olcumu DEGILDIR").
+
+---
+
+### D-61 · COZULDU (kismen) · T44: olcek kapisi hakem ekranina baglandi; T36b'nin IKI nedeni ayrildi
+Bulan/duzelten: Claude 2 · 2026-08-11 · gorev T44 · bagimli: T43 (D-60b)
+
+**KOK NEDEN (Claude 1'in bulgusu, dogrulandi).** T43 olcek kapisini uc GOREV
+cagri yerine koydu (`rpi_inference.py`); GUI o yollari cagirmiyor, `grep mpp
+comms/yks_gui.py` -> SIFIR eslesme. Sonuc iki ayri kusur:
+  1. **Yanlis sebep:** ekran "sahnede uygun koridor yok" diyordu; gercek sebep
+     "olcek yok, govde acikligi garanti edilemez". Sistem kisitini sahne kusuru
+     gibi gostermek — bu dosyada bes kez kapatilan sinif (S9, T34, T37, D-47).
+  2. **C-uzayi ekrana ulasmiyordu:** mpp yoksa `r_gerekli_px` yok; T43'un
+     arenada 0/7 -> 6/7 yapan kazanimi hakem ekraninda GORUNMUYORDU.
+
+**DUZELTME.** `_kaynak_olcegi(yol)` eklendi: kompozit kaynak manifest'teki
+`arena.mpp`'yi okur, digerleri `(None, sebep)` doner. `_algi_kos` uretimin
+kapisini KOPYALAMAZ, `karar_sozlesmesi.rota_olcek_reddi`'yi cagirir ve
+`analyze_path(..., mpp=mpp)` gecirir. Manifest okunamazsa fail-closed: gunluge
+yazilir, olceksiz sayilir, sessiz varsayilan YOK. Bilgi satirinda artik
+"olcek X m/px · govde acikligi Y px · C-uzayi UYGULANDI" ya da "olcek YOK
+(sebep) · C-uzayi UYGULANAMADI" gorunuyor.
+
+**KAPI 1 — 16 otopark karesi, olcek verilmeden (kendi olcumum):**
+
+    ONCE   HAKEM EKRANI : {'YOL/1': 5, 'YOL/3': 8, 'RED/DUSUK_GUVEN': 3}
+           URETIM GOREV : {'RED/OLCEK_YOK': 16}
+           AYRISAN      : 16/16
+    SONRA  HAKEM EKRANI : {'RED/OLCEK_YOK': 16}
+           URETIM GOREV : {'RED/OLCEK_YOK': 16}
+           AYRISAN      : 0/16      -> GECTI
+
+(Claude 1'in olcumunde ekran tarafi `UC_BANT_TEMAS_YOK=16` cikmisti; benim
+zincirimde `predict conf` ve icerik kutusu farkli oldugu icin dagilim farkli,
+ama ayrisma buyuklugu ayni: 16/16.)
+
+**KAPI 2 — T36b KAPANMADI. Zorlanmadi; iki nedeni OLCEREK ayirdim.**
+Ayni 7 kare, her adimda TEK degisken degistirildi:
+
+    A  GUI bugun (letterbox icerik + MODEL maskesi + C-uzayi)  : 1/7
+    B  + ARENA icerik kutusu (manifest ROI)                    : 3/7   (+2)
+    C  + YER GERCEGI maskesi (model yerine manifest maskesi)   : 6/7   (+3)
+
+    Neden 1 — icerik kutusu tanimi UYUSMUYOR : 2 kare
+    Neden 2 — model algisi kompozitte ZAYIF  : 3 kare
+
+**Neden 1 aciklamasi — iki farkli `icerik` kavrami var.**
+
+    `_preprocess` icerik : gercek goruntunun LETTERBOX TUVALINDEKI yeri
+                           kompozit karede (0, 224, 1024, 576)
+    manifest `icerik`    : ARENANIN goruntu icindeki yeri (semantik ROI)
+                           (224, 0, 576, 576) -> tuvalde (224, 224, 576, 576)
+
+Serit sinirlari birincisinde 341/683, ikincisinde 416/608 dusuyor. Manifest
+seritleri ikincisine gore tanimliyor. **Bu bir GUI kusuru DEGILDIR:** sahada
+manifest yoktur ve uretimin arena ROI'sini bilmesinin bir yolu yoktur. Ekranin
+manifest ROI'sini karara sokmasi, yer gercegi metaverisini karar yoluna
+sizdirmak olurdu — T36b'nin kendi kapisi bunu acikca yasakliyor
+(`test_beklenen_serit_KARARA_SIZMIYOR`). Cozum GUI'de degil: ya kompozit uretec
+arenayi TAM KAREYE yayacak, ya da arena ROI'si saha yolunda uretilebilir bir
+sinyalden (or. hedef/branda tespiti) turetilecek — ikincisi D-23'e bagli.
+
+**Neden 2 aciklamasi.** Ayni icerik kutusuyla model maskesi 3/7, kusursuz yer
+gercegi maskesi 6/7 veriyor. Aradaki 3 kare tamamen ALGI kaybidir; karar
+zinciriyle ilgisi yok. Kompozit kume `copy_paste` ile uretildigi icin moloz
+dokusu gercek degil — D-18/D-20'de olculen domain boslugunun ayni sinifi.
+
+**Yani T36b'nin 5 acik karesinin HICBIRI `comms/yks_gui.py` icinde degildir.**
+Gorev `[ ]` birakildi.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    KAPI 1  ayrisan 16/16 -> 0/16                                  GECTI
+    KAPI 2  T36b uyumsuzluk 5/7                                    DUSTU (yukarida)
+    KAPI 3  T36 hizalama testleri: test_gui_kendi_cikarim_hattini_
+            KURMUYOR ve test_gui_karari_uretim_yolunun_karariyla_
+            AYNI dahil 23/23 OK                                    GECTI
+    KAPI 4  codes/test_rota_sentetik.py 15/15 ·
+            unittest discover -s tests -q -> Ran 266 tests OK ·
+            git diff --check exit 0                                GECTI
+
+**Not — hizalama testi genisletildi.** `test_gui_karari_uretim_yolunun_
+karariyla_AYNI` artik olcekli VE olceksiz kipi birden sinar ve referans tarafi
+`rota_olcek_reddi`'yi de calistirir; aksi halde test GUI'yi "olcegi yok sayan"
+bir uretime hizalamis olurdu. `test_rota_ret_nedenleri`'ndeki uc-sebep testi
+olcek kapisindan yalitildi (yoksa uc sebep de OLCEK_YOK'a coker ve ayrim
+olculemez); olcek kapisinin kendi kapisi ayri testtedir.
+
+**Kayit numarasi duzeltmesi (ayni turda).** `D-60` iki kez kullanilmisti;
+Claude 2'nin "T43 cozuldu" kaydi **D-60b** oldu ve `TASK_QUEUE.md` T43 atfi
+guncellendi. D-39/D-40/D-41'de yasanan cakismanin tekrariydi.
+
+---
+
+### D-61 · TIKAYICI · v21'in "geçilebilir" sınıfı bu alanda anlamsız: çatı, çim ve toprak yol sayılıyor
+
+**Nasıl çıktı.** Kullanıcı GUI'yi ilk kez gerçekten kullandı ve bildirdi:
+*"doğru bir şekilde yol tespit etmiyor, görsellerin kenarını yol sanıyor, bazen
+hiç yol bulmuyor, bazen çatıyı yol sanıyor."* **Gözle doğruladım — haklı.**
+
+**Benim kaçırdığım.** Aynı karelerde *"ortalama zemin %74"* ölçtüm ve bunu
+sağlık işareti sandım. Oysa `REVIEW_LOG`'daki v13/v16 kaydı tam tersini söylüyor:
+yüksek kaplama = **yanlış-pozitif zemin çöküşü** (v13 kaplama %43,4, görüntünün
+%84,7'sini boyuyordu, moloza basma %37,7). Bir otoparkın %74'ünü "geçilebilir"
+boyamak **alarm** olmalıydı, ben doğrulama sandım.
+
+**Görsel kanıt (gorunum_0.png / gorunum_1.png, kullanıcıya iletildi):**
+- Metal çatılı **bina tamamen yeşil** (geçilebilir).
+- Çim, toprak, asfalt — hepsi yeşil.
+- **Yalnız araçlar kırmızı.**
+- Üretilen rota (sarı) görüntünün **sol kenarındaki çim şeridinden** geçiyor.
+
+Yani v21 bu alanda pratikte bir **"araç mı, değil mi"** ayırıcısıdır; zemin
+sınıfı "araç olmayan her şey" anlamına geliyor.
+
+**Kullanıcının üç şikâyeti tek kök nedene iniyor:**
+1. *"çatıyı yol sanıyor"* → çatı zemin sınıfında.
+2. *"kenarını yol sanıyor"* → her yer serbest olunca koridor araması en geniş
+   kanalı seçiyor; o da kenardaki çim şeridi oluyor.
+3. *"bazen hiç yol bulmuyor"* → serbest alan anlamsız olduğu için `GORUS_HATTI_
+   KOPUK` / `UC_BANT_TEMAS_YOK` gibi retler gelişigüzel düşüyor.
+
+**Yanlış çıkarımlarımı geri alıyorum:**
+- *"Model suçsuz, sorun `OLCEK_YOK` politikasında"* — **yanlıştı**. Ölçek kapısı
+  daha kötü bir sorunu **örtüyordu**.
+- *"16 karenin 14'ünde rota buluyor"* — bu **iyi haber değil**. O rotalar çatı ve
+  çim üzerinden geçen rotalar.
+- **T46 tehlikeli hâle geldi:** varsayılan ölçekle rotaları geri getirmek, hakem
+  ekranında *"kendinden emin ve yanlış"* rotalar gösterir. Hiçbir şey
+  göstermemekten **daha kötüdür**. T46 bu nedenle **bloke** edildi.
+
+**Ne bilmiyoruz — ve bilemeyiz.** Bu kareler bir **otopark** (D-53); model
+RescueNet + sentetik arena ile eğitildi. Yani bu, alan dışı bir sahnedir ve
+buradaki çöküş, modelin **gerçek arenada** da çökeceğini kanıtlamaz. Ama tersini
+de kanıtlayamayız: **elimizde tek bir gerçek arena karesi yok** (arena çekimi
+2026-08-11'de iptal edildi, D-56). Ölçüm zeminimiz yok.
+
+**Bağlayıcı kısıt bu.** K-3 zaten mAP'in arena sıralamasını tersine çevirdiğini
+söylüyordu; şimdi buna şu ekleniyor: elimizdeki tek gerçek zeminde zemin sınıfı
+çalışmıyor ve **doğrulayacak veri yok**.
+
+**Görev:** `TASK_QUEUE.md` **T47** (zemin sınıfı alan geçerliliği) · T46 bloke.
+
+---
+
+### D-62 · COZULDU · T48: zemin maskesi saglamlik kapisi (kaplama tavani)
+Bulan: kullanici (gozle) · olcen/duzelten: Claude 2 · 2026-08-11 · gorev T48
+
+**KUSUR.** Hakem ekrani bina CATISI ve CIM uzerinden gecen bir rotayi kendinden
+emin ciziyordu. Uretim modeli bu alanda pratikte "arac mi, degil mi"
+ayiricisidir; cati, cim, toprak hepsi zemin sinifina duser. Maske **dolu**
+gorundugu icin mevcut kapilarin HICBIRI bunu yakalayamaz: K-A uc bantlara
+temasi, C-uzayi acikligi, K-B guveni gorur — ucu de memnun kalir.
+
+**OLCUM — esik uydurulmadi.** kaplama := zemin (sinif 0) maskesinin ICERIK
+kutusundaki piksel orani; ham maske uzerinde, morfoloji ve engel cikarmadan
+ONCE. Uretim zinciri, conf=0.30. Uc BAGIMSIZ mesru kaynak, iki cokmus kume:
+
+    MESRU (kapi ATESLEMEMELI)                        n     p50    p95    MAKS
+      sentetik arena YER GERCEGI (etiket poligonu)  60   %11,7  %22,1  %39,0
+      sentetik arena, v17 + v21 model ciktisi      120   %11,8  %23,2  %38,7
+      genel kapinin KENDI 15 sahnesi                15   %36,4    —    %42,6
+
+    COKMUS (kapi ATESLEMELI)                         n     p50           MIN
+      v21 otopark (cati/cim yesil)                  67   %79,9         %76,7
+      v21 kompozit arena                             7   %82,7         %76,0
+
+`%42,6` ile `%76,0` arasi BOS. **TAVAN = 0.55**: en yuksek mesru kaplamanin
+1,29 kati (gurultu payi), en dusuk cokmus kaplamanin 0,72 kati. 194 model
+karesi + 60 yer gercegi + 15 kapi sahnesinde **yanlis pozitif 0, kacirma 0**.
+
+🔴 **GOREV TABLOSUNDAKI v13 SATIRI KULLANILAMADI — ve nedeni onemli.**
+"v13 cokmus, kaplama %43,4" deniyordu. (1) v13 agirligi depoda YOK, olculemedi;
+(2) satirin kendi iki sayisi tek tanim altinda tutarsiz (%43,4 ve "goruntunun
+%84,7'sini boyuyor"); (3) **asil sorun:** %43,4, genel kapinin KENDI mesru
+sahnelerinin azamisinin (%42,6) yalniz **0,8 puan** ustunde. O degeri yakalayan
+bir tavan `codes/test_rota_sentetik.py` 15/15 kapisini kirardi. Yani tablonun
+istedigi esik, deponun kendi referans sahneleriyle CELISIYOR. Tavan
+olculebilen kaynaklardan turetildi ve bu celiski kayda gecirildi.
+
+⚠ **Kapinin bilinen siniri:** bu bir KAPLAMA kapisidir, doku kapisi degil.
+v13 benzeri ORTA siddetli bir cokme (icerigin ~%43'unu boyayan) buradan GECER.
+Yakalamak icin maskenin YAPISI (doku/renk tutarliligi) gerekir — ayri gorev.
+
+**UYGULAMA.** `karar_sozlesmesi.py`: `ZEMIN_KAPLAMA_TAVANI = 0.55`,
+`ZEMIN_MASKESI_SUPHELI_SEBEBI`, `zemin_kaplamasi`, `zemin_maskesi_reddi`.
+`analyze_path` kapiyi ROTADAN ONCE kosuyor (bosuna A* kosulmuyor; test
+`test_kapi_ROTADAN_ONCE_calisir` bunu kilitliyor). `CONTRACTS.md` SS6.4'e
+sebep satiri + gerekce tablosu. GUI esigi SOZLESMEDEN okuyor, ciplak yazmiyor;
+ret halinde rota CIZMIYOR ve bilgi satirina
+`⚠ ZEMİN MASKESİ ŞÜPHELİ · kaplama %78 (tavan %55)` basiyor.
+
+**MADDE 15:** kapi NOTRDUR — maskeye dokunmaz, tek piksel eklemez/cikarmaz;
+yalniz reddeder. `test_MADDE_15_kapi_maskeye_DOKUNMAZ` kilitliyor.
+
+**YAN DUZELTME — ret onceligi.** Otoparkta iki ret AYNI ANDA gecerli
+(`OLCEK_YOK` ve `ZEMIN_MASKESI_SUPHELI`) ve olcek kapisi yapisal reti
+EZIYORDU. `CONTRACTS.md` SS6.4/3 zaten "yapisal ret ezilmez" diyor. Kural
+uc uretim cagri yerinde ve GUI'de duzeltildi:
+`if olcek_reddi is not None and karar_reddi is None`. Gerekce: olcek eksikligi
+bir YAPILANDIRMA boslugu, `ZEMIN_MASKESI_SUPHELI` ise ALGI ARIZASIDIR; hakeme
+gosterilmesi gereken daha derin olandir.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    KAPI 1  otopark 12 kare, hakem ekrani:
+              ONCE  : {'OLCEK_YOK': 12}          (yapisal ret eziliyordu)
+              SONRA : {'ZEMIN_MASKESI_SUPHELI': 12}  -> 12/12 GECTI
+              ekran : "⚠ ZEMİN MASKESİ ŞÜPHELİ · kaplama %78 (tavan %55)"
+    KAPI 2  sentetik arena 40 kare, YANLIS POZITIF 0/40:
+              {'UC_BANT_TEMAS_YOK': 33, 'YOL/2': 4, 'YOL/3': 2, 'YOL/1': 1}
+    KAPI 3  POZITIF KONTROL (sentetik cokme supurmesi):
+              %20 %40 %50 %54 -> KARAR VAR (kapi susuyor)
+              %56 %70 %95     -> ZEMIN_MASKESI_SUPHELI (kapi atesliyor)
+    KAPI 4  codes/test_rota_sentetik.py 15/15 ·
+            unittest discover -s tests -q -> Ran 281 tests OK ·
+            git diff --check exit 0 · Jetson ikizleri BIREBIR
+
+**TEST FIKSTURLERI GERCEKCILESTIRILDI (kapi gevsetilMEDI).** Uc test dosyasi
+`trav = np.ones(...)` — yani "tum kare surulebilir" — kuruyordu; kapi bunlari
+HAKLI OLARAK supheli sayiyor. Fiksturler tavanin altina indirildi, olctukleri
+sey korundu:
+  · `test_rota_serit_etiketi._bariyer_ve_kapi` -> KUM SAATI (kaplama %51,1).
+    Ilk denemem uc AYRI koridordu; kaplama dustu ama POZITIF KONTROL bosaldi
+    (eski centroid tanimi 3/3 dogru cikti, kusur yeniden uretilemedi). Kum
+    saati hem tavanin altinda hem ayirt edici: ust bant uc seride yayildigi
+    icin eski centroid hala 2 diyor, yeni tanim 1/2/3 veriyor.
+  · `test_olcek_ve_c_uzayi._dar_gecitli_sahne` -> 450 px koridor (%50).
+  · `test_rota_ret_nedenleri` tam-ortme sahnesi -> 40 px koridor (%31).
+
+**ACIK KALAN.** Kompozit arena kaynagi artik 7/7 `ZEMIN_MASKESI_SUPHELI`
+donuyor (v21 kaplamasi orada %76-84). Bu, **T36b'nin durumunu degistirir**:
+ekran artik yanlis serit GOSTERMIYOR, dogru sebeple CEKIMSER kaliyor. D-61'in
+"neden 2 — model algisi kompozitte zayif" bulgusu boylece gorunur hale geldi;
+T36b'nin kapanmasi hala model/veri tarafina bagli.
+
+---
+
+### D-63 · OLCUM · T50 FAZ 1: 11 model uc kapiyla siralandi — KAZANAN YOK, ve KAPI 2'nin KENDISI KUSURLU
+Olcen: Claude 2 · 2026-08-11 · gorev T50 FAZ 1 · GPU'ya DOKUNULMADI
+
+⚠ **KAMERA YOK (kullanici bildirdi): gercek arena karesi ALINAMIYOR. Bu gorev
+modelin ARENADAKI basarimini dogrulamaz ve dogrulayamaz; yalniz alan-ici
+dogrulugu ve ALAN DISI TEMKINI iyilestirir.**
+
+**TAM TABLO — 11 model x 3 kapi** (uretim zinciri `_preprocess` + `get_masks` +
+`_maskeleri_icerige_kirp`, conf=0.30; K1 n=120 rescuenet_1024 val, K2 n=67
+otopark, K3 n=9 kompozit). Metrik tanimi: mikro-ortalama (piksel havuzu).
+
+    model                       K1 IoU  K1 kesinlik  K1 duyar  K2 ort  K2 maks  K3 D/Y/R
+    navitas_seg_v2_best.pt       0.366        0.760     0.414   70.4%    86.1%   0/0/9
+    navitas_seg_v3_best.pt       0.412        0.744     0.481   18.2%    78.7%   0/1/8
+    navitas_seg_v4_best.pt       0.351        0.827     0.379   13.5%    76.6%   0/1/8
+    navitas_seg_v5_best.pt       0.384        0.775     0.432   35.8%    68.2%   1/3/5
+    aday_v5a_s640.pt             0.384        0.775     0.432   35.8%    68.2%   1/3/5
+    aday_v5b_s640ft.pt           0.352        0.781     0.390   32.9%    78.3%   0/1/8
+    aday_v5c_m640.pt             0.372        0.689     0.448   46.9%    82.6%   0/0/9
+    aday_v9_mixup_m640.pt        0.365        0.631     0.463   50.2%    92.6%   1/0/8
+    navitas_seg_v17_best.pt      0.315        0.807     0.341    0.9%     7.0%   0/0/9
+    navitas_seg_v20_best.pt      0.267        0.795     0.287    2.9%    52.9%   0/0/9
+    navitas_seg_v21_best.pt      0.311        0.813     0.335   81.0%    86.3%   0/0/9
+
+**KAPI 3 KIMSEYI GECIRMIYOR.** En iyi sonuc 1/9 (v5, v5a, v9) ve o uc model
+kapi 2'de %35-50 ile zaten cokmus. Uretim adaylarinin (v17/v20/v21) UCU DE
+**0/9**. Ayrica kapi 3'un yer gercegi yalniz serit 1 (5 kare) ve serit 3
+(4 kare) iceriyor — **serit 2 hic yok**; "hep 1 de" diyen bir kod sansla 5/9
+alirdi. Kapi bu haliyle zayiftir.
+
+🔴 **ASIL BULGU — KAPI 2 TEK BASINA KUSURLU: TEMKIN ile KORLUGU AYIRT ETMIYOR.**
+Kapi 2'yi gecen dort model (v17 %0,9 · v20 %2,9 · v4 %13,5 · v3 %18,2) iki
+ek olcumle sinandi:
+
+    ARENA BENZERI SENTETIK KUME (n=60, GT kaplama %12,4)
+      model   kaplama   IoU     kesinlik  duyarlilik  kare>%1
+      v17       12.4%  0.896      0.942       0.948    55/60
+      v20       12.7%  0.929      0.951       0.976    59/60
+      v4         5.8%  0.094      0.269       0.125    21/60
+      v3         5.1%  0.122      0.371       0.153    14/60
+      v21       12.7%  0.924      0.948       0.973    60/60
+
+    -> v4 ve v3 kapi 2'yi **HICBIR SEY GORMEDIKLERI ICIN** gecti. Elendiler.
+
+    KOMPOZIT: GERCEK OTOPARK DOKUSU + arena semantigi (n=9, GT kaplama %28,6)
+      model   kaplama   IoU   duyarlilik  kare>%1
+      v17        0.4%  0.010      0.010     1/9
+      v20        0.1%  0.000      0.000     0/9
+      v21       82.5%  0.297      0.890     9/9
+
+    -> v17'nin otoparktaki %0,9'u TEMKIN DEGIL, **GERCEK DOKUDA KORLUK**.
+       v17 yalnizca (a) RescueNet ve (b) SENTETIK arena dokusunda goruyor;
+       ikisi de kendi egitim dagiliminda (VERI_KAYNAKLARI: v17 =
+       `karisim_arena.yaml` = RescueNet + sentetik arena). Gercek asfaltta
+       9 karenin 8'inde HICBIR SEY uretmiyor.
+
+**SONUC: KAZANAN YOK.** Kapi 1 + kapi 2 birlikte uygulandiginda secilen
+modeller (v17, v20) gercek dokuda kor; gercek dokuyu goren tek model (v21)
+kapi 2'de cokuyor (%81,0, GT %28,6'ya karsi %82,5 — ~3 kat asiri tespit).
+Hicbir model "gercek dokuda GORUR **ve** alan disinda COKMEZ" cerceyesinde
+degil. Tablo su iki eksende ozetlenir:
+
+    gercek doku duyarliligi (kompozit)  vs  alan disi kaplama (otopark)
+      v21   0.890  /  %81,0     <- gorur ama coker
+      v17   0.010  /  %0,9      <- cokmez ama gormez
+      v20   0.000  /  %2,9      <- cokmez ama gormez
+
+**GORSEL DOGRULAMA — SAYIYI DEGISTIRDI, kurala uyuldu.**
+`O:\navitas-local-train\results\t50_uc_kapi\` altinda:
+  · `navitas_seg_v21_best__otopark.jpg` — kullanicinin bildirdigi kusur GOZLE
+    DOGRULANDI: bina CATISI ve CIM parlak YESIL (surulebilir zemin), yalniz
+    araclar kirmizi.
+  · `navitas_seg_v17_best__otopark.jpg` — TEK BIR piksel bile isaretlenmemis
+    (ne zemin ne engel). "Temkinli" degil, SESSIZ.
+  · `AYIRT_*__rescuenet_val_ZENGIN.jpg` (GT zemin %37,3) — v17 ve v21 yol
+    yuzeyini dogru ve sinirli sekilde yesilliyor; alan icinde ikisi de saglam.
+  · `AYIRT_*__sentetik_arena_ZENGIN.jpg` (GT %39,0) — v17 uc koridoru temiz
+    ayiriyor (%38,4). Yani v17 KOR DEGIL; korlugu GERCEK DOKUYA OZGU.
+Ilk uretilen `v17__rescuenet_val.jpg` %0,0 gosteriyordu ama o kare molozla
+dolu ve GT zemini yok denecek kadar az; AYIRT EDICI olmadigi icin GT'si zengin
+kare secilip yeniden uretildi.
+
+**GURULTU TABANI (0,04) UYGULANDI.** v17 vs v20 K1 IoU farki 0,048 (gercek);
+K1 kesinlik farki 0,012 (gurultu); arena IoU farki 0,033 (gurultu). Yani
+v17/v20 arasindaki tek gercek fark alan-ici IoU ve alan-disi EN KOTU KARE
+(v17 %7,0 · v20 %52,9). Ama ikisi de gercek dokuda kor oldugu icin siralama
+anlamsizdir.
+
+**VERILEN TABAN TABLOSUYLA FARK — durustluk notu.** Gorevdeki tabloda
+kesinlik sutunu (v17 0,170 · v20 0,284 · v21 0,280) kendi IoU/kaplama
+sayilariyla **tutarsiz**: `I = IoU*(P+G)/(1+IoU)` ile turetilince sirasiyla
+0,372 / 0,458 / 0,442 cikiyor. Muhtemel sebep kare-basi (makro) ortalama vs
+mikro-ortalama. Bu raporda metrik **mikro-ortalama** olarak acikca tanimlandi;
+duyarlilik sutunum (v21 0,335) tablonun kendi sayilarindan turetilenle
+(0,318) ortusuyor.
+
+**FAZ 2 GEREKCELI — ama ONCE OLCUT DUZELTILMELI.** Kazanan cikmadigi icin FAZ 2
+(11 sinifla on-egitim -> 2 sinifa fine-tune) yururlukte. Ancak FAZ 1 kapi 2'nin
+TEK BASINA kullanilamayacagini olcerek gosterdi: en yuksek puani goren degil
+GORMEYEN model aliyor. Ayni olcutle egitilen bir model yine yanlis secilir.
+**Onerilen ek kapi (KAPI 0 — TESPIT TABANI):** modelin GERCEK DOKUDA zemin
+uretmesi zorunlu olsun — kompozit kumede `duyarlilik >= 0,50` ve
+`kare>%1 >= 8/9`. Bugun bu kapiyi **yalniz v21** geciyor (0,890 / 9/9); v17 ve
+v20 kaliyor. Secim o zaman "kapi 0'i gecenler arasinda kapi 2'si en dusuk
+olan" olur ve hem korlugu hem cokusu eler.
+
+**DOGRULANAMADI**
+  1. Hicbir modelin GERCEK ARENA basarimi — kamera yok, arena karesi yok.
+  2. Kompozit kumenin gercek arenayi ne kadar temsil ettigi; moloz yapistirma
+     ile uretildi, dokusu gercek moloz degil.
+  3. Sentetik arena sonuclari v17/v20/v21 icin **dagilim ici** (ucu de o kumeyle
+     egitildi) — genelleme kaniti SAYILMAZ.
+  4. v13 (gorev metnindeki referans) diskte YOK, olculemedi.
+
+---
+
+### D-62 · Üç ölçüm zeminimiz de ayrı sebeplerle geçersiz — ve sentetik arenanınki ucuz düzeltilir
+
+**Ölçüm (Claude 1, 2026-08-11, 24 sentetik arena karesi, v21):**
+
+    TAM KARE          : UC_BANT_TEMAS_YOK 21 · rota  3/24
+    ARENAYA KIRPILMIS : rota 14/24 (ZEMIN_SUPHELI 7 · UC_BANT 2 · GORUS 1)
+
+Arena bölgesine kırpmak rotayı **3/24'ten 14/24'e** çıkarıyor. Bu, Codex-2'nin
+T49 tanısını bağımsız doğruluyor: kusur modelde değil, üretecin arenayı kadraja
+oturtmamasında. `51_sentetik_arena.py` arenayı `%0–28` dikey payla, dönüş ve
+perspektifle yerleştiriyor; karar yolu ise koridorun içerik kutusunun uçlarına
+ulaşmasını bekliyor (K-A).
+
+**Üç zeminin durumu — hepsi geçersiz, sebepleri AYRI:**
+
+| zemin | kusur | düzeltilebilir mi |
+|---|---|---|
+| otopark (`data/raw_frames`) | alan dışı; v21 kaplaması %73,7, çatı/çim zemin | model işi (T50) |
+| sentetik arena | geometri: arena kadraja ulaşmıyor | **evet, ucuz (T51)** |
+| kompozit arena | arka plan otopark → maske çöküyor | otoparkın kusurunu miras alıyor |
+
+Sentetik arenanın **kaplaması zaten temkinli** (%15,7 — T48 tavanının altında).
+Tek eksiği geometri. Yani düzeltilirse **karar yolunun geometrisiyle uyumlu tek
+zemin** olur ve GUI ilk kez uçtan uca çalışır hâlde gösterilebilir.
+
+**🔴 YAN BULGU — T48'in tavanı için canlı risk.** Kırpılmış karelerde 7/24
+`ZEMIN_MASKESI_SUPHELI` çıktı. `ZEMIN_KAPLAMA_TAVANI = 0.55` **gevşek kadrajlı**
+sahnelere göre kalibre edildi (sentetik arena tam karede %15,7). Oysa görev
+kadrajında arena görüntüyü **doldurmalıdır**; o zaman kaplama meşru olarak
+yükselir ve kapı **yanlış ateşler**. Ham kaplama, "her şey boyanmış" ile
+"gerçekten açık arena" hâllerini üst uçta ayırt edemez. Tavan, kadrajı arena ile
+dolu sahnelerde yeniden ölçülmeli; gerekirse ölçüt ham kaplamadan
+ayırt-edicilik ölçen bir büyüklüğe taşınmalı. **T48 kapanmadan bu ölçülmeli.**

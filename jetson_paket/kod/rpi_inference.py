@@ -51,6 +51,7 @@ if __package__:
                                    bant_temasi_yeterli_mi,
                                    hedef_bant_yuksekligi, mpp_irtifadan,
                                    r_gerekli_piksel,
+                                   zemin_maskesi_reddi,
                                    rota_darbogaz_guveni,
                                    rota_guven_reddi,
                                    rota_olcek_reddi, serit_no)
@@ -72,6 +73,7 @@ else:
                                   bant_temasi_yeterli_mi,
                                   hedef_bant_yuksekligi, mpp_irtifadan,
                                   r_gerekli_piksel,
+                                  zemin_maskesi_reddi,
                                   rota_darbogaz_guveni,
                                   rota_guven_reddi,
                                   rota_olcek_reddi, serit_no)
@@ -609,6 +611,16 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
                  f"girdi maskesi {girdi_px} piksel."),
             )
 
+    # ── ZEMIN MASKESI SAGLAMLIK KAPISI (T48) ───────────────────────────────
+    # Rotadan ONCE. v21 catiyi/cimi de zemin sayabiliyor; maske "dolu"
+    # gorundugu icin K-A, C-uzayi ve K-B'nin hicbiri bunu yakalayamaz.
+    # Olcum HAM zemin maskesi uzerinde yapilir — esik o dagilimdan turetildi
+    # (morfoloji/engel cikarma SONRASI degil).
+    zemin_reddi = zemin_maskesi_reddi(trav_mask, (icerik_x0, icerik_y0,
+                                                  icerik_w, icerik_h))
+    if zemin_reddi is not None:
+        return _don(None, 0.0, [], bos, zemin_reddi)
+
     k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
     k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
     clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN, k_open)
@@ -981,7 +993,10 @@ def run_image(model, path_str, conf, mpp=None):
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
             return_reason=True)
-        if olcek_reddi is not None:
+        # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
+        # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
+        # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
+        if olcek_reddi is not None and karar_reddi is None:
             open_path, path_conf, waypoints = None, 0.0, []
             karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
@@ -1074,7 +1089,10 @@ def run_video(model, path_str, conf, save=True, mpp=None):
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
             return_reason=True)
-        if olcek_reddi is not None:
+        # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
+        # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
+        # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
+        if olcek_reddi is not None and karar_reddi is None:
             open_path, path_conf, waypoints = None, 0.0, []
             karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
@@ -1146,7 +1164,10 @@ def run_camera(model, conf, mpp=None):
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
             return_reason=True)
-        if olcek_reddi is not None:
+        # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
+        # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
+        # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
+        if olcek_reddi is not None and karar_reddi is None:
             open_path, path_conf, waypoints = None, 0.0, []
             karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(

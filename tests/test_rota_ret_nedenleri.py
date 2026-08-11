@@ -23,6 +23,7 @@ from iha_sender import IhaSender
 from protocol import FrameReader
 from karar_sozlesmesi import (
     OLCEK_YOK_SEBEBI,
+    ZEMIN_MASKESI_SUPHELI_SEBEBI,
     ALAN_YETERSIZ_SEBEBI,
     BILESEN_YOK_SEBEBI,
     DUSUK_GUVEN_SEBEBI,
@@ -42,10 +43,11 @@ def _duz_koridor(boyut=128, x0=40, x1=88):
 
 
 class AnalyzePathRetNedeniTests(unittest.TestCase):
-    def test_sebep_kodlari_sozlesmedeki_sekiz_degerdir(self):
-        # T43: OLCEK_YOK eklendi (CONTRACTS SS6.4 · Halka 5).
+    def test_sebep_kodlari_sozlesmedeki_dokuz_degerdir(self):
+        # T43: OLCEK_YOK · T48: ZEMIN_MASKESI_SUPHELI (CONTRACTS SS6.4).
         self.assertEqual({
             OLCEK_YOK_SEBEBI,
+            ZEMIN_MASKESI_SUPHELI_SEBEBI,
             MASKE_YOK_SEBEBI,
             BILESEN_YOK_SEBEBI,
             UC_BANT_TEMAS_YOK_SEBEBI,
@@ -96,7 +98,12 @@ class AnalyzePathRetNedeniTests(unittest.TestCase):
         self.assertIn("1 piksel", ret[1])
 
     def test_engel_zeminin_tamamini_orterse_maske_yok_denmez(self):
-        zemin = np.ones((128, 128), np.uint8)
+        # ⚠ T48: zemin ARTIK tam kare degil. `np.ones` kaplama %100 demektir ve
+        # zemin kaplama kapisi onu HAKLI OLARAK supheli sayar; bu testin olctugu
+        # ayrim ("model zemin URETMEDI" ile "zemin vardi ama tamamen oyuldu")
+        # degismedi, yalniz sahne gercekci bir koridora indirildi.
+        zemin = np.zeros((128, 128), np.uint8)
+        zemin[:, 30:70] = 1
         engel = np.ones_like(zemin)
         yol, _guven, wps, ret = rpi_inference.analyze_path(
             zemin, engel_mask=engel, return_reason=True)
@@ -212,6 +219,12 @@ class YksGuiRetNedeniTests(unittest.TestCase):
         gui = _gui()
         put_text_cagrilari = []
         gercek_put_text = cv2.putText
+        # T44: hakem ekrani artik olcek kapisini de kosuyor. Bu test YAPISAL
+        # ret sebeplerinin AYRISTIGINI kanitlar; olcek yoksa hepsi OLCEK_YOK
+        # olur ve ayrim olculemez. Bu yuzden kaynak olcegi gecerli sayilir —
+        # olcek kapisinin kendi kapisi `test_yks_gui_uretim_hizasi.py`'dedir.
+        yamalar_olcek = mock.patch.object(
+            yks_gui.YksArayuz, "_kaynak_olcegi", return_value=(0.05, "test"))
 
         def put_text_sarmal(*args, **kwargs):
             put_text_cagrilari.append(str(args[1]))
@@ -226,7 +239,7 @@ class YksGuiRetNedeniTests(unittest.TestCase):
             yamalar.append(mock.patch.object(
                 rpi_inference, "analyze_path", side_effect=analyze_sahte))
 
-        with yamalar[0], yamalar[1], yamalar[2]:
+        with yamalar_olcek, yamalar[0], yamalar[1], yamalar[2]:
             if len(yamalar) == 4:
                 with yamalar[3]:
                     gui._algi_kos(Path("ret-sahnesi.jpg"))

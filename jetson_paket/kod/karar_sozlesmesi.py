@@ -74,6 +74,7 @@ def rota_darbogaz_guveni(darbogaz_px, icerik_w):
 # CONTRACTS.md SS6.4: karar reddi sebep kodlari. Cagri yerlerine ciplak
 # string yazilmaz; tum uretim ve ekran yollari bu tek kaynagi kullanir.
 OLCEK_YOK_SEBEBI = "OLCEK_YOK"
+ZEMIN_MASKESI_SUPHELI_SEBEBI = "ZEMIN_MASKESI_SUPHELI"
 MASKE_YOK_SEBEBI = "MASKE_YOK"
 BILESEN_YOK_SEBEBI = "BILESEN_YOK"
 UC_BANT_TEMAS_YOK_SEBEBI = "UC_BANT_TEMAS_YOK"
@@ -84,6 +85,7 @@ DUSUK_GUVEN_SEBEBI = "DUSUK_GUVEN"
 
 ROTA_RET_SEBEPLERI = frozenset({
     OLCEK_YOK_SEBEBI,
+    ZEMIN_MASKESI_SUPHELI_SEBEBI,
     MASKE_YOK_SEBEBI,
     BILESEN_YOK_SEBEBI,
     UC_BANT_TEMAS_YOK_SEBEBI,
@@ -233,3 +235,83 @@ def r_gerekli_piksel(mpp, r_gerekli_m):
     if not olcek_gecerli_mi(mpp):
         return None
     return float(r_gerekli_m) / float(mpp)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T48 · ZEMIN MASKESI SAGLAMLIK KAPISI   (CONTRACTS.md SS6.4)
+# ════════════════════════════════════════════════════════════════════════════
+# NEDEN: v21 bu alanda pratikte "arac mi, degil mi" ayiricisidir; CATI, CIM ve
+# TOPRAK hepsi zemin sinifina duser. Sistem maskenin coktugunu ANLAMIYOR ve
+# rotayi yine de uretiyordu — kullanici hakem ekraninda bina catisi uzerinden
+# gecen bir rota gordu. Karar zinciri bunu yakalayamaz cunku maske "dolu"
+# gorunur; her yapisal kapi (K-A, C-uzayi, K-B) memnun kalir.
+#
+# OLCUM — kaplama := zemin (sinif 0) maskesinin ICERIK kutusundaki piksel orani.
+# Uretim zinciri (`_preprocess` + `get_masks` + `_maskeleri_icerige_kirp`),
+# conf=0.30. Uc BAGIMSIZ mesru kaynak ve iki cokmus kume olculdu:
+#
+#   MESRU (kapi ATESLEMEMELI)                          n     p50    p95    MAKS
+#     sentetik arena YER GERCEGI (etiket poligonlari)  60   %11,7  %22,1  %39,0
+#     sentetik arena, v17 + v21 model ciktisi         120   %11,8  %23,2  %38,7
+#     genel kapinin KENDI 15 sahnesi                   15   %36,4    —    %42,6
+#
+#   COKMUS (kapi ATESLEMELI)                           n     p50           MIN
+#     v21 otopark (cati/cim yesil)                     67   %79,9         %76,7
+#     v21 kompozit arena                                7   %82,7         %76,0
+#
+# Iki kip arasinda %42,6 ile %76,0 arasinda GENIS ve BOS bir aralik var.
+# TAVAN = 0.55 secildi:
+#   · olculen en yuksek MESRU kaplamanin (%42,6) 1,29 kati — maske gurultusu
+#     icin pay birakir, genel kapinin kendi sahnelerini reddetmez;
+#   · olculen en dusuk COKMUS kaplamanin (%76,0) 0,72 kati — cokmeyi kacirmaz;
+#   · 194 model karesi + 60 yer gercegi + 15 kapi sahnesinde yanlis pozitif 0,
+#     kacirma 0.
+#   · Anlami: icerigin YARISINDAN fazlasi "surulebilir zemin" iddia ediliyorsa
+#     maske artik sahneyi AYIRT ETMIYOR demektir.
+#
+# ⚠ GOREV TABLOSUNDAKI v13 SATIRI KULLANILAMADI. "v13 cokmus, kaplama %43,4"
+# deniyordu; fakat (1) v13 agirligi depoda YOK, olculemedi; (2) satirin kendi
+# iki sayisi tek tanim altinda tutarsiz (%43,4 ve "goruntunun %84,7'sini
+# boyuyor"); (3) en onemlisi, %43,4 genel kapinin KENDI mesru sahnelerinin
+# azamisinin (%42,6) yalniz 0,8 puan ustunde — o degeri yakalayan bir tavan
+# `codes/test_rota_sentetik.py` 15/15 kapisini kirardi. Bu yuzden tavan
+# olculebilen kaynaklardan turetildi. v13 benzeri ORTA siddetli bir cokme bu
+# kapidan GECER; yakalamak icin kaplama tek basina yetmez, maskenin YAPISI
+# (or. doku/renk tutarliligi) gerekir — ayri gorev.
+ZEMIN_KAPLAMA_TAVANI = 0.55
+
+
+def zemin_kaplamasi(trav, icerik=None):
+    """Zemin maskesinin ICERIK kutusundaki piksel orani [0,1]."""
+    import numpy as _np
+    m = _np.asarray(trav)
+    if m.ndim != 2 or m.size == 0:
+        return 0.0
+    h, w = m.shape
+    if icerik is None:
+        x0, y0, iw, ih = 0, 0, w, h
+    else:
+        x0 = max(0, min(w, int(icerik[0])))
+        y0 = max(0, min(h, int(icerik[1])))
+        iw = max(0, min(w - x0, int(icerik[2])))
+        ih = max(0, min(h - y0, int(icerik[3])))
+    if iw <= 0 or ih <= 0:
+        return 0.0
+    kutu = m[y0:y0 + ih, x0:x0 + iw]
+    return float(_np.count_nonzero(kutu)) / float(iw * ih)
+
+
+def zemin_maskesi_reddi(trav, icerik=None):
+    """Kaplama tavani asilirsa kanonik ``(sebep, detay)``; aksi halde ``None``.
+
+    Kapi yalniz REDDEDER — maskeye dokunmaz, serbest alani BUYUTMEZ
+    (CLAUDE.md madde 15 acisindan notrdur, cunku hicbir piksel eklemez).
+    """
+    oran = zemin_kaplamasi(trav, icerik)
+    if oran <= ZEMIN_KAPLAMA_TAVANI:
+        return None
+    return (ZEMIN_MASKESI_SUPHELI_SEBEBI,
+            f"Zemin maskesi icerigin %{100.0 * oran:.1f}'ini kapliyor; "
+            f"tavan %{100.0 * ZEMIN_KAPLAMA_TAVANI:.1f}. Maske sahneyi ayirt "
+            "etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota "
+            "uretilmez.")

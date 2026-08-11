@@ -74,11 +74,25 @@ def _eski_guven(koridor):
 
 
 def _bariyer_ve_kapi(kapi_serit, kapi_px=64):
-    """Tamami gecilebilir alan + tam genislikte bariyer + TEK temiz kapi.
+    """UC ayri dikey koridor + tam genislikte bariyer + TEK temiz kapi.
 
     Yer gercegi belli: alt->ust gecis yalniz `kapi_serit` icinden mumkun.
+
+    ⚠ T48: eskiden `trav = np.ones(...)` idi, yani "tum kare surulebilir".
+    Zemin kaplama kapisi bunu HAKLI OLARAK supheli sayiyor (kaplama %100 >
+    tavan). Sahne arena semantigine yaklastirildi: uc koridor, aralari
+    gecilemez. Kaplama %50 — tavanin altinda, test ettigi sey degismedi.
     """
-    trav = np.ones((H, W), np.uint8)
+    # KUM SAATI: ustte ve altta UC SERIDI DE kesen genis bantlar, aralarinda
+    # serit basina birer dikey baglanti. Iki ozellik birden gerekli:
+    #   · kaplama %51 (< T48 tavani) -> zemin kapisi atesle-MEZ;
+    #   · ust bant uc seride yayildigi icin ESKI centroid tanimi hala orta
+    #     seride dusuyor -> pozitif kontrol AYIRT EDICI kaliyor.
+    trav = np.zeros((H, W), np.uint8)
+    trav[0:80, :] = 1
+    trav[H - 80:H, :] = 1
+    for merkez in (W // 6, W // 2, 5 * W // 6):
+        trav[80:H - 80, merkez - 50:merkez + 50] = 1
     engel = np.zeros((H, W), np.uint8)
     engel[290:310, :] = 1
     merkez = {1: W // 6, 2: W // 2, 3: 5 * W // 6}[kapi_serit]
