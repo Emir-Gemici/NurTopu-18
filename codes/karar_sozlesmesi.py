@@ -301,8 +301,61 @@ def zemin_kaplamasi(trav, icerik=None):
     return float(_np.count_nonzero(kutu)) / float(iw * ih)
 
 
+# T52 / REVIEW_LOG D-66: KAPLAMA TEK BASINA AYIRT ETMIYOR — olculdu.
+# 218 mesru (kadraj arena) + 67 cokme (otopark) karesinde aday olcutler:
+#
+#   olcut            MESRU min..maks     COKUS min..maks   ayrisma
+#   kaplama          0.001..0.809        0.725..0.833      CAKISIK
+#   doluluk          0.007..0.897        0.726..0.836      CAKISIK
+#   tikizlik         0.013..0.966        0.728..0.838      CAKISIK
+#   en_buyuk_pay     0.208..1.000        0.995..1.000      CAKISIK
+#   engel_orani      0.000..0.998        0.158..0.265      CAKISIK
+#   kenar_dayanma    0.000..0.339        0.579..0.964      +0.240  <- TEK AYIRAN
+#
+# FIZIKSEL GEREKCE: cokmus maske sahneyi ayirt etmedigi icin goruntu CEVRESININ
+# neredeyse tamamina dayanir (%58-96). Mesru arena zemininde koridorlar kenara
+# ULASIR ama yalnizca kendi genislikleri kadar — cevrenin en fazla %34'u.
+# Kaplama bunu goremez cunku cokmus blob ile genis acik arena AYNI alani kaplar.
+#
+# Esik iki dagilimin ORTASI: (0.339 + 0.579) / 2 = 0.459 -> 0.45 (mesru tarafa
+# 0.111, cokme tarafina 0.129 pay). Olculen kumelerde yanlis-negatif 0/218,
+# yanlis-pozitif 0/67.
+ZEMIN_KENAR_DAYANMA_TAVANI = 0.45
+
+
+def zemin_kenar_dayanmasi(trav, icerik=None):
+    """Zemin maskesinin ICERIK kutusu CEVRESINE degme orani [0,1]."""
+    import numpy as _np
+    m = _np.asarray(trav)
+    if m.ndim != 2 or m.size == 0:
+        return 0.0
+    h, w = m.shape
+    if icerik is None:
+        x0, y0, iw, ih = 0, 0, w, h
+    else:
+        x0 = max(0, min(w, int(icerik[0])))
+        y0 = max(0, min(h, int(icerik[1])))
+        iw = max(0, min(w - x0, int(icerik[2])))
+        ih = max(0, min(h - y0, int(icerik[3])))
+    if iw <= 0 or ih <= 0:
+        return 0.0
+    kutu = m[y0:y0 + ih, x0:x0 + iw]
+    kenar = (int(_np.count_nonzero(kutu[0])) + int(_np.count_nonzero(kutu[-1]))
+             + int(_np.count_nonzero(kutu[:, 0]))
+             + int(_np.count_nonzero(kutu[:, -1])))
+    return float(kenar) / float(2 * (ih + iw))
+
+
 def zemin_maskesi_reddi(trav, icerik=None):
-    """Kaplama tavani asilirsa kanonik ``(sebep, detay)``; aksi halde ``None``.
+    """Maske ayirt etmiyorsa kanonik ``(sebep, detay)``; aksi halde ``None``.
+
+    IKI SINYAL, ikisi de asilirsa reddedilir:
+      * kaplama > ZEMIN_KAPLAMA_TAVANI          (kaba siddet olcusu)
+      * kenar dayanma > ZEMIN_KENAR_DAYANMA_TAVANI (AYIRT EDICI olcut, T52)
+
+    Kaplama tek basina mesru genis arenayi da eliyordu (11/260, D-65); kenar
+    dayanmasi o hatayi kaldirir. Kaplama sarti KORUNUR cunku dar ama cevreye
+    dayanan (or. tek serit kenar boyunca) sahneler mesru olabilir.
 
     Kapi yalniz REDDEDER — maskeye dokunmaz, serbest alani BUYUTMEZ
     (CLAUDE.md madde 15 acisindan notrdur, cunku hicbir piksel eklemez).
@@ -310,8 +363,13 @@ def zemin_maskesi_reddi(trav, icerik=None):
     oran = zemin_kaplamasi(trav, icerik)
     if oran <= ZEMIN_KAPLAMA_TAVANI:
         return None
+    kenar = zemin_kenar_dayanmasi(trav, icerik)
+    if kenar <= ZEMIN_KENAR_DAYANMA_TAVANI:
+        return None
     return (ZEMIN_MASKESI_SUPHELI_SEBEBI,
-            f"Zemin maskesi icerigin %{100.0 * oran:.1f}'ini kapliyor; "
-            f"tavan %{100.0 * ZEMIN_KAPLAMA_TAVANI:.1f}. Maske sahneyi ayirt "
+            f"Zemin maskesi icerigin %{100.0 * oran:.1f}'ini kapliyor "
+            f"(tavan %{100.0 * ZEMIN_KAPLAMA_TAVANI:.1f}) VE cevrenin "
+            f"%{100.0 * kenar:.1f}'ine dayaniyor (tavan "
+            f"%{100.0 * ZEMIN_KENAR_DAYANMA_TAVANI:.1f}). Maske sahneyi ayirt "
             "etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota "
             "uretilmez.")

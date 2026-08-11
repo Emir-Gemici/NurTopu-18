@@ -3953,3 +3953,53 @@ canlı örneği: negatif kontrolü olmayan test hiçbir şey ölçmez. Ayrıca �
 **hiç tekrarlanabilir olmadığı** ortaya çıktı — değiştirilmemiş kodla aynı
 seed'le üç koşum üç farklı hash verdi. Benim "bayt-eşit" kapım uygulanamazdı;
 yerine konan RNG-durumu karşılaştırması daha sıkıdır.
+
+---
+
+### D-66 · ÇÖZÜLDÜ · Ayırt edici ölçüt bulundu: kenar dayanması (T52)
+
+**Sorun (D-65).** `ZEMIN_KAPLAMA_TAVANI` üst uçta iki dağılımı ayıramıyordu:
+meşru kadraj arenasının azamisi %82,3, otoparkın çöküşü %73,7–82,5. Tavan
+köprü çözüm olarak bırakılmış, bedeli (%4,2 meşru çekimserlik) kaydedilmişti.
+
+**Ölçüm (Claude 1, 2026-08-12) — 218 meşru + 67 çökme karesi, altı aday:**
+
+    olcut            MESRU min..maks     COKUS min..maks   ayrisma
+    kaplama          0.001..0.809        0.725..0.833      CAKISIK
+    doluluk          0.007..0.897        0.726..0.836      CAKISIK
+    tikizlik         0.013..0.966        0.728..0.838      CAKISIK
+    en_buyuk_pay     0.208..1.000        0.995..1.000      CAKISIK
+    engel_orani      0.000..0.998        0.158..0.265      CAKISIK
+    kenar_dayanma    0.000..0.339        0.579..0.964      +0.240  <- TEK AYIRAN
+
+**Kaplamanın çakıştığı ölçülerek doğrulandı** — D-65'teki uyarı isabetliydi.
+Beş adaydan yalnız **kenar dayanması** (zemin maskesinin içerik kutusu
+ÇEVRESİNE değme oranı) iki kümeyi çakışmasız ayırıyor.
+
+**Fiziksel gerekçe.** Çökmüş maske sahneyi ayırt etmediği için görüntü
+çevresinin neredeyse tamamına dayanır (%58–96). Meşru arena zemininde koridorlar
+kenara **ulaşır** — T51 tam bunu sağladı — ama yalnız kendi genişlikleri kadar;
+çevrenin en fazla %34'ü. Kaplama bunu göremez, çünkü **çökmüş blob ile geniş
+açık arena aynı alanı kaplar**.
+
+**Uygulama.** İki sinyal, ikisi de aşılırsa ret:
+`kaplama > 0.55` **VE** `kenar_dayanma > 0.45`. Eşik iki dağılımın ortası
+((0,339+0,579)/2 = 0,459 → 0,45). Kaplama şartı KORUNDU: dar ama çevreye dayanan
+sahneler meşru olabilir. Kapı yalnız **reddeder**, serbest alanı büyütmez.
+
+**Sonuç — kendi ölçümüm, iki küme:**
+
+    MESRU (kadraj arena)   n=234   YENI kapi   0   ESKI kapi   6
+    COKUS (otopark)        n= 67   YENI kapi  67   ESKI kapi  67
+    yanlis-negatif : 6/234 -> 0/234        cokme yakalama : 67/67 (degismedi)
+
+**🔴 DENETİM BORCU.** Bu kodu **mimar yazdı** (anayasa madde 7 istisnası:
+Codex'ler kotada, Claude-2 gece boyu çalıştı, kullanıcının açık talimatı).
+**Kendi kodumu kendim onaylamıyorum** — T45 ile birlikte ayrı denetim
+bekliyor.
+
+**DOĞRULANAMADI.** Ölçüt iki zeminde sınandı; **gerçek arenada davranışı
+bilinmiyor** (kamera yok). Görev kadrajında arena görüntüyü doldurursa zemin
+çevreye daha çok dayanabilir. Kenar dayanması kaplamadan **daha dayanıklı**
+ama bağışık değil; gerçek arena karesi geldiğinde ilk yeniden ölçülecek
+büyüklüklerden biri budur.

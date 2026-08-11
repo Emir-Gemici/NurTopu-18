@@ -2783,8 +2783,58 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     eğitim izsiz ölüyor. Başlangıç saatini ve tam komutu göreve yaz.
   - ⚠ **KAMERA YOK:** bu görev modelin **gerçek arenadaki** başarımını doğrulamaz
     ve doğrulayamaz. "Arena test edildi" ifadesi kurulmayacak.
+  - 🔵 **EĞİTİM BAŞLATILDI · 2026-08-12 · mimar (madde 7 istisnası).**
+    Betik: `O:\navitas-local-train\56_t53_gercek_karisim.py` (yeni)
+    ```text
+    FOR_DISABLE_CONSOLE_CTRL_HANDLER=1 python.exe -B 56_t53_gercek_karisim.py
+    model = codes/runs/segment/v15_on10sinif/weights/best.pt   (ON-EGITIM DISKTE,
+                                                                yeniden egitilmedi)
+    data  = dataset/karisim_arena_gercek.yaml  (rescuenet + sentetik + GERCEK DOKU)
+    ad    = v22_on10_gercek · epoch 200 · batch 12 · imgsz 640
+    log   = O:\navitas-local-train\calisma\t53_egitim.log
+    ```
+    Reçete `v15_ft2sinif/args.yaml`'dan **birebir** alındı (AdamW, lr0 0.001,
+    cos_lr, patience 60, close_mosaic 20, copy_paste 0.3) — uydurulmadı.
+    571 batch/epoch · ~4 dk/epoch → tam koşu ~13 saat, patience 60 ile erken
+    durabilir. Kesinti olursa `--devam` ile aynı koşuya dönülecek.
+  - **Değerlendirme HENÜZ YAPILMADI.** Eğitim bitince dört kapı koşulacak
+    (K0 tespit tabanı → K2 alan dışı temkin → K1 IoU/kesinlik → K3 karar
+    doğruluğu, T51 kadraj kümesi dâhil). **Kazandı ilanı ölçümden önce yok.**
 
-- [ ] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
+- [STATUS: READY_FOR_REVIEW] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-66**
+  - ⚠ **KODU MİMAR YAZDI** (madde 7 istisnası: Codex'ler kotada, Claude-2 gece
+    boyu çalıştı, kullanıcının açık talimatı). **KENDİ KODUMU ONAYLAMIYORUM** —
+    T45 ile birlikte ayrı denetim bekliyor. Bu satır `[x]` yapılmayacak.
+  - **Ölçüm — 218 meşru (kadraj arena) + 67 çökme (otopark), altı aday:**
+    ```text
+    olcut            MESRU min..maks     COKUS min..maks   ayrisma
+    kaplama          0.001..0.809        0.725..0.833      CAKISIK
+    doluluk          0.007..0.897        0.726..0.836      CAKISIK
+    tikizlik         0.013..0.966        0.728..0.838      CAKISIK
+    en_buyuk_pay     0.208..1.000        0.995..1.000      CAKISIK
+    engel_orani      0.000..0.998        0.158..0.265      CAKISIK
+    kenar_dayanma    0.000..0.339        0.579..0.964      +0.240  <- TEK AYIRAN
+    ```
+    D-65'teki uyarı doğrulandı: **kaplama gerçekten çakışıyor.**
+  - **Uygulama:** iki sinyal, ikisi de aşılırsa ret —
+    `kaplama > 0.55` **VE** `kenar_dayanma > 0.45`. Eşik iki dağılımın ortası
+    (0,459 → 0,45). Kaplama şartı korundu (dar ama çevreye dayanan sahneler
+    meşru olabilir). Kapı yalnız reddeder, serbest alanı büyütmez (madde 15).
+  - **Sonuç — kendi ölçümüm:**
+    ```text
+    MESRU (kadraj arena)   n=234   YENI kapi   0   ESKI kapi   6
+    COKUS (otopark)        n= 67   YENI kapi  67   ESKI kapi  67
+    yanlis-negatif 6/234 -> 0/234 · cokme yakalama 67/67 (degismedi)
+    ```
+  - **Kapılar:** `codes/test_rota_sentetik.py` **15/15** · tam paket **281 OK** ·
+    Jetson paketi yeniden üretildi.
+  - **DOĞRULANAMADI:** gerçek arenada davranışı — kamera yok. Görev kadrajında
+    arena görüntüyü doldurursa zemin çevreye daha çok dayanabilir. Kenar
+    dayanması kaplamadan **daha dayanıklı** ama bağışık değil.
+  - **Denetçiye not:** kapının yeni testi yazılmadı — `tests/test_zemin_kaplama_
+    kapisi.py` iki sinyalli hâli kapsamıyor. Denetim bunu da kapsamalı.
+
+- [ ] **T52 — özgün kayıt (mimar denetimi bekliyor)** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
   - **Kanıt:** kadraj kümesinin **meşru** azamisi %82,3; otoparkın **çöküş**
     değeri %73,7–82,5. Ham kaplama üst uçta *"her şey boyanmış"* ile *"gerçekten
     açık arena"* hâllerini **ayırt edemiyor**. Görev kadrajında arena görüntüyü
