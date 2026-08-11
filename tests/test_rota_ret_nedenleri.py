@@ -22,6 +22,7 @@ import yks_gui
 from iha_sender import IhaSender
 from protocol import FrameReader
 from karar_sozlesmesi import (
+    OLCEK_YOK_SEBEBI,
     ALAN_YETERSIZ_SEBEBI,
     BILESEN_YOK_SEBEBI,
     DUSUK_GUVEN_SEBEBI,
@@ -41,8 +42,10 @@ def _duz_koridor(boyut=128, x0=40, x1=88):
 
 
 class AnalyzePathRetNedeniTests(unittest.TestCase):
-    def test_sebep_kodlari_sozlesmedeki_yedi_degerdir(self):
+    def test_sebep_kodlari_sozlesmedeki_sekiz_degerdir(self):
+        # T43: OLCEK_YOK eklendi (CONTRACTS SS6.4 · Halka 5).
         self.assertEqual({
+            OLCEK_YOK_SEBEBI,
             MASKE_YOK_SEBEBI,
             BILESEN_YOK_SEBEBI,
             UC_BANT_TEMAS_YOK_SEBEBI,

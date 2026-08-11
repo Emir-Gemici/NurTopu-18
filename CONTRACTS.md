@@ -150,13 +150,62 @@ Bilinçli ikamedir, eksiklik değil.
 
 ## 5. Ölçek (`mpp`) sözleşmesi
 
-`mpp` = metre / piksel. **Kritik:** `olcek_px(None)` → `m = 1.0` varsayar ve
-`r_gerekli_px` **1,10 piksele** çöker. Gerçek değer ~27,9 px olmalıyken.
+> **Halka 5 artık SAHİPSİZ değil** (T43 · `REVIEW_LOG.md` D-59, D-22).
+> Sahip: `codes/karar_sozlesmesi.py` — `mpp_irtifadan`, `rota_olcek_reddi`,
+> `r_gerekli_piksel`. Sabitler oradan okunur; çağrı yerlerine çıplak sayı **yazılmaz**.
 
-> **`mpp=None` olan kare ölçüm dışıdır.** Ayrı sayaca yazılır, ihlal istatistiğine girmez.
-> Ölçeksiz kipte ihlal kararı **verilmez**.
+`mpp` = metre / piksel.
 
-Bilinen kaynaklar: `iha_haritala.py` → `MOZ_M / MOZ_PX = 56.0 / 1024 ≈ 0.0547`
+### 5.1 Üretim kaynakları — değerlendirildi, ölçüldü
+
+| # | Kaynak | Formül | Bugün üretilebilir mi |
+|---|---|---|---|
+| **(a)** | **İrtifa + kamera FOV / odak** | `mpp = 2·h·tan(FOV_yatay/2) / W_px` · `mpp = h / f_px` | ✅ **EVET** — irtifa saha yolunda zaten okunuyor: MAVLink `GLOBAL_POSITION_INT.relative_alt` (`comms/inis_kaniti.py:143`). İkinci bir telemetri yolu türetilmez. |
+| (b) | Bilinen ölçekli nesne (2×2 m kırmızı H brandası) → px/m | `mpp = 2.0 / brandanın piksel kenarı` | ❌ **HAYIR** — üretim modeli **2 sınıflı**; ölçüldü: `navitas_seg_v21_best.pt.names = {0: 'traversable', 1: 'blocked'}`. Hedef dedektörü **yok** (D-23). (b) ancak üçüncü sınıf üretime girdiğinde açılır. |
+
+**Seçim: (a).** Gerekçe kolaylık değil, **üretilebilirlik**: (b)'nin dayandığı
+tespit bileşeni sahada mevcut değil ve bir sınıf eklemeden ölçüm yapılamaz.
+
+`SARTNAME_ASGARI_IRTIFA_M = 30.0` (§5.3.2) ve `IRTIFA_MAKUL_UST_M = 200.0`
+makullük bandıdır; bandın dışındaki telemetri **ölçek üretmez** (fail-closed).
+
+### 5.2 `mpp` YOKSA ne olur — bağlayıcı
+
+1. **Görev yolunda rota ÜRETİLMEZ.** `rota_olcek_reddi(mpp)` kanonik
+   `("OLCEK_YOK", detay)` döner; `run_image` / `run_video` / `run_camera`
+   bu reddi yayınlar (§6.4 tablosu).
+2. **`r_gerekli_piksel(None, …)` → `None`.** Bu *"kısıt yok"* demek **değil**,
+   *"kısıt UYGULANAMAZ"* demektir. Çağıran ya ölçeksiz olduğunu açıkça
+   kaydeder ya da reddeder — sessiz varsayılan **yasak**.
+3. **Ölçeksiz kip** (`mpp=None`) yalnız sentetik kapılar ve yer-gerçeği
+   ölçümleri içindir; `analyze_path` dönüşünde `olcum["olceksiz"] = True`
+   olarak **işaretlenir** ve ekrana basılır.
+
+🔴 **Kapatılan sessiz varsayım.** `costmap_path_finder.olcek_px(None)` hâlâ
+`m = 1.0` alıp `r_gerekli_px = 1,10 piksel` döndürür. Bu *"ölçek yok"* değil
+*"ölçek 1 metre/piksel"* demektir. Kompozit arenada gerçek değer
+`1,10 / 0,0868 = 12,7 px` — yani gövde açıklığı sessizce **~11 kat** küçülüyordu
+ve hiçbir uyarı basılmıyordu. Sayı geriye uyum için korundu; **görev yolu artık
+onu kullanmıyor** (madde 1) ve `tests/test_olcek_ve_c_uzayi.py` farkı kilitliyor.
+
+### 5.3 C-uzayı — gövde açıklığı `analyze_path` kolunda da uygulanır
+
+`analyze_path`, rotayı **C-uzayında** kurar: `gecilebilir = (dist >= r_gerekli_px)`.
+Bu, `costmap_path_finder.py:313`'teki kalıbın **taşınmışıdır**, kopyası değil.
+
+- **Madde 15 uyumu yapısaldır:** `{dist ≥ r} ⊆ {dist > 0}` — serbest alan yalnız
+  **daralır**. Ölçüldü: 7 kompozit karede fazla piksel **0**.
+- Ölçek yoksa C-uzayı **uygulanmaz** ve `olceksiz` işaretlenir (§5.2/3).
+
+**Ölçülen etki** (arena kompoziti, kusursuz yer gerçeği maskesi, tek değişken `mpp`):
+
+| | doğru şerit | yanlış şerit | ret | rota darboğazı | güven |
+|---|---:|---:|---:|---|---|
+| C-uzayı **yok** | 1/7 | 0 | 6 | **1,0 px** (4 karede) | 0,028–0,117 |
+| C-uzayı **var** | **6/7** | **0** | 1 | **13,0–15,0 px** | 0,644–0,744 |
+
+Kalan 1 ret `UC_BANT_TEMAS_YOK`'tur ve C-uzayından **önce de** vardı — K-A'nın
+kendi fail-closed reddidir.
 
 ---
 
@@ -264,15 +313,48 @@ gösteriyor. Bu yüzden K-B **seçici bir kapı değil, taban koruyucusudur**:
 - `karar_sozlesmesi.rota_guven_reddi` ayrıca **bool / NaN / sonsuz / `[0,1]` dışı**
   değerleri fail-closed reddeder — asıl bozuk-değer koruması budur.
 
-🔴 **Güvenliğin ağırlığı K-A'dadır, K-B'de değil.** Koridorun uç bantlara teması
-ölçülebilir bir geometrik olgudur; `in_third / bx.size` oranı ise gerçek karelerde
-sabite yakındır ve karar kalitesini ayırt etmez.
+🔴 **T43 · K-B'nin rolü DEĞİŞTİ — ölçüldü, değer değişmedi.**
 
-⚠ **Açık ölçüm borcu (T25 sonrası ayrı görev):** gerçek 67 karede **45 kararın hepsi
-`yol=2`** çıktı. Bu ya doğru (kareler geniş açık alan; koridor üç şeride eşit yayılıyor,
-centroid ortaya düşüyor) ya da metrik körlüğüdür. Ayırt etmek için **margin tabanlı**
-bir güven (seçilen şerit ile ikinci en iyi arasındaki fark) ölçülmeli; `in_third` mutlak
-oranı bu işi görmüyor. Değer değişecekse **önce burası** değişir.
+C-uzayı (§5.3) geldikten sonra rota üzerindeki her piksel `dist ≥ r_gerekli_px`
+sağlar. `guven = min(1, darboğaz / (ROTA_DARBOGAZ_TAM_ORANI · icerik_w))` olduğu
+için güvenin **hesaplanabilir bir TABANI** oluşur:
+
+```
+guven_tabani = r_gerekli_px / (ROTA_DARBOGAZ_TAM_ORANI · icerik_w)
+```
+
+Yani K-B **ancak** şu koşulda ateşleyebilir:
+
+```
+mpp  >  R_GEREKLI_M / (ROTA_GUVEN_ESIGI · ROTA_DARBOGAZ_TAM_ORANI · icerik_w)
+     =  1,10 / (0,20 · 0,035 · icerik_w)
+```
+
+| `icerik_w` | K-B'nin ateşleyebildiği eşik | görev irtifasında tipik `mpp` | K-B ateşler mi |
+|---|---|---|---|
+| 576 | `mpp > 0,273 m/px` | 0,03–0,12 | **hayır** |
+| 1024 | `mpp > 0,153 m/px` | 0,03–0,12 | **hayır** |
+
+**Sonuç — üç rol, ikisi hâlâ geçerli:**
+
+1. ~~Seçici kapı~~ — **değil** ve olamaz: ölçekli kipte yapısal olarak erişilemez.
+2. **Ölçeksiz kipin tek tabanı** — `mpp` yokken C-uzayı uygulanamaz; `guven=0,0`
+   yayınını engelleyen tek şey K-B'dir (D-28'in kapattığı kusur).
+3. **Çözünürlük koruyucusu (YENİ)** — ateşlediği tek durum, ölçeğin araç gövdesini
+   ~4 pikselden ince gösterdiği haldir. Orada geometri doğru olsa bile piksel
+   ızgarası kararı taşıyamaz; reddetmek doğrudur.
+
+**Değer `0.20`'de BIRAKILDI — gerekçe ölçümden:**
+- *Düşürmek* anlamsız: ölçekli kipte zaten hiç ateşlemiyor.
+- *Yükseltmek* zararlı: C-uzayının **zaten** garanti ettiği fiziksel kısıtı ikinci
+  kez, üstelik birimsiz bir oranla sayardı; ve tam da C-uzayının en güvenilir
+  olduğu ince ölçeklerde geçerli rotaları elerdi.
+- Arena yer gerçeğinde ölçülen güven **0,644–0,744**; eşik oraya dokunmuyor.
+
+⚠ **Açık ölçüm borcu (T43 sonrası):** `ROTA_DARBOGAZ_TAM_ORANI = 0.035` hâlâ
+otopark karelerinden kalibre edilmiş **birimsiz** bir orandır. C-uzayı geldiğine
+göre güven doğrudan `darboğaz / r_gerekli_px` (yani **fiziksel kat**) olarak
+tanımlanabilir ve o zaman `icerik_w`'den bağımsızlaşır. Ayrı görev.
 
 ### 6.4 Karar reddi sebep sözleşmesi (T28 · `REVIEW_LOG.md` D-39)
 
@@ -288,6 +370,7 @@ string yazılmaz** (madde 16).
 
 | `sebep` | Ne zaman | Nerede |
 |---|---|---|
+| `OLCEK_YOK` | **Halka 5**: `mpp` türetilemedi — görev yolunda rota üretilmez (§5.2) | `rota_olcek_reddi` |
 | `MASKE_YOK` | Zemin maskesi hiç üretilmedi (`trav.sum() == 0`) | `analyze_path` girişi |
 | `BILESEN_YOK` | Maske var, bağlı bileşen yok | bileşen etiketleme sonrası |
 | `UC_BANT_TEMAS_YOK` | **K-A**: koridor alt ve/veya üst uç bandına temas etmiyor | `_uc_bant_temasi_yeterli` |
@@ -432,7 +515,7 @@ Bir halkanın **sahibi**, o halkayı sahada gerçekten koşturan dosyadır.
 | 2 | Model yükleme | model yolu | YOLO nesnesi | `codes/rpi_inference.py:32-40,52-57` → `best_ncnn_model` | **KUSURLU** · D-13 |
 | 3 | Çıkarım | BGR kare | `results` | `codes/rpi_inference.py:57` (`YOLO.predict`) | **GEÇERLİ** |
 | 4 | Maske çıkarımı | `results` | `{0: zemin, 1: engel}` | `codes/rpi_inference.py:60-83` (`get_masks`) | **GEÇERLİ** |
-| 5 | Ölçek (`mpp`) | irtifa + FOV | m/piksel | — | **SAHİPSİZ** · D-22 |
+| 5 | Ölçek (`mpp`) | irtifa + FOV/odak | m/piksel | `codes/karar_sozlesmesi.py` — `mpp_irtifadan`, `rota_olcek_reddi` | **GEÇERLİ** · T43 |
 | 6 | Hedef konumu (HB) | kare / dış girdi | `hb_xy` | — (yalnız Gazebo `meta.txt`) | **SAHİPSİZ** · D-22, D-23 |
 | 7 | Rota üretimi | maskeler + `mpp` + `hb_xy` | `road`, `waypoints`, `durum` | `codes/costmap_path_finder.py:729` (`rota_bul`) | **KUSURLU** · D-25 |
 | 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK | — (`jetson_paket/kod/` içinde yok) | **SAHİPSİZ** · D-22 |

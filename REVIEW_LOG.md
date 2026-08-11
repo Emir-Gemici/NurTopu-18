@@ -3253,3 +3253,157 @@ cekimserlikten daha tehlikelidir.
 **Gorev durumu:** T36 Gorev 2'nin GUI tarafi tamamlandi (kompozit kaynak, acilis
 kaynagi, yer gercegi gosterimi, fail-closed manifest, dort eski kaynak korundu);
 "7/7 uyum" kapisi `[ ]` birakildi — kusur `comms/yks_gui.py` disindadir.
+
+---
+
+### D-60 · DÜZELTME · "Üretim yolu" referansımı yanlış seçtim; D-48'in sayısı geçersiz
+
+**Kim düzeltti.** Claude-2, T36 sırasında (D-58). Ölçtüm, doğruladım.
+
+**Hatam.** T36 görev tanımında hizalama hedefi olarak
+`simulation/scripts/iha_perceive.py::_infer` (P) yazdım. Yanlış referans:
+
+- `CONTRACTS.md` §11.2 Halka 3 (Çıkarım) ve Halka 4 (Maske) sahibi
+  **`codes/rpi_inference.py`** (R); §11.1 *"`simulation/` altındaki hiçbir dosya
+  sahip yazılamaz"* diyor.
+- Jetson saha paketi **R'nin bayt-birebir kopyasını** taşıyor (D-45'te kilitlendi).
+  `iha_perceive.py` saha paketinde **hiç yok**. Yani **saha donanımı R'yi koşuyor.**
+- Hakem ekranı şartname §2.2.3/§6.2 gereği kanıt belgesidir; sahada koşmayan bir
+  yola hizalanırsa hakem, sahada verilmeyecek kararı onaylar.
+
+**Sonuç — kendi kaydımı geçersiz kılıyorum.** D-48'de ve T36 görevinde yazdığım
+`AYNI 46 · IRAKSAK 21 (%31,3)` ölçümü **P'ye karşı** yapıldı. P üretim referansı
+değil. Bulgunun kendisi (GUI'nin çıplak sabitlerle ayrı bir hat kurmuş olması,
+madde 16 ihlali) ayakta; **oran geçersiz.**
+
+Claude-2 ayrıca R ile P'nin **birbirinden de** ayrıştığını ölçtü:
+`AYNI 54/67 · FARKLI 13/67 (%19,4)`, ikisi şerit farkı. Bu ayrışma **açık**.
+
+**Kapanış ölçümü (Claude 1, bağımsız, 67 kare):** GUI hizalandıktan sonra karar
+denkliği **AYNI 67 · FARKLI 0**; `_algi_kos` içinde çıplak `imgsz`/`conf`/
+`min_conf`/`min_area_ratio` kalmadı; dört üretim fonksiyonu da çağrılıyor.
+
+**Ders — bu turda dördüncü kez aynı kök.** D-33 "depo otoritedir", D-51 "üretim
+fonksiyonu otoritedir, yeniden kurgusu değil", D-53 "ölçüm zeminine bak".
+Bu kayıt dördüncüyü ekliyor: **hangi yolun üretim olduğu `CONTRACTS.md` §11
+SAHİPLİK tablosundan okunur — makullükten değil.** Referansı seçerken sahiplik
+tablosuna bakmadım; P'nin adı "perceive" olduğu için üretim sandım.
+
+**Açık kalan (T43'ün dışında, ayrı):** R↔P 13/67 ayrışması ve
+`iha_perceive.DEFAULT_MODEL` hâlâ `navitas_seg_v2_best.pt` (üretim v21, D-20).
+İkisi de `simulation/` altında.
+
+---
+
+### D-60 · COZULDU · T43: Halka 5 sahiplendi, C-uzayi analyze_path koluna tasindi
+Bulan/duzelten: Claude 2 · 2026-08-11 · kanit: D-59, D-22 · gorev T43
+
+**GOREV 1 — Halka 5 (olcek) artik SAHIPSIZ degil.**
+Iki kaynak degerlendirildi ve **olculerek** secildi:
+
+    (a) irtifa + FOV/odak -> mpp = 2*h*tan(FOV/2)/W  ·  mpp = h/f_px
+        URETILEBILIR: irtifa saha yolunda ZATEN okunuyor —
+        MAVLink GLOBAL_POSITION_INT.relative_alt (comms/inis_kaniti.py:143).
+    (b) bilinen olcekli nesne (2x2 m H brandasi) -> px/m
+        URETILEMEZ: uretim modeli 2 sinifli. OLCULDU:
+        navitas_seg_v21_best.pt.names = {0: 'traversable', 1: 'blocked'}
+        Hedef dedektoru YOK (D-23 dogrulandi). (b) ancak ucuncu sinif
+        uretime girince acilir.
+
+Sahip: `codes/karar_sozlesmesi.py` — `mpp_irtifadan`, `rota_olcek_reddi`,
+`r_gerekli_piksel`, `olcek_gecerli_mi`. `CONTRACTS.md` SS5 yeniden yazildi,
+SS11.2 Halka 5 **SAHIPSIZ -> GECERLI**, SS6.4 tablosuna `OLCEK_YOK` eklendi.
+CLI: `--mpp` / `--irtifa` + `--fov`|`--odak`; uc gorev cagri yeri
+(`run_image`/`run_video`/`run_camera`) olcek yoksa `OLCEK_YOK` ile fail-closed
+doner ve `main()` uyariyi ekrana basar — sessiz varsayilan kalmadi.
+
+**SESSIZ VARSAYIM ACIGA CIKARILDI.** `olcek_px(None)` hala `m = 1.0` alip
+`r_gerekli_px = 1,10 px` donduruyor; gercek deger kompozit arenada 12,7 px.
+Yani govde acikligi sessizce **~11 kat** kuculuyordu. Sayi geriye uyum icin
+korundu (sentetik "olceksiz kip" ona dayali), fakat gorev yolu artik onu
+KULLANMIYOR ve `tests/test_olcek_ve_c_uzayi.py::test_SESSIZ_VARSAYIM_belgelendi`
+orani (>10x) kilitliyor.
+
+**GOREV 2 — C-uzayi tasindi (yeniden yazilmadi).**
+`analyze_path` rotayi artik C-uzayinda kuruyor: `gecilebilir = (dist >=
+r_gerekli_px)`. Bu `costmap_path_finder.py:313`'teki kalibin AYNISIDIR; plan,
+gorus-hatti kisayolu (`yol_duzelt`), ornekleme ve son kenar kapisi hep bu
+maske uzerinde kosuyor. `dist` gercek acikliktan hesaplanmaya devam ediyor
+(A* maliyeti ve T32 guveni icin).
+
+**MADDE 15 — yapisal olarak saglaniyor:** `{dist >= r} ⊆ {dist > 0}`.
+Olculdu, 7 kompozit kare:
+
+    serbest_once  36859 39360 35484 55826 34897 33249 32501
+    C_uzayi       18862 16585 17641 25708 16987 16054 15554
+    FAZLA PIKSEL      0     0     0     0     0     0     0     -> IHLAL 0/7
+
+**GOREV 3 — K-B yeniden degerlendirildi; DEGER DEGISMEDI, ROLU DEGISTI.**
+C-uzayi acikken rota uzerindeki her piksel `dist >= r_gerekli_px` saglar,
+dolayisiyla guvenin hesaplanabilir bir TABANI olusur:
+
+    guven_tabani = r_gerekli_px / (ROTA_DARBOGAZ_TAM_ORANI * icerik_w)
+
+K-B ancak `mpp > R_GEREKLI_M / (0,20 * 0,035 * icerik_w)` iken atesleyebilir:
+
+    icerik_w= 576 -> mpp > 0,273 m/px      gorev irtifasinda tipik mpp
+    icerik_w=1024 -> mpp > 0,153 m/px      0,03-0,12  ->  ATESLEMEZ
+
+Yani K-B **olcekli kipte yapisal olarak erisilemez**. D-38'deki "taban
+koruyucusu" tanimi olceksiz kip icin gecerliligini koruyor; ustune YENI bir
+rol kazandi: **cozunurluk koruyucusu** — atesledigi tek durum, olcegin araci
+~4 pikselden ince gosterdigi haldir.
+
+**Esik 0.20'de BIRAKILDI, gerekce olcumden:** dusurmek anlamsiz (zaten hic
+atesliyor degil), yukseltmek zararli (C-uzayinin zaten garanti ettigi fiziksel
+kisiti birimsiz bir oranla ikinci kez sayar ve tam da C-uzayinin en guvenilir
+oldugu ince olceklerde gecerli rotalari eler). Arena yer gercegindeki guven
+0,644-0,744; esik oraya dokunmuyor. **Esik kapi gecmek icin oynatilmadi.**
+
+**KAPILAR (gercek cikti).**
+
+    KAPI 1  arena kompoziti, C zinciri (analyze_path + K-B), yer gercegi maskesi,
+            icerik kutusu manifest'ten, tek degisken mpp:
+              ONCE  (C-uzayi YOK): DOGRU 1/7 · YANLIS 0 · RET 6
+              SONRA (C-uzayi VAR): DOGRU 6/7 · YANLIS 0 · RET 1
+              darbogaz  1,0 px -> 13,0-15,0 px
+              guven     0,028-0,117 -> 0,644-0,744   (K-B 0,20)
+            Kalan 1 ret UC_BANT_TEMAS_YOK'tur ve C-uzayindan ONCE de vardi.
+    KAPI 2  MADDE 15 ihlali 0/7 (yukaridaki tablo).
+    KAPI 3  otopark (data/raw_frames ilk 16):
+              mpp YOK    -> {1: 5, 3: 8, DUSUK_GUVEN: 3}   cekimser 3/16
+              mpp=0,0868 -> {1: 6, 3: 8, GORUS_HATTI_KOPUK: 2} cekimser 2/16
+    KAPI 4  codes/test_rota_sentetik.py 15/15 · unittest discover -s tests -q
+            Ran 259 tests OK · git diff --check exit 0
+
+**KAPI 3'te cekimserlik AZALDI — gerekcesi kare kare olculdu.**
+Degisen 3 karenin UCU DE onceden `DUSUK_GUVEN` idi ve darbogazlari 1,0 / 2,0 /
+1,4 px'ti (duvar siyiran rotalar):
+
+    frame_000005  DUSUK_GUVEN (darbogaz 1,0)  ->  yol=1  (darbogaz 18,2)
+    frame_000006  DUSUK_GUVEN (darbogaz 2,0)  ->  GORUS_HATTI_KOPUK
+    frame_000007  DUSUK_GUVEN (darbogaz 1,4)  ->  GORUS_HATTI_KOPUK
+
+Yani gevseme YOK: bir kare, planlayicinin onceden gormezden geldigi GERCEKTEN
+guvenli rotayi buldu (1,0 -> 18,2 px); ikisi yumusak guven reddinden SERT
+yapisal rette gecti. Ustelik guvenlik KESIN olarak artti: once
+`frame_000008` **8,0 px** darbogazla — yani fiziksel gerekliligin (12,7 px)
+ALTINDA — yayinlaniyordu; simdi ayni kare 13,0 px. C-uzayindan sonra kabul
+edilen HER rota fiziksel gereklilige uyuyor.
+
+**Kalici kapi:** `tests/test_olcek_ve_c_uzayi.py` (17 test) — olcek fail-closed
+davranisi, madde 15 altkume ispati (4 gecit x 3 olcek), gercekten dar gecidin
+reddi, yeterince genis gecidin kabulu, darbogazin C-uzayi tabaninin altina
+inememesi, K-B'nin kritik olcek esitsizligi ve **pozitif kontrol** (C-uzayi
+kapaliyken darbogazin gercekten kucuk kaldigi — yoksa kapilar vakum olurdu).
+
+**ACIK KALAN — durustluk notu.**
+1. `ROTA_DARBOGAZ_TAM_ORANI = 0.035` hala otopark karelerinden kalibre edilmis
+   BIRIMSIZ bir orandir. C-uzayi geldigine gore guven dogrudan
+   `darbogaz / r_gerekli_px` (fiziksel KAT) olarak tanimlanabilir ve
+   `icerik_w`'den bagimsizlasir. Ayri gorev — bu turda YAPILMADI.
+2. `data/raw_frames` karelerinin GERCEK `mpp`'si bilinmiyor (telemetri yok);
+   KAPI 3'teki 0,0868 bir VARSAYIMDIR ve gorev yolunda o kareler `OLCEK_YOK`
+   ile reddedilir. Gercek sayi ancak telemetrili saha ucusundan gelir.
+3. Kompozit kumenin `mpp`'si de manifest'in kendi beyanidir
+   ("kontrollu kompozit varsayimi ... gercek kamera mpp olcumu DEGILDIR").

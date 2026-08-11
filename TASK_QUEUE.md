@@ -2360,7 +2360,34 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     EXIT_CODE=0
     ```
 
-- [STATUS: READY_FOR_REVIEW] **T36 — Hakem ekranı kendi çıkarım parametrelerini ÇIPLAK yazıyor; üretimden ayrışıyor** · `comms/yks_gui.py:999-1035` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-48
+- [x] **T36 — Hakem ekranı kendi çıkarım parametrelerini ÇIPLAK yazıyor; üretimden ayrışıyor**
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-11 · Claude 1.** Kodu Claude-2 yazdı.
+    **Benim görev tanımımı düzeltti ve haklıydı** (D-58): prompt'ta hizalama
+    hedefi olarak `iha_perceive` (P) yazmıştım. Yanlış — `CONTRACTS.md` §11.2
+    Halka 3/4 sahibi `codes/rpi_inference.py` (R), §11.1 `simulation/` altındaki
+    hiçbir dosyanın sahip olamayacağını söylüyor, ve saha paketi **R'nin
+    bayt-birebir kopyasını** taşıyor (`iha_perceive` pakette **hiç yok**).
+    Claude-2 R'ye hizaladı, üç gerekçesini yazdı.
+    ➜ **Sonuç: D-48'deki %31,3 ıraksama sayım yanlış referansa göreydi.**
+  - **Bağımsız denetimim:**
+    ```text
+    SABIT DENKLIGI
+      rpi_inference --conf default = 0.30   yks_gui ALGI_PREDICT_CONF = 0.3   ESIT
+      ciplak imgsz / min_conf / min_area_ratio / conf : hepsi YOK
+      uretim fonksiyonlari: _preprocess ✓ _maskeleri_icerige_kirp ✓
+                            _rota_kararini_esikle ✓ icerik=icerik ✓
+    KARAR DENKLIGI (67 kare): AYNI 67 · FARKLI 0
+    ```
+    Karolu çıkarım yolu (`max(h,w)>1400`) tamamen kaldırılmış; ikinci bir
+    `predict` yok; K-B üretimin kendi eşikleyicisiyle uygulanıyor, kopya eşik yok.
+  - **Kalıcı koruma:** `tests/test_yks_gui_uretim_hizasi.py` (16 test). İkisi
+    özellikle değerli: `test_gui_kendi_cikarim_hattini_KURMUYOR` (yapısal —
+    özel hat yeniden doğarsa test düşer) ve `test_predict_conf_uretim_
+    varsayilanindan_KOPYALANMIS` (AST ile kilit, sabit ıraksayamaz).
+  - **T36b ayrıldı ve AÇIK bırakıldı** — kompozit kaynak kapısı düştü, GUI'de
+    değil karar zincirinde. Doğru davranış: zorlanmadı.
+
+- [STATUS: KAPANDI] **T36 — özgün kayıt** · `comms/yks_gui.py:999-1035` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-48
   - **✅ YAPILDI · 2026-08-11 · Claude-2.** `_algi_kos` kendi çıkarım hattını
     artık kurmuyor; `codes/rpi_inference.py`'nin `run_image` gövdesini (`:920-932`)
     aynı sırayla çağırıyor: `_preprocess` → `predict(imgsz=INFER_SIZE)` →
@@ -2405,6 +2432,35 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Koşulan kapılar (gerçek çıktı):** `unittest discover -s tests -q` →
     `Ran 242 tests · OK`; `codes/test_rota_sentetik.py` → **15/15**;
     `yks_gui.py --help` exit 0.
+
+- [ ] **T44 — T43 hakem ekranının hizasını BOZDU: GUI `mpp` geçirmiyor, ölçek kapısı yok** · `comms/yks_gui.py` · **KRİTİK** · kanıt: bu görevdeki ölçüm · bağımlı: **T43** (bitti)
+  - **Kanıt — kendim ölçtüm, 16 otopark karesi, ölçek verilmeden:**
+    ```text
+    HAKEM EKRANI : {'RED/UC_BANT_TEMAS_YOK': 16}
+    URETIM GOREV : {'RED/OLCEK_YOK': 16}
+    AYRISAN KARE : 16/16
+    ```
+    `grep mpp comms/yks_gui.py` → **sıfır eşleşme.** T43 ölçek kapısını üç görev
+    çağrı yerine koydu (`rpi_inference.py:980,1073,1145`); GUI o yolları
+    çağırmadığı için kapı GUI'de **hiç yok**.
+  - **İki ayrı sonuç, ikisi de gerçek:**
+    1. **Yanlış sebep gösteriliyor.** GUI `UC_BANT_TEMAS_YOK` (sahne kusuru)
+       diyor, üretim `OLCEK_YOK` (sistem kısıtı) diyor. Hakeme sistem sınırını
+       sahne kusuru gibi göstermek, S9/T34/T37/D-47 ile **aynı kusur sınıfı**.
+    2. **C-uzayı GUI'ye ulaşmıyor.** `mpp` yoksa `r_gerekli_px` yok → gövde
+       açıklığı kısıtı yok. T43'ün arenada 0/7 → 7/7 yapan kazanımı hakem
+       ekranında **görünmüyor**; T36b kapısı bu yüzden hâlâ düşük.
+  - **Yap:** GUI ölçeği kaynağına göre üretsin ve `analyze_path`'e geçirsin:
+    `kompozit` → manifest'teki `mpp`; diğer kaynaklar → ölçek YOK →
+    `rota_olcek_reddi` ile **`OLCEK_YOK` göster** (sessizce rota üretme).
+    Eşik/sebep kodlarını `karar_sozlesmesi.py`'den oku, çıplak yazma.
+  - ⚠ **Beklenen sonuç:** `drone`/`gemini`/`val`/`test` kaynaklarında hakem ekranı
+    artık `OLCEK_YOK` gösterecek. **Bu gerileme değil, dürüstlük** — ölçek
+    olmadan gövde açıklığı garanti edilemez. Açılış kaynağı `kompozit` olduğu
+    için normal kullanım etkilenmiyor.
+  - **Kapı:** (1) 16 otopark karesinde GUI ile üretim görev yolunun **sebebi
+    aynı** (ayrışan 0/16); (2) kompozit kaynakta T36b ölçümü **7/7**;
+    (3) `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
 
 - [ ] **T36b — Kompozit arena kaynağı: yer gerçeği uyumu 1/7 · KAPI DÜŞTÜ** · `comms/yks_gui.py` (GUI tarafı bitti) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-59**
   - **✅ GUI tarafı YAPILDI · 2026-08-11 · Claude-2.** `kompozit` kaynağı eklendi
@@ -2745,6 +2801,64 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     OK
     EXIT_CODE=0
     ```
+
+- [STATUS: READY_FOR_REVIEW] **T43 — Ölçek halkası (Halka 5) sahipsiz ve `analyze_path` kolunda C-uzayı yok** · `codes/rpi_inference.py`, `codes/costmap_path_finder.py`, `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-59, D-22
+  - **✅ YAPILDI · 2026-08-11 · Claude-2** · çözüm kaydı `REVIEW_LOG.md` **D-60**.
+  - **Görev 1 — Halka 5 SAHİPSİZ → GEÇERLİ.** İki kaynak ölçülerek seçildi:
+    **(a) irtifa + FOV/odak → ÜRETİLEBİLİR** (irtifa saha yolunda zaten
+    okunuyor: MAVLink `relative_alt`, `comms/inis_kaniti.py:143`);
+    **(b) 2×2 m H brandası → ÜRETİLEMEZ**, ölçüldü: `v21.names =
+    {0: traversable, 1: blocked}`, hedef dedektörü yok (D-23 doğrulandı).
+    Sahip `codes/karar_sozlesmesi.py`; `CONTRACTS.md` §5 yeniden yazıldı,
+    §11.2 Halka 5 güncellendi, §6.4'e `OLCEK_YOK` eklendi. CLI: `--mpp` /
+    `--irtifa`+`--fov`|`--odak`; üç görev çağrı yeri ölçek yoksa fail-closed.
+  - **Sessiz varsayım açığa çıkarıldı:** `olcek_px(None)` hâlâ `r_gerekli_px =
+    1,10 px` diyor, gerçek değer 12,7 px → gövde açıklığı **~11 kat**
+    küçülüyordu. Sayı geriye uyum için korundu, görev yolu artık kullanmıyor.
+  - **Görev 2 — C-uzayı taşındı** (`rota_bul`'daki `dt >= r_gerekli_px` kalıbı;
+    yeniden yazılmadı). Madde 15 yapısal: `{dist≥r} ⊆ {dist>0}`.
+  - **Görev 3 — K-B: DEĞER DEĞİŞMEDİ (0.20), ROLÜ DEĞİŞTİ.** C-uzayı güvene
+    hesaplanabilir taban koyuyor: `taban = r_gerekli_px / (0,035·icerik_w)`.
+    K-B ancak `mpp > 1,10/(0,20·0,035·icerik_w)` iken ateşleyebilir →
+    `icerik_w=576` için `mpp > 0,273`, `1024` için `> 0,153`; görev
+    irtifasında tipik `mpp` 0,03–0,12 → **ölçekli kipte ateşlemez**.
+    Yeni rolü: **çözünürlük koruyucusu**. Düşürmek anlamsız, yükseltmek
+    zararlı — gerekçe `CONTRACTS.md` §6.3'te.
+  - **KAPILAR (gerçek çıktı):**
+    ```text
+    KAPI 1  arena kompoziti · C zinciri (analyze_path + K-B) · yer gercegi maskesi
+              ONCE  (C-uzayi YOK): DOGRU 1/7 · YANLIS 0 · RET 6
+              SONRA (C-uzayi VAR): DOGRU 6/7 · YANLIS 0 · RET 1
+              darbogaz 1,0 px -> 13,0-15,0 px · guven 0,028-0,117 -> 0,644-0,744
+              kalan 1 ret UC_BANT_TEMAS_YOK; C-uzayindan ONCE de vardi
+    KAPI 2  MADDE 15 ihlali 0/7  (C_uzayi \ serbest_once = 0 piksel, 7 karede)
+    KAPI 3  otopark ilk 16: mpp YOK -> cekimser 3/16 · mpp=0,0868 -> 2/16
+              AZALMA GEREKCESI (kare kare): degisen 3 karenin ucu de darbogazi
+              1,0/2,0/1,4 px olan duvar-siyiran rotalardi.
+                frame_000005  DUSUK_GUVEN(1,0) -> yol=1 (darbogaz 18,2)
+                frame_000006  DUSUK_GUVEN(2,0) -> GORUS_HATTI_KOPUK
+                frame_000007  DUSUK_GUVEN(1,4) -> GORUS_HATTI_KOPUK
+              Guvenlik KESIN artti: once frame_000008 8,0 px darbogazla
+              (fiziksel gerek 12,7 px'in ALTINDA) yayinlaniyordu, simdi 13,0.
+    KAPI 4  codes/test_rota_sentetik.py 15/15 · discover -s tests -q
+              Ran 259 tests OK · git diff --check exit 0
+    ```
+  - **Kalıcı kapı:** `tests/test_olcek_ve_c_uzayi.py` (17 test), **pozitif
+    kontrol dahil** (C-uzayı kapalıyken darboğazın gerçekten küçük kaldığı).
+  - ⚠ **Açık bırakıldı:** `ROTA_DARBOGAZ_TAM_ORANI = 0.035` hâlâ otoparktan
+    kalibre birimsiz oran; C-uzayı geldiğine göre güven `darboğaz /
+    r_gerekli_px` (fiziksel kat) olarak tanımlanabilir → ayrı görev.
+    `data/raw_frames` gerçek `mpp`'si bilinmiyor; KAPI 3'teki 0,0868 varsayımdır.
+  - ⚠ Satırı Claude-2 açtı (kuyrukta yoktu); kapsam kullanıcı direktifinden alındı.
+  - **Doğrulanmış kanıt (Claude 1, 7 kompozit kare):** `rota_bul(mpp=manifest)`
+    → **7/7 doğru** · `rota_bul(mpp=None)` → 5/7 · `analyze_path + K-B` → **0/7**.
+    Sahada koşan zincir sonuncusu.
+  - **Görev 1:** Halka 5'i (ölçek) saha yolunda üretilebilir kıl; `mpp` yoksa
+    açık fail-closed davranış — sessiz `1 px/m` varsayımı kaldırılacak.
+  - **Görev 2:** Gövde açıklığı kısıtını `analyze_path` koluna **taşı**
+    (`rota_bul`'daki `r_gerekli_px` yolu yeniden yazılmayacak). Madde 15:
+    serbest alan yalnız daralabilir.
+  - **Görev 3:** K-B'yi **Görev 2'den sonra** arena yer gerçeğinde yeniden ölç.
 
 - [ ] **T42 — `kamera_dogrula.py` içerik sözleşmesine bağlanamadı: talimat kilidi** · `jetson_paket/kod/kamera_dogrula.py:118` · KÜÇÜK · kanıt: T41 çağrı-yeri tablosu
   - **Kanıt (Codex-2, AST tablosu):** `letterbox=VAR · baglandi=HAYIR · gerekce=

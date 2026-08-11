@@ -73,6 +73,7 @@ def rota_darbogaz_guveni(darbogaz_px, icerik_w):
 
 # CONTRACTS.md SS6.4: karar reddi sebep kodlari. Cagri yerlerine ciplak
 # string yazilmaz; tum uretim ve ekran yollari bu tek kaynagi kullanir.
+OLCEK_YOK_SEBEBI = "OLCEK_YOK"
 MASKE_YOK_SEBEBI = "MASKE_YOK"
 BILESEN_YOK_SEBEBI = "BILESEN_YOK"
 UC_BANT_TEMAS_YOK_SEBEBI = "UC_BANT_TEMAS_YOK"
@@ -82,6 +83,7 @@ KENAR_GUVENSIZ_SEBEBI = "KENAR_GUVENSIZ"
 DUSUK_GUVEN_SEBEBI = "DUSUK_GUVEN"
 
 ROTA_RET_SEBEPLERI = frozenset({
+    OLCEK_YOK_SEBEBI,
     MASKE_YOK_SEBEBI,
     BILESEN_YOK_SEBEBI,
     UC_BANT_TEMAS_YOK_SEBEBI,
@@ -141,3 +143,93 @@ def rota_guven_reddi(guven):
 def rota_guveni_yeterli_mi(guven):
     """Rota guveni K-B'ye gore OPEN_ROUTE icin yeterli mi?"""
     return rota_guven_reddi(guven) is None
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T43 · HALKA 5 — OLCEK (mpp) SOZLESMESI   (CONTRACTS.md SS5, SS11.2 Halka 5)
+# ════════════════════════════════════════════════════════════════════════════
+# NEDEN BURADA: bu halka D-22'den beri SAHIPSIZ'di. Saha kod yolunda `mpp`
+# ureten hicbir kod yoktu; tek kaynak `simulation/scripts/iha_haritala.py:66`
+# sabitiydi ve SS11.1/1 geregi sahip SAYILMAZ (saha paketinde de yok).
+#
+# 🔴 SESSIZ VARSAYIM — kapatilan kusur: `costmap_path_finder.olcek_px(None)`
+# `m = 1.0` alip `r_gerekli_px` degerini 1,10 PIKSEL uretiyordu. Bu "olcek yok"
+# demek DEGIL, "olcek 1 metre/piksel" demektir; gercek deger kompozit arenada
+# 1,10 / 0,0868 = 12,7 px. Yani govde acikligi sessizce ~11 KAT kuculuyor ve
+# hicbir uyari basilmiyordu.
+SARTNAME_ASGARI_IRTIFA_M = 30.0   # sartname SS5.3.2 asgari gorev irtifasi
+IRTIFA_MAKUL_UST_M = 200.0        # ustu telemetri hatasi sayilir (fail-closed)
+
+
+def mpp_irtifadan(irtifa_m, goruntu_genislik_px, *, yatay_fov_derece=None,
+                  odak_px=None):
+    """Nadir (90 derece) kamerada metre/piksel uret. Uretilemezse ``None``.
+
+    Iki kaynak — biri verilmelidir:
+      · FOV yolu  : ``mpp = 2 * h * tan(FOV_yatay / 2) / W_px``
+      · Odak yolu : ``mpp = h / f_px``   (pinhole; f piksel cinsinden)
+
+    ``irtifa_m`` saha kaynagi MAVLink ``GLOBAL_POSITION_INT.relative_alt``tir
+    (mm); `comms/inis_kaniti.py:143` ayni alani zaten okuyor — ikinci bir
+    telemetri yolu turetilmez.
+
+    FAIL-CLOSED: gecersiz/eksik girdi, bool, NaN, sonsuz, sifir veya negatif
+    deger, makul irtifa bandi disi olcum -> ``None``. "Tahmini olcek" DONMEZ.
+    """
+    def _sayi(x):
+        if isinstance(x, bool) or not isinstance(x, Real):
+            return None
+        d = float(x)
+        return d if math.isfinite(d) else None
+
+    h = _sayi(irtifa_m)
+    w = _sayi(goruntu_genislik_px)
+    if h is None or w is None or h <= 0.0 or w <= 0.0:
+        return None
+    if h > IRTIFA_MAKUL_UST_M:
+        return None
+    f = _sayi(odak_px)
+    if f is not None and f > 0.0:
+        return h / f
+    fov = _sayi(yatay_fov_derece)
+    if fov is not None and 0.0 < fov < 180.0:
+        return (2.0 * h * math.tan(math.radians(fov) / 2.0)) / w
+    return None
+
+
+def olcek_gecerli_mi(mpp):
+    """`mpp` gercek bir olcek mi? Bool/NaN/sonsuz/<=0 fail-closed reddedilir."""
+    if isinstance(mpp, bool) or not isinstance(mpp, Real):
+        return False
+    d = float(mpp)
+    return math.isfinite(d) and d > 0.0
+
+
+def rota_olcek_reddi(mpp, *, irtifa_m=None):
+    """Gorev yolunda olcek yoksa kanonik ``(sebep, detay)``; varsa ``None``.
+
+    CONTRACTS SS11.3 Halka 5 olcutu: *"`mpp` turetilemiyorsa halka OLCEK_YOK
+    dondurecek ve rota URETILMEYECEK."* Sessiz varsayilan YASAK.
+    """
+    if not olcek_gecerli_mi(mpp):
+        return (OLCEK_YOK_SEBEBI,
+                f"Olcek (mpp) turetilemedi ({mpp!r}); irtifa+FOV/odak "
+                "gerekli. Olceksiz kipte govde acikligi dogrulanamaz, "
+                "rota yayinlanmaz.")
+    if irtifa_m is not None:
+        h = float(irtifa_m) if olcek_gecerli_mi(irtifa_m) else None
+        if h is not None and h < SARTNAME_ASGARI_IRTIFA_M:
+            # Ret DEGIL, olculen makullük notu: IHA inis/kalkista da kare uretir.
+            return None
+    return None
+
+
+def r_gerekli_piksel(mpp, r_gerekli_m):
+    """Fiziksel gerekli acikligi piksele cevir; olcek yoksa ``None``.
+
+    ``None`` donusu "kisit yok" DEGIL, "kisit UYGULANAMAZ" demektir; cagiran
+    ya olceksiz kipte oldugunu acikca kaydeder ya da OLCEK_YOK ile reddeder.
+    """
+    if not olcek_gecerli_mi(mpp):
+        return None
+    return float(r_gerekli_m) / float(mpp)

@@ -34,7 +34,8 @@ from ultralytics import YOLO
 # _tohum_merkezi kopyasi). costmap_path_finder yalniz cv2/numpy/heapq kullanir,
 # dairesel import yoktur.
 if __package__:
-    from .costmap_path_finder import (_bagli_mi, _bresenham_noktalari,
+    from .costmap_path_finder import (R_GEREKLI_M, _bagli_mi,
+                                      _bresenham_noktalari,
                                       _gorus_hatti, _maks_aralikla_bol,
                                       _tohum_plan_izgarasi, astar,
                                       plan_izgarasi, yol_duzelt)
@@ -43,14 +44,19 @@ if __package__:
                                    GORUS_HATTI_KOPUK_SEBEBI,
                                    KENAR_GUVENSIZ_SEBEBI,
                                    MASKE_YOK_SEBEBI,
+                                   OLCEK_YOK_SEBEBI,
                                    ROTA_PLAN_MAKS_HUCRE,
                                    UC_BANT_TEMAS_YOK_SEBEBI,
                                    bant_temasi_gereken_px,
                                    bant_temasi_yeterli_mi,
-                                   hedef_bant_yuksekligi, rota_darbogaz_guveni,
-                                   rota_guven_reddi, serit_no)
+                                   hedef_bant_yuksekligi, mpp_irtifadan,
+                                   r_gerekli_piksel,
+                                   rota_darbogaz_guveni,
+                                   rota_guven_reddi,
+                                   rota_olcek_reddi, serit_no)
 else:
-    from costmap_path_finder import (_bagli_mi, _bresenham_noktalari,
+    from costmap_path_finder import (R_GEREKLI_M, _bagli_mi,
+                                     _bresenham_noktalari,
                                      _gorus_hatti, _maks_aralikla_bol,
                                      _tohum_plan_izgarasi, astar,
                                      plan_izgarasi, yol_duzelt)
@@ -59,12 +65,16 @@ else:
                                   GORUS_HATTI_KOPUK_SEBEBI,
                                   KENAR_GUVENSIZ_SEBEBI,
                                   MASKE_YOK_SEBEBI,
+                                  OLCEK_YOK_SEBEBI,
                                   ROTA_PLAN_MAKS_HUCRE,
                                   UC_BANT_TEMAS_YOK_SEBEBI,
                                   bant_temasi_gereken_px,
                                   bant_temasi_yeterli_mi,
-                                  hedef_bant_yuksekligi, rota_darbogaz_guveni,
-                                  rota_guven_reddi, serit_no)
+                                  hedef_bant_yuksekligi, mpp_irtifadan,
+                                  r_gerekli_piksel,
+                                  rota_darbogaz_guveni,
+                                  rota_guven_reddi,
+                                  rota_olcek_reddi, serit_no)
 
 _here = Path(__file__).parent
 MODEL_DIR = next(
@@ -521,7 +531,7 @@ def _rota_serit_olcumu(rota, dist, icerik):
 
 def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
                  min_area_ratio=0.01, *, icerik=None, engel_mask=None,
-                 return_reason=False, return_olcum=False):
+                 mpp=None, return_reason=False, return_olcum=False):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
@@ -674,17 +684,50 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
     # koridorda alt->ust baglantinin gercek witness yolunu kur; n_waypoints'i
     # ancak bundan SONRA cikti yogunlugu olarak uygula.
     dist = cv2.distanceTransform(clean, cv2.DIST_L2, 5)
+
+    # ── C-UZAYI (T43 · REVIEW_LOG D-59) ────────────────────────────────────
+    # Olculdu: kusursuz yer gercegi maskesiyle bile arena kompozitinde 6
+    # karenin 4'unde rotanin darbogazi 1,0 px cikiyordu ve darbogaz noktalari
+    # goruntu kenarindan 117-214 px ICERIDE — yani kenar artefakti DEGIL, rota
+    # gercekten molozu siyiriyordu. Sebep: `yol_duzelt`in gorus-hatti kisayogu
+    # pikselin SERBEST olmasini ariyor, ACIKLIGINI degil.
+    #
+    # Cozum `rota_bul`'da ZATEN vardi (`:313` `gecilebilir = dt_px >=
+    # r_gerekli_px`); buraya YENIDEN YAZILMADI, tasindi. Olcek yoksa kisit
+    # UYGULANAMAZ — o zaman "kisit yok" degil, "olceksiz kip" kaydedilir ve
+    # gorev cagri yerleri `rota_olcek_reddi` ile fail-closed doner.
+    #
+    # MADDE 15 — BU ISLEM ANTI-EXTENSIVE: {dist >= r} her zaman {dist > 0}
+    # altkumesidir, yani serbest alan yalniz DARALIR, asla buyumez.
+    r_gerekli_px = r_gerekli_piksel(mpp, R_GEREKLI_M)
+    if r_gerekli_px is not None and r_gerekli_px > 0.0:
+        gecilebilir = (dist >= float(r_gerekli_px)).astype(np.uint8)
+        olceksiz = False
+    else:
+        gecilebilir = clean
+        olceksiz = True
+
+    if int(gecilebilir.sum()) == 0:
+        return _don(
+            None, 0.0, [], clean,
+            (GORUS_HATTI_KOPUK_SEBEBI,
+             f"C-uzayi bos: koridorda {float(r_gerekli_px):.2f} px govde "
+             f"acikligini saglayan tek piksel yok (mpp={mpp!r}, "
+             f"R_GEREKLI_M={R_GEREKLI_M:.2f})."),
+        )
+
     kanonik_yol, kopuk_detay = _bagli_koridor_yolu(
-        clean, icerik_kutusu, dist, min(k_open.shape))
+        gecilebilir, icerik_kutusu, dist, min(k_open.shape))
     if kanonik_yol is None:
         return _don(
             None, 0.0, [], clean,
             (GORUS_HATTI_KOPUK_SEBEBI, kopuk_detay),
         )
-    waypoints = _rotayi_ornekle(kanonik_yol, n_waypoints, clean)
+    waypoints = _rotayi_ornekle(kanonik_yol, n_waypoints, gecilebilir)
 
     # SON KAPI: iki ucu serbest olan bir kenar yine de engelin ustunden gecebilir.
-    if len(waypoints) >= 2 and not _kenarlar_guvenli(waypoints, clean, engel_mask):
+    if len(waypoints) >= 2 and not _kenarlar_guvenli(waypoints, gecilebilir,
+                                                     engel_mask):
         return _don(
             None, 0.0, [], clean,
             (KENAR_GUVENSIZ_SEBEBI,
@@ -707,6 +750,12 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
              "darbogaz turetilemiyor."),
             None,
         )
+    # Olcek durumu KARAR CIKTISINA yazilir: "C-uzayi uygulandi mi" sorusu
+    # ekranda ve gunlukte gorunur olmali (olceksiz kip sessiz kalamaz).
+    olcum["mpp"] = float(mpp) if r_gerekli_px is not None else None
+    olcum["r_gerekli_px"] = (float(r_gerekli_px)
+                             if r_gerekli_px is not None else None)
+    olcum["olceksiz"] = bool(olceksiz)
     open_path = olcum["darbogaz_serit"]
     confidence = rota_darbogaz_guveni(olcum["darbogaz_px"], icerik_w)
 
@@ -894,7 +943,7 @@ def run_fps(model, n=30):
     print("Sonuc    :", "BASARILI" if fps >= 10 else "YETERSIZ — imgsz=256 ile tekrar dene")
 
 
-def run_image(model, path_str, conf):
+def run_image(model, path_str, conf, mpp=None):
     path = Path(path_str)
     RESULTS_DIR.mkdir(exist_ok=True)
 
@@ -926,9 +975,15 @@ def run_image(model, path_str, conf):
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
 
+        # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
+        # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+        olcek_reddi = rota_olcek_reddi(mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1),
+            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
             return_reason=True)
+        if olcek_reddi is not None:
+            open_path, path_conf, waypoints = None, 0.0, []
+            karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
             open_path, path_conf, waypoints, karar_reddi)
         vis = draw_masks(sq, masks)
@@ -963,7 +1018,7 @@ def run_image(model, path_str, conf):
             print(f"{'':30s}  payload: {json.dumps(ika_data)}")
 
 
-def run_video(model, path_str, conf, save=True):
+def run_video(model, path_str, conf, save=True, mpp=None):
     path = Path(path_str)
     if not path.is_file():
         print(f"Dosya bulunamadi: {path}")
@@ -1013,9 +1068,15 @@ def run_video(model, path_str, conf, save=True):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
+        # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
+        # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+        olcek_reddi = rota_olcek_reddi(mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1),
+            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
             return_reason=True)
+        if olcek_reddi is not None:
+            open_path, path_conf, waypoints = None, 0.0, []
+            karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
             open_path, path_conf, waypoints, karar_reddi)
         vis = draw_masks(sq, masks)
@@ -1053,7 +1114,7 @@ def run_video(model, path_str, conf, save=True):
         print(f"Kaydedildi: {out_path}")
 
 
-def run_camera(model, conf):
+def run_camera(model, conf, mpp=None):
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("Kamera acilamadi.")
@@ -1079,9 +1140,15 @@ def run_camera(model, conf):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
+        # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
+        # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+        olcek_reddi = rota_olcek_reddi(mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1),
+            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
             return_reason=True)
+        if olcek_reddi is not None:
+            open_path, path_conf, waypoints = None, 0.0, []
+            karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
             open_path, path_conf, waypoints, karar_reddi)
         vis = draw_masks(sq, masks)
@@ -1114,22 +1181,45 @@ def main():
     parser.add_argument("--camera", action="store_true", help="Canli kamera")
     parser.add_argument("--no-save", action="store_true", help="Video modunda ciktiyi kaydetme")
     parser.add_argument("--conf", type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
+    # T43 · HALKA 5 (CONTRACTS SS5): olcek SAHA YOLUNDA uretilebilir olmali.
+    # Kaynak (a) irtifa + FOV/odak — MAVLink GLOBAL_POSITION_INT.relative_alt
+    # zaten okunuyor (comms/inis_kaniti.py:143). Kaynak (b) bilinen olcekli
+    # nesne (2x2 m H brandasi) BUGUN URETILEMEZ: uretim modeli 2 sinifli
+    # ({0: traversable, 1: blocked}) ve hedef dedektoru YOK (D-23, olculdu).
+    parser.add_argument("--mpp", type=float, default=None,
+                        help="Olcek: metre/piksel (dogrudan)")
+    parser.add_argument("--irtifa", type=float, default=None,
+                        help="Bagil irtifa (m) — --fov veya --odak ile mpp uretir")
+    parser.add_argument("--fov", type=float, default=None,
+                        help="Kameranin YATAY gorus acisi (derece)")
+    parser.add_argument("--odak", type=float, default=None,
+                        help="Odak uzakligi (piksel) — --fov yerine kullanilabilir")
     args = parser.parse_args()
 
     if not any([args.fps, args.image, args.video, args.camera]):
         parser.print_help()
         return
 
+    mpp = args.mpp
+    if mpp is None and args.irtifa is not None:
+        mpp = mpp_irtifadan(args.irtifa, INFER_SIZE,
+                            yatay_fov_derece=args.fov, odak_px=args.odak)
+    if mpp is None and not args.fps:
+        # Sessiz varsayilan YOK: kullanici olcegin uretilemedigini GORUR.
+        print("UYARI: olcek (mpp) turetilemedi -> gorev yolunda her kare "
+              f"{OLCEK_YOK_SEBEBI} ile reddedilecek. --mpp veya "
+              "--irtifa ile --fov/--odak verin.")
+
     model = load_model()
 
     if args.fps:
         run_fps(model)
     elif args.image:
-        run_image(model, args.image, args.conf)
+        run_image(model, args.image, args.conf, mpp=mpp)
     elif args.video:
-        run_video(model, args.video, args.conf, save=not args.no_save)
+        run_video(model, args.video, args.conf, save=not args.no_save, mpp=mpp)
     elif args.camera:
-        run_camera(model, args.conf)
+        run_camera(model, args.conf, mpp=mpp)
 
 
 if __name__ == "__main__":
