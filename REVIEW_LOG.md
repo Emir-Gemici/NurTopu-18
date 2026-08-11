@@ -3798,3 +3798,158 @@ yükselir ve kapı **yanlış ateşler**. Ham kaplama, "her şey boyanmış" ile
 "gerçekten açık arena" hâllerini üst uçta ayırt edemez. Tavan, kadrajı arena ile
 dolu sahnelerde yeniden ölçülmeli; gerekirse ölçüt ham kaplamadan
 ayırt-edicilik ölçen bir büyüklüğe taşınmalı. **T48 kapanmadan bu ölçülmeli.**
+
+---
+
+### D-64 · COZULDU (kismen) · T51: sentetik arena kadraja oturtuldu; T50 FAZ 2 EGITIME GEREK KALMADI
+Olcen/duzelten: Claude 2 · 2026-08-12 · gorevler T51 + T50 FAZ 2
+
+⚠ **KAMERA YOK: gercek arena karesi alinamiyor. Bu gorev modelin ARENADAKI
+basarimini dogrulamaz.** Olculen sey uretecin GEOMETRISI ve karar yolunun o
+geometriyle uyumudur.
+
+**T51 — KADRAJ KIPI.** `51_sentetik_arena.py`'ye `--kadraj` eklendi: dikey pay
+`kenar_y = 0` (koridorlar ust/alt uc bantlara ULASIR), `geometrik()` donus ve
+perspektifi UYGULAMAZ (ikisi de koridor uclarini kadraj disina tasiyordu) ve
+`"kismi"` serit durumu KAPALI (tanimi geregi kareyi bastan basa gecmez).
+**Egitim kipi (varsayilan) DEGISMEDI** — pay ve donus cesitlilik icin degerli,
+silinmedi. Yeni kume 260 kare: `O:\navitas-local-train\calisma\sentetik_arena_kadraj`.
+
+**ONCE/SONRA — kendi olcumum** (TAM KAREDE, kirpmasiz, YER GERCEGI maskesiyle,
+n=24, model YOK):
+
+    ESKI (egitim kipi) : rota  2/24 · sebepler {UC_BANT_TEMAS_YOK: 20, DUSUK_GUVEN: 2}
+    YENI (kadraj kipi) : rota 12/24 · sebepler {DUSUK_GUVEN: 8,
+                         UC_BANT_TEMAS_YOK: 2, ZEMIN_MASKESI_SUPHELI: 2}
+
+`UC_BANT_TEMAS_YOK` **20 -> 2**. Tani dogrulandi: kusur modelde degil, uretecin
+YERLESIMINDE.
+
+**KAPILAR (gercek cikti).**
+
+    KAPI 1  TAM KAREDE rota 12/24 (esik >= 12)                     GECTI
+    KAPI 2  yer gercegi serit ile UYUMSUZLUK 3/12                  (olculdu)
+    KAPI 3  POZITIF KONTROL: acik serit kapatilinca karar DEGISTI
+            12/12                                                  GECTI
+    KAPI 4  EGITIM KIPI DEGISMEDI                                  GECTI
+    KAPI 5  T48 tavani bu kumede 11/260 kareyi kesiyor             (asagida)
+
+🔴 **KAPI 4'UN OLCUM YONTEMI DEGISTIRILDI — cunku istenen yontem GECERSIZ.**
+"Eski komutla uretilen cikti BAYT-ESIT" olcutu uygulanamaz: `51_sentetik_arena.py`
+**zaten** tekrarlanabilir degil. DEGISTIRILMEMIS kodla, ayni `--seed 7` ile uc
+kosum uc farkli hash verdi:
+
+    t51_ONCE   f274c4cd15790c72084357d1a19d0895
+    t51_SONRA  c461a815c796fe7f5fa6ba062a65bd69
+    t51_UCUNCU e213983656f356af2c366cb34b419358
+
+Bu ONCEDEN VAR OLAN bir ozelliktir (kaynagi bu gorevde arastirilmadi —
+**DOGRULANAMADI**). Yerine DAHA SIKI bir denklik testi kuruldu: orijinal dosya
+`_51_orijinal_t51.py` olarak saklanip iki surum YAN YANA import edildi ve ayni
+RNG ile cagrildi. Dort tohumda (7, 42, 123, 2026) **kimlik haritasi, sinif
+sozlugu, cagri sonrasi RNG DURUMU ve `geometrik()` ciktisi** bire bir esit.
+Negatif kontrol: `kadraj=True` kimlik haritasi egitim kipinden FARKLI (True).
+
+⚠ **Bu testin ilk kosumu SAHTE GECTI ve negatif kontrol yakaladi.** Ilk
+uygulamada 8 blogun yalniz 1'i dosyaya yazilmisti (script 8. blokta assert'e
+takilip cikmis, oncekiler bellekte kalmisti); test dosyayi KENDISIYLE
+kiyasliyordu. Negatif kontrol `TypeError: unexpected keyword argument 'kadraj'`
+ile bunu ortaya cikardi. D-15/K-04 sinifinin canli ornegi.
+
+**KAPI 5 — T48 KAPLAMA TAVANI BU KUMEDE YANLIS ATESLIYOR (tavan DEGISTIRILMEDI).**
+Kadraj kipi arenayi kadraja oturttugu icin mesru kaplama YUKSELIYOR. 260 karede:
+
+    kaplama: ort %22,0 · p50 %20,3 · p95 %52,2 · MAKS %82,3
+    tavanin (%55) ustunde kare        : 11/260  (%4,2)
+    ZEMIN_MASKESI_SUPHELI ile reddedilen: 11/260
+      bunlarin GT seridi OLAN (mesru sahne) : 11/11
+      tavan olmasaydi ROTA URETECEK olan    : 11/11
+
+Yani tavan bu kumede **11 mesru karari kesiyor**. D-62'de tavan, mesru azamisi
+%42,6 olan bir tabandan turetilmisti; kadraj kipi o tabani gecersiz kiliyor.
+Gorev geregi tavan **DEGISTIRILMEDI**; karar mimarindir. Not: %82,3'luk kare
+gercekten cok acik bir sahnedir, "cokmus maske" degil — yani bu bir kapi
+kalibrasyon borcudur, kapi hatasi degil.
+
+**T50 FAZ 2 — EGITIM BASLATILDI, ANCAK GEREKMEDI.**
+`42_cok_sinifli_onegitim.py --on-epoch 150 --ft-epoch 200 --batch 12`
+(FOR_DISABLE_CONSOLE_CTRL_HANDLER=1, 2026-08-12 00:17:45) baslatildi. Script
+her iki asamayi da **tamamlanmis** bulup atladi:
+
+    [v15_on10sinif] zaten tamamlanmis (150 epoch), atlaniyor
+    [v15_ft2sinif]  zaten tamamlanmis (166 epoch), atlaniyor
+
+`bitti_mi()` (`42_...py:53`) yalniz epoch sayisina bakmaz; durum gunlugunde
+"EGITIM TAMAMLANDI" damgasini da arar. `v15_ft2sinif` 200 yerine 166 epoch'ta
+**erken durdurma ile** bitmis. Yani **FAZ 2 recetesinin urunu ZATEN DISKTE**:
+`codes/runs/segment/v15_ft2sinif/weights/best.pt`
+(SHA256 `a796265f1c5c3ea6b4d35aa9eebe1a25feec9b277f37149bf1b13cb90ff3f942`).
+Bu model `models/` altina hic aktarilmamis ve **T50'nin 11 modelli tablosunda
+YOKTU**. GPU-gecesi harcamak yerine dort kapiyla olculdu:
+
+    model          K0 duyar  K0 kare>%1  K1 IoU  K1 kesin  K2 otopark  K3 D/Y/R
+    v15_ft2sinif      0.134         2/9   0.425     0.804      24.1%     0/0/9
+    v21 (uretim)      0.890         9/9   0.311     0.813      81.0%     0/0/9
+    v17               0.010         1/9   0.315     0.807       0.9%     0/0/9
+
+**v15 KAPI 0'i GECEMIYOR** (0,134 < 0,50 · 2/9 < 8/9). Yani 11-sinif on-egitim
+recetesi alan-ici dogrulugu YUKSELTIYOR (IoU 0,425 — olculen 12 modelin EN
+IYISI) ve alan-disi asiri tespiti FRENLIYOR (%24,1), ama **gercek doku
+korlugunu COZMUYOR**.
+
+**SONUC — T50'de hala KAZANAN YOK, ve nedeni artik daha net.** Iki kusur
+birbirinin zitti ve tek bir recete ikisini birden cozmuyor:
+  · gercek dokuyu GOREN tek model v21 — cunku egitiminde `copy_paste_gercek`
+    (gercek nadir drone karesi) VAR; ama asiri tespit ediyor (%81,0).
+  · asiri tespit etmeyen modeller (v15 %24,1 · v17 %0,9 · v20 %2,9) gercek
+    dokuda kor — cunku egitimlerinde gercek doku YOK.
+Yani eksik olan sey RECETE degil, **VERI KARISIMI**: 11-sinif on-egitim (v15)
+ile gercek doku verisi (v21'in `copy_paste_gercek`i) AYNI kosuda birlestirilmemis.
+Bu bir egitim tasarim karari; kullaniciya soruldu, kendi basima GPU-gecesi
+harcanmadi.
+
+**DOGRULANAMADI**
+  1. Hicbir modelin GERCEK ARENA basarimi — kamera yok.
+  2. `51_sentetik_arena.py`'nin tekrarlanabilir olmamasinin KAYNAGI.
+  3. Kadraj kumesindeki 3/12 serit uyumsuzlugunun kok nedeni (karar yolu mu,
+     yer gercegi turetimim mi) — ayristirilmadi.
+
+---
+
+### D-65 · MİMAR KARARI · T48 tavanı 0,55'te KALIYOR; bedeli ölçüldü ve kayda geçti
+
+**Karar gerekçesi.** Claude-2 T51'de tavanı değiştirmedi ve kararı bana bıraktı —
+doğru davranış. Ölçümler:
+
+    Claude-2, 260 kadraj karesi (yer gercegi):
+      kaplama ort %22,0 · p50 %20,3 · p95 %52,2 · MAKS %82,3
+      tavan (%55) ustunde 11/260 (%4,2) — 11/11'inin GT seridi VAR,
+      11/11'i tavan olmasaydi ROTA URETECEKTI
+
+    Claude 1, ayni kumeden 24 kare (MODEL cikarimi):
+      kaplama ort %17,7 · p95 %37,5 · maks %48,7 · tavan ustu 0/24
+
+**Karar: tavan `0.55`'te KALIYOR.** Gerekçe:
+1. Engellediği kusur — bir binanın **çatısı üzerinden rota** — ile maliyeti —
+   meşru sahnelerin **%4,2'sinde çekimserlik** — aynı ağırlıkta değil. Anayasa
+   varsayılanı fail-closed'dur.
+2. Model çıkarımı yolunda (GUI'nin gerçekte yaşadığı hâl) tavan bu kümede **hiç
+   ateşlemiyor** (0/24, maks %48,7). Yanlış-negatif maliyeti yer gerçeği
+   ölçümünün gösterdiğinden düşük.
+
+**🔴 AMA ÖLÇÜT ZAYIF, BUNU GİZLEMİYORUM.** Kadraj kümesinin meşru azamisi
+**%82,3**; otoparkın çöküş değeri **%73,7–82,5**. Yani **ham kaplama, üst uçta
+"her şey boyanmış" ile "gerçekten açık arena" hâllerini AYIRT EDEMİYOR.** İki
+dağılım orada çakışıyor. Görev kadrajında arena görüntüyü dolduracağı için
+sistem tam da ölçütün en zayıf olduğu bölgede çalışacak.
+
+Tavan bir **köprü çözümdür**, nihai ölçüt değildir. Yerine ayırt-edicilik ölçen
+bir büyüklük gelmeli: **T52**.
+
+**Kayıt disiplini notu.** Claude-2'nin T51'de kullandığı "eğitim kipi değişmedi"
+testinin **ilk koşumu sahte geçti** (8 bloktan 1'i yazılmış, dosya kendisiyle
+kıyaslanıyordu) ve bunu **kendi negatif kontrolü yakaladı**. D-15/K-04 sınıfının
+canlı örneği: negatif kontrolü olmayan test hiçbir şey ölçmez. Ayrıca üretecin
+**hiç tekrarlanabilir olmadığı** ortaya çıktı — değiştirilmemiş kodla aynı
+seed'le üç koşum üç farklı hash verdi. Benim "bayt-eşit" kapım uygulanamazdı;
+yerine konan RNG-durumu karşılaştırması daha sıkıdır.

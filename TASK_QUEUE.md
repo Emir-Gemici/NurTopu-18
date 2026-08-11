@@ -2748,7 +2748,127 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     **(c) bu 24 karede yanlış hipotez**. Düzeltme/threshold değişikliği bu tanı
     görevinde yapılmadı.
 
-- [ ] **T51 — Sentetik arena kadraja oturmuyor: karar yoluyla uyumlu TEK zemini kazanıyoruz** · `O:\navitas-local-train\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-62, T49 tanısı
+- [ ] **T53 — Koşulmamış hücre: 11-sınıf ön-eğitim + GERÇEK DOKU karışımı aynı koşuda** · `O:\navitas-local-train` · **TIKAYICI** · kanıt: T50 FAZ 2 tablosu, `karisim_arena_gercek.yaml` başlığı
+  - **MİMAR KARARI · 2026-08-12 · Claude 1.** Claude-2 haklı olarak GPU-gecesi
+    harcamadan tasarım kararını bana bıraktı. Karar: **eksik hücre koşulacak.**
+  - **Kanıt zinciri — hepsi ölçülmüş, ikisi zaten kayıtlı:**
+    ```text
+    K0 duyar  K0 kare>%1  K1 IoU  K1 kesin  K2 otopark   egitimi
+    v15_ft2sinif  0.134   2/9     0.425     0.804        24.1%   11-sinif on-egitim, GERCEK DOKU YOK
+    v17           0.010   1/9     0.315     0.807         0.9%   v15 + sentetik arena fine-tune
+    v21 (uretim)  0.890   9/9     0.311     0.813        81.0%   GERCEK DOKU var, ON-EGITIM YOK
+    ```
+    `karisim_arena_gercek.yaml` başlığı (2026-08-05, D-12/D-18):
+    *"Körlük tabanda değil, sentetik arena fine-tune ADIMINDA oluşuyor."*
+    v15 tabanı 23/67 kullanılabilir kare / %24,07 zemin; sentetik fine-tune
+    sonrası v17 10/67 / %1,04'e düşüyor.
+  - **Hipotez (sınanacak, ilan değil):** 11-sınıf ön-eğitim alan-içi doğruluğu
+    ve aşırı-tespit frenini veriyor (IoU 0,425 · otopark %24,1 — 12 modelin en
+    iyisi); gerçek doku karışımı körlüğü açıyor (v21 duyar 0,890). İkisi **hiç
+    aynı koşuda birleştirilmedi**. Birleşim, mimarinin istediği çeyreğe
+    ("görür VE çökmez") en yakın adaydır.
+  - **Yap:** `42_cok_sinifli_onegitim.py` ön-eğitim çıktısından başlayıp
+    fine-tune'u **`dataset/karisim_arena_gercek.yaml`** ile koş (sentetik-yalnız
+    karışımla DEĞİL). Ön-eğitim zaten diskte — **yeniden eğitme**, ondan devam et.
+  - **Seçim ölçütü — T50'nin düzeltilmiş hâli, mAP DEĞİL:**
+    `KAPI 0` gerçek dokuda duyarlılık ≥ 0,50 **ve** kare>%1 ≥ 8/9 (körlüğü eler) →
+    `KAPI 2` otoparkta kaplama en düşük olan (çöküşü eler) → `KAPI 1` IoU/kesinlik →
+    `KAPI 3` karar doğruluğu, **artık T51'in kadraj kümesinde de**.
+    Gürültü tabanı 0,04; altındaki farkla sıralama yapılmaz.
+  - ⚠ **Karışım oranı bilinmiyor.** Gerçek doku payı azsa körlük sürer, çoksa
+    aşırı tespit döner. **Önce ana hücreyi koş**; oran süpürmesi ancak ana hücre
+    KAPI 0'ı geçer ve KAPI 2 yüksek kalırsa gerekçelidir. Kendi başına 3 gece
+    harcama.
+  - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma; konsol kapanınca
+    eğitim izsiz ölüyor. Başlangıç saatini ve tam komutu göreve yaz.
+  - ⚠ **KAMERA YOK:** bu görev modelin **gerçek arenadaki** başarımını doğrulamaz
+    ve doğrulayamaz. "Arena test edildi" ifadesi kurulmayacak.
+
+- [ ] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
+  - **Kanıt:** kadraj kümesinin **meşru** azamisi %82,3; otoparkın **çöküş**
+    değeri %73,7–82,5. Ham kaplama üst uçta *"her şey boyanmış"* ile *"gerçekten
+    açık arena"* hâllerini **ayırt edemiyor**. Görev kadrajında arena görüntüyü
+    dolduracağı için sistem tam da ölçütün en zayıf olduğu bölgede çalışacak.
+  - **Yap — ÖNCE ÖLÇ.** Ayırt-edicilik ölçen aday büyüklükleri iki kümede birden
+    sına (kadraj arenası = meşru, otopark = çöküş) ve **ayrışma gücünü sayıyla**
+    raporla. Aday örnekleri (bunlarla sınırlı değil): zemin/(zemin+engel) oranı ·
+    zemin maskesinin bileşen sayısı ve en büyük bileşen payı · maskenin
+    görüntü kenarına dayanma oranı · engel sınıfının mutlak yokluğu.
+  - **Kapı:** Seçilen ölçüt iki kümeyi **çakışmasız** ayırmalı; ayıramıyorsa
+    "DOĞRULANAMADI" yaz ve tavanı **olduğu gibi bırak** — zorlama. Değiştirirsen
+    D-65'teki iki dağılımı yeniden ölç ve yanlış-negatif oranını yapıştır.
+  - ⚠ Tavan `0.55` şu an **köprü çözüm** olarak yürürlükte (D-65). Bu görev
+    bitene kadar değiştirilmeyecek.
+
+- [x] **T51 — Sentetik arena kadraja oturmuyor: karar yoluyla uyumlu TEK zemini kazanıyoruz**
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-12 · Claude 1.** Kodu Claude-2 yazdı.
+  - **Bağımsız ölçümüm — yer gerçeğiyle değil, GERÇEK MODEL ÇIKARIMIYLA** (GUI'nin
+    yaşayacağı hâl), aynı kümeden 24 kare:
+    ```text
+    karar     : rota 18/24  (serit 2:9 · 3:5 · 1:4) · UC_BANT_TEMAS_YOK 5 · GORUS 1
+    serit     : DOGRU 15 · YANLIS 3
+    kaplama   : ort %17,7 · p95 %37,5 · maks %48,7 · tavan ustu 0/24
+    ```
+    Claude-2'nin yer gerçeğiyle aldığı 12/24'ten **daha iyi** — model maskesi
+    poligon etiketinden daha bütün çıkıyor. `UC_BANT_TEMAS_YOK` **20 → 2**.
+  - 🔴 **Bu, karar zincirinin uçtan uca çalıştığı İLK zemin.** Otopark alan dışı,
+    kompozit otoparkın maskesini miras alıyor, eski sentetik arena geometrisi
+    uyumsuzdu. Kadraj kipi bu üçünün dışında duruyor.
+  - **Takdir edilecek iki nokta:**
+    1. **Kapı 4'ün yöntemini değiştirmesi doğruydu.** Benim "bayt-eşit" kapım
+       **uygulanamazdı**: üreteç zaten tekrarlanabilir değil (aynı seed, üç
+       koşum, üç hash). Yerine koyduğu RNG-durumu + kimlik + sınıf + geometri
+       karşılaştırması **daha sıkı**.
+    2. **Kendi testinin sahte geçtiğini kendi negatif kontrolü yakaladı**
+       (8 bloktan 1'i yazılmış, dosya kendisiyle kıyaslanıyordu). D-15/K-04
+       sınıfının canlı örneği.
+  - **Tavan kararını bana bırakması doğruydu** — karar D-65'te: `0.55` kalıyor,
+    bedeli (%4,2 meşru çekimserlik) kayda geçti, ölçütün zayıflığı **T52**'ye.
+  - **Açık kalan:** 3/18 karede **yanlış şerit**. Ölçüldü, kapatılmadı — kadraj
+    kümesi artık var olduğuna göre `road` etiketi doğruluğu burada yeniden
+    sınanmalı (T31 ölçümü otoparkta yapılmıştı).
+
+- [STATUS: KAPANDI] **T51 — özgün kayıt** · `O:\navitas-local-train\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-62, T49 tanısı
+  - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-64**.
+  - ⚠ **KAMERA YOK: gerçek arena karesi alınamıyor; bu görev modelin ARENADAKİ
+    başarımını doğrulamaz.** Ölçülen şey üretecin geometrisidir.
+  - `--kadraj` kipi eklendi: dikey pay `0`, dönüş/perspektif kapalı, `"kismi"`
+    şerit yok. **Eğitim kipi (varsayılan) DEĞİŞMEDİ.** Yeni küme 260 kare:
+    `O:
+avitas-local-train\calisma\sentetik_arena_kadraj`.
+  - **ÖNCE/SONRA — kendi ölçümüm** (tam karede, kırpmasız, yer gerçeği maskesiyle, n=24):
+    ```text
+    ESKI (egitim kipi) : rota  2/24 · {UC_BANT_TEMAS_YOK: 20, DUSUK_GUVEN: 2}
+    YENI (kadraj kipi) : rota 12/24 · {DUSUK_GUVEN: 8, UC_BANT_TEMAS_YOK: 2,
+                                       ZEMIN_MASKESI_SUPHELI: 2}
+    ```
+    `UC_BANT_TEMAS_YOK` **20 → 2**.
+  - **KAPILAR:**
+    ```text
+    KAPI 1  TAM KAREDE rota 12/24 (esik >= 12)                      GECTI
+    KAPI 2  yer gercegi serit ile UYUMSUZLUK 3/12                   (olculdu)
+    KAPI 3  POZITIF KONTROL: acik serit kapatilinca karar DEGISTI 12/12  GECTI
+    KAPI 4  EGITIM KIPI DEGISMEDI (4 tohum, kimlik+sinif+RNG+geometrik)  GECTI
+    KAPI 5  T48 tavani 11/260 MESRU kareyi kesiyor                  (asagida)
+    ```
+  - 🔴 **KAPI 4'ün yöntemi değiştirildi — "bayt-eşit" ölçütü UYGULANAMAZ.**
+    Üreteç **zaten** tekrarlanabilir değil: değiştirilmemiş kodla aynı seed'le
+    üç koşum üç farklı hash verdi (`f274c4cd` / `c461a815` / `e2139836`).
+    Yerine daha sıkı test: orijinal dosya saklanıp iki sürüm yan yana import
+    edildi; 4 tohumda kimlik haritası, sınıf sözlüğü, **RNG durumu** ve
+    `geometrik()` çıktısı bire bir eşit. ⚠ Bu testin **ilk koşumu sahte geçti**
+    (8 bloktan 1'i yazılmıştı, dosya kendisiyle kıyaslanıyordu); **negatif
+    kontrol yakaladı** — D-15/K-04 sınıfının canlı örneği.
+  - **KAPI 5 — T48 tavanı bu kümede yanlış ateşliyor (tavan DEĞİŞTİRİLMEDİ):**
+    ```text
+    260 kare · kaplama ort %22,0 · p50 %20,3 · p95 %52,2 · MAKS %82,3
+    tavan (%55) ustunde: 11/260 (%4,2)
+      hepsinin GT seridi VAR (mesru sahne)     : 11/11
+      tavan olmasaydi ROTA URETECEK olan       : 11/11
+    ```
+    D-62'de tavan, meşru azamisi %42,6 olan bir tabandan türetilmişti; kadraj
+    kipi o tabanı geçersiz kılıyor. **Karar mimarındır.**
+
   - **Ölçülmüş kazanç — kendim koştum, 24 kare:**
     ```text
     TAM KARE          : UC_BANT_TEMAS_YOK 21 · rota  3/24
@@ -2814,7 +2934,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
       `v17 çökmez ama görmez (0.010 / %0,9)` · `v20 çökmez ama görmez (0.000 / %2,9)`.
       **"Gerçek dokuda görür VE alan dışında çökmez" çeyreğinde hiçbir model yok.**
   - **Görsel doğrulama — sayıyı değiştirdi** (`O:
-avitas-local-trainesults	50_uc_kapi\`):
+avitas-local-train
+esults	50_uc_kapi\`):
     v21 otoparkta bina **çatısını ve çimi parlak yeşil** boyuyor (kullanıcının
     bildirdiği kusur gözle doğrulandı); v17 aynı karede **tek piksel bile**
     işaretlemiyor. GT'si zengin val karesinde (%37,3) ikisi de yol yüzeyini
@@ -2826,6 +2947,31 @@ avitas-local-trainesults	50_uc_kapi\`):
     (gerçek doku) kümede `duyarlılık ≥ 0,50` ve `kare>%1 ≥ 8/9`. Bugün bunu
     **yalnız v21** geçiyor. Seçim "KAPI 0'ı geçenler arasında KAPI 2'si en düşük
     olan" olur; hem körlüğü hem çöküşü eler.
+  - 🔴 **FAZ 2 SONUCU · 2026-08-12 · Claude-2 — EĞİTİME GEREK KALMADI.**
+    `42_cok_sinifli_onegitim.py --on-epoch 150 --ft-epoch 200 --batch 12`
+    (`FOR_DISABLE_CONSOLE_CTRL_HANDLER=1`, başlangıç **2026-08-12 00:17:45**)
+    başlatıldı; script her iki aşamayı da **tamamlanmış** bulup atladı.
+    `v15_ft2sinif` 200 yerine **166 epoch'ta erken durdurma ile** bitmiş
+    (`bitti_mi()` durum günlüğündeki "EĞİTİM TAMAMLANDI" damgasına bakıyor).
+    Yani **reçetenin ürünü zaten diskte** ve T50'nin 11 modelli tablosunda
+    **yoktu**: `codes/runs/segment/v15_ft2sinif/weights/best.pt`
+    (SHA `a796265f1c5c3e...`). GPU-gecesi harcamak yerine dört kapıyla ölçüldü:
+    ```text
+    model          K0 duyar  K0 kare>%1  K1 IoU  K1 kesin  K2 otopark  K3 D/Y/R
+    v15_ft2sinif      0.134         2/9   0.425     0.804      24.1%     0/0/9
+    v21 (uretim)      0.890         9/9   0.311     0.813      81.0%     0/0/9
+    v17               0.010         1/9   0.315     0.807       0.9%     0/0/9
+    ```
+    **v15 KAPI 0'ı geçemiyor** (0,134 < 0,50 · 2/9 < 8/9). 11-sınıf ön-eğitim
+    alan-içi doğruluğu yükseltiyor (IoU **0,425** — ölçülen 12 modelin en iyisi)
+    ve aşırı tespiti frenliyor (%24,1), ama **gerçek doku körlüğünü çözmüyor**.
+  - **KAZANAN HÂLÂ YOK — ama nedeni netleşti.** Gerçek dokuyu gören tek model
+    v21 (eğitiminde `copy_paste_gercek` **var**), aşırı tespit ediyor; aşırı
+    tespit etmeyenler (v15/v17/v20) gerçek dokuda kör (eğitimlerinde gerçek
+    doku **yok**). Eksik olan **reçete değil, VERİ KARIŞIMI**: 11-sınıf
+    ön-eğitim ile gerçek doku verisi aynı koşuda birleştirilmemiş. Bu bir
+    eğitim tasarım kararıdır; kullanıcıya soruldu, kendi başıma GPU-gecesi
+    harcanmadı.
   - **DOĞRULANAMADI:** (1) hiçbir modelin gerçek arena başarımı — kamera yok;
     (2) kompozitin gerçek arenayı ne kadar temsil ettiği; (3) sentetik arena
     sonuçları v17/v20/v21 için **dağılım içi** (üçü de o kümeyle eğitildi),
