@@ -330,7 +330,8 @@ class YksArayuz:
         self.gunluk.pack(side="left", fill="both", expand=True)
         kaydirak.config(command=self.gunluk.yview)
         for renk_ad, renk in (("yesil", YESIL), ("sari", SARI),
-                              ("mavi", MAVI), ("soluk", SOLUK)):
+                              ("kirmizi", KIRMIZI), ("mavi", MAVI),
+                              ("soluk", SOLUK)):
             self.gunluk.tag_configure(renk_ad, foreground=renk)
 
         # Alt durum çubuğu
@@ -769,8 +770,12 @@ class YksArayuz:
             self.link.send(encode(ack(self.rota["seq"], "yks")))
         self.onaylandi = True
         self.sayac["ACK_TX"] += 1
-        havada = (" · AKTARIM HAVADA TAMAMLANDI ✓ (§2.2.3)" if not self.t_iha1
-                  else " · ⚠ aktarım İHA inişinden SONRA (§6.4 geçersizlik riski)")
+        if self.t_iha1 is not None:
+            havada = " · ⚠ aktarım İHA inişinden SONRA (§6.4 geçersizlik riski)"
+        elif self.iha_landed_seq is not None:
+            havada = " · AKTARIM ZAMANI BİLİNMİYOR (IHA_LANDED kanıtı var)"
+        else:
+            havada = " · İHA henüz inmedi"
         self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓✓")
         self.lbl_onay.config(text=f"Hakem onayı tam — ACK(seq={self.rota['seq']}) "
                                   f"İHA'ya iletildi{havada}", fg=YESIL)
@@ -1256,25 +1261,27 @@ class YksArayuz:
             else:
                 self._logla(
                     f"CMD GÖNDERİLEMEDİ → {hedef_dugum}: {cmd} — UDP adresi yok",
-                    "sari",
+                    "kirmizi",
                 )
                 return False
         except (OSError, TypeError, ValueError) as exc:
             self._logla(
-                f"CMD GÖNDERİLEMEDİ → {hedef_dugum}: {cmd} — {exc}", "sari")
+                f"CMD GÖNDERİLEMEDİ → {hedef_dugum}: {cmd} — {exc}", "kirmizi")
             return False
         self._logla(f"CMD → {hedef_dugum}: {cmd}", "mavi")
         return komut_mesaji["seq"]
 
     def arm_degistir(self):
-        self.arm_acik = not self.arm_acik
-        if self.arm_acik:
-            self._cmd_gonder("ARM", "iha")
+        yeni_arm_acik = not self.arm_acik
+        komut = "ARM" if yeni_arm_acik else "DISARM"
+        if not self._cmd_gonder(komut, "iha"):
+            return
+        self.arm_acik = yeni_arm_acik
+        if yeni_arm_acik:
             self.btn_arm.config(text="DISARM (A)", bg=KIRMIZI)
             self.lbl_arm.config(text="SİSTEM: ARM — uçuşa hazır", fg=SARI)
             self.btn_firlat.config(state="normal", bg=SARI)
         else:
-            self._cmd_gonder("DISARM", "iha")
             self.btn_arm.config(text="ARM (A)", bg="#232e3a")
             self.lbl_arm.config(text="SİSTEM: DISARM — güvenli", fg=SOLUK)
             self.btn_firlat.config(state="disabled", bg="#232e3a")
@@ -1384,7 +1391,8 @@ class YksArayuz:
             self.kok.after(3200, lambda: self.btn_parasut.config(
                 bg="#232e3a", text="PARAŞÜT (manuel −50)"))
             return
-        self._cmd_gonder("PARACHUTE", "iha")
+        if not self._cmd_gonder("PARACHUTE", "iha"):
+            return
         self._ceza_ekle(50, "manuel paraşüt tetikleme (§2.2.4)")
         self._ucus("PARAŞÜT — MANUEL TETİKLENDİ (−50)", KIRMIZI)
         self.btn_parasut.config(state="disabled", bg=KIRMIZI,

@@ -2224,7 +2224,16 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap:** `analyze_path`'e engel maskesini geçir ve **çağrıdan önce** `trav`'dan oy (`yks_gui.py:880` kalıbı). `analyze_path`'i **silme** — 6 çağrı yerinin göçü bitmeden kaldırılmaz.
   - **Kapı:** Engelin traversable'ı örttüğü sentetik bir sahnede eski yol yanlış şerit, yeni yol doğru şerit dönüyor; her iki sayıyı da yapıştır.
 
-- [ ] **T34 — Hakem ekranı doğrulamadığı §6.4 iddiasını "✓" ile basıyor** · `comms/yks_gui.py:772` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-46
+- [x] **T34 — Hakem ekranı doğrulamadığı §6.4 iddiasını "✓" ile basıyor** · `comms/yks_gui.py:773-778` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-46
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-11 · Claude 1.** Kodu Codex yazdı.
+    Üç durum bağımsız ölçümümde de birbirinden ayrı çıkıyor:
+    ```text
+    t_iha1 YOK · landed YOK : · İHA henüz inmedi
+    t_iha1 YOK · landed VAR : · AKTARIM ZAMANI BİLİNMİYOR (IHA_LANDED kanıtı var)
+    t_iha1 VAR              : · ⚠ aktarım İHA inişinden SONRA (§6.4 geçersizlik riski)
+    ```
+    Kritik olan orta satır: kanıt varken artık **`✓` basmıyor**. Bilgi yokluğu
+    onaya çevrilmiyor.
   - **Kanıt — kendim koştum, gerçek çıktı:**
     ```text
     t_iha1 = None | landed_seq = 8802 (IHA GERCEKTEN INMIS)
@@ -2243,6 +2252,234 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     → **"BİLİNMİYOR"** (✓ basma). Kararı değiştirme, yalnız iddiayı doğru yap.
   - **Kapı:** Üç durum için üç test; `iha_landed_seq` doluyken `t_iha1` boşsa çıktıda
     `✓` **geçmeyecek**. `codes/test_rota_sentetik.py` **15/15**.
+  - **Uygulama:** Onay/ACK kararı değiştirilmeden ekran metni üç kanıt durumuna
+    ayrıldı: kronometre inişi varsa mevcut §6.4 uyarısı; yalnız protokol iniş latch'i
+    varsa `AKTARIM ZAMANI BİLİNMİYOR`; ikisi de yoksa `İHA henüz inmedi`.
+  - **Hedef kapı — gerçek çıktı:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_yks_gui_aktarim_zamani.py -v
+    test_iha_henuz_inmediyse_ekran_bunu_soyler (...) ... ok
+    test_operator_kronometresi_varsa_inis_sonrasi_uyarir (...) ... ok
+    test_protocol_inisi_var_kronometre_yoksa_zaman_bilinmiyor (...) ... ok
+    Ran 3 tests in 0.001s
+    OK
+    EXIT_CODE=0
+    ```
+  - **Genel kapılar — gerçek çıktı:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py
+    SONUC: 15/15 dogru
+    [OK] TUM DETERMINISTIK SAHNELER GECTI
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q
+    Ran 202 tests in 33.847s
+    OK
+    EXIT_CODE=0
+    ```
+
+- [x] **T37 — Gönderilemeyen komut ekranda BAŞARILI görünüyor (ARM · DISARM · PARAŞÜT)** · `comms/yks_gui.py:1277,1327,1394` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-47
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-11 · Claude 1.** Kodu Codex yazdı.
+    Kendi ölçüm matrisimi koştum (Codex'in testine bakmadan), **16/16 kapı**:
+    ```text
+    [ARM · adres YOK]      telde=False  arm_acik=False  ekran=—  firlat=dokunulmadi
+    [DISARM · adres YOK]   telde=False  arm_acik=True   ekran=—
+    [PARASUT · adres YOK]  telde=False  ceza=0  buton=acik  ('AÇILDI' yok)
+    TERS YON (adres VAR):  ARM ✓ · DISARM ✓ · PARASUT telde=True ceza=50 buton=disabled
+    ```
+    Aradığım üç şey de yerinde: (1) DISARM düşünce `arm_acik` **True kalıyor** —
+    güvenli yön; (2) paraşüt düşünce buton **kapanmıyor**, operatörün tekrar
+    deneme yolu açık; (3) ceza **işlenmiyor**. Ters yön bozulmamış.
+  - **Kanıt — kendim koştum, gerçek çıktı** (İHA adresi henüz öğrenilmemiş):
+    ```text
+    link.send cagrildi mi : False   (ARM TELE CIKMADI)
+    EKRAN                 : SİSTEM: ARM — uçuşa hazır
+    FIRLATMA butonu       : normal
+    ic durum arm_acik     : True
+    gunluk                : ['CMD GÖNDERİLEMEDİ → iha: ARM — UDP adresi yok']
+    ```
+    `_cmd_gonder()` başarısızlıkta **`False` döndürüyor** ama 4 çağrı yerinin
+    **3'ü dönüşü yok sayıyor**: `:1272` ARM · `:1277` DISARM · `:1387` PARACHUTE.
+    Yalnız `:1320` `IKA_GO` denetliyor.
+  - **Neden KRİTİK, üç ayrı yönden:**
+    1. **PARAŞÜT en tehlikelisi:** gönderim düşse bile ekran "PARAŞÜT AÇILDI
+       (manuel)" yazıyor, **butonu `disabled` yapıyor** — operatörün tekrar deneme
+       yolu kapanıyor — ve −50 cezayı işliyor. §2.2.4 acil durumunda operatör
+       paraşütün açıldığına inanır.
+    2. **DISARM tersi yönde ölümcül:** gönderim düşerse ekran "DISARM — güvenli"
+       der, İHA **hâlâ ARM'lıdır**.
+    3. **ARM zincirleme yanıltıyor:** FIRLATMA butonu açılıyor, operatör basıyor,
+       §6.4 kronometresi **hiç başlamamış bir uçuş için** işlemeye başlıyor.
+  - **Yap:** Üç çağrı yerinde de `_cmd_gonder()` dönüşünü denetle (`IKA_GO`
+    kalıbı). Gönderim düşerse: durum değişkenini **değiştirme**, butonu
+    `disabled` yapma, ekrana başarı metni **yazma**, günlüğe kırmızı düş.
+    `arm_acik` değişkenini de yalnız gönderim başarılıysa çevir.
+  - **Kapı:** Üç komut için de "adres yok" durumunda: `link.send` çağrılmamış,
+    ekran metni başarı iddiası **içermiyor**, ilgili buton hâlâ basılabilir.
+    Ters yönde: adres varken üçü de eskisi gibi çalışıyor.
+    `codes/test_rota_sentetik.py` **15/15**.
+  - **Uygulama:** ARM/DISARM durumu yalnız başarılı gönderimden sonra atomik olarak
+    değişiyor. Başarısız paraşüt gönderimi ceza, başarı ekranı ve buton kilidi
+    üretmiyor; teyit durumu korunuyor. Komut hataları gerçek `kirmizi` günlük etiketiyle
+    gösteriliyor.
+  - **Hedef kapı — gerçek çıktı:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_yks_gui_komut_durustlugu.py -v
+    test_arm_adres_varken_eskisi_gibi_baslar (...) ... ok
+    test_arm_adres_yokken_durum_ve_ekran_degismez (...) ... ok
+    test_disarm_adres_varken_eskisi_gibi_guvenli_gosterir (...) ... ok
+    test_disarm_adres_yokken_durum_ve_ekran_degismez (...) ... ok
+    test_parasut_adres_varken_eskisi_gibi_tetiklenir (...) ... ok
+    test_parasut_adres_yokken_ceza_ve_basari_uydurmaz (...) ... ok
+    Ran 6 tests in 0.002s
+    OK
+    EXIT_CODE=0
+    ```
+  - **Genel kapılar — gerçek çıktı:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py
+    SONUC: 15/15 dogru
+    [OK] TUM DETERMINISTIK SAHNELER GECTI
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q
+    Ran 199 tests in 33.432s
+    OK
+    EXIT_CODE=0
+    ```
+
+- [ ] **T36 — Hakem ekranı kendi çıkarım parametrelerini ÇIPLAK yazıyor; üretimden ayrışıyor** · `comms/yks_gui.py:999-1035` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-48
+  - 🔴 **BÜYÜKLÜK DÜZELTİLDİ · 2026-08-11 · Claude 1 (D-51).** İlk ölçümümde
+    üretim yolunu **yeniden kurmuştum**; gerçek `iha_perceive._infer` ile
+    yeniden ölçtüm:
+    ```text
+    ONCE (kurgu ile) : toplam 67 kare · AYNI  0 · IRAKSAK 67 (%100.0)  ← YANLIŞ
+    SIMDI (gercek)   : toplam 67 kare · AYNI 46 · IRAKSAK 21 ( %31.3)  ← DOĞRU
+    ```
+    Ayrışma yönü: hakem ekranı rota açıyor, üretim `DUSUK_GUVEN` ile reddediyor.
+    **Bulgu ve parametre tablosu aynen geçerli**, yalnız oran %31,3. Bu hâliyle
+    bile ciddi: hakem her üç kareden birinde sahada verilmeyecek kararı görüyor.
+  - 🔴 **YÖN DÜZELTMESİ · D-53.** Ölçüm zemini bir **OTOPARK** çıktı. Ayrışmada
+    **yanlış olan taraf hakem ekranıdır**: `analyze_path` (tek-koridor) otoparkta
+    koridor buluyor, `rota_bul` (üç-kapı arena) doğru şekilde çekimser kalıyor.
+    Bu görev **GUI'yi üretime hizalar** — üretimi GUI'ye değil. Hizalama
+    sonrasında hakem ekranının bu karelerde **daha sık çekimser kalması
+    BEKLENEN sonuçtur**, gerileme değil.
+  - **Ayrışan parametreler** (anayasa madde 16 ihlali — çıplak sabit):
+
+    | Parametre | `rpi_inference`/`iha_perceive` | `yks_gui` |
+    |---|---|---|
+    | `imgsz` | `INFER_SIZE=512` / `CANON=1024` | çıplak `512` |
+    | letterbox | `_letterbox_square` **var** | **YOK** (ham görüntü) |
+    | zemin eşiği | `conf=0.15` | çıplak `0.30` → `0.05` |
+    | engel eşiği | — | çıplak `0.10` |
+    | `min_area_ratio` | `0.01` | çıplak `0.02` |
+  - **Yap:** GUI kendi çıkarım hattını **yeniden yazmasın**; üretim fonksiyonunu
+    çağırsın veya parametreleri tek kaynaktan (`karar_sozlesmesi.py` /
+    `CONTRACTS.md`) okusun. T8'in `analyze_path` kopyası için verdiğimiz kararın
+    aynısı: **ölçüm yolu üretim yolundan ayrı olamaz.**
+  - ⚠ **Sıra:** Önce **T35**. T35 düzelmeden GUI'yi üretime hizalarsak hakem
+    ekranı 67/67 kareyi reddeder — yani ekran "doğru" ama kullanılamaz olur.
+  - **Kapı:** Aynı 67 karede iki yolun kararı **67/67 aynı**; ıraksama tablosu
+    yeniden koşulup yapıştırılacak. `codes/test_rota_sentetik.py` **15/15**.
+
+- [ ] **T38 — Saha kuru koşusunun `rota` halkası OTOPARK karesiyle sınanıyor: meşru şekilde geçemez** · `scripts/saha_kuru_kosu.py:250` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-53
+  - **Kanıt:** `:250` halka girdisini `data/raw_frames/**` içinden seçiyor.
+    O kareleri gözle inceledim (iki ayrı video, aynı sahne): **bir otopark** —
+    onlarca park hâlinde araç, bina, ağaçlar. Şartnamenin 3 işaretli güzergâhı
+    **yok**. `rota_bul` `"{n} kapi tespit edildi (3 beklenir)"` diyerek çekimser
+    kalıyor (`costmap_path_finder.py:780-782`) — **doğru davranış**.
+  - **Neden KRİTİK:** Bu halka **hiçbir doğru uygulamayla geçemez**. Bugüne kadar
+    `rota DUSTU` satırı bir kod kusuru sanıldı ve T35 iki tur boyunca bu yanlış
+    kapının peşinde koştu. Ölçülmeyen bir kapı, ölçülmüş bir kusurdan daha
+    pahalıya mal oldu.
+  - **Yap (mimari karar gerekiyor — insan girdisi olabilir):** Halkanın girdisi
+    **arena benzeri** bir kare olmalı. Seçenekler: (a) sentetik arena üretecinden
+    (`51_sentetik_arena.py`) determinist bir kare depoya alınıp halka ona
+    bağlanır; (b) gerçek arena çekimi yapılana kadar halka `SAHIPSIZ` ilan
+    edilir — `DUSTU` değil. **`DUSTU` yanlış sinyaldir: kod kusurunu ima ediyor.**
+  - **Kapı:** Halka ya arena benzeri girdiyle **GECTI** verecek, ya da
+    `SAHIPSIZ` olarak raporlanıp gerekçesi çıktıya yazılacak. Otopark karesiyle
+    `DUSTU` raporlaması **kaldırılacak**.
+  - **Bağlı:** T35 (içerik sözleşmesi) bu görevden bağımsız ilerler.
+
+- [ ] **T35 — `rota_bul` letterbox içerik sözleşmesini hiç taşımıyor: 0/16 kare** · `codes/costmap_path_finder.py:729`, `scripts/saha_kuru_kosu.py:482` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-51, D-50, D-25
+  - 🔴 **GÖREV YENİDEN YAZILDI · 2026-08-11 · Claude 1.** İlk tanımım yanlıştı;
+    Codex-2 zorlamadan geri verdi (D-50), itirazını ölçtüm, **haklıydı** (D-51).
+    - ✗ Yanlış hedef: `iha_perceive.py:106`. O yol maskeleri `analyze_path`'e
+      vermeden **önce kırpıyor** (`iha_perceive.py:92-94`) ve **12/16 rota
+      üretiyor** — kusurlu değil.
+    - ✓ Doğru hedef: `rpi_inference._preprocess` → `costmap_path_finder.rota_bul`.
+      **0/16**, hepsi `KAPALI_DAR`. `rota_bul` imzasında `icerik` parametresi
+      **hiç yok** — sözleşme geçirilmemiş değil, **mevcut değil**.
+    - ✗ Verdiğim kapı (`saha_kuru_kosu.py` → `rota GECTI`) izin verdiğim iki
+      dosyadan **yapısal olarak ulaşılamazdı**. Kapı hatası bana aittir.
+  - **Gerçek fonksiyonlarla ölçüm (16 kare, kurgu değil):**
+    ```text
+    yol                                              ACIK  ret dagilimi
+    E iha_perceive._infer (letterbox + KIRPMA)      12/16  DUSUK_GUVEN=4
+    F _preprocess + rota_bul (saha kuru kosusu)      0/16  KAPALI_DAR=16
+    rota_bul imzasinda `icerik` var mi : False
+    ```
+  - 🔴 **KAPI İKİNCİ KEZ DÜZELTİLDİ · 2026-08-11 · Claude 1 (D-52, D-53).**
+    Codex-2 ikinci kez zorlamadı ve yine haklıydı:
+    - ✗ **`16/16 AÇIK` kapım T4'ün ters yüzüydü.** İçerik sözleşmesi ölçülünce
+      `KAPALI_DAR ×16` → `ACIK ×1 + BELIRSIZ_COKLU ×15` oluyor. 16/16'yı
+      tutturmak için `BELIRSIZ_COKLU`'yu `ACIK` saymak, yani **fail-closed
+      semantiğini bozmak** gerekirdi.
+    - ✗ **Mekanizma açıklamam yanlıştı.** `_preprocess` ölçeklemiyor, yalnız
+      dolgu ekliyor (`rpi_inference.py:844-849`); `r_gerekli_px = r_gerekli_m /
+      mpp` tuval boyutundan bağımsız (`costmap_path_finder.py:107,111`).
+    - ✗ **Ölçüm zemini yanlış:** `data/raw_frames` bir **OTOPARK**, HTAB arenası
+      değil. `rota_bul`'un 5–9 açıklık görüp çekimser kalması **doğru
+      davranıştır**. Kapım dedektörden otoparktan güzergâh üretmesini istiyordu.
+  - **Yap:** `rota_bul`'a **geriye uyumlu `icerik=None`** sözleşmesini ekle;
+    Codex-2'nin hazırladığı güvenli tasarımı uygula — `serbest = zemin AND NOT
+    engel` sonrasında **yalnız ROI ile çıkarma**, aday ve A* varsayılan
+    tohumlarını `hedef_bant_yuksekligi(icerik_h)` ile **içerik uçlarından** kur.
+    Çağıran kutuyu `_preprocess`'ten **taşısın**, yeniden hesaplamasın.
+    `iha_perceive`'e ve `comms/yks_gui.py`'ye DOKUNMA.
+  - **Dosya izni:** `codes/costmap_path_finder.py`, `codes/rpi_inference.py`.
+  - **Kapı — karar SONUCU değil, karar KALİTESİ ölçülür:**
+    1. **Hiçbir kare daha az güvenli olmayacak:** düzeltmeden önce çekimser olan
+       hiçbir kare, sözleşme *olmadan* açılmayacak. (Madde 15'in karar düzeyindeki
+       karşılığı.)
+    2. `KAPALI_DAR` sayısı **ölçülebilir biçimde düşecek**; önce/sonra durum
+       dağılımı tam olarak yapıştırılacak.
+    3. **Madde 15 testi:** dolgulu girdide serbest piksel sayısı düzeltmeden
+       sonra **artmayacak** — testle gösterilecek.
+    4. `BELIRSIZ_COKLU` semantiği **değiştirilmeyecek**; bu kararları `ACIK`
+       sayan hiçbir değişiklik kabul edilmez.
+    5. `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
+  - ⚠ **`rota` halkası bu görevin kapısı DEĞİLDİR** — halkanın zemini otopark
+    olduğu için meşru şekilde geçemez. O ayrı görevdir: **T38**.
+  - **Ölçüm kümesi kaydı (D-50'nin haklı itirazı):** kareler
+    `data/raw_frames/**` altındaki `.jpg/.png/.jpeg` dosyalarının **sıralı ilk
+    16'sı**, model `models/navitas_seg_v21_best.pt`. Bu satır olmadan ölçüm
+    tekrar edilemiyordu.
+  - **[GEÇERSİZ — D-51] İlk (hatalı) kök neden izolasyonu, kayıt için duruyor:**
+    ```text
+    kol                           ACIK  ret dagilimi
+    A ham 512   (hakem ekrani)    16/16  —
+    B ham 1024                    16/16  —
+    C lbox 1024 icerik YOK         0/16  UC_BANT_TEMAS_YOK=16
+    D lbox 1024 icerik VAR        16/16  —
+    ```
+    **A vs B: `imgsz` suçsuz. B vs C: suçlu letterbox. C vs D: çözüm hazır.**
+  - **Kök neden:** `analyze_path` letterbox dolgusunu içerik sanıyor; K-A'nın
+    uç bantları gri dolguya düşüyor, hiçbir koridor banda değemiyor →
+    `UC_BANT_TEMAS_YOK`. `analyze_path` bunun için **`icerik=` parametresini zaten
+    taşıyor** (`codes/rpi_inference.py:523`); üretim çağrısı `iha_perceive.py:106`
+    onu **geçirmiyor**.
+  - **Neden KRİTİK:** Saha kuru koşusundaki `rota DUSTU` halkası tam budur.
+    Üretim algı yolu **gerçek karelerin %100'ünü** reddediyor — yani sahada rota
+    hiç üretilmez. D-25 bir köşe durumu değil, **tam kapanma**.
+  - **Yap:** `_letterbox_square`'in döndürdüğü `(x0, y0, nw, nh)` kutusunu
+    `analyze_path(..., icerik=...)`'a geçir. Aynı denetimi `rpi_inference.py`
+    letterbox yollarında da yap.
+  - **Kapı:** Yukarıdaki dört kollu tablo yeniden koşulacak; **C kolu 16/16 AÇIK**
+    olacak. `scripts/saha_kuru_kosu.py` → `rota` halkası **GECTI**.
+    `codes/test_rota_sentetik.py` **15/15**.
 
 - [ ] **S5 — Çıkarım `imgsz` sabitlenmemiş** · `codes/rpi_inference.py` · ÖNEMLİ
   - **Kanıt:** v17 arena IoU — 640: **0,861** (kaplama %4,2) · 960: **0,034** (kaplama **%96,1**) · 1280: 0,041 · 1600: 0,018. `multi_scale` (v20) düzeltmedi (%96,1 → %90,7). FDA irtifası **≥30 m ve değişken** (şartname §5.3.2).

@@ -2584,3 +2584,353 @@ doğrulayamadığımız bir durumda "TAMAMLANDI ✓" basmak hakemi yanıltır.
 
 **Görev:** `TASK_QUEUE.md` **T34**. Üçüncü durum ("BİLİNMİYOR") eklenecek;
 karar yolu değiştirilmeyecek.
+
+---
+
+### D-47 · KRİTİK · Gönderilemeyen komut hakem ekranında BAŞARILI görünüyor
+
+**Bulgu.** `comms/yks_gui.py:_cmd_gonder()` başarısızlıkta doğru davranıp
+`False` dönüyor, ancak **4 çağrı yerinin 3'ü dönüş değerini yok sayıyor**:
+
+    :1272   self._cmd_gonder("ARM", "iha")        # dönüş yok sayılıyor
+    :1277   self._cmd_gonder("DISARM", "iha")     # dönüş yok sayılıyor
+    :1387   self._cmd_gonder("PARACHUTE", "iha")  # dönüş yok sayılıyor
+    :1320   if not self._cmd_gonder("IKA_GO", "ika"): return   # DOĞRU kalıp
+
+**Ölçüm — koşuldu (Claude 1, 2026-08-11), İHA adresi henüz öğrenilmemiş:**
+
+    link.send cagrildi mi : False   (ARM TELE CIKMADI)
+    EKRAN                 : SİSTEM: ARM — uçuşa hazır
+    FIRLATMA butonu       : normal
+    ic durum arm_acik     : True
+    gunluk                : ['CMD GÖNDERİLEMEDİ → iha: ARM — UDP adresi yok']
+
+Yani tek bir soluk günlük satırı dışında **her gösterge başarı bildiriyor**.
+
+**Üç ayrı sonuç, üçü de ciddi:**
+
+1. **PARAŞÜT (§2.2.4) — en tehlikelisi.** `parasut()` gönderim düşse bile
+   ekrana "PARAŞÜT AÇILDI (manuel)" yazıyor, butonu `state="disabled"` yapıyor
+   ve −50 cezayı işliyor. Buton kapandığı için **operatörün tekrar deneme yolu
+   da kapanıyor.** Acil durumda operatör paraşütün açıldığına inanır.
+2. **DISARM — ters yönde ölümcül.** Gönderim düşerse ekran "DISARM — güvenli"
+   der; İHA hâlâ ARM'lıdır. Emniyet iddiası doğrulanmamıştır.
+3. **ARM — zincirleme yanıltma.** FIRLATMA butonu açılır, operatör basar,
+   §6.4 uçuş kronometresi **hiç başlamamış bir uçuş için** işlemeye başlar.
+
+**Sınıf.** S9, T34 ve D-46 ile aynı aile: hakem ekranının doğrulamadığı bir
+durumu ilan etmesi. Fark: bunlar yalnız gösterge değil, **operatörün emniyet
+kararını** besliyor.
+
+**Görev:** `TASK_QUEUE.md` **T37**.
+
+---
+
+### D-48 · KRİTİK · Hakem ekranı kendi çıkarım hattını yazmış; üretimden 67/67 ayrışıyor
+
+**Bulgu.** `yks_gui._algi_kos()` (`:999-1035`) çıkarım parametrelerini **çıplak
+sabit** olarak taşıyor ve üretim yolundan yapısal olarak ayrışıyor:
+
+| Parametre | `rpi_inference` / `iha_perceive` | `yks_gui` |
+|---|---|---|
+| `imgsz` | `INFER_SIZE = 512` / `CANON = 1024` | çıplak `512` |
+| letterbox | `_letterbox_square` **var** | **YOK** — ham görüntü |
+| zemin eşiği | `conf = 0.15` | çıplak `0.30` → fallback `0.05` |
+| engel eşiği | — | çıplak `0.10` |
+| `min_area_ratio` | `0.01` (varsayılan) | çıplak `0.02` |
+
+**Ölçüm — koşuldu (Claude 1, 2026-08-11), 67 gerçek drone karesi:**
+
+    toplam 67 kare · AYNI 0 · IRAKSAK 67 (%100.0)
+    SONUC: HAKEM EKRANI URETIMDEN AYRISIYOR (67/67 kare)
+
+Hakem ekranı her karede "rota açık" derken üretim parametreleri aynı kareyi
+her seferinde `UC_BANT_TEMAS_YOK` ile reddediyor. **Hakemin ekranda gördüğü
+karar, sahada koşacak kodun vereceği karar değildir.**
+
+**Anayasa madde 16 ihlali.** Eşikler ve çözünürlük tek kaynaktan okunmuyor.
+T8'de `analyze_path`'in ıraksak kopyası için verilen karar birebir geçerli:
+ölçüm/gösterim yolu üretim yolundan ayrı olamaz.
+
+**Sıra uyarısı.** Önce D-49/T35. Aksi hâlde GUI'yi üretime hizalamak ekranı
+"doğru ama 67/67 reddeden" bir hâle sokar.
+
+**Görev:** `TASK_QUEUE.md` **T36**.
+
+---
+
+### D-49 · KRİTİK · D-25'in kökü bulundu: üretim yolu letterbox içerik kutusunu geçirmiyor → %100 ret
+
+**Bağlam.** D-25 ve saha kuru koşusunun `rota DUSTU` halkası
+("letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK")
+bugüne kadar bir *belirti* olarak kayıtlıydı. Kök neden izole edildi.
+
+**Ölçüm — dört kollu izolasyon, koşuldu (Claude 1, 2026-08-11), 16 gerçek kare:**
+
+    kol                           ACIK  ret dagilimi
+    A ham 512   (hakem ekrani)    16/16  —
+    B ham 1024                    16/16  —
+    C lbox 1024 icerik YOK         0/16  UC_BANT_TEMAS_YOK=16
+    D lbox 1024 icerik VAR        16/16  —
+
+- **A vs B → `imgsz` suçsuz.** 512 ile 1024 aynı sonucu veriyor. S5 kapsamındaki
+  çözünürlük kırılganlığı bu kusurun sebebi DEĞİL.
+- **B vs C → suçlu letterbox.** Tek fark dolgu; sonuç 16/16 açıktan 0/16'ya düşüyor.
+- **C vs D → çözüm zaten kodda.** `analyze_path` `icerik=` parametresini taşıyor
+  (`codes/rpi_inference.py:523`); geçirilince 16/16 geri geliyor.
+
+**Kök neden.** `analyze_path`, letterbox'ın gri dolgusunu içerik sanıyor. K-A'nın
+başlangıç/hedef uç bantları (`HEDEF_BANT_ORANI = 0.08`) tuvalin en üst/en alt
+%8'inden hesaplanınca **dolgunun içine** düşüyor; hiçbir koridor banda değemiyor
+→ `UC_BANT_TEMAS_YOK`. Kusur K-A'da değil, **K-A'ya yanlış çerçeve verilmesinde**.
+
+**Ağırlığı.** `simulation/scripts/iha_perceive.py:106` üretim çağrısı `icerik=`
+geçirmiyor. Yani üretim algı yolu gerçek karelerin **%100'ünü** reddediyor —
+sahada rota hiç üretilmez. D-25 bir köşe durumu değil, **tam kapanmadır**.
+
+**Not.** Hakem ekranının letterbox yapmaması bu kusurdan tesadüfen kaçıyor;
+bu bir çözüm değil, D-48'deki ıraksamanın sebebi.
+
+**Görev:** `TASK_QUEUE.md` **T35** (T36'dan ÖNCE).
+
+---
+
+### D-50 · T35 zorunlu saha kapısı izin verilen dosyaların dışında kaldı
+
+**Tarih:** 2026-08-11 · **Uygulayıcı:** Codex-2 · **Karar:** görev zorlanmadı,
+`[ ]` bırakıldı; üretim kodu değiştirilmedi.
+
+**Gerçek kapı koşumu:**
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B scripts/saha_kuru_kosu.py
+
+İlgili gerçek çıktı:
+
+    kamera             DUSTU
+    model_yukleme      DUSTU
+    cikarim            GECTI
+    maske              GECTI
+    olcek              SAHIPSIZ
+    hedef_konumu       SAHIPSIZ
+    rota               DUSTU      letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK — tohum bandi dolguya dusuyor
+    aktarim            GECTI
+    surus_izni         GECTI
+    motor              SAHIPSIZ
+
+    GECTI 4 · DUSTU 3 · SAHIPSIZ 3 · ATLANDI 0
+    KOPUK HALKALAR (6): kamera, model_yukleme, olcek, hedef_konumu, rota, motor
+    Zincir saha kosumunda TAMAMLANMAZ.
+    Cikti: O:\navitas\results\saha_kuru_kosu_20260811_123127
+    EXIT_CODE=1
+
+**Yapısal kanıt:** `scripts/saha_kuru_kosu.py` içindeki `rota` halkası,
+T35 için yazma izni verilen `simulation/scripts/iha_perceive.py` veya
+`codes/rpi_inference.py` yolunu çağırmıyor. Doğrudan
+`costmap_path_finder.rota_bul(maskeler, mpp=None)` çağrısını yapıyor; `icerik`
+değeri bu çağrıya taşınmıyor. `codes/costmap_path_finder.py` içindeki `rota_bul`
+imzasında da `icerik` parametresi yok. Bu nedenle yalnız izin verilen iki üretim
+dosyasını değiştirerek zorunlu `rota GECTI` kapısını etkilemek mümkün değil.
+
+**Ek depo denetimi:** Mevcut `iha_perceive._infer` tam tuval maskelerini
+`analyze_path` çağrısından önce `(x0, y0, nw, nh)` alanına kırpıyor. Dolayısıyla
+orijinal tuval kutusunu zaten kırpılmış `nh × nw` maskeye doğrudan vermek koordinat
+sistemlerini karıştırır. Tam tuval üzerinde `icerik=` kullanılması isteniyorsa dış
+API'yi korumak için analizden sonra maske/içeriğin yeniden kırpılması ve waypoint
+koordinatlarının içerik uzayına çevrilmesi gerekir.
+
+`codes/rpi_inference.py` denetiminde letterbox kullanan üç üretim akışının üçü de
+`_preprocess` tarafından döndürülen `icerik` kutusunu `analyze_path` çağrısına
+zaten aktarıyor; eksik çağrı bulunmadı (`3/3`).
+
+**Gerekli mimari kapsam genişlemesi:** Zorunlu saha kapısını düzeltmek için en az
+`codes/costmap_path_finder.py` ve `scripts/saha_kuru_kosu.py` dosyalarında içerik
+kutusu sözleşmesinin taşınmasına izin verilmesi gerekiyor. Dört kollu ölçümdeki
+"aynı 16 kare" dosya listesi/koşum komutu depoda kayıtlı olmadığından birebir aynı
+küme de bu koşumda doğrulanamadı. İlk zorunlu kapı düştüğü için diğer T35 kapıları
+geçmiş ilan edilmedi.
+
+---
+
+### D-51 · DÜZELTME · D-48 ve D-49 yanlıştı: kusurlu yol `iha_perceive` değil `rota_bul`
+
+**Kim buldu.** Codex-2, T35'i **zorlamadı** — `[ ]` bıraktı, üretim kodunu
+değiştirmedi ve yapısal itirazını D-50'ye kanıtıyla yazdı. İtirazı ölçtüm;
+**haklı**. Aşağısı benim kaydımın düzeltmesidir (madde 6: kayıt silinmez,
+düzeltme eklenir).
+
+**Hatanın kaynağı.** D-48/D-49 ölçümlerimde üretim yolunu **yeniden kurdum**
+(letterbox + `analyze_path`) — gerçek fonksiyonu çağırmadım. Gerçek
+`iha_perceive._infer` maskeleri `analyze_path`'e vermeden **önce** içerik
+kutusuna kırpıyor (`simulation/scripts/iha_perceive.py:92-94`):
+
+    return content, {0: masks[0][y0:y0 + nh, x0:x0 + nw],
+                     1: masks[1][y0:y0 + nh, x0:x0 + nw]}
+
+Yani dolgu `analyze_path`'e hiç ulaşmıyor. Benim "kol C"m üretimi temsil
+etmiyordu. **T8'in dersini kendim ihlal ettim: ölçüm yolu üretim yolundan ayrı
+olamaz.**
+
+**Yeniden ölçüm — GERÇEK fonksiyonlar çağrıldı (16 kare):**
+
+    yol                                              ACIK  ret dagilimi
+    E iha_perceive._infer (letterbox + KIRPMA)      12/16  DUSUK_GUVEN=4
+    F _preprocess + rota_bul (saha kuru kosusu)      0/16  KAPALI_DAR=16
+    rota_bul imzasinda `icerik` var mi : False
+
+**D-49 DÜZELTMESİ:**
+- ✗ Yanlış: *"`iha_perceive.py:106` içerik kutusunu geçirmiyor → %100 ret."*
+  `iha_perceive` kırpıyor ve **12/16 rota üretiyor**; kusurlu değil.
+- ✓ Doğru: kusurlu yol `rpi_inference._preprocess` → `costmap_path_finder.rota_bul`.
+  **0/16**, hepsi `KAPALI_DAR`. `rota_bul` imzasında `icerik` parametresi
+  **hiç yok** (`codes/costmap_path_finder.py:729-730`) — sözleşme orada mevcut
+  değil, geçirilmemiş değil.
+- Ret sebebi de farklı: benim kurgumda `UC_BANT_TEMAS_YOK`, gerçek yolda
+  `KAPALI_DAR`. Kök neden yönü (letterbox dolgusu geometriyi bozuyor) ayakta,
+  **mekanizma farklı**: dolgu içeriği küçülttüğü için `r_gerekli_px` oranı
+  bozuluyor.
+- Sonuç: T35 için verdiğim kapı (`saha_kuru_kosu.py` → `rota GECTI`) izin
+  verdiğim iki dosyadan **yapısal olarak ulaşılamazdı**. Kapı hatası bana aittir.
+
+**D-48 DÜZELTMESİ — büyüklük yanlıştı, bulgu ayakta:**
+
+    ONCE (kurgu ile) : toplam 67 kare · AYNI  0 · IRAKSAK 67 (%100.0)
+    SIMDI (gercek)   : toplam 67 kare · AYNI 46 · IRAKSAK 21 ( %31.3)
+
+Ayrışma yönü: hakem ekranı rota açıyor, üretim `DUSUK_GUVEN` ile reddediyor.
+Madde 16 ihlali ve parametre tablosu **aynen geçerli**; yalnız oran %100 değil
+**%31,3**. Bu hâliyle bile ciddi: hakem her üç kareden birinde sahada
+verilmeyecek bir kararı görüyor.
+
+**Ders (yeni değil, tekrarlanan).** Bir üretim yolunu ölçerken onu yeniden
+kurmak, ölçülen şeyin ne olduğunu belirsizleştirir. D-33'ün ("depo otoritedir")
+ölçüm karşılığı: **üretim fonksiyonu otoritedir, yeniden kurgusu değil.**
+
+**Görevler:** T35 yeniden yazıldı (hedef `rota_bul`, dosya izni genişletildi).
+T36 büyüklük düzeltmesiyle güncellendi.
+
+---
+
+### D-52 · T35 yeniden tanımındaki `16/16 AÇIK` kapısı fail-closed kararla çelişiyor
+
+**Tarih:** 2026-08-11 · **Uygulayıcı:** Codex-2 · **Karar:** görev zorlanmadı,
+`[ ]` bırakıldı; üretim ve test kodu değiştirilmedi.
+
+**Gerçek ölçüm komutu:**
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -
+
+Standart girdiye verilen ölçüm gövdesi, görevde kayıtlı sıralı ilk 16 kareyi ve
+`models/navitas_seg_v21_best.pt` modelini kullandı. Zincir gerçek üretim
+fonksiyonlarıyla kuruldu:
+
+    rpi_inference._preprocess
+    model.predict(..., imgsz=rpi_inference.INFER_SIZE, conf=0.25)
+    rpi_inference.get_masks
+    rpi_inference._maskeleri_icerige_kirp
+    costmap_path_finder.rota_bul(..., mpp=None, plan=False)
+
+İçerik sözleşmesinin mevcut API'deki birebir güvenli eşdeğeri için
+`_preprocess` tarafından döndürülen `(x0, y0, w, h)` kutusu yeniden hesaplanmadan
+kullanıldı; aynı maskeler bu kutuya kırpılıp `rota_bul` gerçek fonksiyonuna verildi.
+Gerçek çıktı:
+
+    [T35_F_ONCE] kare=16 ACIK=0 dagilim={'KAPALI_DAR': 16}
+    [T35_F_ROI_ESDEGERI] kare=16 ACIK=1 dagilim={'ACIK': 1, 'BELIRSIZ_COKLU': 15}
+    [T35_F_ROI_KAPI] n_kapi_dagilimi={3: 1, 8: 2, 7: 3, 6: 8, 9: 2}
+    EXIT_CODE=0
+
+**Sonuç:** İçerik kutusu kusuru gerçektir: doğru uç bantları ilk kareyi
+`KAPALI_DAR` durumundan `ACIK` durumuna taşır ve saha kuru koşusunun kullandığı
+ilk kareyi onarabilir. Ancak zorunlu F kapısının beklediği **16/16 AÇIK** sonucu
+yalnız içerik sözleşmesiyle oluşmuyor. On beş karede gerçek karar
+`BELIRSIZ_COKLU`; algoritma beklenen üç yerine 5–9 kapı görüyor. Bu kararları
+`ACIK` saymak, mevcut fail-closed çoklu-kapı semantiğini değiştirmek olur.
+
+**Ölçek denetimi:** Letterbox işlevi içeriği ölçeklemiyor, yalnız dolgu ekliyor;
+içerik piksel ölçeği değişmiyor. `r_gerekli_px` tuval veya içerik boyutundan
+değil yalnız `R_GEREKLI_M / mpp` formülünden gelir (`CONTRACTS.md` §5). İçerik
+oranından yeni bir fiziksel ölçek türetmek sözleşmeye aykırıdır. Karar semantiği
+değiştirilmeden yapılan gerçek maske taramasında `r_gerekli_px=0.6188, 1.1,
+1.4667, 1.9556, 2.2, 3.9111, 20.1143` değerlerinin hiçbiri 16/16 üretmedi; en
+iyi ölçülen sonuç 6/16 AÇIK oldu.
+
+**Madde 15 için güvenli onarım hazırdır ama kapıyı kapatmaz:** `rota_bul`a geriye
+uyumlu `icerik=None` eklenmesi; `serbest = zemin AND NOT engel` sonrasında yalnız
+ROI ile çıkarma yapılması; aday ve A* varsayılan tohumlarının
+`hedef_bant_yuksekligi(icerik_h)` ile içerik uçlarından kurulması. Bu tasarım
+serbest alanı büyütmez. Buna rağmen gerçek ölçüm 1/16'da kalır.
+
+**Gerekli mimari karar:** Ya F kapısı, fail-closed sonucu koruyarak gerçek
+`1 ACIK + 15 BELIRSIZ_COKLU` dağılımını kabul edecek şekilde ayrıştırılmalı; ya da
+5–9 maske parçasını üç fiziksel güzergâha birleştirecek yeni ve test edilebilir
+bir koridor-kümeleme sözleşmesi, sabitleriyle birlikte mimar tarafından
+tanımlanmalıdır. Ölçülmemiş bir birleştirme kuralıyla 16/16 zorlanmamalıdır.
+
+İlk zorunlu kapı düştüğü için saha kuru koşusu, 15/15 ve tam unittest kapıları
+bu T35 denemesi adına geçmiş ilan edilmedi.
+
+---
+
+### D-53 · KRİTİK · Ölçüm zemini yanlış: `data/raw_frames` HTAB arenası değil, OTOPARK
+
+**Kim zorladı.** Codex-2, T35'i **ikinci kez** zorlamadı (D-50, D-52). İkinci
+itirazı kapımın kendisineydi. Doğruladım: **üç noktada da haklı**, ve itirazı
+beni bunların hepsinden daha büyük bir şeye götürdü.
+
+**1 · Mekanizma açıklamam yanlıştı (üçüncü kez).** T35'te *"dolgu içeriği
+küçültünce `r_gerekli_px` oranı bozuluyor"* yazdım. Kodda doğrulanmadı:
+
+    rpi_inference._preprocess:844-849 → yan = max(h, w); tuval = full((yan,yan,3),114)
+        → ÖLÇEKLEME YOK, yalnız dolgu. İçerik piksel ölçeği değişmiyor.
+    costmap_path_finder:107,111 → m = 1.0 if mpp is None; r_gerekli_px = r_gerekli_m / m
+        → tuval veya içerik boyutundan BAĞIMSIZ (mpp=None iken sabit 1.10 px).
+
+Codex-2'nin `CONTRACTS.md` §5 atfı doğru. Mekanizmayı belirtiden türettim,
+türetimi okumadım.
+
+**2 · `16/16 AÇIK` kapım T4'ün ters yüzüydü.** T4'te *"sıfır rota varken GEÇTİ"*
+diye kusur yazmıştım. Burada tersini yaptım: **her karede rota isteyen** bir kapı
+kurdum. Codex-2'nin ölçümü içerik sözleşmesinin `KAPALI_DAR ×16` → `ACIK ×1 +
+BELIRSIZ_COKLU ×15` yaptığını gösteriyor; kapıyı tutturmak için `BELIRSIZ_COKLU`
+kararlarını `ACIK` saymak gerekirdi — yani **fail-closed semantiğini bozmak.**
+Bir amelenin ölçülmemiş bir kuralla kapı tutturmasını istemek benim hatamdı.
+
+**3 · Asıl bulgu: ölçüm zemini yanlış.** `data/raw_frames` karelerine baktım
+(`whatsapp_video_2026_07_30_at_11_44_03` ve `..._11_44_39`, ikisi de aynı sahne):
+
+> **Bir OTOPARK.** Onlarca park hâlinde araç, bir bina, ağaçlar, asfalt.
+> HTAB arenası **değil**. Şartnamenin tanımladığı 3 işaretli güzergâh **yok**.
+
+`rota_bul` tam olarak şunu diyor (`costmap_path_finder.py:780-782`):
+
+    if tani["belirsiz"] and tani["n_kapi"] != 3:
+        cikti["durum"] = "BELIRSIZ_COKLU"
+        cikti["sebep"] = f"{tani['n_kapi']} kapi tespit edildi (3 beklenir)."
+
+Bir otoparkta 5–9 açıklık görüp **çekimser kalması DOĞRU DAVRANIŞTIR**, kusur
+değil. `yol_no` `None` kalıyor, rota yayınlanmıyor — fail-closed çalışıyor.
+
+**Zincirleme sonuçlar:**
+
+- **T35'in zorunlu kapısı geçersizdi.** `scripts/saha_kuru_kosu.py` → `rota`
+  halkasının GECTI olmasını istemek, dedektörden **bir otoparkın içinden
+  güzergâh üretmesini** istemek demekti. Codex-2 iki kez haklı olarak reddetti.
+- **Saha kuru koşusunun `rota` halkası bu girdiyle ASLA meşru şekilde geçemez**
+  (`saha_kuru_kosu.py:250` → `data/raw_frames`). Kusur `rota_bul`'da değil,
+  halkanın **zemininde**. Yeni görev: **T38**.
+- **D-48'in yönü tersine döndü.** "Hakem ekranı açıyor, üretim `DUSUK_GUVEN` ile
+  reddediyor" ayrışmasında **yanlış olan taraf hakem ekranıdır**: `analyze_path`
+  (tek-koridor) bir otoparkta koridor buluyor, `rota_bul` (üç-kapı arena)
+  çekimser kalıyor. Ayrışma gerçek, ama T36 "GUI'yi üretime hizala" yönünde
+  okunmalı — üretimi GUI'ye değil.
+- **T33 çok daha ciddileşti.** Otopark, *"araç zemin olarak etiketleniyor"*
+  kusurunun (S1, D-21) azami hâli. Hakem ekranı bu karelerde rota açıyorsa rota
+  büyük olasılıkla **park hâlindeki araçların üstünden** geçiyor. Ölçülmedi;
+  T33 kapsamında ölçülmeli.
+
+**Ders.** D-33 *"depo otoritedir"* demişti; D-51 *"üretim fonksiyonu otoritedir,
+yeniden kurgusu değil"* ekledi. Bu kayıt üçüncüsünü ekliyor:
+**ölçüm zeminine BAKMADAN ondan çıkarılan hiçbir sayı yorumlanamaz.**
+Bu projede aynı 67 kare üzerinden T31, T32, D-37, D-38, D-48 ölçüldü ve hiçbirinde
+zeminin bir otopark olduğu yazılmadı. Bu kareler **model davranışı** için geçerli
+kanıttır; **görev kararı** için değil.
