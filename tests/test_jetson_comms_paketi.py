@@ -10,29 +10,18 @@ import sys
 import unittest
 from pathlib import Path
 
-
 KOK = Path(__file__).resolve().parents[1]
 PAKET = KOK / "jetson_paket" / "kod"
-KOPYALAR = {
-    KOK / "codes" / "karar_sozlesmesi.py": PAKET / "karar_sozlesmesi.py",
-    # KARAR MOTORU DA AYNALANIR (T31 · REVIEW_LOG D-41 yan bulgusu).
-    # Bu iki satir yoktu ve `jetson_paket/kod/rpi_inference.py` 456 satir
-    # BAYAT kaldi: T24 (kenar guvenligi), T28 (ret sebepleri), T30 (witness
-    # yolu) ve T31/T32 hicbiri sahaya giden kopyada yoktu. Yani Jetson,
-    # kapatilmis KRITIK kusurlarla ucacakti. D-01'in ("T4 duzeltmesi IKIZ
-    # dosyada yapilmadi") tekrari; kapiyi dosya listesine bagliyoruz.
-    KOK / "codes" / "rpi_inference.py": PAKET / "rpi_inference.py",
-    KOK / "codes" / "costmap_path_finder.py": PAKET / "costmap_path_finder.py",
-    KOK / "comms" / "protocol.py": PAKET / "protocol.py",
-    KOK / "comms" / "link.py": PAKET / "link.py",
-    KOK / "comms" / "iha_sender.py": PAKET / "iha_sender.py",
-    KOK / "comms" / "inis_kaniti.py": PAKET / "inis_kaniti.py",
-    KOK / "comms" / "iha_inis_yayinci.py": PAKET / "iha_inis_yayinci.py",
-}
+BETIKLER = KOK / "scripts"
+if str(BETIKLER) not in sys.path:
+    sys.path.insert(0, str(BETIKLER))
+
+from jetson_paket_hazirla import KOPYALAR
 
 
 class JetsonCommsPaketiTests(unittest.TestCase):
     def test_paket_kopyalari_kanonik_kaynaklarla_birebir(self):
+        self.assertEqual(8, len(KOPYALAR), "paket kopya sozlesmesi 8 dosya olmali")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")

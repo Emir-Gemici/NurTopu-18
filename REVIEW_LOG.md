@@ -2934,3 +2934,219 @@ yeniden kurgusu değil"* ekledi. Bu kayıt üçüncüsünü ekliyor:
 Bu projede aynı 67 kare üzerinden T31, T32, D-37, D-38, D-48 ölçüldü ve hiçbirinde
 zeminin bir otopark olduğu yazılmadı. Bu kareler **model davranışı** için geçerli
 kanıttır; **görev kararı** için değil.
+
+---
+
+### D-54 · T35 üçüncü deneme: güvenli kod geçti, tam paket izinsiz kanonik aynada düştü
+
+**Tarih:** 2026-08-11 · **Uygulayıcı:** Codex-2 · **Karar:** görev zorlanmadı,
+`[ ]` bırakıldı; deneme kodu ve deneme testi geri alındı.
+
+Onaylanan güvenli tasarım geçici olarak uygulandı: `rota_bul(..., icerik=None)`,
+`serbest = zemin AND NOT engel` sonrasında yalnız ROI ile çıkarma ve hem aday hem
+A* varsayılan tohumlarının `hedef_bant_yuksekligi(icerik_h)` üzerinden kurulması.
+`codes/rpi_inference.py` içinde `rota_bul` çağrısı bulunmadığı doğrulandı; bu
+dosyada uydurma bir sarmalayıcı eklenmedi. Regresyon sahnesi `_preprocess` tarafından
+döndürülen kutuyu yeniden hesaplamadan taşıdı.
+
+**Gerçek 16-kare karar-kalitesi koşumu:**
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -
+
+Standart girdi ölçüm gövdesi görevde kayıtlı sıralı ilk 16 kareyi,
+`models/navitas_seg_v21_best.pt`, `imgsz=512`, `conf=0.25` ve gerçek
+`_preprocess -> predict -> get_masks -> rota_bul(mpp=None, plan=False)` zincirini
+kullandı. Gerçek çıktı:
+
+    [T35_KUME] kare=16 model=models/navitas_seg_v21_best.pt imgsz=512 conf=0.25
+    [T35_ONCE] ACIK=0 | KAPALI_DAR=16 | KAPALI_KOPUK=0 | BELIRSIZ_COKLU=0 | BELIRSIZ_TEK_KAPI=0 | MASKE_YOK=0
+    [T35_SONRA] ACIK=1 | KAPALI_DAR=0 | KAPALI_KOPUK=0 | BELIRSIZ_COKLU=15 | BELIRSIZ_TEK_KAPI=0 | MASKE_YOK=0
+    [T35_GECIS] KAPALI_DAR->ACIK=1 | KAPALI_DAR->BELIRSIZ_COKLU=15
+    [T35_KALITE] KAPALI_DAR=16->0 serbest_artan=0 belirsizden_acilan=0 geometri_esdegeri_olmayan_acilma=0 belirsiz_coklu_fail_closed=15
+    EXIT_CODE=0
+
+Bu çıktı karar gevşemesi olmadığını gösterdi: `BELIRSIZ_COKLU` olan 15 karenin
+tamamında `yol_no=None` ve waypoint boş kaldı. Tek `ACIK` geçişi aynı maskenin
+gerçek içerik kırpığında da `ACIK` olduğu için geometri düzeltmesiyle eşdeğerdi.
+Serbest piksel kümesinde büyüme olmadı.
+
+**Geçen odak ve genel rota kapıları:**
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_costmap_letterbox_icerik.py -v
+    Ran 6 tests in 0.199s
+    OK
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py
+    SONUC: 15/15 dogru
+    [OK] TUM DETERMINISTIK SAHNELER GECTI
+    EXIT_CODE=0
+
+**Düşen zorunlu tam paket kapısı:** İlk sandbox koşumundaki Windows TEMP izin
+hataları ölçüm sayılmadı; komut gerçek TEMP erişimiyle sandbox dışında yeniden
+çalıştırıldı:
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q
+    FAIL: test_paket_kopyalari_kanonik_kaynaklarla_birebir
+          (hedef='costmap_path_finder.py')
+    AssertionError: paket kopyasi bayat: costmap_path_finder.py
+    Ran 208 tests in 32.925s
+    FAILED (failures=1)
+    EXIT_CODE=1
+
+**Kök neden ve yetki engeli:** Tam paket, `codes/costmap_path_finder.py` ile
+`jetson_paket/kod/costmap_path_finder.py` dosyalarının bayt eşitliğini zorunlu
+kılıyor. T35 üçüncü tanımının dosya izni Jetson paket aynasını kapsamıyor. Testi
+zayıflatmak veya bayat paketi kabul etmek doğru değildir. Bu nedenle görev
+`READY_FOR_REVIEW` yapılmadı. Geri alma sonrasında iki dosyanın SHA-256 değeri
+yeniden eşittir:
+
+    0591E1DF34B3BBFB5EC3CA01073953D4DFC294F4728039F471D912A0823F1156
+
+**Bir sonraki deneme için kod-inceleme şartı:** İçerik kutusu kısmen tuval dışına
+taşıyorsa veya kesirli/bool/bozuk biçimdeyse sessizce kırpılıp kabul edilmemeli;
+`_preprocess` zaten tam sınır içi tamsayı kutu üretir. Verilen geçersiz kutular
+boş ROI ile fail-closed `MASKE_YOK` üretmeli ve bu durumlar test edilmelidir.
+
+T35'in tamamlanması için en az
+`jetson_paket/kod/costmap_path_finder.py` kanonik aynasına yazma izni gerekir.
+Commit veya push yapılmadı.
+
+---
+
+### D-55 · ÖNEMLİ · T27 denetimimde kaçırdım: paket üreteci, parite testinin kapsadığı iki dosyayı üretmiyor
+
+**Nasıl çıktı.** Codex-2 T35'i **üçüncü kez** zorlamadı (D-54). Bu kez kapı
+değil **dosya izni** engeldi ve engelin kökü benim denetimimde kaçırdığım bir
+tutarsızlık.
+
+**Bulgu — kendim doğruladım:**
+
+    scripts/jetson_paket_hazirla.py:15-22  KOPYALAR = { 6 dosya }
+        karar_sozlesmesi · protocol · link · iha_sender · inis_kaniti · iha_inis_yayinci
+
+    tests/test_jetson_comms_paketi.py:24-25  KOPYALAR ek olarak:
+        codes/rpi_inference.py        -> paket/rpi_inference.py
+        codes/costmap_path_finder.py  -> paket/costmap_path_finder.py
+
+**Parite testi 8 dosyayı zorunlu kılıyor; üreteç 6 dosya üretiyor.** Kalan iki
+dosya hâlâ **elle kopya**. Dolayısıyla `codes/rpi_inference.py` veya
+`codes/costmap_path_finder.py`'ye dokunan her görev tam paketi düşürüyor ve tek
+çözüm elle kopyalamak oluyor — **T27'nin kaldırmayı amaçladığı kırılganlığın ta
+kendisi.**
+
+**Benim hatam.** T27'yi 2026-08-10'da denetlerken 7/7 sha eşitliğini kendim
+hesapladım ve "paket artık üretiliyor, kopya-dosya kırılganlığı yapısal olarak
+kapandı" diye kapattım. **Üretecin listesi ile testin listesinin aynı olup
+olmadığını kontrol etmedim.** İki liste ayrı yerlerde elle tutuluyor; sessizce
+ıraksadılar. Sha eşitliğini doğrulamak, *eşitliği kimin sürdürdüğünü*
+doğrulamaz.
+
+**Sonuç.** T35 üç turdur ilerleyemiyor ve üçünde de sebep benim görev
+tanımımdı: (1) yanlış hedef dosya (D-51), (2) fail-closed'u bozan kapı (D-52/53),
+(3) parite aynasını kapsamayan dosya izni (bu kayıt). Codex-2 üçünde de kodu
+zorlamadı ve kanıtla geri verdi — **istenen davranış tam olarak budur.**
+
+**Görev:** `TASK_QUEUE.md` **T39** (üreteç ve test tek listeden okusun), T35'in
+önüne alındı.
+
+**Kalıcı kural (`AGENTS.md`'ye taşınacak):** `codes/` altındaki kanonik saha
+modüllerinden birine dokunan her görev, `scripts/jetson_paket_hazirla.py`'yi
+**yeniden koşmak zorundadır**; dosya izni Jetson aynasını da kapsamalıdır.
+
+---
+
+### D-56 · KARAR · Arena çekimi iptal; yerine kompozit zemin — ve kapanmayan sınır
+
+**Karar (2026-08-11, kullanıcı).** Kurulu arenanın ≥30 m nadir çekimi uzun süre
+yapılamayacak. `TASK_QUEUE.md` `FAZ 0-B` içindeki `[REQUIRES_HUMAN: ARENA CEKIMI]`
+satırı **kaldırıldı** — `auto_orchestrator.py:31` bu satırı ilk taramada süresiz
+beklerdi ve tüm insan kuyruğunu tıkardı. Kaldırma gerekçesi kayıtta duruyor;
+görev gizlenmedi, **kapatıldı**.
+
+**Neden bir alternatif şart.** D-53: elimizdeki tek gerçek ölçüm zemini
+(`data/raw_frames`) bir **otopark**. Arena mantığı — üç kapı, uç bant teması,
+güzergâh seçimi — bu zeminde **sınanamıyor**. Üç turdur T35 bunun bedelini ödedi.
+
+**Değerlendirilen ve ELENEN seçenek: saf sentetik arena.** `dataset/sentetik_arena`
+mevcut ve arena geometrisi taşıyor. Ama modelleri **bu üretecin verisiyle
+eğitiyoruz**; aynı dağılımla test etmek dairesel olur ve bakir küme sayılmaz.
+
+**Seçilen: kompozit zemin (T40).** `scripts/copy_paste_augmentation.py` gerçek
+zemin üzerine `1=engel` ve `2=hedef` poligonları yapıştırıyor (S1'de araç kâhini
+DOTA OBB'ye geçirildi). Sonuç: **gerçek görüntü istatistiği + kontrollü arena
+semantiği + tam yer gerçeği.** Yer gerçeği elimizde olduğu için ilk kez
+*beklenen kararı bilerek* kapı kurabiliyoruz — bugüne kadar hiçbir arena
+ölçümünde bu yoktu.
+
+**T40'ın en kritik tasarım kuralı.** Arka plan bir otopark: park hâlindeki
+araçlar **engel katmanına girmek zorunda**. Girmezse v16'yı arena moloza basma
+oranında %2,7'den %31,6'ya çökerten *"etiketsiz engel"* hatası birebir tekrarlanır.
+Kâhin **DOTA OBB**, COCO değil (ölçüldü: aynı karede 2'ye karşı 93 araç).
+
+**🔴 KAPANMAYAN SINIR — hiçbir raporda gizlenmeyecek.**
+Gerçek 30 m arena karesi olmadan **modelin gerçek arenadaki başarımı
+doğrulanamaz.** Ölçülmüş gerçek (K-3): mAP arena sıralamasını **tersine
+çeviriyor** — mAP lideri v13 arenada en kötü, en düşük mAP'li v17 arenada en iyi.
+Dolayısıyla kompozit veya sentetik zeminde iyi olan bir modelin arenada iyi
+olacağı **kanıtlanmış değildir**.
+
+T40 **karar mantığını** sınanabilir kılar. **Model başarımını sınamaz.**
+Bu ayrım FDR/FDA belgelerinde de açıkça yazılmalıdır; aksi hâlde "arena test
+edildi" ifadesi doğrulanmamış bir iddia olur — S9/T34/D-47 ile aynı kusur sınıfı,
+bu kez belge düzeyinde.
+
+**Ucuz insan alternatifi (bloke etmez, istendiğinde yapılabilir):** 20×20 m yerine
+~2×2 m maket — karton moloz + kırmızı bez H, balkon/çatı/merdivenden nadir açıyla
+telefon çekimi. Ölçek farkı `mpp` ile normalize edilir. Gerçek ışık, gölge ve
+doku sağlar; domain boşluğunu **daraltır**, kapatmaz. Kuyruğa görev olarak
+eklenmedi — kullanıcı imkân bulursa değerlendirilecek.
+
+---
+
+### D-57 · ÖNEMLİ · T35 sözleşmeyi getirdi, kusuru KAPATMADI — kapsamı ben dar tuttum
+
+**Bağlam.** Codex-2 T35'i dördüncü turda tamamladı (önceki üçünde haklı olarak
+reddetmişti: D-50, D-52/53, D-54/55). Sözleşme doğru ve güvenli.
+
+**Bağımsız denetimim — Codex-2'nin raporuna bakmadan, gerçek zincirle koştum:**
+
+    1 · DURUM DAGILIMI
+      icerik GECIRILMEDEN (bugunku hal)  KAPALI_DAR=16
+      icerik GECIRILINCE                 ACIK=1 | BELIRSIZ_COKLU=15
+    2 · MADDE 15   serbest pikseli ARTAN kare : 0
+    3 · FAIL-CLOSED  BELIRSIZ_COKLU olup yol/waypoint URETEN kare : 0
+    4 · GECERSIZ ICERIK KUTUSU (tasan / negatif / kesirli / sifir alan / bool)
+        -> hepsi durum=MASKE_YOK  yol_no=None
+
+Dört kapının dördü geçti. 4. madde Codex-2'nin kendi eklediği şarttı: bozuk kutu
+sessizce kırpılmıyor, fail-closed `MASKE_YOK` üretiyor.
+
+**Kapanmayan kısım.** Sözleşme **hiçbir çağrı yerine bağlanmadı**. Altı üretim
+çağrısının tamamı `icerik` geçirmiyor (`jetson_fps.py` ×2 kopya ·
+`kamera_dogrula.py` · `saha_kuru_kosu.py` ×2 · `v21_degerlendir_ve_paketle.py` ·
+`iha_haritala.py`). Saha yolu bugün hâlâ **16/16 `KAPALI_DAR`** üretiyor.
+
+**Bu Codex-2'nin eksiği değil, benim kapsam kararım.** Üçüncü tanımda dosya
+iznini bilerek dar tuttum ve `jetson_paket/kod/` için "elle düzenlenmeyecek"
+dedim — `jetson_fps.py` ve `kamera_dogrula.py` üretilen dosya olmadığı için bu
+onları fiilen kilitledi.
+
+**Neden yine de doğru kayıt.** T35'i *"saha rotası düzeldi"* diye kapatmak, tam
+olarak bu turda üç kez kapattığımız kusur sınıfı olurdu (S9 · T34 · D-47:
+doğrulanmamış iddia). T35 **sözleşme var ve güvenli** demektir, o kadar.
+Saha kuru koşusunun `rota` halkası hâlâ `DUSTU`.
+
+**Yan bulgu — T39'un kusur SINIFI tam kapanmadı.** T39 iki listeyi tek kaynağa
+indirdi (test artık `KOPYALAR`'ı üreteçten içe aktarıyor + `assertEqual(8, ...)`
+koruması). Ancak paket dizininde **dokuzuncu bir ikiz** var ve sözleşmenin
+dışında:
+
+    paket dosyasi        uretecte?  ikiz                     durum
+    jetson_fps.py        HAYIR      scripts/jetson_fps.py    AYNI
+    kamera_dogrula.py    HAYIR      —                        (ikizi yok)
+
+Bugün bayt-eşitler; bunu zorlayan hiçbir şey yok. D-01 ve D-55'in aynısı.
+**T41** kapsamına alındı (liste 8 → 9).
+
+**Görev:** `TASK_QUEUE.md` **T41**.

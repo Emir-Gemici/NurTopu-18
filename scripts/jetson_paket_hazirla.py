@@ -14,6 +14,8 @@ KOK = Path(__file__).resolve().parents[1]
 PAKET_KOD = KOK / "jetson_paket" / "kod"
 KOPYALAR = {
     KOK / "codes" / "karar_sozlesmesi.py": PAKET_KOD / "karar_sozlesmesi.py",
+    KOK / "codes" / "rpi_inference.py": PAKET_KOD / "rpi_inference.py",
+    KOK / "codes" / "costmap_path_finder.py": PAKET_KOD / "costmap_path_finder.py",
     KOK / "comms" / "protocol.py": PAKET_KOD / "protocol.py",
     KOK / "comms" / "link.py": PAKET_KOD / "link.py",
     KOK / "comms" / "iha_sender.py": PAKET_KOD / "iha_sender.py",

@@ -45,6 +45,11 @@ from dataclasses import dataclass, field
 import cv2
 import numpy as np
 
+try:
+    from .karar_sozlesmesi import hedef_bant_yuksekligi
+except ImportError:
+    from karar_sozlesmesi import hedef_bant_yuksekligi
+
 logger = logging.getLogger("costmap_path_finder")
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -162,8 +167,49 @@ def _yaricap_cekirdegi(yaricap_px):
     return _cekirdek(2 * yaricap + 1)
 
 
+def _icerik_kutusunu_dogrula(icerik, h, w):
+    """Letterbox icerik kutusunu dogrula; cagri hatasinda bos ROI don.
+
+    ``None`` eski cagrilar icin tum tuvali temsil eder. Verilen kutu dort
+    tamsayidan olusmali, pozitif olmali ve tuvalin tumuyle icinde kalmalidir.
+    Gecersiz kutu sessizce kirpilmaz; fail-closed bos ROI olur.
+    """
+    if icerik is None:
+        return 0, 0, w, h
+    if isinstance(icerik, np.ndarray):
+        if icerik.shape != (4,):
+            return 0, 0, 0, 0
+        degerler = tuple(icerik)
+    elif isinstance(icerik, (tuple, list)):
+        degerler = tuple(icerik)
+    else:
+        return 0, 0, 0, 0
+    if len(degerler) != 4:
+        return 0, 0, 0, 0
+    if any(isinstance(v, (bool, np.bool_)) or
+           not isinstance(v, (int, np.integer)) for v in degerler):
+        return 0, 0, 0, 0
+
+    x0, y0, genislik, yukseklik = (int(v) for v in degerler)
+    if (genislik <= 0 or yukseklik <= 0 or x0 < 0 or y0 < 0 or
+            x0 + genislik > w or y0 + yukseklik > h):
+        return 0, 0, 0, 0
+    return x0, y0, genislik, yukseklik
+
+
+def _icerik_maskesi(h, w, icerik):
+    """Dogrulanmis icerik kutusu ile yalniz-cikaran ikili maske don."""
+    kutu = _icerik_kutusunu_dogrula(icerik, h, w)
+    x0, y0, genislik, yukseklik = kutu
+    maske = np.zeros((h, w), np.uint8)
+    if genislik > 0 and yukseklik > 0:
+        maske[y0:y0 + yukseklik, x0:x0 + genislik] = 1
+    return kutu, maske
+
+
 def serbest_alan(maskeler, *, mpp=None, yol_sinif_idler=(0,), engel_sinif_idler=(1,),
-                 algi_payi_px=None, ac_px=None, kapat_px=None, min_ada_px=None):
+                 algi_payi_px=None, ac_px=None, kapat_px=None, min_ada_px=None,
+                 icerik=None):
     """Zemin - engel = serbest alan. SIRALAMA KRITIK (asagida acikliyor).
 
     maskeler: {sinif_id: (h,w) uint8 binary mask} — rpi_inference.get_masks() ciktisi.
@@ -212,7 +258,12 @@ def serbest_alan(maskeler, *, mpp=None, yol_sinif_idler=(0,), engel_sinif_idler=
     # --- 4) CIKARMA EN SON. Bundan sonra hicbir genisletme yapilmaz. ---
     serbest = cv2.bitwise_and(zemin, cv2.bitwise_not(engel))
 
-    # --- 5) ada temizligi: alan filtresi (erozyon DEGIL) ---
+    # --- 5) letterbox dolgusu YALNIZ CIKARIR; serbest alani buyutemez ---
+    icerik_kutusu, icerik_maske = _icerik_maskesi(h, w, icerik)
+    serbest = serbest.copy()
+    serbest[icerik_maske == 0] = 0
+
+    # --- 6) ada temizligi: alan filtresi (erozyon DEGIL) ---
     n, etiket, ist, _ = cv2.connectedComponentsWithStats(serbest, 8)
     temiz = np.zeros_like(serbest)
     for k in range(1, n):
@@ -223,22 +274,29 @@ def serbest_alan(maskeler, *, mpp=None, yol_sinif_idler=(0,), engel_sinif_idler=
     dt_px = cv2.distanceTransform(serbest, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
 
     return {"serbest": serbest, "engel_ham": engel_ham, "engel": engel,
-           "zemin": zemin, "dt_px": dt_px, "sekil": (h, w), "olcek": olc}
+           "zemin": zemin, "dt_px": dt_px, "sekil": (h, w), "olcek": olc,
+           "icerik": icerik_kutusu}
 
 
 # ────────────────────────────────────────────────────────────────────────────
 # 5) KORIDOR ADAYLARI — en-buyuk-bilesen yerine "kapi" testi
 # ────────────────────────────────────────────────────────────────────────────
-def _tohum_maske(kaynak, h, w, taraf):
-    """baslangic/hedef=None ise varsayilan tohum: alt/ust %8 seridi."""
+def _tohum_maske(kaynak, h, w, taraf, *, icerik=None):
+    """Varsayilan tohumu letterbox iceriginin alt/ust uc bandinda kur."""
     if kaynak is not None:
         return kaynak.astype(np.uint8)
+
+    icerik_kutusu, _icerik_maske = _icerik_maskesi(h, w, icerik)
     m = np.zeros((h, w), np.uint8)
-    pay = max(1, int(h * 0.08))
+    x0, y0, genislik, yukseklik = icerik_kutusu
+    if genislik == 0 or yukseklik == 0:
+        return m
+    pay = hedef_bant_yuksekligi(yukseklik)
     if taraf == "alt":
-        m[h - pay:, :] = 1
+        m[y0 + yukseklik - pay:y0 + yukseklik,
+          x0:x0 + genislik] = 1
     else:
-        m[:pay, :] = 1
+        m[y0:y0 + pay, x0:x0 + genislik] = 1
     return m
 
 
@@ -295,7 +353,7 @@ def _bagli_mi(gecilebilir, tohum_a, tohum_b):
 
 def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
                      bant_oranlari=(0.30, 0.40, 0.50, 0.60, 0.70),
-                     bant_yukseklik_orani=0.06):
+                     bant_yukseklik_orani=0.06, icerik=None):
     """3 guzergahi (ya da kac tane varsa) ayirt edip her birini degerlendirir.
 
     NEDEN EN-BUYUK-BAGLI-BILESEN YETMEZ: 3 guzergah baslangicta ayrilip hedefte
@@ -312,6 +370,8 @@ def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
     """
     gecilebilir = (dt_px >= r_gerekli_px).astype(np.uint8)
     h, w = gecilebilir.shape
+    icerik_kutusu, icerik_maske = _icerik_maskesi(h, w, icerik)
+    gecilebilir[icerik_maske == 0] = 0
 
     ys, xs = np.nonzero(gecilebilir)
     if len(ys) == 0:
@@ -321,8 +381,10 @@ def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
     bbox_h = max(1, y1_bbox - y0_bbox)
     x0_bbox, x1_bbox = int(xs.min()), int(xs.max())
 
-    tohum_a = _tohum_maske(baslangic, h, w, "alt")
-    tohum_b = _tohum_maske(hedef, h, w, "ust")
+    tohum_a = _tohum_maske(
+        baslangic, h, w, "alt", icerik=icerik_kutusu)
+    tohum_b = _tohum_maske(
+        hedef, h, w, "ust", icerik=icerik_kutusu)
 
     min_kapi_px = 2 * r_gerekli_px
     en_iyi = None
@@ -727,21 +789,27 @@ def rota_dogrula(waypoints_px, engel_ham, dt_px_tam, r_gerekli_px, *, katı=Fals
 # 8) UST SEVIYE
 # ────────────────────────────────────────────────────────────────────────────
 def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
-            yol_sinif_idler=(0,), engel_sinif_idler=(1,), gorsel_cikti=False):
+             yol_sinif_idler=(0,), engel_sinif_idler=(1,), gorsel_cikti=False,
+             icerik=None):
     """Ust seviye giris noktasi. Dondugu dict:
       durum: "ACIK" | "MASKE_YOK" | "KAPALI_KOPUK" | "KAPALI_DAR"
            | "BELIRSIZ_COKLU" | "BELIRSIZ_TEK_KAPI" | "DOGRULAMA_BASARISIZ"
       yol_no: 1|2|3|None, guven: float, waypoints_px: [(x,y),...]
+
+    icerik: letterbox tuvalindeki gercek goruntu dikdortgeni ``(x0,y0,w,h)``.
+      ``None`` geriye uyumlu olarak tum tuvali icerik sayar. Verilen kutu
+      gecersizse fail-closed bos ROI olur. Kutu serbest alani yalniz daraltir ve
+      varsayilan baslangic/hedef bantlarini konumlandirir.
     """
     import time
     t0 = time.perf_counter()
     sonuc = serbest_alan(maskeler, mpp=mpp, yol_sinif_idler=yol_sinif_idler,
-                         engel_sinif_idler=engel_sinif_idler)
+                         engel_sinif_idler=engel_sinif_idler, icerik=icerik)
     t1 = time.perf_counter()
     olc = sonuc["olcek"]
 
     adaylar, tani = koridor_adaylari(sonuc["dt_px"], olc["r_gerekli_px"],
-                                     baslangic, hedef)
+                                     baslangic, hedef, icerik=sonuc["icerik"])
     t2 = time.perf_counter()
 
     cikti = {
@@ -800,8 +868,10 @@ def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
     # oldugundan bu genelde buyuk bir hizlanma saglar (sentetik testte HTAB
     # tuvali doldurdugu icin kazanc kucuk gorunur, gercek karede buyuktur).
     gecilebilir_tam_bool = (sonuc["dt_px"] >= olc["r_gerekli_px"]).astype(np.uint8)
-    tohum_a_tam = _tohum_maske(baslangic, h, w, "alt")
-    tohum_b_tam = _tohum_maske(hedef, h, w, "ust")
+    tohum_a_tam = _tohum_maske(
+        baslangic, h, w, "alt", icerik=sonuc["icerik"])
+    tohum_b_tam = _tohum_maske(
+        hedef, h, w, "ust", icerik=sonuc["icerik"])
     n_cc, etiket_cc = cv2.connectedComponents(gecilebilir_tam_bool, 8)
     ea = set(np.unique(etiket_cc[(tohum_a_tam > 0) & (gecilebilir_tam_bool > 0)])) - {0}
     eb = set(np.unique(etiket_cc[(tohum_b_tam > 0) & (gecilebilir_tam_bool > 0)])) - {0}
@@ -964,7 +1034,13 @@ def analyze_path_uyumlu(maskeler_veya_trav, n_waypoints=8, return_clean=False,
     else:
         maskeler = {0: maskeler_veya_trav}
 
-    sonuc = rota_bul(maskeler, plan=True, **kw)
+    rota_kw = dict(kw)
+    if return_clean:
+        # Temiz maske karar ile AYNI ROI sozlesmesinden gelmelidir. Burada
+        # serbest alani yeniden kurmak, icerik kutusunu dusurup dolguyu yeniden
+        # serbest gosterebilirdi.
+        rota_kw["gorsel_cikti"] = True
+    sonuc = rota_bul(maskeler, plan=True, **rota_kw)
     open_path = sonuc["yol_no"]
     guven = sonuc["guven"]
     waypoints = [tuple(wp) for wp in sonuc["waypoints_px"]]
@@ -977,8 +1053,7 @@ def analyze_path_uyumlu(maskeler_veya_trav, n_waypoints=8, return_clean=False,
         return None, 0.0, []
 
     if return_clean:
-        clean = (sonuc.get("serbest") if "serbest" in sonuc else
-                (serbest_alan(maskeler)["serbest"]))
+        clean = sonuc["serbest"]
         return open_path, guven, waypoints, clean
     return open_path, guven, waypoints
 
