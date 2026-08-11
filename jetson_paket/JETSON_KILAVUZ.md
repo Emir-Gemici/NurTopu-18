@@ -43,15 +43,15 @@ bu koşumda **kanıt değildir**. Modeli ya da Jetson'u suçlama — bilinen dep
 FPS sayıları geçerli sayılır, ama tohum boş çıkınca `koridor_adaylari` erken
 döndüğü için **bir miktar iyimser** olabilir; raporda böyle not düş.
 
-### G3 · Paketten rota GÖNDEREMEZSİN — bu test algı testidir, uçtan uca değil
+### G3 · Haberleşme kodu pakette — canlı saha kanıtı yine donanım ister
 
-`jetson_paket/kod/` içinde `protocol.py`, `iha_sender.py`, `link.py` **yok**;
-`requirements_rpi.txt`'te `pyserial` de yok. Yani İHA bu paketle görüntüyü
-işler ama sonucu İKA'ya **iletemez** (`REVIEW_LOG.md` D-22, kopukluk 1).
+`jetson_paket/kod/`, rota ve iniş yayını için kanonik `comms/` modüllerini;
+`requirements_rpi.txt` ise `pyserial` ve `pymavlink` bağımlılıklarını taşır.
+Kopyalar `scripts/jetson_paket_hazirla.py` ile depo kaynaklarından yenilenir.
 
-Bugünkü Jetson testi şunları kanıtlayabilir: **kamera açılıyor mu · model
-yükleniyor mu · çıkarım hızı ne · TensorRT engine derleniyor mu.**
-Şunları kanıtlayamaz: rota aktarımı · ACK · İKA'nın hareket etmesi.
+Depo kapısı paket içeriğini ve loopback ACK yolunu doğrular. Buna rağmen bu
+bilgisayarda Pixhawk/SiK donanımıyla canlı doğrulama yapılmadı. Jetson testi
+İKA'nın fiziksel hareketini kanıtlamaz; gerçek motor sürücüsü ayrı saha halkasıdır.
 
 ### G4 · `rpi_inference.py` artık `costmap_path_finder.py` olmadan çalışmaz
 
@@ -192,6 +192,12 @@ jetson_paket/
 │   ├── jetson_fps.py            ← olcum betigi
 │   ├── rpi_inference.py         ← _preprocess / get_masks kaynagi
 │   ├── costmap_path_finder.py   ← Katman A karari
+│   ├── karar_sozlesmesi.py      ← rota karar sabitleri
+│   ├── protocol.py              ← ortak mesaj cercevesi
+│   ├── link.py                  ← UDP / SiK seri tasiyicilari
+│   ├── iha_sender.py            ← ACK'li rota ve olay yayini
+│   ├── inis_kaniti.py           ← Pixhawk yerde + irtifa kaniti
+│   ├── iha_inis_yayinci.py      ← saha IHA_LANDED yayincisi
 │   ├── karisim_arena.yaml       ← INT8 kalibrasyonu icin
 │   └── requirements_rpi.txt
 └── test_goruntuleri/
@@ -201,8 +207,9 @@ jetson_paket/
 
 Jetson'da klasör yapısını koru:
 ```bash
-mkdir -p ~/navitas/{codes,scripts,models,data}
-cp kod/rpi_inference.py kod/costmap_path_finder.py ~/navitas/codes/
+mkdir -p ~/navitas/{codes,comms,scripts,models,data}
+cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py ~/navitas/codes/
+cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py ~/navitas/comms/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
 cp -r test_goruntuleri ~/navitas/data/
@@ -215,11 +222,19 @@ cp -r test_goruntuleri ~/navitas/data/
 ## 3. Bağımlılıklar
 
 ```bash
-python3 -c "import cv2, numpy, ultralytics; print('hepsi var')"
+python3 -c "import cv2, numpy, ultralytics, serial, pymavlink; print('hepsi var')"
 ```
 Eksikse:
 ```bash
-pip3 install ultralytics opencv-python numpy
+pip3 install ultralytics opencv-python numpy pyserial pymavlink
+```
+
+Saha iniş yayıncısında toplam kanıt süresi operatör tarafından açıkça verilir;
+kod içinde gizli timeout yoktur:
+
+```bash
+cd ~/navitas/comms
+python3 iha_inis_yayinci.py --mavlink udp:127.0.0.1:14550 --kanit-timeout 5 --serial /dev/ttyUSB0
 ```
 
 ⚠ **`pip install torch` YAPMA.** Jetson'da PyTorch NVIDIA'nın JetPack'e özel

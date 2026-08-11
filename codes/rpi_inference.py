@@ -34,8 +34,8 @@ from ultralytics import YOLO
 # _tohum_merkezi kopyasi). costmap_path_finder yalniz cv2/numpy/heapq kullanir,
 # dairesel import yoktur.
 if __package__:
-    from .costmap_path_finder import (_bagli_mi, _gorus_hatti,
-                                      _maks_aralikla_bol,
+    from .costmap_path_finder import (_bagli_mi, _bresenham_noktalari,
+                                      _gorus_hatti, _maks_aralikla_bol,
                                       _tohum_plan_izgarasi, astar,
                                       plan_izgarasi, yol_duzelt)
     from .karar_sozlesmesi import (ALAN_YETERSIZ_SEBEBI,
@@ -47,10 +47,11 @@ if __package__:
                                    UC_BANT_TEMAS_YOK_SEBEBI,
                                    bant_temasi_gereken_px,
                                    bant_temasi_yeterli_mi,
-                                   hedef_bant_yuksekligi, rota_guven_reddi)
+                                   hedef_bant_yuksekligi, rota_darbogaz_guveni,
+                                   rota_guven_reddi, serit_no)
 else:
-    from costmap_path_finder import (_bagli_mi, _gorus_hatti,
-                                     _maks_aralikla_bol,
+    from costmap_path_finder import (_bagli_mi, _bresenham_noktalari,
+                                     _gorus_hatti, _maks_aralikla_bol,
                                      _tohum_plan_izgarasi, astar,
                                      plan_izgarasi, yol_duzelt)
     from karar_sozlesmesi import (ALAN_YETERSIZ_SEBEBI,
@@ -62,7 +63,8 @@ else:
                                   UC_BANT_TEMAS_YOK_SEBEBI,
                                   bant_temasi_gereken_px,
                                   bant_temasi_yeterli_mi,
-                                  hedef_bant_yuksekligi, rota_guven_reddi)
+                                  hedef_bant_yuksekligi, rota_darbogaz_guveni,
+                                  rota_guven_reddi, serit_no)
 
 _here = Path(__file__).parent
 MODEL_DIR = next(
@@ -442,18 +444,94 @@ def _rotayi_ornekle(kanonik, n_waypoints, koridor):
     return list(kanonik)
 
 
+def _rota_pikselleri(rota):
+    """Rotanin LINE_8 piksel dizisi — waypoint DUGUMLERI degil, tum cizgi.
+
+    Karar ornekleme sayisindan bagimsiz olmalidir (CONTRACTS SS6.4/5).
+    Dugumlerden ornekleseydik `n_waypoints` degisince olcum de degisirdi;
+    segmentlerin kendi rasterizasyonu ayni polyline icin degismez.
+    Rasterizasyon `_gorus_hatti` / `rota_dogrula` ile AYNI kaynaktan
+    (`_bresenham_noktalari`) gelir — ikinci bir yuvarlama uretilmez.
+    """
+    if not rota:
+        return []
+    pikseller = [(int(rota[0][0]), int(rota[0][1]))]
+    for a, b in zip(rota, rota[1:]):
+        pikseller.extend(_bresenham_noktalari(a, b)[1:])
+    return pikseller
+
+
+def _rota_serit_olcumu(rota, dist, icerik):
+    """Serit ve darbogazi ROTANIN KENDISINDEN olc (T31 / T32).
+
+    NEDEN (REVIEW_LOG D-41): `open_path` ve `confidence` koridorun UST %30
+    bandindan turetiliyordu. Olculdu: 67 gercek karenin 67'sinde yayinlanan
+    etiket rotanin GERCEKTEN gectigi seritle uyusmuyordu (etiket hep 2; rota
+    32 karede serit 1, 35 karede serit 3). `road` yalnizca ekran etiketi
+    degil, IKA'nin planlama girdisidir (`comms/ika_receiver.py:11`), bu
+    yuzden rotanin kendisinden okunur.
+
+    Doner (rota olculemezse ``None``):
+      darbogaz_serit : rotanin EN DAR gectigi serit  -> yayinlanan `road`
+      baskin_serit   : en cok rota pikseli tasiyan serit (karsilastirma icin)
+      seritler       : serit basina rota pikseli sayisi (n1, n2, n3)
+      darbogaz_px    : rota boyunca olculen en kucuk aciklik (dt yaricapi)
+      darbogaz_xy    : o acikligin olculdugu piksel
+      serit_min_px   : serit basina en kucuk aciklik (None = rota o seritte yok)
+      cok_seritli    : rota birden fazla seride giriyor mu
+    """
+    icerik_x0, _, icerik_w, _ = icerik
+    h, w = dist.shape
+    pikseller = _rota_pikselleri(rota)
+    if not pikseller:
+        return None
+    sayim = [0, 0, 0]
+    serit_min = [None, None, None]
+    darbogaz_px = float("inf")
+    darbogaz_xy = None
+    for px, py in pikseller:
+        xx = min(w - 1, max(0, int(px)))
+        yy = min(h - 1, max(0, int(py)))
+        aciklik = float(dist[yy, xx])
+        s = serit_no(xx, icerik_x0, icerik_w) - 1
+        sayim[s] += 1
+        if serit_min[s] is None or aciklik < serit_min[s]:
+            serit_min[s] = aciklik
+        if aciklik < darbogaz_px:
+            darbogaz_px = aciklik
+            darbogaz_xy = (xx, yy)
+    mevcut = [i for i in range(3) if sayim[i] > 0]
+    if not mevcut:
+        return None
+    # DARBOGAZ SERIDI: en kucuk acikligi tasiyan serit. Esitlikte daha cok rota
+    # pikseli olan kazanir — sonuc deterministiktir, tarama sirasina bagli degil.
+    darbogaz_serit = min(mevcut, key=lambda i: (serit_min[i], -sayim[i])) + 1
+    baskin_serit = max(mevcut, key=lambda i: (sayim[i], -i)) + 1
+    return {
+        "darbogaz_serit": int(darbogaz_serit),
+        "baskin_serit": int(baskin_serit),
+        "seritler": tuple(sayim),
+        "darbogaz_px": float(darbogaz_px),
+        "darbogaz_xy": darbogaz_xy,
+        "serit_min_px": tuple(serit_min),
+        "cok_seritli": len(mevcut) > 1,
+        "rota_px": len(pikseller),
+    }
+
+
 def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
                  min_area_ratio=0.01, *, icerik=None, engel_mask=None,
-                 return_reason=False):
+                 return_reason=False, return_olcum=False):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
       1b. engel_mask verilmisse CIKARMA — kapama sonrasi, EN SON (madde 15)
       2. Ayni bilesenin baslangic ve hedef uc bantlarina temasi; degilse KARAR YOK
-      3. Ust %30'a bakarak hangi ucte birden cikildigi → open_path
-      4. Alt/ust tohumlarin baglantisi + muhafazakar A* witness yolu
-      5. Dogrulanmis yol uzerinde n_waypoints yalniz cikti yogunlugu olarak
-      6. Kenar guvenligi: ardisik waypoint'ler baglantili degilse KARAR YOK
+      3. Alt/ust tohumlarin baglantisi + muhafazakar A* witness yolu
+      4. Dogrulanmis yol uzerinde n_waypoints yalniz cikti yogunlugu olarak
+      5. Kenar guvenligi: ardisik waypoint'ler baglantili degilse KARAR YOK
+      6. Serit (open_path) ve guven, DOGRULANMIS ROTANIN uzerinden olculur
+         (T31/T32 · D-41) — koridorun ust bandindan DEGIL
 
     engel_mask: engel sinifi maskesi (opsiyonel, geriye uyumlu). Verilirse
       morfolojiden SONRA cikarilir — cikarma en son islemdir, sonrasinda serbest
@@ -472,22 +550,29 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
 
     Returns:
       open_path  : 1=sol, 2=orta, 3=sag (None = tespit yok / alan yetersiz)
-      confidence : acik yol piksel orani (0.0-1.0)
+                   ROTANIN EN DAR gectigi serit (T31 · D-41)
+      confidence : rotanin darbogaz acikligindan turetilen [0,1] guven
+                   (T32 · D-41); eski "ust bant piksel orani" DEGIL
       waypoints  : [(x, y), ...] alt→ust sirali, goruntu koordinatlari
-      (return_clean=True ise 4. eleman: kararin kullandigi TEMIZ koridor
+      (return_clean=True ise sonraki eleman: kararin kullandigi TEMIZ koridor
        maskesi — gorsellestirme ham maske yerine bunu basmali)
-      (return_reason=True ise SON eleman: ``None`` veya CONTRACTS SS6.4
-       kanonik ``(sebep, detay)`` cifti. Iki bayrak birlikteyse temiz koridor
-       4., ret nedeni 5. elemandir.)
+      (return_reason=True ise sonraki eleman: ``None`` veya CONTRACTS SS6.4
+       kanonik ``(sebep, detay)`` cifti)
+      (return_olcum=True ise SON eleman: ``None`` veya `_rota_serit_olcumu`
+       sozlugu — darbogaz, serit dagilimi, cok-seritlilik. Hakem ekrani
+       kanit satirini buradan basar.)
+      Bayraklar birlikte verilirse sira: clean, reason, olcum.
     """
     h, w = trav_mask.shape
 
-    def _don(open_path, confidence, waypoints, clean, ret=None):
+    def _don(open_path, confidence, waypoints, clean, ret=None, olcum=None):
         sonuc = (open_path, confidence, waypoints)
         if return_clean:
             sonuc += (clean,)
         if return_reason:
             sonuc += (ret,)
+        if return_olcum:
+            sonuc += (olcum,)
         return sonuc
 
     bos = np.zeros_like(trav_mask)
@@ -585,23 +670,6 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
              f"({alan_px}/{icerik_alani} piksel)."),
         )
 
-    # Acik yol = koridorun HEDEFE (ust) ulastigi taraf. Ust banttaki YATAY MERKEZ
-    # (centroid) -> lane. Piksel-argmax yerine centroid: girdi cozunurlugu/kalitesi
-    # degisince sol/orta/sag ziplamasini onler (kararli, boyuttan bagimsiz).
-    ys, xs = np.nonzero(clean)
-    ymin, ymax = int(ys.min()), int(ys.max())
-    band = ys <= ymin + 0.30 * (ymax - ymin + 1)   # koridorun ust %30'u
-    bx = xs[band] if band.any() else xs
-    cx = float(bx.mean())
-    sinir_1 = icerik_x0 + icerik_w / 3.0
-    sinir_2 = icerik_x0 + 2.0 * icerik_w / 3.0
-    open_path = 1 if cx < sinir_1 else (2 if cx < sinir_2 else 3)
-    # Guven: ust banttaki piksellerin secilen ucte-bire dusen orani (netlik olcusu).
-    lo = icerik_x0 + (open_path - 1) * icerik_w / 3.0
-    hi = icerik_x0 + open_path * icerik_w / 3.0
-    in_third = int(((bx >= lo) & (bx < hi)).sum())
-    confidence = round(in_third / max(1, bx.size), 3)
-
     # T30: Guvenlik karari yatay bant orneklerine bagli olamaz. Once tam
     # koridorda alt->ust baglantinin gercek witness yolunu kur; n_waypoints'i
     # ancak bundan SONRA cikti yogunlugu olarak uygula.
@@ -624,7 +692,25 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
              "gecilemez alana veya ham engele temas ediyor."),
         )
 
-    return _don(open_path, confidence, waypoints, clean)
+    # T31 + T32 (REVIEW_LOG D-41): SERIT ve GUVEN artik ROTANIN KENDISINDEN
+    # okunur. Eskiden ikisi de koridorun UST %30 bandindan turetiliyordu:
+    #   · etiket, 67 gercek karenin 67'sinde rotanin gectigi seritle uyusmuyordu;
+    #   · guven, enjekte-kapi deneyinde kapi sol/orta/sag gezerken hic
+    #     degismiyordu (0,326 / 0,326 / 0,326) ve tespit KOTULESTIKCE yukseliyordu.
+    # Olcum KANONIK yol uzerinde yapilir; `n_waypoints` karara giremez (SS6.4/5).
+    olcum = _rota_serit_olcumu(kanonik_yol, dist, icerik_kutusu)
+    if olcum is None:
+        return _don(
+            None, 0.0, [], clean,
+            (GORUS_HATTI_KOPUK_SEBEBI,
+             "Dogrulanmis rota uzerinde tek piksel olculemedi; serit ve "
+             "darbogaz turetilemiyor."),
+            None,
+        )
+    open_path = olcum["darbogaz_serit"]
+    confidence = rota_darbogaz_guveni(olcum["darbogaz_px"], icerik_w)
+
+    return _don(open_path, confidence, waypoints, clean, None, olcum)
 
 
 def _rota_kararini_esikle(open_path, confidence, waypoints, karar_reddi=None):

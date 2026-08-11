@@ -31,8 +31,8 @@ import iha_flight
 COMMS = Path(__file__).resolve().parents[2] / "comms"
 if str(COMMS) not in sys.path:
     sys.path.insert(0, str(COMMS))
-from iha_sender import IhaSender, _addr as udp_adres  # noqa: E402
-from link import UDPLink  # noqa: E402
+from iha_inis_yayinci import iha_inisini_yayinla  # noqa: E402
+from iha_sender import _addr as udp_adres  # noqa: E402
 
 
 def check_topics():
@@ -82,34 +82,6 @@ def _yerel_udp_hedef(bind):
     if host in ("", "0.0.0.0"):
         host = "127.0.0.1"
     return host, port
-
-
-def iha_inisini_yayinla(
-        peers, heartbeat_until=None, repeat=8, interval=0.25):
-    """IHA_LANDED olayını ACK'li yayınla, İKA bitene dek heartbeat sürdür."""
-    if not peers:
-        return True
-    link = UDPLink(bind=("0.0.0.0", 0), timeout=min(0.05, interval))
-    sender = IhaSender(link, peers=peers)
-    try:
-        seq, acked = sender.send_iha_landed(
-            repeat=repeat, interval=interval, wait_ack=True)
-        beklenen = set(peers)
-        aktarim_tam = acked >= beklenen
-        if not aktarim_tam:
-            print(f"[sim] IHA_LANDED ACK eksik: seq={seq} "
-                  f"beklenen={sorted(beklenen)} gelen={sorted(acked)}")
-        else:
-            print(f"[sim] IHA_LANDED yayınlandı: seq={seq} ACK={sorted(acked)}")
-        # YKS gibi ikinci bir akranın ACK'i eksik olsa bile İKA landed latch'ini
-        # açmış olabilir. İKA görevi bitene dek heartbeat'i kesmek, sürüşü link
-        # timeout'unda sonsuz güvenli-duruşa kilitler. Görev sonucu yine False
-        # kalır; yalnız yaşam döngüsü tamamlanana kadar canlılık korunur.
-        while heartbeat_until is not None and not heartbeat_until.wait(0.5):
-            sender.send_heartbeat("iha")
-        return aktarim_tam
-    finally:
-        link.close()
 
 
 def iha_ucus_ve_inis_gorevi(speed, landed_peers, heartbeat_until=None):

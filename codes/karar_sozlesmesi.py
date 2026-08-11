@@ -26,6 +26,51 @@ ROTA_GUVEN_ESIGI = 0.20
 # GUI worker'i tam cozunurluk A* ile saniyelerce bloke edilemez.
 ROTA_PLAN_MAKS_HUCRE = 32_768
 
+# T32 / REVIEW_LOG D-41: rota guveni ROTANIN DARBOGAZINDAN olculur.
+# Eski metrik (`in_third / bx.size`) koridorun UST BANDINDAN hesaplaniyordu;
+# olculdu, tespit kotulestikce YUKSELIYORDU (az piksel tek ucte-bire duserse
+# oran 1,0) ve enjekte-kapi deneyinde kapi sol/orta/sag gezerken deger hic
+# degismiyordu (0,326 / 0,326 / 0,326).
+#
+# Yeni tanim: rotanin LINE_8 pikselleri boyunca olculen EN KUCUK aciklik
+# (distance transform yaricapi), icerik genisligine oranlanir. Mutlak piksel
+# degil ORAN — cozunurluk degisince olcut kaymaz (CONTRACTS SS8).
+# Bu aciklikta guven 1,0'a doyar; kalibrasyon olcumu REVIEW_LOG D-42'de.
+ROTA_DARBOGAZ_TAM_ORANI = 0.035
+
+
+def serit_no(x, icerik_x0, icerik_w):
+    """Yatay koordinati serit numarasina cevir (1=sol, 2=orta, 3=sag).
+
+    Sinirlar kare tuvalden degil letterbox ICERIK kutusundan hesaplanir
+    (CONTRACTS SS8). Tek kaynak: hem karar hem gorsellestirme burayi cagirir.
+    """
+    if icerik_w <= 0:
+        return 2
+    if x < icerik_x0 + icerik_w / 3.0:
+        return 1
+    if x < icerik_x0 + 2.0 * icerik_w / 3.0:
+        return 2
+    return 3
+
+
+def rota_darbogaz_guveni(darbogaz_px, icerik_w):
+    """Rotanin en dar noktasindaki acikligi [0,1] guvenine cevir.
+
+    ``darbogaz_px`` rota uzerindeki en kucuk distance-transform degeridir
+    (icten tegets cemberin yaricapi; koridor genisligi ~ 2x bu deger).
+    Fail-closed: gecersiz/negatif girdi 0.0 doner.
+    """
+    if isinstance(darbogaz_px, bool) or not isinstance(darbogaz_px, Real):
+        return 0.0
+    d = float(darbogaz_px)
+    if not math.isfinite(d) or d <= 0.0:
+        return 0.0
+    tam = float(icerik_w) * ROTA_DARBOGAZ_TAM_ORANI
+    if not math.isfinite(tam) or tam <= 0.0:
+        return 0.0
+    return round(min(1.0, d / tam), 3)
+
 # CONTRACTS.md SS6.4: karar reddi sebep kodlari. Cagri yerlerine ciplak
 # string yazilmaz; tum uretim ve ekran yollari bu tek kaynagi kullanir.
 MASKE_YOK_SEBEBI = "MASKE_YOK"

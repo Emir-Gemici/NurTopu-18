@@ -37,6 +37,14 @@ DORT_KOPUKLUK = {
     "motor": (sk.SAHIPSIZ, "gercek motor surucusu yok"),
 }
 
+# T20 aktarim ve saha IHA_LANDED uclarini kapatir. Mutasyon agaci yukaridaki
+# tarihsel dort kusuru bilerek korur; gercek depo pozitif kontrolu ise kalan
+# sahiplik bosluklarini ayri olcer.
+GERCEK_DEPODA_KALAN_KOPUKLUKLAR = {
+    "hedef_konumu": DORT_KOPUKLUK["hedef_konumu"],
+    "motor": DORT_KOPUKLUK["motor"],
+}
+
 
 def _sahte_kok(tmp: Path) -> Path:
     """Dort kopuklugun HICBIRINI tatmin etmeyen, en kucuk gecerli agac."""
@@ -130,25 +138,30 @@ class PozitifKontrolTests(unittest.TestCase):
     def test_sozlesmedeki_on_halkanin_hepsi_raporlaniyor(self):
         self.assertEqual(list(sk.HALKALAR), [s["halka"] for s in self.rapor.satirlar])
 
-    def test_dort_kopukluk_isim_isim_yakalaniyor(self):
-        for halka, (beklenen, aciklama) in DORT_KOPUKLUK.items():
+    def test_t20_sonrasi_kalan_kopukluklar_isim_isim_yakalaniyor(self):
+        for halka, (beklenen, aciklama) in GERCEK_DEPODA_KALAN_KOPUKLUKLAR.items():
             with self.subTest(halka=halka):
                 self.assertIn(halka, self.durumlar, f"{halka} raporlanmadi")
                 self.assertEqual(
                     beklenen, self.durumlar[halka]["durum"],
                     f"{halka} ({aciklama}) beklenen {beklenen} degil")
 
-    def test_iha_landed_ureticisi_yalniz_simulasyonda(self):
+    def test_iha_landed_ureticisi_saha_modulunde(self):
         detay = self.durumlar["surus_izni"]["detay"]
-        self.assertEqual([], detay["saha_ureticileri"],
-                         "saha yolunda IHA_LANDED uretici cikti — D-22 kapanmis olabilir")
-        self.assertTrue(any(u.startswith("simulation/") for u in detay["tum_ureticiler"]))
+        self.assertTrue(detay["saha_ureticileri"],
+                        "saha yolunda IHA_LANDED ureticisi bulunamadi")
+        self.assertTrue(any(
+            u.startswith("comms/iha_inis_yayinci.py:")
+            for u in detay["saha_ureticileri"]))
+        self.assertEqual(sk.GECTI, self.durumlar["surus_izni"]["durum"])
 
-    def test_aktarim_kutuphanesi_calisiyor_ama_paket_eksik(self):
-        """Kopukluk PAKETLEMEDE; comms kutuphanesi loopback'te gercekten calisiyor."""
+    def test_aktarim_kutuphanesi_ve_saha_paketi_hazir(self):
+        """Kanonik comms API'si pakette ve depo loopback'i calisiyor."""
         detay = self.durumlar["aktarim"]["detay"]
-        self.assertEqual(["iha_sender.py", "link.py", "protocol.py"],
-                         detay["eksik_moduller"])
+        self.assertEqual([], detay["eksik_moduller"])
+        self.assertEqual({}, detay["eksik_semboller"])
+        self.assertTrue(detay["pyserial_bagimliligi"])
+        self.assertEqual(sk.GECTI, self.durumlar["aktarim"]["durum"])
         dogrulama = detay["depo_comms_loopback"]
         self.assertIsInstance(dogrulama, dict,
                               f"loopback probu kosmadi: {dogrulama}")
@@ -165,7 +178,7 @@ class PozitifKontrolTests(unittest.TestCase):
     def test_cikis_kodu_kopuk_varken_sifir_degil(self):
         kopuk = [s for s in self.rapor.satirlar
                  if s["durum"] in (sk.DUSTU, sk.SAHIPSIZ)]
-        self.assertGreaterEqual(len(kopuk), 4)
+        self.assertGreaterEqual(len(kopuk), 2)
 
 
 class MutasyonKanitiTests(unittest.TestCase):

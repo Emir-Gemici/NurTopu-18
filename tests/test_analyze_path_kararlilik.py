@@ -21,7 +21,7 @@ if str(KOK / "codes") not in sys.path:
 
 import rpi_inference
 from karar_sozlesmesi import (GORUS_HATTI_KOPUK_SEBEBI,
-                              ROTA_PLAN_MAKS_HUCRE)
+                              ROTA_PLAN_MAKS_HUCRE, rota_darbogaz_guveni)
 
 
 def _kivrimli_koridor(boyut=256):
@@ -80,20 +80,30 @@ class OrneklemeKararliligiTests(unittest.TestCase):
         self.assertTrue(_eski_bant_zinciri_kuruldu_mu(clean_eski, 16))
 
         kararlar = []
+        guvenler = set()
         for n in (8, 16, 24, 32):
             with self.subTest(n_waypoints=n):
-                yol, guven, wps, clean, ret = rpi_inference.analyze_path(
-                    zemin, n_waypoints=n, return_clean=True,
-                    return_reason=True)
+                yol, guven, wps, clean, ret, olcum = (
+                    rpi_inference.analyze_path(
+                        zemin, n_waypoints=n, return_clean=True,
+                        return_reason=True, return_olcum=True))
                 kararlar.append((yol, ret[0] if ret else None))
+                guvenler.add(guven)
                 self.assertEqual(2, yol)
-                self.assertEqual(0.599, guven)
+                # T32 (D-41): guven ROTANIN darbogazindan turetilir. Ciplak
+                # sayi yazmak, esik/normalizer her kalibre edildiginde testi
+                # kirar (D-38 SS5, madde 16) — sozlesme fonksiyonundan turet.
+                self.assertEqual(
+                    rota_darbogaz_guveni(olcum["darbogaz_px"], zemin.shape[1]),
+                    guven)
                 self.assertIsNone(ret)
                 self.assertGreaterEqual(len(wps), 2)
                 self.assertTrue(
                     rpi_inference._kenarlar_guvenli(wps, clean), wps)
 
         self.assertEqual(1, len(set(kararlar)), kararlar)
+        # ASIL KAPI: ornekleme sayisi guveni de degistirmemeli (SS6.4/5).
+        self.assertEqual(1, len(guvenler), guvenler)
 
     def test_witness_uretilemezse_kenar_degil_gorus_hatti_kopuk(self):
         zemin = np.zeros((128, 128), np.uint8)

@@ -152,10 +152,16 @@ class IkaReceiver:
 
     def _kontrol_mesaji_ack(self, ref_seq, addr):
         """Kontrol olayı ACK hatasının alıcı thread'ini öldürmesini engelle."""
-        if not self.send_ack or addr is None:
+        if not self.send_ack:
+            return
+        if addr is None and not isinstance(self.link, SerialLink):
             return
         try:
-            self.link.send(encode(ack(ref_seq, self.node)), addr)
+            data = encode(ack(ref_seq, self.node))
+            if addr is None:
+                self.link.send(data)
+            else:
+                self.link.send(data, addr)
         except (OSError, TypeError, ValueError):
             pass
 

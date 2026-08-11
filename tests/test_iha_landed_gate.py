@@ -325,6 +325,52 @@ class IhaLandedGateTests(unittest.TestCase):
         self.assertIsNone(yks.t_ika0)
         self.assertIn("IHA_LANDED", yks._logla.call_args.args[0])
 
+    def test_yks_protokol_latchi_operator_dizisi_olmadan_ika_go_yayinlar(self):
+        link = mock.Mock()
+        yks = _yks_headless(link, ("127.0.0.1", 5006))
+        yks.onaylandi = True
+        yks.btn_ika_go = mock.Mock()
+        yks.btn_hb = mock.Mock()
+
+        yks._mesaj_isle(iha_landed(seq=9501), ("127.0.0.1", 5010))
+
+        self.assertIsNone(yks.t_iha0)
+        self.assertIsNone(yks.t_iha1)
+        self.assertEqual(9501, yks.iha_landed_seq)
+        yks._logla.reset_mock()
+        link.send.reset_mock()
+        with mock.patch.object(yks_gui.time, "time", return_value=123.0):
+            yks.ika_baslat()
+
+        link.send.assert_called_once()
+        komut_verisi, komut_hedefi = link.send.call_args.args
+        komut_mesaji = decode(komut_verisi)
+        self.assertEqual("CMD", komut_mesaji["type"])
+        self.assertEqual("IKA_GO", komut_mesaji["cmd"])
+        self.assertEqual("ika", komut_mesaji["hedef"])
+        self.assertEqual(("127.0.0.1", 5006), komut_hedefi)
+        self.assertEqual(123.0, yks.t_ika0)
+        self.assertFalse(any(
+            "REDDEDİLDİ" in cagri.args[0]
+            for cagri in yks._logla.call_args_list
+        ))
+
+    def test_yks_landed_yokken_operator_dizisi_olmadan_ika_go_reddedilir(self):
+        yks = object.__new__(yks_gui.YksArayuz)
+        yks.t_iha0 = None
+        yks.t_iha1 = None
+        yks.iha_landed_seq = None
+        yks.onaylandi = True
+        yks.t_ika0 = None
+        yks._cmd_gonder = mock.Mock()
+        yks._logla = mock.Mock()
+
+        yks.ika_baslat()
+
+        yks._cmd_gonder.assert_not_called()
+        self.assertIsNone(yks.t_ika0)
+        self.assertIn("REDDEDİLDİ", yks._logla.call_args.args[0])
+
     def test_landed_sonrasi_heartbeat_linki_canli_tutar(self):
         alici_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.02)
         receiver = IkaReceiver(alici_link, hb_timeout=0.8).start()

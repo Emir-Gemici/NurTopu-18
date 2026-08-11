@@ -48,6 +48,20 @@ class _Model:
         return object()
 
 
+# T31/T32 (D-41): `analyze_path` artik `return_olcum=True` ile ALTINCI eleman
+# dondurur ve GUI onu ekrana basar. Sahte analizorlerin de ayni ariteyi
+# tasimasi gerekir — yoksa test uretim sozlesmesinden sessizce ayrisir.
+_SAHTE_OLCUM = {
+    "darbogaz_serit": 2,
+    "baskin_serit": 2,
+    "seritler": (0, 120, 0),
+    "darbogaz_px": 24.0,
+    "darbogaz_xy": (64, 64),
+    "serit_min_px": (None, 24.0, None),
+    "cok_seritli": False,
+    "rota_px": 120,
+}
+
 def _gui():
     gui = yks_gui.YksArayuz.__new__(yks_gui.YksArayuz)
     gui.algi_model = _Model()
@@ -137,7 +151,7 @@ class YksGuiAracEngeliTests(unittest.TestCase):
         gercek_bol = costmap_path_finder._maks_aralikla_bol
 
         def analyze_sahte(*_args, **_kwargs):
-            return 2, 1.0, list(uzun_yol), zemin.copy(), None
+            return 2, 1.0, list(uzun_yol), zemin.copy(), None, _SAHTE_OLCUM
 
         def bol_sarmal(*args, **kwargs):
             sonuc = gercek_bol(*args, **kwargs)
@@ -187,7 +201,7 @@ class YksGuiAracEngeliTests(unittest.TestCase):
         def analyze_sahte(*_args, **_kwargs):
             clean = zemin.copy()
             clean[arac > 0] = 0
-            return 2, 1.0, list(yol), clean, None
+            return 2, 1.0, list(yol), clean, None, _SAHTE_OLCUM
 
         def maskeler(_sonuc, _h, _w, min_conf):
             del min_conf
@@ -220,7 +234,7 @@ class YksGuiAracEngeliTests(unittest.TestCase):
         uzun_yol = [(10, 90), (w - 10, 10)]
 
         def analyze_sahte(*_args, **_kwargs):
-            return 2, 1.0, list(uzun_yol), zemin.copy(), None
+            return 2, 1.0, list(uzun_yol), zemin.copy(), None, _SAHTE_OLCUM
 
         def maskeler(_sonuc, _h, _w, min_conf):
             del min_conf
@@ -271,7 +285,7 @@ class YksGuiAracEngeliTests(unittest.TestCase):
             with self.subTest(guven=gecersiz):
                 def analyze_sahte(*_args, **_kwargs):
                     return (2, gecersiz, [(64, 120), (64, 8)],
-                            zemin.copy(), None)
+                            zemin.copy(), None, _SAHTE_OLCUM)
 
                 gui = _gui()
                 with mock.patch.object(cv2, "imread", return_value=goruntu), \

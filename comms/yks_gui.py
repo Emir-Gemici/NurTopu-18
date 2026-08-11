@@ -124,7 +124,9 @@ class YksArayuz:
         self.algi_kuyruk = queue.Queue()
         self.algi_model = None
         self.algi_mesgul = False
-        self.algi_kaynak = "gemini"
+        # T29 (D-39): Bu yalnız semptom yönetimidir; asıl sorun D-21'deki v21
+        # arena/RescueNet domain boşluğudur. Gemini/val tanısal karşılaştırma için kalır.
+        self.algi_kaynak = "drone"
         self.algi_idx = 0
         self._algi_foto = None              # ImageTk referansı (GC koruması)
 
@@ -1024,9 +1026,12 @@ class YksArayuz:
             trav_serbest[blok > 0] = 0
             # karar + kararın kullandığı TEMİZ koridor; min_area_ratio:
             # gürültüden yol uydurma koruması (failsafe)
-            yol_no, guven, wps, koridor, karar_reddi = analyze_path(
+            # T31/T32 (D-41): serit ve guven artik ROTADAN olculuyor. Hakem
+            # ekrani olcumu de basar — "2·ORTA" yazip rotayi serit 1'den
+            # gecirmek tam olarak kapattigimiz kusurdu, kanit gorunur olmali.
+            yol_no, guven, wps, koridor, karar_reddi, rota_olcumu = analyze_path(
                 trav, n_waypoints=self.ALGI_WAYPOINT_BANT_SAYISI,
-                return_clean=True, return_reason=True,
+                return_clean=True, return_reason=True, return_olcum=True,
                 min_area_ratio=0.02, engel_mask=blok)
             guven_reddi = rota_guven_reddi(guven) if yol_no is not None else None
             if guven_reddi is not None:
@@ -1161,9 +1166,26 @@ class YksArayuz:
                      + (" (düşük-eşik fallback)" if esik <= 0.05 else "")
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
                       f" · gösterim: sürüş koridoru · model: {self.ALGI_MODEL_DOSYA}")
+            if rota_olcumu is not None:
+                # Kanıt satırı: güvenin NEREDEN geldiği ekranda görünür olmalı.
+                n1, n2, n3 = rota_olcumu["seritler"]
+                bilgi += (f" · darboğaz {rota_olcumu['darbogaz_px']:.1f} px"
+                          f" @ şerit {rota_olcumu['darbogaz_serit']}"
+                          f" · rota şerit dağılımı {n1}/{n2}/{n3} px")
+                if rota_olcumu["cok_seritli"]:
+                    bilgi += " · ⚠ ROTA ŞERİT DEĞİŞTİRİYOR (tek etiket eksik kalır)"
             if karar_reddi is not None:
                 bilgi += f" · {karar_reddi[1]}"
             _ad = self.ALGI_MODEL_DOSYA.rsplit(".", 1)[0]
+            if rota_olcumu is not None and rota_olcumu["cok_seritli"]:
+                # Hakem bunu kaçırmamalı: tek `road` etiketi rotanın tamamını
+                # anlatmıyor. Fail-closed değil — rota doğrulanmış, yalnız ADI
+                # eksik; kararı yumuşatmadan görünür kılıyoruz (SS6.4/3).
+                self.algi_kuyruk.put(("log",
+                    f"⚠ ROTA ŞERİT DEĞİŞTİRİYOR: darboğaz şerit "
+                    f"{rota_olcumu['darbogaz_serit']}, dağılım "
+                    f"{rota_olcumu['seritler']} px — yayınlanan `road` "
+                    "yalnız darboğaz şeridini adlandırır"))
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
                                   f"ALGI({_ad}) {yol.name} → {karar} "
                                   f"güven={guven_metin} · {ms:.0f} ms"))
@@ -1282,8 +1304,9 @@ class YksArayuz:
 
     def ika_baslat(self):
         # YAZILIM KİLİDİ — şartname §2.2.5: "İHA yere temas etmeden İKA
-        # hareket edemez"; §6.2: intikal ancak onaylı veri sonrası.
-        if not self.t_iha1 or self.iha_landed_seq is None:
+        # hareket edemez"; §6.2: intikal ancak onaylı veri sonrası. t_iha1
+        # yalnız UI kronometresidir; sürüş izninin otoritesi protokol latch'idir.
+        if self.iha_landed_seq is None:
             self._logla("KİLİT ✋ Üretim IHA_LANDED kanıtı alınmadan İKA "
                         "hareket EDEMEZ (şartname §2.2.5) — komut REDDEDİLDİ",
                         "sari")

@@ -2349,3 +2349,238 @@ karar/reason salınımı `0/14`, komşu geçiş `0/42`, endpoint-band ihlali `0/
 tam keşif `Ran 143 tests in 28.172s · OK`; sentetik rota `15/15`; `py_compile`
 ve `git diff --check` temiz. D-43'teki 20/141 test sayıları ile eski süre/segment
 sayıları bu ek kayıtla düzeltilmiştir.
+
+---
+
+### D-41 · KRITIK · Rota DOGRU, ADI YANLIS: `road` etiketi 67/67 karede rotanin gectigi seride uymuyor
+Bulan: Claude 2 (arastirma turu) · 2026-08-10 · kayit ve degerlendirme: Claude 1
+
+`analyze_path` rotayi DOGRU buluyor ama yayinladigi `road` etiketini centroid'den
+tureterek YANLIS hesapliyor. Olculdu: **67 karenin 67'sinde** centroid seridi,
+piksel-kutlesi argmax seridinden farkli:
+
+    frame_000000  yayin_yol=2 guven=0,326 | serit oranlari=[0,382, 0,326, 0,292] argmax=1 marjin=0,056
+    frame_000003  yayin_yol=2 guven=0,272 | serit oranlari=[0,406, 0,272, 0,322] argmax=1 marjin=0,084
+    marjin < 0,10 : 66/67 (%99)
+
+Enjekte-kapi deneyinde (bilinen cevap) rotanin bariyer satirindaki dugumu
+**serit-1**'den geciyor, yayinlanan etiket ise **2**.
+
+**NEDEN KRITIK — bu bir gorsellestirme kusuru DEGIL.** `road` tel sozlesmesinin
+alanidir ve IKA'nin PLANLAMA GIRDISIDIR:
+
+    comms/protocol.py:31,39,51   open_route(road, ...) -> "road", "label"
+    comms/ika_receiver.py:11     if route: plan_path(route["road"])
+    comms/README.md:84           hedef_yol = route["road"]  # A* bunu kullanir
+    comms/yks_gui.py:445         acik = self.rota["road"]
+    comms/yks_gui.py:453-462     secili serit YESIL, digerleri KIRMIZI = gidilemez
+
+Yani hakem ekrani, olculen 67 karenin hepsinde **rotanin gercekten gectigi seridi
+KIRMIZI (gidilemez)** boyayip yanindakini yesil gosteriyor; ayni yanlis etiket
+IKA'ya da gidiyor. Sartname §5.3.2/§6.2: yanlis guzergah **0 puan**.
+
+**Guven metrigi de yanlis yerden olculuyor.** `in_third / bx.size` (`rpi_inference.py:274`)
+yalniz ust %30 bandindan hesaplaniyor ve:
+  - secilen seridin payi bile degil (ekrandaki 0,326; en yuksek pay 0,382);
+  - tespit KOTULESTIKCE YUKSELIYOR — cok az piksel tek ucte-bire duserse oran 1,0
+    olur. Ham tespit sayaci: `drone` 0/67 karede sinif-0 tespiti sifir (saglikli),
+    `val` 18/40, `gemini_road` 14/40, `gemini_arena` 6/15 karede SIFIR tespit;
+    bu bos karelerde guven paradoksal olarak yuksek cikiyor.
+  - D-38'in onerdigi **marjin** metrigi de kurtarmiyor: ayni ust banttan
+    hesaplandigi surece std(marjin)=0,029 ~ std(in_third)=0,029 (drone).
+    **Sorun istatistigin sekli degil, NEREDEN olculdugudur.**
+
+**S4 (iki iraksak karar yolu) ACIKLANDI — kusur degil, kapsam farki.**
+`costmap_path_finder.py:781`:
+
+    if tani["belirsiz"] and tani["n_kapi"] != 3:
+        cikti["durum"] = "BELIRSIZ_COKLU"
+
+`rota_bul` bir **UC-KAPILI ARENA dedektorudur** (3 kapi bekler); `analyze_path`
+**tek-koridor** dedektorudur. Ayni 67 maskede rota_bul 66 `BELIRSIZ_COKLU` / 1
+`ACIK` demesinin sebebi budur — tespit edilen kapi sayisi 3..10 arasinda
+dagiliyor. Ikisi farkli SORULARI cevapliyor; ayrisma beklenen davranistir.
+
+**val'daki "olu ekran" da kapinin DOGRU calismasidir.** GT ile esleştirmeli olcum
+(40 kare): TP 18 · dogru negatif 13 · gercek kacirma 5 · FP 4. 18 dogru tespitin
+15'i `UC_BANT_TEMAS_YOK` ile dondu, cunku RescueNet karesinde yol serit halinde
+kareyi keser ve alt/ust uc bantlara temas etmez — K-A tam bunu elemek icin var.
+
+**Sonuc — mimar degerlendirmesi:** rota bulma motoru saglam; bozuk olan **kanit
+zinciri**. Sistem dogru yolu buluyor, ona yanlis isim veriyor ve urettigi guven
+sayisi gorevi tanimlayan degiskenle iliskili degil. Gorevler: **T31** (road
+etiketi) ve **T32** (guven metrigi).
+
+---
+
+### D-45 · COZULDU · T31/T32 uygulandi: `road` ve guven artik ROTADAN olculuyor
+Bulan/duzelten: Claude 2 · 2026-08-10 · gorevler T31 (KRITIK) + T32
+Kanit: D-41. Kod: `codes/rpi_inference.py`, `codes/karar_sozlesmesi.py`,
+`comms/yks_gui.py`, `tests/test_rota_serit_etiketi.py`.
+
+**Degisen sey.** `analyze_path` artik karari koridorun ust %30 bandindan degil,
+DOGRULANMIS witness rotasindan okuyor. Sira degisti: witness A* ve kenar kapisi
+ONCE kosuyor, serit ve guven SONRA turetiliyor. Olcum waypoint DUGUMLERINDEN
+degil segmentlerin LINE_8 piksellerinden yapiliyor (`_rota_pikselleri`), boylece
+`n_waypoints` karara giremiyor (SS6.4/5). Rasterizasyon `_gorus_hatti` ile ayni
+kaynaktan (`_bresenham_noktalari`) — ikinci yuvarlama uretilmedi.
+
+**T31 — iki aday tanim OLCULDU.**
+
+    (a) darbogaz seridi  : rotanin EN DAR gectigi serit
+    (b) baskin serit     : en cok rota pikseli tasiyan serit
+    (c) ust uc seridi · (d) alt uc seridi  (ek adaylar)
+
+Enjekte-kapi deneyi (3 gercek kare x 2 bariyer kalinligi x 3 serit x 2 kapi
+genisligi = 36 senaryo, 28 karar / 8 ret) DORT tanimi da AYIRT EDEMEDI:
+
+    (a) 28/28 · (b) 28/28 · (c) 28/28 · (d) 28/28 · ESKI centroid 12/28 (%43)
+
+Sebep olculdu: bu sahnelerde ve 67 gercek karede rota HIC serit degistirmiyor
+(`cok_seritli` 0/67). Bu yuzden AYIRT EDICI sahne kuruldu — alt ve ust uc
+serit 3'te, tek gecis serit 1'deki dar kapidan (yer gercegi = 1):
+
+    kapi_px   (a)darbogaz  (b)baskin  (c)ust  (d)alt   guven   seritler(1,2,3)
+       16          1            3        3       3     0,032   (381, 600, 632)
+       24          1            3        3       3     0,032   (377, 600, 636)
+       32          3            3        3       3     0,063   (377, 600, 636)
+       48          1            3        3       3     0,032   (365, 600, 638)
+       64          1            3        3       3     0,044   (351, 600, 642)
+
+    (a) 4/5 dogru · (b) 0/5 · (c) 0/5 · (d) 0/5
+
+**SECIM: (a) darbogaz seridi.** Gerekce iki katmanli:
+  1. OLCUM — serit degisen sahnede dogru cevabi veren TEK tanim odur;
+  2. ANLAM — darbogaz, IKA'nin gecemedigi yerdir. (b)/(c)/(d) aracin cogunlukla
+     nerede oldugunu soyler; NEREDE KALABILECEGINI soylemez. Fail-closed tercih
+     kritik gecisi adlandirmaktir.
+  (a)'nin 1/5 kaybi (kapi_px=32) kok neden degil: o sahnede rota, kanal
+  koselerinde duvara 2 px yaklasiyor ve gercek darbogaz gercekten serit 3'te.
+  Uretimde bu senaryolarin HEPSI zaten K-B'den donuyor (guven 0,032-0,063 <
+  0,20) — etiket telde hic gorunmuyor.
+
+**COK SERITLI ROTA — tek etiketin yetersizligi kayda gecti.** Rota birden fazla
+seride giriyorsa tek `road` alani rotayi anlatmaz. Karar YUMUSATILMADI (rota
+dogrulanmis, yalniz ADI eksik); bunun yerine `_rota_serit_olcumu` `cok_seritli`
+ve serit basina piksel dagilimini dondurur, hakem ekrani ikisini de basar ve
+sari uyari gunlugu yazar. Yeni bir ret sebebi EKLENMEDI — eklemek dogrulanmis
+gecerli rotayi reddetmek olurdu (kullanilabilirlik kaybi, guvenlik kazanci yok).
+
+**T32 — guven metrigi.** Yeni tanim: rota boyunca olculen EN KUCUK aciklik
+(distance transform yaricapi), icerik genisligine ORAN olarak
+(`ROTA_DARBOGAZ_TAM_ORANI = 0.035`, `karar_sozlesmesi.rota_darbogaz_guveni`).
+Mutlak piksel degil oran — cozunurluk degisince olcut kaymaz (SS8); kapi testi
+ayni sahneyi 2x cozunurlukte kosup ayni karari dogruluyor.
+
+Normalizer OLCUMLE secildi (67 gercek kare, std maksimumu):
+
+    N       std      p50    doygun(=1,0)   K-B 0,20'de cekimserlik
+    0,020  0,3862   1,000      42/67            14/67 (%21)
+    0,028  0,4022   1,000      35/67            15/67 (%22)
+    0,035  0,4029   0,809      31/67            18/67 (%27)   <- secildi
+    0,040  0,4019   0,708      28/67            18/67 (%27)
+    0,050  0,3999   0,566      25/67            22/67 (%33)
+
+Fiziksel capa da ayni yeri gosteriyor: 50 m'lik icerik genisliginde 0,035 x W
+yaricap ~1,75 m, yani `R_GEREKLI_M = 1,10 m`'nin ~1,6 kati — "rahatca genis"
+noktasi. K-B esiginde guven 0,20 ~ 0,35 m yaricap: hala TABAN KORUYUCUSU.
+
+**Ayirt edicilik — once/sonra (ayni kareler, ayni model, tek degisken metrik):**
+
+    kaynak         n   pearson(guven, model_tespit_guveni)      std
+                          ESKI          YENI            ESKI      YENI
+    drone         67     -0,173        +0,333          0,0287    0,4029
+    gemini_road   11     -0,397        +0,158          0,2903    0,3914
+    val            3     -0,577        -0,577          0,0014    0,1296   (n=3, anlamsiz)
+
+Eski metrigin negatif korelasyonu ("tespit kotulestikce guven yukseliyor")
+iki kaynakta da POZITIFE dondu; dagilim genisligi drone'da 14 kat arti.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    KAPI 1  enjekte-kapi, bilinen cevap : kapi serit 1/2/3 -> road 1/2/3
+            (kalici test: tests/test_rota_serit_etiketi.py)
+    KAPI 2  67 gercek kare               : road ROTANIN uzerinde 67/67
+                                           UYUMSUZ 0/67   (onceden 67/67)
+                                           road dagilimi {1: 32, 3: 35}
+    KAPI 3  POZITIF KONTROL (mutasyon)   : serit tekrar centroid'den alininca
+                                           UYUMSUZ 67/67 GERI GELDI,
+                                           dagilim yine {2: 67}
+    KAPI 4  T32, sinif-0 tespiti SIFIR   : 8/82 kare · karar 0 · azami guven 0,0
+    KAPI 5  codes/test_rota_sentetik.py  : 15/15 · exit 0
+    KAPI 6  unittest discover -s tests   : Ran 190 tests · OK · exit 0
+    EK      comms/test_comms.py exit 0 · yks_gui.py --help exit 0 · py_compile temiz
+
+**YAN BULGU — TIKAYICI · D-01'in tekrari: Jetson ikizi 456 satir BAYATTI.**
+`jetson_paket/kod/rpi_inference.py` kanonik `codes/rpi_inference.py` ile
+ayrisikti; icinde T24 (kenar guvenligi), T28 (ret sebepleri), T30 (witness
+yolu) ve T31/T32 kusurlarinin HICBIRININ duzeltmesi yoktu. Jetson, kapatildigi
+sanilan KRITIK kusurlarla ucacakti. Sebep olculdu: `tests/test_jetson_comms_paketi.py`
+KOPYALAR sozlugu yalniz haberlesme dosyalarini kilitliyordu; **karar motoru
+listede degildi.** Jetson'a ozgu icerik yok (fark tamamen eski surum), kopya
+guvenle senkronlandi ve `rpi_inference.py` + `costmap_path_finder.py` KOPYALAR
+sozlugune EKLENDI — kapi artik bunu goruyor.
+
+**ACIK KALAN — durustluk notu.** Yeni guven GEOMETRIKTIR, ALGISAL DEGILDIR.
+D-41'in "tespit kotulestikce guven yukseliyor" bulgusunun tamami kapanmadi:
+
+    test_images/gemini/6.png         model tespit maks 0,0894 -> ESKI 1,000 · YENI 0,837
+    test_images/gemini/road_127.jpg  model tespit maks 0,0821 -> ESKI 1,000 · YENI 0,502
+
+Model 0,089 guvenle GENIS bir blob uretirse geometri saglikli gorunur. Kapanmasi
+icin `boxes.conf` degerinin `get_masks` uzerinden karara tasinip
+`conf = min(geometrik, algisal)` yapilmasi gerekir; bu ayri gorevdir (T33
+onerisi), T32 kapsaminda DEGILDI ve sessizce yapilmadi.
+
+**Ayrica acik:** `analyze_path`'in `distanceTransform`'u goruntu disini hala
+SERBEST sayiyor (`rpi_inference.py`; GUI cizim yolu 1 px cerceveyle duzeltmis).
+Olculdu: dist maks 308,7 -> 129,0 px, uc waypoint x 1016 -> 918. Bu, rota
+GEOMETRISINI degistirir; T30'un kanitlanmis kararliligini ayni degisiklikte
+bozmamak icin T31/T32 kapsamina ALINMADI — ayri gorev olarak durmali.
+
+⚠ **KAYIT NUMARASI CAKISMASI (uclucu oldu):** `D-39`, `D-40` ve `D-41` bu
+dosyada IKI kez kullanildi (`D-41` icin :2213 ve :2355). `CONTRACTS.md` SS6.4
+basligi "D-39"a atif veriyor ve hangisi oldugu belirsiz. Kayitlar silinmez
+(madde 6); ikinci ucluye `b` soneki verilip atiflarin duzeltilmesi gerekiyor.
+
+---
+
+### D-46 · ÖNEMLİ · T20-b'nin kalıntısı: ekran doğrulamadığı §6.4 iddiasını "✓" ile basıyor
+
+**Bağlam.** T20-b `t_iha1`'i (operatör UI kronometresi) sürüş izni kilidinden
+çıkardı; sürüş izninin otoritesi artık yalnız doğrulanmış protokol latch'i
+`iha_landed_seq`. Bu düzeltme doğrudur ve mimar denetiminden geçti (4/4 kapı,
+gerçek UDP baytlarıyla ölçüldü). Ancak `t_iha1` **başka bir yerde** hâlâ bilgi
+kaynağı olarak kullanılıyor.
+
+**Bulgu.** `comms/yks_gui.py:772`:
+
+    havada = (" · AKTARIM HAVADA TAMAMLANDI ✓ (§2.2.3)" if not self.t_iha1
+              else " · ⚠ aktarım İHA inişinden SONRA (§6.4 geçersizlik riski)")
+
+`t_iha1` yalnız `iha_indi()` içinde kuruluyor (`:1293`), o da `t_iha0` yoksa
+`:1291`'de erken dönüyor. Operatör ARM → FIRLATMA dizisini basmadıysa İHA
+**gerçekten inmiş olmasına rağmen** `t_iha1` `None` kalır.
+
+**Ölçüm — koşuldu (Claude 1, 2026-08-11):**
+
+    t_iha1 = None | landed_seq = 8802 (IHA GERCEKTEN INMIS)
+    EKRAN: Hakem onayı tam — ACK(seq=8801) İHA'ya iletildi
+           · AKTARIM HAVADA TAMAMLANDI ✓ (§2.2.3)
+
+Yani **bilgi yokluğu onaya çevriliyor**: `t_iha1` boşluğu iki farklı gerçeği
+(«İHA henüz inmedi» ve «İHA indi ama operatör düğmeye basmadı») tek bir "✓"
+altında topluyor.
+
+**Neden T20-b'nin kendisi değil, kalıntısı.** T20-b'den önce `t_iha1` boşken
+İKA zaten hareket edemiyordu, dolayısıyla bu ekran hâli fiilen ulaşılamazdı.
+Düzeltmeden sonra "operatör dizisi basılmamış" **canlı bir çalışma kipi** oldu.
+Kusur T20-b tarafından ÜRETİLMEDİ, **erişilebilir hâle getirildi**.
+
+**Sınıf.** S9 ile aynı: hakem ekranının doğrulamadığı bir şeyi iddia etmesi.
+Karar güvenliği (fail-closed) etkilenmiyor — kilit sağlam; etkilenen **kanıt
+dürüstlüğü**. Şartname §6.4 aktarımın havada tamamlanmasını istiyor; bunu
+doğrulayamadığımız bir durumda "TAMAMLANDI ✓" basmak hakemi yanıltır.
+
+**Görev:** `TASK_QUEUE.md` **T34**. Üçüncü durum ("BİLİNMİYOR") eklenecek;
+karar yolu değiştirilmeyecek.

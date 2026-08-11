@@ -175,6 +175,20 @@ class _SahteLink:
         return None, None
 
 
+# T31/T32 (D-41): `analyze_path` artik `return_olcum=True` ile ALTINCI eleman
+# dondurur ve GUI onu ekrana basar. Sahte analizorlerin de ayni ariteyi
+# tasimasi gerekir — yoksa test uretim sozlesmesinden sessizce ayrisir.
+_SAHTE_OLCUM = {
+    "darbogaz_serit": 2,
+    "baskin_serit": 2,
+    "seritler": (0, 120, 0),
+    "darbogaz_px": 24.0,
+    "darbogaz_xy": (64, 64),
+    "serit_min_px": (None, 24.0, None),
+    "cok_seritli": False,
+    "rota_px": 120,
+}
+
 def _gui():
     gui = yks_gui.YksArayuz.__new__(yks_gui.YksArayuz)
     gui.algi_model = _Model()
@@ -234,7 +248,7 @@ class YksGuiRetNedeniTests(unittest.TestCase):
 
         def dusuk_guven(*_args, **_kwargs):
             return (2, ROTA_GUVEN_ESIGI - 0.001,
-                    [(64, 120), (64, 8)], temiz.copy(), None)
+                    [(64, 120), (64, 8)], temiz.copy(), None, _SAHTE_OLCUM)
 
         dusuk = self._worker_calistir(zemin, bos, dusuk_guven)
 

@@ -81,10 +81,18 @@ class AccuracyProductionPathTests(unittest.TestCase):
         iki_kollu_tek_bilesen[90:110, 10:245] = 1
         iki_kollu_tek_bilesen[100:, 140:160] = 1
 
+        # S3 BEKLENTISI DUZELTILDI (T31 · REVIEW_LOG D-41). Eski beklenti `2`,
+        # centroid tanimindan geliyordu ve OLCULEN bir artefakttir: bu sahnenin
+        # ust bandi BIMODAL — x 0-49'da 915 px (sol kol), x 200-249'da 2283 px
+        # (sag kol), arasi BOS. Iki kolun agirlikli ortalamasi x=170,7 cikiyor
+        # ve serit 2 deniyordu; oysa koridor o bantta serit 2'de yok denecek
+        # kadar az (20 px baglanti satiri). Rota gercekte SAG koldan cikiyor
+        # (ust uc (233, 20)) ve serit dagilimi (0, 216, 101) — sol kola hic
+        # girmiyor. Dogru etiket 3'tur.
         senaryolar = [
             ("S1", orta_ve_sol_gurultu, 2),
             ("S2", kucuk_gurultu, None),
-            ("S3", iki_kollu_tek_bilesen, 2),
+            ("S3", iki_kollu_tek_bilesen, 3),
         ]
         once_dogru = 0
         sonra_dogru = 0
@@ -103,8 +111,23 @@ class AccuracyProductionPathTests(unittest.TestCase):
             "[ONCE/SONRA] uretim karariyla uyum: "
             f"{once_dogru}/3 -> {sonra_dogru}/3"
         )
-        self.assertEqual(0, once_dogru)
+        # POZITIF KONTROL: eski karar yolu uretimden KESIN olarak kotu olmali,
+        # yoksa bu senaryolar bir sey ayirt etmiyor demektir.
+        #
+        # Eskiden `assertEqual(0, once_dogru)` yaziliyordu; S3'un beklentisi
+        # `2` iken eski yol da yaniliyordu. T31 ile S3'un dogru cevabi `3`
+        # olarak duzeltilince (ust bant BIMODAL, centroid bos seride dusuyordu)
+        # eski yol o TEK senaryoda tesadufen dogru cikiyor. Ayirt edicilik S1
+        # ve S2'de duruyor; kapiyi "eski yol hepsinde yanlis" yerine "eski yol
+        # kesin olarak daha kotu" seklinde tutuyoruz — yanlisligi kanitlanmis
+        # bir beklentiyi testte yasatmamak icin.
         self.assertEqual(3, sonra_dogru)
+        self.assertLess(once_dogru, sonra_dogru)
+        for ad, maske, beklenen in senaryolar[:2]:
+            self.assertNotEqual(
+                beklenen, _eski_karar(maske)[0],
+                f"{ad} artik ayirt edici degil: eski yol da dogru cevabi "
+                "veriyor, pozitif kontrol bosaldi")
 
 
 if __name__ == "__main__":

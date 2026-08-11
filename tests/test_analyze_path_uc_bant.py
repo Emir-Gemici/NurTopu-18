@@ -14,7 +14,8 @@ KOK = Path(__file__).resolve().parents[1]
 if str(KOK / "codes") not in sys.path:
     sys.path.insert(0, str(KOK / "codes"))
 
-from karar_sozlesmesi import BANT_TEMAS_MIN_ORANI, HEDEF_BANT_ORANI
+from karar_sozlesmesi import (BANT_TEMAS_MIN_ORANI, HEDEF_BANT_ORANI,
+                              rota_darbogaz_guveni)
 import rpi_inference
 from rpi_inference import _uc_bant_temasi_yeterli, analyze_path
 
@@ -38,11 +39,16 @@ class UcBantKapisiTests(unittest.TestCase):
              mock.patch.object(
                 rpi_inference, "_bagli_koridor_yolu",
                 return_value=(sahte_zincir, None)):
-            yol, guven, waypoints = analyze_path(zemin, engel_mask=engel)
+            yol, guven, waypoints, olcum = analyze_path(
+                zemin, engel_mask=engel, return_olcum=True)
 
         self.assertEqual(2, yol)
-        self.assertEqual(1.0, guven)
         self.assertGreaterEqual(len(waypoints), 2)
+        # T32 (D-41): guven artik ROTANIN darbogazindan gelir, ust bant piksel
+        # oranindan degil. Ciplak sayi yazmak yerine sozlesme fonksiyonundan
+        # turetilir (madde 16 / D-38 SS5) — sonraki kalibrasyonda kirilmaz.
+        self.assertEqual(
+            rota_darbogaz_guveni(olcum["darbogaz_px"], zemin.shape[1]), guven)
 
     def test_bariyerli_koridor_hedefe_bagli_sayilmaz(self):
         zemin = _duz_koridor()
