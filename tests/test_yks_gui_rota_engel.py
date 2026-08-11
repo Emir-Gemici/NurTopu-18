@@ -80,15 +80,10 @@ class YksGuiAracEngeliTests(unittest.TestCase):
         oyulmus = zemin.copy()
         oyulmus[bariyer > 0] = 0
 
-        eski = rpi_inference.analyze_path(
-            oyulmus,
-            n_waypoints=yks_gui.YksArayuz.ALGI_WAYPOINT_BANT_SAYISI,
-        )
-        yeni = rpi_inference.analyze_path(
-            oyulmus,
-            n_waypoints=yks_gui.YksArayuz.ALGI_WAYPOINT_BANT_SAYISI,
-            engel_mask=bariyer,
-        )
+        # T36: GUI artik kendi `n_waypoints`ini SECMIYOR; uretim varsayilani
+        # (`analyze_path` imzasi) gecerli. Kiyas da onunla yapilir.
+        eski = rpi_inference.analyze_path(oyulmus)
+        yeni = rpi_inference.analyze_path(oyulmus, engel_mask=bariyer)
 
         self.assertEqual(2, eski[0])
         self.assertIsNone(yeni[0])
@@ -99,11 +94,7 @@ class YksGuiAracEngeliTests(unittest.TestCase):
         once = zemin.copy()
         once[arac > 0] = 0
         eski = rpi_inference.analyze_path(
-            once,
-            n_waypoints=yks_gui.YksArayuz.ALGI_WAYPOINT_BANT_SAYISI,
-            return_clean=True,
-            min_area_ratio=0.02,
-        )
+            once, return_clean=True)
         self.assertEqual(2, eski[0])
         self.assertGreater(_kenar_arac_kesisimi(eski[2], arac), 0)
 
@@ -115,7 +106,7 @@ class YksGuiAracEngeliTests(unittest.TestCase):
             cagri.append((args, kwargs, sonuc))
             return sonuc
 
-        def maskeler(_sonuc, _h, _w, min_conf):
+        def maskeler(_sonuc, _h, _w, min_conf=None):
             if min_conf == 0.10:
                 return {0: zemin.copy(), 1: arac.copy()}
             return {0: zemin.copy(), 1: arac.copy()}
@@ -130,154 +121,100 @@ class YksGuiAracEngeliTests(unittest.TestCase):
 
         self.assertEqual(1, len(cagri))
         _args, kwargs, sonuc = cagri[0]
-        self.assertEqual(
-            yks_gui.YksArayuz.ALGI_WAYPOINT_BANT_SAYISI,
-            kwargs["n_waypoints"],
-        )
-        self.assertEqual(8, kwargs["n_waypoints"])
-        self.assertTrue(np.array_equal(zemin, _args[0]))
-        self.assertTrue(np.array_equal(arac, kwargs["engel_mask"]))
+        # T36: GUI kendi `n_waypoints`ini SECMEZ; uretim varsayilani gecerli.
+        self.assertNotIn(
+            "n_waypoints", kwargs,
+            "GUI hala kendi ornekleme sayisini dayatiyor (T36 ihlali)")
+        # T35 sozlesmesi: letterbox icerik kutusu MUTLAKA gecirilir.
+        self.assertIn("icerik", kwargs)
+        self.assertEqual(4, len(kwargs["icerik"]))
+        # D-40'in kok nedeni: HAM engel maskesi son kapiya baglanmali. Maske
+        # artik dolgu kirpmasindan gectigi icin bire bir esitlik yerine
+        # "arac pikselleri engel maskesinde duruyor mu" olculur.
+        self.assertIsNotNone(kwargs["engel_mask"])
+        self.assertGreater(int(np.count_nonzero(kwargs["engel_mask"])), 0)
         self.assertEqual(0, int((sonuc[3][arac > 0] > 0).sum()))
         self.assertTrue(
             sonuc[0] is None or _kenar_arac_kesisimi(sonuc[2], arac) == 0
         )
         self.assertTrue(any(kayit[0] == "sonuc" for kayit in list(gui.algi_kuyruk.queue)))
 
-    def test_gui_uzun_guvenli_kenari_ara_noktalarla_boler(self):
-        zemin = np.ones((640, 640), np.uint8)
-        arac = np.zeros_like(zemin)
-        uzun_yol = [(40, 600), (600, 40)]
-        bolme_cagrisi = []
-        gercek_bol = costmap_path_finder._maks_aralikla_bol
+    def test_gui_uretimin_waypointlerini_DEGISTIRMEDEN_yayinlar(self):
+        """T36: GUI artik rotayi kendi bolmuyor — ekran uretimi gosterir.
 
-        def analyze_sahte(*_args, **_kwargs):
-            return 2, 1.0, list(uzun_yol), zemin.copy(), None, _SAHTE_OLCUM
+        Eski davranis (`_maks_aralikla_bol` ile ara dugum ekleme) KALDIRILDI:
+        hakem ekrani telde gidenden farkli bir polyline gosteremez. Kaldirmanin
+        olculmus bedeli yok — 67 gercek karenin 57'sinde karar uretiliyor ve
+        uretimin kendi azami kenari tuval yuksekliginin p50 %6,8 / maks %7,7'si
+        (eski GUI siniri 1/12 = %8,3). Sinirı asan kare: 0/57.
+        """
+        zemin, arac = _aracli_koridor()
+        gorulen = {}
+        gercek_analyze = rpi_inference.analyze_path
 
-        def bol_sarmal(*args, **kwargs):
-            sonuc = gercek_bol(*args, **kwargs)
-            bolme_cagrisi.append((args, sonuc))
+        def analyze_sarmal(*args, **kwargs):
+            sonuc = gercek_analyze(*args, **kwargs)
+            gorulen["wps"] = list(sonuc[2])
             return sonuc
 
-        def maskeler(_sonuc, _h, _w, min_conf):
-            del min_conf
+        def maskeler(_sonuc, _h, _w, min_conf=None):
             return {0: zemin.copy(), 1: arac.copy()}
 
         gui = _gui()
         goruntu = np.zeros((640, 640, 3), np.uint8)
-        with mock.patch.object(cv2, "imread", return_value=goruntu), \
-             mock.patch.object(rpi_inference, "get_masks", side_effect=maskeler), \
-             mock.patch.object(rpi_inference, "analyze_path",
-                               side_effect=analyze_sahte), \
-             mock.patch.object(costmap_path_finder, "_maks_aralikla_bol",
-                               side_effect=bol_sarmal):
-            gui._algi_kos(Path("uzun.jpg"))
+        with mock.patch.object(cv2, "imread", return_value=goruntu),              mock.patch.object(rpi_inference, "get_masks", side_effect=maskeler),              mock.patch.object(rpi_inference, "analyze_path",
+                               side_effect=analyze_sarmal):
+            gui._algi_kos(Path("aracli.jpg"))
 
-        self.assertEqual(1, len(bolme_cagrisi))
-        args, bolunmus = bolme_cagrisi[0]
-        maks_kenar = float(args[1])
-        self.assertAlmostEqual(
-            640 * yks_gui.YksArayuz.ALGI_MAKS_KENAR_ORANI,
-            maks_kenar,
-        )
-        self.assertGreater(len(bolunmus), len(uzun_yol))
-        for bas, son in zip(bolunmus, bolunmus[1:]):
-            self.assertLessEqual(
-                float(np.hypot(son[0] - bas[0], son[1] - bas[1])),
-                maks_kenar + 1e-9,
-            )
-        # Tam-gecilebilir maske distanceTransform'da FLT_MAX uretebiliyordu;
-        # bolme cagrisi yapilsa bile render asamasinda worker cokup sonuc
-        # kuyruga hic yazilmayabiliyordu. Test gercek sonuc paketini kilitler.
+        # `_maks_aralikla_bol`u `analyze_path` KENDI icinde mesru olarak
+        # kullanir (`_rotayi_ornekle`). Olculecek sey onun cagrilip
+        # cagrilmadigi degil, GUI GOVDESININ rotaya dokunup dokunmadigidir.
+        govde = (KOK / "comms" / "yks_gui.py").read_text(
+            encoding="utf-8").split("def _algi_kos", 1)[1].split(
+                "def _algi_sonucu_goster", 1)[0]
+        for yasak in ("_maks_aralikla_bol", "MAKS_WP", "_kenarlar_guvenli"):
+            self.assertNotIn(
+                yasak, govde,
+                f"GUI hala rotayi kendi isliyor: {yasak}")
         self.assertTrue(
-            any(kayit[0] == "sonuc" for kayit in list(gui.algi_kuyruk.queue))
-        )
+            any(k[0] == "sonuc" for k in list(gui.algi_kuyruk.queue)))
+        self.assertIn("wps", gorulen)
 
-    def test_kalin_sari_cizgi_arac_etiketinin_ustunu_boyamaz(self):
-        zemin = np.ones((640, 640), np.uint8)
-        arac = np.zeros_like(zemin)
-        arac[240:400, 301:305] = 1
-        yol = [(300, 600), (300, 40)]
+    def test_panoramik_kare_worker_i_dusurmez(self):
+        """Dayaniklilik: cok genis kare + tam gecilebilir maske.
 
-        def analyze_sahte(*_args, **_kwargs):
-            clean = zemin.copy()
-            clean[arac > 0] = 0
-            return 2, 1.0, list(yol), clean, None, _SAHTE_OLCUM
-
-        def maskeler(_sonuc, _h, _w, min_conf):
-            del min_conf
-            return {0: zemin.copy(), 1: arac.copy()}
-
-        # Pozitif kontrol: GUI'nin sari kalinlik/circle ayari araca tasar.
-        sari = np.zeros((640, 640), np.uint8)
-        cv2.polylines(sari, [np.array(yol, np.int32)], False, 1, thickness=2)
-        for nokta in yol:
-            cv2.circle(sari, nokta, 4, 1, -1)
-        self.assertGreater(int(sari[arac > 0].sum()), 0)
-
-        gui = _gui()
-        goruntu = np.zeros((640, 640, 3), np.uint8)
-        with mock.patch.object(cv2, "imread", return_value=goruntu), \
-             mock.patch.object(rpi_inference, "get_masks", side_effect=maskeler), \
-             mock.patch.object(rpi_inference, "analyze_path",
-                               side_effect=analyze_sahte):
-            gui._algi_kos(Path("yakin.jpg"))
-
-        sonuc = next(k for k in list(gui.algi_kuyruk.queue) if k[0] == "sonuc")
-        gorsel = sonuc[1]
-        sari_piksel = np.all(gorsel == np.array([0, 220, 255]), axis=2)
-        self.assertEqual(0, int(sari_piksel[arac > 0].sum()))
-
-    def test_panoramik_rotada_waypoint_siniri_worker_i_dusurmez(self):
-        h, w = 100, 1399
+        Tamami gecilebilir maskede `distanceTransform` FLT_MAX dondurebiliyor
+        ve `int(medyan)` cizgi kalinligina cevrilince worker sessizce
+        dusuyordu (D-41). Kapi, sonuc paketinin GERCEKTEN yazildigini kilitler.
+        """
+        h, w = 128, 1024
         zemin = np.ones((h, w), np.uint8)
         arac = np.zeros_like(zemin)
-        uzun_yol = [(10, 90), (w - 10, 10)]
 
-        def analyze_sahte(*_args, **_kwargs):
-            return 2, 1.0, list(uzun_yol), zemin.copy(), None, _SAHTE_OLCUM
-
-        def maskeler(_sonuc, _h, _w, min_conf):
-            del min_conf
-            return {0: zemin.copy(), 1: arac.copy()}
-
-        dogrulanan_wps = []
-        gercek_kenar_kapisi = rpi_inference._kenarlar_guvenli
-
-        def kenar_kapisi_sarmal(waypoints, *args, **kwargs):
-            dogrulanan_wps.append(list(waypoints))
-            return gercek_kenar_kapisi(waypoints, *args, **kwargs)
+        def maskeler(_sonuc, _h, _w, min_conf=None):
+            yan = max(_h, _w)
+            z = np.zeros((yan, yan), np.uint8)
+            a = np.zeros((yan, yan), np.uint8)
+            y0, x0 = (yan - h) // 2, (yan - w) // 2
+            z[y0:y0 + h, x0:x0 + w] = zemin
+            a[y0:y0 + h, x0:x0 + w] = arac
+            return {0: z, 1: a}
 
         gui = _gui()
         goruntu = np.zeros((h, w, 3), np.uint8)
-        with mock.patch.object(cv2, "imread", return_value=goruntu), \
-             mock.patch.object(rpi_inference, "get_masks", side_effect=maskeler), \
-             mock.patch.object(rpi_inference, "analyze_path",
-                               side_effect=analyze_sahte), \
-             mock.patch.object(rpi_inference, "_kenarlar_guvenli",
-                               side_effect=kenar_kapisi_sarmal):
+        with mock.patch.object(cv2, "imread", return_value=goruntu),              mock.patch.object(rpi_inference, "get_masks", side_effect=maskeler):
             gui._algi_kos(Path("panorama.jpg"))
 
         paketler = list(gui.algi_kuyruk.queue)
-        self.assertFalse(any(p[0] == "hata" for p in paketler))
-        sonuc = next(p for p in paketler if p[0] == "sonuc")
-        # Gorsel uzerindeki sari dugumleri saymak yerine planlayicinin hard
-        # sinirini, ayni geometriyle yardimci seviyesinde de kilitle.
-        hedef = max(1.0, h * yks_gui.YksArayuz.ALGI_MAKS_KENAR_ORANI)
-        hedef_adim = max(1, int(np.floor(hedef / np.sqrt(2.0))))
-        gereken = 1 + int(np.ceil((w - 20) / hedef_adim))
-        self.assertGreater(gereken, costmap_path_finder.MAKS_WP)
-        self.assertEqual(1, len(dogrulanan_wps))
-        self.assertLessEqual(
-            len(dogrulanan_wps[0]), costmap_path_finder.MAKS_WP
-        )
-        self.assertEqual("sonuc", sonuc[0])
+        self.assertFalse(any(p[0] == "hata" for p in paketler), paketler)
+        self.assertTrue(any(p[0] == "sonuc" for p in paketler))
 
     def test_gecersiz_guven_gosterimi_worker_i_dusurmez(self):
         zemin = np.ones((128, 128), np.uint8)
         arac = np.zeros_like(zemin)
         goruntu = np.zeros((128, 128, 3), np.uint8)
 
-        def maskeler(_sonuc, _h, _w, min_conf):
+        def maskeler(_sonuc, _h, _w, min_conf=None):
             del min_conf
             return {0: zemin.copy(), 1: arac.copy()}
 

@@ -126,7 +126,10 @@ class YksArayuz:
         self.algi_mesgul = False
         # T29 (D-39): Bu yalnız semptom yönetimidir; asıl sorun D-21'deki v21
         # arena/RescueNet domain boşluğudur. Gemini/val tanısal karşılaştırma için kalır.
-        self.algi_kaynak = "drone"
+        # AÇILIŞ KAYNAĞI listenin ilkidir: `kompozit` — üç-kapılı arena
+        # mantığının GEÇERLİ olduğu tek küme (yer gerçeği manifest'te).
+        # `drone` bir otoparktır ve orada koridor seçimi sınanmaz (D-53).
+        self.algi_kaynak = self.ALGI_KAYNAKLAR[0]
         self.algi_idx = 0
         self._algi_foto = None              # ImageTk referansı (GC koruması)
 
@@ -880,19 +883,27 @@ class YksArayuz:
     # ── Canlı algı: v3 modeliyle GERÇEK çıkarım ──────────────────────────────
     # Karar zinciri sahadakiyle AYNI: codes/rpi_inference.py'nin get_masks +
     # analyze_path fonksiyonları kullanılır (kopya algoritma yok).
-    ALGI_KAYNAKLAR = ("gemini", "test", "val", "drone")
+    # `kompozit` ILK SIRADA ve acilis kaynagidir: uc-kapili arena mantiginin
+    # GECERLI oldugu tek kume odur (yer gercegi manifest'te). Digerleri listede
+    # KALIR — `drone` bir otopark, `gemini`/`val` afet/yol fotografi; domain
+    # boslugunu hakeme gostermek icin degerlidirler (REVIEW_LOG D-53).
+    ALGI_KAYNAKLAR = ("kompozit", "drone", "gemini", "test", "val")
     ALGI_MODEL_DOSYA = "navitas_seg_v21_best.pt"
-    # analyze_path'in bant sayisi rota ornekleme davranisidir; azami kenar
-    # uzunlugu degildir. 12 banda cikarmak bazi gecerli kivrimli koridorlari
-    # yanlis-negatif yapiyor (road_104.jpg: 8 -> yol=1, 12 -> None). Uretimle
-    # ayni 8 bant korunur; uzun kenar siniri ayri sabitle uygulanir.
-    ALGI_WAYPOINT_BANT_SAYISI = 8
-    ALGI_MAKS_KENAR_ORANI = 1.0 / 12.0
+    # T36: cikarim esigi URETIMDEN gelir. `codes/rpi_inference.py` `run_image`
+    # yolunda predict esigi `--conf` argumaniyla verilir, varsayilani 0.30
+    # (`:1116`). GUI kendi esigini SECMEZ; bu deger uretimin varsayilanidir ve
+    # `tests/test_yks_gui_uretim_hizasi.py` onu kaynaktan okuyup kilitler —
+    # uretim varsayilani degisirse test duser, ekran sessizce ayrismaz.
+    ALGI_PREDICT_CONF = 0.30
+    # Kompozit kume yer gercegi. SALT GOSTERIM: karar yoluna GIRMEZ (aksi hâlde
+    # test kendi kendini dogrular). Bkz. test_beklenen_serit_karara_sizmiyor.
+    ALGI_KOMPOZIT_DIZIN = ("data", "arena_kompozit")
 
     def _algi_gorseller(self):
         import pathlib
         kok_dizin = pathlib.Path(__file__).resolve().parents[1]
         dizinler = {
+            "kompozit": kok_dizin.joinpath(*self.ALGI_KOMPOZIT_DIZIN) / "images",
             "gemini": kok_dizin / "test_images" / "gemini",
             "test": kok_dizin / "test_images" / "test" / "images",
             "val": kok_dizin / "dataset" / "rescuenet_yolo" / "images" / "val",
@@ -903,6 +914,34 @@ class YksArayuz:
             return []
         return sorted(p for p in d.rglob("*")
                       if p.suffix.lower() in (".png", ".jpg", ".jpeg"))
+
+    def _kompozit_yer_gercegi(self):
+        """Kompozit kümenin manifest'inden {dosya_adı: beklenen_açık_şerit}.
+
+        SALT GÖSTERİM. Bu değer karar yoluna GİRMEZ — girseydi ekran kendi
+        beklentisini doğrulamış olurdu (D-15 sınıfı vakum kapı).
+
+        Fail-closed: manifest okunamazsa sessizce boş dönmez, hatayı yükseltir;
+        çağıran hatayı hakem günlüğüne yazar. "Yer gerçeği yok" ile "yer
+        gerçeği okunamadı" ekranda aynı görünemez.
+        """
+        import json
+        import pathlib
+        kok_dizin = pathlib.Path(__file__).resolve().parents[1]
+        mf = kok_dizin.joinpath(*self.ALGI_KOMPOZIT_DIZIN) / "manifest.json"
+        veri = json.loads(mf.read_text(encoding="utf-8"))
+        gercek = {}
+        for ornek in veri.get("ornekler", []):
+            arena = ornek.get("arena")
+            cikti = ornek.get("cikti")
+            if not arena or not cikti:
+                continue
+            serit = arena.get("acik_serit")
+            if serit is not None:
+                gercek[pathlib.Path(cikti).name] = int(serit)
+        if not gercek:
+            raise ValueError(f"manifest'te acik_serit taşıyan örnek yok: {mf}")
+        return gercek
 
     def gorunum(self, ad):
         self.gorunum_adi = ad
@@ -937,10 +976,12 @@ class YksArayuz:
         sira = self.ALGI_KAYNAKLAR
         self.algi_kaynak = sira[(sira.index(self.algi_kaynak) + 1) % len(sira)]
         self.algi_idx = 0
-        aciklama = {"gemini": "arena tipi görseller",
+        aciklama = {"kompozit": "kontrollü arena kompoziti — YER GERÇEĞİ var",
+                    "gemini": "arena tipi görseller",
                     "test": "takım test seti (test_images/test)",
                     "val": "RescueNet doğrulama seti",
-                    "drone": "gerçek nadir drone kareleri"}[self.algi_kaynak]
+                    "drone": "gerçek nadir drone kareleri (OTOPARK, arena değil)"
+                    }[self.algi_kaynak]
         self._logla(f"ALGI kaynağı: {self.algi_kaynak} ({aciklama})", "mavi")
         self._algi_iste()
 
@@ -970,8 +1011,9 @@ class YksArayuz:
             import numpy as np
             kok_dizin = pathlib.Path(__file__).resolve().parents[1]
             _sys.path.insert(0, str(kok_dizin / "codes"))
-            from costmap_path_finder import MAKS_WP, _maks_aralikla_bol
-            from rpi_inference import _kenarlar_guvenli, analyze_path, get_masks
+            from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,
+                                       _preprocess, _rota_kararini_esikle,
+                                       analyze_path, get_masks)
 
             if self.algi_model is None:
                 from ultralytics import YOLO
@@ -987,112 +1029,57 @@ class YksArayuz:
                     f"(SHA {_h.hexdigest()[:8]})"))
 
             img = cv2.imread(str(yol))
-            h, w = img.shape[:2]
             t0 = time.perf_counter()
-            trav = np.zeros((h, w), np.uint8)
-            blok = np.zeros((h, w), np.uint8)
-            if max(h, w) > 1400:
-                # KAROLU çıkarım: dev görüntü tek atışta 512'ye sıkışınca doku
-                # kaybolup moloz yola karışıyordu; model eğitildiği 512'lik
-                # karo ölçeğinde koşturulur (SAHI benzeri), maskeler dikilir.
-                KARO, BIND = 768, 128
-                karo_n = 0
-                for ky in range(0, max(1, h - BIND), KARO - BIND):
-                    for kx in range(0, max(1, w - BIND), KARO - BIND):
-                        y2, x2 = min(ky + KARO, h), min(kx + KARO, w)
-                        r = self.algi_model.predict(img[ky:y2, kx:x2],
-                                                    imgsz=512, conf=0.10,
-                                                    verbose=False)
-                        mt = get_masks(r, y2 - ky, x2 - kx, min_conf=0.25)
-                        mb = get_masks(r, y2 - ky, x2 - kx, min_conf=0.10)
-                        trav[ky:y2, kx:x2] = np.maximum(trav[ky:y2, kx:x2], mt[0])
-                        blok[ky:y2, kx:x2] = np.maximum(blok[ky:y2, kx:x2], mb[1])
-                        karo_n += 1
-                cikarim = f"karolu ({karo_n}×{KARO}px)"
-                esik = 0.25
-            else:
-                # tek atış + düşük-eşik fallback (iha_perceive CONF_FLOOR eşdeğeri)
-                sonuc = self.algi_model.predict(img, imgsz=512, conf=0.05,
-                                                verbose=False)
-                esik = 0.30
-                maskeler = get_masks(sonuc, h, w, min_conf=esik)
-                if maskeler[0].sum() == 0:
-                    esik = 0.05
-                    maskeler = get_masks(sonuc, h, w, min_conf=esik)
-                trav = maskeler[0]
-                blok = get_masks(sonuc, h, w, min_conf=0.10)[1]
-                cikarim = "tek atış"
+            # ── ÜRETİM ALGI HATTI — GUI kendi hattını KURMAZ (T36 / madde 16) ──
+            # `CONTRACTS.md` §11.2: Halka 3 (Çıkarım) ve Halka 4 (Maske) sahibi
+            # `codes/rpi_inference.py`. Aşağıdaki sıra o dosyanın `run_image`
+            # gövdesinin (:920-932) birebir aynısıdır ve parametreler oradan
+            # okunur — çıplak sabit yazılmaz. Jetson saha paketi de bu dosyanın
+            # BAYT-BİREBİR kopyasıdır, yani hakem ekranı sahanın gerçekten
+            # koştuğu yolu gösterir.
+            #
+            # `simulation/scripts/iha_perceive.py` bilerek KULLANILMAZ: §11.1/1
+            # `simulation/` altındaki hiçbir dosyanın halka sahibi olmasını
+            # yasaklar ve o dosya saha paketinde hiç yoktur. İki üretim yolu
+            # 67 gerçek karenin 13'ünde birbirinden ayrışıyor (REVIEW_LOG D-58);
+            # hakem ekranı sözleşmenin sahip yazdığı yola hizalanır.
+            sq, small, icerik = _preprocess(img)
+            h, w = sq.shape[:2]
+            sonuc = self.algi_model.predict(
+                small, imgsz=INFER_SIZE, conf=self.ALGI_PREDICT_CONF,
+                verbose=False)
+            maskeler = get_masks(sonuc, h, w)
+            maskeler = _maskeleri_icerige_kirp(maskeler, icerik)
+            trav, blok = maskeler[0], maskeler[1]
             ms = (time.perf_counter() - t0) * 1000
-            # Ham zemin maskesini koru: SS6.4'te MASKE_YOK, modelin hic zemin
-            # uretmemesi demektir. Engeli burada girdiden oyarsak model zemin
-            # bulmus olsa bile tam ortulen sahneyi yanlis MASKE_YOK raporlariz.
-            # analyze_path ham engeli morfolojiden SONRA zaten cikarir.
+            cikarim = "üretim (rpi_inference)"
+            # Ham zemin maskesini koru: §6.4'te MASKE_YOK, modelin hiç zemin
+            # ÜRETMEMESİ demektir. Engeli girdiden burada oyarsak model zemin
+            # bulmuş olsa bile tam örtülen sahneyi yanlış MASKE_YOK raporlarız.
             trav_serbest = trav.copy()
             trav_serbest[blok > 0] = 0
-            # karar + kararın kullandığı TEMİZ koridor; min_area_ratio:
-            # gürültüden yol uydurma koruması (failsafe)
-            # T31/T32 (D-41): serit ve guven artik ROTADAN olculuyor. Hakem
-            # ekrani olcumu de basar — "2·ORTA" yazip rotayi serit 1'den
-            # gecirmek tam olarak kapattigimiz kusurdu, kanit gorunur olmali.
-            yol_no, guven, wps, koridor, karar_reddi, rota_olcumu = analyze_path(
-                trav, n_waypoints=self.ALGI_WAYPOINT_BANT_SAYISI,
-                return_clean=True, return_reason=True, return_olcum=True,
-                min_area_ratio=0.02, engel_mask=blok)
-            guven_reddi = rota_guven_reddi(guven) if yol_no is not None else None
-            if guven_reddi is not None:
-                karar_reddi = guven_reddi
-                yol_no, wps = None, []
-            elif yol_no is not None and len(wps) >= 2:
-                # Bant sayisi tek basina azami edge uzunlugu koymaz: yatay bir
-                # kacis iki uzak dugumu baglayabilir. Zaten gorus-hatti gecmis
-                # segmentleri, bir bant yuksekliginden uzun olmayacak sekilde
-                # mevcut costmap yardimcisiyla bol; geometri degismez.
-                maks_kenar_px = max(1.0, h * self.ALGI_MAKS_KENAR_ORANI)
-                ham_wps = list(wps)
-
-                # Cok genis/panoramik karede h/12, MAKS_WP icinde
-                # tasinamayacak kadar cok ara nokta isteyebilir. Kenar araligini
-                # yalniz zorunlu oldugu kadar buyut; noktayi korlemesine kesme.
-                adimlar = [max(abs(b[0] - a[0]), abs(b[1] - a[1]))
-                           for a, b in zip(ham_wps, ham_wps[1:])]
-                hedef_adim = max(
-                    1, int(math.floor(maks_kenar_px / math.sqrt(2.0))))
-
-                def _wp_sayisi(adim):
-                    return 1 + sum(
-                        int(math.ceil(uzunluk / float(adim)))
-                        for uzunluk in adimlar if uzunluk > 0)
-
-                if adimlar and _wp_sayisi(hedef_adim) > MAKS_WP:
-                    alt, ust = hedef_adim, max(adimlar)
-                    while alt < ust:
-                        orta = (alt + ust) // 2
-                        if _wp_sayisi(orta) <= MAKS_WP:
-                            ust = orta
-                        else:
-                            alt = orta + 1
-                    maks_kenar_px = max(
-                        maks_kenar_px, (alt + 1e-6) * math.sqrt(2.0))
-
-                bolunmus = _maks_aralikla_bol(
-                    ham_wps, maks_kenar_px, MAKS_WP, koridor)
-                # Yardimci farkli raster yuvarlamasi yaparsa analyze_path'in
-                # zaten dogruladigi ham rotayi koru; guvensiz ara kenar cizme.
-                if (len(bolunmus) <= MAKS_WP
-                        and _kenarlar_guvenli(bolunmus, koridor, blok)):
-                    wps = bolunmus
+            # Karar üretimin KENDİ çağrısıdır; `return_clean/reason/olcum`
+            # yalnız GÖSTERİM için ek dönüşlerdir — aynı saf fonksiyon, aynı
+            # girdi, aynı karar. İkinci bir predict yapılmaz.
+            (ham_yol, guven, ham_wps, koridor,
+             karar_reddi, rota_olcumu) = analyze_path(
+                trav, icerik=icerik, engel_mask=blok, return_clean=True,
+                return_reason=True, return_olcum=True)
+            # K-B üretimin kendi eşikleyicisiyle uygulanır — kopya eşik yok.
+            yol_no, guven, wps, karar_reddi = _rota_kararini_esikle(
+                ham_yol, guven, ham_wps, karar_reddi)
 
             # Görselleştirme İLKESİ: yalnızca kararın KULLANDIĞI temiz koridor
             # basılır (ham maskedeki gürültü blobları çizilmez — onlar kararı
             # zaten etkilemiyor). Koridor ORİJİNAL renkte kalır; geri kalan her
             # yer KIRMIZI (geçilemez), tespitli moloz KOYU kırmızı; sınır +
             # rota SARI. Yeşil kullanılmaz.
-            gorsel = img.copy()
-            kirmizi = np.zeros_like(img)
+            gorsel = sq.copy()
+            kirmizi = np.zeros_like(sq)
             kirmizi[:] = (40, 40, 210)                      # BGR kırmızı
             if yol_no is not None and wps:
-                acik_ton = cv2.addWeighted(img, 0.45, kirmizi, 0.55, 0)
-                koyu_ton = cv2.addWeighted(img, 0.20, kirmizi, 0.80, 0)
+                acik_ton = cv2.addWeighted(sq, 0.45, kirmizi, 0.55, 0)
+                koyu_ton = cv2.addWeighted(sq, 0.20, kirmizi, 0.80, 0)
                 # SÜRÜŞ KORİDORU: rota merkez hattı ± ölçülen yol yarıçapı
                 # (distance transform medyanı), geçilebilir alanla kesişik —
                 # İKA'nın gerçekten süreceği bant. Bilgi satırında etiketli.
@@ -1128,7 +1115,7 @@ class YksArayuz:
                 # TESPİT YOK: kırmızı sele boğma — dürüst uyarı bandı bas
                 bant_h = max(60, h // 10)
                 gorsel[:bant_h] = cv2.addWeighted(
-                    img[:bant_h], 0.25, kirmizi[:bant_h], 0.75, 0)
+                    sq[:bant_h], 0.25, kirmizi[:bant_h], 0.75, 0)
                 ret_metin = (f"ROTA YOK: {karar_reddi[0]}"
                              if karar_reddi else
                              "ACIK YOL TESPIT EDILEMEDI")
@@ -1136,9 +1123,14 @@ class YksArayuz:
                             (16, int(bant_h * 0.65)),
                             cv2.FONT_HERSHEY_SIMPLEX, max(0.6, w / 1800),
                             (255, 255, 255), max(1, w // 900))
-            # şerit sınırları + sarı waypoint zinciri
-            for x in (w // 3, 2 * w // 3):
-                cv2.line(gorsel, (x, 0), (x, h), (110, 110, 110), 1)
+            # şerit sınırları — letterbox İÇERİK kutusundan (§8). Tuvalden
+            # (w//3) çizmek dolgu kadar kaydırır ve ekranda gösterilen şerit
+            # `analyze_path`'in kullandığı şeritle örtüşmezdi.
+            _ix0, _iy0, _iw, _ih = icerik
+            for _k in (1, 2):
+                _x = int(_ix0 + _k * _iw / 3.0)
+                cv2.line(gorsel, (_x, _iy0), (_x, _iy0 + _ih),
+                         (110, 110, 110), 1)
             if wps:
                 pts = np.array(wps, dtype=np.int32)
                 cv2.polylines(gorsel, [pts], False, (0, 220, 255), max(2, w // 300))
@@ -1147,7 +1139,8 @@ class YksArayuz:
                 # Kalin sari cizgi merkez hatti guvenli olsa bile arac
                 # konturuna tasabilir. Engel katmanini en son basarak arac
                 # etiketini rota cizgisinin altinda birakma.
-                gorsel[blok > 0] = koyu_ton[blok > 0]
+                if yol_no is not None:
+                    gorsel[blok > 0] = koyu_ton[blok > 0]
 
             trav_oran = 100.0 * trav_serbest.mean()
             blok_oran = 100.0 * blok.mean()
@@ -1167,10 +1160,30 @@ class YksArayuz:
                 guven_metin = repr(guven)
             bilgi = (f"{self.algi_kaynak}/{yol.name} → karar: {karar} · "
                      f"güven {guven_metin} · {ms:.0f} ms · çıkarım: {cikarim} · "
-                     f"eşik {esik:.2f}"
-                     + (" (düşük-eşik fallback)" if esik <= 0.05 else "")
+                     f"predict conf {self.ALGI_PREDICT_CONF:.2f}"
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
                       f" · gösterim: sürüş koridoru · model: {self.ALGI_MODEL_DOSYA}")
+            if self.algi_kaynak == "kompozit":
+                # YER GERÇEĞİ — yalnızca GÖSTERİM. Karar zaten yukarıda
+                # verilmiştir; bu satır onu değiştirmez, yalnız hakemin
+                # "sistem 2 dedi, beklenen 2" diye görmesini sağlar.
+                try:
+                    _beklenen = self._kompozit_yer_gercegi().get(yol.name)
+                except Exception as _e:      # fail-closed: sessiz boş GÖSTERME
+                    self.algi_kuyruk.put(("log",
+                        f"⚠ KOMPOZİT YER GERÇEĞİ OKUNAMADI: "
+                        f"{type(_e).__name__}: {_e} — beklenen şerit "
+                        "gösterilemiyor (karar bundan etkilenmez)"))
+                    bilgi += " · beklenen şerit: OKUNAMADI"
+                else:
+                    if _beklenen is None:
+                        bilgi += " · beklenen şerit: manifest'te YOK"
+                    else:
+                        _uyum = ("UYUMLU" if yol_no == _beklenen
+                                 else ("ÇEKİMSER" if yol_no is None
+                                       else "UYUMSUZ"))
+                        bilgi += (f" · beklenen şerit {_beklenen}"
+                                  f" → {_uyum}")
             if rota_olcumu is not None:
                 # Kanıt satırı: güvenin NEREDEN geldiği ekranda görünür olmalı.
                 n1, n2, n3 = rota_olcumu["seritler"]

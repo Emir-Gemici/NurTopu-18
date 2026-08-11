@@ -202,7 +202,7 @@ class YksGuiRetNedeniTests(unittest.TestCase):
     def _worker_calistir(self, zemin, engel, analyze_sahte=None):
         goruntu = np.zeros((*zemin.shape, 3), np.uint8)
 
-        def maskeler(_sonuc, _h, _w, min_conf):
+        def maskeler(_sonuc, _h, _w, min_conf=None):
             del min_conf
             return {0: zemin.copy(), 1: engel.copy()}
 

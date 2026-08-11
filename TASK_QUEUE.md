@@ -2360,7 +2360,83 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     EXIT_CODE=0
     ```
 
-- [ ] **T36 — Hakem ekranı kendi çıkarım parametrelerini ÇIPLAK yazıyor; üretimden ayrışıyor** · `comms/yks_gui.py:999-1035` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-48
+- [STATUS: READY_FOR_REVIEW] **T36 — Hakem ekranı kendi çıkarım parametrelerini ÇIPLAK yazıyor; üretimden ayrışıyor** · `comms/yks_gui.py:999-1035` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-48
+  - **✅ YAPILDI · 2026-08-11 · Claude-2.** `_algi_kos` kendi çıkarım hattını
+    artık kurmuyor; `codes/rpi_inference.py`'nin `run_image` gövdesini (`:920-932`)
+    aynı sırayla çağırıyor: `_preprocess` → `predict(imgsz=INFER_SIZE)` →
+    `get_masks` → `_maskeleri_icerige_kirp` → `analyze_path(icerik=…)` →
+    `_rota_kararini_esikle`. Çıplak eşik/karo sabitleri kaldırıldı.
+  - 🔴 **ÖNCE ÇÖZÜLEN ÇELİŞKİ — hangi "üretim"? (yeni kayıt D-58).** Görevin
+    kapısı `iha_perceive._infer`'i zincir yazıyor, ama `CONTRACTS.md` §11.2
+    Halka 3/4 sahibini `codes/rpi_inference.py` yazıyor ve §11.1/1 `simulation/`
+    dosyalarının sahip olmasını **yasaklıyor**. İkisi birbirinden de ayrışıyor:
+    ```text
+    R = codes/rpi_inference (SÖZLEŞME SAHİBİ)  vs  P = simulation/iha_perceive
+      67 gerçek kare -> AYNI 54 · FARKLI 13 (%19,4); 2'si ŞERİT farkı (R=3, P=1)
+    ```
+    Hakem ekranı **R'ye** hizalandı: sahibi R'dir, `jetson_paket/kod/rpi_inference.py`
+    R'nin bayt-birebir kopyasıdır (saha donanımı R'yi koşar) ve `iha_perceive.py`
+    saha paketinde hiç yoktur.
+  - **KAPI 1 — ölçüldü (67 gerçek kare, v21, son kod):**
+    ```text
+    ONCE   hakem ekrani vs R : AYNI 60/67 · IRAKSAK  7 (%10,4)
+    SONRA  hakem ekrani vs R : AYNI 67/67 · IRAKSAK  0        <- GECTI
+    SONRA  hakem ekrani vs P : AYNI 54/67 · IRAKSAK 13
+           (GUI'nin P'ye kalan farki, R↔P farkinin TAM KENDISI -> GUI'nin
+            kendi farki YOK; artik R'nin birebir aynisi)
+    ```
+    ⚠ Görevdeki `%31,3` artık geçerli değil: T31/T32 iki yolu yaklaştırdığı için
+    hizalama öncesi ıraksama bu ağaçta %10,4 ölçüldü.
+  - **Bilinçli bırakılan farklar — ölçümlü gerekçe:**
+    - **Karolu çıkarım KALDIRILDI.** Üretimde karşılığı yok; parametreleri
+      (768/128/0,25/0,10) tek kaynaktan okunamıyordu. `raw_frames` ve
+      `arena_kompozit` kareleri 1024×576 — zaten hiç karolanmıyordu.
+    - **GUI densify KALDIRILDI.** Ekran telde gidenden farklı polyline
+      gösteremez. Ölçüldü: üretimin kendi azami kenarı / tuval yüksekliği
+      p50 **%6,8**, maks **%7,7**; eski GUI sınırı 1/12 = %8,3 → **sınırı aşan
+      kare 0/57**. Kaldırmanın ölçülebilir bedeli yok.
+    - **Şerit çizgileri** artık tuvalin `w//3`'ünden değil letterbox **içerik
+      kutusundan** çiziliyor (§8); aksi hâlde ekrandaki şerit `analyze_path`'in
+      kullandığı şeritle örtüşmüyordu.
+  - **Kalıcı kapı:** `tests/test_yks_gui_uretim_hizasi.py` (16 test) — üretim
+    fonksiyon/sıra bağı, `icerik` geçişi, çıktı denkliği (GUI kararı == `run_image`
+    kararı, 9 sahne), ve `ALGI_PREDICT_CONF`'un `codes/rpi_inference.py`'deki
+    `--conf` varsayılanından **AST ile okunarak** kilitlenmesi.
+  - **Koşulan kapılar (gerçek çıktı):** `unittest discover -s tests -q` →
+    `Ran 242 tests · OK`; `codes/test_rota_sentetik.py` → **15/15**;
+    `yks_gui.py --help` exit 0.
+
+- [ ] **T36b — Kompozit arena kaynağı: yer gerçeği uyumu 1/7 · KAPI DÜŞTÜ** · `comms/yks_gui.py` (GUI tarafı bitti) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-59**
+  - **✅ GUI tarafı YAPILDI · 2026-08-11 · Claude-2.** `kompozit` kaynağı eklendi
+    ve **açılış kaynağı** yapıldı; `drone`/`gemini`/`test`/`val` listede kaldı.
+    Bilgi satırı manifest'in beklenen açık şeridini gösteriyor; manifest
+    okunamazsa fail-closed (günlüğe hata + "OKUNAMADI", sessiz boş **yok**).
+  - 🔴 **KAPI DÜŞTÜ — zorlanmadı.** 7 karede: **UYUMLU 1 · UYUMSUZ 5 · ÇEKİMSER 1**.
+  - **Kök neden GUI'de DEĞİL, modelde de DEĞİL** — manifest'in kendi kusursuz
+    zemin/engel maskeleriyle (yer gerçeği) ölçüldü:
+    ```text
+    ORACLE maske -> analyze_path + K-B :  DOGRU 0/7 · YANLIS 0/7 · RET 7/7
+       6 kare DUSUK_GUVEN (0,028 / 0,028 / 0,028 / 0,028 / 0,117 / 0,056)
+       1 kare UC_BANT_TEMAS_YOK
+    K-B UYGULANMADAN ham serit      :  DOGRU 4/7 · YANLIS 2/7 · YAPISAL RET 1/7
+    ```
+    Yani karar mantığı arenada ham hâlde 4/7 doğru; **K-B hepsini eliyor**.
+  - **Neden güven bu kadar düşük — ölçüldü.** Altı karenin dördünde darboğaz
+    **1,0 px**. Görüntü-kenarı artefaktı DEĞİL: darboğaz noktaları kenardan
+    **117–214 px** içeride ve `distanceTransform`'a 1 px kapalı çerçeve eklemek
+    değeri değiştirmiyor (1,0 → 1,0). Rota **gerçekten** molozun kenarını
+    sıyırıyor; çünkü `analyze_path`'te C-uzayı şişmesi yok ve fiziksel gövde
+    açıklığı `mpp`'ye bağlı — §11.2 **Halka 5 SAHİPSİZ** (D-22).
+  - ⚠ **Eşiği tek başına düşürmek ÇÖZÜM DEĞİL:** 0,03'e çekmek 6/7 kararı
+    geçirir ama ikisi zaten **yanlış şerit** ve hepsi 1 px açıklıklı, fiziksel
+    olarak sürülemez rotalar. Önce C-uzayı (Halka 5 + `r_gerekli_px`), sonra
+    K-B kalibrasyonu. Sıra ters çevrilirse §5.3.2 uyarınca çekimserlikten
+    **daha tehlikeli** olur.
+  - **Kalıcı kapı (GUI tarafı):** `tests/test_yks_gui_uretim_hizasi.py`
+    `KompozitKaynakTests` — açılış kaynağı, dört eski kaynağın korunması,
+    manifest okuma, fail-closed, ve **beklenen şeridin karara sızmadığı**
+    (beklenti 1/2/3 yapılınca karar değişmiyor) testi.
+
   - 🔴 **BÜYÜKLÜK DÜZELTİLDİ · 2026-08-11 · Claude 1 (D-51).** İlk ölçümümde
     üretim yolunu **yeniden kurmuştum**; gerçek `iha_perceive._infer` ile
     yeniden ölçtüm:
@@ -2395,7 +2471,33 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı:** Aynı 67 karede iki yolun kararı **67/67 aynı**; ıraksama tablosu
     yeniden koşulup yapıştırılacak. `codes/test_rota_sentetik.py` **15/15**.
 
-- [ ] **T41 — İçerik sözleşmesi hiçbir çağrı yerine bağlanmadı: saha yolu hâlâ `KAPALI_DAR`** · 6 çağrı yeri · **KRİTİK** · bağımlı: **T35** (bitti) · kanıt: `REVIEW_LOG.md` D-57
+- [x] **T41 — İçerik sözleşmesi hiçbir çağrı yerine bağlanmadı: saha yolu hâlâ `KAPALI_DAR`**
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-11 · Claude 1.** Kodu Codex-2 yazdı.
+    Çağrı-yeri tablosunu **AST ile** üretmiş (elle değil) — 7 satırın hepsi dolu,
+    3 bağlanmayanın gerekçesi ayrı ayrı yazılmış ve *"bütün çağrıların bağlandığı
+    iddia edilmez"* demiş. İstediğim dürüstlük tam olarak bu.
+  - **Bağımsız doğrulamalarım:**
+    ```text
+    uretec listesi: 9 dosya · bayt-esit: 9/9
+    sozlesme disinda IKIZI OLAN dosya: yok
+    rota  DUSTU  rota uretilemedi: durum=BELIRSIZ_COKLU   ← KAPALI_DAR KALKTI
+    GECTI 4 · DUSTU 3 · SAHIPSIZ 3 · KOPUK HALKALAR (6)
+    ```
+    `GECTI` iddia edilmemiş — doğru. Otoparkta `BELIRSIZ_COKLU` **fail-closed
+    doğru davranıştır** (D-53); halka ancak T38+T40 ile meşru şekilde geçer.
+  - **`iha_haritala.py:324` gerekçesini kendim okudum — doğru, hatta daha güçlü:**
+    o çağrı `baslangic`/`hedef` tohum maskelerini `_tohum_maskesi(KB/HB)` ile
+    **açıkça** veriyor ve gerçek `mpp=MPP` kullanıyor. Yani `icerik`in düzelteceği
+    varsayılan uç-bant tohumlaması orada **hiç kullanılmıyor**. Bağlanmaması doğru.
+  - **Kanonik karar da doğru:** `scripts/jetson_fps.py` çalıştırılabilir kaynak,
+    paket dosyası dağıtım aynası. Üreteç bu yönü artık yapısal olarak zorluyor.
+  - 🔴 **Kalıntı — yine benim talimat çelişkim (yeni T42):**
+    `jetson_paket/kod/kamera_dogrula.py:118` bağlanamadı çünkü *"ikizi yok,
+    DOKUNMA"* ile *"`jetson_paket/kod/**` yalnız üreteçle"* kurallarım birlikte
+    **düzenlenebilir kanonik kaynak bırakmadı.** Codex-2 bunu zorlamak yerine
+    raporladı.
+
+- [STATUS: KAPANDI] **T41 — özgün kayıt** · 6 çağrı yeri · **KRİTİK** · bağımlı: **T35** (bitti) · kanıt: `REVIEW_LOG.md` D-57
   - **Kanıt — kendim ölçtüm:** `rota_bul` artık `icerik` sözleşmesini taşıyor ve
     geçirilince `KAPALI_DAR=16` → `ACIK=1 | BELIRSIZ_COKLU=15` oluyor. Ama
     **hiçbir üretim çağrısı geçirmiyor**, yani saha yolu bugün hâlâ 16/16
@@ -2426,8 +2528,131 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
        edilmeyecek (o T38+T40'ın işi).
     3. Madde 15: bağlama sonrası hiçbir çağrı yerinde serbest piksel artmayacak.
     4. Üreteç 9/9 · `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
+  - **Çağrı-yeri denetimi — gerçek AST çıktısı (2026-08-11):** `kamera_dogrula.py`
+    satırı görevdeki `ikizi yok, DOKUNMA` ve `jetson_paket/kod/**` dosyalarına
+    yalnız üreteçle yazma kuralları birlikte uygulanabilir bir kanonik kaynak
+    bırakmadığı için açıkça bağlı değildir. Bütün çağrıların bağlandığı iddia
+    edilmez.
+    ```text
+    jetson_paket/kod/jetson_fps.py:162 | letterbox=VAR | baglandi=EVET | gerekce=_preprocess exact kutuyu dondurur; scripts/jetson_fps.py kanoniginden uretecle 9. ayna olarak baglandi
+    jetson_paket/kod/kamera_dogrula.py:118 | letterbox=VAR | baglandi=HAYIR | gerekce=_preprocess exact kutuyu dondurur; ancak ikizi yok/DOKUNMA ve paket dosyasina elle yazma yasagi nedeniyle baglanmadi
+    scripts/jetson_fps.py:162 | letterbox=VAR | baglandi=EVET | gerekce=_preprocess exact kutuyu dondurur; maske tam tuval boyutunda kaldigi icin ayni nesne tasindi
+    scripts/saha_kuru_kosu.py:482 | letterbox=VAR | baglandi=EVET | gerekce=_preprocess kutusu halka_cikarim_ve_maske donusunden halka_rota'ya tasinir; ayni nesne verildi
+    scripts/saha_kuru_kosu.py:495 | letterbox=YOK | baglandi=HAYIR | gerekce=maske fiziksel ROI dilimiyle yerel koordinata gecmistir; eski tuval kutusu bu sekilde gecersiz olur
+    scripts/v21_degerlendir_ve_paketle.py:71 | letterbox=VAR | baglandi=EVET | gerekce=_preprocess exact kutuyu dondurur; kirpma dolguyu sifirlar ama tuval geometrisini korur
+    simulation/scripts/iha_haritala.py:324 | letterbox=YOK | baglandi=HAYIR | gerekce=1024x1024 mozaik 1024 infer edilir ve _infer maskeleri content koordinatina fiziksel kirpar; mpp/KB/HB ayrica verilir
+    EXIT_CODE=0
+    ```
+  - **Kanonik kararı:** `scripts/jetson_fps.py` repo içindeki çalıştırılabilir
+    kaynaktır; kökü `parents[1]` ile bulup `codes/` modüllerini yükler. Paket
+    dosyası dağıtım aynasıdır ve kurulumda yeniden `scripts/` altına taşınır.
+    Üreteç/test bu yönü ve toplam dokuz kaynağı artık yapısal olarak zorluyor.
+  - **Kuru koşu önce/sonra — ikisinde de genel çıkış 1 ve `rota DUSTU`; `GECTI`
+    ilanı yoktur:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B scripts/saha_kuru_kosu.py
+    [ÖNCE] rota  DUSTU  letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK — tohum bandi dolguya dusuyor
+    [ÖNCE] GECTI 4 · DUSTU 3 · SAHIPSIZ 3 · ATLANDI 0
+    [ÖNCE] KOPUK HALKALAR (6): kamera, model_yukleme, olcek, hedef_konumu, rota, motor
+    [ÖNCE] EXIT_CODE=1
 
-- [ ] **T40 — Kompozit arena zemini: gerçek karelere arena semantiği yapıştır** · `scripts/copy_paste_augmentation.py` → `data/arena_kompozit/` · **KRİTİK** · **T38'i açar** · kanıt: `REVIEW_LOG.md` D-53, D-56
+    O:\navitas-local-train\venv\Scripts\python.exe -B scripts/saha_kuru_kosu.py
+    [SONRA] rota  DUSTU  rota uretilemedi: durum=BELIRSIZ_COKLU
+    [SONRA] GECTI 4 · DUSTU 3 · SAHIPSIZ 3 · ATLANDI 0
+    [SONRA] KOPUK HALKALAR (6): kamera, model_yukleme, olcek, hedef_konumu, rota, motor
+    [SONRA] EXIT_CODE=1
+
+    [T41_ROTA_ONCE] halka=DUSTU karar=KAPALI_DAR kirpik=ACIK sebep=letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK — tohum bandi dolguya dusuyor
+    [T41_ROTA_SONRA] halka=DUSTU karar=BELIRSIZ_COKLU kirpik=ACIK icerik_aktarildi=True kirpik_karsilastirma=yalniz_tanisal sebep=rota uretilemedi: durum=BELIRSIZ_COKLU
+    EXIT_CODE=0
+    ```
+  - **İlk 16 otopark karesi — model davranışı ve Madde 15 gerçek ölçümü; görev
+    veya arena başarısı kanıtı değildir:**
+    ```text
+    [T41_KUME] kare=16 model=models\navitas_seg_v21_best.pt imgsz=512 conf=0.25
+    [T41_16_ONCE] ACIK=0 | KAPALI_DAR=16 | KAPALI_KOPUK=0 | BELIRSIZ_COKLU=0 | BELIRSIZ_TEK_KAPI=0 | MASKE_YOK=0
+    [T41_16_SONRA] ACIK=1 | KAPALI_DAR=0 | KAPALI_KOPUK=0 | BELIRSIZ_COKLU=15 | BELIRSIZ_TEK_KAPI=0 | MASKE_YOK=0
+    [T41_MADDE15] cagri=scripts/jetson_fps.py kare=16 roi_serbest_artan=0 k2_serbest_artan=0
+    [T41_MADDE15] cagri=jetson_paket/kod/jetson_fps.py kare=16 roi_serbest_artan=0 k2_serbest_artan=0
+    [T41_MADDE15] cagri=scripts/saha_kuru_kosu.py:482 kare=16 roi_serbest_artan=0 k2_serbest_artan=0
+    [T41_MADDE15] cagri=scripts/v21_degerlendir_ve_paketle.py kare=16 roi_serbest_artan=0 k2_serbest_artan=0
+    EXIT_CODE=0
+    ```
+  - **Regresyon, paket ve genel kapılar — gerçek çıktılar:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_costmap_icerik_cagri_yerleri.py -v
+    Ran 5 tests in 2.329s
+    OK
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B scripts/jetson_paket_hazirla.py
+    [JETSON_PAKET] codes\karar_sozlesmesi.py -> jetson_paket\kod\karar_sozlesmesi.py
+    [JETSON_PAKET] codes\rpi_inference.py -> jetson_paket\kod\rpi_inference.py
+    [JETSON_PAKET] codes\costmap_path_finder.py -> jetson_paket\kod\costmap_path_finder.py
+    [JETSON_PAKET] scripts\jetson_fps.py -> jetson_paket\kod\jetson_fps.py
+    [JETSON_PAKET] comms\protocol.py -> jetson_paket\kod\protocol.py
+    [JETSON_PAKET] comms\link.py -> jetson_paket\kod\link.py
+    [JETSON_PAKET] comms\iha_sender.py -> jetson_paket\kod\iha_sender.py
+    [JETSON_PAKET] comms\inis_kaniti.py -> jetson_paket\kod\inis_kaniti.py
+    [JETSON_PAKET] comms\iha_inis_yayinci.py -> jetson_paket\kod\iha_inis_yayinci.py
+    [T41_9X9] kopya=9 bayt_esit=9
+    GENERATOR_EXIT_CODE=0
+    VERIFY_EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py
+    SONUC: 15/15 dogru
+    [OK] TUM DETERMINISTIK SAHNELER GECTI
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q
+    Ran 216 tests in 34.350s
+    OK
+    EXIT_CODE=0
+
+    [T41_JETSON_FPS_PARITE] bayt_esit=1 canonical_sha256=0D1D1DB18AA8EDBF8CEDC950F56CD5A16F109A3DAF833877574CFC78E4ACAEDF ayna_sha256=0D1D1DB18AA8EDBF8CEDC950F56CD5A16F109A3DAF833877574CFC78E4ACAEDF
+    DIFF_CHECK_EXIT_CODE=0
+    ```
+
+- [x] **T40 — Kompozit arena zemini: gerçek karelere arena semantiği yapıştır**
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-11 · Claude 1.** Kodu Codex-1 yazdı.
+  - ⚠ **İlk ölçümüm YANLIŞTI ve düzelttim:** araç katmanını düşürüp
+    `icerik`/`mpp` geçirmeden `rota_bul({0:zemin,1:engel}, mpp=None)` çağırmıştım
+    → 5/7 çıkmıştı. `arena_rotasi`'yi okuyunca gördüm ki o bir yeniden kurgu
+    değil, **sözleşme katmanlarıyla** (`COSTMAP_YOL/ENGEL_KATMANLARI`, araç
+    katmanı dâhil) üretim girişini çağırıyor. Doğru sözleşmeyle yeniden ölçtüm:
+    ```text
+    kare                          bekl     karar   pozitif kontrol   m15
+    frame_000006_000000864_cp_00     1    ACIK/1        KAPALI_DAR     0
+    frame_000008_000001008_cp_00     1    ACIK/1        KAPALI_DAR     0
+    frame_000018_000002160_cp_00     3    ACIK/3        KAPALI_DAR     0
+    frame_000011_000000600_cp_00     1    ACIK/1        KAPALI_DAR     0
+    frame_000014_000000672_cp_00     2    ACIK/2        KAPALI_DAR     0
+    frame_000015_000000696_cp_00     2    ACIK/2        KAPALI_DAR     0
+    frame_000016_000000720_cp_00     2    ACIK/2        KAPALI_DAR     0
+    [GECTI] karar manifest seridiyle ayni (7/7)
+    [GECTI] POZITIF KONTROL: kapatilinca ACIK kalmiyor (7/7 KAPALI_DAR)
+    [GECTI] MADDE 15: serbest(K1∧¬K2) ⊆ serbest(K1)
+    [GECTI] arac kapsamasi %100.000
+    ```
+  - **Aradığım üç incelik de yerinde:**
+    1. **Pozitif kontrol gerçek** — açık şerit kapatılınca 7/7 `KAPALI_DAR`.
+       Bu olmadan test kendi kendini doğrulardı (T4 dersi).
+    2. **Dairesellik kapatılmış** — üreteç `arena_rotasi()` çağırmıyor, yani
+       karar sonucu örnek seçimini etkileyemiyor.
+    3. **Bariyer "planlanan dikdörtgen" sayılmıyor** — yalnız RGBA alfa eşiğini
+       gerçekten geçen ve koridoru üstten alta kopardığı bağımsız bağlı-bileşen
+       testiyle kanıtlanan pikseller class-1'e giriyor.
+  - **Manifest sınırı kendisi kaydetmiş** (istediğim niteleme, makine-okunur):
+    `arena_karar_mantigi_kaniti: True` · `arena_model_basarimi_kaniti: False` ·
+    `arena_domain_boslugu_kapandi: False` · ölçek kaynağı "gerçek kamera mpp
+    ölçümü değildir".
+  - **Sınır — verim düşük, ilan edilmeli:** 67 ham kareden **7'si** üretildi;
+    60'ı gerekçesiyle atlandı (`arena_c_uzayi_veya_hedef_uygunsuz` 52 ·
+    `arena_gercek_bariyer_kesmiyor_serit_3` 7 · `..._serit_2` 1). Otopark üç
+    şeritlik arena yerleşimine nadiren yer bırakıyor. **T38 için yeterli**
+    (bir determinist kare gerekiyor); genel arena karar kümesi olarak **ince**.
+
+- [STATUS: KAPANDI] **T40 — özgün kayıt** · `scripts/copy_paste_augmentation.py` → `data/arena_kompozit/` · **KRİTİK** · **T38'i açar** · kanıt: `REVIEW_LOG.md` D-53, D-56
   - **Neden:** Gerçek arena çekimi iptal edildi (kullanıcı kararı, süresiz).
     Elimizdeki tek gerçek zemin bir **otopark**; arena mantığı (üç kapı, uç bant
     teması, güzergâh seçimi) orada **sınanamıyor**. Saf sentetik arena ise
@@ -2459,6 +2684,85 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ **Sınır — raporlarda yazılacak:** Bu küme **karar mantığını** sınar,
     **model başarımını** sınamaz. Arena domain boşluğu (K-3: mAP arena
     sıralamasını tersine çeviriyor) bu görevle **kapanmaz**.
+  - **Uygulama özeti (2026-08-11 · Codex-1):** Eski rastgele kip ve v20
+    varsayılanı korundu; yeni `--arena` kipi etkin üretim modeli olduğu için v21'i
+    seçiyor. İlk gerçek karede v20'nin zemin/engel çıktısı `0/0 px`, v21'in
+    `460200/146812 px` ölçülmüştü; bu seçim yine model başarımı ilanı değildir.
+    Şeritler yalnız `serit_no()` ile kuruluyor. DOTA-OBB araçları ve v21 engelleri
+    korunan katmana giriyor; moloz araç/mevcut engel üstüne yapıştırılmıyor.
+    Planlanan dikdörtgen engel sayılmıyor: yalnız RGBA alfa eşiğini gerçekten
+    geçen, yerel koridoru üstten alta kopardığı bağımsız bağlı-bileşen testiyle
+    kanıtlanan pikseller class-1/rota/PNG maskesine giriyor. Üreteç
+    `arena_rotasi()` çağırmıyor; karar sonucu örnek seçimini etkileyemiyor.
+  - **H üretimi ve ölçek:** Harici hedef yokken açık şeridin hedef bandına
+    prosedürel kırmızı kare ve beyaz H çiziliyor. Kenar `2.0 m / mpp`; kontrollü
+    kompozit `mpp = simulation.scripts.arena.HTAB / kısa kenar`. Bu açıkça bir
+    kompozit ölçek varsayımıdır, gerçek kamera `mpp` ölçümü değildir. Çıktı 7
+    geometrik uygun örnek/60 bağımsız geometri reddidir; üç açık şerit de temsil
+    edilir. İlk deterministik çıktı:
+    `images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000006_000000864_cp_00.jpg`.
+  - **Üretim + determinizm kapısı — iki ayrı gerçek koşum:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B scripts/copy_paste_augmentation.py --arena --temizle
+    Modeller yukleniyor: zemin=navitas_seg_v21_best.pt, arac=yolov8m-obb.pt
+      arac kahini: DOTA-OBB (task=obb)
+    TOPLAM: 7 YOLO-seg ornegi yazildi, 60 atlandi -> O:\navitas\data\arena_kompozit
+    KOŞUM_1_SHA256=2c2a81c4721c110a13b4d0b028ffe74263d63df741caddb6421641a090b77c14
+    URETIM_EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B scripts/copy_paste_augmentation.py --arena --temizle
+    TOPLAM: 7 YOLO-seg ornegi yazildi, 60 atlandi -> O:\navitas\data\arena_kompozit
+    KOŞUM_2_SHA256=2c2a81c4721c110a13b4d0b028ffe74263d63df741caddb6421641a090b77c14
+    URETIM_EXIT_CODE=0
+    ```
+  - **Bağımsız kalıcı arena kapısı — gerçek çıktı:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B tests/arena_kompozit_kapisi.py
+    [T40_KAPI] kompozit=7 ACIK=7 rota_ile_elenen=0 acik_seritler={1: 3, 2: 3, 3: 1}
+    [T40_POZITIF] kapatilan=7 durumlar={'KAPALI_DAR': 7}
+    [T40_ARAC] arac_px=653486 kapsanan_px=652680 kapsama_yuzde=99.877 kare_bazli_dusuk=0
+    [T40_BARIYER] exact_px=35560 kapsanan_px=35465 kapsama_yuzde=99.733
+    [T40_MADDE15] serbest_artan=0
+    [T40_HATALAR] {'rota_sonucuyla_elenen': 0}
+    [T40_SHA256] 2c2a81c4721c110a13b4d0b028ffe74263d63df741caddb6421641a090b77c14
+    [T40_SINIR] Kompozit kume karar mantigini sinar; model basarimini veya gercek arena domainini sinamaz.
+    EXIT_CODE=0
+    ```
+  - **Regresyon/genel kapılar — gerçek çıktı:**
+    ```text
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -p test_copy_paste_arena.py -v
+    Ran 11 tests in 0.770s
+    OK
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py
+    SONUC: 15/15 dogru
+    [OK] TUM DETERMINISTIK SAHNELER GECTI
+    EXIT_CODE=0
+
+    O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q
+    Ran 227 tests in 34.324s
+    OK
+    EXIT_CODE=0
+    ```
+
+- [ ] **T42 — `kamera_dogrula.py` içerik sözleşmesine bağlanamadı: talimat kilidi** · `jetson_paket/kod/kamera_dogrula.py:118` · KÜÇÜK · kanıt: T41 çağrı-yeri tablosu
+  - **Kanıt (Codex-2, AST tablosu):** `letterbox=VAR · baglandi=HAYIR · gerekce=
+    _preprocess exact kutuyu dondurur; ancak ikizi yok/DOKUNMA ve paket
+    dosyasina elle yazma yasagi nedeniyle baglanmadi`
+  - **Sebep bende:** T41'de *"`kamera_dogrula.py` ikizi yok, DOKUNMA"* ile
+    *"`jetson_paket/kod/**` yalnız üreteçle güncellenecek"* kurallarımı birlikte
+    verdim; ikisi birlikte **düzenlenebilir kanonik kaynak bırakmadı**. Codex-2
+    zorlamak yerine raporladı — doğru davranış.
+  - **Etkisi sınırlı:** Bu bir Jetson kamera **tanı** betiği; bağlanmadığı için
+    letterbox'lı girdide gereksiz `KAPALI_DAR` raporlayabilir. Karar yolunu
+    etkilemiyor, ama tanı aracının yanlış sinyal vermesi T38'in dersidir.
+  - **Yap:** Ya `scripts/kamera_dogrula.py` kanonik kaynağını oluşturup üreteç
+    listesine ekle (9 → 10), ya da betiği paket-yerel kabul edip **açıkça**
+    sözleşme dışı ilan et ve `icerik`i orada doğrudan bağla. Hangisini seçtiysen
+    gerekçesini yaz.
+  - **Kapı:** Üreteç N/N bayt-eşit · letterbox'lı girdide `KAPALI_DAR` kalkıyor ·
+    `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
 
 - [ ] **T38 — Saha kuru koşusunun `rota` halkası OTOPARK karesiyle sınanıyor: meşru şekilde geçemez** · `scripts/saha_kuru_kosu.py:250` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-53
   - **Kanıt:** `:250` halka girdisini `data/raw_frames/**` içinden seçiyor.

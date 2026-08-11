@@ -6,9 +6,9 @@ Etiket semantigi `codes/sinif_semasi.py`'den gelir: 0=zemin, 1=engel, 2=hedef.
 Zemin satiri tam cercevedir; engeller ve hedefler onun ustunde ayri poligonlar
 olarak yazilir. Boylece zemin poligonu engellerin altinda delik acmaz.
 
-⚠ Ilan edilen SINIF SAYISI veriye baglidir: `--hedef-maske-dizini` verilmezse
-hicbir etikette sinif 2 olusmaz ve `data.yaml` iki sinifli (traversable/blocked)
-yazilir. Aksi halde bu veri seti 2 sinifli bir karisimla birlikte egitilemezdi.
+⚠ Ilan edilen SINIF SAYISI veriye baglidir: rastgele kipte
+`--hedef-maske-dizini` verilmezse sinif 2 olusmaz. T40 `--arena` kipi ise
+CONTRACTS.md 1.1'deki 2 m x 2 m kirmizi H'yi kontrollu olcekte kendisi uretir.
 
 ARAC KAHINI (S1): araclar DOTA OBB ile bulunur, COCO segmentasyonu ile DEGIL.
 Olculdu: ayni nadir fotografta COCO 2 arac / DOTA OBB 93 arac. Zemin satiri tam
@@ -37,17 +37,34 @@ from ultralytics import YOLO
 
 KOK = Path(__file__).resolve().parents[1]
 KODLAR = KOK / "codes"
+if str(KOK) not in sys.path:
+    sys.path.insert(0, str(KOK))
 if str(KODLAR) not in sys.path:
     sys.path.insert(0, str(KODLAR))
 
 from arac_maskesi import coco_arac_maskesi, obb_arac_maskesi, obb_modeli_mi
+from costmap_path_finder import olcek_px, rota_bul
+from karar_sozlesmesi import hedef_bant_yuksekligi, serit_no
 from rpi_inference import _maskeleri_icerige_kirp, _preprocess, get_masks
-from sinif_semasi import (EGITIM_SINIF_ADLARI, ENGEL, HEDEF, IKI_SINIF_ADLARI,
-                          ZEMIN)
+from sinif_semasi import (COSTMAP_ENGEL_KATMANLARI, COSTMAP_YOL_KATMANLARI,
+                          EGITIM_SINIF_ADLARI, ENGEL, HEDEF,
+                          IKI_SINIF_ADLARI, ZEMIN, costmap_katmanlari)
+from simulation.scripts.arena import HTAB
 
 
 GORUNTU_UZANTILARI = {".jpg", ".jpeg", ".png"}
 MASKE_UZANTILARI = (".png", ".jpg", ".jpeg", ".bmp")
+
+# CONTRACTS.md 1.1: hedef, 2 m x 2 m kirmizi H brandasidir. Bu sabit yalniz
+# kontrollu kompozit olcege cevrilir; gercek kameranin mpp olcumu diye sunulmaz.
+ARENA_HEDEF_KENAR_M = 2.0
+# T40 kabul kapisi: yazilan YOLO class-1 poligonlari, DOTA arac piksellerinin en
+# az bu oranini tasimalidir. Bellek ici union bu olcumu kanitlamaz.
+ARENA_ARAC_KAPSAMA_ESIGI = 0.95
+ARENA_OLCEK_KAYNAGI = (
+    "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / "
+    "kaynak karenin kisa kenari; gercek kamera mpp olcumu degildir"
+)
 
 
 @dataclass
@@ -63,6 +80,33 @@ class UretimOzeti:
     mevcut_engel_px: int = 0
     hedef_px: int = 0
     sebep: str | None = None
+    arena: dict | None = None
+
+
+@dataclass
+class ArenaGeometrisi:
+    """Kontrollu uc-koridor yer gercegi ve kabul kapisi girdileri."""
+
+    zemin: np.ndarray
+    bariyer: np.ndarray
+    pozitif_bariyer: np.ndarray
+    hedef: np.ndarray
+    acik_serit: int
+    kapali_seritler: list[int]
+    bariyerler: list[dict]
+    icerik: tuple[int, int, int, int]
+    mpp: float
+    hedef_kutu: tuple[int, int, int, int]
+
+
+@dataclass
+class ArenaBariyerSonucu:
+    """Goruntude gercekten bulunan ve yerel koridoru kesen moloz kaniti."""
+
+    maske: np.ndarray
+    kutu: tuple[int, int, int, int]
+    pencere: tuple[int, int, int, int]
+    parca_sayisi: int
 
 
 def modulu_yukle(yol: Path, ad: str):
@@ -119,6 +163,14 @@ def atomik_jpeg_yaz(hedef: Path, bgr: np.ndarray, kalite: int) -> None:
     basarili, kodlu = cv2.imencode(".jpg", bgr, [cv2.IMWRITE_JPEG_QUALITY, int(kalite)])
     if not basarili:
         raise OSError(f"JPEG kodlanamadi: {hedef}")
+    atomik_bytes_yaz(hedef, kodlu.tobytes())
+
+
+def atomik_png_yaz(hedef: Path, maske: np.ndarray) -> None:
+    """Ikili yer gercegi maskesini kayipsiz ve atomik yaz."""
+    basarili, kodlu = cv2.imencode(".png", ((maske > 0).astype(np.uint8) * 255))
+    if not basarili:
+        raise OSError(f"PNG kodlanamadi: {hedef}")
     atomik_bytes_yaz(hedef, kodlu.tobytes())
 
 
@@ -289,6 +341,448 @@ def moloz_yapistir(
     return etkin_korunan, basarili
 
 
+def arena_icerik_ve_mpp(sekil: tuple[int, int]) -> tuple[tuple[int, int, int, int], float]:
+    """Gercek kare icinde kare HTAB kompozit kutusunu ve kontrollu olcegi kur.
+
+    Ham karelerde irtifa/FOV yoktur; dolayisiyla bu deger bir kamera olcumu
+    degildir. `arena.HTAB` kisa kenara eslenir ve bu varsayim manifeste yazilir.
+    """
+    yukseklik, genislik = map(int, sekil)
+    yan = min(yukseklik, genislik)
+    if yan < 1:
+        raise ValueError("Arena icerigi icin bos goruntu boyutu")
+    x0 = (genislik - yan) // 2
+    y0 = (yukseklik - yan) // 2
+    return (x0, y0, yan, yan), float(HTAB / yan)
+
+
+def arena_serit_haritasi(
+    sekil: tuple[int, int], icerik: tuple[int, int, int, int]
+) -> np.ndarray:
+    """Her pikselin seridini yalniz `serit_no()` otoritesinden turet."""
+    yukseklik, genislik = map(int, sekil)
+    x0, y0, icerik_w, icerik_h = map(int, icerik)
+    harita = np.zeros((yukseklik, genislik), dtype=np.uint8)
+    if icerik_w <= 0 or icerik_h <= 0:
+        return harita
+    x_etiketleri = np.array(
+        [serit_no(x, x0, icerik_w) for x in range(x0, x0 + icerik_w)],
+        dtype=np.uint8,
+    )
+    harita[y0:y0 + icerik_h, x0:x0 + icerik_w] = x_etiketleri[None, :]
+    return harita
+
+
+def _dikey_en_guvenli_yol(
+    dt_px: np.ndarray,
+    gecilebilir: np.ndarray,
+    icerik: tuple[int, int, int, int],
+) -> list[tuple[int, int]] | None:
+    """Ust ve alt uc bantlari arasinda asagi-yukari donmeyen bir omurga bul.
+
+    Dinamik programlama her satirda en fazla bir piksel yana gider. Boylece bir
+    koridor yatay karar bandini iki kez kesip sahte dorduncu kapi uretemez.
+    Skor, yolun en dar noktasindaki acikligi maksimize eder.
+    """
+    x0, y0, genislik, yukseklik = map(int, icerik)
+    pay = hedef_bant_yuksekligi(yukseklik)
+    ust_satirlar = range(y0, min(y0 + pay, y0 + yukseklik))
+    alt_satirlar = range(max(y0, y0 + yukseklik - pay), y0 + yukseklik)
+    ust = max(ust_satirlar, key=lambda y: (int(gecilebilir[y].sum()), -y))
+    alt = max(alt_satirlar, key=lambda y: (int(gecilebilir[y].sum()), y))
+    if ust >= alt or not gecilebilir[ust].any() or not gecilebilir[alt].any():
+        return None
+
+    genislik_tam = dt_px.shape[1]
+    gecersiz = np.float32(-1.0e20)
+    onceki = np.full(genislik_tam, gecersiz, dtype=np.float32)
+    onceki[gecilebilir[alt] > 0] = dt_px[alt, gecilebilir[alt] > 0]
+    ebeveyn = np.full((alt - ust + 1, genislik_tam), -1, dtype=np.int32)
+    kaymalar = np.array([1, 0, -1], dtype=np.int32)
+
+    for y in range(alt - 1, ust - 1, -1):
+        adaylar = np.stack((
+            np.r_[onceki[1:], gecersiz],
+            onceki,
+            np.r_[gecersiz, onceki[:-1]],
+        ))
+        secim = np.argmax(adaylar, axis=0)
+        en_iyi = adaylar[secim, np.arange(genislik_tam)]
+        simdiki = np.minimum(en_iyi, dt_px[y])
+        simdiki[gecilebilir[y] == 0] = gecersiz
+        ebeveyn[y - ust] = np.arange(genislik_tam, dtype=np.int32) + kaymalar[secim]
+        onceki = simdiki
+
+    if float(onceki.max()) < 0.0:
+        return None
+    x = int(np.argmax(onceki))
+    yol: list[tuple[int, int]] = []
+    for y in range(ust, alt + 1):
+        yol.append((x, y))
+        if y < alt:
+            x = int(ebeveyn[y - ust, x])
+            if not (x0 <= x < x0 + genislik):
+                return None
+    return yol
+
+
+def _bagimsiz_merkez_haritalari(
+    serit_maske: np.ndarray,
+    korunan: np.ndarray,
+    mpp: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Rota kodunu cagirmadan fiziksel merkez acikligini olc.
+
+    Serit duvari icin robot yaricapi, gercek engel icin ayni yaricapa ek olarak
+    algi payi aranir. Boylece beklenen acik serit `rota_bul` sonucundan secilmez.
+    """
+    olc = olcek_px(mpp)
+    serit_dt = cv2.distanceTransform(
+        (serit_maske > 0).astype(np.uint8), cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+    engel_bos = (np.asarray(korunan) == 0).astype(np.uint8)
+    engel_dt = cv2.distanceTransform(
+        engel_bos, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+    uygun = (
+        (serit_dt >= float(olc["r_gerekli_px"])) &
+        (engel_dt >= float(olc["r_gerekli_px"] + olc["algi_payi_px"]))
+    ).astype(np.uint8)
+    skor = np.minimum(serit_dt, engel_dt).astype(np.float32)
+    return skor, uygun
+
+
+def _orta_kapi_yolu(
+    skor: np.ndarray,
+    uygun: np.ndarray,
+    icerik: tuple[int, int, int, int],
+) -> list[tuple[int, int]] | None:
+    """Uc koridorun orta karar kesitinde tek ve temiz bir gecit kur."""
+    x0, y0, genislik, yukseklik = map(int, icerik)
+    pay = hedef_bant_yuksekligi(yukseklik)
+    orta = y0 + yukseklik // 2
+    ust = max(y0, orta - pay // 2)
+    alt = min(y0 + yukseklik, ust + pay)
+    if alt <= ust:
+        return None
+    return _dikey_en_guvenli_yol(
+        skor, uygun, (x0, ust, genislik, alt - ust))
+
+
+def _hedef_kutusunu_kur(
+    yol: list[tuple[int, int]],
+    acik_serit: int,
+    serit_haritasi: np.ndarray,
+    korunan: np.ndarray,
+    bariyer: np.ndarray,
+    icerik: tuple[int, int, int, int],
+    mpp: float,
+) -> tuple[np.ndarray, tuple[int, int, int, int]] | None:
+    """Acik koridorun hedef ucuna 2 m x 2 m H brandasi maskesi koy."""
+    x0, y0, genislik, yukseklik = map(int, icerik)
+    kenar = max(1, int(round(ARENA_HEDEF_KENAR_M / mpp)))
+    pay = hedef_bant_yuksekligi(yukseklik)
+    merkez_y = y0 + pay // 2
+    aday_xler = [x for x, y in yol if y < y0 + pay]
+    if not aday_xler:
+        aday_xler = [yol[0][0]]
+
+    for merkez_x in aday_xler:
+        sol = int(merkez_x - kenar // 2)
+        ust = int(merkez_y - kenar // 2)
+        sag, alt = sol + kenar, ust + kenar
+        if sol < x0 or sag > x0 + genislik or ust < y0 or alt > y0 + pay:
+            continue
+        bolge_serit = serit_haritasi[ust:alt, sol:sag]
+        if bolge_serit.size == 0 or not np.all(bolge_serit == acik_serit):
+            continue
+        if np.any(korunan[ust:alt, sol:sag]) or np.any(bariyer[ust:alt, sol:sag]):
+            continue
+        hedef = np.zeros_like(korunan, dtype=np.uint8)
+        hedef[ust:alt, sol:sag] = 1
+        return hedef, (sol, ust, kenar, kenar)
+    return None
+
+
+def arena_geometrisi_uret(
+    korunan: np.ndarray,
+    rng: random.Random,
+    *,
+    icerik: tuple[int, int, int, int],
+    mpp: float,
+    acik_serit: int | None = None,
+    harici_hedef: np.ndarray | None = None,
+) -> ArenaGeometrisi | None:
+    """DOTA/v21 engellerinden kacan tek acik ve iki kapali koridor kur.
+
+    Acik serit, `rota_bul` sonucuna bakilarak secilmez. Once C-uzayinda uc bant
+    arasinda baglanti kurabilen seritler bulunur; deterministik RNG bunlardan
+    birini secer. `rota_bul` daha sonra yalniz kabul kapisi olarak calisir.
+    """
+    korunan = (np.asarray(korunan) > 0).astype(np.uint8)
+    seritler = arena_serit_haritasi(korunan.shape, icerik)
+    serit_no_listesi = sorted(int(s) for s in np.unique(seritler) if int(s) > 0)
+    if len(serit_no_listesi) != 3:
+        return None
+
+    olc = olcek_px(mpp)
+    merkez_gerekli = float(olc["r_gerekli_px"])
+    # Kapinin karar uzayinda en az 2*r genis kalmasi icin zemin tupu 4*r capli
+    # kurulur. Tum degerler costmap fizik sozlesmesinden gelir.
+    koridor_yaricap = int(np.ceil(2.0 * merkez_gerekli))
+    zemin = np.zeros_like(korunan)
+    yollar: dict[int, list[tuple[int, int]]] = {}
+    guvenli_seritler: list[int] = []
+    x0, y0, genislik, yukseklik = map(int, icerik)
+    pay = hedef_bant_yuksekligi(yukseklik)
+
+    for serit in serit_no_listesi:
+        serit_maske = (seritler == serit).astype(np.uint8)
+        # OpenCV distanceTransform goruntu disini sifir saymaz. Icerigin dis
+        # kenarlarini acikca kapatmazsak dis seritlerin "en guvenli" omurgasi
+        # tuval kenarina yapisir ve 2 m hedef kutusu cerceve disina tasar.
+        serit_maske[:, x0] = 0
+        serit_maske[:, x0 + genislik - 1] = 0
+        merkez_skor, merkez_uygun = _bagimsiz_merkez_haritalari(
+            serit_maske, korunan, mpp)
+        tam_yol = _dikey_en_guvenli_yol(merkez_skor, merkez_uygun, icerik)
+        orta_yol = _orta_kapi_yolu(merkez_skor, merkez_uygun, icerik)
+        if orta_yol is None:
+            return None
+        if tam_yol is not None:
+            guvenli_seritler.append(serit)
+            yol = tam_yol
+        else:
+            # Kapali serit icin tam gecis gerekmez; fakat karar kesitinde temiz,
+            # tek bir kapi gerekir. Orta omurga ust/alt tohumlara uzatilir ve
+            # moloz daha sonra bu yerel tupu gercek alfa maskesiyle kesecektir.
+            ilk_x, ilk_y = orta_yol[0]
+            son_x, son_y = orta_yol[-1]
+            yol = [
+                (ilk_x, y0 + pay // 2),
+                (ilk_x, ilk_y),
+                *orta_yol[1:-1],
+                (son_x, son_y),
+                (son_x, y0 + yukseklik - 1 - pay // 2),
+            ]
+        yollar[serit] = yol
+        tup = np.zeros_like(zemin)
+        cv2.polylines(tup, [np.asarray(yol, dtype=np.int32)], False, 1,
+                      thickness=2 * koridor_yaricap + 1, lineType=cv2.LINE_8)
+        tup[seritler != serit] = 0
+        zemin = np.maximum(zemin, tup)
+
+    if harici_hedef is not None and np.any(harici_hedef):
+        ys, xs = np.nonzero(harici_hedef)
+        hedef_seritler = set(int(s) for s in seritler[ys, xs] if int(s) > 0)
+        if (len(hedef_seritler) != 1 or int(ys.min()) < y0 or
+                int(ys.max()) >= y0 + pay):
+            return None
+        secilen = next(iter(hedef_seritler))
+        if not np.all(seritler[ys, xs] == secilen):
+            return None
+    elif acik_serit is not None:
+        secilen = int(acik_serit)
+    elif guvenli_seritler:
+        secilen = int(rng.choice(guvenli_seritler))
+    else:
+        return None
+    if secilen not in guvenli_seritler:
+        return None
+
+    kapali = [serit for serit in serit_no_listesi if serit != secilen]
+    bariyer = np.zeros_like(korunan)
+    bariyerler: list[dict] = []
+    bariyer_y0 = y0 + 2 * pay
+    bariyer_y1 = min(y0 + yukseklik, bariyer_y0 + pay)
+    for serit in kapali:
+        parca = (seritler == serit).astype(np.uint8)
+        parca[:bariyer_y0] = 0
+        parca[bariyer_y1:] = 0
+        bariyer = np.maximum(bariyer, parca)
+        ys, xs = np.nonzero(parca)
+        bariyerler.append({
+            "serit": serit,
+            "kutu": [int(xs.min()), int(ys.min()), int(xs.max() - xs.min() + 1),
+                     int(ys.max() - ys.min() + 1)],
+        })
+
+    pozitif_bariyer = (seritler == secilen).astype(np.uint8)
+    pozitif_bariyer[:bariyer_y0] = 0
+    pozitif_bariyer[bariyer_y1:] = 0
+
+    if harici_hedef is not None and np.any(harici_hedef):
+        hedef = (harici_hedef > 0).astype(np.uint8)
+        if np.any(hedef & korunan) or np.any(hedef & bariyer):
+            return None
+        ys, xs = np.nonzero(hedef)
+        hedef_kutu = (int(xs.min()), int(ys.min()), int(xs.max() - xs.min() + 1),
+                      int(ys.max() - ys.min() + 1))
+    else:
+        hedef_sonucu = _hedef_kutusunu_kur(
+            yollar[secilen], secilen, seritler, korunan, bariyer, icerik, mpp)
+        if hedef_sonucu is None:
+            return None
+        hedef, hedef_kutu = hedef_sonucu
+
+    return ArenaGeometrisi(
+        zemin=zemin, bariyer=bariyer, pozitif_bariyer=pozitif_bariyer,
+        hedef=hedef, acik_serit=secilen, kapali_seritler=kapali,
+        bariyerler=bariyerler, icerik=icerik, mpp=mpp,
+        hedef_kutu=hedef_kutu,
+    )
+
+
+def _pencerede_ust_alt_bileseni(
+    maske: np.ndarray,
+    pencere: tuple[int, int, int, int],
+) -> np.ndarray | None:
+    """Pencerenin ust ve alt kenarina degen ortak bileseni tam tuvalde don."""
+    x0, y0, genislik, yukseklik = map(int, pencere)
+    yerel = (maske[y0:y0 + yukseklik, x0:x0 + genislik] > 0).astype(np.uint8)
+    if yerel.size == 0 or not yerel[0].any() or not yerel[-1].any():
+        return None
+    _n, etiket = cv2.connectedComponents(yerel, connectivity=8)
+    ust = set(int(v) for v in np.unique(etiket[0]) if int(v) > 0)
+    alt = set(int(v) for v in np.unique(etiket[-1]) if int(v) > 0)
+    ortak = sorted(ust & alt)
+    if not ortak:
+        return None
+    secilen = max(ortak, key=lambda deger: int((etiket == deger).sum()))
+    sonuc = np.zeros_like(maske, dtype=np.uint8)
+    sonuc[y0:y0 + yukseklik, x0:x0 + genislik] = (etiket == secilen)
+    return sonuc
+
+
+def arena_molozunu_yapistir(
+    tuval: np.ndarray,
+    kimlik: np.ndarray,
+    bariyer: np.ndarray,
+    asetler: list[Path],
+    yapistir: Callable,
+    rng: random.Random,
+    ilk_kimlik: int,
+    *,
+    koridor: np.ndarray,
+    korunan: np.ndarray,
+    min_poligon_alan: float,
+) -> ArenaBariyerSonucu | None:
+    """Gercek RGBA pikselleriyle yerel koridoru atomik olarak kes.
+
+    Planlanan dikdortgen yalniz yapistirma siniridir. Engel yer gercegi, alfa
+    esigini gecip kimlik haritasina gercekten yazilan piksellerden uretilir.
+    """
+    bariyer = (np.asarray(bariyer) > 0).astype(np.uint8)
+    koridor = (np.asarray(koridor) > 0).astype(np.uint8)
+    korunan = (np.asarray(korunan) > 0).astype(np.uint8)
+    ys, xs = np.nonzero(bariyer)
+    if xs.size == 0 or not asetler:
+        return None
+    sol, sag = int(xs.min()), int(xs.max()) + 1
+    ust, alt = int(ys.min()), int(ys.max()) + 1
+    bant_yuksekligi = alt - ust
+    pencere_ust = max(0, ust - bant_yuksekligi)
+    pencere_alt = min(bariyer.shape[0], alt + bant_yuksekligi)
+    pencere = (sol, pencere_ust, sag - sol, pencere_alt - pencere_ust)
+    izin = ((bariyer > 0) & (korunan == 0)).astype(np.uint8)
+    baslangic_serbest = ((koridor > 0) & (korunan == 0)).astype(np.uint8)
+    if _pencerede_ust_alt_bileseni(baslangic_serbest, pencere) is None:
+        return None
+
+    calisma_tuval = tuval.copy()
+    calisma_kimlik = kimlik.copy()
+    gercek = np.zeros_like(bariyer, dtype=np.uint8)
+    parca_sayisi = 0
+    merkez_adimi = max(1, bant_yuksekligi)
+    merkez_sayisi = max(1, int(np.ceil((sag - sol) / merkez_adimi)))
+    maks_deneme = merkez_sayisi * merkez_sayisi
+
+    for _deneme in range(maks_deneme):
+        kalan = ((baslangic_serbest > 0) & (gercek == 0)).astype(np.uint8)
+        bilesen = _pencerede_ust_alt_bileseni(kalan, pencere)
+        if bilesen is None:
+            ys_g, xs_g = np.nonzero(gercek)
+            if xs_g.size == 0:
+                return None
+            tuval[:] = calisma_tuval
+            kimlik[:] = calisma_kimlik
+            return ArenaBariyerSonucu(
+                maske=gercek,
+                kutu=(int(xs_g.min()), int(ys_g.min()),
+                      int(xs_g.max() - xs_g.min() + 1),
+                      int(ys_g.max() - ys_g.min() + 1)),
+                pencere=pencere,
+                parca_sayisi=parca_sayisi,
+            )
+
+        gecit = ((bilesen > 0) & (izin > 0)).astype(np.uint8)
+        satirlar = [(int(gecit[y].sum()), y) for y in range(ust, alt)
+                    if int(gecit[y].sum()) > 0]
+        if not satirlar:
+            return None
+        _dar_genislik, merkez_y = min(satirlar)
+        gecit_x = np.flatnonzero(gecit[merkez_y])
+        merkez_x = int(np.rint(float(np.median(gecit_x))))
+
+        rgba = None
+        # Mevcut ureticinin bozuk aset toleransi korunur; sessiz bos bariyer yoktur.
+        for _ in range(12):
+            rgba = rgba_oku(rng.choice(asetler))
+            if rgba is not None:
+                break
+        if rgba is None:
+            continue
+        olcek = bant_yuksekligi / max(1, min(rgba.shape[:2]))
+        kimlik_no = ilk_kimlik + parca_sayisi
+        deneme_tuval = calisma_tuval.copy()
+        deneme_kimlik = calisma_kimlik.copy()
+        yapistir(
+            deneme_tuval, deneme_kimlik, rgba, merkez_x, merkez_y, olcek,
+            rng.uniform(-10.0, 10.0), rng, kimlik_no=kimlik_no,
+            isik=None, sinir=izin,
+        )
+        yeni = (deneme_kimlik == kimlik_no).astype(np.uint8)
+        degisen = np.any(deneme_tuval != calisma_tuval, axis=2)
+        if (int(yeni.sum()) < float(min_poligon_alan) or
+                np.any(yeni & (1 - izin)) or np.any(degisen & (izin == 0))):
+            continue
+        calisma_tuval = deneme_tuval
+        calisma_kimlik = deneme_kimlik
+        gercek = np.maximum(gercek, yeni)
+        parca_sayisi += 1
+
+    if _pencerede_ust_alt_bileseni(
+            ((baslangic_serbest > 0) & (gercek == 0)).astype(np.uint8),
+            pencere) is None:
+        ys_g, xs_g = np.nonzero(gercek)
+        if xs_g.size:
+            tuval[:] = calisma_tuval
+            kimlik[:] = calisma_kimlik
+            return ArenaBariyerSonucu(
+                maske=gercek,
+                kutu=(int(xs_g.min()), int(ys_g.min()),
+                      int(xs_g.max() - xs_g.min() + 1),
+                      int(ys_g.max() - ys_g.min() + 1)),
+                pencere=pencere,
+                parca_sayisi=parca_sayisi,
+            )
+    return None
+
+
+def arena_hedefini_ciz(tuval: np.ndarray, hedef_kutu: tuple[int, int, int, int]) -> None:
+    """Class-2 maskesiyle ayni 2 m kareye kirmizi branda ve beyaz H ciz."""
+    x0, y0, genislik, yukseklik = map(int, hedef_kutu)
+    cv2.rectangle(tuval, (x0, y0), (x0 + genislik - 1, y0 + yukseklik - 1),
+                  (0, 0, 255), thickness=-1)
+    kalinlik = max(1, min(genislik, yukseklik) // 8)
+    sol = x0 + genislik // 3
+    sag = x0 + (2 * genislik) // 3
+    ust = y0 + yukseklik // 5
+    alt = y0 + (4 * yukseklik) // 5
+    orta = y0 + yukseklik // 2
+    cv2.line(tuval, (sol, ust), (sol, alt), (255, 255, 255), kalinlik)
+    cv2.line(tuval, (sag, ust), (sag, alt), (255, 255, 255), kalinlik)
+    cv2.line(tuval, (sol, orta), (sag, orta), (255, 255, 255), kalinlik)
+
+
 def poligon_satirlari(sinif: int, maske: np.ndarray, min_alan: float) -> list[str]:
     """Ikili maskeyi YOLO-seg normalize dis poligon satirlarina cevir."""
     yukseklik, genislik = maske.shape[:2]
@@ -324,6 +818,63 @@ def yolo_etiketi(engel: np.ndarray, hedef: np.ndarray, min_alan: float) -> str:
     return "\n".join(satirlar) + "\n"
 
 
+def arena_yolo_etiketi(
+    zemin: np.ndarray, engel: np.ndarray, hedef: np.ndarray, min_alan: float
+) -> str:
+    """Arena kipinde kontrollu zemin maskesini de gercek poligon olarak yaz.
+
+    Rastgele kipin tam-kare zemin sozlesmesi `yolo_etiketi()` icinde aynen kalir.
+    """
+    satirlar: list[str] = []
+    satirlar.extend(poligon_satirlari(ZEMIN, zemin, min_alan))
+    satirlar.extend(poligon_satirlari(ENGEL, engel, min_alan))
+    satirlar.extend(poligon_satirlari(HEDEF, hedef, min_alan))
+    return "\n".join(satirlar) + "\n"
+
+
+def yolo_sinif_maskesi(
+    etiket: str, sekil: tuple[int, int], sinif: int
+) -> np.ndarray:
+    """Yazilacak YOLO poligonunu geri rasterize ederek serilestirmeyi denetle."""
+    yukseklik, genislik = map(int, sekil)
+    maske = np.zeros((yukseklik, genislik), dtype=np.uint8)
+    for satir in etiket.splitlines():
+        alanlar = satir.split()
+        if not alanlar or int(alanlar[0]) != int(sinif):
+            continue
+        sayilar = np.asarray([float(deger) for deger in alanlar[1:]], dtype=np.float64)
+        if sayilar.size < 6 or sayilar.size % 2:
+            continue
+        noktalar = sayilar.reshape(-1, 2)
+        noktalar[:, 0] = np.clip(np.rint(noktalar[:, 0] * genislik), 0, genislik - 1)
+        noktalar[:, 1] = np.clip(np.rint(noktalar[:, 1] * yukseklik), 0, yukseklik - 1)
+        cv2.fillPoly(maske, [noktalar.astype(np.int32)], 1, lineType=cv2.LINE_8)
+    return maske
+
+
+def arena_rotasi(
+    zemin: np.ndarray,
+    mevcut_engel: np.ndarray,
+    arac: np.ndarray,
+    bariyer: np.ndarray,
+    *,
+    mpp: float,
+    icerik: tuple[int, int, int, int],
+) -> dict:
+    """Egitim siniflarini costmap katman sozlesmesiyle rota kapisina ver."""
+    katmanlar = costmap_katmanlari(
+        zemin,
+        np.maximum((mevcut_engel > 0).astype(np.uint8),
+                   (bariyer > 0).astype(np.uint8)),
+        (arac > 0).astype(np.uint8),
+    )
+    return rota_bul(
+        katmanlar, mpp=mpp, plan=False, icerik=icerik,
+        yol_sinif_idler=COSTMAP_YOL_KATMANLARI,
+        engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI,
+    )
+
+
 def bolum_sec(kaynak: Path, cesit: int, tohum: int, val_oran: float) -> str:
     """Calismalar arasinda degismeyen train/val secimi yap."""
     anahtar = f"{kaynak.as_posix()}:{cesit}:{tohum}".encode("utf-8")
@@ -345,11 +896,10 @@ def veri_yaml_yaz(cikti: Path, hedef_uretildi: bool) -> None:
     Sinif adlari `codes/sinif_semasi.py`'den gelir; burada ciplak sayi yazilmaz
     (CLAUDE.md madde 16).
 
-    ⚠ Sinif SAYISI veriye baglidir, sabit degildir. `--hedef-maske-dizini`
-    verilmediginde hicbir etikette sinif 2 bulunmaz; yine de `nc=3` ilan etmek
-    bu veri setini 2 sinifli bir karisimla (ornegin `karisim_arena.yaml`) BIRLIKTE
-    EGITILEMEZ hale getirir -- YOLO nc uyusmazligi verir. Bu yuzden ilan edilen
-    sinif kumesi, gercekten uretilen etiketlerle ayni olmak zorundadir.
+    ⚠ Sinif SAYISI veriye baglidir, sabit degildir. Rastgele kipte harici hedef
+    yoksa sinif 2 bulunmaz; arena kipi ise prosedurel H uretir. Yine de gercekte
+    iki sinifli ciktiya `nc=3` demek veri karisiminda YOLO nc uyusmazligi verir.
+    Bu yuzden ilan edilen sinif kumesi gercek etiketlerle ayni olmak zorundadir.
 
     Iki sinifli kipte `traversable/blocked` adlari kullanilir; boylece mevcut
     RescueNet + sentetik arena karisimiyla ad duzeyinde de uyumludur.
@@ -372,13 +922,17 @@ def manifest_yaz(cikti: Path, parametreler: dict, ozetler: list[UretimOzeti]) ->
 def argumanlar() -> argparse.Namespace:
     """Komut satiri ayarlarini tanimla."""
     ayrac = argparse.ArgumentParser(description="Gercek zemine etiketli moloz copy-paste uygula")
+    ayrac.add_argument("--arena", action="store_true",
+                        help="T40: kontrollu uc-koridor arena yer gercegi uret")
     ayrac.add_argument("--girdi", type=Path, default=KOK / "data" / "raw_frames")
-    ayrac.add_argument("--cikti", type=Path, default=KOK / "dataset" / "copy_paste_moloz")
+    ayrac.add_argument("--cikti", type=Path,
+                        help="Varsayilan: rastgele kipte dataset/copy_paste_moloz, arena kipinde data/arena_kompozit")
     ayrac.add_argument("--aset-dizini", type=Path,
                         default=Path(r"O:\navitas-local-train\doku_bankasi\enkaz"))
     ayrac.add_argument("--yapistir-kaynak", type=Path,
                         default=Path(r"O:\navitas-local-train\51_sentetik_arena.py"))
-    ayrac.add_argument("--zemin-model", type=Path, default=KOK / "models" / "navitas_seg_v20_best.pt")
+    ayrac.add_argument("--zemin-model", type=Path,
+                        help="Varsayilan: rastgele kipte v20, arena kipinde etkin uretim modeli v21")
     # S1: varsayilan DOTA OBB. COCO seg nadir bakista araclarin ~%98'ini kaciriyor
     # ve kacan her arac ZEMIN etiketleniyordu (olculdu: COCO 2 / DOTA 93 arac).
     ayrac.add_argument("--arac-model", type=Path, default=KOK / "yolov8m-obb.pt")
@@ -405,6 +959,19 @@ def argumanlar() -> argparse.Namespace:
     return ayrac.parse_args()
 
 
+def kip_varsayilanlarini_uygula(args: argparse.Namespace) -> argparse.Namespace:
+    """Yeni arena kipini eklerken eski rastgele kipin varsayilanlarini koru."""
+    if args.cikti is None:
+        args.cikti = (KOK / "data" / "arena_kompozit" if args.arena
+                      else KOK / "dataset" / "copy_paste_moloz")
+    if args.zemin_model is None:
+        # Arena v21'i kullanir: bu etkin sistem modelidir ve ilk gercek karede
+        # v20'nin 0 px urettigi olculmustur. Bu yine model basarimi kaniti DEGILDIR.
+        surum = "navitas_seg_v21_best.pt" if args.arena else "navitas_seg_v20_best.pt"
+        args.zemin_model = KOK / "models" / surum
+    return args
+
+
 def ayarlari_dogrula(args: argparse.Namespace) -> None:
     """Hatalari pahali model yuklemeden once acikca bildir."""
     if args.kopya < 1 or args.moloz_min < 1 or args.moloz_max < args.moloz_min:
@@ -422,9 +989,180 @@ def ayarlari_dogrula(args: argparse.Namespace) -> None:
         raise FileNotFoundError(f"Hedef maske dizini bulunamadi: {args.hedef_maske_dizini}")
 
 
+def arena_cesidi_uret(
+    args: argparse.Namespace,
+    cikti: Path,
+    kaynak: Path,
+    bgr: np.ndarray,
+    mevcut_engel: np.ndarray,
+    arac: np.ndarray,
+    harici_hedef: np.ndarray,
+    asetler: list[Path],
+    yapistir: Callable,
+    cesit: int,
+) -> UretimOzeti:
+    """Bir kontrollu arena ornegini kapilariyla birlikte atomik olarak yaz."""
+    goreli_kaynak = kaynak.relative_to(args.girdi).as_posix()
+    temel = dict(
+        kaynak=goreli_kaynak, cikti=None, bolum=None, durum="ATLANDI",
+        arac_px=int(arac.sum()), mevcut_engel_px=int(mevcut_engel.sum()),
+        hedef_px=int(harici_hedef.sum()),
+    )
+    rng = random.Random(f"{args.tohum}:{kaynak.as_posix()}:{cesit}")
+    icerik, mpp = arena_icerik_ve_mpp(bgr.shape[:2])
+    korunan = np.maximum(mevcut_engel, arac)
+    geometri = arena_geometrisi_uret(
+        korunan, rng, icerik=icerik, mpp=mpp,
+        harici_hedef=harici_hedef if np.any(harici_hedef) else None,
+    )
+    if geometri is None:
+        return UretimOzeti(**temel, sebep="arena_c_uzayi_veya_hedef_uygunsuz")
+
+    tuval = bgr.copy()
+    kimlik = np.zeros(bgr.shape[:2], dtype=np.int32)
+    seritler = arena_serit_haritasi(bgr.shape[:2], geometri.icerik)
+    moloz_sayisi = 0
+    sonraki_kimlik = 1
+    gercek_bariyer = np.zeros(bgr.shape[:2], dtype=np.uint8)
+    bariyer_kayitlari: list[dict] = []
+    yapistirma_korunani = np.maximum(korunan, geometri.hedef)
+    for serit in geometri.kapali_seritler:
+        parca = ((geometri.bariyer > 0) & (seritler == serit)).astype(np.uint8)
+        koridor = ((geometri.zemin > 0) & (seritler == serit)).astype(np.uint8)
+        sonuc = arena_molozunu_yapistir(
+            tuval, kimlik, parca, asetler, yapistir, rng, sonraki_kimlik,
+            koridor=koridor, korunan=yapistirma_korunani,
+            min_poligon_alan=args.min_poligon_alan,
+        )
+        if sonuc is None:
+            return UretimOzeti(
+                **temel, sebep=f"arena_gercek_bariyer_kesmiyor_serit_{serit}")
+        gercek_bariyer = np.maximum(gercek_bariyer, sonuc.maske)
+        moloz_sayisi += sonuc.parca_sayisi
+        bariyer_kayitlari.append({
+            "serit": serit,
+            "kutu": list(sonuc.kutu),
+            "pencere": list(sonuc.pencere),
+            "gercek_px": int(sonuc.maske.sum()),
+            "parca_sayisi": sonuc.parca_sayisi,
+            "yerel_once_bagli": True,
+            "yerel_sonra_bagli": False,
+        })
+        sonraki_kimlik = int(kimlik.max()) + 1
+
+    # Pozitif kontrol de hayali bir dikdortgen degil, ayni RGBA mekanizmasinin
+    # acik seritte uretebildigi exact engel maskesidir. Ana JPEG'e yazilmaz.
+    pozitif_tuval = bgr.copy()
+    pozitif_kimlik = np.zeros(bgr.shape[:2], dtype=np.int32)
+    pozitif_rng = random.Random(
+        f"{args.tohum}:{kaynak.as_posix()}:{cesit}:pozitif")
+    pozitif_koridor = (
+        (geometri.zemin > 0) & (seritler == geometri.acik_serit)).astype(np.uint8)
+    pozitif_sonuc = arena_molozunu_yapistir(
+        pozitif_tuval, pozitif_kimlik, geometri.pozitif_bariyer,
+        asetler, yapistir, pozitif_rng, 1,
+        koridor=pozitif_koridor, korunan=yapistirma_korunani,
+        min_poligon_alan=args.min_poligon_alan,
+    )
+    if pozitif_sonuc is None:
+        return UretimOzeti(**temel, sebep="pozitif_gercek_bariyer_kesmiyor")
+    pozitif_bariyer = pozitif_sonuc.maske
+
+    if not np.any(harici_hedef):
+        arena_hedefini_ciz(tuval, geometri.hedef_kutu)
+
+    engel = np.maximum(np.maximum(mevcut_engel, arac), gercek_bariyer)
+    if np.any(geometri.hedef & engel):
+        return UretimOzeti(**temel, sebep="uretilen_hedef_engel_cakismasi")
+    etiket = arena_yolo_etiketi(
+        geometri.zemin, engel, geometri.hedef, args.min_poligon_alan)
+    yazilan_engel = yolo_sinif_maskesi(etiket, bgr.shape[:2], ENGEL)
+    arac_px = int((arac > 0).sum())
+    kapsanan_px = int(((arac > 0) & (yazilan_engel > 0)).sum())
+    if arac_px == 0:
+        return UretimOzeti(**temel, sebep="dota_arac_pikselsiz_kare")
+    arac_kapsama = kapsanan_px / arac_px
+    if arac_kapsama < ARENA_ARAC_KAPSAMA_ESIGI:
+        return UretimOzeti(
+            **temel,
+            sebep=f"yazilan_arac_kapsama_dusuk:{arac_kapsama:.6f}",
+        )
+    bariyer_px = int(gercek_bariyer.sum())
+    bariyer_kapsanan_px = int(((gercek_bariyer > 0) & (yazilan_engel > 0)).sum())
+    bariyer_kapsama = bariyer_kapsanan_px / bariyer_px if bariyer_px else 0.0
+    if bariyer_px == 0 or bariyer_kapsama < ARENA_ARAC_KAPSAMA_ESIGI:
+        return UretimOzeti(
+            **temel,
+            sebep=f"yazilan_bariyer_kapsama_dusuk:{bariyer_kapsama:.6f}",
+        )
+
+    bolum = bolum_sec(kaynak, cesit, args.tohum, args.val_oran)
+    ad = dosya_koku(args.girdi, kaynak, cesit)
+    resim_yol = cikti / "images" / bolum / f"{ad}.jpg"
+    etiket_yol = cikti / "labels" / bolum / f"{ad}.txt"
+    maske_dizini = cikti / "masks" / bolum
+    maske_dizini.mkdir(parents=True, exist_ok=True)
+    maske_yollari = {
+        "zemin": maske_dizini / f"{ad}_zemin.png",
+        "engel": maske_dizini / f"{ad}_engel.png",
+        "hedef": maske_dizini / f"{ad}_hedef.png",
+        "arac": maske_dizini / f"{ad}_arac.png",
+        "bariyer": maske_dizini / f"{ad}_bariyer.png",
+        "pozitif_bariyer": maske_dizini / f"{ad}_pozitif_bariyer.png",
+    }
+    atomik_jpeg_yaz(resim_yol, tuval, args.jpeg_kalite)
+    atomik_bytes_yaz(etiket_yol, etiket.encode("utf-8"))
+    atomik_png_yaz(maske_yollari["zemin"], geometri.zemin)
+    atomik_png_yaz(maske_yollari["engel"], engel)
+    atomik_png_yaz(maske_yollari["hedef"], geometri.hedef)
+    atomik_png_yaz(maske_yollari["arac"], arac)
+    atomik_png_yaz(maske_yollari["bariyer"], gercek_bariyer)
+    atomik_png_yaz(maske_yollari["pozitif_bariyer"], pozitif_bariyer)
+
+    arena_detayi = {
+        "beklenen_durum": "ACIK",
+        "beklenti_kaynagi": "serit_no_ve_bagimsiz_geometri",
+        "acik_serit": geometri.acik_serit,
+        "kapali_seritler": geometri.kapali_seritler,
+        "bariyerler": bariyer_kayitlari,
+        "icerik": list(geometri.icerik),
+        "mpp": geometri.mpp,
+        "olcek_kaynagi": ARENA_OLCEK_KAYNAGI,
+        "hedef_kaynagi": ("harici_maske" if np.any(harici_hedef)
+                           else "prosedurel_2m_kirmizi_H"),
+        "hedef_kutu": list(geometri.hedef_kutu),
+        "arac_kapsanan_px": kapsanan_px,
+        "arac_kapsama": round(arac_kapsama, 6),
+        "bariyer_kapsanan_px": bariyer_kapsanan_px,
+        "bariyer_kapsama": round(bariyer_kapsama, 6),
+        "pozitif_bariyer": {
+            "kutu": list(pozitif_sonuc.kutu),
+            "pencere": list(pozitif_sonuc.pencere),
+            "gercek_px": int(pozitif_bariyer.sum()),
+            "parca_sayisi": pozitif_sonuc.parca_sayisi,
+            "yerel_once_bagli": True,
+            "yerel_sonra_bagli": False,
+        },
+        "maskeler": {ad: yol.relative_to(cikti).as_posix()
+                     for ad, yol in maske_yollari.items()},
+        "etiket": etiket_yol.relative_to(cikti).as_posix(),
+    }
+    return UretimOzeti(
+        kaynak=goreli_kaynak,
+        cikti=resim_yol.relative_to(cikti).as_posix(),
+        bolum=bolum,
+        durum="YAZILDI",
+        moloz_sayisi=moloz_sayisi,
+        arac_px=arac_px,
+        mevcut_engel_px=int(mevcut_engel.sum()),
+        hedef_px=int(geometri.hedef.sum()),
+        arena=arena_detayi,
+    )
+
+
 def main() -> int:
     """Moloz sentezini calistir; arac ustune yazma sozlesmesini uygula."""
-    args = argumanlar()
+    args = kip_varsayilanlarini_uygula(argumanlar())
     try:
         ayarlari_dogrula(args)
         kaynaklar = goruntuleri_bul(args.girdi)
@@ -454,7 +1192,11 @@ def main() -> int:
               "araclarin buyuk cogunlugunu kaciriyor (olculdu: ayni fotografta "
               "COCO 2 / DOTA 93 arac) ve kacan her arac ZEMIN etiketi aliyor. "
               "Uretilen veri seti bu haliyle modele araclarin ustunden gecmeyi "
-              "ogretir. yolov8m-obb.pt kullanin.", file=sys.stderr)
+               "ogretir. yolov8m-obb.pt kullanin.", file=sys.stderr)
+        if args.arena:
+            print("HATA: Arena kipi DOTA-OBB arac kahini olmadan veri uretmez.",
+                  file=sys.stderr)
+            return 2
     ozetler: list[UretimOzeti] = []
 
     for kaynak_sira, kaynak in enumerate(kaynaklar, start=1):
@@ -468,6 +1210,28 @@ def main() -> int:
             hedef = hedef_maskesi_yukle(args.hedef_maske_dizini, kaynak, bgr.shape[:2])
         except (OSError, ValueError, RuntimeError) as exc:
             ozetler.append(UretimOzeti(kaynak.name, None, None, "ATLANDI", sebep=str(exc)))
+            continue
+
+        if args.arena:
+            for cesit in range(args.kopya):
+                try:
+                    ozetler.append(arena_cesidi_uret(
+                        args, cikti, kaynak, bgr, mevcut_engel, arac, hedef,
+                        asetler, yapistir, cesit,
+                    ))
+                except (OSError, RuntimeError, ValueError) as exc:
+                    ozetler.append(UretimOzeti(
+                        kaynak.relative_to(args.girdi).as_posix(), None, None,
+                        "ATLANDI", arac_px=int(arac.sum()),
+                        mevcut_engel_px=int(mevcut_engel.sum()),
+                        hedef_px=int(hedef.sum()), sebep=str(exc),
+                    ))
+            yazilan_kaynak = sum(
+                o.durum == "YAZILDI" and o.kaynak == kaynak.relative_to(args.girdi).as_posix()
+                for o in ozetler)
+            print(f"[{kaynak_sira}/{len(kaynaklar)}] {kaynak.name}: "
+                  f"v21_engel={int(mevcut_engel.sum())} px, "
+                  f"DOTA_arac={int(arac.sum())} px, arena_yazilan={yazilan_kaynak}")
             continue
 
         # Hedefi engel gibi etiketlemek yerine class-2 onceligi verilir. Hedef ile
@@ -524,7 +1288,8 @@ def main() -> int:
     manifest_yaz(cikti, {
         # Siniflar sozlesme modulunden gelir; manifest ile veri seti asla ayrisamaz.
         "siniflar": {str(k): v for k, v in sorted(EGITIM_SINIF_ADLARI.items())},
-        "zemin_tam_cerceve": True,
+        "kip": "arena" if args.arena else "rastgele",
+        "zemin_tam_cerceve": not args.arena,
         "zemin_alti_engeller": True,
         "arac_ustu_yapistirma": False,
         "yapistir_kaynagi": str(args.yapistir_kaynak),
@@ -535,8 +1300,13 @@ def main() -> int:
         "arac_model": str(args.arac_model),
         "arac_kahini": "DOTA-OBB" if arac_obb_mi else "COCO-seg (ESKI, ONERILMEZ)",
         "arac_conf": args.arac_conf, "zemin_conf": args.zemin_conf,
+        "jpeg_kalite": args.jpeg_kalite,
         "hedef_sinifi_uretildi": hedef_uretildi,
         "girdi": str(args.girdi), "tohum": args.tohum,
+        "arena_karar_mantigi_kaniti": bool(args.arena),
+        "arena_model_basarimi_kaniti": False,
+        "arena_domain_boslugu_kapandi": False,
+        "arena_olcek_kaynagi": ARENA_OLCEK_KAYNAGI if args.arena else None,
     }, ozetler)
     yazilan = sum(ozet.durum == "YAZILDI" for ozet in ozetler)
     atlanan = sum(ozet.durum != "YAZILDI" for ozet in ozetler)

@@ -3150,3 +3150,106 @@ Bugün bayt-eşitler; bunu zorlayan hiçbir şey yok. D-01 ve D-55'in aynısı.
 **T41** kapsamına alındı (liste 8 → 9).
 
 **Görev:** `TASK_QUEUE.md` **T41**.
+
+---
+
+### D-58 · KRITIK · "Uretim yolu" TEK degil: iki uretim hatti 13/67 karede birbirinden ayrisiyor
+Bulan: Claude 2 · 2026-08-11 · T36 sirasinda · olcum: 67 gercek kare, v21, tek kosum
+
+T36 "hakem ekranini uretime hizala" diyor. Hizalamadan once **hangi uretim**
+sorusunu olctum; cunku iki aday var ve **birbirlerinden de ayrisiyorlar**:
+
+    R = codes/rpi_inference.py::run_image govdesi (:920-932)
+        _preprocess letterbox -> predict(imgsz=INFER_SIZE=512, conf=0.30)
+        -> get_masks (min_conf YOK) -> _maskeleri_icerige_kirp (dolgu SIFIRLANIR,
+        tuval boyutu KALIR) -> analyze_path(icerik=VAR) -> _rota_kararini_esikle
+
+    P = simulation/scripts/iha_perceive.py::_infer (:72-115)
+        _letterbox_square(imgsz=CANON=1024) -> predict(conf=CONF_FLOOR=0.05)
+        -> get_masks(min_conf=0.15) + taban esik fallback -> maskeler ICERIGE
+        KIRPILIR (tuval boyutu GIDER) -> analyze_path(icerik YOK) -> K-B
+
+    R ile P ayni maskeden AYNI mi? -> AYNI 54/67 · FARKLI 13/67 (%19,4)
+      R dagilimi: {1: 26, 3: 31, DUSUK_GUVEN: 10}
+      P dagilimi: {1: 22, 3: 26, DUSUK_GUVEN: 19}
+    Farklarin ikisi SERIT farki (ayni sahnede R=3, P=1):
+      frame_000014_000000672   R=(3, None)  P=(1, None)
+      frame_000016_000000720   R=(3, None)  P=(1, None)
+    Kalan 11'i "biri karar veriyor, digeri DUSUK_GUVEN" bicimindedir.
+
+**Neden onemli.** T36'nin kapisi P'yi zincir olarak yaziyor. Ama `CONTRACTS.md`
+SS11.2 Halka 3 (Cikarim) ve Halka 4 (Maske) sahibini **`codes/rpi_inference.py`**
+yaziyor ve ikisi de **GECERLI**; SS11.1/1 ise *"`simulation/` altindaki hicbir
+dosya sahip yazilamaz"* diyor. Yani gorevin kapisi ile sozlesme celisiyor.
+
+**Karar (gerekceli).** Hakem ekrani **R'ye** hizalandi. Uc gerekce:
+  1. SS11.2 sahibi R'dir; P sozlesme geregi sahip OLAMAZ.
+  2. `jetson_paket/kod/rpi_inference.py` R'nin **bayt-birebir** kopyasidir
+     (D-45'te kilitlendi) — yani **saha donanimi R'yi kosuyor**. `iha_perceive.py`
+     saha paketinde hic YOKTUR.
+  3. Hakem ekrani sartname SS2.2.3/SS6.2 geregi kanit belgesidir; sahada
+     kosmayan bir yola hizalanirsa hakem sahada verilmeyecek karari onaylar.
+
+**Kalan is (bu gorevin kapsaminda DEGIL):** R ile P'nin kendi arasindaki 13/67
+ayrisma acik durumdadir. Ayrica `iha_perceive.DEFAULT_MODEL` hala
+`navitas_seg_v2_best.pt` (v2) gosteriyor — uretim modeli v21'dir (D-20).
+Ikisi de `simulation/` altinda oldugu icin bu turda dokunulmadi.
+
+---
+
+### D-59 · TIKAYICI · Arena kompozitinde karar zinciri KUSURSUZ maskeyle bile 7/7 reddediyor
+Bulan: Claude 2 · 2026-08-11 · T36 Gorev 2 kapisi · kanit: yer gercegi maskeleri
+
+T40'in urettigi `data/arena_kompozit` ilk kez **yer gercegi olan** uc-seritli
+arena sahnesi veriyor (7 kare, manifest'te `arena.acik_serit`). Hakem ekrani
+kaynagi eklendi; kapi "7/7 gosterilen serit == manifest" istiyordu.
+
+**Olculen: UYUMLU 1 · UYUMSUZ 5 · CEKIMSER 1.** Kapi DUSTU.
+
+Kok neden **GUI'de degil, modelde de degil**. Ayni 7 kare, modelin yerine
+manifest'in KENDI zemin/engel maskeleri (kusursuz yer gercegi) verildi:
+
+    ORACLE (yer gercegi maskesi) -> analyze_path + K-B
+      DOGRU 0/7 · YANLIS 0/7 · RET 7/7
+      6 kare DUSUK_GUVEN (guven 0,028 / 0,028 / 0,028 / 0,028 / 0,117 / 0,056)
+      1 kare UC_BANT_TEMAS_YOK
+
+K-B esigi (`ROTA_GUVEN_ESIGI = 0.20`) uygulanmadan HAM serit:
+
+      DOGRU 4/7 · YANLIS SERIT 2/7 · YAPISAL RET 1/7
+
+Yani: (a) karar mantigi arena geometrisinde ham hâlde 4/7 dogru, (b) K-B o
+kararlarin **hepsini** eliyor.
+
+**Neden guven bu kadar dusuk — olculdu.** T32 metrigi rotanin darbogazidir ve
+alti karenin dordunde darbogaz **1,0 px**. Bu bir goruntu-kenari artefakti
+DEGIL: darbogaz noktalari kenardan 117-214 px iceride ve `distanceTransform`'a
+1 px kapali cerceve eklemek degeri degistirmiyor (1,0 -> 1,0). Rota **gercekten**
+molozun kenarini siyiriyor. Sebep zincirin yukarisinda: `analyze_path`'te
+C-uzayi sismesi YOK; `yol_duzelt`in gorus-hatti kisayolu pikselin SERBEST
+olmasini ariyor, ACIKLIGI degil. Fiziksel govde acikligi `rota_bul`'un
+`r_gerekli_px` yolundadir ve o da `mpp`'ye baglidir — SS11.2 Halka 5 **SAHIPSIZ**
+(D-22). Uc acik kayit burada birlesiyor: Halka 5 yok -> C-uzayi yok -> rota
+molozu siyiriyor -> darbogaz ~1 px -> K-B her arena karesini reddediyor.
+
+**K-B supurmesi (arena kompoziti, yer gercegi maskesi, karar veren 6 kare):**
+
+    esik 0,02 -> gecen 6/7      esik 0,10 -> gecen 1/7
+    esik 0,03 -> gecen 2/7      esik 0,12 -> gecen 0/7
+    esik 0,05 -> gecen 2/7      esik 0,20 -> gecen 0/7   <- YURURLUKTEKI
+
+**Bu, D-37'nin yeni metrik uzerinde tekrari.** `0.20` degeri D-45'te acikca
+"eski metrikten devralinamaz, yeniden kalibre edilmeli" diye isaretlenmisti;
+otopark karelerinde %27 cekimserlik makul gorunuyordu. Arena yer gercegi
+gelince goruldu ki ayni esik **arenada %100 cekimserlik** uretiyor.
+
+**Yapilmadi, cunku dogru cozum esigi dusurmek DEGIL:** 0,03'e cekmek 6/7 karari
+gecirir ama bu kararlarin ikisi zaten YANLIS SERIT ve hepsi 1 px acikligi olan
+rotalar — yani fiziksel olarak surulemez rotalari yayinlamis oluruz. Once
+C-uzayi (Halka 5 + `r_gerekli_px`) kapatilmali, sonra K-B o metrige gore
+kalibre edilmelidir. Esigi tek basina oynatmak sartname SS5.3.2 acisindan
+cekimserlikten daha tehlikelidir.
+
+**Gorev durumu:** T36 Gorev 2'nin GUI tarafi tamamlandi (kompozit kaynak, acilis
+kaynagi, yer gercegi gosterimi, fail-closed manifest, dort eski kaynak korundu);
+"7/7 uyum" kapisi `[ ]` birakildi — kusur `comms/yks_gui.py` disindadir.

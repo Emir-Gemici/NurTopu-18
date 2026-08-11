@@ -479,11 +479,14 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
                          "codes/costmap_path_finder.py:729"), None
 
     t0 = time.perf_counter()
-    sonuc = rota_bul(maskeler, mpp=None)
+    sonuc = rota_bul(maskeler, mpp=None, icerik=icerik)
     sure = (time.perf_counter() - t0) * 1000
 
-    # Ayni maske ICERIGE kirpilinca karar degisiyor mu? Degisiyorsa tohum bandi
-    # dolguya dusuyor demektir (D-25) ve rota halkasi letterbox'ta kordur.
+    # Fiziksel kirpma yalniz TANISALDIR. Otorite, tam tuval maskesiyle birlikte
+    # _preprocess'in exact icerik kutusunu alan yukaridaki rota_bul cagrisidir.
+    # Maskeyi morfolojiden once fiziksel kirpmak, ROI'yi K1-K2 sonrasinda yalniz
+    # cikarmakla birebir ayni olmak zorunda degildir; karar farki artik tek basina
+    # "tohum bandi dolguya dustu" kaniti sayilmaz.
     kirpik_durum = None
     if icerik:
         x0, y0, w, h = icerik
@@ -497,13 +500,9 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
         "durum": sonuc["durum"], "yol_no": sonuc.get("yol_no"),
         "kirpik_durum": kirpik_durum,
         "icerik_parametresi_var": "icerik" in rota_bul.__code__.co_varnames,
+        "icerik_aktarildi": icerik is not None,
+        "kirpik_karsilastirma": "yalniz_tanisal",
     }
-    if kirpik_durum is not None and kirpik_durum != sonuc["durum"]:
-        return rapor.yaz(
-            "rota", DUSTU,
-            f"letterbox'li girdide durum={sonuc['durum']}, ayni maske kirpilinca "
-            f"durum={kirpik_durum} — tohum bandi dolguya dusuyor",
-            "codes/costmap_path_finder.py:232-242", detay, sure), sonuc
     if sonuc["durum"] != "ACIK":
         return rapor.yaz("rota", DUSTU, f"rota uretilemedi: durum={sonuc['durum']}",
                          "codes/costmap_path_finder.py:729", detay, sure), sonuc

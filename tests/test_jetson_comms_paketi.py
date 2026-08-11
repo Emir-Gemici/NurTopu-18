@@ -21,12 +21,19 @@ from jetson_paket_hazirla import KOPYALAR
 
 class JetsonCommsPaketiTests(unittest.TestCase):
     def test_paket_kopyalari_kanonik_kaynaklarla_birebir(self):
-        self.assertEqual(8, len(KOPYALAR), "paket kopya sozlesmesi 8 dosya olmali")
+        self.assertEqual(9, len(KOPYALAR), "paket kopya sozlesmesi 9 dosya olmali")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")
                 self.assertEqual(kaynak.read_bytes(), hedef.read_bytes(),
                                  f"paket kopyasi bayat: {hedef.name}")
+
+    def test_jetson_fps_kanonigi_scripts_altindadir(self):
+        """Calistirilabilir repo betigi kanonik, paket dosyasi turetilmis aynadir."""
+        self.assertEqual(
+            PAKET / "jetson_fps.py",
+            KOPYALAR.get(KOK / "scripts" / "jetson_fps.py"),
+        )
 
     def test_pymavlink_ve_pyserial_paket_bagimliligi(self):
         satirlar = {

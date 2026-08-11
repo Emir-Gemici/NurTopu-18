@@ -68,7 +68,8 @@ def zincir(model: YOLO, bgr: np.ndarray, imgsz: int, conf: float, cihaz: str | N
     mk = _maskeleri_icerige_kirp(get_masks(r, yan, yan, sinif_idler=ALGI_SINIF_IDLERI), icerik)
     x0, y0, gen, yuk = icerik
     zemin_orani = float(mk[0][y0:y0 + yuk, x0:x0 + gen].sum()) / (gen * yuk)
-    rota = rota_bul(mk, mpp=None, plan=False, gorsel_cikti=False)
+    rota = rota_bul(
+        mk, mpp=None, plan=False, gorsel_cikti=False, icerik=icerik)
     return zemin_orani, rota["durum"]
 
 

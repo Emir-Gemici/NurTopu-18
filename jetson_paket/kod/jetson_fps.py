@@ -159,7 +159,8 @@ def tek_kare_isle(model: YOLO, bgr: np.ndarray, imgsz: int, conf: float, cihaz: 
     maske_ms = (time.perf_counter() - t0) * 1000
 
     t0 = time.perf_counter()
-    rota = rota_bul(maskeler, mpp=None, plan=False, gorsel_cikti=False)
+    rota = rota_bul(
+        maskeler, mpp=None, plan=False, gorsel_cikti=False, icerik=icerik)
     katman_a_ms = (time.perf_counter() - t0) * 1000
     return {"cikarim_ms": cikarim_ms, "maske_ms": maske_ms,
             "katman_a_ms": katman_a_ms, "rota_durumu": rota["durum"],
