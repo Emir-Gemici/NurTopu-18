@@ -4003,3 +4003,57 @@ bilinmiyor** (kamera yok). Görev kadrajında arena görüntüyü doldurursa zem
 çevreye daha çok dayanabilir. Kenar dayanması kaplamadan **daha dayanıklı**
 ama bağışık değil; gerçek arena karesi geldiğinde ilk yeniden ölçülecek
 büyüklüklerden biri budur.
+
+---
+
+### D-67 · KÖK NEDEN BULUNDU · 2 sınıflı veri kümesi modele "çatı zemin değildir" demiyor
+
+**Bağlam.** T53 hipotezi (11-sınıf ön-eğitim + gerçek doku karışımı) koşuldu:
+`v22_on10_gercek`, 200 epoch, 8,1 saat. Sonuç **yarı yarıya**:
+
+    model              K1 IoU  K1 kesinlik  K1 duyar  K2 otopark ort  K2 maks
+    v22_on10_gercek     0.512        0.782     0.597           80.6%    86.2%
+    v21 (uretim)        0.311        0.813     0.335           81.0%    86.3%
+    v17                 0.315        0.807     0.341            0.9%     7.0%
+
+**Alan içi büyük kazanç** — IoU 0,311 → **0,512** (ölçülen en iyi; önceki rekor
+v15'in 0,425'i), duyarlılık 0,335 → 0,597. **Alan dışı çöküş DEĞİŞMEDİ**
+(%81,0 → %80,6). Gözle doğrulandı: v22 otoparkta bina **çatısını yine yeşil**
+boyuyor. Araç tespiti belirgin iyileşmiş, çatı aynı.
+
+**KÖK NEDEN — kodda doğrulandı.** `dataset/download_and_convert.py:72-83`:
+
+    # RescueNet class IDs: 7=road-clear, 8=road-blocked, 0=background
+    road_mask    = (lbl_np == 7)  -> sinif 0
+    blocked_mask = (lbl_np == 8)  -> sinif 1
+    # DIGER HER SEY DUSURULUYOR
+
+2 sınıflı eğitim etiketlerinde bulunan id'ler: **yalnız 0 ve 1**.
+
+RescueNet'in 11 sınıflı hâlinde `building_no_damage`, `building_minor`,
+`building_major`, `building_total_destruction`, `tree`, `water`, `pool`
+sınıfları **VAR** (`dataset/rescuenet_11sinif/data.yaml`). Ama 2 sınıfa
+dönüşümde bunlar `blocked`'a eşlenmiyor, **etiketsiz arka plana düşüyor**.
+
+Segmentasyonda etiketsiz arka plan **denetim almaz**. Yani modele hiçbir yerde
+*"çatı zemin DEĞİLDİR"* denmiyor. Model "road-clear = zemin" öğreniyor ve karşı
+örnek olmadığı için **"geniş düz yüzey = zemin"** diye genelliyor. Çatı tam
+olarak budur.
+
+**Her gözlemi açıklıyor:**
+- v15 (11-sınıf ön-eğitim, asgari fine-tune) → otopark %24,1: ön-eğitimin bina
+  bilgisi **kısmen hayatta kalıyor**.
+- v17/v20 (sentetik arena fine-tune) → kör: sentetik arenada bina **yok**.
+- v21/v22 (gerçek doku fine-tune) → görüyor ama çatı boyuyor: bina **denetimi
+  yok**.
+
+**Mimari ile çelişki.** Anayasa madde 15 *"zemin değil → engel"* diyor; bu kural
+costmap'te **maskenin doğru olduğu varsayımıyla** uygulanıyor. Maskenin kendisi
+aşırı kapsayıcı olunca kural hiç ateşlenmiyor. Kusur kuralda değil, **kurala
+girdi üreten etiket semantiğinde**.
+
+**Görev:** `TASK_QUEUE.md` **T54** — 2 sınıflı dönüşümde bina/ağaç/su/havuz
+sınıflarını **`1 = blocked`'a eşle**, arka plana düşürme. Bir eğitim koşusu.
+
+**v22 üretime ALINMAYACAK.** Alan içi daha iyi olsa da alan dışı çöküşü aynı;
+şu an bizi koruyan şey T52'nin iki sinyalli kapısıdır, modelin kendisi değil.

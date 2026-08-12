@@ -2834,6 +2834,38 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Denetçiye not:** kapının yeni testi yazılmadı — `tests/test_zemin_kaplama_
     kapisi.py` iki sinyalli hâli kapsamıyor. Denetim bunu da kapsamalı.
 
+- [ ] **T54 — 2 sınıflı dönüşüm modele "çatı zemin değildir" demiyor: bina/ağaç/su `blocked`'a eşlenecek** · `dataset/download_and_convert.py` + bir eğitim koşusu · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-67**
+  - **Kök neden — kodda doğrulandı** (`download_and_convert.py:72-83`):
+    ```text
+    road_mask    = (lbl_np == 7)  -> sinif 0
+    blocked_mask = (lbl_np == 8)  -> sinif 1
+    DIGER HER SEY DUSURULUYOR
+    2 sinifli egitim etiketlerinde bulunan id'ler: yalniz 0 ve 1
+    ```
+    11 sınıflı sette `building_no_damage/minor/major/total_destruction`, `tree`,
+    `water`, `pool` **var**; 2 sınıfa dönüşümde **etiketsiz arka plana**
+    düşüyorlar. Etiketsiz arka plan **denetim almaz** → modele hiçbir yerde
+    "çatı zemin değildir" denmiyor → "geniş düz yüzey = zemin" genellemesi.
+  - **Her gözlemi açıklıyor:** v15 (11-sınıf ön-eğitim) otopark %24,1 — bina
+    bilgisi kısmen sağ kalmış · v17/v20 kör — sentetik arenada bina yok ·
+    v21/v22 çatı boyuyor — bina denetimi yok.
+  - **Yap:**
+    1. `download_and_convert.py` dönüşümünde **bina (3-6), ağaç (8), su (2),
+       havuz (9)** sınıflarını `1 = blocked`'a eşle. Arka plana düşürme.
+       ⚠ `vehicle (7)` ayrı düşün: DOTA OBB katmanı zaten araçları çıkarıyor
+       (madde 15 "yalnız çıkarır"), çift sayım yapıp yapmadığını **ölç**.
+    2. Kümeyi yeniden üret, sınıf dağılımını yazdır (önce/sonra).
+    3. Aynı reçeteyle tek koşu: 11-sınıf ön-eğitimden başla, yeni 2 sınıflı
+       karışımla fine-tune (`56_t53_gercek_karisim.py` kalıbı, `--ad` değiştir).
+  - **Kapı — dört kapı, mAP DEĞİL:**
+    `K0` gerçek dokuda duyarlılık ≥ 0,50 · `K2` **otoparkta kaplama belirgin
+    DÜŞSÜN** (bu görevin asıl hedefi: %80,6 → ?) · `K1` IoU/kesinlik en az v22
+    seviyesinde kalsın (0,512) · `K3` karar doğruluğu (kompozit + T51 kadraj).
+    **Gözle doğrulama zorunlu:** otopark karesinde bina çatısı **yeşil
+    OLMAYACAK**. Sayı iyi görünüp görsel kötüyse **görsel kazanır**.
+  - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
+  - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
+
 - [ ] **T52 — özgün kayıt (mimar denetimi bekliyor)** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
   - **Kanıt:** kadraj kümesinin **meşru** azamisi %82,3; otoparkın **çöküş**
     değeri %73,7–82,5. Ham kaplama üst uçta *"her şey boyanmış"* ile *"gerçekten
