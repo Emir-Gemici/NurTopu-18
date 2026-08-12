@@ -4651,3 +4651,149 @@ istatistiğini taşımıyor. Aynı zamanda **kırmızı branda** hedefi hiçbir 
 üretilmiyor; D-23'teki "hedef dedektörü yok" kalemi bununla birleşiyor.
 
 **DOĞRULANAMADI (değişmedi):** gerçek arena başarımı. Kamera yok.
+
+---
+
+### D-78 · COZULDU · T56: kadraj kipi sartnameye sadik olcum zemini oldu
+Uygulayan: Claude 2 · 2026-08-12 · kanit D-77 · dosya `51_sentetik_arena.py`
+
+**IKI KIPLI AYRIM KORUNDU VE DERINLESTIRILDI.** Egitim kipinde egrilik,
+aynalama ve yesil "H" celdiricisi **AYNEN KALDI** — gerekceleri (kestirme
+ogrenmeyi engellemek) egitim zemini icin gecerlidir. Yalniz `--kadraj`
+degisti; cunku gerceklik OLCUM zemininin isi.
+
+**1) KORIDORLAR DUZ.** `serit(..., duz=False)` eklendi; kadraj kipinde
+`genlik = 0` ve `genislik dalgalanmasi = 0`. **Dort rng degeri yine cekilir**,
+boylece iki kip ayni tohumda kare kare karsilastirilabilir kalir.
+Olculdu (541 tam-yukseklik koridor): merkez hatti x sapmasi **ort 0,00 px ·
+maks 0,00 px** (esik < 2 px).
+
+**2) HEDEF = 2x2 m KIRMIZI BRANDA.** Kenar = `2,0 m / mpp`, rastgele boyut YOK;
+konum acik seridin HEDEF (ust) ucunda; her karede cizilir (%55 celdirici
+kurali kadraj kipinde gecmez).
+Olculdu: **260/260 karede var** · kenar **2,000 m** (min 2,000 maks 2,000) ·
+`hedef_serit == acik_serit` uyumsuzluk **0/123** (net kare).
+Manifest'e `hedef_kutu`, `hedef_serit`, `hedef_kenar_m` yazildi.
+⚠ **Etiket sinifi EKLENMEDI** — uretim modeli 2 sinifli, hedef dedektoru yok
+(D-23). Ucuncu sinif ayri bir sozlesme karari; bu gorevde verilmedi.
+
+**RENK AYRIMI OLCULDU** (branda 14.440 px, moloz 161.769 px):
+
+    kanal          branda            moloz
+    S (doygunluk)  213,9 ± 31,7      33,2 ± 37,0     etki buyuklugu d = 3,71
+    V (deger)      197,3 ± 30,9      139,8 ± 55,7
+
+Ayrim DOYGUNLUKTAN gelir: `moloz_rengi` molozu tugla tonuna ve **dusuk**
+doygunluga (0,10-0,40x) cekiyor; branda yuksek doygunlukta secildi. Kuyruklarda
+kucuk ortusme var (molozun %99'u S<169, brandanin %1'i S>149) — yani ayrim
+mutlak degil, ama etki buyuklugu 3,71 ile cok buyuk.
+⚠ **Ton (H) ile ayirt etmeye guvenilemez:** kirmizi H=0/179'da sarilir,
+ortalama anlamsizdir; tugla tonu da H 5-22'de bitisiktir.
+
+**3) AYNALAMA KALDIRILDI — ama ilk denemem YANLISTI.**
+Once yamayi TEK dosemeye buyuttum: periyodiklik yapisal olarak yok oldu, fakat
+48-64 px yama 800 piksele cikinca DOKU da yok oldu; gozle bakinca asfalt degil
+**bulanik renkli leke** cikti. Sayi iyiydi, gorsel kotuydu — **gorsel kazandi**
+ve karar geri alindi. Yerine ILIMLI buyutme (~2 doseme) + **dikis harmanlama**
+(`_harmanli_dose`: ortusen doseme, tuy agirlikli capraz gecis) kondu.
+
+Olculdu — ayna simetrisi (ayni sahne, iki kip, 5 tohum):
+
+    EGITIM kipi (aynalamali) : ort 0,502 · maks 0,748
+    KADRAJ kipi (harmanli)   : ort 0,360 · maks 0,458      -> dusus %28
+
+Yatay ozilinti (periyodik tepe): ESKI 0,380 · TEK-doseme 0,323 · HARMANLI 0,312.
+
+🔴 **OLCUM YONTEMI HATASI — kendi buldum, duzelttim.** Ilk gorsel kiyasim
+"ayni indis = ayni sahne" varsayiyordu ve YANLISTI: kadraj kipinde celdirici
+`rng.random()` cekilisi tuketilmiyordu, akis kayiyordu. Bu yuzden "T56 dokuyu
+bozdu" diye yanlis bir sonuca vardim. Duzeltildi (`_celdirici_var` her iki
+kipte de cekilir) ve ayni sahne iki kipte yan yana uretilince goruldu ki doku
+**iki kipte de ayni** — bozulma YOKTU.
+
+**KAPILAR (gercek cikti).**
+
+    KAPI 1  GOZLE DOGRULAMA — gorseller:
+              O:\navitas-local-train\results\t56_gorsel\
+                ayni_sahne_51.jpg · ayni_sahne_77.jpg · ayni_sahne_123.jpg
+                  (AYNI sahne, solda egitim / sagda kadraj — adil kiyas)
+                uclu_sa_000000.jpg · uclu_sa_000005.jpg · uclu_sa_000012.jpg
+                  (T55 · TEK-doseme · HARMANLI)
+              goruntu 260 · manifest kaydi 260                        GECTI
+    KAPI 2  koridor merkez sapmasi ort 0,00 · maks 0,00 px (n=541)    GECTI
+    KAPI 3  hedef 260/260 · kenar 2,000 m · hedef_serit uyumsuzluk 0/123  GECTI
+    KAPI 4  EGITIM KIPI DEGISMEDI — 4 tohumda kimlik + sinif + RNG
+            durumu + GORUNTU birebir esit                              GECTI
+    KAPI 5  karar zinciri (yer gercegi maskesiyle):
+              T55 zemini (dalgali): net 139/260 · rota 89 (DOGRU 85 · YANLIS 4)
+                                    · RET 50 · uyumsuzluk 4/89
+              T56 zemini (duz)    : net 123/260 · rota 86 (DOGRU 86 · YANLIS 0)
+                                    · RET 37 · uyumsuzluk 0/86
+    depo    codes/test_rota_sentetik.py 15/15 · discover -s tests -q Ran 303 OK
+
+**KAPI 5 YORUMU.** Sayilarin artmasi beklenmiyordu; **serit uyumsuzlugu 4 -> 0**
+ve ret orani %36 -> %30 oldu. Duz koridorlar karar yolunun ucte-bir tanimiyla
+ortustugu icin yanlis serit kalmadi. Net (tek cevapli) kare 139 -> 123'e dustu:
+RNG akisi degistigi ve seritler duzlestigi icin birden fazla karar seridinin
+gecilebilir cikmasi biraz artti (belirsiz 137/260).
+
+**Kume:** `O:\navitas-local-train\calisma\sentetik_arena_kadraj` (T56).
+Onceki surum `...\sentetik_arena_kadraj_T55` olarak saklandi.
+
+**DOGRULANAMADI**
+  1. Zemin dokusunun GERCEK asfalta benzerligi — yama bankasi 48-64 px
+     kesitlerden olusuyor ve her iki kipte de benekli/gurultulu goruntu
+     veriyor. Bu T56 kapsaminda DEGISMEDI ve gozle "asfalt gibi" DEGILDIR.
+  2. Moloz seritleri hala RescueNet BINA CATISI kesitleridir (mavi cati,
+     mobilya). Arena molozuna benzerligi dogrulanmadi.
+  3. Brandanin gercek 2x2 m brandaya gorsel benzerligi — duz kirmizi
+     dikdortgen; kumas dokusu, golge, kirisiklik yok.
+
+---
+
+### D-79 · MİMAR DENETİMİ · T56 GEÇTİ · ama zemin dokusu ölçülebilir biçimde gerçek dışı
+
+**T56 denetimden geçti.** Gözle doğruladım (`t56_gorsel/ayni_sahne_51.jpg`):
+eğitim kipinde dalgalı S-koridor + aynalı doku + yeşil çeldirici **aynen duruyor**;
+kadraj kipinde **düz dikey bantlar ve kırmızı branda** var. İstenen ayrım
+korunmuş. Kapılar: koridor merkez sapması **0,00 px** · hedef 260/260, kenar
+**2,000 m** · `hedef_serit != acik_serit` **0/123** · eğitim kipi bozulmadı.
+
+**Asıl kazanç KAPI 5'te — karar zincirinde ölçülen fark:**
+
+    T55 zemini : net 139 · rota 89 (DOGRU 85 · YANLIS 4) · RET 50
+    T56 zemini : net 123 · rota 86 (DOGRU 86 · YANLIS 0) · RET 37
+    -> serit uyumsuzlugu 4 -> 0   ·   ret orani %36 -> %30
+
+Şartnameye sadık geometri şerit hatasını **sıfırladı**. D-77'nin öngörüsü tuttu.
+
+**🔴 AMA ZEMİN DOKUSU HÂLÂ GERÇEK DIŞI — ölçtüm.** Görselde arka plan
+gökkuşağı beneği. Kaynağı `51_sentetik_arena.py`:
+
+- `yuzey_sec()` (:121) banka dolu olsa bile **%60 olasılıkla** prosedürel yüzey
+  seçiyor (`if rng.random() < 0.60 or not banka[kat]`). Oysa bankada
+  **700 zemin + 700 yol** gerçek doku var.
+- `prosedurel_yuzey()` (:110) gürültüyü `im.shape` = (H, W, **3**) ile üretiyor
+  — yani **her kanala bağımsız**. Gerçek yüzey dokusu ağırlıkla PARLAKLIK
+  değişimidir, renk değil.
+
+**Ölçüm (LAB uzayı, n=40 gerçek yama):**
+
+    kaynak                   kroma std  parlaklik std  kroma/parlaklik
+    prosedurel zemin              4.61           5.89             0.78
+    prosedurel yol                4.76           6.80             0.70
+    GERCEK banka zemin            5.05          58.97             0.09
+    GERCEK banka yol              2.98          29.51             0.10
+
+İki kusur aynı anda: prosedürel yüzey **7-8 kat fazla kromatik** ve **5-10 kat
+fazla düz**. Yani "düz bir zemin üstüne renkli benek" gibi görünüyor; gerçek
+zemin ise renksiz ama **çok dokulu**.
+
+**Neden önemli.** Model "geçilebilir zemin"i bu yüzeyden öğreniyor. Renk
+benekli-düz bir yüzeyle eğitilen model, gerçek asfaltın parlaklık dokusunu
+tanımayabilir — D-77'deki az-tespitin bir bölümü buradan gelebilir. Ölçülmedi,
+iddia edilmiyor; **T57'de sınanacak**.
+
+**Görev:** `TASK_QUEUE.md` **T57** — prosedürel yüzeyi ölçülmüş hedefe yaklaştır
+(tek kanallı parlaklık gürültüsü + genlik artışı) ve prosedürel/gerçek payını
+gözden geçir.

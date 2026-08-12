@@ -2940,6 +2940,52 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
+- [STATUS: READY_FOR_REVIEW] **T56 — Kadraj kipi şartnameye sadık değil: hedef yeşil, koridorlar dalgalı, doku kaleydoskopik** · `O:
+  - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-78**.
+    Eğitim kipinde eğrilik, aynalama ve yeşil çeldirici **aynen kaldı**;
+    yalnız `--kadraj` değişti.
+  - **KAPILAR (gerçek çıktı):**
+    ```text
+    KAPI 1  GOZLE DOGRULAMA — O:
+avitas-local-trainesults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI sahne, iki kip)
+              uclu_sa_000000.jpg · _000005.jpg · _000012.jpg
+            goruntu 260 · manifest kaydi 260                        GECTI
+    KAPI 2  koridor merkez sapmasi ort 0,00 · MAKS 0,00 px (n=541)  GECTI
+    KAPI 3  hedef 260/260 · kenar 2,000 m (min/maks 2,000) ·
+            hedef_serit != acik_serit  0/123                        GECTI
+    KAPI 4  EGITIM KIPI DEGISMEDI (4 tohum: kimlik+sinif+RNG+GORUNTU) GECTI
+    KAPI 5  T55 zemini: net 139 · rota 89 (DOGRU 85 · YANLIS 4) · RET 50
+            T56 zemini: net 123 · rota 86 (DOGRU 86 · YANLIS 0) · RET 37
+            -> serit uyumsuzlugu 4 -> 0 · ret orani %36 -> %30
+    depo    test_rota_sentetik 15/15 · discover -s tests -q Ran 303 OK
+    ```
+  - **Renk ayrımı ölçüldü** (branda 14.440 px / moloz 161.769 px): ayrım
+    **doygunluktan** geliyor — S 213,9±31,7 vs 33,2±37,0, **etki büyüklüğü
+    d = 3,71**. Kuyruklarda küçük örtüşme var (molozun %99'u S<169, brandanın
+    %1'i S>149). ⚠ **Ton (H) ile ayırt etmeye güvenilemez:** kırmızı H=0/179'da
+    sarılır, tuğla tonu (H 5-22) bitişiktir.
+  - **Aynalama ölçüldü:** ayna simetrisi eğitim kipi 0,502 → kadraj 0,360
+    (tepe 0,748 → 0,458), **%28 düşüş**.
+  - 🔴 **İlk çözümüm YANLIŞTI, görsel geri aldırdı.** Tek döşemeye büyütme
+    periyodikliği yapısal olarak kaldırdı ama dokuyu da öldürdü (bulanık renkli
+    leke). Yerine ılımlı büyütme + **dikiş harmanlama** kondu.
+  - 🔴 **Kendi ölçüm hatamı buldum:** ilk görsel kıyasım "aynı indis = aynı
+    sahne" varsayıyordu; kadraj kipinde çeldirici `rng.random()` tüketilmediği
+    için akış kaymıştı. Düzeltildi; aynı sahne iki kipte üretilince doku
+    **bozulmamış** olduğu görüldü.
+  - **Küme:** `...\calisma\sentetik_arena_kadraj` (T56); öncekisi
+    `...\sentetik_arena_kadraj_T55` olarak saklandı. Belirsiz kare 137/260.
+  - ⚠ **DOĞRULANAMADI:** (1) zemin dokusunun gerçek asfalta benzerliği — yama
+    bankası 48–64 px kesitlerden, her iki kipte de benekli; **"asfalt gibi"
+    DEĞİL**; (2) moloz şeritleri hâlâ RescueNet **bina çatısı** kesitleri;
+    (3) brandanın gerçek brandaya görsel benzerliği (düz kırmızı dikdörtgen).
+avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-77
+  - ⚠ Satırı Claude-2 açtı (kuyrukta yoktu); kapsam kullanıcı direktifinden.
+  - **Yap (yalnız `--kadraj`):** koridorlar düz · hedef 2×2 m KIRMIZI branda,
+    açık şeridin hedef ucunda, her karede · aynalama kaldırılsın (periyodik
+    desen geri gelmeden). **Eğitim kipi (varsayılan) DEĞİŞMEZ** — eğrilik,
+    aynalama ve yeşil çeldirici çeşitlilik için orada KALIR.
+
 - [STATUS: READY_FOR_REVIEW] **T55 — Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: en iyi zeminimizde şerit doğruluğu ölçülemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-69**
   - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-76**.
   - **Tasarım:** `acik_serit` **üretim anında** kaydediliyor — D-70'in uyarısı
