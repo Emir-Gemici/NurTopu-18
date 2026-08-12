@@ -2801,7 +2801,52 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     (K0 tespit tabanı → K2 alan dışı temkin → K1 IoU/kesinlik → K3 karar
     doğruluğu, T51 kadraj kümesi dâhil). **Kazandı ilanı ölçümden önce yok.**
 
-- [STATUS: READY_FOR_REVIEW] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-66**
+- [x] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-66**
+  - **✅ D-71 DÜZELTMESİ YAPILDI · 2026-08-12 · Claude-2** · kayıt **D-72**.
+    Sıra korundu: **önce köşe düzeltmesi, sonra eşik ölçümü** (köşe düzeltmesi
+    kenar değerlerini aşağı çeker; eşiği önce sabitlemek ölçümü geçersiz kılardı).
+  - **(3) Köşe çift sayımı düzeltildi.** Çerçeve maskesiyle her çevre pikseli
+    bir kez sayılıyor. Doğrulandı: köşe/kenar katkı oranı **2,00× → 1,00×**;
+    dejenere kutular (1×N, N×1, 1×1) tanımlı.
+  - **(1) Tavan 0,45 → 0,50, köşe düzeltmesinden SONRA yeniden ölçüldü:**
+    ```text
+    (a) MESRU azami (kaplama tavanini asan 11 kare) : 0,453
+    (b) mevcut test paketinin COKME fiksturu asgari : 0,536
+    (c) COKMUS kume kenar asgarisi                  : 0,583
+    gecerli aralik (0,453 · 0,536) genislik 0,083 · orta 0,4945
+      0,50 -> mesru +0,047 · test +0,036 · cokme +0,083
+    ```
+    D-71'in payları bağımsız ölçümle **doğrulandı**. Köşe düzeltmesi değerleri
+    pratikte oynatmadı (0,452 → 0,453; çökme asgarisi değişmedi).
+  - **(2) Fail-closed uygulandı.** Yeni `icerik_kutusu_gecerli_mi()`: dörtlü,
+    bool olmayan, sonlu, **tam sayı değerinde**, pozitif boyutlu ve maskeye
+    **tam sığan** kutu. Geçersizde `zemin_maskesi_reddi` artık **reddediyor**.
+  - **Ret sebebi kararı: `ALAN_YETERSIZ` — yeni kod TÜRETİLMEDİ.** Gerekçe
+    ölçüldü: `codes/rpi_inference.py:606-611` aynı koşulu (geçersiz/boş içerik
+    kutusu) **zaten** bu kodla reddediyor; ikinci kod aynı fiziksel koşula iki
+    kanonik cevap üretirdi. Ayrıca §6.4/4 "yeni ret yolu önce tabloya yazılır"
+    diyor ve `CONTRACTS.md` bu turda dosya iznimde **değildi**.
+    ⚠ **Belge borcu (mimara):** §6.4'teki `ALAN_YETERSIZ` satırı yalnız "koridor
+    alanı `min_area_ratio` altında" diyor; kod onu `:606`'dan beri "içerik
+    kutusu geçersiz" için de kullanıyor — satır metni genişletilmeli.
+  - **KAPILAR (gerçek çıktı):**
+    ```text
+    320 MESRU / 67 COKME : mesru elenen 0/320 GECTI · cokme 67/67 GECTI
+    MUTASYON KONTROLU (22 test)
+      duzeltilmis kod                     : 0 basarisiz
+      MUTASYON 1 tek sinyalli (T52 oncesi): 21 basarisiz
+      MUTASYON 2 fail-OPEN (D-69 oncesi)  : 14 basarisiz
+    codes/test_rota_sentetik.py           : 15/15
+    unittest discover -s tests -q         : Ran 303 tests · OK
+    git diff --check exit 0 · Jetson ikizleri BIREBIR
+    ```
+  - **Test paketi 16 → 22:** geçersiz içeriğin 11 biçimi (sıfır/taşan/negatif/
+    kesirli/bool/eksik öğe/NaN/inf), geçerli kutunun reddedilmediği regresyonu,
+    2 boyutlu olmayan maske, köşe-kenar eşit ağırlık, çevre paydası, dejenere
+    kutular ve **fail-closed dalı için ayrı mutasyon kontrolü**.
+  - ⚠ **Açık:** `test_zemin_kaplama_kapisi.py`'nin `_kaplamali` fikstürü en düşük
+    **0,536** kenar üretiyor — yani eşiğin ÜST sınırını veri değil **test**
+    belirliyor. Fikstürün kenar değerinden bağımsızlaştırılması ayrı görev.
   - 🔴 **MİMAR DENETİMİ GEÇMEDİ · 2026-08-12 · Claude-2** · kayıt **D-69**.
     Mantık doğru ve iyileşme gerçek, ama **eşik yanlış yerde**.
   - **Bağımsız ölçüm** (mimarın betiği kullanılmadı; MEŞRU = 320 yer gerçeği

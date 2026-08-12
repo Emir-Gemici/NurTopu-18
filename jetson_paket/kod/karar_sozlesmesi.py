@@ -320,7 +320,22 @@ def zemin_kaplamasi(trav, icerik=None):
 # Esik iki dagilimin ORTASI: (0.339 + 0.579) / 2 = 0.459 -> 0.45 (mesru tarafa
 # 0.111, cokme tarafina 0.129 pay). Olculen kumelerde yanlis-negatif 0/218,
 # yanlis-pozitif 0/67.
-ZEMIN_KENAR_DAYANMA_TAVANI = 0.45
+# T52 · KENAR DAYANMA TAVANI — UC KISITIN KESISIMI (D-69 denetimi, D-71 karari).
+# Olcum: 320 MESRU yer-gercegi maskesi (sentetik_arena val 60 + kadraj val 26 +
+# kadraj train 234; model YOK) ve 67 COKMUS kare (v21'in otopark ciktisi).
+# Kose cift sayimi duzeltildikten SONRA yeniden olculdu:
+#
+#   (a) MESRU azami (kaplama tavanini asan 11 kare) : 0,453   -> tavan USTUNDE olmali
+#   (b) mevcut test paketinin COKME fiksturu asgari : 0,536   -> tavan ALTINDA olmali
+#   (c) COKMUS kume kenar asgarisi                  : 0,583   -> tavan ALTINDA olmali
+#
+#   gecerli aralik (0,453 · 0,536) — genislik 0,083; 0,50 pratikte ORTASI.
+#   0,50'de paylar: mesru +0,047 · test +0,036 · cokme +0,083
+#   sonuc: mesru elenen 0/320 · cokme yakalanan 67/67
+#
+# ONCEKI 0,45 olculen mesru azaminin (0,453) ALTINDAYDI: payi -0,002 ve
+# 1/320 mesru kareyi eliyordu (D-69).
+ZEMIN_KENAR_DAYANMA_TAVANI = 0.50
 
 
 def zemin_kenar_dayanmasi(trav, icerik=None):
@@ -340,10 +355,56 @@ def zemin_kenar_dayanmasi(trav, icerik=None):
     if iw <= 0 or ih <= 0:
         return 0.0
     kutu = m[y0:y0 + ih, x0:x0 + iw]
-    kenar = (int(_np.count_nonzero(kutu[0])) + int(_np.count_nonzero(kutu[-1]))
-             + int(_np.count_nonzero(kutu[:, 0]))
-             + int(_np.count_nonzero(kutu[:, -1])))
-    return float(kenar) / float(2 * (ih + iw))
+    # KOSE PIKSELLERI BIR KEZ SAYILIR (D-69 bulgusu, D-71 karari). Onceki
+    # surum dort kenari ayri ayri toplayip paydayi `2*(ih+iw)` aliyordu;
+    # olculdu: tek KOSE pikseli tek KENAR pikselinin 2,00 kati katki
+    # veriyordu. Azami yine 1,0'da kaldigi icin tutarliydi ama kose agirligi
+    # sahte bir sinyaldi. Cerceve maskesi her cevre pikselini bir kez sayar
+    # ve 1x1 / 1xN / Nx1 kutularda da dogru calisir.
+    cerceve = _np.zeros(kutu.shape, dtype=bool)
+    cerceve[0, :] = True
+    cerceve[-1, :] = True
+    cerceve[:, 0] = True
+    cerceve[:, -1] = True
+    payda = int(_np.count_nonzero(cerceve))
+    if payda == 0:
+        return 0.0
+    return float(_np.count_nonzero(kutu[cerceve])) / float(payda)
+
+
+def icerik_kutusu_gecerli_mi(icerik, sekil):
+    """`icerik` kutusu bu maske icin GECERLI mi? Fail-closed olcut.
+
+    Gecerli sayilmasi icin dortlu olmali ve her ogesi bool OLMAYAN, sonlu,
+    TAM SAYI degerinde olmali; kutu maskenin icine TAM sigmali (tasma yok),
+    genislik ve yukseklik pozitif olmali. `None` gecerlidir (tum maske).
+
+    NEDEN (D-69): `zemin_maskesi_reddi` bozuk kutuda 0,0 olcup SUSUYORDU —
+    tamamen dolu, cevreye tam dayanan bir maske bile geciyordu. Kardes
+    sozlesme fonksiyonlari (`rota_guven_reddi`, `rota_olcek_reddi`,
+    `mpp_irtifadan`) gecersiz girdide FAIL-CLOSED; bu kapi da oyle olmali.
+    """
+    if icerik is None:
+        return True
+    try:
+        ogeler = list(icerik)
+    except TypeError:
+        return False
+    if len(ogeler) != 4:
+        return False
+    tam = []
+    for oge in ogeler:
+        if isinstance(oge, bool) or not isinstance(oge, Real):
+            return False
+        d = float(oge)
+        if not math.isfinite(d) or not d.is_integer():
+            return False
+        tam.append(int(d))
+    x0, y0, iw, ih = tam
+    if iw <= 0 or ih <= 0 or x0 < 0 or y0 < 0:
+        return False
+    h, w = int(sekil[0]), int(sekil[1])
+    return (x0 + iw) <= w and (y0 + ih) <= h
 
 
 def zemin_maskesi_reddi(trav, icerik=None):
@@ -360,6 +421,17 @@ def zemin_maskesi_reddi(trav, icerik=None):
     Kapi yalniz REDDEDER — maskeye dokunmaz, serbest alani BUYUTMEZ
     (CLAUDE.md madde 15 acisindan notrdur, cunku hicbir piksel eklemez).
     """
+    import numpy as _np
+    sekil = _np.asarray(trav).shape
+    if len(sekil) != 2 or not icerik_kutusu_gecerli_mi(icerik, sekil):
+        # FAIL-CLOSED (D-71): olcum yapilamiyorsa kapi SUSMAZ, reddeder.
+        # Sebep `ALAN_YETERSIZ`: `analyze_path:606` ayni kosulu (gecersiz/bos
+        # icerik kutusu) ZATEN bu kodla reddediyor — ikinci bir sebep kodu
+        # turetmek yerine uretimin mevcut kanonik cevabi korunur.
+        return (ALAN_YETERSIZ_SEBEBI,
+                f"Icerik kutusu gecersiz ({icerik!r}) veya maske 2 boyutlu "
+                f"degil (sekil {tuple(sekil)}); zemin maskesi saglamligi "
+                "olculemedi, rota uretilmez.")
     oran = zemin_kaplamasi(trav, icerik)
     if oran <= ZEMIN_KAPLAMA_TAVANI:
         return None

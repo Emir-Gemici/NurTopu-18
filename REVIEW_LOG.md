@@ -4303,3 +4303,116 @@ düzeltme sonrası iki dağılım **yeniden ölçülecek** — eşik ona göre t
 sonra D-60, şimdi D-69). Kendi kaydımı **D-70**'e taşıdım; Claude-2'nin D-69'una
 dokunmadım. Kalıcı çözüm: numarayı yazmadan önce `grep '^### D-' REVIEW_LOG.md |
 tail -1` ile son numarayı okumak — bunu görev şablonuna eklemeliyim.
+
+---
+
+### D-72 · COZULDU · T52 duzeltmesi: tavan 0,50 · fail-closed · kose tek sayim
+Uygulayan: Claude 2 · 2026-08-12 · mimar karari D-71, denetim bulgulari D-69
+Dosyalar: `codes/karar_sozlesmesi.py`, `tests/test_zemin_kapisi_iki_sinyal.py`
+
+**SIRA ONEMLIYDI.** Once kose duzeltmesi yapildi, SONRA esik olculdu — cunku
+kose duzeltmesi kenar degerlerini asagi ceker ve esigi once sabitlemek olcumu
+gecersiz kilardi.
+
+**(3) KOSE CIFT SAYIMI DUZELTILDI.** Eski surum dort kenari ayri toplayip
+paydayi `2*(ih+iw)` aliyordu; kose pikselleri iki kez sayiliyordu (olculdu:
+kose/kenar katki orani **2,00x**). Yerine cerceve maskesi kondu: her cevre
+pikseli **bir kez** sayilir, payda `count_nonzero(cerceve)`. Dogrulandi:
+kose/kenar orani **1,00x**, tek kose pikseli tam `1/(2W+2H-4)`, tam dolu maske
+1,0, dejenere kutular (1xN, Nx1, 1x1) 1,0.
+
+**(1) TAVAN 0,45 -> 0,50 — kose duzeltmesinden SONRA yeniden olculdu.**
+320 mesru yer-gercegi maskesi + 67 cokme karesi (v21 otopark, CPU cikarim):
+
+    (a) MESRU azami (kaplama tavanini asan 11 kare) : 0,453
+    (b) mevcut test paketinin COKME fiksturu asgari : 0,536
+    (c) COKMUS kume kenar asgarisi                  : 0,583
+
+    gecerli aralik (0,453 · 0,536) — genislik 0,083
+      tavan 0,46 -> mesru +0,007 · test +0,076 · cokme +0,123
+      tavan 0,50 -> mesru +0,047 · test +0,036 · cokme +0,083   <- SECILDI
+      tavan 0,52 -> mesru +0,067 · test +0,016 · cokme +0,063
+
+Kose duzeltmesi degerleri pratikte oynatmadi (mesru azami 0,452 -> 0,453;
+cokme asgarisi 0,583 degismedi) — buyuk kutularda 4 kose pikseli ihmal
+edilebilir. D-71'in payları (+0,048 / +0,036 / +0,083) bagimsiz olcumle
+**dogrulandi**; 0,50 gecerli araligin pratikte ORTASI (orta nokta 0,4945).
+
+**(2) FAIL-CLOSED UYGULANDI.** Yeni `icerik_kutusu_gecerli_mi(icerik, sekil)`:
+dortlu olmali; her ogesi bool OLMAYAN, sonlu, TAM SAYI degerinde; kutu
+pozitif boyutlu ve maskeye TAM sigmali. `zemin_maskesi_reddi` gecersiz kutuda
+veya 2 boyutlu olmayan maskede artik **REDDEDER**.
+
+**RET SEBEBI KARARI — `ALAN_YETERSIZ` (yeni kod TURETILMEDI).** Gerekce olculdu:
+`codes/rpi_inference.py:606-611` **zaten** gecersiz/bos icerik kutusunu
+`ALAN_YETERSIZ` ile reddediyor. Ikinci bir sebep kodu turetmek ayni fiziksel
+kosula iki farkli kanonik cevap uretirdi. Ayrica CONTRACTS SS6.4/4 "yeni ret
+yolu once tabloya yazilir" diyor ve `CONTRACTS.md` bu turda dosya iznimde
+DEGILDI — yeni kod eklemek sozlesmeyi kodun gerisinde birakirdi.
+⚠ **BELGE BORCU (mimara):** SS6.4'teki `ALAN_YETERSIZ` satiri yalniz "koridor
+alani `min_area_ratio` altinda" diyor; kod onu `:606`'dan beri "icerik kutusu
+gecersiz/bos" icin de kullaniyor. Satirin metni genisletilmeli.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    320 MESRU / 67 COKME (yururlukteki kod, tavan 0,55 + 0,50)
+      MESRU elenen     : 0/320    GECTI
+      COKME yakalanan  : 67/67    GECTI
+    MUTASYON KONTROLU (22 test)
+      duzeltilmis kod                    : 0 basarisiz
+      MUTASYON 1 tek sinyalli (T52 oncesi): 21 basarisiz
+      MUTASYON 2 fail-OPEN (D-69 oncesi) : 14 basarisiz
+    tests/test_zemin_kapisi_iki_sinyal.py : 22/22 OK
+    tests/test_zemin_kaplama_kapisi.py    : gecti (tam pakette)
+    codes/test_rota_sentetik.py           : 15/15
+    unittest discover -s tests -q         : Ran 303 tests · OK
+    git diff --check exit 0 · Jetson ikizleri BIREBIR
+
+**TEST PAKETI GENISLETILDI** (16 -> 22): gecersiz icerigin 11 bicimi
+(sifir/tasan/negatif/kesirli/bool/eksik oge/NaN/inf), gecerli kutunun
+(int ve tam-degerli float) reddedilmedigi regresyonu, 2 boyutlu olmayan maske,
+kose-kenar esit agirlik, cevre paydasi, dejenere kutular ve **fail-closed dali
+icin ayri mutasyon kontrolu**.
+
+**ACIK KALAN.** `tests/test_zemin_kaplama_kapisi.py`'nin `_kaplamali` fiksturu
+en dusuk 0,536 kenar uretiyor; tavan 0,536'nin uzerine cikarilirsa o paket
+payi olmadan kirilir. Bu, esigin UST sinirini pratikte veri degil TEST
+belirliyor demektir — fiksturun kenar degerinden bagimsizlastirilmasi ayri
+gorevdir (bu turda kapsam disi).
+
+---
+
+### D-73 · MİMAR DENETİMİ · T52 düzeltmesi GEÇTİ
+
+**Bağımsız doğrulamam** (Claude-2'nin betiği kullanılmadı):
+
+    1 · GECERSIZ ICERIK -> fail-CLOSED mu?
+        tasan / negatif / kesirli / sifir alan / bool / None uye
+        -> ALTISI DA RET (sebep ALAN_YETERSIZ)
+    2 · KOSE CIFT SAYIMI
+        dort kose dolu -> 0.01010   tek sayim beklentisi 0.01010   1.0x
+    3 · KAPI MANTIGI
+        kaplama YUKSEK + kenar YUKSEK -> RET
+        kaplama ORTA  + kenar SIFIR   -> gecti
+        kaplama DUSUK + kenar dusuk   -> gecti
+
+**Payda düzeltmesi benim formülümden daha doğru.** Çevre `2(h+w)−4` alınmış;
+köşeler hem payda hem paydada tek sayılıyor. Benim yazdığım `2(h+w)` köşeleri
+payda tarafında da çift sayıyordu.
+
+**Sıra doğru korunmuş** — önce köşe düzeltmesi, sonra eşik ölçümü. Ters sırada
+ölçüm geçersiz olurdu; bunu görevde şart koşmuştum ve uyulmuş.
+
+**Ret sebebi seçimi gerekçeli.** `ALAN_YETERSIZ` keyfi değil: `rpi_inference.py:
+606-611` aynı fiziksel koşulu (geçersiz/boş içerik kutusu) **zaten** bu kodla
+reddediyor. Yeni kod türetmek aynı koşula iki isim verirdi.
+
+**D-71'in payları bağımsız ölçümle doğrulandı** (0,453 / 0,536 / 0,583); köşe
+düzeltmesi değerleri pratikte oynatmadı.
+
+**Kapılar:** `codes/test_rota_sentetik.py` **15/15** · tam paket **303 OK**.
+
+**Denetim borcum kapandı.** T45 (D-69) ve T52 (bu kayıt) bağımsız denetimden
+geçti. Madde 7 istisnasıyla yazdığım iki değişikliğin ikisi de artık onaylı;
+biri kusurlu bulunup düzeltildi — istisnanın neden ayrı denetim gerektirdiğinin
+ölçülmüş kanıtı.
