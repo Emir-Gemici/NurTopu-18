@@ -2802,6 +2802,35 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     doğruluğu, T51 kadraj kümesi dâhil). **Kazandı ilanı ölçümden önce yok.**
 
 - [STATUS: READY_FOR_REVIEW] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-66**
+  - 🔴 **MİMAR DENETİMİ GEÇMEDİ · 2026-08-12 · Claude-2** · kayıt **D-69**.
+    Mantık doğru ve iyileşme gerçek, ama **eşik yanlış yerde**.
+  - **Bağımsız ölçüm** (mimarın betiği kullanılmadı; MEŞRU = 320 yer gerçeği
+    maskesi, ÇÖKMÜŞ = v21 otoparkta 67 kare, CPU çıkarım):
+    ```text
+    ESKI kapi (yalniz kaplama): mesru ELENEN 11/320 · cokme YAKALANAN 67/67
+    YENI kapi (iki sinyal)    : mesru ELENEN  1/320 · cokme YAKALANAN 67/67
+    ```
+    Bildirilen **0/234** daha geniş meşru kümede **sağlanmıyor**.
+  - **Eşik analizi — 0,45 meşru azaminin ALTINDA:**
+    ```text
+    mesru (kaplama>tavan) kenar : ... 0.392  0.452   <- OLCULEN AZAMI
+    cokme kenar asgarisi        : 0.583
+    GERCEK BOSLUK               : [0.452, 0.583]  orta 0.517
+    esik 0.45 -> mesru payi -0.002 (NEGATIF)  · esik 0.52 -> +0.068 / +0.062
+    ```
+    **Öneri: kenar tavanı 0,45 → 0,52** (meşru eleme 0/320, çökme 67/67 korunur).
+    Değer sözleşme sahibinindir; denetimde **değiştirilmedi**.
+  - **Eksik test YAZILDI:** `tests/test_zemin_kapisi_iki_sinyal.py` (16 test),
+    dört birleşim + sınır davranışı + içerik kutusu. **Mutasyon kontrolü:** kapı
+    tek sinyalli hâline döndürülünce **16 testin 8'i düşüyor** (vakum değil).
+  - **Diğer bulgular:** (a) geçersiz `icerik`te kapı **fail-OPEN** — kardeş
+    sözleşme fonksiyonları fail-closed; üretim yolu `analyze_path:606`'daki
+    doğrulama sayesinde korunuyor, yani sözleşme tutarsızlığı. (b) köşe
+    pikselleri **2×** ağırlıklı (ölçüldü); azami 1,0'da kaldığı için tutarlı.
+    (c) mevcut `test_zemin_kaplama_kapisi.py`'nin en düşük kenar değeri **0,536** —
+    tavan 0,52 üstüne çıkarılırsa o testler payı olmadan kırılır.
+  - **Kapılar:** `codes/test_rota_sentetik.py` **15/15** ·
+    `unittest discover -s tests -q` → **Ran 297 tests · OK**.
   - ⚠ **KODU MİMAR YAZDI** (madde 7 istisnası: Codex'ler kotada, Claude-2 gece
     boyu çalıştı, kullanıcının açık talimatı). **KENDİ KODUMU ONAYLAMIYORUM** —
     T45 ile birlikte ayrı denetim bekliyor. Bu satır `[x]` yapılmayacak.
@@ -2865,6 +2894,25 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     OLMAYACAK**. Sayı iyi görünüp görsel kötüyse **görsel kazanır**.
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
+
+- [ ] **T55 — Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: en iyi zeminimizde şerit doğruluğu ölçülemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-69**
+  - **Kanıt:** `calisma\sentetik_arena_kadraj` yalnız `images/`, `labels/`,
+    `data.yaml` taşıyor — **manifest yok**. Hangi şeridin açık olduğu hiçbir
+    yere yazılmıyor.
+  - **Neden `class-0`'dan türetilemez:** üç şeritli arenada traversable **üç
+    koridoru da** kaplar; şeritleri ayıran zemin değil, üzerlerindeki
+    **bariyerlerdir**. Mimar bunu denedi, %83,7 buldu ve **sayıyı geri çekti** —
+    hataların deseni ölçütün yanlışlığını gösteriyordu (rota tamamen tek
+    şeritteyken "GT" başka şerit diyordu).
+  - **Yap:** Kadraj kipi, `data/arena_kompozit` kalıbındaki gibi manifest yazsın:
+    `acik_serit` · `kapali_seritler` · `bariyerler` (kutu + pencere) · `icerik` ·
+    `mpp` · kullanılan tohum. T40'ın gerçek kapısı tam bu sayede kurulabilmişti.
+  - **Kapı:** (1) her kare için manifest kaydı var; (2) yer gerçeği maskeleriyle
+    `rota_bul` manifest'in `acik_serit`'ini buluyor, uyumsuzluk sayısı yazılıyor;
+    (3) **pozitif kontrol**: açık şerit kapatılınca karar `ACIK` kalmıyor.
+  - ⚠ **T51'in KAPI 2 sonucu ("yer gerçeği şerit ile uyumsuzluk 3/12") aynı
+    türetme sorununa maruz olabilir** — nasıl türetildiği görevde yazılı değil.
+    Denetimde sorulacak; doğrulanmadan kullanılmayacak.
 
 - [ ] **T52 — özgün kayıt (mimar denetimi bekliyor)** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
   - **Kanıt:** kadraj kümesinin **meşru** azamisi %82,3; otoparkın **çöküş**
@@ -3166,7 +3214,20 @@ esults	50_uc_kapi\`):
     (4) T36'nın hizalama testleri ayakta; (5) `codes/test_rota_sentetik.py`
     **15/15** · tam paket **OK**.
 
-- [ ] **T45 — Kompozit arena TAM İÇERİK KUTUSUNA yayılmıyor: şerit tanımları uyuşamıyor** · `scripts/copy_paste_augmentation.py` · **KRİTİK** · **T36b'yi tıkıyor** · kanıt: T44 ablasyonu
+- [x] **T45 — Kompozit arena TAM İÇERİK KUTUSUNA yayılmıyor: şerit tanımları uyuşamıyor** · `scripts/copy_paste_augmentation.py` · **KRİTİK** · **T36b'yi tıkıyor** · kanıt: T44 ablasyonu
+  - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-69**.
+    Dört iddia da bağımsız ölçümle doğrulandı:
+    ```text
+    1) serit sinirlari uretec == karar yolu, 4 en-boy oraninda AYNI
+       1024x576 [342,683] · 1280x720 [427,854] · 1024x1024 [342,683] · 800x600 [267,534]
+    2) mpp genislige eslendi -> r_gerekli_px 12.67 -> 22.53 (1024x576)
+       C-uzayi {dist>=r} KUCULUR -> serbest alan DARALIR = madde 15 GUVENLI yon
+    3) manifest notu ("HTAB / kaynak karenin GENISLIGI") formulle birebir ortusuyor
+    4) egitim kipi BOZULMADI — AST: arena_icerik_ve_mpp yalniz arena_cesidi_uret'ten,
+       o da main icinde `if args.arena:` guardi altinda
+    ```
+  - ⚠ **Küçük kusur (bloke etmez):** docstring'de 1 adet **Kiril U+0435**
+    (`"ucе bolerek"`). Davranışa etkisi yok; tek karakterlik belge düzeltmesi.
   - **Kanıt — kendim ölçtüm:**
     ```text
     _preprocess icerik : (0, 224, 1024, 576)  -> serit sinirlari [341, 682]

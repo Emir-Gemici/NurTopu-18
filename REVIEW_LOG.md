@@ -4095,3 +4095,164 @@ artırmaktır**.
 **Ders.** "Dengesizlik var" sezgisi doğruydu, **büyüklüğü yanlıştı**. Bu turda
 dördüncü kez aynı kalıp: ölçüt seçmeden önce ölçütün ne gördüğünü sor. Poligon
 sayısı kayıp fonksiyonunun gördüğü şey değil.
+
+---
+
+### D-69 · MIMAR DENETIMI · T45 GECTI · T52 KUSURLU (esik yanlis yerde)
+Denetleyen: Claude 2 · 2026-08-12 · anayasa madde 7 (mimar kendi kodunu onaylayamaz)
+Denetlenen: commit `8010da8` (T45) ve `69e0409` (T52) · GPU T54'te, olcumler CPU'da
+
+════════ DENETIM 1 — T45 (`arena_icerik_ve_mpp`) · **GECTI** ════════
+
+**IDDIA 1 DOGRULANDI.** Serit sinirlari uretec ve karar yolunda ayni. Dort
+en-boy oraninda bagimsiz olcum (`_preprocess` ile `arena_icerik_ve_mpp` yan yana):
+
+    1024x576 : karar (0,224,1024,576) [342,683] | uretec (0,0,1024,576) [342,683]  AYNI
+    1280x720 : karar (0,280,1280,720) [427,854] | uretec (0,0,1280,720) [427,854]  AYNI
+    1024x1024: karar (0,0,1024,1024)  [342,683] | uretec (0,0,1024,1024)  [342,683] AYNI
+     800x600 : karar (0,100,800,600)  [267,534] | uretec (0,0,800,600)   [267,534]  AYNI
+
+(Komsitteki `[341,682]` ile benim `[342,683]` ayni siniri iki farkli konvansiyonla
+yaziyor — `int(iw/3)` ile "seridin degistigi ilk x". Kusur DEGIL.)
+
+**IDDIA 2 — mpp yonu GUVENLI (madde 15).** `mpp` kisa kenar yerine GENISLIGE
+eslendigi icin kuculuyor; `r_gerekli_px = R_GEREKLI_M / mpp` ise BUYUYOR:
+
+    kare        ESKI mpp   YENI mpp   ESKI r_px  YENI r_px   yon
+    1024x576    0.086806   0.048828       12.67      22.53   DARALTIR (guvenli)
+    1280x720    0.069444   0.039062       15.84      28.16   DARALTIR (guvenli)
+    1024x1024   0.048828   0.048828       22.53      22.53   etkisiz (kare goruntu)
+
+C-uzayi `{dist >= r_gerekli_px}` oldugu icin r buyudukce serbest alan yalniz
+DARALIR. Madde 15 ihlali YOK.
+
+**Manifest notu GERCEGI SOYLUYOR.** `ARENA_OLCEK_KAYNAGI` artik
+*"...HTAB / kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir"*
+diyor — formulle birebir ortusuyor.
+
+**Egitim kipi BOZULMADI.** AST ile izlendi: `arena_icerik_ve_mpp` yalniz
+`arena_cesidi_uret` icinden (`:1023`) cagriliyor; o da `main` icinde
+`if args.arena:` guardi altinda (`:1229`). Rastgele (egitim) kip bu yola hic
+girmiyor.
+
+⚠ **KUCUK KUSUR (bloke etmez): KIRIL KARAKTER.**
+`scripts/copy_paste_augmentation.py` docstring'inde 1 adet U+0435 CYRILLIC
+SMALL LETTER IE var: *"seritleri icerik GENISLIGINI **ucе** bolerek uretir"*.
+Bu depoda ayni sinif daha once yakalanmisti. Davranisa etkisi YOK; tek
+karakterlik belge duzeltmesi.
+
+════════ DENETIM 2 — T52 (iki sinyalli kapi) · **KUSURLU** ════════
+
+**(1) EKSIK TEST YAZILDI.** `tests/test_zemin_kapisi_iki_sinyal.py` (16 test)
+dort birlesimi de kilitliyor: kaplama YUKSEK+kenar DUSUK -> ATESLEMEZ ·
+YUKSEK+YUKSEK -> ATESLER · DUSUK+YUKSEK -> ATESLEMEZ · DUSUK+DUSUK -> ATESLEMEZ.
+Ayrica sinir davranisi (`>` semantigi), detay metninin IKI olcumu de tasidigi
+ve icerik kutusu kirpmasi.
+
+**MUTASYON KONTROLU (testin vakum olmadigi kaniti):** kapi T52 oncesi TEK
+SINYALLI haline dondurulunce **16 testin 8'i DUSUYOR**; duzeltilmis kodda 0.
+
+**Mevcut `test_zemin_kaplama_kapisi.py` gercekten kapsamiyordu — dogrulandi.**
+Onun `_kaplamali` fiksturu SOL-DOLGU oldugu icin kenar dayanmasi hep yuksek
+cikiyor (kaplama %56 -> kenar 0,536 · %95 -> 0,770); "kenar DUSUK" dali HIC
+sinanmiyordu. Mimarin itirafi dogru.
+⚠ Not: o paketin en dusuk kenar degeri **0,536**. Kenar tavani 0,52'nin uzerine
+cikarilirsa o testler pay olmadan kirilir.
+
+**(2) BAGIMSIZ OLCUM — IDDIA TAM DOGRULANMADI.**
+Mimarin betigi kullanilmadi; kume kendim kuruldu. MESRU = yer gercegi
+maskeleri (sentetik_arena val 60 + kadraj val 26 + kadraj train 234 = **320**,
+model YOK). COKMUS = v21'in otopark ciktisi (**67** kare, CPU cikarim).
+
+    ESKI kapi (yalniz kaplama): mesru ELENEN 11/320 · cokme YAKALANAN 67/67
+    YENI kapi (iki sinyal)    : mesru ELENEN  1/320 · cokme YAKALANAN 67/67
+
+Yani iyilesme GERCEK ve buyuk, ama mimarin bildirdigi **"0/234"** daha genis bir
+mesru kumede **saglanmiyor**: 1 mesru kare hala eleniyor.
+
+**(4) 🔴 ESIK YANLIS YERDE — asil bulgu.** Kaplama tavanini asan 11 mesru
+karenin kenar degerleri ve cokme kumesinin asgarisi:
+
+    mesru (kaplama>tavan) kenar : 0.251 0.274 0.275 0.284 0.294 0.296 0.298
+                                  0.315 0.315 0.392 **0.452**
+    cokme kenar asgarisi        : **0.583**
+    GERCEK BOSLUK               : [0.452, 0.583]   orta nokta 0.517
+
+Mimar esigi "0,339 ve 0,579'un ortasi" diye 0,45 secmis. Olculen mesru azami
+**0,452** — yani 0,45'in **USTUNDE**. Esigin mesru taraftaki payi **-0,002**
+(NEGATIF) ve tam bu yuzden 1/320 kare eleniyor.
+
+    KENAR ESIGI SUPURMESI (kaplama esigi sabit %55)
+      esik   mesru ELENEN  cokme YAKALANAN   mesru payi  cokme payi
+      0.45        1/320            67/67         -0.002      +0.133
+      0.46        0/320            67/67         +0.008      +0.122
+      0.50        0/320            67/67         +0.048      +0.083
+      0.52        0/320            67/67         +0.068      +0.062   <- dengeli
+      0.58        0/320            67/67         +0.128      +0.003
+      0.60       0/320            64/67         +0.148      -0.017   <- cokme kacar
+
+**ONERI: kenar tavani 0,45 -> 0,52.** Iki tarafta da ~0,065 pay birakir,
+mesru eleme 0/320, cokme yakalama 67/67 korunur. Deger sozlesme sahibinindir;
+bu denetimde DEGISTIRILMEDI.
+
+**(3) ICERIK KUTUSU — kirpma DOGRU, ama FAIL-OPEN.**
+Kirpma dogru calisiyor (sol yari icerik -> 1,000 · sag yari -> 0,000 · tasan
+genislik kirpiliyor). Ancak GECERSIZ `icerik`te (`(0,0,0,H)`, `x0 > genislik`)
+`zemin_kaplamasi` ve `zemin_kenar_dayanmasi` 0,0 donuyor ve kapi **SUSUYOR** —
+tamamen dolu, cevreye tam dayanan bir maske bile gecebiliyor. Kardes sozlesme
+fonksiyonlari (`rota_guven_reddi`, `rota_olcek_reddi`, `mpp_irtifadan`)
+gecersiz girdide FAIL-CLOSED; bu kapi degil.
+**Uretim yolu KORUNUYOR:** `analyze_path` icerik kutusunu `:606`'da dogrulayip
+`ALAN_YETERSIZ` donuyor, kapi `:619`'da yani SONRA kosuyor. Bu yuzden bulgu
+**sozlesme tutarsizligi**dir, uretim acigi degil. Yeni testte davranis
+BELGELENDI (onaylanmadi).
+
+⚠ **KUCUK: kose pikselleri 2x agirlikli.** Pay `2*(ih+iw)`, sayac kose
+piksellerini iki kez sayiyor; olculdu: tek kose pikseli tek kenar pikselinin
+**2,00 kati** katki veriyor. Azami yine 1,0'da kaldigi icin tutarli, buyuk
+kutularda etkisi ihmal edilebilir. Kayit icin.
+
+**KOSULAN KAPILAR:** `codes/test_rota_sentetik.py` **15/15** ·
+`unittest discover -s tests -q` -> **Ran 297 tests · OK**.
+
+**KARAR**
+  · **T45 — MIMAR DENETIMI GECTI** (yalniz 1 karakterlik belge kusuru).
+  · **T52 — GECMEDI.** Mantik dogru ve iyilesme gercek, ama (a) bildirilen
+    "0/234" daha genis mesru kumede saglanmiyor (1/320), (b) esik olculen
+    mesru azaminin ALTINDA ve pay NEGATIF. Gorev `[ ]` birakildi; eksik test
+    yazildi ve mutasyonla dogrulandi.
+
+---
+
+### D-69 · BOŞLUK · Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: şerit doğruluğu orada ölçülemez
+
+**Nasıl çıktı.** T51'in açık bıraktığı "3/18 yanlış şerit" kalemini geçerli
+zeminde ölçmeye çalıştım. Yer gerçeği şeridini `class-0` poligonlarının
+**baskın şeridi** olarak türettim ve %83,7 uyum buldum. **Sayıyı geri
+çekiyorum** — türetme yanlış.
+
+**Neden yanlış.** Üç şeritli bir arenada `class-0` (traversable) **üç koridoru
+da** kaplar; şeritleri ayıran şey zemin değil, üzerlerindeki **bariyerlerdir**.
+Dolayısıyla "traversable maskesinin baskın şeridi" ile "açık şerit" farklı
+şeylerdir. Hataların deseni de bunu gösteriyordu: rota **tamamen tek şeritte**
+(dağılım `(0,0,540)`) olmasına rağmen "GT" başka şerit diyordu — bir şerit
+seçim hatası değil, ölçütün yanlışlığı.
+
+**Asıl boşluk.** `O:\navitas-local-train\calisma\sentetik_arena_kadraj` içinde
+**manifest yok**; küme yalnız `images/`, `labels/`, `data.yaml` taşıyor. Hangi
+şeridin açık olduğu **hiçbir yere kaydedilmiyor**. Karşılaştırma için
+`data/arena_kompozit` bunu taşıyor (`arena.acik_serit`, `kapali_seritler`,
+`bariyerler`) ve T40'ın gerçek kapısı tam o sayede kurulabilmişti.
+
+**Sonuç:** Kadraj kümesi karar zincirinin **geometrisini** sınayabiliyor
+(rota çıkıyor mu, uç banda değiyor mu) ama **şerit doğruluğunu** sınayamıyor.
+En iyi zeminimizin en değerli özelliği eksik.
+
+⚠ **T51'in KAPI 2 sonucu ("yer gerçeği şerit ile uyumsuzluk 3/12") aynı
+türetme sorununa maruz olabilir.** Nasıl türetildiği görevde yazılı değil;
+denetimde sorulmalı. Kendi sayımı geri çektiğim gibi o da doğrulanmadan
+kullanılmamalı.
+
+**Görev:** `TASK_QUEUE.md` **T55** — kadraj üreteci `acik_serit`,
+`kapali_seritler` ve bariyer kutularını manifest'e yazsın (arena_kompozit
+kalıbı). Bu olmadan en iyi zeminimizde şerit doğruluğu ölçülemez.
