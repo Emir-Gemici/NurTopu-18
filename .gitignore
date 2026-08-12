@@ -18,6 +18,8 @@ env/
 FloodNet/
 dataset/rescuenet_yolo/
 dataset/rescuenet_yolo_aug/
+dataset/rescuenet_2sinif_engelli/
+dataset/copy_paste_gercek/
 dataset/floodnet_yolo/
 dataset/floodnet_filtered/
 dataset/dubai_yolo/

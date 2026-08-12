@@ -4057,3 +4057,41 @@ sınıflarını **`1 = blocked`'a eşle**, arka plana düşürme. Bir eğitim ko
 
 **v22 üretime ALINMAYACAK.** Alan içi daha iyi olsa da alan dışı çöküşü aynı;
 şu an bizi koruyan şey T52'nin iki sinyalli kapısıdır, modelin kendisi değil.
+
+---
+
+### D-68 · ÖLÇÜM KARARI DEĞİŞTİRDİ · Sınıf ağırlığı eklenmedi: dengesizlik 7:1 değil 2:1
+
+**Bağlam.** T54 kümesinde engel poligonu 850 → 22.356'ya çıkınca (D-67) sınıf
+dengesizliği endişesi doğdu; kullanıcı sınıf ağırlığının şimdiden ayarlanmasını
+istedi. **Ayarlamadan önce ölçtüm ve ölçüm kararı değiştirdi.**
+
+**Poligon sayısı yanlış ölçüttür.** Segmentasyon kaybı PİKSEL görür; tek bir yol
+poligonu yüzlerce küçük bina poligonundan geniş olabilir. Alan ölçümü:
+
+    bilesen                      kare  trav alan%  blok alan%   oran
+    rescuenet_2sinif_engelli     3502       14.8%       85.2%   1:5.8
+    sentetik_arena               3003       36.2%       63.8%   1:1.8
+    copy_paste_gercek             393       86.4%       13.6%   1:0.2
+    KARISIM TOPLAMI              6898       32.0%       68.0%   1:2.1
+    poligon toplami: trav 7775 · blok 57299            -> 1:7.4
+
+Karşılaştırma için eski küme (`rescuenet_yolo`): poligon 1:1,3 · **alan 1:1,0**.
+
+**Karar: sınıf ağırlığı EKLENMEDİ.** Karışım alan bazında **1:2,1** — segmentasyon
+için normal, %32 traversable alan sağlıklı. Yanlış öncüle (1:7,4) dayanarak
+ağırlık eklemek, tam da korktuğumuz **körlüğü kendi elimizle üretirdi**.
+
+**Ama ölçüm gerçek bir riski başka yerde gösterdi.** `copy_paste_gercek`
+karışımın yalnız **%5,7'si** (393/6898 kare) ve modelin **gerçek dokuda görme**
+yeteneği tamamen oradan geliyor (D-12/D-18: bu bileşen çıkarılınca v17/v20 kör
+kaldı). Ana koşuda K0 düşerse **çare sınıf ağırlığı değil, bu bileşenin payını
+artırmaktır**.
+
+**Yedek kol hazırlandı, çekilmedi:** `dataset/karisim_t54_gercek_agirlikli.yaml`
+— aynı üç bileşen, `copy_paste_gercek` train yolu üç kez listelenerek pay
+%5,7 → ~%15. Val DEĞİŞMEDİ (val'de tekrar örnekleme ölçümü bozar).
+
+**Ders.** "Dengesizlik var" sezgisi doğruydu, **büyüklüğü yanlıştı**. Bu turda
+dördüncü kez aynı kalıp: ölçüt seçmeden önce ölçütün ne gördüğünü sor. Poligon
+sayısı kayıp fonksiyonunun gördüğü şey değil.

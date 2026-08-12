@@ -1,0 +1,42 @@
+# KARIŞIM v3-B — T54 YEDEK KOL · gerçek doku payı artırılmış
+#
+# ⚠ BU KARIŞIM HENÜZ KULLANILMADI. Ana koşu `karisim_t54_engelli.yaml` ile
+# gidiyor. Bu dosya, ana koşu KÖRLÜĞE savrulursa çekilecek kaldıraçtır.
+#
+# NEDEN SINIF AĞIRLIĞI DEĞİL (ölçüldü 2026-08-12):
+#   bilesen                      kare  trav alan%  blok alan%   oran
+#   rescuenet_2sinif_engelli     3502       14.8%       85.2%   1:5.8
+#   sentetik_arena               3003       36.2%       63.8%   1:1.8
+#   copy_paste_gercek             393       86.4%       13.6%   1:0.2
+#   KARISIM TOPLAMI              6898       32.0%       68.0%   1:2.1
+#
+# Poligon sayısı 1:7,4 gösteriyordu ama segmentasyon kaybı PİKSEL görür.
+# Alan bazında karışım 1:2,1 — segmentasyon için normal. Sınıf ağırlığı bu
+# öncülle eklenirse ters yönde (körlük) hata üretir.
+#
+# GERÇEK RİSK BAŞKA YERDE: `copy_paste_gercek` karışımın yalnız %5,7'si
+# (393/6898 kare) ve modelin GERÇEK DOKUDA GÖRME yeteneği tamamen oradan
+# geliyor (D-12/D-18: bu bileşen çıkarılınca v17/v20 kör kaldı). Ana koşuda
+# K0 (gerçek dokuda duyarlılık) düşerse çare sınıf ağırlığı değil, BU
+# BİLEŞENİN PAYINI ARTIRMAKTIR.
+#
+# Bu dosya aynı üç bileşeni kullanır; `copy_paste_gercek` train yolu ÜÇ KEZ
+# listelenerek payı %5,7'den ~%15'e çıkarılır (Ultralytics aynı yolu tekrar
+# listelendiğinde kareleri tekrar örnekler). Val DEĞİŞMEZ — val'de tekrar
+# örnekleme ölçümü bozar.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_gercek\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked
