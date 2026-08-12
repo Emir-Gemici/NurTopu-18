@@ -4224,7 +4224,7 @@ kutularda etkisi ihmal edilebilir. Kayit icin.
 
 ---
 
-### D-69 · BOŞLUK · Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: şerit doğruluğu orada ölçülemez
+### D-70 · BOŞLUK · Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: şerit doğruluğu orada ölçülemez
 
 **Nasıl çıktı.** T51'in açık bıraktığı "3/18 yanlış şerit" kalemini geçerli
 zeminde ölçmeye çalıştım. Yer gerçeği şeridini `class-0` poligonlarının
@@ -4256,3 +4256,50 @@ kullanılmamalı.
 **Görev:** `TASK_QUEUE.md` **T55** — kadraj üreteci `acik_serit`,
 `kapali_seritler` ve bariyer kutularını manifest'e yazsın (arena_kompozit
 kalıbı). Bu olmadan en iyi zeminimizde şerit doğruluğu ölçülemez.
+
+---
+
+### D-71 · MİMAR KARARI · T52 eşiği 0,45 → 0,50; fail-OPEN kusuru düzeltilecek
+
+**Denetimi kabul ediyorum.** Claude-2 (D-69) benim yazdığım T52 kapısında üç
+kusur buldu; üçü de gerçek. Kendi kodumu onaylamamamın gerekçesi tam olarak bu.
+
+**1 · Eşik yanlış yerdeydi.** Benim ölçümüm 234 kare (model çıkarımı); onunki
+**320 yer gerçeği maskesi** — daha geniş ve daha uygun bir meşru küme.
+
+    mesru kenar AZAMISI  : 0.452        cokme kenar ASGARISI : 0.583
+    GERCEK BOSLUK        : [0.452, 0.583]
+    benim esigim 0.45    : mesru azaminin ALTINDA (pay -0.002)
+    bildirdigim 0/234    : genis kumede 1/320 (saglanmiyor)
+
+**KARAR: `ZEMIN_KENAR_DAYANMA_TAVANI` = 0.45 → `0.50`.**
+Claude-2 `0.52` önerdi (gerçek boşluğun ortası 0,517). **0,50'yi seçtim**, çünkü
+kendi (c) bulgusu üçüncü bir kısıt getiriyor: mevcut `test_zemin_kaplama_
+kapisi.py`'nin en düşük **çökme** kenar değeri **0,536**; tavan onun altında
+kalmalı yoksa o testler payı olmadan kırılır. Üç kısıtın kesişimi:
+
+    mesru azamisi 0.452  <  TAVAN  <  0.536 (mevcut test)  ve  < 0.583 (cokme)
+    0.50 -> mesru payi +0.048 · test payi 0.036 · cokme payi 0.083
+
+0,52 meşru tarafta biraz daha rahat ama test payını **0,016**'ya düşürüyor.
+0,50 üç tarafta da pay bırakıyor. Fark ikisi arasında gürültü tabanının
+(0,04) altında değil, bu yüzden gerekçe kayda geçiyor.
+
+**2 · Geçersiz `icerik`te kapı fail-OPEN.** Kardeş sözleşme fonksiyonları
+(`rota_guven_reddi`, `rota_olcek_reddi`) bozuk girdide fail-closed dönüyor;
+benimki geçiyor. Üretim yolu `analyze_path:606` doğrulaması sayesinde korunuyor,
+ama bu **sözleşme tutarsızlığıdır** ve çağrı yeri değişirse sessizce açılır.
+**Düzeltilecek: bozuk/taşan `icerik` → fail-closed ret.**
+
+**3 · Köşe pikselleri 2× sayılıyor.** Ölçüldü; azami 1,0'da kaldığı için sonuç
+tutarlı ama ölçüt tanımı gevşek. **Düzeltilecek** (köşeler bir kez sayılacak) ve
+düzeltme sonrası iki dağılım **yeniden ölçülecek** — eşik ona göre teyit edilecek.
+
+**Takdir.** Eksik testi Claude-2 yazdı (`tests/test_zemin_kapisi_iki_sinyal.py`,
+16 test) ve **mutasyon kontrolü** koydu: kapı tek sinyalli hâline döndürülünce
+16 testin 8'i düşüyor. Testin vakum olmadığını kanıtlayan doğru yöntem budur.
+
+**Kayıt numarası çakışması.** Bu kayıtla birlikte üçüncü kez oldu (D-39/40/41,
+sonra D-60, şimdi D-69). Kendi kaydımı **D-70**'e taşıdım; Claude-2'nin D-69'una
+dokunmadım. Kalıcı çözüm: numarayı yazmadan önce `grep '^### D-' REVIEW_LOG.md |
+tail -1` ile son numarayı okumak — bunu görev şablonuna eklemeliyim.
