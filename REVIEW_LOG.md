@@ -4904,3 +4904,40 @@ Onceki surumler `..._T56` ve `..._T55` olarak saklandi.
      bu gorevde DEGISMEDI.
   3. Banka "zemin" yamalarinin bir kismi asiri pozlanmis/beyaz — banka
      kalitesi bu gorevde ele alinmadi.
+
+---
+
+### D-81 · TUZAK · Üreteç çıktı dizinini temizlemiyor: yeniden üretim BAYAT kare bırakıyor
+
+**Nasıl çıktı.** T57 sonrası eğitim verisini yeni dokuyla yeniden ürettim.
+Betik `exit 0` döndü. **Damgalara baktım** — dosyalar hâlâ 07-30 tarihliydi:
+
+    UnicodeEncodeError: 'charmap' codec can't encode character '≤'
+    51_sentetik_arena.py, doku bankasi yuklendikten HEMEN SONRA
+
+Çıktı bir dosyaya yönlendirilince Windows kod sayfası **cp1254** oluyor ve
+`≤` karakteri betiği düşürüyor. `exit 0` gördüğüm şey kabuk zincirinin çıkışıydı,
+üretecin değil. **`PYTHONIOENCODING=utf-8` olmadan bu betikler sessizce ölüyor.**
+
+**İkinci ve daha sinsi tuzak.** Doğru kodlamayla yeniden koşturdum, bu kez
+gerçekten üretti — ama dizinde **bayat kareler kaldı**:
+
+    train  toplam 3003  YENI 2072  BAYAT  931
+    val    toplam  300  YENI    0  BAYAT  300
+
+Üreteç çıktı dizinini **temizlemiyor**; farklı `--adet`/numara aralığıyla
+koşulunca eski dosyalar yerinde kalıyor. Sonuç: eğitim kümesi eski (gökkuşağı)
+ve yeni (parlaklık) dokunun **karışımı** olurdu — T57'nin tüm etkisi seyrelirdi
+ve bunu hiçbir kapı yakalamazdı.
+
+**Bu, aynı turda üçüncü "yeşil görünen ama çürük" olay.** Diğer ikisi: kendi
+`0/234` ölçümüm (dar küme, D-69) ve kendi şerit türetmem (D-70). Ortak ders:
+**bir işlemin başarılı döndüğü, istenen şeyi yaptığı anlamına gelmez** — çıktının
+kendisi doğrulanmalı. Damga, sayım ve içerik.
+
+**Yapılan.** Dizin silinip sıfırdan üretildi. Eğitim ancak damga doğrulaması
+geçtikten sonra başlatılacak.
+
+**Kalıcı öneri (görev değil, uyarı):** `51_sentetik_arena.py` bir `--temizle`
+bayrağı taşımalı ya da çıktı dizini boş değilse **uyarmalı**. Bu tuzağa bir
+kez daha düşülürse fark edilmeyebilir.
