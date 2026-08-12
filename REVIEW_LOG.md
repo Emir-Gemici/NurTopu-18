@@ -4416,3 +4416,57 @@ düzeltmesi değerleri pratikte oynatmadı.
 geçti. Madde 7 istisnasıyla yazdığım iki değişikliğin ikisi de artık onaylı;
 biri kusurlu bulunup düzeltildi — istisnanın neden ayrı denetim gerektirdiğinin
 ölçülmüş kanıtı.
+
+---
+
+### D-74 · BELİRLEYİCİ · Alan içi IoU 2,2× arttı, KARAR DÜZEYİNDE hiçbir şey değişmedi
+
+**T54 koşuldu.** `v23_t54_engelli` — 11-sınıf ön-eğitim + bina/ağaç/su denetimi
+eklenmiş 2 sınıflı karışım. 191/200 epoch (erken durma), 7,9 saat.
+
+**Alan içi üçüncü sıçrama:**
+
+    model              K1 IoU  K1 kesinlik  K1 duyar  K2 otopark ort
+    v23_t54_engelli     0.698        0.826     0.819           81.1%
+    v22_on10_gercek     0.512        0.782     0.597           80.6%
+    v21 (uretim)        0.311        0.813     0.335           81.0%
+    v17                 0.315        0.807     0.341            0.9%
+
+IoU 0,311 → 0,512 → **0,698**. Duyarlılık 0,335 → 0,819. Ölçülen en iyi model.
+
+**Ama karar düzeyinde HİÇBİR ŞEY değişmedi:**
+
+    model              KADRAJ ARENA (60)              OTOPARK (30)
+    v23_t54_engelli    rota 43/60 · kaplama %17,0     0/30 (30/30 ZEMIN_SUPHELI)
+    v21 (uretim)       rota 43/60 · kaplama %17,4     0/30 (30/30 ZEMIN_SUPHELI)
+
+Şerit dağılımları bile aynı (v23: 2→19, 3→17, 1→7 · v21: 2→19, 3→16, 1→8).
+Ret dağılımı da: ikisinde de 17 ret.
+
+**Ve çatı hâlâ yeşil.** 10.818 bina poligonu eğitime girdi; otoparkta bina
+çatısı gözle bakıldığında hâlâ tamamen geçilebilir işaretli, kaplama %73,6.
+
+**KARAR: ÜRETİM MODELİ DEĞİŞTİRİLMİYOR.** v23 ölçülebilen her alan-içi ölçütte
+daha iyi, ama **önemli olan yerde ölçülebilir bir fark üretmiyor**. K-3 zaten
+söylüyordu: *"mAP arena sıralamasını tersine çeviriyor."* Bu kayıt onun IoU
+karşılığıdır — **alan-içi doğruluk arena kararını öngörmüyor.** Ölçülmemiş bir
+fayda için üretim modeli değiştirilmez.
+
+**Üç koşunun ortak dersi.** T50-FAZ2 (v15), T53 (v22), T54 (v23): üçü de alan
+içi doğruluğu yükseltti, üçü de otopark çöküşünü ve arena karar sayısını
+değiştirmedi. **Eğitim ekseni, arena kararının darboğazı değil.** Dördüncü bir
+koşu (gerçek doku payı) aynı sonucu verme ihtimali yüksek; kullanıcının
+onayladığı "körlüğe savrulursa kaldıracı çek" koşulu **gerçekleşmedi**
+(savrulma olmadı), bu yüzden kaldıraç ÇEKİLMEDİ.
+
+**🔴 YAN BULGU — kendi kapımız kendi test zeminimizi yedi.** K0 (gerçek dokuda
+tespit tabanı) ve K3 (karar doğruluğu) kompozit arena kümesinde ölçülüyordu;
+o kümenin arka planı otopark olduğu için iki sinyalli kapı (T52) artık 9/9
+reddediyor. Kapı doğru çalışıyor — küme gerçekten çökmüş maske üretiyor — ama
+**K0/K3 artık ölçülemez durumda.** Kapı betiği de K0'ı hiç uygulamamış
+(JSON yalnız k1/k2/k3 taşıyor). Ölçüt kümesi kadraj zeminine taşınmalı.
+
+**Sırada eğitim YOK.** Kanıt başka yeri gösteriyor: kadraj arenasında 17/60 kare
+hâlâ reddediliyor (UC_BANT_TEMAS_YOK 7 · GORUS_HATTI_KOPUK 8 · MASKE_YOK 2) ve
+bu sayı **iki modelde de aynı** — yani karar yolunda, modelde değil. Ayrıca
+şerit doğruluğu D-70 yüzünden hâlâ ölçülemiyor.
