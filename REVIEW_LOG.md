@@ -4512,3 +4512,142 @@ yer gerçeği düzeyinde tam çalışıyor.
 (UC_BANT 3 · GORUS 8). Bunların **meşru fail-closed mu** (o karede gerçekten
 açık güzergâh yok) yoksa karar yolu kusuru mu olduğu, hangi şeridin açık
 olduğu kayıtlı olmadan **belirlenemez** (D-70). T55 inmeden bu kalem kapanmaz.
+
+---
+
+### D-76 · COZULDU (kapi 2 SINIRLI) · T55: kadraj kumesi manifest yaziyor
+Uygulayan: Claude 2 · 2026-08-12 · kanit D-70 · dosya `51_sentetik_arena.py`
+
+**TASARIM — `acik_serit` URETIM ANINDA kaydedilir.** D-70'in uyarisi dogrulandi
+ve tasarima girdi: uc seritli arenada `class-0` UC KORIDORU DA kaplar; seritleri
+ayiran zemin degil, uzerlerindeki bariyerlerdir. Bu yuzden serit durumu
+(`kapali`/`acik`/`dar`) yalniz uretim dongusunde bilinir ve orada kaydedilir.
+
+**UYGULAMA — donus aritesi DEGISMEDI.** `sahne_uret(..., bilgi=None)`: `bilgi`
+bir sozlukse doldurulur, aksi halde hicbir sey degismez. Boylece mevcut cagri
+yerleri (ve egitim kipi) hic etkilenmez. Serit numarasi `serit_no`'dan OKUNUR
+(`codes/karar_sozlesmesi`) — uretecte ucte-bir hesabi CIPLAK yazilmadi; iki
+kume artik ayni otoriteyi kullaniyor.
+
+Manifest `data/arena_kompozit` alan adlarini birebir tasir: `acik_serit`,
+`kapali_seritler`, `bariyerler` (kutu + pencere), `icerik`, `mpp`,
+`olcek_kaynagi`, `beklenen_durum`, `beklenti_kaynagi`, `tohum`,
+`uretec_seritleri`. Ek olarak `acik_serit_adaylari`, `belirsiz` ve
+`arena_x_araligi`.
+
+**KAPILAR (gercek cikti).**
+
+    KAPI 1  kare == kayit : 260 goruntu / 260 kayit · dosyasi olmayan kayit 0   GECTI
+    KAPI 4  geometri degismedi (istatistik karsilastirmasi):
+              ESKI  kare 260 · traversable 550 · blocked 879 · zemin alan 0,2171 ± 0,1522
+              YENI  kare 260 · traversable 550 · blocked 879 · zemin alan 0,2171 ± 0,1522
+    KAPI 5  egitim kipi denkligi (4 tohum: kimlik + sinif + RNG durumu +
+            geometrik) hepsi True                                              GECTI
+            ek: `bilgi` toplamanin yan etkisi YOK (3 tohumda kimlik+RNG esit)
+    depo    codes/test_rota_sentetik.py 15/15 · discover -s tests -q Ran 303 OK
+
+⚠ **KAPI 4'te BAYT karsilastirmasi UYGULANMADI — uygulanamaz.** Uretec ZATEN
+tekrarlanabilir degil (D-64: degistirilmemis kodla ayni seed'le uc kosum uc
+farkli hash). Yerine etiket istatistikleri karsilastirildi ve poligon sayilari
+BIREBIR, zemin alan dagilimi dort haneye kadar ayni cikti.
+
+🔴 **KAPI 2 SINIRLI GECTI — gorevin yazdigi olcut olculemedi.**
+Gorev "yer gercegi maskeleriyle **rota_bul** manifest'in `acik_serit`'ini
+buluyor" diyordu. Olculdu: `rota_bul` bu kumede **hic karar vermiyor**.
+
+    139 net kare (belirsiz olmayan), rota_bul durumlari:
+      BELIRSIZ_TEK_KAPI 65 · MASKE_YOK 28 · KAPI_YOK 27 · BELIRSIZ_COKLU 19
+      DOGRU 0 · YANLIS 0 · karar vermeyen 139/139
+
+Sebep D-58'de kayitli: `rota_bul` UC KAPILI arena dedektorudur
+(`costmap_path_finder.py:781`, `n_kapi != 3 -> BELIRSIZ_COKLU`). Sentetik
+uretec 2-5 serit uretiyor, dolayisiyla nadiren tam 3 kapi sunuyor. Olcut
+bu kumede ISLEMEZ.
+
+Uretim karar yolu (`analyze_path` + K-B) ile olculdu:
+
+    analyze_path : DOGRU 85 · YANLIS 4 · RET 50   ->  UYUMSUZLUK 4/89 (%4,5)
+
+**KAPI 3 — ILK OLCUM DUSTU, DEGISMEZ YANLISTI; DUZELTILIP GECTI.**
+Ilk pozitif kontrol "acik serit kapatilinca ETIKET degismeli" diyordu:
+**87/89**. Iki basarisizlik incelendi — kusur kapida DEGIL, benim
+enjeksiyonumdaydi:
+
+    sa_000063  GT=1 once=1 sonra=1 · kapatilan bantta kalan serbest piksel 0
+               rota y=h/2 civarinda x=237 -> SERIT 2 (komsu seritten dolanmis)
+    sa_000156  GT=2 once=2 sonra=2 · kapatilan bantta kalan serbest piksel 0
+               rota y=h/2 civarinda x=452 -> SERIT 3 (komsu seritten dolanmis)
+
+Koridorlar ucte-bir sinirlarini asarak kivriliyor; kapatilan seridin DISINDAN
+dolanan rota MESRU ve GUVENLIDIR. Etiket degismiyor cunku `road` darbogaz
+seridini adlandirir ve darbogaz baska yerde. Dogru degismez **"kapatilan
+bantTAN GECILMEMESI"**dir; oyle olculdu:
+
+    rota kapatilan bantTAN GECMIYOR (veya RET) : 89/89   GECTI
+    (etiket degisti: 84/89 — bilgi amacli, KAPI DEGIL)
+
+**BULGU — kumenin yarisi BELIRSIZ.** 260 karenin **121'inde** birden fazla
+karar seridi gecilebilir serit iceriyor; tek bir `acik_serit` yazilamiyor ve
+`belirsiz: true` isaretlenip `acik_serit_adaylari` yaziliyor. Kalan **139**
+kare tek cevapli yer gercegi tasiyor. Bu, uretecin 2-5 serit uretmesinin
+dogal sonucudur — T55 kapsaminda GEOMETRI DEGISTIRILMEDI (kapi 4 geregi).
+Tek cevapli kare oranini yukseltmek isteniyorsa uretecin kadraj kipinde
+serit sayisi 3'e sabitlenmelidir; bu AYRI bir gorevdir.
+
+**Kume yerinde:** `O:\navitas-local-train\calisma\sentetik_arena_kadraj`
+(manifest dahil). Onceki manifestsiz surum
+`...\sentetik_arena_kadraj_ONCEKI_manifestsiz` olarak saklandi.
+
+**DOGRULANAMADI**
+  1. Manifest'in `acik_serit` degerlerinin GORSEL dogrulugu — 260 karenin
+     hicbiri gozle denetlenmedi; dogruluk uretecin kendi durum kaydina dayanir.
+  2. `mpp` degeri kamera olcumu degildir (kompozit kumeyle ayni varsayim).
+
+---
+
+### D-77 · Dokuz model kaybı araştırıldı: karar yolu TEMİZ, kusur zeminin GERÇEKÇİLİĞİNDE
+
+**T55 yer gerçeği geldi; iki açık soru kapandı.**
+
+**1 · Kusursuz maskeyle gelen 11 ret — HEPSİ MEŞRU.**
+
+    manifest 'acik serit YOK/belirsiz' diyor : 11   (MESRU)
+    manifest ACIK SERIT VAR diyor            :  0   (KUSUR)
+
+**Karar yolunda kusur yok.** Açık şerit olan her karede rota üretiyor. D-75'te
+açtığım soru kapandı; T55'in kendi ölçümü de aynı yöne bakıyor: `analyze_path`
+şeridi **85/89 doğru** (%95,5).
+
+**2 · Dokuz model kaybı saf AZ-TESPİT.**
+
+    kapA (model) : %0,0 – %13,2      kapB (yer gercegi) : %13,1 – %35,7
+    zemin kaybi  : ort %16,8 · min %8,6 · maks %28,9
+    iki karede model SIFIR zemin buluyor (sa_000059, sa_000072)
+
+**3 · v23 dokuz kayıptan yalnız 1'ini kurtarıyor** (kaplama biraz yükseliyor:
+7,0→9,2 · 4,5→12,1 · 0,0→1,7 — yer gerçeğinin çok altında). D-74'ün "üretim
+modeli değiştirilmiyor" kararı bağımsız olarak doğrulandı.
+
+**4 · 🔴 ASIL BULGU — kayıp modelin değil, ZEMİNİN.** Kayıp kareleri **gözle**
+inceledim (`sa_000059`, `sa_000058`):
+
+- Sahneler **kaleydoskopik kolaj**: aynalanmış, harmanlanmış, doygunluğu gitmiş
+  doku parçaları. Havadan çekilmiş bir arena görüntüsüne benzemiyor.
+- **Hedef `H` YEŞİL bir kare.** Şartname §2.2.6 **2×2 m KIRMIZI branda** diyor.
+  Üreteç yanlış renkte hedef basıyor.
+- "Koridorlar" düz üç güzergâh değil, **dalgalı bantlar**.
+
+Yani en iyi ölçüm zeminimizin **gerçekçiliği düşük**. Bu, öğrendiklerimizi
+tümden geçersiz kılmıyor — karar yolu bulguları **geometriktir ve zeminden
+bağımsızdır** (11/11 meşru ret, %95,5 şerit doğruluğu) — ama şunu söylüyor:
+
+> **Bu zeminde ölçülen MODEL başarımı, gerçek arena başarımını öngörmez.**
+> "9 model kaybı" büyük ölçüde üretecin ürettiği gerçek dışı karelerdir.
+
+**Sıradaki kaldıraç eğitim DEĞİL, üretecin gerçekçiliği.** Dört eğitim koşusu
+(v15, v22, v23 ve ondan önceki) alan içi doğruluğu yükseltti; hiçbiri bu
+karelerdeki körlüğü çözmedi — çözemez de, çünkü kareler gerçek sahne
+istatistiğini taşımıyor. Aynı zamanda **kırmızı branda** hedefi hiçbir zeminde
+üretilmiyor; D-23'teki "hedef dedektörü yok" kalemi bununla birleşiyor.
+
+**DOĞRULANAMADI (değişmedi):** gerçek arena başarımı. Kamera yok.

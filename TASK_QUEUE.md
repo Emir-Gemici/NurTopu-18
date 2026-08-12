@@ -2940,7 +2940,47 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
-- [ ] **T55 — Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: en iyi zeminimizde şerit doğruluğu ölçülemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-69**
+- [STATUS: READY_FOR_REVIEW] **T55 — Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: en iyi zeminimizde şerit doğruluğu ölçülemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-69**
+  - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-76**.
+  - **Tasarım:** `acik_serit` **üretim anında** kaydediliyor — D-70'in uyarısı
+    tasarıma girdi. `sahne_uret(..., bilgi=None)`: dönüş **aritesi değişmedi**,
+    hiçbir çağrı yeri kırılmadı. Şerit numarası `karar_sozlesmesi.serit_no`'dan
+    **okunuyor** (üreteçte çıplak üçte-bir yok) — iki küme aynı otoriteyi kullanıyor.
+  - Manifest `data/arena_kompozit` alan adlarını birebir taşıyor: `acik_serit`,
+    `kapali_seritler`, `bariyerler` (kutu+pencere), `icerik`, `mpp`,
+    `olcek_kaynagi`, `beklenen_durum`, `beklenti_kaynagi`, `tohum`,
+    `uretec_seritleri` + `acik_serit_adaylari`, `belirsiz`, `arena_x_araligi`.
+  - **KAPILAR (gerçek çıktı):**
+    ```text
+    KAPI 1  260 goruntu / 260 kayit · dosyasi olmayan kayit 0        GECTI
+    KAPI 2  rota_bul: DOGRU 0 · YANLIS 0 · karar vermeyen 139/139    OLCULEMEDI
+              {BELIRSIZ_TEK_KAPI 65 · MASKE_YOK 28 · KAPI_YOK 27 · BELIRSIZ_COKLU 19}
+            analyze_path: DOGRU 85 · YANLIS 4 · RET 50 -> UYUMSUZLUK 4/89 (%4,5)
+    KAPI 3  rota kapatilan banttan GECMIYOR (veya RET) : 89/89       GECTI
+    KAPI 4  geometri: ESKI/YENI ikisi de 550 traversable · 879 blocked ·
+            zemin alan 0,2171 ± 0,1522 (BIREBIR)                     GECTI
+    KAPI 5  egitim kipi denkligi 4 tohumda True (kimlik+sinif+RNG+geometrik) GECTI
+    depo    test_rota_sentetik 15/15 · discover -s tests -q Ran 303 OK
+    ```
+  - 🔴 **KAPI 2 görevin yazdığı ölçütle ölçülemedi.** `rota_bul` bu kümede
+    **hiç karar vermiyor**: üç-kapılı arena dedektörü (D-58,
+    `costmap_path_finder.py:781`), üreteç ise 2–5 şerit üretiyor. Üretim karar
+    yolu (`analyze_path` + K-B) ile ölçüldü: **uyumsuzluk 4/89**.
+  - ⚠ **KAPI 3 ilk ölçümde düştü (87/89) — değişmez YANLIŞTI, kapı değil.**
+    İki başarısız karede kapatılan bantta **0 serbest piksel** kalmış ama rota
+    **komşu şeritten dolanmış** (sa_000063 → şerit 2, sa_000156 → şerit 3);
+    etiket değişmiyor çünkü `road` darboğaz şeridini adlandırıyor ve darboğaz
+    başka yerde. Doğru değişmez **"kapatılan banttan geçilmemesi"**dir → 89/89.
+  - 🔴 **BULGU: 260 karenin 121'i BELİRSİZ** — birden fazla karar şeridi
+    geçilebilir şerit içeriyor, tek `acik_serit` yazılamıyor (`belirsiz: true` +
+    `acik_serit_adaylari`). Tek cevaplı **139** kare kalıyor. Üreteç 2–5 şerit
+    ürettiği için doğal sonuç; **geometri değiştirilmedi** (kapı 4 gereği).
+    Oranı yükseltmek için kadraj kipinde şerit sayısı 3'e sabitlenmeli — **ayrı görev**.
+  - **Küme:** `O:
+avitas-local-train\calisma\sentetik_arena_kadraj` (manifest dahil);
+    öncekisi `..._ONCEKI_manifestsiz` olarak saklandı.
+  - **DOĞRULANAMADI:** (1) manifest `acik_serit` değerlerinin **görsel** doğruluğu
+    (260 karenin hiçbiri gözle denetlenmedi); (2) `mpp` kamera ölçümü değil.
   - **Kanıt:** `calisma\sentetik_arena_kadraj` yalnız `images/`, `labels/`,
     `data.yaml` taşıyor — **manifest yok**. Hangi şeridin açık olduğu hiçbir
     yere yazılmıyor.
