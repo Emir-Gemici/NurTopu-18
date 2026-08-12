@@ -4470,3 +4470,45 @@ reddediyor. Kapı doğru çalışıyor — küme gerçekten çökmüş maske ür
 hâlâ reddediliyor (UC_BANT_TEMAS_YOK 7 · GORUS_HATTI_KOPUK 8 · MASKE_YOK 2) ve
 bu sayı **iki modelde de aynı** — yani karar yolunda, modelde değil. Ayrıca
 şerit doğruluğu D-70 yüzünden hâlâ ölçülemiyor.
+
+---
+
+### D-75 · 17/60 RET ARAŞTIRMASI · Yarısı MODEL kusuru; D-74'teki çıkarımım yanlıştı
+
+**Yöntem.** Aynı 60 kadraj karesi iki girdiyle koşuldu — tek değişken maske
+kaynağı: **A** model çıkarımı, **B** etiket poligonlarından kusursuz yer gerçeği.
+A reddedip B kabul ederse kusur MODELDE; ikisi de reddederse karar yolu/sahne.
+
+**Sonuç (doğru ölçekle, mpp = 0,0781):**
+
+    A · MODEL maskesi     : rota 41 · UC_BANT 10 · GORUS 7 · MASKE_YOK 2
+    B · YER GERCEGI maske : rota 49 · UC_BANT  3 · GORUS 8
+    ayrisan kare: 10  (9 model reddi -> GT rota · 1 ters yon)
+
+**1 · Retlerin yaklaşık YARISI MODEL kusuru.** Dokuz karede kusursuz maskeyle
+rota çıkıyor, model maskesiyle çıkmıyor. Model tarafı hâlâ kayıp üretiyor.
+
+**2 · D-74'teki çıkarımım YANLIŞTI — düzeltiyorum.** Orada *"ret sayısı iki
+modelde de aynı, yani karar yolunda, modelde değil"* yazmıştım. Bu geçersiz bir
+çıkarım: **iki modelin eşit kötü olması modeli aklamaz**, ikisinin de aynı zaafı
+paylaştığını gösterir. Doğru ayrım modeli devreden çıkarmakla yapılır ve
+yapıldığında kusurun yarısı modelde çıkıyor. D-74'ün üretim modeli kararı
+(v23 → değiştirilmiyor) bundan etkilenmiyor; **çıkarımın kendisi düzeltiliyor.**
+
+**3 · Kendi ölçüm hatam: yanlış `mpp`.** Kadraj kareleri 640×640 ve arena 50 m →
+doğru `mpp = 0,0781`. Ben kompozit için türetilmiş **0,0868**'i kullanmıştım
+(`r_gerekli_px` 12,7 yerine 14,1 olmalıydı). Etkisi: her iki kolda **2'şer rota**.
+T51 ve D-74'teki `43/60` sayısı bu hatayı taşıyor; doğrusu **41/60**. İki kol da
+aynı hatayla ölçüldüğü için **modeller arası fark sonucu değişmiyor**, ama mutlak
+sayı düzeltildi.
+
+**4 · Retler darlıktan DEĞİL.** Yer gerçeği koridor yarı-genişliği: min 8,9 px ·
+medyan **54,9 px** · maks 110,9. Doğru ölçekte medyan **4,29 m** yarı-genişlik →
+koridor ~8,6 m; gereken 1,10 m. Gereken yarıçapı sağlamayan kare **1/60**.
+Uç bantlar da hiç boş değil (üst 0/60 · alt 0/60) — T51'in kadraj düzeltmesi
+yer gerçeği düzeyinde tam çalışıyor.
+
+**Kalan soru T55'e BAĞLI.** Kusursuz maskeyle 11/60 kare hâlâ reddediyor
+(UC_BANT 3 · GORUS 8). Bunların **meşru fail-closed mu** (o karede gerçekten
+açık güzergâh yok) yoksa karar yolu kusuru mu olduğu, hangi şeridin açık
+olduğu kayıtlı olmadan **belirlenemez** (D-70). T55 inmeden bu kalem kapanmaz.
