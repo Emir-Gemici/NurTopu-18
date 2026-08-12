@@ -4797,3 +4797,110 @@ iddia edilmiyor; **T57'de sınanacak**.
 **Görev:** `TASK_QUEUE.md` **T57** — prosedürel yüzeyi ölçülmüş hedefe yaklaştır
 (tek kanallı parlaklık gürültüsü + genlik artışı) ve prosedürel/gerçek payını
 gözden geçir.
+
+---
+
+### D-80 · COZULDU · T57: prosedurel yuzey artik PARLAKLIK dokusu; pay olcumle ayrildi
+Uygulayan: Claude 2 · 2026-08-12 · kanit D-79 · dosya `51_sentetik_arena.py`
+
+**KUSUR.** `prosedurel_yuzey()` gurultuyu `im.shape` = (H, W, 3) ile uretiyordu:
+her kanal BAGIMSIZ. Gercek yuzey dokusu ise agirlikla PARLAKLIK degisimidir.
+Sonuc: duz zemin uzerinde renkli benek — gozle GOKKUSAGI KONFETI.
+
+**HEDEF KORU KORUNE KOPYALANMADI.** Banka yamalari GERCEK SAHNE parcalaridir;
+parlaklik std'lerinin buyuk kismi dokudan degil ICERIKTEN (golge, nesne, yapi)
+gelir. Bu yuzden 6 px Gauss ile YUKSEK GECIRGEN alinip yalniz DOKU bileseni
+olculdu (n=40):
+
+    kaynak              global kroma  global parlak  DOKU kroma  DOKU parlak  k/p
+    prosedurel zemin           7,92          9,50        6,95         8,10   0,86
+    prosedurel yol             6,56          9,97        6,17         8,45   0,73
+    GERCEK banka zemin         8,12         50,37        1,82        12,15   0,15
+    GERCEK banka yol           1,05          6,90        0,54         3,68   0,15
+
+Iki gercek kategori de **k/p = 0,15**'te bulusuyor — hedef budur. Global
+parlaklik std'si (zemin 50,37) hedef ALINMADI; o icerikten sisiyor.
+
+**KALIBRASYON (supurme).** Renk sapmasi supurmesi: `s_renk` 0,0 -> 0,05 ·
+1,0 -> 0,11 · **1,5 -> 0,14** · 2,0 -> 0,18 · 4,0 -> 0,33. `RENK_SAPMASI = 1.5`
+secildi. Parlaklik supurmesi (ince, kaba) -> DOKU parlaklik: (2,2) -> 2,59 ·
+(3,4) -> 3,97 · (6,7) -> 7,32 · (10,12) -> 12,22. Kategoriye gore bant:
+
+    DOKU_GENLIGI = {"zemin": (7,0 · 10,5 · 8,0 · 12,5)   -> ~8,5-12,7
+                    "yol":   (2,0 ·  4,0 · 2,0 ·  5,0)}  -> ~2,6-5,1
+
+**SONUC (KAPI 1).**
+
+    kaynak                DOKU kroma  DOKU parlak  DOKU k/p
+    ESKI prosedurel zemin       6,95         8,10      0,86
+    ESKI prosedurel yol         5,90         8,09      0,73
+    YENI prosedurel zemin       1,13        10,60      0,11
+    YENI prosedurel yol         0,85         3,99      0,21
+    GERCEK banka zemin          1,82        12,15      0,15
+    GERCEK banka yol            0,54         3,68      0,15
+
+Oran 0,86/0,73 -> **0,11/0,21**; gercek bant 0,15. Ikisi de banda oturdu.
+
+**TABAN RENGI CESITLILIGI KORUNDU** (kroma dusurmek rengi oldurmedi):
+belirgin renkli yama ESKI 42/60 -> YENI 42/60, ortanca ortalama kroma
+21,2 -> 21,0. T57 yalniz DOKU kromasini dusurdu; taban rengi PALET'ten gelir.
+
+**`yuzey_sec()` PAYI OLCUMLE AYRILDI.** Docstring "%45" diyordu, kod %60
+kullaniyordu — ikisi de olculmemisti (docstring/kod celiskisi da giderildi).
+Bankadaki yamalarin gercekten "temiz duz yuzey" olup olmadigi olculdu
+(ICERIK parlaklik std < 8):
+
+    kategori   n   p50 icerik std   TEMIZ (<8)
+    zemin    315          39,8          2/315   -> banka temiz zemin VEREMIYOR
+    yol      385           9,9        166/385   -> banka temiz yol BOL VERIYOR
+
+Bu yuzden pay KATEGORIYE GORE ayrildi: `{"zemin": 0.70, "yol": 0.35}`.
+Sifirlanmadi — prosedurel yuzey hala tek temiz-zemin kaynagidir; ama yolda
+gercek yama daha gercekcidir ve banka onu bol veriyor.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    KAPI 1  LAB olcumu — yukaridaki tablo                              GECTI
+    KAPI 2  GOZLE DOGRULAMA — O:\navitas-local-train\results\t57_gorsel\
+              yuzey_ornekleri.jpg  (ESKI / YENI / GERCEK banka, 2 kategori)
+              sahne_51.jpg · sahne_77.jpg · sahne_123.jpg (tam sahne)
+            Eski zemin GOKKUSAGI KONFETI; yeni zemin CIM/BETON gibi okunuyor.
+    KAPI 3  T56 kapilari KORUNDU:
+              koridor sapma MAKS 0,00 px · hedef 260/260 · kenar 2,000 m
+              hedef_serit != acik_serit  0/144
+    KAPI 4  karar zinciri (yer gercegi maskesiyle):
+              T56 zemini: net 123/260 · rota  86 (DOGRU  86 · YANLIS 0) · RET 37
+              T57 zemini: net 144/260 · rota 107 (DOGRU 107 · YANLIS 0) · RET 37
+    KAPI 5  EGITIM KIPI — asagida
+    depo    codes/test_rota_sentetik.py 15/15 · discover -s tests -q Ran 303 OK
+
+**KAPI 4 YORUMU.** Sayilarin artmasi beklenmiyordu; artti: tek-cevapli kare
+123 -> 144, uretilen rota 86 -> 107, ret DEGISMEDI (37), yanlis serit yine 0.
+Sebep: pay degisikligi RNG akisini kaydirdi ve sahne dagilimi degisti —
+karar mantiginda bir gevseme YOK (yanlis serit hala 0).
+
+**KAPI 5 — EGITIM KIPI DE DEGISTI (KASITLI) ve etki AYRISTIRILDI.**
+Ilk olcumumde "geometri degismedi" yazmistim; **yanlisti**, olcum `False`
+diyordu. Ayristirildi:
+
+    A) pay ESKIDE sabitlenince (0,60/0,60) — fark yalniz DOKUDAN:
+         ESKI egitim sahnesi: kroma 4,90 · parlak 21,13 · oran 0,23
+         YENI egitim sahnesi: kroma 3,96 · parlak 21,22 · oran 0,19
+         GEOMETRI (kimlik haritasi) AYNI: 5/5 tohum
+    B) gercek pay (0,70/0,35): GEOMETRI ayni mi -> 0/5
+
+Yani **geometri degisimi DOKUDAN degil, `yuzey_sec` PAYINDAN geliyor**:
+`yuzey_sec` serit duzeninden ONCE kosar; pay degisince ayni rng cekilisi
+farkli dala girer ve akis kayar. Ikisi de kasitlidir. T51/T56'daki "egitim
+kipi degismedi" kapisi bu gorevde GECERLI DEGILDIR.
+
+**Kume:** `O:\navitas-local-train\calisma\sentetik_arena_kadraj` (T57).
+Onceki surumler `..._T56` ve `..._T55` olarak saklandi.
+
+**DOGRULANAMADI**
+  1. Yeni prosedurel yuzeyin GERCEK asfalt/cim fotografina benzerligi — yalniz
+     LAB istatistigi ve goz kiyasi yapildi; algi modeliyle sinanmadi.
+  2. Moloz seritleri hala RescueNet BINA CATISI kesitleridir (D-78'den devam);
+     bu gorevde DEGISMEDI.
+  3. Banka "zemin" yamalarinin bir kismi asiri pozlanmis/beyaz — banka
+     kalitesi bu gorevde ele alinmadi.

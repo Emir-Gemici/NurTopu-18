@@ -2940,6 +2940,69 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
+- [STATUS: READY_FOR_REVIEW] **T57 — Prosedürel zemin dokusu gerçek dışı: kanal-bağımsız gürültü** · `O:
+  - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-80**.
+  - **Hedef körü körüne kopyalanmadı:** banka yamalarının parlaklık std'sinin
+    büyük kısmı dokudan değil **içerikten** (gölge/nesne) geliyor. 6 px Gauss
+    yüksek-geçirgenle **doku** bileşeni ayrıldı; iki gerçek kategori de
+    **k/p = 0,15**'te buluşuyor — hedef bu.
+  - **KAPI 1 — LAB ölçümü (gerçek çıktı):**
+    ```text
+    kaynak                DOKU kroma  DOKU parlak  DOKU k/p
+    ESKI prosedurel zemin       6,95         8,10      0,86
+    ESKI prosedurel yol         5,90         8,09      0,73
+    YENI prosedurel zemin       1,13        10,60      0,11
+    YENI prosedurel yol         0,85         3,99      0,21
+    GERCEK banka zemin          1,82        12,15      0,15
+    GERCEK banka yol            0,54         3,68      0,15
+    ```
+    Kalibrasyon süpürmesi: `RENK_SAPMASI=1,5` → oran 0,14 · parlaklık bandı
+    kategoriye göre (zemin ~8,5–12,7 · yol ~2,6–5,1).
+  - **Taban rengi çeşitliliği KORUNDU:** belirgin renkli yama 42/60 → 42/60,
+    ortanca kroma 21,2 → 21,0 (kroma düşürmek rengi öldürmedi).
+  - **`yuzey_sec()` payı ölçümle ayrıldı** (docstring "%45" / kod %60 çelişkisi
+    de giderildi). Bankadaki yamaların "temiz düz yüzey" olma oranı:
+    ```text
+    zemin  2/315 temiz (p50 icerik std 39,8) -> banka temiz zemin VEREMIYOR
+    yol  166/385 temiz (p50  9,9)            -> banka temiz yol BOL VERIYOR
+    ```
+    → `PROSEDUREL_PAYI = {"zemin": 0.70, "yol": 0.35}`. **Sıfırlanmadı.**
+  - **KAPI 2 — GÖZLE:** `O:
+avitas-local-trainesults	57_gorsel\`
+    (`yuzey_ornekleri.jpg`, `sahne_51/77/123.jpg`). Eski zemin **gökkuşağı
+    konfeti**; yeni zemin **çim/beton** gibi okunuyor.
+  - **KAPI 3 — T56 kapıları KORUNDU:** koridor sapma **0,00 px** · hedef
+    260/260 · kenar **2,000 m** · `hedef_serit != acik_serit` **0/144**.
+  - **KAPI 4 — karar zinciri:**
+    ```text
+    T56 zemini: net 123/260 · rota  86 (DOGRU  86 · YANLIS 0) · RET 37
+    T57 zemini: net 144/260 · rota 107 (DOGRU 107 · YANLIS 0) · RET 37
+    ```
+    Artması beklenmiyordu, **arttı**; ret değişmedi, yanlış şerit yine 0.
+  - **KAPI 5 — eğitim kipi de değişti (KASITLI), etki AYRIŞTIRILDI:**
+    ```text
+    A) pay ESKIDE sabit (0,60/0,60) -> fark yalniz DOKUDAN
+       ESKI kroma 4,90 parlak 21,13 oran 0,23 | YENI 3,96 / 21,22 / 0,19
+       GEOMETRI (kimlik) AYNI: 5/5 tohum
+    B) gercek pay (0,70/0,35): GEOMETRI ayni mi -> 0/5
+    ```
+    ⚠ İlk ölçümümde "geometri değişmedi" yazmıştım, **yanlıştı**. Geometri
+    değişimi **dokudan değil, `yuzey_sec` payından** geliyor: `yuzey_sec`
+    şerit düzeninden **önce** koşuyor, pay değişince RNG akışı kayıyor.
+  - **Küme:** `...\calisma\sentetik_arena_kadraj` (T57); öncekiler `..._T56`
+    ve `..._T55` olarak saklandı. Depo kapıları: **15/15** · **Ran 303 · OK**.
+  - ⚠ **DOĞRULANAMADI:** (1) yeni yüzeyin gerçek asfalt/çim fotoğrafına
+    benzerliği (yalnız LAB + göz); (2) moloz şeritleri hâlâ RescueNet **bina
+    çatısı** kesitleri (D-78'den devam, bu görevde değişmedi); (3) banka
+    "zemin" yamalarının bir kısmı aşırı pozlanmış.
+avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-79
+  - ⚠ Satırı Claude-2 açtı (kuyrukta yoktu); kapsam kullanıcı direktifinden.
+  - **Yap:** gürültü TEK KANALLI üretilip üç kanala yayılsın (parlaklık dokusu);
+    parlaklık genliği gerçek bankaya ÖLÇEREK yaklaştırılsın; `yuzey_sec()`
+    prosedürel payı ölçümle gerekçelendirilsin (SIFIRLANMAYACAK).
+  - ⚠ Bu değişiklik **eğitim kipini de etkiler ve bu KASITLIDIR**; T51/T56'daki
+    "eğitim kipi değişmedi" kapısı bu görevde geçerli değildir.
+
 - [STATUS: READY_FOR_REVIEW] **T56 — Kadraj kipi şartnameye sadık değil: hedef yeşil, koridorlar dalgalı, doku kaleydoskopik** · `O:
   - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-78**.
     Eğitim kipinde eğrilik, aynalama ve yeşil çeldirici **aynen kaldı**;
@@ -2947,7 +3010,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **KAPILAR (gerçek çıktı):**
     ```text
     KAPI 1  GOZLE DOGRULAMA — O:
-avitas-local-trainesults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI sahne, iki kip)
+avitas-local-train
+esults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI sahne, iki kip)
               uclu_sa_000000.jpg · _000005.jpg · _000012.jpg
             goruntu 260 · manifest kaydi 260                        GECTI
     KAPI 2  koridor merkez sapmasi ort 0,00 · MAKS 0,00 px (n=541)  GECTI
