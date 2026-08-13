@@ -5114,7 +5114,7 @@ birlikte guncellenmelidir. Bu gorevin izni o dosyayi kapsamiyordu.
 
 ---
 
-### D-83 · DÖNÜM NOKTASI · Gerçek arena karesi bulundu: v21 KÖR, kapı YANLIŞ ATEŞLİYOR
+### D-84 · DÖNÜM NOKTASI · Gerçek arena karesi bulundu: v21 KÖR, kapı YANLIŞ ATEŞLİYOR
 
 **Kullanıcının önerisiyle** internette arena görüntüsü arandı. Resmî yarışma
 sayfasında görsel yok; ama **şartnamenin kendisinde var** ve o dosya bir
