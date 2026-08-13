@@ -161,7 +161,7 @@ Bilinçli ikamedir, eksiklik değil.
 | # | Kaynak | Formül | Bugün üretilebilir mi |
 |---|---|---|---|
 | **(a)** | **İrtifa + kamera FOV / odak** | `mpp = 2·h·tan(FOV_yatay/2) / W_px` · `mpp = h / f_px` | ✅ **EVET** — irtifa saha yolunda zaten okunuyor: MAVLink `GLOBAL_POSITION_INT.relative_alt` (`comms/inis_kaniti.py:143`). İkinci bir telemetri yolu türetilmez. |
-| (b) | Bilinen ölçekli nesne (2×2 m kırmızı H brandası) → px/m | `mpp = 2.0 / brandanın piksel kenarı` | ❌ **HAYIR** — üretim modeli **2 sınıflı**; ölçüldü: `navitas_seg_v21_best.pt.names = {0: 'traversable', 1: 'blocked'}`. Hedef dedektörü **yok** (D-23). (b) ancak üçüncü sınıf üretime girdiğinde açılır. |
+| (b) | Bilinen ölçekli nesne (2×2 m kırmızı H brandası) → px/m | `mpp = 2.0 / brandanın piksel kenarı` | ❌ **HAYIR** — üretim modeli **2 sınıflı**; ölçüldü (T58, 2026-08-13): `navitas_seg_v24_best.pt.names = {0: 'traversable', 1: 'blocked'}` — v21 ile **birebir aynı**, iddia model değişiminden etkilenmedi. Hedef dedektörü **yok** (D-23). (b) ancak üçüncü sınıf üretime girdiğinde açılır. |
 
 **Seçim: (a).** Gerekçe kolaylık değil, **üretilebilirlik**: (b)'nin dayandığı
 tespit bileşeni sahada mevcut değil ve bir sınıf eklemeden ölçüm yapılamaz.
@@ -391,7 +391,7 @@ string yazılmaz** (madde 16).
 maske üzerinde, morfoloji ve engel çıkarmadan **önce** ölçülür.
 
 ```python
-ZEMIN_KAPLAMA_TAVANI = 0.55
+ZEMIN_KAPLAMA_TAVANI = 0.67      # T59 · D-85/D-86 · önceki 0.55 (v21 dönemi)
 ```
 
 **Ölçüm** (üretim zinciri, `conf=0.30`) — üç bağımsız meşru kaynak, iki çökmüş küme:
@@ -404,15 +404,53 @@ ZEMIN_KAPLAMA_TAVANI = 0.55
 | v21 **otopark** (çatı/çim yeşil) — çökmüş | 67 | %79,9 | — | **min %76,7** |
 | v21 **kompozit arena** — çökmüş | 7 | %82,7 | — | **min %76,0** |
 
-Meşru ile çökmüş arasında `%42,6 – %76,0` **boş** aralığı var. `0.55` seçildi:
-en yüksek meşru kaplamanın **1,29 katı** (gürültü payı), en düşük çökmüş
-kaplamanın **0,72 katı**; 194 model karesi + 60 yer gerçeği + 15 kapı sahnesinde
-**yanlış pozitif 0, kaçırma 0**.
+Bu tablo **v21 çıktılarıyla** kuruldu ve `0.55` oradan türetildi.
 
-⚠ **Kapının bilinen sınırı.** Bu bir *kaplama* kapısıdır, doku kapısı değil.
-Orta şiddetli bir çökme (içeriğin ~%43'ünü boyayan) **bu kapıdan geçer**;
-yakalamak için maskenin **yapısı** gerekir. Kapı madde 15 açısından nötrdür:
-yalnız reddeder, hiçbir piksel eklemez.
+#### T59 · yeniden kalibrasyon — `0.55 → 0.67` (D-84, D-85, **D-86**)
+
+İki şey birden değişti: üretim modeli **v24** oldu (T58) ve elimize **gerçek
+arena karesi** geçti — `data/arena_referans/sartname_s9_arena.png`, şartname
+s.9, projenin **tek** gerçek arena görüntüsü. v24 onu doğru segmentliyor, ama
+kapı reddediyordu:
+
+```text
+gercek arena  kaplama 0.579 > 0.55  VE  kenar 0.585 > 0.50  ->  RET
+```
+
+**Bağımsız ölçüm** (T59, v24, kümenin **tamamı**):
+
+| küme | n | kaplama min..maks | kenar min..maks |
+|---|---:|---|---|
+| MEŞRU kadraj arena | 260 | 0.000..0.863 | 0.000..0.682 |
+| MEŞRU **gerçek arena** | 1 | 0.579 | 0.585 |
+| ÇÖKÜŞ otopark | 67 | 0.770..0.866 | 0.579..0.971 |
+
+**Hiçbir sinyal tek başına ayırmıyor** (kaplama: meşru maks 0.863 > çöküş min
+0.770; kenar: 0.682 > 0.579). Kapı bu yüzden **AND** birleşimidir.
+
+| eşik çifti | meşru elenen | kaçan çöküş |
+|---|---:|---:|
+| `(0.55, 0.50)` eski | **3/261** — biri **gerçek arena** | 0/67 |
+| `(0.67, 0.50)` yeni | **1/261** | 0/67 |
+
+⚠ **Tam ayrık çift yoktur.** D-85 220 kareli bir alt kümede `(0.67, 0.50)` için
+tam ayrım (0/221, pay 0,062) bildiriyordu; kümenin tamamında bu **doğrulanmadı**.
+
+⚠ **Kapının bilinen sınırı — artık ölçülmüş bir örneği var.** Bu bir *kaplama*
+kapısıdır, doku kapısı değil. Orta şiddetli çökme **geçer**: `sa_000150.jpg`'de
+model kaplaması 0.617 (< 0.67 → geçiyor) iken **yer gerçeği 0.380**; IoU 0.613,
+model kenarı 0.658'e karşı gerçek 0.190. Yakalamak için maskenin **yapısı**
+(doku/renk tutarlılığı) gerekir — ayrı görev.
+
+🔴 **Eşikler MODELE BAĞLIDIR.** v21 için türetilen `0.55`, v24'te yanlıştı ve
+gerçek arenayı eliyordu. **Üretim modeli her değiştiğinde bu kalibrasyon zorunlu
+adımdır.** Meşru taraf ayrıca **tek** gerçek kareye dayanıyor; ikinci bir gerçek
+arena karesi geldiğinde eşik yeniden ölçülmelidir.
+
+Regresyon kilidi: `tests/test_gercek_arena_kapisi.py` — eşik ileride yeniden
+oynatılır ve gerçek arenayı tekrar elerse bu paket düşer.
+
+Kapı madde 15 açısından nötrdür: yalnız reddeder, hiçbir piksel eklemez.
 
 **`detay`** insan-okur ve **ölçülen değeri taşır** — hangi uç (`alt`/`üst`), ölçülen
 güven, ölçülen alan oranı. Örnek: `"Rota guveni 0.180; gereken >= 0.200."`
@@ -569,7 +607,8 @@ var (`--kaynak`) ama o bir doğrulama aracıdır, **üretim yolu değildir**.
 etkin profille **eşleşecek** ve SHA doğrulanacak.
 Kanıt: `codes/rpi_inference.py:32-40` `MODEL_DIR`'i `best_ncnn_model`'e çözüyor —
 11 Temmuz tarihli **v2 dönemi NCNN**. `--model` argümanı yok, `INFER_SIZE = 512`
-sabit (`:44`). Üretimde olması gereken v21'dir. Ayrıca `config/model_registry.json`
+sabit (`:44`). Üretimde olması gereken **v24**'tür (T58, 2026-08-13; önceki v21).
+Ayrıca `config/model_registry.json`
 "competition" profili `navitas_seg_v4_best.pt` gösteriyor — **kayıt defteri de bayat**.
 
 **Halka 3 — Çıkarım.** Ölçüt: tek kare çıkarımı istisnasız tamamlanacak. Geçerli.
@@ -649,7 +688,7 @@ Halka adları (koşucunun kullanacağı anahtarlar, değişmez):
 | Halka | Beklenen | Gerekçe |
 |---|---|---|
 | `kamera` | KUSURLU | kaynak sabit `VideoCapture(0)` |
-| `model_yukleme` | KUSURLU | v21 yerine v2 dönemi NCNN |
+| `model_yukleme` | KUSURLU | v24 (T58 üretim modeli) yerine v2 dönemi NCNN |
 | `cikarim` | GECTI | — |
 | `maske` | GECTI | — |
 | `olcek` | **SAHİPSİZ** | saha `mpp` üreticisi yok |

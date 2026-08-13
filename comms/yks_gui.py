@@ -891,7 +891,11 @@ class YksArayuz:
     # KALIR — `drone` bir otopark, `gemini`/`val` afet/yol fotografi; domain
     # boslugunu hakeme gostermek icin degerlidirler (REVIEW_LOG D-53).
     ALGI_KAYNAKLAR = ("kompozit", "drone", "gemini", "test", "val")
-    ALGI_MODEL_DOSYA = "navitas_seg_v21_best.pt"
+    # T58 (kullanici karari, REVIEW_LOG D-82/D-83): uretim modeli v21 -> v24.
+    # Bu sabit hakem ekranini SAHA DONANIMIYLA ayni modele baglar; `jetson_paket/
+    # models/` ve HER IKI `JETSON_KILAVUZ.md` ayni surume cevrildi. Yalniz
+    # burasi cevrilirse ekran ile saha FARKLI MODELE duser (D-58/D-60 sinifi).
+    ALGI_MODEL_DOSYA = "navitas_seg_v24_best.pt"
     # T36: cikarim esigi URETIMDEN gelir. `codes/rpi_inference.py` `run_image`
     # yolunda predict esigi `--conf` argumaniyla verilir, varsayilani 0.30
     # (`:1116`). GUI kendi esigini SECMEZ; bu deger uretimin varsayilanidir ve

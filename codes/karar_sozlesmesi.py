@@ -259,26 +259,62 @@ def r_gerekli_piksel(mpp, r_gerekli_m):
 #     v21 otopark (cati/cim yesil)                     67   %79,9         %76,7
 #     v21 kompozit arena                                7   %82,7         %76,0
 #
-# Iki kip arasinda %42,6 ile %76,0 arasinda GENIS ve BOS bir aralik var.
-# TAVAN = 0.55 secildi:
-#   · olculen en yuksek MESRU kaplamanin (%42,6) 1,29 kati — maske gurultusu
-#     icin pay birakir, genel kapinin kendi sahnelerini reddetmez;
-#   · olculen en dusuk COKMUS kaplamanin (%76,0) 0,72 kati — cokmeyi kacirmaz;
-#   · 194 model karesi + 60 yer gercegi + 15 kapi sahnesinde yanlis pozitif 0,
-#     kacirma 0.
-#   · Anlami: icerigin YARISINDAN fazlasi "surulebilir zemin" iddia ediliyorsa
-#     maske artik sahneyi AYIRT ETMIYOR demektir.
+# Yukaridaki tablo v21 ciktilariyla turetildi ve TAVAN = 0.55 secilmisti.
+#
+# ════════════════════════════════════════════════════════════════════════════
+# T59 · YENIDEN KALIBRASYON: 0.55 -> 0.67   (REVIEW_LOG D-84, D-85, D-86)
+# ════════════════════════════════════════════════════════════════════════════
+# IKI SEY BIRDEN DEGISTI:
+#   (1) Uretim modeli v24 oldu (T58) — esikler v21 ciktilarindan turetilmisti;
+#   (2) elimize GERCEK ARENA karesi gecti (D-84): sartname s.9,
+#       `data/arena_referans/sartname_s9_arena.png` — projenin TEK gercek arena
+#       goruntusu. v24 onu DOGRU segmentliyor (gozle dogrulandi: toprak zemin
+#       yesil, moloz haric, uc koridor izlenebilir).
+#
+# 🔴 KUSUR: 0.55 tavani DOGRU segmentlenmis GERCEK ARENAYI reddediyordu.
+#       gercek arena  kaplama 0.579 > 0.55  VE  kenar 0.585 > 0.50  -> RET
+#
+# BAGIMSIZ OLCUM (T59, v24, uretim zinciri, conf=0.30 — KUMENIN TAMAMI):
+#
+#   kume                     n    kaplama min..maks    kenar min..maks
+#     MESRU kadraj arena    260    0.000..0.863        0.000..0.682
+#     MESRU GERCEK ARENA      1    0.579               0.585
+#     COKUS otopark          67    0.770..0.866        0.579..0.971
+#
+#   kaplama tek basina: mesru maks 0.863 > cokus min 0.770   CAKISIK
+#   kenar   tek basina: mesru maks 0.682 > cokus min 0.579   CAKISIK
+#   -> HICBIR SINYAL TEK BASINA AYIRMIYOR; kapi AND birlesimidir.
+#
+#   esik cifti              mesru elenen      kacan cokme
+#     (0.55, 0.50) ESKI      3/261             0/67   <- biri GERCEK ARENA
+#     (0.67, 0.50) YENI      1/261             0/67
+#
+# ⚠ TAM AYRIK CIFT YOKTUR. Mimarin 220 kareli alt kumesinde (0.67, 0.50) tam
+# ayirim veriyordu (D-85: mesru elenen 0/221, pay 0.062); kumenin TAMAMINDA
+# vermiyor. Kalan tek elenen kare `sa_000001.jpg` (kaplama 0.856 · kenar 0.682):
+# yer gercegiyle kiyaslandi — GT kaplama 0.717, IoU 0.810, ama GT kenar yalniz
+# 0.359. Model o karede sinira GERCEGIN IKI KATI dayaniyor; SINIR DURUM,
+# duz bir yanlis pozitif degil.
+#
+# ⚠ 0.67'NIN OLCULMUS BEDELI: `sa_000150.jpg` artik kapidan GECIYOR
+# (kaplama 0.617 < 0.67). O karede model GERCEKTEN cokmus: GT kaplama 0.380,
+# model 0.617 (+0.237), IoU 0.613, kenar 0.658 iken GT kenar 0.190. Yani bu
+# yukseltme ORTA SIDDETLI cokmeye acik kapi birakir — yukaridaki v13 uyarisinin
+# somut ornegidir. Kaplama+kenar bu sinifi yakalayamaz; maskenin YAPISI
+# (doku/renk tutarliligi) gerekir — ayri gorev.
+#
+# 🔴 ESIKLER MODELE BAGLIDIR. v21 icin turetilen 0.55 v24'te YANLISTI ve gercek
+# arenayi eliyordu. v24 icin turetilen 0.67 bir sonraki modelde yanlis olabilir.
+# URETIM MODELI HER DEGISTIGINDE BU KALIBRASYON ZORUNLU ADIMDIR.
+#
+# 🔴 GERCEK ARENA TEK KAREDIR. Mesru taraf bir dagilima degil TEK NOKTAYA karsi
+# olculdu. Ikinci bir gercek arena karesi geldiginde esik YENIDEN olculmelidir.
 #
 # ⚠ GOREV TABLOSUNDAKI v13 SATIRI KULLANILAMADI. "v13 cokmus, kaplama %43,4"
 # deniyordu; fakat (1) v13 agirligi depoda YOK, olculemedi; (2) satirin kendi
 # iki sayisi tek tanim altinda tutarsiz (%43,4 ve "goruntunun %84,7'sini
-# boyuyor"); (3) en onemlisi, %43,4 genel kapinin KENDI mesru sahnelerinin
-# azamisinin (%42,6) yalniz 0,8 puan ustunde — o degeri yakalayan bir tavan
-# `codes/test_rota_sentetik.py` 15/15 kapisini kirardi. Bu yuzden tavan
-# olculebilen kaynaklardan turetildi. v13 benzeri ORTA siddetli bir cokme bu
-# kapidan GECER; yakalamak icin kaplama tek basina yetmez, maskenin YAPISI
-# (or. doku/renk tutarliligi) gerekir — ayri gorev.
-ZEMIN_KAPLAMA_TAVANI = 0.55
+# boyuyor"). Bu yuzden tavan olculebilen kaynaklardan turetildi.
+ZEMIN_KAPLAMA_TAVANI = 0.67
 
 
 def zemin_kaplamasi(trav, icerik=None):

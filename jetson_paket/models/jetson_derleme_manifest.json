@@ -1,23 +1,67 @@
 {
-  "olusturma_zamani": "2026-08-05T07:42:46",
-  "pc_modeli": "O:\\navitas\\models\\navitas_seg_v17_best.pt",
-  "format": "onnx",
-  "fp16": true,
-  "imgsz": [
-    640,
-    512
-  ],
-  "dinamik": false,
-  "opset": 17,
-  "cihaz": "0",
-  "onnxler": [
-    "O:\\navitas\\results\\onnx_export_v17_20260805\\navitas_seg_v17_best_640_fp16.onnx",
-    "O:\\navitas\\results\\onnx_export_v17_20260805\\navitas_seg_v17_best_512_fp16.onnx"
-  ],
-  "int8_kalibrasyon": null,
-  "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
-  "jetson_komutlari": [
-    "yolo export model=navitas_seg_v17_best_640_fp16.onnx format=engine imgsz=640 half=True",
-    "yolo export model=navitas_seg_v17_best_512_fp16.onnx format=engine imgsz=512 half=True"
-  ]
+ "_not": "T58: bu manifest ARTIK PAKETIN KENDISINI tarif eder. Onceki surum 2026-08-05 disa aktarim kosusunu tarif ediyordu (pc_modeli v17) oysa pakette v21 ONNX vardi; bayatlik kimseye gorunmedi cunku manifest paket icerigine BAKMIYORDU. `paket_icerigi` her dosyanin sha256'sini tasir - bayatlik artik mekanik olarak yakalanir (REVIEW_LOG D-83).",
+ "olusturma_zamani": "2026-08-13T08:21:23",
+ "paket_yenilenme": "2026-08-13T08:33:07",
+ "pc_modeli": "O:\\navitas\\models\\navitas_seg_v24_best.pt",
+ "format": "onnx",
+ "fp16": true,
+ "imgsz": [
+  640
+ ],
+ "dinamik": false,
+ "opset": 17,
+ "cihaz": "0",
+ "onnxler": [
+  "O:\\navitas\\results\\onnx_export_v24_20260813\\navitas_seg_v24_best_640_fp16.onnx"
+ ],
+ "int8_kalibrasyon": null,
+ "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
+ "jetson_komutlari": [
+  "yolo export model=navitas_seg_v24_best_640_fp16.onnx format=engine imgsz=640 half=True"
+ ],
+ "asil_model": "navitas_seg_v24_best_640_fp16.onnx",
+ "asil_model_pt": "navitas_seg_v24_best.pt",
+ "uretim_hakem_ekrani": "comms/yks_gui.py ALGI_MODEL_DOSYA = navitas_seg_v24_best.pt",
+ "paket_icerigi": [
+  {
+   "dosya": "navitas_seg_v17_best.pt",
+   "bayt": 54830748,
+   "sha256": "8986c300585a05c94fecccc8b5270c2a5e619051b1fc99640d6ab0df59896568"
+  },
+  {
+   "dosya": "navitas_seg_v17_best_512_fp16.onnx",
+   "bayt": 54569670,
+   "sha256": "64ba97913e97e4c54e379b4d62210bb089c3cf36bbfd210d96c7d6bee8019930"
+  },
+  {
+   "dosya": "navitas_seg_v17_best_640_fp16.onnx",
+   "bayt": 54599914,
+   "sha256": "0e9a49f9c99cb9997278ae51f0b811da242215f757a55234bf4c3895763eaef3"
+  },
+  {
+   "dosya": "navitas_seg_v20_best.pt",
+   "bayt": 54830748,
+   "sha256": "eeb95d178c70c73346c4d8cda2419d5248ab730aded0ba5184c1e156099b1596"
+  },
+  {
+   "dosya": "navitas_seg_v21_best.pt",
+   "bayt": 54830748,
+   "sha256": "799e07f9cef3820c3ad9f0365b0052fd8ee2edfc6df1b706830a0a9d3bc5be7d"
+  },
+  {
+   "dosya": "navitas_seg_v21_best_640_fp16.onnx",
+   "bayt": 54599921,
+   "sha256": "84f040920f8d52d8981c63ec9a1abe58401f517fb0500086039a32773bf8f4d5"
+  },
+  {
+   "dosya": "navitas_seg_v24_best.pt",
+   "bayt": 54852380,
+   "sha256": "c04d7d3570ead678f104d0b44145cf9922dbdce32d783deea261332c96ce107d"
+  },
+  {
+   "dosya": "navitas_seg_v24_best_640_fp16.onnx",
+   "bayt": 54599920,
+   "sha256": "27e480a135d75ac3805a6db356f7ba569c20200c0fc6af50093ce308feaa6408"
+  }
+ ]
 }

@@ -5218,3 +5218,317 @@ kendiliğinden uyum sağlıyor. D-71'de karşıma çıkan üçüncü kısıt bur
    için türetilen değerler bir sonraki modelde yanlış olabilir. Üretim modeli
    her değiştiğinde bu kalibrasyon **zorunlu adımdır**. Bunu görev şablonuna
    yazmak gerekiyor.
+
+---
+
+### D-86 · UYGULANDI + DENETIM · T59: tavan 0.67 kondu; D-85'in "tam ayrik" iddiasi kumenin TAMAMINDA DOGRULANMADI
+Uygulayan: Claude 2 · 2026-08-13 · karar D-85 · kanit D-84
+
+**YAPILAN.** `ZEMIN_KAPLAMA_TAVANI` **0.55 -> 0.67**. `ZEMIN_KENAR_DAYANMA_TAVANI`
+**0.50'de kaldi** — dokunulmadi. Sabit yorumu ve `CONTRACTS.md` SS6.4 olcumle
+guncellendi. Jetson paketi yenilendi (9/9 bayt-esit).
+
+**KARARIN ANA GEREKCESI DOGRULANDI.** Gercek arena karesi bagimsiz olculdu:
+
+    sartname_s9_arena.png   kaplama 0.579 · kenar 0.585    (D-85: 0.577 / 0.585)
+
+Eski cift (0.55, 0.50) bu kareyi ELIYOR; yeni cift (0.67, 0.50) GECIRIYOR.
+Dogru segmentlenmis tek gercek arena karemizin reddedilmesi boylece bitti.
+
+**BAGIMSIZ OLCUM — mimarin betigi kullanilmadi, sifirdan kuruldu.** Mimar 220
+kadraj karesi kullanmis; burada kumenin TAMAMI (260) kullanildi — daha genis
+mesru kume DAHA ZOR sinavdir.
+
+    kume                     n    kaplama min..maks    kenar min..maks
+      MESRU kadraj arena    260    0.000..0.863        0.000..0.682
+      MESRU GERCEK ARENA      1    0.579               0.585
+      COKUS otopark          67    0.770..0.866        0.579..0.971
+
+    kaplama tek basina: mesru maks 0.863 > cokus min 0.770   CAKISIK
+    kenar   tek basina: mesru maks 0.682 > cokus min 0.579   CAKISIK
+
+"Hicbir sinyal tek basina ayirmiyor, AND ayiriyor" tespiti DOGRULANDI.
+
+**🔴 UC AYRISMA — D-85 ile ortusmuyor, gizlenmiyor.**
+
+    olcut                        D-85 (n=220)      T59 (n=260, tamami)
+    kadraj kenar maks                  0.655                    0.682
+    otopark kaplama min                0.728                    0.770
+    (0.67,0.50) mesru elenen         0/221                    1/261
+    TAM AYRIK CIFT var mi              EVET (pay 0.062)         YOK
+
+    esik cifti          mesru elenen   kacan cokme
+      (0.55, 0.50)       3/261          0/67    <- biri GERCEK ARENA
+      (0.67, 0.50)       1/261          0/67
+
+Supurme (1..99 x 1..99, tum ciftler): **elenen 0 VE kacan 0 veren cift YOK**.
+Yani D-85'teki 0.062 pay 220 kareli ALT KUMENIN ozelligidir, olcutun degil.
+Bu, kararin YANLIS oldugu anlamina gelmez — 3/261'den 1/261'e inmek ve gercek
+arenayi kurtarmak nettir — ama "tam ayrik" ifadesi kayda boyle gecmemelidir.
+
+**KALAN TEK ELENEN KARE inceledildi (kor kabul edilmedi).** `sa_000001.jpg`
+kaplama 0.856 · kenar 0.682. Yer gercegiyle kiyas:
+
+    kare              MODEL kap   GT kap    fark   MODEL ken   GT ken     IoU
+    sa_000001.jpg         0.856    0.717   +0.139       0.682    0.359   0.810
+
+Sahne GERCEKTEN acik (GT %71,7) ve model onu buyuk olcude dogru buluyor
+(IoU 0,810); ama sinira gercegin IKI KATI dayaniyor. SINIR DURUM — duz bir
+yanlis pozitif degil.
+
+**🔴 0.67'NIN OLCULMUS BEDELI — D-85'te yok, burada var.** `sa_000150.jpg`
+artik kapidan GECIYOR:
+
+    kare              MODEL kap   GT kap    fark   MODEL ken   GT ken     IoU
+    sa_000150.jpg         0.617    0.380   +0.237       0.658    0.190   0.613
+
+Model orada GERCEKTEN cokmus (gercegin 1,6 kati zemin, IoU 0,613, sinira
+gercegin 3,5 kati dayanma) ve 0.55 tavani onu YAKALIYORDU; 0.67 kaciriyor.
+Bu, sabitin kendi yorumundaki "orta siddetli cokme bu kapidan GECER"
+uyarisinin ILK SOMUT ORNEGIDIR. Kaplama+kenar bu sinifi yakalayamaz; maskenin
+YAPISI (doku/renk tutarliligi) gerekir — ayri gorev.
+
+**YENI KALICI KAPI** `tests/test_gercek_arena_kapisi.py` (7 test). Esigin
+SAYISI degil DAVRANIS kilitlenir: "dogru segmentlenmis gercek arena kapidan
+GECER". Iki katman — (a) olculen degerlerle esik mantigi (agirliksiz kosar),
+(b) uretim zinciriyle gercek kare (v24 agirligi varsa). Agirlik/kare yoksa
+ATLANIR, temiz klonda yanlis sebeple kirmizi yanmaz. Sabitler bayatlarsa
+`test_OLCULEN_degerler_SABITLERLE_tutarli` duser.
+
+**MUTASYON KONTROLU** (D-15/K-04: sifir olcum basari sayilmaz):
+
+    M0  mutasyon YOK (tavan 0.67)                7 kosuldu · DUSEN 0  temiz — beklenen
+    M1  tavan 0.55'e GERI ALINDI                 7 kosuldu · DUSEN 4  kapi ATESLENDI
+    M2  tavan 0.578 (arena degerinin altinda)    7 kosuldu · DUSEN 4  kapi ATESLENDI
+    M3  YALNIZ kenar tavani 0.10  (AND kontrolu) 7 kosuldu · DUSEN 0  temiz — beklenen
+    M4  IKI tavan birden dusuruldu               7 kosuldu · DUSEN 4  kapi ATESLENDI
+    M5  testteki OLCULEN sabit bayatlatildi      1 kosuldu · DUSEN 1  kapi ATESLENDI
+    M6  geri alma sonrasi                        7 kosuldu · DUSEN 0  temiz — beklenen
+
+M3 negatif kontroldur: kenar tavanini tek basina dusurmek kapiyi ATESLEMEMELI
+(kapi AND'dir, arena kaplamasi 0.579 < 0.67). Ateslemedi — AND dogrulandi.
+
+**🔴 MEVCUT BIR TEST DUSTU — DUZELTILMEDI, karar kullaniciya birakildi.**
+
+    tests/test_zemin_kapisi_iki_sinyal.py:97
+    IkiSinyalKapisiTests.test_kaplama_YUKSEK_kenar_DUSUK_ATESLEMEZ (kaplama=0.6)
+    AssertionError: 0.600625 not greater than 0.67 : fikstur kaplama tavanini asmiyor
+
+Testin IDDIASI ("kaplama yuksek + kenar dusuk -> kapi ateslememeli") saglam ve
+diger iki alt-durum (0.70, 0.85) GECIYOR. Duşen sey FIKSTUR ON KOSULU: `0.60`
+ciplak sayisi eski tavanin (0.55) ustundeydi, yeni tavanin (0.67) altinda kaldi.
+Madde 16 acisindan zaten kusurlu: fikstur esigi SOZLESMEDEN turetmiyor.
+**Onerilen asgari duzeltme** (uygulanmadi, izin bekliyor):
+`for oran in (0.60, 0.70, 0.85)` -> tavandan turetilen degerler, or.
+`for carpan in (1.05, 1.20, 1.35): oran = min(0.98, ZEMIN_KAPLAMA_TAVANI * carpan)`.
+Boylece esik her degistiginde fikstur kendiliginden uyar.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    KAPI 1  bagimsiz olcum: (0.67,0.50) mesru elenen 1/261 · kacan cokme 0/67
+            HEDEF 0/221 idi — TUTMADI, sebebi yukarida                DUSTU
+    KAPI 2  tests/test_gercek_arena_kapisi.py  Ran 7 tests  OK        GECTI
+    KAPI 3  mevcut testler                                            DUSTU (1)
+    KAPI 4  mutasyon kontrolu: M1/M2/M4/M5 atesledi, M3 sustu         GECTI
+    KAPI 5  codes/test_rota_sentetik.py  SONUC: 15/15 dogru           GECTI
+            unittest discover -s tests -q  Ran 322  FAILED (failures=1)
+            -> tek dusen KAPI 3'teki fikstur; baska dusen YOK
+    KAPI 6  scripts/jetson_paket_hazirla.py  9/9 bayt-esit
+            karar_sozlesmesi.py sha b1a54c9fbe03aacb                  GECTI
+
+**DOGRULANAMADI**
+  1. Gercek arena TEK KAREDIR. Mesru taraf bir dagilima degil tek noktaya karsi
+     olculdu; istatistiksel guven YOKTUR. Ikinci gercek kare geldiginde esik
+     YENIDEN olculmelidir.
+  2. Esikler MODELE BAGLIDIR. 0.67 v24 icindir; bir sonraki modelde yanlis
+     olabilir. Uretim modeli her degistiginde kalibrasyon ZORUNLU adimdir —
+     bu, gorev sablonuna yazilmali (D-85'in kendi onerisi).
+  3. Orta siddetli cokme (sa_000150 sinifi) artik kapidan GECIYOR; bu sinif
+     icin olcut YOK.
+  4. Arena basarimi yine sahada dogrulanmadi — kamera yok, tek kare PDF'ten.
+
+---
+
+### D-87 · OLCUM · Gercek arena RENK KUNYESI: uretec bes noktada celisiyor; D-84'un IKI okumasi YANLIS
+Olcen: Claude 2 · 2026-08-13 · kaynak `data/arena_referans/sartname_s9_arena.png` (1059x634)
+
+**NEDEN.** Kullanici "goruntu isleme mukemmel olsun" dedi ve baslangic olarak
+URETEC SADAKATINI secti. Alti model (v15..v24) ayni duvara toslad; ortak sebep
+egitim substratinin arenaya benzememesi. Artik gercek kare elimizde — hedef
+TAHMIN edilmek yerine OLCULDU.
+
+**ONCE: iki sartname PDF'i de tarandi, BASKA ARENA GORSELI YOK.**
+
+    2026_TEKNOFEST_TYDA_SARTNAME_Ucuncu_Senaryo   19 sayfa · s1/s19 KAPAK
+    Ileri_Otonom_Sistemler_..._Sartname_TR         30 sayfa · s9 1059x634 TEK figur
+    (her sayfadaki 1653x2338 gorsel filigran/arka plandir)
+
+Bu kaynak TUKENDI. Elimizdeki gercek arena goruntusu bir tanedir ve oyle kalacak.
+
+**OLCUM (BGR ortalama · LAB, a/b merkezlenmis):**
+
+    bolge            BGR ort            L      a      b    L std
+    zemin_disi      (122,139,153)    149.7   +2.1  +11.0    13.4   <- EN TEMIZ zemin
+    zemin_acik      (127,148,164)    158.6   +2.3  +13.5    23.4
+    moloz_levha     (101,109,111)    113.6   -0.5   +4.5    68.3
+    moloz_yigin      (91, 96, 96)    101.7   -1.2   +3.0    51.5
+    bariyer         (116,126,148)    139.4   +7.5  +10.2    45.9
+    HB_ped          (129,127,120)    132.2   -2.0   -2.1    57.4
+
+    BASKIN PALET (k-means k=6, LAB):
+       pay      L      a      b     BGR
+     35.4%  165.5   +0.9  +10.3   (139,156,164)
+     28.3%  143.0   +0.8   +9.0   (119,134,141)
+     13.6%  113.9   +0.1   +7.2   ( 93,104,110)
+      8.9%   73.2   +0.3   +4.4   ( 61, 67, 70)
+      7.5%   25.0    0.0   +0.7   ( 26, 26, 26)
+      6.3%  199.3   -0.9   +5.1   (184,193,195)
+
+**BULGU 1 — SAHNENIN TAMAMI DUSUK KROMA.** Alti baskin kumenin HEPSINDE
+|a| < 1,0 ve b +0,7..+10,3. Arena "sicak gri" bir sahnedir. Uretecimiz RescueNet
+kolaji kullaniyor: mavi bina catisi, yesil cim, doymus renkler. Model alti kez
+YANLIS BIR RENK DUNYASI ogrendi.
+
+**BULGU 2 — ZEMIN ile MOLOZ arasinda TEMIZ ve OLCULEBILIR ayrim var:**
+
+    zemin : L 150..159 · b +11..+13,5   (sicak, acik)
+    moloz : L 102..114 · b  +3..+4,5    (notr, koyu)
+    -> dL yaklasik 45 · db yaklasik 8
+
+Yani gercek arenada zemin/moloz ayrimi PARLAKLIK + SICAKLIK ile yapilabiliyor.
+Uretecimizde moloz RescueNet bina catisi oldugu icin bu iliski YOK.
+
+**🔴 BULGU 3 — D-84'un IKI OKUMASI YANLIS. Duzeltiliyor.**
+
+  (a) **HB pedi KIRMIZI DEGIL.** D-84 sartname METNINDEN "uzerinde KIRMIZI H
+      harfi" diye yazmisti ve ben T56'da uretece "2x2 m KIRMIZI branda"
+      koydurmustum. Sartnamenin KENDI FIGURU aksini gosteriyor ve olculdu:
+      HB_ped a = -2,0 · b = -2,1 -> KROMA SIFIR, NOTR. Gorsel: SIYAH kare
+      uzerinde BEYAZ H harfi ve BEYAZ cerceve — standart helipad isareti.
+      **Sartname METNI ile KENDI FIGURU celisiyor.** Uretec bugun duz kirmizi
+      dikdortgen basiyor; ucu de birbirini tutmuyor.
+
+  (b) **Bariyer bir YIGIN degil, KOLLU BARIYER.** Figurde iki adet uzun, ince,
+      YATAY kirmizi-beyaz seritli kol var (yol bariyeri kolu). Kapali guzergahi
+      kapatan sey bu. Uretecte hic yok.
+
+**BULGU 4 — IHA-IB (30x30 m MAVI bolge) FIGURDE YOK.** Sartname metni tarif
+ediyor, kendi figuru gostermiyor. Kare icinde mavi hicbir bolge yok. Metin ile
+figur arasindaki IKINCI celiski. Uretece eklenmesi metne dayanir, olcume DEGIL —
+bu ayrim kayda gecmelidir.
+
+**BULGU 5 — ZEMINDE IZGARA CIZGILERI VAR.** Ince koyu kareli izgara (L~25
+kumesi, sahnenin %7,5'i; icine golge ve HB pedi de giriyor). Uretecte YOK.
+Guclu, duzenli bir gorsel isarettir; modelin zemin sinifini ogrenmesini
+etkileyebilir — sadakat acisindan eklenmeli, ama tek basina "iyilestirme"
+sayilmamali.
+
+**BULGU 6 — MOLOZ, KORIDOR DUVARI olarak dizilmis.** Buyuk duz beton levhalar
+(kimi dik, kimi yatik) ve kirik blok yiginlari, uc koridoru cevreleyen
+DUVARLAR olusturuyor. Uretecin rastgele serpistirilmis moloz seritlerinden
+yapisal olarak farkli.
+
+**KULLANIM SINIRI (degismedi).** Tek karedir. Bu kunye RENK/DOKU hedefidir;
+istatistiksel dagilim degildir. Ikinci gercek kare gelirse yeniden olculmelidir.
+
+**DOGRULANAMADI**
+  1. Figurun gercek yarisma arenasini mi yoksa temsili bir gorseli mi
+     gosterdigi bilinmiyor. Sartnamenin kendi belgesidir; daha iyi kaynak yok.
+  2. Olcek: figurde 50x50 m HTAB'in piksel karsiligi izgaradan tahmin edilebilir
+     ama bu gorevde OLCULMEDI.
+  3. Metin/figur celiskileri (HB rengi, IHA-IB varligi) COZULMEDI. Yarisma
+     otoritesine sorulmasi gereken bir konudur — insan isi.
+
+---
+
+### D-88 · KISIT · Fiziksel mini arena kurulamaz: arena basarimi KALICI OLARAK dogrulanamaz
+Kayit: Claude 2 · 2026-08-13 · kullanici karari
+
+Kullaniciya soruldu: bez + gri bloklar + kirmizi-beyaz serit ile kucuk bir
+arena kurup balkondan/catidan 20-30 kare cekmek mumkun mu? **Cevap: HAYIR,
+imkansiz.**
+
+**SONUC — her raporda kalici olarak yer alacak:** projenin gercek arena
+goruntusu **TEK KAREDIR** (`sartname_s9_arena.png`) ve baska kare gelmeyecek.
+Bu nedenle:
+
+  1. Hicbir model secimi, esik kalibrasyonu veya algi iyilestirmesi ARENA
+     BASARIMINI dogrulayamaz. "Dogrulanamadi: arena basarimi — kamera yok"
+     cumlesi gecici bir not degil, KALICI bir kisittir.
+  2. Tek kare uzerinde olculen her sey DAVRANISIN VARLIGI/YOKLUGU icindir
+     (model goruyor mu, kapi eliyor mu); istatistik degildir.
+  3. Esik ve model kararlarinda mesru taraf tek noktaya dayanir. Bu, D-86'da
+     olculen "tam ayrik cift yok" sonucunun da arka planidir.
+
+Bu kayit D-56'yi (kamera yok) genisletir ve KAPATIR: artik "belki sonra" yok.
+
+---
+
+### D-89 · DENETIM · T58 dort ucu hizaladi ama BESINCI UC cevrilmedi: saha olcum betigi v20'de kalmis
+Denetleyen: Claude 1 (mimar) · 2026-08-13 · gorev T58 · bagimsiz kosuldu
+
+**T58'IN IDDIALARI DOGRULANDI — hicbiri soze dayanmadi.**
+
+    tests/test_uretim_modeli_hizasi.py       Ran 12 · OK   (dort uc tek surume bagli)
+    tests/test_gercek_arena_kapisi.py        Ran  7 · OK   (atlanan YOK)
+    comms/yks_gui.py:898  ALGI_MODEL_DOSYA = navitas_seg_v24_best.pt
+    jetson_paket/models/  v24 .pt (54.852.380 B) + v24 640_fp16.onnx  MEVCUT
+    manifest  pc_modeli = v24 · paket_icerigi her dosyanin sha256'sini tasiyor
+
+Arena kapisi testinin GERCEKTEN cikarim kostugu dogrulandi (sahte gecis
+aranmistir): `setUpClass` icinde `YOLO(MODEL, task="segment")` +
+`model.predict(...)`; `_ATLA` False (agirlik ve kare mevcut). Yedi testin
+"ok" gorunmemesi docstring satirindandir, atlama degildir.
+
+**🔴 BULGU — BESINCI UC VAR ve CEVRILMEDI.** T58 "dort uc birlikte cevrildi"
+diyor (GUI · paket · manifest · iki kilavuz). Besinci bir uc daha var:
+saha basarim olcum betigi. Varsayilanlari OLCULDU:
+
+    scripts/jetson_fps.py           (KAYNAK)
+    jetson_paket/kod/jetson_fps.py  (KOPYALAR haritasindan turetilmis)
+
+    :248  --pt      default = models/navitas_seg_v20_best.pt
+    :249  --onnx    default = models/navitas_seg_v20_best.onnx
+    :250  --engine  default = models/navitas_seg_v20_best.engine
+    :254  --conf    default = 0.25
+
+    URETIM:  codes/rpi_inference.py:1204  --conf default = 0.30
+             comms/yks_gui.py:904         ALGI_PREDICT_CONF = 0.30
+
+Yani argumansiz kosuldugunda saha olcumu **v20**'yi **conf 0.25** ile olcer.
+v20 ne bugunku uretimdir (v24) ne de onceki uretimdir (v21) — hicbiri degildir.
+Ustelik `--onnx` ve `--engine` varsayilanlari **var olmayan dosyalari** gosterir;
+pakette v20 ONNX yoktur (v17/v21/v24 vardir).
+
+**KILAVUZ BU BAYATLIGI BELGELIYOR** — `jetson_paket/JETSON_KILAVUZ.md:63-64`:
+
+    | `--pt`   | ...navitas_seg_v20_best.pt   | var ama **v20** — kilavuzun kendi onerisi v21 |
+    | `--onnx` | ...navitas_seg_v20_best.onnx | **YOK** (yalniz v17 ve v21 ONNX var)         |
+
+Kilavuzun 15 · 223-224 · 299. satirlari v24'e cevrilmis; 63-64 cevrilmemis.
+
+**ETKI.** Karar zincirinde DEGILDIR — yanlis rota uretmez. Ama T15-T18'in
+tamami ve "Jetson'da yetisir mi" sorusunun tamami bu betigin sayilarina
+dayanir. Yanlis model + yanlis esik = olcum butunlugu kusuru. Bu, T58'in
+kapatmayi amacladigi D-58/D-60 iraksama sinifinin ta kendisidir.
+
+**YENI KAPI NEDEN YAKALAMADI.** `test_uretim_modeli_hizasi.py` dort ucu
+kapsiyor (GUI sabiti, paket icerigi, manifest, iki kilavuz); **betik
+VARSAYILAN ARGUMANLARINI** kapsamiyor. Kapi dogru kuruldu, kapsami eksik.
+
+**VERDIKT: T58 KOSULLU KAPANIR.** Surum gecisi dogru ve dogrulanmistir;
+eksik olan besinci uctur. Takip gorevi **T62** olarak kuyruga girdi.
+
+**AYRICA — KAPANMAYAN, ama T58'in kusuru DEGIL.** T58'in kendi olumsuz
+bulgusu ("v24 kompozit arenada hicbir sey degistirmiyor, 9/9 ret") bir MODEL
+bulgusu degil, bir OLCUM ZEMINI bulgusudur: `data/arena_kompozit` arka plani
+OTOPARKtir (D-53). Otopark uzerinde kapinin ret vermesi dogrudur — fail-safe
+calisiyor. Bu kume model AYIRT EDEMEZ; K3'u orada olcmek yanlistir. Kayit
+duzeltilmedi, uzerine yazilmadi: yorumu burada duruyor.
+
+**DOGRULANAMADI**
+  1. Jetson'da hicbir olcum yok; bu bulgu betigin PC'deki varsayilanlarina
+     dayanir. Betik sahada elle arguman verilerek kosulmus olabilir — ama
+     kilavuz argumansiz kosmayi tarif ediyor.
+  2. `--imgsz` varsayilani [640, 512]; uretim `INFER_SIZE` ile hizasi bu
+     denetimde OLCULMEDI. T62'de olculmelidir.

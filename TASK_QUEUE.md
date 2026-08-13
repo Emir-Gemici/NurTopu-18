@@ -2940,8 +2940,176 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
-- [STATUS: READY_FOR_REVIEW] **T58 — Üretim modelini v24'e geçir** · `comms/yks_gui.py`, `CONTRACTS.md`, `JETSON_KILAVUZ.md` (iki kopya), `jetson_paket/models/**` · **KRİTİK** · kullanıcı kararı, kanıt: `REVIEW_LOG.md` **D-82**
+- [IN_PROGRESS: Codex-1] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:
+avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-87**
+  - **NEDEN:** altı model (v15..v24) aynı duvara tosladı. Ortak sebep model değil,
+    **eğitim substratı**: üreteç arenaya benzemiyor. Artık gerçek kare elimizde,
+    hedef **ölçüldü** (D-87) — tahmin değil.
+  - **ÖLÇÜLEN HEDEF** (`sartname_s9_arena.png`, LAB, a/b merkezlenmiş):
+    ```text
+    zemin : L 150..159 · a +2 · b +11..+13,5   (sicak, acik)
+    moloz : L 102..114 · a -1 · b  +3..+4,5    (notr, koyu)   dL~45 · db~8
+    HB ped: a -2,0 · b -2,1  -> KROMA SIFIR (siyah ped + BEYAZ H)
+    baskin paletin ALTI kumesinde de |a| < 1,0  -> sahne DUSUK KROMA
+    ```
+  - **BEŞ MADDE — sırayla, her biri ölçülebilir:**
+    1. **Moloz: RescueNet bina çatısı → GRİ BETON.** En görünür gerçekdışılık
+       (D-78'den beri açık, D-80'de de doğrulanamadı listesindeydi). Hedef:
+       moloz yamalarının LAB ortalaması `L 102..114 · |a|<1,5 · b +3..+5`, ve
+       zemin-moloz farkı `dL >= 35`.
+    2. **Zemin: RescueNet kolajı → açık kahve toprak/kum.** Hedef `L 150..159 ·
+       b +11..+13,5`. T57'nin `PROSEDUREL_PAYI`/`DOKU_GENLIGI` altyapısı hazır;
+       yalnız PALET ve hedef bant değişir.
+    3. **HB pedi: düz KIRMIZI dikdörtgen → SİYAH ped + BEYAZ H + beyaz çerçeve.**
+       ⚠ Bu **benim T56'da koydurduğum yanlış şarttır** — şartname METNİ "kırmızı
+       H" diyor, şartmenin KENDİ FİGÜRÜ nötr/beyaz gösteriyor ve ölçüm figürü
+       doğruluyor (kroma sıfır). Figür kazanır; metin/figür çelişkisi D-87'de.
+    4. **Bariyer: YOK → kırmızı-beyaz şeritli KOL.** Figürde kapalı güzergâhı
+       kapatan şey uzun, ince, yatay bariyer kolu. Yığın değil.
+    5. **Zemin ızgarası: YOK → ince koyu kareli ızgara.** Sadakat gereği eklenir;
+       tek başına "iyileştirme" sayılmaz.
+  - **KAPI**
+    1. Her madde için ölçüm: üreteç çıktısının LAB künyesi hedef banda girdi mi
+       (D-87 tablosu). **Körü körüne kopyalama yok** — T57'deki gibi doku bileşeni
+       ayrıştırılarak ölçülecek.
+    2. **GÖZLE DOĞRULAMA ZORUNLU:** üretilen sahne ile `sartname_s9_arena.png`
+       yan yana. Sayı iyi görünüp görsel kötüyse **görsel kazanır**.
+    3. T51/T56'nın kadraj kapıları korunacak (koridor sapma, hedef, kenar 2,000 m,
+       `hedef_serit` uyumu).
+    4. Karar zinciri kapısı: yer gerçeği maskesiyle rota/ret dağılımı.
+    5. `codes/test_rota_sentetik.py` 15/15 · `unittest discover -s tests -q` OK.
+  - ⚠ **EĞİTİM KİPİNİ DE ETKİLER ve bu KASITLIDIR** (T57'deki gibi). "Eğitim kipi
+    değişmedi" kapısı bu görevde geçerli değildir.
+  - ⚠ **İHA-İB (30×30 m mavi bölge) BU GÖREVE DAHİL DEĞİL.** Şartname metni tarif
+    ediyor ama kendi figüründe **yok** (D-87 bulgu 4). Metne dayanan bir ekleme
+    ölçüme dayanmaz; ayrı kararla eklenir.
+  - ⚠ **DOĞRULANAMAZ (kalıcı, D-88):** bu görev arena başarımını **doğrulamaz**.
+    Fiziksel arena kurulamıyor, ikinci gerçek kare gelmeyecek.
+
+- [ ] **T61 — Orta şiddetli çökme için ölçüt yok: kaplama+kenar bu sınıfı kaçırıyor** · `codes/karar_sozlesmesi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-86**
+  - T59'da tavan 0,67'ye çıkınca `sa_000150.jpg` kapıdan **geçmeye** başladı:
+    MODEL kaplama 0.617 vs **GT 0.380**, IoU **0.613**, kenar 0.658 vs GT 0.190.
+    Model orada gerçekten çökmüş; 0,55 yakalıyordu, 0,67 kaçırıyor.
+  - Kaplama ve kenar bu sınıfı **yapısal olarak** yakalayamaz (ikisi de alan/temas
+    ölçüsü). Gereken: maskenin **iç tutarlılığı** — maske içindeki doku/renk
+    dağılımı tek bir yüzeye mi ait, yoksa model birbirine benzemeyen bölgeleri mi
+    birleştirmiş.
+  - ⚠ Yeni ölçüt eklenirken D-86'daki ders geçerli: **alt küme üzerinde "tam
+    ayrık" görünen eşik, kümenin tamamında ayırmayabilir.** Süpürme tüm kümede
+    yapılacak.
+  - ⚠ Madde 15: yeni ölçüt yalnız **reddedebilir**, serbest alanı büyütemez.
+
+- [ ] **T62 — Saha ölçüm betiği v20'de kalmış: sürüm hizalamasının BEŞİNCİ ucu** · `scripts/jetson_fps.py`, `jetson_paket/JETSON_KILAVUZ.md` (+ depo kopyası), `tests/test_uretim_modeli_hizasi.py` · **ÖNEMLİ** · mimar denetimi, kanıt: `REVIEW_LOG.md` **D-89**
+  - T58 dört ucu (GUI · paket · manifest · iki kılavuz) doğru hizaladı ve
+    **denetimde doğrulandı**. Ama beşinci bir uç var ve çevrilmedi:
+    ```text
+    scripts/jetson_fps.py:248  --pt      default = navitas_seg_v20_best.pt
+                          :249  --onnx    default = navitas_seg_v20_best.onnx   (DOSYA YOK)
+                          :250  --engine  default = navitas_seg_v20_best.engine (DOSYA YOK)
+                          :254  --conf    default = 0.25
+    ÜRETİM: rpi_inference.py:1204 --conf 0.30 · yks_gui.py:904 ALGI_PREDICT_CONF 0.30
+    ```
+    Argümansız koşulduğunda saha ölçümü **v20**'yi **conf 0,25** ile ölçer.
+    v20 ne bugünkü üretimdir (v24) ne öncekidir (v21).
+  - **YAP**
+    1. Varsayılanları üretim sürümüne ve üretim eşiğine çevir. ⚠ Sürüm adını
+       **çıplak sabit yazma** — madde 16; tek kaynaktan (manifest `asil_model_pt`
+       ya da sözleşme) oku.
+    2. `jetson_paket/JETSON_KILAVUZ.md:63-64` tablosu bu bayatlığı **belgeliyor**;
+       her iki kopyada da düzelt.
+    3. `tests/test_uretim_modeli_hizasi.py` kapsamını **betik varsayılanlarına**
+       genişlet — kapı doğru kurulmuş ama kapsamı eksikti, asıl kusur budur.
+    4. Paketi yeniden üret (`scripts/jetson_paket_hazirla.py`, `jetson_fps.py`
+       `KOPYALAR` haritasında — kaynağı düzelt, kopyayı elle düzenleme).
+  - **KAPI**
+    1. **Mutasyon:** varsayılanı v20'ye geri al → yeni test **DÜŞMELİ**.
+    2. `--onnx`/`--engine` varsayılanlarının gösterdiği dosyalar **var olmalı**
+       (ya da yokluk açıkça ele alınmalı — sessiz atlama yasak).
+    3. `--imgsz` varsayılanı `[640, 512]`; üretim `INFER_SIZE` ile hizası
+       **ÖLÇÜLMEDİ** (D-89 doğrulanamadı-2). Ölç, uyuşmazlık varsa bildir.
+    4. `codes/test_rota_sentetik.py` 15/15 · `unittest discover -s tests -q` OK
+  - ⚠ Karar zincirinde **değildir** — yanlış rota üretmez. Ama T15–T18'in ve
+    "Jetson'da yetişir mi" sorusunun tamamı bu betiğin sayılarına dayanır.
+
+- [STATUS: READY_FOR_REVIEW] **T59 — Kaplama tavanı 0,55 → 0,67** · `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **KRİTİK** · mimar kararı, kanıt: `REVIEW_LOG.md` **D-84**, **D-85**
+  - **✅ UYGULANDI · 2026-08-13 · Claude-2** · kayıt `REVIEW_LOG.md` **D-86**.
+  - `ZEMIN_KAPLAMA_TAVANI` **0.55 → 0.67**; `ZEMIN_KENAR_DAYANMA_TAVANI` **0.50'de
+    kaldı** (dokunulmadı). Sabit yorumu + `CONTRACTS.md` §6.4 ölçümle yenilendi.
+  - **Kararın ana gerekçesi DOĞRULANDI** — gerçek arena bağımsız ölçüldü:
+    `kaplama 0.579 · kenar 0.585` (D-85: 0.577 / 0.585). Eski çift onu **eliyor**,
+    yeni çift **geçiriyor**.
+  - 🔴 **KAPI 1 TUTMADI.** Hedef "meşru elenen 0/221"; kümenin **tamamında**
+    (260 kadraj + 1 arena) sonuç **1/261**:
+    ```text
+    kume                     n    kaplama min..maks    kenar min..maks
+      MESRU kadraj arena    260    0.000..0.863        0.000..0.682
+      MESRU GERCEK ARENA      1    0.579               0.585
+      COKUS otopark          67    0.770..0.866        0.579..0.971
+
+    esik cifti          mesru elenen   kacan cokme
+      (0.55, 0.50)       3/261          0/67   <- biri GERCEK ARENA
+      (0.67, 0.50)       1/261          0/67
+    ```
+    Süpürme (99×99 tüm çiftler): **elenen 0 VE kaçan 0 veren çift YOK**. D-85'in
+    0,062'lik payı **220 kareli alt kümenin** özelliği; ölçütün değil.
+    Karar yine de net iyileşme: 3/261 → 1/261 **ve** gerçek arena kurtuldu.
+  - **Kalan elenen kare kör kabul edilmedi** — `sa_000001.jpg` yer gerçeğiyle
+    kıyaslandı: MODEL 0.856 vs **GT 0.717**, IoU **0.810**, ama kenar 0.682 vs
+    GT 0.359. **Sınır durum**, düz yanlış pozitif değil.
+  - 🔴 **0.67'nin ölçülmüş bedeli:** `sa_000150.jpg` artık **geçiyor** —
+    MODEL 0.617 vs **GT 0.380**, IoU **0.613**, kenar 0.658 vs GT 0.190. Orada
+    model gerçekten çökmüş ve 0.55 **yakalıyordu**. Sabitin kendi "orta şiddetli
+    çökme geçer" uyarısının ilk somut örneği.
+  - **YENİ KALICI KAPI** `tests/test_gercek_arena_kapisi.py` (7 test): eşiğin
+    sayısı değil **davranış** kilitlenir. Ağırlık/kare yoksa atlanır.
+  - **MUTASYON KONTROLÜ:**
+    ```text
+    M0 mutasyon YOK (0.67)                DUSEN 0  temiz — beklenen
+    M1 tavan 0.55'e GERI ALINDI           DUSEN 4  kapi ATESLENDI
+    M2 tavan 0.578 (arena altinda)        DUSEN 4  kapi ATESLENDI
+    M3 YALNIZ kenar 0.10 (AND kontrolu)   DUSEN 0  temiz — beklenen
+    M4 IKI tavan birden dusuruldu         DUSEN 4  kapi ATESLENDI
+    M5 testteki OLCULEN sabit bayatladi   DUSEN 1  kapi ATESLENDI
+    ```
+  - 🔴 **MEVCUT BİR TEST DÜŞTÜ — DÜZELTİLMEDİ, karar sende:**
+    ```text
+    tests/test_zemin_kapisi_iki_sinyal.py:97
+    test_kaplama_YUKSEK_kenar_DUSUK_ATESLEMEZ (kaplama=0.6)
+    AssertionError: 0.600625 not greater than 0.67 : fikstur kaplama tavanini asmiyor
+    ```
+    Testin **iddiası sağlam**; düşen şey **fikstür ön koşulu** — çıplak `0.60`
+    eski tavanın üstündeydi, yeni tavanın altında kaldı. Diğer iki alt-durum
+    (0.70, 0.85) **geçiyor**. Madde 16 açısından fikstür zaten kusurlu (eşiği
+    sözleşmeden türetmiyor). **Önerilen asgari düzeltme (uygulanmadı):**
+    `for oran in (0.60, 0.70, 0.85)` → `for carpan in (1.05, 1.20, 1.35):
+    oran = min(0.98, ZEMIN_KAPLAMA_TAVANI * carpan)`.
+  - **KOŞULAN KAPILAR (gerçek çıktı):**
+    ```text
+    KAPI 1  bagimsiz olcum: mesru elenen 1/261 · kacan cokme 0/67   DUSTU
+            (hedef 0/221; sebep yukarida)
+    KAPI 2  tests/test_gercek_arena_kapisi.py  Ran 7 tests  OK      GECTI
+    KAPI 3  mevcut testler                                          DUSTU (1)
+    KAPI 4  mutasyon kontrolu M1/M2/M4/M5 atesledi, M3 sustu        GECTI
+    KAPI 5  codes/test_rota_sentetik.py  SONUC: 15/15 dogru         GECTI
+            unittest discover -s tests -q  Ran 322  FAILED (1)
+            -> tek dusen KAPI 3'teki fikstur; baska dusen YOK
+    KAPI 6  jetson_paket_hazirla.py 9/9 bayt-esit
+            karar_sozlesmesi.py sha b1a54c9fbe03aacb                GECTI
+    ```
+  - ⚠ **DOĞRULANAMADI:** (1) gerçek arena **tek karedir** — meşru taraf bir
+    dağılıma değil tek noktaya karşı ölçüldü, istatistiksel güven **yok**;
+    (2) eşikler **modele bağlıdır**, 0.67 v24 içindir — üretim modeli her
+    değiştiğinde kalibrasyon **zorunlu adımdır** ve görev şablonuna yazılmalı;
+    (3) orta şiddetli çökme sınıfı (`sa_000150`) artık geçiyor, o sınıf için
+    ölçüt **yok**; (4) arena başarımı sahada doğrulanmadı — kamera yok.
+
+- [STATUS: KAPANDI] **T58 — Üretim modelini v24'e geçir** · `comms/yks_gui.py`, `CONTRACTS.md`, `JETSON_KILAVUZ.md` (iki kopya), `jetson_paket/models/**` · **KRİTİK** · kullanıcı kararı, kanıt: `REVIEW_LOG.md` **D-82**
   - **✅ YAPILDI · 2026-08-13 · Claude-2** · kayıt `REVIEW_LOG.md` **D-83**.
+  - **🔎 MİMAR DENETİMİ · 2026-08-13 · KOŞULLU KAPANDI** · kayıt `REVIEW_LOG.md` **D-89**.
+    İddiaların tamamı bağımsız koşuldu ve **doğrulandı** (12+7 test OK, arena
+    testi gerçekten çıkarım koşuyor — sahte geçiş arandı, yok). **Ama beşinci
+    bir uç bulundu:** `scripts/jetson_fps.py` varsayılanları hâlâ **v20 · conf
+    0,25**. Takip görevi **T62**. Sürüm geçişinin kendisi doğrudur.
   - `comms/yks_gui.py:898` `ALGI_MODEL_DOSYA` → **`navitas_seg_v24_best.pt`**.
   - **İRAKSAMA ÖNLENDİ (D-58/D-60 sınıfı):** yalnız GUI çevrilmedi; **dört uç**
     birlikte çevrildi — GUI · `jetson_paket/models/` · paket manifesti · **her

@@ -1,9 +1,49 @@
 # JETSON ORIN NX — SAHA KILAVUZU
 
-> Hazırlanma: 2026-08-05 · Model: **v17** (yedek: v20) · Paket: `O:\navitas\jetson_paket\` (216 MB)
+> Hazırlanma: 2026-08-05 · **ASIL MODEL: v24** (2026-08-13, §0-T58) · eskiler: v21 → v17/v20
+> Paket: `O:\navitas\jetson_paket\`
 >
 > Bu kılavuz **ölçümle** hazırlandı. Her "şu olacak" cümlesinin altında ya bir sayı
 > ya da açık bir *bilinmiyor* etiketi vardır.
+
+---
+
+## 0-T58. GÜNCELLEME 2026-08-13 — **asıl model v21 → v24_t57_doku**
+
+> Kullanıcı kararı (`REVIEW_LOG.md` D-82/D-83). Aşağıdaki v21 ve v17 bölümleri
+> **silinmedi** — ölçüm kaydıdır. Ama **bugün derlenecek ve koşulacak model
+> `navitas_seg_v24_best_640_fp16.onnx`**'tir.
+>
+> **Neden v24** (kadraj zemini, n=60, D-82): rota **35/60 → 46/60** ·
+> yer gerçeğiyle zemin IoU **0,580 → 0,810** · `MASKE_YOK` **9 → 1** ·
+> `UC_BANT_TEMAS_YOK` **6 → 1**.
+>
+> **B1 bağımsız tekrarlandı** (T58 KAPI 2 · 30 gerçek drone karesi, eşit
+> aralıklı · üretim zinciri · `conf=0,30`):
+>
+> | model | boş maske | ort zemin | min | maks |
+> |---|---:|---:|---:|---:|
+> | **v24** | **0/30** ✅ | %81,0 | %77,2 | %86,6 |
+> | v21 | 0/30 | %81,0 | %76,7 | %86,3 |
+> | v17 (kontrol) | **28/30** ❌ | %0,4 | %0,0 | %6,6 |
+>
+> ⚠ **B1 v24 ile v21'i AYIRMAZ** — ikisi de geçiyor, sayılar aynı. B1 yalnız
+> "model kör mü" sorusunu sorar. v24'ün gerekçesi B1 değil, yukarıdaki karar
+> düzeyi ölçümüdür.
+>
+> ⚠ **%81 kaplama bir OTOPARKTA ölçüldü ve bu ÇÖKMEDİR** (D-62): model orayı
+> arena zemini sanıyor. Bu tabloda "geçti" demek **doğru görüyor** demek değil,
+> **kör değil** demektir. Karar zincirinde bu kareler T48 kaplama tavanına
+> (%55) takılıp reddedilir — beklenen davranış budur.
+>
+> ⚠ **v24'ün kazancı GERÇEK görüntüde ölçülmedi.** Otoparkta v21'e göre hiçbir
+> fark yok; kazanç, v24 ile aynı dokuyla üretilmiş sentetik kadraj kümesinde
+> ölçüldü ("ev sahibi avantajı", D-82'de açıkça yazılı). **Kamera yok** —
+> arena başarımı hâlâ doğrulanamamıştır.
+>
+> **Paket içeriği artık `models/jetson_derleme_manifest.json` içinde sha256'lı
+> listelenir** (`paket_icerigi`). Manifest 2026-08-05'ten beri bayattı: `pc_modeli`
+> v17 diyordu, oysa pakette v21 ONNX vardı (D-83).
 
 ---
 
@@ -180,7 +220,9 @@ raporlarsın. Ölçümden önce yap, ölçüm boyunca `tegrastats` ile sıcaklı
 ```
 jetson_paket/
 ├── models/
-│   ├── navitas_seg_v21_best_640_fp16.onnx   ← ASIL — bunu derle (B1'i geçen tek model)
+│   ├── navitas_seg_v24_best_640_fp16.onnx   ← ASIL — bunu derle (T58, üretim modeli)
+│   ├── navitas_seg_v24_best.pt              ← v24 referans / hakem ekranının yüklediği dosya
+│   ├── navitas_seg_v21_best_640_fp16.onnx   ← eski asıl (05-13 Ağu), karar kıyası için
 │   ├── navitas_seg_v21_best.pt              ← v21 referans / karar kıyası
 │   ├── navitas_seg_v17_best_640_fp16.onnx   ← eski asıl, karar kıyası için
 │   ├── navitas_seg_v17_best_512_fp16.onnx   ← yedek, doğruluğu ÖLÇÜLMEDİ
@@ -250,14 +292,14 @@ bu bir hata değil, o backend'in kurulu olmadığının dürüst raporudur.
 
 ## 4. TensorRT engine derle (T16)
 
-**Jetson üzerinde**, ONNX'ten. **v21 ile derle** — B1'i geçen tek model o:
+**Jetson üzerinde**, ONNX'ten. **v24 ile derle** — üretim modeli o (§0-T58):
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v21_best_640_fp16.onnx format=engine imgsz=640 half=True
+yolo export model=navitas_seg_v24_best_640_fp16.onnx format=engine imgsz=640 half=True
 ```
 
-⚠ **Üç modeli birden TensorRT'ye derleme.** v17, v20 ve v21 aynı mimaridir
+⚠ **Üç modeli birden TensorRT'ye derleme.** v17, v20, v21 ve v24 aynı mimaridir
 (YOLOv8m-seg, 27,2M parametre, imgsz 640); ağırlık değerleri hızı değiştirmez.
 Üçünü derlersen ~45 dakika harcayıp üç kez aynı FPS'i ölçersin.
 
@@ -288,12 +330,12 @@ yolo predict task=segment model=navitas_seg_v17_best_640.engine \
 cd ~/navitas
 python3 scripts/jetson_fps.py \
   --girdi data/test_goruntuleri/sentetik_arena \
-  --pt models/navitas_seg_v21_best.pt \
-  --onnx models/navitas_seg_v21_best_640_fp16.onnx \
-  --engine models/navitas_seg_v21_best_640.engine \
+  --pt models/navitas_seg_v24_best.pt \
+  --onnx models/navitas_seg_v24_best_640_fp16.onnx \
+  --engine models/navitas_seg_v24_best_640.engine \
   --imgsz 640 \
   --isinma 15 --tekrar 120 --conf 0.25 --cihaz 0 \
-  --cikti results/jetson_fps_v21_$(date +%Y%m%d_%H%M%S)
+  --cikti results/jetson_fps_v24_$(date +%Y%m%d_%H%M%S)
 ```
 
 **PC referansı (RTX 5080, aynı zincir, karşılaştırman için):**
@@ -326,8 +368,11 @@ python3 scripts/jetson_fps.py \
 ```
 **Beklenen — model seçimine göre değişir:**
 - `v17`/`v20` ile → ezici çoğunluk `MASKE_YOK`. Bu **B1'in Jetson'da teyididir**, arıza değil.
-- **`v21` ile → `MASKE_YOK` ÇIKMAMALI.** PC'de 67/67 karede zemin buldu.
-  v21 ile `MASKE_YOK` görürsen PC ölçümüyle çelişki var demektir — bana söyle.
+- **`v24` (asıl) ile → `MASKE_YOK` ÇIKMAMALI.** PC'de 30/30 karede zemin buldu
+  (T58 KAPI 2, üretim zinciri, `conf=0,30`). v24 ile `MASKE_YOK` görürsen PC
+  ölçümüyle çelişki var demektir — bana söyle.
+- **`v21` ile de → `MASKE_YOK` ÇIKMAMALI** (0/30). Bu iki model B1'de ayırt
+  edilemez; ayrım karar düzeyindedir (§0-T58).
 
 ### Karar kıyası — üç modeli ayıran asıl test (derleme gerekmez, ~5 dk/model)
 
