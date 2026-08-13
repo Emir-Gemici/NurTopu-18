@@ -5171,3 +5171,50 @@ dayanıyor. Ölçüt yeniden düşünülmeli; artık elimizde **gerçek bir pozi
 **KULLANIM SINIRI.** Tek karedir; istatistik çıkarılamaz. **Eğitime
 sokulmayacak** — tek gerçek doğrulama karemiz odur, eğitime girerse o değerini
 kaybeder. `data/arena_referans/KAYNAK.md`'ye yazıldı.
+
+---
+
+### D-85 · MİMAR KARARI · Kaplama tavanı 0,55 → 0,67; kenar 0,50'de kalıyor
+
+**Neden yeniden kalibrasyon.** İki şey birden değişti: (1) üretim modeli
+**v24** oldu, oysa eşikler **v21** çıktılarıyla türetilmişti (D-66); (2) elimize
+**gerçek arena karesi** geçti (D-84) ve meşru kümeye katıldı.
+
+**v24 ile yeniden ölçüm (n = 220 kadraj + 1 gerçek arena · 67 otopark):**
+
+    kume                    n    kaplama min..maks     kenar min..maks
+    MESRU kadraj arena    220    0.000..0.863          0.000..0.655
+    MESRU GERCEK ARENA      1    0.577..0.577          0.585..0.585
+    COKUS otopark          67    0.728..0.835          0.568..0.969
+
+    kaplama tek basina : CAKISIK   (mesru 0.863 > cokus 0.728)
+    kenar   tek basina : CAKISIK   (mesru 0.655 > cokus 0.568)
+    AND birlesimi      : AYIRIYOR
+
+**Hiçbir sinyal tek başına ayırmıyor; AND birleşimi ayırıyor.** Sebep: yüksek
+kaplamalı meşru kareler düşük kenara sahip, yüksek kenarlı meşru kareler düşük
+kaplamaya. Çöküşte **ikisi birden** yüksek.
+
+**Pay en büyük eşik çifti (tam ayrık, mesru elenen 0 · kaçan çökme 0):**
+
+    min pay  mesru payi  cokme payi  kaplama  kenar
+      0.062       0.062       0.063     0.67   0.50
+
+**KARAR: `ZEMIN_KAPLAMA_TAVANI` 0.55 → 0.67. `ZEMIN_KENAR_DAYANMA_TAVANI`
+0.50'de KALIYOR.** Yalnız yanlış olan sayı değişiyor.
+
+    MEVCUT (0.55, 0.50): mesru elenen 2/221 — biri GERCEK ARENA
+    YENI   (0.67, 0.50): mesru elenen 0/221 · kacan cokme 0/67
+
+**Test kısıtı yok.** `test_zemin_kaplama_kapisi.py` eşiği sözleşmeden okuyor ve
+göreli çarpan kullanıyor (madde 16'ya uygun yazılmış); eşik değişince
+kendiliğinden uyum sağlıyor. D-71'de karşıma çıkan üçüncü kısıt burada yok.
+
+**🔴 İKİ SINIR — gizlenmiyor.**
+1. **Gerçek arena tek karedir.** 0,062'lik meşru payı bir dağılıma değil, tek
+   bir noktaya karşı ölçüldü. İkinci bir gerçek arena karesi geldiğinde eşik
+   **yeniden ölçülmeli**; o kare bu payın dışına düşebilir.
+2. **Eşikler MODELE BAĞLI.** v21 için türetilen değerler v24'te yanlıştı; v24
+   için türetilen değerler bir sonraki modelde yanlış olabilir. Üretim modeli
+   her değiştiğinde bu kalibrasyon **zorunlu adımdır**. Bunu görev şablonuna
+   yazmak gerekiyor.
