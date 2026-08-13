@@ -4991,3 +4991,183 @@ kazanç eğitim dağılımıyla eşleşen bir zeminde ölçüldü ve gerçek gö
 karşılığı yok. Mimar tek başına geçirmiyor.
 
 **DOĞRULANAMADI (değişmedi):** gerçek arena başarımı. Kamera yok.
+
+---
+
+### D-83 · COZULDU · T58: uretim modeli v24'e cevrildi; paket manifesti BAYATTI
+Uygulayan: Claude 2 · 2026-08-13 · kullanici karari, gerekce D-82
+
+**YAPILAN.** `comms/yks_gui.py:898` `ALGI_MODEL_DOSYA` v21 -> **v24_t57_doku**.
+Yalniz GUI'yi cevirmek D-58/D-60 sinifi IRAKSAMA olurdu (ekran bir modeli,
+saha donanimi baskasini kosar), bu yuzden dort uc birlikte cevrildi:
+GUI · `jetson_paket/models/` · paket manifesti · HER IKI `JETSON_KILAVUZ.md`.
+
+**MIMARIN HAZIRLIGI DOGRULANDI (yeniden uretilmedi).**
+
+    models/navitas_seg_v24_best.pt       sha c04d7d3570ead678  54.852.380 B  ESLESTI
+    models/navitas_seg_v24_best.onnx     sha 27e480a135d75ac3  54.599.920 B
+    results/onnx_export_v24_.../*.onnx   sha 27e480a135d75ac3  -> ONNX ikisi de AYNI
+    v24.names = {0: 'traversable', 1: 'blocked'}   (v21 ile BIREBIR)
+
+**BAYAT MANIFEST (asil bulgu).** `jetson_paket/models/jetson_derleme_manifest.json`
+2026-08-05'ten beri `pc_modeli = ...v17_best.pt` ve iki ONNX (640+512) diyordu.
+Oysa pakette 2026-08-05 aksamindan beri **v21** ONNX vardi ve kilavuz onu "ASIL"
+gosteriyordu. Sekiz gun boyunca kimse gormedi. **Sebep:** manifest disa aktarim
+KOSUSUNU tarif ediyordu, PAKETI degil — paket icerigine hic bakmiyordu.
+
+**Duzeltme yalniz surum yukseltmek degil.** Manifeste `paket_icerigi` eklendi:
+her dosyanin adi, bayti ve sha256'si. Bayatlik artik mekanik olarak yakalanir.
+Ayrica `asil_model`, `asil_model_pt` ve `uretim_hakem_ekrani` alanlari eklendi.
+
+**KAPI 2 — B1 BAGIMSIZ TEKRARLANDI** (`O:\navitas-local-train\58_b1_bagimsiz.py`).
+Mimarin sayisi kabul edilmedi; olcum sifirdan kuruldu. 30 gercek drone karesi,
+`data/raw_frames` icinden ESIT ARALIKLI (bas-30 tek videonun ilk saniyeleridir),
+zincir URETIMDEN (`_preprocess` -> `predict(imgsz=INFER_SIZE)` -> `get_masks` ->
+`_maskeleri_icerige_kirp`), kaplama icerik kutusundan:
+
+    model                       conf  BOS maske  ort kaplama    min    maks
+    navitas_seg_v24_best.pt     0.30      0/30        %81,0  %77,2   %86,6
+    navitas_seg_v24_best.pt     0.25      0/30        %81,0  %77,2   %86,6
+    navitas_seg_v21_best.pt     0.30      0/30        %81,0  %76,7   %86,3
+    navitas_seg_v17_best.pt     0.30     28/30         %0,4   %0,0    %6,6
+
+KAPI 2 GECTI (v24 0/30). **KONTROL:** v17 28/30 dustu — olcut gercekten
+DUSEBILIYOR (D-15/K-04: sifir olcum basari sayilmaz). Mimarin bildirdigi
+"v24 0/30 · %78,4 · v17 25/30" ile fark **kare secimindendir** (bas-30 vs
+esit aralikli); yon ve sonuc AYNI.
+
+**B1 v24 ile v21'i AYIRMIYOR** — ikisi de 0/30, kaplama ayni. B1 yalniz
+"model kor mu" sorusunu sorar. v24'un gerekcesi B1 degil, D-82'nin karar
+duzeyi olcumudur. Bu kilavuzlara da acikca yazildi.
+
+**D-82'nin UC KAPI tablosu BAGIMSIZ olarak yeniden uretildi** (`56_uc_kapili
+_model_secimi.py`, val n=120, conf 0,30) — mimarin sayilariyla AYNI cikti:
+
+    model   K1 IoU  K1 kesinlik  K1 duyar  K2 otopark ort  K2 maks  K3 dogru/yanlis/ret
+    v24      0,692        0,816     0,821           %81,0    %86,6        0 / 0 / 9
+    v21      0,311        0,813     0,335           %81,0    %86,3        0 / 0 / 9
+
+**K3 YENI VE OLUMSUZ BULGU.** Kompozit arenada (gercek drone karesi + yapistirilmis
+moloz — elimizdeki gercege en yakin kume) **v24 hicbir sey degistirmiyor**: her
+iki modelde de 9/9 kare `ZEMIN_MASKESI_SUPHELI` ile reddediliyor. Tek kare
+ornegi: kaplama %76,5 (tavan %55) VE cevre dayanmasi %63,2 (tavan %50).
+Yani T48 kapisi ikisini de ayni sekilde durduruyor. Kazanc **yalniz sentetik
+kadraj kumesinde** var. Karar zincirinin davranisi DOGRUDUR (cokmus maskeden
+rota uretmiyor), ama v24'un ustunlugu gercege en yakin kumede GORULMUYOR.
+
+**%81 kaplama bir OTOPARKTIR ve COKMEDIR** (D-62). "B1 gecti" = "kor degil",
+"dogru goruyor" DEGIL. Kilavuzlara bu uyari eklendi.
+
+**YENI KAPI** `tests/test_uretim_modeli_hizasi.py` (12 test): GUI sabiti ·
+paket bayt-esitligi · paket ONNX'inin depodan turetilmis olmasi · manifest
+sha'lari · manifest disi dosya · her iki kilavuzun "ASIL" satiri · derleme
+komutu — hepsi TEK surume baglanir. Agirlik yuklemez, GPU'suz saniyede kosar.
+
+**AGIRLIK YOKLUGU.** Model dosyalari `.gitignore:132` ile depo disinda
+(`jetson_paket/models/*.pt`). Temiz bir klonda bayt kapilari dosya YOKLUGUNDAN
+duserdi — yanlis sebeple kirmizi. Bayt kapilari `skipUnless` ile korundu; METIN
+kapilari (manifest alanlari, kilavuz `ASIL` satiri, derleme komutu) HER ZAMAN
+kosar cunku o dosyalar izlenir. Manifest izlendigi icin, agirliklar git'te
+olmasa da paketin NE OLMASI GEREKTIGI artik depoda kayitlidir.
+
+**MUTASYON KONTROLU** (kapi gercekten dusuyor mu):
+
+    M0  mutasyon YOK                  12 kosuldu · DUSEN 0   temiz — beklenen
+    M1  GUI v21'e geri cevrildi       12 kosuldu · DUSEN 7   kapi ATESLENDI
+    M2  manifest sha'si bozuldu       12 kosuldu · DUSEN 1   kapi ATESLENDI
+    M3  paketten v24 .pt silindi      12 kosuldu · DUSEN 2   kapi ATESLENDI
+    M4  geri alma sonrasi             12 kosuldu · DUSEN 0   temiz — beklenen
+
+**`scripts/copy_paste_augmentation.py:981` BILEREK DEGISTIRILMEDI.** Arena zemin
+kahini hala v21'dir. Gerekce: o kahin `data/arena_kompozit` yer gercegini uretir;
+kahini degistirmek D-38'den beri ona dayanan TUM olcumleri (K3, GUI `kompozit`
+kaynagi, T48 tabani %76,0) kiyaslanamaz kilar. **Ancak dosyadaki yorum artik
+yaniltici**: "bu etkin sistem modelidir" diyor, oysa etkin model v24. Ayri bir
+gorevde ya yorum duzeltilmeli ya da kume v24 ile YENIDEN uretilip tum tabanlar
+birlikte guncellenmelidir. Bu gorevin izni o dosyayi kapsamiyordu.
+
+**KOSULAN KAPILAR (gercek cikti).**
+
+    KAPI 1  GUI v24 yukluyor: "navitas_seg_v24_best modeli yuklendi:
+            navitas_seg_v24_best.pt (SHA c04d7d35)" · bilgi satirinda
+            "model: navitas_seg_v24_best.pt"                          GECTI
+    KAPI 2  B1 bagimsiz: v24 bos maske 0/30 (kontrol v17 28/30)       GECTI
+    KAPI 3  depo <-> paket bayt-esit: .pt c04d7d3570ead678 ·
+            onnx 27e480a135d75ac3                                     GECTI
+    KAPI 4  test_gui_kendi_cikarim_hattini_KURMUYOR ......... ok
+            test_gui_karari_uretim_yolunun_karariyla_AYNI .... ok      GECTI
+    KAPI 5  codes/test_rota_sentetik.py  SONUC: 15/15 dogru
+            unittest discover -s tests -q  Ran 315 tests  OK           GECTI
+    KAPI 6  scripts/jetson_paket_hazirla.py -> 9/9 bayt-esit           GECTI
+
+**DOGRULANAMADI**
+  1. v24'un GERCEK arenadaki basarimi. **Kamera yok** — arena karesi alinamiyor.
+     Bu karar arena basarimini dogrulamaz ve dogrulayamaz.
+  2. v24'un kazanci, v24 ile AYNI dokuyla uretilmis sentetik kumede olculdu
+     (D-82 "ev sahibi avantaji"). Gercege en yakin kumede (kompozit) kazanc
+     GORULMEDI — yukaridaki K3.
+  3. ONNX <-> .pt cikti paritesi bu gorevde OLCULMEDI. v21 icin 30/30 olculmustu
+     (`jetson_paket/V21_KAPI_RAPORU.json`); v24 icin karsiligi YOK. Jetson'da
+     engine derlenmeden once olculmelidir.
+  4. Jetson uzerinde hicbir sey kosulmadi: FPS, engine derlemesi ve saha karari
+     donanim ister.
+
+---
+
+### D-83 · DÖNÜM NOKTASI · Gerçek arena karesi bulundu: v21 KÖR, kapı YANLIŞ ATEŞLİYOR
+
+**Kullanıcının önerisiyle** internette arena görüntüsü arandı. Resmî yarışma
+sayfasında görsel yok; ama **şartnamenin kendisinde var** ve o dosya bir
+haftadır depoda duruyordu: `Ileri_Otonom_Sistemler_..._Sartname_TR_Ltktw.pdf`
+**sayfa 9**, gömülü şekil 1059×634. Depoya alındı:
+`data/arena_referans/sartname_s9_arena.png` (sha `1f109df65524db6a`).
+
+Bu, projenin sahip olduğu **tek gerçek arena görüntüsüdür**. D-56'da "kamera
+yok, arena doğrulaması yapılamaz" diye kapattığım kalem **kısmen açıldı** —
+ve bir haftadır aradığım cevabı ilk denemede verdi.
+
+**1 · ÜRETİM MODELİ GERÇEK ARENADA TAMAMEN KÖR.**
+
+    v21 (uretim) : zemin %0.0 · engel %0.0  -> RED/MASKE_YOK
+    v24 (yeni)   : zemin %57.7 · engel %0.9 -> RED/ZEMIN_MASKESI_SUPHELI
+
+`navitas_seg_v21_best.pt` gerçek arenada **tek piksel zemin bulamıyor**. Görev
+günü bu modelle uçulsaydı sistem hiçbir güzergâh üretemezdi. Bir haftadır
+otoparkta ölçtüğümüz "v21 çalışıyor, v24 fark etmiyor" tablosu **alan dışı bir
+zeminde** kuruluydu; gerçek zeminde tablo **tersine dönüyor**.
+
+Bu, kullanıcının bugün verdiği v24 geçiş kararını **geriye dönük olarak ve çok
+daha güçlü biçimde** doğruluyor.
+
+**2 · v24 gerçek arenayı DOĞRU segmentliyor** (gözle doğrulandı): toprak zemin
+yeşil, **moloz yığınları hariç tutulmuş**, İKA engel işaretli, üç koridor
+izlenebilir hâlde. Kaplama %57,7 bu sahnede **meşrudur** — arena zemini
+gerçekten büyük ölçüde açık toprak.
+
+**3 · 🔴 T52 KAPISI GERÇEK ARENAYI REDDEDİYOR — öngörülen kusur gerçekleşti.**
+
+    kaplama       0.577  > tavan 0.55   ASILDI
+    kenar dayanma 0.585  > tavan 0.50   ASILDI   -> RET
+
+D-65 ve D-66'da aynen şunu yazmıştım: *"görev kadrajında arena görüntüyü
+doldurursa zemin çevreye daha çok dayanabilir; kenar dayanması kaplamadan daha
+dayanıklı ama bağışık değil."* **Gerçekleşti.** Doğru segmentlenmiş gerçek
+arenayı kendi güvenlik kapımız eliyor. Eşik iki sentetik/otopark dağılımından
+türetilmişti; **gerçek arena o dağılımların dışında.**
+
+⚠ Eşiği körlemesine yükseltmek çözüm DEĞİL — çöküş yakalama (67/67) o eşiğe
+dayanıyor. Ölçüt yeniden düşünülmeli; artık elimizde **gerçek bir pozitif
+örnek** var, bu ilk kez mümkün.
+
+**4 · Şartname iki tanımı düzeltiyor:**
+- **HB = 2×2 m, üzerinde KIRMIZI H HARFİ** (s.9). T56'da "2×2 m kırmızı branda"
+  diye şart koşmuştum — **yanlış**; üreteç şu an düz kırmızı dikdörtgen basıyor.
+- **İHA-İB = 30×30 m MAVİ bölge.** Üretecimizde **hiç yok**.
+
+**5 · Gerçek arena dokusu üretecimizden farklı:** zemin açık kahve toprak/kum
+(ızgaralı), moloz **gri beton** levhalar, bariyerler **kırmızı-beyaz şeritli**.
+Üreteç RescueNet kolajı kullanıyor — afet enkazı, farklı renk dağılımı.
+
+**KULLANIM SINIRI.** Tek karedir; istatistik çıkarılamaz. **Eğitime
+sokulmayacak** — tek gerçek doğrulama karemiz odur, eğitime girerse o değerini
+kaybeder. `data/arena_referans/KAYNAK.md`'ye yazıldı.

@@ -2940,6 +2940,85 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
+- [STATUS: READY_FOR_REVIEW] **T58 — Üretim modelini v24'e geçir** · `comms/yks_gui.py`, `CONTRACTS.md`, `JETSON_KILAVUZ.md` (iki kopya), `jetson_paket/models/**` · **KRİTİK** · kullanıcı kararı, kanıt: `REVIEW_LOG.md` **D-82**
+  - **✅ YAPILDI · 2026-08-13 · Claude-2** · kayıt `REVIEW_LOG.md` **D-83**.
+  - `comms/yks_gui.py:898` `ALGI_MODEL_DOSYA` → **`navitas_seg_v24_best.pt`**.
+  - **İRAKSAMA ÖNLENDİ (D-58/D-60 sınıfı):** yalnız GUI çevrilmedi; **dört uç**
+    birlikte çevrildi — GUI · `jetson_paket/models/` · paket manifesti · **her
+    iki** `JETSON_KILAVUZ.md` (`ASIL — bunu derle`, `format=engine` komutu,
+    FPS komutu, `MASKE_YOK` beklentisi).
+  - **Mimarın hazırlığı doğrulandı, yeniden üretilmedi:**
+    ```text
+    models/navitas_seg_v24_best.pt      sha c04d7d3570ead678  54.852.380 B  ESLESTI
+    models/navitas_seg_v24_best.onnx    sha 27e480a135d75ac3 = export dizini
+    v24.names = {0: 'traversable', 1: 'blocked'}  (v21 ile BIREBIR)
+    ```
+  - **KAPI 2 — B1 BAĞIMSIZ tekrarlandı** (`O:
+avitas-local-train8_b1_bagimsiz.py`;
+    30 gerçek drone karesi, **eşit aralıklı**, üretim zinciri):
+    ```text
+    model                       conf  BOS maske  ort kaplama    min    maks
+    navitas_seg_v24_best.pt     0.30      0/30        %81,0  %77,2   %86,6
+    navitas_seg_v21_best.pt     0.30      0/30        %81,0  %76,7   %86,3
+    navitas_seg_v17_best.pt     0.30     28/30         %0,4   %0,0    %6,6
+    ```
+    **KONTROL:** v17 28/30 düştü — ölçüt gerçekten **düşebiliyor** (D-15/K-04).
+    Mimarın "0/30 · %78,4 · v17 25/30" değeriyle fark **kare seçimindendir**;
+    yön ve sonuç aynı.
+  - ⚠ **B1 v24 ile v21'i AYIRMIYOR** — ikisi de 0/30. B1 yalnız "kör mü" diye
+    sorar. v24'ün gerekçesi B1 değil, D-82'nin karar düzeyi ölçümüdür.
+  - **D-82 tablosu bağımsız yeniden üretildi** (`56_uc_kapili_model_secimi.py`,
+    val n=120) — mimarın sayılarıyla **aynı**:
+    ```text
+    model   K1 IoU  K1 kesinlik  K1 duyar  K2 otopark  K3 dogru/yanlis/ret
+    v24      0,692        0,816     0,821       %81,0        0 / 0 / 9
+    v21      0,311        0,813     0,335       %81,0        0 / 0 / 9
+    ```
+  - 🔴 **YENİ VE OLUMSUZ BULGU (K3):** gerçeğe en yakın kümede — kompozit
+    arena — **v24 hiçbir şey değiştirmiyor**: iki modelde de 9/9 kare
+    `ZEMIN_MASKESI_SUPHELI` ile reddediliyor (kaplama %76,5 · çevre dayanması
+    %63,2). Kazanç **yalnız sentetik kadraj kümesinde** var. Karar zinciri
+    doğru davranıyor; ama v24'ün üstünlüğü gerçek görüntüde **görünmüyor**.
+  - **Bayat manifest düzeltildi:** `jetson_paket/models/jetson_derleme_manifest.json`
+    2026-08-05'ten beri `pc_modeli` **v17** diyordu, oysa pakette **v21** ONNX
+    vardı — sekiz gün görünmedi, çünkü manifest **paket içeriğine bakmıyordu**.
+    Artık `paket_icerigi` her dosyanın **sha256**'sını taşır; bayatlık mekanik
+    olarak yakalanır.
+  - **YENİ KAPI** `tests/test_uretim_modeli_hizasi.py` (12 test) dört ucu tek
+    sürüme bağlar. **Mutasyon kontrolü:**
+    ```text
+    M0 mutasyon YOK              DUSEN 0   temiz — beklenen
+    M1 GUI v21'e geri cevrildi   DUSEN 7   kapi ATESLENDI
+    M2 manifest sha'si bozuldu   DUSEN 1   kapi ATESLENDI
+    M3 paketten v24 .pt silindi  DUSEN 2   kapi ATESLENDI
+    M4 geri alma sonrasi         DUSEN 0   temiz — beklenen
+    ```
+  - **`scripts/copy_paste_augmentation.py:981` BİLEREK DEĞİŞTİRİLMEDİ.** O kâhin
+    `data/arena_kompozit` yer gerçeğini üretir; değiştirmek D-38'den beri ona
+    dayanan tüm ölçümleri (K3, GUI `kompozit` kaynağı, T48 tabanı %76,0)
+    kıyaslanamaz kılar. ⚠ Ama dosyadaki yorum artık **yanıltıcı** ("bu etkin
+    sistem modelidir" diyor). Ayrı görev gerekir — bu görevin izni o dosyayı
+    kapsamıyordu.
+  - **KOŞULAN KAPILAR (gerçek çıktı):**
+    ```text
+    KAPI 1  "navitas_seg_v24_best modeli yuklendi: navitas_seg_v24_best.pt
+            (SHA c04d7d35)" · bilgi satiri "model: navitas_seg_v24_best.pt"  GECTI
+    KAPI 2  B1 bagimsiz v24 0/30 (kontrol v17 28/30)                         GECTI
+    KAPI 3  depo <-> paket bayt-esit .pt c04d7d3570ead678 · onnx 27e480a1     GECTI
+    KAPI 4  test_gui_kendi_cikarim_hattini_KURMUYOR ......... ok
+            test_gui_karari_uretim_yolunun_karariyla_AYNI .... ok             GECTI
+    KAPI 5  codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+            unittest discover -s tests -q  Ran 315 tests  OK                  GECTI
+    KAPI 6  scripts/jetson_paket_hazirla.py  9/9 bayt-esit                    GECTI
+    ```
+  - ⚠ **DOĞRULANAMADI:** (1) v24'ün **gerçek arenadaki** başarımı — **kamera
+    yok**, bu karar arena başarımını doğrulamaz ve doğrulayamaz; (2) kazanç
+    v24 ile aynı dokuyla üretilmiş sentetik kümede ölçüldü (D-82 "ev sahibi
+    avantajı") ve kompozitte karşılığı yok; (3) **v24 için ONNX↔.pt çıktı
+    paritesi ölçülmedi** — v21'de 30/30 ölçülmüştü, v24'ün karşılığı **yok**,
+    Jetson'da engine derlenmeden önce ölçülmeli; (4) Jetson üzerinde hiçbir şey
+    koşulmadı (FPS, engine, saha kararı donanım ister).
+
 - [STATUS: READY_FOR_REVIEW] **T57 — Prosedürel zemin dokusu gerçek dışı: kanal-bağımsız gürültü** · `O:
   - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-80**.
   - **Hedef körü körüne kopyalanmadı:** banka yamalarının parlaklık std'sinin
@@ -2968,7 +3047,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ```
     → `PROSEDUREL_PAYI = {"zemin": 0.70, "yol": 0.35}`. **Sıfırlanmadı.**
   - **KAPI 2 — GÖZLE:** `O:
-avitas-local-trainesults	57_gorsel\`
+avitas-local-train
+esults	57_gorsel\`
     (`yuzey_ornekleri.jpg`, `sahne_51/77/123.jpg`). Eski zemin **gökkuşağı
     konfeti**; yeni zemin **çim/beton** gibi okunuyor.
   - **KAPI 3 — T56 kapıları KORUNDU:** koridor sapma **0,00 px** · hedef
