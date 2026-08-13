@@ -4941,3 +4941,53 @@ geçtikten sonra başlatılacak.
 **Kalıcı öneri (görev değil, uyarı):** `51_sentetik_arena.py` bir `--temizle`
 bayrağı taşımalı ya da çıktı dizini boş değilse **uyarmalı**. Bu tuzağa bir
 kez daha düşülürse fark edilmeyebilir.
+
+---
+
+### D-82 · BEŞİNCİ KOŞU · Doku ekseni İLK KEZ karar düzeyinde fark üretti — ama kafa karıştırıcıyla
+
+**`v24_t57_doku`** — T57'nin düzeltilmiş dokusuyla yeniden üretilmiş sentetik
+arena + T54 karışımı. 176/200 epoch (erken durma), 7,0 saat.
+
+**Başlatmadan önce üç doğrulama yapıldı** (D-81'deki iki tuzaktan sonra):
+damgalar 3000/3000 taze · eğitim verisinin kendisinde ölçülen doku oranı
+**k/p = 0,15** (hedef 0,15; eski 0,70-0,86) · görsel onaylı.
+
+**Dört kapı — v23 ile AYIRT EDİLEMEZ:**
+
+    model              K1 IoU  K1 kesinlik  K1 duyar  K2 otopark ort
+    v24_t57_doku        0.692        0.816     0.821           81.0%
+    v23_t54_engelli     0.698        0.826     0.819           81.1%
+    v21 (uretim)        0.311        0.813     0.335           81.0%
+
+Farklar gürültü tabanının (0,04) altında.
+
+**AMA KARAR DÜZEYİNDE İLK KEZ FARK VAR** (kadraj zemini, n=60):
+
+    model         rota    kaplama   MASKE_YOK  UC_BANT  GORUS   GT ile zemin IoU
+    v24_t57_doku  46/60     %22,3           1        1     12              0.810
+    v21 (uretim)  35/60     %14,4           9        6     10              0.580
+
+`MASKE_YOK` **9 → 1**, `UC_BANT_TEMAS_YOK` **6 → 1**, yer gerçeğiyle zemin IoU
+**0,580 → 0,810**. Bu, beş koşuda ilk kez alan-içi kazancın karar düzeyine
+geçmesidir. Şerit doğruluğu: v24 23/26 · v21 19/20 — bu sayılarda gürültü.
+
+**🔴 KAFA KARIŞTIRICI — açıkça yazıyorum.** Kadraj kümesi T57'nin **yeni**
+dokusuyla üretildi; v24 de aynı dokuyla eğitildi. v21 eski dokuyla eğitilmişti.
+Yani v24'ün "ev sahibi avantajı" var.
+
+**Bunu tamamen geçersiz kılmayan gerekçe:** zemin v24'ün *tuhaflıklarına* değil,
+**ölçülmüş gerçek doku istatistiğine** doğru taşındı (k/p 0,15 = gerçek banka).
+Substrat gerçeğe yaklaştı ve v24 onu takip etti. Yine de bu, gerçek görüntüde
+kanıt DEĞİLDİR.
+
+**Karşı kanıt, ve ağır basıyor:** otoparkta hiçbir şey değişmedi. Kaplama
+**%74,4**, bina çatısı **hâlâ tamamen yeşil** (gözle doğrulandı). Beş koşu,
+beş kez aynı. Elimizdeki tek GERÇEK görüntüde ilerleme yok.
+
+**Üretim modeli kararı KULLANICIYA bırakılıyor.** v24 ölçülebilen her eksende
+en iyi ya da eşit-en-iyi ve karar düzeyinde ilk gerçek kazancı veriyor; ama
+kazanç eğitim dağılımıyla eşleşen bir zeminde ölçüldü ve gerçek görüntüde
+karşılığı yok. Mimar tek başına geçirmiyor.
+
+**DOĞRULANAMADI (değişmedi):** gerçek arena başarımı. Kamera yok.
