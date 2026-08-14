@@ -6,6 +6,7 @@ yalniz ardışık Pixhawk yerde + düşük irtifa çiftlerini kabul ettiğini ka
 from __future__ import annotations
 
 import sys
+import threading
 import time
 import unittest
 from pathlib import Path
@@ -57,10 +58,193 @@ def _e(durum=1, sysid=1):
                  landed_state=durum)
 
 
-def _p(relative_alt, sysid=1):
+def _p(relative_alt, sysid=1, time_boot_ms=1000):
     return Mesaj(kanit.MESAJ_GLOBAL_POSITION_INT,
                  sysid=sysid,
-                 relative_alt=relative_alt)
+                 relative_alt=relative_alt,
+                 time_boot_ms=time_boot_ms)
+
+
+class SahteSaat:
+    def __init__(self, simdi=0.0):
+        self.simdi = simdi
+
+    def __call__(self):
+        return self.simdi
+
+
+class CanliAkis:
+    def __init__(self, mesajlar=(), target_system=1):
+        self.mesajlar = list(mesajlar)
+        self.cagrilar = []
+        self.target_system = target_system
+
+    def recv_match(self, **kwargs):
+        self.cagrilar.append(kwargs)
+        if not self.mesajlar:
+            return None
+        siradaki = self.mesajlar.pop(0)
+        if isinstance(siradaki, BaseException):
+            raise siradaki
+        return siradaki
+
+
+class BagilIrtifaOkuyucuTests(unittest.TestCase):
+    def test_taze_telemetri_metre_doner_ve_nonblocking_okunur(self):
+        saat = SahteSaat(10.0)
+        mav = CanliAkis([_p(30_250, sysid=7, time_boot_ms=123)],
+                        target_system=7)
+        okuyucu = kanit.BagilIrtifaOkuyucu(mav, 1.0, monotonic=saat)
+
+        self.assertEqual(30.25, okuyucu.oku())
+        self.assertTrue(all(cagri == {
+            "type": kanit.MESAJ_GLOBAL_POSITION_INT,
+            "blocking": False,
+        } for cagri in mav.cagrilar))
+
+    def test_tazelik_esiginde_eski_deger_donmez(self):
+        saat = SahteSaat(10.0)
+        mav = CanliAkis([_p(30_000, time_boot_ms=1)])
+        okuyucu = kanit.BagilIrtifaOkuyucu(
+            mav, 0.5, beklenen_sysid=1, monotonic=saat)
+        self.assertEqual(30.0, okuyucu.oku())
+
+        saat.simdi = 10.5
+        self.assertIsNone(okuyucu.irtifa_m())
+        saat.simdi = 10.6
+        self.assertIsNone(okuyucu.irtifa_m())
+
+    def test_duplicate_ve_sira_disi_paket_yasi_yenilemez(self):
+        saat = SahteSaat(1.0)
+        mav = CanliAkis([_p(30_000, time_boot_ms=100)])
+        okuyucu = kanit.BagilIrtifaOkuyucu(
+            mav, 1.0, beklenen_sysid=1, monotonic=saat)
+        self.assertEqual(30.0, okuyucu.oku())
+
+        saat.simdi = 1.8
+        mav.mesajlar.extend([
+            _p(99_000, time_boot_ms=100),
+            _p(98_000, time_boot_ms=99),
+        ])
+        self.assertEqual(30.0, okuyucu.oku())
+        saat.simdi = 2.0
+        self.assertIsNone(okuyucu.oku())
+
+    def test_yeni_paket_irtifayi_ve_yasi_yeniler(self):
+        saat = SahteSaat(1.0)
+        mav = CanliAkis([_p(30_000, time_boot_ms=100)])
+        okuyucu = kanit.BagilIrtifaOkuyucu(
+            mav, 1.0, beklenen_sysid=1, monotonic=saat)
+        self.assertEqual(30.0, okuyucu.oku())
+
+        saat.simdi = 1.8
+        mav.mesajlar.append(_p(31_500, time_boot_ms=101))
+        self.assertEqual(31.5, okuyucu.oku())
+        saat.simdi = 2.7
+        self.assertEqual(31.5, okuyucu.oku())
+
+    def test_baglanti_target_system_kaynagi_sabitler(self):
+        saat = SahteSaat()
+        mav = CanliAkis([_p(30_000, sysid=2, time_boot_ms=1)],
+                        target_system=1)
+        okuyucu = kanit.BagilIrtifaOkuyucu(mav, 1.0, monotonic=saat)
+        self.assertIsNone(okuyucu.oku())
+
+    def test_beklenen_sysid_ve_target_system_yoksa_fail_closed(self):
+        mav = CanliAkis([_p(30_000, sysid=4, time_boot_ms=1)],
+                        target_system=None)
+        with self.assertRaisesRegex(ValueError, "beklenen_sysid"):
+            kanit.BagilIrtifaOkuyucu(mav, 1.0)
+        self.assertEqual([], mav.cagrilar)
+
+    def test_irtifa_snapshot_okumasi_kuyrugu_tuketmez(self):
+        saat = SahteSaat()
+        mav = CanliAkis([_p(30_000, time_boot_ms=1)])
+        okuyucu = kanit.BagilIrtifaOkuyucu(mav, 1.0, monotonic=saat)
+        self.assertIsNone(okuyucu.irtifa_m())
+        self.assertEqual([], mav.cagrilar)
+        self.assertEqual(30.0, okuyucu.oku())
+
+    def test_poller_recv_aninda_damgalar_sonradan_sorgu_tazelemez(self):
+        saat = SahteSaat(0.0)
+        mav = CanliAkis([_p(30_000, time_boot_ms=1)])
+        okuyucu = kanit.BagilIrtifaOkuyucu(
+            mav, 0.5, monotonic=saat)
+        self.assertTrue(okuyucu.baslat())
+        try:
+            gercek_deadline = time.monotonic() + 1.0
+            while okuyucu.irtifa_m() is None:
+                if time.monotonic() >= gercek_deadline:
+                    self.fail("poller telemetriyi işlemedi")
+                threading.Event().wait(0.001)
+            saat.simdi = 0.5
+            self.assertIsNone(okuyucu.irtifa_m())
+        finally:
+            self.assertTrue(okuyucu.durdur())
+
+    def test_durdurulan_okuyucu_taze_snapshot_i_bile_kullanmaz(self):
+        saat = SahteSaat(0.0)
+        mav = CanliAkis([_p(30_000, time_boot_ms=1)])
+        okuyucu = kanit.BagilIrtifaOkuyucu(
+            mav, 0.5, beklenen_sysid=1, monotonic=saat)
+        self.assertEqual(30.0, okuyucu.oku())
+
+        self.assertTrue(okuyucu.durdur())
+        self.assertIsNone(okuyucu.irtifa_m())
+
+    def test_ayni_mav_ikinci_okuyucu_ve_yerde_mi_tuketimini_reddeder(self):
+        mav = CanliAkis()
+        birinci = kanit.BagilIrtifaOkuyucu(mav, 0.1)
+        ikinci = kanit.BagilIrtifaOkuyucu(mav, 0.1)
+        self.assertTrue(birinci.baslat())
+        try:
+            self.assertFalse(ikinci.baslat())
+            with mock.patch.object(kanit, "_yerde_mi_sahipli") as asil:
+                self.assertFalse(kanit.yerde_mi(mav))
+                asil.assert_not_called()
+        finally:
+            self.assertTrue(birinci.durdur())
+        self.assertTrue(ikinci.baslat())
+        self.assertTrue(ikinci.durdur())
+
+    def test_gecersiz_mesaj_ve_okuma_hatasi_cache_i_gecersiz_kilar(self):
+        bozuklar = [
+            _p(0, time_boot_ms=2),
+            _p(True, time_boot_ms=2),
+            _p(float("nan"), time_boot_ms=2),
+            Mesaj(kanit.MESAJ_GLOBAL_POSITION_INT, sysid=1,
+                  relative_alt=30_000),
+            _p(30_000, sysid=True, time_boot_ms=2),
+            _p(30_000, time_boot_ms=True),
+            Mesaj("UNKNOWN", sysid=1),
+            OSError("baglanti koptu"),
+        ]
+        for bozuk in bozuklar:
+            with self.subTest(bozuk=bozuk):
+                saat = SahteSaat()
+                mav = CanliAkis([_p(30_000, time_boot_ms=1)])
+                okuyucu = kanit.BagilIrtifaOkuyucu(
+                    mav, 1.0, beklenen_sysid=1, monotonic=saat)
+                self.assertEqual(30.0, okuyucu.oku())
+                mav.mesajlar.append(bozuk)
+                self.assertIsNone(okuyucu.oku())
+                self.assertIsNone(okuyucu.oku())
+
+    def test_gecersiz_kurucu_parametreleri_reddedilir(self):
+        for tazelik in (True, 0, -1, float("nan"), float("inf"), "1"):
+            with self.subTest(tazelik=tazelik):
+                with self.assertRaises(ValueError):
+                    kanit.BagilIrtifaOkuyucu(CanliAkis(), tazelik)
+        for sysid in (True, 0, -1, 256, 1.0, "1"):
+            with self.subTest(sysid=sysid):
+                with self.assertRaises(ValueError):
+                    kanit.BagilIrtifaOkuyucu(
+                        CanliAkis(), 1.0, beklenen_sysid=sysid)
+        for hedef in (None, 0, True, -1, 256, 1.0, "1"):
+            with self.subTest(target_system=hedef):
+                with self.assertRaises(ValueError):
+                    kanit.BagilIrtifaOkuyucu(
+                        CanliAkis(target_system=hedef), 1.0)
 
 
 class InisKanitiTests(unittest.TestCase):

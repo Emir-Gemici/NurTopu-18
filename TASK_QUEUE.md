@@ -3038,6 +3038,27 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [IN_PROGRESS: Claude-2] **T71 — 🔴 ŞARTNAME OTORİTEDİR: figür yapay zekâ ürünü çıktı, T60'ın üç kararı geri alınıyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T66/T68 ile birlikte koşulmalı** · kanıt: `REVIEW_LOG.md` **D-99**
+  - Şartname Şekil 1 alt yazısı: *"Görsel **tamamen yapay zeka ile
+    oluşturulmuştur. Gerçek alanı doğrudan yansıtmamaktadır.**"* Figür ile metin
+    çeliştiğinde **metin kazanır**; D-87'nin "figür kazanır" hükmü **tersine döner**.
+  - **GERİ ALINACAK ÜÇ KARAR:**
+    1. **HB KIRMIZI olacak.** §2.1: *"2 m × 2 m boyutlarında üzerinde **kırmızı
+       H harfi** bulunacağı bir bölgedir."* T60'ta figüre bakıp siyah/beyaz
+       yaptırmam **hatadır** — T56'daki kırmızı branda doğruymuş.
+    2. **İHA-İB eklenecek:** 30 m × 30 m **mavi** bölge, §2.1'de açıkça tanımlı.
+       T60'ta "figürde yok" diye dışladım; gerekçe çöktü.
+    3. **Güzergâhlar moloz yığınları ARASINDA** (§2.1) — T66 ile birleşir.
+  - 🔴 **STRATEJİ DEĞİŞİYOR — TEK PALET DEĞİL, ÇEŞİTLİLİK.** D-87'nin LAB
+    hedefleri yapay zekâ üretimi bir görüntüden çıkarıldı; gerçek arenanın renk
+    hedefi **bilinmiyor**. v25 tek palete oturunca ona **bağımlı** oldu ve
+    dağılım dışı bir sahnede tamamen çöktü (D-95). Üreteç artık tek künyeye
+    yakınsamayacak; zemin/moloz renk ve doku bandı **geniş tutulacak**.
+  - **KAPI:** `61_rota_moloza_basma.py` üç sayısı bozulmasın · üretilen kümede
+    renk **çeşitliliği** ölçülüp raporlansın (tek moda çökmediği gösterilsin) ·
+    gözle doğrulama zorunlu.
+  - ⚠ Şartname metni **tek otoritedir**; figürden ölçüm alınmayacak.
+
 - [ ] **T66 — Üreteç geometrisi arenaya benzemiyor: dikey şeritler vs moloz adaları** · `O:\navitas-local-train\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-91**, görsel `results/t60/t60_yan_yana.png`
   - T60 **rengi** düzeltti (doğrulandı). **Geometri** düzelmedi:
     - gerçek arena: **açık toprak tarlası + içine serpilmiş moloz ADALARI**,
@@ -3063,7 +3084,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     yapılacak.
   - ⚠ Madde 15: yeni ölçüt yalnız **reddedebilir**, serbest alanı büyütemez.
 
-- [ ] **T62 — Saha ölçüm betiği v20'de kalmış: sürüm hizalamasının BEŞİNCİ ucu** · `scripts/jetson_fps.py`, `jetson_paket/JETSON_KILAVUZ.md` (+ depo kopyası), `tests/test_uretim_modeli_hizasi.py` · **ÖNEMLİ** · mimar denetimi, kanıt: `REVIEW_LOG.md` **D-89**
+- [IN_PROGRESS: Codex-1] **T62 — Saha ölçüm betiği v20'de kalmış: sürüm hizalamasının BEŞİNCİ ucu** · `scripts/jetson_fps.py`, `jetson_paket/JETSON_KILAVUZ.md` (+ depo kopyası), `tests/test_uretim_modeli_hizasi.py` · **ÖNEMLİ** · mimar denetimi, kanıt: `REVIEW_LOG.md` **D-89**
   - T58 dört ucu (GUI · paket · manifest · iki kılavuz) doğru hizaladı ve
     **denetimde doğrulandı**. Ama beşinci bir uç var ve çevrilmedi:
     ```text
@@ -3164,7 +3185,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     senkronladıktan ve iki SHA eşit olduktan sonra yukarıdaki nihai tam paket
     yeniden koşuldu; nihai kanıt yalnız temiz ikinci koşumdur.
 
-- [ ] **T70 — 🔴 GÖREV KRİTİK: ölçek halkası SABİT başlangıç sayısına bağlı; irtifa sapması gövde açıklığını EKSİK hesaplıyor** · `codes/rpi_inference.py`, `comms/**` (telemetri), `scripts/saha_kuru_kosu.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-98**
+- [STATUS: READY_FOR_REVIEW] **T70 — 🔴 GÖREV KRİTİK: ölçek halkası SABİT başlangıç sayısına bağlı; irtifa sapması gövde açıklığını EKSİK hesaplıyor** · `codes/rpi_inference.py`, `comms/**` (telemetri), `scripts/saha_kuru_kosu.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-98**
   - `mpp_irtifadan` uygulanmış ve çağrılıyor — ama girdisi **`--irtifa` komut
     satırı argümanı**: tüm koşuya uygulanan TEK bir sayı. Algı yolunda MAVLink
     okuyan kod **yok** (`rpi_inference.py:1224` yalnızca bir yorum satırı).
@@ -3187,6 +3208,74 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     mutasyon: telemetriyi bayatlat → `OLCEK_YOK` gelmeli ·
     `saha_kuru_kosu.py` ölçek halkası artık **beslenmeyi** ölçsün, varlığı değil.
   - ⚠ FOV/odak da elle veriliyor; **aynı sınıfta ikinci açık olabilir** — ölç.
+  - **Uygulama (Codex-1, 2026-08-14):** `GLOBAL_POSITION_INT.relative_alt`
+    tek sahipli `BagilIrtifaOkuyucu` arka-plan poller'ında gerçek teslim anında
+    `time.monotonic()` ile damgalanıyor. Her karar karesi inference'tan sonra
+    `icerik[2]` genişliğiyle mpp istiyor. SYSID `1..255` zorunlu; yaş
+    `>= TELEMETRI_IRTIFA_TAZELIK_S = 0.50 s`, eksik/bozuk/yanlış kaynak ve
+    durdurulmuş okuyucu `None -> OLCEK_YOK`. Kamera statik `--mpp` ile açılamaz.
+  - **Canlı sahte yayın + bayat mutasyonu — gerçek çıktı**
+    (`O:\navitas-local-train\venv\Scripts\python.exe -B -`, `EXIT_CODE=0`):
+    ```text
+    [SAHTE_YAYIN] irtifa_m=30.000
+    [TAZE] durum=GECTI mpp=0.054126587737 genislik=640
+    [BAYAT] yas_s=0.50 durum=DUSTU mpp=None sebep=OLCEK_YOK: eksik ya da bayat canli irtifa telemetrisi
+    [ROTA] durum=DUSTU ret=OLCEK_YOK yol_no=None wp=[] yayinlanabilir=False
+    ```
+  - **Besleme kopuk mutasyonu — gerçek çıktı** (`EXIT_CODE=0`):
+    ```text
+    [BESLEME_KOPUK] olcek=DUSTU mpp=None sebep=OLCEK_YOK: canli telemetri saglayicisi bagli degil
+    [BESLEME_KOPUK_ROTA] durum=DUSTU ret=OLCEK_YOK cozum_cagrildi=False yayinlanabilir=False
+    ```
+  - **Kuru koşu gerçek kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B scripts/saha_kuru_kosu.py`
+    → `olcek GECTI · canli telemetri bu kare icin gecerli mpp uretti`;
+    `results/saha_kuru_kosu_20260814_114009/ozet.json`:
+    `besleme_cagrildi=true`, `icerik_genisligi_px=1024`,
+    `mpp=0.03382911733532963`. Otopark rota kararı dürüstçe
+    `BELIRSIZ_COKLU`, `rota_yayinlanabilir=false`; genel betik diğer açık
+    halkalar nedeniyle `GECTI 5 · DUSTU 3 · SAHIPSIZ 2`, `EXIT_CODE=1`.
+    Bu görev kuru koşunun tamamının geçtiğini iddia etmez.
+  - **Odak kapıları — gerçek çıktı:**
+    `test_inis_kaniti.py` → `Ran 23 tests`, `OK`, `EXIT_CODE=0`;
+    `test_rpi_canli_olcek.py` → `Ran 20 tests`, `OK`, `EXIT_CODE=0`;
+    `OlcekHalkasiTests` → `Ran 10 tests`, `OK`, `EXIT_CODE=0`.
+    Kamera testi `predict -> provider -> analyze` sırasını ve `main()` sağlayıcı
+    aktarımını kilitler.
+  - **FOV/odak ve piksel alanı ölçümü** (`R=1.10 m`, `h=30 m`, `W=640`,
+    gerçek varsayılan karşılaştırma `FOV=60°`, `EXIT_CODE=0`):
+    ```text
+    FOV=60  r_px=20.323 hata= +0.0%    FOV=70 r_px=16.757 hata=-17.5%
+    FOV=80  r_px=13.983 hata=-31.2%    FOV=90 r_px=11.733 hata=-42.3%
+    odak=554.3 r_px=20.323 hata= +0.0%  odak=500 r_px=18.333 hata= -9.8%
+    odak=450   r_px=16.500 hata=-18.8%  odak=400 r_px=14.667 hata=-27.8%
+    W=640 eski-INFER_SIZE hatasi=-20.0% · W=1024 -50.0% · W=1920 -73.3%
+    ```
+    Kod son satırdaki kusuru `icerik[2]` ile kapattı. Gerçek lens FOV/odak ve
+    aktif crop kalibrasyonu **DOĞRULANAMADI**; büyük FOV/küçük odak girişi hâlâ
+    tehlikeli yöndedir. `relative_alt` home-relative'dir; AGL eşitliği de
+    **DOĞRULANAMADI**.
+  - **Jetson paketi:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B scripts/jetson_paket_hazirla.py`
+    → 9 `[JETSON_PAKET]` satırı (`karar_sozlesmesi`, `rpi_inference`,
+    `costmap_path_finder`, `jetson_fps`, `protocol`, `link`, `iha_sender`,
+    `inis_kaniti`, `iha_inis_yayinci`), `EXIT_CODE=0`;
+    `test_jetson_comms_paketi.py` → `Ran 5 tests`, `OK`, `EXIT_CODE=0`, 9/9
+    kanonikle bayt-eşit. `rpi_inference.py` SHA eşit, `inis_kaniti.py` SHA eşit.
+  - **Genel kapılar — son koşum:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py`
+    → `SONUC: 15/15 dogru`, `[OK] TUM DETERMINISTIK SAHNELER GECTI`,
+    `EXIT_CODE=0`;
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q`
+    → `Ran 419 tests in 46.033s`, `OK`, `EXIT_CODE=0`.
+  - **Açık/doğrulanmamış sınırlar:** venv'de `PYMAVLINK_VAR=False`; kapı gerçek
+    donanım değil istenen sahte yayıncıyla koştu. `inis_kaniti` ile
+    `comms.inis_kaniti` aynı süreçte iki adla yüklenirse sahiplik kayıtları
+    ayrılabilir; Jetson tek modül adı kullanır, çok-süreçli MAVLink-router/fanout
+    topolojisi **DOĞRULANAMADI**. Ayrıca `drone/rpi_yayin.py -> iha_perceive._infer`
+    ayrı canlı yolunda mpp bağlanması yoktur; T70 yalnız
+    `codes/rpi_inference.py` üretim yolunu kapatır, bütün canlı yolların kapandığı
+    iddia edilmez.
 
 - [ ] **T68 — Üreteç bariyeri ASLA açık zemine koymuyor: "ince çubuk = geçilemez" öğrenilemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T67'yi açar** · kanıt: `REVIEW_LOG.md` **D-93**
   - Ölçüldü (120 kare, 70'inde bariyer var):
@@ -3212,7 +3301,98 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     512 proto çözünürlüğünde öğrenip öğrenemeyeceği ayrı bir sorudur; veri
     düzelmeden sınanması anlamsızdır.
 
-- [ ] **T67 — 🔴 GÖREV KRİTİK: gerçek arenada rota BARİYERİN İÇİNDEN geçiyor** · tasarım kararı önce · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-92**
+- [STATUS: READY_FOR_REVIEW] **T67 — 🔴 GÖREV KRİTİK: gerçek arenada rota BARİYERİN İÇİNDEN geçiyor** · tasarım kararı önce · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-92**
+  - **✅ YAPILDI · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-100**.
+  - `karar_sozlesmesi.ince_bariyer_maskesi()` (KATMAN 2 klasik dedektör) +
+    `rpi_inference.get_masks` içinde tek çağrı. Dedektör **ENGEL katmanına
+    ekler**; serbest alan yalnız **küçülür** (madde 15 · CONTRACTS §2).
+    `comms/` değişmedi.
+  - **Referans KOPYALANMADI, orana çevrildi.** `63_...py` çıplak piksel
+    kullanıyordu (61×5 · alan 300 · genişlik 60), 1059'da kalibreydi; üretim
+    tespiti **512×512**'de yapar ve orada o sabitler **kısa kolu kaçırır**
+    (w=47 < 60):
+    ```text
+    cozunurluk        kol   w/W (kisa · uzun)   en/boy
+    KAYNAK 1059x634    2    0,093 · 0,215       7,0 · 14,2
+    small   512x512    2    0,092 · 0,215       6,7 · 13,8
+    ```
+    `get_masks` ayrıca `r.masks is None` dalında da çalışacak şekilde
+    düzenlendi — model hiçbir şey görmese bile bariyer engeldir (eskiden
+    orada **erken dönülüyordu**).
+  - **KAPI 1 — gerçek çıktı (`63_bariyer_kesisimi.py`):**
+    ```text
+                          taban (D-92)      T67
+    model ENGEL diyor       %0,0           %91,1
+    ROTA x BARIYER          59 px          0 px      GECTI
+    ```
+    Görsel doğrulandı (`results/t63/bariyer_kesisim.png`).
+    ⚠ Rota artık arenanın **sol kenarına** kaymış, güven **0,216** (eşik 0,20).
+    Kesişim 0'dır ama bu "iyi rota" demek **değildir**.
+  - **KAPI 2 — HB engel sayılMIYOR (üç kanıt):**
+    ```text
+    A gercek(!) karede HB : a* -6..4  -> 0/3100 engel px   (ZAYIF: zaten siyah/beyaz)
+    B SENTETIK KIRMIZI HB : a* = 65   -> 0 engel px        KORUNDU
+      ayni karede bariyer 240x14      -> 3360 px           YAKALANDI (pozitif kontrol)
+    C sekil supurmesi     : 100x25 (4,0) engel DEGIL · 100x24 (4,2) ENGEL
+    ```
+  - **KAPI 3 — regresyon (`61_rota_moloza_basma.py`):**
+    ```text
+                      ROTA     MOLOZA    AGIR   ARENA DISI
+    taban (T69)    244/260     6/244   6/244      5/244
+    T67            242/260     4/242   2/242      5/242
+    ```
+    Rota çökmedi (−2). Moloza basma **artmadı, AZALDI** (6→4, ağır 6→2).
+  - **KAPI 4 — MUTASYON (canlı, iki ölçüm):**
+    ```text
+    M0 ACIK    kesisim  0 px · ENGEL %91,1 | rota 242 · moloza 4
+    M1 KAPALI  kesisim 59 px · ENGEL % 0,0 | rota 244 · moloza 6
+    M2 geri    kesisim  0 px · ENGEL %91,1
+    ```
+    Her iki ölçüm de **tam tabana** döndü.
+  - **KAPI 5:** `test_rota_sentetik.py` **15/15** · `jetson_paket_hazirla.py`
+    **9/9 bayt-eşit** · `discover -s tests -q` **Ran 406 · FAILED (1)**.
+    ⚠ **O tek düşen test benim değil:** `test_costmap_icerik_cagri_yerleri.py::
+    test_kuru_kosu_ana_maskeyi_baglar_kirpigi_baglamaz` — dedektör **kapatılıp**
+    koşulduğunda da düşüyor. Başka bir ajanın eşzamanlı çalışması:
+    `scripts/saha_kuru_kosu.py` değişmiş, `halka_rota` imzasına `mpp` eklenmiş.
+    `scripts/` izin listesinde yok; **dokunulmadı**.
+  - **Dedektör isabeti — bağımsız ölçüldü** (T60 kadraj n=260, model
+    kullanılmadan, manifest `bariyerler` yer gerçeği):
+    ```text
+    bariyer tasiyan 210 · BULUNAN 153 · KACIRILAN 57
+      54 -> bariyer kutusunda HIC kroma YOK (moloz ALTINDA, goruntude yok)
+       3 -> kroma VAR, sekil filtresi eledi   <- GERCEK kacirma (%1,4)
+    GORUNUR bariyerlerde isabet: 153/156 = %98,1
+    tespit pikselinin kutu icinde kalani: medyan %92,1
+    tasan pikselin %90,5'i arena ICINDE · %9,5'i disinda (alan disi kirmizi nesneler)
+    ```
+  - 🔴 **D-99 ZEMİNİ DEĞİŞTİRDİ — bu görev onunla birlikte okunmalı.** Mimar ben
+    çalışırken yazdı: `sartname_s9_arena.png` **gerçek arena değildir**, şartname
+    Şekil 1 alt yazısına göre *"tamamen yapay zeka ile oluşturulmuştur"*.
+    `CONTRACTS` §2.1 ve sabit yorumu buna göre **düzeltildi**. Üç etki:
+    1. Dedektörün **renk anahtarı yapay bir görüntüden** kalibre edilmiştir;
+       gerçek engeller kırmızı olmayabilir → dedektör **hiç ateşlemez**.
+       ⚠ Bu **fail-safe**'tir (hiçbir şey eklenmez/çıkarılmaz, sistem T67
+       öncesine döner), yani D-99 bu işi **geri aldırmaz**, geçerlilik alanını
+       daraltır.
+    2. **Ayakta kalan gerekçe:** şartname **metni** §2.1 kapalı güzergâhların
+       *"fiziki engellerle kapatılacağını"* söyler — ince-engel riski **gerçek**.
+    3. **Tuzak KESİNLEŞTİ, hafiflemedi:** figür yapay olduğu için artık **metin
+       otoritedir** ve metin HB'yi *"üzerinde **kırmızı** H harfi"* diye tanımlar.
+       HB **gerçekten kırmızıdır** → naif "kırmızı = engel" kuralı `P_görev`'i
+       sıfırlardı. İşin en taşıyıcı kanıtı **KAPI 2-B'deki sentetik kırmızı HB**
+       testidir; figürdeki siyah/beyaz ped artık **tek başına yetersizdir**.
+  - **Yeni test paketi** `tests/test_ince_bariyer.py` (**18 test**): sözleşme
+    kaynağı (`BARIYER_ENGEL_SINIFI == sinif_semasi.ENGEL` kilidi — `sinif_semasi`
+    Jetson paketinde **yok**, import edilemez) · hedef koruması · figür ölçümleri
+    · çözünürlük bağımsızlığı (320/640/1280) · fail-safe · `get_masks`
+    entegrasyonu (madde 15 monotonluğu dâhil).
+  - ⚠ **DOĞRULANAMADI:** (1) gerçek arena başarımı — elimizde gerçek arena
+    görüntüsü **yok** (D-99), *"bariyer sorunu çözüldü"* genel iddia **değildir**;
+    (2) gerçek engellerin **rengi** bilinmiyor, yedek imza aranmadı; (3) bariyerin
+    fiziksel **yüksekliği** bilinmiyor, fail-safe varsayım geçilemez; (4) ince-engel
+    genel sınıfı (tel/halat/kablo) ele alınmadı; (5) figürde rota artık sol kenara
+    kayıyor — kesişim 0 ama o rotanın **kalitesi** doğrulanmadı.
   - Şartname figüründe kapalı güzergâhı kapatan tek yapı **kırmızı-beyaz şeritli
     yol bariyeri koludur**. Ölçüldü (`O:\navitas-local-train\63_bariyer_kesisimi.py`,
     bariyer tespiti MODELDEN BAĞIMSIZ — LAB a*>25):

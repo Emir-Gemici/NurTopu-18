@@ -33,6 +33,7 @@ if str(KOK / "codes") not in sys.path:
 from costmap_path_finder import R_GEREKLI_M, olcek_px
 from karar_sozlesmesi import (OLCEK_YOK_SEBEBI, ROTA_DARBOGAZ_TAM_ORANI,
                               ROTA_GUVEN_ESIGI, SARTNAME_ASGARI_IRTIFA_M,
+                              TELEMETRI_IRTIFA_TAZELIK_S,
                               mpp_irtifadan, olcek_gecerli_mi,
                               r_gerekli_piksel, rota_olcek_reddi)
 from rpi_inference import analyze_path
@@ -60,6 +61,10 @@ def _dar_gecitli_sahne(gecit_px=30, mpp=0.05):
 
 class OlcekSozlesmesiTests(unittest.TestCase):
     """Halka 5 — `mpp` uretimi ve fail-closed davranis."""
+
+    def test_canli_irtifa_tazelik_esigi_sozlesmede_kilitli(self):
+        """T70: bayat son irtifa varsayimla yeniden kullanilamaz."""
+        self.assertEqual(0.50, TELEMETRI_IRTIFA_TAZELIK_S)
 
     def test_fov_yolu_bilinen_geometriyi_uretir(self):
         # h=40 m, FOV=60 deg, W=1024 -> 2*40*tan(30) / 1024

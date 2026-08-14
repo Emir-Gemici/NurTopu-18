@@ -88,6 +88,76 @@ serbest(K1 ∧ ¬K2)  ⊆  serbest(K1)        ← DEĞİŞMEZ KURAL
 Bu sayede Katman 2'ye yeni bir dedektör eklemek **monotonik olarak güvenlidir** —
 sistemi ancak daha güvenli yapabilir. Uygulama: `codes/costmap_path_finder.py:212-213`.
 
+### 2.1 Katman 2 dedektörü — ince bariyer (T67 · `REVIEW_LOG.md` D-92, D-93, D-99)
+
+> **Neden var.** Şartname figüründe ölçüldü, **model kullanılmadan**: bariyerin
+> 3644 pikselinin **%0,0**'ını model engel sayıyor, **%30,9**'unu zemin sayıyor;
+> üretilen rota bariyeri **59 px** kesiyordu. Korumaların **hiçbiri**
+> ateşlemiyordu (zemin kapısı susuyor, ret yok, güven 0,75). Rotayı yayından
+> alıkoyan tek şey `OLCEK_YOK` idi — bir kapı değil, bir **eksiklik**.
+>
+> 🔴 **D-99 DÜZELTMESİ — ölçüm zemini gerçek arena DEĞİLDİR.** Şartname Şekil 1
+> alt yazısı: *"Görsel tamamen yapay zeka ile oluşturulmuştur. Gerçek alanı
+> doğrudan yansıtmamaktadır."* Dolayısıyla **bariyerin kırmızı-beyaz görünümü
+> uydurmadır** ve bu dedektörün renk anahtarı (`a* > 25`) yapay bir görüntüden
+> kalibre edilmiştir. Gerçek arenada fiziki engeller kırmızı **olmayabilir** —
+> o durumda dedektör **hiç ateşlemez** (fail-safe: hiçbir şey eklemez, hiçbir
+> şey çıkarmaz; sistem T67 öncesi davranışa döner).
+> **Ayakta kalan gerekçe:** şartname **metni** (§2.1) kapalı güzergâhların
+> *"fiziki engellerle kapatılacağını"* söyler — ince-engel riski **gerçektir**,
+> yalnız görünümü bilinmiyor.
+>
+> **Model beklenmedi** (D-93): üreteç bariyeri **yalnız zaten kapalı** şeritlere
+> koyuyor; açık zeminde bariyer oranı **%0,0**. Eğitim verisi bu örneği hiç
+> içermiyor, dolayısıyla model bunu **öğrenemez**.
+
+```python
+BARIYER_KROMA_ESIGI            = 25          # LAB a*
+BARIYER_EN_BOY_ORANI           = 4.0
+BARIYER_ASGARI_GENISLIK_ORANI  = 60/1059     # ≈0,0567 · içerik genişliğinin oranı
+BARIYER_ASGARI_ALAN_ORANI      = 300/(1059·634)
+BARIYER_KAPAMA_ORANI           = 61/1059
+```
+
+**Neden kroma çalışır (bu figürde):** D-87 figürün renk künyesini ölçtü —
+sahnenin **tamamında** `|a*| < 1`. Bariyer figürdeki **tek** yüksek kromalı
+yapıdır; ölçülen tepe `a* = 44`. Eşik 25 iki tarafa da geniş pay bırakır.
+⚠ Bu ayrışma **yapay zeka ürünü** bir görüntünün özelliğidir (D-99); gerçek
+arenada geçerli olacağı **doğrulanmamıştır**.
+
+🔴 **TUZAK — "kırmızı = engel" kuralı HEDEFİ ÖLDÜRÜR ve bu risk D-99 ile
+KESİNLEŞTİ.** Şartname **metni** §2.1 hedefi *"2 m × 2 m … üzerinde **kırmızı
+H harfi** bulunacağı bir bölge"* diye tanımlar. D-99 figürün yapay olduğunu
+saptadıktan sonra **metin otoritedir**: HB gerçekten KIRMIZIDIR. D-87'nin
+figüre dayanan "nötr ped" hükmü geçersizdir.
+Naif bir kırmızı kuralı HB'yi engel yapar, İKA hedefe **hiçbir zaman** ulaşamaz,
+`P_görev = 0`. Ayrım **renkle değil şekille**:
+
+| yapı | en/boy (ölçülen) | sonuç |
+|---|---:|---|
+| HB pedi | **1,00** (T60, n=260) | KARE → **elenir** |
+| bariyer kolu (kısa · uzun) | **7,0** · **14,2** | UZUN → engel |
+
+Eşik `4,0` ikisinin ortasındadır. Sentetik **kırmızı** HB ile doğrudan sınandı
+(`a*=65`, eşiği geçiyor): **0 engel pikseli**; aynı karede bariyer yakalandı.
+
+**Ölçütler ORAN'dır, piksel değil** (§8). Referans ölçüm betiği çıplak piksel
+kullanıyordu (kernel 61×5, alan 300, genişlik 60) ve **1059** genişliğindeki
+kaynak karede kalibreydi; üretim zinciri tespiti **512×512** üzerinde yapar ve
+orada o sabitler **kısa kolu kaçırır** (w=47 < 60). Orana çevrilince üç
+çözünürlükte de aynı iki kol bulunur (w/W 0,093 · 0,215).
+
+⚠ **Madde 15:** dedektör yalnız **engel katmanına ekler**; serbest alan
+(`zemin AND NOT engel`) yalnız **küçülür**. `codes/rpi_inference.py`
+`get_masks` içinde uygulanır — `r.masks is None` dalında da çalışır, çünkü
+model hiçbir şey görmese bile bariyer engeldir.
+
+🔴 **Kalibrasyon zemini: TEK bir YAPAY ZEKA GÖRÜNTÜSÜ** (D-88 + D-99).
+Projenin elinde **hiçbir gerçek arena görüntüsü yoktur**; bu sabitler şartname
+Şekil 1'den, yani bir illüstrasyondan türetildi. İlk gerçek arena karesi
+geldiğinde **hepsi yeniden ölçülmelidir** ve renk anahtarının orada geçerli
+olmaması **beklenebilir bir sonuçtur**.
+
 ---
 
 ## 3. Koordinat çerçevesi sözleşmesi
@@ -168,6 +238,25 @@ tespit bileşeni sahada mevcut değil ve bir sınıf eklemeden ölçüm yapılam
 
 `SARTNAME_ASGARI_IRTIFA_M = 30.0` (§5.3.2) ve `IRTIFA_MAKUL_UST_M = 200.0`
 makullük bandıdır; bandın dışındaki telemetri **ölçek üretmez** (fail-closed).
+
+### 5.1.1 Canlı irtifa ve tazelik — bağlayıcı
+
+Görev yolunda irtifa sabit bir başlangıç/CLI değeri değildir. Her kare için
+`GLOBAL_POSITION_INT.relative_alt` kaynağının en güncel doğrulanmış örneği
+`comms/inis_kaniti.py` içindeki tek okuyucudan alınır. Örneğin yaşı yalnız host
+`time.monotonic()` saatiyle ölçülür; Pixhawk saati host saatine çevrilmez.
+
+`TELEMETRI_IRTIFA_TAZELIK_S = 0.50` saniye azami güvenlik yaşıdır. Yaş bu
+sınıra ulaşır ya da aşarsa, hiç örnek yoksa veya kaynak sistem kimliği
+değişirse irtifa **yok** sayılır ve `OLCEK_YOK` üretilir. Aynı/eski
+`time_boot_ms` paketi son geçerli örneğin geliş yaşını yenileyemez.
+Bayat son değer tekrar kullanılmaz. Bu sayı telemetri yayın hızının saha
+ölçümü değildir: gerçek Pixhawk mesaj hızı/gecikmesi henüz **DOĞRULANAMADI**;
+akış bu sınırı sağlayamıyorsa sistem rota üretmeyerek fail-closed kalır.
+
+`mpp` her karede karar maskesinin yatay içerik genişliği `icerik[2]` ile
+hesaplanır. Model giriş boyutu (`INFER_SIZE`) bu formülün piksel alanı değildir;
+onu kullanmak 640 px karede gerekli açıklık yarıçapını %20 eksik hesaplar.
 
 ### 5.2 `mpp` YOKSA ne olur — bağlayıcı
 

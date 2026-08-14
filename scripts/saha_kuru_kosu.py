@@ -51,6 +51,76 @@ HALKALAR = (
 
 GECTI, DUSTU, SAHIPSIZ, ATLANDI = "GECTI", "DUSTU", "SAHIPSIZ", "ATLANDI"
 
+# Donanimsiz kuru kosunun KONTROLLU sahte kamera geometrisi. Bu bir uretim
+# varsayilani degildir; mpp sonucunu sabitlemek yerine gercek uretim saglayicisi
+# uzerinden hesap yaptirabilmek icin sahte MAVLink yayininin bilinen girdisidir.
+KURU_KOSU_SAHTE_FOV_DERECE = 60.0
+_VARSAYILAN_OLCEK_SAGLAYICI = object()
+
+
+class _SahteGlobalPositionInt:
+    """Kuru kosu icin pymavlink mesajinin kullandigimiz en kucuk arayuzu."""
+
+    def __init__(self, relative_alt, time_boot_ms, sysid):
+        self.relative_alt = relative_alt
+        self.time_boot_ms = time_boot_ms
+        self._sysid = sysid
+
+    def get_type(self):
+        return "GLOBAL_POSITION_INT"
+
+    def get_srcSystem(self):
+        return self._sysid
+
+
+class _SahteIrtifaYayincisi:
+    """Gercek okuyucuya GLOBAL_POSITION_INT kuyrugu sunan sahte yayin ucu."""
+
+    target_system = 1
+
+    def __init__(self):
+        self._mesajlar = []
+        self._time_boot_ms = 0
+
+    def yayinla(self, irtifa_m):
+        from inis_kaniti import MILIMETRE_BIR_METRE
+
+        self._time_boot_ms += 1
+        self._mesajlar.append(_SahteGlobalPositionInt(
+            irtifa_m * MILIMETRE_BIR_METRE,
+            self._time_boot_ms,
+            self.target_system,
+        ))
+
+    def recv_match(self, type=None, blocking=False):
+        del type, blocking
+        return self._mesajlar.pop(0) if self._mesajlar else None
+
+
+def _sahte_canli_olcek_saglayicisi():
+    """Sahte yayin + ORTAK okuyucu + URETIM saglayicisindan pozitif prob."""
+    from inis_kaniti import BagilIrtifaOkuyucu
+    from karar_sozlesmesi import (SARTNAME_ASGARI_IRTIFA_M,
+                                  TELEMETRI_IRTIFA_TAZELIK_S)
+    from rpi_inference import CanliOlcekSaglayici
+
+    yayinci = _SahteIrtifaYayincisi()
+    yayinci.yayinla(SARTNAME_ASGARI_IRTIFA_M)
+    okuyucu = BagilIrtifaOkuyucu(
+        yayinci,
+        TELEMETRI_IRTIFA_TAZELIK_S,
+        beklenen_sysid=yayinci.target_system,
+    )
+    # Kuru kosu tek is parcaciklidir: sahte paketi ortak okuyucunun manuel
+    # nonblocking girisinden GERCEKTEN gecir. Yalniz sinifi kurmak bir besleme
+    # kaniti degildir; snapshot dolmazsa halka OLCEK_YOK ile dusmelidir.
+    if okuyucu.oku() is None:
+        raise RuntimeError("sahte irtifa yayini ortak okuyucuyu besleyemedi")
+    return CanliOlcekSaglayici(
+        okuyucu,
+        yatay_fov_derece=KURU_KOSU_SAHTE_FOV_DERECE,
+    )
+
 
 class Rapor:
     """Halka sonuclarini sirayla toplar. Dusen halkada kosu DURMAZ."""
@@ -207,36 +277,6 @@ def _motor_surucusu_bul(kok: Path, dizinler=SAHA_DIZINLERI) -> list[str]:
     return bulunan
 
 
-def _irtifadan_mpp_ureticisi_bul(kok: Path = KOK) -> str | None:
-    """Irtifa/FOV'dan mpp tureten bir FONKSIYON var mi? AST ile ara.
-
-    Olcut: fonksiyon adinda ya da donus degiskeninde `mpp` gecmeli VE parametre
-    adlarindan en az biri irtifa/yukseklik/FOV ailesinden olmali. Yorum ve
-    docstring metni sayilmaz — bir halkayi belgeledigi icin degil, YAPTIGI is
-    icin GECTI isaretleriz.
-    """
-    irtifa_adlari = {"irtifa", "yukseklik", "altitude", "alt_m", "agl",
-                     "fov", "fov_deg", "fov_yatay", "hfov", "vfov"}
-    for aday in (kok / "codes", kok / "jetson_paket" / "kod", kok / "scripts"):
-        if not aday.exists():
-            continue
-        for py in sorted(aday.rglob("*.py")):
-            try:
-                agac = ast.parse(py.read_text(encoding="utf-8", errors="replace"))
-            except (OSError, SyntaxError):
-                continue
-            for dugum in ast.walk(agac):
-                if not isinstance(dugum, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    continue
-                params = {a.arg.lower() for a in dugum.args.args}
-                params |= {a.arg.lower() for a in dugum.args.kwonlyargs}
-                if not (params & irtifa_adlari):
-                    continue
-                if "mpp" in dugum.name.lower() or "olcek" in dugum.name.lower():
-                    return f"{py.relative_to(kok).as_posix()}:{dugum.lineno}"
-    return None
-
-
 # ─────────────────────────────────────────────────────────── halka 1: kamera
 def halka_kamera(rapor: Rapor, kare_yolu: Path | None) -> tuple[str, np.ndarray | None]:
     """Olcut (§11.3): kaynak PARAMETRIK olacak ve ilk kare okunacak."""
@@ -374,38 +414,68 @@ def halka_cikarim_ve_maske(rapor: Rapor, kare: np.ndarray, model_dir,
 
 
 # ──────────────────────────────────────────────────────────── halka 5: olcek
-def halka_olcek(rapor: Rapor, kok: Path = KOK) -> tuple[str, float | None]:
-    """Olcut (§11.3): mpp irtifa + FOV'dan TURETILECEK; turetilemezse rota uretilmeyecek.
+def halka_olcek(rapor: Rapor, olcek_saglayici,
+                icerik: tuple | None) -> tuple[str, float | None]:
+    """Canli irtifa beslemesini BU KARE icin mpp'ye cevirerek olc.
 
-    Bu halka SAHIPSIZ cunku sahada mpp ureten hicbir kod yok. Simulasyondaki
-    iha_haritala.py:66 sabiti §11.1/1 geregi sahip sayilmaz.
+    Bir sinif/fonksiyonun depoda bulunmasi kanit degildir. Kapi, enjekte edilen
+    uretim saglayicisini letterbox'in GERCEK icerik genisligiyle cagirir. Eksik,
+    bayat ya da gecersiz besleme ``None`` verir ve ``OLCEK_YOK`` ile kapanir;
+    son bilinen mpp burada tutulmaz.
     """
-    # DIKKAT: burada metin aramasi YAPILMAZ. "irtifa"/"fov"/"mpp" kelimeleri
-    # costmap_path_finder.py'nin YORUMLARINDA geciyor ve duz grep bu dosyayi
-    # sahip sanip halkayi yanlislikla GECTI yapiyordu. Olcut bir FONKSIYONUN
-    # varligidir: mpp donduren ve parametrelerinde irtifa/FOV alan bir callable.
-    uretici = _irtifadan_mpp_ureticisi_bul(kok)
+    from karar_sozlesmesi import rota_olcek_reddi
 
-    if uretici:
-        rapor.yaz("olcek", GECTI, "irtifa+FOV tabanli mpp ureticisi bulundu", uretici)
-        return GECTI, None
-
-    # Kritik: olcek_px(None) sessizce 1 m/piksel varsayiyor — bunu OLCUP raporla.
-    detay = {}
+    detay = {
+        "besleme_cagrildi": False,
+        "icerik_genisligi_px": None,
+        "mpp": None,
+        "saglayici_sinifi": (None if olcek_saglayici is None else
+                              type(olcek_saglayici).__name__),
+    }
     try:
-        from costmap_path_finder import R_GEREKLI_M, olcek_px
-        detay = {
-            "mpp_none_r_gerekli_px": round(float(olcek_px(None)["r_gerekli_px"]), 3),
-            "mpp_0.0547_r_gerekli_px": round(float(olcek_px(0.0546875)["r_gerekli_px"]), 3),
-            "R_GEREKLI_M": R_GEREKLI_M,
-            "not": "mpp=None sessizce 1 m/piksel varsayiliyor, uyari basilmiyor",
-        }
-    except (ImportError, KeyError, TypeError):
-        pass
-    rapor.yaz("olcek", SAHIPSIZ,
-              "sahada mpp ureten kod yok; iha_haritala.py:66 sabiti simulation/ altinda",
-              None, detay)
-    return SAHIPSIZ, None
+        icerik_genisligi = int(icerik[2]) if icerik is not None else 0
+    except (IndexError, TypeError, ValueError, OverflowError):
+        icerik_genisligi = 0
+    detay["icerik_genisligi_px"] = icerik_genisligi or None
+
+    if icerik_genisligi <= 0:
+        ret = rota_olcek_reddi(None)
+        return (rapor.yaz("olcek", DUSTU,
+                          f"{ret[0]}: kare icerik genisligi yok; canli olcek "
+                          "bu kare icin turetilemedi",
+                          "codes/rpi_inference.py", detay), None)
+
+    saglayici_fn = (olcek_saglayici if callable(olcek_saglayici) else
+                    getattr(olcek_saglayici, "kare_mpp", None))
+    if not callable(saglayici_fn):
+        ret = rota_olcek_reddi(None)
+        return (rapor.yaz("olcek", DUSTU,
+                          f"{ret[0]}: canli telemetri saglayicisi bagli degil",
+                          "codes/rpi_inference.py", detay), None)
+
+    detay["besleme_cagrildi"] = True
+    try:
+        mpp = saglayici_fn(icerik_genisligi)
+    except Exception as exc:
+        # Kuru kosu tum halkalari raporlamaya devam etmelidir. Saglayici hatasi
+        # olcegi acamaz; hata turu kanit olarak kayda girer.
+        detay["besleme_hatasi"] = f"{type(exc).__name__}: {exc}"
+        ret = rota_olcek_reddi(None)
+        return (rapor.yaz("olcek", DUSTU,
+                          f"{ret[0]}: canli telemetri beslemesi hata verdi",
+                          "codes/rpi_inference.py", detay), None)
+
+    ret = rota_olcek_reddi(mpp)
+    if ret is not None:
+        return (rapor.yaz("olcek", DUSTU,
+                          f"{ret[0]}: eksik ya da bayat canli irtifa telemetrisi",
+                          "codes/rpi_inference.py", detay), None)
+
+    mpp = float(mpp)
+    detay["mpp"] = mpp
+    return (rapor.yaz("olcek", GECTI,
+                      "canli telemetri bu kare icin gecerli mpp uretti",
+                      "codes/rpi_inference.py", detay), mpp)
 
 
 # ───────────────────────────────────────────────────── halka 6: hedef konumu
@@ -468,18 +538,38 @@ def halka_hedef(rapor: Rapor, kok: Path = KOK) -> str:
 
 # ───────────────────────────────────────────────────────────── halka 7: rota
 def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
-               onceki: str) -> tuple[str, dict | None]:
+               onceki: str, mpp: float | None = None) -> tuple[str, dict | None]:
     """Olcut (§11.3): letterbox'li girdide de ICERIK kutusuna gore karar."""
     if maskeler is None:
         return rapor.atla("rota", onceki), None
     try:
         from costmap_path_finder import rota_bul
+        from karar_sozlesmesi import rota_olcek_reddi
     except ImportError as exc:
         return rapor.yaz("rota", DUSTU, f"costmap_path_finder ice aktarilamadi: {exc}",
                          "codes/costmap_path_finder.py:729"), None
 
+    olcek_reddi = rota_olcek_reddi(mpp)
+    if olcek_reddi is not None:
+        sonuc = {
+            "durum": olcek_reddi[0],
+            "yol_no": None,
+            "waypoints": [],
+            "waypoints_px": [],
+        }
+        detay = {
+            "durum": sonuc["durum"],
+            "yol_no": None,
+            "mpp": mpp,
+            "rota_bul_cagrildi": False,
+            "rota_yayinlanabilir": False,
+        }
+        return (rapor.yaz("rota", DUSTU,
+                          f"rota uretilemedi: durum={olcek_reddi[0]}",
+                          "codes/karar_sozlesmesi.py", detay), sonuc)
+
     t0 = time.perf_counter()
-    sonuc = rota_bul(maskeler, mpp=None, icerik=icerik)
+    sonuc = rota_bul(maskeler, mpp=mpp, icerik=icerik)
     sure = (time.perf_counter() - t0) * 1000
 
     # Fiziksel kirpma yalniz TANISALDIR. Otorite, tam tuval maskesiyle birlikte
@@ -492,7 +582,7 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
         x0, y0, w, h = icerik
         kirpik = {k: v[y0:y0 + h, x0:x0 + w] for k, v in maskeler.items()}
         try:
-            kirpik_durum = rota_bul(kirpik, mpp=None)["durum"]
+            kirpik_durum = rota_bul(kirpik, mpp=mpp)["durum"]
         except (ValueError, IndexError):
             kirpik_durum = None
 
@@ -502,6 +592,9 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
         "icerik_parametresi_var": "icerik" in rota_bul.__code__.co_varnames,
         "icerik_aktarildi": icerik is not None,
         "kirpik_karsilastirma": "yalniz_tanisal",
+        "mpp": mpp,
+        "rota_bul_cagrildi": True,
+        "rota_yayinlanabilir": sonuc["durum"] == "ACIK",
     }
     if sonuc["durum"] != "ACIK":
         return rapor.yaz("rota", DUSTU, f"rota uretilemedi: durum={sonuc['durum']}",
@@ -719,8 +812,10 @@ def halka_motor(rapor: Rapor, kok: Path = KOK) -> str:
         None, detay)
 
 
-def kosuyu_yap(kare_yolu: Path | None, atla_cikarim: bool) -> Rapor:
+def kosuyu_yap(kare_yolu: Path | None, atla_cikarim: bool,
+               olcek_saglayici=_VARSAYILAN_OLCEK_SAGLAYICI) -> Rapor:
     rapor = Rapor()
+    varsayilan_olcek = olcek_saglayici is _VARSAYILAN_OLCEK_SAGLAYICI
     kamera_durum, kare = halka_kamera(rapor, kare_yolu)
 
     if kare is None:
@@ -731,9 +826,15 @@ def kosuyu_yap(kare_yolu: Path | None, atla_cikarim: bool) -> Rapor:
         _model_durum, model_dir = halka_model(rapor)
         _c, maskeler, icerik = halka_cikarim_ve_maske(rapor, kare, model_dir, atla_cikarim)
 
-    halka_olcek(rapor)
+    if varsayilan_olcek:
+        # Tek-kare kuru kosuda sahte GLOBAL_POSITION_INT'i karar aninda besle.
+        # Paketi cikarimdan once damgalamak, yavas bir inference'i telemetri
+        # kesintisi sanip pozitif probi haksiz yere bayatlatirdi. Uretimdeki
+        # arka-plan poller'i ise model cikarimi boyunca surekli calisir.
+        olcek_saglayici = _sahte_canli_olcek_saglayicisi()
+    _olcek_durum, mpp = halka_olcek(rapor, olcek_saglayici, icerik)
     halka_hedef(rapor)
-    halka_rota(rapor, maskeler, icerik, "maske")
+    halka_rota(rapor, maskeler, icerik, "maske", mpp=mpp)
     halka_aktarim(rapor)
     halka_surus_izni(rapor)
     halka_motor(rapor)

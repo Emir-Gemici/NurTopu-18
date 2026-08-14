@@ -19,6 +19,7 @@ Dizin yapisi:
 """
 
 import argparse
+import importlib
 import json
 import sys
 import time
@@ -46,6 +47,7 @@ if __package__:
                                    MASKE_YOK_SEBEBI,
                                    OLCEK_YOK_SEBEBI,
                                    ROTA_PLAN_MAKS_HUCRE,
+                                   TELEMETRI_IRTIFA_TAZELIK_S,
                                    UC_BANT_TEMAS_YOK_SEBEBI,
                                    bant_temasi_gereken_px,
                                    bant_temasi_yeterli_mi,
@@ -54,6 +56,8 @@ if __package__:
                                    zemin_maskesi_reddi,
                                    rota_darbogaz_guveni,
                                   rota_koridor_genisligi_reddi,
+                                  BARIYER_ENGEL_SINIFI,
+                                  ince_bariyer_maskesi,
                                    rota_guven_reddi,
                                    rota_olcek_reddi, serit_no)
 else:
@@ -69,6 +73,7 @@ else:
                                   MASKE_YOK_SEBEBI,
                                   OLCEK_YOK_SEBEBI,
                                   ROTA_PLAN_MAKS_HUCRE,
+                                  TELEMETRI_IRTIFA_TAZELIK_S,
                                   UC_BANT_TEMAS_YOK_SEBEBI,
                                   bant_temasi_gereken_px,
                                   bant_temasi_yeterli_mi,
@@ -77,6 +82,8 @@ else:
                                   zemin_maskesi_reddi,
                                   rota_darbogaz_guveni,
                                   rota_koridor_genisligi_reddi,
+                                  BARIYER_ENGEL_SINIFI,
+                                  ince_bariyer_maskesi,
                                   rota_guven_reddi,
                                   rota_olcek_reddi, serit_no)
 
@@ -101,6 +108,146 @@ CLASS_COLORS = {
 }
 
 
+def _inis_kaniti_modulu():
+    """Inis/irtifa okuyucusunu repo ve duz Jetson paketinde tembel yukle.
+
+    Repo yerlesiminde okuyucu ``comms/inis_kaniti.py`` altindadir; Jetson
+    paket ureticisi ise onu ``rpi_inference.py`` ile ayni dizine kopyalar.
+    Tembel yukleme, yalniz goruntu/FPS araclarini pymavlink kurulmadan da ice
+    aktarilabilir tutar.
+    """
+    repo_okuyucu = _here.parent / "comms" / "inis_kaniti.py"
+    if repo_okuyucu.is_file():
+        repo_koku = str(_here.parent)
+        eklendi = repo_koku not in sys.path
+        if eklendi:
+            sys.path.insert(0, repo_koku)
+        try:
+            return importlib.import_module("comms.inis_kaniti")
+        finally:
+            if eklendi:
+                try:
+                    sys.path.remove(repo_koku)
+                except ValueError:
+                    pass
+    return importlib.import_module("inis_kaniti")
+
+
+class CanliOlcekSaglayici:
+    """Taze MAVLink bagil irtifasini kareye ozgu metre/piksele cevirir.
+
+    Okuyucu tazelik ve kaynak kimligi otoritesidir. Bu sinif son bilinen
+    irtifayi saklamaz: okuyucu her karede ``None`` verirse olcek de ``None``
+    olur. Goruntu genisligi infer boyutu degil, ``_preprocess`` tarafindan
+    dondurulen gercek icerik kutusunun genisligidir.
+    """
+
+    def __init__(self, okuyucu, *, yatay_fov_derece=None, odak_px=None,
+                 baglanti=None):
+        if (yatay_fov_derece is None) == (odak_px is None):
+            raise ValueError("FOV ve odaktan tam olarak biri verilmelidir")
+        self.okuyucu = okuyucu
+        self.yatay_fov_derece = yatay_fov_derece
+        self.odak_px = odak_px
+        self._baglanti = baglanti
+
+    @classmethod
+    def baglan(cls, adres, *, yatay_fov_derece=None, odak_px=None,
+               beklenen_sysid=None):
+        """MAVLink ucunu ac ve ortak ``BagilIrtifaOkuyucu``yu sahiplen."""
+        inis_kaniti = _inis_kaniti_modulu()
+        baglanti = inis_kaniti.mavlink_baglantisi_ac(adres)
+        okuyucu = None
+        try:
+            okuyucu = inis_kaniti.BagilIrtifaOkuyucu(
+                baglanti,
+                TELEMETRI_IRTIFA_TAZELIK_S,
+                beklenen_sysid=beklenen_sysid,
+            )
+            if okuyucu.baslat() is not True:
+                raise RuntimeError(
+                    "MAVLink irtifa okuyucusu baslatilamadi; akis baska tuketicide")
+            return cls(
+                okuyucu,
+                yatay_fov_derece=yatay_fov_derece,
+                odak_px=odak_px,
+                baglanti=baglanti,
+            )
+        except Exception:
+            # Poller baslatildiktan sonra saglayici kurucusu hata verse bile
+            # bağlantıyı canlı thread'in altından çekme. Önce tek tüketiciyi
+            # durdur; durduğu doğrulanamıyorsa kaynak sızıntısı fail-closed daha
+            # güvenlidir.
+            durdu = True
+            durdur = getattr(okuyucu, "durdur", None)
+            if callable(durdur):
+                try:
+                    durdu = durdur() is True
+                except Exception:
+                    durdu = False
+            kapat = getattr(baglanti, "close", None)
+            if durdu and callable(kapat):
+                try:
+                    kapat()
+                except Exception:
+                    pass
+            raise
+
+    def kare_mpp(self, icerik_genisligi_px):
+        """Bu karenin taze irtifasiyla mpp uret; hata/bayatlikta ``None``."""
+        try:
+            irtifa_m = self.okuyucu.irtifa_m()
+        except Exception:
+            return None
+        if irtifa_m is None:
+            return None
+        return mpp_irtifadan(
+            irtifa_m,
+            icerik_genisligi_px,
+            yatay_fov_derece=self.yatay_fov_derece,
+            odak_px=self.odak_px,
+        )
+
+    __call__ = kare_mpp
+
+    def kapat(self):
+        """Sahip olunan MAVLink baglantisini varsa kapat."""
+        durdur = getattr(self.okuyucu, "durdur", None)
+        if callable(durdur):
+            try:
+                durdu = durdur()
+            except Exception:
+                return False
+            # Poller join olmadan alttaki baglantiyi kapatmak yarista recv
+            # hatasi ve belirsiz sahiplik uretir. Kaynak sizintisi, canli bir
+            # thread'in altindan baglantiyi cekmekten daha guvenlidir.
+            if durdu is not True:
+                return False
+        kapat = getattr(self._baglanti, "close", None)
+        if callable(kapat):
+            try:
+                kapat()
+            except Exception:
+                return False
+        self._baglanti = None
+        return True
+
+
+def _kare_olcegi(mpp, canli_olcek, icerik):
+    """Canli kaynak varsa onu tek otorite yap; yoksa eski statik yolu koru."""
+    if canli_olcek is None:
+        return mpp
+    try:
+        uret = getattr(canli_olcek, "kare_mpp", None)
+        if not callable(uret) and callable(canli_olcek):
+            uret = canli_olcek
+        if not callable(uret):
+            return None
+        return uret(icerik[2])
+    except Exception:
+        return None
+
+
 def load_model():
     if not MODEL_DIR.exists():
         print(f"HATA: Model klasoru bulunamadi: {MODEL_DIR}")
@@ -120,19 +267,51 @@ def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
     Eskiden {0,1} sabit kodluydu ve id >= 2 olan her maske SESSIZCE atiliyordu."""
     masks = {int(c): np.zeros((h, w), dtype=np.uint8) for c in sinif_idler}
     r = results[0]
-    if r.masks is None:
-        return masks
-    confs = r.boxes.conf
-    for i, cls in enumerate(r.boxes.cls):
-        cls_id = int(cls)
-        if cls_id not in masks:
-            continue
-        if min_conf is not None and float(confs[i]) < min_conf:
-            continue
-        m = r.masks.data[i].cpu().numpy()
-        m_up = cv2.resize(m, (w, h))
-        masks[cls_id] = np.maximum(masks[cls_id], (m_up > 0.5).astype(np.uint8))
+    if r.masks is not None:
+        confs = r.boxes.conf
+        for i, cls in enumerate(r.boxes.cls):
+            cls_id = int(cls)
+            if cls_id not in masks:
+                continue
+            if min_conf is not None and float(confs[i]) < min_conf:
+                continue
+            m = r.masks.data[i].cpu().numpy()
+            m_up = cv2.resize(m, (w, h))
+            masks[cls_id] = np.maximum(masks[cls_id],
+                                       (m_up > 0.5).astype(np.uint8))
+    # T67 (REVIEW_LOG D-92, D-93): KATMAN 2 ince bariyer dedektoru.
+    # Model bariyeri GORMUYOR (gercek arenada %0,0) ve OGRENEMEZ de: uretec
+    # bariyeri yalniz ZATEN KAPALI seritlere koyuyor (D-93). Klasik dedektor
+    # bu yuzden buraya, ENGEL katmanina eklenir. Maske uretimi `r.masks is
+    # None` dalinda da CALISIR — model hicbir sey gormese bile bariyer engel
+    # olarak isaretlenmelidir.
+    _ince_bariyeri_ekle(masks, r, h, w)
     return masks
+
+
+def _ince_bariyeri_ekle(masks, r, h, w):
+    """Bariyer kollarini ENGEL maskesine EKLE (madde 15: yalniz buyutur).
+
+    Engel katmanini buyutmek serbest alani (`zemin AND NOT engel`) yalniz
+    KUCULTUR — CONTRACTS SS2'nin monotonluk sozlesmesine uygundur.
+    Goruntu yoksa (sahte model, eski sonuc nesnesi) SESSIZCE atlanir; bu
+    fail-safe'tir: hicbir sey EKLENMEZ, hicbir sey CIKARILMAZ.
+    """
+    engel = int(BARIYER_ENGEL_SINIFI)
+    if engel not in masks:
+        return
+    goruntu = getattr(r, "orig_img", None)
+    if goruntu is None:
+        return
+    goruntu = np.asarray(goruntu)
+    if goruntu.ndim != 3 or goruntu.shape[2] != 3 or goruntu.size == 0:
+        return
+    kol = ince_bariyer_maskesi(goruntu)
+    if kol is None or kol.size == 0 or not kol.any():
+        return
+    if kol.shape != (h, w):
+        kol = cv2.resize(kol, (w, h), interpolation=cv2.INTER_NEAREST)
+    masks[engel] = np.maximum(masks[engel], (kol > 0).astype(np.uint8))
 
 
 def draw_masks(image_bgr, masks):
@@ -973,7 +1152,7 @@ def run_fps(model, n=30):
     print("Sonuc    :", "BASARILI" if fps >= 10 else "YETERSIZ — imgsz=256 ile tekrar dene")
 
 
-def run_image(model, path_str, conf, mpp=None):
+def run_image(model, path_str, conf, mpp=None, canli_olcek=None):
     path = Path(path_str)
     RESULTS_DIR.mkdir(exist_ok=True)
 
@@ -1004,12 +1183,15 @@ def run_image(model, path_str, conf, mpp=None):
         results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
+        # Telemetriyi inference SONRASINDA sorgula: karar verildigi anda taze
+        # olmayan bir ornek, model gecikmesi boyunca sessizce yaslanmamalidir.
+        kare_mpp = _kare_olcegi(mpp, canli_olcek, icerik)
 
         # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
         # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
-        olcek_reddi = rota_olcek_reddi(mpp)
+        olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
+            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
             return_reason=True)
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
@@ -1051,7 +1233,7 @@ def run_image(model, path_str, conf, mpp=None):
             print(f"{'':30s}  payload: {json.dumps(ika_data)}")
 
 
-def run_video(model, path_str, conf, save=True, mpp=None):
+def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None):
     path = Path(path_str)
     if not path.is_file():
         print(f"Dosya bulunamadi: {path}")
@@ -1101,11 +1283,12 @@ def run_video(model, path_str, conf, save=True, mpp=None):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
+        kare_mpp = _kare_olcegi(mpp, canli_olcek, icerik)
         # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
         # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
-        olcek_reddi = rota_olcek_reddi(mpp)
+        olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
+            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
             return_reason=True)
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
@@ -1150,7 +1333,12 @@ def run_video(model, path_str, conf, save=True, mpp=None):
         print(f"Kaydedildi: {out_path}")
 
 
-def run_camera(model, conf, mpp=None):
+def run_camera(model, conf, mpp=None, canli_olcek=None):
+    # Imza geriye uyumludur; ancak canli kamera kararinda statik mpp artik
+    # otorite degildir. Eski bir cagirici mpp verse bile telemetri yoksa
+    # `_kare_olcegi` None doner ve rota OLCEK_YOK ile fail-closed kalir.
+    if mpp is not None:
+        print("UYARI: kamera kipinde statik --mpp yok sayildi; canli telemetri gerekir.")
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("Kamera acilamadi.")
@@ -1176,11 +1364,12 @@ def run_camera(model, conf, mpp=None):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
+        kare_mpp = _kare_olcegi(None, canli_olcek, icerik)
         # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
         # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
-        olcek_reddi = rota_olcek_reddi(mpp)
+        olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=mpp,
+            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
             return_reason=True)
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
@@ -1212,7 +1401,7 @@ def run_camera(model, conf, mpp=None):
     cv2.destroyAllWindows()
 
 
-def main():
+def _arguman_ayristirici():
     parser = argparse.ArgumentParser(description="Navitas RPi Inference")
     parser.add_argument("--fps", action="store_true", help="FPS olcumu")
     parser.add_argument("--image", type=str, help="Gorsel dosya veya klasor yolu")
@@ -1226,39 +1415,88 @@ def main():
     # nesne (2x2 m H brandasi) BUGUN URETILEMEZ: uretim modeli 2 sinifli
     # ({0: traversable, 1: blocked}) ve hedef dedektoru YOK (D-23, olculdu).
     parser.add_argument("--mpp", type=float, default=None,
-                        help="Olcek: metre/piksel (dogrudan)")
-    parser.add_argument("--irtifa", type=float, default=None,
-                        help="Bagil irtifa (m) — --fov veya --odak ile mpp uretir")
-    parser.add_argument("--fov", type=float, default=None,
-                        help="Kameranin YATAY gorus acisi (derece)")
-    parser.add_argument("--odak", type=float, default=None,
-                        help="Odak uzakligi (piksel) — --fov yerine kullanilabilir")
+                        help="Yalniz cevrimdisi gorsel/video icin metre/piksel")
+    parser.add_argument(
+        "--mavlink", type=str, default=None,
+        help="Canli irtifa MAVLink adresi (orn. udpin:0.0.0.0:14550)")
+    parser.add_argument(
+        "--mav-sysid", type=int, default=None,
+        help="Zorunlu beklenen Pixhawk sistem kimligi (1..255)")
+    geometri = parser.add_mutually_exclusive_group()
+    geometri.add_argument("--fov", type=float, default=None,
+                          help="Kameranin YATAY gorus acisi (derece)")
+    geometri.add_argument("--odak", type=float, default=None,
+                          help="Odak uzakligi (piksel); --fov ile birlikte verilmez")
+    return parser
+
+
+def _argumanlari_dogrula(parser, args):
+    """Canli kamera yolunda statik olcek/irtifa bypassini kapat."""
+    if (args.mav_sysid is not None
+            and not 1 <= args.mav_sysid <= 255):
+        parser.error("--mav-sysid 1..255 tamsayi olmalidir")
+    if args.camera and args.mpp is not None:
+        parser.error("--camera statik --mpp kabul etmez; canli MAVLink gerekir")
+    if args.camera and args.mavlink is None:
+        parser.error("--camera icin --mavlink zorunludur")
+    if args.mavlink is not None:
+        if args.mpp is not None:
+            parser.error("--mavlink ile statik --mpp birlikte kullanilamaz")
+        if args.mav_sysid is None:
+            parser.error("--mavlink icin --mav-sysid zorunludur")
+        if args.fov is None and args.odak is None:
+            parser.error("--mavlink icin --fov veya --odak zorunludur")
+    elif args.fov is not None or args.odak is not None:
+        parser.error("--fov/--odak yalniz --mavlink ile kullanilir")
+
+
+def main():
+    parser = _arguman_ayristirici()
     args = parser.parse_args()
 
     if not any([args.fps, args.image, args.video, args.camera]):
         parser.print_help()
         return
 
+    _argumanlari_dogrula(parser, args)
+
     mpp = args.mpp
-    if mpp is None and args.irtifa is not None:
-        mpp = mpp_irtifadan(args.irtifa, INFER_SIZE,
-                            yatay_fov_derece=args.fov, odak_px=args.odak)
-    if mpp is None and not args.fps:
+    canli_olcek = None
+    if args.mavlink is not None:
+        try:
+            canli_olcek = CanliOlcekSaglayici.baglan(
+                args.mavlink,
+                yatay_fov_derece=args.fov,
+                odak_px=args.odak,
+                beklenen_sysid=args.mav_sysid,
+            )
+        except Exception as exc:
+            # Baglanti kurulamamasi olcege donusturulmez. Maske goruntulenebilir,
+            # fakat her kare OLCEK_YOK ile rota yayinlamadan kalir.
+            print(f"UYARI: canli irtifa okunamadi ({exc}) -> {OLCEK_YOK_SEBEBI}")
+    if mpp is None and canli_olcek is None and not args.fps:
         # Sessiz varsayilan YOK: kullanici olcegin uretilemedigini GORUR.
         print("UYARI: olcek (mpp) turetilemedi -> gorev yolunda her kare "
-              f"{OLCEK_YOK_SEBEBI} ile reddedilecek. --mpp veya "
-              "--irtifa ile --fov/--odak verin.")
+              f"{OLCEK_YOK_SEBEBI} ile reddedilecek. Cevrimdisi kipte "
+              "--mpp; canli kipte --mavlink ile --fov/--odak verin.")
 
-    model = load_model()
-
-    if args.fps:
-        run_fps(model)
-    elif args.image:
-        run_image(model, args.image, args.conf, mpp=mpp)
-    elif args.video:
-        run_video(model, args.video, args.conf, save=not args.no_save, mpp=mpp)
-    elif args.camera:
-        run_camera(model, args.conf, mpp=mpp)
+    try:
+        model = load_model()
+        if args.fps:
+            run_fps(model)
+        elif args.image:
+            run_image(model, args.image, args.conf, mpp=mpp,
+                      canli_olcek=canli_olcek)
+        elif args.video:
+            run_video(model, args.video, args.conf, save=not args.no_save,
+                      mpp=mpp, canli_olcek=canli_olcek)
+        elif args.camera:
+            run_camera(model, args.conf, canli_olcek=canli_olcek)
+    finally:
+        if canli_olcek is not None:
+            if canli_olcek.kapat() is not True:
+                print("UYARI: irtifa poller'i durmadi; MAVLink baglantisi "
+                      "thread altindan kapatilmadi.")
 
 
 if __name__ == "__main__":

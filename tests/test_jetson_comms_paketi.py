@@ -62,6 +62,27 @@ class JetsonCommsPaketiTests(unittest.TestCase):
                          f"stdout={sonuc.stdout}\nstderr={sonuc.stderr}")
         self.assertIn("JETSON_COMMS_IMPORT=OK", sonuc.stdout)
 
+    def test_rpi_canli_olcek_pymavlink_olmadan_izole_import_edilir(self):
+        """T70: duz Jetson yerlesimi ortak irtifa okuyucusunu bulabilmeli."""
+        kod = (
+            "import pathlib,sys; "
+            f"p=pathlib.Path({str(PAKET)!r}).resolve(); "
+            "sys.path[:]=[str(p)]+[x for x in sys.path if x not in ('',str(p))]; "
+            "import rpi_inference as r; "
+            "k=r._inis_kaniti_modulu(); "
+            "assert pathlib.Path(r.__file__).resolve().parent == p; "
+            "assert pathlib.Path(k.__file__).resolve().parent == p; "
+            "assert callable(r.CanliOlcekSaglayici); "
+            "assert callable(k.BagilIrtifaOkuyucu); "
+            "print('JETSON_RPI_CANLI_OLCEK_IMPORT=OK')"
+        )
+        sonuc = subprocess.run(
+            [sys.executable, "-B", "-c", kod], cwd=PAKET,
+            capture_output=True, text=True, timeout=15)
+        self.assertEqual(0, sonuc.returncode,
+                         f"stdout={sonuc.stdout}\nstderr={sonuc.stderr}")
+        self.assertIn("JETSON_RPI_CANLI_OLCEK_IMPORT=OK", sonuc.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

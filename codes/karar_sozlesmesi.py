@@ -260,6 +260,11 @@ def rota_guveni_yeterli_mi(guven):
 # hicbir uyari basilmiyordu.
 SARTNAME_ASGARI_IRTIFA_M = 30.0   # sartname SS5.3.2 asgari gorev irtifasi
 IRTIFA_MAKUL_UST_M = 200.0        # ustu telemetri hatasi sayilir (fail-closed)
+# T70 / REVIEW_LOG D-98: kare olcegi yalniz bu yastan daha yeni MAVLink
+# GLOBAL_POSITION_INT.relative_alt orneginden turetilebilir. Bu bir saha mesaj
+# hizi varsayimi degil, azami guvenlik yasidir: daha yavas/eksik akis rotayi
+# OLCEK_YOK ile fail-closed durdurur. Host monotonic saati kullanilir.
+TELEMETRI_IRTIFA_TAZELIK_S = 0.50
 
 
 def mpp_irtifadan(irtifa_m, goruntu_genislik_px, *, yatay_fov_derece=None,
@@ -580,3 +585,130 @@ def zemin_maskesi_reddi(trav, icerik=None):
             f"%{100.0 * ZEMIN_KENAR_DAYANMA_TAVANI:.1f}). Maske sahneyi ayirt "
             "etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota "
             "uretilmez.")
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T67 · INCE BARIYER DEDEKTORU — KATMAN 2   (CONTRACTS SS2 · REVIEW_LOG D-92/93)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (gercek arena karesinde, MODEL KULLANILMADAN olculdu — D-92):
+#
+#   bariyer pikselleri n = 3644
+#     model ENGEL diyor : %0,0     <- tek piksel bile degil
+#     model ZEMIN diyor : %30,9
+#   ROTA x BARIYER kesisimi: 59 px  -> KESIYOR (gorsel dogrulandi)
+#
+# Korumalarin HICBIRI ateslemiyor: zemin kapisi susuyor (kaplama 0,579 < 0,67),
+# karar reddi yok, guven 0,75, darbogaz 27,8 px "genis" gorunuyor. Rotayi
+# yayindan alikoyan TEK sey `OLCEK_YOK` — bir kapi degil, bir EKSIKLIK.
+#
+# MODEL BEKLENMIYOR (D-93): uretec bariyeri YALNIZ zaten KAPALI seritlere
+# koyuyor; acik zeminde bariyer orani %0,0. Egitim verisi "acik gorunen zeminde
+# bariyer" ornegi HIC icermiyor, dolayisiyla model bunu ogrenemez. Cozum
+# KATMAN 2'de klasik dedektordur.
+#
+# NEDEN KROMA CALISIR: D-87 gercek arenanin renk kunyesini olctu — sahnenin
+# TAMAMINDA |a*| < 1 (baskin paletin alti kumesinde de). Bariyer sahnedeki TEK
+# yuksek kromali yapidir; olculen tepe a* = 44. Esik 25 iki tarafa da genis pay
+# birakir (gurultu tarafina 25x, bariyer tarafina 1,76x).
+#
+# 🔴 TUZAK — "KIRMIZI = ENGEL" KURALI HEDEFI OLDURUR. Sartname METNI hedefi
+# "2x2 m KIRMIZI branda" diyor (figur notr gosteriyor; celiski D-87'de). Naif
+# bir kirmizi kurali HB'yi engel sayar, IKA hedefe HICBIR ZAMAN ulasamaz ve
+# P_gorev = 0 olur. Ayrim RENKLE DEGIL SEKILLE yapilir:
+#
+#   yapi            en/boy (olculen)      sonuc
+#   HB pedi         1,00 (T60, n=260)     KARE  -> ELENIR, engel sayilmaz
+#   bariyer kolu    7,0  ve  14,2         UZUN  -> engel sayilir
+#
+# Esik 4,0 ikisinin ORTASINDADIR: HB tarafina 4,0x, bariyer tarafina 1,75x pay.
+#
+# OLCUTLER ORAN'DIR, PIKSEL DEGIL (CONTRACTS SS8). Referans olcum betigi
+# (`63_bariyer_kesisimi.py`) ciplak piksel kullaniyordu (61x5 cekirdek, alan
+# 300, genislik 60) ve 1059 genisligindeki KAYNAK karede kalibre edilmisti;
+# uretim zincirinde tespit `small` (512x512) uzerinde yapilir ve orada o
+# sabitler KISA KOLU KACIRIYOR (w=47 < 60). Orana cevrilince uc cozunurlukte de
+# ayni iki kol bulunuyor:
+#
+#   cozunurluk        kol    w/W (kisa · uzun)    en/boy (kisa · uzun)
+#   KAYNAK 1059x634    2     0,093 · 0,215        7,0 · 14,2
+#   sq     1059x1059   2     0,093 · 0,215        7,0 · 14,2
+#   small   512x512    2     0,092 · 0,215        6,7 · 13,8
+#
+# ⚠ MADDE 15: bu dedektor yalniz ENGEL KATMANINA EKLER. Serbest alan
+# `zemin AND NOT engel` oldugu icin sonuc yalniz KUCULUR; hicbir kosulda
+# buyumez. CONTRACTS SS2: "Katman 2'ye yeni bir dedektor eklemek monotonik
+# olarak GUVENLIDIR."
+#
+# 🔴 KALIBRASYON ZEMINI GERCEK ARENA DEGIL, TEK BIR YAPAY ZEKA GORUNTUSUDUR
+# (D-99). Sartname Sekil 1 alt yazisi: "Gorsel tamamen yapay zeka ile
+# olusturulmustur. Gercek alani dogrudan yansitmamaktadir." Bariyerin
+# KIRMIZI-BEYAZ gorunumu bu yuzden UYDURMADIR; gercek arenada fiziki engeller
+# kirmizi OLMAYABILIR ve o durumda bu dedektor HIC ATESLEMEZ (fail-safe:
+# sistem T67 oncesi davranisa doner, hicbir sey bozulmaz).
+# AYAKTA KALAN GEREKCE: sartname METNI (SS2.1) kapali guzergahlarin "fiziki
+# engellerle kapatilacagini" soyler — ince-engel riski GERCEKTIR, yalniz
+# gorunumu bilinmiyor.
+# "Bariyer sorunu cozuldu" genel bir iddia DEGILDIR.
+#
+# 🔴 D-99 TUZAGI KESINLESTIRDI: figur yapay oldugu icin artik METIN OTORITEDIR
+# ve metin (SS2.1) hedefi "uzerinde KIRMIZI H harfi bulunacagi bir bolge" diye
+# tanimlar. Yani HB GERCEKTEN KIRMIZIDIR; D-87'nin figure dayanan "notr ped"
+# hukmu GECERSIZDIR. Asagidaki SEKIL ayrimi bu yuzden sussuz degil, TASIYICIDIR.
+BARIYER_KROMA_ESIGI = 25
+BARIYER_EN_BOY_ORANI = 4.0
+BARIYER_ASGARI_GENISLIK_ORANI = 60.0 / 1059.0        # ~0,0567
+BARIYER_ASGARI_ALAN_ORANI = 300.0 / (1059.0 * 634.0)  # ~0,000447
+BARIYER_KAPAMA_ORANI = 61.0 / 1059.0                  # ~0,0576
+
+
+def ince_bariyer_maskesi(bgr):
+    """Uzun/ince/yuksek-kromali YATAY yapilari isaretle (KATMAN 2 engeli).
+
+    Girdi BGR goruntu; cikti ayni (h, w) boyutunda uint8 ikili maske.
+    Fail-closed: cozulemeyen girdide BOS maske doner — yani hicbir sey
+    EKLEMEZ. Bu olcut hicbir kosulda serbest alani BUYUTEMEZ (madde 15).
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return None
+    im = _np.asarray(bgr)
+    if im.ndim != 3 or im.shape[2] != 3 or im.size == 0:
+        return None
+    h, w = im.shape[:2]
+    if h < 3 or w < 3:
+        return _np.zeros((max(h, 0), max(w, 0)), _np.uint8)
+
+    lab = _cv2.cvtColor(im.astype(_np.uint8), _cv2.COLOR_BGR2LAB)
+    a = lab[:, :, 1].astype(_np.int16) - 128
+    kirmizi = (a > BARIYER_KROMA_ESIGI).astype(_np.uint8)
+
+    # Serit araliklarini (beyaz bantlar) kapatarak kolu TEK PARCA yap.
+    # Cekirdek genislige oranlidir; sabit piksel cozunurluk degisince kayar.
+    kx = max(3, int(round(w * BARIYER_KAPAMA_ORANI)) | 1)
+    ky = max(3, int(round(kx / 12.0)) | 1)
+    kirmizi = _cv2.morphologyEx(
+        kirmizi, _cv2.MORPH_CLOSE,
+        _cv2.getStructuringElement(_cv2.MORPH_RECT, (kx, ky)))
+
+    n, lbl, st, _ = _cv2.connectedComponentsWithStats(kirmizi, 8)
+    asgari_alan = max(1.0, BARIYER_ASGARI_ALAN_ORANI * w * h)
+    asgari_gen = max(2.0, BARIYER_ASGARI_GENISLIK_ORANI * w)
+    kol = _np.zeros((h, w), _np.uint8)
+    for i in range(1, n):
+        x, y, bw, bh, alan = st[i]
+        if alan < asgari_alan:
+            continue
+        # UZUN ve INCE olmali: HB pedi KAREDIR ve buradan GECEMEZ.
+        if bw > BARIYER_EN_BOY_ORANI * max(1, bh) and bw > asgari_gen:
+            kol[lbl == i] = 1
+    return kol
+
+
+# T67: bariyer hangi maske katmanina EKLENIR. `sinif_semasi.ENGEL` ile ayni
+# olmak ZORUNDADIR; ama `sinif_semasi` Jetson saha paketinde YOKTUR
+# (`scripts/jetson_paket_hazirla.py` KOPYALAR listesi), bu yuzden buradan
+# import EDILEMEZ — sahada ImportError olurdu. Iki degerin esitligi
+# `tests/test_ince_bariyer.py` ile kilitlenir; biri degisip digeri kalamaz.
+BARIYER_ENGEL_SINIFI = 1

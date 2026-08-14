@@ -135,7 +135,7 @@ class CostmapIcerikCagriYeriTests(unittest.TestCase):
         rapor = modul.Rapor()
         with mock.patch.object(costmap_path_finder, "rota_bul", sahte_rota):
             durum, _sonuc = modul.halka_rota(
-                rapor, maskeler, icerik, modul.GECTI)
+                rapor, maskeler, icerik, modul.GECTI, mpp=0.05)
 
         self.assertEqual(modul.DUSTU, durum)
         self.assertEqual(2, len(cagrilar))

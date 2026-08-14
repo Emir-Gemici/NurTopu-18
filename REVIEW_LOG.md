@@ -6266,3 +6266,251 @@ Cekimserlik gorevi durdurur ama IKA'yi carptirmaz; bayat olcek carptirir.
      OLCULMEDI; "bayat" tanimi bu gorevde SAYILASTIRILMADI.
   3. Kamera FOV/odak degeri de elle verilir; onun dogrulugu bu kayitta ELE
      ALINMADI — ayni sinifta ikinci bir acik olabilir.
+
+---
+
+### D-99 · 🔴 BUYUK DUZELTME · "Gercek arena karesi" GERCEK DEGIL: sartname figuru YAPAY ZEKA URUNU; D-84/D-87/D-88/D-92/D-95 zinciri yeniden degerlendirildi
+Duzelten: Claude 1 (mimar) · 2026-08-14 · kaynak `Ileri_Otonom_Sistemler_..._Sartname_TR_Ltktw.pdf` s.8 · **kullanici uyarisi uzerine**
+
+**KULLANICI SORDU, BEN SORMAMISTIM.** Kullanici "sartnamede bize arac
+vermeyecekler ki, sartnameyi incele" dedi. Sartname metni okundu ve Sekil 1'in
+ALT YAZISI bulundu:
+
+> *"Yarisma alani ve operasyonel cevre **ornek** gorseli (Gorsel **tamamen yapay
+> zeka ile olusturulmustur. Gercek alani dogrudan yansitmamaktadir.**)"*
+
+Yani `data/arena_referans/sartname_s9_arena.png` — D-84'ten beri "projenin
+sahip oldugu TEK GERCEK arena goruntusu" diye uzerine olcum kurdugum kare —
+**gercek arena degildir; yapay zeka ile uretilmis bir ILLUSTRASYONDUR.**
+
+D-87 bunu "DOGRULANAMADI 1" olarak isaretlemisti ("figurun gercek arenayi mi
+temsili bir gorseli mi gosterdigi bilinmiyor"). Cevap sartnamenin KENDI
+sayfasindaydi ve **ben o sayfayi okumadan figuru cikarip kullanmaya
+basladim**. Bu, D-53'un ("olcum zeminine bak") tekrarindan baskasi degildir.
+
+**ETKILENEN KAYITLAR — silinmiyor, GECERLILIK ALANI daraltiliyor.**
+
+    kayit   iddia                                    yeni durum
+    D-84    "GERCEK arena karesi bulundu"            YANLIS ADLANDIRMA. Kare bir
+                                                     illustrasyondur. v21'in orada
+                                                     kor oldugu OLCUMU gecerlidir,
+                                                     ama "gercek arenada kor" DEGIL.
+    D-87    renk kunyesi (L/a/b hedefleri)           YAPAY ZEKA URETIMI bir goruntunun
+                                                     kunyesidir. GERCEK arenanin
+                                                     renk hedefi DEGILDIR.
+    D-88    "tek gercek kare, ikincisi gelmeyecek"   Duzeltilir: elimizde HIC gercek
+                                                     arena goruntusu YOK. Kisit
+                                                     GERCEKTE DAHA AGIR.
+    D-92    "gercek arenada rota bariyeri kesiyor"   Illustrasyonda kesiyor. Bariyerin
+                                                     GORUNUMU uydurmadir; ama sartname
+                                                     metni guzergahlarin "fiziki
+                                                     engellerle" kapatildigini SOYLER,
+                                                     yani ince-engel riski GERCEKTIR.
+    D-95    "v25 GERCEK ARENADA kor -> uretime        Karar AYAKTA ama GEREKCESI ZAYIF.
+            girmiyor"                                 Olcut bir illustrasyondu.
+                                                      Yeniden gerekcelendirildi (asagida).
+
+**D-95 KARARI NEDEN AYAKTA KALIYOR (yeni gerekce).** v25'in reddi artik
+"gercek arenada kor" diye savunulamaz. Ancak su ayakta: v25, ustten bakisli,
+molozlu, izgarali, dusuk kromali bir sahnede `conf=0.02`'ye kadar SIFIR zemin
+uretip sahneyi butunuyle ENGEL ilan ediyor. Bu, EGITIM DAGILIMINA yakin ama
+ayni olmayan bir goruntude tam cokme demektir ve yarisma gunu gercek arena da
+egitim dagilimimizin disinda olacaktir. Karar **kirilganlik** gerekcesiyle
+korunur, "gercek alan" gerekcesiyle degil. v24 uretimde kalir.
+
+**SARTNAME METNI — FIGURLE CELISEN UC NOKTA. ARTIK METIN OTORITEDIR.**
+Figur "gercek alani yansitmiyor" diye ILAN EDILDIGI icin, figur ile metin
+celistiginde **metin kazanir**. D-87'nin "figur kazanir" hukmu TERSINE DONER:
+
+  1. **HB KIRMIZIDIR.** SS2.1: *"2 metre x 2 metre boyutlarinda uzerinde
+     **kirmizi H harfi** bulunacagi bir bolgedir."* D-87 bulgu 3a (figurden
+     "kroma sifir, siyah ped + beyaz H") **GECERSIZDIR**. T56'da koydurdugum
+     kirmizi branda DOGRUYDU; T60'ta figure gore siyah/beyaz yaptirmam
+     HATADIR ve geri alinmalidir (T71).
+  2. **IHA-IB 30x30 m MAVI bolge GERCEKTIR.** SS2.1 acikca tanimliyor. T60'ta
+     "figurde yok" diye kapsam disi biraktim; gerekce cokmustur (T71).
+  3. **GUZERGAHLAR MOLOZ YIGINLARI ARASINDADIR.** SS2.1: *"moloz yiginlari
+     arasinda olusturulmus uc (3) adet farkli yol"* ve kapali olanlar
+     *"fiziki engellerle kapatilacaktir"*. Bu, T66'nin "dikey seritler degil,
+     moloz ADALARI" tespitini SARTNAME DUZEYINDE dogrular.
+
+**KULLANICININ ASIL NOKTASI DOGRUDUR — SARTNAMEDE ARAC YOKTUR.** Engel kumesi
+metinde "moloz yiginlari ve engeller" / "fiziki engeller"dir. v24'un `blocked`
+sinifinin pratikte bir ARAC ayirici olmasi (asagida olculdu) yarisma acisindan
+**degersizdir**.
+
+**OLCUM — `blocked` sinifi alan degistirince susuyor:**
+
+    kaynak                  n   zemin%   ENGEL%   engel/zemin
+    sartname figuru         1     34,6      0,5        0,015
+    raw_frames (otopark)    8     43,6     14,1        0,324   <- araclar
+    copy_paste_gercek       8     44,8     12,8        0,286
+    sentetik_arena val      8     26,0     22,8        0,877
+
+    T60 kadraj, YER GERCEGI moloz bolgelerinde (n=79):
+      ENGEL sinifi engel diyor        %95,4  (medyan %98,3)
+      ZEMIN disi birakiyor            %95,2  (medyan %99,1)
+
+Yani `blocked` SENTETIKTE calisiyor, GERCEK fotografta yalniz araclarda
+atesliyor. Sozlesmede v21 icin zaten yazili olan not (`karar_sozlesmesi.py:342`
+*"pratikte arac mi degil mi ayiricisidir"*) v24'te de gecerlidir.
+
+**🔴 ASIL TEHLIKE — ZEMIN SINIFI GERCEK MOLOZU ZEMIN SANIYOR.** Figur uzerinde,
+D-87 renk kunyesiyle kurulan MODELDEN BAGIMSIZ kahinle:
+
+    moloz-renkli bolgede (kare'nin %9,9'u)
+      model ZEMIN diyor        %37,9   <- TEHLIKELI yon
+      model ENGEL diyor        % 5,9
+      hicbiri ("zemin degil")  %57,0   <- bizi yalnizca DEGISMEZ koruyor
+
+Emniyet agi (Katman 2) gercek goruntude fiilen YOKTUR; koruma tamamen
+Katman 1'in "zemin degil -> engel" varsayilanina kalmistir ve o da molozun
+%37,9'unda yaniliyor.
+
+**DOGRULANAMADI**
+  1. Gercek yarisma arenasinin gorunumu HAKKINDA HICBIR SEY BILMIYORUZ. Elde
+     tek bir gercek goruntu yoktur. D-88'in kisiti daralmadi, AGIRLASTI.
+  2. Figurun YAPISAL bilgisi (uc guzergah, moloz, bariyer, izgara, H pedi)
+     sartname METNIYLE ortusen kismi icin yol gostericidir; RENK, DOKU ve
+     GEOMETRI bilgisi ise uydurmadir ve olcum hedefi olarak KULLANILAMAZ.
+  3. `blocked` sinifinin gercek arenada ne yapacagi OLCULEMEZ — gercek kare
+     yok. Yukaridaki tablo yalniz eldeki alanlar icindir.
+
+---
+
+### D-100 · UYGULANDI · T67: KATMAN 2 ince bariyer dedektoru; kesisim 59 -> 0 px, HB KORUNDU
+Uygulayan: Claude 2 · 2026-08-14 · gorev T67 · kanit D-92, D-93 · ⚠ zemin duzeltmesi D-99
+
+**YAPILAN.** `karar_sozlesmesi.ince_bariyer_maskesi()` (KATMAN 2 klasik
+dedektor) + `rpi_inference.get_masks` icinde tek cagri. Dedektor ENGEL
+katmanina EKLER; serbest alan (`zemin AND NOT engel`) yalniz KUCULUR — madde 15
+ve CONTRACTS SS2 monotonluk sozlesmesi korunur. `comms/` DEGISTIRILMEDI.
+
+**REFERANS KOPYALANMADI, ORANA CEVRILDI.** `63_bariyer_kesisimi.py` ciplak
+piksel kullaniyordu (cekirdek 61x5 · alan 300 · genislik 60) ve 1059 genisligindeki
+KAYNAK karede kalibreydi. Uretim zincirinde tespit `small` (512x512) uzerinde
+yapilir — orada o sabitler KISA KOLU KACIRIYOR (w=47 < 60). Olculdu:
+
+    cozunurluk        kol    w/W (kisa · uzun)   en/boy (kisa · uzun)
+    KAYNAK 1059x634    2     0,093 · 0,215       7,0 · 14,2
+    sq     1059x1059   2     0,093 · 0,215       7,0 · 14,2
+    small   512x512    2     0,092 · 0,215       6,7 · 13,8
+
+Oranlar olcekten BAGIMSIZ. 512 tabanli maske KAYNAK maskesinin %91,1'ini
+kapsiyor (IoU 0,850) — engel katmani icin yeterlidir.
+
+`get_masks` ayrica `r.masks is None` dalinda da calisacak sekilde yeniden
+duzenlendi: model hicbir sey gormese bile bariyer engeldir. Eskiden orada
+ERKEN DONULUYORDU.
+
+**KAPI 1 — GERCEK OLCUM (`63_bariyer_kesisimi.py`).**
+
+                              taban (D-92)      T67
+    model ENGEL diyor           %0,0           %91,1
+    ROTA x BARIYER kesisimi     59 px          0 px      GECTI
+
+Gorsel dogrulandi (`results/t63/bariyer_kesisim.png`): iki kol da sari
+isaretli, rota hicbirine degmiyor. ⚠ Rota artik arenanin SOL KENARINA kaymis
+ve guven 0,216 (esik 0,20). Kesisim 0'dir ama bu "iyi rota" demek DEGILDIR;
+T65'in cozemedigi arena-siniri sinifina yakindir.
+
+**KAPI 2 — HB PEDI ENGEL SAYILMIYOR (uc ayri kanit).**
+
+  A. Gercek(!) karede HB bolgesi: a* min -6 · maks 4 -> 0/3100 engel pikseli.
+     ⚠ ZAYIF kanit: o figurde HB zaten siyah/beyaz.
+  B. SENTETIK KIRMIZI HB (sartname METNINE sadik en kotu durum), a* = 65:
+     64x64 kare -> 0 engel pikseli KORUNDU
+     ayni karede 240x14 bariyer -> 3360 piksel YAKALANDI  (POZITIF KONTROL,
+     D-15/K-04: "hicbir sey bulamiyor" hali basari sayilamaz)
+  C. Sekil supurmesi — sinir tam en/boy 4,0'da:
+       64x64 (1,0) · 128x128 (1,0) · 100x40 (2,5) · 100x25 (4,0) -> ENGEL DEGIL
+       100x24 (4,2) · 200x49 (4,1) · 240x14 (17,1)               -> ENGEL
+
+**KAPI 3 — REGRESYON (`61_rota_moloza_basma.py`, v24 · kadraj_t60).**
+
+                          ROTA     MOLOZA    AGIR   ARENA DISI
+    taban (T69)        244/260     6/244   6/244      5/244
+    T67                242/260     4/242   2/242      5/242
+
+Rota uretimi COKMEDI (-2). Moloza basma ARTMADI, **AZALDI** (6 -> 4; agir
+basma 6 -> 2; basma orani ort %1,86 -> %0,54). Sebep: kadraj bariyerleri de
+gercek engeldir ve model onlari da kaciriyordu.
+
+**KAPI 4 — MUTASYON KONTROLU (canli, iki olcum birden).**
+
+    M0  dedektor ACIK      kesisim   0 px · ENGEL %91,1 | rota 242 · moloza 4
+    M1  dedektor KAPALI    kesisim  59 px · ENGEL % 0,0 | rota 244 · moloza 6
+    M2  geri alma          kesisim   0 px · ENGEL %91,1
+
+Her iki olcum de TAM TABANA dondu. Degisim dedektordendir.
+
+**KAPI 5 — depo kapilari.**
+
+    codes/test_rota_sentetik.py     SONUC: 15/15 dogru              GECTI
+    unittest discover -s tests -q   Ran 406 · FAILED (failures=1)   asagi bak
+    scripts/jetson_paket_hazirla.py 9/9 bayt-esit                   GECTI
+
+⚠ **TEK DUSEN TEST BENIM DEGIL.** `test_costmap_icerik_cagri_yerleri.py::
+test_kuru_kosu_ana_maskeyi_baglar_kirpigi_baglamaz` — dedektor KAPATILIP
+kosuldugunda da DUSUYOR. Sebep baska bir ajanin esZAMANLI calismasi:
+`scripts/saha_kuru_kosu.py` calisma agacinda degistirilmis ve `halka_rota`
+imzasi degismis (`mpp` eklenmis), test eski imzayla cagiriyor. `scripts/`
+T67'nin izin listesinde YOK; DOKUNULMADI, duzeltilmedi.
+
+**DEDEKTOR ISABETI — sentetik kumede BAGIMSIZ olculdu** (T60 kadraj n=260,
+model KULLANILMADAN, yer gercegi manifest `bariyerler` kutulari):
+
+    bariyer tasiyan kare        210 · bariyer yok 50
+    bariyer BULUNAN             153/210
+    KACIRILAN                    57/210
+      -> 54'unde bariyer kutusunda HIC yuksek-kroma piksel YOK
+         (bariyer moloz ALTINDA, goruntude gorunmuyor — dedektorun suclu
+          oldugu bir kacirma DEGIL)
+      -> 3'unde kroma VAR, sekil filtresi eledi   <- GERCEK kacirma (%1,4)
+    GORUNUR bariyerlerde isabet: 153/156 = %98,1
+
+    tespit pikselinin bariyer kutusu icinde kalani: medyan %92,1 · p10 %84,0
+    kutu disina tasan tespit: 144/260 karede (medyan 170 px)
+      -> tasan pikselin %90,5'i arena ICINDE (kolun pencereyi biraz asmasi)
+      -> %9,5'i arena DISINDA (alan disi fotograflardaki kirmizi nesneler)
+
+**🔴 D-99 ZEMINI DEGISTIRDI — bu gorev onunla birlikte okunmalidir.**
+Mimar ben calisirken D-99'u yazdi: `sartname_s9_arena.png` GERCEK ARENA
+DEGILDIR, sartname Sekil 1 alt yazisina gore "tamamen yapay zeka ile
+olusturulmustur". Bunun T67'ye UC etkisi var ve ucu de kayda gecirildi
+(`CONTRACTS` SS2.1 ve sabit yorumu D-99'a gore DUZELTILDI):
+
+  1. **Dedektorun RENK ANAHTARI yapay bir goruntuden kalibre edilmistir.**
+     Bariyerin kirmizi-beyaz gorunumu UYDURMADIR. Gercek arenada fiziki
+     engeller kirmizi OLMAYABILIR; o durumda dedektor HIC ATESLEMEZ.
+     ⚠ Bu FAIL-SAFE'tir: hicbir sey eklenmez, hicbir sey cikarilmaz, sistem
+     T67 oncesi davranisa doner. Yani D-99 bu isi GERI ALDIRMAZ, yalniz
+     GECERLILIK ALANINI daraltir.
+  2. **AYAKTA KALAN GEREKCE:** sartname METNI (SS2.1) kapali guzergahlarin
+     "fiziki engellerle kapatilacagini" soyler. Ince-engel riski GERCEKTIR;
+     bilinmeyen yalniz GORUNUMDUR.
+  3. **TUZAK KESINLESTI, HAFIFLEMEDI.** Figur yapay oldugu icin artik METIN
+     OTORITEDIR ve metin (SS2.1) hedefi "uzerinde KIRMIZI H harfi bulunacagi
+     bir bolge" diye tanimlar. Yani HB GERCEKTEN KIRMIZIDIR ve naif bir
+     "kirmizi = engel" kurali P_gorev'i sifirlardi. Bu isin en tasiyici
+     kaniti, KAPI 2-B'deki SENTETIK KIRMIZI HB testidir — gercek(!) karedeki
+     siyah/beyaz ped kanit olarak artik BASLI BASINA YETERSIZDIR.
+
+**YENI TEST PAKETI** `tests/test_ince_bariyer.py` (18 test): sozlesme kaynagi
+(`BARIYER_ENGEL_SINIFI == sinif_semasi.ENGEL` kilidi — `sinif_semasi` Jetson
+paketinde YOK, import EDILEMEZ) · hedef korumasi (kirmizi kare 4 boyutta,
+pozitif kontrol, esik sinirlari) · figur karesi olcumleri (2 kol, 3644 px,
+HB/IHA/IKA engel sayilmaz) · cozunurluk bagimsizligi (320/640/1280) ·
+fail-safe · `get_masks` entegrasyonu (model bos donunce de calisir, madde 15
+monotonlugu, goruntu yoksa sessizce atlar, ENGEL sinifi istenmemisse dokunmaz).
+
+**DOGRULANAMADI**
+  1. GERCEK arena basarimi. Elimizde gercek arena goruntusu **YOKTUR** (D-99).
+     "Bariyer sorunu cozuldu" genel bir iddia DEGILDIR.
+  2. Gercek fiziki engellerin RENGI bilinmiyor; kroma anahtari orada
+     calismayabilir. Yedek bir imza (or. dogrusal yapi / golge) ARANMADI.
+  3. Bariyerin fiziksel YUKSEKLIGI ve IKA'nin altindan gecip gecemeyecegi
+     bilinmiyor (D-92/2'den devam). Fail-safe varsayim: gecilemez.
+  4. Ince-engel sinifinin genel cozumu (tel, halat, kablo) ELE ALINMADI.
+  5. Gercek(!) karede rota simdi arena SOL KENARINA kayiyor ve guven 0,216 —
+     bariyer kusuru cozuldu ama o rotanin KALITESI dogrulanmadi.

@@ -20,6 +20,7 @@ import sys
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest import mock
 
 KOK = Path(__file__).resolve().parents[1]
 for _yol in (KOK / "scripts", KOK / "codes", KOK / "comms"):
@@ -384,37 +385,259 @@ class DenetimRegresyonTests(unittest.TestCase):
 
 
 class OlcekHalkasiTests(unittest.TestCase):
-    """olcek halkasi METIN aramasiyla degil, FONKSIYON imzasiyla karar vermeli.
+    """T70: halka kod varligini degil, kareye ait CANLI beslemeyi olcer."""
 
-    Bu, gelistirme sirasinda gercekten yasanan bir yanlis pozitiftir: duz grep
-    "irtifa"/"fov"/"mpp" kelimelerini costmap_path_finder.py'nin YORUMLARINDA
-    bulup halkayi GECTI isaretliyordu.
-    """
+    class DiziSaglayici:
+        def __init__(self, *degerler):
+            self.degerler = list(degerler)
+            self.genislikler = []
 
-    def test_yorumda_gecen_kelimeler_halkayi_gecirmez(self):
-        with TemporaryDirectory() as t:
-            kok = Path(t)
-            (kok / "codes").mkdir()
-            (kok / "codes" / "sahte.py").write_text(
-                '"""irtifa ve FOV bilgisinden mpp turetilmelidir (yapilmadi)."""\n'
-                '# mpp = irtifa * fov  <- TODO\n'
-                'def bir_sey():\n'
-                '    return 1\n',
-                encoding="utf-8")
-            self.assertIsNone(sk._irtifadan_mpp_ureticisi_bul(kok))
+        def kare_mpp(self, icerik_genisligi_px):
+            self.genislikler.append(icerik_genisligi_px)
+            return self.degerler.pop(0)
 
-    def test_gercek_fonksiyon_halkayi_gecirir(self):
-        with TemporaryDirectory() as t:
-            kok = Path(t)
-            (kok / "codes").mkdir()
-            (kok / "codes" / "olcek.py").write_text(
-                'def mpp_irtifadan(irtifa_m, fov_deg, genislik_px):\n'
-                '    import math\n'
-                '    return 2 * irtifa_m * math.tan(math.radians(fov_deg / 2)) / genislik_px\n',
-                encoding="utf-8")
-            bulunan = sk._irtifadan_mpp_ureticisi_bul(kok)
-            self.assertIsNotNone(bulunan)
-            self.assertIn("olcek.py", bulunan)
+    def test_sahte_yayinci_ortak_okuyucu_ve_uretim_saglayicisini_besler(self):
+        from karar_sozlesmesi import mpp_irtifadan, SARTNAME_ASGARI_IRTIFA_M
+        from rpi_inference import CanliOlcekSaglayici
+
+        saglayici = sk._sahte_canli_olcek_saglayicisi()
+        rapor = sk.Rapor()
+        durum, mpp = sk.halka_olcek(
+            rapor, saglayici, (0, 80, 640, 480))
+
+        beklenen = mpp_irtifadan(
+            SARTNAME_ASGARI_IRTIFA_M,
+            640,
+            yatay_fov_derece=sk.KURU_KOSU_SAHTE_FOV_DERECE,
+        )
+        self.assertIsInstance(saglayici, CanliOlcekSaglayici)
+        self.assertEqual(sk.GECTI, durum)
+        self.assertAlmostEqual(beklenen, mpp, places=12)
+        self.assertEqual(
+            "CanliOlcekSaglayici",
+            rapor.satirlar[-1]["detay"]["saglayici_sinifi"])
+
+    def test_canli_besleme_mpp_uretince_gecer(self):
+        saglayici = self.DiziSaglayici(0.0546875)
+        rapor = sk.Rapor()
+
+        durum, mpp = sk.halka_olcek(rapor, saglayici, (0, 80, 640, 480))
+
+        self.assertEqual(sk.GECTI, durum)
+        self.assertEqual(0.0546875, mpp)
+        self.assertEqual([640], saglayici.genislikler)
+        self.assertTrue(rapor.satirlar[-1]["detay"]["besleme_cagrildi"])
+        self.assertEqual(640, rapor.satirlar[-1]["detay"]["icerik_genisligi_px"])
+
+    def test_besleme_bayatlayinca_son_bilinen_mpp_kullanilmaz(self):
+        saglayici = self.DiziSaglayici(0.0546875, None)
+
+        ilk_rapor = sk.Rapor()
+        ilk_durum, ilk_mpp = sk.halka_olcek(
+            ilk_rapor, saglayici, (0, 80, 640, 480))
+        bayat_rapor = sk.Rapor()
+        bayat_durum, bayat_mpp = sk.halka_olcek(
+            bayat_rapor, saglayici, (0, 80, 640, 480))
+
+        self.assertEqual(sk.GECTI, ilk_durum)
+        self.assertIsNotNone(ilk_mpp)
+        self.assertEqual(sk.DUSTU, bayat_durum)
+        self.assertIsNone(bayat_mpp, "son bilinen olcek yeniden kullanildi")
+        self.assertIn("OLCEK_YOK", bayat_rapor.satirlar[-1]["sebep"])
+
+    def test_ortak_okuyucu_tazelik_esiginde_rotayi_fail_closed_kapatir(self):
+        """Sahte MAVLink paketi yaşlanınca aynı gerçek zincir yeniden açılmaz."""
+        from inis_kaniti import BagilIrtifaOkuyucu
+        from karar_sozlesmesi import (SARTNAME_ASGARI_IRTIFA_M,
+                                      TELEMETRI_IRTIFA_TAZELIK_S)
+        from rpi_inference import CanliOlcekSaglayici
+
+        class Saat:
+            simdi = 10.0
+
+            def __call__(self):
+                return self.simdi
+
+        saat = Saat()
+        yayinci = sk._SahteIrtifaYayincisi()
+        yayinci.yayinla(SARTNAME_ASGARI_IRTIFA_M)
+        okuyucu = BagilIrtifaOkuyucu(
+            yayinci,
+            TELEMETRI_IRTIFA_TAZELIK_S,
+            beklenen_sysid=yayinci.target_system,
+            monotonic=saat,
+        )
+        self.assertEqual(SARTNAME_ASGARI_IRTIFA_M, okuyucu.oku())
+        saglayici = CanliOlcekSaglayici(
+            okuyucu, yatay_fov_derece=sk.KURU_KOSU_SAHTE_FOV_DERECE)
+
+        taze_rapor = sk.Rapor()
+        taze_durum, taze_mpp = sk.halka_olcek(
+            taze_rapor, saglayici, (0, 80, 640, 480))
+        self.assertEqual(sk.GECTI, taze_durum)
+        self.assertIsNotNone(taze_mpp)
+
+        saat.simdi += TELEMETRI_IRTIFA_TAZELIK_S
+        bayat_rapor = sk.Rapor()
+        bayat_durum, bayat_mpp = sk.halka_olcek(
+            bayat_rapor, saglayici, (0, 80, 640, 480))
+        self.assertEqual(sk.DUSTU, bayat_durum)
+        self.assertIsNone(bayat_mpp)
+        self.assertIn("OLCEK_YOK", bayat_rapor.satirlar[-1]["sebep"])
+
+        np = __import__("numpy")
+        maskeler = {
+            0: np.ones((8, 8), dtype="uint8"),
+            1: np.zeros((8, 8), dtype="uint8"),
+        }
+        rota_raporu = sk.Rapor()
+        rota_durum, rota = sk.halka_rota(
+            rota_raporu, maskeler, (0, 0, 8, 8), sk.GECTI,
+            mpp=bayat_mpp,
+        )
+        self.assertEqual(sk.DUSTU, rota_durum)
+        self.assertEqual("OLCEK_YOK", rota["durum"])
+        self.assertIsNone(rota["yol_no"])
+        self.assertEqual([], rota["waypoints_px"])
+        self.assertFalse(rota_raporu.satirlar[-1]["detay"]["rota_yayinlanabilir"])
+
+    def test_besleme_kopukken_olcek_halkasi_duser(self):
+        rapor = sk.Rapor()
+
+        durum, mpp = sk.halka_olcek(rapor, None, (0, 80, 640, 480))
+
+        self.assertEqual(sk.DUSTU, durum)
+        self.assertIsNone(mpp)
+        self.assertFalse(rapor.satirlar[-1]["detay"]["besleme_cagrildi"])
+        self.assertIn("OLCEK_YOK", rapor.satirlar[-1]["sebep"])
+
+    def test_besleme_kopukken_rota_cozucu_hic_cagrilmaz(self):
+        import costmap_path_finder
+        maskeler = {
+            0: __import__("numpy").ones((8, 8), dtype="uint8"),
+            1: __import__("numpy").zeros((8, 8), dtype="uint8"),
+        }
+        rapor = sk.Rapor()
+
+        with mock.patch.object(costmap_path_finder, "rota_bul") as rota_bul:
+            durum, sonuc = sk.halka_rota(
+                rapor, maskeler, (0, 0, 8, 8), sk.GECTI, mpp=None)
+
+        self.assertEqual(sk.DUSTU, durum)
+        rota_bul.assert_not_called()
+        self.assertEqual("OLCEK_YOK", sonuc["durum"])
+        self.assertIsNone(sonuc["yol_no"])
+        self.assertEqual([], sonuc["waypoints"])
+        self.assertEqual([], sonuc["waypoints_px"])
+        self.assertFalse(rapor.satirlar[-1]["detay"]["rota_yayinlanabilir"])
+
+    def test_gecerli_mpp_ana_ve_tanisal_rota_cagrilarina_aynen_tasinir(self):
+        import costmap_path_finder
+        np = __import__("numpy")
+        maskeler = {
+            0: np.ones((8, 8), dtype="uint8"),
+            1: np.zeros((8, 8), dtype="uint8"),
+        }
+        icerik = (0, 2, 8, 4)
+        rapor = sk.Rapor()
+        cagrilar = []
+
+        def rota_bul(maskeler_girdi, *, mpp=None, icerik=None):
+            cagrilar.append((maskeler_girdi, mpp, icerik))
+            return {"durum": "ACIK", "yol_no": 1}
+
+        with mock.patch.object(costmap_path_finder, "rota_bul", rota_bul):
+            durum, _sonuc = sk.halka_rota(
+                rapor, maskeler, icerik, sk.GECTI, mpp=0.0546875)
+
+        self.assertEqual(sk.GECTI, durum)
+        self.assertEqual(2, len(cagrilar))
+        self.assertEqual([0.0546875, 0.0546875], [c[1] for c in cagrilar])
+        self.assertIs(icerik, cagrilar[0][2])
+
+    def test_kosuyu_yap_olcek_halkasinin_mpp_sini_rota_halkasina_tasir(self):
+        np = __import__("numpy")
+        kare = np.zeros((8, 8, 3), dtype="uint8")
+        maskeler = {0: np.ones((8, 8), dtype="uint8"),
+                    1: np.zeros((8, 8), dtype="uint8")}
+        icerik = (0, 1, 8, 6)
+        saglayici = self.DiziSaglayici(0.0546875)
+        rota = mock.Mock(return_value=(sk.GECTI, {"durum": "ACIK"}))
+
+        with (mock.patch.object(sk, "halka_kamera", return_value=(sk.GECTI, kare)),
+              mock.patch.object(sk, "halka_model", return_value=(sk.GECTI, object())),
+              mock.patch.object(sk, "halka_cikarim_ve_maske",
+                                return_value=(sk.GECTI, maskeler, icerik)),
+              mock.patch.object(sk, "halka_hedef", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_rota", rota),
+              mock.patch.object(sk, "halka_aktarim", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_surus_izni", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_motor", return_value=sk.GECTI)):
+            sk.kosuyu_yap(None, False, olcek_saglayici=saglayici)
+
+        self.assertEqual([8], saglayici.genislikler)
+        self.assertEqual(0.0546875, rota.call_args.kwargs["mpp"])
+
+    def test_kosuyu_yap_varsayilaninda_sahte_uretim_zinciri_kurulur(self):
+        np = __import__("numpy")
+        kare = np.zeros((8, 8, 3), dtype="uint8")
+        maskeler = {0: np.ones((8, 8), dtype="uint8"),
+                    1: np.zeros((8, 8), dtype="uint8")}
+        icerik = (0, 1, 8, 6)
+        saglayici = self.DiziSaglayici(0.0546875)
+        rota = mock.Mock(return_value=(sk.GECTI, {"durum": "ACIK"}))
+
+        olaylar = []
+
+        def saglayici_uret():
+            olaylar.append("sahte_yayin")
+            return saglayici
+
+        def cikarim(*_args, **_kwargs):
+            olaylar.append("cikarim")
+            return sk.GECTI, maskeler, icerik
+
+        with (mock.patch.object(sk, "_sahte_canli_olcek_saglayicisi",
+                               side_effect=saglayici_uret) as fabrika,
+              mock.patch.object(sk, "halka_kamera", return_value=(sk.GECTI, kare)),
+              mock.patch.object(sk, "halka_model", return_value=(sk.GECTI, object())),
+              mock.patch.object(sk, "halka_cikarim_ve_maske",
+                                side_effect=cikarim),
+              mock.patch.object(sk, "halka_hedef", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_rota", rota),
+              mock.patch.object(sk, "halka_aktarim", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_surus_izni", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_motor", return_value=sk.GECTI)):
+            sk.kosuyu_yap(None, False)
+
+        fabrika.assert_called_once_with()
+        self.assertEqual(["cikarim", "sahte_yayin"], olaylar)
+        self.assertEqual([8], saglayici.genislikler)
+        self.assertEqual(0.0546875, rota.call_args.kwargs["mpp"])
+
+    def test_kosuyu_yap_besleme_mutasyonunda_olcek_ve_rota_duser(self):
+        np = __import__("numpy")
+        kare = np.zeros((8, 8, 3), dtype="uint8")
+        maskeler = {0: np.ones((8, 8), dtype="uint8"),
+                    1: np.zeros((8, 8), dtype="uint8")}
+        icerik = (0, 1, 8, 6)
+
+        with (mock.patch.object(sk, "halka_kamera", return_value=(sk.GECTI, kare)),
+              mock.patch.object(sk, "halka_model", return_value=(sk.GECTI, object())),
+              mock.patch.object(sk, "halka_cikarim_ve_maske",
+                                return_value=(sk.GECTI, maskeler, icerik)),
+              mock.patch.object(sk, "halka_hedef", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_aktarim", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_surus_izni", return_value=sk.GECTI),
+              mock.patch.object(sk, "halka_motor", return_value=sk.GECTI)):
+            rapor = sk.kosuyu_yap(None, False, olcek_saglayici=None)
+
+        halkalar = {s["halka"]: s for s in rapor.satirlar}
+        self.assertEqual(sk.DUSTU, halkalar["olcek"]["durum"])
+        self.assertEqual(sk.DUSTU, halkalar["rota"]["durum"])
+        self.assertEqual("OLCEK_YOK", halkalar["rota"]["detay"]["durum"])
+        self.assertFalse(halkalar["rota"]["detay"]["rota_bul_cagrildi"])
+        self.assertFalse(halkalar["rota"]["detay"]["rota_yayinlanabilir"])
 
 
 if __name__ == "__main__":
