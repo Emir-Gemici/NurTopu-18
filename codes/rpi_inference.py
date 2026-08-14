@@ -58,6 +58,8 @@ if __package__:
                                   rota_koridor_genisligi_reddi,
                                   BARIYER_ENGEL_SINIFI,
                                   ince_bariyer_maskesi,
+                                  hb_konumu,
+                                  hedef_yok_reddi,
                                    rota_guven_reddi,
                                    rota_olcek_reddi, serit_no)
 else:
@@ -84,6 +86,8 @@ else:
                                   rota_koridor_genisligi_reddi,
                                   BARIYER_ENGEL_SINIFI,
                                   ince_bariyer_maskesi,
+                                  hb_konumu,
+                                  hedef_yok_reddi,
                                   rota_guven_reddi,
                                   rota_olcek_reddi, serit_no)
 
@@ -508,7 +512,8 @@ def _tohum_hucresi_ankoru(tohum, dist, hucre, adim):
     return x0 + int(yerel_x[secilen]), y0 + int(yerel_y[secilen])
 
 
-def _bagli_koridor_yolu(koridor, icerik, dist, ilk_plan_adimi):
+def _bagli_koridor_yolu(koridor, icerik, dist, ilk_plan_adimi,
+                        hedef_tohumu=None):
     """Uclari bagli koridorda, ornekleme sayisindan bagimsiz guvenli yol kur.
 
     ``_bagli_mi`` karari tam cozunurlukte verir. A* yalniz bu baglantinin somut
@@ -518,6 +523,14 @@ def _bagli_koridor_yolu(koridor, icerik, dist, ilk_plan_adimi):
     worker'i sinirsiz tam-cozunurluk A* ile bloke edilmez.
     """
     alt_tohum, ust_tohum = _uc_tohum_maskeleri(koridor, icerik)
+    # T72: HB bulunduysa A* HEDEFI ust bant DEGIL, HB BOLGESIDIR. Sartname
+    # SS2.2.6 gorevi "IKA'nin HB SINIRLARI ICINE girmesi" diye tanimlar; ust
+    # banda varmak gorevi tamamlamaz. Tohum koridorla KESISTIRILIR: HB
+    # koridora bagli degilse baglanti kapisi zaten reddeder (uydurma yapilmaz).
+    if hedef_tohumu is not None:
+        kesisim = (np.asarray(hedef_tohumu) > 0) & (koridor > 0)
+        if kesisim.any():
+            ust_tohum = kesisim.astype(np.uint8)
     alt_px = int(np.count_nonzero(alt_tohum))
     ust_px = int(np.count_nonzero(ust_tohum))
     if not _bagli_mi(koridor, alt_tohum, ust_tohum):
@@ -714,7 +727,8 @@ def _rota_serit_olcumu(rota, dist, icerik):
 
 def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
                  min_area_ratio=0.01, *, icerik=None, engel_mask=None,
-                 mpp=None, return_reason=False, return_olcum=False):
+                 mpp=None, return_reason=False, return_olcum=False,
+                 goruntu=None):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
@@ -909,8 +923,23 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
              f"R_GEREKLI_M={R_GEREKLI_M:.2f})."),
         )
 
+    # T72 · HEDEF KONUMU (CONTRACTS SS6.4 · REVIEW_LOG D-105).
+    # `goruntu` VERILMEZSE davranis DEGISMEZ: hedef eskisi gibi ust banttir ve
+    # tum mevcut cagri yerleri (olcum betikleri dahil) aynen calisir.
+    # `goruntu` VERILIRSE cagiran "varis noktasini HB'den al" demis olur; HB
+    # bulunamazsa UYDURULMAZ, `HEDEF_YOK` ile cekimser kalinir.
+    hb_tohumu = None
+    if goruntu is not None:
+        hb = hb_konumu(goruntu)
+        if hb is None:
+            return _don(None, 0.0, [], clean, hedef_yok_reddi(), None)
+        hx, hy, hw, hh = hb["kutu"]
+        hb_tohumu = np.zeros(clean.shape, dtype=np.uint8)
+        hb_tohumu[max(0, hy):hy + hh, max(0, hx):hx + hw] = 1
+
     kanonik_yol, kopuk_detay = _bagli_koridor_yolu(
-        gecilebilir, icerik_kutusu, dist, min(k_open.shape))
+        gecilebilir, icerik_kutusu, dist, min(k_open.shape),
+        hedef_tohumu=hb_tohumu)
     if kanonik_yol is None:
         return _don(
             None, 0.0, [], clean,

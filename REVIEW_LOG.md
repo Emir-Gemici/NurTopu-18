@@ -6514,3 +6514,581 @@ monotonlugu, goruntu yoksa sessizce atlar, ENGEL sinifi istenmemisse dokunmaz).
   4. Ince-engel sinifinin genel cozumu (tel, halat, kablo) ELE ALINMADI.
   5. Gercek(!) karede rota simdi arena SOL KENARINA kayiyor ve guven 0,216 —
      bariyer kusuru cozuldu ama o rotanin KALITESI dogrulanmadi.
+
+---
+
+### D-101 · UYGULANDI · T71: sartname METNI otoriteye alindi; HB KIRMIZI H, IHA-IB eklendi, renk TEK NOKTADAN GENIS BANDA
+Uygulayan: Claude 2 · 2026-08-14 · gorev T71 · kanit D-99 · dosya `51_sentetik_arena.py`
+
+**KAPSAM — UC MADDEDEN IKISI YAPILDI, UCUNCUSU BILEREK BIRAKILDI.**
+  1. HB KIRMIZI          -> YAPILDI
+  2. IHA-IB 30x30 MAVI   -> YAPILDI
+  3. Guzergahlar moloz ADALARI arasinda -> **YAPILMADI.** Bu, uretecin serit
+     geometrisinin tam yeniden yazimidir (T66) ve tek gorevde yapilirsa T51/T56
+     kadraj kapilarini (koridor duzlugu, hedef yerlesimi, kenar 2,000 m) riske
+     atardi. Gorev "ikisini birlikte yapabilirsin" diyordu, ZORUNLU degil.
+     Kume hala DIKEY SERITLER uretiyor; T66 acik kalir.
+
+**1 · HB — IKI ESKI VARYANT DA YANLISTI.** SS2.1: *"2 metre x 2 metre
+boyutlarinda uzerinde KIRMIZI H harfi bulunacagi bir bolgedir."*
+
+    varyant                 kirmizi mi   H harfi var mi   metne uygun mu
+    T56 "kirmizi branda"       EVET          HAYIR            HAYIR
+    T60 "figur_siyah_beyaz"    HAYIR         EVET             HAYIR
+    T71 "metin_kirmizi_H"      EVET          EVET             EVET
+
+Gorev "T56'daki kirmizi branda dogruymus" diyordu; **tam degil** — T56 duz
+kirmizi dikdortgendi ve uzerinde H YOKTU. Metin "uzerinde kirmizi H harfi"
+diyor, "kirmizi branda" demiyor. Uygulanan: ped uzerine KIRMIZI cerceve +
+KIRMIZI H. Ped rengi sartnamede BELIRTILMEMISTIR, bu yuzden cesitlilik
+stratejisi geregi bes tondan sahne basina cekilir (beyaz/koyu/gri/haki).
+`hedef_varyanti` artik tek deger: `metin_kirmizi_H` (260/260).
+
+**2 · IHA-IB EKLENDI.** SS2.1'deki 30x30 m MAVI parasutle inis alani.
+Olcek sozlesmesi `px = m * TUVAL / HTAB_M` -> 480 px (TUVAL 800, HTAB 50 m).
+Bu bir ISARETTIR, engel DEGIL: kimlik haritasina DOKUNULMAZ (HB ve izgara ile
+ayni muamele) ve YARI SAYDAM tint uygulanir (saydamlik 0,22..0,45) — duz boya
+arenanin %36'sinda zemin dokusunu SILERDI. Konum sahne basina degisir
+(tuval x 0..312), ton bes maviden cekilir. Manifest: `iha_ib_kutu`,
+`iha_ib_kenar_m` (260/260 kayitli).
+
+**3 · RENK STRATEJISI: TEK NOKTA -> GENIS BANT.** Asil degisiklik budur.
+ESKIDEN her zemin yuzeyi ve HER moloz kesiti tek sabit LAB noktasina
+boyaniyordu (`LAB_ZEMIN_HEDEF` / `LAB_MOLOZ_HEDEF`, D-87'de figurden olculmus).
+Iki sebeple gecersiz: (a) D-99 — o figur YAPAY ZEKA urunu; (b) D-95 — v25 tek
+kunyeye oturunca ona BAGIMLI oldu ve dagilim disi sahnede coktu.
+
+Artik her sahne kendi hedefini bantlardan ceker (`sahne_renklerini_sec`):
+
+    LAB_ZEMIN_BANDI  L 105..190 · a -3..+7 · b +1..+22
+    LAB_MOLOZ_BANDI  a -3..+4 · b -2..+12
+    LAB_MOLOZ_DL     25..75    (moloz zeminden KOYU; farkin BUYUKLUGU taranir)
+
+Moloz L'si bagimsiz cekilmez — sahne cozulebilir kalmali.
+
+**KAPI 1 — RENK CESITLILIGI OLCULDU** (kare basi bolge LAB ortalamasi, n=120,
+YER GERCEGI etiketleriyle):
+
+    kume    sinif    n    L ort   L std   L araligi   a std   b std
+    T60     zemin  120    148,5    6,91    119..170    0,20    0,68
+    T60     moloz  118    107,9    4,61     91..121    0,37    0,55
+    T71     zemin  120    134,1   21,51     94..189    2,35    5,90
+    T71     moloz  119     98,1   24,90     43..148    1,67    3,23
+
+    std kazanci   zemin L x3,1 · a x11,6 · b x8,7
+                  moloz L x5,4 · a x4,6  · b x5,8
+
+TEK MODA COKME KONTROLU (L histogrami, 10 kova):
+
+    zemin T60: dolu 5/10  [0,0,0,2,8,83,25,2,0,0]   <- 120'nin 83'u TEK kovada
+    zemin T71: dolu 9/10  [0,7,21,29,16,19,17,8,2,1]
+    moloz T60: dolu 4/10  [1,21,91,5,0,0,0,0,0,0]
+    moloz T71: dolu 6/10  [18,17,15,13,17,4,0,0,0,0]
+
+Tek moda COKME YOK. GECTI.
+
+**KAPI 4 — GOZLE DOGRULAMA (D-80: gorsel kazanir). GECTI.**
+Kontak sayfalari uretildi (8 kare, ayni indisler): T60'in sekizi de AYNI sicak
+kum zemin + gri moloz; T71'de zemin kum/gri/acik/koyu arasi degisiyor, moloz
+tonlari farkli, kirmizi H ve mavi IHA-IB her karede gorunuyor, kirmizi-beyaz
+bariyerler yerinde.
+
+**🔴 GORSEL BIR REGRESYON YAKALADI — sayilar yakalamamisti.** Ilk denememde
+`banka_yukle`'deki on-boyamayi kaldirdim ama `enkaz_doku` yolunu sahne
+hedefine BAGLAMADIM; ham RescueNet dokusu dogrudan basildi ve molozda MAVI
+GOKYUZU ve BEYAZ BULUT parcalari cikti — D-78/T60'in cozdugu kusurun geri
+donusu. Ilk 12 karelik denemenin GORSELINDE goruldu ve duzeltildi
+(`moloz_yigini` icinde `lab_ortalamasini_tasi(..., _SAHNE_MOLOZ_HEDEFI, ...)`).
+Bu, "gorsel kazanir" kuralinin somut kazancidir.
+
+**KAPI — T67 CAPRAZ KONTROLU (gorevde istenmedi, ZORUNLUYDU).**
+T67 ince bariyer dedektoru yuksek kromali UZUN-INCE yapiyi engel sayar.
+KIRMIZI HB tam da o tuzaktir. 12 karede olculdu:
+
+    HB bolgesinde engel pikseli : 0 / 12 kare   KORUNDU
+    IHA-IB bolgesinde a*        : -7 .. +9      (bariyer esigi 25 -> MAVI guvenli)
+
+HB'nin en/boy orani 260/260 karede tam **1,00** (KARE); dedektorun sekil
+filtresi (en/boy > 4) onu elemez. IKA hedefe ulasabilir.
+
+**KAPI 3 — T51/T56 KADRAJ KAPILARI KORUNDU** (`57_t51_kadraj_kapilari.py`,
+n=260; betik DEGISTIRILMEDI, KUME yolu bellekte yamalandi):
+
+    KAPI 1  TAM KAREDE rota            260/260   GECTI (esik >= 130)
+    KAPI 3  POZITIF KONTROL            260/260   GECTI
+    KAPI 5  T48 kaplama ort %25,9 · maks %64,8 · tavan %67 · ret 0/260
+    manifest: hedef 260/260 · hedef_kenar_m 2,0 (260/260) · en/boy 1,00
+              hedef_serit != acik_serit  0/260
+
+**🔴 KAPI 2 — REGRESYON: UC SAYININ IKISI KOTULESTI. Gizlenmiyor.**
+
+                          ROTA     MOLOZA    AGIR   ARENA DISI
+    T60 kumesi (T67)   242/260     4/242   2/242      5/242
+    T71 kumesi         231/260     5/231   4/231     16/231
+
+    rota uretimi  242 -> 231   COKMEDI (%88,8) ama DUSTU
+    moloza basma    4 ->   5   ARTTI (+1 kare)      <- hedef "ARTMASIN" idi
+    arena disi      5 ->  16   ARTTI (+11 kare)
+
+**BU KIYAS KONTROLLU DEGILDIR ve sayilar bunu dogrudan "kotulesme" olarak
+okutmaz.** v24, T60 substratinda (TEK renk kunyesi) egitildi; T71 kumesi
+BILEREK o dagilimin DISINDADIR. Yani olculen sey karar zincirinin bozulmasi
+degil, **v24'un dagilim disinda daha kirilgan oldugudur** — ki T71'in varlik
+sebebi tam olarak bu kirilganligi kirmaktir (D-95). Dogru kiyas T71 uzerinde
+EGITILMIS bir modelle yapilir; o T68/sonraki egitimin isidir.
+Yine de gorev "moloza basma ARTMASIN" diyordu ve +1 kare ARTTI — kapi
+LAFZEN KARSILANMADI, karar kullaniciya birakiliyor.
+
+**DEPO KAPILARI** (depoda hicbir dosya degistirilmedi):
+
+    codes/test_rota_sentetik.py     SONUC: 15/15 dogru        GECTI
+    unittest discover -s tests -q   Ran 426 tests · OK        GECTI
+
+**KUME:** `O:\navitas-local-train\calisma\sentetik_arena_kadraj_t71` (260 kare).
+T60 kumesi SILINMEDI, kiyas icin duruyor.
+
+**DOGRULANAMADI**
+  1. GERCEK arena basarimi. Elimizde gercek arena goruntusu **HIC YOK**
+     (D-88 + D-99). Bu gorev onu dogrulamaz ve dogrulayamaz.
+  2. Genisletilen bantlarin GERCEK arenayi kapsayip kapsamadigi BILINMIYOR.
+     Bant secimi "makul ortu araligi" akil yurutmesidir, OLCUM DEGILDIR —
+     olculecek bir gercek kare yok. Dar tutmaktan iyi oldugu D-95'e dayanir.
+  3. Cesitliligin MODELE faydasi bu gorevde olculmedi; T71 uzerinde egitim
+     kosulmadi. "Model daha saglam olacak" bir ONGORUDUR, bulgu degildir.
+  4. Guzergah geometrisi hala DIKEY SERIT (madde 3 yapilmadi, T66 acik).
+  5. IHA-IB'nin arena icindeki KONUMU sartnamede tarif edilmiyor; rastgele
+     yerlestirildi. Gercekte sabit bir yeri varsa bu YANLIS olur.
+  6. dL alt ucunda (olculen min -3) zemin ile moloz neredeyse ayni parlakliga
+     gelebiliyor; o karelerin cozulebilirligi ayrica sinanmadi.
+
+---
+
+### D-102 · DENETIM · T71 ve T62 dogrulandi; amele MIMARIN talimatini duzeltti (HB)
+Denetleyen: Claude 1 (mimar) · 2026-08-14 · gorevler T71 (Claude 2), T62 (Codex-1)
+
+**T71 — BAGIMSIZ DOGRULANDI.** Renk cesitliligi mimarin kendi betigiyle,
+amelenin araci kullanilmadan yeniden olculdu (kare basi bolge LAB ortalamasi,
+YER GERCEGI etiketleriyle, n=120):
+
+    kume  sinif    L ort   L std   L araligi   dolu kova (10)
+    t60   zemin    148,5    6,91    119..170        5
+    t71   zemin    134,1   21,51     94..189        7
+    t60   moloz    107,9    4,61     91..121        3
+    t71   moloz     98,1   24,90     43..148        7
+
+    cesitlilik kazanci:  zemin L std x3,1 · moloz L std x5,4
+
+Claude 2'nin bildirdigi degerlerle **birebir ayni**. Tek-moda cokme kirildi:
+T60'ta 120 karenin 83'u tek kovadaydi. Bu, D-95'te v25'i olduren tek-palet
+bagimliliginin dogrudan panzehiridir.
+
+**🔴 AMELE MIMARIN TALIMATINI DUZELTTI — kayda geciyor.** T71 gorevinde
+*"T56'daki kirmizi branda dogruymus"* yazmistim. Claude 2 sartname metnini
+okuyup **ikisinin de yanlis oldugunu** gosterdi:
+
+    varyant                    kirmizi mi   H harfi   metne uygun
+    T56 "kirmizi branda"          EVET       HAYIR       HAYIR
+    T60 "figur_siyah_beyaz"       HAYIR      EVET        HAYIR
+    T71 "metin_kirmizi_H"         EVET       EVET        EVET
+
+SS2.1 *"uzerinde KIRMIZI H HARFI bulunacagi bir bolgedir"* diyor; "kirmizi
+branda" DEMIYOR. Ped rengi sartnamede BELIRTILMEMISTIR, bu yuzden cesitlilik
+stratejisi geregi degisken birakilmis. Talimatimi duzeltmesi DOGRUDUR.
+
+**IHA-IB tasarimi da dogru:** 30x30 m mavi alan bir ISARETTIR, engel degil —
+kimlik haritasina dokunulmamis ve yari saydam uygulanmis. Duz boya arenanin
+%36'sinda zemin dokusunu silerdi.
+
+**T66 BILEREK YAPILMADI ve gerekcesi gecerli:** guzergah geometrisinin
+(moloz ADALARI) yeniden yazimi T51/T56 kadraj kapilarini riske atardi. Gorev
+"birlikte yapabilirsin" diyordu, ZORUNLU degildi. T66 acik kalir.
+
+**T62 — DOGRULANDI.** `scripts/jetson_fps.py` icinde ciplak surum dizesi
+**0** (madde 16 saglandi); varsayilanlar manifest `asil_model_pt`/`asil_model`
+ve uretim `conf`undan turetiliyor; Jetson paketi yeniden uretildi.
+Eksik TensorRT engine UYDURULMADI: `engine=None` ve konsol/ozet/rapor'da acik
+`ATLANDI`. D-89'un "dogrulanamadi-2" maddesi KAPANDI:
+
+    [T62_IMG] manifest=[640] varsayilan=[640,512] uretim_INFER_SIZE=512 hizali=True
+    [T62_FARK] 640/512 dogrusal=1,25 · piksel alani=1,56
+
+Yani 640'lik olcum uretimin GERCEKTEN yaptigi isten %56 daha agir bir isi
+olcuyordu; artik 512 uretimle ayni oldugu KAYITLI.
+
+**KOSULAN KAPILAR.** `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests -q` **Ran 426 · OK** · Jetson paketi yenilendi.
+
+**VERDIKT: T71 ve T62 KAPANIR.**
+
+**DOGRULANAMADI**
+  1. T71'in KARAR duzeyindeki etkisi henuz olculmedi — yeni substratla model
+     egitilmedi. v26 kosusu baslatildi; sonuc gelene kadar "cesitlilik
+     kirilganligi cozdu" DENEMEZ.
+  2. Geometri (T66) acik; kume hala dikey seritler uretiyor.
+  3. T62 karar zincirinde degildir; Jetson'da hicbir olcum hala YOK.
+
+---
+
+### D-103 · UYGULANDI + KAPI DUSTU · T66: geometri DIKEY SERIT -> MOLOZ ADALARI; T68 birlesik; moloza basma kapisi DUSTU
+Uygulayan: Claude 2 · 2026-08-14 · gorev T66 (+T68) · kanit D-91, D-99, D-101 · dosya `51_sentetik_arena.py`
+
+**YAPILAN.** Uretec artik kareyi bastan sona DIKEY SERITLERE bolmuyor. Arena
+zemini GENIS ve BAGLANTILI; moloz ADALAR halinde uzerine yerlesiyor; koridorlar
+adalarin arasindan geciyor (SS2.1: *"moloz yiginlari arasinda olusturulmus uc
+farkli yol"*). T68 birlestirildi: bariyer artik ACIK koridoru kapatabiliyor,
+kendi pikselleri `blocked` etiketleniyor ve manifest bunu yansitiyor.
+T71 kazanimlari (renk bandi, KIRMIZI H'li HB, IHA-IB) KORUNDU.
+
+**🔴 ONCE BULUNAN ONCEKI KUSUR — `etiketle` DELIKLERI ATIYORDU.**
+Eski kod `cv2.RETR_EXTERNAL` kullaniyordu. Serit geometrisinde bedeli kucuktu
+ve OLCULDU: T71 kumesinde **260 karenin 65'inde** class-0 ile class-1
+poligonlari ust uste biniyordu (cakisan alan traversable'in medyan %0,7'si) —
+"dar" seridin ic izi hem gecilebilir hem engel etiketliydi.
+ADA geometrisinde ayni kusur **YIKICI** olurdu: zemin, ortasinda ada DELIKLERI
+olan genis bir bolgedir; delikler atilirsa **HER ADA "traversable" etiketlenir**
+ve yer gercegi tam tersini soyler.
+Cozum `delikli_poligonlar`: her delik dis halkaya en yakin kose ciftinden bir
+YARIK ile baglanir, sonuc tek basit poligondur. Sinandi: tek merkezi delik ve
+uc ada icin yeniden rasterize IoU **1,0000 · fark 0 px**.
+
+**ADA YOGUNLUGU IKI KEZ OLCUMLE AYARLANDI (v16 dersi geri gelmesin).**
+Kod icindeki v16 dersi: ETIKETSIZ moloz modele "genis bolge = gecilebilir"
+onyargisi ogretmisti. Burada etiketsiz moloz YOK, ama IKINCI bir yoldan ayni
+riske girildi ve olcumle yakalandi:
+
+    surum        traversable   blocked   trav/blok
+    T71 (serit)      %24,9      %30,9       0,81
+    T66 ilk deneme   %53,9       %5,4      10,00   <- adalar cok seyrek
+    T66 v3           %31,4      %29,2       1,10
+    T66 nihai        %33,7      %29,0       1,16
+
+Artisin bir kismi YAPISALDIR ve DOGRUDUR: seritler artik BITISIK, aralarindaki
+`duvar_kal * 1.5` genisligindeki ETIKETSIZ bosluk kalkti (T65'in sikayet
+ettigi etiketsiz zemin azaldi).
+
+**KAPI 2 — RENK CESITLILIGI.** Iki duzeyde raporlanir cunku ikisi ayni seyi
+olcmez:
+
+    olcut                        T71     T66   oran
+    URETEC cekilisi zemin L    24,68   24,28   0,98
+    URETEC cekilisi zemin a     2,97    2,85   0,96
+    URETEC cekilisi zemin b     6,18    8,71   1,41
+    URETEC cekilisi moloz L    29,59   28,52   0,96
+    OLCULEN bolge zemin L      21,51   19,45   0,90
+    OLCULEN bolge zemin b       5,90    7,02   1,19
+    OLCULEN bolge moloz L      24,90   24,20   0,97
+
+**L ve a bantlari KODDA HIC DEGISMEDI**; olculen 0,96-0,98 farki n=260'ta
+ORNEKLEME GURULTUSUDUR (uniform(105,190) teorik std 24,54; T71 24,68 · T66
+24,28 — ikisi de bandin kendi std'sinin ~1 standart hatasi icinde).
+`b` bandi ise GERCEKTEN genisletildi (+1..+22 -> -1..+28, cekilis std x1,41).
+"Olculen bolge" std'sinin bir miktar dusmesi BILESIM etkisidir: traversable
+bolge artik IKI yuzeyi birden kapsiyor (koridor izi + serit zemini), bolge
+ORTALAMASI ortalamaya regresyon yapiyor.
+**VERDIKT: uretec cesitliligi DUSMEDI; b'de ARTTI.** Ham "olculen bolge std"
+olcutune bakilirsa L'de %10 dusus gorunur — o rakami kovalayip bandi daha da
+genisletmek bir OLCUM ARTEFAKTINA fit etmek olurdu, yapilmadi.
+
+**KAPI 3 — BARIYER ARTIK ACIK KORIDORU KAPATIYOR (T68). GECTI.**
+D-93 olcmustu: uretec bariyeri YALNIZ zaten kapali seritlere koyuyordu, acik
+zemin ustundeki bariyer orani **%0,0** idi ve model bu ornegi HIC gormuyordu.
+
+    olcut                                    T71        T66
+    ACIK/DAR seridi bariyerle kapatilan     0/260     128/260  (%49,2)
+    serit durumlari                     acik 340    acik 270 · acik+bariyer  77
+                                         dar 180     dar  96 · dar+bariyer   96
+    bariyer pikseli `blocked` etiketli      %92,0      %98,8
+
+Manifest duzeltmesi de baglandi: bariyerle kapanan seridin `gecilebilir` alani
+False'a cevrilir ve `durum` `"acik+bariyer"` olur — yoksa `acik_serit` YALAN
+SOYLERDI.
+
+**KAPI 1 — T51/T56 KADRAJ KAPILARI. GECTI** (ilk ayarda DUSMUSTU, olcumle
+duzeltildi):
+
+    ayar                    rota      POZITIF KONTROL    cekimser sebepleri
+    ilk (dar gecit)      193/260      192/193 DUSTU      DUSUK_GUVEN 50 · UC_BANT 17
+    nihai                242/260      242/242 GECTI      DUSUK_GUVEN 18
+
+Iki duzeltme: (a) acik seritte gecit 0,15-0,26 -> 0,24-0,36; "dar" bant gecidi
+0,16-0,34 -> 0,26-0,44; (b) bariyer KORUNACAK seridi secerken artik oncelikle
+bir "acik" serit korunuyor — ilk surumde korunan cogu kez "dar" seritti ve
+bariyer genis olani kapatinca sahnede yalniz cok dar bir gecit kaliyordu.
+Manifest: hedef 260/260 · kenar 2,0 m · hedef en/boy 1,00 · `hedef_serit !=
+acik_serit` **0/260** · IHA-IB 260/260 · `hedef_varyanti` tek deger
+`metin_kirmizi_H`. T48 kaplama maks %65,2 (tavan %67) · tavan reddi 0/260.
+
+**🔴 KAPI 4 — REGRESYON DUSTU. Gizlenmiyor.**
+
+                          ROTA     MOLOZA    AGIR   ARENA DISI
+    T71 kumesi (v24)   231/260     5/231   4/231     16/231
+    T66 kumesi (v24)   196/260    61/196  40/196     26/196
+
+Moloza basma **5 -> 61** (%2,2 -> %31,1). Gorev "ARTMASIN" diyordu; ARTTI.
+Kapi DUSTU.
+
+**AMA SEBEP AYRISTIRILDI — YER GERCEGI KONTROLU (model YOK):**
+
+    kume                     rota        moloza basan     AGIR basma
+    T71 · YER GERCEGI     259/260        0/259  (%0,0)         0
+    T66 · YER GERCEGI     260/260       24/260  (%9,2)         0
+
+Iki ayri katki var:
+ 1. **SUBSTRAT katkisi: %9,2 ve tamami HAFIF (agir basma 0).** Ada
+    geometrisinde koridorlar daralinca A* rotasi C-uzayi sinirina yaslaniyor;
+    olcum rotayi `r_gerekli` ile kalinlastirip yer gercegiyle kesistirdigi
+    icin sinirda TEMAS sayiyor. Agir basmanin (>%5) **0** olmasi bunun bir
+    carpisma degil SIYIRMA oldugunu gosterir.
+ 2. **MODEL katkisi: geri kalan her sey.** v24 DIKEY SERIT geometrisi ve TEK
+    renk kunyesi ile egitildi; ada geometrisi onun icin tamamen dagilim
+    disidir. Model kosusunda agir basma 40 iken yer gercegiyle 0'dir.
+
+Yani olculen kotulesmenin buyuk kismi karar zincirinden ya da substrattan
+degil, **v24'un bu substrati hic gormemis olmasindan** gelir — ki T66'nin
+varlik sebebi tam olarak o substrati degistirmektir. Dogru kiyas T66 uzerinde
+EGITILMIS bir modelle yapilir (T68/sonraki egitim). **Karar mimara birakilir.**
+
+**KAPI 5 — GOZLE DOGRULAMA. GECTI.** Yan yana kontak sayfasi uretildi (ayni
+bes indis): ust satir T71 — duvar duvara dikey bantlar; alt satir T66 — genis
+acik zemin uzerinde moloz adalari, aralarindan gecen koridorlar, koridoru
+enine kesen kirmizi-beyaz bariyerler. Fark tartismasizdir.
+
+**KAPI 6 — DEPO KAPILARI. GECTI** (depoda hicbir dosya degistirilmedi):
+
+    codes/test_rota_sentetik.py     SONUC: 15/15 dogru
+    unittest discover -s tests -q   Ran 426 tests · OK
+
+**ETIKET CAKISMASI** T71 %0,051 -> T66 %0,204. Kaynagi arastirildi: cakisan
+bilesenlerin en/boy medyani 0,8-2,0 ve yalniz %12-35'i yatay — yani ince
+bariyer barlari DEGIL. Bu, poligon sadelestirmesinin KENAR ARTIGIDIR; ada
+geometrisinde bolge sayisi cok arttigi icin toplam sinir uzunlugu da artti.
+`approxPolyDP` epsilonu 0,0035 -> 0,0015'e cekildi; kalan %0,2 sinirda 1-2
+piksellik ortusmedir, bolge duzeyinde bir etiket celiskisi degildir.
+
+**KUME:** `O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66` (260 kare).
+T71 ve T60 kumeleri SILINMEDI.
+
+**DOGRULANAMADI**
+  1. GERCEK arena basarimi. Elimizde gercek arena goruntusu **HIC YOK**
+     (D-88 + D-99). Bu gorev onu dogrulamaz.
+  2. Ada YERLESIMI sartnameden turetilmedi — metin "moloz yiginlari arasinda"
+     diyor, YIGINLARIN SAYISI, BOYUTU ve DAGILIMI hakkinda bir sey demiyor.
+     Secilen yogunluk `trav/blok` oranini T71 seviyesinde tutmak icin
+     AYARLANDI; gercek arenaya benzerligi OLCULEMEZ.
+  3. Yeni geometrinin MODELE faydasi olculmedi; T66 uzerinde egitim
+     kosulmadi. "Model 'dar dikey bant' onyargisini birakir" bir ONGORUDUR.
+  4. Yer gercegiyle olculen %9,2 hafif basma sifirlanmadi; C-uzayi sinirinda
+     siyirma olarak birakildi (agir basma 0).
+  5. `KAPI 2 GT serit uyumsuzlugu` 22/260 -> 59/242'ye cikti. D-90 bu olcutun
+     TANIMA BAGLI ve guvenilmez oldugunu zaten saptamisti (ada geometrisinde
+     "serit" kavrami daha da bulaniklastir); bu sayi kanit olarak KULLANILMADI.
+
+---
+
+### D-104 · DENETIM + KARAR · T66 KABUL: dusen kapi GECERSIZ bir kiyastir; v26 durduruldu, v27 T66 uzerinde kosacak
+Denetleyen/karar: Claude 1 (mimar) · 2026-08-14 · gorev T66+T68 (Claude 2)
+
+**DUSEN KAPI T66'YI MAHKUM ETMEZ — KAPIYI BEN YANLIS YAZDIM.**
+Gorevde *"moloza basma ARTMASIN"* dedim ve olcumun **v24 ile** yapilmasini
+sarta bagladim. v24, DIKEY SERIT geometrisi ve TEK renk kunyesiyle egitilmis
+bir modeldir; ada geometrisi onun icin tamamen dagilim disidir. Sabit bir
+modeli tutup substrati degistirmek, substratin kusurunu degil MODELIN
+dagilim disiligini olcer. Bu, D-90 bulgu 4'te kendi yazdigim uyarinin
+(*"esleştirilmis degil"*) aynisidir; kapiyi yazarken uygulamayi unuttum.
+
+**AMELE SEBEBI DOGRU AYRISTIRDI — YER GERCEGI KONTROLU (model YOK):**
+
+    kume                     rota      moloza basan    AGIR basma
+    T71 · YER GERCEGI     259/260     0/259  (%0,0)         0
+    T66 · YER GERCEGI     260/260    24/260  (%9,2)         0
+
+Model kosusunda agir basma 40 iken **yer gercegiyle 0**. Yani olculen
+kotulesmenin buyuk kismi karar zincirinden ya da etiketten degil, v24'un bu
+substrati hic gormemis olmasindan gelir.
+
+**🔴 AMA GERCEK BIR SINYAL VAR ve gorevde istenmemisti: %9,2 SIYIRMA.**
+Yer gercegiyle, yani KUSURSUZ algiyla bile rotalarin %9,2'si moloza TEMAS
+ediyor (hepsi hafif; agir basma 0). Sebep: ada geometrisinde koridorlar
+daralinca A* rotasi C-uzayi sinirina yasliyor ve `r_gerekli` ile kalinlastirilan
+iz sinirda kesisiyor. Bu, uretecin koridorlarinin **govde acikligi payina
+gore dar** oldugunu soyler. Sartname koridor genisligi VERMIYOR; ama 50x50 m
+arenada uc guzergah icin 2,20 m'lik asgari (2 x R_GEREKLI_M) fazlasiyla
+saglanabilir olmalidir. **T74 acildi.**
+
+**DOGRULANAN ISLER (bagimsiz kontrol edilmedi, ic tutarlilik ve kapi ciktilari
+uzerinden kabul):**
+  * `RETR_EXTERNAL` kusuru: ada geometrisinde her ada "traversable"
+    etiketlenirdi. Yakalanmasaydi yeni substrat BASTAN zehirli olurdu — bu,
+    gorevin kendisinden daha degerli bir bulgudur.
+  * T68 birlestirildi: acik koridoru kapatan bariyer 0/260 -> **128/260**,
+    bariyer pikseli `blocked` %92,0 -> **%98,8**. D-93'un kusuru kapandi.
+  * Renk cesitliligi DUSMEDI; `b` bandinda x1,41 artti. Amele "olculen bolge
+    std"deki %10 dususu KOVALAMADI ve bunun bir olcum artefakti (bilesim
+    etkisi) oldugunu gosterdi — bir sayiya fit etmeyi reddetmesi DOGRUDUR.
+  * Ada yogunlugu iki kez olcumle ayarlandi; ilk denemedeki trav/blok 10,00
+    orani (adalar cok seyrek) v16 hatasinin ikinci bir yoldan tekrari olurdu.
+
+**GOZLE DOGRULAMA (mimar, bagimsiz kontak sayfasi).** T66 kareleri gercekten
+genis baglantili zemin + kumeler halinde moloz + koridoru enine kesen bariyer
+gosteriyor. Sartname SS2.1 metnine (*"moloz yiginlari arasinda olusturulmus
+uc farkli yol"*) T71'den belirgin bicimde yakin. **GECTI.**
+
+**🔴 GOZLE GORULEN YENI KUSUR — IHA-IB YERLESIMI.** Mavi 30x30 m alan
+karelerin genisce bir kismini kapliyor ve KORIDORLARIN USTUNE biniyor.
+SS2.1 IHA-IB'yi HTAB'dan AYRI bir bolge olarak tanimlar (*"IHA'nin gorev
+sonrasi parasutle inecegi belirlenmis guvenli alandir"*); HTAB uzerine
+yayilmis bir katman degildir. Yari saydam ve etikete dokunmuyor, bu yuzden
+zehirli degil; ama modele YANLIS bir korelasyon ogretebilir. Amele bunu kendi
+"dogrulanamadi" listesine yazmisti (5. madde). **T75 acildi.**
+
+**KARAR — v26 DURDURULDU (epoch ~25/200), v27 T66 UZERINDE KOSACAK.**
+v26 T71 substratiyla egitiliyordu; T66 onu asti. v26'nin tamamlanmasi artik
+BIR DAHA KULLANILMAYACAK bir substrat hakkinda tarihsel bir soruyu
+yanitlardi. GPU saati o soruya harcanmaz. Yeni kosu ayni receteyi ve ayni
+on-egitimi kullanir; degisen tek sey substrattir.
+
+⚠ **BEDELI ACIKCA YAZIYORUM:** v27, T71 (cesitlilik) ve T66 (geometri)
+degisikliklerini BIRLIKTE tasir. Hangisinin ne kadar katki verdigi
+AYRISTIRILAMAYACAK. Hiz gerekcesiyle bilerek kabul edilen bir olcum kaybidir.
+
+**DOGRULANAMADI**
+  1. T66'nin karar duzeyindeki etkisi, T66 ile EGITILMIS bir modelle henuz
+     olculmedi. v27 bunun icin kosuyor.
+  2. %9,2 siyirma orani yalniz yer gercegiyle olculdu; egitilmis modelde ne
+     olacagi bilinmiyor.
+  3. Arena basarimi (D-88 + D-99, kalici).
+
+---
+
+### D-105 · UYGULANDI · T72: HEDEF KONUMU halkasi SAHIPLENDI; SS5(b) olcek yolu ucuncu sinif OLMADAN acildi
+Uygulayan: Claude 2 · 2026-08-14 · gorev T72 · kanit saha kuru kosusu + sartname SS2.2.6
+
+**KUSUR.** `hedef_konumu` halkasi SAHIPSIZDI: HB'nin tek kaynagi Gazebo
+`meta.txt`, saha kod yolunda `--hb` girisi yok, uretim modeli 2 sinifli.
+Sartname SS2.2.6 gorevi "IKA'nin HB SINIRLARI ICINE girmesi" diye tanimlar —
+yani acik guzergahi bulsak ve rota kusursuz olsa bile VARIS NOKTASI
+uretilemedigi icin gorev TAMAMLANAMAZDI.
+
+**UCUNCU SINIF EKLENMEDI.** nc=2 -> 3 sozlesme degisikligi, yeniden egitim ve
+sinif-id cakismasi riski getirirdi (S2'de yasandi: 2 = hedef mi arac mi).
+T67'nin klasik KATMAN 2 deseni kullanildi: `hb_maskesi` / `hb_konumu`.
+
+**AYIRT EDICI UC OZELLIK (SS2.1).** "2 metre x 2 metre boyutlarinda uzerinde
+KIRMIZI H harfi bulunacagi bir bolgedir":
+  1. yuksek kroma KIRMIZI -> esik T67 ile **ORTAK** (`BARIYER_KROMA_ESIGI`)
+  2. KARE (en/boy ~ 1)    -> bariyerin TUMLEYENI
+  3. bilinen metrik kenar -> `HB_KENAR_M = 2.0`
+
+**🔴 SEKIL FILTRESI TEK BASINA YETMEDI — OLCUMLE YAKALANDI.**
+Ilk surumde `sa_000170` karesinde KIRILMIS bir bariyer parcasi 37x32 px
+(en/boy **1,16** -> KARE) olarak kalmis ve gercek HB'den (25,6 px) BUYUK oldugu
+icin secilmisti. Yani bariyer, kirilinca HB'nin sekil bandina GIREBILIYOR.
+
+    olcut                    ilk surum        tumleyenlik sonrasi
+    merkez hatasi maks       284,66 px              1,30 px
+    YANLIS POZITIF            1/260                  0/260
+    mpp hatasi maks           %25,80                 %8,57
+
+Cozum: **T67'nin ENGEL dedigi piksel HB OLAMAZ.** `hb_maskesi` artik
+`ince_bariyer_maskesi`i cagirip (5x5 genisletilmis) o pikselleri adaylardan
+CIKARIYOR. Iki dedektor artik gercek anlamda TUMLEYENDIR.
+
+Ayrica sekil bantlari arasinda BOSLUK birakildi ve testle kilitlendi:
+
+    HB kabul araligi : 1/1,6 .. 1,6
+    bariyer araligi  : 4,0 .. sonsuz
+    BOS BANT         : 1,6 < 4,0     (`test_SEKIL_BANDI_arasinda_BOSLUK_var`)
+
+**KAPI 1 — TESPIT (yer gercegi: `sentetik_arena_kadraj_t66` n=260).**
+
+    TESPIT            260/260  (%100,0) · kacan 0
+    merkez hatasi     medyan 0,71 px · p90 0,95 · maks 1,30
+    kenar hatasi      medyan 1,40 px · maks 2,40   (yer gercegi kenar 25,6 px)
+
+**KAPI 2 — YANLIS POZITIF (bariyeri HB sanma): 0/260. GECTI.**
+T67'nin TERS yonde pozitif kontrolu. `sa_000170` vakasi kalici teste alindi
+(`test_KIRIK_bariyer_parcasi_HB_DEGILDIR`).
+
+**KAPI 3 — mpp CAPRAZ KONTROLU.**
+
+    mpp hatasi   medyan %5,185 · p90 %8,571 · maks %8,571
+    capraz durum {dogrulandi: 260, celiskili: 0, yalniz_hb: 0}
+
+Sapma SISTEMATIKTIR: pedin piksel kenari morfolojik kapamayla ~1,4 px sisiyor,
+`mpp = 2,0/kenar` oldugu icin mpp bir miktar KUCUK cikiyor. **DUZELTILMEDI** —
+duzeltme katsayisi bizim kendi cizimimize fit edilirdi ve gercek pedde
+tutmazdi. Bunun yerine capraz bandi (%25) sapmanin ~4,8 kati secildi: gercek
+celiskiyi yakalayacak kadar dar, dedektorun kendi sapmasini celiski saymayacak
+kadar genis.
+
+**CONTRACTS SS5(b) ACILDI.** Sozlesme "ucuncu sinif uretime girdiginde acilir"
+diyordu; klasik dedektor onu ucuncu sinif OLMADAN acti. Satir guncellendi.
+
+**CONTRACTS SS5.4 YAZILDI — iki kaynak CELISIRSE ne olur (baglayici):**
+
+    yalniz telemetri            -> telemetri      (SS5 birincil kaynak)
+    yalniz HB                   -> HB
+    ikisi, fark <= 0,25         -> TELEMETRI      (HB yalniz DOGRULAR)
+    ikisi, fark  > 0,25         -> HICBIRI, ("celiskili", fark)
+
+🔴 **Celiskide ORTALAMA ALINMAZ ve biri secilmez.** Iki bagimsiz olcum
+celisiyorsa hangisinin dogru oldugunu bilmiyoruz demektir; uydurma bir orta
+deger olculmemis bir olcegi olculmus gibi gosterir. Fail-closed.
+
+**KARAR YOLUNA BAGLANDI — GERIYE UYUMLU.** `analyze_path` opsiyonel `goruntu`
+parametresi aldi:
+  · `goruntu` VERILMEZSE davranis DEGISMEZ — hedef eskisi gibi UST BANTTIR ve
+    tum mevcut cagri yerleri (olcum betikleri dahil) aynen calisir.
+  · `goruntu` VERILIRSE cagiran "varis noktasini HB'den al" demis olur; HB
+    bulunamazsa UYDURULMAZ, yeni `HEDEF_YOK` sebebiyle CEKIMSER kalinir.
+Hedef tohumu koridorla KESISTIRILIR; HB koridora bagli degilse baglanti kapisi
+zaten reddeder.
+
+⚠ **MADDE 15 KORUNDU VE TESTLE KILITLENDI.** HB'yi bulmak serbest alani ne
+buyutur ne kucultur; yalniz A*'in HEDEFINI secer. `test_MADDE_15_HB_serbest_
+alani_BUYUTMEZ` ayni maskede `return_clean` ciktisini HB'li ve HB'siz kosuda
+karsilastirip BIREBIR ayni oldugunu dogrular.
+
+**KAPI 4 — MUTASYON KONTROLU (D-15/K-04):**
+
+    M0  mutasyon YOK                                 25 kosuldu · DUSEN 0
+    M1  HB sekil bandi bariyerin ICINE tasirildi     25 kosuldu · DUSEN 1  ATESLENDI
+    M2  ORTAK kroma esigi 200 yapildi                25 kosuldu · DUSEN 8  ATESLENDI
+    M3  HB kenari 2,0 -> 5,0 m (sartname disi)       25 kosuldu · DUSEN 2  ATESLENDI
+    M4  capraz bandi 5,0 (celiski hic yakalanmaz)    25 kosuldu · DUSEN 1  ATESLENDI
+    M5  geri alma sonrasi                            25 kosuldu · DUSEN 0
+
+**KAPI 5 — depo kapilari.**
+
+    codes/test_rota_sentetik.py     SONUC: 15/15 dogru                 GECTI
+    unittest discover -s tests -q   Ran 451 tests · OK                 GECTI
+    scripts/jetson_paket_hazirla.py 9/9 bayt-esit                      GECTI
+
+**MEVCUT BIR TEST DOGRU ATESLEDI VE GUNCELLENDI.**
+`test_sebep_kodlari_sozlesmede_SAYILANLARDIR` 11. sebep kodu eklenince dustu —
+T65'te tam bunun icin yazilmisti ("yeni kod eklenirse bu liste de guncellenmek
+ZORUNDA, sessizce buyuyemez"). Liste guncellendi; kume yine TAM kilitli.
+
+**YENI TEST PAKETI** `tests/test_hb_dedektoru.py` (25 test): sozlesme kaynagi
+(sekil bandi bosluğu, ORTAK kroma esigi kaynaktan dogrulanir, HB kenari
+sartnameden) · tespit (dort boyutta) · fail-closed · TUMLEYENLIK (uzun bar,
+kirik parca, ayni karede ikisi birden) · olcek (mpp, capraz kontrolun dort
+dali) · `analyze_path` entegrasyonu (geriye uyum, HEDEF_YOK, madde 15,
+mutasyon kilidi) · olculen dagilim regresyonu.
+
+**DOGRULANAMADI**
+  1. Bu kume **SENTETIKTIR** ve HB'yi BIZIM cizdigimiz bicimde tasir
+     (T71'in `hb_ciz`i: ped + kirmizi cerceve + kirmizi H). Gercek arenada
+     tutacagi **DOGRULANAMAZ** (D-88 + D-99: elimizde gercek arena goruntusu
+     HIC YOK). %100 tespit bir GERCEK BASARIM iddiasi DEGILDIR.
+  2. Gercek HB'nin GORUNUMU bilinmiyor: sartname "uzerinde kirmizi H harfi"
+     diyor, pedin rengini/malzemesini/parlakligini SOYLEMIYOR. Kroma esigi
+     (25) yapay zeka uretimi bir figurden kalibre edilmisti (D-99).
+  3. HB'nin KISMEN ORTULU oldugu (moloz/golge altinda) durum SINANMADI.
+  4. mpp'nin %5,2 sistematik sapmasi gercek pedde gecerli DEGILDIR; orada
+     baska bir sapma olabilir.
+  5. Uretim cagri yerleri (`run_image`/`run_video`/`run_camera`) bu gorevde
+     `goruntu` GECIRMIYOR — yani hedef halkasi SOZLESMEDE ve karar yolunda
+     HAZIR ama uretim yolunda HENUZ ETKIN DEGIL. Bunu acmak T73'un
+     parametrik saha kodu isiyle birlikte yapilmalidir (o dosya su an
+     ikinci amelede).

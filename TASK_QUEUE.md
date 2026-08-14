@@ -3038,7 +3038,166 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
-- [IN_PROGRESS: Claude-2] **T71 — 🔴 ŞARTNAME OTORİTEDİR: figür yapay zekâ ürünü çıktı, T60'ın üç kararı geri alınıyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T66/T68 ile birlikte koşulmalı** · kanıt: `REVIEW_LOG.md` **D-99**
+- [STATUS: KAPANDI] **T72 — HEDEF KONUMU halkasi sahipsiz: IKA nereye gidecegini bilmiyor** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `CONTRACTS.md` · **TIKAYICI** · kanit: saha kuru kosusu + sartname SS2.2.6
+  - **✅ YAPILDI · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-105**.
+    `comms/**` ve `O:\navitas-local-train\**` değiştirilmedi.
+  - **Üçüncü sınıf EKLENMEDİ.** T67'nin klasik **Katman 2** deseni kullanıldı:
+    `hb_maskesi` / `hb_konumu`. Ayırt edici üç özellik (§2.1): yüksek kroma
+    kırmızı (eşik **T67 ile ORTAK**) · **KARE** · bilinen kenar **2,0 m**.
+  - 🔴 **Şekil filtresi tek başına YETMEDİ — ölçüm yakaladı.** `sa_000170`'te
+    **kırılmış bir bariyer parçası** 37×32 px (en/boy **1,16** → kare) olarak
+    kalmış ve gerçek HB'den büyük olduğu için seçilmişti:
+    ```text
+    olcut                 ilk surum    tumleyenlik sonrasi
+    merkez hatasi maks     284,66 px          1,30 px
+    YANLIS POZITIF          1/260              0/260
+    mpp hatasi maks         %25,80             %8,57
+    ```
+    Çözüm: **T67'nin ENGEL dediği piksel HB OLAMAZ** — `hb_maskesi` artık
+    bariyer maskesini adaylardan çıkarıyor. İki dedektör gerçek anlamda
+    **tümleyen**. Ayrıca şekil bantları arasında **boşluk** var ve testle
+    kilitli: `HB ≤ 1,6 < 4,0 < bariyer`.
+  - **KAPI 1 — TESPİT** (yer gerçeği `..._t66`, n=260):
+    ```text
+    TESPIT         260/260 (%100,0) · kacan 0
+    merkez hatasi  medyan 0,71 px · p90 0,95 · maks 1,30
+    kenar hatasi   medyan 1,40 px · maks 2,40   (yer gercegi 25,6 px)
+    ```
+  - **KAPI 2 — yanlış pozitif (bariyeri HB sanma): 0/260. GEÇTİ.**
+    `sa_000170` vakası kalıcı teste alındı.
+  - **KAPI 3 — mpp çapraz kontrolü:**
+    ```text
+    mpp hatasi   medyan %5,185 · p90 %8,571 · maks %8,571
+    capraz durum {dogrulandi: 260, celiskili: 0}
+    ```
+    Sapma **sistematik** (kapama pedin kenarını ~1,4 px şişiriyor).
+    **Düzeltilmedi** — düzeltme katsayısı bizim kendi çizimimize fit edilirdi,
+    gerçek pedde tutmazdı. Bunun yerine çapraz bandı (%25) sapmanın ~4,8 katı
+    seçildi.
+  - **`CONTRACTS` §5(b) AÇILDI** ("üçüncü sınıf üretime girdiğinde açılır"
+    diyordu; klasik dedektör onu üçüncü sınıf **olmadan** açtı) ve **§5.4**
+    yazıldı — iki ölçek kaynağı çelişirse:
+    ```text
+    yalniz telemetri      -> telemetri     (SS5 birincil kaynak)
+    yalniz HB             -> HB
+    ikisi, fark <= 0,25   -> TELEMETRI     (HB yalniz DOGRULAR)
+    ikisi, fark  > 0,25   -> HICBIRI, ("celiskili", fark)
+    ```
+    🔴 Çelişkide **ortalama alınmaz**: hangisinin doğru olduğunu bilmiyoruz
+    demektir. Fail-closed.
+  - **Karar yoluna bağlandı, GERİYE UYUMLU:** `analyze_path(..., goruntu=None)`.
+    Görüntü verilmezse davranış **değişmez** (tüm ölçüm betikleri aynen çalışır);
+    verilirse HB hedeftir, bulunamazsa **uydurulmaz** → yeni **`HEDEF_YOK`**.
+  - ⚠ **Madde 15 testle kilitli:** HB'yi bulmak serbest alanı **değiştirmez** —
+    `return_clean` çıktısı HB'li ve HB'siz koşuda **birebir aynı**.
+  - **KAPI 4 — MUTASYON:**
+    ```text
+    M0 mutasyon YOK                          DUSEN 0
+    M1 HB sekil bandi bariyerin ICINE tasindi DUSEN 1  ATESLENDI
+    M2 ORTAK kroma esigi 200                  DUSEN 8  ATESLENDI
+    M3 HB kenari 2,0 -> 5,0 m                 DUSEN 2  ATESLENDI
+    M4 capraz bandi 5,0                       DUSEN 1  ATESLENDI
+    ```
+  - **KAPI 5:** `test_rota_sentetik.py` **15/15** · `discover -s tests -q`
+    **Ran 451 · OK** · paket **9/9 bayt-eşit**.
+  - **Mevcut bir test doğru ateşledi:** `test_sebep_kodlari_sozlesmede_
+    SAYILANLARDIR` 11. kod eklenince düştü — T65'te tam bunun için yazılmıştı.
+    Liste güncellendi.
+  - **Yeni test paketi** `tests/test_hb_dedektoru.py` (**25 test**).
+  - ⚠ **DOĞRULANAMADI:** (1) küme **sentetiktir** ve HB'yi **bizim çizdiğimiz**
+    biçimde taşır — gerçek arenada tutacağı **doğrulanamaz** (D-88+D-99);
+    %100 tespit bir **gerçek başarım iddiası değildir**; (2) gerçek HB'nin
+    görünümü bilinmiyor — şartname pedin rengini/malzemesini söylemiyor, kroma
+    eşiği **yapay zekâ ürünü** bir figürden kalibreydi (D-99); (3) HB'nin
+    **kısmen örtülü** olduğu durum sınanmadı; (4) %5,2 sapma gerçek pedde
+    geçerli değildir; (5) 🔴 **üretim çağrı yerleri (`run_image`/`run_video`/
+    `run_camera`) `goruntu` GEÇİRMİYOR** — hedef halkası sözleşmede ve karar
+    yolunda **hazır**, üretim yolunda **henüz etkin değil**. Bunu açmak T73'ün
+    parametrik saha kodu işiyle birlikte yapılmalı (o dosya ikinci amelede).
+
+- [STATUS: KAPANDI] **T71 — 🔴 ŞARTNAME OTORİTEDİR: figür yapay zekâ ürünü çıktı, T60'ın üç kararı geri alınıyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T66/T68 ile birlikte koşulmalı** · kanıt: `REVIEW_LOG.md` **D-99**
+  - **✅ YAPILDI (2/3) · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-101**.
+    Depoda **hiçbir dosya değiştirilmedi**; yalnız `51_sentetik_arena.py`.
+  - **Madde 3 (moloz adaları) YAPILMADI — bilerek.** Üretecin şerit
+    geometrisinin tam yeniden yazımıdır (**T66**) ve tek görevde yapılırsa
+    T51/T56 kadraj kapılarını riske atardı. Görev "birlikte yapabilirsin"
+    diyordu, zorunlu değil. Küme hâlâ **dikey şeritler** üretiyor; T66 açık.
+  - 🔴 **HB — iki eski varyant da yanlıştı.** §2.1: *"…üzerinde **kırmızı H
+    harfi** bulunacağı bir bölgedir."*
+    ```text
+    varyant                 kirmizi mi   H var mi   metne uygun mu
+    T56 "kirmizi branda"       EVET        HAYIR        HAYIR
+    T60 "figur_siyah_beyaz"    HAYIR       EVET         HAYIR
+    T71 "metin_kirmizi_H"      EVET        EVET         EVET
+    ```
+    ⚠ Görev *"T56'daki kırmızı branda doğruymuş"* diyordu — **tam değil**:
+    T56 düz kırmızı dikdörtgendi, **üzerinde H yoktu**. Metin "kırmızı branda"
+    demiyor, "üzerinde kırmızı H harfi" diyor. Uygulanan: ped üzerine kırmızı
+    çerçeve + kırmızı H. **Ped rengi şartnamede belirtilmemiş** → çeşitlilik
+    stratejisi gereği beş tondan sahne başına çekiliyor.
+  - **İHA-İB eklendi:** 30×30 m, `px = m·TUVAL/HTAB_M` → 480 px. **İşarettir,
+    engel değil** — kimlik haritasına dokunulmaz, yarı saydam tint uygulanır
+    (düz boya arenanın %36'sında dokuyu silerdi). Konum ve ton sahne başına
+    değişir. Manifest: `iha_ib_kutu`, `iha_ib_kenar_m` (260/260).
+  - **KAPI 1 — RENK ÇEŞİTLİLİĞİ (asıl değişiklik):**
+    ```text
+    kume  sinif    n   L ort  L std  L araligi  a std  b std
+    T60   zemin  120   148,5   6,91   119..170   0,20   0,68
+    T60   moloz  118   107,9   4,61    91..121   0,37   0,55
+    T71   zemin  120   134,1  21,51    94..189   2,35   5,90
+    T71   moloz  119    98,1  24,90    43..148   1,67   3,23
+    std kazanci: zemin L x3,1 · a x11,6 · b x8,7 | moloz L x5,4 · a x4,6 · b x5,8
+
+    TEK MODA COKME (L histogrami, 10 kova):
+      zemin T60 dolu 5/10  [0,0,0,2,8,83,25,2,0,0]  <- 120'nin 83'u TEK kovada
+      zemin T71 dolu 9/10  [0,7,21,29,16,19,17,8,2,1]
+    ```
+    Tek moda çökme **yok**. GEÇTİ.
+  - **KAPI 4 — GÖZLE (zorunlu, D-80):** kontak sayfaları — T60'ın sekizi de aynı
+    sıcak kum; T71'de zemin kum/gri/açık/koyu arası değişiyor, kırmızı H ve mavi
+    İHA-İB her karede, bariyerler yerinde. **GEÇTİ.**
+  - 🔴 **Görsel bir regresyon yakaladı, sayılar yakalamamıştı:** ön-boyamayı
+    kaldırınca `enkaz_doku` yolunu sahne hedefine bağlamayı atlamıştım; molozda
+    **mavi gökyüzü ve beyaz bulut** parçaları çıktı (D-78/T60'ın çözdüğü kusurun
+    dönüşü). İlk 12 karelik denemenin görselinde görüldü ve düzeltildi.
+  - **T67 ÇAPRAZ KONTROLÜ (görevde istenmedi, zorunluydu):** kırmızı HB tam da
+    T67'nin tuzağı.
+    ```text
+    HB bolgesinde engel pikseli : 0 / 12 kare        KORUNDU
+    IHA-IB bolgesinde a*        : -7 .. +9  (esik 25 -> MAVI guvenli)
+    HB en/boy 260/260 karede    : 1,00 (KARE)
+    ```
+  - **KAPI 3 — T51/T56 kadraj kapıları KORUNDU** (`57_...py`, betik
+    değiştirilmedi, KUME yolu bellekte yamalandı):
+    ```text
+    KAPI 1 TAM KAREDE rota 260/260 GECTI · KAPI 3 POZITIF KONTROL 260/260 GECTI
+    KAPI 5 kaplama ort %25,9 maks %64,8 (tavan %67) ret 0/260
+    manifest: hedef 260/260 · kenar 2,0 m · en/boy 1,00 · hedef!=acik 0/260
+    ```
+  - 🔴 **KAPI 2 — REGRESYONDA ÜÇ SAYININ İKİSİ KÖTÜLEŞTİ:**
+    ```text
+                      ROTA     MOLOZA    AGIR   ARENA DISI
+    T60 kumesi     242/260     4/242   2/242      5/242
+    T71 kumesi     231/260     5/231   4/231     16/231
+    ```
+    Rota **çökmedi** (%88,8) ama düştü; moloza basma **+1 kare ARTTI** →
+    *"artmasın"* şartı **lafzen karşılanmadı**; arena dışı +11.
+    ⚠ **Bu kıyas kontrollü değildir:** v24, T60 substratında (tek renk künyesi)
+    eğitildi; T71 **bilerek o dağılımın dışındadır**. Ölçülen şey karar
+    zincirinin bozulması değil, **v24'ün dağılım dışında kırılganlığı** — ki
+    T71'in varlık sebebi tam olarak onu kırmak (D-95). Doğru kıyas T71 üzerinde
+    eğitilmiş modelle yapılır (T68). **Kararı sana bırakıyorum.**
+  - **Depo kapıları:** `test_rota_sentetik.py` **15/15** ·
+    `discover -s tests -q` **Ran 426 · OK**.
+  - **Küme:** `...\calisma\sentetik_arena_kadraj_t71` (260 kare). T60 **silinmedi**.
+  - ⚠ **DOĞRULANAMADI:** (1) gerçek arena başarımı — gerçek görüntü **hiç yok**
+    (D-88+D-99); (2) genişletilen bantların gerçek arenayı kapsayıp kapsamadığı
+    **bilinmiyor** — bant seçimi akıl yürütmedir, **ölçüm değildir**; (3)
+    çeşitliliğin modele faydası **ölçülmedi**, T71'de eğitim koşulmadı — "daha
+    sağlam olacak" bir **öngörüdür**; (4) geometri hâlâ dikey şerit (T66);
+    (5) İHA-İB'nin arena içindeki **konumu** şartnamede tarif edilmiyor,
+    rastgele yerleştirildi; (6) dL alt ucunda (min −3) zemin ile moloz aynı
+    parlaklığa gelebiliyor, o karelerin çözülebilirliği sınanmadı.
   - Şartname Şekil 1 alt yazısı: *"Görsel **tamamen yapay zeka ile
     oluşturulmuştur. Gerçek alanı doğrudan yansıtmamaktadır.**"* Figür ile metin
     çeliştiğinde **metin kazanır**; D-87'nin "figür kazanır" hükmü **tersine döner**.
@@ -3059,7 +3218,92 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     gözle doğrulama zorunlu.
   - ⚠ Şartname metni **tek otoritedir**; figürden ölçüm alınmayacak.
 
-- [ ] **T66 — Üreteç geometrisi arenaya benzemiyor: dikey şeritler vs moloz adaları** · `O:\navitas-local-train\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-91**, görsel `results/t60/t60_yan_yana.png`
+- [STATUS: KAPANDI] **T66 — Üreteç geometrisi arenaya benzemiyor: dikey şeritler vs moloz adaları** · `O:\navitas-local-train\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-91**, görsel `results/t60/t60_yan_yana.png`
+  - **⚠ UYGULANDI, BİR KAPI DÜŞTÜ · 2026-08-14 · Claude-2** · kayıt
+    `REVIEW_LOG.md` **D-103**. Depoda hiçbir dosya değiştirilmedi.
+  - Geometri **dikey şerit → moloz ADALARI**: arena zemini geniş ve bağlantılı,
+    moloz adalar hâlinde, koridorlar adaların arasından geçiyor. **T68
+    birleştirildi**; T71 kazanımları (renk bandı, kırmızı H'li HB, İHA-İB) korundu.
+  - 🔴 **Önce başka bir kusur bulundu: `etiketle` DELİKLERİ ATIYORDU**
+    (`RETR_EXTERNAL`). Şerit geometrisinde bedeli küçüktü ve ölçüldü: T71'de
+    **260 karenin 65'inde** class-0 ile class-1 üst üste biniyordu. Ada
+    geometrisinde aynı kusur **yıkıcı** olurdu — **her ada "traversable"
+    etiketlenirdi**. `delikli_poligonlar` ile çözüldü (yeniden rasterize
+    **IoU 1,0000 · fark 0 px**).
+  - **Ada yoğunluğu iki kez ölçümle ayarlandı** (v16 dersi başka yoldan geri
+    gelmesin):
+    ```text
+    surum          traversable  blocked  trav/blok
+    T71 (serit)         %24,9    %30,9      0,81
+    T66 ilk deneme      %53,9     %5,4     10,00   <- adalar cok seyrek
+    T66 nihai           %33,7    %29,0      1,16
+    ```
+    Artışın bir kısmı **yapısaldır ve doğrudur**: şeritler artık bitişik,
+    aralarındaki etiketsiz boşluk kalktı.
+  - **KAPI 2 — renk çeşitliliği. GEÇTİ** (iki düzeyde raporlanıyor):
+    ```text
+    olcut                        T71     T66   oran
+    URETEC cekilisi zemin L    24,68   24,28   0,98   <- bant KODDA degismedi
+    URETEC cekilisi zemin b     6,18    8,71   1,41   <- GERCEKTEN genisletildi
+    OLCULEN bolge zemin L      21,51   19,45   0,90   <- BILESIM etkisi
+    ```
+    L/a bantları kodda hiç değişmedi; 0,96–0,98 farkı n=260'ta **örnekleme
+    gürültüsü** (uniform(105,190) teorik std 24,54). "Ölçülen bölge" std'sinin
+    düşüşü bileşim etkisi — traversable artık iki yüzeyi birden kapsıyor.
+    O rakamı kovalayıp bandı daha da genişletmek **artefakta fit etmek** olurdu.
+  - **KAPI 3 — bariyer açık koridoru kapatıyor (T68). GEÇTİ:**
+    ```text
+    olcut                                 T71        T66
+    ACIK/DAR seridi bariyerle kapatilan  0/260    128/260 (%49,2)
+    bariyer pikseli `blocked` etiketli    %92,0      %98,8
+    ```
+    Manifest düzeltmesi de bağlandı: kapanan şeridin `gecilebilir` alanı
+    False'a çevriliyor, `durum` `"acik+bariyer"` oluyor — yoksa `acik_serit`
+    **yalan söylerdi**.
+  - **KAPI 1 — T51/T56 kadraj kapıları. GEÇTİ** (ilk ayarda düşmüştü):
+    ```text
+    ayar               rota      POZITIF KONTROL     cekimser
+    ilk (dar gecit) 193/260      192/193 DUSTU       DUSUK_GUVEN 50
+    nihai           242/260      242/242 GECTI       DUSUK_GUVEN 18
+    ```
+    İki düzeltme: geçit genişletildi; bariyerin **korunacak şeridi** artık
+    öncelikle bir "açık" şerit (önceden çoğu kez "dar" korunuyordu).
+    Manifest: hedef 260/260 · kenar **2,0 m** · en/boy **1,00** ·
+    `hedef_serit != acik_serit` **0/260** · İHA-İB 260/260.
+  - 🔴 **KAPI 4 — REGRESYON DÜŞTÜ:**
+    ```text
+                      ROTA     MOLOZA    AGIR   ARENA DISI
+    T71 kumesi     231/260     5/231   4/231     16/231
+    T66 kumesi     196/260    61/196  40/196     26/196
+    ```
+    Moloza basma **5 → 61**. *"Artmasın"* şartı **karşılanmadı**.
+    **Sebep ayrıştırıldı — yer gerçeği kontrolü (model YOK):**
+    ```text
+    T71 · YER GERCEGI   rota 259/260 · moloza basan  0/259 (%0,0) · AGIR 0
+    T66 · YER GERCEGI   rota 260/260 · moloza basan 24/260 (%9,2) · AGIR 0
+    ```
+    İki katkı: **(1) substrat %9,2 ve tamamı HAFİF** (ağır basma **0**) —
+    koridorlar daralınca A* rotası C-uzayı sınırına yaslanıyor, ölçüm sınırda
+    temas sayıyor; **(2) geri kalanı v24'ün dağılım dışılığı** — model koşusunda
+    ağır basma 40 iken yer gerçeğiyle **0**. v24 dikey şerit + tek palet ile
+    eğitildi; ada geometrisi onun için tamamen yeni. Doğru kıyas T66'da
+    **eğitilmiş** modelle olur. **Karar sende.**
+  - **KAPI 5 — gözle. GEÇTİ:** yan yana kontak sayfası — üst satır duvar duvara
+    dikey bantlar, alt satır geniş açık zemin + moloz adaları + koridoru enine
+    kesen bariyerler.
+  - **KAPI 6:** `test_rota_sentetik.py` **15/15** · `discover -s tests -q`
+    **Ran 426 · OK**.
+  - **Etiket çakışması** %0,051 → %0,204: kaynağı araştırıldı, çakışan
+    bileşenlerin en/boy medyanı 0,8–2,0 (ince bariyer barı **değil**) — poligon
+    sadeleştirmesinin **kenar artığı**. `approxPolyDP` eps 0,0035 → 0,0015.
+  - **Küme:** `...\calisma\sentetik_arena_kadraj_t66` (260). T71 ve T60 **silinmedi**.
+  - ⚠ **DOĞRULANAMADI:** (1) gerçek arena başarımı — gerçek görüntü **hiç yok**;
+    (2) **ada yerleşimi şartnameden türetilmedi** — metin yığınların sayısı/
+    boyutu/dağılımı hakkında bir şey demiyor, yoğunluk `trav/blok` oranını
+    tutmak için **ayarlandı**; (3) yeni geometrinin **modele faydası ölçülmedi**,
+    T66'da eğitim koşulmadı — öngörüdür; (4) yer gerçeğiyle ölçülen %9,2 hafif
+    basma sıfırlanmadı; (5) `GT şerit uyumsuzluğu` 22/260 → 59/242 çıktı ama
+    D-90 bu ölçütü zaten **güvenilmez** ilan etmişti, kanıt olarak kullanılmadı.
   - T60 **rengi** düzeltti (doğrulandı). **Geometri** düzelmedi:
     - gerçek arena: **açık toprak tarlası + içine serpilmiş moloz ADALARI**,
       koridorlar bu adaların arasından geçer; moloz duvar gibi dizilmiş.
@@ -3070,6 +3314,33 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     doğrudur (gerçekçi). T66 onu kaldırmayacak — geometriyi düzeltecek.
   - **KAPI:** `61_rota_moloza_basma.py` üç sayısı bozulmayacak; gözle yan yana
     doğrulama zorunlu (**görsel kazanır**, D-80).
+
+- [ ] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
+avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
+  - Yer gerçeği etiketleriyle (model YOK, yani kusursuz algı) ölçüldü:
+    ```text
+    kume                  rota      moloza basan   AGIR basma
+    T71 · YER GERCEGI  259/260    0/260  (%0,0)         0
+    T66 · YER GERCEGI  260/260   24/260  (%9,2)         0
+    ```
+  - Hepsi **hafif** (ağır basma 0) → çarpışma değil **sıyırma**: ada
+    geometrisinde koridor daralınca A* rotası C-uzayı sınırına yaslanıyor.
+  - Şartname koridor genişliği **vermiyor**; ama 50×50 m arenada üç güzergâh
+    için asgari `2 × R_GEREKLI_M = 2,20 m` fazlasıyla sağlanabilir olmalı.
+  - **YAP:** ada yerleşiminde koridor genişliğine **alt sınır** koy —
+    `mpp` üzerinden metrik olarak türet, çıplak piksel yazma (madde 16).
+  - **KAPI:** yer gerçeğiyle moloza basma **0'a** insin · rota üretimi çökmesin ·
+    renk çeşitliliği ve bariyer kapatma oranı (128/260) bozulmasın.
+
+- [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
+avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
+  - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev
+    sonrası paraşütle ineceği belirlenmiş güvenli alandır."* Üreteç onu HTAB'ın
+    üstüne yayılmış yarı saydam bir katman olarak çiziyor.
+  - Etikete dokunmuyor, o yüzden **zehirli değil**; ama modele yanlış korelasyon
+    öğretebilir (zemin mavi olabilir).
+  - **YAP:** ya arena dışına/kenarına yerleştir, ya da kaplama oranını belirgin
+    biçimde düşür. **KAPI:** renk çeşitliliği düşmesin, kadraj kapıları geçsin.
 
 - [ ] **T61 — Orta şiddetli çökme için ölçüt yok: kaplama+kenar bu sınıfı kaçırıyor** · `codes/karar_sozlesmesi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-86**
   - T59'da tavan 0,67'ye çıkınca `sa_000150.jpg` kapıdan **geçmeye** başladı:
@@ -3084,7 +3355,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     yapılacak.
   - ⚠ Madde 15: yeni ölçüt yalnız **reddedebilir**, serbest alanı büyütemez.
 
-- [IN_PROGRESS: Codex-1] **T62 — Saha ölçüm betiği v20'de kalmış: sürüm hizalamasının BEŞİNCİ ucu** · `scripts/jetson_fps.py`, `jetson_paket/JETSON_KILAVUZ.md` (+ depo kopyası), `tests/test_uretim_modeli_hizasi.py` · **ÖNEMLİ** · mimar denetimi, kanıt: `REVIEW_LOG.md` **D-89**
+- [STATUS: KAPANDI] **T62 — Saha ölçüm betiği v20'de kalmış: sürüm hizalamasının BEŞİNCİ ucu** · `scripts/jetson_fps.py`, `jetson_paket/JETSON_KILAVUZ.md` (+ depo kopyası), `tests/test_uretim_modeli_hizasi.py` · **ÖNEMLİ** · mimar denetimi, kanıt: `REVIEW_LOG.md` **D-89**
   - T58 dört ucu (GUI · paket · manifest · iki kılavuz) doğru hizaladı ve
     **denetimde doğrulandı**. Ama beşinci bir uç var ve çevrilmedi:
     ```text
@@ -3115,6 +3386,68 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     4. `codes/test_rota_sentetik.py` 15/15 · `unittest discover -s tests -q` OK
   - ⚠ Karar zincirinde **değildir** — yanlış rota üretmez. Ama T15–T18'in ve
     "Jetson'da yetişir mi" sorusunun tamamı bu betiğin sayılarına dayanır.
+  - **T62 uygulama sonucu (Codex-1, 2026-08-14):** PT/ONNX adları manifestin
+    `asil_model_pt`/`asil_model` alanlarından, `conf` üretim yorumlayıcısından,
+    boyutlar manifest + `INFER_SIZE` birleşiminden türetiliyor. Sürüm çıplak
+    yazılmadı. TensorRT engine depoda/Jetson paketinde henüz yok (`ENGINE_COUNT=0`);
+    bu nedenle varsayılan hayalî bir dosya göstermiyor: `engine=None` ve eksiklik
+    konsol + `ozet.json` + `rapor.md` içinde açık `ATLANDI` (T16) olarak kalıyor.
+  - **Varsayılan/ölçek gerçek ölçümü:**
+    ```text
+    [T62_IMG] manifest=[640] varsayilan=[640, 512] uretim_INFER_SIZE=512 hizali=True
+    [T62_FARK] 640/512_dogrusal=1.2500 piksel_alani=1.5625 ek_kol=640
+    [T62_MODEL] pt=navitas_seg_v24_best.pt var=True
+                onnx=navitas_seg_v24_best_640_fp16.onnx var=True
+                engine=None conf=0.30
+    EXIT_CODE=0
+    ```
+    Yalnız 512 üretim çıkarım boyutuyla aynıdır; 640 doğrusal %25, piksel
+    alanında %56,25 büyük ek export/FPS kıyasıdır, üretim gecikmesi diye
+    adlandırılmayacak.
+  - **Zorunlu mutasyon GERÇEKTEN koşuldu:** `scripts/jetson_fps.py` PT varsayılanı
+    geçici olarak v20'ye çevrildi.
+    ```text
+    python.exe -B -m unittest discover -s tests -p test_uretim_modeli_hizasi.py -q
+    FAIL: test_model_varsayilanlari_manifestin_ASIL_dosyalaridir
+    AssertionError: 'navitas_seg_v24_best.pt' != 'navitas_seg_v20_best.pt'
+    Ran 19 tests ... FAILED (failures=1)
+    MUTASYON_EXIT_CODE=1
+    ```
+    Exact inverse sonrası kanonik ve paket aynası SHA256
+    `5E0F6B61E02BCD2B6F3C035B2DA2373180DF165B48AC4EA21B43BED3CC0E6005`.
+  - **Jetson paket üreteci (gerçek çıktı):**
+    ```text
+    [JETSON_PAKET] codes\karar_sozlesmesi.py -> jetson_paket\kod\karar_sozlesmesi.py
+    [JETSON_PAKET] codes\rpi_inference.py -> jetson_paket\kod\rpi_inference.py
+    [JETSON_PAKET] codes\costmap_path_finder.py -> jetson_paket\kod\costmap_path_finder.py
+    [JETSON_PAKET] scripts\jetson_fps.py -> jetson_paket\kod\jetson_fps.py
+    [JETSON_PAKET] comms\protocol.py -> jetson_paket\kod\protocol.py
+    [JETSON_PAKET] comms\link.py -> jetson_paket\kod\link.py
+    [JETSON_PAKET] comms\iha_sender.py -> jetson_paket\kod\iha_sender.py
+    [JETSON_PAKET] comms\inis_kaniti.py -> jetson_paket\kod\inis_kaniti.py
+    [JETSON_PAKET] comms\iha_inis_yayinci.py -> jetson_paket\kod\iha_inis_yayinci.py
+    EXIT_CODE=0
+    ```
+  - **Kapılar (exact yorumlayıcı, gerçek çıktı):**
+    ```text
+    python.exe -B -m unittest discover -s tests -p test_uretim_modeli_hizasi.py -q
+    Ran 19 tests ... OK
+    EXIT_CODE=0
+
+    python.exe -B -m unittest discover -s tests -p test_jetson_comms_paketi.py -v
+    Ran 5 tests ... OK
+    EXIT_CODE=0
+
+    python.exe -B codes/test_rota_sentetik.py
+    SONUC: 15/15 dogru
+    [OK] TUM DETERMINISTIK SAHNELER GECTI
+    EXIT_CODE=0
+
+    python.exe -B -m unittest discover -s tests -q
+    Ran 426 tests in 44.845s
+    OK
+    EXIT_CODE=0
+    ```
 
 - [x] **T63 — Karar doğruluğu şartnameye sadık zeminde İLK KEZ ölçüldü** · `O:\navitas-local-train\60_kadraj_karar_dogrulugu.py`, `61_rota_moloza_basma.py` · mimar ölçümü · kayıt: `REVIEW_LOG.md` **D-90**
   - **Şerit doğruluğu ölçütü GÜVENİLMEZ çıktı** — aynı kararlar, kıyas tanımına
@@ -3185,7 +3518,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     senkronladıktan ve iki SHA eşit olduktan sonra yukarıdaki nihai tam paket
     yeniden koşuldu; nihai kanıt yalnız temiz ikinci koşumdur.
 
-- [STATUS: READY_FOR_REVIEW] **T70 — 🔴 GÖREV KRİTİK: ölçek halkası SABİT başlangıç sayısına bağlı; irtifa sapması gövde açıklığını EKSİK hesaplıyor** · `codes/rpi_inference.py`, `comms/**` (telemetri), `scripts/saha_kuru_kosu.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-98**
+- [STATUS: KAPANDI] **T70 — 🔴 GÖREV KRİTİK: ölçek halkası SABİT başlangıç sayısına bağlı; irtifa sapması gövde açıklığını EKSİK hesaplıyor** · `codes/rpi_inference.py`, `comms/**` (telemetri), `scripts/saha_kuru_kosu.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-98**
   - `mpp_irtifadan` uygulanmış ve çağrılıyor — ama girdisi **`--irtifa` komut
     satırı argümanı**: tüm koşuya uygulanan TEK bir sayı. Algı yolunda MAVLink
     okuyan kod **yok** (`rpi_inference.py:1224` yalnızca bir yorum satırı).
@@ -3277,7 +3610,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     `codes/rpi_inference.py` üretim yolunu kapatır, bütün canlı yolların kapandığı
     iddia edilmez.
 
-- [ ] **T68 — Üreteç bariyeri ASLA açık zemine koymuyor: "ince çubuk = geçilemez" öğrenilemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T67'yi açar** · kanıt: `REVIEW_LOG.md` **D-93**
+- [STATUS: KAPANDI · T66 ile birleşti] **T68 — Üreteç bariyeri ASLA açık zemine koymuyor: "ince çubuk = geçilemez" öğrenilemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T67'yi açar** · kanıt: `REVIEW_LOG.md` **D-93**
   - Ölçüldü (120 kare, 70'inde bariyer var):
     ```text
     BARIYER PIKSELLERININ YER GERCEGI ETIKETI

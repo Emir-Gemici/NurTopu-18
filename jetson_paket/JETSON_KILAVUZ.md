@@ -53,18 +53,22 @@
 > **varsayılan komutlar bu paket için yanlış**. Aşağıdakileri atlarsan test
 > yanlış sonuç verir ya da hiç koşmaz.
 
-### G1 · `jetson_fps.py` varsayılanları bu pakette ÇALIŞMAZ — yol vermek ZORUNLU
+### G1 · `jetson_fps.py` model varsayılanları üretim manifestine bağlıdır
 
-`KOK = parents[1]` yani `jetson_paket/`. Varsayılanlar oraya bakıyor:
+Betik sürüm adını kendi içinde yazmaz; `models/jetson_derleme_manifest.json`
+dosyasındaki `asil_model_pt` ve `asil_model` alanlarını okur:
 
-| argüman | varsayılan | bu pakette |
+| argüman | varsayılanın kaynağı | bugün çözülen değer |
 |---|---|---|
-| `--girdi` | `jetson_paket/data/raw_frames` | **YOK** (görüntüler `test_goruntuleri/` altında) |
-| `--pt` | `jetson_paket/models/navitas_seg_v20_best.pt` | var ama **v20** — kılavuzun kendi önerisi v21 |
-| `--onnx` | `jetson_paket/models/navitas_seg_v20_best.onnx` | **YOK** (yalnız v17 ve v21 ONNX var) |
+| `--girdi` | `data/raw_frames` | **YOK**; görüntüler `test_goruntuleri/` altında, yol açıkça verilmeli |
+| `--pt` | manifest `asil_model_pt` | `navitas_seg_v24_best.pt` (**VAR**) |
+| `--onnx` | manifest `asil_model` | `navitas_seg_v24_best_640_fp16.onnx` (**VAR**) |
+| `--engine` | manifest ONNX adıyla aynı gövde | Jetson'da derlenmiş dosya varsa kullanılır; bugün **YOK**, TensorRT vakası açıkça `ATLANDI` |
+| `--conf` | `rpi_inference` üretim varsayılanı | `0.30` |
+| `--imgsz` | manifest boyutu + üretim `INFER_SIZE` | `[640, 512]`; yalnız **512 üretimle aynı**, 640 ek export/FPS kıyasıdır |
 
-Yani argümansız çalıştırırsan ya boş girdiyle koşar ya da v20 ölçersin.
-**Her koşuda `--girdi`, `--pt`, `--onnx` açıkça verilecek.**
+Paket içinde argümansız koşuda yalnız girdi eksiktir. `--girdi` açıkça verilir;
+PT/ONNX/conf/boyut varsayılanları manifest ve üretim yorumlayıcısından gelir.
 
 ### G2 · `rota_bul` durumu bu zincirde ANLAMSIZ — "KAPALI_DAR" görürsen panikleme
 
@@ -124,8 +128,9 @@ waypoint üretmiyor; gerçek 67 karede ihlalli rota **13 → 0** oldu.
 > (`BELIRSIZ_TEK_KAPI 15 · KAPALI_DAR 12 · BELIRSIZ_COKLU 2 · ACIK 1`).
 > ONNX FP16 paritesi **30/30**, 4 farklı karar durumuyla (boş-doğru değil).
 >
-> **Öneri: FPS ölçümünü ve engine derlemesini v21 ile yap.** Kapı raporu
-> `jetson_paket/V21_KAPI_RAPORU.json` içinde.
+> **Bu 2026-08-05 ölçümünün tarihsel önerisiydi.** Bugünkü FPS/engine otoritesi
+> §0-T58/T62'deki manifesttir ve **v24**'ü gösterir. v21 kapı raporu
+> `jetson_paket/V21_KAPI_RAPORU.json` içinde ölçüm kaydı olarak korunur.
 
 ### B1 · v17 gerçek drone karelerinde KÖR (ölçüldü, 2026-08-05)
 
@@ -310,15 +315,15 @@ Bu 5–15 dakika sürebilir; TensorRT katman katman optimize eder. Sabret, kesme
 
 **Kapı (T16):** `.engine` dosyası oluştu **ve** tek kare çıkarım hatasız tamamlandı:
 ```bash
-yolo predict task=segment model=navitas_seg_v17_best_640.engine \
+yolo predict task=segment model=navitas_seg_v24_best_640_fp16.engine \
   source=~/navitas/data/test_goruntuleri/sentetik_arena --imgsz 640
 ```
 
 ### `yolo export` hata verirse — `trtexec` yedeği
 ```bash
 /usr/src/tensorrt/bin/trtexec \
-  --onnx=navitas_seg_v17_best_640_fp16.onnx \
-  --saveEngine=v17_640_fp16.engine \
+  --onnx=navitas_seg_v24_best_640_fp16.onnx \
+  --saveEngine=navitas_seg_v24_best_640_fp16.engine \
   --fp16 --workspace=4096
 ```
 
@@ -332,9 +337,9 @@ python3 scripts/jetson_fps.py \
   --girdi data/test_goruntuleri/sentetik_arena \
   --pt models/navitas_seg_v24_best.pt \
   --onnx models/navitas_seg_v24_best_640_fp16.onnx \
-  --engine models/navitas_seg_v24_best_640.engine \
+  --engine models/navitas_seg_v24_best_640_fp16.engine \
   --imgsz 640 \
-  --isinma 15 --tekrar 120 --conf 0.25 --cihaz 0 \
+  --isinma 15 --tekrar 120 --conf 0.30 --cihaz 0 \
   --cikti results/jetson_fps_v24_$(date +%Y%m%d_%H%M%S)
 ```
 
@@ -454,7 +459,7 @@ hesabından çıkan gerçek gereksinim **0,9–2,6 FPS**.
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v17_best_640_fp16.onnx format=engine imgsz=640 \
+yolo export model=navitas_seg_v24_best_640_fp16.onnx format=engine imgsz=640 \
   int8=True data=~/navitas/codes/karisim_arena.yaml
 ```
 ⚠ `karisim_arena.yaml` içindeki yollar **Windows mutlak yolları** (`O:\navitas\...`).

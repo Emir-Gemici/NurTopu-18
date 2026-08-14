@@ -7,11 +7,12 @@ Bu tam olarak `jetson_paket/models/jetson_derleme_manifest.json`'in basina geldi
 **v21** ONNX vardi. Manifest paket icerigine BAKMIYORDU, kimse fark etmedi
 (REVIEW_LOG D-83).
 
-Bu paket dort ucu TEK KAYNAGA baglar ve kaymayi mekanik olarak yakalar:
+Bu paket bes ucu TEK KAYNAGA baglar ve kaymayi mekanik olarak yakalar:
   1. `comms/yks_gui.py` `ALGI_MODEL_DOSYA`      — hakem ekraninin yukledigi .pt
   2. `jetson_paket/models/`                      — sahaya giden dosyalar
   3. `jetson_paket/models/jetson_derleme_manifest.json` — paketin kunyesi
   4. HER IKI `JETSON_KILAVUZ.md`                 — "ASIL - bunu derle" satiri
+  5. `scripts/jetson_fps.py` varsayilanlari      — saha FPS olcumunun modeli/esigi
 
 Model AGIRLIGI YUKLENMEZ; yalniz bayt ve metin kimligi sinanir, boylece kapi
 GPU'suz ve saniyeler icinde kosar.
@@ -20,11 +21,16 @@ GPU'suz ve saniyeler icinde kosar.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
+import io
 import json
 import re
 import sys
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
 KOK = Path(__file__).resolve().parents[1]
 if str(KOK / "comms") not in sys.path:
@@ -35,8 +41,21 @@ import yks_gui  # noqa: E402
 PAKET = KOK / "jetson_paket" / "models"
 MANIFEST = PAKET / "jetson_derleme_manifest.json"
 KILAVUZLAR = (KOK / "JETSON_KILAVUZ.md", KOK / "jetson_paket" / "JETSON_KILAVUZ.md")
+JETSON_FPS_YOLU = KOK / "scripts" / "jetson_fps.py"
 
 SURUM_DESENI = re.compile(r"navitas_seg_(v\d+)_best")
+
+
+def _jetson_fps_modulu():
+    spec = importlib.util.spec_from_file_location("navitas_jetson_fps_t62", JETSON_FPS_YOLU)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"jetson_fps modulu yuklenemedi: {JETSON_FPS_YOLU}")
+    modul = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(modul)
+    return modul
+
+
+JETSON_FPS = _jetson_fps_modulu()
 
 # Agirliklar `.gitignore:132` ile depo disinda tutulur (`*.pt`, `*.onnx`).
 # Temiz bir klonda bayt kapilari dosya YOKLUGUNDAN duserdi — bu YANLIS sebeple
@@ -161,6 +180,96 @@ class ManifestBayATLIGI_Tests(unittest.TestCase):
                          f"manifest bu dosyalari tarif etmiyor: {artik}")
 
 
+class SahaOlcumVarsayilanlariTests(unittest.TestCase):
+    """T62: FPS betigi uretim manifesti/yorumlayicisindan sapamasin."""
+
+    def setUp(self):
+        self.mf = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        self.args = JETSON_FPS.argumanlar([])
+
+    def test_model_varsayilanlari_manifestin_ASIL_dosyalaridir(self):
+        self.assertEqual(self.mf["asil_model_pt"], self.args.pt.name)
+        self.assertEqual(self.mf["asil_model"], self.args.onnx.name)
+        self.assertEqual(PAKET.resolve(), self.args.pt.parent.resolve())
+        self.assertEqual(PAKET.resolve(), self.args.onnx.parent.resolve())
+
+    @unittest.skipUnless(AGIRLIK_VAR, AGIRLIK_YOK_SEBEBI)
+    def test_varsayilan_model_yollari_GERCEKTEN_VAR(self):
+        self.assertTrue(self.args.pt.is_file(), f"PT varsayilani yok: {self.args.pt}")
+        self.assertTrue(self.args.onnx.is_file(), f"ONNX varsayilani yok: {self.args.onnx}")
+        if self.args.engine is not None:
+            self.assertTrue(self.args.engine.is_file(),
+                            f"engine varsayilani olmayan dosyayi gosteriyor: {self.args.engine}")
+
+    def test_engine_yoklugu_HAYALI_yolla_gizlenmiyor(self):
+        beklenen = (PAKET / self.mf["asil_model"]).with_suffix(".engine")
+        if beklenen.is_file():
+            self.assertEqual(beklenen.resolve(), self.args.engine.resolve())
+        else:
+            self.assertIsNone(
+                self.args.engine,
+                "Jetson'da derlenmemis engine icin var olmayan varsayilan yol yazilmis",
+            )
+
+    def test_engine_yokken_TensorRT_vakasi_ACIKCA_ATLANIYOR(self):
+        class SahteAkis:
+            def kapat(self):
+                pass
+
+        args = SimpleNamespace(
+            girdi=KOK / "tests" / "t62_sahte_girdi",
+            pt=self.args.pt,
+            onnx=self.args.onnx,
+            engine=None,
+            imgsz=[JETSON_FPS.INFER_SIZE],
+            isinma=0,
+            tekrar=1,
+            conf=self.args.conf,
+            cihaz=None,
+            video_adim=1,
+            cikti=KOK / "tests" / "t62_sahte_cikti",
+        )
+        vaka = lambda ad, *_args, **_kwargs: {  # noqa: E731
+            "tur": ad, "imgsz": JETSON_FPS.INFER_SIZE, "durum": "OK"
+        }
+        yazilan: dict[str, str] = {}
+        stdout = io.StringIO()
+        with (
+            mock.patch.object(JETSON_FPS, "argumanlar", return_value=args),
+            mock.patch.object(JETSON_FPS, "KareAkisi", return_value=SahteAkis()),
+            mock.patch.object(JETSON_FPS, "vaka_calistir", side_effect=vaka),
+            mock.patch.object(JETSON_FPS, "ortam_bilgisi", return_value={}),
+            mock.patch.object(JETSON_FPS, "markdown_raporu", return_value="rapor\n"),
+            mock.patch.object(type(args.cikti), "mkdir", return_value=None),
+            mock.patch.object(
+                JETSON_FPS,
+                "atomik_yaz",
+                side_effect=lambda yol, metin: yazilan.__setitem__(yol.name, metin),
+            ),
+            redirect_stdout(stdout),
+        ):
+            kod = JETSON_FPS.main()
+
+        self.assertEqual(0, kod)
+        self.assertIn("ATLANDI: tensorrt_fp16", stdout.getvalue())
+        ozet = json.loads(yazilan["ozet.json"])
+        self.assertEqual("tensorrt_fp16", ozet["atlanan_vakalar"][0]["tur"])
+        self.assertEqual(["pt", "onnx"], [v["tur"] for v in ozet["vakalar"]])
+        rapor = JETSON_FPS.markdown_raporu(
+            [], {}, [{"tur": "tensorrt_fp16", "sebep": "engine yok"}]
+        )
+        self.assertIn("ATLANDI: engine yok", rapor)
+
+    def test_conf_varsayilani_URETIM_yorumlayicisiyla_AYNI(self):
+        uretim_conf = JETSON_FPS._arguman_ayristirici().get_default("conf")
+        self.assertEqual(uretim_conf, self.args.conf)
+
+    def test_imgsz_manifest_ve_URETIM_boyutlarindan_turetiliyor(self):
+        beklenen = list(dict.fromkeys([*self.mf["imgsz"], JETSON_FPS.INFER_SIZE]))
+        self.assertEqual(beklenen, self.args.imgsz)
+        self.assertIn(JETSON_FPS.INFER_SIZE, self.args.imgsz)
+
+
 class KilavuzHizasiTests(unittest.TestCase):
     """Sahadaki insan hangi dosyayi derleyecek — kilavuz ne diyor?"""
 
@@ -193,6 +302,18 @@ class KilavuzHizasiTests(unittest.TestCase):
                 self.assertIn(
                     self.surum, [_surum(s) for s in satirlar],
                     f"hicbir derleme komutu {self.surum} kullanmiyor")
+
+    def test_FPS_komutu_URETIM_conf_esigini_kullaniyor(self):
+        uretim_conf = JETSON_FPS._arguman_ayristirici().get_default("conf")
+        for k in KILAVUZLAR:
+            satirlar = [s for s in k.read_text(encoding="utf-8").splitlines()
+                        if "--isinma 15 --tekrar 120 --conf" in s]
+            with self.subTest(kilavuz=k.parent.name):
+                self.assertTrue(satirlar, "ASIL FPS komutunda conf satiri yok")
+                self.assertTrue(
+                    any(f"--conf {uretim_conf:.2f}" in s for s in satirlar),
+                    f"ASIL FPS komutu uretim conf={uretim_conf:.2f} kullanmiyor",
+                )
 
 
 if __name__ == "__main__":

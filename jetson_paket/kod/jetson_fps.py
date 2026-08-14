@@ -33,11 +33,75 @@ if str(KODLAR) not in sys.path:
     sys.path.insert(0, str(KODLAR))
 
 from costmap_path_finder import rota_bul
-from rpi_inference import _maskeleri_icerige_kirp, _preprocess, get_masks
+from rpi_inference import (
+    INFER_SIZE,
+    _arguman_ayristirici,
+    _maskeleri_icerige_kirp,
+    _preprocess,
+    get_masks,
+)
 
 
 GORUNTU_UZANTILARI = {".jpg", ".jpeg", ".png", ".bmp"}
 VIDEO_UZANTILARI = {".mp4", ".mov", ".avi", ".mkv", ".m4v"}
+JETSON_MANIFEST_ADI = "jetson_derleme_manifest.json"
+
+
+def _manifest_ve_model_dizini(kok: Path = KOK) -> tuple[dict[str, Any], Path]:
+    """Repo ve Jetson paket topolojisinde ayni uretim manifestini oku."""
+    adaylar = (
+        kok / "models" / JETSON_MANIFEST_ADI,
+        kok / "jetson_paket" / "models" / JETSON_MANIFEST_ADI,
+    )
+    bulunan = [yol for yol in adaylar if yol.is_file()]
+    if len(bulunan) != 1:
+        raise RuntimeError(
+            "Jetson uretim manifesti tekil olmali: "
+            + ", ".join(str(yol) for yol in bulunan)
+        )
+    try:
+        veri = json.loads(bulunan[0].read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Jetson uretim manifesti okunamadi: {bulunan[0]}") from exc
+    if not isinstance(veri, dict):
+        raise RuntimeError("Jetson uretim manifesti JSON nesnesi olmali")
+    return veri, bulunan[0].parent
+
+
+def _manifest_model_adi(veri: dict[str, Any], alan: str, uzanti: str) -> str:
+    """Manifest model adini yol kacisina izin vermeden dogrula."""
+    deger = veri.get(alan)
+    if not isinstance(deger, str) or not deger.strip():
+        raise RuntimeError(f"Jetson uretim manifestinde `{alan}` yok/gecersiz")
+    ad = deger.strip()
+    if Path(ad).name != ad or Path(ad).suffix.lower() != uzanti:
+        raise RuntimeError(f"Jetson uretim manifestinde `{alan}` guvensiz/gecersiz: {ad!r}")
+    return ad
+
+
+def _uretim_varsayilanlari(kok: Path = KOK) -> dict[str, Any]:
+    """FPS varsayilanlarini manifest ve uretim yorumlayicisindan turet."""
+    veri, model_dizini = _manifest_ve_model_dizini(kok)
+    pt = model_dizini / _manifest_model_adi(veri, "asil_model_pt", ".pt")
+    onnx = model_dizini / _manifest_model_adi(veri, "asil_model", ".onnx")
+
+    engine_adayi = onnx.with_suffix(".engine")
+    engine = engine_adayi if engine_adayi.is_file() else None
+
+    manifest_boyutlari = veri.get("imgsz")
+    if (
+        not isinstance(manifest_boyutlari, list)
+        or not manifest_boyutlari
+        or any(isinstance(x, bool) or not isinstance(x, int) or x < 32 or x % 32
+               for x in manifest_boyutlari)
+    ):
+        raise RuntimeError("Jetson uretim manifestinde `imgsz` yok/gecersiz")
+    imgsz = list(dict.fromkeys([*manifest_boyutlari, INFER_SIZE]))
+
+    conf = _arguman_ayristirici().get_default("conf")
+    if isinstance(conf, bool) or not isinstance(conf, (int, float)) or not 0.0 < float(conf) <= 1.0:
+        raise RuntimeError("rpi_inference uretim `conf` varsayilani yok/gecersiz")
+    return {"pt": pt, "onnx": onnx, "engine": engine, "imgsz": imgsz, "conf": float(conf)}
 
 
 class KareAkisi:
@@ -222,7 +286,11 @@ def vaka_calistir(ad: str, yol: Path, imgsz: int, akis: KareAkisi, isinma: int,
                      "fps_ortalama_tabanli": round(1000 / toplam["ortalama"], 3) if toplam["ortalama"] else None}
 
 
-def markdown_raporu(vakalar: list[dict[str, Any]], ortam: dict[str, Any]) -> str:
+def markdown_raporu(
+    vakalar: list[dict[str, Any]],
+    ortam: dict[str, Any],
+    atlanan_vakalar: list[dict[str, Any]] | None = None,
+) -> str:
     """p50/p95'i ayri tutan insan-okunur ozet olustur."""
     satirlar = ["# Jetson Uctan Uca FPS Olcumu", "",
                 "NEDEN: Sayilar kare okuma + cikarim + get_masks + costmap Katman A yolunun gercek olcumudur.", "",
@@ -235,27 +303,37 @@ def markdown_raporu(vakalar: list[dict[str, Any]], ortam: dict[str, Any]) -> str
             satirlar.append(f"| {vaka['tur']} | {vaka['imgsz']} | {vaka['ornek']} | {toplam['p50']:.3f} | {toplam['p95']:.3f} | {vaka['fps_ortalama_tabanli']:.3f} | OK |")
         else:
             satirlar.append(f"| {vaka['tur']} | {vaka['imgsz']} | - | - | - | - | {vaka['durum']}: {vaka.get('sebep')} |")
+    for vaka in atlanan_vakalar or []:
+        satirlar.append(
+            f"| {vaka['tur']} | - | - | - | - | - | ATLANDI: {vaka.get('sebep')} |"
+        )
     satirlar.extend(["", "Not: mpp=None olceksiz Katman-A performans kipidir; gercek mpp rota geometrisini degistirir.",
                      "TensorRT satiri yalniz Jetson'da derlenmis FP16 .engine ile gecerlidir."])
     return "\n".join(satirlar) + "\n"
 
 
-def argumanlar() -> argparse.Namespace:
+def argumanlar(argv: list[str] | None = None) -> argparse.Namespace:
     """Jetson benchmark komut satiri arayuzunu olustur."""
+    varsayilan = _uretim_varsayilanlari()
     tarih = datetime.now().strftime("%Y%m%d_%H%M%S")
     ayrac = argparse.ArgumentParser(description="Gercek Navitas algi + Katman-A FPS olcumu")
     ayrac.add_argument("--girdi", type=Path, default=KOK / "data" / "raw_frames")
-    ayrac.add_argument("--pt", type=Path, default=KOK / "models" / "navitas_seg_v20_best.pt")
-    ayrac.add_argument("--onnx", type=Path, default=KOK / "models" / "navitas_seg_v20_best.onnx")
-    ayrac.add_argument("--engine", type=Path, default=KOK / "models" / "navitas_seg_v20_best.engine")
-    ayrac.add_argument("--imgsz", type=int, nargs="+", default=[640, 512])
+    ayrac.add_argument("--pt", type=Path, default=varsayilan["pt"])
+    ayrac.add_argument("--onnx", type=Path, default=varsayilan["onnx"])
+    ayrac.add_argument(
+        "--engine",
+        type=Path,
+        default=varsayilan["engine"],
+        help="Jetson'da derlenmis TensorRT engine; yoksa bu vaka acikca atlanir",
+    )
+    ayrac.add_argument("--imgsz", type=int, nargs="+", default=varsayilan["imgsz"])
     ayrac.add_argument("--isinma", type=int, default=15)
     ayrac.add_argument("--tekrar", type=int, default=120)
-    ayrac.add_argument("--conf", type=float, default=0.25)
+    ayrac.add_argument("--conf", type=float, default=varsayilan["conf"])
     ayrac.add_argument("--cihaz", help="Ultralytics device, ornek: 0")
     ayrac.add_argument("--video-adim", type=int, default=1)
     ayrac.add_argument("--cikti", type=Path, default=KOK / "results" / f"jetson_fps_{tarih}")
-    return ayrac.parse_args()
+    return ayrac.parse_args(argv)
 
 
 def main() -> int:
@@ -272,8 +350,16 @@ def main() -> int:
     cikti = args.cikti.resolve()
     cikti.mkdir(parents=True, exist_ok=True)
     vakalar: list[dict[str, Any]] = []
+    atlanan_vakalar: list[dict[str, Any]] = []
+    modeller = [("pt", args.pt), ("onnx", args.onnx)]
+    if args.engine is None:
+        sebep = "T16: Jetson'da derlenmis TensorRT .engine henuz yok"
+        print(f"ATLANDI: tensorrt_fp16 - {sebep}")
+        atlanan_vakalar.append({"tur": "tensorrt_fp16", "sebep": sebep})
+    else:
+        modeller.append(("tensorrt_fp16", args.engine))
     try:
-        for ad, yol in (("pt", args.pt), ("onnx", args.onnx), ("tensorrt_fp16", args.engine)):
+        for ad, yol in modeller:
             for imgsz in args.imgsz:
                 print(f"Olculuyor: {ad} / imgsz={imgsz}")
                 vakalar.append(vaka_calistir(ad, yol, imgsz, akis, args.isinma, args.tekrar, args.conf, args.cihaz))
@@ -285,11 +371,13 @@ def main() -> int:
             "zincir": "kare_oku -> letterbox/cikarim -> rpi_inference.get_masks -> costmap_path_finder.rota_bul(plan=False)",
             "parametreler": {"girdi": str(args.girdi), "isinma": args.isinma, "tekrar": args.tekrar,
                               "conf": args.conf, "imgsz": args.imgsz, "cihaz": args.cihaz, "mpp": None},
+            "atlanan_vakalar": atlanan_vakalar,
             "vakalar": vakalar}
     atomik_yaz(cikti / "ozet.json", json.dumps(veri, ensure_ascii=False, indent=2))
-    atomik_yaz(cikti / "rapor.md", markdown_raporu(vakalar, ortam))
+    atomik_yaz(cikti / "rapor.md", markdown_raporu(vakalar, ortam, atlanan_vakalar))
     basarili = sum(vaka["durum"] == "OK" for vaka in vakalar)
-    print(f"SONUC: {basarili}/{len(vakalar)} vaka olculdu -> {cikti}")
+    print(f"SONUC: {basarili}/{len(vakalar)} vaka olculdu; "
+          f"{len(atlanan_vakalar)} vaka acikca atlandi -> {cikti}")
     return 0 if basarili else 1
 
 

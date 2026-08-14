@@ -231,7 +231,7 @@ Bilinçli ikamedir, eksiklik değil.
 | # | Kaynak | Formül | Bugün üretilebilir mi |
 |---|---|---|---|
 | **(a)** | **İrtifa + kamera FOV / odak** | `mpp = 2·h·tan(FOV_yatay/2) / W_px` · `mpp = h / f_px` | ✅ **EVET** — irtifa saha yolunda zaten okunuyor: MAVLink `GLOBAL_POSITION_INT.relative_alt` (`comms/inis_kaniti.py:143`). İkinci bir telemetri yolu türetilmez. |
-| (b) | Bilinen ölçekli nesne (2×2 m kırmızı H brandası) → px/m | `mpp = 2.0 / brandanın piksel kenarı` | ❌ **HAYIR** — üretim modeli **2 sınıflı**; ölçüldü (T58, 2026-08-13): `navitas_seg_v24_best.pt.names = {0: 'traversable', 1: 'blocked'}` — v21 ile **birebir aynı**, iddia model değişiminden etkilenmedi. Hedef dedektörü **yok** (D-23). (b) ancak üçüncü sınıf üretime girdiğinde açılır. |
+| (b) | Bilinen ölçekli nesne (**2×2 m, üzerinde kırmızı H**, §2.1) → px/m | `mpp = HB_KENAR_M / pedin piksel kenarı` | ✅ **EVET (T72'den beri)** — üçüncü sınıf **eklenmeden** açıldı: `karar_sozlesmesi.hb_konumu` klasik **Katman 2** dedektörüdür (T67 deseni). Ölçüldü (n=260 sentetik kadraj): tespit **260/260**, merkez hatası medyan **0,71 px**, `mpp` medyan sapma **%5,2**. ⚠ **İKİNCİL kaynaktır** — §5.4'e bak. |
 
 **Seçim: (a).** Gerekçe kolaylık değil, **üretilebilirlik**: (b)'nin dayandığı
 tespit bileşeni sahada mevcut değil ve bir sınıf eklemeden ölçüm yapılamaz.
@@ -257,6 +257,33 @@ akış bu sınırı sağlayamıyorsa sistem rota üretmeyerek fail-closed kalır
 `mpp` her karede karar maskesinin yatay içerik genişliği `icerik[2]` ile
 hesaplanır. Model giriş boyutu (`INFER_SIZE`) bu formülün piksel alanı değildir;
 onu kullanmak 640 px karede gerekli açıklık yarıçapını %20 eksik hesaplar.
+
+### 5.4 İki ölçek kaynağı ÇELİŞİRSE — bağlayıcı (T72 · `REVIEW_LOG.md` D-105)
+
+Artık `mpp`'nin **iki bağımsız kaynağı** var: (a) irtifa telemetrisi,
+(b) HB pedinin bilinen 2,0 m kenarı. İkisi aynı anda varsa ne olacağı
+**kodda değil burada** tanımlıdır; tek uygulama `olcek_capraz_kontrolu`.
+
+| durum | seçilen `mpp` | gerekçe |
+|---|---|---|
+| yalnız telemetri | **telemetri** | §5.1'in birincil kaynağı |
+| yalnız HB | **HB** | tek ölçüm; yoklukdan iyidir |
+| ikisi var, bağıl fark ≤ `OLCEK_CAPRAZ_BANDI` (**0,25**) | **telemetri** | hiyerarşi değişmez; HB yalnız **doğrular** |
+| ikisi var, fark bandı **aşıyor** | **hiçbiri** → `("celiskili", fark)` | 🔴 **ortalama ALINMAZ** |
+
+🔴 **Çelişkide ortalama alınmaz ve biri seçilmez.** İki bağımsız ölçüm
+çelişiyorsa *hangisinin doğru olduğunu bilmiyoruz* demektir; uydurma bir orta
+değer, ölçülmemiş bir ölçeği ölçülmüş gibi gösterir. Fail-closed: ölçek yok
+sayılır ve §5.2 işler.
+
+**Bant neden 0,25:** HB'den türetilen `mpp`'nin ölçülen sistematik sapması
+**%5,2** (medyan; p90 %8,6) — pedin piksel kenarı morfolojik kapamayla ~1,4 px
+şişiyor. Bant bunun ~4,8 katıdır: gerçek bir çelişkiyi yakalayacak kadar dar,
+dedektörün kendi sapmasını çelişki saymayacak kadar geniş. Ölçüldü: n=260'ta
+**260 "doğrulandı" · 0 "çelişkili"**.
+
+⚠ Bu sapma **sentetik** kümede ölçüldü ve HB'yi bizim çizdiğimiz biçimde
+taşıyor; gerçek arenada geçerliliği **doğrulanamaz** (D-88 + D-99).
 
 ### 5.2 `mpp` YOKSA ne olur — bağlayıcı
 
@@ -469,6 +496,7 @@ string yazılmaz** (madde 16).
 | `KENAR_GUVENSIZ` | **T24**: ardışık waypoint'ler arası görüş hattı engelden geçiyor | `_kenarlar_guvenli` |
 | `DUSUK_GUVEN` | **K-B**: güven `ROTA_GUVEN_ESIGI` altında | `rota_guven_reddi` |
 | `KORIDOR_DEGIL` | **T65**: rota darboğazı **bir şeridin tamamından** geniş — bu bir güzergâh değil açık arazidir | `rota_koridor_genisligi_reddi` |
+| `HEDEF_YOK` | **T72**: HB (2×2 m kırmızı H bölgesi) karede bulunamadı — varış noktası bilinmeden rota üretilmez (§2.2.6) | `hedef_yok_reddi` |
 
 #### `ZEMIN_MASKESI_SUPHELI` — kaplama tavanı (T48)
 

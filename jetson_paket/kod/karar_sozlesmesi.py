@@ -83,6 +83,7 @@ GORUS_HATTI_KOPUK_SEBEBI = "GORUS_HATTI_KOPUK"
 KENAR_GUVENSIZ_SEBEBI = "KENAR_GUVENSIZ"
 DUSUK_GUVEN_SEBEBI = "DUSUK_GUVEN"
 KORIDOR_DEGIL_SEBEBI = "KORIDOR_DEGIL"      # T65 · D-94
+HEDEF_YOK_SEBEBI = "HEDEF_YOK"              # T72 · D-105
 
 ROTA_RET_SEBEPLERI = frozenset({
     OLCEK_YOK_SEBEBI,
@@ -95,6 +96,7 @@ ROTA_RET_SEBEPLERI = frozenset({
     KENAR_GUVENSIZ_SEBEBI,
     DUSUK_GUVEN_SEBEBI,
     KORIDOR_DEGIL_SEBEBI,
+    HEDEF_YOK_SEBEBI,
 })
 
 
@@ -712,3 +714,188 @@ def ince_bariyer_maskesi(bgr):
 # import EDILEMEZ — sahada ImportError olurdu. Iki degerin esitligi
 # `tests/test_ince_bariyer.py` ile kilitlenir; biri degisip digeri kalamaz.
 BARIYER_ENGEL_SINIFI = 1
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T72 · HB (HEDEF BOLGESI) DEDEKTORU — KATMAN 2   (CONTRACTS SS2 · SS5 · SS6.4)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (saha kuru kosusu): `hedef_konumu` halkasi SAHIPSIZ. HB'nin tek kaynagi
+# Gazebo `meta.txt`; saha kod yolunda `--hb` girisi YOK ve uretim modeli 2
+# siniflidir (kirmizi H'yi goren bilesen YOK). Sartname SS2.2.6: gorev, IKA'nin
+# HB SINIRLARI ICINE girmesiyle basarili sayilir. Yani acik guzergahi bulsak ve
+# rota kusursuz olsa bile VARIS NOKTASI uretilemedigi icin gorev tamamlanamaz.
+#
+# UCUNCU SINIF EKLENMEDI. nc=2 -> 3 sozlesme degisikligi, yeniden egitim ve
+# sinif-id cakismasi riski getirir (S2'de yasandi: 2 = hedef mi arac mi).
+# T67'de klasik KATMAN 2 dedektoru calisti; ayni desen kullanildi.
+#
+# SARTNAME SS2.1: "2 metre x 2 metre boyutlarinda uzerinde KIRMIZI H harfi
+# bulunacagi bir bolgedir." Uc ayirt edici ozellik:
+#   1. yuksek kroma KIRMIZI  -> esik T67 ile ORTAK (`BARIYER_KROMA_ESIGI`)
+#   2. KARE  (en/boy ~ 1)    -> bariyerin TUMLEYENI
+#   3. bilinen metrik kenar  -> 2,0 m  (`HB_KENAR_M`)
+#
+# T67 ILE SINIR PAYLASILIR VE TEK YERDEN OKUNUR (madde 16).
+# T67 bariyeri UZUN-INCE diye ayirir (en/boy > BARIYER_EN_BOY_ORANI = 4,0).
+# HB ise KAREDIR. Iki dedektorun ayni yapiyi secmesi MUMKUN OLMAMALIDIR:
+#
+#     HB kabul araligi : 1/HB_KARE_TOLERANSI .. HB_KARE_TOLERANSI
+#     bariyer araligi  : BARIYER_EN_BOY_ORANI .. sonsuz
+#     ARADA BOS BANT VAR: HB_KARE_TOLERANSI < BARIYER_EN_BOY_ORANI
+#
+# Bandin bosluğu `tests/test_hb_dedektoru.py` ile kilitlenir; biri degisip
+# digeri kalamaz ve iki dedektor CAKISAMAZ.
+HB_KENAR_M = 2.0                    # sartname SS2.1
+HB_KARE_TOLERANSI = 1.6             # en/boy bu araligin disindaysa HB DEGIL
+HB_ASGARI_ALAN_ORANI = 120.0 / (640.0 * 640.0)   # ~0,00029 · gurultu suzgeci
+HB_KAPAMA_ORANI = 10.0 / 640.0      # cerceve + H harfini TEK parcaya birlestir
+
+
+def hb_maskesi(bgr):
+    """HB pedini isaretle: yuksek kromali KIRMIZI ve KARE yapi.
+
+    Fail-closed: cozulemeyen girdide None doner (hicbir sey iddia etmez).
+    MADDE 15: bu dedektor SERBEST ALANA DOKUNMAZ. HB'yi bulmak gecilebilir
+    alani ne buyutur ne kucultur; yalnizca A* hedefini belirler.
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return None
+    im = _np.asarray(bgr)
+    if im.ndim != 3 or im.shape[2] != 3 or im.size == 0:
+        return None
+    h, w = im.shape[:2]
+    if h < 8 or w < 8:
+        return _np.zeros((h, w), _np.uint8)
+
+    lab = _cv2.cvtColor(im.astype(_np.uint8), _cv2.COLOR_BGR2LAB)
+    a = lab[:, :, 1].astype(_np.int16) - 128
+    kirmizi = (a > BARIYER_KROMA_ESIGI).astype(_np.uint8)   # ORTAK esik
+
+    # T67 ILE TUMLEYENLIK — OLCUMLE GEREKCELENDIRILDI.
+    # Ilk surumde sekil filtresi TEK BASINA yetmedi: `sa_000170` karesinde bir
+    # BARIYER PARCASI 37x32 px (en/boy 1,16 -> KARE) olarak kalmis ve gercek
+    # HB'den (25,6 px) BUYUK oldugu icin secilmisti. Yani bariyer, kirilinca
+    # HB'nin sekil bandina girebiliyor.
+    # Cozum: T67'nin ENGEL dedigi piksel HB OLAMAZ. Iki dedektor artik gercek
+    # anlamda TUMLEYENDIR; ayni yapiyi ikisi birden secemez.
+    bar = ince_bariyer_maskesi(im)
+    if bar is not None and bar.shape == kirmizi.shape and bar.any():
+        genis = _cv2.dilate(bar, _cv2.getStructuringElement(
+            _cv2.MORPH_RECT, (5, 5)))
+        kirmizi = _cv2.bitwise_and(kirmizi, 1 - (genis > 0).astype(_np.uint8))
+
+    kx = max(3, int(round(w * HB_KAPAMA_ORANI)) | 1)
+    kirmizi = _cv2.morphologyEx(
+        kirmizi, _cv2.MORPH_CLOSE,
+        _cv2.getStructuringElement(_cv2.MORPH_RECT, (kx, kx)))
+
+    n, lbl, st, _ = _cv2.connectedComponentsWithStats(kirmizi, 8)
+    asgari_alan = max(1.0, HB_ASGARI_ALAN_ORANI * w * h)
+    ped = _np.zeros((h, w), _np.uint8)
+    for i in range(1, n):
+        x, y, bw, bh, alan = st[i]
+        if alan < asgari_alan:
+            continue
+        en_boy = float(bw) / max(1.0, float(bh))
+        if not (1.0 / HB_KARE_TOLERANSI <= en_boy <= HB_KARE_TOLERANSI):
+            continue                          # KARE degil -> HB degil
+        # Kutunun kendisi isaretlenir: HB "bolge"dir, yalniz kirmizi pikseller
+        # degil. Sartname SS2.2.6 IKA'nin BOLGE SINIRLARI ICINE girmesini ister.
+        ped[y:y + bh, x:x + bw] = 1
+    return ped
+
+
+def hb_konumu(bgr):
+    """HB merkezi, kutusu ve piksel kenari. Bulunamazsa None.
+
+    Birden fazla aday varsa EN BUYUK secilir (sahnede tek HB vardir; coklu
+    aday gurultudur ve en buyugu en guvenilir olandir).
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return None
+    ped = hb_maskesi(bgr)
+    if ped is None or not ped.any():
+        return None
+    n, lbl, st, mrk = _cv2.connectedComponentsWithStats(ped, 8)
+    if n <= 1:
+        return None
+    i = 1 + int(_np.argmax(st[1:, 4]))
+    x, y, bw, bh, alan = (int(v) for v in st[i][:5])
+    return {
+        "merkez": (float(mrk[i][0]), float(mrk[i][1])),
+        "kutu": (x, y, bw, bh),
+        "kenar_px": float((bw + bh) / 2.0),
+        "alan_px": int(alan),
+        "aday_sayisi": int(n - 1),
+    }
+
+
+def mpp_hb_pedinden(kenar_px, kenar_m=HB_KENAR_M):
+    """CONTRACTS SS5(b): bilinen olcekli nesneden `mpp`.
+
+    Bu, SS5'te "ucuncu sinif uretime girdiginde acilir" diye KAPALI birakilan
+    yoldur. Klasik dedektor onu ucuncu sinif OLMADAN acar. Ama T70 canli
+    telemetri olceginin YERINE GECMEZ — `olcek_capraz_kontrolu`'na bak.
+    Fail-closed: olculemeyen kenar None doner.
+    """
+    try:
+        k = float(kenar_px)
+        m = float(kenar_m)
+    except (TypeError, ValueError):
+        return None
+    if not (k > 0.0) or not (m > 0.0):
+        return None
+    if not math.isfinite(k) or not math.isfinite(m):
+        return None
+    return m / k
+
+
+# CONTRACTS SS5.4: iki olcek kaynagi CELISIRSE ne olur. Bu bant, iki bagimsiz
+# olcumun makul sayilacagi bagil fark siniridir; asilirsa olcek SUPHELIDIR ve
+# fail-closed davranilir (uydurma ortalama ALINMAZ).
+OLCEK_CAPRAZ_BANDI = 0.25
+
+
+def olcek_capraz_kontrolu(mpp_telemetri, mpp_hb):
+    """Iki olcek kaynagini kiyasla -> (secilen_mpp, durum, bagil_fark).
+
+    KURAL (baglayici):
+      - yalniz TELEMETRI varsa -> telemetri secilir (SS5 birincil kaynak)
+      - yalniz HB varsa        -> HB secilir, durum "yalniz_hb"
+      - IKISI de varsa ve bagil fark <= OLCEK_CAPRAZ_BANDI -> TELEMETRI secilir
+        (birincil kaynak degismez; HB yalniz DOGRULAR)
+      - IKISI de varsa ve fark BANDI ASIYORSA -> (None, "celiskili", fark)
+        Ortalama ALINMAZ, biri secilmez: iki bagimsiz olcum celisiyorsa
+        hangisinin dogru oldugunu bilmiyoruz demektir. Fail-closed.
+    """
+    def _gecerli(v):
+        if isinstance(v, bool) or not isinstance(v, Real):
+            return None
+        f = float(v)
+        return f if (math.isfinite(f) and f > 0.0) else None
+
+    t = _gecerli(mpp_telemetri)
+    hb = _gecerli(mpp_hb)
+    if t is None and hb is None:
+        return (None, "olcek_yok", None)
+    if hb is None:
+        return (t, "yalniz_telemetri", None)
+    if t is None:
+        return (hb, "yalniz_hb", None)
+    fark = abs(t - hb) / max(t, hb)
+    if fark > OLCEK_CAPRAZ_BANDI:
+        return (None, "celiskili", fark)
+    return (t, "dogrulandi", fark)
+
+
+def hedef_yok_reddi(detay=None):
+    """HB bulunamadi -> rota uretilmez. Kanonik `(sebep, detay)`."""
+    return (HEDEF_YOK_SEBEBI,
+            detay or ("HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; "
+                      "varis noktasi bilinmeden rota uretilmez."))

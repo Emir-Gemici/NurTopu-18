@@ -29,6 +29,7 @@ from karar_sozlesmesi import (
     DUSUK_GUVEN_SEBEBI,
     GORUS_HATTI_KOPUK_SEBEBI,
     KENAR_GUVENSIZ_SEBEBI,
+    HEDEF_YOK_SEBEBI,
     KORIDOR_DEGIL_SEBEBI,
     MASKE_YOK_SEBEBI,
     ROTA_GUVEN_ESIGI,
@@ -54,7 +55,7 @@ class AnalyzePathRetNedeniTests(unittest.TestCase):
         guncellenmek ZORUNDA, sessizce buyuyemez.
         """
         # T43: OLCEK_YOK · T48: ZEMIN_MASKESI_SUPHELI · T65: KORIDOR_DEGIL
-        # (CONTRACTS SS6.4).
+        # T72: HEDEF_YOK (CONTRACTS SS6.4).
         self.assertEqual({
             OLCEK_YOK_SEBEBI,
             ZEMIN_MASKESI_SUPHELI_SEBEBI,
@@ -66,6 +67,7 @@ class AnalyzePathRetNedeniTests(unittest.TestCase):
             KENAR_GUVENSIZ_SEBEBI,
             DUSUK_GUVEN_SEBEBI,
             KORIDOR_DEGIL_SEBEBI,
+            HEDEF_YOK_SEBEBI,
         }, set(ROTA_RET_SEBEPLERI))
 
     def test_varsayilan_ve_opt_in_tuple_ariteleri_korunur(self):
