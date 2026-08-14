@@ -1,6 +1,6 @@
 # JETSON ORIN NX — SAHA KILAVUZU
 
-> Hazırlanma: 2026-08-05 · **ASIL MODEL: v24** (2026-08-13, §0-T58) · eskiler: v21 → v17/v20
+> Hazırlanma: 2026-08-05 · **ASIL MODEL: v27** (2026-08-14, §0-T76) · eskiler: v24 → v21 → v17/v20
 > Paket: `O:\navitas\jetson_paket\`
 >
 > Bu kılavuz **ölçümle** hazırlandı. Her "şu olacak" cümlesinin altında ya bir sayı
@@ -8,7 +8,41 @@
 
 ---
 
-## 0-T58. GÜNCELLEME 2026-08-13 — **asıl model v21 → v24_t57_doku**
+## 0-T76. GÜNCELLEME 2026-08-14 — **asıl model v24 → v27, çözünürlük 640 → 512**
+
+> Mimar kabulü (`REVIEW_LOG.md` D-115) + kullanıcı emri T76. Aşağıdaki v24/v21/v17
+> bölümleri **silinmedi** — ölçüm kaydıdır. Ama **bugün derlenecek ve koşulacak
+> model `navitas_seg_v27_best_512_fp16.onnx`**'tir.
+>
+> **Neden v27** (T66 ada kadrajı, n=260; eşikler D-107'de **sonuç görülmeden**
+> yazıldı, ölçüm D-115):
+>
+> | ölçüt | eşik | v24 | v27 |
+> |---|---|---|---|
+> | rota üretimi | ≥ 230 | 196 | **255/260** |
+> | moloza basma | ≤ %15 | %31,1 | **%7,1** |
+> | ağır basma | ≤ %3 | %20,4 | **%0,0** |
+> | arena dışı | ≤ %5 | %13,3 | **%0,4** |
+> | bariyer kesişimi | 0 px | 0 px | **0 px** |
+>
+> **Çözünürlük 640 → 512** (D-112): 640'ın ölçülebilir doğruluk üstünlüğü **yok**,
+> Jetson maliyeti **var** (640²/512² = **1,56 kat** hesap). Üretim (`INFER_SIZE`)
+> zaten 512'de koşuyordu; T76'dan beri export da 512 — uyuşmazlık kapandı.
+>
+> ⚠ **Ağırlık `last.pt` (epoch 200), `best.pt` DEĞİL** (D-113): `best.pt` epoch
+> 43'te dondu ve **%21,5 daha kötü**. Koşu grafikleri (`results.png`, karışıklık
+> matrisi) `best.pt`'ye aittir — **bu modeli anlatmazlar**.
+>
+> 🔴 **Bu "sahada çalışır" demek DEĞİLDİR** (D-88/D-99, kalıcı kısıt). Ölçümlerin
+> tamamı **sentetiktir**; elimizde tek bir gerçek arena karesi yoktur.
+>
+> ⚠ **Sürüm adının TEK KAYNAĞI `config/model_registry.json`'dur.** Hakem ekranı
+> adı oradan okur; bu kılavuz, paket manifesti ve saha kodu onunla **testle**
+> kilitlidir (`tests/test_uretim_modeli_hizasi.py`, `test_saha_parametrik.py`).
+
+---
+
+## 0-T58. GÜNCELLEME 2026-08-13 — **asıl model v21 → v24_t57_doku** *(§0-T76 ile AŞILDI)*
 
 > Kullanıcı kararı (`REVIEW_LOG.md` D-82/D-83). Aşağıdaki v21 ve v17 bölümleri
 > **silinmedi** — ölçüm kaydıdır. Ama **bugün derlenecek ve koşulacak model
@@ -49,11 +83,11 @@ aynı manifest `jetson_paket/models/` altından bulunur.
 
 | argüman | varsayılanın kaynağı | bugün çözülen değer |
 |---|---|---|
-| `--pt` | manifest `asil_model_pt` | `navitas_seg_v24_best.pt` (**VAR**) |
-| `--onnx` | manifest `asil_model` | `navitas_seg_v24_best_640_fp16.onnx` (**VAR**) |
+| `--pt` | manifest `asil_model_pt` | `navitas_seg_v27_best.pt` (**VAR**) |
+| `--onnx` | manifest `asil_model` | `navitas_seg_v27_best_512_fp16.onnx` (**VAR**) |
 | `--engine` | manifest ONNX adıyla aynı gövde | Jetson'da derlenmiş dosya varsa kullanılır; bugün **YOK**, TensorRT vakası açıkça `ATLANDI` |
 | `--conf` | `rpi_inference` üretim varsayılanı | `0.30` |
-| `--imgsz` | manifest boyutu + üretim `INFER_SIZE` | `[640, 512]`; yalnız **512 üretimle aynı**, 640 ek export/FPS kıyasıdır |
+| `--imgsz` | manifest boyutu + üretim `INFER_SIZE` | `[512]`; T76'dan beri manifest ile üretim **aynı boyutta** (D-112) — ayrışacak boyut kalmadı |
 
 Paket içinde `data/raw_frames` bulunmadığı için `--girdi` yine açıkça verilmelidir.
 Model, eşik ve boyut varsayılanları için ayrıca sürüm yazılması gerekmez.
@@ -177,8 +211,10 @@ raporlarsın. Ölçümden önce yap, ölçüm boyunca `tegrastats` ile sıcaklı
 ```
 jetson_paket/
 ├── models/
-│   ├── navitas_seg_v24_best_640_fp16.onnx   ← ASIL — bunu derle (T58, üretim modeli)
-│   ├── navitas_seg_v24_best.pt              ← v24 referans / hakem ekranının yüklediği dosya
+│   ├── navitas_seg_v27_best_512_fp16.onnx   ← ASIL — bunu derle (T76, üretim modeli)
+│   ├── navitas_seg_v27_best.pt              ← v27 referans / hakem ekranının yüklediği dosya
+│   ├── navitas_seg_v24_best_640_fp16.onnx   ← eski asıl (13-14 Ağu), karar kıyası için
+│   ├── navitas_seg_v24_best.pt              ← v24 referans / karar kıyası
 │   ├── navitas_seg_v21_best_640_fp16.onnx   ← eski asıl (05-13 Ağu), karar kıyası için
 │   ├── navitas_seg_v21_best.pt              ← v21 referans / karar kıyası
 │   ├── navitas_seg_v17_best_640_fp16.onnx   ← eski asıl, karar kıyası için
@@ -234,15 +270,19 @@ bu bir hata değil, o backend'in kurulu olmadığının dürüst raporudur.
 
 ## 4. TensorRT engine derle (T16)
 
-**Jetson üzerinde**, ONNX'ten. **v24 ile derle** — üretim modeli o (§0-T58):
+**Jetson üzerinde**, ONNX'ten. **v27 ile derle** — üretim modeli o (§0-T76):
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v24_best_640_fp16.onnx format=engine imgsz=640 half=True
+yolo export model=navitas_seg_v27_best_512_fp16.onnx format=engine imgsz=512 half=True
 ```
 
-⚠ **Üç modeli birden TensorRT'ye derleme.** v17, v20, v21 ve v24 aynı mimaridir
-(YOLOv8m-seg, 27,2M parametre, imgsz 640); ağırlık değerleri hızı değiştirmez.
+⚠ **Birden çok modeli TensorRT'ye derleme.** v17, v20, v21, v24 ve v27 aynı
+mimaridir (YOLOv8m-seg, 27,2M parametre); ağırlık değerleri hızı değiştirmez.
+
+⚠ **Ama girdi boyutu değiştirir.** v27 ONNX'i **512**, eskiler **640**. 512, 640'ın
+**0,64 katı** hesaptır. Eski bir 640 engine ile v27'yi FPS'te kıyaslarsan
+boyut farkını modele yazarsın — bu ölçüm değil, karışıklıktır.
 Üçünü derlersen ~45 dakika harcayıp üç kez aynı FPS'i ölçersin.
 
 Modelleri ayıran şey hız değil **karar doğruluğu**. Onu ölçmek için derlemeye
@@ -252,15 +292,15 @@ Bu 5–15 dakika sürebilir; TensorRT katman katman optimize eder. Sabret, kesme
 
 **Kapı (T16):** `.engine` dosyası oluştu **ve** tek kare çıkarım hatasız tamamlandı:
 ```bash
-yolo predict task=segment model=navitas_seg_v24_best_640_fp16.engine \
-  source=~/navitas/data/test_goruntuleri/sentetik_arena --imgsz 640
+yolo predict task=segment model=navitas_seg_v27_best_512_fp16.engine \
+  source=~/navitas/data/test_goruntuleri/sentetik_arena --imgsz 512
 ```
 
 ### `yolo export` hata verirse — `trtexec` yedeği
 ```bash
 /usr/src/tensorrt/bin/trtexec \
-  --onnx=navitas_seg_v24_best_640_fp16.onnx \
-  --saveEngine=navitas_seg_v24_best_640_fp16.engine \
+  --onnx=navitas_seg_v27_best_512_fp16.onnx \
+  --saveEngine=navitas_seg_v27_best_512_fp16.engine \
   --fp16 --workspace=4096
 ```
 
@@ -272,12 +312,12 @@ yolo predict task=segment model=navitas_seg_v24_best_640_fp16.engine \
 cd ~/navitas
 python3 scripts/jetson_fps.py \
   --girdi data/test_goruntuleri/sentetik_arena \
-  --pt models/navitas_seg_v24_best.pt \
-  --onnx models/navitas_seg_v24_best_640_fp16.onnx \
-  --engine models/navitas_seg_v24_best_640_fp16.engine \
-  --imgsz 640 \
+  --pt models/navitas_seg_v27_best.pt \
+  --onnx models/navitas_seg_v27_best_512_fp16.onnx \
+  --engine models/navitas_seg_v27_best_512_fp16.engine \
+  --imgsz 512 \
   --isinma 15 --tekrar 120 --conf 0.30 --cihaz 0 \
-  --cikti results/jetson_fps_v24_$(date +%Y%m%d_%H%M%S)
+  --cikti results/jetson_fps_v27_$(date +%Y%m%d_%H%M%S)
 ```
 
 **PC referansı (RTX 5080, aynı zincir, karşılaştırman için):**
@@ -396,7 +436,7 @@ hesabından çıkan gerçek gereksinim **0,9–2,6 FPS**.
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v24_best_640_fp16.onnx format=engine imgsz=640 \
+yolo export model=navitas_seg_v27_best_512_fp16.onnx format=engine imgsz=512 \
   int8=True data=~/navitas/codes/karisim_arena.yaml
 ```
 ⚠ `karisim_arena.yaml` içindeki yollar **Windows mutlak yolları** (`O:\navitas\...`).

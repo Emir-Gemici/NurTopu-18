@@ -65,6 +65,35 @@ def S(px):
     return int(px * OLCEK)
 
 
+def _uretim_modeli_adi():
+    """Üretim ağırlığının ADI **kayıt defterinden** okunur (anayasa madde 16).
+
+    T76: sürüm adı bu dosyaya ÇIPLAK YAZILMAZ. Tek kaynak
+    `config/model_registry.json`'un etkin profilidir; saha tarafında
+    `codes/rpi_inference.py::model_kayit_dogrula` **aynı defteri** okur.
+    Böylece ekran ile donanım tek bildirimden beslenir — biri çevrilip
+    diğeri unutulamaz (D-58/D-60 ıraksama sınıfı; T58'de manifest tam bu
+    yüzden sekiz gün v17 derken pakette v21 duruyordu, REVIEW_LOG D-83).
+
+    Fail-closed: defter yoksa/bozuksa ad **UYDURULMAZ**, hakem ekranı açılmaz.
+    Sessiz varsayılan, ekranın sahadan farklı bir modeli göstermesi demektir.
+    """
+    import json as _json
+    defter = _PROJE_KOKU / "config" / "model_registry.json"
+    try:
+        veri = _json.loads(defter.read_text(encoding="utf-8"))
+        yol = veri["profiles"][veri["default_profile"]]["path"]
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
+        raise RuntimeError(
+            f"Üretim model kayıt defteri okunamadı ({defter}); hakem ekranı "
+            "hangi ağırlığı yükleyeceğini UYDURMAZ.") from exc
+    ad = str(yol).replace("\\", "/").rsplit("/", 1)[-1]
+    if not ad.endswith(".pt"):
+        raise RuntimeError(
+            f"Kayıt defterindeki etkin profil `.pt` ağırlık göstermiyor: {yol!r}")
+    return ad
+
+
 def _udp_adres(deger):
     """Argparse için IPv4/host:port hedefini doğrula ve tuple'a dönüştür."""
     try:
@@ -892,11 +921,12 @@ class YksArayuz:
     # listede kalırlar (REVIEW_LOG D-53/D-90).
     ALGI_KAYNAKLAR = ("kompozit", "arena_kadraj", "arena_gercek",
                       "drone", "gemini", "test", "val")
-    # T58 (kullanici karari, REVIEW_LOG D-82/D-83): uretim modeli v21 -> v24.
-    # Bu sabit hakem ekranini SAHA DONANIMIYLA ayni modele baglar; `jetson_paket/
-    # models/` ve HER IKI `JETSON_KILAVUZ.md` ayni surume cevrildi. Yalniz
-    # burasi cevrilirse ekran ile saha FARKLI MODELE duser (D-58/D-60 sinifi).
-    ALGI_MODEL_DOSYA = "navitas_seg_v24_best.pt"
+    # T76 (mimar karari, REVIEW_LOG D-115): uretim modeli v24 -> v27.
+    # ⚠ SURUM ADI ARTIK BURAYA YAZILMIYOR. T58'de bu satir CIPLAK SABITTI ve
+    # zincirin dort ucu (paket, manifest, iki kilavuz) ELLE hizalanmak
+    # zorundaydi. Ad artik KAYIT DEFTERINDEN turetilir (madde 16); saha kodu da
+    # ayni defteri okur, boylece ikisi TANIM GEREGI ayni modeli gosterir.
+    ALGI_MODEL_DOSYA = _uretim_modeli_adi()
     # T36: cikarim esigi URETIMDEN gelir. `codes/rpi_inference.py` `run_image`
     # yolunda predict esigi `--conf` argumaniyla verilir, varsayilani 0.30
     # (`:1116`). GUI kendi esigini SECMEZ; bu deger uretimin varsayilanidir ve

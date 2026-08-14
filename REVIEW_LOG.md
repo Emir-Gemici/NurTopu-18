@@ -7768,3 +7768,157 @@ uretimidir (D-99). Bu kisit ancak GERCEK ceki ile kalkar — insan gorevi.
   3. Gercek arena davranisi — olculecek veri YOK.
   4. v27 640 ile egitildi; D-112 uyarinca v28 512 olacak. Kiyas bu degiskeni
      tasiyacaktir.
+
+---
+
+### D-116 · UYGULANDI · T76: v27 uretim zincirine alindi; `model_yukleme` halkasi KAPANDI (GECTI 6 -> 7)
+Uygulayan: Claude 2 · 2026-08-14 · gorev T76 · dayanak D-115 (kabul), D-112 (512), D-113 (last.pt)
+
+**KUSUR (D-106'dan devir).** `config/model_registry.json` `competition` profili
+15 Temmuz'dan kalma `models/navitas_seg_v4_best.pt` gosteriyordu; uretim
+manifesti ise v24 diyordu. `load_model` fail-closed oldugu icin saha kuru
+kosusunda `model_yukleme` halkasi bu CELISKI yuzunden DUSUYORDU. T73'te
+duzeltilemedi cunku `config/` o gorevin izin listesinde yoktu.
+
+**1 · AGIRLIK.** `calisma/v27_epoch200_last.pt` -> `models/navitas_seg_v27_best.pt`
+
+    sha256  1465ed3d288af37e1b3681dd6adabe7ab956a4ab3dc207003bca9ec4fcee489d
+    bayt    54 848 668
+    kopya BAYT-ESIT: EVET (kaynak ve hedef ozeti ayni)
+
+⚠ `best.pt` KULLANILMADI (D-113: epoch 43'te dondu, %21,5 daha kotu).
+
+**2 · KAYIT DEFTERI ARTIK TEK KAYNAK.**
+
+    onceki  navitas-seg-v4-640    models/navitas_seg_v4_best.pt    imgsz=640
+    yeni    navitas-seg-v27-512   models/navitas_seg_v27_best.pt   imgsz=512
+
+`metrics` alanina D-115'in K1..K5 sonuclari YAZILDI; birlikte kapsam uyarisi da
+yazildi (olcumler SENTETIKTIR, saha basarimi iddia edilmez). ⚠ `mask_map50`
+alanina **v4'un 0,6751 degeri TASINMADI** — baska modelin sayisini tasimak
+bayatliktir; alan `None` ve gerekcesi yaninda.
+
+**🔴 3 · EMIR UC MANIFEST ALANI DIYORDU; KAPI BES UC BAGLIYOR.**
+`tests/test_uretim_modeli_hizasi.py` (T58) surumu **bes uctan** dogruluyor ve
+referansi hakem ekranidir. Yalniz `pc_modeli`/`asil_model_pt`/
+`uretim_hakem_ekrani` cevrilseydi su testler DUSERDI:
+
+    test_manifest_URETIM_surumunu_gosteriyor    -> `asil_model` (ONNX) hala v24
+    test_paketteki_ONNX_ayni_SURUMDEN           -> pakette v27 ONNX'i yok
+    test_ASIL_satiri_URETIM_surumunu_gosteriyor -> iki kilavuz da v24 diyor
+    test_derleme_komutu_URETIM_surumunu_kullaniyor
+
+Bu yuzden kapsam **acikca genisletildi**: v27 ONNX'i uretildi ve HER IKI
+kilavuz cevrildi. Aksi halde "v27 uretimde" derken Jetson'a **v24 engine**
+derleten bir paket birakilirdi — D-58/D-60'in tam kendisi.
+
+**4 · ONNX 512 FP16 URETILDI.** `scripts/export_tensorrt.py` (kanonik arac):
+
+    girdi   models/navitas_seg_v27_best.pt
+    cikti   results/onnx_export_v27_20260814/navitas_seg_v27_best_512_fp16.onnx
+    opset   17 · dinamik: hayir · cihaz: CUDA:0
+    FP16 dogrulamasi: betigin `fp16_dogrula` kapisi GECTI (FP32 artefakti degil)
+
+Boyut 640 -> **512** (D-112). Uretim (`INFER_SIZE`) zaten 512'de kosuyordu;
+manifest ile uretim arasindaki olculmemis uyusmazlik boylece KAPANDI.
+
+**5 · PAKET VE MANIFEST.** v27 `.pt` + `.onnx` `jetson_paket/models/`e kopyalandi
+(ikisi de bayt-esit dogrulandi). Manifest paketin KENDISINI tarif etmeye devam
+ediyor: `paket_icerigi` 8 -> **10 dosya**, her biri gercek sha256'siyla.
+
+**6 · MADDE 16 — CIPLAK SABIT KALDIRILDI.** `comms/yks_gui.py:899`
+`ALGI_MODEL_DOSYA` artik **kayit defterinden** turetiliyor
+(`_uretim_modeli_adi()`), sabit degil. T58'de bu satir ciplakti ve zincirin
+dort ucu ELLE hizalanmak zorundaydi — bayatligin kaynagi buydu. Fail-closed:
+defter yok/bozuk/`.pt` degilse ad UYDURULMAZ, ekran acilmaz (5 bozuk defter
+bicimiyle sinandi).
+
+⚠ **BILEREK BIRAKILAN TEK COGALTMA:** uretim manifestindeki `asil_model_pt`.
+Saha paketi `config/`i TASIMAZ; `varsayilan_model_yolu` orada defteri okuyamaz,
+okusa fail-closed'a duser ve **saha kodu model yukleyemez**. Bu yuzden manifest
+paketin kendi kunyesi olarak kaliyor; defterle **esitligi** test kilidiyle
+korunuyor (`test_manifest_ile_kayit_defteri_ESLESIYOR`,
+`test_UC_UC_ayni_agirligi_gosteriyor`). Cogaltma gizlenmiyor, KILITLENIYOR.
+
+**KAPI (a) — GENEL KAPI.**
+
+    codes/test_rota_sentetik.py     SONUC: 15/15 dogru        GECTI
+
+**KAPI (b) — SAHA KURU KOSUSU.**
+
+    kamera         GECTI   kaynak parametrik ve VideoCapture'a BESLENIYOR
+    model_yukleme  GECTI   agirlik manifestten turetiliyor, --model besliyor,
+                           uyusmazlikta fail-closed ve KAYIT DEFTERIYLE ESLESIYOR
+    cikarim        GECTI   tek kare cikarimi tamamlandi
+    maske          GECTI   {0,1} anahtarli maskeler
+    olcek          GECTI   canli telemetri gecerli mpp uretti
+    hedef_konumu   SAHIPSIZ
+    rota           DUSTU   durum=BELIRSIZ_COKLU
+    aktarim        GECTI · surus_izni GECTI · motor SAHIPSIZ
+
+    T73 (v24)  GECTI 6 · DUSTU 2 · SAHIPSIZ 2
+    T76 (v27)  GECTI 7 · DUSTU 1 · SAHIPSIZ 2      <- emrin hedefi
+
+**KONTROL — HALKA HALKA KIYAS (v24 kosusu vs v27 kosusu).** TEK BIR halka
+degisti:
+
+    model_yukleme   DUSTU -> GECTI    >>> DEGISTI
+    diger dokuz halka                  =
+
+`rota` halkasi v24'te de DUSUKTU ve sebep BIREBIR ayni
+(`BELIRSIZ_COKLU`, `mpp=0.03382911733532963`, `rota_yayinlanabilir=False`).
+Yani v27 bu kosuda **gerileme uretmedi**; degisiklik tam olarak amaclanan yerde.
+
+**KAPI (c) — HAKEM EKRANI.** `comms/yks_gui.py` gercekten acildi, `--demo` YOK,
+model SAHTE DEGIL. Butonun cagirdigi metot (`gorunum("algi")`) cagrildi; uretim
+zinciri kosuldu.
+
+    kaynak  arena_kadraj · kare idx 0 (kaynagin ILK karesi — KARE SECILMEDI)
+    karar   2·ORTA · guven 1.000 · model: navitas_seg_v27_best.pt
+            olcek 0.0781 m/px · govde acikligi 14.1 px · C-uzayi UYGULANDI
+            darbogaz 41.0 px @ serit 2 · rota serit dagilimi 0/540/0 px
+    SS      results/t76_hakem_ekrani/yks_ekran_v27.png (1707x996)
+    panel   results/t76_hakem_ekrani/panel_01.png
+
+GOZLE DOGRULANDI (D-80): kirmizi engel katmani, ortada serbest koridor, **sari
+rota poligonu + waypoint'ler**, tepede `H` hedefi. Ekran basligi ve buton
+"navitas_seg_v27_best" yaziyor — ad kayit defterinden geliyor.
+
+**KUME OLCUMU (ekran hangi kumede rota uretiyor, n=12):**
+
+    arena_kadraj T60 (EKRANIN GOSTERDIGI)   11/12   1 x GORUS_HATTI_KOPUK
+    arena_kadraj T66 (v27'nin KABUL kumesi) 12/12
+    kompozit (WhatsApp kareleri)             0/1    ZEMIN_MASKESI_SUPHELI
+                                                    (kaplama %77 > tavan %67)
+
+**KAPI (d) — DEPO.** `unittest discover -s tests -q` -> **Ran 471 tests · OK**
+(468 -> +3: uc-uc esitlik, ciplak ad yasagi, defter fail-closed).
+`scripts/jetson_paket_hazirla.py` -> **9/9 bayt-esit**.
+
+**IKI TEST GUNCELLENDI (gizlenmiyor).**
+  · `test_model_registry.py`: `..._v4_competition_model` -> `..._v27_...`.
+    Bu test `resolve_model()` ile SHA-256'yi GERCEKTEN dogrular; defterdeki
+    ozetin diskteki agirligin ozeti oldugu boylece kanitlanir.
+  · `test_saha_parametrik.py`: T73'te "CELISKI VAR" diye yazilan test gorevini
+    yapti ve dustu; **ters cevrildi** ve ayni yerde artik ESITLIGI kilitliyor.
+
+**DOGRULANAMADI**
+  1. **ONNX HIC KOSULMADI.** Uretildigi ve FP16 oldugu dogrulandi; `.pt` ile
+     karar denkligi **OLCULMEDI**. Sahaya giden artefakt ONNX/engine'dir ve
+     onun dogrulugu hakkinda tek bir sayimiz yok.
+  2. **v27 640 ile EGITILDI, 512'de kosuyor.** D-112'nin olcumu v24 icindir;
+     v27 icin bu fark OLCULMEDI (D-115 de bunu acik birakmisti).
+  3. Jetson'da hiz/dogruluk: D-89'dan beri acik, hala olculmedi.
+  4. Gercek arena davranisi: olculecek veri YOK (D-88/D-99, kalici kisit).
+  5. 🔴 `ALGI_ARENA_KADRAJ_KOKU` hala **T60** kumesini gosteriyor; oysa v27'nin
+     kabul kumesi **T66**'dir. Hakem ekrani modeli, uzerinde kabul edilmedigi
+     bir dagilimda gosteriyor (T60'ta 11/12, T66'da 12/12). O satir T76'nin
+     izin listesinde YOK ve `test_yks_gui_uretim_hizasi.py` yolu CIVILIYOR —
+     ayri gorev.
+  6. `manifest["imgsz"]` [640] -> [512] oldugu icin `jetson_fps` artik **yalniz
+     512** olcer; 640 kiyas noktasi kayboldu. D-112 uyarinca bilerek.
+  7. SHA dogrulamasi hala IKI YERDE FARKLI: `codes/model_registry.py`
+     dogruluyor, `rpi_inference.model_kayit_dogrula` yalniz DOSYA ADI
+     kiyasliyor (D-106/3 hala acik).
+  8. Pakette v17/v20/v21/v24 agirliklari duruyor; paket 522 MB. Budama
+     istenmedi, yapilmadi.

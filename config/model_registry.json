@@ -1,27 +1,67 @@
 {
-  "schema_version": 1,
-  "default_profile": "competition",
-  "profiles": {
-    "competition": {
-      "model_id": "navitas-seg-v4-640",
-      "path": "models/navitas_seg_v4_best.pt",
-      "backend": "pytorch",
-      "imgsz": 640,
-      "sha256": "6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4",
-      "classes": {"0": "traversable", "1": "blocked"},
-      "metrics": {"mask_map50": 0.6751, "blocked_map50": 0.4937},
-      "status": "competition"
+ "schema_version": 1,
+ "default_profile": "competition",
+ "profiles": {
+  "competition": {
+   "model_id": "navitas-seg-v27-512",
+   "path": "models/navitas_seg_v27_best.pt",
+   "backend": "pytorch",
+   "imgsz": 512,
+   "sha256": "1465ed3d288af37e1b3681dd6adabe7ab956a4ab3dc207003bca9ec4fcee489d",
+   "classes": {
+    "0": "traversable",
+    "1": "blocked"
+   },
+   "metrics": {
+    "_kaynak": "REVIEW_LOG D-115 · kabul denetimi; esikler D-107'de SONUC GORULMEDEN yazildi",
+    "_kapsam": "OLCUMLERIN TAMAMI SENTETIKTIR (T66 ada kadraji, n=260). Gercek arena karesi YOKTUR (D-88/D-99) — bu alan SAHA BASARIMI IDDIA ETMEZ.",
+    "_egitim": "epoch 200 (`last.pt`); `best.pt` epoch 43'te dondu ve %21,5 daha kotudur (D-113). Kosu grafikleri best.pt'ye aittir, bu modele DEGIL.",
+    "fitness_epoch200": 0.42048,
+    "k1_rota_uretimi": {
+     "esik": ">=230",
+     "olculen": "255/260",
+     "sonuc": "GECTI"
     },
-    "rpi_ncnn": {
-      "model_id": "navitas-seg-v2-ncnn-512",
-      "path": "models/navitas_seg_v2_ncnn_model",
-      "artifact": "model.ncnn.bin",
-      "backend": "ncnn",
-      "imgsz": 512,
-      "sha256": "16a3974f22508c2ea9f9831c98322bc8eb1a944d53c1d98476276b474aed2a7f",
-      "classes": {"0": "traversable", "1": "blocked"},
-      "status": "legacy-fallback",
-      "warning": "v4 NCNN export is not checked in; this is not metric-equivalent to competition"
-    }
+    "k2_moloza_basma_yuzde": {
+     "esik": "<=15",
+     "olculen": 7.1,
+     "sonuc": "GECTI"
+    },
+    "k3_agir_basma_yuzde": {
+     "esik": "<=3",
+     "olculen": 0.0,
+     "sonuc": "GECTI"
+    },
+    "k4_arena_disi_yuzde": {
+     "esik": "<=5",
+     "olculen": 0.4,
+     "sonuc": "GECTI"
+    },
+    "k5_bariyer_kesisimi_px": {
+     "esik": "=0",
+     "olculen": 0,
+     "sonuc": "GECTI",
+     "not": "olcum tanimi D-115'te DEGISTI (n=1 -> n=172)"
+    },
+    "mask_map50": null,
+    "_mask_map50_notu": "v27 icin OLCULMEDI. v4'un 0,6751 degeri buraya TASINMADI — baska modelin sayisini tasimak bayatliktir."
+   },
+   "status": "competition",
+   "_surum_karari": "T76 · kullanici emri · dayanak REVIEW_LOG D-115 (kabul), D-112 (imgsz 512), D-113 (last.pt, best.pt DEGIL)"
+  },
+  "rpi_ncnn": {
+   "model_id": "navitas-seg-v2-ncnn-512",
+   "path": "models/navitas_seg_v2_ncnn_model",
+   "artifact": "model.ncnn.bin",
+   "backend": "ncnn",
+   "imgsz": 512,
+   "sha256": "16a3974f22508c2ea9f9831c98322bc8eb1a944d53c1d98476276b474aed2a7f",
+   "classes": {
+    "0": "traversable",
+    "1": "blocked"
+   },
+   "status": "legacy-fallback",
+   "warning": "v4 NCNN export is not checked in; this is not metric-equivalent to competition"
   }
+ }
 }

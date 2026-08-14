@@ -175,18 +175,65 @@ class FailClosedTests(unittest.TestCase):
 
 
 class KayitDefteriDurumuTests(unittest.TestCase):
-    """OLCULEN durum: iki bildirim CELISIYOR (T73 raporunda acikca yazili)."""
+    """T76'da TERS CEVRILDI: iki bildirim artik ESLESMEK ZORUNDA.
 
-    def test_manifest_ile_kayit_defteri_CELISIYOR(self):
-        """Bu test BUGUNU kaydeder. Kayit defteri duzeltilince DUSER ve
-        duzeltmenin yapildigini bize soyler — o zaman ters cevrilmelidir."""
+    T73 bu testi "celiski VAR" diye yazmisti; amaci celiskiyi bugunku haliyle
+    kaydetmek ve duzeltildigi an DUSEREK haber vermekti. T76'da kayit defteri
+    v4'ten v27'ye cevrildi ve test gorevini yapip dustu — simdi ayni yerde
+    ESITLIGI kilitliyor. Bir daha ayrisirlarsa BURADA yakalanir.
+    """
+
+    def test_manifest_ile_kayit_defteri_ESLESIYOR(self):
         uyumlu, detay = R.model_kayit_dogrula(R.varsayilan_model_yolu())
-        self.assertFalse(
+        self.assertTrue(
             uyumlu,
-            "kayit defteri ARTIK uretim manifestiyle eslesiyor — T73'un "
-            "bildirdigi celiski COZULMUS. Bu testi ters cevirin ve "
-            "`saha_kuru_kosu.py` model_yukleme halkasini yeniden kosun.")
-        self.assertEqual("ESLESMIYOR", detay["durum"])
+            f"uretim manifesti ile kayit defteri AYRISTI: {detay} — saha "
+            "kuru kosusunda `model_yukleme` halkasi duser (D-106 tekrari)")
+        self.assertEqual("eslesti", detay["durum"])
+
+    def test_UC_UC_ayni_agirligi_gosteriyor(self):
+        """Kayit defteri · uretim manifesti · hakem ekrani — tek ad.
+
+        T58'in kusur sinifi (D-58/D-60/D-83): uclardan biri cevrilir, digeri
+        unutulur; ekran ile saha SESSIZCE farkli modele duser.
+        """
+        import json
+        sys.path.insert(0, str(KOK / "comms"))
+        import yks_gui
+
+        defter = json.loads(
+            (KOK / "config" / "model_registry.json").read_text(encoding="utf-8"))
+        defter_adi = Path(
+            defter["profiles"][defter["default_profile"]]["path"]).name
+        manifest_adi = R.varsayilan_model_yolu().name
+        ekran_adi = yks_gui.YksArayuz.ALGI_MODEL_DOSYA
+
+        self.assertEqual(defter_adi, manifest_adi, "manifest defterden AYRISTI")
+        self.assertEqual(defter_adi, ekran_adi, "hakem ekrani defterden AYRISTI")
+
+    def test_hakem_ekraninda_CIPLAK_model_adi_YOK(self):
+        """Madde 16 / T76-5: surum adi ikinci kez ciplak yazilmaz."""
+        import re
+        kaynak = (KOK / "comms" / "yks_gui.py").read_text(encoding="utf-8")
+        self.assertIsNone(
+            re.search(r"navitas_seg_v\d+_best\.pt", kaynak),
+            "hakem ekraninda CIPLAK model adi var — tek kaynak kayit "
+            "defteri olmali (T58'de zincirin dort ucu bu yuzden elle "
+            "hizalanmak zorundaydi)")
+
+    def test_defter_okunamazsa_ekran_ad_UYDURMAZ(self):
+        """Fail-closed: sessiz varsayilan = ekranin sahadan farkli model
+        gostermesi. Yokluk 'sorun yok' DEGILDIR."""
+        sys.path.insert(0, str(KOK / "comms"))
+        import yks_gui
+
+        for bozuk in ("{bozuk", "{}", '{"default_profile": "yok", "profiles": {}}',
+                      '{"default_profile": "c", "profiles": {"c": {}}}',
+                      '{"default_profile": "c", "profiles": {"c": {"path": "m.onnx"}}}'):
+            with self.subTest(defter=bozuk[:40]):
+                with mock.patch.object(Path, "read_text", return_value=bozuk):
+                    with self.assertRaises(RuntimeError):
+                        yks_gui._uretim_modeli_adi()
 
 
 if __name__ == "__main__":

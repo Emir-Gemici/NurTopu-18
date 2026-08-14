@@ -3038,6 +3038,81 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T76 — v27'yi üretim zincirine al, `model_yukleme` halkasını kapat** · `config/model_registry.json`, `jetson_paket/models/**`, `comms/yks_gui.py`, `JETSON_KILAVUZ.md` (İKİ kopya), `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-115**
+  - **✅ UYGULANDI · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-116**.
+    Emrin hedefi tuttu: `model_yukleme` **DÜŞTÜ → GEÇTİ**, kuru koşu
+    **GEÇTİ 6 → 7**.
+  - **Ağırlık:** `calisma/v27_epoch200_last.pt` → `models/navitas_seg_v27_best.pt`,
+    sha256 `1465ed3d…ee489d`, 54 848 668 bayt, kopya **bayt-eşit**.
+    `best.pt` **kullanılmadı** (D-113: epoch 43'te dondu, %21,5 daha kötü).
+  - **Kayıt defteri tek kaynak:** `navitas-seg-v4-640` → **`navitas-seg-v27-512`**,
+    `imgsz` 640 → **512** (D-112). `metrics` alanına D-115'in K1..K5'i ve kapsam
+    uyarısı yazıldı. ⚠ v4'ün `mask_map50` değeri **taşınmadı** — başka modelin
+    sayısını taşımak bayatlıktır.
+  - 🔴 **Emir ÜÇ manifest alanı diyordu; T58 kapısı BEŞ uç bağlıyor.** Yalnız o
+    üçü çevrilseydi `test_manifest_URETIM_surumunu_gosteriyor` (`asil_model`
+    hâlâ v24), `test_paketteki_ONNX_ayni_SURUMDEN` ve iki kılavuz testi
+    **düşerdi**. Kapsam açıkça genişletildi: **v27 ONNX'i üretildi** ve **her
+    iki `JETSON_KILAVUZ.md`** çevrildi. Aksi hâlde "v27 üretimde" derken
+    Jetson'a **v24 engine** derleten bir paket bırakılırdı (D-58/D-60).
+  - **ONNX 512 FP16:** kanonik `scripts/export_tensorrt.py` ile
+    `results/onnx_export_v27_20260814/navitas_seg_v27_best_512_fp16.onnx`;
+    betiğin **FP16 doğrulama kapısı geçti** (FP32 artefaktı değil).
+  - **Paket + manifest:** v27 `.pt` ve `.onnx` pakete kopyalandı (ikisi de
+    bayt-eşit); `paket_icerigi` **8 → 10 dosya**, her biri gerçek sha256'sıyla.
+  - **Madde 16 — çıplak sabit KALDIRILDI:** `ALGI_MODEL_DOSYA` artık kayıt
+    defterinden türetiliyor (`_uretim_modeli_adi()`). Defter yok/bozuk/`.pt`
+    değilse ad **uydurulmaz**, ekran açılmaz (5 bozuk biçimle sınandı).
+  - ⚠ **Bilerek bırakılan tek çoğaltma:** manifestteki `asil_model_pt`. Saha
+    paketi `config/`i **taşımaz**; defteri okumaya kalkarsa fail-closed'a düşer
+    ve **saha kodu model yükleyemez**. Eşitlik testle **kilitlendi**
+    (`test_manifest_ile_kayit_defteri_ESLESIYOR`, `test_UC_UC_ayni_agirligi…`).
+  - **KAPI (a):** `codes/test_rota_sentetik.py` → **SONUC: 15/15 dogru**.
+  - **KAPI (b) — saha kuru koşusu:**
+    ```text
+    kamera         GECTI   model_yukleme  GECTI   cikarim  GECTI
+    maske          GECTI   olcek          GECTI   aktarim  GECTI
+    surus_izni     GECTI   rota           DUSTU (BELIRSIZ_COKLU)
+    hedef_konumu   SAHIPSIZ                motor    SAHIPSIZ
+    T73 (v24) GECTI 6 · DUSTU 2 · SAHIPSIZ 2
+    T76 (v27) GECTI 7 · DUSTU 1 · SAHIPSIZ 2
+    ```
+  - **KONTROL — halka halka kıyas:** v24 koşusuyla v27 koşusu arasında **tek bir
+    halka değişti** (`model_yukleme` DÜŞTÜ→GEÇTİ); diğer dokuzu aynı. `rota`
+    v24'te de düşüktü ve sebep **birebir aynı** (`BELIRSIZ_COKLU`, aynı `mpp`).
+    v27 bu koşuda **gerileme üretmedi**.
+  - **KAPI (c) — hakem ekranı:** ekran gerçekten açıldı, `--demo` yok, model
+    sahte değil. Kaynak `arena_kadraj`, **kare idx 0 — kare SEÇİLMEDİ**.
+    ```text
+    karar: 2·ORTA · güven 1.000 · model: navitas_seg_v27_best.pt
+    ölçek 0.0781 m/px · gövde açıklığı 14.1 px · C-uzayı UYGULANDI
+    darboğaz 41.0 px @ şerit 2 · rota şerit dağılımı 0/540/0 px
+    SS: results/t76_hakem_ekrani/yks_ekran_v27.png (1707x996)
+    ```
+    **Gözle doğrulandı (D-80):** kırmızı engel katmanı, ortada serbest koridor,
+    **sarı rota + waypoint'ler**, tepede `H`. Başlık ve buton
+    "navitas_seg_v27_best" yazıyor — ad **defterden** geliyor.
+  - **Küme ölçümü (n=12):** T60 (ekranın gösterdiği) **11/12** · T66 (v27'nin
+    kabul kümesi) **12/12** · kompozit (WhatsApp kareleri) **0/1**
+    (`ZEMIN_MASKESI_SUPHELI`, kaplama %77 > tavan %67).
+  - **KAPI (d):** `discover -s tests -q` → **Ran 471 · OK** (468 → +3).
+    `scripts/jetson_paket_hazirla.py` → **9/9 bayt-eşit**.
+  - **İki test güncellendi (gizlenmiyor):** `test_model_registry` v4 → v27
+    (`resolve_model` **SHA-256'yı gerçekten doğruluyor**); T73'ün "çelişki var"
+    testi görevini yapıp düştü ve **ters çevrildi** — artık eşitliği kilitliyor.
+  - ⚠ **DOĞRULANAMADI:** (1) **ONNX hiç koşulmadı** — `.pt` ile karar denkliği
+    ölçülmedi, oysa sahaya giden artefakt odur; (2) v27 **640 ile eğitildi,
+    512'de koşuyor** — bu fark v27 için ölçülmedi (D-112 ölçümü v24 içindir);
+    (3) Jetson hız/doğruluk hâlâ açık (D-89); (4) gerçek arena verisi **yok**
+    (D-88/D-99); (5) 🔴 `ALGI_ARENA_KADRAJ_KOKU` hâlâ **T60**'ı gösteriyor,
+    oysa kabul kümesi **T66** — ekran, modeli kabul edilmediği bir dağılımda
+    gösteriyor (o satır iznimde yok, ayrıca testle çivili); (6) `manifest.imgsz`
+    [640]→[512] olduğu için `jetson_fps` artık **yalnız 512** ölçer, 640 kıyas
+    noktası kayboldu (D-112 uyarınca bilerek); (7) SHA doğrulaması iki yerde
+    **farklı** — `model_registry.py` doğruluyor, `model_kayit_dogrula` yalnız
+    **dosya adı** kıyaslıyor (D-106/3 hâlâ açık); (8) pakette v17/v20/v21/v24
+    duruyor, paket **522 MB** — budama istenmedi, yapılmadı.
+
 - [STATUS: READY_FOR_REVIEW] **T73 — Saha kodu parametrik degil: kamera ve model_yukleme halkalari DUSUK** · `codes/rpi_inference.py`, `scripts/saha_kuru_kosu.py` · **ONEMLI** · kanit: saha kuru kosusu ciktisi
   - **⚠ UYGULANDI, BİR KAPI KALDI · 2026-08-14 · Claude-2** · kayıt
     `REVIEW_LOG.md` **D-106**. `codes/karar_sozlesmesi.py`, `comms/**` ve
