@@ -8549,3 +8549,84 @@ ONNX, paket).
 ⚠ K-3 hatirlatmasi (dort kez olculdu): mAP/fitness arena siralamasini TERSINE
 cevirir. v28'in fitness'i v27'yi gecerse bu **tek basina hicbir sey ifade
 etmez**; karar yalnizca D-107 kapilarina ve D-122 kararliligina aittir.
+
+---
+
+### D-124 · 🔴 OLCUM + KAPSAM · Otoparkta rota URETILEMEZ ve sebebi MODEL DEGIL: kapi "SINIRLI ARENA" varsayimi tasiyor
+Olcen: Claude 1 (mimar) · 2026-08-15 01:40 · kullanici/kaptan istegi: "otoparkta da yol bulsun"
+
+**BAGLAM.** Kullanici uc oturumdur otopark karelerinde rota olusmadigini
+bildiriyor. Mimar olarak once "otopark kapsam disi" dedim — bu KOLAYCILIKTI ve
+geri aliyorum. Kaptan istiyorsa kapsamdadir; dahasi, otopark kareleri
+elimizdeki TEK gercek goruntudur (D-88/D-99), yani orada hicbir sey
+yapamiyorsak gercek dunyaya dair sifir kanitimiz var demektir.
+
+**ADIM 1 — OLCEK TIKAC MI? HAYIR.** Kareler WhatsApp videolarindan cikarilmis;
+**EXIF alan sayisi 0** (olculdu, 5 dosya). Irtifa/FOV yok, mpp turetilemez.
+Yedek bir olcek kahini olculdu (`69_arac_referans_olcegi.py`): DOTA OBB ile
+arac tespiti, yonlu kutunun KISA kenari = govde genisligi ~1,80 m.
+
+    24 kare · 1880 arac tespiti · kisa kenar medyan 24,6 px
+    IQR/medyan 0,138 · kare basina mpp medyan 0,07321 (0,0644-0,0812)
+    arac genisligi 1,70-1,90 m belirsizliginin TAMAMI icin r_gerekli 14,2-15,9 px
+
+Yani **±%6** — govde payindaki maske hatasi toleransinin (0,25 m) altinda.
+Akil sagligi: arenada telemetriden gelen mpp 0,0781 (r_gerekli 14,1 px); ayni
+mertebe.
+
+Bu olcek 67 karenin hepsine verildi (`70_gercek_kare_rota_denemesi.py`):
+
+    taranan kare : 67      ROTA URETILEN: 0/67      67 x ZEMIN_MASKESI_SUPHELI
+
+**Olcek tikac DEGILDI. Cozuldu, hicbir sey degismedi.**
+
+**ADIM 2 — TIKAC KAPININ KENDISI, VE YAPISAL.** v27 ile 67 karede olculdu:
+
+    kaplama        medyan 0,814 · min 0,773 · maks 0,872    tavan 0,67
+    kenar dayanma  medyan 0,809 · min 0,690 · maks 0,957    tavan 0,50
+    kaplama tavanini asan : 67/67
+    kenar tavanini asan   : 67/67
+    IKISI DE asan (RED)   : 67/67
+
+**KOK NEDEN — KAPININ KALIBRASYONU BU KARELERI "COKME" OLARAK TANIMLIYOR.**
+`karar_sozlesmesi.py:455-472` (T52/D-69/D-71) esigin nasil turetildigini yaziyor:
+
+    Olcum: 320 MESRU yer-gercegi maskesi ve **67 COKMUS kare (v21'in otopark
+    ciktisi)** · sonuc: mesru elenen 0/320 · cokme yakalanan 67/67
+
+Yani bu 67 otopark karesi, esigin **NEGATIF SINIFININ KENDISIDIR**. Onlarin
+gecmesi TANIM GEREGI imkansizdir.
+
+Kodun kendi fiziksel gerekcesi de bunu soyluyor:
+
+    "cokmus maske sahneyi ayirt etmedigi icin goruntu CEVRESININ neredeyse
+     tamamina dayanir (%58-96). Mesru arena zemininde koridorlar kenara ULASIR
+     ama yalnizca kendi genislikleri kadar — cevrenin en fazla %34'u."
+
+Bu muhakeme **SINIRLI ARENA** icin dogrudur. Acik bir otoparkta asfalt HER
+kenara ulasir; kenar dayanmasinin yuksek olmasi maskenin cokmesi degil
+SAHNENIN KENDISIDIR. Kapi bu ikisini ayirt edemez.
+
+**SONUC — EGITIM VERISI BU SORUNU COZMEZ.** En iyi karede bile kapinin acilmasi
+icin kaplamanin %13 azalmasi gerekir; kenar dayanmasi ise 0,690'dan 0,50'nin
+altina, yani **%28** dusmelidir. Bunun olmasi icin modelin kenardaki asfalti
+YANLISLIKLA surulemez saymasi gerekir. Hicbir DOGRU algi bu kapiyi acik
+otoparkta acamaz.
+
+⚠ Bu yuzden mimarin ilk yazdigi "modele cati ogret" gorevi (T82 taslagi) YANLIS
+onceliktir ve geri cekilmistir. Cati sorunu GERCEKTIR (D-118 gorseli) ama
+otoparkta rota uretilmemesinin sebebi O DEGILDIR.
+
+**KARAR GEREKTIREN NOKTA — INSANA AITTIR.** Otoparkta rota uretmek bir KUSUR
+DUZELTMESI degil, YENI BIR YETENEKTIR: kapinin "sinirli arena" varsayimini
+senaryoya bagli hale getirmek gerekir. Bedeli su: kapi, cokmus maskeye karsi
+tek savunmamizdir (v21/v25 oyle olmustu). Varsayimi gevsetmek o savunmayi
+otopark kipinde kaldirir; yerine BASKA bir emniyet argumani konmadan
+yapilmamalidir. Bu bir mimari karardir ve sessizce alinmaz.
+
+**DOGRULANAMADI**
+  1. Acik alanda cokmus maskeyi ayirt edecek ALTERNATIF bir sinyal aranmadi.
+  2. Arac referans olcegi yalniz otopark karelerinde olculdu; baska sahnede
+     (farkli irtifa, farkli arac tipi) sinanmadi.
+  3. Gercek arena karesi hala YOK; kapinin gercek arenada dogru davrandigi
+     olculemedi.
