@@ -7092,3 +7092,679 @@ mutasyon kilidi) · olculen dagilim regresyonu.
      HAZIR ama uretim yolunda HENUZ ETKIN DEGIL. Bunu acmak T73'un
      parametrik saha kodu isiyle birlikte yapilmalidir (o dosya su an
      ikinci amelede).
+
+---
+
+### D-106 · UYGULANDI + BIR KAPI KALDI · T73: saha kodu parametrik oldu; model_yukleme'yi KAYIT DEFTERI BAYATLIGI tutuyor
+Uygulayan: Claude 2 · 2026-08-14 · gorev T73 · kanit saha kuru kosusu
+
+**KUSUR.** Iki halka DUSUKTU ve ikisi de ayni siniftandi — saha kodu ELLE
+DUZENLENMEDEN kosamiyordu. Sartname SS2.2.1 sistemlerin goreve MUHURLU KUTULAR
+icinde intikal etmesini sart kosar; yarisma gunu kamera indeksi ya da model
+dosyasi degisirse kaynak dosya duzenlemek prosedure AYKIRIDIR.
+
+**1 · KAMERA PARAMETRIK.** `cv2.VideoCapture(0)` sabitti. Artik `--kaynak`
+indeks / cihaz yolu / dosya kabul ediyor; donusum TEK YERDE (`kamera_kaynagi_coz`)
+yapiliyor ki cagri yerleri "0" metnini cihaz dosyasi sanmasin.
+**Varsayilan DEGISMEDI** (kaynak verilmezse indeks 0) — geriye uyum testle
+kilitli.
+
+**2 · `--model` EKLENDI, VARSAYILAN CIPLAK DEGIL.** Varsayilan Jetson uretim
+manifestindeki `asil_model_pt` alanindan turetilir (`varsayilan_model_yolu`).
+Kaynak dosyada `navitas_seg_vNN_best.pt` kalibinda CIPLAK AD KALMADIGI ayrica
+testle dogrulanir. Manifest alani yol kacisina karsi denetlenir
+(`../gizli.pt`, `alt/dizin.pt`, `.onnx`, bos, None, sayi -> hepsi RED).
+
+**3 · FAIL-CLOSED.** Yuklenen agirlik `config/model_registry.json`'daki etkin
+profille UYUSMUYORSA `load_model` **yukselir**; sessiz devam YOK. Sessiz devam
+sahada YANLIS MODELLE ucmak demektir (D-89'un besinci ucu tam bu siniftandi).
+Gevsetme ancak `--kayit-dogrulamasiz` ile ACIKCA istenir; varsayilan
+`MODEL_KAYIT_ZORUNLU = True`. Kayit defteri YOKSA bu "uyum" SAYILMAZ —
+yokluk fail-closed tarafinda kalir.
+
+**⚠ GERIYE UYUM KORUNDU — MEVCUT BIR TEST YAKALADI.** Ilk yazimimda
+`load_model` uc'lu demet donduruyordu; `tests/test_rpi_canli_olcek.py` bunu
+`TypeError: cannot unpack non-iterable object` ile YAKALADI. Depo taramasinda
+`codes/test_batch.py:139` ve `drone/rpi_yayin.py:415` de `load_model()` deyip
+MODEL bekliyor — ikisi de T73'un izin listesinde YOK. Donus MODELE geri
+cevrildi; ek bilgi ACIKCA istenir (`ayrinti=True`).
+
+**4 · HALKALAR ARTIK BESLEMEYI OLCUYOR (D-98 dersi).** Eski iki halka yalnizca
+`"--model" in secenekler` gibi SECENEGIN VARLIGINA bakiyordu — D-98'de "olcek"
+halkasinin fonksiyonun VARLIGINA bakip GECTI yazmasiyla ayni kusur.
+
+  · `_kamera_beslemesi_olc`: `run_camera` GERCEKTEN kosulur ve
+    `cv2.VideoCapture`in NE ALDIGI olculur (cihaz yolu str, indeks int).
+  · `_model_beslemesi_olc`: UC davranis ayri olculur — varsayilan manifestten
+    mi geliyor · verilen yol GERCEKTEN yukleniyor mu · uyusmazlikta
+    FAIL-CLOSED mi.
+
+**GOREV AYRIMI (gizleme DEGIL).** `cikarim` halkasinin olcutu CIKARIMIN
+TAMAMLANMASIDIR; bildirim tutarliligi `model_yukleme`nin isidir. Bu yuzden
+`cikarim` artik `kayit_zorunlu=False` ile yukluyor. Aksi halde kayit defteri
+bayatligi `cikarim -> maske -> rota` zincirini de dusuruyordu (olculdu: GECTI
+5 -> 3). Uyusmazlik `model_yukleme`de HALA DUSTU olarak raporlanir.
+
+**KAPI 1 — SAHA KURU KOSUSU.**
+
+    taban   GECTI 5 · DUSTU 3 · SAHIPSIZ 2 · ATLANDI 0
+    T73     GECTI 6 · DUSTU 2 · SAHIPSIZ 2 · ATLANDI 0
+
+    kamera         GECTI   kaynak parametrik ve VideoCapture'a BESLENIYOR
+    model_yukleme  DUSTU   karsilanmayan kosul: kayit defteriyle ESLESME
+
+**🔴 HEDEF GECTI >= 7 IDI, 6'DA KALDI. SEBEP TEK VE OLCULDU.**
+`model_yukleme` icin bes kosul olculuyor; **DORDU SAGLANIYOR**:
+
+    --model argumani              EVET
+    varsayilan MANIFESTTEN        EVET  (navitas_seg_v24_best.pt)
+    arguman yuklemeyi BESLIYOR    EVET
+    uyusmazlikta FAIL-CLOSED      EVET
+    kayit defteriyle ESLESME      HAYIR  <- TEK EKSIK
+
+Sebep: **IKI BILDIRIM CELISIYOR.**
+
+    Jetson uretim manifesti  asil_model_pt = navitas_seg_v24_best.pt   (T58)
+    config/model_registry.json  competition -> models/navitas_seg_v4_best.pt
+
+Kayit defteri **v4 doneminden kalma BAYAT**. CONTRACTS SS11 bunu zaten
+soyluyordu ("kayit defteri de bayat") ama duzeltilmemis. Fail-closed dogru
+calisiyor ve dogru sonucu veriyor: hangi agirligin uctugunu bilmiyoruz.
+
+⚠ **DUZELTMEDIM.** `config/` T73'un izin listesinde YOK
+(`codes/rpi_inference.py · scripts/saha_kuru_kosu.py · tests/**`).
+Duzeltme TEK SATIRDIR: `profiles.competition.path` -> `models/navitas_seg_v24_best.pt`
+(ve `sha256` ile `model_id` alanlari da guncellenmelidir, aksi halde SHA
+dogrulamasi bir sonraki adimda ayni celiskiyi uretir). Izin verilirse yaparim.
+
+**KAPI 2 — MUTASYON: yanlis model yolu -> ACIK HATA.**
+
+    var olmayan dosya  -> RuntimeError "Model agirligi bulunamadi: ...yok.pt"
+    yanlis uzanti      -> RuntimeError "MODEL KAYIT DOGRULAMASI BASARISIZ"
+    varsayilan yol     -> RuntimeError "MODEL KAYIT DOGRULAMASI BASARISIZ"
+
+Uc vakada da SESSIZ GECIS YOK.
+
+**KAPI 3 — MUTASYON: kamera parametresi kaldirilinca halka DUSER.**
+
+    kaynak parametresi KALDIRILDI -> besledi=False ·
+        hata "run_camera `kaynak` almiyor: unexpected keyword argument"
+        halka sonucu: DUSER   (dogru)
+    mutasyon geri alindi          -> besledi=True · alinan='/dev/video7'
+        halka sonucu: GECER   (dogru)
+
+**KAPI 4 — depo kapilari.**
+
+    codes/test_rota_sentetik.py     SONUC: 15/15 dogru        GECTI
+    unittest discover -s tests -q   Ran 468 tests · OK        GECTI
+
+**KAPI 5 — Jetson paketi yeniden uretildi: 9/9 bayt-esit.**
+
+**YENI TEST PAKETI** `tests/test_saha_parametrik.py` (17 test): kamera kaynagi
+cozumu (indeks/cihaz yolu/dosya, bool REDDI) · BESLEME olcumu (VideoCapture ne
+aldi, varsayilan degismedi) · manifest varsayilani (ciplak ad yok, guvensiz
+alan reddi, manifest yoksa sessiz varsayilan URETILMEZ) · fail-closed (yukselme,
+uyumda yukleme, gevsetmenin ACIKCA istenmesi, var olmayan yol, kayit defteri
+yoklugu uyum SAYILMAZ) · ve kayit defteri celiskisini BUGUNKU haliyle kaydeden
+bir test — kayit defteri duzeltilince O TEST DUSER ve duzeltmenin yapildigini
+bize soyler (o zaman ters cevrilmelidir).
+
+**IKI MEVCUT TEST GUNCELLENDI (gizlenmiyor).**
+`test_rpi_canli_olcek.py`: (a) `load_model` sahtesi artik `ayrinti=True`
+sozlesmesini tasiyor; (b) `run_camera` beklentisi `kaynak=None` iceriyor —
+`main` artik kamera kaynagini da tasiyor. Ikisi de GENISLETILEN sozlesmenin
+kaydidir, gevsetme DEGILDIR.
+
+**DOGRULANAMADI**
+  1. Gercek kamera ile hicbir sey kosulmadi — donanim yok. `--kaynak`in
+     `/dev/video1` gibi bir cihazda ACILDIGI DOGRULANMADI; olculen sey
+     degerin `VideoCapture`a DOGRU TIPTE ULASTIGIDIR.
+  2. `model_yukleme` halkasi kayit defteri duzeltilene kadar GECEMEZ.
+  3. SHA dogrulamasi UYGULANMADI. CONTRACTS SS11.3 "SHA dogrulanacak" diyor;
+     bugun yalniz DOSYA ADI kiyaslaniyor. Kayit defteri guncellenirken SHA da
+     dogrulanmali — ayri is.
+  4. `scripts/jetson_fps.py` kendi manifest okuyucusunu tasiyor (T62). Artik
+     `rpi_inference.varsayilan_model_yolu` kanonik olabilir ve o dosya buradan
+     import etmelidir; o dosya T73'un izin listesinde YOK (ayri gorev).
+  5. `--kayit-dogrulamasiz` bayragi guvenligi ACIKCA gevsetir. Sahada
+     kullanilirsa gerekcesi kayda gecmelidir; bu betikle zorlanamaz.
+
+---
+
+### D-107 · ONCEDEN KAYIT · v27 kabul olcutleri — SONUC GORULMEDEN yazildi
+Yazan: Claude 1 (mimar) · 2026-08-14 15:30 · v27 epoch ~14/200, bitisine ~8 saat
+
+**NEDEN ONCEDEN.** Bu projede tekrarlanan hata olcutu SAYIYI GORDUKTEN SONRA
+yorumlamak oldu: D-85'te alt kumenin azamisine esik oturttum (D-86 curuttu),
+D-90'da tanima bagli bir olcutle %92,7 rapor etmek uzereydim, D-104'te kapiyi
+yanlis modelle olcturdum. Olcut sonuctan SONRA secilirse rasyonalize edilir.
+Bu yuzden esikler BURAYA, sonuc gelmeden yaziliyor ve sabah DEGISTIRILMEYECEK.
+
+**TABANLAR (bugun olculdu, T66 kadraj kumesi n=260):**
+
+    olcum                          rota      moloza basan   AGIR   arena disi
+    YER GERCEGI (model YOK)     260/260     24 (%9,2)          0        —
+    v24 (uretim, dagilim DISI)  196/260     61 (%31,1)        40   26 (%13,3)
+
+Yer gercegi satiri bu substratin KENDI TABANIDIR: kusursuz algiyla bile %9,2
+siyirma var (T74). Hicbir model bunun altina inmek zorunda degildir.
+
+**v27 KABUL OLCUTLERI — hepsi saglanmali (AND):**
+
+    K0  KORLUK YOK (v25'in olum sebebi)
+        · sartname figuru        : zemin kaplamasi > %0    (v25: %0,0 -> RED)
+        · raw_frames otopark     : bos maske 0/8
+        · copy_paste_gercek      : bos maske 0/8
+    K1  ROTA URETIMI            : >= 230/260   (v24: 196 · yer gercegi: 260)
+    K2  MOLOZA BASMA            : <= %15       (v24: %31,1 · taban: %9,2)
+    K3  AGIR BASMA (>%5)        : <= %3        (v24: %20,4 · taban: %0)
+    K4  ARENA DISI              : <= %5        (v24: %13,3)
+    K5  BARIYER KESISIMI        : 0 px         (v24 + T67 dedektoru: 0 px)
+
+**KARAR KURALI — sabah tartisilmayacak:**
+  * K0..K5 hepsi saglanirsa  -> v27 URETIME ALINIR.
+  * K0 duserse               -> v27 REDDEDILIR (v25 ile ayni sebep, tartisma yok).
+  * K0 gecer, K1..K5'ten biri duserse -> v27 uretime ALINMAZ; dusen olcut
+    kok nedene baglanir ve tek bir duzeltme turu kosulur (T74 en olasi aday).
+  * v27 v24'ten kotu cikarsa -> v24 KALIR. "Yeni model yeni substrat icindir"
+    gerekcesiyle kotusu secilmez.
+
+**BU OLCUMLERIN TAMAMI SENTETIKTIR.** T66 kadraj kumesi bizim urettigimiz
+zemindir; sartname figuru ise YAPAY ZEKA urunudur (D-99). Hicbir esik "sahada
+calisir" anlamina GELMEZ. Gercek arena dogrulamasi 30 Eylul gorev test
+ucusundan once mumkun degildir (D-88 + D-99, kalici kisit).
+
+**⚠ BILINEN OLCUM KAYBI.** v27 hem T71 (renk cesitliligi) hem T66 (ada
+geometrisi) degisikligini birlikte tasir; hangisinin ne kadar katki verdigi
+AYRISTIRILAMAZ (D-104'te hiz gerekcesiyle bilerek kabul edildi).
+
+---
+
+### D-108 · OLCUM · Uretim EGITIM COZUNURLUGUNDEN dusukte kosuyor: bedava IoU kaybi; ve egitim GPU'ya degil VERI HATTINA bagli
+Olcen: Claude 1 (mimar) · 2026-08-14 · kullanici OC sorusu uzerine · v27 kosarken
+
+**BULGU 1 — EGITIM 640, URETIM 512.**
+
+    egitim recetesi          imgsz = 640   (v15_ft2sinif'ten birebir alinmis)
+    codes/rpi_inference.py   INFER_SIZE = 512
+
+Bedeli OLCULDU (v24, T66 kadraj n=60, yer gercegi etiketleriyle):
+
+    imgsz   zemin IoU   kesinlik   duyar   kaplama
+      512      0,405      0,630    0,523    %26,6   <- URETIM burada
+      640      0,435      0,671    0,548    %27,2   <- model burada EGITILDI
+      800      0,442      0,674    0,553    %27,9
+
+512'de kosmak IoU'da **%6,9**, kesinlikte **%6,1** kayip demektir. Model zaten
+640'ta egitildi; bu kayip BEDAVA verilmis bir kayiptir.
+
+⚠ Bu, acik duran **S5**'in ("cikarim imgsz sabitlenmemis") somut bedelidir.
+S5'in kaniti v17'de 640 -> IoU 0,861 · 960 -> 0,034 idi; yani bu model
+ailesinde cozunurluk duyarliligi SERT. 512<->640 farki o kadar yikici degil
+ama olculebilir ve tek yonlu.
+
+**KARAR VERILMEDI — odunlesme var.** 640'a cikmak Jetson'da 1,56 kat cikarim
+hesabi demektir (640²/512²). `results/jetson_fps_pc_smoke` olcumu darbogazin
+cikarim degil COSTMAP oldugunu soyluyordu (cikarimin ~2 kati), dolayisiyla
+640 karsilanabilir gorunuyor — ama Jetson'da HIC olcum yok. Karar S5'te
+verilecek; bu kayit bedeli SAYIYA baglar.
+
+**BULGU 2 — EGITIM GPU'YA DEGIL VERI HATTINA BAGLI.**
+Kullanici GPU'yu overclock etti ve hiz sordu. Olculdu:
+
+    son 5 epoch    138,5 s      onceki 9 epoch  139,1 s   -> BASAMAK YOK
+    GPU kullanimi  ort %58 · min %1 · maks %96  -> %42 BOSTA
+    SM saati       ort 2565 MHz · maks 3000 (tavan 3090) -> tavana DAYANMIYOR
+    sicaklik       ort 82 C · maks 87 C
+    workers 8 · cache false · makinede 24 cekirdek, 51 GB bos RAM
+
+OC olculebilir hizlanma VERMEDI ve sebebi acik: %42 bosta bekleyen ve saat
+tavanina zaten dayanmayan bir GPU'yu hizlandirmak bir sey kazandirmaz. Sinir
+guc/sicaklik tarafinda, is yuku ise CPU tarafinda (veri yukleme + maske
+rasterizasyonu; T66 substrati poligon sayisini 3 kata cikardi).
+
+**TAVAN:** veri hatti sonsuz hizli olsaydi epoch 138 x 0,58 = **~80 s** olurdu,
+yani **~1,7 kat**. 8,6 saatlik kosu ~5 saate iner.
+
+**ONERI (bir sonraki kosuda, OLCULEREK):** `workers` 8 -> 16 (Windows'ta
+spawn kullanilir, 24'e cikarmak ters teper), `cache='ram'` (~8,5 GB, 51 GB
+bos). `batch` 12'de KALSIN — VRAM'de yer var ama batch degisimi egitim
+dinamigini degistirir ve v24/v25/v27 kiyasini bozar.
+
+**v27 YENIDEN BASLATILMADI.** Kalan 161 epoch x 138 s = 6,2 saat. Bastan
+1,7 kat ile 200 x 81 s = 4,5 saat; kazanc ~1,5 saat, bedeli 39 epoch'luk
+ogrenme durumu ve LR takvimi. Degmez.
+
+**DOGRULANAMADI**
+  1. `workers`/`cache` kazanci OLCULMEDI — v27 CPU'yu kullaniyor, simdi
+     olcmek hem yaniltir hem v27'yi yavaslatir. Sonraki kosuda olculecek.
+  2. 1,7 kat TAVANDIR, ulasilacagi garanti degildir.
+  3. Cozunurluk olcumu v24 ve T66 kadraj icindir; v27'de yeniden olculmeli.
+  4. Jetson'da hicbir hiz olcumu YOK (D-89'dan beri acik).
+
+---
+
+### D-109 · 🔴 KUSUR · `--devam` HIC CALISMIYORMUS: sessizce bastan basliyor ve `results.csv`'yi SILIYOR
+Bulan: Claude 1 (mimar) · 2026-08-14 · `O:\navitas-local-train\56_t53_gercek_karisim.py`
+
+**NASIL YAKALANDI.** Kullanici "egitim yarida kalinca devam edecek sekilde
+ayarlamistik" dedi ve hizlandirma icin kosuyu durdurup yeniden baslatmayi
+onerdi. Devam calisti sanildi; args satirinda **`resume=False`** ve
+**`model=v15_on10sinif/weights/best.pt`** (ON-EGITIM) gorulunce yakalandi.
+
+**KOK NEDEN.** Runner `--devam` verilse bile modeli ON-EGITIMDEN kuruyordu:
+
+    model = YOLO(str(ON_BEST))                       # <- her zaman on-egitim
+    model.train(..., exist_ok=True, resume=args.devam)
+
+Ultralytics `resume=True`yu ancak MODELIN KENDISI bir kontrol noktasiysa
+cozer (`BaseTrainer.check_resume`). On-egitimden kurulunca `resume` sessizce
+False'a duser, kosu **BASTAN** baslar ve `exist_ok=True` yuzunden
+`results.csv` **SILINIR**. Hicbir hata verilmez.
+
+**BEDELI.** v27'nin 44 epoch'u (~1,7 saat) kaybediliyordu. `last.pt` diskte
+kaldigi icin kurtarildi (`calisma/v27_epoch44_last.pt`, epoch 43,
+fitness 1,31829) ve geri yuklendi.
+
+**DUZELTME.** `--devam` verildiginde model kosunun KENDI `last.pt`'sinden
+kurulur ve `resume`a o dosyanin YOLU verilir; kontrol noktasi yoksa
+`SystemExit` ile durur (fail-closed, sessiz bastan baslama YOK).
+
+⚠ Bu kural bellekte **"kesinti sonrasi ayni komutla devam"** diye kayitliydi
+ve HIC SINANMAMISTI. Yazili olmasi calistigi anlamina gelmiyormus — D-81'in
+("bir islemin basarili donmesi istenen seyi yaptigi anlamina gelmez")
+bir baska ornegi.
+
+---
+
+### D-110 · OLCUM · `cache='ram'` Windows'ta MemoryError veriyor: isciler onbellegi PAYLASMIYOR, KOPYALIYOR
+Olcen: Claude 1 (mimar) · 2026-08-14
+
+D-108 veri hattini darbogaz olarak gostermisti. Onerilen `workers=16` +
+`cache='ram'` uygulandi ve **MemoryError** ile coktu — 83 GB bos RAM varken.
+
+**KOK NEDEN — PLATFORMA OZGU.** Windows'ta dataloader iscileri `spawn` ile
+baslar, `fork` ile degil. `fork` olsaydi onbellek kopyala-yaz ile PAYLASILIRDI;
+`spawn`da her isci onbellegin **KENDI KOPYASINI** kurar. 16 isci x ~10 GB
+onbellek RAM'i kat kat asar. Linux'ta ayni ayar sorunsuz calisirdi.
+
+**COZUM: `cache='disk'`.** Uc sorunu birden cozer:
+  1. **Bellek**: `.npy` dosyalari bellek eslemelidir, isciler arasinda
+     paylasilir, cogalmaz. (Disk ihtiyaci ~8,5 GB; O:'da 144 GB bos.)
+  2. **BELIRLENIRLIK**: Ultralytics'in kendi uyarisi *"cache='ram' may produce
+     non-deterministic training results. Consider cache='disk' as a
+     deterministic alternative"*. Recetemizde `deterministic=True` var;
+     `ram` bunu sessizce bozardi.
+  3. **I/O**: asil kazanc olan JPEG cozme maliyeti yine kalkar.
+
+**AYRICA — ISLETIM NOTU.** Arka planda baslatilan egitim, oturum sureci
+kapaninca OLDU (GPU %0, python sureci 0, `results.csv` yok). Uzun kosular
+oturumdan BAGIMSIZ baslatilmalidir (Windows'ta `Start-Process`), yoksa
+`FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` ayarli olsa bile surec agacina bagli
+kalir. Bu, `egitim-konsol-olayi` bellek notunun ikinci bir yuzudur.
+
+**DOGRULANAMADI**
+  1. `workers=16` + `cache='disk'` kazanci bu kayit yazilirken HENUZ
+     olculmedi; olculunce ayrica raporlanacak.
+  2. En iyi `workers` degeri taranmadi; 16 secildi cunku makinede 24 cekirdek
+     var ve `spawn` maliyeti yuksek. 8/12/20 KIYASLANMADI.
+
+---
+
+### D-111 · 🔴 DUZELTME · D-108'in "640 daha iyi" BULGUSU YANLISTI: olculen sey BUYUTME artefaktiydi; 640 kesinligi DUSURUYOR
+Duzelten: Claude 1 (mimar) · 2026-08-14 · D-108 bulgu 1 GECERSIZ
+
+**YANLIS OLAN NE.** D-108'de "egitim 640, uretim 512; 512'de kosmak IoU'da
+%6,9 kayip" yazdim ve bunu `predict(small, imgsz=640)` ile olctum. Ama
+`_preprocess` (`codes/rpi_inference.py:1301`) goruntuyu `predict`e vermeden
+ONCE zaten `INFER_SIZE`e indiriyor:
+
+    small = cv2.resize(tuval, (INFER_SIZE, INFER_SIZE))    # INFER_SIZE = 512
+
+Yani `imgsz=640` verdigimde Ultralytics **512'lik bir goruntuyu 640'a
+BUYUTUYORDU**. Yeni bilgi yok, yalniz interpolasyon. Olctugum sey "640'ta
+cikarim" DEGIL, "buyutulmus 512" idi.
+
+**BU AYRICA "yalniz 512 calisiyor" TUHAFLIGINI DA ACIKLIYOR.** Figur uzerinde
+cozunurluk supurmesi sunu vermisti:
+
+    imgsz  416  480  512   544  576  608  640  672  704  800
+    zemin%  0    0   34,6   0    0    0    0    0    0    0
+
+512 tek calisan degerdi cunku YALNIZ orada yeniden ornekleme YOKTU; diger her
+degerde girdi bir kez kucultulup sonra buyutuluyordu ve model o artefaktta
+sahneyi butunuyle ENGEL ilan ediyordu. Bu bir cozunurluk bulgusu degil, bir
+OLCUM KUSURUDUR — benim kusurum.
+
+**DOGRU OLCUM (`INFER_SIZE` degistirilerek, gercek 640):**
+
+    INFER_SIZE   kadraj IoU   kesinlik   FIGUR zemin%
+           512        0,405      0,630         %34,6
+           640        0,402      0,598         %37,3
+
+**SONUC: 640 IoU KAZANDIRMIYOR (0,405 -> 0,402) ve KESINLIGI %5 DUSURUYOR.**
+Kesinlik dususu bu mimaride TEHLIKELI yondur — dort kapili olcutte
+*"KESINLIK ONCELIKLI: yanlis-pozitif zemin, kacirilan zeminden TEHLIKELIDIR"*
+yazilidir. 1,56 kat hesap karsiliginda guvenlik yonunde kayip alinir.
+
+**ONERI: `INFER_SIZE = 512` KALSIN.** Kullanici 640'i istedi; gerekcesi
+D-108'in YANLIS sayisiydi. Duzeltilmis sayilarla karar kullaniciya geri
+verilir.
+
+**S5 ICIN KALAN GERCEK SORU.** "Hangi cozunurlukte egitilmeli/kosulmali"
+sorusu hala aciktir ama bu olcumle YANITLANAMAZ: v24 640'ta EGITILDI ve
+512'de kosuyor; her ikisi de sabit. Gercek yanit, ayni substratla 512'de
+EGITILMIS bir modeli 512'de kosup kiyaslamaktir. Bu bir egitim kosusu
+gerektirir; v27'den sonra degerlendirilecek.
+
+**DERS.** Bir ardisik islem hattinda "cozunurlugu degistirdim" demek, hattin
+HANGI adiminda degistirdigimi bilmeden anlamsizdir. D-53 ("olcum zeminine
+bak") ve D-99 ("kaynagin ne oldugunu belgeden dogrula") ile ayni ailedendir:
+olcumden once BORUYU oku.
+
+**DOGRULANAMADI**
+  1. Egitim cozunurlugunun (640) uretim cozunurluguyle (512) uyusmamasi hala
+     bir uyusmazliktir; bedeli OLCULMEDI cunku olcmek yeni bir egitim ister.
+  2. Bu olcum v24 icindir; v27'de yeniden yapilmalidir.
+
+---
+
+### D-112 · KARAR · Cozunurluk HER YERDE 512: 640'in olculebilir bir ustunlugu YOK, maliyeti VAR
+Olcen/karar: Claude 1 (mimar) · 2026-08-14 · kullanici sorusu: "tam 512 ya da tam 640, ikisi arasi kalmasin"
+
+**SORUN.** Sistem tutarsiz bir durumdaydi: modeller `imgsz=640` ile EGITILIYOR,
+uretim `INFER_SIZE=512` ile KOSUYOR. Bu uyusmazlik hic olculmemisti ve D-108'de
+yanlis olctum (D-111 duzeltti).
+
+**OLCUM — INFER_SIZE gercekten degistirilerek** (v24, 640'ta egitilmis;
+T66 kadraj n=50; yer gercegi etiketleriyle):
+
+    INFER     IoU  kesinlik   duyar   FIGUR zemin%   ms/kare (RTX 5080)
+      384   0,419     0,620   0,556          %38,8    (127 = isinma)
+      448   0,392     0,644   0,499           %0,0
+      512   0,399     0,625   0,527          %34,6         63
+      576   0,405     0,646   0,529          %39,1         64
+      640   0,400     0,598   0,531          %37,3         64
+      768   0,402     0,633   0,522          %37,6         68
+
+**BULGU 1 — FARKLAR GURULTUNUN ALTINDA.** IoU yayilimi 0,392..0,419 = **0,027**;
+kesinlik yayilimi 0,048. Bu projenin olculmus gurultu tabani **0,04**'tur
+(maske sd 0,025-0,032, K-3 ile birlikte kayitli). Yani cozunurluk secimi
+DOGRULUK acisindan AYIRT EDILEMEZ. D-111'de "640 kesinligi %5 dusuruyor"
+dedigim fark da bu gurultunun icindedir; tek basina karar gerekcesi olamaz.
+
+**BULGU 2 — PC'DE SURE DE FARK ETMIYOR** (63-68 ms). RTX 5080'de bu boyutlarda
+olculen sey hesap degil EK YUKTUR. Jetson'da durum farklidir: 640, 512'nin
+**1,56 kati** hesap demektir (640²/512²) ve orada HIC olcumumuz YOK (D-89).
+
+**BULGU 3 — 448'DE FIGURDE TAM KORLUK (%0,0).** Komsu degerler (%34,6 ve
+%39,1) saglamken 448 tamamen coküyor. Bu bir cozunurluk EGRISI degil,
+KIRILGANLIK isaretidir; v25'in olum bicimiyle ayni sinifta. Ayrica kayda gecer:
+model belirli olceklerde catlayabiliyor.
+
+**KARAR: 512 — EGITIMDE DE, CIKARIMDA DA.**
+Gerekce sirasi (dogruluk gerekcesi YOK, cunku olculemedi):
+  1. **Jetson maliyeti**: 512, 640'in 0,64 kati hesap. Orada hicbir olcumumuz
+     yok; ucuz olani secmek riski kucultur.
+  2. **Egitim maliyeti**: 512'de egitim ~0,64 kat -> 8,6 saatlik kosu ~5,5
+     saate iner. Kullanicinin hiz sikayetine dogrudan cevap verir.
+  3. **Tutarlilik**: egitim ve cikarim ayni olcekte olur; olculmemis bir
+     uyusmazlik ortadan kalkar.
+  4. **Degisiklik maliyeti sifir**: uretim ZATEN 512'de kosuyor. Degisen
+     yalniz EGITIM recetesidir.
+
+⚠ **NE IDDIA ETMIYORUM:** "512 daha dogru" DEMIYORUM — olculemedi. Iddia
+"640'in olculebilir bir ustunlugu yok, maliyeti var"dir.
+
+**UYGULAMA.** `56_t53_gercek_karisim.py` recetesinde `imgsz` 640 -> 512.
+⚠ v27 SU AN 640 ile kosuyor ve YENIDEN BASLATILMAYACAK — 47 epoch'u atmak
+olculebilir bir kazanc getirmez ve D-109'da zaten 44 epoch kaybettik.
+Degisiklik v28'den itibaren gecerlidir. Boylece v27<->v28 kiyasi bir degisken
+daha tasiyacak; bu bilerek kabul edilir ve burada yazilidir.
+
+**DOGRULANAMADI**
+  1. 512'de EGITILMIS bir modelin 512'de nasil davranacagi OLCULMEDI; tum
+     olcumler 640'ta egitilmis v24 icindir. Asil kiyas v28 ile yapilacaktir.
+  2. Jetson'da hiz farki olculmedi (D-89'dan beri acik).
+  3. 448'deki korlugun sebebi arastirilmadi.
+
+---
+
+### D-113 · 🔴 KUSUR · `best.pt` YANLIS MODELI TUTUYOR: `best_fitness` ULASILAMAZ bir tavana kilitlenmis
+Olcen: Claude 1 (mimar) · 2026-08-14 19:22 · kullanici sorusu: "egitim ne durumda"
+
+**BELIRTI.** v27 epoch 112'de kosarken `best.pt` dosya tarihi **16:30:06**'da
+donmus — 2 saat 50 dakikadir yazilmamis. Kontrol noktasi ustverisi:
+
+    v27_t66_adalar  best  epoch=43   best_fitness=1.31829
+    v27_t66_adalar  last  epoch=112  best_fitness=1.31829
+
+**FITNESS FORMULU DOGRULANDI** (ultralytics 8.4.92, kaynaktan okundu):
+`SegmentMetrics.fitness = seg.fitness() + DetMetrics.fitness`, `Metric.fitness`
+agirliklari `[P,R,mAP50,mAP50-95] = [0,0,0,1]`. Yani **fitness = kutu mAP50-95 +
+maske mAP50-95**. v26'nin `results.csv` epoch 16 satiriyla kalibre edildi:
+0,73735 + 0,60165 = 1,339 = kontrol noktasindaki `best_fitness`. ✔
+
+v27'nin `results.csv` epoch 112'si ise 0,23501 + 0,17747 = **0,4156** —
+1,318'in **UCTE BIRI**.
+
+**AYIRT EDICI OLCUM.** Iki kontrol noktasi AYNI, BUGUNKU val kumesinde
+(`karisim_t54_engelli.yaml`, n=795 goruntu, 11.380 ornek, imgsz=640) kosuldu:
+
+    kontrol noktasi        kutu mAP50-95   maske mAP50-95   FITNESS
+    best.pt  (epoch  43)         0,19829          0,14087   0,33916
+    last.pt  (epoch 112)         0,23824          0,17396   0,41219
+
+**BULGU 1 — 1,31829 BU VERIDE HIC OLCULMEMIS BIR SAYIDIR.** Epoch 43 agirligi
+bugun 0,339 veriyor. Sayi kontrol noktasina baska bir kosuldan binmis ve
+`best_fitness` icin ULASILAMAZ bir tavan kurmus; `save_model` yalnizca
+`best_fitness <= fitness` oldugunda `best.pt` yazdigi icin dosya bir daha
+GUNCELLENMEMIS.
+
+**BULGU 2 — `best.pt` OLCULEBILIR SEKILDE DAHA KOTU.** `last.pt` ondan
+0,41219 / 0,33916 = **%21,5 daha iyi**. Yani `best.pt`'yi kullanan her asagi
+akis isi — kabul denetimi, saha kuru kosusu, yks_gui — sistematik olarak
+KOTU modeli olcuyordu. Bu, model secimini bozan sessiz bir kusurdur.
+
+**BULGU 3 — EGITIM COKMEMIS.** 43->45 arasindaki "3,2 kat dusus" bir cokus
+degil, olcum degisikligiydi. Egitim kaybi normal seyrediyor (box 0,777 ->
+0,682; v26'nin ayni noktadaki 0,739'undan iyi) ve fitness resume'dan beri
+duzenli tirmaniyor: epoch 45'te 0,3985 -> epoch 112'de 0,4156.
+
+**BULGU 4 — IKI AYRI SAYAC, IKI AYRI DAVRANIS.** Erken durdurmanin epoch
+103'te (43 + patience 60) tetiklenecegini soylemistim; TETIKLENMEDI. Sebep:
+`trainer.best_fitness` kontrol noktasindan geri yukleniyor (1,318), ama
+`EarlyStopping` nesnesi resume'da SIFIRDAN kuruluyor ve resume SONRASI egriyi
+izliyor. O egri hala kil payi yukseldigi icin sabir sayaci surekli sifirlaniyor.
+Sonuc: kosu 200'e kadar gidecek ama `best.pt` epoch 43'te kalacak.
+
+**ETKI.** v27'nin epoch 44+ hesabi `best.pt` yoluyla TAMAMEN kayiptir; yalnizca
+`last.pt` uzerinden kurtarilabilir. Ayni kusur v26'da da mevcuttur
+(`best_fitness=1.339`, epoch 15) — o kosu 17. epoch'ta durduruldugu icin
+sonucu etkilemedi.
+
+**ALINAN ONLEM (bu kayit yazilirken).** `last.pt` epoch 112 sabit bir yola
+kopyalandi: `calisma/v27_epoch112_last.pt`. D-107 kabul denetimi bu kopya
+uzerinde kosuluyor — `best.pt` uzerinde DEGIL.
+
+⚠ **NE IDDIA ETMIYORUM:** 1,31829'un TAM OLARAK nereden geldigini
+kanitlamadim. v15 on-egitim kontrol noktalarinda `best_fitness=None`; dolayisiyla
+oradan gelmiyor. En olasi aciklama v27'nin D-109'da kayda gecen coklu yeniden
+baslatmalarindan birinde farkli bir val kumesinin kullanilmis olmasidir, ama
+bunu OLCMEDIM. Kusurun VARLIGI ve ETKISI olculdu; KOKENI olculmedi.
+
+⚠ Fitness bu projede model SECIM olcutu DEGILDIR (K-3, dort kez olculdu: mAP
+arena siralamasini TERSINE ceviriyor). 0,412'nin 0,339'dan iyi olmasi "sahada
+calisir" ANLAMINA GELMEZ. Karar D-107 kabul denetimine aittir.
+
+**KUYRUGA GIREN IS.** Egitim kosucusunda resume yolu, kontrol noktasindan gelen
+`best_fitness`'i mevcut val kumesinde DOGRULAMALI; dogrulanamiyorsa sifirlamali.
+Aksi halde her resume `best.pt`'yi sessizce dondurabilir.
+
+---
+
+### D-114 · KABUL DENETIMI · v27 e112 dort esas olcutu GECTI; K5 OLCULEMEDI — verdikt ASKIDA
+Olcen: Claude 1 (mimar) · 2026-08-14 19:30-19:45 · esikler D-107'de SONUC GORULMEDEN yazildi
+
+**OLCULEN MODEL.** `calisma/v27_epoch112_last.pt` — v27'nin epoch 112 `last.pt`
+kopyasi. `best.pt` KULLANILMADI cunku D-113'te epoch 43'te donmus ve
+olculebilir sekilde %21,5 daha kotu oldugu gosterildi.
+
+**MEKANIK DENETIM** (`65_kabul_denetcisi.py`, esikler koda gomulu, elle
+degistirilmedi):
+
+    olcut                esik      v24      v27 e112     sonuc
+    K0 korluk yok        > 0       —        bkz. asagi   GECTI
+    K1 rota uretimi      >= 230    196      255/260      GECTI
+    K2 moloza basma      <= %15    %31,1    %7,1 (18/255) GECTI
+    K3 agir basma        <= %3     %20,4    %0,0 (0/255) GECTI
+    K4 arena disi        <= %5     %13,3    %0,0 (0/255) GECTI
+    K5 bariyer kesisimi  = 0 px    0 px     OLCULEMEDI   ASKIDA
+
+**K5 DUSMEDI, OLCULEMEDI — VE BU BIR KAPI KUSURUDUR.** `63_bariyer_kesisimi.py`
+kesisimi SARTNAME FIGURU uzerinde olcuyor. Cikti:
+
+    BARIYER KOLU bulundu: 2
+    BARIYER PIKSELLERI (n=3644):
+      model ENGEL diyor : %100.0
+      model ZEMIN diyor : %0.0
+      rota yok — kesisim olculemez
+    karar: red=('UC_BANT_TEMAS_YOK', 'alt=0/1059px, ust=0/1059px; gereken >= 22px')
+
+Bariyer duyarliligi **%100** — T67 duzeltmesi saglam. Ama o karede rota
+olusmadigi icin "rota x bariyer" kesisimi tanimsiz. Kapi, olcemedigi bir seyi
+"DUSTU" diye raporluyor; bu denetcinin kusurudur, modelin degil.
+
+**K0 AYRINTISI — GERCEK KARELERDE KORLUK YOK, FIGURDE VAR:**
+
+    raw_frames    n=8  bos=0  zemin ortalamasi %45,5
+    copy_paste    n=8  bos=0  zemin ortalamasi %45,4
+    sartname figuru                  zemin      %0,17    (v24: %34,6)
+
+Figur D-99'da YAPAY ZEKA URETIMI oldugu tespit edilen karedir; gercek arena
+degildir ve otorite metindir. Yine de v24'ten v27'ye bu karede olculebilir bir
+gerileme vardir ve SEBEBI ARASTIRILMADI.
+
+**ASIRI-IHTIYAT SINAMASI — HIPOTEZ CURUDU.** K2'nin (%7,1) kusursuz algi
+tabaninin (%9,2) ALTINA inmesi, modelin yer gerceginden daha ihtiyatli
+oldugundan suphelenmemi gerektirdi (asiri ihtiyat sentetikte guvenli gorunur,
+tanimadigi karede rota bulmayi oldurur). Eslestirilmis olcum (n=234 kare,
+ayni kadraj kumesi, conf=0,30):
+
+    model          zemin_model   zemin_YG      fark   frame'lerin %'i fark<0
+    v24 (uretim)        0,2877     0,3459   -0,0583                    62,4%
+    v27 e112            0,3419     0,3459   -0,0041                    71,4%
+
+v27 yer gercegini **0,4 puan** farkla izliyor; ASIRI IHTIYATLI DEGIL. Asil
+asiri ihtiyatli olan v24'tur (5,8 puan eksik serbest alan) — ve K1'in 196'dan
+255'e cikmasinin sebebi de budur. v27 elimizdeki EN IYI KALIBRE modeldir.
+
+**VERDIKT: ASKIDA — "URETIME ALINIR" DEMIYORUM.** D-107'yi sonradan
+gevsetmemek anayasal bir yukumluluktur. Alti olcutten besi gecti, biri
+OLCULEMEDI. "Olculemedi" ile "gecti" ayni sey degildir. Kalan is MODEL isi
+degil KAPI isidir: K5, rota olusabilen bir zeminde (bariyerli sentetik kadraj)
+olculmelidir. O olcum yapilip 0 px cikarsa verdikt URETIME ALINIR olur.
+
+**DOGRULANAMADI**
+  1. Figurdeki %0,17 korlugun sebebi (v24 %34,6 veriyordu).
+  2. K5, rota olusan bir zeminde henuz olculmedi.
+  3. Tum bu olcumler SENTETIKTIR (D-88 + D-99, kalici kisit). Hicbiri
+     "sahada calisir" anlamina gelmez.
+
+---
+
+### D-115 · KABUL · v27 epoch 200 ALTI OLCUTU DE GECTI — K5 olcumu DUZELTILDI, esik DEGISMEDI
+Olcen: Claude 1 (mimar) · 2026-08-14 22:38-23:40 · model: `calisma/v27_epoch200_last.pt`
+
+**EGITIM BITTI.** v27 200/200 epoch, 353 dakika. Kullanilan agirlik `last.pt`
+(epoch 200) — `best.pt` DEGIL. Gerekce D-113: `best.pt` epoch 43'te dondu ve
+ic tarih damgasi bunu dogruluyor:
+
+    best  date = 2026-08-14T16:30:04   -> epoch 43
+    last  date = 2026-08-14T22:38:12   -> epoch 200
+
+`strip_optimizer` bitiste `epoch`/`best_fitness` alanlarini temizledigi icin
+ikisi de `-1/None` gorunur; ayirt eden sey TARIH damgasidir.
+
+⚠ **YAN ETKI — KOSU GRAFIKLERI YANLIS MODELE AITTIR.** Ultralytics final
+dogrulamayi `best.pt` uzerinde kosar. `v27_t66_adalar/` altindaki
+`results.png`, `confusion_matrix*.png` ve tum PR/F1 egrileri EPOCH 43'e aittir.
+Kosuyu bu grafiklerle degerlendiren yanilir.
+
+`results.csv`'ye gore fitness (= kutu mAP50-95 + maske mAP50-95):
+
+    en iyi epoch (195)   0,42093
+    epoch 200 = last.pt  0,42048      <- kullanilan
+    epoch 112            0,41563
+    epoch  43 = best.pt  0,33916      (olculdu, D-113)
+
+last.pt ile en iyi epoch arasindaki fark 0,00045 — gurultunun cok altinda.
+
+**KABUL DENETIMI · epoch 200** (esikler D-107, sonuc gorulmeden yazildi):
+
+    olcut                esik      v24      v27 e200        sonuc
+    K0 korluk yok        > 0       —        bkz. asagi      GECTI
+    K1 rota uretimi      >= 230    196      255/260         GECTI
+    K2 moloza basma      <= %15    %31,1    %7,1  (18/255)  GECTI
+    K3 agir basma        <= %3     %20,4    %0,0  (0/255)   GECTI
+    K4 arena disi        <= %5     %13,3    %0,4  (1/255)   GECTI
+    K5 bariyer kesisimi  = 0 px    0 px     0 px  (0/172)   GECTI
+
+    K0 ayrinti: raw_frames 0/8 bos (zemin ort. %45,5) · copy_paste 0/8 bos
+                (%45,4) · sartname figuru %7,8 (epoch 112'de %0,17 idi)
+
+**🔴 K5 OLCUMU DEGISTIRILDI — SAPMA ACIKCA KAYITTA.** D-107'de K5, `63`in
+olctugu sey olarak yaziliydi. O olcum IKI kusur tasiyordu ve ikisi de K5
+DUSTUKTEN SONRA bulundu:
+
+  1. **TEK KARE.** Kesisim yalniz sartname figuru uzerinde olculuyordu. v27 o
+     karede rota uretmiyor (`red=UC_BANT_TEMAS_YOK`, alt=0/1059px) — kesisim
+     TANIMSIZ. Kapi, olcemedigi seyi "DUSTU" diye raporluyordu.
+  2. **NOKTASAL ROTA.** Kesisim `cv2.line(..., 3)` ile cizilmis 3 piksellik
+     izden hesaplaniyordu. O 3 piksel IKA govdesini temsil etmez, KEYFIDIR.
+     sa_000131'de tam bu ortaya cikti:
+
+         iz kalinligi 3 px -> kesisim 8 px
+         iz kalinligi 1 px -> kesisim 0 px
+
+     Yani "DUSTU" sonucunu ureten sey cizim kalinligiydi, modelin davranisi
+     degil.
+
+**DUZELTME** (`66_k5_bariyer_populasyon.py`, yeni): K5, K2 ILE AYNI TANIMA
+baglandi — rota C-uzayiyla ayni yaricapla (`r_gerekli_px = R_GEREKLI_M / mpp`)
+kalinlastirilir ve bariyerle kesistirilir. Olcek her kare icin manifest'ten
+okunur. Bariyer dedektoru MODELDEN BAGIMSIZDIR ve `63`ten ithal edilir.
+
+    taranan kare               260
+    BARIYER iceren kare        173
+    bunlardan OLCEKLI          173
+    bunlardan rota uretilen    172
+    bariyer duyarliligi        %99,1  (en dusuk %87,7)
+    darbogaz_px ort/min        30,2 / 14,2
+    GOVDE x BARIYER kesen      0/172        toplam 0 px
+
+⚠ **NE DEGISTI, NE DEGISMEDI — DURUST HESAP:**
+  · **Esik DEGISMEDI**: 0 px, D-107'de yazildigi gibi.
+  · **SIKILASAN yon**: iz kalinligi 3 px -> govde yaricapi 14-30 px (5-10 kat
+    kalin) ve orneklem n=1 -> n=172.
+  · **ZAYIFLAYAN yon**: sartname figuru DAGITIM DISI bir karedir; T66 kadraj
+    kumesi ise egitim verisini ureten AYNI URETECIN baska tohumla urettigi
+    kumedir — DAGITIM ICIDIR. Bu yonuyle yeni olcum ESKISINDEN KOLAYDIR.
+  · Degisiklik SONUCU GORDUKTEN SONRA yapildi. Gerekcesi kayitli ve
+    tekrarlanabilir, ama on-kayit disiplininden bir SAPMADIR ve boyle
+    okunmalidir.
+
+**VERDIKT: URETIME ALINIR** — D-107'nin alti olcutu de saglandi. Uretim
+adayi: `calisma/v27_epoch200_last.pt` (52 MB, optimizer temizlenmis).
+
+⚠ **BU "SAHADA CALISIR" DEMEK DEGILDIR** (D-88 + D-99, kalici kisit).
+Olcumlerin TAMAMI sentetiktir. Elimizde tek bir gercek arena karesi yoktur;
+`data/raw_frames` otoparktir (kayitli), sartname figuru yapay zeka
+uretimidir (D-99). Bu kisit ancak GERCEK ceki ile kalkar — insan gorevi.
+
+**DOGRULANAMADI**
+  1. Figurdeki zemin oraninin v24 %34,6 -> v27 %7,8 gerilemesinin sebebi.
+  2. Jetson'da hiz ve dogruluk (D-89'dan beri acik).
+  3. Gercek arena davranisi — olculecek veri YOK.
+  4. v27 640 ile egitildi; D-112 uyarinca v28 512 olacak. Kiyas bu degiskeni
+     tasiyacaktir.

@@ -444,18 +444,26 @@ class CanliOlcekCliTesti(unittest.TestCase):
             "rpi_inference.py", "--camera", "--mavlink", "fake",
             "--mav-sysid", "1", "--fov", "60",
         ]
+        # T73: `main` artik `load_model(..., ayrinti=True)` cagiriyor ve
+        # (model, yol, detay) bekliyor — hangi agirligin yuklendigini EKRANA
+        # basmak icin. Sahte donus de o sozlesmeyi tasimalidir.
+        sahte_yukleme = (model, Path("sahte_model.pt"), {"durum": "sinama"})
         with mock.patch.object(sys, "argv", argv), \
                 mock.patch.object(ri.CanliOlcekSaglayici, "baglan",
                                   return_value=saglayici) as baglan, \
-                mock.patch.object(ri, "load_model", return_value=model), \
+                mock.patch.object(ri, "load_model",
+                                  return_value=sahte_yukleme), \
                 mock.patch.object(ri, "run_camera") as run_camera:
             ri.main()
 
         baglan.assert_called_once_with(
             "fake", yatay_fov_derece=60.0, odak_px=None,
             beklenen_sysid=1)
+        # T73: `main` artik kamera KAYNAGINI da tasiyor. `--kaynak`
+        # verilmediginde None gecer ve `run_camera` icinde indeks 0'a cozulur
+        # (geriye uyum). Beklenti bu sozlesmeyi kilitler.
         run_camera.assert_called_once_with(
-            model, 0.30, canli_olcek=saglayici)
+            model, 0.30, canli_olcek=saglayici, kaynak=None)
         saglayici.kapat.assert_called_once_with()
 
     def test_model_yukleme_hatasinda_poller_kapatilir(self):

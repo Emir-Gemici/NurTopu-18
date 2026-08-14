@@ -277,6 +277,101 @@ def _motor_surucusu_bul(kok: Path, dizinler=SAHA_DIZINLERI) -> list[str]:
     return bulunan
 
 
+def _kamera_beslemesi_olc(kaynak_metni):
+    """T73/D-98: SECENEGIN VARLIGI DEGIL, BESLEMESI olculur.
+
+    D-98'in dersi: bu dosyanin "olcek" halkasi fonksiyonun VARLIGINA bakip
+    GECTI yaziyordu, oysa halka bostu. Ayni hatayi burada tekrarlamamak icin
+    `run_camera` GERCEKTEN kosulur ve `cv2.VideoCapture`in NE ALDIGI olculur.
+    -> (besledi: bool, alinan_deger, hata_metni)
+    """
+    import importlib
+    from unittest import mock
+    try:
+        rpi = importlib.import_module("rpi_inference")
+    except ImportError as exc:                      # pragma: no cover
+        return False, None, f"rpi_inference ice aktarilamadi: {exc}"
+    if not hasattr(rpi, "run_camera"):
+        return False, None, "run_camera yok"
+
+    alinan = []
+
+    class _SahteCap:
+        def __init__(self, kaynak):
+            alinan.append(kaynak)
+
+        def isOpened(self):
+            return False                            # hemen don; donanim yok
+
+    try:
+        with mock.patch.object(rpi.cv2, "VideoCapture", _SahteCap):
+            rpi.run_camera(object(), 0.30, kaynak=kaynak_metni)
+    except TypeError as exc:
+        return False, None, f"run_camera `kaynak` almiyor: {exc}"
+    except Exception as exc:                        # pragma: no cover
+        return False, None, f"run_camera hata verdi: {exc}"
+    if not alinan:
+        return False, None, "VideoCapture hic cagrilmadi"
+    return True, alinan[0], None
+
+
+def _model_beslemesi_olc(kok):
+    """T73/D-98: `--model` GERCEKTEN yukleme yolunu besliyor mu?
+
+    Uc davranis ayri ayri olculur:
+      1. varsayilan MANIFESTTEN mi geliyor (ciplak sabit degil)
+      2. verilen yol GERCEKTEN yukleniyor mu
+      3. kayit defteri uyusmazliginda FAIL-CLOSED mi
+    """
+    import importlib
+    from unittest import mock
+    sonuc = {"varsayilan_manifestten": False, "arguman_besliyor": False,
+             "fail_closed": False, "manifest_modeli": None, "hata": None}
+    try:
+        rpi = importlib.import_module("rpi_inference")
+    except ImportError as exc:                      # pragma: no cover
+        sonuc["hata"] = f"rpi_inference ice aktarilamadi: {exc}"
+        return sonuc
+
+    # 1) varsayilan manifestten mi?
+    try:
+        yol = rpi.varsayilan_model_yolu(kok)
+        sonuc["manifest_modeli"] = yol.name
+        sonuc["varsayilan_manifestten"] = yol.is_file()
+    except Exception as exc:
+        sonuc["hata"] = f"manifest varsayilani turetilemedi: {exc}"
+
+    # 2) verilen yol gercekten yukleniyor mu? (agirlik ACILMAZ; YOLO taklit)
+    istenen = []
+
+    class _SahteYolo:
+        def __init__(self, yol, task=None):
+            istenen.append(str(yol))
+
+    if sonuc["manifest_modeli"]:
+        hedef = rpi.varsayilan_model_yolu(kok)
+        try:
+            with mock.patch.object(rpi, "YOLO", _SahteYolo):
+                rpi.load_model(hedef, kok=kok, kayit_zorunlu=False)
+            sonuc["arguman_besliyor"] = bool(
+                istenen and Path(istenen[0]).name == hedef.name)
+        except Exception as exc:
+            sonuc["hata"] = f"load_model cagrilamadi: {exc}"
+
+    # 3) uyusmazlikta FAIL-CLOSED mi? (var olmayan/uyumsuz ad verilir)
+    try:
+        with mock.patch.object(rpi, "YOLO", _SahteYolo), \
+             mock.patch.object(rpi, "model_kayit_dogrula",
+                               lambda *a, **k: (False, {"durum": "SINAMA"})):
+            rpi.load_model(rpi.varsayilan_model_yolu(kok), kok=kok,
+                           kayit_zorunlu=True)
+        sonuc["fail_closed"] = False        # yukselmedi -> sessiz gecis VAR
+    except RuntimeError:
+        sonuc["fail_closed"] = True
+    except Exception as exc:
+        sonuc["hata"] = f"fail-closed sinamasi beklenmedik hata: {exc}"
+    return sonuc
+
 # ─────────────────────────────────────────────────────────── halka 1: kamera
 def halka_kamera(rapor: Rapor, kare_yolu: Path | None) -> tuple[str, np.ndarray | None]:
     """Olcut (§11.3): kaynak PARAMETRIK olacak ve ilk kare okunacak."""
@@ -300,20 +395,34 @@ def halka_kamera(rapor: Rapor, kare_yolu: Path | None) -> tuple[str, np.ndarray 
                   "codes/rpi_inference.py:505", sure_ms=sure)
         return DUSTU, None
 
-    if not parametrik:
+    # T73/D-98: SECENEGIN VARLIGI YETMEZ — BESLEDIGI olculur.
+    besledi, alinan, hata = _kamera_beslemesi_olc("/dev/video7")
+    besledi_i, alinan_i, _h2 = _kamera_beslemesi_olc("3")
+    detay = {
+        "argparse_secenekleri": sorted(secenekler),
+        "parametrik_secenek": parametrik,
+        "besleme_cihaz_yolu": {"verilen": "/dev/video7", "VideoCapture_aldi": alinan},
+        "besleme_indeks": {"verilen": "3", "VideoCapture_aldi": alinan_i},
+        "kare": _gosterilebilir_yol(kare_yolu), "sekil": list(kare.shape),
+    }
+    if hata:
+        detay["hata"] = hata
+    sure = (time.perf_counter() - t0) * 1000
+
+    tam = (parametrik and besledi and besledi_i
+           and alinan == "/dev/video7" and alinan_i == 3)
+    if not tam:
         rapor.yaz(
             "kamera", DUSTU,
-            "uretim girisi kaynagi PARAMETRIK almiyor: cv2.VideoCapture(0) sabit",
-            "codes/rpi_inference.py:505",
-            {"argparse_secenekleri": sorted(secenekler),
-             "calisan_referans": "jetson_paket/kod/kamera_dogrula.py:57 (--kaynak)",
-             "kare": _gosterilebilir_yol(kare_yolu), "sekil": list(kare.shape)},
-            sure)
+            "uretim girisi kaynagi PARAMETRIK BESLENMIYOR "
+            "(secenek var olabilir ama VideoCapture'a ulasmiyor)",
+            "codes/rpi_inference.py:run_camera", detay, sure)
         return DUSTU, kare
 
-    rapor.yaz("kamera", GECTI, "kaynak parametrik, kare okundu",
-              "codes/rpi_inference.py:505",
-              {"kare": _gosterilebilir_yol(kare_yolu), "sekil": list(kare.shape)}, sure)
+    rapor.yaz("kamera", GECTI,
+              "kaynak parametrik ve VideoCapture'a BESLENIYOR "
+              "(cihaz yolu str, indeks int olarak cozuluyor)",
+              "codes/rpi_inference.py:run_camera", detay, sure)
     return GECTI, kare
 
 
@@ -355,12 +464,36 @@ def halka_model(rapor: Rapor, kok: Path = KOK) -> tuple[str, object | None]:
                   "codes/rpi_inference.py:32-40", detay, sure)
         return DUSTU, None
 
-    # Agirlik yuklense bile YANLIS agirlik yukluyorsa olcut karsilanmaz.
-    durum = GECTI if (eslesme and "--model" in secenekler) else DUSTU
-    sebep = ("kayit defteriyle eslesen agirlik yuklendi" if durum == GECTI else
-             "yuklenen agirlik kayit defterindeki profille eslesmiyor "
-             "ve --model argumani yok")
-    rapor.yaz("model_yukleme", durum, sebep, "codes/rpi_inference.py:32-40", detay, sure)
+    # T73/D-98: SECENEGIN VARLIGI YETMEZ — DORT DAVRANIS ayri ayri olculur.
+    besleme = _model_beslemesi_olc(kok)
+    detay["besleme"] = besleme
+    detay["model_argumani_var"] = "--model" in secenekler
+    # Yuklenen agirlik artik MANIFESTTEN turetilir; kayit defteri kiyasi da
+    # o agirliga gore yapilir (eski kod NCNN klasorune bakiyordu).
+    manifest_modeli = besleme.get("manifest_modeli")
+    if manifest_modeli and beklenen:
+        eslesme = Path(beklenen).name == manifest_modeli
+        detay["yuklenen"] = manifest_modeli
+    detay["kayit_eslesmesi"] = eslesme
+    sure = (time.perf_counter() - t0) * 1000
+
+    kosullar = {
+        "--model argumani": "--model" in secenekler,
+        "varsayilan MANIFESTTEN": besleme.get("varsayilan_manifestten", False),
+        "arguman yuklemeyi BESLIYOR": besleme.get("arguman_besliyor", False),
+        "uyusmazlikta FAIL-CLOSED": besleme.get("fail_closed", False),
+        "kayit defteriyle ESLESME": bool(eslesme),
+    }
+    detay["kosullar"] = kosullar
+    eksik = [ad for ad, ok in kosullar.items() if not ok]
+    durum = GECTI if not eksik else DUSTU
+    if durum == GECTI:
+        sebep = ("agirlik manifestten turetiliyor, --model besliyor, "
+                 "uyusmazlikta fail-closed ve kayit defteriyle eslesiyor")
+    else:
+        sebep = "karsilanmayan kosul: " + " · ".join(eksik)
+    rapor.yaz("model_yukleme", durum, sebep, "codes/rpi_inference.py:load_model",
+              detay, sure)
     return durum, model_dir
 
 
@@ -380,7 +513,11 @@ def halka_cikarim_ve_maske(rapor: Rapor, kare: np.ndarray, model_dir,
     import rpi_inference
     t0 = time.perf_counter()
     try:
-        model = rpi_inference.load_model()
+        # T73: bu halkanin olcutu CIKARIMIN TAMAMLANMASIDIR; agirlik BILDIRIM
+        # TUTARLILIGI `model_yukleme` halkasinin isidir. Bu yuzden burada kayit
+        # dogrulamasi acikca gevsetilir — gizleme DEGIL, gorev ayrimi: uyusmazlik
+        # `model_yukleme`de HALA DUSTU olarak raporlanir.
+        model = rpi_inference.load_model(kayit_zorunlu=False)
         kare_sq, _kucuk, icerik = rpi_inference._preprocess(kare)
         sonuc = model.predict(kare_sq, imgsz=rpi_inference.INFER_SIZE,
                               conf=0.25, verbose=False)

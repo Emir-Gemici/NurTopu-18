@@ -3038,6 +3038,86 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T73 — Saha kodu parametrik degil: kamera ve model_yukleme halkalari DUSUK** · `codes/rpi_inference.py`, `scripts/saha_kuru_kosu.py` · **ONEMLI** · kanit: saha kuru kosusu ciktisi
+  - **⚠ UYGULANDI, BİR KAPI KALDI · 2026-08-14 · Claude-2** · kayıt
+    `REVIEW_LOG.md` **D-106**. `codes/karar_sozlesmesi.py`, `comms/**` ve
+    `O:\navitas-local-train\**` **değiştirilmedi**.
+  - **Kamera parametrik:** `--kaynak` indeks / cihaz yolu / dosya kabul ediyor;
+    dönüşüm tek yerde (`kamera_kaynagi_coz`). **Varsayılan değişmedi** (indeks 0),
+    geriye uyum testle kilitli.
+  - **`--model` eklendi, varsayılan ÇIPLAK DEĞİL:** Jetson manifestindeki
+    `asil_model_pt`'den türetiliyor. Kaynak dosyada `navitas_seg_vNN_best.pt`
+    kalıbında **çıplak ad kalmadığı** ayrıca testle doğrulanıyor; manifest alanı
+    yol kaçışına karşı denetleniyor.
+  - **Fail-closed:** kayıt defteri uyuşmazlığında `load_model` **yükseliyor**.
+    Gevşetme ancak `--kayit-dogrulamasiz` ile **açıkça** isteniyor. Kayıt defteri
+    **yoksa** bu uyum **sayılmıyor**.
+  - ⚠ **Geriye uyumu MEVCUT BİR TEST yakaladı:** ilk yazımımda `load_model`
+    üçlü demet döndürüyordu; `test_rpi_canli_olcek.py` `TypeError: cannot unpack`
+    ile yakaladı. Depo taramasında `codes/test_batch.py:139` ve
+    `drone/rpi_yayin.py:415` de `load_model()` deyip **model** bekliyor — ikisi de
+    iznimde **yok**. Dönüş modele geri çevrildi; ek bilgi `ayrinti=True` ile.
+  - **Halkalar artık BESLEMEYİ ölçüyor (D-98 dersi):** eski hâlleri yalnız
+    `"--model" in secenekler` gibi **seçeneğin varlığına** bakıyordu.
+    `_kamera_beslemesi_olc` `run_camera`'yı gerçekten koşup `VideoCapture`'ın
+    **ne aldığını** ölçüyor; `_model_beslemesi_olc` üç davranışı ayrı ayrı.
+  - **Görev ayrımı (gizleme değil):** `cikarim`'ın ölçütü çıkarımın tamamlanması;
+    bildirim tutarlılığı `model_yukleme`'nin işi. Aksi hâlde kayıt defteri
+    bayatlığı `cikarim → maske → rota` zincirini de düşürüyordu (ölçüldü:
+    GECTI 5 → 3). Uyuşmazlık `model_yukleme`'de **hâlâ DUSTU**.
+  - **KAPI 1 — saha kuru koşusu:**
+    ```text
+    taban   GECTI 5 · DUSTU 3 · SAHIPSIZ 2
+    T73     GECTI 6 · DUSTU 2 · SAHIPSIZ 2
+    kamera         GECTI   kaynak parametrik ve VideoCapture'a BESLENIYOR
+    model_yukleme  DUSTU   karsilanmayan kosul: kayit defteriyle ESLESME
+    ```
+  - 🔴 **Hedef GECTI ≥ 7 idi, 6'da kaldı. Sebep tek ve ölçüldü.**
+    `model_yukleme`'nin **beş koşulundan DÖRDÜ sağlanıyor**:
+    ```text
+    --model argumani            EVET
+    varsayilan MANIFESTTEN      EVET  (navitas_seg_v24_best.pt)
+    arguman yuklemeyi BESLIYOR  EVET
+    uyusmazlikta FAIL-CLOSED    EVET
+    kayit defteriyle ESLESME    HAYIR  <- TEK EKSIK
+    ```
+    **İki bildirim çelişiyor:** manifest `v24` (T58), `config/model_registry.json`
+    `competition → models/navitas_seg_v4_best.pt` (**v4 döneminden bayat** —
+    `CONTRACTS` §11 bunu zaten söylüyordu). Fail-closed **doğru çalışıyor** ve
+    doğru sonucu veriyor: hangi ağırlığın uçtuğunu bilmiyoruz.
+    ⚠ **Düzeltmedim** — `config/` iznimde **yok**. Düzeltme tek satır:
+    `profiles.competition.path` → `models/navitas_seg_v24_best.pt` (+ `sha256`
+    ve `model_id`, aksi hâlde SHA doğrulaması aynı çelişkiyi üretir).
+    **İzin verirsen yaparım.**
+  - **KAPI 2 — mutasyon (yanlış model yolu → açık hata):**
+    ```text
+    var olmayan dosya -> RuntimeError "Model agirligi bulunamadi"
+    yanlis uzanti     -> RuntimeError "MODEL KAYIT DOGRULAMASI BASARISIZ"
+    varsayilan yol    -> RuntimeError "MODEL KAYIT DOGRULAMASI BASARISIZ"
+    ```
+    Üç vakada da **sessiz geçiş yok**.
+  - **KAPI 3 — mutasyon (kamera parametresi kaldırıldı):**
+    ```text
+    kaldirildi   -> besledi=False · "run_camera `kaynak` almiyor"  -> DUSER
+    geri alindi  -> besledi=True  · alinan='/dev/video7'           -> GECER
+    ```
+  - **KAPI 4:** `test_rota_sentetik.py` **15/15** · `discover -s tests -q`
+    **Ran 468 · OK**. **KAPI 5:** Jetson paketi **9/9 bayt-eşit**.
+  - **Yeni test paketi** `tests/test_saha_parametrik.py` (**17 test**), içinde
+    kayıt defteri çelişkisini **bugünkü hâliyle kaydeden** bir test var —
+    defter düzeltilince **o test düşer** ve düzeltmenin yapıldığını söyler.
+  - **İki mevcut test güncellendi (gizlenmiyor):** `load_model` sahtesi
+    `ayrinti=True` sözleşmesini taşıyor; `run_camera` beklentisi `kaynak=None`
+    içeriyor. İkisi de **genişletilen sözleşmenin kaydı**, gevşetme değil.
+  - ⚠ **DOĞRULANAMADI:** (1) gerçek kamera ile hiçbir şey koşulmadı — donanım
+    yok; ölçülen şey değerin `VideoCapture`'a **doğru tipte ulaştığıdır**,
+    cihazın açıldığı **değil**; (2) `model_yukleme` kayıt defteri düzeltilene
+    kadar geçemez; (3) 🔴 **SHA doğrulaması uygulanmadı** — `CONTRACTS` §11.3
+    "SHA doğrulanacak" diyor, bugün yalnız **dosya adı** kıyaslanıyor; (4)
+    `scripts/jetson_fps.py` kendi manifest okuyucusunu taşıyor, artık buradan
+    import etmeli (o dosya iznimde yok); (5) `--kayit-dogrulamasiz` güvenliği
+    açıkça gevşetir, sahada kullanılırsa gerekçesi kayda geçmeli.
+
 - [STATUS: KAPANDI] **T72 — HEDEF KONUMU halkasi sahipsiz: IKA nereye gidecegini bilmiyor** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `CONTRACTS.md` · **TIKAYICI** · kanit: saha kuru kosusu + sartname SS2.2.6
   - **✅ YAPILDI · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-105**.
     `comms/**` ve `O:\navitas-local-train\**` değiştirilmedi.

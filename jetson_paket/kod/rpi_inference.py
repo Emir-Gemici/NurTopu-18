@@ -101,6 +101,9 @@ MODEL_DIR = next(
     ] if p.exists()),
     _here / "best_ncnn_model",
 )
+# T73: kayit defteri dogrulamasi VARSAYILAN OLARAK ZORUNLUDUR. Gevsetmek
+# icin `--kayit-dogrulamasiz` acikca verilmelidir; sessiz gevseme YOKTUR.
+MODEL_KAYIT_ZORUNLU = True
 RESULTS_DIR = _here / "results"
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp"}
 SUPPORTED_VIDEO_EXT = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
@@ -252,12 +255,171 @@ def _kare_olcegi(mpp, canli_olcek, icerik):
         return None
 
 
-def load_model():
-    if not MODEL_DIR.exists():
-        print(f"HATA: Model klasoru bulunamadi: {MODEL_DIR}")
-        print("best_ncnn_model/ klasorunu bu scriptle ayni dizine koy.")
-        sys.exit(1)
-    return YOLO(str(MODEL_DIR), task="segment")
+# ════════════════════════════════════════════════════════════════════════════
+# T73 · SAHA KODU PARAMETRIK       (CONTRACTS SS11.3 · REVIEW_LOG D-106)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (saha kuru kosusu): iki halka DUSUK ve ikisi de ayni sinif —
+#   kamera         : "uretim girisi kaynagi PARAMETRIK almiyor:
+#                     cv2.VideoCapture(0) SABIT"
+#   model_yukleme  : "yuklenen agirlik kayit defterindeki profille eslesmiyor
+#                     ve --model argumani yok"
+# Sartname SS2.2.1 sistemlerin goreve MUHURLU KUTULAR icinde intikal etmesini
+# sart kosar; muhurler hakem nezaretinde acilir. Yarisma gunu kamera indeksi ya
+# da model dosyasi degisirse KAYNAK DOSYA DUZENLEMEK prosedure aykiridir.
+#
+# ⚠ VARSAYILAN CIPLAK YAZILMAZ (madde 16). Model varsayilani Jetson uretim
+# manifestindeki `asil_model_pt` alanindan okunur — T62'de `scripts/jetson_fps.py`
+# ayni tek-kaynak yolunu izliyor. Bu modul saha paketine BIREBIR kopyalandigi
+# icin okuyucu BURADA durur; `jetson_fps.py` kendi kopyasini tasiyor ve ileride
+# buradan import etmelidir (ayri gorev — o dosya T73'un izin listesinde YOK).
+
+JETSON_MANIFEST_ADI = "jetson_derleme_manifest.json"
+
+
+def _uretim_manifesti(kok=None):
+    """Depo ve Jetson paketi topolojisinde AYNI uretim manifestini oku.
+
+    Fail-closed: manifest yoksa, tekil degilse ya da bozuksa RuntimeError.
+    Sessiz varsayilan URETILMEZ — sahada yanlis modelle ucmak bundan dogar.
+    """
+    import json as _json
+    taban = Path(kok) if kok is not None else _here.parent
+    adaylar = (
+        taban / "models" / JETSON_MANIFEST_ADI,
+        taban / "jetson_paket" / "models" / JETSON_MANIFEST_ADI,
+        _here / JETSON_MANIFEST_ADI,          # saha paketi: kod/ ile yan yana
+        _here.parent / "models" / JETSON_MANIFEST_ADI,
+    )
+    bulunan = []
+    for yol in adaylar:
+        if yol.is_file() and yol not in bulunan:
+            bulunan.append(yol)
+    if not bulunan:
+        raise RuntimeError(
+            f"Jetson uretim manifesti bulunamadi ({JETSON_MANIFEST_ADI}); "
+            "model varsayilani turetilemez.")
+    try:
+        veri = _json.loads(bulunan[0].read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise RuntimeError(
+            f"Jetson uretim manifesti okunamadi: {bulunan[0]}") from exc
+    if not isinstance(veri, dict):
+        raise RuntimeError("Jetson uretim manifesti JSON nesnesi olmali")
+    return veri, bulunan[0]
+
+
+def varsayilan_model_yolu(kok=None):
+    """`asil_model_pt` -> diskteki agirlik yolu. Ciplak ad YAZILMAZ."""
+    veri, manifest = _uretim_manifesti(kok)
+    ad = veri.get("asil_model_pt")
+    if not isinstance(ad, str) or not ad.strip():
+        raise RuntimeError(
+            f"Uretim manifestinde `asil_model_pt` yok/gecersiz: {manifest}")
+    ad = ad.strip()
+    if Path(ad).name != ad or Path(ad).suffix.lower() != ".pt":
+        raise RuntimeError(
+            f"Uretim manifestinde `asil_model_pt` guvensiz/gecersiz: {ad!r}")
+    for aday in (manifest.parent / ad, _here.parent / "models" / ad,
+                 _here / ad):
+        if aday.is_file():
+            return aday
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+
+
+def kamera_kaynagi_coz(deger):
+    """Kamera kaynagini coz: INDEKS (int) · CIHAZ YOLU · DOSYA.
+
+    `cv2.VideoCapture` int ve str'yi farkli yorumlar; donusum TEK YERDE yapilir
+    ki cagri yerleri "0" metnini cihaz dosyasi sanmasin.
+    Fail-closed: None -> varsayilan indeks 0 (geriye uyum).
+    """
+    if deger is None:
+        return 0
+    if isinstance(deger, bool):
+        raise ValueError("kamera kaynagi bool olamaz")
+    if isinstance(deger, int):
+        return int(deger)
+    metin = str(deger).strip()
+    if not metin:
+        return 0
+    try:
+        return int(metin)                    # "0", "2" -> indeks
+    except ValueError:
+        return metin                         # /dev/video1 · rtsp:// · dosya
+
+
+def model_kayit_dogrula(model_yolu, kok=None):
+    """Yuklenen agirligi `config/model_registry.json` ile KIYASLA.
+
+    -> (uyumlu: bool, detay: dict). Karar VERMEZ; karari `load_model` verir.
+    Kayit defteri YOKSA "dogrulanamadi" doner — yoklugu UYUM SAYMAZ.
+    """
+    import json as _json
+    taban = Path(kok) if kok is not None else _here.parent
+    kayit = taban / "config" / "model_registry.json"
+    detay = {"kayit_defteri": str(kayit), "yuklenen": str(model_yolu)}
+    if not kayit.is_file():
+        detay["durum"] = "kayit_defteri_yok"
+        return False, detay
+    try:
+        veri = _json.loads(kayit.read_text(encoding="utf-8"))
+        profil_adi = veri["default_profile"]
+        profil = veri["profiles"][profil_adi]
+    except (OSError, UnicodeError, ValueError, KeyError) as exc:
+        detay["durum"] = f"kayit_defteri_okunamadi: {exc}"
+        return False, detay
+    beklenen = profil.get("path")
+    detay.update({"profil": profil_adi, "beklenen": beklenen,
+                  "beklenen_sha256": profil.get("sha256")})
+    if not isinstance(beklenen, str):
+        detay["durum"] = "profilde `path` yok"
+        return False, detay
+    uyumlu = Path(beklenen).name == Path(model_yolu).name
+    detay["durum"] = "eslesti" if uyumlu else "ESLESMIYOR"
+    return uyumlu, detay
+
+
+def load_model(model_yolu=None, kok=None, kayit_zorunlu=None, ayrinti=False):
+    """Uretim agirligini yukle. Varsayilan MANIFESTTEN gelir (madde 16).
+
+    ⚠ FAIL-CLOSED (T73/3): yuklenen agirlik kayit defterindeki etkin profille
+    UYUSMUYORSA SESSIZCE DEVAM EDILMEZ. Sessiz devam, sahada YANLIS MODELLE
+    ucmak demektir; D-89'un besinci ucu tam bu siniftandi.
+    `kayit_zorunlu=False` verilirse uyari basilir ama devam edilir — bu kapi
+    yalniz ACIKCA istenerek gevsetilebilir, varsayilan olarak DEGIL.
+    """
+    if model_yolu is None:
+        yol = varsayilan_model_yolu(kok)
+    else:
+        yol = Path(model_yolu)
+    if not yol.exists():
+        raise RuntimeError(f"Model agirligi bulunamadi: {yol}")
+
+    uyumlu, detay = model_kayit_dogrula(yol, kok)
+    if kayit_zorunlu is None:
+        kayit_zorunlu = MODEL_KAYIT_ZORUNLU
+    if not uyumlu:
+        mesaj = (
+            "MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed.\n"
+            f"  yuklenmek istenen : {yol}\n"
+            f"  kayit defteri     : {detay.get('kayit_defteri')}\n"
+            f"  etkin profil      : {detay.get('profil')}\n"
+            f"  profilin bekledigi: {detay.get('beklenen')}\n"
+            f"  durum             : {detay.get('durum')}\n"
+            "Iki bildirim CELISIYOR. Sahada hangi agirligin uctugunu bilmeden\n"
+            "devam etmek yasaktir; ya kayit defterini ya --model'i duzeltin."
+        )
+        if kayit_zorunlu:
+            raise RuntimeError(mesaj)
+        print("UYARI: " + mesaj)
+    model = YOLO(str(yol), task="segment")
+    # ⚠ GERIYE UYUM: donus degeri MODELDIR. `codes/test_batch.py:139`,
+    # `drone/rpi_yayin.py:415` gibi cagri yerleri `load_model()` deyip modeli
+    # bekliyor; arity degistirmek onlari SESSIZCE bozardi (bir mevcut test bunu
+    # zaten yakaladi). Ek bilgi ACIKCA istenir: `ayrinti=True`.
+    return (model, yol, detay) if ayrinti else model
 
 
 def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
@@ -1362,15 +1524,20 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None):
         print(f"Kaydedildi: {out_path}")
 
 
-def run_camera(model, conf, mpp=None, canli_olcek=None):
+def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None):
     # Imza geriye uyumludur; ancak canli kamera kararinda statik mpp artik
     # otorite degildir. Eski bir cagirici mpp verse bile telemetri yoksa
     # `_kare_olcegi` None doner ve rota OLCEK_YOK ile fail-closed kalir.
     if mpp is not None:
         print("UYARI: kamera kipinde statik --mpp yok sayildi; canli telemetri gerekir.")
-    cap = cv2.VideoCapture(0)
+    # T73: kaynak PARAMETRIK. Eskiden `cv2.VideoCapture(0)` SABITTI ve yarisma
+    # gunu kamera indeksi degisirse KAYNAK DOSYA duzenlemek gerekiyordu — bu
+    # muhurlu kutu prosedurune (SS2.2.1) aykiridir.
+    # Varsayilan DEGISMEDI: `kaynak` verilmezse yine indeks 0.
+    coz = kamera_kaynagi_coz(kaynak)
+    cap = cv2.VideoCapture(coz)
     if not cap.isOpened():
-        print("Kamera acilamadi.")
+        print(f"Kamera acilamadi (kaynak={coz!r}).")
         return
 
     print("Kamera acik — cikmak icin 'q'")
@@ -1436,6 +1603,20 @@ def _arguman_ayristirici():
     parser.add_argument("--image", type=str, help="Gorsel dosya veya klasor yolu")
     parser.add_argument("--video", type=str, help="Video dosyasi (.mp4 .avi .mov ...)")
     parser.add_argument("--camera", action="store_true", help="Canli kamera")
+    # T73 · SS11.3: giris kaynagi ve agirlik ELLE DOSYA DUZENLEMEDEN degismeli.
+    parser.add_argument(
+        "--kaynak", type=str, default=None,
+        help=("Kamera kaynagi: indeks (0, 2), cihaz yolu (/dev/video1) veya "
+              "dosya. Verilmezse indeks 0 (eski davranis)."))
+    parser.add_argument(
+        "--model", type=str, default=None,
+        help=("Model agirligi (.pt). Verilmezse Jetson uretim manifestindeki "
+              "`asil_model_pt` alanindan turetilir — ciplak varsayilan YOK."))
+    parser.add_argument(
+        "--kayit-dogrulamasiz", dest="kayit_dogrulamasiz", action="store_true",
+        help=("Kayit defteri (config/model_registry.json) uyusmazliginda "
+              "DURMA. Varsayilan FAIL-CLOSED'dir; bu bayrak guvenligi acikca "
+              "gevsetir ve gerekcesi kayda gecmelidir."))
     parser.add_argument("--no-save", action="store_true", help="Video modunda ciktiyi kaydetme")
     parser.add_argument("--conf", type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
     # T43 · HALKA 5 (CONTRACTS SS5): olcek SAHA YOLUNDA uretilebilir olmali.
@@ -1510,7 +1691,14 @@ def main():
               "--mpp; canli kipte --mavlink ile --fov/--odak verin.")
 
     try:
-        model = load_model()
+        # T73: agirlik ARTIK argumandan gelir; verilmezse uretim manifestinden
+        # turetilir. Kayit defteri uyusmazliginda `load_model` FAIL-CLOSED
+        # yukselir — sessiz devam YOK (D-89 sinifi kusur).
+        model, model_yolu, kayit_detay = load_model(
+            args.model, kayit_zorunlu=not args.kayit_dogrulamasiz,
+            ayrinti=True)
+        print(f"model: {model_yolu.name} · kayit dogrulamasi: "
+              f"{kayit_detay.get('durum')}")
         if args.fps:
             run_fps(model)
         elif args.image:
@@ -1520,7 +1708,8 @@ def main():
             run_video(model, args.video, args.conf, save=not args.no_save,
                       mpp=mpp, canli_olcek=canli_olcek)
         elif args.camera:
-            run_camera(model, args.conf, canli_olcek=canli_olcek)
+            run_camera(model, args.conf, canli_olcek=canli_olcek,
+                       kaynak=args.kaynak)
     finally:
         if canli_olcek is not None:
             if canli_olcek.kapat() is not True:
