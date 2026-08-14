@@ -6210,3 +6210,59 @@ Sayilar, esik ve testler DEGISMEZ; yalniz ifade duzelir.
      `OLCEK_YOK` ile duruyor (D-90 bulgu 5), rota yayinlanmiyor.
   4. Guven olcutunun DOYMUS oldugu (D-94 yan bulgusu) bu gorevde ele
      ALINMADI; 22,4 px ustunde tum darbogazlar hala guven 1.000 veriyor.
+
+---
+
+### D-98 · 🔴 GOREV KRITIK · Olcek halkasi SABIT bir baslangic sayisina bagli; irtifa sapmasi GOVDE ACIKLIGINI EKSIK hesapliyor
+Olcen: Claude 1 (mimar) · 2026-08-14 · `codes/rpi_inference.py:1230-1250`, `scripts/saha_kuru_kosu.py:210-390`
+
+**DURUM.** `mpp_irtifadan(irtifa_m, W_px, yatay_fov_derece|odak_px)` sozlesmede
+UYGULANMIS ve `codes/rpi_inference.py:1244`ten cagriliyor. Ancak girdisi
+**`--irtifa` komut satiri argumanidir** — uctan uca TEK BIR SAYI, calisma
+basinda elle verilir. Algi yolunda MAVLink okuyan hicbir kod YOKTUR:
+`rpi_inference.py`deki tek MAVLink izi bir YORUM satiridir (`:1224`).
+`comms/inis_kaniti.py` `GLOBAL_POSITION_INT` okur ama yalniz INIS KANITI icin;
+olcege baglanmaz.
+
+**🔴 KAPI YANLIS SEYI OLCUYOR.** `scripts/saha_kuru_kosu.py` "olcek" halkasi
+AST ile *irtifa/FOV parametresi alan ve mpp donduren bir fonksiyon* arar ve
+bulunca **GECTI** yazar (`:387-390`). Betigin kendi yorumu ise durumu dogru
+tarif eder (`:380`): *"Bu halka SAHIPSIZ cunku sahada mpp ureten hicbir kod
+yok."* Yani kapi FONKSIYONUN VARLIGINI olcuyor, BESLENDIGINI degil. Halka
+"GECTI" gorunurken fiilen sahipsizdir.
+
+**ETKI YONU OLCULDU — tehlikeli taraf net.** `r_gerekli_px = R_GEREKLI_M / mpp`
+ve `mpp = 2*h*tan(FOV/2)/W`. Varsayilan irtifa gercekten BUYUKSE mpp buyur,
+`r_gerekli_px` KUCULUR, yani govde acikligi EKSIK istenir:
+
+    R_GEREKLI_M=1,10 · W=640 px · FOV=60 derece
+    gercek h  varsayilan h   gercek r_px  hesaplanan r_px    hata
+          30            30          20,3             20,3    +0,0%   guvenli
+          30            40          20,3             15,2   -25,0%   🔴 TEHLIKELI
+          30            50          20,3             12,2   -40,0%   🔴 TEHLIKELI
+          40            30          15,2             20,3   +33,3%   guvenli (fazla temkinli)
+          50            30          12,2             20,3   +66,7%   guvenli (fazla temkinli)
+
+30 m'de ucarken 50 m yazilmissa IKA, govdesinin gerektirdiginden **%40 dar**
+geciteren gecirilir. Sartname SS5.3.2 asgari irtifa 30 m'dir; ucus sirasinda
+irtifa SABIT KALMAZ ve tek sayi butun kosuya uygulanir.
+
+**IKI AYRI KUSUR.**
+  1. **Canlilik yok** — irtifa kare kare guncellenmiyor.
+  2. **Yanlis girdi yakalanmiyor** — elle yazilan sayi makul bantta
+     (`SARTNAME_ASGARI_IRTIFA_M`..`IRTIFA_MAKUL_UST_M`) oldugu surece,
+     gercekle ilgisiz olsa bile kabul edilir. Makullik kapisi vardir, DOGRULUK
+     kapisi yoktur.
+
+**DOGRU DAVRANIS (madde 15 ruhu).** Telemetri yoksa ya da BAYATSA dogru cevap
+son bilinen sayiyi kullanmak degil, `OLCEK_YOK` ile CEKIMSER kalmaktir.
+Cekimserlik gorevi durdurur ama IKA'yi carptirmaz; bayat olcek carptirir.
+
+**DOGRULANAMADI**
+  1. Yarisma ucusunda irtifanin ne kadar saptigi bilinmiyor; %25-40 hata
+     ornekleri VARSAYIMSAL irtifa farklarindan turetildi, olculmus ucus
+     verisinden degil.
+  2. Jetson/Pixhawk baglantisinin telemetri gecikmesi ve tazelik esigi
+     OLCULMEDI; "bayat" tanimi bu gorevde SAYILASTIRILMADI.
+  3. Kamera FOV/odak degeri de elle verilir; onun dogrulugu bu kayitta ELE
+     ALINMADI — ayni sinifta ikinci bir acik olabilir.

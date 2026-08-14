@@ -3164,6 +3164,30 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     senkronladıktan ve iki SHA eşit olduktan sonra yukarıdaki nihai tam paket
     yeniden koşuldu; nihai kanıt yalnız temiz ikinci koşumdur.
 
+- [ ] **T70 — 🔴 GÖREV KRİTİK: ölçek halkası SABİT başlangıç sayısına bağlı; irtifa sapması gövde açıklığını EKSİK hesaplıyor** · `codes/rpi_inference.py`, `comms/**` (telemetri), `scripts/saha_kuru_kosu.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-98**
+  - `mpp_irtifadan` uygulanmış ve çağrılıyor — ama girdisi **`--irtifa` komut
+    satırı argümanı**: tüm koşuya uygulanan TEK bir sayı. Algı yolunda MAVLink
+    okuyan kod **yok** (`rpi_inference.py:1224` yalnızca bir yorum satırı).
+  - **Kapı yanlış şeyi ölçüyor:** `saha_kuru_kosu.py:387` AST ile *fonksiyonun
+    varlığını* arayıp GEÇTİ yazıyor; betiğin kendi yorumu (`:380`) ise
+    *"bu halka SAHİPSİZ"* diyor. Halka geçmiş görünürken fiilen boş.
+  - **Tehlike yönü ölçüldü** (R=1,10 m · W=640 · FOV=60°):
+    ```text
+    gercek h  varsayilan h  gercek r_px  hesaplanan r_px    hata
+          30            40         20,3             15,2   -25,0%  TEHLIKELI
+          30            50         20,3             12,2   -40,0%  TEHLIKELI
+          50            30         12,2             20,3   +66,7%  guvenli
+    ```
+    Varsayılan irtifa gerçekten **büyükse** açıklık eksik istenir → İKA
+    gövdesinden dar geçitlere sokulur.
+  - **YAP:** irtifa kare kare **canlı telemetriden** (`GLOBAL_POSITION_INT.
+    relative_alt`) okunsun. **Bayat/eksik telemetri → `OLCEK_YOK`** (madde 15
+    ruhu: çekimserlik görevi durdurur, bayat ölçek İKA'yı çarptırır).
+  - **KAPI:** tazelik eşiği **sayılaştırılsın** ve testle kilitlensin ·
+    mutasyon: telemetriyi bayatlat → `OLCEK_YOK` gelmeli ·
+    `saha_kuru_kosu.py` ölçek halkası artık **beslenmeyi** ölçsün, varlığı değil.
+  - ⚠ FOV/odak da elle veriliyor; **aynı sınıfta ikinci açık olabilir** — ölç.
+
 - [ ] **T68 — Üreteç bariyeri ASLA açık zemine koymuyor: "ince çubuk = geçilemez" öğrenilemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T67'yi açar** · kanıt: `REVIEW_LOG.md` **D-93**
   - Ölçüldü (120 kare, 70'inde bariyer var):
     ```text
