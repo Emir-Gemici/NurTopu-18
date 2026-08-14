@@ -8630,3 +8630,167 @@ yapilmamalidir. Bu bir mimari karardir ve sessizce alinmaz.
      (farkli irtifa, farkli arac tipi) sinanmadi.
   3. Gercek arena karesi hala YOK; kapinin gercek arenada dogru davrandigi
      olculemedi.
+
+---
+
+### D-125 · OLCUM · T82: delik yapisi AYIRMIYOR — hipotez CURUTULDU, uc kere
+Olcen: Claude 2 · 2026-08-15 · gorev T82 · 714 maske · KOD DEGISTIRILMEDI
+
+**SORU (mimar, ISPATLANMAMIS ilan edildi).** "Cokmus maske TEK PARCA ve
+DELIKSIZDIR; mesru acik otoparkta her arac bir DELIKTIR. Delik yogunlugu mesru
+acik alani cokmeden ayirabilir."
+
+**VERDIKT: AYIRMIYOR.** Uc ayri sebeple — ucu de olculdu.
+
+**KUMELER** (hepsi ayni sekilde olculdu: letterbox tuvali + icerik kutusu,
+`_preprocess` -> `get_masks` -> `_maskeleri_icerige_kirp`; delikler kenardan
+flood-fill ile bulundu, 25 px altindakiler gurultu sayildi):
+
+    (a) mesru YER GERCEGI   320   kadraj t66 train 234 + val 26 + sentetik val 60
+    (b) COKME (v21)          67   otopark — T52'nin negatif sinifi
+    (c) otopark (v27)        67   ayni 67 kare, bugunun modeli
+    (d) KONTROL: mesru v27  260   kadraj t66 — GT/model asimetrisi icin
+    (e) EMNIYET: v21 arena  260   cokmesi BILINEN model, MESRU sahnede
+
+**DAGILIM (min / medyan / maks):**
+
+    olcut                a_mesru_GT        b_cokme_v21       c_otopark_v27      d_mesru_v27
+    delik_sayisi      0,00/  1,00/ 15,0  24,0/ 33,0/ 47,0  23,0/ 33,0/ 46,0  0,00/ 2,00/19,0
+    delik_yogunlugu   0,00/ 10,56/134,9  43,3/ 58,1/ 81,0  41,2/ 58,0/ 78,4  0,00/14,92/109
+    delik_alan_orani  0,00/  0,02/ 0,26  0,10/ 0,17/ 0,22  0,10/ 0,16/ 0,22  0,00/ 0,03/0,25
+    en_buyuk_pay      0,29/  0,76/ 1,00  1,00/ 1,00/ 1,00  1,00/ 1,00/ 1,00  0,45/ 0,88/1,00
+    euler           -14,0 /  2,00/ 11,0 -45,0/-25,0/ 8,00 -42,0/-25,0/ 5,00 -15,0/ 1,00/11,0
+    kaplama           0,06/  0,32/ 0,65  0,77/ 0,80/ 0,86  0,77/ 0,80/ 0,87  0,19/ 0,33/0,64
+    kenar             0,00/  0,23/ 0,40  0,58/ 0,80/ 0,97  0,69/ 0,81/ 0,96  0,01/ 0,15/0,51
+
+**🔴 SEBEP 1 — YON TERS.** Hipotez "cokme deliksiz" diyordu; olcum tersini
+soyluyor. Cokme medyani **33 delik**, mesru medyani **1**. Cokmus maske
+DELIKSIZ DEGIL, mesru maskeden ON KAT DAHA DELIKLI.
+
+**🔴 SEBEP 2 — (b) ve (c) AYNI KARELERDIR ve AYIRT EDILEMIYORLAR.**
+Her olcutte ortusuyorlar (delik 24-47 vs 23-46; kaplama 0,77-0,86 vs
+0,77-0,87). Bu bir tesaduf degil: ikisi de AYNI 67 otopark karesidir, yalniz
+model farkli. Yani veride "gecmesi gereken mesru acik otopark" diye bir sinif
+YOKTUR — soru mevcut veriyle CEVAPLANAMAZ. Ayrilan sey "cokme mi mesru mu"
+degil, **"arena mi otopark mi"**dir.
+
+**🔴 SEBEP 3 — EMNIYET ARGUMANI SINYALI OLDURUYOR (madde 3).**
+Tabloya bakan bir aday esik turetebilir: mesru azami 19 delik, otopark asgari
+23 -> gecerli aralik (19, 23), ortasi ~21, kural "delik > 21 ise REDDET".
+Bu kural ARENA'DAKI GERCEK COKMEYI KACIRIR:
+
+    (e) v21, MESRU arena kareleri, n=260
+        kapinin kendi olcutuyle (kaplama>0,67 VE kenar>0,50) COKMUS: 2/260
+        o iki karede delik_sayisi: 0 ve 6
+        aday esigin yakaladigi:  0/2        <- SIFIR
+
+Cokme ARENA'da olunca maske tek parca ve deliksizdir; delik sayisi DUSER ve
+aday kural "mesru" der. Kapinin varlik sebebi tam olarak o kareyi yakalamaktir.
+**Sinyal, isini yapmasi gereken tek yerde calismyor.**
+
+**KAPI (d) — GORSEL (D-80).** `results/t82_delik_yapisi/delik_yapisi_gorsel.png`
+(delikler MOR):
+
+    COKME   (v21, arena  sa_000106)  kaplama %86   DELIK  6
+    MESRU   (v27, arena  sa_000026)  kaplama %22   DELIK  6
+    OTOPARK (v27, gercek frame_0)    kaplama %78   DELIK 26
+
+Cokme ile mesru **AYNI delik sayisina** sahip (6 = 6). Gozle de ayni sonuc:
+delik yapisi bu ikisini ayirmiyor. Ayirdigi tek sey otopark sahnesidir — ve
+otopark, reddedilmesi istenen degil, GECMESI istenen siniftir.
+
+**NE OLCULDU, NE OLCULMEDI**
+  · `en_buyuk_pay` otoparkta 1,00/1,00/1,00, mesruda 0,29-1,00 — ust ucta
+    ORTUSUYOR, tek basina ayirmaz.
+  · `euler` ve `delik_alan_orani` ortusuyor; hicbiri aday bile degil.
+  · `delik_yogunlugu` (olcekten bagimsiz) EN KOTUSU: mesru 0-135, otopark
+    41-81 — tamamen ic ice.
+
+**DOGRULANAMADI**
+  1. 🔴 **v25 AGIRLIGI DEPODA YOK** (`models/` icinde v17/v20/v21/v24/v27 var,
+     v25 YOK). Madde 3'un "v25'in korlugunu hala yakaliyor mu" yarisi
+     OLCULEMEDI. Bu, D-59'daki "v13 agirligi depoda yok" ile ayni siniftandir
+     ve iddia edilmedi.
+  2. Mesru sinif (a) YER GERCEGIDIR, (b)/(c) MODEL CIKTISIDIR. Bu asimetri
+     (d) kontrolüyle giderildi: v27'nin MESRU sahnelerdeki ciktisi da az
+     delikli (medyan 2), yani ayrim GT/model farkindan gelmiyor.
+  3. Cokme sinifi n=2'dir (arena'da). Iki kare uzerinden "sinyal cokmeyi
+     kaciriyor" demek zayif bir orneklemdir; ama YON acik ve mekanizma
+     fizikseldir (cokmus maske tanim geregi tek parca).
+  4. Gercek arena karesi YOK (D-88/D-99). Tum "mesru" olcumler sentetiktir.
+  5. Delik esigi 25 px secildi; daha dusuk esik tum kumelerde delik sayisini
+     artirir, ORTUSMEYI azaltmaz (yon degismez).
+
+**SONUC.** Yeni bir sinyal onerilmiyor. Esiklere DOKUNULMADI, kod
+DEGISTIRILMEDI. D-124'un tespiti ayakta kalir: kapi "SINIRLI ARENA" varsayimi
+tasir ve otoparkta rota uretilememesi bu varsayimin sonucudur — maske yapisiyla
+cozulecek bir sey degildir.
+
+---
+
+### D-125 · 🔴 DUZELTME · D-124 YANLISTI: kapi otoparkta YAPISAL OLARAK IMKANSIZ DEGIL — yer gercegiyle 42/67 GECIYOR
+Olcen: Claude 1 (mimar) · 2026-08-15 02:10 · kullanici istegi: "etiketlemeyi detayli yap"
+
+**DUZELTILEN IDDIA.** D-124'te sunu yazdim: *"Hicbir DOGRU algi bu kapiyi acik
+otoparkta acamaz... egitim verisi bu sorunu COZMEZ."* **YANLIS.** Iddiayi
+kurarken bir sey yapmamistim: o karelerin YER GERCEGINI olcmemistim. Yalnizca
+MODELIN ciktisini olcup "kapi gecilemez" sonucuna atladim.
+
+**YAPILAN.** 67 gercek karenin tamami yari otomatik etiketlendi
+(`71_gercek_kare_etiketleyici.py`, yeni) ve etiketler kapiya verildi.
+Etiketleme uc kanita dayanir, hepsi modelden BAGIMSIZ:
+  1. ARAC  — DOTA OBB yonlu kutulari (K-6: ayni fotografta COCO 2, DOTA 93)
+  2. BITKI/YAPI — LAB kromasi, karenin KENDI gri noktasina gore
+  3. YAPI  — parlak + dusuk yerel varyans + genis bilesen
+
+Etiketleyici GORSEL DENETIMLE uc kez duzeltildi (D-80: gorsel kazanir):
+  · 1. gecis: mutlak kroma -> ASFALT "bitki" sayildi (mavi renk yatkinligi);
+    zemin orani 0,17. Duzeltme: gri-dunya (medyan a/b notr kabul).
+  · 2. gecis: yonsuz kroma -> GOLGE engel sayildi. "Koyu asfalt engeldir"
+    ogretmek golgeli koridorlari kapatir. Duzeltme: yonlu kural.
+  · 3. gecis: yalniz sari/yesil sayilinca KIREMIT CATILI BINA zemin sayildi —
+    gecilemez yapiyi etiketsiz birakmak uretecin en kritik kural ihlalidir
+    (v16: %2,7 -> %31,6). Duzeltme: kural TERSINE cevrildi — artik "zemin
+    nedir" degil "NOTR GRI ASFALT DEGILSE ENGELDIR" tanimlanir; tek istisna
+    mavi yondeki sapma (golge).
+
+**OLCUM — AYNI 67 KARE, AYNI KAPI:**
+
+    olcut            v27 (model)      YER GERCEGI       tavan
+    kaplama          0,814            0,728             0,67
+      min/maks       0,773 / 0,872    0,423 / 0,930
+    kenar dayanma    0,809            0,494             0,50
+      min/maks       0,690 / 0,957    0,238 / 0,730
+    kaplama asan     67/67            46/67
+    kenar asan       67/67            32/67
+    KAPI REDDI       67/67            25/67
+
+**YER GERCEGIYLE 42/67 KARE KAPIYI GECIYOR.** Kapi otoparkta gecilebilirdir.
+
+**KOK NEDEN — MODEL, KAPI DEGIL.** Ayirt eden olcut kenar dayanmasidir:
+0,809 (model) vs 0,494 (yer gercegi), fark **0,315**. Sebep: model cerceve
+kenarindaki BITKIYI ve BINAYI zemin sayiyor, boylece maske cevreye dayaniyor.
+Dogru etiketle dayanmiyor. Bu fark her turlu etiketleme gurultusunun cok
+uzerindedir; yon tartismasizdir.
+
+**SONUC — ILK T82 TASLAGI ("modele cati/bina ogret") DOGRUYDU.** D-124'te onu
+"yanlis oncelik" diye geri cektim; o geri cekme GECERSIZDIR. Ustelik egitim
+verisi artik ELDE: 67 kare, gorsel denetimli etiketleriyle
+`calisma/gercek_kare_etiket_v1/`.
+
+**MIMARIN BU GECEKI IKI HATASI, ustu ortulmeden:**
+  1. "Otopark kapsam disi" — kolaycilikti; kaptan istiyor ve dahasi bunlar
+     elimizdeki TEK gercek goruntu.
+  2. "Kapi yapisal olarak gecilemez" — yer gercegi olculmeden verilmis hukum.
+Ikisi de OLCUMLE duzeldi. Ders: model ciktisini olcup sistem hakkinda hukum
+vermek, D-90 bulgu 4'te ve D-104'te uyardigim hatanin AYNISIDIR; ucuncu kez
+ayni tuzaga dustum.
+
+⚠ **NE IDDIA ETMIYORUM:**
+  1. Etiketler YARI OTOMATIKTIR; 9 kare gozle denetlendi, 67'sinin tamami
+     DEGIL. Mutlak sayilar (%72,8 kaplama) etiketleme gurultusu tasir.
+     Tasimayan sey YONdur: 0,315'lik kenar farki gurultuyle aciklanamaz.
+  2. Bu etiketlerle egitilmis bir modelin kapiyi gercekten gecip gecmeyecegi
+     OLCULMEDI — sonraki adim odur.
+  3. 42/67 "rota uretilir" DEMEK DEGILDIR; kapiyi gecmek gerek sarttir,
+     yeter sart degil. Olcek de gerekir (D-124'un arac kahini olcumu gecerli).
