@@ -1,0 +1,48 @@
+# KARISIM v4 — T84 · GERCEK OTOPARK KARELERI EKLENDI
+#
+# NEDEN (REVIEW_LOG D-124 · D-127 · D-128, olculdu):
+# v27, 67 gercek otopark karesinin HICBIRINDE rota uretmiyor. Sebep olcek
+# degil (arac referansindan verildi, degismedi) — modelin CATIYI, BINAYI ve
+# BITKIYI zemin saymasi. Olculen fark:
+#
+#   olcut            v27 modeli   YER GERCEGI (v5 etiketi)   kapi tavani
+#   kaplama              0,814                     0,813            0,67
+#   kenar dayanma        0,809                     0,569            0,50
+#   KAPIYI GECEN          0/67                     17/67
+#
+# Kenar dayanmasindaki 0,240'lik fark belirleyicidir: model cerceve
+# kenarindaki bitkiyi ve binayi zemin sayiyor, maske cevreye dayaniyor.
+# Mukemmel algi otoparkta 0/67'yi 17/67'ye tasir.
+#
+# `gercek_otopark` bu bosluğu kapatmak icindir: 67 gercek kare, yari otomatik
+# etiketlenmis (DOTA OBB araclari + gri-dunya kromasi + dikdortgenlik olcutlu
+# yapi tespiti), GORSEL DENETIMLE dort kez duzeltilmis (D-128).
+#
+# ⚠ COGALTMA: train tarafi 12 KAT cogaltildi (56 -> 672). Gerekce: 67 kare
+# karisimin %1'i kalirsa modeli hic etkilemez. Val tarafi COGALTILMADI —
+# cogaltilsa sizinti olurdu.
+#
+# ⚠ RISK — KAYITTA DURSUN: 67 karenin tamami AYNI OTOPARKTAN ve dort ardisik
+# videodan geliyor. Model bu sahneyi EZBERLEYIP baska bir yerde yine
+# sasirabilir. Bu, olculmesi gereken bir risktir; veri cesitliligi ancak
+# FARKLI YERLERDEN cekimle artar (insan gorevi).
+#
+# Diger uc bilesen `karisim_t54_engelli.yaml` ile BIREBIR AYNIDIR; tek fark
+# gercek_otopark'in eklenmesidir. Boylece v27 <-> v29 kiyasi TEK degisken
+# tasir.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+  - O:\navitas\dataset\gercek_otopark\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_gercek\images\val
+  - O:\navitas\dataset\gercek_otopark\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

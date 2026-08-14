@@ -9069,3 +9069,49 @@ Ders acik: her seferinde EKSIK BIR OLCUMLE hukum verdim. Kullanicinin
 ⚠ **NE IDDIA ETMIYORUM:** etiketler hala YARI OTOMATIKTIR. Iki kare tam
 cozunurlukte denetlendi, 67'sinin tamami DEGIL. Catida kucuk yesil lekeler
 kaldigi gorüldü (koyu/dokulu cati parcalari). Sayilar bu gurultuyu tasir.
+
+---
+
+### D-129 · ONCEDEN KAYIT · v29 (gercek otopark verisi) kabul kurali — SONUC GORULMEDEN yazildi
+Yazan: Claude 1 (mimar) · 2026-08-15 03:10
+
+**AMAC.** Kaptanin istegi: hakem ekrani GERCEK goruntude yol bulsun. Olculen
+tikac (D-128): model catiyi/binayi/bitkiyi zemin sayiyor; kenar dayanmasi
+0,809, yer gercegi 0,569. Mukemmel algi 0/67'yi 17/67'ye tasir.
+
+**VERI.** `karisim_gercek_otopark.yaml` = `karisim_t54_engelli.yaml` + 67
+gercek kare (train 56, 12 kat cogaltilmis -> 672; val 11, cogaltilmamis).
+Diger uc bilesen BIREBIR AYNI; v27 <-> v29 kiyasi TEK degisken tasir.
+
+**v28 DURDURULDU.** Epoch 48/200'de kesildi; `last.pt` korundu, `--devam` ile
+surdurulebilir. Gerekce: v28 bir OLCUM BORCUNU kapatiyordu (D-112), v29 ise
+kaptanin istedigi yetenegi acmayi deniyor. GPU tek; oncelik v29'undur.
+
+⚠ **YAN BULGU — D-112'NIN SURE ARGUMANI GERCEKLESMEDI.** v28 (512) 1,79
+dk/epoch kostu; v27 (640) 1,77 dk/epoch kosmustu. **512'ye inmek egitimi HIC
+hizlandirmadi.** D-112'de "512'de egitim ~0,64 kat -> 8,6 saat 5,5 saate iner"
+yazmistim; bu YANLIS cikti. Sebep D-108'de zaten olculmustu: egitim GPU'ya
+degil VERI HATTINA bagli. Cozunurluk karari (512) hala gecerlidir ama
+gerekcelerinden BIRI (egitim maliyeti) DUSMUSTUR; kalan gerekceler Jetson
+maliyeti ve tutarliliktir.
+
+**KABUL KURALI — VARSAYILAN "v27 KALIR".** v29 ancak sunlarin HEPSI
+saglanirsa uretime alinir:
+  1. D-107'nin ALTI olcutunu de gecer (K0..K5), ve
+  2. K1/K2/K3/K4/K5 v27'ye gore BOZULMAZ (K2 <= %15, K3 <= %3, K4 <= %5,
+     K5 = 0 px, K1 >= 230), ve
+  3. GERCEK karelerde OLCULEBILIR ilerleme:
+     a. kenar dayanmasi medyani 0,809'dan **<= 0,65**'e iner, VE
+     b. kapiyi gecen kare sayisi 0/67'den **>= 8/67**'ye cikar.
+
+(3b'nin tavani yer gercegidir: 17/67. Yarisi, "model yer gercegine anlamli
+sekilde yaklasti" demek icin yeterlidir; altinda kalirsa veri ise yaramamistir.)
+
+Bu esiklerin ALTINDA kalan her sonucta **v27 uretimde kalir**.
+
+⚠ **EZBERLEME RISKI OLCULECEK.** 67 kare AYNI otoparktan ve dort ardisik
+videodan. v29 gercek karelerde iyilesip SENTETIK kabul kumesinde bozulursa
+(sart 2 duserse) bu EZBERLEMEDIR ve model REDDEDILIR — "gercekte iyilesti"
+gerekcesiyle kabul edilmez.
+
+⚠ K-3 hatirlatmasi: mAP/fitness karar olcutu DEGILDIR.
