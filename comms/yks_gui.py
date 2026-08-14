@@ -56,6 +56,11 @@ SARI    = "#f0a437"
 KIRMIZI = "#e15241"
 MAVI    = "#4aa3df"
 
+# T80: CLI görünüm adları ↔ iç görünüm adları. İç adlar ("harita"/"algi")
+# butonlara ve V kısayoluna bağlıdır; CLI hakeme/tanıtıma bakar. Eşleme TEK
+# YERDE durur ki iki taraf ayrışmasın (madde 16).
+GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi"}
+
 ARENA_M = 50.0        # HTAB 50×50 m (şartname)
 OLCEK = 1.0           # main() ekran DPI'sine göre ayarlar (yüksek DPI okunurluk)
 
@@ -335,8 +340,10 @@ class YksArayuz:
         sag.pack_propagate(False)
 
         # Sağ 1: açık yol kararı
-        p1 = self._panel(sag, "AÇIK YOL TESPİTİ")
+        p1 = self._panel(sag, self.KUTU_BASLIK["protokol"])
         p1.pack(fill="x", pady=(0, 8))
+        self.p_karar = p1                       # T81: başlık kaynağı yazacak
+        self._kutu = {k: dict(v) for k, v in self.KUTU_VARSAYILAN.items()}
         self.lbl_karar = tk.Label(p1, text="— BEKLENİYOR —", font=self.f_buyuk,
                                   fg=SOLUK, bg=PANEL)
         self.lbl_karar.pack(pady=(2, 0))
@@ -486,9 +493,87 @@ class YksArayuz:
 
     def _panel(self, ebeveyn, baslik):
         p = tk.Frame(ebeveyn, bg=PANEL, highlightbackground=CIZGI, highlightthickness=1)
-        tk.Label(p, text=baslik, font=self.f_kucuk, fg=SOLUK, bg=PANEL,
-                 anchor="w").pack(fill="x", padx=10, pady=(6, 0))
+        # T81: başlık etiketi saklanır — AÇIK YOL TESPİTİ kutusu KAYNAĞINI
+        # başlıkta da yazmak zorunda (telsiz mi, yerel algı mı).
+        p.baslik_etiketi = tk.Label(p, text=baslik, font=self.f_kucuk, fg=SOLUK,
+                                    bg=PANEL, anchor="w")
+        p.baslik_etiketi.pack(fill="x", padx=10, pady=(6, 0))
         return p
+
+    # ── AÇIK YOL TESPİTİ kutusu — KAYNAK AYRIMI (T81) ────────────────────────
+    # 🔴 Bu kutu iki AYRI kaynaktan beslenebilir ve ikisi ASLA karışmamalıdır:
+    #   `protokol` : telsizden gelen OPEN_ROUTE/NO_ROUTE — aracın kendi kararı
+    #   `yerel`    : bu ekranın kendi çıkarımı — araç bunu GÖRMEDİ, göndermedi
+    # Hakem §6.2 onayını aracın gönderdiği rotaya verir. Ekranın kendi hesabını
+    # telsizden gelmiş sanarsa onay YANLIŞ VERİYE dayanır — kusurun kendisinden
+    # daha ağır bir hata. Bu yüzden hangi kaynağın gösterildiğini GÖRÜNÜM
+    # belirler (mesaj değil) ve kaynak hem başlıkta hem detay satırında yazılır.
+    KUTU_VARSAYILAN = {
+        "protokol": {"karar": "— BEKLENİYOR —", "renk": SOLUK,
+                     "detay": "İHA taraması sürüyor", "guven": None},
+        "yerel": {"karar": "— ÇÖZÜMLENİYOR —", "renk": SOLUK,
+                  "detay": "YEREL ALGI — telsiz DEĞİL · henüz kare işlenmedi",
+                  "guven": None},
+    }
+    KUTU_BASLIK = {
+        "protokol": "AÇIK YOL TESPİTİ",
+        # ⚠ Emoji YOK: tkinter'in yazıtipi renkli emojiyi çizemiyor, hakem
+        # ekranında taralı bir kutu görünüyordu. Uyarı METİNLE taşınır.
+        "yerel": "AÇIK YOL TESPİTİ — YEREL ALGI (telsiz DEĞİL)",
+    }
+    YEREL_IMZA = "YEREL ALGI — telsiz DEĞİL"
+
+    def _kutu_kaynagi(self):
+        """Kutuyu hangi kaynak besler? GÖRÜNÜM belirler, gelen mesaj DEĞİL."""
+        return "yerel" if getattr(self, "gorunum_adi", "harita") == "algi" \
+            else "protokol"
+
+    def _kutu_yaz(self, kaynak, **alanlar):
+        """Kaynağın durumunu SAKLA; ekrana yalnız GÖRÜNÜMÜN kaynağı basılır.
+
+        Karıştırma yasağı burada uygulanır: canlı algı görünümündeyken gelen
+        bir OPEN_ROUTE kutuyu BOYAMAZ — durumu güncellenir, haritaya
+        dönüldüğünde olduğu gibi görünür. Sayaçlar/günlük etkilenmez.
+        """
+        if not hasattr(self, "_kutu"):
+            self._kutu = {k: dict(v) for k, v in self.KUTU_VARSAYILAN.items()}
+        self._kutu[kaynak].update(
+            {a: d for a, d in alanlar.items() if d is not None})
+        if kaynak == self._kutu_kaynagi():
+            self._kutu_ciz()
+
+    def _kutu_ciz(self):
+        """Kutuyu GÖRÜNÜMÜN kaynağından çiz — başlık dâhil."""
+        if not hasattr(self, "_kutu"):
+            self._kutu = {k: dict(v) for k, v in self.KUTU_VARSAYILAN.items()}
+        kaynak = self._kutu_kaynagi()
+        d = self._kutu[kaynak]
+        p = getattr(self, "p_karar", None)
+        if p is not None:
+            p.baslik_etiketi.config(text=self.KUTU_BASLIK[kaynak])
+        self.lbl_karar.config(text=d["karar"], fg=d["renk"])
+        self.lbl_detay.config(text=d["detay"])
+        self._guven_ciz(d["guven"] if d["guven"] is not None else 0.0)
+
+    def _yerel_karari_goster(self, y):
+        """Canlı algının kararını kutuya yaz (§6.2 karıştırma yasağı ile)."""
+        if not y:
+            return
+        yer = f"{y.get('kaynak')}/{y.get('kare')}"
+        if y.get("yol_no"):
+            karar = f"{y['yol_no']} · {ROAD_LABEL[y['yol_no']].upper()}"
+            renk = YESIL
+            detay = (f"{self.YEREL_IMZA} · {yer} · "
+                     f"güven {y.get('guven_metin')}")
+        else:
+            karar = "ROTA YOK"
+            renk = KIRMIZI
+            sebep = y.get("ret") or "TESPİT YOK"
+            detay = f"{self.YEREL_IMZA} · {yer} · {sebep}"
+            if y.get("gerekce"):
+                detay += f" · {y['gerekce']}"
+        self._kutu_yaz("yerel", karar=karar, renk=renk, detay=detay,
+                       guven=y.get("guven") if y.get("guven") is not None else 0.0)
 
     # ── Harita ───────────────────────────────────────────────────────────────
     def _mxy(self, x_m, y_m):
@@ -662,8 +747,12 @@ class YksArayuz:
         while not self.algi_kuyruk.empty():
             paket = self.algi_kuyruk.get()
             if paket[0] == "sonuc":
-                _, gorsel, bilgi, log_satiri = paket
+                gorsel, bilgi, log_satiri = paket[1], paket[2], paket[3]
                 self._algi_sonucu_goster(gorsel, bilgi)
+                # T81: sağ panel de canlı algının kararını göstersin. Kutu
+                # yalnız CANLI ALGI görünümündeyken bu değeri basar; sayaçlara
+                # ve protokol durumuna DOKUNMAZ.
+                self._yerel_karari_goster(paket[4] if len(paket) > 4 else None)
                 self._logla(log_satiri, "yesil")
             elif paket[0] == "hata":
                 # Worker hatasi yalniz gunluge dusunce algi paneli sonsuza dek
@@ -671,6 +760,11 @@ class YksArayuz:
                 self.lbl_algi_img.config(
                     image="", text="ALGİ HATASI — ayrıntı aşağıda")
                 self.lbl_algi_bilgi.config(text=paket[1])
+                # T81: hata da SESSİZ kalmasın — kutu sonsuza dek
+                # "ÇÖZÜMLENİYOR" görünmemeli.
+                self._kutu_yaz("yerel", karar="ALGI HATASI", renk=KIRMIZI,
+                               detay=f"{self.YEREL_IMZA} · {paket[1]}",
+                               guven=0.0)
                 self._logla(paket[1], "sari")
             else:
                 self._logla(paket[1], "mavi")
@@ -700,7 +794,9 @@ class YksArayuz:
                     self._logla("⚠ GEÇERSİZLİK RİSKİ: aktarım İHA inişinden SONRA "
                                 "geldi — şartname §6.4: aktarım HAVADA tamamlanmalı!",
                                 "sari")
-                self.lbl_karar.config(text=f"{m['road']} · {m['label'].upper()}", fg=YESIL)
+                self._kutu_yaz("protokol",
+                               karar=f"{m['road']} · {m['label'].upper()}",
+                               renk=YESIL)
                 # ref_xy protokolce None OLABILIR (protocol.py:44-45) ve
                 # iha_sender geometri dogrulamasini yalniz ika/broadcast akrani
                 # varken kosar — yani "--yks" tek hedefliyken None gelir.
@@ -712,15 +808,16 @@ class YksArayuz:
                                      text="1) TESPİTİ DOĞRULA (§2.2.3)")
                 self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
                                           "gönderimde (ACK yok)", fg=SARI)
-                self._guven_ciz(m["conf"])
+                self._kutu_yaz("protokol", guven=m["conf"])
                 self._harita_ciz()
                 self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
                               "433 MHz TX", "YKS (bu ekran)"))
                 if self.otomatik_onay:
                     self.kok.after(2500, self.onayla)
             # tekrar-gönderim mekanizması canlı izlensin (jüri: ACK'siz teslim yok)
-            self.lbl_detay.config(
-                text=f"{self._detay_base} · alım #{self.rx_alim[m['seq']]}")
+            self._kutu_yaz(
+                "protokol",
+                detay=f"{self._detay_base} · alım #{self.rx_alim[m['seq']]}")
         elif tip == "NO_ROUTE":
             self._dugum_adresini_ogren("iha", adr)
             onceki_seq = self.rota_yok.get("seq") if self.rota_yok else None
@@ -740,15 +837,15 @@ class YksArayuz:
                 self.onaylandi = False
                 self.tespit_onayli = False
                 self.sayac["NO_ROUTE"] += 1
-                self.lbl_karar.config(text="ROTA YOK", fg=KIRMIZI)
                 self._detay_base = f"seq={m['seq']} · {sebep}"
-                self.lbl_detay.config(text=self._detay_base +
-                                      (f" · {detay}" if detay else ""))
+                self._kutu_yaz("protokol", karar="ROTA YOK", renk=KIRMIZI,
+                               detay=self._detay_base
+                               + (f" · {detay}" if detay else ""))
                 self.btn_onay.config(state="disabled", bg="#232e3a",
                                      text="ROTA YOK — ACK OTOMATİK GÖNDERİLDİ")
                 self.lbl_onay.config(text="Costmap güvenli rota üretmedi; İKA hareket etmez.",
                                       fg=KIRMIZI)
-                self._guven_ciz(0.0)
+                self._kutu_yaz("protokol", guven=0.0)
                 self._harita_ciz()
                 self._logla(f"NO_ROUTE · {sebep}"
                             + (f" · {detay}" if detay else "")
@@ -810,22 +907,23 @@ class YksArayuz:
         self.tespit_onayli = False
         if yeni:
             self.sayac["OPEN_ROUTE_RED"] += 1
-            self.lbl_karar.config(text="ROTA YOK", fg=KIRMIZI)
             self._detay_base = f"seq={seq} · {sebep}"
-            self.lbl_detay.config(text=f"{self._detay_base} · {detay}")
+            self._kutu_yaz("protokol", karar="ROTA YOK", renk=KIRMIZI,
+                           detay=f"{self._detay_base} · {detay}")
             self.btn_onay.config(
                 state="disabled", bg="#232e3a",
                 text="DÜŞÜK GÜVEN — OPEN_ROUTE REDDEDİLDİ")
             self.lbl_onay.config(
                 text="Rota güven eşiğinin altında; ACK gönderilmedi, İKA hareket etmez.",
                 fg=KIRMIZI)
-            self._guven_ciz(0.0)
+            self._kutu_yaz("protokol", guven=0.0)
             self._harita_ciz()
             self._logla(
                 f"OPEN_ROUTE REDDEDİLDİ · {sebep} · {detay} · ACK YOK",
                 "sari")
-        self.lbl_detay.config(
-            text=f"{self._detay_base} · alım #{self.rx_alim[seq]} · ACK YOK")
+        self._kutu_yaz(
+            "protokol",
+            detay=f"{self._detay_base} · alım #{self.rx_alim[seq]} · ACK YOK")
 
     def onayla(self):
         """Şartname §2.2.3 İKİ AŞAMALI hakem onayı: (1) güzergâh tespitinin
@@ -1145,6 +1243,10 @@ class YksArayuz:
 
     def gorunum(self, ad):
         self.gorunum_adi = ad
+        # T81: kutu GÖRÜNÜMÜN kaynağından beslenir — geçişte yeniden çizilir.
+        # Harita görünümüne dönüldüğünde protokol durumu OLDUĞU GİBİ görünür;
+        # canlı algı görünümünde telsiz değeri EKRANA BASILMAZ.
+        self._kutu_ciz()
         if ad == "harita":
             self.algi_cerceve.pack_forget()
             self.harita.pack(padx=10, pady=(4, 6), fill="both", expand=True)
@@ -1468,10 +1570,26 @@ class YksArayuz:
                     f"{rota_olcumu['darbogaz_serit']}, dağılım "
                     f"{rota_olcumu['seritler']} px — yayınlanan `road` "
                     "yalnız darboğaz şeridini adlandırır"))
+            # T81: sağ paneldeki AÇIK YOL TESPİTİ kutusu için YAPISAL karar.
+            # Bilgi METNİ ayrıştırılmaz — ayrıştırma sessizce bozulur ve kutu
+            # yanlış değer gösterir; hakem onayı buna dayanır (§6.2).
+            try:
+                _guven_f = float(guven)
+                if isinstance(guven, bool) or not math.isfinite(_guven_f):
+                    _guven_f = None
+            except (TypeError, ValueError, OverflowError):
+                _guven_f = None
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
                                   f"ALGI({_ad}) {self.algi_kaynak}/{yol.name} "
                                   f"→ {karar} "
-                                  f"güven={guven_metin} · {ms:.0f} ms"))
+                                  f"güven={guven_metin} · {ms:.0f} ms",
+                                  {"yol_no": yol_no,
+                                   "guven": _guven_f,
+                                   "guven_metin": guven_metin,
+                                   "ret": karar_reddi[0] if karar_reddi else None,
+                                   "gerekce": karar_reddi[1] if karar_reddi else None,
+                                   "kaynak": self.algi_kaynak,
+                                   "kare": yol.name}))
         except Exception as e:
             self.algi_kuyruk.put(
                 ("hata", f"ALGI HATASI: {type(e).__name__}: {e}"))
@@ -1824,6 +1942,18 @@ def main():
                     help="N sn sonra pencere görüntüsünü PNG kaydet (rapor için)")
     ap.add_argument("--kaydet-yolu", default="yks_ekran.png")
     ap.add_argument("--kapat", action="store_true", help="otokaydet sonrası çık")
+    # T80 · ⚠ VARSAYILANLAR DEĞİŞMEDİ: ikisi de `None`, yani verilmezse ekran
+    # bugünkü gibi `kompozit` kaynağı ve "Saha Haritası" görünümüyle açılır.
+    # `kompozit` bilerek korunur — bir OTOPARK karesidir ve domain boşluğunu
+    # hakeme gösterir (D-53/D-90); orada `ZEMIN_MASKESI_SUPHELI` MEŞRUDUR
+    # (D-118, görselle doğrulandı: model binanın çatısını zemin sayıyor).
+    # Bu görev yalnız SEÇİLEBİLİR yapar, varsayılanı taşımaz.
+    ap.add_argument("--kaynak", choices=YksArayuz.ALGI_KAYNAKLAR,
+                    help="canlı algı açılış kaynağı (varsayılan: "
+                         f"{YksArayuz.ALGI_KAYNAKLAR[0]}); geçerli değerler "
+                         "ALGI_KAYNAKLAR'dan okunur")
+    ap.add_argument("--gorunum", choices=tuple(GORUNUM_SECENEKLERI),
+                    help="açılış görünümü (varsayılan: saha)")
     args = ap.parse_args()
 
     if args.serial and args.demo:
@@ -1861,10 +1991,23 @@ def main():
         app._logla("DEMO modu: dahili İHA/İKA beslemesi başladı — "
                    "senaryo butonları etkin", "mavi")
 
+    # T80: kaynak GÖRÜNÜMDEN ÖNCE kurulur — `gorunum("algi")` çıkarımı hemen
+    # tetikler, sonra ayarlanan kaynak o ilk kareyi kaçırırdı.
+    if args.kaynak:
+        app.algi_kaynak = args.kaynak
+        app.algi_idx = 0
+        app._logla(f"ALGI kaynağı (--kaynak): {args.kaynak}", "mavi")
+    if args.gorunum:
+        app.gorunum(GORUNUM_SECENEKLERI[args.gorunum])
+        app._logla(f"Açılış görünümü (--gorunum): {args.gorunum}", "mavi")
+
     if args.otokaydet > 0:
         # SS modunda pencere HEP önde olsun — yoksa arkadaki pencere yakalanır
         kok.attributes("-topmost", True)
         kok.lift()
+
+        # T80: hedef alt dizin yoksa SS sessizce kaybolmasın.
+        Path(args.kaydet_yolu).parent.mkdir(parents=True, exist_ok=True)
 
         def kaydet():
             from PIL import ImageGrab

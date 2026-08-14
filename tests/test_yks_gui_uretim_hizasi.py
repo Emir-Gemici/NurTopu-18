@@ -27,6 +27,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 import cv2
@@ -47,6 +48,16 @@ from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
 
 H, W = 576, 1024
 ARENA_KADRAJ_MPP = 0.078125
+
+
+class _SahteEtiket:
+    """`config(**kw)` cagrilarini kaydeden asgari tk.Label taklidi (T81)."""
+
+    def __init__(self):
+        self.son = {"text": "", "fg": None}
+
+    def config(self, **kwargs):
+        self.son.update(kwargs)
 
 
 class _SahteModel:
@@ -615,6 +626,243 @@ class ArenaKaynakTests(unittest.TestCase):
                          _karar_metni(paket[2]))
         sari = np.all(paket[1] == np.asarray((0, 220, 255), np.uint8), axis=2)
         self.assertEqual(0, np.count_nonzero(sari))
+
+
+class AcilisArgumanlariTests(unittest.TestCase):
+    """T80: ekran ISTENEN DURUMDA acilabilmeli — `--kaynak` ve `--gorunum`.
+
+    Kusur: acilista kaynak `kompozit`ti ve o bir OTOPARK karesidir; zemin kapisi
+    orada MESRU olarak `ZEMIN_MASKESI_SUPHELI` verir (D-118, gorselle
+    dogrulandi: model binanin CATISINI zemin sayiyor). Ekrani acan herkes once
+    "yol bulunamadi" goruyor, rotayi gormek icin V+K tuslamak zorundaydi.
+
+    ⚠ Bu paket VARSAYILANIN KORUNDUGUNU da kilitler: `kompozit` acilis kaynagi
+    BILEREK durur (domain boslugunu hakeme gosterir, D-53/D-90).
+    """
+
+    GUI_KAYNAK = KOK / "comms" / "yks_gui.py"
+
+    @staticmethod
+    def _add_argument_cagrisi(bayrak):
+        agac = ast.parse(AcilisArgumanlariTests.GUI_KAYNAK.read_text(
+            encoding="utf-8"))
+        for dugum in ast.walk(agac):
+            if (isinstance(dugum, ast.Call)
+                    and isinstance(dugum.func, ast.Attribute)
+                    and dugum.func.attr == "add_argument"
+                    and dugum.args
+                    and isinstance(dugum.args[0], ast.Constant)
+                    and dugum.args[0].value == bayrak):
+                return dugum
+        return None
+
+    def test_kaynak_secenekleri_ALGI_KAYNAKLARDAN_okunuyor(self):
+        """Madde 16: gecerli liste CIPLAK yazilmaz, tek kaynaktan gelir."""
+        cagri = self._add_argument_cagrisi("--kaynak")
+        self.assertIsNotNone(cagri, "`--kaynak` argumani yok")
+        secenek = next((kw.value for kw in cagri.keywords if kw.arg == "choices"),
+                       None)
+        self.assertIsNotNone(secenek, "`--kaynak` `choices` tasimiyor")
+        self.assertNotIsInstance(
+            secenek, (ast.List, ast.Tuple, ast.Set),
+            "gecerli kaynak listesi CIPLAK yazilmis; ALGI_KAYNAKLAR'dan okunmali")
+        self.assertIsInstance(secenek, ast.Attribute)
+        self.assertEqual("ALGI_KAYNAKLAR", secenek.attr)
+
+    def test_argparse_kabul_ettigi_HER_kaynak_COZULEBILIYOR(self):
+        """Kabul edilen ama dizine cozulemeyen bir deger ekrani KeyError ile
+        cokertirdi: argparse'in gecerli dedigi her ad uretimde karsiligi olmali."""
+        for ad in yks_gui.YksArayuz.ALGI_KAYNAKLAR:
+            with self.subTest(kaynak=ad):
+                g = _gui(ad)
+                try:
+                    g._algi_gorseller()          # dizin YOKSA [] doner, patlamaz
+                except KeyError as exc:
+                    self.fail(f"`--kaynak {ad}` kabul ediliyor ama dizine "
+                              f"cozulemiyor: {exc}")
+
+    def test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI(self):
+        """CLI adlari ic adlara eslenir; ic adlar butonlarla ORTAK olmali."""
+        kaynak = self.GUI_KAYNAK.read_text(encoding="utf-8")
+        ic_adlar = set(re.findall(r'self\.gorunum\(\s*"([a-z]+)"', kaynak))
+        self.assertEqual(
+            ic_adlar, set(yks_gui.GORUNUM_SECENEKLERI.values()),
+            "CLI gorunum eslemesi butonlarin kullandigi ic adlardan AYRISTI")
+        self.assertEqual({"saha", "canli"}, set(yks_gui.GORUNUM_SECENEKLERI))
+
+    def test_VARSAYILANLAR_DEGISMEDI(self):
+        """T80 yalniz SECILEBILIR yapar; acilis davranisini TASIMAZ."""
+        for bayrak in ("--kaynak", "--gorunum"):
+            with self.subTest(bayrak=bayrak):
+                cagri = self._add_argument_cagrisi(bayrak)
+                varsayilan = next((kw.value for kw in cagri.keywords
+                                   if kw.arg == "default"), None)
+                self.assertIsNone(
+                    varsayilan,
+                    f"{bayrak} varsayilan tasiyor; verilmeyince acilis "
+                    "davranisi DEGISMEMELI")
+        self.assertEqual("kompozit", yks_gui.YksArayuz.ALGI_KAYNAKLAR[0],
+                         "acilis kaynagi tasindi — `kompozit` BILEREK duruyor "
+                         "(domain boslugu, D-53/D-90)")
+        self.assertIn('self.gorunum_adi = "harita"',
+                      self.GUI_KAYNAK.read_text(encoding="utf-8"),
+                      "acilis gorunumu tasindi")
+
+    def test_kaynak_arena_kadraj_DEFTERDEKI_kumeye_cozulur(self):
+        """T77 baglantisi AYRISMASIN: `--kaynak arena_kadraj` -> `kabul_kumesi`."""
+        self.assertIn("arena_kadraj", yks_gui.YksArayuz.ALGI_KAYNAKLAR)
+        defter = json.loads(
+            (KOK / "config" / "model_registry.json").read_text(encoding="utf-8"))
+        ilan = defter["profiles"][defter["default_profile"]]["kabul_kumesi"]
+        self.assertEqual(Path(ilan), yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU)
+
+        # Secim GERCEKTEN o koku okuyor mu — gecici kume ile kanitla.
+        with tempfile.TemporaryDirectory() as gecici:
+            kok = Path(gecici)
+            veri, _onizleme = ArenaKaynakTests._kadraj_fiksturu(kok)
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_KADRAJ_KOKU", kok):
+                bulunan = _gui("arena_kadraj")._algi_gorseller()
+        self.assertEqual([veri], bulunan,
+                         "`arena_kadraj` secimi kabul kumesi kokunu OKUMUYOR")
+
+    def test_GECERSIZ_kaynak_ekrani_ACMAZ(self):
+        """Fail-closed: ekran acilmaz, gecerli liste yazilir, sifirdan farkli cikar."""
+        import subprocess
+        sonuc = subprocess.run(
+            [sys.executable, str(self.GUI_KAYNAK), "--ika", "127.0.0.1:5006",
+             "--kaynak", "boyle_bir_kaynak_yok"],
+            capture_output=True, text=True, timeout=120, cwd=str(KOK / "comms"))
+        self.assertNotEqual(0, sonuc.returncode, "gecersiz kaynakta ekran ACILDI")
+        cikti = sonuc.stdout + sonuc.stderr
+        for ad in yks_gui.YksArayuz.ALGI_KAYNAKLAR:
+            self.assertIn(ad, cikti,
+                          f"gecerli liste yazilmamis: `{ad}` ciktida yok")
+
+
+class KararKutusuKaynakAyrimiTests(unittest.TestCase):
+    """T81: sağ paneldeki AÇIK YOL TESPİTİ kutusu KİMİN kararını gösteriyor?
+
+    Kusur: canlı algı görünümünde sol panel rotayı buluyordu ama sağ kutu
+    telsizden gelen OPEN_ROUTE'u beklediği için "— BEKLENİYOR —" yazıyordu;
+    bağlı İHA olmadığından asla dolmuyordu. Ekrana bakan "yol bulunamadı"
+    sonucunu çıkarıyordu (kullanıcı ÜÇ ayrı oturumda bu sonuca vardı).
+
+    🔴 Düzeltmenin kendisinden ağır olan kısıt: gösterilen değerin telsizden
+    mi YEREL algıdan mı geldiği ekranda AÇIKÇA yazmalı. Hakem §6.2 onayını
+    aracın gönderdiği rotaya verir; ekranın kendi hesabını telsiz sanırsa
+    onay YANLIŞ VERİYE dayanır.
+    """
+
+    def _kutu_gui(self, gorunum="algi"):
+        g = yks_gui.YksArayuz.__new__(yks_gui.YksArayuz)
+        g.gorunum_adi = gorunum
+        g.lbl_karar = _SahteEtiket()
+        g.lbl_detay = _SahteEtiket()
+        g.p_karar = SimpleNamespace(baslik_etiketi=_SahteEtiket())
+        g._guven_ciz = lambda *_a: None
+        g._kutu = {k: dict(v)
+                   for k, v in yks_gui.YksArayuz.KUTU_VARSAYILAN.items()}
+        # Gercek uygulamada etiketler kurulusta ZATEN dolu ("— BEKLENIYOR —");
+        # fikstur de ayni baslangic durumundan koşsun, yoksa "sizmadi" iddiasi
+        # bos etiketle sinanir ve hicbir sey kanitlamaz.
+        g._kutu_ciz()
+        return g
+
+    def test_CANLI_ALGI_gorunumunde_YEREL_karar_gosterilir(self):
+        g = self._kutu_gui("algi")
+        g._yerel_karari_goster({"yol_no": 2, "guven": 0.848,
+                                "guven_metin": "0.848", "ret": None,
+                                "gerekce": None, "kaynak": "arena_kadraj",
+                                "kare": "sa_000026.jpg"})
+        self.assertIn("2", g.lbl_karar.son["text"])
+        self.assertIn("ORTA", g.lbl_karar.son["text"].upper())
+        self.assertIn("0.848", g.lbl_detay.son["text"])
+        self.assertNotIn("BEKLENİYOR", g.lbl_karar.son["text"])
+
+    def test_KAYNAK_ekranda_ACIKCA_yaziyor(self):
+        """Karıştırma yasağı: hem BAŞLIKTA hem DETAYDA yazmalı."""
+        g = self._kutu_gui("algi")
+        g._yerel_karari_goster({"yol_no": 2, "guven": 0.9,
+                                "guven_metin": "0.900", "ret": None,
+                                "gerekce": None, "kaynak": "arena_kadraj",
+                                "kare": "a.jpg"})
+        self.assertIn("YEREL ALGI", g.p_karar.baslik_etiketi.son["text"])
+        self.assertIn("telsiz", g.p_karar.baslik_etiketi.son["text"].lower())
+        self.assertIn("YEREL ALGI", g.lbl_detay.son["text"])
+        self.assertIn("telsiz", g.lbl_detay.son["text"].lower())
+
+    def test_RET_sebebi_ve_GEREKCESI_gosterilir(self):
+        """Sessizce boş kalmasın: sebep kodu VE gerekçe metni."""
+        g = self._kutu_gui("algi")
+        g._yerel_karari_goster({
+            "yol_no": None, "guven": 0.0, "guven_metin": "0.000",
+            "ret": "ZEMIN_MASKESI_SUPHELI",
+            "gerekce": "Zemin maskesi icerigin %77'sini kapliyor",
+            "kaynak": "drone", "kare": "f.jpg"})
+        self.assertEqual("ROTA YOK", g.lbl_karar.son["text"])
+        self.assertIn("ZEMIN_MASKESI_SUPHELI", g.lbl_detay.son["text"])
+        self.assertIn("%77", g.lbl_detay.son["text"])
+
+    def test_SAHA_HARITASI_gorunumu_DEGISMEDI(self):
+        """Harita görünümünde kutu protokol durumunu gösterir; 'BEKLENİYOR'
+        orada DOĞRUDUR ve korunur."""
+        g = self._kutu_gui("harita")
+        g._kutu_ciz()
+        self.assertIn("BEKLENİYOR", g.lbl_karar.son["text"])
+        self.assertEqual(yks_gui.YksArayuz.KUTU_BASLIK["protokol"],
+                         g.p_karar.baslik_etiketi.son["text"])
+        self.assertNotIn("YEREL", g.lbl_detay.son["text"].upper())
+
+    def test_YEREL_karar_HARITA_gorunumune_SIZMAZ(self):
+        """Canlı algı sonucu geldi ama harita görünümündeyiz: kutu telsizin."""
+        g = self._kutu_gui("harita")
+        g._yerel_karari_goster({"yol_no": 2, "guven": 0.848,
+                                "guven_metin": "0.848", "ret": None,
+                                "gerekce": None, "kaynak": "arena_kadraj",
+                                "kare": "a.jpg"})
+        self.assertIn("BEKLENİYOR", g.lbl_karar.son["text"],
+                      "yerel karar harita görünümündeki kutuya SIZDI")
+        # ...ama saklanmış olmalı: görünüm değişince görünsün
+        g.gorunum_adi = "algi"
+        g._kutu_ciz()
+        self.assertIn("ORTA", g.lbl_karar.son["text"].upper())
+
+    def test_TELSIZ_karari_CANLI_ALGI_gorunumune_SIZMAZ(self):
+        """Ters yön: OPEN_ROUTE geldi ama canlı algı görünümündeyiz."""
+        g = self._kutu_gui("algi")
+        g._kutu_yaz("protokol", karar="2 · ORTA", renk=yks_gui.YESIL,
+                    detay="seq=7 · 3 waypoint", guven=0.92)
+        self.assertNotIn("seq=7", g.lbl_detay.son["text"],
+                         "telsiz değeri canlı algı kutusuna SIZDI")
+        self.assertIn("YEREL ALGI", g.p_karar.baslik_etiketi.son["text"])
+        # Haritaya dönünce telsiz durumu OLDUĞU GİBİ görünmeli
+        g.gorunum_adi = "harita"
+        g._kutu_ciz()
+        self.assertIn("seq=7", g.lbl_detay.son["text"])
+
+    def test_YEREL_karar_PROTOKOL_SAYACLARINA_sizmaz(self):
+        """KAPI (f): canlı algı hiçbir protokol sayacını oynatmaz."""
+        g = self._kutu_gui("algi")
+        g.sayac = {"OPEN_ROUTE": 0, "OPEN_ROUTE_RED": 0, "NO_ROUTE": 0,
+                   "IHA_LANDED": 0, "HEARTBEAT": 0, "ACK_TX": 0}
+        g.rota = None
+        g.rota_yok = None
+        g.onaylandi = False
+        g.tespit_onayli = False
+        once = dict(g.sayac)
+        for paket in ({"yol_no": 2, "guven": 0.9, "guven_metin": "0.900",
+                       "ret": None, "gerekce": None, "kaynak": "arena_kadraj",
+                       "kare": "a.jpg"},
+                      {"yol_no": None, "guven": 0.0, "guven_metin": "0.000",
+                       "ret": "ZEMIN_MASKESI_SUPHELI", "gerekce": "…",
+                       "kaynak": "drone", "kare": "b.jpg"}):
+            g._yerel_karari_goster(paket)
+        self.assertEqual(once, g.sayac, "yerel algı protokol sayacını oynattı")
+        self.assertIsNone(g.rota, "yerel algı `rota` protokol durumunu yazdı")
+        self.assertIsNone(g.rota_yok)
+        self.assertFalse(g.tespit_onayli,
+                         "yerel algı hakem onayı durumunu değiştirdi")
 
 
 if __name__ == "__main__":

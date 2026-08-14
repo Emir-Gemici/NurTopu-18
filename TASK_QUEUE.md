@@ -3038,6 +3038,134 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T81 — Canlı Algı görünümünde sağ panel, canlı algı sonucunu göstersin** · `comms/yks_gui.py`, `tests/**` · **ÖNEMLİ** · kanıt: ekran görüntüsü (mimar ölçtü)
+  - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-121**.
+  - **Kusur:** canlı algı görünümünde sol panel rotayı buluyordu ama sağ kutu
+    telsizden gelen OPEN_ROUTE'u beklediği için "— BEKLENİYOR —" yazıyordu;
+    bağlı İHA olmadığından asla dolmuyordu. Ekrana bakan "yol bulunamadı"
+    sonucunu çıkarıyordu — **kullanıcı üç ayrı oturumda bu sonuca vardı**.
+  - 🔴 **Önce kısıt, sonra düzeltme.** Karıştırma yasağı düzeltmeden önemli:
+    hakem §6.2 onayını **aracın gönderdiği** rotaya verir. Bu yüzden tasarım
+    şöyle: **kutuyu GÖRÜNÜM besler, gelen mesaj değil.** İki kaynak ayrı
+    saklanır ve ekrana yalnız görünümün kaynağı basılır.
+    ```text
+    Saha Haritası -> kutu `protokol` durumunu gösterir
+    Canlı Algı    -> kutu `yerel`    durumunu gösterir
+    ```
+    Canlı algı görünümündeyken gelen OPEN_ROUTE kutuyu **boyamaz** (durumu
+    saklanır, haritaya dönünce olduğu gibi görünür); ters yön de aynı.
+    **İki yön de testle kilitli.**
+  - **Kaynak iki yerde yazılı** — kırpılmış bir ekran görüntüsünde bile
+    görünsün diye hem panel başlığında hem detay satırında:
+    `AÇIK YOL TESPİTİ — YEREL ALGI (telsiz DEĞİL)` ve
+    `YEREL ALGI — telsiz DEĞİL · arena_kadraj/sa_000026.jpg · güven 0.848`.
+  - **Yapısal veri, metin ayrıştırma YOK:** kutu, algı kuyruğuna eklenen
+    yapısal sözlükten beslenir (`yol_no`, `guven`, `ret`, `gerekce`, `kaynak`,
+    `kare`). Bilgi metnini ayrıştırmak sessizce bozulur ve kutu **yanlış**
+    değer gösterirdi — hakem onayı buna dayanıyor.
+  - **KAPI (a):** `test_rota_sentetik.py` → **SONUC: 15/15 dogru**.
+  - **KAPI (b):** `discover -s tests -q` → **Ran 488 · OK** (481 → +7, düşmedi).
+  - **KAPI (c)** `--kaynak arena_kadraj` → `results/t81/canli_arena.png`:
+    `2 · ORTA` (yeşil, büyük punto) · `güven 0.848` · çubuk `güven %85` ·
+    **"BEKLENİYOR" ekranda YOK**, **"YEREL ALGI" VAR**.
+  - **KAPI (d)** `--kaynak drone` → `results/t81/canli_drone.png`:
+    `ROTA YOK` (kırmızı) + `ZEMIN_MASKESI_SUPHELI` + tam gerekçe
+    ("…%78.0'ini kapliyor (tavan %67.0) VE cevrenin %72.8'ine dayaniyor…").
+    Bu ret **D-118'de meşru** ölçülmüştü (model orada binanın çatısını zemin
+    sayıyor).
+  - **KAPI (e)** `--gorunum saha` → `results/t81/saha.png`: başlık
+    `AÇIK YOL TESPİTİ` (**değişmedi**), `— BEKLENİYOR —`,
+    `İHA taraması sürüyor`. Harita görünümü birebir eskisi gibi.
+  - **KAPI (f) — sayaç sızıntısı YOK:** test, iki yerel karardan (kabul + ret)
+    sonra `sayac` sözlüğünün **birebir aynı** kaldığını, `rota`/`rota_yok`ün
+    `None` kaldığını, `tespit_onayli`nin değişmediğini kilitliyor. Ayrıca
+    **üç ekran görüntüsünde de** gözle okunuyor:
+    `OPEN_ROUTE 0 · RED 0 · NO_ROUTE 0 · LANDED 0 · HB 0 · ACK 0`.
+  - **Yeni testler (7):** yerel kararın gösterilmesi · kaynağın başlık+detayda
+    yazması · ret sebebi + gerekçe · harita görünümünün değişmediği · yerel →
+    harita sızmaması · telsiz → canlı algı sızmaması · sayaç sızıntısı.
+    ⚠ İlk yazımımda sahte etiketler **boş** başlıyordu ve "sızmadı" iddiası boş
+    etiketle sınanıyordu — hiçbir şey kanıtlamıyordu. **İki test bunu yakaladı;**
+    fikstür artık gerçek uygulamadaki gibi çizilmiş durumdan koşuyor.
+  - ⚠ **ÖLÇÜLEN YAN ETKİ (gizlenmiyor):** uzun gerekçe (~200 karakter, 400 px
+    sarmada 5 satır) sağ sütunu büyütüyor ve **ret durumunda** alt kontrol
+    şeridi bir satır aşağı kayıyor. Kapı (e) görüntüsüyle kıyaslandı: kutu
+    kısayken pencere tam sığıyor. Metni **kısaltmadım** — emrin 4. maddesi
+    gerekçeyi şart koşuyor ve sayılar hakem için işlevsel. Sarma genişliğini
+    artırmak ~20 px kazandırıyor (sütun S(440), sarma S(400)) — değmez. Çözüm
+    pencere yerleşiminde; **ayrı görev**.
+  - ⚠ **Emoji kaldırıldı:** başlıkta `🔴` vardı; tkinter renkli emojiyi
+    çizemiyor, hakem ekranında **taralı bir kutu** görünüyordu (ilk ekran
+    görüntüsünde görüldü, düzeltildi). Uyarı artık metinle taşınıyor.
+  - ⚠ **DOĞRULANAMADI:** (1) gerçek bir OPEN_ROUTE ile canlı algı **aynı anda**
+    sınanmadı (bağlı İHA yok) — iki yönlü sızmama testle kilitli ama sahada
+    eşzamanlı trafikle doğrulanmadı; (2) kutu yalnız **en son** kareyi gösterir,
+    kaynak değişince önceki karar kaybolur (protokol tarafında da böyleydi,
+    değiştirilmedi); (3) hakem onay butonu canlı algı kararına **bağlanmadı** ve
+    bağlanmamalıdır — onay telsizden gelen tespite verilir; ekran "Onay bekleyen
+    tespit yok" demeye devam eder; (4) `arena_kadraj` kümesi **sentetiktir**
+    (D-88/D-99) — sağ panelin rota göstermesi sahada rota üretileceği anlamına
+    gelmez.
+
+- [STATUS: READY_FOR_REVIEW] **T80 — Hakem ekranı istenen durumda AÇILABİLSİN (`--kaynak`, `--gorunum`)** · `comms/yks_gui.py`, `tests/**` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-118**
+  - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-120**.
+  - **Kusur:** ekran hep `kompozit` + "Saha Haritası" ile açılıyordu. `kompozit`
+    bir **otopark** karesidir; zemin kapısı orada **meşru** olarak
+    `ZEMIN_MASKESI_SUPHELI` verir (D-118: model binanın **çatısını** zemin
+    sayıyor). Ekranı açan önce "yol bulunamadı" görüyor, rotayı görmek için
+    V + K tuşluyordu — tanıtımda kötü ve **tekrarlanabilir değil**.
+  - **`--kaynak`:** geçerli değerler `YksArayuz.ALGI_KAYNAKLAR`'dan okunuyor,
+    liste **çıplak yazılmadı** (madde 16). AST testi List/Tuple literalini
+    yasaklıyor.
+  - **`--gorunum saha|canli`:** CLI adları iç adlara (`harita`/`algi`)
+    `GORUNUM_SECENEKLERI` ile eşleniyor; test iç adları **kaynaktan toplayıp**
+    karşılaştırıyor — buton/kısayol tarafıyla ayrışırsa test düşer.
+  - ⚠ **VARSAYILANLAR DEĞİŞMEDİ.** İkisinin de `default`u yok. Verilmezse açılış
+    bugünkü gibi: `kompozit` + Saha Haritası. `kompozit` **bilerek** duruyor
+    (domain boşluğunu hakeme gösterir, D-53/D-90). Üç ayrı test kilitliyor.
+  - **Sıra önemli:** kaynak, görünümden **önce** kuruluyor. `gorunum("algi")`
+    çıkarımı hemen tetikler; kaynak sonra ayarlansaydı **ilk kare** eski
+    kaynaktan gelirdi — üstelik tanıtımda görünen kare tam odur.
+  - **KAPI (a):** `codes/test_rota_sentetik.py` → **SONUC: 15/15 dogru**.
+  - **KAPI (b):** `discover -s tests -q` → **Ran 481 · OK** (475 → +6, düşmedi).
+  - **KAPI (c) — emrin komutu aynen koşuldu**, `SS kaydedildi ... exit=0`:
+    ```text
+    arena_kadraj/sa_000026.jpg -> karar: 2·ORTA · güven 0.848 · 1594 ms
+    çıkarım: üretim (rpi_inference) · predict conf 0.30
+    traversable %22 · blocked %20 · gösterim: sürüş koridoru
+    model: navitas_seg_v27_best.pt · ölçek 0.0781 m/px (kabul kümesi manifesti)
+    gövde açıklığı 14.1 px · C-uzayı UYGULANDI · darboğaz 19.0 px @ şerit 2
+    ```
+    **Gözle doğrulandı (D-80):** kırmızı engel katmanı, serbest koridor, **sarı
+    rota + waypoint'ler**, tepede `H`, İHA-İB mavi alanı. Rota **ilk karede,
+    tuşa basmadan** görünüyor — kusur kapandı.
+    ⚠ **Bağımsız doğrulama:** SS'teki mesaj günlüğünde
+    `ALGI kaynağı (--kaynak): arena_kadraj` · `Açılış görünümü: canli` ·
+    `navitas_seg_v27_best.pt (SHA 1465ed3d)` okunuyor. O SHA kayıt defterindeki
+    `sha256`nın ilk sekiz karakteridir (T76/D-116) — ekranın üretim ağırlığını
+    yüklediği argümanlardan **bağımsız** olarak da görünüyor.
+  - **KAPI (d) — geçersiz değer, ekran AÇILMIYOR:**
+    ```text
+    yks_gui.py: error: argument --kaynak: invalid choice: 'xyz'
+      (choose from kompozit, arena_kadraj, arena_gercek, drone, gemini, test, val)
+    exit = 2      (Tk penceresi HİÇ oluşturulmadı)
+    ```
+  - **Yeni testler (6):** `choices` AST kilidi · argparse'ın kabul ettiği **her**
+    kaynağın `_algi_gorseller()` ile çözülebilmesi (kabul edilip çözülemeyen ad
+    ekranı `KeyError` ile çökertirdi) · görünüm eşlemesi ↔ iç adlar ·
+    varsayılanların taşınmadığı · `--kaynak arena_kadraj` → defterdeki
+    `kabul_kumesi` (T77 bağlantısı) · geçersiz değerde alt süreçte fail-closed.
+  - **Küçük sağlamlık:** `--kaydet-yolu` alt dizin gösteriyorsa dizin açılıyor;
+    aksi hâlde emrin `results\t80\` yazan komutunda SS sessizce kaybolurdu.
+  - ⚠ **DOĞRULANAMADI:** (1) SS'teki kare kümenin **ilk** karesidir, küme
+    genelinde rota üretimi bu görevde yeniden ölçülmedi (T77'de 12/12);
+    (2) `--gorunum canli` açılışta model ~2 sn yükleniyor — `--otokaydet` bundan
+    kısa verilirse SS "işleniyor…" hâlini yakalar, betik **beklemez**; alt sınır
+    ölçülmedi; (3) `--kaynak` yalnız **açılışı** belirler, `K` kısayolu sırayı
+    eskisi gibi döndürür (kilitleme istenmedi, yapılmadı); (4) kabul kümesi de
+    **sentetiktir** (D-88/D-99) — açılışta rota göstermek sahada rota üreteceği
+    anlamına **gelmez**.
+
 - [STATUS: READY_FOR_REVIEW] **T78 — Zemin kapısı v24 ile kalibre, v27 ile DEĞİL: yeniden ölç** · ölçüm görevi · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-118**
   - **✅ ÖLÇÜLDÜ · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-118**.
     **1568 ölçüm.** 🔴 **EŞİK DEĞİŞTİRİLMEDİ** — 0,67 / 0,50 aynen duruyor.

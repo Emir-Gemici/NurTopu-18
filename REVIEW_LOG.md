@@ -8227,3 +8227,289 @@ ayni mi".
   3. ONNX CPU'da kosuldu (`CUDAExecutionProvider` bu makinede kayitli degil);
      dolayisiyla bu olcumden HIZ sonucu CIKARILAMAZ. Jetson hala olculmedi
      (D-89).
+
+---
+
+### D-120 · UYGULANDI · T80: hakem ekrani ISTENEN durumda acilabiliyor (`--kaynak`, `--gorunum`)
+Uygulayan: Claude 2 · 2026-08-15 · gorev T80 · VARSAYILANLAR DEGISMEDI
+
+**KUSUR.** Ekran her zaman `kompozit` kaynagi ve "Saha Haritasi" gorunumuyle
+aciliyordu. `kompozit` bir OTOPARK karesidir; zemin kapisi orada MESRU olarak
+`ZEMIN_MASKESI_SUPHELI` verir — D-118'de gorselle dogrulandi: model binanin
+CATISINI zemin sayiyor, kapi hakli. Sonuc: ekrani acan herkes once "yol
+bulunamadi" goruyor ve rotayi gormek icin V + K tuslamak zorunda kaliyordu.
+Tanitimda kotu, ustelik TEKRARLANABILIR DEGIL (kac kez K'ya basildigi elde).
+
+**1 · `--kaynak`.** Gecerli degerler `YksArayuz.ALGI_KAYNAKLAR`'dan okunur —
+liste CIPLAK YAZILMADI (madde 16). Ekleme/cikarma tek yerden yapilir ve CLI
+kendiliginden izler.
+
+**2 · `--gorunum saha|canli`.** CLI adlari ic adlara (`harita`/`algi`)
+`GORUNUM_SECENEKLERI` ile eslenir. Ic adlar butonlara ve `V` kisayoluna
+baglidir; esleme TEK YERDE durur ve testi ic adlari KAYNAKTAN toplayip
+karsilastirir — iki taraf ayrisirsa test duser.
+
+**3 · VARSAYILANLAR DEGISMEDI.** Iki argumanin da `default`u YOK (`None`).
+Verilmezse acilis bugunku gibidir: `kompozit` + "Saha Haritasi". `kompozit`
+BILEREK durur — domain boslugunu hakeme gosterir (D-53/D-90). Bu gorev yalniz
+SECILEBILIR yapar. Uc ayri test bunu kilitler: iki bayrakta da `default`
+bulunmamali, `ALGI_KAYNAKLAR[0] == "kompozit"` olmali ve kaynakta
+`self.gorunum_adi = "harita"` durmali.
+
+**4 · SIRA ONEMLI.** Kaynak, gorunumden ONCE kurulur. `gorunum("algi")`
+`_algi_iste()`i cagirip cikarimi HEMEN baslatir; kaynak sonra ayarlansaydi ilk
+kare eski kaynaktan gelirdi (sessiz ve tam da tanitimda gorunen kare).
+
+**5 · Kucuk saglamlik:** `--kaydet-yolu` alt dizin gosteriyorsa dizin acilir;
+aksi halde SS sessizce kaybolurdu (emrin kapi (c) komutu `results\t80\` yaziyor).
+
+**KAPI (a).** `codes/test_rota_sentetik.py` -> **SONUC: 15/15 dogru**
+
+**KAPI (b).** `unittest discover -s tests -q` -> **Ran 481 tests · OK**
+(T78'de 475 idi; **dusmedi**, +6).
+
+**KAPI (c) — EMRIN KOMUTU AYNEN KOSULDU.**
+
+    comms\yks_gui.py --ika 127.0.0.1:5006 --gorunum canli
+        --kaynak arena_kadraj --otokaydet 10
+        --kaydet-yolu results\t80\acilis_arena.png --kapat
+    -> "SS kaydedildi: results\t80\acilis_arena.png"   exit=0
+
+Ekranda (SS'te GORUNUR halde):
+
+    arena_kadraj/sa_000026.jpg -> karar: 2·ORTA · guven 0.848 · 1594 ms
+    cikarim: uretim (rpi_inference) · predict conf 0.30
+    traversable %22 · blocked %20 · gosterim: surus koridoru
+    model: navitas_seg_v27_best.pt · olcek 0.0781 m/px (kabul kumesi manifesti)
+    govde acikligi 14.1 px · C-uzayi UYGULANDI · darbogaz 19.0 px @ serit 2
+
+GOZLE DOGRULANDI (D-80): kirmizi engel katmani, serbest koridor, **sari rota
+poligonu + waypoint'ler**, tepede `H` hedefi, IHA-IB mavi alani. Rota ILK
+KAREDE, tus basmadan gorunuyor — kusurun kendisi kapandi.
+
+⚠ **BAGIMSIZ DOGRULAMA — mesaj gunlugu SS'te okunuyor:**
+
+    ALGI kaynagi (--kaynak): arena_kadraj
+    Acilis gorunumu (--gorunum): canli
+    navitas_seg_v27_best modeli yuklendi: navitas_seg_v27_best.pt (SHA 1465ed3d)
+
+Ekranin bastigi SHA `1465ed3d`, kayit defterindeki `sha256`nin ilk sekiz
+karakteridir (T76/D-116). Yani ekranin gercekten uretim agirligini yukledigi
+argumanlardan bagimsiz olarak da gorunuyor.
+
+**KAPI (d) — GECERSIZ KAYNAK: EKRAN ACILMIYOR.**
+
+    comms\yks_gui.py --ika 127.0.0.1:5006 --kaynak xyz
+    -> yks_gui.py: error: argument --kaynak: invalid choice: 'xyz'
+       (choose from kompozit, arena_kadraj, arena_gercek, drone, gemini,
+        test, val)
+    -> exit = 2      (Tk penceresi HIC olusturulmadi; `parse_args` `tk.Tk()`ten
+                      ONCE calisir)
+
+**YENI TESTLER (6, `tests/test_yks_gui_uretim_hizasi.py::AcilisArgumanlariTests`)**
+  · `--kaynak` `choices`i AST ile denetlenir: List/Tuple/Set literali OLMAMALI,
+    `ALGI_KAYNAKLAR` niteligi olmali (madde 16 mekanik kilidi).
+  · argparse'in kabul ettigi HER kaynak `_algi_gorseller()` ile cozulebilmeli —
+    kabul edilip dizine cozulemeyen bir ad ekrani `KeyError` ile cokertirdi.
+  · CLI gorunum eslemesi, kaynaktan toplanan ic adlarla AYNI kume olmali.
+  · Varsayilanlarin TASINMADIGI (uc ayri iddia).
+  · `--kaynak arena_kadraj` -> kayit defterindeki `kabul_kumesi` (T77 baglantisi
+    ayrismasin; secimin O KOKU okudugu gecici kume ile ayrica kanitlanir).
+  · Gecersiz deger: alt surecte ekran ACILMAZ, gecerli listenin TAMAMI yazilir.
+
+**DOGRULANAMADI**
+  1. SS'teki kare `arena_kadraj` kumesinin ILK karesidir; kume genelinde rota
+     uretimi bu gorevde YENIDEN olculmedi (T77'de 12/12 olculmustu).
+  2. `--gorunum canli` ile acilista modelin yuklenmesi ~2 sn surer; `--otokaydet`
+     bundan KISA verilirse SS "isleniyor..." halini yakalar. Betik bunu
+     BEKLEMEZ; emrin verdigi 10 sn yeterliydi, alt sinir olculmedi.
+  3. `--kaynak` yalniz ACILIS kaynagini belirler; `K` kisayolu sirayi eskisi
+     gibi dondurur. Kaynagi KILITLEME (degistirilemez yapma) istenmedi,
+     yapilmadi.
+  4. Kabul kumesi de SENTETIKTIR (D-88/D-99). Ekranin acilista rota gostermesi
+     sahada rota uretecegi anlamina GELMEZ.
+
+---
+
+### D-121 · UYGULANDI · T81: canli algi gorunumunde sag panel YEREL karari gosteriyor — kaynak ayrimi KILITLI
+Uygulayan: Claude 2 · 2026-08-15 · gorev T81 · kusur: kullanici UC oturumda yanlis sonuca vardi
+
+**KUSUR.** `--gorunum canli` ile acildiginda SOL panel rotayi buluyor ve
+ciziyordu, ama SAG paneldeki AÇIK YOL TESPİTİ kutusu "— BEKLENIYOR — / IHA
+taramasi suruyor" yaziyordu. O kutu TELSIZDEN gelen OPEN_ROUTE'u gosterir;
+canli algi kipinde bagli IHA olmadigi icin asla dolmuyordu. Ekrana bakan "yol
+bulunamadi" sonucunu cikariyordu.
+
+**🔴 ONCE KISIT, SONRA DUZELTME.** Emrin kendi ifadesiyle karistirma yasagi
+duzeltmeden ONEMLIDIR: hakem SS6.2 onayini ARACIN GONDERDIGI rotaya verir.
+Ekranin kendi hesabini telsizden gelmis sanarsa onay YANLIS VERIYE dayanir.
+Bu yuzden tasarim once o yasagi kuruyor:
+
+**1 · KUTUYU GORUNUM BESLER, MESAJ DEGIL.** Iki kaynak ayri saklanir
+(`protokol`, `yerel`) ve ekrana yalnizca GORUNUMUN kaynagi basilir:
+
+    Saha Haritasi  -> kutu `protokol` durumunu gosterir
+    Canli Algi     -> kutu `yerel` durumunu gosterir
+
+Canli algi gorunumundeyken gelen bir OPEN_ROUTE kutuyu **BOYAMAZ**; durumu
+guncellenir ve haritaya donuldugunde OLDUGU GIBI gorunur. Ters yon de ayni:
+yerel karar harita gorunumundeki kutuya SIZMAZ. **Iki yon de testle kilitli.**
+
+**2 · KAYNAK IKI YERDE YAZILI.** Kirpilmis bir ekran goruntusunde bile
+gorunsun diye hem panel BASLIGINDA hem DETAY satirinda:
+
+    baslik : "AÇIK YOL TESPİTİ — YEREL ALGI (telsiz DEĞİL)"
+    detay  : "YEREL ALGI — telsiz DEĞİL · arena_kadraj/sa_000026.jpg · güven 0.848"
+
+Harita gorunumunde baslik DEGISMEDI ("AÇIK YOL TESPİTİ") — madde 3 geregi.
+
+**3 · YAPISAL VERI, METIN AYRISTIRMA YOK.** Kutu, algi kuyruguna eklenen
+yapisal bir sozlukten beslenir (`yol_no`, `guven`, `ret`, `gerekce`, `kaynak`,
+`kare`). Bilgi METNI ayristirilmadi: ayristirma sessizce bozulur ve kutu yanlis
+deger gosterir — hakem onayi buna dayanir.
+
+**4 · RET SESSIZ KALMIYOR.** Reddedilen karede sebep KODU ve GEREKCE METNI
+tam olarak yazilir. Algi ISTISNA atarsa kutu "ALGI HATASI" der; sonsuza dek
+"ÇÖZÜMLENİYOR" gorunmez.
+
+**KAPI (a).** `codes/test_rota_sentetik.py` -> **SONUC: 15/15 dogru**
+
+**KAPI (b).** `unittest discover -s tests -q` -> **Ran 488 tests · OK**
+(T80'de 481 idi; **dusmedi**, +7).
+
+**KAPI (c) — `--kaynak arena_kadraj`** (`results/t81/canli_arena.png`):
+
+    baslik : AÇIK YOL TESPİTİ — YEREL ALGI (telsiz DEĞİL)
+    karar  : 2 · ORTA          (yesil, buyuk punto)
+    detay  : YEREL ALGI — telsiz DEĞİL · arena_kadraj/sa_000026.jpg · güven 0.848
+    cubuk  : güven %85
+    "BEKLENIYOR" ekranda YOK · "YEREL ALGI" ibaresi VAR
+
+**KAPI (d) — `--kaynak drone`** (`results/t81/canli_drone.png`):
+
+    karar : ROTA YOK          (kirmizi)
+    detay : YEREL ALGI — telsiz DEĞİL · drone/frame_000000_000000000.jpg ·
+            ZEMIN_MASKESI_SUPHELI · Zemin maskesi icerigin %78.0'ini kapliyor
+            (tavan %67.0) VE cevrenin %72.8'ine dayaniyor (tavan %50.0). Maske
+            sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir);
+            rota uretilmez.
+
+Sebep kodu VE gerekce tam olarak gorunuyor. (Bu ret D-118'de MESRU oldugu
+olculmus ve gorselle dogrulanmisti — model orada binanin catisini zemin
+sayiyor.)
+
+**KAPI (e) — `--gorunum saha`** (`results/t81/saha.png`):
+
+    baslik : AÇIK YOL TESPİTİ        (DEGISMEDI)
+    karar  : — BEKLENİYOR —
+    detay  : İHA taraması sürüyor
+
+Harita gorunumu birebir eskisi gibi.
+
+**KAPI (f) — SAYAC SIZINTISI YOK.** Test: iki yerel karar (kabul + ret)
+islendikten sonra `sayac` sozlugu BIREBIR ayni, `rota`/`rota_yok` None kaliyor,
+`tespit_onayli` degismiyor. Ayrica UC EKRAN GORUNTUSUNDE DE sayac satiri
+gozle okunuyor:
+
+    OPEN_ROUTE 0 · RED 0 · NO_ROUTE 0 · LANDED 0 · HB 0 · ACK 0
+
+**YENI TESTLER (7, `KararKutusuKaynakAyrimiTests`).** Yerel kararin
+gosterilmesi · kaynagin BASLIK ve DETAYDA yazmasi · ret sebebi + gerekce ·
+harita gorunumunun DEGISMEDIGI · yerel -> harita sizmamasi (ve gorunum
+degisince gorunmesi) · telsiz -> canli algi sizmamasi (ve haritaya donunce
+OLDUGU GIBI gorunmesi) · sayac sizintisi olmamasi.
+
+⚠ Fikstur duzeltmesi kayda gecer: ilk yazimimda sahte etiketler BOS
+basliyordu ve "sizmadi" iddiasi bos etiketle sinaniyordu — hicbir sey
+kanitlamiyordu. Iki test bunu YAKALADI. Fikstur artik gercek uygulamadaki gibi
+kurulusta CIZILMIS durumdan kosuyor.
+
+**⚠ OLCULEN YAN ETKI — GIZLENMIYOR.** Uzun gerekce (~200 karakter, 400 px
+sarma genisliginde 5 satir) sag sutunu buyutuyor ve RET DURUMUNDA pencerenin
+alt kontrol seridi bir satir asagi kayiyor. Kapi (e) goruntusuyle kiyaslandi:
+kutu kisayken pencere TAM sigiyor, uzun gerekcede alt seridin ikinci satiri
+kirpiliyor. Metin KISALTILMADI — emrin 4. maddesi gerekcenin gosterilmesini
+sart kosuyor ve sayilar (kaplama/tavan) hakem icin islevsel bilgidir. Sarma
+genisligini artirmak ~20 px kazandiriyor (sutun S(440), sarma S(400)) — degmez.
+Cozum pencere yerlesiminde aranmali; ayri gorev.
+
+**⚠ EMOJI KALDIRILDI.** Baslikta once `🔴` vardi; tkinter'in yazitipi renkli
+emojiyi cizemiyor ve hakem ekraninda TARALI BIR KUTU goruluyordu (ilk ekran
+goruntusunde gorulup duzeltildi). Uyari artik METINLE tasiniyor.
+
+**DOGRULANAMADI**
+  1. Gercek bir OPEN_ROUTE ile canli algi AYNI ANDA sinanmadi — bagli IHA yok.
+     Iki yonlu sizmama TESTLE kilitli, ama sahada esZAMANLI trafikle
+     dogrulanmadi.
+  2. Kutu yalnizca EN SON kareyi gosterir; canli algi kaynagi degistirilirse
+     onceki karar kaybolur (protokol tarafinda da boyleydi, degistirilmedi).
+  3. Hakem onay butonu (`btn_onay`) canli algi kararina BAGLANMADI ve
+     baglanmamalidir — onay telsizden gelen tespite verilir. Bu bilerek
+     yapilmadi; ekranda "Onay bekleyen tespit yok" yazmaya devam eder.
+  4. `arena_kadraj` kumesi SENTETIKTIR (D-88/D-99). Sag panelin rota gostermesi
+     sahada rota uretilecegi anlamina gelmez.
+
+---
+
+### D-122 · 🔴 DUZELTME + OLCUM · D-119'un "hakem baska rota gorur" CERCEVESI YANLISTI; ama KARARSIZLIK olculdu: %3,46
+Olcen: Claude 1 (mimar) · 2026-08-15 00:45
+
+**DUZELTILEN IDDIA.** D-119'da soyle yazdim: "`comms/yks_gui.py:1285` rotayi
+KENDISI hesapliyor; `.pt` ile hesaplayan bir yer ve `.onnx` ile hesaplayan bir
+yer olusuyor; hakem, aracin gitmedigi guzergahi izliyor olabilir." Ayni kayitta
+bunu "DOGRULAMADIM" diye isaretlemistim. **Denetledim, YANLIS cikti.**
+
+    comms/protocol.py:50      OPEN_ROUTE mesaji WAYPOINT tasir (maske DEGIL)
+    comms/iha_sender.py:82    waypointleri IHA hesaplayip gonderir
+    comms/yks_gui.py:682      YKS OPEN_ROUTE'u TUKETIR
+
+Sahada rotayi hesaplayan **TEK yer** vardir. `yks_gui`nin kendi `analyze_path`
+cagrisi CANLI ALGI panelinindir — telsiz baglantisi olmadan yerel gosterim
+icindir ve T81'den (D-121) sonra ekranda "YEREL ALGI — telsiz DEGIL" diye
+ACIKCA etiketlenir. D-119'un o paragrafi GECERSIZDIR; kayit silinmez (madde 6),
+duzeltme burada durur.
+
+**AMA BULGUNUN OZU AYAKTA — VE OLCULDU.** Iki artefakt, ayni sahnenin
+binde-4 gurultuyle iki ORNEGIDIR. Ayni kararsizlik TEK bir IHA'da kareden
+kareye de olusur. `68_karar_kararliligi.py` (yeni) bunu dogrudan olcer: her
+kareye gercekci algilayici gurultusu bindirip ayni modelle yeniden karar
+urettirir.
+
+    gurultu: Gauss sigma = 2/255 (%0,8) · kare basina 3 tekrar · n=260
+    model  : navitas_seg_v27_best.pt
+
+    KARARI CEVRILEN            9/260   (%3,46)
+    darbogaz PAYI (darbogaz - r_gerekli), tum kareler:
+      medyan 10,9 px · en dusuk 0,1 px · pay < 3 px olan kare: 59/255
+
+    sa_000025  pay= 5,92  ->  1 | 1 | 2 | 2
+    sa_000063  pay= 0,92  ->  1 | 2 | 1 | 2
+    sa_000081  pay= 0,92  ->  2 | 2 | 3 | 2
+    sa_000172  pay=10,92  ->  1 | 3 | 1 | 3
+    sa_000174  pay= 1,92  ->  2 | GORUS_HATTI_KOPUK | 2 | 2
+    sa_000176  pay=80,92  ->  3 | 1 | 1 | 1
+    sa_000192  pay=36,92  ->  1 | 1 | 2 | 1
+    sa_000232  pay= 8,92  ->  1 | 2 | 2 | 2
+    sa_000258  pay= 0,12  ->  3 | 2 | 3 | 2
+
+**IKI AYRI OLGU, KARISTIRILMAMALI:**
+  1. **Dar pay** — 255 karenin **59'unda** darbogaz payi 3 pikselden az. Bu
+     T74'un konusudur (koridorlar govde acikligina gore dar).
+  2. **Kararsizlik** — cevrilme dar paya BAGLI DEGIL. `sa_000176` payi 80,92 px
+     olmasina ragmen ceviriliyor, `sa_000174` reddetmeye kadar gidiyor. Yani
+     sorun yalnizca "kil payi" degil; iki gecerli koridor varken secim
+     gurultuye acik.
+
+**%0,8 GURULTU GERCEGIN ALT SINIRIDIR.** Ucuz bir kameranin bile altinda kalan
+bir seviye; saha gurultusu (isik, titresim, JPEG) bundan BUYUKTUR. Dolayisiyla
+%3,46 bir TAVAN degil TABANDIR.
+
+**ETKI.** Tek kareyi degerlendiren kabul denetimi bunu GORMEZ — her kare tek
+basina dogru karar veriyor. Ama video akisinda ardisik kareler farkli koridor
+secerse IKA'nin izleyecegi hedef zikzak yapar. T79 bu bulguya gore yeniden
+cerceveledi: sorun "iki artefakt ayrisiyor" degil, "secim gurultuye karsi
+kararsiz".
+
+⚠ **NE IDDIA ETMIYORUM:** sahadaki gurultu seviyesini OLCMEDIM; %0,8 secilmis
+bir alt sinirdir. Ayrica ardisik VIDEO kareleriyle sinanmadi — kadraj kumesi
+bagimsiz karelerden olusur, gercek zikzak orani olculmedi.
