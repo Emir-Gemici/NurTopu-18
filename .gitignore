@@ -137,3 +137,8 @@ rapor/
 
 # Visual Studio
 .vs/
+
+# T84: gercek otopark karelerinin etiketli kumesi — 1,4 GB, 2049 dosya.
+# `scripts/olcum/71_gercek_kare_etiketleyici.py` + `data/raw_frames` ile
+# YENIDEN URETILEBILIR; ureteci depoda durdugu icin kumenin kendisi tutulmaz.
+dataset/gercek_otopark/
