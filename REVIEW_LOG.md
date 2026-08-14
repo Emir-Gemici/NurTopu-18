@@ -9009,3 +9009,63 @@ geri cevrildi ve saha paketi yeniden uretildi; takim OK'e dondu.
      bagimsizdir, SAYI degildir.
   6. Histerezis GERCEK bir kare dizisinde HIC kosulmadi (ardisik kare verisi
      yok); yalnizca birim testleriyle dogrulandi.
+
+---
+
+### D-128 · 🔴 DUZELTME · D-127'nin "42/67" sayisi KUSURLU ETIKETTEN geldi; dogru sayi 17/67
+Olcen: Claude 1 (mimar) · 2026-08-15 03:00 · kullanici: "yeterince iyi etiketleyememissin, daha fazla ugras"
+
+**KULLANICI HAKLIYDI.** Etiketleri yalnizca KUCULTULMUS bir kontakt sayfasinda
+gormustum. Tam cozunurlukte bakilinca acik bir kusur cikti: **gunes alan duz
+asfalt "bina" isaretlenmisti** — otoparkin ortasinda alani 54.250 pikselе varan
+kirmizi lekeler. Sebep, YAPI kuralinin "parlak + duz + genis" demesiydi;
+gunesli asfalt uc sarti da sagliyor.
+
+**OLCUMLE DUZELTILDI.** Aday bilesenler tek tek olculdu (ayni kare):
+
+    bilesen          alan     L ort   DIKDORTGENLIK
+    cati            31794     222,3          0,853
+    asfalt lekesi   54250     180,0          0,324
+    asfalt lekesi   15527     212,7          0,339
+    asfalt lekesi    3881     182,3          0,355
+
+Cati DOGAL OLARAK DIKDORTGENDIR; gunes lekesi pacavradir. Kural iki olcute
+baglandi (`L > 205` ve `dikdortgenlik > 0,45`) ve kapama cekirdegi 15 -> 9
+kucultuldu (buyuk cekirdek catiyi komsu asfalta yapistiriyordu). Yapi bileseni
+kare basina 3,5 -> 2,0 dustu; gorsel olarak asfalt tertemiz zemin oldu.
+
+**VE BU, D-127'NIN SAYISINI COKERTTI:**
+
+    etiket surumu              kaplama   kenar   KAPIYI GECEN
+    v27 modeli                   0,814   0,809         0/67
+    v1 etiketi (KUSURLU)         0,728   0,494        42/67
+    v5 etiketi (DUZELTILMIS)     0,813   0,569        17/67
+
+**v1 etiketleri kapiyi DAHA COK geciyordu CUNKU YANLISTILAR.** Asfalti engel
+isaretlemek kaplamayi yapay olarak dusuruyor ve kenar dayanmasini kiriyordu.
+Duzeltilince ikisi de gercek degerine cikti.
+
+**DOGRU SAYI 17/67'DIR.** D-127'de yazdigim "yer gercegiyle 42/67 geciyor"
+GECERSIZDIR; kayit silinmez (madde 6), duzeltme burada durur.
+
+**BUNUN ANLAMI — D-124 ILE D-127 ARASINDA BIR YERDE:**
+  · D-124 ("hicbir dogru algi gecemez") MUTLAK olarak YANLIS — 17 kare geciyor.
+  · D-127 ("kapi rahat gecilir, 42/67") ASIRI IYIMSER — kusurlu etiketten geldi.
+  · Dogrusu: **acik otoparkin cogu karesi kapiyi MESRU olarak gecemez**, cunku
+    sahne gercekten de cogunlukla acik surulebilir alandir ve cerceve
+    kenarlarina dayanir. Kapinin "sinirli arena" varsayimi bu sahnede
+    kismen ihlal olur. Ama karelerin **dortte biri** gecer; mukemmel algi
+    otoparkta 0/67'yi 17/67'ye TASIR.
+
+**MIMARIN BU KONUDAKI UCUNCU DUZELTMESI.** Sirasiyla: (1) "otopark kapsam
+disi" — kolaycilik; (2) "kapi yapisal olarak gecilemez" — yer gercegi
+olculmeden; (3) "42/67 geciyor" — kusurlu etiketle. Ucu de OLCUMLE duzeldi.
+Ders acik: her seferinde EKSIK BIR OLCUMLE hukum verdim. Kullanicinin
+"daha fazla ugras" uyarisi olmasa ucuncusu de duzelmezdi.
+
+**ELDEKI VERI.** 67 kare + duzeltilmis YOLO-seg etiketleri + onizleme:
+`calisma/gercek_kare_etiket_v1/` (v5 kurallariyla yeniden yazildi).
+
+⚠ **NE IDDIA ETMIYORUM:** etiketler hala YARI OTOMATIKTIR. Iki kare tam
+cozunurlukte denetlendi, 67'sinin tamami DEGIL. Catida kucuk yesil lekeler
+kaldigi gorüldü (koyu/dokulu cati parcalari). Sayilar bu gurultuyu tasir.
