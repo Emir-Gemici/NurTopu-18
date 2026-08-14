@@ -8513,3 +8513,39 @@ kararsiz".
 ⚠ **NE IDDIA ETMIYORUM:** sahadaki gurultu seviyesini OLCMEDIM; %0,8 secilmis
 bir alt sinirdir. Ayrica ardisik VIDEO kareleriyle sinanmadi — kadraj kumesi
 bagimsiz karelerden olusur, gercek zikzak orani olculmedi.
+
+---
+
+### D-123 · ONCEDEN KAYIT · v28 (512) kabul kurali — SONUC GORULMEDEN yazildi
+Yazan: Claude 1 (mimar) · 2026-08-15 01:15 · kullanici sorusu: "v28 baslatmaya gerek var mi bu gece"
+
+**NEDEN KOSULUYOR.** D-112 su borcu acik birakti: *"512'de EGITILMIS bir modelin
+512'de nasil davranacagi OLCULMEDI; tum olcumler 640'ta egitilmis modeller
+icindir."* v27 640 ile egitildi ve 512'de kosuyor; bu uyusmazlik hic olculmedi.
+GPU gece bostadir, maliyet ~3,8 saattir (v27'nin 640'taki 5,9 saatinin 0,64 kati).
+
+**NEDEN BEKLENTI DUSUK TUTULUYOR.** v27 alti kapiyi da geciyor (D-115, D-119).
+v28 hicbir tikanikligi ACMAZ. Bu kosu bir ARAYIS degil, bir OLCUM BORCUNUN
+kapatilmasidir.
+
+**DEGISKEN KONTROLU.** v28, v27 ile AYNI veriyi (`karisim_t54_engelli.yaml`),
+AYNI receteyi ve AYNI on-egitimi kullanir. Tek fark `imgsz`: 640 -> 512.
+
+**KARAR KURALI — VARSAYILAN "v27 KALIR".** v28 ancak sunlarin HEPSI saglanirsa
+uretime alinir:
+  1. D-107'nin ALTI olcutunu de gecer (K0..K5), ve
+  2. K3/K4/K5 v27'ye gore BOZULMAZ, ve
+  3. su ikisinden EN AZ BIRI:
+     a. K2 (moloza basma) v27'den **en az 2 puan** iyidir (yani <= %5,1), veya
+     b. karar kararliligi (D-122 olcumu, ayni tohum ve sigma) cevrilme sayisini
+        **9/260'tan en az yariya** indirir (<= 4/260).
+
+Bu esiklerin ALTINDA kalan her sonucta **v27 uretimde kalir** ve v28 yalnizca
+D-112'nin olcum borcunu kapatan bir KAYIT olur. "Biraz daha iyi gorundu" bir
+degistirme gerekcesi DEGILDIR — gurultu tabani 0,04'tur ve model degisimi
+T76 olceginde bir zincir isi getirir (kayit defteri, manifest, iki kilavuz,
+ONNX, paket).
+
+⚠ K-3 hatirlatmasi (dort kez olculdu): mAP/fitness arena siralamasini TERSINE
+cevirir. v28'in fitness'i v27'yi gecerse bu **tek basina hicbir sey ifade
+etmez**; karar yalnizca D-107 kapilarina ve D-122 kararliligina aittir.
