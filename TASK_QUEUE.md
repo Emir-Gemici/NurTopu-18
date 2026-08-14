@@ -3599,6 +3599,31 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
   - **KAPI:** `61_rota_moloza_basma.py` üç sayısı bozulmayacak; gözle yan yana
     doğrulama zorunlu (**görsel kazanır**, D-80).
 
+- [ ] **T79 — Koridor seçimi binde-4'lük algı gürültüsüne karşı KARARSIZ: `.pt` ile `.onnx` aynı karede 28 m ayrı rota üretiyor** · `codes/costmap_path_finder.py`, `comms/yks_gui.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-119**
+  - Ölçüldü (n=260, eşleştirilmiş, T66 kabul kümesi): karar aynı **258/260**,
+    zemin maskesi IoU **0,9968**, ama azami rota sapması **360 px = 28,1 m**.
+    ```text
+    sa_000063   .pt şerit 1 (darboğaz 15,0 px · pay 0,92 px)   .onnx şerit 2 (17,0 px)
+    sa_000172   .pt şerit 1 (540/0/0 · güven 1,000)            .onnx şerit 3 (0/0/540 · 0,982)
+    ```
+  - **İkisi de güvenli**: her iki artefakt da K1..K5'i geçiyor. Sorun "hangisi
+    doğru" değil, **seçimin kararsız olması**. ONNX'e özgü DEĞİLDİR — farklı
+    ışık veya tekrar koşum da çevirebilir.
+  - **Etki:** `comms/yks_gui.py:1285` rotayı KENDİSİ hesaplıyor. `.pt` ile
+    hesaplayan bir yer, `.onnx` ile hesaplayan bir yer olursa hakem, aracın
+    gitmediği güzergâhı izler.
+  - **YAP — iki seçenekten birini ÖLÇÜMLE seç:**
+    (a) beraberlik bozma kuralı: adaylar arasındaki fark gürültü tabanının
+        altındaysa deterministik ve HİSTEREZİSLİ seçim (kare kare zıplamasın);
+    (b) rotayı TEK yer hesaplasın, diğeri yalnızca göstersin — mimarinin
+        tek-otorite ilkesine daha yakın olan budur.
+  - **ÖNCE DOĞRULA (mimar doğrulamadı):** saha topolojisinde gerçekten İKİ hesap
+    yeri var mı? İHA telsizle **rota** mı yoksa **maske** mi gönderiyor?
+    Cevap "tek yer" ise (a) gereksizdir, kusur yalnız demo kipindedir.
+  - **KAPI:** `codes/test_rota_sentetik.py` 15/15 · `67_onnx_karar_denkligi.py`
+    yeniden koşulduğunda **karar uyuşmazlığı 0/260** ve azami sapma gürültü
+    mertebesinde (< 1 m) olmalı.
+
 - [ ] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
 avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
   - Yer gerçeği etiketleriyle (model YOK, yani kusursuz algı) ölçüldü:

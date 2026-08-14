@@ -8150,3 +8150,80 @@ denetci KOSULMADI. Kosulmus gibi yazilmadi.
   5. Kapinin HAM zemini olcmesi bir TASARIM secimidir ve bu gorevde
      sorgulanmadi (madde 6'daki olcum yalnizca verdikti degistirmedigini
      gosterir, secimin dogrulugunu kanitlamaz).
+
+---
+
+### D-119 · 🔴 OLCUM · Sahaya giden ONNX ALTI KAPIYI DA GECIYOR — ama koridor SECIMI binde-4'luk gurultuye karsi KARARSIZ
+Olcen: Claude 1 (mimar) · 2026-08-15 00:30 · acik kalan D-116/3'un kapatilmasi
+
+**NEDEN OLCULDU.** Kabul denetimi (D-115) `navitas_seg_v27_best.pt` uzerinde
+kosuldu. Jetson'da kosacak olan ise `navitas_seg_v27_best_512_fp16.onnx` —
+FP16'ya indirilmis, BASKA calisma zamaniyla kosan BASKA bir artefakt. T76'yi
+yapan amele bunu acikca "DOGRULANAMADI (1): ONNX hic kosulmadi" diye birakmisti.
+Ayrisiyorlarsa elimizdeki butun kabul kaydi UCMAYACAK bir dosyaya aitti.
+
+**BULGU 1 — ONNX ALTI KAPIYI DA GECIYOR.** Ayni denetim, ayni esikler:
+
+    olcut              .pt          .onnx
+    K0 korluk yok      GECTI        GECTI    (figur %7,8 · raw 0/8 · cp 0/8)
+    K1 rota            255/260      255/260
+    K2 moloza basma    18/255       16/255
+    K3 agir basma      0/255        0/255
+    K4 arena disi      1/255        1/255
+    K5 bariyer         0/172 · 0px  0/172 · 0px   (duyar %99,1 vs %99,4)
+
+**BULGU 2 — MASKELER NEREDEYSE AYNI** (eslestirilmis, n=260):
+
+    zemin maskesi IoU        ort 0,9968 · en dusuk 0,9847
+    kaplama farki (onnx-pt)  ort +0,00058 · azami |fark| 0,00424
+
+FP16 nicemlemesi algiyi pratikte bozmuyor.
+
+**BULGU 3 — 🔴 AMA KARAR 2 KAREDE AYRISIYOR VE ROTA 28 METRE SAPIYOR.**
+
+    KARAR AYNI            258/260  (%99,2)
+    rota ortusmesi (IoU)  ort 0,9850 · EN DUSUK 0,0000
+    azami sapma           ort 2,6 px (0,20 m) · EN KOTU 360 px (28,1 m)
+
+    sa_000063   .pt serit 1   .onnx serit 2
+    sa_000172   .pt serit 1   .onnx serit 3
+
+Binde 4'luk maske farki 28 metrelik rota farkina donusuyor.
+
+**KOK NEDEN — MODEL DEGIL, KARAR KURALI.** Iki kare farkli sebeplerle ayrisiyor:
+
+  `sa_000063` — KIL PAYI BERABERLIK. `.pt` serit 1'i seciyor; darbogazi
+  **15,0 px**, gereken **14,08 px** -> pay **0,92 px = 7 cm**. ONNX ayni serit
+  icin 31,98 px olcup serit 2'ye geciyor (17,0 px). Iki aday zaten esite yakin.
+
+  `sa_000172` — IKI GECERLI KORIDOR. `.pt` rotanin 540 pikselinin TAMAMINI
+  serit 1'e koyuyor (guven 1,000, darbogaz 25,0 px); ONNX TAMAMINI serit 3'e
+  koyuyor (guven 0,982, darbogaz 22,0 px). Ikisi de gereken 14,08 px'i rahat
+  asiyor. Hicbiri YANLIS degil — arena iki koridor sunuyor ve secim, binde-4
+  gurultusuyle ceviriliyor.
+
+**ETKI — HAKEM EKRANI ILE ARACIN AYNI KORIDORU GOSTERMEME IHTIMALI.**
+`comms/yks_gui.py:1285` rotayi KENDISI hesapliyor (`analyze_path`). Yani `.pt`
+ile hesaplayan bir yer ve `.onnx` ile hesaplayan bir yer olusuyor. Ikisi de
+GUVENLI rota uretir (her ikisi de K1..K5'i geciyor), ama AYNI rotayi uretmez.
+Hakem, aracin gitmedigi bir guzergahi izliyor olabilir.
+
+**BU ONNX'E OZGU DEGILDIR.** FP12/FP16 yalnizca gurultunun bir kaynagi. Ayni
+kararsizlik farkli isik, farkli yigin boyu ya da tekrar kosumla da tetiklenir.
+Duzeltme "ONNX'i .pt'ye benzet" DEGILDIR; ya beraberlik bozma kurali
+(histerezisli) eklenmeli, ya da rotayi TEK bir yer hesaplayip digeri yalnizca
+GOSTERMELIDIR. Ikincisi mimarinin tek-otorite ilkesine daha yakindir.
+
+**ARACLAR.** `67_onnx_karar_denkligi.py` (yeni) — olculen sey maske benzerligi
+DEGIL karardir; yer gercegi KULLANILMAZ, sorulan "hangisi dogru" degil "ikisi
+ayni mi".
+
+⚠ **NE IDDIA ETMIYORUM:**
+  1. Sahadaki topolojinin gercekten IKI hesap yeri icerdigini DOGRULAMADIM.
+     Olctugum sey `yks_gui`nin rotayi yerel olarak hesapladigidir; IHA
+     tarafinin telsizle rota mi yoksa maske mi gonderdigi ayrica denetlenmeli.
+  2. 2/260'in sahada hangi siklikta gorulecegini bilmiyorum — kadraj kumesi
+     sentetiktir (D-88/D-99).
+  3. ONNX CPU'da kosuldu (`CUDAExecutionProvider` bu makinede kayitli degil);
+     dolayisiyla bu olcumden HIZ sonucu CIKARILAMAZ. Jetson hala olculmedi
+     (D-89).
