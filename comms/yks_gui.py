@@ -65,33 +65,74 @@ def S(px):
     return int(px * OLCEK)
 
 
-def _uretim_modeli_adi():
-    """Üretim ağırlığının ADI **kayıt defterinden** okunur (anayasa madde 16).
+def _kayit_profili():
+    """Kayıt defterinin **etkin profilini** oku — TEK okuma yolu (madde 16).
 
-    T76: sürüm adı bu dosyaya ÇIPLAK YAZILMAZ. Tek kaynak
-    `config/model_registry.json`'un etkin profilidir; saha tarafında
-    `codes/rpi_inference.py::model_kayit_dogrula` **aynı defteri** okur.
-    Böylece ekran ile donanım tek bildirimden beslenir — biri çevrilip
+    `config/model_registry.json` bu ekranın tek bildirim kaynağıdır: hangi
+    ağırlık yüklenecek (T76) **ve** o ağırlığın hangi zeminde kabul edildiği
+    (T77). Saha tarafında `codes/rpi_inference.py::model_kayit_dogrula` aynı
+    defteri okur; ekran ile donanım tek bildirimden beslenir — biri çevrilip
     diğeri unutulamaz (D-58/D-60 ıraksama sınıfı; T58'de manifest tam bu
     yüzden sekiz gün v17 derken pakette v21 duruyordu, REVIEW_LOG D-83).
 
-    Fail-closed: defter yoksa/bozuksa ad **UYDURULMAZ**, hakem ekranı açılmaz.
-    Sessiz varsayılan, ekranın sahadan farklı bir modeli göstermesi demektir.
+    Fail-closed: defter yoksa/bozuksa/profil yoksa **UYDURULMAZ**.
     """
     import json as _json
     defter = _PROJE_KOKU / "config" / "model_registry.json"
     try:
         veri = _json.loads(defter.read_text(encoding="utf-8"))
-        yol = veri["profiles"][veri["default_profile"]]["path"]
+        return veri["profiles"][veri["default_profile"]], defter
     except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
         raise RuntimeError(
             f"Üretim model kayıt defteri okunamadı ({defter}); hakem ekranı "
             "hangi ağırlığı yükleyeceğini UYDURMAZ.") from exc
+
+
+def _uretim_modeli_adi():
+    """Üretim ağırlığının ADI kayıt defterinden okunur (T76).
+
+    Sürüm adı bu dosyaya ÇIPLAK YAZILMAZ. Fail-closed: ad uydurulmaz,
+    hakem ekranı açılmaz. Sessiz varsayılan, ekranın sahadan farklı bir
+    modeli göstermesi demektir.
+    """
+    profil, defter = _kayit_profili()
+    try:
+        yol = profil["path"]
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError(
+            f"Kayıt defterindeki etkin profilde `path` yok: {defter}") from exc
     ad = str(yol).replace("\\", "/").rsplit("/", 1)[-1]
     if not ad.endswith(".pt"):
         raise RuntimeError(
             f"Kayıt defterindeki etkin profil `.pt` ağırlık göstermiyor: {yol!r}")
     return ad
+
+
+def _kabul_kumesi_koku():
+    """Üretim modelinin **KABUL EDİLDİĞİ** kadraj kümesinin kökü (T77).
+
+    Kusur (D-116/5): bu satır T60 kümesini gösteriyordu, oysa v27 **T66**
+    kümesinde kabul edilmişti (D-115). Yani hakem ekranı modeli, kabul
+    edilmediği bir dağılımda gösteriyordu — ölçüldü: T60 **11/12**,
+    T66 **12/12**.
+
+    Kabul kümesi modelin KİMLİĞİNİN parçasıdır (hangi zeminde kabul edildi),
+    bu yüzden ağırlıkla **aynı yerde** durur: sürüm değişince küme de tek
+    yerden değişir, ikisi ayrı ayrı güncellenmez.
+
+    ⚠ Dizinin VAR OLMASI şart koşulmaz — küme depo dışındadır
+    (`O:\\navitas-local-train\\...`) ve temiz bir klonda bulunmayabilir. O
+    durumda ekran "Kaynak boş" der; sessizce BAŞKA bir kümeye düşmez.
+    Fail-closed olan şey **bildirimin yokluğudur**, verinin değil.
+    """
+    profil, defter = _kayit_profili()
+    ham = profil.get("kabul_kumesi") if isinstance(profil, dict) else None
+    if not isinstance(ham, str) or not ham.strip():
+        raise RuntimeError(
+            f"Kayıt defterindeki etkin profilde `kabul_kumesi` yok/geçersiz "
+            f"({defter}); hakem ekranı modeli hangi zeminde göstereceğini "
+            "UYDURMAZ.")
+    return Path(ham.strip())
 
 
 def _udp_adres(deger):
@@ -936,8 +977,11 @@ class YksArayuz:
     # Kompozit kume yer gercegi. SALT GOSTERIM: karar yoluna GIRMEZ (aksi hâlde
     # test kendi kendini dogrular). Bkz. test_beklenen_serit_karara_sizmiyor.
     ALGI_KOMPOZIT_DIZIN = ("data", "arena_kompozit")
-    ALGI_ARENA_KADRAJ_KOKU = Path(
-        r"O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60")
+    # T77 (kusur D-116/5): burada T60 kumesinin yolu CIPLAK yaziliydi ve model
+    # v27'ye gecince kimse cevirmedi — ekran modeli KABUL EDILMEDIGI bir
+    # dagilimda gosteriyordu. Yol artik kayit defterindeki `kabul_kumesi`
+    # alanindan gelir; surum degisince kume de TEK YERDEN degisir.
+    ALGI_ARENA_KADRAJ_KOKU = _kabul_kumesi_koku()
     ALGI_ARENA_GERCEK_DOSYA = (
         _PROJE_KOKU / "data" / "arena_referans" / "sartname_s9_arena.png")
 
@@ -1078,7 +1122,7 @@ class YksArayuz:
             try:
                 olcekler = self._arena_kadraj_olcekleri()
             except (OSError, TypeError, ValueError) as exc:
-                return None, (f"T60 manifesti okunamadı/geçersiz: "
+                return None, (f"kabul kümesi manifesti okunamadı/geçersiz: "
                               f"{type(exc).__name__}: {exc} — "
                               "ölçek uydurulmadı")
             secili = Path(yol).resolve()
@@ -1089,7 +1133,8 @@ class YksArayuz:
             if mpp is None:
                 return None, (f"manifest'te {secili.name} için mpp yok/geçersiz "
                               "— ölçek uydurulmadı")
-            return mpp, "T60 manifesti (kontrollü sentetik kadraj varsayımı)"
+            return mpp, ("kabul kümesi manifesti "
+                         "(kontrollü sentetik kadraj varsayımı)")
         if self.algi_kaynak != "kompozit":
             return None, (f"{self.algi_kaynak} kümesinde telemetri/ölçek yok "
                           "— irtifa+FOV bilinmiyor")

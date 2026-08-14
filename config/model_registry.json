@@ -7,6 +7,8 @@
    "path": "models/navitas_seg_v27_best.pt",
    "backend": "pytorch",
    "imgsz": 512,
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "_kabul_kumesi_notu": "T77 · D-115: v27 BU kume uzerinde kabul edildi (T66 ada geometrisi, n=260). Hakem ekrani `arena_kadraj` kaynagini buradan okur; onceden T60 yolu comms/yks_gui.py'de CIPLAK yaziliydi ve surum v27'ye gecince cevrilmedi (kusur D-116/5) — ekran modeli KABUL EDILMEDIGI bir dagilimda gosteriyordu (olculdu: T60 11/12, T66 12/12). Surum degisirse BU alan da degismelidir; ikisi ayni profilde durur ki ayri ayri unutulamasin.",
    "sha256": "1465ed3d288af37e1b3681dd6adabe7ab956a4ab3dc207003bca9ec4fcee489d",
    "classes": {
     "0": "traversable",

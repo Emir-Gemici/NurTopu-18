@@ -3038,6 +3038,135 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T78 — Zemin kapısı v24 ile kalibre, v27 ile DEĞİL: yeniden ölç** · ölçüm görevi · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-118**
+  - **✅ ÖLÇÜLDÜ · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-118**.
+    **1568 ölçüm.** 🔴 **EŞİK DEĞİŞTİRİLMEDİ** — 0,67 / 0,50 aynen duruyor.
+  - **VERDİKT: hipotezin ÖNCÜLÜ doğru, SONUCU yanlış.** v27 kabul dağılımında
+    tavanı **delmiyor**: azami kaplama **0,636**, tavana **+0,034 pay**.
+    Tavanı delen **v24**'tü (azami 0,765, pay **−0,095**).
+  - 🔴 **Gerçek karelerde yer gerçeği YOK — bu önce söylenmeli.** Emrin üç
+    kümesinde "yer gerçeği" insan etiketi değil:
+    `copy_paste_gercek` → `zemin_tam_cerceve: true`, GT kaplama **1,000**;
+    `arena_kompozit` → GT `navitas_seg_v21_best.pt` **çıktısı**, GT **0,285**;
+    `raw_frames` → etiket yok. **Aynı otopark için iki GT 1,000 ve 0,285 diyor.**
+    Emrin 2. maddesi bu kümelerde karşılanamaz; cevap sahnenin değil etiket
+    konvansiyonunun cevabı olurdu.
+  - 🔴 **D-116'daki kompozit reddi v27'den GELMİYOR** (n=524, iki model):
+    ```text
+    kume               n    v24 medyan  v27 medyan   fark     RED (v24 / v27)
+    arena_kompozit     9      0,829       0,836     +0,007     9/9  ·   9/9
+    raw_frames        67      0,801       0,806     +0,005    67/67 ·  67/67
+    copy_paste_gercek 448     0,801       0,805     +0,004   448/448 · 448/448
+    ```
+    v24 aynı kareyi aynı şekilde reddediyor. "v27 geldi de bozuldu" gerekçesi
+    **ölçümle çürütüldü**.
+  - **ASIL ÖLÇÜM — gerçek GT'si olan tek küme: T66 kabul kümesi (n=260):**
+    ```text
+    olcut                      v24                 v27
+    kaplama min/med/maks  0,000/0,272/0,765   0,189/0,332/0,636
+    GT kaplama            0,184/0,334/0,652   (ayni GT)
+    |model - GT| medyan        0,1023              0,0051
+    IoU medyan                 0,4534              0,9220
+    kaplama > 0,67               5/260               0/260
+    KAPI REDDI                   1/260               0/260
+    TAVANA KALAN PAY            -0,095              +0,034
+    ```
+  - **Neden öncül doğru ama sonuç yanlış:** v27 gerçekten daha geniş zemin
+    görüyor (0,272 → 0,332) — ama **GT'nin kendisi 0,334**. Genişlemek tavana
+    değil **gerçeğe** yaklaşmaktır; tavan (0,67) gerçeğin **iki katı** uzağında.
+    v24'ün tavanı deldiği 5 kare, v24'ün **yanıldığı** karelerdi (fark +0,089…
+    +0,258, IoU 0,476…0,842); v27 aynı karelerde GT'nin altında/eşinde.
+  - **Kapı (0,67 / 0,50) v27 için YENİDEN GEÇERLENDİ** (kalibre edilmedi):
+    meşru elenen **0/260** (v24'te 1/260 idi) · arena dışı yakalanan **524/524**.
+  - **GÖRSEL KAPI (D-80) — kapı HAKLI:** `results/t78_zemin_kalibrasyon/
+    kompozit_zemin_maskesi.png` (girdi · v24 · v27): her iki model de araçları
+    kırmızı (doğru) ama **binanın ÇATISINI YEŞİL** — yani zemin — boyuyor.
+    Kapının gerekçe metni ("çatı/çim/toprak zemin sayılmış olabilir") o karede
+    **harfiyen doğru**. Tavanı gevşetmek, İKA'yı bir binanın **çatısına** rota
+    çizmeye açık bırakırdı.
+  - **Önceden kapatılan itiraz** ("kapı HAM zemini ölçüyor, ETKİN serbest alanı
+    değil"): ölçüldü — `arena_kompozit` 0,825 → 0,788, `raw_frames` 0,814 →
+    0,776; **red 9/9 ve 67/67 aynen kalıyor**. Verdikt değişmiyor (çatıda engel
+    yok; engeli çıkarmak çatıyı zemin saymayı düzeltmez). **Uygulanmadı** —
+    eşik çifti HAM zemin üzerinde türetilmiştir (T52/D-66, D-85).
+  - **D-114/D-115 bağımsız doğrulandı:** D-114 0,3419 / 0,2877 / GT 0,3459
+    demişti; bağımsız ölçümüm 0,3315 / 0,2723 / 0,3345. Üstüne D-114'te olmayan
+    şey: v27'nin GT'ye **yakınlığı** (IoU 0,453 → 0,922).
+  - **KAPILAR:** `test_rota_sentetik.py` → **15/15** · `discover -s tests -q` →
+    **Ran 475 · OK** · `ZEMIN_KAPLAMA_TAVANI = 0.67` ve
+    `ZEMIN_KENAR_DAYANMA_TAVANI = 0.50` **değişmedi**.
+  - **KAPI (d) KOŞULMADI** — emir "eşiği değiştirdiysen kabul denetimini koş"
+    diyor; eşik değişmedi, K0..K5'in değişmesi için sebep yok. Koşulmuş gibi
+    **yazılmadı**.
+  - ⚠ **DOĞRULANAMADI:** (1) **gerçek arena karesi yok** — "gerçek kareler"
+    otoparktır, tavanın gerçek arenada doğru olduğu ölçülemedi; T59'un tek
+    gerçek arena karesi v27 ile yeniden ölçülmedi (küme listesinde yoktu);
+    (2) T59'un kaydettiği 0,67 bedeli (`sa_000150`) v27 için yeniden ölçülmedi
+    — o kare T60 kümesinden; (3) eşli tabloda `raw_frames` 64/67 eşleşti (üç
+    kare adı alt klasörler arasında aynı; özet tablo 67'nin tamamını kullanır);
+    (4) "çökme" tanımı gerçek karelerde yorumlanamadığı için o tablo **karara
+    sokulmadı** — karar yalnız T66 kümesine ve görsele dayanır; (5) kapının HAM
+    zemini ölçmesi bir **tasarım seçimidir**, bu görevde sorgulanmadı.
+
+- [STATUS: READY_FOR_REVIEW] **T77 — Hakem ekranı, modelin KABUL EDİLDİĞİ zemini göstersin** · `comms/yks_gui.py`, `config/model_registry.json`, `tests/**` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-116/5**
+  - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-117**.
+  - **Kusur:** `ALGI_ARENA_KADRAJ_KOKU` T60 yolunu **çıplak sabit** taşıyordu;
+    model v27'ye geçince kimse çevirmedi. Ekran, modeli **kabul edilmediği**
+    bir dağılımda gösteriyordu (T60 11/12 · T66 12/12). T58'in kusur sınıfının
+    aynısı (D-58/D-60/D-83) — T76 aynı dosyada **ağırlık** için kapatmıştı,
+    **zemin** açık kalmıştı.
+  - **Kabul kümesi modelin kimliğine bağlandı:** yol artık
+    `config/model_registry.json` etkin profilindeki **`kabul_kumesi`**
+    alanından okunuyor. Gerekçe: "hangi zeminde kabul edildi" modelin
+    kimliğinin parçasıdır; ağırlıkla **aynı yerde** durur ki sürüm değişince
+    ikisi ayrı ayrı unutulamasın.
+  - **Tek okuma yolu:** `_uretim_modeli_adi()` ve `_kabul_kumesi_koku()` artık
+    ortak `_kayit_profili()` üzerinden okuyor. T76'nın fail-closed davranışı
+    korundu (beş bozuk defter biçimiyle sınanan testler değişmeden geçti).
+  - ⚠ **Fail-closed sınırı bilerek çizildi:** alan yok/boş/sayı ise
+    `RuntimeError`. Ama **dizinin var olması şart koşulmadı** — küme depo
+    dışındadır, temiz klonda bulunmayabilir; o durumda ekran "Kaynak boş" der.
+    Fail-closed olan şey **bildirimin** yokluğudur, verinin değil; aksi hâlde
+    bu satır ağırlık gerektirmeyen ~470 testi import zamanında çökertirdi.
+  - **Ölçek notu da düzeltildi:** ekran "T60 manifesti" yazıyordu → "kabul
+    kümesi manifesti". Küme değişince ekranda yanlış küme adı kalmıyor.
+  - **KAPI (a):** `codes/test_rota_sentetik.py` → **SONUC: 15/15 dogru**.
+  - **KAPI (b):** `discover -s tests -q` → **Ran 475 tests · OK**
+    (T76'da 471 idi; **düşmedi**, +4).
+  - **KAPI (c) — hakem ekranı** (`--demo` yok, model sahte değil, **kare
+    seçilmedi**, idx 0):
+    ```text
+    kare  sa_000026.jpg
+    karar 2·ORTA · güven 0.848 · model: navitas_seg_v27_best.pt
+    ölçek 0.0781 m/px (kabul kümesi manifesti) · gövde açıklığı 14.1 px
+    C-uzayı UYGULANDI · darboğaz 19.0 px @ şerit 2 · dağılım 0/540/0 px
+    SS: results/t77_hakem_ekrani/yks_ekran_kabul_kumesi.png (1707x996)
+    ```
+    **Gözle doğrulandı (D-80):** kırmızı engel katmanı (moloz **adaları** — T66
+    geometrisi), serbest koridor, **sarı rota + waypoint'ler**, tepede `H`,
+    İHA-İB mavi alanı ve yatay bariyerler. Panel, T76'nın T60 görüntüsündeki
+    **dikey şeritlerden gözle ayırt edilebiliyor** — gösterilen zeminin
+    gerçekten değiştiği görsel olarak da doğrulandı.
+  - ⚠ Darboğaz **41.0 px (T60) → 19.0 px (T66)**, güven **1.000 → 0.848**.
+    T66 ada geometrisi koridorları **daraltıyor**. Gerileme değil, kabul
+    kümesinin daha zor olması — ama **T74** ile aynı yöne işaret ediyor.
+  - **KAPI (d) — kabul kümesinde karar (n=12, ilk 12, seçim yok):**
+    ```text
+    ROTA URETILEN: 12/12   (8 ORTA · 3 SOL · 1 SAG)
+    C-uzayi: 12/12 UYGULANDI
+    ```
+  - **Test ters çevrildi, SİLİNMEDİ:** yol değil **invaryant** kilitli —
+    `test_kadraj_koku_KABUL_KUMESIDIR` (ekran == defterin ilanı) ·
+    `test_kadraj_yolu_kaynakta_CIPLAK_YAZILMAMIS` (madde 16) ·
+    `test_ilan_edilen_kume_ESKI_T60_DEGIL` (açık gerileme kilidi) ·
+    `test_defterde_kabul_kumesi_yoksa_ekran_UYDURMAZ` (fail-closed).
+  - ⚠ **DOĞRULANAMADI:** (1) n=12 ilk karelerdir, **260'ın tamamı ekran
+    yolundan koşulmadı** (D-115'in 255/260'ı başka betikle ölçüldü);
+    (2) kabul kümesi de **sentetiktir** — ekranın doğru zemini göstermesi
+    sahada çalışacağı anlamına **gelmez** (D-88/D-99); (3) `kabul_kumesi` depo
+    dışını gösterir, başka makinede küme **bulunmaz**; (4) kompozit kaynak hâlâ
+    `ZEMIN_MASKESI_SUPHELI` veriyor — T77 ona **dokunmadı**, T78'in konusu.
+
 - [STATUS: READY_FOR_REVIEW] **T76 — v27'yi üretim zincirine al, `model_yukleme` halkasını kapat** · `config/model_registry.json`, `jetson_paket/models/**`, `comms/yks_gui.py`, `JETSON_KILAVUZ.md` (İKİ kopya), `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-115**
   - **✅ UYGULANDI · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-116**.
     Emrin hedefi tuttu: `model_yukleme` **DÜŞTÜ → GEÇTİ**, kuru koşu

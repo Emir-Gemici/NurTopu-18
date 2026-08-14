@@ -7922,3 +7922,231 @@ rota poligonu + waypoint'ler**, tepede `H` hedefi. Ekran basligi ve buton
      kiyasliyor (D-106/3 hala acik).
   8. Pakette v17/v20/v21/v24 agirliklari duruyor; paket 522 MB. Budama
      istenmedi, yapilmadi.
+
+---
+
+### D-117 · UYGULANDI · T77: hakem ekrani artik modelin KABUL EDILDIGI zemini gosteriyor
+Uygulayan: Claude 2 · 2026-08-15 · gorev T77 · kusur D-116/5
+
+**KUSUR.** `comms/yks_gui.py` `ALGI_ARENA_KADRAJ_KOKU` T60 kumesinin yolunu
+CIPLAK SABIT tasiyordu. Uretim modeli v27'ye gecince (T76) kimse o satiri
+cevirmedi; hakem ekrani modeli **KABUL EDILMEDIGI** bir dagilimda gosteriyordu.
+v27'nin kabul kumesi **T66**'dir (D-115, n=260). Olculmustu:
+
+    T60 (ekranin gosterdigi)   11/12
+    T66 (kabul kumesi)         12/12
+
+Bu, T58'in kusur sinifinin AYNISIDIR (D-58/D-60/D-83): bir uc cevrilir,
+otekinde ciplak sabit unutulur. T76 ayni dosyada AGIRLIK icin bunu kapatmisti;
+ZEMIN acik kalmisti.
+
+**1 · KABUL KUMESI MODELIN KIMLIGINE BAGLANDI.** Yol artik
+`config/model_registry.json`'un etkin profilindeki **`kabul_kumesi`** alanindan
+okunur. Gerekce: "hangi zeminde kabul edildi" modelin KIMLIGININ parcasidir;
+agirlikla AYNI yerde durur ki surum degisince ikisi ayri ayri unutulamasin.
+
+    profiles.competition.kabul_kumesi =
+        "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66"
+
+**2 · TEK OKUMA YOLU.** T76'da `_uretim_modeli_adi()` defteri kendi okuyordu;
+simdi ikisi de `_kayit_profili()` uzerinden okuyor — defter bu ekranda TEK
+noktadan aciliyor. `_uretim_modeli_adi`'nin fail-closed davranisi korundu
+(bes bozuk defter bicimiyle sinanmis testler degismeden gectI).
+
+**3 · FAIL-CLOSED SINIRI BILEREK CIZILDI.** `kabul_kumesi` alani yoksa/bos/sayi
+ise `RuntimeError` — ekran hangi zemini gosterecegini UYDURMAZ. Ama **dizinin
+VAR OLMASI sart kosulmadi**: kume depo disindadir
+(`O:\navitas-local-train\...`) ve temiz bir klonda bulunmayabilir; o durumda
+ekran zaten "Kaynak bos" der. Fail-closed olan sey BILDIRIMIN yoklugudur,
+verinin degil. Aksi halde bu satir, agirlik gerektirmeyen ~470 testi olan bir
+depoda import zamaninda cokerdi.
+
+**4 · OLCEK NOTU DA DUZELTILDI.** Ekran "T60 manifesti" yaziyordu; artik
+"kabul kumesi manifesti". Kume degisince ekranda YANLIS kume adi kalmiyor.
+
+**KAPI (a).** `codes/test_rota_sentetik.py` -> **SONUC: 15/15 dogru**
+
+**KAPI (b).** `unittest discover -s tests -q` -> **Ran 475 tests · OK**
+(T76'da 471 idi; **dusmedi**, +4).
+
+**KAPI (c) — HAKEM EKRANI.** Ekran gercekten acildi (`--demo` YOK, model sahte
+degil), kaynak `arena_kadraj`, **kare idx 0 — KARE SECILMEDI**:
+
+    kare    sa_000026.jpg
+    karar   2·ORTA · guven 0.848 · model: navitas_seg_v27_best.pt
+    olcek   0.0781 m/px (kabul kumesi manifesti) · govde acikligi 14.1 px
+            C-uzayi UYGULANDI · darbogaz 19.0 px @ serit 2
+            rota serit dagilimi 0/540/0 px
+    SS      results/t77_hakem_ekrani/yks_ekran_kabul_kumesi.png (1707x996)
+    panel   results/t77_hakem_ekrani/panel_01.png
+
+GOZLE DOGRULANDI (D-80): kirmizi engel katmani (moloz ADALARI — T66
+geometrisi), serbest koridor, **sari rota poligonu + waypoint'ler**, tepede
+`H` hedefi, IHA-IB mavi alani ve yatay kirmizi bariyerler gorunuyor. Panel
+T76'nin T60 ekran goruntusundeki DIKEY SERITLERDEN gozle ayirt edilebiliyor —
+gosterilen zeminin gercekten degistigi gorsel olarak da dogrulanmistir.
+
+⚠ Darbogaz **41.0 px (T60) -> 19.0 px (T66)** dustu; guven **1.000 -> 0.848**.
+T66 ada geometrisi koridorlari DARALTIYOR. Bu bir gerileme degil, kabul
+kumesinin daha zor olmasidir — ama T74'un ("koridorlar govde acikligina gore
+dar") ayni yone isaret ettigi kayda gecer.
+
+**KAPI (d) — KABUL KUMESININ TAMAMINDA KARAR (n=12, kare SECILMEDI, ilk 12):**
+
+    sa_000026  2·ORTA  0.848      sa_000032  2·ORTA  0.670
+    sa_000027  1·SOL   1.000      sa_000033  2·ORTA  1.000
+    sa_000028  2·ORTA  1.000      sa_000034  2·ORTA  1.000
+    sa_000029  1·SOL   1.000      sa_000035  1·SOL   1.000
+    sa_000030  2·ORTA  0.670      sa_000036  3·SAG   1.000
+    sa_000031  2·ORTA  0.723      sa_000037  2·ORTA  1.000
+
+    ROTA URETILEN: 12/12    (8 x ORTA · 3 x SOL · 1 x SAG)
+    C-uzayi: 12/12 UYGULANDI (kabul kumesi manifesti olcegi her karede var)
+
+Kume mock'lanmadi: olcum `ALGI_ARENA_KADRAJ_KOKU` ne diyorsa onu kullanir,
+yani kayit defterinin ilan ettigi kumeyi.
+
+**TEST TERS CEVRILDI, SILINMEDI.** `test_arena_kaynaklari_listede_ve_yollari_sabit`
+T60 yolunu CIVILIYORDU. Artik yol degil **invaryant** kilitli:
+
+    test_kadraj_koku_KABUL_KUMESIDIR          ekran == defterin ilan ettigi kume
+    test_kadraj_yolu_kaynakta_CIPLAK_YAZILMAMIS  madde 16 (kaynakta yol yok)
+    test_ilan_edilen_kume_ESKI_T60_DEGIL      acik gerileme kilidi
+    test_defterde_kabul_kumesi_yoksa_ekran_UYDURMAZ  fail-closed
+
+**DOGRULANAMADI**
+  1. n=12 ilk karelerdir; kumenin TAMAMI (260) bu gorevde kosulmadi. D-115'in
+     255/260'i ZATEN o kume icindir, ama o olcum farkli bir betikle yapildi —
+     ekran yolundan tam kume kosusu YAPILMADI.
+  2. Kabul kumesi de SENTETIKTIR. Ekranin artik "dogru" zemini gostermesi,
+     modelin sahada calisacagi anlamina GELMEZ (D-88/D-99, kalici kisit).
+  3. `kabul_kumesi` depo disini gosterir; baska bir makinede/temiz klonda kume
+     BULUNMAZ ve ekran "Kaynak bos" der. Kume depoya tasinmadi (boyut).
+  4. Kompozit kaynak hala `ZEMIN_MASKESI_SUPHELI` veriyor (kaplama %77 >
+     tavan %67). T77 ona DOKUNMADI — T78'in konusu.
+
+---
+
+### D-118 · OLCUM · T78: zemin tavani BAYAT DEGIL — hipotez CURUTULDU, esik DEGISTIRILMEDI
+Olcen: Claude 2 · 2026-08-15 · gorev T78 · 1568 olcum · esik DEGISMEDI (0,67 / 0,50)
+
+**SORU (mimar hipotezi, ONCEDEN ILAN EDILDI: "BU BIR IDDIA DEGIL").**
+`ZEMIN_KAPLAMA_TAVANI = 0,67` D-85'te v24 ile kalibre edildi. v27 serbest alani
+daha genis goruyor. v27 zemini DAHA DOGRU gordugu icin v24'e bicilmis tavani mi
+deliyor (tavan bayat), yoksa gercekten ASIRI zemin mi sayiyor (kapi hakli)?
+
+**VERDIKT: HIPOTEZIN ONCULU DOGRU, SONUCU YANLIS. ESIK DEGISTIRILMEDI.**
+v27 kabul dagiliminda tavani **DELMIYOR** — azami kaplamasi **0,636**, tavana
+**+0,034 pay** var. Tavani delen v24'tu (azami 0,765, pay **-0,095**).
+
+---
+
+**1 · GERCEK KARELERDE YER GERCEGI YOK — bu once soylenmelidir.**
+Emrin istedigi uc kumede "yer gercegi" INSAN ETIKETI DEGILDIR:
+
+    dataset/copy_paste_gercek  manifest `zemin_tam_cerceve = true`
+                               -> class 0 TUM KAREYI kapliyor, GT kaplama 1,000
+    data/arena_kompozit        manifest `zemin_model = navitas_seg_v21_best.pt`
+                               -> "yer gercegi" ESKI BIR MODELIN CIKTISI, GT 0,285
+    data/raw_frames            etiket YOK
+
+AYNI otopark sahnesi icin iki "yer gercegi" **1,000 ve 0,285** diyor — aralarinda
+0,7 fark var. Bu kumelerle "GT tavanin ustunde mi" sorusu SORULAMAZ; sorulursa
+alinan cevap sahnenin degil ETIKET KONVANSIYONUNUN cevabidir. Emrin 2. maddesi
+bu yuzden gercek karelerde KARSILANAMAZ.
+
+**2 · GERCEK KARELERDE v24 ILE v27 AYIRT EDILEMIYOR** (n=524, her model):
+
+    kume                  n    v24 kaplama medyan   v27 kaplama medyan   fark
+    arena_kompozit        9          0,829                0,836         +0,007
+    raw_frames           67          0,801                0,806         +0,005
+    copy_paste_gercek   448          0,801                0,805         +0,004
+
+    KAPI REDDI     v24: 9/9 · 67/67 · 448/448      v27: 9/9 · 67/67 · 448/448
+
+🔴 **D-116'da bildirilen kompozit reddi v27'DEN GELMIYOR.** v24 de ayni kareyi
+ayni sekilde reddediyor (kaplama 0,765 vs 0,770). Tavani gevsetmek icin
+"v27 geldi de bozuldu" gerekcesi OLCUMLE CURUTULDU.
+
+**3 · ASIL OLCUM — GERCEK yer gercegi olan TEK kume: T66 kabul kumesi (n=260).**
+Etiketler URETECIN KENDISINDEN gelir; v27 bu kumede kabul edilmisti (D-115).
+
+    olcut                       v24        v27
+    kaplama (min/med/maks)  0,000/0,272/0,765   0,189/0,332/0,636
+    GT kaplama              0,184/0,334/0,652   (ayni GT)
+    |model - GT| medyan          0,1023          0,0051
+    IoU medyan                   0,4534          0,9220
+    kaplama > 0,67 olan kare       5/260           0/260
+    KAPI REDDI                     1/260           0/260
+    TAVANA KALAN PAY              -0,095          +0,034
+
+**ONCUL DOGRU, SONUC YANLIS — sebep olculebilir.** v27 gercekten daha genis
+zemin goruyor (0,272 -> 0,332). Ama GT'nin kendisi **0,334**'tur: genislemek
+tavana YAKLASMAK degil, GERCEGE yaklasmaktir. Tavan 0,67, gercegin **iki kati**
+uzaginda. v24'un tavani deldigi 5 kare, v24'un YANILDIGI karelerdi:
+
+    sa_000023  kapl 0,682  GT 0,424  fark +0,258  IoU 0,476
+    sa_000040  kapl 0,680  GT 0,453  fark +0,227  IoU 0,664
+    sa_000135  kapl 0,680  GT 0,436  fark +0,244  IoU 0,577
+    sa_000222  kapl 0,765  GT 0,652  fark +0,113  IoU 0,842
+    sa_000233  kapl 0,739  GT 0,650  fark +0,089  IoU 0,839
+
+v27 ayni karelerde GT'nin **altinda/esinde** kaliyor (sa_000222: 0,635 vs GT
+0,652, fark -0,017, IoU 0,958). Yani tavan v27 icin **daha bol**, daha dar degil.
+
+**4 · KAPI (0,67 / 0,50) v27 ICIN YENIDEN GECERLENDI** (kalibre EDILMEDI):
+
+    mesru (T66 kabul kumesi)  elenen  0/260     (v24'te 1/260 idi)
+    arena disi gercek kareler yakalanan 524/524
+
+**5 · GORSEL KAPI (D-80: GORSEL KAZANIR) — KAPI HAKLI.**
+`results/t78_zemin_kalibrasyon/kompozit_zemin_maskesi.png` (girdi · v24 · v27):
+her iki model de araclari KIRMIZI (dogru) ama **binanin CATISINI YESIL** —
+yani ZEMIN — boyuyor. Kapinin gerekce metni ("cati/cim/toprak zemin sayilmis
+olabilir") bu karede HARFIYEN dogrudur. Tavani gevsetmek, IKA'yi bir binanin
+CATISINA rota cizmeye acik hale getirirdi.
+
+**6 · ONCEDEN KAPATILAN ITIRAZ — "kapi HAM zemini olcuyor, ETKIN serbest alani
+degil".** Olculdu (v27, zemin AND NOT engel):
+
+    kume              HAM kaplama   ETKIN kaplama   HAM red   ETKIN red
+    arena_kompozit       0,825          0,788        9/9        9/9
+    raw_frames           0,814          0,776       67/67      67/67
+
+Etkin olcum verdikti DEGISTIRMIYOR. Zaten catida engel yoktur; engeli cikarmak
+catiyi zemin saymayi duzeltmez. **Uygulanmadi** — esik cifti T52/D-66 ve D-85'te
+HAM zemin uzerinde turetilmistir; olculen buyuklugu degistirmek tum kalibrasyonu
+gecersiz kilar (ayri gorev).
+
+**7 · D-114/D-115 BAGIMSIZ OLARAK DOGRULANDI.** D-114 v27 icin 0,3419 / v24 icin
+0,2877 / GT 0,3459 bildirmisti; bagimsiz olcumum 0,3315 / 0,2723 / 0,3345
+(medyan) verdi — ayni yer. Ustune D-114'te olmayan sey: v27'nin GT'ye YAKINLIGI
+(IoU 0,453 -> 0,922).
+
+**KAPILAR**
+
+    codes/test_rota_sentetik.py       SONUC: 15/15 dogru
+    unittest discover -s tests -q     Ran 475 tests · OK
+    ZEMIN_KAPLAMA_TAVANI              0.67   (DEGISMEDI)
+    ZEMIN_KENAR_DAYANMA_TAVANI        0.50   (DEGISMEDI)
+
+**KAPI (d) UYGULANMADI** — emir "esigi degistirdiysen kabul denetimini kos"
+diyor; esik DEGISMEDI, dolayisiyla K0..K5'in degismesi icin bir sebep yok ve
+denetci KOSULMADI. Kosulmus gibi yazilmadi.
+
+**DOGRULANAMADI**
+  1. **Gercek arena karesi yok** (D-88/D-99). "Gercek kareler" otoparktir;
+     tavanin GERCEK ARENADA dogru oldugu OLCULEMEDI. T59'un tek gercek arena
+     karesi (kaplama 0,579) v27 ile YENIDEN OLCULMEDI — bu gorevin kume
+     listesinde yoktu.
+  2. T59'un kaydettigi 0,67 BEDELI (`sa_000150`: v24 kaplama 0,617 vs GT 0,380
+     ile kapidan geciyor) v27 icin YENIDEN olculmedi; o kare T60 kumesindendir.
+  3. Esli tabloda `raw_frames` 67 yerine 64 kare eslesti: uc kare adi alt
+     klasorler arasinda AYNI ve eslestirme anahtari dosya adiydi. Ozet tablo
+     (A bolumu) 67'nin tamamini kullanir; sonuc etkilenmez.
+  4. "Cokme" tanimi olarak `model - GT > 0,15` kullanildi; gercek karelerde GT
+     konvansiyon oldugu icin o tablo (D bolumu) YORUMLANAMAZ ve karara
+     SOKULMADI. Karar yalnizca T66 kumesine ve gorsele dayanir.
+  5. Kapinin HAM zemini olcmesi bir TASARIM secimidir ve bu gorevde
+     sorgulanmadi (madde 6'daki olcum yalnizca verdikti degistirmedigini
+     gosterir, secimin dogrulugunu kanitlamaz).

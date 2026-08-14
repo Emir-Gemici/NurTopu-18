@@ -22,6 +22,7 @@ from __future__ import annotations
 import ast
 import json
 import queue
+import re
 import sys
 import tempfile
 import unittest
@@ -421,11 +422,58 @@ class ArenaKaynakTests(unittest.TestCase):
         self.assertIn("arena_kadraj", yks_gui.YksArayuz.ALGI_KAYNAKLAR)
         self.assertIn("arena_gercek", yks_gui.YksArayuz.ALGI_KAYNAKLAR)
         self.assertEqual(
-            Path(r"O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60"),
-            yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU)
-        self.assertEqual(
             KOK / "data" / "arena_referans" / "sartname_s9_arena.png",
             yks_gui.YksArayuz.ALGI_ARENA_GERCEK_DOSYA)
+
+    def test_kadraj_koku_KABUL_KUMESIDIR(self):
+        """T77 · TERS CEVRILDI: bu test T60 yolunu CIVILIYORDU.
+
+        Kusur (D-116/5): yol ciplak sabitti; model v27'ye gecince kimse
+        cevirmedi ve hakem ekrani modeli KABUL EDILMEDIGI bir dagilimda
+        gosterdi (olculdu: T60 11/12, T66 12/12). Test artik yolu degil
+        INVARYANTI kilitliyor: ekranin gosterdigi kume, kayit defterinin
+        etkin profilinde ilan edilen KABUL KUMESIDIR.
+        """
+        defter = json.loads(
+            (KOK / "config" / "model_registry.json").read_text(encoding="utf-8"))
+        profil = defter["profiles"][defter["default_profile"]]
+        ilan = profil.get("kabul_kumesi")
+        self.assertIsInstance(
+            ilan, str, "etkin profil kabul kumesini ILAN ETMIYOR — ekran "
+                       "hangi zemini gosterecegini uyduramaz")
+        self.assertEqual(Path(ilan),
+                         yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU,
+                         "hakem ekrani kabul kumesinden AYRISTI")
+
+    def test_kadraj_yolu_kaynakta_CIPLAK_YAZILMAMIS(self):
+        """Madde 16: yol ikinci kez kaynak dosyaya yazilmaz."""
+        kaynak = (KOK / "comms" / "yks_gui.py").read_text(encoding="utf-8")
+        bulunan = re.findall(r"sentetik_arena_kadraj[_a-zA-Z0-9]*", kaynak)
+        self.assertEqual(
+            [], bulunan,
+            f"hakem ekraninda CIPLAK kadraj yolu var: {bulunan} — tek kaynak "
+            "kayit defterinin `kabul_kumesi` alani olmali")
+
+    def test_ilan_edilen_kume_ESKI_T60_DEGIL(self):
+        """D-116/5'in geri gelmesine karsi acik gerileme kilidi."""
+        defter = json.loads(
+            (KOK / "config" / "model_registry.json").read_text(encoding="utf-8"))
+        ilan = defter["profiles"][defter["default_profile"]]["kabul_kumesi"]
+        self.assertNotIn(
+            "t60", Path(ilan).name.lower(),
+            "kabul kumesi yine T60'a dondu; v27 T66'da kabul edildi (D-115)")
+
+    def test_defterde_kabul_kumesi_yoksa_ekran_UYDURMAZ(self):
+        """Fail-closed: bildirim yoksa sessizce baska kumeye DUSULMEZ."""
+        for bozuk in ('{"default_profile": "c", "profiles": {"c": {}}}',
+                      '{"default_profile": "c", "profiles": {"c": '
+                      '{"kabul_kumesi": ""}}}',
+                      '{"default_profile": "c", "profiles": {"c": '
+                      '{"kabul_kumesi": 5}}}'):
+            with self.subTest(defter=bozuk[:48]):
+                with mock.patch.object(Path, "read_text", return_value=bozuk):
+                    with self.assertRaises(RuntimeError):
+                        yks_gui._kabul_kumesi_koku()
 
     def test_arena_kadraj_yalniz_images_altini_listeler(self):
         with tempfile.TemporaryDirectory() as gecici:
@@ -456,7 +504,7 @@ class ArenaKaynakTests(unittest.TestCase):
                 mpp, not_ = g._kaynak_olcegi(veri)
                 yanlis, _ = g._kaynak_olcegi(onizleme)
         self.assertEqual(ARENA_KADRAJ_MPP, mpp)
-        self.assertIn("T60 manifesti", not_)
+        self.assertIn("kabul kümesi manifesti", not_)
         self.assertIsNone(yanlis, "aynı basename'li önizlemeye mpp sızdı")
 
     def test_arena_kadraj_mpp_None_mutasyonu_fail_closed(self):
@@ -517,7 +565,7 @@ class ArenaKaynakTests(unittest.TestCase):
         g = _gui("arena_kadraj")
         with mock.patch.object(
                 yks_gui.YksArayuz, "_kaynak_olcegi",
-                return_value=(ARENA_KADRAJ_MPP, "T60 manifesti")):
+                return_value=(ARENA_KADRAJ_MPP, "kabul kümesi manifesti")):
             _kos(g, maskeler=_koridor_maskeleri(2, 340))
         paket = next(p for p in _paketler(g) if p[0] == "sonuc")
         self.assertEqual("2·ORTA", _karar_metni(paket[2]))
