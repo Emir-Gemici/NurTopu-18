@@ -29,6 +29,7 @@ from karar_sozlesmesi import (
     DUSUK_GUVEN_SEBEBI,
     GORUS_HATTI_KOPUK_SEBEBI,
     KENAR_GUVENSIZ_SEBEBI,
+    KORIDOR_DEGIL_SEBEBI,
     MASKE_YOK_SEBEBI,
     ROTA_GUVEN_ESIGI,
     ROTA_RET_SEBEPLERI,
@@ -43,8 +44,17 @@ def _duz_koridor(boyut=128, x0=40, x1=88):
 
 
 class AnalyzePathRetNedeniTests(unittest.TestCase):
-    def test_sebep_kodlari_sozlesmedeki_dokuz_degerdir(self):
-        # T43: OLCEK_YOK · T48: ZEMIN_MASKESI_SUPHELI (CONTRACTS SS6.4).
+    def test_sebep_kodlari_sozlesmede_SAYILANLARDIR(self):
+        """Ret sebebi kumesi TAM olarak sozlesmede sayilanlardir.
+
+        ⚠ Test adi SAYI TASIMAZ (eskiden "..._dokuz_degerdir" idi). Yeni bir
+        sebep kodu eklendiginde adin da degismesi gerekiyordu; bu, T59
+        denetiminde isaretlenen ciplak-sabit kirilganliginin ta kendisiydi.
+        Kume yine TAM olarak kilitli — yeni kod eklenirse bu liste de
+        guncellenmek ZORUNDA, sessizce buyuyemez.
+        """
+        # T43: OLCEK_YOK · T48: ZEMIN_MASKESI_SUPHELI · T65: KORIDOR_DEGIL
+        # (CONTRACTS SS6.4).
         self.assertEqual({
             OLCEK_YOK_SEBEBI,
             ZEMIN_MASKESI_SUPHELI_SEBEBI,
@@ -55,6 +65,7 @@ class AnalyzePathRetNedeniTests(unittest.TestCase):
             GORUS_HATTI_KOPUK_SEBEBI,
             KENAR_GUVENSIZ_SEBEBI,
             DUSUK_GUVEN_SEBEBI,
+            KORIDOR_DEGIL_SEBEBI,
         }, set(ROTA_RET_SEBEPLERI))
 
     def test_varsayilan_ve_opt_in_tuple_ariteleri_korunur(self):

@@ -23,6 +23,7 @@ import ast
 import json
 import queue
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -44,6 +45,7 @@ from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            get_masks)
 
 H, W = 576, 1024
+ARENA_KADRAJ_MPP = 0.078125
 
 
 class _SahteModel:
@@ -159,12 +161,15 @@ class UretimHizasiTests(unittest.TestCase):
           · olceksiz (`mpp=None`)  -> iki taraf da OLCEK_YOK demeli
           · olcekli  (`mpp` VAR)   -> iki taraf da AYNI seridi vermeli
         """
-        for mpp in (None, 0.05):
+        kaynaklar = (("arena_kadraj", ARENA_KADRAJ_MPP),
+                     ("arena_gercek", None))
+        for kaynak, mpp in kaynaklar:
             for serit in (1, 2, 3):
                 for genislik in (60, 200, 340):
-                    with self.subTest(mpp=mpp, serit=serit, genislik=genislik):
+                    with self.subTest(kaynak=kaynak, mpp=mpp, serit=serit,
+                                      genislik=genislik):
                         maskeler = _koridor_maskeleri(serit, genislik)
-                        g = _gui()
+                        g = _gui(kaynak)
                         with mock.patch.object(
                                 yks_gui.YksArayuz, "_kaynak_olcegi",
                                 return_value=(mpp, "test")):
@@ -180,7 +185,7 @@ class UretimHizasiTests(unittest.TestCase):
                         yol, guv, wps, ret = analyze_path(
                             m[0], icerik=icerik, engel_mask=m.get(1), mpp=mpp,
                             return_reason=True)
-                        if olcek_reddi is not None:
+                        if olcek_reddi is not None and ret is None:
                             yol, guv, wps, ret = None, 0.0, [], olcek_reddi
                         yol, guv, wps, ret = _rota_kararini_esikle(
                             yol, guv, wps, ret)
@@ -388,6 +393,180 @@ class OlcekKapisiTests(unittest.TestCase):
             _kos(g, maskeler=_koridor_maskeleri(2, 340))
         self.assertEqual(f"ROTA YOK · {OLCEK_YOK_SEBEBI}",
                          _karar_metni(_sonuc_bilgisi(g)))
+
+
+class ArenaKaynakTests(unittest.TestCase):
+    """T64: arena kaynakları, manifest ölçeği ve fail-closed ekran kanıtı."""
+
+    @staticmethod
+    def _kadraj_fiksturu(kok: Path, mpp=ARENA_KADRAJ_MPP):
+        """Gerçek T60 dizilimini küçük ve hermetik olarak kur."""
+        veri = kok / "images" / "train" / "sa_000001.jpg"
+        veri.parent.mkdir(parents=True)
+        veri.write_bytes(b"gorsel")
+        onizleme = kok / "_onizleme" / veri.name
+        onizleme.parent.mkdir(parents=True)
+        onizleme.write_bytes(b"onizleme")
+        manifest = {
+            "ornekler": [{
+                "cikti": "images/train/sa_000001.jpg",
+                "arena": {"mpp": mpp},
+            }],
+        }
+        (kok / "manifest.json").write_text(
+            json.dumps(manifest), encoding="utf-8")
+        return veri, onizleme
+
+    def test_arena_kaynaklari_listede_ve_yollari_sabit(self):
+        self.assertIn("arena_kadraj", yks_gui.YksArayuz.ALGI_KAYNAKLAR)
+        self.assertIn("arena_gercek", yks_gui.YksArayuz.ALGI_KAYNAKLAR)
+        self.assertEqual(
+            Path(r"O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60"),
+            yks_gui.YksArayuz.ALGI_ARENA_KADRAJ_KOKU)
+        self.assertEqual(
+            KOK / "data" / "arena_referans" / "sartname_s9_arena.png",
+            yks_gui.YksArayuz.ALGI_ARENA_GERCEK_DOSYA)
+
+    def test_arena_kadraj_yalniz_images_altini_listeler(self):
+        with tempfile.TemporaryDirectory() as gecici:
+            kok = Path(gecici)
+            veri, onizleme = self._kadraj_fiksturu(kok)
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_KADRAJ_KOKU", kok):
+                bulunan = _gui("arena_kadraj")._algi_gorseller()
+        self.assertEqual([veri], bulunan)
+        self.assertNotIn(onizleme, bulunan)
+
+    def test_arena_gercek_tek_dosya_olarak_listelenir(self):
+        with tempfile.TemporaryDirectory() as gecici:
+            gercek = Path(gecici) / "arena.png"
+            gercek.write_bytes(b"gorsel")
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_GERCEK_DOSYA", gercek):
+                bulunan = _gui("arena_gercek")._algi_gorseller()
+        self.assertEqual([gercek], bulunan)
+
+    def test_arena_kadraj_manifest_olcegi_tam_yolla_baglanir(self):
+        with tempfile.TemporaryDirectory() as gecici:
+            kok = Path(gecici)
+            veri, onizleme = self._kadraj_fiksturu(kok)
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_KADRAJ_KOKU", kok):
+                g = _gui("arena_kadraj")
+                mpp, not_ = g._kaynak_olcegi(veri)
+                yanlis, _ = g._kaynak_olcegi(onizleme)
+        self.assertEqual(ARENA_KADRAJ_MPP, mpp)
+        self.assertIn("T60 manifesti", not_)
+        self.assertIsNone(yanlis, "aynı basename'li önizlemeye mpp sızdı")
+
+    def test_arena_kadraj_mpp_None_mutasyonu_fail_closed(self):
+        with tempfile.TemporaryDirectory() as gecici:
+            kok = Path(gecici)
+            veri, _ = self._kadraj_fiksturu(kok, mpp=None)
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_KADRAJ_KOKU", kok):
+                mpp, not_ = _gui("arena_kadraj")._kaynak_olcegi(veri)
+        self.assertIsNone(mpp)
+        self.assertIn("mpp yok/geçersiz", not_)
+        self.assertIn("ölçek uydurulmadı", not_)
+
+    def test_arena_kadraj_gecersiz_mpp_degerlerini_uydurmaz(self):
+        gecersizler = (True, 0, -1, float("nan"), float("inf"),
+                       "0.078125", [])
+        for mpp in gecersizler:
+            with self.subTest(mpp=repr(mpp)):
+                with tempfile.TemporaryDirectory() as gecici:
+                    kok = Path(gecici)
+                    veri, _ = self._kadraj_fiksturu(kok, mpp=mpp)
+                    with mock.patch.object(
+                            yks_gui.YksArayuz,
+                            "ALGI_ARENA_KADRAJ_KOKU", kok):
+                        bulunan, not_ = _gui(
+                            "arena_kadraj")._kaynak_olcegi(veri)
+                self.assertIsNone(bulunan)
+                self.assertIn("ölçek uydurulmadı", not_)
+
+    def test_arena_kadraj_bozuk_manifest_olcek_uydurmaz(self):
+        with tempfile.TemporaryDirectory() as gecici:
+            kok = Path(gecici)
+            veri = kok / "images" / "train" / "sa_000001.jpg"
+            veri.parent.mkdir(parents=True)
+            veri.write_bytes(b"gorsel")
+            (kok / "manifest.json").write_text("{bozuk", encoding="utf-8")
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_KADRAJ_KOKU", kok):
+                bulunan, not_ = _gui("arena_kadraj")._kaynak_olcegi(veri)
+        self.assertIsNone(bulunan)
+        self.assertIn("manifesti okunamadı/geçersiz", not_)
+        self.assertIn("ölçek uydurulmadı", not_)
+
+    def test_arena_kadraj_kok_disina_tasan_manifest_reddedilir(self):
+        with tempfile.TemporaryDirectory() as gecici:
+            kok = Path(gecici)
+            (kok / "images").mkdir()
+            (kok / "manifest.json").write_text(json.dumps({
+                "ornekler": [{"cikti": "../disari.jpg",
+                              "arena": {"mpp": ARENA_KADRAJ_MPP}}],
+            }), encoding="utf-8")
+            with mock.patch.object(
+                    yks_gui.YksArayuz, "ALGI_ARENA_KADRAJ_KOKU", kok):
+                with self.assertRaisesRegex(ValueError, "üst dizine"):
+                    _gui("arena_kadraj")._arena_kadraj_olcekleri()
+
+    def test_arena_kadraj_ekranda_rota_cizer_ve_loglar(self):
+        g = _gui("arena_kadraj")
+        with mock.patch.object(
+                yks_gui.YksArayuz, "_kaynak_olcegi",
+                return_value=(ARENA_KADRAJ_MPP, "T60 manifesti")):
+            _kos(g, maskeler=_koridor_maskeleri(2, 340))
+        paket = next(p for p in _paketler(g) if p[0] == "sonuc")
+        self.assertEqual("2·ORTA", _karar_metni(paket[2]))
+        self.assertIn("gösterim: sürüş koridoru", paket[2])
+        self.assertIn("arena_kadraj", paket[3])
+        sari = np.all(paket[1] == np.asarray((0, 220, 255), np.uint8), axis=2)
+        self.assertGreater(np.count_nonzero(sari), 0, "ekranda sarı rota yok")
+
+    def test_arena_gercek_maske_var_rota_yok_ve_sebep_acik(self):
+        g = _kos(_gui("arena_gercek"),
+                 maskeler=_koridor_maskeleri(2, 340))
+        paket = next(p for p in _paketler(g) if p[0] == "sonuc")
+        bilgi = paket[2]
+        self.assertEqual(f"ROTA YOK · {OLCEK_YOK_SEBEBI}",
+                         _karar_metni(bilgi))
+        self.assertIn("eğik arena bakışında", bilgi)
+        self.assertIn("72 px", bilgi)
+        self.assertIn("38 px", bilgi)
+        self.assertIn("tek skaler mpp geçersiz", bilgi)
+        self.assertIn("gösterim: segmentasyon maskesi (rota değil)", bilgi)
+        self.assertIn(OLCEK_YOK_SEBEBI, paket[3])
+        sari = np.all(paket[1] == np.asarray((0, 220, 255), np.uint8), axis=2)
+        self.assertEqual(0, np.count_nonzero(sari), "ölçeksiz karede rota çizildi")
+        # Siyah girdi üzerinde, uyarı bandının altındaki serbest maske mavi
+        # tonla görünür olmalı; bu rota/waypoint iddiası değildir.
+        self.assertTrue(np.any(paket[1][H // 2, W // 2] != 0))
+
+    def test_bos_maske_varmis_gibi_gosterilmez_ve_yapisal_ret_korunur(self):
+        yan = max(H, W)
+        bos = np.zeros((yan, yan), np.uint8)
+        g = _kos(_gui("arena_gercek"), maskeler={0: bos, 1: bos})
+        paket = next(p for p in _paketler(g) if p[0] == "sonuc")
+        self.assertIn("ROTA YOK · MASKE_YOK", paket[2])
+        self.assertIn("gösterim: maske yok", paket[2])
+        self.assertNotIn("gösterim: segmentasyon maskesi", paket[2])
+        sari = np.all(paket[1] == np.asarray((0, 220, 255), np.uint8), axis=2)
+        self.assertEqual(0, np.count_nonzero(sari))
+
+    def test_arena_kadraj_mpp_None_olursa_rota_cizilmez(self):
+        g = _gui("arena_kadraj")
+        with mock.patch.object(
+                yks_gui.YksArayuz, "_kaynak_olcegi",
+                return_value=(None, "MUTASYON: manifest mpp=None")):
+            _kos(g, maskeler=_koridor_maskeleri(2, 340))
+        paket = next(p for p in _paketler(g) if p[0] == "sonuc")
+        self.assertEqual(f"ROTA YOK · {OLCEK_YOK_SEBEBI}",
+                         _karar_metni(paket[2]))
+        sari = np.all(paket[1] == np.asarray((0, 220, 255), np.uint8), axis=2)
+        self.assertEqual(0, np.count_nonzero(sari))
 
 
 if __name__ == "__main__":

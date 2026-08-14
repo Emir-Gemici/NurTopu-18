@@ -91,7 +91,8 @@ class IkiSinyalKapisiTests(unittest.TestCase):
 
     def test_kaplama_YUKSEK_kenar_DUSUK_ATESLEMEZ(self):
         """T52'nin getirdigi YENI davranis — mesru genis arena elenmez."""
-        for oran in (0.60, 0.70, 0.85):
+        for carpan in (1.05, 1.20, 1.35):
+            oran = min(0.98, ZEMIN_KAPLAMA_TAVANI * carpan)
             with self.subTest(kaplama=oran):
                 m = _ortada_blok(oran)
                 self.assertGreater(zemin_kaplamasi(m), ZEMIN_KAPLAMA_TAVANI,

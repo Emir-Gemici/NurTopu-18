@@ -82,6 +82,7 @@ ALAN_YETERSIZ_SEBEBI = "ALAN_YETERSIZ"
 GORUS_HATTI_KOPUK_SEBEBI = "GORUS_HATTI_KOPUK"
 KENAR_GUVENSIZ_SEBEBI = "KENAR_GUVENSIZ"
 DUSUK_GUVEN_SEBEBI = "DUSUK_GUVEN"
+KORIDOR_DEGIL_SEBEBI = "KORIDOR_DEGIL"      # T65 · D-94
 
 ROTA_RET_SEBEPLERI = frozenset({
     OLCEK_YOK_SEBEBI,
@@ -93,7 +94,105 @@ ROTA_RET_SEBEPLERI = frozenset({
     GORUS_HATTI_KOPUK_SEBEBI,
     KENAR_GUVENSIZ_SEBEBI,
     DUSUK_GUVEN_SEBEBI,
+    KORIDOR_DEGIL_SEBEBI,
 })
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T65 · KORIDOR GENISLIK TAVANI   (CONTRACTS.md SS6.4 · REVIEW_LOG D-90/3, D-94)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (D-90 bulgu 3): karar yolunun ARENA SINIRI kavrami yok. Uretec arena
+# disina bilerek ETIKETSIZ duz zemin cizer (gercekcidir; dronun gordugu arazi
+# arena ile bitmez), model orayi HAKLI OLARAK zemin isaretler, karar yolu ise
+# tum kareyi ucte bolup o bos kenari gecerli guzergah sayar. AYNI KUSUR GERCEK
+# KAREDE DE VAR (`sartname_s9_arena.png`: izgarali arenanin disindaki toprak da
+# zemin isaretleniyor). Sentetik bir yan etki DEGILDIR.
+#
+# ⚠ SINIRI YERELLESTIRME DENENDI VE BASARISIZ OLDU (T65 FAZ 1, D-94). Uc aday
+# imza olculdu; UCU DE guvenilmez cikti ve UCU DE gercek karede coktu:
+#
+#   imza                n     IoU medyan   guvenilir mi   gercek karede
+#   izgara cizgileri   260        0.806         HAYIR     TUM KAREYI verdi
+#   moloz kapsayan k.  260        0.664         HAYIR     — (dar yanli)
+#   dis cerceve        260        0.960         HAYIR     HIC sinir uretemedi
+#
+# Ve daha temelde: GERCEK ARENA SINIRI DIKEY DEGIL. Perspektif nedeniyle yamuk
+# (sol kenar x~190 ust -> x~65 alt; sag x~920 -> x~1015). Tek bir [x0,x1]
+# araligi gercek arenayi TANIMLAMAZ; indirgenemez hata ~50-60 px.
+#
+# BU YUZDEN SINIR YERELLESTIRILMIYOR. Onun yerine kusurun OLCULEN yapisindan
+# yararlanilir: hata DEJENERE. Rota ya tamamen arena icinde ya tamamen disinda:
+#
+#   arena disi oran == 0.000 -> 238 kare · == 0.001 -> 1 · == 1.000 -> 10
+#
+# Ara deger YOKTUR. Dolayisiyla "sinir nerede" sorusunu yanitlamak GEREKMEZ;
+# "bu bir koridor mu" sorusu yeterlidir.
+#
+# OLCUT: koridorun EN DAR yeri bir SERIDIN tamamindan genis olamaz. Sartname
+# arenada UC guzergah tanimlar ve bunlar molozla ayrilir; bir seridin tamaminden
+# genis bir "koridor" uc guzergahtan biri DEGILDIR — acik arazidir.
+# Tavan `serit_no`nun kendi bolusumunden turetilir, ciplak sayi degildir (m.16).
+#
+# OLCUM (v24 · T60 kadraj · n=260 · uretim zinciri · rota uretilen 249):
+#
+#   kume                     darbogaz/icerik_w
+#     MESRU (arena ici) 239   medyan 0.094 · p95 0.208 · MAKS 0.280
+#     KUSURLU (disi)     10   0.022 · 0.028 · 0.111 · 0.170 · 0.314 · 0.353
+#                             0.358 · 0.375 · 0.475 · 0.487
+#
+#   tavan = 1/3 (bir serit)  -> yanlis elenen MESRU 0/239 · yakalanan 5/10
+#   mesru tarafa pay 0.053 (0.280 -> 0.333) · kusurlu tarafa pay 0.020
+#
+# ⚠ BU KISMI BIR COZUMDUR — gizlenmiyor. Kalan 5 kusurlu kare genislige gore
+# MESRU karelerden AYIRT EDILEMEZ: arena disi bolge her zaman bos degildir
+# (or. `sa_000068` arena disinda bir OTOPARK fotografi tasir, park cizgileriyle;
+# model orada 14 px darbogazli kendi koridorunu bulur). Genislik olcutu bu
+# sinifi yakalayamaz; gerceken sinir bilgisi gerekir ve o bilgi bugun YOK.
+#
+# ⚠ MADDE 15: bu olcut yalniz REDDEDER. Serbest alani buyutmez, maskeye
+# dokunmaz, tek piksel eklemez.
+SERIT_SAYISI = 3
+# `serit_no` ayni bolusumu kodlar; ikisinin uyumu testle kilitlenir
+# (`tests/test_koridor_genisligi.py`), boylece biri degisip digeri kalamaz.
+
+KORIDOR_GENISLIK_TAVANI_SERIT = 1.0
+# Bir koridor EN COK bir serit kadar genis olabilir. 1.0 fiziksel siniridir,
+# olcumle FIT EDILMIS bir sayi degildir; olculen mesru azami (0.280) bu sinirin
+# altinda kalarak onu DOGRULAR.
+
+
+def koridor_genislik_tavani_px(icerik_w):
+    """Bir koridorun asamayacagi darbogaz genisligi (piksel)."""
+    try:
+        genislik = float(icerik_w)
+    except (TypeError, ValueError):
+        return 0.0
+    if not genislik > 0.0:
+        return 0.0
+    return genislik / float(SERIT_SAYISI) * KORIDOR_GENISLIK_TAVANI_SERIT
+
+
+def rota_koridor_genisligi_reddi(darbogaz_px, icerik_w):
+    """Darbogazi bir seritten genis olan "koridor" bir guzergah DEGILDIR.
+
+    Kanonik ``(sebep, detay)`` doner; koridor makul genislikteyse ``None``.
+    Fail-closed: olculemeyen darbogaz reddi TETIKLEMEZ — bu olcut yalniz
+    POZITIF bir kanit (olculmus asiri genislik) uzerine ates eder; olcum
+    yoksa karar diger kapilara birakilir.
+    """
+    tavan = koridor_genislik_tavani_px(icerik_w)
+    if tavan <= 0.0:
+        return None
+    try:
+        darbogaz = float(darbogaz_px)
+    except (TypeError, ValueError):
+        return None
+    if not darbogaz > tavan:
+        return None
+    return (KORIDOR_DEGIL_SEBEBI,
+            f"Rota darbogazi {darbogaz:.1f} px, bir seridin tamamindan "
+            f"({tavan:.1f} px) genis. Bu bir guzergah degil ACIK ARAZIDIR; "
+            f"rota uretilmez.")
 
 
 def _guven_metin(deger):

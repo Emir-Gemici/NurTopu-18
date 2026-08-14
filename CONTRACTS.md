@@ -379,6 +379,7 @@ string yazılmaz** (madde 16).
 | `GORUS_HATTI_KOPUK` | Başlangıç–hedef bağlantısı veya bu bağlantı üzerinde doğrulanmış waypoint zinciri kurulamıyor | `_bagli_mi` / A* rota üretimi |
 | `KENAR_GUVENSIZ` | **T24**: ardışık waypoint'ler arası görüş hattı engelden geçiyor | `_kenarlar_guvenli` |
 | `DUSUK_GUVEN` | **K-B**: güven `ROTA_GUVEN_ESIGI` altında | `rota_guven_reddi` |
+| `KORIDOR_DEGIL` | **T65**: rota darboğazı **bir şeridin tamamından** geniş — bu bir güzergâh değil açık arazidir | `rota_koridor_genisligi_reddi` |
 
 #### `ZEMIN_MASKESI_SUPHELI` — kaplama tavanı (T48)
 
@@ -451,6 +452,70 @@ Regresyon kilidi: `tests/test_gercek_arena_kapisi.py` — eşik ileride yeniden
 oynatılır ve gerçek arenayı tekrar elerse bu paket düşer.
 
 Kapı madde 15 açısından nötrdür: yalnız reddeder, hiçbir piksel eklemez.
+
+#### `KORIDOR_DEGIL` — koridor genişlik tavanı (T65)
+
+> **Neden var** (`REVIEW_LOG.md` D-90 bulgu 3, D-94): karar yolunun **arena
+> sınırı kavramı yok**. Üreteç arena dışına bilerek etiketsiz düz zemin çizer
+> (gerçekçidir — dronun gördüğü arazi arena ile bitmez), model orayı **haklı
+> olarak** zemin işaretler, karar yolu ise tüm kareyi üçe bölüp o boş kenarı
+> geçerli güzergâh sayar. `sa_000070`: darboğaz **304 px**. **Aynı kusur gerçek
+> karede de var** — `sartname_s9_arena.png`'de ızgaralı arenanın dışındaki
+> toprak da zemin işaretleniyor.
+
+⚠ **Sınır yerelleştirilemedi ve bu bilinçli bir karardır.** Üç aday imza ölçüldü
+(260 kadraj karesi + gerçek kare); **üçü de** güvenilmez çıktı ve **üçü de
+gerçek karede çöktü**:
+
+| aday imza | n | IoU medyan | güvenilir mi | gerçek karede |
+|---|---:|---:|---|---|
+| ızgara çizgileri | 260 | 0,806 | **hayır** | **tüm kareyi** verdi (arenayı büyütür) |
+| moloz kapsayan kutusu | 260 | 0,664 | **hayır** | dar yanlı; moloz arenayı doldurmuyor |
+| dış çerçeve | 260 | 0,960 | **hayır** | **hiç sınır üretemedi** |
+
+Ve daha temelde: **gerçek arena sınırı dikey değil.** Perspektif nedeniyle
+yamuk (sol kenar x≈190 üst → x≈65 alt; sağ x≈920 → x≈1015). Tek bir `[x0,x1]`
+aralığının indirgenemez hatası **~50–60 px**'dir.
+
+**Bu yüzden sınır yerelleştirilmiyor.** Kusurun ölçülen yapısı buna izin veriyor:
+hata **dejeneredir** — rota ya tamamen arena içinde ya tamamen dışında
+(`arena_disi` oranı: 238 kare `0.000` · 1 kare `0.001` · 10 kare `1.000`; ara
+değer yok). Dolayısıyla *"sınır nerede"* sorusu değil, *"bu bir koridor mu"*
+sorusu yanıtlanır.
+
+```python
+SERIT_SAYISI = 3
+KORIDOR_GENISLIK_TAVANI_SERIT = 1.0        # bir koridor EN ÇOK bir şerit kadar geniş
+```
+
+Şartname arenada **üç güzergâh** tanımlar ve bunlar molozla ayrılır. Bir şeridin
+tamamından geniş bir "koridor" üç güzergâhtan biri **değildir**. Tavan
+`serit_no`'nun kendi bölüşümünden türetilir — çıplak sayı değildir (madde 16) —
+ve ikisinin uyumu `tests/test_koridor_genisligi.py` ile kilitlenir.
+
+**Ölçüm** (v24 · T60 kadraj · n=260 · üretim zinciri · rota üretilen 249):
+
+| küme | n | `darbogaz / icerik_w` |
+|---|---:|---|
+| **meşru** (arena içi) | 239 | medyan 0,094 · p95 0,208 · **maks 0,280** |
+| **kusurlu** (arena dışı) | 10 | 0,022 · 0,028 · 0,111 · 0,170 · **0,314** · **0,353 · 0,358 · 0,375 · 0,475 · 0,487** |
+
+Tavan `1/3 = 0,333`: **yanlış elenen meşru 0/239**, yakalanan **5/10**. Meşru
+tarafa pay **0,053**, kusurlu tarafa **0,020**.
+
+⚠ **Bu KISMİ bir çözümdür.** Kaçan 5 kareden **4'ü** meşru azaminin (0,280)
+altındadır — genişlikle **ayırt edilemezler**: arena dışı bölge her zaman boş
+değildir (`sa_000068` arena dışında bir **otopark fotoğrafı** taşır, park
+çizgileriyle; model orada 14 px darboğazlı kendi koridorunu bulur). Kalan
+1 kare (0,314) meşru azaminin üstündedir; `(0,280 · 0,333)` aralığına konacak
+**fit edilmiş** bir tavan onu da yakalardı — bilerek yapılmadı: (i) fiziksel
+değil fit edilmiş olurdu; (ii) 0,280 **sentetik** karelerden gelir ve üreteç
+kadraj kipinde geometrik + fotometrik bozunumu **kapatır**, yani gerçek meşru
+dağılım daha geniştir — optimist bir azamiye eşik oturtmak D-85'in hatasıdır;
+(iii) payı ±0,017'ye inerdi.
+
+⚠ **Madde 15**: bu ölçüt yalnız **reddeder**. Serbest alanı büyütmez, maskeye
+dokunmaz, tek piksel eklemez.
 
 **`detay`** insan-okur ve **ölçülen değeri taşır** — hangi uç (`alt`/`üst`), ölçülen
 güven, ölçülen alan oranı. Örnek: `"Rota guveni 0.180; gereken >= 0.200."`

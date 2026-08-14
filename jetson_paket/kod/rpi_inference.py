@@ -53,6 +53,7 @@ if __package__:
                                    r_gerekli_piksel,
                                    zemin_maskesi_reddi,
                                    rota_darbogaz_guveni,
+                                  rota_koridor_genisligi_reddi,
                                    rota_guven_reddi,
                                    rota_olcek_reddi, serit_no)
 else:
@@ -75,6 +76,7 @@ else:
                                   r_gerekli_piksel,
                                   zemin_maskesi_reddi,
                                   rota_darbogaz_guveni,
+                                  rota_koridor_genisligi_reddi,
                                   rota_guven_reddi,
                                   rota_olcek_reddi, serit_no)
 
@@ -768,6 +770,22 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
     olcum["r_gerekli_px"] = (float(r_gerekli_px)
                              if r_gerekli_px is not None else None)
     olcum["olceksiz"] = bool(olceksiz)
+
+    # T69 (REVIEW_LOG D-94, D-96): KORIDOR GENISLIK TAVANI.
+    # Karar yolunun ARENA SINIRI kavrami yoktur: uretec arena disina bilerek
+    # etiketsiz duz zemin cizer, model orayi HAKLI OLARAK zemin isaretler ve
+    # burasi tum kareyi ucte bolup o bos kenari gecerli guzergah sayardi.
+    # `sa_000070`: darbogaz 304 px. AYNI KUSUR GERCEK KAREDE DE VAR.
+    # Sinir GORUNTUDEN YERELLESTIRILEMEDI (D-94: uc aday imza da guvenilmez,
+    # ucu de gercek karede coktu; ustelik gercek arena siniri PERSPEKTIF YAMUK).
+    # Bu yuzden sinir DEGIL koridorun kendisi sinanir: bir seridin tamamindan
+    # genis aciklik guzergah degil ACIK ARAZIDIR. Esik `serit_no`nun kendi
+    # bolusumunden gelir; ciplak sayi yoktur (madde 16).
+    # Madde 15: yalniz REDDEDER — maskeye dokunmaz, serbest alani buyutmez.
+    kg_reddi = rota_koridor_genisligi_reddi(olcum["darbogaz_px"], icerik_w)
+    if kg_reddi is not None:
+        return _don(None, 0.0, [], clean, kg_reddi, olcum)
+
     open_path = olcum["darbogaz_serit"]
     confidence = rota_darbogaz_guveni(olcum["darbogaz_px"], icerik_w)
 

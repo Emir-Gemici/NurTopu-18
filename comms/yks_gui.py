@@ -215,7 +215,7 @@ class YksArayuz:
         arow.pack(fill="x", padx=10)
         for ad, kom in (("◀ Önceki (←)", self.algi_onceki),
                         ("Sonraki (→) ▶", self.algi_sonraki),
-                        ("Kaynak: gemini/val (K)", self.algi_kaynak_degistir)):
+                        ("Kaynak değiştir (K)", self.algi_kaynak_degistir)):
             tk.Button(arow, text=ad, font=self.f_kucuk, fg=METIN, bg="#232e3a",
                       activebackground=MAVI, activeforeground=BG, relief="flat",
                       padx=7, pady=3, command=kom).pack(side="left", padx=(0, 6))
@@ -886,11 +886,12 @@ class YksArayuz:
     # ── Canlı algı: v3 modeliyle GERÇEK çıkarım ──────────────────────────────
     # Karar zinciri sahadakiyle AYNI: codes/rpi_inference.py'nin get_masks +
     # analyze_path fonksiyonları kullanılır (kopya algoritma yok).
-    # `kompozit` ILK SIRADA ve acilis kaynagidir: uc-kapili arena mantiginin
-    # GECERLI oldugu tek kume odur (yer gercegi manifest'te). Digerleri listede
-    # KALIR — `drone` bir otopark, `gemini`/`val` afet/yol fotografi; domain
-    # boslugunu hakeme gostermek icin degerlidirler (REVIEW_LOG D-53).
-    ALGI_KAYNAKLAR = ("kompozit", "drone", "gemini", "test", "val")
+    # `kompozit` açılış kaynağı olarak korunur. T64: şartnameye sadık T60 kadraj
+    # kümesi ve tek gerçek arena karesi ayrıca seçilebilir. `drone` bir otopark,
+    # `gemini`/`val` afet/yol fotoğrafıdır; domain boşluğunu hakeme göstermek için
+    # listede kalırlar (REVIEW_LOG D-53/D-90).
+    ALGI_KAYNAKLAR = ("kompozit", "arena_kadraj", "arena_gercek",
+                      "drone", "gemini", "test", "val")
     # T58 (kullanici karari, REVIEW_LOG D-82/D-83): uretim modeli v21 -> v24.
     # Bu sabit hakem ekranini SAHA DONANIMIYLA ayni modele baglar; `jetson_paket/
     # models/` ve HER IKI `JETSON_KILAVUZ.md` ayni surume cevrildi. Yalniz
@@ -905,22 +906,31 @@ class YksArayuz:
     # Kompozit kume yer gercegi. SALT GOSTERIM: karar yoluna GIRMEZ (aksi hâlde
     # test kendi kendini dogrular). Bkz. test_beklenen_serit_karara_sizmiyor.
     ALGI_KOMPOZIT_DIZIN = ("data", "arena_kompozit")
+    ALGI_ARENA_KADRAJ_KOKU = Path(
+        r"O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60")
+    ALGI_ARENA_GERCEK_DOSYA = (
+        _PROJE_KOKU / "data" / "arena_referans" / "sartname_s9_arena.png")
 
     def _algi_gorseller(self):
-        import pathlib
-        kok_dizin = pathlib.Path(__file__).resolve().parents[1]
-        dizinler = {
+        kok_dizin = Path(__file__).resolve().parents[1]
+        kaynaklar = {
             "kompozit": kok_dizin.joinpath(*self.ALGI_KOMPOZIT_DIZIN) / "images",
+            # Kök altında aynı adlı 24 `_onizleme` karesi de var. Yalnız gerçek
+            # veri bölümleri listelenir; önizlemeye manifest ölçeği bağlanamaz.
+            "arena_kadraj": Path(self.ALGI_ARENA_KADRAJ_KOKU) / "images",
+            "arena_gercek": Path(self.ALGI_ARENA_GERCEK_DOSYA),
             "gemini": kok_dizin / "test_images" / "gemini",
             "test": kok_dizin / "test_images" / "test" / "images",
             "val": kok_dizin / "dataset" / "rescuenet_yolo" / "images" / "val",
             "drone": kok_dizin / "data" / "raw_frames",
         }
-        d = dizinler[self.algi_kaynak]
-        if not d.is_dir():
+        yol = kaynaklar[self.algi_kaynak]
+        uzantilar = (".png", ".jpg", ".jpeg")
+        if yol.is_file():
+            return [yol] if yol.suffix.lower() in uzantilar else []
+        if not yol.is_dir():
             return []
-        return sorted(p for p in d.rglob("*")
-                      if p.suffix.lower() in (".png", ".jpg", ".jpeg"))
+        return sorted(p for p in yol.rglob("*") if p.suffix.lower() in uzantilar)
 
     def _kompozit_yer_gercegi(self):
         """Kompozit kümenin manifest'inden {dosya_adı: beklenen_açık_şerit}.
@@ -978,13 +988,78 @@ class YksArayuz:
             raise ValueError(f"manifest'te gecerli mpp tasiyan ornek yok: {mf}")
         return olcekler
 
+    def _arena_kadraj_olcekleri(self):
+        """T60 manifest'inden güvenli ``{tam_görsel_yolu: mpp|None}`` haritası.
+
+        Manifest yolları küme köküne göre ``images/train|val/...`` biçimindedir.
+        Basename eşlemesi yapılmaz: `_onizleme` aynı adları taşır ve ileride
+        train/val adları da çakışabilir. Mutlak, kök dışına taşan veya yinelenen
+        yollar fail-closed reddedilir. Eksik/geçersiz mpp ise ``None`` kalır;
+        hiçbir ölçek uydurulmaz.
+        """
+        import json
+
+        kok = Path(self.ALGI_ARENA_KADRAJ_KOKU).resolve()
+        gorsel_koku = (kok / "images").resolve()
+        mf = kok / "manifest.json"
+        veri = json.loads(mf.read_text(encoding="utf-8"))
+        ornekler = veri.get("ornekler")
+        if not isinstance(ornekler, list) or not ornekler:
+            raise ValueError(f"manifest'te örnek listesi yok: {mf}")
+
+        olcekler = {}
+        for sira, ornek in enumerate(ornekler):
+            if not isinstance(ornek, dict):
+                raise ValueError(f"manifest örneği sözlük değil: sıra={sira}")
+            cikti = ornek.get("cikti")
+            if not isinstance(cikti, str) or not cikti.strip():
+                raise ValueError(f"manifest çıktısı yok/geçersiz: sıra={sira}")
+            goreli = Path(cikti)
+            if goreli.is_absolute():
+                raise ValueError(f"manifest çıktısı mutlak olamaz: {cikti}")
+            if ".." in goreli.parts:
+                raise ValueError(f"manifest çıktısı üst dizine çıkamaz: {cikti}")
+            tam = (kok / goreli).resolve()
+            try:
+                tam.relative_to(gorsel_koku)
+            except ValueError as exc:
+                raise ValueError(
+                    f"manifest çıktısı images dışına taşıyor: {cikti}") from exc
+            if tam in olcekler:
+                raise ValueError(f"manifest çıktısı yinelenmiş: {cikti}")
+            arena = ornek.get("arena")
+            mpp = arena.get("mpp") if isinstance(arena, dict) else None
+            olcekler[tam] = float(mpp) if olcek_gecerli_mi(mpp) else None
+        return olcekler
+
     def _kaynak_olcegi(self, yol):
         """Kaynağa göre `(mpp, açıklama)`. Ölçek yoksa `(None, sebep)`.
 
-        ⚠ **Ölçek uydurulmaz.** `drone` / `gemini` / `val` / `test` kümelerinde
-        telemetri yok; ölçek de yok. Orada `mpp=None` dönmek "kısıt yok" değil,
-        `rota_olcek_reddi` ile `OLCEK_YOK` demektir (CONTRACTS §5.2/1).
+        ⚠ **Ölçek uydurulmaz.** T60 kadraj kümesi manifest ölçeğini taşır. Eğik
+        gerçek arena karesi ile `drone` / `gemini` / `val` / `test` kümelerinde
+        güvenilir tek skaler ölçek yoktur. Orada `mpp=None` dönmek "kısıt yok"
+        değil, `rota_olcek_reddi` ile `OLCEK_YOK` demektir (CONTRACTS §5.2/1).
         """
+        if self.algi_kaynak == "arena_gercek":
+            return None, ("D-90: eğik arena bakışında 2,0 m HB yatayda yaklaşık "
+                          "72 px, dikeyde yaklaşık 38 px; tek skaler mpp "
+                          "geçersiz — yerel rota kararı üretilmez")
+        if self.algi_kaynak == "arena_kadraj":
+            try:
+                olcekler = self._arena_kadraj_olcekleri()
+            except (OSError, TypeError, ValueError) as exc:
+                return None, (f"T60 manifesti okunamadı/geçersiz: "
+                              f"{type(exc).__name__}: {exc} — "
+                              "ölçek uydurulmadı")
+            secili = Path(yol).resolve()
+            if secili not in olcekler:
+                return None, (f"manifest'te seçili görsel yok: {secili.name} "
+                              "— ölçek uydurulmadı")
+            mpp = olcekler[secili]
+            if mpp is None:
+                return None, (f"manifest'te {secili.name} için mpp yok/geçersiz "
+                              "— ölçek uydurulmadı")
+            return mpp, "T60 manifesti (kontrollü sentetik kadraj varsayımı)"
         if self.algi_kaynak != "kompozit":
             return None, (f"{self.algi_kaynak} kümesinde telemetri/ölçek yok "
                           "— irtifa+FOV bilinmiyor")
@@ -1027,6 +1102,9 @@ class YksArayuz:
         self.algi_kaynak = sira[(sira.index(self.algi_kaynak) + 1) % len(sira)]
         self.algi_idx = 0
         aciklama = {"kompozit": "kontrollü arena kompoziti — YER GERÇEĞİ var",
+                    "arena_kadraj": "T60 şartname kadrajı — manifest ölçeği var",
+                    "arena_gercek": ("tek gerçek arena karesi — eğik perspektif, "
+                                      "tek skaler ölçek yok"),
                     "gemini": "arena tipi görseller",
                     "test": "takım test seti (test_images/test)",
                     "val": "RescueNet doğrulama seti",
@@ -1152,9 +1230,12 @@ class YksArayuz:
             gorsel = sq.copy()
             kirmizi = np.zeros_like(sq)
             kirmizi[:] = (40, 40, 210)                      # BGR kırmızı
+            acik_ton = cv2.addWeighted(sq, 0.45, kirmizi, 0.55, 0)
+            koyu_ton = cv2.addWeighted(sq, 0.20, kirmizi, 0.80, 0)
+            maske_var = bool(np.any(trav_serbest) or np.any(blok))
+            gosterim = ("segmentasyon maskesi (rota değil)"
+                        if maske_var else "maske yok")
             if yol_no is not None and wps:
-                acik_ton = cv2.addWeighted(sq, 0.45, kirmizi, 0.55, 0)
-                koyu_ton = cv2.addWeighted(sq, 0.20, kirmizi, 0.80, 0)
                 # SÜRÜŞ KORİDORU: rota merkez hattı ± ölçülen yol yarıçapı
                 # (distance transform medyanı), geçilebilir alanla kesişik —
                 # İKA'nın gerçekten süreceği bant. Bilgi satırında etiketli.
@@ -1187,7 +1268,17 @@ class YksArayuz:
                     cv2.drawContours(gorsel, [k], -1, (0, 220, 255),
                                      max(3, w // 250))
             else:
-                # TESPİT YOK: kırmızı sele boğma — dürüst uyarı bandı bas
+                # Rota yokken segmentasyon yine görünür kalır: hakem modelin
+                # maske üretip üretmediğini rota kararından AYRI görebilmelidir.
+                # Mavi ton yalnız maske kanıtıdır; sarı rota/waypoint çizilmez.
+                if maske_var:
+                    maske_rengi = np.zeros_like(sq)
+                    maske_rengi[:] = (210, 130, 45)
+                    maske_ton = cv2.addWeighted(
+                        sq, 0.55, maske_rengi, 0.45, 0)
+                    gorsel[trav_serbest > 0] = maske_ton[trav_serbest > 0]
+                    gorsel[blok > 0] = koyu_ton[blok > 0]
+                # TESPİT/ROTA YOK: görüntüyü sele boğma — dürüst uyarı bandı bas
                 bant_h = max(60, h // 10)
                 gorsel[:bant_h] = cv2.addWeighted(
                     sq[:bant_h], 0.25, kirmizi[:bant_h], 0.75, 0)
@@ -1195,9 +1286,17 @@ class YksArayuz:
                              if karar_reddi else
                              "ACIK YOL TESPIT EDILEMEDI")
                 cv2.putText(gorsel, ret_metin + " (guvenli: rota gonderilmez)",
-                            (16, int(bant_h * 0.65)),
+                            (16, int(bant_h * 0.48)),
                             cv2.FONT_HERSHEY_SIMPLEX, max(0.6, w / 1800),
                             (255, 255, 255), max(1, w // 900))
+                maske_metin = ("SEGMENTASYON MASKESI (ROTA DEGIL)"
+                               if maske_var else "SEGMENTASYON MASKESI YOK")
+                cv2.putText(gorsel, maske_metin,
+                            (16, int(bant_h * 0.82)),
+                            cv2.FONT_HERSHEY_SIMPLEX, max(0.55, w / 1900),
+                            (255, 255, 255), max(1, w // 1000))
+            if yol_no is not None and wps:
+                gosterim = "sürüş koridoru"
             # şerit sınırları — letterbox İÇERİK kutusundan (§8). Tuvalden
             # (w//3) çizmek dolgu kadar kaydırır ve ekranda gösterilen şerit
             # `analyze_path`'in kullandığı şeritle örtüşmezdi.
@@ -1237,7 +1336,7 @@ class YksArayuz:
                      f"güven {guven_metin} · {ms:.0f} ms · çıkarım: {cikarim} · "
                      f"predict conf {self.ALGI_PREDICT_CONF:.2f}"
                      + f" · traversable %{trav_oran:.0f} · blocked %{blok_oran:.0f}"
-                      f" · gösterim: sürüş koridoru · model: {self.ALGI_MODEL_DOSYA}")
+                       f" · gösterim: {gosterim} · model: {self.ALGI_MODEL_DOSYA}")
             if self.algi_kaynak == "kompozit":
                 # YER GERÇEĞİ — yalnızca GÖSTERİM. Karar zaten yukarıda
                 # verilmiştir; bu satır onu değiştirmez, yalnız hakemin
@@ -1295,7 +1394,8 @@ class YksArayuz:
                     f"{rota_olcumu['seritler']} px — yayınlanan `road` "
                     "yalnız darboğaz şeridini adlandırır"))
             self.algi_kuyruk.put(("sonuc", gorsel, bilgi,
-                                  f"ALGI({_ad}) {yol.name} → {karar} "
+                                  f"ALGI({_ad}) {self.algi_kaynak}/{yol.name} "
+                                  f"→ {karar} "
                                   f"güven={guven_metin} · {ms:.0f} ms"))
         except Exception as e:
             self.algi_kuyruk.put(

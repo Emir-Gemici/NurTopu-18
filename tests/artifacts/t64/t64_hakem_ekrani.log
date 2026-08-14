@@ -1,0 +1,7 @@
+KAYNAK=O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60\images\train\sa_000026.jpg
+ALGI(navitas_seg_v24_best) arena_kadraj/sa_000026.jpg → 2·ORTA güven=1.000 · 2033 ms
+arena_kadraj/sa_000026.jpg → karar: 2·ORTA · güven 1.000 · 2033 ms · çıkarım: üretim (rpi_inference) · predict conf 0.30 · traversable %15 · blocked %19 · gösterim: sürüş koridoru · model: navitas_seg_v24_best.pt · ölçek 0.0781 m/px (T60 manifesti (kontrollü sentetik kadraj varsayımı)) · gövde açıklığı 14.1 px · C-uzayı UYGULANDI · darboğaz 37.0 px @ şerit 2 · rota şerit dağılımı 0/540/0 px
+
+KAYNAK=O:\navitas\data\arena_referans\sartname_s9_arena.png
+ALGI(navitas_seg_v24_best) arena_gercek/sartname_s9_arena.png → ROTA YOK · OLCEK_YOK güven=0.000 · 29 ms
+arena_gercek/sartname_s9_arena.png → karar: ROTA YOK · OLCEK_YOK · güven 0.000 · 29 ms · çıkarım: üretim (rpi_inference) · predict conf 0.30 · traversable %35 · blocked %1 · gösterim: segmentasyon maskesi (rota değil) · model: navitas_seg_v24_best.pt · ölçek YOK (D-90: eğik arena bakışında 2,0 m HB yatayda yaklaşık 72 px, dikeyde yaklaşık 38 px; tek skaler mpp geçersiz — yerel rota kararı üretilmez) · C-uzayı UYGULANAMADI · darboğaz 27.8 px @ şerit 2 · rota şerit dağılımı 0/536/0 px · Olcek (mpp) turetilemedi (None); irtifa+FOV/odak gerekli. Olceksiz kipte govde acikligi dogrulanamaz, rota yayinlanmaz.

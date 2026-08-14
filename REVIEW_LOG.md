@@ -5532,3 +5532,681 @@ duzeltilmedi, uzerine yazilmadi: yorumu burada duruyor.
      kilavuz argumansiz kosmayi tarif ediyor.
   2. `--imgsz` varsayilani [640, 512]; uretim `INFER_SIZE` ile hizasi bu
      denetimde OLCULMEDI. T62'de olculmelidir.
+
+---
+
+### D-90 · OLCUM · Karar dogrulugu ILK KEZ sartnameye sadik zeminde olculdu; "serit dogrulugu" olcutu GUVENILMEZ cikti
+Olcen: Claude 1 (mimar) · 2026-08-14 · zemin `calisma/sentetik_arena_kadraj_t60` (T60, n=260) · model v24 · uretim zinciri
+
+**NEDEN BU OLCUM YOKTU.** Bugune kadar iki ayri sey olculuyordu ve ikisi de bu
+soruyu yanitlamiyordu: `57_t51_kadraj_kapilari.py` YER GERCEGI etiketleriyle
+kosar (URETECIN geometrisini sinar, modeli DEGIL); `56_uc_kapili_model_secimi.py`
+K3 ise `data/arena_kompozit` uzerinde olcer — o kumenin arka plani OTOPARKTIR
+(D-53/D-89) ve modelleri ayirt edemiyor. "Model, sartnameye sadik bir arenada
+dogru guzergahi buluyor mu" HIC olculmemisti. Yeni betik: `60_...py`, `61_...py`.
+
+**🔴 BULGU 1 — "SERIT DOGRULUGU" OLCUTU TANIMA BAGLI ve bu yuzden GUVENILMEZ.**
+Ayni kararlar, ayni model, ayni kume; degisen yalniz KIYAS TANIMI:
+
+    icerik = TUM KARE (uretimin yaptigi)   DOGRU 241/260 %92,7 · TEHLIKELI  8 %3,1
+    icerik = ARENA kutusu (kahin)          DOGRU 176/260 %67,7 · TEHLIKELI 55 %21,2
+
+Sebep: `analyze_path` seritleri `icerik`in UCTE BIRI olarak tanimlar; uretecin
+manifesti ise seritleri ARENANIN ucte biri sayar. Kadraj karesinde arena kare
+icinde iceridedir (`arena_x_araligi` 122,5..517,5 / 640 — genisligin %38'i arena
+DISI). Iki tanim ortusmez, dolayisiyla "serit dogru mu" sayisi olcumun degil
+tanimin ozelligidir. **%92,7 rapor edilmek uzereydi; kendi kahin denetimimle
+curutuldu.**
+
+**NULL MODEL KONTROLU** (D-15/K-04: kontrolsuz sayi olcum degildir):
+
+    hep serit 1   DOGRU %45,0 · TEHLIKELI %55,0
+    hep serit 2   DOGRU %73,8 · TEHLIKELI %26,2   <- en iyi basit tahmin
+    hep serit 3   DOGRU %47,7 · TEHLIKELI %52,3
+    rastgele      DOGRU %55,4 · TEHLIKELI %44,6
+
+Arena-hizali kiyasta v24 (%67,7) "hep orta"dan (%73,8) **DAHA KOTUDUR**. Yani
+serit olcutune gore sistem basit bir sabit tahmini yenemiyor.
+
+**BULGU 2 — TANIMDAN BAGIMSIZ OLCUT SORUYU YANITLIYOR.** Gorevin sordugu sey
+"serit indisi dogru mu" degil, "IKA carpar mi". Rota `r_gerekli_px` ile
+kalinlastirilip YER GERCEGI engel maskesiyle kesistirildi (mimarin
+`arena-olcum-araci` notu: *asil olcut moloza basma oranidir*):
+
+    v24 · T60 kadraj · n=260
+      ROTA URETILDI          249 / 260   %95,8
+      MOLOZA BASIYOR (>0)      6 / 249   % 2,4
+      AGIR BASMA   (>%5)       6 / 249   % 2,4
+      ARENA DISINDA (>%10)    10 / 249   % 4,0
+      basma orani  medyan %0,00 · ort %1,82 · maks %100
+
+Uretilen rotalarin **%97,6'si molozla hic temas etmiyor**. Serit tartismasi bu
+olcutte buharlasiyor; bundan sonra karar kalitesi BU olcutle raporlanmalidir.
+
+**🔴 BULGU 3 — KARAR YOLUNUN ARENA SINIRI KAVRAMI YOK.** Rotalarin %4'u
+buyuk olcude arena DISINDAN geciyor. Uretec arena disina bilerek ETIKETSIZ duz
+zemin cizer (gercekci: dronun gordugu arazi arena ile bitmez) ve model orayi
+hakli olarak zemin isaretler; `analyze_path` ise tum kareyi ucte bolup o bos
+kenari gecerli guzergah sayabiliyor. `sa_000070`'te darbogaz **304 px** cikti —
+640'lik karede neredeyse bos bir sahneden gecmek demektir.
+
+**AYNI KUSUR GERCEK KAREDE DE VAR.** `sartname_s9_arena.png` uzerinde uretim
+zinciri kosuldu: izgarali arenanin DISINDAKI toprak da zemin isaretleniyor.
+Bu sentetik bir yan etki degildir.
+
+**BULGU 4 — SUBSTRAT A/B (v24 sabit, zemin degisti).** ⚠ **ESLESTIRILMIS DEGIL**
+— iki kume farkli sahneler icerir, fark sahne cesitliliginden de gelebilir:
+
+    zemin        ROTA URETILDI   MOLOZA BASIYOR   ARENA DISINDA
+    T56 (eski)    204/260 %78,5     1/204 %0,5     17/204 %8,3
+    T60 (yeni)    249/260 %95,8     6/249 %2,4     10/249 %4,0
+
+T60 daha cok rota uretiyor ve arena disina daha az tasiyor; ama moloza basan
+rota sayisi 1'den 6'ya cikiyor. Bu bir ODUNLESMEDIR (cekimserlik <-> ilerleme),
+"iyilesme" diye yazilmamalidir. Eski zemin daha cok susuyor.
+
+**BULGU 5 — GERCEK ARENADA ZINCIR ROTA URETIYOR, AMA YAYINLAYAMIYOR.**
+
+    kaplama 0,579 (tavan 0,67) · kenar 0,585 (tavan 0,50) -> kapi SUSUYOR (T59 dogru)
+    open_path = 2 (ORTA) · guven 0,75 · 8 waypoint · karar reddi YOK
+    rota_olcek_reddi -> OLCEK_YOK   ->  URETIMDE ROTA YAYINLANMAZ
+
+**BULGU 6 — GERCEK ARENA KARESI EGIK; TEK SKALER `mpp` ORADA GECERSIZ.**
+2,0 m'lik HB pedi olculdu: yatay ~72 px, dikey ~38 px (paralelkenar). Ayni 2 m
+iki eksende iki farkli piksel karsiligi veriyor:
+
+    yatay mpp 0,0278 -> r_gerekli 39,6 px ; darbogaz 27,8 px -> RET
+    dikey mpp 0,0526 -> r_gerekli 20,9 px ; darbogaz 27,8 px -> GECER
+
+Karar EKSENE gore terse doner. `CONTRACTS.md` SS5 tek skaler `mpp` varsayar; bu
+yalniz NADIR (dik) bakista gecerlidir. Sartname figuru dik degildir.
+
+**DOGRULANAMADI**
+  1. Figurun metrik olarak dogru bir foto mu yoksa temsili bir render mi oldugu
+     bilinmiyor; oyleyse ondan turetilen her mpp supheldir. (D-87/1'in devami.)
+  2. T56<->T60 kiyasi ESLESTIRILMIS DEGIL; ayni tohumla ayni sahnelerin
+     uretilip yalniz renk/dokunun degistigi bir kume ile tekrarlanmalidir.
+  3. Arena basarimi yine dogrulanmadi (D-88, kalici kisit).
+  4. Bu olcumlerin tamami v24 icindir; substrat degisirse ve model yeniden
+     egitilirse hepsi yeniden olculmelidir.
+
+---
+
+### D-91 · DENETIM · T60 renk kunyesi BAGIMSIZ dogrulandi; GEOMETRI acigi kaldi (ureteci tarafindan da bildirildi)
+Denetleyen: Claude 1 (mimar) · 2026-08-14 · gorev T60 · uygulayan Codex-1
+
+**BAGIMSIZ OLCUM — Codex'in betigi kullanilmadi.** T60 kadraj kumesinin 60
+karesinde YER GERCEGI etiketleriyle bolge LAB ortalamasi:
+
+    sinif      L        a         b       D-87 hedefi
+    zemin   149,2   +1,59   +11,39      L 150..159 · a +2 · b +11..13,5
+    moloz   108,0   -0,50    +4,44      L 102..114 · a -1 · b  +3..4,5
+    dL = 41,2                            (gercek arena ~45 · kapi >=35)
+
+Moloz bandin TAM ICINDE; dL kapiyi geciyor. **Zemin L'si bandin 0,8 ALTINDA**
+(149,2 < 150). Codex kaynak-yama degerlerini 154,0 / 153,7 diye bildirmisti;
+fark nihai JPEG + fotometrik bozunum + erozyondan geliyor ve Codex bunu
+kismen kendi bildirdi (arena-ici erozyonlu class-0 151,3). Kusur sayilmaz —
+hedef bandi TEK gercek karenin bolge ortalamalarindan turetilmistir, 0,8'lik
+sapma o bandin belirsizliginden kucuktur. Yine de kayda gecer.
+
+**GOZLE DOGRULAMA (gorsel kazanir · D-80).** `results/t60/t60_yan_yana.png`:
+bes maddenin besi de teslim edilmis — sicak/acik zemin, koyu-notr ama dokusu
+korunmus moloz, SIYAH ped + BEYAZ H, kirmizi-beyaz seritli bariyer, ince
+izgara. **Ancak GEOMETRI gercek arenanin esligi degildir:** gercek arena
+"acik toprak tarlasi + icine serpilmis moloz ADALARI"; uretec ise DIKEY
+SERITLER uretiyor. Bunu Codex kendi raporunda da yazdi ("dar serit/dikdortgen
+kolaj geometrisi gercek arenanin esleniği degildir; arena basarimi iddia
+edilmedi") — gizlenmedi, ayri goreve birakildi.
+
+**OYUNA KARSI KAPI GECTI.** Renk kapisi tek basina duz gri boyayarak
+gecilebilirdi; doku genligi olcumu bunu engelledi (mimarin sart kostugu AND):
+kaynak-yama koruma zemin 0,999 · yol 1,000 · moloz 0,940/0,939; nihai JPEG
+zemin 0,872x · blocked 1,017x — hepsi 0,75 esiginin ustunde.
+
+**KOSULAN KAPILAR (mimar tarafindan tekrar kosuldu).**
+
+    unittest discover -s tests -q      Ran 322 · OK · exit 0     GECTI
+    codes/test_rota_sentetik.py        SONUC: 15/15 dogru        GECTI
+    ADIM 0 (fikstur sozlesmeden turetiliyor)                     GECTI
+
+**VERDIKT: T60 KAPANIR.** Renk/malzeme sadakati olculdu ve dogrulandi.
+Geometri sadakati **T66** olarak acildi.
+
+**DOGRULANAMADI**
+  1. Bu gorev arena BASARIMINI dogrulamaz (D-88, kalici).
+  2. Yol (asfalt/iz) icin ayri bir D-87 renk hedefi OLCULMEDI; mevcut T57
+     dokusu korundu.
+  3. Renk duzeltmesinin karar duzeyine etkisi ESLESTIRILMIS olarak olculmedi —
+     T56/T60 kiyasi farkli sahneler icerir (D-90 bulgu 4).
+
+---
+
+### D-92 · 🔴 GOREV KRITIK · Gercek arenada rota BARIYER KOLUNUN ICINDEN geciyor; model bariyeri hic gormuyor
+Olcen: Claude 1 (mimar) · 2026-08-14 · `data/arena_referans/sartname_s9_arena.png` · v24 · uretim zinciri
+
+**BARIYER NEDIR.** Sartname figurunde KAPALI guzergahi kapatan tek yapi, iki
+adet kirmizi-beyaz seritli YOL BARIYERI KOLUDUR (D-87 bulgu 3b). Ince ve
+yukseltilmistir; altindaki ve cevresindeki zemin gorunur kalir.
+
+**OLCUM (modelden BAGIMSIZ bariyer tespiti).** Bariyer, sahnedeki tek yuksek
+kromali kirmizi yapidir (D-87: geri kalanin tamaminda |a| < 1), bu yuzden LAB
+a* > 25 ile guvenle bulunur — model kullanilmadi:
+
+    bariyer kolu 1 : x=687 y=208 w=228 h=16   (uzun kol)
+    bariyer kolu 2 : x=462 y=210 w= 98 h=14   (kisa kol)
+    bariyer pikselleri: n = 3644
+
+    model ENGEL diyor : %0,0     <-- TEK PIKSEL BILE DEGIL
+    model ZEMIN diyor : %30,9
+
+**SONUC — URETILEN ROTA BARIYERI KESIYOR: 59 px.** Gorsel dogrulandi: rota
+IKA'nin bulundugu alt banttan cikip yukari gidiyor ve KISA BARIYER KOLUNUN tam
+ortasindan geciyor. Sahada IKA bariyere carpardi.
+
+**🔴 KORUMALARIN HICBIRI ATESLEMIYOR.**
+
+    zemin kapisi   kaplama 0,579 < 0,67 · kenar 0,585      -> SUSUYOR (T59 dogru)
+    karar reddi                                             -> YOK
+    guven                                                   -> 0,75 (esik 0,20)
+    darbogaz 27,8 px                                        -> genis gorunuyor
+
+Rotayi yayindan alikoyan TEK sey `OLCEK_YOK`. Yani bugun bizi koruyan sey bir
+guvenlik kapisi degil, bir EKSIKLIK. 
+
+**🔴 DOGRUDAN SONUC — GOREV SIRALAMASI DEGISTI.** T64 (hakem ekranina arena
+kaynagi + olcek) tek basina UYGULANIRSA sistem bariyere giren bir rotayi
+YAYINLAR hale gelir. Olcek halkasi kapatilmadan once ya da onunla birlikte
+bariyer/ince-engel tespiti cozulmelidir. T64 promptu bu nedenle `arena_gercek`
+icin mpp DONDURMEMEYI zaten sart kosuyordu; bu kayit o sarti GEREKCELENDIRIR.
+
+**NEDEN GORMUYOR — SINANABILIR ONGORU.** v24 T60 ONCESI substratla egitildi;
+orada "bariyer" TEK RENK ince bir `cv2.line` idi (uretecin ~720. satiri).
+T60 ile uretec artik KIRMIZI-BEYAZ SERITLI kol ciziyor. Su an egitilen
+**v25 bu veriyle ogreniyor**; bariyeri engel sayip saymadigi sabah AYNI
+olcumle sinanacaktir. Ongoru yazildi ki sonuc ne cikarsa ciksin kayitli olsun.
+
+**KAPSAM SINIRI.** Tek karedir (D-88). "Model bariyerleri goremiyor" genel bir
+iddia DEGILDIR; olculen sey "bu karede gormedi"dir. Ama bu kare projenin sahip
+oldugu TEK gercek arena goruntusudur ve bariyer sartnamenin kapatma yontemidir.
+
+**DOGRULANAMADI**
+  1. Sentetik kadraj kumesinde bariyer kesisimi AYRICA olculmedi; oradaki
+     bariyerler uretecin cizdikleridir, gercek degil.
+  2. Bariyerin fiziksel yuksekligi ve dolayisiyla IKA'nin altindan gecip
+     gecemeyecegi bilinmiyor — sartname olcu vermiyor. Fail-safe varsayim:
+     gecilemez.
+  3. Ince-engel sinifinin genel cozumu (tel, halat, kablo) bu kayitta ELE
+     ALINMADI.
+
+---
+
+### D-93 · OLCUM · D-92'nin ONGORUSU CURUTULDU: uretec bariyeri ASLA acik zemine koymuyor, v25 bunu ogrenemez
+Olcen: Claude 1 (mimar) · 2026-08-14 · zemin T60 kadraj (120 kare) · v25 egitimi KOSARKEN
+
+**D-92'de yazdigim ongoru:** "v25 seritli bariyerle egitiliyor, bariyeri engel
+sayip saymadigi sabah sinanacak." Sabahi beklemeden KOD + OLCUM ile bakildi ve
+ongoru **CURUTULDU**. Kayit, sonuc lehte cikmadigi icin silinmiyor; duzeltiliyor.
+
+**KOD (uretec, ~934-944).**
+
+    kapali_indisler = [i for i, d in enumerate(durumlar) if d == "kapali"]
+    ...
+    if kapali_indisler:
+        i = kapali_indisler[ham_i % len(kapali_indisler)]
+        bariyer_tarifleri.append(...)
+
+Bariyer YALNIZ **zaten KAPALI** seritlere ciziliyor — yani molozla doldurulmus
+ve `blocked` etiketli bolgelere. Tum seritler acikken bariyer HIC cizilmiyor.
+
+**OLCUM (bariyer tespiti modelden bagimsiz · LAB a*>25 · uzun/ince):**
+
+    120 kare incelendi · 70'inde bariyer bulundu
+    BARIYER PIKSELLERININ YER GERCEGI ETIKETI
+      zemin          31   % 0,0
+      engel     142.260   %92,4
+      etiketsiz  11.655   % 7,6
+
+**SONUC.** Egitim verisinde bariyer, molozun UZERINDEKI bir susdur. Gercek
+arenada ise bariyer, aksi halde ACIK olan zeminin ustunden gecen ve guzergahi
+KAPATAN yapidir (D-92). Bu konfigurasyon egitim kumesinde **hic gecmiyor**;
+dolayisiyla v25'in "ince seritli cubuk = engel" kuralini ogrenmesi icin
+gerekcesi yoktur. v25 bu konuda v24'ten farkli davranirsa sebebi bariyer
+ogrenimi DEGIL, baska bir yan etkidir — oyle yorumlanmamalidir.
+
+**BU BIR ETIKETSIZ-ENGEL HATASI DEGILDIR.** Bariyer pikselleri %92,4 oraninda
+`blocked` tasiyor; v16 cokusunu doguran "etiketsiz gecilemez nesne" kusuru
+BURADA YOK. Kusur ETIKETTE degil, KONFIGURASYONDA: yanlis yerde duruyor.
+
+**GEREKEN (T68).** Uretec, acik seridi KAPATAN bariyer uretebilmelidir: ince
+seritli kol acik zeminin uzerine cizilir ve **kendi pikselleri `blocked`
+etiketlenir** (alttaki zemin degil — cubugun kendisi). Boylece "ince cubuk =
+gecilemez" kurali ogrenilebilir hale gelir.
+
+**DOGRULANAMADI**
+  1. Modelin ince yapilari 640 px cikarim cozunurlugunde ogrenip
+     ogrenemeyecegi OLCULMEDI — gercek bariyer kolu 14-16 px kalinliginda;
+     `imgsz=640` ve maske protolari 512'de cozuluyor. Ogrenilebilirlik ayri
+     bir sorudur ve veri duzeltilmeden sinanmasi anlamsizdir.
+  2. Bu kayit v25'in ne yapacagini KANITLAMAZ; yalnizca "bariyeri ogrenmis
+     olma" yorumunun gerekcesiz oldugunu soyler. Olcum sabah yine kosulacak.
+
+---
+
+### D-95 · 🔴 KARAR · v25 URETIME GIRMIYOR: sentetikte kusursuz, GERCEK ARENADA TAMAMEN KOR
+Olcen/karar: Claude 1 (mimar) · 2026-08-14 · v25_t60_renk (best.pt = epoch 106/150+)
+
+> ⚠ NUMARA CAKISMASI (BESINCI). Bu kayit once D-94 yazildi; Claude 2 ayni anda
+> T65 icin D-94 kullandi. Kural geregi **kendi** kaydimi tasidim (D-95), baska
+> ajanin kaydina dokunmadim. Dosyada D-95, D-94'ten ONCE gelir.
+>
+> ⚠ D-94'un (Claude 2) gecerli bir itirazi asagidaki sentetik sayilara da
+> uygulanir: uretec KADRAJ kipinde geometrik ve fotometrik bozunumu KAPATIYOR
+> (`return im if kadraj else sonuc`). Yani T60 kadraj uzerindeki tum sonuclar —
+> v24'unkiler de v25'inkiler de — **IYIMSER UST SINIRDIR**; egim, golge,
+> bulaniklik ve JPEG bozunumu o 260 karede yoktur. Bu, v25'in sentetik
+> ustunlugunu daha da suphelı kilar ve karari GUCLENDIRIR.
+
+**DENEYIN TASARIMI (projedeki en temiz esleştirilmis substrat deneyi).** v25,
+v24 ile **BIREBIR ayni** recete, ayni on-egitim (`v15_on10sinif`), ayni karisim
+yaml'i, ayni seed/augmentasyon ile kosuldu. Degisen TEK sey: `sentetik_arena`
+bileseni T60 renk kunyesiyle yeniden uretildi. Yani olculen sey substratin
+renk sadakatinin etkisidir.
+
+**SENTETIK ZEMINDE v25 CARPICI BICIMDE DAHA IYI** (T60 kadraj, n=260):
+
+    olcut                        v24            v25
+    ROTA URETILDI            249/260        257/260
+    MOLOZA BASIYOR (>0)      6  %2,4        0  %0,0     <- SIFIR
+    ARENA DISINDA (>%10)    10  %4,0        0  %0,0     <- SIFIR
+    basma orani maks           %100          %0,00
+    (serit olcutu · TANIMA BAGLI, baglam icin)
+    TEHLIKELI                8  %3,1        6  %2,3
+    DOGRU                  241  %92,7     251  %96,5
+
+D-90 bulgu 3'teki **arena disina tasma tamamen kayboldu**. Bu, T65'in cozmeye
+calistigi kusurun bir kismi icin veri tarafinda cozum oldugunu gosterir.
+
+**🔴 GERCEK ARENA KARESINDE v25 TAMAMEN KOR.**
+
+    conf    v24 zemin  v24 engel   v25 zemin  v25 engel
+    0.30       %34,6      %0,5        %0,0      %0,1
+    0.20       %34,6      %0,5        %0,0     %14,7
+    0.10       %34,6      %2,8        %0,0     %43,2
+    0.05       %34,6      %2,8        %0,0     %43,2
+    0.02       %34,6      %4,2        %0,0     %48,2
+
+Esik meselesi DEGILDIR: 0,02'ye kadar zemin SIFIR. Dahasi v25 kareyi
+kacirmiyor — arenanin tamamini **ENGEL** ilan ediyor (%43-48). Karar:
+`MASKE_YOK`, serit None. Gorselle dogrulandi (`results/t63/harita_v25_GERCEK.png`).
+
+**KORLUK GENEL DEGIL, ARENAYA OZGU.** v25 diger her kaynakta v24 ile
+neredeyse ayni:
+
+    kaynak                  n    v24 bos/kaplama    v25 bos/kaplama
+    GERCEK ARENA            1     0/1  %34,6         1/1  %0,0    <- TEK FARK
+    raw_frames OTOPARK      2     0/2  %44,4         0/2  %44,5
+    copy_paste_gercek      12    0/12  %45,2        0/12  %45,3
+    sentetik_arena val     12    0/12  %20,6        0/12  %19,9
+
+Yani "v25 gercek fotograflari reddediyor" iddiasi YANLIS olurdu; kusur tam
+olarak hedef alan gorseline ozgudur.
+
+**KARAR: URETIM MODELI v24 KALIR.** Gerekce: karar verdigimiz tek sey gorevin
+kosulacagi alandir ve elimizdeki tek ornekte v25 hicbir rota uretemez.
+Sentetik kazanc, hedef alandaki tam korlugu telafi etmez (madde 15 ruhu:
+guvenli taraf cekimserliktir ama gorev de ilerlemelidir; v25 ikisini birden
+kaybettirmez, gorevi kaybettirir).
+
+**mAP YINE YANILTTI — K-3 dogrulandi.** v25 val mAP50-95(M) = 0,6979;
+v24 = 0,7179. Iki sayi da arenadaki nitel farki (goruyor / kor) hic
+gostermiyor. Model secimi mAP ile YAPILAMAZ; bu kayit K-3'un dorduncu
+tekrar dogrulamasidir.
+
+**ONEMLI SONUC — SUBSTRAT SADAKATI TEK BASINA YETMIYOR.** T60 rengi olculmus
+hedefe oturttu (D-91) ve sentetik basarim ucuruma gitti; ama gercek karede
+sonuc TERSINE dondu. Substrati kendi icinde tutarli hale getirmek, modeli o
+tutarliliga BAGIMLI da yapabiliyor. Kalan farklar: geometri (T66), egik bakis
+(D-90 bulgu 6), ve figurun render mi foto mu oldugu (D-87 dogrulanamadi-1).
+
+**DOGRULANAMADI**
+  1. Korlugun MEKANIZMASI bilinmiyor. Renk mi, izgara mi, egiklik mi, geometri
+     mi — olculmedi. Ayri gorev (T69).
+  2. n=1. "v25 arenada kor" ifadesi TEK KARE icindir (D-88 kalici kisit).
+     Ama o kare hedef alanin sahip oldugumuz tek ornegidir.
+  3. Ara kontrol noktasi YOK (yalniz best/last). Daha erken bir epoch'un hem
+     sentetikte iyi hem arenada goren bir denge tutup tutmadigi SINANAMADI.
+  4. ~~v25 200 epoch'a tamamlanmadan olculdu (best.pt = epoch 106).~~
+     **KAPANDI 2026-08-14 08:33** — kosu 200/200 tamamlandi, `best.pt` epoch
+     **173** oldu (mAP50-95(M) 0,7009) ve olcum TEKRARLANDI:
+
+         sentetik T60 kadraj : rota 256/260 · moloza basma 0 %0,0 ·
+                               arena disi 0 %0,0 · TEHLIKELI 7 %2,7 · DOGRU %95,8
+         GERCEK ARENA        : zemin %0,0 -> MASKE_YOK   (degismedi)
+
+     Karar DEGISMEDI: v25 uretime girmez. "Daha cok epoch gerekiyordu" acikligi
+     boylece kapandi.
+
+     YAN GOZLEM: tamamlanmis v25, bariyer piksellerinin %65,7'sini ENGEL
+     sayiyor (v24: %0,0). Bu **bariyer ogrenimi DEGILDIR** — v25 arenanin
+     TAMAMINI engel sayiyor, dolayisiyla olcut secici degil. D-93'un ongorusu
+     ayakta; boyle yorumlanmamalidir.
+
+---
+
+### D-94 · OLCUM + KISMI COZUM · T65: arena siniri YERELLESTIRILEMEDI; koridor genisligi tavani kondu (10 -> 5)
+Olcen/uygulayan: Claude 2 · 2026-08-14 · gorev T65 · kanit D-90 bulgu 3
+
+**TABAN BAGIMSIZ DOGRULANDI** (`61_rota_moloza_basma.py`, v24, T60 kadraj):
+`rota 249/260 · moloza basma 6/249 · arena disi 10/249` — gorevde bildirilen
+sayilarla BIREBIR ayni.
+
+**KUSUR DEJENEREDIR — bu, cozumun seklini belirledi.** Arena disi orani:
+
+    == 0.000 -> 238 kare · == 0.001 -> 1 kare · == 1.000 -> 10 kare
+
+Ara deger YOK. Rota ya tamamen arena icinde ya TAMAMEN disinda. Onun 9'u
+serit 3, biri serit 1; orta serit HIC yok. Sekizinde guven **1.000** —
+sistem tamamen yanlis bir rotaya azami guven veriyor. Moloza basan 6 kare ile
+KESISIM YOK: iki kusur ayrik.
+
+**YAN BULGU — GUVEN OLCUTU DOYMUS.** `ROTA_DARBOGAZ_TAM_ORANI = 0.035`, yani
+640'lik karede **22,4 px**'te doyuyor. Olculdu: 23 px -> 1.000 · 40 px -> 1.000
+· 304 px -> 1.000. Darbogaz genisligi bilgi tasiyor ama guven onu ATIYOR.
+10 hatali karenin 8'inde azami guvenin sebebi budur. Ayri gorev konusu.
+
+**FAZ 1 — UC ADAY SINIR IMZASI OLCULDU** (gorevin dayattigi sira: once olc).
+260 kadraj karesi + gercek kare. **UCU DE GUVENILMEZ, UCU DE GERCEK KAREDE COKTU:**
+
+    imza                 n   IoU medyan  basarili  guvenilir  gercek karede
+    izgara cizgileri   260       0.806    220/260     HAYIR    TUM KAREYI verdi
+    moloz kapsayan k.  260       0.664    254/260     HAYIR    dar yanli
+    dis cerceve        260       0.960    226/260     HAYIR    HIC sinir uretemedi
+
+  - **Izgara**: fiziksel temeli SAGLAM (T60 izgarayi yalniz arena icine ciziyor,
+    gercek karede de oyle). Moloz tuzagi testini GECTI (molozu izgara sanmiyor).
+    Bozan sey molozun izgarayi GIZLEMESI: sol kenar molozlu 118 karede dx0
+    medyan 79,0 px, molozsuz 102 karede 4,0 px — **20 kat** fark. Iki kenari da
+    molozsuz 27 karede imza NEREDEYSE KUSURSUZ (IoU medyan 0,981).
+    Gercek karede min/max birlestirme **[0, 1058] = tum kare** verdi — yani
+    sinir arenayi BUYUTUYOR, tam da onlenmek istenen kip.
+  - **Moloz kutusu**: "arena disinda moloz yoktur" DOGRU, ama TERSI degil —
+    moloz arenayi DOLDURMAZ. Kare basina EN KOTU kenar hatasi medyan 114,9 px
+    (arena ort. genisligi 410,5 px). Yalniz iki dis serit de kapaliyken iyi
+    (n=31, IoU 0,986). 6/260 karede sinif-1 maskesi tamamen BOS.
+  - **Dis cerceve**: karelerin %29'unda arena sinirini degil IC SERIT sinirini
+    buluyor. Kok neden URETEC KODUNDA: `sinirlar` listesi arena kenarlarini VE
+    ic serit sinirlarini AYNI renk ve kalinlikta tutuyor; ustelik cerceve
+    karelerin yalniz YARISINDA ciziliyor (`rng.random() < 0.5`). Gercek karede
+    dusey kenar izdusumu max 0,406 < 0,45 esigi -> HICBIR SINIR URETEMEDI.
+
+**DAHA TEMEL BULGU — GERCEK ARENA SINIRI DIKEY DEGIL.** Perspektif nedeniyle
+yamuk: sol kenar x~190 (ust) -> x~65 (alt), sag x~920 -> x~1015. Tek bir
+`[x0,x1]` araligi gercek arenayi TANIMLAMAZ; indirgenemez hata **~50-60 px**.
+Yani gorevin (ve benim ilk kurgumun) varsaydigi CIKTI BICIMI yanlisti.
+
+**EK UYARI:** sentetik sayilar IYIMSER UST SINIRDIR — uretec kadraj kipinde
+geometrik ve fotometrik bozunumu KAPATIYOR (`return im if kadraj else sonuc`);
+o 260 karede egim, golge, bulaniklik ve JPEG bozunumu YOK.
+
+**FAZ 2 — SINIR YERELLESTIRILMEDEN COZUM.** Kusur dejenere oldugu icin
+"sinir nerede" sorusu GEREKMIYOR; "bu bir koridor mu" sorusu yetiyor.
+
+    OLCUT: koridorun EN DAR yeri bir SERIDIN tamamindan genis olamaz.
+
+Sartname arenada UC guzergah tanimlar ve bunlar molozla ayrilir; bir seridin
+tamamindan genis bir "koridor" uc guzergahtan biri DEGILDIR — acik arazidir.
+Tavan `serit_no`nun KENDI bolusumunden turetilir (m.16), ciplak sayi degildir.
+
+    kume                     darbogaz / icerik_w
+      MESRU (arena ici) 239   medyan 0.094 · p95 0.208 · MAKS 0.280
+      KUSURLU (disi)     10   0.022 · 0.028 · 0.111 · 0.170 · 0.314
+                              0.353 · 0.358 · 0.375 · 0.475 · 0.487
+
+    tavan 1/3 = 0.333 -> yanlis elenen MESRU 0/239 · yakalanan 5/10
+    mesru tarafa pay 0.053 · kusurlu tarafa pay 0.020
+
+**FIT EDILMIS TAVAN BILEREK SECILMEDI.** 0.280 ile 0.333 arasina konacak bir
+tavan 6/10 yakalardi. Reddedildi cunku: (i) fiziksel degil FIT olurdu;
+(ii) 0.280 sentetik ve bozunumu kapali karelerden gelir, gercek mesru dagilim
+daha GENISTIR — optimist bir azamiye esik oturtmak **D-85'in hatasidir**;
+(iii) payi 0.017'ye inerdi. Bu gerekce testle kilitlendi
+(`test_neden_FIT_EDILMIS_tavan_secilmedi`).
+
+**KISMI COZUMDUR, GIZLENMIYOR.** Kacan 5 kareden **4'u** mesru azaminin
+altinda ve genislikle AYIRT EDILEMEZ. Sebep olculdu: arena disi bolge her
+zaman bos DEGIL — `sa_000068`'de arena disi bir **OTOPARK FOTOGRAFI** tasiyor
+(park cizgileriyle) ve model orada 14,2 px darbogazli kendi koridorunu
+buluyor. Genislik olcutu bu sinifi yakalayamaz; gercek sinir bilgisi gerekir
+ve o bilgi bugun YOKTUR.
+
+**KAPSAM ENGELI — KISIT BAGLANAMADI, DEPO DURUMU BOYLE BIRAKILDI.**
+Gorevin izin listesi: `codes/costmap_path_finder.py` · `codes/karar_sozlesmesi.py`
+· `CONTRACTS.md` · `tests/**`. Ama kusur `codes/rpi_inference.py` icindeki
+`analyze_path`tadir ve o dosya listede YOK. Izinli iki dosyaya GORUNTU HIC
+ULASMIYOR; `analyze_path` asagi yalniz maskeleri geciriyor:
+
+    zemin_maskesi_reddi(trav_mask, icerik)   <- yalniz zemin maskesi
+    astar(gecilebilir, ...) · plan_izgarasi(dt_px, gecilebilir, ds)
+
+Darbogaz `analyze_path` icinde hesaplaniyor (`olcum["darbogaz_px"]`) ve
+`rota_darbogaz_guveni` ile guvene ceviriliyor; ama ret uygulanmiyor —
+`rota_guven_reddi` AYRI bir fonksiyonda (`_rota_kararini_esikle`).
+Yeni olcutu devreye almak icin `analyze_path` icinde **tek bir cagri** gerekir:
+
+    kg_reddi = rota_koridor_genisligi_reddi(olcum["darbogaz_px"], icerik_w)
+    if kg_reddi is not None:
+        return _don(None, 0.0, [], clean, kg_reddi, olcum)
+
+Bu satir YAZILMADI; `codes/rpi_inference.py`'ye DOKUNULMADI. Sozlesme, sebep
+kodu, `CONTRACTS` maddesi ve testler TESLIM EDILDI ve gecti; kisit BEKLEMEDE.
+
+**KAPI 1 — SIMULASYON (kisit bagli olmadigi icin canli kosu DEGIL).**
+Olculen 249 rotanin her birine sozlesme olcutu uygulandi:
+
+                              ROTA     MOLOZA    AGIR   ARENA DISI
+    KISIT KAPALI (taban)   249/260     6/249   6/249      10/249
+    KISIT ACIK  (T65)      244/260     6/244   6/244       5/244
+
+    ARENA DISI   10 -> 5   DUSTU
+    MOLOZA BASMA  6 -> 6   ARTMADI
+    ROTA URETIMI 249 -> 244  COKMEDI (-5 kare)
+    reddedilen 5 karenin HEPSI gercekten arena disiydi — mesru kayip 0
+
+**KAPI 2 — MUTASYON KONTROLU** (D-15/K-04):
+
+    M0  mutasyon YOK                             18 kosuldu · DUSEN  0  temiz
+    M1  tavan pratikte KALDIRILDI (serit x99)    18 kosuldu · DUSEN  6  ATESLENDI
+    M2  SERIT_SAYISI 12 (serit_no ile ayristi)   18 kosuldu · DUSEN 18  ATESLENDI
+    M3  tavan YARIYA indirildi                   18 kosuldu · DUSEN  6  ATESLENDI
+    M4  geri alma sonrasi                        18 kosuldu · DUSEN  0  temiz
+
+M2 madde-16 kilididir: `SERIT_SAYISI` ile `serit_no` birbirinden bagimsiz
+kayamaz.
+
+**KAPI 3 — depo kapilari.**
+
+    codes/test_rota_sentetik.py        SONUC: 15/15 dogru            GECTI
+    unittest discover -s tests -q      Ran 349 tests · OK            GECTI
+    scripts/jetson_paket_hazirla.py    9/9 bayt-esit                 GECTI
+
+**MEVCUT BIR TEST GUNCELLENDI (gizlenmiyor).**
+`tests/test_rota_ret_nedenleri.py::test_sebep_kodlari_sozlesmedeki_dokuz_degerdir`
+onuncu sebep kodu eklenince dustu. Test dogrudan benim genislettigim sozlesme
+kumesini kilitliyor; kume guncellendi ve test adindaki SAYI kaldirildi
+(`..._sozlesmede_SAYILANLARDIR`). Ad sayi tasidigi icin her yeni kodda ad da
+degismek zorundaydi — T59 denetiminde isaretlenen ciplak-sabit kirilganliginin
+ta kendisi. Kume yine TAM kilitli; sessizce buyuyemez.
+
+**DOGRULANAMADI**
+  1. Arena basarimi (D-88, KALICI kisit). Bu gorev onu dogrulamaz.
+  2. Kisit CANLI kosulmadi — `analyze_path`e baglanmadi (kapsam engeli).
+     Yukaridaki KAPI 1 sayilari SIMULASYONDUR.
+  3. Kalan 5 arena-disi kare icin olcut YOKTUR.
+  4. Tavan v24 + T60 kadraj icin olculdu; model ya da substrat degisirse
+     yeniden olculmelidir.
+  5. Gercek karede sinir imzalarinin yer gercegi ETIKETI yok; oradaki
+     "dogru/yanlis" degerlendirmeleri GOZLEDIR, olculmus hata degildir.
+
+---
+
+### D-96 · DENETIM · T65 dogrulandi; KISIT BAGLANMADI ve sebebi MIMARIN KAPSAM HATASIDIR
+Denetleyen: Claude 1 (mimar) · 2026-08-14 · gorev T65 · uygulayan Claude 2
+
+**🔴 ONCE KENDI HATAM.** T65'in dosya izin listesini ben yazdim:
+`costmap_path_finder.py · karar_sozlesmesi.py · CONTRACTS.md · tests/**`.
+Ama duzeltilecek kusur `codes/rpi_inference.py` icindeki `analyze_path`tadir
+ve o dosya listede YOKTU. Claude 2 izni asmadi, isi yaptigi yere kadar
+getirdi ve engeli acikca bildirdi — **dogru davranis budur**. Bu, T35'te
+yaptigim "yanlis dosyayi hedef gosterme" hatasinin AYNISIDIR (D-50); ikinci
+kez oldu, bu yuzden kayda geciyor.
+
+**BAGIMSIZ DOGRULAMA — Claude 2'nin betigi kullanilmadi, mimarin kendi
+olcum JSON'lari uzerinden sozlesme fonksiyonu cagrilarak tekrarlandi:**
+
+    tavan = icerik_w / SERIT_SAYISI = 640/3 = 213,3 px
+    rotali kare        249
+    kisit ELEDI          5   -> 5'inin de arena disi orani > %10 (GERCEKTEN kusurlu)
+    yanlis elenen        0   <- mesru hicbir kare kaybedilmedi
+    kacan kusurlu        5 / 10
+
+Claude 2'nin bildirdigi `10 -> 5` ve `mesru 0/239` rakamlariyla **birebir
+ayni**. Sozlesme girdisi `CONTRACTS.md:382` ve `:456`'da mevcut; sebep kodu
+`KORIDOR_DEGIL` kanonik listeye eklenmis.
+
+**TASARIM DENETIMI — UCU DE DOGRU.**
+  1. **Madde 15**: olcut yalniz REDDEDER; maskeye dokunmaz, serbest alani
+     buyutmez. Ihlal yok.
+  2. **Madde 16**: tavan `SERIT_SAYISI`'ndan turetiliyor, ciplak sayi degil.
+     `KORIDOR_GENISLIK_TAVANI_SERIT = 1.0` **fiziksel** sinirdir.
+  3. **Fail-closed yonu dogru**: olculemeyen darbogaz reddi TETIKLEMEZ —
+     olcut yalniz POZITIF kanit uzerine ates eder, karar diger kapilara kalir.
+
+**FIT ETMEYI REDDETMESI DOGRU KARARDIR.** 0,280 ile 0,333 arasina konacak bir
+tavan 6/10 yakalardi; reddedildi cunku olculen azami (0,280) bozunumu KAPALI
+sentetik karelerden gelir ve gercek mesru dagilim daha genistir. Bu tam olarak
+**benim D-85'te yaptigim hatadir** (alt kumenin azamisine esik oturtmak, D-86'da
+curutuldu). Amele mimarin gecmis hatasini tekrarlamayi reddetti ve gerekcesini
+teste kilitledi. Kayda gecer.
+
+**KISMI OLDUGU GIZLENMEDI.** Kacan 5 karenin 4'u mesru azaminin ALTINDA ve
+genislikle ayirt EDILEMEZ; `sa_000068`'de arena disi bolge bir OTOPARK
+FOTOGRAFI tasiyor ve model orada kendi koridorunu buluyor. Genislik olcutu bu
+sinifi yakalayamaz.
+
+**VERDIKT: T65 KABUL — kisit BAGLANMAK UZERE yetkilendirildi.** Uygulama
+`codes/rpi_inference.py` icinde `analyze_path`e TEK cagridir; izin listesi
+duzeltilerek **T69** olarak acildi. `comms/yks_gui.py` Codex'te (T64),
+`rpi_inference.py` bostur — cakisma yok.
+
+**KOSULAN KAPILAR (mimar tarafindan tekrar kosuldu, ameleler calisirken).**
+
+    codes/test_rota_sentetik.py        SONUC: 15/15 dogru        GECTI
+    unittest discover -s tests -q      Ran 349 · OK              GECTI
+                                       (322 -> 349: +27 test)
+
+**DOGRULANAMADI**
+  1. Kisit CANLI kosulmadi; yukaridaki sayilar SIMULASYONDUR. T69 bittiginde
+     `61_rota_moloza_basma.py` ile canli olculmelidir.
+  2. Claude 2'nin "sentetik sayilar iyimser ust sinirdir" uyarisi (uretec
+     kadraj kipinde bozunumu kapatiyor) DOGRUDUR ve mimarin D-90/D-95
+     olcumlerinin tamamina da uygulanir. D-95'e islendi.
+
+---
+
+### D-97 · UYGULANDI · T69: T65 kisiti karar yoluna baglandi; CANLI olcum simulasyonu dogruladi
+Uygulayan: Claude 2 · 2026-08-14 · gorev T69 · kanit D-94, D-96
+
+**YAPILAN.** `codes/rpi_inference.py` `analyze_path` icinde, darbogaz olculdukten
+ve `olcum` tamamlandiktan SONRA tek cagri:
+
+    kg_reddi = rota_koridor_genisligi_reddi(olcum["darbogaz_px"], icerik_w)
+    if kg_reddi is not None:
+        return _don(None, 0.0, [], clean, kg_reddi, olcum)
+
+Import iki blogun IKISINE de eklendi (goreli `.karar_sozlesmesi` ve mutlak),
+yoksa paket-ici ve depo-ici calisma ayrisirdi. Esige DOKUNULMADI (1.0),
+`karar_sozlesmesi.py` DEGISTIRILMEDI, `comms/` DEGISTIRILMEDI.
+
+**KAPI 1 — CANLI OLCUM (simulasyon DEGIL).**
+`61_rota_moloza_basma.py --model navitas_seg_v24_best.pt --kume ..._t60`
+
+                              ROTA     MOLOZA    AGIR   ARENA DISI
+    taban  (D-90/D-94)     249/260     6/249   6/249      10/249
+    T69    (kisit CANLI)   244/260     6/244   6/244       5/244
+
+    ARENA DISI   10 -> 5   DUSTU        (hedef: 5)
+    MOLOZA BASMA  6 -> 6   ARTMADI      (hedef: artmasin)
+    ROTA URETIMI      244  COKMEDI      (hedef: 244'un altina dusmesin)
+
+**D-94'un SIMULASYONU BIREBIR DOGRULANDI** — uc sayi da tuttu. Simulasyonun
+kendisi de boylece gecerli bir yontem oldugu icin kayda gecer.
+
+**KAPI 2 — MUTASYON KONTROLU (canli, ayni olcum betigi).**
+
+    M0  kisit ACIK (depo hali)                rota 244 · moloza 6 · arena disi  5
+    M1  kisit KAPATILDI (fonksiyon None)      rota 249 · moloza 6 · arena disi 10
+    M2  geri alma sonrasi                     rota 244 · moloza 6 · arena disi  5
+
+Kisit kapatilinca sayilar TABANA TAM DONDU (249/6/10). Dusus baska bir
+kapinin yan etkisi degil, KISITTAN geliyor. Depo dosyasi degistirilmedi;
+fonksiyon bellekte yamalandi.
+
+**KAPI 3 — depo kapilari.**
+
+    codes/test_rota_sentetik.py        SONUC: 15/15 dogru            GECTI
+    unittest discover -s tests -q      Ran 359 tests · OK            GECTI
+    scripts/jetson_paket_hazirla.py    9/9 bayt-esit                 GECTI
+
+**YENI TEST SINIFI** `tests/test_koridor_genisligi.py::AnalyzePathEntegrasyonTests`
+(7 test) BAGLANTIYI kilitler — cagri silinirse duser. Icerik: fikstur
+onkontrolu (kor kapi kurmamak icin ZEMIN kapisina takilmadigi dogrulanir) ·
+asiri genis koridorun `KORIDOR_DEGIL` ile reddi · fail-closed (yol/guven/
+waypoint YAYINLANMAZ) · negatif kontrol (makul koridor ETKILENMEZ) ·
+madde 15 (maskeye dokunulmuyor) · olcut sozlesmeden cagriliyor mu (kimlik
+karsilastirmasi) · kisit kapatilinca ayni kare GECIYOR mu. Toplam 25 test.
+
+**🔴 BULGU — T65'IN GEREKCESI YANLIS IFADE EDILMIS (esik DOGRU, ANLATIM yanlis).**
+Baglarken `darbogaz_px`in ne oldugu dogrulandi: `_rota_serit_olcumu` docstring
+`:492` **"rota boyunca olculen en kucuk aciklik (dt YARICAPI)"** diyor. Yani
+`darbogaz_px` bir YARICAPTIR, koridor GENISLIGI degil (genislik ~ 2x).
+
+Oysa T65'in gerekcesi (`karar_sozlesmesi.py` yorumu ve `CONTRACTS.md` SS6.4
+satiri) sunu diyor: *"koridorun en dar yeri BIR SERIDIN TAMAMINDAN genis
+olamaz"*. Uygulanan kural `yaricap > icerik_w/3` oldugu icin fiilen sunu
+soyluyor: **koridor GENISLIGI IKI seritten genis olamaz.** Anlatim iki kat
+sapiyor.
+
+OLCULDU (ayni kume, n=249):
+
+    kural                              esik oran   yanlis elenen MESRU   yakalanan
+    UYGULANAN  yaricap > 1/3               0.333            0/239          5/10
+    LAFZI      genislik > 1/3 (yar>1/6)    0.167           23/239          7/10
+
+Yani **lafzi "bir serit" kurali UYGULANAMAZ** — 23 mesru kareyi elerdi.
+Uygulanan esik dogru muhendislik secimidir ve olculen paylari korur; yanlis
+olan yalnizca ANLATIMDIR.
+
+Altta yatan olgu da kayda deger: bu kumede MESRU koridorlar genislik olarak
+`0.559 * icerik_w`e, yani ~1,7 seride kadar cikiyor. "Uc guzergah molozla
+ayrilir" resmi T60 geometrisinde SIKI tutmuyor — D-91'in "uretec dikey
+seritler uretiyor, gercek arena ise moloz ADALARI" bulgusuyla tutarli.
+
+⚠ **DUZELTILMEDI.** T69'un izin listesi `codes/rpi_inference.py` ve `tests/**`
+ile sinirli; `karar_sozlesmesi.py` ve `CONTRACTS.md` acikca DOKUNMA listesinde
+("T65 bitti"). Esik de OYNATILMADI (gorev acikca yasakladi ve gerekcesi teste
+kilitli). Duzeltilmesi gereken **yalniz iki cumledir**:
+  1. `codes/karar_sozlesmesi.py` T65 yorum blogu — "bir seridin tamamindan"
+     ifadesi "iki seritten" ya da "yaricapi bir serit genisligini asan" olmali.
+  2. `CONTRACTS.md` SS6.4 `KORIDOR_DEGIL` satiri — ayni duzeltme.
+Sayilar, esik ve testler DEGISMEZ; yalniz ifade duzelir.
+
+**DOGRULANAMADI**
+  1. Arena basarimi (D-88, KALICI kisit). Bu gorev onu dogrulamaz.
+  2. Kalan 5 arena-disi kare hala geciyor; genislikle ayirt EDILEMEZLER
+     (D-94: `sa_000068` arena disinda otopark fotografi tasiyor). Olcut YOK.
+  3. Olcum yalniz T60 kadraj kumesi ve v24 icindir. Gercek karede kisitin
+     etkisi OLCULMEDI — `sartname_s9_arena.png` uretim yolunda zaten
+     `OLCEK_YOK` ile duruyor (D-90 bulgu 5), rota yayinlanmiyor.
+  4. Guven olcutunun DOYMUS oldugu (D-94 yan bulgusu) bu gorevde ele
+     ALINMADI; 22,4 px ustunde tum darbogazlar hala guven 1.000 veriyor.

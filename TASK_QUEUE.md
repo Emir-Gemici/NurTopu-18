@@ -2940,7 +2940,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
-- [IN_PROGRESS: Codex-1] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:
+- [STATUS: KAPANDI] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:
 avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-87**
   - **NEDEN:** altı model (v15..v24) aynı duvara tosladı. Ortak sebep model değil,
     **eğitim substratı**: üreteç arenaya benzemiyor. Artık gerçek kare elimizde,
@@ -2985,6 +2985,70 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     ölçüme dayanmaz; ayrı kararla eklenir.
   - ⚠ **DOĞRULANAMAZ (kalıcı, D-88):** bu görev arena başarımını **doğrulamaz**.
     Fiziksel arena kurulamıyor, ikinci gerçek kare gelmeyecek.
+  - **Uygulama:** Gerçek RescueNet dokusu düz renkle değiştirilmedi; LAB ortalaması
+    additif olarak taşındı. Ana moloz dokusu ve RGBA kesitleri işlendi, alfa
+    bit-eşit kaldı; eski `%35` renkli-çatı geçişi kaldırıldı. `PROSEDUREL_PAYI`
+    ve `DOKU_GENLIGI` değişmedi. Zemin ve traversable arena yüzeyi ölçülen sıcak
+    zemin bandına taşındı. Eğitimde kırmızı/figür HB, kadrajda figür HB üretildi;
+    HB yalnız tamamı önceden class-0 olan 2×2 m ROI içinde çizildi. Şeritli
+    bariyer, arena-içi kare ızgara ve varsayılan güvenli/bayat-dosya temizliği eklendi.
+  - **ADIM 0 kapısı:** `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q`
+    → `Ran 322 tests in 41.176s` · `OK` · `EXIT_CODE=0`. Fikstür
+    `ZEMIN_KAPLAMA_TAVANI * (1.05, 1.20, 1.35)` ile sözleşmeden türetiliyor;
+    eşik ve test iddiası değişmedi.
+  - **Renk+doku kapısı:** `O:\navitas-local-train\venv\Scripts\python.exe -B O:\navitas-local-train\59_t60_uretec_sadakati.py --faz sonra --uretec O:\navitas-local-train\51_sentetik_arena.py --once-json O:\navitas-local-train\results\t60\oncesi.json --json O:\navitas-local-train\results\t60\sonrasi.json`
+    → LAB: prosedürel zemin `(154.025,+1.530,+11.747)`, banka zemin
+    `(153.738,+1.417,+11.783)`, ana moloz `(108.485,-0.994,+3.152)`, RGBA moloz
+    `(111.393,-1.007,+3.155)`, `dL=42.346`. Doku koruma oranları zemin
+    `0.999`, yol `1.000`, ana moloz `0.940`, RGBA `0.939`, banka zemin `0.992`;
+    T57 kaynak-yama genliği zemin `10.542/12.055`, yol `3.971`. Gerçek eğitim
+    yolu HB dağılımı `yok=13, figür=17, kırmızı=10`, tam ön-temas `27/27`,
+    class-0 dışı piksel `0`; fotometrik sonrası moloz-L çakışması figür `%2.592`,
+    kırmızı `%20.215` (**gizlenmedi**). SHA256
+    `8e204c1171cb287b95dd99318130217a55216f6bdbc76b5816422ef85e3aa9ea` · `EXIT_CODE=0`.
+  - **Kadraj/görsel kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B O:\navitas-local-train\51_sentetik_arena.py --adet 260 --seed 51 --kadraj --onizleme --cikti O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60`
+    → `260 görüntü`, `260 manifest`, `260 etiket`, temizlenen `546`, `EXIT_CODE=0`.
+    Ardından `O:\navitas-local-train\venv\Scripts\python.exe -B O:\navitas-local-train\59_t60_uretec_sadakati.py --faz kadraj --uretec O:\navitas-local-train\51_sentetik_arena.py --json O:\navitas-local-train\results\t60\kadraj.json --kume O:\navitas-local-train\calisma\sentetik_arena_kadraj_t60 --once-kume O:\navitas-local-train\calisma\sentetik_arena_kadraj_T56 --referans O:\navitas\data\arena_referans\sartname_s9_arena.png --gorsel O:\navitas-local-train\results\t60\t60_yan_yana.png`
+    → sapma `527/527, 0`, hedef `260/260`, hedef-şerit uyumsuz `0`, tam temas
+    `260/260`, serialized class-1/HB çakışma `0 px`, kenar `2.000..2.000 m`;
+    persisted dış zemin `(154.370,+1.884,+11.886)`, arena-içi erozyonlu class-0
+    `(151.344,+1.627,+11.559)` (260 kare eşit ağırlıklı küme ortalaması,
+    hedef bantta), moloz
+    `(108.235,-0.453,+4.503)`, `dL=46.135`. Nihai JPEG doku koruması T56→T60:
+    zemin `8.7818→7.6556 = 0.8718×`, blocked `28.7073→29.1967 = 1.0170×`;
+    `EXIT_CODE=0`. Final-JPEG zemin için kaynak-yama T57 mutlak bandının
+    uygulanabilirliği **DOĞRULANAMADI** (koruma kapısı geçti).
+  - **Gözle doğrulama:** `O:\navitas-local-train\results\t60\t60_yan_yana.png`.
+    Ölçülen beş öğe geçti: sıcak/açık zemin, koyu-nötr fakat dokusu korunmuş
+    moloz, siyah-beyaz HB, kırmızı-beyaz bariyer ve ince ızgara. Yol için ayrı
+    ölçülmüş renk hedefi **DOĞRULANAMADI**. Dar şerit/dikdörtgen RescueNet kolaj
+    geometrisi gerçek arenanın eşleniği değildir; arena başarımı iddia edilmedi.
+  - **Temizlik kapısı:** imzalı geçici çıktıda `imzali_silinen=2`; yabancı alt
+    dizinde `ret=1`, önceden var olan dosya korundu · `EXIT_CODE=0`.
+  - **Genel kapılar:** `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py`
+    → `SONUC: 15/15 dogru` · `EXIT_CODE=0`; tam paket → `Ran 322 tests in 37.680s`
+    · `OK` · `EXIT_CODE=0`.
+  - **Eğitim:** ÇALIŞTIRILMADI; kararı mimar verecek.
+  - **🔎 MİMAR DENETİMİ · 2026-08-14 · KAPANDI** · kayıt `REVIEW_LOG.md` **D-91**.
+    Renk künyesi **bağımsız doğrulandı** (60 karede yer gerçeğiyle: zemin
+    L 149,2 · b +11,4 · moloz L 108,0 · b +4,4 · **dL 41,2**). Oyuna karşı
+    kapı geçti (doku koruma 0,87–1,00, hepsi 0,75 eşiğinin üstünde) — düz gri
+    boyayarak geçilemedi. Gözle doğrulama: beş maddenin beşi teslim.
+    Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
+    **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
+
+- [ ] **T66 — Üreteç geometrisi arenaya benzemiyor: dikey şeritler vs moloz adaları** · `O:\navitas-local-train\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-91**, görsel `results/t60/t60_yan_yana.png`
+  - T60 **rengi** düzeltti (doğrulandı). **Geometri** düzelmedi:
+    - gerçek arena: **açık toprak tarlası + içine serpilmiş moloz ADALARI**,
+      koridorlar bu adaların arasından geçer; moloz duvar gibi dizilmiş.
+    - üreteç: **dikey şeritler** — kare baştan sona dar bantlara bölünmüş.
+  - ⚠ Model "zemin = dar dikey bant" ön yargısı öğrenebilir; arenada zemin
+    geniş ve bağlantılı bir alandır.
+  - ⚠ **T65 ile ilişkili:** üreteç arena dışına etiketsiz zemin çiziyor ve bu
+    doğrudur (gerçekçi). T66 onu kaldırmayacak — geometriyi düzeltecek.
+  - **KAPI:** `61_rota_moloza_basma.py` üç sayısı bozulmayacak; gözle yan yana
+    doğrulama zorunlu (**görsel kazanır**, D-80).
 
 - [ ] **T61 — Orta şiddetli çökme için ölçüt yok: kaplama+kenar bu sınıfı kaçırıyor** · `codes/karar_sozlesmesi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-86**
   - T59'da tavan 0,67'ye çıkınca `sa_000150.jpg` kapıdan **geçmeye** başladı:
@@ -3030,6 +3094,310 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     4. `codes/test_rota_sentetik.py` 15/15 · `unittest discover -s tests -q` OK
   - ⚠ Karar zincirinde **değildir** — yanlış rota üretmez. Ama T15–T18'in ve
     "Jetson'da yetişir mi" sorusunun tamamı bu betiğin sayılarına dayanır.
+
+- [x] **T63 — Karar doğruluğu şartnameye sadık zeminde İLK KEZ ölçüldü** · `O:\navitas-local-train\60_kadraj_karar_dogrulugu.py`, `61_rota_moloza_basma.py` · mimar ölçümü · kayıt: `REVIEW_LOG.md` **D-90**
+  - **Şerit doğruluğu ölçütü GÜVENİLMEZ çıktı** — aynı kararlar, kıyas tanımına
+    göre %92,7 ya da %67,7. Null model ("hep orta") %73,8. Bu ölçüt terk edildi.
+  - **Yerine geçen tanımdan bağımsız ölçüt:** rotanın yer gerçeği molozuna basma
+    oranı (`61_rota_moloza_basma.py`). v24/T60: rota 249/260 · moloza basan
+    6/249 (**%97,6 temiz**) · arena dışı 10/249.
+  - Bundan sonra karar kalitesi **bu** ölçütle raporlanır.
+  - **ÖLÇÜTÜN KENDİSİ MUTASYONLA DENETLENDİ** (mimar kendi aracını onaylamaz —
+    araç sıfırda takılı olabilirdi):
+    ```text
+    kare             gercek rota   +120px kaydirilmis
+    sa_000000.jpg          0,0%              100,0%
+    sa_000002.jpg          0,0%               74,2%
+    sa_000004.jpg          0,0%              100,0%
+    ```
+    Rota bilerek kaydırılınca basma %74–100'e fırlıyor → ölçüt **ateşleyebiliyor**
+    ve koordinat dönüşümü doğru. %0 sonuçları gerçek.
+
+- [STATUS: KAPANDI] **T64 — Hakem ekranına ARENA kaynağı ve ölçeği** · `comms/yks_gui.py`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-90**
+  - Ekran bir haftadır "çalışmıyor" görünüyor çünkü **baktığı zemin yanlış**:
+    `ALGI_KAYNAKLAR` içindeki beş kaynağın hiçbiri arena değil.
+  - Ekle: `arena_kadraj` (T60 kadraj kümesi, manifestte `arena.mpp` VAR) ve
+    `arena_gercek` (tek gerçek kare).
+  - ⚠ `arena_gercek` için mpp **DÖNDÜRÜLMEYECEK** → `OLCEK_YOK` kalacak.
+    Sebep D-90/bulgu 6: kare **eğik**, 2 m'lik HB pedi yatayda ~72 px dikeyde
+    ~38 px; tek skaler mpp kararı eksene göre terse çeviriyor.
+  - **KAPI:** `arena_kadraj` seçiliyken ekran rota ÇİZİYOR (asıl iddia) ·
+    `arena_gercek`te sebep yazılı · mutasyon: mpp None → rota yayınlanmaz.
+  - **Uygulama · Codex-1 · 2026-08-14:** `arena_kadraj` yalnız T60 kümesinin
+    `images/**` altındaki 260 veri karesini listeler; aynı adlı `_onizleme`
+    kareleri dışarıda kalır. Ölçek manifestteki küme-köküne göre göreli tam yol
+    ile bağlanır; basename eşlemesi yoktur. Mutlak/üst-dizin/images-dışı/yinelenen
+    yollar reddedilir. Eksik, bozuk veya geçersiz `mpp` için ölçek uydurulmaz.
+    `arena_gercek` daima ölçeksizdir; ekranda D-90'ın eğik perspektif ve
+    `72 px / 38 px` gerekçesi görünür. Ölçeksiz sonuçta segmentasyon maskesi
+    gösterilir, sarı rota çizilmez; boş maskede ise dürüstçe `maske yok` yazılır.
+    Karar algoritması kopyalanmadı; üretimin `rota_olcek_reddi`, `analyze_path`
+    ve `_rota_kararini_esikle` fonksiyonları çağrılır.
+  - **Gerçek-model ekran kapısı:** `$env:PYTHONIOENCODING='utf-8';
+    O:\navitas-local-train\venv\Scripts\python.exe -B
+    tests/t64_hakem_ekrani_kapisi.py --cikti tests/artifacts/t64`
+    ```text
+    [T64_ARENA_KADRAJ] kare=260 | ALGI(navitas_seg_v24_best) arena_kadraj/sa_000026.jpg → 2·ORTA güven=1.000 · 2033 ms | sari_rota_px=8383
+    [T64_ARENA_GERCEK] ALGI(navitas_seg_v24_best) arena_gercek/sartname_s9_arena.png → ROTA YOK · OLCEK_YOK güven=0.000 · 29 ms | sari_rota_px=0 | maske=GORUNUR
+    [T64_EKRAN] tests\artifacts\t64\t64_hakem_ekrani.png
+    [T64_LOG] tests\artifacts\t64\t64_hakem_ekrani.log
+    EXIT_CODE=0
+    ```
+    Bu panel ağ/RF `link.send` yolu değildir; kanıtlanan çıktı yerel rota kararı,
+    waypoint/koridor çizimi ve ölçeksizde bunların fail-closed bastırılmasıdır.
+  - **Odak + mutasyon + üretim eşitliği:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover
+    -s tests -p test_yks_gui_uretim_hizasi.py -v`
+    → `Ran 35 tests in 4.348s` · `OK` · `EXIT_CODE=0`. `arena_kadraj` mpp'si
+    `None` yapıldığında aynı açık maske `ROTA YOK · OLCEK_YOK` verdi ve sarı
+    piksel sayısı `0`; iki yeni kaynak için GUI kararı üretim kararıyla aynı.
+  - **Genel rota kapısı:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py`
+    → `SONUC: 15/15 dogru` · `[OK] TUM DETERMINISTIK SAHNELER GECTI` ·
+    `EXIT_CODE=0`.
+  - **Tam paket:**
+    `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover
+    -s tests -q` → `Ran 359 tests in 38.135s` · `OK` · `EXIT_CODE=0`.
+    İlk ara koşumda eşzamanlı T69 değişikliği sırasında Jetson
+    `rpi_inference.py` aynası henüz üretilmediği için tek parite testi düştü
+    (`Ran 359`, `FAILED (failures=1)`, exit `1`). Diğer görev sahibi aynayı
+    senkronladıktan ve iki SHA eşit olduktan sonra yukarıdaki nihai tam paket
+    yeniden koşuldu; nihai kanıt yalnız temiz ikinci koşumdur.
+
+- [ ] **T68 — Üreteç bariyeri ASLA açık zemine koymuyor: "ince çubuk = geçilemez" öğrenilemiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **TIKAYICI** · **T67'yi açar** · kanıt: `REVIEW_LOG.md` **D-93**
+  - Ölçüldü (120 kare, 70'inde bariyer var):
+    ```text
+    BARIYER PIKSELLERININ YER GERCEGI ETIKETI
+      zemin          31   % 0,0
+      engel     142.260   %92,4
+      etiketsiz  11.655   % 7,6
+    ```
+  - Kod (~934): `kapali_indisler` — bariyer **yalnız zaten KAPALI** (molozla dolu,
+    `blocked` etiketli) şeritlere çiziliyor. Tüm şeritler açıkken **hiç** çizilmiyor.
+  - Gerçek arenada bariyer, aksi hâlde **açık** zeminin üstünden geçip güzergâhı
+    **kapatan** yapıdır (D-92). Bu konfigürasyon eğitim verisinde **hiç yok**.
+  - ⚠ **Bu bir etiketsiz-engel hatası DEĞİLDİR** (v16 çöküşü değil): bariyer
+    pikselleri %92,4 `blocked` taşıyor. Kusur **etikette değil, konumda**.
+  - **YAP:** üreteç, **açık** şeridi kapatan bariyer üretebilsin; ince şeritli kol
+    açık zeminin üstüne çizilsin ve **kendi pikselleri `blocked` etiketlensin**
+    (altındaki zemin değil — çubuğun kendisi). Manifest `acik_serit` /
+    `kapali_seritler` bu kapatmayı **yansıtmalı**, yoksa yer gerçeği yalan söyler.
+  - **KAPI:** aynı ölçüm tekrarlansın — açık zemin üstündeki bariyer payı > 0
+    olmalı · `61_rota_moloza_basma.py` üç sayısı bozulmamalı · gözle doğrulama.
+  - ⚠ **DOĞRULANAMADI:** modelin 14–16 px kalınlığındaki çubuğu `imgsz=640` ve
+    512 proto çözünürlüğünde öğrenip öğrenemeyeceği ayrı bir sorudur; veri
+    düzelmeden sınanması anlamsızdır.
+
+- [ ] **T67 — 🔴 GÖREV KRİTİK: gerçek arenada rota BARİYERİN İÇİNDEN geçiyor** · tasarım kararı önce · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-92**
+  - Şartname figüründe kapalı güzergâhı kapatan tek yapı **kırmızı-beyaz şeritli
+    yol bariyeri koludur**. Ölçüldü (`O:\navitas-local-train\63_bariyer_kesisimi.py`,
+    bariyer tespiti MODELDEN BAĞIMSIZ — LAB a*>25):
+    ```text
+    bariyer pikselleri n=3644
+      model ENGEL diyor : %0,0      <-- tek piksel bile değil
+      model ZEMIN diyor : %30,9
+    ROTA x BARIYER kesisimi: 59 px  -> KESIYOR (görsel doğrulandı)
+    ```
+  - **Korumaların hiçbiri ateşlemiyor:** zemin kapısı susuyor (kaplama 0,579 <
+    0,67), karar reddi yok, güven 0,75, darboğaz geniş görünüyor. Rotayı yayından
+    alıkoyan **tek** şey `OLCEK_YOK` — bizi koruyan bir kapı değil, bir **eksiklik**.
+  - 🔴 **SIRALAMA KISITI — T64'Ü YAPAN OKUSUN:** ölçek halkası kapatılırsa sistem
+    bariyere giren rotayı **YAYINLAR** hale gelir. T64'ün `arena_gercek` için mpp
+    döndürmeme şartı bu yüzden zorunludur ve **kaldırılamaz**.
+  - **SINANABİLİR ÖNGÖRÜ:** v24 T60 öncesi substratla eğitildi; orada bariyer tek
+    renk ince bir `cv2.line` idi. v25 şeritli kolla eğitiliyor — bariyeri görüp
+    görmediği aynı ölçümle sınanacak (`63_bariyer_kesisimi.py --model ...`).
+  - **İKİ ÇÖZÜM YOLU — ölçmeden seçme:**
+    (a) **Model öğrensin** — v25 sınavı bunu yanıtlayacak. Ucuz ama garantisiz.
+    (b) **Katman 2 klasik dedektör** — uzun/ince/yüksek-kromalı yapıyı bulup
+        serbest alandan **ÇIKAR**. Madde 15 ile uyumlu: yalnız küçültür.
+  - 🔴 **(b) İÇİN TUZAK — kırmızıyı engel sayan naif dedektör HEDEFİ ÖLDÜRÜR.**
+    Şartname **metni** HB'yi "2×2 m **kırmızı** branda" diye tarif ediyor
+    (figür nötr gösteriyor, çelişki D-87'de). Kırmızı = engel kuralı konursa
+    hedef bölge engel sayılır ve İKA hedefe **hiçbir zaman ulaşamaz** →
+    `P_görev = 0`. Ayrım **ŞEKİLLE** yapılmalı: bariyer uzun ve ince
+    (en/boy > 4, genişlik > 60 px); HB **kare** (2×2 m). Ölçüm betiği bu ayrımı
+    zaten yapıyor — kopyalanmadan, gerekçesiyle taşınmalı.
+  - **KAPI:** bariyer piksellerinde `model ENGEL` oranı · rota-bariyer kesişimi
+    **0 px** · HB pedinin engel sayılMAdığı ayrıca gösterilecek · kalıcı fikstür.
+  - ⚠ Tek karedir (D-88). "Model bariyerleri göremiyor" genel iddia **değildir**.
+
+- [STATUS: KAPANDI] **T69 — T65 kısıtını devreye bağla (mimarın kapsam hatası düzeltildi)** · `codes/rpi_inference.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-96**
+  - **✅ YAPILDI · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-97**.
+  - `codes/rpi_inference.py` `analyze_path` içinde, darboğaz ölçüldükten **sonra**
+    tek çağrı eklendi. Import **iki bloğun ikisine de** eklendi (göreli
+    `.karar_sozlesmesi` ve mutlak) — yoksa paket-içi ve depo-içi çalışma ayrışırdı.
+    **Eşiğe dokunulmadı** (1.0) · `karar_sozlesmesi.py` **değişmedi** · `comms/`
+    **değişmedi**.
+  - **KAPI — CANLI ölçüm (simülasyon değil):**
+    ```text
+                              ROTA     MOLOZA    AGIR   ARENA DISI
+    taban  (D-90/D-94)     249/260     6/249   6/249      10/249
+    T69    (kisit CANLI)   244/260     6/244   6/244       5/244
+
+    ARENA DISI   10 -> 5   DUSTU      (hedef 5)
+    MOLOZA BASMA  6 -> 6   ARTMADI
+    ROTA URETIMI      244  COKMEDI    (hedef: 244'un altina dusmesin)
+    ```
+    D-94'ün simülasyonu **birebir doğrulandı** — üç sayı da tuttu.
+  - **MUTASYON (canlı, aynı ölçüm betiği):**
+    ```text
+    M0 kisit ACIK (depo hali)           rota 244 · moloza 6 · arena disi  5
+    M1 kisit KAPATILDI (fonksiyon None) rota 249 · moloza 6 · arena disi 10
+    M2 geri alma sonrasi                rota 244 · moloza 6 · arena disi  5
+    ```
+    Kısıt kapatılınca **tabana tam döndü** — düşüş kısıttan geliyor, başka
+    kapının yan etkisi değil.
+  - **KAPI:** `codes/test_rota_sentetik.py` **15/15** ·
+    `unittest discover -s tests -q` **Ran 359 · OK** ·
+    `jetson_paket_hazirla.py` **9/9 bayt-eşit**.
+  - **Yeni test sınıfı** `AnalyzePathEntegrasyonTests` (7 test) **bağlantıyı**
+    kilitler — çağrı silinirse düşer. Fikstür ön kontrolü (kör kapı kurmamak
+    için ZEMİN kapısına takılmadığı doğrulanır) · `KORIDOR_DEGIL` ile ret ·
+    fail-closed (yol/güven/waypoint yayınlanmaz) · negatif kontrol (makul
+    koridor etkilenmez) · madde 15 · ölçüt sözleşmeden mi çağrılıyor ·
+    kısıt kapatılınca aynı kare geçiyor mu. Dosya toplamı **25 test**.
+  - 🔴 **BULGU — T65'in GEREKÇESİ yanlış ifade edilmiş (eşik DOĞRU, anlatım yanlış).**
+    `_rota_serit_olcumu:492`: `darbogaz_px` bir **yarıçaptır** (`dt yaricapi`),
+    koridor genişliği değil (genişlik ≈ 2×). Uygulanan kural
+    `yaricap > icerik_w/3` fiilen *"koridor genişliği **iki** şeritten geniş
+    olamaz"* der; oysa yorum ve `CONTRACTS` §6.4 *"bir şeridin tamamından"* diyor.
+    ```text
+    kural                              esik oran   yanlis elenen MESRU   yakalanan
+    UYGULANAN  yaricap > 1/3               0.333            0/239          5/10
+    LAFZI      genislik > 1/3 (yar>1/6)    0.167           23/239          7/10
+    ```
+    **Lafzî kural uygulanamaz** — 23 meşru kareyi elerdi. Uygulanan eşik doğru
+    mühendislik seçimidir; yanlış olan **yalnızca anlatım**. Alttaki olgu da
+    kayda değer: bu kümede meşru koridorlar genişlik olarak `0.559·icerik_w`e
+    (~1,7 şerit) çıkıyor — D-91'in "üreteç dikey şeritler üretiyor, gerçek
+    arena moloz adaları" bulgusuyla tutarlı.
+    ⚠ **DÜZELTİLMEDİ:** T69'un izni `rpi_inference.py` + `tests/**`;
+    `karar_sozlesmesi.py` ve `CONTRACTS.md` **DOKUNMA** listesinde. Eşik de
+    oynatılmadı (görev yasakladı, gerekçesi teste kilitli). Düzeltilmesi gereken
+    **yalnız iki cümle**: `karar_sozlesmesi.py` T65 yorum bloğu ve `CONTRACTS.md`
+    §6.4 `KORIDOR_DEGIL` satırı. Sayılar, eşik ve testler değişmez.
+  - ⚠ **DOĞRULANAMADI:** (1) arena başarımı (**D-88, kalıcı**); (2) kalan **5**
+    arena-dışı kare hâlâ geçiyor, genişlikle ayırt edilemezler, ölçüt yok;
+    (3) ölçüm yalnız T60 kadraj + v24 içindir — gerçek karede kısıtın etkisi
+    ölçülmedi (`sartname_s9_arena.png` zaten `OLCEK_YOK`'ta duruyor, D-90/5);
+    (4) güven ölçütünün **doymuş** olduğu (D-94 yan bulgusu) ele alınmadı.
+  - T65'in sözleşme fonksiyonu, sebep kodu, `CONTRACTS` maddesi ve testleri
+    **teslim edildi ve denetimden geçti**. Kısıt yalnız **bağlanmadı**, çünkü
+    T65'in izin listesini yazarken `codes/rpi_inference.py`'yi **atlamışım** —
+    kusur oradaki `analyze_path`te. Amele izni aşmadı, doğru davrandı.
+  - **YAP** — `analyze_path` içinde, darboğaz ölçüldükten sonra tek çağrı:
+    ```python
+    kg_reddi = rota_koridor_genisligi_reddi(olcum["darbogaz_px"], icerik_w)
+    if kg_reddi is not None:
+        return _don(None, 0.0, [], clean, kg_reddi, olcum)
+    ```
+  - **KAPI — canlı ölç, simülasyon değil** (`61_rota_moloza_basma.py`, v24, T60):
+    ```text
+    taban (kısıt kapalı) : rota 249/260 · moloza basma 6 · arena dışı 10
+    hedef (kısıt açık)   : arena dışı 5'e DÜŞSÜN · moloza basma ARTMASIN ·
+                           rota üretimi 244'ün altına DÜŞMESİN
+    ```
+  - **MUTASYON:** kısıtı kapat → arena dışı 10'a geri dönmeli.
+  - ⚠ Eşiği **oynatma**. `KORIDOR_GENISLIK_TAVANI_SERIT = 1.0` fizikseldir;
+    0,28–0,33 arasına fit etmek 6/10 yakalardı ama bu **D-85'in hatasıdır**
+    (bozunumu kapalı sentetik azamiye eşik oturtmak). Claude 2 bunu bilerek
+    reddetti ve gerekçeyi teste kilitledi — kilidi kırma.
+  - ⚠ `comms/yks_gui.py` Codex'te (T64); oraya **dokunma**.
+
+- [STATUS: KAPANDI] **T65 — Karar yolunun ARENA SINIRI kavramı yok** · `codes/costmap_path_finder.py`, `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-90 bulgu 3**
+  - **⚠ KISMEN TESLİM · 2026-08-14 · Claude-2** · kayıt `REVIEW_LOG.md` **D-94**.
+    Sözleşme + sebep kodu + `CONTRACTS` + testler **teslim ve geçti**; kısıt
+    **`analyze_path`'e BAĞLANMADI** — gerekçe aşağıda (kapsam engeli).
+  - **Taban bağımsız doğrulandı:** `rota 249/260 · moloza basma 6/249 ·
+    arena dışı 10/249` — görevdeki sayılarla birebir.
+  - 🔴 **Kusur DEJENERE:** arena dışı oranı `0.000` (238 kare) · `0.001` (1) ·
+    **`1.000` (10)**. Ara değer yok — rota ya tamamen içeride ya tamamen dışarıda.
+    9'u şerit 3, biri şerit 1. Sekizinde güven **1.000**. Moloza basan 6 kareyle
+    **kesişim yok** (iki kusur ayrık).
+  - **Yan bulgu — güven ölçütü DOYMUŞ:** `ROTA_DARBOGAZ_TAM_ORANI = 0.035`,
+    640'lık karede **22,4 px**'te doyuyor; 23 px de 304 px de güven **1.000**.
+    Darboğaz bilgi taşıyor, güven onu atıyor. Ayrı görev konusu.
+  - **FAZ 1 — önce ölçüldü (görevin dayattığı sıra). Üç imza da başarısız:**
+    ```text
+    imza                 n   IoU medyan  guvenilir  gercek karede
+    izgara cizgileri   260       0.806     HAYIR    TUM KAREYI verdi
+    moloz kapsayan k.  260       0.664     HAYIR    dar yanli
+    dis cerceve        260       0.960     HAYIR    HIC sinir uretemedi
+    ```
+    Izgaranın fiziksel temeli sağlam ama **moloz onu gizliyor** (kenarı molozlu
+    118 karede dx0 medyan 79,0 px · molozsuz 102 karede 4,0 px — 20 kat).
+    Dış çerçevenin kök nedeni **üreteç kodunda**: `sinirlar` listesi arena
+    kenarlarını ve iç şerit sınırlarını **aynı renk/kalınlıkta** tutuyor.
+  - 🔴 **GERÇEK ARENA SINIRI DİKEY DEĞİL** — perspektif yamuk (sol x≈190→65,
+    sağ x≈920→1015). Tek `[x0,x1]` aralığının indirgenemez hatası **~50–60 px**.
+    Görevin (ve benim ilk kurgumun) varsaydığı **çıktı biçimi** yanlıştı.
+  - **FAZ 2 — sınır yerelleştirmeden çözüm.** Kusur dejenere olduğu için
+    "sınır nerede" gerekmiyor: **bir koridorun en dar yeri bir şeridin
+    tamamından geniş olamaz.** Tavan `serit_no`'nun kendi bölüşümünden
+    türetildi (madde 16), çıplak sayı değil.
+    ```text
+    MESRU (arena ici) 239   medyan 0.094 · p95 0.208 · MAKS 0.280
+    KUSURLU (disi)     10   0.022 0.028 0.111 0.170 0.314
+                            0.353 0.358 0.375 0.475 0.487
+    tavan 1/3 -> yanlis elenen MESRU 0/239 · yakalanan 5/10
+    ```
+    **Fit edilmiş tavan bilerek seçilmedi**: 0.280–0.333 arasına konsa 6/10
+    yakalardı, ama 0.280 **bozunumu kapalı sentetik** karelerden gelir —
+    optimist azamiye eşik oturtmak **D-85'in hatası**. Gerekçe testle kilitli.
+  - 🔴 **KISMİ ÇÖZÜM.** Kaçan 5 kareden **4'ü** genişlikle ayırt edilemez:
+    arena dışı her zaman boş değil — `sa_000068`'de arena dışı bir **otopark
+    fotoğrafı** (park çizgileriyle), model orada 14,2 px darboğazlı kendi
+    koridorunu buluyor.
+  - 🔴 **KAPSAM ENGELİ — kısıt bağlanamadı.** Kusur `codes/rpi_inference.py`
+    `analyze_path`'te; o dosya **izin listesinde yok**. İzinli iki dosyaya
+    **görüntü hiç ulaşmıyor** (`analyze_path` aşağı yalnız maske geçiriyor).
+    Devreye almak için `analyze_path` içinde **tek çağrı** gerekiyor:
+    ```python
+    kg_reddi = rota_koridor_genisligi_reddi(olcum["darbogaz_px"], icerik_w)
+    if kg_reddi is not None:
+        return _don(None, 0.0, [], clean, kg_reddi, olcum)
+    ```
+    Bu satır **yazılmadı**, dosyaya dokunulmadı. **İzin verirsen bağlarım.**
+  - **KAPI 1 — SİMÜLASYON** (kısıt bağlı olmadığı için canlı koşu değil):
+    ```text
+                              ROTA     MOLOZA    AGIR   ARENA DISI
+    KISIT KAPALI (taban)   249/260     6/249   6/249      10/249
+    KISIT ACIK  (T65)      244/260     6/244   6/244       5/244
+    ARENA DISI 10->5 DUSTU · MOLOZA 6->6 ARTMADI · ROTA 249->244 COKMEDI
+    reddedilen 5 karenin HEPSI gercekten arena disiydi — mesru kayip 0
+    ```
+  - **KAPI 2 — MUTASYON:**
+    ```text
+    M0 mutasyon YOK                        DUSEN  0  temiz
+    M1 tavan KALDIRILDI (serit x99)        DUSEN  6  ATESLENDI
+    M2 SERIT_SAYISI 12 (serit_no ayristi)  DUSEN 18  ATESLENDI
+    M3 tavan YARIYA indirildi              DUSEN  6  ATESLENDI
+    M4 geri alma sonrasi                   DUSEN  0  temiz
+    ```
+  - **KAPI 3:** `test_rota_sentetik.py` **15/15** · `discover -s tests -q`
+    **Ran 349 · OK** · `jetson_paket_hazirla.py` **9/9 bayt-eşit**.
+  - **Mevcut bir test güncellendi (gizlenmiyor):**
+    `test_sebep_kodlari_sozlesmedeki_dokuz_degerdir` onuncu sebep kodu
+    eklenince düştü. Küme güncellendi ve **test adındaki sayı kaldırıldı** —
+    T59 denetiminde işaretlenen çıplak-sabit kırılganlığının aynısı.
+  - ⚠ **DOĞRULANAMADI:** (1) arena başarımı (**D-88, kalıcı**); (2) kısıt
+    **canlı koşulmadı**, KAPI 1 sayıları **simülasyondur**; (3) kalan 5 kare
+    için ölçüt **yok**; (4) tavan v24 + T60 için ölçüldü, substrat değişirse
+    yeniden ölçülmeli; (5) gerçek karede sınır imzalarının yer gerçeği etiketi
+    yok — oradaki değerlendirme **gözledir**.
+  - Rotaların **%4'ü arena DIŞINDAN** geçiyor. Üreteç arena dışına bilerek
+    etiketsiz zemin çizer (gerçekçi), model orayı haklı olarak zemin işaretler,
+    `analyze_path` tüm kareyi üçe bölüp boş kenarı güzergâh sayıyor.
+    `sa_000070`: darboğaz **304 px**. **Aynı kusur gerçek karede de var.**
+  - ⚠ **ÇÜRÜTÜLMÜŞ HİPOTEZ — tekrarlanmayacak:** `icerik`i arena kutusuna
+    daraltmayı denedim, TEHLİKELİ 8 → **55**'e çıktı (`results/t63/*.json`).
+  - Sıra: **önce ölç** (ızgara · moloz kapsayan kutusu · dış çerçeve), sonra tasarla.
+  - ⚠ Madde 15: yeni kısıt yalnız **çıkarabilir**. Sınır bulunamazsa doğru
+    davranış genişletmek değil, yeni sebep koduyla **çekimser** kalmaktır.
+  - **KAPI:** `61_rota_moloza_basma.py` ile üç sayı birden — arena dışı DÜŞSÜN,
+    moloza basma ARTMASIN, rota üretimi ÇÖKMESİN. Biri iyileşip diğeri
+    bozulursa **ödünleşmedir**, öyle raporlanır.
 
 - [STATUS: READY_FOR_REVIEW] **T59 — Kaplama tavanı 0,55 → 0,67** · `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **KRİTİK** · mimar kararı, kanıt: `REVIEW_LOG.md` **D-84**, **D-85**
   - **✅ UYGULANDI · 2026-08-13 · Claude-2** · kayıt `REVIEW_LOG.md` **D-86**.
