@@ -894,6 +894,219 @@ def olcek_capraz_kontrolu(mpp_telemetri, mpp_hb):
     return (t, "dogrulandi", fark)
 
 
+# ════════════════════════════════════════════════════════════════════════════
+# T83 · OLCEK KAHINI HIYERARSISI            (CONTRACTS SS5.4 · REVIEW_LOG D-124)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR. `mpp` YALNIZ telemetriden turetilebiliyordu (`mpp_irtifadan`).
+# Telemetrisiz goruntude `OLCEK_YOK` duser ve C-uzayi HIC kosmaz — 67 gercek
+# otopark karesinin 67'sinde olan tam budur.
+#
+# UC KATMAN, her biri KAYNAGINI BEYAN EDER. Sessiz dusus YOKTUR: hangi katmanin
+# uretttigi karar nesnesine yazilir ve KATMAN DUSTUKCE GUVEN DE DUSER.
+#
+# 🔴 GUVEN CARPANLARI UYDURULMADI — OLCULEN bagil belirsizlikten gelir:
+#
+#   telemetri     1.00  sozlesme OTORITESI (SS5.2); kiyas noktasi budur
+#   arena_siniri  0.70  T65/D-94: gercek arena siniri PERSPEKTIF YAMUKTUR ve
+#                       genisligi kare boyunca 730 px (ust) -> 950 px (alt)
+#                       degisir. Tek skaler bu yuzden en az %30 hata tasir:
+#                       1 - 0.30 = 0.70
+#   arac_referansi 0.86 D-124: 24 kare · 1880 DOTA-OBB tespiti; kisa kenarin
+#                       ceyrekler-arasi yayilim / medyan = 0.138.
+#                       1 - 0.138 = 0.862 -> 0.86
+#
+# ⚠ OLCUM, EMIRDEKI SIRALAMAYI DOGRULAMIYOR — kayda gecer: katman 2 (arena)
+# katman 3'ten (arac) DAHA BELIRSIZ olcumlendi (0.70 < 0.86). Siralama
+# kullanicinin karari oldugu icin DEGISTIRILMEDI; carpanlar olculen gercegi
+# yansitir, dolayisiyla arena kaynakli bir olcek arac kaynaklidan DAHA DUSUK
+# guvenle sunulur. Siralamayi cevirme karari mimarindir.
+OLCEK_KAYNAK_TELEMETRI = "telemetri"
+OLCEK_KAYNAK_ARENA = "arena_siniri"
+OLCEK_KAYNAK_ARAC = "arac_referansi"
+OLCEK_KAYNAK_SIRASI = (OLCEK_KAYNAK_TELEMETRI, OLCEK_KAYNAK_ARENA,
+                       OLCEK_KAYNAK_ARAC)
+OLCEK_GUVEN_CARPANI = {
+    OLCEK_KAYNAK_TELEMETRI: 1.00,
+    OLCEK_KAYNAK_ARENA: 0.70,
+    OLCEK_KAYNAK_ARAC: 0.86,
+}
+
+# Binek arac govde genisligi (ayna haric), TS/EU M1 tipik bandi (D-124).
+ARAC_GENISLIGI_M = 1.80
+ARAC_GENISLIGI_BANDI = (1.70, 1.90)
+
+# 🔴 SENARYO BEYAN EDILIR, TAHMIN EDILMEZ. Yanlis senaryo 2,5 kat olcek
+# hatasidir (50 m / 20 m). Bu yuzden `senaryo` bilinen bir anahtar degilse
+# katman 2 DEVREYE GIRMEZ — "buyuk olan HTAB'dir" gibi bir varsayim YOKTUR.
+SENARYO_BOYUTLARI_M = {"HTAB": 50.0, "IHA_IB": 30.0, "FDA": 20.0}
+
+
+def mpp_arac_referansindan(kisa_kenar_px, arac_genisligi_m=ARAC_GENISLIGI_M):
+    """DOTA-OBB kisa kenari (= tepeden gövde genisligi) -> m/px. Yoksa None."""
+    if isinstance(kisa_kenar_px, bool) or not isinstance(kisa_kenar_px, Real):
+        return None
+    k = float(kisa_kenar_px)
+    if not math.isfinite(k) or k <= 0.0:
+        return None
+    if (isinstance(arac_genisligi_m, bool)
+            or not isinstance(arac_genisligi_m, Real)):
+        return None
+    g = float(arac_genisligi_m)
+    if not math.isfinite(g) or g <= 0.0:
+        return None
+    return g / k
+
+
+def mpp_arena_sinirindan(sinir_genislik_px, senaryo):
+    """TESPIT EDILMIS arena sinir genisligi + BEYAN EDILEN senaryo -> m/px.
+
+    ⚠ `sinir_genislik_px` GORUNTUDEN TESPIT EDILMIS olmalidir. "kare = arena"
+    varsayimi bu fonksiyonun disinda da, icinde de YOKTUR: cagiran tespit
+    edemediyse ``None`` gecer ve katman devreye girmez.
+    """
+    if senaryo not in SENARYO_BOYUTLARI_M:
+        return None
+    if (isinstance(sinir_genislik_px, bool)
+            or not isinstance(sinir_genislik_px, Real)):
+        return None
+    s = float(sinir_genislik_px)
+    if not math.isfinite(s) or s <= 0.0:
+        return None
+    return SENARYO_BOYUTLARI_M[senaryo] / s
+
+
+def olcek_guveni_uygula(guven, kaynak):
+    """Rota guvenini olcek KAYNAGINA gore indir (katman dustukce guven duser)."""
+    if isinstance(guven, bool) or not isinstance(guven, Real):
+        return 0.0
+    g = float(guven)
+    if not math.isfinite(g) or g <= 0.0:
+        return 0.0
+    return g * OLCEK_GUVEN_CARPANI.get(kaynak, 0.0)
+
+
+def olcek_kahini(*, irtifa_m=None, goruntu_genislik_px=None,
+                 yatay_fov_derece=None, odak_px=None,
+                 arena_sinir_px=None, senaryo=None,
+                 arac_kisa_kenar_px=None, arac_genisligi_m=ARAC_GENISLIGI_M):
+    """Uc katmanli olcek kahini. -> dict (ASLA sessizce dusmez).
+
+    Doner: ``{"mpp", "kaynak", "guven_carpani", "detay", "denenen"}``
+    `denenen` her katman icin (kaynak, sonuc_metni) tasir — hangi katmanin
+    neden devreye girmedigi KAYITLIDIR; bu alan ekranda ve gunlukte gosterilir.
+    """
+    denenen = []
+
+    t = mpp_irtifadan(irtifa_m, goruntu_genislik_px,
+                      yatay_fov_derece=yatay_fov_derece, odak_px=odak_px)
+    if olcek_gecerli_mi(t):
+        return {"mpp": float(t), "kaynak": OLCEK_KAYNAK_TELEMETRI,
+                "guven_carpani": OLCEK_GUVEN_CARPANI[OLCEK_KAYNAK_TELEMETRI],
+                "detay": f"irtifa {irtifa_m} m + FOV/odak",
+                "denenen": [(OLCEK_KAYNAK_TELEMETRI, "URETTI")]}
+    denenen.append((OLCEK_KAYNAK_TELEMETRI, "irtifa/FOV yok ya da gecersiz"))
+
+    a = mpp_arena_sinirindan(arena_sinir_px, senaryo)
+    if olcek_gecerli_mi(a):
+        return {"mpp": float(a), "kaynak": OLCEK_KAYNAK_ARENA,
+                "guven_carpani": OLCEK_GUVEN_CARPANI[OLCEK_KAYNAK_ARENA],
+                "detay": (f"senaryo {senaryo} "
+                          f"({SENARYO_BOYUTLARI_M[senaryo]:.0f} m) / "
+                          f"tespit edilen sinir {float(arena_sinir_px):.1f} px"),
+                "denenen": denenen + [(OLCEK_KAYNAK_ARENA, "URETTI")]}
+    denenen.append((OLCEK_KAYNAK_ARENA,
+                    "senaryo BEYAN EDILMEDI" if senaryo not in SENARYO_BOYUTLARI_M
+                    else "arena siniri GORUNTUDEN TESPIT EDILEMEDI"))
+
+    v = mpp_arac_referansindan(arac_kisa_kenar_px, arac_genisligi_m)
+    if olcek_gecerli_mi(v):
+        return {"mpp": float(v), "kaynak": OLCEK_KAYNAK_ARAC,
+                "guven_carpani": OLCEK_GUVEN_CARPANI[OLCEK_KAYNAK_ARAC],
+                "detay": (f"arac kisa kenari {float(arac_kisa_kenar_px):.1f} px "
+                          f"= {arac_genisligi_m:.2f} m"),
+                "denenen": denenen + [(OLCEK_KAYNAK_ARAC, "URETTI")]}
+    denenen.append((OLCEK_KAYNAK_ARAC, "sahnede olculebilir arac YOK"))
+
+    return {"mpp": None, "kaynak": None, "guven_carpani": 0.0,
+            "detay": "hicbir katman olcek uretemedi", "denenen": denenen}
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T79 · KORIDOR SECIMI: BERABERLIK BANDI + HISTEREZIS   (REVIEW_LOG D-122)
+# ════════════════════════════════════════════════════════════════════════════
+# OLCULEN KUSUR: Gauss sigma=2/255 (%0,8) gurultu altinda 260 karenin 9'unda
+# secilen koridor DEGISIYOR (%3,46). %0,8 GERCEGIN ALT SINIRIDIR.
+#
+# 🔴 KOKEN OLCULDU VE ONERILEN CARE KISMEN CURUDU (T79 teshisi):
+# ceviren 9 karenin YALNIZ 2'sinde beraberlik vardir. Kalan 7'de rota FIZIKSEL
+# OLARAK yer degistirir — 4 karede her kosuda TEK serit doludur, yani
+# kiyaslanacak ikinci aday YOKTUR:
+#
+#   sa_000081  ham --/15.00/-- -> serit 2   gurultulu --/--/15.00 -> serit 3
+#              ACIKLIK AYNI (15.00), serit FARKLI: beraberlik degil, TASINMA
+#   sa_000172  25.00/--/-- (1)  ->  --/--/24.00 (3)
+#   sa_000176  --/--/95.00 (3)  ->  64.13/--/-- (1)   maske IoU 0,649
+#
+# Beraberlik bandi bu 7'yi COZMEZ; yalnizca gercek beraberligi determinize eder:
+#   sa_000232 ham 23.00/23.00 -> bagil fark 0,0000
+#   sa_000258 g2  18.00/17.98 -> bagil fark 0,0009
+#
+# BAND DEGERI CIPLAK DEGIL: projenin OLCULMUS gurultu tabani 0,04'tur
+# (D-112: maske sd 0,025-0,032 ile birlikte kayitli). Bu bandin ALTINDAKI fark
+# olcum degil GURULTUDUR; orada argmin gurultuyu izler.
+BERABERLIK_BANDI = 0.04
+
+
+def beraber_adaylar(acikliklar, band=BERABERLIK_BANDI):
+    """En kucuk aciklikla GURULTU TABANI icinde kalan aday indisleri.
+
+    `acikliklar`: indis -> aciklik (None = o serit rotada yok).
+    Doner: artan indis sirali liste. Aday yoksa bos liste.
+    """
+    var = [(i, float(a)) for i, a in enumerate(acikliklar)
+           if a is not None and isinstance(a, Real) and not isinstance(a, bool)
+           and math.isfinite(float(a))]
+    if not var:
+        return []
+    en_kucuk = min(a for _, a in var)
+    return [i for i, a in var
+            if (a - en_kucuk) / max(a, 1e-9) <= band]
+
+
+def koridor_histerezisi(onceki_serit, aday_serit, gecilebilir_seritler,
+                        onceki_aciklik=None, aday_aciklik=None,
+                        band=BERABERLIK_BANDI):
+    """Ardisik karelerde secimi SABIT tut — ama GUVENLIGI BOZMADAN.
+
+    🔴 BAGLAYICI KURAL: onceki koridor ARTIK GECILEMEZSE aninda birakilir.
+    Histerezis yalnizca "yeni aday BELIRGIN sekilde iyi degilse" onceki secimi
+    korur; guvenligi geciktiren bir mekanizma DEGILDIR.
+
+    `gecilebilir_seritler`: bu karede rota uretilebilen seritlerin kumesi.
+    Doner: secilecek serit no.
+    """
+    gecilebilir = set(gecilebilir_seritler or ())
+    if aday_serit not in gecilebilir:
+        return aday_serit          # cagiran zaten aday uretmis; dokunma
+    if onceki_serit is None or onceki_serit == aday_serit:
+        return aday_serit
+    if onceki_serit not in gecilebilir:
+        return aday_serit          # 🔴 onceki artik GECILEMEZ -> ANINDA birak
+    if onceki_aciklik is None or aday_aciklik is None:
+        return aday_serit          # olculemiyorsa histerezis UYGULANMAZ
+    try:
+        o = float(onceki_aciklik)
+        a = float(aday_aciklik)
+    except (TypeError, ValueError):
+        return aday_serit
+    if not (math.isfinite(o) and math.isfinite(a)) or o <= 0.0 or a <= 0.0:
+        return aday_serit
+    # Aday BELIRGIN sekilde daha genis mi? Degilse onceki korunur.
+    if (a - o) / max(a, 1e-9) > band:
+        return aday_serit
+    return onceki_serit
+
+
 def hedef_yok_reddi(detay=None):
     """HB bulunamadi -> rota uretilmez. Kanonik `(sebep, detay)`."""
     return (HEDEF_YOK_SEBEBI,

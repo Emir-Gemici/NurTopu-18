@@ -61,6 +61,11 @@ if __package__:
                                   hb_konumu,
                                   hedef_yok_reddi,
                                    rota_guven_reddi,
+                                   BERABERLIK_BANDI,
+                                   OLCEK_GUVEN_CARPANI,
+                                   beraber_adaylar,
+                                   OLCEK_KAYNAK_TELEMETRI,
+                                   olcek_guveni_uygula,
                                    rota_olcek_reddi, serit_no)
 else:
     from costmap_path_finder import (R_GEREKLI_M, _bagli_mi,
@@ -89,6 +94,11 @@ else:
                                   hb_konumu,
                                   hedef_yok_reddi,
                                   rota_guven_reddi,
+                                  BERABERLIK_BANDI,
+                                  OLCEK_GUVEN_CARPANI,
+                                  beraber_adaylar,
+                                  OLCEK_KAYNAK_TELEMETRI,
+                                  olcek_guveni_uygula,
                                   rota_olcek_reddi, serit_no)
 
 _here = Path(__file__).parent
@@ -871,9 +881,18 @@ def _rota_serit_olcumu(rota, dist, icerik):
     mevcut = [i for i in range(3) if sayim[i] > 0]
     if not mevcut:
         return None
-    # DARBOGAZ SERIDI: en kucuk acikligi tasiyan serit. Esitlikte daha cok rota
-    # pikseli olan kazanir — sonuc deterministiktir, tarama sirasina bagli degil.
-    darbogaz_serit = min(mevcut, key=lambda i: (serit_min[i], -sayim[i])) + 1
+    # DARBOGAZ SERIDI: en kucuk acikligi tasiyan serit.
+    # T79 (D-122): `serit_min` SUREKLI bir olcudur. Iki serit projenin OLCULMUS
+    # gurultu tabanindan (0,04 · D-112) daha yakinsa argmin OLCUMU degil
+    # GURULTUYU izler; `sa_000232`de iki serit 23,00/23,00, `sa_000258`de
+    # 18,00/17,98 olculdu. Band icindeki adaylar arasinda secim DETERMINISTIK
+    # yapilir: once daha COK rota pikseli tasiyan, esitlikte kucuk indis.
+    # Band disinda davranis DEGISMEZ (tek aday kalir -> eski sonuc).
+    adaylar = [i for i in beraber_adaylar(
+        [serit_min[i] if i in mevcut else None for i in range(3)]) if i in mevcut]
+    if not adaylar:
+        adaylar = mevcut
+    darbogaz_serit = min(adaylar, key=lambda i: (-sayim[i], i)) + 1
     baskin_serit = max(mevcut, key=lambda i: (sayim[i], -i)) + 1
     return {
         "darbogaz_serit": int(darbogaz_serit),
@@ -890,7 +909,7 @@ def _rota_serit_olcumu(rota, dist, icerik):
 def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
                  min_area_ratio=0.01, *, icerik=None, engel_mask=None,
                  mpp=None, return_reason=False, return_olcum=False,
-                 goruntu=None):
+                 goruntu=None, olcek_kaynagi=OLCEK_KAYNAK_TELEMETRI):
     """
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
@@ -1157,7 +1176,14 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
         return _don(None, 0.0, [], clean, kg_reddi, olcum)
 
     open_path = olcum["darbogaz_serit"]
-    confidence = rota_darbogaz_guveni(olcum["darbogaz_px"], icerik_w)
+    # T83: OLCEK KAYNAGI KARAR NESNESINE YAZILIR ve GUVENE YANSIR.
+    # Sessiz dusus yasak: olcek telemetri disi bir katmandan geldiyse rota
+    # telemetriyle AYNI guvende sunulamaz. Varsayilan `telemetri` ve carpani
+    # 1.00'dir — mevcut cagri yerlerinin davranisi BIREBIR korunur.
+    olcum["olcek_kaynagi"] = olcek_kaynagi
+    olcum["olcek_guven_carpani"] = OLCEK_GUVEN_CARPANI.get(olcek_kaynagi, 0.0)
+    confidence = olcek_guveni_uygula(
+        rota_darbogaz_guveni(olcum["darbogaz_px"], icerik_w), olcek_kaynagi)
 
     return _don(open_path, confidence, waypoints, clean, None, olcum)
 

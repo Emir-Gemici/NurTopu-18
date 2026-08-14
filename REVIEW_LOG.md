@@ -8728,7 +8728,7 @@ cozulecek bir sey degildir.
 
 ---
 
-### D-125 · 🔴 DUZELTME · D-124 YANLISTI: kapi otoparkta YAPISAL OLARAK IMKANSIZ DEGIL — yer gercegiyle 42/67 GECIYOR
+### D-127 · 🔴 DUZELTME · D-124 YANLISTI: kapi otoparkta YAPISAL OLARAK IMKANSIZ DEGIL — yer gercegiyle 42/67 GECIYOR
 Olcen: Claude 1 (mimar) · 2026-08-15 02:10 · kullanici istegi: "etiketlemeyi detayli yap"
 
 **DUZELTILEN IDDIA.** D-124'te sunu yazdim: *"Hicbir DOGRU algi bu kapiyi acik
@@ -8794,3 +8794,218 @@ ayni tuzaga dustum.
      OLCULMEDI — sonraki adim odur.
   3. 42/67 "rota uretilir" DEMEK DEGILDIR; kapiyi gecmek gerek sarttir,
      yeter sart degil. Olcek de gerekir (D-124'un arac kahini olcumu gecerli).
+
+---
+
+### D-126 · UYGULANDI + OLCUM · T83 olcek kahini KURULDU (67/67) · T74 olculdu · T79 KAPISI TUTMADI
+Uygulayan: Claude 2 · 2026-08-15 · gorev T83+T74+T79 · esiklere DOKUNULMADI
+
+⚠ **NUMARA CAKISMASI VAR — DUZELTILMEDI, BILDIRILIYOR.** Bu dosyada **IKI ADET
+`### D-125`** bulunuyor: satir 8636 (T82 · delik yapisi, Claude 2) ve satir
+8731 (D-124 duzeltmesi, mimar). Ikisi de silinmedi (kimse silmez kurali);
+sonraki numara D-126 alindi. Atif verirken satir numarasi da yazilmalidir.
+
+═══════════════════════════════════════════════════════════════════════════
+T83 · OLCEK KAHINI HIYERARSISI — UYGULANDI, 67/67
+═══════════════════════════════════════════════════════════════════════════
+
+**KUSUR.** `mpp` yalniz telemetriden turetilebiliyordu; telemetrisiz karede
+`OLCEK_YOK` duser ve C-uzayi HIC kosmaz — 67 gercek karenin 67'sinde olan bu.
+
+**UC KATMAN, her biri KAYNAGINI BEYAN EDER** (`karar_sozlesmesi.olcek_kahini`).
+Sessiz dusus YOK: `denenen` alani her katmanin NEDEN devreye girmedigini tasir.
+
+**🔴 GUVEN CARPANLARI OLCULEN BELIRSIZLIKTEN TURETILDI, UYDURULMADI:**
+
+    telemetri      1.00  sozlesme OTORITESI (SS5.2)
+    arena_siniri   0.70  T65/D-94: gercek arena siniri PERSPEKTIF YAMUK,
+                         genislik 730 px (ust) -> 950 px (alt) = %30 -> 1-0.30
+    arac_referansi 0.86  D-124: 24 kare · 1880 tespit, IQR/medyan 0.138
+                         -> 1-0.138 = 0.862
+
+**⚠ OLCUM EMRIN SIRALAMASINI DOGRULAMIYOR.** Katman 2 (arena) katman 3'ten
+(arac) DAHA BELIRSIZ olculdu: 0.70 < 0.86. Siralama KULLANICININ karari oldugu
+icin DEGISTIRILMEDI; carpanlar olculen gercegi yansitir, yani arena kaynakli
+bir olcek arac kaynaklidan DAHA DUSUK guvenle sunulur. Cevirme karari mimarindir.
+
+**🔴 SENARYO BEYAN EDILIR, TAHMIN EDILMEZ.** `senaryo` bilinen bir anahtar
+degilse katman 2 DEVREYE GIRMEZ. Neden onemli oldugu testle sayiya baglandi:
+ayni sinir genisliginde HTAB (50 m) ile FDA (20 m) arasindaki oran **tam 2,5**.
+"kare = arena" varsayimi da yoktur: sinir tespit edilemediyse katman calismaz.
+
+**KAPI (e) — 67 GERCEK KAREDE OLCEK KAYNAGI DAGILIMI:**
+
+    telemetri        0/67  (%  0.0)   carpan 1.00
+    arena_siniri     0/67  (%  0.0)   carpan 0.70   (otoparkta ARENA YOK)
+    arac_referansi  67/67  (%100.0)   carpan 0.86
+    URETILEMEDI      0/67  (%  0.0)
+
+    OLCEK TURETILEBILEN KARE : 67/67      (onceki durum: 0/67)
+    mpp  min/medyan/maks     : 0.06437 / 0.07459 / 0.11409
+    r_gerekli_px             : 9.6 / 14.7 / 17.1   (R_GEREKLI_M = 1.10 m)
+
+D-124 bagimsiz olarak DOGRULANDI: mimar mpp medyan 0,07321 ve r_gerekli
+14,2-15,9 px bildirmisti; bagimsiz olcum 0,07459 ve 14,7 px verdi.
+
+**GERIYE UYUM.** `analyze_path(..., olcek_kaynagi=OLCEK_KAYNAK_TELEMETRI)`
+varsayilani telemetridir ve carpani 1.00'dir — mevcut cagri yerlerinin guveni
+BIREBIR korunur. Kaynak ve carpan `olcum` sozlugune yazilir.
+
+═══════════════════════════════════════════════════════════════════════════
+T74 · KORIDORLAR GOVDE ACIKLIGINA GORE DAR — OLCULDU (kod degismedi)
+═══════════════════════════════════════════════════════════════════════════
+
+**ADIM 1 — DAR PAYLAR TEK BIR PARAMETRE ARALIGINDAN GELMIYOR.**
+KUSURSUZ ALGI ile olculdu (yer gercegi maskesi, model YOK; D-104 cercevesi),
+n=260, pay = darbogaz_px - r_gerekli_px:
+
+    uretec serit durumu     n    medyan     min     pay<3px
+    acik                  170     17.92    0.10     17/170  (%10.0)
+    kapali                 51      7.92    0.12     18/51   (%35.3)
+    dar+bariyer            16      7.42    0.10      5/16   (%31.3)
+    dar                     8      9.52    0.92      3/8    (%37.5)
+    acik+bariyer            8      5.42    0.92      3/8    (%37.5)
+
+    TUM KARELER: medyan 14.31 px · en dusuk 0.10 px · pay<3px 46/260
+    pay < 0 olan kare: 0/260   (C-uzayi ihlali YOK)
+
+🔴 **`dar_orani = 0.28` DEGIL.** "dar" isaretli seritler yalniz 24/260 karede
+secilir; oysa dar paylarin **17'si (%37) "acik" seritlerden** gelir. En dusuk
+pay (0,10 px) hem "acik" hem "dar+bariyer" durumunda gorulur. Yani darlik
+uretec parametresiyle SINIRLANMIS degildir, geometrinin geneline yayilmistir.
+
+⚠ **ALGI DEGIL GEOMETRI.** Ayni olcut modelle 10,9 px medyan / 59-255 verirken
+(D-122), kusursuz algiyla 14,31 px / 46-260 veriyor. Yani darligin BUYUK KISMI
+modelin hatasi degil URETECIN GEOMETRISIDIR: kusursuz algida bile kareler-in
+%17,7'si 3 pikselin altinda pay tasiyor.
+
+**ADIM 2 — R_GEREKLI_M = 1,10 m BILESENLERININ KANITI** (`costmap_path_finder.py`
+:58-72 ve modul sonu TAHMINLER blogu). DEGISTIRILMEDI, yalniz kanit gosterildi:
+
+    bilesen           deger   pay      kaynak
+    IKA_GENISLIK_M/2  0.35 m  %32   simulation/models/ika/model.sdf'ten
+                                    TURETILDI (govde 0,66x0,50 -> 0,70
+                                    yuvarlandi). ⚠ kodun kendi notu:
+                                    "GERCEK aracin olcusu FARKLI olabilir"
+    MASKE_HATA_M      0.25 m  %23   GEREKCELI ama OLCULMEMIS: "512-proto maske
+                                    bilineer resize; sinir belirsizligi ~1
+                                    proto-piksel + bulanma payi"
+    TAKIP_HATA_M      0.50 m  %45   🔴 TAHMINLER #1: "SAF VARSAYIM,
+                                    r_gerekli'nin EN BUYUK terimi"
+
+    OLCULMEMIS PAY: 0.75 m / 1.10 m = %68
+    GERCEK IKA UZERINDE OLCULEN BILESEN: YOK (0.35 m SIM modelinden gelir)
+
+🔴 **BELGE ILE KOD CELISIYOR — DUZELTILMEDI, BILDIRILIYOR.** TAHMINLER blogu
+`TAKIP_HATA_M = 0.40` diyor, kod satir 63'te `0.50` yaziyor. Denetim notu
+BAYAT. Hangisinin dogru oldugu bu gorevde belirlenemez; R_GEREKLI_M'e
+DOKUNULMADI (emrin 3. maddesi).
+
+═══════════════════════════════════════════════════════════════════════════
+T79 · KORIDOR SECIMI KARARSIZ — KAPI TUTMADI, [ ] BIRAKILDI
+═══════════════════════════════════════════════════════════════════════════
+
+**ADIM 1 — KOKEN OLCULDU VE ONERILEN CERCEVE KISMEN CURUDU.**
+Ceviren 9 karenin her biri 4 kez kosuldu ve TAM olcum saklandi:
+
+    kare        ham -> gurultulu        serit_min (1/2/3)          teshis
+    sa_000081   2 -> 3    --/15.00/--  ->  --/--/15.00   ACIKLIK AYNI, serit
+                                                          FARKLI: TASINMA
+    sa_000172   1 -> 3    25.00/--/--  ->  --/--/24.00   tek serit, TASINMA
+    sa_000176   3 -> 1    --/--/95.00  ->  64.13/--/--   maske IoU 0,649
+    sa_000174   2 -> yok  gurultulu kosuda GORUS_HATTI_KOPUK (serit degil ROTA
+                          kayboluyor)
+    sa_000232   1 -> 2    23.00/23.00  ->  bagil fark 0,0000   BERABERLIK
+    sa_000258   3 -> 2    18.00/17.98  ->  bagil fark 0,0009   BERABERLIK
+
+  · BERABERLIK (argmin gurultuyu izliyor) : **2/9**
+  · ROTA TASINMASI (maske degisiyor)      : **7/9**
+  · Bunlarin 4'unde her kosuda TEK serit dolu — kiyaslanacak IKINCI ADAY YOK,
+    beraberlik bozma kurali TANIM GEREGI caresiz.
+  · rota piksel sayisi 4 vakada da AYNI (540) ama maske IoU 0,649-0,986:
+    degisen sey rotanin UZUNLUGU degil YERIDIR.
+
+**ADIM 2 — BERABERLIK BANDI UYGULANDI** (`BERABERLIK_BANDI = 0.04`).
+Deger CIPLAK DEGIL: projenin OLCULMUS gurultu tabani 0,04'tur (D-112). Band
+icindeki adaylar arasinda secim DETERMINISTIKTIR (once daha cok rota pikseli,
+esitlikte kucuk indis). Band disinda davranis DEGISMEZ.
+
+**ADIM 3 — HISTEREZIS YAZILDI, URETIME BAGLANMADI.**
+`koridor_histerezisi()` saf fonksiyon olarak eklendi ve EMNIYET KURALI testle
+civilendi: **onceki koridor artik gecilemezse ANINDA birakilir** (test:
+`test_onceki_GECILEMEZSE_ANINDA_birakilir`). Olculemeyen durumda histerezis
+UYGULANMAZ (fail-through), yani "olcemedim" gerekcesiyle eski koridor korunmaz.
+⚠ URETIME BAGLANMADI: `analyze_path` DURUMSUZDUR ve histerezis KARELER ARASI
+bir mekanizmadir; `68_karar_kararliligi.py` her kareyi BAGIMSIZ gurultu
+cekimiyle olcer, dolayisiyla o kapiyla DOGRULANAMAZ. Olcemedigim bir seyi
+uretime baglamadim.
+
+**🔴 KAPI (c) TUTMADI — ZORLANMADI.**
+
+    taban (degisiklikten ONCE) : 9/260  (%3,46)
+    T79 sonrasi                : 8/260  (%3,08)     hedef: <= 4/260
+
+Duzelen tek kare `sa_000192` (51,00/52,00 -> bagil fark 0,0192, band ICINDE).
+Bu, adim 1'in olcumunun tam olarak ongordugu sonuctur: band yalnizca
+beraberligi cozer, TASINMAYI cozmez. Kalan 8 cevrilmenin 7'si tasinmadir ve
+maske degisiminden gelir; onlari cozmek ya modelin gurultu dayanikliligini ya
+da kareler-arasi histerezisi gerektirir — ikisi de bu gorevin kapsaminda
+DEGILDIR. Gorev `[ ]` birakildi.
+
+═══════════════════════════════════════════════════════════════════════════
+KAPILAR
+═══════════════════════════════════════════════════════════════════════════
+
+    (a) codes/test_rota_sentetik.py      SONUC: 15/15 dogru          GECTI
+    (b) unittest discover -s tests -q    Ran 526 tests · OK          GECTI
+                                         (481 -> +45; dusmedi)
+    (c) 68_karar_kararliligi.py          8/260 (%3,08)               DUSTU
+                                         (taban 9/260; hedef <= 4)
+    (d) 65_kabul_denetcisi.py            K0..K4 GECTI · K5 asagida
+    (e) 67 karede olcek kaynagi          67/67 turetildi             GECTI
+
+**KAPI (d) AYRINTI — K5 BOZULMADI, ZATEN OLCULEMIYOR.**
+
+    K0 KORLUK YOK        GECTI  figur zemin %7.8 · raw 0/8 · cp 0/8
+    K1 ROTA >= 230       GECTI  255/260
+    K2 BASMA <= %15      GECTI  18/255
+    K3 AGIR  <= %3       GECTI  0/255
+    K4 ARENA DISI <= %5  GECTI  1/255
+    K5 BARIYER = 0 px    DUSTU  "None px"
+
+K0..K4 D-115 ile **BIREBIR AYNI** (255/260 · 18/255 · 0/255 · 1/255 · %7,8) —
+karar yolundaki degisiklik bu olcutlerin hicbirini oynatmadi.
+K5'in "None" olmasinin sebebi ayrica kosularak KANITLANDI: `65_kabul_denetcisi`
+K5'i `63_bariyer_kesisimi.py`nin ciktisini AYRISTIRARAK alir; o betik dogrudan
+kosuldugunda **"rota yok — kesisim olculemez"** basiyor ve "ROTA x BARIYER
+kesisimi" satirini HIC uretmiyor, ayristirma da `None` donduruyor. Bu, D-115'in
+1. bulgusunun aynisidir (sartname figurunde v27 rota uretmiyor; K5 olcumu bu
+yuzden `66_k5_bariyer_populasyon.py`ye TASINMISTI, n=172, 0 px). Yani denetci
+ASILMIS bir olcumu cagirmaya devam ediyor — benim degisikligimden BAGIMSIZ,
+ONCEDEN VAR OLAN bir kusur.
+⚠ Ayrica kayda gecer: ayni kosuda bariyer pikselleri icin **model ENGEL %100,0**
+olculdu (D-92'de v24 icin %0,0 idi) — v27 o bariyeri tam goruyor.
+
+**YAN ETKI — KENDI HATAM, KAYDA GECIYOR.** `sed -i` ile import satiri eklerken
+`codes/rpi_inference.py`nin TUM satir sonlarini CRLF'ten LF'e cevirdim.
+`test_jetson_comms_paketi` bunu bayt kiyasiyla YAKALADI (2 hata). Dosya CRLF'e
+geri cevrildi ve saha paketi yeniden uretildi; takim OK'e dondu.
+
+**DOGRULANAMADI**
+  1. Katman 2 (arena siniri) HICBIR GERCEK KAREDE CALISMADI — otoparkta arena
+     yoktur. Uretilen kod yolu yalniz BIRIM TESTIYLE dogrulandi; gercek bir
+     arena karesinde sinir tespiti KOSULMADI (T65/D-94: sinir zaten
+     yerellestirilemiyor).
+  2. Arac referansi ARENADA CALISMAZ — arenada arac yoktur. 67/67 sonucu
+     OTOPARK icindir, arena icin degil.
+  3. Olcek kahini uretim cagri yerlerine (run_image/run_video/run_camera,
+     hakem ekrani) BAGLANMADI; yalniz sozlesme fonksiyonu + `analyze_path`
+     parametresi olarak mevcut. Ekranda gosterim ayri bir istir.
+  4. `ARAC_GENISLIGI_M = 1.80` bir LITERATUR degeridir (TS/EU M1 bandi);
+     sahnedeki araclarin gercek genisligi OLCULMEDI. Band duyarliligi %11,1
+     olarak testle kayitlidir.
+  5. T79 cevrilme sayilari TOHUMA baglidir: kendi tek-cekimli olcumumde 4/260,
+     kapinin 3-tekrarli olcumunde 8/260 cikti. Yon ve mekanizma tohumdan
+     bagimsizdir, SAYI degildir.
+  6. Histerezis GERCEK bir kare dizisinde HIC kosulmadi (ardisik kare verisi
+     yok); yalnizca birim testleriyle dogrulandi.

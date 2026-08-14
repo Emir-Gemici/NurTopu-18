@@ -3038,6 +3038,98 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T83 — Ölçek kâhini hiyerarşisi (telemetri → arena sınırı → araç referansı)** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-124**
+  - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-126**.
+  - **KAPI (e) — 67 gerçek karede ölçek kaynağı:**
+    ```text
+    telemetri        0/67  (%  0.0)   carpan 1.00
+    arena_siniri     0/67  (%  0.0)   carpan 0.70   (otoparkta ARENA YOK)
+    arac_referansi  67/67  (%100.0)   carpan 0.86
+    OLCEK TURETILEBILEN: 67/67   (onceki durum: 0/67)
+    mpp 0.06437 / 0.07459 / 0.11409 · r_gerekli 9.6 / 14.7 / 17.1 px
+    ```
+    D-124 **bağımsız doğrulandı** (mimar: mpp 0,07321 · r_gerekli 14,2–15,9 px).
+  - 🔴 **Güven çarpanları ölçülen belirsizlikten türetildi, uydurulmadı:**
+    telemetri **1.00** (sözleşme otoritesi) · arena **0.70** (T65/D-94: sınır
+    perspektif yamuk, genişlik 730→950 px = %30) · araç **0.86** (D-124:
+    IQR/medyan 0,138).
+  - ⚠ **Ölçüm emrin sıralamasını doğrulamıyor:** katman 2 (0.70) katman 3'ten
+    (0.86) **daha belirsiz** çıktı. Sıralama kullanıcının kararı olduğu için
+    **değiştirmedim**; çarpanlar ölçülen gerçeği yansıtıyor. Çevirme kararı
+    mimarın.
+  - 🔴 **Senaryo beyan edilir:** bilinmeyen anahtar → katman 2 devreye girmez.
+    Testle sayıya bağlandı: aynı sınırda HTAB/FDA oranı **tam 2,5**.
+    "kare = arena" varsayımı yok; sınır tespit edilemezse katman çalışmaz.
+  - **Geriye uyum:** `analyze_path(..., olcek_kaynagi=telemetri)` varsayılanı ve
+    çarpanı 1.00 — mevcut çağrı yerlerinin güveni **birebir** korunur. Kaynak ve
+    çarpan `olcum` sözlüğüne yazılır (sessiz düşüş yok; `denenen` alanı her
+    katmanın neden girmediğini taşır).
+  - **Yeni testler:** `tests/test_olcek_kahini.py` (21).
+  - ⚠ **DOĞRULANAMADI:** katman 2 **hiçbir gerçek karede çalışmadı** (otoparkta
+    arena yok) — yalnız birim testiyle doğrulandı; araç referansı **arenada
+    çalışmaz** (arenada araç yok), 67/67 sonucu otopark içindir; kâhin üretim
+    çağrı yerlerine ve ekrana **bağlanmadı**; `ARAC_GENISLIGI_M = 1.80` literatür
+    değeridir, sahnedeki araçlar ölçülmedi (band duyarlılığı %11,1 testte).
+
+- [STATUS: READY_FOR_REVIEW] **T82 — Açık alanı çökmüş maskeden ayıran İKİNCİ bir sinyal ara** · ölçüm görevi · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-124**
+  - **✅ ÖLÇÜLDÜ · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-125**.
+    **714 maske.** 🔴 **KOD DEĞİŞTİRİLMEDİ, EŞİKLERE DOKUNULMADI.**
+  - **VERDİKT: AYIRMIYOR.** Üç ayrı sebeple, üçü de ölçüldü.
+  - **Kümeler:** (a) meşru yer gerçeği **320** (kadraj t66 train 234 + val 26 +
+    sentetik val 60 — T52'nin kümesi birebir) · (b) çökme v21 **67** ·
+    (c) otopark v27 **67** · (d) **kontrol**: meşru v27 **260** ·
+    (e) **emniyet**: v21 arena **260**.
+  - **Dağılım (min/medyan/maks):**
+    ```text
+    olcut               a_mesru_GT       b_cokme_v21      c_otopark_v27     d_mesru_v27
+    delik_sayisi     0,0/  1,0/ 15,0  24,0/33,0/47,0  23,0/33,0/46,0   0,0/ 2,0/19,0
+    delik_yogunlugu  0,0/ 10,6/134,9  43,3/58,1/81,0  41,2/58,0/78,4   0,0/14,9/109
+    delik_alan_orani 0,00/0,02/0,26   0,10/0,17/0,22  0,10/0,16/0,22   0,00/0,03/0,25
+    en_buyuk_pay     0,29/0,76/1,00   1,00/1,00/1,00  1,00/1,00/1,00   0,45/0,88/1,00
+    euler          -14,0/ 2,0/ 11,0  -45,0/-25,0/8,0 -42,0/-25,0/5,0  -15,0/ 1,0/11,0
+    kaplama          0,06/0,32/0,65   0,77/0,80/0,86  0,77/0,80/0,87   0,19/0,33/0,64
+    ```
+  - 🔴 **Sebep 1 — YÖN TERS.** Hipotez "çökme deliksiz" diyordu; ölçüm tersini
+    söylüyor: çökme medyanı **33 delik**, meşru medyanı **1**. Çökmüş maske
+    meşrudan **on kat daha delikli**.
+  - 🔴 **Sebep 2 — (b) ve (c) AYNI karelerdir ve ayırt edilemiyorlar** (her
+    ölçütte örtüşüyorlar). Veride "geçmesi gereken meşru açık otopark" diye bir
+    sınıf **yok**; soru mevcut veriyle **cevaplanamaz**. Ayrılan şey "çökme mi
+    meşru mu" değil, **"arena mı otopark mı"**.
+  - 🔴 **Sebep 3 — EMNİYET ARGÜMANI sinyali öldürüyor (madde 3).** Tablodan
+    aday eşik türetilebilir: meşru azami 19, otopark asgari 23 → geçerli aralık
+    (19, 23), ortası ~21, kural "delik > 21 ise REDDET". Bu kural **arenadaki
+    gerçek çökmeyi kaçırır**:
+    ```text
+    (e) v21, MESRU arena, n=260
+        kapinin olcutuyle COKMUS: 2/260   (kaplama>0,67 VE kenar>0,50)
+        o karelerde delik_sayisi: 0 ve 6
+        aday esigin yakaladigi:   0/2     <- SIFIR
+    ```
+    Çökme arenada olunca maske tek parça ve deliksizdir; sinyal "meşru" der.
+    **Kapının varlık sebebi tam olarak o kareyi yakalamaktır.**
+  - **KAPI (a):** `codes/test_rota_sentetik.py` → **SONUC: 15/15 dogru**.
+  - **KAPI (d) — görsel (D-80):** `results/t82_delik_yapisi/delik_yapisi_gorsel.png`
+    (delikler mor):
+    ```text
+    COKME   (v21, arena  sa_000106)  kaplama %86   DELIK  6
+    MESRU   (v27, arena  sa_000026)  kaplama %22   DELIK  6
+    OTOPARK (v27, gercek frame_0)    kaplama %78   DELIK 26
+    ```
+    Çökme ile meşru **aynı delik sayısına** sahip (6 = 6). Gözle de aynı sonuç.
+  - ⚠ **DOĞRULANAMADI:** (1) 🔴 **v25 ağırlığı depoda YOK** — madde 3'ün "v25
+    körlüğünü yakalıyor mu" yarısı **ölçülemedi** (D-59'daki "v13 ağırlığı yok"
+    ile aynı sınıf, iddia edilmedi); (2) meşru sınıf yer gerçeği, negatifler
+    model çıktısı — asimetri **(d) kontrolüyle** giderildi (v27'nin meşru
+    sahnelerdeki çıktısı da az delikli, medyan 2), ayrım GT/model farkından
+    gelmiyor; (3) arenadaki çökme sınıfı **n=2** — zayıf örneklem, ama yön açık
+    ve mekanizma fizikseldir; (4) gerçek arena karesi yok (D-88/D-99), tüm
+    "meşru" ölçümler sentetiktir; (5) delik eşiği 25 px — daha düşük eşik tüm
+    kümelerde delik sayısını artırır, **örtüşmeyi azaltmaz**.
+  - **SONUÇ:** yeni sinyal **önerilmiyor**. D-124'ün tespiti ayakta: kapı
+    "SINIRLI ARENA" varsayımı taşır; otoparkta rota üretilememesi bu varsayımın
+    sonucudur, maske yapısıyla çözülecek bir şey değildir.
+
 - [STATUS: READY_FOR_REVIEW] **T81 — Canlı Algı görünümünde sağ panel, canlı algı sonucunu göstersin** · `comms/yks_gui.py`, `tests/**` · **ÖNEMLİ** · kanıt: ekran görüntüsü (mimar ölçtü)
   - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-121**.
   - **Kusur:** canlı algı görünümünde sol panel rotayı buluyordu ama sağ kutu
@@ -3752,7 +3844,38 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     yeniden koşulduğunda **karar uyuşmazlığı 0/260** ve azami sapma gürültü
     mertebesinde (< 1 m) olmalı.
 
-- [ ] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
+  - 🔴 **KAPI TUTMADI, ZORLANMADI · 2026-08-15 · Claude-2** · kayıt **D-126**.
+    ```text
+    taban (once) : 9/260 (%3,46)      T79 sonrasi : 8/260 (%3,08)
+    hedef        : <= 4/260
+    ```
+  - **Adım 1 — kök ölçüldü, önerilen çerçeve kısmen çürüdü.** Çeviren 9 karenin
+    yalnız **2'sinde beraberlik** var; **7'sinde rota fiziksel olarak taşınıyor**
+    ve bunların **4'ünde her koşuda tek şerit dolu** (kıyaslanacak ikinci aday
+    yok):
+    ```text
+    sa_000081  --/15.00/-- -> --/--/15.00   ACIKLIK AYNI, serit FARKLI
+    sa_000172  25.00/--/-- -> --/--/24.00   tek serit, TASINMA
+    sa_000176  --/--/95.00 -> 64.13/--/--   maske IoU 0,649
+    sa_000232  23.00/23.00 -> bagil fark 0,0000   BERABERLIK
+    sa_000258  18.00/17.98 -> bagil fark 0,0009   BERABERLIK
+    ```
+    Rota piksel sayısı dört vakada da aynı (540); değişen **yeri**, uzunluğu değil.
+  - **Adım 2 — beraberlik bandı uygulandı** (`BERABERLIK_BANDI = 0.04`; değer
+    çıplak değil, projenin ölçülmüş gürültü tabanı — D-112). Band içinde seçim
+    deterministik. **Düzelen tek kare `sa_000192`** (bağıl fark 0,0192) — adım
+    1'in tam olarak öngördüğü sonuç.
+  - **Adım 3 — histerezis yazıldı, üretime BAĞLANMADI.** Emniyet kuralı testle
+    çivili: **önceki koridor geçilemezse anında bırakılır**; ölçülemeyen durumda
+    histerezis uygulanmaz (fail-through). ⚠ `analyze_path` **durumsuzdur** ve
+    histerezis kareler arası bir mekanizmadır; kapı betiği her kareyi bağımsız
+    gürültü çekimiyle ölçtüğü için **o kapıyla doğrulanamaz**. Ölçemediğim bir
+    şeyi üretime bağlamadım.
+  - **Kalan 8 çevrilmenin 7'si taşınmadır** ve maske değişiminden gelir; çözümü
+    ya modelin gürültü dayanıklılığı ya kareler-arası histerezistir — ikisi de bu
+    görevin kapsamı dışında. **Görev `[ ]` bırakıldı.**
+  - **Yeni testler:** `tests/test_koridor_kararliligi.py` (17).
+- [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
 avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
   - Yer gerçeği etiketleriyle (model YOK, yani kusursuz algı) ölçüldü:
     ```text
@@ -3769,6 +3892,36 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - **KAPI:** yer gerçeğiyle moloza basma **0'a** insin · rota üretimi çökmesin ·
     renk çeşitliliği ve bariyer kapatma oranı (128/260) bozulmasın.
 
+  - **✅ ÖLÇÜLDÜ · 2026-08-15 · Claude-2** · kayıt **D-126**. 🔴 `R_GEREKLI_M`
+    **değiştirilmedi** (emrin 3. maddesi).
+  - **Adım 1 — dar paylar TEK bir parametre aralığından gelmiyor.** Kusursuz
+    algıyla (yer gerçeği maskesi, model yok), n=260:
+    ```text
+    uretec serit durumu     n    medyan     min     pay<3px
+    acik                  170     17.92    0.10     17/170  (%10.0)
+    kapali                 51      7.92    0.12     18/51   (%35.3)
+    dar+bariyer            16      7.42    0.10      5/16   (%31.3)
+    dar                     8      9.52    0.92      3/8    (%37.5)
+    acik+bariyer            8      5.42    0.92      3/8    (%37.5)
+    TUM: medyan 14.31 px · min 0.10 px · pay<3px 46/260 · pay<0: 0/260
+    ```
+    🔴 **`dar_orani = 0.28` değil:** "dar" şeritler yalnız 24/260 karede
+    seçiliyor, oysa dar payların **17'si (%37) "acik" şeritlerden**. En düşük pay
+    (0,10 px) hem "acik" hem "dar+bariyer" durumunda görülüyor.
+  - ⚠ **Algı değil geometri:** aynı ölçüt modelle 10,9 px / 59-255 (D-122),
+    kusursuz algıyla **14,31 px / 46-260**. Darlığın büyük kısmı modelin hatası
+    değil **üretecin geometrisi**; kusursuz algıda bile %17,7 kare 3 px altında.
+  - **Adım 2 — `R_GEREKLI_M = 1,10 m` bileşenlerinin kanıtı:**
+    ```text
+    IKA_GENISLIK_M/2  0.35 m  %32  SIM modelinden turetildi (model.sdf);
+                                   kodun kendi notu: "GERCEK arac FARKLI olabilir"
+    MASKE_HATA_M      0.25 m  %23  gerekceli ama OLCULMEMIS
+    TAKIP_HATA_M      0.50 m  %45  🔴 "SAF VARSAYIM, en buyuk terim" (TAHMINLER #1)
+    OLCULMEMIS PAY: 0.75 / 1.10 = %68 · GERCEK IKA uzerinde olculen bilesen: YOK
+    ```
+    🔴 **Belge ile kod çelişiyor:** TAHMINLER bloğu `TAKIP_HATA_M = 0.40` diyor,
+    kod `0.50`. Denetim notu **bayat**; hangisinin doğru olduğu bu görevde
+    belirlenemez, **dokunulmadı**.
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev
