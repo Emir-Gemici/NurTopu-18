@@ -9115,3 +9115,87 @@ videodan. v29 gercek karelerde iyilesip SENTETIK kabul kumesinde bozulursa
 gerekcesiyle kabul edilmez.
 
 ⚠ K-3 hatirlatmasi: mAP/fitness karar olcutu DEGILDIR.
+
+---
+
+### D-130 · KABUL · v28 (512) D-123'un KURALINI SAGLADI — kararlilik 3 KAT iyilesti, moloza basma bir puan kotulesti
+Olcen/karar: Claude 1 (mimar) · 2026-08-15 10:06-11:20 · esikler D-123'te SONUC GORULMEDEN yazildi
+
+**EGITIM.** v28, 200/200 epoch, `imgsz=512`. v27 ile AYNI veri
+(`karisim_t54_engelli.yaml`), AYNI recete, AYNI on-egitim; tek degisken
+cozunurluk (640 -> 512).
+
+**D-113 TEKRARLAMADI.** `best.pt` epoch 152'ye denk geliyor (tahmini bitis
+07:41, dosya damgasi 07:48) ve fitness'in gercek azamisi da epoch 152'dir
+(0,38847). v27'deki donma, kendi olmayan bir `best_fitness`in mirasindan
+kaynaklaniyordu; v28 kendi `last.pt`'sinden devam ettigi icin gecerli bir deger
+tasidi. Denetim yine de `last.pt` (epoch 200) uzerinde kosuldu; fark 0,0027.
+
+**FITNESS — 512 DAHA KOTU:**
+
+    v27 (640)  en iyi 0,42093 (epoch 195) · son 0,42048
+    v28 (512)  en iyi 0,38847 (epoch 152) · son 0,38580
+
+Fark 0,035 — gurultu tabani 0,04'un hemen altinda, yani tek basina belirleyici
+degil. Zaten K-3 uyarinca fitness KARAR OLCUTU DEGILDIR.
+
+**D-123'UN UC SARTI, TEK TEK:**
+
+    1. ALTI OLCUT DE GECTI:
+       K0 korluk yok   GECTI  figur zemin %15,5 · raw 0/8 · cp 0/8
+       K1 rota >= 230  GECTI  256/260          (v27: 255/260)
+       K2 basma <= %15 GECTI  21/256 = %8,20   (v27: %7,06)
+       K3 agir <= %3   GECTI  0/256 = %0,0     (v27: %0,0)
+       K4 disi <= %5   GECTI  1/256 = %0,39    (v27: %0,4)
+       K5 bariyer=0px  GECTI  0 px             (v27: 0 px)
+       ⚠ K5 v28'de FIGUR uzerinde de olculebildi; v27'de o karede rota
+         olusmadigi icin tanimsizdi (D-114). Bu bir iyilesmedir.
+
+    2. K3/K4/K5 v27'ye gore BOZULMADI: ✓ (%0,0 · %0,39 · 0 px)
+
+    3. IKISINDEN EN AZ BIRI:
+       a. K2 v27'den >= 2 puan iyi (<= %5,1)?   ✗ DUSTU — %8,20, yani
+          v27'den 1,14 puan KOTU.
+       b. Kararlilik cevrilmesi <= 4/260?        ✓ TUTTU
+
+          v27  KARARI CEVRILEN  9/260  (%3,46)
+          v28  KARARI CEVRILEN  3/260  (%1,15)     <- UC KAT iyilesme
+          (ayni tohum, ayni sigma=2/255, kare basina 3 tekrar)
+
+**VERDIKT: v28 KABUL EDILIR.** Kural saglandi. Esik sonradan ne
+SIKILASTIRILDI ne GEVSETILDI.
+
+**TAKAS ACIKCA YAZILIYOR.** v28, moloza basmada **1,14 puan** kotu; buna
+karsilik karar kararliliginda **3 kat** iyi. Bu takasi D-123'te sonucu
+gormeden kabul ettim ve arkasindayim: tek kare olcumu (K2) ile video akisi
+davranisi (kararlilik) ayni agirlikta degildir — IKA tek kare degil, akis
+izler. %3,46'lik cevrilme oraninda rota koridor degistirip zikzak yapar.
+
+⚠ **UYGULAMA v29'DAN SONRAYA BIRAKILDI.** Uretim zincirini cevirmek
+(`config/model_registry.json`, jetson manifesti, iki kilavuz, ONNX, paket)
+T76 olceginde bir istir ve URETIM KODUDUR — mimarin yazma yetkisi yoktur
+(madde 7; kullanici bu yetkiyi acikca vermedi). v29 ~12:49'da bitiyor ve
+GERCEK otopark verisiyle egitildi. Zincir bir kez cevrilsin diye v29'un
+verdikti beklenir. Bu, D-123'un kuralini degistirmez — v28 KABUL EDILMISTIR;
+degisen yalnizca uygulama SIRASIDIR.
+
+**PARALEL KOSUM — MIMARIN ERKEN YARGISI DUZELTILIYOR.** Kullanicinin "ikisi
+ayni anda kosabilir" onerisini iki epoch'luk bir olcumle "bedava" diye
+onaylamistim. Tam kosum bunu curuttu:
+
+    v28 TEKIL   (epoch 45->47)    1,74 dk/epoch
+    v28 PARALEL (epoch 197->199)  2,81 dk/epoch   (+%61)
+    v29 tekil baslangic           2,11 dk/epoch
+    v29 paralel ortalama          3,07 dk/epoch   (+%45)
+
+VRAM ve RAM gercekten bostu (kullanici hakliydi); ama darbogaz onlar degil
+VERI HATTIDIR (D-108) ve iki egitim ayni diski ve cekirdekleri paylasti.
+Toplam is cikti ARTMADI. Iki epoch'luk orneklem bu etkiyi gormek icin cok
+kisaydi.
+
+**DOGRULANAMADI**
+  1. v28'in K2'deki gerilemesinin sebebi (cozunurluk mu, egitim gurultusu mu)
+     arastirilmadi; fark 1,14 puan ve gurultu tabani mertebesinde.
+  2. Kararliliktaki 3 kat iyilesmenin cozunurlukten geldigi KANITLANMADI —
+     tek kosu, tek tohum.
+  3. Tum olcumler SENTETIKTIR (D-88/D-99, kalici kisit).
