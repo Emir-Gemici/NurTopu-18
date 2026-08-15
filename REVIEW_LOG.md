@@ -9286,3 +9286,45 @@ etmez; v28 zinciri cevrilene kadar mevcut durum korunur.
   3. K5'in dustugu iki kare marjinal (darbogaz 14,8 ve 15,8 px, r=14);
      sebebin cogaltma mi egitim gurultusu mu oldugu arastirilmadi.
   4. Tum arena olcumleri SENTETIKTIR (D-88/D-99, kalici kisit).
+
+---
+
+### D-132 · ONCEDEN KAYIT · v30 (gercek veri 4 KAT) kabul kurali — SONUC GORULMEDEN yazildi
+Yazan: Claude 1 (mimar) · 2026-08-15 11:45
+
+**NEDEN.** D-131: v29 gercek karelerde 0/67 -> 64/67 tasidi ama arenada K5'i
+dusurdu (0 px -> 3 px, iki kare) ve K3'u sifirdan cikardi (%0 -> %0,78).
+Verdikt REDDI idi. Teshis: **yon dogru, doz yanlis** — 67 kareyi 12 kat
+cogaltmak karisimin ~%9'unu tek bir otoparktan yapti.
+
+**TEK DEGISKEN.** v30, v29 ile HER SEYDE ayni; tek fark cogaltma
+**12 kat -> 4 kat** (train 672 -> 224; karisimin ~%9'u -> ~%3'u).
+Val tarafi (11 kare) DEGISMEDI ve hic cogaltilmadi.
+
+⚠ **BAYAT ONBELLEK TEMIZLENDI.** Cogaltma azaltilirken silinen karelerin
+`cache=disk` `.npy` dosyalari YETIM kalmisti (224 jpg'ye karsi 672 npy).
+Bayat onbellekle egitim baslatmak D-81 sinifi bir hatadir; tum `.npy`
+silindi ve yeniden uretilecek.
+
+**KABUL KURALI — VARSAYILAN "v28 KALIR"** (v28 D-130'da kabul edildi):
+v30 ancak sunlarin HEPSI saglanirsa uretime alinir:
+  1. D-107'nin ALTI olcutunu de gecer (K0..K5), ve
+  2. 🔴 **K5 = 0 px** (govde yaricapiyla, 173 karelik populasyonda) — v29
+     tam buradan dustu, bu sart PAZARLIGA KAPALI, ve
+  3. K3 <= %0,0 ... yani **agir basma BELIRMEZ** (v27/v28: %0,0; v29: %0,78), ve
+  4. Gercek karelerde OLCULEBILIR ilerleme: kapiyi gecen kare **>= 8/67**
+     (v27: 0/67 · v29: 64/67).
+
+**3. sart neden var:** K3 esigi D-107'de %3'tur ve v29 onu teknik olarak
+geciyordu (%0,78). Ama v27 ve v28 SIFIR veriyordu; agir moloza basmanin
+sifirdan cikmasi bir GERILEMEDIR ve esigin altinda kalmasi onu kabul
+edilebilir yapmaz. Bu sart D-129'da YOKTU ve v29'un aciklarindan biriydi;
+sonucu gormeden simdi ekleniyor.
+
+⚠ **"64/67 GECTI" BIR HEDEF DEGILDIR.** D-131'de olculdu: v29'un gecis
+sebebi dogru gormek degil COK AZ ZEMIN GORMEKTI (kaplama 0,601, etiketler
+0,813). v30 icin de ayni kontrol kosulacak: gercek karelerde kaplama
+etiketlerin **0,813'unden asiri sapmamali**; saparsa gecis sayisi ne olursa
+olsun bu bir BASARI DEGILDIR ve kayda oyle yazilir.
+
+⚠ K-3 hatirlatmasi: fitness karar olcutu DEGILDIR.
