@@ -9328,3 +9328,86 @@ etiketlerin **0,813'unden asiri sapmamali**; saparsa gecis sayisi ne olursa
 olsun bu bir BASARI DEGILDIR ve kayda oyle yazilir.
 
 ⚠ K-3 hatirlatmasi: fitness karar olcutu DEGILDIR.
+
+---
+
+### D-133 · KABUL + 🔴 ACIK KARAR · v30 D-132'nin DORT SARTINI DA SAGLADI; ama v28'in kararlilik ustunlugunu geri veriyor
+Olcen/karar: Claude 1 (mimar) · 2026-08-15 17:34-18:20 · esikler D-132'de SONUC GORULMEDEN yazildi
+
+**EGITIM.** v30 = v29 ile HER SEYDE ayni, tek fark gercek kare cogaltmasi
+**12 kat -> 4 kat** (train 672 -> 224; karisimin ~%9'u -> ~%3'u). 200/200
+epoch, en iyi epoch **200** (sona kadar tirmandi), 386 dk. `best.pt` ve
+`last.pt` ayni; D-113 tekrarlamadi.
+
+**D-132'NIN DORT SARTI, TEK TEK:**
+
+    1. ALTI OLCUT DE GECTI:
+       K0 korluk yok   GECTI  figur zemin %8,0 · raw 0/8 · cp 0/8
+       K1 rota >= 230  GECTI  258/260
+       K2 basma <= %15 GECTI  22/258 = %8,53
+       K3 agir <= %3   GECTI  0/258 = %0,0
+       K4 disi <= %5   GECTI  1/258 = %0,39
+       K5 bariyer      GECTI  0/173 kare · 0 px  (govde yaricapiyla)
+    2. K5 = 0 px (PAZARLIGA KAPALI)          ✓  v29 TAM BURADAN dusmustu
+    3. K3 agir basma BELIRMEZ (%0,0)         ✓  v29: %0,78
+    4. Gercek karede gecen >= 8/67           ✓  65/67
+
+**VERDIKT: v30 D-132'YI SAGLADI.** Doz teshisi dogruydu — 12 kat cogaltma
+modeli bozuyordu, 4 kat bozmuyor. v29'un dustugu IKI yer de kapandi.
+
+**DORT MODEL, YAN YANA:**
+
+    olcut              v27       v28       v29       v30
+    K1 rota        255/260   256/260   258/260   258/260
+    K2 basma         %7,06     %8,20    %10,08     %8,53
+    K3 agir           %0,0      %0,0     %0,78      %0,0
+    K4 arena disi     %0,4     %0,39     %0,78     %0,39
+    K5 bariyer        0 px      0 px      3 px      0 px
+    K0 figur zemin    %7,8     %15,5      %3,5      %8,0
+    fitness         0,42048   0,38580   0,41014   0,41545
+    KARAR CEVRILME  9 (%3,46) 3 (%1,15)    —     8 (%3,08)
+    gercek kare gecen 0/67       —       64/67     65/67
+
+**🔴 MIMARIN EKSIGI — D-132 KARARLILIK SARTINI TASIMADI.** v28, D-123
+uyarinca TAM DA kararlilik sarti sayesinde kabul edilmisti (cevrilme
+9/260 -> 3/260, uc kat). D-132'yi yazarken o olcutu tasimayi ATLADIM. v30
+kararlilikta **8/260**'a, yani v27 seviyesine geri donuyor.
+
+Bu eksigi FARK ETTIKTEN SONRA kurala eklemiyorum. Sonucu gorduikten sonra
+olcut eklemek, D-107 disiplinini kendi elimle bozmaktir; v29'u ayni
+disiplinle reddettim, v30'u ayni disiplinle kabul ederim. Eksik KAYITTA
+durur.
+
+**AMA KARAR RULES ILE COZULMUYOR — IKI ON-KAYIT CATISIYOR:**
+  · D-123 -> v28 KABUL (kararlilik gerekcesiyle)
+  · D-132 -> v30 KABUL (dort sartla)
+Ikisi de gecerli; hangisinin SEVK EDILECEGI on-kayitlarda yazmiyor.
+
+    v28'in ustunlugu : karar kararliligi %1,15 vs %3,08 (UC KAT)
+    v30'un ustunlugu : K1 258 vs 256 · fitness 0,415 vs 0,386 ·
+                       gercek karelerde kapi 0/67 -> 65/67
+
+Hicbiri digerini EZMIYOR. Bu bir MUHENDISLIK TAKASIDIR ve on-kayitlarda
+cevabi yoktur; insana aittir.
+
+**MIMARIN ONERISI: v30 — ama T79 ONCELIKLENEREK.** Gerekce: kararsizligin
+BILINEN bir duzeltmesi kuyrukta duruyor (T79: gurultu tabani altindaki
+beraberliklerde deterministik secim + ardisik karelerde histerezis). O
+duzeltme inerse v30'un kararlilik dezavantaji buyuk olcude kalkar; oysa
+v28'in gercek goruntude hicbir seyi acmadigi durum bir egitim kosusu daha
+gerektirir. Yani v30 + T79, v28 + yeni egitimden UCUZDUR.
+
+⚠ **"65/67 GECTI" BIR BASARI OLARAK SUNULMUYOR** — D-132'de sonucu gormeden
+yazildigi gibi. Gercek karelerde v30'un kaplamasi **0,594**, etiketler
+**0,813** diyor: 22 puan az zemin. v29'un 0,601'iyle neredeyse ayni. Yani
+kapiyi gecme sebebi DOGRU GORMEK DEGIL, AZ ZEMIN GORMEKTIR. Otoparkta
+hangisinin (model mi etiket mi) gercege yakin oldugu OLCULEMEDI; daha iyi
+yer gercegi yok.
+
+**DOGRULANAMADI**
+  1. v30'un kararlilikta v28'e gore neden geriledigi arastirilmadi (veri mi,
+     tohum mu, cozunurluk mu).
+  2. Otoparkta 0,594 mu 0,813 mu dogru — olculemedi.
+  3. T79'un kararsizligi gercekten kapatip kapatmayacagi OLCULMEDI; oneri
+     bir BEKLENTIYE dayaniyor.
+  4. Tum arena olcumleri SENTETIKTIR (D-88/D-99, kalici kisit).
