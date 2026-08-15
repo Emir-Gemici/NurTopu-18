@@ -9411,3 +9411,49 @@ yer gercegi yok.
   3. T79'un kararsizligi gercekten kapatip kapatmayacagi OLCULMEDI; oneri
      bir BEKLENTIYE dayaniyor.
   4. Tum arena olcumleri SENTETIKTIR (D-88/D-99, kalici kisit).
+
+---
+
+### D-134 · 🔴 DUZELTME · D-133'teki "oneri: v30" TUTARSIZDI; kanit v28'i gosteriyor
+Yazan: Claude 1 (mimar) · 2026-08-15 18:30 · D-133 yazildiktan hemen sonra
+
+**DUZELTILEN.** D-133'te "MIMARIN ONERISI: v30" yazdim ve gerekcesini buyuk
+olcude gercek karelerdeki **65/67** sonucuna dayandirdim. AYNI KAYITTA o
+sonucun DOGRULANMADIGINI kendim yazmistim:
+
+    "Gecis sebebi DOGRU GORMEK DEGIL, AZ ZEMIN GORMEKTIR (kaplama 0,594,
+     etiketler 0,813). Otoparkta hangisinin gercege yakin oldugu OLCULEMEDI."
+
+DOGRULANMAMIS bir kazanc ugruna OLCULMUS bir kazanctan vazgecmeyi onermek
+tutarsizdir. Oneriyi geri aliyorum.
+
+**IKI MODELIN KANIT DURUMU, DURUSTCE:**
+
+    v28'in ustunlugu — OLCULMUS ve ANLAMLI:
+      karar cevrilmesi 3/260 (%1,15) vs v30 8/260 (%3,08) — UC KAT.
+      Video akisinda rota koridor degistirmesi demektir; IKA tek kare degil
+      AKIS izler.
+
+    v30'un ustunlukleri — ZAYIF:
+      K1  258 vs 256   -> iki kare, gurultu icinde
+      K2  %8,53 vs %8,20 -> v28 zaten DAHA IYI
+      fitness 0,415 vs 0,386 -> K-3 uyarinca KARAR OLCUTU DEGIL
+      gercek kare 65/67 -> DOGRULANMADI (yukarida)
+
+v30'un elinde, ayakta kalan tek somut ustunluk YOK. v28'inki ise ayakta.
+
+**DUZELTILMIS ONERI: URETIM MODELI v28 KALIR.**
+
+**v30 ATILMAZ.** Su iki is icin saklanir:
+  1. Gercek goruntu davranisinin DOGRULANMASI: otoparkta 0,594 mu 0,813 mu
+     gercege yakin? Bu olculmeden v30'un gercek kazanci bilinemez. Olcum
+     yolu: daha iyi yer gercegi (T84'un elle denetimi) veya FARKLI bir
+     yerden cekilmis ikinci gercek kume (insan gorevi).
+  2. T79 (kararsizlik duzeltmesi) inince v30 YENIDEN olculur. Kararlilik
+     dezavantaji kalkarsa v30'un lehine kanit degisir.
+
+⚠ **BU BIR KURAL DEGISIKLIGI DEGILDIR.** D-132'nin dort sarti saglandi ve
+v30 KABUL EDILEBILIR bir modeldir (D-133 gecerlidir). Degisen sey, iki KABUL
+EDILEBILIR model arasindaki SEVK KARARIDIR — ki on-kayitlarda cevabi yoktur
+ve D-133'te de "insana aittir" diye yazilmistir. Mimar yalnizca kendi
+onerisini duzeltmektedir.
