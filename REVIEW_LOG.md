@@ -9705,3 +9705,182 @@ yoldur ve model egitimi GEREKTIRMEZ.
      mesru cikip cikmayacagi olculmedi (darbogaz 1,0 px'lik kareler C-uzayi
      uygulaninca REDDEDILEBILIR — ki dogrusu odur).
   2. `kompozit`teki GORUS_HATTI_KOPUK'un sebebi arastirilmadi.
+
+### D-137 · OLCEK KAHINI URETIME BAGLANDI — `drone` 0/12 -> 11/12; ama paylar OLCEK BELIRSIZLIGINDEN KUCUK
+Yazan: Claude 2 (amele) · 2026-08-15 · gorev T86 (kullanici emri) · dayanak D-126, D-136
+
+⚠ **NUMARA CAKISMASI:** REVIEW_LOG'da IKI adet `### D-136` var — satir 9506
+(T85 kaydim) ve satir 9640 (mimarin kaynak taramasi). Ikisini de silmedim,
+D-137'ye gectim. Atiflarda satir numarasi da gerekecek. (Ayni sinif çakisma
+D-125'te de yasandi, D-126'da kayitli.)
+
+---
+
+**NE BAGLANDI.** Kahin (T83/D-126) uc uretim cagri yerine, hakem ekranina ve
+kaynak taramasina baglandi. Cozucu TEK YERDE yazildi ve UC UC de ONU cagirir
+(madde 16 — kapi kopyalanmaz):
+
+    codes/rpi_inference.py   kare_olcek_kahini()   <- YENI, tek cozucu
+      run_image / run_video / run_camera           <- ucu de bunu cagirir
+    comms/yks_gui.py         _algi_kos()           <- ayni fonksiyonu cagirir
+    scripts/olcum/72_...py   tarama                <- ayni fonksiyonu cagirir
+    codes/arac_maskesi.py    arac_kisa_kenar_medyani()  <- 69/70'teki KOPYA
+                                                            olcum tek kaynaga alindi
+
+Katman 3 dedektorunun yolu CIPLAK YAZILMADI: kayit defterine `arac_referansi`
+profili eklendi (T85'te uretim modeli icin kurulan desen). Profil `status`
+alani `olcek-katman-3`'tur ve `default_profile` OLAMAZ — bu testle kilitli.
+
+---
+
+**KAPI (c) — KAYNAK TARAMASI, ONCE/SONRA** (ayni betik, ayni model v30):
+
+    kaynak          ONCE rota   SONRA rota   ONCE OLCEK_YOK  SONRA OLCEK_YOK
+    kompozit          0/9          0/9              0              0
+    arena_kadraj     12/12        12/12             0              0
+    arena_gercek      0/1          0/1              1              1
+    gemini            0/12         0/12            12              9
+    test              0/12         1/12            12              9
+    val               0/12         0/12            12             11
+    drone             0/12        11/12            12              0   <- ASIL
+
+`drone`da 12 karenin 12'si de olcegi ARAC REFERANSINDAN turetti. Arena yolu
+(telemetri/beyan) DEGISMEDI: `arena_kadraj` 12/12, `kompozit` ayni iki sebep.
+
+---
+
+**🔴 KAPI (f) — ROTA UYDURULDU MU? HAYIR, AMA PAYLAR KIL PAYI.**
+
+D-136'da olceksiz bir `drone` karesi **1,0 px** darbogazla rota HESAPLAMISTI
+(C-uzayi kosamadigi icin). Her kare IKI KEZ kosuldu:
+
+    kare                          A: olceksiz   B: kahinle (C-uzayi KOSAR)
+                                   darbogaz     mpp      darbogaz  r_ger    pay
+    frame_000000_000000000.jpg       1.00     0.06481      17.58   16.97  +0.602
+    frame_000005_000001008.jpg       1.00     0.07746      15.98   14.20  +1.781
+    frame_000006_000000336.jpg       1.00     0.07254      15.18   15.16  +0.020
+    frame_000016_000000720.jpg       1.00     0.07378      17.60   14.91  +2.688
+    frame_000001_000000168.jpg       1.00     0.07505         —       —   GORUS_HATTI_KOPUK
+    frame_000005_000000816.jpg       5.00     0.06558      16.78   16.77  +0.006
+    frame_000010_000001200.jpg       2.00     0.06627      16.79   16.60  +0.190
+    frame_000010_000001824.jpg       2.00     0.07796      14.18   14.11  +0.072
+    frame_000011_000000600.jpg       2.00     0.07262      15.98   15.15  +0.836
+    frame_000015_000002040.jpg       9.59     0.07452      15.00   14.76  +0.240
+    frame_000021_000000984.jpg       9.79     0.09830      15.98   11.19  +4.792
+    frame_000000_000000000.jpg      12.98     0.08815      14.18   12.48  +1.703
+
+    🔴 PAY < 0 olan kare: 0/11  — C-uzayi TUTUYOR.
+
+A'da 1,0-9,8 px'lik "hayali aralik"lardan gecen 10 karenin **hicbiri** B'de o
+aralikatan gecmiyor; C-uzayi onlari kapatiyor ve rota ya DAHA GENIS bir
+koridora tasiniyor ya da kare reddediliyor. Kapi (f) SAGLANDI.
+
+**AMA — VE BU ASIL BULGUDUR — PAYLAR OLCEGIN KENDI BELIRSIZLIGINDEN KUCUK.**
+Katman 3'un dayanagi "arac govde genisligi 1,80 m"dir; D-124'un kaydettigi
+band **1,70-1,90 m**'dir. `r_gerekli_px = 1,10 * kisa_kenar / arac_m`
+oldugundan 1,70 varsayimi r_gerekli'yi **%5,9 buyutur**:
+
+    varsayim        ayakta kalan rota
+    1,90 m               11/11
+    1,80 m               11/11   (kullanilan)
+    1,70 m                4/11   🔴 YEDI ROTA DUSER
+
+Yani `drone`da uretilen 11 rotanin 7'si, arac genisligi varsayimi bandin ALT
+ucundaysa **C-uzayindan gecmez**. Bu rotalar "guvenli" degil, "1,80 m
+varsayimiyla guvenli"dir. Ekran bunu 0,86 carpani ve `ARAÇ REFERANSI` etiketi
+ile beyan eder; ama **pay < belirsizlik** oldugu icin karar bu varsayima
+DUYARLIDIR. Esik onerisi YAPMIYORUM (R_GEREKLI_M'e dokunulmadi); sayi
+mimarindir.
+
+---
+
+**🔴 AMELENIN BULDUGU VE KAPATTIGI KUSUR — D-90'IN REDDI EZILIYORDU.**
+`arena_gercek` icin `_kaynak_olcegi` olcegi "bilmiyorum" diye degil
+**REDDEDEREK** dondurur (D-90: egik bakista 2,0 m hedef yatayda ~72 px,
+dikeyde ~38 px; tek skaler mpp GECERSIZ). Ilk baglamamda kahin orada da
+calisiyordu: sahnede arac gorulseydi bir mpp uretilecek ve **acik ret sessizce
+ezilecekti**. YOKLUK ile RET ayni sey degildir. `ALGI_SKALER_OLCEK_GECERSIZ`
+listesi eklendi (kaynak: hakem ekrani; tarama betigi ayni listeyi OKUR, ikinci
+kopya tanimlamaz) ve iki testle cakildi — biri katmanin CALISMADIGINI, digeri
+(karsit kontrol) yasak olmayan kaynakta CALISTIGINI kanitlar.
+
+**IKINCI KUSUR — EKRANDAN BILGI DUSURMUSTUM.** Kahinin katman dokumunu
+yazarken kaynagin KENDI gerekcesini ("egik arena bakisinda...") ezmisim; hakem
+sistem kisitini sahne kusuru sanabilirdi. `test_arena_gercek_...` bunu yakaladi;
+ikisi de yazilacak sekilde duzeltildi.
+
+---
+
+**KAPILAR**
+
+    (a) codes/test_rota_sentetik.py        SONUC: 15/15 dogru
+    (b) unittest discover -s tests -q      Ran 544 · OK   (once 526, +18)
+    (c) 72_kaynak_taramasi.py              drone OLCEK_YOK 12 -> 0 (yukarida)
+    (d) 65_kabul_denetcisi.py --model v30  K0..K4 D-133 ile BIREBIR
+    (e) yks_gui --kaynak drone             GOZLE DOGRULANDI
+    (f) drone darbogaz paylari             pay<0: 0/11 (yukarida)
+
+**(d) ayrinti** — arena yolu telemetri kullanir ve DEGISMEDI:
+
+    K0 KORLUK YOK       GECTI  figur zemin %8.0 · raw 0/8 · cp 0/8
+    K1 ROTA >= 230      GECTI  258/260
+    K2 BASMA <= %15     GECTI  22/258
+    K3 AGIR <= %3       GECTI  0/258
+    K4 ARENA DISI <= %5 GECTI  1/258
+    K5 BARIYER = 0 px   DUSTU  None px   <- ONCEDEN VAR OLAN KUSUR
+
+K5 T86'nin getirdigi bir gerileme DEGILDIR (T85/D-136'da da boyleydi).
+Kanit: `63_bariyer_kesisimi.py` dogrudan kosuldugunda o tek karede rota
+`UC_BANT_TEMAS_YOK` ile reddediliyor ve betik **"rota yok — kesisim
+olculemez"** basip aranan satiri hic uretmiyor; denetcinin ayristirmasi None
+kaliyor. Asil K5 olcumu (D-115'te tasindigi yer) `66_k5_bariyer_populasyon.py`
+ile kosuldu: **0/173 kare · 0 px · GECTI** — D-133 ile birebir. Denetci hala
+ASILMIS betigi cagiriyor.
+
+**(e) gozle dogrulama (D-80):** `results/t86/drone.png` — gercek otopark
+karesinde SURUS KORIDORU cizili; bilgi satiri:
+
+    olcek 0.0648 m/px (ARAÇ REFERANSI · güven ×0.86 · arac kisa kenari
+    27.8 px = 1.80 m) · gövde açıklığı 17.0 px · C-uzayı UYGULANDI ·
+    darboğaz 17.6 px @ şerit 2
+
+darbogaz **17,6 px > r_gerekli 17,0 px** (emrin sarti). Sag panel:
+`2 · ORTA · güven 0.421 · ölçek ARAÇ REFERANSI ×0.86` — 0,86 carpani guvene
+YANSIMIS (0,49 x 0,86 = 0,42). Gunlukte `ÖLÇEK katman 3 hazır — kayıt defteri
+profili 'arac_referansi'`. Protokol sayaclari **hepsi 0** (T81 kaynak ayrimi
+korunuyor).
+
+---
+
+**DOGRULANAMADI / ACIK KALAN**
+
+  1. 🔴 **KATMAN 2 URETIMDE HIC CALISMADI VE CALISAMAZ.** Parametreleri
+     baglandi (`--senaryo`, `arena_sinir_px`) ama **arena sinirini goruntuden
+     tespit eden bir fonksiyon YOKTUR**. Katman 2 bugun yalniz birim testiyle
+     vardir; uretimde her zaman "senaryo BEYAN EDILMEDI" ya da "sinir tespit
+     edilemedi" der. D-126'daki ayni bosluk KAPANMADI.
+  2. 🔴 **KATMAN 3 JETSON'A GITMIYOR.** Ne `codes/arac_maskesi.py` ne de OBB
+     agirligi saha paketinde vardir (`jetson_paket_hazirla.py` kopya listesi ·
+     `jetson_paket/models/`). Saha kodunda import GECIKMELIDIR ve orada
+     katman 3 SESSIZCE degil, `denenen` dokumune yazarak kapanir. Yani bu
+     kayit **hakem ekrani + PC olcumu** icin gecerlidir; **Jetson icin
+     DEGIL**. Gonderilmesi gerekiyorsa bu ayri bir karardir (53 MB agirlik).
+  3. ⚠ **`test`/`gemini`/`val` KARELERINDE DE OLCEK URETILDI** (3+3+1 kare) ve
+     `test/road_233.jpg` bir ROTA uretti. Bunlar **yer seviyesinden cekilmis**
+     yol/afet fotograflaridir; orada bir aracin OBB kisa kenari govde
+     genisligi DEGILDIR ve D-90'in `arena_gercek` icin yurutttugu gerekce
+     (egik bakista tek skaler mpp gecersiz) ayniyla gecerlidir. Bu kaynaklar
+     icin projede ACIK bir ret KAYITLI OLMADIGI icin listeye EKLEMEDIM —
+     politika uydurmak amelenin isi degildir. Mimar isterse
+     `ALGI_SKALER_OLCEK_GECERSIZ` listesine eklenir; karar mimarindir.
+  4. **Gercek otopark karelerinde rotanin DOGRU olup olmadigi olculmedi.**
+     Olculen sey "rota cikiyor ve C-uzayindan geciyor"dur; yer gercegi yoktur
+     (D-133: modelin kaplamasi 0,594, etiketler 0,813 — hangisinin gercege
+     yakin oldugu OLCULEMEDI).
+  5. **`ARAC_GENISLIGI_M = 1.80` literatur degeridir**; bu sahnedeki araclar
+     olculmedi. Yukaridaki band duyarliligi tam bu yuzden onemlidir.
+  6. **Arena olcumlerinin tamami SENTETIKTIR** (D-88/D-99, kalici kisit).
+  7. Test paketi artik 53 MB'lik OBB agirligini yukluyor (suite ~54 s -> ~63 s).
+     Agirlik yoksa ilgili testler kirmizi yanar, sessizce atlanmaz.
+
+---

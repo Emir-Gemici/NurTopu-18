@@ -65,6 +65,10 @@ if __package__:
                                    OLCEK_GUVEN_CARPANI,
                                    beraber_adaylar,
                                    OLCEK_KAYNAK_TELEMETRI,
+                                   OLCEK_KAYNAK_ARAC,
+                                   SENARYO_BOYUTLARI_M,
+                                   olcek_gecerli_mi,
+                                   olcek_kahini,
                                    olcek_guveni_uygula,
                                    rota_olcek_reddi, serit_no)
 else:
@@ -98,6 +102,10 @@ else:
                                   OLCEK_GUVEN_CARPANI,
                                   beraber_adaylar,
                                   OLCEK_KAYNAK_TELEMETRI,
+                                  OLCEK_KAYNAK_ARAC,
+                                  SENARYO_BOYUTLARI_M,
+                                  olcek_gecerli_mi,
+                                  olcek_kahini,
                                   olcek_guveni_uygula,
                                   rota_olcek_reddi, serit_no)
 
@@ -263,6 +271,74 @@ def _kare_olcegi(mpp, canli_olcek, icerik):
         return uret(icerik[2])
     except Exception:
         return None
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# T86 · OLCEK KAHINI URETIM YOLUNA BAGLI      (CONTRACTS SS5.4 · REVIEW_LOG D-136)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (D-136, olculdu): hakem ekraninin 7 kaynagindan 5'i TEK ve AYNI
+# sebepten dusuyordu — `OLCEK_YOK`. Kahin T83'te yazilmis (D-126) ama ayni
+# kayitta "uretim cagri yerlerine ve EKRANA BAGLANMADI" diye not dusulmustu.
+#
+# 🔴 KAPI GEVSEMEZ. `rota_olcek_reddi` hala olcek YOKSA reddeder; degisen tek
+# sey olcegin DAHA COK karede TURETILEBILMESIDIR. Katman atlandikca guven
+# carpani duser (1.00 / 0.70 / 0.86) ve kaynak karar nesnesine yazilir.
+def _arac_kisa_kenari(bgr, arac_modeli, conf):
+    """(kisa_kenar_px, not) — dedektor yoksa/patlarsa SEBEBIYLE birlikte doner.
+
+    Sessiz dusus yasak oldugu icin "arac yok" ile "dedektor yok" AYRI
+    raporlanir; kahinin `denenen` dokumune bu metin yazilir.
+    """
+    if arac_modeli is None:
+        return None, "arac dedektoru (DOTA OBB) VERILMEDI"
+    if bgr is None:
+        return None, "kare goruntusu cozucuye verilmedi"
+    try:
+        # Ic ice bagimlilik yaratmamak icin GECIKMELI import: `arac_maskesi`
+        # saha paketinde YOKTUR (jetson_paket_hazirla.py kopya listesi) ve
+        # orada bu katman calismaz — sessizce degil, ASAGIDAKI notla.
+        if __package__:
+            from .arac_maskesi import arac_kisa_kenar_medyani
+        else:
+            from arac_maskesi import arac_kisa_kenar_medyani
+    except ImportError as exc:
+        return None, f"arac_maskesi modulu yok ({exc.__class__.__name__})"
+    try:
+        kenar = arac_kisa_kenar_medyani(bgr, arac_modeli, conf=conf)
+    except Exception as exc:                       # fail-closed: olcek uydurma
+        return None, f"arac tespiti HATA verdi: {type(exc).__name__}: {exc}"
+    if kenar is None:
+        return None, "sahnede olculebilir arac YOK"
+    return kenar, f"arac kisa kenar medyani {kenar:.1f} px"
+
+
+def kare_olcek_kahini(mpp, canli_olcek, icerik, *, bgr=None, arac_modeli=None,
+                      senaryo=None, arena_sinir_px=None, arac_conf=0.25):
+    """Uretim karar yolunun OLCEK cozucusu. -> kahin sozlugu (ASLA None).
+
+    Katman 1 ONCE denenir: `_kare_olcegi` canli telemetriyi ya da cagiricinin
+    verdigi statik/manifest olcegini dondurur; bu, SS5.2 uyarinca OTORITEDIR
+    ve davranisi T86'da DEGISMEDI. Uretmezse katman 2 (arena siniri, senaryo
+    BEYAN EDILMISSE) ve katman 3 (arac referansi) denenir.
+    """
+    beyan = _kare_olcegi(mpp, canli_olcek, icerik)
+    if olcek_gecerli_mi(beyan):
+        return {"mpp": float(beyan),
+                "kaynak": OLCEK_KAYNAK_TELEMETRI,
+                "guven_carpani": OLCEK_GUVEN_CARPANI[OLCEK_KAYNAK_TELEMETRI],
+                "detay": ("canli telemetri" if canli_olcek is not None
+                          else "cagirici beyani (statik/manifest)"),
+                "denenen": [(OLCEK_KAYNAK_TELEMETRI, "URETTI")]}
+
+    kisa_kenar, arac_notu = _arac_kisa_kenari(bgr, arac_modeli, arac_conf)
+    kahin = olcek_kahini(arena_sinir_px=arena_sinir_px, senaryo=senaryo,
+                         arac_kisa_kenar_px=kisa_kenar)
+    if kahin["kaynak"] != OLCEK_KAYNAK_ARAC:
+        # Kahin "sahnede olculebilir arac YOK" der; oysa sebep dedektorun
+        # olmamasi da olabilir. Hakem ikisini ayirt edebilmeli.
+        kahin["denenen"] = [(k, arac_notu if k == OLCEK_KAYNAK_ARAC else n)
+                            for k, n in kahin["denenen"]]
+    return kahin
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -1369,7 +1445,8 @@ def run_fps(model, n=30):
     print("Sonuc    :", "BASARILI" if fps >= 10 else "YETERSIZ — imgsz=256 ile tekrar dene")
 
 
-def run_image(model, path_str, conf, mpp=None, canli_olcek=None):
+def run_image(model, path_str, conf, mpp=None, canli_olcek=None,
+              arac_modeli=None, senaryo=None):
     path = Path(path_str)
     RESULTS_DIR.mkdir(exist_ok=True)
 
@@ -1402,14 +1479,18 @@ def run_image(model, path_str, conf, mpp=None, canli_olcek=None):
         masks = _maskeleri_icerige_kirp(masks, icerik)
         # Telemetriyi inference SONRASINDA sorgula: karar verildigi anda taze
         # olmayan bir ornek, model gecikmesi boyunca sessizce yaslanmamalidir.
-        kare_mpp = _kare_olcegi(mpp, canli_olcek, icerik)
-
+        # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
+        # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
+        olcek = kare_olcek_kahini(mpp, canli_olcek, icerik, bgr=img,
+                                  arac_modeli=arac_modeli, senaryo=senaryo)
+        kare_mpp = olcek["mpp"]
         # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
         # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+        # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
         olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True)
+            return_reason=True, olcek_kaynagi=olcek["kaynak"])
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
         # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
@@ -1450,7 +1531,8 @@ def run_image(model, path_str, conf, mpp=None, canli_olcek=None):
             print(f"{'':30s}  payload: {json.dumps(ika_data)}")
 
 
-def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None):
+def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
+              arac_modeli=None, senaryo=None):
     path = Path(path_str)
     if not path.is_file():
         print(f"Dosya bulunamadi: {path}")
@@ -1500,13 +1582,18 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
-        kare_mpp = _kare_olcegi(mpp, canli_olcek, icerik)
+        # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
+        # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
+        olcek = kare_olcek_kahini(mpp, canli_olcek, icerik, bgr=frame,
+                                  arac_modeli=arac_modeli, senaryo=senaryo)
+        kare_mpp = olcek["mpp"]
         # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
         # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+        # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
         olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True)
+            return_reason=True, olcek_kaynagi=olcek["kaynak"])
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
         # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
@@ -1550,7 +1637,8 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None):
         print(f"Kaydedildi: {out_path}")
 
 
-def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None):
+def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
+               arac_modeli=None, senaryo=None):
     # Imza geriye uyumludur; ancak canli kamera kararinda statik mpp artik
     # otorite degildir. Eski bir cagirici mpp verse bile telemetri yoksa
     # `_kare_olcegi` None doner ve rota OLCEK_YOK ile fail-closed kalir.
@@ -1586,13 +1674,18 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None):
 
         masks = get_masks(results, orig_h, orig_w)
         masks = _maskeleri_icerige_kirp(masks, icerik)
-        kare_mpp = _kare_olcegi(None, canli_olcek, icerik)
+        # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
+        # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
+        olcek = kare_olcek_kahini(None, canli_olcek, icerik, bgr=frame,
+                                  arac_modeli=arac_modeli, senaryo=senaryo)
+        kare_mpp = olcek["mpp"]
         # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
         # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+        # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
         olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True)
+            return_reason=True, olcek_kaynagi=olcek["kaynak"])
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
         # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
@@ -1663,6 +1756,18 @@ def _arguman_ayristirici():
                           help="Kameranin YATAY gorus acisi (derece)")
     geometri.add_argument("--odak", type=float, default=None,
                           help="Odak uzakligi (piksel); --fov ile birlikte verilmez")
+    # T86 · OLCEK KAHINI KATMAN 2 ve 3 (CONTRACTS SS5.4 · D-126/D-136).
+    # Ikisi de VARSAYILAN OLARAK KAPALIDIR: verilmezlerse davranis T86
+    # oncesiyle BIREBIR aynidir (telemetri yoksa OLCEK_YOK).
+    parser.add_argument(
+        "--arac-modeli", type=Path, default=None,
+        help=("Katman 3 icin DOTA OBB agirligi (orn. yolov8m-obb.pt). "
+              "Verilirse telemetri yokken olcek SAHNEDEKI ARACLARDAN "
+              "turetilir ve guven 0.86 ile carpilir"))
+    parser.add_argument(
+        "--senaryo", type=str, default=None, choices=sorted(SENARYO_BOYUTLARI_M),
+        help=("Katman 2 icin arena senaryosu — BEYAN EDILIR, tahmin edilmez. "
+              "Yanlis senaryo 2,5 kat olcek hatasidir (50 m / 20 m)"))
     return parser
 
 
@@ -1710,11 +1815,15 @@ def main():
             # Baglanti kurulamamasi olcege donusturulmez. Maske goruntulenebilir,
             # fakat her kare OLCEK_YOK ile rota yayinlamadan kalir.
             print(f"UYARI: canli irtifa okunamadi ({exc}) -> {OLCEK_YOK_SEBEBI}")
-    if mpp is None and canli_olcek is None and not args.fps:
+    if (mpp is None and canli_olcek is None and not args.fps
+            and args.arac_modeli is None and args.senaryo is None):
         # Sessiz varsayilan YOK: kullanici olcegin uretilemedigini GORUR.
+        # T86: kahinin 2. ve 3. katmani da acilmamissa bu uyari HALA gecerlidir.
         print("UYARI: olcek (mpp) turetilemedi -> gorev yolunda her kare "
               f"{OLCEK_YOK_SEBEBI} ile reddedilecek. Cevrimdisi kipte "
-              "--mpp; canli kipte --mavlink ile --fov/--odak verin.")
+              "--mpp; canli kipte --mavlink ile --fov/--odak verin. "
+              "Telemetrisiz goruntude --arac-modeli (katman 3) ya da "
+              "--senaryo (katman 2) olcegi kurtarabilir.")
 
     try:
         # T73: agirlik ARTIK argumandan gelir; verilmezse uretim manifestinden
@@ -1725,17 +1834,29 @@ def main():
             ayrinti=True)
         print(f"model: {model_yolu.name} · kayit dogrulamasi: "
               f"{kayit_detay.get('durum')}")
+        # T86: katman 3 dedektoru YALNIZ istenirse yuklenir — Jetson'da
+        # ikinci bir 53 MB agirligi sessizce yuklemek kabul edilemez.
+        arac_modeli = None
+        if args.arac_modeli is not None:
+            from ultralytics import YOLO as _YOLO
+            arac_modeli = _YOLO(str(args.arac_modeli), task="obb")
+            print(f"olcek katman 3: arac dedektoru {args.arac_modeli.name} "
+                  f"yuklendi (guven carpani "
+                  f"{OLCEK_GUVEN_CARPANI[OLCEK_KAYNAK_ARAC]:.2f})")
         if args.fps:
             run_fps(model)
         elif args.image:
             run_image(model, args.image, args.conf, mpp=mpp,
-                      canli_olcek=canli_olcek)
+                      canli_olcek=canli_olcek, arac_modeli=arac_modeli,
+                      senaryo=args.senaryo)
         elif args.video:
             run_video(model, args.video, args.conf, save=not args.no_save,
-                      mpp=mpp, canli_olcek=canli_olcek)
+                      mpp=mpp, canli_olcek=canli_olcek,
+                      arac_modeli=arac_modeli, senaryo=args.senaryo)
         elif args.camera:
             run_camera(model, args.conf, canli_olcek=canli_olcek,
-                       kaynak=args.kaynak)
+                       kaynak=args.kaynak, arac_modeli=arac_modeli,
+                       senaryo=args.senaryo)
     finally:
         if canli_olcek is not None:
             if canli_olcek.kapat() is not True:

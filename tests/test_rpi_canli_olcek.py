@@ -462,8 +462,12 @@ class CanliOlcekCliTesti(unittest.TestCase):
         # T73: `main` artik kamera KAYNAGINI da tasiyor. `--kaynak`
         # verilmediginde None gecer ve `run_camera` icinde indeks 0'a cozulur
         # (geriye uyum). Beklenti bu sozlesmeyi kilitler.
+        # T86: olcek kahininin 2. ve 3. katmani da tasinir. Ikisi de burada
+        # None'dur — `--arac-modeli` / `--senaryo` VERILMEDIGINDE davranis T86
+        # oncesiyle BIREBIR aynidir; bu beklenti tam da onu kilitler.
         run_camera.assert_called_once_with(
-            model, 0.30, canli_olcek=saglayici, kaynak=None)
+            model, 0.30, canli_olcek=saglayici, kaynak=None,
+            arac_modeli=None, senaryo=None)
         saglayici.kapat.assert_called_once_with()
 
     def test_model_yukleme_hatasinda_poller_kapatilir(self):

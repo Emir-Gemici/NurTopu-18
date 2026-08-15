@@ -931,6 +931,18 @@ OLCEK_GUVEN_CARPANI = {
     OLCEK_KAYNAK_ARAC: 0.86,
 }
 
+# T86: EKRANDA gorunen ad. Hakem `arac_referansi` gibi bir anahtar degil,
+# okunabilir bir etiket gormeli; ama etiket de CIPLAK YAZILMAZ (madde 16) —
+# tek kaynak burasidir, `comms/yks_gui.py` buradan okur.
+OLCEK_KAYNAK_ETIKETI = {
+    # 1. katman hem CANLI TELEMETRIYI hem cagiricinin BEYANINI (statik --mpp,
+    # kume manifesti) kapsar; ikisi de SS5.2 uyarinca OTORITEDIR. Ekranda
+    # "TELEMETRI" yazmak manifest olcegi icin yaniltici olurdu.
+    OLCEK_KAYNAK_TELEMETRI: "TELEMETRİ/BEYAN",
+    OLCEK_KAYNAK_ARENA: "ARENA SINIRI",
+    OLCEK_KAYNAK_ARAC: "ARAÇ REFERANSI",
+}
+
 # Binek arac govde genisligi (ayna haric), TS/EU M1 tipik bandi (D-124).
 ARAC_GENISLIGI_M = 1.80
 ARAC_GENISLIGI_BANDI = (1.70, 1.90)
@@ -1029,6 +1041,32 @@ def olcek_kahini(*, irtifa_m=None, goruntu_genislik_px=None,
 
     return {"mpp": None, "kaynak": None, "guven_carpani": 0.0,
             "detay": "hicbir katman olcek uretemedi", "denenen": denenen}
+
+
+def olcek_kaynak_metni(kahin):
+    """Kahin sozlugunu EKRAN/GUNLUK satirina cevir (T86).
+
+    🔴 SESSIZ DUSUS YASAK: olcek uretilemediginde bu metin hangi katmanin
+    NEDEN devreye girmedigini tek tek sayar. Uretildiginde ise kaynak adi ve
+    GUVEN CARPANI yazilir — katman 3'ten gelen bir olcek, telemetriyle ayni
+    guvende sunulamaz (D-126).
+
+    Ornek: ``ARAÇ REFERANSI · güven ×0,86 · arac kisa kenari 24.1 px = 1.80 m``
+    """
+    if not isinstance(kahin, dict):
+        return "ölçek kaynağı BEYAN EDİLMEDİ"
+    kaynak = kahin.get("kaynak")
+    denenen = kahin.get("denenen") or []
+    if kaynak is None:
+        dokum = " · ".join(f"{OLCEK_KAYNAK_ETIKETI.get(k, k)}: {n}"
+                           for k, n in denenen)
+        return f"hiçbir katman ölçek üretemedi — {dokum}" if dokum else \
+               "hiçbir katman ölçek üretemedi"
+    carpan = kahin.get("guven_carpani", OLCEK_GUVEN_CARPANI.get(kaynak, 0.0))
+    etiket = OLCEK_KAYNAK_ETIKETI.get(kaynak, kaynak)
+    metin = f"{etiket} · güven ×{carpan:.2f}"
+    detay = kahin.get("detay")
+    return f"{metin} · {detay}" if detay else metin
 
 
 # ════════════════════════════════════════════════════════════════════════════

@@ -3,53 +3,84 @@
  "default_profile": "competition",
  "profiles": {
   "competition": {
-   "model_id": "navitas-seg-v27-512",
-   "path": "models/navitas_seg_v27_best.pt",
+   "model_id": "navitas-seg-v30-512",
+   "path": "models/navitas_seg_v30_best.pt",
    "backend": "pytorch",
    "imgsz": 512,
    "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
-   "_kabul_kumesi_notu": "T77 · D-115: v27 BU kume uzerinde kabul edildi (T66 ada geometrisi, n=260). Hakem ekrani `arena_kadraj` kaynagini buradan okur; onceden T60 yolu comms/yks_gui.py'de CIPLAK yaziliydi ve surum v27'ye gecince cevrilmedi (kusur D-116/5) — ekran modeli KABUL EDILMEDIGI bir dagilimda gosteriyordu (olculdu: T60 11/12, T66 12/12). Surum degisirse BU alan da degismelidir; ikisi ayni profilde durur ki ayri ayri unutulamasin.",
-   "sha256": "1465ed3d288af37e1b3681dd6adabe7ab956a4ab3dc207003bca9ec4fcee489d",
+   "_kabul_kumesi_notu": "T77 · D-115/D-133: uretim modeli BU kume uzerinde kabul edilir (T66 ada geometrisi, n=260); v27 de v30 da burada olculdu. Hakem ekrani `arena_kadraj` kaynagini buradan okur; onceden T60 yolu comms/yks_gui.py'de CIPLAK yaziliydi ve surum v27'ye gecince cevrilmedi (kusur D-116/5) — ekran modeli KABUL EDILMEDIGI bir dagilimda gosteriyordu (olculdu: T60 11/12, T66 12/12). Surum degisirse BU alan da degismelidir; ikisi ayni profilde durur ki ayri ayri unutulamasin.",
+   "sha256": "492e4508ec1ca3b183fa538f880bd4c2c3918533c0b57dd77bd371a2d6b104e9",
    "classes": {
     "0": "traversable",
     "1": "blocked"
    },
    "metrics": {
-    "_kaynak": "REVIEW_LOG D-115 · kabul denetimi; esikler D-107'de SONUC GORULMEDEN yazildi",
-    "_kapsam": "OLCUMLERIN TAMAMI SENTETIKTIR (T66 ada kadraji, n=260). Gercek arena karesi YOKTUR (D-88/D-99) — bu alan SAHA BASARIMI IDDIA ETMEZ.",
-    "_egitim": "epoch 200 (`last.pt`); `best.pt` epoch 43'te dondu ve %21,5 daha kotudur (D-113). Kosu grafikleri best.pt'ye aittir, bu modele DEGIL.",
-    "fitness_epoch200": 0.42048,
+    "_kaynak": "REVIEW_LOG D-133 · kabul denetimi; kabul kurali D-132'de SONUC GORULMEDEN yazildi (esikler D-107)",
+    "_kapsam": "ARENA OLCUMLERININ TAMAMI SENTETIKTIR (T66 ada kadraji, n=260). Gercek arena karesi YOKTUR (D-88/D-99) — bu alan SAHA BASARIMI IDDIA ETMEZ.",
+    "_egitim": "epoch 200/200; en iyi epoch SONUNCUDUR. `best.pt` ile `last.pt` bayt-es DEGILDIR (ayri seri hale) ama 537/537 agirlik tensoru ESITTIR (T85'te olculdu) — D-113 kusuru bu kosuda TEKRARLAMADI. Bu dosya `best.pt`'den kopyalandi.",
+    "fitness_epoch200": 0.41545,
+    "k0_korluk": {
+     "esik": "korluk YOK",
+     "olculen": "figur zemin %8,0 · raw 0/8 · cp 0/8",
+     "sonuc": "GECTI"
+    },
     "k1_rota_uretimi": {
      "esik": ">=230",
-     "olculen": "255/260",
+     "olculen": "258/260",
      "sonuc": "GECTI"
     },
     "k2_moloza_basma_yuzde": {
      "esik": "<=15",
-     "olculen": 7.1,
-     "sonuc": "GECTI"
+     "olculen": 8.53,
+     "sonuc": "GECTI",
+     "not": "22/258"
     },
     "k3_agir_basma_yuzde": {
      "esik": "<=3",
      "olculen": 0.0,
-     "sonuc": "GECTI"
+     "sonuc": "GECTI",
+     "not": "0/258 · D-132'nin 3. sarti: agir basma BELIRMEZ (v29 %0,78 ile buradan dusmustu)"
     },
     "k4_arena_disi_yuzde": {
      "esik": "<=5",
-     "olculen": 0.4,
-     "sonuc": "GECTI"
+     "olculen": 0.39,
+     "sonuc": "GECTI",
+     "not": "1/258"
     },
     "k5_bariyer_kesisimi_px": {
      "esik": "=0",
      "olculen": 0,
      "sonuc": "GECTI",
-     "not": "olcum tanimi D-115'te DEGISTI (n=1 -> n=172)"
+     "not": "0/173 kare · govde yaricapiyla · D-132'nin 2. sarti PAZARLIGA KAPALI idi"
+    },
+    "karar_cevrilmesi": {
+     "olculen": "8/260 (%3,08)",
+     "sonuc": "OLCUM",
+     "not": "KAPI DEGIL. v28 3/260 (%1,15) ile UC KAT daha kararliydi (D-133/D-134). D-132 bu olcutu tasimadi; mimar eksigi D-133'te kendi kaydetti ve sonucu gorduikten sonra kurala EKLEMEDI."
+    },
+    "gercek_kare_gecen": {
+     "olculen": "65/67",
+     "sonuc": "DOGRULANMADI",
+     "not": "🔴 BASARI OLARAK SUNULMAZ (D-133/D-134): gercek karelerde v30 kaplamasi 0,594, etiketler 0,813 — 22 puan az zemin. Kapiyi gecme sebebi DOGRU GORMEK DEGIL AZ ZEMIN GORMEK olabilir; otoparkta hangisinin gercege yakin oldugu OLCULEMEDI."
     },
     "mask_map50": null,
-    "_mask_map50_notu": "v27 icin OLCULMEDI. v4'un 0,6751 degeri buraya TASINMADI — baska modelin sayisini tasimak bayatliktir."
+    "_mask_map50_notu": "v30 icin OLCULMEDI. v27'nin ve v4'un degerleri buraya TASINMADI — baska modelin sayisini tasimak bayatliktir."
    },
    "status": "competition",
-   "_surum_karari": "T76 · kullanici emri · dayanak REVIEW_LOG D-115 (kabul), D-112 (imgsz 512), D-113 (last.pt, best.pt DEGIL)"
+   "_surum_karari": "T85 · KULLANICI KARARI (v30 uretim olsun) · dayanak REVIEW_LOG D-132 (kabul kurali, sonuc gorulmeden), D-133 (dort sart da saglandi), D-112 (imgsz 512). ⚠ D-134'te mimar kendi onerisini duzeltip 'uretim modeli v28 KALIR' demisti; D-133'te de yazildigi gibi iki KABUL EDILEBILIR model arasindaki sevk karari on-kayitlarda cozulmez ve INSANA aittir — kullanici v30'u secti."
+  },
+  "arac_referansi": {
+   "model_id": "dota-yolov8m-obb",
+   "path": "yolov8m-obb.pt",
+   "backend": "pytorch",
+   "imgsz": 1024,
+   "sha256": "0678d79d5593db6e5e4a7de7d9f8bcaa70d5415f5541c8cf8911f3bcdbc13891",
+   "status": "olcek-katman-3",
+   "_neden": "T86: olcek kahininin 3. katmani sahnedeki araclarin OBB kisa kenarindan mpp turetir (D-124/D-126). Bu agirlik KARAR MODELI DEGILDIR — zemin/engel maskesi uretmez, yalnizca OLCEK REFERANSI verir. Ayri profil olmasinin sebebi madde 16: yol ve ozet CIPLAK SABIT olarak yazilmasin (T85'te uretim modeli icin kurulan desen).",
+   "_kapsam": "DOTA-v1 hava fotografi kumesinde egitilmis HAZIR agirliktir; NAVITAS verisiyle egitilmedi/ince ayar YAPILMADI. Sinif adi ile eslesir (`small vehicle`, `large vehicle`) — id ile DEGIL (S1/K-6).",
+   "_guven_carpani": 0.86,
+   "_guven_dayanagi": "D-124: 24 kare · 1880 tespit; kisa kenarin ceyrekler-arasi yayilim / medyan = 0,138 -> 1 - 0,138 = 0,86. Deger `codes/karar_sozlesmesi.py:OLCEK_GUVEN_CARPANI` icindedir; buradaki alan YALNIZ BELGEDIR, kod oradan okur.",
+   "warning": "Bu profil `default_profile` OLAMAZ; algi karari competition profilinden gelir. Saha paketinde YOKTUR (jetson_paket/models) — Jetson'da katman 3 CALISMAZ."
   },
   "rpi_ncnn": {
    "model_id": "navitas-seg-v2-ncnn-512",

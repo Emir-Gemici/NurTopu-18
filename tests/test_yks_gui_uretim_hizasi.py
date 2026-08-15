@@ -337,6 +337,28 @@ class OlcekKapisiTests(unittest.TestCase):
                 self.assertIn("ölçek YOK", bilgi)
                 self.assertIn("C-uzayı UYGULANAMADI", bilgi)
 
+    def test_D90_reddi_olcek_katman3_ile_EZILMEZ(self):
+        """T86: `arena_gercek` ölçeği BİLMİYOR değil, skaler ölçeği REDDEDİYOR.
+
+        D-90 ölçtü: eğik arena bakışında 2,0 m hedef yatayda ~72 px, dikeyde
+        ~38 px. Orada tek bir mpp yoktur. Kâhinin 3. katmanı sahnede araç
+        görürse bir sayı üretebilir ve bu **açık reddi sessizce ezerdi**.
+        Yokluk ile RET aynı şey değildir; katman orada çalıştırılmaz.
+        """
+        with mock.patch.object(yks_gui.YksArayuz, "_arac_modeli") as arac:
+            g = _kos(_gui("arena_gercek"))
+        arac.assert_not_called()
+        bilgi = _sonuc_bilgisi(g)
+        self.assertIn("katman ÇALIŞTIRILMADI", bilgi)
+        self.assertIn("eğik arena bakışında", bilgi)
+
+    def test_KARSIT_KONTROL_yasak_olmayan_kaynakta_katman3_DENENIR(self):
+        """Üstteki kapı, katman 3'ü HER YERDE kapatarak geçilemesin (D-15/K-04)."""
+        with mock.patch.object(yks_gui.YksArayuz, "_arac_modeli",
+                               return_value=None) as arac:
+            _kos(_gui("drone"))
+        arac.assert_called()
+
     def test_kompozit_kaynakta_manifest_olcegi_kullanilir(self):
         olcekler = _gui("kompozit")._kompozit_olcekleri()
         self.assertTrue(olcekler)

@@ -1,9 +1,9 @@
 {
  "_not": "T58: bu manifest ARTIK PAKETIN KENDISINI tarif eder. Onceki surum 2026-08-05 disa aktarim kosusunu tarif ediyordu (pc_modeli v17) oysa pakette v21 ONNX vardi; bayatlik kimseye gorunmedi cunku manifest paket icerigine BAKMIYORDU. `paket_icerigi` her dosyanin sha256'sini tasir - bayatlik artik mekanik olarak yakalanir (REVIEW_LOG D-83).",
  "_t76": "T76: uretim modeli v24 -> v27 (REVIEW_LOG D-115). Cozunurluk 640 -> 512 (D-112: 640'in olculebilir ustunlugu yok, Jetson maliyeti var). Agirlik epoch 200 `last.pt`'dir; `best.pt` epoch 43'te dondu (D-113). ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR (paket defteri tasimaz) ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR.",
- "olusturma_zamani": "2026-08-14T23:52:00",
- "paket_yenilenme": "2026-08-14T23:28:32",
- "pc_modeli": "O:\\navitas\\models\\navitas_seg_v27_best.pt",
+ "olusturma_zamani": "2026-08-15T18:00:24",
+ "paket_yenilenme": "2026-08-15T18:00:24",
+ "pc_modeli": "O:\\navitas\\models\\navitas_seg_v30_best.pt",
  "format": "onnx",
  "fp16": true,
  "imgsz": [
@@ -13,16 +13,16 @@
  "opset": 17,
  "cihaz": "0",
  "onnxler": [
-  "O:\\navitas\\results\\onnx_export_v27_20260814\\navitas_seg_v27_best_512_fp16.onnx"
+  "O:\\navitas\\results\\onnx_export_v30_20260815\\navitas_seg_v30_best_512_fp16.onnx"
  ],
  "int8_kalibrasyon": null,
  "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
  "jetson_komutlari": [
-  "yolo export model=navitas_seg_v27_best_512_fp16.onnx format=engine imgsz=512 half=True"
+  "yolo export model=navitas_seg_v30_best_512_fp16.onnx format=engine imgsz=512 half=True"
  ],
- "asil_model": "navitas_seg_v27_best_512_fp16.onnx",
- "asil_model_pt": "navitas_seg_v27_best.pt",
- "uretim_hakem_ekrani": "comms/yks_gui.py ALGI_MODEL_DOSYA <- config/model_registry.json (etkin profil: competition) — T76'da CIPLAK SABIT KALDIRILDI",
+ "asil_model": "navitas_seg_v30_best_512_fp16.onnx",
+ "asil_model_pt": "navitas_seg_v30_best.pt",
+ "uretim_hakem_ekrani": "comms/yks_gui.py ALGI_MODEL_DOSYA <- config/model_registry.json (etkin profil: competition) — T76'da CIPLAK SABIT KALDIRILDI, T85'te surum degisirken TEK KAYNAK oldugu icin ekran kendiliginden cevrildi",
  "paket_icerigi": [
   {
    "dosya": "navitas_seg_v17_best.pt",
@@ -73,6 +73,17 @@
    "dosya": "navitas_seg_v27_best_512_fp16.onnx",
    "bayt": 54569676,
    "sha256": "ccb07d34fa3658b17ba9f7f68fcef022b61c8f6c1693a5f1abbf5499e8574c42"
+  },
+  {
+   "dosya": "navitas_seg_v30_best.pt",
+   "bayt": 54837724,
+   "sha256": "492e4508ec1ca3b183fa538f880bd4c2c3918533c0b57dd77bd371a2d6b104e9"
+  },
+  {
+   "dosya": "navitas_seg_v30_best_512_fp16.onnx",
+   "bayt": 54569679,
+   "sha256": "091754c9ef752a5ff69e6fb195eb2f86b30c796012524a901cf52c44b84f1599"
   }
- ]
+ ],
+ "_t85": "T85: uretim modeli v27 -> v30 (REVIEW_LOG D-132 kabul kurali, D-133 kabul, kullanici karari). Cozunurluk 512 (D-112). Agirlik `best.pt`; bu kosuda best.pt ile last.pt'nin 537/537 agirlik tensoru esit, D-113 tekrarlamadi. ⚠ D-134'te mimar 'v28 kalir' onerisi yazdi; sevk karari kullanicinindir. ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR."
 }

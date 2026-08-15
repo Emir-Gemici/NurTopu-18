@@ -26,7 +26,15 @@ sys.path.insert(0, str(REPO / "codes"))
 
 from karar_sozlesmesi import rota_olcek_reddi                # noqa: E402
 from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
-                           _preprocess, analyze_path, get_masks)
+                           _preprocess, analyze_path, get_masks,
+                           kare_olcek_kahini)
+
+sys.path.insert(0, str(REPO / "comms"))
+from yks_gui import YksArayuz                                # noqa: E402
+
+# T86: skaler olcegin GECERSIZ oldugu kaynaklar (D-90). Liste hakem
+# ekranindan okunur — ikinci bir kopya bayatlar (madde 16).
+SKALER_OLCEK_GECERSIZ = YksArayuz.ALGI_SKALER_OLCEK_GECERSIZ
 
 CONF = 0.30
 KADRAJ_KOKU = Path(r"O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66")
@@ -78,10 +86,26 @@ def main():
     ap.add_argument("--model", type=Path, default=uretim_pt())
     ap.add_argument("--azami", type=int, default=12, help="kaynak basina kare")
     ap.add_argument("--json", type=Path, default=None)
+    # T86: olcek kahininin 3. katmani. Varsayilan olarak KAYIT DEFTERINDEN
+    # cozulur (profil `arac_referansi`, madde 16); `--araciz` ile kapatilinca
+    # tarama T86 ONCESI davranisi olcer — ONCE/SONRA kiyasi bu bayrakla yapilir.
+    ap.add_argument("--arac-modeli", type=Path, default=None)
+    ap.add_argument("--araciz", action="store_true",
+                    help="katman 3'u KAPAT (T86 oncesi davranis)")
     args = ap.parse_args()
 
     from ultralytics import YOLO
     model = YOLO(str(args.model), task="segment")
+
+    arac_modeli = None
+    if not args.araciz:
+        arac_yolu = args.arac_modeli
+        if arac_yolu is None:
+            defter = json.loads(
+                (REPO / "config" / "model_registry.json").read_text(encoding="utf-8"))
+            arac_yolu = REPO / defter["profiles"]["arac_referansi"]["path"]
+        arac_modeli = YOLO(str(arac_yolu), task="obb")
+        print(f"olcek katman 3: {Path(arac_yolu).name}")
 
     ozet = {}
     print(f"\n{'=' * 76}\nKAYNAK TARAMASI · {args.model.name}\n{'=' * 76}")
@@ -93,21 +117,35 @@ def main():
             continue
         mpp_ile = manifest_mpp(yol if yol.is_dir() else yol.parent)
         sebep = Counter()
+        olcek_kaynak = Counter()
+        paylar = []                       # T86 kapi (f): darbogaz_px - r_gerekli_px
         rota = 0
         kaplamalar = []
         for p in kar:
             img = cv2.imread(str(p))
             if img is None:
                 continue
-            mpp = mpp_ile.get(p.name)
+            beyan = mpp_ile.get(p.name)
             sq, small, ic = _preprocess(img)
             r = model.predict(small, imgsz=INFER_SIZE, conf=CONF, verbose=False)
             mk = _maskeleri_icerige_kirp(get_masks(r, *sq.shape[:2]), ic)
             x0, y0, cw, ch = ic
             kaplamalar.append(float((mk[0][y0:y0+ch, x0:x0+cw] > 0).mean()))
-            _y, _g, wps, _k, red, _o = analyze_path(
+            # T86: olcek artik URETIMIN cozucusunden gelir. Betik kendi
+            # cozumunu YAZMAZ (madde 16) — `kare_olcek_kahini` hem hakem
+            # ekraninin hem saha kodunun cagirdigi fonksiyondur.
+            kahin = kare_olcek_kahini(
+                beyan, None, ic, bgr=img,
+                # D-90 reddi burada da gecerlidir; yasak liste hakem
+                # ekranindan OKUNUR, burada IKINCI kez tanimlanmaz.
+                arac_modeli=(None if ad in SKALER_OLCEK_GECERSIZ
+                             else arac_modeli))
+            mpp = kahin["mpp"]
+            olcek_kaynak[kahin["kaynak"] or "YOK"] += 1
+            _y, _g, wps, _k, red, olcum = analyze_path(
                 mk[0], icerik=ic, engel_mask=mk[1], mpp=mpp,
-                return_clean=True, return_reason=True, return_olcum=True)
+                return_clean=True, return_reason=True, return_olcum=True,
+                olcek_kaynagi=kahin["kaynak"])
             s = red[0] if isinstance(red, tuple) else red
             # ⚠ OLCEK KAPISI AYRI BIR HALKADIR (CONTRACTS SS11.3 Halka 5) ve
             # `analyze_path`in ICINDE degildir. Ilk surumde cagrilmadi ve
@@ -122,6 +160,16 @@ def main():
             if red is None and wps:
                 rota += 1
                 sebep["ROTA VAR"] += 1
+                # 🔴 T86 KAPI (f): olcek baglaninca rota UYDURULMASIN. Pay
+                # negatifse C-uzayi gecmemis demektir; boyle bir kare
+                # ROTA VAR sayilamaz ve asagida AYRICA raporlanir.
+                if olcum and olcum.get("darbogaz_px") is not None \
+                        and olcum.get("r_gerekli_px"):
+                    paylar.append((p.name,
+                                   float(olcum["darbogaz_px"]),
+                                   float(olcum["r_gerekli_px"]),
+                                   float(olcum["darbogaz_px"])
+                                   - float(olcum["r_gerekli_px"])))
             else:
                 sebep[s or "SEBEPSIZ"] += 1
         n = sum(sebep.values())
@@ -131,8 +179,21 @@ def main():
               f"olcek MANIFESTTE {olcekli}/{n}   zemin kaplamasi ~%{100*km:.0f}")
         for s, c in sebep.most_common():
             print(f"      {c:4d}  {s}")
+        if olcek_kaynak:
+            print("      olcek kaynagi: " + " · ".join(
+                f"{k} {c}" for k, c in olcek_kaynak.most_common()))
+        if paylar:
+            eksi = [x for x in paylar if x[3] < 0]
+            en_dar = min(paylar, key=lambda x: x[3])
+            print(f"      DARBOGAZ PAYI (darbogaz - r_gerekli): "
+                  f"en dusuk {en_dar[3]:+.1f} px ({en_dar[0]}: "
+                  f"{en_dar[1]:.1f} - {en_dar[2]:.1f}) · pay<0: {len(eksi)}")
         ozet[ad] = {"n": n, "rota": rota, "olcekli": olcekli,
-                    "kaplama_medyan": km, "sebepler": dict(sebep)}
+                    "kaplama_medyan": km, "sebepler": dict(sebep),
+                    "olcek_kaynaklari": dict(olcek_kaynak),
+                    "paylar": [{"kare": k, "darbogaz_px": d,
+                                "r_gerekli_px": r, "pay_px": pay}
+                               for k, d, r, pay in paylar]}
     print(f"\n{'=' * 76}")
 
     if args.json:

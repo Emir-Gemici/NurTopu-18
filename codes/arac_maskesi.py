@@ -66,6 +66,59 @@ def obb_arac_maskesi(bgr, arac_model, conf: float = 0.25, imgsz: int | None = No
     return maske
 
 
+def arac_kisa_kenarlari(bgr, arac_model, conf: float = 0.25,
+                        imgsz: int | None = None) -> np.ndarray:
+    """DOTA OBB arac kutularinin KISA KENARLARI (px). Arac yoksa bos dizi.
+
+    NEDEN BURADA (T86): olcek kahininin 3. katmani "arac genisligi ~1,80 m"
+    referansiyla mpp uretir (D-124/D-126). Bu olcum `69_arac_referans_olcegi.py`
+    ve `70_gercek_kare_rota_denemesi.py` icinde IKI KEZ kopyalanmisti; uretim
+    yoluna baglanirken UCUNCU kopya cikarmak yerine tek kaynaga alindi
+    (CLAUDE.md madde 16).
+
+    ⚠ Kisa kenar ORIJINAL goruntu pikselindedir. `_preprocess` letterbox
+    tuvaline goruntuyu 1:1 yerlestirir (olcekleme YOK), bu yuzden bu deger
+    dogrudan tuval pikseli olarak kullanilabilir. Tuval olceklenmeye
+    baslarsa BU VARSAYIM COKER.
+    """
+    bos = np.empty(0, dtype=np.float32)
+    if arac_model is None:
+        return bos
+
+    olcu = imgsz if imgsz else max(bgr.shape[:2])
+    sonuc = arac_model.predict(bgr, imgsz=olcu, conf=conf, verbose=False)
+    adlar = getattr(arac_model, "names", {}) or {}
+
+    kenarlar = []
+    for kare in sonuc:
+        obb = getattr(kare, "obb", None)
+        if obb is None or obb.cls is None or getattr(obb, "xywhr", None) is None:
+            continue
+        sinifler = obb.cls.cpu().numpy().astype(int)
+        wh = obb.xywhr.cpu().numpy()[:, 2:4]
+        for sinif, (kg, ky) in zip(sinifler, wh):
+            if adlar.get(int(sinif), str(sinif)) not in ARAC_SINIFLERI:
+                continue
+            kenarlar.append(float(min(kg, ky)))
+    return np.array(kenarlar, dtype=np.float32) if kenarlar else bos
+
+
+def arac_kisa_kenar_medyani(bgr, arac_model, conf: float = 0.25,
+                            imgsz: int | None = None):
+    """Sahnedeki araclarin kisa kenar MEDYANI (px); olculebilir arac yoksa None.
+
+    Medyan secildi cunku tek bir yanlis kutu (kamyon, golge, kismen gorunen
+    arac) ortalamayi kaydirir; D-124 olcumu de medyanla yapildi ve kareler
+    arasi bagil aralik 0,138 olarak KAYITLIDIR — olcek kahininin 0,86 guven
+    carpani tam bu sayidan gelir.
+    """
+    kenarlar = arac_kisa_kenarlari(bgr, arac_model, conf=conf, imgsz=imgsz)
+    if kenarlar.size == 0:
+        return None
+    medyan = float(np.median(kenarlar))
+    return medyan if medyan > 0 else None
+
+
 def obb_modeli_mi(model) -> bool:
     """Verilen modelin OBB gorevi olup olmadigini soyle.
 

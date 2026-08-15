@@ -3038,6 +3038,158 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T86 — Ölçek kâhinini üretim yoluna ve ekrana BAĞLA** · `codes/rpi_inference.py`, `codes/arac_maskesi.py`, `codes/karar_sozlesmesi.py`, `comms/yks_gui.py`, `config/model_registry.json`, `scripts/olcum/72_*`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-126, D-136**
+  - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-137**.
+  - **KAPI (c) — kaynak taraması, ÖNCE/SONRA** (aynı betik, aynı model v30):
+    ```text
+    kaynak          ONCE rota   SONRA rota   ONCE OLCEK_YOK  SONRA OLCEK_YOK
+    kompozit          0/9          0/9              0              0
+    arena_kadraj     12/12        12/12             0              0
+    arena_gercek      0/1          0/1              1              1
+    gemini            0/12         0/12            12              9
+    test              0/12         1/12            12              9
+    val               0/12         0/12            12             11
+    drone             0/12        11/12            12              0   <- ASIL
+    ```
+    `drone`da 12 karenin 12'si ölçeği **araç referansından** türetti. Arena yolu
+    (telemetri/beyan) **değişmedi**.
+  - 🔴 **KAPI (f) — rota UYDURULMADI, ama paylar kıl payı.** Ölçeksiz koşan
+    kareler 1,0–9,8 px'lik "hayali aralık"lardan geçiyordu; C-uzayı koşunca
+    **hiçbiri** o aralıktan geçmiyor:
+    ```text
+    kare                          A: olceksiz    B: kahinle (C-uzayi KOSAR)
+                                   darbogaz      darbogaz  r_ger     pay
+    frame_000005_000000816.jpg        5.00         16.78   16.77   +0.006
+    frame_000006_000000336.jpg        1.00         15.18   15.16   +0.020
+    frame_000010_000001824.jpg        2.00         14.18   14.11   +0.072
+    frame_000000_000000000.jpg        1.00         17.58   16.97   +0.602
+    frame_000016_000000720.jpg        1.00         17.60   14.91   +2.688
+    frame_000001_000000168.jpg        1.00           —       —     GORUS_HATTI_KOPUK
+    PAY < 0 olan kare: 0/11  — C-uzayi TUTUYOR
+    ```
+  - 🔴 **ASIL BULGU — paylar ölçeğin KENDİ belirsizliğinden küçük.** Katman 3
+    "araç gövde genişliği 1,80 m" varsayar; D-124'ün kaydettiği bant
+    **1,70–1,90 m**. `r_gerekli ∝ 1/arac_m` olduğundan 1,70 varsayımı
+    r_gerekli'yi %5,9 büyütür:
+    ```text
+    varsayim     ayakta kalan rota
+    1,90 m            11/11
+    1,80 m            11/11   (kullanilan)
+    1,70 m             4/11   🔴 YEDI ROTA DUSER
+    ```
+    Bu rotalar "güvenli" değil, **"1,80 m varsayımıyla güvenli"**dir. Eşik
+    önerisi YAPILMADI; `R_GEREKLI_M`'e dokunulmadı.
+  - **KAPILAR:**
+    ```text
+    (a) codes/test_rota_sentetik.py       SONUC: 15/15 dogru
+    (b) unittest discover -s tests -q     Ran 544 · OK   (once 526, +18)
+    (c) 72_kaynak_taramasi.py             drone OLCEK_YOK 12 -> 0
+    (d) 65_kabul_denetcisi.py --model v30 K0..K4 D-133 ile BIREBIR
+    (e) yks_gui --kaynak drone            GOZLE DOGRULANDI
+    (f) drone darbogaz paylari            pay<0: 0/11
+    ```
+  - **(d):** `K0 %8.0 · K1 258/260 · K2 22/258 · K3 0/258 · K4 1/258` — D-133 ile
+    birebir. `K5 None px` **T86 gerilemesi DEĞİLDİR**: denetçi aşılmış
+    `63_bariyer_kesisimi.py`'yi çağırıyor, o betik tek karede rotayı
+    `UC_BANT_TEMAS_YOK` ile reddedip "rota yok — kesişim ölçülemez" basıyor.
+    Asıl ölçüm `66_k5_bariyer_populasyon.py`: **0/173 kare · 0 px · GEÇTİ**.
+  - **(e) gözle doğrulama (D-80):** `results/t86/drone.png` — gerçek otopark
+    karesinde sürüş koridoru çizili; `ölçek 0.0648 m/px (ARAÇ REFERANSI ·
+    güven ×0.86 · arac kisa kenari 27.8 px = 1.80 m) · gövde açıklığı 17.0 px ·
+    C-uzayı UYGULANDI · darboğaz 17.6 px @ şerit 2` → **17,6 > 17,0** ✓.
+    Sağ panel `2 · ORTA · güven 0.421 · ölçek ARAÇ REFERANSI ×0.86` (çarpan
+    güvene yansımış); protokol sayaçları **hepsi 0**.
+  - 🔴 **AMELENİN BULDUĞU VE KAPATTIĞI KUSUR:** `arena_gercek` ölçeği
+    "bilmiyorum" diye değil **REDDEDEREK** döndürür (D-90). İlk bağlamamda
+    kâhin orada da çalışıyordu — sahnede araç görülseydi açık ret **sessizce
+    ezilecekti**. `ALGI_SKALER_OLCEK_GECERSIZ` eklendi (tarama betiği aynı
+    listeyi OKUR, ikinci kopya yok) ve iki testle çakıldı: biri katmanın
+    çalışmadığını, karşıt kontrol yasak olmayan kaynakta çalıştığını kanıtlar.
+  - **Yeni testler:** `tests/test_olcek_uretim_baglantisi.py` (15) +
+    `test_yks_gui_uretim_hizasi.py` (2) + `test_model_registry.py` (1).
+  - ⚠ **DOĞRULANAMADI:** **Katman 2 üretimde HİÇ çalışmadı ve çalışamaz** —
+    arena sınırını görüntüden tespit eden fonksiyon YOK; parametreler bağlı,
+    katman yalnız birim testiyle var (D-126'daki boşluk KAPANMADI). · **Katman 3
+    Jetson'a gitmiyor** — ne `arac_maskesi.py` ne OBB ağırlığı pakette var; bu
+    kayıt hakem ekranı + PC ölçümü içindir. · `test`/`gemini`/`val` karelerinde
+    de ölçek üretildi (3+3+1) ve `test/road_233.jpg` bir rota verdi; bunlar yer
+    seviyesi fotoğraflarıdır ve D-90'ın gerekçesi aynıyla geçerlidir — projede
+    **açık ret kayıtlı olmadığı için** listeye eklemedim, karar mimarındır. ·
+    Gerçek karelerde rotanın DOĞRU olup olmadığı ölçülmedi (yer gerçeği yok). ·
+    `ARAC_GENISLIGI_M = 1.80` literatür değeridir, sahnedeki araçlar ölçülmedi. ·
+    Arena ölçümlerinin tamamı sentetiktir (D-88/D-99).
+
+- [STATUS: READY_FOR_REVIEW] **T85 — v30'u üretim zincirine al** · `config/model_registry.json`, `jetson_paket/**`, `JETSON_KILAVUZ.md` ×2, `scripts/olcum/**`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-132, D-133, D-134**
+  - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-136**.
+  - **Ağırlık:** `models/navitas_seg_v30_best.pt` · sha256 `492e4508…` · 54.837.724 B.
+    ⚠ Emrin "best.pt ile last.pt AYNI dosyadır" ifadesi **ölçüldü**: dosyalar
+    bayt-eş **değil** (sha 492e4508 vs 3ca73a90), ama **537/537 ağırlık tensörü
+    eşit**. Karar veren şey ağırlık olduğu için iddia anlamlı düzeyde doğru;
+    **D-113 kusuru tekrarlamadı**.
+  - **ONNX:** kanonik `scripts/export_tensorrt.py` ile üretildi; **FP16 kapısı
+    GEÇTİ** (FP16 tensör 193 · FP32 tensör **0** — FP32 artefaktı yok).
+    sha256 `091754c9…` · `results/onnx_export_v30_20260815/`.
+  - 🔴 **BEŞ UÇ MUTASYONLA KANITLANDI** (D-15/K-04 — geçen kapı boş olabilir):
+    ```text
+    mutasyonsuz taban                  exit=0  OK (19 test)
+    manifest asil_model    -> v27      exit=1  KIRMIZI (1)
+    manifest asil_model_pt -> v27      exit=1  KIRMIZI (1)
+    kilavuz (kok) ASIL     -> v27      exit=1  KIRMIZI (1)
+    kilavuz (paket) ASIL   -> v27      exit=1  KIRMIZI (1)
+    kayit defteri path     -> v27      exit=1  KIRMIZI (7)
+    geri yazma sonrasi                 exit=0  OK   (dosyalar bayt-birebir)
+    ```
+  - **KAPILAR:**
+    ```text
+    (a) codes/test_rota_sentetik.py     SONUC: 15/15 dogru
+    (b) unittest discover -s tests -q   Ran 526 tests · OK  (once 526, DUSMEDI)
+    (c) scripts/saha_kuru_kosu.py       model_yukleme GECTI [35 ms]
+    (d) yks_gui --gorunum canli --kaynak arena_kadraj   GOZLE DOGRULANDI
+    (e) scripts/jetson_paket_hazirla.py 9/9 BAYT-ESIT
+    (f) 67_onnx_karar_denkligi.py       259/260 (%99,6) — OLCUM, KAPI DEGIL
+    ```
+  - **KAPI (f) — ONNX ile .pt karar denkliği:**
+    ```text
+    olculen kare         260      KARAR AYNI  259/260 (%99,6)
+    ikisi de rota uretti  258/260
+    rota IoU  ort 0,9816 · en dusuk 0,0000
+    azami sapma ort 2,4 px (0,184 m) · en kotu 194,0 px (15,156 m)
+    zemin maskesi IoU ort 0,9975 · kaplama farki ort +0,00048
+    UYUSMAZLIK: sa_000131.jpg  pt=serit 2  onnx=serit 1
+    v27 kiyasi (D-116/3): 258/260, iki kare, 28 m
+    ```
+    **Yorum yapılmadı — mimarındır.**
+  - **(d) gözle doğrulama (D-80):** `results/t85/v30_ekran.png` — sağ panel
+    **"AÇIK YOL TESPİTİ — YEREL ALGI (telsiz DEĞİL)"**, karar **2·ORTA**,
+    güven **0,848** + `%85` çubuğu, kaynak satırı `arena_kadraj/sa_000026.jpg`;
+    sol panelde rota **çizili**; günlükte `navitas_seg_v30_best.pt (SHA
+    492e4508)`; protokol sayaçları **hepsi 0** (T81 kaynak ayrımı korunuyor).
+  - ⚠ **KAPSAM GENİŞLETİLDİ (bilerek, emrin 6. maddesi gereği):** üç ölçüm
+    betiği sürüm adını **çıplak sabit** taşıyordu — `67_onnx_karar_denkligi.py`,
+    `68_karar_kararliligi.py`, `70_gercek_kare_rota_denemesi.py`. Argümansız
+    koşan bir kararlılık ölçümü **v27'yi ölçüp sonucu üretim modelinin sayısı
+    diye** kaydederdi. `scripts/olcum/ayarlar.py`'ye fail-closed `uretim_pt()` /
+    `uretim_onnx()` eklendi; dört dosyanın `O:\navitas-local-train` kopyaları
+    bayt-eş yenilendi. Bu beş uçtan **değildir**; mimar isterse ayrılabilir.
+  - 🔴 **DOĞRULANAMADI:** v30'un **kararlılık gerilemesi** (8/260 vs v28 3/260)
+    bu görevde çözülmedi — T85 çevirme görevidir, ölçüm görevi değil; mimarın
+    D-133'teki "T79 inince kalkar" gerekçesi **hâlâ doğrulanmamıştır** (T79
+    D-126'da kapıyı tutturamadı, `[ ]`). · Gerçek karelerdeki **65/67
+    doğrulanmamıştır** (kaplama 0,594 vs etiket 0,813) ve deftere
+    `"DOGRULANMADI"` diye yazıldı. · Arena ölçümlerinin tamamı **sentetiktir**
+    (D-88/D-99). · `mask_map50` v30 için **ölçülmedi**; v27/v4 değerleri
+    **taşınmadı**. · **Jetson'da hiçbir şey koşulmadı** — engine derlenmedi,
+    ONNX denkliği PC'de ölçüldü ve **CUDA sağlayıcısı bulunamadı** uyarısı
+    düştü (CPU'da koşmuş olabilir; Jetson TensorRT FP16 farklı davranabilir).
+  - ⚠ **Saha kuru koşusunda `rota` halkası DÜŞTÜ** (`BELIRSIZ_TEK_KAPI`) —
+    T85 gerilemesi **değildir**: 2026-08-14 (v27) koşusunda da düşüktü
+    (`BELIRSIZ_COKLU`). Belirsizlik sınıfı değişti, halkanın durumu değişmedi.
+  - **Amelenin kendi hatası:** kılavuz çevirme betiğinde değişim sırası
+    yanlıştı; genel v27→v30 değişimi **§0-T76 kayıt bölümünü** ve ağaçtaki
+    "eski asıl, karar kıyası için" satırını da çevirdi (tarihsel kaydı bir an
+    tahrif etti). İki dosyada da elle geri alındı ve denetlendi. **Kapılar bunu
+    yakalamazdı** — kapı yalnız `ASIL` satırına bakar, kayıt bölümüne bakmaz.
+
 - [STATUS: READY_FOR_REVIEW] **T83 — Ölçek kâhini hiyerarşisi (telemetri → arena sınırı → araç referansı)** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-124**
   - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-126**.
   - **KAPI (e) — 67 gerçek karede ölçek kaynağı:**

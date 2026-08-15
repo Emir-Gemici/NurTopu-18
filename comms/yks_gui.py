@@ -42,7 +42,11 @@ if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
 from karar_sozlesmesi import (ZEMIN_KAPLAMA_TAVANI,
                               ZEMIN_MASKESI_SUPHELI_SEBEBI,
-                              olcek_gecerli_mi, rota_guven_reddi,
+                              OLCEK_KAYNAK_ARAC,
+                              OLCEK_KAYNAK_ETIKETI,
+                              OLCEK_KAYNAK_TELEMETRI,
+                              olcek_gecerli_mi, olcek_kaynak_metni,
+                              rota_guven_reddi,
                               rota_olcek_reddi, zemin_kaplamasi)
 
 # ── Renkler (koyu tema) ──────────────────────────────────────────────────────
@@ -111,6 +115,29 @@ def _uretim_modeli_adi():
         raise RuntimeError(
             f"Kayıt defterindeki etkin profil `.pt` ağırlık göstermiyor: {yol!r}")
     return ad
+
+
+def _arac_dedektoru_yolu():
+    """Ölçek katman 3'ün DOTA OBB ağırlığı — `(yol|None, sebep)` (T86).
+
+    Yol ÇIPLAK YAZILMAZ; kayıt defterindeki `arac_referansi` profilinden gelir
+    (madde 16, T85'te üretim modeli için kurulan desen). Burada fail-closed
+    **fırlatmak** yanlış olurdu: katman 3'ün yokluğu bir arıza değil, meşru
+    bir durumdur (arenada araç yoktur, Jetson paketinde bu ağırlık yoktur).
+    Fail-closed olan şey **sessizlik**: sebep döner ve EKRANA yazılır.
+    """
+    import json as _json
+    defter = _PROJE_KOKU / "config" / "model_registry.json"
+    try:
+        veri = _json.loads(defter.read_text(encoding="utf-8"))
+        profil = veri["profiles"]["arac_referansi"]
+        yol = _PROJE_KOKU / profil["path"]
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
+        return None, (f"kayıt defterinde `arac_referansi` profili yok/bozuk "
+                      f"({type(exc).__name__})")
+    if not yol.is_file():
+        return None, f"ağırlık diskte yok: {yol.name}"
+    return yol, f"kayıt defteri profili `arac_referansi` ({yol.name})"
 
 
 def _kabul_kumesi_koku():
@@ -201,6 +228,9 @@ class YksArayuz:
         # canlı algı (v3 modeli ile gerçek çıkarım)
         self.algi_kuyruk = queue.Queue()
         self.algi_model = None
+        # T86: ölçek katman 3 dedektörü — `(model|None, sebep)`; None ise HİÇ
+        # denenmedi demektir. Tembel yüklenir, tek sefer.
+        self._arac_modeli_durumu = None
         self.algi_mesgul = False
         # T29 (D-39): Bu yalnız semptom yönetimidir; asıl sorun D-21'deki v21
         # arena/RescueNet domain boşluğudur. Gemini/val tanısal karşılaştırma için kalır.
@@ -565,6 +595,12 @@ class YksArayuz:
             renk = YESIL
             detay = (f"{self.YEREL_IMZA} · {yer} · "
                      f"güven {y.get('guven_metin')}")
+            # T86: güvenin İÇİNDE ölçek çarpanı var; hakem hangi katmandan
+            # geldiğini kutuda da görmeli (sessiz düşüş yasak, D-126).
+            if y.get("olcek_kaynagi"):
+                detay += (f" · ölçek "
+                          f"{OLCEK_KAYNAK_ETIKETI.get(y['olcek_kaynagi'], y['olcek_kaynagi'])}"
+                          f" ×{y.get('olcek_carpani', 0.0):.2f}")
         else:
             karar = "ROTA YOK"
             renk = KIRMIZI
@@ -1082,6 +1118,19 @@ class YksArayuz:
     ALGI_ARENA_KADRAJ_KOKU = _kabul_kumesi_koku()
     ALGI_ARENA_GERCEK_DOSYA = (
         _PROJE_KOKU / "data" / "arena_referans" / "sartname_s9_arena.png")
+    # 🔴 T86 · D-90: bu kaynaklarda TEK SKALER ÖLÇEK GEÇERSİZDİR — eğik arena
+    # bakışında 2,0 m hedef yatayda ~72 px, dikeyde ~38 px'tir. `_kaynak_olcegi`
+    # orada ölçeği "bilmiyorum" diye değil **REDDEDEREK** döndürür. Ölçek
+    # kâhininin 3. katmanı bu reddi EZMEMELİDİR: sahnede araç görülse bile
+    # oradan tek bir mpp türetmek, D-90'ın ölçtüğü geometrik gerçeği yok
+    # saymaktır. Yokluk ile RET aynı şey değildir.
+    ALGI_SKALER_OLCEK_GECERSIZ = ("arena_gercek",)
+    # T86: ölçek katman 3 dedektörünün SINIF düzeyindeki varsayılanı. `__init__`
+    # ayrıca örnek düzeyinde kurar; sınıf düzeyinde de durmasının sebebi,
+    # worker'ın `__init__` koşmadan kurulan örneklerle de sınanmasıdır
+    # (tests/test_yks_gui_uretim_hizasi.py). Eksik öznitelik, ölçek katmanını
+    # sessizce değil GÖRÜNÜR biçimde kapatmalı.
+    _arac_modeli_durumu = None
 
     def _algi_gorseller(self):
         kok_dizin = Path(__file__).resolve().parents[1]
@@ -1241,6 +1290,33 @@ class YksArayuz:
             return None, f"manifest'te {yol.name} için mpp yok"
         return mpp, "manifest (kontrollü kompozit varsayımı)"
 
+    def _arac_modeli(self):
+        """Ölçek katman 3 dedektörünü GEREKİNCE yükle ve önbellekle (T86).
+
+        Ağırlık 53 MB'dir; `arena_kadraj` gibi manifest ölçeği taşıyan
+        kaynaklarda HİÇ yüklenmez. Yüklenemezse `None` döner ve sebep hakem
+        günlüğüne yazılır — sessizce ölçeksiz kalınmaz.
+        """
+        if self._arac_modeli_durumu is not None:
+            return self._arac_modeli_durumu[0]
+        yol, sebep = _arac_dedektoru_yolu()
+        if yol is None:
+            self._arac_modeli_durumu = (None, sebep)
+            self.algi_kuyruk.put(("log", f"ÖLÇEK katman 3 KAPALI: {sebep}"))
+            return None
+        try:
+            from ultralytics import YOLO
+            model = YOLO(str(yol), task="obb")
+        except Exception as exc:                  # fail-closed: ölçek uydurma
+            self._arac_modeli_durumu = (
+                None, f"yüklenemedi: {type(exc).__name__}: {exc}")
+            self.algi_kuyruk.put(("log",
+                f"ÖLÇEK katman 3 YÜKLENEMEDİ: {type(exc).__name__}: {exc}"))
+            return None
+        self._arac_modeli_durumu = (model, sebep)
+        self.algi_kuyruk.put(("log", f"ÖLÇEK katman 3 hazır — {sebep}"))
+        return model
+
     def gorunum(self, ad):
         self.gorunum_adi = ad
         # T81: kutu GÖRÜNÜMÜN kaynağından beslenir — geçişte yeniden çizilir.
@@ -1318,7 +1394,8 @@ class YksArayuz:
             _sys.path.insert(0, str(kok_dizin / "codes"))
             from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,
                                        _preprocess, _rota_kararini_esikle,
-                                       analyze_path, get_masks)
+                                       analyze_path, get_masks,
+                                       kare_olcek_kahini)
 
             if self.algi_model is None:
                 from ultralytics import YOLO
@@ -1370,14 +1447,41 @@ class YksArayuz:
             #   (1) hakeme SİSTEM KISITI sahne kusuru gibi gösteriliyordu;
             #   (2) C-uzayı ekrana hiç ulaşmıyordu (mpp yok -> r_gerekli_px yok).
             # Üretimin kapısı KOPYALANMAZ, `rota_olcek_reddi` çağrılır.
-            mpp, olcek_notu = None, None
+            beyan, olcek_notu = None, None
             try:
-                mpp, olcek_notu = self._kaynak_olcegi(yol)
+                beyan, olcek_notu = self._kaynak_olcegi(yol)
             except Exception as _oe:      # fail-closed: sessiz varsayılan YOK
                 olcek_notu = f"manifest okunamadı: {type(_oe).__name__}: {_oe}"
                 self.algi_kuyruk.put(("log",
                     f"⚠ ÖLÇEK OKUNAMADI: {olcek_notu} — ölçeksiz sayılıyor, "
                     "rota yayınlanmaz"))
+            # T86: kaynağın kendi beyanı ÖLÇEK KÂHİNİNİN 1. KATMANIDIR. Beyan
+            # yoksa üretimin çözücüsü katman 2/3'ü dener — çözücü KOPYALANMAZ,
+            # `codes/rpi_inference.py` içindeki fonksiyon çağrılır (madde 16).
+            _katman3_yasak = (self.algi_kaynak
+                              in self.ALGI_SKALER_OLCEK_GECERSIZ)
+            kahin = kare_olcek_kahini(
+                beyan, None, icerik, bgr=img,
+                arac_modeli=(None if (olcek_gecerli_mi(beyan) or _katman3_yasak)
+                             else self._arac_modeli()))
+            if _katman3_yasak:
+                # Sessiz düşüş yasak: katmanın neden çalıştırılmadığı yazılır.
+                kahin["denenen"] = [
+                    (k, "bu kaynakta tek skaler ölçek GEÇERSİZ (D-90) — "
+                        "katman ÇALIŞTIRILMADI" if k == OLCEK_KAYNAK_ARAC else n)
+                    for k, n in kahin["denenen"]]
+            mpp = kahin["mpp"]
+            if kahin["kaynak"] == OLCEK_KAYNAK_TELEMETRI and olcek_notu:
+                # Kaynağın KENDİ açıklaması ("kabul kümesi manifesti…") daha
+                # bilgilidir; kâhinin genel metni onun yerini almaz.
+                kahin["detay"] = olcek_notu
+            olcek_beyani = olcek_kaynak_metni(kahin)
+            if kahin["kaynak"] is None and olcek_notu:
+                # ⚠ Kâhinin katman dökümü, kaynağın KENDİ gerekçesinin yerine
+                # GEÇMEZ. `arena_gercek` için ekran D-90'ı anlatır ("eğik arena
+                # bakışında 2,0 m HB yatayda ~72 px…"); bu cümle kaybolursa
+                # hakem sistem kısıtını sahne kusuru sanır. İkisi de yazılır.
+                olcek_beyani = f"{olcek_notu} · {olcek_beyani}"
             olcek_reddi = rota_olcek_reddi(mpp)
 
             # Karar üretimin KENDİ çağrısıdır; `return_clean/reason/olcum`
@@ -1386,7 +1490,8 @@ class YksArayuz:
             (ham_yol, guven, ham_wps, koridor,
              karar_reddi, rota_olcumu) = analyze_path(
                 trav, icerik=icerik, engel_mask=blok, mpp=mpp,
-                return_clean=True, return_reason=True, return_olcum=True)
+                return_clean=True, return_reason=True, return_olcum=True,
+                olcek_kaynagi=kahin["kaynak"])
             # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. `analyze_path`
             # zaten reddettiyse sebebi KORUNUR — olcek eksikligi bir yapilandirma
             # boslugu, `ZEMIN_MASKESI_SUPHELI` ise ALGI ARIZASIDIR; hakeme
@@ -1543,12 +1648,16 @@ class YksArayuz:
                           f" (tavan %{100.0 * ZEMIN_KAPLAMA_TAVANI:.0f})")
             # ÖLÇEK KANITI: hakem "C-uzayı uygulandı mı" sorusunu ekrandan
             # cevaplayabilmeli. Ölçeksiz kip SESSİZ kalamaz (§5.2/3).
+            # T86: ölçeğin HANGİ KATMANDAN geldiği ve güven çarpanı ekranda
+            # yazılıdır — katman 3'ten gelen bir ölçek telemetriyle AYNI
+            # güvende sunulamaz (D-126). Sessiz düşüş yasaktır: ölçek yoksa
+            # hangi katmanın neden düştüğü tek tek yazılır.
             if mpp is not None and rota_olcumu is not None                     and rota_olcumu.get("r_gerekli_px"):
-                bilgi += (f" · ölçek {mpp:.4f} m/px ({olcek_notu})"
+                bilgi += (f" · ölçek {mpp:.4f} m/px ({olcek_beyani})"
                           f" · gövde açıklığı {rota_olcumu['r_gerekli_px']:.1f} px"
                           " · C-uzayı UYGULANDI")
             else:
-                bilgi += (f" · ölçek YOK ({olcek_notu})"
+                bilgi += (f" · ölçek YOK ({olcek_beyani})"
                           " · C-uzayı UYGULANAMADI")
             if rota_olcumu is not None:
                 # Kanıt satırı: güvenin NEREDEN geldiği ekranda görünür olmalı.
@@ -1589,6 +1698,11 @@ class YksArayuz:
                                    "ret": karar_reddi[0] if karar_reddi else None,
                                    "gerekce": karar_reddi[1] if karar_reddi else None,
                                    "kaynak": self.algi_kaynak,
+                                   # T86: ölçeğin KATMANI karar nesnesinde de
+                                   # taşınır — kutu telemetri ile araç
+                                   # referansını aynı güvende göstermesin.
+                                   "olcek_kaynagi": kahin["kaynak"],
+                                   "olcek_carpani": kahin["guven_carpani"],
                                    "kare": yol.name}))
         except Exception as e:
             self.algi_kuyruk.put(
