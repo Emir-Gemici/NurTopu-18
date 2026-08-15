@@ -9199,3 +9199,90 @@ kisaydi.
   2. Kararliliktaki 3 kat iyilesmenin cozunurlukten geldigi KANITLANMADI —
      tek kosu, tek tohum.
   3. Tum olcumler SENTETIKTIR (D-88/D-99, kalici kisit).
+
+---
+
+### D-131 · 🔴 RED · v29 (gercek otopark verisi) — GERCEKTE 0/67 -> 64/67, AMA ARENADA K5 DUSTU: EZBERLEME
+Olcen/karar: Claude 1 (mimar) · 2026-08-15 10:51-11:40 · esikler D-129'da SONUC GORULMEDEN yazildi
+
+**EGITIM.** v29, `karisim_gercek_otopark.yaml` (= v27'nin karisimi + 67 gercek
+otopark karesi, train 12 kat cogaltilmis). Erken durdu: en iyi epoch **106**,
+kosu epoch **166**'da bitti (patience 60). `best.pt` epoch 106'ya denk geliyor;
+**D-113 burada da tekrarlamadi.**
+
+    fitness   v27 0,42048 · v28 0,38580 · v29 0,41014 (en iyi 0,41173)
+
+**SART 3 — GERCEK KARELERDE COK BUYUK ILERLEME:**
+
+    olcut            v27      v29     YER GERCEGI    D-129 sarti
+    kaplama        0,814    0,601           0,813
+    kenar dayanma  0,809    0,446           0,569     <= 0,65   ✓
+    KAPIYI GECEN    0/67    64/67           17/67     >= 8/67   ✓
+
+Gercek otopark karelerinde kapi 0/67'den **64/67**'ye cikti. Egitim verisinin
+ise yaradigi TARTISMASIZDIR; yon dogruydu.
+
+**SART 1 ve 2 — ARENADA BOZULMA:**
+
+    olcut              v27       v28       v29     D-107 esigi
+    K0 figur zemin   %7,8     %15,5      %3,5      > 0
+    K1 rota       255/260   256/260   258/260      >= 230
+    K2 basma        %7,06     %8,20    %10,08      <= %15
+    K3 agir          %0,0      %0,0     %0,78      <= %3
+    K4 arena disi    %0,4     %0,39     %0,78      <= %5
+    K5 bariyer       0 px      0 px      3 px      = 0 px   ✗ DUSTU
+
+**K5 GERCEKTEN DUSTU — olcum aracinin kusuru DEGIL.** Govde yaricapiyla,
+173 karelik populasyonda olculdu:
+
+    v29  GOVDE x BARIYER kesen kare  2/173   toplam 3 px
+         sa_000131  2 px   (darbogaz 14,80 px · r_gerekli 14)
+         sa_000206  1 px   (darbogaz 15,79 px · r_gerekli 14)
+    v27  0/172 · 0 px      v28  0 px
+
+IKA govdesi iki karede bariyere DEGIYOR. D-129'un hem 1. hem 2. sarti
+`K5 = 0 px` diyor.
+
+**AYRICA K3 ILK KEZ SIFIRDAN CIKTI** (%0,0 -> %0,78): agir moloza basma
+belirdi. K2 de %7,06'dan %10,08'e yukseldi.
+
+**VERDIKT: v29 REDDEDILIR.** D-129'un ezberleme sarti ACIKCA bu durumu tarif
+ediyordu ve sonucu gormeden yazilmisti:
+
+    "v29 gercek karelerde iyilesip SENTETIK kabul kumesinde bozulursa
+     (sart 2 duserse) bu EZBERLEMEDIR ve model REDDEDILIR — 'gercekte
+     iyilesti' gerekcesiyle kabul edilmez."
+
+Kural aynen uygulandi. Esik ne gevsetildi ne yeniden yorumlandi.
+
+**ASIRI IHTIYAT NEREDE OLUSTU — OLCULDU.** T66 kabul kumesinde (n=234, yer
+gercegine karsi) uc model de neredeyse ayni ve iyi kalibre:
+
+    model  zemin_model  zemin_YG     fark
+    v27         0,3426    0,3459   -0,0033
+    v28         0,3433    0,3459   -0,0026
+    v29         0,3422    0,3459   -0,0037
+
+Yani v29 ARENADA asiri ihtiyatli DEGIL. Ihtiyati YALNIZCA OTOPARK BENZERI
+goruntude kazandi: orada kaplamasi 0,601, oysa etiketler 0,813 diyor —
+**21 puan** daha az zemin goruyor. Kapiyi 64/67 gecmesinin sebebi de budur;
+gecis, dogru gormekten degil COK AZ ZEMIN GORMEKTEN geliyor. Bu, "kapiyi
+gecti" sonucunun neden tek basina yeterli olmadiginin somut ornegidir.
+
+**SONUC — YON DOGRU, DOZ YANLIS.** 67 gercek kareyi **12 kat** cogaltmak
+karisimin ~%9'unu tek bir otoparktan yapti. Model o alani ogrendi ama
+arenadaki ince bariyer davranisini bozdu. Bir sonraki deney bellidir ve
+dar kapsamlidir: **ayni veri, DAHA DUSUK agirlikla** (or. 4 kat) ve
+K5'in korunup korunmadigina bakilarak.
+
+**URETIM MODELI: v28** (D-130'da kabul edildi). v27 uretimde kalmaya devam
+etmez; v28 zinciri cevrilene kadar mevcut durum korunur.
+
+**DOGRULANAMADI**
+  1. Otopark karelerinde v29'un mu (0,601) yoksa benim etiketlerimin mi
+     (0,813) gercege yakin oldugu OLCULEMEDI — daha iyi yer gercegi yok.
+     Bu yuzden "64/67 gecti" bir BASARI olarak SUNULAMAZ.
+  2. 4 kat agirlikla sonucun ne olacagi olculmedi (siradaki deney).
+  3. K5'in dustugu iki kare marjinal (darbogaz 14,8 ve 15,8 px, r=14);
+     sebebin cogaltma mi egitim gurultusu mu oldugu arastirilmadi.
+  4. Tum arena olcumleri SENTETIKTIR (D-88/D-99, kalici kisit).
