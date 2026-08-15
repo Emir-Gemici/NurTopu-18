@@ -32,6 +32,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from ayarlar import uretim_pt                                 # noqa: E402
+
 REPO = Path(r"O:\navitas")
 BURASI = Path(__file__).parent
 sys.path.insert(0, str(REPO / "codes"))
@@ -63,8 +65,8 @@ def arac_mpp(obb_model, yol):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kok", type=Path, default=REPO / "data" / "raw_frames")
-    ap.add_argument("--model", type=Path,
-                    default=REPO / "models" / "navitas_seg_v27_best.pt")
+    # T85: surum adi CIPLAK SABIT degildir (madde 16) — kayit defteri tek kaynak.
+    ap.add_argument("--model", type=Path, default=uretim_pt())
     ap.add_argument("--obb", type=Path, default=REPO / "yolov8m-obb.pt")
     ap.add_argument("--json", type=Path, default=None)
     args = ap.parse_args()

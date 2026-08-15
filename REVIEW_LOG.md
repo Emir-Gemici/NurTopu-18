@@ -9502,3 +9502,206 @@ D-134).
 **URETIM DURUMU.** Kullanici karari: **v30 uretim modelidir.** Zincir cevirme
 isi (kayit defteri, jetson manifesti, iki kilavuz, ONNX, paket) URETIM KODUDUR
 ve ameleye verilir (madde 7).
+
+### D-136 · URETIM ZINCIRI v27 -> v30 CEVRILDI; bes uc MUTASYONLA dogrulandi, ONNX denkligi 259/260
+Yazan: Claude 2 (amele) · 2026-08-15 · gorev T85 (kullanici emri) · dayanak D-132/D-133/D-134
+
+**NE YAPILDI.** Kullanici karari uyarinca uretim modeli **v30**'a cevrildi.
+Cevrilen uclar: kayit defteri (`config/model_registry.json`), Jetson paket
+kunyesi, HER IKI `JETSON_KILAVUZ.md`, saha paketindeki ikili dosyalar, ONNX
+512 FP16, ve **T85'te fazladan bulunan** uc olcum betigi varsayilani.
+
+---
+
+**1. AGIRLIK — emrin "best.pt ile last.pt AYNI dosyadir" ifadesi OLCULDU.**
+
+    best.pt  54.837.724 B  sha256 492e4508...  epoch=-1
+    last.pt  54.837.724 B  sha256 3ca73a90...  epoch=-1
+    -> DOSYALAR BAYT-ES DEGIL; agirlik tensorleri 537/537 ESIT (torch.equal)
+
+Iki dosya ayri seri hale edildigi icin ozetleri farklidir; **karar veren sey
+olan agirliklar ayni**. Yani emrin iddiasi ANLAMLI duzeyde dogrudur ve D-113
+kusuru (best.pt'nin erken epoch'ta donmasi) bu kosuda TEKRARLAMADI. Uretime
+`best.pt` girdi (`models/navitas_seg_v30_best.pt`, sha256 492e4508...).
+
+**2. ONNX — kanonik betikle uretildi, FP16 kapisi GECTI.**
+
+    scripts/export_tensorrt.py --model models/navitas_seg_v30_best.pt
+      --imgsz 512 --cihaz 0 --cikti results/onnx_export_v30_20260815
+    FP16 tensor 193 · FP32 tensor 0    -> FP32 artefakti YOK
+    sha256 091754c9... · 54.569.679 B
+
+**3. 🔴 BES UCUN BAGLADIGI MUTASYONLA KANITLANDI (D-15/K-04).** Gecen bir
+kapi bos olabilir; her uc TEK TEK v27'ye geri dondurulup kapinin kirmizi
+yandigi gosterildi, sonra dosyalar bayt-birebir geri yazildi:
+
+    mutasyonsuz taban                        exit=0  OK (19 test)
+    manifest asil_model      -> v27          exit=1  KIRMIZI  (1 test)
+    manifest asil_model_pt   -> v27          exit=1  KIRMIZI  (1 test)
+    kilavuz (kok) ASIL       -> v27          exit=1  KIRMIZI  (1 test)
+    kilavuz (paket) ASIL     -> v27          exit=1  KIRMIZI  (1 test)
+    kayit defteri path       -> v27          exit=1  KIRMIZI  (7 test)
+    geri yazma sonrasi                       exit=0  OK
+
+Yani T58 kapisi bes ucu **gercekten** bagliyor; T76'nin ogrettigi
+D-58/D-60/D-116 kusuru bu cevrimde mekanik olarak imkansizdi.
+
+**4. ONNX KARAR DENKLIGI — OLCUM, KAPI DEGIL.**
+
+    olculen kare              : 260
+    KARAR AYNI                : 259/260  (%99,6)
+    ikisi de rota uretti      : 258/260
+    rota ortusmesi (IoU)      : ort 0,9816 · en dusuk 0,0000
+    azami sapma               : ort 2,4 px (0,184 m) · en kotu 194,0 px (15,156 m)
+    zemin maskesi IoU         : ort 0,9975 · en dusuk 0,9874
+    kaplama farki (onnx-pt)   : ort +0,00048 · azami |fark| 0,00462
+    🔴 UYUSMAZLIK: sa_000131.jpg  pt=serit 2  onnx=serit 1
+
+Kiyas icin v27: **258/260, iki kare, 28 m sapma** (D-116/3 olcumu). Sayi
+yukaridadir; **yorumu mimarindir**. Amele hicbir esik onermiyor.
+
+**5. FAZLADAN BULUNAN VE KAPATILAN UC (emirde YOKTU).** Emrin 6. maddesi
+"surum adi hicbir yerde CIPLAK SABIT yazilmasin" diyor. Tarama uc olcum
+betiginde v27'nin ciplak yazildigini gosterdi:
+
+    scripts/olcum/67_onnx_karar_denkligi.py:40-41   PT / ONNX
+    scripts/olcum/68_karar_kararliligi.py:40        MODEL
+    scripts/olcum/70_gercek_kare_rota_denemesi.py   --model varsayilani
+
+Bunlar T58'in bagladigi bes uctan **degildir**, ama tehlike aynidir:
+argumansiz kosan bir kararlilik olcumu **v27'yi olcup sonucu uretim modelinin
+sayisi diye** kaydederdi. `scripts/olcum/ayarlar.py`'ye fail-closed iki
+yardimci eklendi (`uretim_pt`, `uretim_onnx`) ve ucu de tek kaynaga baglandi.
+Dort dosyanin `O:\navitas-local-train` kopyalari bayt-es olarak yenilendi.
+
+⚠ **Bu bir KAPSAM GENISLETMESIDIR ve bilerek yapildi** — T76'nin dersi
+emirde acikca hatirlatilmisti. Mimar geri almak isterse tek commit'te
+ayrilabilir.
+
+---
+
+**KAPILAR**
+
+    (a) codes/test_rota_sentetik.py       SONUC: 15/15 dogru
+    (b) unittest discover -s tests -q     Ran 526 tests · OK   (once: 526, DUSMEDI)
+    (c) scripts/saha_kuru_kosu.py         model_yukleme GECTI  [35 ms]
+    (d) yks_gui --gorunum canli --kaynak arena_kadraj   GOZLE DOGRULANDI
+    (e) scripts/jetson_paket_hazirla.py   9/9 BAYT-ESIT
+    (f) 67_onnx_karar_denkligi.py         259/260 (yukarida)
+
+**(d) gozle dogrulama (D-80):** `results/t85/v30_ekran.png` — sag panel
+baslik **"ACIK YOL TESPITI — YEREL ALGI (telsiz DEGIL)"**, karar **2·ORTA**,
+guven **0,848** ve `%85` cubugu; alt satirda `YEREL ALGI — telsiz DEGIL ·
+arena_kadraj/sa_000026.jpg`. Sol panelde rota **cizili** (sari koridor +
+waypoint zinciri). Gunlukte `navitas_seg_v30_best modeli yuklendi:
+navitas_seg_v30_best.pt (SHA 492e4508)` — ekranin yukledigi agirlik kayit
+defterindekiyle ayni. Protokol sayaclari **hepsi 0** (T81 kaynak ayrimi
+korunuyor: yerel karar protokole sizmiyor).
+
+---
+
+**DOGRULANAMADI / ACIK KALAN**
+
+  1. 🔴 **v30'un kararlilik gerilemesi bu gorevde COZULMEDI.** D-133/D-134:
+     karar cevrilmesi **8/260 (%3,08)**, v28 **3/260 (%1,15)**. T85 bir
+     **cevirme** gorevidir; kararliligi olcmedi veya iyilestirmedi. Mimarin
+     D-133'teki oneri gerekcesi (T79 inince dezavantaj kalkar) **hala
+     dogrulanmamistir** — T79 D-126'da kapiyi TUTTURAMADI (9/260 -> 8/260,
+     hedef <= 4/260) ve `[ ]` birakildi. Yani v30 su an kararlilik
+     dezavantajini **tasiyarak** uretimdedir.
+  2. **Gercek karelerdeki 65/67 hala DOGRULANMAMIS** (D-133/D-134: kaplama
+     0,594 vs etiket 0,813). Kayit defterine `"sonuc": "DOGRULANMADI"`
+     olarak yazildi, basari diye degil.
+  3. **Arena olcumlerinin tamami SENTETIKTIR** (D-88/D-99, kalici kisit).
+  4. **`mask_map50` v30 icin OLCULMEDI**; v27'nin ve v4'un degerleri
+     TASINMADI (bayatlik).
+  5. **Jetson'da hicbir sey kosulmadi.** Engine derlenmedi, FPS olculmedi;
+     ONNX denkligi PC'de ONNX Runtime ile olculdu ve **CUDA saglayicisi
+     bulunamadi** (uyari kayitli) — yani CPU'da kosmus olabilir. Jetson
+     TensorRT FP16 davranisi bundan FARKLI olabilir.
+  6. **Saha kuru kosusunda `rota` halkasi DUSTU** (`durum=BELIRSIZ_TEK_KAPI`).
+     Bu **T85'in getirdigi bir gerileme DEGILDIR**: 2026-08-14 kosusunda
+     (v27) da dusuktu, sebep dizesi `BELIRSIZ_COKLU` idi. Model degisince
+     belirsizlik sinifi degisti, halkanin durumu degismedi.
+
+**AMELENIN KENDI HATASI (kayda geciyor).** Kilavuz cevirme betigimde
+degisim sirasi yanlisti: genel `navitas_seg_v27_* -> v30` degisimi, KAYIT
+bolumu olan §0-T76'nin "bugun derlenecek model ... v27'dir" cumlesini ve
+agactaki "eski asil (14-15 Agu), karar kiyasi icin" satirini da cevirdi.
+Yani bir an icin **tarihsel kaydi tahrif ettim**. Iki dosyada da elle geri
+alindi ve denetlendi; §0-T76 yeniden v27 diyor, agacta v30 ASIL / v27 kiyas
+olarak duruyor. Kapilar bunu YAKALAMAZDI — kapi yalnizca `ASIL` satirina
+bakar, kayit bolumune bakmaz.
+
+---
+
+---
+
+### D-136 · OLCUM · "Digerlerinde yol bulmuyor"un sebebi TEK: 7 kaynagin 5'i OLCEK_YOK'tan dusuyor
+Olcen: Claude 1 (mimar) · 2026-08-15 22:40 · kullanici bildirimi: "arena_kadraj
+dogru calisiyor ama digerleri ile duzgun yol bulmuyor"
+
+**OLCUM** (`72_kaynak_taramasi.py`, yeni · uretim modeli v30 · kaynak listesi
+`yks_gui._algi_gorseller` ile birebir):
+
+    kaynak          rota     olcek manifestte  kaplama   sebep
+    arena_kadraj   12/12          12/12          %31     ROTA VAR
+    kompozit        0/9            9/9           %66     5 GORUS_HATTI_KOPUK
+                                                          4 ZEMIN_MASKESI_SUPHELI
+    arena_gercek    0/1            0/1           %13     OLCEK_YOK
+    gemini          0/12           0/12           %0     OLCEK_YOK
+    test            0/12           0/12           %0     OLCEK_YOK
+    val             0/12           0/12           %0     OLCEK_YOK
+    drone           0/12           0/12          %58     OLCEK_YOK
+
+**BES KAYNAK TEK VE AYNI SEBEPTEN DUSUYOR.** Bu bir MODEL kusuru degil,
+VERININ eksigidir: o goruntulerde irtifa ve FOV bilinmiyor, mpp turetilemiyor,
+govde acikligi piksele cevrilemiyor, C-uzayi kosamiyor.
+
+**🔴 MIMARIN OLCUM HATASI — ILK GECISTE DUZELTILDI.** Betigin ilk surumu olcek
+kapisini (`rota_olcek_reddi`, CONTRACTS SS11.3 Halka 5) CAGIRMIYORDU ve
+`drone` icin "12/12 ROTA VAR" yazdi. Hakem ekrani ayni karede ROTA YOK ·
+OLCEK_YOK diyor. Ekran gorüntüsüyle karsilastirinca fark goruldu ve betik
+duzeltildi. Ders: **uretimin yaptigi kontrolu atlayan bir olcum, uretimi
+olcmez** — bu, D-90/4 ve D-104'te uyardigim hatanin ayni sinifidir.
+
+Ekranin o karede yazdigi (gorsel kanit):
+
+    ROTA YOK · OLCEK_YOK · guven 0.000
+    "Olcek (mpp) turetilemedi (None); irtifa+FOV/odak gerekli. Olceksiz
+     kipte govde acikligi dogrulanamaz, rota yayinlanmaz."
+    darbogaz 1.0 px @ serit 2 · rota serit dagilimi 0/496/0 px
+    C-uzayi UYGULANAMADI
+
+`analyze_path` bir rota HESAPLADI (496 px) ama darbogazi **1 piksel** —
+hayali bir aralik. Ekranin olcek kapisi tam da bunu yayinlamayi engelliyor.
+Kapi DOGRU calisiyor.
+
+**EN ONEMLI BULGU — `drone`DA ZEMIN KAPISI ARTIK ACIK.** v27'de o 67 kare
+kaplama 0,814 ile ZEMIN_MASKESI_SUPHELI'den dusuyordu (D-124). v30'da kaplama
+**%58** ve zemin kapisi GECIYOR; ekran gorüntüsünde bina catisi KIRMIZI
+(v30 catiyi engel gormeyi ogrendi, D-133). Orada rota cikmamasinin **TEK**
+sebebi olcektir.
+
+**VE O OLCEK ZATEN YAZILDI.** T83 (D-126) arac referans kahinini kurdu:
+DOTA OBB kisa kenari = govde genisligi ~1,80 m, 67/67 karede mpp turetilebildi
+(±%6, r_gerekli 14,2-15,9 px). Ama ayni kayitta amele acikca yazmisti:
+*"kahin uretim cagri yerlerine ve EKRANA BAGLANMADI."* Baglanirsa `drone`
+kaynagi GERCEK goruntude GERCEK rota uretir.
+
+**DIGER DORT KAYNAK ICIN BEKLENTI DUSUK TUTULMALI:** `gemini`, `test`, `val`
+kaplamasi **%0** — model o goruntulerde hic zemin maskesi uretmiyor. Bunlar
+yer seviyesinden cekilmis afet/yol fotograflaridir ve listede BILEREK durur
+(kod yorumu: "domain boslugunu hakeme gostermek icin", D-53/D-90). Olcek
+baglansa bile orada rota beklemek yanlistir. `arena_gercek` ise D-99'da
+YAPAY ZEKA URETIMI oldugu tespit edilen figurdur.
+
+**SONUC — SIRADAKI IS TEK VE DAR:** olcek kahinini uretim yoluna ve ekrana
+bagla (T86). Bu, kaptana gercek goruntude rota gosterebilecegimiz TEK
+yoldur ve model egitimi GEREKTIRMEZ.
+
+**DOGRULANAMADI**
+  1. Arac referans olcegi baglaninca `drone` karelerinde rotanin GERCEKTEN
+     mesru cikip cikmayacagi olculmedi (darbogaz 1,0 px'lik kareler C-uzayi
+     uygulaninca REDDEDILEBILIR — ki dogrusu odur).
+  2. `kompozit`teki GORUS_HATTI_KOPUK'un sebebi arastirilmadi.

@@ -28,7 +28,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-from ayarlar import REPO
+from ayarlar import REPO, uretim_pt
 
 BURASI = Path(__file__).parent
 sys.path.insert(0, str(REPO / "codes"))
@@ -37,7 +37,10 @@ from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            _preprocess, analyze_path, get_masks)
 
 KUME = BURASI / "calisma" / "sentetik_arena_kadraj_t66"
-MODEL = REPO / "models" / "navitas_seg_v27_best.pt"
+# T85: surum adi CIPLAK SABIT degildir (madde 16) — kayit defteri tek kaynak.
+# Argumansiz kosan bir kararlilik olcumu ESKI modeli olcup sonucu uretim
+# modelinin sayisi diye kaydediyordu; bu D-58/D-60/D-116 kusur sinifidir.
+MODEL = uretim_pt()
 CONF = 0.30
 
 
