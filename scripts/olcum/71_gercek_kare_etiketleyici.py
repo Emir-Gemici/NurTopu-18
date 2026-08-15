@@ -32,6 +32,7 @@ import numpy as np
 REPO = Path(r"O:\navitas")
 sys.path.insert(0, str(REPO / "codes"))
 from arac_maskesi import ARAC_SINIFLERI                     # noqa: E402
+from karar_sozlesmesi import hb_konumu                      # noqa: E402
 
 # ── Esikler: hepsi bu dosyada TEK YERDE, gorsel denetimle ayarlanir ─────────
 BITKI_KROMA = 12          # LAB kroma sapmasi; gri-dunya notrune gore
@@ -58,7 +59,41 @@ def yerel_varyans(gri, k=9):
     return cv2.blur(g * g, (k, k)) - ort * ort
 
 
-def etiket_onerisi(img, obb_sonuc):
+def hedef_pedi(img, hedef_kutu=None):
+    """(maske|None, kaynak_metni) — H pedinin piksel bolgesi.
+
+    🔴 T87 KUSURU (mimar gozle gordu): kompozit karelere eklenen `H` HEDEF
+    PEDI, BITKI kuralinin kroma esigine takilip **ENGEL** isaretleniyordu.
+    H, IKA'nin ULASMASI GEREKEN hedeftir; onu engel ogretmek IKA'yi hedefe
+    hicbir zaman ulasamaz hale getirir — K-2 sinifi kusur.
+
+    Iki kaynak, sirasiyla:
+      1. MANIFEST `arena.hedef_kutu` — pedin YAPISTIRILDIGI yer; tam ve
+         tartisilmaz. Otorite budur.
+      2. `karar_sozlesmesi.hb_konumu` — T72/D-105 dedektoru. Manifest yoksa.
+    Ikisi de yoksa None doner ve cagirici bunu KAYDA yazar; ped sessizce
+    engel BIRAKILMAZ, durum GORUNUR olur.
+    """
+    h, w = img.shape[:2]
+    if hedef_kutu:
+        x, y, bw, bh = (int(v) for v in hedef_kutu)
+        m = np.zeros((h, w), np.uint8)
+        x0, y0 = max(0, x), max(0, y)
+        x1, y1 = min(w, x + bw), min(h, y + bh)
+        if x1 > x0 and y1 > y0:
+            m[y0:y1, x0:x1] = 1
+            return m, f"manifest hedef_kutu {[x, y, bw, bh]}"
+        return None, f"manifest hedef_kutu KARE DISINDA {[x, y, bw, bh]}"
+    kon = hb_konumu(img)
+    if kon is None:
+        return None, "manifest yok ve HB dedektoru ped BULAMADI"
+    x, y, bw, bh = kon["kutu"]
+    m = np.zeros((h, w), np.uint8)
+    m[max(0, y):min(h, y + bh), max(0, x):min(w, x + bw)] = 1
+    return m, f"hb_konumu (T72/D-105) kutu {[x, y, bw, bh]}"
+
+
+def etiket_onerisi(img, obb_sonuc, hedef_kutu=None):
     """(engel_maskesi, zemin_maskesi, ayrinti) — ikisi ORTUSMEZ, birlesimi TAM."""
     h, w = img.shape[:2]
     lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
@@ -133,16 +168,41 @@ def etiket_onerisi(img, obb_sonuc):
         n_yapi += 1
 
     engel = ((arac | bitki | yapi) > 0).astype(np.uint8)
+
+    # 4) 🔴 HEDEF PEDI (H) ENGEL DEGILDIR — T87.
+    # Bu ADIM SON SIRADA olmali: ped, BITKI (kirmizi kroma) ve YAPI (parlak
+    # duz dikdortgen) kurallarinin IKISINE de takilabilir; hangisi isaretlemis
+    # olursa olsun burada geri alinir.
+    ped, ped_kaynak = hedef_pedi(img, hedef_kutu)
+    ped_engel_px = 0
+    if ped is not None:
+        ped_engel_px = int((engel & ped).sum())
+        engel[ped > 0] = 0
+
     zemin = 1 - engel
     return engel, zemin, {"arac": n_arac, "yapi_bileseni": n_yapi,
                           "engel_orani": float(engel.mean()),
-                          "zemin_orani": float(zemin.mean())}
+                          "zemin_orani": float(zemin.mean()),
+                          "hedef_kaynagi": ped_kaynak,
+                          "hedef_px": int(ped.sum()) if ped is not None else 0,
+                          # Pedin KAC pikseli yanlislikla engel isaretlenmisti:
+                          # kusurun BUYUKLUGU kayda gecer, "duzelttim" demek yetmez.
+                          "hedef_engelden_kurtarilan_px": ped_engel_px}
 
 
-def gorsellestir(img, engel, zemin):
+def gorsellestir(img, engel, zemin, ped=None):
     g = img.copy()
     g[engel > 0] = (0.45 * g[engel > 0] + 0.55 * np.array([0, 0, 255])).astype(np.uint8)
     g[zemin > 0] = (0.65 * g[zemin > 0] + 0.35 * np.array([0, 255, 0])).astype(np.uint8)
+    if ped is not None and ped.any():
+        # T87 gorsel kaniti: pedin KIRMIZI (engel) DEGIL, zemin tonunda ve
+        # MAVI cerceveli oldugu tek bakista gorulmeli (D-80: gorsel kazanir).
+        kon, _ = cv2.findContours(ped, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cv2.drawContours(g, kon, -1, (255, 200, 0), 2)
+        for c in kon:
+            x, y, bw, bh = cv2.boundingRect(c)
+            cv2.putText(g, "H = HEDEF (engel DEGIL)", (max(0, x - 4), max(12, y - 6)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.42, (255, 200, 0), 1, cv2.LINE_AA)
     return g
 
 
@@ -171,18 +231,42 @@ def main():
     ap.add_argument("--azami", type=int, default=0, help="0 = sinirsiz")
     ap.add_argument("--yaz-etiket", action="store_true",
                     help="YOLO-seg .txt yaz (varsayilan: yalniz onizleme)")
+    # T87: kompozit kareler HEDEF PEDI tasir ve manifest onun yerini BILIR.
+    # Manifest verilmezse dedektore dusulur; ikisi de yoksa durum kayda gecer.
+    ap.add_argument("--manifest", type=Path, default=None,
+                    help="kaynak kumenin manifest.json'u (arena.hedef_kutu)")
+    # Bolumu manifestten al: train/val ayrimi UYDURULMAZ, kaynak kumeninkiyle
+    # AYNI kalir — aksi halde ayni kare hem egitimde hem dogrulamada olabilir.
+    ap.add_argument("--bolum-manifestten", action="store_true")
     args = ap.parse_args()
 
     from ultralytics import YOLO
     obb = YOLO(str(args.obb), task="obb")
+
+    hedef_kutulari, bolumler = {}, {}
+    if args.manifest is not None:
+        man = json.loads(args.manifest.read_text(encoding="utf-8"))
+        for o in man.get("ornekler", []):
+            cikti = o.get("cikti")
+            if not cikti:
+                continue
+            ad = Path(cikti).name
+            arena = o.get("arena") or {}
+            if arena.get("hedef_kutu"):
+                hedef_kutulari[ad] = arena["hedef_kutu"]
+            if o.get("bolum"):
+                bolumler[ad] = o["bolum"]
+        print(f"manifest: {len(hedef_kutulari)} hedef kutusu · "
+              f"{len(bolumler)} bolum kaydi")
 
     kareler = sorted(args.kok.rglob("*.jpg"))[::args.adim]
     if args.azami:
         kareler = kareler[:args.azami]
     (args.cikti / "onizleme").mkdir(parents=True, exist_ok=True)
     if args.yaz_etiket:
-        (args.cikti / "images").mkdir(parents=True, exist_ok=True)
-        (args.cikti / "labels").mkdir(parents=True, exist_ok=True)
+        for b in (set(bolumler.values()) or {""}) if args.bolum_manifestten else {""}:
+            (args.cikti / "images" / b).mkdir(parents=True, exist_ok=True)
+            (args.cikti / "labels" / b).mkdir(parents=True, exist_ok=True)
 
     ozet = []
     for p in kareler:
@@ -190,11 +274,16 @@ def main():
         if img is None:
             continue
         r = obb.predict(str(p), conf=ARAC_CONF, verbose=False)[0]
-        engel, zemin, d = etiket_onerisi(img, r)
+        kutu = hedef_kutulari.get(p.name)
+        engel, zemin, d = etiket_onerisi(img, r, hedef_kutu=kutu)
+        ped, _ = hedef_pedi(img, kutu)
         ad = f"{p.parent.name[-8:]}_{p.stem}"
         cv2.imwrite(str(args.cikti / "onizleme" / f"{ad}.jpg"),
-                    gorsellestir(img, engel, zemin))
+                    gorsellestir(img, engel, zemin, ped))
         d["kare"] = ad
+        d["kaynak"] = str(p)
+        bolum = bolumler.get(p.name, "") if args.bolum_manifestten else ""
+        d["bolum"] = bolum or None
         ozet.append(d)
 
         if args.yaz_etiket:
@@ -207,8 +296,27 @@ def main():
                     xy[:, 1] /= h
                     satirlar.append(str(sinif) + " " +
                                     " ".join(f"{v:.6f}" for v in xy.reshape(-1)))
-            cv2.imwrite(str(args.cikti / "images" / f"{ad}.jpg"), img)
-            (args.cikti / "labels" / f"{ad}.txt").write_text(
+            # 🔴 HEDEF PEDI AYRI VE SON POLIGON — T87, OLCUMLE gerekcelendirildi.
+            # Pedi maskeden cikarmak YETMEDI: `poligonlar()` `RETR_EXTERNAL`
+            # kullanir, yani pedin actigi DELIK kaybolur ve ped yeniden engel
+            # poligonunun icinde kalir. Egiticinin gordugu maske olculdugunde
+            # (Ultralytics `overlap_mask: true`, `polygons2masks_overlap`)
+            # pedin 9 karenin 6'sinda HALA engel oldugu goruldu; 2 karede
+            # 1681 pikselin 1681'i.
+            # Cozum: ped KENDI poligonu olarak EN SONA yazilir. Ultralytics
+            # poligonlari ALANA GORE buyukten kucuge basar, kucuk olan KAZANIR;
+            # ped (1681 px) her buyuk engel poligonunu EZER. Pedin uzerindeki
+            # DAHA KUCUK bir enkaz poligonu pedi ezmeye devam eder — dogrusu da
+            # budur, ped uzerindeki gercek engel gorunur kalmalidir.
+            if ped is not None and ped.any():
+                for poly in poligonlar(ped, asgari=1):
+                    xy = poly.astype(np.float32)
+                    xy[:, 0] /= w
+                    xy[:, 1] /= h
+                    satirlar.append("0 " +
+                                    " ".join(f"{v:.6f}" for v in xy.reshape(-1)))
+            cv2.imwrite(str(args.cikti / "images" / bolum / f"{ad}.jpg"), img)
+            (args.cikti / "labels" / bolum / f"{ad}.txt").write_text(
                 "\n".join(satirlar), encoding="utf-8")
 
     zo = np.array([o["zemin_orani"] for o in ozet])
@@ -218,6 +326,19 @@ def main():
     print(f"  ZEMIN orani         medyan {np.median(zo):.3f} · "
           f"min {zo.min():.3f} · maks {zo.max():.3f}")
     print(f"  (v27'nin ayni karelerdeki zemin kaplamasi: ~0,81 — kapi tavani 0,67)")
+    # T87: hedef pedi kusurunun BUYUKLUGU ve nereden cozuldugu GORUNUR olsun.
+    kurtarilan = [o.get("hedef_engelden_kurtarilan_px", 0) for o in ozet]
+    pedli = sum(1 for o in ozet if o.get("hedef_px"))
+    print(f"  HEDEF PEDI (H)      {pedli}/{len(ozet)} karede bulundu · "
+          f"engelden kurtarilan px: toplam {sum(kurtarilan)} · "
+          f"kare basina ort {np.mean(kurtarilan):.0f}")
+    kaynaklar = {}
+    for o in ozet:
+        kaynaklar[str(o.get("hedef_kaynagi")).split(" kutu")[0].split(" hedef_kutu")[0]] = \
+            kaynaklar.get(str(o.get("hedef_kaynagi")).split(" kutu")[0]
+                          .split(" hedef_kutu")[0], 0) + 1
+    for k, c in sorted(kaynaklar.items(), key=lambda x: -x[1]):
+        print(f"                      {c:3d}  {k}")
     print("=" * 62)
     print(f"onizleme -> {args.cikti / 'onizleme'}")
     (args.cikti / "ozet.json").write_text(

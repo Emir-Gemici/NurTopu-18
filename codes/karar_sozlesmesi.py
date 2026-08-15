@@ -1043,6 +1043,128 @@ def olcek_kahini(*, irtifa_m=None, goruntu_genislik_px=None,
             "detay": "hicbir katman olcek uretemedi", "denenen": denenen}
 
 
+# ════════════════════════════════════════════════════════════════════════════
+# T88 · ARENA SINIR DEDEKTORU — olcek kahininin 2. KATMANINI BESLER
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (mimar olctu): `mpp_arena_sinirindan` yazildi ve testleri var, ama
+# uretim cagri yerleri `arena_sinir_px` GECIRMIYORDU — hep None. Katman 2
+# uretimde HIC calisamiyordu.
+#
+# 🔴 UC YAKLASIM DENENDI, IKISI CURUDU (olcum REVIEW_LOG D-138'de):
+#   1. Hough + aralik duzenliligi   -> arena cv 0,55; otopark 0,13-0,32. AYIRMADI.
+#   2. Morfolojik cizgi + aralik CV -> ayni sonuc, olcut YON DEGISTIRIYOR.
+#   3. Oziliski (periyodiklik)      -> arena 0,497; negatiflerin medyani 0,472,
+#                                      maks 0,825. AYIRMADI.
+# AYIRAN sey su oldu: sartname izgarasinin cizgileri kareyi BASTAN SONA kat
+# eder. Cok uzun (>= %45 kisa kenar) ve IKI DIK AILEDE birden gorulen cizgi
+# parcasi, molozun/park cizgisinin uretemedigi bir yapidir:
+#
+#     kaynak         n    min(dikey,yatay) parca   min/medyan/maks
+#     arena_gercek   1                             11 / 11 / 11
+#     drone         14                              0 /  0 /  0
+#     kompozit       9                              0 /  0 /  0
+#     arena_kadraj  13                              0 /  0 /  3
+#     gemini        80                              0 /  0 /  6
+#
+# ⚠ ESIK SAYILARI GORDUKTEN SONRA SECILDI (8): negatif azami 6, pozitif 11.
+# ⚠⚠ POZITIF ORNEK SAYISI **BIR**'dir (D-88/D-99: elimizde tek gercek arena
+# karesi var). Tek ornekle ayarlanmis bir esik GENELLENEMEZ; bu dedektor
+# DOGRULANMIS degil, YALNIZCA elimizdeki tek kare uzerinde OLCULMUSTUR.
+#
+# 🔴 SONUC — T88'IN ASIL SORUSU CEVAPSIZ KALDI. Bu yapi arenayi TANIYOR ama
+# SINIRI YERELLESTIREMIYOR; katman 2'nin ihtiyaci olan sey ikincisidir.
+# Olculen genislik 535 px, izgaranin gercek uzanimi ~840 px — hata
+# EMNIYETSIZ yonde (`r_gerekli_px` %36 KUCUK). D-94 ayni imzayi 260 karede
+# olcmus ve "guvenilir: HAYIR" yazmisti; bagimsiz olcum onu DOGRULUYOR.
+# Bu yuzden asagidaki aciklik fonksiyonu HICBIR uretim yolundan cagrilmaz ve
+# olcek kahini `arena_sinir_px`i almaya devam eder — ama BEYANLA, tespitle
+# DEGIL. Kayit: REVIEW_LOG D-138.
+ARENA_IZGARA_UZUNLUK_ORANI = 0.45   # kisa kenarin orani; cizgi BU kadar uzun
+ARENA_IZGARA_ACI_TOLERANSI = 12.0   # derece; dik/yatay aileye kabul bandi
+ARENA_IZGARA_ASGARI_PARCA = 8       # HER IKI ailede de gereken parca sayisi
+
+
+def arena_izgara_parcalari(bgr):
+    """(dikey_x_listesi, yatay_y_listesi) — cok uzun cizgi PARCALARI.
+
+    Doner: iki liste (parca orta noktalarinin konumu). Cozulemeyen girdide
+    ``([], [])``. Bunlar AYRI CIZGI DEGIL PARCADIR: Hough ayni cizgiyi birden
+    cok parcayla dondurur; sayim bu yuzden "cizgi sayisi" diye okunmamalidir.
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return [], []
+    im = _np.asarray(bgr)
+    if im.ndim != 3 or im.shape[2] != 3 or im.size == 0:
+        return [], []
+    h, w = im.shape[:2]
+    if min(h, w) < 32:
+        return [], []
+    gri = _cv2.GaussianBlur(_cv2.cvtColor(im.astype(_np.uint8),
+                                          _cv2.COLOR_BGR2GRAY), (3, 3), 0)
+    parcalar = _cv2.HoughLinesP(
+        _cv2.Canny(gri, 40, 120), 1, _np.pi / 360, threshold=110,
+        minLineLength=int(ARENA_IZGARA_UZUNLUK_ORANI * min(h, w)), maxLineGap=10)
+    if parcalar is None:
+        return [], []
+    dikey, yatay = [], []
+    for x1, y1, x2, y2 in parcalar.reshape(-1, 4):
+        aci = abs(math.degrees(math.atan2(float(y2 - y1), float(x2 - x1))))
+        aci = min(aci, 180.0 - aci)
+        if abs(aci - 90.0) <= ARENA_IZGARA_ACI_TOLERANSI:
+            dikey.append((float(x1) + float(x2)) / 2.0)
+        elif aci <= ARENA_IZGARA_ACI_TOLERANSI:
+            yatay.append((float(y1) + float(y2)) / 2.0)
+    return sorted(dikey), sorted(yatay)
+
+
+def arena_izgarasi_var_mi(bgr):
+    """Karede sartname IZGARASI var mi? (True/False) — SINIFLANDIRICI.
+
+    🔴 "KARE = ARENA" VARSAYIMI YOKTUR. Iki dik aile de esigi gecmezse False
+    doner; olcek kahini katman 2'yi atlar ve sebep `denenen` dokumune yazilir.
+
+    Bu fonksiyon YALNIZ VARLIK soyler, KONUM SOYLEMEZ. Ayrimi 118 negatif
+    karede olculdu (yukaridaki tablo): negatif azami 6 parca, pozitif 11.
+    ⚠ Pozitif ornek sayisi BIRDIR; esik genellenebilir DEGILDIR.
+    """
+    dikey, yatay = arena_izgara_parcalari(bgr)
+    return (len(dikey) >= ARENA_IZGARA_ASGARI_PARCA
+            and len(yatay) >= ARENA_IZGARA_ASGARI_PARCA)
+
+
+def arena_izgara_acikligi_px(bgr):
+    """Cok uzun DIKEY izgara parcalarinin yatay acikligi (px) — ya da None.
+
+    🔴🔴 BU BIR ARENA SINIRI **DEGILDIR** VE OLCEK KAHINININ 2. KATMANINA
+    BESLENMEZ. T88'de olculdu ve REDDEDILDI:
+
+        gercek arena karesi (1059x634) · izgara acikligi  535 px
+        ayni karede izgaranin gercek yatay uzanimi        ~840 px
+        -> mpp %57 BUYUK, `r_gerekli_px` %36 KUCUK cikar (11,8 px / ~18,5 px)
+
+    Hata YONU EMNIYETSIZDIR: gereken govde acikligi OLDUGUNDAN KUCUK gorunur,
+    yani IKA'nin gecemeyecegi koridor gecilebilir sayilir.
+
+    Sebep D-94'te 260 karede ZATEN olculmustu: molozun izgarayi GIZLEMESI. Sol
+    kenar molozlu 118 karede dx0 medyan 79,0 px, molozsuz 102 karede 4,0 px —
+    20 kat. D-94'un min/maks birlestirmesi gercek karede `[0, 1058]` yani TUM
+    KAREYI verdi (sinir arenayi BUYUTUYORDU); buradaki "cok uzun parca" secimi
+    ters yone kaciyor (sinir arenayi KUCULTUYOR). Iki uc da yanlis.
+
+    Fonksiyon SILINMEDI cunku olcumun kendisi kayittir; ama adi ne olctugunu
+    soyler ve hicbir uretim yolundan CAGRILMAZ.
+    """
+    dikey, yatay = arena_izgara_parcalari(bgr)
+    if (len(dikey) < ARENA_IZGARA_ASGARI_PARCA
+            or len(yatay) < ARENA_IZGARA_ASGARI_PARCA):
+        return None
+    aciklik = float(dikey[-1] - dikey[0])
+    return aciklik if aciklik > 0 else None
+
+
 def olcek_kaynak_metni(kahin):
     """Kahin sozlugunu EKRAN/GUNLUK satirina cevir (T86).
 

@@ -3038,6 +3038,115 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     Zemin L'si bandın **0,8 altında** (149,2 < 150) — kusur değil, kayıtta.
     **Geometri açığı T66'ya taşındı** (Codex kendi bildirdi, gizlemedi).
 
+- [STATUS: READY_FOR_REVIEW] **T87 — `kompozit` kaynağında rota: etiketle, eğit, ölç** · `scripts/olcum/71_*`, `dataset/gercek_kompozit/**`, `dataset/karisim_gercek_kompozit.yaml` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-136**
+  - **✅ VERİ HAZIRLANDI · 2026-08-16 · Claude-2** · kayıt `REVIEW_LOG.md` **D-138**.
+    🔴 **EĞİTİM BAŞLATILMADI** (emrin 4. maddesi).
+  - 🔴 **1. MADDE — H PEDİ KUSURU DÜZELTİLDİ, büyüklüğü ölçüldü:**
+    ```text
+    9 karenin 7'sinde pedin 1681 pikselinin 1681'i ENGEL
+    kalan 2 karede    1404 ve 1680 px ENGEL
+    engelden kurtarilan TOPLAM: 14.849 px (kare basina ort. 1650)
+    ```
+    Konum **manifestten** (`arena.hedef_kutu`, otorite); manifest yoksa
+    `hb_konumu` (T72/D-105); ikisi de yoksa None + kayıt (sessiz engel YOK).
+  - 🔴 **Maskede düzeltmek YETMEDİ — poligon kodlaması geri getirdi:**
+    ```text
+    yalniz maskede duzeltilince   ped ENGEL kalan kare: 6/9 (2'sinde 1681/1681)
+    ped AYRI poligon yazilinca    ped ENGEL kalan kare: 4/9 (kalan 13-41 px)
+    ```
+    Sebep `RETR_EXTERNAL`in delikleri kaybetmesi. Kalan 13–41 px pedin **sağ
+    kenarında tek piksellik şerit** (satır 0-40, sütun 40-40) — rasterleştirme
+    yuvarlaması, emniyetli yönde.
+  - **KÜME:** `dataset/gercek_kompozit/` · train **7 asıl → 4 KAT → 28**
+    görsel/etiket · val **2** (ÇOĞALTILMADI) · bölüm ayrımı kaynak
+    manifestten (sızıntı yok) · poligon sınıfları yalnız 0/1.
+    Yeni karışım `dataset/karisim_gercek_kompozit.yaml`;
+    **`karisim_gercek_otopark.yaml` DEĞİŞMEDİ** (git: fark yok).
+    ```text
+    karisim_gercek_otopark.yaml   train 6819 · val 806
+    karisim_gercek_kompozit.yaml  train 6847 · val 808
+    yeni kumenin payi: 28/6847 = %0,41
+    ```
+    ⚠ **Pay çok küçük**: D-132'de 67 kare 12 katta ~%9 idi. Bu kümenin modeli
+    ölçülebilir biçimde değiştirmesi **beklenmemelidir**; doz kararı mimarındır.
+  - **KAPI (b) — etiketler yer gerçeği olarak** (model YOK, eğiticinin gördüğü
+    maske · `overlap_mask: true` semantiği):
+    ```text
+    ZEMIN KAPISINDAN GECEN : 9/9
+    kaplama medyan 0,618 · min 0,580 · maks 0,667   (tavan 0,67)
+    KUSURSUZ ALGI TAVANI — rota ureten: 1/9 · pay +3,64 px · pay<0: 0
+    ```
+  - 🔴 **ÖLÇÜLEN TAVAN 1/9 — görevin teşhisi KISMEN çürüdü.** Kalan 8 kare
+    `GORUS_HATTI_KOPUK`: *"Başlangıç ve hedef tohumları aynı koridor
+    bileşeninde değil; alt_tohum=13561px, üst_tohum=1781px"*. Bu sahnelerin
+    çoğunda kareyi baştan sona kat eden sürülebilir koridor **fiziksel olarak
+    yoktur**. Algıyı düzeltmek 4 `ZEMIN_MASKESI_SUPHELI` karesini kurtarır ama
+    onlar da aynı yere düşer. Bu küme `kompozit`i 0/9'dan **en fazla 1/9**'a
+    taşıyabilir. D-136'nın açık maddesi (GORUS_HATTI_KOPUK'un sebebi) böylece
+    cevaplandı: sebep **algı değil sahne geometrisi**.
+  - **KAPI (a)** 15/15 · **(c)/(d) gözle (D-80):** `results/t87/h_pedi_kaniti.png`
+    — 6 karede görüntü + **eğiticinin sınıf haritası** yan yana; ped 6/6
+    panelde YEŞİL, çevresi kırmızı olsa bile. Tam kare önizlemeler
+    `dataset/gercek_kompozit/onizleme/`: binalar tamamen kırmızı, araçların
+    büyük çoğunluğu kırmızı, bitki kırmızı, asfalt yeşil.
+  - ⚠ **KAÇAN ARAÇ VAR — ölçüldü:** DOTA OBB (conf 0,10, tam çözünürlük) araç
+    pikselinin **%5,9'u** etikette engel değil; bunun **%3,47**'si poligon sınır
+    yuvarlaması, kalanı conf 0,25 altında kalan araçlar. Gözle de görüldü
+    (beyaz/gümüş birkaç araç zemin kalmış). `ARAC_CONF` **değiştirilmedi** —
+    eşik ayarı veri kalitesi kararıdır, mimarındır.
+  - ⚠ **Ölçüm hatam kayda geçti:** kapı (b)'yi önce class-0 poligonlarını tek
+    başına rasterleştirerek ölçtüm (kaplama 0,785 · 1/9 geçti) — bu etiketi
+    değil **poligon kodlamasını** ölçüyordu. Doğrusu Ultralytics'in alan sıralı
+    üst üste basmasıdır. D-136'daki mimarın dersiyle aynı sınıf.
+
+- [ ] **T88 — Arena sınırı dedektörü: ölçek kâhininin 2. katmanını BESLE** · `codes/karar_sozlesmesi.py`, `tests/**` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-94, D-137**
+  - 🔴 **KAPI TUTMADI, ZORLANMADI · 2026-08-16 · Claude-2** · kayıt **D-138**.
+  - **Görevin teşhisi doğru:** `mpp_arena_sinirindan` yazılı ama üretim çağrı
+    yerleri `arena_sinir_px` geçmiyordu.
+  - **DÖRT yaklaşım ölçüldü, ÜÇÜ ayırmadı** (negatif kontrol: drone, kompozit,
+    arena_kadraj, gemini — toplam 118 kare):
+    ```text
+    1 Hough + aralik CV     arena 0,55 · arena_kadraj 0,14-0,32   AYIRMIYOR
+    2 Morfolojik + CV       arena 0,52/0,55 · negatif 0,13-1,29   AYIRMIYOR
+    3 Oziliski (periyot)    arena 0,497 · gemini medyan 0,472     AYIRMIYOR
+    4 COK UZUN cizgi, IKI DIK AILEDE — min(dikey,yatay) parca:
+        arena_gercek  n=  1     11 / 11 / 11
+        drone         n= 14      0 /  0 /  0
+        kompozit      n=  9      0 /  0 /  0
+        arena_kadraj  n= 13      0 /  0 /  3
+        gemini        n= 80      0 /  0 /  6      -> AYIRIYOR (esik 8)
+    ```
+  - 🔴 **AMA AYIRMAK YETMİYOR — katman 2 KONUM ister, sınıf değil:**
+    ```text
+    gercek arena karesi (1059x634) · olculen izgara acikligi   535 px
+    izgaranin gercek yatay uzanimi                            ~840 px
+    -> mpp %57 BUYUK · r_gerekli 11,8 px (olmasi gereken ~18,5) = %36 KUCUK
+    ```
+    Hata **EMNİYETSİZ** yönde: geçilemeyecek koridor geçilebilir sayılır.
+    Bu yüzden dedektör üretim ölçek yoluna **BAĞLANMADI**; bir test bu
+    bağlantısızlığı kilitler.
+  - **D-94 bunu 260 karede ZATEN ölçmüştü** ("izgara cizgileri · guvenilir:
+    **HAYIR**"; gerçek karede `[0, 1058]` = tüm kare). Kök neden orada yazılı:
+    **moloz izgarayı gizliyor** (molozlu 118 karede dx0 medyan 79,0 px,
+    molozsuz 102 karede 4,0 px — 20 kat). Bağımsız ölçüm onu **doğruluyor**;
+    benim seçimim ters uca kaçıyor (sınırı KÜÇÜLTÜYOR).
+  - **KAPILAR:**
+    ```text
+    (a) codes/test_rota_sentetik.py    SONUC: 15/15 dogru
+    (b) unittest discover -s tests -q  Ran 553 · OK  (once 544, +9)
+    (c) 72_kaynak_taramasi.py          arena_gercek  1 OLCEK_YOK  -> TUTMADI
+    (d) sinir tespit edilemeyen kare   SAGLANDI (sessiz varsayim YOK)
+    ```
+  - **(d):** düz zemin, gürültü, yalnız-yatay-çizgili (yol şeridi) ve bozuk
+    girdide dedektör False/None döner; kâhin katman 2'yi **atlar**, sebep
+    `denenen` dökümüne yazılır, `rota_olcek_reddi` **OLCEK_YOK** ile reddeder.
+    `tests/test_arena_sinir_dedektoru.py` (9 test).
+  - **Emrin 4. maddesi uygulandı:** `arena_gercek` karesi üzerinde eğitim
+    **yapılmadı ve önerilmiyor** (K0 ölçütünün baktığı karedir).
+  - ⚠ **ÖNERİ (mimarın kararı):** katman 2 dedektörle değil **BEYANLA**
+    beslenebilir — sınır piksel genişliği hakem/operatör tarafından bildirilir.
+    Ayrım eşiği **tek pozitif örnekle** seçildi (n=1, D-88/D-99); genellenemez.
+
 - [STATUS: READY_FOR_REVIEW] **T86 — Ölçek kâhinini üretim yoluna ve ekrana BAĞLA** · `codes/rpi_inference.py`, `codes/arac_maskesi.py`, `codes/karar_sozlesmesi.py`, `comms/yks_gui.py`, `config/model_registry.json`, `scripts/olcum/72_*`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-126, D-136**
   - **✅ UYGULANDI · 2026-08-15 · Claude-2** · kayıt `REVIEW_LOG.md` **D-137**.
   - **KAPI (c) — kaynak taraması, ÖNCE/SONRA** (aynı betik, aynı model v30):

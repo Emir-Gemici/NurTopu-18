@@ -9637,7 +9637,10 @@ bakar, kayit bolumune bakmaz.
 
 ---
 
-### D-136 · OLCUM · "Digerlerinde yol bulmuyor"un sebebi TEK: 7 kaynagin 5'i OLCEK_YOK'tan dusuyor
+### D-139 · OLCUM · "Digerlerinde yol bulmuyor"un sebebi TEK: 7 kaynagin 5'i OLCEK_YOK'tan dusuyor
+⚠ NUMARA: bu kayit ONCE `D-136` diye yazildi ve ameleninkiyle CAKISTI (altinci cakisma).
+Mimar KENDI kaydini tasidi; amelenin kaydina DOKUNULMADI. Diger kayitlarda
+"D-136" diye anilan MIMAR kaydi BUDUR (kaynak taramasi, OLCEK_YOK bulgusu).
 Olcen: Claude 1 (mimar) · 2026-08-15 22:40 · kullanici bildirimi: "arena_kadraj
 dogru calisiyor ama digerleri ile duzgun yol bulmuyor"
 
@@ -10060,7 +10063,9 @@ YAPILMADI ve ONERILMIYOR — o kare K0 olcutunun baktigi karedir.
 
 ---
 
-### D-138 · 🔴 KUSUR + OLCUM · `seed` EGITIMI HIC ETKILEMIYOR: v31, v30'un BIT-BIT AYNISI
+### D-140 · 🔴 KUSUR + OLCUM · `seed` EGITIMI HIC ETKILEMIYOR: v31, v30'un BIT-BIT AYNISI
+⚠ NUMARA: bu kayit ONCE `D-138` diye yazildi ve ameleninkiyle CAKISTI (yedinci cakisma).
+Mimar KENDI kaydini tasidi; amelenin D-138'i (T87+T88) yerinde durur.
 Olcen: Claude 1 (mimar) · 2026-08-16 00:24 · D-135'in on-kayitli deneyi
 
 **DENEY.** D-135'te v31 = v30'un AYNI recetesi, tek fark `seed 0 -> 1` diye
