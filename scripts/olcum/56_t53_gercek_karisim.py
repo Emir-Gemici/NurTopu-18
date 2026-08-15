@@ -63,6 +63,11 @@ def main():
                     help="fine-tune karisim yaml'i (varsayilan: karisim_arena_gercek)")
     ap.add_argument("--epoch", type=int, default=RECETE["epochs"])
     ap.add_argument("--batch", type=int, default=RECETE["batch"])
+    # D-135: her karar bugune kadar TEK KOSUYLA verildi; K2/K5/kararlilik
+    # farklarinin ne kadari TOHUM GURULTUSU, olculmedi. Ayni receteyi farkli
+    # tohumla kosmak o gurultu tabanini verir.
+    ap.add_argument("--tohum", type=int, default=None,
+                    help="Egitim tohumu (varsayilan recetedeki 0)")
     ap.add_argument("--devam", action="store_true",
                     help="Kesinti sonrasi ayni kosuya devam et")
     # D-108: egitim GPU'ya DEGIL VERI HATTINA bagli — GPU %42 bosta bekliyor ve
@@ -97,6 +102,8 @@ def main():
 
     kw = dict(RECETE)
     kw.update(epochs=args.epoch, batch=args.batch)
+    if args.tohum is not None:
+        kw["seed"] = args.tohum
     if args.workers is not None:
         kw["workers"] = args.workers
     if args.cache is not None:

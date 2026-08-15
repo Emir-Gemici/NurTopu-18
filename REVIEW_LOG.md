@@ -9457,3 +9457,48 @@ v30 KABUL EDILEBILIR bir modeldir (D-133 gecerlidir). Degisen sey, iki KABUL
 EDILEBILIR model arasindaki SEVK KARARIDIR — ki on-kayitlarda cevabi yoktur
 ve D-133'te de "insana aittir" diye yazilmistir. Mimar yalnizca kendi
 onerisini duzeltmektedir.
+
+---
+
+### D-135 · ONCEDEN KAYIT · v31 = v30'un AYNI RECETESI, TOHUM 1 — olcut gurultusunu olcmek icin
+Yazan: Claude 1 (mimar) · 2026-08-15 18:45 · kullanici karari: "v30 uretim olsun"
+
+**NEDEN — BUGUNE KADARKI HER KARAR TEK KOSUYLA VERILDI.** v27 vs v28 vs v29
+vs v30 kiyaslarinin tamami tek egitim kosusuna dayaniyor. Su farklarin ne
+kadarinin GERCEK, ne kadarinin TOHUM GURULTUSU oldugunu HIC olcmedik:
+
+    K2 basma      %7,06 · %8,20 · %10,08 · %8,53
+    K5 bariyer     0 px ·  0 px ·   3 px ·  0 px
+    kararlilik   9/260 · 3/260 ·    —   · 8/260
+
+Ozellikle iki karar dogrudan bu sayilara dayandi:
+  · D-130: v28 KABUL — cunku kararlilik 9/260 -> 3/260 (uc kat).
+  · D-131: v29 RED   — cunku K5 0 px -> 3 px (iki kare, toplam 3 px).
+Ikisi de TEK kosunun tek tohumundan gelen sayilardir. 3 px'lik bir farkin
+tohum gurultusu olup olmadigini BILMIYORUZ.
+
+**DENEY.** v31 = v30 ile HER SEYDE ayni (ayni veri, ayni recete, ayni
+cogaltma, ayni cozunurluk); tek fark `seed = 0 -> 1`. Kosucuya `--tohum`
+argumani eklendi.
+
+**BU BIR MODEL ADAYI DEGILDIR.** v31 uretime alinmaz, alinmayi da hedeflemez.
+Ciktisi tek bir sayidir: **ayni receteyi iki kez kosunca olcutler ne kadar
+oynuyor.**
+
+**SONUCUN NASIL OKUNACAGI — SONUC GORULMEDEN yaziliyor:**
+  · |v31 - v30| farki, iki model arasindaki farktan BUYUKSE, o olcut o
+    mertebede AYIRT EDICI DEGILDIR ve gecmiste ona dayanarak verilmis
+    kararlar YENIDEN DEGERLENDIRILIR.
+  · Ozellikle: v31'in K5'i 0 px'ten farkli cikarsa, D-131'in v29'u 3 px
+    yuzunden reddetmesi GURULTUYE dayanmis olabilir — bu durumda D-131
+    duzeltilir ve v29 yeniden olculur.
+  · v31'in kararlilik cevrilmesi v30'un 8/260'indan belirgin sapiyorsa,
+    D-130'un v28'i 3/260 ile kabul etmesi de gurultuye dayanmis olabilir.
+
+**BU KAYIT, GECMIS KARARLARI SAVUNMAK ICIN DEGIL SINAMAK ICIN yazildi.**
+Sonuc aleyhime cikarsa duzeltmeyi yazarim; bu gece uc kez oldu (D-127, D-128,
+D-134).
+
+**URETIM DURUMU.** Kullanici karari: **v30 uretim modelidir.** Zincir cevirme
+isi (kayit defteri, jetson manifesti, iki kilavuz, ONNX, paket) URETIM KODUDUR
+ve ameleye verilir (madde 7).
