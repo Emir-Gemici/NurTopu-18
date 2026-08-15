@@ -10129,3 +10129,54 @@ dataloader tohumlamasi duzeltilirse islevsel hale gelir.
      olmayacagi denenmedi.
   2. Dataloader generator'unu degistirmenin belirlenimciligi bozup bozmayacagi
      olculmedi.
+
+---
+
+### D-141 · ONCEDEN KAYIT · v32 (gercek veri 2 KAT) kabul kurali — SONUC GORULMEDEN yazildi
+Yazan: Claude 1 (mimar) · 2026-08-16 01:20 · kullanici sorusu: "bu gece egitim yok mu"
+
+**NEDEN.** Uretimde OLCULMUS bir gerileme tasiyoruz:
+
+    karar cevrilmesi (D-122 olcumu, Gauss sigma=2/255, 3 tekrar, n=260)
+      v28 (gercek veri YOK)     3/260  (%1,15)
+      v30 (gercek veri 4 kat)   8/260  (%3,08)    <- URETIMDE
+
+v30 `drone` kaynaginda 0/12 -> 11/12 getirdi (D-137); bedeli koridor
+seciminin kararliligi oldu. Doz kaldiracinin ISLEDIGI olculdu: 12 kat K5'i
+kirdi (D-131), 4 kat kirmadi (D-133). **ARA DOZ HIC DENENMEDI.**
+
+**SORU:** dozu yariya indirmek kararliligi geri alip gercek kare yetenegini
+korur mu? Korursa v32 hem v28'i hem v30'u DOMINE eder.
+
+**TEK DEGISKEN.** v32 = v30 ile her seyde ayni; cogaltma 4 kat -> 2 kat
+(train 224 -> 112). Ozgun kare sayisi AYNI (56). Val BIREBIR AYNI, hic
+cogaltilmadi. Yeni dizin ve yeni yaml kullanildi; `gercek_otopark/` ve
+`karisim_gercek_otopark.yaml` DEGISMEDI — v30 yeniden uretilebilir kalir.
+
+⚠ **D-140 SAYESINDE SONUC ATFEDILEBILIR.** `seed` egitimi hic etkilemiyor;
+ayni recete ayni modeli veriyor (537/537 tensor ozdes). Dolayisiyla
+v30 <-> v32 farki TOHUM GURULTUSU OLAMAZ, yalnizca DOZ farkidir. Bu deney,
+D-140 olmasaydi yorumlanamazdi.
+
+**KABUL KURALI — VARSAYILAN "v30 KALIR"** (v30 kullanici karariyla uretimde):
+v32 ancak sunlarin HEPSI saglanirsa uretime alinir:
+  1. D-107'nin ALTI olcutunu de gecer (K0..K5), ve
+  2. 🔴 **K5 = 0 px** (govde yaricapiyla, 173 karelik populasyon) — PAZARLIGA
+     KAPALI, v29 tam buradan dusmustu, ve
+  3. **K3 agir basma = %0,0** (v27/v28/v30 sifir verdi; sifirdan cikmak
+     gerilemedir), ve
+  4. **KARARLILIK <= 5/260** — v30'un 8'i ile v28'in 3'unun ORTASI. Bu
+     deneyin AMACI budur; saglanmazsa doz kaldiraci kararliligi
+     kurtarmiyor demektir, ve
+  5. **`drone` kaynaginda rota >= 8/12** (v30: 11/12). Kararlilik ugruna
+     gercek kare yetenegini kaybetmek KABUL DEGILDIR.
+
+Bes sartin BIRI bile dusrse **v30 uretimde kalir** ve v32 yalnizca doz-
+kararlilik egrisini olcen bir KAYIT olur.
+
+⚠ **BEKLENTI DURUST TUTULUYOR.** Bu bir kesif degil, bilinen bir kaldiracin
+ara noktasidir. Getirisi ORTA: tutarsa uretim modeli iyilesir, tutmazsa
+"doz kararliligi aciklamiyor" bilgisini aliriz ve kararsizligin kaynagini
+BASKA yerde (T79: beraberlik bozma + histerezis) aramaya odaklaniriz.
+
+⚠ K-3: fitness karar olcutu DEGILDIR.

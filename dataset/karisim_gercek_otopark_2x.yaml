@@ -1,0 +1,39 @@
+# KARISIM v5 — v30'un AYNISI, tek fark GERCEK KARE DOZU 4 KAT -> 2 KAT
+#
+# NEDEN (REVIEW_LOG D-141, on-kayit):
+# Uretimde OLCULMUS bir gerileme tasiyoruz. Karar cevrilmesi (D-122 olcumu,
+# Gauss sigma=2/255, 3 tekrar, n=260):
+#
+#     v28 (gercek veri YOK)   3/260  (%1,15)
+#     v30 (gercek veri 4 kat) 8/260  (%3,08)
+#
+# v30, `drone` kaynaginda 0/12 -> 11/12 getirdi (D-137) ama bedeli kararlilik
+# oldu. Doz kaldiracinin ISLEDIGI olculmustur: 12 kat K5'i kirdi (D-131),
+# 4 kat kirmadi (D-133). Ara doz HIC denenmedi.
+#
+# ⚠ D-140 SAYESINDE SONUC ATFEDILEBILIR: `seed` egitimi hic etkilemiyor;
+# ayni recete ayni modeli veriyor. Dolayisiyla v30 <-> v32 farki TOHUM
+# GURULTUSU OLAMAZ, yalnizca DOZ farkidir.
+#
+# TEK DEGISKEN: `gercek_otopark_2x` (train 112) yerine `gercek_otopark`
+# (train 224). Ozgun kare sayisi AYNI (56); degisen yalnizca cogaltma.
+# Val tarafi (11 kare) BIREBIR AYNI ve HIC cogaltilmadi.
+#
+# Diger uc bilesen `karisim_gercek_otopark.yaml` ile BIREBIR AYNIDIR;
+# o dosyaya DOKUNULMADI (v30/v31 onu kullaniyor, yeniden uretilebilir kalir).
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+  - O:\navitas\dataset\gercek_otopark_2x\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_gercek\images\val
+  - O:\navitas\dataset\gercek_otopark_2x\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked
