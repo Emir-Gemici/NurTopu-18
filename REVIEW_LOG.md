@@ -9884,3 +9884,243 @@ korunuyor).
      Agirlik yoksa ilgili testler kirmizi yanar, sessizce atlanmaz.
 
 ---
+
+### D-138 · T87 + T88 · KOMPOZIT ETIKETLENDI (H PEDI DUZELTILDI) · ARENA SINIRI YINE YERELLESTIRILEMEDI
+Yazan: Claude 2 (amele) · 2026-08-16 · gorevler T87 ve T88 (kullanici emri) · dayanak D-90, D-94, D-131/D-133, D-136, D-137
+
+---
+## T87 — `kompozit` kaynagi icin etiket kumesi
+
+**1. HEDEF PEDI (H) KUSURU — BUYUKLUGU OLCULDU.** Etiketleyici `H` pedini
+ENGEL isaretliyordu. Kusur her karede TAM pedi kapsiyordu:
+
+    9 karenin 7'sinde  pedin 1681 pikselinin 1681'i ENGEL
+    kalan 2 karede     1404 ve 1680 px ENGEL
+    TOPLAM engelden kurtarilan: 14.849 px (kare basina ort. 1650)
+
+Ped konumu MANIFESTTEN alinir (`arena.hedef_kutu`, otorite); manifest yoksa
+`karar_sozlesmesi.hb_konumu` (T72/D-105). Ikisi de yoksa None doner ve durum
+kayda yazilir — ped SESSIZCE engel birakilmaz.
+
+**🔴 MASKEDE DUZELTMEK YETMEDI — KODLAMA GERI GETIRDI.** Pedi `engel`
+maskesinden cikardiktan sonra egiticinin GORDUGU maskeyi olctum
+(Ultralytics `overlap_mask: true` · `polygons2masks_overlap`):
+
+    duzeltme oncesi (yalniz maske)   ped ENGEL kalan kare: 6/9  (2'sinde 1681/1681)
+    ped AYRI poligon olarak yazildi  ped ENGEL kalan kare: 4/9  (kalan 13-41 px)
+
+Sebep: `poligonlar()` `RETR_EXTERNAL` kullanir; pedin actigi DELIK kaybolur
+ve ped yeniden engel poligonunun icinde kalir. Cozum: ped KENDI poligonu
+olarak EN SONA yazilir — Ultralytics poligonlari alana gore buyukten kucuge
+basar, KUCUK olan kazanir; ped (1681 px) her buyuk engel poligonunu ezer.
+Kalan 13-41 px pedin SAG KENARINDA TEK PIKSELLIK seritdir (olculdu: satir
+0-40, sutun 40-40), rasterlestirme yuvarlamasidir ve EMNIYETLI yondedir.
+
+**2. KUME.** `dataset/gercek_kompozit/`
+
+    train  7 asil -> 4 KAT -> 28 gorsel / 28 etiket
+    val    2 gorsel / 2 etiket   (COGALTILMADI)
+    bolum ayrimi kaynak manifestten alindi — sizinti yok
+    poligon siniflari: yalniz 0/1 (uretim sozlesmesi 2 siniflidir)
+
+Doz gerekcesi D-131/D-133: 12 kat v29'u bozdu, 4 kat v30'u bozmadi.
+Yeni karisim `dataset/karisim_gercek_kompozit.yaml`;
+**`karisim_gercek_otopark.yaml`a DOKUNULMADI** (git: degisiklik yok).
+
+    karisim_gercek_otopark.yaml   train 6819 · val 806
+    karisim_gercek_kompozit.yaml  train 6847 · val 808
+    yeni kumenin payi: 28/6847 = %0,41
+
+⚠ **PAY COK KUCUK.** D-132'nin doz mantiginda 67 kare 12 katta karisimin
+~%9'uydu; burada 9 kare 4 katta **%0,41**. Bu kumenin modeli olculebilir
+sekilde degistirmesi BEKLENMEMELIDIR. Doz karari mimarindir; ben emirdeki
+4 kati uyguladim.
+
+**3. KAPI (b) — ETIKETLER YER GERCEGI OLARAK** (model YOK, egiticinin
+gordugu maske):
+
+    kare (9)     kaplama  kenar   ZEMIN KAPISI   rota
+    medyan         0,618  —       9/9 GECTI      1/9
+    min/maks  0,580/0,667                        pay +3,64 px · pay<0: 0
+
+⚠ **ILK IKI OLCUMUM YANLISTI, kayda geciyor.** Once class-0 poligonlarini tek
+basina rasterlestirdim -> kaplama 0,785, kapi 1/9 GECTI cikti. `RETR_EXTERNAL`
+delikleri kaybettigi icin bu ETIKETI degil POLIGON KODLAMASINI olcuyordu.
+Sonra `zemin AND NOT engel` dedim; o da eksikti. Dogrusu Ultralytics'in alan
+sirali ust uste basmasidir. Ders D-136'daki mimarin dersiyle AYNI SINIF:
+uretimin/egiticinin yaptigi islemi atlayan bir olcum, onu olcmez.
+
+**🔴 OLCULEN TAVAN — 1/9.** Etiketler KUSURSUZ ALGI sayilsa bile rota yalniz
+**1/9** karede cikiyor. Kalan 8 kare `GORUS_HATTI_KOPUK` ile duser:
+
+    "Baslangic ve hedef tohumlari ayni koridor bileseninde degil;
+     alt_tohum=13561px, ust_tohum=1781px"
+    "Koridor uclari bagli, ancak dogrulanmis waypoint zinciri kurulamadi"
+
+Yani bu sahnelerin cogunda kareyi bastan sona kat eden surulebilir koridor
+**FIZIKSEL OLARAK YOKTUR**. Gorevin teshisi ("sorun kapida degil, alginin
+tutarsizliginda") KISMEN dogrudur: algiyi duzeltmek 4 `ZEMIN_MASKESI_SUPHELI`
+karesini kurtarir, ama onlar da `GORUS_HATTI_KOPUK`a duser. Bu kume
+`kompozit` kaynagini 0/9'dan **en fazla 1/9**'a tasiyabilir. D-136'nin acik
+maddesi ("kompozit'teki GORUS_HATTI_KOPUK'un sebebi arastirilmadi") boylece
+cevaplanmis olur: sebep algi degil SAHNE GEOMETRISIDIR.
+
+**KAPI (c) ve (d) — GOZLE (D-80).** `results/t87/h_pedi_kaniti.png`:
+6 karede goruntu + EGITICININ SINIF HARITASI yan yana; ped 6/6 panelde
+YESIL (zemin), cevresi kirmizi (engel) olsa bile. Tam kare onizlemeler
+`dataset/gercek_kompozit/onizleme/`: binalar TAMAMEN kirmizi, araclarin
+buyuk cogunlugu kirmizi, agac/bitki kirmizi, asfalt yesil.
+
+⚠ **KACAN ARAC VAR — OLCULDU.** DOTA OBB (conf 0,10, tam cozunurluk) arac
+pikselinin **%5,9'u** etikette engel DEGILDIR. Bunun **%3,47**'si poligon
+sinir yuvarlamasidir (ham maske vs poligon geri rasterlestirmesi, ±yonlu),
+kalani conf 0,25 esiginin ALTINDA kalan araclardir. Gozle de goruldu: acik
+renkli (beyaz/gumus) birkac arac zemin kalmis. `ARAC_CONF` DEGISTIRILMEDI —
+esik ayari veri kalitesi karari, mimarindir.
+
+---
+## T88 — Arena siniri: DEDEKTOR YAZILDI, KAPI TUTMADI, `[ ]` BIRAKILDI
+
+**GOREVIN TESHISI DOGRU.** `mpp_arena_sinirindan` yazili ama uretim cagri
+yerleri `arena_sinir_px` gecmiyordu. D-137'de de ayni sey yazilmisti.
+
+**DORT YAKLASIM OLCULDU; UCU AYIRMADI.** Negatif kontrol: drone, kompozit,
+arena_kadraj, gemini (toplam 118 kare).
+
+    1. Hough + aralik duzenliligi (CV)
+       arena cv 0,55 · arena_kadraj 0,14-0,32 · drone 0,32-0,84  -> AYIRMIYOR
+       (olcut YON DEGISTIRIYOR: arena bazi negatiflerden DAHA DUZENSIZ)
+    2. Morfolojik cizgi cikarimi + aralik CV
+       arena 0,52/0,55 · negatifler 0,13-1,29                    -> AYIRMIYOR
+    3. Oziliski (periyodiklik), guc_min
+       arena 0,497 · drone 0,371-0,540 · kompozit 0,530-0,760
+       gemini (n=320) medyan 0,472 maks 0,825                    -> AYIRMIYOR
+    4. COK UZUN (>= %45 kisa kenar) cizgi parcasi, IKI DIK AILEDE birden
+       min(dikey,yatay) parca sayisi:
+           arena_gercek   n=  1    11 / 11 / 11
+           drone          n= 14     0 /  0 /  0
+           kompozit       n=  9     0 /  0 /  0
+           arena_kadraj   n= 13     0 /  0 /  3
+           gemini         n= 80     0 /  0 /  6
+       -> AYIRIYOR (esik 8; negatif azami 6, pozitif 11)
+
+**🔴 AMA AYIRMAK YETMIYOR — KATMAN 2 KONUM ISTER, SINIF DEGIL.**
+
+    gercek arena karesi (1059x634) · olculen izgara acikligi   535 px
+    izgaranin gercek yatay uzanimi                            ~840 px
+    -> mpp %57 BUYUK · r_gerekli_px 11,8 px yerine ~18,5 px olmali (%36 KUCUK)
+
+Hata **EMNIYETSIZ** yondedir: gereken govde acikligi oldugundan kucuk gorunur,
+IKA'nin gecemeyecegi koridor gecilebilir sayilir. Bu yuzden dedektor uretim
+olcek yoluna **BAGLANMADI** ve bir test bu baglantisizligi KILITLER.
+
+**D-94 BUNU ZATEN OLCMUSTU — BAGIMSIZ OLCUM ONU DOGRULUYOR.** T65, izgara
+imzasini 260 karede olcmus ve "guvenilir: **HAYIR**" yazmisti; gercek karede
+min/maks birlestirme `[0, 1058]` yani TUM KAREYI vermisti (sinir arenayi
+BUYUTUYOR). Kok neden orada da yazili: **moloz izgarayi GIZLIYOR** — sol kenar
+molozlu 118 karede dx0 medyan 79,0 px, molozsuz 102 karede 4,0 px (20 kat).
+Benim "cok uzun parca" secimim ters uca kaciyor (sinir arenayi KUCULTUYOR).
+Iki uc da yanlis; sorun secimde degil, molozun izgarayi ortmesindedir.
+
+**KAPILAR**
+
+    (a) codes/test_rota_sentetik.py       SONUC: 15/15 dogru
+    (b) unittest discover -s tests -q     Ran 553 · OK   (once 544, +9)
+    (c) 72_kaynak_taramasi.py             `arena_gercek` HALA OLCEK_YOK -> TUTMADI
+    (d) sinir tespit edilemeyen kare      SAGLANDI (asagida)
+
+**(d) SESSIZ VARSAYIM YOK.** Duz zemin, gurultu, yalniz-yatay-cizgili (yol
+seridi/park cizgisi) ve bozuk girdide dedektor False/None doner; kahin
+katman 2'yi ATLAR, `denenen` dokumune sebep yazilir ve `rota_olcek_reddi`
+`OLCEK_YOK` ile REDDEDER. Dort negatif vaka + kapi reddi testle civili
+(`tests/test_arena_sinir_dedektoru.py`, 9 test).
+
+**GOREVIN 4. MADDESI UYGULANDI:** `arena_gercek` karesi uzerinde EGITIM
+YAPILMADI ve ONERILMIYOR — o kare K0 olcutunun baktigi karedir.
+
+---
+**DOGRULANAMADI / ACIK KALAN**
+
+  1. 🔴 **KATMAN 2 HALA BESLENMIYOR** ve bu gorevle beslenemedi. Onerilen yol
+     dedektor DEGIL **BEYAN** olabilir: telemetri (irtifa+FOV) zaten katman
+     1'dir; arena icin sinir piksel genisligi hakem/operator tarafindan
+     BEYAN EDILEBILIR. Bu bir mimari karardir.
+  2. **Ayrim esigi TEK pozitif ornekle secildi** (n=1; D-88/D-99 kalici
+     kisiti). Genellenebilirligi OLCULEMEZ.
+  3. **~840 px "gercek uzanim" degeri gorsel okumadir**, bagimsiz olculmedi;
+     D-94'un 730-950 px araligiyla tutarlidir ama bir olcum kaydi degildir.
+  4. T87 kumesi **egitilmedi** (emir). Kumenin modeli degistirip
+     degistirmedigi OLCULMEDI.
+  5. T87 kumesindeki 9 kare `gercek_otopark` kumesiyle **AYNI otoparktan**;
+     ezberleme riski D-124'te kayitli ve bu gorevde azalmadi.
+  6. `kompozit` kaynaginda tavan 1/9 olculdu; **modelle** ne cikacagi
+     egitilmeden bilinemez.
+
+---
+
+---
+
+### D-138 · 🔴 KUSUR + OLCUM · `seed` EGITIMI HIC ETKILEMIYOR: v31, v30'un BIT-BIT AYNISI
+Olcen: Claude 1 (mimar) · 2026-08-16 00:24 · D-135'in on-kayitli deneyi
+
+**DENEY.** D-135'te v31 = v30'un AYNI recetesi, tek fark `seed 0 -> 1` diye
+kayda gecirilmisti. Amac: bugune kadarki her kararin TEK KOSUYA dayandigini
+ve K2/K5/kararlilik farklarinin ne kadarinin TOHUM GURULTUSU oldugunu
+bilmedigimizi olcmekti.
+
+**SONUC: TOHUM HICBIR SEYI DEGISTIRMIYOR.**
+
+    args.yaml         v30: seed: 0    ·   v31: seed: 1      (ikisi de yazili)
+    train_args.seed   v30: 0          ·   v31: 1            (kontrol noktasinda)
+    results.csv       200 epoch'un HEPSINDE metrikler BIREBIR AYNI
+                      (fitness farki epoch 1/5/20/50/100/150/200'de 0,00000)
+    agirlik tensorleri 537/537 AYNI · en buyuk mutlak fark 0,0
+
+Iki model BIT-BIT OZDESTIR. Farkli olan tek sey `date` damgasidir.
+
+**KOK NEDEN — ULTRALYTICS KAYNAGINDA, SABIT TOHUM:**
+`ultralytics/data/build.py::build_dataloader`
+
+    generator = torch.Generator()
+    generator.manual_seed(6148914691236517205 + RANK)   # <- SABIT
+    ...
+    worker_init_fn=seed_worker, generator=generator
+
+Veri yukleyicinin KARISTIRMA sirasi ve iscilerin ARTIRMA rastgeleligi bu
+SABIT sayidan turer; `args.seed`ten DEGIL. `init_seeds(seed)` yalnizca ana
+surecteki genel RNG'leri ayarlar — o da AGIRLIK ILKLEMESINI etkilerdi, ama
+biz modeli ON-EGITIMDEN yukluyoruz (`v15_on10sinif/best.pt`), yani ilkleme
+yok. Sonuc: on-egitimli baslangic + `deterministic=True` ile egitim
+BIT-BIT BELIRLENIMCIDIR.
+
+**IKI SONUCU VAR, BIRI IYI BIRI KOTU:**
+
+  ✔ **IYI — GECMIS KIYASLAR PIYANGO DEGIL.** Ayni recete iki kez kosulunca
+    ayni modeli veriyor. Dolayisiyla:
+      · v29 (12 kat) ile v30 (4 kat) arasindaki K5 farki (3 px vs 0 px)
+        TOHUM GURULTUSU DEGILDIR; cogaltma oraninin TEKRARLANABILIR sonucudur.
+      · v28 ile v30 arasindaki kararlilik farki (3/260 vs 8/260) de oyle.
+    D-135'te "3 px gurultu olabilir, D-131 duzeltilebilir" diye yazdigim
+    endise **CURUDU**: D-131'in v29'u reddi saglam zeminde duruyor.
+
+  ✘ **KOTU — EGITIMIN VARYANSINI HALA OLCEMIYORUZ.** Tekrarlanabilirlik ile
+    varyans ayni sey degildir. `seed` dugmesi calismadigi icin "ayni veriyle
+    egitseydik ne kadar farkli cikardi" sorusu ACIK KALIYOR. Olcmek icin
+    ya dataloader generator'unu degistirmek (Ultralytics'e yama) ya da
+    baska bir degiskeni (veri sirasi, on-egitim) oynatmak gerekir.
+
+**MALIYET — MIMARIN HATASI.** v31 6,4 saat GPU harcadi ve v30'un birebir
+kopyasini uretti. `--tohum` argumanini eklerken Ultralytics'in dataloader
+tohumlamasini ONCEDEN OKUMADIM; okusaydim deney hic kosulmazdi. Ders:
+bir dugmenin ETKI ETTIGI once KUCUK bir kosuyla dogrulanir, 200 epoch'la
+degil.
+
+**ARGUMANIN DURUMU.** `56_t53_gercek_karisim.py --tohum` su an ATILDIR
+(etkisiz). Kaldirilmiyor ama etkisiz oldugu belgeleniyor; ileride
+dataloader tohumlamasi duzeltilirse islevsel hale gelir.
+
+**DOGRULANAMADI**
+  1. Rastgele ILKLENMIS (on-egitimsiz) bir kosuda `seed`in etkili olup
+     olmayacagi denenmedi.
+  2. Dataloader generator'unu degistirmenin belirlenimciligi bozup bozmayacagi
+     olculmedi.
