@@ -10252,3 +10252,105 @@ girer.
      olculmedi; ama 2 kat zaten esigi tutturamadigi icin 1 kat'in drone
      yetenegini korumasi beklenmez.
   3. Tum arena olcumleri SENTETIKTIR (D-88/D-99, kalici kisit).
+
+---
+
+### D-143 · 🔴 IKI HIPOTEZ DE CURUDU · Kararsizlik SERIT BERABERLIGI DEGIL, SERIT ENVANTERI · Olcek korumasi SACILIM DEGIL, SAYIM
+Olcen: Claude 1 (mimar) · 2026-08-16 09:15-10:05 · D-142'nin iki acik maddesi
+
+## 1. KARARSIZLIGIN MEKANIZMASI — "SERIT BERABERLIGI" HIPOTEZI CURUDU
+
+**HIPOTEZ (D-142'de acik birakilmisti).** Gercek doku maskeyi koridor
+kenarlarinda gurultulu yapar; seritlerin darbogazlari birbirine yaklasir;
+secim iki neredeyse esit aday arasinda yapilinca gurultu tercihi cevirir.
+Beklenen: v30/v32'nin SERIT PAYI (en iyi serit - ikinci serit) v28'inkinden
+kucuk olmali.
+
+**OLCUM 1 — pay dagilimi** (`73_serit_payi.py`, n=260, ayni kadraj kumesi):
+
+    model          pay medyan  pay %25  pay<2px  pay<1px  COK SERITLI
+    v28 (0 kat)         18,41     8,97        2        0       21/260
+    v32 (2 kat)         13,00     4,41        4        1       23/260
+    v30 (4 kat)         14,80     4,00        2        0       21/260
+
+Alt ceyrek MONOTON daraliyor (8,97 -> 4,41 -> 4,00) — bu kadari hipotezi
+destekler. Ama medyan MONOTON DEGIL (v32 < v30) ve `pay<2px` sayisi da degil.
+Daha onemlisi: 260 karenin yalnizca **21-23'u COK SERITLI**.
+
+**OLCUM 2 — CAPRAZ KONTROL, VE HIPOTEZ BURADA COKTU.** Kararlilik kosusunda
+CEVRILEN karelerin serit envanteri tek tek bakildi:
+
+    v30 · cevrilen 8 kare
+      sa_000076  (None, None, 73,0)   -> TEK serit
+      sa_000078  (None, 20,0, None)   -> TEK serit
+      sa_000172  (25,0, None, None)   -> TEK serit
+      sa_000258  (None, None, 20,0)   -> TEK serit
+      sa_000131  pay 19,77 · sa_000192 pay 4,00 · sa_000215 pay 5,61
+      sa_000238  pay 4,00
+      -> COK SERITLI 4/8 · TEK SERITLI 4/8
+
+    v32 · cevrilen 6 kare  -> COK SERITLI 5/6 · TEK SERITLI 1/6
+      (paylar: 1,00 · 4,41 · 0,60 · 16,18 · — · 23,54)
+
+**TEK SERITLI BIR KARE, SERITLER ARASI BERABERLIKTEN CEVRILEMEZ** — ortada
+tek aday vardir. v30'da cevrilmelerin YARISI boyledir. Ayrica cok seritli
+olanlarin bir kismi COK GENIS payla ceviriliyor (19,77 · 16,18 · 23,54).
+
+**DOGRU MEKANIZMA — SERIT ENVANTERI OYNUYOR.** Gurultu, mevcut adaylar
+arasinda tercih degistirmiyor; **hangi koridorlarin VAR OLDUGUNU**
+degistiriyor. Kil payi bagli bir koridor gurultuyle kopuyor ya da bagliyor,
+`serit_min_px` uclusunun None/deger deseni degisiyor ve karar onunla beraber
+degisiyor.
+
+🔴 **T79'UN TASARIMI BUNA GORE DEGISMELIDIR.** "Gurultu tabani altindaki
+beraberliklerde deterministik secim" kurali cevrilmelerin EN COK YARISINA
+dokunur; digerlerinde ortada kiyaslanacak ikinci aday YOKTUR. Gerekli olan
+sey **koridor VARLIGININ kararliligidir** (baglantinin esik civarinda
+titremesini sonumlemek), beraberlik bozma DEGIL. Bir amele bu olcum olmadan
+T79'u yazsaydi cevrilmelerin yarisini hic gormezdi.
+
+## 2. OLCEK KAHINI KORUMASI — "SACILIM" OLCUTU CURUDU, "SAYIM" AYIRIYOR
+
+**HIPOTEZ.** Tepeden bakista butun araclar ayni uzakliktadir, kisa kenarlari
+birbirine yakin cikar; egik bakista sacilir. Beklenen: IQR/medyan orani
+tepeden KUCUK, egik BUYUK.
+
+**OLCUM** (`74_olcek_kahini_gecerlilik.py`, kaynak basina 20 kare):
+
+    kaynak                   kare  >=3 arac  IQR/med medyan  IQR/med maks
+    drone (TEPEDEN)            20        20       0,084          0,117
+    kompozit (TEPEDEN)          9         9       0,077          0,104
+    gemini (YER SEVIYESI)      20         1       0,101          0,101
+    val (YER SEVIYESI)         20         0    olcut uretilemedi
+    test (KARISIK)             20         0    olcut uretilemedi
+
+**SACILIM AYIRMIYOR:** gemini'nin nitelikli tek karesi 0,101 ve bu deger
+drone'un bandinin (0,084-0,117) TAM ICINDE. Esik cekilemez.
+
+**AMA SAYIM AYIRIYOR — VE URETIMDE BOYLE BIR KORUMA YOK:**
+
+    >= 3 arac bulunan kare oranı
+      drone     20/20    kompozit  9/9
+      gemini     1/20    val       0/20    test  0/20
+
+`karar_sozlesmesi.mpp_arac_referansindan(kisa_kenar_px)` TEK BIR SKALER alir
+ve **asgari arac sayisi sarti YOKTUR**; cagirici medyani hesaplar, tek aracla
+bile "medyan" uretir. D-142'de gozlenen sizinti (gemini 3 karede olcek,
+1 karede ROTA) tam buradan gelir.
+
+**ONERI — OLCULMUS ESIK:** arac referans katmani ancak sahnede **en az 3**
+olculebilir arac varsa devreye girsin. Bu esik `drone`u 20/20 korur,
+yer-seviyesi kumelerinin 39/40'ini eler. Sayi arttikca medyan da saglamlasir,
+yani koruma AYNI ZAMANDA olcegin kendisini iyilestirir.
+
+⚠ **YONELIM DAGILIMI DA AYIRIYOR AMA ONERILMIYOR:** dairesel sd drone 0,813 ·
+kompozit 0,819 · gemini 0,271. Ayrim keskin, ama ILKESEL DEGIL: tepeden
+cekilmis bir OTOYOL goruntusunde araclar da hizali olurdu ve olcut yanlis
+elerdi. Bu kumeleri ayirmasi tesadufidir; kayda gecer, kural yapilmaz.
+
+**DOGRULANAMADI**
+  1. Serit envanterinin gurultuyle nasil degistigi (hangi piksel/baglanti)
+     GORSEL olarak incelenmedi — sonraki adim odur.
+  2. "En az 3 arac" esiginin GERCEK arenada ne yapacagi olculemez: arenada
+     arac YOKTUR, katman 3 orada zaten devreye girmez.
+  3. Tum olcumler SENTETIK kadraj + eldeki gercek kareler uzerindedir.
