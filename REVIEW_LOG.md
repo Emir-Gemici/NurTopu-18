@@ -10604,3 +10604,186 @@ bu kayit yalniz olcumdur.
      karelerinde envanterin ne yapacagi OLCULMEDI (elimizde gercek arena
      goruntusu yok — bkz. insan gorevleri).
   5. `road` etiket kusurunun gercek hakem kosusunda puana etkisi olculmedi.
+
+---
+
+### D-146 · UYGULANDI (MIMAR YAZDI) · T90 koridor etiketi TEK KAYNAGA baglandi — BAGIMSIZ DENETIM T90'IN ACTIGI FAIL-DANGEROUS ACIGI YAKALADI
+Yazan/olcen: Claude 1 (mimar) · 2026-08-17 · gorev T90 · esiklere DOKUNULMADI
+⚠ **MADDE 7 ISTISNASI (SUREKLI):** kullanici 2026-08-17'de "ameleler geri geldi
+diyene kadar amelelerin yapmasi gereken isi sen yapacaksin" dedi. Ayni madde
+geregi **kendi kodumu kendim onaylamadim**: AYRI bir denetim kosuldu, DORT bulgu
+getirdi, dordu de islendi. **Birincisi benim ACTIGIM bir gerilemedir.**
+
+**YAPILAN.** `koridor_adaylari()` kendi serit numarasini uretmeyi BIRAKTI.
+Kaldirilan iki sema: `n_kapi == 3` iken soldan saga SIRA NUMARASI (`i + 1`) ve
+aksi halde kapiyi SERBEST ALAN BBOX'ina gore uce bolme. Tek kaynak artik
+`karar_sozlesmesi.serit_no()`dur (CONTRACTS SS8). Etiket, YAYINLANAN
+`kapi_merkez_x` ile AYNI tamsayidan turer — float `cx` kullanilsaydi disaridan
+bir denetim, icerik genisligi 3'e tam bolunmeyen karelerde etiketi yeniden
+uretemezdi. TANI AMACLI `serit_yayilimi` alani eklendi (karara GIRMEZ).
+
+**ON KAYIT (kapilar KOSULMADAN once yazildi).**
+  1. Tautolojik olmayan asil olcut: D-145 yeniden etiketlemeyi SIMULE etmis ve
+     "uretim seridi gecilebilir aday kumesinde" icin **192 -> 230** ongormustu.
+  2. Yetenek kaybi olmayacak: `rota_bul` ACIK sayisi >= 34/260.
+  3. `etiket != serit_no(kapi_merkez_x)` == 0/470. (TAUTOLOJIK; yalnizca
+     baglantiyi dogrular, dogrulugu DEGIL.)
+  4. Genel kapilar dusmeyecek.
+  5. B <= 10/260 KABUL · B > 10/260 UYARI, kayda ACIKCA yazilir.
+
+## 1. BAGIMSIZ DENETIMIN BULDUKLARI — DORT, BIRI CIDDI
+
+**(1) MEDIUM-HIGH · T90 `ACIK` YOLUNDA `road`U BELIRSIZ YAPABILIYORDU.**
+`serit_no()` COK-BIRE bir eslemedir; iki AYRI kapi ayni numarayi alabilir. Eski
+sema (`i+1`) bunu farkli numara UYDURARAK IMKANSIZ kiliyordu. T90 sonrasi
+`rota_bul` yalniz `n_kapi == 3`e bakip `yol_no = kazanan["etiket"]` yayinliyordu;
+cokusmayi HICBIR SEY denetlemiyordu. Denetim 240 px tuvalde yeniden uretti:
+
+    koridorlar [(10,50),(55,95),(100,150)] -> durum=ACIK yol_no=1 etiket=[1,1,2]
+    koridorlar [(2,40),(45,62),(66,78)]    -> durum=ACIK yol_no=1 etiket=[1,1,1]
+
+Sonuc: `iha_haritala.py:329` `road=1` gonderir, `ika_receiver.py:11`
+`plan_path(1)` cagirir, IKA planlayicinin SECMEDIGI koridora surebilir. Bu
+FAIL-DANGEROUS'tur ve **T90 oncesi MUMKUN DEGILDI** — yani ertelenecek bir eksik
+degil, benim actigim bir gerilemedir. (Ben bunu D-146 taslaginda "3/34 kare
+belirsiz" diye olcup T91'e ERTELEMISTIM; denetim ertelenemez oldugunu gosterdi.)
+
+**COZUM — FAIL-CLOSED, DAR TUTULDU.** Kazananin etiketini paylasan baska bir
+**GECILEBILIR** kapi varsa durum `BELIRSIZ_COKLU`, `yol_no = None`. Kontrol
+bilerek dardir: gecilemez bir kapinin ayni numarayi tasimasi belirsizlik
+YARATMAZ (IKA zaten gecilebilir olani surer) ve genis bir kontrol bosuna yetenek
+yakardi. Bunun icin AYRI bir on kayit yazildi (asagida).
+
+**(2) LOW · OLCUM BETIGI TAUTOLOJIK HALE GELDI.** `76_serit_etiketi_celiskisi`
+`etiket == serit_no(kapi_merkez_x)` karsilastirmasini yapiyor; T90 sonrasi etiket
+ZATEN oyle TANIMLI. Sifir cikmasi yapisaldir ve baska bir yerde UCUNCU bir
+etiketleme otoritesi dogsa yine 0 kalirdi. Betik artik bunu ekrana ACIKCA
+yaziyor; ayirt edici olcut kova dagilimidir.
+
+**(3) LOW · BAYAT YORUM + URETIMLE AYRISAN TAHMINCI.** Betik yayilimi
+`cx ± genislik/2` ile KESTIRIYORDU; uretim artik `CC_STAT_LEFT`/`CC_STAT_WIDTH`
+ile KESIN yayinliyor. Piksel kutlesi bakisik olmayan kapilarda ikisi ayrisir.
+Betik artik uretimin alanini OKUR, alan yoksa SESSIZCE tahmine DONMEZ, hata
+verir. Ayrica `koridor_adaylari` docstring'i D-145'in "7/247" sayisini gerekce
+gosteriyordu; o sayi YAKLASIK tahminciden gelmisti — provenans duzeltildi.
+**OLCULDU: bu veri kumesinde kesin alanla yaklasik tahminci AYNI kovalari
+veriyor** (230 / 16 / 1), yani endise ilkesel olarak hakli ama sonucu
+degistirmedi. Bu da gizlenmedi.
+
+**(4) LOW · TEK `yol_no` TESTI KENDINI SESSIZCE KAPATABILIYORDU.**
+`skipTest(...)` vardi; `r_gerekli` ya da belirsizlik esigi ilerde degisip fikstur
+karar uretmese suite YESIL kalirken iddia HIC kosmazdi. `skipTest` kaldirildi,
+`assertEqual("ACIK", ...)` + `assertIsNotNone` kondu.
+
+⚠ **DENETIM SIRASINDA KENDI YAPTIGIM HATA:** 76'daki yayilim hesabini
+degistirirken `gw` degiskenini kaldirip referansini biraktim; betik
+`NameError` ile coktu. Kosuyu "ciktisi bos" diye fark ettim — cikisi
+dogrulamadan basarili saymasaydim sessizce gecerdi. Duzeltildi.
+
+## 2. EK ON KAYIT (koruma icin, KOSULMADAN once yazildi)
+
+    OLCULEN TABAN: 34 ACIK karenin 3'unde kazananin etiketini paylasan
+                   baska gecilebilir kapi vardi.
+    ONGORU : ACIK 34/260 -> 31/260 (tam olarak 3 dusus)
+    RED    : ACIK < 31 -> koruma OLCULENDEN GENIS · ACIK > 31 -> atesLEMIYOR
+
+⚠ Bu, ILK on kayittaki "ACIK >= 34" olcutunu **IHLAL EDER** ve ihlal
+GIZLENMEZ: ilk olcut ETIKET degisikligi icin yazilmisti, bu dusus AYRI bir
+guvenlik duzeltmesinden gelir. Kural sonradan GEVSETILMEDI; IKINCI bir kural
+olarak ACIKCA eklendi ve ONGORUSU ONCEDEN yazildi.
+
+**SONUC: ACIK = 31/260. Ongoru TAM TUTTU** — koruma olculen 3 kareden ne
+fazlasina ne azina atesledi. (BELIRSIZ_COKLU 133 -> 136.)
+
+## 3. OLCULEN SONUC
+
+    olcut                             D-145    T90 (korumasiz)   T90+KORUMA
+    etiket != serit_no               104/470       0/470           0/470
+    uretim seridi gecilebilir kumede 192/247     230/247         230/247
+    rota_bul durum == ACIK            34/260      34/260          31/260
+    (A) URETIM seridi cevrilen         8/260       8/260           8/260
+    (B) ENVANTER yol_no cevrilen      10/260      12/260          11/260
+    test_rota_sentetik                 15/15       15/15           15/15
+    unittest discover -s tests        563 OK      574 OK          576 OK
+
+Ongoru 1 TAM TUTTU: D-145'in simulasyonu 230 demisti, uygulama 230 uretti.
+
+**NET KAZANC +38'DIR, +47 DEGIL.** D-145 "47 kare kapanir" demisti; toplam 192'den
+230'a, yani **+38** cikti. Fark 9 karedir ve bunlar KAYBEDILMEDI, KOVA DEGISTIRDI:
+yayilimla aciklanan kare 7 -> 16 (+9). O 9 karede ESKI (yanlis) etiket uretimin
+seridiyle TESADUFEN cakisiyordu. Dagilim iki kosuda da tutarli:
+    ONCE  192 + 47 +  7 + 1 = 247
+    SONRA 230 +  0 + 16 + 1 = 247
+
+## 4. 🔴 BEDEL ACIK YAZILIYOR: B 10/260 -> 11/260
+
+Ilk on kayit bunu UYARI olarak isaretlemisti; atesledi. Korumasiz halde B=12
+idi, koruma bir kareyi kapatti (12 -> 11). Mekanizma UYDURULMADI, olculdu:
+
+    sa_000100  kazanan kapi cx=435 · yayilim [2,3] · etiket 3 -> 2
+               KORUMA sonrasi 4 kosunun DORDUNDE de BELIRSIZ_COKLU -> KARARLI
+    sa_000166  kazanan kapi cx=166 · genislik=175 · yayilim [1,2]
+               darbogaz 22,66 -> 22,66 (BIREBIR AYNI) · etiket 1 -> 2
+               KORUMA sonrasi: kosu0/2/3 ACIK yol_no=1 · kosu1 BELIRSIZ_COKLU
+
+**IKISINDE DE SECILEN KAPI DEGISMEDI**; `sa_000166`'da darbogaz DEGERI bile
+birebir ayni. Degisen tek sey kapinin AGIRLIK MERKEZININ serit sinirini
+gecmesi. Ve kalan +1'in NITELIGI degisti: cevrilme artik `road 1 <-> road 2`
+(FAIL-DANGEROUS) degil, `ACIK <-> BELIRSIZ_COKLU` (FAIL-CLOSED). Yani ayni
+sayidaki kararsizlik, YANLIS YONLENDIRME yerine KARAR VERMEME olarak
+gerceklesiyor.
+
+**ESKI SEMANIN KARARLILIGI NEREDEN GELIYORDU.** `i+1` KONUMDAN BAGIMSIZDIR:
+kapilar nereye kayarsa kaysin etiket hep (1,2,3) cikar. O kararlilik, konum
+bilgisini ISKARTAYA CIKARIP yerine sabit bir ordinal koyarak satin alinmisti ve
+104/470 kapida YANLIS numara pahasinaydi. **Kararli ama yanlis bir numara,
+IKA'yi her karede ayni yanlis koridora surer.**
+
+## 5. YENI OLCULEN SONUC (T91 acildi)
+
+    n_kapi == 3 kare                                      : 34
+      KORUMA reddediyor (etiket cokusmesi)                :  3
+      ACIK kalan                                          : 31
+        KAZANAN kapi IKI SERIDE yayiliyor (numara SINIRDA): 13  (%42)
+
+⚠ Bu sayilar URETIMIN KESIN `serit_yayilimi` alaniyla olculmustur. Bu kaydin
+ILK taslagindaki "13/34" YAKLASIK tahminciden geliyordu ve GECERSIZDIR.
+
+## 6. KIYAS UYARISI
+
+D-145'teki `(C) envanter AYNI 7 / DEGISTI 1` ile bu kosudaki `AYNI 5 /
+DEGISTI 3` **DOGRUDAN KIYASLANAMAZ**: siniflandirma `(etiket, gecilebilir)`
+demetleri uzerinden yapiliyor ve etiket semasi degisti. D-145'in FIZIKSEL
+bulgusu (koridor VARLIGI cevrilmiyor) bundan etkilenmez.
+
+**DEGISEN DOSYALAR:** `codes/costmap_path_finder.py` (+ jetson kopyasi),
+`tests/test_koridor_etiketi.py` (yeni, 13 test),
+`scripts/olcum/76_serit_etiketi_celiskisi.py`.
+
+**TESTLERIN BOSA GECMEDIGI KANITLANDI.** Her sahnede ESKI formul ayni adaylar
+uzerinde yeniden kosuldu:
+
+    sahne                        ESKI        YENI
+    iki kapi sol yarim          [1, 3]      [1, 2]
+    uc kapi sol ucte iki        [1, 2, 3]   [1, 1, 2]
+    ayni seritte iki kapi       [1, 3]      [1, 1]
+    ayni maske, dar icerik       [2]         [1]
+
+Cokusma testi de POZITIF KONTROLLUDUR: sahnenin gercekten cokusma urettigi
+`assertGreater` ile sinaniyor, yoksa test bosa gecerdi. Ayrica 120 rastgele
+sahnelik ozellik taramasi eklendi; `serit_yayilimi`nin etiketi KAPSAMASI
+`CC_STAT_LEFT`in dogru bilesenden okundugunu sinar (elle yazilan bakisik
+sahneler bunu yakalamaz).
+
+**DOGRULANAMADI**
+  1. Iki seride yayilan kapida `road`un NE OLMASI gerektigi KARARLASTIRILMADI.
+     Secenekler olculmedi: (a) agirlik merkezi (bugunku), (b) kapinin darbogaz
+     noktasinin seridi, (c) fail-closed. 13/31 kare bundan etkilenir -> T91.
+  2. Korumanin GERCEK arena karesinde ne kadar ates edecegi olculmedi; butun
+     sayilar `sentetik_arena_kadraj_t66` kumesinden.
+  3. `iha_haritala` yolunun hakem kosusunda gercekten kullanilip kullanilmadigi
+     DOGRULANMADI; kullanilmiyorsa T90'in canli etkisi yalniz demo kipindedir.
+  4. ACIK 34 -> 31 dususunun gorev puanina etkisi olculmedi. 3 karede karar
+     VERILMEMESI, yanlis karardan iyidir ama BEDELSIZ degildir.
+  5. B = 11/260'in gercek uctaki karsiligi olculmedi; bu SIMULE gurultu
+     olcumudur (sigma = 2/255).

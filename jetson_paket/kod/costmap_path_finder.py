@@ -46,9 +46,9 @@ import cv2
 import numpy as np
 
 try:
-    from .karar_sozlesmesi import hedef_bant_yuksekligi
+    from .karar_sozlesmesi import hedef_bant_yuksekligi, serit_no
 except ImportError:
-    from karar_sozlesmesi import hedef_bant_yuksekligi
+    from karar_sozlesmesi import hedef_bant_yuksekligi, serit_no
 
 logger = logging.getLogger("costmap_path_finder")
 
@@ -365,21 +365,45 @@ def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
 
     Donen: (adaylar, tani)
       adaylar[i] = {"etiket": 1|2|3, "gecilebilir": bool, "darbogaz_px": float,
-                    "kapi_merkez_x": int, "kapi_genislik_px": int}
+                    "kapi_merkez_x": int, "kapi_genislik_px": int,
+                    "serit_yayilimi": (int, int)}
       tani: {"bant_y": (y0,y1), "n_kapi": int, "belirsiz": bool}
+
+    ETIKET TEK KAYNAKTAN GELIR (T90 · REVIEW_LOG D-145). Bu fonksiyon eskiden
+    kendi numarasini uretiyordu: n_kapi==3 iken soldan saga SIRA NUMARASI
+    (i+1), aksi halde kapiyi SERBEST ALAN BBOX'ina gore uce bolerek. Oysa
+    `karar_sozlesmesi.serit_no()` docstring'i "Tek kaynak: hem karar hem
+    gorsellestirme burayi cagirir" der ve sinirlari LETTERBOX ICERIK
+    KUTUSUNDAN alir (CONTRACTS SS8). Iki otorite olculdu: 470 aday kapinin
+    104'u (%22,1) iki semada FARKLI numara aliyordu. Kadraj alinmis bir karede
+    serbest alan icerik kutusunu doldurmaz; ayni fiziksel koridor iki semada
+    ayrisir. Artik etiket YALNIZ `serit_no()`dan turer.
+
+    `serit_yayilimi` TANI AMACLIDIR, karara girmez: kapi bir NOKTA degil bir
+    ACIKLIKTIR ve iki seride yayilabilir. Etiketin kendisi AGIRLIK MERKEZINDEN
+    turer, cunku yayinlanan `road` TEK bir sayi olmak zorundadir
+    (comms/protocol.py:51).
+
+    ⚠ Bu alan `CC_STAT_LEFT`/`CC_STAT_WIDTH` ile KESIN hesaplanir. D-145'te
+    "247 karenin 7'si yalniz yayilimla aciklanir" diye gecen sayi ise bir
+    OLCUM BETIGININ `cx ± genislik/2` YAKLASIMINDAN gelir ve bu alanla ayni
+    sey DEGILDIR (D-145 "DOGRULANAMADI #3"). Kesin alanla yeniden olculen
+    sayilar D-146'dadir; yaklasik sayi buraya gerekce olarak YAZILMAZ.
     """
     gecilebilir = (dt_px >= r_gerekli_px).astype(np.uint8)
     h, w = gecilebilir.shape
     icerik_kutusu, icerik_maske = _icerik_maskesi(h, w, icerik)
     gecilebilir[icerik_maske == 0] = 0
 
-    ys, xs = np.nonzero(gecilebilir)
+    # Yatay bbox ARTIK KULLANILMIYOR: etiket `serit_no()`den, yani ICERIK
+    # KUTUSUNDAN turer (T90). Dikey bbox bant konumlandirmasi icin durur.
+    ys, _xs = np.nonzero(gecilebilir)
     if len(ys) == 0:
         return [], {"bant_y": None, "n_kapi": 0, "belirsiz": True, "sebep": "MASKE_YOK"}
 
     y0_bbox, y1_bbox = int(ys.min()), int(ys.max())
     bbox_h = max(1, y1_bbox - y0_bbox)
-    x0_bbox, x1_bbox = int(xs.min()), int(xs.max())
+    icerik_x0, _icerik_y0, icerik_w, _icerik_h = icerik_kutusu
 
     tohum_a = _tohum_maske(
         baslangic, h, w, "alt", icerik=icerik_kutusu)
@@ -402,7 +426,8 @@ def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
             alan = ist[k, cv2.CC_STAT_AREA]
             if genislik >= min_kapi_px and alan >= min_kapi_px * (by1 - by0) * 0.5:
                 kapilar.append({"k": k, "cx": float(sent[k][0]), "genislik": genislik,
-                               "alan": alan})
+                               "alan": alan,
+                               "x0": int(ist[k, cv2.CC_STAT_LEFT])})
         if len(kapilar) > (len(en_iyi["kapilar"]) if en_iyi else 0) or (
                 en_iyi and len(kapilar) == len(en_iyi["kapilar"]) and
                 sum(x["alan"] for x in kapilar) > sum(x["alan"] for x in en_iyi["kapilar"])):
@@ -417,7 +442,7 @@ def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
     belirsiz = n_kapi != 3
 
     adaylar = []
-    for i, kapi in enumerate(kapilar):
+    for kapi in kapilar:
         m_g = gecilebilir.copy()
         m_g[by0:by1, :] = 0
         alt_etiket = (etiket == kapi["k"])
@@ -440,17 +465,26 @@ def koridor_adaylari(dt_px, r_gerekli_px, baslangic=None, hedef=None, *,
                     hi = mid
             darbogaz_px = lo
 
-        if n_kapi == 3:
-            etiket_no = i + 1
-        else:
-            uzunluk = max(1, x1_bbox - x0_bbox)
-            oran = (kapi["cx"] - x0_bbox) / uzunluk
-            etiket_no = 1 if oran < 1 / 3 else (2 if oran < 2 / 3 else 3)
+        # TEK KAYNAK (madde 16): numara `serit_no()`den gelir, burada
+        # URETILMEZ. Sira numarasi (i+1) ve serbest-alan-bbox uclemesi T90'da
+        # kaldirildi — ikisi de icerik kutusundan BAGIMSIZ calisiyordu.
+        # Etiket, YAYINLANAN `kapi_merkez_x` ile AYNI sayidan turer. Float `cx`
+        # kullanilsaydi disaridan yapilan bir denetim (76_serit_etiketi...)
+        # icerik genisligi 3'e tam bolunmedigi karelerde etiketi yeniden
+        # uretemezdi: int() asagi keser ve sinira cok yakin bir kapi taraf
+        # degistirirdi.
+        kapi_merkez_x = int(kapi["cx"])
+        etiket_no = int(serit_no(kapi_merkez_x, icerik_x0, icerik_w))
+        kapi_x0 = int(kapi["x0"])
+        kapi_x1 = kapi_x0 + max(1, int(kapi["genislik"])) - 1
+        yay_sol = int(serit_no(kapi_x0, icerik_x0, icerik_w))
+        yay_sag = int(serit_no(kapi_x1, icerik_x0, icerik_w))
 
         adaylar.append({
             "etiket": etiket_no, "gecilebilir": gecebiliyor,
-            "darbogaz_px": darbogaz_px, "kapi_merkez_x": int(kapi["cx"]),
+            "darbogaz_px": darbogaz_px, "kapi_merkez_x": kapi_merkez_x,
             "kapi_genislik_px": int(kapi["genislik"]), "bilesen_alan": int(kapi["alan"]),
+            "serit_yayilimi": (min(yay_sol, yay_sag), max(yay_sol, yay_sag)),
         })
 
     tani = {"bant_y": (by0, by1), "n_kapi": n_kapi, "belirsiz": belirsiz}
@@ -848,6 +882,31 @@ def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
     if tani["belirsiz"] and tani["n_kapi"] != 3:
         cikti["durum"] = "BELIRSIZ_COKLU"
         cikti["sebep"] = f"{tani['n_kapi']} kapi tespit edildi (3 beklenir)."
+        cikti["en_iyi_aday"] = kazanan
+        cikti["guven"] = guven
+        return cikti
+
+    # T90 · ETIKET COKUSMASI FAIL-CLOSED (bagimsiz denetim bulgusu, D-146).
+    # `serit_no()` COK-BIRE bir eslemedir: iki AYRI kapi ayni serit numarasini
+    # alabilir. Eski sema (n_kapi==3 -> i+1) bunu farkli numara UYDURARAK
+    # gizliyordu, yani `ACIK` yolunda `road` HIC belirsiz olamazdi; T90 bu
+    # durumu MUMKUN kildi. Kazananin numarasini baska bir GECILEBILIR kapi da
+    # tasiyorsa yayinlanan `road` HANGI koridorun dogrulandigini SOYLEMEZ ve
+    # `comms/ika_receiver.py:11` -> `plan_path(road)` planlayicinin
+    # REDDETMEDIGI degil, SECMEDIGI koridora surebilir. Bu fail-dangerous'tur;
+    # karar VERILMEZ.
+    #
+    # Kontrol DAR tutulur: yalnizca KAZANANIN etiketini paylasan GECILEBILIR
+    # kapilar sayilir. Gecilemez bir kapinin ayni numarayi tasimasi belirsizlik
+    # YARATMAZ (IKA zaten gecilebilir olani surer), genis bir kontrol bosuna
+    # yetenek yakardi.
+    ayni_etiketli = [a for a in gecebilenler
+                     if a["etiket"] == kazanan["etiket"]]
+    if len(ayni_etiketli) > 1:
+        cikti["durum"] = "BELIRSIZ_COKLU"
+        cikti["sebep"] = (
+            f"{len(ayni_etiketli)} gecilebilir kapi ayni seridi "
+            f"({kazanan['etiket']}) gosteriyor — koridor ayirt edilemedi.")
         cikti["en_iyi_aday"] = kazanan
         cikti["guven"] = guven
         return cikti

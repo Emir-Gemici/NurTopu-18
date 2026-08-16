@@ -116,15 +116,23 @@ def main():
             cx = int(a["kapi_merkez_x"])
             sn = int(serit_no(cx, ix0, iw))
             uyum = (int(a["etiket"]) == sn)
-            # KAPI BIR NOKTA DEGIL, BIR ACIKLIKTIR. `etiket`/`serit_no` ikisi de
-            # AGIRLIK MERKEZINDEN turer; genis bir kapinin merkezi serit 1'de
-            # olup rota serit 2 kismindan gecebilir. Kapinin YAYILIMI bu yuzden
-            # kaydedilir. YAKLASIKTIR: uretim x0/x1 dondurmez, yalniz merkez ve
-            # GENISLIK doner (costmap_path_finder.py:452-453), yayilim
-            # cx ± genislik/2 ile kestirilir.
+            # KAPI BIR NOKTA DEGIL, BIR ACIKLIKTIR: genis bir kapinin merkezi
+            # serit 1'de olup rota serit 2 kismindan gecebilir.
+            #
+            # ⚠ T90 ONCESI bu yayilim BURADA `cx ± genislik/2` ile
+            # KESTIRILIYORDU, cunku uretim x0/x1 dondurmuyordu. Piksel kutlesi
+            # bbox merkezine gore bakisik olmayan kapilarda bu kestirim
+            # uretimden SAPAR (pencere bilesenin kutusunun disina bile
+            # dusebilir). T90 ile uretim `serit_yayilimi`ni CC_STAT_LEFT /
+            # CC_STAT_WIDTH ile KESIN yayinladigi icin artik O alan okunur;
+            # olcum kendi tahminini uretmez (bagimsiz denetim bulgusu, D-146).
+            if "serit_yayilimi" not in a:
+                raise RuntimeError(
+                    "uretim `serit_yayilimi` yayinlamiyor — bu betik T90 "
+                    "sonrasi koda gore yazildi; YAKLASIK kestirime SESSIZCE "
+                    "donmez (D-146 bulgu 3)")
+            sn_sol, sn_sag = (int(v) for v in a["serit_yayilimi"])
             gw = int(a["kapi_genislik_px"])
-            sn_sol = int(serit_no(cx - gw / 2.0, ix0, iw))
-            sn_sag = int(serit_no(cx + gw / 2.0, ix0, iw))
             aday_top += 1
             aday_by_nkapi[str(nk)] = aday_by_nkapi.get(str(nk), 0) + 1
             if not uyum:
@@ -203,6 +211,11 @@ def main():
     print(f"  toplam aday kapi                 : {aday_top}")
     print(f"  etiket != serit_no(kapi_merkez_x): {aday_celiski} "
           f"(%{100*aday_celiski/max(1,aday_top):.1f})")
+    print("     [!] T90 SONRASI BU OLCUT TAUTOLOJIKTIR: uretim etiketi ZATEN")
+    print("     `serit_no(kapi_merkez_x, ...)` olarak TANIMLI. Sifir cikmasi")
+    print("     BAGLANTININ kuruldugunu gosterir, DOGRULUGU degil; baska bir")
+    print("     yerde ucuncu bir etiketleme otoritesi dogsa bu sayi yine 0")
+    print("     kalirdi. Ayirt edici olcut asagidaki kova dagilimidir.")
     print(f"  serbest_alan icerik kutusunu degistirdi: {icerik_farkli}/{n}")
     print(f"\n  n_kapi kirilimi (celiskili aday / toplam aday):")
     for key in sorted(set(aday_by_nkapi) | set(celiski_by_nkapi), key=lambda x: int(x)):
@@ -215,8 +228,8 @@ def main():
           f"disinda: {gec_var - eski_icinde}")
     print(f"    YENI etiketle  (serit_no ile)      icinde: {yeni_icinde}  "
           f"disinda: {gec_var - yeni_icinde}")
-    print(f"    KAPI YAYILIMIYLA (yaklasik)        icinde: {yayilim_icinde}  "
-          f"disinda: {gec_var - yayilim_icinde}")
+    print(f"    KAPI YAYILIMIYLA (uretimin KESIN alani) icinde: {yayilim_icinde}"
+          f"  disinda: {gec_var - yayilim_icinde}")
     print(f"\n  zaten celiskisiz                      : {hic_sorun_yok}")
     print(f"  YENIDEN ETIKETLEMEYLE kapanan         : {len(kapandi)}  -> H1a (ETIKET CERCEVESI)")
     print(f"  KAPI YAYILIMIYLA kapanan              : {len(yayilimla_kapandi)}  -> H1b (KAPI GENIS, MERKEZ YANILTIYOR)")

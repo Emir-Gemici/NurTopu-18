@@ -4187,6 +4187,65 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     ve `rota_bul` ACIK sayısı (34) **DÜŞMEYECEK**.
   - ⚠ **ÖNCE DOĞRULA:** `iha_haritala` yolunun hakem koşusunda gerçekten
     kullanılıp kullanılmadığı; kullanılmıyorsa kusur yalnız demo kipindedir.
+
+  - ✅ **YAPILDI · 2026-08-17 · Claude 1 (mimar, madde 7 istisnası)** · kayıt **D-146**.
+    Ön kayıt kapılar koşulmadan önce yazıldı. Sıra numarası (`i+1`) ve serbest
+    alan bbox üçlemesi **kaldırıldı**; etiket artık yalnız `serit_no()`'dan,
+    üstelik **yayınlanan `kapi_merkez_x` ile aynı tamsayıdan** türüyor.
+    Tanı amaçlı `serit_yayilimi` alanı eklendi (karara **girmez**).
+    ```text
+    ölçüt                             D-145   T90(korumasız)  T90+KORUMA
+    etiket != serit_no               104/470      0/470         0/470
+    üretim şeridi geçilebilir kümede 192/247    230/247       230/247
+    rota_bul durum == ACIK            34/260     34/260        31/260
+    (A) üretim şeridi çevrilen          8/260      8/260         8/260
+    (B) ENVANTER yol_no çevrilen       10/260     12/260        11/260
+    test_rota_sentetik                  15/15      15/15         15/15
+    unittest discover -s tests         563 OK     574 OK        576 OK
+    ```
+  - 🔴 **BAĞIMSIZ DENETİM T90'IN AÇTIĞI BİR AÇIĞI YAKALADI (dört bulgu, biri
+    ciddi).** `serit_no()` **çok-bire** eşlemedir; eski şema (`i+1`) iki kapının
+    aynı numarayı almasını **imkânsız** kılıyordu. T90 sonrası `rota_bul`
+    `durum=ACIK` ile `road=1` yayınlayıp **iki farklı koridoru** kastedebiliyordu
+    → `plan_path(road)` planlayıcının seçmediği koridora sürebilirdi. Bunu
+    D-146 taslağında "3/34 kare belirsiz" diye ölçüp T91'e **ertelemiştim**;
+    denetim ertelenemez olduğunu gösterdi. **Fail-closed koruma eklendi:**
+    kazananın etiketini paylaşan başka bir *geçilebilir* kapı varsa
+    `BELIRSIZ_COKLU`. Kontrol dar tutuldu (geçilemez kapı sayılmaz).
+    Ek ön kayıt koşulmadan önce yazıldı: **öngörü ACIK 34 → 31, ölçüm 31 — tam
+    tuttu.** Bu, ilk ön kaydın "ACIK ≥ 34" ölçütünü **ihlal eder**; kural
+    gevşetilmedi, ikinci bir kural olarak açıkça eklendi.
+  - 🔴 **BEDEL AÇIK:** `B` 10 → 11 (korumasız hâlde 12 idi). Mekanizma
+    **ölçüldü, uydurulmadı**: `sa_000100` ve `sa_000166`'nın ikisinde de
+    **seçilen kapı DEĞİŞMEDİ** (`sa_000166`'da darboğaz değeri bile birebir
+    aynı); yalnız ağırlık merkezi şerit sınırını geçti. Kalan +1'in **niteliği
+    değişti**: çevrilme artık `road 1 ↔ road 2` (fail-dangerous) değil,
+    `ACIK ↔ BELIRSIZ_COKLU` (fail-closed). Eski şemanın kararlılığı konumu
+    ıskartaya çıkarıp sabit ordinal koymaktan geliyordu — **kararlı ama yanlış
+    numara İKA'yı her karede aynı yanlış koridora sürer.**
+  - **Testler boşa geçmiyor:** her sahnede eski formül aynı adaylar üzerinde
+    yeniden koşuldu ve farklı cevap verdi (`[1,3]`→`[1,2]` · `[1,2,3]`→`[1,1,2]`
+    · `[1,3]`→`[1,1]` · `[2]`→`[1]`). Ayrıca 120 rastgele sahnelik özellik
+    taraması eklendi (yayılımın etiketi kapsaması `CC_STAT_LEFT`'i sınar).
+- [ ] **T91 — İki şeride yayılan kapının `road` numarası TANIMSIZ (ACIK karelerin %42'si)** · `codes/costmap_path_finder.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-146**
+  - T90 etiketi sözleşmeye bağladı ama **kapı bir nokta değil bir açıklıktır.**
+    Ölçüldü (v30, n=260, üretimin **kesin** `serit_yayilimi` alanıyla):
+    ```text
+    n_kapi == 3 kare                                      : 34
+      KORUMA reddediyor (etiket çakışması)                :  3
+      ACIK kalan                                          : 31
+        KAZANAN kapı İKİ ŞERİDE yayılıyor (numara SINIRDA): 13  (%42)
+    ```
+    `serit_yayilimi` alanı bu kareleri **görünür** kılar; **çözmez**.
+  - **KARAR VERİLMEDİ — üç seçenek, hiçbiri ölçülmedi:**
+    (a) ağırlık merkezi (bugünkü davranış);
+    (b) kapının **darboğaz noktasının** şeridi — rota fiilen oradan geçer;
+    (c) yayılım iki şeritliyse **fail-closed** (`road` yayınlama).
+  - **KAPI:** seçilen seçenek `75_koridor_envanteri.py` ile ölçülecek;
+    `B <= 11/260` (T90+koruma tabanı) **ve** ACIK sayısı `>= 31/260` kalmalı.
+    İkisi birden tutmuyorsa seçenek reddedilir.
+  - ⚠ Etiket **çakışması** T90'da zaten fail-closed kapatıldı (3/34 kare); bu
+    görev yalnız **yayılım** belirsizliğini kapsar, ikisi karıştırılmasın.
 - [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
 avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
   - Yer gerçeği etiketleriyle (model YOK, yani kusursuz algı) ölçüldü:
