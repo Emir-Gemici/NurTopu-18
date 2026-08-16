@@ -10354,3 +10354,113 @@ elerdi. Bu kumeleri ayirmasi tesadufidir; kayda gecer, kural yapilmaz.
   2. "En az 3 arac" esiginin GERCEK arenada ne yapacagi olculemez: arenada
      arac YOKTUR, katman 3 orada zaten devreye girmez.
   3. Tum olcumler SENTETIK kadraj + eldeki gercek kareler uzerindedir.
+
+---
+
+### D-144 · UYGULANDI (MIMAR YAZDI) · T89 olcek korumasi — BAGIMSIZ DENETIM ALTI KUSUR BULDU, UCU OLCUMLE DUZELTILDI
+Yazan/olcen: Claude 1 (mimar) · 2026-08-16 10:10-12:40
+⚠ **MADDE 7 ISTISNASI:** ameleler kotada, is tikayici, kullanicinin ACIK
+onayiyla ("ameleler kotada gorevi sana veriyorum") mimar kod yazdi. Ayni madde
+geregi **kendi kodumu kendim onaylamadim**: degisiklik uzerinde AYRI bir
+denetim kosuldu ve bulgulari asagida tek tek islendi.
+
+**YAPILAN.** Olcek kahininin 3. katmani (arac referansi) ALAN DISINDA
+atesleniyordu (D-142/D-143). Koruma eklendi: `arac_maskesi.ARAC_ASGARI_SAYI = 3`.
+
+**BAGIMSIZ DENETIMIN BULDUKLARI — ALTI, UCU CIDDI:**
+
+**(1) Yeni testler HIC KOSMUYORDU.** `if __name__ == "__main__"` blogu dosyanin
+ORTASINDA kaldi; ondan sonra tanimlanan sinif, dosya DOGRUDAN kosuldugunda
+tanimlanmadan once `unittest.main()` calisiyordu. `discover` onlari buluyordu
+(560 sayisi bu yuzden dogru artti) ama dogrudan kosum 15 test gosteriyordu.
+Duzeltildi; dogrudan kosum artik **22 test**.
+
+**(2) TEK KAYNAK ILKESI IHLAL EDILDI.** Uretim yolu diziyi kendisi cekip
+medyani ORADA yeniden hesapliyordu; boylece `arac_kisa_kenar_medyani` uretimde
+KULLANILMAZ hale geldi ve toplama kuralinin ileride degismesi uretime HIC
+ULASMAYACAKTI. `arac_olcek_kenari()` tek kaynak olarak yazildi: medyan, sayim,
+esik, cozunurluk ve sebep metni ORADA; dedektor tek kez kosar.
+
+**(3) EN CIDDISI — ESIK BASKA COZUNURLUKTE KALIBRE EDILMISTI.**
+Kalibrasyonlarin TAMAMI (D-124 · D-126 · D-143) `obb.predict(yol, ...)` ile,
+yani Ultralytics'in VARSAYILAN `imgsz=640` degeriyle kosuldu. Uretim ise
+`max(bgr.shape[:2])`, yani DOGAL uzun kenar kullaniyordu. Olculdu:
+
+    SAYIM (>= 3 arac bulunan kare)      640        DOGAL
+      drone (1024x576)                 20/20       20/20
+      kompozit (1024x576)               9/9         9/9
+      gemini (512x512)                  1/20        0/20
+      test (512x512)                    2/20        0/20
+      val (512x512)                     0/20        0/20
+
+    OLCEK DEGERI (drone, n=20)
+      imgsz=640 (kalibre)   mpp 0,07037  ->  r_gerekli 15,6 px
+      DOGAL     (uretim)    mpp 0,07392  ->  r_gerekli 14,9 px
+      bagil fark +%5,1 · r_gerekli 0,75 px KUCUK = **EMNIYETSIZ YON**
+
+Sayim tarafinda uretim tesadufen daha SIKIYDI, ama olcek DEGERI tarafinda daha
+GEVSEKTI. T86 olcumunde bazi drone karelerinin payi +0,006 px idi; 0,75 px
+orada belirleyicidir.
+
+**(3b) SABITLEMEK TEK BASINA YETMEDI — ikinci olcum.** `imgsz=640` sabitlenince
+512x512 lik ALAN DISI kareler BUYUTULDU, olmayan ayrinti uretildi ve
+`test/road_233.jpg` karesinde 3 arac bulunup **ROTA URETILDI** (0 -> 1).
+Kalibrasyonda HIC BUYUTME YOKTU. Kural TAVANA cevrildi:
+`olcu = min(ARAC_OLCEK_IMGSZ, goruntunun uzun kenari)`. Boylece 1024 lik kareler
+kalibre edilen 640 ta kosar, 512 likler kendi cozunurlugunde kalir, hicbir kare
+BUYUTULMEZ.
+
+**(4) AYNI ARAC IKI SINIFTA SAYILIYORDU.** Ultralytics NMS i SINIF FARKINDADIR;
+bir arac `small vehicle` + `large vehicle` olarak IKI kutu birakabilir.
+Olculdu: drone 1137 kutuda **3 cift**, kompozit 685 te **2 cift** (%0,26) —
+ve **BESININ DE sinifi farkli**, mekanizma dogrulandi. Oran kucuk ama TEHLIKELI
+DURUM esik civaridir: 2 gercek arac + 1 mukerrer = 3 ile esik HAKSIZ gecilir.
+`IoU > 0,5` ciftleri elenir; eleme yalnizca sayiyi AZALTIR (madde 15 yonu).
+
+**(5) TESTLER SABIT SAYI CIVILIYORDU.** "Esik alti" fiksturu tek arac diye
+yazilmisti; esik 1 e cekilse testler YANLIS SEBEPLE duserdi ve bir dongu BOSA
+gecerdi. Fiksturler sozlesmeden turetildi (`ARAC_YETERSIZ`), bos gecis
+`skipTest` ile reddedildi.
+
+**(6) SAVUNMACI FALLBACK KENDINI BOZUYORDU.** `getattr(x, "size", len(x))`
+ifadesi `len(x)` i KOSULSUZ degerlendiriyordu. `np.asarray(...).size` ile
+degistirildi.
+
+⚠ **DENETIMIN FIKSTURDE ORTAYA CIKARDIGI YAN KUSUR:** `_SahteOBB` butun
+araclari AYNI koordinata koyuyordu; mukerrer eleme gelince bu fikstur "tek
+arac" anlamina gelirdi. Araclar ayri konumlara yayildi.
+
+**OLCULEN SONUC (kaynak taramasi, uretim modeli v30):**
+
+    kaynak         ONCE (D-142)              SONRA (T89)
+    arena_kadraj   12/12 · telemetri         12/12 · telemetri   (DEGISMEDI)
+    kompozit        0/9  · telemetri          0/9  · telemetri   (DEGISMEDI)
+    drone          11/12 · arac 12           **7/12** · arac 12
+    gemini          3 olcek · **1 ROTA**      0 olcek · 0 rota
+    test            3 olcek                   0 olcek
+    val             1 olcek                   0 olcek
+
+**BEDELI ACIK YAZILIYOR: `drone` 11/12 -> 7/12.** Dusen dort rota,
+KALIBRE EDILMEMIS ve daha GEVSEK bir olcekle (r_gerekli 0,75 px kucuk)
+hesaplanmisti. Bu bir GERILEME DEGIL, once fazla gosterilen bir sayinin
+duzeltilmesidir. Yeni sayi kalibre edilen kosulda olculmustur.
+
+**ARENA YOLU HIC ETKILENMEDI** (kabul denetimi, v30): K0 %8,0 · K1 258/260 ·
+K2 22/258 · K3 0/258 · K4 1/258 — D-133 ile BIREBIR. K5 in "None" ciktisi
+`63_bariyer_kesisimi` nin tek-kare kisitidir; gercek olcum `66` ile 0/173.
+
+**KAPILAR:** `codes/test_rota_sentetik.py` **15/15** · `unittest discover`
+**563 OK** (553 -> +10) · dogrudan kosum 22 test · jetson paketi senkron.
+
+**T79 YAPILMADI.** Bu kayit yalnizca T89 u kapsar. T79 un dogru tasarimi
+D-143 te belirlendi (koridor VARLIGININ kararliligi, beraberlik bozma DEGIL)
+ve kod degisikligi ayrica yapilacaktir.
+
+**DOGRULANAMADI**
+  1. Mukerrer kutu oraninin ALAN DISI goruntulerde ne oldugu olculemedi —
+     o kumelerde zaten ~0 arac var.
+  2. `min(640, uzun kenar)` kuralinin 1920 px gibi cok buyuk karelerde ne
+     yapacagi olculmedi (elimizde oyle kare yok).
+  3. `drone` daki 7/12 nin dogru sayi oldugu KANITLANMADI — yalnizca kalibre
+     edilen kosulda olculmus sayidir. Gercek mpp bilinmiyor (D-124 ten beri).
+

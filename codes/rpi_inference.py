@@ -298,18 +298,19 @@ def _arac_kisa_kenari(bgr, arac_modeli, conf):
         # saha paketinde YOKTUR (jetson_paket_hazirla.py kopya listesi) ve
         # orada bu katman calismaz — sessizce degil, ASAGIDAKI notla.
         if __package__:
-            from .arac_maskesi import arac_kisa_kenar_medyani
+            from .arac_maskesi import arac_olcek_kenari
         else:
-            from arac_maskesi import arac_kisa_kenar_medyani
+            from arac_maskesi import arac_olcek_kenari
     except ImportError as exc:
         return None, f"arac_maskesi modulu yok ({exc.__class__.__name__})"
     try:
-        kenar = arac_kisa_kenar_medyani(bgr, arac_modeli, conf=conf)
+        # T89: TEK KAYNAK. Esik, cikarim cozunurlugu, toplama kurali ve sebep
+        # metni `arac_maskesi.arac_olcek_kenari` icinde durur; burada hicbiri
+        # TEKRARLANMAZ (madde 16). Dedektor tek kez kosar.
+        kenar, _n, sebep = arac_olcek_kenari(bgr, arac_modeli, conf=conf)
     except Exception as exc:                       # fail-closed: olcek uydurma
         return None, f"arac tespiti HATA verdi: {type(exc).__name__}: {exc}"
-    if kenar is None:
-        return None, "sahnede olculebilir arac YOK"
-    return kenar, f"arac kisa kenar medyani {kenar:.1f} px"
+    return kenar, sebep
 
 
 def kare_olcek_kahini(mpp, canli_olcek, icerik, *, bgr=None, arac_modeli=None,
