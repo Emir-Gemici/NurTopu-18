@@ -4136,6 +4136,57 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     ya modelin gürültü dayanıklılığı ya kareler-arası histerezistir — ikisi de bu
     görevin kapsamı dışında. **Görev `[ ]` bırakıldı.**
   - **Yeni testler:** `tests/test_koridor_kararliligi.py` (17).
+
+  - 🔴 **T79-A ÖLÇÜLDÜ · ÜÇÜNCÜ HİPOTEZ DE ÇÜRÜDÜ · 2026-08-17** · kayıt **D-145**.
+    Ölçüm ameleye yazdırıldı (`75_koridor_envanteri.py`), koşu tamamlandı, amele
+    yazım aşamasında kotaya takıldı; çözümleme ve `76` mimar tarafından yapıldı.
+    **Ön kayıt betiğe koşulmadan önce yazılmıştı** (`75_...py:22-36`).
+    ```text
+    (A) ÜRETİM şeridi çevrilen   :  8/260   <- D-142 ile BİREBİR
+    (B) ENVANTER yol_no çevrilen : 10/260   <- ÜRETİMDEN DAHA KARARSIZ
+    (D) temiz koşuda durum=ACIK  : 34/260   (226 karede n_kapi != 3 -> BELİRSİZ)
+    (C) üretimi çeviren 8 karede envanter: AYNI 7 · DEĞİŞTİ 1
+    ```
+    Ön kayıt kuralı **(B) ve (D) birden ateşledi -> FIX YAZILMADI, görev `[ ]`.**
+  - **D-143'ün "koridor VARLIĞI çevriliyor" çıkarımı ÇÜRÜDÜ.** O bir ölçüm değil,
+    `serit_min_px` deseninden yapılmış bir çıkarımdı. Doğrudan ölçüldü: çeviren
+    8 karenin **7'sinde envanter birebir aynı** (aynı kapılar, aynı geçilebilirlik,
+    aynı darboğazlar). Koridorlar geniş (15-56 px, r_gerekli 14,08 px).
+  - **Geriye tek mekanizma kaldı:** değişmeyen bir koridor kümesi üzerinde
+    **küresel A\* maliyet beraberliği**. Bu VERİ ile (D-142: doz eğrisi tek yönlü)
+    ve ENVANTER ile (D-145) çözülemez. **T79'un yeni şekli:** beraberlik bozma
+    `serit_min_px` üzerinde DEĞİL, A\*'ın **toplam yol maliyeti** üzerinde
+    tanımlanmalı — `_rota_serit_olcumu` rota SEÇİLDİKTEN SONRA koşar, seçimi
+    değiştiremez. ⚠ Maliyet beraberliği **HİPOTEZDİR, ÖLÇÜLMEDİ**: `astar()`
+    toplam maliyeti döndürmüyor.
+- [ ] **T90 — İKİ ETİKETLEME OTORİTESİ: `koridor_adaylari` `serit_no()`'yu çağırmıyor** · `codes/costmap_path_finder.py:443-448` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-145**
+  - `karar_sozlesmesi.serit_no()` docstring'i *"Tek kaynak: hem karar hem
+    görselleştirme burayı çağırır"* der (CONTRACTS SS8) ve sınırları **letterbox
+    içerik kutusundan** hesaplar. `koridor_adaylari()` bu fonksiyonu **çağırmaz**:
+    `n_kapi==3` iken soldan sağa **sıra numarası** (i+1), aksi hâlde kapıyı
+    **serbest alan bbox'ına** göre üçe böler. Madde 16 ihlali.
+    ```text
+    aday kapı toplamı                 : 470
+    etiket != serit_no(kapi_merkez_x) : 104  (%22,1)
+    ```
+  - **Etki ölçüldü ve KÜÇÜK — büyütülmemeli:** `simulation/scripts/iha_haritala.py:329`
+    `road`'u `rota_bul["yol_no"]`dan alıp yayınlar (`comms/protocol.py:51` ->
+    `ika_receiver.py:11` -> `plan_path(road)`; `hakem_log.py:108` de bununla puanlar).
+    Ama `rota_bul` `n_kapi==3` görmeden `road` yayınlamaz:
+    ```text
+    gizil oran : kazananın etiketi != serit_no  ->  61/247  (%24,7)
+    CANLI oran : yayınlanan road yanlış         ->   1/34   (%2,9)
+    ```
+    BELİRSİZ kapısı gevşetilirse gizil oran canlıya döner.
+  - **YAP:** `koridor_adaylari` etiketini `serit_no(kapi_merkez_x, icerik_x0,
+    icerik_w)` ile üret; sıra numarası ve bbox üçlemesi kaldırılsın. Kapı bir
+    NOKTA değil AÇIKLIK olduğundan etiketin merkeze mi yayılıma mı bağlanacağı
+    **ölçümle** seçilsin (D-145'te 7 kare yalnız yayılımla açıklanıyor).
+  - **KAPI:** `codes/test_rota_sentetik.py` 15/15 · `unittest discover` düşmeyecek ·
+    `76_serit_etiketi_celiskisi.py` yeniden koşulduğunda **etiket != serit_no = 0/470**
+    ve `rota_bul` ACIK sayısı (34) **DÜŞMEYECEK**.
+  - ⚠ **ÖNCE DOĞRULA:** `iha_haritala` yolunun hakem koşusunda gerçekten
+    kullanılıp kullanılmadığı; kullanılmıyorsa kusur yalnız demo kipindedir.
 - [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
 avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
   - Yer gerçeği etiketleriyle (model YOK, yani kusursuz algı) ölçüldü:

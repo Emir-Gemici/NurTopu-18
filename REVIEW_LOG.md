@@ -10464,3 +10464,143 @@ ve kod degisikligi ayrica yapilacaktir.
   3. `drone` daki 7/12 nin dogru sayi oldugu KANITLANMADI — yalnizca kalibre
      edilen kosulda olculmus sayidir. Gercek mpp bilinmiyor (D-124 ten beri).
 
+
+---
+
+### D-145 · 🔴 UCUNCU HIPOTEZ DE CURUDU · Envanter kaldirac DEGIL (10/260 > 8/260) · Koridor VARLIGI cevrilmiyor · Yan bulgu: IKI ETIKETLEME OTORITESI
+Olcen: amele (75, kosu tamamlandi, yazim asamasinda kotaya takildi) + Claude 1
+(mimar: 75 denetimi, cozumleme, 76) · 2026-08-17 01:14-02:05 · gorev T79-A
+
+**ON KAYIT (betige, KOSULMADAN ONCE yazildi — 75_koridor_envanteri.py:22-36).**
+  (A) B <= 4/260 VE D >= 255/260 -> envanter kararli, yon: secimi envantere bagla
+  (B) B > 4/260                  -> envanter DE kararsiz, FIX YAZILMAZ
+  (C) A, 8/260'tan ±1'den fazla saparsa -> kosu D-142'den iraksamis, DUR
+  (D) D < 255/260 -> B ne olursa olsun envantere baglamak KAZANC DEGILDIR
+
+**OLCUM** (v30, sigma=2/255, tekrar=3, tohum=7, n=260 — 68'in recetesi AYNEN):
+
+    (A) URETIM seridi cevrilen        :  8/260   <- D-142'nin 8/260'i BIREBIR
+    (B) ENVANTER yol_no cevrilen      : 10/260   <- URETIMDEN DAHA KARARSIZ
+    (D) temiz kosuda durum == ACIK    : 34/260
+    (C) uretimi ceviren 8 karede envanter: AYNI 7 · DEGISTI 1
+    olcum kendi kontrolu: rota_bul<->koridor_adaylari tutarsizlik 0 ·
+                          maske bozulmasi 0
+
+    durum dagilimi: BELIRSIZ_COKLU 133 · BELIRSIZ_TEK_KAPI 88 · ACIK 34 ·
+                    KAPALI_DAR 4 · KAPI_YOK 1
+    (A) ile (B)'nin ORTAK karesi yalniz 2 — iki kararsizlik BAGIMSIZ.
+
+**KURAL (B) VE (D) IKISI BIRDEN ATESLENDI. FIX YAZILMADI, T79 `[ ]` KALDI.**
+Envanter hem daha cok ceviriyor (10 > 8) hem de 260 karenin 226'sinda karar
+VEREMIYOR (n_kapi != 3 -> BELIRSIZ). Sartname 3 kapili tam arena topolojisi
+bekler; kadraj alinmis karelerde 3 kapi cogunlukla gorunmez.
+
+## 1. D-143'UN MEKANIZMA CIKARIMI OLCULDU VE CURUDU
+
+D-143 sunu YAZMISTI: "Gurultu, hangi koridorlarin VAR OLDUGUNU degistiriyor."
+Bu bir OLCUM DEGIL, `serit_min_px` uclusunun None/deger deseninden yapilmis bir
+CIKARIMDI. Simdi dogrudan olculdu: uretimi ceviren 8 karenin **7'sinde envanter
+BIREBIR AYNI kaldi** — ayni kapilar, ayni gecilebilirlik, ayni darbogazlar.
+
+    sa_000258  env 4 kosuda da: [(1,False,0.0), (2,True,25.96), (3,True,22.66)]
+               uretim serit   : 3 | 3 | 2 | 3          <- envanter SABIT, uretim cevirdi
+    sa_000238  env 4 kosuda da: [(3,True,45.76)]
+               uretim serit   : 3 | 2 | 2 | 3
+    sa_000215  env 4 kosuda da: [(1,True,15.4)]
+               uretim serit   : 1 | 2 | 2 | 2
+    (tek istisna sa_000078: n_kapi 1->2, bant_y 428->236)
+
+**KORIDOR VARLIGI CEVRILMIYOR.** Cevrilen karelerde koridorlar GENIS (darbogaz
+15-56 px, r_gerekli 14,08 px) ve gecilebilirlikleri sabit. Geriye tek mekanizma
+kaliyor: **kuresel A*'in DEGISMEYEN bir koridor kumesi uzerindeki maliyet
+BERABERLIGI.** Rota, koridor kaybolduğu icin degil, iki koridorun aciklik
+agirlikli maliyeti birbirine cok yakin oldugu icin yer degistiriyor.
+
+Boylece T79 icin uc hipotez de olculdu ve uçu de curudu:
+  1. serit beraberligi (D-126) -> 9/260'i 8/260 yapti, ceviren 8'in 4'u TEK serit
+  2. koridor varligi (D-143)   -> 7/8 karede envanter AYNI
+  3. envanter kararliligi (bu) -> envanter DAHA KARARSIZ (10 > 8)
+
+## 2. YAN BULGU · IKI ETIKETLEME OTORITESI (76_serit_etiketi_celiskisi.py)
+
+75'in dokumu gosterdi ki iki karar yolu ayni maskede FARKLI serit numarasi
+soyluyor. Ilk okumam "iki yol farkli KORIDOR seciyor" idi; **bu okuma YANLISTI**
+ve olcumle duzeltildi.
+
+`serit_no()` sinirlari LETTERBOX ICERIK KUTUSUNU uce boler (karar_sozlesmesi.py:
+42-54; docstring'i "Tek kaynak: hem karar hem gorsellestirme burayi cagirir"
+der). `koridor_adaylari()` bu fonksiyonu CAGIRMAZ: n_kapi==3 iken soldan saga
+SIRA NUMARASI (i+1), aksi halde kapiyi SERBEST ALAN BBOX'ina gore uce boler
+(costmap_path_finder.py:443-448). Iki ayri etiketleme otoritesi.
+
+    aday kapi toplami                       : 470
+    etiket != serit_no(kapi_merkez_x)       : 104  (%22,1)
+      n_kapi=1: 32/88 · n_kapi=2: 60/268 · n_kapi=3: 10/102 · n_kapi=4: 2/12
+
+    uretim seridi, gecilebilir aday kumesinde mi? (247 olculebilir kare)
+      koridor_adaylari etiketiyle : 192 icinde · 55 DISINDA
+      serit_no ile yeniden etiketlenince : 230 icinde · 17 disinda
+      kapi YAYILIMI da sayilinca  : 246 icinde ·  1 disinda
+
+    55 karelik celiskinin dagilimi:
+      47  yeniden etiketlemeyle kapandi  -> ETIKET CERCEVESI farki
+       7  kapi genisligiyle kapandi      -> kapi bir NOKTA degil ACIKLIK;
+                                            merkez serit 1'de, rota serit 2
+                                            kismindan geciyor (yayilim YAKLASIK)
+       1  kapanmadi (sa_000148)          -> aciklanamadi
+
+**YANI IKI YOL AYNI KORIDORU GOSTERIYOR, FARKLI NUMARA VERIYOR.** "Rota
+gecilemez koridordan geciyor" gibi bir bulgu YOKTUR; rota geometrisi zaten
+`rota_dogrula` ile bagimsiz dogrulaniyor (K2/K3 denetimi 0/258).
+
+**CANLI ETKI OLCULDU VE KUCUK.** `simulation/scripts/iha_haritala.py:329`
+`road`'u dogrudan `rota_bul["yol_no"]`dan alir, yani bu etiketi YAYINLAR.
+`comms/protocol.py:51` -> `comms/ika_receiver.py:11` -> `plan_path(route["road"])`;
+`simulation/scripts/hakem_log.py:108` de `road` uzerinden puanlar. Ama:
+
+    gecilebilir kazanani olan kare        : 247
+      KAZANANIN etiketi != serit_no       :  61  (%24,7)   <- GIZIL oran
+    rota_bul'un ACIK verip road YAYINLADIGI kare : 34
+      yayinlanan road yanlis numarali     :   1  (%2,9)    <- CANLI oran
+
+`rota_bul` n_kapi==3 gormeden `road` yayinlamaz; 3 kapi gorundugunde de soldan
+saga sira numarasi `serit_no` ucte birleriyle neredeyse hep ortusur. **CANLI
+kusur 1/34'tur; %24,7 gizil orandir** ve BELIRSIZ kapisi gevsetilirse canliya
+doner. Bu ayrim yapilmadan %24,7 raporlamak kusuru BUYUTMEK olurdu.
+
+## 3. UCUNCU BULGU · YAYINLANAN `road` = DARBOGAZ SERIDI, GOVDE SERIDI DEGIL
+
+`rpi_inference.py:1255` -> `open_path = olcum["darbogaz_serit"]` (rotanin EN DAR
+noktasinin seridi). `baskin_serit` (en cok rota pikseli tasiyan serit) hesaplanir
+ama YAYINLANMAZ. Olculdu: 258 rotali karenin **5'inde (%1,9)** ikisi ayrisiyor,
+besi de cok seritli. Kucuk bir etki, ama tam da kararsiz karelerde toplaniyor
+(sa_000063 D-119'un ornegi; sa_000215 ve sa_000238 ceviren 8'den).
+
+    sa_000063  yayin=1 govde=2  piksel=[115,425,0]
+    sa_000215  yayin=1 govde=2  piksel=[253,287,0]
+    sa_000238  yayin=3 govde=2  piksel=[0,270,270]
+
+## 4. T79'UN YENI SEKLI
+
+Kalan tek mekanizma PLANLAYICI tarafindadir: degismeyen bir koridor kumesi
+uzerinde A* maliyet beraberligi. Bu, VERI tarafindan (D-142: doz egrisi tek
+yonlu) ve ENVANTER tarafindan (bu kayit) cozulemez. Beraberlik bozma da
+`serit_min_px` uzerinde DEGIL, A*'in TOPLAM YOL MALIYETI uzerinde tanimlanmali;
+`_rota_serit_olcumu` rota SECILDIKTEN SONRA calisir, secimi degistiremez.
+
+**KAPILAR:** `codes/test_rota_sentetik.py` **15/15**. Uretim kodu DEGISMEDI —
+bu kayit yalniz olcumdur.
+
+**DOGRULANAMADI**
+  1. A* maliyet beraberligi HIPOTEZDIR, olculmedi. `astar()` toplam maliyeti
+     dondurmuyor; olcmek icin ya imza degisikligi ya koridor-kisitli yeniden
+     kosum gerekir. Yapilmadi.
+  2. sa_000148 (tek kapanmayan etiket celiskisi) aciklanamadi. Muhtemel:
+     rota bandı serit 3 kapisindan gecip darbogazi serit 2'ye dusuruyor —
+     DOGRULANMADI.
+  3. Kapi yayilimi cx ± genislik/2 ile KESTIRILDI; uretim kapi x0/x1
+     dondurmuyor. Duzensiz kapilarda bu yaklasim hatali olabilir.
+  4. Butun sayilar `sentetik_arena_kadraj_t66` kumesindendir. Gercek arena
+     karelerinde envanterin ne yapacagi OLCULMEDI (elimizde gercek arena
+     goruntusu yok — bkz. insan gorevleri).
+  5. `road` etiket kusurunun gercek hakem kosusunda puana etkisi olculmedi.
