@@ -10180,3 +10180,75 @@ ara noktasidir. Getirisi ORTA: tutarsa uretim modeli iyilesir, tutmazsa
 BASKA yerde (T79: beraberlik bozma + histerezis) aramaya odaklaniriz.
 
 ⚠ K-3: fitness karar olcutu DEGILDIR.
+
+---
+
+### D-142 · 🔴 RED · v32 (2 KAT) kararliligi YARI YARIYA kurtardi ama esigi tutturamadi — DOZ EGRISI TEK YONLU
+Olcen/karar: Claude 1 (mimar) · 2026-08-16 08:26-09:10 · esikler D-141'de SONUC GORULMEDEN yazildi
+
+**EGITIM.** v32 = v30 ile her seyde ayni, tek fark gercek kare cogaltmasi
+4 kat -> 2 kat (train 224 -> 112, ozgun kare sayisi AYNI 56). 200/200 epoch,
+en iyi epoch 200, 342 dk. Fitness 0,41199 (v30: 0,41545).
+
+**D-141'IN BES SARTI, TEK TEK:**
+
+    1. ALTI OLCUT DE GECTI                                       ✓
+       K0 GECTI (figur %0,3 · raw 0/8 · cp 0/8) · K1 258/260
+       K2 19/258 = %7,36 · K3 0/258 = %0,0 · K4 2/258 = %0,78
+       K5 (govde yaricapiyla, 173 kare) 0/173 · 0 px
+    2. K5 = 0 px — PAZARLIGA KAPALI                               ✓
+    3. K3 agir basma = %0,0                                       ✓
+    4. KARARLILIK <= 5/260                                        ✗ **6/260 (%2,31)**
+    5. `drone` rota >= 8/12                                       ✓ 10/12
+
+**VERDIKT: v32 REDDEDILIR. URETIM MODELI v30 KALIR.** Tek sart dustu ve esik
+sonucu gormeden yazilmisti; 6 > 5. Esigi "kil payi" diye gevsetmiyorum —
+v29'u 3 piksel icin reddettim, burada 1 kare icin gevsetmek ayni disiplini
+bozar.
+
+**ASIL BULGU — DOZ EGRISI TEK YONLU, TATLI NOKTA YOK:**
+
+    doz            karar cevrilmesi     drone rota     K5
+    v28  0 kat       3/260 (%1,15)          —         0 px
+    v32  2 kat       6/260 (%2,31)        10/12       0 px
+    v30  4 kat       8/260 (%3,08)        11/12       0 px
+    v29 12 kat          —                   —         3 px  (REDDEDILDI, D-131)
+
+Gercek veri arttikca `drone` yetenegi MONOTON artiyor, koridor kararliligi
+MONOTON bozuluyor. Ikisini birden veren bir doz YOK. D-141'in sordugu soru
+("doz kararliligi kurtarir mi") **HAYIR** diye cevaplandi — yariya
+indirmek kararsizligin ancak yarisini geri aliyor ve bedeli drone'da
+11/12 -> 10/12.
+
+⚠ **D-140 OLMASAYDI BU EGRI YORUMLANAMAZDI.** `seed` egitimi hic
+etkilemediginden (537/537 tensor ozdes) uc noktanin farki TOHUM GURULTUSU
+OLAMAZ. Dun bosa gittigini sandigim v31 kosusu, bu uc noktayi anlamli
+kilan sey oldu.
+
+**SONUC — KARARSIZLIK ARTIK VERI TARAFINDAN COZULEMEZ.** Geriye tek
+kaldirac kaliyor ve o KOD tarafindadir: **T79** (gurultu tabani altindaki
+beraberliklerde deterministik secim + ardisik karelerde histerezis).
+Kuyruktaki onceligi buna gore yukseltilmelidir.
+
+**YAN BULGU 1 — T87'NIN TAVANI DOGRULANDI.** T87, `kompozit` kaynaginin
+KUSURSUZ ALGIYLA bile en fazla **1/9** rota uretebilecegini olcmustu
+(kalan 8 kare GORUS_HATTI_KOPUK, sahne geometrisi). v32 tam olarak
+**1/9** uretti (5 GORUS_HATTI_KOPUK · 3 ZEMIN_MASKESI_SUPHELI · 1 ROTA).
+Bagimsiz iki yoldan ayni sayi — teshis dogrulanmis oldu.
+
+**YAN BULGU 2 — 🔴 ARAC REFERANS OLCEGI ALAN DISINDA DA ATESLENIYOR.**
+Kaynak taramasinda `gemini` (yer seviyesi yol fotograflari) 3 karede
+`arac_referansi` ile olcek turetti ve 1 karede ROTA URETTI (road_249.jpg,
+pay +2,0 px). O sahnede "arac genisligi 1,80 m" varsayimi TEPEDEN BAKIS
+gerektirir; yandan/egik bakista kisa kenar govde genisligi DEGILDIR.
+`val` kumesinde de 1 kare olcek turetti. Bu, T86'nin getirdigi bir
+YAN ETKIDIR ve emniyetsiz yondedir (uydurma olcek -> uydurma r_gerekli).
+`ALGI_SKALER_OLCEK_GECERSIZ` listesi bu kaynaklari KAPSAMIYOR. Kuyruga
+girer.
+
+**DOGRULANAMADI**
+  1. Kararsizligin gercek veriden GELIS MEKANIZMASI (hangi ozellik) arastirilmadi.
+  2. 1 kat (67 ozgun kare, cogaltmasiz) denenmedi — egri 0 ile 2 arasinda
+     olculmedi; ama 2 kat zaten esigi tutturamadigi icin 1 kat'in drone
+     yetenegini korumasi beklenmez.
+  3. Tum arena olcumleri SENTETIKTIR (D-88/D-99, kalici kisit).
