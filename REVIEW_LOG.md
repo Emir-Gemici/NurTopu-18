@@ -10787,3 +10787,205 @@ sahneler bunu yakalamaz).
      VERILMEMESI, yanlis karardan iyidir ama BEDELSIZ degildir.
   5. B = 11/260'in gercek uctaki karsiligi olculmedi; bu SIMULE gurultu
      olcumudur (sigma = 2/255).
+
+---
+
+### D-147 · 🔴 OLCUM · Envanterin EN KARARSIZ parcasi BANT SECIMI (41/260) · T91 secenek (c) CEVRIMDISI ELENDI · D-146'nin mekanizma cumlesi DUZELTILDI
+Olcen: Claude 1 (mimar) · 2026-08-17 · T91 on calismasi · KOD DEGISTIRILMEDI
+
+## 1. D-146'DA YAZDIGIM MEKANIZMA CUMLESI EKSIKTI
+
+D-146 `sa_000166` icin sunu yazdi: *"degisen tek sey, kapinin AGIRLIK
+MERKEZININ serit sinirini gecmesi"*. Merkez gercekten taraf degistirdi, ama
+SEBEBI yazdigim gibi bir kil payi titremesi DEGIL. Olculdu — kazanan kapinin
+merkezi serit sinirindan **47,3 px** uzakti; kil payi bir titreme onu tasiyamaz.
+Gercek sebep:
+
+    sa_000166   kosu0  bant_y=[236, 275]  -> ACIK · yol_no=1
+                kosu1  bant_y=[300, 339]  -> BELIRSIZ_COKLU
+                kosu2  bant_y=[236, 275]  -> ACIK · yol_no=1
+                kosu3  bant_y=[236, 275]  -> ACIK · yol_no=1
+
+**BANT DEGISTI.** `koridor_adaylari` bes aday bant orani dener ve birini secer;
+gurultu altinda BASKA bir yatay dilim secildi. Farkli dilim farkli kapi sekli,
+farkli agirlik merkezi demektir. D-146 append-only oldugu icin duzeltilmedi;
+duzeltme burada.
+
+## 2. BANT SECIMI, ENVANTERIN EN KARARSIZ PARCASI
+
+Ayni kosulardaki (sigma=2/255, tekrar=3, tohum=7, n=260) tam sayim:
+
+    kod durumu     BANT degisen   yol_no degisen   IKISI BIRDEN
+    T90 oncesi        41/260          10/260            4
+    T90 + koruma      41/260          11/260            5
+
+**41/260 = %15,8.** Bu, `yol_no` kararsizliginin (%4,2) neredeyse DORT KATIDIR
+ve T90 oncesi ile sonrasi BIREBIR AYNIDIR — yani T90'in actigi bir sey DEGIL,
+BASTAN BERI ORADA olan bir kusur. Bugune kadar olculmemisti cunku disaridan
+gorunmuyor: bant, karar nesnesinde yayinlanmiyor.
+
+**KOKEN — YINE AYNI SINIF KUSUR.** `costmap_path_finder.py:406-409` bandi
+`(kapi_sayisi, toplam_alan)` uzerinden ARGMAX ile secer:
+
+    len(kapilar) > en_iyi_kapi_sayisi  OR
+    (esit sayida ise)  sum(alan) > sum(en_iyi alan)
+
+Yani SUREKLI bir buyukluk (toplam alan) uzerinde AYRIK bir secim. Iki bandin
+alani birbirine yakinsa argmax OLCUMU degil GURULTUYU izler. Bu, D-122'nin
+serit beraberligi ve D-145'in A* maliyet beraberligiyle AYNI kusur sinifidir;
+proje bunu ucuncu kez ayni yerde goruyor.
+
+⚠ **NEDENSELLIK IDDIA EDILMIYOR.** 41 bant degisiminin yalniz 5'i `yol_no`yu de
+cevirdi; 11 `yol_no` cevrilmesinin 6'sinda bant HIC degismedi. Yani bant
+kararsizligi karar cevrilmesi icin ne GEREK ne YETER kosuldur. Dogrudan
+izlenebilen tek vaka `sa_000166`'dir. Bant kararliligi bir ADAY kaldiractir,
+kanitlanmis bir care DEGIL.
+
+## 3. T91 · SECENEK (c) CEVRIMDISI ELENDI
+
+T91 uc secenek biraktimisti. (c) "kazanan kapinin yayilimi iki seritliyse
+fail-closed" GPU'ya gerek kalmadan, mevcut dokumden degerlendirildi:
+
+    ACIK (T90 + koruma)                    : 31/260
+    kazanan kapi iki seride yayilan        : 13
+    secenek (c) uygulanirsa ACIK           : 18/260
+    T91 on kayit kapisi                    : ACIK >= 31/260
+    -> KAPI DUSER · **SECENEK (c) REDDEDILDI**
+
+**Ayrica (c)'nin gerekcesi de zayif cikti.** Kazanan kapi merkezinin serit
+sinirina uzakligi olculdu (n=13):
+
+    medyan 29,3 px · en kucuk 8,3 px · en buyuk 60,3 px
+    10 px'ten yakin olan: 1/13  (yalniz sa_000129, 8,3 px)
+
+Yani yayilan kapilarin **12/13'unde merkez sinira UZAK**; etiket kil payinda
+degil. "Yayilim iki seritli" olmak, etiketin belirsiz oldugu anlamina GELMIYOR.
+(c) hem pahali hem yanlis hedefe atesliyor.
+
+Geriye (a) mevcut davranis ve (b) kapinin darbogaz noktasinin seridi kaliyor.
+**(b) OLCULMEDI** — kapinin darbogaz noktasi karar nesnesinde yayinlanmiyor;
+olcmek once o alanin yayinlanmasini gerektirir.
+
+## 4. ACILAN GOREV
+
+**T92 — bant secimi gurultuye karsi kararsiz (41/260).** Kapisi TASK_QUEUE'da.
+⚠ T92 karar cekirdegine dokunur ve kabul olcumu GPU ister; v33 egitimi bitmeden
+KOD YAZILMADI. Boylece "bant duzeltmesi" ile "v33 model degisikligi" ayni
+olcumde KARISMAZ.
+
+**KOD DEGISTIRILMEDI. Kapi:** `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK (degisiklik yok, dogrulama amacli).
+
+**DOGRULANAMADI**
+  1. Bant kararliliginin duzeltilmesinin `yol_no` kararsizligini (11/260)
+     DUSURECEGI KANITLANMADI — 6 cevrilmede bant hic degismiyor.
+  2. Bandin neden kaydigi (hangi iki bandin alani yaristi) kare kare
+     izlenmedi; yalniz `sa_000166` dogrudan bakildi.
+  3. Secenek (b) olculmedi (GPU mesgul).
+  4. Butun sayilar `sentetik_arena_kadraj_t66` kumesinden; gercek arena
+     karesinde olculmedi.
+
+---
+
+### D-148 · 🔴 TERFI YOK ama HIPOTEZ DOGRULANDI · v33 (gurultu dayanikliligi) kararliligi 8/260 -> 3/260 indirdi, K5'ten DUSTU
+Olcen/karar: Claude 1 (mimar) · 2026-08-17 02:37-09:27 egitim · 09:30-10:10 olcum
+On kayit: `calisma/olcum/v33_on_kayit.md`, egitim BASLAMADAN once yazildi (D-107)
+
+**EGITIM.** v33 = v30 recetesi (`56_t53_gercek_karisim.py`, v30'un `args.yaml`i
+ile dogrulandi: epochs=200 · imgsz=512 · batch=12 · seed=0 · cache=disk ·
+workers=16 · model=v15_on10sinif/best.pt · data=karisim_gercek_otopark.yaml)
++ **TEK DEGISKEN**: egitim orneklerinin yarisina Gauss piksel gurultusu
+(sigma ~ U(0,6)/255). Val'e gurultu VERILMEDI. 200/200 epoch · **409,2 dk**.
+
+Recete KOPYALANMADI, `78_gurultu_dayanikli_egitim.py` o betigi CAGIRDI (madde
+16). Ultralytics'in piksel gurultusu hiperparametresi yoktur; `albumentations`
+kurulsaydi kendi varsayilan hatti da (Blur/CLAHE/ToGray) acilir, tek degisken
+olmaktan cikardi. Onun yerine `BaseDataset.load_image` MODUL DUZEYINDE
+yamalandi.
+
+⚠ **YAMANIN GERCEKTEN KOSTUGU KANITLANDI, UMUT EDILMEDI.** Windows'ta
+DataLoader iscileri `spawn` ile ayri surectir; yama her surecte ilk
+atesledigine dair bir satir yazar. `calisma/olcum/v33_gurultu_kaniti.log`
+egitim sonunda **32 ayri PID** icerir. Ayrica `cache=disk` gurultuyu onbellege
+YAZMAZ (Ultralytics diski `cv2.imread` ile doldurur, `load_image` ile degil),
+yani her epoch YENI gurultu gorur.
+
+## 1. BIRINCIL OLCUT — HIPOTEZ DOGRULANDI
+
+`68_karar_kararliligi.py` (sigma=2/255, tekrar=3, tohum=7, n=260):
+
+    model              KARARI CEVRILEN
+    v28 (0 kat)             3/260        <- onceki en iyi
+    v32 (2 kat)             6/260
+    v30 (URETIM, 4 kat)     8/260
+    **v33 (v30 + gurultu)   3/260**      <- on kayit esigi: <= 4/260
+
+On kaydin birincil olcutu **A <= 4/260 -> HIPOTEZ DOGRULANDI** dalidir. 3/260
+o esigi tutturdu ve v30'u YARIYA INDIRDI.
+
+## 2. 🔴 D-142'NIN BIR SONUCU KISMEN CURUDU
+
+D-142 sunu yazmisti: *"kararsizlik VERI tarafindan cozulemez. Tek kaldirac KOD
+tarafinda."* Bu **DOZ ekseninde** olculmustu (gercek kare cogaltmasi 0x/2x/4x)
+ve o eksende dogrudur — doz egrisi tek yonludur. Ama **GURULTU DAYANIKLILIGI
+AYRI BIR VERI EKSENIDIR** ve hic denenmemisti. Olculdu: veri tarafi
+kararsizligi **8/260'tan 3/260'a indiriyor**. D-142'nin cumlesi "doz ekseninde"
+diye daraltilmalidir.
+
+Bu, T79'un tek kaldiracinin kod oldugu varsayimini da zayiflatir: kod tarafi
+(A* maliyet beraberligi) hala acik bir kaldiractir, ama TEK degildir.
+
+## 3. KABUL DENETIMI — K5 DUSTU
+
+`65_kabul_denetcisi.py` + gercek K5 icin `66_k5_bariyer_populasyon.py`
+(D-144: 65'in K5 "None" ciktisi tek-kare kisitidir, populasyon olcumu 66'dir):
+
+    olcut                 v30 (uretim)      v33            yon
+    K0 korluk             %8,0              **%1,0**       IYI
+    K1 rota >= 230        258/260           258/260        AYNI
+    K2 basma <= %15       22/258 (%8,5)     **18/258**     IYI
+    K3 agir <= %3         0/258             0/258          AYNI
+    K4 arena disi <= %5   1/258             **0/258**      IYI
+    K5 bariyer = 0 px     **0/173 · 0 px**  **1/173 · 2 px**  🔴 DUSTU
+
+    dusen kare: sa_000131 · 2 px · darbogaz 14,797 px · r_gerekli 14 px
+                -> pay 0,8 px (T74 sinifi: kil payi koridor)
+
+## 4. TERFI KURALI UYGULANDI — v33 TERFI ETMEZ
+
+On kayit UC sart birden istiyordu:
+    1. A <= 4/260                      ✅  3/260
+    2. K0..K5 kapilarinin HEPSI gecer  ❌  K5 DUSTU
+    3. K1 >= 250/260                   ✅  258/260
+
+On kayitta aynen su yaziyordu: *"Ucunden biri bile tutmazsa v33 TERFI ETMEZ;
+sonuc yine de kayda gecer. 'Neredeyse tuttu' diye terfi ettirilmez."*
+
+**URETIM MODELI v30 OLARAK KALIR.** `config/model_registry.json` DEGISTIRILMEDI.
+
+⚠ Bu, v33'un "kotu" oldugu anlamina GELMEZ: dort olcutte v30'dan IYI, birinde
+esit, birinde kotu. Ama K5 projenin SIFIR esikli fiziksel guvenlik olcutudur
+(D-107) ve gevsetilmez. 2 px, IKA govdesinin bariyere DEGMESIDIR.
+
+## 5. BU BIR TOHUM PIYANGOSU DEGIL
+
+D-135 tek-kosu uyarisini yazmisti; ama D-140 `seed`in Ultralytics'te egitimi
+HIC etkilemedigini olctu (v31, v30'un bit-bit aynisiydi). Yani v33'un K5
+dususu tekrar edilebilir bir sonuctur, sansa baglanamaz.
+
+**KAPILAR:** uretim kodu DEGISMEDI; `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. K5 dususunun KOKENI bulunmadi. `sa_000131` pay 0,8 px'lik bir kil payi
+     karesidir; gurultu augmentasyonunun maskeyi bir yerde 2 px genislettigi
+     TAHMIN ediliyor ama OLCULMEDI.
+  2. sigma araligi (0,6) SECILDI, TARANMADI. Daha dar bir aralik (or. 0-3)
+     K5'i bozmadan kararliligi verir miydi, bilinmiyor.
+  3. Gurultu olasiligi 0,5 SECILDI, taranmadi.
+  4. v33'un GERCEK karelerde (drone/kompozit) ne yaptigi olculmedi; bu kayit
+     yalniz sentetik arena kadraj kumesini kapsar.
+  5. A = 3/260 ile v28'in 3/260'i AYNI kareler mi, bakilmadi.
+  6. K0'in %8,0'dan %1,0'a dusmesi buyuk bir degisimdir ve ACIKLANMADI;
+     gurultu augmentasyonunun asiri-tespiti frenledigi tahmin ediliyor,
+     olculmedi.

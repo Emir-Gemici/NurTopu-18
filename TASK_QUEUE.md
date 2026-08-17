@@ -4237,10 +4237,36 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
         KAZANAN kapı İKİ ŞERİDE yayılıyor (numara SINIRDA): 13  (%42)
     ```
     `serit_yayilimi` alanı bu kareleri **görünür** kılar; **çözmez**.
-  - **KARAR VERİLMEDİ — üç seçenek, hiçbiri ölçülmedi:**
-    (a) ağırlık merkezi (bugünkü davranış);
-    (b) kapının **darboğaz noktasının** şeridi — rota fiilen oradan geçer;
-    (c) yayılım iki şeritliyse **fail-closed** (`road` yayınlama).
+  - **SEÇENEKLER:**
+    (a) ağırlık merkezi (bugünkü davranış) — yürürlükte;
+    (b) kapının **darboğaz noktasının** şeridi — rota fiilen oradan geçer.
+        **ÖLÇÜLMEDİ**: darboğaz noktası karar nesnesinde yayınlanmıyor, önce
+        o alan yayınlanmalı;
+    (c) yayılım iki şeritliyse **fail-closed** → 🔴 **ELENDİ (D-147)**.
+        Çevrimdışı ölçüldü: ACIK **31 → 18/260**, ön kayıt kapısı (≥31) düşer.
+        Gerekçesi de zayıf çıktı: yayılan 13 kazananın **12'sinde** merkez şerit
+        sınırına 10 px'ten uzak (medyan 29,3 px) — etiket kıl payında değil.
+- [ ] **T92 — Bant seçimi gürültüye karşı KARARSIZ (41/260), envanterin en oynak parçası** · `codes/costmap_path_finder.py:406-409` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-147**
+  - `koridor_adaylari` beş aday bant oranı dener ve bandı
+    `(kapı_sayısı, toplam_alan)` üzerinden **argmax** ile seçer — yani **sürekli
+    bir büyüklük üzerinde ayrık bir seçim**. Ölçüldü (σ=2/255, n=260):
+    ```text
+    kod durumu     BANT değişen   yol_no değişen   İKİSİ BİRDEN
+    T90 öncesi        41/260          10/260            4
+    T90 + koruma      41/260          11/260            5
+    ```
+    **%15,8** — `yol_no` kararsızlığının ~4 katı; T90 öncesi/sonrası **birebir
+    aynı**, yani mevcut bir kusur.
+  - Doğrudan izlenen tek vaka `sa_000166`: bant `[236,275] → [300,339]` kayınca
+    kazanan kapının merkezi şerit sınırını geçti — oysa merkez sınıra **47,3 px**
+    uzaktı, yani kıl payı bir titreme değil.
+  - ⚠ **NEDENSELLİK YOK:** 41 bant değişiminin yalnız 5'i `yol_no`'yu de çevirdi;
+    11 çevrilmenin 6'sında bant hiç değişmedi. Bant kararlılığı **aday** bir
+    kaldıraçtır, kanıtlanmış çare değil.
+  - Bu, D-122 (şerit beraberliği) ve D-145 (A\* maliyet beraberliği) ile **aynı
+    kusur sınıfıdır** — proje bunu üçüncü kez görüyor.
+  - **KAPI:** `75_koridor_envanteri.py` → bant değişen kare **≤ 10/260** ve
+    `B ≤ 11/260` **ve** ACIK `≥ 31/260`. Üçü birden tutmazsa düzeltme reddedilir.
   - **KAPI:** seçilen seçenek `75_koridor_envanteri.py` ile ölçülecek;
     `B <= 11/260` (T90+koruma tabanı) **ve** ACIK sayısı `>= 31/260` kalmalı.
     İkisi birden tutmuyorsa seçenek reddedilir.
