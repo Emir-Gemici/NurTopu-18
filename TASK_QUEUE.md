@@ -4246,6 +4246,27 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
         Çevrimdışı ölçüldü: ACIK **31 → 18/260**, ön kayıt kapısı (≥31) düşer.
         Gerekçesi de zayıf çıktı: yayılan 13 kazananın **12'sinde** merkez şerit
         sınırına 10 px'ten uzak (medyan 29,3 px) — etiket kıl payında değil.
+- [ ] **T93 — K5 kapısı TEK TEMİZ ÇEKİLİŞTE ölçülüyor; `K5=0` sağlam bir özellik değil** · `65_kabul_denetcisi.py` · `66_k5_bariyer_populasyon.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-149**
+  - Ölçüldü (`79_k5_koken.py`, `sa_000131`, 20 eşleştirilmiş gürültülü çekiliş):
+    ```text
+    v30: KESEN koşu  3/20   darboğaz 14,80 – 17,60 arası oynuyor
+    v33: KESEN koşu 20/20   darboğaz 20 koşuda da 14,80
+    kesen koşuların darboğazı   : {14,80}                  (HER İKİ MODELDE)
+    kesmeyen koşuların darboğazı: {15,98 · 16,00 · 17,60}  (HER İKİ MODELDE)
+    ```
+    Kare **iki modlu**; kötü mod İKA gövdesini bariyere 2 px sokuyor.
+    **v30'un kayıtlı `K5 = 0/173`'ü o çekilişte kesmediği anlamına gelir**,
+    kesmeyeceği anlamına değil. D-133'teki "GEÇTİ" ifadesi bu yüzden eksik.
+  - Bu, K5'in ölçüm kusuruyla **üçüncü** karşılaşması: D-114 (tek kare) ·
+    D-115 (noktasal rota) · D-149 (tek çekiliş).
+  - **YAP:** K5 kapısı popülasyon **× gürültülü tekrar** olarak yeniden
+    tanımlansın (kararlılık kapısının reçetesi: σ=2/255). Ölçüt "hiçbir karede,
+    hiçbir çekilişte kesişim yok" olmalı; tek çekiliş yeterli sayılmasın.
+  - ⚠ **ÖNCE KARAR:** eşik gevşetilmiyor, **ölçüm** sıkılaştırılıyor. Bu, v30
+    dâhil mevcut modellerin K5'ini yeniden açabilir — sonucu ne olursa olsun
+    kayda geçer.
+  - **KAPI:** yeni ölçütle v30 ve v33 **eşit koşulda** yeniden ölçülür; iki
+    modelin de sonucu `REVIEW_LOG`'a yazılır. Karar kullanıcınındır.
 - [ ] **T92 — Bant seçimi gürültüye karşı KARARSIZ (41/260), envanterin en oynak parçası** · `codes/costmap_path_finder.py:406-409` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-147**
   - `koridor_adaylari` beş aday bant oranı dener ve bandı
     `(kapı_sayısı, toplam_alan)` üzerinden **argmax** ile seçer — yani **sürekli

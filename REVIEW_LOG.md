@@ -10989,3 +10989,119 @@ dususu tekrar edilebilir bir sonuctur, sansa baglanamaz.
   6. K0'in %8,0'dan %1,0'a dusmesi buyuk bir degisimdir ve ACIKLANMADI;
      gurultu augmentasyonunun asiri-tespiti frenledigi tahmin ediliyor,
      olculmedi.
+
+---
+
+### D-149 · 🔴 KOKEN BULUNDU · v33'un K5 dususu "bariyere sizma" DEGIL; v30'u kurtaran TITREMENIN KALKMASI · K5 KAPISI TEK CEKILISTE OLCULUYOR
+Olcen: Claude 1 (mimar) · 2026-08-17 · D-148 "DOGRULANAMADI #1"in kapatilmasi
+Betik: `79_k5_koken.py` · uretim kodu DEGISTIRILMEDI
+
+D-148 K5 dususunun kokeni icin *"gurultu augmentasyonunun maskeyi bir yerde
+genislettigi TAHMIN ediliyor"* yazmisti. **O tahmin YANLIS cikti.**
+
+## 1. IKI HIPOTEZ DE CURUDU (sa_000131, eslestirilmis olcum)
+
+    olcut                              v30        v33
+    serit (road)                         2          2
+    darbogaz_px                      16,00      14,80
+    r_gerekli_px                     14,08      14,08
+    bariyer DUYARLILIGI (blocked)   0,9504     0,9504     <- BIREBIR AYNI
+    SERBEST alan bariyer USTUNDE       108        106     <- fiilen AYNI
+    ham `trav` bariyer USTUNDE         412         89     <- v33 DAHA muhafazakar
+    KESISIM px                           0          2
+
+    kesisim civarinda (kutu ± 40 px):
+      blocked kapsamasi             0,8886     0,8886     <- BIREBIR AYNI
+      serbest alan bariyer ustunde      41         41     <- BIREBIR AYNI
+
+**H2 (bariyer sizintisi) CURUDU:** v33 bariyer uzerinde serbest alani
+BUYUTMEDI; ham maskesi orada 4,6 KAT DAHA KUCUK.
+**H1 (rota tasindi) CURUDU:** ayni serit, IKISINDE DE 8 waypoint, L1 sapma
+medyan **2 px**, azami 5 px. Rota baska koridora GITMEDI.
+
+## 2. GERCEK MEKANIZMA — KARE IKI MODLU, KESISIM DARBOGAZLA BIREBIR
+
+20 gurultulu cekilis, IKI modele de AYNI gurultu ornegi verilerek:
+
+    v30: KESEN kosu  3/20   kesisim 2 px   darbogaz 14,80 – 17,60 arasi oynuyor
+    v33: KESEN kosu 20/20   kesisim 2 px   darbogaz 20 kosuda da 14,80
+
+    KESEN kosularin darbogazi   : {14,80}                  (HER IKI MODELDE)
+    KESMEYEN kosularin darbogazi: {15,98 · 16,00 · 17,60}  (HER IKI MODELDE)
+
+**Ayrim KUSURSUZ:** darbogaz 14,80 ⟺ 2 px kesisim; darbogaz >= 15,98 ⟺ 0 px.
+40 eslestirilmis kosuda TEK istisna yok. Yani kare IKI MODLUDUR ve kotu mod
+IKA govdesini bariyere 2 px sokar.
+
+**v30 o kotu moda gurultulu cekilislerin %15'inde dusuyor; temiz cekiliste
+dusmedi (16,00). v33 ise HER cekiliste dusuyor (14,80).**
+
+🔴 **YANI v33 DAHA AZ GUVENLI OLMADI; v30'u KURTARAN TITREMEYI KALDIRDI.**
+Gurultu dayanikliligi v33'un HEDEFIYDI ve calisti — ama titreme bu karede
+kotu modu %85 ihtimalle atlatan sey oldugu icin, kararlilik kazanci burada
+kotu modu KALICI hale getirdi. Bu bir yan etki degil, ayni ozelligin obur yuzu.
+
+## 3. 🔴 KAPININ KENDISI KUSURLU: K5 TEK TEMIZ CEKILISTE OLCULUYOR
+
+`65`/`66` K5'i kare basina TEK temiz cikarimla olcer. `sa_000131`in sonucu ise
+bir YAZI-TURA'dir. Dolayisiyla:
+
+**v30 icin kayitli `K5 = 0/173` SAGLAM BIR OZELLIK DEGILDIR** — ayni kare v30
+ile de 3/20 cekiliste 2 px kesiyor. D-133'te v30'un K5'i "GECTI" diye yazildi;
+dogru ifade "o cekiliste kesmedi"dir.
+
+Populasyon kontrolu (173 bariyerli kare, temiz + 3 gurultulu, eslestirilmis):
+
+    v30: hicbir kosuda kesen kare 0/173      (3 tekrar sa_000131'in kotu
+                                              moduna denk GELMEDI — 20
+                                              tekrarda 3 kez gelmisti)
+    v33: kesen kare 1/173, o da 4/4 kosuda   (sa_000131)
+
+⚠ Uc tekrarin kotu modu yakalama olasiligi 1-(0,85)^3 ≈ %39'dur; populasyon
+kosusunun v30'da 0 vermesi kokeni CURUTMEZ, yalnizca tekrar sayisinin AZ
+oldugunu gosterir.
+
+Bu, K5'in olcum kusuruyla ucuncu karsilasmasidir (D-114: tek kare · D-115:
+noktasal rota · bu kayit: tek cekilis). **T93 acildi.**
+
+## 4. TEK FAKTORLU ACIKLAMALAR CURUTULDU
+
+"Bariyer duyarliligi dusuk oldugu icin" ya da "pay dar oldugu icin" aciklamalari
+populasyonda TUTMUYOR:
+
+    v33, en DUSUK bariyer duyarlilikli 6 kare (0,8699 – 0,9016): kesisim 0 · 0 · 0 · 0 · 0 · 0
+    v33, en DAR paylI 6 kare (0,10 – 0,12 px)                  : kesisim 0 · 0 · 0 · 0 · 0 · 0
+
+    populasyon: duyarlilik medyan 1,0000 · min 0,8699 · <0,95 olan 13/173
+                pay        medyan 11,92 px · min 0,10 px · <1 px olan 17/173
+
+`sa_000131` ikisinde de EN KOTU DEGIL (duyarlilik 0,9504 · pay 0,72 px).
+Kesisim, kaplanmayan bariyer kenarinin rotaya gore NEREDE oldugu ile ilgilidir;
+tek bir skaler bunu ongormuyor. Bu kayit boyle bir ongoru IDDIA ETMEZ.
+
+Not: v33'un pay MEDYANI v30'unkinden BUYUK (11,92 > 9,92) — yani v33 genel
+olarak DAHA DAR koridorlar uretmiyor; sorun tek karede ve yerel.
+
+## 5. BU KAYIT NE DEGISTIRMEZ
+
+**v33 hala TERFI ETMEZ.** On kayit (D-148) K0..K5'in HEPSINI sartti ve K5
+dustu. Kokenin "titremenin kalkmasi" olmasi kurali GEVSETMEZ; kural sonuca
+gore degistirilmez. Uretim modeli **v30**, `model_registry.json` degismedi.
+
+Ancak karar sahibine sunulacak yeni bilgi sudur: **v30'un K5 ustunlugu de
+olculdugunde kayboluyor** (3/20). Iki modeli ESIT KOSULDA kiyaslamak icin K5
+kapisi gurultu altinda yeniden tanimlanmalidir (T93). O yapilana kadar iki
+model de bu olcutte "temiz cekiliste sansli/sanssiz" durumundadir.
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. `sa_000131`i iki modlu yapan sey (hangi piksel obeginin varligi/yoklugu
+     darbogazi 14,80 ile 15,98 arasinda zipllatiyor) BULUNMADI.
+  2. v30'un 173 kare uzerinde 20 tekrarli K5'i OLCULMEDI (maliyet); yalnizca
+     `sa_000131` icin olculdu. Baska karelerin de iki modlu olup olmadigi
+     BILINMIYOR.
+  3. Bariyer duyarliligini 1,0'a cikarmanin kesisimi kaldirip kaldirmayacagi
+     olculmedi.
+  4. Butun sayilar sentetiktir (D-88 + D-99 kalici kisiti).
