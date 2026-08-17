@@ -11105,3 +11105,120 @@ model de bu olcutte "temiz cekiliste sansli/sanssiz" durumundadir.
   3. Bariyer duyarliligini 1,0'a cikarmanin kesisimi kaldirip kaldirmayacagi
      olculmedi.
   4. Butun sayilar sentetiktir (D-88 + D-99 kalici kisiti).
+
+---
+
+### D-150 · 🔴 T93 · K5 SIKI KAPIDA **IKI MODEL DE DUSUYOR** — v30'un `K5 = 0/173`'u SANSLI BIR CEKILISMIS · D-149 DUZELTILDI
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T93 · uretim kodu DEGISTIRILMEDI
+On kayit: `scripts/olcum/t93_on_kayit.md` — olcum KOSULMADAN once yazildi (D-107)
+
+## 1. OLCUM
+
+`80_k5_siki_kapi.py` · 173 bariyerli+olcekli kare · kare basina **1 temiz +
+20 gurultulu** cekilis (sigma=2/255, 68'in recetesi) · cekilisler IKI MODELE DE
+ESLESTIRILMIS verildi · bariyer TEMIZ goruntuden BIR KEZ (yer gercegi).
+
+    model    TEMIZ cekilis   HERHANGI cekilis   (kare,cekilis) cifti   K5-SIKI
+    v30          0/173            1/173               4/3633           DUSER
+    v33          1/173            1/173              18/3633           DUSER
+
+    POZITIF KONTROL (temiz cekilis, 66'nin yayimlanmis sayilari):
+      v30 beklenen 0 · olculen 0 · TUTTU
+      v33 beklenen 1 · olculen 1 · TUTTU     -> kosu 66 ile KIYASLANABILIR
+
+    kesen TEK kare (iki modelde de AYNI): sa_000131
+      v30  4/21 cekiliste kesiyor  (%19)
+      v33 18/21 cekiliste kesiyor  (%86)
+      darbogaz  KESEN = {14,80}
+                KESMEYEN = {15,98 · 16,00 · 17,00 · 17,60}
+
+**ON KAYIT DALI 1 ATESLEDI** ("ikisi de duserse"): K5 hicbir modelde
+saglanmiyor. On kayitta yazildigi gibi bu bir MODEL kusuru degil KORIDOR
+kusurudur (T74 sinifi). Terfi karari kullanicinindir.
+
+## 2. 🔴 v30'UN KAYITLI `K5 = 0/173`'U SAGLAM DEGILDI
+
+D-133 v30 icin "K5 GECTI · 0/173" yazdi. Dogru ifade **"o cekiliste kesmedi"**
+idi: ayni model, ayni kare, 21 cekilisin 4'unde kesiyor. Kapi tek temiz
+cikarimla olculdugu icin sonuc bir YAZI-TURA'ydi ve favori tarafa dustu.
+
+Bu, K5'in olcum kusuruyla DORDUNCU karsilasmasidir:
+    D-114  tek kare olculuyordu
+    D-115  rota 3 px NOKTASAL iz olarak kalinlastiriliyordu
+    D-149  tek CEKILISTE olculuyordu
+    D-150  ...ve o tek cekilis v30'u HAKSIZ YERE GECIRIYORDU
+
+## 3. 🔴 D-149 DUZELTILDI — "20/20 DETERMINISTIK" KISMEN ARTEFAKTMIS
+
+D-149 v33 icin *"20/20 kesiyor · darbogaz 20 kosuda da 14,80"* yazdi ve bundan
+"v33 kotu modu KALICI hale getirdi" sonucunu cikardi. O olcumun gurultu
+dongusu bariyer maskesini de GURULTULU goruntuden turetiyordu; oysa bariyer
+YER GERCEGIDIR ve sensor gurultusuyle yerinden oynamamalidir.
+
+Bariyer TEMIZ goruntuden sabitlenince: **v33 20 gurultulu cekilisin 17'sinde
+kesiyor (%85), 20/20 DEGIL.** Yani:
+  - "v33 daha sik kesiyor" bulgusu AYAKTA (%85 vs v30 %15-19)
+  - "v33 icin DETERMINISTIK" nitelemesi YANLIS, geri alindi
+
+D-149 append-only oldugu icin orada duruyor; duzeltme budur.
+
+Bimodal mekanizma DUZELTILMIS olcumde de aynen tekrar etti: kesen cekilislerin
+darbogazi {14,80}, kesmeyenlerinki {15,98 · 16,00 · 17,00 · 17,60}. Ayrim yine
+kusursuz — 3633 cekiliste tek istisna yok.
+
+## 4. ⚠ "K5 DUSTU" NE DEMEK, NE DEMEK DEGIL
+
+K5, rotayi **r_gerekli_px** yaricapiyla kalinlastirip bariyerle kesistirir.
+mpp = 0,07812 icin:
+
+    yari govde      0,350 m =  4,48 px
+    maske hatasi    0,250 m =  3,20 px
+    takip hatasi    0,500 m =  6,40 px
+    R_GEREKLI       1,100 m = 14,08 px
+
+Yani kesisen sey **GOVDE DEGIL, EMNIYET ZARFIDIR**. 2 px'lik kesisim, zarfin
+2 pikselinin bariyere girmesidir; kusursuz takiple govde bariyerden hala
+~(14,08-2)-4,48 = 7,6 px ≈ **0,59 m** uzaktadir. Asinan sey TAKIP HATASI
+butcesidir (0,50 m -> ~0,34 m o noktada).
+
+**Bu bir esik gevsetmesi DEGILDIR** — D-107'nin olcutu (0 px) aynen durur ve
+bu kayit onu gevsetmiyor. Yalnizca sayinin NE OLCTUGU yaziliyor: "K5 dustu"
+"arac bariyere carpiyor" demek degildir. `66`nin baslik metni ("IKA GOVDESI
+bariyer koluna degiyor mu") bu yuzden YANILTICIDIR ve duzeltilmelidir.
+
+## 5. IKI MODELIN ESIT KOSULDAKI TABLOSU
+
+    olcut                        v30            v33            ustun
+    karar kararliligi (A)        8/260          3/260          v33
+    K0 korluk                    %8,0           %1,0           v33
+    K1 rota                      258/260        258/260        esit
+    K2 basma                     22/258         18/258         v33
+    K3 agir basma                0/258          0/258          esit
+    K4 arena disi                1/258          0/258          v33
+    K5-SIKI (T93)                DUSER          DUSER          esit (ikisi de)
+      kesen cekilis orani        4/21 (%19)     18/21 (%86)    v30
+
+**KARAR KULLANICININDIR.** Mimar uretim modelini DEGISTIRMEDI:
+`config/model_registry.json` -> `models/navitas_seg_v30_best.pt` aynen duruyor.
+D-148'in terfi reddi de AYAKTA (K5 kapisi hala saglanmiyor).
+
+## 6. ASIL IS KORIDORDA
+
+Kesen tek kare `sa_000131`in darbogazi 14,80 px, r_gerekli 14,08 px — pay
+**0,72 px**. Populasyonda pay < 1 px olan kare 17-18/173. Bu koridorlar
+gecilebilir SAYILIYOR ama emniyet zarfi bariyere degiyor. Model degistirerek
+kapanacak bir sey degil; **koridor kabul olcutu** meselesidir (T74).
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. 20 tekrar, bilinen kotu modu %96,1 ihtimalle yakalar; **daha nadir
+     (or. %2) iki modlu kareler bu kosuda da GORUNMEMIS olabilir.** "1/173"
+     bir ALT SINIRDIR.
+  2. `sa_000131`i iki modlu yapan piksel obegi hala BULUNMADI (D-149 #1).
+  3. Baska sigma degerlerinde (saha gurultusu > 2/255) oranin ne olacagi
+     olculmedi.
+  4. K5'in `66`daki "govde" adlandirmasi duzeltilmedi — yalnizca kayda
+     gecirildi.
+  5. Butun sayilar sentetiktir (D-88 + D-99 kalici kisiti).

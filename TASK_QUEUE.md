@@ -4267,6 +4267,36 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     kayda geçer.
   - **KAPI:** yeni ölçütle v30 ve v33 **eşit koşulda** yeniden ölçülür; iki
     modelin de sonucu `REVIEW_LOG`'a yazılır. Karar kullanıcınındır.
+
+  - ✅ **KOŞULDU · 2026-08-17 · Claude 1** · kayıt **D-150** · betik
+    `scripts/olcum/80_k5_siki_kapi.py` · ön kayıt `scripts/olcum/t93_on_kayit.md`
+    (ölçüm koşulmadan **önce** yazıldı). 173 kare × (1 temiz + 20 gürültülü),
+    eşleştirilmiş, bariyer **temiz** görüntüden (yer gerçeği).
+    ```text
+    model    TEMİZ çekiliş   HERHANGİ çekiliş   (kare,çekiliş)   K5-SIKI
+    v30          0/173            1/173            4/3633        DÜŞER
+    v33          1/173            1/173           18/3633        DÜŞER
+    pozitif kontrol: temiz çekiliş 66'nın sayılarını BİREBİR verdi
+    kesen TEK kare (ikisinde de): sa_000131 · v30 4/21 · v33 18/21
+    darboğaz KESEN={14,80} · KESMEYEN={15,98 · 16,00 · 17,00 · 17,60}
+    ```
+  - 🔴 **ÖN KAYIT DALI 1 ATEŞLEDİ — İKİ MODEL DE DÜŞÜYOR.** v30'un D-133'te
+    kayıtlı `K5 = 0/173`'ü **sağlam bir özellik değilmiş**; doğru ifade "o
+    çekilişte kesmedi". K5'in ölçüm kusuruyla **dördüncü** karşılaşması.
+  - **D-149 DÜZELTİLDİ:** v33 için yazılan "20/20 deterministik", bariyerin
+    gürültülü görüntüden türetilmesinin artefaktıymış. Bariyer sabitlenince
+    **17/20 (%85)**. "Daha sık kesiyor" ayakta, "deterministik" geri alındı.
+  - ⚠ **"K5 düştü" ≠ "araç bariyere çarpıyor".** Kesişen şey gövde değil
+    **emniyet zarfı**: `r_gerekli = 4,48 (yarı gövde) + 3,20 (maske hatası)
+    + 6,40 (takip hatası) px`. 2 px'lik kesişimde gövde kusursuz takiple
+    bariyerden hâlâ ~0,59 m uzakta; aşınan şey takip hatası bütçesi.
+    Eşik **gevşetilmedi**; `66`'nın "İKA GÖVDESİ" başlığı yanıltıcı, düzeltilmeli.
+  - **KARAR KULLANICININ:** üretim modeli **v30 olarak bırakıldı**
+    (`model_registry.json` değişmedi), D-148'in terfi reddi de ayakta.
+    Eşit koşulda tablo: v33 kararlılık/K0/K2/K4'te üstün, v30 K5 kesme
+    oranında üstün (%19 vs %86), K1/K3 eşit.
+  - **ASIL İŞ KORİDORDA:** `sa_000131` payı **0,72 px**; popülasyonda pay < 1 px
+    olan 17-18/173 kare var. Model değiştirerek kapanmaz → **T74**.
 - [ ] **T92 — Bant seçimi gürültüye karşı KARARSIZ (41/260), envanterin en oynak parçası** · `codes/costmap_path_finder.py:406-409` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-147**
   - `koridor_adaylari` beş aday bant oranı dener ve bandı
     `(kapı_sayısı, toplam_alan)` üzerinden **argmax** ile seçer — yani **sürekli
