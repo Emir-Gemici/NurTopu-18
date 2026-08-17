@@ -11591,3 +11591,104 @@ yalnizca ACIKLIGI belirgin dusurmuyorsa kabul eden bir string-pulling.
      uzunluk olculmedi (D-152'de mevcut yapilandirmalar icin 539,2 px'ti).
   5. `_gorus_hatti`nin kirisi dogrulamasi guvenligi saglar; bu kayit
      string-pulling'i GUVENSIZ ILAN ETMIYOR — yalnizca PAY YIYOR diyor.
+
+---
+
+### D-155 · T94 · ACIKLIK KORUYAN KIRIS: KIL PAYI KARELERI 46 -> 5'e DUSURUYOR ama ON KAYIT KAPISI (kayip) TUTMUYOR — RED
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94 · **URETIM KODU DEGISTIRILMEDI**
+Betik: `85_t94_aciklik_koruyan_kiris.py` · yer gercegi, MODEL YOK, n=260
+On kayit betigin basinda, olcum KOSULMADAN once yazildi (D-107)
+
+## 1. FIKIR
+
+D-154: `yol_duzelt`in string-pulling'i kirisi yalnizca C-uzayinda kaldigi icin
+kabul ediyor; kiris DAR BOGAZDAN gecebiliyor ve emniyet payini yiyor. Denenen
+kural: kiris uzerindeki en kucuk aciklik esigin altina duserse kiris REDDEDILIR
+(yol o noktada dugum tutar). Esikler `r_gerekli` ve `MASKE_HATA_M`den
+TURETILDI, ciplak sayi yok. Kural yalnizca KISALTMAYI REDDEDER — serbest alana
+dokunmaz, karar yalniz MUHAFAZAKARLASIR.
+
+## 2. ⚠ ONCE KENDI OLCUM DUZENEGIMDEKI KUSURU BILDIRIYORUM
+
+Ilk kosumda `_gorus_hatti` GLOBAL yamalandi. Oysa ayni yordam BES BASKA yerde
+daha kullaniliyor: `costmap_path_finder.py:340` (`_ankoru_ekle`), `:706`
+(`_maks_aralikla_bol`) ve `rpi_inference.py:606/622/636` (dogrulama). Global
+yama onlari da sikilastirdi ve rota uretimi **260 -> 256 / 247 / 231** dustu.
+
+**Bu FIKRIN degil OLCUM DUZENEGININ kusuruydu.** Esik yalnizca `yol_duzelt`
+suresince acilacak sekilde daraltilinca rota uretimi **259/260**'a cikti.
+Daraltilmamis sayilar GECERSIZDIR.
+
+⚠ Ayrica 40 karelik duman testi `rota 40/40` ve `pay<3px 0` gostermisti; tam
+kume 259/260 ve 5-7 verdi. Duman testi TEK BASINA yaniltirdi.
+
+## 3. OLCUM (kapsam daraltilmis, n=260)
+
+    esik                   rota  kayip med  pay med  pay<3px  pay min  wp  sure ms
+    V0 mevcut               260       6,61    14,31       46     0,10   8     30,5
+    V1 r + maske_hata       259       6,00    14,71        5     0,92   8     30,3
+    V2 r + 2x maske_hata    259       5,80    14,71        7     0,92   8     31,0
+    V3 r + 3x maske_hata    259       5,00    14,92        7     0,92   8     32,7
+
+    rota uzunlugu: 539,2 -> 539,2 / 539,3 / 539,4  (fiilen degismiyor)
+
+## 4. ON KAYIT UYGULANDI — UCU DE RED
+
+Kismi kabul ALTI olcut istiyordu. Uc esik icin de:
+
+    olcut                     esik      V1      V2      V3    durum
+    1 kayip medyani        <= 4,00    6,00    5,80    5,00    🔴 DUSTU
+    2 pay < 3 px           <= 20         5       7       7    GECTI
+    3 pay min              >= 0,50    0,92    0,92    0,92    GECTI
+    4 yayinlanan wp        <= 16         8       8       8    GECTI
+    5 rota uretilen        >= 258      259     259     259    GECTI
+    6 sure artisi          <= 2 kat   ~1,0    ~1,0    ~1,1    GECTI
+
+**ALTI OLCUTTEN BESI GECTI, BIRI DUSTU -> UCU DE RED. KOD DEGISTIRILMEDI.**
+On kayitta "biri bile tutmazsa REDDEDILIR, 'neredeyse tuttu' diye kabul
+edilmez" yaziyordu; uygulandi.
+
+## 5. 🔴 DUSEN OLCUT, FIKRIN HEDEFLEDIGI SEYI OLCMUYOR — ACIKCA YAZILIYOR
+
+`kayip` = maximin - rota darbogazi. Bu, rotanin ULASILABILECEK EN GENIS yola ne
+kadar yaklastigini olcer. Denenen kural ise rotayi genis yola TASIMAZ; yalnizca
+KIRISIN DAR BOGAZDAN GECMESINI engeller. Yani olcut ile care AYNI BUYUKLUGU
+hedeflemiyor.
+
+Carenin hedefledigi belirti (T74'un ve D-150'nin belirtisi) `pay<3px` ve
+`pay min`dir ve orada etki BUYUK:
+
+    pay < 3 px : 46 -> **5**    (%89 azalma)
+    pay min    : 0,10 -> **0,92** px
+    bedeli     : 1 kare rota kaybi · waypoint AYNI (8) · uzunluk AYNI ·
+                 sure AYNI
+
+⚠ **BU BIR KAPI GEVSETME TALEBI DEGILDIR.** Olcut on kayitta BENIM tarafimdan
+secildi ve dustu; sonucu gordukten sonra olcut degistirmek yasaktir. Burada
+yalnizca olcutun NE OLCTUGU ile carenin NE YAPTIGI arasindaki fark
+kaydediliyor. Bu farki agirliklandirmak KULLANICININ kararidir.
+
+⚠ Daha sıkı bir esik (V4 = r + 4x maske_hata) ARANMADI: sonucu gordukten sonra
+gecen bir esik aramak on kayit disciplinini bozar. Gerekirse YENI bir on
+kayitla olculur.
+
+## 6. T94'UN DURUMU
+
+Elenen: ceza parametreleri (D-152) · C-uzayi izgarasi (D-152) · `r_gerekli_m`
+(D-152) · izgara cozunurlugu (D-153) · aciklik koruyan kiris (bu kayit, on
+kayit kapisina gore).
+Bulunan koken: string-pulling (D-154) — kayip 4,00 px, kareler %63.
+Kapatilmamis: kaybi 2 px'in altina indiren bir care YOK; D-154 tavan modda
+bile 2,33 px olctu.
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. Kaybi <= 4 px'e indiren bir esik VAR MI, bilinmiyor (arama yapilmadi).
+  2. Kural MODELLE olculmedi; yalnizca yer gercegiyle.
+  3. Kaybedilen 1 karenin NEDEN kaybedildigi incelenmedi.
+  4. Kuralin K5-SIKI (T93) ve kararlilik (A) uzerindeki etkisi OLCULMEDI —
+     bunlar model gerektirir ve bu kosu yer gercegiyleydi.
+  5. `_maks_aralikla_bol` de `yol_duzelt` icinde cagriliyorsa esik ona da
+     uygulanmis olur; iki asamanin katkisi AYRISTIRILMADI.
