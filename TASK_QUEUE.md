@@ -4408,6 +4408,35 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     yer gerçeğiyle kayıp medyanı **≤ 2 px** · `pay < 3 px` olan kare
     **≤ 5/260** (46'dan) · K1 ≥ 258/260 · `test_rota_sentetik` 15/15 ·
     K2/K3 kötüleşmeyecek · rota uzunluğu artışı **ölçülüp kayda geçecek**.
+
+  - 🔴 **TARAMA KOŞULDU · HİÇBİRİ GEÇMEDİ · 2026-08-17** · kayıt **D-152** ·
+    betik `scripts/olcum/82_t94_planlayici_taramasi.py` (üretim kodu
+    **değiştirilmedi**; `rpi_inference.astar` sarmalayıcıyla değiştirildi).
+    ```text
+    mod                    rota  kayıp med  pay med  pay<3px  uzunluk
+    A mevcut                260      6,61    14,31       46    539,2
+    B C-uzayı ızgarası      260      6,61    14,31       45    539,2
+    C B + r_gerçek          260      7,00    13,92       45    539,2
+    D C + lam=6             260      7,01    12,92       55    539,2
+    E C + lam=12            260      7,79    12,92       55    539,2
+    F C + us=1              260      7,00    14,31       45    539,2
+    ```
+    Kapı `kayıp ≤ 2 px` istiyordu; **en iyisi 6,61 = mevcut durum.** Üçü daha
+    kötü: `lam=12` hem kaybı büyüttü hem dar kareyi 46→**55** yaptı.
+    **Ön kayıt kuralı uygulandı: KOD DEĞİŞTİRİLMEDİ.**
+  - **Kayıp son işlemde DEĞİL:** ham A\* darboğazı medyan 28,50 px, nihai
+    28,39 px → **son işlem kaybı 0,11 px**. Kayıp A\*'ın seçtiği yoldadır
+    (maximin 36,0 vs ham A\* 28,5).
+  - 🔴 **ÜÇ HİPOTEZ DE ÇÜRÜDÜ:** D-151'in "LAMBDA küçük"ü, "arama ızgarası
+    C-uzayı değil" ve "`r_gerekli_m=0.0` geçiliyor". **En çarpıcı ölçüm: rota
+    uzunluğu altı modda da 539,2 px** — A\*'ın bulduğu yol bu parametrelerden
+    fiilen bağımsız. Köken ceza ağırlığında değil, **arama uzayının kendisinde**
+    görünüyor; bu da ölçülmedi.
+  - **KALAN ADAYLAR (ölçülmedi):** (a) arama uzayında gerçekten tek geçerli
+    koridor mu var; (b) `koridor` ROI kısıtı alternatifleri dışarıda mı
+    bırakıyor; (c) sezgisel `h_alan` ile `g`nin ölçek uyumu.
+    ⚠ Plan ızgarası min-havuzlaması **hesapla** elendi (bütçe 32768 → adım ~4 px);
+    ince ızgarayla koşum **yapılmadı**.
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev

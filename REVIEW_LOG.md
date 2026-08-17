@@ -11312,3 +11312,94 @@ kullanilmayan bir bolluğu daha da buyutur, olculen kusuru kapatmaz.
      kanitlar. Ilk okumamda bu ayrimi yapmamistim, duzeltildi.
   5. Kalan 1 kare (maximin <= r_gerekli+3) gercekten sikisiktir; uretec
      tarafinda bir alt sinir O kare icin hala anlamli olabilir, olculmedi.
+
+---
+
+### D-152 · 🔴 T94 · ALTI PLANLAYICI YAPILANDIRMASI OLCULDU, HICBIRI KAPIYI GECMEDI — D-151'in koken hipotezi de CURUDU
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94 · **URETIM KODU DEGISTIRILMEDI**
+Betik: `82_t94_planlayici_taramasi.py` · yer gercegi, MODEL YOK, n=260
+On kayit: TASK_QUEUE T94, tarama KOSULMADAN once yazildi (D-107)
+
+## 1. ON KAYIT
+
+    kayip medyani <= 2 px · pay<3px kare <= 5/260 · rota >= 258/260 ·
+    test_rota_sentetik 15/15 · K2/K3 kotulesmeyecek ·
+    rota UZUNLUGU artisi olculup kayda gececek.
+
+## 2. OLCUM
+
+`rpi_inference.astar` bir sarmalayiciyla degistirildi (uretim dosyasi
+DEGISMEDI); sarmalayici yalnizca izgarayi ve ceza parametrelerini yeniden
+yazip GERCEK `astar`i cagirdi.
+
+    mod                    rota  kayip med  pay med  pay<3px  pay min  uzunluk
+    A mevcut                260      6,61    14,31       46     0,10    539,2
+    B C-uzayi izgarasi      260      6,61    14,31       45     0,10    539,2
+    C B + r_gercek          260      7,00    13,92       45     0,10    539,2
+    D C + lam=6             260      7,01    12,92       55     0,10    539,2
+    E C + lam=12            260      7,79    12,92       55     0,10    539,2
+    F C + us=1              260      7,00    14,31       45     0,10    539,2
+
+**HICBIRI KAPIYI GECMEDI** (kayip <= 2 px istenmisti; en iyisi 6,61 = MEVCUT
+durum). Uc yapilandirma DAHA KOTU: `lam=12` hem kaybi buyuttu (7,79) hem dar
+kare sayisini 46'dan **55**'e cikardi.
+
+**ON KAYIT KURALI UYGULANDI: KOD DEGISTIRILMEDI.**
+
+⚠ POZITIF KONTROL: sarmalayicinin fiilen kostugu, modlar arasi `pay<3px`
+(46/45/45/55/55/45) ve `kayip` (6,61...7,79) farklarindan gorulur. Hepsi ayni
+ciksaydi olcum ARIZALI sayilirdi.
+
+## 3. KAYIP NEREDE — SON ISLEMDE DEGIL
+
+    HAM A* yolunun darbogazi (duzeltme ONCESI) : medyan 28,50 px
+    NIHAI rotanin darbogazi (waypointlerden)   : medyan 28,39 px
+    SON ISLEM KAYBI                            : **0,11 px**
+
+Yani waypoint duzeltme/seyreltme kaybin kaynagi DEGIL. Kayip A*'in SECTIGI
+YOLDADIR (maximin 36,0 vs ham A* 28,5).
+
+⚠ Bunu ilk 30 karelik duman testinde "son islem kaybi 2-3 px" diye okumustum;
+tam kumede 0,11 px cikti. Kucuk orneklem artefaktiydi, duzeltildi.
+
+## 4. 🔴 UC HIPOTEZ DE CURUDU
+
+    D-151 (hipotez)  : "LAMBDA_ACIKLIK=3,0 kucuk"            -> lam=6/12 KOTULESTIRDI
+    bu kayit (yeni)  : "arama izgarasi C-uzayi degil"        -> B modu DEGISTIRMEDI
+    bu kayit (yeni)  : "`r_gerekli_m=0.0` geciliyor"         -> C modu KOTULESTIRDI
+
+**EN CARPICI OLCUM: rota uzunlugu ALTI MODDA DA 539,2 px.** Yani A*'in
+buldugu yol bu parametrelerden fiilen BAGIMSIZ. Ceza fonksiyonunu 4 kat
+buyutmek (lam 3->12) bile yolu degistirmiyor. Bu, kokenin ceza AGIRLIGINDA
+degil, arama uzayinin KENDISINDE oldugunu isaret eder — ama bu da
+OLCULMEMISTIR.
+
+## 5. ELENEN BIR ADAY DAHA (olcum degil, hesap)
+
+Plan izgarasi min-havuzlanir (`plan_izgarasi`, muhafazakar). Hucre butcesi
+`ROTA_PLAN_MAKS_HUCRE = 32768`; 640x640 ROI icin adim ~4 px, yani 160x160
+izgara. 4x4 min-havuzlama darbogazi en cok birkac piksel kucultur — 6,6 px'lik
+kaybi ACIKLAMAZ. Bu bir HESAPTIR, olcum degil; kesin eleme icin ince izgarayla
+kosum gerekir, YAPILMADI.
+
+## 6. T94 YENIDEN HEDEFLENDI
+
+Ceza parametreleri (lam/us), arama izgarasinin C-uzayina kisitlanmasi ve
+`r_gerekli_m` gecirilmesi **elendi**. Kalan adaylar OLCULMEDI:
+  (a) A* yolunun neden parametreden bagimsiz oldugu — arama uzayinda gercekten
+      tek bir gecerli koridor mu var?
+  (b) `koridor` ROI kisitlamasinin alternatif yollari disarida birakmasi
+  (c) sezgisel (`h_alan`) ile `g`nin olcek uyumsuzlugu
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. Kokeni bulunmadi. Bu kayit YALNIZCA uc adayi ELER.
+  2. Maximin bir UST SINIRDIR; A*'in maliyet karisimiyla ona ulasmasi
+     gerekmez. "Kayip 6,6 px" tamami giderilebilir demek DEGILDIR.
+  3. Butun olcum YER GERCEGIYLE yapildi; modelle kayip olculmedi.
+  4. Ince plan izgarasiyla kosum yapilmadi (madde 5 hesaba dayaniyor).
+  5. Rota uzunlugunun degismemesi "yol birebir ayni" anlamina gelmeyebilir;
+     uzunluk esit ama gecki farkli olabilir — waypoint karsilastirmasi
+     YAPILMADI.
