@@ -11222,3 +11222,93 @@ kapanacak bir sey degil; **koridor kabul olcutu** meselesidir (T74).
   4. K5'in `66`daki "govde" adlandirmasi duzeltilmedi — yalnizca kayda
      gecirildi.
   5. Butun sayilar sentetiktir (D-88 + D-99 kalici kisiti).
+
+---
+
+### D-151 · 🔴 T74'UN TESHISI CURUDU · Koridorlar DAR DEGIL; PLANLAYICI gereksiz sikisik yoldan geciyor (medyan 9 px kayip)
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T74 · KOD DEGISTIRILMEDI
+Betikler: `81_t74_darbogaz_yeri.py` + maximin olcumu · MODEL YOK (yer gercegi)
+
+D-126 T74 icin sunu yazmisti: *"darligin BUYUK KISMI modelin hatasi degil
+URETECIN GEOMETRISIDIR"*. Gorevin YAP maddesi de buna dayaniyordu: "ada
+yerlesiminde koridor genisligine ALT SINIR koy". **Olculdu; teshis YANLIS.**
+
+## 1. DARBOGAZI NE DARALTIYOR (yer gercegi, model YOK, n=260)
+
+    pay = darbogaz - r_gerekli : medyan 14,31 px · min 0,10 px · <3px 46/260
+
+    DARALTAN            MOLOZ            SINIR
+    tum kareler      190/260 (%73,1)   70/260 (%26,9)
+    pay < 3 px        36/46  (%78,3)   10/46  (%21,7)
+
+    dar karelerin TAMAMI "acik" seritte (35 MOLOZ + 10 SINIR + 1 acik+bariyer)
+
+⚠ **KENDI OLCUMUMDE BIR HATA CIKTI VE DUZELTILDI:** ilk kosumda serit durumunu
+`durumlar[serit_no(bx)-1]` ile atamistim. Uretec seritleri ~110 px, `serit_no`
+ucte birleri ~213 px — ikisi ORTUSMEZ. Yanlis atama "kapali 13 / acik 13"
+gosteriyordu; darbogaz x'i hangi `serit_kutusu` icine duserse o serit alinacak
+sekilde duzeltilince gercek dagilim ciktı: **hepsi "acik"**. D-126 tarzi
+"hangi serit durumu" atiflari bu tuzagi tasir.
+
+## 2. 🔴 ASIL OLCUM — MAXIMIN: EN IYI YOLUN DARBOGAZI
+
+"Moloz daraltiyor" demek "yer yok" demek DEGILDIR. Alttan uste giden butun
+yollar arasinda darbogazi EN BUYUK olani (maximin) ikili arama + baglantilik
+testiyle olculdu:
+
+    olcut                       TUM (n=260)      DAR olanlar (n=46)
+    ROTANIN darbogazi           medyan 28,4      medyan 15,09
+    MAXIMIN (en iyi yol)        medyan 36,0      medyan 24,67
+    KAYIP (maximin - rota)      medyan  6,6      medyan  9,00
+    kayip > 3 px olan kare      202/260
+
+    **DAR karelerin 45/46'sinda maximin > r_gerekli + 3 px.**
+    Yani rahat gecilebilir bir yol ZATEN VARDI; rota onu KULLANMADI.
+
+**Gercekten sikisik olan kare 46 degil, 1'dir.**
+
+## 3. K5 DUSUSUYLE DOGRUDAN BAGLANTI
+
+D-150'de K5'i iki modelde de dusuren tek kare `sa_000131`di. Ayni kare, yer
+gercegiyle (kusursuz algi):
+
+    rota darbogazi  16,39 px  ->  pay  2,31 px
+    MAXIMIN         37,00 px  ->  pay 22,92 px
+
+Yani K5'in dustugu yerde bile 2,3 KAT daha genis bir yol vardi. K5 sorunu
+"bariyer cok yakin" degil, "rota gereksiz yere bariyerin dibinden geciyor".
+
+## 4. KOKEN HIPOTEZI (OLCULMEDI)
+
+`astar()` aciklik cezasi: `1 + LAMBDA_ACIKLIK * u^US_ACIKLIK`, LAMBDA=3,0 ve
+US=2,0. En dar hucrenin cezasi EN COK **4 kat**tir ve `DOYUM_CARPANI_M`
+uzerindeki aciklik EK ODUL GETIRMEZ. Dolayisiyla 4 kattan uzun her guvenli
+sapma reddedilir. Bu, olculen davranisi acikliyor GIBI gorunuyor —
+**ama LAMBDA/US degistirmenin kaybi kapatacagi OLCULMEDI.** Hipotezdir.
+
+## 5. T74 YENIDEN HEDEFLENDI
+
+Uretecte `gecit_yari`ye metrik taban koymak **yanlis yeri duzeltirdi**: uretec
+zaten medyan 36 px'lik bir yol sunuyor, kullanilan 28,4. Alt sinir koymak
+kullanilmayan bir bolluğu daha da buyutur, olculen kusuru kapatmaz.
+
+**T94 acildi:** planlayici, ulasabilecegi en iyi darbogazin medyan 6,6 px
+(dar karelerde 9,0 px) altinda kaliyor. Kapisi TASK_QUEUE'da.
+
+**KAPILAR:** kod DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. LAMBDA_ACIKLIK/US_ACIKLIK degisiminin kaybi kapatip kapatmayacagi
+     OLCULMEDI. Degistirmek rota UZUNLUGUNU artirir; sartname sureye bakar,
+     bedeli olculmelidir.
+  2. Maximin, `_bagli_mi` ile ikili aramadan gelir; A*'in bulabilecegi en iyi
+     yol maximin'e ESIT olmak zorunda degildir (A* maliyeti uzunluk+aciklik
+     karisimidir). Kayip bir UST SINIRDIR.
+  3. Bu olcum YER GERCEGIYLE yapildi. Modelle kayip daha buyuk mu kucuk mu,
+     olculmedi.
+  4. `dt_max` (herhangi bir noktadaki en genis aciklik) dar karelerde 66-108
+     px cikti; bu tek basina genis bir YOL oldugunu KANITLAMAZ — maximin
+     kanitlar. Ilk okumamda bu ayrimi yapmamistim, duzeltildi.
+  5. Kalan 1 kare (maximin <= r_gerekli+3) gercekten sikisiktir; uretec
+     tarafinda bir alt sinir O kare icin hala anlamli olabilir, olculmedi.

@@ -4370,6 +4370,44 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     🔴 **Belge ile kod çelişiyor:** TAHMINLER bloğu `TAKIP_HATA_M = 0.40` diyor,
     kod `0.50`. Denetim notu **bayat**; hangisinin doğru olduğu bu görevde
     belirlenemez, **dokunulmadı**.
+
+  - 🔴 **TEŞHİS ÇÜRÜDÜ · 2026-08-17 · Claude 1** · kayıt **D-151**.
+    D-126'nın *"darlığın büyük kısmı üretecin geometrisidir"* sonucu ölçümle
+    yanlışlandı; görevin YAP maddesi (**üreteçte koridor genişliğine alt sınır**)
+    **yanlış yeri düzeltirdi.** Alttan üste giden yolların en iyi darboğazı
+    (maximin) ölçüldü (yer gerçeği, model YOK):
+    ```text
+    ölçüt                    TÜM (n=260)    DAR olanlar (n=46)
+    ROTANIN darboğazı        medyan 28,4    medyan 15,09
+    MAXIMIN (en iyi yol)     medyan 36,0    medyan 24,67
+    KAYIP (maximin - rota)   medyan  6,6    medyan  9,00
+    kayıp > 3 px olan kare   202/260
+    DAR karelerin 45/46'sında maximin > r_gerekli + 3 px
+    ```
+    Yani **rahat geçilebilir yol zaten vardı, rota onu kullanmadı.** Gerçekten
+    sıkışık kare 46 değil **1**. Üretece alt sınır koymak, kullanılmayan bir
+    bolluğu daha da büyütür.
+  - **K5 ile doğrudan bağ:** D-150'de K5'i iki modelde de düşüren `sa_000131`,
+    yer gerçeğiyle rota darboğazı **16,39 px** (pay 2,31) iken maximin
+    **37,00 px** (pay 22,92). K5 sorunu "bariyer yakın" değil, "rota gereksiz
+    yere bariyerin dibinden geçiyor".
+  - ⚠ Kalan **1 kare** (maximin ≤ r_gerekli+3) gerçekten sıkışık; üreteç
+    tarafında alt sınır O kare için hâlâ anlamlı olabilir — ölçülmedi.
+- [ ] **T94 — Planlayıcı, ulaşabileceği en iyi darboğazın medyan 6,6 px altında kalıyor** · `codes/costmap_path_finder.py:509-585` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-151**
+  - `astar()` açıklık cezası `1 + LAMBDA_ACIKLIK · u^US_ACIKLIK`
+    (`LAMBDA=3,0`, `US=2,0`): en dar hücrenin cezası **en çok 4 kat**, ve
+    `DOYUM_CARPANI_M` üstündeki açıklık **ek ödül getirmez**. Dolayısıyla
+    4 kattan uzun her güvenli sapma reddedilir. ⚠ Bu bir **hipotezdir**;
+    LAMBDA/US değişiminin kaybı kapatacağı **ölçülmedi**.
+  - **Etki zinciri:** dar rota → T79 kararsızlığı (C-uzayı sınırına yaslanan
+    rota gürültüyle çevriliyor) → K5 teması (D-150) → T74'ün "dar koridor"
+    görünümü. Üçü de aynı davranışın belirtisi olabilir; **kanıtlanmadı**.
+  - **ÖNCE ÖLÇ, SONRA YAZ:** LAMBDA/US taraması yapılmadan kod değiştirilmesin.
+    Rota **uzunluğu** artacaktır; şartname süreye bakar, bedeli ölçülmeli.
+  - **KAPI (ön kayıt olarak yazılacak, sonuç görülmeden):**
+    yer gerçeğiyle kayıp medyanı **≤ 2 px** · `pay < 3 px` olan kare
+    **≤ 5/260** (46'dan) · K1 ≥ 258/260 · `test_rota_sentetik` 15/15 ·
+    K2/K3 kötüleşmeyecek · rota uzunluğu artışı **ölçülüp kayda geçecek**.
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev
