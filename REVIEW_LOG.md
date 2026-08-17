@@ -11782,3 +11782,85 @@ DOGRULANMADI (esik civarindaki kirisler tek tek izlenmedi).
      DOGRULANMADI.
   4. `sa_000083`teki rota kaybinin sebebi incelenmedi.
   5. Yumusak/histerezisli bicimin ne verecegi OLCULMEDI.
+
+---
+
+### D-157 · T94 · YUMUSAK (GORELI) KIRIS KABULU: W1 kararliligi KORUYOR ve K5'i COZUYOR — ama ON KAYITTAKI 3. OLCUTU BEN YANLIS CIVILEDIM
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94 · **URETIM KODU DEGISTIRILMEDI**
+Betik: `87_t94_yumusak_kiris.py` (kurali devreye alip PROJENIN olcum
+betiklerini kosturur; o betikler DEGISMEZ) · model v30 · GPU
+
+## 1. KURAL
+
+D-156: V1 (sabit esik) K5'i cozdu ama kararliligi bozdu, cunku SUREKLI bir
+buyuklugu SABIT bir sayiyla kiyasliyordu. Yumusatma su sekilde kuruldu:
+
+    KIRIS, YERINE GECTIGI ALT YOLDAN BELIRGIN OLARAK DAHA DAR DEGILSE KABUL.
+    kiris_darbogazi >= (1 - band) * alt_yol_darbogazi
+
+Iki buyukluk de AYNI maskeden turer ve gurultuyle BIRLIKTE oynar. "Belirgin"
+olcusu projenin OLCULMUS gurultu tabanidir: `BERABERLIK_BANDI = 0,04`
+(D-112/D-122) — ciplak sayi degil.
+
+⚠ GERCEK HISTEREZIS DENENMEDI cunku MUMKUN DEGIL: D-126 `analyze_path`in
+DURUMSUZ oldugunu ve histerezisin kareler-arasi bir mekanizma oldugunu olcup
+yazmisti.
+
+## 2. OLCUM (model v30)
+
+    olcut                TABAN v30    V1 (sabit)    W1 (goreli)  W2      W3
+    kararlilik A           8/260        11/260       **8/260**   11/260  10/260
+    K5 sa_000131 kesen     4/20         0/20         **0/20**    —       —
+      darbogaz            14,80      17,59-18,39   **23,78-33,00**
+    pay < 3 px           57/258        11/255       **15/258**   23/258  16/258
+    rota uretilen           258          259          **258**
+
+W2 (3x band) ve W3 (yalniz sinirda) kararliligi bozdu -> REDDEDILDI.
+
+## 3. 🔴 ON KAYITTAKI 3. OLCUT YANLIS CIVILENMISTI — KENDI HATAM
+
+On kayitta su yazdim: *"3. rota uretilen >= 259/260 (V1'de 259; daha kotusu
+kabul edilmez)"*. Bu olcutu **V1'in sayisina** civiledim; oysa V1 REDDEDILMIS
+bir bicimdi ve 259 rakami TABANDAN (258) IYIYDI. Yani olcut, URETIMIN KENDISININ
+saglamadigi bir esik istiyor: taban v30 = **258/260**.
+
+  · Metnin HARFI ile      : W1 258 verdi -> 3. olcut DUSTU.
+  · Olcutun AMACI ile     : "rota kaybi olmasin" -> W1 tabanla BIREBIR ayni
+                            (258 = 258), yani HIC rota kaybi yok -> gecti.
+
+**Bu celiskiyi KENDI LEHIME COZMUYORUM.** On kaydi sonucu gordukten sonra
+yeniden yorumlamak, bu oturumda bes kez uyguladigim disiplini bozar. Ikisi de
+yazildi; agirliklandirma KULLANICININ.
+
+⚠ Ayni sekilde, tutan bir esik bulmak icin BASKA band degerleri ARANMADI.
+
+## 4. OLCULMEYENLER (uygulama karari icin ONEMLI)
+
+  1. W1'in waypoint sayisi / rota uzunlugu / sure maliyeti OLCULMEDI. V1 icin
+     bunlar "AYNI" cikmisti (D-155/D-156) ama W1 farkli bir kuraldir.
+  2. K5-SIKI POPULASYONU (173 x 21) W1 ile KOSULMADI; olculen tek sey
+     `sa_000131`in 0/20 olmasidir. "0/173" IDDIA EDILMIYOR.
+  3. K0..K4 kabul denetimi W1 ile kosulmadi.
+  4. `pay min` hala 0,1 px: en kotu kare duzelmedi, YALNIZCA SAYISI azaldi
+     (57 -> 15).
+  5. Kural yer gercegiyle DEGIL yalnizca modelle olculdu (D-155'in tersi).
+
+## 5. DURUM
+
+W1, projenin iki sert kapisini (kararlilik ve K5) tabanla ayni ya da daha iyi
+karsiliyor ve kil payi koridorlari %74 azaltiyor. Uygulanmasi icin gereken:
+(a) 3. olcut celiskisinin kullanicica cozulmesi, (b) yukaridaki bes olcumun
+tamamlanmasi, (c) uretim koduna yazilmasi ve **madde 7 geregi AYRI DENETIM**.
+
+**KOD DEGISTIRILMEDI.**
+
+**KAPILAR:** `codes/test_rota_sentetik.py` 15/15 · `unittest discover -s tests`
+576 OK.
+
+**DOGRULANAMADI**
+  1. W1'in kararliligi tabanla AYNI cikmasinin (8/260) tesaduf mu yoksa
+     kuralin ozelligi mi oldugu; ayni kareler mi ceviriyor, bakilmadi.
+  2. Madde 4'te sayilan bes olcum.
+  3. Band degerinin (0,04) bu kullanim icin dogru buyukluk oldugu — degeri
+     D-112'nin MASKE gurultu tabanindan aliyoruz, kiris acikligi icin
+     olculmedi.
