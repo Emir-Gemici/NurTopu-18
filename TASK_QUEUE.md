@@ -4432,11 +4432,41 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     uzunluğu altı modda da 539,2 px** — A\*'ın bulduğu yol bu parametrelerden
     fiilen bağımsız. Köken ceza ağırlığında değil, **arama uzayının kendisinde**
     görünüyor; bu da ölçülmedi.
-  - **KALAN ADAYLAR (ölçülmedi):** (a) arama uzayında gerçekten tek geçerli
-    koridor mu var; (b) `koridor` ROI kısıtı alternatifleri dışarıda mı
-    bırakıyor; (c) sezgisel `h_alan` ile `g`nin ölçek uyumu.
-    ⚠ Plan ızgarası min-havuzlaması **hesapla** elendi (bütçe 32768 → adım ~4 px);
-    ince ızgarayla koşum **yapılmadı**.
+  - 🔴 **"ALTERNATİF YOL VAR MI?" ÖLÇÜLDÜ · 2026-08-17** · kayıt **D-153** ·
+    betik `scripts/olcum/83_t94_izgara_cozunurlugu.py`.
+    ```text
+    maximin TAM ÇÖZÜNÜRLÜK   36,00 px
+    maximin A* IZGARASINDA   30,00 px   -> IZGARA KAYBI  6,00 px  (~%80)
+    A* yolunun darboğazı     28,50 px   -> SEÇİM  KAYBI  1,50 px  (~%20)
+    ```
+    **Geniş yol tam çözünürlükte VAR, A\*'ın ızgarasında YOK.** A\* kendi
+    ızgarasında zaten neredeyse en iyisini buluyor — D-152'de altı ceza
+    yapılandırmasının neden hiçbir şey değiştirmediği budur.
+  - **Izgara ölçüldü:** ~64×20-44 hücre, **adım 10 px**, kare başına `astar`
+    çağrısı **1**. Bütçe 32768 iken ~2.600 hücre kullanılıyor → **%92 boşta.**
+    Adım bütçeden değil `min(k_open.shape)`'ten, yani **morfoloji
+    çekirdeğinden** geliyor; `_plan_adimlari` ince ızgarayı yalnız kaba ızgara
+    **başarısız olursa** dener, o yüzden hiç koşmaz.
+    ⚠ D-152'de bu adayı "hesapla eledim" diye işaretlemiştim (adım ~4 px
+    varsaymıştım) — **hesap yanlıştı**, ölçüm çürüttü.
+  - 🔴 **IZGARAYI DÜZELTMEK TOPLAMI DEĞİŞTİRMİYOR (n=40):**
+    ```text
+    ölçüt                      MEVCUT    İNCE IZGARA
+    IZGARA KAYBI  (mt-mi)        7,00        2,00
+    SEÇİM KAYBI   (mi-ham)      -0,00       -0,00
+    SON İŞLEM     (ham-dar)     -1,00      +4,00
+    TOPLAM        (mt-dar)       6,00       6,00   ← DEĞİŞMEDİ
+    son işlem >2px kare         11/40      24/40
+    pay<3px / pay min          4 / 1,71   7 / 0,31
+    süre medyan               24,9 ms    179,0 ms  (7,2 kat)
+    ```
+    **Izgaranın kazandırdığını waypoint seyreltmesi geri alıyor.** Ön kayıt
+    kapısını üç kalemde birden tutturamadı → **kod değiştirilmedi.**
+  - **GERİYE KALAN TEK ADAY:** waypoint seyreltme/düzeltme (`yol_duzelt`,
+    `_maks_aralikla_bol`, `_gorus_hatti`). Ceza parametreleri, C-uzayı
+    ızgarası, `r_gerekli_m` ve ızgara çözünürlüğü **elendi**.
+    ⚠ Aday'dır, kanıt değil: seyreltmeyi açıklığı koruyacak biçimde
+    değiştirmenin toplamı düşüreceği **ölçülmedi**.
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev

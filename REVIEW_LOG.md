@@ -11403,3 +11403,97 @@ Ceza parametreleri (lam/us), arama izgarasinin C-uzayina kisitlanmasi ve
   5. Rota uzunlugunun degismemesi "yol birebir ayni" anlamina gelmeyebilir;
      uzunluk esit ama gecki farkli olabilir — waypoint karsilastirmasi
      YAPILMADI.
+
+---
+
+### D-153 · 🔴 T94 · "ALTERNATIF YOL VAR MI?" OLCULDU: A*'IN IZGARASINDA YOK · Izgara duzeltilince kayip SON ISLEME KAYIYOR, TOPLAM DEGISMIYOR
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94 · **URETIM KODU DEGISTIRILMEDI**
+Betikler: `82_...py` (ayristirma) · `83_t94_izgara_cozunurlugu.py` (izgara denemesi)
+Yer gercegi, MODEL YOK. On kayit: TASK_QUEUE T94 (tarama oncesi yazildi).
+
+## 1. SORU VE CEVAP
+
+Soru: rota gereksiz sikisik gidiyorsa, A*'in gordugu uzayda daha genis bir
+alternatif VAR MI? Cevap ayristirmayla verildi (n=260):
+
+    maximin TAM COZUNURLUK   36,00 px
+    maximin A* IZGARASINDA   30,00 px   -> IZGARA KAYBI  6,00 px  (~%80)
+    A* yolunun darbogazi     28,50 px   -> SECIM  KAYBI  1,50 px  (~%20)
+
+**GENIS YOL TAM COZUNURLUKTE VAR, A*'IN IZGARASINDA YOK.** A* kendi izgarasinda
+zaten neredeyse en iyisini buluyor. D-152'de alti ceza yapilandirmasinin hicbir
+sey degistirmemesinin sebebi budur: hepsi tavani 30 olan bir izgarada SECIM
+yapiyordu.
+
+## 2. IZGARA NEDEN KAYBEDIYOR — OLCULDU
+
+    plan izgarasi sekli   : ~64 x 20-44 hucre
+    plan adimi            : **10 piksel**
+    kare basina astar     : **1** cagri
+    hucre butcesi         : ROTA_PLAN_MAKS_HUCRE = 32768
+    fiilen kullanilan     : ~2.600 hucre  ->  **butcenin %92'si BOSTA**
+
+Adim, butceden DEGIL `_bagli_koridor_yolu(..., ilk_plan_adimi=min(k_open.shape))`
+ile MORFOLOJIK ACMA CEKIRDEGINDEN gelir. `_plan_adimlari` daha ince izgarayi
+ancak kaba izgara BASARISIZ olursa dener; kaba izgara basarili oldugu icin ince
+izgara HIC KOSMAZ (olculdu: astar cagrisi = 1).
+
+`plan_izgarasi` MIN-havuzlar: 10x10 blokta tek bir dar piksel butun hucreyi dar
+gosterir. Kayip buradan.
+
+⚠ D-152'de bu adayi "hesapla eledim, olcum degil" diye isaretlemistim
+(adim ~4 px varsaymistim). **Hesap YANLISTI; adim 10 px ve kayip 6-7 px.**
+Olcum hesabi curuttu.
+
+## 3. 🔴 IZGARAYI DUZELTMEK TOPLAMI DEGISTIRMIYOR — KAYIP KORUNUYOR
+
+`_plan_adimlari` surec icinde "butceye sigan EN INCE adimi ONCE dene" olarak
+degistirildi (uretim dosyasi DEGISMEDI). n=40 alt kume, kare kare:
+
+    olcut                        MEVCUT      INCE IZGARA
+    plan izgarasi              64 x ~20      160 x ~130
+    IZGARA KAYBI  (mt - mi)        7,00           2,00
+    SECIM  KAYBI  (mi - ham)      -0,00          -0,00
+    SON ISLEM     (ham - dar)     -1,00          **+4,00**
+    TOPLAM        (mt - dar)       6,00           **6,00**
+    son islem kaybi > 2px olan     11/40          24/40
+    pay < 3 px                         4              7
+    pay min                         1,71           0,31
+    A* yolunun darbogazi           27,00          31,00
+    SURE medyan                 24,9 ms       179,0 ms  (**7,2 kat**)
+
+**IZGARANIN KAZANDIRDIGINI WAYPOINT SEYRELTMESI GERI ALIYOR.** Ham A* yolu
+27 -> 31 px'e genisliyor ama nihai rota bunu tutmuyor; toplam kayip BIREBIR
+ayni kaliyor (6,00). Mekanizma: kaba izgarada yol zaten 10 px'lik adimlarla
+kabadir ve duz waypoint kirislari ona yakin gecer; ince izgarada yol gercek
+orta-eksene sarilir, ~8 waypoint'e seyreltilince uzun kirisler KOSE KESER.
+
+## 4. ON KAYIT UYGULANDI — KOD DEGISTIRILMEDI
+
+Kapi: kayip medyani <= 2 px · pay<3px <= 5 · rota >= 258 · uzunluk/sure kayda.
+Ince izgara UCUNU DE tutturamadi: kayip 6,00 · pay<3px 4 -> 7 · sure 7,2 kat.
+**T94'te yine kod degistirilmedi.**
+
+## 5. GERIYE KALAN TEK ADAY
+
+Ceza parametreleri (D-152), arama izgarasinin C-uzayina kisitlanmasi (D-152),
+`r_gerekli_m` gecirilmesi (D-152) ve izgara COZUNURLUGU (bu kayit) ELENDI.
+Kalan: **waypoint seyreltmesi/duzeltmesi** (`yol_duzelt`, `_maks_aralikla_bol`,
+`_gorus_hatti`). Olculen isaret: ince izgarada son islem kaybi +4,00 px ve
+etkilenen kare 11/40 -> 24/40.
+
+⚠ Bu bir ADAYDIR, kanit degil. Seyreltmenin acikligi koruyacak bicimde
+degistirilmesinin toplami dusurecegi OLCULMEDI.
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. Izgara denemesi n=40 ALT KUMEDIR (sure 7,2 kat oldugu icin). Tam kumede
+     sayilar biraz kayabilir; TOPLAM KAYBIN DEGISMEMESI bulgusu alt kumeye
+     dayanir.
+  2. Seyreltmeyi acikligi koruyacak sekilde degistirmenin etkisi OLCULMEDI.
+  3. Sure olcumu bu makinede, yer gercegi maskesiyle yapildi; Jetson'da
+     karsiligi BILINMIYOR (Jetson'da hicbir olcumumuz yok — kalici kisit).
+  4. "Kayip korunuyor" bir GOZLEMDIR; bunun bir zorunluluk mu yoksa bu iki
+     yapilandirmaya ozgu bir rastlanti mi oldugu KANITLANMADI.

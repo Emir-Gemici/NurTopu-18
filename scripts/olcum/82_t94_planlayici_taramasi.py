@@ -54,6 +54,7 @@ KUME = BURASI / "calisma" / "sentetik_arena_kadraj_t66"
 DAR_ESIK_PX = 3.0
 
 _GERCEK_ASTAR = C.astar
+_TABAN_BUTCE = RI.ROTA_PLAN_MAKS_HUCRE
 # Kare basina degisen baglam; sarmalayici buradan okur.
 AKTIF = {"r_px": None, "mod": None}
 
@@ -77,9 +78,22 @@ def _sarmalayici(gecilebilir_h, aciklik_m_h, hedef_h, baslangic_h, *,
     # HAM A* YOLUNUN darbogazi: duzeltme/seyreltme ONCESI. Nihai 
     # duzeltilmis waypointlerden olculur; ikisi ayrisiyorsa kayip PLANLAYICIDA
     # degil SON ISLEMDE demektir.
+    a = np.asarray(aciklik_m_h)
     if yol:
-        a = np.asarray(aciklik_m_h)
         AKTIF["ham"] = float(min(a[r, c] for r, c in yol))
+    # A*'IN KENDI IZGARASINDA MAXIMIN: alttan uste giden yollar arasinda
+    # darbogazi en buyuk olani, AYNI izgara ve AYNI tohumlarla. Tam
+    # cozunurluk maximin'iyle farki IZGARA KAYBI, A* yoluyla farki SECIM
+    # KAYBIDIR. Ikisi ayrilmadan koken bulunamaz.
+    gb = np.asarray(g) > 0
+    lo, hi = 0.0, float(a.max()) if a.size else 0.0
+    for _ in range(18):
+        mid = (lo + hi) / 2.0
+        if C._bagli_mi((gb & (a >= mid)).astype(np.uint8), baslangic_h, hedef_h):
+            lo = mid
+        else:
+            hi = mid
+    AKTIF["izgara_maximin"] = lo
     return yol
 
 
@@ -90,6 +104,11 @@ MODLAR = [
     ("D C + lam=6",           {"cuzay": True, "r_gercek": True, "lam": 6.0}),
     ("E C + lam=12",          {"cuzay": True, "r_gercek": True, "lam": 12.0}),
     ("F C + us=1",            {"cuzay": True, "r_gercek": True, "us": 1.0}),
+    # G/H: IZGARA COZUNURLUGU.  hucre butcesini MODUL
+    # GLOBALINDEN okur, yani surec icinde degistirilebilir; uretim dosyasi
+    # DEGISMEZ. Butce buyudukce adim kuculur, MIN-HAVUZLAMA kaybi azalir.
+    ("G ince izgara x4",      {"butce": 4}),
+    ("H ince izgara x16",     {"butce": 16}),
 ]
 
 
@@ -119,6 +138,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kume", type=Path, default=KUME)
     ap.add_argument("--sinir", type=int, default=0)
+    ap.add_argument("--yalniz", default=None, help="yalniz bu modlar (virgullu on ek)")
     ap.add_argument("--json", type=Path, default=None)
     args = ap.parse_args()
 
@@ -150,12 +170,17 @@ def main():
 
     sonuc = {}
     mm_onbellek = {}
+    secili = ([m.strip() for m in args.yalniz.split(",")] if args.yalniz else None)
     for ad, mod in MODLAR:
+        if secili and not any(ad.startswith(p) for p in secili):
+            continue
         AKTIF["mod"] = mod
         satir = []
         for i, (kare, gt, mpp, h, w) in enumerate(kareler):
+            RI.ROTA_PLAN_MAKS_HUCRE = _TABAN_BUTCE * int(mod.get("butce", 1))
             AKTIF["r_px"] = r_gerekli_piksel(mpp, C.R_GEREKLI_M)
             AKTIF["ham"] = None
+            AKTIF["izgara_maximin"] = None
             _y, _g, wps, temiz, red, ol = RI.analyze_path(
                 gt[0], icerik=(0, 0, w, h), engel_mask=gt[1], mpp=mpp,
                 return_clean=True, return_reason=True, return_olcum=True)
@@ -173,6 +198,7 @@ def main():
                 "maximin": mm,
                 "kayip": (mm - float(ol["darbogaz_px"])) if mm else None,
                 "ham_darbogaz": AKTIF.get("ham"),
+                "izgara_maximin": AKTIF.get("izgara_maximin"),
                 "uzunluk": yol_uzunlugu(wps)})
             if (i + 1) % 60 == 0:
                 print(f"  {ad}: {i+1}/{len(kareler)}", flush=True)
@@ -186,6 +212,8 @@ def main():
           f"{'pay med':>9}{'pay<3px':>9}{'pay min':>9}{'uzunluk':>10}{'uz.%':>8}")
     ozet = {}
     for ad, _m in MODLAR:
+        if ad not in sonuc:
+            continue
         r = [k for k in sonuc[ad] if k["rota"]]
         if not r:
             print(f"{ad:<22}{'0':>7}   (rota uretilemedi)")
@@ -202,6 +230,15 @@ def main():
                     "dar": int((pay < DAR_ESIK_PX).sum()),
                     "uzunluk_med": float(np.median(uz)), "uzunluk_artis_yuzde": artis}
         ham = np.array([k["ham_darbogaz"] for k in r if k.get("ham_darbogaz")])
+        izg = np.array([k["izgara_maximin"] for k in r if k.get("izgara_maximin")])
+        mmt = np.array([k["maximin"] for k in r if k.get("maximin")])
+        if izg.size and mmt.size and ham.size:
+            print(f"   [{ad}] AYRISTIRMA (medyan):")
+            print(f"       maximin TAM COZUNURLUK   {np.median(mmt):7.2f} px")
+            print(f"       maximin A* IZGARASINDA   {np.median(izg):7.2f} px"
+                  f"   -> IZGARA KAYBI {np.median(mmt)-np.median(izg):6.2f} px")
+            print(f"       A* yolunun darbogazi     {np.median(ham):7.2f} px"
+                  f"   -> SECIM  KAYBI {np.median(izg)-np.median(ham):6.2f} px")
         if ham.size:
             print(f"   [{ad}] HAM A* darbogazi medyan {np.median(ham):.2f} px "
                   f"· nihai medyan {np.median([k['darbogaz'] for k in r]):.2f} px "
