@@ -11497,3 +11497,97 @@ degistirilmesinin toplami dusurecegi OLCULMEDI.
      karsiligi BILINMIYOR (Jetson'da hicbir olcumumuz yok — kalici kisit).
   4. "Kayip korunuyor" bir GOZLEMDIR; bunun bir zorunluluk mu yoksa bu iki
      yapilandirmaya ozgu bir rastlanti mi oldugu KANITLANMADI.
+
+---
+
+### D-154 · 🔴 T94 KOKENI BULUNDU · `yol_duzelt` STRING-PULLING'i rotayi TEK DUZ KIRISE indiriyor; dar karelerin 39/46'si BUNDAN dar
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94 · **URETIM KODU DEGISTIRILMEDI**
+Betik: `84_t94_seyreltme.py` · yer gercegi, MODEL YOK, n=260
+On kayit betigin basinda, olcum KOSULMADAN once yazildi (D-107)
+
+## 1. ONCE BIR OLCUM KUSURUMU DUZELTIYORUM
+
+D-153'te "son islem kaybi" diye raporladigim sayi `ham` (MIN-HAVUZLANMIS plan
+izgarasi birimi) ile `darbogaz` (TAM COZUNURLUK) farkiydi — **iki ayri
+buyukluk**. Mevcut izgarada -1,00 px (negatif) cikmasi bunun isaretiydi ve
+farketmem gerekirdi. Burada ikisi de TAM COZUNURLUK dt'si uzerinde olculur.
+
+Ayrica olcumun DOGRU asamada yapildigi dogrulandi: `analyze_path` darbogazi
+KANONIK yol uzerinde olcer (`rpi_inference.py:1224`), yani `n_waypoints`
+karara girmez. Suclu aday `_rotayi_ornekle` DEGIL `yol_duzelt`tir.
+
+## 2. OLCUM
+
+    olcut (TAM COZUNURLUK)        MEVCUT      TAVAN (string-pulling YOK)
+    ham A* yolu darbogazi          33,00 px          33,00 px
+    kanonik yol darbogazi          28,14 px          33,00 px
+    STRING-PULLING KAYBI            4,00 px           0,00 px
+      maks                         30,98 px
+      > 2 px olan kare            165/260  (%63)        0/259
+    TOPLAM KAYIP (maximin-rota)     6,61 px           2,33 px
+    pay medyan                     14,31 px          18,92 px
+    pay < 3 px                         46                 7
+    pay min                          0,10 px           0,92 px
+    dugum sayisi (giris -> cikis)    56 -> 2          56 -> 56
+
+**ON KAYIT DALI (b) ATESLEDI** (sp kaybi >= 3 px): **ADAY DOGRULANDI.**
+
+## 3. 🔴 MEDYAN KAREDE ROTA TEK DUZ KIRISE INIYOR
+
+    string-pulling sonrasi dugum sayisi: medyan **2**
+    **260 karenin 213'unde (%82) sonuc TAM 2 DUGUM** — yani basla-bitir
+    arasinda TEK BIR DUZ CIZGI.
+
+`_gorus_hatti` kirisin gecilebilir alanda kaldigini dogruladigi icin bu
+GUVENSIZ DEGILDIR (`rota_dogrula` da aciklik >= r_gerekli'yi ayrica zorlar).
+Ama orta-eksene sarilan A* yolunu duz kirisle degistirmek EMNIYET PAYINI
+sistematik olarak yiyor.
+
+## 4. DAR KARELERIN COGU GERCEKTEN DAR DEGIL
+
+    dar kareler (pay < 3 px, n=46) icinde string-pulling kaybi:
+      medyan 6,46 px · maks 22,37 px · > 2 px olan 35/46
+    TAVAN modda payi >= 3 px'e cikan kare: **39/46**
+
+Yani **T74'un "dar koridor" gorunumunun %85'i string-pulling kaynaklidir.**
+D-151'de "koridorlar dar degil, planlayici sikisik geciyor" demistim; simdi
+"planlayici" degil, PLANDAN SONRAKI DUZELTME oldugu olculdu.
+
+## 5. K5 ILE BAG — DOGRUDAN
+
+`sa_000131`, D-150'de K5'i IKI MODELDE DE dusuren tek kare:
+
+    MEVCUT : ham 26,87 -> kanonik 16,40   (string-pulling kaybi **10,47 px**)
+             pay 2,31 px
+    TAVAN  : darbogaz 26,60               pay **12,52 px**
+
+K5'in dustugu yerde emniyet payinin 12,52'den 2,31'e inmesinin sebebi
+string-pulling'dir. D-149/D-150'de "rota gereksiz yere bariyerin dibinden
+geciyor" demistim; NEDEN'i budur.
+
+## 6. TAVAN BILE T94 KAPISINI TUTTURMUYOR
+
+Kapi: toplam kayip <= 2 px · pay<3px <= 5/260.
+Tavan (string-pulling tamamen kaldirilmis): **2,33 px** ve **7 kare**.
+Ikisi de kilpayi ASIYOR. Yani string-pulling duzeltilse BILE T94 kapanmaz;
+kalan ~2,33 px izgara (D-153: 2,00 px) ve secim kaybindandir.
+
+**B modu DAGITILABILIR DEGILDIR:** yayinlanan waypoint 8 -> 56. Mesaj boyutu
+ve IKA planlamasi bunu kaldirmaz. Gercek care ARADA bir yerdedir: kirisi
+yalnizca ACIKLIGI belirgin dusurmuyorsa kabul eden bir string-pulling.
+**BU OLCULMEDI.**
+
+**ON KAYIT UYGULANDI: KOD DEGISTIRILMEDI.**
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. "Aciklik koruyan string-pulling"in ne kazandiracagi OLCULMEDI; A ile B
+     arasinda bir yerde olacagi VARSAYIMDIR.
+  2. Dugum sayisinin artmasinin mesaj/IKA maliyeti olculmedi.
+  3. Butun olcum YER GERCEGIYLE yapildi; modelle sayilar degisebilir.
+  4. String-pulling'in KALDIRILMASI rota UZUNLUGUNU degistirir; bu kayitta
+     uzunluk olculmedi (D-152'de mevcut yapilandirmalar icin 539,2 px'ti).
+  5. `_gorus_hatti`nin kirisi dogrulamasi guvenligi saglar; bu kayit
+     string-pulling'i GUVENSIZ ILAN ETMIYOR — yalnizca PAY YIYOR diyor.

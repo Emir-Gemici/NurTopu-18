@@ -4462,11 +4462,34 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     ```
     **Izgaranın kazandırdığını waypoint seyreltmesi geri alıyor.** Ön kayıt
     kapısını üç kalemde birden tutturamadı → **kod değiştirilmedi.**
-  - **GERİYE KALAN TEK ADAY:** waypoint seyreltme/düzeltme (`yol_duzelt`,
-    `_maks_aralikla_bol`, `_gorus_hatti`). Ceza parametreleri, C-uzayı
-    ızgarası, `r_gerekli_m` ve ızgara çözünürlüğü **elendi**.
-    ⚠ Aday'dır, kanıt değil: seyreltmeyi açıklığı koruyacak biçimde
-    değiştirmenin toplamı düşüreceği **ölçülmedi**.
+  - ✅ **KÖKEN BULUNDU · 2026-08-17** · kayıt **D-154** · betik
+    `scripts/olcum/84_t94_seyreltme.py`. Suçlu `yol_duzelt`'in **görüş-hattı
+    string-pulling**'i (`_rotayi_ornekle` değil — darboğaz kanonik yoldan
+    ölçülüyor, `rpi_inference.py:1224`).
+    ```text
+    ölçüt (TAM ÇÖZÜNÜRLÜK)      MEVCUT     TAVAN (string-pulling YOK)
+    ham A* yolu darboğazı       33,00 px          33,00 px
+    kanonik yol darboğazı       28,14 px          33,00 px
+    STRING-PULLING KAYBI         4,00 px           0,00 px
+      >2 px olan kare          165/260 (%63)         0/259
+    TOPLAM KAYIP                 6,61 px           2,33 px
+    pay<3px / pay min         46 / 0,10          7 / 0,92
+    düğüm (giriş→çıkış)          56 → 2           56 → 56
+    ```
+  - 🔴 **260 karenin 213'ünde (%82) rota TAM 2 DÜĞÜME** iniyor — baştan sona
+    tek düz kiriş. `_gorus_hatti` kirişi doğruladığı için **güvensiz değil**,
+    ama emniyet payını sistematik olarak yiyor.
+  - **T74'ün "dar koridor" görünümünün %85'i buradan:** dar karelerin
+    **39/46**'sı tavan modda pay ≥ 3 px'e çıkıyor.
+  - **K5 ile doğrudan bağ:** `sa_000131` (D-150'de K5'i iki modelde de düşüren
+    kare) string-pulling yüzünden **10,47 px** kaybediyor — pay 12,52 → 2,31.
+  - 🔴 **TAVAN BİLE KAPIYI TUTTURMUYOR:** toplam kayıp 2,33 px (kapı ≤2) ve
+    pay<3px 7 (kapı ≤5). String-pulling düzeltilse **bile T94 kapanmaz**;
+    kalanı ızgara (D-153: 2,00 px) ve seçim kaybından. **Kod değiştirilmedi.**
+  - **YAP (ölçülmedi, önce ölçülecek):** kirişi yalnızca **açıklığı belirgin
+    düşürmüyorsa** kabul eden bir string-pulling — A ile B arasında bir yerde.
+    Tavan modu **dağıtılabilir değil** (yayınlanan waypoint 8 → 56; mesaj ve
+    İKA planlama maliyeti ölçülmedi).
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev
