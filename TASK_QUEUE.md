@@ -4486,10 +4486,30 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - 🔴 **TAVAN BİLE KAPIYI TUTTURMUYOR:** toplam kayıp 2,33 px (kapı ≤2) ve
     pay<3px 7 (kapı ≤5). String-pulling düzeltilse **bile T94 kapanmaz**;
     kalanı ızgara (D-153: 2,00 px) ve seçim kaybından. **Kod değiştirilmedi.**
-  - **YAP (ölçülmedi, önce ölçülecek):** kirişi yalnızca **açıklığı belirgin
-    düşürmüyorsa** kabul eden bir string-pulling — A ile B arasında bir yerde.
-    Tavan modu **dağıtılabilir değil** (yayınlanan waypoint 8 → 56; mesaj ve
-    İKA planlama maliyeti ölçülmedi).
+  - **DENENDI · V1 = açıklık koruyan kiriş** (`eşik = r_gerekli + MASKE_HATA`,
+    yalnız `yol_duzelt` içinde) · kayıtlar **D-155** (yer gerçeği) ve **D-156**
+    (model, projenin kendi kapıları).
+    ```text
+    ölçüt                    taban(v30)    V1        durum
+    K5 · sa_000131 kesen      4/20        0/20      ÇÖZÜLDÜ
+    kararlılık A              8/260      11/260     🔴 DÜŞTÜ
+    pay<3px (model)          59/258      11/255     iyileşti
+    pay<3px (yer gerçeği)    46/260       5/260     iyileşti
+    rota kaybı                  —      1 kare (sa_000083)
+    waypoint / uzunluk / süre     hepsi ~AYNI
+    ```
+    **Ön kayıt "üçü birden" istiyordu; kararlılık düştü → RED, kod
+    değiştirilmedi.** K5'in çözülmüş olması kuralı kurtarmaz.
+  - 🔴 **ÖĞRENİLEN:** K5 kusuru string-pulling kaynaklıdır ve **giderilebilir**
+    (4/20 → 0/20); kıl payı koridorlar da giderilebilir. Ama **sert eşikli** bir
+    kural bunu kararlılık pahasına yapıyor.
+  - **SIRADAKİ (ölçülmedi):** sert eşik yerine **yumuşak/histerezisli** biçim —
+    D-122'nin beraberlik bandı mantığının kiriş kabulüne taşınması. Gerekçe:
+    V1 sürekli bir ölçü (kiriş açıklığı) üzerine **sert ayrık karar** koyuyor;
+    proje bu kusur sınıfını **beşinci kez** görüyor (D-122 · D-145 · D-147 ·
+    D-156). ⚠ V1'in kararsızlığının bu mekanizmadan geldiği **doğrulanmadı**.
+  - ⚠ **Ölçülmeyenler:** K5-SIKI popülasyonu (0/173 mü?), K0..K4 kabul denetimi
+    V1 ile, `sa_000083`teki rota kaybının sebebi.
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev

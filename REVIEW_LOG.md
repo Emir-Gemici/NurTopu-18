@@ -11692,3 +11692,93 @@ bile 2,33 px olctu.
      bunlar model gerektirir ve bu kosu yer gercegiyleydi.
   5. `_maks_aralikla_bol` de `yol_duzelt` icinde cagriliyorsa esik ona da
      uygulanmis olur; iki asamanin katkisi AYRISTIRILMADI.
+
+---
+
+### D-156 · 🔴 T94/V1 · K5'i COZUYOR ama KARARLILIGI BOZUYOR (8 -> 11/260) — ON KAYIT GEREGI RED
+Olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94 · **URETIM KODU DEGISTIRILMEDI**
+Betik: `86_t94_v1_kapi_kosumu.py` (V1 kuralini devreye alip PROJENIN KENDI
+olcum betiklerini kosturur; o betikler DEGISMEZ) · model v30 · GPU
+
+D-155'te V1 (aciklik koruyan kiris) on kayit kapisindan RED almisti; dusen tek
+olcut `kayip` idi ve o olcut carenin hedefledigi seyi olcmuyordu. Karar bu kez
+projenin ZATEN YURURLUKTEKI kapilarina dayandirildi. Kapilar D-107/D-132'de
+sonuc gorulmeden yazilmisti ve bu turda DEGISTIRILMEDI.
+
+## 1. ON KAYIT (kosum yapilmadan once yazildi)
+
+    V1 KABUL EDILIR ancak SU UCU BIRDEN saglanirsa:
+      1. K5-SIKI kesen kare 0/173      (taban 1/173 · D-150)
+      2. kararlilik A <= 8/260         (taban 8/260 · D-142/D-145)
+      3. K1 >= 258 · K2 <= 22 · K3 == 0 · K4 <= 1  (taban D-133)
+
+## 2. OLCUM
+
+**(2) KARARLILIK — DUSTU.**
+
+    taban (v30)      A = **8**/260
+    V1 ile           A = **11**/260      🔴 KOTULESTI
+
+    Yan olcum: `pay < 3 px` olan kare 59/258 -> **11/255** (belirgin iyilesme)
+    Yan bedel : 1 kare rota kaybi (`sa_000083`, 4 kosunun 3'unde
+                GORUS_HATTI_KOPUK)
+
+**(1) K5 — COZULDU (hedefli olcum).**
+
+`sa_000131`, D-150'de K5'i IKI MODELDE DE dusuren tek kare. Ayni gurultu
+recetesiyle (sigma=2/255, 20 cekilis, eslestirilmis):
+
+    taban (v30)   KESEN kosu **4/20**  · darbogaz 14,80 (kesen modda)
+    V1 ile        KESEN kosu **0/20**  · darbogaz 17,59 – 18,39
+
+Yani string-pulling'in yedigi pay geri geldi ve govde-bariyer temasi KALKTI.
+
+⚠ **POPULASYON KOSULMADI.** K5-SIKI'nin tam kosumu (173 x 21) ~45 dk surer ve
+sonucu KARARI DEGISTIREMEZ (sart (2) zaten dustu). Bu yuzden yalnizca kararı
+belirleyen kare olculdu. "0/173" IDDIA EDILMIYOR; olculen sey `sa_000131`in
+0/20 oldugudur.
+
+**(3) KABUL DENETIMI KOSULMADI** — ayni gerekce.
+
+## 3. ON KAYIT UYGULANDI: RED
+
+Sart (2) dustu; "ucu birden" kurali geregi **V1 UYGULANMAZ, KOD DEGISTIRILMEDI.**
+Sart (1)'in tutmus olmasi kurali kurtarmaz — on kayitta "neredeyse kabul
+edilmez" yaziyordu.
+
+## 4. 🔴 NEDEN KARARLILIK BOZULDU — AYNI KUSUR SINIFI, BESINCI KEZ
+
+V1 kirisi kabul/red eden **AYRIK bir karar** ekler ve bu kararin girdisi
+SUREKLI bir buyukluktur (kiris uzerindeki en kucuk aciklik). Esik civarindaki
+bir kiriste kucuk bir maske degisimi kabul/red'i cevirir, yol sekli degisir ve
+yayinlanan serit onunla degisir.
+
+Proje bu kusur sinifini simdiye kadar SU dort yerde gordu:
+    D-122  serit secimi: `serit_min_px` uzerinde argmin
+    D-145  A* maliyet beraberligi (degismeyen koridor kumesi uzerinde)
+    D-147  bant secimi: (kapi sayisi, toplam alan) uzerinde argmax
+    D-156  kiris kabulu: aciklik esigi uzerinde ikili karar   <- bu kayit
+
+Her seferinde ayni desen: SUREKLI bir olcu uzerinde SERT bir AYRIK karar.
+⚠ Bu bir GOZLEMDIR; V1'in kararsizliginin bu mekanizmadan geldigi
+DOGRULANMADI (esik civarindaki kirisler tek tek izlenmedi).
+
+## 5. NE OGRENILDI (kayda gecer)
+
+  · K5 kusuru string-pulling kaynaklidir ve GIDERILEBILIR — kanit: 4/20 -> 0/20.
+  · Kil payi koridorlar da giderilebilir — modelle 59/258 -> 11/255.
+  · Ama SERT ESIKLI bir kural bunu kararlilik pahasina yapiyor.
+  · Bir sonraki deneme sert esik yerine YUMUSAK/HISTEREZISLI bir bicim
+    olmalidir (D-122'nin beraberlik bandi mantiginin kiris kabulune
+    tasinmasi). **OLCULMEDI.**
+
+**KAPILAR:** uretim kodu DEGISMEDI · `codes/test_rota_sentetik.py` 15/15 ·
+`unittest discover -s tests` 576 OK.
+
+**DOGRULANAMADI**
+  1. K5-SIKI populasyonu (0/173 mu?) OLCULMEDI.
+  2. K0..K4 kabul denetimi V1 ile OLCULMEDI.
+  3. Kararsizligin kaynagi olarak "esik civari kiris" mekanizmasi
+     DOGRULANMADI.
+  4. `sa_000083`teki rota kaybinin sebebi incelenmedi.
+  5. Yumusak/histerezisli bicimin ne verecegi OLCULMEDI.
