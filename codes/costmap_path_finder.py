@@ -46,9 +46,11 @@ import cv2
 import numpy as np
 
 try:
-    from .karar_sozlesmesi import hedef_bant_yuksekligi, serit_no
+    from .karar_sozlesmesi import (BERABERLIK_BANDI, hedef_bant_yuksekligi,
+                                   serit_no)
 except ImportError:
-    from karar_sozlesmesi import hedef_bant_yuksekligi, serit_no
+    from karar_sozlesmesi import (BERABERLIK_BANDI, hedef_bant_yuksekligi,
+                                  serit_no)
 
 logger = logging.getLogger("costmap_path_finder")
 
@@ -724,20 +726,121 @@ def _maks_aralikla_bol(noktalar, maks_aralik_px, maks_wp, gecilebilir_tam=None):
     return bolunmus
 
 
+def _polyline_asgari_aciklik(noktalar, dt_px, taban=None):
+    """Polyline'in cizgi pikselleri uzerinde en kucuk aciklik.
+
+    🔴 RASTERIZASYON `_gorus_hatti` ILE AYNI OLMAK ZORUNDADIR. Ilk yazimda
+    `_bresenham_noktalari` kullanilmisti ve docstring "ayni kaynak" diyordu;
+    BAGIMSIZ DENETIM bunun YANLIS oldugunu olctu: `_gorus_hatti` (`:641`) ve
+    `rota_dogrula` `cv2.line`/`cv2.polylines` kullanir ve 200x200 karede 4000
+    rastgele segmentin **621'i (%15,5)** farkli piksel kumesi uretiyor. Bir
+    kiris, gercek (cv2) rasterde dar bir piksele degip elde yazilan rasterde
+    degmeyebilir — yani "yeterince genis" diye KABUL EDILEBILIRDI. Guvenlik
+    payi kararinda bu kabul edilemez; `cv2.line` kullanilir.
+
+    `taban` verilirse deger onun ALTINA duser dusmez ERKEN CIKILIR (kabul
+    kurali zaten reddedecektir). Denetim olctu: erken cikis olmadan bu yordam
+    1860 dugumlu bir yolda 5,2 saniye harciyordu.
+
+    Cerceve disi nokta FAIL-CLOSED islenir (0,0 doner) — sessizce kirpilmaz.
+    """
+    h, w = dt_px.shape
+    en_kucuk = float("inf")
+    for a, b in zip(noktalar, noktalar[1:]):
+        x1, y1 = int(round(a[0])), int(round(a[1]))
+        x2, y2 = int(round(b[0])), int(round(b[1]))
+        if not (0 <= x1 < w and 0 <= y1 < h and 0 <= x2 < w and 0 <= y2 < h):
+            return 0.0
+        sol, sag = min(x1, x2), max(x1, x2)
+        ust, alt = min(y1, y2), max(y1, y2)
+        cizgi = np.zeros((alt - ust + 1, sag - sol + 1), np.uint8)
+        cv2.line(cizgi, (x1 - sol, y1 - ust), (x2 - sol, y2 - ust),
+                 1, thickness=1, lineType=cv2.LINE_8)
+        pencere = dt_px[ust:alt + 1, sol:sag + 1]
+        deger = float(pencere[cizgi > 0].min())
+        if deger < en_kucuk:
+            en_kucuk = deger
+            if taban is not None and en_kucuk < taban:
+                return en_kucuk
+    return en_kucuk
+
+
 def yol_duzelt(yol_px, gecilebilir_tam, *, wp_aralik_px=WP_ARALIK_M,
-              aci_esigi_derece=15.0, maks_wp=MAKS_WP):
+              aci_esigi_derece=15.0, maks_wp=MAKS_WP,
+              dt_px=None, kiris_bandi=BERABERLIK_BANDI):
     """Gorus-hatti string-pulling + kose secimi + azami waypoint araligi.
-    gecilebilir_tam'a karsi DOGRULANIR — asla korlemesine kisaltma yapilmaz."""
+    gecilebilir_tam'a karsi DOGRULANIR — asla korlemesine kisaltma yapilmaz.
+
+    `dt_px` VERILIRSE (mesafe donusumu, tam cozunurluk) string-pulling'e bir
+    ACIKLIK KORUMA kurali eklenir:
+
+        kiris, YERINE GECTIGI ALT YOLDAN belirgin olarak daha dar olmamali
+        kiris_asgari >= (1 - kiris_bandi) * alt_yol_asgari
+
+    NEDEN (REVIEW_LOG D-154 · D-156 · D-157, olculdu). Gorus-hatti testi bir
+    kirisi yalnizca C-uzayinda kaldigi icin kabul ediyordu; kiris DAR BOGAZDAN
+    gecebiliyor ve emniyet payini yiyordu. Olculen (yer gercegi, n=260):
+    string-pulling kaybi medyan 4,00 px, 165/260 karede > 2 px, ve 260 karenin
+    **213'unde sonuc TAM 2 DUGUME** (tek duz kiris) iniyordu. Dar karelerin
+    39/46'si SADECE bundan dar gorunuyordu; K5'i dusuren `sa_000131`de kayip
+    10,47 px idi (pay 12,52 -> 2,31).
+
+    NEDEN SABIT ESIK DEGIL, GORELI (D-156). Once sabit esik denendi
+    (`kiris >= r_gerekli + MASKE_HATA`): K5'i cozdu ama kararliligi bozdu
+    (8 -> 11/260). Sabit esik SUREKLI bir buyuklugu SABIT bir sayiyla
+    kiyaslar; esik civarinda kucuk bir maske degisimi kabul/red'i cevirir.
+    Goreli kiyasta iki buyukluk de AYNI maskeden turer ve gurultuyle BIRLIKTE
+    oynar. Olculdu: kararlilik 8/260 (taban ile AYNI).
+
+    `kiris_bandi` CIPLAK SAYI DEGILDIR: projenin olculmus gurultu tabani
+    `karar_sozlesmesi.BERABERLIK_BANDI` (D-112 · D-122).
+
+    ⚠ YON: kural yalnizca KISALTMAYI REDDEDER. Serbest alana, maskeye ve
+    C-uzayina DOKUNMAZ; sonuc yolu ancak DAHA COK dugumlu olur (madde 15
+    acisindan notr).
+
+    ⚠ GERIYE UYUM: `dt_px=None` iken davranis BIREBIR eskisidir; mevcut cagri
+    yerleri ve testler etkilenmez.
+    """
     if len(yol_px) < 2:
         return list(yol_px)
+
+    korumali = dt_px is not None
+    if korumali:
+        if tuple(np.shape(dt_px)) != tuple(np.shape(gecilebilir_tam)):
+            raise ValueError(
+                "dt_px ve gecilebilir_tam AYNI cozunurlukte olmali: "
+                f"{np.shape(dt_px)} != {np.shape(gecilebilir_tam)}")
+        band = float(np.clip(float(kiris_bandi), 0.0, 1.0))
+        # Segment basina asgari aciklik BIR KEZ hesaplanir.
+        seg_asgari = [_polyline_asgari_aciklik((a, b), dt_px)
+                      for a, b in zip(yol_px, yol_px[1:])]
+
+    def _yeterince_genis(a, b, alt):
+        """Kiris, yerine gectigi parcadan BELIRGIN olarak dar olmasin."""
+        esik = (1.0 - band) * alt
+        return _polyline_asgari_aciklik((a, b), dt_px, taban=esik) >= esik
 
     # 1) gorus hatti ile azalt
     sadelesmis = [yol_px[0]]
     i = 0
     n = len(yol_px)
     while i < n - 1:
+        # Onek asgarilari: min(seg_asgari[i:k]) tek gecişte hazirlanir; aksi
+        # halde her aday `j` icin dilim yeniden taranir (denetim bulgusu 3).
+        onek = None
+        if korumali:
+            onek = [float("inf")] * (n + 1)
+            en_kucuk = float("inf")
+            for k in range(i, n - 1):
+                en_kucuk = min(en_kucuk, seg_asgari[k])
+                onek[k + 1] = en_kucuk
         j = n - 1
-        while j > i + 1 and not _gorus_hatti(yol_px[i], yol_px[j], gecilebilir_tam):
+        while j > i + 1:
+            if _gorus_hatti(yol_px[i], yol_px[j], gecilebilir_tam) and (
+                    not korumali
+                    or _yeterince_genis(yol_px[i], yol_px[j], onek[j])):
+                break
             j -= 1
         sadelesmis.append(yol_px[j])
         i = j
@@ -758,7 +861,20 @@ def yol_duzelt(yol_px, gecilebilir_tam, *, wp_aralik_px=WP_ARALIK_M,
         if np.linalg.norm(v1) > 1e-6 and np.linalg.norm(v2) > 1e-6:
             cos_aci = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
             aci = np.degrees(np.arccos(np.clip(cos_aci, -1, 1)))
-        if mesafe >= wp_aralik_px or aci >= aci_esigi_derece:
+        tut = bool(mesafe >= wp_aralik_px or aci >= aci_esigi_derece)
+        if not tut and korumali:
+            # 🔴 BAGIMSIZ DENETIM BULGUSU (D-157). Asama 2, asama 1'in koruma
+            # geregi GERI EKLEDIGI dugumleri hicbir denetim yapmadan
+            # siliyordu; ustelik o dugumler tam da YUMUSAK DONUSLU olanlardir
+            # (bir daralmayi kavisle donen rota) ve silinmeye en yatkin
+            # olanlardir. Olculdu: `aci_esigi_derece=15.0` ile koruma TAMAMEN
+            # siliniyordu (dugum 3 -> 2, aciklik 9,06 -> 4,00 px) ve sonuc
+            # korumasiz haliyle BIREBIR ayni cikiyordu.
+            # Dugumu dusurmek `onceki -> sonraki` kirisini dogurur; o kiris
+            # kurali bozuyorsa dugum TUTULUR.
+            alt = _polyline_asgari_aciklik((onceki, simdiki, sonraki), dt_px)
+            tut = not _yeterince_genis(onceki, sonraki, alt)
+        if tut:
             tutulan.append(simdiki)
     tutulan.append(sadelesmis[-1])
 

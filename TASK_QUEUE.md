@@ -4510,6 +4510,48 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     D-156). ⚠ V1'in kararsızlığının bu mekanizmadan geldiği **doğrulanmadı**.
   - ⚠ **Ölçülmeyenler:** K5-SIKI popülasyonu (0/173 mü?), K0..K4 kabul denetimi
     V1 ile, `sa_000083`teki rota kaybının sebebi.
+
+  - ✅ **YAPILDI · W1 (göreli band) ÜRETİME ALINDI · 2026-08-17** · kayıt **D-158**.
+    Ön kayıt `scripts/olcum/w1_on_kayit.md`, ölçümlerden **önce** yazıldı; on
+    ölçütün **onu da** tuttu.
+    ```text
+    ölçüt                  eşik        taban(v30)   SONUÇ
+    K5-SIKI kesen kare     == 0/173    1/173        0/173  (0/3633 çift)
+    kararlılık A           <= 8/260    8/260        8/260
+    K1 rota                >= 258/260  258          258/260
+    K2 moloza basma        <= 22/258   22/258       14/258   ← İYİLEŞTİ
+    K3 / K4 / K0           —           0 / 1 / %8,0  aynı
+    waypoint / uzunluk / süre  ≤16 / ≤%5 / ≤2×      8 / %0,00 / 1,17×
+    yan ölçüm: pay<3px                 57/258       15/258
+    ```
+    **Bağımsız denetim SEKİZ bulgu getirdi; biri (HIGH) kuralı 2. aşamada
+    tamamen siliyordu** (`aci_esigi_derece=15` ile düğüm 3→2, açıklık 9,06→4,00
+    — korumasızla birebir aynı). Altısı kodla kapatıldı, ikisi göreve döndü.
+    Düzeltmeler algoritmayı değiştirdiği için **bütün kapılar son kodla
+    yeniden koşuldu**.
+- [ ] **T95 — `rota_bul` açıklık korumasından yararlanmıyor (KATMAN B)** · `codes/costmap_path_finder.py:1071` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 2)
+  - `rota_bul` `yol_duzelt`i `dt_px` **geçirmeden** çağırıyor; oysa
+    `sonuc["dt_px"]` bir satır önce kapsamda. D-154'te ölçülen kusur (kiriş
+    emniyet payını yiyor, medyan 4 px) bu yolda **hâlâ canlı**.
+  - `rota_bul` → `simulation/scripts/iha_haritala.py:329` → `road`.
+  - ⚠ **Körlemesine eklenmesin:** o yolun açıklık ölçüm düzeneği yok. Önce
+    `rota_bul` için bir kayıp ölçümü (maximin karşılaştırması) kurulmalı,
+    sonra ön kayıtla değiştirilmeli.
+  - **KAPI:** `rota_bul` ACIK sayısı **≥ 34/260** · `test_rota_sentetik` 15/15 ·
+    `unittest discover` düşmeyecek.
+- [ ] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
+  - `road = darbogaz_serit` (en dar noktanın şeridi). İki kollu bir sahnede
+    darboğaz çatalın **altındaki paylaşılan gövdeye** düşerse yayınlanan sayı
+    hangi kola sürüleceğini **söylemez**. Ölçülen örnek (S3): rota `(233,20)`
+    ile sağ koldan çıkıyor ama `road=2` (ortak gövde).
+  - Ölçülen kırılganlık: `serit_min` 8,0 (şerit 2) vs 9,0 (şerit 3), band eşiği
+    8,64 → **0,64 px**'lik kayma yayınlanan kararı çevirir.
+  - ⚠ Bu semantik **D-41'den gelir ve T94'ten öncedir**; T94 onu yalnız
+    görünür kıldı. `baskin_serit` zaten hesaplanıyor ama yayınlanmıyor (D-146).
+  - **ÖNCE KARAR:** `road` "en dar noktanın şeridi" mi, "rotanın gövdesinin
+    şeridi" mi, yoksa "çıkış kolunun şeridi" mi olmalı? İKA `plan_path(road)`
+    ile plan yapıyor (`comms/ika_receiver.py:11`), hakem `hakem_log.py:108`
+    ile puanlıyor. **Ölçmeden değiştirilmesin.**
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev

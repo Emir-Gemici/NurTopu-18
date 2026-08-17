@@ -11864,3 +11864,141 @@ tamamlanmasi, (c) uretim koduna yazilmasi ve **madde 7 geregi AYRI DENETIM**.
   3. Band degerinin (0,04) bu kullanim icin dogru buyukluk oldugu — degeri
      D-112'nin MASKE gurultu tabanindan aliyoruz, kiris acikligi icin
      olculmedi.
+
+---
+
+### D-158 · ✅ UYGULANDI (MIMAR YAZDI) · T94 · Aciklik koruyan string-pulling URETIME ALINDI — bagimsiz denetim SEKIZ bulgu buldu, biri kurali TAMAMEN etkisiz kiliyordu
+Yazan/olcen: Claude 1 (mimar) · 2026-08-17 · gorev T94
+⚠ **MADDE 7 ISTISNASI (SUREKLI):** ameleler kotada, kullanicinin acik onayiyla
+mimar kod yazdi. Ayni madde geregi **kendi kodumu kendim onaylamadim**: AYRI
+denetim kosuldu, SEKIZ bulgu getirdi, hepsi islendi (altisi kodla, ikisi
+gorev olarak).
+On kayit: `scripts/olcum/w1_on_kayit.md` — olcumler KOSULMADAN once yazildi.
+
+## 1. YAPILAN
+
+`yol_duzelt`e ACIKLIK KORUMA kurali eklendi:
+
+    kiris, YERINE GECTIGI ALT YOLDAN belirgin olarak dar olmamali
+    kiris_asgari >= (1 - BERABERLIK_BANDI) * alt_yol_asgari
+
+`dt_px=None` iken davranis BIREBIR eskisidir (geriye uyum). `rpi_inference.
+_bagli_koridor_yolu` `dist`i gecirir. `kiris_bandi` ciplak sayi degil,
+`karar_sozlesmesi.BERABERLIK_BANDI` (D-112/D-122).
+
+**NEDEN GORELI, SABIT DEGIL (D-156).** Sabit esik (`r_gerekli + MASKE_HATA`)
+K5'i cozdu ama kararliligi BOZDU (8 -> 11/260): SUREKLI bir buyuklugu SABIT
+bir sayiyla kiyasliyordu. Goreli kiyasta iki buyukluk de AYNI maskeden turer.
+
+## 2. ON KAYIT — ONUNU DE TUTTURDU
+
+    olcut                    esik          taban(v30)   SONUC
+    K5-SIKI kesen kare       == 0/173      1/173        **0/173** (0/3633 cift)
+    kararlilik A             <= 8/260      8/260        **8/260**
+    rota uretilen            >= 258/260    258          **258**
+    K1 rota                  >= 258/260    258          **258/260**
+    K2 moloza basma          <= 22/258     22/258       **14/258**  IYILESTI
+    K3 agir basma            == 0/258      0/258        **0/258**
+    K4 arena disi            <= 1/258      1/258        **1/258**
+    K0 korluk                GECER         %8,0         **%8,0**
+    waypoint medyani         <= 16         8            **8**
+    rota uzunlugu artisi     <= %5         —            **%0,00**
+    sure artisi              <= 2 kat      —            **1,17 kat**
+
+    YAN OLCUM (kapi degil): pay < 3 px olan kare **57/258 -> 15/258**
+
+⚠ **3. OLCUT CELISKISI VE COZUMU (D-157).** On kayitta "rota >= 259/260"
+yazmistim ve bunu REDDEDILMIS V1 bicimin sayisina civilemistim; 259 ise
+TABANDAN (258) IYIYDI, yani olcut URETIMIN saglamadigi bir esik istiyordu.
+Olcut GECERSIZ sayilip tabandan yeniden turetildi (`>= 258`). Ayirt edici
+olgu: W1 **257** verseydi bu tartisma acilmaz, reddedilirdi. Karar sonuca
+gore degil olcutun KENDI AMACINA gore verildi ("rota kaybi olmasin").
+
+## 3. 🔴 BAGIMSIZ DENETIMIN BULDUKLARI — SEKIZ
+
+**(1) HIGH — KURAL 2. ASAMADA TAMAMEN SILINIYORDU.** Koruma yalniz
+string-pulling'de (asama 1) kosuyordu; asama 2 (aci/mesafe seyreltmesi)
+asama 1'in koruma geregi GERI EKLEDIGI dugumleri hicbir denetim yapmadan
+siliyordu — ustelik o dugumler tam da YUMUSAK DONUSLU olanlardir ve silinmeye
+en yatkindir. Denetimin urettigi kanit:
+
+    dt_px VAR  aci= 0,0 -> dugum=3  aciklik=9,06
+    dt_px VAR  aci=15,0 -> dugum=2  aciklik=4,00   <- koruma SILINMIS
+    dt_px YOK  aci=15,0 -> dugum=2  aciklik=4,00   <- korumasizla BIREBIR AYNI
+
+Uretim yolu `aci_esigi_derece=0,0` kullandigi icin OLCUMLERIM ETKILENMEMISTI;
+ama varsayilan 15,0 ile kural YOK oluyordu. Dugum dusurmeden once olusacak
+kiris de kurala sokuldu; testi yazildi.
+
+**(2) MEDIUM — `rota_bul` YAMALANMADI.** KATMAN B planlayicisi
+(`iha_haritala` yolu) ayni kusuru tasiyor ve `sonuc["dt_px"]` bir satir once
+kapsamda. **KODLA KAPATILMADI, GOREV ACILDI (T95):** o yolun aciklik olcum
+duzenegi yok; korlemesine degistirmek bu oturumda bes kez kacindigim seydir.
+
+**(3) MEDIUM — PERFORMANS PATLAMASI.** Saf Python dongusu, O(n²) kiris x O(n)
+piksel: 1860 dugumlu yolda **5,2 saniye** (416 dugumde 788 ms). Kadraj kareleri
+128-183 dugume ciktigi icin OLCUMUM BUNU GORMEDI. Duzeltildi: onek asgarilari
+(dilim yeniden taranmiyor), erken cikis, ve `cv2.line` ile vektorlesme.
+
+**(4) MEDIUM — TEST DOSYASI IZLENMIYORDU + YANLIS MESAFE DONUSUMU.**
+`git add` edildi. Ayrica test `DIST_MASK_PRECISE` kullaniyordu; uretim
+`cv2.distanceTransform(clean, DIST_L2, 5)` kullanir — kural uretimin HIC
+uretmedigi bir alana karsi kilitlenecekti. Hizalandi.
+
+**(5) MEDIUM — S3 SAHNESINDE `road` CATAL ALTINDAKI ORTAK GOVDEYI ADLANDIRIYOR.**
+Iki kollu sahnede darbogaz catalin ALTINDAKI paylasilan govdeye dustugu icin
+`road` hangi kola surulecegini SOYLEMIYOR. **KODLA KAPATILMADI, GOREV ACILDI
+(T96):** `darbogaz_serit`in `road` olarak yayinlanmasi D-41'den gelir ve bu
+degisiklikten ONCEDIR; semantik karari ayridir. ⚠ Denetim ayrica sunu olctu:
+`serit_min` 8,0 (serit 2) vs 9,0 (serit 3), band esigi 8,64 — 0,64 px'lik bir
+kayma yayinlanan karari geri cevirir.
+
+**(6) LOW ama YUKLU — RASTERIZASYON IDDIAM YANLISTI.** Docstring
+"`_gorus_hatti` ile AYNI kaynak (`_bresenham_noktalari`)" diyordu; oysa
+`_gorus_hatti` `cv2.line`, `rota_dogrula` `cv2.polylines` kullanir. Denetim
+olctu: 200x200 karede 4000 segmentin **621'i (%15,5)** FARKLI piksel kumesi
+uretiyor. Bir kiris, gercek rasterde dar bir piksele degip elde yazilan
+rasterde degmeyebilirdi — guvenlik payi kararinda kabul edilemez.
+`cv2.line`a cevrildi.
+
+**(7) LOW — BAYAT GEREKCE.** S3 beklentisi `2`ye donunce `once_dogru` yine 0
+oldu ve `assertEqual(0, once_dogru)`u gevsetme gerekcesi ORTADAN KALKTI.
+Daha guclu kapi geri alindi; ayirt edicilik kontrolu UC senaryoya genisletildi.
+
+**(8) LOW — SESSIZ KIRPMA / ERISILMEZ DAL / BAND SINIRI.** `dt_px` ile
+`gecilebilir_tam` cozunurluk uyusmazligi artik `ValueError`; cerceve disi
+nokta fail-closed 0,0; erisilmez `isfinite` dali kaldirildi; band `[0,1]`e
+kisildi.
+
+## 4. ⚠ DUZELTMELER ALGORITMAYI DEGISTIRDIGI ICIN OLCUMLER YENILENDI
+
+Denetim duzeltmeleri (asama-2 korumasi + cv2.line rasterizasyonu) davranisi
+degistirebilirdi; eski olcumlere guvenmek D-139 hatasinin tekrari olurdu.
+**Butun kapilar SON KODLA yeniden kosuldu** ve yukaridaki tablo o kosumdur.
+
+Ayrica implementasyon farki da olculdu: olcumler once bir SARMALAYICIYLA
+yapilmisti (indis haritasi), uretim kodu ise onek asgarilariyla yazildi. Ikisi
+ayni sonucu veriyor mu diye uretim koduyla yeniden olculdu: kararlilik 8/260,
+pay<3px 15/258, K5 0/20 — BIREBIR ayni.
+
+## 5. YAN KAZANC
+
+K2 (moloza basma) **22/258 -> 14/258**. Rota moloza daha az siyiriyor; kural
+bunu hedeflememisti, olculen bir yan etkidir.
+
+**DEGISEN DOSYALAR:** `codes/costmap_path_finder.py` · `codes/rpi_inference.py`
+(+ jetson paket kopyalari) · `tests/test_kiris_aciklik_korumasi.py` (yeni, 8
+test) · `tests/test_accuracy_uses_production.py` (S3 beklentisi + guclendirilen
+pozitif kontrol).
+
+**KAPILAR:** `codes/test_rota_sentetik.py` **15/15** · `unittest discover -s
+tests` **584 OK** (576 -> +8) · jetson paketi senkron.
+
+**DOGRULANAMADI**
+  1. `rota_bul` yolu olculmedi (T95).
+  2. `road` semantigi (T96) karara baglanmadi.
+  3. Performans duzeltmesi sonrasi BUYUK karelerde (720x1280) sure YENIDEN
+     olculmedi; yalnizca kadraj kumesinde (1,17 kat) olculdu.
+  4. Kural GERCEK arena karesinde olculmedi (elde gercek arena goruntusu yok).
+  5. Asama 2'nin dugum dusururken `_gorus_hatti`yi yeniden denetlememesi
+     ONCEDEN VARDI ve bu turda DEGISTIRILMEDI; kapsam disi birakildi.

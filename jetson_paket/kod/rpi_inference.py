@@ -849,6 +849,12 @@ def _bagli_koridor_yolu(koridor, icerik, dist, ilk_plan_adimi,
             wp_aralik_px=float(max(koridor.shape) * 2),
             aci_esigi_derece=0.0,
             maks_wp=max(2, len(yol_px)),
+            # T94 (D-154/D-156/D-157): kiris, yerine gectigi alt yoldan
+            # BELIRGIN olarak daha dar olmamali. `dist` TAM COZUNURLUK mesafe
+            # donusumudur ve `yol_px` de tam goruntu koordinatlarindadir.
+            # Verilmezse string-pulling rotayi tek duz kirise indirip emniyet
+            # payini yiyordu (260 karenin 213'unde 2 dugum; kayip medyan 4 px).
+            dt_px=dist,
         )
         ilk_x, ilk_y = kanonik[0] if kanonik else (-1, -1)
         son_x, son_y = kanonik[-1] if kanonik else (-1, -1)

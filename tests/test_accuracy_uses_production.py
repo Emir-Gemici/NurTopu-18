@@ -89,10 +89,26 @@ class AccuracyProductionPathTests(unittest.TestCase):
         # kadar az (20 px baglanti satiri). Rota gercekte SAG koldan cikiyor
         # (ust uc (233, 20)) ve serit dagilimi (0, 216, 101) — sol kola hic
         # girmiyor. Dogru etiket 3'tur.
+        # 🔴 S3 BEKLENTISI IKINCI KEZ DUZELTILDI (T94 · REVIEW_LOG D-157).
+        # Yukaridaki T31 gerekcesi `3` diyordu ve o gerekce KENDI ZAMANINDA
+        # dogruydu; ama `darbogaz_serit` EN DAR NOKTANIN seridini yayinlar,
+        # rotanin CIKTIGI kolu degil. Eski string-pulling kirisi yatay
+        # baglantinin sag kola girdigi KOSEYI kesiyordu ve en dar nokta orada
+        # olusuyordu. Olculdu (ayni sahne, tek fark `yol_duzelt(dt_px=...)`):
+        #
+        #   ESKI : darbogaz 1,00 px @ (211, 91)  serit_min [None, 3,0, 1,0] -> 3
+        #   YENI : darbogaz 8,00 px @ (153,149)  serit_min [None, 8,0, 9,0] -> 2
+        #   ikisinde de baslangic (151,276) · cikis (233,20) · 8 waypoint
+        #
+        # Yani `3`, KOSE KESMEYLE 1 piksele dusen bir acikligin artefaktiydi.
+        # Yeni rota 8 KAT daha genis geciyor ve en dar noktasi serit 2'de.
+        # Serit dagilimi da (0, 216, 106) ile serit 2 baskin.
+        # Beklenti "testi gecirmek icin" degil, OLCUM boyle gosterdigi icin
+        # guncellendi; pozitif kontrol bununla GUCLENIR (once_dogru 1 -> 0).
         senaryolar = [
             ("S1", orta_ve_sol_gurultu, 2),
             ("S2", kucuk_gurultu, None),
-            ("S3", iki_kollu_tek_bilesen, 3),
+            ("S3", iki_kollu_tek_bilesen, 2),
         ]
         once_dogru = 0
         sonra_dogru = 0
@@ -114,16 +130,17 @@ class AccuracyProductionPathTests(unittest.TestCase):
         # POZITIF KONTROL: eski karar yolu uretimden KESIN olarak kotu olmali,
         # yoksa bu senaryolar bir sey ayirt etmiyor demektir.
         #
-        # Eskiden `assertEqual(0, once_dogru)` yaziliyordu; S3'un beklentisi
-        # `2` iken eski yol da yaniliyordu. T31 ile S3'un dogru cevabi `3`
-        # olarak duzeltilince (ust bant BIMODAL, centroid bos seride dusuyordu)
-        # eski yol o TEK senaryoda tesadufen dogru cikiyor. Ayirt edicilik S1
-        # ve S2'de duruyor; kapiyi "eski yol hepsinde yanlis" yerine "eski yol
-        # kesin olarak daha kotu" seklinde tutuyoruz — yanlisligi kanitlanmis
-        # bir beklentiyi testte yasatmamak icin.
+        # TARIHCE: bir ara `assertEqual(0, once_dogru)` gevsetilip
+        # `assertLess`e cevrilmisti, cunku T31'de S3'un beklentisi `3` yapilinca
+        # eski yol o TEK senaryoda tesadufen dogru cikiyordu. T94'te (D-157)
+        # S3'un beklentisi OLCUMLE `2`ye donunce eski yol yine UCUNDE DE
+        # yaniliyor (kosum: "uretim karariyla uyum: 0/3 -> 3/3"), yani gevsetme
+        # gerekcesi ORTADAN KALKTI ve daha GUCLU kapi geri aliniyor.
+        # (Bagimsiz denetim bulgusu: gevsetilmis kapi ile bayat gerekce
+        # birbiriyle celisiyordu.)
         self.assertEqual(3, sonra_dogru)
-        self.assertLess(once_dogru, sonra_dogru)
-        for ad, maske, beklenen in senaryolar[:2]:
+        self.assertEqual(0, once_dogru)
+        for ad, maske, beklenen in senaryolar:
             self.assertNotEqual(
                 beklenen, _eski_karar(maske)[0],
                 f"{ad} artik ayirt edici degil: eski yol da dogru cevabi "
