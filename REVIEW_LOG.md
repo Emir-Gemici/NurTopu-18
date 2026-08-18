@@ -13401,3 +13401,93 @@ ama HANGI ISTATISTIK oldugunu yazmiyordu. Yazildi — bir OLGU beyani olarak,
   3. Ucunu birlestiren kural (oy coklugu) olculmedi; kahin tavani 202/209,
      yani en iyi ihtimalle 4 kare kazanc (%1,9).
   4. Sartname SS5.3.2/SS6.2 metni okunmadi (D-166'dan beri acik).
+
+### D-169 · 🔴 T98 · "KATMAN A ~5 ms @384px" IDDIASININ ARKASINDA HICBIR OLCUM YOKTU — 384'te bile ~12,6 ms, ve URETIM 384'te KOSMUYOR
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T98 · dayanak D-162 SS6, D-163 SS5
+⚠ Bu kayittaki olcum SENTETIK maskelerle yapildi ve DENETIMDEN GECMEDI.
+⚠ URETIM DAVRANISI DEGISMEDI: yalnizca yanlis bir docstring iddiasi kaldirildi.
+
+## 1. IDDIA NEREDEN GELDI
+
+`codes/costmap_path_finder.py:22` yaziyordu:
+
+    KATMAN A (her karede, ~5 ms @384px): serbest_alan() + koridor_adaylari()
+
+`grep` ile tarandi: REVIEW_LOG'da bu sayiyi ureten HICBIR olcum yok. Sayi
+yalnizca docstring'de duruyor ve oradan T95-B'nin (4') olcutune kadar
+gerekce olarak tasindi.
+
+## 2. OLCUM (mimar, MODELSIZ — maskeler sentetik, saha ~50 m sabit)
+
+    px     mpp      serbest_ms  koridor_ms  KATMAN_A   _bagli_mi cagrisi  n_kapi
+    384   0,1302        2,12       10,46      12,58            9            3
+    512   0,0977        3,87       16,15      20,02            9            3
+    640   0,0781        6,33       26,31      32,64            9            3
+    768   0,0651        8,02       39,81      47,83            9            3
+    896   0,0558        9,81       49,13      58,93            9            3
+    1024  0,0488       16,53       70,93      87,47            9            3
+
+CAPA (amele, GERCEK model maskeleri, D-162):  640 px -> 24,45 ms ·
+1024 px -> 83,02 ms. Sentetigim 1024'te 87,5 ile capaya cok yakin, 640'ta
+%33 yuksek. Yani sentetik OLCEK DAVRANISINI temsil ediyor, mutlak degeri
+bir miktar YUKARI sapiyor.
+
+**UC SONUC:**
+  1. **384 px'te bile ~5 ms DEGIL** — 12,58 ms (sentetik). Capa oranindan
+     (0,75) turetilen gercek tahmini ~9,4 ms; ikisi de iddiadan ~2x buyuk.
+  2. **MALIYET PIKSEL SAYISIYLA DOGRUSAL:** 384 -> 1024 kenar 2,67x, piksel
+     7,11x, sure 6,95x.
+  3. **`koridor_adaylari` maliyetin ~%80'idir** (384'te 10,46/12,58;
+     1024'te 70,93/87,47).
+
+## 3. 🔴 URETIM 384 PX'TE KOSMUYOR — IDDIA CIFTE YANLIS
+
+`INFER_SIZE = 512` yalnizca MODEL girdisidir. Maskeler kaynak karenin KARE
+TUVALI boyutunda uretilir:
+
+    sq, small, icerik = _preprocess(img)
+    mk = _maskeleri_icerige_kirp(get_masks(r, *sq.shape[:2]), icerik)
+
+Yani KATMAN A'nin gordugu cozunurluk:
+    t66 kadraj karesi 640x640      -> 640²   -> ~24,5 ms (olculdu)
+    drone karesi     1024x576      -> 1024²  -> ~83,0 ms (olculdu)
+
+Sozlesme satiri hem SAYIYI hem COZUNURLUGU yanlis veriyordu.
+
+## 4. MEKANIZMA: KARE BASINA 9 TAM-GORUNTU `connectedComponents`
+
+`_bagli_mi` (`:347`) her cagrida TUM goruntude `cv2.connectedComponents`
+kosar. `koridor_adaylari` onu iki yerden cagirir (`:453` bant gecilebilirligi,
+`:464` aday basina "yalniz bu kapi acikken" testi). Olculen cagri sayisi
+cozunurlukten BAGIMSIZ **9**; degisen sey cagri BASINA piksel sayisidir.
+Bu, dogrusal olcegi tam olarak aciklar.
+
+⚠ Optimizasyon FIRSATI gorunuyor (bilesenleri bir kez hesaplayip yeniden
+kullanmak, ya da ROI'ye kisitlamak) ama **BU TURDA HICBIR SEY
+DEGISTIRILMEDI** — `koridor_adaylari` T90/T91/T92'nin yuk tasiyan
+fonksiyonudur ve olcmeden dokunulmaz.
+
+## 5. NE KADAR ONEMLI — ABARTMIYORUM
+
+Gerekli kare hizi KAPSAMA HESABINDAN **0,9-2,6 FPS**'tir (ARCHITECT_PLAN
+SS2.7); 15 FPS takimin IC hedefidir, sartname sarti degildir. KATMAN A tek
+basina 1024²'de 83 ms -> ~12 FPS tavani. Yani **gorev acisindan tikayici
+DEGIL**, ama:
+  · sozlesme satiri YANLISTI ve baska bir olcute (T95-B (4')) gerekce oldu,
+  · "darbogaz sinir agi degil costmap" bulgusu (ARCHITECT_PLAN SS2.7) burada
+    SAYIYLA dogrulaniyor,
+  · Jetson'da modul basligi "~2x" der; 1024²'de bu ~166 ms/kare demektir.
+
+## 6. YAPILAN
+
+Docstring'deki iddia KALDIRILDI ve yerine OLCULEN sayilar + olcum kaynagi
+yazildi (uretim davranisi DEGISMEDI). Jetson aynasi senkronlandi.
+**KAPILAR:** `test_rota_sentetik` **15/15** · `unittest discover` **589 OK**.
+
+**DOGRULANAMADI**
+  1. Olcum SENTETIK maskelerle; gercek maskelerde 384/512 OLCULMEDI (T98
+     faz 1 hala amelenin isi).
+  2. Jetson'da hicbir sey olculmedi; "~2x" modul basliginin iddiasidir.
+  3. `_bagli_mi` cagri sayisi (9) yalniz BU sahnede olculdu; n_kapi degisen
+     sahnelerde degisebilir.
+  4. Optimizasyonun mumkun oldugu GORUNUYOR ama DENENMEDI/OLCULMEDI.

@@ -4821,6 +4821,44 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     karede" koşmaz; kare başına koşan yol `rpi_inference`tır (384-640 px). Bu
     doğruysa 83 ms göründüğü kadar alarm verici değildir. **T98 karara bağlar.**
   - **KAPI:** ölçüm koşulmadan hiçbir kod değişmez.
+  - 🔎 **MİMAR ÖLÇTÜ (modelsiz, SENTETİK maske) · 2026-08-18 · `REVIEW_LOG.md`
+    D-169.** İddianın arkasında **hiçbir ölçüm yokmuş** — `grep` ile tarandı,
+    sayı yalnız docstring'de duruyordu ve oradan T95-B'nin (4') ölçütüne
+    gerekçe olarak taşınmış.
+    ```text
+    px     serbest_ms  koridor_ms  KATMAN_A   _bagli_mi cagrisi
+    384        2,12       10,46      12,58           9
+    640        6,33       26,31      32,64           9
+    1024      16,53       70,93      87,47           9
+    ÇAPA (GERÇEK maske, D-162):  640 -> 24,45 ms · 1024 -> 83,02 ms
+    ```
+  - **Üç sonuç:** (1) **384 px'te bile ~5 ms değil** — 12,58 ms sentetik,
+    çapa oranından gerçek tahmini ~9,4 ms; (2) maliyet **piksel sayısıyla
+    doğrusal** (kenar 2,67× → süre 6,95×); (3) `koridor_adaylari` maliyetin
+    **~%80'i**.
+  - 🔴 **İDDİA ÇİFTE YANLIŞ: üretim 384'te koşmuyor.** `INFER_SIZE=512`
+    yalnız MODEL girdisidir; maskeler kaynak karenin **kare tuvali** boyutunda
+    üretilir (`get_masks(r, *sq.shape[:2])`) → t66'da **640²**, 1024×576 drone
+    karesinde **1024²**.
+  - **MEKANİZMA:** `_bagli_mi` (`:347`) her çağrıda **tüm görüntüde**
+    `connectedComponents` koşar; `koridor_adaylari` onu `:453` ve `:464`'ten
+    çağırır. Çağrı sayısı çözünürlükten **bağımsız 9**; değişen şey çağrı
+    başına piksel. Doğrusal ölçeği tam olarak açıklıyor.
+  - ✅ **DOCSTRING DÜZELTİLDİ** (`costmap_path_finder.py:22` + jetson aynası):
+    dayanaksız iddia kaldırıldı, ölçülen sayılar ve kaynakları yazıldı.
+    **Üretim davranışı değişmedi.** Kapılar: **15/15** · **589 OK**.
+  - ⚠ **ABARTMIYORUM:** gerekli kare hızı kapsama hesabından **0,9-2,6 FPS**
+    (ARCHITECT_PLAN §2.7); 15 FPS takımın iç hedefi. KATMAN A 1024²'de 83 ms
+    → ~12 FPS tavanı, yani **görev açısından tıkayıcı değil**. Ama sözleşme
+    satırı yanlıştı ve başka bir ölçüte gerekçe olmuştu.
+  - ⚠ **OPTİMİZASYON FIRSATI GÖRÜNÜYOR** (bileşenleri bir kez hesaplayıp
+    yeniden kullanmak / ROI'ye kısıtlamak) ama **denenmedi**.
+    `koridor_adaylari` T90/T91/T92'nin yük taşıyan fonksiyonudur;
+    **ölçmeden dokunulmaz.**
+  - **AMELEYE KALAN (faz 1):** aynı tabloyu **GERÇEK model maskeleriyle**
+    384/512/640/1024'te çıkar; `_bagli_mi` çağrı sayısını sahne başına say.
+    Sentetiğim ölçek davranışını temsil ediyor ama mutlak değeri ~%33 yukarı
+    sapıyor.
 
   - ✅ **BEKLENEN ÖLÇÜM GELDİ · 2026-08-18 · Claude-2** · kayıt **D-162 §6** ·
     `scripts/olcum/90_t95b_butce.py --uretim-olcegi`.

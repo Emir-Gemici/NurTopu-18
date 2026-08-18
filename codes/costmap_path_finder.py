@@ -20,8 +20,18 @@ carpmadan H'ye goturmek.
 
 MİMARİ — İKİ KATMAN (saf Python A* kare basina kosamaz, olculdu: ROI 128x48 A*
 ~30 ms; Jetson'da ~2x):
-  KATMAN A (her karede, ~5 ms @384px): serbest_alan() + koridor_adaylari()
+  KATMAN A (her karede): serbest_alan() + koridor_adaylari()
     → hangi koridor acik, guven, darbogaz genisligi.
+    🔴 "~5 ms @384px" IDDIASI KALDIRILDI (T98 · REVIEW_LOG D-169). O sayinin
+    arkasinda HICBIR olcum yoktu. OLCULEN (KATMAN A = serbest_alan +
+    koridor_adaylari, maliyet PIKSEL SAYISIYLA DOGRUSAL):
+        384 px  12,6 ms | 640 px  32,6 ms | 1024 px  87,5 ms   (sentetik maske)
+        640 px  24,5 ms | 1024 px 83,0 ms                       (GERCEK maske, D-162)
+    Yani 384 px'te bile ~5 ms DEGIL. Ayrica URETIM 384'te KOSMAZ: maskeler
+    kaynak karenin KARE TUVALI boyutunda uretilir (`get_masks(r, *sq.shape[:2])`),
+    t66'da 640², 1024x576 drone karesinde 1024². Maliyetin ~%80'i
+    `koridor_adaylari`dir ve cogu `_bagli_mi`nin kare basina 9 kez TAM
+    GORUNTUDE `connectedComponents` kosmasindan gelir.
   KATMAN B (mozaikte veya ~2 Hz'de, ~30-40 ms): astar() + yol_duzelt()
     + rota_dogrula() → gercek waypoint listesi + guvenlik kaniti.
 
