@@ -4159,7 +4159,13 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     tanımlanmalı — `_rota_serit_olcumu` rota SEÇİLDİKTEN SONRA koşar, seçimi
     değiştiremez. ⚠ Maliyet beraberliği **HİPOTEZDİR, ÖLÇÜLMEDİ**: `astar()`
     toplam maliyeti döndürmüyor.
-- [ ] **T90 — İKİ ETİKETLEME OTORİTESİ: `koridor_adaylari` `serit_no()`'yu çağırmıyor** · `codes/costmap_path_finder.py:443-448` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-145**
+- [x] **T90 — İKİ ETİKETLEME OTORİTESİ: `koridor_adaylari` `serit_no()`'yu çağırmıyor** · `codes/costmap_path_finder.py:443-448` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-145**
+  - ✅ **KAPANDI (defter düzeltmesi 2026-08-18).** Üretimde: `koridor_adaylari`
+    etiketi artık `serit_no()`den türetiyor **ve** `rota_bul` içinde etiket
+    çakışması fail-closed kapatıldı (`costmap_path_finder.py:1006-1025`).
+    Kanıt `REVIEW_LOG.md` **D-145/D-146**; ön kayıt ACIK 34→31 öngörüsü tam tuttu.
+    ⚠ Satır bitmiş olmasına rağmen `[ ]` kalmıştı — kuyruk kalan işi fazla
+    gösteriyordu.
   - `karar_sozlesmesi.serit_no()` docstring'i *"Tek kaynak: hem karar hem
     görselleştirme burayı çağırır"* der (CONTRACTS SS8) ve sınırları **letterbox
     içerik kutusundan** hesaplar. `koridor_adaylari()` bu fonksiyonu **çağırmaz**:
@@ -4246,7 +4252,12 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
         Çevrimdışı ölçüldü: ACIK **31 → 18/260**, ön kayıt kapısı (≥31) düşer.
         Gerekçesi de zayıf çıktı: yayılan 13 kazananın **12'sinde** merkez şerit
         sınırına 10 px'ten uzak (medyan 29,3 px) — etiket kıl payında değil.
-- [ ] **T93 — K5 kapısı TEK TEMİZ ÇEKİLİŞTE ölçülüyor; `K5=0` sağlam bir özellik değil** · `65_kabul_denetcisi.py` · `66_k5_bariyer_populasyon.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-149**
+- [x] **T93 — K5 kapısı TEK TEMİZ ÇEKİLİŞTE ölçülüyor; `K5=0` sağlam bir özellik değil** · `65_kabul_denetcisi.py` · `66_k5_bariyer_populasyon.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-149**
+  - ✅ **KAPANDI (defter düzeltmesi 2026-08-18).** Popülasyon kapısı kuruldu
+    (`66_k5_bariyer_populasyon.py`, 173 kare × 21 çekiliş) ve ölçtü:
+    v30'un `K5=0`'ı **şanslı çekilişmiş** (D-150). Kapı o günden beri
+    **K5-SIKI** biçimiyle kullanılıyor — T94'ün ön kaydında bağlayıcı ölçüt
+    olarak koştu ve 0/173 (0/3633 çift) ölçüldü (D-158).
   - Ölçüldü (`79_k5_koken.py`, `sa_000131`, 20 eşleştirilmiş gürültülü çekiliş):
     ```text
     v30: KESEN koşu  3/20   darboğaz 14,80 – 17,60 arası oynuyor
@@ -4393,7 +4404,10 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     yere bariyerin dibinden geçiyor".
   - ⚠ Kalan **1 kare** (maximin ≤ r_gerekli+3) gerçekten sıkışık; üreteç
     tarafında alt sınır O kare için hâlâ anlamlı olabilir — ölçülmedi.
-- [ ] **T94 — Planlayıcı, ulaşabileceği en iyi darboğazın medyan 6,6 px altında kalıyor** · `codes/costmap_path_finder.py:509-585` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-151**
+- [x] **T94 — Planlayıcı, ulaşabileceği en iyi darboğazın medyan 6,6 px altında kalıyor** · `codes/costmap_path_finder.py:509-585` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-151**
+  - ✅ **KAPANDI (defter düzeltmesi 2026-08-18).** Açıklık koruyan
+    string-pulling üretimde (`D-158`); bağımsız denetim sekiz bulgu getirdi,
+    biri kuralı 2. aşamada tamamen siliyordu, altısı kodla kapatıldı.
   - `astar()` açıklık cezası `1 + LAMBDA_ACIKLIK · u^US_ACIKLIK`
     (`LAMBDA=3,0`, `US=2,0`): en dar hücrenin cezası **en çok 4 kat**, ve
     `DOYUM_CARPANI_M` üstündeki açıklık **ek ödül getirmez**. Dolayısıyla
@@ -4950,7 +4964,11 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
 - [ ] **T100 — `76_serit_etiketi_celiskisi.py` sayıları T95'le kaymış olabilir** · `scripts/olcum/76_serit_etiketi_celiskisi.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-164 §7.5**
   - Betik `rota_bul` kullanır ve T95 `waypoints`i değiştirdi; yeniden koşulmadı.
   - **YAP:** yeniden koş, D-146/D-147'deki sayılarla kıyasla, kaydı güncelle.
-- [ ] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
+- [x] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
+  - ✅ **KAPANDI (defter düzeltmesi 2026-08-18).** Ölçüldü (D-167), denetlendi
+    (D-168): ayırt edici 11 karenin yer gerçeği kırılgan → sıralama karara
+    bağlanamaz, `darbogaz_serit` kalıyor. CONTRACTS §6.2 olgu beyanıyla
+    güncellendi. Kırılganlık **T101** olarak ayrıldı.
   - `road = darbogaz_serit` (en dar noktanın şeridi). İki kollu bir sahnede
     darboğaz çatalın **altındaki paylaşılan gövdeye** düşerse yayınlanan sayı
     hangi kola sürüleceğini **söylemez**. Ölçülen örnek (S3): rota `(233,20)`
