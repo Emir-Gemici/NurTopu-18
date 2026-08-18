@@ -4537,8 +4537,108 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **Körlemesine eklenmesin:** o yolun açıklık ölçüm düzeneği yok. Önce
     `rota_bul` için bir kayıp ölçümü (maximin karşılaştırması) kurulmalı,
     sonra ön kayıtla değiştirilmeli.
-  - **KAPI:** `rota_bul` ACIK sayısı **≥ 34/260** · `test_rota_sentetik` 15/15 ·
+  - 🔴 **KAPI DÜZELTİLDİ (mimar, ölçümden ÖNCE).** Buraya ilk yazdığım
+    "ACIK ≥ **34**/260" **BAYAT** bir sayıdır: 34, D-146'daki T90 **öncesi**
+    ölçümdür; T90'ın fail-closed etiket koruması onu ölçülerek **31/260**'a
+    indirdi (D-146, "öngörü TAM tuttu"). Üretim bugün 34 vermiyor — yani kapı,
+    üretimin **sağlamadığı** bir eşik istiyordu. Bu, D-157'de yakalanan hatanın
+    birebir aynısıdır ve aynı şekilde kapatılıyor: eşik mutlak sayıya değil,
+    **aynı koşumda ölçülen tabana** bağlanır.
+  - **KAPI (ön kayıt: `scripts/olcum/t95_on_kayit.md`):** `rota_bul` ACIK sayısı
+    **aynı koşumun taban değerinden düşmeyecek** · `test_rota_sentetik` 15/15 ·
     `unittest discover` düşmeyecek.
+
+  - 🔴 **ÖLÇÜLDÜ · KAPI TUTMADI, ZORLANMADI · 2026-08-18 · Claude-2** · kayıt
+    `REVIEW_LOG.md` **D-159**. Ölçüm `scripts/olcum/89_t95_rota_bul_kayip.py`.
+    **Üretim kodu DEĞİŞTİRİLMEDİ** (`git status`: `codes/`, `jetson_paket/` temiz).
+  - **Kusur bu yolda CANLI ve BÜYÜK** — taban vs koruma, aynı koşum, aynı `mk`,
+    n=260 temiz kare:
+    ```text
+    olcum                            TABAN     KORUMA
+    durum == ACIK                       31         31
+    kayip medyani (px)                3,00      0,693
+    kayip > 2 px olan ACIK kare         19          0
+    pay < 3 px olan ACIK kare            3          0
+    pay medyani (px)                 13,92      17,92
+    waypoint medyani                    31         32
+    `duzelt` suresi medyani (ms)      0,91       2,79
+    ```
+    `yol_no` **31/31 karede AYNI** — koruma hiçbir koridor seçimini çevirmiyor.
+    Tabanda payı 3 px altında kalan üç karenin üçü de kurtuluyor:
+    `0,48 → 8,92` · `0,92 → 8,01` · `1,95 → 6,02` px.
+  - **ÖN KAYIT ÖLÇÜTLERİ — gerçek sonuç:**
+    ```text
+    (1) ACIK >= taban              31 >= 31        TUTTU
+    (2) kayip medyani kazanci      2,307 >= 1,00   TUTTU
+    (3) pay<3 ACIK kare <= taban   0 <= 3          TUTTU
+    (4) duzelt suresi <= 2 kat     2,79 vs 1,82    DUSTU  (3,07 kat)
+    (5) waypoint medyani <= 16     32              DUSTU  (TABAN da 31)
+    (6) codes/test_rota_sentetik.py                SONUC: 15/15 dogru
+    (7) unittest discover -s tests  Ran 584 tests in 51.506s / OK
+    ```
+  - ⚠ **(4)'ü önce KENDİ PROBUM kurtarıyordu.** İlk koşumda 1,96 → 3,84 ms
+    (**1,96 kat**) ile kıl payı tutuyordu; sonra gördüm ki açıklık ölçümlerimi
+    `rota_bul`un `sure_ms["duzelt"]` **penceresinin içinde** yapıyordum ve bu
+    sabit ek yük **oranı sıkıştırıyordu**. Prob kapatılıp 260 kare yeniden
+    koşuldu: `sure_ms["duzelt"]` **0,91 → 2,79 (3,07 kat)**, yalnız `yol_duzelt`
+    çağrısı **0,37 → 2,29 (6,19 kat)**. **Her dürüst okumada (4) düşüyor.**
+    Mutlak artış kare başına **+1,88 ms** (KATMAN B bütçesi ~30-40 ms'in ~%5'i)
+    — bu bir **olgudur, gevşetme gerekçesi değildir**; karar mimarındır.
+  - ⚠ **(5) değişikliği AYIRT ETMİYOR:** `waypoint medyanı <= 16` KATMAN A'nın
+    sayısıdır (D-158: taban 8); KATMAN B'nin **tabanı 31**'dir. Yani ölçüt yine
+    üretimin **sağlamadığı** bir eşik istiyor — D-146 ve D-157'de yakalanan
+    kusurun **üçüncü tekrarı**. Ölçüt **gevşetilmedi**, olgu bildirilir.
+    ⚠ (5) düzeltilse bile **(4) yine düşer**; sonuç değişmez.
+  - **ÖLÇÜMÜN POZİTİF KONTROLLERİ:** taban `dt_px` sızıntısı **0** · taban
+    çağrı/enjekte **31/0** · koruma **31/31** · `mk` bozulan kare **0**.
+  - ⚠ **DOĞRULANAMADI:** küme sentetiktir; KATMAN B'nin gerçek girdisi
+    ortomozaiktir ve D-158 bulgu 3'te 1860 düğümlü yolda 5,2 s ölçülmüştü —
+    **süre ölçütü mozaik ölçeğinde yeniden ölçülmelidir.** Ayrıca gürültü
+    altında kararlılık (A ölçüsü) bu yolda ölçülmedi.
+  - 🔎 **MİMAR DENETİMİ · 2026-08-18 · kayıt `REVIEW_LOG.md` D-160.** Ölçüm
+    **GEÇERLİ**, RED kararı **DOĞRU**. Bağımsız doğrulandı: `git diff codes/
+    tests/ jetson_paket/ simulation/` **boş**; D-159 tablosu JSON'dan yeniden
+    okundu, **birebir**; pozitif kontroller `gecerli: true`.
+    ⚠ (6) ve (7) bu dalda **kanıt değeri taşımaz** — üretim kodu değişmediğinde
+    15/15 ve 584 OK zaten değişemez. Kapı tasarımının (benim) zayıflığı.
+  - 🔴 **(5) ÖLÇÜTÜ GEÇERSİZ — hata benim, ÜÇÜNCÜ tekrar.** `waypoint medyanı
+    ≤ 16` KATMAN A'nın sayısıdır. Kökeni doğrulandı: `rpi_inference.py:847`
+    `wp_aralik_px = max(shape)*2` (bölme YOK) · `costmap_path_finder.py:1116`
+    `wp_aralik_px = olc["wp_aralik_px"]` (**böler**). KATMAN B'de waypoint
+    sayısını string-pulling değil `_maks_aralikla_bol` belirler; 31 bir kusur
+    değil **tasarım sayısıdır**. Ölçüt tabandan yeniden türetildi:
+    **(5') waypoint medyanı ≤ taban + 2** (31 → eşik 33; ölçülen **32** → tutar).
+    Ayırt edici olgu: 64'e (MAKS_WP) dayansaydı reddederdim.
+    ⚠ Bundan sonra bağlayıcı kural: **bir ön kayıt ölçütü mutlak sayı
+    içeriyorsa, o sayının tabanı AYNI YOLDA ve AYNI KOŞUMDA ölçülmüş olmalı.**
+  - **(4) GEVŞETİLMEDİ.** Bir orandır, (5)'in kusuru ona bulaşmaz ve düşmüştür
+    (3,07 kat · yalnız çağrı 6,19 kat). Gevşetmeyi haklı kılacak ölçüm **yok**:
+    KATMAN B'nin gerçek girdisi ortomozaiktir. Ayırt edici olgu: mozaik
+    ölçeğinde artış bütçenin %5'inde kalsaydı **kabul ederdim**.
+  - **SONUÇ: T95 `[ ]` KALIR.** Değişiklik **değerlidir** (pay<3px 3→0, kayıp
+    3,00→0,693, koridor seçimi 31/31 karede aynı); onu tutan tek şey maliyet.
+    **Sıradaki adım oran tartışması değil, ÖLÇEK ÖLÇÜMÜDÜR:**
+    1. Gerçek karelerde `_polyline_asgari_aciklik` **çağrı sayısını** say —
+       n=91'de maliyet neden 1,03–7,82 ms arasında oynuyor? (reddetme maliyeti)
+    2. **Mozaik ölçeğinde** düğüm sayısı ve süre ölç (`iha_haritala` girdisi).
+    3. Ön kaydı o ölçümden sonra, **mutlak bütçe** cinsinden yeniden yaz.
+- [ ] **T97 — `yol_duzelt` mozaik rejiminde KORUMASIZ DA bütçeyi aşıyor** · `codes/costmap_path_finder.py:768` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-160 §4**
+  - Mimarın tanı probu (modelsiz, sentetik): görüntü ve düğüm sayısı **birlikte**
+    büyürken `yol_duzelt` süresi
+    ```text
+    n        50     100     200     400     800
+    TABAN  0,66    1,01    3,05   11,45   96,27 ms
+    KORUMA 0,66    1,42    4,09   14,53   84,47 ms
+    ```
+    `costmap_path_finder.py:25` KATMAN B'yi *"~2 Hz'de, ~30-40 ms"* diye
+    tanımlar. **n=800'de TABAN tek başına 96 ms** — koruma yokken de bütçe
+    aşılıyor, hatta orada KORUMA daha hızlı çıktı (fark gürültü).
+  - ⚠ Bu **T94/T95'ten ÖNCE VARDIR**; T95 ölçümü onu yalnız görünür kıldı.
+  - ⚠ **DOĞRULANAMADI:** üs ayrıştırılmadı (n ile görüntü birlikte büyütüldü);
+    tek makine, tek koşum, varyans yok; **gerçek mozaikte hiç ölçülmedi**.
+    Mimarın kendi probudur, **denetimden geçmemiştir**.
+  - **ÖNCE ÖLÇ:** gerçek ortomozaik girdisinde `yol_duzelt`e giren düğüm sayısı
+    kaçtır? Bu sayı bilinmeden hem T95 hem T97 karara bağlanamaz.
 - [ ] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
   - `road = darbogaz_serit` (en dar noktanın şeridi). İki kollu bir sahnede
     darboğaz çatalın **altındaki paylaşılan gövdeye** düşerse yayınlanan sayı

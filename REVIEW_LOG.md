@@ -12002,3 +12002,308 @@ tests` **584 OK** (576 -> +8) · jetson paketi senkron.
   4. Kural GERCEK arena karesinde olculmedi (elde gercek arena goruntusu yok).
   5. Asama 2'nin dugum dusururken `_gorus_hatti`yi yeniden denetlememesi
      ONCEDEN VARDI ve bu turda DEGISTIRILMEDI; kapsam disi birakildi.
+
+### D-159 · 🔴 T95 · `rota_bul` ACIKLIK KORUMASI — GUVENLIK KAZANCI BUYUK ama ON KAYITTAKI (4) ve (5) DUSTU → RED
+Yazan/olcen: Claude 2 (amele) · 2026-08-18 · gorev T95 (kullanici emri) · dayanak D-107, D-139, D-146, D-154, D-157, D-158 (denetim bulgusu 2)
+On kayit: `scripts/olcum/t95_on_kayit.md` — mimar tarafindan, olcum KOSULMADAN once yazildi.
+Olcum: `scripts/olcum/89_t95_rota_bul_kayip.py` · cikti `calisma/olcum/89_t95_rota_bul_kayip.json`, `89_t95_temiz_sure.json`
+
+🔴 **URETIM KODU DEGISTIRILMEDI.** `codes/costmap_path_finder.py:1116` oldugu
+gibi durur; `git status` `codes/` ve `jetson_paket/` altinda hicbir degisiklik
+gostermiyor.
+
+---
+## 1. NE OLCULDU
+
+D-158 denetim bulgusu 2: T94'un aciklik koruma kurali yalniz KATMAN A
+(`rpi_inference`) yolunda devrede; `rota_bul` (KATMAN B, `iha_haritala` ->
+yayinlanan `road`) `yol_duzelt`i `dt_px` GECIRMEDEN cagiriyor, oysa
+`sonuc["dt_px"]` bir satir once kapsamda.
+
+Uretim kodu DEGISTIRILMEDEN, `serbest_alan` ve `yol_duzelt` maymun-yamayla
+sarmalandi (87_t94_yumusak_kiris.py kalibi). TABAN (enjeksiyon yok) ve KORUMA
+(`dt_px=sonuc["dt_px"]` enjekte) **ayni kosumda, ayni `mk` maskeleriyle**
+olculdu; model kare basina YALNIZ BIR KEZ kostu (D-139 sozlesmesi).
+
+**OLCUMUN POZITIF KONTROLLERI** (D-15/K-04 — sifir olcum basari sayilmaz):
+
+    TABAN modunda dt_px sizintisi        : 0        (0 olmali)
+    TABAN  yol_duzelt cagri / enjekte    : 31 / 0   (enjekte 0 olmali)
+    KORUMA yol_duzelt cagri / enjekte    : 31 / 31  (ESIT olmali)
+    `mk` maskesi iki kosum arasi bozulan : 0        (0 olmali)
+    -> OLCUM GECERLI
+
+---
+## 2. SAYILAR (n=260, temiz kare, cekilis yok, v30)
+
+    olcum                              TABAN     KORUMA
+    durum == ACIK                         31         31
+    yol_duzelt kosan kare                 31         31
+    kayip medyani (px)                  3,00      0,693
+    kayip > 2 px olan ACIK kare           19          0
+    pay < 3 px olan ACIK kare              3          0
+    pay medyani (px)                   13,92      17,92
+    yol_duzelt cikti dugum medyani        31         32
+    waypoint medyani                      31         32
+    `duzelt` suresi medyani (ms)        0,91       2,79
+      yalniz yol_duzelt cagrisi (ms)    0,37       2,29
+
+    durum dagilimi (IKI MODDA DA AYNI):
+      BELIRSIZ_COKLU 136 · BELIRSIZ_TEK_KAPI 88 · ACIK 31 · KAPALI_DAR 4 · KAPI_YOK 1
+    ACIK -> baska durum: 0 kare · baska durum -> ACIK: 0 kare
+    `yol_no` 31/31 karede AYNI — koruma hicbir koridor secimini CEVIRMIYOR.
+
+**En cok kazanan kareler** (kayip taban -> koruma · pay taban -> koruma):
+
+    sa_000221   12,00 -> 0,00     11,92 -> 23,92
+    sa_000105    9,89 -> 1,00      4,03 -> 12,92
+    sa_000164    8,00 -> 0,91      0,92 ->  8,01
+    sa_000254    8,00 -> 1,00     12,92 -> 19,92
+    sa_000166    7,46 -> -0,98     0,48 ->  8,92
+    sa_000031    4,85 -> 0,78      1,95 ->  6,02
+
+Tabanda payi 3 px'in altinda kalan UC karenin ucu de kurtuluyor:
+0,48 -> 8,92 · 0,92 -> 8,01 · 1,95 -> 6,02 px. Kusur bu yolda **canli ve
+buyuk**: KATMAN A'da olculen (D-154) 4,00 px medyan kayip burada 3,00 px.
+
+⚠ `sa_000166`da koruma kaybi **negatif** (-0,98): cikti polyline'i girdi
+A* polyline'indan DAHA GENIS. `_maks_aralikla_bol` ara noktalari guvenli
+cizginin pikselleri arasindan sectigi icin sonuc, ham A* dugum zincirinin
+degdigi dar bir pikselden kacinabiliyor. Aykiri deger degil, mekanizmanin
+sonucu.
+
+---
+## 3. ON KAYIT OLCUTLERI — GERCEK SONUC
+
+    olcut                                     esik              SONUC
+    (1) rota_bul ACIK >= taban                >= 31          31   TUTTU
+    (2) kayip medyani kazanci                 >= 1,00 px  2,307   TUTTU
+    (3) pay < 3 px olan ACIK kare <= taban    <= 3            0   TUTTU
+    (4) `duzelt` suresi medyani <= 2 kat      <= 1,82 ms   2,79   🔴 DUSTU
+    (5) waypoint medyani <= 16                <= 16          32   🔴 DUSTU
+    (6) codes/test_rota_sentetik.py           15/15       15/15   TUTTU
+    (7) unittest discover -s tests            >= 584 OK  584 OK   TUTTU
+
+**RED KURALI GEREGI: degisiklik URETIME YAZILMADI, gorev `[ ]` birakildi.**
+"Neredeyse tuttu" kabul edilmez; olcut sonuca gore GEVSETILMEDI.
+
+---
+## 4. 🔴 (4) OLCUTUNU BENIM KENDI PROBUM KARARA BAGLIYORDU — DUZELTTIM
+
+Ilk kosumda (4) **1,96 -> 3,84 ms = 1,96 kat** cikti, yani KIL PAYIYLA
+TUTUYORDU. Sonra farkettim: `rota_bul`un `sure_ms["duzelt"]` penceresi
+`yol_duzelt` cagrisini sarar ve **benim sarmalayicim aciklik olcumlerini o
+pencerenin ICINDE yapiyordu**. Bu sabit ek yuk her iki moda da eklendigi icin
+ORANI SIKISTIRIYOR — yani olcutu OLDUGUNDAN IYI gosteriyordu. Bu, D-139'un
+kusur sinifinin aynasidir: uretimin yapmadigi bir isi ekleyen olcum de
+uretimi olcmez.
+
+Prob KAPATILIP (`--yalniz-sure`) 260 kare yeniden kosuldu:
+
+    olcum                              TABAN   KORUMA   oran
+    `sure_ms["duzelt"]` (prob KAPALI)   0,91     2,79   3,07 kat   DUSTU
+    yalniz `yol_duzelt` cagrisi         0,37     2,29   6,19 kat   DUSTU
+    (ilk kosum, prob ACIK — KIRLI)      1,96     3,84   1,96 kat   [gecersiz]
+
+**Her durust okumada (4) DUSUYOR.** Tuttugu tek okuma, benim olcum aletimi
+uretim sayan okumaydi.
+
+⚠ `sure_ms["duzelt"]` yalniz `yol_duzelt`i degil, ondan onceki dugum-yerel-
+tepe kaydirma dongusunu de (`:1096-1108`) icerir; bu yuzden 0,91 ile 0,37
+arasinda ~0,54 ms ortak sabit vardir. Iki okuma da kayda gecti.
+
+**MUTLAK BUYUKLUK — OLGU, GEVSETME GEREKCESI DEGIL:** artis kare basina
+**+1,88 ms**. `costmap_path_finder` bas yorumu KATMAN B'yi "~2 Hz'de, ~30-40 ms"
+diye tanimlar; artis o butcenin ~%5'idir. Olcut bir ORANDIR ve tabani 0,91 ms
+gibi cok kucuk bir sayidir, dolayisiyla oran kapisi burada asiri duyarlidir.
+**Bunu bir gevsetme onerisi olarak yazmiyorum** — olcutun kendi amacindan
+turetilmis bir gerekce degildir; karar mimarindir (D-157 usulu).
+
+---
+## 5. 🔴 (5) OLCUTU DEGISIKLIGI AYIRT ETMIYOR — TABAN DA SAGLAMIYOR
+
+    waypoint medyani:  TABAN 31 · KORUMA 32 · esik <= 16
+
+`waypoint medyani <= 16` KATMAN A'nin sayisidir (D-158 tablosunda taban 8,
+W1 8). KATMAN B'nin tabani **31**'dir; yani olcut, uretimin KENDISININ
+saglamadigi bir esik istiyor. Bu, D-146'da (ACIK >= 34) ve D-157'de
+(rota >= 259) yakalanan kusurun **ucuncu tekrari**dir.
+
+Waypoint sayisini belirleyen sey string-pulling degil, `_maks_aralikla_bol`
+guvenlik kuralidir (`MAKS_WP = 64` YUMUSAK hedeftir, azami aralik sert
+kuraldir). Koruma bu sayiyi 31 -> 32 yapiyor, yani **+1**.
+
+**OLCUT GEVSETILMEDI.** Olgu bildirilir; (5)'in bu yol icin yeniden turetilip
+turetilmeyecegi mimarin karidir. ⚠ Ama not: (5) duzeltilse bile **(4) yine
+duser**, yani T95'in sonucu degismez.
+
+---
+## 6. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+
+    python -m unittest discover -s tests -q
+        Ran 584 tests in 51.506s
+        OK
+
+---
+## 7. DOGRULANAMADI / ACIK KALAN
+
+  1. **Kume SENTETIKTIR** (t66, n=260). `kompozit` / `drone` / gercek arena
+     karelerinde kayip ve sure OLCULMEDI. KATMAN B'nin gercek girdisi
+     ortomozaiktir ve dugum sayisi orada COK daha buyuk olabilir — D-158
+     bulgu 3 tam bu yuzden acilmisti (1860 dugumde 5,2 s). Sure olcutu
+     mozaik olceginde YENIDEN olculmelidir; benim 260 karem bunu TEMSIL
+     ETMEZ.
+  2. **Sure olcumu tek makinede, tek kosumda.** Tekrar sayisi 1; varyans
+     OLCULMEDI. 0,37 ms mertebesinde islemci gurultusu belirleyici olabilir.
+     Yine de 6,19 kat ile 2 kat arasindaki fark gurultuyle kapanacak gibi
+     degildir.
+  3. **Yalniz TEMIZ kare olculdu** (emir geregi). Korumanin gurultu altinda
+     kararliligi (A olcusu, D-142/D-145) BU YOLDA olculmedi. KATMAN A'da
+     8/260 ile taban ayniydi (D-158) ama bu yol farkli parametrelerle
+     (`aci_esigi_derece=15,0`, C-uzayi `gecilebilir_tam`) kosuyor.
+  4. **Emniyet kazanci yer gercegine karsi dogrulanmadi.** "pay 3 -> 0" ve
+     "kayip 3,00 -> 0,693" ayni maskeye gore olculdu; maskenin kendisi
+     yanlissa kazanc da yanlis olcektedir. K2 (moloza basma) bu yolda
+     KOSULMADI.
+  5. **`aci_esigi_derece=15,0` dalinin katkisi ayristirilmadi.** Ön kayittaki
+     iki yapisal farktan (aci esigi · C-uzayi) hangisinin ne kadar etkidigi
+     olculmedi; yalniz TOPLAM etki olculdu.
+  6. **`iha_haritala.py:329` zinciri kod okumasiyla dogrulandi, KOSULMADI.**
+     Yayinlanan `road` uzerindeki etkisi olculmedi.
+
+### D-160 · 🔎 T95 DENETIMI (MIMAR) · Olcum GECERLI, RED DOGRU — ama (5) OLCUTU BENIM HATAMDI (UCUNCU TEKRAR) ve (4) OLCEKTE YENIDEN OLCULMELI
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T95 · denetlenen kayit D-159 (Claude 2, amele)
+⚠ MADDE 7: ameleyi ben denetliyorum; bu kayit BENIM olcumlerimi de icerir ve
+onlar KENDI denetimimden gecmemistir — asagida ACIKCA isaretlendi.
+
+## 1. DENETIM SONUCU: OLCUM GECERLI, RED KARARI DOGRU
+
+Bagimsiz dogrulananlar:
+
+    iddia                                    nasil dogrulandi          sonuc
+    uretim kodu degistirilmedi               git diff codes/ tests/    BOS
+                                             jetson_paket/ simulation/
+    D-159 tablosu = olculen sayilar          JSON'dan yeniden okundu   BIREBIR
+    pozitif kontroller                       JSON kontrol.gecerli      true
+      taban dt_px sizintisi 0 · taban 31/0 enjekte · koruma 31/31 · mk bozulan 0
+    D-159 numarasi cakismiyor                grep "^### D-159"         1
+    kapilar (6)(7) uretim degismedigi icin   —                         VAKUM
+
+⚠ (6) ve (7) BU KAYITTA KANIT DEGERI TASIMAZ. Uretim kodu degismediginde
+`test_rota_sentetik` 15/15 ve `unittest` 584 OK zaten degisemez. Amele ikisini
+de gercekten kostu ve cikti dogrudur; ama bunlar T95 hakkinda HICBIR SEY
+soylemez. Bu bir kusur degil, kapi tasariminin (benim) bir zayifligidir:
+"uygulanmadi" dalinda (6)-(7) anlamsizdir.
+
+## 2. 🔴 (5) OLCUTU GECERSIZDIR — HATA BENIM, UCUNCU TEKRAR
+
+On kayda "(5) waypoint medyani <= 16" yazdim. **16, KATMAN A'nin sayisidir**
+(D-158 tablosu: taban 8, W1 8). KATMAN B'nin tabani **31**'dir; yani olcut,
+uretimin KENDISININ saglamadigi bir esik istiyordu.
+
+KOKENI (dogrulandi, kod okumasi): iki yol `wp_aralik_px`i FARKLI veriyor —
+
+    rpi_inference.py:847   wp_aralik_px = max(koridor.shape) * 2   -> BOLME YOK
+    costmap_path_finder.py:1116  wp_aralik_px = olc["wp_aralik_px"] -> BOLER
+
+KATMAN B waypoint sayisini string-pulling degil `_maks_aralikla_bol` belirler;
+91 dugumlu A* yolu once ~2-4 dugume iner, sonra AZAMI ARALIK kuralina gore
+31'e geri bolunur. Yani 31 bir kusur degil, KATMAN B'nin tasarim sayisidir.
+
+**KARAR (D-157 usulu): (5) GECERSIZ sayilir ve tabandan yeniden turetilir:**
+
+    (5') waypoint medyani <= taban + 2      (taban 31 -> esik 33; olculen 32)
+
+Amacindan turetildi ("dugum patlamasi olmasin"); sert sinir zaten
+`MAKS_WP = 64`tur. Ayirt edici olgu: koruma 31 -> 64 verseydi (yani azami
+waypoint'e dayansaydi) REDDEDERDIM; +1 patlama degildir.
+
+⚠ **BU HATANIN UCUNCU TEKRARI:** D-146 (ACIK >= 34, taban 31), D-157
+(rota >= 259, taban 258), simdi D-159 (waypoint <= 16, taban 31). Ucunde de
+ben mutlak bir esigi BASKA BIR BAGLAMDAN kopyaladim. Bu artik tekil bir
+dikkatsizlik degil, tekrar eden bir kusur sinifidir:
+
+    KURAL (bundan sonra baglayici): bir on kayit olcutu MUTLAK sayi
+    iceriyorsa, o sayinin TABANI AYNI YOLDA VE AYNI KOSUMDA olculmus
+    olmalidir. Olculmemisse olcut ORAN veya "taban" cinsinden yazilir.
+
+Amele bunu kendi betigine bir dedektor olarak KOYMUS (89_..., `if
+t["wp_medyan"] > 16: print("[!] ... TABAN da saglamiyor")`) ve gevsetmeye
+kalkmadan olgu olarak bildirmis. Dogru davranis.
+
+## 3. (4) GEVSETILMIYOR — ve gerekce "kural kuraldir" DEGIL
+
+(4) bir ORANDIR; (5)'in kusuru ona bulasmaz (taban orani 1,00 ile trivial
+olarak saglar). Yani (4) YAPISAL OLARAK GECERLI bir olcuttur ve DUSMUSTUR:
+`sure_ms["duzelt"]` 0,91 -> 2,79 = **3,07 kat**; yalniz `yol_duzelt` cagrisi
+0,37 -> 2,29 = **6,19 kat**.
+
+Amele "mutlak artis +1,88 ms, KATMAN B butcesinin ~%5'i" olgusunu bildirdi ve
+GEVSETME ONERMEDI. Gevsetmiyorum, cunku gevsetmeyi hakli kilacak olcum YOK:
+KATMAN B'nin gercek girdisi ORTOMOZAIKTIR ve orada dugum sayisi bu kumedeki
+91'in cok ustundedir. Ayirt edici olgu: mozaik olceginde artis butcenin
+%5'inde kalsaydi KABUL EDERDIM; o olcum yapilmadi.
+
+## 4. ⚠ MIMARIN KENDI OLCUMU (DENETIMDEN GECMEDI) — OLCEK TANISI
+
+Modelsiz, sentetik iki prob kostum (`_polyline_asgari_aciklik` sayaclandi):
+
+    (a) SABIT goruntu (480x480), n = 91..1600:
+        TABAN  0,25 0,18 0,17 0,20 0,16 ms   -> n'den BAGIMSIZ, duz
+        KORUMA 0,53 0,83 1,59 2,95 5,89 ms   -> DOGRUSAL, ~3,7 us/dugum
+        aciklik cagrisi = n (TAM) her iki probda -> bu, onek gecisinin
+        (`seg_asgari`) kendisidir; j-dongusu EK cagri uretmedi.
+
+    (b) goruntu n ile BIRLIKTE buyurken (mozaik rejimi), n = 50..800:
+        TABAN  0,66 1,01 3,05 11,45 96,27 ms
+        KORUMA 0,66 1,42 4,09 14,53 84,47 ms
+
+BUNDAN CIKAN IKI SEY:
+
+  1. Korumanin TABAN maliyeti O(n) tek gecistir (~3,7 us/dugum). 5000 dugumlu
+     bir mozaik yolunda yalniz bu ~18 ms eder — KATMAN B butcesinin (~30-40 ms)
+     yarisi. Yani (4) bu kumede kil payi degil, OLCEKTE ASIL SORUN olabilir.
+  2. 🔴 **DAHA BUYUK BULGU, T95'TEN BAGIMSIZ:** (b)'de TABAN da patliyor —
+     n=800'de **96 ms**, KORUMA'siz. `yol_duzelt`in kendisi mozaik rejiminde
+     KATMAN B butcesini ASIYOR. Bu T94/T95'ten ONCE VARDIR ve iki modda da
+     vardir (KORUMA orada 84 ms ile TABAN'dan hizli bile cikti — fark gurultu).
+
+🔴 **KENDI PROBUMUN SINIRLARI (kendim isaretliyorum):**
+  · Ikisinde de aciklik cagrisi = n cikti, yani **REDDETME URETEMEDIM**. Oysa
+    gercek karelerde maliyet n=91'de 3-19 kat arasi oynuyor (1,03-7,82 ms) ve
+    bu oynaklik REDDETMELERDEN gelir. **Gercek maliyet mekanizmasini
+    yeniden uretemedim; reddetme maliyeti OLCULMEMISTIR.**
+  · (b)'de n ile goruntu boyunu BIRLIKTE buyuttum; ustel ayristirilmadi.
+    Gercek mozaikte ikisi zaten birlikte buyur, yani rejim temsilidir — ama
+    "O(n^k)" diye bir us IDDIA ETMIYORUM.
+  · Tek makine, tek kosum, varyans olculmedi.
+
+## 5. USUL NOTU — ON KAYITTAKI BELIRSIZLIK BENIM
+
+(4)'e "duzelt suresi medyani" yazdim ama **HANGI ALAN** oldugunu yazmadim.
+`rota_bul`un `sure_ms["duzelt"]` penceresi `yol_duzelt`ten fazlasini sarar
+(:1096-1108 tepe kaydirma dongusu de icinde). Amele iki okumayi da yayinladi
+ve olcut degerlendirmesinde DAHA SIKI olani (ic olcum) kullandi. Sonucu
+degistirmiyor (ikisi de dusuyor) ama sans eseri boyle: gevsek okuma secilseydi
+ilk kosumda (4) **1,96 kat ile TUTUYOR** gorunecekti. Ders: on kayit bir alan
+adi veriyorsa **TAM YOLUYLA** vermeli.
+
+## 6. KARAR
+
+  · **T95 `[ ]` KALIR.** RED dogrudur; (5) gecersiz olsa da (4) dusuyor.
+  · Kusurun KATMAN B'de canli ve buyuk oldugu OLCULDU (pay<3px 3 -> 0,
+    kayip medyani 3,00 -> 0,693, koridor secimi 31/31 karede AYNI). Degisiklik
+    DEGERLIDIR; onu tutan tek sey MALIYETTIR.
+  · Siradaki adim ORAN TARTISMASI DEGIL, OLCEK OLCUMUDUR (T95 devami).
+  · **YENI GOREV T97** acildi: `yol_duzelt` mozaik rejiminde KORUMASIZ da
+    butceyi asiyor (96 ms @ n=800). T95'ten BAGIMSIZ, ONCEDEN VAR.
+
+**DOGRULANAMADI**
+  1. Reddetme maliyeti (gercek karelerdeki 3-19 kat oynaklik) OLCULMEDI.
+  2. Mozaik olceginde HICBIR sey olculmedi — ne dugum sayisi, ne sure.
+  3. Gurultu altinda kararlilik (A olcusu) bu yolda olculmedi.
+  4. Benim (a)/(b) problarim sentetiktir ve DENETLENMEMISTIR.
