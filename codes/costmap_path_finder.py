@@ -1007,10 +1007,21 @@ def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
     # alabilir. Eski sema (n_kapi==3 -> i+1) bunu farkli numara UYDURARAK
     # gizliyordu, yani `ACIK` yolunda `road` HIC belirsiz olamazdi; T90 bu
     # durumu MUMKUN kildi. Kazananin numarasini baska bir GECILEBILIR kapi da
-    # tasiyorsa yayinlanan `road` HANGI koridorun dogrulandigini SOYLEMEZ ve
-    # `comms/ika_receiver.py:11` -> `plan_path(road)` planlayicinin
-    # REDDETMEDIGI degil, SECMEDIGI koridora surebilir. Bu fail-dangerous'tur;
-    # karar VERILMEZ.
+    # tasiyorsa yayinlanan `road` HANGI koridorun dogrulandigini SOYLEMEZ.
+    #
+    # 🔴 GEREKCE DUZELTILDI (T96 · REVIEW_LOG D-166). Buraya once
+    # "`comms/ika_receiver.py:11` -> `plan_path(road)` IKA'yi baska koridora
+    # SURER" yazilmisti. BU YANLIS: `ika_receiver.py:11` bir DOCSTRING
+    # ORNEGIDIR, uretim kodu degil. Gercek navigator
+    # `simulation/scripts/ika_nav.py:179-182` sayisal `road`u geometri saymayi
+    # ACIKCA REDDEDER ("sayisal road tek basina geometri degildir") ve yalniz
+    # `waypoints` + `ref_xy` ile surer.
+    #
+    # KORUMA YINE DE DOGRUDUR, baska bir gerekceyle: `road` YAYINLANAN ve
+    # PUANLANAN cevaptir. CONTRACTS SS6.3: sartname SS5.3.2/SS6.2 yanlis
+    # guzergahi 0 puan sayar ve projenin ilan ettigi politika "cekimserlik
+    # puan kaybettirir, YANLIS KARAR SIFIRLAR"dir. Ayirt edilemeyen bir
+    # numarayi yayinlamak yazi-tura atmaktir; karar VERILMEZ.
     #
     # Kontrol DAR tutulur: yalnizca KAZANANIN etiketini paylasan GECILEBILIR
     # kapilar sayilir. Gecilemez bir kapinin ayni numarayi tasimasi belirsizlik

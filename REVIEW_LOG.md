@@ -13036,3 +13036,107 @@ Gerekce, kapilarin gecmesi DEGIL, mekanizmanin kapali olmasidir:
   4. Tek gurultu recetesi/tohumu (sigma 2/255, tekrar 3, tohum 7).
   5. Gercek arena karesi ve gercek mozaik yok; kume sentetiktir.
   6. Jetson'da hicbir sey olculmedi.
+
+### D-166 · 🔴 T96 · "IKA `road` ILE SURER" ONERMESI YANLIS — UC YERDE, BIRI T90 KORUMASININ GEREKCESI · KORUMA AYAKTA, GEREKCE DEGISTI
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T96 · dayanak D-41, D-146, D-158 (bulgu 5)
+⚠ Bu tur URETIM DAVRANISI DEGISMEDI: yalnizca yorum/docstring duzeltildi.
+Kapilar yine kosuldu: `test_rota_sentetik` 15/15 · `unittest` 589 OK · jetson senkron.
+
+## 1. ONERME NEREDEN GELDI VE NEDEN YANLIS
+
+T96'yi acarken (D-158 bulgu 5) sunu yazdim ve olcmedim:
+
+    "IKA `plan_path(road)` ile plan yapiyor (`comms/ika_receiver.py:11`)"
+
+`comms/ika_receiver.py:11` **MODUL DOCSTRING'IDIR**, uretim kodu degildir:
+
+    İKA navigasyonu (ika_nav) bu sınıfı kullanarak ... hareket eder:
+        route = rx.latest
+        if route: plan_path(route["road"])          <- ORNEK, KOD DEGIL
+
+Gercek navigator `simulation/scripts/ika_nav.py:178-182` bunun TERSINI yapar:
+
+    if not raw_waypoints and isinstance(route.get("road"), (list, tuple)):
+        # Eski koordinatli road formati yalniz acik koordinat dizisi olarak
+        # kabul edilir; sayisal road tek basina geometri degildir.
+        raw_waypoints = route["road"]
+
+ve `:165` **"waypoint olmadan IKA'nin hareket etmesine izin verilmez"** der.
+`plan_path` diye bir fonksiyon repoda YOKTUR (`grep` ile tarandi; tek gecen
+yer o docstring'dir).
+
+Tuketicilerin hepsi geometriyi WAYPOINT'ten alir:
+
+    simulation/scripts/hakem_log.py:175   wps_w = route_to_world_waypoints(ika.latest)
+    simulation/scripts/mission_demo.py:74 wps   = route_to_world_waypoints(ika.latest)
+    simulation/scripts/ika_nav.py         waypoints + ref_xy
+
+`road`in gercek islevleri: (a) EKRAN/GUNLUK etiketi
+(`hakem_log.py:177` `arena.ROAD_LABEL[road_rx]`), (b) gecerlilik kapisi
+(`_dinamik_rota`: `road not in (1,2,3)` -> None), (c) **YAYINLANAN ve
+PUANLANAN cevap**.
+
+## 2. ONERME UC YERDEDIR — BIRI YUK TASIYOR
+
+    codes/costmap_path_finder.py:1011   T90 fail-closed korumasinin GEREKCESI
+    scripts/olcum/76_...py:27           olcum betiginin "neden onemli"si
+    scripts/olcum/76_...py:201          ayni betigin ic yorumu
+
+Ucu de duzeltildi (davranis degismedi). Ilki onemli: **T90 korumasini ben
+onayladim ve gerekcesi "IKA yanlis koridora SURER" idi.** Bu yanlis.
+
+## 3. 🔴 KORUMA YINE DE DOGRU — AMA BASKA GEREKCEYLE
+
+T90 korumasi 34 -> 31 ACIK'e mal olmustu (3 kare yetenek). Yanlis oncul
+dususe gerekce yapilmisti; oncul dusunce gerekce de dusuyor mu?
+
+HAYIR, cunku PUANLAMA argumani ayakta:
+  · CONTRACTS SS6.3: *"sartname SS5.3.2/SS6.2 yanlis guzergahi 0 puan sayar.
+    Cekimserlik puan kaybettirir, YANLIS KARAR SIFIRLAR."*
+  · Yani yanlis cevap ile cekimserlik ESDEGER DEGILDIR; yanlis DAHA KOTUDUR.
+  · Ayirt edilemeyen bir numarayi yayinlamak yazi-turadir -> fail-closed dogru.
+
+⚠ Ama FIZIKSEL GUVENLIK argumani ORTADAN KALKTI: yanlis `road` aracı yanlis
+koridora SURMEZ (waypoint'ler dogrulanmis koridordan gecer). Kusur artik
+"IKA carpar" degil, "YANLIS CEVAP YAYINLARIZ" siniftandir. Bu, T90'in
+maliyetini yeniden tartmaya deger kilar ama BU TURDA DEGISTIRMIYORUM —
+degistirmek yeni bir olcum ve on kayit ister.
+
+## 4. T96 YENIDEN IFADE EDILDI
+
+Eski ifade "IKA hangi kola surulecegini bilmiyor" idi — YANLIS. Dogru soru:
+
+    `road` PUANLANAN cevaptir. "Hangi koridor acik?" sorusuna en iyi cevabi
+    hangi istatistik verir: EN DAR NOKTANIN seridi mi, ROTANIN GOVDESININ
+    seridi mi?
+
+Su an yayinlanan `darbogaz_serit`tir (en dar noktanin seridi). `baskin_serit`
+(en cok rota pikseli) hesaplanir ama YAYINLANMAZ.
+
+OLCULMUS OLGULAR:
+  · D-146: 258 rotali karenin **5'inde (%1,9)** ikisi ayrisiyor; besi de cok
+    seritli ve tam da KARARSIZ karelerde topluyor (sa_000063, sa_000215,
+    sa_000238 — sonuncu ikisi ceviren 8'den).
+  · D-158 bulgu 5: `serit_min` 8,0 (serit 2) vs 9,0 (serit 3), band esigi
+    8,64 -> **0,64 px**lik kayma yayinlanan karari cevirir.
+
+⚠ SEMANTIK OLARAK `darbogaz_serit` sorunun cevabi DEGILDIR: "en dar nokta
+nerede" ile "hangi koridor acik" farkli sorulardir. Ama bunu ARGUMANLA
+degistirmem — kendi kuralim: olcmeden degistirilmez.
+
+**EKSIK OLCUM (T96'nin isi):** ayrisan karelerde HANGISI DOGRU? Kume yer
+gercegi TASIR: manifest `arena.acik_serit` (+ `uretec_seritleri`,
+`arena_x_araligi`, `kapali_seritler`).
+
+🔴 **TUZAK, ONCEDEN ISARETLENIYOR:** `acik_serit` URETECIN serit numarasidir;
+`serit_no()` ise LETTERBOX ICERIK KUTUSUNU uce boler. Ikisi ancak arena icerik
+kutusunu doldurdugunda ortusur. **BU TUZAGA BU OTURUMDA BIR KEZ DUSTUM**
+(`81_t74_darbogaz_yeri.py`, "kapali 13 / acik 13" yanlis sonucu). Esleme
+`uretec_seritleri` / `arena_x_araligi` x araliklariyla yapilmali, indisle DEGIL.
+
+**DOGRULANAMADI**
+  1. Hangi istatistigin yer gercegine daha yakin oldugu OLCULMEDI (T96).
+  2. Sartname SS5.3.2/SS6.2 metni bu oturumda okunmadi; puanlama iddiasi
+     CONTRACTS SS6.3'un ozetine dayaniyor.
+  3. T90 korumasinin maliyeti (3 kare) yeni gerekce altinda yeniden
+     tartilmadi.

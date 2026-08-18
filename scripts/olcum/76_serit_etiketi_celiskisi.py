@@ -24,9 +24,15 @@ BU BETIK IKISINI AYIRIR. Her aday kapi icin `etiket` ile
 `serit_no(kapi_merkez_x, ...)` yan yana konur. Etiketler `serit_no` ile YENIDEN
 yazildiginda celiski KAPANIYORSA fark H1'dir; KAPANMIYORSA kalan H2'dir.
 
-NEDEN ONEMLI: `comms/ika_receiver.py:11` -> `plan_path(route["road"])`. IKA
-WAYPOINT ile degil SERIT NUMARASI ile plan yapar. Yanlis numara, IHA'nin
-dogruladigi koridordan BASKA bir koridora surer.
+NEDEN ONEMLI (🔴 GEREKCE DUZELTILDI, T96 · REVIEW_LOG D-166). Buraya once
+"IKA WAYPOINT ile degil SERIT NUMARASI ile plan yapar" yazilmisti. BU YANLIS:
+`ika_receiver.py:11` bir DOCSTRING ORNEGIDIR. Gercek navigator
+`simulation/scripts/ika_nav.py:179-182` sayisal `road`u geometri saymayi ACIKCA
+REDDEDER ve yalniz `waypoints` + `ref_xy` ile surer; `hakem_log.py:175` ve
+`mission_demo.py:74` de geometriyi `route_to_world_waypoints`ten alir.
+`road` YAYINLANAN ve PUANLANAN etikettir (CONTRACTS SS6.3 -> sartname
+SS5.3.2/SS6.2: yanlis guzergah 0 puan). Yanlis numara IKA'yi yanlis koridora
+SURMEZ; YANLIS CEVAP YAYINLAR. Onem bundandir.
 
 Gurultu YOKTUR — bu bir kararlilik olcumu degil, TUTARLILIK olcumudur.
 Yer gercegi KULLANILMAZ; sorulan "hangisi dogru" degil, "ayni seyi mi
@@ -198,8 +204,9 @@ def main():
     # YAYINLANAN SAYI, ROTANIN KULLANDIGI SERIT MI?
     # `road` = darbogaz_serit (en dar noktanin seridi). `baskin_serit` (en cok
     # rota pikseli tasiyan serit) hesaplanir ama yayinlanmaz. Ikisi ayrilan
-    # karede IKA `plan_path(road)` ile rotanin ana govdesinden BASKA bir seride
-    # yonlendirilir. Bu bir KARARLILIK degil TANIM sorunudur; gurultu gerekmez.
+    # karede YAYINLANAN sayi rotanin ana govdesinden BASKA bir seridi gosterir.
+    # (IKA bununla SURMEZ — `ika_nav.py:179-182` sayisal road'u reddeder — ama
+    # yayinlanan/puanlanan cevap budur.) KARARLILIK degil TANIM sorunudur.
     rotali = [k for k in kayitlar if k["darbogaz_serit"] is not None]
     ayrilan = [k for k in rotali if k["darbogaz_serit"] != k["baskin_serit"]]
     cok_seritli = [k for k in rotali if k["cok_seritli"]]

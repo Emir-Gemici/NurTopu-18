@@ -4914,10 +4914,39 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     8,64 → **0,64 px**'lik kayma yayınlanan kararı çevirir.
   - ⚠ Bu semantik **D-41'den gelir ve T94'ten öncedir**; T94 onu yalnız
     görünür kıldı. `baskin_serit` zaten hesaplanıyor ama yayınlanmıyor (D-146).
-  - **ÖNCE KARAR:** `road` "en dar noktanın şeridi" mi, "rotanın gövdesinin
-    şeridi" mi, yoksa "çıkış kolunun şeridi" mi olmalı? İKA `plan_path(road)`
-    ile plan yapıyor (`comms/ika_receiver.py:11`), hakem `hakem_log.py:108`
-    ile puanlıyor. **Ölçmeden değiştirilmesin.**
+  - 🔴 **ÖNCÜLÜM YANLIŞTI · 2026-08-18 · `REVIEW_LOG.md` D-166.** Bu göreve
+    "İKA `plan_path(road)` ile plan yapıyor (`comms/ika_receiver.py:11`)"
+    yazmıştım ve **ölçmemiştim**. O satır bir **modül DOCSTRING'idir**, üretim
+    kodu değil; `plan_path` diye bir fonksiyon repoda **yoktur**.
+    Gerçek navigatör `simulation/scripts/ika_nav.py:178-182` tersini yapar —
+    *"sayısal road tek başına geometri değildir"* — ve `:165` **"waypoint
+    olmadan İKA'nın hareket etmesine izin verilmez"** der. Tüketicilerin hepsi
+    geometriyi waypoint'ten alır (`hakem_log.py:175`, `mission_demo.py:74`).
+  - Aynı öncül **üç yerdeydi** ve biri **T90 fail-closed korumasının
+    gerekçesiydi** (`costmap_path_finder.py:1011`) — onu ben onaylamıştım.
+    Üçü de düzeltildi (**yalnız yorum/docstring; davranış değişmedi**).
+  - **Koruma yine de doğru, başka gerekçeyle:** `road` yayınlanan ve
+    **puanlanan** cevaptır. CONTRACTS §6.3 → şartname §5.3.2/§6.2 yanlış
+    güzergâhı 0 puan sayar ve politika *"çekimserlik puan kaybettirir, yanlış
+    karar SIFIRLAR"*. ⚠ Ama **fiziksel güvenlik argümanı ortadan kalktı**:
+    yanlış `road` aracı yanlış koridora **sürmez**, yanlış **cevap yayınlar**.
+  - **T96 YENİDEN İFADE EDİLDİ:** soru "İKA hangi kola sürülecek" değil —
+    *"'hangi koridor açık' sorusuna en iyi cevabı hangi istatistik verir:
+    en dar noktanın şeridi mi, rotanın gövdesinin şeridi mi, çıkış kolu mu?"*
+  - Ölçülmüş olgular: **5/258 (%1,9)** karede `darbogaz_serit != baskin_serit`,
+    beşi de çok şeritli ve **kararsız karelerde toplanıyor** (D-146) ·
+    **0,64 px**'lik kayma yayınlanan kararı çeviriyor (D-158 bulgu 5).
+  - **ÖLÇÜM VAR, KARAR YOK:** ayrışan karelerde **hangisi doğru** ölçülmedi.
+    Küme yer gerçeği taşır: manifest `arena.acik_serit` · `uretec_seritleri` ·
+    `arena_x_araligi` · `kapali_seritler`.
+  - 🔴 **EŞLEME TUZAĞI (önceden işaretlendi):** `acik_serit` **üretecin** şerit
+    numarasıdır, `serit_no()` letterbox içerik kutusunu üçe böler. **Bu tuzağa
+    bu oturumda bir kez düşüldü** (`81_t74_darbogaz_yeri.py`). Eşleme x
+    aralıklarıyla yapılacak, **indisle değil**.
+  - **ÖN KAYIT YAZILDI:** `scripts/olcum/t96_on_kayit.md` — kazanan aday
+    diğerlerinden **en az 5 kare** önde olmalı (D-146'nın ayrışma sayısı),
+    **ve** kararlılığı mevcut `darbogaz_serit`ten kötü olmayacak. Tutmazsa
+    **değişiklik yapılmaz**. **Ölçmeden değiştirilmesin.**
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev
