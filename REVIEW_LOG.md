@@ -12307,3 +12307,87 @@ adi veriyorsa **TAM YOLUYLA** vermeli.
   2. Mozaik olceginde HICBIR sey olculmedi — ne dugum sayisi, ne sure.
   3. Gurultu altinda kararlilik (A olcusu) bu yolda olculmedi.
   4. Benim (a)/(b) problarim sentetiktir ve DENETLENMEMISTIR.
+
+### D-161 · 🔴 KENDI KAYDIMI DUZELTIYORUM · D-160 §4'teki "MOZAIK OLCEGI" GEREKCESI OLCUMLE CURUDU — T97'nin ONERMESI DE YANLIS
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T95/T97 · duzeltilen kayit D-160 §3-§4 (BENIM)
+
+## 1. NE YANLISTI
+
+D-160'ta (4) olcutunu gevsetmeyi su gerekceyle REDDETTIM:
+
+    "KATMAN B'nin gercek girdisi ORTOMOZAIKTIR ve orada dugum sayisi bu
+     kumedeki 91'in cok ustundedir."
+
+**BU ONERME OLCULMEDEN YAZILDI ve YANLIS CIKTI.** Kaynagi
+`simulation/scripts/iha_haritala.py` okunarak dogrulandi:
+
+    MOZ_PX = 1024            # mozaik kenari SABIT 1024 px
+    MPP    = MOZ_M / MOZ_PX  # ~0,055 m/px  ->  saha ~56 m
+
+Plan izgarasi (`ds = round(PLAN_M_HUCRE / mpp)`, PLAN_M_HUCRE = 0,45 m):
+
+    girdi                    px    mpp     saha     ds   plan izgarasi
+    kadraj (t66, olculen)   640  0,0781   50,0 m    6      106 x 106
+    mozaik (URETIM)        1024  0,0547   56,0 m    8      128 x 128
+
+**Mozaik, test kumesinden %21 daha buyuk bir plan izgarasidir — kat kat degil.**
+Dugum sayisi 91 yerine ~110 mertebesinde beklenir. `rota_bul` ayrica bilesen
+cevresine ROI kirpar, yani gercek sayi daha da kucuk olabilir.
+
+Diger `rota_bul` cagri yerleri de tarandi (`scripts/saha_kuru_kosu.py:709,722`,
+`scripts/v21_degerlendir_ve_paketle.py`): hepsi model cikarimi olcegindeki
+letterbox maskeleri besler. **KATMAN B girdisi arenanin FIZIKSEL boyutuyla ve
+sabit 1024 px tuvaliyle SINIRLIDIR; buyumez.**
+
+## 2. DOLAYISIYLA D-160 §4'un 2. BULGUSU (ve T97) DAYANAKSIZ
+
+D-160 §4'te "n=800'de TABAN 96 ms, KATMAN B butcesi asiliyor" diye olctum ve
+T97'yi actim. O prob **n ile GORUNTU BOYUNU BIRLIKTE buyutuyordu** (H = n·7).
+n=800'de tuval ~320x5640 idi. **Uretimde boyle bir girdi YOKTUR.**
+
+    T97'nin onermesi ("mozaik rejimi") URETIMDE GERCEKLESMIYOR.
+
+T97 SILINMEZ ama YENIDEN KAPSAMLANIR: soru "mozaikte patlar mi" degil,
+"128x128 plan izgarasinda gercek maliyet nedir" olur — ki bu zaten T95'in
+sorusudur. Kayit olarak duruyor cunku probun kendisi gecerli bir olcumdur;
+yanlis olan benim ondan cikardigim URETIM SONUCUDUR.
+
+## 3. (4) OLCUTU YENIDEN TURETILIYOR — ve bu SEFER SONUCU DEGISTIREBILIR
+
+(4)'u "oran dusuyor, gevsetmeyi hakli kilacak olcum yok" diye ayakta
+tutmustum. O olcum artik VAR ve gevsetmeyi degil, **olcutun YANLIS SEVIYEDE
+uygulandigini** gosteriyor:
+
+  · (4) bir BUTCEYI korumak icin yazildi ("planlayici cok yavaslamasin").
+  · Ama olctugu sey bir ALT BILESENIN ORANIDIR. Toplamin kucuk bir yuzdesi
+    olan bir alt bilesen, butceye dokunmadan uce katlanabilir.
+  · Bu, (5)'in kusuruyla AYNI AILEDENDIR: kisiti YANLIS SEVIYEDE uyguladim.
+
+⚠ AMA (4) HENUZ TUTTU DIYE ILAN EDILMIYOR. Butce bicimini degerlendirmek icin
+gereken sayi — `rota_bul`un TOPLAM suresi — **HIC OLCULMEDI**; 89 numarali
+betik yalniz `sure_ms["duzelt"]`i kaydetti. Yeni olcut ON KAYDA yazildi
+(`scripts/olcum/t95b_on_kayit.md`) ve OLCUM KOSULMADAN once baglandi:
+
+    (4') `rota_bul` TOPLAM suresi medyani (KORUMA) <= 40 ms
+         VE artis, tabanin <= %20'si
+
+AYIRT EDICI OLGU: toplam taban ~5 ms cikarsa +1,88 ms = %38 -> **REDDEDILIR**.
+Toplam taban ~30 ms cikarsa +1,88 ms = %6 -> kabul edilir. **Hangisi oldugunu
+BILMIYORUM**; olcut bu yuzden rigged degildir.
+
+## 4. USUL DERSI (kendime)
+
+Bu oturumda mutlak esikleri baska baglamdan kopyalamayi UC kez yakaladim
+(D-146, D-157, D-159/§2). Simdi dorduncusunu kendi RED GEREKCEMDE yaptim:
+**olculmemis bir onermeyi ("mozaik cok daha buyuktur") olculmus gibi kullanip
+onunla bir olcutu ayakta tuttum.** Kusur sinifi ayni: DOGRULANMAMIS SAYI.
+
+    KURAL (baglayici): bir olcutu ayakta tutan ya da dusuren GEREKCE bir
+    OLGU iddiasi iceriyorsa, o olgu da EN AZ olcut kadar dogrulanmis
+    olmalidir. "Muhtemelen daha buyuktur" bir kanit degildir.
+
+**DOGRULANAMADI**
+  1. Mozaikte `yol_duzelt`e giren gercek dugum sayisi HALA OLCULMEDI
+     (128x128 izgaradan ~110 diye TAHMIN ediliyor; olculmedi).
+  2. `rota_bul` toplam suresi olculmedi — (4') bu yuzden karara baglanamadi.
+  3. Reddetme maliyeti (n=91'de 1,03-7,82 ms oynaklik) hala aciklanmadi.

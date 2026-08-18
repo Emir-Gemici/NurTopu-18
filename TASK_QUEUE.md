@@ -4622,7 +4622,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
        n=91'de maliyet neden 1,03–7,82 ms arasında oynuyor? (reddetme maliyeti)
     2. **Mozaik ölçeğinde** düğüm sayısı ve süre ölç (`iha_haritala` girdisi).
     3. Ön kaydı o ölçümden sonra, **mutlak bütçe** cinsinden yeniden yaz.
-- [ ] **T97 — `yol_duzelt` mozaik rejiminde KORUMASIZ DA bütçeyi aşıyor** · `codes/costmap_path_finder.py:768` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-160 §4**
+- [ ] **T97 — [ÖNERMESİ ÇÜRÜDÜ · YENİDEN KAPSAMLANDI] `yol_duzelt` ölçek maliyeti** · `codes/costmap_path_finder.py:768` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-160 §4**
   - Mimarın tanı probu (modelsiz, sentetik): görüntü ve düğüm sayısı **birlikte**
     büyürken `yol_duzelt` süresi
     ```text
@@ -4637,8 +4637,21 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **DOĞRULANAMADI:** üs ayrıştırılmadı (n ile görüntü birlikte büyütüldü);
     tek makine, tek koşum, varyans yok; **gerçek mozaikte hiç ölçülmedi**.
     Mimarın kendi probudur, **denetimden geçmemiştir**.
-  - **ÖNCE ÖLÇ:** gerçek ortomozaik girdisinde `yol_duzelt`e giren düğüm sayısı
-    kaçtır? Bu sayı bilinmeden hem T95 hem T97 karara bağlanamaz.
+  - 🔴 **AYNI GÜN ÇÜRÜTÜLDÜ (mimar, `REVIEW_LOG.md` D-161).** Bu görevi
+    "mozaik rejiminde patlıyor" önermesiyle açtım; önerme **ölçülmeden**
+    yazılmıştı ve **yanlış**. `iha_haritala.py:64` mozaiği **sabit 1024 px**
+    tutar (`MOZ_PX`), saha ~56 m, `ds=8` → plan ızgarası **128×128**. Test
+    kümesi 640 px / `ds=6` → **106×106**. Yani üretim girdisi test kümesinden
+    **%21 büyük, kat kat değil**. Yukarıdaki tabloda n=800 için tuval
+    ~320×5640'tı — **üretimde böyle bir girdi YOKTUR.**
+  - Diğer `rota_bul` çağrı yerleri de tarandı (`saha_kuru_kosu.py:709,722`,
+    `v21_degerlendir_ve_paketle.py`): hepsi çıkarım ölçeğinde letterbox maskesi
+    besler. **KATMAN B girdisi arenanın fiziksel boyutuyla sınırlıdır, büyümez.**
+  - **YENİ KAPSAM:** soru "mozaikte patlar mı" değil, **"128×128 plan
+    ızgarasında gerçek maliyet nedir"** — ki bu T95-B'nin sorusudur. T97 o
+    ölçüm gelene kadar **bekler**; gelen sayı bütçeyi aşmıyorsa **kapanır**.
+  - ⚠ Prob ölçümünün kendisi geçerlidir; yanlış olan **ondan çıkardığım üretim
+    sonucudur**. Kayıt bu yüzden silinmedi.
 - [ ] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
   - `road = darbogaz_serit` (en dar noktanın şeridi). İki kollu bir sahnede
     darboğaz çatalın **altındaki paylaşılan gövdeye** düşerse yayınlanan sayı
