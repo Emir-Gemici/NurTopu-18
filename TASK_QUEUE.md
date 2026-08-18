@@ -4622,7 +4622,100 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
        n=91'de maliyet neden 1,03–7,82 ms arasında oynuyor? (reddetme maliyeti)
     2. **Mozaik ölçeğinde** düğüm sayısı ve süre ölç (`iha_haritala` girdisi).
     3. Ön kaydı o ölçümden sonra, **mutlak bütçe** cinsinden yeniden yaz.
-- [ ] **T97 — [ÖNERMESİ ÇÜRÜDÜ · YENİDEN KAPSAMLANDI] `yol_duzelt` ölçek maliyeti** · `codes/costmap_path_finder.py:768` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-160 §4**
+  - 🔴 **T95-B ÖLÇÜLDÜ · 2026-08-18 · `REVIEW_LOG.md` D-162 (amele) / D-163
+    (mimar denetimi).** Ölçüm `scripts/olcum/90_t95b_butce.py`. **Üretim kodu
+    yine DEĞİŞTİRİLMEDİ.**
+    ```text
+    olcut                                  esik            SONUC
+    (1) ACIK >= taban                      >= 31        31   TUTTU
+    (3) pay < 3 px ACIK kare <= taban      <= 3          0   TUTTU
+    (4'a) TOPLAM sure medyani <= 40 ms     <= 40    49,977   DUSTU
+    (4'b) artis <= tabanin %20             <= %20     %6,2   TUTTU
+    (5') waypoint medyani <= taban + 2     <= 33        32   TUTTU
+    (6) test_rota_sentetik / (7) unittest           15/15 · 584 OK
+    ```
+  - 🔴 **(4'a) KAPSAM HATASIYDI — ve hata benim.** 40 ms'i modülün kendi
+    sözleşmesinden aldım (`:24`) ama **o satırın kapsamını okumadım**: 30-40 ms
+    açıkça **KATMAN B**'nindir (`astar + yol_duzelt + rota_dogrula`); `rota_bul`
+    TOPLAMI ise **iki katmanı birden** koşar. Taban da (47 ms) eşiği aşıyor —
+    çünkü eşik o kapsam için hiç yazılmamıştı. Ölçüt kendi kapsamında yeniden
+    türetildi ve **sıkılaştı** (toplam kapsamda artış %6,2 iken KATMAN B
+    kapsamında %16,0):
+    ```text
+    kapsam        106x106            128x128 (URETIM OLCEGI)
+    KATMAN A   24,45 -> 24,41 ms   83,02 -> 86,21 ms   (korumadan BAGIMSIZ)
+    KATMAN B   16,15 -> 18,90 ms   21,69 -> 25,15 ms   (+%16,0) <- 30-40 ms ICINDE
+    ```
+    ⚠ **Bu, mutlak eşik kusurunun DÖRDÜNCÜ tekrarı** (D-146 taban 31 · D-157
+    taban 258 · D-159 taban 31 · şimdi kapsam). D-160 kuralı genişletildi:
+    **bir ölçüt dışarıdan sayı alıyorsa yalnız KAYNAĞI değil KAPSAMI da
+    doğrulanır.**
+  - **MALİYETİN KAYNAĞI ÇÖZÜLDÜ** (emrin sorusu): ön ek geçişi **%55** (sabit,
+    O(n), her karede tam 90 çağrı), reddetme döngüsü **%45** (1–190 çağrı arası
+    — n=91'de 1,03–7,82 ms oynaklığının kaynağı **budur**), aşama 2 **%0**.
+  - 🔴 **BUNA RAĞMEN T95 UYGULANMIYOR → T95-C.** Ölçütü dört kez düzelttim ve
+    her düzeltmede sonuç "geçti"ye yaklaştı. Düzeltmeler nesnel olsa da bu
+    yeterli değil. **Hiç ölçülmemiş ve bu kuralı bir kez ÖLDÜRMÜŞ** eksende
+    sınanacak: **gürültü altında kararlılık** — D-156'da aynı kuralın sabit
+    eşikli biçimi (V1) K5'i çözdü ama kararlılığı 8→11/260 bozduğu için
+    reddedilmişti. Ön kayıt: `scripts/olcum/t95c_on_kayit.md` (yazıldı).
+
+  - 🔴 **T95-B ÖLÇÜLDÜ · (4') YİNE DÜŞTÜ, ZORLANMADI · 2026-08-18 · Claude-2**
+    · kayıt `REVIEW_LOG.md` **D-162** · ölçüm `scripts/olcum/90_t95b_butce.py`.
+    **Üretim kodu DEĞİŞTİRİLMEDİ** (`git status`: `codes/ tests/ comms/
+    jetson_paket/ simulation/` **boş**).
+  - **Üç ayrı koşum** (D-159 §4 dersi — kendi aletim ölçütü kurtarmasın):
+    A `--yalniz-sure` (temiz süre) · B `--sayac` (çağrı dökümü) ·
+    C `--uretim-olcegi` (128×128).
+    ```text
+    olcum (kosum A · n=260 · ACIK 31)     TABAN     KORUMA
+    durum == ACIK                            31         31
+    pay < 3 px olan ACIK kare                 3          0
+    waypoint medyani                         31         32
+    rota_bul TOPLAM medyan (ms)          47,044     49,977
+      costmap                              7,87       8,06
+      koridor                             15,11      15,14
+      astar                               14,69      15,08
+      duzelt                               0,88       2,67
+      dogrulama                            0,69       0,66
+      KATMAN_A (costmap+koridor)          24,45      24,41
+      KATMAN_B (astar+duzelt+dogrulama)   16,15      18,90
+    ```
+  - **ÖLÇÜTLER:**
+    ```text
+    (1) ACIK >= taban                31 >= 31          TUTTU
+    (2) kayip kazanci >= 1,00 px     2,307 (D-159)     TASINDI
+    (3) pay<3 ACIK kare <= taban     0 <= 3            TUTTU
+    (4'a) TOPLAM sure <= 40 ms       49,977            DUSTU
+    (4'b) artis <= taban %20         +2,933 = %6,2     TUTTU
+    (5') waypoint <= taban+2         32 <= 33          TUTTU
+    (6) codes/test_rota_sentetik.py  SONUC: 15/15 dogru
+    (7) unittest discover -s tests   Ran 584 tests in 50.818s / OK
+    ```
+    (4') bir birleşimdir; (4'a) düştüğü için **(4') DÜŞTÜ → T95 `[ ]` kalır.**
+  - 🔴 **(4'a) değişikliği AYIRT ETMİYOR — TABAN da 40 ms'in üstünde (47,0).**
+    Bu, D-146 · D-157 · D-159 ile aynı kusur sınıfının **DÖRDÜNCÜ tekrarı**.
+    **Ölçüt gevşetilmedi**; ama eşiğin kaynağı hakkında bir **olgu**:
+    `costmap_path_finder.py:21-25` KATMAN B'yi *"astar() + yol_duzelt() +
+    rota_dogrula()"* diye tanımlar ve 40 ms **o satırdan** alındı; `rota_bul`
+    TOPLAMI ise **iki katmanı birden** içerir. Ölçülen ayrışım:
+    **KATMAN B 16,15 → 18,90 ms (30-40 ms bütçesinin İÇİNDE)** ·
+    **KATMAN A 24,45 → 24,41 ms (korumadan tamamen bağımsız)**.
+    Hangi kapsamın ölçüt olacağı **mimarın kararıdır**.
+  - **MALİYET AYRIŞTIRILDI (emrin sorusu):** çağrılar **çağrı yerine göre**
+    ayrıldı (imzadan; üretim koduna hiçbir şey eklenmeden).
+    ```text
+    cagri yeri     n medyan  n maks  ms medyan  ms toplam    pay
+    :816 onek            90      90      0,855      26,75   %55,0
+    :822 kiris           27     190      0,478      21,91   %45,0
+    :875 asama2           0       1      0,000       0,02    %0,0
+    toplam cagri: TABAN 0 · KORUMA min 91 · medyan 117 · maks 280
+    yol_duzelt GIRDI dugum: 31 karenin HEPSINDE tam 91
+    ```
+    **Cevap: yarı yarıya** — sabit ön ek geçişi %55, reddetme döngüsü %45,
+    aşama-2 pratikte bedava. D-160'ın gözlediği **1,03–7,82 ms oynaklığının
+    kaynağı `:822`dir** (1–190 çağrı); `:816` her karede tam 90'dır (n−1).
+- [x] **T97 — KAPANDI (önermesi üretim ölçeğinde ÇÜRÜDÜ) · `yol_duzelt` ölçek maliyeti** · `codes/costmap_path_finder.py:768` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-160 §4**
   - Mimarın tanı probu (modelsiz, sentetik): görüntü ve düğüm sayısı **birlikte**
     büyürken `yol_duzelt` süresi
     ```text
@@ -4652,6 +4745,66 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     ölçüm gelene kadar **bekler**; gelen sayı bütçeyi aşmıyorsa **kapanır**.
   - ⚠ Prob ölçümünün kendisi geçerlidir; yanlış olan **ondan çıkardığım üretim
     sonucudur**. Kayıt bu yüzden silinmedi.
+  - ✅ **KAPANDI · 2026-08-18 · `REVIEW_LOG.md` D-162 §6 / D-163 §4.** Üretim
+    ölçeğinde (1024 px · mpp 0,0547 · ds 8 · plan ızgarası **128×128**) ölçüldü:
+    ```text
+    yol_duzelt (koruma dahil)    4,21 ms
+    KATMAN B toplamı            25,15 ms   <- sözleşme 30-40 ms İÇİNDE
+    ```
+    Açılış önermesi ("mozaik rejiminde bütçeyi aşıyor") üretimde
+    **gerçekleşmiyor**. Görev kapanır.
+- [ ] **T98 — KATMAN A 1024 px'te 83 ms: `koridor_adaylari` tek başına 53 ms** · `codes/costmap_path_finder.py:21-25` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-162 §6, D-163 §5**
+  - T95-B ölçümünün yan bulgusu; **korumadan tamamen bağımsız** (costmap
+    28,27→28,08 · koridor 53,27→51,75 ms; fark gürültü).
+  - Modülün kendi sözleşmesi (`:22`): *"KATMAN A (her karede, **~5 ms @384px**)"*.
+  - 🔴 **"Sözleşmesini N kat aşıyor" DENMİYOR** — ölçüm 1024 px'e ait, sözleşme
+    384 px'e. Bunu kıyaslamak D-163 §2'de yakalanan **kapsam hatasının** birebir
+    tekrarı olurdu. Amele de bu iddiada bulunmadı; doğru davrandı.
+  - **İLK İŞ: 384 px'te ölç.** Sonra 640 px (`rpi_inference` yolu) ve 1024 px
+    (`iha_haritala` mozaik yolu). Üçü de aynı koşumda.
+  - ⚠ Açıklayıcı **tahmin, ölçüm değil**: 1024 px yolu mozaik yoludur ve "her
+    karede" koşmaz; kare başına koşan yol `rpi_inference`tır (384-640 px). Bu
+    doğruysa 83 ms göründüğü kadar alarm verici değildir. **T98 karara bağlar.**
+  - **KAPI:** ölçüm koşulmadan hiçbir kod değişmez.
+
+  - ✅ **BEKLENEN ÖLÇÜM GELDİ · 2026-08-18 · Claude-2** · kayıt **D-162 §6** ·
+    `scripts/olcum/90_t95b_butce.py --uretim-olcegi`.
+    Aynı fiziksel sahne **üretimin piksel ölçeğinde yeniden kuruldu** (maske
+    algıdan SONRA ölçeklendi, model yeniden koşmadı); betik doğruladı:
+    ```text
+    [URETIM OLCEGI] tuval 1024px · arena 914px · mpp 0.0547 · ds 8
+                    · plan izgarasi 128x128
+    ```
+    ```text
+    n=260 · ACIK 31                    TABAN     KORUMA
+    yol_duzelt GIRDI dugum             97/97/97  97/97/97   (min/med/mak)
+    duzelt (ms)                         1,28       4,21
+    astar (ms)                         18,59      19,10
+    dogrulama (ms)                      1,87       1,82
+    KATMAN_B = astar+duzelt+dogrulama  21,69      25,15   <- 30-40 ms ICINDE
+    KATMAN_A = costmap+koridor         83,02      86,21
+      costmap                          28,27      28,08
+      koridor                          53,27      51,75
+    rota_bul TOPLAM                   120,292    122,761   (+2,469 = %2,1)
+    pay < 3 px olan ACIK kare               3          0
+    ```
+  - 🔴 **T97'NİN ÖNERMESİ ÜRETİM ÖLÇEĞİNDE DE DOĞRULANMADI.** 128×128'te
+    `yol_duzelt` korumayla birlikte **4,21 ms**, KATMAN B toplamı **25,15 ms**
+    — modülün kendi **30-40 ms** bütçesinin **içinde**. "n=800'de 96 ms" probu
+    üretimde **karşılığı olmayan** bir girdiye aitti (D-161 zaten yazmıştı).
+  - 🔴 **AMA BAŞKA BİR ŞEY AŞIYOR ve T95 ile ilgisi YOK:** 1024 px'te
+    **KATMAN A 83 ms**tir ve korumadan tamamen bağımsızdır (costmap 28,27 →
+    28,08 · koridor 53,27 → 51,75; fark gürültü). Tek başına
+    **`koridor_adaylari` 53 ms** ediyor. Modülün KATMAN A sözleşmesi
+    *"~5 ms @384px"*tir.
+    ⚠ **384 px'te ÖLÇMEDİM** — "sözleşmesini N kat aşıyor" **demiyorum**;
+    ölçülen sayı 1024 px'e, sözleşme metni başka bir çözünürlüğe aittir.
+  - ⚠ **DOĞRULANAMADI:** 128×128 koşumu bir **yeniden kurulumdur**, gerçek
+    mozaik değildir — geometri birebir ama maskeler INTER_NEAREST ile
+    büyütüldü, mozaik **dikişleri/boşlukları yok**, sahne sentetik arenadır.
+    Elde mozaik artefaktı **yok** (arandı); üretmek Gazebo tarama uçuşu ister.
+  - **KARAR MİMARIN:** `yol_duzelt` cephesinde T97 kapanabilir; KATMAN A
+    bulgusu **ayrı bir görev** olarak yeniden kapsamlanmalıdır.
 - [ ] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
   - `road = darbogaz_serit` (en dar noktanın şeridi). İki kollu bir sahnede
     darboğaz çatalın **altındaki paylaşılan gövdeye** düşerse yayınlanan sayı
