@@ -7258,6 +7258,28 @@ esults	50_uc_kapi\`):
     Bu, S5'in kendi sorusunu (*"imgsz sabitlenmeli mi, hangi değerde?"*)
     ölçülebilir kılar; şu an süpürme o soruyu **cevaplayamıyor**.
   - ⚠ n=2 ve ikisi de YZ üretimi — bu sayılar **model seçimine girdi değildir**.
+  - 🔎 **MİMAR TANISI · 2026-08-19.** Kodda okundu, ölçülmedi — doğrulanabilir olgular:
+    ```text
+    kaynak                                       imgsz     registry'den mi?
+    config/model_registry.json competition          512     (TEK KAYNAK)
+    codes/rpi_inference.py:128 INFER_SIZE           512     HAYIR — ciplak sabit
+    codes/arac_maskesi.py:206 ARAC_OLCEK_IMGSZ      640     HAYIR — ciplak sabit
+    config/model_registry.json arac_referansi      1024     (TEK KAYNAK)
+    codes/test_rota_guvenlik.py:274,430             896     HAYIR — ciplak sabit
+    ```
+  - 🔴 **ASIL KUSUR:** `model_kayit_dogrula` (`rpi_inference.py:438`) registry ile
+    yalnız **`path`/dosya adını** kıyaslıyor; **`imgsz` alanını HİÇ okumuyor.**
+    Yani registry `imgsz`'i 640'a çevrilse `INFER_SIZE` 512'de kalır ve
+    **hiçbir yerde ses çıkmaz.** Bu, registry'nin kendi notunda yazılı
+    kusurun (D-116/5: *"sürüm v27'ye geçince çevrilmedi"*) birebir aynısı.
+  - Bugün **512 = 512 uyuşuyor** — yani bu canlı bir hata değil, **açık bir
+    kapı**. T53/T54 de 512'de eğitiliyor, dolayısıyla terfi anında sorun
+    çıkmaz; ama koruma yok.
+  - ⚠ `arac_referansi.imgsz = 1024` ile `ARAC_OLCEK_IMGSZ = 640` **ayrışıyor**.
+    Bu muhtemelen bir hata değil (registry DOTA'nın eğitim boyunu, kod ölçek
+    kâhininin kalibre koşum boyunu yazıyor — `arac_maskesi.py:188-206`), ama
+    **alanın hangisini kastettiği yazılı değil**. Önce anlam netleşmeli,
+    sonra dokunulmalı.
 - [ ] **S6 — `hedef` sınıfı hedef tohumu olarak bağlı değil** · `codes/costmap_path_finder.py:730` · ÖNEMLİ
   - **Kanıt:** `rota_bul` yalnız `yol_sinif_idler` ve `engel_sinif_idler` okuyor; `2 = hedef` hiçbir yerde hedef tohumu olarak kullanılmıyor. Hedef `baslangic`/`hedef` parametreleriyle dışarıdan veriliyor.
   - **Yap:** İsteğe bağlı `hedef_sinif_idler` ekle; verilirse maskenin en büyük bağlı bileşeninin merkezi hedef tohumu olsun. **S2 sözleşmesinden sonra** yapılmalı.
