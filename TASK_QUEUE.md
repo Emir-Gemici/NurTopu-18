@@ -5006,6 +5006,30 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     kendi DOĞRULANAMADI listesinde yazdı; ben **tasarlarken** görmeliydim.
     **DERS: bir kapı kurmadan önce ölçeceği olayın meydana GELEBİLİR olduğunu
     kodda doğrula. Meydana gelemeyen olayı ölçen kapı güven üretir, bilgi değil.**
+- [ ] **T102 — `serbest ⊆ zemin` kapıya bağlı değil: "dilate + engeli tekrar çıkar" regresyonu TÜM testleri geçiyor** · `tests/test_monotonluk.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-171 §3**
+  - S3 üç savunma kurdu: (1) alt küme kafesi · (2) engel pikseli sızıntısı ·
+    (3) sabit referans. Ama **(3) yalnız mutasyon testlerinin içinde koşar**;
+    normal koşumda devrede olan (1) ve (2)'dir.
+  - Mimar şu regresyonu denedi — gerçekçi ve "temiz" görünüyor:
+    ```python
+    s["serbest"] = dilate(serbest) & ~engel_ham   # "kenari yumusatayim"
+    ```
+    ```text
+    kosum                          KAFES   engel-sizintisi   ZEMIN DISI serbest
+    YAMASIZ                          0            0                  0
+    dilate + engeli TEKRAR cikar     0            0              40183
+    ```
+    **(1) ve (2) ikisi de geçiyor.** Serbest alan 40 bin piksel büyüyor ve
+    büyüme **etiketsiz arka plana** oluyor — mimarinin kendi kuralına göre
+    ("bilinmeyen → engel") orası engel olmalıydı.
+  - **YAP:** `tests/test_monotonluk.py`'ye `serbest ⊆ zemin` değişmezini ekle
+    (50 tohum × tüm engel alt kümeleri) **ve** mutasyon kanıtı: yukarıdaki
+    "dilate + tekrar çıkar" yamasıyla testin **DÜŞTÜĞÜNÜ** göster.
+  - ⚠ `zemin` = `yol_sinif_idler` maskelerinin birleşimi; **çıplak sınıf id
+    yazma** (madde 16), `codes/sinif_semasi.py`den al.
+  - **KAPI:** yeni test yamasız koşumda geçer · yamalı koşumda düşer ·
+    `git diff codes/` BOŞ · `test_rota_sentetik` 15/15 · `unittest discover`
+    ≥ 601 OK, hiç düşme yok.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python

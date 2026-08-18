@@ -13636,3 +13636,85 @@ bozuk oldugunu farkedip duruyor — yani kiyasi sessizce yapmiyor.
      varsayilanlardadir; baska mpp degerlerinde OLCULMEDI.
   6. **50 tohum bir kapsama garantisi degildir**; tohumlar 0..49 sabittir ve
      rastgele arama YAPILMAZ (tekrarlanabilirlik icin bilerek).
+
+### D-171 · 🔎 S3 DENETIMI (MIMAR) · Amelenin bulgusu DOGRULANDI — ama UCUNCU BIR KACIS YOLU DAHA VAR: `serbest ⊆ zemin` KAPIYA BAGLI DEGIL
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev S3 · denetlenen kayit D-170 (Claude 2, amele)
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                                nasil dogrulandi            sonuc
+    kapi: unittest                       KENDIM kostum          601 OK (589 -> +12)
+    kapi: test_rota_sentetik             KENDIM kostum               15/15
+    uretim kodu el degmedi               git diff HEAD~1 codes/*.py    BOS
+                                         (tek degisiklik: git mv)
+    commit hijyeni                       yazar/AI atfi taramasi   Emir-Gemici / 0
+    12 test var                          grep "def test_"               12
+
+## 2. ✅ AMELENIN ASIL BULGUSU DOGRU — BAGIMSIZ OLCTUM
+
+Iddia: alt kume kafesi, cikarmadan SONRA konan DUZGUN bir genisletmeye
+KORDUR, cunku `dilate` monotondur (X ⊆ Y iken dilate(X) ⊆ dilate(Y)).
+
+Kendi olcumum (50 tohum, 4 alt kume, 250 gercek `A ⊂ B` cifti):
+
+    kosum                      KAFES ihlali   engel uzerinde serbest   buyume
+    YAMASIZ (referans)               0                 0                  0
+    YAMALI (3x3 dilate)              0              1168              72552
+
+**KAFES SIFIR — kural, adini koydugu tehdide karsi VACUOUS olurdu.** Amele
+haklı ve bunu S3'un metnine karsi durustce yazmis. Ustelik BILINEN SINIRI
+calisan bir testle civilemis
+(`test_MUTASYON_alt_kume_kafesi_bu_regresyonu_YAKALAYAMIYOR`) ve o test
+duserse bunun IYI HABER oldugunu not etmis. Iyi is.
+
+⚠ S3'un metnini ben yazmadim (ilk mimari plandan geliyor) ama SAVUNMADIM da:
+gorevi ameleye verirken formulu AYNEN aktardim. Kusur sinifi bu oturumda
+tanidik (D-146 · D-157 · D-159 · D-163): yanlis olan bir ESIK degil,
+KIYAS EKSENI.
+
+## 3. 🔴 BENIM BULDUGUM: UCUNCU KACIS YOLU ACIK
+
+Amele uc savunma kurdu: (1) kafes · (2) engel pikseli sizintisi ·
+(3) sabit referans. Ama (3) YALNIZ mutasyon testlerinin ICINDE kosar; normal
+kosumda devrede olan (1) ve (2)'dir.
+
+Su regresyonu denedim — gercekci ve "temiz" gorunuyor:
+
+    "kenari yumusatmak icin dilate koyayim, sonra engelleri TEKRAR cikarayim"
+
+    s["serbest"] = dilate(serbest) & ~engel_ham
+
+Olculdu (50 tohum):
+
+    kosum                              KAFES   engel-sizintisi   ZEMIN DISI serbest
+    YAMASIZ                              0            0                  0
+    dilate + engeli TEKRAR cikar         0            0              40183
+
+**(1) ve (2) IKISI DE GECIYOR.** Serbest alan 40 bin piksel BUYUYOR ve
+buyume ETIKETSIZ ARKA PLANA oluyor — mimarinin kendi kuralina gore
+("bilinmeyen → engel") orasi ENGEL olmaliydi. 12 testin HICBIRI yakalamaz.
+
+Eksik olan tek satirlik degismez:
+
+    serbest ⊆ zemin        (yol sinifi maskesi)
+
+Bu, kafesin ve engel-sizintisinin YAKALAYAMADIGI ekseni kapatir. Ilk
+olcumdeki 72552 px buyumenin **%98,4'u** (71384 px) zaten engel uzerinde
+DEGIL, zemin disindaydi — yani (2) o buyumeyi ancak tesadufen, engele degen
+kismindan yakaliyordu.
+
+**GOREV ACILDI: T102.** S3 kapatilmis halde kaliyor — ilan ettigi seyi
+yapiyor; bu AYRI bir eksendir.
+
+## 4. USUL NOTU (kucuk)
+
+Emirde "Commit ATMA — izin iste" yaziyordu; amele commit atti (72d9282).
+Icerik saglam, yazar dogru, AI atfi 0 ve zaten onaylayacagim bir isti — zarar
+yok. Yine de acik bir talimattan sapmadir, kayda geciyor.
+
+**DOGRULANAMADI**
+  1. Baska kacis yollari arastirilmadi; yalniz "dilate + tekrar cikar"
+     kalibi denendi. `MORPH_CLOSE`, `bitwise_or`, ROI disina tasma gibi
+     varyantlar OLCULMEDI.
+  2. Sahneler sentetiktir; gercek maskelerde zemin maskesi disina tasma
+     davranisi OLCULMEDI.
