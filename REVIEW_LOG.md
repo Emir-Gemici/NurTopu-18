@@ -14121,3 +14121,249 @@ degil) — dogru karar.
   3. 768-960 arasindaki keskin gecisin nedeni ARASTIRILMADI (maske
      prototip cozunurlugu mu, egitim olcegi mi — bilinmiyor).
   4. Gercek arena karesinde hicbir sey olculmedi (kalici sinir).
+
+### D-176 · ✅ S5 KAPANDI · `imgsz` TEK KAYNAKTAN turetiliyor ve HER YUKLEMEDE kiyaslaniyor — acik kapi kapatildi
+Yazan/olcen: Claude 2 (amele) · 2026-08-19 · gorev S5 (kullanici emri) · dayanak D-116/5, D-175 (mimar tanisi), madde 16
+Degisen: `codes/rpi_inference.py` (+ `jetson_paket/kod/` aynasi) · `config/model_registry.json` (yalniz NOT) · `tests/test_imgsz_tek_kaynak.py` (YENI, 9 test)
+
+⚠ Bu gorev URETIM KODUNA dokundu. Karar davranisi DEGISMEDI: bugun defter 512,
+`INFER_SIZE` 512 -> `model_kayit_dogrula` "eslesti", `load_model` eskisi gibi.
+
+---
+## 1. TANI DOGRULANDI
+
+Mimarin kodda okudugu tani (D-175) dogrudur: `model_kayit_dogrula` defterle
+yalniz `path`/dosya adini kiyasliyordu, `imgsz` alanini HIC OKUMUYORDU.
+Defter 640'a cevrilse `INFER_SIZE` 512'de kalir ve **hicbir yerde ses
+cikmazdi** — defterin KENDI notundaki D-116/5 kusurunun birebir aynisi.
+
+⚠ Bugun 512 == 512 uyusuyor: bu **canli bir hata degil, ACIK BIR KAPIYDI**.
+
+---
+## 2. (A) `imgsz` KIYASI EKLENDI — `path` ile AYNI FAIL-CLOSED MANTIK
+
+`model_kayit_dogrula(model_yolu, kok=None, calisan_imgsz=None)`:
+
+    detay["beklenen_imgsz"]  <- profilin `imgsz`i
+    detay["calisan_imgsz"]   <- `calisan_imgsz` ya da modulun INFER_SIZE'i
+
+    profilde `imgsz` YOK      -> durum "profilde `imgsz` yok"      · uyumlu=False
+    profilde `imgsz` GECERSIZ -> durum "profilde `imgsz` gecersiz" · uyumlu=False
+    ad UYUSMUYOR              -> durum "ESLESMIYOR"                · uyumlu=False
+    ad OK, imgsz UYUSMUYOR    -> durum "IMGSZ ESLESMIYOR"          · uyumlu=False
+    ikisi de OK               -> durum "eslesti"                   · uyumlu=True
+
+⚠ **Mevcut `durum` degerleri KORUNDU** ("eslesti" / "ESLESMIYOR"); yeni deger
+yalnizca yeni dal icin eklendi. Aksi halde `tests/test_saha_parametrik.py::
+test_manifest_ile_kayit_defteri_ESLESIYOR` (`durum == "eslesti"` bekliyor)
+sessizce duserdi.
+
+⚠ `load_model`in `kayit_zorunlu` semantigi DEGISTIRILMEDI (emrin sarti).
+Yalniz hata mesajina iki satir eklendi (`profilin imgsz'i` · `calisan imgsz`).
+
+---
+## 3. (C) SECIM: `INFER_SIZE` DEFTERDEN TURETILIYOR — ve NEDEN
+
+**Tercih edilen yol secildi.** `INFER_SIZE = _baslangic_imgsz()`; deger etkin
+profilin `imgsz`inden gelir.
+
+**FAIL-CLOSED AMA YUMUSAK.** Defter okunamazsa `INFER_SIZE_YEDEK = 512`'ye
+dusulur ve **stderr'e UYARI** basilir; sessizce devam EDILMEZ. Modul yine de
+YUKLENIR.
+
+🔴 **Neden "yumusak" — olcuyle gerekcelendirildi:** `jetson_paket/` altinda
+`config/` dizini **YOKTUR**. Ice aktarma aninda sert bir bagimlilik kursaydim
+saha aynasi HIC IMPORT EDILEMEZDI. Olculdu:
+
+    cd jetson_paket/kod && import rpi_inference
+    -> UYARI: kayit defterinden `imgsz` okunamadi; INFER_SIZE yedek degere
+       dusuldu (512). TEK KAYNAK config/model_registry.json'dur.
+    -> INFER_SIZE 512 · _kayittan_imgsz() None
+
+⚠ **BU AYNADA YENI BIR DAVRANISTIR ve bildiriyorum:** saha aynasi artik her
+ice aktarmada bir uyari basiyor. Deger DEGISMIYOR (512, eskisiyle ayni) ve
+`load_model` orada zaten fail-closed dusuyordu (defter yok). Yani karar
+davranisi ayni, gorunurluk artti. Mimar bunu gurultu bulursa `jetson_paket/`
+altina bir `config/model_registry.json` konmasi ayri bir istir.
+
+---
+## 4. (B) OVERRIDE UYARISI — ve `--imgsz` EKLEMEME KARARI
+
+S5 kapisi *"CLI ile imgsz degistirilirse gorunur uyari"* diyor. 🔴 **Ama
+`rpi_inference` CLI'sinde `--imgsz` bayragi YOKTUR** (argparse tarandi, 17
+bayrak var, imgsz yok). **EKLEMEDIM.** Gerekce: amaci `imgsz`i SABITLEMEK
+olan bir goreve yeni bir DEGISTIRME KOLU takmak ters yonde bir adimdir; kapi
+metni boyle bir kolun VAR OLDUGUNU varsayiyor, oysa yok.
+
+Bunun yerine **ortak cozucu** yazildi:
+
+    cikarim_boyu(istenen=None, kok=None) -> int
+
+`istenen` defterdekinden farkliysa **stderr'e uyari** basar ve istenen degeri
+doner (karar cagirana aittir). Ileride bir CLI/API yolu acilirsa oradan da
+gecmek zorunda kalacagi TEK NOKTA burasidir. Gercek cikti:
+
+    UYARI: CIKARIM BOYU VARSAYILAN DISINA CIKARILDI: kayit defteri 512,
+    istenen 896. Model bu boyda kalibre EDILMEDI; sonuclar kayit defterindeki
+    olculerle KIYASLANAMAZ.
+
+Ayirt edicilik ayrica sinandi: **ayni degerde SUSUYOR** (bos stderr).
+⚠ Mimar `--imgsz` bayragini yine de isterse bu ayri bir karardir.
+
+---
+## 5. (D) DOKUNULMADI — YALNIZ BELGELENDI
+
+`arac_referansi.imgsz = 1024` ile `arac_maskesi.ARAC_OLCEK_IMGSZ = 640`
+ayrismasi **degistirilmedi**. Defterdeki uc profile `_imgsz_notu` eklendi:
+`competition` ve `rpi_ncnn` icin "CIKARIM boyu, INFER_SIZE buradan turer";
+`arac_referansi` icin "bu DOTA agirliginin EGITIM boyudur; olcek kahininin
+KALIBRE KOSUM boyu 640'tir (D-124/D-126/D-143 hepsi 640'ta kosuldu) —
+ayrisma KUSUR DEGIL, IKI FARKLI BUYUKLUK; `INFER_SIZE` turetimine GIRMEZ".
+
+⚠ Defter dosyasinda **yalniz 3 satir eklendi**; girinti ve sira korundu
+(`git diff`: 6 ekleme / 3 silme — ucu virgul eklenen satirlar).
+
+---
+## 6. TESTLER — `tests/test_imgsz_tek_kaynak.py` (9 test)
+
+    1. uretim defteri ile INFER_SIZE UYUSUYOR            (davranis degismedi)
+    2. INFER_SIZE defterden TURETILIYOR                  (ciplak sabit degil)
+    3. imgsz FARKLIYSA uyumsuz + detay IKI degeri tasiyor
+    4. imgsz AYNIYSA uyumlu                              (ayirt edicilik)
+    5. defterde imgsz YOKSA uyum SAYILMAZ                (fail-closed)
+    6. override uyarisi STDERR'e basiliyor
+    7. ayni degerde SUSUYOR                              (ayirt edicilik)
+    8. MUTASYON: kiyas kaldirilirsa (3) DUSER
+    9. load_model hata mesaji iki imgsz degerini de yaziyor
+
+⚠ Uretim `config/`i DEGISTIRILMEDI: gecici defterler `tempfile` altinda
+kuruldu ve `kok=` ile verildi.
+
+**MUTASYON KANITI — GERCEK URETIM DOSYASINDA** (yedek -> degistir -> kos ->
+yedekten geri koy; `git checkout` KULLANILMADI). `imgsz_uyumlu = True` zorlandi:
+
+    Ran 9 tests in 0.040s
+    FAILED (failures=2)
+      FAIL: test_imgsz_FARKLIYSA_uyumsuz
+            AssertionError: True is not false : imgsz 640 vs 512 — UYUMLU sayilmamali
+      FAIL: test_MUTASYON_imgsz_kiyasi_kaldirilirsa_test_DUSER
+            AssertionError: True is not false : gercek kod imgsz sapmasini KACIRDI
+
+Geri alindi; `diff codes/... jetson_paket/kod/...` -> ayna SENKRON.
+
+---
+## 7. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    uretim davranisi (defter 512 · INFER_SIZE 512):
+        INFER_SIZE 512 · _kayittan_imgsz() 512
+        model_kayit_dogrula -> True · "eslesti" · beklenen 512 · calisan 512
+        cikarim_boyu() -> 512
+    yeni testler                     Ran 9 · OK
+    mutasyonda                       FAILED (failures=2)  [yukarida]
+    codes/test_rota_sentetik.py      SONUC: 15/15 dogru
+    unittest discover -s tests       Ran 614 tests in 73.099s · OK
+                                     (605 -> 614; artis 9 yeni test, HIC dusme yok)
+    scripts/jetson_paket_hazirla.py  9 dosya · hata yok
+    tests -p "*jetson*"              Ran 5 · OK
+    git status: yalniz codes/rpi_inference.py · jetson_paket/kod/rpi_inference.py
+                · config/model_registry.json · tests/test_imgsz_tek_kaynak.py
+
+⚠ GPU: bu gorev MODEL CALISTIRMADI. Testler sahte defter + kukla yolla kuruldu.
+
+---
+## 8. DOGRULANAMADI / ACIK KALAN
+
+  1. **`INFER_SIZE` degerinin DEGISMESI hicbir zaman olculmedi.** Defter 640
+     olsaydi uretim gercekten 640'ta kosar miydi, sonuclar ne olurdu —
+     OLCULMEDI ve bu gorevin kapsami degildi. Kapatilan sey **sessizlik**tir,
+     dogrulanan sey degisimin **etkisi** degildir.
+  2. **`cikarim_boyu()` HICBIR URETIM CAGRI YERINDE KULLANILMIYOR.** Bugun
+     `predict(..., imgsz=INFER_SIZE)` cagrilari dogrudan sabiti okuyor. Cozucu
+     ileride bir override yolu acilirsa diye KONULDU; su an yalniz testler
+     cagiriyor. Yani (B) kapisi MEKANIZMAYI kuruyor, canli bir yolu DEGIL.
+  3. **`codes/test_rota_guvenlik.py:274,430`'daki `896` ciplak sabitleri
+     DOKUNULMADAN BIRAKILDI.** Emirde (A)-(D) arasinda sayilmadilar; test
+     dosyasidir ve uretim yolu degildir, ama tanidaki tabloda yer aliyorlar —
+     kapsamda olup olmadiklarini mimar soylemeli.
+  4. **`arac_maskesi.ARAC_OLCEK_IMGSZ = 640` hala ciplak sabittir** ve
+     defterle kiyaslanmaz. (D) maddesi geregi DOKUNULMADI; anlam netlesmeden
+     kod degismez denildi. Kapi orada ACIK KALIYOR.
+  5. **Aynadaki ice-aktarma uyarisi** yeni bir davranistir (yukarida §3);
+     gurultu sayilirsa cozumu `jetson_paket/config/` eklemektir — AYRI IS.
+  6. `_kayittan_imgsz` **yalniz `default_profile`i** okur; baska bir profille
+     kosan bir cagri yeri olursa (or. `rpi_ncnn`) bu turetim onu YANSITMAZ.
+
+### D-177 · 🔎 S5 DENETIMI (MIMAR) · ONAYLANDI — ve SAHA PAKETI KILAVUZA GORE KURULURSA MODEL YUKLEYEMIYOR (T103)
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev S5 · denetlenen kayit D-176 (Claude 2, amele)
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                              nasil dogrulandi              sonuc
+    kapi: unittest discover            KENDIM kostum        614 OK (605 -> +9)
+    kapi: test_rota_sentetik           KENDIM kostum                 15/15
+    jetson aynasi senkron              diff -q                    BIREBIR
+    uretim davranisi degismedi         INFER_SIZE                       512
+    saha aynasi ice aktarilabiliyor    jetson_paket/kod'da import  UYARI + 512
+
+Amelenin uc karari da isabetli:
+  · `durum` degerlerini KORUMASI — `test_saha_parametrik` `"eslesti"` bekliyor;
+    degistirseydi SESSIZCE duserdi. Yakalamis.
+  · `--imgsz` bayragi EKLEMEMESI — amaci imgsz'i SABITLEMEK olan bir gorevde
+    yeni bir degistirme kolu acmak ters yonde adimdir. Yerine ortak cozucu
+    (`cikarim_boyu`) yazmis; ileride bir yol acilirsa uyari ORADAN gecer.
+  · Ice aktarmayi SERT bagimliliga baglamamasi — olcerek gerekcelendirmis.
+
+## 2. 🔴 BENIM BULDUGUM: SAHA PAKETI, KILAVUZA GORE KURULURSA MODEL YUKLEYEMIYOR
+
+S5 `imgsz`in TEK KAYNAGINI kayit defteri yapti. Sordum: o kaynak SAHADA VAR MI?
+
+**YOK — ve sonucu `imgsz`den cok daha buyuk.** Olculdu (`jetson_paket/kod`
+icinde, gercek kosum):
+
+    UYARI: kayit defterinden `imgsz` okunamadi; INFER_SIZE yedek degere
+           dusuldu (512).
+    model_kayit_dogrula -> False | durum "kayit_defteri_yok"
+    load_model -> RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed.
+
+Kaynagi iki yerde dogrulandi:
+  · `scripts/jetson_paket_hazirla.py:15-25` **KOPYALAR** sozlugu DOKUZ .py
+    dosyasi tasir; `config/model_registry.json` **YOKTUR**.
+  · `jetson_paket/JETSON_KILAVUZ.md:345-350` sahada
+    `mkdir -p ~/navitas/{codes,comms,scripts,models,data}` diyor —
+    **`config` dizini YOK** — ve defteri hicbir yere kopyalamiyor.
+
+Yani kilavuza gore kurulan bir Jetson'da `load_model()` **fail-closed duser**.
+Calistirmanin tek yolu `--kayit-dogrulamasiz` vermektir; o da T73'te bilerek
+kurulan yanlis-model korumasini KAPATIR.
+
+⚠ **BU S5'IN URETTIGI BIR KUSUR DEGILDIR**, S5 onu GORUNUR KILDI. Fail-closed
+defter zorunlulugu T73'te geldi; kilavuz ve paketleyici o gun guncellenmedi.
+
+⚠ **DUZELTME: paket YANLIS MODEL TASIMIYOR.** Ilk bakista `models/` altinda
+v17 gorup endiselendim; tam liste alininca **`navitas_seg_v30_best.pt` ve
+`navitas_seg_v30_best_512_fp16.onnx` PAKETTE MEVCUT** (yaninda v17/v20/v21/
+v24/v27 tarihsel surumleriyle). Sorun model degil, DEFTERIN YOKLUGUDUR.
+
+⚠ `jetson_derleme_manifest.json`in *"paket defteri tasimaz"* notu, manifestin
+defterin YERINE GECMEDIGINI soyler — defterin paketlenmesini YASAKLAMAZ.
+Ustelik o not yazildiginda defter yalniz `path`/`sha256` dogrulamasi icindi;
+S5'ten sonra `imgsz`in de tek kaynagidir. Gerekce degisti.
+
+**GOREV ACILDI: T103.** Kor duzeltme yapilmadi — paketleme ve kilavuz saha
+prosedurudur, olcumle degistirilmeli.
+
+## 3. YAN GOZLEM — SAHA AYNASINDA YENI UYARI
+
+Ayna artik her ice aktarmada bir satir uyari basiyor. Amele bunu bildirdi ve
+karari bana birakti. **Gurultu saymiyorum:** deger degismiyor (512) ve uyari
+tam da T103'un isaret ettigi eksigi her kosumda gorunur kiliyor. T103
+kapandiginda uyari kendiliginden susar.
+
+**DOGRULANAMADI**
+  1. **GERCEK Jetson'da hicbir sey olculmedi.** Yukaridaki kosum reponun
+     `jetson_paket/` dizinindedir. Gercek cihazda `~/navitas/config/`
+     baska bir yoldan olusturulmus olabilir — BILINMIYOR.
+  2. Sahada bugune kadar `--kayit-dogrulamasiz` ile mi kosuldugu bilinmiyor.
+  3. `cikarim_boyu` ortak cozucusu HICBIR uretim cagri yerinden
+     kullanilmiyor (bugun `--imgsz` yolu yok); ileride acilacak yolun
+     oradan gecmesi bir SOZLESMEDIR, kod tarafindan zorlanmaz.

@@ -5097,6 +5097,29 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     regresyon aranmadı (D-173 DOĞRULANAMADI #1).
   - ⚠ Talimat uyumu: bu turda **commit atılmadı, izin beklendi** — geçen turdaki
     sapma tekrarlanmadı.
+- [ ] **T103 — Saha paketi kılavuza göre kurulursa MODEL YÜKLEYEMİYOR: `config/model_registry.json` paketlenmiyor** · `scripts/jetson_paket_hazirla.py:15`, `jetson_paket/JETSON_KILAVUZ.md:345` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-177 §2**
+  - Ölçüldü (`jetson_paket/kod` içinde gerçek koşum):
+    ```text
+    model_kayit_dogrula -> False | durum "kayit_defteri_yok"
+    load_model -> RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed
+    ```
+  - Kaynak iki yerde doğrulandı: `jetson_paket_hazirla.py` **KOPYALAR** sözlüğü
+    **dokuz .py** taşıyor, defter yok · kılavuz `mkdir -p
+    ~/navitas/{codes,comms,scripts,models,data}` diyor — **`config` dizini yok.**
+  - Çalıştırmanın tek yolu `--kayit-dogrulamasiz`; o da T73'te bilerek kurulan
+    **yanlış-model korumasını kapatır**.
+  - ⚠ **S5'in ürettiği kusur DEĞİL** — S5 onu görünür kıldı. Fail-closed defter
+    zorunluluğu T73'te geldi, kılavuz ve paketleyici o gün güncellenmedi.
+  - ⚠ Paket **yanlış model taşımıyor**: `navitas_seg_v30_best.pt` + 512 fp16
+    ONNX mevcut. Sorun **defterin yokluğu**.
+  - **YAP:** defteri `KOPYALAR`a ekle · kılavuzun `mkdir` satırına `config`
+    ekle ve `cp` satırı yaz · paketlenmiş düzende `load_model()`in **başarılı**
+    olduğunu gerçek çıktıyla göster.
+  - ⚠ `jetson_derleme_manifest.json` *"paket defteri taşımaz"* diyor; bu,
+    manifestin defterin **yerine geçmediğini** söyler, paketlenmesini
+    yasaklamaz. Yine de o notu **güncelle**, çelişki bırakma.
+  - **KAPI:** paketlenmiş düzende `load_model()` başarılı · `INFER_SIZE` uyarısı
+    **susuyor** · `test_rota_sentetik` 15/15 · `unittest discover` ≥ 614 OK.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
@@ -7237,7 +7260,7 @@ esults	50_uc_kapi\`):
     olacak. `scripts/saha_kuru_kosu.py` → `rota` halkası **GECTI**.
     `codes/test_rota_sentetik.py` **15/15**.
 
-- [ ] **S5 — Çıkarım `imgsz` sabitlenmemiş** · `codes/rpi_inference.py` · ÖNEMLİ
+- [x] **S5 — KAPANDI · Çıkarım `imgsz`i tek kaynaktan türetiliyor ve denetleniyor** · `codes/rpi_inference.py` · ÖNEMLİ
   - **Kanıt:** v17 arena IoU — 640: **0,861** (kaplama %4,2) · 960: **0,034** (kaplama **%96,1**) · 1280: 0,041 · 1600: 0,018. `multi_scale` (v20) düzeltmedi (%96,1 → %90,7). FDA irtifası **≥30 m ve değişken** (şartname §5.3.2).
   - **Yap:** Çıkarım çözünürlüğünü tek bir sabitten oku ve CLI ile değiştirilirse **görünür uyarı** bas. Model ağırlığının eğitildiği `imgsz` ile çalışma anındaki değeri karşılaştırıp uyuşmazlıkta uyar.
   - **Kapı:** `imgsz` varsayılan dışına çıkarıldığında uyarı basıldığını gerçek çıktıyla göster.
@@ -7280,6 +7303,75 @@ esults	50_uc_kapi\`):
     kâhininin kalibre koşum boyunu yazıyor — `arac_maskesi.py:188-206`), ama
     **alanın hangisini kastettiği yazılı değil**. Önce anlam netleşmeli,
     sonra dokunulmalı.
+
+  - ✅ **YAPILDI · 2026-08-19 · Claude-2** · kayıt `REVIEW_LOG.md` **D-176**.
+    Değişen: `codes/rpi_inference.py` (+ `jetson_paket/kod/` aynası SENKRON) ·
+    `config/model_registry.json` (**yalnız NOT**, 3 satır) ·
+    `tests/test_imgsz_tek_kaynak.py` (YENİ, 9 test).
+  - **ÜRETİM DAVRANIŞI DEĞİŞMEDİ** (defter 512 · `INFER_SIZE` 512):
+    ```text
+    INFER_SIZE 512 · _kayittan_imgsz() 512
+    model_kayit_dogrula -> True · "eslesti" · beklenen 512 · calisan 512
+    cikarim_boyu() -> 512
+    ```
+  - **(A) `imgsz` KIYASI EKLENDİ** — `path` ile aynı fail-closed mantık.
+    `detay`ya `beklenen_imgsz` + `calisan_imgsz`; yeni `durum` değeri
+    **`IMGSZ ESLESMIYOR`**; alan yoksa/geçersizse de `uyumlu=False`.
+    ⚠ Mevcut `"eslesti"`/`"ESLESMIYOR"` değerleri **korundu** — aksi hâlde
+    `test_saha_parametrik::test_manifest_ile_kayit_defteri_ESLESIYOR`
+    sessizce düşerdi. `kayit_zorunlu` semantiği **değiştirilmedi**.
+  - **(C) SEÇİM: `INFER_SIZE` defterden TÜRETİLİYOR** — fail-closed ama
+    **yumuşak**: defter okunamazsa `INFER_SIZE_YEDEK`e düşer ve **stderr'e
+    uyarır**, modül yine yüklenir. 🔴 Gerekçe ölçüldü: `jetson_paket/` altında
+    `config/` **yok**; sert bağımlılık saha aynasını **import edilemez**
+    yapardı. ⚠ **Aynada yeni davranış:** import'ta uyarı basılıyor, değer
+    512'de kalıyor (`load_model` orada zaten fail-closed düşüyordu).
+  - 🔴 **(B) `--imgsz` BAYRAĞI EKLENMEDİ — karar ve gerekçe.** `rpi_inference`
+    CLI'sinde böyle bir bayrak **yok** (17 argüman tarandı). Amacı `imgsz`i
+    **sabitlemek** olan bir göreve yeni bir **değiştirme kolu** takmak ters
+    yönde bir adım olurdu. Yerine **ortak çözücü** `cikarim_boyu(istenen, kok)`
+    yazıldı; ileride bir CLI/API yolu açılırsa oradan geçmek zorunda kalacağı
+    tek nokta budur. Gerçek çıktı:
+    ```text
+    UYARI: CIKARIM BOYU VARSAYILAN DISINA CIKARILDI: kayit defteri 512,
+    istenen 896. Model bu boyda kalibre EDILMEDI; sonuclar kayit defterindeki
+    olculerle KIYASLANAMAZ.
+    ```
+    Ayırt edicilik ayrıca sınandı: **aynı değerde susuyor** (boş stderr).
+    ⚠ Mimar yine de bayrak isterse **ayrı karardır**.
+  - **(D) DOKUNULMADI, BELGELENDİ:** üç profile `_imgsz_notu` eklendi.
+    `arac_referansi` için: *"bu DOTA ağırlığının EĞİTİM boyudur (1024); ölçek
+    kâhininin KALİBRE KOŞUM boyu `ARAC_OLCEK_IMGSZ = 640`tır ve
+    D-124/D-126/D-143 kalibrasyonlarının tamamı 640'ta koşuldu — ayrışma kusur
+    değil, İKİ FARKLI BÜYÜKLÜK; `INFER_SIZE` türetimine girmez"*.
+  - 🔴 **MUTASYON KANITI — GERÇEK ÜRETİM DOSYASINDA** (yedek → değiştir → koş →
+    yedekten geri koy; `git checkout` kullanılmadı). `imgsz_uyumlu = True`:
+    ```text
+    Ran 9 tests in 0.040s
+    FAILED (failures=2)
+      FAIL: test_imgsz_FARKLIYSA_uyumsuz
+            True is not false : imgsz 640 vs 512 — UYUMLU sayilmamali
+      FAIL: test_MUTASYON_imgsz_kiyasi_kaldirilirsa_test_DUSER
+            True is not false : gercek kod imgsz sapmasini KACIRDI
+    ```
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    yeni testler                     Ran 9 · OK
+    codes/test_rota_sentetik.py      SONUC: 15/15 dogru
+    unittest discover -s tests       Ran 614 tests in 73.099s · OK  (605 -> 614)
+    scripts/jetson_paket_hazirla.py  9 dosya · hata yok
+    tests -p "*jetson*"              Ran 5 · OK
+    ayna                             diff codes/ jetson_paket/kod/ -> SENKRON
+    ```
+    ⚠ GPU: bu görev **model çalıştırmadı** (sahte defter + kukla yol).
+  - ⚠ **DOĞRULANAMADI:** `INFER_SIZE` **değişseydi** ne olurdu ölçülmedi —
+    kapatılan şey **sessizlik**, doğrulanan şey değişimin **etkisi değil** ·
+    `cikarim_boyu()` **hiçbir üretim çağrı yerinde kullanılmıyor** (mekanizma
+    kuruldu, canlı yol değil) · `codes/test_rota_guvenlik.py:274,430`'daki
+    **896** çıplak sabitleri emirde sayılmadığı için **dokunulmadan bırakıldı**
+    — kapsamda mı, mimar söylemeli · `ARAC_OLCEK_IMGSZ = 640` hâlâ çıplak
+    sabittir ve defterle kıyaslanmaz ((D) gereği dokunulmadı), **o kapı açık
+    kalıyor** · `_kayittan_imgsz` yalnız `default_profile`i okur.
 - [ ] **S6 — `hedef` sınıfı hedef tohumu olarak bağlı değil** · `codes/costmap_path_finder.py:730` · ÖNEMLİ
   - **Kanıt:** `rota_bul` yalnız `yol_sinif_idler` ve `engel_sinif_idler` okuyor; `2 = hedef` hiçbir yerde hedef tohumu olarak kullanılmıyor. Hedef `baslangic`/`hedef` parametreleriyle dışarıdan veriliyor.
   - **Yap:** İsteğe bağlı `hedef_sinif_idler` ekle; verilirse maskenin en büyük bağlı bileşeninin merkezi hedef tohumu olsun. **S2 sözleşmesinden sonra** yapılmalı.

@@ -67,7 +67,8 @@
     "_mask_map50_notu": "v30 icin OLCULMEDI. v27'nin ve v4'un degerleri buraya TASINMADI — baska modelin sayisini tasimak bayatliktir."
    },
    "status": "competition",
-   "_surum_karari": "T85 · KULLANICI KARARI (v30 uretim olsun) · dayanak REVIEW_LOG D-132 (kabul kurali, sonuc gorulmeden), D-133 (dort sart da saglandi), D-112 (imgsz 512). ⚠ D-134'te mimar kendi onerisini duzeltip 'uretim modeli v28 KALIR' demisti; D-133'te de yazildigi gibi iki KABUL EDILEBILIR model arasindaki sevk karari on-kayitlarda cozulmez ve INSANA aittir — kullanici v30'u secti."
+   "_surum_karari": "T85 · KULLANICI KARARI (v30 uretim olsun) · dayanak REVIEW_LOG D-132 (kabul kurali, sonuc gorulmeden), D-133 (dort sart da saglandi), D-112 (imgsz 512). ⚠ D-134'te mimar kendi onerisini duzeltip 'uretim modeli v28 KALIR' demisti; D-133'te de yazildigi gibi iki KABUL EDILEBILIR model arasindaki sevk karari on-kayitlarda cozulmez ve INSANA aittir — kullanici v30'u secti.",
+   "_imgsz_notu": "S5 · CIKARIM boyudur, egitim boyu DEGIL. `codes/rpi_inference.py::INFER_SIZE` BU alandan turetilir ve `model_kayit_dogrula` her yuklemede bu alanla calisan degeri KIYASLAR (uyusmazlik fail-closed). Eskiden INFER_SIZE ciplak sabitti ve bu alanla hicbir yerde kiyaslanmiyordu; defter cevrilse kod 512'de kalir ve ses cikmazdi — D-116/5 kusurunun birebir aynisi."
   },
   "arac_referansi": {
    "model_id": "dota-yolov8m-obb",
@@ -80,7 +81,8 @@
    "_kapsam": "DOTA-v1 hava fotografi kumesinde egitilmis HAZIR agirliktir; NAVITAS verisiyle egitilmedi/ince ayar YAPILMADI. Sinif adi ile eslesir (`small vehicle`, `large vehicle`) — id ile DEGIL (S1/K-6).",
    "_guven_carpani": 0.86,
    "_guven_dayanagi": "D-124: 24 kare · 1880 tespit; kisa kenarin ceyrekler-arasi yayilim / medyan = 0,138 -> 1 - 0,138 = 0,86. Deger `codes/karar_sozlesmesi.py:OLCEK_GUVEN_CARPANI` icindedir; buradaki alan YALNIZ BELGEDIR, kod oradan okur.",
-   "warning": "Bu profil `default_profile` OLAMAZ; algi karari competition profilinden gelir. Saha paketinde YOKTUR (jetson_paket/models) — Jetson'da katman 3 CALISMAZ."
+   "warning": "Bu profil `default_profile` OLAMAZ; algi karari competition profilinden gelir. Saha paketinde YOKTUR (jetson_paket/models) — Jetson'da katman 3 CALISMAZ.",
+   "_imgsz_notu": "S5/D · ⚠ BU ALAN DOTA `yolov8m-obb.pt` agirliginin EGITIM boyudur (1024). Olcek kahininin KALIBRE KOSUM boyu ile AYNI SEY DEGILDIR: o deger `codes/arac_maskesi.py::ARAC_OLCEK_IMGSZ = 640`tir ve D-124/D-126/D-143 kalibrasyonlarinin TAMAMI 640'ta kosuldu (`arac_maskesi.py:186-206`; orada 640 bir TAVANDIR, hedef degil — kare buyutulmez). Ikisinin ayrismasi KUSUR DEGILDIR, IKI FARKLI BUYUKLUKTUR. Anlam netlesmeden kod DEGISTIRILMEZ; bu alan `INFER_SIZE` turetimine de GIRMEZ."
   },
   "rpi_ncnn": {
    "model_id": "navitas-seg-v2-ncnn-512",
@@ -94,7 +96,8 @@
     "1": "blocked"
    },
    "status": "legacy-fallback",
-   "warning": "v4 NCNN export is not checked in; this is not metric-equivalent to competition"
+   "warning": "v4 NCNN export is not checked in; this is not metric-equivalent to competition",
+   "_imgsz_notu": "S5 · CIKARIM boyu. Bu profil `default_profile` DEGILKEN INFER_SIZE turetimine GIRMEZ; yalniz etkin profil oldugunda gecerlidir."
   }
  }
 }

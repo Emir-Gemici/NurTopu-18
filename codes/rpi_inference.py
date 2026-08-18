@@ -125,7 +125,70 @@ MODEL_KAYIT_ZORUNLU = True
 RESULTS_DIR = _here / "results"
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp"}
 SUPPORTED_VIDEO_EXT = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
-INFER_SIZE = 512
+# ── CIKARIM BOYU (imgsz) — TEK KAYNAK KAYIT DEFTERIDIR (S5 · madde 16) ──────
+# ⚠ ESKIDEN BURASI CIPLAK BIR SABITTI (`INFER_SIZE = 512`) ve kayit defterinin
+# `imgsz` alaniyla HICBIR YERDE kiyaslanmiyordu. Defter 640'a cevrilse burasi
+# 512'de kalirdi ve HICBIR YERDE SES CIKMAZDI — defterin KENDI notundaki
+# D-116/5 kusurunun ("surum v27'ye gecince cevrilmedi") birebir aynisi.
+#
+# ⚠ ICE AKTARMA ANINDA DOSYA OKUMAK RISKLIDIR: defter yoksa modulun HIC
+# yuklenememesi kabul edilemez (`jetson_paket/` altinda `config/` YOKTUR).
+# Bu yuzden kural FAIL-CLOSED ama YUMUSAK: okunamazsa YEDEK degere dusulur ve
+# STDERR'e uyari basilir — sessizce devam EDILMEZ. Yukleme karari yine
+# `model_kayit_dogrula` + `load_model` tarafindan fail-closed verilir.
+INFER_SIZE_YEDEK = 512     # defter okunamazsa son care; TEK KAYNAK DEGILDIR
+
+
+def _uyar(mesaj):
+    """Gorunur uyari — stdout'a DEGIL stderr'e. Sessiz kalmaz."""
+    print(f"UYARI: {mesaj}", file=sys.stderr, flush=True)
+
+
+def _kayittan_imgsz(kok=None):
+    """Etkin profilin `imgsz`i; okunamazsa None. Istisna FIRLATMAZ."""
+    taban = Path(kok) if kok is not None else _here.parent
+    kayit = taban / "config" / "model_registry.json"
+    try:
+        veri = json.loads(kayit.read_text(encoding="utf-8"))
+        return int(veri["profiles"][veri["default_profile"]]["imgsz"])
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError):
+        return None
+
+
+def _baslangic_imgsz():
+    deger = _kayittan_imgsz()
+    if deger is None:
+        _uyar("kayit defterinden `imgsz` okunamadi; INFER_SIZE yedek degere "
+              f"dusuldu ({INFER_SIZE_YEDEK}). TEK KAYNAK "
+              "config/model_registry.json'dur.")
+        return INFER_SIZE_YEDEK
+    return deger
+
+
+INFER_SIZE = _baslangic_imgsz()
+
+
+def cikarim_boyu(istenen=None, kok=None):
+    """Etkin cikarim boyu — ve `istenen` defterdekinden FARKLIYSA UYARI.
+
+    S5 kapisi: "imgsz varsayilan disina cikarildiginda uyari basildigini
+    goster." Bugun `rpi_inference` CLI'sinde `--imgsz` bayragi YOKTUR ve bu
+    gorevde EKLENMEDI — amaci imgsz'i SABITLEMEK olan bir ise yeni bir
+    degistirme kolu takmak ters yonde bir adim olurdu. Bunun yerine
+    ORTAK COZUCU burasidir: ileride bir CLI/API yolu acilirsa oradan da
+    gecmek zorunda kalacagi tek nokta budur ve uyari BURADA basilir.
+    """
+    taban = _kayittan_imgsz(kok)
+    if taban is None:
+        taban = INFER_SIZE
+    if istenen is None:
+        return int(taban)
+    istenen = int(istenen)
+    if istenen != int(taban):
+        _uyar(f"CIKARIM BOYU VARSAYILAN DISINA CIKARILDI: kayit defteri "
+              f"{taban}, istenen {istenen}. Model bu boyda kalibre EDILMEDI; "
+              "sonuclar kayit defterindeki olculerle KIYASLANAMAZ.")
+    return istenen
 
 CLASS_COLORS = {
     0: (0, 200, 0),    # traversable — yesil
@@ -437,11 +500,17 @@ def kamera_kaynagi_coz(deger):
         return metin                         # /dev/video1 · rtsp:// · dosya
 
 
-def model_kayit_dogrula(model_yolu, kok=None):
+def model_kayit_dogrula(model_yolu, kok=None, calisan_imgsz=None):
     """Yuklenen agirligi `config/model_registry.json` ile KIYASLA.
 
     -> (uyumlu: bool, detay: dict). Karar VERMEZ; karari `load_model` verir.
     Kayit defteri YOKSA "dogrulanamadi" doner — yoklugu UYUM SAYMAZ.
+
+    ⚠ S5: ARTIK `imgsz` DE KIYASLANIR. Eskiden yalniz dosya ADI kiyaslaniyordu;
+    defterin `imgsz`i 640'a cekilse `INFER_SIZE` 512'de kalir ve HICBIR YERDE
+    ses cikmazdi. `path` hangi fail-closed mantikla ele aliniyorsa `imgsz` de
+    ayni sekilde ele alinir: alan YOKSA ya da UYUSMUYORSA `uyumlu=False`.
+    `calisan_imgsz` verilmezse modulun etkin `INFER_SIZE`i kullanilir.
     """
     import json as _json
     taban = Path(kok) if kok is not None else _here.parent
@@ -458,14 +527,31 @@ def model_kayit_dogrula(model_yolu, kok=None):
         detay["durum"] = f"kayit_defteri_okunamadi: {exc}"
         return False, detay
     beklenen = profil.get("path")
+    beklenen_imgsz = profil.get("imgsz")
+    calisan = INFER_SIZE if calisan_imgsz is None else calisan_imgsz
     detay.update({"profil": profil_adi, "beklenen": beklenen,
-                  "beklenen_sha256": profil.get("sha256")})
+                  "beklenen_sha256": profil.get("sha256"),
+                  "beklenen_imgsz": beklenen_imgsz,
+                  "calisan_imgsz": calisan})
     if not isinstance(beklenen, str):
         detay["durum"] = "profilde `path` yok"
         return False, detay
-    uyumlu = Path(beklenen).name == Path(model_yolu).name
-    detay["durum"] = "eslesti" if uyumlu else "ESLESMIYOR"
-    return uyumlu, detay
+    if beklenen_imgsz is None:
+        detay["durum"] = "profilde `imgsz` yok"
+        return False, detay
+    try:
+        imgsz_uyumlu = int(beklenen_imgsz) == int(calisan)
+    except (TypeError, ValueError):
+        detay["durum"] = "profilde `imgsz` gecersiz"
+        return False, detay
+    ad_uyumlu = Path(beklenen).name == Path(model_yolu).name
+    if not ad_uyumlu:
+        detay["durum"] = "ESLESMIYOR"
+    elif not imgsz_uyumlu:
+        detay["durum"] = "IMGSZ ESLESMIYOR"
+    else:
+        detay["durum"] = "eslesti"
+    return (ad_uyumlu and imgsz_uyumlu), detay
 
 
 def load_model(model_yolu=None, kok=None, kayit_zorunlu=None, ayrinti=False):
@@ -494,6 +580,8 @@ def load_model(model_yolu=None, kok=None, kayit_zorunlu=None, ayrinti=False):
             f"  kayit defteri     : {detay.get('kayit_defteri')}\n"
             f"  etkin profil      : {detay.get('profil')}\n"
             f"  profilin bekledigi: {detay.get('beklenen')}\n"
+            f"  profilin imgsz'i  : {detay.get('beklenen_imgsz')}\n"
+            f"  calisan imgsz     : {detay.get('calisan_imgsz')}\n"
             f"  durum             : {detay.get('durum')}\n"
             "Iki bildirim CELISIYOR. Sahada hangi agirligin uctugunu bilmeden\n"
             "devam etmek yasaktir; ya kayit defterini ya --model'i duzeltin."
