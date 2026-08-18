@@ -5006,7 +5006,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     kendi DOĞRULANAMADI listesinde yazdı; ben **tasarlarken** görmeliydim.
     **DERS: bir kapı kurmadan önce ölçeceği olayın meydana GELEBİLİR olduğunu
     kodda doğrula. Meydana gelemeyen olayı ölçen kapı güven üretir, bilgi değil.**
-- [ ] **T102 — `serbest ⊆ zemin` kapıya bağlı değil: "dilate + engeli tekrar çıkar" regresyonu TÜM testleri geçiyor** · `tests/test_monotonluk.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-171 §3**
+- [x] **T102 — KAPANDI · `serbest ⊆ zemin` kapıya bağlandı** · `tests/test_monotonluk.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-171 §3**
   - S3 üç savunma kurdu: (1) alt küme kafesi · (2) engel pikseli sızıntısı ·
     (3) sabit referans. Ama **(3) yalnız mutasyon testlerinin içinde koşar**;
     normal koşumda devrede olan (1) ve (2)'dir.
@@ -5030,6 +5030,73 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - **KAPI:** yeni test yamasız koşumda geçer · yamalı koşumda düşer ·
     `git diff codes/` BOŞ · `test_rota_sentetik` 15/15 · `unittest discover`
     ≥ 601 OK, hiç düşme yok.
+
+  - ✅ **YAPILDI · 2026-08-18 · Claude-2** · kayıt `REVIEW_LOG.md` **D-172**.
+    **Üretim kodu değişmedi:** `git diff HEAD -- codes/` **BOŞ**.
+    `tests/test_monotonluk.py` 12 → **16 test**.
+  - **ÖLÇÜM — 50 tohum × 4 alt küme (200 koşum):**
+    ```text
+    kosum                                KAFES  engel-sizinti  ZEMIN DISI serbest
+    YAMASIZ                                  0              0                   0
+    dilate + engeli TEKRAR cikar             0              0              160766
+    ```
+    **(1) ve (2) yamayı ikisi de geçiriyor; yalnız yeni kapı yakalıyor.**
+    Mimarın tek karede ölçtüğü 40183 px, 200 koşuma yayılınca 160766 px.
+  - **EKLENEN DÖRT TEST:**
+    (A) `serbest ⊆ zemin`, 50 tohum × tüm alt kümeler — `zemin` **çıplak
+    `KATMAN_ZEMIN` değil**, `COSTMAP_YOL_KATMANLARI` birleşiminden türetilir
+    (madde 16) · (B) pozitif kontrol: sahnede taşacak yer var mı — ölçüldü,
+    tuval 57600 px, zemin 40000 px, **dışarısı 17600 px ve 50/50 tohumda
+    tamamen etiketsiz**; test bunu türetilmiş biçimde çiviler, çıplak eşik yok ·
+    (C) mutasyon kanıtı: aynı yamada (A) düşer, (1) ve (2) geçer — hem **ayırt
+    edici** hem **gerekli** olduğu tek testte · (D) yama sızmıyor.
+  - 🔴 **MUTASYON KANITI — GERÇEK ÜRETİM DOSYASINDA** (yedek → değiştir → koş →
+    yedekten geri koy; `git checkout` kullanılmadı):
+    ```text
+    Ran 16 tests in 1.639s
+    FAILED (failures=2)
+      FAIL: test_serbest_alan_ZEMIN_ALT_KUMESIDIR_50_tohum
+            Lists differ: [] != [(0, (), 804), (0, (1,), 804), (0, (10,), ...)]
+      FAIL: test_MUTASYON_kenar_yumusatma_geri_alininca_YENIDEN_saglaniyor
+    ```
+    🔴 **`test_alt_kume_kafesi_...` ve `test_engel_pikseli_...` DÜŞMEDİ** —
+    yani (1)/(2)'nin körlüğü maymun-yamayla değil **gerçek üretim
+    mutasyonuyla** doğrulandı. Yeni kapı olmasaydı bu regresyon 16 testin
+    **tamamını** geçerdi.
+  - ⚠ **KENDİ HATAM:** (C)'de sızıntıyı önce sabit `moloz|arac` birleşimine
+    karşı ölçtüm → 22017 px sahte "sızıntı". `(MOLOZ,)` koşumunda `arac` zaten
+    engel sayılmamıştı. Sızıntı kapının **kendi tanımıyla** aynı olmalı; alt
+    kümeye göre düzeltildi.
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    git diff HEAD -- codes/        -> BOS
+    codes/test_rota_sentetik.py    SONUC: 15/15 dogru
+    unittest discover -s tests     Ran 605 tests in 83.591s / OK  (601 -> 605, +4)
+    ```
+    🔴 GPU'ya dokunulmadı; görev model çalıştırmadı (CPU/sentetik).
+  - ⚠ **DOĞRULANAMADI:** sahneler sentetiktir · **`analyze_path` içindeki
+    çıkarma (`rpi_inference.py:1086-1094`) hâlâ kapsam dışı** — D-170 §6'da
+    açılan madde **açık kalıyor**; `serbest ⊆ zemin` orada da geçerli ve orada
+    da test edilmiyor · tek mutasyon biçimi denendi. 🔴 **Özellikle: zemin
+    maskesinin KENDİSİ büyütülürse `serbest ⊆ zemin` de kör kalır** (referans
+    da büyür) — bu, kapatılan açığın aynasıdır ve **açıktır**.
+  - 🔎 **MİMAR DENETİMİ · 2026-08-18 · `REVIEW_LOG.md` D-173. ONAYLANDI.**
+    Kapıları **kendim koştum**: `unittest discover` **605 OK** (601 → +4) ·
+    `test_rota_sentetik` **15/15** · `git diff codes/` **BOŞ** · monotonluk
+    testleri `discover -p` ile **16/16 toplanıyor ve geçiyor**.
+  - **Ameleyi ayrıca doğruladım:** yeni kapının ayırt ediciliğini D-171 §3'te
+    zaten bağımsız ölçmüştüm (kafes 0 · engel sızıntısı 0 · zemin dışı
+    **40183 px**). Amele aynı yamayı 200 koşuma yayıp **160766 px** ölçtü —
+    iki bağımsız ölçüm aynı yöne işaret ediyor.
+  - **En iyi hamlesi:** mutasyonu maymun-yamayla değil **gerçek üretim
+    dosyasına** enjekte etmesi. "Yama üretimin yapacağının aynısını yapıyor"
+    bir iddiadır; sınandı ve doğrulandı.
+  - ✅ **MADDE 15 ARTIK ÜÇ EKSENDE KORUNUYOR** — (1) alt küme kafesi ·
+    (2) engel sızıntısı · (3) `serbest ⊆ zemin`; üçü de mutasyon kanıtlı.
+    ⚠ Üçünün **birlikte eksiksiz olduğu kanıtlanmadı**; üçünü birden geçen bir
+    regresyon aranmadı (D-173 DOĞRULANAMADI #1).
+  - ⚠ Talimat uyumu: bu turda **commit atılmadı, izin beklendi** — geçen turdaki
+    sapma tekrarlanmadı.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python

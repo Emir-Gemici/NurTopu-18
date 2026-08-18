@@ -173,6 +173,63 @@ class _AsimetrikEnjekteCv2(_DilateEnjekteCv2):
         return self._g.dilate(sonuc, self._cekirdek) if self.acik else sonuc
 
 
+#: Yama sizintisini sinamak icin import aninda yakalanan ORIJINAL referans.
+_ORIJINAL_SERBEST_ALAN = C.serbest_alan
+
+
+def _zemin_maskesi(mk):
+    """Uretimin `yol_sinif_idler` olarak verdigi maskelerin BIRLESIMI.
+
+    ⚠ Test `KATMAN_ZEMIN`i CIPLAK VARSAYMAZ: `serbest_alan`a hangi yol
+    siniflari veriliyorsa (`COSTMAP_YOL_KATMANLARI`) zemin de ONLARDAN
+    turetilir. Yarin ikinci bir surulebilir sinif eklenirse test kendiliginden
+    dogru kalir (madde 16).
+    """
+    ilk = next(iter(mk.values()))
+    zemin = np.zeros(ilk.shape, dtype=bool)
+    for c in COSTMAP_YOL_KATMANLARI:
+        if c in mk:
+            zemin |= mk[c].astype(bool)
+    return zemin
+
+
+def _zemin_disi_ihlaller(tohumlar):
+    """`serbest ⊆ zemin` ihlalleri. Doner: [(tohum, alt_kume, px), ...]"""
+    ihlaller = []
+    for tohum in tohumlar:
+        mk = _maskeler(tohum)
+        zemin = _zemin_maskesi(mk)
+        for alt in ENGEL_ALT_KUMELERI:
+            n = int((alan(mk, alt) & ~zemin).sum())
+            if n:
+                ihlaller.append((tohum, alt, n))
+    return ihlaller
+
+
+class _KenarYumusatmaYamasi:
+    """MUTASYON (T102 · D-171 §3): `serbest = dilate(serbest) & ~engel_ham`.
+
+    "Kenari yumusatayim, sonra engelleri TEKRAR cikarayim" — masum gorunen,
+    hatta OZENLI gorunen bir regresyon. Mimar olctu: alt kume kafesi ve engel
+    sizintisi kapilarinin IKISI DE geciyor, ama serbest alan 40183 px buyuyor
+    ve buyume ETIKETSIZ ARKA PLANA oluyor. Mimarinin kendi kuralina gore
+    ("bilinmeyen -> engel") orasi engel olmaliydi.
+
+    `serbest_alan`in DONDURDUGU sozluk uzerinde calisir — regresyonun gercek
+    bicimi de budur. Uretim dosyasina DOKUNULMAZ.
+    """
+
+    def __init__(self, gercek):
+        self._g = gercek
+        self._c = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+
+    def __call__(self, *a, **kw):
+        s = self._g(*a, **kw)
+        genis = cv2.dilate(s["serbest"], self._c)
+        s["serbest"] = cv2.bitwise_and(genis, cv2.bitwise_not(s["engel_ham"]))
+        return s
+
+
 class MonotonlukInvarianti(unittest.TestCase):
 
     # ── 1) ASIL KAPI: alt kume kafesi, 50 tohum ───────────────────────────
@@ -350,6 +407,95 @@ class MonotonlukInvarianti(unittest.TestCase):
         s = alan(mk, (KATMAN_MOLOZ, KATMAN_ARAC))
         sizinti = int((s & (moloz | arac).astype(bool)).sum())
         self.assertEqual(0, sizinti, f"{sizinti} px engel uzerinde serbest")
+
+
+    # ── 7) `serbest ALT-KUMESI zemin` — T102 · D-171 §3 ───────────────────
+    # UCUNCU KACIS YOLU. Kafes (1) ve engel sizintisi (2) "dilate + engeli
+    # TEKRAR cikar" yamasini IKISI DE gecirir; buyume ETIKETSIZ ARKA PLANA
+    # olur ve mimarinin "bilinmeyen -> engel" kuralini ihlal eder.
+    def test_serbest_alan_ZEMIN_ALT_KUMESIDIR_50_tohum(self):
+        ihlaller = _zemin_disi_ihlaller(range(TOHUM_SAYISI))
+        self.assertEqual(
+            [], ihlaller,
+            f"{len(ihlaller)} vakada serbest alan ZEMIN DISINA tasti — "
+            f"etiketsiz arka plan surulebilir sayildi (ilk 3: {ihlaller[:3]})")
+
+    def test_POZITIF_KONTROL_sahne_zemin_disinda_ETIKETSIZ_alan_iceriyor(self):
+        """Yukaridaki test ancak tasacak YER varsa ayirt edicidir.
+
+        Sahnede zemin disinda etiketsiz bir kusak OLMAZSA `serbest & ~zemin`
+        zaten hep 0 cikar ve test BOS YERE yesil yanar (D-15/K-04).
+        """
+        for tohum in (0, 17, 49):
+            mk = _maskeler(tohum)
+            zemin = _zemin_maskesi(mk)
+            disari = int(zemin.size - zemin.sum())
+            self.assertGreater(disari, 0,
+                               f"tohum {tohum}: zemin tuvali dolduruyor, "
+                               "tasacak yer YOK")
+            engel = np.zeros(zemin.shape, dtype=bool)
+            for c in ENGEL_ALT_KUMELERI[-1]:
+                engel |= mk[c].astype(bool)
+            etiketsiz = int((~zemin & ~engel).sum())
+            self.assertEqual(
+                disari, etiketsiz,
+                f"tohum {tohum}: zemin disinda {disari - etiketsiz} px ENGEL "
+                "var — kusak tamamen etiketsiz degil, kontrol zayiflar")
+
+    def test_MUTASYON_kenar_yumusatma_ZEMIN_DISINA_TASAR_ama_1_ve_2_GECER(self):
+        """🔴 T102'nin ASIL KAPISI — ve yeni savunmanin GEREKLI oldugunun kaniti.
+
+        Ayni yamada UC olcu birden alinir:
+          · (A) `serbest ALT-KUMESI zemin`  -> DUSMELI  (yeni savunma yakalar)
+          · (1) alt kume kafesi             -> GECMELI  (kor oldugu kanit)
+          · (2) engel pikseli sizintisi     -> GECMELI  (kor oldugu kanit)
+
+        ⚠ (1)/(2) icin yazilan "GECMELI" iddialari BILINEN SINIRI civiler.
+        Bunlar duserse IYI HABERDIR (eski kapilar guclenmis demektir); o zaman
+        bu test guncellenmeli, `serbest ALT-KUMESI zemin` kapisi KALMALIDIR.
+        """
+        gercek = C.serbest_alan
+        C.serbest_alan = _KenarYumusatmaYamasi(gercek)
+        try:
+            tohumlar = range(5)
+            zemin_disi = sum(n for _t, _a, n in _zemin_disi_ihlaller(tohumlar))
+            kafes, _kucultme, _cift = _kafes_ihlalleri(tohumlar)
+            # ⚠ Sizinti YALNIZ o alt kumede ENGEL SAYILAN siniflara karsi
+            # olculur. Ilk yazimimda birlesimi sabit `moloz|arac` almistim ve
+            # 22017 px "sizinti" cikti — oysa `(MOLOZ,)` kosumunda `arac` zaten
+            # cikarilmamisti, yani o bir ihlal DEGILDI. Kapinin kendi tanimi
+            # (`test_engel_pikseli_...`) ile AYNI olmalidir.
+            sizinti = 0
+            for tohum in tohumlar:
+                mk = _maskeler(tohum)
+                for alt in ENGEL_ALT_KUMELERI:
+                    if not alt:
+                        continue
+                    birlesim = np.zeros(mk[KATMAN_ZEMIN].shape, dtype=bool)
+                    for c in alt:
+                        birlesim |= mk[c].astype(bool)
+                    sizinti += int((alan(mk, alt) & birlesim).sum())
+        finally:
+            C.serbest_alan = gercek
+
+        self.assertGreater(
+            zemin_disi, 0,
+            "MUTASYON KONTROLU BOS: `dilate + engeli tekrar cikar` yamasi "
+            "zemin disina HIC tasmadi — yeni kapi regresyon uretemiyor")
+        self.assertEqual(
+            [], kafes,
+            f"ALT KUME KAFESI bu yamayi artik YAKALIYOR ({len(kafes)} ihlal) "
+            "— iyi haber; testi guncelle, yeni kapi yine de kalsin")
+        self.assertEqual(
+            0, sizinti,
+            f"ENGEL SIZINTISI kapisi bu yamayi artik YAKALIYOR ({sizinti} px) "
+            "— iyi haber; testi guncelle, yeni kapi yine de kalsin")
+
+    def test_MUTASYON_kenar_yumusatma_geri_alininca_YENIDEN_saglaniyor(self):
+        """Yamanin sizmadigini kanitlar."""
+        self.assertEqual([], _zemin_disi_ihlaller(range(5)))
+        self.assertIs(C.serbest_alan, _ORIJINAL_SERBEST_ALAN,
+                      "modulun `serbest_alan`i yamali kalmis")
 
 
 if __name__ == "__main__":

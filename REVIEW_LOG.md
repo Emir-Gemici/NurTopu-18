@@ -13718,3 +13718,200 @@ yok. Yine de acik bir talimattan sapmadir, kayda geciyor.
      varyantlar OLCULMEDI.
   2. Sahneler sentetiktir; gercek maskelerde zemin maskesi disina tasma
      davranisi OLCULMEDI.
+
+### D-172 · ✅ T102 KAPANDI · `serbest ⊆ zemin` kapiya baglandi — UCUNCU kacis yolu kapatildi, (1) ve (2)'nin KOR oldugu URETIM MUTASYONUYLA dogrulandi
+Yazan/olcen: Claude 2 (amele) · 2026-08-18 · gorev T102 (kullanici emri) · dayanak CLAUDE.md m.15, D-15/K-04, D-170, D-171 §3
+Dosya: `tests/test_monotonluk.py` (12 -> **16 test**)
+
+🔴 **URETIM KODU DEGISTIRILMEDI.** `git diff HEAD -- codes/` **BOS**.
+
+---
+## 1. NEDEN GEREKLIYDI
+
+D-170'te uc savunma kurulmustu, ama (3) SABIT REFERANS yalniz mutasyon
+testlerinin ICINDE kosuyor; normal kosumda devrede olan (1) alt kume kafesi
+ve (2) engel pikseli sizintisidir. D-171 §3 su regresyonu olctu — masum,
+hatta OZENLI gorunuyor:
+
+    s["serbest"] = dilate(serbest) & ~engel_ham   # "kenari yumusatayim"
+
+Mimarin olcumu: kafes 0, engel-sizintisi 0, ama serbest alan 40183 px
+BUYUYOR ve buyume ETIKETSIZ ARKA PLANA oluyor. Mimarinin kendi kuralina gore
+("bilinmeyen -> engel") orasi ENGEL olmaliydi. Eksik degismez tek satirdi:
+
+    serbest ALT-KUMESI zemin        (zemin = `yol_sinif_idler` birlesimi)
+
+---
+## 2. EKLENEN DORT TEST
+
+  **(A)** `test_serbest_alan_ZEMIN_ALT_KUMESIDIR_50_tohum`
+        50 tohum x tum engel alt kumeleri (200 kosum): `(serbest & ~zemin) == 0`.
+        ⚠ `zemin` CIPLAK `KATMAN_ZEMIN` degil, `COSTMAP_YOL_KATMANLARI`
+        birlesiminden turetilir — yarin ikinci bir surulebilir sinif
+        eklenirse test kendiliginden dogru kalir (madde 16).
+
+  **(B)** `test_POZITIF_KONTROL_sahne_zemin_disinda_ETIKETSIZ_alan_iceriyor`
+        (A) ancak TASACAK YER varsa ayirt edicidir. Olculdu: tuval 240x240 =
+        57600 px, zemin 40000 px, disarisi **17600 px** ve 50/50 tohumda
+        TAMAMEN ETIKETSIZ (hicbir engel zemin disina dusmuyor). Test bunu
+        turetilmis bicimde civiler: `zemin disi == etiketsiz` ve `> 0`.
+        Ciplak esik YAZILMADI.
+
+  **(C)** `test_MUTASYON_kenar_yumusatma_ZEMIN_DISINA_TASAR_ama_1_ve_2_GECER`
+        Ayni yamada UC olcu birden alinir: (A) DUSMELI, (1) ve (2) GECMELI.
+        Yani hem yeni kapinin AYIRT EDICI oldugu, hem de GEREKLI oldugu
+        (eskilerin yakalamadigi) TEK testte kanitlanir.
+
+  **(D)** `test_MUTASYON_kenar_yumusatma_geri_alininca_YENIDEN_saglaniyor`
+        Yamanin sizmadigini kanitlar (`C.serbest_alan is _ORIJINAL_...`).
+
+---
+## 3. OLCUM — 50 TOHUM x 4 ALT KUME (200 kosum)
+
+    kosum                                KAFES  engel-sizinti  ZEMIN DISI serbest
+    YAMASIZ                                  0              0                   0
+    dilate + engeli TEKRAR cikar             0              0              160766
+
+**(1) ve (2) yamayi IKISI DE gecirir; yalniz yeni kapi yakalar.** Mimarin
+tek karede olctugu 40183 px, 200 kosuma yayilinca 160766 px ediyor.
+
+---
+## 4. MUTASYON KANITI — GERCEK URETIM DOSYASI UZERINDE
+
+Maymun-yama disinda, `codes/costmap_path_finder.py` icine de enjekte edildi
+(yedek -> degistir -> kos -> yedekten geri koy; `git checkout` KULLANILMADI).
+`serbest = temiz` ile `dt_px = cv2.distanceTransform(...)` arasina:
+
+    serbest = cv2.dilate(serbest, cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3)))
+    serbest = cv2.bitwise_and(serbest, cv2.bitwise_not(engel_ham))
+
+    Ran 16 tests in 1.639s
+    FAILED (failures=2)
+      FAIL: test_serbest_alan_ZEMIN_ALT_KUMESIDIR_50_tohum
+            AssertionError: Lists differ: [] != [(0, (), 804), (0, (1,), 804),
+                                                 (0, (10,), ...804)]
+      FAIL: test_MUTASYON_kenar_yumusatma_geri_alininca_YENIDEN_saglaniyor
+            (ayni ihlal listesi — yamanin TABANI bozdugunu farkediyor)
+
+🔴 **KRITIK GOZLEM: `test_alt_kume_kafesi_50_tohumda_invariant` ve
+`test_engel_pikseli_50_tohumda_hicbir_alt_kumede_serbest_degil` DUSMEDI.**
+Yani (1) ve (2)'nin bu regresyona korlugu, yalniz maymun-yamayla degil
+GERCEK URETIM MUTASYONUYLA da dogrulandi. Yeni kapi olmasaydi bu regresyon
+16 testin TAMAMINI gecerdi.
+
+**GERI ALMA DOGRULANDI:** `git diff HEAD -- codes/` -> BOS.
+
+---
+## 5. ⚠ KENDI HATAM — kayda geciyor
+
+(C) testinde engel sizintisini once SABIT `moloz | arac` birlesimine karsi
+olctum ve 22017 px "sizinti" cikti. Yanlisti: `(MOLOZ,)` kosumunda `arac`
+zaten engel sayilmamisti, dolayisiyla serbest alanin arac pikselleriyle
+ortusmesi bir IHLAL DEGILDI. Sizinti, kapinin KENDI tanimiyla ayni olmali —
+yani YALNIZ o alt kumede engel sayilan siniflara karsi. Duzeltildi; kapinin
+tanimi (`test_engel_pikseli_...`) ile birebir hizalandi.
+
+---
+## 6. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    (A) yamasiz 50/50 tohum x tum alt kumeler            -> tests: OK
+    (C) yamali kosumda (A) DUSUYOR                       -> FAILED (failures=2)
+    (C) ayni yamada (1) ve (2) GECIYOR                   -> kafes 0 · sizinti 0
+    git diff HEAD -- codes/                              -> BOS
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 605 tests in 83.591s
+        OK
+    (601 -> 605; artis bu gorevin 4 testidir, HIC dusme yok)
+
+🔴 GPU'YA DOKUNULMADI: gorev model CALISTIRMADI, tamamen CPU/sentetik.
+Egitim loglarina dokunulmadi.
+
+---
+## 7. DOGRULANAMADI / ACIK KALAN
+
+  1. **(1) ve (2) icin yazilan "GECMELI" iddialari BILINEN SINIRI civiler.**
+     Onlar duserse IYI HABERDIR (eski kapilar guclenmis demektir); o zaman
+     (C) guncellenmeli, ama `serbest ALT-KUMESI zemin` kapisi KALMALIDIR.
+     Test mesajlari bunu soyluyor.
+  2. **Sahneler SENTETIKTIR** (eksen hizali dikdortgenler, 240x240). Gercek
+     maskelerde OLCULMEDI.
+  3. **Yalniz `serbest_alan` sinandi.** `analyze_path` icindeki cikarma
+     (`rpi_inference.py:1086-1094`) AYNI invarianti tasir ve HALA KAPSAM
+     DISIDIR — D-170 §6'da acilan madde ACIK KALIYOR. `serbest ALT-KUMESI
+     zemin` orada da gecerlidir ve orada da test EDILMIYOR.
+  4. **Tek mutasyon bicimi.** Yalniz "dilate + engeli tekrar cikar" denendi.
+     `MORPH_CLOSE`, `bitwise_or`, ya da zemin maskesini genisleten bir
+     regresyon DENENMEDI. Ozellikle: **zemin maskesinin KENDISI buyutulurse**
+     `serbest ALT-KUMESI zemin` de KOR KALIR — cunku referans da buyur.
+     Bu, bu gorevin kapattigi acigin AYNASIDIR ve acik kalmistir.
+  5. **`mpp=None`** ile kosuldu; olcege bagli morfoloji parametreleri
+     varsayilandir, baska mpp degerlerinde olculmedi.
+  6. **50 tohum sabittir** (0..49), rastgele arama YAPILMAZ.
+
+### D-173 · 🔎 T102 DENETIMI (MIMAR) · ONAYLANDI — ucuncu kacis yolu kapandi, madde 15 artik UC EKSENDE korunuyor
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T102 · denetlenen kayit D-172 (Claude 2, amele)
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                              nasil dogrulandi              sonuc
+    kapi: unittest discover            KENDIM kostum          605 OK (601 -> +4)
+    kapi: test_rota_sentetik           KENDIM kostum                 15/15
+    monotonluk testleri toplaniyor     discover -p test_monotonluk  16/16 ok
+    uretim kodu el degmedi             git diff codes/                 BOS
+    talimat: commit atma               calisma agaci kirli        UYULDU
+
+⚠ Ilk sayimimda "17 def test_ ama unittest 16 goruyor" diye bir tutarsizlik
+sandim; kendi sayim aracim hataliydi (yanlis loader kullanimi). `discover -p`
+ile dogrulandi: **16 test, 16'si da toplaniyor ve geciyor.** Tutarsizlik YOK.
+
+## 2. YENI KAPININ AYIRT EDICILIGI — ZATEN BAGIMSIZ OLCMUSTUM
+
+D-171 §3'te mimar olcumu (50 tohum, 4 alt kume):
+
+    kosum                          KAFES   engel-sizintisi   ZEMIN DISI serbest
+    YAMASIZ                          0            0                  0
+    dilate + engeli TEKRAR cikar     0            0              40183
+
+Amele ayni yamayi 200 kosuma yayip 160766 px olctu — ayni olgu, daha genis
+kume. **Iki bagimsiz olcum ayni yone isaret ediyor.**
+
+## 3. AMELENIN EN IYI HAMLESI: MUTASYONU GERCEK URETIM DOSYASINA ENJEKTE ETTI
+
+Maymun-yama "uretimin yapacaginin aynisini yapiyor" bir IDDIADIR. Amele bunu
+`codes/costmap_path_finder.py` icine gercekten enjekte ederek sinadi
+(yedek -> degistir -> kos -> geri koy; `git checkout` KULLANILMADI) ve
+sonuc: 16 testten **2'si dustu, ikisi de YENI olanlar.**
+
+    test_alt_kume_kafesi_50_tohumda_invariant                   DUSMEDI
+    test_engel_pikseli_50_tohumda_hicbir_alt_kumede_serbest_degil DUSMEDI
+    test_serbest_alan_ZEMIN_ALT_KUMESIDIR_50_tohum              DUSTU  <-- yeni
+    test_MUTASYON_..._geri_alininca_YENIDEN_saglaniyor          DUSTU  <-- yeni
+
+Yani (1) ve (2)'nin korlugu **maymun-yamayla degil, gercek uretim
+mutasyonuyla** kanitlandi. Yeni kapi olmasaydi bu regresyon 16 testin
+TAMAMINI gecerdi.
+
+⚠ Pozitif kontrolu de turetilmis yazmis: sahne 240x240 = 57600 px, zemin
+40000 px, disarisi 17600 px ve 50/50 tohumda TAMAMEN etiketsiz. Ciplak esik
+yok; "tasacak yer var mi" sorusu VERIDEN turetiliyor.
+
+## 4. MADDE 15 ARTIK UC EKSENDE KORUNUYOR
+
+    (1) alt kume kafesi     serbest(B) ⊆ serbest(A)   -> ASIMETRIK regresyon
+    (2) engel sizintisi     engel pikseli serbest degil -> engele TASMA
+    (3) zemin alt kumesi    serbest ⊆ zemin           -> ETIKETSIZ ALANA TASMA
+
+Ucu de mutasyon kanitli. Bu oturumdan once madde 15'i koruyan **hicbir kapi
+yoktu** (D-170: dosya vardi ama `tests/` altinda degildi ve 0 test iceriyordu).
+
+**DOGRULANAMADI**
+  1. Uc eksenin BIRLIKTE eksiksiz oldugu KANITLANMADI. Ucu de gecen bir
+     regresyon kurgulanabilir mi diye ARANMADI. (Or. zemin maskesini de
+     buyuten bir yama ucunu birden gecer — ama o artik `serbest_alan`in
+     GIRDISINI degistirmek demektir, yani baska bir kusur sinifi.)
+  2. Sahneler sentetiktir; gercek maskelerde olculmedi.
+  3. Testler CPU'da kosuldu; T54 egitimi ayni anda GPU'da kosuyordu, sure
+     olcumu yapilmadi (gerek de yoktu).
