@@ -13915,3 +13915,209 @@ yoktu** (D-170: dosya vardi ama `tests/` altinda degildi ve 0 test iceriyordu).
   2. Sahneler sentetiktir; gercek maskelerde olculmedi.
   3. Testler CPU'da kosuldu; T54 egitimi ayni anda GPU'da kosuyordu, sure
      olcumu yapilmadi (gerek de yoktu).
+
+### D-174 · ✅ S7 KAPANDI · Arena olcum araclari makine-okunur cikti uretiyor — ve HAVUZ SAYISININ NEYI GIZLEDIGI ilk kez gorunur oldu
+Yazan/olcen: Claude 2 (amele) · 2026-08-19 · gorev S7 (kullanici emri) · dayanak 44_karar_kurali.md, BULGULAR_20260720.md §13a/§13d, madde 16
+Dosyalar: `48_arena_iou.py` · `54_arena_cozunurluk.py` (+ `scripts/olcum/` aynasi, IKISI DE ILK KEZ)
+Ciktilar: `calisma/olcum/s7_48/ozet.json` · `calisma/olcum/s7_54/ozet.json`
+
+🔴 **URETIM KODU DEGISTIRILMEDI.** `git diff HEAD -- codes/` **BOS**.
+
+---
+## 1. YAPILAN
+
+Iki betige de `--out <dizin>` eklendi; `ozet.json` yazilir. **`print` ciktisi
+BIREBIR korundu** — JSON EK'tir, ikame degil.
+
+  · **GORUNTU BAZINDA kayit** (S7 A). Havuz ozeti AYRI tutulur ve `havuz_`
+    onekiyle isaretlenir. Gerekce `44_karar_kurali.md`: *"v17'nin 0,615'i
+    aslinda 0,861 + 0,000'di"*.
+  · **Alanlar** (goruntu basina): `model` · `imgsz` · `esik` · `iou` ·
+    `moloza_basma_orani` · `kaplama` · `yer_gercegi_kaplamasi` · `kesinlik` ·
+    `duyarlilik` · `goruntu_adi` (+ `karar`, 54'te `sure_ms`).
+    Alan denetimi kosuldu: **48'de 20 kayit, 54'te 16 kayit, EKSIK ALAN YOK.**
+  · `moloza_basma_orani` 54'te HIC YOKTU; `_moloz.png` maskesi 48'deki kalibin
+    aynisiyla okunacak sekilde eklendi (BULGULAR §13d: IoU otorite DEGIL).
+  · **JSON KENDI SINIRINI TASIR** (S7 C), alanlar KODDAN turetildi:
+    ```json
+    "kume": {"n": 2, "kaynak": "test_images/ai", "gercek_arena": false,
+             "not": "YZ uretimi iki gorsel; gercek 30 m arena karesi YOK",
+             "goruntuler": ["1.jpg", "2.png"],
+             "yer_gercegi": "47_arena_yer_gercegi.py (yari otomatik, 2.png'de DAR)"}
+    ```
+    `n` gercekten `len(sahne)`dir, `goruntuler` diskten okunan adlardir.
+  · **Madde 16:** uretim modeli CIPLAK SABIT degil — `KISAYOL["uretim"] =
+    uretim_pt()`. Tarihsel surumlerin sabit haritasi oldugu gibi kaldi.
+  · **AYNA:** ikisi de ilk kez `scripts/olcum/` altina kopyalandi.
+
+---
+## 2. KAPI — `ozet.json` vs BULGULAR_20260720.md §13a (ELLE yazilmis)
+
+Eski surum olarak `v5c` secildi (tabloda EN IYI olan, yani en cok sayisi olan
+satir). Uretim modeli `uretim_pt()` ile cozuldu (bugun v30).
+
+    olcut (v5c)          BULGULAR §13a (elle)   ozet.json (olculen)   ESLESME
+    en iyi arena IoU              0,077               0,077            ✓
+    esik                          0,10                0,10             ✓
+    kesinlik                      0,079               0,079            ✓
+    duyarlilik                    0,679               0,679            ✓
+    kaplama                       %22,5               %22,54           ✓ (yuvarlama)
+
+**BES SATIRIN BESI DE ESLESTI. Elle kopyalamada hata YOK, betik o gunden beri
+DEGISMEMIS.** Arastirilacak bir sapma cikmadi.
+
+---
+## 3. 🔴 ASIL KAZANC: HAVUZ SAYISI NEYI GIZLIYORDU
+
+Makine-okunur cikti ilk kez sunu gosterdi — tabloda GORUNMEYEN sey:
+
+    v5c @ esik 0,10   havuz IoU 0,077
+      1.jpg   IoU 0,081  ·  moloza_basma 0,660  ·  kaplama %44,39  ·  duyarlilik 0,994
+      2.png   IoU 0,000  ·  moloza_basma 0,000  ·  kaplama  %0,69  ·  duyarlilik 0,000
+
+  1. **0,077 bir ortalama degil, 0,081 + 0,000'dir.** v5c 2.png'de TAMAMEN
+     kordur. `44_karar_kurali.md`'nin v17 icin yazdigi patolojinin AYNISI,
+     bu kez tablonun "en iyi" satirinda.
+  2. 🔴 **IoU-EN IYI ESIK, EN GUVENSIZ ESIKTIR.** v5c 0,10'da 1.jpg'de molozun
+     **%66'sina** "gecilebilir" diyor (havuz sutunu %27,0 gosteriyordu —
+     goruntu boyutlari havuzu seyreltiyor). Ayni model 0,25'te moloza basmayi
+     0,0'a indiriyor ama IoU'su da 0,000'a dusuyor. Yani tablodaki "en iyi
+     IoU" satiri, guvenlik acisindan modelin EN KOTU calistigi noktadir.
+     BULGULAR §13d bu gerilimi metinle anlatiyordu; artik SAYIYLA duruyor.
+  3. Duyarlilik 0,994 + kesinlik 0,081: v5c 1.jpg'de yolu "buluyor" cunku
+     kareyi zaten %44 boyuyor — §13a'nin v13 icin yazdigi teshis.
+
+---
+## 4. YAN OLCUM — URETIM MODELI (v30) ARENA GORUNTULERINDE
+
+Emir "iki model kos" dedigi icin uretim modeli de kosuldu. Sonuc BULGULAR
+tablosuyla dogrudan kiyaslanabilir DEGILDIR (tablo 640 px IoU'su verir), ama
+kayda deger:
+
+    54_arena_cozunurluk (esik 0,25), 1.jpg:
+      imgsz  640  ->  IoU 0,000   (kaplama %0,00)
+      imgsz  960  ->  IoU 0,584   (kaplama %2,92)
+      imgsz 1280  ->  IoU 0,431
+      imgsz 1600  ->  IoU 0,404
+    2.png: DORT olcekte de IoU 0,000
+
+`0,584`, BULGULAR §13a'daki en iyi degerin (v5c 0,077) **yedi katindan
+fazladir** — ama YALNIZ 640'in USTUNDE. 640'ta uretim modeli de kordur.
+Bu, §13'un "sorun olceksel mi anlamsal mi" sorusuna 1.jpg icin **OLCEKSEL**
+cevabini veriyor; 2.png icin cevap DEGISMIYOR (dort olcekte de 0).
+
+⚠ Bu bir KAPI DEGIL, yan olcumdur. `n=2`, goruntuler YZ uretimi, yer gercegi
+yari otomatik ve 2.png'de dar. Model secimi icin kullanilamaz.
+
+---
+## 5. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    ozet.json alan denetimi   48: 20 kayit · 54: 16 kayit · EKSIK ALAN YOK
+    ozet.json vs BULGULAR     5/5 satir ESLESTI (yukarida)
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 605 tests in 73.116s
+        OK      (605 -> 605; bu gorev test EKLEMEDI, HIC dusme yok)
+    git diff HEAD -- codes/   -> BOS
+
+⚠ GPU: yalniz 2 goruntu x 2 model (48) ve 2 x 2 x 4 olcek (54) cikarim
+kosuldu; buyuk supurme BASLATILMADI, egitim loglarina DOKUNULMADI.
+
+---
+## 6. DOGRULANAMADI / ACIK KALAN
+
+  1. **Yalniz `v5c` ile karsilastirildi.** BULGULAR §13a'da bes satir var
+     (v5c · v13 · v15 · v4 · v9); digerleri KOSULMADI (GPU'da egitim var,
+     buyuk supurme yasaklandi). Onlarin elle yazilmis sayilari
+     DOGRULANMAMISTIR.
+  2. **§13e tablosu (v15/v16 arena IoU 0,030 / 0,045) da dogrulanmadi.**
+  3. **48'in `imgsz`i 640'a GOMULU.** JSON alani `"imgsz": 640` diye yaziyor
+     ama betik onu argumandan almiyor; 54 tarar. Bu bir kusur degil (48'in
+     tasarimi boyle) ama JSON okuyan biri 48'in cok olcekli sanmamali.
+  4. **`moloza_basma_orani` yer gercegi maskesine baglidir** ve o maske
+     yari otomatiktir (%38,7 / %37,2, gorsel dogrulanmis — BULGULAR §13d).
+     Mutlak deger degil, MODELLER ARASI KIYAS icindir.
+  5. **Uretim modelinin arena sayilari bir KAPI DEGILDIR** ve model secimine
+     girdi olarak kullanilmamalidir (n=2, YZ uretimi).
+  6. **Regresyon takibi artik MUMKUN ama KURULMADI:** `ozet.json` uretiliyor,
+     fakat onu bir esikle kiyaslayan otomatik kapi YOK. S7 "makine-okunur
+     cikti" istiyordu; "otomatik kapi" ayri bir istir.
+
+### D-175 · 🔎 S7 DENETIMI (MIMAR) · ONAYLANDI — ve SUPURME URETIMIN KENDI COZUNURLUGUNU (512) HIC SINAMIYOR
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev S7 · denetlenen kayit D-174 (Claude 2, amele)
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                            nasil dogrulandi                sonuc
+    kapi: unittest discover          KENDIM kostum          605 OK (degismedi)
+    kapi: test_rota_sentetik         KENDIM kostum                   15/15
+    uretim kodu el degmedi           git diff codes/                   BOS
+    ayna ilk kez olustu              git status scripts/olcum/    48 + 54 ✓
+    ozet.json uretildi               s7_48 · s7_54                   ✓ ikisi
+    `kume` alani KODDAN turedi       JSON: n=2, goruntuler=[1.jpg,2.png]  ✓
+    v5c sayilari                     JSON'dan yeniden okundu       BIREBIR
+      1.jpg @0,10 IoU 0,0813 · moloza 0,6598 · kaplama %44,39 · duyar 0,9944
+      2.png @0,10 IoU 0,0000 · havuz 0,0765 ≈ BULGULAR'in 0,077   ✓
+
+Amelenin BULGULAR kiyasi (5/5 eslesme) dogrulandi; elle kopyalamada hata yok.
+
+## 2. AMELENIN ASIL BULGUSU DOGRU VE ONEMLI
+
+Havuz 0,077, bir ortalama DEGIL, **0,081 + 0,000**dir: v5c 2.png'de TAMAMEN
+kordur. Ve IoU-en-iyi esik (0,10) ayni zamanda molozun **%66'sina**
+"gecilebilir" dedigi esiktir. Yani tablodaki "en iyi IoU" satiri, guvenlik
+acisindan modelin EN KOTU calistigi noktadir. BULGULAR §13d bunu METINLE
+anlatiyordu; artik SAYIYLA duruyor. S7'nin gercek kazanci budur.
+
+## 3. 🔴 BENIM BULDUGUM: SUPURME 512'yi HIC OLCMUYOR
+
+`54_arena_cozunurluk.py:33` -> `OLCEKLER = [640, 960, 1280, 1600]` (GOMULU,
+arguman yok). Oysa uretim `rpi_inference.INFER_SIZE = **512**` ile kosar.
+Yani cozunurluk supurmesi, **uretimin fiilen kullandigi cozunurlugu hic
+sinamiyor** ve bu haliyle uretim hakkinda konusamaz.
+
+54'un KENDI `maske()` fonksiyonuyla olctum (metrik yeniden yazilmadi, D-139):
+
+    v30 (uretim) · esik 0,25
+    imgsz   1.jpg IoU / kaplama      2.png IoU / kaplama
+      512     0,000 / %0,00            0,000 / %0,00
+      640     0,000 / %0,00            0,000 / %0,04
+      768     0,000 / %0,00            0,000 / %0,10
+      960     0,584 / %2,92            0,000 / %0,14
+     1280     0,431 / %3,42            0,000 / %0,16
+
+**512'de kaplama %0,00 — model bu iki goruntude HICBIR SEY uretmiyor.** Bu bir
+IoU inceligi degil, kategorik bir gozlem: bos zemin maskesi -> `analyze_path`
+-> MASKE_YOK -> rota yok. Gecis 768 ile 960 arasinda KESKIN.
+
+## 4. ⚠ BUNU ABARTMIYORUM — SINIRLARI NET
+
+  · **n=2 ve ikisi de YZ uretimi** (`test_images/ai`). Model secimine girdi
+    OLAMAZ; amele de oyle yazdi, katiliyorum.
+  · **v30 KENDI alaninda 512'de kor DEGILDIR:** t66 sentetik kadraj kumesinde
+    (640x640 -> 512 cikarim) 31 kare ACIK veriyor ve K1-K5 kapilarinin hepsi
+    kosuyor. Yani bu, "model bozuk" bulgusu degil, **alan disi + olcek**
+    etkilesimidir (K-3 / arena domain boslugu).
+  · Gercek 30 m arena karesi olmadigi icin "gercek arenada 512 kor mu"
+    sorusu **CEVAPLANAMAZ**. Kalici sinir.
+
+**AMA SU KISMI ABARTI DEGIL:** bir cozunurluk supurmesi, uretimin cozunurlugunu
+icermiyorsa uretim hakkinda hicbir sey soyleyemez. Bu bir OLCUM ARACI
+kusurudur ve ucuz duzeltilir: `OLCEKLER`e 512 eklenmeli ya da `--olcekler`
+argumani acilmali. **S5'e bagli** (imgsz sabitlenmemis) — orada kayitli.
+
+## 5. USUL
+
+Amele bu turda da commit atmadi, izin bekledi. Kapsam disina cikmadi
+(buyuk supurme baslatmadi, egitim loglarina dokunmadi). `moloza_basma_orani`i
+54'e EKLEMESI emrin harfinde yoktu ama ruhundaydi (BULGULAR §13d: IoU otorite
+degil) — dogru karar.
+
+**DOGRULANAMADI**
+  1. BULGULAR §13a'nin diger dort satiri (v13 · v15 · v4 · v9) dogrulanmadi.
+  2. 512 olcumu TEK kosumdur; varyans olculmedi.
+  3. 768-960 arasindaki keskin gecisin nedeni ARASTIRILMADI (maske
+     prototip cozunurlugu mu, egitim olcegi mi — bilinmiyor).
+  4. Gercek arena karesinde hicbir sey olculmedi (kalici sinir).

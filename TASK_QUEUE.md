@@ -7242,16 +7242,115 @@ esults	50_uc_kapi\`):
   - **Yap:** Çıkarım çözünürlüğünü tek bir sabitten oku ve CLI ile değiştirilirse **görünür uyarı** bas. Model ağırlığının eğitildiği `imgsz` ile çalışma anındaki değeri karşılaştırıp uyuşmazlıkta uyar.
   - **Kapı:** `imgsz` varsayılan dışına çıkarıldığında uyarı basıldığını gerçek çıktıyla göster.
 
+  - 🔴 **S7 DENETİMİNDEN GELEN GİRDİ · 2026-08-19 · `REVIEW_LOG.md` D-175 §3.**
+    `54_arena_cozunurluk.py:33` → `OLCEKLER = [640, 960, 1280, 1600]` **gömülü**,
+    argüman yok. Üretim ise `rpi_inference.INFER_SIZE = **512**`. Yani mevcut
+    çözünürlük süpürmesi **üretimin fiilen kullandığı çözünürlüğü hiç
+    sınamıyor** ve bu haliyle üretim hakkında konuşamaz.
+  - Mimar ölçtü (54'ün kendi `maske()`si, v30, eşik 0,25):
+    ```text
+    imgsz   1.jpg IoU/kaplama    2.png IoU/kaplama
+      512    0,000 / %0,00        0,000 / %0,00     <- URETIMIN COZUNURLUGU
+      768    0,000 / %0,00        0,000 / %0,10
+      960    0,584 / %2,92        0,000 / %0,14
+    ```
+  - **İLK İŞ (ucuz):** `OLCEKLER`e **512** ekle veya `--olcekler` argümanı aç.
+    Bu, S5'in kendi sorusunu (*"imgsz sabitlenmeli mi, hangi değerde?"*)
+    ölçülebilir kılar; şu an süpürme o soruyu **cevaplayamıyor**.
+  - ⚠ n=2 ve ikisi de YZ üretimi — bu sayılar **model seçimine girdi değildir**.
 - [ ] **S6 — `hedef` sınıfı hedef tohumu olarak bağlı değil** · `codes/costmap_path_finder.py:730` · ÖNEMLİ
   - **Kanıt:** `rota_bul` yalnız `yol_sinif_idler` ve `engel_sinif_idler` okuyor; `2 = hedef` hiçbir yerde hedef tohumu olarak kullanılmıyor. Hedef `baslangic`/`hedef` parametreleriyle dışarıdan veriliyor.
   - **Yap:** İsteğe bağlı `hedef_sinif_idler` ekle; verilirse maskenin en büyük bağlı bileşeninin merkezi hedef tohumu olsun. **S2 sözleşmesinden sonra** yapılmalı.
   - **Kapı:** `codes/test_rota_sentetik.py` **15/15** düşmüyor; hedef sınıflı sentetik bir sahnede rota H'ye ulaşıyor.
 
-- [ ] **S7 — Arena ölçüm araçları makine-okunur çıktı üretmiyor** · `O:\navitas-local-train\48_arena_iou.py`, `54_arena_cozunurluk.py` · ÖNEMLİ
+- [x] **S7 — KAPANDI · Arena ölçüm araçları `ozet.json` üretiyor** · `O:\navitas-local-train\48_arena_iou.py`, `54_arena_cozunurluk.py` · ÖNEMLİ
   - **Kanıt:** Her iki betikte de `json.dump` / `write_text` **yok**; yalnız `print`. Bütün arena sayıları elle `BULGULAR_20260720.md`'ye kopyalanmış. Regresyon takibi ve otomatik kapı **imkânsız**.
   - **Yap:** Her iki betiğe `--out <dizin>` ekle; `ozet.json` yaz. Alanlar: model, imgsz, görüntü başına IoU, **moloza basma oranı**, kaplama, yer gerçeği kaplaması. **Havuz metrik yerine görüntü bazında** yaz (`44_karar_kurali.md`: *"v17'nin 0,615'i aslında 0,861 + 0,000'dı"*).
   - **Kapı:** İki model için koş, `ozet.json` üret ve `BULGULAR`'daki elle yazılmış sayılarla **eşleştiğini** göster.
 
+  - ✅ **YAPILDI · 2026-08-19 · Claude-2** · kayıt `REVIEW_LOG.md` **D-174**.
+    Üretim kodu değişmedi: `git diff HEAD -- codes/` **BOŞ**.
+    İkisi de ilk kez `scripts/olcum/` altına **aynalandı**.
+  - **`print` çıktısı birebir korundu** — JSON **ek**, ikame değil. Kayıtlar
+    **görüntü bazında**; havuz özeti ayrı ve `havuz_` önekli.
+    Alan denetimi: 48'de **20 kayıt**, 54'te **16 kayıt**, **eksik alan YOK**.
+    `moloza_basma_orani` 54'te hiç yoktu — eklendi (§13d: IoU otorite değil).
+    Model adı çıplak sabit değil: `KISAYOL["uretim"] = uretim_pt()` (madde 16).
+  - **KAPI — `ozet.json` vs `BULGULAR_20260720.md` §13a (v5c):**
+    ```text
+    olcut          BULGULAR (elle)   ozet.json   ESLESME
+    en iyi IoU          0,077          0,077       ✓
+    esik                0,10           0,10        ✓
+    kesinlik            0,079          0,079       ✓
+    duyarlilik          0,679          0,679       ✓
+    kaplama             %22,5          %22,54      ✓ (yuvarlama)
+    ```
+    **5/5 eşleşti.** Elle kopyalamada hata yok, betik o günden beri değişmemiş
+    — araştırılacak bir sapma çıkmadı.
+  - 🔴 **ASIL KAZANÇ — havuz sayısının gizlediği:**
+    ```text
+    v5c @ esik 0,10   havuz IoU 0,077
+      1.jpg  IoU 0,081 · moloza_basma 0,660 · kaplama %44,39 · duyarlilik 0,994
+      2.png  IoU 0,000 · moloza_basma 0,000 · kaplama  %0,69 · duyarlilik 0,000
+    ```
+    (a) **0,077 bir ortalama değil, 0,081 + 0,000'dır** — v5c 2.png'de tamamen
+    kör; `44_karar_kurali.md`'nin v17 patolojisi, bu kez tablonun "en iyi"
+    satırında. (b) 🔴 **IoU-en iyi eşik, en GÜVENSİZ eşiktir:** v5c 0,10'da
+    1.jpg'de molozun **%66'sına** "geçilebilir" diyor (havuz sütunu %27,0
+    gösteriyordu — görüntü boyutları havuzu seyreltiyor). 0,25'te moloza basma
+    0,0'a iniyor ama IoU de 0,000'a düşüyor. §13d bu gerilimi metinle
+    anlatıyordu; artık **sayıyla** duruyor.
+  - **YAN ÖLÇÜM (kapı DEĞİL) — üretim modeli (v30), `54`, eşik 0,25, 1.jpg:**
+    ```text
+    imgsz  640 -> IoU 0,000    960 -> IoU 0,584    1280 -> 0,431   1600 -> 0,404
+    2.png: dort olcekte de IoU 0,000
+    ```
+    `0,584`, §13a'daki en iyi değerin (0,077) **yedi katından fazla** — ama
+    yalnız **640'ın üstünde**; 640'ta üretim modeli de kör. §13'ün "ölçeksel mi
+    anlamsal mı" sorusuna 1.jpg için **ÖLÇEKSEL** cevabı. 2.png değişmiyor.
+    ⚠ n=2 ve görüntüler YZ üretimi — **model seçimine girdi olamaz.**
+  - **KOŞULAN KAPILAR:**
+    ```text
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 605 tests in 73.116s / OK  (test EKLENMEDI)
+    git diff HEAD -- codes/       -> BOS
+    ```
+    ⚠ GPU: yalnız 2 görüntü × 2 model çıkarımı; **büyük süpürme başlatılmadı**,
+    eğitim loglarına dokunulmadı.
+  - ⚠ **DOĞRULANAMADI:** yalnız **v5c** karşılaştırıldı; §13a'nın diğer dört
+    satırı (v13/v15/v4/v9) ve §13e (v15/v16) **koşulmadı** — GPU'da eğitim var,
+    büyük süpürme yasaklıydı · `48`'in `imgsz`i 640'a **gömülü** (JSON'da öyle
+    yazıyor ama argümandan almıyor) · `moloza_basma_orani` yarı otomatik
+    maskeye bağlıdır, mutlak değil kıyaslamalıdır · 🔴 **regresyon takibi artık
+    MÜMKÜN ama KURULMADI** — `ozet.json`'ı eşikle kıyaslayan otomatik kapı
+    hâlâ yok; S7 "makine-okunur çıktı" istiyordu, "otomatik kapı" ayrı iştir.
+
+  - 🔎 **MİMAR DENETİMİ · 2026-08-19 · `REVIEW_LOG.md` D-175. ONAYLANDI.**
+    Kapıları kendim koştum (**605 OK**, **15/15**), `git diff codes/` **BOŞ**,
+    ayna ilk kez oluştu, `ozet.json`'daki v5c sayıları JSON'dan yeniden
+    okundu: **birebir**. BULGULAR kıyası (5/5) doğrulandı.
+  - **Amelenin asıl kazancı doğru:** havuz 0,077 bir ortalama değil
+    **0,081 + 0,000**; ve IoU-en-iyi eşik (0,10) aynı zamanda molozun
+    **%66'sına** "geçilebilir" dediği eşik. Tablodaki "en iyi IoU" satırı,
+    güvenlik açısından modelin **en kötü** çalıştığı nokta.
+  - 🔴 **DENETİMİN BULDUĞU: süpürme üretimin çözünürlüğünü hiç ölçmüyor.**
+    `54_arena_cozunurluk.py:33` → `OLCEKLER = [640, 960, 1280, 1600]` (gömülü);
+    üretim ise `INFER_SIZE = **512**`. Mimar 54'ün kendi `maske()`siyle ölçtü:
+    ```text
+    v30 (uretim) · esik 0,25      1.jpg IoU/kaplama    2.png IoU/kaplama
+      512                          0,000 / %0,00        0,000 / %0,00
+      640                          0,000 / %0,00        0,000 / %0,04
+      768                          0,000 / %0,00        0,000 / %0,10
+      960                          0,584 / %2,92        0,000 / %0,14
+     1280                          0,431 / %3,42        0,000 / %0,16
+    ```
+    **512'de kaplama %0,00** — model bu iki görüntüde hiçbir şey üretmiyor.
+    Geçiş 768–960 arasında keskin.
+  - ⚠ **Abartmıyorum:** n=2, ikisi de YZ üretimi → model seçimine girdi olamaz.
+    v30 **kendi alanında 512'de kör değil** (t66'da 31 kare ACIK, K1–K5 koşuyor).
+    Bu "model bozuk" değil, **alan dışı + ölçek** etkileşimi (K-3).
+    **Ama şu abartı değil:** çözünürlük süpürmesi üretimin çözünürlüğünü
+    içermiyorsa üretim hakkında hiçbir şey söyleyemez. → **S5'e bağlandı.**
 - [ ] **S8 — FDA profili sentetik üretece girmemiş** · `O:\navitas-local-train\51_sentetik_arena.py` · ÖNEMLİ
   - **Kanıt:** Üreteç 50×50 m HTAB'a göre kurulu. FDA test uçuşu **20×20 m** alan, **asgari 30 m irtifa** (şartname §5.3.2).
   - **Yap:** Alan boyutunu ve irtifayı **profil** parametresi yap (`HTAB_50`, `FDA_20`). `mpp`'yi irtifa + kamera FOV'undan türet, sabit varsayma. Üretecin mevcut tasarım kurallarını **koru** — özellikle *"etiketsiz moloz yok"* ve şerit modeli.
