@@ -13491,3 +13491,148 @@ yazildi (uretim davranisi DEGISMEDI). Jetson aynasi senkronlandi.
   3. `_bagli_mi` cagri sayisi (9) yalniz BU sahnede olculdu; n_kapi degisen
      sahnelerde degisebilir.
   4. Optimizasyonun mumkun oldugu GORUNUYOR ama DENENMEDI/OLCULMEDI.
+
+### D-170 · ✅ S3 KAPANDI · Monotonluk invarianti KAPIYA BAGLANDI — ve S3'un KENDI FORMULU korktugu regresyona KOR CIKTI
+Yazan/olcen: Claude 2 (amele) · 2026-08-18 · gorev S3 (kullanici emri) · dayanak CLAUDE.md m.15, D-15/K-04, D-158 (bulgu 4)
+Dosya: `tests/test_monotonluk.py` (12 test) · `codes/test_monotonluk.py`ten `git mv` ile TASINDI
+
+🔴 **URETIM KODU DEGISTIRILMEDI.** `git diff HEAD -- codes/costmap_path_finder.py`
+**BOS**. `codes/` altindaki tek degisiklik, izlenen dosyanin `tests/`e
+TASINMASIDIR.
+
+---
+## 1. ASIL KUSUR: TEST VARDI AMA HIC KOSMUYORDU
+
+`codes/test_monotonluk.py` (131 satir) git'te izleniyordu, 5 kontrol iceriyordu
+ve gecmiste kosulmustu (`REVIEW_LOG.md:1413`). Ama:
+
+    `def test_` iceren fonksiyon sayisi : 0   (script bicimi, main() donus kodu)
+    `tests/` altinda mi                 : HAYIR
+    -> `unittest discover -s tests` onu HIC KOSMUYORDU
+
+Yani bugune kadar **hicbir regresyon bu dosya tarafindan yakalanamazdi**.
+Bu, D-158 bulgu 4'un ("test dosyasi izlenmiyordu") ayni kusur sinifidir:
+VAR OLAN ama DEVREDE OLMAYAN kapi.
+
+Dosya `git mv` ile `tests/`e tasindi ve unittest'e cevrildi. **IKI KOPYA
+BIRAKILMADI** (emrin acik sarti). `sahne()` / `alan()` yardimcilari AYNEN
+devralindi.
+⚠ `REVIEW_LOG.md:1413` eski yolu anar; o TARIHSEL bir kayittir ve
+DEGISTIRILMEDI.
+
+---
+## 2. 🔴🔴 EN ONEMLI BULGU: S3'UN LITERAL FORMULU BU REGRESYONA KOR
+
+S3 sunu diyor: *"biri cikarmadan sonra bir `dilate`/`MORPH_CLOSE` eklerse
+serbest alan sessizce buyur"* — ve kapi olarak `serbest(B) alt-kumesi
+serbest(A)` istiyor. Kapiyi yazip mutasyonu enjekte ettim; **kafes ihlali 0
+cikti.** Sebebini arayinca formulun kendisinde buldum.
+
+Olculdu (tohum 0, tam engel kumesi, cikarmadan sonra 3x3 `dilate`):
+
+    sabit referansa (yamasiz kosuma) gore buyume : 1388 px   YAKALAR
+    engel pikseli uzerinde serbest               : 0 -> 22   YAKALAR
+    ALT KUME KAFESI ihlali                       :    0      🔴 YAKALAMAZ
+
+**Sebep matematikseldir: `dilate` MONOTON bir islemdir.** X alt-kumesi Y iken
+dilate(X) alt-kumesi dilate(Y) olmaya devam eder. Her alt kumeye AYNI sekilde
+uygulanan bir genisletme kafesi HIC BOZMAZ — iki taraf birlikte buyur. Yani
+S3'un yazdigi kapi, S3'un adini koydugu tehdide karsi VACUOUS olurdu.
+
+⚠ Bu, "olcut yanlis kuruldu" sinifinin bu oturumdaki DEVAMIDIR (D-146 ·
+D-157 · D-159 · D-163 · t96 on kaydinin kendi duzeltmesi). Farki: burada
+yanlis olan bir ESIK degil, invariantin KIYAS EKSENIDIR.
+
+---
+## 3. UC SAVUNMA — HER BIRININ MUTASYON KANITI VAR
+
+    (1) ALT KUME KAFESI      beyan edilen invariant; ASIMETRIK regresyonu yakalar
+    (2) ENGEL PIKSELI SIZINTISI  50 tohum x tum alt kumeler; DUZGUN genisletmeyi yakalar
+    (3) SABIT REFERANS       yamali cikti vs yamasiz cikti; "buyume"nin dogrudan tanimi
+
+Her savunmanin AYIRT EDICILIGI ayri bir testle civilendi (D-15/K-04 — sifir
+olcum basari sayilmaz):
+
+  · `test_MUTASYON_dilate_SABIT_REFERANSA_gore_serbest_alani_BUYUTUR`
+  · `test_MUTASYON_dilate_ENGEL_PIKSELINE_SIZINTI_uretir`
+  · `test_MUTASYON_ASIMETRIK_genisletmeyi_KAFES_YAKALAR`
+        genisletme YALNIZ `KATMAN_ARAC` engel kumesindeyken uygulanir — yani
+        "yeni katman eklendi, bir de su morfolojiyi koyayim" kalibinin birebir
+        modeli. Kafes bunu YAKALIYOR; yani (1) vacuous DEGILDIR.
+  · `test_MUTASYON_alt_kume_kafesi_bu_regresyonu_YAKALAYAMIYOR`
+        BILINEN SINIRI civiler. ⚠ Bu test DUSERSE iyi haberdir: kafes artik
+        duzgun genisletmeyi de yakiyor demektir; o zaman test silinip dosya
+        basligindaki not guncellenmelidir.
+  · `test_MUTASYON_geri_alininca_invariant_YENIDEN_saglaniyor` — yamanin
+    sizmadigini kanitlar (`C.cv2 is cv2`).
+
+**KAPSAM GENISLEMESI (S3 istegi):** 10 tohum -> **50 tohum**; tek sinif cifti ->
+**ALT KUME KAFESI** `()`, `(MOLOZ,)`, `(ARAC,)`, `(MOLOZ,ARAC)` ve her gercek
+`A alt-kumesi B` cifti = **250 cift** (50 x 5; test bu sayiyi da dogruluyor,
+kafes eksik kurulursa duser). Sinif kimlikleri `codes/sinif_semasi.py`den
+gelir, ciplak sayi YOK (madde 16).
+
+---
+## 4. MUTASYON KANITI — GERCEK DOSYA UZERINDE
+
+Maymun-yama disinda, emrin istedigi bicimde uretim dosyasina da enjekte
+edildi (yedek -> degistir -> kos -> yedekten geri koy; `git checkout`
+KULLANILMADI):
+
+    codes/costmap_path_finder.py:271 sonrasina eklendi:
+        serbest = cv2.dilate(serbest, cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3)))
+
+    Ran 11 tests in 1.475s
+    FAILED (failures=3)
+      FAIL: test_engel_pikseli_50_tohumda_hicbir_alt_kumede_serbest_degil
+            AssertionError: Lists differ: [] != [(0, (1,), 16), (0, (10,), 10), ...]
+      FAIL: test_hicbir_engel_pikseli_serbest_degil
+            AssertionError: 0 != 24 : 24 px engel uzerinde serbest
+      FAIL: test_MUTASYON_dilate_ENGEL_PIKSELINE_SIZINTI_uretir
+            AssertionError: 0 != 22 : yamasiz halde zaten sizinti var — kiyas anlamsiz
+
+Ucuncusu ozellikle anlamlidir: mutasyon kontrolunun KENDISI, tabanin zaten
+bozuk oldugunu farkedip duruyor — yani kiyasi sessizce yapmiyor.
+
+**GERI ALMA DOGRULANDI:**
+
+    git diff -- codes/                              -> BOS
+    git diff HEAD -- codes/costmap_path_finder.py   -> BOS
+    git status --porcelain codes/  -> yalniz `D  codes/test_monotonluk.py` (tasima)
+
+---
+## 5. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    50/50 tohumda invariant (250 alt kume cifti)   -> tests: OK
+    mutasyon enjekte edilince test DUSUYOR         -> FAILED (failures=3), yukarida
+    git diff codes/                                -> BOS
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 601 tests in 70.355s
+        OK
+    (589 -> 601; artis bu dosyanin 12 testidir, HIC dusme yok)
+
+🔴 GPU'YA DOKUNULMADI: bu gorev model CALISTIRMADI, tamamen CPU/sentetik.
+
+---
+## 6. DOGRULANAMADI / ACIK KALAN
+
+  1. **Sahneler SENTETIKTIR** — eksen hizali dikdortgenler. Gercek maskelerin
+     topolojisi (delikli, ince, kopuk) FARKLIDIR. Invariant yapisaldir ve
+     sahne bicimine bagli olmamalidir, ama GERCEK karelerde OLCULMEDI.
+  2. **Yalniz `serbest_alan` sinandi.** `analyze_path` icindeki cikarma
+     (`rpi_inference.py:1086-1094`, morfolojiden SONRA) AYNI invarianti tasir
+     ama bu dosya ONU KAPSAMIYOR. Ayri bir kapi gerekir.
+  3. **Kafesin ASIMETRIK duyarliligi TEK bir mutasyon bicimiyle gosterildi**
+     (yalniz-ARAC dilate). Baska asimetrik bicimler (or. yalniz belirli
+     sekil/boyutta genisletme) DENENMEDI.
+  4. **`MORPH_CLOSE` ve `bitwise_or` bicimleri AYRICA denenmedi**; yalniz
+     `dilate` enjekte edildi. Ucu de genisletici oldugu icin ayni davranisi
+     beklerim, ama bu bir BEKLENTIDIR, olcum degildir.
+  5. **`mpp=None`** ile kosuldu (olcek yok). Olcege bagli morfoloji
+     parametreleri (`algi_payi_px`, `ac_px`, `kapat_px`, `min_ada_px`)
+     varsayilanlardadir; baska mpp degerlerinde OLCULMEDI.
+  6. **50 tohum bir kapsama garantisi degildir**; tohumlar 0..49 sabittir ve
+     rastgele arama YAPILMAZ (tekrarlanabilirlik icin bilerek).

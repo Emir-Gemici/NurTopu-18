@@ -2184,10 +2184,72 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap:** Sınıf-id sözleşmesini **tek bir modülde** sabitle (ör. `codes/sinif_semasi.py`): `ZEMIN=0, ENGEL=1, HEDEF=2` ve costmap katmanları için ayrı bir ad alanı (araç maskesi `iha_haritala` içinde **runtime** katmanıdır, eğitim sınıfı değil — ikisini karıştırma). Her iki dosya da bu modülden okusun. Sabit sayı (`2`) yazmayı bırak.
   - **Kapı:** `grep -rn "engel_sinif_idler" ` çıktısındaki her çağrı yeri sözleşme modülünden gelen adları kullanıyor; hiçbir yerde çıplak `2` yok. Ayrıca 3 sınıflı sentetik bir sahnede hedef bölgesinin `serbest` maskesinde **1** olduğunu göster.
 
-- [ ] **S3 — Monotonluk invariantı test edilmiyor** · `codes/costmap_path_finder.py:212-213` · KRİTİK
+- [x] **S3 — KAPANDI · Monotonluk invariantı kapıya bağlandı** · `tests/test_monotonluk.py` · KRİTİK · kanıt: `REVIEW_LOG.md` **D-170**
   - **Kanıt:** Kod doğru (*"çıkarma en son, bundan sonra hiçbir genişletme yapılmaz"*) ama hiçbir test bunu doğrulamıyor. Bir gün biri çıkarmadan sonra `dilate`/`MORPH_CLOSE` eklerse sessizce serbest alan büyür ve rota engelin üstünden geçer.
   - **Yap:** `tests/test_monotonluk.py` yaz. İddia: **her engel sınıfı kümesi için** `serbest(K1 ∧ ¬K2) ⊆ serbest(K1)`, yani `cv2.bitwise_and(serbest_genis, cv2.bitwise_not(serbest_dar)).sum() == 0`. Rastgele tohumlu ≥50 sentetik maske çiftinde koş. Ayrıca boş engel maskesiyle `serbest` değişmemeli.
   - **Kapı:** 50/50 sahnede invariant sağlanıyor; `serbest_alan`'a bilerek eklenen bir `dilate` ile test **başarısız** olduğunu da göster (mutasyon kanıtı).
+
+  - ✅ **YAPILDI · 2026-08-18 · Claude-2** · kayıt `REVIEW_LOG.md` **D-170**.
+    **Üretim kodu değişmedi:** `git diff HEAD -- codes/costmap_path_finder.py`
+    **BOŞ**.
+  - 🔴 **ASIL KUSUR: test VARDI ama HİÇ KOŞMUYORDU.**
+    `codes/test_monotonluk.py` git'te izleniyordu (131 satır, 5 kontrol) ama
+    içinde **0 tane `def test_`** vardı (script biçimi) ve `tests/` altında
+    değildi → `unittest discover` onu **hiç koşmuyordu**. D-158 bulgu 4'ün
+    aynı sınıfı: **var olan ama devrede olmayan kapı.** `git mv` ile taşındı,
+    unittest'e çevrildi, **iki kopya bırakılmadı**.
+  - 🔴🔴 **S3'ÜN KENDİ FORMÜLÜ, KORKTUĞU REGRESYONA KÖR ÇIKTI.** Kapıyı yazıp
+    `dilate` enjekte ettim; kafes ihlali **0** geldi. Ölçüldü (tohum 0, tam
+    engel kümesi):
+    ```text
+    sabit referansa (yamasiz kosuma) gore buyume : 1388 px   YAKALAR
+    engel pikseli uzerinde serbest               : 0 -> 22   YAKALAR
+    ALT KUME KAFESI ihlali                       :    0      KOR
+    ```
+    Sebep matematiksel: **`dilate` monotondur** — `X ⊆ Y ⟹ dilate(X) ⊆ dilate(Y)`.
+    Her alt kümeye **aynı** uygulanan bir genişletme kafesi hiç bozmaz, iki
+    taraf birlikte büyür. Bu, D-146/D-157/D-159/D-163 sınıfının devamıdır;
+    farkı: yanlış olan bir **eşik değil, kıyas ekseni**.
+  - **ÜÇ SAVUNMA, HER BİRİNİN MUTASYON KANITI VAR:**
+    ```text
+    (1) ALT KUME KAFESI       ASIMETRIK regresyonu yakalar  -> testle kanitlandi
+    (2) ENGEL PIKSELI SIZINTISI  50 tohum x tum alt kumeler -> DUZGUN genisletmeyi yakalar
+    (3) SABIT REFERANS        yamali vs yamasiz cikti       -> "buyume"nin tanimi
+    ```
+    (1)'in vacuous olmadığı, genişletmeyi **yalnız `KATMAN_ARAC` kümesindeyken**
+    uygulayan asimetrik bir mutasyonla kanıtlandı ("yeni katman ekledim, bir de
+    şu morfolojiyi koyayım" kalıbı) — kafes onu **yakalıyor**.
+    Bilinen sınır ayrıca **çivilendi**; o test düşerse iyi haberdir.
+  - **KAPSAM:** 10 tohum → **50 tohum**; tek çift → **250 alt küme çifti**
+    (test çift sayısını da doğruluyor, kafes eksik kurulursa düşer). Sınıf
+    kimlikleri `codes/sinif_semasi.py`den, çıplak sayı yok (madde 16).
+  - **MUTASYON KANITI — GERÇEK DOSYA ÜZERİNDE** (yedek → değiştir → koş →
+    yedekten geri koy; `git checkout` kullanılmadı):
+    ```text
+    Ran 11 tests in 1.475s
+    FAILED (failures=3)
+      FAIL: test_engel_pikseli_50_tohumda_hicbir_alt_kumede_serbest_degil
+      FAIL: test_hicbir_engel_pikseli_serbest_degil     (0 != 24 px)
+      FAIL: test_MUTASYON_dilate_ENGEL_PIKSELINE_SIZINTI_uretir
+            (0 != 22 : yamasiz halde zaten sizinti var — kiyas anlamsiz)
+    ```
+    Üçüncüsü anlamlı: mutasyon kontrolünün **kendisi** tabanın bozuk olduğunu
+    farkedip duruyor.
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    git diff -- codes/                            -> BOS
+    git diff HEAD -- codes/costmap_path_finder.py -> BOS
+    codes/test_rota_sentetik.py    SONUC: 15/15 dogru
+    unittest discover -s tests     Ran 601 tests in 70.355s / OK   (589 -> 601, +12)
+    ```
+    🔴 GPU'ya dokunulmadı; görev model çalıştırmadı (tamamen CPU/sentetik).
+  - ⚠ **DOĞRULANAMADI:** sahneler sentetiktir (eksen hizalı dikdörtgenler),
+    gerçek maskelerde ölçülmedi · **yalnız `serbest_alan` sınandı**;
+    `analyze_path` içindeki çıkarma (`rpi_inference.py:1086-1094`) aynı
+    invariantı taşır ama **bu dosya onu kapsamıyor**, ayrı kapı gerekir ·
+    `MORPH_CLOSE`/`bitwise_or` biçimleri ayrıca denenmedi (yalnız `dilate`) ·
+    `mpp=None` ile koşuldu, başka ölçeklerde ölçülmedi · 50 tohum sabittir,
+    rastgele arama yapılmaz.
 
 - [x] **S4 — İki ıraksak karar yolu: biri emniyet ağsız** · `codes/rpi_inference.py`, `simulation/scripts/iha_perceive.py` · KRİTİK
   - **✅ MİMAR DENETİMİ GEÇTİ · 2026-08-10 · Claude 1.** İki ayrı iddia vardı; ikisi de
