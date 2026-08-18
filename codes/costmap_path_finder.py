@@ -1113,7 +1113,19 @@ def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
     # koridor KENARINA (aciklik ~1 px) yapisan bir duz cizgiyi "gorunur" sayar —
     # rota_dogrula sonra bunu haklı olarak reddeder. Ilk denemede tam bu bulundu.
     gecilebilir_tam = sonuc["dt_px"] >= olc["r_gerekli_px"]
-    waypoints = yol_duzelt(yol_px, gecilebilir_tam, wp_aralik_px=olc["wp_aralik_px"])
+    # ACIKLIK KORUMASI (T95 · REVIEW_LOG D-159 · D-162 · D-164). `dt_px`
+    # gecilmedigi surece string-pulling kirisi yalnizca C-uzayinda kaldigi
+    # icin kabul edilir ve emniyet payini yer. Bu yolda OLCULDU (n=260,
+    # t66, ayni kosumda taban vs koruma):
+    #     kayip medyani  3,00 -> 0,693 px   ·  pay < 3 px olan kare  3 -> 0
+    #     ACIK 31 -> 31  ·  `yol_no` 31/31 karede AYNI  ·  waypoint 31 -> 32
+    #     uretim olceginde (128x128) KATMAN B 21,69 -> 25,15 ms (butce 30-40)
+    #     gurultu altinda (sigma 2/255, 3 cekilis) ceviren kare 26 -> 26,
+    #     kare kumeleri BIREBIR ayni, DOGRULAMA_BASARISIZ 0 -> 0
+    # KATMAN A (`rpi_inference`) ayni korumayi T94'te almisti (D-158); bu
+    # cagri yeri o zaman atlanmisti (D-158 denetim bulgusu 2).
+    waypoints = yol_duzelt(yol_px, gecilebilir_tam, wp_aralik_px=olc["wp_aralik_px"],
+                           dt_px=sonuc["dt_px"])
     t5 = time.perf_counter()
     cikti["sure_ms"]["duzelt"] = round((t5 - t4) * 1000, 2)
 

@@ -12741,3 +12741,298 @@ tahmindir, olcum degildir** — T98 karara baglar.
   3. KATMAN A 384 px'te olculmedi (T98).
   4. Jetson'da hicbir sey olculmedi.
   5. Kosumlar arasi varyans ±%6; her kosum TEK.
+
+### D-164 · ✅ UYGULANDI · T95 · `rota_bul` (KATMAN B) ACIKLIK KORUMASI URETIME ALINDI — kararlilik ekseninde SIFIR fark, ceviren kare kumeleri BIREBIR AYNI
+Yazan/olcen: Claude 2 (amele) · 2026-08-18 · gorev T95-C (kullanici emri) · dayanak D-107, D-139, D-156, D-158, D-159, D-162, D-163
+On kayit: `scripts/olcum/t95c_on_kayit.md` — mimar tarafindan, olcum KOSULMADAN once yazildi.
+Olcum: `scripts/olcum/91_t95c_kararlilik.py` · cikti `calisma/olcum/91_t95c_kararlilik.json`, `91_t95c_uretim_sonrasi.json`
+
+---
+## 1. NEDEN BU EKSEN
+
+Bu kuralin SABIT ESIKLI bicimi (V1) daha once TAM BU EKSENDE olduruldu:
+D-156'da K5'i cozdu ama kararliligi 8 -> 11/260 BOZDU ve reddedildi. W1
+bicimi KATMAN A'da kararliligi korumustu (8/260, D-158) — ama `rota_bul`
+FARKLI parametrelerle kosar ve bu yolda hicbir gurultu olcumu YOKTU:
+
+    rpi_inference:  aci_esigi_derece = 0,0   · gecilebilir = koridor > 0
+    rota_bul     :  aci_esigi_derece = 15,0  · gecilebilir = dt_px >= r_gerekli
+
+D-158 bulgu 1 asama 2'nin (aci esigi) korumayi SILEBILDIGINI gostermisti.
+
+---
+## 2. OLCUM
+
+Kume `sentetik_arena_kadraj_t66` (n=260). Gurultu recetesi 68/75 ile BIREBIR:
+`sigma=2,0/255` · `tekrar=3` · `tohum=7`; TEMIZ kosu cekilis YAPMAZ, ardindan
+kare basina 3 cekilis. Kare+cekilis basina model YALNIZ BIR KEZ kosar; cikan
+AYNI `mk` HEM taban HEM koruma `rota_bul` cagrisina verilir (D-139). Uretim
+kodu olcum sirasinda DEGISTIRILMEDI (maymun-yama).
+
+Kararsizlik olcusu: bir karenin 4 kosumunda `(durum, yol_no)` demeti AYNI
+degilse o kare CEVIRMIS sayilir.
+
+**POZITIF KONTROLLER**
+
+    TABAN modunda dt_px sizintisi        : 0    (beklenen 0)
+    TABAN yol_duzelt enjekte             : 0    (beklenen 0)
+    mk maskesi bozulan kosum             : 0    (beklenen 0)
+    RNG cekilis sayisi                   : 780  (beklenen 260 x 3 = 780)
+    KORUMA cagri == enjekte              : 118 / 118
+    -> OLCUM GECERLI
+
+---
+## 3. SONUC — SIFIR FARK
+
+    olcum                                        TABAN   KORUMA
+    (durum, yol_no) CEVIREN kare                    26       26
+    temiz kosuda durum == ACIK                      31       31
+    DOGRULAMA_BASARISIZ kare (4 kosumun biri)        0        0
+      ayni, temiz kosuda                             0        0
+      ayni, TOPLAM kosum (1040 icinde)               0        0
+
+    temiz kosuda durum dagilimi — IKI MODDA DA AYNI:
+      BELIRSIZ_COKLU 136 · BELIRSIZ_TEK_KAPI 88 · ACIK 31 · KAPALI_DAR 4 · KAPI_YOK 1
+
+🔴 **CEVIREN KARE KUMELERI BIREBIR AYNI** — yalniz korumada ceviren **0**,
+yalniz tabanda ceviren **0**. Gecis histogramlari da ayni (11x
+BELIRSIZ_TEK_KAPI->BELIRSIZ_COKLU · 6x tersi · 5x ACIK/2->BELIRSIZ_COKLU · …).
+
+**MIMARIN MEKANIZMA ONGORUSU DOGRULANDI.** `yol_no` `koridor_adaylari`dan
+gelir ve `yol_duzelt`ten ONCE belirlenir; koruma koridor SECIMINI
+ceviremez. Kod okumasiyla dogrulandi: `yol_duzelt` sonrasi `durum`u
+degistirebilen TEK dal `costmap_path_finder.py:1185-1190`
+(`DOGRULAMA_BASARISIZ`) ve o dal 1040 kosumun HICBIRINDE tetiklenmedi.
+
+---
+## 4. ON KAYIT OLCUTLERI
+
+    olcut                                          esik        SONUC
+    (K1) ceviren kare <= taban                     <= 26    26  TUTTU
+    (K2) temiz kosuda ACIK >= taban                >= 31    31  TUTTU
+    (K3) DOGRULAMA_BASARISIZ kare <= taban         <= 0      0  TUTTU
+    (6)  codes/test_rota_sentetik.py               15/15  15/15 TUTTU
+    (7)  unittest discover -s tests                >= 584  589  TUTTU
+
+T95-B'de tutan olcutler (D-162) gecerliligini korur; yeniden olculmedi.
+
+**HEPSI TUTTU -> DEGISIKLIK URETIME ALINDI.**
+
+---
+## 5. YAPILAN
+
+`codes/costmap_path_finder.py:1116` (+ `jetson_paket/kod/` kopyasi):
+
+    - waypoints = yol_duzelt(yol_px, gecilebilir_tam, wp_aralik_px=olc["wp_aralik_px"])
+    + waypoints = yol_duzelt(yol_px, gecilebilir_tam, wp_aralik_px=olc["wp_aralik_px"],
+    +                        dt_px=sonuc["dt_px"])
+
+Yani T94'te yazilan kural (D-158) KATMAN B'de de devreye girdi. Olculen
+kazanc (D-159/D-162, ayni kosumda taban vs koruma, n=260):
+
+    kayip medyani            3,00 -> 0,693 px
+    pay < 3 px olan ACIK kare   3 -> 0        (0,48 -> 8,92 · 0,92 -> 8,01 · 1,95 -> 6,02)
+    ACIK                       31 -> 31       · `yol_no` 31/31 karede AYNI
+    waypoint medyani           31 -> 32
+    uretim olceginde (128x128) KATMAN B 21,69 -> 25,15 ms (sozlesme 30-40 ms)
+
+**YENI TEST:** `tests/test_rota_bul_aciklik_korumasi.py` (5 test).
+Kilitledigi sey: `rota_bul` `yol_duzelt`e `dt_px` GECIRIYOR · gecilen dizi
+`serbest_alan`in dondurdugu `sonuc["dt_px"]`in TA KENDISI (`assertIs`) ·
+sekil uyumu · sahnenin `yol_duzelt`e GERCEKTEN ULASTIGI · yardimcinin
+DUSEBILDIGI karsi kontrol.
+
+⚠ **NEDEN BU TEST SART:** kural `dt_px=None` iken SESSIZCE kapanir. Argumanin
+dusmesi hicbir hata uretmez, yalnizca koruma yok olur — D-58/D-60/D-116
+sapma sinifinin tam kalibi.
+
+**MUTASYON KONTROLU (D-15/K-04).** Uretim satirindan `dt_px` gecici olarak
+KALDIRILDI ve testler kosuldu:
+
+    Ran 5 tests · FAILED (failures=1, errors=2)
+    AssertionError: rota_bul `yol_duzelt`e `dt_px` GECIRMIYOR — aciklik
+    korumasi sessizce KAPALI
+
+Yani test bos degil: 5 testin 3'u mutasyonda duser. Satir sonra yedekten
+GERI ALINDI (`git checkout` KULLANILMADI) ve ayna senkronu dogrulandi.
+
+---
+## 6. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    ⚠ Waypoint sayilari arti: 38->43, 56->67, 39->43 ... Bu BEKLENEN
+      etkidir (kural yalniz KISALTMAYI reddeder, dugum EKLER) ve 15/15
+      dogruluk degismedi.
+
+    python -m unittest discover -s tests -q
+        Ran 589 tests in 51.403s
+        OK
+    (584 -> 589; artis yeni test dosyasinin 5 testidir, HIC dusme yok)
+
+---
+## 6b. 🔴 EMULASYON = URETIM, OLCUMLE DOGRULANDI (D-158 §4 disiplini)
+
+Olcumler uretim kodu DEGISMEDEN, maymun-yamayla yapildi. "Yama uretimin
+yapacaginin AYNISINI yapiyor" bir IDDIADIR; D-158 §4 bunu olcmustu, ben de
+olctum. Degisiklik uygulandiktan SONRA ayni betik yeniden kosuldu.
+
+⚠ Betigin TABAN kolu bu noktada artik "hicbir sey eklememek" ile kurulamaz —
+uretim `dt_px`i KENDISI gecirdigi icin taban kolu onu CIKARMAK zorundadir.
+Bu duzeltilmeseydi taban ile koruma AYNI SEY olur ve olcum SESSIZCE
+anlamsizlasirdi. Betige `kw.pop("dt_px", None)` ve bir sayac eklendi:
+
+    URETIMIN KENDI gecirdigi dt_px cagrisi : 236 / 236
+    (T95 ONCESI bu sayi 0 idi — degisiklik OLCULEREK dogrulandi)
+
+Uygulama SONRASI kosum, uygulama ONCESI emulasyonun sayilarini BIREBIR
+yeniden uretti:
+
+    olcum                                  ONCE (emulasyon)   SONRA (uretim)
+    ceviren kare        TABAN / KORUMA          26 / 26           26 / 26
+    temiz ACIK          TABAN / KORUMA          31 / 31           31 / 31
+    DOGRULAMA_BASARISIZ TABAN / KORUMA            0 / 0             0 / 0
+    RNG cekilis                                     780               780
+
+---
+## 7. DOGRULANAMADI / ACIK KALAN
+
+  1. 🔴 **KORUMANIN CEVIRME FIRSATI HIC DOGMADI.** `yol_duzelt` sonrasi
+     `durum`u degistirebilen tek dal `DOGRULAMA_BASARISIZ`tir ve 1040
+     kosumun HICBIRINDE tetiklenmedi (iki kolda da 0). Yani (K1)/(K3)
+     YAPISAL OLARAK dusebilir olcutlerdir ama BU KUMEDE sinanma firsati
+     bulamadilar. "Kararliligi bozmuyor" sonucu bu kume icin GECERLI, ama
+     `rota_dogrula`nin dustugu bir kumede YENIDEN olculmelidir.
+  2. **Tek gurultu recetesi, tek tohum.** sigma=2/255 · tekrar=3 · tohum=7.
+     Baska tohumda ceviren kare sayisi degisebilir; olculmedi.
+  3. **Kume SENTETIKTIR** (t66). Gercek karelerde ve gercek mozaikte
+     gurultu altinda HICBIR SEY olculmedi.
+  4. **K1..K5 kabul kapilari YENIDEN KOSULMADI.** Gerekce (kod okumasi,
+     dogrulandi): `65_kabul_denetcisi.py` / `66_k5_bariyer_populasyon.py`
+     `analyze_path` uzerinden koser, yani KATMAN A'dir; `rota_bul`u
+     KULLANAN tek uretim yeri `simulation/scripts/iha_haritala.py`dir
+     (`grep -l rota_bul` ile tarandi). Bu bir GEREKCEDIR, kapi ciktisi
+     DEGILDIR.
+  5. **`76_serit_etiketi_celiskisi.py` `rota_bul` kullanir**; sayilari bu
+     degisiklikle KAYMIS olabilir, yeniden kosulmadi.
+  6. **`iha_haritala` zinciri KOSULMADI.** Yayinlanan `road` uzerindeki
+     etki kod okumasiyla beklenir (koridor secimi degismiyor) ama
+     olculmedi.
+  7. **Jetson'da hicbir sey olculmedi**; sure sayilari PC'ye aittir.
+
+### D-165 · 🔎 T95 DENETIMI (MIMAR) · UYGULAMA ONAYLANDI — ama OLCUM HICBIR TURDA URETIMIN CAGRI IMZASINI KULLANMADI (T99)
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T95 · denetlenen kayit D-164 (Claude 2, amele)
+⚠ MADDE 7: ameleyi ben denetliyorum; kendi kapi tasarimimin zayifligi da §3'te.
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                                nasil dogrulandi              sonuc
+    kapi: unittest                       KENDIM kostum             589 OK
+    kapi: test_rota_sentetik             KENDIM kostum              15/15
+    uretim degisikligi dogru satirda     git diff                  :1116 TEK
+    jetson aynasi senkron                iki diff satir satir      BIREBIR
+    kararlilik sayilari                  JSON'dan yeniden okundu   BIREBIR
+      ceviren 26/26 · temiz ACIK 31/31 · yalniz_koruma [] · yalniz_taban []
+    pozitif kontroller                   kontrol.gecerli            true
+      sizinti 0 · taban enjekte 0 · koruma 118/118 · cekilis 780 (=260x3)
+    yeni test BOS DEGIL                  amele mutasyon kostu       3/5 duser
+
+Testin kendisi de denetlendi: `assertIs` ile gecilen dizinin
+`serbest_alan`in dondurdugu `dt_px`in TA KENDISI oldugunu kilitliyor (D-158
+bulgu 4'un tekrarini engeller), sahnenin `yol_duzelt`e ULASTIGINI ayrica
+siniyor, ve yardimcinin DUSEBILDIGINI karsi kontrolle gosteriyor. Iyi test.
+
+Amelenin en iyi hamlesi §6b'dir: degisiklik uygulandiktan SONRA olcum
+betiginin TABAN kolu artik "hicbir sey eklememek" ile kurulamaz — uretim
+`dt_px`i KENDISI gecirdigi icin taban kolu onu CIKARMAK zorundadir. Bunu
+kendisi yakalayip `kw.pop("dt_px", None)` ekledi ve sayacla dogruladi
+(236/236; T95 oncesi 0). Yakalamasaydi iki kol AYNI SEY olur ve olcum
+SESSIZCE anlamsizlasirdi.
+
+## 2. 🔴 BENIM BULDUGUM: OLCUM URETIMIN CAGRI IMZASINI HIC KULLANMADI
+
+Uc turun UCUNDE de olcum sunu cagirdi:
+
+    C.rota_bul(mk, mpp=mpp, icerik=icerik)          # 91_t95c_kararlilik.py:130
+
+Uretim ise (`simulation/scripts/iha_haritala.py:323-328`):
+
+    rota_bul(costmap_maskeleri, mpp=MPP,
+             baslangic=baslangic, hedef=hedef, plan=True,
+             yol_sinif_idler=COSTMAP_YOL_KATMANLARI,      # (0,)
+             engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI,  # (1, 2) = MOLOZ + ARAC
+             gorsel_cikti=True)
+
+UC FARK, ikisi maddi:
+
+  (a) **`baslangic`/`hedef` olcumde None** -> `_ankoru_ekle` UC TURUN
+      HICBIRINDE KOSMADI. Amele "DOGRULAMA_BASARISIZ 1040 kosumun hicbirinde
+      tetiklenmedi" diye yazdi ve bunu kumeye yordu; sebebin bir parcasi
+      CAGRI IMZASIDIR.
+  (b) **`engel_sinif_idler` olcumde varsayilan `(1,)`**, uretimde `(1, 2)` —
+      yani olculen sahnelerde ARACLAR ENGEL SAYILMADI. Serbest alan, dolayisi
+      ile `dt_px` ve C-uzayi, uretimdekinden FARKLIDIR.
+  (c) `icerik` olcumde var, uretimde yok (mozaik letterbox degildir). Kucuk.
+
+## 3. NEDEN SONUCU YINE DE GECERSIZ KILMIYOR — KOD OKUMASIYLA
+
+(a) icin mekanizmayi kapattim, bu bir tahmin degil:
+
+  · `_ankoru_ekle` (`:339`) waypoint listesinden YALNIZ `waypoints[0]` veya
+    `waypoints[-1]`e bakar.
+  · `yol_duzelt` UCLARI KORUR — bu T94'te teste baglandi
+    (`test_kiris_aciklik_korumasi.py::test_koruma_YALNIZCA_dugum_EKLER`).
+  · Dolayisiyla ankor segmenti koruma ILE ve KORUMASIZ BIREBIR AYNIDIR;
+    koruma `_ankoru_ekle`nin sonucunu DEGISTIREMEZ.
+
+  · Geriye `rota_dogrula` kalir; o TUM listeyi dogrular, yani koruma dugum
+    ekledikce dogrulanacak segment artar. AMA risk YONU LEHTEDIR: kural
+    acikligi ARTIRIR (olculdu: pay medyani 13,92 -> 17,92 px), yani
+    `rota_dogrula`nin dusme olasiligi AZALIR, artmaz.
+  · Ustelik dusse bile `:1160-1195` HAM A* hucre merkezlerine GERI DUSER;
+    `DOGRULAMA_BASARISIZ` ancak IKISI BIRDEN duserse olusur.
+
+(b) icin boyle bir kapatma YAPAMIYORUM: araclar engel sayildiginda serbest
+alan daralir, dar gecitler cogalir ve kuralin REDDETME orani artabilir.
+Bu, kuralin MANTIGINI degistirmez ama OLCULEN SAYILARIN uretim girdisine ait
+olmadigi anlamina gelir. **T99 acildi.**
+
+## 4. 🔴 KENDI KAPI TASARIMIM ZAYIF CIKTI — sahiplenıyorum
+
+T95-C'yi "bu kurali BIR KEZ OLDURMUS eksende sina" diye kurdum (D-163 §3).
+Ama korumanin karari cevirebilecegi TEK dal (`DOGRULAMA_BASARISIZ`) 1040
+kosumun hicbirinde tetiklenmedi. Yani kapi "gercek bir meydan okumadan sag
+cikti"yi degil, "surpriz olmadi"yi dogruladi.
+
+⚠ Bunu on kayitta KISMEN ongormustum ("mekanizma daralticidir... beklentim
+bozulmamasi yonunde") — ama o zaman `_ankoru_ekle`nin uclara bakip
+gecmesini ve geri dusme dalini ANALIZ ETMEMISTIM. Etseydim, bu eksende bir
+TUR HARCAMAK yerine mekanizmayi dogrudan kapatir ve T95'i bir tur once
+bitirirdim. Amele bunu kendi DOGRULANAMADI listesinin 1. maddesinde durustce
+yazdi; ben tasarlarken gormeliydim.
+
+    DERS: bir kapi kurmadan once, olcecegi olayin MEYDANA GELEBILIR olup
+    olmadigini kodda kontrol et. Meydana gelemeyen bir olayi olcen kapi,
+    gecmesi kacinilmaz oldugu icin GUVEN URETIR ama BILGI URETMEZ.
+
+## 5. KARAR: UYGULAMA ONAYLANDI
+
+Gerekce, kapilarin gecmesi DEGIL, mekanizmanin kapali olmasidir:
+  · Kazanc olculdu ve buyuk: pay < 3 px olan kare 3 -> 0, kayip medyani
+    3,00 -> 0,693 px, pay medyani 13,92 -> 17,92 px.
+  · Maliyet uretim olceginde butce icinde: KATMAN B 21,69 -> 25,15 ms (30-40).
+  · Koridor secimi degismiyor (`yol_no` 31/31 AYNI) ve degisemez de:
+    `koridor_adaylari` `yol_duzelt`ten ONCE kosar.
+  · Kararsizlastirma yolu ANALITIK OLARAK KAPALI (§3) ve olculen fark SIFIR.
+  · Test baglantiyi kilitliyor ve mutasyonda dusuyor.
+
+**DOGRULANAMADI**
+  1. Uretimin cagri imzasiyla (ankorlu, `engel=(1,2)`) HIC olculmedi (T99).
+  2. `76_serit_etiketi_celiskisi.py` `rota_bul` kullanir; sayilari bu
+     degisiklikle kaymis olabilir — yeniden kosulmadi.
+  3. `iha_haritala` zinciri ucdan uca kosulmadi; yayinlanan `road` uzerindeki
+     etki kod okumasiyla bekleniyor, OLCULMEDI.
+  4. Tek gurultu recetesi/tohumu (sigma 2/255, tekrar 3, tohum 7).
+  5. Gercek arena karesi ve gercek mozaik yok; kume sentetiktir.
+  6. Jetson'da hicbir sey olculmedi.

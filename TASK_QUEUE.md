@@ -4529,7 +4529,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     — korumasızla birebir aynı). Altısı kodla kapatıldı, ikisi göreve döndü.
     Düzeltmeler algoritmayı değiştirdiği için **bütün kapılar son kodla
     yeniden koşuldu**.
-- [ ] **T95 — `rota_bul` açıklık korumasından yararlanmıyor (KATMAN B)** · `codes/costmap_path_finder.py:1071` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 2)
+- [x] **T95 — UYGULANDI · `rota_bul` açıklık koruması (KATMAN B)** · `codes/costmap_path_finder.py:1116` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 2) → **D-164**
   - `rota_bul` `yol_duzelt`i `dt_px` **geçirmeden** çağırıyor; oysa
     `sonuc["dt_px"]` bir satır önce kapsamda. D-154'te ölçülen kusur (kiriş
     emniyet payını yiyor, medyan 4 px) bu yolda **hâlâ canlı**.
@@ -4715,6 +4715,61 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     **Cevap: yarı yarıya** — sabit ön ek geçişi %55, reddetme döngüsü %45,
     aşama-2 pratikte bedava. D-160'ın gözlediği **1,03–7,82 ms oynaklığının
     kaynağı `:822`dir** (1–190 çağrı); `:816` her karede tam 90'dır (n−1).
+
+  - ✅ **T95-C ÖLÇÜLDÜ · HEPSİ TUTTU · UYGULANDI · 2026-08-18 · Claude-2** ·
+    kayıt `REVIEW_LOG.md` **D-164** · ölçüm `scripts/olcum/91_t95c_kararlilik.py`.
+  - **Sınanan eksen:** bu kuralın sabit eşikli biçimi (V1) D-156'da **tam bu
+    eksende öldürülmüştü** (kararlılık 8 → 11/260). `rota_bul` farklı
+    parametrelerle koşar (`aci_esigi_derece=15,0` · C-uzayı) ve bu yolda hiç
+    gürültü ölçümü yoktu.
+    ```text
+    olcum (n=260 · sigma 2/255 · 3 cekilis · tohum 7)  TABAN   KORUMA
+    (durum, yol_no) CEVIREN kare                          26       26
+    temiz kosuda durum == ACIK                            31       31
+    DOGRULAMA_BASARISIZ kare (4 kosumun biri)              0        0
+      ayni, TOPLAM kosum (1040 icinde)                     0        0
+    ```
+  - 🔴 **ÇEVİREN KARE KÜMELERİ BİREBİR AYNI** — yalnız korumada çeviren **0**,
+    yalnız tabanda çeviren **0**; geçiş histogramları da aynı. Mimarın
+    mekanizma öngörüsü doğrulandı: `yol_no` `koridor_adaylari`dan gelir ve
+    `yol_duzelt`ten **önce** belirlenir.
+  - **ÖLÇÜTLER:**
+    ```text
+    (K1) ceviren kare <= taban           26 <= 26     TUTTU
+    (K2) temiz ACIK >= taban             31 >= 31     TUTTU
+    (K3) DOGRULAMA_BASARISIZ <= taban     0 <= 0      TUTTU
+    (6) codes/test_rota_sentetik.py      SONUC: 15/15 dogru
+    (7) unittest discover -s tests       Ran 589 tests in 51.403s / OK
+    ```
+    **POZİTİF KONTROLLER:** taban `dt_px` sızıntısı 0 · taban enjekte 0 ·
+    `mk` bozulan 0 · RNG çekiliş **780 = 260×3** · koruma çağrı/enjekte 118/118.
+  - **UYGULANAN:** `codes/costmap_path_finder.py:1116` →
+    `dt_px=sonuc["dt_px"]` (+ `jetson_paket/kod/` kopyası **senkron**).
+    Yeni test **`tests/test_rota_bul_aciklik_korumasi.py`** (5 test):
+    `dt_px` geçiliyor · geçilen dizi `sonuc["dt_px"]`in **ta kendisi**
+    (`assertIs`) · şekil uyumu · sahnenin `yol_duzelt`e **gerçekten ulaştığı** ·
+    yardımcının **düşebildiği** karşı kontrol.
+  - 🔴 **MUTASYON KONTROLÜ:** üretim satırından `dt_px` geçici kaldırıldı →
+    `Ran 5 tests · FAILED (failures=1, errors=2)`. Test boş değil; satır
+    yedekten geri alındı (`git checkout` kullanılmadı), ayna senkronu doğrulandı.
+  - 🔴 **EMÜLASYON = ÜRETİM, ÖLÇÜMLE DOĞRULANDI (D-158 §4):** değişiklikten
+    sonra aynı betik yeniden koşuldu; taban kolu artık `dt_px`i **çıkarmak**
+    zorunda (yoksa iki kol aynılaşıp ölçüm sessizce anlamsızlaşırdı).
+    ```text
+    URETIMIN KENDI gecirdigi dt_px cagrisi : 236 / 236   (T95 ONCESI 0)
+    ceviren 26/26 · temiz ACIK 31/31 · DOGRULAMA_BASARISIZ 0/0 — BIREBIR AYNI
+    ```
+  - ⚠ **DOĞRULANAMADI:** korumanın çevirme **fırsatı hiç doğmadı** —
+    `yol_duzelt` sonrası `durum`u değiştirebilen tek dal
+    (`:1185-1190 DOGRULAMA_BASARISIZ`) 1040 koşumun hiçbirinde tetiklenmedi.
+    (K1)/(K3) yapısal olarak düşebilir ölçütlerdir ama bu kümede **sınanma
+    fırsatı bulamadılar**; `rota_dogrula`nın düştüğü bir kümede yeniden
+    ölçülmeli. Ayrıca: tek tohum · küme sentetik · **K1..K5 kabul kapıları
+    yeniden koşulmadı** (gerekçe: `65`/`66` `analyze_path` üzerinden koşar,
+    `rota_bul`u kullanan tek üretim yeri `simulation/scripts/iha_haritala.py` —
+    `grep -l` ile tarandı; bu bir **gerekçedir, kapı çıktısı değildir**) ·
+    `76_serit_etiketi_celiskisi.py` `rota_bul` kullanır, sayıları kaymış
+    olabilir, yeniden koşulmadı.
 - [x] **T97 — KAPANDI (önermesi üretim ölçeğinde ÇÜRÜDÜ) · `yol_duzelt` ölçek maliyeti** · `codes/costmap_path_finder.py:768` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-160 §4**
   - Mimarın tanı probu (modelsiz, sentetik): görüntü ve düğüm sayısı **birlikte**
     büyürken `yol_duzelt` süresi
@@ -4805,6 +4860,51 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     Elde mozaik artefaktı **yok** (arandı); üretmek Gazebo tarama uçuşu ister.
   - **KARAR MİMARIN:** `yol_duzelt` cephesinde T97 kapanabilir; KATMAN A
     bulgusu **ayrı bir görev** olarak yeniden kapsamlanmalıdır.
+  - 🔎 **MİMAR DENETİMİ · 2026-08-18 · `REVIEW_LOG.md` D-165. UYGULAMA ONAYLANDI.**
+    Bağımsız doğrulananlar: kapıları **kendim koştum** (`unittest` **589 OK**,
+    `test_rota_sentetik` **15/15**) · `git diff` değişikliğin **tek satır** ve
+    doğru yerde olduğunu gösteriyor · jetson aynası satır satır **birebir** ·
+    kararlılık sayıları JSON'dan yeniden okundu, **birebir** · yeni testin
+    `assertIs`/pozitif kontrol/karşı kontrolü denetlendi, **boş değil**.
+  - 🔴 **DENETİMİN BULDUĞU (D-165 §2): ölçüm hiçbir turda üretimin çağrı
+    imzasını kullanmadı.** Üç tur da `rota_bul(mk, mpp=mpp, icerik=icerik)`
+    çağırdı; üretim (`iha_haritala.py:323-328`) `baslangic=`, `hedef=`,
+    `engel_sinif_idler=(1,2)` (**araçlar da engel**) kullanıyor. Sonucu:
+    `_ankoru_ekle` hiç koşmadı ve ölçülen sahnelerde **araçlar engel sayılmadı**.
+  - **Neden yine de onaylandı** (kod okuması, D-165 §3): `_ankoru_ekle` yalnız
+    `waypoints[0]`/`[-1]`e bakar (`:339`) ve `yol_duzelt` **uçları korur** —
+    T94 testiyle kilitli → koruma ankor sonucunu **değiştiremez**.
+    `rota_dogrula` tüm listeyi doğrular ama koruma açıklığı **artırır** (pay
+    medyanı 13,92 → 17,92 px), yani risk yönü lehtedir; düşse bile `:1160-1195`
+    **ham A\* hücre merkezlerine geri düşer**. Onay kapıların geçmesine değil,
+    **mekanizmanın kapalı olmasına** dayanıyor.
+  - ⚠ **Kendi kapı tasarımım zayıf çıktı (D-165 §4).** T95-C'yi "bu kuralı bir
+    kez öldürmüş eksende sına" diye kurdum; ama korumanın kararı çevirebileceği
+    tek dal 1040 koşumun **hiçbirinde tetiklenmedi**. Kapı "gerçek bir meydan
+    okumadan sağ çıktı"yı değil **"sürpriz olmadı"yı** doğruladı. Amele bunu
+    kendi DOĞRULANAMADI listesinde yazdı; ben **tasarlarken** görmeliydim.
+    **DERS: bir kapı kurmadan önce ölçeceği olayın meydana GELEBİLİR olduğunu
+    kodda doğrula. Meydana gelemeyen olayı ölçen kapı güven üretir, bilgi değil.**
+- [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
+  - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
+    ```python
+    rota_bul(costmap_maskeleri, mpp=MPP, baslangic=..., hedef=..., plan=True,
+             yol_sinif_idler=COSTMAP_YOL_KATMANLARI,      # (0,)
+             engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI,  # (1, 2) MOLOZ + ARAC
+             gorsel_cikti=True)
+    ```
+  - `baslangic`/`hedef` farkının **mekanizması D-165 §3'te kapatıldı** (uçlar
+    korunuyor) — yine de hiç ölçülmedi.
+  - 🔴 **KAPATILAMAYAN fark:** `engel_sinif_idler=(1,2)`. Araçlar engel
+    sayıldığında serbest alan **daralır**, dar geçit çoğalır ve kuralın
+    reddetme oranı artabilir. **Ölçülen sayılar üretim girdisine ait değil.**
+  - **YAP:** `89`/`90`/`91` betiklerini üretim imzasıyla koştur; kayıp · pay ·
+    süre · kararlılık aynı tabloda yeniden çıkar.
+  - ⚠ Bulgu çıkarsa **geri alma seçeneği açıktır**; değişiklik tek satırdır.
+  - **KAPI:** ölçüm koşulmadan hiçbir kod değişmez.
+- [ ] **T100 — `76_serit_etiketi_celiskisi.py` sayıları T95'le kaymış olabilir** · `scripts/olcum/76_serit_etiketi_celiskisi.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-164 §7.5**
+  - Betik `rota_bul` kullanır ve T95 `waypoints`i değiştirdi; yeniden koşulmadı.
+  - **YAP:** yeniden koş, D-146/D-147'deki sayılarla kıyasla, kaydı güncelle.
 - [ ] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
   - `road = darbogaz_serit` (en dar noktanın şeridi). İki kollu bir sahnede
     darboğaz çatalın **altındaki paylaşılan gövdeye** düşerse yayınlanan sayı
