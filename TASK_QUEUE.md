@@ -4947,6 +4947,107 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     diğerlerinden **en az 5 kare** önde olmalı (D-146'nın ayrışma sayısı),
     **ve** kararlılığı mevcut `darbogaz_serit`ten kötü olmayacak. Tutmazsa
     **değişiklik yapılmaz**. **Ölçmeden değiştirilmesin.**
+
+  - ✅ **ÖLÇÜLDÜ · MEVCUT İSTATİSTİK DOĞRULANDI · DEĞİŞİKLİK YOK · 2026-08-18 ·
+    Claude-2** · kayıt `REVIEW_LOG.md` **D-167** · ölçüm
+    `scripts/olcum/92_t96_road_istatistigi.py`.
+    **Üretim kodu DEĞİŞTİRİLMEDİ** (`git status`: `codes/ comms/ tests/
+    jetson_paket/ simulation/` **boş**).
+    ```text
+    olculen kare 260 · rota ureten 258 · DISLANAN (BELIRSIZ) 49
+    KARSILASTIRILABILIR 209
+
+    TAM KUME UYUM (yer gercegine gore)
+      A_darbogaz  198 / 209  (%94,7)   <- yayinlanan, MEVCUT
+      C_cikis     197 / 209  (%94,3)
+      B_baskin    196 / 209  (%93,8)
+
+    AYRISMA:  A!=B 2 · A!=C 9 · B!=C 11 · ucu birden farkli 0
+              ayrisan alt kume 11 kare — 11'i de COK SERITLI (D-146 ile tutarli)
+    ```
+  - **ÖLÇÜTLER:**
+    ```text
+    (T1a) TAM KUME kazanan A (198) >= B(196), C(197)      TUTTU
+    (T1c) ayrisan + yer gercegi alt kume 11 kare (bos degil)
+    (T1b) A vs B : ayrisan  2 · A kurtardi 2 · B kurtardi 0 -> DOMINANT
+          A vs C : ayrisan  9 · A kurtardi 5 · C kurtardi 4 -> TAKAS
+          B vs C : ayrisan 11 · B kurtardi 5 · C kurtardi 6 -> TAKAS
+          -> A hepsine dominant DEGIL                       DUSTU
+    (T3) codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    (T4) unittest discover -s tests    Ran 589 tests in 54.665s / OK
+    (T5) KOSULMADI — on kayit "(T1a)+(T1b) tuttuysa kos" der; kazanan zaten
+         mevcut A oldugu icin gereksiz.
+    ```
+  - **KARAR: kazanan A (mevcut) → değişiklik yok.** Ön kaydın açıkça izin
+    verdiği sonuç. **İki gerekçe aynı yöne bakıyor:** (1) A tam kümede en
+    yüksek uyumu veriyor; (2) **A, B'yi 2-0 kesin yeniyor** — yani
+    `baskin_serit`i yayınlamak bu kümede **kesin olarak daha kötü** olurdu,
+    "hesaplanıyor ama yayınlanmıyor" bir eksiklik değil **doğru karar**.
+    A ile C arasında **5-4'lük takas** var; net kazanç yok.
+  - **POZİTİF KONTROLLER:** `karar_seridi` eşleme uyuşmazlığı **0** ·
+    manifest/üretim `icerik` farkı **0** · `acik_serit` çelişkisi **0** ·
+    ek kontrol: **yayınlanan `open_path` == A, 209/209** (yani "A" yeniden
+    türetim değil, üretimin yayınladığı alanın ta kendisi).
+  - 🔴 **İKİ KONTROL DE ATEŞLEDİ, İKİSİNDE DE HATA BENDEYDİ** (D-167 §2):
+    (a) eşlemeyi önce `serit_kutusu` ile kurdum → 21/527 uyuşmaz; doğrusu
+    `gecilebilir_kutu` (0/527) — kadraj tam şerit kutusunu kırpıyor, bu tam da
+    işaretlenen eşleme tuzağı. (b) "tam bir açık şerit olmalı" değişmezini
+    yanlış kurdum → 25 karede ateşledi; kadraj **birden çok üreteç şeridini
+    tek karar şeridine katlıyor** (`sa_000020`: üçü de `karar_seridi=2`).
+    Doğru değişmez: *açık şeritlerin hiçbiri `acik_serit` ile çelişmeyecek*.
+  - ⚠ **DOĞRULANAMADI:** küme sentetiktir (gerçek karelerde yer gerçeği yok) ·
+    49 BELİRSİZ kare dışlandı · **ayrışan alt küme 11 kare**, 5-4 ve 2-0 gibi
+    sayılar küçüktür ve örnekleme hatası ölçülmedi (bu, "değişiklik yok"
+    kararını **güçlendirir**, "A kesin en iyidir" demek değildir) · üçünü
+    birleştiren kural (oy çokluğu) ölçülmedi · B ve C'nin gürültü kararlılığı
+    hiç ölçülmedi · (T3)/(T4) bu dalda **kanıt değeri taşımaz** (D-160 §1).
+  - ⚠ **AÇIK KALAN (mimarın kararı):** `CONTRACTS.md §6.2` `road`ın **hangi
+    istatistik** olduğunu hâlâ **yazmıyor** (yalnız `{1:sol,2:orta,3:sağ}`
+    değer aralığı var). Ön kayıt bu yazımı yalnız "kazanan A değilse" dalıyla
+    şartlamıştı, o yüzden dokunmadım; ama bu ölçüm artık o tanımın dayanağını
+    sağlıyor.
+  - 🔎 **MİMAR DENETİMİ · 2026-08-18 · `REVIEW_LOG.md` D-168. KARAR DOĞRU,
+    GEREKÇE DÜZELTİLDİ.** Sayılar JSON'dan yeniden hesaplandı (198/196/197,
+    ayrışan 11, `yayinlanan_open_path == A` 209/209): **birebir**.
+  - 🔴 **A'nın 11 hatasının 7'si, üç istatistiğin de AYNI cevabı verdiği
+    karelerdedir** — orada aday seçmek hiçbir şey değiştirmez. O 7 kareye
+    baktım: sebep üretim değil, **yer gerçeğinin kendisi**. `sa_000127`de
+    kadrajda yalnız iki üreteç şeridi var, açık olanı **210 px** geniş; onun
+    merkezi 214,75, `serit_no` sınırı **213** → etiket 2, ama rota tamamen
+    x<213'te. **Merkez sınırın 1,75 px ötesinde.**
+  - **Ölçtüm** (açık şerit merkezinin en yakın `serit_no` sınırına uzaklığı):
+    ```text
+    kume                 n     merkez-sinir medyani   min    serit genisligi
+    ucu de YANLIS        7            5,2 px          0,8         210,4 px
+    AYRISAN             11            4,6 px          1,5         109,2 px
+    ucu de DOGRU       191           45,7 px          0,0         114,6 px
+    (serit_no ucte biri = 213,3 px)
+    ```
+    Hem 7 hem 11, etiketin **yazı-tura olduğu bantta** topluyor; doğru çıkan
+    191 karede pay **on kat** büyük.
+  - **SONUÇ: "değişiklik yok" DOĞRU ve şimdi DAHA GÜÇLÜ** (kanıt yalnızca az
+    değil, ölçülerek güvenilmez). ⚠ Ama **"A doğrulandı" DENEMEZ** — 198 vs
+    197 vs 196 farkı (2 kare) bu kırılganlığın altındadır. Doğru ifade: **bu
+    kümede sıralama KARARA BAĞLANAMAZ.**
+  - ⚠ **7 karelik "hepsi yanlış" ÜRETİM KUSURU DEĞİLDİR** — rota kapalı
+    koridordan geçmiyor, etiketleme çerçeveleri çatışıyor. D-167'yi okuyanın
+    çıkaracağı ilk yanlış sonuç bu olurdu.
+  - ✅ **CONTRACTS §6.2 GÜNCELLENDİ:** `road`ın hangi istatistik olduğu artık
+    yazılı — **olgu beyanı olarak**, "en iyisidir" iddiası olmadan.
+- [ ] **T101 — Etiketleme çerçevesi ill-conditioned: bir üreteç şeridi iki `serit_no` üçte birine birden yayılıyor** · `codes/karar_sozlesmesi.py` (`serit_no`) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-168 §4**
+  - `serit_no` GÖRÜNTÜYÜ üçe böler (üçte bir = 213,3 px). Üreteç şerit kutuları
+    kadraja göre **109-210 px** arası değişir; bir şerit iki üçte bire birden
+    yayılabilir. Ayırt edici karelerde şerit merkezi sınıra **~5 px**.
+  - Bu, `76_serit_etiketi_celiskisi.py`nin **H1** hipotezinin ta kendisidir —
+    artık sayıyla.
+  - 🔴 **SENTETİK KADRAJIN MI, GERÇEĞİN Mİ SORUNU: BİLİNMİYOR.** Gerçek arenada
+    üç koridor kabaca birer üçte bir kaplar; t66 kadrajı **iki şeritli** görüşler
+    üretiyor (uzunluk dağılımı 2→39, 3→116, 4→54, 5→51). Gerçek kamera çerçevesi
+    de iki şeritli görüş üretiyorsa sorun **gerçektir**.
+  - **ÖNCE ÖLÇ:** gerçek karelerde (`kompozit`, `drone`) kadrajda kaç koridor
+    görünüyor ve bir koridor `serit_no` sınırını ne sıklıkta aşıyor?
+  - **KAPI:** ölçüm koşulmadan `serit_no` DEĞİŞMEZ — o sözleşme alanıdır
+    (CONTRACTS §8) ve tüm karar yolu ona bağlıdır.
 - [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
 avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev

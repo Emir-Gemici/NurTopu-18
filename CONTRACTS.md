@@ -352,6 +352,27 @@ kendi fail-closed reddidir.
 `{1: "sol", 2: "orta", 3: "sag"}` — `open_route()` bu aralık dışında `ValueError` fırlatır.
 Rota yoksa `NO_ROUTE` gönderilir; `open_route`'a `None` geçilmez.
 
+**`road` HANGİ İSTATİSTİKTİR** (T96 · `REVIEW_LOG.md` D-167/D-168 · olgu beyanı):
+
+    road = olcum["darbogaz_serit"]        # rpi_inference.py:1255
+         = rotanın EN DAR geçtiği noktanın `serit_no()` şeridi
+
+`baskin_serit` (en çok rota pikseli taşıyan şerit) **hesaplanır ama yayınlanmaz**.
+Bu bir eksiklik değildir: ölçüldü (n=209, yer gerçekli sentetik küme),
+`darbogaz_serit` `baskin_serit`i ayrıştıkları 2 karenin **2'sinde de** yeniyor.
+
+⚠ **"En iyi istatistik budur" DİYE OKUNMAMALIDIR.** Üç aday ölçüldü —
+`darbogaz_serit` 198/209 · `cikis_serit` 197 · `baskin_serit` 196 — ama farkı
+belirleyen 11 karenin **yer gerçeği kırılgandır**: o karelerde açık şeridin
+merkezi `serit_no` sınırına medyan **4,6 px** uzaklıktadır (şerit genişliği
+109-210 px; doğru çıkan 191 karede pay 45,7 px). Yani sıralama bu kümede
+**karara bağlanamaz**; yayınlanan istatistik `darbogaz_serit`tir çünkü
+**öyle yazılmıştır** (D-41), daha iyi olduğu **gösterilmemiştir**.
+
+⚠ `road` **İKA'nın sürüş girdisi DEĞİLDİR** (D-166). Sürüş `waypoints`+`ref_xy`
+ile olur (`simulation/scripts/ika_nav.py:178-182` sayısal `road`'u geometri
+saymayı açıkça reddeder). `road` **yayınlanan ve puanlanan etikettir**.
+
 ### 6.3 Karar geçerliliği sözleşmesi — uç-band teması ve güven eşiği
 
 > Bir `OPEN_ROUTE` yayınlanmadan önce **iki bağımsız kapıdan** geçer. İkisi de

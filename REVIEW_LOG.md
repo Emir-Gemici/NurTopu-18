@@ -13140,3 +13140,264 @@ kutusunu doldurdugunda ortusur. **BU TUZAGA BU OTURUMDA BIR KEZ DUSTUM**
      CONTRACTS SS6.3'un ozetine dayaniyor.
   3. T90 korumasinin maliyeti (3 kare) yeni gerekce altinda yeniden
      tartilmadi.
+
+### D-167 · ✅ T96 · MEVCUT `road` ISTATISTIGI DOGRULANDI — `darbogaz_serit` uc aday icinde EN IYI, ama C ile TAKAS yaptigi icin DEGISIKLIK YOK
+Yazan/olcen: Claude 2 (amele) · 2026-08-18 · gorev T96 (kullanici emri) · dayanak D-41, D-107, D-139, D-146, D-158 (bulgu 5), D-166
+On kayit: `scripts/olcum/t96_on_kayit.md` — mimar tarafindan, olcum KOSULMADAN once yazildi (ve olcumden ONCE bir kez duzeltildi).
+Olcum: `scripts/olcum/92_t96_road_istatistigi.py` · cikti `calisma/olcum/92_t96_road_istatistigi.json`
+
+🔴 **URETIM KODU DEGISTIRILMEDI.** `git status`: `codes/`, `comms/`, `tests/`,
+`jetson_paket/`, `simulation/` BOS.
+
+---
+## 1. SORU
+
+`rpi_inference.py:1255` -> `open_path = olcum["darbogaz_serit"]`. Sorulan sey
+"hangi koridor acik"; sorulmayan sey "en dar nokta nerede". Uc aday:
+
+    A = darbogaz_serit   (yayinlanan, mevcut)
+    B = baskin_serit     (en cok rota pikseli tasiyan serit)
+    C = cikis_serit      (rotanin UST ucunun seridi — bu olcumde hesaplandi)
+
+`road` PUANLANAN cevaptir; IKA onunla SURMEZ (D-166). Yanlis numara IKA'yi
+yanlis koridora surmez, YANLIS CEVAP YAYINLAR.
+
+C su sekilde hesaplandi: kanonik rotanin **en kucuk y**'li waypoint'inin x'i
+-> `serit_no(x, icerik_x0, icerik_w)`. ⚠ Sira SOZLESME DEGILDIR; indise
+guvenilmedi, y'ye gore secildi.
+
+---
+## 2. OLCUM VE KONTROLLERI
+
+Kume `sentetik_arena_kadraj_t66` (n=260), TEMIZ kare, cekilis YOK. Kare basina
+model YALNIZ BIR KEZ kosar; A, B, C AYNI `analyze_path`/`_rota_serit_olcumu`
+ciktisindan turetilir (D-139).
+
+    olculen kare                          : 260
+    uretim ROTA URETEN kare               : 258
+    DISLANAN (uretec BELIRSIZ, yer=None)  :  49
+    C hesaplanamadi (waypoint yok)        :   0
+    KARSILASTIRILABILIR kare              : 209   (258 - 49)
+
+    POZITIF KONTROLLER
+      karar_seridi != serit_no(kutu merkezi) olan serit :  0   (beklenen 0)
+      manifest icerik != uretim icerik olan kare        :  0   (beklenen 0)
+      acik_serit ile uretec dokumu celisen kare         :  0   (beklenen 0)
+      -> ESLEME GECERLI
+    EK KONTROL (JSON'dan bagimsiz sayim):
+      yayinlanan `open_path` == A olan kare : 209 / 209
+      (yani "A" bir yeniden turetim degil, URETIMIN YAYINLADIGI alanin ta kendisi)
+
+**🔴 IKI KONTROL DE ATESLEDI VE IKISINDE DE HATA BENDEYDI — kayda geciyor.**
+
+  **(a) Yanlis kutu.** Yer gercegi eslemesini once `serit_kutusu` ile kurdum;
+  kontrol atesledi. Olculdu:
+
+      gecilebilir_kutu (varsa) -> serit_kutusu :   0 / 527 uyusmaz
+      yalniz serit_kutusu                      :  21 / 527 uyusmaz
+      arena_x_araligi ile bolme                : 133 / 527 uyusmaz
+
+  Sebep D-166'nin isaret ettigi tuzak: `serit_kutusu` URETECIN TAM serit
+  kutusudur ve kadraj onu KIRPAR; kirpilmis bir seridin tam-kutu merkezi
+  baska bir ucte bire dusebilir. Karar uzayinin gordugu sey seridin kare
+  icinde kalan GECILEBILIR parcasidir. Kontrol ayirt edicidir; 0 cikmasi
+  tesadufi degildir.
+
+  **(b) Yanlis degismez.** "acik_serit doluysa TAM BIR acik serit olmali"
+  diye ikinci bir kontrol yazdim; 25 karede atesledi. Ayristirinca veri degil
+  VARSAYIMIM yanlis cikti:
+
+      acik_serit VAR + karar_seridi CELISEN serit :  0 / 260   <- asil degismez
+      acik_serit VAR + birden cok "acik" serit    :  5   (hepsi AYNI
+                                                   karar_seridi, or. [2,2,2])
+      acik_serit YOK (BELIRSIZ)                   : 49   (29 tek + 20 coklu)
+
+  Kadraj birden cok URETEC seridini TEK karar seridine katlayabiliyor
+  (`sa_000020`: uc serit de `karar_seridi=2`). Degismez duzeltildi:
+  *acik_serit doluysa hicbir acik serit onunla CELISMEYECEK; bossa kare
+  `belirsiz` olacak.* Duzeltilmis haliyle 0/260.
+
+---
+## 3. SONUC (karsilastirilabilir kume, n=209)
+
+    TAM KUME UYUM (yer gercegine gore)
+      A_darbogaz   198 / 209   (%94,7)
+      C_cikis      197 / 209   (%94,3)
+      B_baskin     196 / 209   (%93,8)
+
+    AYRISMA
+      A != B :  2      A != C :  9      B != C : 11
+      ucu birden farkli : 0
+      EN AZ IKISI farkli (ayrisan alt kume) : 11
+      -> 11 karenin **11'i de `cok_seritli`** (D-146 ile tutarli)
+      -> ayrisan karelerde A dogru: 7 / 11
+
+    AYRISAN ALT KUME — KARE KARE
+      kare             yer  A  B  C  cok   serit pikselleri   serit_min_px
+      sa_000012.jpg      2  2  2  1   E        [20, 520, 0]   [29.0, 16.0, None]
+      sa_000025.jpg      2  1  1  2   E       [376, 164, 0]   [27.0, 42.79, None]
+      sa_000048.jpg      1  1  1  2   E       [386, 154, 0]   [58.59, 60.0, None]
+      sa_000060.jpg      2  1  1  2   E       [407, 133, 0]   [44.39, 52.0, None]
+      sa_000061.jpg      3  3  3  2   E       [0, 144, 396]   [None, 19.0, 19.0]
+      sa_000063.jpg      1  2  2  1   E        [93, 447, 0]   [31.0, 20.2, None]
+      sa_000105.jpg      1  1  1  2   E        [502, 38, 0]   [30.0, 52.0, None]
+      sa_000129.jpg      1  1  2  1   E       [198, 342, 0]   [29.59, 41.54, None]
+      sa_000191.jpg      3  3  3  2   E        [0, 56, 484]   [None, 111.0, 75.0]
+      sa_000198.jpg      3  2  2  3   E       [0, 287, 253]   [None, 37.0, 44.0]
+      sa_000216.jpg      3  3  2  3   E       [0, 320, 220]   [None, 36.0, 31.79]
+
+---
+## 4. ON KAYIT OLCUTLERI
+
+    (T1a) TAM KUME kazanan A (198) >= B (196), C (197)            TUTTU
+    (T1c) ayrisan + yer gercegi olan alt kume: 11 kare (BOS DEGIL)
+    (T1b) KESIN DOMINANS — ikili dokum:
+            A vs B : ayrisan  2 · A kurtardi 2 · B kurtardi 0  -> DOMINANT
+            A vs C : ayrisan  9 · A kurtardi 5 · C kurtardi 4  -> 🔴 TAKAS
+            B vs C : ayrisan 11 · B kurtardi 5 · C kurtardi 6  -> TAKAS
+          -> A digerlerinin HEPSINE dominant DEGIL                DUSTU
+    (T3)  codes/test_rota_sentetik.py                    SONUC: 15/15 dogru
+    (T4)  unittest discover -s tests                     Ran 589 / OK
+    (T5)  KOSULMADI — on kayit "(T1a)+(T1b) tuttuysa kos" der ve zaten
+          kazanan mevcut A'dir; degisiklik olmadigi icin gereksizdir.
+
+**KARAR: KAZANAN A (MEVCUT). DEGISIKLIK YAPILMADI.**
+Bu bir basarisizlik degildir — on kaydin acikca izin verdigi sonuctur:
+*"mevcut istatistik dogrulandi"* da gecerli bir sonuctur.
+
+**IKI AYRI GEREKCE ayni yone isaret ediyor:**
+  1. A tam kumede EN YUKSEK uyumu veriyor (198 · 197 · 196).
+  2. A, B'yi 2-0 KESIN yeniyor — yani `baskin_serit`i yayinlamak bu kumede
+     KESIN OLARAK DAHA KOTU olurdu. `baskin_serit`in "yayinlanmiyor" olmasi
+     bir eksiklik degil, dogru karardir.
+  3. A ile C arasinda 5-4'luk bir TAKAS var; net kazanc YOK. Puanlanan bir
+     sozlesme alanini 1 kare ugruna calkalamak on kayitta zaten
+     reddedilmisti.
+
+⚠ **C ILGINC AMA YETMIYOR.** `cikis_serit` tek basina A'ya cok yakin (197 vs
+198) ve A'nin YANILDIGI 4 karede DOGRU. Ama A'nin dogru oldugu 5 karede
+yaniliyor. Ucunu birlestiren bir kural (or. oy coklugu) OLCULMEDI — kapsam
+disi, ayri bir on kayit ister.
+
+---
+## 5. DOGRULANAMADI / ACIK KALAN
+
+  1. **Kume SENTETIKTIR** (t66). Gercek karelerde (`kompozit`, `drone`,
+     `arena_gercek`) yer gercegi YOKTUR, dolayisiyla bu kiyas ORADA
+     YAPILAMAZ. Sonuc bu kumeye aittir.
+  2. **49 BELIRSIZ kare DISLANDI** (uretecin kendisi tek cevap ilan etmiyor).
+     Yayinlanan `road`in o karelerde ne yaptigi bu olcumun KAPSAMINDA DEGIL.
+  3. **Ayrisan alt kume 11 karedir.** 5-4 ve 2-0 gibi sayilar KUCUKTUR;
+     ornekleme hatasi OLCULMEDI. Tek bir karenin degismesi A-C kiyasini
+     cevirebilir. Bu, "degisiklik yok" kararini GUCLENDIRIR (kanit zayifken
+     puanlanan alan calkalanmaz), ama "A kesin en iyidir" DEMEK DEGILDIR.
+  4. **Ucunu birlestiren kural (oy coklugu / kosullu secim) OLCULMEDI.**
+  5. **Gurultu altinda kararlilik (T5) KOSULMADI** — degisiklik olmadigi
+     icin gereksizdi. A'nin kendi kararliligi D-142/D-145'te 8/260'tir;
+     B ve C'nin kararliligi HIC olculmedi.
+  6. **(T3)/(T4) bu dalda KANIT DEGERI TASIMAZ** (D-160 §1): uretim kodu
+     degismedigi icin 15/15 ve 589 OK zaten degisemezdi. Yine de kosuldu ve
+     gercek ciktilari yukaridadir.
+  7. **Sartname SS5.3.2/SS6.2 metni OKUNMADI**; puanlama iddiasi CONTRACTS
+     SS6.3 ozetine dayanir (on kaydin kendi kapsam notu).
+  8. **CONTRACTS SS6.2'ye istatistik tanimi YAZILMADI** — on kayit bunu
+     yalniz "kazanan A degilse" daliyla sartlamisti. `road`in HANGI
+     istatistik oldugu sozlesmede HALA yazili degil; bu olcum artik o
+     tanimin dayanagini saglar. Mimarin karari.
+
+### D-168 · 🔎 T96 DENETIMI (MIMAR) · KARAR DOGRU ("degisiklik yok") ama GEREKCE YANLIS: KARSILASTIRMANIN DAYANDIGI 11 KARENIN YER GERCEGI KIRILGAN — "A dogrulandi" DENEMEZ
+Yazan/olcen: Claude 1 (mimar) · 2026-08-18 · gorev T96 · denetlenen kayit D-167 (Claude 2, amele)
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                                 nasil dogrulandi           sonuc
+    uretim kodu degistirilmedi            git status codes/ comms/   BOS
+                                          tests/ jetson_paket/ simulation/
+    uyum sayilari 198 / 196 / 197         JSON'dan yeniden hesapladim BIREBIR
+    ayrisan alt kume 11                   yeniden sayildi             11
+    `yayinlanan_open_path == A`           209 / 209                   TUTTU
+    esleme pozitif kontrolleri            kontrol.gecerli             true
+
+Amele iki kez kendi hatasini yakalayip kayda gecirmis (yanlis kutu:
+`serit_kutusu` yerine `gecilebilir_kutu`; yanlis degismez: "tek acik serit"
+varsayimi 25 karede atesledi). Ikisi de dogru duzeltilmis. Iyi is.
+
+## 2. 🔴 BENIM BULDUGUM: KARSILASTIRMANIN DAYANDIGI KARELER, YER GERCEGININ
+##    YAZI-TURA OLDUGU KARELERDIR
+
+A dogru 198/209, yani **11 karede yaniliyor**. Ayrisan alt kume de 11.
+Bunlar AYNI kumeler DEGIL — ayristirdim:
+
+    ayrisan (A, B, C birbirinden farkli)            : 11
+    ucu de AYNI ve UCU DE YANLIS                    :  7
+    ucu de AYNI ve dogru                            : 191
+    KAHIN TAVANI (yer gercegi uc adaydan biri)      : 202 / 209
+
+Yani A'nin 11 hatasinin **7'si, uc istatistigin de AYNI cevabi verdigi**
+karelerdedir; orada aday secmek hicbir sey degistirmez.
+
+**O 7 KAREYE BAKTIM VE SEBEP URETIM DEGIL, YER GERCEGININ KENDISI.**
+Ornek `sa_000127`: kadrajda YALNIZ IKI uretec seridi var, acik olani
+x 109,5..320,0 arasi — **210 px genisliginde**. `karar_seridi`, o kutunun
+MERKEZININ `serit_no`sudur: merkez 214,75 · `serit_no` siniri **213** ->
+etiket 2. Rotanin pikselleri ise tamamen x < 213'te, yani serit 1.
+**Merkez sinirin 1,75 px otesinde.** Rota da, etiket de kendi tanimina gore
+dogru; catisan sey TANIMLAR.
+
+Olctum (acik seridin merkezinin en yakin `serit_no` sinirina uzakligi):
+
+    kume                 n     merkez-sinir medyani   min    serit genisligi
+    ucu de YANLIS        7            5,2 px          0,8         210,4 px
+    AYRISAN             11            4,6 px          1,5         109,2 px
+    ucu de DOGRU       191           45,7 px          0,0         114,6 px
+
+    (`serit_no` ucte biri = 213,3 px)
+
+🔴 **HEM 7 hem 11, yer gercegi etiketinin YAZI-TURA oldugu daracik bantta
+topluyor** (medyan ~5 px sapma, seridin 109-210 px genisligine karsi). Dogru
+cikan 191 karede pay 45,7 px — **on kat.**
+
+MEKANIZMA (korelasyon degil): acik serit bir `serit_no` sinirini ASTIGINDA,
+rota o seridin ICINDE kaldigi halde sinirin iki yanina dusebilir. A, B ve C'nin
+UCU DE rota pikselinden turer; bu yuzden hem birbirlerinden hem lane-merkezli
+etiketten ayrilirlar. Ayrisma ile "hata" AYNI GEOMETRIDEN dogar.
+
+## 3. KARARI DEGISTIRMIYOR, GEREKCEYI DEGISTIRIYOR
+
+  · **"Degisiklik yok" DOGRU** — ve simdi DAHA GUCLU: kanit yalnizca az degil,
+    olculerek GUVENILMEZ. Puanlanan bir sozlesme alani boyle bir temelde
+    calkalanmaz.
+  · **D-167'nin basligi FAZLA GUCLU.** "MEVCUT `road` ISTATISTIGI DOGRULANDI"
+    denemez. Dogru ifade: **bu kumede karsilastirma KARARA BAGLANAMAZ**, cunku
+    ayirt edici 11 karenin yer gercegi kirilgandir. 198 vs 197 vs 196 farki
+    (2 kare / %1) bu kirilganligin altindadir.
+  · **7 karelik "hepsi yanlis" URETIM KUSURU DEGILDIR** — yer gercegi
+    artefaktidir. Rota kapali koridordan GECMIYOR; etiketleme cercevesi
+    catisiyor. Bu, D-167'yi okuyanin cikaracagi ilk yanlis sonuc olurdu.
+
+## 4. ASIL SORU BUYUDU: ETIKETLEME CERCEVESI
+
+`serit_no` GORUNTUYU uce boler; uretec serit kutulari kadraja gore 109-210 px
+arasi degisir ve bir serit iki ucte bire birden yayilabilir. Bu ill-conditioned
+bir eslemedir ve `76_serit_etiketi_celiskisi.py`nin H1 hipotezinin ta kendisidir
+— artik SAYIYLA: ayirt edici karelerde pay ~5 px, seride ~110-210 px.
+
+⚠ **BU SENTETIK KADRAJIN MI, GERCEGIN MI SORUNU — BILMIYORUM.** Gercek arenada
+uc koridor kabaca birer ucte bir kaplar; t66 kadraji ise IKI seritli gorusler
+uretiyor (uretec_seritleri uzunluk dagilimi: 2->39, 3->116, 4->54, 5->51 kare).
+Gercek kamera cercevesi de iki seritli gorus uretiyorsa sorun GERCEKTIR.
+**OLCULMEDI.** T101 acildi.
+
+## 5. SOZLESME BOSLUGU KAPATILDI (amele SS5.8'in isaret ettigi)
+
+CONTRACTS SS6.2 `road`in DEGER KUMESINI yaziyordu (`{1:sol,2:orta,3:sag}`)
+ama HANGI ISTATISTIK oldugunu yazmiyordu. Yazildi — bir OLGU beyani olarak,
+"en iyisidir" iddiasi OLMADAN (SS2 geregi oyle bir iddia kurulamaz).
+
+**DOGRULANAMADI**
+  1. Ayirt edici karelerde "dogru cevap"in ne oldugu TANIMSIZDIR; bu kumede
+     A/B/C sıralamasi karara baglanamaz.
+  2. Etiketleme cercevesi sorunu GERCEK karelerde olculmedi (T101).
+  3. Ucunu birlestiren kural (oy coklugu) olculmedi; kahin tavani 202/209,
+     yani en iyi ihtimalle 4 kare kazanc (%1,9).
+  4. Sartname SS5.3.2/SS6.2 metni okunmadi (D-166'dan beri acik).
