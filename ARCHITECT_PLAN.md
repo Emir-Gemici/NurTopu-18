@@ -226,8 +226,30 @@ yapılır"* gerekçesi zayıfladı. Çıkarım baskın olduğu için INT8/Tensor
 getirisi eskiden sanıldığından yüksek. Yine de sıra değişmez: Jetson'daki oran
 **ölçülmeden** optimize edilmez (T17).
 
+### 🔴 K-8 · KARE HIZI HEDEFİ — **3 FPS hedef, 1 FPS kabul edilen minimum**
+*(Karar: Yunus, 2026-08-18. Önceki "15 FPS iç hedefi" **KALDIRILDI**.)*
+
 Gerekli hız kapsama hesabından **0,9–2,6 FPS** (30 m irtifa, %80 örtüşme,
-5–15 m/s); 15 FPS şartname şartı değil, iç hedef.
+5–15 m/s). 15 FPS hiçbir zaman şartname şartı değildi ve ölçüm bütçesini
+gereksiz yere sıkıyordu; kapsama hesabının üst ucunun biraz üstü hedef alındı.
+
+| | değer | dayanak |
+|---|---|---|
+| **hedef** | **3 FPS** | kapsama hesabı üst ucu (2,6) + pay |
+| **kabul edilen asgari** | **1 FPS** | kapsama hesabı alt ucu (0,9) |
+
+**ÖLÇÜLEN DURUM (PC, RTX 5080, imgsz 640):** toplam p50 **84,5 ms → 11,96 FPS**
+— hedefin **4 katı**, asgarinin **12 katı**.
+Modül başlığı Jetson için "~2×" der (⚠ **ölçülmedi**) → tahmini **~6 FPS**,
+hedefin 2 katı.
+
+**DOĞRUDAN SONUÇ:** hız artık **tıkayıcı bir kısıt değildir**. Bu, iki açık
+işi doğrudan etkiler:
+- **T98** (KATMAN A 1024²'de 83 ms → ~12 FPS tavanı) — 3 FPS hedefinin
+  4 katı. **Optimizasyon gerekmiyor**; T98 ölçüm kaydıyla kapanır.
+- **T16/T17** (Jetson TensorRT + gerçek FPS) — hâlâ gerekli, çünkü Jetson'da
+  **hiçbir ölçüm yok**; ama artık "15 FPS'e yetişme" değil "1 FPS'in üstünde
+  kalma" sorusudur. Kapı: **T17 ölçümü ≥ 1 FPS**, hedef ≥ 3 FPS.
 
 **ONNX FP16 parite kapısı GEÇTİ:** aynı 60 karede PyTorch ve ONNX **birebir aynı**
 rota kararı (`KAPALI_DAR 24 · BELIRSIZ_TEK_KAPI 22 · MASKE_YOK 6 ·

@@ -4808,7 +4808,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     ```
     Açılış önermesi ("mozaik rejiminde bütçeyi aşıyor") üretimde
     **gerçekleşmiyor**. Görev kapanır.
-- [ ] **T98 — KATMAN A 1024 px'te 83 ms: `koridor_adaylari` tek başına 53 ms** · `codes/costmap_path_finder.py:21-25` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-162 §6, D-163 §5**
+- [x] **T98 — KAPANDI (3 FPS hedefiyle tıkayıcı değil) · KATMAN A 1024 px'te 83 ms** · `codes/costmap_path_finder.py:21-25` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-162 §6, D-163 §5**
   - T95-B ölçümünün yan bulgusu; **korumadan tamamen bağımsız** (costmap
     28,27→28,08 · koridor 53,27→51,75 ms; fark gürültü).
   - Modülün kendi sözleşmesi (`:22`): *"KATMAN A (her karede, **~5 ms @384px**)"*.
@@ -4855,10 +4855,17 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     yeniden kullanmak / ROI'ye kısıtlamak) ama **denenmedi**.
     `koridor_adaylari` T90/T91/T92'nin yük taşıyan fonksiyonudur;
     **ölçmeden dokunulmaz.**
-  - **AMELEYE KALAN (faz 1):** aynı tabloyu **GERÇEK model maskeleriyle**
-    384/512/640/1024'te çıkar; `_bagli_mi` çağrı sayısını sahne başına say.
-    Sentetiğim ölçek davranışını temsil ediyor ama mutlak değeri ~%33 yukarı
-    sapıyor.
+  - ✅ **KAPANDI · 2026-08-18 · kullanıcı kararı K-8 (`ARCHITECT_PLAN.md`).**
+    15 FPS iç hedefi **kaldırıldı**; yeni hedef **3 FPS**, kabul edilen asgari
+    **1 FPS**. KATMAN A 1024²'de 83 ms → **~12 FPS tavanı** = hedefin 4 katı,
+    asgarinin 12 katı. **Optimizasyon gerekmiyor.**
+  - Gerçek maskelerle 384/512 ölçümü **artık gereksiz** — hangi sayı çıkarsa
+    çıksın karar değişmez. Ölçüm kaydı D-169'da duruyor; gerekirse oradan
+    devam edilir.
+  - ⚠ **Kapanan şey OPTİMİZASYON İHTİYACIDIR, ölçüm borcu değil:** `_bagli_mi`
+    kare başına 9 kez tüm görüntüde `connectedComponents` koşuyor. Bu bir
+    kusur değil ama **bilinen bir maliyet**; ileride hız sorun olursa
+    bakılacak ilk yer burasıdır.
 
   - ✅ **BEKLENEN ÖLÇÜM GELDİ · 2026-08-18 · Claude-2** · kayıt **D-162 §6** ·
     `scripts/olcum/90_t95b_butce.py --uretim-olcegi`.
