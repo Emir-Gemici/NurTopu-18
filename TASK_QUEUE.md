@@ -5451,7 +5451,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **ÖNCE TARA VE ÖLÇ. EŞİK DEĞİŞTİRME** — eşik değişikliği ayrı karardır.
   - D-201'in kendi sınırı buraya girer: %80,6 tabanının T58 zinciri koşulmadı.
 
-- [ ] **T117 — "Çatı engeldir" dersi RescueNet'ten gerçek kareye TAŞINMIYOR: neden?** · `models/`, `dataset/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-201**, hüküm **D-207**
+- [STATUS: READY_FOR_REVIEW] **T117 — CEVAPLANDI (kök neden): model çatıyı ÖĞRENMİŞ (hasarsız bina recall %96,6) ama gerçek karelerin KENDİ ETİKETİ "zemin" diyor — 448/448 dosya TAM-KARE sınıf 0** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_gercek/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-210** · ⚠ ölçümü MİMAR yaptı, kapatan **Fable 5** olacak (madde 19)
   - v34 RescueNet'te bina/ağaç/su/havuzu engel olarak gördü (D-199 §2, görsel) ama
     gerçek otopark karesinde çatı hâlâ **yeşil** (D-201 A2, iki karede gözle).
   - **Çoklu hipotez — aynı anda ölç, önceden birini seçme:** GSD/irtifa farkı ·
@@ -5489,6 +5489,29 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **Genel risk:** aynı sınıftan başka dosya var mı? `tests/arena_kompozit_kapisi.py`
     ve `tests/t64_hakem_ekrani_kapisi.py` `test_` önekli **değil** — keşif onları hiç
     toplamıyor olabilir (turun tamlık eleştirmeni işaret etti, ölçülmedi).
+
+- [ ] **T121 — 🔴 Üreteç bilinmeyen bölgeyi ZEMİN ilan ediyor: madde 15'in VERİ tarafındaki ihlali** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**
+  - **Ölçüldü (mimar).** `copy_paste_gercek` etiketlerinin **448/448**'i şu satırla başlıyor:
+    ```text
+    0 0.000000 0.000000 1.000000 0.000000 1.000000 1.000000 0.000000 1.000000
+    ```
+    Sınıf 0 = tüm kare. Üstüne sınıf 1 yapıştırılıyor; **geri kalan her piksel zemin**.
+    Kaynak `data/raw_frames` = otopark kareleri → bina çatıları eğitimde
+    açıkça **"geçilebilir"** öğretiliyor.
+  - **Madde 15 ihlali, veri tarafında.** Kodda `serbest(K1 ∧ ¬K2) ⊆ serbest(K1)`
+    üç eksende testli (T102). Ama tam-kare zemin etiketi **bilinmeyen her pikseli
+    serbest ilan ediyor** — yani serbest alanı BÜYÜTÜYOR. Değişmez kodda korunup
+    veride ihlal ediliyor.
+  - ⚠ **"Sil gitsin" YANLIŞ CEVAP.** D-12/D-18: bu bileşen çıkarılınca **körlük geri
+    dönüyor** (gerçek dokudan gelen görme yeteneği buradan geliyor). Seçenekler
+    **ölçülecek**, biri seçilmeyecek:
+    (a) tam-kare zemin → yalnız **doğrulanmış** zemin bölgelerine daralt
+    (b) bilinmeyen bölge **etiketsiz** bırakılsın (denetim almaz, ama "zemin" de demez)
+    (c) çatı/bina bölgeleri ayrı bir kâhinle işaretlenip sınıf 1'e eklensin
+    (d) karışım oranı değiştirilsin (çelişkinin ağırlığı azaltılsın)
+  - ⚠ **ÖN KAYIT ZORUNLU.** Her seçeneğin K0 (körlük) ve otopark kaplaması
+    üzerindeki etkisi **önceden** yazılacak ölçütle değerlendirilir.
+  - **Sıra bozulamaz:** veri düzeltilmeden **eğitim başlatılmaz** (D-210 §4).
 
 - [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):

@@ -16963,3 +16963,94 @@ edecek** — ozet denetlenebilir degildir, ham cikti denetlenebilirdir.
 
   · **T119** — yayinlanan `road` sozlesmesine DAVRANISSAL kapi (bu mutasyon dussun)
   · **T120** — `tests/test_costmap_on_images.py` sifir test topluyor
+
+---
+
+### D-210 · 🔴 T117 CEVAPLANDI (KÖK NEDEN) · Model çatıyı ÖĞRENMİŞ (recall %96,6) — gerçek karede görmüyor çünkü O KARELERİN KENDİ ETİKETİ "ZEMİN" DİYOR: 448/448 dosya TAM-KARE sınıf 0 ile başlıyor
+Tarih: 2026-08-20 · Ölçen: Claude 1 (mimar) · Girdi: Filo 4 ham çıktıları (Fable 5, işlenmemişti)
+⚠ **DENETİM BEKLİYOR** — bu ölçümü mimar yaptı, madde 19 gereği kapatan **Fable 5** olacak.
+
+#### 1. ALTI HİPOTEZDEN BEŞİ ÇÜRÜDÜ (turun ham çıktılarından okundu)
+
+    H1 GSD/irtifa   ÇÜRÜDÜ  GSD eşitlendi -> çatı blocked_frac yine 0.0
+                            (otopark araçları RescueNet medyanından KÜÇÜK; irtifa daha yüksek/eşit)
+    H5 çözünürlük   ÇÜRÜDÜ  8 ölçümün 8'inde çatı_blocked = 0.0 (512/1024/1600)
+                            1600'de çatı zeminden çıkıyor ama engel de olmuyor —
+                            eğitim ölçeği dışında GENEL çökme, çatıya özgü değil
+    H4 etiket kal.  ÇÜRÜDÜ  RescueNet çatıları tutarlı etiketli; 1/12 önemli hata (%8,3)
+    H3 dengesizlik  ZAYIF   bina RescueNet üyesinde blocked denetiminin %22,4'ü — az değil
+    H2 görünüm      ÇÜRÜDÜ  ve bu ÇÜRÜME belirleyici oldu -> §2
+
+#### 2. 🔴 BELİRLEYİCİ ÖLÇÜM — MODEL ZATEN ÖĞRENMİŞ
+
+`f4_doku.json`, v34, RescueNet **val**, hasar sınıfına göre bina recall'u:
+
+    bina_hasarsiz  n=33  blocked recall 0,966   trav sızıntı 0,0000
+    bina_hafif     n=18                 0,982                0,0001
+    bina_agir      n=15                 0,944                0,0002
+    bina_yikik     n=16                 0,947                0,0017
+
+**Sağlam, hasarsız çatıda bile recall %96,6 ve zemine sızıntı SIFIR.**
+Yani "çatı engeldir" dersi öğrenilmiş — hem de en zor sınıfta (hasarsız bina,
+otopark çatısına en çok benzeyen).
+
+Ama aynı model gerçek otopark karesinde çatıyı **1,0 zemin / 0,0 engel**
+görüyor (D-201 A2 + `f4_imgsz.json`: her çözünürlükte).
+
+Model öğrendi. Gerçek karede uygulamıyor. **Neden?**
+
+#### 3. KÖK NEDEN — EĞİTİM KÜMESİ ÇELİŞİYOR, VE ÇELİŞKİNİN GERÇEK-ALAN TARAFI "ZEMİN" DİYOR
+
+`dataset/copy_paste_gercek/labels/**/*.txt` ilk satırı:
+
+    0 0.000000 0.000000 1.000000 0.000000 1.000000 1.000000 0.000000 1.000000
+
+Sınıf **0 (traversable)**, köşeleri (0,0)·(1,0)·(1,1)·(0,1) — yani **TÜM KARE**.
+Üstüne sınıf 1 poligonları yapıştırılıyor; geri kalan her piksel **zemin**.
+
+    toplam etiket dosyasi                  : 448
+    TAM-KARE sinif 0 ile baslayan          : 448   (%100)
+    istisna                                : YOK
+
+`copy_paste_gercek`in kaynağı `data/raw_frames` — **otopark kareleri**
+(bkz. kalıcı sınır: bu kareler arena değildir). Yani o karelerdeki bina
+çatıları eğitimde **açıkça "geçilebilir zemin" olarak etiketleniyor.**
+
+`karisim_t54_engelli.yaml` içinde ikisi yan yana:
+
+    rescuenet_2sinif_engelli  3502 kare  ->  "çatı = ENGEL"
+    copy_paste_gercek          393 kare  ->  "çatı = ZEMİN"   (gerçek alan!)
+
+Model ikisini de öğreniyor ve **hangi alanda hangisini** uygulayacağını da
+öğreniyor: RescueNet görünümünde engel, gerçek otopark görünümünde zemin.
+D-201'in ölçtüğü davranış **tam olarak eğitildiği davranıştır.**
+
+#### 4. SONUÇ — BU GECE EĞİTİM YOK
+
+  · Aynı dağılımla yeniden eğitim **çözemez**: model hedef kavramı zaten
+    %96,6 recall ile biliyor. Eksik olan kapasite değil, **çelişkili denetim**.
+  · Reçete/epoch/seed değişikliği de çözemez (D-140: seed eğitimi hiç etkilemiyor).
+  · Düzeltilmesi gereken şey **veri**: `copy_paste_augmentation.py` bilinmeyen
+    bölgeyi zemin ilan etmeyi bırakmalı.
+  · Veri düzeltilmeden başlatılacak eğitim bir GPU gecesini **bilerek** yakar —
+    D-200'de aynı hatayı bir kez yaptım, kayda geçmişti.
+
+#### 5. MİMARİ AĞIRLIK — BU MADDE 15 İHLALİNİN VERİ TARAFI
+
+Anayasa madde 15: *"Serbest alan OTORİTEDİR; nesne katmanı yalnızca ÇIKARIR"*
+ve `serbest(K1 ∧ ¬K2) ⊆ serbest(K1)`. Kodda bu korunuyor (üç eksende testli,
+T102). Ama **eğitim verisi** ters yönde çalışıyor: tam-kare zemin etiketi,
+bilinmeyen her pikseli **serbest ilan ediyor** — yani serbest alanı BÜYÜTÜYOR.
+Değişmez kodda korunup veride ihlal ediliyor.
+
+Bu, planın ilk turunda **S1** olarak yazılmış ve *"geçilemez nesneyi asla
+etiketsiz bırakma"* kuralıyla adlandırılmıştı. O tur araçlar için görülmüştü;
+**çatılar için hâlâ canlı.**
+
+#### 6. AÇILAN GÖREV
+
+**T121** — üreteç bilinmeyen bölgeyi zemin ilan etmeyi bırakacak.
+⚠ Karar mimarındır ve ucuz değildir: tam-kare zemin etiketi kaldırılırsa
+gerçek dokudan gelen **görme yeteneği** de zayıflayabilir (D-12/D-18: bu bileşen
+çıkarılınca körlük geri dönüyordu). Yani "sil gitsin" **yanlış cevap**;
+seçenekler ölçülmeli.
