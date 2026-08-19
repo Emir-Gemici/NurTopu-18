@@ -1,0 +1,636 @@
+{
+ "betik": "94_t111_bakirlik_envanteri.py",
+ "not": "ENVANTERDIR, OLCUM DEGIL. Kapi YAPILMAZ (mimarin kisiti); etiketsiz kume bakir dogrulama kumesi DEGILDIR.",
+ "kumeler": {
+  "dataset/copy_paste_gercek": {
+   "yol": "O:\\navitas\\dataset\\copy_paste_gercek",
+   "goruntu": 448,
+   "etiket_txt": 448,
+   "etiketli_mi": true
+  },
+  "dataset/copy_paste_smoke": {
+   "yol": "O:\\navitas\\dataset\\copy_paste_smoke",
+   "goruntu": 6,
+   "etiket_txt": 6,
+   "etiketli_mi": true
+  },
+  "dataset/gercek_kompozit": {
+   "yol": "O:\\navitas\\dataset\\gercek_kompozit",
+   "goruntu": 39,
+   "etiket_txt": 30,
+   "etiketli_mi": true
+  },
+  "dataset/gercek_otopark": {
+   "yol": "O:\\navitas\\dataset\\gercek_otopark",
+   "goruntu": 235,
+   "etiket_txt": 235,
+   "etiketli_mi": true
+  },
+  "dataset/gercek_otopark_2x": {
+   "yol": "O:\\navitas\\dataset\\gercek_otopark_2x",
+   "goruntu": 123,
+   "etiket_txt": 123,
+   "etiketli_mi": true
+  },
+  "dataset/rescuenet_1024": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_1024",
+   "goruntu": 2964,
+   "etiket_txt": 2964,
+   "etiketli_mi": true
+  },
+  "dataset/rescuenet_11sinif": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_11sinif",
+   "goruntu": 4383,
+   "etiket_txt": 4383,
+   "etiketli_mi": true
+  },
+  "dataset/rescuenet_2sinif_engelli": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli",
+   "goruntu": 4383,
+   "etiket_txt": 4383,
+   "etiketli_mi": true
+  },
+  "dataset/rescuenet_ham": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_ham",
+   "goruntu": 8988,
+   "etiket_txt": 0,
+   "etiketli_mi": false
+  },
+  "dataset/rescuenet_kirpik": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_kirpik",
+   "goruntu": 485,
+   "etiket_txt": 484,
+   "etiketli_mi": true
+  },
+  "dataset/rescuenet_yolo": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_yolo",
+   "goruntu": 4048,
+   "etiket_txt": 4048,
+   "etiketli_mi": true
+  },
+  "dataset/rescuenet_yolo_256": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_yolo_256",
+   "goruntu": 4048,
+   "etiket_txt": 4048,
+   "etiketli_mi": true
+  },
+  "dataset/sentetik_arena": {
+   "yol": "O:\\navitas\\dataset\\sentetik_arena",
+   "goruntu": 3000,
+   "etiket_txt": 3000,
+   "etiketli_mi": true
+  },
+  "data/arena_kompozit": {
+   "yol": "O:\\navitas\\data\\arena_kompozit",
+   "goruntu": 63,
+   "etiket_txt": 9,
+   "etiketli_mi": true
+  },
+  "data/arena_referans": {
+   "yol": "O:\\navitas\\data\\arena_referans",
+   "goruntu": 1,
+   "etiket_txt": 0,
+   "etiketli_mi": false
+  },
+  "data/raw_frames": {
+   "yol": "O:\\navitas\\data\\raw_frames",
+   "goruntu": 67,
+   "etiket_txt": 0,
+   "etiketli_mi": false
+  },
+  "data/raw_frames_smoke": {
+   "yol": "O:\\navitas\\data\\raw_frames_smoke",
+   "goruntu": 2,
+   "etiket_txt": 0,
+   "etiketli_mi": false
+  }
+ },
+ "yamllar": {
+  "combined_data.yaml": {
+   "cozulen": [],
+   "cozulemeyen": [
+    {
+     "bolum": "train",
+     "ham": "rescuenet_yolo/images/train",
+     "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\rescuenet_yolo\\images\\train",
+     "var": false
+    },
+    {
+     "bolum": "train",
+     "ham": "floodnet_filtered/images/train",
+     "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\floodnet_filtered\\images\\train",
+     "var": false
+    },
+    {
+     "bolum": "val",
+     "ham": "rescuenet_yolo/images/val",
+     "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\rescuenet_yolo\\images\\val",
+     "var": false
+    },
+    {
+     "bolum": "val",
+     "ham": "floodnet_filtered/images/val",
+     "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\floodnet_filtered\\images\\val",
+     "var": false
+    },
+    {
+     "bolum": "test",
+     "ham": "rescuenet_yolo/images/test",
+     "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\rescuenet_yolo\\images\\test",
+     "var": false
+    }
+   ]
+  },
+  "karisim_arena.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  },
+  "karisim_arena_gercek.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_yolo\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  },
+  "karisim_gercek_kompozit.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\gercek_otopark\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\gercek_otopark\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\gercek_kompozit\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\gercek_kompozit\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\gercek_otopark\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\gercek_otopark\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\gercek_kompozit\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\gercek_kompozit\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  },
+  "karisim_gercek_otopark.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\gercek_otopark\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\gercek_otopark\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\gercek_otopark\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\gercek_otopark\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  },
+  "karisim_gercek_otopark_2x.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\gercek_otopark_2x\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\gercek_otopark_2x\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\gercek_otopark_2x\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\gercek_otopark_2x\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  },
+  "karisim_t54_engelli.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  },
+  "karisim_t54_gercek_agirlikli.yaml": {
+   "cozulen": [
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "train",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\train",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\sentetik_arena\\images\\val",
+     "var": true
+    },
+    {
+     "bolum": "val",
+     "ham": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "cozulen": "O:\\navitas\\dataset\\copy_paste_gercek\\images\\val",
+     "var": true
+    }
+   ],
+   "cozulemeyen": []
+  }
+ },
+ "matris": {
+  "dataset/copy_paste_gercek": [
+   "karisim_arena_gercek.yaml",
+   "karisim_gercek_kompozit.yaml",
+   "karisim_gercek_otopark.yaml",
+   "karisim_gercek_otopark_2x.yaml",
+   "karisim_t54_engelli.yaml",
+   "karisim_t54_gercek_agirlikli.yaml"
+  ],
+  "dataset/copy_paste_smoke": [],
+  "dataset/gercek_kompozit": [
+   "karisim_gercek_kompozit.yaml"
+  ],
+  "dataset/gercek_otopark": [
+   "karisim_gercek_kompozit.yaml",
+   "karisim_gercek_otopark.yaml"
+  ],
+  "dataset/gercek_otopark_2x": [
+   "karisim_gercek_otopark_2x.yaml"
+  ],
+  "dataset/rescuenet_1024": [],
+  "dataset/rescuenet_11sinif": [],
+  "dataset/rescuenet_2sinif_engelli": [
+   "karisim_gercek_kompozit.yaml",
+   "karisim_gercek_otopark.yaml",
+   "karisim_gercek_otopark_2x.yaml",
+   "karisim_t54_engelli.yaml",
+   "karisim_t54_gercek_agirlikli.yaml"
+  ],
+  "dataset/rescuenet_ham": [],
+  "dataset/rescuenet_kirpik": [],
+  "dataset/rescuenet_yolo": [
+   "karisim_arena.yaml",
+   "karisim_arena_gercek.yaml"
+  ],
+  "dataset/rescuenet_yolo_256": [],
+  "dataset/sentetik_arena": [
+   "karisim_arena.yaml",
+   "karisim_arena_gercek.yaml",
+   "karisim_gercek_kompozit.yaml",
+   "karisim_gercek_otopark.yaml",
+   "karisim_gercek_otopark_2x.yaml",
+   "karisim_t54_engelli.yaml",
+   "karisim_t54_gercek_agirlikli.yaml"
+  ],
+  "data/arena_kompozit": [],
+  "data/arena_referans": [],
+  "data/raw_frames": [],
+  "data/raw_frames_smoke": []
+ },
+ "hicbir_yamla_girmemis": {
+  "dataset/copy_paste_smoke": {
+   "yol": "O:\\navitas\\dataset\\copy_paste_smoke",
+   "goruntu": 6,
+   "etiket_txt": 6,
+   "etiketli_mi": true,
+   "olcum_adayi_mi": true
+  },
+  "dataset/rescuenet_1024": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_1024",
+   "goruntu": 2964,
+   "etiket_txt": 2964,
+   "etiketli_mi": true,
+   "olcum_adayi_mi": true
+  },
+  "dataset/rescuenet_11sinif": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_11sinif",
+   "goruntu": 4383,
+   "etiket_txt": 4383,
+   "etiketli_mi": true,
+   "olcum_adayi_mi": true
+  },
+  "dataset/rescuenet_ham": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_ham",
+   "goruntu": 8988,
+   "etiket_txt": 0,
+   "etiketli_mi": false,
+   "olcum_adayi_mi": false
+  },
+  "dataset/rescuenet_kirpik": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_kirpik",
+   "goruntu": 485,
+   "etiket_txt": 484,
+   "etiketli_mi": true,
+   "olcum_adayi_mi": true
+  },
+  "dataset/rescuenet_yolo_256": {
+   "yol": "O:\\navitas\\dataset\\rescuenet_yolo_256",
+   "goruntu": 4048,
+   "etiket_txt": 4048,
+   "etiketli_mi": true,
+   "olcum_adayi_mi": true
+  },
+  "data/arena_kompozit": {
+   "yol": "O:\\navitas\\data\\arena_kompozit",
+   "goruntu": 63,
+   "etiket_txt": 9,
+   "etiketli_mi": true,
+   "olcum_adayi_mi": true
+  },
+  "data/arena_referans": {
+   "yol": "O:\\navitas\\data\\arena_referans",
+   "goruntu": 1,
+   "etiket_txt": 0,
+   "etiketli_mi": false,
+   "olcum_adayi_mi": false
+  },
+  "data/raw_frames": {
+   "yol": "O:\\navitas\\data\\raw_frames",
+   "goruntu": 67,
+   "etiket_txt": 0,
+   "etiketli_mi": false,
+   "olcum_adayi_mi": false
+  },
+  "data/raw_frames_smoke": {
+   "yol": "O:\\navitas\\data\\raw_frames_smoke",
+   "goruntu": 2,
+   "etiket_txt": 0,
+   "etiketli_mi": false,
+   "olcum_adayi_mi": false
+  }
+ },
+ "cozulemeyen": {
+  "combined_data.yaml": [
+   {
+    "bolum": "train",
+    "ham": "rescuenet_yolo/images/train",
+    "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\rescuenet_yolo\\images\\train",
+    "var": false
+   },
+   {
+    "bolum": "train",
+    "ham": "floodnet_filtered/images/train",
+    "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\floodnet_filtered\\images\\train",
+    "var": false
+   },
+   {
+    "bolum": "val",
+    "ham": "rescuenet_yolo/images/val",
+    "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\rescuenet_yolo\\images\\val",
+    "var": false
+   },
+   {
+    "bolum": "val",
+    "ham": "floodnet_filtered/images/val",
+    "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\floodnet_filtered\\images\\val",
+    "var": false
+   },
+   {
+    "bolum": "test",
+    "ham": "rescuenet_yolo/images/test",
+    "cozulen": "\\home\\trs\\trs\\github\\navitas\\dataset\\rescuenet_yolo\\images\\test",
+    "var": false
+   }
+  ]
+ }
+}

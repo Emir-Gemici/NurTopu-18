@@ -16179,3 +16179,364 @@ Gorev metni yeniden yazildi: tam esleme tablosu + **TEK KAYNAK** olarak
 "bina (3-6)" tek basina anlamsizdir; "HAM RescueNet id 2-5" anlamlidir.
 Ayni disiplin esikler icin zaten vardi (hangi kosumdan geldigini yaz); sinif
 id'leri icin de gecerli.
+
+### D-196 · 🔎 T114 DENETIMI (BASAMELE -> MIMAR) · T104 GECTI — dort iddia da bagimsiz olcumle dogrulandi; 79 satirlik kor bolgede kurulumu bozan ayrisma YOK, bir DERECELI bulgu var
+Yazan/olcen: Claude 2 / Fable 5 (basamele, YUKARI yon) · 2026-08-20 · gorev T114 (kullanici emri) · denetlenen: commit effd125 (mimar, T104/D-193) · madde 19 bagimsizlik kurali geregi
+⚠ Mimarin ciktisi KABUL EDILMEDI; her iddia kendi olcumumle yeniden uretildi.
+
+**VERDIKT: GECTI — bir DERECELI bulgu ile (asagida §5).**
+
+---
+## 1. IDDIA 1 — "kok kilavuzun yordami bozuktu" · DOGRULANDI (kendi simulasyonumla)
+
+`git show effd125^:JETSON_KILAVUZ.md` okundu: eski yordamda `mkdir` icinde
+`comms` YOK ve `cp` yalniz `rpi_inference.py + costmap_path_finder.py`
+kopyaliyor — `karar_sozlesmesi.py` YOK. Iddiayi kabul etmeyip ESKI YORDAMI
+gecici dizinde BIREBIR uyguladim ve import ettim:
+
+    cikis kodu: 1
+    ModuleNotFoundError: No module named 'karar_sozlesmesi'
+
+(`costmap_path_finder.py:59-62` onu import eder — kod satiriyla dogrulandi.)
+YENI yordami da ayni sekilde simule ettim: `imports OK · INFER_SIZE 512`
+(defterden okunmus — S5 zinciri de kurulumda calisiyor). Yani duzeltme yalniz
+"testi geciyor" degil, GERCEKTEN calisan bir kurulum uretiyor.
+
+## 2. IDDIA 2 — "mutasyon 6 testin 3'unu dusuruyor" · DOGRULANDI
+
+Kok kilavuzu ESKI bozuk yordama cevirdim, kapiyi kostum:
+
+    FAIL: test_PAKETIN_TASIDIGI_her_dosya_kilavuzda_KOPYALANIYOR (navitas)
+    FAIL: test_dizin_agaci_IKI_kilavuzda_AYNI
+    FAIL: test_karar_sozlesmesi_EKSIK_KALAMAZ (navitas)
+    Ran 6 tests · FAILED (failures=3)
+
+Tam 3/6 — mimarin sayisiyla birebir. Yedekten geri alindi, `git diff` bos.
+
+## 3. IDDIA 3 — "beklenen liste KOPYALAR'dan turuyor" · DOGRULANDI
+
+`KOPYALAR`a `SAHTE_T114_dosyasi.py` ekledim; kapi onu IKI kilavuzda birden
+aradi ve dustu:
+
+    AssertionError: [] != ['SAHTE_T114_dosyasi.py']  (kilavuz='navitas')
+    AssertionError: [] != ['SAHTE_T114_dosyasi.py']  (kilavuz='jetson_paket')
+
+Elle liste YOK; kaynak `jetson_paket_hazirla.KOPYALAR`. Geri alindi.
+
+## 4. IDDIA 4 — MIMARIN OLCMEDIGI 79 SATIR · OLCULDU, KURULUMU BOZAN AYRISMA YOK
+
+`difflib.SequenceMatcher` ile iki kilavuzun TUM farkli satirlari cikarildi
+(yalniz kokte/degisen 19 · yalniz pakette/degisen 76) ve dort eksende tarandi:
+
+    surum anmalari : degisen satirlarda kokte 0, pakette yalniz 1 satir
+                     ("pc_modeli v17 diyordu, oysa pakette v21 vardi (D-83)")
+                     — TARIHSEL kayit, kurulum bilgisi degil.
+    ASIL MODEL     : iki kilavuzda da v34 (birebir ayni satir).
+    komutlar       : kokte 1, pakette 3 fark — hepsi asagidaki pip/dogrulama
+                     farki + paketin comms calistirma bolumu (kokte o bolum yok).
+    yollar/dosyalar: paket fazlaliklari paketin KENDI icerik agaci ve G1-G4
+                     bolumleri; kurulum yordamiyla celisen yol YOK.
+
+## 5. ⚠ DERECELI BULGU — pip satiri ayrisiyor, ama IMPORT KIRMIYOR (olculdu)
+
+    kok   :323/:327  python3 -c "import cv2, numpy, ultralytics; ..."
+                     pip3 install ultralytics opencv-python numpy
+    paket :372/:376  ... + serial, pymavlink
+                     pip3 install ... + pyserial pymavlink
+
+Kokun KENDI `cp` blogu artik `comms/` dosyalarini kopyaliyor ama pip satiri
+`pyserial/pymavlink` icermiyor. OLCTUM: bes comms modulunu pyserial/pymavlink
+GIZLENMIS bir yorumlayicida import ettim — **besi de OK** (korumali import;
+mevcut `test_jetson_comms_paketi` testleriyle tutarli). Kok kilavuz comms
+YAYINCISINI CALISTIRMAYI hicbir yerde soylemiyor (`iha_inis_yayinci.py
+--mavlink` yalniz pakette). Yani bu ayrisma KURULUMU BOZMAZ; yalniz kok
+kilavuzdan kurulup comms CALISTIRILMAK istenirse kosum aninda eksik cikar.
+Mimarin "kok depo baglamini, paket saha baglamini anlatir" ayrimiyla tutarli —
+ama pip satirinin da esitlenmesi UCUZ bir iyilestirme olur. KAPI YAPILMADI,
+yalniz kayda geciyor.
+
+---
+**KAPILAR:** `SONUC: 15/15 dogru` · `Ran 647 tests · OK` (asagida D-197/D-198
+degisiklikleriyle ortak kosum; T114'un kendisi kalici degisiklik birakmadi,
+tum mutasyonlar geri alindi, `git diff` yalniz kayit/kuyruk dosyalarinda).
+
+**DOGRULANAMADI:** simulasyonlar repo icinde gecici dizinlerdedir; gercek
+Jetson'da hicbir sey olculmedi (T16/T17 acik, D-178 ile ayni sinir).
+`combined_data.yaml`in olu yollari bu denetimin kapsami disinda (D-198'de).
+
+
+### D-197 · ✅ T105 KAPANDI · K5 artik UC DURUMLU: GECTI / DUSTU / OLCULEMEDI — OLCULEMEDI terfiyi YINE bloklar; ve 1059x634 sorusunun T94/T95 ile ILGISI CURUTULDU
+Yazan/olcen: Claude 2 / Fable 5 (basamele) · 2026-08-20 · gorev T105 (kullanici emri) · dayanak D-180
+Degisen: `65_kabul_denetcisi.py` (canli + `scripts/olcum/` aynasi, BAYT AYNI) · `tests/test_k5_ucuncu_durum.py` (YENI, 5 test)
+
+🔴 `codes/` ALTINA DOKUNULMADI.
+
+---
+## 1. YAPILAN
+
+`k5_durumu(kes)` saf fonksiyonu eklendi: `0 -> GECTI · >0 -> DUSTU ·
+None -> OLCULEMEDI`; verdikt girisi `k5_gecti(kes)` YALNIZ "GECTI"yi gecirir.
+
+🔴 **MIMARIN KISITI AYNEN UYGULANDI: OLCULEMEDI != GECTI.** Verdikt eski
+davranisla BIREBIR AYNI kalir (None eskiden de bloklardi: `None == 0` False);
+degisen yalniz RAPORDUR — eski kod None'u "DUSTU" diye YANLIS ATIFLA basiyordu,
+yeni kod "OLCULEMEDI" der ve ekrana sebep aciklamasi ekler:
+
+    K5 BARIYER = 0 px    OLCULEMEDI  kesisim OLCULEMEDI
+       (63_bariyer_kesisimi TEK karede kosar; o karede rota cikmadiysa
+        kesisim olculemez — bu 'basti' demek DEGILDIR. Terfi YINE bloklanir.)
+    VERDIKT: URETIME ALINMAZ — dusen: K5(OLCULEMEDI)
+
+JSON'a `K5_durum` alani eklendi. Bu "verdikt ayni / rapor farkli" denkligi
+bir TESTLE civilendi (`test_eski_davranis_None_ile_ayni_VERDIKT_farkli_RAPOR`).
+
+**MUTASYON KANITI** — "olculemeyeni gecir" duzeltmesi enjekte edildi
+(`k5_gecti` OLCULEMEDI'yi de gecirir yapildi):
+
+    Ran 5 tests · FAILED (failures=3)
+      FAIL: test_OLCULEMEDI_terfiyi_BLOKLAR
+            OLCULEMEDI GECTI sayildi — 'olculemeyeni gecir' KABUL EDILMEZ
+      FAIL: test_eski_davranis_None_ile_ayni_VERDIKT_farkli_RAPOR
+      FAIL: test_yalniz_sifir_kesisim_GECER
+
+Geri alindi; canli ve ayna kopya `diff` ile BAYT AYNI dogrulandi.
+
+## 2. ARASTIRMA — 1059x634 karesinde rota neden yok · T94/T95 BAGLANTISI CURUTULDU
+
+v34 ile kosuldu (`63_bariyer_kesisimi.py`):
+
+    karar: serit=None red=('UC_BANT_TEMAS_YOK', '... olculen alt=0/1059px,
+           ust=0/1059px; gereken >= 22px.')
+    bariyer pikselleri: model ENGEL diyor %100,0 · ZEMIN %0,0
+
+Kod okumasiyla kesinlestirildi: `UC_BANT_TEMAS_YOK` `rpi_inference.py:1222`de
+doner; `yol_duzelt` cagrisi `_bagli_koridor_yolu:1292 -> :935` icindedir, yani
+**bu red uretildiginde `yol_duzelt` HIC CALISMAMISTIR**. T94/T95 string-pulling
+degisiklikleri bu kareyle ILGISIZDIR. Ustune olcum: temas `alt=0, ust=0` —
+esik kiyisinda bir dusme degil; model o karede zemini uc bantlara HIC
+ulastirmiyor (kaplama ~%13, D-90 bolgesi). Sebep ALGIDIR, son islem degil.
+
+## 3. KAPILAR
+
+    yeni testler                  Ran 5 · OK
+    mutasyonda                    FAILED (failures=3)   [yukarida]
+    ayna                          diff canli/ayna -> BAYT AYNI (51/51 kapisi yesil)
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 647 tests · OK    (642 -> 647, +5)
+
+## 4. DOGRULANAMADI / ACIK KALAN
+
+  1. K5 HALA tek karede olculuyor; UC DURUM raporu kusuru GORUNUR yapti ama
+     OLCULEBILIR yapmadi. `66`/`80`e baglamak (D-180'in diger secenegi)
+     YAPILMADI — verdikte nasil girecegi mimarin acik karariyla "karar isi".
+  2. Ekran/verdikt baglantisi iki gercek kosum ciktisiyla gosterildi
+     (v34 ve v30, T110 kosumlari None uretmisti); YENI bir tam kabul kosumu
+     bu gorevde tekrarlanmadi (GPU'da T54 israfi olmasin diye).
+
+### D-198 · ✅ T111 KAPANDI · BAKIRLIK ENVANTERI: 17 kume x 8 yaml — GERCEKTEN ALAN DISI + ETIKETLI dogrulama kumesi YOK; "aday" gorunen 6 kumenin 6'si da egitim dagiliminin turevi
+Yazan/olcen: Claude 2 / Fable 5 (basamele) · 2026-08-20 · gorev T111 (kullanici emri)
+Cikti: `results/t111_bakirlik_envanteri/ozet.json` · betik `94_t111_bakirlik_envanteri.py` (+ `scripts/olcum/` aynasi)
+
+⚠ Bu bir ENVANTERDIR, olcum degil. KAPI YAPILMADI (mimarin kisiti).
+
+---
+## 1. MATRIS (ozet — tam hali ozet.json'da)
+
+17 kume tarandi (dataset/ 13 + data/ 4), 8 yaml cozuldu (goreceli yollar
+yaml'in kendi konumuna gore; `path:` anahtari varsa once o).
+
+    YAML'LARA GIREN 7 kume: copy_paste_gercek · gercek_kompozit ·
+      gercek_otopark · gercek_otopark_2x · rescuenet_2sinif_engelli ·
+      rescuenet_yolo · sentetik_arena
+    HICBIR YAML'A GIRMEYEN 10 kume:
+      ETIKETSIZ (olcum YAPILAMAZ — "bakir dogrulama kumesi" DEGILDIR):
+        rescuenet_ham (8988) · data/raw_frames (67) · data/raw_frames_smoke (2)
+        · data/arena_referans (1)
+      ETIKETLI (aday GIBI gorunen 6 kume — asagida provenans):
+        rescuenet_11sinif (4383) · rescuenet_yolo_256 (4048) ·
+        rescuenet_1024 (2964) · rescuenet_kirpik (485) ·
+        data/arena_kompozit (63 kare/9 etiket) · copy_paste_smoke (6)
+
+## 2. 🔴 ASIL BULGU — "ADAY" GORUNEN 6 KUMENIN 6'SI DA EGITIM TUREVI (OLCULDU)
+
+Dosya adi ortusmesi olculdu:
+
+    rescuenet_11sinif   4383/4383 (%100) egitimdeki adlarla AYNI — ayni
+                        goruntuler, farkli etiket semasi (11 sinif)
+    rescuenet_yolo_256  4048/4048 (%100) — rescuenet_yolo'nun 256px kucultmesi
+    rescuenet_1024      ad ortusmesi 0 AMA adlar `10794_tam.jpg` bicimli —
+                        ayni RescueNet karelerinin `_tam` turevi (10794.jpg
+                        egitimde); ARA URUN
+    rescuenet_kirpik    ad ortusmesi 0 AMA `10781_r0c0.jpg` bicimli — ayni
+                        karelerin kirpiklari; ARA URUN (icinde `.tmp` bile var)
+    data/arena_kompozit adlar `whatsapp_video_..._cp_00.jpg`; gercek_kompozit
+                        (EGITIMDE) ayni govdenin `train_` onekli halleri —
+                        yani KAYNAK dizin zaten egitime akmis; 9 etiketi T87'nin
+                        etiketleridir
+    copy_paste_smoke    6 karenin 2'si copy_paste_gercek ile AYNI ADLI;
+                        uretecin smoke ciktisi, ayni otopark kaynagi
+
+**SONUC — acik cevap: GERCEKTEN ALAN DISI + ETIKETLI dogrulama kumesi YOKTUR.**
+"Bakir kume yok" bir BASARISIZLIK degil BULGUDUR (mimarin kendi ifadesi):
+rapor cumlelerine eklenecek sinir kesinlesti — *butun kabul olcumleri egitim
+dagiliminin icindedir ve eldeki veriyle disina cikmak MUMKUN DEGILDIR;
+tek etiketsiz alan-disi gorsel sartname figurudur (n=1, YZ uretimi).*
+
+## 3. YAN BULGU — `combined_data.yaml` OLU: 5 yolun 5'i cozulmuyor
+
+`path: /home/trs/trs/github/navitas/dataset` — baska bir makinenin Linux yolu;
+`floodnet_filtered` diye bir kume diskte HIC yok. Bu yaml hicbir kumeye
+uyelik veremez; envanterde `cozulemeyen` alaninda acikca duruyor. SILINMEDI
+(kullanici dosyasi, madde 18); mimara temizlik karari.
+
+## 4. KAPILAR VE SINIRLAR
+
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 647 tests · OK
+    ayna                          94_* scripts/olcum/ altina kopyalandi
+                                  (test_olcum_ayna_senkronu kapsami 51 -> 52 cift)
+
+**DOGRULANAMADI / KAPSAM:**
+  1. `test_images/` altindaki kumeler (gemini/test/val/ai) gorev kapsaminin
+     DISINDAYDI (emir: dataset/ + data/). Onlar YAML'larda yok ama coguna yer
+     gercegi de yok; ai n=2 icin yari-otomatik maske var (S7). Istenirse ayri
+     envanter cikarilir.
+  2. Ad-ortusme kaniti %100 icin kesindir; `_tam`/`_rXcY` turetim iddialari
+     AD KALIBINA dayanir, piksel kiyasi YAPILMADI.
+  3. `arena_kompozit`teki 63 karenin kacinin gercek_kompozit'e girdigi tek tek
+     eslenmedi (9 etiketli olani T87 kayitlarindan biliniyor).
+
+### D-199 · T54 · KANONIK DONUSUM DUZELTILDI (tek kaynak + testli) · ARAC KARARI OLCULDU (DOTA kapsamasi %0,0) · ve 🔴 ITIRAZ: 4. ADIM (EGITIM) ZATEN KOSULMUS — URUNU v34'UN KENDISI
+Yazan/olcen: Claude 2 / Fable 5 (basamele) · 2026-08-20 · gorev T54 (kullanici emri) · dayanak D-67, D-140, D-181/D-182, D-195
+Degisen: `dataset/download_and_convert.py` · `tests/test_donusum_esleme.py` (YENI, 8 test) · AYNAYA EKLENEN: `scripts/olcum/41_cok_sinifli_veri.py`, `scripts/olcum/57_t54_engel_eslemesi.py` (D-190 kurali: izlenen kod 41'e SERT bagimli oldu)
+Olcum duzenegi: DINAMIK WORKFLOW — 3 paralel ajan (provenans · arac-DOTA · dagilim), ciktilar asagida denetlendi
+
+🔴 `codes/` ALTINA DOKUNULMADI. EGITIM BASLATILMADI (asagidaki ITIRAZ nedeniyle).
+
+---
+## 1. UC OLCUM SERIDI (workflow, her biri bagimsiz ajan; sayilar dogrulandi)
+
+**(a) PROVENANS.** `rescuenet_2sinif_engelli`yi (v34'un egitim verisi)
+`57_t54_engel_eslemesi.py` uretti — 11-sinif ara kumeden, ESLEME:
+`{0:0, digerleri:1}` yani ARAC DAHIL her zemin-olmayan sinif -> engel.
+Ajan bunu kod okumasiyla BIRAKMADI, olctu: 20 karede sinif-1 etiketleri
+rasterize edilip ham kompozisyonlarla IoU kiyaslandi:
+
+    medyan IoU (arac YOK)  = 0,9856
+    medyan IoU (arac VAR)  = 0,9892
+    arac'li kompozisyon 9/20 karede DAHA IYI, 0/20'de daha kotu (11 esit)
+    -> egitilen kume {8}+{1,2,3,4,5,9,10}+{6} HAM eslemesini TASIYOR
+
+**(b) 🔴 ARAC x DOTA — "CIFT SAYIM" ENDISESI BU VERIDE BOS.** RescueNet
+train'den 40 arac'li kare (esit aralikli, deterministik), 4.469.436 arac px;
+DOTA (`yolov8m-obb.pt`, `obb_arac_maskesi`, conf 0,25, imgsz=uzun kenar):
+
+    kapsanma medyan/min/maks = 0,000 / 0,000 / 0,000   (kesisim_px = 0)
+    kapsanma < 0,5 : 40/40 · < 0,1 : 40/40
+    DOTA'nin maske urettigi 16/40 karede maskenin %100'u ARAC DISINA dustu
+    (plane/helicopter/harbor yanlis siniflari; 1 karede gorsel teyit yapildi)
+
+**KARAR (olcumden):** arac ENGELDE KALIR. Calisma zamani DOTA katmani bu
+araclari CIKARMIYOR; egitim etiketi onlari kapsayan TEK seydir. (57 zaten
+oyle uretmisti; v34 oyle egitildi.)
+
+**(c) ONCE/SONRA PIKSEL DAGILIMI** (600 ham maske, 7,2 milyar px):
+
+    ONCE  etiketli {7,8}          :  %8,31 etiketli · %91,69 etiketsiz
+    SONRA etiketli (+yeni engel)  : %47,01
+    SONRA + arac                  : %47,34 · kalan etiketsiz = SAF Background
+    agac tek basina %21,3 · su %8,6 · binalar %8,7 · road-clear %6,7
+    600 maskenin 269'unda (%44,8) road-clear HIC YOK
+    497'sinde (%82,8) yeni engel kumesi road-clear'dan BUYUK
+
+## 2. GOZLE DOGRULAMA (D-80) — GECTI
+
+`results/t54_gorsel_dogrulama.png`: bina agirlikli kare (10861), ESKI/YENI
+yan yana. ESKIDE cati ETIKETSIZ (dogal renk); YENIDE ayni catilar KIRMIZI
+(sinif 1). "Cati zemin degildir" dersi artik ETIKETTE — gorsel teyitli.
+
+## 3. KANONIK DONUSTURUCU DUZELTILDI — TEK KAYNAK, TESTLI
+
+`dataset/download_and_convert.py`:
+  · `SINIF_ESLEME` `scripts/olcum/41_cok_sinifli_veri.py` AYNASINDAN **AST ile**
+    okunur (41 `ayarlar` ithal ettigi icin IMPORT EDILMEZ; `ast.literal_eval`
+    yan etkisizdir). IKINCI KOPYA YAZILMADI (madde 16; 4x tekrar eden kusur).
+  · Kumeler ADLARDAN turetilir: `TRAVERSABLE_HAM={7}` · `BLOCKED_HAM =
+    hepsi - traversable` (ARAC DAHIL — §1b olcumu). Ciplak id yok.
+  · maske: `np.isin(lbl_np, ...)` — eski `==7/==8` satirlari kalkti.
+  · 🔴 GERIYE-DONUK KORUMA: `rescuenet_yolo` TARIHSEL karisimlersin girdisidir
+    (v21-v27 donemi); var olan cikti ancak `--temizle` ile ezilir, yoksa
+    ACIK hatayla durur. Sessiz uzerine-yazma kapali.
+  · 41 ve 57 AYNAYA eklendi (cift 52 -> 54, senkron kapisi otomatik kapsadi).
+
+**TESTLER** `tests/test_donusum_esleme.py` (8): tek-kaynak · adlardan turetim ·
+HAM kumeleri ACIK literalle (D-195 tuzagina karsi) · bina/agac/su/havuz engelde ·
+arac karari · ayriklik/Background disarida · **57 zinciriyle semantik denklik**
+(41 koprusuyle: iki zincir ayrisirsa DUSER).
+
+**MUTASYON KANITI (iki ayri mutasyon):**
+  1. eski "yalniz road-blocked" eslemesi geri kondu -> modul IMPORT'ta
+     `assert`e takildi, kapi `FAILED (errors=1)` — korkuluk calisiyor.
+  2. yalniz BINALAR engelden cikarildi (modul yuklenebilir kalir) ->
+     `FAILED (failures=2)`: `HAM 2 (building_no_damage) engel DEGIL` +
+     kume-tam testi. Geri alindi.
+
+## 4. 🔴 ITIRAZ — GOREVIN 4. ADIMI (EGITIM) KOSULMAMALI
+
+**ITIRAZ · T54 adim 4 ("Tek kosu: 11-sinif on-egitimden basla, yeni 2 sinifli
+karisimla fine-tune") · TASK_QUEUE T54 / D-195 sonrasi prompt**
+
+1. **MIMARIN IDDIASI:** T54'un kapanmasi icin yeni eslemeyle bir egitim
+   kosusu gerekir.
+2. **NEDEN YANLIS:** o kosu ZATEN yapildi ve urunu BUGUNKU URETIM MODELIDIR.
+3. **KANIT (kosulan komutlar + gercek cikti):**
+   · `zincir_t53_t54.sh:16-20`: T54 adimi `56_t53_gercek_karisim.py
+     --ad v23_t54_engelli --data karisim_t54_engelli.yaml` — yani 11-sinif
+     on-egitim tabanindan (`YOLO(str(ON_BEST))`, 56:126) yeni 2-sinifli
+     karisimla fine-tune. Log: `[v23_t54_engelli] EGITIM TAMAMLANDI`.
+   · `sha256(models/navitas_seg_v34_best.pt) == sha256(codes/runs/segment/
+     v23_t54_engelli/weights/best.pt)` -> **bayt-es: True** (olculdum).
+   · Egitim verisi dogru eslemeyi tasiyor (§1a: IoU 0,989) ve v34 bu veriyle
+     D-181/D-182 kapilarindan gecip terfi etti; T106 kuyruk notu: "v23 on
+     kaydin hepsini sagliyor (D-181 §3)".
+   · D-140: seed egitimi HIC etkilemiyor (v31 = v30 BIT-BIT AYNI). Ayni veri +
+     ayni recete ile yeni kosu buyuk olasilikla v34'un BITEBIT ESINI uretir —
+     bir GPU gecesi, bilgi kazanci SIFIR.
+4. **ONERI:** T54, adim 1-3 teslimatlariyla (donusum + testler + olcumler +
+   gorsel) kapatilsin; adim 4 "zaten kosuldu, urunu v34" diye kayda gecsin.
+5. **YANILIYORSAM — beni curutecek olcum:** mimar adim 4 ile 57 zincirinden
+   FARKLI bir recete kastediyorsa (or. HAM'dan dogrudan uretilmis kume,
+   farkli karisim orani, farkli taban) o farki soylesin; o zaman kosarim.
+   Ayrica: `--temizle` ile yeniden uretilen kanonik kume, 2sinif_engelli'den
+   OLCULEBILIR bicimde farkliysa (IoU medyani < 0,98'in belirgin altina
+   duserse ya da poligon tavani asagida yazdigim gibi kirpiyorsa) itirazim
+   zayiflar — o olcumu de kosmaya hazirim.
+
+## 5. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    yeni testler                  Ran 8 · OK
+    mutasyon 1 (eski esleme)      FAILED (errors=1)  — import korkulugu
+    mutasyon 2 (binasiz)          FAILED (failures=2)
+    ayna senkronu                 cift: 54 · AYRISAN: 0
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 655 tests · OK   (647 -> 655, +8)
+
+## 6. DOGRULANAMADI / YAPMADIKLARIM
+
+  1. **EGITIM BASLATILMADI** — §4 ITIRAZI mimarin cevabini bekliyor. Bu bir
+     eksik degil, bilincli durustur (yanlissa 5. maddedeki olcumle curutulur).
+  2. **Kanonik donusturucu YENIDEN URETIM kosulmadi**: HF indirmesi + tarihsel
+     `rescuenet_yolo`yu ezme karari mimarindir (`--temizle` korumasi kondu).
+     Dolayisiyla duzeltmenin CIKTI dagilimi dogrudan olculmedi; ham-maske
+     dagilimi (§1c) verildi.
+  3. ⚠ **`MAX_POLYGONS // 2 = 15` engel tavani ESKI varsayimin kalintisi:**
+     engel nadirken kondu; yeni eslemede engel baskin (57 ciktisinda sinif-1
+     22356 vs sinif-0 3104). Yeniden uretimde kirpma yapabilir — OLCULMEDI,
+     mimara isaretlendi.
+  4. DOTA olcumu (§1b) RescueNet dogal cozunurlugunde (uzun kenar ~4000);
+     uretim olcek katmani 640 tavaniyla kosar — o boyda kapsam AYRICA
+     olculmedi (0'in alti olamayacagi icin karari degistirmez).
+  5. ⚠ KAMERA YOK: gercek arena basarimi yine dogrulanamadi (D-88/D-99,
+     kalici kisit — mimarin istedigi cumle).
+  6. Workflow ajanlarinin betikleri scratchpad'dedir, repoya alinmadi
+     (tek kullanimlik olcum; kalici olcum betigi gerekirse ayri is).

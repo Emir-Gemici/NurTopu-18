@@ -75,6 +75,30 @@ def k0_taban_orani(figur_kaplama, kok=None):
     return float(figur_kaplama) / taban, taban, ""
 
 
+def k5_durumu(kes):
+    """K5'in UC DURUMU: GECTI / DUSTU / OLCULEMEDI (T105 · D-180).
+
+    KUSUR: K5 alt betigin stdout'undan ayristiriliyor; satir basilmazsa
+    `kes = None` kaliyordu ve `gecti[\"K5\"] = (kes == 0)` bunu DUSTU sayiyordu.
+    `63_bariyer_kesisimi.py` TEK karede kosar; o karede rota cikmazsa kesisim
+    OLCULEMEZ — bu \"rota bariyere BASTI\" demek DEGILDIR (yanlis atif).
+    Olculdu (D-180): v22/v23/v30 UCU DE None'a dusuyordu; satir hicbir modeli
+    ayirt etmiyordu.
+
+    🔴 MIMARIN KISITI — DEGISTIRILEMEZ: OLCULEMEDI != GECTI.
+    OLCULEMEDI terfiyi YINE BLOKLAR (fail-closed); yalnizca raporda DUSTU'den
+    AYRI gorunur. \"Olculemeyeni gecir\" seklinde bir duzeltme KABUL EDILMEZ.
+    """
+    if kes is None:
+        return "OLCULEMEDI"
+    return "GECTI" if kes == 0 else "DUSTU"
+
+
+def k5_gecti(kes):
+    """Verdikt girdisi. YALNIZ 'GECTI' gecer — OLCULEMEDI de DUSTU de bloklar."""
+    return k5_durumu(kes) == "GECTI"
+
+
 def k0_gecti(figur, raw_bos, cp_bos):
     """K0 olcutu. DEGISMEDI (D-186): `figur > 0` VE hicbir kumede bos maske yok.
 
@@ -173,7 +197,8 @@ def main():
             except (IndexError, ValueError):
                 pass
     sonuc["K5_bariyer_px"] = kes
-    gecti["K5"] = kes == 0
+    sonuc["K5_durum"] = k5_durumu(kes)          # GECTI / DUSTU / OLCULEMEDI
+    gecti["K5"] = k5_gecti(kes)                 # OLCULEMEDI de bloklar
 
     # ── RAPOR ───────────────────────────────────────────────────────────────
     print(f"\n{'='*66}\nKABUL DENETIMI · {ad}\n  esikler: REVIEW_LOG D-107 "
@@ -201,14 +226,21 @@ def main():
           f"{sonuc['K3_agir']}   (taban %0)")
     print(f"  K4 ARENA DISI <= %{100*ESIK['K4_arena_disi_maks']:.0f}  {'GECTI' if gecti['K4'] else 'DUSTU':<6} "
           f"{sonuc['K4_arena_disi']}")
-    print(f"  K5 BARIYER = 0 px    {'GECTI' if gecti['K5'] else 'DUSTU':<6} {kes} px")
+    k5d = sonuc["K5_durum"]
+    print(f"  K5 BARIYER = 0 px    {k5d:<11} "
+          f"{('%d px' % kes) if kes is not None else 'kesisim OLCULEMEDI'}")
+    if k5d == "OLCULEMEDI":
+        print("     (63_bariyer_kesisimi TEK karede kosar; o karede rota"
+              " cikmadiysa kesisim olculemez — bu 'basti' demek DEGILDIR."
+              " Terfi YINE bloklanir: OLCULEMEDI != GECTI.)")
     print("-" * 66)
     if not gecti["K0"]:
         print("  VERDIKT: RED — K0 dustu. v25 ile AYNI sebep, tartisma yok.")
     elif all(gecti.values()):
         print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu de saglandi.")
     else:
-        d_ = [k for k, v in gecti.items() if not v]
+        d_ = [(k + "(OLCULEMEDI)" if k == "K5" and sonuc.get("K5_durum") ==
+               "OLCULEMEDI" else k) for k, v in gecti.items() if not v]
         print(f"  VERDIKT: URETIME ALINMAZ — dusen: {', '.join(d_)}")
         print("           kok nedene baglanip TEK duzeltme turu kosulur.")
     print("=" * 66)

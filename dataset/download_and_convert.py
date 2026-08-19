@@ -30,6 +30,46 @@ MAX_POLYGONS = 30       # görüntü başına max instance (hafıza)
 EPSILON_RATIO = 0.003   # contour basitleştirme oranı (×perimeter)
 IMG_SIZE = 512
 
+# ── T54 · SINIF ESLEME — TEK KAYNAKTAN (madde 16 · REVIEW_LOG D-195/D-199) ──
+# ESKI KUSUR (D-67): yalniz road-clear(7)->0 ve road-blocked(8)->1 aliniyordu;
+# bina/agac/su/havuz ETIKETSIZ ARKA PLANA dusuyordu. Etiketsiz arka plan
+# denetim almaz -> modele hicbir yerde "cati zemin DEGILDIR" denmedi ->
+# "genis duz yuzey = zemin" genellemesi (otopark %80,6 kaplama bundan).
+#
+# ⚠ IKI SEMA VARDIR ve KARISTIRILMISTI (D-195): HAM RescueNet id'leri
+# (Note.txt: 0=Background..10=Pool) ile 11-sinif ara kumenin YOLO indeksleri
+# AYNI DEGILDIR. Bu dosya HAM maskeyi okur -> HAM id kullanir. Tek kaynak
+# `scripts/olcum/41_cok_sinifli_veri.py::SINIF_ESLEME`dir; buradan AST ile
+# okunur, IKINCI BIR KOPYA YAZILMAZ (projenin 4x tekrar eden kusuru).
+# 41 IMPORT EDILMEZ: modul `ayarlar` ithal eder ve makineye baglidir;
+# `ast.literal_eval` yan etkisiz okur.
+_ESLEME_AYNASI = Path(__file__).resolve().parent.parent / "scripts" / "olcum" / "41_cok_sinifli_veri.py"
+
+
+def _sinif_esleme():
+    import ast
+    agac = ast.parse(_ESLEME_AYNASI.read_text(encoding="utf-8"))
+    for dugum in ast.walk(agac):
+        if isinstance(dugum, ast.Assign):
+            for hedef in dugum.targets:
+                if getattr(hedef, "id", None) == "SINIF_ESLEME":
+                    return ast.literal_eval(dugum.value)
+    raise RuntimeError(f"SINIF_ESLEME bulunamadi: {_ESLEME_AYNASI}")
+
+
+SINIF_ESLEME = _sinif_esleme()
+#: HAM id kumeleri ADLARDAN turetilir — ciplak id yazilmaz (madde 16).
+TRAVERSABLE_HAM = {h for h, (_i, ad) in SINIF_ESLEME.items() if ad == "traversable"}
+VEHICLE_HAM = {h for h, (_i, ad) in SINIF_ESLEME.items() if ad == "vehicle"}
+# T54 ARAC KARARI — OLCULDU (D-199): DOTA OBB katmani RescueNet arac
+# piksellerinin %0,0'ini yakaliyor (n=40 kare, 4.469.436 arac px, kesisim 0;
+# urettigi maskelerin %100'u arac DISINA dustu — plane/harbor yanlis sinifi).
+# Yani "cift sayim" endisesi BU VERIDE BOSTUR: egitim etiketi bu araclari
+# kapsayan TEK seydir. ARAC ENGELDIR. (Uretimde egitilen kume
+# `rescuenet_2sinif_engelli` de araci enge sayar — 57_t54_engel_eslemesi.)
+BLOCKED_HAM = set(SINIF_ESLEME) - TRAVERSABLE_HAM
+assert TRAVERSABLE_HAM and BLOCKED_HAM and VEHICLE_HAM <= BLOCKED_HAM
+
 
 def mask_to_yolo_polygons(mask: np.ndarray, class_id: int, min_area: int = MIN_AREA):
     """
@@ -69,9 +109,11 @@ def process_split(dataset_split, split_name: str, img_dir: Path, lbl_dir: Path):
         img_np = np.array(img.convert("RGB"))
         lbl_np = np.array(lbl)
 
-        # RescueNet class IDs: 7=road-clear, 8=road-blocked, 0=background
-        road_mask = (lbl_np == 7).astype(np.uint8)
-        blocked_mask = (lbl_np == 8).astype(np.uint8)
+        # T54 (D-199): HAM id kumeleri TEK KAYNAKTAN turetildi (yukarida).
+        # Eski satirlar yalniz 7/8 aliyordu; simdi zemin-olmayan HER etiketli
+        # sinif ENGELDIR ("bilinmeyen -> engel", madde 15 ile ayni yon).
+        road_mask = np.isin(lbl_np, sorted(TRAVERSABLE_HAM)).astype(np.uint8)
+        blocked_mask = np.isin(lbl_np, sorted(BLOCKED_HAM)).astype(np.uint8)
 
         road_lines = mask_to_yolo_polygons(road_mask, class_id=0)
         blocked_lines = mask_to_yolo_polygons(blocked_mask, class_id=1)
@@ -118,6 +160,24 @@ names:
 
 
 def main():
+    # T54 KORUMASI: `rescuenet_yolo` TARIHSEL egitim verisidir
+    # (karisim_arena*.yaml v21-v27 donemi onu okur). Yeni eslemeyle SESSIZCE
+    # uzerine yazmak, eski kosumlarin verisini geriye donuk DEGISTIRIR ve
+    # yeniden uretilebilirligi kirar. Var olan cikti ancak ACIK bayrakla ezilir.
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--temizle", action="store_true",
+                    help="cikti dizini VARSA sil ve yeniden uret (aksi halde durur)")
+    args = ap.parse_args()
+    if OUTPUT_DIR.exists() and not args.temizle:
+        sys.exit(f"DUR: {OUTPUT_DIR} zaten var. Bu kume TARIHSEL karisimlarin "
+                 "girdisidir; yeni eslemeyle ezmek icin --temizle verin. "
+                 "(Uretimin 2 sinifli kumesi zaten `rescuenet_2sinif_engelli`dir "
+                 "— 41 + 57 zinciri.)")
+    if OUTPUT_DIR.exists():
+        import shutil
+        shutil.rmtree(OUTPUT_DIR)
+
     print("HuggingFace datasets yükleniyor...")
     try:
         from datasets import load_dataset

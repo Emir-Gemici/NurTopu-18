@@ -2991,7 +2991,54 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Denetçiye not:** kapının yeni testi yazılmadı — `tests/test_zemin_kaplama_
     kapisi.py` iki sinyalli hâli kapsamıyor. Denetim bunu da kapsamalı.
 
-- [ ] **T54 — 2 sınıflı dönüşüm modele "çatı zemin değildir" demiyor: bina/ağaç/su `blocked`'a eşlenecek** · `dataset/download_and_convert.py` + bir eğitim koşusu · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-67**
+- [ ] **T54 — ADIM 1-3 TESLİM · ADIM 4 (eğitim) İTİRAZDA — D-199 §4: o koşu ZATEN yapıldı, ürünü v34 (bayt-eş kanıtlı)** · `dataset/download_and_convert.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-67 → D-199**
+  - ✅ **ADIM 1-3 · 2026-08-20 · Claude-2 (Fable 5)** · kayıt `REVIEW_LOG.md`
+    **D-199** · ölçüm düzeneği: **dinamik workflow, 3 paralel ajan**
+    (provenans · araç-DOTA · dağılım), çıktıları ana döngüde denetlendi.
+  - **Dönüşüm düzeltildi (tek kaynak):** eşleme
+    `scripts/olcum/41_cok_sinifli_veri.py` **aynasından AST ile** okunur
+    (import değil — 41 `ayarlar` ithal eder); kümeler **adlardan** türetilir;
+    maskeler `np.isin`; `rescuenet_yolo`yu sessiz ezme **kapalı** (`--temizle`
+    korkuluğu — tarihsel karışımların girdisidir). **41 + 57 aynaya eklendi**
+    (çift 52→54, senkron kapısı otomatik kapsadı — D-190 kuralı).
+  - **ARAÇ KARARI ÖLÇÜLDÜ:** DOTA, RescueNet araç piksellerinin **%0,0'ını**
+    yakalıyor (n=40 kare, 4.469.436 px, kesişim 0; ürettiği maskelerin %100'ü
+    araç DIŞINA düştü — plane/harbor yanlış sınıfı). "Çift sayım" bu veride
+    **boş** → **araç ENGELDE KALIR** (57 zaten öyle üretmişti; v34 öyle eğitildi).
+  - **ÖNCE/SONRA (600 ham maske, 7,2 mlr px):** etiketli **%8,31 → %47,34**;
+    kalan etiketsiz **saf Background**. Ağaç %21,3 · su %8,6 · binalar %8,7.
+  - **GÖZLE (D-80) GEÇTİ:** `results/t54_gorsel_dogrulama.png` — eski panelde
+    çatılar etiketsiz, yenisinde **kırmızı (engel)**.
+  - **TESTLER:** `tests/test_donusum_esleme.py` (8 test; **57 zinciriyle
+    semantik denklik** dahil — iki zincir ayrışırsa düşer).
+    Mutasyon 1 (eski 7/8 eşleme) → import korkuluğu, `FAILED (errors=1)`;
+    mutasyon 2 (binasız) → `FAILED (failures=2)`.
+    ```text
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 655 tests · OK   (647 -> 655, +8)
+    ayna                          cift: 54 · AYRISAN: 0
+    ```
+  - 🔴 **İTİRAZ (AGENTS §8 · D-199 §4):**
+    1. MİMARIN İDDİASI: T54'ün kapanması için yeni eşlemeyle eğitim koşusu gerekir.
+    2. NEDEN YANLIŞ: o koşu ZATEN yapıldı ve ürünü BUGÜNKÜ ÜRETİM MODELİ.
+    3. KANIT: `zincir_t53_t54.sh:16-20` (`--ad v23_t54_engelli --data
+       karisim_t54_engelli.yaml`, taban `ON_BEST` = 11-sınıf ön-eğitim) ·
+       log `[v23_t54_engelli] EGITIM TAMAMLANDI` · **sha256(v34) ==
+       sha256(v23_t54_engelli/best.pt) → bayt-eş: True** (ölçtüm) · D-140:
+       seed bit-bit etkisiz → yeni koşu v34'ün eşini üretir, GPU gecesi boşa.
+    4. ÖNERİ: T54 adım 1-3 teslimatlarıyla kapansın; adım 4 "zaten koşuldu,
+       ürünü v34" diye kayda geçsin.
+    5. YANILIYORSAM: mimar FARKLI reçete kastediyorsa (ham'dan üretilmiş küme,
+       farklı karışım/taban) söylesin — koşarım; ya da `--temizle` ile yeniden
+       üretilen kanonik küme `2sinif_engelli`den ölçülebilir ayrışırsa
+       (IoU medyanı belirgin < 0,98) itirazım zayıflar, o ölçümü koşarım.
+  - ⚠ **Yapmadıklarım:** eğitim başlatılmadı (itiraz bekliyor) · kanonik
+    yeniden üretim koşulmadı (tarihsel veriyi ezme kararı mimarın) ·
+    `MAX_POLYGONS//2 = 15` engel tavanı ESKİ varsayımın kalıntısı — yeni
+    eşlemede engel baskın (22356 vs 3104), yeniden üretimde KIRPABİLİR
+    (işaretlendi, ölçülmedi) · KAMERA YOK: gerçek arena başarımı yine
+    doğrulanamadı (D-88/D-99, kalıcı kısıt).
+
   - **Kök neden — kodda doğrulandı** (`download_and_convert.py:72-83`):
     ```text
     road_mask    = (lbl_np == 7)  -> sinif 0
@@ -5311,7 +5358,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     Kapılar: **642 OK** (636 → +6) · **15/15** · `git diff codes/` **BOŞ**.
   - **Bilerek yapılmadı:** iki kılavuz aynı yapılmadı · kök kopya **silinmedi**
     (`test_uretim_modeli_hizasi.py:43` ikisini de şart koşuyor).
-- [IN_PROGRESS: Claude-2] **T114 — 🔴 DENETİM BORCU: T104 kodunu MİMAR yazdı ve MİMAR onayladı** · `tests/test_kilavuz_kurulum_yordami.py`, `JETSON_KILAVUZ.md` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-194**
+- [x] **T114 — KAPANDI · T104 denetimi GEÇTİ (4/4 iddia bağımsız doğrulandı; 1 dereceli bulgu: pip satırı ayrışıyor, import kırmıyor) · kayıt D-196** · `tests/test_kilavuz_kurulum_yordami.py`, `JETSON_KILAVUZ.md` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-194**
   - **Kim yapar:** Claude 2 (Fable 5) — anayasa madde 19, **YUKARI yön**. Mimar bu görevi kendi kapatamaz.
   - **Kanıt.** `TASK_QUEUE.md` T104 bloğu: `✅ KAPANDI · 2026-08-19 · mimar` ve
     `MUTASYON KONTROLÜ (mimar koştu)`. Kodu yazan ile onaylayan **aynı ajan**.
@@ -5343,7 +5390,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - **Kapı:** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **0** · onarılan her yol için dosyanın
     **gerçekten var olduğunu** doğrula (`test -f`); var olmayan yol çıkarsa onu **onarma**, raporla.
 
-- [IN_PROGRESS: Claude-2] **T105 — Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
+- [x] **T105 — KAPANDI · K5 üç durumlu: OLCULEMEDI raporda ayrı, terfiyi YİNE bloklar · 1059×634 sorusunun T94/T95 bağı ÇÜRÜTÜLDÜ (red :1222, yol_duzelt hiç koşmuyor) · kayıt D-197** — eski: Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
 avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
   - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa
     `kes = None` kalır ve `gecti["K5"] = (kes == 0)` → **DÜŞTÜ**.
@@ -5482,7 +5529,7 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
     (`copy_paste_gercek` → `karisim_t54_engelli.yaml:25` `train:` listesinde),
     sıkışmanın görüldüğü tek girdi (figür) ise **tek alan dışı örnektir, n=1**.
     Yani "figüre özgü" ile "alan dışı olmaya özgü" **ayrılamıyor** → **T111**.
-- [IN_PROGRESS: Claude-2] **T111 — Alan dışı doğrulama kümemiz YOK: bütün kabul ölçümleri eğitim dağılımının İÇİNDE** · `dataset/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-185 §3**
+- [x] **T111 — KAPANDI · Bakırlık envanteri: GERÇEKTEN alan dışı + etiketli doğrulama kümesi YOK; 6 aday kümenin 6sı da eğitim türevi (ölçüldü) · combined_data.yaml ÖLÜ (5/5 yol çözülmüyor) · kayıt D-198**
   - Doğrulandı: `copy_paste_gercek` v34'ün **eğitim verisidir**
     (`karisim_t54_engelli.yaml:25`); `sentetik_arena` aynı yaml'da; `kadraj_t66`
     o üretecin ailesinden; `raw_frames` `copy_paste_gercek`in **kaynak
