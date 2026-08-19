@@ -1,0 +1,9430 @@
+{
+ "meta": {
+  "gorev": "T91+T92 costmap tanisi (LANE 4, SAF TANI)",
+  "tarih": "2026-08-20T01:40:39",
+  "model": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+  "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "n": 260,
+  "conf": 0.3,
+  "infer_size": 512,
+  "sigma": 2.0,
+  "tekrar": 3,
+  "tohum": 7,
+  "device": "varsayilan (ultralytics kendi secer)",
+  "zincir": "_preprocess -> predict(conf 0.30, imgsz=INFER_SIZE) -> get_masks -> _maskeleri_icerige_kirp; kare/kosum basina TEK cikarim (D-139)",
+  "rng_akisi": "68/75 ile ayni: temiz cekilissiz + kare basina 3 cekilis, default_rng(7)"
+ },
+ "t91": {
+  "tanim_emir": "kazanan kapinin cx±genislik/2 araligindaki iki uc serit_no(karar_sozlesmesi, icerik kutusu) farkli mi",
+  "tanim_kesin": "koridor_adaylari'nin CC_STAT_LEFT/WIDTH tabanli serit_yayilimi alani (D-145 kesin olcum)",
+  "durum_dagilimi": {
+   "BELIRSIZ_TEK_KAPI": 91,
+   "BELIRSIZ_COKLU": 136,
+   "ACIK": 30,
+   "KAPALI_DAR": 3
+  },
+  "n_kapi_dagilimi": {
+   "1": 91,
+   "2": 134,
+   "3": 34,
+   "4": 1
+  },
+  "n_kapi_3_kare_sayisi": 34,
+  "acik_kare_sayisi": 30,
+  "iki_seride_yayilan_emir_sayisi": 10,
+  "iki_seride_yayilan_emir_kareler": [
+   "sa_000002.jpg",
+   "sa_000044.jpg",
+   "sa_000105.jpg",
+   "sa_000141.jpg",
+   "sa_000166.jpg",
+   "sa_000175.jpg",
+   "sa_000222.jpg",
+   "sa_000250.jpg",
+   "sa_000254.jpg",
+   "sa_000258.jpg"
+  ],
+  "iki_seride_yayilan_kesin_sayisi": 12,
+  "iki_seride_yayilan_kesin_kareler": [
+   "sa_000002.jpg",
+   "sa_000044.jpg",
+   "sa_000105.jpg",
+   "sa_000141.jpg",
+   "sa_000166.jpg",
+   "sa_000175.jpg",
+   "sa_000179.jpg",
+   "sa_000222.jpg",
+   "sa_000250.jpg",
+   "sa_000252.jpg",
+   "sa_000254.jpg",
+   "sa_000258.jpg"
+  ],
+  "kayitlar": [
+   {
+    "kare": "sa_000000.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000001.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000002.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 3,
+    "kapi_merkez_x": 458,
+    "kapi_genislik_px": 126,
+    "x_araligi_emir": [
+     395.0,
+     521.0
+    ],
+    "serit_emir": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000003.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000004.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000005.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000006.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000007.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000008.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000009.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000010.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000011.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000012.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000013.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000014.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000015.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 142,
+    "kapi_genislik_px": 74,
+    "x_araligi_emir": [
+     105.0,
+     179.0
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000016.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000017.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000018.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 313,
+    "kapi_genislik_px": 117,
+    "x_araligi_emir": [
+     254.5,
+     371.5
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000019.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000020.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 3,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000021.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000022.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000023.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000024.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000025.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000026.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000027.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 106,
+    "kapi_genislik_px": 107,
+    "x_araligi_emir": [
+     52.5,
+     159.5
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000028.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000029.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000030.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000031.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 327,
+    "kapi_genislik_px": 46,
+    "x_araligi_emir": [
+     304.0,
+     350.0
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000032.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000033.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 3,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000034.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000035.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000036.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000037.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000038.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000039.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000040.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000041.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000042.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000043.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000044.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 205,
+    "kapi_genislik_px": 50,
+    "x_araligi_emir": [
+     180.0,
+     230.0
+    ],
+    "serit_emir": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000045.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000046.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000047.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000048.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000049.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000050.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000051.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000052.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000053.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000054.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000055.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000056.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000057.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000058.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000059.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000060.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000061.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000062.jpg",
+    "durum": "KAPALI_DAR",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000063.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000064.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000065.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000066.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000067.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000068.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000069.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000070.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000071.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000072.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000073.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000074.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000075.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000076.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000077.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000078.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000079.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000080.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000081.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000082.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000083.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000084.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000085.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000086.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000087.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000088.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000089.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000090.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000091.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000092.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000093.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000094.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000095.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000096.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000097.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000098.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 112,
+    "kapi_genislik_px": 144,
+    "x_araligi_emir": [
+     40.0,
+     184.0
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000099.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000100.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 3,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000101.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000102.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000103.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000104.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000105.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 189,
+    "kapi_genislik_px": 107,
+    "x_araligi_emir": [
+     135.5,
+     242.5
+    ],
+    "serit_emir": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000106.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000107.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000108.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000109.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000110.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000111.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000112.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000113.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000114.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000115.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000116.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000117.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000118.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 324,
+    "kapi_genislik_px": 67,
+    "x_araligi_emir": [
+     290.5,
+     357.5
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000119.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 120,
+    "kapi_genislik_px": 121,
+    "x_araligi_emir": [
+     59.5,
+     180.5
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000120.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000121.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000122.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000123.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000124.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000125.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000126.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000127.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000128.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000129.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 312,
+    "kapi_genislik_px": 83,
+    "x_araligi_emir": [
+     270.5,
+     353.5
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000130.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000131.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 81,
+    "kapi_genislik_px": 63,
+    "x_araligi_emir": [
+     49.5,
+     112.5
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000132.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000133.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000134.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000135.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000136.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000137.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000138.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000139.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000140.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000141.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 3,
+    "kapi_merkez_x": 448,
+    "kapi_genislik_px": 66,
+    "x_araligi_emir": [
+     415.0,
+     481.0
+    ],
+    "serit_emir": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000142.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000143.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000144.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000145.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000146.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000147.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000148.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 3,
+    "kapi_merkez_x": 477,
+    "kapi_genislik_px": 41,
+    "x_araligi_emir": [
+     456.5,
+     497.5
+    ],
+    "serit_emir": [
+     3,
+     3
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     3,
+     3
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000149.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000150.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 107,
+    "kapi_genislik_px": 65,
+    "x_araligi_emir": [
+     74.5,
+     139.5
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000151.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000152.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000153.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000154.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 3,
+    "kapi_merkez_x": 465,
+    "kapi_genislik_px": 74,
+    "x_araligi_emir": [
+     428.0,
+     502.0
+    ],
+    "serit_emir": [
+     3,
+     3
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     3,
+     3
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000155.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000156.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000157.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000158.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 320,
+    "kapi_genislik_px": 130,
+    "x_araligi_emir": [
+     255.0,
+     385.0
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000159.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000160.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000161.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000162.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000163.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000164.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000165.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000166.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 166,
+    "kapi_genislik_px": 152,
+    "x_araligi_emir": [
+     90.0,
+     242.0
+    ],
+    "serit_emir": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000167.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000168.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000169.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000170.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000171.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000172.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 135,
+    "kapi_genislik_px": 57,
+    "x_araligi_emir": [
+     106.5,
+     163.5
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000173.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000174.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000175.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 3,
+    "kapi_merkez_x": 459,
+    "kapi_genislik_px": 95,
+    "x_araligi_emir": [
+     411.5,
+     506.5
+    ],
+    "serit_emir": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000176.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000177.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000178.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 305,
+    "kapi_genislik_px": 113,
+    "x_araligi_emir": [
+     248.5,
+     361.5
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000179.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 179,
+    "kapi_genislik_px": 66,
+    "x_araligi_emir": [
+     146.0,
+     212.0
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000180.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000181.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000182.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000183.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000184.jpg",
+    "durum": "KAPALI_DAR",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000185.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000186.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000187.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000188.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000189.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000190.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000191.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000192.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000193.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000194.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000195.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000196.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000197.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000198.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000199.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000200.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000201.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000202.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000203.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000204.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000205.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 308,
+    "kapi_genislik_px": 43,
+    "x_araligi_emir": [
+     286.5,
+     329.5
+    ],
+    "serit_emir": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     2,
+     2
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000206.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000207.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 94,
+    "kapi_genislik_px": 52,
+    "x_araligi_emir": [
+     68.0,
+     120.0
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000208.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000209.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000210.jpg",
+    "durum": "KAPALI_DAR",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000211.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000212.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000213.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000214.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000215.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000216.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000217.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000218.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000219.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000220.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000221.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 129,
+    "kapi_genislik_px": 72,
+    "x_araligi_emir": [
+     93.0,
+     165.0
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_kesin": false
+   },
+   {
+    "kare": "sa_000222.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 3,
+    "kapi_merkez_x": 487,
+    "kapi_genislik_px": 130,
+    "x_araligi_emir": [
+     422.0,
+     552.0
+    ],
+    "serit_emir": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000223.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000224.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 3,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000225.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000226.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000227.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000228.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000229.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000230.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000231.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000232.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000233.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 4,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000234.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000235.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000236.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000237.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000238.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000239.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000240.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000241.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000242.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000243.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000244.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000245.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000246.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000247.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000248.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000249.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000250.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 198,
+    "kapi_genislik_px": 91,
+    "x_araligi_emir": [
+     152.5,
+     243.5
+    ],
+    "serit_emir": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000251.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000252.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 153,
+    "kapi_genislik_px": 113,
+    "x_araligi_emir": [
+     96.5,
+     209.5
+    ],
+    "serit_emir": [
+     1,
+     1
+    ],
+    "iki_seride_yayilan_emir": false,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000253.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000254.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 1,
+    "kapi_merkez_x": 184,
+    "kapi_genislik_px": 178,
+    "x_araligi_emir": [
+     95.0,
+     273.0
+    ],
+    "serit_emir": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     1,
+     2
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000255.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000256.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000257.jpg",
+    "durum": "BELIRSIZ_COKLU",
+    "n_kapi": 2,
+    "yol_no": null
+   },
+   {
+    "kare": "sa_000258.jpg",
+    "durum": "ACIK",
+    "n_kapi": 3,
+    "yol_no": 2,
+    "kapi_merkez_x": 417,
+    "kapi_genislik_px": 38,
+    "x_araligi_emir": [
+     398.0,
+     436.0
+    ],
+    "serit_emir": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_emir": true,
+    "serit_yayilimi_kesin": [
+     2,
+     3
+    ],
+    "iki_seride_yayilan_kesin": true
+   },
+   {
+    "kare": "sa_000259.jpg",
+    "durum": "BELIRSIZ_TEK_KAPI",
+    "n_kapi": 1,
+    "yol_no": null
+   }
+  ]
+ },
+ "t92": {
+  "tanim": "4 kosuda (1 temiz + 3 gurultulu) koridor_adaylari tanisinin bant_y'si degisen kare",
+  "degisen_kare_sayisi": 34,
+  "degisen_kareler": [
+   "sa_000020.jpg",
+   "sa_000032.jpg",
+   "sa_000037.jpg",
+   "sa_000041.jpg",
+   "sa_000055.jpg",
+   "sa_000063.jpg",
+   "sa_000066.jpg",
+   "sa_000068.jpg",
+   "sa_000076.jpg",
+   "sa_000078.jpg",
+   "sa_000086.jpg",
+   "sa_000102.jpg",
+   "sa_000109.jpg",
+   "sa_000112.jpg",
+   "sa_000117.jpg",
+   "sa_000118.jpg",
+   "sa_000121.jpg",
+   "sa_000125.jpg",
+   "sa_000131.jpg",
+   "sa_000162.jpg",
+   "sa_000172.jpg",
+   "sa_000181.jpg",
+   "sa_000182.jpg",
+   "sa_000183.jpg",
+   "sa_000184.jpg",
+   "sa_000199.jpg",
+   "sa_000200.jpg",
+   "sa_000215.jpg",
+   "sa_000217.jpg",
+   "sa_000219.jpg",
+   "sa_000220.jpg",
+   "sa_000226.jpg",
+   "sa_000233.jpg",
+   "sa_000235.jpg"
+  ],
+  "kayitlar": [
+   {
+    "kare": "sa_000000.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000001.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000002.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000003.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000004.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000005.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000006.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000007.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000008.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000009.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000010.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000011.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     2,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000012.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000013.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000014.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000015.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000016.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000017.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000018.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000019.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000020.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000021.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000022.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000023.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     3,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000024.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000025.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000026.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000027.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000028.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000029.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000030.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000031.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000032.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000033.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000034.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000035.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000036.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000037.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000038.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000039.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000040.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000041.jpg",
+    "bant_y": [
+     [
+      359,
+      397
+     ],
+     [
+      357,
+      396
+     ],
+     [
+      358,
+      397
+     ],
+     [
+      359,
+      397
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000042.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000043.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000044.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000045.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000046.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000047.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000048.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000049.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000050.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000051.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000052.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000053.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000054.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000055.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      168,
+      207
+     ],
+     [
+      167,
+      206
+     ],
+     [
+      168,
+      207
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000056.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000057.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000058.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000059.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000060.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000061.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     1,
+     2,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000062.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000063.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      168,
+      206
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000064.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000065.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000066.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000067.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000068.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000069.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000070.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000071.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000072.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000073.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000074.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000075.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000076.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      187,
+      225
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000077.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000078.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000079.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000080.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000081.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000082.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000083.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000084.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000085.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000086.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000087.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000088.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000089.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000090.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000091.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000092.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000093.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000094.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000095.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000096.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000097.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000098.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000099.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000100.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000101.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000102.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000103.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000104.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000105.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000106.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000107.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000108.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000109.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000110.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000111.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000112.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000113.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000114.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000115.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000116.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000117.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000118.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      416,
+      454
+     ],
+     [
+      415,
+      453
+     ],
+     [
+      416,
+      454
+     ]
+    ],
+    "n_kapi": [
+     3,
+     2,
+     2,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000119.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000120.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000121.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     1,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000122.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000123.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000124.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000125.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000126.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000127.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000128.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000129.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000130.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000131.jpg",
+    "bant_y": [
+     [
+      187,
+      225
+     ],
+     [
+      187,
+      225
+     ],
+     [
+      311,
+      349
+     ],
+     [
+      187,
+      225
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000132.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000133.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000134.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000135.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000136.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000137.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000138.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000139.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000140.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000141.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000142.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000143.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000144.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000145.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000146.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000147.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000148.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000149.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000150.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000151.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000152.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000153.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000154.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000155.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000156.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000157.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000158.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000159.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000160.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000161.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000162.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000163.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000164.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000165.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000166.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000167.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000168.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000169.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000170.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000171.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000172.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000173.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000174.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000175.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000176.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000177.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000178.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000179.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000180.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000181.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000182.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     1,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000183.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000184.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     1,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000185.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000186.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000187.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000188.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000189.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000190.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000191.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000192.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000193.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000194.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000195.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000196.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000197.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000198.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000199.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000200.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000201.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000202.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000203.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000204.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000205.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000206.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000207.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000208.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000209.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000210.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000211.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000212.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000213.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000214.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000215.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000216.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000217.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000218.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000219.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      419,
+      457
+     ],
+     [
+      416,
+      455
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000220.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000221.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000222.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000223.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000224.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000225.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000226.jpg",
+    "bant_y": [
+     [
+      373,
+      411
+     ],
+     [
+      373,
+      411
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000227.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000228.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000229.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     3,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000230.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000231.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000232.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000233.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     4,
+     4,
+     4,
+     4
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000234.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000235.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": true
+   },
+   {
+    "kare": "sa_000236.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000237.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000238.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000239.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000240.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     1,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000241.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000242.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000243.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000244.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000245.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000246.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000247.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000248.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000249.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000250.jpg",
+    "bant_y": [
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ],
+     [
+      300,
+      339
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000251.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000252.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000253.jpg",
+    "bant_y": [
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ],
+     [
+      364,
+      403
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000254.jpg",
+    "bant_y": [
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ],
+     [
+      428,
+      467
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000255.jpg",
+    "bant_y": [
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ],
+     [
+      172,
+      211
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000256.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000257.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     2,
+     2,
+     2,
+     2
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000258.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     3,
+     3,
+     3,
+     3
+    ],
+    "degisti": false
+   },
+   {
+    "kare": "sa_000259.jpg",
+    "bant_y": [
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ],
+     [
+      236,
+      275
+     ]
+    ],
+    "n_kapi": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "degisti": false
+   }
+  ]
+ },
+ "kontrol": {
+  "tutarsiz_temiz_kosu": []
+ }
+}

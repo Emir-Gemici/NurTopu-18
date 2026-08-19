@@ -1,0 +1,72 @@
+{
+  "gorev": "T116-B poligon tavani (SAF TANI, verdikt yok)",
+  "tarih": "2026-08-20",
+  "yontem": {
+    "modul": "O:\\navitas\\dataset\\download_and_convert.py",
+    "yukleme": "importlib.util.spec_from_file_location; main() CAGRILMADI",
+    "orneklem": "600 maske / 3595 (np.linspace esit aralikli)",
+    "kaynak_dizin": "O:\\navitas\\dataset\\rescuenet_ham\\segmentation-trainset\\train-label-img",
+    "boyut": "cv2.resize -> 512x512, INTER_NEAREST (donusturucunun girdi boyu; ham 3000x4000'de saymak yanlis olcum olur: MIN_AREA=200 ve EPSILON_RATIO 512 olceginde anlamli)",
+    "alan_cikarimi": "findContours(RETR_EXTERNAL, CHAIN_APPROX_SIMPLE) + contourArea<MIN_AREA atla + approxPolyDP(eps=0.003*arcLength) len<3 atla; alan = ORIJINAL konturun cv2.contourArea'si",
+    "kirpma_modeli": "alan buyukten kucuge siralanir, ilk TAVAN tutulur, kalan atilir",
+    "not_kod_farki": "process_split gercekte satirlari len(l) (STRING uzunlugu) ile siralar, alanla degil; buradaki alan-sirali kirpma gorev tanimindaki modeldir (on_kayit: saf tani, yorum yok)",
+    "sinif_kumeleri": {
+      "blocked_ham": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10
+      ],
+      "road_ham": [
+        7
+      ]
+    }
+  },
+  "blocked": {
+    "tavan": 15,
+    "poligon_sayisi": {
+      "medyan": 3.0,
+      "p90": 9.0,
+      "maks": 20,
+      "ortalama": 4.2316666666666665
+    },
+    "tavani_asan_maske": 4,
+    "orneklem": 600,
+    "kirpilan_alan": {
+      "toplam_pay": 3.6700430614429386e-05,
+      "maske_basina_frac_medyan_tum": 0.0,
+      "maske_basina_frac_medyan_yalniz_asanlar": 0.004505470958317447,
+      "maske_basina_frac_maks": 0.016048160281461662
+    },
+    "fn_vs_alan_cikarimi_uyusmazlik": 0
+  },
+  "road": {
+    "tavan": 30,
+    "poligon_sayisi": {
+      "medyan": 1.0,
+      "p90": 1.0,
+      "maks": 4,
+      "ortalama": 0.6666666666666666
+    },
+    "tavani_asan_maske": 0,
+    "orneklem": 600,
+    "kirpilan_alan": {
+      "toplam_pay": 0.0,
+      "maske_basina_frac_medyan_tum": 0.0,
+      "maske_basina_frac_medyan_yalniz_asanlar": 0.0,
+      "maske_basina_frac_maks": 0.0
+    },
+    "fn_vs_alan_cikarimi_uyusmazlik": 0
+  },
+  "tavani_asan_blocked_ilk20_dosya": [
+    "10853_lab.png",
+    "10887_lab.png",
+    "13077_lab.png",
+    "20430_lab.png"
+  ]
+}

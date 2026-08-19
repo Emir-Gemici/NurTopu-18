@@ -16626,3 +16626,174 @@ amele kendini curutecek olcumu onceden yazdi ("mimar FARKLI bir recete
 kastediyorsa soylesin; `--temizle` ile uretilen kume olculebilir bicimde
 farkliysa itirazim zayiflar"). Bu madde olmasaydi itiraz bir tercih beyani
 olurdu; oldugu icin **sinanabilir bir iddiaydi** ve sinandi.
+
+### D-201 · 🔴 T116-A · T54 HEDEFINE ULASMADI: v34 otopark kaplamasi v21 ILE ESDEGER — "%80,6 -> %45,7 dususu" PAYDA FARKIYMIS
+Yazan: Claude 2 / Fable 5 (basamele) · 2026-08-20 · T116 lane 1 · on kayit `results/t116_turu/on_kayit.md` (olcumden ONCE; bulasma beyani icinde)
+Duzenek: dinamik workflow lane + 3 bagimsiz curutucu (oy: 0/3 curuttu — bulgu AYAKTA)
+Kosum: 67 kare (`data/raw_frames` rglob, eslestirilmis — 4 model ayni dosyalar), zincir `65_kabul_denetcisi.kaplama()` importlib ile BIREBIR, conf 0,30. JSON: `results/t116_turu/t116a.json`
+
+    model  medyan   min     maks    ort     (kaplama; letterbox KARE paydasi)
+    v21    %44,96   %43,13  %48,54  %45,55
+    v22    %44,77   %42,71  %48,65  %45,28
+    v30    %33,42   %29,21  %39,50  %33,44
+    v34    %45,01   %43,10  %49,16  %45,67
+
+**ON KAYIT A1: SAGLANMADI.** v34 medyani v21'den 20 puan dusuk degil — 0,05
+puan USTUNDE. Kare bazinda esli fark tum 67 karede [-0,30, +0,78] puan
+(curutucu (c) olctu); fark yok denecek kadar kucuk.
+
+**ON KAYIT A2: SAGLANMADI — GORSELI KENDIM DOGRULADIM (D-80).**
+`results/t116_turu/t116a_cati_gorsel.png`: iki karede de bina catisi HEM v21
+HEM v34 tarafindan YESIL. (Araclar dogru sekilde boyanmiyor — arac dersi
+gercek karede CALISIYOR; cati dersi CALISMIYOR.)
+
+**🔴 PAYDA BULGUSU (tani; verdikt disi).** `kaplama()` paydasi letterbox
+KARESIDIR; kareler 1024x576 (icerik orani 0,5625). Icerige normalize
+medyanlar: v21 %79,9 · v34 %80,0 · v30 %59,4. Yani T54 metnindeki taban
+%80,6, iceriğe-normalize v21 ile AYNI MERTEBEDIR ve v34'un %45,7'siyle
+kiyaslanamaz — "belirgin dusus" izlenimi PAYDA FARKINDAN dogmus goruntuyor.
+⚠ Tamlik elestirmeni haklı bir sinir koydu: %80,6'nin KENDI kosum zinciri
+(T58/B1, 30 kare) bu turda kosulMADI; payda sozlesmesi oradan dogrulanmali.
+
+**Curutuculerin bagimsiz dogrulamalari:** 4 modelin SHA256'lari farkli
+(v34 kopya degil) · JSON'dan medyanlar birebir yeniden uretildi · 2 kare x 2
+model gercek yeniden kosumla 1e-6 icinde esit · v34/v30 ortalamalar D-184
+havuz sayilariyla birebir.
+
+**SONUC:** T54'un asil hedefi ("otoparkta kaplama belirgin dussun") v34'te
+GERCEKLESMEMIS. v34'un RescueNet'te ogrendigi "cati engeldir" dersi bu gercek
+otopark karelerine TASINMIYOR. Ne yapilacagi (veri mi, esik mi, hedef yanlis
+mi) MIMARIN KARARIDIR — bu kayit yalniz olcumdur.
+
+DOGRULANAMADI: %80,6 tabaninin payda sozlesmesi (T58 zinciri kosulmadi) ·
+cati iceren kare sayisi 67 icinde sayilmadi (A2 2 karede dogrulandi) ·
+"neden tasinmiyor" (GSD/gorunum farki?) olculmedi.
+
+
+### D-202 · T116-B · POLIGON TAVANI PRATIKTE KIRPMIYOR (600 maskede asan 4, atilan alan ~%0,004) — AMA URETIM SIRALAMASI ALANLA DEGIL SATIR UZUNLUGUYLA
+Yazan: Claude 2 / Fable 5 · 2026-08-20 · T116 lane 2 (SAF TANI — verdikt yok) · curutucu oyu 0/3
+Kosum: 600 ham maske (esit aralikli / 3595), 512x512'ye INTER_NEAREST kucultme (donusturucunun girdi boyu), `download_and_convert` fonksiyonlariyla. JSON: `results/t116_turu/t116b.json`
+
+    blocked poligon sayisi: medyan 3 · p90 9 · maks 20 · ort 4,23
+    tavani (15) asan maske: 4/600
+    kirpilan alan payi (alan-sirali model): toplam 3,67e-05 · en kotu maske 0,016
+    road (tavan 30): asan 0/600
+
+**⚠ TAMLIK ELESTIRMENININ DUZELTMESI — KAYDA GECIYOR (m.6):**
+`download_and_convert.py:122-123` satirlari poligonlari `len(l)` ile — yani
+SATIR UZUNLUGU (~kose sayisi) ile — siralayip kirpar, ALANLA DEGIL. Lane'in
+"kirpilan alan" olcumu alan-sirali modeldi; gercek kodun kirptigi alan
+FARKLI olabilir (kucuk-ama-cok-koseli poligon buyuk-az-koseliyi kovabilir).
+Asan-maske SAYISI (4/600) siralamadan bagimsizdir ve gecerlidir. Sonuc:
+tavan bugun pratik sorun degil; ama `len(l)` siralamasi ayri bir kusur adayi
+olarak MIMARA gorev onerisidir (alan-sirali kirpmaya cevirmek + tavani
+olculmus degere baglamak — kod degisikligi bu turda YASAKTI, yapilmadi).
+
+DOGRULANAMADI: val/test split'leri okunmadi (diskte varlar) · 600 orneklemin
+tam kumeye izdusumu (~24 asan maske tahmini) kosulmadi · gercek kodun
+`len(l)`-sirali kirpma ALANI olculmedi.
+
+
+### D-203 · T79-YENIDEN · v34 kararlilik TEK TOHUMDA 4/260 (v30: 8) — AMA CURUTUCU TOHUM 42'DE ISARETI TERSINE CEVIRDI: KAZANC ISPATLANMADI · ONNX denklik 2/260
+Yazan: Claude 2 / Fable 5 · 2026-08-20 · T116 lane 3 · on kayit B1/B2 · curutucu oyu 1/3 (bulgu ayakta, MUHALEFET OLCUMLU)
+Kosumlar: `68_karar_kararliligi.py` (v34, D-142 recetesi birebir: sigma 2/255 · tekrar 3 · tohum 7) -> `calisma/olcum/68_v34_t116.json` · `67_onnx_karar_denkligi.py` (v34 pt + 512fp16 onnx) -> `67_v34_t116.json`. JSON: `results/t116_turu/t79.json`
+
+    kararlilik (tohum 7):  v34 CEVRILEN 4/260  (D-142 v30: 8/260)
+      ceviren kareler: sa_000066 · 000076 · 000172 · 000176
+    ONNX denklik: uyusmazlik 2/260 (sa_000098, sa_000121) · maske IoU ort 0,9959
+      rota IoU min 0,0 · azami sapma 18,4 m  (67'nin kendi raporu)
+
+**ON KAYIT B1 (harfiyen):** 4 < 8 -> "iyilesme GORUNUYOR". AMA:
+
+**🔴 MUHALIF CURUTUCUNUN OLCUMU (mercek c) — kaydin asil degeri:**
+68'i DEGISTIRMEDEN yalniz `--tohum 42` ile IKI modeli de yeniden kostu:
+v34 = **7/260**, v30 = **6/260**. Yani tohum 7'de v34 lehine -4 olan fark,
+tohum 42'de v34 ALEYHINE +1. Ayni modelin sayisi sirf tohumla 4 -> 7
+sicriyor; 4-vs-8 farki binom p~0,39 ile anlamsiz. **SONUC: T54'un
+kararlilik kazanci TEK-TOHUM artefakti olabilir — ISPATLANMADI.** (2/3
+curutmedigi icin lane dusmedi; ama iki tohumlu tablo kayitta ve yorum ona
+gore kisitlandi. On kayit gevsetilmedi: B1'in kendi sozu zaten "gorunuyor".)
+
+DOGRULANAMADI: cok-tohumlu (>=5) dagilim olculmedi (iki tohum var) · 67'de
+ONNX'in hangi cihazda kostugu belirsiz (CUDA EP uyarisi — tamlik maddesi) ·
+sa_000098'in hem ONNX uyusmazliginda hem gecmis kararsizlik listelerinde
+gorunmesi INCELENMEDI.
+
+
+### D-204 · T91+T92 TANISI (v34) · bant kararsizligi 34/260 GERCEK; "iki seride yayilan kazanan 12/30" ise GEOMETRIK TABAN ORANINDAN AYIRT EDILEMIYOR
+Yazan: Claude 2 / Fable 5 · 2026-08-20 · T116 lane 4 (SAF TANI) · curutucu oyu 1/3 — muhalefet OLCUMLU ve yorumu SINIRLADI
+Kosum: v34 · t66 n=260 · D-139 tek-cikarim · temiz + gurultulu (sigma 2/255 · tekrar 3 · tohum 7). JSON: `results/t116_turu/t91t92.json`
+
+    T91 (temiz):  ACIK 30/260 · kazanan iki seride yayilan: 12/30 (kesin
+                  serit_yayilimi) / 10/30 (emir tanimi cx±w/2)
+                  [kiyas, BASKA kosum: D-146 v30 13/31]
+    T92 (gurultu): bant_y 4 kosuda degisen 34/260
+                  [kiyas, BASKA kosum: D-147 v30-donemi 41/260]
+    kontroller: rota_bul<->koridor_adaylari tutarsizligi 0 · CUDA hatasi 0
+
+**🔴 MUHALIF CURUTUCUNUN OLCUMU:** gozlenen kapi genislikleriyle 640 px
+icerikte RASTGELE yerlesim sifir-modeli tam **10,1/30 (%34)** yayilim
+ongoruyor — gozlenen 10-12/30 bundan AYIRT EDILEMEZ. Yani T91'in sayisi
+costmap'e ozgu bir kusurun degil, "genis kapi + 1/3 izgara" geometrisinin
+taban oranidir. v34-v30 kiyaslari da istatistiksel bos (z=0,15 · z=0,87).
+**Ayakta kalan tek saglam olcum T92'nin 34/260'i**: 33/34 karede bant_y
+kaymasi > 3 px (medyan 64 px), yalniz 7/34'te n_kapi de degisiyor — yani
+esik/beraberlik artefakti degil, gercek bant secim oynakligi.
+
+**MIMARA:** T91'in cercevesi "kusur orani" degil "tanim eksigi" olarak
+okunmali (kapi bir aciklik, numara bir nokta); T92 icin bant seciminin
+argmax'tan histerezisli/agirlikli bir secime cevrilmesi OLCULECEK bir aday
+(kod degisikligi bu turda yasakti — yapilmadi).
+
+
+### D-205 · T101 TANISI · t66'da ACIK seridin kutusu 260 karenin 77'sinde (%29,6) IKI serit_no ucte-birine yayiliyor; GERCEK karelerde OLCULEMIYOR (manifest kutusuz)
+Yazan: Claude 2 / Fable 5 · 2026-08-20 · T116 lane 5 (SAF TANI) · curutucu oyu 0/3
+Kosum: t66 manifesti, 260 kare / 897 uretec seridi; serit_no `scripts/olcum` uzerinden import (yeniden yazilmadi); esik: her iki ucte-birde >= kutu_genisligi/3 pay (1px degme sayilmaz). JSON: `results/t116_turu/t101.json`
+
+    iki ucte-bire yayilan serit: 186/897 (ana esik) · 449/897 (gevsek, >=2px)
+    ACIK seritte yayilma: 77/260 kare (ana) · 155/260 (gevsek)
+    merkez-sinir uzakligi: tum seritler medyan 46,2 px · ACIK medyan 37,3 px
+      (p10 3,8 px) · acik+yayilan (n=82) medyan 6,99 px — D-168'in "~5 px"
+      gozlemiyle ayni mertebe (o sayilar O KAYDIN kosumundan, buradan degil)
+    GERCEK kareler: arena_kompozit (9) ve raw_frames (67) OLCULEMEDI —
+      manifestlerinde serit kutusu alani YOK (kosumda dogrulandi)
+
+D-168 §4'un H1 hipotezi artik POPULASYON sayisiyla duruyor: serit_no'nun
+sabit 1/3 bolumu, kadraja gore 109-210 px oynayan uretec seritleriyle
+yapisal olarak uyumsuz. `serit_no` SOZLESME ALANIDIR ve DEGISTIRILMEDI;
+gercek-kare olcumu icin once gercek karelerde serit yer gercegi gerekir
+(T111/D-198: alan disi etiketli kume YOK — ayni duvara carpiyor).
+
+
+### D-206 · SENTEZ + TAMLIK · "ORTAK KOK" HIPOTEZI CURUDU: dortlu kesisim 0/260 — T91 digerlerinden TAMAMEN AYRIK
+Yazan: Claude 2 / Fable 5 · 2026-08-20 · T116 turu sentez (bariyer asamasi) · on kayit SENTEZ KURALI uygulanmis
+JSON: `results/t116_turu/sentez_kesisim.json`
+
+    kume boyutlari: T79=4 · T91=12 · T92=34 · T101=77   (kaynak: lane JSON'lari)
+    DORTLU kesisim: 0/260  -> on kayit kurali geregi ORTAK KOK CURUDU
+      (duyarlilik: T91-emir 10 ve T101-gevsek 155 varyantlarinda da 0)
+    uclu: yalniz T79∩T92∩T101 = 2 (sa_000066, sa_000076); T91'li ucluler BOS
+    ikili: T79∩T92 = 3 (T79'un 4 karesinden 3'u; ~5,7x sans beklentisi) ·
+      T92∩T101 = 10 (TAM sans duzeyi, 10,07 beklenti) · T79∩T91 = 0 · T91∩T92 = 0
+
+Kuyrugun "bu dortu ayni kokten" varsayimi SINANDI ve TUTMADI. Tek dikkat
+cekici iliski T79∩T92 (kararsiz karar ~ kararsiz bant, 3/4) — korelasyondur,
+kanit degildir (on kaydin kendi kaydi).
+
+**TAMLIK ELESTIRMENI (sonraki turun isi — hicbiri bu turda kosulmadi):**
+  1. %80,6 tabaninin payda sozlesmesi: T58/B1'in KENDI zinciri + KENDI 30
+     karesiyle v34 kosulmali (elma-elma).
+  2. A2 gorseli 2/67 kareyle kapatildi; cati iceren kare sayisi sayilmali.
+     (Gorsel bu kayitla birlikte INSANA sunuldu; ana dongu kendi gozuyle
+     dogruladi — hakem/olcen ayrimi saglandi.)
+  3. `download_and_convert.py:122-123` `len(l)` siralamasi — alan-sirali
+     kirpmaya cevirme + tavani olculmus degere baglama GOREV ADAYI.
+  4. rescuenet val/test split'leri tavan taramasina dahil edilmeli (ucuz).
+  5. 67'de ONNX'in EP/cihazi loglanmali ("CUDAExecutionProvider bulunamadi"
+     uyarisi sessizce gecilmis olabilir).
+
+**TURUN HARNESS OZETI:** 22 ajan (5 lane + 15 curutucu + sentez + tamlik) ·
+0 hata · dusen lane YOK (en kotu 1/3) · iki muhalif oy OLCUM getirdi ve
+iki lane'in YORUMUNU kalici olarak sinirladi (D-203 tohum duyarliligi,
+D-204 sifir-model). Curutuculerden ikisi kendi bagimsiz yeniden-kosumlarini
+yapti — harness bos calismadi.

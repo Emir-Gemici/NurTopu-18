@@ -1,0 +1,44 @@
+{
+ "lane": "T79-YENIDEN (T116 turu, on kayit B1/B2)",
+ "tarih": "2026-08-20",
+ "kararlilik_68": {
+  "komut": "cd O:\\navitas-local-train && venv\\Scripts\\python.exe 68_karar_kararliligi.py --json calisma/olcum/68_v34_t116.json",
+  "orneklem": "sentetik_arena_kadraj_t66, n=260 · sigma=2.0/255 · tekrar=3 · tohum=7 · conf=0.30 (D-142 recetesi, betik degistirilmedi)",
+  "model": "O:\\navitas\\models\\navitas_seg_v34_best.pt (uretim_pt() varsayilani; cikti basliginda dogrulandi: navitas_seg_v34_best.pt)",
+  "n": 260,
+  "karari_cevrilen": 4,
+  "karari_cevrilen_yuzde": 1.54,
+  "cevrilen_kareler": ["sa_000066.jpg", "sa_000076.jpg", "sa_000172.jpg", "sa_000176.jpg"],
+  "darbogaz_payi": {"medyan_px": 17.8, "en_dusuk_px": 0.1, "pay_alti_3px_kare": "14/258"},
+  "on_kayit_B1": "4 < 8 (8 = D-142 v30 kosumu) -> 'iyilesme GORUNUYOR'",
+  "ham_json": "O:\\navitas-local-train\\calisma\\olcum\\68_v34_t116.json"
+ },
+ "onnx_denklik_67": {
+  "komut": "cd O:\\navitas-local-train && venv\\Scripts\\python.exe 67_onnx_karar_denkligi.py --json calisma/olcum/67_v34_t116.json",
+  "orneklem": "sentetik_arena_kadraj_t66, n=260 · conf=0.30 · varsayilanlar kayit defteri/manifestten (betik degistirilmedi)",
+  "pt": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+  "onnx": "O:\\navitas\\jetson_paket\\models\\navitas_seg_v34_best_512_fp16.onnx",
+  "n": 260,
+  "karar_ayni": 258,
+  "uyusmazlik": 2,
+  "uyusmayan_kareler": ["sa_000098.jpg", "sa_000121.jpg"],
+  "uyusmazlik_detay": [
+   {"kare": "sa_000098.jpg", "pt": "serit 2 / red None", "onnx": "serit 1 / red None"},
+   {"kare": "sa_000121.jpg", "pt": "serit 2 / red None", "onnx": "serit None / red GORUS_HATTI_KOPUK"}
+  ],
+  "rota_ikisi": 257,
+  "rota_iou_ort": 0.9755,
+  "rota_iou_min": 0.0,
+  "sapma_px_maks": 235.1,
+  "sapma_m_maks": 18.364,
+  "maske_iou_ort": 0.9959,
+  "maske_iou_min": 0.5918,
+  "kaplama_farki_ort": -0.00023,
+  "kaplama_farki_maks_mutlak": 0.16471,
+  "betigin_kendi_verdikti": "🔴 KARAR UYUSMAZLIGI: 2 kare (betik 0 uyusmazlikta 'YOK' der; sayisal esigi yoktur)",
+  "tarihsel_baglam": "D-119 donemi 2/260 idi — FARKLI modelin (v27) sayisidir, esik DEGILDIR (on kayit B2)",
+  "onnxruntime_notu": "ORT 1.28.0, 'Using CUDAExecutionProvider' satirindan sonra 'No registered plugin EP device found for CUDAExecutionProvider device_id=0' UYARISI basildi; kosum tamamlandi, olcum gecerli — yurutucu saglayici belirsizligi tani notudur",
+  "ham_json": "O:\\navitas-local-train\\calisma\\olcum\\67_v34_t116.json"
+ },
+ "kesisim_notu": "68 cevrilen {66,76,172,176} ∩ 67 uyusmayan {98,121} = BOS kume"
+}

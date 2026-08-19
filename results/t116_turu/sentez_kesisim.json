@@ -1,0 +1,124 @@
+{
+ "lane": "SENTEZ — ortak kok sinamasi (T116 turu, on kayit SENTEZ KURALI)",
+ "tarih": "2026-08-20",
+ "kaynaklar": {
+  "T79_cevrilen": "t79.json kararlilik_68.cevrilen_kareler (68_karar_kararliligi.py, t66 n=260, sigma=2/255, tekrar=3, tohum=7, conf=0.30)",
+  "T91_iki_serit_kesin": "t91t92.json t91.iki_seride_yayilan_kesin_kareler (D-145 kesin olcum, t66 n=260)",
+  "T92_bant_degisen": "t91t92.json t92.degisen_kareler (4 kosuda bant_y degisen, t66 n=260)",
+  "T101_acik_yayilan_ana": "t101.json olc2.kareler_ana (kw/3 ana esik, manifest geometrisi, t66 n=260; yol oneki basename ile normalize edildi)"
+ },
+ "evren_n": 260,
+ "kume_boyutlari": {
+  "T79_cevrilen": 4,
+  "T91_iki_serit_kesin": 12,
+  "T92_bant_degisen": 34,
+  "T101_acik_yayilan_ana": 77
+ },
+ "kume_boyutlari_varyant": {
+  "T91_iki_serit_emir": 10,
+  "T101_acik_yayilan_gevsek": 155
+ },
+ "ikili_kesisimler": {
+  "T79_cevrilen & T91_iki_serit_kesin": {
+   "kesisim_n": 0,
+   "kesisim_kareler": [],
+   "jaccard": 0.0,
+   "beklenen_rastgele_n": 0.18
+  },
+  "T79_cevrilen & T92_bant_degisen": {
+   "kesisim_n": 3,
+   "kesisim_kareler": [
+    "sa_000066.jpg",
+    "sa_000076.jpg",
+    "sa_000172.jpg"
+   ],
+   "jaccard": 0.0857,
+   "beklenen_rastgele_n": 0.52
+  },
+  "T79_cevrilen & T101_acik_yayilan_ana": {
+   "kesisim_n": 3,
+   "kesisim_kareler": [
+    "sa_000066.jpg",
+    "sa_000076.jpg",
+    "sa_000176.jpg"
+   ],
+   "jaccard": 0.0385,
+   "beklenen_rastgele_n": 1.18
+  },
+  "T91_iki_serit_kesin & T92_bant_degisen": {
+   "kesisim_n": 0,
+   "kesisim_kareler": [],
+   "jaccard": 0.0,
+   "beklenen_rastgele_n": 1.57
+  },
+  "T91_iki_serit_kesin & T101_acik_yayilan_ana": {
+   "kesisim_n": 3,
+   "kesisim_kareler": [
+    "sa_000105.jpg",
+    "sa_000166.jpg",
+    "sa_000250.jpg"
+   ],
+   "jaccard": 0.0349,
+   "beklenen_rastgele_n": 3.55
+  },
+  "T92_bant_degisen & T101_acik_yayilan_ana": {
+   "kesisim_n": 10,
+   "kesisim_kareler": [
+    "sa_000020.jpg",
+    "sa_000063.jpg",
+    "sa_000066.jpg",
+    "sa_000068.jpg",
+    "sa_000076.jpg",
+    "sa_000112.jpg",
+    "sa_000121.jpg",
+    "sa_000162.jpg",
+    "sa_000184.jpg",
+    "sa_000215.jpg"
+   ],
+   "jaccard": 0.099,
+   "beklenen_rastgele_n": 10.07
+  }
+ },
+ "uclu_kesisimler": {
+  "T79_cevrilen & T91_iki_serit_kesin & T92_bant_degisen": {
+   "kesisim_n": 0,
+   "kesisim_kareler": []
+  },
+  "T79_cevrilen & T91_iki_serit_kesin & T101_acik_yayilan_ana": {
+   "kesisim_n": 0,
+   "kesisim_kareler": []
+  },
+  "T79_cevrilen & T92_bant_degisen & T101_acik_yayilan_ana": {
+   "kesisim_n": 2,
+   "kesisim_kareler": [
+    "sa_000066.jpg",
+    "sa_000076.jpg"
+   ]
+  },
+  "T91_iki_serit_kesin & T92_bant_degisen & T101_acik_yayilan_ana": {
+   "kesisim_n": 0,
+   "kesisim_kareler": []
+  }
+ },
+ "dortlu_kesisim": {
+  "n": 0,
+  "kareler": []
+ },
+ "dortlu_duyarlilik": {
+  "T91_emir_varyanti": {
+   "n": 0,
+   "kareler": []
+  },
+  "T101_gevsek_varyanti": {
+   "n": 0,
+   "kareler": []
+  }
+ },
+ "en_kucuk_kume": {
+  "ad": "T79_cevrilen",
+  "n": 4,
+  "yarisi": 2.0
+ },
+ "sentez_verdikti_on_kayit_kurali": "KESISIM BOS -> ortak kok hipotezi CURUDU (on kayit sentez kurali)",
+ "kimlik_notu": "T101 kareleri 'images/train|val/' onekliydi; kesisim icin basename kullanildi. Uc kosum da ayni t66 kumesi (n=260) uzerinde."
+}

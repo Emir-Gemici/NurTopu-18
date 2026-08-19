@@ -4271,6 +4271,14 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     doğrulama zorunlu (**görsel kazanır**, D-80).
 
 - [ ] **T79 — Koridor seçimi binde-4'lük algı gürültüsüne karşı KARARSIZ: `.pt` ile `.onnx` aynı karede 28 m ayrı rota üretiyor** · `codes/costmap_path_finder.py`, `comms/yks_gui.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-119**
+  - 🔎 **v34 İLE YENİDEN ÖLÇÜLDÜ · 2026-08-20 · D-203.** Tohum 7 (D-142
+    reçetesi birebir): **çevrilen 4/260** (v30: 8) → ön kayıt B1 harfiyen
+    "iyileşme GÖRÜNÜYOR". 🔴 **AMA çürütücü tohum 42 ile iki modeli de
+    yeniden koştu: v34=7, v30=6 — işaret TERSİNE döndü.** 4-vs-8 binom
+    p≈0,39. **Kararlılık kazancı İSPATLANMADI (tek-tohum artefaktı olabilir).**
+    ONNX denklik (67, v34): uyuşmazlık 2/260 (sa_000098, sa_000121),
+    maske IoU 0,9959, azami sapma 18,4 m. Çok-tohumlu dağılım ölçülmedi.
+
   - Ölçüldü (n=260, eşleştirilmiş, T66 kabul kümesi): karar aynı **258/260**,
     zemin maskesi IoU **0,9968**, ama azami rota sapması **360 px = 28,1 m**.
     ```text
@@ -4424,6 +4432,13 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     · `[1,3]`→`[1,1]` · `[2]`→`[1]`). Ayrıca 120 rastgele sahnelik özellik
     taraması eklendi (yayılımın etiketi kapsaması `CC_STAT_LEFT`'i sınar).
 - [ ] **T91 — İki şeride yayılan kapının `road` numarası TANIMSIZ (ACIK karelerin %42'si)** · `codes/costmap_path_finder.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-146**
+  - 🔎 **v34 TANISI + SIFIR-MODEL · 2026-08-20 · D-204.** Kazanan kapı iki
+    şeride yayılan: 12/30 (kesin) / 10/30 (emir tanımı) — 🔴 **çürütücünün
+    sıfır-modeli (gözlenen kapı genişlikleriyle rastgele yerleşim) tam
+    10,1/30 öngörüyor: sayı costmap kusuru değil GEOMETRİK TABAN ORANI.**
+    v30 kıyası istatistiksel boş (z=0,15). Çerçeve "kusur oranı" değil
+    "tanım eksiği" olarak okunmalı (kapı bir açıklık, numara bir nokta).
+
   - T90 etiketi sözleşmeye bağladı ama **kapı bir nokta değil bir açıklıktır.**
     Ölçüldü (v30, n=260, üretimin **kesin** `serit_yayilimi` alanıyla):
     ```text
@@ -4499,6 +4514,12 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
   - **ASIL İŞ KORİDORDA:** `sa_000131` payı **0,72 px**; popülasyonda pay < 1 px
     olan 17-18/173 kare var. Model değiştirerek kapanmaz → **T74**.
 - [ ] **T92 — Bant seçimi gürültüye karşı KARARSIZ (41/260), envanterin en oynak parçası** · `codes/costmap_path_finder.py:406-409` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-147**
+  - 🔎 **v34 İLE YENİDEN ÖLÇÜLDÜ · 2026-08-20 · D-204.** bant_y 4 koşuda
+    değişen **34/260** (v30-dönemi 41/260; fark z=0,87, boş). 33/34'te kayma
+    >3 px (medyan 64 px), yalnız 7/34'te n_kapi de değişiyor → eşik artefaktı
+    değil GERÇEK bant seçim oynaklığı. Ortak-kök sentezinde T91 ile kesişimi
+    SIFIR (D-206).
+
   - `koridor_adaylari` beş aday bant oranı dener ve bandı
     `(kapı_sayısı, toplam_alan)` üzerinden **argmax** ile seçer — yani **sürekli
     bir büyüklük üzerinde ayrık bir seçim**. Ölçüldü (σ=2/255, n=260):
@@ -5376,7 +5397,22 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - **Çıktı:** `REVIEW_LOG.md`'ye denetim kaydı — **GEÇTİ** veya **KUSURLU**, her hâlde kanıtla.
     Bulgu çıkmazsa da yaz: "denetlendi, bulgu yok" da bir kayıttır.
 
-- [ ] **T116 — 🔴 T54 KOŞULDU ama HEDEFİNE ULAŞTIĞI HİÇ ÖLÇÜLMEDİ: otopark kaplaması %80,6'dan düştü mü?** · `models/navitas_seg_v34_best.pt`, `data/raw_frames/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-200 §3**
+- [ ] **T116 — ÖLÇÜLDÜ (D-201/D-202): T54 hedefine ULAŞMAMIŞ — v34 otopark kaplaması v21 ile eşdeğer; %80,6→%45,7 'düşüşü' PAYDA FARKI. Karar mimarın** · `models/navitas_seg_v34_best.pt`, `data/raw_frames/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-200 §3 → D-201/D-202**
+  - ✅ **ÖLÇÜM · 2026-08-20 · Claude-2 (Fable 5) · dinamik workflow (22 ajan:
+    5 lane + 15 çürütücü + sentez + tamlık; düşen lane YOK).**
+  - **A (D-201):** eşleştirilmiş 67 karede medyan kaplama — v21 %44,96 ·
+    v22 %44,77 · v30 %33,42 · v34 %45,01. **Ön kayıt A1 (≥20 puan düşüş)
+    SAĞLANMADI** (fark −0,05 puan); **A2 SAĞLANMADI** — çatı görselini ana
+    döngü KENDİ GÖZÜYLE doğruladı: çatı hem v21 hem v34'te YEŞİL
+    (`results/t116_turu/t116a_cati_gorsel.png`; araçlar doğru — araç dersi
+    çalışıyor, çatı dersi gerçek kareye taşınmıyor).
+    🔴 **Payda bulgusu:** içeriğe-normalize medyanlar v21 %79,9 · v34 %80,0 ·
+    v30 %59,4 → T54 metnindeki %80,6 tabanı letterbox-kare paydalı %45,7 ile
+    **kıyaslanamaz**. ⚠ %80,6'nın kendi zinciri (T58/B1) bu turda koşulmadı.
+  - **B (D-202):** poligon tavanı pratikte kırpmıyor (600 maskede aşan 4,
+    atılan alan ~%0,004) — AMA üretim sıralaması `len(l)` (satır uzunluğu),
+    ALAN DEĞİL (`download_and_convert.py:122-123`) → görev adayı.
+
   - **Neden var.** T54'ün eğitimi yapıldı (ürünü v34, bayt-eş doğrulandı) ama
     görevin **kendi kapıları** hiç ölçülmedi. `config/model_registry.json`
     içindeki `k0..k5` **arena kabul kapılarıdır** — T54'ünkiler değil.
@@ -6052,6 +6088,14 @@ avitas-local-train` tümüyle yedek
   - ✅ **CONTRACTS §6.2 GÜNCELLENDİ:** `road`ın hangi istatistik olduğu artık
     yazılı — **olgu beyanı olarak**, "en iyisidir" iddiası olmadan.
 - [ ] **T101 — Etiketleme çerçevesi ill-conditioned: bir üreteç şeridi iki `serit_no` üçte birine birden yayılıyor** · `codes/karar_sozlesmesi.py` (`serit_no`) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-168 §4**
+  - 🔎 **POPÜLASYON SAYISIYLA ÖLÇÜLDÜ · 2026-08-20 · D-205.** t66'da AÇIK
+    şeridin kutusu 260 karenin **77'sinde (%29,6)** iki `serit_no` üçte-birine
+    yayılıyor (897 şeritten 186'sı); açık+yayılan şeritlerde merkez-sınır
+    medyanı **6,99 px** (D-168'in ~5 px gözlemiyle aynı mertebe).
+    🔴 Gerçek karelerde ÖLÇÜLEMEDİ: arena_kompozit/raw_frames manifestlerinde
+    şerit kutusu YOK — T111/D-198'in duvarı (etiketli alan-dışı küme yok).
+    `serit_no` DEĞİŞTİRİLMEDİ (sözleşme alanı).
+
   - `serit_no` GÖRÜNTÜYÜ üçe böler (üçte bir = 213,3 px). Üreteç şerit kutuları
     kadraja göre **109-210 px** arası değişir; bir şerit iki üçte bire birden
     yayılabilir. Ayırt edici karelerde şerit merkezi sınıra **~5 px**.
