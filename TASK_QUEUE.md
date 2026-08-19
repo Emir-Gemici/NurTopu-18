@@ -5206,6 +5206,29 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - **ÖNCE KARAR (mimar):** (a) kök kopya silinsin, tek kaynak paket olsun ·
     (b) paketleyici `paket → kök` kopyalasın · (c) ikisi ayrı kalsın ama bir
     test farkı sabitlesin. **Körlemesine kopyalama YOK.**
+- [ ] **T105 — Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
+avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
+  - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa
+    `kes = None` kalır ve `gecti["K5"] = (kes == 0)` → **DÜŞTÜ**.
+  - `63_bariyer_kesisimi.py` **tek** karede (1059×634) koşar; o karede rota
+    çıkmazsa "kesişim ölçülemez" der. Mimar üç modeli de geçirdi:
+    ```text
+    model   karar                          bariyer pikselleri      kesisim
+    v22     serit=None GORUS_HATTI_KOPUK   ENGEL %100,0            olculemedi
+    v23     serit=None UC_BANT_TEMAS_YOK   ENGEL %100,0            olculemedi
+    v30     serit=None UC_BANT_TEMAS_YOK   ENGEL %100,0            olculemedi
+    ```
+    🔴 **Üretimdeki v30 da düşüyor** — satır hiçbir modeli ayırt etmiyor.
+  - ⚠ Ölçülebilen tek şey model **lehine**: üçü de bariyer piksellerinin
+    **%100'ünü ENGEL** görüyor.
+  - **Kusur sınıfı:** eksik ölçüm **başarısızlık** sayılıyor ve karar gerekçesi
+    olarak yazılıyor — yanlış atıf. Fail-closed ancak **ölçümü yapılmış** bir
+    riske karşı anlamlıdır.
+  - **YAP:** `65`in K5'i ya `66`/`80`e bağlansın ya da **"ÖLÇÜLEMEDİ"** üçüncü
+    bir durum olarak raporlansın (verdikte nasıl gireceği **karar işidir**).
+  - ⚠ Ayrıca araştır: 1059×634 karesinden **neden** rota çıkmıyor? Red sebebi
+    (`UC_BANT_TEMAS_YOK`) `analyze_path`in band temas kapısıdır, `yol_duzelt`ten
+    **önce** gelir — yani T94/T95 ile ilgisi **kurulmadı**, kurulmalı.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python

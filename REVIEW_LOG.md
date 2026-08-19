@@ -14592,3 +14592,83 @@ kapsam disina tasmadi.
   2. Sahada bugune kadar `--kayit-dogrulamasiz` ile mi kosuldugu BILINMIYOR;
      gecmis kosumlarin hangi korumayla yapildigi geriye donuk saptanamaz.
   3. Paketin ONNX/`.engine` tarafi bu turda ELE ALINMADI.
+
+### D-180 · 🔴 KABUL DENETCISININ K5'i HER MODELI REDDEDIYOR — URETIM MODELI DAHIL; "olculemedi" ile "dustu" AYIRT EDILMIYOR
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · v22/v23 degerlendirmesi sirasinda bulundu
+
+## 1. NE OLDU
+
+v22/v23 kabul denetimi kosuldu; ikisi de ayni satirdan dustu:
+
+    K5 BARIYER = 0 px    DUSTU  **None** px
+    VERDIKT: URETIME ALINMAZ — dusen: K5
+
+`None`, bir olcum DEGILDIR. Kaynak `65_kabul_denetcisi.py:101-111`:
+
+    c = kos("63_bariyer_kesisimi.py", ["--model", str(args.model)])
+    kes = None
+    for s in c.splitlines():
+        if "ROTA x BARIYER kesisimi" in s: kes = int(...)
+    gecti["K5"] = kes == 0          # <-- `None` da buraya duser
+
+Yani **alt betigin o satiri BASMADIGI her durum "K5 DUSTU" olarak okunur.**
+
+## 2. 🔴 URETIM MODELI DE AYNI SEKILDE DUSUYOR — KONTROL EDILDI
+
+`63_bariyer_kesisimi.py` TEK bir karede (1059x634) kosar. Uc modeli de o
+kareden gecirdim:
+
+    model   karar                         bariyer pikselleri     kesisim
+    v22     serit=None GORUS_HATTI_KOPUK  ENGEL %100,0           olculemedi
+    v23     serit=None UC_BANT_TEMAS_YOK  ENGEL %100,0           olculemedi
+    v30     serit=None UC_BANT_TEMAS_YOK  ENGEL %100,0 · ZEMIN %1,5  olculemedi
+
+**URETIMDEKI v30 DA AYNI KAREDE ROTA URETMIYOR.** Yani bu satir hicbir modeli
+ayirt etmiyor; bugun `65` ile denetlenen HER aday K5'ten duser.
+
+⚠ Ustelik olculebilen tek sey MODEL LEHINE: uc model de bariyer piksellerinin
+**%100'unu ENGEL** goruyor. Yani K5'in sormak istedigi soru ("rota bariyeri
+kesiyor mu") icin kotu bir isaret YOK; olcum kurulamiyor, o kadar.
+
+## 3. KUSUR SINIFI: "OLCULEMEDI" ILE "DUSTU" AYNI KEFEYE KONMUS
+
+Bu, bu oturumda tekrar eden bir aileden: **sifir/eksik olcumun basari ya da
+basarisizlik sayilmasi**. D-15/K-04 bunun tersini soyler ("sifir olcum basari
+sayilmaz"); burada ters yonde ayni hata var — eksik olcum BASARISIZLIK
+sayiliyor ve karar gerekcesi olarak yaziliyor.
+
+Fail-closed olmasi ILK BAKISTA dogru gorunur, ama degildir: fail-closed bir
+karar ancak OLCUMU YAPILMIS bir riske karsi anlamlidir. Burada olcum HIC
+YAPILMAMISTIR ve sonuc "model kotu" diye raporlanir — YANLIS ATIF.
+
+## 4. GERCEK K5 BASKA BETIKTEDIR — DEGERLENDIRME ONDAN YURUYOR
+
+Kayit defterindeki v30 K5 degeri (`0/173 kare · govde yaricapiyla`)
+`66_k5_bariyer_populasyon.py`den gelir, `63`ten DEGIL. Ikisi FARKLI olcumdur:
+
+    63 -> TEK kare, rota yoksa olculemez
+    66 -> 173 karelik populasyon, govde yaricapiyla
+    80 -> 66 + gurultulu tekrar (T93/D-150'nin SIKI kapisi)
+
+v22/v23 degerlendirmesi bu yuzden `65`in K5 satirini **GECERSIZ** sayar ve
+on kayittaki (2) numarali olcute — `80_k5_siki_kapi.py` — dayanir. Bu bir
+gevsetme DEGILDIR: 80, 63'ten KAT KAT sikidir.
+
+## 5. GOREV ACILDI: T105
+
+`65`in K5'i ya `66`/`80`e baglanmali ya da "OLCULEMEDI" ucuncu bir durum
+olarak raporlanmalidir. **Kor duzeltme yok** — hangi betige baglanacagi ve
+"olculemedi"nin verdikte nasil gireceği karar isidir.
+
+⚠ **NEDEN v30 KABUL EDILIRKEN BU GORUNMEDI (hipotez, DOGRULANMADI):** D-133'te
+K5 muhtemelen `66` ile ayri kosuldu (defterdeki bicim `66`nin bicimi). `65`in
+K5 satirinin o gun ne verdigi ARASTIRILMADI. Ayrica o kareden bugun rota
+cikmamasinin nedeni de ARASTIRILMADI — planlayici bu oturumda degisti (T94/T95)
+ama red sebepleri (`UC_BANT_TEMAS_YOK`) `analyze_path`in BAND TEMAS kapisidir,
+`yol_duzelt`ten ONCE gelir. **Nedensellik kurulmadi.**
+
+**DOGRULANAMADI**
+  1. `65`in K5 satirinin gecmiste calisip calismadigi.
+  2. 1059x634 karesinden bugun rota cikmamasinin nedeni (T94/T95 ile
+     ilgisi kurulmadi; red sebebi upstream gorunuyor).
+  3. Bu karenin hangi kumeye ait oldugu ve temsil degeri.
