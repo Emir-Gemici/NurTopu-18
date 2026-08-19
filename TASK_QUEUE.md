@@ -5593,6 +5593,28 @@ avitas-local-train` **git
     (yanlış yönde kopyalamak D-166'nın düzeltmesini **geri alırdı**) ·
     **T104 bu karara bağlanır ama otomatik çözülmez** (orada doğru kopya
     **pakettekidir**; yön kararı ayrıdır).
+- [ ] **T113 — 46 numaralı betik SÜRÜM KONTROLÜ DIŞINDA, ve izlenen üretim kodu onlardan birine BAĞIMLI** · `O:
+avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T112 ölçümünün yan bulgusu)
+  - Aynalama **#48'den sonra** başlamış; `01`–`47` arası (ve 49-53, 55, 57-59)
+    **hiç aynalanmamış**. Ölçüldü: canlıda **82** numaralı betik, repoda **36**.
+    ```text
+    aynalanan numaralar: 48 54 56 60..93
+    aynalanmayan       : 01..22 · 30..36 · 40..43 · 45..47 · 49..53 · 55 · 57..59
+    ```
+  - 🔴 **İzlenen üretim betiği sürümsüz bir dosyaya bağımlı:**
+    `scripts/copy_paste_augmentation.py:944` →
+    `default=Path(r"O:
+avitas-local-train)_sentetik_arena.py")`.
+    `51_sentetik_arena.py` **sentetik arena üretecidir** — kabul kümesinin
+    (`kadraj_t66`) atasıdır ve `RESEARCH_NOTES.md` / `TASK_QUEUE.md` ona atıf
+    yapar. **Yalnız bu PC'nin diskinde duruyor.**
+  - ⚠ **PC garantiye gidecek** — bu dosyalar yedeklenmezse geri gelmez.
+    Yedekleme listesine **girmek zorunda**.
+  - **ÖNCE KARAR (mimar):** hepsi mi aynalanmalı, yoksa yalnız **hâlâ
+    çağrılanlar** mı? Ölçmeden karar verilmez: hangi numarasız/eski betiğe
+    bugün hâlâ atıf var, çıkarılmalı.
+  - ⚠ T112'nin testi bunu **yakalamaz** — o test yalnız **iki tarafta da var
+    olan** çiftleri kıyaslar (bilinçli, D-189 §3.1). Bu ayrı bir eksiktir.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
