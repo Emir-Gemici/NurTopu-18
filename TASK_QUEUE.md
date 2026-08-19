@@ -5279,7 +5279,7 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
   - ⚠ Ayrıca araştır: 1059×634 karesinden **neden** rota çıkmıyor? Red sebebi
     (`UC_BANT_TEMAS_YOK`) `analyze_path`in band temas kapısıdır, `yol_duzelt`ten
     **önce** gelir — yani T94/T95 ile ilgisi **kurulmadı**, kurulmalı.
-- [ ] **T106 — v23 şartname figüründe zemin kaplamasını 16 KAT düşürüyor (%7,96 → %0,49), sebebi bilinmiyor** · `dataset/download_and_convert.py` (T54 eşlemesi) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-181 §5**
+- [x] **T106 — KAPANDI · Figür çöküşü GÜVEN ÇÖKÜŞÜ ve sıkışma FİGÜRE ÖZGÜ (üç kümede yok)** · `dataset/download_and_convert.py` (T54 eşlemesi) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-181 §5**
   - Ölçüldü (`65_kabul_denetcisi`, aynı figür `data/arena_referans/sartname_s9_arena.png`):
     ```text
     v30 %7,96   v22 %10,54   v23 %0,49
@@ -5323,6 +5323,96 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
     açıklamıyor.
   - **KALAN İŞ (ameleye):** kabul kümesinde ve `raw_frames`/`copy_paste`
     kümelerinde aynı güven bandı sıkışması var mı? Bu ölçülmedi.
+
+  - ✅ **KALAN İŞ ÖLÇÜLDÜ · 2026-08-19 · Claude-2** · kayıt `REVIEW_LOG.md`
+    **D-184** · ölçüm `scripts/olcum/93_t106_guven_bandi.py`.
+    **Üretim kodu değişmedi:** `git diff HEAD -- codes/` **BOŞ**.
+  - **AÇIK CEVAP: sıkışma FİGÜRE ÖZGÜDÜR — üç kümede de YOK.**
+    ```text
+    BAND_ORANI          figur   kadraj_t66   raw_frames   copy_paste
+    v30                  1,62         1,01         1,02         1,02
+    v34 (uretim)         9,59         1,01         1,00         1,00
+    n                       1          260           67          393
+    ```
+    `BAND_ORANI = toplam(0,10)/toplam(0,30)`, `toplam = zemin+engel` (D-183
+    tablosunun kendi toplamı). Eşiği 0,30 → 0,05 indirmek bu üç kümede
+    kaplamayı pratik olarak **değiştirmiyor**.
+    **`zemin < %1` olan kare: 0/720 · her eşikte · her iki modelde** — figürdeki
+    "zemin ~0" durumu bu kümelerin hiçbir karesinde tekrarlanmıyor.
+  - **POZİTİF KONTROL (iki tane, ikisi de tuttu):**
+    (1) `65_kabul_denetcisi.kaplama()` ile sapma **0** — metrik yeniden
+    yazılmadı, 65 modülü içe aktarıldı. (2) D-183'ün figür sayıları **birebir**
+    yeniden üretildi (`7,96/1,61/9,56` · `13,29/27,34/40,63`), BAND_ORANI
+    figürde **1,62** ve **9,59** (mimarın ~1,6 / ~9,6 değerleri).
+  - 🔴 ⚠ **CEVABIN SINIRI — ÖLÇÜLDÜ, VARSAYILMADI:** sıkışmanın **görülmediği
+    üç kümenin üçü de eğitim verisi ya da ona komşudur.** `copy_paste` (393)
+    **v34'ün kendi eğitim verisidir** — `zincir_t53_t54.sh:19` →
+    `karisim_t54_engelli.yaml` → `train:` listesinde
+    `dataset\copy_paste_gercek\images\train` var. Aynı karışımda
+    `sentetik_arena` da var (`kadraj_t66` o üretecin ailesinden); `raw_frames`
+    ise `copy_paste_gercek`/`gercek_otopark`ın **kaynak kareleri**.
+    Sıkışmanın **görüldüğü** tek girdi (figür) elimizdeki **tek alan dışı
+    örnektir ve n=1**. Yani ölçüm *"bütün kümelerde var mı"* sorusunu **HAYIR**
+    diye cevaplar; *"FİGÜRE mi yoksa ALAN DIŞI OLMAYA mı özgü"* sorusunu
+    **cevaplayamaz** — iki açıklamanın ayrıldığı noktada tek örnek var.
+  - **YAN GÖZLEM (kapı değil):** v34 `raw_frames`te v30'dan **daha çok** zemin
+    görüyor (45,67% vs 33,44% @0,30) ve dört eşikte de neredeyse **sabit**;
+    kuyrukta kayıtlı "gerçek karelerde en çok gören model (0,4551)" ile aynı
+    mertebede — ⚠ **aynı ölçüm değildir** (benimki 67 karenin tamamı, 0,4567),
+    yalnız tutarlıdır. `kadraj_t66`da iki model neredeyse aynı (34,28 / 33,96).
+  - ⚠ **HÜKÜM VERİLMEDİ:** "v34 iyi/kötü" denmedi, eşik değişikliği
+    **önerilmedi** (T110 mimarda), gerçek arena karesi olmadığı için saha
+    ifadesi kurulmadı (D-88/D-99).
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    uc kume x iki model x dort esik  -> 24 hucre, EKSIK YOK (5760 cikarim)
+    pozitif kontrol 1 (65.kaplama)   sapma 0
+    pozitif kontrol 2 (D-183 figur)  BIREBIR
+    git diff HEAD -- codes/          BOS
+    codes/test_rota_sentetik.py      SONUC: 15/15 dogru
+    unittest discover -s tests       Ran 620 tests in 61.574s / OK
+    ```
+  - ⚠ **DOĞRULANAMADI:** "figüre özgü" ile "alan dışına özgü" **ayrılamadı**
+    (tek alan dışı örnek) · gerçek arena karesi yok · `raw_frames`/`copy_paste`
+    örneklemesi 65'in K0'ından farklı (8 yerine hepsi) · yalnız **kaplama**
+    ölçüldü, sıkışmanın **rota kararına** etkisi (K1..K5, `MASKE_YOK`) değil ·
+    figürde v34'ün kırılma noktası **0,30 ile 0,20 arasındadır** (4,24% →
+    34,87%) ve tam yeri ölçülmedi · tek koşum, varyans ölçülmedi.
+  - ✅ **KAPANDI · 2026-08-19 · `REVIEW_LOG.md` D-184 (amele) / D-185 (mimar).**
+    ```text
+    BAND_ORANI       figur   kadraj_t66   raw_frames   copy_paste
+    v30               1,62         1,01         1,02         1,02
+    v34 (uretim)      9,59         1,01         1,00         1,00
+    n                    1          260           67          393
+    ```
+    `zemin < %1` olan kare: **0/720**, her eşikte, iki modelde de.
+    **Sıkışma kabul kümesinde YOK → v34'ün terfisi bu yönden temiz.**
+  - Ölçüm düzeneği doğrulandı: `65`in kendi `kaplama()`si ile sapma **0**,
+    D-183'ün figür sayıları **birebir** yeniden üretildi. Kapılar (mimar koştu):
+    **620 OK** · **15/15** · `git diff codes/` **BOŞ**.
+  - 🔴 **Amelenin §4'ü görevden büyük — doğruladım:** sıkışmanın görülmediği
+    **üç kümenin üçü de eğitim verisi ya da ona komşudur**
+    (`copy_paste_gercek` → `karisim_t54_engelli.yaml:25` `train:` listesinde),
+    sıkışmanın görüldüğü tek girdi (figür) ise **tek alan dışı örnektir, n=1**.
+    Yani "figüre özgü" ile "alan dışı olmaya özgü" **ayrılamıyor** → **T111**.
+- [ ] **T111 — Alan dışı doğrulama kümemiz YOK: bütün kabul ölçümleri eğitim dağılımının İÇİNDE** · `dataset/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-185 §3**
+  - Doğrulandı: `copy_paste_gercek` v34'ün **eğitim verisidir**
+    (`karisim_t54_engelli.yaml:25`); `sentetik_arena` aynı yaml'da; `kadraj_t66`
+    o üretecin ailesinden; `raw_frames` `copy_paste_gercek`in **kaynak
+    kareleridir**. Elimizdeki tek alan dışı örnek bir **YZ üretimi figürdür**.
+  - Sonucu: **bugüne kadarki bütün kabul ölçümleri eğitim dağılımının içinde
+    yapıldı.** Bu, "gerçek arena karesi yok" kalıcı sınırının (D-88/D-99) daha
+    geniş bir yüzüdür ve **model seçimini de etkiler**.
+  - ⚠ **v34 terfisini geri almaz** — terfi D-181'deki kapılara dayanır ve onlar
+    bu kümede geçerlidir. Ama **raporlarda** "modelimiz X yapıyor" cümleleri bu
+    sınırla birlikte yazılmalıdır.
+  - **YAP (ucuz olan):** eğitimde HİÇ kullanılmamış, elde mevcut bir görüntü
+    kümesi var mı diye tara (`dataset/` ve `data/` altındaki her kümenin hangi
+    yaml'lara girdiğini çıkar). Varsa **bakir** ilan et ve kabul denetimine ek
+    bir ölçüm alanı olarak bağla.
+  - ⚠ **KAPI YAPMA:** bakir küme bulunsa bile eşiği önce **ölçmeden** kapıya
+    çevirmek bu oturumda dört kez patlayan hatadır.
+
 - [ ] **T110 — K0 kapısı "tamamen kör değil" ölçüyor; 16 kat düşüşü göremiyor** · `O:
 avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**
   - ```python

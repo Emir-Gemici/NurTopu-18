@@ -14943,3 +14943,233 @@ baglanmali mi — karar isi, kor sikilastirma YOK).
   2. `raw_frames` / `copy_paste` kumelerinde esik taramasi YAPILMADI.
   3. Gercek arena karesi YOK — sahadaki davranis olculemez.
   4. Bu tani TEK goruntudur (n=1); genelleme YAPILMAZ.
+
+### D-184 · ✅ T106 (kalan) · GUVEN BANDI SIKISMASI UC KUMEDE DE YOK — sikisma FIGURE OZGU; ama "figur" ile "ALAN DISI" ayrimi n=1'de KILITLI
+Yazan/olcen: Claude 2 (amele) · 2026-08-19 · gorev T106 kalan is (kullanici emri) · dayanak D-181, D-182, D-183 §DOGRULANAMADI
+Olcum: `scripts/olcum/93_t106_guven_bandi.py` · cikti `calisma/olcum/93_t106_guven_bandi.json`
+
+🔴 **URETIM KODU DEGISTIRILMEDI.** `git diff HEAD -- codes/` **BOS**.
+
+---
+## 1. SORU
+
+D-183 figurdeki cokusun KORLUK degil GUVEN COKUSU oldugunu olctu ve tek soruyu
+acik birakti: **bu sikisma yalniz o figure mi ozgu, yoksa kabul kumesinde de
+var mi?**
+
+    BAND_ORANI = toplam_kaplama(conf=0,10) / toplam_kaplama(conf=0,30)
+    toplam = zemin + engel   (D-183 tablosunun KENDI toplami:
+                              40,63/4,24 = 9,58 · 15,46/9,56 = 1,62)
+
+Emrin okuma kurali: **>= 3 ise sikisma GENEL · ~1 ise FIGURE OZGU.**
+
+---
+## 2. OLCUM SOZLESMESI VE POZITIF KONTROLU
+
+Kaplama `65_kabul_denetcisi.kaplama()` ile AYNI yoldan hesaplandi
+(`_preprocess` -> `predict(imgsz=INFER_SIZE, conf)` -> `get_masks` ->
+`_maskeleri_icerige_kirp`). Metrik YENIDEN YAZILMADI: 65 modulu ICE AKTARILDI,
+`FIGUR`/`KADRAJ` sabitleri ve `kaplama` ondan alindi. Iki farkim var ve ikisi
+de gerekli: `conf` parametreli, zemin/engel AYRI.
+
+⚠ Her esik icin AYRI `predict` kosuldu. `get_masks(min_conf=...)` ile tek
+cikarimdan suzmek mumkundur ama NMS'e giren kutu kumesi degisir; `kaplama()`
+her cagrida kendi `conf`uyla predict eder ve olcum ONA denk olmalidir.
+
+**POZITIF KONTROL 1 — 65'in kendi `kaplama`si ile esitlik:** sapma **0**.
+**POZITIF KONTROL 2 — D-183'un figur sayilari yeniden uretildi:**
+
+    model  conf    ZEMIN    ENGEL   toplam      D-183'te yazan
+    v30    0,30    7,96%    1,61%    9,56%      7,96 / 1,61 / 9,56   ✓
+    v30    0,10   10,62%    4,84%   15,46%     10,62 / 4,84 / 15,46  ✓
+    v34    0,30    0,49%    3,74%    4,24%      0,49 / 3,74 / 4,24   ✓
+    v34    0,10   13,29%   27,34%   40,63%     13,29 / 27,34 / 40,63 ✓
+
+    BAND_ORANI (figur):  v30 = 1,62      v34 = 9,59
+    (mimarin verdigi ~1,6 ve ~9,6 ile birebir)
+
+Duzenek dogrulandi; asagidaki sayilar ayni duzenekten gelir.
+
+---
+## 3. SONUC — SIKISMA UC KUMEDE DE YOK
+
+    BAND_ORANI          figur   kadraj_t66   raw_frames   copy_paste
+    v30                  1,62         1,01         1,02         1,02
+    v34 (uretim)         9,59         1,01         1,00         1,00
+
+    n                       1          260           67          393
+
+**AÇIK CEVAP: sikisma FIGURE OZGUDUR. Kabul kumesinde (n=260),
+`raw_frames`te (n=67) ve `copy_paste`te (n=393) YOKTUR** — BAND_ORANI'nin
+tamami 1,00-1,02 bandinda, yani esigi 0,30'dan 0,05'e indirmek kaplamayi
+pratik olarak DEGISTIRMIYOR. Emrin okuma kurali ("~1 ise figure ozgu")
+dogrudan uygulanir.
+
+Ayrintili tablo (ort kaplama; `zemin<%1` olan kare sayisi HER hucrede 0):
+
+    v34   kume          0,30      0,20      0,10      0,05
+          kadraj_t66  64,62%    64,86%    65,29%    65,66%
+          raw_frames  57,60%    57,63%    57,67%    57,73%
+          copy_paste  57,62%    57,64%    57,69%    57,75%
+
+    v30   kadraj_t66  64,32%    64,60%    65,02%    65,44%
+          raw_frames  56,01%    56,57%    57,11%    57,51%
+          copy_paste  58,95%    59,90%    60,37%    60,69%
+
+**`zemin < %1` olan kare: 0/720 · her esikte · her iki modelde.** Yani figurde
+gorulen "zemin ~0" durumu bu kumelerin HICBIR karesinde tekrarlanmiyor.
+
+---
+## 4. 🔴 CEVABIN SINIRI — "FIGURE OZGU" ile "ALAN DISINA OZGU" AYRILAMIYOR
+
+Bu, sonucun en onemli kaydidir ve olculerek soyleniyor:
+
+  · `copy_paste` (393 kare) **v34'un KENDI EGITIM VERISIDIR.** Dogrulandi:
+    `zincir_t53_t54.sh:19` -> `--data dataset/karisim_t54_engelli.yaml`, ve o
+    dosyanin `train:` listesinde `dataset\copy_paste_gercek\images\train` var.
+  · Ayni karisimda `sentetik_arena` da var; `kadraj_t66` o uretecin
+    ailesinden gelen KABUL kumesidir.
+  · `raw_frames` (67 kare) ise `copy_paste_gercek` / `gercek_otopark`
+    kumelerinin KAYNAK kareleridir.
+
+Yani **sikismanin GORULMEDIGI uc kumenin ucu de egitim verisi ya da ona
+komsudur; sikismanin GORULDUGU tek girdi (figur) elimizdeki TEK alan disi
+ornektir ve n=1'dir.**
+
+Buradan cikan sey: olcum "bu sikisma butun kumelerde var mi" sorusunu
+**HAYIR** diye cevaplar; ama "sikisma FIGURE mi yoksa ALAN DISI OLMAYA mi
+ozgu" sorusunu **CEVAPLAYAMAZ**, cunku iki aciklamanin ayrildigi noktada tek
+bir ornek vardir. Bu bir eksiklik degil, kumenin yapisal sinirdir.
+
+---
+## 5. YAN GOZLEM (kapi degil, olcum)
+
+  · v34, `raw_frames`te v30'dan DAHA COK zemin goruyor: 45,67% vs 33,44%
+    (conf 0,30). TASK_QUEUE'da v23/v34 icin kayitli "gercek karelerde en cok
+    goren model (0,4551)" ifadesiyle ayni mertebede; ⚠ ayni olcum DEGILDIR
+    (benimki 67 karenin tamami, 0,4567), yalniz TUTARLIDIR.
+  · v34'un `raw_frames`/`copy_paste` kaplamasi dort esikte de neredeyse SABIT
+    (45,67% -> 45,67%); v30 ayni kumelerde hafifce oynuyor (33,44 -> 33,76).
+    Yani v34 bu kumelerde v30'dan DAHA yuksek guvenle karar veriyor.
+  · `kadraj_t66`da iki model neredeyse ayni (v34 34,28% · v30 33,96% zemin).
+
+⚠ **HUKUM VERILMIYOR.** Emir geregi "v34 iyi/kotu" denmez, esik degisikligi
+onerilmez (T110 mimarda), gercek arena karesi olmadigi icin saha ifadesi
+kurulmaz (D-88/D-99 kalici kisiti).
+
+---
+## 6. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    uc kume x iki model x dort esik   -> 24 hucre, EKSIK YOK
+    BAND_ORANI her kume/model icin raporlandi  (tablo §3)
+    pozitif kontrol 1 (65.kaplama sapmasi)     0
+    pozitif kontrol 2 (D-183 figur sayilari)   BIREBIR
+    git diff HEAD -- codes/                    BOS
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 620 tests in 61.574s
+        OK      (620 -> 620; bu gorev test EKLEMEDI, HIC dusme yok)
+
+Toplam cikarim: 720 kare x 4 esik x 2 model = **5760**.
+
+---
+## 7. DOGRULANAMADI / ACIK KALAN
+
+  1. 🔴 **"Figure ozgu" ile "alan disina ozgu" AYRILAMADI** (§4). Elimizde tek
+     alan disi ornek var ve o da figurdur. Ikinci bir alan disi girdi
+     (or. baska bir sartname figuru, farkli bir hava fotografi kaynagi)
+     olmadan bu ayrim OLCULEMEZ.
+  2. **GERCEK ARENA KARESI YOKTUR** (D-88/D-99, kalici). Uc kumenin hicbiri
+     gercek arena degildir.
+  3. **`raw_frames` ve `copy_paste` orneklemesi 65'ten FARKLI:** 65 K0
+     kontrolunde her kumeden 8 kare ornekler, bu olcum HEPSINI kullandi
+     (67 ve 393). Ayni kaynak, daha cok kare — ama sayilar 65'in K0
+     ciktilariyla dogrudan kiyaslanamaz.
+  4. **Yalniz kaplama olculdu.** Sikismanin ROTA KARARINA etkisi
+     (K1..K5, `MASKE_YOK` orani) bu betikte OLCULMEDI.
+  5. **Esikler {0,30 · 0,20 · 0,10 · 0,05}** ile sinirli; ara degerlerde
+     egrinin bicimi bilinmiyor. Figurde v34 icin 0,30 -> 0,20 arasinda
+     buyuk bir sicrama var (4,24% -> 34,87%), yani kirilma noktasi bu iki
+     esik ARASINDADIR ve tam yeri olculmedi.
+  6. **Tek kosum**, varyans olculmedi (cikarim deterministik oldugu icin
+     tekrar beklenmiyor, ama sinanmadi).
+
+### D-185 · 🔎 T106 DENETIMI (MIMAR) · ONAYLANDI — ve amelenin SS4'u bir gorev bulgusundan buyuk: ALAN DISI DOGRULAMA KUMEMIZ YOK
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev T106 · denetlenen kayit D-184 (Claude 2, amele)
+
+## 1. BAGIMSIZ DOGRULANANLAR
+
+    iddia                          nasil dogrulandi                 sonuc
+    kapi: unittest discover        KENDIM kostum                    620 OK
+    kapi: test_rota_sentetik       KENDIM kostum                     15/15
+    uretim kodu el degmedi         git diff codes/                     BOS
+    BAND_ORANI tablosu             JSON'dan yeniden okundu         BIREBIR
+      v30: 1,011 / 1,020 / 1,024 · v34: 1,010 / 1,001 / 1,001
+    `copy_paste` egitim verisi mi  dataset/karisim_t54_engelli.yaml:25  EVET
+    `raw_frames` yolu              65_kabul_denetcisi.py:74      data/raw_frames
+
+Amelenin olcum sozlesmesi de dogru kurulmus: 65 modulunu ICE AKTARMIS,
+`kaplama`yi ondan almis (metrik yeniden yazilmamis) ve iki pozitif kontrol
+koymus — 65'in kendi `kaplama`siyla sapma **0**, D-183'un figur sayilari
+**birebir** yeniden uretilmis. Duzenegi once dogrulayip sonra olcmus.
+
+⚠ Bir tasarim karari da dogru: her esik icin AYRI `predict` kosmus. Tek
+cikarimdan `get_masks(min_conf=...)` ile suzmek daha ucuz olurdu ama NMS'e
+giren kutu kumesi degisir ve olcum `kaplama()`ye DENK olmazdi.
+
+## 2. CEVAP NET: SIKISMA UC KUMEDE DE YOK
+
+    BAND_ORANI       figur   kadraj_t66   raw_frames   copy_paste
+    v30               1,62         1,01         1,02         1,02
+    v34 (uretim)      9,59         1,01         1,00         1,00
+    n                    1          260           67          393
+
+`zemin < %1` olan kare: **0/720**, her esikte, iki modelde de. Figurdeki
+"zemin ~0" durumu bu kumelerin HICBIR karesinde tekrarlanmiyor.
+
+**Yani D-183'un actigi soru kapandi:** guven bandi sikismasi kabul kumesinde
+YOKTUR ve v34'un terfisi bu yonden temizdir.
+
+## 3. 🔴 AMELENIN SS4'U BULDUGU SEY GOREVDEN BUYUK — VE HAKLI
+
+Amele "sikisma yok" deyip birakmamis; **olcumun neyi kanitlayamadigini**
+yazmis. Dogruladim, uc kume de egitim verisi ya da ona komsudur:
+
+    copy_paste_gercek  -> karisim_t54_engelli.yaml:25 `train:` listesinde   (DOGRULANDI)
+    sentetik_arena     -> ayni yaml:24; kadraj_t66 o uretecin ailesinden
+    raw_frames         -> copy_paste_gercek'in KAYNAK kareleri (otopark)
+
+**Sikismanin GORULMEDIGI uc kumenin ucu de egitim dagilimindadir; sikismanin
+GORULDUGU tek girdi (figur) elimizdeki TEK alan disi ornektir ve n=1'dir.**
+
+Bu, T106'nin cevabini "sikisma figure ozgu" diye ilan etmeyi ENGELLER: ayni
+veri "alan disi olmaya ozgu" aciklamasiyla da BIREBIR uyumludur. Iki hipotez
+tam olarak n=1'de ayrisiyor.
+
+⚠ **BUNU BIR GOREV NOTU DEGIL, PROJE SINIRI OLARAK KAYDEDIYORUM:**
+**NAVITAS'in ALAN DISI DOGRULAMA KUMESI YOKTUR.** Elimizdeki tek alan disi
+ornek bir YZ URETIMI figurdur. Bu, "gercek arena karesi yok" kalici sinirinin
+(D-88/D-99) daha genis bir yuzudur ve model secimini de etkiler: bugune kadarki
+butun kabul olcumleri egitim dagiliminin ICINDE yapildi.
+
+**T111 acildi.** ⚠ Bu, v34 terfisini geri almaz — terfi kararinin dayanagi
+D-181'deki kapilardir ve onlar bu kumede gecerlidir. Ama raporlarda
+"modelimiz X yapiyor" cumleleri bu sinirla birlikte yazilmalidir.
+
+## 4. YAN GOZLEMLER — DOGRU CERCEVELENMIS
+
+Amele su ikisini de KAPI DEGIL, OLCUM diye isaretlemis (dogru):
+  · v34 `raw_frames`te v30'dan daha cok zemin goruyor (45,67% vs 33,44%).
+  · v34'un kaplamasi dort esikte de neredeyse SABIT; v30 hafifce oynuyor.
+    Yani v34 bu kumelerde DAHA YUKSEK guvenle karar veriyor — figurdeki
+    davranisin TERSI.
+Ustelik kendi olcumunun TASK_QUEUE'daki 0,4551 ile AYNI OLCUM OLMADIGINI
+(67 karenin tamami vs kabul denetcisinin 8 karesi) ayrica belirtmis. Iyi is.
+
+**DOGRULANAMADI**
+  1. "Figure ozgu" ile "alan disina ozgu" AYRILAMADI (§3) — kumenin
+     yapisal siniri, kapatilamaz.
+  2. Baska alan disi ornek DENENMEDI (yok).
+  3. Gercek arena karesi YOK (kalici sinir).
