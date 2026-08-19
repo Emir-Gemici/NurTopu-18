@@ -14672,3 +14672,111 @@ ama red sebepleri (`UC_BANT_TEMAS_YOK`) `analyze_path`in BAND TEMAS kapisidir,
   2. 1059x634 karesinden bugun rota cikmamasinin nedeni (T94/T95 ile
      ilgisi kurulmadi; red sebebi upstream gorunuyor).
   3. Bu karenin hangi kumeye ait oldugu ve temsil degeri.
+
+### D-181 · ⚖ v22 (T53) ve v23 (T54) HUKMU · v23 ON KAYDIN HEPSINI SAGLIYOR ve UC EKSENDE URETIMDEN IYI — TERFI KARARI INSANINDIR
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev T53/T54 · on kayit `scripts/olcum/v22_v23_on_kayit.md` (olcumler KOSULMADAN once yazildi)
+
+## 1. OLCULEN (hepsi BUGUNKU kodla, ayni kume, ayni betikler)
+
+    model   K0 figur  K0 raw   K1       K2       K3      K4      K5-SIKI   kararlilik
+    v30      %8,0     0,3272   258/260  14/258   0/258   1/258   0/3633    8/260
+    v22     %10,5     0,4510   258/260  16/258   0/258   0/258   0/3633    7/260
+    v23      %0,5     0,4551   258/260  12/258   0/258   1/258   0/3633    4/260
+
+Kume `sentetik_arena_kadraj_t66` (n=260) · K5-SIKI 173 kare x 21 cekilis ·
+kararlilik sigma 2/255, tekrar 3, tohum 7.
+
+## 2. 🔴 ON KAYITTAKI (4). OLCUTUN TABANI BAYATTI — SIKILASTIRILDI
+
+On kayda "(4) K2 <= **%8,53** — v30'un OLCULEN degeri (kayit defteri)" yazmistim.
+Kontrol ettim: defterdeki 22/258 (%8,53) **T94 ONCESI planlayiciyla** olculmus.
+Kanit, ayni denetcinin arsivi:
+
+    v30_t86     (2026-08-15)        K2 = 22/258     T94 ONCESI
+    v30_W1      (2026-08-17 14:27)  K2 = 22/258     T94 ONCESI
+    v30_T94son  (2026-08-17 15:07)  K2 = 14/258     T94 SONRASI
+    v30 (bugun, 2026-08-19)         K2 = 14/258     dogrulandi
+
+D-158 zaten "K2 22/258 -> 14/258 IYILESTI" diye yazmisti; defter guncellenmemis.
+
+**Olcut, ayni kosumda olculen tabana cekildi: K2 <= 14/258.** Bu bir GEVSETME
+DEGIL, SIKILASTIRMADIR (%8,53 -> %5,43).
+
+🔴 **VE BEDELINI ADAY ODEDI:** eski (bayat) tabanla v22'nin 16/258'i GECERDI;
+yeni tabanla DUSUYOR. Yani duzeltme kendi lehime degil, aleyhime calisti —
+duzeltmenin durustlugunun en iyi kaniti budur.
+
+## 3. ON KAYIT OLCUTLERI — GERCEK SONUC
+
+    olcut                                    v22            v23
+    (1) denetci verdikti "URETIME ALINIR"    GECERSIZ       GECERSIZ   (D-180)
+    (2) K5-SIKI = 0/3633                     TUTTU          TUTTU
+    (3) K3 = %0,0 TAM                        TUTTU          TUTTU
+    (4) K2 <= 14/258 (v30, ayni kosum)       🔴 DUSTU (16)  TUTTU (12)
+    (5) kararlilik <= 8/260                  TUTTU (7)      TUTTU (4)
+    (6) test_rota_sentetik 15/15 · unittest  15/15 · 620 OK — IKISI ICIN DE
+
+⚠ **(1) NEDEN GECERSIZ:** `65_kabul_denetcisi`nin K5'i HER modeli reddediyor,
+URETIMDEKI v30 DAHIL (`K5_bariyer_px: None`; D-180). Olcum kurulamiyor.
+Yerine on kayittaki (2) esas alindi — `80_k5_siki_kapi.py` `63`ten KAT KAT
+sikidir (173x21 cekilis vs tek kare). Bu bir gevsetme DEGILDIR.
+K0..K4 zaten ikisinde de GECTI.
+
+**HUKUM:**
+  · **v23 (T54) on kaydin HEPSINI sagliyor** -> TERFIYE UYGUN.
+  · **v22 (T53) (4)'ten 2 kare geride** -> otomatik terfi YOK. On kaydin
+    "kismi gecis" maddesi geregi RED de ilan edilmez; ama v23 onu HER eksende
+    gectigi icin pratikte konu disidir.
+
+## 4. v23 URETIMDEN UC EKSENDE IYI
+
+    K2 moloza basma   14/258 -> 12/258
+    kararlilik         8/260 ->  4/260      (YARIYA indi)
+    gercek kare zemin  0,3272 -> 0,4551     (etiketler 0,813; D-133'te v30'un
+                                             "22 puan az zemin" gorduğu yazili)
+
+T54'un hipotezi (bina/agac/su -> `blocked` modele "cati zemin DEGILDIR" ogretir)
+bu kumede **desteklendi**: model DAHA COK zemin goruyor ve DAHA AZ moloza
+basiyor. Bu ikisi genelde ters yonde hareket eder; birlikte iyilesmesi
+anlamlidir.
+
+🔴 **D-133'un TUZAGI BU KEZ ISLEMIYOR** ve bunu ozellikle kontrol ettim:
+oradaki endise "kapiyi gecme sebebi dogru gormek degil AZ ZEMIN GORMEK
+olabilir" idi. v23 tam TERSINI yapiyor — **daha cok** zemin goruyor (0,455 vs
+0,327) ve yine de daha az moloza basiyor.
+
+## 5. ⚠ AMA v23'UN ACIKLANMAMIS BIR DAVRANISI VAR — KAPI DEGIL, BAYRAK
+
+`sartname_s9_arena.png` figuru uzerinde zemin kaplamasi:
+
+    v30 %7,96  ·  v22 %10,54  ·  v23 **%0,49**
+
+**16 KAT dusus.** K0 bunu yakalamiyor cunku olcut yalnizca `figur > 0.0` ve
+"bos maske yok" diyor (`65_kabul_denetcisi.py:81-82`) — yani "tamamen kor
+degil" kapisidir, "yeterince goruyor" kapisi DEGILDIR.
+
+⚠ Bu figur YAPAY ZEKA URETIMIDIR ve proje onu zaten otorite saymiyor
+(figur/metin celisirse METIN otoritedir). Gercek karelerde v23 EN COK goren
+modeldir. Yani "v23 kor" demek YANLIS olur.
+
+**Ama aciklanmamis bir cokustur ve gizlenmez:** T54'un yeni esleme kumesi
+(bina/agac/su -> blocked) o figurun sentetik zeminini `blocked` sayiyor
+olabilir. **DOGRULANMADI. T106 acildi.**
+
+## 6. TERFI KARARI BENIM DEGIL
+
+D-133'un yazdigi gibi: *"iki KABUL EDILEBILIR model arasindaki sevk karari
+on-kayitlarda cozulmez ve INSANA aittir."* v23 on kaydi saglar; v30 da
+kabul edilmis bir modeldir. **Karar kullanicinindir.** Mimarin gorusu:
+v23 uc eksende olculebilir sekilde iyidir ve hicbir kapida geride degildir;
+tek acik nokta §5'teki figur cokusudur ve o bir KAPI DEGILDIR.
+
+**DOGRULANAMADI**
+  1. **GERCEK ARENA KARESI YOK** (kalici sinir, D-88/D-99). Butun sayilar
+     sentetiktir; "sahada daha iyi" DENEMEZ.
+  2. §5'teki figur cokusunun nedeni (T106).
+  3. `gercek_kare_gecen` bu turda KOSULMADI (D-133/D-134: tek basina basari
+     olarak sunulmaz zaten).
+  4. mAP/fitness'a BAKILMADI ve karara girmedi (K-3).
+  5. Tek tohum (7), tek sigma (2/255); varyans olculmedi.
+  6. v22/v23 ONNX/TensorRT tarafi ele alinmadi.

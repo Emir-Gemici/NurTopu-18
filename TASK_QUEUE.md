@@ -2863,6 +2863,27 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     (K0 tespit tabanı → K2 alan dışı temkin → K1 IoU/kesinlik → K3 karar
     doğruluğu, T51 kadraj kümesi dâhil). **Kazandı ilanı ölçümden önce yok.**
 
+  - ⚖ **ÖLÇÜLDÜ VE HÜKME BAĞLANDI · 2026-08-19 · `REVIEW_LOG.md` D-181.**
+    Ön kayıt `scripts/olcum/v22_v23_on_kayit.md` (ölçümlerden **önce** yazıldı).
+    ```text
+    model   K0 figur  K0 raw   K1       K2       K3      K4      K5-SIKI   kararlilik
+    v30      %8,0     0,3272   258/260  14/258   0/258   1/258   0/3633    8/260
+    v22     %10,5     0,4510   258/260  16/258   0/258   0/258   0/3633    7/260
+    v23      %0,5     0,4551   258/260  12/258   0/258   1/258   0/3633    4/260
+    ```
+    Kapılar: `test_rota_sentetik` **15/15** · `unittest` **620 OK** (ikisi için de).
+  - 🔴 **Ön kayıttaki (4)'ün tabanı bayattı, SIKILAŞTIRILDI.** Defterdeki
+    %8,53 (22/258) **T94 öncesi** planlayıcıyla ölçülmüş; aynı denetçinin
+    arşivi bunu gösteriyor (`v30_t86` 22/258 · `v30_T94son` 14/258 · bugün
+    14/258). Ölçüt aynı koşumun tabanına çekildi: **K2 ≤ 14/258**.
+    ⚠ **Bedelini aday ödedi:** eski tabanla v22'nin 16/258'i geçerdi; yeni
+    tabanla düşüyor. Düzeltme kendi lehime değil **aleyhime** çalıştı.
+  - **HÜKÜM (T53/v22):** (4)'ten **2 kare geride** (16 vs 14) → **otomatik terfi
+    YOK**. Ön kaydın "kısmi geçiş" maddesi gereği RED de ilan edilmiyor; ama
+    v23 onu her eksende geçtiği için pratikte konu dışı.
+  - ✅ **T53'ün hipotezi ölçülebilir destek aldı:** 11-sınıf ön-eğitim + gerçek
+    doku karışımı, gerçek karelerde zemin görüsünü **0,3272 → 0,4510** çıkardı
+    ve kararlılığı **8 → 7** iyileştirdi. Sadece K2'de 2 kare geride kaldı.
 - [x] **T52 — Kaplama tavanı ayırt edici değil: üst uçta iki dağılım çakışıyor** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-66**
   - **✅ D-71 DÜZELTMESİ YAPILDI · 2026-08-12 · Claude-2** · kayıt **D-72**.
     Sıra korundu: **önce köşe düzeltmesi, sonra eşik ölçümü** (köşe düzeltmesi
@@ -3161,6 +3182,35 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     değil **poligon kodlamasını** ölçüyordu. Doğrusu Ultralytics'in alan sıralı
     üst üste basmasıdır. D-136'daki mimarın dersiyle aynı sınıf.
 
+  - ⚖ **ÖLÇÜLDÜ VE HÜKME BAĞLANDI · 2026-08-19 · `REVIEW_LOG.md` D-181.**
+    Ön kayıt `scripts/olcum/v22_v23_on_kayit.md` (ölçümlerden **önce** yazıldı).
+    ```text
+    model   K0 figur  K0 raw   K1       K2       K3      K4      K5-SIKI   kararlilik
+    v30      %8,0     0,3272   258/260  14/258   0/258   1/258   0/3633    8/260
+    v22     %10,5     0,4510   258/260  16/258   0/258   0/258   0/3633    7/260
+    v23      %0,5     0,4551   258/260  12/258   0/258   1/258   0/3633    4/260
+    ```
+    Kapılar: `test_rota_sentetik` **15/15** · `unittest` **620 OK** (ikisi için de).
+  - 🔴 **Ön kayıttaki (4)'ün tabanı bayattı, SIKILAŞTIRILDI.** Defterdeki
+    %8,53 (22/258) **T94 öncesi** planlayıcıyla ölçülmüş; aynı denetçinin
+    arşivi bunu gösteriyor (`v30_t86` 22/258 · `v30_T94son` 14/258 · bugün
+    14/258). Ölçüt aynı koşumun tabanına çekildi: **K2 ≤ 14/258**.
+    ⚠ **Bedelini aday ödedi:** eski tabanla v22'nin 16/258'i geçerdi; yeni
+    tabanla düşüyor. Düzeltme kendi lehime değil **aleyhime** çalıştı.
+  - ✅ **HÜKÜM (T54/v23): ÖN KAYDIN HEPSİNİ SAĞLIYOR → TERFİYE UYGUN.**
+    Üretimden **üç eksende** iyi: K2 14→12 · kararlılık 8→**4** (yarıya) ·
+    gerçek kare zemin 0,3272→**0,4551** (etiketler 0,813).
+  - 🔴 **D-133'ün tuzağı bu kez işlemiyor** — özellikle kontrol edildi: oradaki
+    endişe *"geçiş sebebi doğru görmek değil AZ ZEMİN GÖRMEK olabilir"* idi.
+    v23 tam **tersini** yapıyor: daha **çok** zemin görüyor ve yine de daha az
+    moloza basıyor. Bu ikisi genelde ters yönde hareket eder.
+  - ⚠ **AÇIK NOKTA (kapı değil):** v23 şartname figüründe zemin kaplamasını
+    **16 kat** düşürüyor (%7,96 → %0,49). K0 bunu yakalamıyor (ölçüt
+    `figur > 0.0`). Figür **YZ üretimidir** ve v23 gerçek karelerde **en çok
+    gören** modeldir — ama açıklanmamış bir çöküştür → **T106**.
+  - 🔴 **TERFİ KARARI MİMARIN DEĞİL.** D-133: *"iki KABUL EDİLEBİLİR model
+    arasındaki sevk kararı ön-kayıtlarda çözülmez ve İNSANA aittir."*
+    **Kullanıcı kararı bekleniyor.**
 - [ ] **T88 — Arena sınırı dedektörü: ölçek kâhininin 2. katmanını BESLE** · `codes/karar_sozlesmesi.py`, `tests/**` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-94, D-137**
   - 🔴 **KAPI TUTMADI, ZORLANMADI · 2026-08-16 · Claude-2** · kayıt **D-138**.
   - **Görevin teşhisi doğru:** `mpp_arena_sinirindan` yazılı ama üretim çağrı
@@ -5229,6 +5279,23 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
   - ⚠ Ayrıca araştır: 1059×634 karesinden **neden** rota çıkmıyor? Red sebebi
     (`UC_BANT_TEMAS_YOK`) `analyze_path`in band temas kapısıdır, `yol_duzelt`ten
     **önce** gelir — yani T94/T95 ile ilgisi **kurulmadı**, kurulmalı.
+- [ ] **T106 — v23 şartname figüründe zemin kaplamasını 16 KAT düşürüyor (%7,96 → %0,49), sebebi bilinmiyor** · `dataset/download_and_convert.py` (T54 eşlemesi) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-181 §5**
+  - Ölçüldü (`65_kabul_denetcisi`, aynı figür `data/arena_referans/sartname_s9_arena.png`):
+    ```text
+    v30 %7,96   v22 %10,54   v23 %0,49
+    ```
+  - K0 bunu **yakalamıyor**: ölçüt yalnızca `figur > 0.0` ve "boş maske yok"
+    (`65_kabul_denetcisi.py:81-82`) — *"tamamen kör değil"* kapısıdır,
+    *"yeterince görüyor"* kapısı **değildir**.
+  - ⚠ Figür **yapay zekâ üretimidir** ve proje onu otorite saymıyor; v23 **gerçek
+    karelerde en çok gören modeldir** (0,4551). Yani "v23 kör" demek yanlış olur.
+  - **HİPOTEZ (doğrulanmadı):** T54'ün yeni eşlemesi (bina/ağaç/su/havuz →
+    `blocked`) o figürün sentetik zeminini `blocked` sayıyor olabilir.
+  - **YAP:** figürde v23'ün sınıf dağılımını çıkar (zemin/engel piksel oranları),
+    v30 ile yan yana koy. Eşleme hipotezi doğruysa engel kaplaması v30'a göre
+    belirgin artmış olmalı.
+  - ⚠ **Bu bir KAPI DEĞİLDİR** — v23 ön kaydın hepsini sağlıyor (D-181 §3).
+    Açıklanmamış bir davranış olarak izleniyor.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
