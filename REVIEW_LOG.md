@@ -15537,3 +15537,91 @@ zaten dogruydu ve karar onlardan geliyor).
   2. Oran esikleri (0,5 / 2,0) KABA secildi (D-186 §DOGRULANAMADI 2); bu
      turda da olcumle turetilmedi — bloklamadigi icin gerekmiyor.
   3. K5 hala `None` (D-180/T105) — bu gorevin konusu degildi, degismedi.
+
+### D-189 · ⚖ T112 KARARI (MIMAR) · AYNA SILINMEZ (surum kontrolunun KENDISI) — TESTLE KILITLENIR · ve karar verirken CANLI bir ayrisma bulundu: KUSUR BENIMDI
+Yazan/karar: Claude 1 (mimar) · 2026-08-19 · gorev T112 · dayanak D-188 §4
+
+## 1. KARARI DEGISTIREN OLGU: `navitas-local-train` GIT DEPOSU DEGIL
+
+    cd O:
+avitas-local-train && git rev-parse --is-inside-work-tree
+    -> fatal: not a git repository
+
+**Yani `scripts/olcum/` bir "fazlalik kopya" DEGIL, o betiklerin TEK SURUM
+KONTROLUDUR.** Aynayi kaldirmak 37 olcum betiginin gecmisini silmek olurdu.
+
+    ayna cifti sayisi        : 37
+    yalniz repoda olan       : 0
+    (yani her repo betiginin canli bir esi var)
+
+**(a) "ayna kaldirilsin, tek kaynak olsun" -> REDDEDILDI.** Sorunun teshisi
+yanlisti: ayna bir kaza degil, MEKANIZMA.
+
+## 2. 🔴 KARAR VERIRKEN CANLI BIR AYRISMA BULDUM — VE KUSUR BENIMDI
+
+37 cifti kiyasladim: **biri ayrismisti** — `76_serit_etiketi_celiskisi.py`.
+
+Kaynagi `git log` ile buldum: **D-166 (T96)**. Orada "IKA `road` ile surer"
+yanlis onculunu UC yerde duzeltmistim; ama `76`nin yalniz **repo aynasini**
+duzeltmisim. **Canli betik hala YANLIS gerekceyi tasiyordu:**
+
+    canli (yanlis): "IKA WAYPOINT ile degil SERIT NUMARASI ile plan yapar"
+    ayna  (dogru) : "... `ika_nav.py:179-182` sayisal `road`u geometri saymayi
+                     ACIKCA REDDEDER ..."
+
+Yani D-166'nin duzeltmesi ucte ikisi kadar uygulanmisti ve olcumu fiilen kosan
+dosya cürütülmüs bir onculu tasimaya devam ediyordu. **Duzeltildi** (repo -> canli);
+37/37 senkron dogrulandi.
+
+⚠ Bu, T112'nin tam olarak uyardigi seyin CANLI ornegidir ve **kararin
+kendisini olcumle destekler**: bir kapi olsaydi bu 2026-08-19'da degil,
+D-166 commit'inde yakalanirdi.
+
+## 3. KARAR: **(b) TESTLE KILITLE** — ve bu, projede ZATEN CALISAN kalip
+
+`codes/` -> `jetson_paket/kod/` aynasi bugun **zaten** boyle korunuyor:
+bir senkron araci (`scripts/jetson_paket_hazirla.py`) + testler
+(`test_jetson_comms_paketi.py`, `test_jetson_paket_defteri.py`). Bu ciftte
+ayrisma YASANMADI. `scripts/olcum/` <-> `navitas-local-train` ciftinde ise ne
+arac ne test var — ve ayrisma YASANDI. **Yeni bir sey icat etmiyorum, calisan
+kalibi eksik olan yere tasiyorum.**
+
+### Testin sartlari (uygulayacak amele icin baglayici)
+
+  1. **CIFTLER MEKANIK BULUNUR.** Elle liste TUTULMAZ — liste kendisi
+     bayatlar (bu oturumun tekrar eden kusuru). `scripts/olcum/*.py` taranir,
+     canli tarafta ayni adli dosya varsa cift sayilir.
+  2. **KIYAS BAYT BAZINDA** (`filecmp.cmp(..., shallow=False)` ya da sha256).
+  3. **YON IDDIA EDILMEZ.** Test yalnizca "AYNI MI" der. Hangisinin dogru
+     oldugu INSAN kararidir — D-166'da dogru olan repo kopyasiydi, ama T104'te
+     dogru olan PAKET kopyasiydi. Otomatik kopyalama YOK.
+  4. 🔴 **CANLI DIZIN YOKSA `skipTest` — DUSMEZ, ama SESSIZ de kalmaz.**
+     Gerekce: bu kapi baska makinede ve **PC garantiye gittiginde**
+     kosulamaz; orada kirmizi yanmasi yanlis alarm olur. Atlama sebebi
+     ACIKCA basilir.
+     ⚠ Bunun bedeli kabul ediliyor: koruma yalnizca ayrismanin URETILEBILDIGI
+     makinede vardir. Zaten ayrisma da orada uretilir.
+  5. **POZITIF KONTROL:** bir cifti gecici ayristirinca test DUSMELI.
+
+### Yardimci (zorunlu degil, onerilir)
+
+Kucuk bir senkron araci (`jetson_paket_hazirla.py` kalibinda): hangi ciftler
+ayrismis LISTELER ve `--uygula` ile **YON ACIKCA VERILEREK** kopyalar.
+**Varsayilan yon YOKTUR**; kullanici `--repodan` ya da `--canlidan` der.
+
+## 4. NE YAPILMAYACAK
+
+  · Ayna **silinmeyecek** (§1).
+  · Otomatik/sessiz senkron **kurulmayacak** — yanlis yonde kopyalamak
+    D-166'nin duzeltmesini GERI ALIRDI.
+  · **T104 bu karara BAGLANIR ama otomatik cozulmez:** orada dogru kopya
+    PAKETTEKIDIR (32.363 > 28.940 bayt, kok ESKI). Ayni test kalibi oraya da
+    uygulanabilir; yon karari ayridir.
+
+**DOGRULANAMADI**
+  1. Testin kosulamadigi makinelerde koruma YOKTUR (bilincli, §3.4).
+  2. 37 ciftin BUGUN senkron oldugu olculdu; gecmiste baska ayrismalar olup
+     olmadigi ARASTIRILMADI (git gecmisinde tek tek kiyaslanmadi).
+  3. `76`nin canli kopyasiyla kosulmus eski olcumler bu yanlis GEREKCEYI
+     tasiyordu; ama gerekce bir YORUMDUR — olculen SAYILARI etkilemez.
+     Yine de D-146/D-147'deki `76` sayilari bu notla okunmalidir.

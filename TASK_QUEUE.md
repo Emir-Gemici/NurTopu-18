@@ -5563,6 +5563,36 @@ avitas-local-train5_kabul_denetcisi.py`. **İkisi ayrı dosya ve
   - ⚠ **T104 bunun bir örneğidir** ve o karar da buraya bağlanmalı.
   - ⚠ **KÖR SİLME YOK:** hangi kopyanın kaynak olduğu dosya başına değişebilir
     (T104'te **paket** kopyası büyüktü, yani kök eskiydi).
+  - ⚖ **KARARA BAĞLANDI · 2026-08-19 · mimar · `REVIEW_LOG.md` D-189.**
+  - 🔴 **Teşhisim yanlıştı, ölçüm düzeltti:** `O:
+avitas-local-train` **git
+    deposu değil** (`git rev-parse` → *not a git repository*). Yani
+    `scripts/olcum/` bir fazlalık kopya **değil**, o 37 betiğin **tek sürüm
+    kontrolüdür**. **(a) "aynayı kaldır" REDDEDİLDİ** — 37 betiğin geçmişini
+    silmek olurdu.
+  - 🔴 **Karar verirken CANLI bir ayrışma buldum ve kusur BENİMDİ.** 37 çiftten
+    biri (`76_serit_etiketi_celiskisi.py`) ayrışmıştı. Kaynağı **D-166**: orada
+    yanlış öncülü üç yerde düzeltirken `76`nın yalnız **repo aynasını**
+    düzeltmişim; **canlı betik hâlâ çürütülmüş gerekçeyi taşıyordu.**
+    Düzeltildi (repo → canlı), **37/37 senkron** doğrulandı.
+    ⚠ Bir kapı olsaydı bu, bugün değil **D-166 commit'inde** yakalanırdı.
+  - ✅ **(b) SEÇİLDİ: TESTLE KİLİTLE** — ve bu projede **zaten çalışan** kalıp:
+    `codes/` → `jetson_paket/kod/` aynası bir senkron aracı + testlerle korunuyor
+    ve orada ayrışma **yaşanmadı**; `scripts/olcum/` çiftinde ne araç ne test
+    var ve ayrışma **yaşandı**. Yeni bir şey icat etmiyorum.
+  - **Testin bağlayıcı şartları:** çiftler **mekanik** bulunur (elle liste
+    tutulmaz — liste bayatlar) · kıyas **bayt bazında** · **yön iddia edilmez**,
+    test yalnız "aynı mı" der (D-166'da doğru olan repo, T104'te **paket**
+    kopyasıydı) · canlı dizin yoksa **`skipTest`**, düşmez ama **sessiz de
+    kalmaz** (PC garantiye gidince kırmızı yanmamalı) · **pozitif kontrol:**
+    bir çift geçici ayrıştırılınca test **düşmeli**.
+  - **Yardımcı (önerilir, zorunlu değil):** ayrışan çiftleri **listeleyen**,
+    `--uygula` ile **yön açıkça verilerek** kopyalayan küçük bir araç.
+    **Varsayılan yön YOKTUR.**
+  - **YAPILMAYACAK:** ayna silinmeyecek · otomatik/sessiz senkron kurulmayacak
+    (yanlış yönde kopyalamak D-166'nın düzeltmesini **geri alırdı**) ·
+    **T104 bu karara bağlanır ama otomatik çözülmez** (orada doğru kopya
+    **pakettekidir**; yön kararı ayrıdır).
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
