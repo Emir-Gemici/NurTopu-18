@@ -15173,3 +15173,109 @@ Ustelik kendi olcumunun TASK_QUEUE'daki 0,4551 ile AYNI OLCUM OLMADIGINI
      yapisal siniri, kapatilamaz.
   2. Baska alan disi ornek DENENMEDI (yok).
   3. Gercek arena karesi YOK (kalici sinir).
+
+### D-186 · ⚖ T110 KARARI (MIMAR) · K0 ESIGI YUKSELTILMEYECEK — K0 bir EMNIYET degil YETENEK kapisidir; asil kusur ORNEKLEMEDE
+Yazan/karar: Claude 1 (mimar) · 2026-08-19 · gorev T110 · dayanak D-183, D-184, D-185
+
+## 1. SORU
+
+v34 sartname figurunde zemin kaplamasini %7,96 -> %0,49'a (16 KAT) dusurdu ve
+K0 bunu **hic gormedi**, cunku olcut sudur:
+
+    gecti["K0"] = (k0["figur"] > 0.0
+                   and k0["raw_frames"]["bos"] == 0
+                   and k0["copy_paste"]["bos"] == 0)     # :81-82
+
+Yani "TAMAMEN kor degil" kapisi. Soru: esik tabana mi baglanmali?
+
+## 2. 🔴 ONCE SINIFLANDIRMA: K0 NE TUR BIR KAPI?
+
+Bunu netlestirmeden esik tartisilmaz. Iki yon ASIMETRIKTIR:
+
+    ZEMINI AZ GORMEK  -> bos maske -> `analyze_path` MASKE_YOK -> NO_ROUTE
+                      -> FAIL-CLOSED. Puan kaybettirir, ARACI TEHLIKEYE ATMAZ.
+
+    ZEMINI COK GORMEK -> molozun uzerine "zemin" demek -> rota engelden gecer
+                      -> FAIL-DANGEROUS.
+
+**Yani K0'in cezalandirdigi yon (az gormek) GUVENLI yondur.** Tehlikeli yon
+(cok gormek) K0'in olctugu sey DEGILDIR — onu **K2 (moloza basma)** ve
+**K3 (agir basma)** olcer, ustelik **n=258** uzerinde, K0'in **n=1** figuru
+yerine.
+
+**SONUC: K0 bir YETENEK kapisidir, EMNIYET kapisi degil.** Dogusu da oyle
+(v25'in olum sebebi: TAMAMEN kor model). Ve yetenegi zaten daha iyi olcen bir
+kapi var: **K1 (rota uretimi, 258/260)**.
+
+## 3. KARAR
+
+**(a) "Uretimin tabanina bagli bir esik" — REDDEDILDI.**
+Uc gerekce:
+  1. Guvenli yonu cezalandirir. D-183 v34'un figurdeki cokusunun FAIL-SAFE
+     oldugunu olctu (daha az zemin + daha cok engel; conf 0,10'da tahminler
+     geri geliyor — model gormuyor degil, DUSUK GUVENLE goruyor).
+  2. Tehlikeli yon zaten K2/K3 ile ve **258 kare** uzerinde kapali. K0'a
+     esik koymak emniyet EKLEMEZ, yalnizca yetenek kirpar.
+  3. Esigi **n=1**, YZ URETIMI, alan disi tek bir goruntuye civilemek bu
+     sistemdeki en zayif kanita en sert kurali dayamaktir. (Ayrica proje
+     figuru zaten otorite saymiyor: figur/metin celisirse METIN otoritedir.)
+
+**(b) "Etiketli yer gercegi kaplamasina oran" — REDDEDILDI.**
+Figurun yer gercegi YOKTUR; oran kurulamaz. `raw_frames`/`copy_paste` icin de
+etiket kaplamasi (0,813) TEK bir sayidir ve D-133 onun kendisinin de
+tartismali oldugunu yaziyor.
+
+**(c) ✅ SECILEN: kapi `> 0` KALIR; dusus bir OLCUM olarak GORUNUR KILINIR.**
+Asil sorun "kapi gevsek" degil, **"16 kat dusus SESSIZ gecti"**dir. Ben onu
+ancak tabloyu dikkatle okurken yakaladim. Cozum esik degil, **GORUNURLUK**:
+
+    · Denetci `figur` kaplamasini URETIM TABANIYLA birlikte bassin
+      (`kayit defteri metrics.k0_korluk` icindeki olculen deger) ve **orani**
+      yazsin.
+    · Oran 0,5'in altina ya da 2,0'in ustune ciktiginda satir **🔴 DIKKAT**
+      isaretiyle bassin ve verdikt JSON'una `k0_taban_orani` alani girsin.
+    · **BLOKLAMAZ.** Verdikt AND birlesimine GIRMEZ.
+
+⚠ Yon farki kayda geciyor: oran **> 2,0** (cok daha fazla zemin) tehlikeli
+yonu isaret eder ve o durumda K2/K3'e AYRICA bakilmasi gerektigi basilir.
+Oran **< 0,5** yetenek uyarisidir.
+
+## 4. 🔴 ASIL KUSURU BASKA YERDE BULDUM — VE O DUZELTILECEK
+
+T110'u incelerken K0'in gercek zayifligi ortaya cikti: `bos == 0` kontrolu
+kumelerin TAMAMINDA degil, **SEKIZ KAREDE** yapiliyor (`:76`):
+
+    yollar = sorted(kok.rglob(desen))[::max(1, len(...) // 8)][:8]
+
+Olculdu:
+
+    kume         toplam   denetcinin ornekledigi   ornekleme orani
+    raw_frames       67                        8            %11,9
+    copy_paste      393                        8            %2,0
+
+**%2'lik bir orneklemeyle "hicbir kare bos degil" demek zayif bir iddiadir.**
+D-184 tam kumeleri olctu ve `zemin < %1` olan kare **0/720** cikti — yani
+bugun gizlenen bir kusur YOK. Ama kapinin KENDISI zayif ve bu tesadufen
+guvenli.
+
+**KARAR: ornekleme kaldirilir, K0 TAM kumede kosar.** Maliyet onemsiz: D-184
+aynen 720 kare x 4 esik x 2 model = 5760 cikarim kosurdu; K0 icin 460 kare x
+1 esik x 1 model gerekiyor.
+
+⚠ Bu bir SIKILASTIRMADIR ve `bos == 0` olcutunu DEGISTIRMEZ — yalnizca ayni
+olcutu **tam kumede** uygular. Yeni esik UYDURULMUYOR.
+
+## 5. NE YAPILMAYACAK
+
+  · K0'in `> 0` olcutu **degistirilmeyecek**.
+  · Figur kaplamasi icin **sayisal esik konmayacak**.
+  · v34 geriye donuk **yeniden yargilanmayacak** (D-181/D-182 kapilarina
+    dayanir; bu karar o kapilari degistirmiyor).
+
+**DOGRULANAMADI**
+  1. Tam kumede K0 kosuldugunda v30/v34 icin `bos` sayisinin 0 kalacagi
+     BEKLENIYOR (D-184: 0/720) ama K0'in kendi yolunda (conf 0,30, tek esik)
+     AYRICA kosulmadi — uygulamada olculecek.
+  2. Oran esikleri (0,5 / 2,0) BILINCLI olarak KABA secildi: bloklamayan bir
+     GORUNURLUK isareti icin hassas esik gerekmez. Bloklayan bir kapiya
+     donusturulurse bu sayilar OLCUMLE yeniden turetilmelidir.

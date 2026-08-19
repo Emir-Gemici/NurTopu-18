@@ -5428,6 +5428,37 @@ avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW
     D-183 §3 onun **fail-safe** yönde yanıldığını ölçtü. Kapı "az zemin
     görmeyi" cezalandırmadan önce **hangi yönün tehlikeli olduğu** yazılmalı.
 
+  - ⚖ **KARARA BAĞLANDI · 2026-08-19 · mimar · `REVIEW_LOG.md` D-186.**
+  - 🔴 **Önce sınıflandırma:** K0'ın cezalandırdığı yön (**az zemin görmek**)
+    **güvenli** yöndür — boş maske → `MASKE_YOK` → `NO_ROUTE`, yani fail-closed.
+    Tehlikeli yön (**çok zemin görmek**) K0'ın ölçtüğü şey **değildir**; onu
+    **K2/K3** ölçer, üstelik **n=258** üzerinde, K0'ın **n=1** figürü yerine.
+    **K0 bir YETENEK kapısıdır, emniyet kapısı değil** — ve yeteneği zaten daha
+    iyi ölçen bir kapı var: **K1 (258/260)**.
+  - **(a) tabana bağlı eşik → REDDEDİLDİ:** güvenli yönü cezalandırır ·
+    tehlikeli yön zaten kapalı · eşiği **n=1, YZ üretimi, alan dışı** tek bir
+    görüntüye çivilemek en zayıf kanıta en sert kuralı dayamaktır.
+  - **(b) yer gerçeği oranı → REDDEDİLDİ:** figürün yer gerçeği **yok**.
+  - ✅ **(c) SEÇİLDİ: kapı `> 0` KALIR, düşüş GÖRÜNÜR KILINIR.** Asıl sorun
+    "kapı gevşek" değil, **16 kat düşüşün sessiz geçmesi**. Denetçi `figur`
+    kaplamasını **üretim tabanıyla** ve **oranıyla** bassın; oran `<0,5` veya
+    `>2,0` ise **🔴 DİKKAT** satırı + verdikt JSON'una `k0_taban_orani`.
+    **BLOKLAMAZ**, verdikt AND birleşimine girmez.
+    ⚠ Yön farkı: oran **>2,0** tehlikeli yönü işaret eder → K2/K3'e ayrıca
+    bakılması gerektiği basılır. **<0,5** yetenek uyarısıdır.
+  - 🔴 **ASIL KUSUR BAŞKA YERDEYMİŞ — DÜZELTİLECEK.** `bos == 0` kontrolü
+    kümelerin tamamında değil **sekiz karede** yapılıyor (`:76`):
+    ```text
+    kume         toplam   ornekledigi   ornekleme orani
+    raw_frames       67             8          %11,9
+    copy_paste      393             8           %2,0
+    ```
+    **%2'lik örneklemeyle "hiçbir kare boş değil" demek zayıf bir iddiadır.**
+    D-184 tam kümeleri ölçtü, `zemin<%1` = **0/720** — bugün gizlenen kusur yok,
+    ama kapı tesadüfen güvenli. **KARAR: örnekleme kaldırılır, K0 TAM kümede
+    koşar.** Ölçüt (`bos == 0`) **değişmez**; yeni eşik **uydurulmuyor**.
+  - **YAPILMAYACAK:** `> 0` ölçütü değişmeyecek · figür için sayısal eşik
+    konmayacak · v34 geriye dönük yeniden yargılanmayacak.
 - [ ] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
 avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
   - `AD = "v22_on10_gercek"` gömülü. Dün geceki iki koşum `v22_*` ve `v23_*`
