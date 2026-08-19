@@ -5245,7 +5245,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ Kılavuz senkronunu **hiçbir şey zorlamıyor** → **T104** açıldı.
   - 🔴 **DOĞRULANAMADI:** gerçek Jetson cihazında **hiçbir şey ölçülmedi**;
     tüm ölçümler reponun `jetson_paket/` dizinindedir → **T16/T17**.
-- [ ] **T104 — İki `JETSON_KILAVUZ.md` kopyası var ve senkronu hiçbir şey zorlamıyor** · `JETSON_KILAVUZ.md`, `jetson_paket/JETSON_KILAVUZ.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-179 §3**
+- [x] **T104 — KAPANDI · Kurulum yordamı testle kilitlendi (bayt kimliği DEĞİL)** · `JETSON_KILAVUZ.md`, `jetson_paket/JETSON_KILAVUZ.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-179 §3**
   - T103'te ikisi de elle düzeltildi (amele yakaladı), ama **ayrı dosyalar** ve
     paketleyici kılavuzu **kopyalamıyor** (`grep -c JETSON_KILAVUZ
     scripts/jetson_paket_hazirla.py` → **0**). Bugün düzeltilen ayrışma yarın
@@ -5256,6 +5256,30 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - **ÖNCE KARAR (mimar):** (a) kök kopya silinsin, tek kaynak paket olsun ·
     (b) paketleyici `paket → kök` kopyalasın · (c) ikisi ayrı kalsın ama bir
     test farkı sabitlesin. **Körlemesine kopyalama YOK.**
+  - ✅ **KAPANDI · 2026-08-19 · mimar · `REVIEW_LOG.md` D-193.**
+  - 🔴 **T112'nin bayt kimliği buraya UYMADI.** Fark ölçüldü: kök 28.983 bayt,
+    paket 32.406, farklı satır **95**, yalnız kökte **16**. Farklar **meşru** —
+    iki belge farklı bağlam anlatıyor (kök: depo · paket: saha + ek §0-A).
+    **Bayt kimliği dayatmak bu içeriği silerdi.** Uygulanan şey kalıbın
+    **fikri**: yük taşıyan değişmezi testle kilitle.
+  - 🔴 **ÖLÇERKEN GERÇEK BİR KUSUR ÇIKTI:** kök kılavuzun kurulum yordamı
+    **bozukmuş** — `comms` dizini yok, `karar_sozlesmesi.py` kopyalanmıyor,
+    haberleşme dosyaları hiç kopyalanmıyor. `costmap_path_finder.py:59-62` onu
+    **import eder** → bu kılavuzu izleyen saha kurulumu **`ImportError`** alır.
+    ⚠ T103 bu dosyaya dokunmuştu ama o tur `config` aranıyordu; eksik görülmedi.
+    **Kapı olmayan yer yeniden bozulur ya da eksik kalır.** Düzeltildi.
+  - **Kilitlenen değişmez:** kurulum yordamı (dizin ağacı + kopyalanan dosya
+    kümesi) iki kılavuzda **aynı** olmalı **ve** paketin gerçekten taşıdığı
+    dosyaları **eksiksiz** kapsamalı. `tests/test_kilavuz_kurulum_yordami.py`
+    (6 test).
+  - ⚠ **Beklenen dosya listesi ELLE yazılmıyor** — `jetson_paket_hazirla.py`
+    içindeki `KOPYALAR`dan **türetiliyor**; paketleyiciye yeni dosya eklenirse
+    kapı kendiliğinden onu da arar. (Elle liste bu oturumda dört kez bayatladı.)
+  - **MUTASYON KONTROLÜ (mimar koştu):** kılavuz bozuk haline döndürülünce
+    **6 testin 3'ü düştü**; yedekten geri konuldu.
+    Kapılar: **642 OK** (636 → +6) · **15/15** · `git diff codes/` **BOŞ**.
+  - **Bilerek yapılmadı:** iki kılavuz aynı yapılmadı · kök kopya **silinmedi**
+    (`test_uretim_modeli_hizasi.py:43` ikisini de şart koşuyor).
 - [ ] **T105 — Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
 avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
   - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa

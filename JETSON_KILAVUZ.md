@@ -289,8 +289,9 @@ jetson_paket/
 
 Jetson'da klasör yapısını koru:
 ```bash
-mkdir -p ~/navitas/{codes,scripts,models,data,config}
-cp kod/rpi_inference.py kod/costmap_path_finder.py ~/navitas/codes/
+mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
+cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py ~/navitas/codes/
+cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py ~/navitas/comms/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
 cp config/model_registry.json ~/navitas/config/
@@ -305,9 +306,14 @@ cp -r test_goruntuleri ~/navitas/data/
 > `RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ` ile **düşer**. Koruma
 > T73'te bilerek kuruldu; tek atlatma yolu `--kayit-dogrulamasiz` ve o bayrak
 > **tam bu korumayı kapatır** — saha koşumunda kullanılmaz.
-> ⚠ Bu kopya paketin `jetson_paket/JETSON_KILAVUZ.md` kopyasından **eskidir**
-> (orada `comms/` adımları da vardır); saha kurulumunda **paketteki** kılavuz
-> esas alınır.
+> ⚠ **Bu kopya ile paketteki kopya AYNI DEĞİLDİR ve olmaları da gerekmiyor:**
+> kök kopya depo bağlamını, paket kopyası saha bağlamını anlatır (paket
+> kopyasında ek bir §0-A bölümü vardır). **Ama KURULUM YORDAMI aynı olmak
+> ZORUNDADIR** ve `tests/test_kilavuz_kurulum_yordami.py` bunu kilitler.
+> 🔴 **2026-08-19 · T104:** bu kopyanın kurulum bloğu **bozuktu** — `comms`
+> dizini ve `karar_sozlesmesi.py` eksikti; `costmap_path_finder.py` onu
+> **import eder**, yani bu kılavuzu izleyen saha kurulumu `ImportError`
+> alırdı. Düzeltildi (`REVIEW_LOG.md` D-193).
 
 ---
 

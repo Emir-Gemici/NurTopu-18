@@ -15940,3 +15940,91 @@ Yani kopyayi ben yaptim, dogrulamayi BASKASININ yazdigi kapi yapti.
   2. 32 aynasiz betigin "olu" oldugu yalniz METIN ARAMASIYLA saptandi;
      dinamik/dolayli cagri aranmadi (D-190).
   3. Testin kosulamadigi makinelerde koruma YOKTUR (D-189 §3.4, bilincli).
+
+### D-193 · ✅ T104 KAPANDI · BAYT KIMLIGI YANLIS DEGISMEZDI — kilitlenen sey KURULUM YORDAMI; ve kok kilavuzun yordami BOZUKMUS
+Yazan/uygulayan: Claude 1 (mimar) · 2026-08-19 · gorev T104 · dayanak D-189 §4 (T112 kalibi), D-177 (T103)
+
+## 1. "T112 KALIBIYLA KAPAT" DEDIM AMA KALIP OLDUGU GIBI UYMADI
+
+T112'de olcum aynasi icin **BAYT KIMLIGI** kullanildi. Buraya ayni degismezi
+dayatmadan once iki kilavuzun farkini OLCTUM:
+
+    kok  28.983 bayt · paket 32.406 bayt · farkli satir: 95
+    yalniz KOKTE olan satir: 16
+
+Farklar MESRU cikti — iki belge FARKLI BAGLAM anlatiyor:
+
+    kok kopya   : depo baglami ("Depo kopyasinda ayni manifest
+                  `jetson_paket/models/` altindan bulunur")
+    paket kopya : saha baglami + ek bir SS0-A bolumu (G1..G4)
+
+**Bayt kimligi dayatmak bu icerigi SILERDI.** Yani "T112 kalibi" burada
+**oldugu gibi uygulanamaz**; uygulanacak olan KALIBIN FIKRIDIR
+(*yuk tasiyan degismezi testle kilitle*), bicimi degil.
+
+## 2. 🔴 OLCERKEN GERCEK BIR KUSUR CIKTI: KOK KILAVUZUN KURULUM YORDAMI BOZUKMUS
+
+    kok  : mkdir -p ~/navitas/{codes,scripts,models,data,config}
+           cp kod/rpi_inference.py kod/costmap_path_finder.py ~/navitas/codes/
+    paket: mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
+           cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py ~/navitas/codes/
+           cp kod/protocol.py kod/link.py ... ~/navitas/comms/
+
+Kok kopyada **`comms` dizini YOK** ve **`karar_sozlesmesi.py` KOPYALANMIYOR**.
+`codes/costmap_path_finder.py:59-62` onu **IMPORT EDER** — yani bu kilavuzu
+izleyen bir saha kurulumu `ImportError` alir. Haberlesme dosyalari da hic
+kopyalanmiyordu.
+
+⚠ **T103 bu dosyaya DOKUNMUSTU** (D-178: amele iki kilavuzu da duzeltti ve
+`config`i ekledi) ama `comms`/`karar_sozlesmesi` eksigi O ZAMAN GORULMEDI —
+cunku o tur `config` aranıyordu. Bu, "bir kez duzelttik" duygusunun neden
+yetmedigini gosteriyor: **kapi olmayan yer yeniden bozulur ya da eksik kalir.**
+
+## 3. KILITLENEN DEGISMEZ
+
+    KURULUM YORDAMI (dizin agaci + kopyalanan dosya kumesi) IKI KILAVUZDA
+    AYNI olmali VE paketin GERCEKTEN tasidigi dosyalari EKSIKSIZ kapsamali.
+
+`tests/test_kilavuz_kurulum_yordami.py` (6 test):
+
+  · dizin agaci iki kilavuzda AYNI
+  · `config` dizini + defter kopyasi ZORUNLU (T103/D-177 tekrarlamasin)
+  · `karar_sozlesmesi.py` eksik kalamaz (dayanagi da test ediliyor:
+    "costmap artik onu import etmiyorsa bu testin gerekcesi kalkmis" der)
+  · 🔴 **BEKLENEN DOSYA LISTESI ELLE YAZILMAZ** — `scripts/jetson_paket_hazirla.py`
+    icindeki `KOPYALAR`dan TURETILIR. Paketleyiciye yeni dosya eklenirse kapi
+    kendiliginden onu da arar. (Elle liste bu oturumda dort kez bayatladi:
+    D-146 · D-157 · D-159 · D-163.)
+  · IKI pozitif kontrol: kurulum blogu bulunamazsa digerleri BOS gecerdi;
+    ve ayristiricinin gercekten okudugu ayrica sinaniyor.
+
+## 4. MUTASYON KONTROLU — KENDIM KOSTUM
+
+Kok kilavuz BOZUK haline dondurulup (comms + karar_sozlesmesi geri cikarildi):
+
+    Ran 6 tests · FAILED (failures=3)
+      test_PAKETIN_TASIDIGI_her_dosya_kilavuzda_KOPYALANIYOR (kilavuz='navitas')
+      test_dizin_agaci_IKI_kilavuzda_AYNI
+      test_karar_sozlesmesi_EKSIK_KALAMAZ (kilavuz='navitas')
+
+Dosya yedekten geri konuldu (`git checkout` KULLANILMADI).
+
+    kapi                          sonuc
+    unittest discover -s tests    642 OK  (636 -> +6)
+    codes/test_rota_sentetik.py   15/15
+    git diff codes/               BOS
+
+## 5. NE YAPILMADI — BILEREK
+
+  · Iki kilavuz **ayni yapilmadi**; farklari mesru (SS1).
+  · Kok kopya **silinmedi**: `tests/test_uretim_modeli_hizasi.py:43` ikisini de
+    sart kosuyor ve depo kokunde bir kilavuz bulunmasi okunabilirlik icin
+    degerli.
+  · Kok kopyadaki "bu kopya eskidir" notu **guncellendi**: artik kurulum
+    yordami ES; not bunu ve kapiyi anlatiyor.
+
+**DOGRULANAMADI**
+  1. Kilavuzlarin GERI KALANI (95 farkli satirin 79'u) kapsanmadi — yalniz
+     kurulum yordami kilitlendi. Baska bir bolum bayatlarsa kapi gormez.
+  2. Duzeltilmis yordam GERCEK Jetson'da KOSULMADI (T16/T17).
+  3. `KOPYALAR`in kendisi dogru mu diye sorgulanmadi; kapi onu OTORITE sayar.
