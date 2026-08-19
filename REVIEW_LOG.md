@@ -14780,3 +14780,86 @@ tek acik nokta §5'teki figur cokusudur ve o bir KAPI DEGILDIR.
   4. mAP/fitness'a BAKILMADI ve karara girmedi (K-3).
   5. Tek tohum (7), tek sigma (2/255); varyans olculmedi.
   6. v22/v23 ONNX/TensorRT tarafi ele alinmadi.
+
+### D-182 · ✅ URETIM MODELI v30 -> **v34** (KULLANICI KARARI) · terfi YARIM KALAMAZ: hiza paketi kusuru yakaladi
+Yazan/uygulayan: Claude 1 (mimar) · 2026-08-19 · dayanak D-181 (hukum) · on kayit `scripts/olcum/v22_v23_on_kayit.md`
+Sevk karari KULLANICININ (D-133: iki kabul edilebilir model arasindaki sevk karari INSANA aittir).
+
+## 1. ⚠ SURUM ADI `v23` DEGIL `v34` — GEREKCE
+
+Kosum adi `v23_t54_engelli`dir, ama `codes/runs/segment/` dizisi **zaten v33'e
+gitmisti** (v31_tohum1 · v32_gercek_2kat · v33_gurultu). Kosum adindaki "v23",
+`56_t53_gercek_karisim.py::AD` icindeki **BAYAT bir varsayilandan** gelir.
+
+`v23`i uretim adi yapmak, uretimde v30'dan KUCUK numarali bir model
+birakirdi — bu projenin defalarca belgeledigi "hangi agirlik uctu" karisikligi
+tam olarak buradan dogar. Uretim adi **v34** (ilk serbest numara) secildi;
+koken (`v23_t54_engelli`, T54) deftere yazildi. **T107** acildi.
+
+## 2. 🔴 TERFI YARIM KALDI VE TEST PAKETI YAKALADI
+
+Yalniz defteri guncelleyip kapilari kosunca **8 test dustu**. Sistem tam
+tasarlandigi gibi calisti — kusur bende, kapi dogru:
+
+    test_model_registry            v30 CIVILI (sha256'yi GERCEKTEN dogrular)
+    test_uretim_modeli_hizasi      kilavuz "ASIL" satiri (IKI kilavuz)
+                                   kilavuz derleme komutu (IKI kilavuz)
+                                   manifest `pc_modeli` · `asil_model`
+                                   paketteki ONNX AYNI SURUMDEN olmali
+
+Yani **terfi tek bir alani degistirmek degildir**; surum adi ALTI yerde birden
+hizali olmak zorundadir ve bunu bir test kumesi zorluyor (D-116/5'in dersi
+kurumsallasmis).
+
+⚠ Ilk denememde `asil_model_pt`i guncellemeden once `load_model` FAIL-CLOSED
+dustu ("iki bildirim CELISIYOR"). **Bu da dogru davranistir** ve terfinin
+bittigini degil, yarim oldugunu soyluyordu.
+
+## 3. YAPILAN — ALTI HIZA NOKTASI
+
+  1. `models/navitas_seg_v34_best.pt` (kosum `best.pt`inden kopya; sha kaynakla
+     BIREBIR dogrulandi: `6730d777…`)
+  2. `config/model_registry.json` · `competition`: model_id · path · sha256 ·
+     metrikler (K0..K5 + kararlilik KAPI olarak) · `_surum_karari`
+  3. **ONNX 512 fp16 URETILDI** (`scripts/export_tensorrt.py`, opset 17,
+     `results/onnx_export_v34_20260819/`) — v34'un ONNX'i YOKTU ve hiza testi
+     bunu yakaladi
+  4. `jetson_paket/models/`: `.pt` + `.onnx` kopyalandi;
+     `jetson_derleme_manifest.json` hizalandi (`pc_modeli`, `asil_model`,
+     `asil_model_pt`, `onnxler`, `jetson_komutlari`, `paket_icerigi` sha'lari)
+  5. **IKI** `JETSON_KILAVUZ.md`: basliktaki "ASIL MODEL", `ASIL` satiri ve
+     derleme komutu (10'ar gecis)
+  6. `tests/test_model_registry.py`: v30 -> v34. ⚠ Bu ad ELLE guncellenir ve
+     BILEREK oyledir — defterden turetilseydi test TOTOLOJIK olur, kazara
+     degisen bir profili yakalayamazdi. Docstring'e yazildi.
+
+## 4. DOGRULAMA
+
+    REPO   -> load_model: navitas_seg_v34_best.pt · durum "eslesti" · imgsz 512/512
+    SAHA   -> jetson_paket/kod icinde AYNI: "eslesti" · INFER_SIZE 512
+    defter senkronu (repo <-> paket)        : BIREBIR
+    unittest discover -s tests              : 620 OK
+    codes/test_rota_sentetik.py             : 15/15
+
+## 5. NEDEN v34 (D-181'den, ozet)
+
+    olcut                    v30        v34       durum
+    K5-SIKI (173x21)         0/3633     0/3633    esit
+    K2 moloza basma          14/258     12/258    IYI
+    kararlilik               8/260      4/260     IYI (yariya)
+    gercek kare zemin        0,3272     0,4551    IYI (etiketler 0,813)
+    K1 / K3 / K4             258 / 0 / 1  aynı     esit
+
+## 6. ⚠ ACIK KALANLAR — TERFI BUNLARI KAPATMAZ
+
+  1. **T106:** v34 sartname figurunde zemin kaplamasini 16 KAT dusuruyor
+     (%7,96 -> %0,49). K0 yakalamiyor (olcut yalniz `figur > 0`). Figur YZ
+     uretimidir ve v34 GERCEK karelerde EN COK goren modeldir — ama
+     ACIKLANMAMISTIR.
+  2. **`.engine` PC'de URETILEMEZ** — Jetson'da derlenmeli (T16). Pakette
+     yalniz ONNX var.
+  3. **GERCEK ARENA KARESI YOK** (kalici sinir). "Sahada daha iyi" DENMEZ;
+     butun sayilar sentetiktir.
+  4. v30 dosyalari pakette TARIHSEL olarak duruyor (silinmedi); hangisinin
+     uretim oldugunu `asil_model`/`asil_model_pt` soyler.
+  5. Jetson cihazinda hicbir sey olculmedi (T16/T17).

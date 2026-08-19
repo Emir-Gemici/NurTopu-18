@@ -1,6 +1,6 @@
 # JETSON ORIN NX — SAHA KILAVUZU
 
-> Hazırlanma: 2026-08-05 · **ASIL MODEL: v30** (2026-08-15, §0-T85) · eskiler: v27 → v24 → v21 → v17/v20
+> Hazırlanma: 2026-08-05 · **ASIL MODEL: v34** (2026-08-19, D-181/D-182 · kullanıcı kararı) · eskiler: v30 → v27 → v24 → v21 → v17/v20
 > Paket: `O:\navitas\jetson_paket\`
 >
 > Bu kılavuz **ölçümle** hazırlandı. Her "şu olacak" cümlesinin altında ya bir sayı
@@ -13,7 +13,7 @@
 > **Kullanıcı kararı** (T85). Mimar kabulü: `REVIEW_LOG.md` **D-132** (kabul kuralı,
 > **sonuç görülmeden** yazıldı) + **D-133** (dört şartın hepsi sağlandı). Aşağıdaki
 > v27/v24/v21/v17 bölümleri **silinmedi** — ölçüm kaydıdır. Ama **bugün derlenecek
-> ve koşulacak model `navitas_seg_v30_best_512_fp16.onnx`**'tir.
+> ve koşulacak model `navitas_seg_v34_best_512_fp16.onnx`**'tir.
 >
 > **v30 nedir:** v29 ile her şeyde aynı; tek fark gerçek otopark karelerinin
 > çoğaltması **12 kat → 4 kat** (D-132). v29 tam bu dozdan reddedilmişti (D-131).
@@ -146,8 +146,8 @@ dosyasındaki `asil_model_pt` ve `asil_model` alanlarını okur:
 | argüman | varsayılanın kaynağı | bugün çözülen değer |
 |---|---|---|
 | `--girdi` | `data/raw_frames` | **YOK**; görüntüler `test_goruntuleri/` altında, yol açıkça verilmeli |
-| `--pt` | manifest `asil_model_pt` | `navitas_seg_v30_best.pt` (**VAR**) |
-| `--onnx` | manifest `asil_model` | `navitas_seg_v30_best_512_fp16.onnx` (**VAR**) |
+| `--pt` | manifest `asil_model_pt` | `navitas_seg_v34_best.pt` (**VAR**) |
+| `--onnx` | manifest `asil_model` | `navitas_seg_v34_best_512_fp16.onnx` (**VAR**) |
 | `--engine` | manifest ONNX adıyla aynı gövde | Jetson'da derlenmiş dosya varsa kullanılır; bugün **YOK**, TensorRT vakası açıkça `ATLANDI` |
 | `--conf` | `rpi_inference` üretim varsayılanı | `0.30` |
 | `--imgsz` | manifest boyutu + üretim `INFER_SIZE` | `[512]`; T76'dan beri manifest ile üretim **aynı boyutta** (D-112) — ayrışacak boyut kalmadı |
@@ -310,8 +310,8 @@ raporlarsın. Ölçümden önce yap, ölçüm boyunca `tegrastats` ile sıcaklı
 ```
 jetson_paket/
 ├── models/
-│   ├── navitas_seg_v30_best_512_fp16.onnx   ← ASIL — bunu derle (T85, üretim modeli)
-│   ├── navitas_seg_v30_best.pt              ← v30 referans / hakem ekranının yüklediği dosya
+│   ├── navitas_seg_v34_best_512_fp16.onnx   ← ASIL — bunu derle (D-181/D-182, üretim modeli)
+│   ├── navitas_seg_v34_best.pt              ← v30 referans / hakem ekranının yüklediği dosya
 │   ├── navitas_seg_v27_best_512_fp16.onnx   ← eski asıl (14-15 Ağu), karar kıyası için
 │   ├── navitas_seg_v27_best.pt              ← v27 referans / karar kıyası
 │   ├── navitas_seg_v24_best_640_fp16.onnx   ← eski asıl (13-14 Ağu), karar kıyası için
@@ -401,7 +401,7 @@ bu bir hata değil, o backend'in kurulu olmadığının dürüst raporudur.
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v30_best_512_fp16.onnx format=engine imgsz=512 half=True
+yolo export model=navitas_seg_v34_best_512_fp16.onnx format=engine imgsz=512 half=True
 ```
 
 ⚠ **Birden çok modeli TensorRT'ye derleme.** v17, v20, v21, v24, v27 ve v30 aynı
@@ -426,7 +426,7 @@ yolo predict task=segment model=navitas_seg_v30_best_512_fp16.engine \
 ### `yolo export` hata verirse — `trtexec` yedeği
 ```bash
 /usr/src/tensorrt/bin/trtexec \
-  --onnx=navitas_seg_v30_best_512_fp16.onnx \
+  --onnx=navitas_seg_v34_best_512_fp16.onnx \
   --saveEngine=navitas_seg_v30_best_512_fp16.engine \
   --fp16 --workspace=4096
 ```
@@ -439,8 +439,8 @@ yolo predict task=segment model=navitas_seg_v30_best_512_fp16.engine \
 cd ~/navitas
 python3 scripts/jetson_fps.py \
   --girdi data/test_goruntuleri/sentetik_arena \
-  --pt models/navitas_seg_v30_best.pt \
-  --onnx models/navitas_seg_v30_best_512_fp16.onnx \
+  --pt models/navitas_seg_v34_best.pt \
+  --onnx models/navitas_seg_v34_best_512_fp16.onnx \
   --engine models/navitas_seg_v30_best_512_fp16.engine \
   --imgsz 512 \
   --isinma 15 --tekrar 120 --conf 0.30 --cihaz 0 \
@@ -563,7 +563,7 @@ hesabından çıkan gerçek gereksinim **0,9–2,6 FPS**.
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v30_best_512_fp16.onnx format=engine imgsz=512 \
+yolo export model=navitas_seg_v34_best_512_fp16.onnx format=engine imgsz=512 \
   int8=True data=~/navitas/codes/karisim_arena.yaml
 ```
 ⚠ `karisim_arena.yaml` içindeki yollar **Windows mutlak yolları** (`O:\navitas\...`).

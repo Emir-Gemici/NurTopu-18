@@ -5296,6 +5296,21 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
     belirgin artmış olmalı.
   - ⚠ **Bu bir KAPI DEĞİLDİR** — v23 ön kaydın hepsini sağlıyor (D-181 §3).
     Açıklanmamış bir davranış olarak izleniyor.
+- [ ] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
+avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
+  - `AD = "v22_on10_gercek"` gömülü. Dün geceki iki koşum `v22_*` ve `v23_*`
+    adıyla düştü, oysa `codes/runs/segment/` zaten **v33**'e gitmişti.
+  - Sonucu: üretime alınan model **v30'dan küçük numaralı** görünecekti; terfide
+    ad elle **v34**'e çevrildi. Bu, "hangi ağırlık uçtu" karışıklığının kaynağı.
+  - **YAP:** `AD` varsayılanı ya zorunlu argüman olsun ya da `runs/segment/`
+    içindeki en yüksek numaradan **türetilsin**. ⚠ Türetilecekse koşum adının
+    **görev bilgisini** de taşıması gerekiyor (`v34_t54_engelli` gibi).
+- [ ] **T109 — v34'ün `.engine`i yok; Jetson'da derlenmeli** · `jetson_paket/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-182 §6**
+  - Terfide **ONNX 512 fp16 üretildi** (`results/onnx_export_v34_20260819/`) ve
+    pakete kondu; `.engine` **PC'de üretilemez** (Jetson Orin NX'te derlenmeli).
+  - Pakette v30'un ONNX'i **tarihsel olarak duruyor** — hangisinin üretim
+    olduğunu `asil_model` söyler; yanlışlıkla eski ONNX derlenmemeli.
+  - **T16'ya bağlı.**
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python

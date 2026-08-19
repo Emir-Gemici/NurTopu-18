@@ -1,9 +1,9 @@
 {
  "_not": "T58: bu manifest ARTIK PAKETIN KENDISINI tarif eder. Onceki surum 2026-08-05 disa aktarim kosusunu tarif ediyordu (pc_modeli v17) oysa pakette v21 ONNX vardi; bayatlik kimseye gorunmedi cunku manifest paket icerigine BAKMIYORDU. `paket_icerigi` her dosyanin sha256'sini tasir - bayatlik artik mekanik olarak yakalanir (REVIEW_LOG D-83).",
  "_t76": "T76: uretim modeli v24 -> v27 (REVIEW_LOG D-115). Cozunurluk 640 -> 512 (D-112: 640'in olculebilir ustunlugu yok, Jetson maliyeti var). Agirlik epoch 200 `last.pt`'dir; `best.pt` epoch 43'te dondu (D-113). ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR. ⚠ T103 GUNCELLEMESI (D-178): burada eskiden 'paket defteri tasimaz' yaziyordu. O ifade ARTIK YANLISTIR — paket `jetson_paket/config/model_registry.json` dosyasini TASIR ve tasimak ZORUNDADIR: `load_model` fail-closed'tur, defter yoksa 'kayit_defteri_yok' ile duser. Notun asil soyledigi sey gecerliligini KORUYOR: bu manifest defterin YERINE GECMEZ, surum adinin tek kaynagi yine defterdir; manifest yalniz paketin kunyesidir.",
- "olusturma_zamani": "2026-08-15T18:00:24",
+ "olusturma_zamani": "2026-08-19T09:29:18",
  "paket_yenilenme": "2026-08-15T18:00:24",
- "pc_modeli": "O:\\navitas\\models\\navitas_seg_v30_best.pt",
+ "pc_modeli": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
  "format": "onnx",
  "fp16": true,
  "imgsz": [
@@ -13,15 +13,15 @@
  "opset": 17,
  "cihaz": "0",
  "onnxler": [
-  "O:\\navitas\\results\\onnx_export_v30_20260815\\navitas_seg_v30_best_512_fp16.onnx"
+  "O:\\navitas\\results\\onnx_export_v34_20260819\\navitas_seg_v34_best_512_fp16.onnx"
  ],
  "int8_kalibrasyon": null,
  "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
  "jetson_komutlari": [
-  "yolo export model=navitas_seg_v30_best_512_fp16.onnx format=engine imgsz=512 half=True"
+  "yolo export model=navitas_seg_v34_best_512_fp16.onnx format=engine imgsz=512 half=True"
  ],
- "asil_model": "navitas_seg_v30_best_512_fp16.onnx",
- "asil_model_pt": "navitas_seg_v30_best.pt",
+ "asil_model": "navitas_seg_v34_best_512_fp16.onnx",
+ "asil_model_pt": "navitas_seg_v34_best.pt",
  "uretim_hakem_ekrani": "comms/yks_gui.py ALGI_MODEL_DOSYA <- config/model_registry.json (etkin profil: competition) — T76'da CIPLAK SABIT KALDIRILDI, T85'te surum degisirken TEK KAYNAK oldugu icin ekran kendiliginden cevrildi",
  "paket_icerigi": [
   {
@@ -83,7 +83,20 @@
    "dosya": "navitas_seg_v30_best_512_fp16.onnx",
    "bayt": 54569679,
    "sha256": "091754c9ef752a5ff69e6fb195eb2f86b30c796012524a901cf52c44b84f1599"
+  },
+  {
+   "dosya": "navitas_seg_v34_best.pt",
+   "bayt": 54837660,
+   "sha256": "6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8"
+  },
+  {
+   "dosya": "navitas_seg_v34_best_512_fp16.onnx",
+   "bayt": 54569676,
+   "sha256": "06e271999d0898114747863f4ae556fe646b382dd290dcdfbc69a7e1080e417a"
   }
  ],
- "_t85": "T85: uretim modeli v27 -> v30 (REVIEW_LOG D-132 kabul kurali, D-133 kabul, kullanici karari). Cozunurluk 512 (D-112). Agirlik `best.pt`; bu kosuda best.pt ile last.pt'nin 537/537 agirlik tensoru esit, D-113 tekrarlamadi. ⚠ D-134'te mimar 'v28 kalir' onerisi yazdi; sevk karari kullanicinindir. ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR."
+ "_t85": "T85: uretim modeli v27 -> v30 (REVIEW_LOG D-132 kabul kurali, D-133 kabul, kullanici karari). Cozunurluk 512 (D-112). Agirlik `best.pt`; bu kosuda best.pt ile last.pt'nin 537/537 agirlik tensoru esit, D-113 tekrarlamadi. ⚠ D-134'te mimar 'v28 kalir' onerisi yazdi; sevk karari kullanicinindir. ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR.",
+ "_asil_model_pt_notu": "2026-08-19 · navitas_seg_v30_best.pt -> navitas_seg_v34_best.pt (KULLANICI KARARI, REVIEW_LOG D-181/D-182). ⚠ Bu alan `config/model_registry.json`in `path` alaniyla AYNI dosyayi gostermek ZORUNDADIR; `rpi_inference.model_kayit_dogrula` ikisini kiyaslar ve ayrisirlarsa `load_model` FAIL-CLOSED duser. Terfide IKISI BIRDEN guncellenir — bu terfide once yalnizca defter guncellendi ve kapi DOGRU sekilde dustu (T108: iki bildirim tek kaynaktan turemeli).",
+ "_paket_icerigi_notu": "2026-08-19 · v34 (uretim) .pt ve 512 fp16 ONNX eklendi. Onceki uretim v30'un dosyalari TARIHSEL olarak pakette KALIYOR (silinmez); hangisinin URETIM oldugunu `asil_model` / `asil_model_pt` soyler.",
+ "_paket_yenilenme": "2026-08-19 · v34 terfisi (REVIEW_LOG D-182)"
 }

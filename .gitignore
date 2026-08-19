@@ -142,3 +142,8 @@ rapor/
 # `scripts/olcum/71_gercek_kare_etiketleyici.py` + `data/raw_frames` ile
 # YENIDEN URETILEBILIR; ureteci depoda durdugu icin kumenin kendisi tutulmaz.
 dataset/gercek_otopark/
+
+# Disa aktarim ciktilari: agirliklar depoda TUTULMAZ (T85 konvansiyonu; v30
+# export dizini de izlenmiyor). D-182: bir terfide yanlislikla eklendi, geri alindi.
+results/**/*.onnx
+results/**/*.pt

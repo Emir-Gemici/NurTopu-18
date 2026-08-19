@@ -4,24 +4,30 @@ from codes.model_registry import ModelRegistryError, load_registry, resolve_mode
 
 
 class ModelRegistryTests(unittest.TestCase):
-    def test_default_is_verified_v30_competition_model(self):
-        """T85: etkin profil v27 -> v30 (imgsz 512, DEGISMEDI).
+    def test_default_is_verified_v34_competition_model(self):
+        """D-182: etkin profil v30 -> v34 (imgsz 512, DEGISMEDI).
 
         Tarihce: v4 kaydi 2026-07-15'ten kalmaydi ve uretim manifestiyle
         CELISIYORDU; `load_model` fail-closed oldugu icin saha kuru kosusunda
         `model_yukleme` halkasi bu yuzden dusuyordu (REVIEW_LOG D-106). T76'da
         v27'ye gecildi (D-115), T85'te v30'a (D-132 kabul kurali + D-133 kabul,
-        kullanici karari). Boyut dayanagi D-112.
+        kullanici karari), 2026-08-19'da v34'e (T54 kosumu `v23_t54_engelli`;
+        on kayit `scripts/olcum/v22_v23_on_kayit.md` olcumlerden ONCE yazildi,
+        hukum D-181, sevk karari KULLANICININ). Boyut dayanagi D-112.
+
+        ⚠ Bu testteki surum adi ELLE guncellenir ve bu BILEREK boyledir:
+        defterden turetilseydi test totolojik olur, kazara degisen bir profili
+        YAKALAYAMAZDI. Surum bumpi terfinin BILINCLI bir adimidir.
 
         `resolve_model` SHA-256'yi GERCEKTEN dogrular (verify=True): bu test
         defterdeki ozetin diskteki agirligin ozeti oldugunu da kanitlar — yani
         `path` alani cevrilip `sha256` unutulursa kapi KIRMIZI yanar.
         """
         path, spec = resolve_model()
-        self.assertEqual(path.name, "navitas_seg_v30_best.pt")
+        self.assertEqual(path.name, "navitas_seg_v34_best.pt")
         self.assertEqual(spec["imgsz"], 512)
         self.assertEqual(spec["status"], "competition")
-        self.assertEqual(spec["model_id"], "navitas-seg-v30-512")
+        self.assertEqual(spec["model_id"], "navitas-seg-v34-512")
 
     def test_profiles_are_explicit_not_alias_directories(self):
         registry = load_registry()
