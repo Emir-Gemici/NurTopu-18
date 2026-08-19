@@ -1,0 +1,94 @@
+  ... 40 kare
+Rota 90 waypoint gerektiriyor (yumusak hedef: 56); azami aralik guvenligi icin seyreltilmedi.
+  ... 80 kare
+  ... 120 kare
+  ... 160 kare
+  ... 200 kare
+  ... 240 kare
+
+============================================================================
+SERIT ETIKETI CELISKISI · navitas_seg_v34_best.pt
+  kume sentetik_arena_kadraj_t66 · n=260 · gurultu YOK
+============================================================================
+  toplam aday kapi                 : 465
+  etiket != serit_no(kapi_merkez_x): 0 (%0.0)
+     [!] T90 SONRASI BU OLCUT TAUTOLOJIKTIR: uretim etiketi ZATEN
+     `serit_no(kapi_merkez_x, ...)` olarak TANIMLI. Sifir cikmasi
+     BAGLANTININ kuruldugunu gosterir, DOGRULUGU degil; baska bir
+     yerde ucuncu bir etiketleme otoritesi dogsa bu sayi yine 0
+     kalirdi. Ayirt edici olcut asagidaki kova dagilimidir.
+  serbest_alan icerik kutusunu degistirdi: 0/260
+
+  n_kapi kirilimi (celiskili aday / toplam aday):
+    n_kapi= 1 :    0 /   91
+    n_kapi= 2 :    0 /  268
+    n_kapi= 3 :    0 /  102
+    n_kapi= 4 :    0 /    4
+
+============================================================================
+URETIM SERIDI, GECILEBILIR ADAY KUMESINDE MI?
+============================================================================
+  olculebilen kare (rota var + >=1 gecilebilir aday): 252
+    ESKI etiketle  (koridor_adaylari)  icinde: 238  disinda: 14
+    YENI etiketle  (serit_no ile)      icinde: 238  disinda: 14
+    KAPI YAYILIMIYLA (uretimin KESIN alani) icinde: 252  disinda: 0
+
+  zaten celiskisiz                      : 238
+  YENIDEN ETIKETLEMEYLE kapanan         : 0  -> H1a (ETIKET CERCEVESI)
+  KAPI YAYILIMIYLA kapanan              : 14  -> H1b (KAPI GENIS, MERKEZ YANILTIYOR)
+  HALA KAPANMAYAN                       : 0 -> H2 (GERCEKTEN FARKLI KORIDOR)
+
+============================================================================
+YAYINLANAN `road` ROTANIN KULLANDIGI SERIT MI?
+============================================================================
+  rota uretilen kare                    : 258
+  rota BIRDEN FAZLA seride giriyor       : 29
+  darbogaz_serit != baskin_serit (YAYIN != GOVDE): 2  (%0.8)
+    bunlarin cok seritli olani           : 2
+     sa_000129.jpg  yayin=1 govde=2 piksel=[266, 274, 0] serit_min=[24.58, 38.75, None]
+     sa_000216.jpg  yayin=3 govde=2 piksel=[0, 312, 228] serit_min=[None, 36.0, 31.79]
+
+============================================================================
+KAPANMAYAN KARELER (H2 adaylari)
+============================================================================
+  sa_000004.jpg  uretim serit=2 darbogaz=25.0 r_ger=14.080000000000002 n_kapi=1
+     etiket=1 serit_no=1 cx=204 gec=True db=22.66
+  sa_000025.jpg  uretim serit=1 darbogaz=27.0 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=231 gec=True db=24.64
+  sa_000115.jpg  uretim serit=3 darbogaz=92.0 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=397 gec=True db=55.66
+  sa_000132.jpg  uretim serit=1 darbogaz=43.0 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=218 gec=True db=45.76
+  sa_000135.jpg  uretim serit=2 darbogaz=46.0 r_ger=14.080000000000002 n_kapi=2
+     etiket=1 serit_no=1 cx=213 gec=True db=45.76
+     etiket=2 serit_no=2 cx=418 gec=False db=0.0
+  sa_000142.jpg  uretim serit=3 darbogaz=77.0 r_ger=14.080000000000002 n_kapi=2
+     etiket=2 serit_no=2 cx=256 gec=False db=0.0
+     etiket=2 serit_no=2 cx=424 gec=True db=55.66
+  sa_000155.jpg  uretim serit=2 darbogaz=16.0 r_ger=14.080000000000002 n_kapi=2
+     etiket=1 serit_no=1 cx=207 gec=True db=16.06
+     etiket=2 serit_no=2 cx=315 gec=False db=0.0
+  sa_000160.jpg  uretim serit=1 darbogaz=64.1968994140625 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=214 gec=True db=55.66
+  sa_000171.jpg  uretim serit=2 darbogaz=63.0 r_ger=14.080000000000002 n_kapi=2
+     etiket=1 serit_no=1 cx=210 gec=True db=55.66
+     etiket=2 serit_no=2 cx=348 gec=False db=0.0
+  sa_000173.jpg  uretim serit=3 darbogaz=66.0 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=417 gec=True db=51.7
+  sa_000192.jpg  uretim serit=1 darbogaz=48.78759765625 r_ger=14.080000000000002 n_kapi=2
+     etiket=2 serit_no=2 cx=222 gec=True db=45.76
+     etiket=2 serit_no=2 cx=403 gec=False db=0.0
+  sa_000194.jpg  uretim serit=3 darbogaz=40.9844970703125 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=395 gec=True db=40.48
+  sa_000216.jpg  uretim serit=3 darbogaz=31.787599563598633 r_ger=14.080000000000002 n_kapi=1
+     etiket=2 serit_no=2 cx=420 gec=True db=31.9
+  sa_000238.jpg  uretim serit=2 darbogaz=46.393798828125 r_ger=14.080000000000002 n_kapi=1
+     etiket=3 serit_no=3 cx=429 gec=True db=45.76
+============================================================================
+  OKUMA: kapanan celiski ETIKETLEME CERCEVESI farkidir (H1) —
+  koridor ayni, numara farkli. Kapanmayan celiski iki yolun FARKLI
+  KORIDOR sectigi anlamina gelir (H2) ve amac fonksiyonu farkindan
+  gelir: envanter EN GENIS darbogazi, A* EN UCUZ yolu secer.
+============================================================================
+
+json -> O:\navitas\results\filo_turu\filo2_t100_76_yeniden_20260820.json

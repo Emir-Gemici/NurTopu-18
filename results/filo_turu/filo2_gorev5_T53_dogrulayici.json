@@ -1,0 +1,17 @@
+{
+  "filo": "FILO2",
+  "rol": "DOGRULAYICI",
+  "gorev_indeksi": 5,
+  "gorev": "T53 — Kosulmamis hucre: 11-sinif on-egitim + GERCEK DOKU karisimi ayni kosuda",
+  "kanit_cumlesi": "Ikisi (11-sinif on-egitim + gercek doku karisimi) HIC AYNI KOSUDA birlestirilmedi; tablo: v15 duyar 0.134/otopark %24.1 · v17 0.010/%0.9 · v21 (uretim) 0.890/%81.0",
+  "sonuc": "ARTIK YOK",
+  "gerekce": "Hucre 2026-08-12'de KOSULDU (56_t53_gercek_karisim.py, kosum v22_on10_gercek; agirlik diskte: codes/runs/segment/v22_on10_gercek/weights/best.pt), 2026-08-19'da HUKME BAGLANDI (REVIEW_LOG D-181; TASK_QUEUE.md:2869-2884). v22 otomatik terfi ALAMADI (K2 16/258 vs taban 14/258) ama ayni soyun T54 devami v23_t54_engelli v34 adiyla URETIME ALINDI (config/model_registry.json, model_id navitas-seg-v34-512). 'Kosulmamis hucre' onculu bugun gecersiz; gorev yalnizca kapanis kaydi bekliyor (kutusu hala [ ]).",
+  "yeniden_uretim": {
+    "komut": "O:/navitas-local-train/venv/Scripts/python.exe scratchpad/filo2_g5_t53_dogrula.py (56_uc_kapili_model_secimi.py kapi2_alan_disi zinciri birebir: _preprocess -> predict conf 0.30 imgsz INFER_SIZE -> get_masks -> _maskeleri_icerige_kirp -> zemin_kaplamasi)",
+    "kosum": "bu oturum, 2026-08-20, v34 .pt, data/raw_frames TAM kume n=67",
+    "olculen": {"n": 67, "otopark_kaplama_ort": 0.8120, "p50": 0.8002, "maks": 0.8740},
+    "kiyas": "Tablodaki v21 K2 otopark %81.0 -> bugunku uretim v34'te %81.2. Yani tablonun 'asiri tespit / cokus' sayisi uretim modelinde AYNEN SURUYOR; bayatlayan sey SAYI degil, 'hucre kosulmamis' onculu."
+  },
+  "olculemedi": "Tablonun K0 duyar / K1 IoU sutunlari 9-karelik gercek-doku kumesi ve rescuenet val ile eski kosumlara ait; bu tur icin yalniz K2 tam kumede yeniden uretildi. K0/K1 eski modellerle yeniden kosulmadi (v15/v17/v21 sorgusu bu gorevin bugunku gecerliligini degistirmez).",
+  "etiket": "SONUC-DEGISTIREN"
+}

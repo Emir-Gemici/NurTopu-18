@@ -1,0 +1,33 @@
+{
+  "filo": 2,
+  "rol": "dogrulayici",
+  "gorev_indeksi": 11,
+  "gorev": "T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)",
+  "kanit_cumlesi": "Üç ölçüm turu da rota_bul(mk, mpp=mpp, icerik=icerik) kullandı; üretim baslangic/hedef/plan=True ve engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI ile çağırıyor — ölçülen sayılar üretim girdisine ait değil (D-165 §2).",
+  "sonuc": "HALA GECERLI",
+  "not_sayi_kaymasi": "Görev/D-165 metnindeki '(1, 2) MOLOZ + ARAC' açıklaması yanlış yazımdır: sinif_semasi.py 2026-08-07'den beri değişmedi (git log tek commit 11eed4a), KATMAN_ARAC=10, COSTMAP_ENGEL_KATMANLARI=(1, 10). Asıl iddia (küme farkı: varsayılan (1,) vs üretim MOLOZ+ARAC) etkilenmez.",
+  "yeniden_uretim": {
+    "statik": [
+      "scripts/olcum/89_t95_rota_bul_kayip.py:160 -> rota_bul(mk, mpp=mpp, icerik=icerik)",
+      "scripts/olcum/90_t95b_butce.py:276 -> rota_bul(mk, mpp=mpp, icerik=icerik)",
+      "scripts/olcum/91_t95c_kararlilik.py:130 -> C.rota_bul(mk, mpp=mpp, icerik=icerik)",
+      "simulation/scripts/iha_haritala.py:324-328 -> rota_bul(costmap_maskeleri, mpp=MPP, baslangic=..., hedef=..., plan=True, yol_sinif_idler=COSTMAP_YOL_KATMANLARI, engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI, gorsel_cikti=True)",
+      "codes/costmap_path_finder.py:952 -> rota_bul varsayılanı engel_sinif_idler=(1,)",
+      "results/ altında üretim imzasıyla 89/90/91 yeniden koşumu YOK (t95/t99 desenli dizin: 0)",
+      "TASK_QUEUE.md:5958 -> T99 hâlâ [ ] açık"
+    ],
+    "kosum": {
+      "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe <scratchpad>\\filo2_g11_t99_dogrula.py",
+      "betik": "C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\filo2_g11_t99_dogrula.py",
+      "aciklama": "Sentetik sahne (200x300, zemin+moloz+4000 px araç), serbest_alan iki imzayla — bugünkü kodla fark maddi mi?",
+      "sayilar": {
+        "COSTMAP_ENGEL_KATMANLARI_bugun": [1, 10],
+        "serbest_px_olcum_imzasi_(1,)": 40616,
+        "serbest_px_uretim_imzasi": 35248,
+        "fark_px": 5368,
+        "arac_px": 4000
+      }
+    }
+  },
+  "tarih": "2026-08-20"
+}

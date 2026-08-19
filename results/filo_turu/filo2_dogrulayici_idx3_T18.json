@@ -1,0 +1,23 @@
+{
+  "filo": "FILO2",
+  "rol": "DOGRULAYICI",
+  "gorev_indeksi": 3,
+  "gorev": "T18 — DroidCam kamera kaynaginin algi hattina baglanmasi (codes/rpi_inference.py, D-13 kapsam genislemesi)",
+  "tarih": "2026-08-20",
+  "kanit_cumleleri": [
+    "(a) Kamera kaynagi CLI parametresi degil (dosya/video dugumu/RTSP secilemez)",
+    "(b) D-13: model yolu sabit kodlu — :32-40 her zaman best_ncnn_model arar, --model argumani YOK",
+    "(c) INFER_SIZE = 512 sabit (ciplak)"
+  ],
+  "yeniden_uretim": {
+    "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe <scratchpad>\\filo2_t18_dogrula.py (bu kosum, 2026-08-20) + statik okuma codes/rpi_inference.py",
+    "bulgular": {
+      "kaynak_parametrik": "--kaynak argumani VAR (rpi_inference.py:1821-1824); kamera_kaynagi_coz (:481-500) indeks/cihaz yolu/RTSP/dosya cozuyor; run_camera :1746-1747 kullaniyor (T73 · D-106). Kosum ciktisi: 'rtsp://x:4747/video' -> str, '0' -> int 0, '/dev/video1' -> str",
+      "model_parametrik": "--model argumani VAR (:1825-1828); verilmezse varsayilan_model_yolu() Jetson manifesti asil_model_pt'den turetiyor (:461-478). Kosum ciktisi: O:\\navitas\\jetson_paket\\models\\navitas_seg_v34_best.pt (uretim v34). best_ncnn_model yalniz MODEL_DIR eski sabitinde (:113-121) duruyor, yukleme yolu load_model->varsayilan_model_yolu (:557-567)",
+      "infer_size": "Ciplak sabit DEGIL: INFER_SIZE = _baslangic_imgsz() (:168), config/model_registry.json default_profile (competition, v34) imgsz alanindan okunuyor; INFER_SIZE_YEDEK=512 yalniz defter okunamazsa. Kosum ciktisi: INFER_SIZE = 512 (deger ayni ama kaynak artik kayit defteri + model_kayit_dogrula fail-closed kiyasi)"
+    }
+  },
+  "SONUC": "ARTIK YOK",
+  "aciklama": "T18'in uc kanit cumlesi de bugunku kodda gecersiz — T73 (D-106) kaynak ve modeli parametrik yapti, S5 INFER_SIZE'i kayit defterine bagladi. DIKKAT: gorevin KAPISI (DroidCam ile 60 s kesintisiz cikarim + dusen kare raporu + v17 .engine tek kare) kosulmus DEGIL — results/ altinda boyle bir cikti yok ve .engine PC'de uretilemez (T109). Kanit ARTIK YOK ama kapi kaniti da YOK; kapatma karari mimarindir (on kayit FILO2).",
+  "etiket": "SONUC-DEGISTIREN"
+}

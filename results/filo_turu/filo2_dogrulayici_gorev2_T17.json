@@ -1,0 +1,37 @@
+{
+  "filo": "FILO2_DOGRULAYICI",
+  "gorev_indeksi": 2,
+  "gorev": "T17 — Jetson'da gercek uctan uca FPS olcumu",
+  "tarih": "2026-08-20",
+  "yeniden_uretim_komutu": "O:\\navitas-local-train\\venv\\Scripts\\python.exe C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\filo2_t17_dogrula.py (jetson_fps._uretim_varsayilanlari() + argumanlar([]) gercek kosumu) + Glob results/jetson_fps_2026*/**",
+  "kanit_kalemleri": [
+    {
+      "kanit": "14 FPS, Jetson Nano 4GB (2026-08-10, yalniz ekranda goruldu, cikti dosyasi yok)",
+      "sonuc": "OLCULEMEDI",
+      "sebep": "Jetson donanimi bu makinede yok; bugun de results/ altinda hicbir Jetson kosum dosyasi yok (Glob results/jetson_fps_2026*/** -> 0 dosya; yalniz results/jetson_fps_pc_smoke* var, 2026-08-02 PC RTX 5080 + v20). Gorevin 'kanit eksik, kapi kapanmadi' tespiti HALA GECERLI."
+    },
+    {
+      "kanit": "(b) --girdi varsayilani data/raw_frames (yaniltici yuksek FPS riski)",
+      "sonuc": "HALA_GECERLI",
+      "bugunku_deger": "O:\\navitas\\data\\raw_frames (jetson_fps.py:320, kosumla dogrulandi)"
+    },
+    {
+      "kanit": "(c) --pt varsayilani v20, oneri v21",
+      "sonuc": "SAYI_KAYMIS",
+      "eski": "navitas_seg_v20_best.pt (ciplak varsayilan)",
+      "yeni": "jetson_paket\\models\\navitas_seg_v34_best.pt — manifest 'asil_model_pt' uzerinden turetiliyor (_uretim_varsayilanlari), registry competition profili navitas-seg-v34-512 ile ayni sha256 (6730d777...). imgsz varsayilani [512], conf 0.30 (rpi_inference:1835). G1 uyarisinin kok nedeni (bayat ciplak varsayilan) yapisal olarak giderilmis."
+    },
+    {
+      "kanit": "(d) jetson_fps.py:162 rota_bul(..., plan=False) — A* olcum disi",
+      "sonuc": "HALA_GECERLI",
+      "bugunku_deger": "ayni cagri bugun jetson_fps.py:226-227'de: rota_bul(maskeler, mpp=None, plan=False, gorsel_cikti=False, icerik=icerik). Satir 162->227 kaydi, kapsam siniri aynen duruyor."
+    },
+    {
+      "kanit": "T16 bagimliligi: .engine yok",
+      "sonuc": "HALA_GECERLI",
+      "bugunku_deger": "jetson_paket/models/*.engine -> 0 dosya; kosumda engine_varsayilani=None (vaka acikca ATLANIR)."
+    }
+  ],
+  "genel_sonuc": "HALA GECERLI (gorev acik kalmali) — cekirdek kanit (Jetson FPS sayisi) bugun de yeniden uretilemez: OLCULEMEDI (donanim yok, cikti dosyasi hicbir kosumdan yok). Yan kanitlardan biri SAYI KAYMIS: --pt varsayilani artik v20 degil, manifest/registry'den v34.",
+  "etiket": "BILGILENDIRICI"
+}

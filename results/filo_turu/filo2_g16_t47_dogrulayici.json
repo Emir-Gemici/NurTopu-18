@@ -1,0 +1,22 @@
+{
+  "gorev": "T47",
+  "filo": "FILO2-dogrulayici",
+  "tarih": "2026-08-20",
+  "kanit_eski": {
+    "model": "v21",
+    "ortalama_zemin_kaplamasi": 0.74,
+    "kaynak": "D-61"
+  },
+  "yeniden_uretim": {
+    "model": "navitas-seg-v34-512",
+    "sha256_eslesme": true,
+    "kume": "data/raw_frames (tam kume)",
+    "n": 67,
+    "zincir": "_preprocess->predict(conf 0.30, imgsz 512)->get_masks->icerige_kirp->sinif0",
+    "ortalama_zemin_kaplamasi": 0.45674463528305737,
+    "medyan": 0.4501075744628906,
+    "min": 0.4310188293457031,
+    "max": 0.49161529541015625,
+    "tavan_067_ustu": 0
+  }
+}

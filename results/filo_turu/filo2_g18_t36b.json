@@ -1,0 +1,123 @@
+{
+  "olcum": "T36b yeniden uretim · ORACLE maske -> analyze_path + K-B",
+  "tarih": "2026-08-20",
+  "kod": "bugunku calisma agaci (analyze_path T48 zemin kapisi dahil)",
+  "model": "KULLANILMADI (yer gercegi maskesi)",
+  "kareler": [
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00",
+      "bolum": "train",
+      "beklenen": 1,
+      "ham_serit": 1,
+      "guven": 0.602,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=1",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00",
+      "bolum": "train",
+      "beklenen": 1,
+      "ham_serit": 1,
+      "guven": 0.921,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=1",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00",
+      "bolum": "val",
+      "beklenen": 1,
+      "ham_serit": 1,
+      "guven": 0.775,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=1",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00",
+      "bolum": "train",
+      "beklenen": 1,
+      "ham_serit": 1,
+      "guven": 0.753,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=1",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00",
+      "bolum": "val",
+      "beklenen": 3,
+      "ham_serit": 3,
+      "guven": 0.96,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=3",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00",
+      "bolum": "train",
+      "beklenen": 3,
+      "ham_serit": 3,
+      "guven": 1.0,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=3",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00",
+      "bolum": "train",
+      "beklenen": 1,
+      "ham_serit": 1,
+      "guven": 0.999,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=1",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00",
+      "bolum": "train",
+      "beklenen": 3,
+      "ham_serit": 3,
+      "guven": 0.96,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=3",
+      "ham_uyum": "DOGRU"
+    },
+    {
+      "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00",
+      "bolum": "train",
+      "beklenen": 3,
+      "ham_serit": 3,
+      "guven": 1.0,
+      "yapisal_sebep": null,
+      "kb_reddi": null,
+      "final": "ROTA serit=3",
+      "ham_uyum": "DOGRU"
+    }
+  ],
+  "ozet_train": {
+    "n": 7,
+    "ham_dogru": 7,
+    "ham_yanlis": 0,
+    "ham_yapisal_ret": 0,
+    "nihai_ret": 0,
+    "nihai_rota": 7
+  },
+  "ozet_hepsi": {
+    "n": 9,
+    "ham_dogru": 9,
+    "ham_yanlis": 0,
+    "ham_yapisal_ret": 0,
+    "nihai_ret": 0,
+    "nihai_rota": 9
+  }
+}

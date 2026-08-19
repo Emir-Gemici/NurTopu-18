@@ -1,0 +1,71 @@
+{
+ "gorev": "FILO4 T117 H1 GSD/IRTIFA — v34 catiyi RescueNet'te engel, otoparkta zemin goruyor; sebep GSD farki mi?",
+ "tarih": "2026-08-20",
+ "on_kayit": "results/filo_turu/on_kayit.md FILO 4 kurali: hipotez DESTEKLENDI <=> olcum yon olarak dogru VE 2/3 curutucuden sag cikar",
+ "kosumlar": {
+  "K1_rescuenet_arac": {
+   "betik": "scratchpad/f4_rescuenet_arac.py",
+   "kaynak": "dataset/rescuenet_11sinif labels train+val+test, sinif 7 (vehicle), poligon bbox, <8px cop filtresi",
+   "n_instans": 4756,
+   "n_goruntu": 1699,
+   "goruntu_boyutu": "1024x768 (30 orneklemde 29; 1 adet 1024x767) — otopark kareleriyle ayni max kenar (1024), letterbox esdeger",
+   "uzun_kenar_px": {"medyan": 73.0, "q25": 61.0, "q75": 87.0},
+   "model_girisi_512_medyan_px": 36.5
+  },
+  "K2_otopark_arac_elle": {
+   "yontem": "bu ajan, 4x buyutulmus 10px-izgarali kirpintilardan elle 10+10 kutu isaretledi (scratchpad/f4_kirp.py, f4_A_kutular.png, f4_B_kutular.png); belirsizlik ~±10%",
+   "kare_A": {
+    "dosya": "data/raw_frames/whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg",
+    "n_kutu": 10,
+    "uzun_kenar_px": [63, 65, 65, 65, 66, 69, 70, 70, 70, 81],
+    "medyan_px": 67.5
+   },
+   "kare_B": {
+    "dosya": "data/raw_frames/whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+    "n_kutu": 10,
+    "uzun_kenar_px": [35, 36, 37, 38, 50, 52, 52, 52, 55, 57],
+    "medyan_px": 51.0
+   }
+  },
+  "K3_gsd_esitleme_v34": {
+   "betik": "scratchpad/f4_v34_olcek.py",
+   "zincir": "codes/rpi_inference: _preprocess -> predict(conf=0.30, imgsz=512) -> get_masks -> _maskeleri_icerige_kirp (t116a ile ayni uretim zinciri)",
+   "model": "models/navitas_seg_v34_best.pt",
+   "yontem": "kare, arac medyani RescueNet medyanina (73px) esitlenecek sekilde s katiyla buyutuldu, cati merkezli 1024x576 pencere kirpildi, ayni zincir kosuldu; cati poligonu (elle, ic-konservatif) icinde sinif oranlari olculdu",
+   "kare_A": {
+    "olcek_carpani_s": 1.0815,
+    "dogal": {"cati_px": 60903, "trav_frac": 1.0, "blocked_frac": 0.0, "hicbiri_frac": 0.0},
+    "rescuenet_gsd": {"cati_px": 71175, "trav_frac": 1.0, "blocked_frac": 0.0, "hicbiri_frac": 0.0}
+   },
+   "kare_B": {
+    "olcek_carpani_s": 1.4314,
+    "dogal": {"cati_px": 14416, "trav_frac": 1.0, "blocked_frac": 0.0, "hicbiri_frac": 0.0},
+    "rescuenet_gsd": {"cati_px": 29445, "trav_frac": 1.0, "blocked_frac": 0.0, "hicbiri_frac": 0.0}
+   },
+   "gorseller": "scratchpad/f4_A_dogal.png, f4_A_rescuenet_gsd.png, f4_B_dogal.png, f4_B_rescuenet_gsd.png (cati poligonu macenta; cati her kosulda tamamen yesil, araclar kirmizi)"
+  },
+  "K4_oncul_kontrolu": {
+   "betik": "scratchpad/f4_rescuenet_kontrol.py",
+   "yontem": "ayni zincir, rescuenet_11sinif val'den bina (sinif 3-6) poligonu >= %2 alan iceren ilk 12 goruntu",
+   "n": 12,
+   "bina_blocked_frac_medyan": 0.9263,
+   "bina_trav_frac_medyan": 0.0,
+   "sonuc": "oncul DOGRU: v34 RescueNet binalarini blocked goruyor (12/12 goruntude blocked_frac >= 0.74)"
+  }
+ },
+ "bulgular": [
+  "GSD farki VAR ama YONU hipotezin ima ettiginin tersi degil kucuk: otopark araclari RescueNet medyanindan KUCUK (A: 67.5 vs 73.0 px = %8; B: 51.0 vs 73.0 px = %30) — otopark RescueNet'ten daha yuksek/esit irtifada goruntulenmis, asiri yakin degil.",
+  "GSD esitlenince (kare %8 ve %43 buyutulup) cati SIFIR piksel blocked'a donmedi: her iki karede trav_frac dogal=1.0, rescuenet_gsd=1.0; blocked_frac=0.0.",
+  "Kontrol: ayni model ayni zincirle RescueNet binalarini blocked goruyor (medyan 0.9263, n=12) — fark modelin bina kavraminda degil, otopark catisinin GORUNUMUNDE ya da baglaminda ariyor olmali (H2 gorunum-doku yonune isaret; bu olcum H2'yi OLCMEDI)."
+ ],
+ "verdikt": {
+  "H1_gsd_irtifa": "DESTEKLENMEDI",
+  "gerekce": "Olcum yon olarak hipotezi dogrulamiyor: GSD farki kucuk (%8-%30) ve fark tamamen kapatildiginda v34'un cati sinifi DEGISMIYOR (blocked_frac 0.0 -> 0.0, iki karede de)."
+ },
+ "sinirlar": [
+  "Otopark arac kutulari ELLE isaretlendi (~±10% belirsizlik); s carpani buna duyarli ama sonuc (0.0 blocked) esik-duyarli degil.",
+  "Cati poligonu ic-konservatif elle cizildi; kenar pikselleri olcum disi.",
+  "Yalnizca 2 cati karesi ve 2 olcek noktasi test edildi; ara/asiri olcekler (or. s=2-3) OLCULMEDI.",
+  "RescueNet arac medyani tum kumeden (4756 instans); bina iceren karelerle sinirlanmadi."
+ ]
+}

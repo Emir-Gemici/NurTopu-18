@@ -1,0 +1,36 @@
+{
+  "filo": "FILO2",
+  "rol": "DOGRULAYICI",
+  "gorev_indeksi": 10,
+  "gorev": "T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)",
+  "tarih": "2026-08-20",
+  "kanit_cumlesi": "Üç ölçüm turu da rota_bul(mk, mpp=mpp, icerik=icerik) kullandı; üretim (iha_haritala.py:323) rota_bul(costmap_maskeleri, mpp=MPP, baslangic=..., hedef=..., plan=True, yol_sinif_idler=(0,), engel_sinif_idler=(1,2), gorsel_cikti=True). Ölçülen sayılar üretim girdisine ait değil.",
+  "yeniden_uretim": {
+    "kosum": "O:/navitas-local-train/venv/Scripts/python.exe <scratchpad>/filo2_g10_t99.py (2026-08-20) + statik dogrulama: Read iha_haritala.py:319-328, grep engel_sinif_idler 89/90/91",
+    "statik": {
+      "uretim_cagri_yeri": "simulation/scripts/iha_haritala.py:324-328 (gorevdeki :323 bir satir kaymis) — imza gorevdekiyle AYNI",
+      "olcum_betikleri_duz_imza": {
+        "scripts/olcum/89_t95_rota_bul_kayip.py:160": "rota_bul(mk, mpp=mpp, icerik=icerik)",
+        "scripts/olcum/90_t95b_butce.py:276": "rota_bul(mk, mpp=mpp, icerik=icerik)",
+        "scripts/olcum/91_t95c_kararlilik.py:130": "rota_bul(mk, mpp=mpp, icerik=icerik)",
+        "engel_sinif_idler_gecen_satir_sayisi": "89:0 · 90:0 · 91:0"
+      },
+      "uretim_imzali_yeniden_olcum_kaydi": "results/ altinda t95/t99/uretim-imza kosumu YOK (glob *t95*, *t99*, *kayip*, *butce*, *kararlilik* bos) — gorevin KAPI'si hala acik"
+    },
+    "sabit_kaymasi": {
+      "gorevdeki": "COSTMAP_ENGEL_KATMANLARI = (1, 2)",
+      "bugunku": "COSTMAP_ENGEL_KATMANLARI = (KATMAN_MOLOZ, KATMAN_ARAC) = (1, 10)",
+      "kaynak": "codes/sinif_semasi.py:59-68; ad-alani duzeltmesi REVIEW_LOG.md:1829-1845 (KATMAN_ARAC=10)"
+    },
+    "mekanizma_olcumu_sentetik": {
+      "sahne": "3 seritli sentetik, sol seritte arac, orta seritte moloz (480x640, mpp=0.0547)",
+      "duz_imza": {"durum": "ACIK", "yol_no": 1, "guven": 0.0},
+      "uretim_imza_engel_1_10": {"durum": "ACIK", "yol_no": 3, "guven": 1.0},
+      "serbest_px": {"arac_engel_degil": 128000, "arac_engel": 122000},
+      "yorum": "Ayni sahnede imza farki KARARI degistiriyor (yol 1 -> yol 3); duz imzayla olculen sayilar uretim girdisini temsil etmiyor — gorevin cekirdek iddiasi yeniden uretildi"
+    }
+  },
+  "sonuc": "SAYI KAYMIS",
+  "sonuc_aciklama": "Cekirdek kanit (olcum betikleri duz imza, uretim farkli imza, uretim-imzali olcum hic kosulmamis) HALA GECERLI; ancak kanit cumlesindeki iki sayi kaymis: engel_sinif_idler (1,2) -> (1,10) ve cagri yeri satiri :323 -> :324.",
+  "olculemeyenler": "89/90/91'in TAM yeniden kosumu (model+67 kare) bu turda kosulmadi; dogrulama statik imza karsilastirmasi + sentetik mekanizma olcumuyle yapildi."
+}

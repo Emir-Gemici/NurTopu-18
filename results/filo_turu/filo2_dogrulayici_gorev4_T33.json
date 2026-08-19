@@ -1,0 +1,33 @@
+{
+  "filo": "FILO2",
+  "rol": "DOGRULAYICI",
+  "gorev_indeksi": 4,
+  "gorev": "T33 - Arac katmani (DOTA OBB) algi karar yoluna bagli degil",
+  "tarih": "2026-08-20",
+  "yeniden_uretim_komutu": "Grep pattern='arac_maskesi|obb_arac_maskesi|KATMAN_ARAC|COSTMAP_ENGEL_KATMANLARI' uzerinde 4 dosya (count) + Grep pattern='analyze_path|engel_mask' rpi_inference.py/iha_perceive.py/yks_gui.py (content) + CONTRACTS.md 1.3 okuma",
+  "kanit_kontrolleri": [
+    {
+      "kanit": "arac maskesi referans sayimi: iha_haritala 8 / rpi_inference 0 / iha_perceive 0 / yks_gui 0",
+      "bugun": "iha_haritala 8 / rpi_inference 5 / iha_perceive 0 / yks_gui 0",
+      "not": "rpi_inference'taki 5 referansin TAMAMI olcek kahini katman 3 (_arac_kisa_kenari, arac_olcek_kenari import'lari, satir 364-373) - arac maskesi ENGEL katmani olarak hala baglanmamis. yks_gui'deki _arac_modeli de yalniz olcek katman 3 (satir 1293-1316, 1465-1466).",
+      "sonuc": "SAYI KAYMIS (0->5) ama kaymanin sebebi olcek kahini; gorevin iddiasi acisindan HALA GECERLI"
+    },
+    {
+      "kanit": "CONTRACTS 1.3 COSTMAP_ENGEL_KATMANLARI=(KATMAN_MOLOZ,KATMAN_ARAC)=(1,10); yalniz iha_haritala uyguluyor",
+      "bugun": "CONTRACTS.md:44,63 (1,10) dogruluyor; iha_haritala.py:327 rota_bul(engel_sinif_idler=COSTMAP_ENGEL_KATMANLARI) tek uygulayici; rpi_inference/iha_perceive/yks_gui'de COSTMAP_ENGEL_KATMANLARI referansi 0",
+      "sonuc": "HALA GECERLI (satir 327, eskiden 336 deniyordu - satir numarasi kaymis)"
+    },
+    {
+      "kanit": "rpi_inference.py:387,467,527 ve iha_perceive.py:106 yalniz analyze_path(masks[0]) cagiriyor - engel maskesi HIC okunmuyor (saf Yaklasim B)",
+      "bugun": "rpi_inference.py:1586,1689,1781 analyze_path(masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=...) ; iha_perceive.py:108-109 analyze_path(masks[0], engel_mask=masks.get(1)) ; yks_gui.py:1442 trav_serbest[blok>0]=0 ve :1492 analyze_path(trav, engel_mask=blok)",
+      "sonuc": "ARTIK YOK - MOLOZ engel maskesi (sinif 1) artik 3 dosyada da analyze_path'e geciliyor. ANCAK gecilen yalniz masks[1]=MOLOZ; ARAC maskesi (KATMAN_ARAC=10, DOTA OBB) algi yolunda hala uretilmiyor ve gecilmiyor."
+    },
+    {
+      "kanit": "S1 olcumu: ayni hava fotografinda COCO-seg 2 arac, DOTA OBB 93 arac",
+      "bugun": "OLCULEMEDI - iki model cikarimi gerektirir, bu dogrulama turunda kosulmadi; statik kod kanitiyla iliskisi yok",
+      "sonuc": "OLCULEMEDI"
+    }
+  ],
+  "SONUC": "SAYI KAYMIS (gorevin cekirdek iddiasi HALA GECERLI, alt-kanitlardan biri ARTIK YOK)",
+  "ozet": "Cekirdek iddia gecerli: DOTA OBB arac maskesi algi karar yolunda (rpi_inference, iha_perceive, yks_gui) ENGEL katmani olarak hala bagli degil; yalniz iha_haritala.py:286-327 hibrit. Ama kanit metninin 'engel maskesi hic okunmuyor / saf Yaklasim B' kismi bayat: moloz engel_mask artik uc dosyada da analyze_path'e geciliyor (T95 sonrasi degisiklik). Satir numaralari da kaymis (387/467/527 -> 1586/1689/1781; 336 -> 327). Gorev metni guncellenmeli ama KAPANMA ADAYI DEGIL."
+}

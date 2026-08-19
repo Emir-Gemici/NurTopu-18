@@ -1,0 +1,31 @@
+{
+ "lane": "FILO1 tarama 1/15 (T118 payda sozlesmesi)",
+ "grup_indeksi": 1,
+ "dosya": "scripts/olcum/93_t106_guven_bandi.py",
+ "yontem": "statik kod okuma; hicbir olcum kosulmadi (kosum yok)",
+ "payda_tespiti": {
+  "kaplamalar_93_97": "LETTERBOX karesi — _maskeleri_icerige_kirp (codes/rpi_inference.py:1502-1509) dolguyu SIFIRLAR ama dizi boyutunu (yan x yan) korur; .mean() paydasi tum kare tuval",
+  "kaplama_65_134": "LETTERBOX karesi (ayni yol, ayni payda)",
+  "uretim_zemin_kaplamasi": "ICERIK kutusu — codes/karar_sozlesmesi.py:426-443, payda iw*ih",
+  "ZEMIN_KAPLAMA_TAVANI_0_67": "ICERIK paydasinda kalibre (T59/D-84/D-85 kaydi, codes/karar_sozlesmesi.py:340-423)"
+ },
+ "satirlar": [
+  {"ref": "93:16", "payda": "LETTERBOX karesi (kaplamalar() ciktilarinin orani)", "esik": "BAND_ORANI >= 3 sezgisel etiket (93:245, betigin kendi ozet basligi)", "esik_paydasi": "PAYDASIZ — pay/payda ayni kosumun ayni paydasi, oran alinirken payda SADELESIR", "uyusmazlik": false},
+  {"ref": "93:19", "payda": "LETTERBOX karesi (D-183 tablosu ayni kaplama yolundan)", "esik": "yok — tarihsel kiyas (9,58 vs 1,62)", "esik_paydasi": "ayni yol, ayni payda; tutarli", "uyusmazlik": false},
+  {"ref": "93:23", "payda": "kaplama-tanimi (olcum sozlesmesi metni)", "esik": "yok", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:26", "payda": "kaplama-tanimi (pozitif kontrol ilani)", "esik": "esitlik sapmasi > 1e-9 (93:183)", "esik_paydasi": "iki taraf da LETTERBOX karesi — payda ozdes", "uyusmazlik": false},
+  {"ref": "93:28", "payda": "LETTERBOX karesi (iki taraf da)", "esik": "1e-9 esitlik kontrolu (93:183)", "esik_paydasi": "ozdes payda", "uyusmazlik": false},
+  {"ref": "93:34", "payda": "kaplama-degil (NMS/predict yontem notu)", "esik": "yok", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:87", "payda": "LETTERBOX karesi (fonksiyon tanimi)", "esik": "dogrudan esik yok; ciktisi BAND_ORANI ve zemin<0,01 sayacini besler", "esik_paydasi": "BAND_ORANI paydasiz; 0,01 esigi 93:224'te betik-ici tanim, kalibrasyon izi YOK -> BELIRSIZ", "uyusmazlik": false},
+  {"ref": "93:88", "payda": "kaplama-tanimi (docstring, 65 ile aynilik ilani)", "esik": "yok", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:97", "payda": "LETTERBOX karesi — (mk>0).mean(), payda yan*yan", "esik": "yok (deger uretimi)", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:150", "payda": "kaplama-degil (JSON metaveri metni)", "esik": "yok", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:176", "payda": "LETTERBOX karesi (figur olcumu)", "esik": "D-183 tablosuyla kiyas (docstring 93:7-11)", "esik_paydasi": "D-183 ayni kaplama yolundan -> ayni payda, tutarli", "uyusmazlik": false},
+  {"ref": "93:181", "payda": "LETTERBOX karesi (K65.kaplama pozitif kontrol)", "esik": "sapma > 1e-9 -> OLCUM GECERSIZ (93:183, 93:262)", "esik_paydasi": "ozdes payda; esitlik kontrolu kalibre gerektirmez", "uyusmazlik": false},
+  {"ref": "93:209", "payda": "LETTERBOX karesi (kume karesi basina olcum)", "esik": "yok (deger uretimi)", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:258", "payda": "kaplama-degil (sapma sayaci raporu)", "esik": "0 OLMALI (esitlik)", "esik_paydasi": "-", "uyusmazlik": false},
+  {"ref": "93:263", "payda": "kaplama-degil (JSON kayit alani)", "esik": "yok", "esik_paydasi": "-", "uyusmazlik": false}
+ ],
+ "capraz_payda_riski": "93'un mutlak yuzdeleri (or. zemin_ort) LETTERBOX paydasindadir; 16:9 kaynak karede ICERIK-payda degerinin ~0,5625 kati kucuk cikar. Bu dosya 0,67 tavanina KARSI hicbir karsilastirma yapmaz, o yuzden dosya ici UYUSMAZLIK yok; ama 93'un yuzdeleri baska yerde ICERIK-paydali tavan/degerlerle yan yana konursa uyusmazlik dogar.",
+ "uyusmazlik_sayisi": 0
+}

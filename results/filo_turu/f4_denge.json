@@ -1,0 +1,142 @@
+{
+ "gorev": "FILO4 T117 H3 sinif dengesizligi",
+ "tarih": "2026-08-20",
+ "kosum": {
+  "betik": "f4_h3_denge.py (scratchpad)",
+  "raster": 512,
+  "seed": 117,
+  "orneklem_train": 400,
+  "kaynak_etiket": "dataset/rescuenet_11sinif/labels/train (2sinif kumede bina AYRISAMAZ; 11sinif etiketler ayni dosya adlariyla birebir esli, 3502/3502)"
+ },
+ "karisim_bilesimi_kare": {
+  "rescuenet_2sinif_engelli": 3502,
+  "sentetik_arena": 2700,
+  "copy_paste_gercek": 393,
+  "toplam": 6595
+ },
+ "uyari_2sinif": "karisim_t54_engelli.yaml'in UC uyesi de 2 siniflidir (traversable/blocked); bina payi YALNIZ RescueNet uyesinin 11-sinif kaynak etiketlerinden olculebilir. sentetik_arena ve copy_paste_gercek icinde bina piksel payi OLCULEMEDI (etiket yok).",
+ "rescuenet_uyesi_pay": {
+  "bina_px": 9821291,
+  "bina_pay_toplam_goruntu": 0.09366312980651856,
+  "bina_pay_etiketli_alan": 0.19000082800066084,
+  "bina_pay_blocked_denetimi_icinde": 0.22380480132642744,
+  "bina_iceren_kare": 309,
+  "kare": 400,
+  "sinif_bazli": {
+   "traversable": {
+    "px": 7988278,
+    "pay_toplam": 0.07618215560913086,
+    "pay_etiketli": 0.15453970708122416
+   },
+   "blocked": {
+    "px": 1875387,
+    "pay_toplam": 0.01788508415222168,
+    "pay_etiketli": 0.0362808802653007
+   },
+   "water": {
+    "px": 8299889,
+    "pay_toplam": 0.07915390968322754,
+    "pay_etiketli": 0.1605680742290985
+   },
+   "building_no_damage": {
+    "px": 3445809,
+    "pay_toplam": 0.032861795425415036,
+    "pay_etiketli": 0.06666196563487725
+   },
+   "building_minor": {
+    "px": 2904587,
+    "pay_toplam": 0.027700300216674804,
+    "pay_etiketli": 0.05619158774543545
+   },
+   "building_major": {
+    "px": 1840197,
+    "pay_toplam": 0.01754948616027832,
+    "pay_etiketli": 0.035600101217277046
+   },
+   "building_total_destruction": {
+    "px": 1630698,
+    "pay_toplam": 0.01555154800415039,
+    "pay_etiketli": 0.03154717340307111
+   },
+   "vehicle": {
+    "px": 397601,
+    "pay_toplam": 0.0037918186187744143,
+    "pay_etiketli": 0.007691913335414942
+   },
+   "tree": {
+    "px": 23521946,
+    "pay_toplam": 0.22432275772094726,
+    "pay_etiketli": 0.45505109421834994
+   },
+   "pool": {
+    "px": 69597,
+    "pay_toplam": 0.0006637287139892578,
+    "pay_etiketli": 0.0013464103269480554
+   }
+  },
+  "not": "paylar sinif-union maskeleriyle; siniflar arasi ortusme olabilir, paylar toplami etiketli alani asabilir. blocked_denetimi = 2-sinif eslemede 1'e giden (0 disi) union."
+ },
+ "karisim_geneli_kaba_pay": {
+  "deger": 0.04973590304509901,
+  "not": "KABA ALT SINIR: diger iki uyede bina etiketi yok sayildi; kare boyutlari esit agirlikli varsayildi (mozaik/odaklanma etkisi yok sayildi)."
+ },
+ "in_domain_recall_v34": {
+  "durum": "OLCULDU",
+  "kosum": "v34 models/navitas_seg_v34_best.pt · imgsz 512 · conf 0.30 · rescuenet_11sinif val, bina iceren 100 kare (seed 117)",
+  "bina_toplam_recall": 0.9520234018781706,
+  "bina_gt_px": 3202478,
+  "sinif_bazli": {
+   "traversable": {
+    "gt_px": 2619659,
+    "blocked_olarak_yakalanan_px": 230294,
+    "recall": 0.08790991499275287
+   },
+   "blocked": {
+    "gt_px": 316004,
+    "blocked_olarak_yakalanan_px": 193337,
+    "recall": 0.6118182048328502
+   },
+   "water": {
+    "gt_px": 1150022,
+    "blocked_olarak_yakalanan_px": 1101912,
+    "recall": 0.9581660176935746
+   },
+   "building_no_damage": {
+    "gt_px": 1086046,
+    "blocked_olarak_yakalanan_px": 1053980,
+    "recall": 0.9704745471186303
+   },
+   "building_minor": {
+    "gt_px": 844073,
+    "blocked_olarak_yakalanan_px": 817217,
+    "recall": 0.9681828467442982
+   },
+   "building_major": {
+    "gt_px": 741213,
+    "blocked_olarak_yakalanan_px": 701864,
+    "recall": 0.9469126958107859
+   },
+   "building_total_destruction": {
+    "gt_px": 531146,
+    "blocked_olarak_yakalanan_px": 475773,
+    "recall": 0.8957480617382038
+   },
+   "vehicle": {
+    "gt_px": 141433,
+    "blocked_olarak_yakalanan_px": 127794,
+    "recall": 0.9035656459242185
+   },
+   "tree": {
+    "gt_px": 4408483,
+    "blocked_olarak_yakalanan_px": 4049465,
+    "recall": 0.9185620087454119
+   },
+   "pool": {
+    "gt_px": 22673,
+    "blocked_olarak_yakalanan_px": 19599,
+    "recall": 0.8644202355224275
+   }
+  },
+  "not": "recall = GT sinif pikselinin v34 'blocked'(1) tahmini ile kesisim orani; 512x512 rasterde"
+ }
+}

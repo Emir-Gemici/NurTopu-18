@@ -1,0 +1,147 @@
+{
+ "kosum": {
+  "tarih": "2026-08-20",
+  "gorev": "FILO4 T117 H5 cozunurluk/imgsz",
+  "komut": "f4_imgsz_olcum.py (scratchpad) · v34 · conf=0.30 · dogrudan predict imgsz=512/1024/1600 + uretim zinciri kopyasi (kare tuval 1024->512, imgsz=512)",
+  "model": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+  "siniflar": {
+   "0": "traversable",
+   "1": "blocked"
+  },
+  "cati_bbox_kaynagi": "ELLE tanimlandi (goruntuye bakilarak; t116a_cati_gorsel.png yardimci)",
+  "notlar": [
+   "uretim zinciri kopyasinda normalize_light atlandi cunku her iki karede LAB L ortalamasi >= 80 (kimlik, asagida olculdu)",
+   "_ince_bariyeri_ekle atlandi (yalniz ince bariyeri ENGEL katmanina ekler; cati olcumunu etkilemez)",
+   "dogrudan predict maskeleri: ultralytics letterbox dolgusu merkezli kirpilip orijinale olceklendi"
+  ]
+ },
+ "ozet_verdikt": {
+  "soru": "Cati bolgesinde blocked/zemin kaplamasi cozunurlukle degisiyor mu?",
+  "cati_blocked": "DEGISMIYOR: 8 olcumun 8'inde cati_blocked_orani = 0.0 (512 uretim, 512/1024/1600 dogrudan, 2 kare). v34 catiyi HICBIR cozunurlukte engel olarak isaretlemiyor.",
+  "cati_zemin": "512 ve 1024'te cati TAMAMEN zemin (1.0 / 0.999). 1600'de cati zeminden cikiyor (0.0) AMA engel de olmuyor (bos=1.0); ayni kosumda TUM icerik zemini cokuyor (kare1 0.78->0.13, kare2 0.81->0.31) ve gorselde zemin maskeleri bbox sinirinda dik kenarlarla kirpik — 1600'deki kayip cati-ozel bir duzeltme degil, egitim olcegi (512) disina cikan GENEL cokme.",
+  "uretim_vs_dogrudan_512": "Fark IHMAL EDILEBILIR: icerik trav 0.7815 vs 0.7776 (kare1), 0.8145 vs 0.8126 (kare2); cati her ikisinde 1.0. Uretim kare-tuval zincirinin etkin icerik cozunurlugu (512x288) ultralytics dogrudan letterbox ile ayni.",
+  "h5_yorum": "H5 (cozunurluk artsa cati engel gorulurdu) DESTEKLENMEDI: cati_blocked her imgsz'de 0.0. Cozunurlugun etkisi var ama yonu 'cati engel olur' degil 'model tamamen cokuyor'."
+ },
+ "kareler": {
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg": {
+   "boyut": [
+    1024,
+    576
+   ],
+   "lab_l_ortalama": 134.2,
+   "normalize_light_kimlik": true,
+   "cati_bbox_xyxy": [
+    165,
+    255,
+    465,
+    485
+   ],
+   "olcumler": {
+    "uretim_zinciri_512": {
+     "icerik_trav_orani": 0.7815,
+     "icerik_blocked_orani": 0.2506,
+     "cati_trav_orani": 1.0,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 0.0,
+     "tespit_sayisi": {
+      "0": 1,
+      "1": 70
+     }
+    },
+    "dogrudan_512": {
+     "icerik_trav_orani": 0.7776,
+     "icerik_blocked_orani": 0.2499,
+     "cati_trav_orani": 1.0,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 0.0,
+     "tespit_sayisi": {
+      "0": 1,
+      "1": 70
+     }
+    },
+    "dogrudan_1024": {
+     "icerik_trav_orani": 0.7933,
+     "icerik_blocked_orani": 0.1856,
+     "cati_trav_orani": 0.9993,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 0.0007,
+     "tespit_sayisi": {
+      "0": 2,
+      "1": 69
+     }
+    },
+    "dogrudan_1600": {
+     "icerik_trav_orani": 0.1315,
+     "icerik_blocked_orani": 0.153,
+     "cati_trav_orani": 0.0,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 1.0,
+     "tespit_sayisi": {
+      "0": 1,
+      "1": 63
+     }
+    }
+   }
+  },
+  "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg": {
+   "boyut": [
+    1024,
+    576
+   ],
+   "lab_l_ortalama": 136.9,
+   "normalize_light_kimlik": true,
+   "cati_bbox_xyxy": [
+    495,
+    120,
+    650,
+    250
+   ],
+   "olcumler": {
+    "uretim_zinciri_512": {
+     "icerik_trav_orani": 0.8145,
+     "icerik_blocked_orani": 0.2127,
+     "cati_trav_orani": 1.0,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 0.0,
+     "tespit_sayisi": {
+      "0": 1,
+      "1": 116
+     }
+    },
+    "dogrudan_512": {
+     "icerik_trav_orani": 0.8126,
+     "icerik_blocked_orani": 0.2135,
+     "cati_trav_orani": 1.0,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 0.0,
+     "tespit_sayisi": {
+      "0": 1,
+      "1": 114
+     }
+    },
+    "dogrudan_1024": {
+     "icerik_trav_orani": 0.8056,
+     "icerik_blocked_orani": 0.1813,
+     "cati_trav_orani": 0.9998,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 0.0002,
+     "tespit_sayisi": {
+      "0": 2,
+      "1": 120
+     }
+    },
+    "dogrudan_1600": {
+     "icerik_trav_orani": 0.3069,
+     "icerik_blocked_orani": 0.16,
+     "cati_trav_orani": 0.0,
+     "cati_blocked_orani": 0.0,
+     "cati_bos_orani": 1.0,
+     "tespit_sayisi": {
+      "0": 2,
+      "1": 123
+     }
+    }
+   }
+  }
+ }
+}

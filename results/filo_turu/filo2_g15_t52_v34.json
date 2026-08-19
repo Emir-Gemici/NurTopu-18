@@ -1,0 +1,33 @@
+{
+  "gorev": "FILO2 g15 · T52 kanit yeniden uretimi",
+  "model": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+  "conf": 0.3,
+  "imgsz": 512,
+  "payda": "ICERIK kutusu (zemin_kaplamasi)",
+  "tavan_bugun": 0.67,
+  "otopark(raw_frames, TAM kume)": {
+    "n": 67,
+    "min": 0.7662556966145834,
+    "p50": 0.8001912434895834,
+    "maks": 0.8739827473958334,
+    "tavan_ustu(>0.67)": 67,
+    "tavan_ustu(>0.55_eski)": 67,
+    "maks_kare": "frame_000024_000001104.jpg",
+    "min_kare": "frame_000006_000001416.jpg"
+  },
+  "kadraj_t66(TAM kume)": {
+    "n": 260,
+    "min": 0.19121337890625,
+    "p50": 0.331527099609375,
+    "maks": 0.63796630859375,
+    "tavan_ustu(>0.67)": 0,
+    "tavan_ustu(>0.55_eski)": 8,
+    "maks_kare": "sa_000233.jpg",
+    "min_kare": "sa_000038.jpg"
+  },
+  "cakisma_v34": {
+    "mesru_maks": 0.63796630859375,
+    "cokus_min": 0.7662556966145834,
+    "cakisik_mi": false
+  }
+}

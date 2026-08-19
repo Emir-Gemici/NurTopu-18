@@ -16856,3 +16856,37 @@ Bulgu "verdikt disi tani" diye isaretlenmisti; yani amele onu **abartmadi**.
 Abartilmayan bulgunun mimar tarafindan buyutulmesi dogru islemedir; tersi
 (amele buyutup mimar kucultmesi) olsaydi kanit yuku amelede olurdu.
 Tamlik elestirmeninin koydugu sinirlar da kayda gecti ve gorevlere donustu.
+
+### D-208 · DORT FILO TURU (198 ajan, 0 hata) · KONTROL NOKTASI OZETI — ham kanitlar repoda, tam kayitlar SONRAKI oturumda
+Yazan: Claude 2 / Fable 5 (basamele) · 2026-08-20 · kota kontrol noktasi
+Ham cikti: results/filo_turu/ham_filo124.json · ham_filo3_ana.json · ham_filo3_ek.json
+On kayit: results/filo_turu/on_kayit.md (olcumlerden ONCE yazildi, D-107)
+
+[SONUC-DEGISTIREN] ilk bulgular (dogrulanmis, curutuculerden sag cikmis):
+ 1. T118 IDDIA DOGRU (0/3 curutucu): 67 otopark karesinin 67'sinde (%100)
+    uretim zinciri zemin_maskesi_reddi TETIKLIYOR — uretim olcusu (ICERIK
+    paydasi) medyan 0,800 > ZEMIN_KAPLAMA_TAVANI(0,67); denetcinin ~0,45'i
+    AYNI maskenin tuval-paydali hali (oran 0,5625). results/filo_turu/f1_iddia.json
+ 2. T118 SENTEZ (0/3): ~171 aday satirda KOD-ICI payda uyusmazligi 0 — ama
+    6 dosya LETTERBOX/HAM paydali degeri "kaplama" ADIYLA raporluyor
+    (48:149/163/183 · 65:126-134 · 54:143 · 93:97 · 67:113 ·
+    saha_kuru_kosu:543-549) -> asagi-akis kiyas riski. 70:106-109 yorumu
+    %45,3-tuval ≡ %78-ICERIK esitligini YAZILI belgeliyor.
+ 3. FILO3: KORUMASIZ TEST DOSYASI x2 — tests/test_rota_serit_etiketi.py
+    (0/21: yayinlanan `yol`u ayirt edici sahnede HIC assert etmiyor;
+    baskin_serit mutasyonu 21 testten geciyor — T96'nin dogruladigi
+    sozlesmenin kapisi ACIK) ve tests/test_costmap_on_images.py (TestCase
+    icermiyor, discover 0 test topluyor — D-170 sinifi).
+ 4. FILO3 katmanli-savunma bosluklari: rpi_inference._kenarlar_guvenli'nin
+    _gorus_hatti dali TEK BASINA hicbir testle kilitli degil (0/11);
+    ika_receiver.py:122 yedek denetimi tek basina olculemiyor (0/12).
+ 5. FILO3 geneli: 84 gercek test dosyasi supuruldu (58+26), 2 KORUMASIZ
+    disinda hepsi KORUMALI; mutasyonlar worktree'lerde, ana agac temiz.
+
+HENUZ ISLENMEYENLER (ham dosyada duruyor, sonraki oturum isi):
+ - Filo2: 23 gorevin dogrulama sonuclari + kapanma adaylari (8 curutucu
+   guvenlik-siniflandiricisiz kostu — dikkatle okunacak)
+ - Filo4: 6 hipotezin sonuclari (T117) + tamlik elestirmenleri
+ - Kuyruk durum satirlari + gorev onerileri (2 korumasiz dosya için)
+⚠ Bu kontrol noktasinda KAPILAR YENIDEN KOSULMADI (kota); tur kod
+DEGISTIRMEDI (git status: codes/ + config/ TEMIZ dogrulandi).

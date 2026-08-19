@@ -1,0 +1,35 @@
+{
+  "gorev": "FILO4 T117 H4 ETIKET KALITESI",
+  "tarih": "2026-08-20",
+  "kosum": {
+    "betik": "C:/Users/yunus/AppData/Local/Temp/claude/O--navitas/3e104177-9b44-4ec7-a18f-1f32ed2c3f72/scratchpad/f4_etiket_overlay.py",
+    "veri": "O:/navitas/dataset/rescuenet_11sinif (labels/val poligon etiketleri, data.yaml 10 sinif)",
+    "ornekleme": "random.seed(117), bina iceren 317 val karesinden 12",
+    "inceleme": "12 yan-yana panel (orijinal|bindirme) Claude tarafindan gozle tek tek okundu"
+  },
+  "bina_iceren_val_kare_sayisi": 317,
+  "toplam_val_kare": 440,
+  "ornek_kareler": ["11680","12045","12077","12221","12469","12652","13497","14213","14292","15346","15501","15580"],
+  "kare_bazli_degerlendirme": {
+    "11680": {"onemli_hata": false, "not": "yikik molozlar (6) ve saglam cati (4) dogru; cati poligonu alt (golgeli) cati dilimini biraz eksik kapsiyor - sinir kusuru"},
+    "12045": {"onemli_hata": false, "not": "3 saglam + 1 hafif hasarli cati dogru sinifta; ust binanin poligonu cevre agac/molozu gevsekce iceriyor - sinir kusuru"},
+    "12077": {"onemli_hata": false, "not": "agir hasarli cati (5) ve saglam catilar dogru; sol-alt moloz yigini etiketsiz (RescueNet'te moloz arka plandir, cati hatasi degil)"},
+    "12221": {"onemli_hata": false, "not": "4 saglam/hafif cati + 3 yikik dogru; ortadaki genis moloz seridi etiketsiz (tasarim geregi arka plan)"},
+    "12469": {"onemli_hata": false, "not": "7 bina dogru sinif ve sinirla; orta-alttaki kucuk beyaz baraka/karavan etiketsiz - kucuk yapi atlamasi, cati hatasi sayilmadi"},
+    "12652": {"onemli_hata": true, "not": "ust-ortadaki belirgin SAGLAM koyu kiremit cati TAMAMEN ETIKETSIZ; yikik dilimler (6) dogru - tek net onemli atlama"},
+    "13497": {"onemli_hata": false, "not": "saglam (3), hafif (4x2) ve agir (5x2) catilar dogru sinif ve sinirla"},
+    "14213": {"onemli_hata": false, "not": "su (2) dogru; kose kesigindeki bina_hasarsiz poligonu bitki ortusune tasiyor, kare kenarinda kesildigi icin kesin hukum verilemedi; beyaz panel 'arac' etiketi supheli ama cati degil"},
+    "14292": {"onemli_hata": false, "not": "saglam cati (3) dogru ve siki sinirli; sel suyu (2) dogru"},
+    "15346": {"onemli_hata": false, "not": "3 saglam cati dogru; tekne 'arac' etiketli (tekne sinifi yok, makul yedek)"},
+    "15501": {"onemli_hata": false, "not": "catisi sokulmus bina (5) ve saglam cati (3) dogru sinif ve sinirla"},
+    "15580": {"onemli_hata": false, "not": "kaplama sokulmus cati bina_hafif (4); 5 de savunulabilirdi - sinif derecesi tartismali ama bina olarak dogru"}
+  },
+  "sonuc": {
+    "onemli_hatali_kare": 1,
+    "incelenen_kare": 12,
+    "onemli_hata_orani": 0.083,
+    "sinir_veya_derece_kusurlu_kare": 4,
+    "yorum": "Catilar (saglam dahil) RescueNet'te tutarli bicimde bina siniflarina (3-6) etiketli; tek onemli hata bir saglam catinin atlanmasi (12652). Etiket kalitesi v34'un 'RescueNet catisini engel gorup gercek otoparkta gormemesini' aciklayacak duzeyde bozuk DEGIL - H4 yon olarak DESTEKLENMEDI."
+  },
+  "kanit": "O:/navitas/results/filo_turu/f4_etiket.png (12 panelin kontakt tabakasi; tek tek paneller scratchpad/f4_panels/)"
+}

@@ -1,0 +1,40 @@
+{
+ "gorev": "T61 dogrulama (FILO2, indeks 14)",
+ "model": {
+  "id": "navitas-seg-v34-512",
+  "yol": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+  "imgsz": 512,
+  "conf": 0.3
+ },
+ "kare": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t60\\images\\train\\sa_000150.jpg",
+ "kare_boyu": [
+  640,
+  640
+ ],
+ "icerik": [
+  0,
+  0,
+  640,
+  640
+ ],
+ "v34_kaplama": 0.2914,
+ "v34_kenar_dayanma": 0.0751,
+ "gt_kaplama_engelsiz": 0.4172,
+ "gt_kaplama_saf_sinif0": 0.4188,
+ "gt_kenar_dayanma": 0.2089,
+ "iou_engelsiz_gt": 0.6723,
+ "iou_saf_gt": 0.6699,
+ "tavanlar": {
+  "kaplama": 0.67,
+  "kenar": 0.5
+ },
+ "zemin_maskesi_reddi": null,
+ "kapidan_geciyor_mu": true,
+ "eski_kanit_v24": {
+  "kaplama": 0.617,
+  "gt_kaplama": 0.38,
+  "iou": 0.613,
+  "kenar": 0.658,
+  "gt_kenar": 0.19
+ }
+}

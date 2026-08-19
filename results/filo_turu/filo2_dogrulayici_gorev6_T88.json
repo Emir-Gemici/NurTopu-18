@@ -1,0 +1,37 @@
+{
+  "rol": "FILO2 DOGRULAYICI",
+  "gorev_indeksi": 6,
+  "gorev": "T88 - Arena siniri dedektoru: olcek kahininin 2. katmanini BESLE",
+  "tarih": "2026-08-20",
+  "model": "navitas_seg_v34_best.pt (kayit defterinden, 72_kaynak_taramasi varsayilani)",
+  "sonuc": "HALA GECERLI",
+  "kanit_cumleleri_ve_yeniden_uretim": {
+    "1_dedektor_ayirma": {
+      "iddia": "yaklasim 4 (cok uzun cizgi, iki dik aile) arena 11/11/11, negatifler 0, esik 8",
+      "komut": "scratchpad/filo2_t88_dogrula.py (venv python)",
+      "bugun": {
+        "arena_gercek sartname_s9_arena.png (1059x634)": {"dikey": 11, "yatay": 27, "min_dy": 11, "izgara_var": true},
+        "drone_orneklem_n6": "min_dy hepsi 0",
+        "kompozit_orneklem_n6": "min_dy hepsi 0",
+        "esik": 8
+      },
+      "not": "negatif orneklem 6+6 kare (tam kume degil); pozitif kare zaten tek"
+    },
+    "2_yerellestirme_hatasi": {
+      "iddia": "olculen izgara acikligi 535 px, gercek uzanim ~840 px -> mpp %57 buyuk, EMNIYETSIZ",
+      "bugun": "arena_izgara_acikligi_px(sartname_s9_arena.png) = 535.0 px — AYNEN",
+      "kilit_test": "test_olculen_aciklik_gercek_sinirdan_KUCUK ... ok"
+    },
+    "3_uretim_baglantisizligi": {
+      "iddia": "dedektor uretim olcek yoluna BAGLANMADI; cagri yerleri arena_sinir_px gecirmiyor",
+      "bugun": "grep: yalniz codes/rpi_inference.py:380,398 parametreyi None varsayilanla GECIRIR; yks_gui.py ve simulation/* hic gecirmez. test_dedektor_URETIM_OLCEK_YOLUNA_BAGLI_DEGIL ... ok"
+    },
+    "4_kapilar": {
+      "a_test_rota_sentetik": "SONUC: 15/15 dogru (bugun kosuldu)",
+      "b_tum_tests": "OLCULEMEDI (553'luk tam kosum bu turda kosulmadi; yalniz hedef dosya kosuldu)",
+      "c_72_kaynak_taramasi": "bugun kosuldu (--azami 1 --araciz, v34): arena_gercek n=1 -> 1 OLCEK_YOK, olcek kaynagi YOK 1 — kapinin TUTMADI durumu AYNEN suruyor",
+      "d_arena_sinir_dedektoru_testleri": "Ran 9 tests ... OK (9/9)"
+    }
+  },
+  "yorum": "Gorevin acik kalma gerekcesi (dedektor siniri yerellestiremiyor, katman 2 beslenmiyor, arena_gercek OLCEK_YOK) v34 ile bire bir yeniden uretildi. Sayilar kaymadi: 11 parca, 535 px, esik 8, 1 OLCEK_YOK."
+}

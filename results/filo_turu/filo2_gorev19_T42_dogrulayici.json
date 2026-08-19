@@ -1,0 +1,25 @@
+{
+  "filo": "FILO2",
+  "rol": "DOGRULAYICI",
+  "gorev_indeksi": 19,
+  "gorev": "T42 - kamera_dogrula.py icerik sozlesmesine baglanamadi: talimat kilidi",
+  "kanit_cumlesi": "jetson_paket/kod/kamera_dogrula.py:118 | letterbox=VAR | baglandi=HAYIR (T41 AST cagri-yeri tablosu, 2026-08-11)",
+  "yeniden_uretim": {
+    "tarih": "2026-08-20",
+    "komut": "O:/navitas-local-train/venv/Scripts/python.exe <scratchpad>/t42_dogrula.py",
+    "yontem": "AST ile rota_bul cagrilarinin keyword listesi + _preprocess kullanimi; bagli referans jetson_fps.py ile karsilastirma; kanonik ikiz ve uretec KOPYALAR kontrolu",
+    "cikti": [
+      "jetson_paket/kod/kamera_dogrula.py:118 | letterbox=VAR | baglandi=HAYIR | keywords=[mpp, plan, gorsel_cikti]",
+      "jetson_paket/kod/jetson_fps.py:226 | letterbox=VAR | baglandi=EVET | keywords=[mpp, plan, gorsel_cikti, icerik]",
+      "scripts/kamera_dogrula.py var mi: HAYIR",
+      "uretec KOPYALAR icinde kamera_dogrula: HAYIR"
+    ]
+  },
+  "ek_kanit": {
+    "gorev_durumu": "TASK_QUEUE.md:7800 hala acik [ ]",
+    "dosya_gecmisi": "git log: tek commit e05ee88 (2026-08-07), o gunden beri degismemis",
+    "belgelenmis_semptom": "jetson_paket/JETSON_KILAVUZ.md:158-173 (G2) KAPALI_DAR kusurunu bilinen depo kusuru olarak isaretliyor ama T42'nin istedigi iki cozumden (kanonik kaynak+uretec 9->10 YA DA acik sozlesme-disi ilani + dogrudan baglama) hicbiri yapilmamis"
+  },
+  "sonuc": "HALA GECERLI",
+  "etiket": "BILGILENDIRICI"
+}

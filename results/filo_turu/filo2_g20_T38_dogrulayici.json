@@ -1,0 +1,30 @@
+{
+  "filo": 2,
+  "rol": "DOGRULAYICI",
+  "gorev_indeksi": 20,
+  "gorev": "T38 — saha kuru kosusunun rota halkasi OTOPARK karesiyle sinaniyor: mesru sekilde gecemez",
+  "kanit_cumlesi_eski": "saha_kuru_kosu.py:250 halka girdisini data/raw_frames/** icinden seciyor; rota_bul '{n} kapi tespit edildi (3 beklenir)' diyerek cekimser kaliyor (costmap_path_finder.py:780-782)",
+  "yeniden_uretim": {
+    "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe <scratchpad>\\t38_dogrula.py",
+    "betik_ozu": "load_model(kayit_zorunlu=False) -> _preprocess -> predict(INFER_SIZE=512, conf=0.25) -> get_masks -> rota_bul(maskeler, mpp=0.01, icerik) — saha_kuru_kosu.halka_cikarim_ve_maske zinciri birebir",
+    "model": "navitas-seg-v34-512 (models/navitas_seg_v34_best.pt, kayit defteri default_profile=competition)",
+    "orneklem": "67 raw_frames karesinden 5 (ilk kare + esit araliklarla 4): frame_000000_000000000, frame_000001_000000336, frame_000018_000002160, frame_000016_000000720, frame_000001_000000456",
+    "tarih": "2026-08-20"
+  },
+  "olculen": {
+    "raw_frames_toplam": 67,
+    "orneklem_n": 5,
+    "ACIK": 0,
+    "ACIK_disi": 5,
+    "durum_dagilimi": {"KAPI_YOK": 5},
+    "sebep": "Serbest alanda gecerli kapi bulunamadi. (5/5)"
+  },
+  "kod_bugun": {
+    "raw_frames_secimi": "saha_kuru_kosu.py:385 (varsayilan) ve :986 (--kare argumani); eski :250 artik motor surucusu taramasi",
+    "cekimserlik_mesaji": "'{n} kapi tespit edildi (3 beklenir)' hala kodda ama costmap_path_finder.py:1010'da; bu karelerde TETIKLENMIYOR (adaylar bos -> KAPI_YOK, :986-989)",
+    "dustu_raporlamasi": "saha_kuru_kosu.py:737 rota halkasi ACIK-disi durumda HALA DUSTU yaziyor; gorevin istedigi SAHIPSIZ/kompozit-girdi degisikligi UYGULANMAMIS"
+  },
+  "SONUC": "SAYI KAYMIS",
+  "sonuc_aciklama": "Gorevin ozu HALA GECERLI: otopark raw_frames girdisiyle rota halkasi mesru gecemez (v34 ile 5/5 orneklem ACIK-disi) ve DUSTU raporlamasi hala yerinde. Ancak kanit cumlesinin AYRINTILARI kaymis: (1) satir referanslari 250->385/986 ve 780-782->1010; (2) cekimserlik artik BELIRSIZ_COKLU '{n} kapi tespit edildi (3 beklenir)' degil, KAPI_YOK 'Serbest alanda gecerli kapi bulunamadi' (v34 bu karelerde hic gecerli kapi adayi uretmiyor, eski model birden fazla uretiyordu).",
+  "etiket": "BILGILENDIRICI"
+}

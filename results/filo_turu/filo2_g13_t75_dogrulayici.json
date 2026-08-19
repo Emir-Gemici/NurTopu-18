@@ -1,0 +1,254 @@
+{
+ "gorev": "T75",
+ "modul": "O:\\navitas-local-train\\51_sentetik_arena.py",
+ "N": 30,
+ "seed": 7,
+ "koridora_binen_kare": 30,
+ "koridora_binen_oran": 1.0,
+ "trav_kaplanan_medyan": 0.565,
+ "trav_kaplanan_min": 0.2461,
+ "trav_kaplanan_max": 0.9205,
+ "kutu_alan_orani_sabit": 0.36,
+ "kareler": [
+  {
+   "kare": 0,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 248797,
+   "kesisim_px": 108967,
+   "trav_kaplanan_oran": 0.438,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 1,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 63336,
+   "kesisim_px": 33617,
+   "trav_kaplanan_oran": 0.5308,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 2,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 57019,
+   "kesisim_px": 45997,
+   "trav_kaplanan_oran": 0.8067,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 3,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 73746,
+   "kesisim_px": 67885,
+   "trav_kaplanan_oran": 0.9205,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 4,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 127138,
+   "kesisim_px": 86279,
+   "trav_kaplanan_oran": 0.6786,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 5,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 171546,
+   "kesisim_px": 42215,
+   "trav_kaplanan_oran": 0.2461,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 6,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 96150,
+   "kesisim_px": 84894,
+   "trav_kaplanan_oran": 0.8829,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 7,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 189553,
+   "kesisim_px": 139523,
+   "trav_kaplanan_oran": 0.7361,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 8,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 200641,
+   "kesisim_px": 112773,
+   "trav_kaplanan_oran": 0.5621,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 9,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 95938,
+   "kesisim_px": 39262,
+   "trav_kaplanan_oran": 0.4092,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 10,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 98981,
+   "kesisim_px": 84489,
+   "trav_kaplanan_oran": 0.8536,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 11,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 100542,
+   "kesisim_px": 59982,
+   "trav_kaplanan_oran": 0.5966,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 12,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 149971,
+   "kesisim_px": 83800,
+   "trav_kaplanan_oran": 0.5588,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 13,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 116851,
+   "kesisim_px": 66358,
+   "trav_kaplanan_oran": 0.5679,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 14,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 64550,
+   "kesisim_px": 39065,
+   "trav_kaplanan_oran": 0.6052,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 15,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 141195,
+   "kesisim_px": 54475,
+   "trav_kaplanan_oran": 0.3858,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 16,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 85935,
+   "kesisim_px": 73039,
+   "trav_kaplanan_oran": 0.8499,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 17,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 221673,
+   "kesisim_px": 105395,
+   "trav_kaplanan_oran": 0.4755,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 18,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 70539,
+   "kesisim_px": 61066,
+   "trav_kaplanan_oran": 0.8657,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 19,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 108284,
+   "kesisim_px": 87160,
+   "trav_kaplanan_oran": 0.8049,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 20,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 153860,
+   "kesisim_px": 91433,
+   "trav_kaplanan_oran": 0.5943,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 21,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 139127,
+   "kesisim_px": 73112,
+   "trav_kaplanan_oran": 0.5255,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 22,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 124397,
+   "kesisim_px": 94413,
+   "trav_kaplanan_oran": 0.759,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 23,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 92741,
+   "kesisim_px": 85313,
+   "trav_kaplanan_oran": 0.9199,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 24,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 91301,
+   "kesisim_px": 49937,
+   "trav_kaplanan_oran": 0.5469,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 25,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 214849,
+   "kesisim_px": 82328,
+   "trav_kaplanan_oran": 0.3832,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 26,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 153482,
+   "kesisim_px": 69621,
+   "trav_kaplanan_oran": 0.4536,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 27,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 194825,
+   "kesisim_px": 58537,
+   "trav_kaplanan_oran": 0.3005,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 28,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 81172,
+   "kesisim_px": 30188,
+   "trav_kaplanan_oran": 0.3719,
+   "koridora_biniyor": true
+  },
+  {
+   "kare": 29,
+   "kutu_alan_orani": 0.36,
+   "trav_px": 251719,
+   "kesisim_px": 86496,
+   "trav_kaplanan_oran": 0.3436,
+   "koridora_biniyor": true
+  }
+ ]
+}

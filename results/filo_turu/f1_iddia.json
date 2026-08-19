@@ -1,0 +1,636 @@
+{
+ "kosum": {
+  "tarih": "2026-08-20",
+  "betik": "scratchpad/f1_iddia_olcum.py (FILO1 iddia kosumu)",
+  "on_kayit": "results/filo_turu/on_kayit.md · FILO 1 kurali",
+  "kume": "O:\\navitas\\data\\raw_frames",
+  "kare_sayisi": 67,
+  "model": "O:\\navitas\\jetson_paket\\models\\navitas_seg_v34_best.pt",
+  "model_id": null,
+  "profil": "competition",
+  "conf": 0.3,
+  "imgsz": 512,
+  "zincir": "_preprocess -> predict -> get_masks -> _maskeleri_icerige_kirp -> zemin_maskesi_reddi(trav, icerik)",
+  "esikler": {
+   "ZEMIN_KAPLAMA_TAVANI": 0.67,
+   "ZEMIN_KENAR_DAYANMA_TAVANI": 0.5
+  }
+ },
+ "ozet": {
+  "red_sayisi": 67,
+  "red_yuzdesi": 100.0,
+  "red_sebebi_ZEMIN_MASKESI_SUPHELI": 67,
+  "kaplama_ZEMIN_KAPLAMA_TAVANI_ustunde": 67,
+  "kenar_ZEMIN_KENAR_DAYANMA_TAVANI_ustunde": 67,
+  "kaplama_min": 0.766256,
+  "kaplama_medyan": 0.800191,
+  "kaplama_maks": 0.873983,
+  "on_kayit_hukmu": "IDDIA DOGRU (>= %80 red)",
+  "_not": "zemin_maskesi_reddi IKI sinyal ister: kaplama > ZEMIN_KAPLAMA_TAVANI VE kenar > ZEMIN_KENAR_DAYANMA_TAVANI. Tek sebep koduyla doner (ZEMIN_MASKESI_SUPHELI); kaplama tavani tek basina red uretmez."
+ },
+ "kare_bazli": {
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg": {
+   "zemin_kaplamasi": 0.781528,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.628598,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.2'ini kapliyor (tavan %67.0) VE cevrenin %62.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000001_000000600.jpg": {
+   "zemin_kaplamasi": 0.778151,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.728098,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %72.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000002_000000672.jpg": {
+   "zemin_kaplamasi": 0.780938,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.640801,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %64.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000003_000000720.jpg": {
+   "zemin_kaplamasi": 0.785007,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.654568,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg": {
+   "zemin_kaplamasi": 0.786099,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.819775,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %82.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg": {
+   "zemin_kaplamasi": 0.775526,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.687109,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.6'ini kapliyor (tavan %67.0) VE cevrenin %68.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000006_000000864.jpg": {
+   "zemin_kaplamasi": 0.771844,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.682416,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.2'ini kapliyor (tavan %67.0) VE cevrenin %68.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg": {
+   "zemin_kaplamasi": 0.77769,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.679912,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %68.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg": {
+   "zemin_kaplamasi": 0.783847,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.791302,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %79.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg": {
+   "zemin_kaplamasi": 0.790731,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.724343,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %72.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg": {
+   "zemin_kaplamasi": 0.783535,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.731539,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %73.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg": {
+   "zemin_kaplamasi": 0.779412,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.698999,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.9'ini kapliyor (tavan %67.0) VE cevrenin %69.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg": {
+   "zemin_kaplamasi": 0.783447,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.71214,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.3'ini kapliyor (tavan %67.0) VE cevrenin %71.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg": {
+   "zemin_kaplamasi": 0.791334,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.830726,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg": {
+   "zemin_kaplamasi": 0.809116,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.836671,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %83.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000.jpg": {
+   "zemin_kaplamasi": 0.818488,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.833229,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %83.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg": {
+   "zemin_kaplamasi": 0.809774,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.874844,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %81.0'ini kapliyor (tavan %67.0) VE cevrenin %87.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg": {
+   "zemin_kaplamasi": 0.798692,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.683041,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %68.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg": {
+   "zemin_kaplamasi": 0.800191,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.723404,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %80.0'ini kapliyor (tavan %67.0) VE cevrenin %72.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg": {
+   "zemin_kaplamasi": 0.786289,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.678661,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %67.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg": {
+   "zemin_kaplamasi": 0.786513,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.727472,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.7'ini kapliyor (tavan %67.0) VE cevrenin %72.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg": {
+   "zemin_kaplamasi": 0.766256,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.684919,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %76.6'ini kapliyor (tavan %67.0) VE cevrenin %68.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg": {
+   "zemin_kaplamasi": 0.775363,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.926471,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %92.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg": {
+   "zemin_kaplamasi": 0.778429,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.836045,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %83.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000009_000001776.jpg": {
+   "zemin_kaplamasi": 0.771328,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.670213,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %67.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000010_000001824.jpg": {
+   "zemin_kaplamasi": 0.771498,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.686483,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %68.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000011_000001848.jpg": {
+   "zemin_kaplamasi": 0.775282,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.655194,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000012_000001872.jpg": {
+   "zemin_kaplamasi": 0.780836,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.662078,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %66.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg": {
+   "zemin_kaplamasi": 0.788201,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.655194,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg": {
+   "zemin_kaplamasi": 0.788093,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.619212,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %61.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg": {
+   "zemin_kaplamasi": 0.794501,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.632979,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.5'ini kapliyor (tavan %67.0) VE cevrenin %63.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg": {
+   "zemin_kaplamasi": 0.80662,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.668648,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %80.7'ini kapliyor (tavan %67.0) VE cevrenin %66.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg": {
+   "zemin_kaplamasi": 0.809401,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.749061,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %74.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg": {
+   "zemin_kaplamasi": 0.816264,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.841051,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %81.6'ini kapliyor (tavan %67.0) VE cevrenin %84.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg": {
+   "zemin_kaplamasi": 0.780314,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.688986,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.0'ini kapliyor (tavan %67.0) VE cevrenin %68.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg": {
+   "zemin_kaplamasi": 0.781169,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.676471,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %67.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg": {
+   "zemin_kaplamasi": 0.781311,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.564143,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %56.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg": {
+   "zemin_kaplamasi": 0.797587,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.590738,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg": {
+   "zemin_kaplamasi": 0.796088,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.62766,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.6'ini kapliyor (tavan %67.0) VE cevrenin %62.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg": {
+   "zemin_kaplamasi": 0.798503,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.654568,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg": {
+   "zemin_kaplamasi": 0.800598,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.598248,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %80.1'ini kapliyor (tavan %67.0) VE cevrenin %59.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg": {
+   "zemin_kaplamasi": 0.813137,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.63204,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %81.3'ini kapliyor (tavan %67.0) VE cevrenin %63.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg": {
+   "zemin_kaplamasi": 0.818461,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.591364,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg": {
+   "zemin_kaplamasi": 0.829956,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.539424,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %83.0'ini kapliyor (tavan %67.0) VE cevrenin %53.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg": {
+   "zemin_kaplamasi": 0.837863,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.562265,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %56.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg": {
+   "zemin_kaplamasi": 0.845581,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.642678,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %84.6'ini kapliyor (tavan %67.0) VE cevrenin %64.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg": {
+   "zemin_kaplamasi": 0.841831,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.633917,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %84.2'ini kapliyor (tavan %67.0) VE cevrenin %63.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg": {
+   "zemin_kaplamasi": 0.859104,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.831039,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.9'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg": {
+   "zemin_kaplamasi": 0.85473,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.878598,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %87.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg": {
+   "zemin_kaplamasi": 0.846985,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.826033,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %84.7'ini kapliyor (tavan %67.0) VE cevrenin %82.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg": {
+   "zemin_kaplamasi": 0.844645,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.809449,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %84.5'ini kapliyor (tavan %67.0) VE cevrenin %80.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg": {
+   "zemin_kaplamasi": 0.854357,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.807572,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %80.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg": {
+   "zemin_kaplamasi": 0.853373,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.812891,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.3'ini kapliyor (tavan %67.0) VE cevrenin %81.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg": {
+   "zemin_kaplamasi": 0.854221,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.86796,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %86.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg": {
+   "zemin_kaplamasi": 0.854872,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.68836,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %68.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg": {
+   "zemin_kaplamasi": 0.855726,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.666145,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.6'ini kapliyor (tavan %67.0) VE cevrenin %66.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg": {
+   "zemin_kaplamasi": 0.861925,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.714643,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %86.2'ini kapliyor (tavan %67.0) VE cevrenin %71.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg": {
+   "zemin_kaplamasi": 0.869025,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.872028,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %86.9'ini kapliyor (tavan %67.0) VE cevrenin %87.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg": {
+   "zemin_kaplamasi": 0.873983,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.921777,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %87.4'ini kapliyor (tavan %67.0) VE cevrenin %92.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000025_000001152.jpg": {
+   "zemin_kaplamasi": 0.870829,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.951189,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %87.1'ini kapliyor (tavan %67.0) VE cevrenin %95.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000026_000001200.jpg": {
+   "zemin_kaplamasi": 0.866204,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.765645,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %86.6'ini kapliyor (tavan %67.0) VE cevrenin %76.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg": {
+   "zemin_kaplamasi": 0.860725,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.775344,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %86.1'ini kapliyor (tavan %67.0) VE cevrenin %77.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg": {
+   "zemin_kaplamasi": 0.853739,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.75,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %75.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg": {
+   "zemin_kaplamasi": 0.855442,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.791615,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %79.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg": {
+   "zemin_kaplamasi": 0.858276,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.801627,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %85.8'ini kapliyor (tavan %67.0) VE cevrenin %80.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg": {
+   "zemin_kaplamasi": 0.838067,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.786608,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %78.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  },
+  "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg": {
+   "zemin_kaplamasi": 0.814507,
+   "kaplama_tavan_ustunde": true,
+   "zemin_kenar_dayanmasi": 0.760638,
+   "kenar_tavan_ustunde": true,
+   "red": true,
+   "red_sebebi": "ZEMIN_MASKESI_SUPHELI",
+   "red_detay": "Zemin maskesi icerigin %81.5'ini kapliyor (tavan %67.0) VE cevrenin %76.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez."
+  }
+ }
+}

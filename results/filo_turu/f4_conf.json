@@ -1,0 +1,142 @@
+{
+ "gorev": "FILO4 T117 H6 guven esigi",
+ "model": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+ "model_sha256": "6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8",
+ "infer_size": 512,
+ "zincir": "_preprocess -> predict(imgsz=INFER_SIZE, conf=C) -> get_masks -> _maskeleri_icerige_kirp",
+ "conf_degerleri": [
+  0.3,
+  0.1,
+  0.05
+ ],
+ "payda_notu": "'kare' oranlar letterbox KARE paydasi (1024x1024, D-201 ile ayni); 'icerik' oranlar 1024x576 icerik paydasi; 'bbox' oranlar cati bbox paydasi",
+ "bbox_tanimi": "orijinal 1024x576 piksel koordinati [x0,y0,x1,y1], cati yuzeyi ICI; kare-tuval koordinati = (x, y+224)",
+ "kareler": [
+  {
+   "kare": "O:\\navitas\\data\\raw_frames\\whatsapp_video_2026_07_30_at_11_44_03\\frame_000000_000000000.jpg",
+   "kare_boyut": [
+    1024,
+    576
+   ],
+   "icerik_dikdortgeni_xywh": [
+    0,
+    224,
+    1024,
+    576
+   ],
+   "cati_bbox_orijinal_xyxy": [
+    185,
+    285,
+    445,
+    470
+   ],
+   "cati_bbox_tuval_xyxy": [
+    185,
+    509,
+    445,
+    694
+   ],
+   "olcumler": [
+    {
+     "conf": 0.3,
+     "kare_zemin": 43.961,
+     "kare_engel": 14.094,
+     "icerik_zemin": 78.153,
+     "icerik_engel": 25.056,
+     "bbox_piksel": 48100,
+     "bbox_zemin": 100.0,
+     "bbox_engel": 0.0,
+     "bbox_hicbiri": 0.0,
+     "bbox_zemin_ve_engel_cakisan": 0.0
+    },
+    {
+     "conf": 0.1,
+     "kare_zemin": 43.961,
+     "kare_engel": 14.111,
+     "icerik_zemin": 78.153,
+     "icerik_engel": 25.086,
+     "bbox_piksel": 48100,
+     "bbox_zemin": 100.0,
+     "bbox_engel": 0.0,
+     "bbox_hicbiri": 0.0,
+     "bbox_zemin_ve_engel_cakisan": 0.0
+    },
+    {
+     "conf": 0.05,
+     "kare_zemin": 43.961,
+     "kare_engel": 14.224,
+     "icerik_zemin": 78.153,
+     "icerik_engel": 25.288,
+     "bbox_piksel": 48100,
+     "bbox_zemin": 100.0,
+     "bbox_engel": 0.247,
+     "bbox_hicbiri": 0.0,
+     "bbox_zemin_ve_engel_cakisan": 0.247
+    }
+   ]
+  },
+  {
+   "kare": "O:\\navitas\\data\\raw_frames\\whatsapp_video_2026_07_30_at_11_44_46\\frame_000001_000000456.jpg",
+   "kare_boyut": [
+    1024,
+    576
+   ],
+   "icerik_dikdortgeni_xywh": [
+    0,
+    224,
+    1024,
+    576
+   ],
+   "cati_bbox_orijinal_xyxy": [
+    505,
+    130,
+    640,
+    245
+   ],
+   "cati_bbox_tuval_xyxy": [
+    505,
+    354,
+    640,
+    469
+   ],
+   "olcumler": [
+    {
+     "conf": 0.3,
+     "kare_zemin": 45.816,
+     "kare_engel": 11.99,
+     "icerik_zemin": 81.451,
+     "icerik_engel": 21.316,
+     "bbox_piksel": 15525,
+     "bbox_zemin": 100.0,
+     "bbox_engel": 0.0,
+     "bbox_hicbiri": 0.0,
+     "bbox_zemin_ve_engel_cakisan": 0.0
+    },
+    {
+     "conf": 0.1,
+     "kare_zemin": 45.816,
+     "kare_engel": 12.202,
+     "icerik_zemin": 81.451,
+     "icerik_engel": 21.693,
+     "bbox_piksel": 15525,
+     "bbox_zemin": 100.0,
+     "bbox_engel": 0.0,
+     "bbox_hicbiri": 0.0,
+     "bbox_zemin_ve_engel_cakisan": 0.0
+    },
+    {
+     "conf": 0.05,
+     "kare_zemin": 45.816,
+     "kare_engel": 12.204,
+     "icerik_zemin": 81.451,
+     "icerik_engel": 21.697,
+     "bbox_piksel": 15525,
+     "bbox_zemin": 100.0,
+     "bbox_engel": 0.0,
+     "bbox_hicbiri": 0.0,
+     "bbox_zemin_ve_engel_cakisan": 0.0
+    }
+   ]
+  }
+ ]
+}

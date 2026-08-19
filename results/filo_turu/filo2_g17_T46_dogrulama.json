@@ -1,0 +1,687 @@
+{
+ "ozet": {
+  "n": 67,
+  "ekran_dagilim": {
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.2'ini kapliyor (tavan %67.0) VE cevrenin %62.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %72.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %64.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %82.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.6'ini kapliyor (tavan %67.0) VE cevrenin %68.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.2'ini kapliyor (tavan %67.0) VE cevrenin %68.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %68.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %79.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %72.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %73.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.9'ini kapliyor (tavan %67.0) VE cevrenin %69.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.3'ini kapliyor (tavan %67.0) VE cevrenin %71.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %83.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %83.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.0'ini kapliyor (tavan %67.0) VE cevrenin %87.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %68.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.0'ini kapliyor (tavan %67.0) VE cevrenin %72.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %67.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.7'ini kapliyor (tavan %67.0) VE cevrenin %72.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %76.6'ini kapliyor (tavan %67.0) VE cevrenin %68.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %92.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %83.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %67.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %68.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %66.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %61.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.5'ini kapliyor (tavan %67.0) VE cevrenin %63.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.7'ini kapliyor (tavan %67.0) VE cevrenin %66.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %74.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.6'ini kapliyor (tavan %67.0) VE cevrenin %84.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.0'ini kapliyor (tavan %67.0) VE cevrenin %68.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %67.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %56.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.6'ini kapliyor (tavan %67.0) VE cevrenin %62.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.1'ini kapliyor (tavan %67.0) VE cevrenin %59.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.3'ini kapliyor (tavan %67.0) VE cevrenin %63.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.0'ini kapliyor (tavan %67.0) VE cevrenin %53.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %56.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.6'ini kapliyor (tavan %67.0) VE cevrenin %64.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.2'ini kapliyor (tavan %67.0) VE cevrenin %63.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.9'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %87.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.7'ini kapliyor (tavan %67.0) VE cevrenin %82.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.5'ini kapliyor (tavan %67.0) VE cevrenin %80.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %80.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.3'ini kapliyor (tavan %67.0) VE cevrenin %81.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %86.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %68.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.6'ini kapliyor (tavan %67.0) VE cevrenin %66.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.2'ini kapliyor (tavan %67.0) VE cevrenin %71.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.9'ini kapliyor (tavan %67.0) VE cevrenin %87.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.4'ini kapliyor (tavan %67.0) VE cevrenin %92.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.1'ini kapliyor (tavan %67.0) VE cevrenin %95.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.6'ini kapliyor (tavan %67.0) VE cevrenin %76.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.1'ini kapliyor (tavan %67.0) VE cevrenin %77.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %75.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %79.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.8'ini kapliyor (tavan %67.0) VE cevrenin %80.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %78.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.5'ini kapliyor (tavan %67.0) VE cevrenin %76.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1
+  },
+  "ham_dagilim": {
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.2'ini kapliyor (tavan %67.0) VE cevrenin %62.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %72.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %64.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %82.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.6'ini kapliyor (tavan %67.0) VE cevrenin %68.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.2'ini kapliyor (tavan %67.0) VE cevrenin %68.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %68.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %79.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %72.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %73.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.9'ini kapliyor (tavan %67.0) VE cevrenin %69.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.3'ini kapliyor (tavan %67.0) VE cevrenin %71.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %83.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %83.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.0'ini kapliyor (tavan %67.0) VE cevrenin %87.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %68.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.0'ini kapliyor (tavan %67.0) VE cevrenin %72.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %67.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.7'ini kapliyor (tavan %67.0) VE cevrenin %72.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %76.6'ini kapliyor (tavan %67.0) VE cevrenin %68.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %92.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %83.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %67.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %68.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %66.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %61.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.5'ini kapliyor (tavan %67.0) VE cevrenin %63.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.7'ini kapliyor (tavan %67.0) VE cevrenin %66.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %74.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.6'ini kapliyor (tavan %67.0) VE cevrenin %84.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.0'ini kapliyor (tavan %67.0) VE cevrenin %68.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %67.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %56.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.6'ini kapliyor (tavan %67.0) VE cevrenin %62.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.1'ini kapliyor (tavan %67.0) VE cevrenin %59.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.3'ini kapliyor (tavan %67.0) VE cevrenin %63.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.0'ini kapliyor (tavan %67.0) VE cevrenin %53.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %56.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.6'ini kapliyor (tavan %67.0) VE cevrenin %64.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.2'ini kapliyor (tavan %67.0) VE cevrenin %63.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.9'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %87.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.7'ini kapliyor (tavan %67.0) VE cevrenin %82.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.5'ini kapliyor (tavan %67.0) VE cevrenin %80.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %80.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.3'ini kapliyor (tavan %67.0) VE cevrenin %81.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %86.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %68.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.6'ini kapliyor (tavan %67.0) VE cevrenin %66.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.2'ini kapliyor (tavan %67.0) VE cevrenin %71.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.9'ini kapliyor (tavan %67.0) VE cevrenin %87.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.4'ini kapliyor (tavan %67.0) VE cevrenin %92.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.1'ini kapliyor (tavan %67.0) VE cevrenin %95.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.6'ini kapliyor (tavan %67.0) VE cevrenin %76.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.1'ini kapliyor (tavan %67.0) VE cevrenin %77.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %75.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %79.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.8'ini kapliyor (tavan %67.0) VE cevrenin %80.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %78.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1,
+   "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.5'ini kapliyor (tavan %67.0) VE cevrenin %76.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")": 1
+  },
+  "olcek_kaynak_dagilim": {
+   "arac_referansi": 67
+  },
+  "model": "navitas_seg_v34_best.pt",
+  "conf": 0.3,
+  "infer_size": 512
+ },
+ "kareler": [
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "mpp": 0.06004051653814544,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.2'ini kapliyor (tavan %67.0) VE cevrenin %62.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.2'ini kapliyor (tavan %67.0) VE cevrenin %62.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000001_000000600.jpg",
+   "mpp": 0.06226998265289896,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %72.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %72.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000002_000000672.jpg",
+   "mpp": 0.06254409879402324,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %64.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %64.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000003_000000720.jpg",
+   "mpp": 0.06201799071542341,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000004_000000768.jpg",
+   "mpp": 0.06219246403095789,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %82.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %82.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000005_000000816.jpg",
+   "mpp": 0.062151370178184645,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.6'ini kapliyor (tavan %67.0) VE cevrenin %68.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.6'ini kapliyor (tavan %67.0) VE cevrenin %68.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000006_000000864.jpg",
+   "mpp": 0.06112866961618461,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.2'ini kapliyor (tavan %67.0) VE cevrenin %68.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.2'ini kapliyor (tavan %67.0) VE cevrenin %68.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000007_000000936.jpg",
+   "mpp": 0.061559283134370334,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %68.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %68.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000008_000001008.jpg",
+   "mpp": 0.06152229006832381,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %79.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %79.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000009_000001152.jpg",
+   "mpp": 0.062051461402764393,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %72.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %72.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000010_000001200.jpg",
+   "mpp": 0.06212058029772668,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %73.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.4'ini kapliyor (tavan %67.0) VE cevrenin %73.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000011_000001224.jpg",
+   "mpp": 0.06221777484382074,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.9'ini kapliyor (tavan %67.0) VE cevrenin %69.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.9'ini kapliyor (tavan %67.0) VE cevrenin %69.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000012_000001248.jpg",
+   "mpp": 0.06332038881463148,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.3'ini kapliyor (tavan %67.0) VE cevrenin %71.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.3'ini kapliyor (tavan %67.0) VE cevrenin %71.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000013_000001272.jpg",
+   "mpp": 0.0622305221010651,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.1'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000014_000001320.jpg",
+   "mpp": 0.06360421199004648,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %83.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %83.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "mpp": 0.0822758071559638,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %83.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %83.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000001_000000336.jpg",
+   "mpp": 0.07904771349921332,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.0'ini kapliyor (tavan %67.0) VE cevrenin %87.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.0'ini kapliyor (tavan %67.0) VE cevrenin %87.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000002_000000648.jpg",
+   "mpp": 0.07587237866726096,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %68.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %68.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000003_000000912.jpg",
+   "mpp": 0.07508611422494095,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.0'ini kapliyor (tavan %67.0) VE cevrenin %72.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.0'ini kapliyor (tavan %67.0) VE cevrenin %72.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000004_000000960.jpg",
+   "mpp": 0.07518901657838882,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %67.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.6'ini kapliyor (tavan %67.0) VE cevrenin %67.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000005_000001008.jpg",
+   "mpp": 0.07567619495610393,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.7'ini kapliyor (tavan %67.0) VE cevrenin %72.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.7'ini kapliyor (tavan %67.0) VE cevrenin %72.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000006_000001416.jpg",
+   "mpp": 0.0748384327867308,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %76.6'ini kapliyor (tavan %67.0) VE cevrenin %68.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %76.6'ini kapliyor (tavan %67.0) VE cevrenin %68.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000007_000001440.jpg",
+   "mpp": 0.0734897439535481,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %92.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %92.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000008_000001488.jpg",
+   "mpp": 0.07388639974182151,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %83.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.8'ini kapliyor (tavan %67.0) VE cevrenin %83.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000009_000001776.jpg",
+   "mpp": 0.0742597812554246,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %67.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %67.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000010_000001824.jpg",
+   "mpp": 0.07401222428788053,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %68.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.1'ini kapliyor (tavan %67.0) VE cevrenin %68.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000011_000001848.jpg",
+   "mpp": 0.0738911840618015,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %77.5'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000012_000001872.jpg",
+   "mpp": 0.07321093064351829,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %66.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %66.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000013_000001944.jpg",
+   "mpp": 0.07232567854870783,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000014_000001992.jpg",
+   "mpp": 0.07125125623474086,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %61.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.8'ini kapliyor (tavan %67.0) VE cevrenin %61.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000015_000002040.jpg",
+   "mpp": 0.07068519031449765,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.5'ini kapliyor (tavan %67.0) VE cevrenin %63.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.5'ini kapliyor (tavan %67.0) VE cevrenin %63.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000016_000002088.jpg",
+   "mpp": 0.06944957519721948,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.7'ini kapliyor (tavan %67.0) VE cevrenin %66.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.7'ini kapliyor (tavan %67.0) VE cevrenin %66.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000017_000002112.jpg",
+   "mpp": 0.0698110131328252,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %74.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.9'ini kapliyor (tavan %67.0) VE cevrenin %74.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000018_000002160.jpg",
+   "mpp": 0.06977521757103429,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.6'ini kapliyor (tavan %67.0) VE cevrenin %84.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.6'ini kapliyor (tavan %67.0) VE cevrenin %84.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "mpp": 0.07405258753308938,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.0'ini kapliyor (tavan %67.0) VE cevrenin %68.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.0'ini kapliyor (tavan %67.0) VE cevrenin %68.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000001_000000168.jpg",
+   "mpp": 0.07119671751583902,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %67.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %67.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000002_000000192.jpg",
+   "mpp": 0.07082690241050689,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %56.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %78.1'ini kapliyor (tavan %67.0) VE cevrenin %56.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000003_000000240.jpg",
+   "mpp": 0.07078257662006399,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000004_000000264.jpg",
+   "mpp": 0.07001622130778284,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.6'ini kapliyor (tavan %67.0) VE cevrenin %62.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.6'ini kapliyor (tavan %67.0) VE cevrenin %62.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000005_000000288.jpg",
+   "mpp": 0.0699164293811898,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %79.9'ini kapliyor (tavan %67.0) VE cevrenin %65.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000006_000000336.jpg",
+   "mpp": 0.07013256632180478,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.1'ini kapliyor (tavan %67.0) VE cevrenin %59.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %80.1'ini kapliyor (tavan %67.0) VE cevrenin %59.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000007_000000384.jpg",
+   "mpp": 0.06873105872461764,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.3'ini kapliyor (tavan %67.0) VE cevrenin %63.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.3'ini kapliyor (tavan %67.0) VE cevrenin %63.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000008_000000432.jpg",
+   "mpp": 0.06805911688436818,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.8'ini kapliyor (tavan %67.0) VE cevrenin %59.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000009_000000480.jpg",
+   "mpp": 0.06816421325065668,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.0'ini kapliyor (tavan %67.0) VE cevrenin %53.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.0'ini kapliyor (tavan %67.0) VE cevrenin %53.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000010_000000504.jpg",
+   "mpp": 0.0681587929520401,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %56.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %56.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000011_000000600.jpg",
+   "mpp": 0.06890138780620346,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.6'ini kapliyor (tavan %67.0) VE cevrenin %64.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.6'ini kapliyor (tavan %67.0) VE cevrenin %64.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000012_000000624.jpg",
+   "mpp": 0.06842873446144403,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.2'ini kapliyor (tavan %67.0) VE cevrenin %63.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.2'ini kapliyor (tavan %67.0) VE cevrenin %63.4'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000013_000000648.jpg",
+   "mpp": 0.06970748467399626,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.9'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.9'ini kapliyor (tavan %67.0) VE cevrenin %83.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000014_000000672.jpg",
+   "mpp": 0.07011575151557253,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %87.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %87.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000015_000000696.jpg",
+   "mpp": 0.07007863327274871,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.7'ini kapliyor (tavan %67.0) VE cevrenin %82.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.7'ini kapliyor (tavan %67.0) VE cevrenin %82.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000016_000000720.jpg",
+   "mpp": 0.07169633316530823,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.5'ini kapliyor (tavan %67.0) VE cevrenin %80.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %84.5'ini kapliyor (tavan %67.0) VE cevrenin %80.9'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000017_000000792.jpg",
+   "mpp": 0.07700089287309722,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %80.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %80.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000018_000000840.jpg",
+   "mpp": 0.08235414646831779,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.3'ini kapliyor (tavan %67.0) VE cevrenin %81.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.3'ini kapliyor (tavan %67.0) VE cevrenin %81.3'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000019_000000888.jpg",
+   "mpp": 0.08705257284365056,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %86.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %86.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000020_000000936.jpg",
+   "mpp": 0.09174712004045855,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %68.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %68.8'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000021_000000984.jpg",
+   "mpp": 0.09729258279399221,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.6'ini kapliyor (tavan %67.0) VE cevrenin %66.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.6'ini kapliyor (tavan %67.0) VE cevrenin %66.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000022_000001032.jpg",
+   "mpp": 0.09970519027398372,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.2'ini kapliyor (tavan %67.0) VE cevrenin %71.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.2'ini kapliyor (tavan %67.0) VE cevrenin %71.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000023_000001080.jpg",
+   "mpp": 0.1020919406707776,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.9'ini kapliyor (tavan %67.0) VE cevrenin %87.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.9'ini kapliyor (tavan %67.0) VE cevrenin %87.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000024_000001104.jpg",
+   "mpp": 0.10534323230090718,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.4'ini kapliyor (tavan %67.0) VE cevrenin %92.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.4'ini kapliyor (tavan %67.0) VE cevrenin %92.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000025_000001152.jpg",
+   "mpp": 0.10658208631410825,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.1'ini kapliyor (tavan %67.0) VE cevrenin %95.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %87.1'ini kapliyor (tavan %67.0) VE cevrenin %95.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000026_000001200.jpg",
+   "mpp": 0.10669452405582784,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.6'ini kapliyor (tavan %67.0) VE cevrenin %76.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.6'ini kapliyor (tavan %67.0) VE cevrenin %76.6'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000027_000001248.jpg",
+   "mpp": 0.10792020761627126,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.1'ini kapliyor (tavan %67.0) VE cevrenin %77.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %86.1'ini kapliyor (tavan %67.0) VE cevrenin %77.5'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000028_000001296.jpg",
+   "mpp": 0.1085594282548558,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %75.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.4'ini kapliyor (tavan %67.0) VE cevrenin %75.0'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000029_000001320.jpg",
+   "mpp": 0.10836904607701826,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %79.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.5'ini kapliyor (tavan %67.0) VE cevrenin %79.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000030_000001344.jpg",
+   "mpp": 0.10819422577173585,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.8'ini kapliyor (tavan %67.0) VE cevrenin %80.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %85.8'ini kapliyor (tavan %67.0) VE cevrenin %80.2'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "mpp": 0.10122498398848695,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %78.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %83.8'ini kapliyor (tavan %67.0) VE cevrenin %78.7'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  },
+  {
+   "kare": "frame_000001_000000456.jpg",
+   "mpp": 0.09151592095785249,
+   "olcek_kaynak": "arac_referansi",
+   "ham": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.5'ini kapliyor (tavan %67.0) VE cevrenin %76.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")",
+   "guven": 0.0,
+   "ekran": "RED/('ZEMIN_MASKESI_SUPHELI', \"Zemin maskesi icerigin %81.5'ini kapliyor (tavan %67.0) VE cevrenin %76.1'ine dayaniyor (tavan %50.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.\")"
+  }
+ ]
+}
