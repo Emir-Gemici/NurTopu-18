@@ -5615,6 +5615,39 @@ avitas-local-train)_sentetik_arena.py")`.
     bugün hâlâ atıf var, çıkarılmalı.
   - ⚠ T112'nin testi bunu **yakalamaz** — o test yalnız **iki tarafta da var
     olan** çiftleri kıyaslar (bilinçli, D-189 §3.1). Bu ayrı bir eksiktir.
+  - ⚖ **KARARA BAĞLANDI · 2026-08-19 · mimar · `REVIEW_LOG.md` D-190.**
+  - **Ölçüldü** (46 betiğin her biri YALNIZ izlenen dosyalarda `git ls-files` ile arandı):
+    ```text
+    IZLENEN KODDAN cagrilan :  7
+    yalniz BELGEDE gecen    :  7
+    HIC atif almayan        : 32
+    ```
+  - 🔴 **Bağımlılık "atıf" değil, SERT ÇALIŞMA-ZAMANI BAĞI.**
+    `scripts/copy_paste_augmentation.py:124-129` (izlenen üretim betiği)
+    `51_sentetik_arena.py`yi **dinamik import edip `yapistir()`ı çağırıyor** ve
+    bulamazsa **`RuntimeError`** atıyor. Versiyonlu kodun versiyonsuz dosyaya
+    sert bağımlı olması bir tercih değil, **depo bütünlüğü kırığıdır.**
+  - ✅ **(A) 7 kod-atıflı betik AYNALANIR — zorunlu.** Kırığın kapatılması.
+  - ✅ **(B) 7 belge-atıflı betik de AYNALANIR.** Projenin kendi disiplini:
+    ölçüm **kanıttır** ve `REVIEW_LOG` bu betikleri kanıt olarak anıyor; betik
+    kaybolursa **anılan kanıt yeniden koşulamaz.** Yedi küçük `.py`, bedeli yok.
+  - ✅ **(C) 32 atıfsız betik AYNALANMAZ.** Hiçbir şey onlara bağlı değil; depo
+    bir **yedekleme ortamı değildir** (`.gitignore:130-134` zaten ağırlıkları
+    dışarıda tutuyor).
+  - 🔴 **AMA (C) "önemsiz" demek DEĞİL — ihtiyaç farklı:**
+    **sürüm kontrolü** = değişimi izlemek + kod bağımlılığını garanti etmek ·
+    **yedek** = diski kaybetmemek. 32 betik yedek **gerektiriyor** ve
+    **PC garantiye gidiyor**. `O:
+avitas-local-train` **tümüyle** yedek
+    listesine girer.
+  - ⚠ **YAN BULGU:** aynı betik `--aset-dizini` ile `doku_bankasi\enkaz`a da
+    bağlı (**498 MB** doku bankası). Aynalanamaz (ikili varlık) ama
+    **yedeklenmek zorunda**. Bu yüzden *"izlenen kod depo dışı yola atıf
+    etmesin"* diye **blanket bir test YAZILMAYACAK** — doku bankası meşru
+    olarak dışarıda ve o test yanlış alarm üretirdi.
+  - **UYGULAMA:** 14 betik `scripts/olcum/` altına **içerik değiştirilmeden**
+    kopyalanır · T112'nin kimlik testi onları **kendiliğinden** kapsar ·
+    hiçbir ölçüm sayısı değişmez (**arşivleme**, ölçüm değil).
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python

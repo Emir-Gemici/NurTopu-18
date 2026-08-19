@@ -15625,3 +15625,94 @@ ayrismis LISTELER ve `--uygula` ile **YON ACIKCA VERILEREK** kopyalar.
   3. `76`nin canli kopyasiyla kosulmus eski olcumler bu yanlis GEREKCEYI
      tasiyordu; ama gerekce bir YORUMDUR — olculen SAYILARI etkilemez.
      Yine de D-146/D-147'deki `76` sayilari bu notla okunmalidir.
+
+### D-190 · ⚖ T113 KARARI (MIMAR) · 14 betik AYNALANIR (7'si IZLENEN KODUN SERT BAGIMLILIGI), 32'si aynalanmaz — YEDEK ile SURUM KONTROLU AYRI IHTIYACLARDIR
+Yazan/karar: Claude 1 (mimar) · 2026-08-19 · gorev T113 · dayanak D-189 §1
+
+## 1. OLCULDU — "hepsi mi, bazisi mi" tahminle degil sayiyla
+
+46 aynasiz numarali betigin her biri, YALNIZ IZLENEN dosyalarda
+(`git ls-files`) arandi:
+
+    IZLENEN KODDAN cagrilan/atif alan :  7
+    yalniz BELGEDE gecen              :  7
+    HIC atif almayan                  : 32
+
+Izlenen koddan cagrilanlar:
+
+    42_cok_sinifli_onegitim.py    <- scripts/olcum/56_t53_gercek_karisim.py
+    46_arena_esik.py              <- scripts/olcum/48_arena_iou.py
+    47_arena_yer_gercegi.py       <- scripts/olcum/48_arena_iou.py · 54_arena_cozunurluk.py
+    51_sentetik_arena.py          <- scripts/copy_paste_augmentation.py
+    53_drone_kare.py              <- scripts/extract_key_frames.py
+    56_uc_kapili_model_secimi.py  <- scripts/olcum/60_kadraj_karar_dogrulugu.py
+    57_t51_kadraj_kapilari.py     <- scripts/olcum/60_kadraj_karar_dogrulugu.py
+
+## 2. 🔴 BAGIMLILIK "atif" DEGIL, SERT CALISMA-ZAMANI BAGI
+
+`scripts/copy_paste_augmentation.py:124-129` (IZLENEN uretim betigi):
+
+    def yapistir_yukle(kaynak: Path) -> Callable:
+        """51_sentetik_arena.py icindeki ... yapistir'i al."""
+        yapistir = getattr(modulu_yukle(kaynak, ...), "yapistir", None)
+        if not callable(yapistir):
+            raise RuntimeError(f"yapistir() bulunamadi: {kaynak}")
+
+Yani dosya yoksa **RuntimeError**. `51_sentetik_arena.py` sentetik arena
+uretecidir — kabul kumemizin (`kadraj_t66`) atasidir — ve **yalniz bu PC'nin
+diskindedir.** Versiyonlu kodun versiyonsuz dosyaya sert bagimli olmasi bir
+tercih degil, **depo butunlugu kirigidir.**
+
+## 3. KARAR
+
+**(A) 7 KOD-ATIFLI BETIK AYNALANIR — ZORUNLU.**
+Gerekce tartisma gerektirmiyor: izlenen kod, izlenmeyen dosyaya bagimli
+olamaz. Bu bir "iyi olur" degil, kirigin kapatilmasidir.
+
+**(B) 7 BELGE-ATIFLI BETIK DE AYNALANIR.**
+Gerekce projenin KENDI disiplini: olcum KANITTIR ve `REVIEW_LOG` bu betikleri
+kanit olarak anar. Betik kaybolursa **anilan kanit yeniden kosulamaz**, yani
+kayit dogrulanamaz hale gelir. Yedi kucuk `.py` dosyasinin bedeli yok.
+
+**(C) 32 ATIFSIZ BETIK AYNALANMAZ.**
+Hicbir sey onlara bagli degil; depo bir YEDEKLEME ORTAMI degildir (proje
+zaten agirliklari ve ciktilari disarida tutuyor — `.gitignore:130-134`).
+
+🔴 **AMA (C) "onemsiz" DEMEK DEGILDIR — IHTIYAC FARKLI:**
+
+    SURUM KONTROLU  = degisimi izlemek, kod bagimliligini garanti etmek
+    YEDEK           = diski kaybetmemek
+
+32 betik SURUM KONTROLU gerektirmiyor ama **YEDEK gerektiriyor** ve
+**PC garantiye gidiyor.** Ikisini karistirmak, "aynalamadik demek ki onemsiz"
+gibi yanlis bir sonuc dogurur. Yedekleme listesine `O:
+avitas-local-train`
+**tumuyle** girer (D-177/§yedek plani).
+
+## 4. YAN BULGU — AYNI BETIK BIR DE VERI DIZINE BAGLI
+
+`copy_paste_augmentation.py:942` -> `--aset-dizini` varsayilani
+`O:
+avitas-local-train\doku_bankasi\enkaz`. Bu bir DOKU BANKASIDIR
+(ikili varlıklar); **aynalanamaz** (depo agirlik/varlik tutmuyor) ama
+**yedeklenmek zorundadir.** Ayni sinif: izlenen kod, depo disi bir varliga
+bagli. Kod tarafinda cozumu yok; **yedek listesinde.**
+
+⚠ Bu yuzden "izlenen kod depo disi yola atif etmesin" diye BLANKET bir test
+YAZILMAYACAK: doku bankasi mesru olarak disarida ve o test yanlis alarm
+uretirdi. Kapsam **aynalanabilir .py dosyalariyla** sinirli.
+
+## 5. UYGULAMA SIRASI
+
+  1. 14 betik `scripts/olcum/` altina kopyalanir (icerik DEGISTIRILMEZ).
+  2. T112'nin kimlik testi onlari **kendiliginden** kapsar (mekanik tarama).
+  3. `TASK_QUEUE`/`REVIEW_LOG`da hicbir sayi degismez — bu bir ARSIVLEME
+     islemidir, olcum degil.
+
+**DOGRULANAMADI**
+  1. 32 atifsiz betigin gercekten olu oldugu, yalniz METIN ARAMASIYLA
+     saptandi; dinamik/dolayli cagri (or. `subprocess` ile ad uretimi)
+     ARANMADI.
+  2. Kopyalanan 14 betigin BUGUN calisir oldugu KOSULMADI (arsivleme
+     amaclidir; calisirlik ayri bir istir).
+  3. `doku_bankasi` boyutu ve yedeklenebilirligi ayrica olculmedi.
