@@ -5176,6 +5176,25 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     `kabul_kumesi` Windows yolu defterle sahaya gidiyor (`yks_gui` pakette
     yok — kod okumasıyla doğrulandı, sahada koşulmadı) · iki kılavuz kopyası
     hâlâ **ayrışık** ve eşitliklerini zorlayan bir kapı **yok** (ayrı iş).
+  - 🔎 **MİMAR DENETİMİ · 2026-08-19 · `REVIEW_LOG.md` D-179. ONAYLANDI.**
+    Asıl kapıyı `jetson_paket/kod` içinde **kendim koştum**:
+    ```text
+    ONCE : load_model -> RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ
+    SONRA: INFER_SIZE 512 (UYARI YOK) · dogrulama True "eslesti"
+           (beklenen_imgsz 512 · calisan 512) · load_model -> BASARILI: YOLO
+    ```
+    `unittest` **620 OK** (614 → +6) · `test_rota_sentetik` **15/15** ·
+    defter senkronu `diff -q` **BİREBİR**.
+  - **MUTASYON KONTROLÜNÜ KENDİM KOŞTUM:** `jetson_paket/config/model_registry.json`
+    geçici kaldırıldı → **6 testin 3'ü düştü** (+1 hata); dosya geri konuldu,
+    senkron yeniden doğrulandı. **Test boş değil.**
+  - ✅ **Amele emrin işaret etmediği bir kusuru kendi yakaladı:** depoda **iki**
+    `JETSON_KILAVUZ.md` var ve **kök kopya da sahaya yanlış dizin ağacı
+    söylüyordu** (`comms` bile yoktu). İkisini de düzeltti. Ben de bağımsız
+    gördüm ve aynı sonuca vardım — amele benden önce yakalamış.
+  - ⚠ Kılavuz senkronunu **hiçbir şey zorlamıyor** → **T104** açıldı.
+  - 🔴 **DOĞRULANAMADI:** gerçek Jetson cihazında **hiçbir şey ölçülmedi**;
+    tüm ölçümler reponun `jetson_paket/` dizinindedir → **T16/T17**.
 - [ ] **T104 — İki `JETSON_KILAVUZ.md` kopyası var ve senkronu hiçbir şey zorlamıyor** · `JETSON_KILAVUZ.md`, `jetson_paket/JETSON_KILAVUZ.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-179 §3**
   - T103'te ikisi de elle düzeltildi (amele yakaladı), ama **ayrı dosyalar** ve
     paketleyici kılavuzu **kopyalamıyor** (`grep -c JETSON_KILAVUZ
