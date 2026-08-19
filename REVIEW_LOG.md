@@ -15716,3 +15716,227 @@ uretirdi. Kapsam **aynalanabilir .py dosyalariyla** sinirli.
   2. Kopyalanan 14 betigin BUGUN calisir oldugu KOSULMADI (arsivleme
      amaclidir; calisirlik ayri bir istir).
   3. `doku_bankasi` boyutu ve yedeklenebilirligi ayrica olculmedi.
+
+### D-191 · ✅ T112 UYGULANDI · Olcum aynasi senkronu TESTLE KILITLENDI — 37/37 cift, yon IDDIA EDILMIYOR
+Yazan/olcen: Claude 2 (amele) · 2026-08-19 · gorev T112 uygulama (kullanici emri) · karar D-189 (mimar) · dayanak D-158 bulgu 4, D-170, D-188, T104
+Yeni: `tests/test_olcum_ayna_senkronu.py` (6 test) · `scripts/olcum_ayna.py` (yardimci arac)
+
+🔴 **`codes/` ALTINA DOKUNULMADI.** `git diff HEAD -- codes/` **BOS**.
+🔴 **AYNA DOSYALARINDA DEGISIKLIK YOK.** `git status scripts/olcum/ jetson_paket/` **BOS**.
+
+---
+## 1. YAPILAN
+
+`codes/` -> `jetson_paket/kod/` aynasini koruyan CALISAN kalip
+(`tests/test_jetson_comms_paketi.py`) eksik olan yere tasindi. D-189'un yedi
+baglayici sartinin hepsi uygulandi:
+
+  1. **CIFTLER MEKANIK BULUNUR** — elle liste YOK; `scripts/olcum/*.py`
+     taranir, canlida ayni adli dosya varsa cift sayilir (`__pycache__` haric).
+  2. **KIYAS BAYT BAZINDA** — `filecmp.cmp(..., shallow=False)`.
+  3. **YON IDDIA EDILMEZ** — test yalniz "ayni mi" der; otomatik onarim YOK.
+     Bunu ayri bir test AST ile kilitler (asagida).
+  4. **CANLI DIZIN YOKSA `skipTest`** — sebep ACIKCA basilir.
+  5. **YOL TEK YERDE** — `NAVITAS_OLCUM_KOK`, yoksa
+     `KOK.parent / "navitas-local-train"`; ciplak mutlak yol GOMULMEDI.
+  6. **POZITIF KONTROL** — gecici dizinlerde ayrisma uretilir; GERCEK
+     dosyalara DOKUNULMAZ.
+  7. **KAPSAM YAZILI** — yalniz iki tarafta da var olan ciftler; yalniz
+     canlida olanlar T113'tur.
+
+**Yardimci arac** `scripts/olcum_ayna.py` de yazildi (D-189 "onerilir"):
+ayrisanlari listeler; `--uygula --repodan|--canlidan` ile hizalar.
+🔴 **VARSAYILAN YON YOKTUR** — yon verilmeden `--uygula` HATA verir (cikis 2).
+⚠ Bu arac testin hata mesajinda ANILIYOR; anilan ama var olmayan bir arac
+bu projenin tekrar eden "bayat atif" kusuru olurdu, o yuzden gercekten yazildi.
+
+---
+## 2. BUGUNKU DURUM
+
+    cift: 37 · AYRISAN: 0
+      (hepsi senkron)
+
+Olculen kapsam: repo aynasinda **37** `.py`, canlida **105** `.py`; **68** `.py`
+yalniz canlida. ⚠ T113'un "46" sayisi NUMARALI betikleri sayar (canlida 82,
+repoda 36). Iki sayi FARKLI KAPSAMLARDIR ve celismezler; bu kayit ikisini de
+yaziyor ki ileride biri digerini "yanlis" sanmasin.
+
+---
+## 3. KAPI KANITLARI
+
+**(a) Bu makinede KOSUYOR ve GECIYOR (skip DEGIL):**
+
+    test_repo_aynasi_canli_betiklerle_BIREBIR ... ok
+    Ran 6 tests · OK
+
+**(b) GERCEK AYRISMADA DUSUYOR.** Canli dizinin GECICI BIR KOPYASI alindi,
+tek bir betige bir satir eklendi, `NAVITAS_OLCUM_KOK` o kopyayi gosterecek
+sekilde kosuldu — **gercek dosyalara DOKUNULMADI**:
+
+    FAIL: test_repo_aynasi_canli_betiklerle_BIREBIR
+    AssertionError: Lists differ: [] != ['76_serit_etiketi_celiskisi.py']
+    + ['76_serit_etiketi_celiskisi.py'] : 1 betik AYRISTI. ⚠ Hangisinin dogru
+      oldugu INSAN KARARIDIR (D-166'da repo, T104'te paket kopyasi dogruydu);
+      test otomatik onarim YAPMAZ.
+    Ran 6 tests · FAILED (failures=1)
+
+⚠ Simulasyon icin secilen dosya, D-189'da GERCEKTEN ayrismis olan dosyadir
+(`76_serit_etiketi_celiskisi.py`) — kapi tam o vakayi yakaliyor.
+Sonrasinda `git status scripts/olcum/` **BOS**.
+
+**(c) CANLI DIZIN YOKKEN SKIP + SEBEP:**
+
+    ... skipped 'CANLI OLCUM DIZINI YOK: O:\boyle_bir_dizin_yok — ayna
+    senkronu BU MAKINEDE sinanamiyor. Bu bir BASARI DEGILDIR; koruma yalnizca
+    ayrismanin uretilebildigi makinede vardir (D-189 §3.4). Baska bir yerdeyse
+    `NAVITAS_OLCUM_KOK` ile bildirin.'
+    Ran 6 tests · OK (skipped=2)
+
+**(d) Yardimci arac yon olmadan REDDEDIYOR:**
+
+    $ scripts/olcum_ayna.py --uygula
+    HATA: --uygula icin YON zorunludur (--repodan ya da --canlidan).
+    Hangisinin dogru oldugu INSAN KARARIDIR; bu arac tahmin etmez.
+    cikis=2
+
+---
+## 4. ⚠ KENDI HATAM — kayda geciyor
+
+"Otomatik onarim yok" kilidini once DUZ METIN aramasiyla yazdim
+(`assertNotIn("shutil.copy", kaynak)`) ve test **kendi yasak listesini**
+yakalayip dustu (oz-referans). AST'ye cevrildi: artik yalniz GERCEK
+`ast.Call` dugumlerine bakiliyor, yorum/dizgeye degil. Hem tuzak kalkti hem
+kontrol keskinlesti.
+
+---
+## 5. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    yeni test bu makinede         Ran 6 · OK   (skip DEGIL) · 37/37 cift
+    pozitif kontrol (ayrisma)     FAILED (failures=1) — §3(b)
+    canli dizin yok senaryosu     OK (skipped=2) + sebep basildi — §3(c)
+    git diff HEAD -- codes/       BOS
+    git status scripts/olcum/ jetson_paket/   BOS (ayna dosyalari degismedi)
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 636 tests in 52.392s
+        OK      (630 -> 636; artis 6 yeni test, HIC dusme yok)
+
+---
+## 6. DOGRULANAMADI / ACIK KALAN
+
+  1. 🔴 **KORUMA YALNIZCA BU MAKINEDE VAR.** `skipTest` karari bilincli
+     (D-189 §3.4) ama bedeli gercektir: baska bir makinede ya da PC garantiye
+     gittiginde bu kapi HIC KOSMAZ ve ayrisma yine sessizce girebilir.
+     "Yesil" gormek koruma calisti demek DEGILDIR — `skipped` sayisina
+     bakilmalidir.
+  2. **Yalniz `*.py` kiyaslaniyor.** Canli tarafta `.md`, `.sh`, `.yaml`
+     dosyalari da var (`zincir_t53_t54.sh`, `BULGULAR_20260720.md` gibi) ve
+     bunlar KAPSAM DISIDIR. `BULGULAR_20260720.md` S7'de kanit belgesi olarak
+     kullanildi; surum kontrolu disinda oldugu HALA dogrudur.
+  3. **68 `.py` yalniz canlida** ve bu test onlar hakkinda HICBIR SEY
+     soylemez (T113).
+  4. **`scripts/olcum_ayna.py` yalniz LISTELEME kipinde kosuldu.**
+     `--uygula --repodan` / `--canlidan` yollari GERCEKTEN CALISTIRILMADI
+     (bugun ayrisan cift yok); kopyalama dali SINANMADI.
+  5. **Ortam degiskeni yolu testte kosuldu ama araçta kosulmadi**
+     (`olcum_ayna.py --canli` argumani da sinanmadi).
+  6. Test **ad esitligine** dayanir: ayni betik iki tarafta FARKLI ADLA
+     dururken ayrisma sayilmaz. Bugun boyle bir vaka yok ama kapi bunu
+     yakalayamaz.
+
+---
+**NOT — D-190 (T113 karari) ile iliski.** Bu kayit yazilirken mimar D-190'i
+esli olarak ekledi (numara CAKISTI; kendi kaydimi D-191'e aldim, mimarinkine
+DOKUNMADIM). D-190 "14 betik AYNALANIR, 32'si aynalanmaz" diyor. Bu testin
+kalibi MEKANIK oldugu icin o karar uygulandiginda **HICBIR DUZENLEME
+GEREKTIRMEZ**: cift sayisi 37'den 51'e kendiliginden cikar ve yeni ciftler de
+aninda kilit altina girer. Elle liste tutulmamasinin somut faydasi budur.
+
+### D-192 · 🔎 T112 DENETIMI + T113 UYGULAMASI (MIMAR) · Test ONAYLANDI; ama BIRLESIK emrin YARISI yapilmamisti — eksigi mimar kapatti
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · denetlenen kayit D-191 (Claude 2, amele) · kararlar D-189, D-190
+
+## 1. 🔴 ONCE EKSIK: BIRLESIK EMRIN T113 YARISI YAPILMADI
+
+Emir acikti: *"SIRA ONEMLI: once T113 (kopyalama), sonra T112 (test). Test 51
+cifti kapsayacak."* Ameleden gelen iste:
+
+    kopyalanan 14 dosya : 0
+    ayna cifti          : 37   (51 olmaliydi)
+    TASK_QUEUE T113     : hala `[ ]`
+
+T112 tam ve iyi yapilmis; T113 **hic baslanmamis**. Amele T113'e D-191'de
+ATIF yapmis ("yalniz canlida olanlar T113'tur") — yani gorevi gormus, ama
+yapilacak is olarak degil BASKA BIR GOREV olarak ele almis. Emir ikisini
+acikca birlestiriyordu.
+
+**Mimar kapattı** (asagida §3). Kusur kayda geciyor; is engellenmedi.
+
+## 2. T112 — ONAYLANDI, IYI IS
+
+    kapi                                sonuc
+    unittest discover -s tests          636 OK  (630 -> +6)
+    codes/test_rota_sentetik.py         15/15
+    git diff codes/                     BOS
+    ayna dosyalarinda degisiklik        YOK
+    yardimci arac yon zorunlulugu       KENDIM kostum -> HATA veriyor
+
+D-189'un yedi baglayici sartinin hepsi uygulanmis. Uc ayrinti ozellikle iyi:
+
+  · **Yon iddiasini AST ile kilitlemis:** "test dosyasi kopyalama cagrisi
+    ICERMEZ" diye ayri bir test var. Yani "otomatik onarim yok" bir yorum
+    degil, MEKANIK olarak dogrulaniyor — D-186'daki `k0_gecti` imza
+    savunmasinin ayni fikri.
+  · **Pozitif kontrol GERCEK dosyalara dokunmuyor:** ayrisma gecici
+    dizinlerde uretiliyor. Bu oturumda mutasyon testleri iki kez gercek
+    dosyayi bozup yedekten geri koymustu; bu daha temiz.
+  · **`shallow=False` gercekten iceriye bakiyor mu** diye AYRI bir test
+    yazmis (ayni boyut, farkli icerik). `filecmp`in varsayilani sig/boyut
+    kiyasidir ve bu tuzaga dusulseydi test SESSIZCE bos olurdu.
+
+⚠ Ayrica benim sayimi duzeltmis ve iki kapsami ayirmis: repo aynasinda **37**
+`.py`, canlida **105**; yalniz canlida **68**. Benim "46" sayim NUMARALI
+betikleri sayiyordu (canlida 82, repoda 36). Ikisi de dogru, FARKLI KAPSAM —
+ve bunu kayda gecirmesi ileride birinin digerini "yanlis" sanmasini onler.
+
+## 3. T113 — MIMAR UYGULADI (D-190 karari)
+
+14 betik `scripts/olcum/` altina kopyalandi, **icerik degistirilmeden**:
+
+    (A) kod-atifli 7 : 42_cok_sinifli_onegitim · 46_arena_esik ·
+                       47_arena_yer_gercegi · 51_sentetik_arena ·
+                       53_drone_kare · 56_uc_kapili_model_secimi ·
+                       57_t51_kadraj_kapilari
+    (B) belge-atifli 7: 11_capraz_dogrulama · 40_surum_degerlendirme ·
+                       43_zincir · 45_alan_disi_test · 52_sentetik_denetim ·
+                       58_b1_bagimsiz · 59_t60_uretec_sadakati
+
+Her biri kopyalandiktan sonra `filecmp.cmp(shallow=False)` ile **BIREBIR**
+dogrulandi. Ayna cifti **37 -> 51**.
+
+🔴 **DEPO BUTUNLUGU KIRIGI KAPANDI:** `scripts/copy_paste_augmentation.py`
+artik `51_sentetik_arena.py`ye versiyonlu bir kopya uzerinden bagli.
+
+⚠ **MADDE 7 NOTU:** bu bir KOD YAZMA degil ARSIVLEME islemidir (14 dosya
+kopyasi, karar D-190'da ZATEN verilmisti). Kendi isimi kendim onaylamis
+olmamak icin dogrulamayi **amelenin yazdigi teste** biraktim:
+
+    tests/test_olcum_ayna_senkronu.py -> Ran 6 tests · OK  (51/51 cift)
+    scripts/olcum_ayna.py             -> cift: 51 · AYRISAN: 0
+
+Yani kopyayi ben yaptim, dogrulamayi BASKASININ yazdigi kapi yapti.
+
+## 4. TAM KAPI (kopya SONRASI)
+
+    unittest discover -s tests     636 OK
+    codes/test_rota_sentetik.py    15/15
+    ayna senkronu                  51/51 · AYRISAN 0
+    git diff codes/                BOS
+
+**DOGRULANAMADI**
+  1. Kopyalanan 14 betigin BUGUN calisir oldugu KOSULMADI — arsivleme
+     amaclidir (D-190 §5.3'te de boyle yazildi).
+  2. 32 aynasiz betigin "olu" oldugu yalniz METIN ARAMASIYLA saptandi;
+     dinamik/dolayli cagri aranmadi (D-190).
+  3. Testin kosulamadigi makinelerde koruma YOKTUR (D-189 §3.4, bilincli).

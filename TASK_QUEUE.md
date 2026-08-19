@@ -5538,7 +5538,7 @@ avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG
   - Pakette v30'un ONNX'i **tarihsel olarak duruyor** — hangisinin üretim
     olduğunu `asil_model` söyler; yanlışlıkla eski ONNX derlenmemeli.
   - **T16'ya bağlı.**
-- [ ] **T112 — "İKİ KOPYA, YALNIZ BİRİ DENETLENİYOR" kalıbı: aynalığı zorlayan hiçbir kapı yok** · `scripts/olcum/` ↔ `O:
+- [x] **T112 — KAPANDI · Ölçüm aynası senkronu testle kilitlendi** · `scripts/olcum/` ↔ `O:
 avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**
   - Testler `scripts/olcum/65_kabul_denetcisi.py`yi (**ayna**) içe aktarıyor
     (`tests/test_k0_gorunurlugu.py:29`); ölçümleri fiilen koşan dosya ise
@@ -5588,12 +5588,86 @@ avitas-local-train` **git
     bir çift geçici ayrıştırılınca test **düşmeli**.
   - **Yardımcı (önerilir, zorunlu değil):** ayrışan çiftleri **listeleyen**,
     `--uygula` ile **yön açıkça verilerek** kopyalayan küçük bir araç.
+
+  - ✅ **UYGULANDI · 2026-08-19 · Claude-2** · kayıt `REVIEW_LOG.md` **D-191**
+    (⚠ numara **çakıştı**: mimar aynı anda D-190'ı T113 kararı olarak ekledi;
+    **kendi kaydımı** D-191'e aldım, mimarınkine dokunmadım).
+    Yeni: `tests/test_olcum_ayna_senkronu.py` (6 test) · `scripts/olcum_ayna.py`.
+    🔴 `git diff HEAD -- codes/` **BOŞ** · `git status scripts/olcum/
+    jetson_paket/` **BOŞ** (ayna dosyaları değişmedi).
+  - **Yedi bağlayıcı şartın hepsi uygulandı:** çiftler **mekanik** bulunur
+    (elle liste yok) · kıyas **bayt bazında** (`shallow=False`) · **yön iddia
+    edilmez**, otomatik onarım yok · canlı dizin yoksa **`skipTest` + açık
+    sebep** · yol tek yerde (`NAVITAS_OLCUM_KOK`, yoksa
+    `KOK.parent/"navitas-local-train"`) · pozitif kontrol geçici dizinlerde ·
+    kapsam docstring'de yazılı.
+  - **BUGÜNKÜ DURUM:** `cift: 37 · AYRISAN: 0` — hepsi senkron.
+    Ölçülen kapsam: repo aynası **37** `.py`, canlı **105** `.py`, **68** yalnız
+    canlıda. ⚠ T113'ün "46"sı **numaralı** betikleri sayar (canlı 82, repo 36);
+    iki sayı **farklı kapsamlardır, çelişmezler**.
+  - **KAPI KANITLARI:**
+    ```text
+    (a) bu makinede KOSUYOR ve GECIYOR (skip DEGIL)
+        test_repo_aynasi_canli_betiklerle_BIREBIR ... ok · Ran 6 · OK
+
+    (b) GERCEK AYRISMADA DUSUYOR  (canli dizinin GECICI KOPYASI bozuldu;
+        gercek dosyalara DOKUNULMADI)
+        FAIL: test_repo_aynasi_canli_betiklerle_BIREBIR
+        AssertionError: Lists differ: [] != ['76_serit_etiketi_celiskisi.py']
+        Ran 6 · FAILED (failures=1)
+
+    (c) CANLI DIZIN YOKKEN SKIP + SEBEP
+        skipped 'CANLI OLCUM DIZINI YOK: ... Bu bir BASARI DEGILDIR; koruma
+        yalnizca ayrismanin uretilebildigi makinede vardir (D-189 §3.4).'
+        Ran 6 · OK (skipped=2)
+
+    (d) yardimci arac YON olmadan REDDEDIYOR
+        HATA: --uygula icin YON zorunludur (--repodan ya da --canlidan).
+        cikis=2
+    ```
+    ⚠ (b)'de simülasyon için seçilen dosya, D-189'da **gerçekten ayrışmış olan**
+    dosyadır — kapı tam o vakayı yakalıyor.
+  - ⚠ **KENDİ HATAM:** "otomatik onarım yok" kilidini önce **düz metin**
+    aramasıyla yazdım ve test **kendi yasak listesini** yakalayıp düştü
+    (öz-referans). **AST**'ye çevrildi: artık yalnız gerçek `ast.Call`
+    düğümlerine bakıyor — hem tuzak kalktı hem kontrol keskinleşti.
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 636 tests in 52.392s / OK   (630 -> 636)
+    git diff HEAD -- codes/       BOS
+    ```
+  - **NOT — D-190 (T113) ile ilişki:** kalıp **mekanik** olduğu için "14 betik
+    aynalanır" kararı uygulandığında **hiçbir düzenleme gerekmez**; çift sayısı
+    37 → 51'e kendiliğinden çıkar ve yeni çiftler anında kilit altına girer.
+    Elle liste tutmamanın somut faydası budur.
+  - ⚠ **DOĞRULANAMADI:** 🔴 **koruma yalnızca BU makinede var** — `skipTest`
+    kararı bilinçli ama bedeli gerçek; başka makinede kapı **hiç koşmaz**,
+    "yeşil" görmek koruma çalıştı demek **değildir** (`skipped` sayısına
+    bakılmalı) · yalnız `*.py` kıyaslanıyor (`.md`/`.sh`/`.yaml` kapsam dışı) ·
+    68 `.py` yalnız canlıda ve bu test onlar hakkında hiçbir şey söylemez
+    (T113) · `olcum_ayna.py`nin **kopyalama dalı çalıştırılmadı** (bugün ayrışan
+    çift yok) · test **ad eşitliğine** dayanır, farklı adla duran aynı betiği
+    yakalayamaz.
     **Varsayılan yön YOKTUR.**
   - **YAPILMAYACAK:** ayna silinmeyecek · otomatik/sessiz senkron kurulmayacak
     (yanlış yönde kopyalamak D-166'nın düzeltmesini **geri alırdı**) ·
     **T104 bu karara bağlanır ama otomatik çözülmez** (orada doğru kopya
     **pakettekidir**; yön kararı ayrıdır).
-- [ ] **T113 — 46 numaralı betik SÜRÜM KONTROLÜ DIŞINDA, ve izlenen üretim kodu onlardan birine BAĞIMLI** · `O:
+  - ✅ **KAPANDI · 2026-08-19 · `REVIEW_LOG.md` D-191 (amele) / D-192 (mimar).**
+    `tests/test_olcum_ayna_senkronu.py` (6 test) + `scripts/olcum_ayna.py`.
+    Kapılar (mimar koştu): **636 OK** (630 → +6) · **15/15** ·
+    `git diff codes/` **BOŞ** · ayna **51/51 · AYRIŞAN 0**.
+  - **Üç ayrıntı özellikle iyi:** *yön iddiası AST ile kilitlenmiş* ("test
+    dosyası kopyalama çağrısı içermez" diye ayrı test — "otomatik onarım yok"
+    bir yorum değil, mekanik doğrulama) · *pozitif kontrol gerçek dosyalara
+    dokunmuyor* (geçici dizinlerde) · *`shallow=False` gerçekten içeriğe
+    bakıyor mu* diye **ayrı** test (aynı boyut, farklı içerik — `filecmp`in
+    varsayılanı boyut kıyasıdır, bu tuzağa düşülseydi test sessizce boş olurdu).
+  - ⚠ Amele mimarın sayımını **düzeltti**: repo aynasında **37** `.py`, canlıda
+    **105**, yalnız canlıda **68**. Mimarın "46"sı **numaralı** betikleri
+    sayıyordu (canlıda 82, repoda 36). İkisi de doğru, **farklı kapsam**.
+- [x] **T113 — KAPANDI · 14 betik arşivlendi, depo bütünlüğü kırığı kapandı, ve izlenen üretim kodu onlardan birine BAĞIMLI** · `O:
 avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T112 ölçümünün yan bulgusu)
   - Aynalama **#48'den sonra** başlamış; `01`–`47` arası (ve 49-53, 55, 57-59)
     **hiç aynalanmamış**. Ölçüldü: canlıda **82** numaralı betik, repoda **36**.
@@ -5648,6 +5722,22 @@ avitas-local-train` **tümüyle** yedek
   - **UYGULAMA:** 14 betik `scripts/olcum/` altına **içerik değiştirilmeden**
     kopyalanır · T112'nin kimlik testi onları **kendiliğinden** kapsar ·
     hiçbir ölçüm sayısı değişmez (**arşivleme**, ölçüm değil).
+  - ✅ **KAPANDI · 2026-08-19 · `REVIEW_LOG.md` D-192 §3 · uygulayan MİMAR.**
+    🔴 **Birleşik emrin bu yarısı ameleden gelen işte YAPILMAMIŞTI** (kopyalanan
+    dosya 0, ayna çifti 37 — 51 olmalıydı). Amele T113'e atıf yapmış ama
+    yapılacak iş olarak değil, başka görev olarak ele almış. Mimar kapattı.
+  - 14 betik `scripts/olcum/` altına **içerik değiştirilmeden** kopyalandı ve
+    her biri `filecmp.cmp(shallow=False)` ile **BİREBİR** doğrulandı.
+    Ayna çifti **37 → 51**.
+  - 🔴 **DEPO BÜTÜNLÜĞÜ KIRIĞI KAPANDI:** `scripts/copy_paste_augmentation.py`
+    artık `51_sentetik_arena.py`ye **versiyonlu** bir kopya üzerinden bağlı.
+  - ⚠ **Madde 7 notu:** bu kod yazma değil **arşivleme** (karar D-190'da zaten
+    verilmişti). Kendi işini kendi onaylamamak için doğrulama **amelenin yazdığı
+    teste** bırakıldı: `test_olcum_ayna_senkronu` → **6 test OK, 51/51**.
+  - ⚠ **32 aynasız betik bilerek aynalanmadı** (D-190 (C)) — onlar **yedek**
+    ihtiyacıdır, sürüm kontrolü değil. `O:
+avitas-local-train` tümüyle yedek
+    listesinde.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
