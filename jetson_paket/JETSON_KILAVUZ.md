@@ -343,15 +343,26 @@ jetson_paket/
 
 Jetson'da klasör yapısını koru:
 ```bash
-mkdir -p ~/navitas/{codes,comms,scripts,models,data}
+mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
 cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py ~/navitas/codes/
 cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py ~/navitas/comms/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
+cp config/model_registry.json ~/navitas/config/
 cp -r test_goruntuleri ~/navitas/data/
 ```
 
 `jetson_fps.py` yolları `parents[1]/codes` üzerinden kurar — bu yapı şart.
+
+> 🔴 **`config/model_registry.json` BİR ÖNERİ DEĞİL, ZORUNLULUKTUR** (T103 ·
+> `REVIEW_LOG.md` D-177/D-178). `load_model` yüklediği ağırlığı kayıt
+> defteriyle karşılaştırır ve **fail-closed**tur: defter yoksa
+> `model_kayit_dogrula` `"kayit_defteri_yok"` der ve yükleme
+> `RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ` ile **düşer**. Bu koruma
+> T73'te bilerek kuruldu — sahada yanlış ağırlıkla uçmayı engeller.
+> Defteri kopyalamadan çalıştırmanın tek yolu `--kayit-dogrulamasiz`'dır ve
+> **o bayrak tam bu korumayı kapatır**; saha koşumunda kullanılmaz.
+> Defter ayrıca `imgsz`i de taşır: `INFER_SIZE` oradan türer (S5 · D-176).
 
 ---
 

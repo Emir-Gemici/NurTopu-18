@@ -11,8 +11,17 @@ from pathlib import Path
 
 
 KOK = Path(__file__).resolve().parents[1]
-PAKET_KOD = KOK / "jetson_paket" / "kod"
+PAKET = KOK / "jetson_paket"
+PAKET_KOD = PAKET / "kod"
 KOPYALAR = {
+    # 🔴 KAYIT DEFTERI — T103 · REVIEW_LOG D-177. Paket bunu TASIMIYORDU ve
+    # kilavuza gore kurulan bir Jetson MODEL YUKLEYEMIYORDU:
+    #     model_kayit_dogrula -> False | durum "kayit_defteri_yok"
+    #     load_model -> RuntimeError: ... fail-closed
+    # Tek calistirma yolu `--kayit-dogrulamasiz` idi, o da T73'te BILEREK
+    # kurulan yanlis-model korumasini kapatir. Hedef `kod/` DEGIL `config/`:
+    # `rpi_inference` defteri `_here.parent / "config" / ...` diye arar.
+    KOK / "config" / "model_registry.json": PAKET / "config" / "model_registry.json",
     KOK / "codes" / "karar_sozlesmesi.py": PAKET_KOD / "karar_sozlesmesi.py",
     KOK / "codes" / "rpi_inference.py": PAKET_KOD / "rpi_inference.py",
     KOK / "codes" / "costmap_path_finder.py": PAKET_KOD / "costmap_path_finder.py",
@@ -31,6 +40,9 @@ def paketi_hazirla():
     for kaynak, hedef in KOPYALAR.items():
         if not kaynak.is_file():
             raise FileNotFoundError(f"kanonik paket kaynagi yok: {kaynak}")
+        # Hedef `kod/` disinda da olabilir (T103: `config/`). Dizin yoksa
+        # olusturulur; raporlama ve `copy2` akisi DEGISMEZ.
+        hedef.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(kaynak, hedef)
         print(f"[JETSON_PAKET] {kaynak.relative_to(KOK)} -> "
               f"{hedef.relative_to(KOK)}")

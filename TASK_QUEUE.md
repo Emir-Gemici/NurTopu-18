@@ -5097,7 +5097,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     regresyon aranmadı (D-173 DOĞRULANAMADI #1).
   - ⚠ Talimat uyumu: bu turda **commit atılmadı, izin beklendi** — geçen turdaki
     sapma tekrarlanmadı.
-- [ ] **T103 — Saha paketi kılavuza göre kurulursa MODEL YÜKLEYEMİYOR: `config/model_registry.json` paketlenmiyor** · `scripts/jetson_paket_hazirla.py:15`, `jetson_paket/JETSON_KILAVUZ.md:345` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-177 §2**
+- [x] **T103 — KAPANDI · Saha paketi `config/model_registry.json`'u taşıyor** · `scripts/jetson_paket_hazirla.py:15`, `jetson_paket/JETSON_KILAVUZ.md:345` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-177 §2**
   - Ölçüldü (`jetson_paket/kod` içinde gerçek koşum):
     ```text
     model_kayit_dogrula -> False | durum "kayit_defteri_yok"
@@ -5120,6 +5120,73 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     yasaklamaz. Yine de o notu **güncelle**, çelişki bırakma.
   - **KAPI:** paketlenmiş düzende `load_model()` başarılı · `INFER_SIZE` uyarısı
     **susuyor** · `test_rota_sentetik` 15/15 · `unittest discover` ≥ 614 OK.
+
+  - ✅ **YAPILDI · 2026-08-19 · Claude-2** · kayıt `REVIEW_LOG.md` **D-178**.
+    Yeni dizin: **`jetson_paket/config/`**.
+  - **ÖNCE / SONRA** (ikisi de `jetson_paket/kod` içinde gerçek koşum):
+    ```text
+    olcum                 ONCE                          SONRA
+    import uyarisi        VAR (defter okunamadi)        YOK
+    model_kayit_dogrula   False · "kayit_defteri_yok"   True · "eslesti"
+    load_model            RuntimeError (fail-closed)    BASARILI (YOLO)
+    ```
+    ```text
+    ONCE : load_model: RuntimeError -> MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed.
+    SONRA: INFER_SIZE 512 · dogrulama True | durum 'eslesti' | imgsz 512 / 512
+           load_model: BASARILI -> YOLO
+    ```
+  - **(A)** `KOPYALAR`a defter eklendi; hedef **`config/`** (kod
+    `_here.parent/"config"` arar, `kod/` DEĞİL). Kopyalayıcıya
+    `mkdir(parents=True, exist_ok=True)` eklendi; `copy2` ve raporlama akışı
+    **değişmedi**. Paketleyici koşuldu, **10 satır** rapor verdi (ilki defter).
+  - **(B)** 🔴 **İKİ KILAVUZ KOPYASI DA düzeltildi.** Emir yalnız paketteki
+    kopyayı işaret ediyordu, ama kök `JETSON_KILAVUZ.md` de sahaya yanlış ağaç
+    söylüyordu (`{codes,scripts,models,data}` — `comms` bile yok). Yalnız birini
+    düzeltmek **D-58/D-60/D-116 sapma sınıfıdır**. İkisine de `config` +
+    `cp config/model_registry.json` ve *"bu bir öneri değil ZORUNLULUK;
+    `--kayit-dogrulamasiz` tam bu korumayı kapatır"* uyarısı eklendi. Kök
+    kopyaya ayrıca *"paketteki kopya esastır, bu eskidir"* notu düşüldü.
+  - **(C)** Manifestteki *"(paket defteri taşımaz)"* ifadesi **çıkarıldı**;
+    yerine T103 güncellemesi yazıldı — paket defteri **taşır ve taşımak
+    zorundadır**, ama manifest defterin **yerine geçmez**. Diff: 1 satır.
+  - **YENİ TEST** `tests/test_jetson_paket_defteri.py` (6 test): defter var ·
+    depo defteriyle **sha256 birebir** · üretim profilini içeriyor (dosyanın
+    var olması yetmez) · `_here.parent/config` konumu doğru (hedefin `kod/`
+    **olmaması** asıl konu) · paketleyicinin `KOPYALAR`ında duruyor (elle
+    konmuş olması yetmez) · **pozitif kontrol**.
+    Mutasyon (defter kaldırıldı): **1 ERROR + 3 FAIL**. Geri alma paketleyiciyle.
+  - 🔴 **MEVCUT BİR KAPI DEĞİŞİKLİĞİ YAKALADI:**
+    `tests/test_jetson_comms_paketi.py:24` → `AssertionError: 9 != 10`.
+    Bu kusur değil, **kapının işlevi** — pakete dosya eklemek sessiz olmamalı.
+    Sayı **gevşetilmedi** (`>= 9`'a çevrilmedi), gerekçesiyle **9 → 10**
+    güncellendi. Aynı testin dosya-başına bayt eşitliği döngüsü zaten
+    `KOPYALAR`ı geziyor, yani defterin bayatlamasını da o yakalar.
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    yeni testler                  Ran 6 · OK
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 620 tests in 74.343s · OK   (614 -> 620)
+    git status                    jetson_paket/config/ OLUSTU
+    ```
+    ⚠ GPU: model çalıştırılmadı; yalnız `load_model` ağırlığı açtı.
+  - 🔴 ⚠ **DOĞRULANAMADI — EN ÖNEMLİSİ: bu ölçüm reponun `jetson_paket/`
+    dizinindedir; GERÇEK JETSON CİHAZINDA HİÇBİR ŞEY ÖLÇÜLMEDİ** (T16/T17
+    hâlâ açık). Kılavuzun `cp` komutları elle koşulmadı · `sha256` bu yolda
+    hâlâ **doğrulanmıyor** (`model_kayit_dogrula` yalnız `detay`ya yazar) ·
+    `kabul_kumesi` Windows yolu defterle sahaya gidiyor (`yks_gui` pakette
+    yok — kod okumasıyla doğrulandı, sahada koşulmadı) · iki kılavuz kopyası
+    hâlâ **ayrışık** ve eşitliklerini zorlayan bir kapı **yok** (ayrı iş).
+- [ ] **T104 — İki `JETSON_KILAVUZ.md` kopyası var ve senkronu hiçbir şey zorlamıyor** · `JETSON_KILAVUZ.md`, `jetson_paket/JETSON_KILAVUZ.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-179 §3**
+  - T103'te ikisi de elle düzeltildi (amele yakaladı), ama **ayrı dosyalar** ve
+    paketleyici kılavuzu **kopyalamıyor** (`grep -c JETSON_KILAVUZ
+    scripts/jetson_paket_hazirla.py` → **0**). Bugün düzeltilen ayrışma yarın
+    yeniden oluşur.
+  - ⚠ **YÖN ÖNEMLİ:** paket kopyası kök kopyadan **büyüktür** (32.363 > 28.940
+    bayt) — yani kök kopya **eski/eksik** olandır. Mekanik senkron kurulacaksa
+    yön **paket → kök** olmalı; ters yön **içerik kaybettirir**.
+  - **ÖNCE KARAR (mimar):** (a) kök kopya silinsin, tek kaynak paket olsun ·
+    (b) paketleyici `paket → kök` kopyalasın · (c) ikisi ayrı kalsın ama bir
+    test farkı sabitlesin. **Körlemesine kopyalama YOK.**
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python

@@ -289,14 +289,25 @@ jetson_paket/
 
 Jetson'da klasör yapısını koru:
 ```bash
-mkdir -p ~/navitas/{codes,scripts,models,data}
+mkdir -p ~/navitas/{codes,scripts,models,data,config}
 cp kod/rpi_inference.py kod/costmap_path_finder.py ~/navitas/codes/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
+cp config/model_registry.json ~/navitas/config/
 cp -r test_goruntuleri ~/navitas/data/
 ```
 
 `jetson_fps.py` yolları `parents[1]/codes` üzerinden kurar — bu yapı şart.
+
+> 🔴 **`config/model_registry.json` BİR ÖNERİ DEĞİL, ZORUNLULUKTUR** (T103 ·
+> `REVIEW_LOG.md` D-177/D-178). `load_model` **fail-closed**tur: defter yoksa
+> `model_kayit_dogrula` `"kayit_defteri_yok"` der ve yükleme
+> `RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ` ile **düşer**. Koruma
+> T73'te bilerek kuruldu; tek atlatma yolu `--kayit-dogrulamasiz` ve o bayrak
+> **tam bu korumayı kapatır** — saha koşumunda kullanılmaz.
+> ⚠ Bu kopya paketin `jetson_paket/JETSON_KILAVUZ.md` kopyasından **eskidir**
+> (orada `comms/` adımları da vardır); saha kurulumunda **paketteki** kılavuz
+> esas alınır.
 
 ---
 

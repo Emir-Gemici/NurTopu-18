@@ -21,7 +21,13 @@ from jetson_paket_hazirla import KOPYALAR
 
 class JetsonCommsPaketiTests(unittest.TestCase):
     def test_paket_kopyalari_kanonik_kaynaklarla_birebir(self):
-        self.assertEqual(9, len(KOPYALAR), "paket kopya sozlesmesi 9 dosya olmali")
+        # ⚠ SAYI BILEREK CIVILIDIR: pakete dosya eklemek/cikarmak SESSIZ
+        # olmamalidir. T103'te 9 -> 10 oldu; eklenen
+        # `config/model_registry.json`dur (REVIEW_LOG D-178). Bu kapi
+        # degisikligi YAKALADI ve dogru davrandi — gevsetilmedi, GUNCELLENDI.
+        self.assertEqual(10, len(KOPYALAR),
+                         "paket kopya sozlesmesi 10 dosya olmali "
+                         "(9 .py + config/model_registry.json · T103)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")

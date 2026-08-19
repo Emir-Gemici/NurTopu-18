@@ -14367,3 +14367,228 @@ kapandiginda uyari kendiliginden susar.
   3. `cikarim_boyu` ortak cozucusu HICBIR uretim cagri yerinden
      kullanilmiyor (bugun `--imgsz` yolu yok); ileride acilacak yolun
      oradan gecmesi bir SOZLESMEDIR, kod tarafindan zorlanmaz.
+
+### D-178 · ✅ T103 KAPANDI · Saha paketi artik KAYIT DEFTERINI tasiyor — kilavuza gore kurulan Jetson MODEL YUKLEYEBILIYOR
+Yazan/olcen: Claude 2 (amele) · 2026-08-19 · gorev T103 (kullanici emri) · dayanak T73, D-116, D-176, D-177 §2
+Degisen: `scripts/jetson_paket_hazirla.py` · `jetson_paket/JETSON_KILAVUZ.md` · `JETSON_KILAVUZ.md` (kok kopya) · `jetson_paket/models/jetson_derleme_manifest.json` (yalniz NOT) · `tests/test_jetson_paket_defteri.py` (YENI, 6 test) · `tests/test_jetson_comms_paketi.py` (sayi 9 -> 10)
+Yeni dizin: `jetson_paket/config/`
+
+---
+## 1. KUSUR BIREBIR DOGRULANDI (ONCE)
+
+`jetson_paket/kod` icinde, duzeltmeden ONCE:
+
+    UYARI: kayit defterinden `imgsz` okunamadi; INFER_SIZE yedek degere
+           dusuldu (512). TEK KAYNAK config/model_registry.json'dur.
+    INFER_SIZE: 512
+    dogrulama : False | durum 'kayit_defteri_yok'
+    load_model: RuntimeError -> MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed.
+
+Mimarin olcumu (D-177 §2) AYNEN dogrulandi. Kilavuza gore kurulan bir Jetson
+model YUKLEYEMIYORDU; tek calistirma yolu `--kayit-dogrulamasiz` idi ve o
+bayrak T73'te BILEREK kurulan yanlis-model korumasini kapatir. Yani saha ya
+HIC kosuyordu ya da KORUMASIZ kosuyordu.
+
+⚠ Bu S5'in URETTIGI bir kusur DEGILDIR: zorunluluk T73'te geldi, kilavuza ve
+paketleyiciye yansitilmadi; S5 (D-176) yalnizca GORUNUR kildi.
+
+---
+## 2. YAPILAN
+
+**(A) Paketleyici.** `scripts/jetson_paket_hazirla.py::KOPYALAR`a eklendi:
+
+    KOK / "config" / "model_registry.json" -> PAKET / "config" / "model_registry.json"
+
+⚠ Hedef `kod/` DEGIL `config/`: `rpi_inference` defteri
+`_here.parent / "config" / "model_registry.json"` diye arar. Kopyalayiciya
+`hedef.parent.mkdir(parents=True, exist_ok=True)` eklendi; `shutil.copy2`
+akisi ve raporlama davranisi DEGISMEDI.
+
+**(B) Kilavuz.** `mkdir` satirina `config` eklendi ve kopyalama satiri
+yazildi; ayrica NEDEN'i acikca yazan bir uyari blogu konuldu ("bir oneri
+degil, ZORUNLULUK; `--kayit-dogrulamasiz` tam bu korumayi kapatir").
+
+🔴 **IKI KILAVUZ KOPYASI DA DUZELTILDI.** Emir yalniz `jetson_paket/`
+kopyasini isaret ediyordu, ama depoda IKI kopya var ve kok kopya da sahaya
+yanlis dizin agaci soyluyordu (`mkdir -p ~/navitas/{codes,scripts,models,data}`
+— `comms` de yoktu). Yalniz birini duzeltmek D-58/D-60/D-116'nin sapma
+sinifidir. Kok kopyaya ayrica "bu kopya paketinkinden ESKIDIR, saha
+kurulumunda PAKETTEKI esas alinir" notu dusuldu.
+
+**(C) Manifest notu.** `jetson_derleme_manifest.json::_t76` icindeki
+"(paket defteri tasimaz)" ifadesi CIKARILDI ve yerine T103 guncellemesi
+yazildi: paket artik defteri TASIR ve tasimak ZORUNDADIR; notun asil soyledigi
+sey (manifest defterin YERINE GECMEZ, surum adinin tek kaynagi defterdir)
+gecerliligini KORUR. Diff: 1 satir.
+
+**(D) Paketleyici kosuldu** — cikti asagida.
+
+---
+## 3. KAPI — SONRA
+
+Paketleyici raporu (10 satir, ilki yeni):
+
+    [JETSON_PAKET] config\model_registry.json -> jetson_paket\config\model_registry.json
+    [JETSON_PAKET] codes\karar_sozlesmesi.py -> jetson_paket\kod\karar_sozlesmesi.py
+    [JETSON_PAKET] codes\rpi_inference.py -> jetson_paket\kod\rpi_inference.py
+    [JETSON_PAKET] codes\costmap_path_finder.py -> jetson_paket\kod\costmap_path_finder.py
+    [JETSON_PAKET] scripts\jetson_fps.py -> jetson_paket\kod\jetson_fps.py
+    [JETSON_PAKET] comms\protocol.py -> jetson_paket\kod\protocol.py
+    [JETSON_PAKET] comms\link.py -> jetson_paket\kod\link.py
+    [JETSON_PAKET] comms\iha_sender.py -> jetson_paket\kod\iha_sender.py
+    [JETSON_PAKET] comms\inis_kaniti.py -> jetson_paket\kod\inis_kaniti.py
+    [JETSON_PAKET] comms\iha_inis_yayinci.py -> jetson_paket\kod\iha_inis_yayinci.py
+
+Paketlenmis duzende (`jetson_paket/kod` icinde) gercek kosum:
+
+    INFER_SIZE: 512                      <- UYARI BASILMIYOR
+    dogrulama : True | durum 'eslesti' | imgsz 512 / 512
+    load_model: BASARILI -> YOLO
+
+**ONCE/SONRA yan yana:**
+
+    olcum                 ONCE                          SONRA
+    import uyarisi        VAR (defter okunamadi)        YOK
+    model_kayit_dogrula   False · "kayit_defteri_yok"   True · "eslesti"
+    load_model            RuntimeError (fail-closed)    BASARILI (YOLO)
+
+---
+## 4. TEST — `tests/test_jetson_paket_defteri.py` (6 test)
+
+    1. paket kayit defterini TASIYOR
+    2. paket defteri depo defteriyle BIREBIR AYNI (sha256)
+    3. paket defteri URETIM PROFILINI iceriyor (dosya var olmasi YETMEZ)
+    4. paketlenmis duzende DEFTER BULUNUYOR (`_here.parent/config` — yani
+       hedefin `kod/` OLMAMASI testin asil konusu)
+    5. paketleyici defteri KOPYALAR listesinde tutuyor (elle konmus olmasi
+       yetmez; depo defteri degisince paket bayatlamamali)
+    6. POZITIF KONTROL: var olmayan yol icin ayni kontroller DUSER
+
+**MUTASYON KANITI** — paket defteri kaldirilarak:
+
+    ERROR: test_paket_defteri_URETIM_PROFILINI_iceriyor
+           FileNotFoundError: ...jetson_paket\config\model_registry.json
+    FAIL : test_paket_defteri_depo_defteriyle_BIREBIR_AYNI
+    FAIL : test_paket_kayit_defterini_TASIYOR
+    FAIL : test_paketlenmis_duzende_DEFTER_BULUNUYOR
+
+Geri alma paketleyiciyle yapildi (dosya yeniden uretildi), `git checkout`
+KULLANILMADI.
+
+---
+## 5. 🔴 MEVCUT BIR KAPI DEGISIKLIGI YAKALADI — VE DOGRU DAVRANDI
+
+Tam kume kosuldugunda `tests/test_jetson_comms_paketi.py:24` DUSTU:
+
+    AssertionError: 9 != 10 : paket kopya sozlesmesi 9 dosya olmali
+
+Bu bir kusur DEGIL, kapinin ISLEVIDIR: pakete dosya eklemek/cikarmak SESSIZ
+olmamali. Sayi **gevsetilmedi** (`>= 9` gibi bir seye cevrilmedi), gerekcesiyle
+**9 -> 10** guncellendi ve yorumda T103/D-178 dayanagi yazildi. Ayni testin
+dosya-basina bayt esitligi dongusu zaten `KOPYALAR`i geziyor, yani defterin
+bayat kalmasini da o yakalar.
+
+---
+## 6. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    paketlenmis duzen        INFER_SIZE 512 · "eslesti" · load_model BASARILI
+    once (pozitif kontrol)   RuntimeError: MODEL KAYIT DOGRULAMASI BASARISIZ
+    yeni testler             Ran 6 · OK
+    mutasyonda               1 ERROR + 3 FAIL (yukarida)
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 620 tests in 74.343s
+        OK      (614 -> 620; artis 6 yeni test, HIC dusme yok)
+    git status: `jetson_paket/config/` OLUSTU
+
+⚠ GPU: bu gorev model CALISTIRMADI; yalniz `load_model` agirligi acti.
+
+---
+## 7. DOGRULANAMADI / ACIK KALAN
+
+  1. 🔴 **BU OLCUM REPONUN `jetson_paket/` DIZININDEDIR. GERCEK JETSON
+     CIHAZINDA HICBIR SEY OLCULMEDI** (T16/T17 hala acik). "Kilavuza gore
+     kurulan Jetson artik model yukleyebilir" ifadesi, kilavuzun tarif ettigi
+     DIZIN DUZENININ repo icinde taklit edilmesiyle dogrulanmistir; gercek
+     cihazda kurulum, ARM tekerlekleri, TensorRT ve dosya izinleri
+     SINANMAMISTIR.
+  2. **Kilavuzun `cp` komutlari ELLE KOSULMADI.** `~/navitas/...` hedefine
+     kopyalama simule edilmedi; yalniz paket kaynagindaki duzen sinandi.
+     Kilavuzdaki komut satirlari SOZDIZIMSEL olarak denetlenmedi.
+  3. **`sha256` bu yolda hala DOGRULANMIYOR.** `model_kayit_dogrula` onu
+     yalniz `detay`a yazar; kiyas `model_registry.py:53`tedir ve
+     `rpi_inference` onu kullanmaz (mimarin notu, bagimsiz dogrulanmadi).
+     Yani paket defteri dogru YERDE ama agirligin ICERIGI bu yolda
+     sinanmiyor.
+  4. **`kabul_kumesi` Windows yolu** defterle birlikte sahaya gidiyor
+     (`O:/navitas-local-train/...`). Mimarin notuna gore onu yalniz
+     `comms/yks_gui.py` okur ve `yks_gui` pakette YOKTUR — bu KOD OKUMASIYLA
+     dogrulandi (paket icerigi listesinde `yks_gui` yok), ama sahada
+     kosulmadi.
+  5. **Kok `JETSON_KILAVUZ.md` ile paket kopyasi HALA AYRISIK** (icerik
+     olarak); ikisi de duzeltildi ama BIRLESTIRILMEDI. Iki kopyanin esitligini
+     zorlayan bir kapi YOKTUR — ayri bir is.
+
+### D-179 · 🔎 T103 DENETIMI (MIMAR) · ONAYLANDI — saha paketi artik model YUKLEYEBILIYOR; amele IKI KILAVUZ ayrismasini KENDI yakaladi
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev T103 · denetlenen kayit D-178 (Claude 2, amele)
+
+## 1. ASIL KAPI — KENDIM KOSTUM
+
+`jetson_paket/kod` icinde, duzeltmeden SONRA:
+
+    INFER_SIZE = 512                       (UYARI BASILMIYOR)
+    model_kayit_dogrula -> True | "eslesti" | beklenen_imgsz 512 · calisan 512
+    load_model          -> BASARILI: YOLO
+
+ONCE (D-177 §2, benim olcumum): `load_model -> RuntimeError: MODEL KAYIT
+DOGRULAMASI BASARISIZ — fail-closed`. **Kusur gercekten kapandi.**
+
+    kapi                              sonuc
+    unittest discover -s tests        620 OK  (614 -> +6)
+    codes/test_rota_sentetik.py       15/15
+    defter senkronu                   diff -q -> BIREBIR
+    paketleyici raporu                10 satir, ilki defter
+
+**MUTASYON KONTROLUNU KENDIM KOSTUM:** `jetson_paket/config/model_registry.json`
+gecici olarak kaldirildi -> `Ran 6 tests · FAILED (failures=3, errors=1)`.
+Dosya geri konuldu, senkron yeniden dogrulandi. **Test bos degil.**
+
+## 2. ✅ AMELENIN KENDI YAKALADIGI: IKI KILAVUZ KOPYASI
+
+Emir yalniz `jetson_paket/JETSON_KILAVUZ.md`i isaret ediyordu. Amele depoda
+IKI kopya oldugunu gordu ve kok kopyanin da sahaya YANLIS dizin agaci
+soyledigini fark etti (`mkdir -p ~/navitas/{codes,scripts,models,data}` —
+`comms` de yoktu). Ikisini de duzeltti ve kok kopyaya "paketteki esastir"
+notu dusuruldu.
+
+**Ben de bunu bagimsiz gordum ve ayni sonuca vardim** (iki dosya 28.940 vs
+32.363 bayt, `diff` FARKLI); amele benden once yakalamis. Yalniz birini
+duzeltmek D-58/D-60/D-116 sapma sinifi olurdu.
+
+## 3. ⚠ KALAN: KILAVUZ SENKRONUNU HICBIR SEY ZORLAMIYOR
+
+Iki kopya hala AYRI dosyadir; paketleyici kilavuzu KOPYALAMIYOR
+(`grep -c JETSON_KILAVUZ scripts/jetson_paket_hazirla.py` -> 0). Amele bir NOT
+dusurdu ("paketteki esastir") ama not bir MEKANIZMA DEGILDIR — bugun
+duzeltilen ayrisma yarin yeniden olusabilir.
+
+⚠ Yon ONEMLI: paket kopyasi kok kopyadan BUYUKTUR (32.363 > 28.940), yani kok
+kopya ESKI/EKSIK olandir. Mekanik senkron kurulacaksa yon **paket -> kok**
+olmalidir; ters yon ICERIK KAYBEDER. Bu bir karar isidir, kor kopyalama
+degil. **T104 acildi.**
+
+## 4. USUL
+
+Amele bu turda da commit atmadi, izin bekledi. Manifest notunu tek satirlik
+bir diff'le duzeltti (ifadeyi cikardi, notun gecerli kalan kismini korudu) —
+kapsam disina tasmadi.
+
+**DOGRULANAMADI**
+  1. 🔴 **GERCEK Jetson cihazinda hicbir sey olculmedi.** Butun olcumler
+     reponun `jetson_paket/` dizinindedir. Cihazda `~/navitas/config/`in
+     olusup olusmadigi ancak T16/T17'de gorulur.
+  2. Sahada bugune kadar `--kayit-dogrulamasiz` ile mi kosuldugu BILINMIYOR;
+     gecmis kosumlarin hangi korumayla yapildigi geriye donuk saptanamaz.
+  3. Paketin ONNX/`.engine` tarafi bu turda ELE ALINMADI.
