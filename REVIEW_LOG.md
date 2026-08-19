@@ -16890,3 +16890,76 @@ HENUZ ISLENMEYENLER (ham dosyada duruyor, sonraki oturum isi):
  - Kuyruk durum satirlari + gorev onerileri (2 korumasiz dosya için)
 ⚠ Bu kontrol noktasinda KAPILAR YENIDEN KOSULMADI (kota); tur kod
 DEGISTIRMEDI (git status: codes/ + config/ TEMIZ dogrulandi).
+
+---
+
+### D-209 · ⚖ MIMAR DENETIMI · 198 AJANLIK TURUN IKI "KORUMASIZ TEST" BULGUSU — ikisi de DOGRU; ve biri RAPOR EDILDIGINDEN AGIR
+Tarih: 2026-08-20 · Denetleyen: Claude 1 (mimar) · Denetlenen: D-208 bulgu 3 (Fable 5)
+Kapilar mimar tarafindan kosuldu (tur kota nedeniyle kosmamisti): **655 OK · 15/15 · `codes/` + `config/` temiz**
+
+#### 1. `tests/test_costmap_on_images.py` — DOGRULANDI
+
+    grep -cE "TestCase|def test_"  ->  0
+    unittest discover -p test_costmap_on_images.py  ->  Ran 0 tests · NO TESTS RAN
+
+`tests/` altinda duruyor, ad kaliba uyuyor, **sifir test topluyor**. D-170'in
+birebir tekrari (o vakada da test VARDI ama kosmuyordu). Kusur sinifi:
+*"kapi var gorunuyor, aslinda yok"*.
+
+#### 2. `tests/test_rota_serit_etiketi.py` — DOGRULANDI, VE DAHA AGIR
+
+⚠ **Once kendi hatam:** ilk denememde YANLIS yeri mutasyona ugrattim
+(`:1067` `baskin_serit` HESABI, `max` -> `min`). O mutasyon **1/21 dusurdu** —
+`test_ayirt_edici_sahne_darbogaz_kazanir_baskin_kaybeder`. Bu sonuca bakip
+"amele yaniliyor" diyecektim. **Diyemem: amelenin hedefi baskaydi.** Ham
+ciktisindan (`results/filo_turu/ham_filo3_ek.json`) tam mutasyonu okudum ve
+onu kostum:
+
+    MUTASYON  codes/rpi_inference.py:1349
+              open_path = olcum["darbogaz_serit"]  ->  olcum["baskin_serit"]
+              (YAYINLANAN road, darbogaz yerine BASKIN seride baglandi)
+
+    iddia edilen dosya  : Ran 21 tests · OK        <- 0/21, amele HAKLI
+    TUM TAKIM           : Ran 655 tests · FAILED (failures=1)
+
+**Tek dusen test:** `test_jetson_comms_paketi.test_paket_kopyalari_kanonik_
+kaynaklarla_birebir (hedef='rpi_inference.py')` — yani **BAYT KIMLIGI** testi.
+`rpi_inference.py`de **herhangi bir** duzenleme yapsam yine duserdi. Davranis
+hakkinda **hicbir sey** soylemiyor.
+
+🔴 **Sonuc: yayinlanan `road` sozlesmesinin 655 testte DAVRANISSAL koruyucusu
+YOK.** Amele "dosya korumasiz" dedi; olculen sey **sistem korumasiz**.
+
+**Neden onemli:** `road` telsizle giden alandir. `comms/protocol.py:51` onu
+paketler, `comms/yks_gui.py:645` hakem ekraninda **acik seridi** ondan okur.
+Darbogaz seridi yerine baskin serit yayinlanirsa hakem **aracin gitmedigi
+seridi** acik sanir — ve hicbir davranis testi bunu yakalamaz. (T96 IKA'nin
+`road`u SAYISAL olarak tuketmedigini olcmustu; YKS tuketiyor.)
+
+#### 3. RAPORLAMA DISIPLINI — 198 AJANLIK OLCEGIN ILK BEDELI
+
+Amelenin kaydi mutasyonu ve `0/21`i dogru yazmis ama **takim sonucunu
+yazmamis**. Dosya bazli supurmede bu ayrim belirleyicidir:
+
+    dosya dustu / takim dustu   -> kapi YANLIS DOSYADA, sistem korunuyor
+    dosya OK   / takim dustu    -> baska bir dosya koruyor
+    dosya OK   / takim OK       -> SISTEM KORUMASIZ            <- buradaki durum
+
+Ucu ayirt etmek icin takim kosumu **zorunlu**. Kosulmadigi icin bulgu
+"orta siddetli" gorundu; olctugumde **en agir kategoriye** dustu.
+
+**Kural (bundan sonra baglayici):** mutasyon supurmesinde her satir
+`dosya: <dusen>/<toplam> · takim: <dusen>/655` bicimindedir. Takim sutunu
+bos birakilamaz.
+
+#### 4. KENDI HATAMDAN CIKAN DERS
+
+Yanlis mutasyonla amelenin bulgusunu **curutecektim**. Beni durduran sey
+amelenin ham ciktiyi repoya birakmis olmasiydi (`results/filo_turu/`). Ozet
+yeterli olsaydi yanlis hukum verirdim. **Ham cikti repoya birakilmaya devam
+edecek** — ozet denetlenebilir degildir, ham cikti denetlenebilirdir.
+
+#### 5. ACILAN GOREVLER
+
+  · **T119** — yayinlanan `road` sozlesmesine DAVRANISSAL kapi (bu mutasyon dussun)
+  · **T120** — `tests/test_costmap_on_images.py` sifir test topluyor

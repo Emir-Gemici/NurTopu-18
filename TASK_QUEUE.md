@@ -5459,6 +5459,37 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     dengesizliği · RescueNet etiket kalitesi · çözünürlük/imgsz · güven eşiği.
   - ⚠ "En makul olan" değil **ölçülen** kazanır.
 
+- [ ] **T119 — 🔴 Yayınlanan `road` sözleşmesinin 655 testte DAVRANIŞSAL koruyucusu YOK** · `codes/rpi_inference.py:1349`, `tests/test_rota_serit_etiketi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-209 §2**
+  - **Ölçüldü (mimar koştu).** `open_path = olcum["darbogaz_serit"]` →
+    `olcum["baskin_serit"]` mutasyonu:
+    ```text
+    tests/test_rota_serit_etiketi.py : Ran 21 · OK        (0/21)
+    TÜM TAKIM                        : FAILED (failures=1)
+    tek düşen: test_jetson_comms_paketi::..._birebir  <- BAYT KİMLİĞİ
+    ```
+    Yani düşen tek test **bayt kimliği** testidir; dosyada herhangi bir
+    düzenleme yapsam yine düşerdi. **Davranış hakkında hiçbir şey söylemiyor.**
+  - **Neden kritik.** `road` telsizle gider (`comms/protocol.py:51`) ve hakem
+    ekranı açık şeridi ondan okur (`comms/yks_gui.py:645`). Darboğaz yerine
+    baskın şerit yayınlanırsa hakem **aracın gitmediği şeridi** açık sanır.
+  - **Yap.** `_zikzak` gibi **ayırt edici** sahnede (darboğaz şerit ≠ baskın şerit)
+    yayınlanan `road` değerini doğrudan assert eden test. Alan adı değil,
+    **yayınlanan değer**.
+  - **Kapı = mutasyon:** yukarıdaki mutasyon uygulandığında bu test **DÜŞMELİ**;
+    düşmüyorsa bir şey korumuyordur. Bayt kimliği testi kanıt sayılmaz.
+
+- [ ] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
+  - ```text
+    grep -cE "TestCase|def test_"  ->  0
+    unittest discover -p test_costmap_on_images.py  ->  Ran 0 tests · NO TESTS RAN
+    ```
+  - D-170'in birebir tekrarı: ad kalıba uyuyor, keşif topluyor, **içi boş**.
+  - **Karar gerekiyor (mimar):** (a) gerçek teste çevrilsin · (b) `scripts/` altına
+    taşınsın · (c) silinsin. ⚠ Kullanıcının dosyası silinmez — (c) yalnız mimar onayıyla.
+  - ⚠ **Genel risk:** aynı sınıftan başka dosya var mı? `tests/arena_kompozit_kapisi.py`
+    ve `tests/t64_hakem_ekrani_kapisi.py` `test_` önekli **değil** — keşif onları hiç
+    toplamıyor olabilir (turun tamlık eleştirmeni işaret etti, ölçülmedi).
+
 - [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
     `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``
