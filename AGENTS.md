@@ -10,15 +10,15 @@
 | # | Ajan | Rol | Yöneten | Sistem prompt'u |
 |---|---|---|---|---|
 | 1 | **Claude 1** (Opus 5) | Başmimar, araştırmacı, denetçi | Kullanıcı | `CLAUDE.md` |
+| 1b | **Claude 2** (**Fable 5**, 2026-08-20 → 09-20) | **Başamele** (üretim kodu) **+ mimarın denetçisi** | Claude 1 (iş) · Kullanıcı (itiraz) | `CLAUDE2_WORKER.md` |
 | 2 | **Codex 1** | Amele kodlayıcı | Claude 1 | `CODEX_WORKERS.md` |
 | 3 | **Codex 2** | Amele kodlayıcı (Codex 1 ile **eş yetkili yedek**) | Claude 1 | `CODEX_WORKERS.md` |
 | 4 | **gpt-oss-120b** MXFP4 (yerel) | Red team, debugger, insan raporlayıcı | Claude 1 | `REDTEAM.md` |
 | 5 | **Qwen3-Coder-Next Q6_K** (yerel) | Temizlik ve refactoring | Claude 1 | `QWEN_CLEANUP.md` |
-| 6 | Claude 2 (Joker) | — | **Kullanıcı (manuel)** | bu protokolün dışında |
 | 7 | Gemini 3.6 Flash | — | **Kullanıcı (manuel)** | bu protokolün dışında |
 | 8 | Qwopus 35B | — | **Kullanıcı (manuel)** | bu protokolün dışında |
 
-**6–8 numaralı ajanlara Claude 1 müdahale etmez.** Onların ürettiği iş repoya girerse
+**7–8 numaralı ajanlara Claude 1 müdahale etmez.** Onların ürettiği iş repoya girerse
 Claude 1 yalnız **denetler**, yönlendirmez.
 
 ⚠ **4 ve 5 numaralı yerel modeller ASLA aynı anda yüklenmez.** Roller zaten ardışıktır
@@ -31,18 +31,18 @@ ve makine ikisini birden kaldırmıyor. Donanım ölçümleri ve çalıştırma 
 
 `Y` = yazabilir · `E` = yalnız **ekleyebilir** (mevcut satırı değiştiremez) · `D` = yalnız durum satırı · `—` = salt okuma
 
-| Yol | Claude 1 | Codex 1/2 | Red team | Qwen3-Coder |
-|---|---|---|---|---|
-| `CLAUDE.md`, `AGENTS.md`, `CONTRACTS.md`, `ARCHITECT_PLAN.md`, `RESEARCH_NOTES.md`, `TEST_SPECS.md` | **Y** | — | — | — |
-| `CODEX_WORKERS.md`, `REDTEAM.md`, `QWEN_CLEANUP.md`, `LOCAL_LLM.md` | **Y** | — | — | — |
-| `TASK_QUEUE.md` | **Y** | **D** | — | **D** |
-| `REVIEW_LOG.md` | **E** | **E** | **E** | **E** |
-| `HANDOFF.md` | **Y** | **Y** | **Y** | **Y** |
-| `codes/`, `comms/`, `simulation/`, `scripts/`, `drone/` | *(madde 7 istisnası)* | **Y** | — | **Y** |
-| `tests/` | *(istisna)* | **Y** | — | **Y** |
-| `models/`, `dataset/`, `data/`, `results/` | — | **Y** | — | — |
-| `auto_orchestrator.py`, `.codexrules` | **Y** | **Y** (görevle) | — | — |
-| Kullanıcının belgeleri (`rapor/`, `*.docx`, `*.pdf`, `*.jpeg`, `*.mp4`) | — | — | — | — |
+| Yol | Claude 1 | **Claude 2 (Fable 5)** | Codex 1/2 | Red team | Qwen3-Coder |
+|---|---|---|---|---|---|
+| `CLAUDE.md`, `AGENTS.md`, `CONTRACTS.md`, `ARCHITECT_PLAN.md`, `RESEARCH_NOTES.md`, `TEST_SPECS.md` | **Y** | — | — | — | — |
+| `CODEX_WORKERS.md`, `REDTEAM.md`, `QWEN_CLEANUP.md`, `LOCAL_LLM.md` | **Y** | — | — | — | — |
+| `TASK_QUEUE.md` | **Y** | **D** | **D** | — | **D** |
+| `REVIEW_LOG.md` | **E** | **E** | **E** | **E** | **E** |
+| `HANDOFF.md` | **Y** | **Y** | **Y** | **Y** | **Y** |
+| `codes/`, `comms/`, `simulation/`, `scripts/`, `drone/` | *(madde 7 istisnası — **2026-08-20 KAPALI**)* | **Y** | **Y** | — | **Y** |
+| `tests/` | *(istisna — **KAPALI**)* | **Y** | **Y** | — | **Y** |
+| `models/`, `dataset/`, `data/`, `results/` | — | **Y** | **Y** | — | — |
+| `auto_orchestrator.py`, `.codexrules` | **Y** | **Y** (görevle) | **Y** (görevle) | — | — |
+| Kullanıcının belgeleri (`rapor/`, `*.docx`, `*.pdf`, `*.jpeg`, `*.mp4`) | — | — | — | — | — |
 
 ### Geçici rol devri
 
@@ -178,3 +178,40 @@ Her ajan işini bitirdiğinde şunu üretir:
 | Claude 1 | kullanıcıya | Denetim sonucu + hangi kapıların **gerçekten** koşulduğu |
 
 **Ortak kural:** Çalıştırılmayan bir kapı "geçti" sayılmaz. Kanıt = komut + gerçek çıktı + çıkış kodu.
+
+---
+
+## 8. İtiraz protokolü — amelenin mimara itirazı
+
+> Anayasa madde 19. **Yalnız Claude 2 (Fable 5) kullanır.** Diğer ameleler kusur bulursa
+> `REVIEW_LOG.md`'ye kanıtıyla ekler; mimarın **kararına** itiraz kanalı bu değildir.
+
+Mimarın bir kararı (karar kaydı `K-*`, görev tanımı, ön kayıt ölçütü, kapı eşiği) **yanlış**
+görünüyorsa Fable 5 şunu üretir — ve **kod yazmadan önce** üretir:
+
+```
+İTİRAZ · <hangi karar> · <hangi dosya:satır veya D-numarası>
+1. MİMARIN İDDİASI  : <tek cümle, mimarın kendi sözleriyle>
+2. NEDEN YANLIŞ     : <tek cümle>
+3. KANIT            : koşulan komut + GERÇEK çıktı  (veya alıntılanan kod)
+4. ÖNERİ            : <ne yapılmalı>
+5. YANILIYORSAM     : <bu itirazı çürütecek ölçüm ne olurdu>
+```
+
+**5. madde zorunludur.** Kendini çürütecek ölçümü söyleyemeyen itiraz **itiraz değil, tercihtir.**
+
+### Mimarın işleyişi (bağlayıcı)
+| Gelen | Mimar ne yapar |
+|---|---|
+| Kanıt **ölçüm** içeriyor | Ölçümü **kendi koşar**. Tutarsa karar **değişir**, `REVIEW_LOG.md`'ye D-kaydı düşer ve kaydın içinde **kusurun mimara ait olduğu** açıkça yazılır. |
+| Kanıt yalnız **kod alıntısı** | Alıntı doğrulanır. Doğruysa aynı yol izlenir. |
+| Kanıt **yok** / "bence" | **Reddedilir** — ama **reddin gerekçesi yazılır**. Sessiz ret yoktur. |
+| İtiraz **haklı ama kapsam dışı** | Reddedilmez, **kuyruğa görev** olarak girer. |
+
+⚠ **Otorite argümanı iki yönde de yasaktır.** "Ben mimarım" da, "ben Fable 5'im, Opus 5'ten
+iyiyim" de kanıt değildir. Hüküm ölçümündür.
+
+### İtirazın kapatılması
+İtiraz `REVIEW_LOG.md`'ye **her hâlde** kaydedilir — kabul edilse de reddedilse de.
+Kabul edilen itiraz görev açar; reddedilen itirazın gerekçesi bir sonraki itirazın zeminidir.
+**Kaydedilmeyen itiraz tekrar eder.**

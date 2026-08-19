@@ -16028,3 +16028,83 @@ Dosya yedekten geri konuldu (`git checkout` KULLANILMADI).
      kurulum yordami kilitlendi. Baska bir bolum bayatlarsa kapi gormez.
   2. Duzeltilmis yordam GERCEK Jetson'da KOSULMADI (T16/T17).
   3. `KOPYALAR`in kendisi dogru mu diye sorgulanmadi; kapi onu OTORITE sayar.
+
+---
+
+### D-194 · MIMAR · YENI CAG DEVRI: denetim borcu izlenmiyor, ve kuyrugun yollari bozuk
+Tarih: 2026-08-20 · Yazan: Claude 1 (mimar) · Tetikleyen: kullanicinin rol degisikligi
+(Claude 2 = Fable 5, basamele + itiraz; anayasa madde 19)
+
+Rol degisikligini belgelere islerken **iki olculebilir bulgu** cikti. Ikisi de
+"belge guncellemesi" isinin yan urunu degil, kendi baslarina kusur.
+
+#### 1. DENETIM BORCU ISARETI PROJEDE **BIR KEZ** KULLANILMIS
+
+Anayasa madde 7 diyor ki: mimar zorunlu hallerde kod yazar ama **kendi kodunu
+kendi onaylamaz**. Bu disiplinin izi `REVIEW_LOG.md` icindeki "DENETIM BORCU"
+isaretidir. Sayim:
+
+    grep -ciE "denet[iI]m borcu" REVIEW_LOG.md   ->  1
+
+Tek ornek D-69 civari (T45/T52, 2026-08-12) ve **kapatilmis**: "Denetleyen:
+Claude 2 · 2026-08-12 · anayasa madde 7". Yani disiplin bir kez uygulandi,
+sonra **birakildi**.
+
+Bu arada mimar bir is daha yazdi ve **kendi onayladi**:
+
+    TASK_QUEUE.md T104 blogu:
+      "KAPANDI · 2026-08-19 · mimar"
+      "MUTASYON KONTROLU (mimar kostu)"
+
+Karsilastirma (ayni donem, ayni kuyruk):
+
+    T95  codes/costmap_path_finder.py   yazan Claude-2   denetleyen mimar   BAGIMSIZ
+    T102 tests/test_monotonluk.py       yazan Claude-2   denetleyen mimar   BAGIMSIZ
+    T110 scripts/olcum/65_...py         yazan Claude-2   denetleyen mimar   BAGIMSIZ
+    S5   codes/rpi_inference.py         yazan Claude-2   denetleyen mimar   BAGIMSIZ
+    T104 tests/test_kilavuz_...py       yazan MIMAR      denetleyen MIMAR   *** BORC ***
+
+**Yanildigim nokta ayrica kayda deger:** oturum ozetimde T95/T102/T110'u da
+kendi yazdigimi sanmisim; kuyruk satirlari bunun **yanlis** oldugunu gosteriyor.
+Yani "kim yazdi" bilgisi bellekten degil **kuyruktan** okunmali. Borc dusundugumden
+kucuk cikti — ama sifir degil.
+
+**Sonuc:** T114 acildi. Denetimi **Claude 2 (Fable 5)** yapar; mimar bu gorevi
+kendi kapatamaz. T114 yalniz "mimarin dedigini dogrula" degil, **mimarin
+olcmedigini olc** gorevidir: iki kilavuz arasinda 95 satir farkli, kapi 16'sini
+kapsiyor; kalan 79 satirda kurulumu bozacak baska bir ayrisma olup olmadigi
+**hic bakilmadi**.
+
+#### 2. KUYRUGUN 21 SATIRINDA DOSYA YOLLARI OKTAL KACISLA COKMUS
+
+    grep -cE '^avitas-local-train' TASK_QUEUE.md   ->  21
+
+Ornek (T105 satiri):
+
+    - [ ] **T105 — ...** · `O:
+    avitas-local-train5_kabul_denetcisi.py:101-111` · **KRITIK**
+
+Yol bir Python **ham olmayan** dizgeyle yazilmis; kacis dizileri cozulmus:
+
+    ters bolu + n   -> satir sonu          ("O:" ile "avitas-..." ayrilmis)
+    ters bolu + 51  -> ")"   (0o51 = 41)   51_sentetik_arena.py  -> )_sentetik_arena.py
+    ters bolu + 65  -> "5"   (0o65 = 53)   65_kabul_denetcisi.py -> 5_kabul_denetcisi.py
+    ters bolu + 56  -> "."   (0o56 = 46)   56_t53_gercek_...py   -> ._t53_gercek_...py
+    ters bolu + v   -> 0x0B  (dusey sekme) venv                  -> <VT>env
+
+Bozulma **tersine cevrilebilir**: her kacis tek bir karaktere coktugu icin
+"avitas-local-train" sonrasindaki ilk karakterden ozgun rakam cifti hesaplanir.
+T115 acildi.
+
+#### 3. AYNI KUSURU YAZARKEN **YENIDEN URETTIM** — kanit
+
+T115'i kuyruga yazarken kendi metnimde ayni sey oldu: yazdigim uc yol satirinin
+ucu de coktu (`venv` -> dusey sekme + `env`), hatta **kusuru anlatan satirin
+kendisi** kusura ugradi (`ters bolu + 51` yerine dogrudan `)` basildi).
+Uc satir da elle degil betikle onarildi (`chr(92)` ile uretilerek).
+
+**Ders.** Bu kusur "dikkat" ile onlenmiyor — arac zincirinin herhangi bir
+katmani ters boluyu yiyor. Windows yolu yazan her yerde ya ham dizge ya
+`chr(92)` ya da ileri bolu kullanilir. T115'in onarimi da **elle degil betikle**
+yapilacak ve her onarilan yolun dosyasi `test -f` ile dogrulanacak: cozulen yol
+gercekten var olmayan bir dosyayi gosteriyorsa onarim **yanlis** demektir.

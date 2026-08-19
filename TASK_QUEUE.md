@@ -5280,6 +5280,38 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     Kapılar: **642 OK** (636 → +6) · **15/15** · `git diff codes/` **BOŞ**.
   - **Bilerek yapılmadı:** iki kılavuz aynı yapılmadı · kök kopya **silinmedi**
     (`test_uretim_modeli_hizasi.py:43` ikisini de şart koşuyor).
+- [ ] **T114 — 🔴 DENETİM BORCU: T104 kodunu MİMAR yazdı ve MİMAR onayladı** · `tests/test_kilavuz_kurulum_yordami.py`, `JETSON_KILAVUZ.md` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-194**
+  - **Kim yapar:** Claude 2 (Fable 5) — anayasa madde 19, **YUKARI yön**. Mimar bu görevi kendi kapatamaz.
+  - **Kanıt.** `TASK_QUEUE.md` T104 bloğu: `✅ KAPANDI · 2026-08-19 · mimar` ve
+    `MUTASYON KONTROLÜ (mimar koştu)`. Kodu yazan ile onaylayan **aynı ajan**.
+    Karşılaştır: T95 / T102 / T110 / S5 hepsi `Claude-2` tarafından yazıldı ve **mimar** denetledi — orada bağımsızlık vardı.
+  - **Denetlenecek iddialar** (her biri **kendi ölçümünle**, mimarın çıktısını kabul etme):
+    1. Kök kılavuzun kurulum yordamı **gerçekten** bozuktu: `comms` ve `karar_sozlesmesi.py` yoktu
+       ve `codes/costmap_path_finder.py` `karar_sozlesmesi`i import ediyor. → `git show effd125^:JETSON_KILAVUZ.md` ile doğrula.
+    2. Mutasyon kontrolü **gerçekten** 6 testin 3'ünü düşürüyor. → Kılavuzu bozuk hâline çevir, testi koş, geri al.
+    3. Beklenen dosya listesi `KOPYALAR`dan **türüyor** ve elle listeye düşmüyor. → `KOPYALAR`a sahte bir dosya ekle, kapının onu **aradığını** göster, geri al.
+    4. ⚠ **En önemlisi — testin GÖREMEDİĞİ ne var:** iki kılavuz arasında **95 satır** farklı, kapı yalnız **16**'sını kapsıyor.
+       Kalan 79 satırda **kurulumu bozacak** başka bir ayrışma var mı? (sürüm numarası, model adı, dosya yolu, komut)
+       Bu ölçülmedi; mimar "dürüst sınır" diye yazıp geçti. **Ölç.**
+  - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **642 OK**
+    ve `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15**.
+  - **Çıktı:** `REVIEW_LOG.md`'ye denetim kaydı — **GEÇTİ** veya **KUSURLU**, her hâlde kanıtla.
+    Bulgu çıkmazsa da yaz: "denetlendi, bulgu yok" da bir kayıttır.
+
+- [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+  - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
+    `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``
+  - **Kök neden ÇÖZÜLDÜ (mimar):** yol bir Python **ham olmayan** dizgeyle yazılmış.
+    `
+ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters bölü + 65 → `5` (0o65=53) · ters bölü + 56 → `.` (0o56=46).
+    Yani bozulma **tersine çevrilebilir**: kaçış dizisi tek bir karaktere çöktüğü için
+    `avitas-local-train` sonrası ilk karakterden özgün rakam çifti **hesaplanır**.
+  - **Yap.** Bozuk satırları onar (`O:` + satır sonu + `avitas-...` → tek satır `O:\navitas-local-train\<özgün>`).
+    Onarımı **elle satır satır yapma** — bir betikle üret, çıktısını göz kontrolünden geçir.
+  - ⚠ **DOKUNMA:** `[HUMAN_COMPLETED]` ve `[IN_PROGRESS]` satırlarının **durum işaretine**. Yalnız yol metni onarılır.
+  - **Kapı:** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **0** · onarılan her yol için dosyanın
+    **gerçekten var olduğunu** doğrula (`test -f`); var olmayan yol çıkarsa onu **onarma**, raporla.
+
 - [ ] **T105 — Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
 avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
   - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa
