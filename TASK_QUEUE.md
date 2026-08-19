@@ -5438,6 +5438,27 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15** ·
     `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **655 OK**
 
+- [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
+  - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.
+    Denetçi `kaplama()` → payda **letterbox karesi**. 1024×576'da içerik oranı 0,5625.
+    Aynı maske: denetçi **%45,0** · üretim **%80,0**.
+  - **Sınanacak sonuç (ilan DEĞİL):** denetçinin "%45" dediği kareler üretim
+    ölçüsüyle **0,67 tavanının ÜSTÜNDE** olabilir → kabul kapılarımızın bir kısmı
+    üretim eşikleriyle **kıyaslanamaz** sayı üretiyor olabilir.
+  - **Yap:** kaplama/oran hesaplayan **her** çağrı yerinde paydayı çıkar. Üretim
+    eşiklerinin hangi paydada kalibre edildiğini kaynağına kadar izle
+    (`ZEMIN_KAPLAMA_TAVANI` 0,67 · T59 / D-84 / D-85).
+  - ⚠ **ÖNCE TARA VE ÖLÇ. EŞİK DEĞİŞTİRME** — eşik değişikliği ayrı karardır.
+  - D-201'in kendi sınırı buraya girer: %80,6 tabanının T58 zinciri koşulmadı.
+
+- [ ] **T117 — "Çatı engeldir" dersi RescueNet'ten gerçek kareye TAŞINMIYOR: neden?** · `models/`, `dataset/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-201**, hüküm **D-207**
+  - v34 RescueNet'te bina/ağaç/su/havuzu engel olarak gördü (D-199 §2, görsel) ama
+    gerçek otopark karesinde çatı hâlâ **yeşil** (D-201 A2, iki karede gözle).
+  - **Çoklu hipotez — aynı anda ölç, önceden birini seçme:** GSD/irtifa farkı ·
+    görünüm ve doku farkı (RescueNet afet sonrası, otopark temiz) · sınıf
+    dengesizliği · RescueNet etiket kalitesi · çözünürlük/imgsz · güven eşiği.
+  - ⚠ "En makul olan" değil **ölçülen** kazanır.
+
 - [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
     `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``

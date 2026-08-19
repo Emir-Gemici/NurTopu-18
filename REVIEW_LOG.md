@@ -16797,3 +16797,62 @@ kanit degildir (on kaydin kendi kaydi).
 iki lane'in YORUMUNU kalici olarak sinirladi (D-203 tohum duyarliligi,
 D-204 sifir-model). Curutuculerden ikisi kendi bagimsiz yeniden-kosumlarini
 yapti — harness bos calismadi.
+
+---
+
+### D-207 · ⚖ MIMAR HUKMU · D-201 KABUL — ve amelenin YAN NOTU ASIL BULGU: URETIM ile DENETCI FARKLI PAYDA kullaniyor (canli tutarsizlik)
+Tarih: 2026-08-20 · Hukmu veren: Claude 1 (mimar) · Dayanak: D-201 (Fable 5, 22 ajanlik tur)
+
+#### 1. D-201 KABUL
+
+T54'un hedefi ("otoparkta kaplama BELIRGIN DUSSUN") **tutmadi**. v34 ile v21
+eslesmis 67 karede fark [-0,30, +0,78] puan — yok denecek kadar kucuk; ve
+gorselde bina catisi HER IKI modelde de YESIL. RescueNet'te ogretilen "cati
+engeldir" dersi gercek otopark karelerine **tasinmiyor**. Uc bagimsiz curutucu
+bulguyu curutemedi (0/3).
+
+**T54 bu haliyle "basarili" sayilamaz.** Ama T54'un KODU (kanonik donusum, tek
+kaynak, 8 test) gecerlidir ve kalir — kusur eslemede degil, eslemenin **gercek
+kareye transferinde**.
+
+#### 2. 🔴 ASIL BULGU AMELENIN "TANI, VERDIKT DISI" DIYE ISARETLEDIGI YERDE
+
+Amele payda farkini bir **aciklama** olarak yazdi. Ben onu **canli tutarsizlik**
+olarak siniflandiriyorum, cunku iki taraf ayni ismi kullanip **baska sey** olcuyor:
+
+    URETIM   codes/karar_sozlesmesi.py:577   oran = zemin_kaplamasi(trav, icerik)
+             -> payda ICERIK KUTUSU        · tavan ZEMIN_KAPLAMA_TAVANI = 0.67
+    DENETCI  scripts/olcum/65_kabul_denetcisi.kaplama()
+             -> payda LETTERBOX KARESI     · ayni ismi tasiyor
+
+1024x576 karede icerik orani 0,5625. Yani ayni maske:
+
+    denetci    %45,0   (letterbox kare paydasi)
+    uretim     %80,0   (icerik kutusu paydasi)      = 45,0 / 0,5625
+
+**SONUCU (sinanacak, ilan degil):** denetcinin "%45" diye rapor ettigi bu
+kareler, uretim olcusuyle **0,67 TAVANININ USTUNDE**. Yani uretim bu karelerde
+`ZEMIN_MASKESI_SUPHELI` yolunu degerlendiriyor olabilir; denetci bunu
+**gormez**, cunku baska paydada bakiyor. Kabul kapilarimizin bir kismi
+uretimin karar esikleriyle **kiyaslanamaz** sayilar uretiyor olabilir.
+
+**Sinif:** "iki kopya, biri zorlanmiyor"in bir varyanti — burada iki kopya
+degil, **ayni ismin iki tanimi** var. Projede bu kusur sinifi (D-158, D-170,
+D-188, T104) ile birlikte **besinci** kez.
+
+#### 3. KARAR
+
+  a. **T54 kapanmaz**, "hedef tutmadi" olarak isaretlenir; kod teslimati kalir.
+  b. **Neden tasinmiyor** sorusu acilir (T117) — coklu hipotez, ayni anda olculur.
+  c. 🔴 **PAYDA SOZLESMESI taranir (T118)** — bu bir tek dosya isi degil, bir
+     **sozlesme** isi: kaplama/oran hesaplayan HER cagri yerinde payda ne?
+     Uretim esikleri hangi paydada kalibre edildi? Depoda 98 aday satir var.
+     ⚠ Once TARA ve OLC; esik degistirme. Esik degisikligi ayri karardir.
+  d. Amelenin kendi koydugu sinir (`%80,6`nin T58 zinciri kosulmadi) T118'e girer.
+
+#### 4. NOT — AMELENIN DISIPLINI
+
+Bulgu "verdikt disi tani" diye isaretlenmisti; yani amele onu **abartmadi**.
+Abartilmayan bulgunun mimar tarafindan buyutulmesi dogru islemedir; tersi
+(amele buyutup mimar kucultmesi) olsaydi kanit yuku amelede olurdu.
+Tamlik elestirmeninin koydugu sinirlar da kayda gecti ve gorevlere donustu.
