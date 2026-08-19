@@ -2991,7 +2991,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Denetçiye not:** kapının yeni testi yazılmadı — `tests/test_zemin_kaplama_
     kapisi.py` iki sinyalli hâli kapsamıyor. Denetim bunu da kapsamalı.
 
-- [ ] **T54 — ADIM 1-3 TESLİM · ADIM 4 (eğitim) İTİRAZDA — D-199 §4: o koşu ZATEN yapıldı, ürünü v34 (bayt-eş kanıtlı)** · `dataset/download_and_convert.py` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-67 → D-199**
+- [ ] **T54 — ADIM 1-3 KABUL · ADIM 4 GEÇERLİ SAYILDI (itiraz kabul, D-200) · HEDEFİ HÂLÂ ÖLÇÜLMEDİ → T116** · `dataset/download_and_convert.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-199**, hüküm **D-200**
   - ✅ **ADIM 1-3 · 2026-08-20 · Claude-2 (Fable 5)** · kayıt `REVIEW_LOG.md`
     **D-199** · ölçüm düzeneği: **dinamik workflow, 3 paralel ajan**
     (provenans · araç-DOTA · dağılım), çıktıları ana döngüde denetlendi.
@@ -5375,6 +5375,32 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     ve `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15**.
   - **Çıktı:** `REVIEW_LOG.md`'ye denetim kaydı — **GEÇTİ** veya **KUSURLU**, her hâlde kanıtla.
     Bulgu çıkmazsa da yaz: "denetlendi, bulgu yok" da bir kayıttır.
+
+- [ ] **T116 — 🔴 T54 KOŞULDU ama HEDEFİNE ULAŞTIĞI HİÇ ÖLÇÜLMEDİ: otopark kaplaması %80,6'dan düştü mü?** · `models/navitas_seg_v34_best.pt`, `data/raw_frames/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-200 §3**
+  - **Neden var.** T54'ün eğitimi yapıldı (ürünü v34, bayt-eş doğrulandı) ama
+    görevin **kendi kapıları** hiç ölçülmedi. `config/model_registry.json`
+    içindeki `k0..k5` **arena kabul kapılarıdır** — T54'ünkiler değil.
+    Aynı harf, **başka ölçüt**. Otopark kaplamasının düştüğüne dair defterde
+    **tek bir sayı yok**.
+  - **ÖLÇ — eğitim YOK, model ve kareler zaten elde:**
+    1. `data/raw_frames/` (67 kare, otopark) üzerinde **eşleştirilmiş** kaplama:
+       v21 · v22 · v30 · v34. Taban **%80,6** (v21/v22, D-67'de gözle doğrulanmış).
+    2. Havuz metriği **yetmez** — kare bazında dağılım ver (D-175 dersi).
+    3. **GÖZLE ZORUNLU:** bina çatısı olan bir karede v34'ün maskesi çatıyı
+       yeşile boyuyor mu? Sayı iyi görünüp görsel kötüyse **görsel kazanır**.
+    4. T54'ün diğer kapıları da aynı koşumda: K0 duyarlılık ≥ 0,50 ·
+       K1 IoU/kesinlik ≥ v22 (0,512).
+  - ⚠ **ÖN KAYIT ZORUNLU (D-107):** "belirgin düşüş"ü **sonucu görmeden** sayıyla
+    tanımla. Gördükten sonra gevşetme.
+  - ⚠ **KAPI YAPMA.** Bu bir ölçümdür. Eşiği kapıya çevirmek ayrı karardır.
+  - 🔴 **İKİNCİ İŞ — POLİGON TAVANI (D-199 §6.3, D-200 §4):**
+    `download_and_convert.py` içindeki `MAX_POLYGONS // 2 = 15` engel tavanı
+    *"engel nadirdir"* varsayımının kalıntısı. Yeni eşlemede engel **baskın**
+    (sınıf-1 22.356 / sınıf-0 3.104). Yeniden üretimde **sessizce kırpabilir**.
+    Ölç: kaç maskede engel poligon sayısı tavanı aşıyor, kırpılan alan oranı ne?
+    Kırpıyorsa tavan **ölçülmüş** bir değere bağlanmalı — çıplak sabite değil.
+  - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15** ·
+    `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **655 OK**
 
 - [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):

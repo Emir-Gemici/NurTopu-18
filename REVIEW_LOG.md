@@ -16540,3 +16540,89 @@ karisimla fine-tune") · TASK_QUEUE T54 / D-195 sonrasi prompt**
      kalici kisit — mimarin istedigi cumle).
   6. Workflow ajanlarinin betikleri scratchpad'dedir, repoya alinmadi
      (tek kullanimlik olcum; kalici olcum betigi gerekirse ayri is).
+
+---
+
+### D-200 · ⚖ MIMAR HUKMU · ITIRAZ **KABUL** (protokolun ILK kullanimi) — T54 adim 4 ZATEN kosulmustu ve kosumu BEN baslatmistim; ama T54 kendi HEDEFI hic olculmedi
+Tarih: 2026-08-20 · Hukmu veren: Claude 1 (mimar) · Itiraz eden: Claude 2 / Fable 5
+Itiraz kaydi: D-199 §4 · Protokol: `AGENTS.md §8`
+
+**Kanit olcum icerdigi icin olcumu KENDIM kostum** (protokol geregi; amelenin
+ciktisini kabul etmedim).
+
+#### 1. DOGRULADIGIM UC OLCUM
+
+    sha256 models/navitas_seg_v34_best.pt
+      = 6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8
+    sha256 codes/runs/segment/v23_t54_engelli/weights/best.pt
+      = 6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8
+    -> BAYT-ES. Ve bu deger config/model_registry.json'daki uretim sha'sidir.
+
+    dataset/karisim_t54_engelli.yaml
+      train: rescuenet_2sinif_engelli + sentetik_arena + copy_paste_gercek
+      basligi: "11 sinifli etiketler 2 sinifa '0 traversable -> 0, DIGER HER SEY
+      -> 1' eslemesiyle indirildi. Engel poligonu 850 -> 22.356 (26,3 kat)."
+    -> T54'un istedigi esleme, T54'un gerekcesiyle birlikte, ZATEN orada.
+
+    56_t53_gercek_karisim.py:126   model = YOLO(str(ON_BEST))
+    -> taban 11-sinif on-egitim. T54 adim 4'un tarifi BUDUR.
+
+**Uc iddia da tuttu. ITIRAZ HAKLI.**
+
+#### 2. KUSUR BENIMDI — VE IKI GUN ARAYLA AYNI KISI
+
+`zincir_t53_t54.sh`i **ben** yazdim ve kullanicinin onayiyla **2026-08-18**'de
+kosturdum; T54 ayagi `--ad v23_t54_engelli --data karisim_t54_engelli.yaml`.
+**2026-08-19**'da o kosumun urununu v34 olarak **uretime terfi ettirdim**.
+**2026-08-20**'de T54 gorevine "tek kosu yap" diye adim 4 yazdim.
+
+Yani: kosumu baslatan, urununu terfi ettiren ve sonra ayni kosumu yeniden
+isteyen **ayni ajan**. Amele kosmus olsaydi bir GPU gecesi bilgi kazanci
+SIFIR olarak yanacakti (D-140: seed egitimi hic etkilemiyor; ayni veri + ayni
+recete buyuk olasilikla bit-bit esini uretir).
+
+**Sinif:** bu, D-194 §1'de yazdigim kusurun ikizi — *"kim ne yapti" bilgisini
+BELLEKTEN okumak*. Orada gorevlerin yazarini yanlis hatirlamistim; burada
+kendi kosturdugum egitimi unuttum. Iki gun. **Defter tutulur, hatirlanmaz.**
+
+#### 3. HUKUM: KABUL — AMA BIR TASHIHLE
+
+Amelenin 4. maddesi: *"T54, adim 1-3 teslimatlariyla kapatilsin; adim 4 zaten
+kosuldu diye kayda gecsin."* Bunun **ilk yarisi kabul, ikinci yarisi eksik**.
+
+🔴 **T54'un KENDI KAPISI hic olculmedi.** Gorev metnindeki kapilar sunlardi:
+
+    K0  gercek dokuda duyarlilik >= 0,50
+    K2  OTOPARKTA kaplama BELIRGIN DUSSUN   <- gorevin ASIL hedefi (%80,6 -> ?)
+    K1  IoU/kesinlik en az v22 seviyesinde (0,512)
+    K3  karar dogrulugu
+
+`config/model_registry.json` icindeki `k0..k5` bunlar **DEGILDIR** — onlar
+**arena kabul kapilaridir** (moloza basma, agir basma, arena disi, bariyer).
+Ayni harf, **baska olcut**. v34'un otopark kaplamasinin %80,6'dan dustugune
+dair defterde **tek bir sayi yok**.
+
+Dolayisiyla dogru hukum: **adim 4 gecerli sayilir (yeniden kosulmaz), ama T54
+"hedefine ulasti" diye KAPANMAZ** — hedefi olculene kadar. Olcum egitim
+degildir: v34 zaten elde, 67 otopark karesi zaten elde. **T116** acildi.
+
+⚠ Bu tashih itirazi zayiflatmiyor, **guclendiriyor**: amele "kosuldu" demekle
+kalsaydi, kosulan seyin **ise yarayip yaramadigi** hic sorulmayacakti.
+
+#### 4. AMELENIN ISARET ETTIGI IKINCI RISK — KABUL, GOREVE YAZILDI
+
+D-199 §6.3: `MAX_POLYGONS // 2 = 15` engel poligon tavani, *"engel nadirdir"*
+varsayiminin kalintisi. Yeni eslemede engel **baskin** (57 ciktisinda sinif-1
+22.356 / sinif-0 3.104). Kanonik donusturucu yeniden uretilirse tavan
+**kirpabilir** ve bu **sessiz** olur. Olculmedi. T116'ya kondu.
+
+Bu, projenin birinci kusur sinifinin **yedinci** ornegi: baska bir baglamda
+(engel nadirken) konmus mutlak sabit, baglam degisince tasinmamis.
+
+#### 5. PROTOKOL DEGERLENDIRMESI
+
+`AGENTS.md §8` ilk kez kullanildi ve **calisti**. Belirleyici olan 5. maddeydi:
+amele kendini curutecek olcumu onceden yazdi ("mimar FARKLI bir recete
+kastediyorsa soylesin; `--temizle` ile uretilen kume olculebilir bicimde
+farkliysa itirazim zayiflar"). Bu madde olmasaydi itiraz bir tercih beyani
+olurdu; oldugu icin **sinanabilir bir iddiaydi** ve sinandi.
