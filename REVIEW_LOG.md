@@ -16108,3 +16108,74 @@ katmani ters boluyu yiyor. Windows yolu yazan her yerde ya ham dizge ya
 `chr(92)` ya da ileri bolu kullanilir. T115'in onarimi da **elle degil betikle**
 yapilacak ve her onarilan yolun dosyasi `test -f` ile dogrulanacak: cozulen yol
 gercekten var olmayan bir dosyayi gosteriyorsa onarim **yanlis** demektir.
+
+---
+
+### D-195 · MIMAR · T54 GOREV METNINDE SINIF ID CELISKISI — amele uygulasa VERIYI BOZARDI
+Tarih: 2026-08-20 · Yazan: Claude 1 (mimar) · Tetikleyen: kullanici T54'u onayladi,
+prompt yazilmadan once gorev metni dogrulandi
+
+**Kusur BENIMDI.** T54 gorev metnindeki "Yap 1." maddesi soyle yaziliydi:
+
+    1. `download_and_convert.py` donusumunde **bina (3-6), agac (8), su (2),
+       havuz (9)** siniflarini `1 = blocked`'a esle.
+
+Bu id'ler **11-SINIF ARA KUMESININ** id'leridir (`dataset/rescuenet_11sinif/data.yaml`).
+Ama `download_and_convert.py` **HAM RescueNet maskesini** okur:
+
+    dataset/download_and_convert.py:72-74
+    # RescueNet class IDs: 7=road-clear, 8=road-blocked, 0=background
+    road_mask    = (lbl_np == 7).astype(np.uint8)
+    blocked_mask = (lbl_np == 8).astype(np.uint8)
+
+**Iki sema farkli.** Tek kaynak `O:\navitas-local-train\41_cok_sinifli_veri.py:51-60`:
+
+    HAM -> 11sinif -> ad
+     7      0        traversable (Road-Clear)
+     8      1        blocked (Road-Blocked)
+     1      2        water
+     2      3        building_no_damage
+     3      4        building_minor
+     4      5        building_major
+     5      6        building_total_destruction
+     6      7        vehicle
+     9      8        tree
+    10      9        pool
+
+#### HARFIYEN UYGULANSA NE OLURDU (sayarak)
+
+Metindeki id'ler HAM sema sanilsa:
+
+    "bina (3-6)"  -> HAM 3,4,5,6 = building_minor, building_major,
+                     building_total_destruction, **VEHICLE**
+                     -> ARAC blocked'a girer. Oysa ayni maddede
+                        "vehicle AYRI dusun" yaziyor. Kendi kendisiyle celisiyor.
+    "agac (8)"    -> HAM 8 = road-blocked. Zaten sinif 1. Etkisiz.
+                     GERCEK agac HAM 9'dur ve DISARIDA kalir.
+    "su (2)"      -> HAM 2 = building_no_damage. Tesadufen dogru yonde,
+                     ama GERCEK su HAM 1'dir ve DISARIDA kalir.
+    "havuz (9)"   -> HAM 9 = tree. Tesadufen dogru yonde,
+                     ama GERCEK havuz HAM 10'dur ve DISARIDA kalir.
+
+**Net sonuc:** gorevin ACIKCA ayri tutmak istedigi tek sinif (arac) ICERI girerdi;
+su ve havuz DISARIDA kalirdi. Ve bu **sessizce** olurdu — uretilen etiket kumesi
+gecerli YOLO formatinda olurdu, egitim koserdi, sayilar cikardi. Kusur ancak
+gorsel denetimde ya da hic fark edilmeden gecerdi.
+
+#### SINIFLANDIRMA
+
+Bu, bu projenin **birinci tekrar eden kusur sinifidir**: *baska bir baglamdan
+kopyalanmis mutlak sabit* (D-146 taban 31, D-157 taban 258, D-159, D-163 kapsam,
+D-181 bayat taban — simdi **altinci** kez). Sabitin kendisi yanlis degil; **hangi
+semada oldugu** yazilmamis.
+
+#### DUZELTME
+
+Gorev metni yeniden yazildi: tam esleme tablosu + **TEK KAYNAK** olarak
+`41_cok_sinifli_veri.py:51-60` (`SINIF_ESLEME`) gosterildi, ve madde 16 geregi
+"bu id'leri koda ciplak sabit yazma, SINIF_ESLEME'den turet" kisiti eklendi.
+
+**Ders.** Bir gorev metnine sayi yazarken **hangi semada oldugunu** da yaz.
+"bina (3-6)" tek basina anlamsizdir; "HAM RescueNet id 2-5" anlamlidir.
+Ayni disiplin esikler icin zaten vardi (hangi kosumdan geldigini yaz); sinif
+id'leri icin de gecerli.

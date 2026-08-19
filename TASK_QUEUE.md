@@ -3007,9 +3007,40 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     bilgisi kısmen sağ kalmış · v17/v20 kör — sentetik arenada bina yok ·
     v21/v22 çatı boyuyor — bina denetimi yok.
   - **Yap:**
-    1. `download_and_convert.py` dönüşümünde **bina (3-6), ağaç (8), su (2),
-       havuz (9)** sınıflarını `1 = blocked`'a eşle. Arka plana düşürme.
-       ⚠ `vehicle (7)` ayrı düşün: DOTA OBB katmanı zaten araçları çıkarıyor
+    1. `download_and_convert.py` dönüşümünde bina · ağaç · su · havuz sınıflarını
+       `1 = blocked`'a eşle. Arka plana düşürme.
+
+       🔴 **SINIF ID DÜZELTMESİ · 2026-08-20 · mimar · `REVIEW_LOG.md` D-195.**
+       Bu maddede **önceden yanlış id'ler yazılıydı** ("bina 3-6, ağaç 8, su 2,
+       havuz 9"). O sayılar **11-sınıf ara kümesinin** id'leridir;
+       `download_and_convert.py` ise **HAM RescueNet maskesini** okur. İki şema
+       farklı. Harfiyen uygulanırsa: `vehicle` **yanlışlıkla içeri girer**
+       (ayrı tutulması gereken tek sınıf) ve **su ile havuz DIŞARIDA kalır**.
+
+       **TEK KAYNAK:** `O:\navitas-local-train\41_cok_sinifli_veri.py:51-60`
+       (`SINIF_ESLEME`). Bu tablo kodda mevcut; **yeniden yazma, oradan oku.**
+
+       ```text
+       HAM RescueNet id -> 11-sinif id -> ad                        T54 hedefi
+        7                  0             traversable (Road-Clear)   0 KALIR
+        8                  1             blocked (Road-Blocked)     1 KALIR
+        1                  2             water                      -> 1
+        2                  3             building_no_damage         -> 1
+        3                  4             building_minor             -> 1
+        4                  5             building_major             -> 1
+        5                  6             building_total_destruction -> 1
+        6                  7             vehicle                    *** AYRI ***
+        9                  8             tree                       -> 1
+       10                  9             pool                       -> 1
+       ```
+       Yani `download_and_convert.py` içinde blocked kümesi HAM id ile:
+       `{8}` ∪ `{1, 2, 3, 4, 5, 9, 10}` · `vehicle` = HAM **6**, kararı ayrı.
+
+       ⚠ **Madde 16:** bu id'leri koda çıplak sabit olarak yazma. `SINIF_ESLEME`yi
+       içe aktar ya da tek bir sözlükten türet; iki dosyada iki kopya olursa bu
+       projenin **dört kez tekrar eden** kusuru (iki kopya, biri zorlanmıyor) tekrar eder.
+
+       ⚠ `vehicle` (HAM **6**) ayrı düşün: DOTA OBB katmanı zaten araçları çıkarıyor
        (madde 15 "yalnız çıkarır"), çift sayım yapıp yapmadığını **ölç**.
     2. Kümeyi yeniden üret, sınıf dağılımını yazdır (önce/sonra).
     3. Aynı reçeteyle tek koşu: 11-sınıf ön-eğitimden başla, yeni 2 sınıflı
@@ -5280,7 +5311,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     Kapılar: **642 OK** (636 → +6) · **15/15** · `git diff codes/` **BOŞ**.
   - **Bilerek yapılmadı:** iki kılavuz aynı yapılmadı · kök kopya **silinmedi**
     (`test_uretim_modeli_hizasi.py:43` ikisini de şart koşuyor).
-- [ ] **T114 — 🔴 DENETİM BORCU: T104 kodunu MİMAR yazdı ve MİMAR onayladı** · `tests/test_kilavuz_kurulum_yordami.py`, `JETSON_KILAVUZ.md` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-194**
+- [IN_PROGRESS: Claude-2] **T114 — 🔴 DENETİM BORCU: T104 kodunu MİMAR yazdı ve MİMAR onayladı** · `tests/test_kilavuz_kurulum_yordami.py`, `JETSON_KILAVUZ.md` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-194**
   - **Kim yapar:** Claude 2 (Fable 5) — anayasa madde 19, **YUKARI yön**. Mimar bu görevi kendi kapatamaz.
   - **Kanıt.** `TASK_QUEUE.md` T104 bloğu: `✅ KAPANDI · 2026-08-19 · mimar` ve
     `MUTASYON KONTROLÜ (mimar koştu)`. Kodu yazan ile onaylayan **aynı ajan**.
@@ -5312,7 +5343,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - **Kapı:** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **0** · onarılan her yol için dosyanın
     **gerçekten var olduğunu** doğrula (`test -f`); var olmayan yol çıkarsa onu **onarma**, raporla.
 
-- [ ] **T105 — Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
+- [IN_PROGRESS: Claude-2] **T105 — Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
 avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
   - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa
     `kes = None` kalır ve `gecti["K5"] = (kes == 0)` → **DÜŞTÜ**.
@@ -5451,7 +5482,7 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
     (`copy_paste_gercek` → `karisim_t54_engelli.yaml:25` `train:` listesinde),
     sıkışmanın görüldüğü tek girdi (figür) ise **tek alan dışı örnektir, n=1**.
     Yani "figüre özgü" ile "alan dışı olmaya özgü" **ayrılamıyor** → **T111**.
-- [ ] **T111 — Alan dışı doğrulama kümemiz YOK: bütün kabul ölçümleri eğitim dağılımının İÇİNDE** · `dataset/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-185 §3**
+- [IN_PROGRESS: Claude-2] **T111 — Alan dışı doğrulama kümemiz YOK: bütün kabul ölçümleri eğitim dağılımının İÇİNDE** · `dataset/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-185 §3**
   - Doğrulandı: `copy_paste_gercek` v34'ün **eğitim verisidir**
     (`karisim_t54_engelli.yaml:25`); `sentetik_arena` aynı yaml'da; `kadraj_t66`
     o üretecin ailesinden; `raw_frames` `copy_paste_gercek`in **kaynak
