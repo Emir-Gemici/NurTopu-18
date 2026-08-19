@@ -38,6 +38,67 @@ ESIK = {
 }
 
 
+# ── T110 · K0 GORUNURLUGU (karar D-186) ─────────────────────────────────────
+# K0'in cezalandirdigi yon (AZ zemin gormek) GUVENLI yondur — fail-closed.
+# Tehlikeli yonu (COK zemin gormek) K0 olcmez; onu K2/K3 olcer (n=258).
+# Yani K0 bir EMNIYET degil YETENEK kapisidir ve `> 0` olcutu DEGISMEZ.
+# Asil sorun 16 kat dususun SESSIZ gecmesiydi; cozum esik degil GORUNURLUK.
+#
+# ⚠ ORAN BLOKLAMAZ: `gecti["K0"]`a girmez, verdikt AND birlesimini
+# degistirmez. Yalnizca RAPORLAR.
+K0_ORAN_ALT = 0.5     # bunun altinda YETENEK uyarisi (fail-closed yon)
+K0_ORAN_UST = 2.0     # bunun ustunde TEHLIKELI yon — K2/K3'e ayrica bakilir
+
+
+def k0_taban_orani(figur_kaplama, kok=None):
+    """Figur kaplamasinin URETIM TABANINA orani. -> (oran|None, taban|None, not).
+
+    🔴 TABAN SAYIDAN OKUNUR, METINDEN AYIKLANMAZ. Kayit defterindeki
+    `metrics.k0_korluk.olculen` bicimli bir metindir
+    ('figur zemin %0,49 · raw bos 0/8 ...'); ondan sayi cikarmak D-180'in
+    kusur sinifidir (orada `None` sessizce "DUSTU" olmustu). Bu yuzden
+    defterde AYRI ve SAYISAL bir alan tutulur: `figur_zemin_orani`.
+
+    ⚠ Alan YOKSA oran `None` doner ve durum RAPORLANIR — yokluk ne BASARI
+    ne BASARISIZLIK sayilir (D-180 dersi).
+    """
+    taban_yolu = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
+    try:
+        veri = json.loads(taban_yolu.read_text(encoding="utf-8"))
+        profil = veri["profiles"][veri["default_profile"]]
+        taban = profil["metrics"]["k0_korluk"]["figur_zemin_orani"]
+        taban = float(taban)
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError):
+        return None, None, "taban kayitli DEGIL — oran hesaplanamadi"
+    if not (taban > 0.0) or figur_kaplama is None:
+        return None, taban, "taban 0 ya da figur olculemedi — oran hesaplanamadi"
+    return float(figur_kaplama) / taban, taban, ""
+
+
+def k0_gecti(figur, raw_bos, cp_bos):
+    """K0 olcutu. DEGISMEDI (D-186): `figur > 0` VE hicbir kumede bos maske yok.
+
+    🔴 ORAN BU FONKSIYONA PARAMETRE OLARAK BILE GIRMEZ. "Oran bloklamiyor"
+    iddiasi boylece bir yorum degil, IMZANIN kendisidir: oranla cagrilamaz.
+    """
+    return (figur is not None and figur > 0.0
+            and raw_bos == 0 and cp_bos == 0)
+
+
+def k0_dikkat_satiri(oran):
+    """Oran bandin disindaysa UYARI metni, degilse None. BLOKLAMAZ."""
+    if oran is None or K0_ORAN_ALT <= oran <= K0_ORAN_UST:
+        return None
+    if oran > K0_ORAN_UST:
+        yon = ("     > 2,0 ise TEHLIKELI yon (daha cok zemin) — "
+               "K2/K3'e AYRICA bakin.")
+    else:
+        yon = ("     < 0,5 ise YETENEK uyarisi (daha az zemin) — "
+               "fail-closed yon.")
+    return (f"  🔴 DIKKAT: figur kaplamasi uretim tabanindan {oran:.2f} kat "
+            f"sapiyor.\n{yon}")
+
+
 def kaplama(model, p):
     img = cv2.imread(str(p))
     if img is None:
@@ -73,13 +134,17 @@ def main():
     for ad_k, kok, desen in (
             ("raw_frames", REPO / "data" / "raw_frames", "*.jpg"),
             ("copy_paste", REPO / "dataset" / "copy_paste_gercek" / "images" / "train", "*.jpg")):
-        yollar = sorted(kok.rglob(desen))[::max(1, len(sorted(kok.rglob(desen))) // 8)][:8]
+        # 🔴 ORNEKLEME KALDIRILDI (T110 · D-186). Eskiden 8 kare orneklenirdi:
+        #     raw_frames  67 -> 8  (%11,9)   ·   copy_paste  393 -> 8  (%2,0)
+        # `bos == 0` olcutu DEGISMEDI; ayni olcut artik TAM KUMEDE uygulanir.
+        # (`rglob` de iki kez cagriliyordu; tek cagriya indirildi.)
+        yollar = sorted(kok.rglob(desen))
         oranlar = [kaplama(model, p) for p in yollar]
         oranlar = [o for o in oranlar if o is not None]
         k0[ad_k] = {"n": len(oranlar), "bos": sum(1 for o in oranlar if o <= 0.0),
                     "ort": float(np.mean(oranlar)) if oranlar else 0.0}
-    gecti["K0"] = (k0["figur"] is not None and k0["figur"] > 0.0
-                   and k0["raw_frames"]["bos"] == 0 and k0["copy_paste"]["bos"] == 0)
+    gecti["K0"] = k0_gecti(k0["figur"], k0["raw_frames"]["bos"],
+                           k0["copy_paste"]["bos"])
     sonuc["K0"] = k0
 
     # ── K1..K4 · rota / basma / arena disi ──────────────────────────────────
@@ -114,9 +179,20 @@ def main():
     print(f"\n{'='*66}\nKABUL DENETIMI · {ad}\n  esikler: REVIEW_LOG D-107 "
           f"(sonuc gorulmeden yazildi)\n{'='*66}")
     f = sonuc["K0"]["figur"]
+    oran, taban, oran_notu = k0_taban_orani(f)
+    taban_metni = (f"uretim tabani %{100*taban:.2f} · oran {oran:.2f}"
+                   if oran is not None else (oran_notu or "oran YOK"))
     print(f"  K0 KORLUK YOK        {'GECTI' if gecti['K0'] else 'DUSTU':<6} "
-          f"figur zemin %{100*f:.1f} · raw bos {k0['raw_frames']['bos']}/{k0['raw_frames']['n']} "
+          f"figur zemin %{100*f:.2f} ({taban_metni})")
+    print(f"{'':23s}raw bos {k0['raw_frames']['bos']}/{k0['raw_frames']['n']} "
           f"· cp bos {k0['copy_paste']['bos']}/{k0['copy_paste']['n']}")
+    # ⚠ BLOKLAMAZ — `gecti` sozlugune DOKUNMAZ, yalniz basar (D-186).
+    dikkat = k0_dikkat_satiri(oran)
+    if dikkat:
+        print(dikkat)
+    sonuc["K0"]["figur_orani"] = oran
+    sonuc["K0"]["figur_tabani"] = taban
+    sonuc["K0"]["oran_notu"] = oran_notu
     print(f"  K1 ROTA >= {ESIK['K1_rota_min']}       {'GECTI' if gecti['K1'] else 'DUSTU':<6} "
           f"{sonuc['K1_rota']}")
     print(f"  K2 BASMA <= %{100*ESIK['K2_basma_maks']:.0f}      {'GECTI' if gecti['K2'] else 'DUSTU':<6} "

@@ -15279,3 +15279,261 @@ olcutu **tam kumede** uygular. Yeni esik UYDURULMUYOR.
   2. Oran esikleri (0,5 / 2,0) BILINCLI olarak KABA secildi: bloklamayan bir
      GORUNURLUK isareti icin hassas esik gerekmez. Bloklayan bir kapiya
      donusturulurse bu sayilar OLCUMLE yeniden turetilmelidir.
+
+### D-187 · ✅ T110 UYGULANDI · K0 ornekleme KALDIRILDI (8 -> tam kume) ve dusus GORUNUR oldu — olcut DEGISMEDI, oran BLOKLAMIYOR
+Yazan/olcen: Claude 2 (amele) · 2026-08-19 · gorev T110 uygulama (kullanici emri) · karar D-186 (mimar) · dayanak D-180, D-181, D-183, D-184
+Degisen: `65_kabul_denetcisi.py` (+ `scripts/olcum/` aynasi) · `config/model_registry.json` · `tests/test_k0_gorunurlugu.py` (YENI, 10 test) · `jetson_paket/config/model_registry.json` (paketleyici yenilemesi)
+
+🔴 **`codes/` ALTINA DOKUNULMADI.** `git diff HEAD -- codes/` **BOS**.
+
+---
+## 1. YAPILAN UC IS (karar D-186, yeniden tartisilmadi)
+
+**(A) ORNEKLEME KALDIRILDI — asil duzeltme.** Eski satir 8 kare orneklyordu:
+
+    kume         toplam   ornekledigi   oran
+    raw_frames       67             8   %11,9
+    copy_paste      393             8    %2,0
+
+Artik `yollar = sorted(kok.rglob(desen))` — TAM KUME. Olcut (`bos == 0`)
+DEGISMEDI; ayni olcut artik 67 ve 393 karede uygulaniyor. `rglob` de iki kez
+cagriliyordu, tek cagriya indi.
+
+**(B) TABAN ORANI GORUNUR.** Denetci figur kaplamasini uretim tabaniyla ve
+oraniyla basiyor; oran `< 0,5` veya `> 2,0` ise ayri bir DIKKAT satiri
+ekliyor. 🔴 **BLOKLAMAZ.**
+
+**(C) TABAN SAYIDAN OKUNUYOR.** Kayit defterine `competition.metrics.
+k0_korluk` altina UC SAYISAL alan eklendi:
+
+    "figur_zemin_orani": 0.0049,  "raw_frames_bos": 0,  "copy_paste_bos": 0
+
+`olculen` metni (`'figur zemin %0,49 · raw bos 0/8 ...'`) INSAN OKUMASI icin
+KALDI ama oran ONDAN AYIKLANMIYOR — metinden sayi cikararak karar uretmek
+D-180'in kusur sinifidir. Alan yoksa oran `None` basilir ve
+*"taban kayitli DEGIL — oran hesaplanamadi"* denir; yokluk ne BASARI ne
+BASARISIZLIK sayilir. 0,0049 YENIDEN OLCULMEDI (D-181/D-183, v34).
+
+**⚠ EK BIR SEY DAHA YAPTIM — gerekcesiyle:** K0 olcutu `main()` icinde satir
+ici bir ifadeydi; onu `k0_gecti(figur, raw_bos, cp_bos)` saf fonksiyonuna
+ayirdim. **Semantik BIREBIR AYNI.** Gerekce: "oran bloklamiyor" iddiasi
+boylece bir yorum degil IMZANIN KENDISI oluyor — `k0_gecti` oranla
+CAGRILAMAZ. Test bunu `inspect.signature` ile kilitliyor.
+
+---
+## 2. GERCEK KOSUM — URETIM MODELI (v34)
+
+    K0 KORLUK YOK        GECTI  figur zemin %0.49 (uretim tabani %0.49 · oran 1.01)
+                         raw bos 0/67 · cp bos 0/393
+    K1 ROTA >= 230       GECTI  258/260
+    K2 BASMA <= %15      GECTI  12/258   (taban %9,2)
+    K3 AGIR  <= %3       GECTI  0/258   (taban %0)
+    K4 ARENA DISI <= %5  GECTI  1/258
+    K5 BARIYER = 0 px    DUSTU  None px
+    VERDIKT: URETIME ALINMAZ — dusen: K5
+
+`raw bos 0/67 · cp bos 0/393` — **8 DEGIL.** Oran 1,01, band icinde, DIKKAT
+satiri BASILMADI (beklenen davranis).
+⚠ K5'in `None` olmasi D-180/T105 konusudur ve BU GOREVIN KONUSU DEGILDIR;
+verdikt bu gorevden ONCE de K5 yuzunden RED idi — **degismedi**.
+
+---
+## 3. 🔴 (B)'NIN CALISTIGININ KANITI — v30
+
+    K0 KORLUK YOK        GECTI  figur zemin %7.96 (uretim tabani %0.49 · oran 16.24)
+                         raw bos 0/67 · cp bos 0/393
+    🔴 DIKKAT: figur kaplamasi uretim tabanindan 16.24 kat sapiyor.
+       > 2,0 ise TEHLIKELI yon (daha cok zemin) — K2/K3'e AYRICA bakin.
+    ...
+    VERDIKT: URETIME ALINMAZ — dusen: K5
+
+**DIKKAT satiri BASILDI ve K0 YINE GECTI.** Yani gorunurluk calisiyor,
+bloklamiyor. Ikisi ayni kosumda gorulmus oldu.
+
+⚠ Sayi neden 16,24: figur %7,96 / taban %0,49 = 16,24. D-183'un "16 KAT"
+ifadesiyle ayni buyukluk.
+
+---
+## 4. 🔴 D-186'NIN ACIK MADDESI CEVAPLANDI
+
+Soru: *"tam kumede `bos` sayisinin 0 kaldigi BU KOSUMDA dogrulandi mi?"*
+
+**EVET.** Iki modelde de, tam kumede:
+
+    v34   raw bos 0/67   ·   cp bos 0/393
+    v30   raw bos 0/67   ·   cp bos 0/393
+
+Yani ornekleme kaldirilinca K0 DUSMEDI; 8 karelik ornek bu kumelerde tam
+kumeyi DOGRU temsil ediyormus. ⚠ Bu, ornekleme kaldirmanin GEREKSIZ oldugu
+anlamina GELMEZ — 8 kare bunu GARANTI ETMIYORDU, sadece sansi tutmus. Simdi
+garanti var.
+
+---
+## 5. TESTLER — `tests/test_k0_gorunurlugu.py` (10 test)
+
+Model YUKLENMEZ (emrin sarti); uc SAF fonksiyon sinanir.
+
+    1. oran band DISINDA (16,24 · 2,01 · 0,49 · 0,00) -> DIKKAT satiri VAR
+    2. oran band ICINDE (0,50 · 1,00 · 1,62 · 2,00)   -> satir YOK
+    3. uyarinin YONU dogru (>2 TEHLIKELI/K2-K3 · <0,5 YETENEK/fail-closed)
+    4. 🔴 K0 olcutu ORANDAN BAGIMSIZ — `inspect.signature(k0_gecti)` =
+       ['figur','raw_bos','cp_bos']; oran GIREMEZ. Olcut tablosu ayrica
+       sinandi (16 kat sapmada bile GECER; `>0` ve `bos` dustugunde DUSER).
+    5. DIKKAT satiri YAN ETKISIZ
+    6. defterde `figur_zemin_orani` YOKSA oran None + verdikt etkilenmiyor
+    7. taban METINDEN degil SAYIDAN okunuyor (metinde %9,99 yazsa bile
+       sayisal alan 0,0049 kazaniyor)
+    8. taban 0 ise oran hesaplanmiyor
+    9. POZITIF KONTROL — oran mantigi kaldirilirsa DUSER
+   10. POZITIF KONTROL — 8'lik ornekleme kalibi kaynakta ARTIK YOK
+
+**MUTASYON KANITI** (`k0_dikkat_satiri` her zaman `None` dondurecek sekilde
+uretim aracina enjekte edildi; yedek -> degistir -> kos -> yedekten geri koy,
+`git checkout` KULLANILMADI):
+
+    FAIL: test_POZITIF_KONTROL_oran_mantigi_kaldirilirsa_DUSER
+          AssertionError: unexpectedly None : gercek kod 16 kat sapmayi bildirmiyor
+    FAIL: test_oran_bandin_DISINDA_dikkat_satiri_BASILIYOR (oran=16.24)
+    FAIL: test_oran_bandin_DISINDA_dikkat_satiri_BASILIYOR (oran=2.01)
+    FAIL: test_oran_bandin_DISINDA_dikkat_satiri_BASILIYOR (oran=0.49)
+
+---
+## 6. 🔴 T103'UN KAPISI BU DEGISIKLIGI YAKALADI — DOGRU DAVRANDI
+
+Defteri degistirince tam kume IKI testten DUSTU:
+
+    FAIL: test_paket_kopyalari_kanonik_kaynaklarla_birebir (model_registry.json)
+    FAIL: test_paket_defteri_depo_defteriyle_BIREBIR_AYNI
+
+Ikisi de dun (T103/D-178) kurulan senkron kapilaridir ve **bayat paket
+defterini** bildiriyorlardi. `scripts/jetson_paket_hazirla.py` kosuldu, paket
+defteri yenilendi, tam kume OK. Yani kapi calisiyor.
+
+---
+## 7. KOSULAN KAPILARIN GERCEK CIKTISI
+
+    v34 kosumu   raw bos 0/67 · cp bos 0/393 · oran 1.01 · DIKKAT BASILMADI
+    v30 kosumu   raw bos 0/67 · cp bos 0/393 · oran 16.24 · DIKKAT BASILDI
+                 iki kosumda da K0 GECTI · verdikt K5 yuzunden RED (degismedi)
+    yeni testler                  Ran 10 · OK
+    mutasyonda                    4 FAIL (yukarida)
+    git diff HEAD -- codes/       BOS
+    codes/test_rota_sentetik.py
+        SONUC: 15/15 dogru
+        [OK] TUM DETERMINISTIK SAHNELER GECTI
+    python -m unittest discover -s tests -q
+        Ran 630 tests in 49.194s
+        OK      (620 -> 630; artis 10 yeni test, HIC dusme yok)
+
+---
+## 8. DOGRULANAMADI / ACIK KALAN
+
+  1. **K5 `None` sorunu COZULMEDI** — D-180/T105'in konusu. Iki kosumda da
+     verdikt K5 yuzunden RED; bu gorev onu ne duzeltti ne kotulestirdi.
+  2. **Yeni oran esikleri (0,5 / 2,0) OLCUMLE TURETILMEDI** — emirde verilen
+     degerlerdir. Bir dagilimdan cikarilmadilar; yalniz RAPORLAMA bandidir ve
+     hicbir karari degistirmedigi icin risksizdir, ama "dogru esik" iddiasi
+     TASIMAZLAR.
+  3. **`figur_zemin_orani = 0,0049` YENIDEN OLCULMEDI** (emir geregi);
+     D-181/D-183'e dayanir. Uretim modeli degisirse bu alanin da elle
+     guncellenmesi gerekir — bunu zorlayan bir kapi YOKTUR.
+  4. **`raw_frames_bos` / `copy_paste_bos` alanlari deftere YAZILDI ama
+     hicbir yerde OKUNMUYOR.** Emirde istendigi icin konuldu; ileride bir
+     regresyon kiyasi icin hazir duruyorlar. Bugun olu alanlardir.
+  5. **Tam kumede kosmanin SURESI olculmedi.** 8 -> 67/393 gecisi K0'i
+     ~57 kat daha cok cikarim yaptiriyor; kabul denetiminin toplam suresi
+     uzadi ama SAYIYLA kaydedilmedi.
+  6. **Yalniz iki model kosuldu** (v34, v30). Baska surumlerde oranin ne
+     cikacagi bilinmiyor.
+  7. Testler **saf fonksiyonlari** sinar; `main()` icindeki BAGLANTI
+     (oranin gercekten basildigi, `gecti`ye girmedigi) yalniz iki gercek
+     kosumun ciktisiyla gosterildi, testle degil.
+
+### D-188 · 🔎 T110 DENETIMI (MIMAR) · ONAYLANDI — ve "IKI KOPYA, YALNIZ BIRI DENETLENIYOR" kalibinin DORDUNCU ornegi bulundu (T112)
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev T110 · denetlenen kayit D-187 (Claude 2, amele) · karar D-186
+
+## 1. ASIL DAVRANISI KENDIM KOSTUM — IKI MODELDE
+
+    v34 (uretim):
+      K0 KORLUK YOK  GECTI  figur zemin %0.49 (uretim tabani %0.49 · oran 1.01)
+      -> DIKKAT satiri BASILMADI (band icinde)             DOGRU
+
+    v30 (kontrol):
+      K0 KORLUK YOK  GECTI  figur zemin %7.96 (uretim tabani %0.49 · oran 16.24)
+                            raw bos 0/67 · cp bos 0/393
+      🔴 DIKKAT: figur kaplamasi uretim tabanindan 16.24 kat sapiyor.
+         > 2,0 ise TEHLIKELI yon (daha cok zemin) — K2/K3'e AYRICA bakin.
+      -> K0 YINE "GECTI" · VERDIKT DEGISMEDI                DOGRU
+
+**Karar (D-186) tam istendigi gibi uygulanmis:** 16 kat sapma artik SESSIZ
+gecmiyor, ama BLOKLAMIYOR da. `raw bos 0/67 · cp bos 0/393` — ornekleme
+gercekten kalkmis (eskiden 0/8 · 0/8).
+
+    kapi                          sonuc
+    unittest discover -s tests    630 OK  (620 -> +10)
+    codes/test_rota_sentetik.py   15/15
+    git diff codes/               BOS
+    ayna senkronu (65/66/80)      UCU DE senkron
+
+## 2. ✅ TASARIM KARARI IYI: "BLOKLAMIYOR" BIR YORUM DEGIL, IMZANIN KENDISI
+
+    def k0_gecti(figur, raw_bos, cp_bos): ...
+
+Oran bu fonksiyona **parametre olarak bile girmiyor**. Yani "oran bloklamiyor"
+iddiasi bir yorumla degil, **cagrilamamasiyla** guvence altinda. Bir sonraki
+gelistirici oranı yanlislikla kapiya baglamak istese once IMZAYI degistirmek
+zorunda. Bu, bu oturumda gordugum en iyi savunma tasarimlarindan biri.
+
+Ayrica taban **SAYIDAN** okunuyor (`figur_zemin_orani`), METINDEN degil —
+emrin sarti; ve alan yoksa oran `None` donup RAPORLANIYOR, basari/basarisizlik
+SAYILMIYOR (D-180 dersi dogru uygulanmis).
+
+## 3. MUTASYON KONTROLUNU KENDIM KOSTUM — VE ILK DENEMEM YANLIS DOSYAYI BOZDU
+
+`O:
+avitas-local-train5_kabul_denetcisi.py` icine mutasyon enjekte ettim
+(`k0_dikkat_satiri` hicbir zaman uyari dondurmesin) ve testler **10/10 GECTI**.
+Bir an testin bos oldugunu sandim; degildi — **yanlis kopyayi bozmustum.**
+
+Aynayi (`scripts/olcum/65_kabul_denetcisi.py`) bozunca:
+
+    Ran 10 tests · FAILED (failures=5, errors=1)
+
+Yani test GERCEKTEN duyarli. Dosya yedekten geri konuldu, iki kopya senkron
+dogrulandi (`git checkout` KULLANILMADI).
+
+## 4. 🔴 AMA BU BIR SEY GOSTERDI: TESTLER AYNAYI DENETLIYOR, CANLI BETIGI DEGIL
+
+`tests/test_k0_gorunurlugu.py:29` -> `_DENETCI = KOK/"scripts"/"olcum"/"65_kabul_denetcisi.py"`
+
+Olcumleri fiilen kosan dosya ise `O:
+avitas-local-train5_kabul_denetcisi.py`
+dir. **Ikisi ayri dosyadir ve senkronlarini hicbir sey ZORLAMIYOR.** Bugun
+ucu de (65 · 66 · 80) senkron — kontrol ettim — ama bu DISIPLINLE saglanmis,
+MEKANIZMAYLA degil.
+
+⚠ **BU KALIBIN DORDUNCU ORNEGI:**
+
+    D-158 bulgu 4  test dosyasi izlenmiyordu + yanlis mesafe donusumu
+    D-170          codes/test_monotonluk.py vardi ama tests/ altinda DEGILDI
+                   -> `discover` onu HIC kosmuyordu (0 `def test_`)
+    T104           IKI JETSON_KILAVUZ.md, senkronu zorlayan yok
+    ŞIMDI          IKI 65_kabul_denetcisi.py, yalniz AYNA denetleniyor
+
+Dorduncu tekrar artik tekil dikkatsizlik degil, **yapisal bir desen**: proje
+ayna dosyalar tutuyor ve aynaligi zorlayan bir kapi YOK. **T112 acildi**
+(T104 onun bir ornegi olarak baglandi).
+
+## 5. KUCUK BAYATLIK (mimar duzeltti)
+
+Kayit defterindeki `metrics.k0_korluk.olculen` metni hala
+`'... raw bos 0/8 · cp bos 0/8'` diyordu; ornekleme kalktigi icin artik
+`0/67` ve `0/393`. Tek satirlik metin duzeltmesi yapildi (SAYISAL alanlar
+zaten dogruydu ve karar onlardan geliyor).
+
+**DOGRULANAMADI**
+  1. Canli betik (`navitas-local-train` kopyasi) hicbir testle KAPSANMIYOR;
+     bugun senkron oldugu OLCULDU ama yarin icin garanti YOK (T112).
+  2. Oran esikleri (0,5 / 2,0) KABA secildi (D-186 §DOGRULANAMADI 2); bu
+     turda da olcumle turetilmedi — bloklamadigi icin gerekmiyor.
+  3. K5 hala `None` (D-180/T105) — bu gorevin konusu degildi, degismedi.

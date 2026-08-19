@@ -5413,7 +5413,7 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
   - ⚠ **KAPI YAPMA:** bakir küme bulunsa bile eşiği önce **ölçmeden** kapıya
     çevirmek bu oturumda dört kez patlayan hatadır.
 
-- [ ] **T110 — K0 kapısı "tamamen kör değil" ölçüyor; 16 kat düşüşü göremiyor** · `O:
+- [x] **T110 — KAPANDI · K0 örneklemesi kaldırıldı, düşüş görünür kılındı** · `O:
 avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**
   - ```python
     gecti["K0"] = (k0["figur"] is not None and k0["figur"] > 0.0
@@ -5459,6 +5459,70 @@ avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW
     koşar.** Ölçüt (`bos == 0`) **değişmez**; yeni eşik **uydurulmuyor**.
   - **YAPILMAYACAK:** `> 0` ölçütü değişmeyecek · figür için sayısal eşik
     konmayacak · v34 geriye dönük yeniden yargılanmayacak.
+
+  - ✅ **UYGULANDI · 2026-08-19 · Claude-2** · kayıt `REVIEW_LOG.md` **D-187**.
+    🔴 **`codes/` altına dokunulmadı:** `git diff HEAD -- codes/` **BOŞ**.
+  - **(A) ÖRNEKLEME KALDIRILDI** — `yollar = sorted(kok.rglob(desen))`, tam küme.
+    Ölçüt (`bos == 0`) **değişmedi**; `rglob` çift çağrısı da tek çağrıya indi.
+  - **(B) ORAN GÖRÜNÜR** — figür kaplaması üretim tabanı + oranıyla basılıyor;
+    band dışında 🔴 DİKKAT satırı. **BLOKLAMAZ.**
+  - **(C) TABAN SAYIDAN** — deftere `figur_zemin_orani: 0.0049`,
+    `raw_frames_bos: 0`, `copy_paste_bos: 0` eklendi. `olculen` **metni kaldı**
+    (insan okuması) ama orandan **sayı ayıklanmıyor** — D-180 kusur sınıfı.
+    Alan yoksa oran `None` + *"taban kayitli DEGIL"*; yokluk ne başarı ne
+    başarısızlık sayılıyor.
+  - ⚠ **EK BİR ŞEY DAHA YAPTIM (gerekçesiyle):** K0 ölçütü satır içi ifadeydi,
+    `k0_gecti(figur, raw_bos, cp_bos)` saf fonksiyonuna ayrıldı — **semantik
+    birebir aynı**. Böylece "oran bloklamıyor" iddiası bir yorum değil
+    **imzanın kendisi** oluyor: `k0_gecti` oranla **çağrılamaz**. Test bunu
+    `inspect.signature` ile kilitliyor.
+  - **GERÇEK KOŞUM — ÜRETİM MODELİ (v34):**
+    ```text
+    K0 KORLUK YOK        GECTI  figur zemin %0.49 (uretim tabani %0.49 · oran 1.01)
+                         raw bos 0/67 · cp bos 0/393        <- 8 DEGIL
+    K1 258/260 · K2 12/258 · K3 0/258 · K4 1/258 · K5 None px DUSTU
+    VERDIKT: URETIME ALINMAZ — dusen: K5
+    ```
+    Oran band içinde → **DİKKAT satırı basılmadı** (beklenen).
+    ⚠ K5'in `None` olması **D-180/T105** konusudur; verdikt bu görevden **önce
+    de** K5 yüzünden RED'di — **değişmedi**.
+  - 🔴 **(B)'NİN ÇALIŞTIĞININ KANITI — v30:**
+    ```text
+    K0 KORLUK YOK        GECTI  figur zemin %7.96 (uretim tabani %0.49 · oran 16.24)
+                         raw bos 0/67 · cp bos 0/393
+    🔴 DIKKAT: figur kaplamasi uretim tabanindan 16.24 kat sapiyor.
+       > 2,0 ise TEHLIKELI yon (daha cok zemin) — K2/K3'e AYRICA bakin.
+    VERDIKT: URETIME ALINMAZ — dusen: K5
+    ```
+    **DİKKAT basıldı ve K0 yine GEÇTİ** — görünürlük çalışıyor, bloklamıyor.
+  - ✅ **D-186'NIN AÇIK MADDESİ CEVAPLANDI:** tam kümede `bos` **0 kaldı** —
+    v34 `0/67` + `0/393`, v30 `0/67` + `0/393`. Örnekleme kaldırılınca K0
+    düşmedi. ⚠ Bu, örneklemenin **gereksiz olduğu** anlamına gelmez: 8 kare
+    bunu **garanti etmiyordu**, şansı tutmuş; artık garanti var.
+  - **YENİ TEST** `tests/test_k0_gorunurlugu.py` (10 test, **model yüklemez**).
+    Mutasyon (`k0_dikkat_satiri` hep `None`): **4 FAIL**.
+  - 🔴 **T103'ÜN KAPISI BU DEĞİŞİKLİĞİ YAKALADI:** defteri değiştirince
+    `test_paket_kopyalari_kanonik_kaynaklarla_birebir` ve
+    `test_paket_defteri_depo_defteriyle_BIREBIR_AYNI` düştü — **bayat paket
+    defteri**. `jetson_paket_hazirla.py` koşuldu, kapı yeşile döndü. Dün
+    kurulan senkron kapısı işini yaptı.
+  - **KOŞULAN KAPILARIN GERÇEK ÇIKTISI:**
+    ```text
+    yeni testler                  Ran 10 · OK
+    mutasyonda                    4 FAIL
+    git diff HEAD -- codes/       BOS
+    codes/test_rota_sentetik.py   SONUC: 15/15 dogru
+    unittest discover -s tests    Ran 630 tests in 49.194s / OK   (620 -> 630)
+    ```
+  - ⚠ **DOĞRULANAMADI:** K5 `None` **çözülmedi** (D-180/T105) · oran eşikleri
+    (0,5 / 2,0) **ölçümle türetilmedi**, emirde verilen değerlerdir (yalnız
+    raporlama bandı, karar değiştirmiyor) · `figur_zemin_orani` üretim modeli
+    değişirse **elle** güncellenmeli, bunu zorlayan kapı **yok** ·
+    `raw_frames_bos`/`copy_paste_bos` deftere yazıldı ama **hiçbir yerde
+    okunmuyor** (bugün ölü alan) · tam kümede koşmanın **süre maliyeti**
+    ölçülmedi (~57 kat daha çok çıkarım) · yalnız iki model koşuldu ·
+    testler **saf fonksiyonları** sınar; `main()` içindeki bağlantı yalnız iki
+    gerçek koşumun çıktısıyla gösterildi.
 - [ ] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
 avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
   - `AD = "v22_on10_gercek"` gömülü. Dün geceki iki koşum `v22_*` ve `v23_*`
@@ -5474,6 +5538,31 @@ avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG
   - Pakette v30'un ONNX'i **tarihsel olarak duruyor** — hangisinin üretim
     olduğunu `asil_model` söyler; yanlışlıkla eski ONNX derlenmemeli.
   - **T16'ya bağlı.**
+- [ ] **T112 — "İKİ KOPYA, YALNIZ BİRİ DENETLENİYOR" kalıbı: aynalığı zorlayan hiçbir kapı yok** · `scripts/olcum/` ↔ `O:
+avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**
+  - Testler `scripts/olcum/65_kabul_denetcisi.py`yi (**ayna**) içe aktarıyor
+    (`tests/test_k0_gorunurlugu.py:29`); ölçümleri fiilen koşan dosya ise
+    `O:
+avitas-local-train5_kabul_denetcisi.py`. **İkisi ayrı dosya ve
+    senkronlarını hiçbir şey zorlamıyor.**
+  - Mimar mutasyon kontrolünde bunu **canlı yaşadı**: canlı betiği bozdu,
+    testler **10/10 geçti**; aynayı bozunca **5 düştü**. Yani bir gün ayrışırsa
+    testler yeşil kalırken gerçek araç bozuk olabilir.
+  - Bugün **üçü de senkron** (65 · 66 · 80) — ölçüldü. Ama bu **disiplinle**
+    sağlanmış, **mekanizmayla** değil.
+  - 🔴 **DÖRDÜNCÜ TEKRAR — artık yapısal desen:**
+    ```text
+    D-158 bulgu 4  test dosyasi izlenmiyordu + yanlis mesafe donusumu
+    D-170          codes/test_monotonluk.py vardi ama tests/ altinda DEGILDI
+    T104           IKI JETSON_KILAVUZ.md
+    D-188          IKI 65_kabul_denetcisi.py, yalniz AYNA denetleniyor
+    ```
+  - **ÖNCE KARAR (mimar):** (a) ayna kaldırılsın, tek kaynak olsun (import
+    yolu düzeltilir) · (b) bir test aynalığı **sabitlesin** (sha kıyası) ·
+    (c) paketleyici gibi bir senkron aracı olsun.
+  - ⚠ **T104 bunun bir örneğidir** ve o karar da buraya bağlanmalı.
+  - ⚠ **KÖR SİLME YOK:** hangi kopyanın kaynak olduğu dosya başına değişebilir
+    (T104'te **paket** kopyası büyüktü, yani kök eskiydi).
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
