@@ -14863,3 +14863,83 @@ bittigini degil, yarim oldugunu soyluyordu.
   4. v30 dosyalari pakette TARIHSEL olarak duruyor (silinmedi); hangisinin
      uretim oldugunu `asil_model`/`asil_model_pt` soyler.
   5. Jetson cihazinda hicbir sey olculmedi (T16/T17).
+
+### D-183 · 🔎 T106 TANISI (MIMAR) · Figur cokusu KORLUK DEGIL, GUVEN COKUSU — ve yonu FAIL-SAFE
+Yazan/olcen: Claude 1 (mimar) · 2026-08-19 · gorev T106 · dayanak D-181 §5, D-182 §6
+
+## 1. HIPOTEZ KISMEN DOGRU CIKTI
+
+D-181 §5'te hipotez: *"T54'un yeni eslemesi (bina/agac/su/havuz -> blocked) o
+figurun sentetik zeminini `blocked` sayiyor olabilir."*
+
+Olculdu (`65_kabul_denetcisi.kaplama()` ile AYNI yol — metrik yeniden yazilmadi;
+figur `data/arena_referans/sartname_s9_arena.png`, conf 0,30):
+
+    model    ZEMIN    ENGEL   toplam
+    v30      7,96%    1,61%    9,56%
+    v22     10,54%    3,81%   14,35%
+    v34      0,49%    3,74%    4,24%
+
+Engel GERCEKTEN artmis (1,61 -> 3,74) ama zemin 7,47 PUAN dusmus. Yani kaybin
+yalniz ~2 puani engele gitmis; **~5,3 puani HICBIR SINIFA gitmemis.** Saf
+"yeniden siniflandirma" aciklamasi YETMIYOR.
+
+## 2. 🔴 ASIL SEBEP: TAHMINLER 0,10–0,30 GUVEN BANDINDA SIKISMIS
+
+Esik taramasi (ayni figur, ayni yol):
+
+    model  conf    ZEMIN    ENGEL   toplam
+    v30    0,30    7,96%    1,61%    9,56%
+    v30    0,10   10,62%    4,84%   15,46%
+    v34    0,30    0,49%    3,74%    4,24%
+    v34    0,10   13,29%   27,34%   40,63%
+    v34    0,05   13,59%   33,39%   46,98%
+
+**v34'un tahminleri KAYBOLMUYOR, URETIM ESIGININ (0,30) ALTINDA duruyor.**
+0,10'a inince zemin 0,49 -> 13,29 (27 kat), engel 3,74 -> 27,34 (7 kat).
+Yani model bu figuru GORUYOR; ama alan disi oldugu icin DUSUK GUVENLE ve
+agirlikli olarak ENGEL diye goruyor.
+
+Bu, T54 eslemesiyle TUTARLIDIR: bina/agac/su artik `blocked` oldugu icin
+sehir gorunumlu sentetik bir figurde engel payi buyuyor.
+
+## 3. YONU FAIL-SAFE — BU YUZDEN TERFIYI DEGISTIRMIYOR
+
+Mimarinin degismezi: *"Serbest alan OTORITEDIR; bilinmeyen -> ENGEL."*
+v34 bu figurde DAHA AZ zemin, DAHA COK engel goruyor — yani **guvenli yonde**
+yaniliyor. Zemin maskesi bosalinca `analyze_path` MASKE_YOK verir, sistem
+`NO_ROUTE` yayinlar. Bu **fail-closed**tur, fail-dangerous DEGIL.
+
+⚠ Yani bu bir **YETENEK** gerilemesidir (alan disi bir goruntude rota
+uretemeyebilir), **EMNIYET** gerilemesi DEGILDIR. D-182'deki terfi karari
+degismiyor.
+
+## 4. ⚠ AMA CIDDIYE ALINACAK BIR UYARI TASIYOR
+
+Figur YZ uretimidir ve otorite degildir — ama sundugu ders gercektir:
+**v34 alan disi girdide uretim esiginin ALTINA dusuyor.** Gercek arena
+kareleri egitim dagilimindan bu figur kadar uzaksa, v34 sahada rota
+URETEMEYEBILIR. Gercek 30 m arena karesi olmadigi icin bu **olculemez**
+(kalici sinir, D-88/D-99).
+
+⚠ Ayni testte v30 da alan disinda zayif ama COKMUYOR (9,56 -> 15,46). Yani
+"her model alan disinda kotudur" savunmasi bu farki aciklamiyor.
+
+## 5. K0 KAPISI BUNU YAPISAL OLARAK YAKALAYAMAZ
+
+`65_kabul_denetcisi.py:81-82`:
+
+    gecti["K0"] = (k0["figur"] is not None and k0["figur"] > 0.0
+                   and k0["raw_frames"]["bos"] == 0 and k0["copy_paste"]["bos"] == 0)
+
+Yani K0 **"tamamen kor degil"** kapisidir. %0,49 ile %7,96 arasinda AYRIM
+YAPMAZ. 16 kat dusus kapiya HIC gorunmez. **T110 acildi** (K0 esigi tabana
+baglanmali mi — karar isi, kor sikilastirma YOK).
+
+**DOGRULANAMADI**
+  1. Kabul kumesinde (t66) benzer bir guven bandi sikismasi olup olmadigi
+     OLCULMEDI — orada v34 258/260 rota uretiyor, yani yok gibi gorunuyor
+     ama SAYILMADI.
+  2. `raw_frames` / `copy_paste` kumelerinde esik taramasi YAPILMADI.
+  3. Gercek arena karesi YOK — sahadaki davranis olculemez.
+  4. Bu tani TEK goruntudur (n=1); genelleme YAPILMAZ.

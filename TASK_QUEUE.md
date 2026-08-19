@@ -5296,6 +5296,48 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
     belirgin artmış olmalı.
   - ⚠ **Bu bir KAPI DEĞİLDİR** — v23 ön kaydın hepsini sağlıyor (D-181 §3).
     Açıklanmamış bir davranış olarak izleniyor.
+  - 🔎 **MİMAR TANISI · 2026-08-19 · `REVIEW_LOG.md` D-183.** Hipotez **kısmen**
+    doğru: engel gerçekten arttı (1,61→3,74) ama zemin **7,47 puan** düştü —
+    kaybın yalnız ~2 puanı engele gitti, **~5,3 puanı hiçbir sınıfa gitmedi.**
+  - 🔴 **ASIL SEBEP: GÜVEN ÇÖKÜŞÜ.** Tahminler kaybolmuyor, **üretim eşiğinin
+    (0,30) altında** duruyor:
+    ```text
+    model  conf    ZEMIN    ENGEL   toplam
+    v30    0,30    7,96%    1,61%    9,56%
+    v30    0,10   10,62%    4,84%   15,46%
+    v34    0,30    0,49%    3,74%    4,24%
+    v34    0,10   13,29%   27,34%   40,63%
+    ```
+    0,10'a inince zemin **27 kat**, engel **7 kat** artıyor. Model figürü
+    **görüyor** ama alan dışı olduğu için düşük güvenle ve ağırlıklı olarak
+    **engel** diye görüyor — T54 eşlemesiyle tutarlı.
+  - ✅ **YÖNÜ FAIL-SAFE → terfiyi değiştirmiyor.** Daha az zemin + daha çok
+    engel = mimarinin değişmezi yönünde ("bilinmeyen → engel"). Zemin boşalınca
+    `MASKE_YOK` → `NO_ROUTE`; **fail-closed**, fail-dangerous değil.
+    Bu bir **yetenek** gerilemesidir, **emniyet** gerilemesi değil.
+  - ⚠ **Ama ciddiye alınacak uyarı:** v34 alan dışı girdide üretim eşiğinin
+    altına düşüyor. Gerçek arena kareleri eğitim dağılımından bu figür kadar
+    uzaksa v34 sahada **rota üretemeyebilir**. Gerçek kare olmadığı için
+    **ölçülemez** (kalıcı sınır). ⚠ v30 aynı testte zayıf ama **çökmüyor**
+    (9,56→15,46) — "her model alan dışında kötüdür" savunması bu farkı
+    açıklamıyor.
+  - **KALAN İŞ (ameleye):** kabul kümesinde ve `raw_frames`/`copy_paste`
+    kümelerinde aynı güven bandı sıkışması var mı? Bu ölçülmedi.
+- [ ] **T110 — K0 kapısı "tamamen kör değil" ölçüyor; 16 kat düşüşü göremiyor** · `O:
+avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**
+  - ```python
+    gecti["K0"] = (k0["figur"] is not None and k0["figur"] > 0.0
+                   and k0["raw_frames"]["bos"] == 0 and k0["copy_paste"]["bos"] == 0)
+    ```
+    Yani K0 **`> 0`** kapısıdır: %0,49 ile %7,96 arasında **ayrım yapmaz**.
+    v34'ün 16 kat düşüşü kapıya **hiç görünmedi**.
+  - **ÖNCE KARAR (mimar):** eşik neye bağlanmalı? (a) üretimin **aynı koşumda**
+    ölçülen değerine göre bir bant · (b) etiketli yer gerçeği kaplamasına oran ·
+    (c) `> 0` kalsın, ayrı bir **ölçüm** alanı eklensin.
+  - ⚠ **KÖR SIKILAŞTIRMA YOK:** eşik yükseltmek v34'ü geriye dönük düşürür ve
+    D-183 §3 onun **fail-safe** yönde yanıldığını ölçtü. Kapı "az zemin
+    görmeyi" cezalandırmadan önce **hangi yönün tehlikeli olduğu** yazılmalı.
+
 - [ ] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
 avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
   - `AD = "v22_on10_gercek"` gömülü. Dün geceki iki koşum `v22_*` ve `v23_*`
