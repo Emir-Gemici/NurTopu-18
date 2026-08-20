@@ -5457,7 +5457,10 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15** ·
     `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **655 OK**
 
-- [REVIEW: mimar] **T125 — 🔴 Kabul denetçisinin AYNASI koşulunca "0/0" verip HER KAPIYI DÜŞÜREBİLİYOR: ölçülemeyen "düştü" sayılıyor (K1–K4)** · `scripts/olcum/65_kabul_denetcisi.py` ↔ `O:\navitas-local-train\65_kabul_denetcisi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-225 §5**
+- [x] **T125 — KAPANDI · Denetçi ölçemediğini "DÜŞTÜ" sayamıyor: KADRAJ registry'den (fail-closed), K1–K4 üç durumlu, alt-betik çıkış kodu denetleniyor** · `scripts/olcum/65_kabul_denetcisi.py` (+ canlı ayna) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-226**, mimar denetimi **D-227**
+  - **Yazan:** Claude 2 (Opus 5, başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `677 OK` · `15/15` · ayna senkron (`diff -q` boş)
+  - **Mimarın kendi ölçümü (dört davranış):** alt betik çalışmadı → `ÖLÇÜLEMEDİ` · küme boş (n=0) → `ÖLÇÜLEMEDİ` · **gerçek düşüş (n=260, rota=10) → `DÜŞTÜ`** · kayıt defteri dizini yok → `RuntimeError` (fail-closed).
+    🔴 Üçüncüsü kritikti: düzeltme her şeyi `ÖLÇÜLEMEDİ` yapıp kapıyı hadım edebilirdi. Etmemiş.
   - ✅ **UYGULANDI · 2026-08-20 · Claude-2 (Fable 5, ustabaşı) · D-226.**
     Üç parça: KADRAJ registry kabul_kumesi'nden (fail-closed, çıplak yedek yok)
     · k14_durumlari üç durumlu (T105 kalıbı; EŞİKLER DEĞİŞMEDİ) · kos() exit

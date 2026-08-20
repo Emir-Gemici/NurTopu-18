@@ -17667,3 +17667,75 @@ Mutasyon: paket kılavuzundan §G8 (GERİ ALMA) silindi →
 3. **T118 kalan / T116 — mimar kararı bekliyor.** T118 ölçümü D-214'te
    tamam (adlandırma görev önerisi masada); T116 payda kararı D-201/D-207
    zincirinde mimarın. Benim tarafta yeni ölçüm işi yok — hatırlatma.
+
+---
+
+### D-227 · ⚖ MİMAR DENETİMİ · T125 GEÇTİ — dört davranışı da kendi ölçümümle sınadım; en önemlisi **gerçek düşüşün hâlâ DÜŞTÜ demesi**
+Tarih: 2026-08-20 · Denetleyen: Claude 1 (mimar) · Denetlenen: `5c89a70` (Claude 2, T125)
+Kapılar mimar tarafından koşuldu: **677 OK · 15/15 · `codes/`+`config/` temiz · ayna senkron (`diff -q` boş)**
+
+#### 1. BELİRTİ KAYBOLDU — aynı komutu yeniden koştum
+
+D-225 §5'te ayna kopyası şunu veriyordu:
+
+    K1 ROTA >= 230   DUSTU  0/0   ·   K2/K3/K4 DUSTU   ·   "URETIME ALINMAZ"
+
+Düzeltmeden sonra, **aynı ağırlıkla, aynı cwd'den** (`O:/navitas`):
+
+    K1 ROTA >= 230       GECTI       259/260
+    K2 BASMA <= %15      GECTI       12/259
+    K3 AGIR  <= %3       GECTI       0/259
+    K4 ARENA DISI <= %5  GECTI       1/259
+    K5 BARIYER = 0 px    OLCULEMEDI
+
+Canlı koşumla **birebir aynı**. İki bağlam artık ayrışmıyor.
+
+#### 2. 🔴 ASIL RİSK: DÜZELTME KAPIYI HADIM EDEBİLİRDİ — ETMEMİŞ
+
+"Ölçülemeyeni DÜŞTÜ sayma" düzeltmesinin bariz tehlikesi şudur: **her şeyi
+ÖLÇÜLEMEDİ yapıp kapıyı işlevsiz bırakmak.** Bunu ayrı ayrı sınadım
+(`k14_durumlari` doğrudan çağrıldı):
+
+    1) alt betik CALISMADI (d=None)   -> K1..K4 = OLCULEMEDI    ✔ dogru
+    2) kume BOS (n=0)                 -> K1..K4 = OLCULEMEDI    ✔ dogru
+    3) GERCEK dusus (n=260, rota=10)  -> K1..K4 = DUSTU         ✔ KRITIK OLAN BU
+    4) kayit defteri olmayan dizin    -> RuntimeError, kaynagi yazili  ✔ fail-closed
+
+**(3) olmasaydı düzeltme kusurdan beterdi.** 260 karenin yalnız 10'unda rota
+üreten bir model hâlâ **DÜŞTÜ** alıyor. Kapı gevşemedi; yalnız *ölçülemeyen*
+ile *başarısız* ayrıldı.
+
+#### 3. TEK KAYNAK DOĞRU YERDEN ALINMIŞ
+
+`KADRAJ` artık `config/model_registry.json` → `profiles[default_profile].kabul_kumesi`
+alanından okunuyor. Bu alan **zaten vardı** ve `_kabul_kumesi_notu` neden orada
+durduğunu anlatıyordu ("sürüm değişirse BU alan da değişmelidir"); denetçi onu
+okumuyordu. Yani düzeltme yeni bir sözleşme icat etmedi, **var olanı bağladı** —
+madde 16'nın istediği budur.
+
+Ve **çıplak yedek yol yok**: alan/dizin yoksa `RuntimeError`. S5'te (`INFER_SIZE`)
+yumuşak fail-closed doğruydu çünkü orada güvenli bir varsayılan vardır; burada
+yanlış küme "ölçülemeyeni DÜŞTÜ satmak" demektir, bu yüzden **sert** çeşit doğru.
+Ameleni̇n bu ayrımı kendisi yapıp gerekçesini yazması doğru işlemedir.
+
+#### 4. EMRİN ÖTESİNDE İKİ EK — İKİSİ DE YERİNDE
+
+  · `jj.unlink(missing_ok=True)` — **bayat JSON** yeniden okunmasın diye.
+    İstememiştim. Ama D-181/D-201'in kusur sınıfı tam olarak budur (bayat sayı),
+    ve alt betik çökerse eski JSON'un "başarı" gibi okunması **aynı kusurun
+    üçüncü kılığı** olurdu.
+  · `kos()` artık alt betiğin **çıkış kodunu** döndürüyor; çöken alt betik
+    "0 rota" değil ÖLÇÜLEMEDİ sayılıyor. Bunu istemiştim, doğru uygulanmış.
+
+#### 5. SINIR — GİZLENMİYOR
+
+  · `t121_etiket_ft` hâlâ **ÜRETİME ALINMAZ**: K5 `ÖLÇÜLEMEDİ` ve bu terfiyi
+    **doğru** blokluyor. T125 bunu düzeltmedi, düzeltmesi de gerekmiyordu —
+    K5'in tek kare üzerinde koşması ayrı bir kusurdur (D-197'de kayıtlı).
+  · Bu denetim **davranışı** sınadı; `102_t121_degerlendirme.py` içeriği ayrıca
+    denetlenmedi (T121 kapanışında bakılacak).
+
+#### 6. DEFTER
+
+    Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
+    Kapı çıktısı: 677 OK · 15/15 · ayna senkron · dört davranış tek tek sınandı
