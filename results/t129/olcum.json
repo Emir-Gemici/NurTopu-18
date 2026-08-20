@@ -1,0 +1,83 @@
+{
+ "kume": "6 ham 1600x900 foto (2026-07-30, videolarla AYNI oturum)",
+ "yer_gercegi": "T121 cati maskeleri, en yakin video karesinden homografi",
+ "kiyas_video_kareleri": {
+  "v34": 0.961,
+  "t121_ft": 0.131,
+  "t122ac": 0.02,
+  "v30": 0.305,
+  "_kaynak": "D-232/D-237, 55 kare"
+ },
+ "eslesme": [
+  {
+   "foto": "WhatsApp Image 2026-07-30 at 11.44.48.jpeg",
+   "durum": "TAMAM",
+   "en_yakin": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "pHash": 0.062,
+   "inlier": 751,
+   "cati_pay": 0.0584
+  },
+  {
+   "foto": "WhatsApp Image 2026-07-30 at 11.44.50 (1).jpeg",
+   "durum": "TAMAM",
+   "en_yakin": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "pHash": 0.188,
+   "inlier": 650,
+   "cati_pay": 0.0415
+  },
+  {
+   "foto": "WhatsApp Image 2026-07-30 at 11.44.50 (2).jpeg",
+   "durum": "TAMAM",
+   "en_yakin": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "pHash": 0.156,
+   "inlier": 739,
+   "cati_pay": 0.0987
+  },
+  {
+   "foto": "WhatsApp Image 2026-07-30 at 11.44.50.jpeg",
+   "durum": "TAMAM",
+   "en_yakin": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "pHash": 0.219,
+   "inlier": 684,
+   "cati_pay": 0.0419
+  },
+  {
+   "foto": "WhatsApp Image 2026-07-30 at 11.44.51 (1).jpeg",
+   "durum": "TAMAM",
+   "en_yakin": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "pHash": 0.094,
+   "inlier": 756,
+   "cati_pay": 0.0981
+  },
+  {
+   "foto": "WhatsApp Image 2026-07-30 at 11.44.51.jpeg",
+   "durum": "TAMAM",
+   "en_yakin": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "pHash": 0.156,
+   "inlier": 751,
+   "cati_pay": 0.0987
+  }
+ ],
+ "modeller": {
+  "v30": {
+   "foto_cati_kacak_ort": 0.0788,
+   "foto_cati_kacak_medyan": 0.0387,
+   "n": 6
+  },
+  "v34_URETIM": {
+   "foto_cati_kacak_ort": 0.4593,
+   "foto_cati_kacak_medyan": 0.5034,
+   "n": 6
+  },
+  "t121_ft": {
+   "foto_cati_kacak_ort": 0.1183,
+   "foto_cati_kacak_medyan": 0.1311,
+   "n": 6
+  },
+  "t122ac": {
+   "foto_cati_kacak_ort": 0.0745,
+   "foto_cati_kacak_medyan": 0.0389,
+   "n": 6
+  }
+ }
+}

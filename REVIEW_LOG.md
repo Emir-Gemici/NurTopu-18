@@ -18911,3 +18911,46 @@ Mimarın üç sorusuna cevabım:
   bağlamsa yalnız dizin yolunu geri koy, *(c)* ikisi de değilse RAPORLA.
 - ⚠ Görevi **kapatmadım**; kapatma kararı işi tamamlayanın değil, işi
   denetleyenin — ve bu iş **tamamlanmadı**.
+
+---
+
+### D-248 · 🔴 T129 · ÇATI KÖRLÜĞÜ BÜYÜK ÖLÇÜDE **KAYNAK KALİTESİNE** BAĞLI: v34'ün kaçağı video karelerinde %96, aynı sahnenin HAM FOTOĞRAFLARINDA %46 — sıralama değişmiyor ama "v34 çatıyı görmez" hükmü KOŞULLU
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-21 · Betik (aynalı): `117_t129_cozunurluk_etkisi.py` · Ham:
+  `results/t129/olcum.json` + `dogrulama.png`.
+- **Nasıl bulundu:** depo kökünde kullanıcının **6 ham 1600×900 fotoğrafı**
+  duruyor (2026-07-30 — videolarla AYNI oturum, ama eğitimde HİÇ kullanılmadı;
+  eğitim `data/raw_frames` = 1024×576 video karelerinden geldi).
+  ⚠ 2026-08-02 tarihli 3 görüntü DIŞARIDA bırakıldı: onlar kırmızı bindirmeli
+  ekran görüntüleridir, ham girdi değildir (REVIEW_LOG:134 zaten söylüyor).
+- **Yer gerçeği:** her fotoğrafın en yakın video karesi pHash ile bulundu ve o
+  karenin **T121 doğrulanmış çatı maskesi** ORB+RANSAC homografisiyle taşındı.
+  Kayıt kalitesi: **inlier 650-756**, pHash 0,062-0,219, 6/6 taşındı.
+- **ÖLÇÜM — aynı ölçüt, iki kaynak kalitesi:**
+| model | video karesi (55 kare) | **ham foto (6)** |
+|---|---|---|
+| v30 | 0,305 | **0,079** |
+| **v34 ÜRETİM** | **0,961** | **0,459** |
+| t121_ft (c) | 0,131 | 0,118 |
+| **t122ac (a)+(c)** | **0,020** | 0,075 |
+- **HÜKÜM:** çatı kaçağı **kaynak kalitesine güçlü şekilde bağlıdır**.
+  v34 videoda çatının %96'sını kaçırırken ham fotoğrafta %46'sını kaçırıyor
+  (yarı yarıya iyileşme); v30 %31 → %8. Yani "v34 çatıyı GÖRMEZ" hükmü
+  mutlak değil, **WhatsApp video sıkıştırması altında** geçerlidir.
+  D-216'nın "kalan açıklama görünüm/doku" sonucuyla birebir tutarlı.
+- **AMA SIRALAMA DEĞİŞMİYOR:** fotoğraflarda da v34 **en kötü** (0,459);
+  t122ac ve v30 en iyi (0,075-0,079). Yani T122/T127 seçim tablosu bu bulguyla
+  **çürümüyor**, yalnız v34'ün kusurunun büyüklüğü koşullu hale geliyor.
+- 🔴 **KENDİ GÖRSEL OKUMAM YANLIŞTI — kayda geçiyor:** ilk bakışta
+  "fotoğraflarda dört model de çatıyı engel görüyor" diye okumuştum. Ölçüm
+  bunu çürüttü: v34 fotoğrafların birinde 0,02 kaçak verirken bir diğerinde
+  **0,77** veriyor (medyan 0,50). Tek görsele bakıp genelleme yapmak bu turda
+  **ikinci kez** yanılttı (D-241'de de olmuştu). Görsel işaret eder, sayı
+  karar verir.
+- **SAHA İÇİN ANLAMI (öneri değil, ölçüm sonucu):** yarışmada girdi canlı
+  kamera olacak, WhatsApp videosu değil. Bu ölçüm, gerçek girdinin
+  ölçtüğümüzden **daha iyi** olabileceğini gösteriyor — ama ne kadar iyi
+  olacağı **bilinmiyor** ve ancak Jetson+kamera ile ölçülür (T16/T17).
+  ⚠ Bu, v34'ü rahatlatan bir sonuç DEĞİLDİR: aynı iyileşme diğer adaylarda da
+  var ve aralarındaki fark duruyor.

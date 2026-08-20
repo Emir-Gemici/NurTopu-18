@@ -1,0 +1,25 @@
+{
+ "kume": "6 ham 1600x900 foto (2026-07-30)",
+ "modeller": {
+  "v30": {
+   "kaplama_icerik_medyan": 0.3002,
+   "red": 0,
+   "n": 6
+  },
+  "v34_URETIM": {
+   "kaplama_icerik_medyan": 0.5466,
+   "red": 0,
+   "n": 6
+  },
+  "t121_ft": {
+   "kaplama_icerik_medyan": 0.5781,
+   "red": 0,
+   "n": 6
+  },
+  "t122ac": {
+   "kaplama_icerik_medyan": 0.4335,
+   "red": 0,
+   "n": 6
+  }
+ }
+}
