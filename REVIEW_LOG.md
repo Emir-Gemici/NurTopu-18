@@ -18145,3 +18145,30 @@ RISK   : cati disi YENI engel  +0,0166   (asfalt kaybi)
 - **Dürüstlük notu:** bu turda kendi iki önerimden biri düştü (D-234 gölge
   kuralı), biri kısmen tuttu (geometri), asıl kazanç ise ilk raporumda
   yalnız "önerilmiş" olan bileşimden geldi. Sıralamayı ölçüm yaptı, ben değil.
+
+---
+
+### D-236 · 🔎 D-233'ün SINIFI GENİŞLETİLDİ: iki sızıntı hipotezi daha KURULDU ve ÖLÇÜMLE DÜŞTÜ — RescueNet komşuluğu ve kabul kümesi–eğitim örtüşmesi
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20 · Bu kayıt **olumsuz
+  sonuç** kaydıdır: aynı şüphenin tekrar araştırılmasını önler.
+- **Hipotez 1 — RescueNet val'i de kirli olabilir.** Gözlem: val karelerinin
+  **%93'ünün** (411/440) numarası eğitim karesiyle bitişik. RescueNet ardışık
+  uçuş kareleri ise val fiilen eğitimin komşusu olurdu.
+  **ÖLÇÜM (pHash, 25 bitişik çift):** medyan fark **0,438**, minimum 0,375;
+  **0,10'un altında (neredeyse aynı) çift SIFIR.** Kıyas: ilgisiz görüntü ~0,5.
+  ⇒ Bitişik numara benzer görüntü DEMEK DEĞİL. Dönüştürücü zaten RescueNet'in
+  **resmi** bölümünü kullanıyor (`download_and_convert.py:192-194`
+  `ds["train"]` / `ds["validation"]`). **HİPOTEZ DÜŞTÜ.**
+- **Hipotez 2 — kabul kümesi (K1–K4'ün 260/284 karesi) eğitim kümesinin
+  içinden gelmiş olabilir; öyleyse arena kapıları EZBER ölçer.**
+  **ÖLÇÜM:** `sentetik_arena_kadraj_t66` (284 kare) ↔ `dataset/sentetik_arena`
+  (3000 kare): **bayt-eşit kare 0**; 20 örnek kabul karesinin eğitimdeki EN
+  YAKIN komşusuna pHash farkı medyan **0,281**, minimum **0,219**;
+  0,10 altı SIFIR. **HİPOTEZ DÜŞTÜ.**
+  ⚠ Bu "kabul kümesi bağımsızdır" demek DEĞİLDİR: aynı üreteçten, aynı
+  dağılımdan gelir. D-88/D-99'un kalıcı kısıtı (her şey sentetiktir) aynen
+  geçerlidir; ölçülen tek şey **görüntü düzeyinde kopya olmadığıdır**.
+- **Ayakta kalan tek sızıntı:** D-233 (copy_paste val'i %100 kirli).
+  Karışımın büyük bileşenleri (`sentetik_arena` 3000, `rescuenet_2sinif_engelli`
+  3942) bu açıdan TEMİZ ölçüldü.
