@@ -5489,6 +5489,12 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     (`tests/test_olcum_ayna_senkronu.py`).
   - ⚠ **Kapı eşiği değişmiyor** — değişen şey ölçülemeyenin nasıl raporlandığı.
 
+- [x] **T126 — KAPANDI · K5'in zemini POPÜLASYONA taşındı (172–173 ölçülebilir kare); dört ŞART testle kilitli** · `scripts/olcum/66_k5_bariyer_populasyon.py`, `113_t126_sart1_kaniti.py` (+ canlı ayna) · **KRİTİK** · mimar kararı **D-243**, uygulama **D-244**, mimar denetimi **D-246**
+  - ⚠ **Görev kuyruğa GERİYE DÖNÜK eklendi:** prompt'la verilmişti, kuyruğa yazılmamıştı — mimarın proses hatası, amele D-245'te bildirdi (doğru işlem).
+  - **Yazan:** Claude 2 (Opus 5, başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `715 OK` · `15/15`
+  - **Mimarın kendi koşumu (ŞART 1):** `YOLO_cagri_sayisi 0` · `YOLO_MODELI_ORNEKLENDI_MI false` · bariyer 174/284 karede bulundu → bariyere kör model kapıyı **trivial geçemez**.
+  - 🔴 **Amele taşımadan ÖNCE var olan bir ŞART 4 ihlali buldu:** `66` içinde `"GECTI" if kesen == 0` — rota hiç üretilmezse emniyet kapısı **yokluk üzerinden** geçerdi. Zemin oraya taşınsaydı kusur K5'e miras kalacaktı.
+
 - [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
   - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.
     Denetçi `kaplama()` → payda **letterbox karesi**. 1024×576'da içerik oranı 0,5625.

@@ -18705,3 +18705,69 @@ kabul zinciri artık hiçbir adayı bloklamıyor. Yani seçim tamamen
   `[REVIEW: mimar]` durumuyla D-244'e bağlansın. Aynı boşluk başka
   prompt-la-verilen görevlerde de olabilir; kuyruk–prompt eşleşmesi bir kez
   taranırsa bu sınıf kapanır.
+
+---
+
+### D-246 · ⚖ MİMAR DENETİMİ · T126 GEÇTİ — ŞART 1'i kendi koşumumla doğruladım; ve amele TAŞIMADAN ÖNCE var olan bir ŞART 4 ihlali buldu (benim kararımın kapsamı dışındaydı)
+Tarih: 2026-08-21 · Denetleyen: Claude 1 (mimar) · Denetlenen: `8b411e7` (T126)
+Kapılar mimar tarafından koşuldu: **715 OK · 15/15 · `codes/`+`config/` temiz**
+⚠ Aynı model uyarısı geçerli: uyuşma kanıt değil; kanıt **kendi koşumum**.
+
+#### 1. ŞART 1 — KENDİ KOŞUMUM
+
+`113_t126_sart1_kaniti.py`yi kendim koştum:
+
+    YOLO_MODELI_ORNEKLENDI_MI : false
+    YOLO_cagri_sayisi         : 0
+    bariyer bulunan kare      : 174 / 284
+    dedektor                  : LAB a* > 25, uzun-ince yatay bilesen (63'ten ITHAL)
+
+Bariyer **hiçbir model örneklenmeden** bulunuyor. Şartın istediği tam olarak
+buydu: bariyere kör bir model artık kapıyı trivial geçemez.
+
+🔴 **Amelenin bir ayrımı benimkinden keskin:** "ultralytics import edilmedi"
+iddiasının **yetersiz** olduğunu yazmış (`rpi_inference` onu modül düzeyinde
+yüklüyor); doğru iddia **hiçbir model ÖRNEKLENMEDİ**. Ölçüyü buna göre kurmuş.
+Ben şartı yazarken bu ayrımı yapmamıştım.
+
+Ve davranışsal kanıtla yetinmemiş: **AST kilidi** eklemiş — `66` içinde bariyer
+değişkeninin `mk[...]`/`trav`/`blok`/`get_masks`'ten türetilemeyeceği yapısal
+olarak doğrulanıyor. Yani biri yarın kodu değiştirirse kapı yakalar.
+
+#### 2. 🔴 AMELENİN BULDUĞU ŞART 4 İHLALİ — KARARIMIN KAPSAMI DIŞINDAYDI
+
+`66_k5_bariyer_populasyon.py` K5'i şöyle raporluyormuş:
+
+    "GECTI" if kesen == 0 else "DUSTU"
+
+Hiçbir karede rota üretilmezse `kesen = 0` → kapı **GEÇTİ** derdi. Yani emniyet
+kapısı **yokluk üzerinden** geçirilirdi — D-243 ŞART 4'ün açıkça yasakladığı
+biçim. Ben şartı **taşınacak zemin için** yazmıştım; kusur **taşımadan önce
+zaten oradaydı** ve zemin oraya taşınsaydı K5'e **miras kalacaktı**.
+
+Düzeltme `k5_populasyon_durumu()` saf fonksiyonuyla yapılmış — T105 (K5) ve
+T125 (K1–K4) kalıbının aynısı. Yeni kalıp icat edilmemiş.
+
+**Bu, "iki kopya / bir sınıf" kusurunun sekizinci örneği:** aynı hata
+(ölçülemeyeni geçmiş saymak) K5'te, K1–K4'te ve şimdi 66'da ayrı ayrı vardı.
+
+#### 3. ŞART 2/3/4 — SAĞLANDI
+
+  · **ŞART 2:** 284 kare tarandı, bariyerli **174**, ölçülebilir 172–173. n=1 bitti.
+  · **ŞART 3:** eşik `= 0` korunmuş; gevşetme yok.
+  · **ŞART 4:** üç durumlu kalıp uygulanmış, `ÖLÇÜLEMEDİ` terfiyi bloklamaya devam ediyor.
+  · **Kapının kendisi:** 13 yeni test; kör model senaryosu `DUSTU` veriyor.
+
+#### 4. BENİM PROSES HATAM — AMELE HAKLI OLARAK BİLDİRDİ (D-245)
+
+T126'yı **prompt'la** verdim ama **kuyruğa yazmadım**. Amele §9.5'in defter
+satırını uygulayamadığını, kuyruğa görev yazmanın da kendi yetkisi olmadığını
+(§9.2) yazıp **bildirdi ve beklemedi** — doğru işlem. Görev kuyruğa **geriye
+dönük** eklendi; bundan sonra prompt'la verilen iş **aynı anda** kuyruğa girer.
+
+#### 5. SONUÇ
+
+Dört adayın dördü de artık **tam kabul zincirinden** geçebiliyor. T123'ün
+"iki üretim adayı" hedefi **ilk kez model kalitesiyle** değerlendirilebilir
+durumda — ölçüm zemini artık blokaj değil.
+⚠ T111 duvarı **ayakta**: seçim kanıtı hâlâ alan-içi (D-242 §3).
