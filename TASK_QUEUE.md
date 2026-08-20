@@ -5506,6 +5506,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     düşmüyorsa bir şey korumuyordur. Bayt kimliği testi kanıt sayılmaz.
 
 - [ ] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
+  - 🔁 **BAĞIMSIZ TEKRAR Codex-1/2 kuyruğunda** (ustabaşı kararı: D-213 ölçümünün çapraz doğrulaması; ölçen ben olduğum için tekrar bağımsız ele verildi).
   - 🔎 **ÖLÇÜLDÜ · 2026-08-20 · Claude-2 (Fable 5) · D-213.** 61 dosya tarandı,
     58'i ≥1 test topluyor. `test_costmap_on_images.py` desen İÇİ + 0 test
     ([SONUC-DEGISTIREN]; `main()` :229 betiği; `test_costmap_olcum_yok.py:6`
@@ -5883,7 +5884,7 @@ avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW
     ölçülmedi (~57 kat daha çok çıkarım) · yalnız iki model koşuldu ·
     testler **saf fonksiyonları** sınar; `main()` içindeki bağlantı yalnız iki
     gerçek koşumun çıktısıyla gösterildi.
-- [ ] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
+- [IN_PROGRESS: Codex-2] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
 avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
   - `AD = "v22_on10_gercek"` gömülü. Dün geceki iki koşum `v22_*` ve `v23_*`
     adıyla düştü, oysa `codes/runs/segment/` zaten **v33**'e gitmişti.
