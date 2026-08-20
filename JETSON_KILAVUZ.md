@@ -604,6 +604,90 @@ kaydet; eğitim verisi kararı için değerli.
 
 ---
 
+## 6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)
+
+> 🔴 **NEDEN VAR:** Jetson saha kurulumuyla AYNI GÜN ele geçiyor (D-211 §5) —
+> cihaz-öncesi doğrulama penceresi yok. Birincil aday sahada düşerse geçiş
+> **el yordamıyla değil bu yordamla** yapılır. Kurulum yordamı T104 ile
+> testli; bu bölüm de `tests/test_kilavuz_gecis_yordami.py` ile kilitlidir.
+> ⚠ Aday ADLARI bu yordama T121+T123 kapanınca yazılır (`<YEDEK>` yer
+> tutucuları); yordamın mekaniği ada bağımlı değildir. **Geçiş KARARI
+> İNSANINDIR (D-133)** — yordam yalnız mekaniktir.
+
+### G1 · Tetik ve karar
+Birincil model sahada şu ikisinden birinde sistematik düşüyorsa geçiş
+değerlendirilir: **§5 "Karar kıyası"** (üç modeli ayıran test) veya
+**§5 "Domain kontrolü"**. Karar veren: takım (insan). Saat + gerekçe saha
+defterine yazılır.
+
+### G2 · Yedeğin varlığı ve bütünlüğü
+Yedeğin `.pt` ve `.onnx` dosyaları pakette olmalı ve sha256'ları
+`models/jetson_derleme_manifest.json` → `paket_icerigi` ile eşleşmeli:
+```bash
+cd ~/navitas
+python3 - <<'PY'
+import hashlib, json, pathlib
+kok = pathlib.Path.home() / "navitas"
+man = json.loads((kok / "models/jetson_derleme_manifest.json").read_text(encoding="utf-8"))
+for ad in ("<YEDEK>.pt", "<YEDEK>_512_fp16.onnx"):   # T123 kapaninca doldur
+    yol = kok / "models" / ad
+    beklenen = man["paket_icerigi"].get("models/" + ad)
+    ozet = hashlib.sha256(yol.read_bytes()).hexdigest()
+    print(ad, "OK" if ozet == beklenen else f"UYUSMAZ ({ozet[:12]} != {str(beklenen)[:12]})")
+PY
+```
+`UYUSMAZ` veya dosya yoksa **geçiş YAPILMAZ** — bozuk yedekle koşmak,
+düşen birincille koşmaktan kötüdür.
+
+### G3 · Yedek-dosya kopyaları (sahada git yok)
+```bash
+cp config/model_registry.json config/model_registry.json.oncesi
+cp models/jetson_derleme_manifest.json models/jetson_derleme_manifest.json.oncesi
+```
+
+### G4 · Defteri yedeğe çevir (yalnız PAKET kopyası)
+`config/model_registry.json` → `profiles.competition` altında **yalnız** şu
+alanlar değişir: `model_id`, `path`, `sha256`, (gerekiyorsa) `imgsz`.
+Yeni değerler yedeğin KENDİ defter kaydından alınır — elle uydurulmaz;
+`imgsz` değişiyorsa `_imgsz_notu` disiplinine uyulur. Başka HİÇBİR alana
+dokunulmaz. ⚠ **Deponun kök kopyası sahada DEĞİŞTİRİLMEZ**; dönüşte mimar
+onayıyla senkronlanır — aksi iki defteri sessizce ayrıştırır (D-189 sınıfı).
+
+### G5 · Paket künyesini çevir
+`models/jetson_derleme_manifest.json` → `asil_model_pt` ve `asil_model`
+alanları yedeğin dosya adlarına çevrilir. Künye paketin GERÇEĞİNİ anlatır;
+defterle tutarlılığı `tests/test_saha_parametrik.py` sınıfı kilitler.
+
+### G6 · Doğrulama zinciri (SIRALI — biri düşerse §G8)
+1. **Yükleme + defter kapısı:** kısa koşum, `load_model` +
+   `model_kayit_dogrula` zincirinden geçer (fail-closed; `--kayit-dogrulamasiz`
+   sahada YASAK):
+```bash
+python3 scripts/jetson_fps.py \
+  --girdi data/test_goruntuleri/sentetik_arena \
+  --pt models/<YEDEK>.pt --onnx models/<YEDEK>_512_fp16.onnx \
+  --imgsz 512 --isinma 1 --tekrar 3 --conf 0.30 --cihaz 0 \
+  --cikti results/gecis_dogrulama_$(date +%Y%m%d_%H%M%S)
+```
+2. **Domain kontrolü:** §5 "Domain kontrolü" adımı yedek modelle tekrarlanır.
+3. Süre varsa tam FPS ölçümü (§5); yoksa kısa koşumla yetinildiği saha
+   defterine yazılır.
+
+### G7 · Kayıt
+Saha defterine: saat · gerekçe · G2/G6 çıktı yolları · kim karar verdi.
+Dönüşte `REVIEW_LOG.md`'ye D-kaydı olarak işlenir — **kaydedilmeyen geçiş
+tekrar tartışılır.**
+
+### G8 · GERİ ALMA
+```bash
+cp config/model_registry.json.oncesi config/model_registry.json
+cp models/jetson_derleme_manifest.json.oncesi models/jetson_derleme_manifest.json
+```
+Geri almadan sonra G6/1 doğrulaması birincil ile YENİDEN koşulur — geri
+dönüşün de kanıtı olur.
+
+---
+
 ## 7. Yaptığın her şeyde bana getireceklerin
 
 Bunları toplarsan T16 ve T17'yi kanıtlı kapatabilirim:

@@ -3122,8 +3122,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ `set FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` olmadan başlatma.
   - ⚠ **KAMERA YOK:** gerçek arena başarımı yine doğrulanamayacak.
 
-- [STATUS: KAPANDI] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:
-avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-87**
+- [STATUS: KAPANDI] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:\navitas-local-train\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-87**
   - **NEDEN:** altı model (v15..v24) aynı duvara tosladı. Ortak sebep model değil,
     **eğitim substratı**: üreteç arenaya benzemiyor. Artık gerçek kare elimizde,
     hedef **ölçüldü** (D-87) — tahmin değil.
@@ -4566,8 +4565,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     İkisi birden tutmuyorsa seçenek reddedilir.
   - ⚠ Etiket **çakışması** T90'da zaten fail-closed kapatıldı (3/34 kare); bu
     görev yalnız **yayılım** belirsizliğini kapsar, ikisi karıştırılmasın.
-- [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:
-avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
+- [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:\navitas-local-train\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**
   - Yer gerçeği etiketleriyle (model YOK, yani kusursuz algı) ölçüldü:
     ```text
     kume                  rota      moloza basan   AGIR basma
@@ -5570,6 +5568,10 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     doğrulanabilir.
 
 - [ ] **T123 — İKİ ÜRETİM ADAYI (birincil + yedek) ön kaydı: Jetson 30 Eylül'de geliyor, cihaz-öncesi doğrulama penceresi YOK** · `config/model_registry.json`, `jetson_paket/` · **KRİTİK** · kanıt: **D-211**
+  - 🔧 **YORDAM YAZILDI · 2026-08-20 · Claude-2 (ustabaşı) · D-223.** İki kılavuza
+    §6C (G1..G8, <YEDEK> yer tutuculu — aday adı T121/T123 kapanınca);
+    kilit: tests/test_kilavuz_gecis_yordami.py 7/7 OK. Mutasyon kanıtı
+    tam-takım kapısıyla birlikte (eğitim GPU'da). Aday SEÇİMİ bu blokta YOK.
   - **Takvim gerçeği (kullanıcı):** Jetson **30.09**'da ele geçiyor; saha kurulumu
     **30.09–03.10**. Yani donanım üstünde deneme yapılacak **tek bir gün bile yok**.
     T16/T17 bu tarihten önce **koşulamaz** — yeniden tarihlendi.
@@ -5587,6 +5589,9 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     (T104); geçiş yordamı **kilitli değil**.
 
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
+  - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
+    Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
+    registry'ye DOKUNULMADI (kısıt) — mimar onayı bekliyor (ÖNER-BEKLE).
   - Defterde v34'ün **lehine** yazılmış cümle:
     *"aynı model GERÇEK karelerde EN ÇOK gören modeldir (0,4551 vs v30 0,3272)"*
   - D-218 çatı diski ölçümü aynı farkı **aleyhe** okutuyor:
@@ -5603,7 +5608,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **v34 terfisi GERİ ALINMAZ** — arena kabul kapılarında v30'u geçti (D-181)
     ve çatı ekseni hiçbir terfi kapısında yoktu; v30 de o eksende seçilmemişti.
 
-- [IN_PROGRESS: Codex-1] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+- [REVIEW: ustabasi] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
     `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``
   - **Kök neden ÇÖZÜLDÜ (mimar):** yol bir Python **ham olmayan** dizgeyle yazılmış.
@@ -5616,9 +5621,9 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - ⚠ **DOKUNMA:** `[HUMAN_COMPLETED]` ve `[IN_PROGRESS]` satırlarının **durum işaretine**. Yalnız yol metni onarılır.
   - **Kapı:** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **0** · onarılan her yol için dosyanın
     **gerçekten var olduğunu** doğrula (`test -f`); var olmayan yol çıkarsa onu **onarma**, raporla.
+  - **Yazan:** Codex-1 · **Denetleyen:** Claude 2 / Fable 5 · **Kapı çıktısı:** 21 bulundu; 8 güvenli yol çözüldü, 13 vaka `COZULEMEYEN`; `^avitas` = 13; kapılar koşulMADI (yerel).
 
-- [x] **T105 — KAPANDI · K5 üç durumlu: OLCULEMEDI raporda ayrı, terfiyi YİNE bloklar · 1059×634 sorusunun T94/T95 bağı ÇÜRÜTÜLDÜ (red :1222, yol_duzelt hiç koşmuyor) · kayıt D-197** — eski: Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:
-avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
+- [x] **T105 — KAPANDI · K5 üç durumlu: OLCULEMEDI raporda ayrı, terfiyi YİNE bloklar · 1059×634 sorusunun T94/T95 bağı ÇÜRÜTÜLDÜ (red :1222, yol_duzelt hiç koşmuyor) · kayıt D-197** — eski: Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:\navitas-local-train\65_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
   - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa
     `kes = None` kalır ve `gecti["K5"] = (kes == 0)` → **DÜŞTÜ**.
   - `63_bariyer_kesisimi.py` **tek** karede (1059×634) koşar; o karede rota
@@ -5774,8 +5779,7 @@ avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVI
   - ⚠ **KAPI YAPMA:** bakir küme bulunsa bile eşiği önce **ölçmeden** kapıya
     çevirmek bu oturumda dört kez patlayan hatadır.
 
-- [x] **T110 — KAPANDI · K0 örneklemesi kaldırıldı, düşüş görünür kılındı** · `O:
-avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**
+- [x] **T110 — KAPANDI · K0 örneklemesi kaldırıldı, düşüş görünür kılındı** · `O:\navitas-local-train\65_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**
   - ```python
     gecti["K0"] = (k0["figur"] is not None and k0["figur"] > 0.0
                    and k0["raw_frames"]["bos"] == 0 and k0["copy_paste"]["bos"] == 0)
@@ -5903,8 +5907,7 @@ avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG
 avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**
   - Testler `scripts/olcum/65_kabul_denetcisi.py`yi (**ayna**) içe aktarıyor
     (`tests/test_k0_gorunurlugu.py:29`); ölçümleri fiilen koşan dosya ise
-    `O:
-avitas-local-train5_kabul_denetcisi.py`. **İkisi ayrı dosya ve
+    `O:\navitas-local-train\65_kabul_denetcisi.py`. **İkisi ayrı dosya ve
     senkronlarını hiçbir şey zorlamıyor.**
   - Mimar mutasyon kontrolünde bunu **canlı yaşadı**: canlı betiği bozdu,
     testler **10/10 geçti**; aynayı bozunca **5 düştü**. Yani bir gün ayrışırsa
@@ -6038,8 +6041,7 @@ avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T
     ```
   - 🔴 **İzlenen üretim betiği sürümsüz bir dosyaya bağımlı:**
     `scripts/copy_paste_augmentation.py:944` →
-    `default=Path(r"O:
-avitas-local-train)_sentetik_arena.py")`.
+    `default=Path(r"O:\navitas-local-train\51_sentetik_arena.py")`.
     `51_sentetik_arena.py` **sentetik arena üretecidir** — kabul kümesinin
     (`kadraj_t66`) atasıdır ve `RESEARCH_NOTES.md` / `TASK_QUEUE.md` ona atıf
     yapar. **Yalnız bu PC'nin diskinde duruyor.**
@@ -6274,8 +6276,7 @@ avitas-local-train` tümüyle yedek
     görünüyor ve bir koridor `serit_no` sınırını ne sıklıkta aşıyor?
   - **KAPI:** ölçüm koşulmadan `serit_no` DEĞİŞMEZ — o sözleşme alanıdır
     (CONTRACTS §8) ve tüm karar yolu ona bağlıdır.
-- [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:
-avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
+- [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:\navitas-local-train\51_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**
   - §2.1 İHA-İB'yi HTAB'dan **ayrı** bir bölge olarak tanımlıyor: *"İHA'nın görev
     sonrası paraşütle ineceği belirlenmiş güvenli alandır."* Üreteç onu HTAB'ın
     üstüne yayılmış yarı saydam bir katman olarak çiziyor.
@@ -6971,8 +6972,7 @@ avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **
     models/navitas_seg_v24_best.onnx    sha 27e480a135d75ac3 = export dizini
     v24.names = {0: 'traversable', 1: 'blocked'}  (v21 ile BIREBIR)
     ```
-  - **KAPI 2 — B1 BAĞIMSIZ tekrarlandı** (`O:
-avitas-local-train8_b1_bagimsiz.py`;
+  - **KAPI 2 — B1 BAĞIMSIZ tekrarlandı** (`O:\navitas-local-train\58_b1_bagimsiz.py`;
     30 gerçek drone karesi, **eşit aralıklı**, üretim zinciri):
     ```text
     model                       conf  BOS maske  ort kaplama    min    maks

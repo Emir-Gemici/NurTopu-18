@@ -17436,3 +17436,54 @@ Bunlar **farklı hata yapan** iki modeldir — yedeklilik tam olarak budur.
 sınır düşülecek: kaplama artışı **tek başına erdem değildir**; hangi bölgede
 arttığı ölçülmeden yazılamaz. ⚠ Metin işi değil **sözleşme** işi: aynı cümle
 kalıbı başka yerlerde de var mı, taranacak.
+
+---
+
+### D-223 · ✅ T123 HAZIRLIK · BİRİNCİL→YEDEK GEÇİŞ YORDAMI iki kılavuza yazıldı ve T104 kalıbıyla TESTLE KİLİTLENDİ (7 test OK; mutasyon kanıtı tam-takım kapısıyla birlikte gelecek)
+
+- **Yazan:** Claude 2 / Fable 5 (ustabaşı) · 2026-08-20 · dayanak: mimar emri §3c.
+- **Yeni bölüm:** `## 6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)` — hem kök
+  hem paket `JETSON_KILAVUZ.md` (§7'den önce). Adımlar G1..G8: tetik/karar
+  (İNSAN, D-133) · yedek sha doğrulaması (`paket_icerigi`) · yedek-dosya
+  kopyaları · defter çevrimi (YALNIZ paket kopyası; `profiles.competition`
+  {model_id, path, sha256, imgsz}) · künye çevrimi (`asil_model_pt`/`asil_model`)
+  · SIRALI doğrulama zinciri (`load_model`+`model_kayit_dogrula` kısa koşum +
+  domain kontrolü) · saha defteri kaydı · GERİ ALMA (+geri dönüş kanıtı).
+  ⚠ Aday ADLARI `<YEDEK>` yer tutucu — reçete/aday seçimi T121 bitmeden
+  yazılmaz (emir); yordam ada bağımsız.
+- **Kilit:** `tests/test_kilavuz_gecis_yordami.py` (7 test) — beklentiler
+  TÜRETİLİR: adım kümesi iki kılavuzdan parse edilip eşitlenir; dosya atıfları
+  `jetson_paket_hazirla.KOPYALAR` + paket ağacından doğrulanır; alan adları
+  (`asil_model_pt`, `model_id`...) paketteki GERÇEK json'lardan; `model_kayit_dogrula`
+  import kontrolüyle. Elle liste YOK. `Ran 7 · OK` (CUDA'sız koşum; eğitim GPU'da).
+- **Bilinen borç (açık):** mutasyon kanıtı ("dosya: x/y · takım: z/NNN") tam
+  takım kapısı GPU'ya muhtaç tek sınıf yüzünden T121 eğitimi bitince koşulacak —
+  o kayıtta rapor edilecek. Kapı bu kanıt gelmeden GEÇTİ İLAN EDİLMEZ (D-15/K-04).
+
+### D-224 · 🔎 T124 TARAMA + ÖNERİ (ÖNER-BEKLE) · "en çok gören model" kalıbı 2 dosyada × 2 yerde; sınır cümleleri HAZIR, registry'ye DOKUNULMADI
+
+- **Yazan:** Claude 2 / Fable 5 (ustabaşı) · 2026-08-20 · dayanak: D-222 §5 / emir §3a.
+  Kısıt gereği (`config/model_registry.json`'a DOKUNMA + yetki devri karar devri
+  değildir) uygulama YAPILMADI; metinler mimar onayına hazır.
+- **Envanter (mekanik grep; results/ hariç tüm *.md/*.json/*.py):**
+  1. `config/model_registry.json:26` — k0_korluk notu: "…EN COK goren modeldir (0,4551 vs v30 0,3272)…" [SONUC-DEGISTIREN — erdem cümlesi]
+  2. `config/model_registry.json:75` — `_surum_karari`: "…UC EKSENDE olculebilir sekilde iyidir: … gercek kare zemin 0,3272 -> 0,4551" [üçüncü eksen şüpheli metriğin kendisi]
+  3-4. `jetson_paket/config/model_registry.json:26/:75` — aynaları (bayt-eş; birlikte değişmeli).
+  - REVIEW_LOG'daki geçmiş kullanımlar (14735, 14759, 14850, 14857, 15049): defter EKLENİR-silinmez; D-222/D-224 zaten sınırı koyuyor — geçmişe dokunulmaz.
+  - TASK_QUEUE 2893/3290: ham ölçüm tabloları, erdem iddiası değil — dokunulmaz.
+  - Başka eşleşme YOK (kalıplar: "en cok goren", "daha cok gor", "kaplama yuksek→iyi", 0,4551).
+- **ÖNERİLEN SINIR CÜMLELERİ (verbatim; onaylanırsa iki kopyaya birden):**
+  - :26 notunun sonuna ek → "⚠ SINIR (T124/D-222): 'EN COK goren' TEK BASINA
+    ERDEM DEGILDIR — kaplama artisi madde 15'in TEHLIKELI yonudur ve NEREDE
+    arttigi olculmeden lehte yazilamaz. Olculdu (D-218): v34 cati disklerinde
+    0,990 ZEMIN diyor (v30: 0,286); 0,4551-0,3272 farkinin makul bir kismi
+    CATININ zemin sayilmasi olabilir (D-222 §2)."
+  - :75 `_surum_karari` sonuna ek → "⚠ SINIR (T124): ucuncu eksen ('gercek
+    kare zemin 0,3272→0,4551') cift yonlu okunur — artisin bir kismi cati
+    korlugu olabilir (D-218/D-222); bu eksen tek basina lehte kanit degildir.
+    Ilk iki eksen (K2, kararlilik) etkilenmez."
+- **[BILGILENDIRICI] ek gözlem (aynı nottan):** k0 notundaki "figür kaplaması
+  16 KAT düşük" cümlesi ile "en çok gören" cümlesi AYNI paragrafta zıt yönde
+  duruyor: v34 figürde AZ, çatıda ÇOK görüyor — iki ayrı kör bölge. Bu, D-222
+  §3'ün "farklı hata yapan iki aday" okumasını güçlendirir; T121 modeli üçüncü
+  aday olarak aynı disk ölçümünden geçecek (ön kayıt).
