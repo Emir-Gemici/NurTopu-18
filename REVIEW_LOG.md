@@ -18389,3 +18389,28 @@ t122ac (a)+(c)                 0,455   <- gercege EN YAKIN (hafif muhafazakar)
 - **Sınır:** "gerçek" tahmini 71 etiketleri + elle çatı maskelerine dayanır;
   71 bazı engelleri kaçırır (o yüzden ÜST sınır), gerçek değer daha da
   düşük olabilir — bu, hükmü GÜÇLENDİRİR, zayıflatmaz.
+
+---
+
+### D-241 · ✅ T122 KAPANIŞ GÖRSELİ · Kazananın "görmediği" zemin, ARAÇ ÇEVRESİ GÜVENLİK PAYI ve KADRAJ KENARLARI — ana sürüş koridorları sağlam
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20 · Ham:
+  `results/t122/eksik_zemin_gorsel.png`.
+- **Soru:** D-240 (a)+(c)'nin kaplamasını gerçeğe en yakın buldu, ama kalan
+  ~%28'lik açık **nerede**? Kritik koridorlarda ise yetenek sorunu olur.
+- **Ölçüm + görsel (4 kare, model-free üst sınıra göre):** eksik oran ort.
+  **0,285**; görselde eksik bölgeler (turuncu) üç yerde toplanıyor:
+  1. **her aracın çevresindeki güvenlik payı** (araçlar zaten engel;
+     çevrelerinde birkaç piksellik tampon),
+  2. **kadraj kenarları** (otopark alanının dışı),
+  3. çevre/çim geçişleri.
+  **Ana sürüş koridorları YEŞİL** — orta aksların tamamı zemin.
+  Bu, K1 257/260 ve gerçek karelerde 0 red ile tutarlıdır.
+- 🔴 **KENDİ ARACIMDAKİ HATA (kayda geçiyor):** bu görselin ilk sürümünde
+  "gerçek zemin"i yalnız 71'in sınıf-0 poligonlarından aldım; 71'in zemin
+  poligonları **araçların ÜSTÜNE biniyor** (copy_paste'teki tam-kare kalıbının
+  aynısı), dolayısıyla turuncu alan araçları da içeriyordu ve "kazanan
+  koridorları görmüyor" gibi YANLIŞ bir izlenim veriyordu. Düzeltme: sınıf-1
+  poligonları çıkarıldı. ⚠ D-240'ın ölçümü bu hatadan ETKİLENMEDİ — orada
+  `engel71` zaten sınıf-1 ile birleştirilmişti. Ders yine aynı: aracı
+  kontrol etmeden çıktısına inanma (T95 sınıfı, bu turda üçüncü kez).
