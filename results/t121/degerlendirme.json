@@ -1,0 +1,69 @@
+{
+ "conf": 0.3,
+ "ft": "O:\\navitas\\codes\\runs\\segment\\t121_etiket_ft\\weights\\best.pt",
+ "taban": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+ "v30": {
+  "disk": {
+   "cati_engel_ort": 0.6878,
+   "cati_zemin_ort": 0.2796,
+   "zemin_zemin_ort": 0.96,
+   "n_cati_disk": 20,
+   "n_zemin_disk": 18
+  },
+  "kaplama67": {
+   "n": 67,
+   "icerik_medyan": 0.5942,
+   "icerik_ort": 0.5944,
+   "tuval_medyan": 0.3342,
+   "tuval_ort": 0.3344,
+   "zemin_maskesi_reddi": 2,
+   "red_sebepleri": {
+    "ZEMIN_MASKESI_SUPHELI": 2
+   }
+  }
+ },
+ "taban_v34": {
+  "disk": {
+   "cati_engel_ort": 0.0114,
+   "cati_zemin_ort": 0.9896,
+   "zemin_zemin_ort": 0.9609,
+   "n_cati_disk": 20,
+   "n_zemin_disk": 18
+  },
+  "kaplama67": {
+   "n": 67,
+   "icerik_medyan": 0.8002,
+   "icerik_ort": 0.812,
+   "tuval_medyan": 0.4501,
+   "tuval_ort": 0.4567,
+   "zemin_maskesi_reddi": 67,
+   "red_sebepleri": {
+    "ZEMIN_MASKESI_SUPHELI": 67
+   }
+  }
+ },
+ "t121_ft": {
+  "disk": {
+   "cati_engel_ort": 0.9887,
+   "cati_zemin_ort": 0.0177,
+   "zemin_zemin_ort": 0.9597,
+   "n_cati_disk": 20,
+   "n_zemin_disk": 18
+  },
+  "kaplama67": {
+   "n": 67,
+   "icerik_medyan": 0.7335,
+   "icerik_ort": 0.7446,
+   "tuval_medyan": 0.4126,
+   "tuval_ort": 0.4189,
+   "zemin_maskesi_reddi": 67,
+   "red_sebepleri": {
+    "ZEMIN_MASKESI_SUPHELI": 67
+   }
+  }
+ },
+ "on_kayit_kiyasi": {
+  "cati_dondu": true,
+  "kural": "cati disklerinde engel>=0,50 VE zemin<=0,30 (results/t121_on_kayit.md)"
+ }
+}

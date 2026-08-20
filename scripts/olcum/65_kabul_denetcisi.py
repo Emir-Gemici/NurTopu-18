@@ -25,8 +25,48 @@ from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            _preprocess, get_masks)
 
 BURASI = Path(__file__).parent
-KADRAJ = BURASI / "calisma" / "sentetik_arena_kadraj_t66"
 FIGUR = REPO / "data" / "arena_referans" / "sartname_s9_arena.png"
+
+
+def kabul_kumesi_yolu(kok=None):
+    """KADRAJ'in TEK KAYNAGI: registry `profiles[default_profile].kabul_kumesi`.
+
+    🔴 T125 (D-225 §5): eskiden `KADRAJ = BURASI / "calisma" / ...` idi —
+    betigin KENDI KONUMUNDAN turetiliyordu. Ayna kopyasinda (scripts/olcum)
+    o dizin YOK; denetci BOS kume uzerinden K1..K4'u "DUSTU" raporladi ve
+    mimar az kalsin "model her kapida dustu" hukmu veriyordu. Registry'deki
+    `_kabul_kumesi_notu` alanin neden orada durdugunu zaten anlatiyordu;
+    denetci onu OKUMUYORDU ("iki kopya, biri zorlanmiyor" sinifi).
+
+    Fail-closed: alan yoksa ya da gosterdigi dizin yoksa RuntimeError —
+    bos kume uzerinden rapor URETILMEZ. CIPLAK YEDEK YOL YOKTUR (madde 16;
+    S5/INFER_SIZE kalibinin sert cesidi: orada guvenli varsayilan vardi,
+    burada yanlis kume "olculemeyeni DUSTU satmak" demektir).
+    """
+    taban = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
+    try:
+        veri = json.loads(taban.read_text(encoding="utf-8"))
+        profil = veri["default_profile"]
+        deger = veri["profiles"][profil]["kabul_kumesi"]
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
+        raise RuntimeError(
+            f"kabul_kumesi registry'den okunamadi ({taban}): {exc}") from exc
+    yol = Path(deger)
+    if not yol.is_dir():
+        raise RuntimeError(
+            f"kabul kumesi dizini yok: {yol} "
+            f"(kaynak: {taban} -> profiles.{profil}.kabul_kumesi)")
+    return yol
+
+
+try:
+    # 93_t106 gibi ithalatcilar modul niteligi olarak okur; registry saglamsa
+    # iki kosum baglaminda da AYNI mutlak yoldur. Bozuksa None kalir ve
+    # main() acik hatayla durur — sessiz "bos kume raporu" yolu kapali.
+    KADRAJ = kabul_kumesi_yolu()
+except RuntimeError as _exc:
+    print(f"UYARI: {_exc}", file=sys.stderr)
+    KADRAJ = None
 CONF = 0.30
 
 # ── D-107 esikleri · SONUC GORULMEDEN yazildi, sabah DEGISTIRILMEYECEK ──────
@@ -134,19 +174,70 @@ def kaplama(model, p):
     return float((mk[0] > 0).mean())
 
 
+def k14_durumlari(d, esik=None):
+    """K1..K4'un UC DURUMU (T125 · D-225 §5) — T105'in K5 kalibinin AYNISI.
+
+    d: `61_rota_moloza_basma.py` JSON'u (dict) ya da None (alt betik cokmus /
+    JSON yok). Kural: girdi yok ya da payda 0 -> OLCULEMEDI; olculdu ve esigin
+    altinda -> DUSTU. 🔴 ESIKLER DEGISMEZ — degisen yalniz OLCULEMEYENIN
+    raporlanisi. OLCULEMEDI != GECTI: verdikt icin YINE bloklar (k5_gecti
+    kalibi); "olculemeyeni gecir" seklinde bir okuma KABUL EDILMEZ.
+    """
+    e = ESIK if esik is None else esik
+    if not d or int(d.get("n", 0)) == 0:
+        return ({k: "OLCULEMEDI" for k in ("K1", "K2", "K3", "K4")},
+                {"n": int(d.get("n", 0)) if d else 0, "rota_uretilen": 0,
+                 "basan": 0, "agir": 0, "arena_disi": 0})
+    n = int(d.get("n", 0))
+    r = int(d.get("rota_uretilen", 0))
+    basan = int(d.get("basan", 0))
+    agir = int(d.get("agir", 0))
+    disi = int(d.get("arena_disi", 0))
+    durum = {"K1": "GECTI" if r >= e["K1_rota_min"] else "DUSTU"}
+    if r == 0:
+        # Rota hic uretilmemis: K1 OLCULDU ve dustu; K2..K4'un paydasi yok.
+        durum.update(K2="OLCULEMEDI", K3="OLCULEMEDI", K4="OLCULEMEDI")
+    else:
+        durum["K2"] = "GECTI" if basan / r <= e["K2_basma_maks"] else "DUSTU"
+        durum["K3"] = "GECTI" if agir / r <= e["K3_agir_maks"] else "DUSTU"
+        durum["K4"] = "GECTI" if disi / r <= e["K4_arena_disi_maks"] else "DUSTU"
+    return durum, {"n": n, "rota_uretilen": r, "basan": basan,
+                   "agir": agir, "arena_disi": disi}
+
+
 def kos(betik, ek):
+    """Alt betigi kosar; (stdout, basarili_mi) dondurur.
+
+    🔴 T125: cikis kodu artik KONTROL EDILIR. Alt betik coktuyse bu
+    OLCULEMEDI'dir — "0 rota uretti" DEGILDIR. Eski hali cikis kodunu
+    yutuyordu ve cokme, dort kapinin "DUSTU"su olarak raporlaniyordu.
+    """
     p = subprocess.run([sys.executable, "-B", str(BURASI / betik)] + ek,
                        capture_output=True, text=True, encoding="utf-8",
                        errors="replace")
-    return p.stdout or ""
+    if p.returncode != 0:
+        kuyruk = (p.stderr or "").strip().splitlines()[-3:]
+        print(f"  UYARI: {betik} exit={p.returncode} — ciktisi OLCULEMEDI "
+              "sayilacak.", file=sys.stderr)
+        for s in kuyruk:
+            print(f"    {s}", file=sys.stderr)
+        return p.stdout or "", False
+    return p.stdout or "", True
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", type=Path, required=True)
     ap.add_argument("--ad", default=None)
+    ap.add_argument("--kok", type=Path, default=None,
+                    help="registry koku (varsayilan REPO; T125 senaryo "
+                         "testleri icin)")
     args = ap.parse_args()
     ad = args.ad or args.model.parent.parent.name
+
+    # T125: girdi kumesi MODEL YUKLENMEDEN dogrulanir — kume yoksa denetci
+    # ACIK HATAYLA durur; bos kume uzerinden verdikt URETILMEZ (D-225 §5).
+    kume = kabul_kumesi_yolu(args.kok)
 
     from ultralytics import YOLO
     model = YOLO(str(args.model), task="segment")
@@ -173,22 +264,28 @@ def main():
 
     # ── K1..K4 · rota / basma / arena disi ──────────────────────────────────
     jj = BURASI / "results" / "t63" / f"{ad}_kabul.json"
-    kos("61_rota_moloza_basma.py", ["--model", str(args.model),
-                                    "--kume", str(KADRAJ), "--json", str(jj)])
-    d = json.loads(jj.read_text(encoding="utf-8")) if jj.is_file() else {}
-    n, r = d.get("n", 0), d.get("rota_uretilen", 0)
-    basan, agir, disi = d.get("basan", 0), d.get("agir", 0), d.get("arena_disi", 0)
+    jj.parent.mkdir(parents=True, exist_ok=True)
+    jj.unlink(missing_ok=True)          # T125: BAYAT json yeniden okunmasin
+    _, alt_ok = kos("61_rota_moloza_basma.py",
+                    ["--model", str(args.model),
+                     "--kume", str(kume), "--json", str(jj)])
+    d = (json.loads(jj.read_text(encoding="utf-8"))
+         if alt_ok and jj.is_file() else None)
+    k14, sayilar = k14_durumlari(d)
+    n, r = sayilar["n"], sayilar["rota_uretilen"]
+    basan, agir, disi = sayilar["basan"], sayilar["agir"], sayilar["arena_disi"]
     sonuc["K1_rota"] = f"{r}/{n}"
     sonuc["K2_basma"] = f"{basan}/{r}" if r else "-"
     sonuc["K3_agir"] = f"{agir}/{r}" if r else "-"
     sonuc["K4_arena_disi"] = f"{disi}/{r}" if r else "-"
-    gecti["K1"] = r >= ESIK["K1_rota_min"]
-    gecti["K2"] = bool(r) and basan / r <= ESIK["K2_basma_maks"]
-    gecti["K3"] = bool(r) and agir / r <= ESIK["K3_agir_maks"]
-    gecti["K4"] = bool(r) and disi / r <= ESIK["K4_arena_disi_maks"]
+    sonuc["K14_durum"] = k14
+    gecti["K1"] = k14["K1"] == "GECTI"
+    gecti["K2"] = k14["K2"] == "GECTI"      # OLCULEMEDI de bloklar (T105 kalibi)
+    gecti["K3"] = k14["K3"] == "GECTI"
+    gecti["K4"] = k14["K4"] == "GECTI"
 
     # ── K5 · bariyer kesisimi ───────────────────────────────────────────────
-    c = kos("63_bariyer_kesisimi.py", ["--model", str(args.model)])
+    c, _k5_ok = kos("63_bariyer_kesisimi.py", ["--model", str(args.model)])
     kes = None
     for s in c.splitlines():
         if "ROTA x BARIYER kesisimi" in s:
@@ -218,14 +315,18 @@ def main():
     sonuc["K0"]["figur_orani"] = oran
     sonuc["K0"]["figur_tabani"] = taban
     sonuc["K0"]["oran_notu"] = oran_notu
-    print(f"  K1 ROTA >= {ESIK['K1_rota_min']}       {'GECTI' if gecti['K1'] else 'DUSTU':<6} "
+    print(f"  K1 ROTA >= {ESIK['K1_rota_min']}       {k14['K1']:<11} "
           f"{sonuc['K1_rota']}")
-    print(f"  K2 BASMA <= %{100*ESIK['K2_basma_maks']:.0f}      {'GECTI' if gecti['K2'] else 'DUSTU':<6} "
+    print(f"  K2 BASMA <= %{100*ESIK['K2_basma_maks']:.0f}      {k14['K2']:<11} "
           f"{sonuc['K2_basma']}   (taban %9,2)")
-    print(f"  K3 AGIR  <= %{100*ESIK['K3_agir_maks']:.0f}       {'GECTI' if gecti['K3'] else 'DUSTU':<6} "
+    print(f"  K3 AGIR  <= %{100*ESIK['K3_agir_maks']:.0f}       {k14['K3']:<11} "
           f"{sonuc['K3_agir']}   (taban %0)")
-    print(f"  K4 ARENA DISI <= %{100*ESIK['K4_arena_disi_maks']:.0f}  {'GECTI' if gecti['K4'] else 'DUSTU':<6} "
+    print(f"  K4 ARENA DISI <= %{100*ESIK['K4_arena_disi_maks']:.0f}  {k14['K4']:<11} "
           f"{sonuc['K4_arena_disi']}")
+    if "OLCULEMEDI" in k14.values():
+        print("     (girdi kumesi / alt betik sorunu: OLCULEMEDI — bu 'DUSTU'"
+              " DEGILDIR ama terfi YINE bloklanir: OLCULEMEDI != GECTI."
+              " T125 · D-225 §5.)")
     k5d = sonuc["K5_durum"]
     print(f"  K5 BARIYER = 0 px    {k5d:<11} "
           f"{('%d px' % kes) if kes is not None else 'kesisim OLCULEMEDI'}")
@@ -239,8 +340,10 @@ def main():
     elif all(gecti.values()):
         print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu de saglandi.")
     else:
-        d_ = [(k + "(OLCULEMEDI)" if k == "K5" and sonuc.get("K5_durum") ==
-               "OLCULEMEDI" else k) for k, v in gecti.items() if not v]
+        durumlar = dict(sonuc.get("K14_durum", {}))
+        durumlar["K5"] = sonuc.get("K5_durum")
+        d_ = [(k + "(OLCULEMEDI)" if durumlar.get(k) == "OLCULEMEDI" else k)
+              for k, v in gecti.items() if not v]
         print(f"  VERDIKT: URETIME ALINMAZ — dusen: {', '.join(d_)}")
         print("           kok nedene baglanip TEK duzeltme turu kosulur.")
     print("=" * 66)

@@ -17598,3 +17598,72 @@ sonucuna varabilir. Ben az kalsın vardım. → **T125**.
 **insanındır** (D-133) ve K5 `ÖLÇÜLEMEDİ` olduğu sürece kapı zaten bloklu.
 T123'ün "iki aday" hedefi artık **üç** ölçülmüş adaya sahip ve üçü **farklı hata
 yapıyor** — yedekliliğin istediği şey budur.
+
+---
+
+### D-226 · ✅ T125 UYGULANDI · Denetçi artık ölçemediğini "DÜŞTÜ" satamıyor: KADRAJ tek kaynaktan (registry), K1..K4 üç durumlu, alt-betik çıkış kodu denetimli — iki koşum bağlamı AYNI sonucu veriyor
+
+- **Yazan:** Claude 2 / Fable 5 (ustabaşı) · Denetleyen: mimar bekleniyor (madde 19)
+  · Kapı çıktısı: `discover -s tests -q → Ran 677 · OK` + `test_rota_sentetik 15/15`
+  + iki-bağlam doğrulama çıktıları (aşağıda). 2026-08-20 · dayanak: mimar T125
+  emri + D-225 §5. **Codex'e bölünmedi — gerekçe (§9.1):** doğrulama adımı iki
+  YEREL bağlamda GPU'lu koşum ister (bulut Codex koşamaz); düzeltme T105/S5
+  kalıplarının birebir taşınması gereken sözleşme işiydi, mekanik parça yoktu.
+- **Kök neden mimarındı, doğrulandı:** `:28 KADRAJ = BURASI/"calisma"/...`
+  (betik konumundan türetim; aynada dizin YOK) + `:178 else {}` (sessiz boş) +
+  `kos()` çıkış kodunu yutuyordu. Registry'deki `kabul_kumesi` tek-kaynak
+  alanı hiç okunmuyordu.
+- **Üç parça (emirdeki bölme birebir):**
+  1. `kabul_kumesi_yolu(kok=None)` — KADRAJ artık registry
+     `profiles[default_profile].kabul_kumesi`ten; alan/dizin yoksa
+     **RuntimeError, rapor üretilmez** (çıplak yedek yol YOK; S5 kalıbının
+     sert çeşidi — orada güvenli varsayılan vardı, burada yok). `KADRAJ`
+     modül niteliği korundu (93_t106 `K65.KADRAJ` okur) — bozuksa None +
+     stderr uyarı, `main()` açık hatayla durur. Ek korkuluk: `jj.unlink()`
+     — **bayat JSON yeniden okunamaz** (aynı sınıf ikinci sessiz yol).
+  2. `k14_durumlari(d)` — GECTI/DUSTU/OLCULEMEDI, T105'in K5 kalıbının
+     AYNISI; girdi yok/payda 0 → OLCULEMEDI; r=0 → K1 ÖLÇÜLDÜ-DÜŞTÜ,
+     K2..K4 OLCULEMEDI. **EŞİKLER DEĞİŞMEDİ** (fonksiyon ESIK sözlüğünü
+     okur); OLCULEMEDI terfiyi YİNE bloklar, verdikt satırında
+     `(OLCULEMEDI)` etiketiyle ayrışır.
+  3. `kos()` → `(stdout, basarili_mi)`; exit≠0 → stderr kuyruğu basılır ve
+     sonuç OLCULEMEDI ("0 rota" DEĞİL).
+- **Kapı (davranışsal, emir gereği mutasyonsuz):**
+  `tests/test_t125_denetci_olculemedi.py` — 11 test: kume-yok senaryosu
+  (alt süreçle: verdikt YOK, "DUSTU" YOK, "GECTI" YOK, açık hata mesajı VAR),
+  üç-durum birim kuralları, fail-closed `kabul_kumesi_yolu` + POZİTİF
+  kontroller (ESIK'ten türetilmiş geçen/düşen girdiler; üretim registry'sinin
+  alanı gerçek dizine işaret ediyor). `Ran 11 · OK`.
+- **Mimarın belirtisi YENİDEN ÜRETİLDİ → KAPANDI** (aynı ağırlık:
+  `codes/runs/segment/t121_etiket_ft/weights/best.pt`):
+  - cwd `O:/navitas` (ayna): K1 **259/260 GECTI** · K2 12/259 GECTI ·
+    K3 0/259 GECTI · K4 1/259 GECTI · K5 OLCULEMEDI → verdikt yalnız
+    K5(OLCULEMEDI) ile bloklu.
+  - cwd `O:/navitas-local-train` (canlı): **AYNI satırlar, AYNI sayılar.**
+  - "0/0 DUSTU" iki bağlamda da bir daha ÇIKMADI. Ham: `scripts/olcum/
+    results/t63/t125_dogrulama_ayna_kabul*.json` (+ canlı taraftaki eşi).
+- **Yan kayıt:** Bu doğrulama D-225'in "arena kapıları bozulmadı" hükmünü
+  denetçi zincirinin KENDİSİYLE de teyit etti (K1–K4 gerçekten GEÇTİ; önceki
+  "her kapıda düştü" görüntüsü tamamen artefakttı).
+- Ayna senkron: 62 çift · AYRISAN 0. İki kopya bayt-eş.
+
+#### D-223'e EK · T123 kilidinin mutasyon borcu KAPANDI
+Mutasyon: paket kılavuzundan §G8 (GERİ ALMA) silindi →
+**dosya: 2/7 · takım: 2/677** — düşenler:
+`test_adim_kumesi_iki_kilavuzda_ayni_ve_bos_degil` ve
+`test_yordamin_cekirdek_islevleri_var` ("GERİ ALMA adımı yok"). Geri koyma:
+`git status --porcelain` BOŞ; ardından 7/7 OK ve takım 677 OK.
+
+#### SIRADAKİLER — ustabaşı sıralaması (emir: "sen sırala, gerekçesini yaz")
+1. **T122 (etiket hattı düzeltmesi) — İLK.** Gerekçe: T121 sonucu elde
+   (çatı DÖNDÜ + K0 TAKASI, D-225); DJI verisi her an gelebilir ve T122'nin
+   kendi gerekçesi "yeni veri düzeltilmemiş hatta girerse kusuru BÜYÜTEREK
+   tekrarlar". K0 takası seçenek tasarımını etkilediğinden (figür/gerçek-doku
+   dengesi) uygulama öncesi mimarın seçenek kararı gerekir — D-225'teki
+   seçenek sıralamasına karar bekliyor; NASIL bölümünü ben yazacağım.
+2. **T120 kapanış paketi — Codex bağımsız tekrarı dönünce.** Ölçüm bende
+   (D-213); tekrar çapraz doğrulama için Codex kuyruğunda. İkisi birleşince
+   mimara çevir/taşı/bırak önerisi tek raporla gider.
+3. **T118 kalan / T116 — mimar kararı bekliyor.** T118 ölçümü D-214'te
+   tamam (adlandırma görev önerisi masada); T116 payda kararı D-201/D-207
+   zincirinde mimarın. Benim tarafta yeni ölçüm işi yok — hatırlatma.
