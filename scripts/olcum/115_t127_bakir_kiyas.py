@@ -49,6 +49,7 @@ MODELLER = [
     ("v34_URETIM", KOK / "models" / "navitas_seg_v34_best.pt"),
     ("t121_ft_(c)", RUNS / "t121_etiket_ft" / "weights" / "best.pt"),
     ("t122ac_(a+c)", RUNS / "t122ac_daralt_cati" / "weights" / "best.pt"),
+    ("t127_temiz", RUNS / "t127_temiz" / "weights" / "best.pt"),
 ]
 
 
