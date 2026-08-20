@@ -18299,3 +18299,43 @@ t122ac'nin kaybettigi kisim              : 0,3968   (%39,7)
   kısıtı). Bu satır, seçim yapılırken bilinmeyen olarak durmalıdır.
 - ⚠ Bu kayıt D-237'nin sonucunu değiştirmez, **fiyatını** yazar. Sıralamayı
   ölçüm yaptı; seçim ve terfi mimarın/insanındır (D-133, §9.2).
+
+---
+
+### D-239 · ⚖ KENDİ SIRALAMAMI DÜZELTİYORUM (D-237 §5) · (c) çatıyı çevirirken çatı-dışı zeminin yalnız %1,85'ini kaybediyor; (a)+(c)'nin "red 67→0" üstünlüğü YETENEKTEN DEĞİL, DAHA AZ GÖRMEKTEN geliyor
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20 · D-238'in ölçümü (c)
+  için de koşuldu; sonuç kendi önerimi zayıflattı ve kaydı düzeltiyorum.
+- **ÖLÇÜM (aynı 55 kare, aynı ölçüt, v34 tabanına göre):**
+```
+model            cati DISI zemin kaybi   kaybin ENGEL olan kismi
+t121_ft (c)              0,0185 (%1,9)          %70
+t122ac (a)+(c)           0,3968 (%39,7)         %12  (kalan %88 ETIKETSIZ)
+```
+- **Anlamı — D-237 §1'de "en çarpıcı satır" dediğim şey yeniden okunmalı:**
+  (a)+(c)'nin gerçek 67 karede **0 red** vermesi, kaplamasının 0,455'e
+  düşmesindendir; kaplama düştüğü için `ZEMIN_KAPLAMA_TAVANI` (0,67) artık
+  aşılmıyor. (c) ise kaplamayı 0,734'te tutuyor — çünkü **çatı dışındaki
+  zemini görmeye devam ediyor** — ve tam da bu yüzden tavana takılıyor.
+  ⇒ **Tavanı geçmek, burada bir yetenek göstergesi DEĞİL, görme kaybının yan
+  ürünüdür.** Kendi raporumda bu satırı üstünlük gibi öne çıkarmıştım;
+  düzeltiyorum.
+- **Ortaya çıkan asıl soru MİMARIN masasındaki T118/T116'ya bağlanıyor:**
+  gerçek bir otopark ZATEN büyük ölçüde sürülebilir yüzeydir; çatı doğru
+  şekilde engel sayıldıktan SONRA bile içerik-paydalı kaplama 0,734'tür ve
+  0,67 tavanını aşar. Yani tavan, **doğru çalışan bir modeli** reddediyor
+  olabilir. Tavanın kalibrasyonu (hangi payda, hangi kümede) T118/D-201
+  zincirinin konusudur ve **karar mimarındır**; ben yalnız bu bağlantıyı
+  ölçümle kuruyorum. Eşik önerisi YAZMIYORUM (§9.2).
+- **DÜZELTİLMİŞ SIRALAMA (seçim yine MİMARIN):**
+  1. **(c)** — çatıyı çeviriyor (kaçak %13,1), çatı-dışı zemini KORUYOR
+     (kayıp %1,9), K0 takas (oran 0,30), arena kapıları geçti.
+     Açık sorunu tavan/red — ki bu **modelin değil eşiğin** sorusu olabilir.
+  2. **(a)+(c)** — çatıda en iyi (kaçak %2,0), K0 geçti, red 0; ama
+     çatı-dışı zeminin %39,7'sini kaybediyor ve kaybın %88'i etiketsiz.
+     "Daha az gören" bir aday, T123'ün YEDEK adayı olarak savunulabilir
+     (farklı hata yapar — D-222 §3), birincil olarak savunmak için
+     yetenek kaybının sahada ölçülmesi gerekir.
+  3. (d) tek başına çözmüyor · 4. (a) K0 körlükten RED · 5. (b) ölçülmedi.
+- ⚠ **Bu kayıt D-237'nin ölçümlerini değiştirmez; YORUMUNU düzeltir.** İki
+  kayıt birlikte okunmalıdır.

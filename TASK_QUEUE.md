@@ -5608,6 +5608,9 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ⚠ SEÇİM VE TERFİ MİMARIN/İNSANIN (D-133, §9.2); ben ölçtüm ve sıraladım.
     - Yazan: Claude-2 (Opus 5) · Denetleyen: mimar bekleniyor ·
       Kapı çıktısı: 15/15 · discover 702 OK · ham: results/t122/kiyas.md
+    - ⚖ **D-239 DÜZELTMESİ:** sıralama değişti — (c) çatı-dışı zeminin yalnız
+      %1,9'unu kaybederken (a)+(c) %39,7'sini kaybediyor; (a)+(c)'nin "red 0"
+      üstünlüğü daha az görmesinden geliyor. Tavan sorusu T118/T116'ya bağlı.
   - ⏳ **ÖLÇÜM TURU BAŞLADI · 2026-08-20 · Claude-2 (Opus 5) · D-229/D-230.**
     K0 TANISI: T121'in TAKAS sebebi aşırı genelleme DEĞİL — kaybolan zeminin
     %100'ü hiçbir sınıfa gitti, engel de düştü, v34↔ft figür maskeleri SIFIR
