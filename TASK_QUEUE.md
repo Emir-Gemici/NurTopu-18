@@ -5585,6 +5585,23 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     (hangi komut, hangi dosya, kaç dakika). Kılavuzun kurulum yordamı testle kilitli
     (T104); geçiş yordamı **kilitli değil**.
 
+- [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
+  - Defterde v34'ün **lehine** yazılmış cümle:
+    *"aynı model GERÇEK karelerde EN ÇOK gören modeldir (0,4551 vs v30 0,3272)"*
+  - D-218 çatı diski ölçümü aynı farkı **aleyhe** okutuyor:
+    ```text
+    v30  çatı→zemin 0,286 · çatı→engel 0,776
+    v34  çatı→zemin 0,990 · çatı→engel 0,011
+    kaplama farkı ~11,6 puan (D-201: v30 %33,42 · v34 %45,01)
+    ```
+    Yani "daha çok görüyor" ile "çatıyı da zemin sayıyor" **aynı sayı** olabilir.
+  - **Yap:** zemin kaplamasının **artışı** tek başına erdem olarak yazılamaz;
+    hangi bölgede arttığı ölçülmeden cümle kurulmaz. Defterdeki cümleye sınır düş.
+  - ⚠ **Metin işi değil sözleşme işi:** aynı kalıp (`daha çok görüyor` /
+    `kaplama yüksek → iyi`) başka nerelerde geçiyor? Tara.
+  - ⚠ **v34 terfisi GERİ ALINMAZ** — arena kabul kapılarında v30'u geçti (D-181)
+    ve çatı ekseni hiçbir terfi kapısında yoktu; v30 de o eksende seçilmemişti.
+
 - [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
     `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``

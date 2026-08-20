@@ -17352,3 +17352,87 @@ olması sınanmamasını gerektirmez.**
   (4 test `test_gercek_arena_kapisi.setUpClass` GPU ister; eğitim GPU'yu
   kullandığından CUDA gizlenerek koşuldu — kod kusuru değil, koşum kısıtı).
   TAM 659 kapısı eğitim bitince, nihai kayıttan önce koşulacak.
+
+---
+
+### D-222 · ⚖ MİMAR DENETİMİ · T119 kapısı DOĞRULANDI (kendi mutasyonumla) — ve D-218'in tablosu ÜRETİM TERFİSİNİ YENİDEN OKUTUYOR: v34'ün "daha çok görüyor" üstünlüğü büyük ölçüde "ÇATIYA ZEMİN DİYOR" olabilir
+Tarih: 2026-08-20 · Denetleyen: Claude 1 (mimar) · Denetlenen: b55ddfa (T119/T120/T118) ve b36c8a9 (T121 adım 1-4)
+Kapılar mimar tarafından koşuldu: **659 OK · 15/15 · `codes/` temiz**
+
+#### 1. T119 — KAPI GERÇEKTEN TUTUYOR (kendi ölçümüm)
+
+Kapıyı ben tanımlamıştım, dolayısıyla doğrulamasını da kendim koştum:
+
+    MUTASYON  codes/rpi_inference.py:1349
+              open_path = olcum["darbogaz_serit"] -> olcum["baskin_serit"]
+
+    tests/test_t119_yayinlanan_road_kapisi.py : Ran 4 · FAILED (failures=6)
+    TÜM TAKIM                                 : Ran 659 · FAILED (failures=7)
+    geri alındıktan sonra                     : Ran 4 · OK · git diff codes/ BOŞ
+
+D-209'daki durum kapandı: mutasyonu artık **davranışsal** bir kapı yakalıyor,
+bayt kimliği testi değil. `test_rota_serit_etiketi.py` hâlâ 21/21 OK — yani
+kapı **doğru dosyaya** kondu, eskisi zorlanmaya çalışılmadı. Doğru tercih.
+
+#### 2. 🔴 D-218'İN TABLOSU BİR TERFİ GEREKÇESİNİ TERSİNE OKUTUYOR
+
+Ameleni̇n çatı diski ölçümü (conf 0,05 · çatı→zemin / çatı→engel):
+
+    v30 : 0,286 / 0,776      <- çatıyı BÜYÜK ÖLÇÜDE ENGEL görüyor
+    v34 : 0,990 / 0,011      <- her türde çatı = ZEMİN
+    v21 : 0,989 / 0,011
+
+Şimdi bunu terfi defterindeki cümleyle yan yana koyuyorum
+(`config/model_registry.json`, k0 notu — v34'ün **lehine** yazılmıştı):
+
+    "aynı model GERÇEK karelerde EN ÇOK goren modeldir (0,4551 vs v30 0,3272)"
+
+Ve D-201'in eşleştirilmiş kaplama ölçümü:
+
+    v30 medyan %33,42   ·   v34 medyan %45,01     (fark ~11,6 puan)
+
+**Çatı diskleri bu farkın makul bir açıklaması.** v34 "daha çok görüyor" değil,
+**çatıyı da zemin sayıyor** olabilir. Terfi defterine v34'ün **üstünlüğü** diye
+yazılmış bir sayı, aynı ölçümle v34'ün **kusuru** olarak da okunabiliyor.
+
+⚠ **Bu v34'ü geri almaz** ve almamalı:
+  · v34 arena kabul kapılarında v30'u geçti (k2 %4,65 vs %5,43 — aynı koşumda,
+    D-181), k3/k4/k5 temiz.
+  · Çatı ekseni **hiçbir terfi kapısında yoktu** — yani v30 de o eksende
+    seçilmemişti, tesadüfen iyiydi.
+  · Ölçüm 6 sonda karesi × diskler üzerinde; n küçük.
+
+**Ama şunu değiştirir:** "en çok gören model" cümlesi bundan sonra **tek başına
+bir erdem olarak yazılamaz.** Zemin kaplamasının artması, madde 15'in
+tehlikeli yönüdür (serbest alan büyüyor). Defterde bu cümlenin yanına sınır
+düşülecek.
+
+#### 3. İKİ ADAYIN (T123) SOMUT HÂLİ ORTAYA ÇIKTI
+
+T123 "iki üretim adayı" istiyordu ve ayrımın **seed'de olamayacağını** yazmıştım
+(D-140). D-218 ayrımı **ölçülmüş bir eksende** veriyor:
+
+    v30 : çatıda güçlü (0,776) · arena kapılarında biraz zayıf · gerçek karede az görür
+    v34 : arena kapılarında güçlü · çatıda kör (0,011) · gerçek karede çok görür
+
+Bunlar **farklı hata yapan** iki modeldir — yedeklilik tam olarak budur.
+⚠ Karar değil, aday tespiti. T121 biterse üçüncü bir aday (etiket düzeltilmiş)
+çıkacak ve karşılaştırma **üç** model üzerinden yapılacak. **Seçim insanındır** (D-133).
+
+#### 4. AMELENİN DİSİPLİNİ — İKİ NOKTA KAYDA DEĞER
+
+  · **Dairesellik kendiliğinden beyan edildi:** v21/v30/v34'ün copy_paste
+    soyundan geldiğini ve bunun ölçümü kirletebileceğini ben sormadan yazdı.
+    Emirde istemiştim; uyguladı ve **kendi aleyhine** kullandı (v30'un
+    (c)-kâhinliğini "dairesel-riskli" diye işaretledi).
+  · **(b) sorusu varsayımla değil KODDAN cevaplandı:** ultralytics
+    `v8SegmentationLoss.single_mask_loss`'un maske kaybını GT kutusuna kırptığı
+    kaynak satırıyla gösterildi. "Etiketsiz = negatif mi?" sorusu literatürden
+    değil, **kullandığımız sürümün kodundan** cevaplandı. Doğru yöntem budur.
+
+#### 5. AÇILAN GÖREV
+
+**T124** — `config/model_registry.json`'daki "en çok gören model" cümlesine
+sınır düşülecek: kaplama artışı **tek başına erdem değildir**; hangi bölgede
+arttığı ölçülmeden yazılamaz. ⚠ Metin işi değil **sözleşme** işi: aynı cümle
+kalıbı başka yerlerde de var mı, taranacak.
