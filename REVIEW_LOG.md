@@ -19121,3 +19121,42 @@ kabul zinciri        : K0 figur 0.015521439953062066 (BIT-ES) · K1 257/260 ·
   DataLoader'ın tükettiği bir şeyin değişmesi gerekir — en temizi
   `deterministic=False` ile bir koşum. Bu bir **ölçüm** koşumudur, üretim
   reçetesi değişikliği değildir; ayrı ön kayıtla (T128-B) koşulacak.
+
+---
+
+### D-252 · 🔴 KENDİ HATAM · T128'i koşmadan ÖNCE defteri aramadım: aynı deney ZATEN koşulmuş, sonucu ZATEN yazılıydı — 1,18 saat GPU boşa gitti ve **belgelenmiş bir dersi tekrarladım**
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-21 · Bu kayıt bir bulgu
+  değil, **bir sürecin başarısızlığıdır** ve öyle yazılıyor.
+- **NE OLDU:** D-135'in "kararlar tek koşuyla verildi, ne kadarı tohum
+  gürültüsü?" sorusunu kapatmak için `--tohum 42` koşumu başlattım (T128,
+  ön kayıt yazılı). Sonuç: tohum kolu **atıl** (D-251).
+- **AMA BU ZATEN BİLİNİYORDU.** `REVIEW_LOG.md:10100-10127` (v31 deneyi,
+  mimar) aynı şeyi ölçmüş ve yazmış:
+  - *"v31 6,4 saat GPU harcadı ve v30'un birebir kopyasını üretti."*
+  - *"`56_t53_gercek_karisim.py --tohum` şu an **ATILDIR** (etkisiz)."*
+  - Ve dersi: *"bir düğmenin ETKİ ETTİĞİ önce KÜÇÜK bir koşuyla doğrulanır,
+    200 epoch'la değil."*
+  Ben o dersi **birebir tekrarladım**: 40 epoch (1,18 saat) koşup sonra
+  düğmenin atıl olduğunu keşfettim.
+- **NEDEN OLDU (kök neden, mazeret değil):** T128'i kendi girişimimle açtım ve
+  ön kaydı yazarken **`REVIEW_LOG`'da "tohum" araması yapmadım**. Ölçüm
+  disiplinim (ön kayıt, karar kuralı, mutasyon) çalıştı; eksik olan **önce
+  defteri okuma** adımıydı. Bu projede defter tam olarak bunun için var.
+- **NE KURTARDI:** D-251 yine de iki şey ekliyor: (a) mekanizma artık
+  **kaynak satırıyla** belgeli (`ultralytics/data/build.py:359` sabit tohum,
+  `:209` epoch tabanlı karıştırma) — eski kayıt mekanizmayı bu kadar kesin
+  yazmıyordu; (b) atıllık **bu reçetede de** (v34 tabanlı ince ayar, 40 epoch)
+  doğrulandı, yalnız v31'in reçetesinde değil. Yine de bu, koşumu **haklı
+  çıkarmaz** — aynı bilgi 5 dakikalık bir aramayla elde edilirdi.
+- **KALICI DÜZELTME (kendime kural):** yeni bir ölçüm turu açmadan önce
+  **ön kaydın ilk satırı** "bu soru daha önce ölçüldü mü?" araması olacak
+  (`REVIEW_LOG` + `TASK_QUEUE` anahtar kelime taraması) ve sonucu ön kayda
+  YAZILACAK — "arandı, bulunamadı" da bir kayıttır.
+- **T128-B'ye etkisi:** eski kayıt varyans sorusunun **açık** kaldığını ve
+  çözümün "dataloader generator'ünü değiştirmek ya da başka bir değişkeni
+  oynatmak" olduğunu söylüyor. Koşmakta olan T128-B (`deterministic=False`)
+  veri sırasını **değiştirmez** (build.py:359 sabit) — yani yalnız **sayısal
+  belirsizliği** ölçecek. Bu sınır T128-B ön kaydında zaten yazılıydı;
+  koşum bitince sonuç **bu sınırla** raporlanacak, "varyans ölçüldü" diye
+  DEĞİL.
