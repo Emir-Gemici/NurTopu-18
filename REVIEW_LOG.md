@@ -17950,3 +17950,69 @@ BARIYER  : uc modelde de  model ENGEL diyor %100,0  ·  ZEMIN diyor %0,0 / %1,5
   eşik/ölçüt yazma yetkisi mimardadır; (2) yeni zemin sentetiktir, D-88/D-99
   kalıcı kısıtı sürer; (3) figür ölçümü bilgi olarak korunabilir — ama
   "OLCULEMEDI" ile "GECTI" ayrımı D-180 gereği aynen kalmalı.
+
+---
+
+### D-232 · 🔴 T122 · Depoda ZATEN doğru ilkeli bir etiket hattı var (71) ve 67 kareyi etiketlemiş — ama ölçüldü: çatının %49'unu ZEMİN sayıyor (gölgeli yamaç). Kâhin kıyası: en iyi otomatik kâhin `aday_v5c` (%12), en kötüsü ÜRETİM MODELİ v34 (%96)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-20 · Betikler (aynalı): `107_t122_71_capraz_denetimi.py`,
+  `108_t122_kahin_kiyasi.py` · Ham: `results/t122/capraz_71.json`,
+  `capraz_71.png`, `kahin_kiyasi.json`.
+- **Yer gerçeği (her iki ölçümde de AYNI):** T121'de elle çizilip **üç görsel
+  turda** doğrulanan çatı maskeleri (`results/t121/cati_maskeleri/`, çatı
+  içeren 55 kare). Yani kâhinler benim etiketime göre değil, **üç turda
+  düzeltilmiş** bir yer gerçeğine göre sıralandı.
+
+#### 1. Depoda ZIT İKİ ETİKETLEME FELSEFESİ var
+`scripts/olcum/71_gercek_kare_etiketleyici.py` docstring'i (T84, D-127/D-128):
+*"GEÇİLEMEZ NESNE ASLA ETİKETSİZ BIRAKILMAZ… sınıf ataması 'geriye kalan
+zemindir' mantığıyla YAPILMAZ; her sınıf KENDİ kanıtıyla işaretlenir ve
+KANITSIZ kalan piksel `blocked` olur (fail-safe)."* Üç kanıt: DOTA araç ·
+LAB bitki · **parlak+düz+geniş bileşen = YAPI**. Üç görsel düzeltme turundan
+geçmiş ve **67 karenin tamamını etiketlemiş** (`gercek_kare_etiket_v1/`).
+🔴 Buna karşılık eğitim verisini ÜRETEN `copy_paste_augmentation.yolo_etiketi()`
+tam-kare zemin yazıyor (D-210) — **tam ters ilke**. İki hattan YANLIŞ olanı
+üretime bağlıydı; doğru ilkeli olan kullanılmadı. "İki kopya, biri
+zorlanmıyor" sınıfının en pahalı örneği.
+
+#### 2. AMA 71 DE KAÇIRIYOR — ve nerede kaçırdığı belli
+```
+n=55 cati kare · olcut: cati alaninda 71'in ZEMIN dedigi piksel orani
+kacak ort %49,4 · medyan %39,9 · maks %100 · >%20 olan kare 44/55
+71'in kare geneli zemin payi: 0,707
+```
+**Görsel doğrulama (D-80, `capraz_71.png`):** kaçak rastgele değil,
+**çatının GÖLGELİ yamacı**. Parlak çatı doğru şekilde engel; koyu yamaç
+71'in "gölge istisnası"na (mavi yönde sapma → zemin) takılıp zemin oluyor.
+Bu istisna D-127'de bilerek eklenmişti ("koyu asfaltı engel öğretmek gölgeli
+koridorları kapatır") — yani düzeltmenin kendisi yeni bir kaçak açmış.
+
+#### 3. KÂHİN KIYASI — aynı 55 kare, aynı ölçüt [SONUC-DEGISTIREN]
+| kâhin | çatı kaçağı ort | medyan | >%20 kare | zemin kapsama |
+|---|---|---|---|---|
+| **aday_v5c @0,30** | **0,121** | 0,074 | 12/55 | 0,491 |
+| aday_v5c @0,05 (üretecin bugünkü ayarı) | 0,148 | 0,087 | 14/55 | 0,590 |
+| v30 @0,30 | 0,305 | 0,265 | 42/55 | 0,602 |
+| 71 hattı (klasik CV) | 0,494 | 0,399 | 44/55 | 0,707 |
+| **v34 @0,30 (ÜRETİM)** | **0,961** | 0,975 | **55/55** | 0,816 |
+- **Üretim modeli, mevcut en KÖTÜ çatı kâhinidir** (%96 kaçak). D-218'in disk
+  ölçümü artık tam-maske ölçümüyle de doğrulandı ve D-222'nin terfi okumasını
+  güçlendirir: v34'ün "daha çok görmesi" büyük ölçüde çatıyı görmemesidir.
+- ⚠ **Dairesellik:** v30/v34 düzeltilmeye çalışılan zincirin ürünüdür; tabloya
+  "hangi model ne görüyor" sorusu için girdiler, **kâhin adayı olarak değil**.
+  Kâhin adayları yalnız `aday_v5c` ve `71`dir.
+
+#### 4. T122 İÇİN ANLAMI (öneri — karar mimarın)
+- **Yeni DJI verisi için otomatik hat:** elle çizim 56 karede sürdürülebildi,
+  yüzlerce karede sürdürülemez. Ölçülen en iyi otomatik kâhin **aday_v5c**
+  (%12 kaçak) — ve seçenek (a) zaten tam olarak onu kullanıyor.
+- **Daha güçlü ve ölçülebilir bir bileşim önerisi:** zemin = *v5c-zemin ∩
+  71-zemin* (iki BAĞIMSIZ kanıt aynı anda "zemin" demedikçe piksel zemin
+  sayılmaz — fail-safe yön). Kaçağı ölçülmedi; eğitimler bitince aynı
+  yer gerçeğinde ölçüp rapora ekleyeceğim.
+- **71'in gölge istisnası için somut düzeltme adayı:** gölge kurtarması
+  yalnız **doğrulanmış asfaltla bitişik** bölgelere uygulanmalı; bir yapının
+  kendi gölgeli yüzeyi (parlak-düz-geniş bileşene bitişik koyu alan)
+  kurtarılmamalı. ⚠ 71'i DEĞİŞTİRMEDİM: hattın kuralını değiştirmek etiket
+  sözleşmesini değiştirmektir, mimarın kararıdır (§9.2). Önerdim, bekliyorum.

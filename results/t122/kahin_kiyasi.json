@@ -1,0 +1,47 @@
+{
+ "n_kare": 55,
+ "yer_gercegi": "T121 elle+homografi cati maskeleri (uc gorsel tur)",
+ "olcut": "kacak = cati alaninda ZEMIN diyen piksel orani (kucuk iyi)",
+ "adaylar": {
+  "aday_v5c@0.05": {
+   "yol": "O:\\navitas\\models\\aday_v5c_m640.pt",
+   "conf": 0.05,
+   "dairesel_aday": false,
+   "kacak_ort": 0.1478,
+   "kacak_medyan": 0.0866,
+   "kacak_maks": 0.6737,
+   "kacak_yuksek_kare_0_20": 14,
+   "zemin_kapsama_ort": 0.59
+  },
+  "aday_v5c@0.30": {
+   "yol": "O:\\navitas\\models\\aday_v5c_m640.pt",
+   "conf": 0.3,
+   "dairesel_aday": false,
+   "kacak_ort": 0.1211,
+   "kacak_medyan": 0.0742,
+   "kacak_maks": 0.6433,
+   "kacak_yuksek_kare_0_20": 12,
+   "zemin_kapsama_ort": 0.491
+  },
+  "v30@0.30": {
+   "yol": "O:\\navitas\\models\\navitas_seg_v30_best.pt",
+   "conf": 0.3,
+   "dairesel_aday": true,
+   "kacak_ort": 0.3052,
+   "kacak_medyan": 0.2646,
+   "kacak_maks": 0.5442,
+   "kacak_yuksek_kare_0_20": 42,
+   "zemin_kapsama_ort": 0.6022
+  },
+  "v34@0.30": {
+   "yol": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+   "conf": 0.3,
+   "dairesel_aday": true,
+   "kacak_ort": 0.9606,
+   "kacak_medyan": 0.9746,
+   "kacak_maks": 1.0,
+   "kacak_yuksek_kare_0_20": 55,
+   "zemin_kapsama_ort": 0.8155
+  }
+ }
+}
