@@ -43,6 +43,15 @@ Ham: `results/t120/bagimsiz_sayim.json`.
 dosya "sifir test" gorunmustu (ImportError: Start directory is not importable).
 Yani olcum aletinin kendisi once YANLIS sonuc uretti; pozitif kontrol
 (takimin 677 testi geciyor olmasi) bunu yakaladi. Ayni sinif: T95 prob kusuru.
+
+🔴 AST'NIN BILINEN SINIRI (oz-denetim, 2026-08-20): testlerini bir MIXIN'den
+MIRAS ALAN bir dosya (`class X(OrtakTestler, unittest.TestCase)` ve kendi
+`test*` metodu YOK) bu kapida "sifir test" gorunur, oysa kesif miras alinan
+testleri TOPLAR. Bugunku depoda boyle dosya YOK (63/63 alt-surec uyumu bunu
+kanitlar). Sinirin YONU guvenlidir: kapi YANLIS GECIRMEZ, YANLIS DUSURUR —
+yani sessiz basari degil, incelenecek bir kirmizi verir. Boyle bir dosya
+eklenirse cozum: ya dosyaya kendi `test*` metodunu koymak ya da neden
+miras kullanildigini yazan bir muafiyet isareti eklemek.
 """
 
 from __future__ import annotations
