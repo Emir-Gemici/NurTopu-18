@@ -18,41 +18,29 @@
 
 ---
 
-## GECE KOSUMU · 2026-08-21 · Claude 2 (Opus 5, basamele) → devralan varsa
+## GECE KOSUMU · 2026-08-21 (GUNCEL) · Claude 2 (Opus 5, basamele)
 
-> Bu bir DEVIR DEGIL, KOSAN ZINCIRIN DURUM KAYDIDIR. Kullanici uyuyor, PC acik.
-> Zincir koparsa devralan buradan devam eder.
+**BITEN ISLER (hepsi push edildi):**
+- T127 temiz bolum zinciri — D-249. On kayit kurali 1 SAGLANDI: kirli bolum
+  kazanani sismemis. Temiz val'de egitim 18 epoch'ta durdu, en iyi epoch 27->10.
+- T115 ustabasi denetimi — D-247 (DOGRU AMA EKSIK) + D-250 (13 satirin 10'u
+  guvenle onarilabilir; onarim Codex'in isi, bagimsizlik geregi ben yapmiyorum).
+- T129 — D-248: cati korlugu KAYNAK KALITESINE bagli (v34 videoda %96, ham
+  fotografta %46). Siralama degismiyor.
+- T128 — D-251:  bu recetede ETKISIZ (bit-es agirlik). D-252: bu deney
+  ZATEN v31'de kosulmustu, defteri aramadan tekrarladim (1,18 saat GPU).
 
-**KOSAN IS: T127 temiz bolum zinciri** — TEK betik, elle adim YOK.
-- Betik: `scripts/olcum/116_t127_temiz_bolum_zinciri.py` (aynali)
-- Gunluk: `results/t127_zincir_log.txt`
-- On kayit (KILITLI, D-107): `results/t127_on_kayit.md`
-- **Adim 1 BITTI ve fail-closed kapisini gecti:** train 344 · val 96 ·
-  **KIRLI val 0** · ikiye bolunen kaynak 0
-  (kume `dataset/copy_paste_t127`, yaml `dataset/karisim_t127.yaml`)
-- **Adim 3 (egitim `t127_temiz`) KOSUYOR.** Bitince adim 4 AYNI betikte
-  otomatik kosar: 65 kabul zinciri · 109 kiyas · 115 bakir kare kiyasi ->
-  ciktilar `results/t127_temiz/` altina.
-- Zincir coker ve devralan gerekirse ayni betik bastan kosulabilir: adim 1
-  kumeyi yeniden kurar, egitim `exist_ok=True` ile ayni dizine yazar.
-- ⚠ Kosum ortami ZORUNLU: `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` ve
-  `PYTHONIOENCODING=utf-8` (olmadan egitim izsiz kalir — olculdu).
+**KOSAN IS: T128-B** (, olcum kosumu)
+- Betik: 
+- Gunluk:  · zincir:
+   (egitim bitince kabul zinciri otomatik)
+- On kayit:  (DEFTER ARAMASI dahil — tekrar degil)
+- Beklenen sinir: veri sirasini DEGISTIRMEZ (build.py:359 sabit tohum), yalniz
+  SAYISAL belirsizligi olcer. Sonuc bu sinirla raporlanacak.
 
-**DURDURULAN IS: T128 (tohum gurultusu, D-135).** Kendi girisimimdi; T127
-oncelikli oldugu icin epoch 3/40'ta durduruldu. On kayit yazili ve GECERLI:
-`results/t128_on_kayit.md`. Yeniden baslatma:
-`scripts/olcum/105_t122_ft_kosumu.py --kip ac --tohum 42`.
-⚠ Yarim agirlik `codes/runs/segment/t122ac_tohum42/` altinda olabilir —
-40 epoch tamamlanmadigi icin KIYASA SOKULMAZ.
-
-**KAPI DURUMU (ustabasi kostu, bu kayit aninda):**
-`codes/test_rota_sentetik.py` -> **15/15** ·
-`unittest discover -s tests -q` -> **Ran 715 · OK**
-
-**MIMARIN MASASINDA BEKLEYENLER:** T122 secim karari (D-237 -> D-239 -> D-240
-birlikte okunur) · T126 denetimi (D-244) · T115 eksigi ve bagimliligi (D-247) ·
-T124 sinir cumleleri (D-224) · D-233 kume yeniden uretimi · D-245 kuyruk-prompt
-boslugu · D-248 (cati korlugu kaynak kalitesine bagli).
+**KAPI DURUMU:** 15/15 · discover -s tests -q -> Ran 715 · OK
+**MIMARIN MASASI:** T122/T127 secim karari · T126 denetimi · T115 devami
+(Codex prompt'u verildi) · T124 · T118 · D-233 kume yeniden uretimi · D-245.
 
 ---
 
