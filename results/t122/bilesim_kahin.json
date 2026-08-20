@@ -1,0 +1,510 @@
+{
+ "n": 55,
+ "KACAK": {
+  "v5c": 0.1211,
+  "71+ws": 0.2597,
+  "BILESIM": 0.0633
+ },
+ "CATI_DISI_ENGEL": {
+  "v5c": 0.4828,
+  "71+ws": 0.2041,
+  "BILESIM": 0.5553
+ },
+ "kayitlar": [
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768",
+   "v5c_kacak": 0.025249509511217266,
+   "71ws_kacak": 0.1882965111319628,
+   "BILESIM_kacak": 0.024652392732235774,
+   "v5c_disi_engel": 0.42365434320578155,
+   "71ws_disi_engel": 0.20092844812493765,
+   "BILESIM_disi_engel": 0.46734336202888127
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816",
+   "v5c_kacak": 0.019005059021922427,
+   "71ws_kacak": 0.19799325463743675,
+   "BILESIM_kacak": 0.019005059021922427,
+   "v5c_disi_engel": 0.38330970889158644,
+   "71ws_disi_engel": 0.1780786543115863,
+   "BILESIM_disi_engel": 0.4488260663042577
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936",
+   "v5c_kacak": 0.09300319414329347,
+   "71ws_kacak": 0.3515889114266396,
+   "BILESIM_kacak": 0.08349070900655149,
+   "v5c_disi_engel": 0.370681600854218,
+   "71ws_disi_engel": 0.1798373841037202,
+   "BILESIM_disi_engel": 0.4495541501427049
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008",
+   "v5c_kacak": 0.06277589331350773,
+   "71ws_kacak": 0.3695460248129734,
+   "BILESIM_kacak": 0.058524232145346404,
+   "v5c_disi_engel": 0.36707133738857534,
+   "71ws_disi_engel": 0.1541107790673431,
+   "BILESIM_disi_engel": 0.4254620671492478
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152",
+   "v5c_kacak": 0.15698069517505223,
+   "71ws_kacak": 0.3999899322946817,
+   "BILESIM_kacak": 0.1431376003624374,
+   "v5c_disi_engel": 0.3308131534122412,
+   "71ws_disi_engel": 0.16708629268141933,
+   "BILESIM_disi_engel": 0.4065021732688836
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200",
+   "v5c_kacak": 0.06948210226494674,
+   "71ws_kacak": 0.3397693972009969,
+   "BILESIM_kacak": 0.0690986771834689,
+   "v5c_disi_engel": 0.31567780145343216,
+   "71ws_disi_engel": 0.17055146201684043,
+   "BILESIM_disi_engel": 0.3900446584289848
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224",
+   "v5c_kacak": 0.0741553550624509,
+   "71ws_kacak": 0.33810181798477335,
+   "BILESIM_kacak": 0.07339673250426725,
+   "v5c_disi_engel": 0.24139695974969028,
+   "71ws_disi_engel": 0.18315835164537045,
+   "BILESIM_disi_engel": 0.33764683540869755
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248",
+   "v5c_kacak": 0.21192234071643423,
+   "71ws_kacak": 0.3563333637164646,
+   "BILESIM_kacak": 0.20478230486433932,
+   "v5c_disi_engel": 0.18785407363115472,
+   "71ws_disi_engel": 0.19314755858656052,
+   "BILESIM_disi_engel": 0.29815176931322956
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272",
+   "v5c_kacak": 0.14076740445737917,
+   "71ws_kacak": 0.42942482959332157,
+   "BILESIM_kacak": 0.13456383549054146,
+   "v5c_disi_engel": 0.17607280339181494,
+   "71ws_disi_engel": 0.19575490943925067,
+   "BILESIM_disi_engel": 0.28593425697610475
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320",
+   "v5c_kacak": 0.44845417944077126,
+   "71ws_kacak": 0.44110368263583644,
+   "BILESIM_kacak": 0.14527388911461603,
+   "v5c_disi_engel": 0.1558700028964853,
+   "71ws_disi_engel": 0.18238261682342635,
+   "BILESIM_disi_engel": 0.24834962532274488
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.1802939961036661,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.1796595352786062,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.17838266384778012,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.18315748282558914,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648",
+   "v5c_kacak": 0.219308643169888,
+   "71ws_kacak": 0.17866905343622244,
+   "BILESIM_kacak": 0.11016231645661483,
+   "v5c_disi_engel": 0.3030948886478208,
+   "71ws_disi_engel": 0.19552221118170962,
+   "BILESIM_disi_engel": 0.3775910006654694
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.10791629703073631,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.19426362380280618,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960",
+   "v5c_kacak": 0.0047967287882362195,
+   "71ws_kacak": 0.10516107048308039,
+   "BILESIM_kacak": 0.0047967287882362195,
+   "v5c_disi_engel": 0.3621638180588863,
+   "71ws_disi_engel": 0.1667219530410225,
+   "BILESIM_disi_engel": 0.4514014642732198
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008",
+   "v5c_kacak": 0.026089950733697093,
+   "71ws_kacak": 0.10555172961805372,
+   "BILESIM_kacak": 0.02590453991630026,
+   "v5c_disi_engel": 0.3562428677522778,
+   "71ws_disi_engel": 0.16324198018367236,
+   "BILESIM_disi_engel": 0.4347655188653613
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416",
+   "v5c_kacak": 0.004182913860333215,
+   "71ws_kacak": 0.35481507739572254,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 0.3103766330781777,
+   "71ws_disi_engel": 0.20881300581360307,
+   "BILESIM_disi_engel": 0.43457367824090565
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440",
+   "v5c_kacak": 0.016256110873795623,
+   "71ws_kacak": 0.36397076273197587,
+   "BILESIM_kacak": 0.003037638236271299,
+   "v5c_disi_engel": 0.2996954459306975,
+   "71ws_disi_engel": 0.20712963267273585,
+   "BILESIM_disi_engel": 0.43471624251852337
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488",
+   "v5c_kacak": 0.001210741700365644,
+   "71ws_kacak": 0.36005036685473524,
+   "BILESIM_kacak": 0.00031479284209506744,
+   "v5c_disi_engel": 0.40681497902564506,
+   "71ws_disi_engel": 0.19512439679359447,
+   "BILESIM_disi_engel": 0.48006388017362867
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944",
+   "v5c_kacak": 0.0592234801870539,
+   "71ws_kacak": 0.03741078021166626,
+   "BILESIM_kacak": 0.002953482648289441,
+   "v5c_disi_engel": 0.3769988516471686,
+   "71ws_disi_engel": 0.22450836144405367,
+   "BILESIM_disi_engel": 0.497556161630661
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992",
+   "v5c_kacak": 0.33605195124953835,
+   "71ws_kacak": 0.024929213344823342,
+   "BILESIM_kacak": 0.004247199310599532,
+   "v5c_disi_engel": 0.3283698047124515,
+   "71ws_disi_engel": 0.23698621288567676,
+   "BILESIM_disi_engel": 0.4529203419146936
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040",
+   "v5c_kacak": 0.49504518788647534,
+   "71ws_kacak": 0.026082130965593784,
+   "BILESIM_kacak": 0.004280957666085302,
+   "v5c_disi_engel": 0.29732587549327305,
+   "71ws_disi_engel": 0.24940311302240895,
+   "BILESIM_disi_engel": 0.426618325315801
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088",
+   "v5c_kacak": 0.643326967960959,
+   "71ws_kacak": 0.693401230638659,
+   "BILESIM_kacak": 0.3988966687884575,
+   "v5c_disi_engel": 0.22118270566059842,
+   "71ws_disi_engel": 0.284182578161882,
+   "BILESIM_disi_engel": 0.37373664278650165
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.09021558872305141,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 0.3184856302051751,
+   "71ws_disi_engel": 0.2534883880272836,
+   "BILESIM_disi_engel": 0.423174955549389
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000",
+   "v5c_kacak": 0.11512978631865768,
+   "71ws_kacak": 0.13248243223863473,
+   "BILESIM_kacak": 0.02265882690377169,
+   "v5c_disi_engel": 0.6153553685947971,
+   "71ws_disi_engel": 0.2183945120270146,
+   "BILESIM_disi_engel": 0.633902684702834
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168",
+   "v5c_kacak": 0.016872860569795964,
+   "71ws_kacak": 0.0937171504811191,
+   "BILESIM_kacak": 0.009703242500202151,
+   "v5c_disi_engel": 0.3438340724015465,
+   "71ws_disi_engel": 0.21595446543747954,
+   "BILESIM_disi_engel": 0.46015092550879916
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192",
+   "v5c_kacak": 0.01298875560207176,
+   "71ws_kacak": 0.13823363658320587,
+   "BILESIM_kacak": 0.01298875560207176,
+   "v5c_disi_engel": 0.5878608877571888,
+   "71ws_disi_engel": 0.21813338255866774,
+   "BILESIM_disi_engel": 0.6011770646136807
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240",
+   "v5c_kacak": 0.0782703469951588,
+   "71ws_kacak": 0.28352723493777404,
+   "BILESIM_kacak": 0.07545687273464628,
+   "v5c_disi_engel": 0.2892503420420044,
+   "71ws_disi_engel": 0.22196845400647927,
+   "BILESIM_disi_engel": 0.42901606370975215
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264",
+   "v5c_kacak": 0.11065472969649269,
+   "71ws_kacak": 0.30124452752225883,
+   "BILESIM_kacak": 0.11016282158492793,
+   "v5c_disi_engel": 0.2795311435886417,
+   "71ws_disi_engel": 0.21832742740810612,
+   "BILESIM_disi_engel": 0.4171470921360754
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288",
+   "v5c_kacak": 0.08912564290962527,
+   "71ws_kacak": 0.3020328190056331,
+   "BILESIM_kacak": 0.08912564290962527,
+   "v5c_disi_engel": 0.309659121957617,
+   "71ws_disi_engel": 0.22045413975380423,
+   "BILESIM_disi_engel": 0.43658764940964745
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336",
+   "v5c_kacak": 0.09030883919062833,
+   "71ws_kacak": 0.2078807241746539,
+   "BILESIM_kacak": 0.08881789137380192,
+   "v5c_disi_engel": 0.32877865620588453,
+   "71ws_disi_engel": 0.2101196378903846,
+   "BILESIM_disi_engel": 0.45870748709295084
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384",
+   "v5c_kacak": 0.07511371939003983,
+   "71ws_kacak": 0.20973862216879965,
+   "BILESIM_kacak": 0.07329892290650263,
+   "v5c_disi_engel": 0.4121301802172106,
+   "71ws_disi_engel": 0.21014258442258332,
+   "BILESIM_disi_engel": 0.514147918778944
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432",
+   "v5c_kacak": 0.14225028163725123,
+   "71ws_kacak": 0.20836462636124672,
+   "BILESIM_kacak": 0.12647859556890725,
+   "v5c_disi_engel": 0.42553032075085523,
+   "71ws_disi_engel": 0.19865464460103505,
+   "BILESIM_disi_engel": 0.5125343557205929
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480",
+   "v5c_kacak": 0.14009548773637895,
+   "71ws_kacak": 0.19022654933533045,
+   "BILESIM_kacak": 0.09979404605879048,
+   "v5c_disi_engel": 0.48508122888853145,
+   "71ws_disi_engel": 0.20388195124804423,
+   "BILESIM_disi_engel": 0.5417038325997631
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504",
+   "v5c_kacak": 0.2547165882303944,
+   "71ws_kacak": 0.1407896380825455,
+   "BILESIM_kacak": 0.09730956644871101,
+   "v5c_disi_engel": 0.26419614545535086,
+   "71ws_disi_engel": 0.18515620097378746,
+   "BILESIM_disi_engel": 0.39067039250501107
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600",
+   "v5c_kacak": 0.3421174587125042,
+   "71ws_kacak": 0.1757035726322885,
+   "BILESIM_kacak": 0.1006066734074823,
+   "v5c_disi_engel": 0.31739718854175886,
+   "71ws_disi_engel": 0.16629974629023217,
+   "BILESIM_disi_engel": 0.4142715432044134
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624",
+   "v5c_kacak": 0.07570264852646394,
+   "71ws_kacak": 0.15861304218023628,
+   "BILESIM_kacak": 0.04977182581993432,
+   "v5c_disi_engel": 0.3725121102167867,
+   "71ws_disi_engel": 0.1670731033466561,
+   "BILESIM_disi_engel": 0.43091006207061683
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648",
+   "v5c_kacak": 0.1872452467151067,
+   "71ws_kacak": 0.24838603508949594,
+   "BILESIM_kacak": 0.17863743385908504,
+   "v5c_disi_engel": 0.38455276427565527,
+   "71ws_disi_engel": 0.22778539953663743,
+   "BILESIM_disi_engel": 0.4697987552809703
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672",
+   "v5c_kacak": 0.2509156101933666,
+   "71ws_kacak": 0.2743757203227046,
+   "BILESIM_kacak": 0.23421692918427456,
+   "v5c_disi_engel": 0.3834278358470457,
+   "71ws_disi_engel": 0.24032869808035529,
+   "BILESIM_disi_engel": 0.4584869793510646
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696",
+   "v5c_kacak": 0.09613245375759928,
+   "71ws_kacak": 0.2778165825895744,
+   "BILESIM_kacak": 0.09320915793558401,
+   "v5c_disi_engel": 0.47654530643051407,
+   "71ws_disi_engel": 0.25795899261388067,
+   "BILESIM_disi_engel": 0.5156222501628357
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.10377829560585886,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.22746020051428736,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.05597569646435266,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 0.6501944954391088,
+   "71ws_disi_engel": 0.23506929906491889,
+   "BILESIM_disi_engel": 0.6605490962314048
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.08927223312698174,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 0.5114213288078788,
+   "71ws_disi_engel": 0.2405774924911065,
+   "BILESIM_disi_engel": 0.5519338507310076
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888",
+   "v5c_kacak": 0.12805692800099439,
+   "71ws_kacak": 0.3461048444734471,
+   "BILESIM_kacak": 0.12535346943848855,
+   "v5c_disi_engel": 0.4556607004840014,
+   "71ws_disi_engel": 0.22668624908767795,
+   "BILESIM_disi_engel": 0.5387138366302455
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.4496703421621007,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.23428518884457555,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.46110903193612773,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 0.863676133103844,
+   "71ws_disi_engel": 0.2397536574870912,
+   "BILESIM_disi_engel": 0.8893072289156626
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032",
+   "v5c_kacak": 0.5695248115027178,
+   "71ws_kacak": 0.40635254627890083,
+   "BILESIM_kacak": 0.11685579018561659,
+   "v5c_disi_engel": 0.41620249389437775,
+   "71ws_disi_engel": 0.2399550466173125,
+   "BILESIM_disi_engel": 0.5062292804367315
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080",
+   "v5c_kacak": 0.49919375926087334,
+   "71ws_kacak": 0.46559313170051425,
+   "BILESIM_kacak": 0.2173581452104942,
+   "v5c_disi_engel": 0.33265371406719957,
+   "71ws_disi_engel": 0.2285304045358611,
+   "BILESIM_disi_engel": 0.45721891707051615
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104",
+   "v5c_kacak": 0.20133926565098198,
+   "71ws_kacak": 0.3286369151948227,
+   "BILESIM_kacak": 0.03334681587344389,
+   "v5c_disi_engel": 0.5978449429878127,
+   "71ws_disi_engel": 0.24928757688118214,
+   "BILESIM_disi_engel": 0.635054151492146
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.2975073706781024,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.17912544667017746,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.3095291064145347,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.16375514453855242,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.3242086402548278,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.14096135652427044,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344",
+   "v5c_kacak": 0.0,
+   "71ws_kacak": 0.4433486741179049,
+   "BILESIM_kacak": 0.0,
+   "v5c_disi_engel": 1.0,
+   "71ws_disi_engel": 0.12575564792037774,
+   "BILESIM_disi_engel": 1.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000",
+   "v5c_kacak": 0.06796927187708751,
+   "71ws_kacak": 0.3242545697455517,
+   "BILESIM_kacak": 0.008410760915770936,
+   "v5c_disi_engel": 0.41657887303514035,
+   "71ws_disi_engel": 0.16785951492110024,
+   "BILESIM_disi_engel": 0.4930394918657292
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456",
+   "v5c_kacak": 0.012143376233677942,
+   "71ws_kacak": 0.3185409194270577,
+   "BILESIM_kacak": 0.005485617835290808,
+   "v5c_disi_engel": 0.49945446271430843,
+   "71ws_disi_engel": 0.1968064594538779,
+   "BILESIM_disi_engel": 0.5792344933082587
+  }
+ ]
+}

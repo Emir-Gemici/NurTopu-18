@@ -18108,3 +18108,40 @@ kiyas: TUTULAN cati pikselleri L medyan 219 (parlak yamac)
   çatı kanıtı olarak DEĞİLDİR.
 - ⚠ **Kendi önerimi çürüttüm:** D-232 §4'teki gölge önerisi bu kayıtla
   DÜŞMÜŞTÜR; mimar o öneriye göre iş açmasın.
+
+---
+
+### D-235 · ✅ T122 · Model-free geometri KISMEN çalışıyor (kaçak %37→%26), ama ASIL kazanç BİLEŞİMDE: v5c ∩ (71+watershed) → kaçak %12,1 → **%6,3** (bedeli: çatı-dışı engel +7,3 puan)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-20 · Betikler (aynalı): `111_t122_cati_buyutme_denemesi.py`,
+  `results/t122/bilesim_kahin_betigi.py` · Ham: `cati_buyutme.json`,
+  `cati_buyutme.png`, `bilesim_kahin.json`. **71 DEĞİŞTİRİLMEDİ** (§9.2).
+- **Deneme 2 — kenar güdümlü büyütme (D-234'ün "geometri" ucu):** çatı tek
+  parçadır; parlak yamacını 71 zaten buluyor. Tohum = YAPI (aşındırılmış),
+  arka plan = YAPI'dan uzak, sınır = watershed. Renk/parlaklık yerine BİNA
+  KENARI üzerinden ayırır. Şişme korkuluğu: sonuç tohumun 6 katını aşarsa
+  reddedilir (55 karede 0 kez devreye girdi).
+```
+KAZANC : cati kacagi  0,3731 -> 0,2597   (-11,3 puan · -%30 goreli)
+RISK   : cati disi YENI engel  +0,0166   (asfalt kaybi)
+```
+  ⇒ Geometri GERÇEK bir sinyal taşıyor ama tek başına öğrenilmiş kâhinin
+  (v5c 0,121) gerisinde kalıyor.
+- **[SONUC-DEGISTIREN] BİLEŞİM ÖLÇÜMÜ** — DJI runbook'undaki "iki bağımsız
+  kanıt aynı anda zemin demedikçe piksel zemin sayılmaz" önerisi artık
+  ölçülüdür (55 kare, aynı yer gerçeği):
+| kâhin | çatı kaçağı | çatı-dışı engel payı |
+|---|---|---|
+| aday_v5c @0,30 | 0,1211 | 0,4828 |
+| 71 + watershed | 0,2597 | 0,2041 |
+| **v5c ∩ (71+ws)** | **0,0633** | 0,5553 |
+  Bileşim kaçağı **yarıya indiriyor**; bedeli çatı-dışı alanın +7,3 puanının
+  daha engel sayılması (yani daha az zemin denetimi). Bu takas **fail-safe
+  yöndedir** (madde 15) ama gerçek-doku zemin kütlesini azaltır — D-12/D-18
+  körlük riskinin ölçülmesi gereken tarafı. Eğitim etkisi ÖLÇÜLMEDİ.
+- **Öneri (karar mimarın):** DJI hattı için bileşim; kabul edilirse etkisi
+  bir eğitim koşumuyla ölçülmeli (bu turda koşulmadı — ÖLÇÜLMEDİ, düştü değil).
+- **Dürüstlük notu:** bu turda kendi iki önerimden biri düştü (D-234 gölge
+  kuralı), biri kısmen tuttu (geometri), asıl kazanç ise ilk raporumda
+  yalnız "önerilmiş" olan bileşimden geldi. Sıralamayı ölçüm yaptı, ben değil.
