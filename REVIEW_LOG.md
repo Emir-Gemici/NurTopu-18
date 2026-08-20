@@ -19037,3 +19037,41 @@ yukarıda yalnız *hangi epoch'ta durduğu* kıyaslanıyor, değeri değil.
   mertebede ve kaplaması bağımsız gerçek tahminine (D-240: %47–52) **daha
   yakın** (0,508).
 
+
+---
+
+### D-250 · 🔎 T115 DEVAMI (ölçüm, onarım DEĞİL) · 13 bozuk satırın **10'u güvenle mekanik onarılabilir**, 1'i korunan göreve bağlı, 2'si içerikten yeniden kurulmalı — "hiçbiri kurtarılamaz" YANLIŞTI
+
+- **Yazan:** Claude 2 / Opus 5 (ustabaşı) · 2026-08-21 · Betik:
+  `scratchpad/t115_kurtarma.py` (ölçüm; onarım Codex'in işi — kendi
+  denetleyeceğim işi kendim yazmam).
+- **Neden:** D-247'de "12'si korumadan değil bilginin yokluğundan onarılamadı"
+  yazmıştım ve "çoğu aslında kurtarılabilir" diye **iddia** etmiştim. İddiayı
+  ölçtüm.
+- **ÖLÇÜM (13/13 satır sınıflandı):**
+```
+A_DIZIN_YOLU     10   kayip olan DOSYA ADI DEGIL, yalnizca dizin yolunun
+                      kendisi ("O:\navitas-local-train") — onceki satir "O:"
+                      ile bitiyor, birlestirme GUVENLI
+B_OKTAL_COZULDU   3   ilk karakterin oktal kodu GERCEK bir betige cozuluyor:
+                      '.' -> 56_t53_gercek_karisim.py · ')' -> 51_sentetik_arena.py (x2)
+C_COZULEMEZ       0
+```
+- **AMA hepsi aynı derecede güvenli DEĞİL** — ikinci bir ölçüm bunu gösterdi:
+  - **10 satır (A) + 1 satır (B, satır 6046):** önceki satır `O:` ile bitiyor →
+    basit birleştirme doğru. ⚠ 6046 **T107'ye ait ve `[IN_PROGRESS: Codex-2]`**
+    — madde 1 gereği o görev kapanmadan DOKUNULMAZ.
+  - **2 satır (B, 7250 ve 7298):** önceki satır `O:` ile BİTMİYOR. Yukarı doğru
+    en yakın `O:` satırı **28 ve 33 satır** yukarıda ve o satırlar **başka**
+    parçaların başlığı. Naif "yukarı ara" kuralı bunları **YANLIŞ birleştirir**.
+    Sebep ölçüldü: başlık satırı `\n` ile ikiye bölündükten sonra, sonraki
+    turlarda durum blokları **başlığın ilk parçasının hemen altına** eklendi ve
+    kuyruk parçası blokların ALTINDA kaldı. Bunlar **içerikten** yeniden
+    kurulmalı (hangi görevin `51_sentetik_arena.py` + D-79/D-77 dediği belli).
+- **HÜKÜM:** D-247'nin "kurtarılamaz" ifadesi **fazla kötümserdi**; doğrusu
+  *"Codex'in kuralıyla kurtarılamaz"*. Kural genişletilirse 10 satır bugün
+  onarılabilir. Bu, D-247'nin kararını (DOĞRU AMA EKSİK) değiştirmez;
+  eksiğin **nasıl kapatılacağını** netleştirir.
+- ⚠ Onarımı **ben yapmıyorum**: T115 Codex-1'in zimmetinde ve denetleyeni
+  benim. Kendi yazdığımı denetleyemem (madde 19 / §9.3). Genişletilmiş kural
+  Codex'e görev emri olarak verildi.
