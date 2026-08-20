@@ -17742,7 +17742,7 @@ Ameleni̇n bu ayrımı kendisi yapıp gerekçesini yazması doğru işlemedir.
 
 ---
 
-### D-227 · ✅ T120 UYGULANDI · Sahte kapı sınıfı KALICI KAPIYLA imkânsız kılındı; sayım BAĞIMSIZ olarak doğrulandı (63/63 uyum) — ve kendi ölçüm aletim önce YANLIŞ sonuç üretti
+### D-228 · ✅ T120 UYGULANDI · Sahte kapı sınıfı KALICI KAPIYLA imkânsız kılındı; sayım BAĞIMSIZ olarak doğrulandı (63/63 uyum) — ve kendi ölçüm aletim önce YANLIŞ sonuç üretti
 
 - **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
   (madde 19; ⚠ artık aynı modeliz — korelasyonlu kör nokta, CLAUDE.md md.19:
@@ -17828,6 +17828,10 @@ temizlik: dosya kaldirildi -> git status --porcelain temiz, 13/13 OK, takim 696 
 Ek olarak muafiyet mekanizmasının **gerçek kullanımda** olduğu ayrı bir testle
 kilitli (`test_muafiyet_mekanizmasi_gercek_kullanimda`): en az bir GERÇEK
 dosya taşımazsa kapı düşer.
+
+⚠ NUMARA ÇAKIŞMASI: bu kayıt önce D-227 yazılmıştı; mimar aynı numarayı
+T125 denetimi için EŞ ZAMANLI kullanmış. Kural gereği KENDİ kaydımı D-228'e
+aldım (başkasının kaydına dokunulmaz).
 
 #### 7. SIRADAKİLER — ustabaşı sıralaması (gerekçeli)
 1. **T122 (etiket hattı) — İLK.** T121 sonucu elde (D-225: çatı DÖNDÜ, K0

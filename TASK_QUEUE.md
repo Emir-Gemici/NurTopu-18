@@ -5536,7 +5536,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     düşmüyorsa bir şey korumuyordur. Bayt kimliği testi kanıt sayılmaz.
 
 - [REVIEW: mimar] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
-  - ✅ **UYGULANDI · 2026-08-20 · Claude-2 (Opus 5, başameleliği sürüyor) · D-227.**
+  - ✅ **UYGULANDI · 2026-08-20 · Claude-2 (Opus 5, başameleliği sürüyor) · D-228.**
     Bağımsız sayım mimarınkini DOĞRULADI (63 · 3 · 2; iki yöntem 0 ayrışma).
     Kararlar: test_costmap_on_images → GERÇEK TestCase (0→6 test, ad ve CLI
     korundu, referans kırılmadı) · arena_kompozit_kapisi ve t64_hakem_ekrani →
