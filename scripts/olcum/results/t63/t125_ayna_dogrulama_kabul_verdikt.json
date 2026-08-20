@@ -1,0 +1,48 @@
+{
+ "model": "codes\\runs\\segment\\t121_etiket_ft\\weights\\best.pt",
+ "esikler": {
+  "K1_rota_min": 230,
+  "K2_basma_maks": 0.15,
+  "K3_agir_maks": 0.03,
+  "K4_arena_disi_maks": 0.05
+ },
+ "olcum": {
+  "K0": {
+   "figur": 0.001464135370996031,
+   "raw_frames": {
+    "n": 67,
+    "bos": 0,
+    "ort": 0.41885028668303986
+   },
+   "copy_paste": {
+    "n": 393,
+    "bos": 0,
+    "ort": 0.41999967346967937
+   },
+   "figur_orani": 0.29880313693796556,
+   "figur_tabani": 0.0049,
+   "oran_notu": ""
+  },
+  "K1_rota": "259/260",
+  "K2_basma": "12/259",
+  "K3_agir": "0/259",
+  "K4_arena_disi": "1/259",
+  "K14_durum": {
+   "K1": "GECTI",
+   "K2": "GECTI",
+   "K3": "GECTI",
+   "K4": "GECTI"
+  },
+  "K5_bariyer_px": null,
+  "K5_durum": "OLCULEMEDI"
+ },
+ "gecti": {
+  "K0": true,
+  "K1": true,
+  "K2": true,
+  "K3": true,
+  "K4": true,
+  "K5": false
+ },
+ "verdikt": false
+}

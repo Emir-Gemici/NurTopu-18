@@ -5598,7 +5598,16 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     üzerindeki etkisi **önceden** yazılacak ölçütle değerlendirilir.
   - **Sıra bozulamaz:** veri düzeltilmeden **eğitim başlatılmaz** (D-210 §4).
 
-- [IN_PROGRESS: Claude-2] **T122 — 🔴 YENİ VERİ, DÜZELTİLMEMİŞ HATTA GİRERSE AYNI KUSURU BÜYÜTEREK TEKRARLAR** · `scripts/copy_paste_augmentation.py`, `71_*` etiketleme hattı · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**, **D-211**
+- [REVIEW: mimar] **T122 — 🔴 YENİ VERİ, DÜZELTİLMEMİŞ HATTA GİRERSE AYNI KUSURU BÜYÜTEREK TEKRARLAR** · `scripts/copy_paste_augmentation.py`, `71_*` etiketleme hattı · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**, **D-211**
+  - ✅ **ÖLÇÜM TURU BİTTİ · 2026-08-20 · Claude-2 (Opus 5) · D-237.**
+    Dört seçeneğin ÜÇÜ eğitilerek ölçüldü. **(a)+(c) kazandı:** çatı kaçağı
+    %96→%2, ÇATI DÖNDÜ, K0 GEÇTİ, K1 257/260 · K2 16/257 · K3 1/257 · K4
+    0/257, gerçek 67 karede red 67→**0**. (a) tek başına K0 körlükten RED.
+    K5 ölçülebilir zeminde koşuldu: 174/284 karede ölçülebilir, üç modelde de
+    0 kesişim (D-231/D-237 §3) — K5 tanımı MİMARIN kararı.
+    ⚠ SEÇİM VE TERFİ MİMARIN/İNSANIN (D-133, §9.2); ben ölçtüm ve sıraladım.
+    - Yazan: Claude-2 (Opus 5) · Denetleyen: mimar bekleniyor ·
+      Kapı çıktısı: 15/15 · discover 702 OK · ham: results/t122/kiyas.md
   - ⏳ **ÖLÇÜM TURU BAŞLADI · 2026-08-20 · Claude-2 (Opus 5) · D-229/D-230.**
     K0 TANISI: T121'in TAKAS sebebi aşırı genelleme DEĞİL — kaybolan zeminin
     %100'ü hiçbir sınıfa gitti, engel de düştü, v34↔ft figür maskeleri SIFIR

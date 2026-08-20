@@ -18172,3 +18172,100 @@ RISK   : cati disi YENI engel  +0,0166   (asfalt kaybi)
 - **Ayakta kalan tek sızıntı:** D-233 (copy_paste val'i %100 kirli).
   Karışımın büyük bileşenleri (`sentetik_arena` 3000, `rescuenet_2sinif_engelli`
   3942) bu açıdan TEMİZ ölçüldü.
+
+---
+
+### D-237 · ✅ T122 SONUÇ · Dört seçeneğin ÜÇÜ ölçüldü (izdüşüm değil, eğitilerek). Kazanan aday **(a)+(c)**: çatı kaçağı %96→%2, ölçülebilir HER kapı GEÇTİ, gerçek karelerde 67/67 red → **0**. Seçim MİMARIN.
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (madde 19; ⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-20.
+- **Ön kayıt:** `results/t122_on_kayit.md` (D-107; iki eğitimden ÖNCE yazıldı).
+  Ölçütler ve karar kuralları **aynen uygulandı, hiçbiri gevşetilmedi.**
+- **Kapı çıktısı:** `test_rota_sentetik 15/15` · `discover -s tests -q →
+  Ran 702 · OK` (D-233 turunda ölçüldü; bu turda kod değişmedi).
+- Betikler (hepsi aynalı): 104 (küme üretimi) · 105 (eğitim) · 109 (kıyas) ·
+  106 (K5 zemini) · 65 (kabul zinciri). Ham: `results/t122/kiyas.json`,
+  `kiyas.md`, `results/t126/k5_zemin_*.json`, `scripts/olcum/results/t63/*`.
+
+#### 1. BEŞ MODEL, TEK TABLO (aynı zincir, conf 0,30)
+| ölçüt | v30 | **v34 ÜRETİM** | t121_ft (c) | t122a (a) | **t122ac (a)+(c)** |
+|---|---|---|---|---|---|
+| çatı kaçağı (55 kare, tam maske) | 0,305 | **0,961** | 0,131 | 0,069 | **0,020** |
+| disk çatı→engel | 0,688 | 0,011 | 0,989 | 0,016 | **0,991** |
+| disk çatı→zemin | 0,280 | 0,990 | 0,018 | 0,001 | 0,001 |
+| **ÇATI DÖNDÜ?** (ön kayıt kuralı) | EVET | HAYIR | EVET | HAYIR | **EVET** |
+| disk zemin→zemin (yetenek) | 0,960 | 0,961 | 0,960 | 0,913 | 0,932 |
+| kaplama İÇERİK medyan | 0,594 | 0,800 | 0,734 | 0,451 | 0,455 |
+| kaplama TUVAL medyan | 0,334 | 0,450 | 0,413 | 0,254 | 0,256 |
+| **67 gerçek karede red** | 2 | **67** | **67** | **0** | **0** |
+| figür zemin (K0 girdisi) | 0,133 | 0,008 | 0,002 | **0,000** | 0,026 |
+| figür v34 ile IoU ⚠ | 0,058 | 1,000 | 0,000 | 0,000 | 0,000 |
+🔴 **En çarpıcı satır "67 karede red".** v34 ve t121_ft, elimizdeki TEK gerçek
+görüntü kümesinin **67/67'sini** reddediyor (fail-closed, D-201/D-225).
+Daraltılmış zeminle eğitilen iki aday **0 red** veriyor: üretim zinciri ilk kez
+gerçek otopark karelerinde KARAR ÜRETİYOR. ⚠ Mekanizma dürüstçe: red sebebi
+"kaplama tavanı aşıldı" idi; kaplama düştüğü için tavan artık aşılmıyor. Bu
+"algı iyileşti"nin ÖLÇÜLMÜŞ kanıtı değildir — ama çatı kaçağının %96→%2
+düşmesi ayrı ve bağımsız bir kanıttır.
+
+#### 2. KABUL ZİNCİRİ (65 denetçisi, resmi kapılar)
+| kapı | t122a (a) | **t122ac (a)+(c)** | kıyas: t121_ft (c) |
+|---|---|---|---|
+| K0 körlük | **DÜŞTÜ** (figür %0,00) | **GEÇTİ** (%1,55 · oran 3,17) | GEÇTİ (%0,15 · oran 0,30) |
+| K1 rota ≥230 | GEÇTİ 256/260 | GEÇTİ 257/260 | GEÇTİ 259/260 |
+| K2 basma ≤%15 | GEÇTİ 14/256 | GEÇTİ 16/257 | GEÇTİ 12/259 |
+| K3 ağır ≤%3 | GEÇTİ 0/256 | GEÇTİ 1/257 | GEÇTİ 0/259 |
+| K4 arena dışı ≤%5 | GEÇTİ 1/256 | GEÇTİ 0/257 | GEÇTİ 1/259 |
+| K5 bariyer | ÖLÇÜLEMEDİ | ÖLÇÜLEMEDİ | ÖLÇÜLEMEDİ |
+| **VERDİKT** | **RED (K0)** | ölçülebilir her kapı GEÇTİ; yalnız K5 blokluyor | aynı |
+- **(a) tek başına ÖLDÜ:** figür zemini **%0,00** — v25'in ölüm sebebiyle
+  birebir aynı (körlük). Ön kayıttaki K0 bandı gevşetilmedi; seçenek düştü.
+- **(a)+(c)'nin K0 uyarısı ters yönde:** oran 3,17 > 2,0 → "TEHLİKELİ yön
+  (daha çok zemin)". Denetçinin kendi talimatı gereği K2/K3'e ayrıca bakıldı:
+  K2 %6,2 ve K3 %0,4 — ikisi de tavanın altında. Uyarı **kayda geçti**,
+  bloklamadı (T110/D-186 kuralı).
+
+#### 3. K5 — ölçülebilir zeminde koşuldu (D-231'in devamı)
+`106_t126_k5_olculebilir_zemin.py`, kabul kümesinin **284 karesi**:
+```
+                bariyerli  rota  K5 OLCULEBILIR  KESEN kare  kesisim px  bariyere ENGEL
+v34                174      284       174           0            0          0,9919
+t121_ft            174      284       174           0            0          0,9922
+t122ac             174      284       174           0            0          0,9924
+```
+⇒ K5'in sınamak istediği özellik **174 karede ölçülebiliyor ve üç modelde de
+tam sağlanıyor**. Tek OOD figüründe ölçülemez olması modellerin değil
+**zeminin** sorunuydu. ⚠ K5'in neye bakacağı MİMARIN kararı (§9.2); ben
+yalnız ölçtüm. Karar verilirse **t122ac zincirin tamamını geçen ilk model olur.**
+
+#### 4. DÖRT SEÇENEĞİN DURUMU
+| seçenek | durum | sonuç |
+|---|---|---|
+| (a) daralt | **ÖLÇÜLDÜ (eğitildi)** | K0 körlük → RED |
+| (b) zemin etiketi yok | **ÖLÇÜLMEDİ** (düştü değil, D-180) | D-219: kutu dışı maske denetimi yok, gerçek-doku zemin kütlesi 0'a iner; körlük riski (a)'dan büyük |
+| (c) çatı sınıf 1 | **ÖLÇÜLDÜ** (T121) | çatı döndü, K0 takas, 67/67 red sürüyor |
+| (a)+(c) | **ÖLÇÜLDÜ** | çatı döndü, K0 GEÇTİ, red 0, K1–K4 geçti |
+| (d) karışım oranı | **ÖLÇÜLDÜ (kütle tablosu, 97)** | çelişkiyi VE gerçek-doku denetimini aynı çarpanla azaltır — seçici değil |
+
+#### 5. SIRALAMA VE ÖNERİ (seçim MİMARIN — §9.2)
+1. **(a)+(c)** — ölçülen her eksende önde; tek açık K5 zemini (mimar kararı).
+2. **(c)** — güvenli ikinci; çatıyı çeviriyor ama 67/67 red sürüyor, K0 takas.
+3. **(d)** — tek başına çözmüyor, (a)/(c) ile birlikte ayar parametresi olabilir.
+4. **(a)** — tek başına ELENDİ (K0 körlük).
+5. **(b)** — ölçülmedi; ölçülmeden önerilmez.
+**T123 bağlantısı:** iki farklı hata yapan aday istenmişti (D-222 §3).
+Bugün elde: **v34** (arena güçlü, çatı kör) ve **t122ac** (çatı güçlü, kaplama
+düşük). ⚠ Bu bir TERFİ ÖNERİSİ DEĞİLDİR; terfi ve seçim insanındır (D-133).
+
+#### 6. SINIRLAR (sonuç görülmeden yazılmıştı, aynen geçerli)
+1. Beş model de aynı 67 karenin kaynak kümesinde ölçüldü → **alan-içi etiket
+   etkisi**, genelleme kanıtı DEĞİL.
+2. Koşum başına tek tohum (seed=0); farkların ne kadarı tohum gürültüsü
+   ölçülmedi (D-135).
+3. A/AC kümeleri 440 dosya, t121_ft'ninki 448 (8 dosya IoU denetiminden düştü;
+   eşik koşumdan önce yazılıydı) — %1,8 fark.
+4. 🔴 D-233: copy_paste val'i %100 kirli; **beş modelin hepsi** bu kirlilikle
+   eğitildi. Kıyas içinde tutarlıdır, mutlak val sayıları ezber taşır.
+5. v5c kâhini açık-oluklu çatıda zayıf (D-218/D-232) → (a) ve (a)+(c) bu
+   zayıflığı taşır.
+6. "67'de red 0" mekanik olarak kaplama düşüşünden gelir (§1 notu).

@@ -1,0 +1,48 @@
+{
+ "model": "codes\\runs\\segment\\t122a_daralt\\weights\\best.pt",
+ "esikler": {
+  "K1_rota_min": 230,
+  "K2_basma_maks": 0.15,
+  "K3_agir_maks": 0.03,
+  "K4_arena_disi_maks": 0.05
+ },
+ "olcum": {
+  "K0": {
+   "figur": 0.0,
+   "raw_frames": {
+    "n": 67,
+    "bos": 0,
+    "ort": 0.24869172964523087
+   },
+   "copy_paste": {
+    "n": 393,
+    "bos": 0,
+    "ort": 0.25402585483386014
+   },
+   "figur_orani": 0.0,
+   "figur_tabani": 0.0049,
+   "oran_notu": ""
+  },
+  "K1_rota": "256/260",
+  "K2_basma": "14/256",
+  "K3_agir": "0/256",
+  "K4_arena_disi": "1/256",
+  "K14_durum": {
+   "K1": "GECTI",
+   "K2": "GECTI",
+   "K3": "GECTI",
+   "K4": "GECTI"
+  },
+  "K5_bariyer_px": null,
+  "K5_durum": "OLCULEMEDI"
+ },
+ "gecti": {
+  "K0": false,
+  "K1": true,
+  "K2": true,
+  "K3": true,
+  "K4": true,
+  "K5": false
+ },
+ "verdikt": false
+}

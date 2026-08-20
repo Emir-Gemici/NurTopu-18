@@ -1,0 +1,2091 @@
+{
+ "model": "codes\\runs\\segment\\t122a_daralt\\weights\\best.pt",
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+ "n": 260,
+ "rota_uretilen": 256,
+ "basan": 14,
+ "agir": 0,
+ "arena_disi": 1,
+ "kayitlar": [
+  {
+   "kare": "sa_000000.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "serit": 2,
+   "guven": 0.759,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "serit": 2,
+   "guven": 0.919,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "serit": 2,
+   "guven": 0.696,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "serit": 2,
+   "guven": 0.696,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "serit": 2,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.01980475763016158,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "serit": 3,
+   "guven": 0.928,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000026.jpg",
+   "serit": 2,
+   "guven": 0.982,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000027.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000028.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000029.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "serit": 2,
+   "guven": 0.982,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000031.jpg",
+   "serit": 2,
+   "guven": 0.839,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "serit": 2,
+   "guven": 0.804,
+   "red": null,
+   "basma_orani": 0.0078010175240248725,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000033.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000034.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000035.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000036.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000037.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000039.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000040.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "serit": null,
+   "guven": 0.0,
+   "red": "GORUS_HATTI_KOPUK",
+   "basma_orani": null,
+   "arena_disi_orani": null
+  },
+  {
+   "kare": "sa_000042.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "serit": 1,
+   "guven": 0.804,
+   "red": null,
+   "basma_orani": 0.00346354758119464,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000044.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000045.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000046.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000048.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000049.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000052.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000054.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000058.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000060.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "serit": 3,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "serit": null,
+   "guven": 0.0,
+   "red": "GORUS_HATTI_KOPUK",
+   "basma_orani": null,
+   "arena_disi_orani": null
+  },
+  {
+   "kare": "sa_000063.jpg",
+   "serit": 2,
+   "guven": 0.982,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000064.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000065.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000066.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000068.jpg",
+   "serit": 2,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000069.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000070.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000071.jpg",
+   "serit": 1,
+   "guven": 0.714,
+   "red": null,
+   "basma_orani": 0.004708952683535686,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000073.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000074.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000075.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000077.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000078.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000081.jpg",
+   "serit": 2,
+   "guven": 0.714,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000083.jpg",
+   "serit": 2,
+   "guven": 0.643,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000085.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000089.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000091.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000093.jpg",
+   "serit": 2,
+   "guven": 0.982,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000094.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000098.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "serit": 1,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000100.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000101.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000102.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 1.0
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "serit": 2,
+   "guven": 0.687,
+   "red": null,
+   "basma_orani": 0.0003948333239325399,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000105.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000106.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000107.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000108.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000111.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000112.jpg",
+   "serit": 2,
+   "guven": 0.866,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000113.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000114.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.021492638348282283,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000115.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0036848072562358277,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000117.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000118.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000121.jpg",
+   "serit": 2,
+   "guven": 0.651,
+   "red": null,
+   "basma_orani": 0.010099863822060826,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000124.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000125.jpg",
+   "serit": 2,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.017511877140647444,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000127.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000129.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000131.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000132.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000133.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000134.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000135.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000136.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000137.jpg",
+   "serit": 1,
+   "guven": 0.67,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000138.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000139.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000140.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000141.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000142.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000143.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000144.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000145.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000147.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000148.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "serit": 2,
+   "guven": 0.893,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000153.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000154.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000155.jpg",
+   "serit": 2,
+   "guven": 0.67,
+   "red": null,
+   "basma_orani": 0.0034928996793403572,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "serit": 2,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.013000112069931638,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000159.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000160.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000162.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000164.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000166.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000167.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000168.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000169.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000170.jpg",
+   "serit": 2,
+   "guven": 0.893,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000171.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000172.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000173.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "serit": 2,
+   "guven": 0.678,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000175.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000179.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000180.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000181.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "serit": null,
+   "guven": 0.0,
+   "red": "GORUS_HATTI_KOPUK",
+   "basma_orani": null,
+   "arena_disi_orani": null
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000186.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000187.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000188.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000190.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000191.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000192.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000193.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000194.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000195.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000196.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000197.jpg",
+   "serit": 2,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000198.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000199.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000200.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "serit": 3,
+   "guven": 0.893,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.010689170182841068,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000208.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000209.jpg",
+   "serit": 2,
+   "guven": 0.982,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000210.jpg",
+   "serit": null,
+   "guven": 0.0,
+   "red": "GORUS_HATTI_KOPUK",
+   "basma_orani": null,
+   "arena_disi_orani": null
+  },
+  {
+   "kare": "sa_000211.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "serit": 3,
+   "guven": 0.714,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000214.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000215.jpg",
+   "serit": 1,
+   "guven": 0.848,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000217.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.018881546065419003,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000219.jpg",
+   "serit": 2,
+   "guven": 0.696,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000220.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000221.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000222.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000223.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000224.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000226.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000227.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000228.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000229.jpg",
+   "serit": 2,
+   "guven": 0.714,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000232.jpg",
+   "serit": 2,
+   "guven": 0.982,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000233.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000234.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000235.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000236.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000238.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000241.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000242.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000243.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "serit": 3,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000248.jpg",
+   "serit": 1,
+   "guven": 0.991,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000249.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000250.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000251.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000252.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000254.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000255.jpg",
+   "serit": 1,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "serit": 2,
+   "guven": 0.937,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000257.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000258.jpg",
+   "serit": 2,
+   "guven": 1.0,
+   "red": null,
+   "basma_orani": 0.007578290426836064,
+   "arena_disi_orani": 0.0
+  },
+  {
+   "kare": "sa_000259.jpg",
+   "serit": 2,
+   "guven": 0.804,
+   "red": null,
+   "basma_orani": 0.0,
+   "arena_disi_orani": 0.0
+  }
+ ]
+}

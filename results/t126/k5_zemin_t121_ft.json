@@ -1,0 +1,2524 @@
+{
+ "model": "codes\\runs\\segment\\t121_etiket_ft\\weights\\best.pt",
+ "ad": "t121_ft",
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+ "n": 284,
+ "bariyerli_kare": 174,
+ "rota_uretilen": 284,
+ "K5_OLCULEBILIR_kare": 174,
+ "kesen_kare": 0,
+ "kesisim_toplam_px": 0,
+ "bariyere_ENGEL_ort": 0.9922,
+ "kayitlar": [
+  {
+   "kare": "sa_000000.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 546,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.6978,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000026.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1390,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9978,
+   "bariyere_ZEMIN_orani": 0.0676,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000027.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000028.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000029.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 788,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0343,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1190,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9992,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000031.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000033.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000034.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000035.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 3305,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000036.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000037.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2293,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.976,
+   "bariyere_ZEMIN_orani": 0.0345,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 955,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1309,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000039.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 514,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.677,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000040.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1050,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.2114,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 868,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000042.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1566,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9955,
+   "bariyere_ZEMIN_orani": 0.0945,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000044.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 1554,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000045.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000046.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 2177,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.17,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000048.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1907,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000049.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 926,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9968,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1506,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1401,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000052.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 717,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.5174,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3149,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9984,
+   "bariyere_ZEMIN_orani": 0.1137,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000054.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1681,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1992,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1046,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 584,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.8699,
+   "bariyere_ZEMIN_orani": 0.137,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000058.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3402,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.147,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2767,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9989,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000060.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1261,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000063.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000064.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1390,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000065.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000066.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1567,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.044,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1647,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9982,
+   "bariyere_ZEMIN_orani": 0.3886,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000068.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000069.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 4850,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9996,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000070.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000071.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 765,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9961,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1107,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000073.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1577,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1959,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000074.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000075.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1740,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 2379,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9992,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000077.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1802,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9967,
+   "bariyere_ZEMIN_orani": 0.0694,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000078.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1262,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9992,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3050,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9987,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 2226,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000081.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000083.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 407,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2534,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9992,
+   "bariyere_ZEMIN_orani": 0.1283,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000085.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1757,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1098,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2089,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9986,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1578,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0032,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 784,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000089.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 696,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000091.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000093.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000094.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2134,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9981,
+   "bariyere_ZEMIN_orani": 0.0872,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2732,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9993,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2410,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000098.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2035,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9985,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000100.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1694,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9935,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000101.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1622,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000102.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2290,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9729,
+   "bariyere_ZEMIN_orani": 0.0415,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000105.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 706,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.364,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000106.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 4187,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9947,
+   "bariyere_ZEMIN_orani": 0.1025,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000107.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000108.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1197,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000111.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 3294,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9985,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000112.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000113.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000114.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000115.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 6618,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9856,
+   "bariyere_ZEMIN_orani": 0.0124,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 785,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.2701,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000117.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 3119,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9994,
+   "bariyere_ZEMIN_orani": 0.1356,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000118.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3366,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9658,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2744,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 851,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.2221,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000121.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 4470,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2681,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9978,
+   "bariyere_ZEMIN_orani": 0.1384,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000124.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000125.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 709,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000127.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 2385,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2038,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0466,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000129.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2798,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1855,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1226,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000131.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2280,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9504,
+   "bariyere_ZEMIN_orani": 0.0395,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000132.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2941,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9997,
+   "bariyere_ZEMIN_orani": 0.0177,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000133.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1206,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000134.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1332,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.8881,
+   "bariyere_ZEMIN_orani": 0.3161,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000135.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1518,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0679,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000136.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000137.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 847,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9941,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000138.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000139.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 1663,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9994,
+   "bariyere_ZEMIN_orani": 0.2321,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000140.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000141.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000142.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 4744,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000143.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2921,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000144.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1112,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000145.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3305,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9976,
+   "bariyere_ZEMIN_orani": 0.3785,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000147.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2103,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000148.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 1715,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0035,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2760,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9457,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1541,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1722,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1614,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2086,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.999,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000153.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1690,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000154.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1204,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000155.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 657,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1772,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0248,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 596,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9044,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 5109,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9947,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000159.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2470,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0704,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000160.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000162.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2596,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9988,
+   "bariyere_ZEMIN_orani": 0.0397,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000164.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2578,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1955,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000166.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2079,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1212,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000167.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000168.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000169.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 5473,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0073,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000170.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2643,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9981,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000171.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1875,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000172.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000173.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000175.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1084,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1421,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9177,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 757,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2647,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9977,
+   "bariyere_ZEMIN_orani": 0.0748,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000179.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1059,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9981,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000180.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000181.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1399,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9478,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2205,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0399,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 785,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.372,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000186.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000187.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1366,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9993,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000188.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 6882,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.011,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1184,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000190.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000191.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1719,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9994,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000192.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 4783,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.999,
+   "bariyere_ZEMIN_orani": 0.0332,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000193.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1203,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9983,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000194.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3939,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000195.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 3570,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9989,
+   "bariyere_ZEMIN_orani": 0.0062,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000196.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000197.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1314,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.997,
+   "bariyere_ZEMIN_orani": 0.054,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000198.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 732,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000199.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 757,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000200.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 1612,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.995,
+   "bariyere_ZEMIN_orani": 0.2078,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3033,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.999,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2531,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2811,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0178,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 704,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 507,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9921,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1663,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9964,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000208.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 591,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000209.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 1877,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9995,
+   "bariyere_ZEMIN_orani": 0.0927,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000210.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000211.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 1937,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9608,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 905,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000214.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 5543,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9989,
+   "bariyere_ZEMIN_orani": 0.1025,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000215.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 960,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9969,
+   "bariyere_ZEMIN_orani": 0.0281,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000217.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2104,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9995,
+   "bariyere_ZEMIN_orani": 0.192,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000219.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 530,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000220.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000221.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2401,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9971,
+   "bariyere_ZEMIN_orani": 0.0466,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000222.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000223.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000224.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000226.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000227.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 838,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000228.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3085,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9588,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000229.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2117,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9608,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2728,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3580,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9609,
+   "bariyere_ZEMIN_orani": 0.1268,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000232.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000233.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1822,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1037,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000234.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 3060,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0173,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000235.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000236.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2864,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9979,
+   "bariyere_ZEMIN_orani": 0.0653,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 4267,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9672,
+   "bariyere_ZEMIN_orani": 0.03,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000238.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1652,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2316,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0436,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2530,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9787,
+   "bariyere_ZEMIN_orani": 0.034,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000241.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2936,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.999,
+   "bariyere_ZEMIN_orani": 0.1856,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000242.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1096,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000243.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1935,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9995,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1856,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000248.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 734,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9932,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000249.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1935,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000250.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000251.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2048,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9507,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000252.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1069,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.2563,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1678,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000254.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2918,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9582,
+   "bariyere_ZEMIN_orani": 0.0103,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000255.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 730,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.5164,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1652,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9976,
+   "bariyere_ZEMIN_orani": 0.0291,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000257.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2654,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000258.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 656,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000259.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 955,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000000.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1201,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1066,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 1050,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.879,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 714,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0084,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 575,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 729,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.428,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1268,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1317,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "bariyer_kutu": 3,
+   "bariyer_px": 2804,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0275,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1375,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 758,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.1253,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 657,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9893,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "bariyer_kutu": 0,
+   "bariyer_px": 0,
+   "rota_var": true,
+   "red": null
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 2774,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 1.0,
+   "bariyere_ZEMIN_orani": 0.0552,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "bariyer_kutu": 1,
+   "bariyer_px": 747,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.8768,
+   "bariyere_ZEMIN_orani": 0.0,
+   "kesisim_px": 0
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "bariyer_kutu": 2,
+   "bariyer_px": 1540,
+   "rota_var": true,
+   "red": null,
+   "bariyere_ENGEL_orani": 0.9955,
+   "bariyere_ZEMIN_orani": 0.0097,
+   "kesisim_px": 0
+  }
+ ]
+}
