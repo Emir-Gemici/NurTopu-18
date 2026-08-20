@@ -5598,7 +5598,14 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     üzerindeki etkisi **önceden** yazılacak ölçütle değerlendirilir.
   - **Sıra bozulamaz:** veri düzeltilmeden **eğitim başlatılmaz** (D-210 §4).
 
-- [ ] **T122 — 🔴 YENİ VERİ, DÜZELTİLMEMİŞ HATTA GİRERSE AYNI KUSURU BÜYÜTEREK TEKRARLAR** · `scripts/copy_paste_augmentation.py`, `71_*` etiketleme hattı · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**, **D-211**
+- [IN_PROGRESS: Claude-2] **T122 — 🔴 YENİ VERİ, DÜZELTİLMEMİŞ HATTA GİRERSE AYNI KUSURU BÜYÜTEREK TEKRARLAR** · `scripts/copy_paste_augmentation.py`, `71_*` etiketleme hattı · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**, **D-211**
+  - ⏳ **ÖLÇÜM TURU BAŞLADI · 2026-08-20 · Claude-2 (Opus 5) · D-229/D-230.**
+    K0 TANISI: T121'in TAKAS sebebi aşırı genelleme DEĞİL — kaybolan zeminin
+    %100'ü hiçbir sınıfa gitti, engel de düştü, v34↔ft figür maskeleri SIFIR
+    örtüşüyor (K0 sinyali gürültü baskın; eşik DEĞİŞTİRİLMEDİ, öneri mimara).
+    Seçenek (a) ve (a)+(c) kümeleri üretildi (440/448 her biri, 8 ihlal
+    yazılmadı) ve GERÇEKTEN eğitiliyor; ön kayıt results/t122_on_kayit.md.
+    (b)/(d) ÖLÇÜLMEDİ (düştü değil). Dört-model kıyası + öneri ayrı kayıtta.
   - **Bağımlılık kuralı:** DJI Neo çekimi gelmeden **önce** etiket hattı düzeltilmiş
     olmalı. Aksi hâlde yeni kareler de tam-kare sınıf 0 alır ve çelişki
     **393 kareden çok daha büyük** ölçekte geri gelir.

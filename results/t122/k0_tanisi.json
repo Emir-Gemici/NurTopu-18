@@ -1,0 +1,22 @@
+{
+ "figur": "O:\\navitas\\data\\arena_referans\\sartname_s9_arena.png",
+ "conf": 0.3,
+ "v34": {
+  "zemin_pay": 0.00825,
+  "engel_pay": 0.06255
+ },
+ "t121_ft": {
+  "zemin_pay": 0.00245,
+  "engel_pay": 0.01358
+ },
+ "kaybolan_zemin_pay": 0.00825,
+ "kaybolan_piksel": 5538,
+ "kaybolan_nereye": {
+  "ENGEL_oldu": 0.0,
+  "HICBIR_SINIF": 1.0
+ },
+ "ft_engel_artisi_pay": -0.04897,
+ "yorum_kurali": "ENGEL_oldu >= 0,5 -> (i) ASIRI GENELLEME; HICBIR_SINIF >= 0,5 -> (ii) GUVEN COKMESI",
+ "kare_px": 671406,
+ "tani": "GUVEN_COKMESI"
+}

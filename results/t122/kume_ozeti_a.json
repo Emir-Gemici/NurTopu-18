@@ -1,0 +1,3141 @@
+{
+ "kip": "a",
+ "kahin": "O:\\navitas\\models\\aday_v5c_m640.pt",
+ "zemin_conf": 0.05,
+ "yazilan": 440,
+ "ihlal": 8,
+ "ort_zemin_pay": 0.5865,
+ "en_kotu_zemin_iou": 0.9358,
+ "ihlaller": [
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_00.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_01.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_02.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_03.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_04.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_05.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_06.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000000_000000000_cp_07.jpg",
+   "zemin_pay": 0.6792,
+   "zemin_iou": 0.896,
+   "cati_zemin_talebi": 0.0518
+  }
+ ],
+ "kayitlar": [
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "zemin_pay": 0.5566,
+   "zemin_iou": 0.9777,
+   "cati_zemin_talebi": 0.0269
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000008_000001008_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "zemin_pay": 0.6301,
+   "zemin_iou": 0.9463,
+   "cati_zemin_talebi": 0.0694
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000009_000001152_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "zemin_pay": 0.6325,
+   "zemin_iou": 0.9709,
+   "cati_zemin_talebi": 0.1713
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000005_000001008_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "zemin_pay": 0.6023,
+   "zemin_iou": 0.9515,
+   "cati_zemin_talebi": 0.023
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000007_000001440_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "zemin_pay": 0.6438,
+   "zemin_iou": 0.9585,
+   "cati_zemin_talebi": 0.01
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000014_000001992_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "zemin_pay": 0.6628,
+   "zemin_iou": 0.9734,
+   "cati_zemin_talebi": 0.3516
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000016_000002088_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "zemin_pay": 0.7767,
+   "zemin_iou": 0.9855,
+   "cati_zemin_talebi": 0.6579
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000002_000000192_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "zemin_pay": 0.5909,
+   "zemin_iou": 0.9856,
+   "cati_zemin_talebi": 0.013
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000005_000000288_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "zemin_pay": 0.6455,
+   "zemin_iou": 0.9569,
+   "cati_zemin_talebi": 0.0852
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000009_000000480_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "zemin_pay": 0.4906,
+   "zemin_iou": 0.9575,
+   "cati_zemin_talebi": 0.1505
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "zemin_pay": 0.3384,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000020_000000936_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "zemin_pay": 0.4813,
+   "zemin_iou": 0.9595,
+   "cati_zemin_talebi": 0.3638
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000022_000001032_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "zemin_pay": 0.5914,
+   "zemin_iou": 0.9781,
+   "cati_zemin_talebi": 0.561
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "zemin_pay": 0.5241,
+   "zemin_iou": 0.9738,
+   "cati_zemin_talebi": 0.0687
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "zemin_pay": 0.5214,
+   "zemin_iou": 0.9799,
+   "cati_zemin_talebi": 0.0261
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000007_000000936_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "zemin_pay": 0.5903,
+   "zemin_iou": 0.9761,
+   "cati_zemin_talebi": 0.0962
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000010_000001200_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "zemin_pay": 0.6555,
+   "zemin_iou": 0.9832,
+   "cati_zemin_talebi": 0.0651
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000011_000001224_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "zemin_pay": 0.7156,
+   "zemin_iou": 0.9775,
+   "cati_zemin_talebi": 0.0909
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000012_000001248_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "zemin_pay": 0.7785,
+   "zemin_iou": 0.9854,
+   "cati_zemin_talebi": 0.2054
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000013_000001272_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "zemin_pay": 0.7927,
+   "zemin_iou": 0.9851,
+   "cati_zemin_talebi": 0.1325
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_03_frame_000014_000001320_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "zemin_pay": 0.8237,
+   "zemin_iou": 0.9805,
+   "cati_zemin_talebi": 0.4241
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000001_000000336_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "zemin_pay": 0.6193,
+   "zemin_iou": 0.9672,
+   "cati_zemin_talebi": 0.0103
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000002_000000648_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "zemin_pay": 0.6585,
+   "zemin_iou": 0.9618,
+   "cati_zemin_talebi": 0.24
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000003_000000912_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "zemin_pay": 0.6358,
+   "zemin_iou": 0.969,
+   "cati_zemin_talebi": 0.0316
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000004_000000960_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "zemin_pay": 0.5974,
+   "zemin_iou": 0.9558,
+   "cati_zemin_talebi": 0.0051
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000006_000001416_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "zemin_pay": 0.6338,
+   "zemin_iou": 0.9429,
+   "cati_zemin_talebi": 0.0031
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000008_000001488_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "zemin_pay": 0.5513,
+   "zemin_iou": 0.9721,
+   "cati_zemin_talebi": 0.0012
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000013_000001944_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "zemin_pay": 0.5868,
+   "zemin_iou": 0.9549,
+   "cati_zemin_talebi": 0.0572
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000015_000002040_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "zemin_pay": 0.6924,
+   "zemin_iou": 0.9667,
+   "cati_zemin_talebi": 0.506
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000017_000002112_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "zemin_pay": 0.6692,
+   "zemin_iou": 0.9622,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "zemin_pay": 0.6307,
+   "zemin_iou": 0.9499,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000000_000000000_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "zemin_pay": 0.367,
+   "zemin_iou": 0.9789,
+   "cati_zemin_talebi": 0.1259
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000001_000000168_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "zemin_pay": 0.6134,
+   "zemin_iou": 0.9847,
+   "cati_zemin_talebi": 0.0137
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000003_000000240_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "zemin_pay": 0.6629,
+   "zemin_iou": 0.9557,
+   "cati_zemin_talebi": 0.0707
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000004_000000264_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "zemin_pay": 0.6741,
+   "zemin_iou": 0.9572,
+   "cati_zemin_talebi": 0.1113
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "zemin_pay": 0.6281,
+   "zemin_iou": 0.964,
+   "cati_zemin_talebi": 0.1052
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000007_000000384_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "zemin_pay": 0.556,
+   "zemin_iou": 0.9779,
+   "cati_zemin_talebi": 0.0638
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000008_000000432_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "zemin_pay": 0.549,
+   "zemin_iou": 0.9621,
+   "cati_zemin_talebi": 0.1187
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "zemin_pay": 0.6964,
+   "zemin_iou": 0.9358,
+   "cati_zemin_talebi": 0.2343
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000011_000000600_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "zemin_pay": 0.6483,
+   "zemin_iou": 0.9418,
+   "cati_zemin_talebi": 0.3473
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000012_000000624_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "zemin_pay": 0.581,
+   "zemin_iou": 0.9626,
+   "cati_zemin_talebi": 0.0608
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000013_000000648_cp_07.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "zemin_pay": 0.5927,
+   "zemin_iou": 0.9584,
+   "cati_zemin_talebi": 0.1902
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000014_000000672_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "zemin_pay": 0.5986,
+   "zemin_iou": 0.9746,
+   "cati_zemin_talebi": 0.2487
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "zemin_pay": 0.5045,
+   "zemin_iou": 0.9612,
+   "cati_zemin_talebi": 0.0888
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "zemin_pay": 0.4088,
+   "zemin_iou": 0.9857,
+   "cati_zemin_talebi": 0.0019
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000018_000000840_cp_03.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "zemin_pay": 0.4666,
+   "zemin_iou": 0.9694,
+   "cati_zemin_talebi": 0.0
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000019_000000888_cp_01.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "zemin_pay": 0.5198,
+   "zemin_iou": 0.957,
+   "cati_zemin_talebi": 0.1413
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000021_000000984_cp_04.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "zemin_pay": 0.6362,
+   "zemin_iou": 0.9737,
+   "cati_zemin_talebi": 0.652
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000023_000001080_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "zemin_pay": 0.6505,
+   "zemin_iou": 0.9528,
+   "cati_zemin_talebi": 0.4959
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000024_000001104_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "zemin_pay": 0.387,
+   "zemin_iou": 0.9662,
+   "cati_zemin_talebi": 0.2045
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000027_000001248_cp_00.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "zemin_pay": 0.4599,
+   "zemin_iou": 0.986,
+   "cati_zemin_talebi": 0.1589
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000028_000001296_cp_02.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "zemin_pay": 0.4044,
+   "zemin_iou": 0.976,
+   "cati_zemin_talebi": 0.0528
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000029_000001320_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "zemin_pay": 0.4303,
+   "zemin_iou": 0.9843,
+   "cati_zemin_talebi": 0.0426
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000030_000001344_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "zemin_pay": 0.4379,
+   "zemin_iou": 0.9631,
+   "cati_zemin_talebi": 0.0637
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_05.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  },
+  {
+   "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_46_frame_000001_000000456_cp_06.jpg",
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "zemin_pay": 0.4645,
+   "zemin_iou": 0.974,
+   "cati_zemin_talebi": 0.0095
+  }
+ ]
+}

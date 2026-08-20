@@ -17843,3 +17843,66 @@ aldım (başkasının kaydına dokunulmaz).
 3. **T118 kalan** — ölçüm D-214'te bitti (eşik bozulması sıfır, 4 rapor alanı
    adlandırma önerisi); mimar kararı bekliyor, bende yeni ölçüm yok.
 4. **T116** — payda kararı zincirinde mimarda; hatırlatma.
+
+---
+
+### D-229 · 🔴 T122 TANISI · T121'i "TAKAS"a düşüren K0 kaybı AŞIRI GENELLEME DEĞİL: kaybolan zeminin %100'ü HİÇBİR SINIFA gitti ve iki modelin figür maskeleri SIFIR piksel örtüşüyor
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  Ölçüm: `scripts/olcum/103_t122_k0_tanisi.py` (aynalı) · Ham:
+  `results/t122/k0_tanisi.json` + `k0_tanisi.png` · 2026-08-20.
+  Zincir: üretim `zemin_ve_mevcut_engel`, conf 0,30 (65 denetçisiyle AYNI).
+- **Soru:** D-225 T121'i "SONUÇ 2: TAKAS" saydı çünkü K0 figür oranı 0,49% →
+  0,15% (oran 0,30 < ön kayıt bandı 0,5). İki farklı açıklama vardı ve
+  **farklı seçenek önerirlerdi**: (i) çatı dersinin figürün düz/parlak
+  zeminine taşması [aşırı genelleme], (ii) güven çökmesi [ders değil kayıp].
+- **[SONUC-DEGISTIREN] ÖLÇÜM:**
+```
+figur zemin payi   v34 0,00825   ->  t121_ft 0,00245
+figur engel payi   v34 0,06255   ->  t121_ft 0,01358   (ENGEL DE DUSTU: -0,049)
+kaybolan zemin     5538 px  ->  ENGEL oldu %0,0 · HICBIR SINIF %100,0
+z34 ∩ zft          = 0 piksel   (kaybolan pay == v34'un TUM zemin payi)
+```
+- **Hüküm:** teşhis **GÜVEN ÇÖKMESİ**, aşırı genelleme DEĞİL. Çatı dersi
+  figürün zeminini "engel" yapmadı; model bu figürde **her iki sınıfta da
+  daha az şey görüyor**.
+- 🔴 **Daha ağır ikinci bulgu:** v34 ile ft'nin figürdeki zemin maskeleri
+  **hiç örtüşmüyor (IoU = 0)**. Yani K0 oranı iki modeli *aynı bölge*
+  üzerinden kıyaslamıyor; iki model bu figürde **farklı yerleri** zemin
+  sanıyor. Ölçüm zaten D-183/T106'da "açıklanmamış davranış" diye
+  işaretlenmişti; bu, sinyalin kararsızlığına doğrudan kanıt.
+- ⚠ **BU BİR EŞİK DEĞİŞİKLİĞİ GEREKÇESİ DEĞİLDİR.** Eşik değiştirmek ve bir
+  ölçümü kapıya çevirmek/çıkarmak yetkim dışıdır (AGENTS §9.2). K0 bandı
+  T122 ön kaydında **aynen korundu** (K0_oran ≥ 0,5) ve altında kalan her
+  seçenek yine "TAKAS" diye yazılacak. Yalnız **rapora örtüşme (IoU) sütunu
+  eklendi** ki mimar sinyalin kararlılığını görebilsin.
+- **Mimara ÖNERİ (öner-bekle):** figür (YZ üretimi, alan dışı, n=1) K0'ın tek
+  dayanağı olduğu sürece bu ölçüm gürültü baskın kalır. İki seçenek mimarın
+  masasında: (1) K0'a **gerçek** bir körlük referansı eklemek (DJI çekim
+  listesinde "insan figürü ayakta+yerde" maddesi tam bunun içindi — veri
+  gelince ölçülebilir), (2) figür ölçümünü korumak ama yanına örtüşme
+  oranını **kalıcı** raporlamak. Karar mimarın; ben ölçtüm ve raporluyorum.
+
+### D-230 · ⏳ T122 · Dört seçenekten İKİSİ daha GERÇEKTEN eğitiliyor (izdüşüm değil ölçüm) — ön kayıt kilitli
+
+- **Ön kayıt:** `results/t122_on_kayit.md` (D-107; iki eğitim başlamadan yazıldı).
+  Mimarın emri "ÖLÇ ve ÖNER" idi; kullanıcı GPU koşumuna açık izin verdiği
+  için (a) ve (a)+(c) **izdüşümle değil koşularak** ölçülüyor.
+- **Kümeler (aynı reçete, yalnız ETİKET değişti; `104_t122_secenek_kumeleri.py`):**
+  - **(a) DARALT** → `dataset/copy_paste_t122a` — zemin = üretecin KENDİ
+    kâhini `aday_v5c` @conf 0,05 (manifest'ten okundu, yeni kâhin SEÇİLMEDİ);
+    çatı ayrıca işaretlenmez. 440/448 yazıldı, ort. zemin payı 0,586.
+  - **(a)+(c) DARALT+ÇATI** → `dataset/copy_paste_t122ac` — zemin = v5c
+    zemin MINUS çatı, engel += çatı (T121'in üç görsel turdan geçmiş elle+
+    homografi maskesi). 440/448, ort. zemin payı 0,575.
+  - ⚠ **8 dosya İHLAL ile YAZILMADI** (hepsi tek kaynak kare:
+    `11_44_23/frame_000000`; zemin IoU 0,896 < 0,90). Eşik koşumdan ÖNCE
+    yazılmıştı, **gevşetilmedi**. Sonuç: A/AC kümeleri 440, T121'inki 448 —
+    %1,8 fark bir karışıklık kaynağıdır ve kıyasta böyle raporlanacak.
+- **Koşumlar:** `105_t122_ft_kosumu.py --kip a|ac`, taban v34, epochs 40,
+  patience 15, RECETE 101 ile birebir. Günlükler: `results/t122/ft_a_log.txt`,
+  `ft_ac_log.txt`. Sonuç + dört-model kıyası ayrı kayıtta.
+- **(b) ve (d) EĞİTİLMİYOR** ve bu "düştü" DEĞİL "ÖLÇÜLMEDİ"dir (D-180):
+  (b) için gerçek-doku zemin denetiminin tamamen kaybolması riski D-219'da
+  ultralytics kaynağından gösterildi; (d) etiketi hiç değiştirmiyor, kütle
+  tablosu 97 ile zaten ölçüldü.
