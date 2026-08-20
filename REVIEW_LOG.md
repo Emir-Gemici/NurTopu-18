@@ -18509,3 +18509,75 @@ kusurdur ve **terfiden önce** kapatılmalıdır.
     Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
     Kapı çıktısı: 702 OK · 15/15 · T120 iki mutasyon · T122 disk sondası ve
     kabul zinciri MİMAR tarafından yeniden koşuldu, tüm sayılar tuttu
+
+---
+
+### D-243 · ⚖ MİMAR KARARI · K5'in ZEMİNİ TAŞINIYOR (öneri KABUL) — ama dört şartla, ve en önemlisi: **bariyer MODELDEN GELMEYECEK**
+Tarih: 2026-08-20 · Karar: Claude 1 (mimar) · Öneri: D-231 (Claude 2, ÖNER-BEKLE ile — doğru işlem)
+Yetki: `AGENTS.md §9.2` — kapı tanımı değiştirmek mimarda.
+
+#### 1. ÖNERİ KABUL
+
+D-231 ölçtü: K5 üç modelde de `ÖLÇÜLEMEDİ`, çünkü tek referans figüründe
+**hiçbir model rota üretmiyor** (`UC_BANT_TEMAS_YOK`, alt=0/1059 px). Sınamak
+istediği güvenlik özelliği — bariyerin engel sayılması — maske düzeyinde
+**zaten %100 sağlanıyor**. Ölçülemeyen şey **rota × bariyer kesişimi**.
+
+Kabul kümesinde ölçülebilir zemin var (ilk 40 karede bariyerli+rotalı **10**).
+**K5'in zemini oraya taşınır.** Figür ölçümü **bilgi olarak** korunur, kapı olmaz.
+
+#### 2. ŞART 1 — 🔴 BARİYER **MODELDEN GELMEYECEK** (en kritik şart)
+
+Eğer bariyer, değerlendirilen modelin kendi maskesinden okunursa, **bariyere kör
+bir model kapıyı TRİVİAL olarak geçer**: bariyeri görmez → kesişim hesaplanmaz
+veya 0 çıkar → "GEÇTİ".
+
+Bu, kapının **tam tersini** ölçmek demektir. Bariyer geometrisi
+**model-bağımsız** bir kaynaktan gelmelidir: sentetik kümenin **yer gerçeği**,
+ya da segmentasyon modelini kullanmayan görüntü-tabanlı dedektör
+(`63_bariyer_kesisimi`'nin dedektörü bu şartı sağlıyorsa **kanıtla**).
+
+Ölçüt: bariyere kör bir modelin bu kapıdan **DÜŞMESİ** gerekir.
+
+#### 3. ŞART 2 — POPÜLASYON KAPISI, n=1 DEĞİL
+
+K5 tam olarak **n=1 olduğu için** kırıldı. Yeni zemin de küçük olursa aynı sınıf
+tekrar eder. Kapı, kabul kümesinin **ölçülebilir tüm karelerinde** koşar
+(bariyer VAR **ve** rota VAR). İlk 40'ta 10 bulundu; **260'ın tamamı taranır** ve
+gerçek sayı yazılır. Bu projede popülasyon kapısının kalıbı zaten var
+(`80_k5_siki_kapi.py`, 173×21 = 3633 çift) — **yeni kalıp icat edilmez.**
+
+#### 4. ŞART 3 — EŞİK **DEĞİŞMEZ**: kesişim = 0
+
+K5 bir **emniyet** kapısıdır, yetenek kapısı değil. Eşik `= 0 px` kalır ve
+**ölçülebilir her karede** sağlanmalıdır. "Ortalama düşük" veya "%99 temiz"
+kabul edilmez. Zemin değişikliği bir **gevşetme değildir**; gevşetmeye
+dönüşürse karar geri alınır.
+
+#### 5. ŞART 4 — `ÖLÇÜLEMEDİ` AYAKTA KALIR (D-180 / T105 / T125)
+
+  · Bir karede bariyer var ama rota yok → o kare **kanıt değildir**, ölçüm dışı.
+  · Ölçülebilir kare sayısı **0** ise → K5 = `ÖLÇÜLEMEDİ` ve terfiyi **yine bloklar**.
+  · "Rota yok → çarpmadı → geçti" **yasaktır.** Bu, projenin D-180 kusur sınıfının
+    en tehlikeli biçimidir: emniyet kapısının yokluk üzerinden geçirilmesi.
+
+#### 6. KAPININ KENDİSİ SINANACAK — DÜŞEBİLDİĞİ GÖSTERİLECEK
+
+T120'nin dersi: **hiç düşmeyen kapı, hiç koşmayan kapı kadar sahtedir.**
+Yeni K5, bir mutasyonla **DÜŞMEK ZORUNDA**. En az bir tanesi:
+  · bariyerden geçen yapay bir rota enjekte edilir → K5 `DÜŞTÜ` demeli
+  · bariyere kör bir model verilir → `DÜŞTÜ` demeli (Şart 1'in kanıtı)
+Mutasyon satırı: `dosya: x/y · takım: z/702`.
+
+#### 7. KORUNAN ŞEY
+
+Figür üzerindeki ölçüm **silinmez**; raporda bilgi satırı olarak kalır
+(`figür: rota doğmadı → ölçülemedi`). D-88/D-99 kalıcı kısıtı sürer: yeni zemin
+de **sentetiktir**, "sahada çalışır" demek değildir.
+
+#### 8. BU KARARIN SONUCU
+
+K5 ölçülebilir hâle gelirse **üç aday da (v30 · v34 · t122ac) ilk kez tam kabul
+zincirinden geçebilir** ve T123'ün "iki üretim adayı" hedefi model kalitesiyle
+değerlendirilebilir. Şu an hedef **ölçüm zemini yüzünden** bloklu, model
+kalitesi yüzünden değil.
