@@ -25,8 +25,11 @@ ADLAR = {"a": "t122a_daralt", "ac": "t122ac_daralt_cati"}
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--kip", choices=("a", "ac"), required=True)
+    # T128 (D-135): tohum gurultusunu OLCMEK icin; recete DEGISMEZ.
+    ap.add_argument("--tohum", type=int, default=None,
+                    help="RECETE tohumunu ez (varsayilan: recetedeki 0)")
     args = ap.parse_args()
-    ad = ADLAR[args.kip]
+    ad = ADLAR[args.kip] if args.tohum is None else f"t122{args.kip}_tohum{args.tohum}"
     data = KOK / "dataset" / f"karisim_t122{args.kip}.yaml"
     if not data.is_file():
         raise SystemExit(f"karisim yok: {data}")
@@ -35,6 +38,8 @@ def main() -> int:
 
     kw = dict(m56.RECETE)
     kw.update(epochs=40, patience=15)
+    if args.tohum is not None:
+        kw["seed"] = args.tohum
     from ultralytics import YOLO
     print(f"[{ad}] taban={TABAN.name} data={data.name} epochs={kw['epochs']} "
           f"imgsz={kw['imgsz']} batch={kw['batch']}", flush=True)
