@@ -41,6 +41,22 @@
 
 - [HUMAN_COMPLETED:  FDA gorev test ucusu icin coklu rotorlu dikey inis-kalkis yapabilen drone TEMIN EDILDI mi - sartname 5.3.2 zorunlu kiliyor, son tarih 30 Eylul 2026, bu arac olmadan FDA ucus bacagi 0 puan] · **H7** · Kullanıcı 3 Ağustos'ta "yok / belirsiz" bildirdi. Yarışmanın kendisi sabit kanat + mancınık; bu **ayrı** bir araç.
 - [HUMAN_COMPLETED:  Mevcut drone karelerini 3 sinifla etiketle - 0 zemin, 1 engel, 2 hedef; zemin poligonu engellerin altini da kapsayacak sekilde BUTUN cizilecek, gecilemez hicbir nesne etiketsiz birakilmayacak; bu kume EGITIME girecek] · **H9** · Roboflow veya CVAT. ⚠ **S1 düzeltilmeden** üretilen hibrit veri araçları zemin sayar.
+- [ ] [REQUIRES_HUMAN: DJI Neo ile nadir 90 derece cekim - gimbal 90, 30 m ana irtifa + 20 ve 40 m tekrar, yavas ucus, sahne basina 30-60 sn ayri klip. ZORUNLU 7 sahne - 1 bina catisi duz beton kiremit metal EN KRITIK, 2 aracli otopark ve yol, 3 asfalt toprak cim cakil zemin, 4 moloz bariyer branda, 5 insan figuru ayakta ve yerde, 6 agac ve bitki kenari, 7 sabah ve ogle isik tekrari. DOSYALAR ORIJINAL AKTARILIR - WhatsApp veya sikistirmali paylasim YASAK. AYRICA farkli yer ve farkli gunde bir oturum daha cekilir ve DOGRULAMA diye adlandirilir; o oturum egitime asla girmez. Teslim 2 hafta icinde, gecikirse tampon sifirlanir]
+  - **Açan:** Claude 1 (mimar), anayasa madde 9 · **Kaynak:** kullanıcı sözlü kararı, Fable 5 brifingi 2026-08-20
+  - **Neden EN KRİTİK sahne çatı.** Ölçüldü (D-210): model çatıyı **öğrenmiş**
+    (RescueNet sağlam bina recall **%96,6**, zemine sızıntı 0) ama gerçek karede
+    **%100 güvenle zemin** diyor — çünkü elimizdeki gerçek karelerin **kendi
+    etiketi** "zemin" (448/448 dosya tam-kare sınıf 0). Yeni çekim bu çelişkiyi
+    doğru etiketle kırabilecek **tek** kaynak.
+  - **Neden sıkıştırma yasak.** `data/raw_frames` WhatsApp'tan geçtiği için dokusu
+    bozuk; doku bu projede ölçülmüş şekilde belirleyici (D-12/D-18: gerçek doku
+    çıkarılınca körlük geri dönüyor).
+  - **Neden ayrı doğrulama oturumu.** T111/D-198: etiketli **alan dışı** doğrulama
+    kümemiz **yok** ve bu kalıcı duvar yalnız **çekim anında** ayrılan bir kümeyle
+    yıkılır. Sonradan bölmek işe yaramaz — aynı yer/gün aynı dağılımdır.
+  - **İnsan YALNIZ çeker.** Etiketleme (71 hattı) ve eğitim (56/57 zinciri)
+    Fable 5'in işidir — kullanıcı kararı.
+
 > ⛔ **ARENA ÇEKİMİ İPTAL — 2026-08-11, kullanıcı kararı.** Uzun süre böyle
 > bir imkân yok; görev insan kuyruğundan **çıkarıldı** (orkestratörü süresiz
 > bekletmemesi için). Yerine **T40** açıldı: gerçek karelere arena semantiği
@@ -5512,6 +5528,35 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **ÖN KAYIT ZORUNLU.** Her seçeneğin K0 (körlük) ve otopark kaplaması
     üzerindeki etkisi **önceden** yazılacak ölçütle değerlendirilir.
   - **Sıra bozulamaz:** veri düzeltilmeden **eğitim başlatılmaz** (D-210 §4).
+
+- [ ] **T122 — 🔴 YENİ VERİ, DÜZELTİLMEMİŞ HATTA GİRERSE AYNI KUSURU BÜYÜTEREK TEKRARLAR** · `scripts/copy_paste_augmentation.py`, `71_*` etiketleme hattı · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**, **D-211**
+  - **Bağımlılık kuralı:** DJI Neo çekimi gelmeden **önce** etiket hattı düzeltilmiş
+    olmalı. Aksi hâlde yeni kareler de tam-kare sınıf 0 alır ve çelişki
+    **393 kareden çok daha büyük** ölçekte geri gelir.
+  - **Ölçülmüş gerekçe.** Bugünkü hat: `copy_paste_gercek` etiketlerinin **448/448**'i
+    `0 0 0 1 0 1 1 0 1` ile başlıyor = tüm kare zemin. Kaynak `data/raw_frames`
+    otopark kareleri; çatılar açıkça "geçilebilir" öğretiliyor.
+  - **Sıra (bozulamaz):** T121 (dört seçenek ölçülür) → hat düzeltilir → yeni veri
+    etiketlenir → eğitim. Bu sıra bozulursa GPU gecesi **ve** çekim emeği birlikte yanar.
+  - ⚠ Bu görev yeni çekimi **beklemez** — hat, eldeki 448 kare üzerinde düzeltilip
+    doğrulanabilir.
+
+- [ ] **T123 — İKİ ÜRETİM ADAYI (birincil + yedek) ön kaydı: Jetson 30 Eylül'de geliyor, cihaz-öncesi doğrulama penceresi YOK** · `config/model_registry.json`, `jetson_paket/` · **KRİTİK** · kanıt: **D-211**
+  - **Takvim gerçeği (kullanıcı):** Jetson **30.09**'da ele geçiyor; saha kurulumu
+    **30.09–03.10**. Yani donanım üstünde deneme yapılacak **tek bir gün bile yok**.
+    T16/T17 bu tarihten önce **koşulamaz** — yeniden tarihlendi.
+  - **Karar:** tek model yerine **iki aday** pakette hazır olacak; ikisi de 65 kabul
+    denetçisinden, kararlılık ve ONNX denklik kapılarından geçmiş.
+  - ⚠ **Reçeteler ŞİMDİ sabitlenmez.** T121 dört seçeneği ölçmeden reçete yazmak
+    D-200'ün tekrarı olur (ölçülmemiş varsayımdan koşum). Ön kayıt T121 biter bitmez
+    yazılır ve **sonuç görülmeden** kilitlenir (D-107).
+  - **Şimdiden sabit olan:** iki aday **aynı reçetenin iki seed'i olmayacak**
+    (D-140: seed eğitimi hiç etkilemiyor → yedek olmaz). Ayrım **veri dozunda veya
+    tabanda** olacak.
+  - **SEÇİM İNSANINDIR** (D-133). Mimar sıralar, kullanıcı seçer.
+  - **Ek görev:** `JETSON_KILAVUZ.md`'ye **saha günü birincil→yedek geçiş yordamı**
+    (hangi komut, hangi dosya, kaç dakika). Kılavuzun kurulum yordamı testle kilitli
+    (T104); geçiş yordamı **kilitli değil**.
 
 - [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):

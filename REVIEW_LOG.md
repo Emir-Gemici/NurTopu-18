@@ -17054,3 +17054,83 @@ etiketsiz bırakma"* kuralıyla adlandırılmıştı. O tur araçlar için gör�
 gerçek dokudan gelen **görme yeteneği** de zayıflayabilir (D-12/D-18: bu bileşen
 çıkarılınca körlük geri dönüyordu). Yani "sil gitsin" **yanlış cevap**;
 seçenekler ölçülmeli.
+
+---
+
+### D-211 · ⚖ MIMAR HÜKMÜ · Fable 5 brifingi (kullanıcı kararları) — DÖRDÜ DE KABUL, ama "veri tek kaldıraç" öncülü TASHİH EDİLDİ: kaldıraç YENİ veri değil ETİKET HATTI
+Tarih: 2026-08-20 · Hükmü veren: Claude 1 (mimar) · Girdi: Fable 5 brifingi + D-210
+
+#### 1. KULLANICI KARARLARI — KAYDA GEÇTİ (tartışma dışı)
+
+    a. DJI Neo alındı; insan nadir (gimbal 90°) video çekecek
+    b. İş bölümü: insan YALNIZ toplar; etiketleme ve eğitim Fable 5'in
+    c. Jetson 30.09'da ele geçiyor · saha kurulumu 30.09–03.10
+       -> CIHAZ-ÖNCESİ DOĞRULAMA PENCERESİ YOK
+    d. Hedef: 2 üretim adayı (birincil + yedek), ikisi de kabul zincirinden geçmiş
+
+#### 2. TALEPLERİN HÜKMÜ
+
+    A) İnsan görevi (DJI Neo çekim listesi)      KABUL — açıldı, madde 9
+    B) Çekim anında doğrulama ayrımı             KABUL — göreve yazıldı
+    C) 2-aday reçete ön kaydı                    KABUL AMA ERTELENDİ -> §4
+    D) Takvim / T16-T17 yeniden tarihleme        KABUL -> T123
+
+#### 3. 🔴 ÖNCÜL TASHİHİ — "veri tek kaldıraç" EKSİK BİR CÜMLE
+
+Brifing *"kalan açıklama görünüm/alan boşluğu → eşik/çözünürlük değil, VERİ işi"*
+diyor. **Yön doğru, özne yanlış.** D-210'da ölçtüğüm şey:
+
+    dataset/copy_paste_gercek/labels/**/*.txt   448/448 dosya
+    ilk satir: 0 0.000000 0.000000 1.000000 0.000000 1.000000 1.000000 0.000000 1.000000
+    = sınıf 0 (traversable), TÜM KARE
+
+Yani elimizde **gerçek alan verisi VAR** (393 kare + 67 ham kare) — sorun onun
+**yokluğu değil, etiketinin yanlış olması**. Model çatıyı RescueNet'te %96,6
+recall ile biliyor; gerçek karede bilmiyor çünkü o karelerin **kendi etiketi
+"zemin" diyor** ve model tam da bunu öğreniyor.
+
+**Sonuç:** kaldıraç **yeni veri değil, ETİKET HATTI**. Yeni veri ikinci kaldıraç
+ve gerekli (T111 duvarı için şart), ama **hattı düzeltmeden gelen yeni veri
+kusuru büyüterek tekrarlar** — 393 kare yerine belki 3000 kare ölçeğinde.
+Bu yüzden **T122** açıldı ve bağımlılık kuralı yazıldı:
+
+    T121 (dört seçenek ölçülür) -> hat düzeltilir -> yeni veri etiketlenir -> eğitim
+
+#### 4. §4 ÇÜRÜTME TEKLİFİNE CEVAP — KOŞUM TASARLANDI, VE UCUZ
+
+Fable 5 şunu yazdı: *"yeni veri OLMADAN mevcut reçeteyle bir fine-tune çatıyı
+gerçek karede engele çevirirse öncülüm düşer."*
+
+**Bu koşum tasarlanabilir ve yeni veri gerektirmez** — çünkü eldeki 448 karenin
+etiketi zaten yanlış. Sınama:
+
+    1. Eldeki otopark karelerinden ÇATI İÇEREN bir alt küme seç (n>=20).
+    2. O karelerde çatı bölgesini sınıf 1 olarak ETİKETLE (tam-kare zemin
+       poligonu o bölgeden ÇIKARILIR).
+    3. Aynı reçeteyle fine-tune. YENİ VERİ YOK, yalnız ETİKET düzeldi.
+    4. 67 karede çatı blocked oranını ölç.
+
+Çatı engele dönerse: kaldıracın **etiket** olduğu kanıtlanır ve yeni veri
+"gerekli ama tek başına yeterli değil" konumuna oturur.
+Dönmezse: benim tashihim düşer, "yeni veri tek kaldıraç" öncülü ayakta kalır.
+
+⚠ Bu koşum **T121'in (b) ve (c) seçeneklerinin küçük ölçekli hâlidir**; ayrı bir
+GPU gecesi olarak değil, T121'in içinde koşulmalıdır.
+
+#### 5. TAKVİM RİSKİ — GİZLENMEYECEK
+
+Jetson **saha kurulumuyla aynı gün** geliyor. Yani `.engine` derlemesi (T109),
+gerçek FPS (T17) ve uçtan uca bütçe (T15) **ilk kez sahada** koşulacak. Bu bir
+plan değil, **kabul edilmiş bir risk**; iki adaylı hazırlık (T123) bu riskin
+karşılığıdır, çözümü değil.
+
+Ayrıca: `JETSON_KILAVUZ.md`'nin **kurulum** yordamı testle kilitli (T104), ama
+**birincil→yedek geçiş** yordamı diye bir şey **yok**. Saha gününde gerekecek.
+T123'e kondu.
+
+#### 6. PROTOKOL NOTU
+
+Brifing "bu bir itiraz değildir" diye açıkça işaretlenmişti ve doğru
+işaretlenmişti: kullanıcı kararının aktarımı itiraz değil **girdidir**.
+Ama içindeki öncül (§3) yine de ölçümle sınandı ve tashih edildi — **girdi
+olması sınanmamasını gerektirmez.**
