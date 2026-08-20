@@ -33,3 +33,16 @@ Recete t122ac ile AYNI; degisen TEK sey `deterministic=False`.
   kalkmasi. Bant bu ikisini AYIRMAZ; "kosum-ici degiskenlik" toplamidir.
 · Veri sirasi HALA sabit olabilir (build.py:359 sabit tohum) — o durumda
   bant yalniz sayisal belirsizligi olcer ve bu RAPORDA yazilir.
+
+## DEFTER ARAMASI (D-252'nin kalici duzeltmesi — SONUC GORULMEDEN eklendi)
+Kural: yeni olcum turu acmadan once "bu soru daha once olculdu mu" aranir ve
+sonucu ON KAYDA yazilir. Arama yapildi (2026-08-21):
+  `grep -niE "deterministic|belirlenimci" REVIEW_LOG.md`
+Bulunanlar:
+  · :7395-7396 — `cache='ram'` belirleniriligi bozar tartismasi (BASKA konu)
+  · :10098-10099 — "on-egitimli baslangic + deterministic=True ile egitim
+    BIT-BIT BELIRLENIMCIDIR" (v31 deneyi; `deterministic=False` KOSULMAMIS)
+  · :10130 — "Dataloader generator'unu degistirmenin belirlenimciligi bozup
+    bozmayacagi" DOGRULANAMADI diye isaretli
+SONUC: `deterministic=False` ile bir kosum bu depoda DAHA ONCE YAPILMAMIS.
+T128-B bir TEKRAR DEGILDIR. (D-252'de kaydedildigi gibi, T128 bir tekrardi.)
