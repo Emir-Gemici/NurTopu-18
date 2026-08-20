@@ -18269,3 +18269,33 @@ düşük). ⚠ Bu bir TERFİ ÖNERİSİ DEĞİLDİR; terfi ve seçim insanındı
 5. v5c kâhini açık-oluklu çatıda zayıf (D-218/D-232) → (a) ve (a)+(c) bu
    zayıflığı taşır.
 6. "67'de red 0" mekanik olarak kaplama düşüşünden gelir (§1 notu).
+
+---
+
+### D-238 · 🔴 D-237'YE EK · Kazanan adayın DÜRÜST BEDELİ ölçüldü: t122ac, v34'ün çatı-DIŞI zemininin **%39,7'sini** kaybediyor ve kaybın **%88'i etiketsiz** kalıyor (engel bile değil)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20 · Ham:
+  `results/t122/yetenek_bedeli.json` · Görsel: `gorsel_kazanan_kiyas.png`.
+- **Neden ölçüldü:** D-237'yi yazdıktan sonra kazananı **gözle** kontrol ettim
+  (D-80 zorunlu). Görselde çatılar doğru şekilde kırmızı (v34'te YEŞİLDİ) ama
+  gerçek asfalt/cadde bölgelerinin bir kısmı **gri = etiketsiz** kalıyordu.
+  Göz işaret etti, ölçüm karara bağladı.
+- **ÖLÇÜM (55 çatılı kare, üretim zinciri conf 0,30):**
+```
+v34'un CATI DISI zemin payi (ort)        : 0,7521
+t122ac'nin kaybettigi kisim              : 0,3968   (%39,7)
+  kaybin ENGEL'e donen kismi             : 0,1186   (%11,9)
+  kaybin ETIKETSIZ kalan kismi           : 0,8814   (%88,1)
+```
+- **Anlamı:** kazanç (çatı kaçağı %96→%2) bedelsiz değildir. Kaybın büyük
+  kısmı "engel" bile değil, **hiçbir sınıf** — üretimde bu bölge maskesiz
+  kalır ve madde 15 gereği serbest alan sayılmaz. **Yön fail-safe'dir**, ama
+  bu bir **YETENEK KAYBIDIR** ve öyle raporlanmalıdır.
+- **Karşı kanıtlar (aynı turda ölçüldü, D-237):** sentetik arenada rota üretimi
+  bozulmadı (K1 257/260, v34 ile aynı mertebe) ve gerçek 67 karede red 67→0
+  oldu. Yani kayıp, ölçülen hiçbir kapıda rota üretimini engellemedi.
+- **Ölçülmemiş kalan:** gerçek bir arenada dar koridorlarda bu kaybın rota
+  bulmayı engelleyip engellemediği — **sahada ölçülür** (D-88/D-99 kalıcı
+  kısıtı). Bu satır, seçim yapılırken bilinmeyen olarak durmalıdır.
+- ⚠ Bu kayıt D-237'nin sonucunu değiştirmez, **fiyatını** yazar. Sıralamayı
+  ölçüm yaptı; seçim ve terfi mimarın/insanındır (D-133, §9.2).

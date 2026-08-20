@@ -1,0 +1,394 @@
+{
+ "n": 55,
+ "v34_catisiz_zemin_pay_ort": 0.7521,
+ "CATI_DISI_ZEMIN_KAYBI_ort": 0.3968,
+ "kaybin_ENGEL_olan_kismi": 0.1186,
+ "kaybin_ETIKETSIZ_kalan_kismi": 0.8814,
+ "kayitlar": [
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768",
+   "v34_catisiz_zemin_pay": 0.6871778700086806,
+   "KAYIP_orani": 0.4058038952515827,
+   "kayip_ENGEL_oldu": 0.16382130132905312,
+   "kayip_ETIKETSIZ": 0.8361786986709469
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816",
+   "v34_catisiz_zemin_pay": 0.677001953125,
+   "KAYIP_orani": 0.37856863805745883,
+   "kayip_ENGEL_oldu": 0.1567736344572559,
+   "kayip_ETIKETSIZ": 0.8432263655427441
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936",
+   "v34_catisiz_zemin_pay": 0.7067362467447916,
+   "KAYIP_orani": 0.33027467914117786,
+   "kayip_ENGEL_oldu": 0.16151806791356454,
+   "kayip_ETIKETSIZ": 0.8384819320864354
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008",
+   "v34_catisiz_zemin_pay": 0.7127295600043403,
+   "KAYIP_orani": 0.26216206572546596,
+   "kayip_ENGEL_oldu": 0.1746681305519513,
+   "kayip_ETIKETSIZ": 0.8253318694480487
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152",
+   "v34_catisiz_zemin_pay": 0.7265879313151041,
+   "KAYIP_orani": 0.2624586112997277,
+   "kayip_ENGEL_oldu": 0.1673379030752407,
+   "kayip_ETIKETSIZ": 0.8326620969247593
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200",
+   "v34_catisiz_zemin_pay": 0.7231530083550347,
+   "KAYIP_orani": 0.2354729880220288,
+   "kayip_ENGEL_oldu": 0.17705626412577039,
+   "kayip_ETIKETSIZ": 0.8229437358742296
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224",
+   "v34_catisiz_zemin_pay": 0.7185923258463541,
+   "KAYIP_orani": 0.20899248070629928,
+   "kayip_ENGEL_oldu": 0.15421088281779183,
+   "kayip_ETIKETSIZ": 0.8457891171822082
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248",
+   "v34_catisiz_zemin_pay": 0.7290056016710069,
+   "KAYIP_orani": 0.2008907287463516,
+   "kayip_ENGEL_oldu": 0.16165779115536003,
+   "kayip_ETIKETSIZ": 0.83834220884464
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272",
+   "v34_catisiz_zemin_pay": 0.7471449110243056,
+   "KAYIP_orani": 0.22277414201559395,
+   "kayip_ENGEL_oldu": 0.1882391288847239,
+   "kayip_ETIKETSIZ": 0.8117608711152761
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320",
+   "v34_catisiz_zemin_pay": 0.7633022732204862,
+   "KAYIP_orani": 0.20926048501379343,
+   "kayip_ENGEL_oldu": 0.13013204262726616,
+   "kayip_ETIKETSIZ": 0.8698679573727338
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000",
+   "v34_catisiz_zemin_pay": 0.7610507541232638,
+   "KAYIP_orani": 0.29532665309232187,
+   "kayip_ENGEL_oldu": 0.1812051173737252,
+   "kayip_ETIKETSIZ": 0.8187948826262749
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336",
+   "v34_catisiz_zemin_pay": 0.7456190321180556,
+   "KAYIP_orani": 0.2843645971658814,
+   "kayip_ENGEL_oldu": 0.10939636491575976,
+   "kayip_ETIKETSIZ": 0.8906036350842402
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648",
+   "v34_catisiz_zemin_pay": 0.7298600938585069,
+   "KAYIP_orani": 0.28826288244298925,
+   "kayip_ENGEL_oldu": 0.0963785517430335,
+   "kayip_ETIKETSIZ": 0.9036214482569664
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912",
+   "v34_catisiz_zemin_pay": 0.7352125379774306,
+   "KAYIP_orani": 0.297542234910503,
+   "kayip_ENGEL_oldu": 0.1394658523731283,
+   "kayip_ETIKETSIZ": 0.8605341476268716
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960",
+   "v34_catisiz_zemin_pay": 0.7216067843967013,
+   "KAYIP_orani": 0.31684761795118194,
+   "kayip_ENGEL_oldu": 0.21588052529716664,
+   "kayip_ETIKETSIZ": 0.7841194747028334
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008",
+   "v34_catisiz_zemin_pay": 0.722503662109375,
+   "KAYIP_orani": 0.3015792561304705,
+   "kayip_ENGEL_oldu": 0.24872780466549432,
+   "kayip_ETIKETSIZ": 0.7512721953345056
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416",
+   "v34_catisiz_zemin_pay": 0.6983812120225694,
+   "KAYIP_orani": 0.3371390700181102,
+   "kayip_ENGEL_oldu": 0.16034563456345635,
+   "kayip_ETIKETSIZ": 0.8396543654365437
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440",
+   "v34_catisiz_zemin_pay": 0.7079366048177084,
+   "KAYIP_orani": 0.35260969733546,
+   "kayip_ENGEL_oldu": 0.17419091927870411,
+   "kayip_ETIKETSIZ": 0.8258090807212959
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488",
+   "v34_catisiz_zemin_pay": 0.7120463053385416,
+   "KAYIP_orani": 0.3843807591753932,
+   "kayip_ENGEL_oldu": 0.15449133696332223,
+   "kayip_ETIKETSIZ": 0.8455086630366777
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944",
+   "v34_catisiz_zemin_pay": 0.73309326171875,
+   "KAYIP_orani": 0.40639830155690615,
+   "kayip_ENGEL_oldu": 0.1039635794565372,
+   "kayip_ETIKETSIZ": 0.8960364205434628
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992",
+   "v34_catisiz_zemin_pay": 0.7330050998263888,
+   "KAYIP_orani": 0.32695261180911495,
+   "kayip_ENGEL_oldu": 0.06997934293556694,
+   "kayip_ETIKETSIZ": 0.930020657064433
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040",
+   "v34_catisiz_zemin_pay": 0.7517293294270834,
+   "KAYIP_orani": 0.3323748049112741,
+   "kayip_ENGEL_oldu": 0.07677901351012072,
+   "kayip_ETIKETSIZ": 0.9232209864898793
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088",
+   "v34_catisiz_zemin_pay": 0.7972361246744791,
+   "KAYIP_orani": 0.37789034704367447,
+   "kayip_ENGEL_oldu": 0.15656039843552155,
+   "kayip_ETIKETSIZ": 0.8434396015644785
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112",
+   "v34_catisiz_zemin_pay": 0.7991773817274306,
+   "KAYIP_orani": 0.363412067699958,
+   "kayip_ENGEL_oldu": 0.061014693262815015,
+   "kayip_ETIKETSIZ": 0.9389853067371849
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000",
+   "v34_catisiz_zemin_pay": 0.7212032741970487,
+   "KAYIP_orani": 0.3523060394985225,
+   "kayip_ENGEL_oldu": 0.1292429853534848,
+   "kayip_ETIKETSIZ": 0.8707570146465152
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168",
+   "v34_catisiz_zemin_pay": 0.7183295355902778,
+   "KAYIP_orani": 0.37086724193274295,
+   "kayip_ENGEL_oldu": 0.11009215182139857,
+   "kayip_ETIKETSIZ": 0.8899078481786015
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192",
+   "v34_catisiz_zemin_pay": 0.7181447347005209,
+   "KAYIP_orani": 0.37796963494413083,
+   "kayip_ENGEL_oldu": 0.10348532167395377,
+   "kayip_ETIKETSIZ": 0.8965146783260463
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240",
+   "v34_catisiz_zemin_pay": 0.7330220540364584,
+   "KAYIP_orani": 0.32002248157759616,
+   "kayip_ENGEL_oldu": 0.10411020287215512,
+   "kayip_ETIKETSIZ": 0.8958897971278449
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264",
+   "v34_catisiz_zemin_pay": 0.7320675320095487,
+   "KAYIP_orani": 0.33131306581193215,
+   "kayip_ENGEL_oldu": 0.11261166799479931,
+   "kayip_ETIKETSIZ": 0.8873883320052007
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288",
+   "v34_catisiz_zemin_pay": 0.7335866292317709,
+   "KAYIP_orani": 0.3380388132761095,
+   "kayip_ENGEL_oldu": 0.10710696338837042,
+   "kayip_ETIKETSIZ": 0.8928930366116296
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336",
+   "v34_catisiz_zemin_pay": 0.7292073567708334,
+   "KAYIP_orani": 0.3225429198519428,
+   "kayip_ENGEL_oldu": 0.1044064962119847,
+   "kayip_ETIKETSIZ": 0.8955935037880153
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384",
+   "v34_catisiz_zemin_pay": 0.7413652208116319,
+   "KAYIP_orani": 0.3639997713109599,
+   "kayip_ENGEL_oldu": 0.09831750100522718,
+   "kayip_ETIKETSIZ": 0.9016824989947728
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432",
+   "v34_catisiz_zemin_pay": 0.7465481228298612,
+   "KAYIP_orani": 0.3609140375898186,
+   "kayip_ENGEL_oldu": 0.09201998464655617,
+   "kayip_ETIKETSIZ": 0.9079800153534439
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480",
+   "v34_catisiz_zemin_pay": 0.7577650282118056,
+   "KAYIP_orani": 0.4680343127164681,
+   "kayip_ENGEL_oldu": 0.09760166740763049,
+   "kayip_ETIKETSIZ": 0.9023983325923695
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504",
+   "v34_catisiz_zemin_pay": 0.7661556667751737,
+   "KAYIP_orani": 0.47863119250625696,
+   "kayip_ENGEL_oldu": 0.09765964529432435,
+   "kayip_ETIKETSIZ": 0.9023403547056756
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600",
+   "v34_catisiz_zemin_pay": 0.7743971082899306,
+   "KAYIP_orani": 0.4127415392833842,
+   "kayip_ENGEL_oldu": 0.09179251338033025,
+   "kayip_ETIKETSIZ": 0.9082074866196698
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624",
+   "v34_catisiz_zemin_pay": 0.7715657552083334,
+   "KAYIP_orani": 0.3638417185247688,
+   "kayip_ENGEL_oldu": 0.1300096630027781,
+   "kayip_ETIKETSIZ": 0.8699903369972218
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648",
+   "v34_catisiz_zemin_pay": 0.7942386203342013,
+   "KAYIP_orani": 0.4084288766834379,
+   "kayip_ENGEL_oldu": 0.10179634459293484,
+   "kayip_ETIKETSIZ": 0.8982036554070651
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672",
+   "v34_catisiz_zemin_pay": 0.7905968560112847,
+   "KAYIP_orani": 0.47217855817873405,
+   "kayip_ENGEL_oldu": 0.0686974017067621,
+   "kayip_ETIKETSIZ": 0.9313025982932379
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696",
+   "v34_catisiz_zemin_pay": 0.7833947075737847,
+   "KAYIP_orani": 0.5816129765292762,
+   "kayip_ENGEL_oldu": 0.07274980185530414,
+   "kayip_ETIKETSIZ": 0.9272501981446959
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720",
+   "v34_catisiz_zemin_pay": 0.7849138047960069,
+   "KAYIP_orani": 0.5890193774421604,
+   "kayip_ENGEL_oldu": 0.07348190089221213,
+   "kayip_ETIKETSIZ": 0.9265180991077879
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792",
+   "v34_catisiz_zemin_pay": 0.8032463921440972,
+   "KAYIP_orani": 0.6066478954100478,
+   "kayip_ENGEL_oldu": 0.06541435003166164,
+   "kayip_ETIKETSIZ": 0.9345856499683384
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840",
+   "v34_catisiz_zemin_pay": 0.8096262613932291,
+   "KAYIP_orani": 0.6170432866982035,
+   "kayip_ENGEL_oldu": 0.07051832444741585,
+   "kayip_ETIKETSIZ": 0.9294816755525842
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888",
+   "v34_catisiz_zemin_pay": 0.8050147162543403,
+   "KAYIP_orani": 0.5080862732379001,
+   "kayip_ENGEL_oldu": 0.0671922668788964,
+   "kayip_ETIKETSIZ": 0.9328077331211035
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936",
+   "v34_catisiz_zemin_pay": 0.7996910942925347,
+   "KAYIP_orani": 0.42497090169755997,
+   "kayip_ENGEL_oldu": 0.09229280265803272,
+   "kayip_ETIKETSIZ": 0.9077071973419673
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984",
+   "v34_catisiz_zemin_pay": 0.8051486545138888,
+   "KAYIP_orani": 0.5012971261076109,
+   "kayip_ENGEL_oldu": 0.06620488608105383,
+   "kayip_ETIKETSIZ": 0.9337951139189462
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032",
+   "v34_catisiz_zemin_pay": 0.8004811604817709,
+   "KAYIP_orani": 0.44463224065590295,
+   "kayip_ENGEL_oldu": 0.08246558376601724,
+   "kayip_ETIKETSIZ": 0.9175344162339828
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080",
+   "v34_catisiz_zemin_pay": 0.796844482421875,
+   "KAYIP_orani": 0.5532151200643407,
+   "kayip_ENGEL_oldu": 0.0752663359101573,
+   "kayip_ETIKETSIZ": 0.9247336640898427
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104",
+   "v34_catisiz_zemin_pay": 0.8042483859592013,
+   "KAYIP_orani": 0.5737059015736827,
+   "kayip_ENGEL_oldu": 0.08206991835264894,
+   "kayip_ETIKETSIZ": 0.917930081647351
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248",
+   "v34_catisiz_zemin_pay": 0.7945217556423612,
+   "KAYIP_orani": 0.5983722696893912,
+   "kayip_ENGEL_oldu": 0.09841163422653648,
+   "kayip_ETIKETSIZ": 0.9015883657734636
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296",
+   "v34_catisiz_zemin_pay": 0.7885318332248263,
+   "KAYIP_orani": 0.6124727206269687,
+   "kayip_ENGEL_oldu": 0.07290650078284619,
+   "kayip_ETIKETSIZ": 0.9270934992171538
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320",
+   "v34_catisiz_zemin_pay": 0.7907562255859375,
+   "KAYIP_orani": 0.5923410240412343,
+   "kayip_ENGEL_oldu": 0.13948572421381827,
+   "kayip_ETIKETSIZ": 0.8605142757861818
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344",
+   "v34_catisiz_zemin_pay": 0.7586347791883681,
+   "KAYIP_orani": 0.5618523178556344,
+   "kayip_ENGEL_oldu": 0.13085156737879217,
+   "kayip_ETIKETSIZ": 0.8691484326212079
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000",
+   "v34_catisiz_zemin_pay": 0.7293752034505209,
+   "KAYIP_orani": 0.46923661620211854,
+   "kayip_ENGEL_oldu": 0.10651072240633684,
+   "kayip_ETIKETSIZ": 0.8934892775936631
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456",
+   "v34_catisiz_zemin_pay": 0.7422502305772569,
+   "KAYIP_orani": 0.46513795206454134,
+   "kayip_ENGEL_oldu": 0.0946247225441474,
+   "kayip_ETIKETSIZ": 0.9053752774558526
+  }
+ ]
+}
