@@ -1,0 +1,6487 @@
+{
+ "diskler_rev": "T121 kahin sondasi diskleri. Koordinatlar ORIJINAL kare (1024x576). cati=engel olmasi gereken ic bolge, zemin=gecilebilir referans. Yerlesim: Fable 5 gozle (D-80), grid uzerinden; asagidaki gorsel dogrulamayla kilitlendi. REV1: 6 disk gorsel dogrulamada duzeltildi (arac/sinir tasmasi).",
+ "conflar": [
+  0.05,
+  0.3
+ ],
+ "adaylar": [
+  {
+   "etiket": "aday_v5c_m640",
+   "yol": "models/aday_v5c_m640.pt",
+   "not": "URETEC KAHINI - kosulmus uretimde zemin_model buydu (manifest.json)"
+  },
+  {
+   "etiket": "v17",
+   "yol": "models/navitas_seg_v17_best.pt",
+   "not": "eski soy; karisim yorumunda 'cokmuyor ama kor' (karisim_t54_engelli.yaml)"
+  },
+  {
+   "etiket": "v20",
+   "yol": "models/navitas_seg_v20_best.pt",
+   "not": "eski soy; ayni yorum"
+  },
+  {
+   "etiket": "v21",
+   "yol": "models/navitas_seg_v21_best.pt",
+   "not": "DAIRESEL-ADAY: copy_paste tam-kare etiketiyle egitildi"
+  },
+  {
+   "etiket": "v30",
+   "yol": "models/navitas_seg_v30_best.pt",
+   "not": "DAIRESEL-ADAY: ayni soy"
+  },
+  {
+   "etiket": "v34",
+   "yol": "models/navitas_seg_v34_best.pt",
+   "not": "DAIRESEL-URETIM: duzeltilmeye calisilan modelin kendisi"
+  }
+ ],
+ "olcumler": [
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 0.0443,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.9996,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 0.9225,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 0.6293,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.4345,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.4591,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0553,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.2963,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.8734,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 0.1444,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0602,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 0.0443,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 0.9984,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.9996,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 0.9225,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 0.6293,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.4345,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.4591,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0602,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "aday_v5c_m640",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v17",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v20",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.7588,
+   "engel_orani": 0.3498
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.9881,
+   "engel_orani": 0.0119
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.9021,
+   "engel_orani": 0.2371
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.9289,
+   "engel_orani": 0.0849
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.8424,
+   "engel_orani": 0.1407
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.9355,
+   "engel_orani": 0.0961
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.8316,
+   "engel_orani": 0.1876
+  },
+  {
+   "model": "v21",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.8823,
+   "engel_orani": 0.1567
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.7588,
+   "engel_orani": 0.3498
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.9881,
+   "engel_orani": 0.0119
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.9021,
+   "engel_orani": 0.2371
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.9289,
+   "engel_orani": 0.0849
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.8424,
+   "engel_orani": 0.1407
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.9355,
+   "engel_orani": 0.0961
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.8316,
+   "engel_orani": 0.1876
+  },
+  {
+   "model": "v21",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.8823,
+   "engel_orani": 0.1567
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.4803,
+   "engel_orani": 0.7104
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.7859,
+   "engel_orani": 0.346
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0204,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.7619,
+   "engel_orani": 0.2402
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0915,
+   "engel_orani": 0.972
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.9995,
+   "engel_orani": 0.0076
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.9881,
+   "engel_orani": 0.0119
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0191,
+   "engel_orani": 0.9879
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0021,
+   "engel_orani": 0.9894
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.8767,
+   "engel_orani": 0.222
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.9984
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.0091,
+   "engel_orani": 0.992
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.1747,
+   "engel_orani": 0.7981
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.5401,
+   "engel_orani": 0.6184
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.4739,
+   "engel_orani": 0.6211
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.3508,
+   "engel_orani": 0.8146
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.9227,
+   "engel_orani": 0.0961
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0991,
+   "engel_orani": 0.9891
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.7031,
+   "engel_orani": 0.442
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.969,
+   "engel_orani": 0.2395
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.8399,
+   "engel_orani": 0.197
+  },
+  {
+   "model": "v30",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.8912,
+   "engel_orani": 0.1726
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 0.425,
+   "engel_orani": 0.6161
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 0.7859,
+   "engel_orani": 0.3403
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 0.0204,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.7619,
+   "engel_orani": 0.2402
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0276,
+   "engel_orani": 0.972
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 0.9995,
+   "engel_orani": 0.0076
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.9881,
+   "engel_orani": 0.0119
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 0.0191,
+   "engel_orani": 0.9879
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 0.0021,
+   "engel_orani": 0.9894
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.8767,
+   "engel_orani": 0.222
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 0.9984
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 0.0091,
+   "engel_orani": 0.992
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.1747,
+   "engel_orani": 0.7981
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.5401,
+   "engel_orani": 0.6184
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 0.4739,
+   "engel_orani": 0.6211
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 0.3508,
+   "engel_orani": 0.8146
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.9227,
+   "engel_orani": 0.0961
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 0.0,
+   "engel_orani": 1.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 0.0991,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 0.6958,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 0.969,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.8399,
+   "engel_orani": 0.197
+  },
+  {
+   "model": "v30",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.8912,
+   "engel_orani": 0.1726
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.7741,
+   "engel_orani": 0.2402
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.9901,
+   "engel_orani": 0.0119
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.864,
+   "engel_orani": 0.2371
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.9185,
+   "engel_orani": 0.0869
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.8741,
+   "engel_orani": 0.1407
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.9341,
+   "engel_orani": 0.0961
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0398
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.843,
+   "engel_orani": 0.1869
+  },
+  {
+   "model": "v34",
+   "conf": 0.05,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.8908,
+   "engel_orani": 0.1538
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    55,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    125,
+    385,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "cati",
+   "disk": [
+    75,
+    440,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    170,
+    25
+   ],
+   "zemin_orani": 0.7741,
+   "engel_orani": 0.2402
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    700,
+    290,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "cati_turu": "koyu_oluklu",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    520,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    60,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    530,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    465,
+    255,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    250,
+    120,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "cati_turu": "acik_oluklu_kismi",
+   "disk_turu": "zemin",
+   "disk": [
+    500,
+    410,
+    18
+   ],
+   "zemin_orani": 0.9901,
+   "engel_orani": 0.0119
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    150,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    230,
+    450,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "cati",
+   "disk": [
+    110,
+    470,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    515,
+    230,
+    20
+   ],
+   "zemin_orani": 0.864,
+   "engel_orani": 0.2371
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    750,
+    180,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "cati_turu": "beyaz_ambar",
+   "disk_turu": "zemin",
+   "disk": [
+    350,
+    545,
+    18
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    300,
+    350,
+    45
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    370,
+    380,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "cati",
+   "disk": [
+    250,
+    440,
+    35
+   ],
+   "zemin_orani": 0.9185,
+   "engel_orani": 0.0869
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    820,
+    190,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    930,
+    330,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "cati_turu": "beyaz_ambar_merkez",
+   "disk_turu": "zemin",
+   "disk": [
+    780,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    540,
+    220,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    555,
+    262,
+    18
+   ],
+   "zemin_orani": 0.8741,
+   "engel_orani": 0.1407
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    300,
+    30
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    975,
+    345,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    180,
+    420,
+    30
+   ],
+   "zemin_orani": 0.9341,
+   "engel_orani": 0.0961
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    60,
+    300,
+    25
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    150,
+    500,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    545,
+    200,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    590,
+    165,
+    22
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    950,
+    180,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    960,
+    400,
+    35
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "cati",
+   "disk": [
+    955,
+    435,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    120,
+    340,
+    20
+   ],
+   "zemin_orani": 1.0,
+   "engel_orani": 0.0
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    200,
+    300,
+    35
+   ],
+   "zemin_orani": 0.843,
+   "engel_orani": 0.1869
+  },
+  {
+   "model": "v34",
+   "conf": 0.3,
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "disk_turu": "zemin",
+   "disk": [
+    400,
+    450,
+    30
+   ],
+   "zemin_orani": 0.8908,
+   "engel_orani": 0.1538
+  }
+ ],
+ "ozet": {
+  "aday_v5c_m640@0.05": {
+   "cati_disklerinde_ort_zemin": 0.1153,
+   "cati_disklerinde_ort_engel": 0.0,
+   "zemin_disklerinde_ort_zemin": 0.8674
+  },
+  "aday_v5c_m640@0.3": {
+   "cati_disklerinde_ort_zemin": 0.0977,
+   "cati_disklerinde_ort_engel": 0.0,
+   "zemin_disklerinde_ort_zemin": 0.7552
+  },
+  "v17@0.05": {
+   "cati_disklerinde_ort_zemin": 0.15,
+   "cati_disklerinde_ort_engel": 0.0,
+   "zemin_disklerinde_ort_zemin": 0.0
+  },
+  "v17@0.3": {
+   "cati_disklerinde_ort_zemin": 0.0,
+   "cati_disklerinde_ort_engel": 0.0,
+   "zemin_disklerinde_ort_zemin": 0.0
+  },
+  "v20@0.05": {
+   "cati_disklerinde_ort_zemin": 0.0,
+   "cati_disklerinde_ort_engel": 0.0,
+   "zemin_disklerinde_ort_zemin": 0.2222
+  },
+  "v20@0.3": {
+   "cati_disklerinde_ort_zemin": 0.0,
+   "cati_disklerinde_ort_engel": 0.0,
+   "zemin_disklerinde_ort_zemin": 0.0
+  },
+  "v21@0.05": {
+   "cati_disklerinde_ort_zemin": 0.9886,
+   "cati_disklerinde_ort_engel": 0.0113,
+   "zemin_disklerinde_ort_zemin": 0.961
+  },
+  "v21@0.3": {
+   "cati_disklerinde_ort_zemin": 0.9886,
+   "cati_disklerinde_ort_engel": 0.0113,
+   "zemin_disklerinde_ort_zemin": 0.961
+  },
+  "v30@0.05": {
+   "cati_disklerinde_ort_zemin": 0.2859,
+   "cati_disklerinde_ort_engel": 0.7763,
+   "zemin_disklerinde_ort_zemin": 0.96
+  },
+  "v30@0.3": {
+   "cati_disklerinde_ort_zemin": 0.2796,
+   "cati_disklerinde_ort_engel": 0.6878,
+   "zemin_disklerinde_ort_zemin": 0.96
+  },
+  "v34@0.05": {
+   "cati_disklerinde_ort_zemin": 0.9896,
+   "cati_disklerinde_ort_engel": 0.0134,
+   "zemin_disklerinde_ort_zemin": 0.9609
+  },
+  "v34@0.3": {
+   "cati_disklerinde_ort_zemin": 0.9896,
+   "cati_disklerinde_ort_engel": 0.0114,
+   "zemin_disklerinde_ort_zemin": 0.9609
+  }
+ }
+}

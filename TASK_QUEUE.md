@@ -5524,6 +5524,16 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     toplamıyor olabilir (turun tamlık eleştirmeni işaret etti, ölçülmedi).
 
 - [ ] **T121 — 🔴 Üreteç bilinmeyen bölgeyi ZEMİN ilan ediyor: madde 15'in VERİ tarafındaki ihlali** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**
+  - ⏳ **ADIM 1-4 KOŞULDU · 2026-08-20 · Claude-2 (Fable 5) · D-217..D-221.**
+    Envanter: 67/67 kaynak çatılı → 448/448 kompozit (D-217). Kâhin: üreteç
+    kâhini aday_v5c çatıyı ZATEN zemin saymıyor (0,115); v30 çatı-kâhini adayı
+    (engel 0,776; kiremitte 0,53); v21/v34 kör 0,99 (D-218). İstatistik: engel
+    piksellerinin %100 ü zemin etiketliydi; (b) sorusu ultralytics kaynağından
+    cevaplandı — kutu dışı maske denetimi yok, sınıflandırma negatifi var
+    (loss.py:557-578) (D-219). 56 kaynağa elle+homografi çatı etiketi (3 görsel
+    tur) → 448/448 yamalı, 0 ihlal → dataset/copy_paste_t121 (D-220).
+    🔴 BELİRLEYİCİ KOŞUM t121_etiket_ft EĞİTİMDE (v34 tabanlı, ön kayıt kilitli:
+    results/t121_on_kayit.md). Sonuç + K0 + seçenek sıralaması eğitim bitince.
   - **Ölçüldü (mimar).** `copy_paste_gercek` etiketlerinin **448/448**'i şu satırla başlıyor:
     ```text
     0 0.000000 0.000000 1.000000 0.000000 1.000000 1.000000 0.000000 1.000000

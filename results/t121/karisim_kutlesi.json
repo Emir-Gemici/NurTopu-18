@@ -1,0 +1,38 @@
+{
+ "tohum": 20260820,
+ "raster": [
+  256,
+  144
+ ],
+ "kumeler": {
+  "rescuenet_2sinif_engelli": {
+   "dosya": 4383,
+   "orneklem": 400,
+   "ort_zemin_payi": 0.077,
+   "ort_engel_payi": 0.4267,
+   "zemin_kutlesi": 337.6,
+   "engel_kutlesi": 1870.1
+  },
+  "sentetik_arena": {
+   "dosya": 3000,
+   "orneklem": 400,
+   "ort_zemin_payi": 0.1987,
+   "ort_engel_payi": 0.226,
+   "zemin_kutlesi": 596.0,
+   "engel_kutlesi": 678.1
+  },
+  "copy_paste_gercek": {
+   "dosya": 448,
+   "orneklem": 400,
+   "ort_zemin_payi": 1.0,
+   "ort_engel_payi": 0.195,
+   "zemin_kutlesi": 448.0,
+   "engel_kutlesi": 87.4
+  }
+ },
+ "oran_notu": {
+  "copy_paste_zemin_kutlesi": 448.0,
+  "rescuenet_engel_kutlesi": 1870.1,
+  "yorum": "(d) karisim orani dususu copy_paste'in HEM celiskili zemin kutlesini HEM gercek-doku denetimini AYNI carpanla azaltir — secici degildir. Sayisal karsiligi bu iki kutledir."
+ }
+}

@@ -1,0 +1,237 @@
+{
+ "aciklama": "T121 kahin sondasi diskleri. Koordinatlar ORIJINAL kare (1024x576). cati=engel olmasi gereken ic bolge, zemin=gecilebilir referans. Yerlesim: Fable 5 gozle (D-80), grid uzerinden; asagidaki gorsel dogrulamayla kilitlendi. REV1: 6 disk gorsel dogrulamada duzeltildi (arac/sinir tasmasi).",
+ "kareler": {
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg": {
+   "cati_turu": "koyu_oluklu",
+   "cati": [
+    [
+     55,
+     300,
+     30
+    ],
+    [
+     125,
+     385,
+     30
+    ],
+    [
+     75,
+     440,
+     25
+    ]
+   ],
+   "zemin": [
+    [
+     500,
+     170,
+     25
+    ],
+    [
+     700,
+     290,
+     30
+    ],
+    [
+     350,
+     520,
+     20
+    ]
+   ]
+  },
+  "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg": {
+   "cati_turu": "acik_oluklu_kismi",
+   "cati": [
+    [
+     60,
+     470,
+     30
+    ],
+    [
+     110,
+     530,
+     25
+    ]
+   ],
+   "zemin": [
+    [
+     465,
+     255,
+     20
+    ],
+    [
+     250,
+     120,
+     25
+    ],
+    [
+     500,
+     410,
+     18
+    ]
+   ]
+  },
+  "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg": {
+   "cati_turu": "beyaz_ambar",
+   "cati": [
+    [
+     150,
+     400,
+     35
+    ],
+    [
+     230,
+     450,
+     30
+    ],
+    [
+     110,
+     470,
+     30
+    ]
+   ],
+   "zemin": [
+    [
+     515,
+     230,
+     20
+    ],
+    [
+     750,
+     180,
+     25
+    ],
+    [
+     350,
+     545,
+     18
+    ]
+   ]
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg": {
+   "cati_turu": "beyaz_ambar_merkez",
+   "cati": [
+    [
+     300,
+     350,
+     45
+    ],
+    [
+     370,
+     380,
+     35
+    ],
+    [
+     250,
+     440,
+     35
+    ]
+   ],
+   "zemin": [
+    [
+     820,
+     190,
+     30
+    ],
+    [
+     930,
+     330,
+     30
+    ],
+    [
+     780,
+     300,
+     25
+    ]
+   ]
+  },
+  "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg": {
+   "cati_turu": "beyaz_ambar+kirmizi_kiremit",
+   "cati": [
+    [
+     540,
+     220,
+     30
+    ],
+    [
+     555,
+     262,
+     18
+    ],
+    [
+     950,
+     300,
+     30
+    ],
+    [
+     975,
+     345,
+     20
+    ]
+   ],
+   "zemin": [
+    [
+     180,
+     420,
+     30
+    ],
+    [
+     60,
+     300,
+     25
+    ],
+    [
+     150,
+     500,
+     22
+    ]
+   ]
+  },
+  "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg": {
+   "cati_turu": "beyaz_ambar+sag_plaka+kirmizi_kiremit",
+   "cati": [
+    [
+     545,
+     200,
+     35
+    ],
+    [
+     590,
+     165,
+     22
+    ],
+    [
+     950,
+     180,
+     35
+    ],
+    [
+     960,
+     400,
+     35
+    ],
+    [
+     955,
+     435,
+     20
+    ]
+   ],
+   "zemin": [
+    [
+     120,
+     340,
+     20
+    ],
+    [
+     200,
+     300,
+     35
+    ],
+    [
+     400,
+     450,
+     30
+    ]
+   ]
+  }
+ }
+}

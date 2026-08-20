@@ -1,0 +1,378 @@
+{
+ "A_bugunku_448": {
+  "dosya_sayisi": 448,
+  "tam_kare_zemin_sayisi": 448,
+  "ort_zemin": 1.0,
+  "ort_engel": 0.195,
+  "ort_hedef": 0.0,
+  "ort_zemin_engel_bindirme": 0.195
+ },
+ "B_kaynak_kahinleri": [
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "v5c_zemin_payi": 0.5216,
+   "v30_engel_payi": 0.4558,
+   "kesisim_v5czemin_v30engel": 0.1596
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "v5c_zemin_payi": 0.557,
+   "v30_engel_payi": 0.453,
+   "kesisim_v5czemin_v30engel": 0.1804
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+   "v5c_zemin_payi": 0.5902,
+   "v30_engel_payi": 0.4121,
+   "kesisim_v5czemin_v30engel": 0.1872
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+   "v5c_zemin_payi": 0.6348,
+   "v30_engel_payi": 0.3973,
+   "kesisim_v5czemin_v30engel": 0.1751
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+   "v5c_zemin_payi": 0.6351,
+   "v30_engel_payi": 0.394,
+   "kesisim_v5czemin_v30engel": 0.2088
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+   "v5c_zemin_payi": 0.6558,
+   "v30_engel_payi": 0.4149,
+   "kesisim_v5czemin_v30engel": 0.2113
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+   "v5c_zemin_payi": 0.7163,
+   "v30_engel_payi": 0.4348,
+   "kesisim_v5czemin_v30engel": 0.2587
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+   "v5c_zemin_payi": 0.7789,
+   "v30_engel_payi": 0.4325,
+   "kesisim_v5czemin_v30engel": 0.2883
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+   "v5c_zemin_payi": 0.7944,
+   "v30_engel_payi": 0.4152,
+   "kesisim_v5czemin_v30engel": 0.2904
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+   "v5c_zemin_payi": 0.8265,
+   "v30_engel_payi": 0.3956,
+   "kesisim_v5czemin_v30engel": 0.2733
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000.jpg",
+   "v5c_zemin_payi": 0.6934,
+   "v30_engel_payi": 0.4182,
+   "kesisim_v5czemin_v30engel": 0.2405
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+   "v5c_zemin_payi": 0.6244,
+   "v30_engel_payi": 0.4259,
+   "kesisim_v5czemin_v30engel": 0.213
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+   "v5c_zemin_payi": 0.664,
+   "v30_engel_payi": 0.4421,
+   "kesisim_v5czemin_v30engel": 0.2194
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+   "v5c_zemin_payi": 0.6387,
+   "v30_engel_payi": 0.4441,
+   "kesisim_v5czemin_v30engel": 0.2193
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+   "v5c_zemin_payi": 0.6022,
+   "v30_engel_payi": 0.4427,
+   "kesisim_v5czemin_v30engel": 0.2495
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+   "v5c_zemin_payi": 0.6053,
+   "v30_engel_payi": 0.4494,
+   "kesisim_v5czemin_v30engel": 0.2313
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+   "v5c_zemin_payi": 0.6412,
+   "v30_engel_payi": 0.4585,
+   "kesisim_v5czemin_v30engel": 0.2789
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+   "v5c_zemin_payi": 0.652,
+   "v30_engel_payi": 0.4502,
+   "kesisim_v5czemin_v30engel": 0.2737
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "v5c_zemin_payi": 0.5524,
+   "v30_engel_payi": 0.4445,
+   "kesisim_v5czemin_v30engel": 0.2059
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "v5c_zemin_payi": 0.5916,
+   "v30_engel_payi": 0.4777,
+   "kesisim_v5czemin_v30engel": 0.2584
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+   "v5c_zemin_payi": 0.6653,
+   "v30_engel_payi": 0.4651,
+   "kesisim_v5czemin_v30engel": 0.2843
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+   "v5c_zemin_payi": 0.6968,
+   "v30_engel_payi": 0.4852,
+   "kesisim_v5czemin_v30engel": 0.2828
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+   "v5c_zemin_payi": 0.777,
+   "v30_engel_payi": 0.4876,
+   "kesisim_v5czemin_v30engel": 0.324
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+   "v5c_zemin_payi": 0.6753,
+   "v30_engel_payi": 0.4664,
+   "kesisim_v5czemin_v30engel": 0.2614
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+   "v5c_zemin_payi": 0.6329,
+   "v30_engel_payi": 0.4727,
+   "kesisim_v5czemin_v30engel": 0.2209
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+   "v5c_zemin_payi": 0.3687,
+   "v30_engel_payi": 0.4789,
+   "kesisim_v5czemin_v30engel": 0.1252
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+   "v5c_zemin_payi": 0.6167,
+   "v30_engel_payi": 0.4735,
+   "kesisim_v5czemin_v30engel": 0.2487
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+   "v5c_zemin_payi": 0.5928,
+   "v30_engel_payi": 0.4583,
+   "kesisim_v5czemin_v30engel": 0.2197
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+   "v5c_zemin_payi": 0.6686,
+   "v30_engel_payi": 0.4447,
+   "kesisim_v5czemin_v30engel": 0.2751
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+   "v5c_zemin_payi": 0.6788,
+   "v30_engel_payi": 0.4398,
+   "kesisim_v5czemin_v30engel": 0.2776
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+   "v5c_zemin_payi": 0.6498,
+   "v30_engel_payi": 0.4304,
+   "kesisim_v5czemin_v30engel": 0.2593
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+   "v5c_zemin_payi": 0.6302,
+   "v30_engel_payi": 0.4208,
+   "kesisim_v5czemin_v30engel": 0.2421
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+   "v5c_zemin_payi": 0.5583,
+   "v30_engel_payi": 0.4029,
+   "kesisim_v5czemin_v30engel": 0.1863
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+   "v5c_zemin_payi": 0.5501,
+   "v30_engel_payi": 0.3904,
+   "kesisim_v5czemin_v30engel": 0.1552
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+   "v5c_zemin_payi": 0.495,
+   "v30_engel_payi": 0.3779,
+   "kesisim_v5czemin_v30engel": 0.112
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+   "v5c_zemin_payi": 0.7029,
+   "v30_engel_payi": 0.3785,
+   "kesisim_v5czemin_v30engel": 0.2178
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+   "v5c_zemin_payi": 0.6558,
+   "v30_engel_payi": 0.3547,
+   "kesisim_v5czemin_v30engel": 0.1881
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+   "v5c_zemin_payi": 0.5838,
+   "v30_engel_payi": 0.3659,
+   "kesisim_v5czemin_v30engel": 0.143
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+   "v5c_zemin_payi": 0.5927,
+   "v30_engel_payi": 0.3848,
+   "kesisim_v5czemin_v30engel": 0.1555
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+   "v5c_zemin_payi": 0.6002,
+   "v30_engel_payi": 0.4116,
+   "kesisim_v5czemin_v30engel": 0.1602
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+   "v5c_zemin_payi": 0.5053,
+   "v30_engel_payi": 0.4332,
+   "kesisim_v5czemin_v30engel": 0.1103
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+   "v5c_zemin_payi": 0.4097,
+   "v30_engel_payi": 0.4354,
+   "kesisim_v5czemin_v30engel": 0.0748
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+   "v5c_zemin_payi": 0.3399,
+   "v30_engel_payi": 0.4089,
+   "kesisim_v5czemin_v30engel": 0.0559
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+   "v5c_zemin_payi": 0.467,
+   "v30_engel_payi": 0.4125,
+   "kesisim_v5czemin_v30engel": 0.1013
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+   "v5c_zemin_payi": 0.5221,
+   "v30_engel_payi": 0.4092,
+   "kesisim_v5czemin_v30engel": 0.147
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+   "v5c_zemin_payi": 0.484,
+   "v30_engel_payi": 0.3958,
+   "kesisim_v5czemin_v30engel": 0.1281
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+   "v5c_zemin_payi": 0.6401,
+   "v30_engel_payi": 0.4112,
+   "kesisim_v5czemin_v30engel": 0.2609
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+   "v5c_zemin_payi": 0.5943,
+   "v30_engel_payi": 0.4042,
+   "kesisim_v5czemin_v30engel": 0.2116
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+   "v5c_zemin_payi": 0.6551,
+   "v30_engel_payi": 0.4175,
+   "kesisim_v5czemin_v30engel": 0.2618
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "v5c_zemin_payi": 0.3871,
+   "v30_engel_payi": 0.4185,
+   "kesisim_v5czemin_v30engel": 0.1203
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "v5c_zemin_payi": 0.4604,
+   "v30_engel_payi": 0.3828,
+   "kesisim_v5czemin_v30engel": 0.1715
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+   "v5c_zemin_payi": 0.4062,
+   "v30_engel_payi": 0.3743,
+   "kesisim_v5czemin_v30engel": 0.1556
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+   "v5c_zemin_payi": 0.43,
+   "v30_engel_payi": 0.3602,
+   "kesisim_v5czemin_v30engel": 0.1541
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+   "v5c_zemin_payi": 0.4433,
+   "v30_engel_payi": 0.3431,
+   "kesisim_v5czemin_v30engel": 0.1603
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+   "v5c_zemin_payi": 0.5267,
+   "v30_engel_payi": 0.394,
+   "kesisim_v5czemin_v30engel": 0.196
+  },
+  {
+   "kaynak": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+   "v5c_zemin_payi": 0.4658,
+   "v30_engel_payi": 0.415,
+   "kesisim_v5czemin_v30engel": 0.1889
+  }
+ ],
+ "B_ozet": {
+  "v5c_zemin_ort": 0.5912,
+  "v30_engel_ort": 0.4226
+ },
+ "C_secenek_izdusumleri": {
+  "ONCE_bugunku": {
+   "zemin": 1.0,
+   "engel": 0.195,
+   "etiketsiz": 0.0,
+   "not": "zemin tam-kare: engel/hedef ZEMIN ETIKETININ ALTINDA da etiketli (bindirme A'da)"
+  },
+  "a_kahin_zeminine_daralt": {
+   "zemin": 0.5912,
+   "etiketsiz": 0.4088,
+   "not": "zemin=aday_v5c(conf 0.05) maskesi; engel/hedef degismez. Kahin zayifligi: acik_oluklu catida 0.50 sizinti (95_t121_kahin_sondasi.json)"
+  },
+  "b_zemin_etiketi_yok": {
+   "zemin": 0.0,
+   "etiketsiz": 1.0,
+   "not": "zemin satiri hic yazilmaz; yalniz engel/hedef kalir. Gercek-doku ZEMIN denetimi tamamen kaybolur (D-12/D-18 riski). 'Etiketsiz=negatif mi' sorusu ultralytics kaynagindan ayrica raporlanir."
+  },
+  "c_cati_sinif1": {
+   "zemin": 0.5774,
+   "engel_eki": 0.4226,
+   "not": "v30 vekiliyle izdusum (kiremitte 0.53 — EKSIK sayim); elle etiket olcumu adim 4'te"
+  },
+  "d_karisim_orani": {
+   "not": "etiket degismez; kutle tablosu 97_t121_karisim_kutlesi.py"
+  }
+ }
+}

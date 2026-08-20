@@ -17242,3 +17242,113 @@ olması sınanmamasını gerektirmez.**
   RescueNet etiketlerini sınamıştı; tamlık eleştirmeninin işaret ettiği boşluk buydu.
   Eleme + kök neden birlikte TUTARLI: model çatıyı öğrenmiş, gerçek-karışım verisi
   "bu çatı zemindir" diye YENİDEN öğretmiş. Sonuç T121/T122'nin gerekçesini güçlendirir.
+
+---
+
+### D-217 · 🔎 T121 ADIM 1 · ENVANTER: 67/67 kaynak kare ÇATI İÇERİYOR → 448/448 kompozit çatılı; üç çatı türü; n≥20 koşulu bol karşılanıyor
+
+- **Yazan:** Claude 2 / Fable 5 (başamele) · 2026-08-20 · dayanak: mimar T121 emri, adım 1.
+- **Yöntem (emir gereği yazıldı):** 67 kaynak karenin indeksli kontakt sayfası üretildi
+  (üretime giren 56 yeşil/atlanan 11 kırmızı, manifest'ten mekanik); sınıflandırma
+  ana döngünün GÖZÜYLE (D-80); sınırda kalan 6 kare tam boyda ayrıca doğrulandı.
+  Kompozitlere eşleme mekanik: `manifest.json` kaynak→8 varyant.
+- **Sonuç:** çatı HER karede var (ana yapı: beyaz oluklu ambar çatısı). Türler:
+  beyaz oluklu ambar (tüm videolar) · koyu oluklu (video _03) · kırmızı kiremit
+  ev çatıları + beton plaka (video _39 kuyruğu ve _46). 56 üretilen kaynak × 8
+  varyant = 448/448 kompozit çatı içerir; adım 4'ün n<20 riski YOK (n=56 kaynak).
+- Kanıt: `results/t121/diskler.json` (tür alanları), scratchpad kontakt üretimi;
+  kompozit-kaynak geometrik eşliği ölçüldü: 8 varyantta farklı piksel oranı
+  0,001-0,004 (yalnız yapıştırılan moloz) → poligonlar varyantlara AYNEN taşınır.
+
+### D-218 · 🔴 T121 ADIM 2 · KÂHİN SONDASI: üreteç kâhini (aday_v5c) çatıyı ZATEN zemin saymıyor; v30 gerçek bir ÇATI KÂHİNİ adayı; v21/v34 her çatı türünde kör
+
+- **Yöntem:** 6 sonda karesi × çatı-içi/zemin-referans diskleri (`results/t121/
+  diskler.json`, REV1; yerleşim gözle + iki görsel doğrulama turu, 6 disk düzeltildi).
+  Maske zinciri üretecin KENDİSİNDEN import (`zemin_ve_mevcut_engel`) — secenek (a)
+  bu zincirle koşacağı için. Conf 0,05 (üreteç varsayılanı, manifest) ve 0,30 (üretim).
+  Ham: `results/t121/kahin_sondasi.json` · betik: `scripts/olcum/95_t121_kahin_sondasi.py` (aynalı).
+- **[SONUC-DEGISTIREN] tablo (conf 0,05 · çatı→zemin / çatı→engel / zemin→zemin):**
+  - aday_v5c (ÜRETEÇ KÂHİNİ): **0,115 / 0,000 / 0,867** — çatıyı zemin YAPMIYOR
+    (maskesiz bırakıyor). Tür kırılımı: koyu 0,00 · kiremit 0,00 · plaka 0,00 ·
+    ambar 0,13 · açık-oluklu 0,50 (tek zayıf nokta). Seçenek (a) mevcut kâhinle
+    UYGULANABILIR: `--zemin-model` parametresi ve maske zaten üretimde hesaplanıyor;
+    etiket fonksiyonu (`yolo_etiketi`) onu KULLANMIYOR — D-210'daki borcun mekanizma tarafı.
+  - v30: **0,286 / 0,776 / 0,960** — çatıyı BÜYÜK ÖLÇÜDE ENGEL görüyor: ambar 0,94 ·
+    plaka 0,99 · koyu 0,69 · ama kiremit yalnız 0,53. Zemin disklerinde yanlış-engel 0,052.
+    Seçenek (c) için TEK mevcut model adayı; kiremit açığı elle tamamlanmalı.
+  - v21: 0,989/0,011/0,961 · v34: 0,990/0,011/0,961 — HER türde çatı=zemin
+    (D-201/D-210'un disk düzeyinde, üreteç zinciriyle bağımsız teyidi).
+  - v17: 0,15/0/0,000 · v20: 0/0/0,222 — fiilen KÖR (maske üretmiyorlar);
+    karisim yorumundaki "çökmüyor ama kör" doğrulandı; kâhin OLAMAZLAR.
+- **Dairesellik (emir gereği açık):** v21/v30/v34 copy_paste soyundandır; ölçüme
+  "hiçbir model görmüyor mu" sorusu için girdiler. (a)-kâhini olarak aday_v5c
+  önerilir (üretimde kullanılan buydu); v30'un (c)-kâhinliği dairesel-riskli ama
+  ölçümü kiremit dışında güçlü — SEÇİM MİMARIN.
+- **[BILGILENDIRICI]** 11-sınıf RescueNet MODELİ depoda YOK (yalnız 11→2 sınıf
+  etiket dönüşümü var; `calisma/11sinif.log` veri hazırlığı) — (c) için hazır
+  bina-kâhini bulunmuyor; bu yüzden adım 4 etiketi elle+homografiyle üretildi.
+
+### D-219 · 🔎 T121 ADIM 3 · ETİKET İSTATİSTİĞİ: engel piksellerinin %100'ü AYNI ANDA zemin etiketli; (a) zemin %100→%59; (b) "etiketsiz=negatif mi" KODDAN ölçüldü; (d) seçici değil
+
+- **A (bugünkü 448):** 448/448 dosya tam-kare zemin satırıyla başlıyor (D-210'un
+  mekanik teyidi); ort. zemin payı 1,0 · engel 0,195 · **zemin∧engel bindirmesi
+  0,195 = engel payının TAMAMI** — "zemin_alti_engeller": true'nun piksel karşılığı:
+  çelişkili çift denetim yalnız çatıda değil, HER engelin altında.
+  Ham: `results/t121/etiket_istatistigi.json` · betik: 96 (aynalı).
+- **(a) izdüşümü:** zemin = aday_v5c maskesi → ort. 0,591 (etiketsiz 0,409).
+- **(b) sorusu — mimar notu KODDAN cevaplandı (varsayım değil):** ultralytics
+  `v8SegmentationLoss.single_mask_loss` maske kaybını GT KUTUSUNA KIRPAR
+  (`ultralytics/utils/loss.py:557-578`, çağrı :633; `crop_mask` :14 import) →
+  kutu dışı etiketsiz piksel MASKE denetimi almaz; ama tespit başında atanmamış
+  konumlar sınıflandırma NEGATİFİDİR (BCE hedefi 0) → (b) "denetimsiz" değil
+  "nesne-yok denetimi"dir. Mimarın "arka plan denetimi olabilir" şüphesi DOĞRU.
+  (b)'nin bedeli: gerçek-doku ZEMİN denetimi kütlesi 448→0 (D-12/D-18 körlük riski).
+- **(c) izdüşümü:** v30 vekiliyle engel eki 0,42 — ARAÇ KİRLİLİĞİ dahil (v30
+  engel'i araçları da içerir); elle çatı etiketiyle gerçek ek 0,065 (D-220).
+- **(d) kütle tablosu:** copy_paste zemin kütlesi 448,0 kare-eşdeğeri (tamamı
+  "her şey zemindir" iddialı) · rescuenet engel kütlesi 1870,1 · sentetik 596/678.
+  Karışım oranını düşürmek çelişkiyi VE gerçek-doku denetimini AYNI çarpanla
+  azaltır — SEÇİCİ DEĞİL. Ham: `results/t121/karisim_kutlesi.json` · betik: 97 (aynalı).
+
+### D-220 · ✅ T121 ADIM 4 HAZIRLIK · 56 kaynağa elle+homografi ÇATI ETİKETİ (3 görsel tur) ve 448 kompozitin yaması: 0 ihlal — dataset/copy_paste_t121 hazır
+
+- **Etiketleme:** 23 anahtar karede elle poligon (100px gridli tam-boy görünümler);
+  kalan 33 kare ORB+RANSAC homografisiyle en yakın anahtar kareden (≤3 kare;
+  0 başarısız, inlier≥40). ÜÇ görsel doğrulama turu (D-80): REV1'de 6 keyframe
+  düzeltmesi + 2 yeni anahtar; REV2'de 39/11 ve 39/14 maske+grid yakın bakışla
+  yeniden çizildi, şüpheli 2 küçük-yapı poligonu KALDIRILDI (yanlış-zemin-cezası
+  riski); REV3'te kendi düzeltmem YANLIŞ çıktı ve geri alındı: 23/18'de çatı
+  fiilen kadraj dışı, REV2 poligonu araçlı PLATFORMU kaplıyordu → BOŞALTILDI.
+  Ham: `results/t121/cati_anahtar_poligonlari.json` (revizyon notlarıyla),
+  `cati_maskeleri/` (56 png), `yayilim_sayfa_*.png` (10 doğrulama sayfası),
+  `yayilim_ozet.json` · betik: 99 (aynalı). (98'in v30−DOTA başlangıç denemesi
+  araç/bitki kirliliği yüzünden TERK edildi — o da kayıtta: `cati_aday_ozet.json`.)
+- **Yama (mimar tasarımı birebir):** zemin tam-kare satırı → tam-kare−çatı
+  poligonları (iç delikler 2px dikişle dışa bağlandı; zemin GENİŞLETİLMİŞ
+  çatıdan (5×5) çıkarılır — poligon sadeleşmesinin ~%2 sınır bindirmesini
+  sıfırlar, eşik GEVŞETİLMEDİ); çatı → sınıf 1 poligonları; DİĞER SATIRLAR
+  (moloz, DOTA araçları) AYNEN. 448/448 yazıldı · **0 ihlal** (dosya başına
+  denetim: çatının zemin-talebi<0,02 · zemin IoU>0,97 · çatı kapsamı>0,95;
+  en kötüler 0,9895 / 0,9953). Etiketi değişen 440, çatısız (23/18) 8.
+  Ort. çatı payı 0,065. Görsel nokta kontrolü: `yama_nokta_kontrolu.png` ✓.
+  Ham: `etiket_yamasi_ozet.json` · betik: 100 (aynalı).
+- **[BILGILENDIRICI] tuzak kaydı:** ultralytics import edilince `cv2.imread`
+  monkey-patch'lenir ve gri okuma (H,W,1) döner — saf cv2'de (H,W). 100 betiği
+  bunu ele alır; gelecekteki maske okuyan betikler için not.
+
+### D-221 · ⏳ T121 BELİRLEYİCİ KOŞUM BAŞLATILDI · t121_etiket_ft: v34'ten, yamalı etiketlerle, RECETE birebir — ön kayıt ölçütleri kilitli, sonuç AYRI kayıtla
+
+- **Ön kayıt:** `results/t121_on_kayit.md` — GPU başlamadan yazıldı; tek düzeltme
+  (imgsz 640→512, kaynak RECETE/D-112) koşum ÖNCESİ işlendi ve işaretli.
+- **Koşum:** taban=navitas_seg_v34_best.pt · data=karisim_t121.yaml (yalnız
+  copy_paste bileşeni yamalı kopyayla değişti) · epochs=40 · patience=15 ·
+  diğer her şey 56 zinciri RECETE'sinden import (tek kaynak; betik: 101, aynalı).
+  Çıktı: `codes/runs/segment/t121_etiket_ft/` · günlük: `results/t121/ft_kosum_log.txt`.
+- **Karar kuralları (özet; tam metin ön kayıtta):** çatı diskleri ort. engel≥0,50
+  VE zemin≤0,30 → "çatı döndü"; K0_ft ≥ 0,5×K0_v34 yoksa TAKAS; 67 karede kaplama
+  İKİ PAYDAYLA raporlanır. Üç sonuç senaryosunun hangi seçeneği kazandıracağı
+  önceden yazılı; eşik gevşetilmez.
+- **Kapı durumu (bu commit anında):** 15/15 OK (CPU) · discover CPU'da 655/659
+  (4 test `test_gercek_arena_kapisi.setUpClass` GPU ister; eğitim GPU'yu
+  kullandığından CUDA gizlenerek koşuldu — kod kusuru değil, koşum kısıtı).
+  TAM 659 kapısı eğitim bitince, nihai kayıttan önce koşulacak.
