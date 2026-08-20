@@ -11,8 +11,8 @@
 |---|---|---|---|---|
 | 1 | **Claude 1** (Opus 5) | Başmimar, araştırmacı, denetçi | Kullanıcı | `CLAUDE.md` |
 | 1b | **Claude 2** (**Fable 5**, 2026-08-20 → 09-20) | **Başamele** (üretim kodu) **+ mimarın denetçisi** | Claude 1 (iş) · Kullanıcı (itiraz) | `CLAUDE2_WORKER.md` |
-| 2 | **Codex 1** | Amele kodlayıcı | Claude 1 | `CODEX_WORKERS.md` |
-| 3 | **Codex 2** | Amele kodlayıcı (Codex 1 ile **eş yetkili yedek**) | Claude 1 | `CODEX_WORKERS.md` |
+| 2 | **Codex 1** | Amele kodlayıcı | **Claude 2 / Fable 5** (2026-08-20'den itibaren) | `CODEX_WORKERS.md` |
+| 3 | **Codex 2** | Amele kodlayıcı (Codex 1 ile **eş yetkili yedek**) | **Claude 2 / Fable 5** | `CODEX_WORKERS.md` |
 | 4 | **gpt-oss-120b** MXFP4 (yerel) | Red team, debugger, insan raporlayıcı | Claude 1 | `REDTEAM.md` |
 | 5 | **Qwen3-Coder-Next Q6_K** (yerel) | Temizlik ve refactoring | Claude 1 | `QWEN_CLEANUP.md` |
 | 7 | Gemini 3.6 Flash | — | **Kullanıcı (manuel)** | bu protokolün dışında |
@@ -215,3 +215,63 @@ iyiyim" de kanıt değildir. Hüküm ölçümündür.
 İtiraz `REVIEW_LOG.md`'ye **her hâlde** kaydedilir — kabul edilse de reddedilse de.
 Kabul edilen itiraz görev açar; reddedilen itirazın gerekçesi bir sonraki itirazın zeminidir.
 **Kaydedilmeyen itiraz tekrar eder.**
+
+---
+
+## 9. Üç kademeli hiyerarşi (2026-08-20, kullanıcı kararı)
+
+```
+        Claude 1 (mimar)          karar · mimari · denetim · insan görevi
+             │  ne yapılacak
+             ▼
+   Claude 2 / Fable 5 (başamele)  iş bölme · üretim kodu · Codex'e prompt
+             │  nasıl yapılacak
+             ▼
+        Codex 1 / Codex 2         parça iş
+```
+
+### 9.1 Kim kime prompt yazar
+- Mimar **Codex'e doğrudan prompt yazmaz.** Fable 5'e **ne** istediğini söyler.
+- Fable 5 işi böler, Codex'e **yapıştırılabilir** prompt üretir (`CODEX_WORKERS.md` disiplini geçerlidir).
+- Codex çıktısını **Fable 5** toplar; mimara **tek elden** rapor gider.
+
+### 9.2 🔴 YETKİ DEVRİ, KARAR DEVRİ DEĞİLDİR
+Fable 5'e devredilen şey **iş dağıtımıdır**. Devredilmeyenler — bunlar mimarda kalır:
+
+| Karar | Neden mimarda |
+|---|---|
+| Eşik değiştirme / kapıya çevirme | Bu projede kör sıkılaştırma dört kez patladı |
+| Üretim modeli terfisi | Seçim **insanındır** (D-133); mimar sıralar |
+| Mimari değişmezler (madde 15/16) | Anayasa |
+| **İnsan görevi açmak** | Madde 9 tekeli — Fable 5 **brifing verir**, görev açmaz |
+| Görev kapatma (`[x]`) | Denetim mimarın |
+
+Fable 5 bunlardan birine ihtiyaç duyarsa **önerir ve bekler**; kendi başına uygulamaz.
+Aciliyet gerekçe değildir.
+
+### 9.3 Denetim zinciri — kimse kendi işini onaylamaz
+```
+Codex yazar      ->  Fable 5 denetler   (Fable 5 yazmadı: bağımsız)
+Fable 5 yazar    ->  mimar denetler
+mimar yazar      ->  Fable 5 denetler   (madde 19, YUKARI yön)
+```
+Bu zincir **kapalıdır**: her üretimin, onu üretmeyen bir denetleyicisi vardır.
+⚠ Fable 5 Codex'e yazdırdığı kodu denetleyebilir; **kendi yazdığını denetleyemez.**
+Bir görevin bir kısmını kendi yazıp kalanını Codex'e verdiyse, **kendi yazdığı kısım
+mimara gider.**
+
+### 9.4 Kilit ve çakışma — artık Fable 5'in sorumluluğu
+- Kuyruk **tektir**, kilit **tektir** (§3 aynen geçerli).
+- İki amele aynı dosyaya **aynı anda** yazamaz. Fable 5 görev dağıtırken bunu gözetir;
+  aynı dosyaya dokunan görevleri **ardışık** verir.
+- Codex'e verilen her görev kuyrukta `[IN_PROGRESS: Codex-1]` biçiminde görünür —
+  Fable 5 kendi adına kilitleyip Codex'e devretmez.
+
+### 9.5 Defter zorunluluğu — "kim ne yaptı" hatırlanmaz, YAZILIR
+Her görevin altına, kapanışta:
+
+    - **Yazan:** <ajan> · **Denetleyen:** <ajan> · **Kapı çıktısı:** <komut + sonuç>
+
+Bu satır **zorunludur**. Gerekçesi ölçülmüştür: mimar bir turda görev yazarlarını
+yanlış hatırladı (D-194 §1) ve iki gün önce kendi koşturduğu eğitimi unutup yeniden
+istedi (D-200 §2). Üç kademede bu risk **artar**, azalmaz.

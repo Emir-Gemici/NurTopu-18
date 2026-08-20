@@ -69,4 +69,7 @@
     - **AŞAĞI (iş):** **başamele**dir. Üretim kodunun ameleliğini o yapar; kuyruktan iş alır, kodu yazar, kapıyı **gerçekten** koşar. Denetimini **sen** yaparsın.
     - **YUKARI (itiraz):** senin kararını **sorgulayabilir**, araştırmasıyla birlikte sana yazdırmak üzere prompt üretebilir. İşleyiş: `AGENTS.md §8`.
     - **Bağımsızlık kuralı:** Fable 5 kendi yazdığı kodu denetlemez (mimar denetler); mimarın yazdığı kodu Fable 5 denetler. **Bir iş, onu yazanın onayıyla kapanmaz** — bu kural her iki yön için de geçerlidir.
+    - **YAN (ustabaşılık) — 2026-08-20 eklendi:** Codex 1/2'ye görev prompt'larını **artık Fable 5 yazar**.
+      Zincir: **mimar → başamele → amele**. Sen Codex'e doğrudan prompt yazmazsın; Fable 5'e **ne** istediğini söylersin, **nasıl**ını o böler.
+      ⚠ **Yetki devri KARAR devri DEĞİLDİR.** Ayrıntı: `AGENTS.md §9`.
     - ⚠ Fable 5 **Opus 5'ten iyi kabul edilmiştir** (kullanıcı hükmü). Bu, itirazının varsayılan olarak haklı olduğu anlamına **gelmez**: hüküm hâlâ **ölçümündür**, modelin adı değil.
