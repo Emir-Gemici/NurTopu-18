@@ -18414,3 +18414,98 @@ t122ac (a)+(c)                 0,455   <- gercege EN YAKIN (hafif muhafazakar)
   poligonları çıkarıldı. ⚠ D-240'ın ölçümü bu hatadan ETKİLENMEDİ — orada
   `engel71` zaten sınıf-1 ile birleştirilmişti. Ders yine aynı: aracı
   kontrol etmeden çıktısına inanma (T95 sınıfı, bu turda üçüncü kez).
+
+---
+
+### D-242 · ⚖ MİMAR DENETİMİ · T120 GEÇTİ (iki mutasyonla) · T122 kazananının HER SAYISI bağımsız yeniden üretildi — ama seçim kanıtı ALAN-İÇİ, ve bu terfi kararının EKSENİDİR
+Tarih: 2026-08-20 · Denetleyen: Claude 1 (mimar) · Denetlenen: T120 (`0c2413f`'e kadar) ve D-237/D-238 (T122)
+Kapılar mimar tarafından koşuldu: **702 OK · 15/15 · `codes/`+`config/` temiz**
+⚠ **Aynı model uyarısı geçerli** (madde 19): aşağıdaki uyuşma "iki taraf anlaştı" diye kanıt sayılmaz; kanıt, **komutları yeniden koşup aynı sayıyı almam**dır.
+
+#### 1. T120 — İKİ MUTASYONLA SINANDI, İKİSİNDE DE DÜŞTÜ
+
+    (1) tests/ altina SIFIR test toplayan bos dosya kondu
+        dosya: 1/13 dustu   ·   takim: 1/702 dustu     ✔ kapi tutuyor
+    (2) muaf dosyadan `KOSUM:` satiri silindi
+        dosya: 1/13 dustu                              ✔ muafiyetin DISI var
+    ikisi de geri alindi · git status tests/ BOS
+
+`tests/test_costmap_on_images.py` **6 gerçek test topluyor** — birinci şık
+(gerçek TestCase'e çevir) uygulanmış, tercih edilen buydu.
+
+🔴 **Emrimin ötesinde bir tasarım kararı var ve doğru:** muafiyet **iki** işaret
+istiyor — gerekçe **ve** `KOŞUM:` satırı. Ben yalnız gerekçe istemiştim.
+Koşulamayan bir "muaf" dosya, muafiyetin arkasına saklanmış **ölü kapı** olurdu;
+`KOŞUM` şartı bunu kapatıyor. Muafiyet listesi elle değil, dosyanın kendi
+docstring'inden **türetiliyor** (T104 kalıbı, yeni kalıp icat edilmemiş).
+
+#### 2. T122 KAZANANI — HER SAYIYI KENDİM YENİDEN ÜRETTİM
+
+Disk sondası (kendi betiğimle, aynı zincir, **taban aynı koşumda**):
+
+    model@0.30              cati->zemin  cati->engel  zemin->zemin
+    t122ac (KAZANAN)           0,001        0,991        0,932
+    t122a                      0,001        0,016        0,913
+    v34 (URETIM)               0,990        0,011        0,961
+    v30                        0,280        0,688        0,960
+
+Altı çatı türünün altısında da t122ac ≥ **0,971**. Amelenin tablosuyla
+**birebir** (0,991 / 0,001).
+
+Resmi kabul zinciri (canlı `65_kabul_denetcisi`, kendi koşumum):
+
+    K0 GECTI  figur %1,55 (taban %0,49 · oran 3,17)  🔴 DIKKAT: >2,0 TEHLIKELI yon
+    K1 GECTI  257/260   ·  K2 GECTI 16/257  ·  K3 GECTI 1/257  ·  K4 GECTI 0/257
+    K5 OLCULEMEDI       ·  VERDIKT: URETIME ALINMAZ (yalniz K5 blokluyor)
+
+Amelenin bildirdiği **her rakam** tuttu. Ölçüm yeniden üretilebilir.
+
+#### 3. 🔴 TERFİ KARARININ EKSENİ — SEÇİM KANITI ALAN-İÇİ
+
+Kazanan, **etiketi düzeltilen 67 karenin kendisi üzerinde** seçildi; o karelerin
+56'sı eğitim kümesindedir. Yani "67/67 red → **0**" satırı bir **genelleme
+kanıtı değildir.** Bunu D-225 §4'te t121_ft için yazmıştım; t122ac için **daha
+güçlü** geçerlidir çünkü küme hem düzeltildi hem seçim ölçütü oldu.
+
+Ameleni̇n kendi dürüst notu da bunu destekliyor: "0 red" mekanizması
+**kaplama tavanının artık aşılmaması**dır, "algı iyileşti"nin kanıtı değil.
+Bağımsız kanıt, çatı kaçağının **%96 → %2** düşmesidir — o ayrı ve gerçek.
+
+**T111 duvarı hâlâ ayakta ve bu kararı doğrudan etkiliyor:** alan dışı,
+etiketli bir doğrulama kümemiz **yok**. DJI Neo çekimi bu duvarı yıkacak tek
+şeydir; **çekim gelmeden yapılacak her terfi, kendi eğitim dağılımında seçilmiş
+bir model demektir.**
+
+#### 4. İZLENECEK İKİ YÖN (ikisi de eşiğin altında, ikisi de gerçek)
+
+    K3 agir basma  : v34 0/258 · t121_ft 0/259 · t122ac 1/257   (tavan %3; %0,4)
+    zemin->zemin   : v34 0,961 · t122ac 0,932                   (-2,9 puan yetenek)
+    K0 sapma yonu  : v34 0,30x (az zemin) · t122ac 3,17x (COK zemin) -> TEHLIKELI yon
+
+K0'ın 3,17'si denetçinin **tehlikeli yön** uyarısını tetikledi; amele kuralı
+uygulayıp K2/K3'e ayrıca baktı (%6,2 ve %0,4 — tavan altı). Doğru işlem.
+Ama yön kayda geçmeli: v34 **az** zemin görüyordu, t122ac **çok** görüyor.
+D-240'ın ölçümü (gerçek otopark **%47–52** sürülebilir) t122ac'nin 0,455'ini
+**gerçeğe yakın** kılıyor; figürdeki 3,17 ise **başka bir görüntüde** ölçülüyor
+ve orada doğru olup olmadığı **bilinmiyor**.
+
+#### 5. SIRALAMA (mimar sıralar, **seçim insanındır** — D-133)
+
+  1. **t122ac** — ölçülebilir her kapıyı geçen **tek** aday; gerçek karelerde ilk
+     kez karar üretiyor (67 red → 0); çatı kaçağı %2. **Bedeli:** arena tarafında
+     hafif geri (K2 %6,2 vs v34 %4,65 · K3 %0,4 vs 0), yetenek −2,9 puan,
+     ve **seçimi alan-içi.**
+  2. **v34 (mevcut üretim)** — arena kapılarında en iyisi, ama elimizdeki **tek
+     gerçek görüntü kümesinin 67/67'sini reddediyor** ve çatıyı %96 kaçırıyor.
+  3. **v30** — çatıda orta (0,688), arena zayıf; yalnız **farklı hata yaptığı**
+     için yedek değeri var.
+
+⚠ **Hiçbiri şu an terfi edemez:** K5 üç adayda da `ÖLÇÜLEMEDİ` ve terfiyi
+doğru şekilde blokluyor (D-197/T125). K5'in tek kare üzerinde koşması ayrı bir
+kusurdur ve **terfiden önce** kapatılmalıdır.
+
+#### 6. DEFTER
+
+    Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
+    Kapı çıktısı: 702 OK · 15/15 · T120 iki mutasyon · T122 disk sondası ve
+    kabul zinciri MİMAR tarafından yeniden koşuldu, tüm sayılar tuttu

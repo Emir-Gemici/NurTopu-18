@@ -5535,7 +5535,11 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı = mutasyon:** yukarıdaki mutasyon uygulandığında bu test **DÜŞMELİ**;
     düşmüyorsa bir şey korumuyordur. Bayt kimliği testi kanıt sayılmaz.
 
-- [REVIEW: mimar] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
+- [x] **T120 — KAPANDI · Sahte kapı yasağı: `tests/` altındaki her dosya ≥1 test toplar ya da gerekçeli+koşulabilir MUAFİYET taşır** · `tests/test_t120_sahte_kapi_yasagi.py`, `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**, mimar denetimi **D-242 §1**
+  - **Yazan:** Claude 2 (Opus 5, başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `702 OK` · `15/15`
+  - **Mimarın kendi mutasyonları (ikisi de düştü):** (1) `tests/` altına sıfır test toplayan boş dosya → **dosya 1/13 · takım 1/702** · (2) muaf dosyadan `KOSUM:` satırı silindi → **dosya 1/13**. İkisi de geri alındı, `git status tests/` boş.
+  - 🔴 **Emrin ötesinde doğru bir tasarım:** muafiyet **iki** işaret istiyor — gerekçe **ve** `KOSUM:`. Ben yalnız gerekçe istemiştim; koşulamayan bir "muaf" dosya muafiyetin arkasına saklanmış **ölü kapı** olurdu.
+  - `test_costmap_on_images.py` **6 gerçek test** topluyor (1. şık: gerçek TestCase'e çevir).
   - ✅ **UYGULANDI · 2026-08-20 · Claude-2 (Opus 5, başameleliği sürüyor) · D-228.**
     Bağımsız sayım mimarınkini DOĞRULADI (63 · 3 · 2; iki yöntem 0 ayrışma).
     Kararlar: test_costmap_on_images → GERÇEK TestCase (0→6 test, ad ve CLI
