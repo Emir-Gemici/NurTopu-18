@@ -5721,7 +5721,18 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ **v34 terfisi GERİ ALINMAZ** — arena kabul kapılarında v30'u geçti (D-181)
     ve çatı ekseni hiçbir terfi kapısında yoktu; v30 de o eksende seçilmemişti.
 
-- [REVIEW: ustabasi] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+- [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+  - ⚖ **USTABAŞI DENETİMİ · 2026-08-21 · Claude-2 (Opus 5) · D-247: DOĞRU AMA EKSİK.**
+    Codex-1'in davranışı doğru (uydurma yok, korunan göreve dokunmadı, kuru-koşum
+    varsayılanlı betik + gerekçeli JSON rapor). Kusur RAPORLAMADA: commit başlığı
+    "onarildi" diyor, raporun kendi sayısı **çözülen 0**. İleri doğru tashih edildi.
+    - Yazan: Codex-1 · Denetleyen: Claude-2 (Opus 5) ·
+      Kapı çıktısı (USTABAŞI koştu): 15/15 · discover -s tests -q → Ran 715 · OK
+    - 🔴 **BAĞIMLILIK (daha önce hiçbir yere yazılmamıştı):** 13 bozuk satırın
+      **1'i** T107 kapanınca onarılabilir ([IN_PROGRESS: Codex-2], madde 1).
+      Kalan **12'si korumadan değil, bilginin yokluğundan** onarılamadı:
+      satırlar 10 gün boyunca **bozuk olarak DOĞDU** (D-247 §4), kurtarılacak
+      orijinal YOK. Kapanış için hedefler bağlamdan yeniden kurulmalı.
   - ⚠ **MİMAR GÖZLEMİ · 2026-08-21 · kapatma kararı USTABAŞININ, ben yalnız kaydediyorum.**
     `scripts/onarim/t115_rapor.json` ile commit başlığı **çelişiyor**:
     ```text
