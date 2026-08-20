@@ -1,0 +1,511 @@
+{
+ "n_kare": 55,
+ "golge_bitisiklik_px": 25,
+ "KAZANC": {
+  "temel_cati_kacak_ort": 0.3731,
+  "duzeltilmis_cati_kacak_ort": 0.3722
+ },
+ "RISK": {
+  "temel_cati_disi_engel_ort": 0.1875,
+  "duzeltilmis_cati_disi_engel_ort": 0.1879,
+  "cati_disi_YENI_engel_ort": 0.0004
+ },
+ "not": "cati disi YENI engel, D-127'nin korumaya calistigi 'golgeli asfalt' kaybidir; kazanc bu maliyetle birlikte okunur.",
+ "kayitlar": [
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768",
+   "cati_px": 58615,
+   "TEMEL_cati_kacak": 0.3251,
+   "DUZELTILMIS_cati_kacak": 0.3251,
+   "TEMEL_cati_disi_engel_pay": 0.1776,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1777,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816",
+   "cati_px": 59300,
+   "TEMEL_cati_kacak": 0.3576,
+   "DUZELTILMIS_cati_kacak": 0.3576,
+   "TEMEL_cati_disi_engel_pay": 0.1604,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1604,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936",
+   "cati_px": 42891,
+   "TEMEL_cati_kacak": 0.504,
+   "DUZELTILMIS_cati_kacak": 0.504,
+   "TEMEL_cati_disi_engel_pay": 0.1557,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1557,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008",
+   "cati_px": 43042,
+   "TEMEL_cati_kacak": 0.51,
+   "DUZELTILMIS_cati_kacak": 0.51,
+   "TEMEL_cati_disi_engel_pay": 0.1359,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1359,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152",
+   "cati_px": 39731,
+   "TEMEL_cati_kacak": 0.5315,
+   "DUZELTILMIS_cati_kacak": 0.5315,
+   "TEMEL_cati_disi_engel_pay": 0.1514,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1514,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200",
+   "cati_px": 36513,
+   "TEMEL_cati_kacak": 0.4533,
+   "DUZELTILMIS_cati_kacak": 0.4533,
+   "TEMEL_cati_disi_engel_pay": 0.1612,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1612,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224",
+   "cati_px": 36909,
+   "TEMEL_cati_kacak": 0.439,
+   "DUZELTILMIS_cati_kacak": 0.439,
+   "TEMEL_cati_disi_engel_pay": 0.1735,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1736,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248",
+   "cati_px": 32913,
+   "TEMEL_cati_kacak": 0.4587,
+   "DUZELTILMIS_cati_kacak": 0.4587,
+   "TEMEL_cati_disi_engel_pay": 0.1827,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1828,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272",
+   "cati_px": 26114,
+   "TEMEL_cati_kacak": 0.4861,
+   "DUZELTILMIS_cati_kacak": 0.4861,
+   "TEMEL_cati_disi_engel_pay": 0.1855,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1855,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320",
+   "cati_px": 27073,
+   "TEMEL_cati_kacak": 0.4872,
+   "DUZELTILMIS_cati_kacak": 0.4872,
+   "TEMEL_cati_disi_engel_pay": 0.1773,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1773,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000",
+   "cati_px": 33878,
+   "TEMEL_cati_kacak": 0.3083,
+   "DUZELTILMIS_cati_kacak": 0.3083,
+   "TEMEL_cati_disi_engel_pay": 0.1793,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1793,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336",
+   "cati_px": 37840,
+   "TEMEL_cati_kacak": 0.2977,
+   "DUZELTILMIS_cati_kacak": 0.2977,
+   "TEMEL_cati_disi_engel_pay": 0.1813,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1813,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648",
+   "cati_px": 41339,
+   "TEMEL_cati_kacak": 0.2932,
+   "DUZELTILMIS_cati_kacak": 0.2932,
+   "TEMEL_cati_disi_engel_pay": 0.1878,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.188,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912",
+   "cati_px": 38326,
+   "TEMEL_cati_kacak": 0.2364,
+   "DUZELTILMIS_cati_kacak": 0.2364,
+   "TEMEL_cati_disi_engel_pay": 0.1832,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1832,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960",
+   "cati_px": 38151,
+   "TEMEL_cati_kacak": 0.2241,
+   "DUZELTILMIS_cati_kacak": 0.2241,
+   "TEMEL_cati_disi_engel_pay": 0.1654,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1654,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008",
+   "cati_px": 37754,
+   "TEMEL_cati_kacak": 0.2277,
+   "DUZELTILMIS_cati_kacak": 0.2277,
+   "TEMEL_cati_disi_engel_pay": 0.1618,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1618,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416",
+   "cati_px": 42315,
+   "TEMEL_cati_kacak": 0.4411,
+   "DUZELTILMIS_cati_kacak": 0.4411,
+   "TEMEL_cati_disi_engel_pay": 0.1907,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1908,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440",
+   "cati_px": 42138,
+   "TEMEL_cati_kacak": 0.4603,
+   "DUZELTILMIS_cati_kacak": 0.4603,
+   "TEMEL_cati_disi_engel_pay": 0.1884,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1884,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488",
+   "cati_px": 41297,
+   "TEMEL_cati_kacak": 0.4473,
+   "DUZELTILMIS_cati_kacak": 0.4473,
+   "TEMEL_cati_disi_engel_pay": 0.1759,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1759,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944",
+   "cati_px": 32504,
+   "TEMEL_cati_kacak": 0.2023,
+   "DUZELTILMIS_cati_kacak": 0.2023,
+   "TEMEL_cati_disi_engel_pay": 0.1967,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1972,
+   "cati_disi_YENI_engel_pay": 0.0005
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992",
+   "cati_px": 32492,
+   "TEMEL_cati_kacak": 0.2039,
+   "DUZELTILMIS_cati_kacak": 0.2039,
+   "TEMEL_cati_disi_engel_pay": 0.2099,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2102,
+   "cati_disi_YENI_engel_pay": 0.0003
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040",
+   "cati_px": 25228,
+   "TEMEL_cati_kacak": 0.1875,
+   "DUZELTILMIS_cati_kacak": 0.1875,
+   "TEMEL_cati_disi_engel_pay": 0.2252,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.226,
+   "cati_disi_YENI_engel_pay": 0.0008
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088",
+   "cati_px": 9426,
+   "TEMEL_cati_kacak": 0.6934,
+   "DUZELTILMIS_cati_kacak": 0.6934,
+   "TEMEL_cati_disi_engel_pay": 0.2629,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2637,
+   "cati_disi_YENI_engel_pay": 0.0008
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112",
+   "cati_px": 6030,
+   "TEMEL_cati_kacak": 0.1804,
+   "DUZELTILMIS_cati_kacak": 0.1804,
+   "TEMEL_cati_disi_engel_pay": 0.2355,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2367,
+   "cati_disi_YENI_engel_pay": 0.0012
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000",
+   "cati_px": 34865,
+   "TEMEL_cati_kacak": 0.2203,
+   "DUZELTILMIS_cati_kacak": 0.2202,
+   "TEMEL_cati_disi_engel_pay": 0.2011,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2014,
+   "cati_disi_YENI_engel_pay": 0.0003
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168",
+   "cati_px": 37101,
+   "TEMEL_cati_kacak": 0.2299,
+   "DUZELTILMIS_cati_kacak": 0.2299,
+   "TEMEL_cati_disi_engel_pay": 0.1928,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1929,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192",
+   "cati_px": 37263,
+   "TEMEL_cati_kacak": 0.2297,
+   "DUZELTILMIS_cati_kacak": 0.2295,
+   "TEMEL_cati_disi_engel_pay": 0.1966,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1968,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240",
+   "cati_px": 39453,
+   "TEMEL_cati_kacak": 0.3566,
+   "DUZELTILMIS_cati_kacak": 0.3566,
+   "TEMEL_cati_disi_engel_pay": 0.1975,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1976,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264",
+   "cati_px": 40658,
+   "TEMEL_cati_kacak": 0.3732,
+   "DUZELTILMIS_cati_kacak": 0.3732,
+   "TEMEL_cati_disi_engel_pay": 0.1913,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1915,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288",
+   "cati_px": 40830,
+   "TEMEL_cati_kacak": 0.3761,
+   "DUZELTILMIS_cati_kacak": 0.3761,
+   "TEMEL_cati_disi_engel_pay": 0.1958,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1961,
+   "cati_disi_YENI_engel_pay": 0.0003
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336",
+   "cati_px": 42255,
+   "TEMEL_cati_kacak": 0.3206,
+   "DUZELTILMIS_cati_kacak": 0.3206,
+   "TEMEL_cati_disi_engel_pay": 0.1893,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1894,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384",
+   "cati_px": 42429,
+   "TEMEL_cati_kacak": 0.3275,
+   "DUZELTILMIS_cati_kacak": 0.3275,
+   "TEMEL_cati_disi_engel_pay": 0.1857,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1859,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432",
+   "cati_px": 42608,
+   "TEMEL_cati_kacak": 0.3274,
+   "DUZELTILMIS_cati_kacak": 0.3274,
+   "TEMEL_cati_disi_engel_pay": 0.1777,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1778,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480",
+   "cati_px": 42728,
+   "TEMEL_cati_kacak": 0.3137,
+   "DUZELTILMIS_cati_kacak": 0.3137,
+   "TEMEL_cati_disi_engel_pay": 0.1806,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1808,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504",
+   "cati_px": 48022,
+   "TEMEL_cati_kacak": 0.3296,
+   "DUZELTILMIS_cati_kacak": 0.3296,
+   "TEMEL_cati_disi_engel_pay": 0.1719,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.172,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600",
+   "cati_px": 47472,
+   "TEMEL_cati_kacak": 0.3308,
+   "DUZELTILMIS_cati_kacak": 0.3308,
+   "TEMEL_cati_disi_engel_pay": 0.152,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1522,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624",
+   "cati_px": 46894,
+   "TEMEL_cati_kacak": 0.3283,
+   "DUZELTILMIS_cati_kacak": 0.3283,
+   "TEMEL_cati_disi_engel_pay": 0.1579,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1579,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648",
+   "cati_px": 39499,
+   "TEMEL_cati_kacak": 0.3514,
+   "DUZELTILMIS_cati_kacak": 0.3514,
+   "TEMEL_cati_disi_engel_pay": 0.2012,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2012,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672",
+   "cati_px": 39045,
+   "TEMEL_cati_kacak": 0.3653,
+   "DUZELTILMIS_cati_kacak": 0.3653,
+   "TEMEL_cati_disi_engel_pay": 0.2152,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2152,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696",
+   "cati_px": 38655,
+   "TEMEL_cati_kacak": 0.3662,
+   "DUZELTILMIS_cati_kacak": 0.3662,
+   "TEMEL_cati_disi_engel_pay": 0.2281,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2285,
+   "cati_disi_YENI_engel_pay": 0.0004
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720",
+   "cati_px": 36048,
+   "TEMEL_cati_kacak": 0.2409,
+   "DUZELTILMIS_cati_kacak": 0.2405,
+   "TEMEL_cati_disi_engel_pay": 0.2119,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2121,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792",
+   "cati_px": 30942,
+   "TEMEL_cati_kacak": 0.2553,
+   "DUZELTILMIS_cati_kacak": 0.2534,
+   "TEMEL_cati_disi_engel_pay": 0.2132,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2134,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840",
+   "cati_px": 26492,
+   "TEMEL_cati_kacak": 0.2488,
+   "DUZELTILMIS_cati_kacak": 0.2488,
+   "TEMEL_cati_disi_engel_pay": 0.2226,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2227,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888",
+   "cati_px": 32181,
+   "TEMEL_cati_kacak": 0.4679,
+   "DUZELTILMIS_cati_kacak": 0.4676,
+   "TEMEL_cati_disi_engel_pay": 0.2106,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2108,
+   "cati_disi_YENI_engel_pay": 0.0002
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936",
+   "cati_px": 35188,
+   "TEMEL_cati_kacak": 0.5581,
+   "DUZELTILMIS_cati_kacak": 0.5581,
+   "TEMEL_cati_disi_engel_pay": 0.2119,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.212,
+   "cati_disi_YENI_engel_pay": 0.0001
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984",
+   "cati_px": 32064,
+   "TEMEL_cati_kacak": 0.5649,
+   "DUZELTILMIS_cati_kacak": 0.5644,
+   "TEMEL_cati_disi_engel_pay": 0.2193,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2196,
+   "cati_disi_YENI_engel_pay": 0.0003
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032",
+   "cati_px": 39921,
+   "TEMEL_cati_kacak": 0.5508,
+   "DUZELTILMIS_cati_kacak": 0.5508,
+   "TEMEL_cati_disi_engel_pay": 0.2154,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2161,
+   "cati_disi_YENI_engel_pay": 0.0007
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080",
+   "cati_px": 45892,
+   "TEMEL_cati_kacak": 0.512,
+   "DUZELTILMIS_cati_kacak": 0.512,
+   "TEMEL_cati_disi_engel_pay": 0.2126,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2126,
+   "cati_disi_YENI_engel_pay": 0.0
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104",
+   "cati_px": 44502,
+   "TEMEL_cati_kacak": 0.4833,
+   "DUZELTILMIS_cati_kacak": 0.4831,
+   "TEMEL_cati_disi_engel_pay": 0.2212,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.2223,
+   "cati_disi_YENI_engel_pay": 0.0011
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248",
+   "cati_px": 41041,
+   "TEMEL_cati_kacak": 0.3922,
+   "DUZELTILMIS_cati_kacak": 0.3896,
+   "TEMEL_cati_disi_engel_pay": 0.1746,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1783,
+   "cati_disi_YENI_engel_pay": 0.0037
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296",
+   "cati_px": 40455,
+   "TEMEL_cati_kacak": 0.3931,
+   "DUZELTILMIS_cati_kacak": 0.3872,
+   "TEMEL_cati_disi_engel_pay": 0.1612,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.166,
+   "cati_disi_YENI_engel_pay": 0.0048
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320",
+   "cati_px": 40184,
+   "TEMEL_cati_kacak": 0.4021,
+   "DUZELTILMIS_cati_kacak": 0.3999,
+   "TEMEL_cati_disi_engel_pay": 0.1388,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1418,
+   "cati_disi_YENI_engel_pay": 0.003
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344",
+   "cati_px": 59319,
+   "TEMEL_cati_kacak": 0.4843,
+   "DUZELTILMIS_cati_kacak": 0.4665,
+   "TEMEL_cati_disi_engel_pay": 0.1224,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1242,
+   "cati_disi_YENI_engel_pay": 0.0018
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000",
+   "cati_px": 65868,
+   "TEMEL_cati_kacak": 0.4233,
+   "DUZELTILMIS_cati_kacak": 0.4083,
+   "TEMEL_cati_disi_engel_pay": 0.1552,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1568,
+   "cati_disi_YENI_engel_pay": 0.0016
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456",
+   "cati_px": 42657,
+   "TEMEL_cati_kacak": 0.4399,
+   "DUZELTILMIS_cati_kacak": 0.4379,
+   "TEMEL_cati_disi_engel_pay": 0.1801,
+   "DUZELTILMIS_cati_disi_engel_pay": 0.1803,
+   "cati_disi_YENI_engel_pay": 0.0002
+  }
+ ]
+}

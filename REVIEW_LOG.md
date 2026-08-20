@@ -18062,3 +18062,49 @@ TEMIZ val ornegi            : 0
   t121_ft ve şu an koşan T122-A/AC dâhil **bu karışımla eğitilmiş her model**
   bu bileşende kirli val görmüştür. Karışımdaki payı küçüktür (448/~7000)
   ama T122 kıyas kaydında sınır olarak yazılacak.
+
+---
+
+### D-234 · 🔎 T122 · "71'in gölge istisnası düzeltilirse çatı kaçağı kapanır" HİPOTEZİM KURULDU ve ÖLÇÜMLE DÜŞTÜ — gerçek mekanizma: OLUKLU SAC ÇATI, klasik kurallara ASFALTIN AYNISI görünüyor
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-20 · Betik (aynalı): `110_t122_golge_kurali_denemesi.py` · Ham:
+  `results/t122/golge_kurali.json` + `golge_kurali.png`.
+  **71 DEĞİŞTİRİLMEDİ** — etiket kuralı değişikliği mimarın (§9.2).
+- **Hipotez (D-232 §4'te ÖNERİ olarak yazmıştım):** 71'in çatı kaçağı, "mavi
+  yönde sapan gölge zemindir" istisnasından geliyor; gölge kurtarması yalnız
+  açık alana uygulanırsa (yapıya bitişik gölge engel sayılırsa) kaçak kapanır.
+- **KURULDU VE DÜŞTÜ — iki yönlü ölçüm (55 kare, aynı yer gerçeği):**
+```
+KAZANC : cati kacagi  0,3731 -> 0,3722   (0,1 puan — fiilen SIFIR)
+RISK   : cati disi YENI engel  +0,0004   (zarar da yok)
+```
+  Kural neredeyse hiçbir pikseli değiştirmedi → **kaçak gölge kaynaklı DEĞİL.**
+  (Not: buradaki taban 0,373, D-232'deki 0,494'ten düşük çünkü bu ölçüm araç
+  katmanını dışarıda bırakır — iki varyant da aynı şekilde kurulduğu için
+  kural değişikliği YALITILMIŞTIR.)
+- **[SONUC-DEGISTIREN] GERÇEK MEKANİZMA (kaçan piksellerin ölçülen özellikleri,
+  n≈6000 örnek, 20 kare):**
+```
+L (parlaklik)  medyan 134   ·  YAPI kurali esigi  L > 205   -> KACIYOR
+yerel varyans  medyan 336   ·  YAPI kurali tavani < 90      -> KACIYOR (DOKULU!)
+b - b0         medyan +3,0  ·  BITKI esigi 12, mavi degil   -> KACIYOR
+|a - a0|       medyan  3,0  ·  akromatik                    -> KACIYOR
+kiyas: TUTULAN cati pikselleri L medyan 219 (parlak yamac)
+```
+  Yani kaçan bölge **orta-koyu, YÜKSEK DOKULU, akromatik** — 71'in üç
+  kuralına göre **asfaltın tanımı budur**. Kaynak: oluklu sac çatının
+  nervürleri yerel varyansı asfalt seviyesine çıkarıyor; gri tonu da
+  parlaklık ve kroma testlerini geçiyor.
+- **HÜKÜM:** 71'in klasik kuralları (parlaklık + düzlük + kroma) **oluklu
+  çatıyı asfalttan AYIRAMAZ**; bu bir parametre ayarı sorunu değil, ölçütün
+  ayırt edici olmadığı bir durum. Ayırt etmek için ya geometri/örüntü
+  (nervür periyodu, bina dikdörtgenliği koyu bileşenlere de uygulanmalı) ya
+  da öğrenilmiş bir kâhin gerekir. Ölçülen gerçek: öğrenilmiş kâhin
+  **`aday_v5c` bu ayrımı yapıyor (%12 kaçak, D-232)**.
+- **T122 önerisine etkisi:** "71'i düzelt" yolu bu turda KAPANDI (parametre
+  ayarıyla değil, ölçüt değişikliğiyle açılabilir — ayrı iş). Otomatik hat
+  önerisi **v5c-tabanlı** kalır; 71 bitki/araç kanıtı olarak değerlidir,
+  çatı kanıtı olarak DEĞİLDİR.
+- ⚠ **Kendi önerimi çürüttüm:** D-232 §4'teki gölge önerisi bu kayıtla
+  DÜŞMÜŞTÜR; mimar o öneriye göre iş açmasın.
