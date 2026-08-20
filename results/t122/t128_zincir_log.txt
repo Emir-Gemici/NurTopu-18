@@ -1,0 +1,5 @@
+== T128/1: t122ac tohum 42 ==
+T122AC_TOHUM42_BITTI exit=0
+== T128/2: kabul zinciri ==
+KABUL_BITTI exit=0
+ZINCIR TAMAM

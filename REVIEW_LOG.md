@@ -19075,3 +19075,49 @@ C_COZULEMEZ       0
 - ⚠ Onarımı **ben yapmıyorum**: T115 Codex-1'in zimmetinde ve denetleyeni
   benim. Kendi yazdığımı denetleyemem (madde 19 / §9.3). Genişletilmiş kural
   Codex'e görev emri olarak verildi.
+
+---
+
+### D-251 · 🔴 T128 · `--tohum` BU REÇETEDE ETKİSİZ: tohum 0 ile 42 **bit-eş ağırlık** üretti (537/537 tensör aynı, 40/40 epoch aynı). D-135'in sorusu bu kolla ÖLÇÜLEMEZ
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-21 · Ön kayıt: `results/t128_on_kayit.md` (koşumdan önce yazıldı).
+  Ham: `results/t122/ft_ac_tohum42_log.txt`, `t128_kabul_tohum42.txt`.
+- **Ne yapıldı:** t122ac reçetesi **birebir aynı** veriyle, yalnız `seed 0 → 42`
+  değiştirilerek yeniden koşuldu (40 epoch, 1,18 saat).
+- **ÖLÇÜM — dört düzeyde de FARK YOK:**
+```
+args.yaml            : seed 0  vs  seed 42        (tohum GERCEKTEN degisti)
+egitim egrisi        : 40/40 epoch satiri AYNI (ilk seg_loss 1.42012 = 1.42012)
+agirlik tensorleri   : 537/537 AYNI · en buyuk mutlak fark 0.0
+kabul zinciri        : K0 figur 0.015521439953062066 (BIT-ES) · K1 257/260 ·
+                       K2 16/257 · K3 1/257 · K4 0/257 · K5 0/172 — hepsi AYNI
+```
+  ⚠ `best.pt` sha256'ları farklı çıkıyor ama bu **meta veriden** (tarih, koşum
+  adı, train_args); parametreler birebir aynı. sha farkı "model farklı" DEMEK
+  DEĞİLDİR — bu tuzağa düşmemek için tensörler tek tek kıyaslandı.
+- **MEKANİZMA (kaynak okundu, tahmin edilmedi):**
+  - `ultralytics/engine/trainer.py:135` → `init_seeds(self.args.seed + 1 + RANK, ...)`
+    genel RNG'leri tohumluyor (seed BURAYA ulaşıyor).
+  - 🔴 `ultralytics/data/build.py:359` → `generator.manual_seed(6148914691236517205 + RANK)`
+    — DataLoader karıştırma üreteci **SABİT bir sayıya** tohumlu, kullanıcı
+    tohumuna DEĞİL.
+  - `build.py:209` → epoch başına karıştırma `g.manual_seed(self.epoch)`,
+    yani **epoch numarasıyla**; `seed_worker` de bundan türüyor.
+  ⇒ Veri sırası ve artırma RNG'si `--seed`'den **bağımsızdır**. Sabit bir
+  kontrol noktasından ince ayar yapıldığı için rastgele başlatma da yoktur:
+  `deterministic=True` ile eğitim **bit-tekrarlanabilir** olur.
+- **ÖN KAYIT KURALLARININ DÜRÜST UYGULANMASI:** T128'in 1-3 numaralı kuralları
+  "tohum gürültüsü bandı" tanımlıyordu. Ölçülen bant **0**'dır. Kural 3
+  ("fark banttan büyükse GERÇEKTİR") bu durumda **uygulanamaz**: bant sıfır
+  olduğu için dejenere, ve "v34 ile t122ac arasındaki farklar gerçektir"
+  sonucu buradan **ÇIKARILAMAZ**. Bunu yazmıyorum.
+  ⇒ T128'in gerçek sonucu: **"bu kolla ÖLÇÜLEMEDİ"** (düştü değil, D-180).
+- **D-135 için anlamı:** "kararlar tek koşuyla verildi, ne kadarı tohum
+  gürültüsü?" sorusunun cevabı **bu reçetede tohum kolu için sıfırdır** — ama
+  bu "koşumdan koşuma değişkenlik yok" demek DEĞİLDİR; yalnızca `seed`
+  düğmesinin **atıl** olduğu ölçülmüştür.
+- **ÖNERİ (öner-bekle):** gerçek koşum-içi değişkenliği ölçmek için
+  DataLoader'ın tükettiği bir şeyin değişmesi gerekir — en temizi
+  `deterministic=False` ile bir koşum. Bu bir **ölçüm** koşumudur, üretim
+  reçetesi değişikliği değildir; ayrı ön kayıtla (T128-B) koşulacak.
