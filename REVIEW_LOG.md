@@ -18771,3 +18771,60 @@ Dört adayın dördü de artık **tam kabul zincirinden** geçebiliyor. T123'ün
 "iki üretim adayı" hedefi **ilk kez model kalitesiyle** değerlendirilebilir
 durumda — ölçüm zemini artık blokaj değil.
 ⚠ T111 duvarı **ayakta**: seçim kanıtı hâlâ alan-içi (D-242 §3).
+
+---
+
+### D-246 · ✅ T127 · Mimarın işaret ettiği eksende İLK KANIT: sıralama EĞİTİME HİÇ GİRMEMİŞ karelerde de korunuyor — t122ac'nin çatı kaçağı bakir karelerde %1,1 (v34: %97,6)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (⚠ aynı model — anlaşma kanıt değil) · 2026-08-21 · Betikler (aynalı):
+  `114_t127_bakir_kare_kumesi.py`, `115_t127_bakir_kiyas.py` · Ham:
+  `results/t127/` (maskeler, doğrulama sayfaları, kiyas.json/md).
+- **Neden:** D-242 §3 terfi kararının eksenini "**seçim kanıtı ALAN-İÇİ**"
+  olarak koydu. Alan-dışı etiketli küme yok (T111/D-198) — ama **eğitim-dışı**
+  gerçek kare VAR: 67 karenin **11'i** copy_paste üretimine hiç girmemiş
+  (manifest sebebi: `yeterli_guvenli_zemin_yok`).
+
+#### 1. BU KÜMENİN NE OLDUĞU — ve NE OLMADIĞI (önce sınırlar)
+- **YANLI ÖRNEKLEM:** kareler rastgele ayrılmadı; üreteç onları "yeterli
+  güvenli zemin yok" diye ELEDİ → sistematik olarak **daha zor** kareler.
+- **ALAN-DIŞI DEĞİL, EĞİTİM-DIŞI:** aynı saha, aynı oturum, komşu kareler.
+  Ölçüldü (pHash, en yakın eğitim karesine): **medyan 0,281**; 11'in 1'i
+  **0,094** (neredeyse aynı: `03/frame_000003` ↔ eğitimdeki `frame_000004`).
+  O kare ayrıca dışlanarak da hesaplandı — sonuç değişmedi.
+- Çatı yer gerçeği T121 çapalarından homografiyle taşındı (11/11, inlier
+  764-795). ⚠ İlk denemede çapa havuzu yalnız 23 elle çizim olduğu için iki
+  karede maske kaydı; havuz T121'in **56 doğrulanmış maskesine** genişletildi
+  (komşuluk 2→1) ve çapayla yan yana **gözle** doğrulandı (D-80).
+  Çapaların kendi küçük alt-taşması tüm modellere AYNI biner — kıyası bozmaz.
+
+#### 2. ÖLÇÜM (11 bakir kare, üretim zinciri conf 0,30)
+| ölçüt | v30 | **v34 ÜRETİM** | t121_ft (c) | **t122ac (a)+(c)** |
+|---|---|---|---|---|
+| çatı kaçağı | 0,261 | **0,976** | 0,175 | **0,011** |
+| çatı kaçağı (ikiz kare hariç, n=10) | 0,265 | 0,973 | 0,181 | 0,012 |
+| kaplama İÇERİK medyan | 0,535 | 0,781 | 0,704 | 0,420 |
+| zemin_maskesi_reddi | 0/11 | **11/11** | **11/11** | **0/11** |
+
+#### 3. 🔴 KARAR DEĞİŞTİREN OKUMA — EZBER DEĞİL
+Eğitim-içi (55 kare) ile bakir (11 kare) yan yana:
+```
+                cati kacagi        kaplama ICERIK
+model           egitim-ici  bakir  egitim-ici  bakir
+v34 URETIM        0,961     0,976     0,800    0,781
+t121_ft (c)       0,131     0,175     0,734    0,704
+t122ac (a)+(c)    0,020     0,011     0,455    0,420
+```
+Üç modelde de sayılar **aynı mertebede**; t122ac bakir karelerde **daha da
+iyi** (0,011 < 0,020). Yani t122ac'nin çatı üstünlüğü **eğitim karelerinin
+ezberi değildir** — hiç görmediği karelerde de duruyor.
+⚠ Bu **alan-dışı genelleme kanıtı DEĞİLDİR** (aynı saha/oturum). "Farklı bir
+otoparkta da çalışır" sorusu hâlâ **açıktır** ve ancak DJI verisiyle kapanır.
+
+#### 4. YAN GÖZLEM
+Bakir kareler daha zor olduğu hâlde v34 hâlâ 11/11 reddediyor ve çatının
+%97,6'sını kaçırıyor; t122ac 0/11 reddediyor. D-240'ın bağımsız gerçek
+tahminiyle (%47–52 sürülebilir) t122ac'nin 0,420'si tutarlı; v34'ün 0,781'i
+gerçeğin çok üstünde.
+- ⚠ Bu bir TERFİ ÖNERİSİ DEĞİLDİR. Seçim ve sevk **insanındır** (D-133);
+  ben ölçtüm ve mimarın koyduğu eksende yeni kanıt sundum.

@@ -1,0 +1,100 @@
+{
+ "n_bakir": 11,
+ "yontem_dagilimi": {
+  "HOMOGRAFI": 11
+ },
+ "sinirlar": [
+  "YANLI ORNEKLEM: ureteci 'yeterli guvenli zemin yok' diye eledi — sistematik olarak daha ZOR kareler",
+  "AYNI SAHA/OTURUM: alan-DISI degil EGITIM-DISI"
+ ],
+ "kayitlar": [
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "mesafe": 4,
+   "inlier": 574,
+   "cati_pay": 0.1076
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000001_000000600.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "mesafe": 3,
+   "inlier": 666,
+   "cati_pay": 0.0972
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000002_000000672.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "mesafe": 2,
+   "inlier": 773,
+   "cati_pay": 0.0986
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000003_000000720.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+   "mesafe": 1,
+   "inlier": 788,
+   "cati_pay": 0.0989
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000006_000000864.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+   "mesafe": 1,
+   "inlier": 791,
+   "cati_pay": 0.0892
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000009_000001776.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "mesafe": 1,
+   "inlier": 794,
+   "cati_pay": 0.0692
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000010_000001824.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+   "mesafe": 2,
+   "inlier": 764,
+   "cati_pay": 0.0694
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000011_000001848.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "mesafe": 2,
+   "inlier": 793,
+   "cati_pay": 0.055
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000012_000001872.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+   "mesafe": 1,
+   "inlier": 795,
+   "cati_pay": 0.0549
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000025_000001152.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+   "mesafe": 1,
+   "inlier": 791,
+   "cati_pay": 0.0704
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000026_000001200.jpg",
+   "yontem": "HOMOGRAFI",
+   "anahtar": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+   "mesafe": 1,
+   "inlier": 792,
+   "cati_pay": 0.0712
+  }
+ ]
+}
