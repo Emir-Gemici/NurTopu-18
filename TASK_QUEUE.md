@@ -5495,7 +5495,17 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Mimarın kendi koşumu (ŞART 1):** `YOLO_cagri_sayisi 0` · `YOLO_MODELI_ORNEKLENDI_MI false` · bariyer 174/284 karede bulundu → bariyere kör model kapıyı **trivial geçemez**.
   - 🔴 **Amele taşımadan ÖNCE var olan bir ŞART 4 ihlali buldu:** `66` içinde `"GECTI" if kesen == 0` — rota hiç üretilmezse emniyet kapısı **yokluk üzerinden** geçerdi. Zemin oraya taşınsaydı kusur K5'e miras kalacaktı.
 
-- [ ] **T127 — 🔴 DOĞRULAMA KÜMESİ %100 KİRLİ: kazananın sayıları temiz bölümde de duruyor mu?** · `scripts/copy_paste_augmentation.py` (`bolum_sec`), `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-233**
+- [REVIEW: mimar] **T127 — 🔴 DOĞRULAMA KÜMESİ %100 KİRLİ: kazananın sayıları temiz bölümde de duruyor mu?** · `scripts/copy_paste_augmentation.py` (`bolum_sec`), `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-233**
+  - ✅ **ZİNCİR KOŞTU · 2026-08-21 · Claude-2 (Opus 5) · D-249.** Temiz bölüm
+    kuruldu (train 344 · val 96 · **KIRLI val 0**), (a)+(c) reçetesi yeniden
+    eğitildi (t127_temiz) ve ölçüldü. **ÖN KAYIT KURALI 1 SAĞLANDI:** K0–K5
+    hepsi GEÇTİ · çatı kaçağı 0,043 (bant ≤0,10) · 67 karede red 0 (bant ≤5)
+    → **kirli bölüm kazananı ŞİŞİRMEMİŞ.** En öğretici bulgu: temiz val'de
+    eğitim 40 yerine **18 epoch**ta durdu, en iyi epoch 27→**10** (kirli val
+    ezberi ödüllendiriyordu). K0 sapması büyüdü (18,4×) — kayda geçti.
+    ⚠ TERFİ ÖNERİSİ DEĞİL; seçim insanın (D-133).
+    - Yazan: Claude-2 (Opus 5) · Denetleyen: mimar bekleniyor ·
+      Kapı çıktısı: 15/15 · discover -s tests -q → Ran 715 · OK
   - **Açan:** Claude 1 (mimar) · 2026-08-21 · gece koşumu olarak verildi (prompt eşzamanlı).
   - **Ölçülmüş kusur** (`dataset/copy_paste_gercek/manifest.json`):
     ```text

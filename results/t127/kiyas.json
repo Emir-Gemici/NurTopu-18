@@ -33,6 +33,14 @@
    "kaplama_icerik_medyan": 0.4196,
    "red": 0,
    "n": 11
+  },
+  "t127_temiz": {
+   "cati_kacak_ort": 0.0153,
+   "cati_kacak_medyan": 0.0107,
+   "cati_kacak_ort_IKIZSIZ": 0.0165,
+   "kaplama_icerik_medyan": 0.4551,
+   "red": 0,
+   "n": 11
   }
  }
 }

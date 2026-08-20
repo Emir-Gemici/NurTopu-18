@@ -1,0 +1,39 @@
+# T127 TEMIZ BOLUM — goruntuler t122ac ile AYNI, yalniz train/val
+# dagilimi kaynak duzeyinde (D-233 duzeltmesi). Diger bilesenler AYNEN.
+# T122 secenek (a)+(c) DARALT+CATI
+# copy_paste_gercek -> copy_paste_t127 (yalniz ETIKET degisti).
+# Kaynak: karisim_t54_engelli.yaml — diger iki bilesen AYNEN.
+# KARIŞIM v3 — T54 · "zemin değil → engel" EĞİTİM VERİSİNDE de geçerli
+#
+# NEDEN (REVIEW_LOG D-67, kodda doğrulandı):
+# `karisim_arena_gercek.yaml` RescueNet tarafında `rescuenet_yolo`'yu kullanıyor.
+# O küme `download_and_convert.py:72-83` ile üretilmiş ve YALNIZ road-clear(7)
+# ile road-blocked(8) sınıflarını alıyor; bina, ağaç, su, havuz ETİKETSİZ ARKA
+# PLANA düşüyor. Segmentasyonda etiketsiz arka plan DENETİM ALMAZ — modele
+# hiçbir yerde "çatı zemin DEĞİLDİR" denmiyor.
+#
+# Ölçülen sonuç: v21 ve v22 otoparkta bina çatısını GEÇİLEBİLİR sayıyor
+# (kaplama %80,6-%81,0, gözle doğrulandı). v17/v20 çökmüyor ama kör.
+#
+# Bu karışım RescueNet tarafını `rescuenet_2sinif_engelli` ile değiştirir:
+# 11 sınıflı etiketler 2 sınıfa "0 traversable -> 0, DİĞER HER ŞEY -> 1"
+# eşlemesiyle indirildi. Engel poligonu 850 -> 22.356 (26,3 kat).
+#
+# Diğer iki bileşen DEĞİŞMEDİ:
+#   sentetik_arena     — arena geometrisi (yer gerçeği kusursuz)
+#   copy_paste_t127  — GERÇEK DOKU; v21'in görme yeteneği buradan geliyor,
+#                        çıkarılırsa körlük geri döner (D-12/D-18 ölçümü).
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_t127\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_t127\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

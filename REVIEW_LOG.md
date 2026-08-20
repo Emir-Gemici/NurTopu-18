@@ -18954,3 +18954,86 @@ Mimarın üç sorusuna cevabım:
   olacağı **bilinmiyor** ve ancak Jetson+kamera ile ölçülür (T16/T17).
   ⚠ Bu, v34'ü rahatlatan bir sonuç DEĞİLDİR: aynı iyileşme diğer adaylarda da
   var ve aralarındaki fark duruyor.
+
+---
+
+### D-249 · ✅ T127 SONUÇ · ÖN KAYIT KURALI 1 SAĞLANDI: **temiz bölüm kazananı GEÇERLİ KILDI** — t122ac'nin sayıları kirli bölümden GELMİYOR. Ve temiz val'de eğitim 40 değil **18 epoch**ta durdu (en iyi epoch 27 → **10**)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-21.
+- **Ön kayıt:** `results/t127_on_kayit.md` (D-107; eğitim başlamadan yazıldı,
+  bantlar **gevşetilmedi**). Zincir tek betikti (`116_t127_temiz_bolum_zinciri.py`),
+  elle adım yok; günlük `results/t127_zincir_log.txt`.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py → 15/15` ·
+  `discover -s tests -q → Ran 715 · OK` (ustabaşı koştu, zincir öncesi/sonrası).
+
+#### 1. TEMİZ BÖLÜM (adım 1, fail-closed kapı geçildi)
+```
+ESKI : train 385 · val 55 · kaynagi egitimde de olan val 55/55  (%100 KIRLI)
+YENI : train 344 · val 96 · kaynagi egitimde de olan val  0/96  (TEMIZ)
+       ikiye bolunen kaynak 0 · val kaynak 12 · train kaynak 44
+```
+Görüntüler **yeniden üretilmedi**; yalnız varyantların bölümü değişti.
+Kirli çıksaydı zincir DURACAKTI (`ZINCIR DURDU`, fail-closed).
+Kapı: D-233'te yazılan `tests/test_t122_bolum_ayrimi.py` yeni kümeyi
+**otomatik** denetliyor (manifestli her küme ya TEMİZ ya listede) — 6/6 OK.
+
+#### 2. ÖN KAYIT KURALININ MEKANİK UYGULANMASI
+Kural 1'in dört şartı ve ölçülen değerler:
+| şart (ön kayıtta yazılı) | ölçülen | sonuç |
+|---|---|---|
+| K0..K5 **hepsi** GEÇTİ | K0 ✓ K1 ✓ K2 ✓ K3 ✓ K4 ✓ K5 ✓ → VERDİKT: ÜRETİME ALINIR | ✅ |
+| çatı kaçağı ≤ 0,10 | **0,0428** | ✅ |
+| K1 ≥ 230 · K2/K3/K4 tavan altı | 256/260 · 18/256 (%7,0) · 0/256 · 1/256 | ✅ |
+| 67 gerçek karede red ≤ 5 | **0** | ✅ |
+⇒ **"TEMİZ BÖLÜM KAZANANI GEÇERLİ KILDI"** (ön kayıt, kural 1).
+t122ac'nin sayıları **bölümün kirliliğinden gelmiyor**.
+
+#### 3. ÜÇ MODEL YAN YANA (mimarın istediği tablo)
+| ölçüt | **v34 ÜRETİM** | t122ac (kirli bölüm) | **t127_temiz (temiz bölüm)** |
+|---|---|---|---|
+| çatı kaçağı (55 kare) | 0,961 | 0,020 | **0,043** |
+| ÇATI DÖNDÜ? | HAYIR | EVET | **EVET** |
+| disk çatı→engel | 0,011 | 0,991 | 0,981 |
+| kaplama İÇERİK | 0,800 | 0,455 | **0,508** |
+| 67 gerçek karede red | 67 | 0 | **0** |
+| K1 | 258/260 | 257/260 | 256/260 |
+| K2 | 12/258 | 16/257 | 18/256 |
+| K3 | 0/258 | 1/257 | **0/256** |
+| K4 | 1/258 | 0/257 | 1/256 |
+| K5 (popülasyon) | GEÇTİ 0/172 | GEÇTİ 0/172 | GEÇTİ 0/173 |
+| figür zemin (K0) | 0,0083 (oran 1,01) | 0,0259 (3,17 ⚠) | **0,0903 (18,43 ⚠⚠)** |
+**BAKIR (eğitim dışı 11 kare):** çatı kaçağı v34 0,976 · t122ac 0,011 ·
+**t127_temiz 0,015** · kaplama 0,781 / 0,420 / **0,455** · red 11 / 0 / **0**.
+⇒ Sıralama her iki kümede de KORUNUYOR.
+
+#### 4. 🔴 EN ÖĞRETİCİ BULGU — TEMİZ VAL ERKEN DURDURDU
+```
+t122ac (KIRLI val) : 40 epoch kosuldu · en iyi epoch 27
+t127_temiz (TEMIZ) : 18 epoch kosuldu · en iyi epoch 10   (patience=15)
+```
+Aynı reçete, aynı görüntüler — **yalnız val kümesi dürüstleşti** ve model
+27 yerine **10.** epoch'ta en iyisine ulaştı, 18'de durdu. Bu, D-233'ün
+doğrudan sonucudur: kirli val, eğitim boyunca "iyileşme" göstermeye devam
+ediyordu çünkü **eğitim karelerinin ikizlerinde** ölçüyordu. Erken durma
+kirli val altında geç tetikleniyor; yani kirlilik yalnız sayıları değil
+**seçilen kontrol noktasını** da etkiliyordu.
+⚠ val mAP değerleri **KIYASLANAMAZ** (val kümeleri farklı — mimarın kısıtı);
+yukarıda yalnız *hangi epoch'ta durduğu* kıyaslanıyor, değeri değil.
+
+#### 5. DÜRÜST NOTLAR
+- **K0 sapması büyüdü:** t127_temiz figürde %9,03 zemin görüyor (üretim
+  tabanının **18,4 katı**) — denetçinin "TEHLİKELİ yön" uyarısı tetiklendi.
+  Kuralı uyguladım, K2/K3'e ayrıca bakıldı: %7,0 ve %0 (tavan altı) → kapı
+  geçti. Ama bu sapma t122ac'ninkinden (3,17×) belirgin büyük ve **kayda
+  geçiyor**. ⚠ D-229 zaten figür sinyalinin gürültü baskın olduğunu ölçtü.
+- **Küme küçülmesi karışıklığı (ön kayıtta soruldu):** copy_paste bileşeni
+  385→344 (−%10,6), ama toplam eğitim kümesi ~6587→~6546 (**−%0,6**). Çatı
+  kaçağının 0,020→0,043'e çıkması bu −%0,6 ile açıklanamaz; daha olası neden
+  **12 kaynak karenin (ve çatılarının) eğitimden tamamen çıkması**. Bu iki
+  etki n=1 koşumla **AYRILAMAZ** — ön kayıtta böyle yazılmıştı, öyle kalıyor.
+- **Bu bir TERFİ ÖNERİSİ DEĞİLDİR.** Seçim ve sevk insanındır (D-133).
+  Ölçüm şunu söyler: kirli bölüm kazananı **şişirmemiş**; t127_temiz aynı
+  mertebede ve kaplaması bağımsız gerçek tahminine (D-240: %47–52) **daha
+  yakın** (0,508).
+

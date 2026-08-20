@@ -1,0 +1,13 @@
+{
+ "kume": {
+  "train": 344,
+  "val": 96,
+  "val_ornegi": 96,
+  "KIRLI_val": 0,
+  "ikiye_bolunen_kaynak": 0,
+  "tohum": 20260802,
+  "val_oran": 0.15
+ },
+ "agirlik": "O:\\navitas\\codes\\runs\\segment\\t127_temiz\\weights\\best.pt",
+ "on_kayit": "results/t127_on_kayit.md"
+}
