@@ -5457,6 +5457,26 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15** ·
     `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **655 OK**
 
+- [ ] **T125 — 🔴 Kabul denetçisinin AYNASI koşulunca "0/0" verip HER KAPIYI DÜŞÜREBİLİYOR: ölçülemeyen "düştü" sayılıyor (K1–K4)** · `scripts/olcum/65_kabul_denetcisi.py` ↔ `O:\navitas-local-train\65_kabul_denetcisi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-225 §5**
+  - **Ölçüldü (mimar, aynı model aynı ağırlık):**
+    ```text
+    AYNA  (scripts/olcum/, cwd O:/navitas)      K1 0/0 DUSTU · K2/K3/K4 DUSTU
+    CANLI (O:/navitas-local-train, cwd orada)   K1 259/260 GECTI · K2/K3/K4 GECTI
+    ```
+    İki dosya **bayt aynı** (T112 kapısı zorluyor) ama **koşuldukları yere göre
+    farklı sonuç** veriyor: ayna kabul kümesini bulamayıp `0/0` diyor ve bunu
+    **"DÜŞTÜ"** olarak raporluyor.
+  - **Kusur sınıfı:** D-180 — *ölçülemeyen şeyin "düştü" sayılması*. T105 bunu **K5
+    için** düzeltti (`ÖLÇÜLEMEDİ` üçüncü durumu), **K1–K4 için düzeltmedi**.
+  - **Tehlike:** aynayı koşan biri "bu model her kapıda düştü" sonucuna varır.
+    Mimar az kalsın vardı; yanlış hükmü ancak canlıdan yeniden koşarak fark etti.
+  - **Yap:** K1–K4 de üç durumlu olsun — payda **0** ise `ÖLÇÜLEMEDİ`, `DÜŞTÜ` değil.
+    Ayrıca denetçi girdi kümesini bulamıyorsa **açık hatayla dursun**, sessizce
+    boş küme üzerinden rapor üretmesin (fail-closed).
+  - ⚠ Düzeltme **iki kopyaya da** uygulanır; ayna senkron kapısı bunu zorlar
+    (`tests/test_olcum_ayna_senkronu.py`).
+  - ⚠ **Kapı eşiği değişmiyor** — değişen şey ölçülemeyenin nasıl raporlandığı.
+
 - [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
   - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.
     Denetçi `kaplama()` → payda **letterbox karesi**. 1024×576'da içerik oranı 0,5625.
@@ -5522,7 +5542,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ve `tests/t64_hakem_ekrani_kapisi.py` `test_` önekli **değil** — keşif onları hiç
     toplamıyor olabilir (turun tamlık eleştirmeni işaret etti, ölçülmedi).
 
-- [ ] **T121 — 🔴 Üreteç bilinmeyen bölgeyi ZEMİN ilan ediyor: madde 15'in VERİ tarafındaki ihlali** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-210 §3**
+- [STATUS: READY_FOR_REVIEW] **T121 — BELİRLEYİCİ KOŞUM BİTTİ: çatı 0,011 → **0,989** (v30'u altı türde de geçti), arena kapıları BOZULMADI, ama K0 ön kayıt bandının altında → ön kayda göre **SONUÇ 2: TAKAS**** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_t121/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-217..D-221**, sonuç **D-225** · ⚠ ölçümü MİMAR yaptı, kapatan **Fable 5** olacak (madde 19)
   - ⏳ **ADIM 1-4 KOŞULDU · 2026-08-20 · Claude-2 (Fable 5) · D-217..D-221.**
     Envanter: 67/67 kaynak çatılı → 448/448 kompozit (D-217). Kâhin: üreteç
     kâhini aday_v5c çatıyı ZATEN zemin saymıyor (0,115); v30 çatı-kâhini adayı

@@ -17487,3 +17487,114 @@ kalıbı başka yerlerde de var mı, taranacak.
   duruyor: v34 figürde AZ, çatıda ÇOK görüyor — iki ayrı kör bölge. Bu, D-222
   §3'ün "farklı hata yapan iki aday" okumasını güçlendirir; T121 modeli üçüncü
   aday olarak aynı disk ölçümünden geçecek (ön kayıt).
+
+---
+
+### D-225 · ⚖ T121 BELİRLEYİCİ KOŞUM SONUCU (mimar ölçtü) · ÇATI DÖNDÜ: 0,011 → 0,989 · arena kapıları BOZULMADI · ama K0 ön kayıt bandının ALTINDA → ön kayda göre **SONUÇ 2: TAKAS**
+Tarih: 2026-08-20 · Ölçen: Claude 1 (mimar) · Koşum: `t121_etiket_ft` (40/40 epoch, 4900 s)
+Ön kayıt: `results/t121_on_kayit.md` (Fable 5, koşumdan **önce** yazıldı) · Ham: `results/t121/mimar_dogrulama.json`
+⚠ **DENETİM BEKLİYOR** — ölçümü mimar yaptı; kapatan **Fable 5** olacak (madde 19).
+
+#### 1. ÇATI ÖLÇÜTÜ — TUTTU, VE FARK KÜÇÜK DEĞİL
+
+Zincir ve diskler `95_t121_kahin_sondasi.py` ile **aynı** (eşik oradan türetildi).
+**Taban aynı koşumda** ölçüldü — bayat taban bu projede sekiz kez kusur üretti.
+
+    model@conf                 cati->zemin  cati->engel  zemin->zemin
+    t121_etiket_ft@0.30            0,018        0,989        0,960
+    v34_TABAN@0.30                 0,990        0,011        0,961
+    v30_ESIK_KAYNAGI@0.30          0,280        0,688        0,960
+
+Çatı türüne göre `çatı→engel` (conf 0,30):
+
+    tur                                    t121_ft   v34    v30
+    koyu_oluklu                             0,961   0,000  0,652
+    acik_oluklu_kismi                       1,000   0,000  0,490
+    beyaz_ambar                             1,000   0,000  0,992
+    beyaz_ambar_merkez                      0,964   0,029  0,929
+    beyaz_ambar+kirmizi_kiremit             0,999   0,035  0,764
+    beyaz_ambar+sag_plaka+kirmizi_kiremit   1,000   0,000  0,400
+
+**Altı çatı türünün altısında da v30'u geçiyor** — ve v30 eşiğin kaynağıydı.
+`zemin→zemin` **0,960** (v34: 0,961): zemin referans diskleri hâlâ zemin, yani
+"her şeyi engel boyadı" değil.
+
+**Ön kayıt ölçütü:** ENGEL ≥ 0,50 **ve** ZEMİN ≤ 0,30 → **0,989 / 0,018 → TUTTU.**
+
+#### 2. ARENA KABUL KAPILARI — BOZULMADI
+
+    kapi                t121_etiket_ft      v34 (defter)
+    K1 rota >= 230      259/260  GECTI      258/260
+    K2 basma <= %15     12/259 (%4,63)      12/258 (%4,65)
+    K3 agir <= %3       0/259               0/258
+    K4 arena disi <=%5  1/259               1/258
+    K5 bariyer = 0      OLCULEMEDI          0 (81 kapisiyla ayrica)
+
+Yani çatı kazancı arena başarımından **çalınmadı**. K5'in `ÖLÇÜLEMEDİ` demesi
+T105'in eklediği üçüncü durumdur ve **doğru çalışıyor**: terfiyi bloklar ama
+"düştü" demez.
+
+#### 3. 🔴 K0 — ÖN KAYIT BANDININ ALTINDA. GEVŞETİLMİYOR.
+
+    K0 figur zemin  %0,15   (uretim tabani %0,49)  ->  oran 0,30
+    on kayit kabulu : K0_ft >= 0,5 x K0_v34        ->  0,30 < 0,50   TUTMADI
+    raw_frames  bos 0/67  · ort 0,4189
+    copy_paste  bos 0/393 · ort 0,4200
+
+Ön kayıt üç sonuç tanımlamıştı. Ölçülen: **çatı DÖNDÜ + K0 bandın altında**
+→ **SONUÇ 2: TAKAS.** Eşiği gördükten sonra gevşetmiyorum (D-107).
+
+**Takasın ne olduğu dürüstçe:** K0'ın ölçtüğü `figür` **n=1, YZ üretimi ve alan
+dışı** bir görüntüdür ve defterde "otorite değildir" diye yazılıdır (D-183/D-186).
+Cezalandırdığı yön (**az zemin görmek**) **fail-safe** yöndür. Gerçek karelerde
+körlük **yok**: 0/67 ve 0/393 boş maske, ortalama kaplama ~0,42.
+Yani takas gerçek ama **büyüklüğü tek bir yapay görüntüden** okunuyor.
+
+⚠ Bunu "aslında geçti" diye yazmıyorum. Ön kayıt neyse odur. Ölçütün **dayanağının
+zayıflığı** ayrı bir bulgudur ve K0'ın tasarımına aittir (T110/D-186'da zaten
+tartışıldı), bu koşumun sonucunu değiştirmez.
+
+#### 4. HÜKÜM: MİMARIN TASHİHİ (D-211 §3) DOĞRULANDI
+
+Fable 5'in öncülü *"veri tek kaldıraç"*tı; ben *"kaldıraç ETİKET HATTI"* diye
+tashih etmiştim ve çürütme ölçütünü kendisi yazmıştı: *"yeni veri OLMADAN
+mevcut reçeteyle fine-tune çatıyı gerçek karede engele çevirirse öncülüm düşer."*
+
+**Çevirdi.** Yeni veri yok, görüntü değişmedi, reçete aynı — **yalnız etiket
+düzeldi** ve çatı 0,011'den 0,989'a gitti.
+
+    "veni veri tek kaldirac"  ->  "yeni veri GEREKLI ama TEK BASINA YETERLI DEGIL"
+
+⚠ **Sınır (ön kayıtta yazılıydı):** 67 karenin 56'sı eğitimde. Bu ölçüm
+**genelleme değil, ALAN-İÇİ etiket-düzeltme etkisidir.** DJI Neo çekimi bu yüzden
+iptal edilmez — T111 duvarı (alan dışı doğrulama) hâlâ ayakta ve **yalnız yeni
+veriyle** yıkılır.
+
+#### 5. 🔴 YAN BULGU — AYNAYI KOŞMAK SESSİZCE YANLIŞ CEVAP VERDİ (kusur benim ortaya çıkardığım, hata da benimdi)
+
+Denetçiyi önce **ayna kopyasından** koştum (`scripts/olcum/65_kabul_denetcisi.py`,
+cwd `O:/navitas`):
+
+    K1 ROTA >= 230   DUSTU  0/0
+    K2/K3/K4         DUSTU  -
+    VERDIKT: URETIME ALINMAZ — dusen: K1, K2, K3, K4, K5
+
+Canlı kopyadan (`O:/navitas-local-train`, cwd oradayken):
+
+    K1 259/260 GECTI · K2 GECTI · K3 GECTI · K4 GECTI
+
+**İki dosya BAYT AYNI** (T112 kapısı bunu zorluyor) ama **çalıştırıldıkları yere
+göre farklı sonuç veriyorlar** — ayna, kabul kümesini bulamayıp `0/0` diyor ve
+bunu **"DÜŞTÜ"** olarak raporluyor. Bu tam olarak D-180'in kusur sınıfı:
+**ölçülemeyen şeyin "düştü" sayılması** — T105 bunu K5 için düzeltti, **K1–K4
+için düzeltmedi**.
+
+Tehlikesi: bir amele (ya da ben) aynayı koşup **"bu model her kapıda düştü"**
+sonucuna varabilir. Ben az kalsın vardım. → **T125**.
+
+#### 6. BU BİR ADAYDIR, TERFİ DEĞİL
+
+`t121_etiket_ft` şu an **üçüncü aday**tır (v30 · v34 · t121_ft). Terfi kararı
+**insanındır** (D-133) ve K5 `ÖLÇÜLEMEDİ` olduğu sürece kapı zaten bloklu.
+T123'ün "iki aday" hedefi artık **üç** ölçülmüş adaya sahip ve üçü **farklı hata
+yapıyor** — yedekliliğin istediği şey budur.
