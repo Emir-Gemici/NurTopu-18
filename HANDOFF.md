@@ -21,26 +21,37 @@
 ## GECE KOSUMU · 2026-08-21 (GUNCEL) · Claude 2 (Opus 5, basamele)
 
 **BITEN ISLER (hepsi push edildi):**
-- T127 temiz bolum zinciri — D-249. On kayit kurali 1 SAGLANDI: kirli bolum
-  kazanani sismemis. Temiz val'de egitim 18 epoch'ta durdu, en iyi epoch 27->10.
-- T115 ustabasi denetimi — D-247 (DOGRU AMA EKSIK) + D-250 (13 satirin 10'u
-  guvenle onarilabilir; onarim Codex'in isi, bagimsizlik geregi ben yapmiyorum).
-- T129 — D-248: cati korlugu KAYNAK KALITESINE bagli (v34 videoda %96, ham
-  fotografta %46). Siralama degismiyor.
-- T128 — D-251:  bu recetede ETKISIZ (bit-es agirlik). D-252: bu deney
-  ZATEN v31'de kosulmustu, defteri aramadan tekrarladim (1,18 saat GPU).
+- **T127** temiz bolum zinciri — D-249. On kayit kurali 1 SAGLANDI: kirli
+  bolum kazanani SISMEMIS (cati kacagi 0,043 · 67 karede red 0 · K0-K5 gecti).
+  Temiz val'de egitim 18 epoch'ta durdu, en iyi epoch 27 -> 10.
+- **T115** ustabasi denetimi — D-247 (DOGRU AMA EKSIK; kapiyi ustabasi kostu)
+  + D-250 (13 satirin 10'u guvenle onarilabilir; onarim Codex'in isi —
+  bagimsizlik geregi ben yapmiyorum, prompt verildi).
+- **T129** — D-248: cati korlugu KAYNAK KALITESINE bagli (v34 videoda %96,
+  ayni sahnenin ham fotografinda %46; v30 %31 -> %8). Siralama DEGISMIYOR.
+- **T128** — D-251: `--tohum` bu recetede ETKISIZ (tohum 0 ile 42 bit-es
+  agirlik; mekanizma `ultralytics/data/build.py:359` sabit tohum).
+  D-252: bu deney ZATEN v31'de kosulmustu; defteri aramadan tekrarladim,
+  1,18 saat GPU bosa gitti. Kalici duzeltme: her on kaydin ilk satiri
+  "daha once olculdu mu" aramasi olacak.
 
-**KOSAN IS: T128-B** (, olcum kosumu)
-- Betik: 
-- Gunluk:  · zincir:
-   (egitim bitince kabul zinciri otomatik)
-- On kayit:  (DEFTER ARAMASI dahil — tekrar degil)
-- Beklenen sinir: veri sirasini DEGISTIRMEZ (build.py:359 sabit tohum), yalniz
-  SAYISAL belirsizligi olcer. Sonuc bu sinirla raporlanacak.
+**KOSAN IS: T128-B** (deterministic=False, OLCUM kosumu)
+- Betik: `scripts/olcum/105_t122_ft_kosumu.py --kip ac --belirsiz`
+- Gunluk: `results/t122/ft_ac_belirsiz_log.txt`
+- Zincir gunlugu: `results/t122/t128b_zincir_log.txt`
+  (egitim bitince kabul zinciri OTOMATIK kosar -> `results/t122/t128b_kabul.txt`)
+- On kayit: `results/t128b_on_kayit.md` — DEFTER ARAMASI dahil (tekrar DEGIL)
+- ⚠ Beklenen sinir: veri sirasini DEGISTIRMEZ (build.py:359 sabit tohum),
+  yalniz SAYISAL belirsizligi olcer. Sonuc bu sinirla raporlanacak;
+  "varyans olculdu" diye YAZILMAYACAK.
 
-**KAPI DURUMU:** 15/15 · discover -s tests -q -> Ran 715 · OK
-**MIMARIN MASASI:** T122/T127 secim karari · T126 denetimi · T115 devami
-(Codex prompt'u verildi) · T124 · T118 · D-233 kume yeniden uretimi · D-245.
+**KAPI DURUMU (ustabasi kostu):** `codes/test_rota_sentetik.py` -> 15/15 ·
+`unittest discover -s tests -q` -> Ran 715 · OK
+
+**MIMARIN MASASINDA:** T122/T127 secim karari (D-237 -> D-239 -> D-240 -> D-249
+birlikte okunur) · T126 denetimi (D-244) · T115 devami · T124 sinir cumleleri
+(D-224) · T118 adlandirma (D-214) · D-233 kume yeniden uretimi · D-245 kuyruk
+boslugu · D-248 (cati korlugu kosullu).
 
 ---
 
