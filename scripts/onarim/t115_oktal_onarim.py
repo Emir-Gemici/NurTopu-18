@@ -16,8 +16,7 @@ BOZUK_BASLANGIC = "avitas"
 YOL_ONEKI = "avitas-local-train"
 YOL_KOKU = "\\navitas-local-train\\"
 NUMARALI_PYTHON_DOSYASI = re.compile(r"^(?P<ad>[0-9]+_[A-Za-z0-9_]+\.py)(?=$|[:`\"')\s;,])")
-GOREV_KILIDI = re.compile(r"\[IN_PROGRESS:\s*(?P<sahip>[^\]]+)\]")
-BU_AJAN = "Codex-1"
+GOREV_BASLIGI = re.compile(r"^- \[(?P<durum>[^\]]+)\]")
 
 
 def _satir_ve_son(satir: str) -> tuple[str, str]:
@@ -27,6 +26,15 @@ def _satir_ve_son(satir: str) -> tuple[str, str]:
     if satir.endswith(("\r", "\n")):
         return satir[:-1], satir[-1]
     return satir, ""
+
+
+def _ait_oldugu_gorev(satirlar: list[str], indis: int) -> str:
+    """Bozuk satirin ait oldugu en yakin kuyruk gorev basligini bul."""
+    for onceki in range(indis - 1, -1, -1):
+        icerik, _ = _satir_ve_son(satirlar[onceki])
+        if GOREV_BASLIGI.match(icerik):
+            return icerik
+    return ""
 
 
 def onar(metin: str) -> tuple[str, dict[str, Any]]:
@@ -45,11 +53,23 @@ def onar(metin: str) -> tuple[str, dict[str, Any]]:
         birinci = ""
         if indis > 0:
             birinci, _ = _satir_ve_son(satirlar[indis - 1])
-        ortak = {
-            "satir_no": indis + 1,
-            "once_1": birinci,
-            "once_2": ikinci,
-        }
+        gorev = _ait_oldugu_gorev(satirlar, indis)
+        ortak = {"satir_no": indis + 1, "once": [birinci, ikinci]}
+
+        gorev_eslesmesi = GOREV_BASLIGI.match(gorev)
+        gorev_durumu = gorev_eslesmesi.group("durum") if gorev_eslesmesi else ""
+        insan_gorevi = "HUMAN_COMPLETED:" in gorev or "REQUIRES_HUMAN:" in gorev
+        if gorev_durumu.startswith("IN_PROGRESS:") or insan_gorevi:
+            cozulemeyenler.append(
+                {
+                    **ortak,
+                    "neden": "korunan_gorev",
+                    "gorev_durumu": gorev_durumu,
+                    "gorev_satiri": gorev,
+                }
+            )
+            cikti.append(ham_satir)
+            continue
 
         if indis == 0 or not birinci.endswith("O:"):
             cozulemeyenler.append({**ortak, "neden": "onceki_satir_O_ile_bitmiyor"})
@@ -60,25 +80,24 @@ def onar(metin: str) -> tuple[str, dict[str, Any]]:
             cikti.append(ham_satir)
             continue
 
-        kilit = GOREV_KILIDI.search(birinci)
-        if kilit is not None and kilit.group("sahip").strip() != BU_AJAN:
+        kalan = ikinci[len(YOL_ONEKI):]
+        if not kalan:
+            cozulemeyenler.append({**ortak, "neden": "oktal_kacis_karakteri_yok"})
+            cikti.append(ham_satir)
+            continue
+
+        ilk_karakter = kalan[0]
+        if ilk_karakter in ("\\", "`"):
             cozulemeyenler.append(
                 {
                     **ortak,
-                    "neden": "baska_ajan_in_progress",
-                    "kilit_sahibi": kilit.group("sahip").strip(),
+                    "neden": "kacis_tam_kayip_uydurulamaz",
+                    "ilk_karakter_kod_noktasi": ord(ilk_karakter),
                 }
             )
             cikti.append(ham_satir)
             continue
 
-        kalan = ikinci[len(YOL_ONEKI):]
-        if not kalan:
-            cozulemeyenler.append({**ortak, "neden": "oktal_tersi_icin_ilk_karakter_yok"})
-            cikti.append(ham_satir)
-            continue
-
-        ilk_karakter = kalan[0]
         oktal_tersi = oct(ord(ilk_karakter))[2:]
         ek = oktal_tersi + kalan[1:]
         dosya_eslesmesi = NUMARALI_PYTHON_DOSYASI.match(ek)
@@ -111,16 +130,23 @@ def onar(metin: str) -> tuple[str, dict[str, Any]]:
             }
         )
 
+    onarilmis = "".join(cikti)
+    toplamlar = {
+        "bulunan": len(cozulenler) + len(cozulemeyenler),
+        "cozulen": len(cozulenler),
+        "cozulemeyen": len(cozulemeyenler),
+        "onarim_sonrasi_avitas": sum(
+            satir.startswith(BOZUK_BASLANGIC) for satir in onarilmis.splitlines()
+        ),
+    }
     rapor = {
         "cozulenler": cozulenler,
         "cozulemeyenler": cozulemeyenler,
-        "ozet": {
-            "bulunan": len(cozulenler) + len(cozulemeyenler),
-            "cozulen": len(cozulenler),
-            "cozulemeyen": len(cozulemeyenler),
-        },
+        "toplamlar": toplamlar,
+        "ozet": toplamlar,
+        "kapilar": "kosulMADI (yerel)",
     }
-    return "".join(cikti), rapor
+    return onarilmis, rapor
 
 
 def _argumanlar() -> argparse.Namespace:
@@ -147,7 +173,7 @@ def main() -> int:
     args.rapor.parent.mkdir(parents=True, exist_ok=True)
     args.rapor.write_text(rapor_metni, encoding="utf-8", newline="\n")
     print(rapor_metni, end="")
-    return 0 if rapor["ozet"]["cozulemeyen"] == 0 else 1
+    return 0 if rapor["toplamlar"]["cozulemeyen"] == 0 else 1
 
 
 if __name__ == "__main__":
