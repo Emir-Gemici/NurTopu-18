@@ -5621,7 +5621,9 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - ⚠ **DOKUNMA:** `[HUMAN_COMPLETED]` ve `[IN_PROGRESS]` satırlarının **durum işaretine**. Yalnız yol metni onarılır.
   - **Kapı:** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **0** · onarılan her yol için dosyanın
     **gerçekten var olduğunu** doğrula (`test -f`); var olmayan yol çıkarsa onu **onarma**, raporla.
-  - **Yazan:** Codex-1 · **Denetleyen:** Claude 2 / Fable 5 · **Kapı çıktısı:** 21 bulundu; 8 güvenli yol çözüldü, 13 vaka `COZULEMEYEN`; `^avitas` = 13; kapılar koşulMADI (yerel).
+  - **Yazan:** Codex-1 · **Denetleyen:** Claude 2 / Fable 5 · **Kapı çıktısı:**
+    `git show HEAD:TASK_QUEUE.md | O:\navitas-local-train\venv\Scripts\python.exe -B -c "import json,sys; from scripts.onarim.t115_oktal_onarim import onar; _,r=onar(sys.stdin.read()); print(json.dumps(r['ozet'],ensure_ascii=False)); raise SystemExit(1 if r['ozet']['cozulemeyen'] else 0)"` → `{"bulunan": 21, "cozulen": 8, "cozulemeyen": 13}`, exit 1 (13 çekimser vaka);
+    `rg -c '^avitas' TASK_QUEUE.md` → `13`, exit 0. 15/15 ve discover kapıları koşulMADI (yerel).
 
 - [x] **T105 — KAPANDI · K5 üç durumlu: OLCULEMEDI raporda ayrı, terfiyi YİNE bloklar · 1059×634 sorusunun T94/T95 bağı ÇÜRÜTÜLDÜ (red :1222, yol_duzelt hiç koşmuyor) · kayıt D-197** — eski: Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): "ölçülemedi" ile "düştü" ayırt edilmiyor** · `O:\navitas-local-train\65_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**
   - `65` K5'i alt betiğin stdout'undan **parse ediyor**; satır basılmazsa

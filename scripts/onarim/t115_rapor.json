@@ -1,0 +1,183 @@
+{
+  "cozulenler": [
+    {
+      "satir_no": 3126,
+      "once_1": "- [STATUS: KAPANDI] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:",
+      "once_2": "avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-87**",
+      "sonra": "- [STATUS: KAPANDI] **T60 — Üreteci ŞARTNAMEYE SADIK kıl: renk künyesi ölçüldü, beş nokta çelişiyor** · `O:\\navitas-local-train\\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-87**",
+      "cozulen_dosya_adi": "51_sentetik_arena.py",
+      "ilk_karakter_kod_noktasi": 41,
+      "oktal_tersi": "51"
+    },
+    {
+      "satir_no": 4570,
+      "once_1": "- [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:",
+      "once_2": "avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**",
+      "sonra": "- [STATUS: READY_FOR_REVIEW] **T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:\\navitas-local-train\\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**",
+      "cozulen_dosya_adi": "51_sentetik_arena.py",
+      "ilk_karakter_kod_noktasi": 41,
+      "oktal_tersi": "51"
+    },
+    {
+      "satir_no": 5621,
+      "once_1": "- [x] **T105 — KAPANDI · K5 üç durumlu: OLCULEMEDI raporda ayrı, terfiyi YİNE bloklar · 1059×634 sorusunun T94/T95 bağı ÇÜRÜTÜLDÜ (red :1222, yol_duzelt hiç koşmuyor) · kayıt D-197** — eski: Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): \"ölçülemedi\" ile \"düştü\" ayırt edilmiyor** · `O:",
+      "once_2": "avitas-local-train5_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**",
+      "sonra": "- [x] **T105 — KAPANDI · K5 üç durumlu: OLCULEMEDI raporda ayrı, terfiyi YİNE bloklar · 1059×634 sorusunun T94/T95 bağı ÇÜRÜTÜLDÜ (red :1222, yol_duzelt hiç koşmuyor) · kayıt D-197** — eski: Kabul denetçisinin K5'i HER modeli reddediyor (üretim dahil): \"ölçülemedi\" ile \"düştü\" ayırt edilmiyor** · `O:\\navitas-local-train\\65_kabul_denetcisi.py:101-111` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-180**",
+      "cozulen_dosya_adi": "65_kabul_denetcisi.py",
+      "ilk_karakter_kod_noktasi": 53,
+      "oktal_tersi": "65"
+    },
+    {
+      "satir_no": 5778,
+      "once_1": "- [x] **T110 — KAPANDI · K0 örneklemesi kaldırıldı, düşüş görünür kılındı** · `O:",
+      "once_2": "avitas-local-train5_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**",
+      "sonra": "- [x] **T110 — KAPANDI · K0 örneklemesi kaldırıldı, düşüş görünür kılındı** · `O:\\navitas-local-train\\65_kabul_denetcisi.py:81-82` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-183 §5**",
+      "cozulen_dosya_adi": "65_kabul_denetcisi.py",
+      "ilk_karakter_kod_noktasi": 53,
+      "oktal_tersi": "65"
+    },
+    {
+      "satir_no": 5907,
+      "once_1": "    `O:",
+      "once_2": "avitas-local-train5_kabul_denetcisi.py`. **İkisi ayrı dosya ve",
+      "sonra": "    `O:\\navitas-local-train\\65_kabul_denetcisi.py`. **İkisi ayrı dosya ve",
+      "cozulen_dosya_adi": "65_kabul_denetcisi.py",
+      "ilk_karakter_kod_noktasi": 53,
+      "oktal_tersi": "65"
+    },
+    {
+      "satir_no": 6042,
+      "once_1": "    `default=Path(r\"O:",
+      "once_2": "avitas-local-train)_sentetik_arena.py\")`.",
+      "sonra": "    `default=Path(r\"O:\\navitas-local-train\\51_sentetik_arena.py\")`.",
+      "cozulen_dosya_adi": "51_sentetik_arena.py",
+      "ilk_karakter_kod_noktasi": 41,
+      "oktal_tersi": "51"
+    },
+    {
+      "satir_no": 6278,
+      "once_1": "- [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:",
+      "once_2": "avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**",
+      "sonra": "- [ ] **T75 — İHA-İB yerleşimi yanlış: 30×30 m mavi alan koridorların üstüne biniyor** · `O:\\navitas-local-train\\51_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-104**",
+      "cozulen_dosya_adi": "51_sentetik_arena.py",
+      "ilk_karakter_kod_noktasi": 41,
+      "oktal_tersi": "51"
+    },
+    {
+      "satir_no": 6975,
+      "once_1": "  - **KAPI 2 — B1 BAĞIMSIZ tekrarlandı** (`O:",
+      "once_2": "avitas-local-train\u00058_b1_bagimsiz.py`;",
+      "sonra": "  - **KAPI 2 — B1 BAĞIMSIZ tekrarlandı** (`O:\\navitas-local-train\\58_b1_bagimsiz.py`;",
+      "cozulen_dosya_adi": "58_b1_bagimsiz.py",
+      "ilk_karakter_kod_noktasi": 5,
+      "oktal_tersi": "5"
+    }
+  ],
+  "cozulemeyenler": [
+    {
+      "satir_no": 5888,
+      "once_1": "- [IN_PROGRESS: Codex-2] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:",
+      "once_2": "avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**",
+      "neden": "baska_ajan_in_progress",
+      "kilit_sahibi": "Codex-2"
+    },
+    {
+      "satir_no": 5903,
+      "once_1": "- [x] **T112 — KAPANDI · Ölçüm aynası senkronu testle kilitlendi** · `scripts/olcum/` ↔ `O:",
+      "once_2": "avitas-local-train\\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 92,
+      "oktal_tersi": "134",
+      "aday_ek": "134` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**"
+    },
+    {
+      "satir_no": 5929,
+      "once_1": "  - 🔴 **Teşhisim yanlıştı, ölçüm düzeltti:** `O:",
+      "once_2": "avitas-local-train` **git",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 96,
+      "oktal_tersi": "140",
+      "aday_ek": "140 **git"
+    },
+    {
+      "satir_no": 6032,
+      "once_1": "- [x] **T113 — KAPANDI · 14 betik arşivlendi, depo bütünlüğü kırığı kapandı, ve izlenen üretim kodu onlardan birine BAĞIMLI** · `O:",
+      "once_2": "avitas-local-train\\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T112 ölçümünün yan bulgusu)",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 92,
+      "oktal_tersi": "134",
+      "aday_ek": "134` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T112 ölçümünün yan bulgusu)"
+    },
+    {
+      "satir_no": 6076,
+      "once_1": "    **PC garantiye gidiyor**. `O:",
+      "once_2": "avitas-local-train` **tümüyle** yedek",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 96,
+      "oktal_tersi": "140",
+      "aday_ek": "140 **tümüyle** yedek"
+    },
+    {
+      "satir_no": 6100,
+      "once_1": "    ihtiyacıdır, sürüm kontrolü değil. `O:",
+      "once_2": "avitas-local-train` tümüyle yedek",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 96,
+      "oktal_tersi": "140",
+      "aday_ek": "140 tümüyle yedek"
+    },
+    {
+      "satir_no": 7068,
+      "once_1": "  - **KAPI 2 — GÖZLE:** `O:",
+      "once_2": "avitas-local-train",
+      "neden": "oktal_tersi_icin_ilk_karakter_yok"
+    },
+    {
+      "satir_no": 7096,
+      "once_1": "    \"zemin\" yamalarının bir kısmı aşırı pozlanmış.",
+      "once_2": "avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-79",
+      "neden": "onceki_satir_O_ile_bitmiyor"
+    },
+    {
+      "satir_no": 7111,
+      "once_1": "    KAPI 1  GOZLE DOGRULAMA — O:",
+      "once_2": "avitas-local-train",
+      "neden": "oktal_tersi_icin_ilk_karakter_yok"
+    },
+    {
+      "satir_no": 7144,
+      "once_1": "    (3) brandanın gerçek brandaya görsel benzerliği (düz kırmızı dikdörtgen).",
+      "once_2": "avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-77",
+      "neden": "onceki_satir_O_ile_bitmiyor"
+    },
+    {
+      "satir_no": 7188,
+      "once_1": "  - **Küme:** `O:",
+      "once_2": "avitas-local-train\\calisma\\sentetik_arena_kadraj` (manifest dahil);",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 92,
+      "oktal_tersi": "134",
+      "aday_ek": "134calisma\\sentetik_arena_kadraj` (manifest dahil);"
+    },
+    {
+      "satir_no": 7264,
+      "once_1": "    `O:",
+      "once_2": "avitas-local-train\\calisma\\sentetik_arena_kadraj`.",
+      "neden": "oktal_tersi_numarali_python_dosyasi_uretmiyor",
+      "ilk_karakter_kod_noktasi": 92,
+      "oktal_tersi": "134",
+      "aday_ek": "134calisma\\sentetik_arena_kadraj`."
+    },
+    {
+      "satir_no": 7363,
+      "once_1": "  - **Görsel doğrulama — sayıyı değiştirdi** (`O:",
+      "once_2": "avitas-local-train",
+      "neden": "oktal_tersi_icin_ilk_karakter_yok"
+    }
+  ],
+  "ozet": {
+    "bulunan": 21,
+    "cozulen": 8,
+    "cozulemeyen": 13
+  }
+}
