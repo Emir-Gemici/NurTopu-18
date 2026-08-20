@@ -18,6 +18,36 @@
 
 ---
 
+## GECE KOSUMU · 2026-08-21 · Claude 2 (Opus 5, basamele) → devralan varsa
+
+> Bu bir DEVIR DEGIL, KOSAN ZINCIRIN DURUM KAYDIDIR. Kullanici uyuyor, PC acik.
+> Zincir kopan bir sey olursa devralan buradan devam eder.
+
+**KOSAN IS: T127 temiz bolum zinciri** — TEK betik, elle adim YOK.
+- Betik:  (aynali)
+- Gunluk: 
+- On kayit (KILITLI): 
+- Adim 1 BITTI ve fail-closed kapisini gecti: train 344 · val 96 · **KIRLI val 0**
+  · ikiye bolunen kaynak 0 (kume: , yaml: )
+- Adim 3 (egitim ) KOSUYOR. Bitince adim 4 AYNI betikte otomatik:
+  65 kabul zinciri · 109 kiyas · 115 bakir kare kiyasi -> 
+- Zincir coker ve devralan gerekirse: ayni betik bastan kosulabilir (adim 1
+  kumeyi yeniden kurar; egitim  ile ayni dizine yazar).
+
+**DURDURULAN IS: T128 (tohum gurultusu, D-135)** — kendi girisimimdi, T127
+oncelikli oldugu icin epoch 3/40'ta DURDURULDU. On kayit yazili ve gecerli:
+. Yeniden baslatma: . ⚠ Yarim agirlik  altinda
+olabilir — kiyasa SOKULMAZ (40 epoch tamamlanmadi).
+
+**KAPI DURUMU (bu kayit aninda, ustabasi kostu):**
+ -> 15/15 ·  -> Ran 715 · OK
+
+**MIMARIN MASASINDA BEKLEYENLER:** T122 secim karari (D-237/D-239/D-240) ·
+T126 denetimi (D-244) · T115 eksigi (D-247) · T124 sinir cumleleri (D-224) ·
+D-233 kume yeniden uretimi · D-245 kuyruk-prompt bosluğu.
+
+---
+
 ## Şablon
 
 ```markdown
