@@ -21,30 +21,38 @@
 ## GECE KOSUMU · 2026-08-21 · Claude 2 (Opus 5, basamele) → devralan varsa
 
 > Bu bir DEVIR DEGIL, KOSAN ZINCIRIN DURUM KAYDIDIR. Kullanici uyuyor, PC acik.
-> Zincir kopan bir sey olursa devralan buradan devam eder.
+> Zincir koparsa devralan buradan devam eder.
 
 **KOSAN IS: T127 temiz bolum zinciri** — TEK betik, elle adim YOK.
-- Betik:  (aynali)
-- Gunluk: 
-- On kayit (KILITLI): 
-- Adim 1 BITTI ve fail-closed kapisini gecti: train 344 · val 96 · **KIRLI val 0**
-  · ikiye bolunen kaynak 0 (kume: , yaml: )
-- Adim 3 (egitim ) KOSUYOR. Bitince adim 4 AYNI betikte otomatik:
-  65 kabul zinciri · 109 kiyas · 115 bakir kare kiyasi -> 
-- Zincir coker ve devralan gerekirse: ayni betik bastan kosulabilir (adim 1
-  kumeyi yeniden kurar; egitim  ile ayni dizine yazar).
+- Betik: `scripts/olcum/116_t127_temiz_bolum_zinciri.py` (aynali)
+- Gunluk: `results/t127_zincir_log.txt`
+- On kayit (KILITLI, D-107): `results/t127_on_kayit.md`
+- **Adim 1 BITTI ve fail-closed kapisini gecti:** train 344 · val 96 ·
+  **KIRLI val 0** · ikiye bolunen kaynak 0
+  (kume `dataset/copy_paste_t127`, yaml `dataset/karisim_t127.yaml`)
+- **Adim 3 (egitim `t127_temiz`) KOSUYOR.** Bitince adim 4 AYNI betikte
+  otomatik kosar: 65 kabul zinciri · 109 kiyas · 115 bakir kare kiyasi ->
+  ciktilar `results/t127_temiz/` altina.
+- Zincir coker ve devralan gerekirse ayni betik bastan kosulabilir: adim 1
+  kumeyi yeniden kurar, egitim `exist_ok=True` ile ayni dizine yazar.
+- ⚠ Kosum ortami ZORUNLU: `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` ve
+  `PYTHONIOENCODING=utf-8` (olmadan egitim izsiz kalir — olculdu).
 
-**DURDURULAN IS: T128 (tohum gurultusu, D-135)** — kendi girisimimdi, T127
-oncelikli oldugu icin epoch 3/40'ta DURDURULDU. On kayit yazili ve gecerli:
-. Yeniden baslatma: . ⚠ Yarim agirlik  altinda
-olabilir — kiyasa SOKULMAZ (40 epoch tamamlanmadi).
+**DURDURULAN IS: T128 (tohum gurultusu, D-135).** Kendi girisimimdi; T127
+oncelikli oldugu icin epoch 3/40'ta durduruldu. On kayit yazili ve GECERLI:
+`results/t128_on_kayit.md`. Yeniden baslatma:
+`scripts/olcum/105_t122_ft_kosumu.py --kip ac --tohum 42`.
+⚠ Yarim agirlik `codes/runs/segment/t122ac_tohum42/` altinda olabilir —
+40 epoch tamamlanmadigi icin KIYASA SOKULMAZ.
 
-**KAPI DURUMU (bu kayit aninda, ustabasi kostu):**
- -> 15/15 ·  -> Ran 715 · OK
+**KAPI DURUMU (ustabasi kostu, bu kayit aninda):**
+`codes/test_rota_sentetik.py` -> **15/15** ·
+`unittest discover -s tests -q` -> **Ran 715 · OK**
 
-**MIMARIN MASASINDA BEKLEYENLER:** T122 secim karari (D-237/D-239/D-240) ·
-T126 denetimi (D-244) · T115 eksigi (D-247) · T124 sinir cumleleri (D-224) ·
-D-233 kume yeniden uretimi · D-245 kuyruk-prompt bosluğu.
+**MIMARIN MASASINDA BEKLEYENLER:** T122 secim karari (D-237 -> D-239 -> D-240
+birlikte okunur) · T126 denetimi (D-244) · T115 eksigi ve bagimliligi (D-247) ·
+T124 sinir cumleleri (D-224) · D-233 kume yeniden uretimi · D-245 kuyruk-prompt
+boslugu · D-248 (cati korlugu kaynak kalitesine bagli).
 
 ---
 
