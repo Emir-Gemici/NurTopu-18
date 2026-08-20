@@ -18016,3 +18016,49 @@ koridorları kapatır") — yani düzeltmenin kendisi yeni bir kaçak açmış.
   kendi gölgeli yüzeyi (parlak-düz-geniş bileşene bitişik koyu alan)
   kurtarılmamalı. ⚠ 71'i DEĞİŞTİRMEDİM: hattın kuralını değiştirmek etiket
   sözleşmesini değiştirmektir, mimarın kararıdır (§9.2). Önerdim, bekliyorum.
+
+---
+
+### D-233 · 🔴 T122 YAN BULGUSU · copy_paste doğrulama kümesi %100 KİRLİ: 55/55 val karesinin kaynağı eğitimde de var — tek satırlık bölüm anahtarı yüzünden
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-20 · **Kapı çıktısı:** `discover -s tests -q → Ran 702 · OK`
+  (696 → 702, +6 yeni kapı) · `test_rota_sentetik 15/15`.
+- **Nasıl bulundu:** T122 için DJI verisinin ingest hattını hazırlarken
+  `bolum_sec()` okundu; anahtarın `cesit` (varyant indisi) içerdiği görüldü
+  ve üretilmiş manifest üzerinde ölçüldü.
+- **[SONUC-DEGISTIREN] ÖLÇÜM** (`dataset/copy_paste_gercek/manifest.json`):
+```
+uretilen kaynak kare        : 56
+HEM train HEM val'e dusen   : 41 / 56
+val ornegi                  : 55
+kaynagi EGITIMDE de olan val: 55  (%100,0)
+TEMIZ val ornegi            : 0
+```
+  Varyantlar aynı kaynak kareden üretilir; piksel farkı **%0,1–0,4** (T121'de
+  ölçüldü — yalnız yapıştırılan moloz değişiyor). Yani bu bileşenin
+  doğrulama kümesi fiilen **eğitim verisinin ikizidir** ve val metriği
+  genelleme değil **ezber** ölçer.
+- **Kök neden (tek satır):** `scripts/copy_paste_augmentation.py:889`
+  `anahtar = f"{kaynak}:{cesit}:{tohum}"` → aynı kaynağın varyantları farklı
+  bölümlere düşüyordu. **Düzeltildi:** anahtar artık `f"{kaynak}:{tohum}"`
+  (grup ayrımı: bir kaynağın TÜM varyantları aynı bölümde).
+- **Kapı:** `tests/test_t122_bolum_ayrimi.py` (6 test) — fonksiyon değişmezi
+  + vakum kontrolü (ayrım hâlâ iki bölüm üretiyor) + val oranı bandı +
+  **üretilmiş kümelerin kirlilik durumunun KAYITLI olması**: yeni bir küme
+  sessizce kirli üretilirse kapı düşer; bilinen kirli küme listede açıkça
+  durur ve **temizlenince listeden çıkarılmazsa da kapı düşer** (bayat
+  muafiyet koruması).
+- **Mutasyon:** düzeltme geri alındı (`cesit` anahtara kondu) →
+  **dosya: 2/6 · takım: 2/702**; düşenler
+  `test_ayni_kaynagin_tum_cesitleri_ayni_bolumde` ve
+  `test_tohum_degisince_ayrim_degisebilir_kaynak_grubu_BOZULMAZ`. Geri
+  konuldu, 6/6 OK.
+- ⚠ **MEVCUT KÜMELER YENİDEN ÜRETİLMEDİ.** Yeniden üretim veri sözleşmesi
+  değişikliğidir ve mimarın kararıdır (§9.2); ayrıca şu an iki eğitim bu
+  kümelerle koşuyor. Düzeltme **bundan sonraki üretimleri** kapsar; mevcut
+  kirlilik `BILINEN_KIRLI` listesinde kayıtlıdır.
+- 🔴 **DÜRÜSTLÜK NOTU — kendi koşumlarımı da vurur:** v21/v22/v30/v34,
+  t121_ft ve şu an koşan T122-A/AC dâhil **bu karışımla eğitilmiş her model**
+  bu bileşende kirli val görmüştür. Karışımdaki payı küçüktür (448/~7000)
+  ama T122 kıyas kaydında sınır olarak yazılacak.

@@ -887,8 +887,25 @@ def arena_rotasi(
 
 
 def bolum_sec(kaynak: Path, cesit: int, tohum: int, val_oran: float) -> str:
-    """Calismalar arasinda degismeyen train/val secimi yap."""
-    anahtar = f"{kaynak.as_posix()}:{cesit}:{tohum}".encode("utf-8")
+    """Calismalar arasinda degismeyen train/val secimi yap — KAYNAK BAZINDA.
+
+    🔴 T122 (D-233) — DUZELTILEN KUSUR: anahtar eskiden `cesit`i de iceriyordu
+    (`f"{kaynak}:{cesit}:{tohum}"`). Ayni kaynak karenin varyantlari boylece
+    FARKLI bolumlere dusuyordu. Olculdu (`dataset/copy_paste_gercek/
+    manifest.json`): 56 kaynagin 41'i HEM train HEM val'de; dogrulama
+    kumesinin 55/55'inin (%100) kaynagi egitimde de var — TEMIZ dogrulama
+    ornegi SIFIR. Varyantlar ayni kareden uretildigi icin piksel farki
+    %0,1-0,4'tur (olculdu), yani val fiilen egitim verisinin ikizidir ve o
+    bilesenin val metrigi EZBERI olcer.
+
+    Kural: bolum YALNIZ kaynak (ve tohum) ile belirlenir — bir kaynagin TUM
+    varyantlari AYNI bolume gider (grup ayrimi). Kilit:
+    `tests/test_t122_bolum_ayrimi.py`.
+
+    ⚠ MEVCUT KUMELER BU DUZELTMEDEN ONCE URETILDI ve kirliligi tasimaya devam
+    eder; yeniden uretim MIMARIN karari (veri sozlesmesi degisikligi).
+    """
+    anahtar = f"{kaynak.as_posix()}:{tohum}".encode("utf-8")
     deger = int.from_bytes(hashlib.sha256(anahtar).digest()[:8], "big") / 2**64
     return "val" if deger < val_oran else "train"
 
