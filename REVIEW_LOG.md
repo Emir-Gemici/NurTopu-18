@@ -18687,3 +18687,21 @@ blokluyor" yazılmıştı. **K5 artık ölçülebilir ve dördü de geçiyor** �
 kabul zinciri artık hiçbir adayı bloklamıyor. Yani seçim tamamen
 **D-242 §3'ün işaret ettiği eksene** kayıyor: seçim kanıtı ALAN-İÇİ.
 ⚠ Bu bir TERFİ ÖNERİSİ DEĞİLDİR; seçim ve sevk **insanındır** (D-133).
+
+---
+
+### D-245 · 📌 DEFTER BOŞLUĞU · T126 kuyrukta YOK: görev prompt'la verildi, `TASK_QUEUE.md`'de satırı hiç açılmadı
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20.
+- `grep -c "T126" TASK_QUEUE.md` → **0**. Görev bana doğrudan prompt olarak
+  geldi ve tamamlandı (D-244), ama kuyrukta ne açılışı ne durum satırı var.
+- **Neden ben eklemedim:** kuyruğa görev YAZMAK mimarın işidir (`AGENTS.md`:
+  "TASK_QUEUE.md · Claude 1 yazar, ameleler **durum satırını** günceller").
+  Kendi işime kendim görev satırı açmak, o ayrımı bozardı.
+- **Sonuç:** "kapatılan her görevin altına Yazan/Denetleyen/Kapı çıktısı"
+  kuralı T126 için **uygulanamadı** — çünkü altına yazılacak satır yok.
+  Defter satırının tamamı D-244'ün başlığındadır.
+- **İstenen (mimar):** T126 için kuyruk satırı açılsın ve
+  `[REVIEW: mimar]` durumuyla D-244'e bağlansın. Aynı boşluk başka
+  prompt-la-verilen görevlerde de olabilir; kuyruk–prompt eşleşmesi bir kez
+  taranırsa bu sınıf kapanır.
