@@ -5535,7 +5535,18 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kapı = mutasyon:** yukarıdaki mutasyon uygulandığında bu test **DÜŞMELİ**;
     düşmüyorsa bir şey korumuyordur. Bayt kimliği testi kanıt sayılmaz.
 
-- [ ] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
+- [REVIEW: mimar] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
+  - ✅ **UYGULANDI · 2026-08-20 · Claude-2 (Opus 5, başameleliği sürüyor) · D-227.**
+    Bağımsız sayım mimarınkini DOĞRULADI (63 · 3 · 2; iki yöntem 0 ayrışma).
+    Kararlar: test_costmap_on_images → GERÇEK TestCase (0→6 test, ad ve CLI
+    korundu, referans kırılmadı) · arena_kompozit_kapisi ve t64_hakem_ekrani →
+    MUAFİYET işareti (kıran taşıma yapılmadı). Kalıcı kapı:
+    tests/test_t120_sahte_kapi_yasagi.py (13 test) — muafiyet listesi ELLE
+    tutulmuyor, dosyanın docstringinden türetiliyor; keşif KAPSAMI da denetli.
+    Mutasyon: boş dosya → **dosya 1/13 · takım 1/696**; POZİTİF KONTROL:
+    işaret eklenince 13/13 OK. Kapılar: 15/15 · 696 OK.
+    - Yazan: Claude-2 (Opus 5) · Denetleyen: mimar bekleniyor ·
+      Kapı çıktısı: discover -s tests -q → Ran 696 · OK
   - 🔁 **BAĞIMSIZ TEKRAR Codex-1/2 kuyruğunda** (ustabaşı kararı: D-213 ölçümünün çapraz doğrulaması; ölçen ben olduğum için tekrar bağımsız ele verildi).
   - 🔎 **ÖLÇÜLDÜ · 2026-08-20 · Claude-2 (Fable 5) · D-213.** 61 dosya tarandı,
     58'i ≥1 test topluyor. `test_costmap_on_images.py` desen İÇİ + 0 test

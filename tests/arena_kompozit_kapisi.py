@@ -1,5 +1,9 @@
 """NEDEN: T40'in agir model kosusunu kaydedilmis yer gerceginden tekrar olcer.
 
+KESIF MUAFIYETI: agir model kosusu gerektiren ELLE kapi; unittest kesfinde
+  kosulamaz (takim kapisini dakikalarca bloklar ve GPU ister).
+KOSUM: O:\\navitas-local-train\\venv\\Scripts\\python.exe -B tests/arena_kompozit_kapisi.py
+
 Bu betik unittest kesfine girmez. Kompozit kare karar mantigini sinar; modelin
 gercek arenadaki basarimini veya arena domain boslugunun kapandigini iddia etmez.
 Ureticinin kendi rota sonucuyla ornek elemesine izin vermez: rota ve pozitif

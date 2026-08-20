@@ -1,5 +1,9 @@
 """NEDEN: T64 arena kaynaklarını gerçek v24 ile ekran ve log kanıtına bağlar.
 
+KESIF MUAFIYETI: GUI/görsel kanıt üreten ELLE araç; çıktısı PNG ve log
+  dosyasıdır, assert'i yoktur — otomatik kapıya çevrilemez, GÖZLE okunur.
+KOSUM: O:\\navitas-local-train\\venv\\Scripts\\python.exe -B tests/t64_hakem_ekrani_kapisi.py --cikti tests/artifacts/t64
+
 Bu betik karar algoritması kurmaz. ``YksArayuz._algi_kos`` üretim yolunu çağırır,
 GUI'nin göstereceği iki paneli PNG'ye ve gerçek sonuç satırlarını UTF-8 loga yazar.
 """

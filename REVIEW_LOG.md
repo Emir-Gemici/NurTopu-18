@@ -17739,3 +17739,103 @@ Ameleni̇n bu ayrımı kendisi yapıp gerekçesini yazması doğru işlemedir.
 
     Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
     Kapı çıktısı: 677 OK · 15/15 · ayna senkron · dört davranış tek tek sınandı
+
+---
+
+### D-227 · ✅ T120 UYGULANDI · Sahte kapı sınıfı KALICI KAPIYLA imkânsız kılındı; sayım BAĞIMSIZ olarak doğrulandı (63/63 uyum) — ve kendi ölçüm aletim önce YANLIŞ sonuç üretti
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (madde 19; ⚠ artık aynı modeliz — korelasyonlu kör nokta, CLAUDE.md md.19:
+  anlaşmamız kanıt değil, hakem ölçüm) · **Kapı çıktısı:**
+  `codes/test_rota_sentetik.py → 15/15` · `discover -s tests -q → Ran 696 · OK`
+  (677 → 696: +6 dönüştürülen dosya, +13 yeni kapı) · 2026-08-20.
+- **Codex'e bölünmedi (SS9.1 gerekçesi):** işin özü 63 dosyalık bağımsız ölçüm
+  + oto-referans tuzağı olan bir kapı tasarımı; ölçüm yerel yorumlayıcı ve
+  yerel test ağacı ister, tasarım ise T104/T112 kalıplarının taşınmasıdır.
+  Mekanik/taşınabilir parça çıkmadı.
+
+#### 1. BAĞIMSIZ SAYIM — mimarın sayısı DOĞRULANDI (ve yöntem farklıydı)
+Mimarın yöntemi in-process `defaultTestLoader.discover(pattern=...)` idi.
+Benim iki yolum: **(A)** her dosya için ayrı ALT SÜREÇ
+`python -m unittest discover -s tests -p <ad>` + "Ran N" ayrıştırma,
+**(B)** AST (TestCase türevi + `test*` metod + `load_tests/suite` kancaları).
+```
+toplam .py                     : 63      (mimar: 63)   ✔
+alt surecte SIFIR test         : 3       (mimar: 3)    ✔
+kesif kalibi disi (test* degil): 2                     ✔
+IKI YOL AYRISAN                : 0
+import hatasi goren            : []      (yutulan ImportError YOK)
+```
+Ham: `results/t120/bagimsiz_sayim.json` · konsol: `..._konsol.txt` ·
+betik: `..._betigi.py`.
+
+#### 2. 🔴 ÖLÇÜM ALETİM ÖNCE YANLIŞ SONUÇ ÜRETTİ — kayda geçiyor
+İlk iki koşumda alt sürece `-t <kok>` verilmişti; unittest
+`ImportError: Start directory is not importable` diyordu ve **63/63 dosya
+"sıfır test" görünüyordu.** Yani aletim "tests/ tamamen sahte kapı" gibi bir
+felaket bulgusu üretmişti. Yakalayan şey **pozitif kontroldü**: takımın 677
+testi geçiyordu, dolayısıyla sayım imkânsızdı. Sınıf: **T95 prob kusuru**
+(ölçüm aleti üretim sayılmaz). Bu yüzden kapının kendi docstring'ine ALET
+UYARISI olarak yazıldı.
+
+#### 3. DOSYA KARARLARI (her biri için şık + neden)
+| Dosya | Şık | Neden |
+|---|---|---|
+| `test_costmap_on_images.py` | **1 · GERÇEK TestCase'e çevrildi** | Mimarın tercihi. Başka HİÇBİR yerde kapsanmayan saf yardımcıları vardı (`guvenli_ad`, `atomik_json_yaz`, `sonuc_donustur`); `guvenlik_ozeti`/`ozet_cikis_kodu` zaten `test_costmap_olcum_yok.py`de kapsanıyordu. **6 test eklendi (0 → 6)**; dosya adı ve `main()` KORUNDU → `test_costmap_olcum_yok.py:6` importu ve TASK_QUEUE:1113 CLI örneği KIRILMADI. |
+| `arena_kompozit_kapisi.py` | **MUAFİYET işareti** | Kasıtlı ağır ELLE kapı (docstring baştan "unittest keşfine girmez" diyor), GPU/model ister — takım kapısına konamaz. Taşıma/ad değişikliği TASK_QUEUE:7905 CLI örneğini kırar; REVIEW_LOG'daki tarihsel atıflar EKLENİR-SİLİNMEZ olduğu için düzeltilemez → mimarın "kıran taşıma YAPILMAZ" kuralı taşımayı zaten dışlıyor. Kodda import eden YOK. |
+| `t64_hakem_ekrani_kapisi.py` | **MUAFİYET işareti** | Aynı sınıf: `--cikti` ile PNG+log üreten GÖRSEL araç, assert'i yok → otomatik kapıya çevrilemez. TASK_QUEUE:6472 CLI örneği. |
+Hiçbir dosya SİLİNMEDİ, TAŞINMADI, yeniden ADLANDIRILMADI.
+⚠ Mimar isterse taşımayı emredebilir; o durumda TASK_QUEUE atıfları önce
+güncellenir — ben referans kırmamayı seçtim, karar onundur.
+
+#### 4. KALICI KAPI — sınıfı imkânsız kılan değişmez
+`tests/test_t120_sahte_kapi_yasagi.py` (13 test). Değişmez:
+**tests/ altındaki her .py ya ≥1 test toplar ya da kendi modül docstring'inde
+gerekçeli muafiyet işareti taşır.**
+- **Muafiyet listesi ELLE TUTULMUYOR** — dosyanın kendi docstring'inden
+  türetiliyor (T104 kalıbı; elle liste 4 kez bayatladı: D-146/157/159/163).
+- Muafiyet GEÇERLİ olmak için: işaret + **aynı satırda boş olmayan gerekçe**
+  + **`KOSUM:` satırı** (koşulamayan "muaf" dosya = muafiyetin arkasına
+  gizlenmiş ölü kod) + KOSUM satırı **kendi dosya adını** göstermeli (bayat
+  yol yakalanır).
+- **Keşif KAPSAMI da denetleniyor:** `test*` olmayan adla test taşımak
+  GEÇERSİZ (keşif onu hiç toplamaz → ölü kapı).
+- **"HEM test HEM muafiyet" = BAYAT işaret** → düşer.
+- Sayım AST ile (kapı 63 alt süreç koşamaz); AST'nin geçerliliği §1'de
+  ölçüldü — varsayılmadı.
+
+#### 5. 🔴 KAPI KENDİNİ YAKALADI (T112 öz-referans tuzağı, ikinci kez)
+İlk yazımda kapının docstring'i muafiyet biçimini ÖRNEK olarak yazıyordu ve
+kapı **kendi docstring'ini muaf sandı** ("HEM test HEM muafiyet → BAYAT").
+Çözüm: işaret **yalnız girintisiz satırda** geçerli; anlatım/örnek metin
+(girintili) muafiyet üretmez. ⚠ Bunun çalışması için `ast.get_docstring(...,
+**clean=False**)` şart: varsayılan `cleandoc` ortak girintiyi SİLER ve korumayı
+etkisizleştirir — bu da ölçülerek bulundu (kapı önce yine kendini muaf saydı).
+Ayrıca iki gerçek ayrıştırma kusuru bu turda çıktı ve düzeltildi: boş gerekçe
+bir sonraki satırı gerekçe sanıyordu; "işaret yok" ile "işaret bozuk" aynı
+mesajı veriyordu.
+
+#### 6. MUTASYON KANITI + POZİTİF KONTROL
+```
+mutasyon: tests/ altina SIFIR test toplayan bos dosya (zz_t120_mutasyon_gecici.py)
+          -> dosya: 1/13 · takim: 1/696
+          dusen test: test_tests_altinda_sahte_kapi_YOK
+          mesaj: "SIFIR test topluyor ve muafiyet isareti YOK (sahte kapi)"
+POZITIF KONTROL: AYNI dosyaya muafiyet isareti (+KOSUM) eklendi -> 13/13 OK
+          => muafiyet mekanizmasi OLU KOD DEGIL, gercekten geciriyor
+temizlik: dosya kaldirildi -> git status --porcelain temiz, 13/13 OK, takim 696 OK
+```
+Ek olarak muafiyet mekanizmasının **gerçek kullanımda** olduğu ayrı bir testle
+kilitli (`test_muafiyet_mekanizmasi_gercek_kullanimda`): en az bir GERÇEK
+dosya taşımazsa kapı düşer.
+
+#### 7. SIRADAKİLER — ustabaşı sıralaması (gerekçeli)
+1. **T122 (etiket hattı) — İLK.** T121 sonucu elde (D-225: çatı DÖNDÜ, K0
+   TAKASI); DJI verisi her an gelebilir ve T122'nin kendi gerekçesi "yeni veri
+   düzeltilmemiş hatta girerse kusuru BÜYÜTEREK tekrarlar". Dört seçeneği
+   ÖLÇÜP önereceğim; **hangisinin uygulanacağı MİMARIN kararı** (SS9.2).
+2. **T124** — sınır cümleleri D-224'te hazır, registry'ye dokunmadım; mimar
+   onayı bekliyor (ÖNER-BEKLE). Ucuz, kapanmaya hazır.
+3. **T118 kalan** — ölçüm D-214'te bitti (eşik bozulması sıfır, 4 rapor alanı
+   adlandırma önerisi); mimar kararı bekliyor, bende yeni ölçüm yok.
+4. **T116** — payda kararı zincirinde mimarda; hatırlatma.

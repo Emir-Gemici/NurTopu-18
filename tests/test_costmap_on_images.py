@@ -329,5 +329,83 @@ def main() -> int:
     return ozet_cikis_kodu(ozet)
 
 
+# ── T120: BU DOSYA ARTIK GERCEK BIR KAPIDIR ────────────────────────────────
+# NEDEN (D-209 §1 · T120): dosya `tests/` altindaydi, adi `test_` ile
+# basliyordu, kesif onu TOPLUYORDU — ama ICI BOSTU: `Ran 0 tests · NO TESTS
+# RAN`. Yani "kapi var" gorunumu uretiyordu, kapi YOKTU (D-170 sinifi).
+# Mimarin karar sirasinda 1. sik: "icinde degerli, kosulabilir bir denetim
+# varsa GERCEK TestCase'e cevir" — asagidaki saf yardimcilar tam olarak oyle:
+# CLI'nin kendisi model+goruntu ister (birim test olamaz), ama bu ucu SAF ve
+# baska HICBIR dosyada kapsanmiyordu (`guvenlik_ozeti`/`ozet_cikis_kodu`
+# `test_costmap_olcum_yok.py`de kapsanir; bunlar DEGIL).
+# Dosya adi ve `main()` KORUNDU: TASK_QUEUE:1113 CLI ornegi ve
+# `test_costmap_olcum_yok.py:6` importu KIRILMADI.
+import unittest  # noqa: E402
+
+
+class SafYardimcilarTests(unittest.TestCase):
+    """CLI'siz kosulabilen ic yardimcilar — model/goruntu GEREKTIRMEZ."""
+
+    def test_guvenli_ad_windows_yasakli_karakterleri_temizler(self):
+        for ham, beklenen in (
+            ("a/b\\c", "a_b_c"), ("kare:1*?", "kare_1"),
+            ("  bosluk  ", "bosluk"), ("...", "kare"), ("", "kare"),
+        ):
+            with self.subTest(ham=ham):
+                self.assertEqual(guvenli_ad(ham), beklenen)
+
+    def test_guvenli_ad_ciktisi_dosya_adi_olarak_yazilabilir(self):
+        """POZITIF KONTROL: temizlenen ad GERCEKTEN yazilabiliyor mu?"""
+        import tempfile
+        kok = Path(tempfile.mkdtemp(prefix="t120_ad_"))
+        hedef = kok / f"{guvenli_ad('vid/eo:1*.mp4')}.png"
+        hedef.write_bytes(b"x")
+        self.assertTrue(hedef.is_file())
+
+    def test_atomik_json_yaz_gecerli_json_birakir_ve_gecici_dosya_kalmaz(self):
+        import tempfile
+        kok = Path(tempfile.mkdtemp(prefix="t120_json_"))
+        hedef = kok / "ozet.json"
+        atomik_json_yaz(hedef, {"durum": "OLCUM_YOK", "n": 3})
+        self.assertEqual(json.loads(hedef.read_text(encoding="utf-8")),
+                         {"durum": "OLCUM_YOK", "n": 3})
+        artik = [p.name for p in kok.iterdir() if p.name != "ozet.json"]
+        self.assertEqual(artik, [], f"gecici dosya kaldi: {artik}")
+
+    def test_atomik_json_yaz_mevcut_dosyayi_yarim_birakmaz(self):
+        """Ustune yazim: eski icerik ya tam eskisi ya tam yenisi olmali."""
+        import tempfile
+        kok = Path(tempfile.mkdtemp(prefix="t120_json2_"))
+        hedef = kok / "ozet.json"
+        atomik_json_yaz(hedef, {"surum": 1})
+        atomik_json_yaz(hedef, {"surum": 2, "ek": "x" * 100})
+        self.assertEqual(json.loads(hedef.read_text(encoding="utf-8"))["surum"], 2)
+
+    def test_sonuc_donustur_semayi_birebir_indirger(self):
+        ham = {"karar_var": 1, "ihlal": True, "min_aciklik_px": 12.5}
+        enj = {"karar_var": 0, "ihlal": None, "min_aciklik_px": None}
+        k = sonuc_donustur("a.jpg", "foto", 7,
+                           {"ham": ham, "enj": enj,
+                            "r_gerekli_px": 10.0, "mpp": 0.05})
+        self.assertEqual(
+            (k.kaynak, k.tur, k.kare_no, k.ham_karar_var, k.ham_ihlal,
+             k.ham_min_aciklik_px, k.enjekte_karar_var, k.enjekte_ihlal,
+             k.r_gerekli_px, k.mpp),
+            ("a.jpg", "foto", 7, True, True, 12.5, False, None, 10.0, 0.05))
+        self.assertIsInstance(k.ham_karar_var, bool, "karar_var bool'a inmedi")
+
+    def test_sonuc_donustur_ciktisi_ozet_zincirine_giriyor(self):
+        """POZITIF KONTROL: donusturulen kayit `guvenlik_ozeti`ni besliyor."""
+        ham = {"karar_var": 1, "ihlal": False, "min_aciklik_px": 30.0}
+        enj = {"karar_var": 1, "ihlal": False, "min_aciklik_px": 30.0}
+        k = sonuc_donustur("a.jpg", "foto", 0,
+                           {"ham": ham, "enj": enj,
+                            "r_gerekli_px": 10.0, "mpp": 0.05})
+        ozet = guvenlik_ozeti([k])
+        self.assertEqual(ozet["n_kare"], 1)
+        self.assertEqual(ozet["olcekli_kare"], 1, "mpp'li kayit olceksiz sayildi")
+        self.assertIn("durum", ozet)
+
+
 if __name__ == "__main__":
     raise SystemExit(main())
