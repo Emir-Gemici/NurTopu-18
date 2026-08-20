@@ -17906,3 +17906,47 @@ z34 ∩ zft          = 0 piksel   (kaybolan pay == v34'un TUM zemin payi)
   (b) için gerçek-doku zemin denetiminin tamamen kaybolması riski D-219'da
   ultralytics kaynağından gösterildi; (d) etiketi hiç değiştirmiyor, kütle
   tablosu 97 ile zaten ölçüldü.
+
+---
+
+### D-231 · 🔴 K5 HİÇBİR MODELDE ÖLÇÜLEMİYOR ÇÜNKÜ ZEMİNİ YANLIŞ: bariyer sorunu DEĞİL, tek referans figüründe HİÇBİR MODEL rota üretemiyor — ve ölçülebilir zemin ZATEN kabul kümesinde var (40 karede 10 aday)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-20 · Ölçüm: `scripts/olcum/63_bariyer_kesisimi.py` üç modelle
+  koşuldu + `results/t126/` zemin araması. **ÖNER-BEKLE:** hiçbir kapı
+  değiştirilmedi (§9.2: eşik/kapı değiştirmek yetkim dışı).
+- **Neden önemli:** K5 `OLCULEMEDI` döndüğü sürece **hiçbir model kabul
+  zincirinden geçemez** (fail-closed, D-180/T105 gereği doğru davranış).
+  Yani T123'ün "iki üretim adayı" hedefi **model kalitesiyle değil ölçüm
+  zeminiyle** bloklu. Bu, saha planına doğrudan etki eder.
+- **ÖLÇÜM (aynı zincir, üç model, `sartname_s9_arena.png`):**
+```
+v34      : karar serit=None · red=UC_BANT_TEMAS_YOK (alt=0/1059px, ust=0/1059px, gereken>=22)
+t121_ft  : karar serit=None · red=UC_BANT_TEMAS_YOK (alt=0/1059px, ust=0/1059px)
+v30      : karar serit=None · red=UC_BANT_TEMAS_YOK (alt=157/1059px, ust=0/1059px)
+BARIYER  : uc modelde de  model ENGEL diyor %100,0  ·  ZEMIN diyor %0,0 / %1,5
+```
+- **HÜKÜM:** K5'in sınamak istediği güvenlik özelliği — bariyerin engel
+  sayılması — **maske düzeyinde ZATEN sağlanıyor (%100)**. Ölçülemeyen şey
+  ROTA × BARİYER kesişimi; çünkü bu figürde **rota hiç doğmuyor**. Kök neden
+  D-229'unkiyle AYNI: figür (YZ üretimi, alan dışı, n=1) modellerin
+  neredeyse hiç segmentleyemediği bir görüntü — K0 orada gürültü baskın,
+  K5 orada ölçülemez.
+- **[SONUC-DEGISTIREN] ÖLÇÜLEBİLİR ZEMİN VAR:** kabul kümesinde
+  (`kabul_kumesi` = `sentetik_arena_kadraj_t66`, K1–K4'ün zaten kullandığı
+  küme) ilk 40 karede: **bariyerli 10 · rota üretilen 40 · İKİSİ BİRDEN 10.**
+  Kıyas: `arena_kompozit` 2 bariyerli / 0 rota · `raw_frames` 15 bariyerli /
+  0 rota (üretim orada zaten fail-closed reddediyor — D-201/D-225).
+  Ham: `scratchpad/k5_zemin_arayisi.json` (repoya kopyalandı:
+  `results/t126/zemin_arayisi.json`).
+- **HAZIR ÖLÇÜM ARACI (kapı DEĞİL):** `scripts/olcum/106_t126_k5_olculebilir_zemin.py`
+  (aynalı) — bariyer dedektörünü 63'ten **import eder** (kopya yok), kümeyi
+  65'in `kabul_kumesi_yolu()`'ndan alır (T125 tek kaynağı), her kare için
+  bariyer/rota/kesişim üçlüsünü yazar. Dört model üzerinde koşulacak ve
+  T122 kıyas kaydına eklenecek.
+- **MİMARA ÖNERİ (karar onun):** K5'in zemini tek OOD figüründen kabul
+  kümesindeki **bariyerli+rotalı alt kümeye** taşınırsa K5 hem ÖLÇÜLEBİLİR
+  hem MODEL AYIRT EDİCİ olur. Üç uyarı: (1) bu kapı tanımı değişikliğidir,
+  eşik/ölçüt yazma yetkisi mimardadır; (2) yeni zemin sentetiktir, D-88/D-99
+  kalıcı kısıtı sürer; (3) figür ölçümü bilgi olarak korunabilir — ama
+  "OLCULEMEDI" ile "GECTI" ayrımı D-180 gereği aynen kalmalı.

@@ -1,0 +1,54 @@
+{
+ "sentetik_arena_kadraj_t66": {
+  "n": 40,
+  "bariyerli": 10,
+  "rota_uretilen": 40,
+  "IKISI_BIRDEN": 10,
+  "ornekler": [
+   {
+    "kare": "sa_000013.jpg",
+    "kutu": 1,
+    "serit": 1,
+    "guven": 1.0
+   },
+   {
+    "kare": "sa_000026.jpg",
+    "kutu": 2,
+    "serit": 2,
+    "guven": 1.0
+   },
+   {
+    "kare": "sa_000029.jpg",
+    "kutu": 1,
+    "serit": 1,
+    "guven": 1.0
+   },
+   {
+    "kare": "sa_000030.jpg",
+    "kutu": 2,
+    "serit": 2,
+    "guven": 0.804
+   },
+   {
+    "kare": "sa_000035.jpg",
+    "kutu": 2,
+    "serit": 1,
+    "guven": 1.0
+   }
+  ]
+ },
+ "arena_kompozit": {
+  "n": 9,
+  "bariyerli": 2,
+  "rota_uretilen": 0,
+  "IKISI_BIRDEN": 0,
+  "ornekler": []
+ },
+ "raw_frames": {
+  "n": 40,
+  "bariyerli": 15,
+  "rota_uretilen": 0,
+  "IKISI_BIRDEN": 0,
+  "ornekler": []
+ }
+}
