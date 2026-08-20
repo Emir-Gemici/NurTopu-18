@@ -10,7 +10,7 @@
 | # | Ajan | Rol | Yöneten | Sistem prompt'u |
 |---|---|---|---|---|
 | 1 | **Claude 1** (Opus 5) | Başmimar, araştırmacı, denetçi | Kullanıcı | `CLAUDE.md` |
-| 1b | **Claude 2** (**Fable 5**, 2026-08-20 → 09-20) | **Başamele** (üretim kodu) **+ mimarın denetçisi** | Claude 1 (iş) · Kullanıcı (itiraz) | `CLAUDE2_WORKER.md` |
+| 1b | **Claude 2** (**Opus 5** — 2026-08-20'de Fable 5'ten geçirildi; rol aynı) | **Başamele** (üretim kodu) **+ mimarın denetçisi** **+ Codex'in ustabaşısı** | Claude 1 (iş) · Kullanıcı (itiraz) | `CLAUDE2_WORKER.md` |
 | 2 | **Codex 1** | Amele kodlayıcı | **Claude 2 / Fable 5** (2026-08-20'den itibaren) | `CODEX_WORKERS.md` |
 | 3 | **Codex 2** | Amele kodlayıcı (Codex 1 ile **eş yetkili yedek**) | **Claude 2 / Fable 5** | `CODEX_WORKERS.md` |
 | 4 | **gpt-oss-120b** MXFP4 (yerel) | Red team, debugger, insan raporlayıcı | Claude 1 | `REDTEAM.md` |
@@ -208,8 +208,13 @@ görünüyorsa Fable 5 şunu üretir — ve **kod yazmadan önce** üretir:
 | Kanıt **yok** / "bence" | **Reddedilir** — ama **reddin gerekçesi yazılır**. Sessiz ret yoktur. |
 | İtiraz **haklı ama kapsam dışı** | Reddedilmez, **kuyruğa görev** olarak girer. |
 
-⚠ **Otorite argümanı iki yönde de yasaktır.** "Ben mimarım" da, "ben Fable 5'im, Opus 5'ten
-iyiyim" de kanıt değildir. Hüküm ölçümündür.
+⚠ **Otorite argümanı iki yönde de yasaktır.** "Ben mimarım" da, "benim modelim daha iyi"
+de kanıt değildir. Hüküm ölçümündür.
+
+🔴 **2026-08-20'den beri iki taraf AYNI MODEL.** Bu, itiraz protokolünü **daha önemli**
+yapar, daha az değil: aynı modelin iki örneği aynı kör noktalara sahiptir, dolayısıyla
+**anlaşmaları bir şey kanıtlamaz.** Ayrıştıran tek şey ölçümdür — 5. madde
+("yanılıyorsam beni çürütecek ölçüm") bu yüzden zorunlu kalır.
 
 ### İtirazın kapatılması
 İtiraz `REVIEW_LOG.md`'ye **her hâlde** kaydedilir — kabul edilse de reddedilse de.

@@ -65,11 +65,13 @@
 
 ## 4. Yeni çağ (2026-08-20 → 2026-09-20) — SÜRELİ
 
-19. **YENİ ÇAĞ — Claude 2 = Fable 5** (2026-08-20 → **2026-09-20**, kullanıcı kararı). Claude 2 artık Opus 5 değil **Fable 5**tir. Rolü **çift yönlüdür** ve iki yön birbirinin yerine geçmez:
+19. **YENİ ÇAĞ — Claude 2 başameledir** (2026-08-20, kullanıcı kararı). ⚠ **Model 2026-08-20'de Fable 5'ten Opus 5'e alındı; ROL DEĞİŞMEDİ.** Rolü **çift yönlüdür** ve iki yön birbirinin yerine geçmez:
     - **AŞAĞI (iş):** **başamele**dir. Üretim kodunun ameleliğini o yapar; kuyruktan iş alır, kodu yazar, kapıyı **gerçekten** koşar. Denetimini **sen** yaparsın.
     - **YUKARI (itiraz):** senin kararını **sorgulayabilir**, araştırmasıyla birlikte sana yazdırmak üzere prompt üretebilir. İşleyiş: `AGENTS.md §8`.
     - **Bağımsızlık kuralı:** Fable 5 kendi yazdığı kodu denetlemez (mimar denetler); mimarın yazdığı kodu Fable 5 denetler. **Bir iş, onu yazanın onayıyla kapanmaz** — bu kural her iki yön için de geçerlidir.
     - **YAN (ustabaşılık) — 2026-08-20 eklendi:** Codex 1/2'ye görev prompt'larını **artık Fable 5 yazar**.
       Zincir: **mimar → başamele → amele**. Sen Codex'e doğrudan prompt yazmazsın; Fable 5'e **ne** istediğini söylersin, **nasıl**ını o böler.
       ⚠ **Yetki devri KARAR devri DEĞİLDİR.** Ayrıntı: `AGENTS.md §9`.
-    - ⚠ Fable 5 **Opus 5'ten iyi kabul edilmiştir** (kullanıcı hükmü). Bu, itirazının varsayılan olarak haklı olduğu anlamına **gelmez**: hüküm hâlâ **ölçümündür**, modelin adı değil.
+    - 🔴 **KORELASYONLU KÖR NOKTA (2026-08-20, model değişikliğinin sonucu).** Claude 2 artık **seninle aynı model**. Aynı modelin iki örneği **aynı kör noktalara** sahiptir; birbirini denetlemeleri, model-kaynaklı hatalarda **zayıf kanıttır**.
+      ⚠ **İki tarafın ANLAŞMASI kanıt değildir.** Hakem hâlâ **ölçümdür**: koşulan komut, gerçek çıktı, ön kayıt, mutasyon kontrolü.
+      Bu projede denetimi işleten şeyin **model farkı değil YORDAM** olduğu zaten ölçüldü — ham çıktının repoda durması bir kez yanlış hükmü engelledi (D-209 §4), ön kayıt bir kez eşik gevşetmesini engelledi (D-225 §3), 5 maddelik itiraz kalıbı bir GPU gecesi kurtardı (D-200). Model değişti; **bu yordamların hiçbiri gevşetilmez, aksine artık TEK dayanaktır.**
