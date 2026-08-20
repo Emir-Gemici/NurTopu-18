@@ -28,8 +28,17 @@ def main() -> int:
     # T128 (D-135): tohum gurultusunu OLCMEK icin; recete DEGISMEZ.
     ap.add_argument("--tohum", type=int, default=None,
                     help="RECETE tohumunu ez (varsayilan: recetedeki 0)")
+    # T128-B (D-251): tohum kolu ETKISIZ cikti; gercek kosum-ici degiskenligi
+    # olcmek icin belirlenimcilik kapatilir. OLCUM kosumu — uretim recetesi
+    # DEGISMEZ.
+    ap.add_argument("--belirsiz", action="store_true",
+                    help="deterministic=False ile kos (T128-B olcumu)")
     args = ap.parse_args()
-    ad = ADLAR[args.kip] if args.tohum is None else f"t122{args.kip}_tohum{args.tohum}"
+    ad = ADLAR[args.kip]
+    if args.belirsiz:
+        ad = f"t122{args.kip}_belirsiz"
+    elif args.tohum is not None:
+        ad = f"t122{args.kip}_tohum{args.tohum}"
     data = KOK / "dataset" / f"karisim_t122{args.kip}.yaml"
     if not data.is_file():
         raise SystemExit(f"karisim yok: {data}")
@@ -40,6 +49,8 @@ def main() -> int:
     kw.update(epochs=40, patience=15)
     if args.tohum is not None:
         kw["seed"] = args.tohum
+    if args.belirsiz:
+        kw["deterministic"] = False
     from ultralytics import YOLO
     print(f"[{ad}] taban={TABAN.name} data={data.name} epochs={kw['epochs']} "
           f"imgsz={kw['imgsz']} batch={kw['batch']}", flush=True)
