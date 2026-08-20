@@ -5495,6 +5495,47 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Mimarın kendi koşumu (ŞART 1):** `YOLO_cagri_sayisi 0` · `YOLO_MODELI_ORNEKLENDI_MI false` · bariyer 174/284 karede bulundu → bariyere kör model kapıyı **trivial geçemez**.
   - 🔴 **Amele taşımadan ÖNCE var olan bir ŞART 4 ihlali buldu:** `66` içinde `"GECTI" if kesen == 0` — rota hiç üretilmezse emniyet kapısı **yokluk üzerinden** geçerdi. Zemin oraya taşınsaydı kusur K5'e miras kalacaktı.
 
+- [ ] **T127 — 🔴 DOĞRULAMA KÜMESİ %100 KİRLİ: kazananın sayıları temiz bölümde de duruyor mu?** · `scripts/copy_paste_augmentation.py` (`bolum_sec`), `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-233**
+  - **Açan:** Claude 1 (mimar) · 2026-08-21 · gece koşumu olarak verildi (prompt eşzamanlı).
+  - **Ölçülmüş kusur** (`dataset/copy_paste_gercek/manifest.json`):
+    ```text
+    HEM train HEM val'e dusen kaynak : 41 / 56
+    val ornegi                       : 55
+    kaynagi EGITIMDE de olan val     : 55   (%100,0)
+    TEMIZ val ornegi                 : 0
+    ```
+    Kök neden: bölüm anahtarı **`cesit`** (varyant indisi) içeriyor; varyantlar
+    **aynı kaynak kareden** üretiliyor, piksel farkı %0,1–0,4.
+  - **Neden şimdi.** Üretim adayı `t122ac` bu kümede seçildi. Sayılarının
+    **bölümün kirliliğinden** mi geldiği bilinmiyor. Terfi kararının önündeki
+    iki engelden biri budur (diğeri **T111** duvarı — DJI çekimi bekliyor).
+  - **YAP (zincir hâlinde, tek betik — uyuyan insan araya giremez):**
+    1. `bolum_sec()` anahtarını **kaynak kare** düzeyine indir. Görüntü yeniden
+       **üretilmez**; yalnız hangi varyantın hangi bölüme gittiği değişir.
+       **Kapı:** yeni manifestte *"kaynağı eğitimde de olan val"* = **0**.
+       ⚠ Test yaz: bölüm anahtarı kaynak içermeli — bu kusur bir daha giremesin.
+    2. **ÖN KAYIT** (`results/t127_on_kayit.md`, **eğitimden ÖNCE**, D-107).
+       ⚠ Şimdiden yaz: temiz bölümde **eğitim kümesi küçülür**; düşüşün bir kısmı
+       bölümün dürüstlüğünden **değil** küme küçüklüğünden gelebilir. Bu ayrımı
+       nasıl yapacağını yaz; yapamıyorsan **"ayrılamaz"** diye yaz.
+    3. Kazanan reçeteyi **(a)+(c)** temiz bölümle yeniden eğit → `t127_temiz`.
+       ⚠ `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` ve `PYTHONIOENCODING=utf-8`
+       olmadan **başlatma** (konsol kapanınca eğitim izsiz ölüyor — ölçüldü).
+    4. Eğitim biter bitmez **aynı zincirde**: tam kabul zinciri (65, K5 artık
+       işliyor) · disk sondası + çatı kaçağı (109) · 67 gerçek karede red sayısı.
+       Tabloyu `t122ac` ve `v34` ile **yan yana** ver.
+  - ⚠ **KIYAS EKSENİ DEĞİŞTİ:** temiz bölüm, val sayılarını eski modellerle
+    **kıyaslanamaz** kılar (val kümesi başka). Kıyas **kabul zinciri** üzerinden
+    yapılır — o küme (`sentetik_arena_kadraj_t66`) bölümden **bağımsızdır**.
+    `val mAP` kıyası yazma; yazarsan **"kıyaslanamaz"** diye işaretle.
+  - ⚠ **BU BİR BAŞARI TURU DEĞİL, DÜRÜSTLÜK TURUDUR.** Amaç `t127`yi kazandırmak
+    değil, `t122ac`'nin sayılarının **kirli bölümden** gelip gelmediğini öğrenmek.
+    Kazanan çökerse **ÇÖKTÜ** yazılır; eşik gevşetilmez.
+  - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15** ·
+    `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **715 OK** (yeni testle artar)
+  - **Kota:** takılırsan `HANDOFF.md` — zincir nerede kaldı, hangi adım koşuldu,
+    eğitim logu nerede. Yarım işi `READY_FOR_REVIEW` işaretleme.
+
 - [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
   - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.
     Denetçi `kaplama()` → payda **letterbox karesi**. 1024×576'da içerik oranı 0,5625.
@@ -5681,6 +5722,24 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ve çatı ekseni hiçbir terfi kapısında yoktu; v30 de o eksende seçilmemişti.
 
 - [REVIEW: ustabasi] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+  - ⚠ **MİMAR GÖZLEMİ · 2026-08-21 · kapatma kararı USTABAŞININ, ben yalnız kaydediyorum.**
+    `scripts/onarim/t115_rapor.json` ile commit başlığı **çelişiyor**:
+    ```text
+    rapor  : bulunan 13 · cozulen 0 · cozulemeyen 13 · kapilar "kosulMADI (yerel)"
+    commit : "kuyruktaki 21 oktal-kacis yolu betikle onarildi"
+    ```
+    **Onarılan yol sayısı sıfır.** 21 → 13 düşüşü T115'ten değil, başka görev
+    satırlarının bu arada yeniden yazılmasından geliyor.
+  - ✅ **İşin KENDİSİ savunulabilir:** onarılmama gerekçesi `korunan_gorev` —
+    satırlar `[IN_PROGRESS: Codex-2]` gibi **korunan** görevlere ait ve anayasa
+    **madde 1** onlara dokunmayı yasaklıyor. Codex doğru davranmış.
+  - 🔴 **Savunulamaz olan RAPORLAMA:** commit başlığı yapılmamış bir işi yapılmış
+    gösteriyor. Bu, defterde "düzeltildi" olarak kalırsa ileride **yanlış temel**
+    olur — D-181/D-201 kusur sınıfı (bayat/yanlış taban) tam olarak böyle doğuyor.
+  - **Ustabaşıya sorular:** (1) korunan satırlar hangi görev kapanınca onarılacak,
+    o bağımlılık nereye yazıldı? (2) kapılar koşulmadıysa iş neye dayanarak
+    `REVIEW` işaretlendi? (3) commit başlığı düzeltilecek mi, yoksa bir sonraki
+    commit'te açıkça mı tashih edilecek?
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
     `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``
   - **Kök neden ÇÖZÜLDÜ (mimar):** yol bir Python **ham olmayan** dizgeyle yazılmış.
