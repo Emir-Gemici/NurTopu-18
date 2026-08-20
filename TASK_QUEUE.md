@@ -1907,6 +1907,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ifadesiyle bu test *"rota aktarımını, ACK'i ve İKA'nın hareket etmesini kanıtlayamaz."*
 
 - [ ] **T18 — DroidCam kamera kaynağının algı hattına bağlanması** · `codes/rpi_inference.py` · bağımlı: **H3**
+  - 🔎 **FİLO 2 · D-215 (2026-08-20):** 3 kanıt cümlesinin 3'ü v34'te yeniden
+    üretilemedi (oy 1/2) — kanıt ARTIK YOK; kapanış/yeniden-gerekçelendirme mimarın.
   - **Yap:** Kamera kaynağını CLI parametresi yap (dosya / video düğümü / RTSP). Bağlantı koparsa yeniden deneme mantığı zaten var, kaynak değişimiyle bozulmadığını doğrula.
   - ⚠ **Kapsam genişledi (D-13):** aynı dosyada **model yolu da sabit kodlu** — `:32-40` her zaman `best_ncnn_model` arar, `--model` argümanı **yok**, `INFER_SIZE = 512` sabit. Jetson'da v17/v20 ile canlı demo bu yüzden koşulamıyor. Model yolunu da CLI parametresi yap.
   - **Yap (hazır referans):** `jetson_paket/kod/kamera_dogrula.py` kaynağı parametrik alan çalışan bir örnektir (indeks / `/dev/videoN` / `http://…:4747/video`); kalıbı oradan al.
@@ -2827,6 +2829,9 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     görevinde yapılmadı.
 
 - [ ] **T53 — Koşulmamış hücre: 11-sınıf ön-eğitim + GERÇEK DOKU karışımı aynı koşuda** · `O:\navitas-local-train` · **TIKAYICI** · kanıt: T50 FAZ 2 tablosu, `karisim_arena_gercek.yaml` başlığı
+  - 🔎 **FİLO 2 · D-215 (2026-08-20):** "koşulmamış hücre" öncülü ARTIK YOK —
+    hücre koşuldu, soyu v34 olarak üretimde (oy 1/2); v34 otopark kaplaması
+    %81,2 (İÇERİK paydası, n=67) ≈ v21 %81,0. Kapanış kararı mimarın.
   - **MİMAR KARARI · 2026-08-12 · Claude 1.** Claude-2 haklı olarak GPU-gecesi
     harcamadan tasarım kararını bana bıraktı. Karar: **eksik hücre koşulacak.**
   - **Kanıt zinciri — hepsi ölçülmüş, ikisi zaten kayıtlı:**
@@ -5475,7 +5480,13 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     dengesizliği · RescueNet etiket kalitesi · çözünürlük/imgsz · güven eşiği.
   - ⚠ "En makul olan" değil **ölçülen** kazanır.
 
-- [ ] **T119 — 🔴 Yayınlanan `road` sözleşmesinin 655 testte DAVRANIŞSAL koruyucusu YOK** · `codes/rpi_inference.py:1349`, `tests/test_rota_serit_etiketi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-209 §2**
+- [x] **T119 — 🔴 Yayınlanan `road` sözleşmesinin 655 testte DAVRANIŞSAL koruyucusu YOK** · `codes/rpi_inference.py:1349`, `tests/test_rota_serit_etiketi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-209 §2**
+  - ✅ **UYGULANDI · 2026-08-20 · Claude-2 (Fable 5) · D-212.** Yeni kapı:
+    `tests/test_t119_yayinlanan_road_kapisi.py` (4 test; sahne `_zikzak`tan import,
+    kopya yok). Mutasyon `rpi_inference.py:1349` darbogaz→baskin →
+    **dosya: 3/4 · takım: 4/659** (3 davranışsal + 1 bayt-kimliği; bayt kanıt
+    SAYILMADI, D-209). Geri alındı, `git status --porcelain` BOŞ. Kapılar:
+    15/15 + discover 659 OK. **Mimar denetimi bekler (madde 19).**
   - **Ölçüldü (mimar koştu).** `open_path = olcum["darbogaz_serit"]` →
     `olcum["baskin_serit"]` mutasyonu:
     ```text
@@ -5495,6 +5506,12 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
     düşmüyorsa bir şey korumuyordur. Bayt kimliği testi kanıt sayılmaz.
 
 - [ ] **T120 — `tests/test_costmap_on_images.py` SIFIR test topluyor: `tests/` altında ama kapı değil** · `tests/test_costmap_on_images.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-209 §1**
+  - 🔎 **ÖLÇÜLDÜ · 2026-08-20 · Claude-2 (Fable 5) · D-213.** 61 dosya tarandı,
+    58'i ≥1 test topluyor. `test_costmap_on_images.py` desen İÇİ + 0 test
+    ([SONUC-DEGISTIREN]; `main()` :229 betiği; `test_costmap_olcum_yok.py:6`
+    import kısıtı) · `arena_kompozit_kapisi.py` ve `t64_hakem_ekrani_kapisi.py`
+    desen DIŞI ve docstring/koşum kanıtıyla KASITLI. Çevir/taşı/bırak kararı
+    MİMARIN; hiçbir dosyaya dokunulmadı.
   - ```text
     grep -cE "TestCase|def test_"  ->  0
     unittest discover -p test_costmap_on_images.py  ->  Ran 0 tests · NO TESTS RAN
@@ -6240,6 +6257,9 @@ avitas-local-train)_sentetik_arena.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **
     biçimde düşür. **KAPI:** renk çeşitliliği düşmesin, kadraj kapıları geçsin.
 
 - [ ] **T61 — Orta şiddetli çökme için ölçüt yok: kaplama+kenar bu sınıfı kaçırıyor** · `codes/karar_sozlesmesi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-86**
+  - 🔎 **FİLO 2 · D-215 (2026-08-20) · SAYI KAYMIŞ:** kanıt karesi `sa_000150`
+    v34'te çökme imzası göstermiyor (kaplama 0,617→0,2914, kenar 0,658→0,0751);
+    YAPISAL ölçüt boşluğu kodda duruyor — gerekçe ayakta, örnek kare bayat.
   - T59'da tavan 0,67'ye çıkınca `sa_000150.jpg` kapıdan **geçmeye** başladı:
     MODEL kaplama 0.617 vs **GT 0.380**, IoU **0.613**, kenar 0.658 vs GT 0.190.
     Model orada gerçekten çökmüş; 0,55 yakalıyordu, 0,67 kaçırıyor.
@@ -7160,6 +7180,9 @@ avitas-local-train\calisma\sentetik_arena_kadraj` (manifest dahil);
     Denetimde sorulacak; doğrulanmadan kullanılmayacak.
 
 - [ ] **T52 — özgün kayıt (mimar denetimi bekliyor)** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
+  - 🔎 **FİLO 2 · D-215 (2026-08-20):** v34'te çakışma yeniden üretilemedi —
+    meşru-maks 0,638 / çöküş-min 0,766 (+0,128 boşluk; 67+260 kare, oy 1/2);
+    kanıt ARTIK YOK, karar mimarın.
   - **Kanıt:** kadraj kümesinin **meşru** azamisi %82,3; otoparkın **çöküş**
     değeri %73,7–82,5. Ham kaplama üst uçta *"her şey boyanmış"* ile *"gerçekten
     açık arena"* hâllerini **ayırt edemiyor**. Görev kadrajında arena görüntüyü
@@ -7393,6 +7416,8 @@ esults	50_uc_kapi\`):
     aynen yazılacak.
 
 - [ ] **T47 — v21'in "geçilebilir" sınıfı bu alanda anlamsız: çatı ve çim yol sayılıyor** · model / veri · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-61 + görsel
+  - 🔎 **FİLO 2 · D-215 (2026-08-20) · SAYI KAYMIŞ:** v21 %74 → v34 %45,67
+    (n=67; ⚠ LETTERBOX paydası — D-214 notuyla oku); 0/67 kare 0,67 tavanını aşıyor.
   - **Kullanıcı bildirdi, gözle doğrulandı.** v21 bu karelerde pratikte
     **"araç mı, değil mi"** ayırıcısı: bina çatısı, çim, toprak — hepsi zemin
     sınıfında; yalnız araçlar engel. Kaplama **%74** (v13'ün çöküş imzası).
@@ -7416,6 +7441,9 @@ esults	50_uc_kapi\`):
     görsel. "Model bozuk/sağlam" ilanı **tek başına mAP ile yapılmayacak** (K-3).
 
 - [ ] **T46 — [BLOKE · D-61] Hakem ekranı HİÇBİR kaynakta rota göstermiyor: `OLCEK_YOK` politikası ekranı öldürdü**
+  - 🔎 **FİLO 2 · D-215 (2026-08-20):** bloke gerekçesi değişmiş — 67/67 ret
+    artık ZEMIN_MASKESI_SUPHELI, OLCEK_YOK 0/67 (mpp katman 3'ten çözülüyor);
+    özgün kanıt ARTIK YOK.
   - 🔴 **BLOKE EDİLDİ · 2026-08-11 · Claude 1.** Bu görevi ben açtım ve teşhisim
     yanlıştı. Varsayılan ölçekle rotaları geri getirmek, hakem ekranında **çatı
     ve çim üzerinden geçen, kendinden emin ve yanlış** rotalar gösterir —
@@ -7499,6 +7527,9 @@ esults	50_uc_kapi\`):
     **15/15** · tam paket **OK**.
 
 - [ ] **T36b — Kompozit arena kaynağı: yer gerçeği uyumu 1/7 · KAPI DÜŞTÜ** · `comms/yks_gui.py` (GUI tarafı bitti) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-59**
+  - 🔴 **FİLO 2 · D-215 (2026-08-20) · KAPANMA ADAYI (oy 2/2):** "ORACLE →
+    RET 7/7" kanıtı bugünkü kodla 7/7 DOĞRU · 0 RET (güven 0,60–1,00) — kanıt
+    ARTIK YOK. Kapatma kararı MİMARIN (ön kayıt kuralı).
   - **✅ GUI tarafı YAPILDI · 2026-08-11 · Claude-2.** `kompozit` kaynağı eklendi
     ve **açılış kaynağı** yapıldı; `drone`/`gemini`/`test`/`val` listede kaldı.
     Bilgi satırı manifest'in beklenen açık şeridini gösteriyor; manifest

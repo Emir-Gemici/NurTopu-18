@@ -17134,3 +17134,111 @@ Brifing "bu bir itiraz değildir" diye açıkça işaretlenmişti ve doğru
 işaretlenmişti: kullanıcı kararının aktarımı itiraz değil **girdidir**.
 Ama içindeki öncül (§3) yine de ölçümle sınandı ve tashih edildi — **girdi
 olması sınanmamasını gerektirmez.**
+
+---
+
+### D-212 · ✅ T119 UYGULANDI · Yayınlanan `road` artık DAVRANIŞSAL kapılı — mutasyon kanıtı "dosya: 3/4 · takım: 4/659" (bayt-kimliği HARİÇ 3 davranışsal düşüş)
+
+- **Yazan:** Claude 2 / Fable 5 (başamele) · 2026-08-20 · dayanak: mimar TUR 2 emri + D-209 §2.
+  **Ön kayıt:** `results/tur2/on_kayit.md` (emirdeki `:1349`ün `rpi_inference.py:1349` olduğu
+  düzeltmesi ölçümden ÖNCE işlendi; karar kuralı değişmedi).
+- **Yeni dosya:** `tests/test_t119_yayinlanan_road_kapisi.py` (4 test). Zikzak sahnesi
+  `test_rota_serit_etiketi._zikzak`ten İMPORT edilir — kopya tutulmaz (tekrarlayan kusur
+  sınıfı: "iki kopya, biri zorlanmıyor"; cross-import emsali `test_costmap_on_images.py:37`).
+  Bağımsız kâhin: dar kapılarda (16/24 px) tek geçiş serit 1'in kapısı → yayınlanan değer 1
+  OLMAK ZORUNDA; alan adı değil YAYINLANAN DEĞER assert edilir.
+- **Üretimle:** `discover -s tests -p test_t119_yayinlanan_road_kapisi.py` → `Ran 4 tests · OK`.
+- **Mutasyon** `rpi_inference.py:1349` `darbogaz_serit`→`baskin_serit`:
+  - **dosya: 3/4** — düşenler: `test_zikzak_yayinlanan_road_yer_gercegidir`
+    (`AssertionError: 3 != 1 : kapi_px=16: tek gecis serit 1'de ama yayinlanan road=3`),
+    `test_zikzak_ayrisan_sahnede_yayin_baskina_esitlenmez`, `test_yayin_darbogaz_sozlesmesine_bagli`.
+    Düşmeyen 1 = sahne-geçerlilik pozitif kontrolü (yayına bakmaz — doğru davranış).
+  - **takım: 4/659** — `Ran 659 tests · FAILED (failures=7)`: 6 alt-test yukarıdaki 3 davranışsal
+    testten + 1 bayt-kimliği (`test_paket_kopyalari_kanonik_kaynaklarla_birebir`,
+    D-209 gereği kanıt SAYILMAZ, ayrıca raporlandı). Mutasyon ÖNCESİ boşluk: yalnız bayt testi.
+- **Geri alma:** yedek-dosya yöntemi; `git status --porcelain -- codes/rpi_inference.py` → BOŞ;
+  geri koyma sonrası 4/4 OK. Mutasyon commit edilmedi.
+- Madde 19: kodu Fable 5 yazdı — **mimar denetimi bekler**, kendi onayımla kapanmaz.
+
+### D-213 · 🔎 T120 ÖLÇÜLDÜ · tests/ 61 dosyanın keşif sayımı: takım desenine girip 0 test toplayan 1 dosya; desen dışı 2 KASITLI kapı betiği — çevir/taşı/bırak kararı MİMARIN
+
+- **Komut:** `scratchpad/t120_kesif.py` — her `.py` için `loader.discover(tests, pattern=<dosya>)`
+  + `countTestCases()`; import hatası ayrı sütun (0 import hatası görüldü). 61 dosyadan 58'i
+  ≥1 test topluyor (takım toplamı 659, T119 dahil).
+- **[SONUC-DEGISTIREN]** `test_costmap_on_images.py`: toplanan=0, takım deseninde EVET.
+  `test_` adı kapı iddiası taşıyor, keşif katkısı SIFIR; gerçekte `__main__` betiği
+  (`main()` :229; CLI koşum örneği TASK_QUEUE:1113). Yeniden adlandırma kısıtı:
+  `test_costmap_olcum_yok.py:6` onu modül olarak import ediyor — birlikte güncellenmeli.
+- **[BILGILENDIRICI]** `arena_kompozit_kapisi.py`: 0 test, desen DIŞI — docstring satır 3
+  açıkça "Bu betik unittest kesfine girmez" der; elle koşulur (TASK_QUEUE:7812). KASITLI tasarım.
+- **[BILGILENDIRICI]** `t64_hakem_ekrani_kapisi.py`: 0 test, desen DIŞI — `main()`/`__main__`
+  betiği, `--cikti` ile koşulur (TASK_QUEUE:6389). KASITLI tasarım.
+- Hiçbir dosya silinmedi/taşınmadı/değiştirilmedi.
+
+### D-214 · 🔎 T118 KALAN İŞ ÖLÇÜLDÜ · 6 letterbox-paydalı "kaplama" değerinin TÜKETİMİ: eşikli kıyas yalnız PAYDA-SADELEŞEN oranlarda; 4 alan rapora giriyor → ADLANDIRMA görevi önerisi
+
+- **Eşiğe girenler (payda ETKİSİZ):** `65_kabul_denetcisi` k0 oranı (figür/taban, 0,5 uyarı
+  bandı :120-124) — AYNI paydalı iki kaplamanın BÖLÜMÜ, payda sadeleşir; T110 gereği
+  BLOKLAMAZ (DİKKAT satırı). `93_t106` BAND_ORANI aynı sınıf (oran; docstring D-139 bunu
+  zaten sözleşmeye bağlamış). `67_onnx:113` kaplama_fark: FARK — işaret/sıfır paydadan
+  bağımsız, yalnız konsol istatistiği (:149-150).
+- **Rapora girip KARARA girmeyenler:** `48_arena_iou.py:163` JSON `kaplama` + `:183`
+  `havuz_kaplama_ortalamasi` · `54_arena_cozunurluk.py:143` JSON `kaplama` ·
+  `scripts/saha_kuru_kosu.py:543` `piksel_orani` (rapor detayı; oradaki GECTI/DUSTU yalnız
+  maske ANAHTAR kümesinden, :544-549).
+- **HÜKÜM (ön kayıt kuralıyla):** eşik/karar bozulması SIFIR. Ama 4 rapor alanı, üretim
+  `zemin_kaplamasi` (İÇERİK paydası) ile aynı/benzer adla FARKLI payda taşıyor — T116'daki
+  %45,7↔%80,6 karışıklığı tam bu sınıftan doğdu (D-201). **GÖREV ÖNERİSİ (karar mimarın):**
+  alan adına payda niteleyici (`kaplama_tuval`) veya kayda `"payda": "tuval|icerik"` alanı;
+  kod davranışı değişmez, yalnız adlandırma sözleşmesi.
+
+### D-215 · ✅ FİLO 2 İŞLENDİ · 23 bayatlık kararı: 13 HÂLÂ GEÇERLİ · 4 SAYI KAYMIŞ · 5 kanıtı ARTIK YOK · kapanma adayı YALNIZ T36b (oy 2/2) — 8 çürütücü SINIFLANDIRICISIZ koştu
+
+- **Kaynak:** `results/filo_turu/ham_filo124.json` (result.filo2.sonuc) — çıkarım MEKANİK
+  (regex, elle liste yok). Oylar "çürüten/2" biçimindedir.
+- **HÂLÂ GEÇERLİ (13):** T15, T16, T17 (not: `--pt` varsayılanı v20→v34 kaymış), T88, T117
+  (gerekçesi; kök neden artık D-210), T115, T107, T99 (iki bağımsız doğrulayıcı: i=10, i=11),
+  T75, T42, S6, S8, T33 (kısmen: çekirdek geçerli; "engel maskesi hiç okunmuyor" parçası artık yok).
+- **SAYI KAYMIŞ (4):** T100 (D-146'nın 230/247 · H2=1 → 238/252 · H2=0; nitel sonuç aynı) ·
+  T61 (`sa_000150` kaplama 0,617→0,2914 — çökme imzası v34'te bu karede yok; YAPISAL ölçüt
+  boşluğu kodda duruyor) · T47 (v21 %74 → v34 %45,67, n=67; 0/67 kare 0,67 tavanını aşıyor —
+  ⚠ bu sayı LETTERBOX paydalıdır, D-201/D-214 notuyla okunmalı) · T38 (öz geçerli; sebep adı
+  BELIRSIZ_COKLU→KAPI_YOK, satırlar :250→:385/:986 kaymış).
+- **Kanıtı ARTIK YOK (5):** T18 (oy 1/2; 3 kanıt cümlesinin 3'ü v34+T73/D-106 sonrası yeniden
+  üretilemedi) · T53 (oy 1/2; "koşulmamış hücre" öncülü düştü — hücre koşuldu, soyu v34) ·
+  T52 (oy 1/2; meşru-maks 0,638 ile çöküş-min 0,766 arası +0,128 boşluk, çakışma yok; 67+260
+  kare) · T46 (67/67 ret ZEMIN_MASKESI_SUPHELI, OLCEK_YOK 0/67 — bloke gerekçesi değişmiş) ·
+  **T36b (oy 2/2 → TEK KAPANMA ADAYI: ORACLE 7/7 DOĞRU · 0 RET, güven 0,60–1,00)**.
+  Kapanma KARARI mimarındır (ön kayıt kuralı).
+- **8 sınıflandırıcısız ÇÜRÜTÜCÜ** (log kanıtı `[f2:curut:i:j]`): T15×2, T16×2, T115×2,
+  T107×2. Ayrıca 11 DOĞRULAYICI raporu aynı işaretle döndü: T15, T16, T115, T107, T100,
+  T75, T61, T46, T36b, T42, T38. Mimar bu kümelere ayrı baksın (TUR 2 emri gereği işaretlendi).
+- **DÜZELTME (D-208'e):** kontrol noktası özetimdeki "kapanma adayı idx18 = T95" aktarımı
+  YANLIŞTI — ham veride i=18 **T36b**'dir. Sıkıştırılmış bağlam aktarım hatası; ham dosya kazanır.
+- **Tamlık eleştirmeni:** T15/T16/T17 kapıları donanımsız ÖLÇÜLEMEZ (`results/fda_butce*` 0,
+  `**/*.engine` 0, `results/jetson_fps_2026*` 0 dosya) — ÖLÇÜLEMEDİ ≠ DÜŞTÜ (D-180); üçü de
+  30 Eylül Jetson gününe zincirli (D-211 §5 takvim riski).
+
+### D-216 · ✅ FİLO 4 İŞLENDİ · 6/6 hipotez ölçüldü ve HİÇBİRİ çatı transferini AÇIKLAMADI; tamlık eleştirmeni "H2 doğrudan sınanmadı" dedi — kök nedeni D-210 buldu: iki tur birbirini TAMAMLIYOR
+
+- **Kaynak:** `results/filo_turu/ham_filo124.json` (result.filo4) + `f4_*.json`. Oylar:
+  6 hipotezin 6'sında da bulgu çürütülmedi (yalnız etiket 1/2 itiraz aldı); ama hiçbir ölçüm
+  çatı-transferini açıklamadı — ön kayıt gereği "uydurma yok" kuralı uygulandı.
+- **gsd** AÇIKLAMIYOR: ölçekleme s=1,08/1,43 → çatı kararı değişmedi, blocked 0,0 (`f4_gsd.json`).
+- **doku** ölçümü: in-domain sağlam bina recall %96,6 — model çatıyı RescueNet İÇİNDE görüyor
+  (`f4_doku.json`; çürütücüleri sınıflandırıcısız koştu, işaretli).
+- **denge** AÇIKLAMIYOR: bina payı %22,4 + recall 0,952 — az-temsil yok (`f4_denge.json`).
+- **etiket(RescueNet)** AÇIKLAMIYOR: 12 karede 1 önemli hata (%8,3) (`f4_etiket.json`; oy 1/2).
+- **imgsz** AÇIKLAMIYOR: 512–1600 arası 8/8 ölçümde çatı hiçbirinde engel değil (`f4_imgsz.json`).
+- **conf** AÇIKLAMIYOR: 0,30/0,10/0,05'te çatı %100 ZEMİN; 0,05'te engel yalnız %0,2 —
+  model KARARSIZ değil, EMİN ve YANLIŞ (`f4_conf.json`).
+- **Tamlık eleştirmeni [SONUC-DEGISTIREN]:** H2 (görünüm/bağlam) doğrudan sınanmadı — ölçülen
+  şey RescueNet-içi seçici öğrenmeydi; karşı-olgusal nakil deneyi (çatı yaması bağlam değiştirip
+  karar değişiyor mu) koşulmadı. Sınanmamış ikinci aday: bakış geometrisi (RescueNet nadir ·
+  WhatsApp kareleri alçak/eğik).
+- **D-210 ile bağ:** Filo 4 NEDEN OLMADIĞINI ölçtü (GSD/denge/RescueNet-etiketi/imgsz/conf
+  değil); mimar D-210 kök nedeni tam da filonun KÖR NOKTASINDA buldu — gerçek-karışım
+  üretecinin KENDİ etiketi (448/448 dosya tam-kare sınıf 0). Filo 4'ün "etiket" hipotezi yalnız
+  RescueNet etiketlerini sınamıştı; tamlık eleştirmeninin işaret ettiği boşluk buydu.
+  Eleme + kök neden birlikte TUTARLI: model çatıyı öğrenmiş, gerçek-karışım verisi
+  "bu çatı zemindir" diye YENİDEN öğretmiş. Sonuç T121/T122'nin gerekçesini güçlendirir.
