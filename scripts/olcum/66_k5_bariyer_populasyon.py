@@ -48,16 +48,47 @@ from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
 
 bariyer_maskesi = import_module("63_bariyer_kesisimi").bariyer_maskesi
 
-KUME = BURASI / "calisma" / "sentetik_arena_kadraj_t66"
+# 🔴 T126 (D-226 sinifi): KUME eskiden `BURASI / "calisma" / ...` idi — betigin
+# KENDI KONUMUNDAN turetiliyordu ve AYNA kopyasinda (scripts/olcum) o dizin YOK.
+# T125'te ayni kusur `65_kabul_denetcisi`de olculdu: bos kume uzerinden K1..K4
+# "DUSTU" raporlanmisti. K5'in zemini artik BURAYA tasindigi icin (D-243) ayni
+# tuzak K5'i de vurabilirdi. Tek kaynak: registry `kabul_kumesi` (fail-closed).
+kabul_kumesi_yolu = import_module("65_kabul_denetcisi").kabul_kumesi_yolu
 CONF = 0.30
+
+
+def k5_populasyon_durumu(olculebilir: int, kesen: int) -> str:
+    """K5'in UC DURUMU — populasyon zemininde (T126 · SART 4 · D-243).
+
+    🔴 KUSUR (T126'da bulundu, bu betikte VARDI): eski hal
+    `"GECTI" if kesen == 0 else "DUSTU"` idi. Hicbir karede rota uretilmezse
+    `kesen = 0` olur ve kapi **GECTI** derdi — yani emniyet kapisi YOKLUK
+    uzerinden gecirilirdi. D-180 kusur sinifinin en tehlikeli bicimi budur ve
+    D-243 SART 4 bunu acikca yasaklar.
+
+    Kural (T105'te K5 icin, T125'te K1..K4 icin yazilan kalibin AYNISI):
+      olculebilir kare = 0            -> OLCULEMEDI  (terfiyi YINE bloklar)
+      olculebilir > 0 ve kesen = 0    -> GECTI
+      kesen > 0                       -> DUSTU
+    ⚠ ESIK DEGISMEZ: olculebilir HER karede kesisim 0 px (D-243 SART 3).
+    "ortalama dusuk" / "%99 temiz" GECTI degildir.
+    """
+    if kesen > 0:
+        return "DUSTU"
+    return "GECTI" if olculebilir > 0 else "OLCULEMEDI"
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", type=Path, required=True)
-    ap.add_argument("--kume", type=Path, default=KUME)
+    ap.add_argument("--kume", type=Path, default=None,
+                    help="varsayilan: registry `kabul_kumesi` (tek kaynak)")
     ap.add_argument("--json", type=Path, default=None)
     args = ap.parse_args()
+    # Fail-closed: kume verilmediyse registry'den; alan/dizin yoksa ACIK HATA
+    # (bos kume uzerinden K5 raporu URETILMEZ — T125/D-226 dersi).
+    if args.kume is None:
+        args.kume = kabul_kumesi_yolu()
 
     man = json.loads((args.kume / "manifest.json").read_text(encoding="utf-8"))
 
@@ -146,8 +177,12 @@ def main():
     print("-" * 64)
     print(f"  GOVDE x BARIYER kesen kare: {kesen}/{rota_var}")
     print(f"  toplam kesisim            : {kesisim_top} px")
-    print(f"  K5                        : "
-          f"{'GECTI' if kesen == 0 else 'DUSTU'}")
+    durum = k5_populasyon_durumu(rota_var, kesen)
+    print(f"  K5                        : {durum}")
+    if durum == "OLCULEMEDI":
+        print("     (olculebilir kare YOK: bariyerli+olcekli karelerde rota "
+              "uretilmedi. Bu 'carpmadi' DEMEK DEGILDIR — kanit yoktur ve "
+              "terfi YINE bloklanir. D-243 SART 4.)")
     print("=" * 64)
     for k in kesenler[:10]:
         print(f"    {k['kare']}  {k['px']} px  r={k['r_px']}  "
@@ -160,7 +195,11 @@ def main():
              "bariyerli": bariyerli, "olcekli": olcekli, "rota_var": rota_var,
              "duyar_ort": float(np.mean(duyar)),
              "duyar_min": float(np.min(duyar)),
-             "kesen": kesen, "kesisim_px": kesisim_top, "kesenler": kesenler},
+             "kesen": kesen, "kesisim_px": kesisim_top, "kesenler": kesenler,
+             # T126: 65 denetcisi bu alanlari OKUR — metinden sayi AYIKLAMAZ
+             # (D-180 kusur sinifi: string parse ile kapi beslemek).
+             "K5_durum": durum, "olculebilir_kare": rota_var,
+             "kume": str(args.kume)},
             ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"\njson -> {args.json}")
 

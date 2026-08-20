@@ -1,0 +1,54 @@
+{
+ "model": "models\\navitas_seg_v30_best.pt",
+ "esikler": {
+  "K1_rota_min": 230,
+  "K2_basma_maks": 0.15,
+  "K3_agir_maks": 0.03,
+  "K4_arena_disi_maks": 0.05
+ },
+ "olcum": {
+  "K0": {
+   "figur": 0.07958137498539877,
+   "raw_frames": {
+    "n": 67,
+    "bos": 0,
+    "ort": 0.3343746697724755
+   },
+   "copy_paste": {
+    "n": 393,
+    "bos": 0,
+    "ort": 0.44973149190422235
+   },
+   "figur_orani": 16.241096935795667,
+   "figur_tabani": 0.0049,
+   "oran_notu": ""
+  },
+  "K1_rota": "258/260",
+  "K2_basma": "14/258",
+  "K3_agir": "0/258",
+  "K4_arena_disi": "1/258",
+  "K14_durum": {
+   "K1": "GECTI",
+   "K2": "GECTI",
+   "K3": "GECTI",
+   "K4": "GECTI"
+  },
+  "K5_durum": "GECTI",
+  "K5_olculebilir_kare": 173,
+  "K5_kesen_kare": 0,
+  "K5_kesisim_px": 0,
+  "K5_bariyerli_kare": 173,
+  "K5_kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "K5_figur_bilgi_px": null,
+  "K5_figur_bilgi_durum": "OLCULEMEDI"
+ },
+ "gecti": {
+  "K0": true,
+  "K1": true,
+  "K2": true,
+  "K3": true,
+  "K4": true,
+  "K5": true
+ },
+ "verdikt": true
+}

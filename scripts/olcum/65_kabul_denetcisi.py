@@ -284,8 +284,43 @@ def main():
     gecti["K3"] = k14["K3"] == "GECTI"
     gecti["K4"] = k14["K4"] == "GECTI"
 
-    # ── K5 · bariyer kesisimi ───────────────────────────────────────────────
-    c, _k5_ok = kos("63_bariyer_kesisimi.py", ["--model", str(args.model)])
+    # ── K5 · bariyer kesisimi — ZEMIN: POPULASYON (T126 · D-243) ────────────
+    # 🔴 ZEMIN TASINDI: eskiden `63_bariyer_kesisimi` TEK OOD figurunde kosardu
+    # ve UC modelde de OLCULEMEDI donuyordu (D-231): o figurde hicbir model rota
+    # uretmiyor. Yeni zemin, kabul kumesinin BARIYERLI + OLCEKLI + ROTALI
+    # karelerdir (`66_k5_bariyer_populasyon.py`, D-243 SART 2).
+    # SART 1 (bariyer MODELDEN GELMEZ): 66, bariyer maskesini `63`ten ITHAL
+    # eder ve LAB a* esigiyle TEMIZ GORUNTUDEN hesaplar — degerlendirilen
+    # modelin maskesi kullanilmaz. Kanit: `results/t126/sart1_kaniti.json`
+    # (dedektor model YUKLENMEDEN kosuldu) ve bariyere KOR sahte model bu
+    # kapidan DUSER (`tests/test_t126_k5_zemini.py`).
+    # SART 3: esik DEGISMEDI — olculebilir HER karede kesisim 0 px.
+    # SART 4: olculebilir kare 0 ise OLCULEMEDI (yokluk GECTI degildir).
+    k5j = BURASI / "results" / "t63" / f"{ad}_k5_populasyon.json"
+    k5j.parent.mkdir(parents=True, exist_ok=True)
+    k5j.unlink(missing_ok=True)                 # bayat json okunmasin (T125)
+    _c5, k5_ok = kos("66_k5_bariyer_populasyon.py",
+                     ["--model", str(args.model), "--json", str(k5j)])
+    k5d = json.loads(k5j.read_text(encoding="utf-8")) \
+        if k5_ok and k5j.is_file() else None
+    if k5d is None:
+        # Alt betik cokmus/JSON yok -> OLCULEMEDI (D-226 kalibi: cokme "0 kesen"
+        # DEGILDIR).
+        sonuc["K5_durum"] = "OLCULEMEDI"
+        sonuc["K5_olculebilir_kare"] = 0
+        sonuc["K5_kesen_kare"] = None
+        sonuc["K5_kesisim_px"] = None
+    else:
+        sonuc["K5_durum"] = k5d["K5_durum"]     # 66'nin SAF fonksiyonu uretti
+        sonuc["K5_olculebilir_kare"] = k5d["olculebilir_kare"]
+        sonuc["K5_kesen_kare"] = k5d["kesen"]
+        sonuc["K5_kesisim_px"] = k5d["kesisim_px"]
+        sonuc["K5_bariyerli_kare"] = k5d["bariyerli"]
+        sonuc["K5_kume"] = k5d["kume"]
+    gecti["K5"] = sonuc["K5_durum"] == "GECTI"  # OLCULEMEDI de bloklar
+
+    # BILGI (kapi DEGIL, D-243): tek figurdeki eski olcum korunur.
+    c, _figur_ok = kos("63_bariyer_kesisimi.py", ["--model", str(args.model)])
     kes = None
     for s in c.splitlines():
         if "ROTA x BARIYER kesisimi" in s:
@@ -293,9 +328,8 @@ def main():
                 kes = int(s.split(":")[1].strip().split()[0])
             except (IndexError, ValueError):
                 pass
-    sonuc["K5_bariyer_px"] = kes
-    sonuc["K5_durum"] = k5_durumu(kes)          # GECTI / DUSTU / OLCULEMEDI
-    gecti["K5"] = k5_gecti(kes)                 # OLCULEMEDI de bloklar
+    sonuc["K5_figur_bilgi_px"] = kes
+    sonuc["K5_figur_bilgi_durum"] = k5_durumu(kes)
 
     # ── RAPOR ───────────────────────────────────────────────────────────────
     print(f"\n{'='*66}\nKABUL DENETIMI · {ad}\n  esikler: REVIEW_LOG D-107 "
@@ -328,12 +362,20 @@ def main():
               " DEGILDIR ama terfi YINE bloklanir: OLCULEMEDI != GECTI."
               " T125 · D-225 §5.)")
     k5d = sonuc["K5_durum"]
+    olc = sonuc.get("K5_olculebilir_kare", 0)
+    kesen_k = sonuc.get("K5_kesen_kare")
     print(f"  K5 BARIYER = 0 px    {k5d:<11} "
-          f"{('%d px' % kes) if kes is not None else 'kesisim OLCULEMEDI'}")
+          f"kesen {kesen_k if kesen_k is not None else '-'}/{olc} kare"
+          f" · toplam {sonuc.get('K5_kesisim_px')} px"
+          f"  [zemin: POPULASYON, T126/D-243]")
+    print(f"{'':23s}bilgi (kapi DEGIL): tek figur "
+          f"{sonuc.get('K5_figur_bilgi_durum')} "
+          f"({sonuc.get('K5_figur_bilgi_px')} px)")
     if k5d == "OLCULEMEDI":
-        print("     (63_bariyer_kesisimi TEK karede kosar; o karede rota"
-              " cikmadiysa kesisim olculemez — bu 'basti' demek DEGILDIR."
-              " Terfi YINE bloklanir: OLCULEMEDI != GECTI.)")
+        print("     (olculebilir kare YOK: bariyerli+olcekli karelerde rota"
+              " uretilmedi ya da alt betik cokTU. Bu 'carpmadi' DEMEK"
+              " DEGILDIR — kanit yoktur. Terfi YINE bloklanir:"
+              " OLCULEMEDI != GECTI. D-243 SART 4.)")
     print("-" * 66)
     if not gecti["K0"]:
         print("  VERDIKT: RED — K0 dustu. v25 ile AYNI sebep, tartisma yok.")

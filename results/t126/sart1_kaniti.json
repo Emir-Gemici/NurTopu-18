@@ -1,0 +1,1432 @@
+{
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+ "n_kare": 284,
+ "YOLO_MODELI_ORNEKLENDI_MI": false,
+ "YOLO_cagri_sayisi": 0,
+ "bariyer_bulunan_kare": 174,
+ "bariyer_px_ort": 1950.5,
+ "dedektor": "63_bariyer_kesisimi.bariyer_maskesi (LAB a* > 25, uzun-ince yatay bilesen)",
+ "hukum": "MODEL-BAGIMSIZ: HICBIR YOLO modeli orneklenmeden 174/284 karede bariyer bulundu",
+ "kayitlar": [
+  {
+   "kare": "sa_000000.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "kutu": 1,
+   "bariyer_px": 546
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000026.jpg",
+   "kutu": 2,
+   "bariyer_px": 1390
+  },
+  {
+   "kare": "sa_000027.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000028.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000029.jpg",
+   "kutu": 1,
+   "bariyer_px": 788
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "kutu": 2,
+   "bariyer_px": 1190
+  },
+  {
+   "kare": "sa_000031.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000033.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000034.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000035.jpg",
+   "kutu": 2,
+   "bariyer_px": 3305
+  },
+  {
+   "kare": "sa_000036.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000037.jpg",
+   "kutu": 2,
+   "bariyer_px": 2293
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "kutu": 1,
+   "bariyer_px": 955
+  },
+  {
+   "kare": "sa_000039.jpg",
+   "kutu": 1,
+   "bariyer_px": 514
+  },
+  {
+   "kare": "sa_000040.jpg",
+   "kutu": 1,
+   "bariyer_px": 1050
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "kutu": 2,
+   "bariyer_px": 868
+  },
+  {
+   "kare": "sa_000042.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "kutu": 2,
+   "bariyer_px": 1566
+  },
+  {
+   "kare": "sa_000044.jpg",
+   "kutu": 3,
+   "bariyer_px": 1554
+  },
+  {
+   "kare": "sa_000045.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000046.jpg",
+   "kutu": 1,
+   "bariyer_px": 2177
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000048.jpg",
+   "kutu": 1,
+   "bariyer_px": 1907
+  },
+  {
+   "kare": "sa_000049.jpg",
+   "kutu": 1,
+   "bariyer_px": 926
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "kutu": 2,
+   "bariyer_px": 1506
+  },
+  {
+   "kare": "sa_000052.jpg",
+   "kutu": 1,
+   "bariyer_px": 717
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "kutu": 3,
+   "bariyer_px": 3149
+  },
+  {
+   "kare": "sa_000054.jpg",
+   "kutu": 2,
+   "bariyer_px": 1681
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "kutu": 2,
+   "bariyer_px": 1992
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "kutu": 1,
+   "bariyer_px": 1046
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "kutu": 1,
+   "bariyer_px": 584
+  },
+  {
+   "kare": "sa_000058.jpg",
+   "kutu": 3,
+   "bariyer_px": 3402
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "kutu": 3,
+   "bariyer_px": 2767
+  },
+  {
+   "kare": "sa_000060.jpg",
+   "kutu": 1,
+   "bariyer_px": 1261
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000063.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000064.jpg",
+   "kutu": 1,
+   "bariyer_px": 1390
+  },
+  {
+   "kare": "sa_000065.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000066.jpg",
+   "kutu": 2,
+   "bariyer_px": 1567
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "kutu": 1,
+   "bariyer_px": 1647
+  },
+  {
+   "kare": "sa_000068.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000069.jpg",
+   "kutu": 3,
+   "bariyer_px": 4850
+  },
+  {
+   "kare": "sa_000070.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000071.jpg",
+   "kutu": 1,
+   "bariyer_px": 765
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "kutu": 1,
+   "bariyer_px": 1107
+  },
+  {
+   "kare": "sa_000073.jpg",
+   "kutu": 2,
+   "bariyer_px": 1577
+  },
+  {
+   "kare": "sa_000074.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000075.jpg",
+   "kutu": 2,
+   "bariyer_px": 1740
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "kutu": 1,
+   "bariyer_px": 2379
+  },
+  {
+   "kare": "sa_000077.jpg",
+   "kutu": 2,
+   "bariyer_px": 1802
+  },
+  {
+   "kare": "sa_000078.jpg",
+   "kutu": 2,
+   "bariyer_px": 1262
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "kutu": 3,
+   "bariyer_px": 3050
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "kutu": 1,
+   "bariyer_px": 2226
+  },
+  {
+   "kare": "sa_000081.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000083.jpg",
+   "kutu": 1,
+   "bariyer_px": 407
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "kutu": 2,
+   "bariyer_px": 2534
+  },
+  {
+   "kare": "sa_000085.jpg",
+   "kutu": 2,
+   "bariyer_px": 1757
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "kutu": 3,
+   "bariyer_px": 2089
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "kutu": 2,
+   "bariyer_px": 1578
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "kutu": 1,
+   "bariyer_px": 784
+  },
+  {
+   "kare": "sa_000089.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "kutu": 1,
+   "bariyer_px": 696
+  },
+  {
+   "kare": "sa_000091.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000093.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000094.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "kutu": 2,
+   "bariyer_px": 2134
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "kutu": 2,
+   "bariyer_px": 2732
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "kutu": 2,
+   "bariyer_px": 2410
+  },
+  {
+   "kare": "sa_000098.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "kutu": 3,
+   "bariyer_px": 2035
+  },
+  {
+   "kare": "sa_000100.jpg",
+   "kutu": 2,
+   "bariyer_px": 1694
+  },
+  {
+   "kare": "sa_000101.jpg",
+   "kutu": 1,
+   "bariyer_px": 1622
+  },
+  {
+   "kare": "sa_000102.jpg",
+   "kutu": 2,
+   "bariyer_px": 2290
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000105.jpg",
+   "kutu": 1,
+   "bariyer_px": 706
+  },
+  {
+   "kare": "sa_000106.jpg",
+   "kutu": 2,
+   "bariyer_px": 4187
+  },
+  {
+   "kare": "sa_000107.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000108.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "kutu": 1,
+   "bariyer_px": 1197
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000111.jpg",
+   "kutu": 2,
+   "bariyer_px": 3294
+  },
+  {
+   "kare": "sa_000112.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000113.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000114.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000115.jpg",
+   "kutu": 2,
+   "bariyer_px": 6618
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "kutu": 1,
+   "bariyer_px": 785
+  },
+  {
+   "kare": "sa_000117.jpg",
+   "kutu": 2,
+   "bariyer_px": 3119
+  },
+  {
+   "kare": "sa_000118.jpg",
+   "kutu": 3,
+   "bariyer_px": 3366
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "kutu": 2,
+   "bariyer_px": 2744
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "kutu": 1,
+   "bariyer_px": 851
+  },
+  {
+   "kare": "sa_000121.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "kutu": 3,
+   "bariyer_px": 4470
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "kutu": 2,
+   "bariyer_px": 2681
+  },
+  {
+   "kare": "sa_000124.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000125.jpg",
+   "kutu": 1,
+   "bariyer_px": 709
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000127.jpg",
+   "kutu": 1,
+   "bariyer_px": 2385
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "kutu": 3,
+   "bariyer_px": 2038
+  },
+  {
+   "kare": "sa_000129.jpg",
+   "kutu": 3,
+   "bariyer_px": 2798
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "kutu": 1,
+   "bariyer_px": 1226
+  },
+  {
+   "kare": "sa_000131.jpg",
+   "kutu": 3,
+   "bariyer_px": 2280
+  },
+  {
+   "kare": "sa_000132.jpg",
+   "kutu": 2,
+   "bariyer_px": 2941
+  },
+  {
+   "kare": "sa_000133.jpg",
+   "kutu": 1,
+   "bariyer_px": 1206
+  },
+  {
+   "kare": "sa_000134.jpg",
+   "kutu": 1,
+   "bariyer_px": 1332
+  },
+  {
+   "kare": "sa_000135.jpg",
+   "kutu": 1,
+   "bariyer_px": 1518
+  },
+  {
+   "kare": "sa_000136.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000137.jpg",
+   "kutu": 1,
+   "bariyer_px": 847
+  },
+  {
+   "kare": "sa_000138.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000139.jpg",
+   "kutu": 3,
+   "bariyer_px": 1663
+  },
+  {
+   "kare": "sa_000140.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000141.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000142.jpg",
+   "kutu": 2,
+   "bariyer_px": 4744
+  },
+  {
+   "kare": "sa_000143.jpg",
+   "kutu": 2,
+   "bariyer_px": 2921
+  },
+  {
+   "kare": "sa_000144.jpg",
+   "kutu": 2,
+   "bariyer_px": 1112
+  },
+  {
+   "kare": "sa_000145.jpg",
+   "kutu": 3,
+   "bariyer_px": 3305
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000147.jpg",
+   "kutu": 3,
+   "bariyer_px": 2103
+  },
+  {
+   "kare": "sa_000148.jpg",
+   "kutu": 3,
+   "bariyer_px": 1715
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "kutu": 2,
+   "bariyer_px": 2760
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "kutu": 2,
+   "bariyer_px": 1541
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "kutu": 2,
+   "bariyer_px": 1722
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "kutu": 3,
+   "bariyer_px": 2086
+  },
+  {
+   "kare": "sa_000153.jpg",
+   "kutu": 1,
+   "bariyer_px": 1690
+  },
+  {
+   "kare": "sa_000154.jpg",
+   "kutu": 1,
+   "bariyer_px": 1204
+  },
+  {
+   "kare": "sa_000155.jpg",
+   "kutu": 1,
+   "bariyer_px": 657
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "kutu": 2,
+   "bariyer_px": 1772
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "kutu": 1,
+   "bariyer_px": 596
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "kutu": 3,
+   "bariyer_px": 5109
+  },
+  {
+   "kare": "sa_000159.jpg",
+   "kutu": 2,
+   "bariyer_px": 2470
+  },
+  {
+   "kare": "sa_000160.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000162.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "kutu": 3,
+   "bariyer_px": 2596
+  },
+  {
+   "kare": "sa_000164.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "kutu": 2,
+   "bariyer_px": 2578
+  },
+  {
+   "kare": "sa_000166.jpg",
+   "kutu": 3,
+   "bariyer_px": 2079
+  },
+  {
+   "kare": "sa_000167.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000168.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000169.jpg",
+   "kutu": 2,
+   "bariyer_px": 5473
+  },
+  {
+   "kare": "sa_000170.jpg",
+   "kutu": 3,
+   "bariyer_px": 2643
+  },
+  {
+   "kare": "sa_000171.jpg",
+   "kutu": 1,
+   "bariyer_px": 1875
+  },
+  {
+   "kare": "sa_000172.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000173.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000175.jpg",
+   "kutu": 1,
+   "bariyer_px": 1084
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "kutu": 1,
+   "bariyer_px": 1421
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "kutu": 1,
+   "bariyer_px": 757
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "kutu": 2,
+   "bariyer_px": 2647
+  },
+  {
+   "kare": "sa_000179.jpg",
+   "kutu": 1,
+   "bariyer_px": 1059
+  },
+  {
+   "kare": "sa_000180.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000181.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "kutu": 2,
+   "bariyer_px": 1399
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "kutu": 2,
+   "bariyer_px": 2205
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "kutu": 1,
+   "bariyer_px": 785
+  },
+  {
+   "kare": "sa_000186.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000187.jpg",
+   "kutu": 1,
+   "bariyer_px": 1366
+  },
+  {
+   "kare": "sa_000188.jpg",
+   "kutu": 3,
+   "bariyer_px": 6882
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "kutu": 1,
+   "bariyer_px": 1184
+  },
+  {
+   "kare": "sa_000190.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000191.jpg",
+   "kutu": 1,
+   "bariyer_px": 1719
+  },
+  {
+   "kare": "sa_000192.jpg",
+   "kutu": 3,
+   "bariyer_px": 4783
+  },
+  {
+   "kare": "sa_000193.jpg",
+   "kutu": 1,
+   "bariyer_px": 1203
+  },
+  {
+   "kare": "sa_000194.jpg",
+   "kutu": 3,
+   "bariyer_px": 3939
+  },
+  {
+   "kare": "sa_000195.jpg",
+   "kutu": 2,
+   "bariyer_px": 3570
+  },
+  {
+   "kare": "sa_000196.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000197.jpg",
+   "kutu": 2,
+   "bariyer_px": 1314
+  },
+  {
+   "kare": "sa_000198.jpg",
+   "kutu": 1,
+   "bariyer_px": 732
+  },
+  {
+   "kare": "sa_000199.jpg",
+   "kutu": 1,
+   "bariyer_px": 757
+  },
+  {
+   "kare": "sa_000200.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "kutu": 3,
+   "bariyer_px": 1612
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "kutu": 3,
+   "bariyer_px": 3033
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "kutu": 3,
+   "bariyer_px": 2531
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "kutu": 2,
+   "bariyer_px": 2811
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "kutu": 1,
+   "bariyer_px": 704
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "kutu": 1,
+   "bariyer_px": 507
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "kutu": 2,
+   "bariyer_px": 1663
+  },
+  {
+   "kare": "sa_000208.jpg",
+   "kutu": 1,
+   "bariyer_px": 591
+  },
+  {
+   "kare": "sa_000209.jpg",
+   "kutu": 3,
+   "bariyer_px": 1877
+  },
+  {
+   "kare": "sa_000210.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000211.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "kutu": 3,
+   "bariyer_px": 1937
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "kutu": 1,
+   "bariyer_px": 905
+  },
+  {
+   "kare": "sa_000214.jpg",
+   "kutu": 2,
+   "bariyer_px": 5543
+  },
+  {
+   "kare": "sa_000215.jpg",
+   "kutu": 2,
+   "bariyer_px": 960
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000217.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "kutu": 3,
+   "bariyer_px": 2104
+  },
+  {
+   "kare": "sa_000219.jpg",
+   "kutu": 1,
+   "bariyer_px": 530
+  },
+  {
+   "kare": "sa_000220.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000221.jpg",
+   "kutu": 2,
+   "bariyer_px": 2401
+  },
+  {
+   "kare": "sa_000222.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000223.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000224.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000226.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000227.jpg",
+   "kutu": 1,
+   "bariyer_px": 838
+  },
+  {
+   "kare": "sa_000228.jpg",
+   "kutu": 3,
+   "bariyer_px": 3085
+  },
+  {
+   "kare": "sa_000229.jpg",
+   "kutu": 3,
+   "bariyer_px": 2117
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "kutu": 2,
+   "bariyer_px": 2728
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "kutu": 3,
+   "bariyer_px": 3580
+  },
+  {
+   "kare": "sa_000232.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000233.jpg",
+   "kutu": 2,
+   "bariyer_px": 1822
+  },
+  {
+   "kare": "sa_000234.jpg",
+   "kutu": 3,
+   "bariyer_px": 3060
+  },
+  {
+   "kare": "sa_000235.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000236.jpg",
+   "kutu": 2,
+   "bariyer_px": 2864
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "kutu": 3,
+   "bariyer_px": 4267
+  },
+  {
+   "kare": "sa_000238.jpg",
+   "kutu": 1,
+   "bariyer_px": 1652
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "kutu": 3,
+   "bariyer_px": 2316
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "kutu": 3,
+   "bariyer_px": 2530
+  },
+  {
+   "kare": "sa_000241.jpg",
+   "kutu": 2,
+   "bariyer_px": 2936
+  },
+  {
+   "kare": "sa_000242.jpg",
+   "kutu": 1,
+   "bariyer_px": 1096
+  },
+  {
+   "kare": "sa_000243.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "kutu": 2,
+   "bariyer_px": 1935
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "kutu": 2,
+   "bariyer_px": 1856
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000248.jpg",
+   "kutu": 1,
+   "bariyer_px": 734
+  },
+  {
+   "kare": "sa_000249.jpg",
+   "kutu": 1,
+   "bariyer_px": 1935
+  },
+  {
+   "kare": "sa_000250.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000251.jpg",
+   "kutu": 2,
+   "bariyer_px": 2048
+  },
+  {
+   "kare": "sa_000252.jpg",
+   "kutu": 1,
+   "bariyer_px": 1069
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "kutu": 2,
+   "bariyer_px": 1678
+  },
+  {
+   "kare": "sa_000254.jpg",
+   "kutu": 3,
+   "bariyer_px": 2918
+  },
+  {
+   "kare": "sa_000255.jpg",
+   "kutu": 1,
+   "bariyer_px": 730
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "kutu": 2,
+   "bariyer_px": 1652
+  },
+  {
+   "kare": "sa_000257.jpg",
+   "kutu": 3,
+   "bariyer_px": 2654
+  },
+  {
+   "kare": "sa_000258.jpg",
+   "kutu": 1,
+   "bariyer_px": 656
+  },
+  {
+   "kare": "sa_000259.jpg",
+   "kutu": 1,
+   "bariyer_px": 955
+  },
+  {
+   "kare": "sa_000000.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "kutu": 1,
+   "bariyer_px": 1201
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "kutu": 1,
+   "bariyer_px": 1050
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "kutu": 1,
+   "bariyer_px": 714
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "kutu": 1,
+   "bariyer_px": 575
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "kutu": 1,
+   "bariyer_px": 729
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "kutu": 2,
+   "bariyer_px": 1268
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "kutu": 3,
+   "bariyer_px": 2804
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "kutu": 2,
+   "bariyer_px": 1375
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "kutu": 1,
+   "bariyer_px": 758
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "kutu": 1,
+   "bariyer_px": 657
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "kutu": 0,
+   "bariyer_px": 0
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "kutu": 2,
+   "bariyer_px": 2774
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "kutu": 1,
+   "bariyer_px": 747
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "kutu": 2,
+   "bariyer_px": 1540
+  }
+ ]
+}

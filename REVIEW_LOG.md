@@ -18581,3 +18581,109 @@ K5 ölçülebilir hâle gelirse **üç aday da (v30 · v34 · t122ac) ilk kez ta
 zincirinden geçebilir** ve T123'ün "iki üretim adayı" hedefi model kalitesiyle
 değerlendirilebilir. Şu an hedef **ölçüm zemini yüzünden** bloklu, model
 kalitesi yüzünden değil.
+
+---
+
+### D-244 · ✅ T126 UYGULANDI · K5'in zemini POPÜLASYONA taşındı; dört ŞART da testle kilitli. Dört modelin dördü de artık tam zinciri geçiyor — ve 66'da ŞART 4'ü ihlal eden GİZLİ BİR KUSUR bulundu
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (madde 19; ⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-20.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py → 15/15` ·
+  `discover -s tests -q → Ran 715 · OK` (702 → 715: +13 yeni kapı).
+- **Codex'e bölünmedi (§9.1 gerekçesi):** iş yerel GPU (dört model × 260 kare),
+  yerel kabul kümesi ve `codes/` import zinciri ister; bulut Codex koşamaz.
+  Codex'e paralel olarak PORTATİF bir iş verildi (T115 metinsel onarım).
+
+#### 1. 🔴 ÖNCE BULUNAN KUSUR — ŞART 4, TAŞIMADAN ÖNCE ZATEN İHLALDİ
+`66_k5_bariyer_populasyon.py` K5'i şöyle raporluyordu:
+`"GECTI" if kesen == 0 else "DUSTU"`. Hiçbir karede rota üretilmezse
+`kesen = 0` olur ve kapı **GEÇTİ** derdi — yani emniyet kapısı **yokluk
+üzerinden** geçirilirdi. D-243 ŞART 4'ün açıkça yasakladığı biçim budur ve
+zemin oraya taşınsaydı kusur K5'e miras kalacaktı. **Düzeltildi:**
+`k5_populasyon_durumu(olculebilir, kesen)` saf fonksiyonu — T105 (K5) ve
+T125 (K1–K4) kalıbının aynısı; yeni kalıp icat edilmedi.
+
+#### 2. ŞART 1 — BARİYER MODELDEN GELMİYOR (ölçümle kanıtlandı, kod okumasıyla değil)
+- **(a) Model örneklenmeden bariyer bulunuyor:** `113_t126_sart1_kaniti.py`
+  `ultralytics.YOLO`'yu SAYAÇLA sarar ve ölçüm sonunda sayacı raporlar.
+  ⚠ "ultralytics import edilmedi" YETERSİZ bir iddiadır (`rpi_inference` onu
+  modül düzeyinde yükler); doğru iddia **hiçbir model örneklenmedi**dir.
+```
+YOLO_cagri_sayisi        : 0
+bariyer bulunan kare     : 174 / 284
+bariyer_px ortalamasi    : 1950,5
+dedektor                 : LAB a* > 25, uzun-ince yatay bilesen (63'ten ITHAL)
+```
+  Ham: `results/t126/sart1_kaniti.json`.
+- **(b) Bariyere KÖR model DÜŞÜYOR:** kapalı bariyerli sentetik sahnede kör
+  modelin ürettiği düz rota bariyeri keser → `k5_populasyon_durumu(1, 1)` =
+  **DUSTU**. Bariyer modelden gelseydi kesişim 0 çıkar ve kapı ödüllendirirdi.
+- **(c) YAPISAL KİLİT:** AST ile doğrulanır — 66 `bariyer_maskesi`yi ÇAĞIRIR
+  ve bariyer değişkeni `mk[...]`/`trav`/`blok`/`get_masks`'ten TÜRETİLEMEZ.
+  Davranışsal kanıt tek başına yetmez; biri kodu değiştirirse bu yakalar.
+
+#### 3. ŞART 2 — POPÜLASYON (n=1 değil)
+Kabul kümesinin **284 karesi** tarandı; **bariyerli 174**, bunlardan ölçekli
+ve rotalı olanlar K5'e girdi: modele göre **172–173 ölçülebilir kare**.
+Kalıp icat edilmedi — mevcut `66` (D-114/D-115 dersleriyle yazılmış: C-uzayı
+yarıçapıyla kalınlaştırma, ölçeksiz kare ölçüme girmez) kullanıldı.
+⚠ 66'nın kümesi de registry'den okunacak şekilde düzeltildi: eskiden
+`BURASI / "calisma" / ...` idi — **T125/D-226 ile aynı tuzak**; ayna
+kopyasında dizin yok, K5 sessizce boş küme üzerinden raporlanabilirdi.
+
+#### 4. ŞART 3 — EŞİK DEĞİŞMEDİ
+Ölçüt `kesişim = 0 px`, **ölçülebilir HER karede**. Testle kilitli:
+`kesen ∈ {1,2,5}` → hepsi DUSTU ("ortalama düşük" GEÇTİ değildir).
+Eşik yazma yetkim yok (§9.2); değiştirilmedi, önerilmedi.
+
+#### 5. ŞART 4 — ÖLÇÜLEMEDİ AYAKTA
+`olculebilir = 0` → **OLCULEMEDI** (GEÇTİ değil), terfiyi yine bloklar.
+Alt betik çökerse/JSON yoksa da OLCULEMEDI (D-226 kalıbı, çökme "0 kesen"
+değildir). 65'in verdikt eşlemesi yalnız GEÇTİ'yi geçirir.
+
+#### 6. KAPININ KENDİSİ SINANDI (T120 dersi)
+`tests/test_t126_k5_zemini.py` (13 test). İki mutasyon:
+```
+mutasyon 1: uc durum -> eski iki durumlu hal ("GECTI" if kesen==0)
+            -> dosya: 1/12 · takim: 2/714
+            dusenler: test_olculebilir_sifir_OLCULEMEDI_dir_GECTI_DEGIL
+                      + test_olcum_ayna_senkronu (⚠ MUTASYON YAN ETKISI:
+                        yalniz repo kopyasi degistirildi — gercek yakalama 1)
+mutasyon 2: bariyer MODELIN blok maskesinden turetildi (SART 1 ihlali)
+            -> dosya: 1/13 · dusen: test_66_bariyeri_MODEL_MASKESINDEN_turetmiyor
+POZITIF KONTROL: kapidan gecen temiz rota -> kesisim 0 -> GECTI (kapi her
+seyi dusurmuyor)
+```
+Her iki mutasyon geri alındı; ayna 73 çift senkron, `git status` temiz.
+
+#### 7. DÖRT MODEL — YENİ K5 İLE TAM ZİNCİR
+| kapı | v30 | v34 ÜRETİM | t121_ft (c) | t122ac (a)+(c) |
+|---|---|---|---|---|
+| K0 | GEÇTİ %7,96 (oran 16,24 ⚠) | GEÇTİ %0,49 | GEÇTİ %0,15 (0,30) | GEÇTİ %1,55 (3,17 ⚠) |
+| K1 | 258/260 | 258/260 | 259/260 | 257/260 |
+| K2 | 14/258 | 12/258 | 12/259 | 16/257 |
+| K3 | 0/258 | 0/258 | 0/259 | 1/257 |
+| K4 | 1/258 | 1/258 | 1/259 | 0/257 |
+| **K5 (YENİ ZEMİN)** | **GEÇTİ 0/173** | **GEÇTİ 0/172** | **GEÇTİ 0/173** | **GEÇTİ 0/172** |
+| K5 figür (BİLGİ, kapı değil) | ÖLÇÜLEMEDİ | ÖLÇÜLEMEDİ | ÖLÇÜLEMEDİ | ÖLÇÜLEMEDİ |
+| **VERDİKT** | ÜRETİME ALINIR | ÜRETİME ALINIR | ÜRETİME ALINIR | ÜRETİME ALINIR |
+Ham: `results/t126/kabul/*.json`.
+
+#### 8. 🔴 DÜRÜST OKUMA — K5 ARTIK AYIRT ETMİYOR
+Dört modelin dördü de K5'i geçiyor. Bu, kapının işe yaramadığı anlamına
+gelmez ama **şu anki adaylar arasında ayrım üretmediği** anlamına gelir:
+- Kapının **düşebildiği** gösterildi (mutasyon 1-2 + kör model senaryosu).
+- Tarihsel kanıt: `66`nın kendi belgelenmiş sayıları **v33 için 1/173**
+  (gerçek bir model bu kapıdan düşmüştü).
+- Ölçülen olgu: bariyer duyarlılığı ~%99 ve hiçbir modelin rotası, C-uzayı
+  yarıçapıyla kalınlaştırıldığında bile bariyere değmiyor.
+⚠ Bu kapının **artık gereksiz olduğu** anlamına GELMEZ: emniyet kapıları
+ihlal olmadığı sürece sessizdir. Ama **terfi kararında ayırt edici değildir**
+ve öyle kullanılmamalıdır.
+
+#### 9. SONUÇ — KARAR DEĞİŞTİREN
+D-237/D-242'de "t122ac ölçülebilir her kapıyı geçen tek aday; yalnız K5
+blokluyor" yazılmıştı. **K5 artık ölçülebilir ve dördü de geçiyor** →
+kabul zinciri artık hiçbir adayı bloklamıyor. Yani seçim tamamen
+**D-242 §3'ün işaret ettiği eksene** kayıyor: seçim kanıtı ALAN-İÇİ.
+⚠ Bu bir TERFİ ÖNERİSİ DEĞİLDİR; seçim ve sevk **insanındır** (D-133).
