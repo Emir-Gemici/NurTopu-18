@@ -18339,3 +18339,53 @@ t122ac (a)+(c)           0,3968 (%39,7)         %12  (kalan %88 ETIKETSIZ)
   3. (d) tek başına çözmüyor · 4. (a) K0 körlükten RED · 5. (b) ölçülmedi.
 - ⚠ **Bu kayıt D-237'nin ölçümlerini değiştirmez; YORUMUNU düzeltir.** İki
   kayıt birlikte okunmalıdır.
+
+---
+
+### D-240 · 🔴 D-239'DAKİ KENDİ SPEKÜLASYONUMU ÖLÇÜMLE ÇÜRÜTTÜM · Gerçek otopark **%47–52** sürülebilir; 0,67 tavanı gerçeğin ÜSTÜNDE. (c)'nin 0,734'ü FAZLA görmek, (a)+(c)'nin 0,455'i gerçeğe EN YAKIN
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20 · Betik (aynalı):
+  `112_t118_tavan_gercekligi.py` · Ham: `results/t118/tavan_gercekligi.json`.
+  🔴 **Eşik DEĞİŞTİRİLMEDİ, ÖNERİLMEDİ** (§9.2) — bu bir ölçümdür.
+- **Neden koşuldu:** D-239'da "tavan doğru çalışan bir modeli reddediyor
+  OLABİLİR" diye yazmıştım. Bu bir **spekülasyondu**; ölçmeden bırakmadım.
+- **YÖNTEM — iki sınır (payda AÇIK: ham 1024×576 tam kare = içerik kutusu):**
+  - **İYİMSER (üst sınır, MODEL KULLANMAZ):** zemin = kare − (71 etiketi
+    engel ∪ ELLE çizilmiş çatı). 71'in kaçırdığı engeller zemin sayılır →
+    gerçekten BÜYÜK.
+  - **MUHAFAZAKÂR (alt sınır):** yukarıdakinden ayrıca v34 ve t122ac'nin
+    engel dediği her piksel çıkarılır. ⚠ Bu sınır o iki modeli kullandığı
+    için onlar açısından DAİRESELDİR; aşağıdaki hüküm **model kullanmayan
+    ÜST sınıra** dayanır.
+- **SONUÇ (56 kare):**
+```
+IYIMSER (modelsiz)   medyan 0,5169  · ort 0,5043
+MUHAFAZAKAR          medyan 0,4704  · ort 0,4564
+tavani (0,67) asan kare:  IYIMSER 0/56  ·  MUHAFAZAKAR 0/56
+```
+- **HÜKÜM — D-239 §"asıl soru" DÜŞTÜ:** tavan gerçeğin ALTINDA değil,
+  **ÜSTÜNDE**. Hiçbir karede gerçek sürülebilir oran 0,67'yi aşmıyor.
+  Dolayısıyla 67/67 red, "tavan haksız" demek değil; **modeller gerçekten
+  fazla zemin görüyor** demektir.
+- **KIYAS (aynı payda):**
+```
+gercek (modelsiz ust sinir)   ~0,517
+v34 URETIM                     0,800   <- cok fazla (cati dahil)
+t121_ft (c)                    0,734   <- HALA cok fazla
+t122ac (a)+(c)                 0,455   <- gercege EN YAKIN (hafif muhafazakar)
+```
+- **D-238'in yeniden okunması:** (a)+(c)'nin "kaybettiği" çatı-dışı zeminin
+  büyük kısmı, v34'ün **zaten hatalı** saydığı alandır. Kayıp mutlak bir
+  yetenek kaybı değil, büyük ölçüde **hatanın geri alınmasıdır**. Ne kadarının
+  gerçek kayıp olduğu ayrıca ölçülmeli (üst sınırla 0,455 arasındaki ~6 puan).
+- **SIRALAMA (ikinci kez düzeltildi — bu kez ölçümle):**
+  1. **(a)+(c)** — çatı kaçağı %2, kaplaması bağımsız gerçek tahminine en
+     yakın, K0–K4 geçti, K5 ölçülebilir zeminde temiz.
+  2. **(c)** — çatıyı çeviriyor ama hâlâ gerçeğin ~%42 üstünde zemin görüyor.
+  3. (d) · 4. (a) (K0 kör) · 5. (b) (ölçülmedi).
+- ⚠ **Üç kayıt birlikte okunmalı: D-237 (ölçüm) → D-239 (yorum düzeltmesi) →
+  D-240 (yorumun kendisinin çürütülmesi).** Sıralamayı üç kez ölçüm belirledi,
+  benim gerekçelendirmem iki kez yanıldı. Seçim ve terfi yine mimarın/insanın.
+- **Sınır:** "gerçek" tahmini 71 etiketleri + elle çatı maskelerine dayanır;
+  71 bazı engelleri kaçırır (o yüzden ÜST sınır), gerçek değer daha da
+  düşük olabilir — bu, hükmü GÜÇLENDİRİR, zayıflatmaz.

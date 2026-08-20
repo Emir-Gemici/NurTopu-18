@@ -1,0 +1,294 @@
+{
+ "n": 56,
+ "tavan": 0.67,
+ "payda": "TAM KARE (gercek kareler letterbox DEGIL: 1024x576 ham)",
+ "iyimser_medyan": 0.5169,
+ "iyimser_ort": 0.5043,
+ "muhafazakar_medyan": 0.4704,
+ "muhafazakar_ort": 0.4564,
+ "iyimser_tavani_asan_kare": 0,
+ "muhafazakar_tavani_asan_kare": 0,
+ "yorum_kurali": "IKI sinir da tavanin USTUNDEYSE tavan gercegin altindadir ve DOGRU bir model de reddedilir; alt sinir altta kaliyorsa soru ACIKTIR.",
+ "kayitlar": [
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768",
+   "iyimser_zemin": 0.5599,
+   "muhafazakar_zemin": 0.5052
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816",
+   "iyimser_zemin": 0.5659,
+   "muhafazakar_zemin": 0.5119
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936",
+   "iyimser_zemin": 0.5932,
+   "muhafazakar_zemin": 0.5451
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008",
+   "iyimser_zemin": 0.6284,
+   "muhafazakar_zemin": 0.5679
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152",
+   "iyimser_zemin": 0.6254,
+   "muhafazakar_zemin": 0.5734
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200",
+   "iyimser_zemin": 0.617,
+   "muhafazakar_zemin": 0.5531
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224",
+   "iyimser_zemin": 0.5543,
+   "muhafazakar_zemin": 0.503
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248",
+   "iyimser_zemin": 0.5242,
+   "muhafazakar_zemin": 0.4726
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272",
+   "iyimser_zemin": 0.55,
+   "muhafazakar_zemin": 0.4913
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320",
+   "iyimser_zemin": 0.5149,
+   "muhafazakar_zemin": 0.471
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000",
+   "iyimser_zemin": 0.4992,
+   "muhafazakar_zemin": 0.4295
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336",
+   "iyimser_zemin": 0.473,
+   "muhafazakar_zemin": 0.4275
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648",
+   "iyimser_zemin": 0.4986,
+   "muhafazakar_zemin": 0.448
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912",
+   "iyimser_zemin": 0.4876,
+   "muhafazakar_zemin": 0.4302
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960",
+   "iyimser_zemin": 0.4662,
+   "muhafazakar_zemin": 0.3975
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008",
+   "iyimser_zemin": 0.5332,
+   "muhafazakar_zemin": 0.4553
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416",
+   "iyimser_zemin": 0.5071,
+   "muhafazakar_zemin": 0.4448
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440",
+   "iyimser_zemin": 0.5118,
+   "muhafazakar_zemin": 0.4566
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488",
+   "iyimser_zemin": 0.5379,
+   "muhafazakar_zemin": 0.4752
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944",
+   "iyimser_zemin": 0.3833,
+   "muhafazakar_zemin": 0.3325
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992",
+   "iyimser_zemin": 0.3661,
+   "muhafazakar_zemin": 0.3177
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040",
+   "iyimser_zemin": 0.335,
+   "muhafazakar_zemin": 0.3004
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088",
+   "iyimser_zemin": 0.3175,
+   "muhafazakar_zemin": 0.2808
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112",
+   "iyimser_zemin": 0.301,
+   "muhafazakar_zemin": 0.2749
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160",
+   "iyimser_zemin": 0.2773,
+   "muhafazakar_zemin": 0.2555
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000",
+   "iyimser_zemin": 0.4268,
+   "muhafazakar_zemin": 0.3769
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168",
+   "iyimser_zemin": 0.4283,
+   "muhafazakar_zemin": 0.383
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192",
+   "iyimser_zemin": 0.4186,
+   "muhafazakar_zemin": 0.3751
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240",
+   "iyimser_zemin": 0.4111,
+   "muhafazakar_zemin": 0.3788
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264",
+   "iyimser_zemin": 0.4213,
+   "muhafazakar_zemin": 0.3838
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288",
+   "iyimser_zemin": 0.4251,
+   "muhafazakar_zemin": 0.3903
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336",
+   "iyimser_zemin": 0.4488,
+   "muhafazakar_zemin": 0.4119
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384",
+   "iyimser_zemin": 0.4603,
+   "muhafazakar_zemin": 0.4297
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432",
+   "iyimser_zemin": 0.492,
+   "muhafazakar_zemin": 0.4556
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480",
+   "iyimser_zemin": 0.5008,
+   "muhafazakar_zemin": 0.4707
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504",
+   "iyimser_zemin": 0.5298,
+   "muhafazakar_zemin": 0.5
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600",
+   "iyimser_zemin": 0.633,
+   "muhafazakar_zemin": 0.5934
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624",
+   "iyimser_zemin": 0.6244,
+   "muhafazakar_zemin": 0.5786
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648",
+   "iyimser_zemin": 0.5899,
+   "muhafazakar_zemin": 0.5548
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672",
+   "iyimser_zemin": 0.5763,
+   "muhafazakar_zemin": 0.5417
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696",
+   "iyimser_zemin": 0.5475,
+   "muhafazakar_zemin": 0.5083
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720",
+   "iyimser_zemin": 0.5389,
+   "muhafazakar_zemin": 0.4918
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792",
+   "iyimser_zemin": 0.5239,
+   "muhafazakar_zemin": 0.479
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840",
+   "iyimser_zemin": 0.5065,
+   "muhafazakar_zemin": 0.4611
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888",
+   "iyimser_zemin": 0.4986,
+   "muhafazakar_zemin": 0.458
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936",
+   "iyimser_zemin": 0.5139,
+   "muhafazakar_zemin": 0.4688
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984",
+   "iyimser_zemin": 0.5188,
+   "muhafazakar_zemin": 0.4701
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032",
+   "iyimser_zemin": 0.5383,
+   "muhafazakar_zemin": 0.4911
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080",
+   "iyimser_zemin": 0.5339,
+   "muhafazakar_zemin": 0.4857
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104",
+   "iyimser_zemin": 0.5412,
+   "muhafazakar_zemin": 0.491
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248",
+   "iyimser_zemin": 0.5795,
+   "muhafazakar_zemin": 0.5073
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296",
+   "iyimser_zemin": 0.5729,
+   "muhafazakar_zemin": 0.5205
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320",
+   "iyimser_zemin": 0.606,
+   "muhafazakar_zemin": 0.5378
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344",
+   "iyimser_zemin": 0.6025,
+   "muhafazakar_zemin": 0.5361
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000",
+   "iyimser_zemin": 0.5555,
+   "muhafazakar_zemin": 0.5043
+  },
+  {
+   "kare": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456",
+   "iyimser_zemin": 0.4482,
+   "muhafazakar_zemin": 0.401
+  }
+ ]
+}
