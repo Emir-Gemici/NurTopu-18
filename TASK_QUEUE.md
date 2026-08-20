@@ -5602,7 +5602,7 @@ avitas-local-train)_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md
   - ⚠ **v34 terfisi GERİ ALINMAZ** — arena kabul kapılarında v30'u geçti (D-181)
     ve çatı ekseni hiçbir terfi kapısında yoktu; v30 de o eksende seçilmemişti.
 
-- [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+- [IN_PROGRESS: Codex-1] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
   - **Kanıt.** `grep -cE '^avitas-local-train' TASK_QUEUE.md` → **21**. Örnek (satır 5284):
     `` `O: `` + satır sonu + `` avitas-local-train5_kabul_denetcisi.py:101-111` ``
   - **Kök neden ÇÖZÜLDÜ (mimar):** yol bir Python **ham olmayan** dizgeyle yazılmış.
