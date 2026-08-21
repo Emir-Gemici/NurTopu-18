@@ -1,0 +1,129 @@
+{
+ "model": "models\\navitas_seg_v34_best.pt",
+ "sigma": 2.0,
+ "tekrar": 3,
+ "n": 260,
+ "kararsiz": 4,
+ "cevrilenler": [
+  {
+   "kare": "sa_000066.jpg",
+   "kararlar": [
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 25.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 25.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    }
+   ],
+   "pay_px": 10.919999999999998
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "kararlar": [
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 68.5906982421875
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 33.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 34.353492736816406
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 29.984498977661133
+    }
+   ],
+   "pay_px": 54.5106982421875
+  },
+  {
+   "kare": "sa_000172.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 26.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 24.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 24.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 25.0
+    }
+   ],
+   "pay_px": 11.919999999999998
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "kararlar": [
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 88.0
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 64.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 83.0
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 62.544193267822266
+    }
+   ],
+   "pay_px": 73.92
+  }
+ ]
+}

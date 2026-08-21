@@ -36,7 +36,16 @@ sys.path.insert(0, str(REPO / "codes"))
 from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            _preprocess, analyze_path, get_masks)
 
-KUME = BURASI / "calisma" / "sentetik_arena_kadraj_t66"
+# 🔴 T130 (D-226 sinifi, UCUNCU ornek): KUME eskiden `BURASI / "calisma" / ...`
+# idi — betigin KENDI KONUMUNDAN turetiliyordu ve AYNA kopyasinda (scripts/olcum)
+# o dizin YOK. T125'te `65_kabul_denetcisi`, T126'da `66_k5_bariyer_populasyon`
+# ayni kusurla duzeltildi; bu betik v35 terfisinde kararlilik olcerken
+# `FileNotFoundError` ile DUSTU (sessiz degil, gurultulu — iyi yon).
+# Tek kaynak: registry `kabul_kumesi` (fail-closed).
+from importlib import import_module  # noqa: E402
+
+kabul_kumesi_yolu = import_module("65_kabul_denetcisi").kabul_kumesi_yolu
+KUME = None                     # main() icinde registry'den cozulur
 # T85: surum adi CIPLAK SABIT degildir (madde 16) — kayit defteri tek kaynak.
 # Argumansiz kosan bir kararlilik olcumu ESKI modeli olcup sonucu uretim
 # modelinin sayisi diye kaydediyordu; bu D-58/D-60/D-116 kusur sinifidir.
@@ -61,13 +70,16 @@ def karar(model, img, mpp):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", type=Path, default=MODEL)
-    ap.add_argument("--kume", type=Path, default=KUME)
+    ap.add_argument("--kume", type=Path, default=None,
+                    help="varsayilan: registry `kabul_kumesi` (tek kaynak)")
     ap.add_argument("--sigma", type=float, default=2.0,
                     help="Gauss gurultu sigmasi, 0-255 olceginde (varsayilan 2)")
     ap.add_argument("--tekrar", type=int, default=3)
     ap.add_argument("--tohum", type=int, default=7)
     ap.add_argument("--json", type=Path, default=None)
     args = ap.parse_args()
+    if args.kume is None:                  # fail-closed: yoksa ACIK HATA
+        args.kume = kabul_kumesi_yolu()
 
     man = json.loads((args.kume / "manifest.json").read_text(encoding="utf-8"))
     from ultralytics import YOLO

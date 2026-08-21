@@ -19330,3 +19330,94 @@ kullanilmayan numara: 0 (D-1..D-253 arasi bosluk YOK)
   TABANI aşmaması). Kapı **bugünkü ihlalleri taban olarak** kaydeder (D-233'ün
   `BILINEN_KIRLI` kalıbı) ve yalnız **artışta** düşer. Bu iş Codex'e uygundur:
   taşınabilir, GPU'suz, tek dosya. Kapıyı mimar isterse görev satırını o açar.
+
+---
+
+### D-256 · ✅ T130 UYGULANDI · ÜRETİM MODELİ v34 → **v35** (t127_temiz) · altı hizalama noktası TEK COMMIT'te · iki MALİYET deftere yazıldı (K2 %4,65→%7,03 · kararlılık 4/260→9/260)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3: yazan denetleyemez) · **Karar: KULLANICININ** (D-133) — ben terfi
+  ettirmedim, verilmiş kararı uyguladım · 2026-08-21.
+- **Kapı çıktısı (terfiden SONRA koşuldu):**
+  `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 728 · OK** ·
+  ölçüm aynası **77 çift · AYRIŞAN 0**.
+  ⚠ Emirde 715 yazıyordu; ölçülen 728. Fark: çalışma ağacında **izlenmeyen**
+  `tests/test_defter_butunlugu.py` (Codex teslimi, 13 test) suite'e giriyor.
+  O dosya **bu commit'e KATILMADI** — ayrı denetlenecek (D-247 §5'teki
+  "başkasının hazırlanmamış değişikliğini süpürme" tuzağına düşmemek için).
+
+#### 1. ALTI HİZALAMA NOKTASI (hepsi bu commit'te)
+| # | nokta | yapılan |
+|---|---|---|
+| 1 | ağırlık | `models/navitas_seg_v35_best.pt` ← `runs/segment/t127_temiz/weights/best.pt` (bit-eş) |
+| 2 | `config/model_registry.json` | model_id · path · **sha256 ÖLÇÜLDÜ** · imgsz 512 · metrics · `_surum_karari` |
+| 3 | `jetson_paket/config/model_registry.json` | aynı içerik (ayna) |
+| 4 | ONNX | `results/onnx_export_v35_20260821/navitas_seg_v35_best_512_fp16.onnx` (fp16, opset 17, 512) |
+| 5 | paket künyesi | `jetson_paket/models/jetson_derleme_manifest.json`: `pc_modeli`·`asil_model`·`asil_model_pt`·`onnxler`·`jetson_komutlari`·`paket_icerigi` (sha'lar ÖLÇÜLDÜ) + .pt/.onnx paketе kopyalandı |
+| 6 | kılavuzlar ×2 + testler | `JETSON_KILAVUZ.md` (kök+paket) başlık ve dosya adları; §6C `<YEDEK>` yer tutucuları **v34** ile dolduruldu; `tests/test_model_registry.py` v35'e alındı |
+- **sha256 (ölçüldü, kopyalanmadı):** `e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b`
+  · ONNX: `248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3`
+- `test_uretim_modeli_hizasi.py` **elle değiştirilmedi** — sürümü defterden
+  türetiyor; geçen terfide yarım kalışı yakalayan kapı odur ve bu turda
+  **19/19 geçti**, yani altı nokta gerçekten hizalı.
+
+#### 2. DOĞRULAMA — registry'nin GÖSTERDİĞİ yerden koşuldu
+```
+resolve_model() -> O:\navitas\models\navitas_seg_v35_best.pt
+65_kabul_denetcisi --model <o yol> --ad t130_v35_dogrulama
+  K0 GECTI %9,03 (taban %9,03 · oran 1,00) · K1 256/260 · K2 18/256 ·
+  K3 0/256 · K4 1/256 · K5 GECTI 0/173 · VERDIKT: URETIME ALINIR
+```
+Sayılar T127 zincirinin koşumuyla **birebir** aynı → registry doğru yeri
+gösteriyor ve `sha256` diskteki ağırlıkla eşleşiyor (`resolve_model` doğrular).
+
+#### 3. 🔴 İKİ MALİYET — geçiştirilmiyor, registry'de duruyor
+1. **K2 moloza basma: %4,65 → %7,03** (v34 12/258 → v35 18/256). Tavanın
+   (%15) altında ama **tek yönlü sürüklenme** ve madde 15'in tehlikeli ekseni.
+2. **KARAR KARARLILIĞI: 4/260 → 9/260** — bunu bu turda **ben ölçtüm**, çünkü
+   registry'deki alan v34'ün sayısıydı ve bayat taşımak yasak. **Aynı koşumda
+   eşli** ölçüldü (`68_karar_kararliligi`, sigma 2/255, tekrar 3, tohum 7;
+   `results/t130_kararlilik_*.json`).
+   ⚠ **Bu eksen v34 TERFİSİNDE KAPIYDI** (v22_v23_on_kayit.md ölçüt 5,
+   eşik ≤ 8/260) ve **v35 o eşiğin ÜSTÜNDE**. Bugünkü kabul zincirinde (65)
+   kararlılık kapı DEĞİLDİR — bu yüzden terfi bloklanmadı. Ama karar sahibinin
+   bunu **bilerek** seçip seçmediği benim bilgim dışında; D-249'da bu eksen
+   ölçülmemişti. **ÖNER-BEKLE:** mimar/kullanıcı bunu görüp geri almak isterse
+   v34 yerinde duruyor ve §6C geçiş yordamı hazır.
+   ⚠ D-203: bu ölçüt tohuma duyarlıdır (v34 tohum 42'de 7/260); tek tohumla
+   "kötüleşti" hükmü **kesin değildir**, İŞARET olarak durur.
+
+#### 4. K0 SAPMASI VE TABAN KAYMASI (mimarın istediği yorum)
+Terfi öncesi v35'in figür oranı v34 tabanına göre **18,43×** idi ("TEHLİKELİ
+yön" uyarısı). Kural uygulandı, K2/K3'e ayrıca bakıldı (%7,03 · %0,00 — tavan
+altı). **YORUM (ölçüm DEĞİL):** figür n=1, YZ üretimi, alan dışıdır ve orada
+hiçbir model rota üretemez (D-231); v34 ile ft maskeleri sıfır piksel örtüşür
+(D-229). Bu yüzden yüksek değer "aşırı zemin" yerine "ilk kez segmentleyebiliyor"
+olabilir — **ama figürde yer gerçeği yoktur, bu iddia ölçülmemiştir.**
+⚠ **TABAN KAYDI:** `figur_zemin_orani` artık v35'in kendi değeridir (0,0903),
+dolayısıyla denetçi bundan sonra oran **1,00** basacak. Tarihsel 18,43×
+registry notunda **yazılı** kaldı.
+
+#### 5. T111 SINIRI (registry `_kapsam`'a yazıldı)
+Bu model **ALAN DIŞI DOĞRULAMASI OLMADAN** terfi etti. Eğitim dışı 11 gerçek
+karede sıralama korunuyor (çatı kaçağı 0,0153 · red 0/11 — D-254) ama o 11 kare
+**aynı saha ve aynı oturumdandır**: KANIT değil, **ZAYIF DESTEK**. Alan dışı
+soru DJI çekimi olmadan kapanmaz (T111/D-198).
+
+#### 6. v34 SİLİNMEDİ — YEDEK olarak kayıtlı
+Registry `_surum_karari`, paket künyesi ve iki kılavuzun başlığı v34'ün
+**hangi eksende daha iyi** olduğunu yazıyor: arena K2 (%4,65) ve karar
+kararlılığı (4/260). Buna karşılık gerçek karelerin 67/67'sini reddediyor ve
+çatının %96'sını kaçırıyor. §6C birincil→yedek geçiş yordamındaki `<YEDEK>`
+yer tutucuları **v34 ile dolduruldu** — saha gününde seçim yapılabilir.
+
+#### 7. YAN BULGU — D-226 SINIFI ÜÇÜNCÜ KEZ
+`68_karar_kararliligi.py` kararlılığı ölçerken **çöktü**: kümeyi kendi
+konumundan türetiyordu (`BURASI / "calisma" / ...`), ayna kopyasında o dizin
+yok. T125'te 65, T126'da 66 aynı kusurla düzeltilmişti. 68 de registry
+`kabul_kumesi`ne bağlandı (fail-closed). ⚠ **Sınıf taraması:** `scripts/olcum`
+altında aynı kalıbı taşıyan **23 dosya** var (65/66 dahil — onlarda yalnız
+açıklama yorumu eşleşiyor). Bu betiklerin hangisinin **gürültülü** (çöker,
+güvenli) hangisinin **sessiz** (boş küme üzerinden rapor üretir, tehlikeli)
+düştüğü **ÖLÇÜLMEDİ**; ayrı bir tur gerektirir. Kayda geçti.

@@ -4,8 +4,8 @@ from codes.model_registry import ModelRegistryError, load_registry, resolve_mode
 
 
 class ModelRegistryTests(unittest.TestCase):
-    def test_default_is_verified_v34_competition_model(self):
-        """D-182: etkin profil v30 -> v34 (imgsz 512, DEGISMEDI).
+    def test_default_is_verified_v35_competition_model(self):
+        """T130: etkin profil v34 -> v35 (imgsz 512, DEGISMEDI).
 
         Tarihce: v4 kaydi 2026-07-15'ten kalmaydi ve uretim manifestiyle
         CELISIYORDU; `load_model` fail-closed oldugu icin saha kuru kosusunda
@@ -13,7 +13,12 @@ class ModelRegistryTests(unittest.TestCase):
         v27'ye gecildi (D-115), T85'te v30'a (D-132 kabul kurali + D-133 kabul,
         kullanici karari), 2026-08-19'da v34'e (T54 kosumu `v23_t54_engelli`;
         on kayit `scripts/olcum/v22_v23_on_kayit.md` olcumlerden ONCE yazildi,
-        hukum D-181, sevk karari KULLANICININ). Boyut dayanagi D-112.
+        hukum D-181, sevk karari KULLANICININ). 2026-08-21'de v35'e gecildi
+        (kosum `t127_temiz`: T122 secenegi (a)+(c) + T127 TEMIZ bolum; on kayit
+        `results/t127_on_kayit.md` olcumlerden ONCE yazildi, sonuc D-249,
+        mimar denetimi D-255, sevk karari YINE KULLANICININ — T130).
+        ⚠ v34 SILINMEDI: T123'un YEDEK adayidir ve FARKLI HATA YAPAR.
+        Boyut dayanagi D-112.
 
         ⚠ Bu testteki surum adi ELLE guncellenir ve bu BILEREK boyledir:
         defterden turetilseydi test totolojik olur, kazara degisen bir profili
@@ -24,10 +29,10 @@ class ModelRegistryTests(unittest.TestCase):
         `path` alani cevrilip `sha256` unutulursa kapi KIRMIZI yanar.
         """
         path, spec = resolve_model()
-        self.assertEqual(path.name, "navitas_seg_v34_best.pt")
+        self.assertEqual(path.name, "navitas_seg_v35_best.pt")
         self.assertEqual(spec["imgsz"], 512)
         self.assertEqual(spec["status"], "competition")
-        self.assertEqual(spec["model_id"], "navitas-seg-v34-512")
+        self.assertEqual(spec["model_id"], "navitas-seg-v35-512")
 
     def test_profiles_are_explicit_not_alias_directories(self):
         registry = load_registry()

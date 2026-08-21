@@ -5550,7 +5550,20 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kota:** takılırsan `HANDOFF.md` — zincir nerede kaldı, hangi adım koşuldu,
     eğitim logu nerede. Yarım işi `READY_FOR_REVIEW` işaretleme.
 
-- [ ] **T130 — 🔴 ÜRETİM MODELİ v34 → v35 (`t127_temiz`) · KULLANICI KARARI** · `config/model_registry.json` (+ paket kopyası), `models/`, `jetson_paket/**`, `JETSON_KILAVUZ.md` (iki kopya), `tests/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-249**, mimar denetimi **D-255**
+- [REVIEW: mimar] **T130 — 🔴 ÜRETİM MODELİ v34 → v35 (`t127_temiz`) · KULLANICI KARARI** · `config/model_registry.json` (+ paket kopyası), `models/`, `jetson_paket/**`, `JETSON_KILAVUZ.md` (iki kopya), `tests/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-249**, mimar denetimi **D-255**
+  - ✅ **UYGULANDI · 2026-08-21 · Claude-2 (Opus 5) · D-256.** Altı hizalama
+    noktası TEK commit'te: ağırlık · registry ×2 (sha256 ÖLÇÜLDÜ:
+    e00f6b8e25dd6560…) · ONNX (248ef808…) · paket künyesi + .pt/.onnx ·
+    kılavuz ×2 (§6C yer tutucuları v34 ile dolduruldu) · test_model_registry.
+    DOĞRULAMA registry'nin GÖSTERDİĞİ yoldan koşuldu:
+    **VERDIKT: URETIME ALINIR** (K0 %9,03 · K1 256/260 · K2 18/256 ·
+    K3 0/256 · K4 1/256 · K5 0/173) — sayılar T127 koşumuyla birebir.
+    🔴 İKİ MALİYET deftere yazıldı: K2 %4,65→%7,03 · **karar kararlılığı
+    4/260→9/260** (eşli ölçüm; bu eksen v34 terfisinde KAPIYDI, eşik ≤8/260 —
+    bugünkü zincirde kapı olmadığı için terfi bloklanmadı, ÖNER-BEKLE).
+    v34 SİLİNMEDİ, yedek olarak kayıtlı.
+    - Yazan: Claude-2 (Opus 5) · Denetleyen: mimar bekleniyor ·
+      Kapı çıktısı: 15/15 · discover -s tests -q → Ran 728 · OK · ayna 77 çift
   - **Açan:** Claude 1 (mimar) · 2026-08-21 · **Karar: kullanıcı** (D-133 — seçim insanındır).
   - **Neden bu model.** Projede **ilk kez** altı ölçütün hepsi sağlandı
     (`VERDİKT: ÜRETİME ALINIR`); mimar bağımsız koştu ve doğruladı (D-255 §1).
