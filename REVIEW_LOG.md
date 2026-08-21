@@ -19160,3 +19160,46 @@ kabul zinciri        : K0 figur 0.015521439953062066 (BIT-ES) · K1 257/260 ·
   belirsizliği** ölçecek. Bu sınır T128-B ön kaydında zaten yazılıydı;
   koşum bitince sonuç **bu sınırla** raporlanacak, "varyans ölçüldü" diye
   DEĞİL.
+
+---
+
+### D-253 · 🔎 T128-B SONUÇ · `deterministic=False` DE hiçbir şeyi değiştirmedi: bant yine **SIFIR**. Eğitim hattı bu reçetede **tam tekrarlanabilir** — ama koşum-içi varyans hâlâ ÖLÇÜLMEDİ (ve üçüncü denemeyi KOŞMUYORUM)
+
+- **Yazan:** Claude 2 / Opus 5 (başamele) · Denetleyen: mimar bekleniyor ·
+  2026-08-21 · Ön kayıt: `results/t128b_on_kayit.md` (defter araması dahil,
+  koşumdan önce yazıldı) · Ham: `results/t122/ft_ac_belirsiz_log.txt`,
+  `t128b_kabul.txt`.
+- **ÖLÇÜM — üç düzeyde de fark YOK (t122ac taban vs `deterministic=False`):**
+```
+agirlik tensorleri : 537/537 AYNI · en buyuk mutlak fark 0.0
+egitim egrisi      : 40/40 epoch satiri AYNI (ilk seg_loss 1.42012 = 1.42012,
+                     son mAP50(M) 0.26371 = 0.26371)
+kabul zinciri      : K0 %1,55 · K1 257/260 · K2 16/257 · K3 1/257 · K4 0/257 ·
+                     K5 0/172 — TAMAMI AYNI
+```
+- **`deterministic=False` NE DEĞİŞTİRİR (kaynak okundu):**
+  `ultralytics/utils/torch_utils.py:687-692` → `use_deterministic_algorithms(False)`,
+  `cudnn.deterministic=False`, `CUBLAS_WORKSPACE_CONFIG` ve `PYTHONHASHSEED`
+  kaldırılır. Yani **yalnız çekirdek/algoritma seçimi** serbest bırakılır;
+  **veri sırası dokunulmaz** (`data/build.py:359` sabit tohum — D-251).
+  Ölçülen sonuç: bu iş yükünde algoritma serbestliği bile **hiçbir sayısal
+  fark üretmedi**.
+- **ÖN KAYIT KURAL 4'ÜN UYGULANMASI (aynen):** bant SIFIR çıktı →
+  **"bu kolla da ÖLÇÜLEMEDİ"**. Sıfır bant **"gürültü yok" DEMEK DEĞİLDİR**;
+  yalnızca oynattığım iki kolun (seed, determinism) **atıl** olduğu ölçülmüştür.
+  "v34 ile t122ac arasındaki farklar gerçektir" sonucu bu koşumdan da
+  **ÇIKARILMIYOR**.
+- **İKİ YÖNLÜ OKUMA:**
+  - ✔ **İYİ:** eğitim hattı **tam tekrarlanabilir** — aynı reçete iki kez
+    koşulunca **bit-eş** model veriyor. Geçmiş kıyaslar "piyango" değil.
+    (v31 kaydının aynı sonucu ile tutarlı, `REVIEW_LOG:10102`.)
+  - ✘ **KÖTÜ:** "aynı veriyle farklı sırada eğitseydik ne çıkardı" sorusu
+    **hâlâ açık**. Bunu ölçmenin tek yolu DataLoader üretecini değiştirmek
+    (`build.py:359` sabitini oynatmak) — yani **ultralytics'e yama**.
+- 🔴 **ÜÇÜNCÜ DENEMEYİ KOŞMUYORUM.** D-252'nin dersi tam da bu: aynı soruya
+  arka arkaya GPU harcamak. Bugüne kadar bu soru için **v31 (6,4 saat) + T128
+  (1,18 saat) + T128-B (1,04 saat) = ~8,6 saat GPU** harcandı ve cevap hâlâ
+  yok. **ÖNERİ (öner-bekle):** yama gerekiyorsa bu bir mimar kararıdır ve
+  önce **küçük bir koşuyla** (2-3 epoch) yamanın gerçekten sırayı değiştirdiği
+  doğrulanmalı — 40 epoch'la değil. Ben başlatmıyorum.
+- **Kapı çıktısı (ustabaşı):** 15/15 · `discover -s tests -q` → Ran 715 · OK.
