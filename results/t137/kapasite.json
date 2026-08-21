@@ -1,0 +1,119 @@
+{
+ "uyum": {
+  "ajan": 3,
+  "kare": 24,
+  "duvar_saati_sn": 2609,
+  "ajan_sureleri": [
+   2609,
+   2081,
+   1005
+  ],
+  "kare_saat_paralel": 33.1,
+  "sn_kare_ajan_basina": 237.3,
+  "satirlar": [
+   {
+    "ajan": "uyum-A",
+    "kare": 8,
+    "cati_olan": 8,
+    "sure_sn": 2609
+   },
+   {
+    "ajan": "uyum-B",
+    "kare": 8,
+    "cati_olan": 8,
+    "sure_sn": 2081
+   },
+   {
+    "ajan": "uyum-C",
+    "kare": 8,
+    "cati_olan": 8,
+    "sure_sn": 1005
+   }
+  ]
+ },
+ "kucuk": {
+  "ajan": 2,
+  "kare": 20,
+  "duvar_saati_sn": 2841,
+  "ajan_sureleri": [
+   669,
+   2841
+  ],
+  "kare_saat_paralel": 25.3,
+  "sn_kare_ajan_basina": 175.5,
+  "satirlar": [
+   {
+    "ajan": "kucuk-1",
+    "kare": 10,
+    "cati_olan": 10,
+    "sure_sn": 669
+   },
+   {
+    "ajan": "kucuk-2",
+    "kare": 10,
+    "cati_olan": 10,
+    "sure_sn": 2841
+   }
+  ]
+ },
+ "buyuk": {
+  "ajan": 7,
+  "kare": 67,
+  "duvar_saati_sn": 12137,
+  "ajan_sureleri": [
+   150,
+   1150,
+   12137,
+   799,
+   649,
+   470,
+   2150
+  ],
+  "kare_saat_paralel": 19.9,
+  "sn_kare_ajan_basina": 261.3,
+  "satirlar": [
+   {
+    "ajan": "buyuk-1",
+    "kare": 9,
+    "cati_olan": 9,
+    "sure_sn": 150
+   },
+   {
+    "ajan": "buyuk-2",
+    "kare": 10,
+    "cati_olan": 10,
+    "sure_sn": 1150
+   },
+   {
+    "ajan": "buyuk-3",
+    "kare": 9,
+    "cati_olan": 9,
+    "sure_sn": 12137
+   },
+   {
+    "ajan": "buyuk-4",
+    "kare": 10,
+    "cati_olan": 9,
+    "sure_sn": 799
+   },
+   {
+    "ajan": "buyuk-5",
+    "kare": 9,
+    "cati_olan": 9,
+    "sure_sn": 649
+   },
+   {
+    "ajan": "buyuk-6",
+    "kare": 10,
+    "cati_olan": 10,
+    "sure_sn": 470
+   },
+   {
+    "ajan": "buyuk-7",
+    "kare": 10,
+    "cati_olan": 10,
+    "sure_sn": 2150
+   }
+  ]
+ }
+}

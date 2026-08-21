@@ -20836,3 +20836,102 @@ klip 0032  L=21,0  gece yolda YURUYEN IKI KISI                      zemin 0 · e
 kısaldığı için sebep **yanlış indeksten** okundu ve 12/12 kare `None` göründü.
 Üretimdeki çağrının (`61_rota_moloza_basma.py:96`) aynısına hizalandı; gerçek
 sebepler ancak ondan sonra çıktı. **Ölçüm değil aletin kusuruydu.**
+
+---
+
+### D-273 · 🔎 T137 · ETİKETLEME KAPASİTESİ **19,9 kare/saat** (ölçüldü) → son güvenli tarih **13 → 19 Eylül**; ve 🔴 KALİTE KUSURU YETENEKTE DEĞİL **ŞARTNAMEDE**: ajanlar birbiriyle 0,88 uyuşuyor, referansla 0,55
+
+- **Ölçen:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-22 · görev **T137** (kullanıcı kararı: etiketlemeyi ajan yapar).
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 793 · OK**.
+- **Ham çıktı repoda:** `results/t137/kapasite.json` · `kalite_bulgusu.md` ·
+  güncellenen `results/t136/son_guvenli_gelis_tarihi.md` ·
+  araç `scripts/olcum/125_t137_etiket_olcumu.py`.
+- **Ölçüm zemini GÜNDÜZ kareleridir** (`data/raw_frames`, medyan L≈129).
+  Gece karesinde ölçmek yasaktı ve ölçülmedi: boş kareyi etiketlemek kolaydır,
+  sayı değersiz olurdu (D-271 §1).
+
+#### 1. A) KAPASİTE — ölçüldü, ve AJAN SAYISIYLA ÖLÇEKLENMİYOR
+```text
+faz     ajan  kare  duvar saati   PARALEL verim   ajan basina
+uyum      3    24     43,5 dk     33,1 kare/saat   237 sn/kare
+kucuk     2    20     47,4 dk     25,3 kare/saat   176 sn/kare
+buyuk     7    67    202,3 dk     19,9 kare/saat   261 sn/kare
+```
+🔴 **3 ajan 33,1 · 7 ajan 19,9.** Sebep ölçüldü: büyük partide ajan süreleri
+**`[150, 1150, 12137, 799, 649, 470, 2150]`** — **81 KAT yayılım**. Faz duvar
+saatini **tek geç kalan** belirliyor (bariyer).
+- Ajan-saniye toplamı **17.505** / 67 kare = **261 sn/kare**.
+- **Dengeli dağıtımla** 7 ajan aynı işi **2.501 sn (42 dk)** → **96,5 kare/saat**.
+  ⚠ Bu **PROJEKSİYONDUR, ölçüm değil**; plana **ölçülen 19,9** kondu.
+- **Tıkanma ajanların kendi ifadesiyle:** *"100 px ızgara kaba kaldı; bir karede
+  çatı kenarını gözle x=118 okudum, piksel profili x=170 çıkardı (**52 px
+  hata**). Bundan sonra HER kenarı OpenCV ile ölçmek zorunda kaldım."* Bir ajan
+  *"25 px ızgara + kenar-vurgulu ön işleme ile gelseydi iş en az 2 kat hızlı
+  olurdu"* diyor. **ÖNER-BEKLE:** D-80 yordamına bu eklenmeli.
+
+#### 2. 🔴 B) KALİTE — YETENEK DEĞİL, ŞARTNAME
+Üç ajan **birbirinden habersiz** aynı 8 kareyi etiketledi:
+```text
+ajanlar arasi IoU medyan : A-B 0,894 · A-C 0,891 · B-C 0,878   (min 0,61)
+T121 REFERANSINA gore    : A 0,562 · B 0,500 · C 0,566          (min 0,43)
+```
+**Üçü birbiriyle 0,88 uyuşuyor ama referansla 0,55 — ve üçü de AYNI YÖNDE
+sapıyor.** Bu ya ortak kör nokta ya referansın kendisidir; ayırmak için
+**ölçüm + görsel** kullanıldı:
+- Alan: referans ajanın **1,45 katı**; ajan poligonunun **%90'ı referansın
+  içinde**. Fark, çatının sağındaki koyu şerit.
+- **GÖRSEL (D-80, ustabaşı kendi gözüyle):** 2,6× büyütmede o şeritte
+  **pencere boşluğu, dış merdiven, klima ünitesi** görünüyor → gerçekten
+  **dikey DUVAR YÜZÜ**. **Ajanlar "çatı" tanımında FİİLEN HAKLI.**
+
+🔴 **Asıl bulgu:** etiketin beslediği karar *"rota buradan geçmesin"*dir ve
+**duvar da geçilemez binadır**. Ajanlar *"çatı üst yüzeyi"*, referans
+*"geçilemez bina bölgesi"* çizdi. Ajan `uyum-A` bunu kendi notunda **açıkça**
+yazmış: *"poligonlar yalnızca gerçek üst yüzeydir, bina ayak izi değil."*
+⇒ 0,55'lik referans uyumu **kalite düşüklüğü değil, ŞARTNAME BELİRSİZLİĞİDİR**
+ve üçünün de aynı yere düşmesi bunu kanıtlar: belirsizlik **tutarlı** çözülüyor,
+yani **tek cümleyle** düzeltilebilir.
+⚠ **Düzeltilmezse:** 1566 kare *"yalnız üst yüzey"* diye etiketlenir, model
+duvar yüzünü **zemin** öğrenir ve rota bina duvarından geçer — **D-210'un
+kardeş kusuru, ölçeklenerek**. Önerilen şartname cümlesi `kalite_bulgusu.md
+§3`'te; **karar mimarındır**.
+
+#### 3. AJANLARIN KENDİ BULDUĞU İKİ ŞEY (ikisi de doğru, ikisi de bağımsız)
+1. **Gözle okuma güvenilmez**; hepsi OpenCV ölçümüne (satır/sütun parlaklık
+   profili, eşik maskesi, `connectedComponents`, `approxPolyDP` + bindirme ile
+   görsel doğrulama) geçmek zorunda kaldı.
+2. **Çözünürlük tavanı DÜRÜSTÇE bildirildi:** 25-60 px yüksekliğindeki dükkân
+   cepheleri hiçbir büyütmede çözülmedi ve **etiketsiz bırakıldı** — *"D-210
+   gereği 'olabilir' diye işaretlemedim"*. Bu, istenen davranıştır.
+
+#### 4. ÇIKTI — SON GÜVENLİ GELİŞ TARİHİ **13 → 19 EYLÜL**
+V2 (*"1 kişi × 8 saat/gün, İNSAN"*) düştü; yerine **ölçülen 19,9 kare/saat**
+kondu. 60 dk çekim → 1566 kare:
+```text
+AJAN ETIKETLEME  1566 / 19,9 = 78,7 SAAT = 3,3 gun (INSANSIZ)
+hat toplami ~5 gun (cogunlukla insansiz)
+27 Eylul - 5 gun - 3 gun (V5) = 19 EYLUL
+```
+⚠ **Ham saatte ajan İNSANDAN YAVAŞ** (78,7 vs ~47 saat) ama **gözetimsiz**:
+takvimde 3,3 gün sürekli iş, 6 iş gününe karşı. Kazanç hızdan değil
+**insanın hattan tamamen çıkmasından** (D-211 §1b).
+⚠ V1 duyarlılığı: 120 dk çekimde etiketleme 157 saate çıkar → **~15 Eylül**.
+🔴 **ÖN KOŞUL:** §2'deki şartname düzeltilmeden bu tarih **geçersizdir**.
+
+#### 5. USTABAŞININ KENDİ HATASI — ilk turda kare listesini ELLE yazdım
+İlk fan-out turunda 8 uyum karesinin **5'i diskte yoktu**: `11_44_04/05/06`
+dizinlerini **uydurmuştum** (gerçekleri `11_44_03/23/39/46`). Bir adım önce
+`partiler.json`'a **türetip yazmıştım** ve kullanmadım — bu projede dört kez
+bayatlayan **"elle liste"** kusurunun aynısı.
+- ⚠ Ajanların *"boş liste 'çatı yok' değil 'kare yok' demektir"* diye **ayrı
+  ayrı** bildirmesi ölçümü kurtardı; sessizce boş dönselerdi **sahte bir uyum**
+  ölçerdim (0,92 yerine 1,00 çıkardı).
+- Düzeltme: ajanlar artık atamalarını **diskten türetilmiş dosyadan** okuyor ve
+  atama üretilirken her ızgara dosyasının varlığı **doğrulanıyor** (eksik 0).
+
+#### 6. YETKİ SINIRI
+`dataset/` altına **kalıcı küme yazılmadı** (ölçüm turu) · registry'ye
+**dokunulmadı** · eşik **değiştirilmedi** · `codes/` altına **girilmedi** ·
+şartname önerisi **uygulanmadı** (karar mimarın) · **push YOK**.

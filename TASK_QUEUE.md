@@ -6147,7 +6147,40 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ Prova modeli **aday bile değildir** — 14 dosya yetersiz. Amaç **hattı**
     sınamak, model üretmek değil.
 
-- [ ] **T137 — 🔴 SON TARİHİN BASKIN TERİMİ ETİKETLEME VE KİM YAPACAĞI BELİRSİZ: kapasiteyi VE kaliteyi ölç** · `scripts/dji_hatti.py`, `O:\navitas-local-train\71_gercek_kare_etiketleyici.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-271 §4**
+- [STATUS: READY_FOR_REVIEW] **T137 — 🔴 SON TARİHİN BASKIN TERİMİ ETİKETLEME VE KİM YAPACAĞI BELİRSİZ: kapasiteyi VE kaliteyi ölç** · `scripts/dji_hatti.py`, `O:\navitas-local-train\71_gercek_kare_etiketleyici.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-271 §4**
+  - 🔎 **ÖLÇÜLDÜ · 2026-08-22 · Claude-2 · kanıt `REVIEW_LOG.md` D-273.**
+    **Kapı:** 15/15 · 793 OK · ham çıktı `results/t137/`.
+  - **A) KAPASİTE (ölçüldü, GÜNDÜZ karelerinde):**
+    ```text
+    faz     ajan  kare  duvar saati   PARALEL verim
+    uyum      3    24     43,5 dk     33,1 kare/saat
+    kucuk     2    20     47,4 dk     25,3 kare/saat
+    buyuk     7    67    202,3 dk     19,9 kare/saat
+    ```
+    🔴 **Ajan sayısıyla ÖLÇEKLENMİYOR, kötüleşiyor.** Sebep: büyük partide ajan
+    süreleri `[150, 1150, 12137, 799, 649, 470, 2150]` — **81 kat yayılım**;
+    duvar saatini **tek geç kalan** belirliyor. Dengeli dağıtımla aynı iş
+    **42 dk (96,5 kare/saat)** olurdu — bu **projeksiyon**, plana **19,9** kondu.
+  - 🔴 **B) KALİTE — kusur YETENEKTE DEĞİL ŞARTNAMEDE:**
+    ajanlar arası IoU **0,878–0,894**, T121 referansına **0,500–0,566**, üçü de
+    **aynı yönde** sapıyor. Alan: referans ajanın **1,45 katı**, ajanın %90'ı
+    referansın içinde. **Görsel (D-80):** fark, 2,6× büyütmede **pencere + dış
+    merdiven + klima** görünen **dikey DUVAR YÜZÜ** → ajanlar "çatı" tanımında
+    **fiilen haklı**. Ama etiketin beslediği karar açısından **duvar da
+    geçilemez binadır**. ⇒ **ŞARTNAME BELİRSİZLİĞİ**, tek cümleyle düzeltilir.
+    ⚠ Düzeltilmezse model **duvar yüzünü zemin öğrenir** (D-210'un kardeşi,
+    ölçeklenerek). Önerilen cümle `results/t137/kalite_bulgusu.md §3`,
+    **karar mimarın** — ve bu, tarihin **ÖN KOŞULUDUR**.
+  - 🔴 **ÇIKTI: son güvenli geliş tarihi 13 → 19 EYLÜL** (+6 gün).
+    1566 kare / 19,9 = **78,7 saat = 3,3 gün İNSANSIZ**; hat toplamı ~5 gün;
+    27 Eylül − 5 − 3 = **19 Eylül**. Bugün 22 Ağustos → 28 gün var.
+    ⚠ Ham saatte ajan insandan **yavaş** (78,7 vs ~47 saat) ama **gözetimsiz**;
+    kazanç hızdan değil **insanın hattan çıkmasından**. V1 duyarlılığı: 120 dk
+    çekimde **~15 Eylül**.
+  - ⚠ **Ustabaşının hatası:** ilk turda kare listesini **elle yazdım**, 8 karenin
+    5'i yoktu (`11_44_04/05/06` uydurma). Ajanlar *"boş liste 'çatı yok' değil
+    'kare yok' demektir"* diye bildirdi ve **sahte uyum** ölçmemi engelledi.
+    Düzeltildi: atamalar artık diskten **türetiliyor**, varlık doğrulanıyor.
   - **Çelişki (mimar buldu).** T136'nın **V2** varsayımı etiketlemeyi **insana**
     yüklüyor (*1 kişi × 8 saat/gün*). Kullanıcının **kendi kararı** ise (D-211 §1b):
     *"insan YALNIZ veri toplar; etiketleme ve eğitim başamelenin işidir."*
