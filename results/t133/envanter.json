@@ -1,0 +1,1004 @@
+{
+ "_ne": "T133 · READY_FOR_REVIEW envanteri (MEKANIK)",
+ "_kaynak": "TASK_QUEUE.md",
+ "n": 39,
+ "kayitlar": [
+  {
+   "satir": 103,
+   "baslik_ham": "**T21 — Saha zinciri halka sözleşmesi** · `CONTRACTS.md` §11 · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-22",
+   "gorev": "T21",
+   "baslik": "T21 — Saha zinciri halka sözleşmesi",
+   "dosyalar": [
+    ") → rota üretimi → aktarım (OPEN_ROUTE/NO_ROUTE + ACK) → İKA sürüş izni\n    (rota ∧ IKA_GO ∧ IHA_LANDED) → motor komutu.**\n  - Her halka için **dört alan** zorunlu: ",
+    "CONTRACTS.md",
+    "REVIEW_LOG.md",
+    "jetson_paket/kod/",
+    "navitas_sim.py:95",
+    "simulation/"
+   ],
+   "atiflar": [
+    22
+   ],
+   "govde_satir": 46
+  },
+  {
+   "satir": 150,
+   "baslik_ham": "**T22 — `scripts/saha_kuru_kosu.py`: Gazebo'suz, donanımsız uçtan uca koşucu** · **TIKAYICI** · bağımlı: **T21** · kanıt: `REVIEW_LOG.md` D-22",
+   "gorev": "T22",
+   "baslik": "T22 — `scripts/saha_kuru_kosu.py`: Gazebo'suz, donanımsız uçtan uca koşucu",
+   "dosyalar": [
+    " / ",
+    " ikamesi)\n    - motor → çağrıları kaydeden bir sahte sürücü (sıfır/sıfır olmayan komut sayısı raporlansın)\n  - **Düşen halkada DURMA.** Sonraki halkaları ",
+    "/",
+    "67/67 KAPALI_DAR",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B scripts/saha_kuru_kosu.py --cikti O:\\navitas\\results\\saha_kuru_kosu_20260807",
+    "REVIEW_LOG.md",
+    "comms/",
+    "data/raw_frames",
+    "ozet.json",
+    "results/saha_kuru_kosu_<tarih>/ozet.json",
+    "scripts/saha_kuru_kosu.py",
+    "text\n      ==============================================================================\n      SAHA KURU KOSUSU — CONTRACTS.md §11 · Gazebo YOK · donanim YOK\n      ==============================================================================\n        kamera         DUSTU      uretim girisi kaynagi PARAMETRIK almiyor: cv2.VideoCapture(0) sabit  [15 ms]\n                                  -> codes/rpi_inference.py:505\n        model_yukleme  DUSTU      yuklenen agirlik kayit defterindeki profille eslesmiyor ve --model argumani yok  [2113 ms]\n                                  -> codes/rpi_inference.py:32-40\n        cikarim        GECTI      tek kare cikarimi tamamlandi  [2199 ms]\n                                  -> codes/rpi_inference.py:57\n        maske          GECTI      {0,1} anahtarli maskeler uretildi  [5 ms]\n                                  -> codes/rpi_inference.py:60-83\n        olcek          SAHIPSIZ   sahada mpp ureten kod yok; iha_haritala.py:66 sabiti simulation/ altinda\n        hedef_konumu   SAHIPSIZ   HB'nin tek kaynagi Gazebo meta.txt; --hb CLI girisi yok ve uretim modeli 2 sinifli\n        rota           DUSTU      letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK — tohum bandi dolguya dusuyor  [45 ms]\n                                  -> codes/costmap_path_finder.py:232-242\n        aktarim        SAHIPSIZ   saha paketinde haberlesme kodu yok (eksik: iha_sender.py, link.py, protocol.py; pyserial bagimliligi da yok)\n        surus_izni     DUSTU      kapi dogru ama beslemesi kopuk: IHA_LANDED yalnizca simulation/ altinda uretiliyor\n                                  -> comms/ika_receiver.py:119-121\n        motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i\n      ------------------------------------------------------------------------------\n      GECTI 2 · DUSTU 4 · SAHIPSIZ 4 · ATLANDI 0\n      KOPUK HALKALAR (8): kamera, model_yukleme, olcek, hedef_konumu, rota, aktarim, surus_izni, motor\n      Zincir saha kosumunda TAMAMLANMAZ.\n      "
+   ],
+   "atiflar": [
+    22,
+    25
+   ],
+   "govde_satir": 54
+  },
+  {
+   "satir": 205,
+   "baslik_ham": "**T23 — Kuru koşunun pozitif kontrolü ve mutasyon kanıtı** · KRİTİK · bağımlı: **T22** · kanıt: `REVIEW_LOG.md` D-22, D-15",
+   "gorev": "T23",
+   "baslik": "T23 — Kuru koşunun pozitif kontrolü ve mutasyon kanıtı",
+   "dosyalar": [
+    " seçeneğiyle göreli/depo dışı yol\n         verilince ",
+    "-m unittest discover -s tests -p \"test*.py\"",
+    "-m unittest discover -s tests -p test_saha_kuru_kosu.py",
+    ".\n       Sadece \"4 halka düştü\" saymak yetmez; **hangi** halkanın düştüğü assert edilecek.\n    2. **Mutasyon kanıtı:** her kopukluk için, o halkayı sahte biçimde tatmin eden bir\n       enjeksiyonla (monkeypatch / geçici sahte modül) ilgili satırın ",
+    "/",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_saha_kuru_kosu.py -v",
+    "REVIEW_LOG.md",
+    "codes/test_rota_sentetik.py",
+    "comms/",
+    "comms/link.py",
+    "irtifa/fov/mpp",
+    "ozet.json",
+    "scripts/saha_kuru_kosu.py:439",
+    "simulation/",
+    "tests/test_saha_kuru_kosu.py",
+    "tests/test_saha_kuru_kosu.py:60"
+   ],
+   "atiflar": [
+    15,
+    22,
+    28
+   ],
+   "govde_satir": 97
+  },
+  {
+   "satir": 993,
+   "baslik_ham": "**T1 — Letterbox düzeltmesi commit'e girmemiş, temiz klon çöküyor** · `codes/rpi_inference.py` · KRİTİK",
+   "gorev": "T1",
+   "baslik": "T1 — Letterbox düzeltmesi commit'e girmemiş, temiz klon çöküyor",
+   "dosyalar": [
+    ".md",
+    "codes/rpi_inference.py",
+    "test_accuracy.py",
+    "test_accuracy.py --help",
+    "test_batch.py",
+    "test_batch.py --help"
+   ],
+   "atiflar": [],
+   "govde_satir": 4
+  },
+  {
+   "satir": 998,
+   "baslik_ham": "**T2 — Tek geçici NO_ROUTE, İKA görevini geri dönülmez iptal ediyor** · `simulation/scripts/ika_nav.py:319` · KRİTİK",
+   "gorev": "T2",
+   "baslik": "T2 — Tek geçici NO_ROUTE, İKA görevini geri dönülmez iptal ediyor",
+   "dosyalar": [
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_ika_no_route_recovery.py -v",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe codes/test_rota_sentetik.py",
+    "simulation/scripts/ika_nav.py:319",
+    "text\n      ==============================================================================\n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ==============================================================================\n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      "
+   ],
+   "atiflar": [],
+   "govde_satir": 57
+  },
+  {
+   "satir": 1056,
+   "baslik_ham": "**T3 — Güvenlik testi 0/18 karede rota üretemiyor, hiçbir şey ölçmüyor** · `codes/test_rota_guvenlik.py:117` · KRİTİK",
+   "gorev": "T3",
+   "baslik": "T3 — Güvenlik testi 0/18 karede rota üretemiyor, hiçbir şey ölçmüyor",
+   "dosyalar": [
+    "\n    - Bu 18 kare, özgün kanıttaki 6 fotoğraf + dört videonun baş/orta/son karelerinden oluşur. COCO-seg hava görüntüsündeki araçları kâhin olacak yeterlilikte bulamadığı için görev tekrar ",
+    " alt/üst %8 (71 px) bandını tarıyor; bu bantlar **tamamen gri dolgunun içinde**. Tohum boş → ",
+    ". 18/18 karede iki kipte de rota yok. Videolar da 1024×576, aynı dolgu.\n  - **Yap:** Tohum bantlarını tuvalin tamamına değil, ",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_rota_guvenlik_tohum.py -v",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_guvenlik.py --hepsi --adim 24 --imgsz 896 --conf 0.25 --navitas-model O:\\navitas\\models\\navitas_seg_v20_best.pt --coco-model O:\\navitas\\yolov8m-seg.pt --out O:\\navitas\\results\\rota_guvenlik_t3_gate_20260803_full",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B tests/test_costmap_on_images.py --navitas-model O:\\navitas\\models\\navitas_seg_v20_best.pt --arac-model O:\\navitas\\yolov8m-obb.pt --arac-conf 0.25 --imgsz 896 --conf 0.25 --video-basina 3 --beklenen-kare 18 --cikti O:\\navitas\\results\\costmap_t3_gate_20260804_obb_final",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B tests/test_costmap_on_images.py --navitas-model O:\\navitas\\models\\navitas_seg_v20_best.pt --coco-model O:\\navitas\\yolov8m-seg.pt --imgsz 896 --conf 0.25 --video-basina 3 --cikti O:\\navitas\\results\\costmap_t3_gate_20260804_attempt1",
+    "REVIEW_LOG.md",
+    "codes/test_rota_guvenlik.py:117",
+    "text\n      ======================================================================\n      OZET\n      ======================================================================\n      islenen kare          : 280\n      ihlal orani (ham)     : 0.000  (0/280) — BEKLENEN: >0.10 (aksi halde testin gucu yok)\n      ihlal orani (enjekte) : 0.000  (0/280) — GECME SARTI: tam 0.0\n      cekimserlik (ham)     : 0.704\n      cekimserlik (enjekte) : 0.704  — GECME SARTI: <0.60 (asiri temkinliyse sahada kullanilamaz)\n      TOHUM_YOK (ham)       : 182/280\n      TOHUM_YOK (enjekte)   : 182/280\n\n      [UYARI] ihlal_orani_ham <= 0.10 — bu goruntu kumesi bildirilen hatayi\n              YETERINCE tetiklemiyor olabilir; sonuc 'temiz' degil 'gucsuz'.\n\n      [GECTI] Enjekte kipte SIFIR ihlal — geometri (costmap_path_finder)\n              gercek engel bilgisi verildiginde arabaya DEGMIYOR.\n\n      Cikti: O:\\navitas\\results\\rota_guvenlik_t3_gate_20260803_full\n      ",
+    "text\n      ==============================================================================\n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ==============================================================================\n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      ",
+    "text\n      ============================================================================== \n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ============================================================================== \n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      ",
+    "text\n      [1/18] foto WhatsApp Image 2026-07-30 at 11.44.48.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [2/18] foto WhatsApp Image 2026-07-30 at 11.44.50.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [3/18] foto WhatsApp Image 2026-07-30 at 11.44.50 (1).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [4/18] foto WhatsApp Image 2026-07-30 at 11.44.50 (2).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [5/18] foto WhatsApp Image 2026-07-30 at 11.44.51.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [6/18] foto WhatsApp Image 2026-07-30 at 11.44.51 (1).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [7/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [8/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#822: ham_ihlal=False enjekte_ihlal=False\n      [9/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#1643: ham_ihlal=False enjekte_ihlal=False\n      [10/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [11/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#1308: ham_ihlal=False enjekte_ihlal=False\n      [12/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#2616: ham_ihlal=False enjekte_ihlal=False\n      [13/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [14/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#761: ham_ihlal=False enjekte_ihlal=False\n      [15/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#1522: ham_ihlal=False enjekte_ihlal=False\n      [16/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [17/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#370: ham_ihlal=False enjekte_ihlal=False\n      [18/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#741: ham_ihlal=False enjekte_ihlal=False\n      ========================================================================\n      HAM ihlal orani: 0.000 (0/18) — BEKLENEN > 0.10\n      ENJEKTE rota ∩ dilate(arac, r_gerekli): TAM 0\n      [GUCSUZ] Ham ihlal orani <= 0.10. Bu veri kumesi bildirilen kusuru yeterince tetiklemiyor;\n               sonuc TEMIZ degil, GUCSUZ kabul edilmelidir.\n      [GECTI] Enjekte kipte her rota, genisletilmis arac alanindan tam uzakta.\n      CIKTI: O:\\navitas\\results\\costmap_t3_gate_20260804_attempt1\n      Rota 493 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.\n      Rota 493 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.\n      Rota 562 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.\n      Rota 562 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.\n      ",
+    "text\n      [1/18] foto WhatsApp Image 2026-07-30 at 11.44.48.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [2/18] foto WhatsApp Image 2026-07-30 at 11.44.50.jpeg#0: ham_ihlal=True enjekte_ihlal=False\n      [3/18] foto WhatsApp Image 2026-07-30 at 11.44.50 (1).jpeg#0: ham_ihlal=True enjekte_ihlal=False\n      [4/18] foto WhatsApp Image 2026-07-30 at 11.44.50 (2).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [5/18] foto WhatsApp Image 2026-07-30 at 11.44.51.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [6/18] foto WhatsApp Image 2026-07-30 at 11.44.51 (1).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [7/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#0: ham_ihlal=True enjekte_ihlal=False\n      [8/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#822: ham_ihlal=False enjekte_ihlal=False\n      [9/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#1643: ham_ihlal=True enjekte_ihlal=False\n      [10/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [11/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#1308: ham_ihlal=False enjekte_ihlal=False\n      [12/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#2616: ham_ihlal=False enjekte_ihlal=False\n      [13/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [14/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#761: ham_ihlal=False enjekte_ihlal=False\n      [15/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#1522: ham_ihlal=False enjekte_ihlal=False\n      [16/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [17/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#370: ham_ihlal=False enjekte_ihlal=False\n      [18/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#741: ham_ihlal=False enjekte_ihlal=False\n      ========================================================================\n      HAM ihlal orani: 0.222 (4/18) — BEKLENEN > 0.10\n      ENJEKTE rota ∩ dilate(arac, r_gerekli): TAM 0\n      [GECTI] Enjekte kipte her rota, genisletilmis arac alanindan tam uzakta.\n      CIKTI: O:\\navitas\\results\\costmap_t3_gate_20260804_obb_final\n      "
+   ],
+   "atiflar": [],
+   "govde_satir": 151
+  },
+  {
+   "satir": 1208,
+   "baslik_ham": "**T4 — Geçme ölçütü çekimserliği denetlemiyor: sıfır rota varken GEÇTİ** · `tests/test_costmap_on_images.py:238` · KRİTİK",
+   "gorev": "T4",
+   "baslik": "T4 — Geçme ölçütü çekimserliği denetlemiyor: sıfır rota varken GEÇTİ",
+   "dosyalar": [
+    " ile ölçüldü: enjekte kipte 0/6 karar üretilmişken ",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_costmap_olcum_yok.py -v",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B tests/test_costmap_on_images.py --navitas-model O:\\navitas\\models\\navitas_seg_v20_best.pt --arac-model O:\\navitas\\yolov8m-obb.pt --arac-conf 0.25 --imgsz 896 --conf 0.25 --video-basina 3 --beklenen-kare 18 --cikti O:\\navitas\\results\\costmap_t4_gate_20260804_olcum_yok_final",
+    "tests/test_costmap_on_images.py:238",
+    "text\n      ============================================================================== \n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ============================================================================== \n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      ",
+    "text\n      [1/18] foto WhatsApp Image 2026-07-30 at 11.44.48.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [2/18] foto WhatsApp Image 2026-07-30 at 11.44.50.jpeg#0: ham_ihlal=True enjekte_ihlal=False\n      [3/18] foto WhatsApp Image 2026-07-30 at 11.44.50 (1).jpeg#0: ham_ihlal=True enjekte_ihlal=False\n      [4/18] foto WhatsApp Image 2026-07-30 at 11.44.50 (2).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [5/18] foto WhatsApp Image 2026-07-30 at 11.44.51.jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [6/18] foto WhatsApp Image 2026-07-30 at 11.44.51 (1).jpeg#0: ham_ihlal=False enjekte_ihlal=False\n      [7/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#0: ham_ihlal=True enjekte_ihlal=False\n      [8/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#822: ham_ihlal=False enjekte_ihlal=False\n      [9/18] video WhatsApp Video 2026-07-30 at 11.44.03.mp4#1643: ham_ihlal=True enjekte_ihlal=False\n      [10/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [11/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#1308: ham_ihlal=False enjekte_ihlal=False\n      [12/18] video WhatsApp Video 2026-07-30 at 11.44.23.mp4#2616: ham_ihlal=False enjekte_ihlal=False\n      [13/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [14/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#761: ham_ihlal=False enjekte_ihlal=False\n      [15/18] video WhatsApp Video 2026-07-30 at 11.44.39.mp4#1522: ham_ihlal=False enjekte_ihlal=False\n      [16/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#0: ham_ihlal=False enjekte_ihlal=False\n      [17/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#370: ham_ihlal=False enjekte_ihlal=False\n      [18/18] video WhatsApp Video 2026-07-30 at 11.44.46.mp4#741: ham_ihlal=False enjekte_ihlal=False\n      ========================================================================\n      HAM ihlal orani: 0.222 (4/18) — BEKLENEN > 0.10\n      ENJEKTE rota ∩ dilate(arac, r_gerekli): TAM 0\n      [OLCUM_YOK] Enjekte kipte 0 rota karari var; sifir ihlal sonucu vakumdur.\n      CIKTI: O:\\navitas\\results\\costmap_t4_gate_20260804_olcum_yok_final\n      "
+   ],
+   "atiflar": [],
+   "govde_satir": 75
+  },
+  {
+   "satir": 1284,
+   "baslik_ham": "**T5 — Şerit sınırları dolgulu tuvale göre: portre karede YANLIŞ GÜZERGÂH** · `codes/rpi_inference.py:151` · ÖNEMLİ",
+   "gorev": "T5",
+   "baslik": "T5 — Şerit sınırları dolgulu tuvale göre: portre karede YANLIŞ GÜZERGÂH",
+   "dosyalar": [
+    " **2 (ORTA)** döndürüyor.\n  - **Neden önemli:** Şartname §5.3.2/§6.2 — **yanlış güzergâh tespiti 0 puan**.\n  - **Yap:** ",
+    " **kare tuval** genişliği. 576×1024 girdide tuval şerit sınırları 341/683, doğrusu 416/608. İçerik-x fraksiyonu [0,7–0,8] olan (net **SAĞ**) bir koridor için ",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_rpi_letterbox.py -v",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py",
+    "codes/rpi_inference.py:151",
+    "open_path = 1 if cx < w/3 else (2 if cx < 2*w/3 else 3)",
+    "text\n      ============================================================================== \n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ============================================================================== \n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      ",
+    "x0 + 2*w_icerik/3",
+    "x0 + w_icerik/3"
+   ],
+   "atiflar": [],
+   "govde_satir": 48
+  },
+  {
+   "satir": 1333,
+   "baslik_ham": "**T6 — Sürüş sırasında gelen NO_ROUTE tamamen yok sayılıyor** · `simulation/scripts/ika_nav.py:232` · ÖNEMLİ",
+   "gorev": "T6",
+   "baslik": "T6 — Sürüş sırasında gelen NO_ROUTE tamamen yok sayılıyor",
+   "dosyalar": [
+    " / ",
+    "& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -m unittest discover -s tests -p test_ika_surus_no_route.py -v",
+    "& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B codes/test_rota_sentetik.py",
+    "4/4",
+    "comms/test_comms.py",
+    "simulation/scripts/ika_nav.py:232",
+    "text\n      ============================================================================== \n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ============================================================================== \n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      ",
+    "text\n      [ika_nav] Dinamik rota: ORTA | 1 segment\n      [ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)\n\n      [ika_nav] ── Waypoint 1/1: (1.0, 0.0)\n      [ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA\n      [ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam\n      [ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)\n\n      [ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══\n      [KAPI] NO_ROUTE etkin komut=3, sıfır-olmayan=0; OPEN_ROUTE sonrası sıfır-olmayan=1\n      test_gecersiz_open_route_rota_kapisini_acmaz (test_ika_surus_no_route.SurusNoRouteTests.test_gecersiz_open_route_rota_kapisini_acmaz) ... ok\n      test_navigate_route_rota_gecerli_callbackini_aktarir (test_ika_surus_no_route.SurusNoRouteTests.test_navigate_route_rota_gecerli_callbackini_aktarir) ... ok\n      test_no_route_boyunca_nonzero_komut_yok_ve_open_route_ile_devam (test_ika_surus_no_route.SurusNoRouteTests.test_no_route_boyunca_nonzero_komut_yok_ve_open_route_ile_devam) ... ok\n\n      ----------------------------------------------------------------------\n      Ran 3 tests in 0.027s\n\n      OK\n      "
+   ],
+   "atiflar": [],
+   "govde_satir": 58
+  },
+  {
+   "satir": 1392,
+   "baslik_ham": "**T7 — `min_area_ratio` dolgulu tuval alanına göre ölçülüyor** · `codes/rpi_inference.py:138` · ÖNEMLİ",
+   "gorev": "T7",
+   "baslik": "T7 — `min_area_ratio` dolgulu tuval alanına göre ölçülüyor",
+   "dosyalar": [
+    "& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -m unittest discover -s tests -p test_rpi_letterbox.py -v",
+    "& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B codes/test_rota_sentetik.py",
+    "codes/rpi_inference.py --help",
+    "codes/rpi_inference.py:138",
+    "side²/(w·h) = 1,778",
+    "text\n      ==============================================================================\n      KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n      ==============================================================================\n      harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n           1    kolay       1       1  1.000               ACIK   38  OK\n           1     orta       2       2  1.000               ACIK   39  OK\n           1      zor       3       3  0.797               ACIK   56  OK\n           2    kolay       1       1  1.000               ACIK   40  OK\n           2     orta       1       1  1.000               ACIK   57  OK\n           2      zor       3       3  0.797               ACIK   54  OK\n           3    kolay       3       3  1.000               ACIK   41  OK\n           3     orta       2       2  1.000               ACIK   38  OK\n           3      zor       1       1  0.797               ACIK   54  OK\n           4    kolay       3       3  1.000               ACIK   40  OK\n           4     orta       3       3  1.000               ACIK   45  OK\n           4      zor       1       1  0.797               ACIK   42  OK\n           5    kolay       3       3  1.000               ACIK   50  OK\n           5     orta       3       3  1.000               ACIK   42  OK\n           5      zor       2       2  0.797               ACIK   35  OK\n      ------------------------------------------------------------------------------\n      SONUC: 15/15 dogru\n      [OK] TUM DETERMINISTIK SAHNELER GECTI\n      "
+   ],
+   "atiflar": [],
+   "govde_satir": 48
+  },
+  {
+   "satir": 1441,
+   "baslik_ham": "**T8 — Iraksak `analyze_path` kopyası ölçüm yolunu geçersiz kılıyor** · `codes/test_accuracy.py:83` · ÖNEMLİ",
+   "gorev": "T8",
+   "baslik": "T8 — Iraksak `analyze_path` kopyası ölçüm yolunu geçersiz kılıyor",
+   "dosyalar": [
+    " da yok. Bu yüzden etiketli doğruluk **BULUNAMADI** ve sayı uydurulmadı. Altı etiketsiz gerçek karede karar 2/6 kez değişti (bu bir doğruluk ölçümü değildir); deterministik üretim-sözleşmesi uyumu **0/3 → 3/3** oldu.\n  - **Gerçek kapı koşusu (2026-08-04):**\n    ",
+    " kutusunu aynı fonksiyona iletiyor. Ayrıntılı önce/sonra tablosu: ",
+    "'i (T5'in içerik parametresiyle) doğrudan çağır. Doğruluk sayılarını yeniden üret; **önce/sonra tablosu** yaz.\n  - **Kapı:** ",
+    ".\n  - **Ölçüm sonucu:** Etiketli P001–P030 görsellerinden çalışma alanında **0/30** bulundu; eski ",
+    "1 / 1 / 3",
+    "2 / None / 2",
+    "accuracy_results.json",
+    "codes/test_accuracy.py",
+    "codes/test_accuracy.py:83",
+    "codes/test_accuracy.py:83-140",
+    "powershell\n    & 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -c \"import sys; sys.path.insert(0, r'O:/navitas/codes'); import test_accuracy, rpi_inference; print('test_accuracy.analyze_path is rpi_inference.analyze_path ->', test_accuracy.analyze_path is rpi_inference.analyze_path)\"\n    test_accuracy.analyze_path is rpi_inference.analyze_path -> True\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_accuracy_uses_production.py -v\n    [ONCE/SONRA] S1: 1/0.624 -> 2/1.000 (beklenen=2)\n    [ONCE/SONRA] S2: 1/1.000 -> None/0.000 (beklenen=None)\n    [ONCE/SONRA] S3: 3/0.396 -> 2/0.000 (beklenen=2)\n    [ONCE/SONRA] uretim karariyla uyum: 0/3 -> 3/3\n    test_analyze_path_uretim_fonksiyonunun_aynisidir (test_accuracy_uses_production.AccuracyProductionPathTests.test_analyze_path_uretim_fonksiyonunun_aynisidir) ... ok\n    test_infer_frame_letterbox_icerigini_uretim_fonksiyonuna_aktarir (test_accuracy_uses_production.AccuracyProductionPathTests.test_infer_frame_letterbox_icerigini_uretim_fonksiyonuna_aktarir) ... ok\n    test_uc_ayrisma_senaryosu_uretim_karariyla_birlesir (test_accuracy_uses_production.AccuracyProductionPathTests.test_uc_ayrisma_senaryosu_uretim_karariyla_birlesir) ... ok\n\n    ----------------------------------------------------------------------\n    Ran 3 tests in 0.106s\n\n    OK\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_accuracy.py --help\n    usage: test_accuracy.py [-h] (--test DIR | --image PATH | --video FILE |\n                            --camera) [--conf CONF] [--no-save] [--model PATH]\n                            [--labels JSON]\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py\n    ==============================================================================\n    KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n    ==============================================================================\n    harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n         1    kolay       1       1  1.000               ACIK   38  OK\n         1     orta       2       2  1.000               ACIK   39  OK\n         1      zor       3       3  0.797               ACIK   56  OK\n         2    kolay       1       1  1.000               ACIK   40  OK\n         2     orta       1       1  1.000               ACIK   57  OK\n         2      zor       3       3  0.797               ACIK   54  OK\n         3    kolay       3       3  1.000               ACIK   41  OK\n         3     orta       2       2  1.000               ACIK   38  OK\n         3      zor       1       1  0.797               ACIK   54  OK\n         4    kolay       3       3  1.000               ACIK   40  OK\n         4     orta       3       3  1.000               ACIK   45  OK\n         4      zor       1       1  0.797               ACIK   42  OK\n         5    kolay       3       3  1.000               ACIK   50  OK\n         5     orta       3       3  1.000               ACIK   42  OK\n         5      zor       2       2  0.797               ACIK   35  OK\n    ------------------------------------------------------------------------------\n    SONUC: 15/15 dogru\n    [OK] TUM DETERMINISTIK SAHNELER GECTI\n    EXIT_CODE=0\n    "
+   ],
+   "atiflar": [],
+   "govde_satir": 65
+  },
+  {
+   "satir": 1507,
+   "baslik_ham": "**T9 — `mpp=None` olduğunda ihlal eşiği 27,9 px'ten 1,10 px'e çöküyor** · `codes/test_rota_guvenlik.py:170` · ÖNEMLİ",
+   "gorev": "T9",
+   "baslik": "T9 — `mpp=None` olduğunda ihlal eşiği 27,9 px'ten 1,10 px'e çöküyor",
+   "dosyalar": [
+    " / ",
+    " karelerde eşik/iki ihlal alanı ",
+    "O:\\navitas\\results\\rota_guvenlik_t9_gate_20260804_olceksiz\\ozet.json",
+    "codes/test_rota_guvenlik.py:170",
+    "ozet.json",
+    "test_costmap_olcum_yok.py",
+    "tests/test*.py",
+    "tests/test_costmap_on_images.py",
+    "text\n    & 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B codes/test_rota_guvenlik.py --girdi 'O:\\navitas\\WhatsApp Image 2026-07-30 at 11.44.48.jpeg' --navitas-model 'O:\\navitas\\models\\navitas_seg_v20_best.pt' --arac-model 'O:\\navitas\\yolov8m-obb.pt' --arac-conf 1.0 --imgsz 896 --conf 0.25 --out 'O:\\navitas\\results\\rota_guvenlik_t9_gate_20260804_olceksiz'\n\n    === WhatsApp Image 2026-07-30 at 11.44.48.jpeg ===\n      ham:OLCEK_YOK ihlal=None  enj:OLCEK_YOK ihlal=None  mpp=None  r_gerekli_px=YOK\n\n    ======================================================================\n    OZET\n    ======================================================================\n    islenen kare          : 1\n    olcekli / olceksiz    : 0 / 1  (OLCUM_YOK)\n    ihlal orani (ham)     : OLCUM_YOK (0 olcekli kare)\n    ihlal orani (enjekte) : OLCUM_YOK (0 olcekli kare)\n    cekimserlik (ham)     : OLCUM_YOK\n    cekimserlik (enjekte) : OLCUM_YOK\n    TOHUM_YOK (ham)       : OLCUM_YOK\n    TOHUM_YOK (enjekte)   : OLCUM_YOK\n\n    [OLCEKSIZ] 1 karede mpp yok; bu karelerde rota ve ihlal\n                   karari uretilmedi, guvenlik paydalarina katilmadi.\n\n    [OLCUM_YOK] Fiziksel olcegi bilinen kare yok; guvenlik sonucu uretilemez.\n\n    Cikti: O:\\navitas\\results\\rota_guvenlik_t9_gate_20260804_olceksiz\n    PRODUCER_EXIT_CODE=1\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_rota_guvenlik_olcek.py -v\n    test_mpp_yokken_plan_ve_ihlal_karari_uretilmez (test_rota_guvenlik_olcek.OlceksizGuvenlikTests.test_mpp_yokken_plan_ve_ihlal_karari_uretilmez) ... ok\n    test_olceksiz_zehir_kaydi_ihlal_paydasina_girmez (test_rota_guvenlik_olcek.OlceksizGuvenlikTests.test_olceksiz_zehir_kaydi_ihlal_paydasina_girmez) ... ok\n    test_tum_kareler_olceksizse_oran_null_olur (test_rota_guvenlik_olcek.OlceksizGuvenlikTests.test_tum_kareler_olceksizse_oran_null_olur) ... ok\n\n    ----------------------------------------------------------------------\n    Ran 3 tests in 0.001s\n\n    OK\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py\n    ==============================================================================\n    KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n    ==============================================================================\n    harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n         1    kolay       1       1  1.000               ACIK   38  OK\n         1     orta       2       2  1.000               ACIK   39  OK\n         1      zor       3       3  0.797               ACIK   56  OK\n         2    kolay       1       1  1.000               ACIK   40  OK\n         2     orta       1       1  1.000               ACIK   57  OK\n         2      zor       3       3  0.797               ACIK   54  OK\n         3    kolay       3       3  1.000               ACIK   41  OK\n         3     orta       2       2  1.000               ACIK   38  OK\n         3      zor       1       1  0.797               ACIK   54  OK\n         4    kolay       3       3  1.000               ACIK   40  OK\n         4     orta       3       3  1.000               ACIK   45  OK\n         4      zor       1       1  0.797               ACIK   42  OK\n         5    kolay       3       3  1.000               ACIK   50  OK\n         5     orta       3       3  1.000               ACIK   42  OK\n         5      zor       2       2  0.797               ACIK   35  OK\n    ------------------------------------------------------------------------------\n    SONUC: 15/15 dogru\n    [OK] TUM DETERMINISTIK SAHNELER GECTI\n    EXIT_CODE=0\n    "
+   ],
+   "atiflar": [],
+   "govde_satir": 79
+  },
+  {
+   "satir": 1587,
+   "baslik_ham": "**T10 — Erken `return`: görev raporu ölü kod, çökmüş thread'de exit 0** · `simulation/scripts/navitas_sim.py:169` · KÜÇÜK",
+   "gorev": "T10",
+   "baslik": "T10 — Erken `return`: görev raporu ölü kod, çökmüş thread'de exit 0",
+   "dosyalar": [
+    " / ",
+    "navitas_sim.py --help",
+    "simulation/scripts/navitas_sim.py:169",
+    "tests/test*.py",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_navitas_sim_reporting.py -v\n    [T10_KAPI_OUTPUT] GÖREV SONUCU\n    [T10_KAPI_OUTPUT] İKA görevi: ✗ BAŞARISIZ\n    [T10_KAPI] worker=ika-nav exception exit=1 rapor=VAR\n    test_beklenen_tek_worker_basariliysa_exit_0 (test_navitas_sim_reporting.GorevRaporuTests.test_beklenen_tek_worker_basariliysa_exit_0) ... ok\n    test_ika_cokerken_iha_basarisi_yanlis_exit_0_uretmez (test_navitas_sim_reporting.GorevRaporuTests.test_ika_cokerken_iha_basarisi_yanlis_exit_0_uretmez) ... ok\n    test_ika_thread_istisnasi_exit_1_ve_rapor_uretir (test_navitas_sim_reporting.GorevRaporuTests.test_ika_thread_istisnasi_exit_1_ve_rapor_uretir) ... ok\n    test_iki_only_bayragi_bos_gorev_yaratmaz (test_navitas_sim_reporting.GorevRaporuTests.test_iki_only_bayragi_bos_gorev_yaratmaz) ... ok\n\n    ----------------------------------------------------------------------\n    Ran 4 tests in 0.005s\n\n    OK\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py\n    ==============================================================================\n    KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n    ==============================================================================\n    harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n         1    kolay       1       1  1.000               ACIK   38  OK\n         1     orta       2       2  1.000               ACIK   39  OK\n         1      zor       3       3  0.797               ACIK   56  OK\n         2    kolay       1       1  1.000               ACIK   40  OK\n         2     orta       1       1  1.000               ACIK   57  OK\n         2      zor       3       3  0.797               ACIK   54  OK\n         3    kolay       3       3  1.000               ACIK   41  OK\n         3     orta       2       2  1.000               ACIK   38  OK\n         3      zor       1       1  0.797               ACIK   54  OK\n         4    kolay       3       3  1.000               ACIK   40  OK\n         4     orta       3       3  1.000               ACIK   45  OK\n         4      zor       1       1  0.797               ACIK   42  OK\n         5    kolay       3       3  1.000               ACIK   50  OK\n         5     orta       3       3  1.000               ACIK   42  OK\n         5      zor       2       2  0.797               ACIK   35  OK\n    ------------------------------------------------------------------------------\n    SONUC: 15/15 dogru\n    [OK] TUM DETERMINISTIK SAHNELER GECTI\n    EXIT_CODE=0\n    "
+   ],
+   "atiflar": [],
+   "govde_satir": 50
+  },
+  {
+   "satir": 1638,
+   "baslik_ham": "**T11 — `--no-route` adres bayrağı olmadan `TypeError` ile çöküyor** · `comms/iha_sender.py:87` · KÜÇÜK",
+   "gorev": "T11",
+   "baslik": "T11 — `--no-route` adres bayrağı olmadan `TypeError` ile çöküyor",
+   "dosyalar": [
+    " / ",
+    " ile temiz hata ver.\n  - **Kapı:** Aynı komut anlaşılır argparse hatası ve **exit 2** vermeli, traceback değil.\n  - **Uygulama (2026-08-04 · Codex-1):** Payload/heartbeat doğrulamasından sonra, fakat link kurulmadan ve “gönderiliyor” yazılmadan önce en az bir ",
+    "comms/iha_sender.py:87",
+    "comms/test_comms.py",
+    "python iha_sender.py --no-route KAPALI_DAR --detay test",
+    "tests/test*.py",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_iha_sender_cli.py -v\n    [T11_KAPI] exit=2 argparse=VAR traceback=YOK gonderim_mesaji=YOK\n    test_no_route_hedefsiz_argparse_exit_2 (test_iha_sender_cli.IhaSenderCliTests.test_no_route_hedefsiz_argparse_exit_2) ... ok\n    test_open_route_hedefsiz_ayni_argparse_kapisinda_durur (test_iha_sender_cli.IhaSenderCliTests.test_open_route_hedefsiz_ayni_argparse_kapisinda_durur) ... ok\n\n    ----------------------------------------------------------------------\n    Ran 2 tests in 0.175s\n\n    OK\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B codes/test_rota_sentetik.py\n    ==============================================================================\n    KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)\n    ==============================================================================\n    harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc\n         1    kolay       1       1  1.000               ACIK   38  OK\n         1     orta       2       2  1.000               ACIK   39  OK\n         1      zor       3       3  0.797               ACIK   56  OK\n         2    kolay       1       1  1.000               ACIK   40  OK\n         2     orta       1       1  1.000               ACIK   57  OK\n         2      zor       3       3  0.797               ACIK   54  OK\n         3    kolay       3       3  1.000               ACIK   41  OK\n         3     orta       2       2  1.000               ACIK   38  OK\n         3      zor       1       1  0.797               ACIK   54  OK\n         4    kolay       3       3  1.000               ACIK   40  OK\n         4     orta       3       3  1.000               ACIK   45  OK\n         4      zor       1       1  0.797               ACIK   42  OK\n         5    kolay       3       3  1.000               ACIK   50  OK\n         5     orta       3       3  1.000               ACIK   42  OK\n         5      zor       2       2  0.797               ACIK   35  OK\n    ------------------------------------------------------------------------------\n    SONUC: 15/15 dogru\n    [OK] TUM DETERMINISTIK SAHNELER GECTI\n    EXIT_CODE=0\n    ",
+    "text\n    O:\\navitas-local-train\\venv\\Scripts\\python.exe -B iha_sender.py --no-route KAPALI_DAR --detay test\n    usage: iha_sender.py [-h] [--road {1,2,3}] [--conf CONF] [--ref REF]\n                         [--rota-json ROTA_JSON] [--no-route SEBEP]\n                         [--detay DETAY] [--ika IKA] [--yks YKS] [--serial SERIAL]\n                         [--baud BAUD] [--heartbeat-sure HEARTBEAT_SURE]\n                         [--heartbeat-aralik HEARTBEAT_ARALIK]\n    iha_sender.py: error: --serial, --ika veya --yks hedeflerinden biri gerekli\n    EXIT_CODE=2\n    "
+   ],
+   "atiflar": [],
+   "govde_satir": 62
+  },
+  {
+   "satir": 2624,
+   "baslik_ham": "**T48 — Zemin maskesi sağlamlık kapısı: kaplama çöküşünde rota YAYINLANMAZ** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `comms/yks_gui.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-61",
+   "gorev": "T48",
+   "baslik": "T48 — Zemin maskesi sağlamlık kapısı: kaplama çöküşünde rota YAYINLANMAZ",
+   "dosyalar": [
+    "\n  - **Yan düzeltme — ret önceliği.** Otoparkta iki ret aynı anda geçerliydi ve\n    ölçek kapısı yapısal reti **eziyordu**. §6.4/3 zaten \"yapısal ret ezilmez\"\n    diyor; kural üç üretim çağrı yerinde ve GUI'de düzeltildi\n    (",
+    " (15 test) — eşiğin\n    sözleşmeden okunduğu, sınırın kendisinin geçerli olduğu, kapının **rotadan\n    önce** çalıştığı, içerik kutusunu kullandığı, **madde 15 nötrlüğü** ve genel\n    kapının 15 sahnesinin reddedilmediği.\n  - ⚠ **Açık:** kompozit kaynak artık 7/7 ",
+    " dönüyor\n    (v21 kaplaması orada %76–84). **T36b'nin durumu değişti:** ekran artık\n    yanlış şerit göstermiyor, doğru sebeple çekimser kalıyor. Kapanması hâlâ\n    model/veri tarafına bağlı (D-61 neden 2).\n  - **Neden:** Kullanıcının gördüğü asıl kusur, ekranın **çatı ve çim üzerinden\n    geçen bir rotayı kendinden emin çizmesi**. Sistem maskenin çöktüğünü\n    anlamıyor; rotayı yine de üretiyor. Karar zinciri bunu yakalayamaz çünkü\n    maske \"dolu\" görünüyor.\n  - **Ölçülmüş taban — eşik uydurulmuyor:**\n    ",
+    " yazsın. Hakem, sistemin\n    **neden** karar vermediğini görsün.\n  - ⚠ **Madde 15 uyumlu:** bu kapı serbest alanı yalnız **reddeder**, asla\n    büyütmez. Kapı ret verdiğinde rota yayınlanmaz — sessizce daraltma yok.\n  - **Kapı:** (1) otopark 12 karesinde **12/12** ",
+    "'nin **pozitif kontrolünü boşalttı** (eski centroid\n    3/3 doğru çıktı); kum saati fikstürüyle hem tavanın altına indi (%51,1) hem\n    ayırt edici kaldı.\n  - **Kalıcı kapı:** ",
+    "CONTRACTS.md",
+    "REVIEW_LOG.md",
+    "codes/karar_sozlesmesi.py",
+    "codes/rpi_inference.py",
+    "codes/test_rota_sentetik.py",
+    "comms/yks_gui.py",
+    "karar_sozlesmesi.py",
+    "test_rota_sentetik.py",
+    "text\n    KAPI 1  otopark 12 kare, hakem ekrani\n              ONCE  : {'OLCEK_YOK': 12}                  (yapisal ret eziliyordu)\n              SONRA : {'ZEMIN_MASKESI_SUPHELI': 12}  ->  12/12  GECTI\n              ekran : \"⚠ ZEMİN MASKESİ ŞÜPHELİ · kaplama %78 (tavan %55)\"\n    KAPI 2  sentetik arena 40 kare -> YANLIS POZITIF 0/40\n              {'UC_BANT_TEMAS_YOK': 33, 'YOL/2': 4, 'YOL/3': 2, 'YOL/1': 1}\n    KAPI 3  POZITIF KONTROL (cokme supurmesi)\n              %20 %40 %50 %54 -> KARAR VAR (kapi susuyor)\n              %56 %70 %95     -> ZEMIN_MASKESI_SUPHELI (kapi atesliyor)\n    KAPI 4  codes/test_rota_sentetik.py 15/15 ·\n            unittest discover -s tests -q -> Ran 281 tests OK ·\n            git diff --check exit 0 · Jetson ikizleri BIREBIR\n    ",
+    "text\n    MESRU (kapi ATESLEMEMELI)                        n     p50    p95    MAKS\n      sentetik arena YER GERCEGI (etiket poligonu)  60   %11,7  %22,1  %39,0\n      sentetik arena, v17 + v21 model ciktisi      120   %11,8  %23,2  %38,7\n      genel kapinin KENDI 15 sahnesi                15   %36,4    —    %42,6\n    COKMUS (kapi ATESLEMELI)                         n     p50           MIN\n      v21 otopark (cati/cim yesil)                  67   %79,9         %76,7\n      v21 kompozit arena                             7   %82,7         %76,0\n    "
+   ],
+   "atiflar": [
+    61,
+    62
+   ],
+   "govde_satir": 82
+  },
+  {
+   "satir": 2707,
+   "baslik_ham": "**T49 — Sentetik arenada 11/12 kare `UC_BANT_TEMAS_YOK`: modelin EĞİTİLDİĞİ alanda rota çıkmıyor** · `codes/rpi_inference.py` (tanı) · **KRİTİK** · kanıt: aşağıdaki ölçüm",
+   "gorev": "T49",
+   "baslik": "T49 — Sentetik arenada 11/12 kare `UC_BANT_TEMAS_YOK`: modelin EĞİTİLDİĞİ alanda rota çıkmıyor",
+   "dosyalar": [
+    "\n    Kaplama **makul** — yani maske çökmüş değil. Buna rağmen 11/12 karede\n    başlangıç/hedef uç bandına temas eden koridor bulunamıyor.\n  - **Neden KRİTİK:** Bu, modelin **eğitildiği ve IoU 0,861 ölçtüğümüz** alan.\n    Burada rota çıkmıyorsa kusur modelde değil, **karar yolunun sentetik arena\n    geometrisiyle uyuşmamasında** olabilir (kare tuval → ",
+    "\n    Yalnız **13/24** sahne üç şeritli; yalnız **1/24** etiket maskesinde tam üç\n    traversable bileşen var. Üreteç ayrıca arenayı görüntü içinde ",
+    " dikey\n    payla, dönüş/perspektifle ve ",
+    " ile 0..320 yeniden oynatıldı; ilk 24\n    JPEG disk kümesiyle **24/24 bayt-eşit**. Gerçek çıktı:\n    ",
+    " ile geri yüklendi; üretim eşiği bu görevde **değiştirilmedi**.\n  - **(b) Yer gerçeği/geometri — doğru ve baskın açıklama.** Üreteç kaynağı\n    seed=7, ",
+    " reddinin **0/21**'i bileşen kopukluğundan; **21/21**'inde\n    tüm model maskesi dahi bir veya iki uçta yeterli zemin taşımıyor.\n  - **Gözle doğrulama — 6/6 görsel açıldı ve incelendi.** Her dosyada ham kare,\n    maske/bileşen, uç bantlar ve varsa sarı rota aynı panelde:\n    - (a) ",
+    " salt YOLO etiketinden birebir geri kazanılamazdı — etiket-only sonuç\n    **DOĞRULANAMADI**; 24/24 bayt-eşit kaynak replay'iyle ayrıca doğrulandı.\n  - **(c) Maske parçalanması — ölçülen retlerin nedeni değil.** Morfoloji ve\n    engel çıkarma sonrasındaki **tüm** bileşenler, en büyük bileşen seçilmeden\n    ölçüldü:\n    ",
+    " şerit olasılığıyla yerleştiriyor. Kusursuz\n    GT'nin 22/24 reddedilmesi model kusurunu dışlar: karar yolunun **tam görüntü\n    uçlarına uzanan koridor** varsayımı bu veri geometrisiyle uyuşmuyor. Gerçek\n    ",
+    ", 21 reddin 9'unu açıyor; 12/24 kare ",
+    "ACIK_1 / ACIK_2 / ACIK_3 / UC_BANT_TEMAS_YOK",
+    "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B results/t49_sentetik_arena_tani_20260811/t49_tani.py",
+    "codes/rpi_inference.py",
+    "rapor.json",
+    "results/t49_sentetik_arena_tani_20260811/gorseller/a2_bant_yetersiz_sa_000301.png",
+    "results/t49_sentetik_arena_tani_20260811/gorseller/b1_gt_iki_serit_sa_000300.png",
+    "results/t49_sentetik_arena_tani_20260811/gorseller/b2_gt_cok_koridor_sa_000306.png",
+    "results/t49_sentetik_arena_tani_20260811/gorseller/c1_bilesen_sa_000306.png",
+    "results/t49_sentetik_arena_tani_20260811/gorseller/c2_bilesen_sa_000310.png",
+    "results/t49_sentetik_arena_tani_20260811/rapor.md",
+    "rpi_inference.py",
+    "text\n    [T49_ARTEFAKT] rapor_json=OK gorsel=6/6 okunur=6/6\n    [T49_ARTEFAKT] rapor_md=VAR csv=VAR\n    EXIT_CODE=0\n    ",
+    "text\n    [T49_B_REPLAY] n_ser={2: 5, 3: 13, 4: 2, 5: 4}\n    [T49_B_PROVENANCE] jpeg_bayt_esit=24/24 seed=7 ayni_malzeme=0.0 dar=0.0\n    [T49_B_LABEL] bos_etiket=0\n    EXIT_CODE=0\n    ",
+    "text\n    fiziksel şerit sayısı             {2:5, 3:13, 4:2, 5:4}\n    class-0 poligon sayısı             {1:15, 2:5, 3:1, 4:2, 5:1}\n    class-0 bağlı bileşen sayısı       {1:20, 2:3, 3:1}\n    GT analyze_path, %8                ACIK=2, UC_BANT_TEMAS_YOK=22\n    GT analyze_path, %20               ACIK=12, UC_BANT_TEMAS_YOK=12\n    aynı GT bileşeni iki %8 uca değer  2/24\n    GT üst boşluk                      medyan=101 px, maks=328 px; 20/24 bant dışında\n    GT alt boşluk                      medyan=74,5 px, maks=159 px; 16/24 bant dışında\n    ",
+    "text\n    model bağlı bileşen sayısı dağılımı   {1:20, 2:3, 6:1}\n    %8 UC ret atfı                         iki bant yetersiz=14\n                                             yalnız üst yetersiz=5\n                                             yalnız alt yetersiz=2\n                                             uçlar farklı bileşenlerde=0\n                                             küçük bileşen span kaybı=0\n    uç bant zemin px (tüm / en büyük)     üst 24954 / 24954\n                                           alt 31008 / 30740\n    görsel c1, sa_000306 (6 bileşen)       üst 0 / 0, alt 0 / 0\n    görsel c2, sa_000310 (2 bileşen)       üst 0 / 0, alt 268 / 0\n    ",
+    "text\n    oran  bant_px   karar dağılımı\n    0.02     12     1 / 1 / 0 / 22\n    0.03     19     1 / 1 / 0 / 22\n    0.04     25     1 / 0 / 1 / 22\n    0.05     32     2 / 0 / 1 / 21\n    0.06     38     2 / 0 / 1 / 21\n    0.07     44     2 / 0 / 1 / 21\n    0.08     51     2 / 0 / 1 / 21\n    0.09     57     2 / 0 / 1 / 21\n    0.10     64     2 / 1 / 1 / 20\n    0.11     70     2 / 2 / 1 / 19\n    0.12     76     2 / 2 / 1 / 19\n    0.13     83     3 / 3 / 1 / 17\n    0.14     89     3 / 4 / 1 / 16\n    0.15     96     4 / 3 / 1 / 16\n    0.16    102     4 / 5 / 2 / 13\n    0.17    108     3 / 6 / 2 / 13\n    0.18    115     5 / 5 / 2 / 12\n    0.19    121     4 / 6 / 2 / 12\n    0.20    128     4 / 5 / 3 / 12\n    ",
+    "text\n    sentetik arena  kaplama %15,7 (min 6 max 25)\n                    {'RED/UC_BANT_TEMAS_YOK': 11, '1': 1}\n    "
+   ],
+   "atiflar": [],
+   "govde_satir": 123
+  },
+  {
+   "satir": 3222,
+   "baslik_ham": "**T87 — `kompozit` kaynağında rota: etiketle, eğit, ölç** · `scripts/olcum/71_*`, `dataset/gercek_kompozit/**`, `dataset/karisim_gercek_kompozit.yaml` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-136**",
+   "gorev": "T87",
+   "baslik": "T87 — `kompozit` kaynağında rota: etiketle, eğit, ölç",
+   "dosyalar": [
+    "\n    — 6 karede görüntü + **eğiticinin sınıf haritası** yan yana; ped 6/6\n    panelde YEŞİL, çevresi kırmızı olsa bile. Tam kare önizlemeler\n    ",
+    "\n  - 🔴 **ÖLÇÜLEN TAVAN 1/9 — görevin teşhisi KISMEN çürüdü.** Kalan 8 kare\n    ",
+    " (T72/D-105); ikisi de yoksa None + kayıt (sessiz engel YOK).\n  - 🔴 **Maskede düzeltmek YETMEDİ — poligon kodlaması geri getirdi:**\n    ",
+    " **15/15** · ",
+    " **620 OK** (ikisi için de).\n  - 🔴 **Ön kayıttaki (4)'ün tabanı bayattı, SIKILAŞTIRILDI.** Defterdeki\n    %8,53 (22/258) **T94 öncesi** planlayıcıyla ölçülmüş; aynı denetçinin\n    arşivi bunu gösteriyor (",
+    " **değiştirilmedi** —\n    eşik ayarı veri kalitesi kararıdır, mimarındır.\n  - ⚠ **Ölçüm hatam kayda geçti:** kapı (b)'yi önce class-0 poligonlarını tek\n    başına rasterleştirerek ölçtüm (kaplama 0,785 · 1/9 geçti) — bu etiketi\n    değil **poligon kodlamasını** ölçüyordu. Doğrusu Ultralytics'in alan sıralı\n    üst üste basmasıdır. D-136'daki mimarın dersiyle aynı sınıf.\n\n  - ⚖ **ÖLÇÜLDÜ VE HÜKME BAĞLANDI · 2026-08-19 · ",
+    " 14/258 · bugün\n    14/258). Ölçüt aynı koşumun tabanına çekildi: **K2 ≤ 14/258**.\n    ⚠ **Bedelini aday ödedi:** eski tabanla v22'nin 16/258'i geçerdi; yeni\n    tabanla düşüyor. Düzeltme kendi lehime değil **aleyhime** çalıştı.\n  - ✅ **HÜKÜM (T54/v23): ÖN KAYDIN HEPSİNİ SAĞLIYOR → TERFİYE UYGUN.**\n    Üretimden **üç eksende** iyi: K2 14→12 · kararlılık 8→**4** (yarıya) ·\n    gerçek kare zemin 0,3272→**0,4551** (etiketler 0,813).\n  - 🔴 **D-133'ün tuzağı bu kez işlemiyor** — özellikle kontrol edildi: oradaki\n    endişe *\"geçiş sebebi doğru görmek değil AZ ZEMİN GÖRMEK olabilir\"* idi.\n    v23 tam **tersini** yapıyor: daha **çok** zemin görüyor ve yine de daha az\n    moloza basıyor. Bu ikisi genelde ters yönde hareket eder.\n  - ⚠ **AÇIK NOKTA (kapı değil):** v23 şartname figüründe zemin kaplamasını\n    **16 kat** düşürüyor (%7,96 → %0,49). K0 bunu yakalamıyor (ölçüt\n    ",
+    " 22/258 · ",
+    ": binalar tamamen kırmızı, araçların\n    büyük çoğunluğu kırmızı, bitki kırmızı, asfalt yeşil.\n  - ⚠ **KAÇAN ARAÇ VAR — ölçüldü:** DOTA OBB (conf 0,10, tam çözünürlük) araç\n    pikselinin **%5,9'u** etikette engel değil; bunun **%3,47**'si poligon sınır\n    yuvarlaması, kalanı conf 0,25 altında kalan araçlar. Gözle de görüldü\n    (beyaz/gümüş birkaç araç zemin kalmış). ",
+    "REVIEW_LOG.md",
+    "dataset/gercek_kompozit/",
+    "dataset/gercek_kompozit/**",
+    "dataset/karisim_gercek_kompozit.yaml",
+    "i 0/9'dan **en fazla 1/9**'a\n    taşıyabilir. D-136'nın açık maddesi (GORUS_HATTI_KOPUK'un sebebi) böylece\n    cevaplandı: sebep **algı değil sahne geometrisi**.\n  - **KAPI (a)** 15/15 · **(c)/(d) gözle (D-80):** ",
+    "karisim_gercek_otopark.yaml",
+    "scripts/olcum/71_*",
+    "scripts/olcum/v22_v23_on_kayit.md",
+    "text\n    ZEMIN KAPISINDAN GECEN : 9/9\n    kaplama medyan 0,618 · min 0,580 · maks 0,667   (tavan 0,67)\n    KUSURSUZ ALGI TAVANI — rota ureten: 1/9 · pay +3,64 px · pay<0: 0\n    ",
+    "text\n    karisim_gercek_otopark.yaml   train 6819 · val 806\n    karisim_gercek_kompozit.yaml  train 6847 · val 808\n    yeni kumenin payi: 28/6847 = %0,41\n    ",
+    "text\n    model   K0 figur  K0 raw   K1       K2       K3      K4      K5-SIKI   kararlilik\n    v30      %8,0     0,3272   258/260  14/258   0/258   1/258   0/3633    8/260\n    v22     %10,5     0,4510   258/260  16/258   0/258   0/258   0/3633    7/260\n    v23      %0,5     0,4551   258/260  12/258   0/258   1/258   0/3633    4/260\n    ",
+    "text\n    yalniz maskede duzeltilince   ped ENGEL kalan kare: 6/9 (2'sinde 1681/1681)\n    ped AYRI poligon yazilinca    ped ENGEL kalan kare: 4/9 (kalan 13-41 px)\n    "
+   ],
+   "atiflar": [
+    80,
+    105,
+    132,
+    133,
+    136,
+    138,
+    181
+   ],
+   "govde_satir": 89
+  },
+  {
+   "satir": 3360,
+   "baslik_ham": "**T86 — Ölçek kâhinini üretim yoluna ve ekrana BAĞLA** · `codes/rpi_inference.py`, `codes/arac_maskesi.py`, `codes/karar_sozlesmesi.py`, `comms/yks_gui.py`, `config/model_registry.json`, `scripts/olcum/72_*`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-126, D-136**",
+   "gorev": "T86",
+   "baslik": "T86 — Ölçek kâhinini üretim yoluna ve ekrana BAĞLA",
+   "dosyalar": [
+    "/",
+    "63_bariyer_kesisimi.py",
+    "66_k5_bariyer_populasyon.py",
+    "K0 %8.0 · K1 258/260 · K2 22/258 · K3 0/258 · K4 1/258",
+    "REVIEW_LOG.md",
+    "arac_maskesi.py",
+    "codes/arac_maskesi.py",
+    "codes/karar_sozlesmesi.py",
+    "codes/rpi_inference.py",
+    "comms/yks_gui.py",
+    "config/model_registry.json",
+    "da 12 karenin 12'si ölçeği **araç referansından** türetti. Arena yolu\n    (telemetri/beyan) **değişmedi**.\n  - 🔴 **KAPI (f) — rota UYDURULMADI, ama paylar kıl payı.** Ölçeksiz koşan\n    kareler 1,0–9,8 px'lik \"hayali aralık\"lardan geçiyordu; C-uzayı koşunca\n    **hiçbiri** o aralıktan geçmiyor:\n    ",
+    "r_gerekli ∝ 1/arac_m",
+    "results/t86/drone.png",
+    "scripts/olcum/72_*",
+    "test/road_233.jpg",
+    "test_model_registry.py",
+    "test_yks_gui_uretim_hizasi.py",
+    "tests/**",
+    "tests/test_olcek_uretim_baglantisi.py",
+    "text\n    (a) codes/test_rota_sentetik.py       SONUC: 15/15 dogru\n    (b) unittest discover -s tests -q     Ran 544 · OK   (once 526, +18)\n    (c) 72_kaynak_taramasi.py             drone OLCEK_YOK 12 -> 0\n    (d) 65_kabul_denetcisi.py --model v30 K0..K4 D-133 ile BIREBIR\n    (e) yks_gui --kaynak drone            GOZLE DOGRULANDI\n    (f) drone darbogaz paylari            pay<0: 0/11\n    ",
+    "text\n    kare                          A: olceksiz    B: kahinle (C-uzayi KOSAR)\n                                   darbogaz      darbogaz  r_ger     pay\n    frame_000005_000000816.jpg        5.00         16.78   16.77   +0.006\n    frame_000006_000000336.jpg        1.00         15.18   15.16   +0.020\n    frame_000010_000001824.jpg        2.00         14.18   14.11   +0.072\n    frame_000000_000000000.jpg        1.00         17.58   16.97   +0.602\n    frame_000016_000000720.jpg        1.00         17.60   14.91   +2.688\n    frame_000001_000000168.jpg        1.00           —       —     GORUS_HATTI_KOPUK\n    PAY < 0 olan kare: 0/11  — C-uzayi TUTUYOR\n    ",
+    "text\n    kaynak          ONCE rota   SONRA rota   ONCE OLCEK_YOK  SONRA OLCEK_YOK\n    kompozit          0/9          0/9              0              0\n    arena_kadraj     12/12        12/12             0              0\n    arena_gercek      0/1          0/1              1              1\n    gemini            0/12         0/12            12              9\n    test              0/12         1/12            12              9\n    val               0/12         0/12            12             11\n    drone             0/12        11/12            12              0   <- ASIL\n    ",
+    "text\n    varsayim     ayakta kalan rota\n    1,90 m            11/11\n    1,80 m            11/11   (kullanilan)\n    1,70 m             4/11   🔴 YEDI ROTA DUSER\n    ",
+    "ölçek 0.0648 m/px (ARAÇ REFERANSI ·\n    güven ×0.86 · arac kisa kenari 27.8 px = 1.80 m) · gövde açıklığı 17.0 px ·\n    C-uzayı UYGULANDI · darboğaz 17.6 px @ şerit 2"
+   ],
+   "atiflar": [
+    80,
+    88,
+    90,
+    99,
+    124,
+    126,
+    133,
+    136,
+    137
+   ],
+   "govde_satir": 80
+  },
+  {
+   "satir": 3441,
+   "baslik_ham": "**T85 — v30'u üretim zincirine al** · `config/model_registry.json`, `jetson_paket/**`, `JETSON_KILAVUZ.md` ×2, `scripts/olcum/**`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-132, D-133, D-134**",
+   "gorev": "T85",
+   "baslik": "T85 — v30'u üretim zincirine al",
+   "dosyalar": [
+    " /\n    ",
+    " diye yazıldı. · Arena ölçümlerinin tamamı **sentetiktir**\n    (D-88/D-99). · ",
+    " kopyaları\n    bayt-eş yenilendi. Bu beş uçtan **değildir**; mimar isterse ayrılabilir.\n  - 🔴 **DOĞRULANAMADI:** v30'un **kararlılık gerilemesi** (8/260 vs v28 3/260)\n    bu görevde çözülmedi — T85 çevirme görevidir, ölçüm görevi değil; mimarın\n    D-133'teki \"T79 inince kalkar\" gerekçesi **hâlâ doğrulanmamıştır** (T79\n    D-126'da kapıyı tutturamadı, ",
+    " v30 için **ölçülmedi**; v27/v4 değerleri\n    **taşınmadı**. · **Jetson'da hiçbir şey koşulmadı** — engine derlenmedi,\n    ONNX denkliği PC'de ölçüldü ve **CUDA sağlayıcısı bulunamadı** uyarısı\n    düştü (CPU'da koşmuş olabilir; Jetson TensorRT FP16 farklı davranabilir).\n  - ⚠ **Saha kuru koşusunda ",
+    " · 54.837.724 B.\n    ⚠ Emrin \"best.pt ile last.pt AYNI dosyadır\" ifadesi **ölçüldü**: dosyalar\n    bayt-eş **değil** (sha 492e4508 vs 3ca73a90), ama **537/537 ağırlık tensörü\n    eşit**. Karar veren şey ağırlık olduğu için iddia anlamlı düzeyde doğru;\n    **D-113 kusuru tekrarlamadı**.\n  - **ONNX:** kanonik ",
+    "). · Gerçek karelerdeki **65/67\n    doğrulanmamıştır** (kaplama 0,594 vs etiket 0,813) ve deftere\n    ",
+    "67_onnx_karar_denkligi.py",
+    "68_karar_kararliligi.py",
+    "70_gercek_kare_rota_denemesi.py",
+    "JETSON_KILAVUZ.md",
+    "REVIEW_LOG.md",
+    "arena_kadraj/sa_000026.jpg",
+    "config/model_registry.json",
+    "jetson_paket/**",
+    "models/navitas_seg_v30_best.pt",
+    "results/onnx_export_v30_20260815/",
+    "results/t85/v30_ekran.png",
+    "scripts/olcum/**",
+    "scripts/olcum/ayarlar.py",
+    "tests/**",
+    "text\n    (a) codes/test_rota_sentetik.py     SONUC: 15/15 dogru\n    (b) unittest discover -s tests -q   Ran 526 tests · OK  (once 526, DUSMEDI)\n    (c) scripts/saha_kuru_kosu.py       model_yukleme GECTI [35 ms]\n    (d) yks_gui --gorunum canli --kaynak arena_kadraj   GOZLE DOGRULANDI\n    (e) scripts/jetson_paket_hazirla.py 9/9 BAYT-ESIT\n    (f) 67_onnx_karar_denkligi.py       259/260 (%99,6) — OLCUM, KAPI DEGIL\n    ",
+    "text\n    olculen kare         260      KARAR AYNI  259/260 (%99,6)\n    ikisi de rota uretti  258/260\n    rota IoU  ort 0,9816 · en dusuk 0,0000\n    azami sapma ort 2,4 px (0,184 m) · en kotu 194,0 px (15,156 m)\n    zemin maskesi IoU ort 0,9975 · kaplama farki ort +0,00048\n    UYUSMAZLIK: sa_000131.jpg  pt=serit 2  onnx=serit 1\n    v27 kiyasi (D-116/3): 258/260, iki kare, 28 m\n    "
+   ],
+   "atiflar": [
+    15,
+    80,
+    88,
+    99,
+    113,
+    116,
+    126,
+    132,
+    133,
+    134,
+    136
+   ],
+   "govde_satir": 70
+  },
+  {
+   "satir": 3512,
+   "baslik_ham": "**T83 — Ölçek kâhini hiyerarşisi (telemetri → arena sınırı → araç referansı)** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-124**",
+   "gorev": "T83",
+   "baslik": "T83 — Ölçek kâhini hiyerarşisi (telemetri → arena sınırı → araç referansı)",
+   "dosyalar": [
+    "\n    D-124 **bağımsız doğrulandı** (mimar: mpp 0,07321 · r_gerekli 14,2–15,9 px).\n  - 🔴 **Güven çarpanları ölçülen belirsizlikten türetildi, uydurulmadı:**\n    telemetri **1.00** (sözleşme otoritesi) · arena **0.70** (T65/D-94: sınır\n    perspektif yamuk, genişlik 730→950 px = %30) · araç **0.86** (D-124:\n    IQR/medyan 0,138).\n  - ⚠ **Ölçüm emrin sıralamasını doğrulamıyor:** katman 2 (0.70) katman 3'ten\n    (0.86) **daha belirsiz** çıktı. Sıralama kullanıcının kararı olduğu için\n    **değiştirmedim**; çarpanlar ölçülen gerçeği yansıtıyor. Çevirme kararı\n    mimarın.\n  - 🔴 **Senaryo beyan edilir:** bilinmeyen anahtar → katman 2 devreye girmez.\n    Testle sayıya bağlandı: aynı sınırda HTAB/FDA oranı **tam 2,5**.\n    \"kare = arena\" varsayımı yok; sınır tespit edilemezse katman çalışmaz.\n  - **Geriye uyum:** ",
+    "REVIEW_LOG.md",
+    "codes/karar_sozlesmesi.py",
+    "codes/rpi_inference.py",
+    "tests/**",
+    "tests/test_olcek_kahini.py",
+    "text\n    telemetri        0/67  (%  0.0)   carpan 1.00\n    arena_siniri     0/67  (%  0.0)   carpan 0.70   (otoparkta ARENA YOK)\n    arac_referansi  67/67  (%100.0)   carpan 0.86\n    OLCEK TURETILEBILEN: 67/67   (onceki durum: 0/67)\n    mpp 0.06437 / 0.07459 / 0.11409 · r_gerekli 9.6 / 14.7 / 17.1 px\n    "
+   ],
+   "atiflar": [
+    94,
+    124,
+    126
+   ],
+   "govde_satir": 32
+  },
+  {
+   "satir": 3545,
+   "baslik_ham": "**T82 — Açık alanı çökmüş maskeden ayıran İKİNCİ bir sinyal ara** · ölçüm görevi · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-124**",
+   "gorev": "T82",
+   "baslik": "T82 — Açık alanı çökmüş maskeden ayıran İKİNCİ bir sinyal ara",
+   "dosyalar": [
+    "REVIEW_LOG.md",
+    "codes/test_rota_sentetik.py",
+    "results/t82_delik_yapisi/delik_yapisi_gorsel.png",
+    "text\n    (e) v21, MESRU arena, n=260\n        kapinin olcutuyle COKMUS: 2/260   (kaplama>0,67 VE kenar>0,50)\n        o karelerde delik_sayisi: 0 ve 6\n        aday esigin yakaladigi:   0/2     <- SIFIR\n    ",
+    "text\n    olcut               a_mesru_GT       b_cokme_v21      c_otopark_v27     d_mesru_v27\n    delik_sayisi     0,0/  1,0/ 15,0  24,0/33,0/47,0  23,0/33,0/46,0   0,0/ 2,0/19,0\n    delik_yogunlugu  0,0/ 10,6/134,9  43,3/58,1/81,0  41,2/58,0/78,4   0,0/14,9/109\n    delik_alan_orani 0,00/0,02/0,26   0,10/0,17/0,22  0,10/0,16/0,22   0,00/0,03/0,25\n    en_buyuk_pay     0,29/0,76/1,00   1,00/1,00/1,00  1,00/1,00/1,00   0,45/0,88/1,00\n    euler          -14,0/ 2,0/ 11,0  -45,0/-25,0/8,0 -42,0/-25,0/5,0  -15,0/ 1,0/11,0\n    kaplama          0,06/0,32/0,65   0,77/0,80/0,86  0,77/0,80/0,87   0,19/0,33/0,64\n    "
+   ],
+   "atiflar": [
+    59,
+    80,
+    88,
+    99,
+    124,
+    125
+   ],
+   "govde_satir": 58
+  },
+  {
+   "satir": 3604,
+   "baslik_ham": "**T81 — Canlı Algı görünümünde sağ panel, canlı algı sonucunu göstersin** · `comms/yks_gui.py`, `tests/**` · **ÖNEMLİ** · kanıt: ekran görüntüsü (mimar ölçtü)",
+   "gorev": "T81",
+   "baslik": "T81 — Canlı Algı görünümünde sağ panel, canlı algı sonucunu göstersin",
+   "dosyalar": [
+    "/",
+    "REVIEW_LOG.md",
+    "YEREL ALGI — telsiz DEĞİL · arena_kadraj/sa_000026.jpg · güven 0.848",
+    "comms/yks_gui.py",
+    "results/t81/canli_arena.png",
+    "results/t81/canli_drone.png",
+    "results/t81/saha.png",
+    "test_rota_sentetik.py",
+    "tests/**"
+   ],
+   "atiflar": [
+    88,
+    99,
+    118,
+    121
+   ],
+   "govde_satir": 68
+  },
+  {
+   "satir": 3673,
+   "baslik_ham": "**T80 — Hakem ekranı istenen durumda AÇILABİLSİN (`--kaynak`, `--gorunum`)** · `comms/yks_gui.py`, `tests/**` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-118**",
+   "gorev": "T80",
+   "baslik": "T80 — Hakem ekranı istenen durumda AÇILABİLSİN (`--kaynak`, `--gorunum`)",
+   "dosyalar": [
+    " **bilerek** duruyor\n    (domain boşluğunu hakeme gösterir, D-53/D-90). Üç ayrı test kilitliyor.\n  - **Sıra önemli:** kaynak, görünümden **önce** kuruluyor. ",
+    " ile eşleniyor; test iç adları **kaynaktan toplayıp**\n    karşılaştırıyor — buton/kısayol tarafıyla ayrışırsa test düşer.\n  - ⚠ **VARSAYILANLAR DEĞİŞMEDİ.** İkisinin de ",
+    " yazan komutunda SS sessizce kaybolurdu.\n  - ⚠ **DOĞRULANAMADI:** (1) SS'teki kare kümenin **ilk** karesidir, küme\n    genelinde rota üretimi bu görevde yeniden ölçülmedi (T77'de 12/12);\n    (2) ",
+    "'dan okunuyor,\n    liste **çıplak yazılmadı** (madde 16). AST testi List/Tuple literalini\n    yasaklıyor.\n  - **",
+    "/",
+    "REVIEW_LOG.md",
+    "codes/test_rota_sentetik.py",
+    "comms/yks_gui.py",
+    "nın ilk sekiz karakteridir (T76/D-116) — ekranın üretim ağırlığını\n    yüklediği argümanlardan **bağımsız** olarak da görünüyor.\n  - **KAPI (d) — geçersiz değer, ekran AÇILMIYOR:**\n    ",
+    "tests/**",
+    "text\n    arena_kadraj/sa_000026.jpg -> karar: 2·ORTA · güven 0.848 · 1594 ms\n    çıkarım: üretim (rpi_inference) · predict conf 0.30\n    traversable %22 · blocked %20 · gösterim: sürüş koridoru\n    model: navitas_seg_v27_best.pt · ölçek 0.0781 m/px (kabul kümesi manifesti)\n    gövde açıklığı 14.1 px · C-uzayı UYGULANDI · darboğaz 19.0 px @ şerit 2\n    ",
+    "text\n    yks_gui.py: error: argument --kaynak: invalid choice: 'xyz'\n      (choose from kompozit, arena_kadraj, arena_gercek, drone, gemini, test, val)\n    exit = 2      (Tk penceresi HİÇ oluşturulmadı)\n    "
+   ],
+   "atiflar": [
+    53,
+    80,
+    88,
+    90,
+    99,
+    116,
+    118,
+    120
+   ],
+   "govde_satir": 58
+  },
+  {
+   "satir": 3732,
+   "baslik_ham": "**T78 — Zemin kapısı v24 ile kalibre, v27 ile DEĞİL: yeniden ölç** · ölçüm görevi · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-118**",
+   "gorev": "T78",
+   "baslik": "T78 — Zemin kapısı v24 ile kalibre, v27 ile DEĞİL: yeniden ölç",
+   "dosyalar": [
+    "\n  - **Neden öncül doğru ama sonuç yanlış:** v27 gerçekten daha geniş zemin\n    görüyor (0,272 → 0,332) — ama **GT'nin kendisi 0,334**. Genişlemek tavana\n    değil **gerçeğe** yaklaşmaktır; tavan (0,67) gerçeğin **iki katı** uzağında.\n    v24'ün tavanı deldiği 5 kare, v24'ün **yanıldığı** karelerdi (fark +0,089…\n    +0,258, IoU 0,476…0,842); v27 aynı karelerde GT'nin altında/eşinde.\n  - **Kapı (0,67 / 0,50) v27 için YENİDEN GEÇERLENDİ** (kalibre edilmedi):\n    meşru elenen **0/260** (v24'te 1/260 idi) · arena dışı yakalanan **524/524**.\n  - **GÖRSEL KAPI (D-80) — kapı HAKLI:** ",
+    " (girdi · v24 · v27): her iki model de araçları\n    kırmızı (doğru) ama **binanın ÇATISINI YEŞİL** — yani zemin — boyuyor.\n    Kapının gerekçe metni (\"çatı/çim/toprak zemin sayılmış olabilir\") o karede\n    **harfiyen doğru**. Tavanı gevşetmek, İKA'yı bir binanın **çatısına** rota\n    çizmeye açık bırakırdı.\n  - **Önceden kapatılan itiraz** (\"kapı HAM zemini ölçüyor, ETKİN serbest alanı\n    değil\"): ölçüldü — ",
+    " 0,814 →\n    0,776; **red 9/9 ve 67/67 aynen kalıyor**. Verdikt değişmiyor (çatıda engel\n    yok; engeli çıkarmak çatıyı zemin saymayı düzeltmez). **Uygulanmadı** —\n    eşik çifti HAM zemin üzerinde türetilmiştir (T52/D-66, D-85).\n  - **D-114/D-115 bağımsız doğrulandı:** D-114 0,3419 / 0,2877 / GT 0,3459\n    demişti; bağımsız ölçümüm 0,3315 / 0,2723 / 0,3345. Üstüne D-114'te olmayan\n    şey: v27'nin GT'ye **yakınlığı** (IoU 0,453 → 0,922).\n  - **KAPILAR:** ",
+    " → **15/15** · ",
+    "REVIEW_LOG.md",
+    "text\n    kume               n    v24 medyan  v27 medyan   fark     RED (v24 / v27)\n    arena_kompozit     9      0,829       0,836     +0,007     9/9  ·   9/9\n    raw_frames        67      0,801       0,806     +0,005    67/67 ·  67/67\n    copy_paste_gercek 448     0,801       0,805     +0,004   448/448 · 448/448\n    ",
+    "text\n    olcut                      v24                 v27\n    kaplama min/med/maks  0,000/0,272/0,765   0,189/0,332/0,636\n    GT kaplama            0,184/0,334/0,652   (ayni GT)\n    |model - GT| medyan        0,1023              0,0051\n    IoU medyan                 0,4534              0,9220\n    kaplama > 0,67               5/260               0/260\n    KAPI REDDI                   1/260               0/260\n    TAVANA KALAN PAY            -0,095              +0,034\n    "
+   ],
+   "atiflar": [
+    66,
+    80,
+    85,
+    114,
+    115,
+    116,
+    118
+   ],
+   "govde_satir": 69
+  },
+  {
+   "satir": 3802,
+   "baslik_ham": "**T77 — Hakem ekranı, modelin KABUL EDİLDİĞİ zemini göstersin** · `comms/yks_gui.py`, `config/model_registry.json`, `tests/**` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-116/5**",
+   "gorev": "T77",
+   "baslik": "T77 — Hakem ekranı, modelin KABUL EDİLDİĞİ zemini göstersin",
+   "dosyalar": [
+    " (fail-closed).\n  - ⚠ **DOĞRULANAMADI:** (1) n=12 ilk karelerdir, **260'ın tamamı ekran\n    yolundan koşulmadı** (D-115'in 255/260'ı başka betikle ölçüldü);\n    (2) kabul kümesi de **sentetiktir** — ekranın doğru zemini göstermesi\n    sahada çalışacağı anlamına **gelmez** (D-88/D-99); (3) ",
+    " T60 yolunu **çıplak sabit** taşıyordu;\n    model v27'ye geçince kimse çevirmedi. Ekran, modeli **kabul edilmediği**\n    bir dağılımda gösteriyordu (T60 11/12 · T66 12/12). T58'in kusur sınıfının\n    aynısı (D-58/D-60/D-83) — T76 aynı dosyada **ağırlık** için kapatmıştı,\n    **zemin** açık kalmıştı.\n  - **Kabul kümesi modelin kimliğine bağlandı:** yol artık\n    ",
+    " üzerinden okuyor. T76'nın fail-closed davranışı\n    korundu (beş bozuk defter biçimiyle sınanan testler değişmeden geçti).\n  - ⚠ **Fail-closed sınırı bilerek çizildi:** alan yok/boş/sayı ise\n    ",
+    "REVIEW_LOG.md",
+    "codes/test_rota_sentetik.py",
+    "comms/yks_gui.py",
+    "config/model_registry.json",
+    "tests/**",
+    "text\n    ROTA URETILEN: 12/12   (8 ORTA · 3 SOL · 1 SAG)\n    C-uzayi: 12/12 UYGULANDI\n    ",
+    "text\n    kare  sa_000026.jpg\n    karar 2·ORTA · güven 0.848 · model: navitas_seg_v27_best.pt\n    ölçek 0.0781 m/px (kabul kümesi manifesti) · gövde açıklığı 14.1 px\n    C-uzayı UYGULANDI · darboğaz 19.0 px @ şerit 2 · dağılım 0/540/0 px\n    SS: results/t77_hakem_ekrani/yks_ekran_kabul_kumesi.png (1707x996)\n    "
+   ],
+   "atiflar": [
+    58,
+    60,
+    80,
+    83,
+    88,
+    99,
+    115,
+    116,
+    117
+   ],
+   "govde_satir": 58
+  },
+  {
+   "satir": 3861,
+   "baslik_ham": "**T76 — v27'yi üretim zincirine al, `model_yukleme` halkasını kapat** · `config/model_registry.json`, `jetson_paket/models/**`, `comms/yks_gui.py`, `JETSON_KILAVUZ.md` (İKİ kopya), `tests/**` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-115**",
+   "gorev": "T76",
+   "baslik": "T76 — v27'yi üretim zincirine al, `model_yukleme` halkasını kapat",
+   "dosyalar": [
+    " ile karar denkliği\n    ölçülmedi, oysa sahaya giden artefakt odur; (2) v27 **640 ile eğitildi,\n    512'de koşuyor** — bu fark v27 için ölçülmedi (D-112 ölçümü v24 içindir);\n    (3) Jetson hız/doğruluk hâlâ açık (D-89); (4) gerçek arena verisi **yok**\n    (D-88/D-99); (5) 🔴 ",
+    "). Defter yok/bozuk/",
+    ". Başlık ve buton\n    \"navitas_seg_v27_best\" yazıyor — ad **defterden** geliyor.\n  - **Küme ölçümü (n=12):** T60 (ekranın gösterdiği) **11/12** · T66 (v27'nin\n    kabul kümesi) **12/12** · kompozit (WhatsApp kareleri) **0/1**\n    (",
+    "JETSON_KILAVUZ.md",
+    "REVIEW_LOG.md",
+    "calisma/v27_epoch200_last.pt",
+    "codes/test_rota_sentetik.py",
+    "comms/yks_gui.py",
+    "config/",
+    "config/model_registry.json",
+    "jetson_paket/models/**",
+    "model_registry.py",
+    "models/navitas_seg_v27_best.pt",
+    "results/onnx_export_v27_20260814/navitas_seg_v27_best_512_fp16.onnx",
+    "scripts/export_tensorrt.py",
+    "scripts/jetson_paket_hazirla.py",
+    "tests/**",
+    "text\n    karar: 2·ORTA · güven 1.000 · model: navitas_seg_v27_best.pt\n    ölçek 0.0781 m/px · gövde açıklığı 14.1 px · C-uzayı UYGULANDI\n    darboğaz 41.0 px @ şerit 2 · rota şerit dağılımı 0/540/0 px\n    SS: results/t76_hakem_ekrani/yks_ekran_v27.png (1707x996)\n    "
+   ],
+   "atiflar": [
+    58,
+    60,
+    80,
+    88,
+    89,
+    99,
+    106,
+    112,
+    113,
+    115,
+    116
+   ],
+   "govde_satir": 74
+  },
+  {
+   "satir": 3936,
+   "baslik_ham": "**T73 — Saha kodu parametrik degil: kamera ve model_yukleme halkalari DUSUK** · `codes/rpi_inference.py`, `scripts/saha_kuru_kosu.py` · **ONEMLI** · kanit: saha kuru kosusu ciktisi",
+   "gorev": "T73",
+   "baslik": "T73 — Saha kodu parametrik degil: kamera ve model_yukleme halkalari DUSUK",
+   "dosyalar": [
+    "\n    **Ran 468 · OK**. **KAPI 5:** Jetson paketi **9/9 bayt-eşit**.\n  - **Yeni test paketi** ",
+    " almiyor\"  -> DUSER\n    geri alindi  -> besledi=True  · alinan='/dev/video7'           -> GECER\n    ",
+    " indeks / cihaz yolu / dosya kabul ediyor;\n    dönüşüm tek yerde (",
+    "REVIEW_LOG.md",
+    "codes/karar_sozlesmesi.py",
+    "codes/rpi_inference.py",
+    "codes/test_batch.py:139",
+    "comms/**",
+    "competition → models/navitas_seg_v4_best.pt",
+    "config/",
+    "config/model_registry.json",
+    "drone/rpi_yayin.py:415",
+    "models/navitas_seg_v24_best.pt",
+    "scripts/jetson_fps.py",
+    "scripts/saha_kuru_kosu.py",
+    "test_rota_sentetik.py",
+    "test_rpi_canli_olcek.py"
+   ],
+   "atiflar": [
+    98,
+    106
+   ],
+   "govde_satir": 79
+  },
+  {
+   "satir": 4568,
+   "baslik_ham": "**T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar** · `O:\\navitas-local-train\\51_sentetik_arena.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-104**",
+   "gorev": "T74",
+   "baslik": "T74 — Kusursuz algıyla bile rotaların %9,2'si moloza SIYIRIYOR: koridorlar gövde açıklığına göre dar",
+   "dosyalar": [
+    " değil:** \"dar\" şeritler yalnız 24/260 karede\n    seçiliyor, oysa dar payların **17'si (%37) \"acik\" şeritlerden**. En düşük pay\n    (0,10 px) hem \"acik\" hem \"dar+bariyer\" durumunda görülüyor.\n  - ⚠ **Algı değil geometri:** aynı ölçüt modelle 10,9 px / 59-255 (D-122),\n    kusursuz algıyla **14,31 px / 46-260**. Darlığın büyük kısmı modelin hatası\n    değil **üretecin geometrisi**; kusursuz algıda bile %17,7 kare 3 px altında.\n  - **Adım 2 — ",
+    " üzerinden metrik olarak türet, çıplak piksel yazma (madde 16).\n  - **KAPI:** yer gerçeğiyle moloza basma **0'a** insin · rota üretimi çökmesin ·\n    renk çeşitliliği ve bariyer kapatma oranı (128/260) bozulmasın.\n\n  - **✅ ÖLÇÜLDÜ · 2026-08-15 · Claude-2** · kayıt **D-126**. 🔴 ",
+    "O:\\navitas-local-train\\51_sentetik_arena.py",
+    "REVIEW_LOG.md",
+    "text\n    IKA_GENISLIK_M/2  0.35 m  %32  SIM modelinden turetildi (model.sdf);\n                                   kodun kendi notu: \"GERCEK arac FARKLI olabilir\"\n    MASKE_HATA_M      0.25 m  %23  gerekceli ama OLCULMEMIS\n    TAKIP_HATA_M      0.50 m  %45  🔴 \"SAF VARSAYIM, en buyuk terim\" (TAHMINLER #1)\n    OLCULMEMIS PAY: 0.75 / 1.10 = %68 · GERCEK IKA uzerinde olculen bilesen: YOK\n    ",
+    "text\n    kume                  rota      moloza basan   AGIR basma\n    T71 · YER GERCEGI  259/260    0/260  (%0,0)         0\n    T66 · YER GERCEGI  260/260   24/260  (%9,2)         0\n    ",
+    "text\n    uretec serit durumu     n    medyan     min     pay<3px\n    acik                  170     17.92    0.10     17/170  (%10.0)\n    kapali                 51      7.92    0.12     18/51   (%35.3)\n    dar+bariyer            16      7.42    0.10      5/16   (%31.3)\n    dar                     8      9.52    0.92      3/8    (%37.5)\n    acik+bariyer            8      5.42    0.92      3/8    (%37.5)\n    TUM: medyan 14.31 px · min 0.10 px · pay<3px 46/260 · pay<0: 0/260\n    ",
+    "text\n    ölçüt                    TÜM (n=260)    DAR olanlar (n=46)\n    ROTANIN darboğazı        medyan 28,4    medyan 15,09\n    MAXIMIN (en iyi yol)     medyan 36,0    medyan 24,67\n    KAYIP (maximin - rota)   medyan  6,6    medyan  9,00\n    kayıp > 3 px olan kare   202/260\n    DAR karelerin 45/46'sında maximin > r_gerekli + 3 px\n    "
+   ],
+   "atiflar": [
+    104,
+    122,
+    126,
+    150,
+    151
+   ],
+   "govde_satir": 68
+  },
+  {
+   "satir": 5716,
+   "baslik_ham": "**T117 — CEVAPLANDI (kök neden): model çatıyı ÖĞRENMİŞ (hasarsız bina recall %96,6) ama gerçek karelerin KENDİ ETİKETİ \"zemin\" diyor — 448/448 dosya TAM-KARE sınıf 0** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_gercek/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-210** · ⚠ ölçümü MİMAR yaptı, kapatan **Fable 5** olacak (madde 19)",
+   "gorev": "T117",
+   "baslik": "T117 — CEVAPLANDI (kök neden): model çatıyı ÖĞRENMİŞ (hasarsız bina recall %96,6) ama gerçek karelerin KENDİ ETİKETİ \"zemin\" diyor — 448/448 dosya TAM",
+   "dosyalar": [
+    "REVIEW_LOG.md",
+    "dataset/copy_paste_gercek/",
+    "scripts/copy_paste_augmentation.py"
+   ],
+   "atiflar": [
+    199,
+    201,
+    210
+   ],
+   "govde_satir": 7
+  },
+  {
+   "satir": 5783,
+   "baslik_ham": "**T121 — BELİRLEYİCİ KOŞUM BİTTİ: çatı 0,011 → **0,989** (v30'u altı türde de geçti), arena kapıları BOZULMADI, ama K0 ön kayıt bandının altında → ön kayda göre **SONUÇ 2: TAKAS**** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_t121/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-217..D-221**, sonuç **D-225** · ⚠ ölçümü MİMAR yaptı, kapatan **Fable 5** olacak (madde 19)",
+   "gorev": "T121",
+   "baslik": "T121 — BELİRLEYİCİ KOŞUM BİTTİ: çatı 0,011 → 0,989 (v30'u altı türde de geçti), arena kapıları BOZULMADI, ama K0 ön kayıt bandının altında → ön kayda ",
+   "dosyalar": [
+    " etiketlerinin **448/448**'i şu satırla başlıyor:\n    ",
+    "REVIEW_LOG.md",
+    "data/raw_frames",
+    "dataset/copy_paste_t121/",
+    "scripts/copy_paste_augmentation.py"
+   ],
+   "atiflar": [
+    12,
+    18,
+    210,
+    217,
+    218,
+    219,
+    220,
+    221,
+    225
+   ],
+   "govde_satir": 32
+  },
+  {
+   "satir": 6980,
+   "baslik_ham": "**T67 — 🔴 GÖREV KRİTİK: gerçek arenada rota BARİYERİN İÇİNDEN geçiyor** · tasarım kararı önce · **TIKAYICI** · kanıt: `REVIEW_LOG.md` **D-92**",
+   "gorev": "T67",
+   "baslik": "T67 — 🔴 GÖREV KRİTİK: gerçek arenada rota BARİYERİN İÇİNDEN geçiyor",
+   "dosyalar": [
+    "\n    Jetson paketinde **yok**, import edilemez) · hedef koruması · figür ölçümleri\n    · çözünürlük bağımsızlığı (320/640/1280) · fail-safe · ",
+    "\n    entegrasyonu (madde 15 monotonluğu dâhil).\n  - ⚠ **DOĞRULANAMADI:** (1) gerçek arena başarımı — elimizde gerçek arena\n    görüntüsü **yok** (D-99), *\"bariyer sorunu çözüldü\"* genel iddia **değildir**;\n    (2) gerçek engellerin **rengi** bilinmiyor, yedek imza aranmadı; (3) bariyerin\n    fiziksel **yüksekliği** bilinmiyor, fail-safe varsayım geçilemez; (4) ince-engel\n    genel sınıfı (tel/halat/kablo) ele alınmadı; (5) figürde rota artık sol kenara\n    kayıyor — kesişim 0 ama o rotanın **kalitesi** doğrulanmadı.\n  - Şartname figüründe kapalı güzergâhı kapatan tek yapı **kırmızı-beyaz şeritli\n    yol bariyeri koludur**. Ölçüldü (",
+    " §2.1 ve sabit yorumu buna göre **düzeltildi**. Üç etki:\n    1. Dedektörün **renk anahtarı yapay bir görüntüden** kalibre edilmiştir;\n       gerçek engeller kırmızı olmayabilir → dedektör **hiç ateşlemez**.\n       ⚠ Bu **fail-safe**'tir (hiçbir şey eklenmez/çıkarılmaz, sistem T67\n       öncesine döner), yani D-99 bu işi **geri aldırmaz**, geçerlilik alanını\n       daraltır.\n    2. **Ayakta kalan gerekçe:** şartname **metni** §2.1 kapalı güzergâhların\n       *\"fiziki engellerle kapatılacağını\"* söyler — ince-engel riski **gerçek**.\n    3. **Tuzak KESİNLEŞTİ, hafiflemedi:** figür yapay olduğu için artık **metin\n       otoritedir** ve metin HB'yi *\"üzerinde **kırmızı** H harfi\"* diye tanımlar.\n       HB **gerçekten kırmızıdır** → naif \"kırmızı = engel\" kuralı ",
+    "'i\n       sıfırlardı. İşin en taşıyıcı kanıtı **KAPI 2-B'deki sentetik kırmızı HB**\n       testidir; figürdeki siyah/beyaz ped artık **tek başına yetersizdir**.\n  - **Yeni test paketi** ",
+    ". Ayrım **ŞEKİLLE** yapılmalı: bariyer uzun ve ince\n    (en/boy > 4, genişlik > 60 px); HB **kare** (2×2 m). Ölçüm betiği bu ayrımı\n    zaten yapıyor — kopyalanmadan, gerekçesiyle taşınmalı.\n  - **KAPI:** bariyer piksellerinde ",
+    "61_rota_moloza_basma.py",
+    "63_...py",
+    "63_bariyer_kesisimi.py",
+    "63_bariyer_kesisimi.py --model ...",
+    "REVIEW_LOG.md",
+    "comms/",
+    "jetson_paket_hazirla.py",
+    "results/t63/bariyer_kesisim.png",
+    "scripts/",
+    "scripts/saha_kuru_kosu.py",
+    "test_costmap_icerik_cagri_yerleri.py::\n    test_kuru_kosu_ana_maskeyi_baglar_kirpigi_baglamaz",
+    "test_rota_sentetik.py",
+    "text\n                      ROTA     MOLOZA    AGIR   ARENA DISI\n    taban (T69)    244/260     6/244   6/244      5/244\n    T67            242/260     4/242   2/242      5/242\n    ",
+    "text\n    A gercek(!) karede HB : a* -6..4  -> 0/3100 engel px   (ZAYIF: zaten siyah/beyaz)\n    B SENTETIK KIRMIZI HB : a* = 65   -> 0 engel px        KORUNDU\n      ayni karede bariyer 240x14      -> 3360 px           YAKALANDI (pozitif kontrol)\n    C sekil supurmesi     : 100x25 (4,0) engel DEGIL · 100x24 (4,2) ENGEL\n    ",
+    "text\n    bariyer tasiyan 210 · BULUNAN 153 · KACIRILAN 57\n      54 -> bariyer kutusunda HIC kroma YOK (moloz ALTINDA, goruntude yok)\n       3 -> kroma VAR, sekil filtresi eledi   <- GERCEK kacirma (%1,4)\n    GORUNUR bariyerlerde isabet: 153/156 = %98,1\n    tespit pikselinin kutu icinde kalani: medyan %92,1\n    tasan pikselin %90,5'i arena ICINDE · %9,5'i disinda (alan disi kirmizi nesneler)\n    ",
+    "text\n    cozunurluk        kol   w/W (kisa · uzun)   en/boy\n    KAYNAK 1059x634    2    0,093 · 0,215       7,0 · 14,2\n    small   512x512    2    0,092 · 0,215       6,7 · 13,8\n    "
+   ],
+   "atiflar": [
+    87,
+    88,
+    92,
+    99,
+    100
+   ],
+   "govde_satir": 124
+  },
+  {
+   "satir": 7282,
+   "baslik_ham": "**T59 — Kaplama tavanı 0,55 → 0,67** · `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **KRİTİK** · mimar kararı, kanıt: `REVIEW_LOG.md` **D-84**, **D-85**",
+   "gorev": "T59",
+   "baslik": "T59 — Kaplama tavanı 0,55 → 0,67",
+   "dosyalar": [
+    "\n    Süpürme (99×99 tüm çiftler): **elenen 0 VE kaçan 0 veren çift YOK**. D-85'in\n    0,062'lik payı **220 kareli alt kümenin** özelliği; ölçütün değil.\n    Karar yine de net iyileşme: 3/261 → 1/261 **ve** gerçek arena kurtuldu.\n  - **Kalan elenen kare kör kabul edilmedi** — ",
+    " (D-85: 0.577 / 0.585). Eski çift onu **eliyor**,\n    yeni çift **geçiriyor**.\n  - 🔴 **KAPI 1 TUTMADI.** Hedef \"meşru elenen 0/221\"; kümenin **tamamında**\n    (260 kadraj + 1 arena) sonuç **1/261**:\n    ",
+    "CONTRACTS.md",
+    "REVIEW_LOG.md",
+    "codes/karar_sozlesmesi.py",
+    "tests/test_gercek_arena_kapisi.py",
+    "text\n    KAPI 1  bagimsiz olcum: mesru elenen 1/261 · kacan cokme 0/67   DUSTU\n            (hedef 0/221; sebep yukarida)\n    KAPI 2  tests/test_gercek_arena_kapisi.py  Ran 7 tests  OK      GECTI\n    KAPI 3  mevcut testler                                          DUSTU (1)\n    KAPI 4  mutasyon kontrolu M1/M2/M4/M5 atesledi, M3 sustu        GECTI\n    KAPI 5  codes/test_rota_sentetik.py  SONUC: 15/15 dogru         GECTI\n            unittest discover -s tests -q  Ran 322  FAILED (1)\n            -> tek dusen KAPI 3'teki fikstur; baska dusen YOK\n    KAPI 6  jetson_paket_hazirla.py 9/9 bayt-esit\n            karar_sozlesmesi.py sha b1a54c9fbe03aacb                GECTI\n    ",
+    "text\n    kume                     n    kaplama min..maks    kenar min..maks\n      MESRU kadraj arena    260    0.000..0.863        0.000..0.682\n      MESRU GERCEK ARENA      1    0.579               0.585\n      COKUS otopark          67    0.770..0.866        0.579..0.971\n\n    esik cifti          mesru elenen   kacan cokme\n      (0.55, 0.50)       3/261          0/67   <- biri GERCEK ARENA\n      (0.67, 0.50)       1/261          0/67\n    ",
+    "text\n    tests/test_zemin_kapisi_iki_sinyal.py:97\n    test_kaplama_YUKSEK_kenar_DUSUK_ATESLEMEZ (kaplama=0.6)\n    AssertionError: 0.600625 not greater than 0.67 : fikstur kaplama tavanini asmiyor\n    "
+   ],
+   "atiflar": [
+    84,
+    85,
+    86
+   ],
+   "govde_satir": 71
+  },
+  {
+   "satir": 7437,
+   "baslik_ham": "**T57 — Prosedürel zemin dokusu gerçek dışı: kanal-bağımsız gürültü** · `O:",
+   "gorev": "T57",
+   "baslik": "T57 — Prosedürel zemin dokusu gerçek dışı: kanal-bağımsız gürültü",
+   "dosyalar": [
+    " **0/144**.\n  - **KAPI 4 — karar zinciri:**\n    ",
+    " olarak saklandı. Depo kapıları: **15/15** · **Ran 303 · OK**.\n  - ⚠ **DOĞRULANAMADI:** (1) yeni yüzeyin gerçek asfalt/çim fotoğrafına\n    benzerliği (yalnız LAB + göz); (2) moloz şeritleri hâlâ RescueNet **bina\n    çatısı** kesitleri (D-78'den devam, bu görevde değişmedi); (3) banka\n    \"zemin\" yamalarının bir kısmı aşırı pozlanmış.\navitas-local-train)_sentetik_arena.py",
+    " payı ölçümle ayrıldı** (docstring \"%45\" / kod %60 çelişkisi\n    de giderildi). Bankadaki yamaların \"temiz düz yüzey\" olma oranı:\n    ",
+    " → oran 0,14 · parlaklık bandı\n    kategoriye göre (zemin ~8,5–12,7 · yol ~2,6–5,1).\n  - **Taban rengi çeşitliliği KORUNDU:** belirgin renkli yama 42/60 → 42/60,\n    ortanca kroma 21,2 → 21,0 (kroma düşürmek rengi öldürmedi).\n  - **",
+    "REVIEW_LOG.md",
+    "sahne_51/77/123.jpg",
+    "text\n    A) pay ESKIDE sabit (0,60/0,60) -> fark yalniz DOKUDAN\n       ESKI kroma 4,90 parlak 21,13 oran 0,23 | YENI 3,96 / 21,22 / 0,19\n       GEOMETRI (kimlik) AYNI: 5/5 tohum\n    B) gercek pay (0,70/0,35): GEOMETRI ayni mi -> 0/5\n    ",
+    "text\n    T56 zemini: net 123/260 · rota  86 (DOGRU  86 · YANLIS 0) · RET 37\n    T57 zemini: net 144/260 · rota 107 (DOGRU 107 · YANLIS 0) · RET 37\n    ",
+    "text\n    kaynak                DOKU kroma  DOKU parlak  DOKU k/p\n    ESKI prosedurel zemin       6,95         8,10      0,86\n    ESKI prosedurel yol         5,90         8,09      0,73\n    YENI prosedurel zemin       1,13        10,60      0,11\n    YENI prosedurel yol         0,85         3,99      0,21\n    GERCEK banka zemin          1,82        12,15      0,15\n    GERCEK banka yol            0,54         3,68      0,15\n    ",
+    "text\n    zemin  2/315 temiz (p50 icerik std 39,8) -> banka temiz zemin VEREMIYOR\n    yol  166/385 temiz (p50  9,9)            -> banka temiz yol BOL VERIYOR\n    "
+   ],
+   "atiflar": [
+    78,
+    79,
+    80
+   ],
+   "govde_satir": 63
+  },
+  {
+   "satir": 7501,
+   "baslik_ham": "**T56 — Kadraj kipi şartnameye sadık değil: hedef yeşil, koridorlar dalgalı, doku kaleydoskopik** · `O:",
+   "gorev": "T56",
+   "baslik": "T56 — Kadraj kipi şartnameye sadık değil: hedef yeşil, koridorlar dalgalı, doku kaleydoskopik",
+   "dosyalar": [
+    "\n  - **Renk ayrımı ölçüldü** (branda 14.440 px / moloz 161.769 px): ayrım\n    **doygunluktan** geliyor — S 213,9±31,7 vs 33,2±37,0, **etki büyüklüğü\n    d = 3,71**. Kuyruklarda küçük örtüşme var (molozun %99'u S<169, brandanın\n    %1'i S>149). ⚠ **Ton (H) ile ayırt etmeye güvenilemez:** kırmızı H=0/179'da\n    sarılır, tuğla tonu (H 5-22) bitişiktir.\n  - **Aynalama ölçüldü:** ayna simetrisi eğitim kipi 0,502 → kadraj 0,360\n    (tepe 0,748 → 0,458), **%28 düşüş**.\n  - 🔴 **İlk çözümüm YANLIŞTI, görsel geri aldırdı.** Tek döşemeye büyütme\n    periyodikliği yapısal olarak kaldırdı ama dokuyu da öldürdü (bulanık renkli\n    leke). Yerine ılımlı büyütme + **dikiş harmanlama** kondu.\n  - 🔴 **Kendi ölçüm hatamı buldum:** ilk görsel kıyasım \"aynı indis = aynı\n    sahne\" varsayıyordu; kadraj kipinde çeldirici ",
+    " olarak saklandı. Belirsiz kare 137/260.\n  - ⚠ **DOĞRULANAMADI:** (1) zemin dokusunun gerçek asfalta benzerliği — yama\n    bankası 48–64 px kesitlerden, her iki kipte de benekli; **\"asfalt gibi\"\n    DEĞİL**; (2) moloz şeritleri hâlâ RescueNet **bina çatısı** kesitleri;\n    (3) brandanın gerçek brandaya görsel benzerliği (düz kırmızı dikdörtgen).\navitas-local-train)_sentetik_arena.py",
+    "REVIEW_LOG.md",
+    "text\n    KAPI 1  GOZLE DOGRULAMA — O:\navitas-local-train\nesults\t56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI sahne, iki kip)\n              uclu_sa_000000.jpg · _000005.jpg · _000012.jpg\n            goruntu 260 · manifest kaydi 260                        GECTI\n    KAPI 2  koridor merkez sapmasi ort 0,00 · MAKS 0,00 px (n=541)  GECTI\n    KAPI 3  hedef 260/260 · kenar 2,000 m (min/maks 2,000) ·\n            hedef_serit != acik_serit  0/123                        GECTI\n    KAPI 4  EGITIM KIPI DEGISMEDI (4 tohum: kimlik+sinif+RNG+GORUNTU) GECTI\n    KAPI 5  T55 zemini: net 139 · rota 89 (DOGRU 85 · YANLIS 4) · RET 50\n            T56 zemini: net 123 · rota 86 (DOGRU 86 · YANLIS 0) · RET 37\n            -> serit uyumsuzlugu 4 -> 0 · ret orani %36 -> %30\n    depo    test_rota_sentetik 15/15 · discover -s tests -q Ran 303 OK\n    "
+   ],
+   "atiflar": [
+    77,
+    78
+   ],
+   "govde_satir": 46
+  },
+  {
+   "satir": 7548,
+   "baslik_ham": "**T55 — Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: en iyi zeminimizde şerit doğruluğu ölçülemiyor** · `O:\\navitas-local-train\\51_sentetik_arena.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` **D-69**",
+   "gorev": "T55",
+   "baslik": "T55 — Kadraj kümesi AÇIK ŞERİDİ kaydetmiyor: en iyi zeminimizde şerit doğruluğu ölçülemiyor",
+   "dosyalar": [
+    " + K-B) ile ölçüldü: **uyumsuzluk 4/89**.\n  - ⚠ **KAPI 3 ilk ölçümde düştü (87/89) — değişmez YANLIŞTI, kapı değil.**\n    İki başarısız karede kapatılan bantta **0 serbest piksel** kalmış ama rota\n    **komşu şeritten dolanmış** (sa_000063 → şerit 2, sa_000156 → şerit 3);\n    etiket değişmiyor çünkü ",
+    " darboğaz şeridini adlandırıyor ve darboğaz\n    başka yerde. Doğru değişmez **\"kapatılan banttan geçilmemesi\"**dir → 89/89.\n  - 🔴 **BULGU: 260 karenin 121'i BELİRSİZ** — birden fazla karar şeridi\n    geçilebilir şerit içeriyor, tek ",
+    "O:\\navitas-local-train\\51_sentetik_arena.py",
+    "REVIEW_LOG.md",
+    "costmap_path_finder.py:781",
+    "data.yaml",
+    "data/arena_kompozit",
+    "images/",
+    "labels/",
+    "text\n    KAPI 1  260 goruntu / 260 kayit · dosyasi olmayan kayit 0        GECTI\n    KAPI 2  rota_bul: DOGRU 0 · YANLIS 0 · karar vermeyen 139/139    OLCULEMEDI\n              {BELIRSIZ_TEK_KAPI 65 · MASKE_YOK 28 · KAPI_YOK 27 · BELIRSIZ_COKLU 19}\n            analyze_path: DOGRU 85 · YANLIS 4 · RET 50 -> UYUMSUZLUK 4/89 (%4,5)\n    KAPI 3  rota kapatilan banttan GECMIYOR (veya RET) : 89/89       GECTI\n    KAPI 4  geometri: ESKI/YENI ikisi de 550 traversable · 879 blocked ·\n            zemin alan 0,2171 ± 0,1522 (BIREBIR)                     GECTI\n    KAPI 5  egitim kipi denkligi 4 tohumda True (kimlik+sinif+RNG+geometrik) GECTI\n    depo    test_rota_sentetik 15/15 · discover -s tests -q Ran 303 OK\n    "
+   ],
+   "atiflar": [
+    58,
+    69,
+    70,
+    76
+   ],
+   "govde_satir": 58
+  },
+  {
+   "satir": 7718,
+   "baslik_ham": "**T50 — Zemin sınıfı otorite değil: model seçimi mimarinin değişmezine göre yeniden yapılacak** · `O:\\navitas-local-train` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-61 + aşağıdaki ölçüm",
+   "gorev": "T50",
+   "baslik": "T50 — Zemin sınıfı otorite değil: model seçimi mimarinin değişmezine göre yeniden yapılacak",
+   "dosyalar": [
+    "\n      v4/v3 kapı 2'yi **hiçbir şey görmedikleri için** geçmiş. v17'nin %0,9'u da\n      temkin değil, **gerçek dokuda körlük** — 9 karenin 8'inde hiçbir şey yok.\n    - Üç eksenin özeti: ",
+    "\n    **v15 KAPI 0'ı geçemiyor** (0,134 < 0,50 · 2/9 < 8/9). 11-sınıf ön-eğitim\n    alan-içi doğruluğu yükseltiyor (IoU **0,425** — ölçülen 12 modelin en iyisi)\n    ve aşırı tespiti frenliyor (%24,1), ama **gerçek doku körlüğünü çözmüyor**.\n  - **KAZANAN HÂLÂ YOK — ama nedeni netleşti.** Gerçek dokuyu gören tek model\n    v21 (eğitiminde ",
+    "\n    v21 **alan-kırılgan**: kendi alanında uslu, alan dışında (otopark) %73,7'ye\n    patlıyor ve çatıyı/çimi zemin sayıyor. Seçim mAP ile yapılmış; K-3 zaten\n    *\"mAP arena sıralamasını tersine çeviriyor\"* diyordu.\n  - 🔴 **FAZ 1 — GPU YOK, ÖNCE BU.** Diskte **11 eğitilmiş model** var ve hiçbiri\n    mimarinin ölçütüyle sıralanmadı. Belki eğitime hiç gerek yok.\n    **Üç kapılı seçim ölçütü** (mAP DEĞİL):\n    1. **Alan içi doğruluk:** RescueNet val'de zemin IoU + **kesinlik**.\n       Kesinlik önceliklidir — yanlış-pozitif zemin, kaçırılan zeminden\n       tehlikelidir (fail-safe).\n    2. **ALAN DIŞI TEMKİN (negatif kontrol, kamera gerekmez):** otopark\n       karelerinde kaplama. Model burayı arena zemini **sanmamalı**. ",
+    "\n  - 🔴 **KAZANAN YOK.**\n    - **KAPI 3 kimseyi geçirmiyor:** en iyi 1/9 (v5, v5a, v9 — üçü de K2'de\n      %35–50 ile çökmüş). Üretim adaylarının üçü de **0/9**. Ayrıca K3 yer\n      gerçeğinde **şerit 2 hiç yok** (5×şerit1, 4×şerit3) — \"hep 1\" diyen kod\n      şansla 5/9 alırdı.\n    - **KAPI 2 tek başına KUSURLU:** temkin ile körlüğü ayırt etmiyor. İki ek\n      ölçümle gösterildi:\n      ",
+    " **var**), aşırı tespit ediyor; aşırı\n    tespit etmeyenler (v15/v17/v20) gerçek dokuda kör (eğitimlerinde gerçek\n    doku **yok**). Eksik olan **reçete değil, VERİ KARIŞIMI**: 11-sınıf\n    ön-eğitim ile gerçek doku verisi aynı koşuda birleştirilmemiş. Bu bir\n    eğitim tasarım kararıdır; kullanıcıya soruldu, kendi başıma GPU-gecesi\n    harcanmadı.\n  - **DOĞRULANAMADI:** (1) hiçbir modelin gerçek arena başarımı — kamera yok;\n    (2) kompozitin gerçek arenayı ne kadar temsil ettiği; (3) sentetik arena\n    sonuçları v17/v20/v21 için **dağılım içi** (üçü de o kümeyle eğitildi),\n    genelleme kanıtı sayılmaz; (4) v13 diskte yok, ölçülemedi.\n  - **Kök neden (Claude 1 ölçtü, 2026-08-11):** Mimari *\"Serbest alan OTORİTEDİR;\n    zemin değil → engel\"* (fail-safe) diyor. Üretim modeli bunun **tersini**\n    yapıyor: her şeye zemin diyor, dolayısıyla kural hiç ateşlenmiyor.\n    ",
+    "42_cok_sinifli_onegitim.py",
+    "42_cok_sinifli_onegitim.py --on-epoch 150 --ft-epoch 200 --batch 12",
+    "43_zincir.py",
+    "45_alan_disi_test.py",
+    "REVIEW_LOG.md",
+    "codes/runs/segment/v15_ft2sinif/weights/best.pt",
+    "data/arena_kompozit",
+    "dataset/rescuenet_11sinif",
+    "kare>%1 ≥ 8/9",
+    "text\n      ARENA BENZERI SENTETIK (n=60, GT %12,4)   KOMPOZIT: GERCEK DOKU (n=9, GT %28,6)\n        v17  IoU 0.896  55/60                     v17  kaplama %0.4  duyar 0.010  1/9\n        v20  IoU 0.929  59/60                     v20  kaplama %0.1  duyar 0.000  0/9\n        v4   IoU 0.094  21/60  <- KOR             v21  kaplama %82.5 duyar 0.890  9/9\n        v3   IoU 0.122  14/60  <- KOR\n      ",
+    "text\n    model                       K1 IoU  K1 kesinlik  K1 duyar  K2 ort  K2 maks  K3 D/Y/R\n    navitas_seg_v2_best.pt       0.366        0.760     0.414   70.4%    86.1%   0/0/9\n    navitas_seg_v3_best.pt       0.412        0.744     0.481   18.2%    78.7%   0/1/8\n    navitas_seg_v4_best.pt       0.351        0.827     0.379   13.5%    76.6%   0/1/8\n    navitas_seg_v5_best.pt       0.384        0.775     0.432   35.8%    68.2%   1/3/5\n    aday_v5a_s640.pt             0.384        0.775     0.432   35.8%    68.2%   1/3/5\n    aday_v5b_s640ft.pt           0.352        0.781     0.390   32.9%    78.3%   0/1/8\n    aday_v5c_m640.pt             0.372        0.689     0.448   46.9%    82.6%   0/0/9\n    aday_v9_mixup_m640.pt        0.365        0.631     0.463   50.2%    92.6%   1/0/8\n    navitas_seg_v17_best.pt      0.315        0.807     0.341    0.9%     7.0%   0/0/9\n    navitas_seg_v20_best.pt      0.267        0.795     0.287    2.9%    52.9%   0/0/9\n    navitas_seg_v21_best.pt      0.311        0.813     0.335   81.0%    86.3%   0/0/9\n    (K1 n=120 rescuenet_1024 val · K2 n=67 otopark · K3 n=9 kompozit · conf=0.30\n     mikro-ortalama · D/Y/R = doğru/yanlış/ret)\n    ",
+    "text\n    model          K0 duyar  K0 kare>%1  K1 IoU  K1 kesin  K2 otopark  K3 D/Y/R\n    v15_ft2sinif      0.134         2/9   0.425     0.804      24.1%     0/0/9\n    v21 (uretim)      0.890         9/9   0.311     0.813      81.0%     0/0/9\n    v17               0.010         1/9   0.315     0.807       0.9%     0/0/9\n    ",
+    "v17 çökmez ama görmez (0.010 / %0,9)",
+    "v20 çökmez ama görmez (0.000 / %2,9)"
+   ],
+   "atiflar": [
+    61,
+    63
+   ],
+   "govde_satir": 124
+  },
+  {
+   "satir": 8297,
+   "baslik_ham": "**T43 — Ölçek halkası (Halka 5) sahipsiz ve `analyze_path` kolunda C-uzayı yok** · `codes/rpi_inference.py`, `codes/costmap_path_finder.py`, `codes/karar_sozlesmesi.py`, `CONTRACTS.md` · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-59, D-22",
+   "gorev": "T43",
+   "baslik": "T43 — Ölçek halkası (Halka 5) sahipsiz ve `analyze_path` kolunda C-uzayı yok",
+   "dosyalar": [
+    "\n    → **7/7 doğru** · ",
+    " /\n    ",
+    " → **0/7**.\n    Sahada koşan zincir sonuncusu.\n  - **Görev 1:** Halka 5'i (ölçek) saha yolunda üretilebilir kıl; ",
+    " → 5/7 · ",
+    "1 px/m",
+    "CONTRACTS.md",
+    "REVIEW_LOG.md",
+    "codes/costmap_path_finder.py",
+    "codes/karar_sozlesmesi.py",
+    "codes/rpi_inference.py",
+    "comms/inis_kaniti.py:143",
+    "darboğaz /\n    r_gerekli_px",
+    "data/raw_frames",
+    "mpp > 1,10/(0,20·0,035·icerik_w)",
+    "taban = r_gerekli_px / (0,035·icerik_w)",
+    "tests/test_olcek_ve_c_uzayi.py",
+    "text\n    KAPI 1  arena kompoziti · C zinciri (analyze_path + K-B) · yer gercegi maskesi\n              ONCE  (C-uzayi YOK): DOGRU 1/7 · YANLIS 0 · RET 6\n              SONRA (C-uzayi VAR): DOGRU 6/7 · YANLIS 0 · RET 1\n              darbogaz 1,0 px -> 13,0-15,0 px · guven 0,028-0,117 -> 0,644-0,744\n              kalan 1 ret UC_BANT_TEMAS_YOK; C-uzayindan ONCE de vardi\n    KAPI 2  MADDE 15 ihlali 0/7  (C_uzayi \\ serbest_once = 0 piksel, 7 karede)\n    KAPI 3  otopark ilk 16: mpp YOK -> cekimser 3/16 · mpp=0,0868 -> 2/16\n              AZALMA GEREKCESI (kare kare): degisen 3 karenin ucu de darbogazi\n              1,0/2,0/1,4 px olan duvar-siyiran rotalardi.\n                frame_000005  DUSUK_GUVEN(1,0) -> yol=1 (darbogaz 18,2)\n                frame_000006  DUSUK_GUVEN(2,0) -> GORUS_HATTI_KOPUK\n                frame_000007  DUSUK_GUVEN(1,4) -> GORUS_HATTI_KOPUK\n              Guvenlik KESIN artti: once frame_000008 8,0 px darbogazla\n              (fiziksel gerek 12,7 px'in ALTINDA) yayinlaniyordu, simdi 13,0.\n    KAPI 4  codes/test_rota_sentetik.py 15/15 · discover -s tests -q\n              Ran 259 tests OK · git diff --check exit 0\n    "
+   ],
+   "atiflar": [
+    22,
+    23,
+    59
+   ],
+   "govde_satir": 57
+  },
+  {
+   "satir": 8871,
+   "baslik_ham": "**S9 — Hakem ekranı koşmadığı modelin adını basıyor** · `comms/yks_gui.py` · KRİTİK · kanıt: `REVIEW_LOG.md` D-21",
+   "gorev": "S9",
+   "baslik": "S9 — Hakem ekranı koşmadığı modelin adını basıyor",
+   "dosyalar": [
+    "\n      headless algı kapısı   sabit-kodlu sürüm adı: 1 satır (:826, tanımın kendisi)\n                             ALGI_KAYNAKLAR ('gemini','test','val','drone')\n                             gemini 320 · test 305 · val 294 · drone 67 kare\n      test_rota_sentetik.py  SONUC: 15/15 dogru · [OK] TUM DETERMINISTIK SAHNELER GECTI\n      unittest discover      Ran 101 tests in 27.546s · OK\n      GUI --demo, 9 s ayakta _arayuz_kur çalıştı · NameError yok · stderr boş\n      SHA doğrulaması        hesaplanan 799e07f9 == D-21'deki v21 · EŞLEŞTİ\n      ",
+    " bayat — v21 karışık val mask mAP50 = 0,960.\n  - **Neden KRİTİK:** bu ekranı şartname §2.2.3/§6.2 gereği **Alan Hakemi** izliyor. Kod hatası değil, **kanıt bütünlüğü** hatası.\n  - **İkinci kusur:** ",
+    "\"drone\": KOK/\"data\"/\"raw_frames\"",
+    "/",
+    ":171/:181/:194/:997",
+    "REVIEW_LOG.md",
+    "codes/test_rota_sentetik.py",
+    "comms/yks_gui.py",
+    "data/raw_frames",
+    "dataset/rescuenet_yolo/images/val",
+    "grep -nE \"v1[0-9]|v2[0-9]\" comms/yks_gui.py",
+    "simulation/scripts/hakem_log.py:36-39",
+    "test_images/gemini",
+    "test_images/test/images"
+   ],
+   "atiflar": [
+    21,
+    32,
+    33
+   ],
+   "govde_satir": 52
+  },
+  {
+   "satir": 8924,
+   "baslik_ham": "**S10 — Hakem ekranı tek bozuk çerçevede kalıcı donuyor / sessizce sağırlaşıyor** · `comms/yks_gui.py`, `comms/link.py` · KRİTİK · kanıt: 2026-08-07 taraması, `REVIEW_LOG.md` D-06",
+   "gorev": "S10",
+   "baslik": "S10 — Hakem ekranı tek bozuk çerçevede kalıcı donuyor / sessizce sağırlaşıyor",
+   "dosyalar": [
+    " geometri doğrulamasını yalnız ika/broadcast akranı varken koşuyor\n    (",
+    "'yi\n    try/except ile sarar ve bozuk çerçeveyi hakeme **görünür** kılar. ",
+    "/",
+    "REVIEW_LOG.md",
+    "comms/link.py",
+    "comms/test_comms.py",
+    "comms/yks_gui.py",
+    "protocol.py:44-45",
+    "tests/test_yks_gui_dayaniklilik.py"
+   ],
+   "atiflar": [
+    6
+   ],
+   "govde_satir": 30
+  }
+ ]
+}

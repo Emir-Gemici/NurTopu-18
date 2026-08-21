@@ -1,0 +1,799 @@
+{
+ "_ne": "T133 · READY_FOR_REVIEW bekleme yasi (git gecmisinden)",
+ "_bugun": "2026-08-21",
+ "_uyari": "Isaret TARIH TASIMIYOR; yas ancak git'ten cikarilabiliyor.",
+ "bugun_bekleyen": 39,
+ "gorevler": [
+  {
+   "gorev": "T1",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T10",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T11",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T2",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T3",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T4",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T5",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T6",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T7",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T8",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "T9",
+   "ilk_tarih": "2026-08-07",
+   "commit": "9761f5ae",
+   "gun": 14
+  },
+  {
+   "gorev": "S10",
+   "ilk_tarih": "2026-08-08",
+   "commit": "40859b3f",
+   "gun": 13
+  },
+  {
+   "gorev": "S9",
+   "ilk_tarih": "2026-08-08",
+   "commit": "40859b3f",
+   "gun": 13
+  },
+  {
+   "gorev": "T21",
+   "ilk_tarih": "2026-08-08",
+   "commit": "5be2742e",
+   "gun": 13
+  },
+  {
+   "gorev": "T22",
+   "ilk_tarih": "2026-08-08",
+   "commit": "5be2742e",
+   "gun": 13
+  },
+  {
+   "gorev": "T23",
+   "ilk_tarih": "2026-08-08",
+   "commit": "5be2742e",
+   "gun": 13
+  },
+  {
+   "gorev": "T43",
+   "ilk_tarih": "2026-08-11",
+   "commit": "b23370d1",
+   "gun": 10
+  },
+  {
+   "gorev": "T48",
+   "ilk_tarih": "2026-08-11",
+   "commit": "8010da8e",
+   "gun": 10
+  },
+  {
+   "gorev": "T49",
+   "ilk_tarih": "2026-08-11",
+   "commit": "8010da8e",
+   "gun": 10
+  },
+  {
+   "gorev": "T50",
+   "ilk_tarih": "2026-08-11",
+   "commit": "8010da8e",
+   "gun": 10
+  },
+  {
+   "gorev": "T55",
+   "ilk_tarih": "2026-08-12",
+   "commit": "548ff5e1",
+   "gun": 9
+  },
+  {
+   "gorev": "T56",
+   "ilk_tarih": "2026-08-12",
+   "commit": "9f160684",
+   "gun": 9
+  },
+  {
+   "gorev": "T57",
+   "ilk_tarih": "2026-08-12",
+   "commit": "829b91fa",
+   "gun": 9
+  },
+  {
+   "gorev": "T59",
+   "ilk_tarih": "2026-08-13",
+   "commit": "20ef0d87",
+   "gun": 8
+  },
+  {
+   "gorev": "T67",
+   "ilk_tarih": "2026-08-14",
+   "commit": "f4724e27",
+   "gun": 7
+  },
+  {
+   "gorev": "T73",
+   "ilk_tarih": "2026-08-14",
+   "commit": "09aa3ed8",
+   "gun": 7
+  },
+  {
+   "gorev": "T76",
+   "ilk_tarih": "2026-08-14",
+   "commit": "b4f8e402",
+   "gun": 7
+  },
+  {
+   "gorev": "T74",
+   "ilk_tarih": "2026-08-15",
+   "commit": "2f4d5951",
+   "gun": 6
+  },
+  {
+   "gorev": "T77",
+   "ilk_tarih": "2026-08-15",
+   "commit": "caef4a67",
+   "gun": 6
+  },
+  {
+   "gorev": "T78",
+   "ilk_tarih": "2026-08-15",
+   "commit": "caef4a67",
+   "gun": 6
+  },
+  {
+   "gorev": "T80",
+   "ilk_tarih": "2026-08-15",
+   "commit": "0bea49f2",
+   "gun": 6
+  },
+  {
+   "gorev": "T81",
+   "ilk_tarih": "2026-08-15",
+   "commit": "0bea49f2",
+   "gun": 6
+  },
+  {
+   "gorev": "T82",
+   "ilk_tarih": "2026-08-15",
+   "commit": "2f4d5951",
+   "gun": 6
+  },
+  {
+   "gorev": "T83",
+   "ilk_tarih": "2026-08-15",
+   "commit": "2f4d5951",
+   "gun": 6
+  },
+  {
+   "gorev": "T85",
+   "ilk_tarih": "2026-08-15",
+   "commit": "865f5910",
+   "gun": 6
+  },
+  {
+   "gorev": "T86",
+   "ilk_tarih": "2026-08-15",
+   "commit": "865f5910",
+   "gun": 6
+  },
+  {
+   "gorev": "T87",
+   "ilk_tarih": "2026-08-16",
+   "commit": "52a8be0b",
+   "gun": 5
+  },
+  {
+   "gorev": "T117",
+   "ilk_tarih": "2026-08-20",
+   "commit": "ffd54dea",
+   "gun": 1
+  },
+  {
+   "gorev": "T121",
+   "ilk_tarih": "2026-08-20",
+   "commit": "dee27acf",
+   "gun": 1
+  }
+ ],
+ "gunluk_adet": [
+  {
+   "commit": "9761f5ae",
+   "tarih": "2026-08-07",
+   "adet": 15
+  },
+  {
+   "commit": "1ebf3cb7",
+   "tarih": "2026-08-07",
+   "adet": 15
+  },
+  {
+   "commit": "5be2742e",
+   "tarih": "2026-08-08",
+   "adet": 18
+  },
+  {
+   "commit": "557366ab",
+   "tarih": "2026-08-08",
+   "adet": 19
+  },
+  {
+   "commit": "40859b3f",
+   "tarih": "2026-08-08",
+   "adet": 21
+  },
+  {
+   "commit": "e90f006e",
+   "tarih": "2026-08-10",
+   "adet": 16
+  },
+  {
+   "commit": "cd9cbad9",
+   "tarih": "2026-08-11",
+   "adet": 16
+  },
+  {
+   "commit": "b7643be0",
+   "tarih": "2026-08-11",
+   "adet": 16
+  },
+  {
+   "commit": "694fe665",
+   "tarih": "2026-08-11",
+   "adet": 16
+  },
+  {
+   "commit": "e0255d86",
+   "tarih": "2026-08-11",
+   "adet": 17
+  },
+  {
+   "commit": "b23370d1",
+   "tarih": "2026-08-11",
+   "adet": 17
+  },
+  {
+   "commit": "8010da8e",
+   "tarih": "2026-08-11",
+   "adet": 20
+  },
+  {
+   "commit": "4636817e",
+   "tarih": "2026-08-12",
+   "adet": 20
+  },
+  {
+   "commit": "69e04094",
+   "tarih": "2026-08-12",
+   "adet": 21
+  },
+  {
+   "commit": "158c4d53",
+   "tarih": "2026-08-12",
+   "adet": 21
+  },
+  {
+   "commit": "24ff1ee6",
+   "tarih": "2026-08-12",
+   "adet": 21
+  },
+  {
+   "commit": "0cc2a631",
+   "tarih": "2026-08-12",
+   "adet": 20
+  },
+  {
+   "commit": "548ff5e1",
+   "tarih": "2026-08-12",
+   "adet": 21
+  },
+  {
+   "commit": "9f160684",
+   "tarih": "2026-08-12",
+   "adet": 22
+  },
+  {
+   "commit": "829b91fa",
+   "tarih": "2026-08-12",
+   "adet": 23
+  },
+  {
+   "commit": "4ed3b8de",
+   "tarih": "2026-08-13",
+   "adet": 24
+  },
+  {
+   "commit": "20ef0d87",
+   "tarih": "2026-08-13",
+   "adet": 24
+  },
+  {
+   "commit": "8560dfd5",
+   "tarih": "2026-08-14",
+   "adet": 24
+  },
+  {
+   "commit": "f46dc2a5",
+   "tarih": "2026-08-14",
+   "adet": 24
+  },
+  {
+   "commit": "f4724e27",
+   "tarih": "2026-08-14",
+   "adet": 26
+  },
+  {
+   "commit": "e629522b",
+   "tarih": "2026-08-14",
+   "adet": 25
+  },
+  {
+   "commit": "09aa3ed8",
+   "tarih": "2026-08-14",
+   "adet": 26
+  },
+  {
+   "commit": "b4f8e402",
+   "tarih": "2026-08-14",
+   "adet": 27
+  },
+  {
+   "commit": "caef4a67",
+   "tarih": "2026-08-15",
+   "adet": 29
+  },
+  {
+   "commit": "916e3147",
+   "tarih": "2026-08-15",
+   "adet": 29
+  },
+  {
+   "commit": "0bea49f2",
+   "tarih": "2026-08-15",
+   "adet": 31
+  },
+  {
+   "commit": "2f4d5951",
+   "tarih": "2026-08-15",
+   "adet": 34
+  },
+  {
+   "commit": "865f5910",
+   "tarih": "2026-08-15",
+   "adet": 36
+  },
+  {
+   "commit": "52a8be0b",
+   "tarih": "2026-08-16",
+   "adet": 37
+  },
+  {
+   "commit": "4db50c8b",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "f98c4aeb",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "1589b1c4",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "76fb3bb1",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "d0acebb2",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "47baca95",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "381833eb",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "66f0d03a",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "e1c048d8",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "abd6a243",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "7a58eb6e",
+   "tarih": "2026-08-17",
+   "adet": 37
+  },
+  {
+   "commit": "c50fb50d",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "3fde584e",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "b7aae233",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "a1d1372d",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "1232346c",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "f593bede",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "aa995f6c",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "f9bdff49",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "994ac11b",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "72d9282e",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "a48cebd0",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "5b1d7db9",
+   "tarih": "2026-08-18",
+   "adet": 37
+  },
+  {
+   "commit": "70e908f9",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "e58a51f0",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "10514303",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "f42f5c4f",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "d048afe5",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "6b0e8e73",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "1ee9dad1",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "3cebce22",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "0dfa5606",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "5809b0ba",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "971395ac",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "1b571665",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "e4dfb005",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "e9bed363",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "5287065b",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "153b5051",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "effd125b",
+   "tarih": "2026-08-19",
+   "adet": 37
+  },
+  {
+   "commit": "71b215a5",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "e05d7cbe",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "c7d1a130",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "79517cb4",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "35ed9f75",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "614e2787",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "e2cc047b",
+   "tarih": "2026-08-20",
+   "adet": 37
+  },
+  {
+   "commit": "ffd54dea",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "8492e63d",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "b55ddfa6",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "b36c8a9e",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "62ceb390",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "5d1fd431",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "8a62d533",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "d77f75fc",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "c5985d06",
+   "tarih": "2026-08-20",
+   "adet": 38
+  },
+  {
+   "commit": "dee27acf",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "5c89a701",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "a62d4f3d",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "f1c20a4d",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "29ca3aae",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "d9498cf5",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "b09934a4",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "45a2086b",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "2e5b591e",
+   "tarih": "2026-08-20",
+   "adet": 39
+  },
+  {
+   "commit": "3aaa6513",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "b147e603",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "3fd4407d",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "6aa47fde",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "95a49c0d",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "66525959",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "ee7508d7",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "a54a65fd",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "03dd97de",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "f1c59317",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "d99219e9",
+   "tarih": "2026-08-21",
+   "adet": 39
+  },
+  {
+   "commit": "44737f83",
+   "tarih": "2026-08-21",
+   "adet": 39
+  }
+ ]
+}
