@@ -6077,6 +6077,34 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ **EŞİK DEĞİŞMEZ.** Bu bir **payda / çağrı biçimi** işidir.
   - **Kapı:** `15/15` · `discover -s tests -q` → **777 OK** (yeni testle artar)
 
+- [ ] **T136 — 🔴 DJI HATTI PROVA EDİLECEK: geliş günü ilk koşum OLMAYACAK · 30 Eylül'e 40 gün** · `scripts/` (yeni ingest), `scripts/copy_paste_augmentation.py`, `O:\navitas-local-train\56_*`, `config/model_registry.json` · **KRİTİK** · kullanıcı emri 2026-08-21
+  - **Açan:** Claude 1 (mimar) · **Denetim borcu görülerek açıldı** (D-267 §4.2):
+    `READY_FOR_REVIEW 40 · açık 31 · kapalı 56`; T133 triyajı **karar bekliyor**.
+  - **Kullanıcının hedefi:** *"DJI görüntüleri geldiği an eğitim yapıp 30 Eylül'e
+    her şeyimle hazır olmak."*
+  - 🔴 **BU GÖREV ÇEKİMİ BEKLEMEZ.** Hattı **bugün elde olan 14 dosyayla** uçtan uca
+    **prova** et. Geliş günü hattın **ilk kez** koşması, kusurlarını **o gün**
+    keşfetmek demektir — ve o gün telafi süresi **yoktur**.
+  - **ZİNCİR (tek giriş komutu olacak):**
+    ```text
+    video -> kare cikarma (dedup) -> BOLUM AYRIMI -> etiketleme -> karisim yaml
+          -> egitim -> tam kabul zinciri -> aday raporu
+    ```
+  - ⚠ **T122'NİN BAĞLAYICI SIRASI GEÇERLİ:** yeni veri **düzeltilmiş** etiket
+    hattına girer. Eski hat (tam-kare zemin) yeni veriyi alırsa kusur **393 kare
+    yerine binlerce karede** tekrar eder (D-210/D-211).
+  - ⚠ **DOĞRULAMA OTURUMU ÇEKİMDE AYRILIR** — farklı yer/gün olan oturum
+    `DOGRULAMA` etiketiyle ayrılır ve **eğitime asla girmez**. T111 duvarı
+    **yalnız böyle** yıkılır; sonradan bölmek işe yaramaz (aynı dağılım).
+  - 🔴 **SON GÜVENLİ GELİŞ TARİHİNİ HESAPLA.** Provada her adımın **duvar
+    saatini** ölç (kare çıkarma · etiketleme · eğitim · kabul zinciri) ve şunu yaz:
+    *"görüntü en geç <tarih>'te gelmezse 30 Eylül'e yetişmez."* Bu sayı
+    **kullanıcının planını değiştirir**; tahminle değil **ölçümle** verilecek.
+  - **Kapı:** prova sonunda `15/15` · `discover -s tests -q` → **777 OK** ·
+    ve prova modelinin **tam kabul zinciri** çıktısı raporda.
+  - ⚠ Prova modeli **aday bile değildir** — 14 dosya yetersiz. Amaç **hattı**
+    sınamak, model üretmek değil.
+
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
     Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
