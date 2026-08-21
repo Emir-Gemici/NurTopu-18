@@ -18,40 +18,46 @@
 
 ---
 
-## GECE KOSUMU · 2026-08-21 (GUNCEL) · Claude 2 (Opus 5, basamele)
+## GECE KOSUMU · 2026-08-21 (KAPANIS) · Claude 2 (Opus 5, basamele)
+
+**KOSAN IS YOK — tum zincirler bitti, GPU bosta.**
 
 **BITEN ISLER (hepsi push edildi):**
 - **T127** temiz bolum zinciri — D-249. On kayit kurali 1 SAGLANDI: kirli
   bolum kazanani SISMEMIS (cati kacagi 0,043 · 67 karede red 0 · K0-K5 gecti).
   Temiz val'de egitim 18 epoch'ta durdu, en iyi epoch 27 -> 10.
 - **T115** ustabasi denetimi — D-247 (DOGRU AMA EKSIK; kapiyi ustabasi kostu)
-  + D-250 (13 satirin 10'u guvenle onarilabilir; onarim Codex'in isi —
-  bagimsizlik geregi ben yapmiyorum, prompt verildi).
+  + D-250 (13 satirin 10'u guvenle onarilabilir). Onarim Codex'in isi;
+  genisletilmis kural prompt'u verildi. Bagimsizlik geregi ben onarmiyorum.
 - **T129** — D-248: cati korlugu KAYNAK KALITESINE bagli (v34 videoda %96,
-  ayni sahnenin ham fotografinda %46; v30 %31 -> %8). Siralama DEGISMIYOR.
-- **T128** — D-251: `--tohum` bu recetede ETKISIZ (tohum 0 ile 42 bit-es
-  agirlik; mekanizma `ultralytics/data/build.py:359` sabit tohum).
-  D-252: bu deney ZATEN v31'de kosulmustu; defteri aramadan tekrarladim,
-  1,18 saat GPU bosa gitti. Kalici duzeltme: her on kaydin ilk satiri
-  "daha once olculdu mu" aramasi olacak.
+  ham fotografta %46). Siralama DEGISMIYOR.
+- **T128 / T128-B** — D-251, D-253: `--tohum` VE `deterministic=False`
+  ikisi de ATIL; egitim hatti bu recetede TAM TEKRARLANABILIR (bit-es).
+  Kosum-ici varyans HALA olculmedi. 🔴 UCUNCU DENEME KOSULMADI (D-253):
+  bu soruya ~8,6 saat GPU gitti; yama gerekiyorsa once 2-3 epochluk kucuk
+  kosuyla dogrulanmali — karar mimarin.
+- **D-252** (kendi hatam): T128'i kosmadan once defteri aramadim, ayni deney
+  v31'de zaten yapilmisti. Kalici duzeltme: her on kaydin ilk satiri
+  "daha once olculdu mu" aramasi olacak (T128-B'de uygulandi).
+- **Kanit dosyasi**: `results/uretim_adayi_kanit_dosyasi.md` — secim kanitlari
+  tek yerde (karar DEGIL, derleme).
 
-**KOSAN IS: T128-B** (deterministic=False, OLCUM kosumu)
-- Betik: `scripts/olcum/105_t122_ft_kosumu.py --kip ac --belirsiz`
-- Gunluk: `results/t122/ft_ac_belirsiz_log.txt`
-- Zincir gunlugu: `results/t122/t128b_zincir_log.txt`
-  (egitim bitince kabul zinciri OTOMATIK kosar -> `results/t122/t128b_kabul.txt`)
-- On kayit: `results/t128b_on_kayit.md` — DEFTER ARAMASI dahil (tekrar DEGIL)
-- ⚠ Beklenen sinir: veri sirasini DEGISTIRMEZ (build.py:359 sabit tohum),
-  yalniz SAYISAL belirsizligi olcer. Sonuc bu sinirla raporlanacak;
-  "varyans olculdu" diye YAZILMAYACAK.
+**KAPI DURUMU (tum degisikliklerden SONRA kosuldu):**
+`codes/test_rota_sentetik.py` -> 15/15 ·
+`unittest discover -s tests -q` -> Ran 715 · OK · olcum aynasi 77 cift senkron
 
-**KAPI DURUMU (ustabasi kostu):** `codes/test_rota_sentetik.py` -> 15/15 ·
-`unittest discover -s tests -q` -> Ran 715 · OK
+**DISKTE DURAN AMA COMMIT EDILMEYEN (runs/ gitignore'da):**
+`codes/runs/segment/t122ac_tohum42` ve `t122ac_belirsiz` (113'er MB) —
+t122ac ile BIT-ES olduklari olculdu; D-251/D-253'un kaniti olarak duruyorlar.
+Silinmediler; gerekirse silinebilir (uretim degeri yok).
 
-**MIMARIN MASASINDA:** T122/T127 secim karari (D-237 -> D-239 -> D-240 -> D-249
-birlikte okunur) · T126 denetimi (D-244) · T115 devami · T124 sinir cumleleri
-(D-224) · T118 adlandirma (D-214) · D-233 kume yeniden uretimi · D-245 kuyruk
-boslugu · D-248 (cati korlugu kosullu).
+**MIMARIN MASASINDA:** T122/T127 secim karari (D-237 -> D-239 -> D-240 ->
+D-249 birlikte okunur, derleme kanit dosyasinda) · T126 denetimi (D-244) ·
+T115 devami (Codex'te) · T124 sinir cumleleri (D-224) · T118 adlandirma
+(D-214) · D-233 kume yeniden uretimi · D-245 kuyruk boslugu · D-253 yama karari.
+
+**INSANI BEKLEYEN (madde 9, mimarin acmasi gerek):** DJI cekimi — alan-disi
+genelleme sorusu bunsuz KAPANMIYOR (T111/D-198 duvari).
 
 ---
 

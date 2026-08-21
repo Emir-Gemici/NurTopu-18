@@ -67,7 +67,7 @@ aşağıdaki gerçek-kare ölçümlerinden gelir.
 | K0 sinyalinin güvenilirliği | v34 ↔ ft figür maskeleri **sıfır piksel örtüşüyor** | D-229 |
 | arena tarafında hafif geri | K2 %4,65 → %6,2 · K3 0 → 1/257 | D-242 §4 |
 | tohum gürültüsü | `--tohum` **atıl**; bu kolla ölçülemez | D-251 |
-| koşum-içi değişkenlik | T128-B koşuyor (yalnız sayısal belirsizlik) | T128-B ön kayıt |
+| koşum-içi değişkenlik | ÖLÇÜLEMEDİ: hem tohum hem determinism kolu ATIL, eğitim bit-eş tekrarlanabilir | D-251/D-253 |
 
 ## 5. AÇIK KALAN — ve kapatılamayan
 1. **ALAN-DIŞI genelleme.** Tüm ölçümler tek otoparkın karelerinden.
