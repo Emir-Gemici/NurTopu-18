@@ -5989,7 +5989,10 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     **süreç kusuruysa** görev tek tek temizlemekle bitmez, tekrar eder.
   - **Kapı:** `15/15` · `discover -s tests -q` → **765 OK**
 
-- [STATUS: READY_FOR_REVIEW] **T134 — 🔴 GÖREV KRİTİK: zemin sağlamlık kapısı İKİ rota üreticisinden yalnız BİRİNDE; kapısız olan İKA'ya YAYINLAYAN yol** · `simulation/scripts/iha_haritala.py`, `codes/costmap_path_finder.py`, `codes/rpi_inference.py:1166` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-267 §2** (mimar ölçtü), triyaj **D-266 §4**
+- [x] **T134 — KAPANDI · Zemin sağlamlık kapısı `rota_bul`a kondu; İKA'ya yayınlayan yol artık kapısız değil** · `codes/costmap_path_finder.py` · **KRİTİK** · uygulama `REVIEW_LOG.md` **D-268**, mimar denetimi **D-269**
+  - **Yazan:** Claude 2 (başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `777 OK` (765 → +12) · `15/15` · ayna 77 çift, ayrışan 0
+  - **Mimarın kendi ölçümü:** kapı `costmap_path_finder.py:1012`'de, `rota_bul` erken dönüyor · kabul zincirinin dört betiğinde de `rota_bul` **0 geçiş** (K1 düşemezdi, yapısal) · **mutasyon: dosya 5/12 · takım 6/777**, geri alındı.
+  - **Eşikler yalnız okundu:** `ZEMIN_KAPLAMA_TAVANI` 0,67 ve `ZEMIN_KENAR_DAYANMA_TAVANI` 0,50 **değişmedi**. Bu bir **yer** işiydi.
   - ✅ **UYGULANDI · 2026-08-21 · Claude-2 (başamele) · kanıt `REVIEW_LOG.md` D-268.**
     **Yazan:** Claude 2 · **Denetleyen:** mimar bekleniyor (§9.3) ·
     **Kapı çıktısı:** `15/15` · `Ran 777 · OK` (765 → 777) · ayna **77 çift ·
@@ -6057,6 +6060,22 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ama **ölçülmeden** öyle sayılmaz.
   - ⚠ Eşik (`ZEMIN_KAPLAMA_TAVANI` 0,67) **değişmez**. Bu bir **yer** işidir.
   - **Kapı:** `15/15` · `discover -s tests -q` → **765 OK** (yeni testle artar)
+
+- [ ] **T135 — `icerik=None` + letterbox: kaplama tavanı 0,67'yi HİÇ ateşleyemiyor (0,5625 sınırı)** · `codes/karar_sozlesmesi.py`, `jetson_paket/kod/kamera_dogrula.py:118`, `scripts/saha_kuru_kosu.py:722`, `scripts/jetson_fps.py:226` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-268 §6**, mimar denetimi **D-269 §5**
+  - **Ölçülmüş:** letterbox tuvalinde içerik oranı **0,5625**; `icerik=None` geçen
+    çağrıda kaplama bu değeri **aşamaz**, dolayısıyla **0,67 tavanı hiç ateşlenmez**
+    (1920×1080 · 1280×720 · 640×360 ölçüldü). Kenar kolu çalışmaya devam eder.
+  - ✅ **İKA yolu ETKİLENMEZ:** `iha_haritala` kare mozaik kullanıyor (`MOZ_PX=1024`);
+    orada kaplama yüzde 96,5 ölçülmüştü — kapı **canlı**.
+  - 🔴 **Ölçülmemiş olan:** `icerik` geçmeyen üç çağıran — `kamera_dogrula.py:118`,
+    `saha_kuru_kosu.py:722`, `jetson_fps.py:226`. Kolun orada **ölü olup olmadığı
+    tuvale bağlı ve ölçülmedi**.
+  - **Sınıf:** **D-207'nin payda sınıfı** — aynı eşik, farklı paydada **farklı şey**
+    ölçüyor. Bu, projede tekrar eden bir aile.
+  - **Yap:** üç çağıranın tuvalini ölç; kol ölüyse ya `icerik` geçirilsin ya da
+    o çağrıda kapının **ölçemediği** açıkça raporlansın (`ÖLÇÜLEMEDİ` sınıfı).
+  - ⚠ **EŞİK DEĞİŞMEZ.** Bu bir **payda / çağrı biçimi** işidir.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **777 OK** (yeni testle artar)
 
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**

@@ -20459,3 +20459,70 @@ düzeltilmedi, **kayda geçti**:
 Eşik **değişmedi** (okundu) · `config/model_registry.json`'a **dokunulmadı** ·
 iki kutu doğrulayıcısının ayrışması **düzeltilmedi** (§5, öner-bekle) ·
 letterbox sınırı **kapatılmadı** (§6, öner-bekle) · **push YOK** (CLAUDE.md §5).
+
+---
+
+### D-269 · ⚖ MİMAR DENETİMİ · T134 GEÇTİ — kapı yayınlayan yolda; **iki yük taşıyan iddiayı ve mutasyonu kendim koştum**. Ve uyardığım iki tuzağın ikisi de doğmadı: sebebini ÖLÇÜM söyledi, varsayım değil
+Tarih: 2026-08-21 · Denetleyen: Claude 1 (mimar) · Denetlenen: `e5bc519` (T134)
+Kapılar mimar tarafından koşuldu: **777 OK** (765 → +12) · **15/15** · `codes/` temiz
+
+#### 1. YÜK TAŞIYAN İKİ İDDİA — KENDİ ÖLÇÜMÜM
+
+    1) Kapi artik rota_bul'da mi?
+       codes/costmap_path_finder.py : zemin_maskesi_reddi -> 4 gecis
+       :1012  _red = zemin_maskesi_reddi(_zemin_ham, _kutu) -> erken doner
+       => iha_haritala (:324 rota_bul) artik kapiyi MIRAS ALIYOR.
+
+    2) "Kabul zinciri etkilenemez" iddiasi (K1 dusmedi, DUSEMEZDI):
+       61_rota_moloza_basma      rota_bul=0  analyze_path=3
+       63_bariyer_kesisimi       rota_bul=0  analyze_path=2
+       65_kabul_denetcisi        rota_bul=0  analyze_path=0
+       66_k5_bariyer_populasyon  rota_bul=0  analyze_path=2
+       => Dordunde de rota_bul HIC gecmiyor. Iddia YAPISAL OLARAK dogru.
+
+#### 2. MUTASYON — KENDİM KOŞTUM
+
+    kapi devre disi (`_red = None`)   -> dosya 5/12 · takim 6/777
+    geri alindi                       -> git status codes/ BOS
+
+Kapı gerçekten bir şey koruyor. ⚠ Amelenin raporundaki `takim 5/777` ile benim
+`6/777`m bir fark: aynı mutasyon değil — ben çağrıyı tamamen `None` yaptım, o
+satırı kaldırdı. **Yön ve büyüklük aynı**; kapı her iki biçimde de düşüyor.
+
+#### 3. UYARDIĞIM İKİ TUZAK DOĞMADI — VE BU BİR ÖLÇÜM SONUCUDUR
+
+Emirde iki şeyden korkmuştum:
+  · *"K1 düşerse bu gerileme değil, kapının nihayet çalışmasıdır"*
+  · *"K1'i kurtarmak için tavana dokunmak YASAK"*
+
+**İkisi de gerekmedi** — ama gerekmediğini **ölçüm** gösterdi: kabul zinciri
+`analyze_path` kullanıyor ve **zaten kapıdan geçiyordu**. Bunu varsayarak
+yazmamıştım; yazarken bilmiyordum. Uyarı doğru bir uyarıydı, **riski ortadan
+kaldıran şey ölçümdür.** Eşikler yalnız **okundu**, değişmedi.
+
+Ve genel kapı gerçekten risk altındaydı (`test_rota_sentetik.py` `rota_bul`u
+**doğrudan** çağırır): 15 sahnenin tamamı ölçülmüş — kaplama maks **0,4262**
+(tavan 0,67), kenar maks **0,0306** (tavan 0,50) → **0/15 reddedildi**.
+
+#### 4. AMELENİN İKİ İYİ HAMLESİ
+
+  · **Kendi ilk okumasını düzeltti.** Düşen testi "19 dejenere fikstür" sanmış;
+    gerçek sebep **sebep kodu çakışması** (`ALAN_YETERSIZ` ↔ `MASKE_YOK`) —
+    ikisi de rota üretmiyor, çakışan tek şey **kod**du. Test hatasını
+    kapatmak yerine **teşhis** etmiş ve o çakışmayı doğurmayan yerleşimi seçmiş.
+  · **M2 mutasyonu:** ölçümü **yanlış yere** (serbest_alan çıktısı) taşıyınca
+    1 test düşüyor. Yani yeni kapı "kapı var mı"yı değil **doğru yerde mi**
+    sorusunu da kilitliyor. Bunu ben istememiştim.
+
+#### 5. 🔴 KAPATILMAYAN SINIR — KABUL, GÖREVE DÖNÜŞÜYOR
+
+`icerik=None` + letterbox: içerik oranı 0,5625 olduğu için kaplama **0,67
+tavanını hiç ateşleyemez** (1920×1080 · 1280×720 · 640×360 ölçüldü).
+  · **İKA yolu ETKİLENMEZ** — `iha_haritala` kare mozaik kullanıyor (`MOZ_PX=1024`),
+    orada kaplama %96,5 ölçülmüştü: kapı **canlı**.
+  · Ama `icerik` geçmeyen üç çağıran var: `kamera_dogrula.py:118` ·
+    `saha_kuru_kosu.py:722` · `jetson_fps.py:226`. Kolun orada ölü olup
+    olmadığı **tuvale bağlı ve ÖLÇÜLMEDİ**.
+
+Bu, **D-207'nin payda sınıfının** aynısıdır: aynı eşik, farklı paydada
+**farklı şey** ölçüyor. → **T135**.
