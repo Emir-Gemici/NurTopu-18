@@ -20526,3 +20526,105 @@ tavanını hiç ateşleyemez** (1920×1080 · 1280×720 · 640×360 ölçüldü)
 
 Bu, **D-207'nin payda sınıfının** aynısıdır: aynı eşik, farklı paydada
 **farklı şey** ölçüyor. → **T135**.
+
+---
+
+### D-270 · 🔴 T136 PROVA · **İLK DJI ÇEKİMİ KULLANILAMAZ — GECE YAPILMIŞ** (569/569 kare referansın altında); hat kuruldu, iki kapı ekledi ve son güvenli geliş tarihi **13 Eylül** olarak HESAPLANDI
+
+- **Yazan:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-21 · görev **T136** (kullanıcı emri).
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 793 · OK** (777 → 793, yeni kapı
+  16 test) · ayna **77 çift · AYRIŞAN 0**.
+- **Ham çıktı repoda:** `results/t136/` — `dji_prova/kosum.json` (zamanlama) ·
+  `parlaklik.json` (569 kare) · `parlaklik_referansi.json` ·
+  `son_guvenli_gelis_tarihi.md`. Hat: `scripts/dji_hatti.py`.
+- 🔴 **Registry'ye DOKUNULMADI, eşik DEĞİŞTİRİLMEDİ, `codes/` altına
+  girilmedi.** Prova modeli üretilmedi — çünkü veri eğitime uygun çıkmadı.
+
+#### 1. 🔴 PROVANIN ASIL BULGUSU — MODEL DEĞİL, ÇEKİM
+Üç bağımsız ajan + kendi ölçümüm **aynı kök nedende** buluştu:
+```text
+parlaklik (0-255 ortalama, 569 kare):
+   DJI          medyan  21,2 · maks 73,2 · 569/569 kare < 80
+   raw_frames   medyan 128,7 · min 118,7      (BUGUNKU modelleri ureten veri)
+   -> IKI DAGILIM HIC ORTUSMUYOR: DJI'nin EN AYDINLIK karesi (73,2)
+      referansin EN KARANLIK karesinin (118,7) ALTINDA.
+etiket verimi   : otopark 440/448 (%98,2)  ·  DJI 73/569 (%12,8)
+zemin maskesi   : 496/569 (%87,2) TAMAMEN BOS · zemin_ort 0,0132 (otopark 0,59)
+uretim modeli   : v35, 546/569 (%96,0) bos maske · uretim hatti 30/30 REDDETTI
+```
+Çekim **20:17–21:05** arası; parlaklık klip sırasıyla düşüyor (70,2 → 13,8) —
+hava kararırken çekilmiş. **7 fotoğrafın 7'si de 20:43–20:57.**
+⚠ **KARIŞTIRICI AYRILAMIYOR ve öyle yazılıyor:** elde **tek bir gündüz DJI
+karesi yok**, bu yüzden "gece mi DJI dokusu mu" sorusu **ölçülemez**. Doz-yanıt
+ilişkisi geceyi işaret ediyor (körlük L<10'da 0,992 → L 40-80'de 0,50) ama
+bu **kanıt değil güçlü işarettir**.
+
+#### 2. ⚠ BENİM İLK OKUMAM DA YANLIŞ OLABİLİRDİ — görsele baktım
+İlk ajan raporu "model DJI dokusunda zemini görmüyor" diye geldi. Bunu
+**model kusuru** diye yazmadan önce kareye baktım: **kare neredeyse siyahtı**.
+Ajanın sayıları doğruydu, **yorumu eksikti**. Yer gerçeği olmayan yerde
+"model kör" demek, bu projede defalarca kapattığımız hatanın ta kendisiydi.
+
+#### 3. HAT KURULDU — TEK KOMUT, İKİ KAPI ZORLUYOR
+`scripts/dji_hatti.py` · `--kahin` **ZORUNLU** (varsayılan YOK: D-210'un
+kusuru tam oradaydı — üreteç bilinmeyeni zemin ilan ediyordu).
+- **ADIM 0 · OTURUM KAPISI (T136 kısıt 2).** `DOGRULAMA` oturumu yoksa zincir
+  **DURUR** (exit 1). `--prova` kapıyı **AÇMAZ**; yalnız koşumun **aday
+  üretemeyeceğini** kabul eder (`gecti=False` kalır ve bu testle kilitli).
+  Bugünkü 14 dosya: **tek oturum** → kapı ateşledi.
+- **ADIM 1b · PARLAKLIK KAPISI — bu provanın ürünü.** Eşik **uydurulmaz,
+  `data/raw_frames`ten TÜRETİLİR**: yeni çekimin en aydınlık karesi
+  referansın en karanlık karesine ulaşmıyorsa **DURUR**. Bugün ateşledi.
+- **ADIM 3 · BÖLÜM KAPISI (D-233).** "Kaynağı eğitimde de olan val" = 0;
+  değilse durur. Anahtar **kaynak** düzeyinde.
+- **ADIM 2+ BİLEREK BAĞLANMADI** ve zincir orada açık hatayla durur: yarım
+  bağlanmış bir zincir "koşuyor" görünüp sessizce yanlış etiket üretirdi
+  (D-210 sınıfı). Gerekçe koda yazıldı.
+
+#### 4. SON GÜVENLİ GELİŞ TARİHİ — ÖLÇÜMDEN
+Ölçülen birim maliyetler: kare çıkarma **6,4 sn/dk video** · verim
+**26,1 kare/dk** · etiket+çoğaltma **4,6 sn/kare (4K — 1024×576'nın 11 katı)** ·
+eğitim **0,58 saat / 440 görüntü** (`t127_temiz`, 18 epoch) · kabul zinciri
+~7 dk · **elle etiketleme ~0,03 saat/kare**.
+🔴 **Baskın terim compute değil İNSAN EMEĞİ:** (c) çatı maskesi elle poligon +
+homografi ürünüdür, depoda hazır bina kâhini **YOK**.
+```text
+V1 60 dk video · V2 1 kisi x 8 saat/gun · V3 1 yeniden egitim ·
+V4 bitis 27 Eylul (30 Eylul CIHAZ gunudur) · V5 +3 gun basarisiz cekim payi
+  -> 1566 kare · ELLE ETIKETLEME ~47 saat = 6 IS GUNU (baskin)
+  -> hat toplami ~8,5-9 is gunu
+  -> 27 Eylul - 9 is gunu - 3 gun = 13 EYLUL
+```
+> **Görüntü en geç 13 Eylül'de gelmezse 30 Eylül'e yetişmez.**
+Bugün 21 Ağustos → **23 gün var**; takvim yeterli, **ama çekim gündüz
+tekrarlanmalı**. ⚠ V1'e çok duyarlı: 120 dk çekimde son tarih **~6 Eylül**.
+
+#### 5. 🔴 YAN BULGU — `zemin_maskesi_reddi` KÖRLÜĞÜ SESSİZCE GEÇİRİYOR
+569 DJI karesinin **0'ında** ateşledi, oysa 496'sında zemin maskesi **tamamen
+boştu**. Kapı **tek yönlüdür**: yalnız *aşırı* etiketlemeyi (kaplama > tavan)
+yakalar, *körlüğü* yakalamaz. T134'te o kapıyı `rota_bul`a koyduk; oradaki
+davranış da aynı yönlüdür. K0 körlüğü ölçer ama **kabul kümesinde**, DJI
+verisinde değil. **ÖNER-BEKLE:** yeni veri için körlük kolu gerekli mi?
+
+#### 6. KABUL ZİNCİRİ DJI'YA ÇEVRİLEMİYOR (ölçüldü)
+K0–K5'in **altısı da** sentetik arena kümesinde koşar; DJI verisi zincirin
+hiçbir yerinden geçmiyor. Çevirmeye çalışan ajan ölçtü: `61` betiği
+`KeyError 'ornekler'` ile çöktü (DJI manifesti farklı şema; arena/mpp ve
+`labels/` **yer gerçeği yok**). K1–K4 rotayı GT poligonuyla kıyaslar →
+DJI'da yapısal olarak **ÖLÇÜLEMEDİ**. Bu, T111/D-198 duvarının kendisidir.
+
+#### 7. İNSAN İŞİ (madde 9 — yalnız kullanıcıya raporlanır)
+1. **Çekimi GÜN IŞIĞINDA tekrarla.** Bugünkü 8 GB veri eğitime giremez.
+2. **Doğrulama uçuşunu `dji/DOGRULAMA/` altına AYRI koy** — farklı yer/gün.
+   Sonradan bölmek T111 duvarını yıkmaz (D-256 §5).
+3. **Çekim süresini bildir** — son güvenli tarih ona çok duyarlı.
+4. Elle etiketleme yükü ~47 saat (60 dk çekim varsayımıyla); azaltmanın tek
+   meşru yolu **daha az ama daha ÇEŞİTLİ** kare.
+
+#### 8. YETKİ SINIRI — yapılmayanlar
+Registry'ye **yazılmadı** · eşik **değiştirilmedi** (parlaklık eşiği
+**türetilir**, gömülü değil ve bunu bir test kilitliyor) · `codes/` altına
+**dokunulmadı** · prova modeli **üretilmedi** (veri uygun değil) ·
+ADIM 2+ **bilerek bağlanmadı** · **push YOK**.

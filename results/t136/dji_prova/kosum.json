@@ -1,0 +1,42 @@
+{
+ "_ne": "T136 · DJI hatti kosumu",
+ "ad": "dji_prova",
+ "kaynak": "O:\\navitas\\dji",
+ "kahin": "models\\navitas_seg_v35_best.pt",
+ "oturum": {
+  "gecti": false,
+  "prova_mi": true,
+  "egitim_dosya": 14,
+  "dogrulama_dosya": 0
+ },
+ "kare": {
+  "dizin": "O:\\navitas\\data\\dji_prova_kareler",
+  "adet": 569,
+  "manifest": "O:\\navitas\\data\\dji_prova_kareler\\manifest.json"
+ },
+ "parlaklik": {
+  "durum": "ORTUSME_YOK",
+  "yeni_maks": 73.2090625,
+  "yeni_medyan": 21.230164930555556,
+  "ref_min": 118.66317708333334,
+  "ref_medyan": 128.73614583333332,
+  "n_yeni": 400,
+  "n_ref": 67,
+  "referans": "O:\\navitas\\data\\raw_frames"
+ },
+ "zamanlama": [
+  {
+   "adim": "0-oturum_kapisi",
+   "saniye": 0.0
+  },
+  {
+   "adim": "1-kare_cikarma",
+   "saniye": 138.95
+  },
+  {
+   "adim": "1b-parlaklik_kapisi",
+   "saniye": 9.71
+  }
+ ],
+ "toplam_saniye": 148.66
+}

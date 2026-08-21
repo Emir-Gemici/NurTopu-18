@@ -6077,7 +6077,49 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ **EŞİK DEĞİŞMEZ.** Bu bir **payda / çağrı biçimi** işidir.
   - **Kapı:** `15/15` · `discover -s tests -q` → **777 OK** (yeni testle artar)
 
-- [ ] **T136 — 🔴 DJI HATTI PROVA EDİLECEK: geliş günü ilk koşum OLMAYACAK · 30 Eylül'e 40 gün** · `scripts/` (yeni ingest), `scripts/copy_paste_augmentation.py`, `O:\navitas-local-train\56_*`, `config/model_registry.json` · **KRİTİK** · kullanıcı emri 2026-08-21
+- [STATUS: READY_FOR_REVIEW] **T136 — 🔴 DJI HATTI PROVA EDİLECEK: geliş günü ilk koşum OLMAYACAK · 30 Eylül'e 40 gün** · `scripts/` (yeni ingest), `scripts/copy_paste_augmentation.py`, `O:\navitas-local-train\56_*`, `config/model_registry.json` · **KRİTİK** · kullanıcı emri 2026-08-21
+  - 🔴 **PROVA KOŞULDU · 2026-08-21 · Claude-2 · kanıt `REVIEW_LOG.md` D-270.**
+    **Yazan:** Claude 2 · **Denetleyen:** mimar bekleniyor (§9.3) ·
+    **Kapı çıktısı:** `15/15` · `Ran 793 · OK` (777 → 793) · ayna 77 çift, ayrışan 0.
+  - 🔴 **ASIL BULGU — İLK ÇEKİM KULLANILAMAZ, GECE YAPILMIŞ:**
+    ```text
+    parlaklik (0-255 ort):  DJI medyan 21,2 · maks 73,2 · 569/569 kare < 80
+                            raw_frames min 118,7 · medyan 128,7 (CALISAN veri)
+                            -> IKI DAGILIM HIC ORTUSMUYOR
+    etiket verimi        :  otopark 440/448 (%98,2) · DJI 73/569 (%12,8)
+    zemin maskesi        :  496/569 (%87,2) TAMAMEN BOS
+    uretim modeli v35    :  546/569 (%96,0) bos maske · hat 30/30 REDDETTI
+    ```
+    Çekim 20:17–21:05; parlaklık klip sırasıyla düşüyor (70 → 14).
+    ⚠ **Karıştırıcı ayrılamıyor:** tek bir gündüz DJI karesi yok — "gece mi
+    doku mu" **ölçülemez**; doz-yanıt geceyi işaret ediyor ama kanıt değil.
+  - **HAT KURULDU:** `scripts/dji_hatti.py` — tek komut, `--kahin` **ZORUNLU**
+    (varsayılan YOK; D-210 kusuru oradaydı). Üç kapı **fail-closed** (exit 1):
+    ① **oturum** (`DOGRULAMA` yoksa DURUR; `--prova` kapıyı **açmaz**, yalnız
+    "aday üretemez" der) · ② **parlaklık** (eşik `data/raw_frames`ten
+    **TÜRETİLİR**, gömülü değil) · ③ **bölüm** (kaynağı eğitimde olan val = 0).
+    ADIM 2+ **bilerek bağlanmadı** — yarım zincir sessizce yanlış etiket üretirdi.
+  - 🔴 **SON GÜVENLİ GELİŞ TARİHİ = 13 EYLÜL** (ölçümden; varsayımlar
+    `results/t136/son_guvenli_gelis_tarihi.md` §2'de açık):
+    ```text
+    olculen: kare cikarma 6,4 sn/dk · verim 26,1 kare/dk ·
+             etiket+cogaltma 4,6 sn/kare (4K = 1024x576'nin 11 kati) ·
+             egitim 0,58 saat/440 goruntu · ELLE ETIKETLEME ~0,03 saat/kare
+    V1 60 dk cekim -> 1566 kare -> ELLE ETIKET ~47 saat = 6 IS GUNU (BASKIN)
+    hat toplami ~8,5-9 is gunu · 27 Eylul - 9 gun - 3 gun pay = 13 EYLUL
+    ```
+    Bugün 21 Ağustos → 23 gün var. ⚠ V1'e çok duyarlı: 120 dk çekimde **~6 Eylül**.
+    🔴 Baskın terim **compute değil İNSAN EMEĞİ** — hazır bina kâhini depoda YOK.
+  - **YAN BULGU:** `zemin_maskesi_reddi` 569 karenin **0'ında** ateşledi, oysa
+    496'sında zemin **tamamen boştu** — kapı tek yönlü, **körlüğü sessizce
+    geçiriyor** (ÖNER-BEKLE).
+  - **KABUL ZİNCİRİ DJI'YA ÇEVRİLEMİYOR:** K0–K5'in altısı da sentetik arena
+    kümesinde; çevirme denemesi `61`de `KeyError` ile çöktü (GT yok). T111 duvarı.
+  - 👤 **İNSAN İŞİ (madde 9):** ① çekimi **gün ışığında** tekrarla ·
+    ② doğrulama uçuşunu **`dji/DOGRULAMA/`** altına ayrı koy (farklı yer/gün) ·
+    ③ çekim süresini bildir (son tarih ona duyarlı).
+  - **Yetki sınırı:** registry'ye yazılmadı · eşik değiştirilmedi · `codes/`
+    altına dokunulmadı · prova modeli **üretilmedi** (veri uygun değil) · **push YOK**.
   - **Açan:** Claude 1 (mimar) · **Denetim borcu görülerek açıldı** (D-267 §4.2):
     `READY_FOR_REVIEW 40 · açık 31 · kapalı 56`; T133 triyajı **karar bekliyor**.
   - **Kullanıcının hedefi:** *"DJI görüntüleri geldiği an eğitim yapıp 30 Eylül'e
