@@ -20628,3 +20628,46 @@ Registry'ye **yazılmadı** · eşik **değiştirilmedi** (parlaklık eşiği
 **türetilir**, gömülü değil ve bunu bir test kilitliyor) · `codes/` altına
 **dokunulmadı** · prova modeli **üretilmedi** (veri uygun değil) ·
 ADIM 2+ **bilerek bağlanmadı** · **push YOK**.
+
+#### 9. EK — fan-out kaydı yazdıktan SONRA tamamlandı; iki şey eklendi
+⚠ Bu bölüm D-270 commit'lendikten sonra eklendi (fan-out geç bitti). Mimar
+denetimi henüz yapılmadığı için kendi kaydımı tamamladım; **sayı değiştirmedim,
+ekledim**.
+
+**9.1 🔴 `normalize_light` ÜRETİM YOLUNDA TEK BAŞINA ÇAĞRILIYOR — kendi
+docstring'i bunu YASAKLIYOR (ustabaşı doğruladı).**
+```text
+codes/rpi_inference.py:1448  DARK_L_MEAN = 80.0
+codes/rpi_inference.py:1456  def normalize_light(img)
+    docstring: "tek basina kullanma — normalizasyon bazi goruntulerde tespiti
+                BOZAR; dogru kullanim orijinalle YARISTIRMAK"
+codes/rpi_inference.py:1493  _preprocess -> normalize_light(img)   TEK BASINA, KOSULSUZ
+simulation/scripts/iha_perceive.py:97,104  _infer -> orijinalle YARISTIRIYOR  ✔
+```
+Yani docstring'in şart koştuğu savunma **bir yolda var, diğerinde yok** —
+projenin en sık kusur sınıfı ("iki kopya, biri zorlanmıyor"), bu kez **ışık
+normalizasyonu ekseninde**. `_preprocess` kabul zincirinin alt betiklerinin
+(61/63/66) ve `analyze_path` çağıranlarının yoludur.
+- DJI gecesinde sonucu ölçüldü: `L_ort` 16,7 → eşik 80'in altında olduğu için
+  **569/569 karede tetikleniyor**, gürültüyü büyütüyor ve model **tek parça
+  tüm-kare "engel" blobu** döndürüyor (%92–93 @512/1024, %0,0 @1536).
+- ⚠ **SINIR:** gündüz karesinde (L ≥ 80) fonksiyon görüntüyü **aynen** döndürür;
+  bu yüzden kusur yalnız karanlık/gölgeli girdide ısırır. Ama yarışma günü
+  **Eylül sonu** ve gölge/alacakaranlık olasıdır. **ÖNER-BEKLE.**
+
+**9.2 MASKE KÜÇÜLMÜYOR — BAŞKA BİR FİZİKSEL NESNEYE TAŞINIYOR.**
+Çatı karesinde (`frame_000026_000004020`): 512'de engel maskesi **soldaki bitki
+şeridinde** (0,226) ve çatıyı hiç işaretlemiyor · 1024'te **çatının üstünde**
+(0,122) · 1536'da yok oluyor (0,002). Engel maskesi medyan IoU
+**512↔1536 = 0,041** (n=30) — iki çözünürlük pratikte **örtüşmeyen** maskeler
+döndürüyor. Yani imgsz bir ayar düğmesi değil, bu veride **doğruluk sorusu**.
+⚠ Gece × çözünürlük ayrışımı **ÖLÇÜLEMEDİ** — ayırmak için gündüz DJI karesi
+gerekir, elde yok.
+
+**9.3 ÇÜRÜTÜCÜ BAĞIMSIZ YENİDEN ÜRETTİ ve bir varsayımı ÖLÇTÜ.**
+Ajanın betiklerini **çalıştırmadan**, kendi kodunu yazarak aynı 30 kareyi
+ölçtü. Ayrıca sınıf haritasını **iki kaynaktan** doğruladı: registry
+`classes = {0: traversable, 1: blocked}` **ve** ağırlığın kendi üstverisi
+`YOLO(...).names`. Kendi ifadesiyle: *"bu eşleme ters olsaydı tüm bulgu tersine
+dönerdi; ölçüldü, varsayılmadı."* Ayna kontrolü de yaptı: `codes/rpi_inference.py`
+ile `jetson_paket/kod/rpi_inference.py` **md5-eş**.
