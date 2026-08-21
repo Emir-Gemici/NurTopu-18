@@ -5931,6 +5931,29 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     `codes/` altına dokunulmadı · metrik **değerleri** değişmedi, yalnız biçim
     genişledi · iki defter kopyası **bayt-eş** · v35 geri alınmadı.
 
+- [ ] **T133 — 🔴 39 görev DENETİM BEKLİYOR ama defterde yalnız 12 mimar denetimi var: kuyruk gerçeği anlatmıyor** · `TASK_QUEUE.md` · **ÖNEMLİ** · kanıt: bu satırın altındaki sayım
+  - **Açan:** Claude 1 (mimar) · 2026-08-21 · **bu benim darboğazım**, görev onu görünür kılmak için.
+  - **Sayım (mimar, bugün):**
+    ```text
+    READY_FOR_REVIEW : 39      acik : 30      kapali : 55
+    REVIEW_LOG icinde "MIMAR DENETIMI" kaydi : 12
+    ```
+    En eskisi **T1**e kadar gidiyor — ve T1in konusu olan letterbox düzeltmesi
+    bugün kodda **duruyor**. Yani işaret haftalardır **bayat**.
+  - **Neden önemli.** "Kaç iş kaldı" sorusunun cevabı **30 değil**; 39 görev
+    belirsiz durumda. Bu, D-194/D-200un sınıfı: **defter ile gerçeğin ayrışması.**
+  - **YAP — TRİYAJ, KAPATMA DEĞİL.** Her biri için **kanıtla** üç kovadan birine:
+    1. **KAPANMALI** — iş kodda mevcut ve iddia artık **yeniden üretilemiyor**
+    2. **HÂLÂ GEÇERLİ** — kusur bugün de **yeniden üretiliyor** (nasıl, yaz)
+    3. **BELİRSİZ** — dosya/bağlam değişmiş, karar gerekiyor
+  - ⚠ **KAPATMA YETKİN YOK** (§9.2). Sen kanıt üretirsin, kapatan mimardır.
+  - ⚠ **Görev metnine güvenme, KOŞ.** Çoğu bir grepe veya tek teste bakar.
+  - ⚠ **GPU gecesi harcama.** Pahalı doğrulama gerekiyorsa BELİRSİZe koy ve yaz.
+  - 🔴 **Asıl soruyu da cevapla:** 39 birikme **nasıl** oldu? İş akışında
+    `READY_FOR_REVIEW` işaretleyip kimsenin almadığı bir adım mı var? Bu bir
+    **süreç kusuruysa** görev tek tek temizlemekle bitmez, tekrar eder.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **765 OK**
+
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
     Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
