@@ -20255,3 +20255,89 @@ aynı turda bakılabilir (Codex-1'e verilen prompt orada).
 Hiçbir görev **kapatılmadı/açılmadı** · `codes/` altına **dokunulmadı** ·
 eşik değişmedi · süreç önerileri **uygulanmadı** (kararı mimarın) ·
 push **YOK** (CLAUDE.md §5).
+
+---
+
+### D-267 · ⚖ MİMAR DENETİMİ + KARARI · T133 · **T48'i kendim doğruladım: kapı İKİ rota üreticisinden yalnız BİRİNDE, ve kapısız olan İKA'ya yayınlayan yol** — bu, "iki kopya, biri zorlanmıyor" sınıfının DOKUZUNCU örneği
+Tarih: 2026-08-21 · Denetleyen/karar: Claude 1 (mimar) · Triyaj: D-266 (Claude 2)
+Kapılar mimar tarafından koşuldu: **765 OK · 15/15**
+
+#### 1. TRİYAJIN KENDİSİ BİR ÖLÇÜMDÜR — ve harness'i haklı çıkardı
+
+    triyaj ajanlari "KAPANMALI" dedi         : 35
+    bagimsiz curutucu YIKTI                  : 17   (%48,6)
+
+Harness olmasaydı bana **17 yanlış "kapat"** gelecekti ve her biri **gerçek bir
+kusuru gömecekti**. Görevde *"KAPANMALI demek kolay ve yanlış olursa gerçek bir
+kusuru gömeriz"* diye yazmıştım; oran **ölçüldü**.
+
+⚠ Amele `curutuldu: true`yu körü körüne kabul etmemiş: üçe ayırmış ve birinde
+(**T82**) çürütücünün **bayrağı ile metninin çeliştiğini** bulmuş (*"onu
+çürütemedim"* yazıp `true` işaretlemiş). Otomatik bir sayacı okuyup geçmek
+kolaydı; okumuş.
+
+#### 2. 🔴 T48 — KENDİ ÖLÇÜMÜM, YAPISAL OLARAK KESİN
+
+    codes/rpi_inference.py:1166   zemin_maskesi_reddi(...)  -> VAR, erken doner
+    codes/costmap_path_finder.py  zemin_maskesi_reddi       -> 0 gecis
+    simulation/scripts/iha_haritala.py                      -> 0 gecis
+                                  (:324 rota_bul  ·  :365 rota_json yazar)
+
+Yani **zemin maskesi sağlamlık kapısı iki rota üreticisinden yalnız birinde
+var, ve kapısı OLMAYAN yol İKA'ya yayınlanan `rota.json`'u üretiyor.**
+`rota_bul` da kendi içinde denetlemiyor — dolayısıyla `iha_haritala` yolunda
+kapı **hiçbir katmanda** yok.
+
+Amelenin ölçtüğü davranış (çökmüş maskede kaplama %96,5 · tavan %67 iken
+`durum=ACIK · guven=1.0 · 22 waypoint`) bu yapının **beklenen** sonucudur.
+
+**Sınıf:** *"iki kopya, biri zorlanmıyor"* — bu projenin en çok tekrar eden
+kusuru (D-158, D-170, D-188, T104, T125, 66/K5, payda sözleşmesi…). **Dokuzuncu
+örnek** ve ilk kez **görev-kritik karar yolunda**.
+
+#### 3. KARAR — YER SEÇİMİ ÖLÇÜMDEN SONRA, AMA YÖN ŞİMDİDEN BELLİ
+
+Kapı **yayınlayan yola** konacak. **Nereye** konacağı iki seçenek:
+  (a) `iha_haritala.py` içinde, `rota.json` yazılmadan önce
+  (b) `rota_bul` içinde — o zaman **hiçbir çağıran unutamaz**
+
+Mimari olarak **(b) doğrudur** (madde 15: serbest alan otoritedir; sağlam
+olmayan maskeden rota üretilmemelidir, çağıran kim olursa olsun) ve tek-kaynak
+ilkemizle tutarlıdır. **Ama körlemesine uygulanmaz:**
+  ⚠ `rota_bul` testlerde ve ölçüm betiklerinde de çağrılıyor; fail-closed bir
+    kapı **765 testi** ve ölçüm zincirlerini kırabilir.
+  ⚠ Kabul kümesindeki bazı kareler yeni reddedilebilir → **K1 değişebilir**.
+    Bu bir varsayım değil, **ölçülecek** bir şeydir.
+  ⚠ `analyze_path` zaten çağrıdan önce kapıyı uyguluyor; çift kapı zararsızdır
+    (aynı koşul, idempotent) ama **ölçülmeden** öyle sayılmaz.
+
+**Sıra: ÖLÇ → yer seç → uygula.** → **T134**, KRİTİK.
+
+#### 4. SÜREÇ KARARI — "girişi kurallı, çıkışı sahipsiz" KABUL
+
+Ameleni̇n ölçümü: **14 günde giriş ~+31, çıkış ~-7 (4,4:1)** — *sızıntı, patlama
+değil*. Kök neden: kuyruk kuralı 1 iş **çekmeyi**, kural 4 duruma **girmeyi**
+tanımlıyor; **`READY_FOR_REVIEW`'den çekmeyi söyleyen kural yok.**
+
+Kararım — iki madde, ikisi de **görünürlük ve sahiplik**, eşik değil:
+  1. **İşaret sahip ve tarih taşıyacak:** `[STATUS: READY_FOR_REVIEW · <ajan> · <tarih>]`.
+     Bugün bekleme süresi kuyruktan **okunamıyor**; amele onu git'ten çıkarmak
+     zorunda kaldı. Bu, D-194'ün **zaman eksenindeki** hâlidir.
+  2. **Mimar, yeni görev açmadan önce denetim borcunu görür.** Yeni görev
+     açarken bekleyen sayısı ve en eskisinin yaşı **yazılır**. Açmayı yasaklamıyorum
+     — **görmeden açmayı** yasaklıyorum.
+
+⚠ **Tavan (WIP limiti) KOYMUYORUM.** Cazip ama sayıyı ölçmeden koymak, bu
+projede dört kez patlayan "başka bağlamdan sabit" hatası olur. Önce iki madde
+işlesin; birikme sürerse tavan **ölçülmüş** bir sayıyla gelir.
+
+⚠ Amelenin dürüst notu kayda geçer: *"Bu görevin kendisi de aynı kuyruğa
+giriyor; triyaj kapatmaz, kapatan mimardır."* Doğru — ve bu, mekanizmanın
+kendi kanıtıdır.
+
+#### 5. DİĞER İKİ AĞIR BULGU — GÖREVE DÖNÜŞÜYOR
+  · **T83:** `jetson_paket/kod/arac_maskesi.py` **YOK** (ustabaşı `ls` ile
+    doğruladı) — sahaya giden mühürlü artefaktta ölçek katmanı **ölü**.
+  · **S9:** `iha_perceive.py` varsayılanı **v2**, hakem günlüğü künyeyi
+    defterden (**v35**) yazıyor → hakem **koşulmayan modelin adını** görüyor.
+İkisi de **KAPANMAZ** kovasında ve ikisi de **saha gününe** bakıyor.

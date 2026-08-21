@@ -5989,6 +5989,31 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     **süreç kusuruysa** görev tek tek temizlemekle bitmez, tekrar eder.
   - **Kapı:** `15/15` · `discover -s tests -q` → **765 OK**
 
+- [ ] **T134 — 🔴 GÖREV KRİTİK: zemin sağlamlık kapısı İKİ rota üreticisinden yalnız BİRİNDE; kapısız olan İKA'ya YAYINLAYAN yol** · `simulation/scripts/iha_haritala.py`, `codes/costmap_path_finder.py`, `codes/rpi_inference.py:1166` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-267 §2** (mimar ölçtü), triyaj **D-266 §4**
+  - **Mimarın kendi ölçümü (yapısal, kesin):**
+    ```text
+    codes/rpi_inference.py:1166      zemin_maskesi_reddi -> VAR, erken doner
+    codes/costmap_path_finder.py     zemin_maskesi_reddi -> 0 gecis
+    simulation/scripts/iha_haritala  zemin_maskesi_reddi -> 0 gecis
+                                     (:324 rota_bul · :365 rota_json YAZAR)
+    ```
+    `rota_bul` da kendi içinde denetlemiyor → `iha_haritala` yolunda kapı
+    **hiçbir katmanda yok**. Çökmüş maskede `durum=ACIK · guven=1.0 · 22 waypoint`
+    (D-266 §4.1) bu yapının **beklenen** sonucudur.
+  - **Sınıf:** *"iki kopya, biri zorlanmıyor"* — **dokuzuncu** örnek ve ilk kez
+    **görev-kritik karar yolunda**.
+  - **SIRA BOZULMAZ: ÖLÇ → yer seç → uygula.**
+    1. **ÖLÇ:** kapı `rota_bul`a konsa kabul kümesinde **kaç kare** yeni reddedilir?
+       K1/K2/K3/K4 nasıl değişir? 765 test ve ölçüm zincirleri kırılır mı?
+    2. **YER:** (a) `iha_haritala` içinde, `rota.json` yazılmadan · (b) `rota_bul`
+       içinde (hiçbir çağıran unutamaz). **Mimarın yönü (b)** — madde 15 gereği —
+       **ama ölçüm (b)'yi kırıyorsa (a) seçilir ve gerekçe yazılır.**
+    3. **UYGULA + MUTASYON:** kapıyı kaldır → yeni test **DÜŞMELİ**.
+  - ⚠ `analyze_path` zaten çağrıdan önce uyguluyor; çift kapı idempotenttir —
+    ama **ölçülmeden** öyle sayılmaz.
+  - ⚠ Eşik (`ZEMIN_KAPLAMA_TAVANI` 0,67) **değişmez**. Bu bir **yer** işidir.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **765 OK** (yeni testle artar)
+
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
     Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
