@@ -5550,6 +5550,46 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kota:** takılırsan `HANDOFF.md` — zincir nerede kaldı, hangi adım koşuldu,
     eğitim logu nerede. Yarım işi `READY_FOR_REVIEW` işaretleme.
 
+- [ ] **T130 — 🔴 ÜRETİM MODELİ v34 → v35 (`t127_temiz`) · KULLANICI KARARI** · `config/model_registry.json` (+ paket kopyası), `models/`, `jetson_paket/**`, `JETSON_KILAVUZ.md` (iki kopya), `tests/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-249**, mimar denetimi **D-255**
+  - **Açan:** Claude 1 (mimar) · 2026-08-21 · **Karar: kullanıcı** (D-133 — seçim insanındır).
+  - **Neden bu model.** Projede **ilk kez** altı ölçütün hepsi sağlandı
+    (`VERDİKT: ÜRETİME ALINIR`); mimar bağımsız koştu ve doğruladı (D-255 §1).
+    Mevcut üretim v34 gerçek karelerin **67/67'sini reddediyor** ve çatıyı **%96** kaçırıyor.
+  - **Sürüm adı:** `navitas-seg-v35-512` · ağırlık `models/navitas_seg_v35_best.pt`
+    (kaynak: `codes/runs/segment/t127_temiz/weights/best.pt`).
+    ⚠ Koşum adları (`t127_temiz`) ile üretim sürüm dizisi **ayrıdır** — T107.
+  - 🔴 **TERFİ ALTI HİZALAMA NOKTASINDA BİRDEN YAPILIR.** Geçen sefer yarım kaldı ve
+    takım **8 testle** yakaladı (D-182). Kontrol listesi:
+    1. ağırlık `models/navitas_seg_v35_best.pt`
+    2. `config/model_registry.json` — `model_id` · `path` · **`sha256` (ÖLÇ, kopyalama)** · `imgsz` · metrikler
+    3. `jetson_paket/config/model_registry.json` — ayna
+    4. ONNX dışa aktarım (v34'te vardı: `models/navitas_seg_v34_best.onnx`)
+    5. `jetson_paket/models/jetson_derleme_manifest.json` (+ diğer manifest)
+    6. `JETSON_KILAVUZ.md` **iki kopya** (kök + paket)
+    7. `tests/test_model_registry.py`, `tests/test_uretim_modeli_hizasi.py` — sabitler
+  - **Metrikler TEK KOŞUMDAN gelir.** K0…K5 aynı kabul koşumunun çıktısıdır;
+    farklı koşumlardan derleme **yasak** (bayat taban bu projede 8 kez kusur üretti).
+  - 🔴 **DEFTERE MALİYET OLARAK YAZILACAK (mimar kararı, D-255 §3):**
+    ```text
+    K2 moloza basma:  v34 %4,65  ->  v35 %7,03   (tavan %15)
+    ```
+    Bu **tek yönlü sürüklenme**dir ve madde 15'in tehlikeli eksenidir.
+    "Tavan altı" diye geçiştirilmez; **maliyet** olarak yazılır.
+  - 🔴 **K0 SAPMASI KAYDA GEÇER:** figür oranı **18,43×** (tehlikeli yön).
+    Yorum: figür n=1, YZ üretimi, alan dışı ve orada **hiçbir model rota üretemiyor**
+    (D-231). Muhtemelen "aşırı zemin" değil "ilk kez segmentleyebiliyor" —
+    ⚠ ama bu **yorumdur, ölçüm değildir**; figürde yer gerçeği yok. Defter böyle desin.
+  - 🔴 **T111 SINIRI `_kapsam` NOTUNA YAZILACAK:** bu model **alan dışı doğrulaması
+    olmadan** terfi ediyor. Eğitim dışı **11 kare**de sıralama korunuyor (çatı kaçağı
+    0,015 · red 0/11) — bu **kanıt değil, zayıf destektir**; 11 kare aynı oturumdandır.
+  - ⚠ **v34 SİLİNMEZ.** T123 "iki üretim adayı" hedefinin **yedeği** odur ve
+    **farklı hata yapıyor** (arena K2'de en iyi). Kayıt defterinde yedek olarak durur.
+  - **Kapı:** `O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -q` → **715 OK**
+    (terfi eksikse burada **düşer** — geçen sefer 8 test yakaladı) ·
+    `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15**
+  - **Doğrulama:** terfiden sonra kabul zinciri **yeni yoldan** yeniden koşulur ve
+    `VERDİKT: ÜRETİME ALINIR` çıktısı görev satırına yapıştırılır.
+
 - [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
   - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.
     Denetçi `kaplama()` → payda **letterbox karesi**. 1024×576'da içerik oranı 0,5625.
