@@ -20746,3 +20746,93 @@ tarihi yeniden hesapla.
 Çekim **gün ışığında** tekrarlanacak ve doğrulama oturumu **ayrı** konacak.
 İlk çekim boşa gitmedi: **hattı prova etti ve bir kapı kazandırdı** (parlaklık
 kapısı, artık gece verisi sessizce eğitime giremez).
+
+---
+
+### D-272 · 🔴 T138 · GECE KARELERİ EĞİTİME UYGUN DEĞİL (8/569, eşik 30) — ama **ÖN KAYITTAKİ AĞIR HÜKÜM ATEŞLEDİ: sistem gece karesinde `YOL=2 · güven=1,000` yayınladı**; ve v35 üçünün EN GÜVENLİ çökeni (2 < 3 < 5)
+
+- **Ölçen:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-21 · görev **T138** · ön kayıt `results/t138/on_kayit.md`
+  (ölçümlerden **ÖNCE** yazıldı, D-107).
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 793 · OK**.
+- **Ham çıktı repoda:** `results/t138/gece_kumesi.json` (569 kare × 3 model,
+  kare kare) · `rota_uretilen_kareler.json` · `bulgular.md` ·
+  araç `scripts/olcum/126_t138_gece_kumesi.py`.
+- 🔴 Registry'ye **dokunulmadı** · eşik **değiştirilmedi** · `dataset/` altına
+  **kalıcı küme yazılmadı** · `codes/` altına **girilmedi** · **push YOK**.
+
+#### 1. A) EĞİTİME UYGUNLUK — DÜŞTÜ, ETİKETLEME YAPILMADI
+Ön kayıttaki U2 bandı (`0,05 < zemin oranı < 0,95` — **iki yönlü**: alt sınır
+körlüğü, üst sınır D-210'un tam-kare zemin kusurunu eler) ve eşik
+(**≥30 kare VE ≥2 ayrı klip**):
+```text
+v35  U2 gecen  8/569 · 5 klip      v34  4/569 · 1 klip      v30  7/569 · 1 klip
+```
+Hüküm (ön kayıt §4): **< 30 → küme kurulmaz, etiketleme YAPILMAZ.**
+Kullanıcının yargısı (*"çoğunu kullanmazdım"*) **doğrulandı ve aşıldı**:
+"çoğu" değil **fiilen tamamı**. ⛔ *"Az da olsa etiketleyelim"* yapılmadı.
+
+#### 2. 🔴 B) ÖN KAYITTAKİ HÜKÜM ATEŞLEDİ — ROTA SAYISI SIFIR DEĞİL
+```text
+model  MASKE_YOK  UC_BANT  BILESEN_YOK  ZEMIN_SUPHELI   ROTA URETILDI
+v35       546       20         1             0              2
+v34       542       20         3             1              3
+v30       538       23         3             0              5
+```
+**6 benzersiz kare** rota üretti; biri (`0033/frame_000094`) **üç modelde de**.
+Hepsi **8 waypoint** ve **yayınlanmış bir `yol` numarası** üretti.
+
+**En ağır örnek + GÖRSEL (D-80, ustabaşı kendi gözüyle baktı):**
+```text
+0032/frame_000064_000004740.jpg   L=18,4   ->  YOL=2  guven=1,000  wp=8
+```
+⚠ **Dürüst okuma: rota SAÇMA DEĞİL.** Nadir gece karesinde şeritli bir yol var;
+model zemin maskesini **asfaltın üstüne doğru oturtmuş**, waypoint'ler yolun
+ortasından geçiyor. **Tam da bu yüzden ciddi:**
+1. Girdi referansın **çok altında** (L 18,4 · referans min 118,7) ama güven
+   **1,000**. **Güven, alan dışılığa dair hiçbir sinyal taşımıyor.**
+2. Sahne yarışma arenası değil — üzerinde **motosiklet** duran halka açık yol.
+   Model "yol benzeri şerit"e genelledi; makul ama **alan geçerliliğiyle
+   ilgisiz**.
+3. İkinci örnek güven **0,298** ile geldi → güven bazen düşük, **kural olarak
+   değil**.
+
+⚠ **Ama tasarımın büyük kısmı TUTUYOR:** v35 için **567/569 reddedildi**.
+Sızan 2 kare **istisna**, kural değil. Bu bir "fail-closed çöktü" bulgusu
+DEĞİL, "fail-closed **airtight değil**" bulgusudur.
+
+#### 3. 🔴 MODELLER ARASI SIRALAMA — ÜRETİM MODELİ LEHİNE, ALAN DIŞINDA
+```text
+rota sizdiran kare:   v35 = 2   <   v34 = 3   <   v30 = 5
+```
+**v35 üçünün en güvenli çökeni.** Bu, terfi kararını destekleyen **bağımsız
+bir eksendir**: kabul zinciri sentetik arenada ölçer, bu ölçüm **alan dışıdır**
+ve bugüne kadar böyle bir eksende kıyas yapılmamıştı (T111/D-198).
+
+#### 4. ÖNERİ — "gece kümesi" EMNİYET DOĞRULAMA kümesi olur (ÖNER-BEKLE)
+T111 duvarı: alan dışı etiketli doğrulama kümemiz **yok**. Bu 569 kare **tanım
+gereği alan dışıdır** ve **6 somut karşı-örnek** üretti.
+> Öneri: `dji_gece` = emniyet doğrulama kümesi. Ölçüt: *"bu kümede rota
+> üretilen kare sayısı"*. **Etiket GEREKMEZ** — doğru cevap **"karar verme"**dir
+> ve bu, yer gerçeği olmadan ölçülebilen **nadir** bir ölçüttür.
+⚠ Kabul kümesine ekleme / eşik koyma / terfi kuralına bağlama **MİMARIN
+kararıdır** (§9.2). Ben ölçtüm ve önerdim; kapı **koymadım**.
+
+#### 5. ÜÇ AYRI PROBLEM — "gündüz çek" GEREKLİ AMA YETERLİ DEĞİL
+Görsel doğrulama (D-80) üç **bağımsız** kusur gösterdi:
+```text
+klip 0020  L=76,2  UFUK CIZGISI + GOKYUZU + TARLA -> NADIR DEGIL   engel %97,4
+klip 0022  L=20,6  nadir ama neredeyse siyah, surulmus toprak       engel %96,6
+klip 0032  L=21,0  gece yolda YURUYEN IKI KISI                      zemin 0 · engel 0
+```
+1. **Gece** (569/569) · 2. **Gimbal 90° DEĞİL** (en az bir klip yatay) ·
+3. **İçerik alan dışı**: tarla, toprak yol, halka açık yol, yayalar.
+👤 **İNSAN İŞİ (madde 9):** çekim **gündüz** + **gimbal 90° (nadir)** +
+**otopark/moloz sahnesi**. Üçünden biri eksikse veri yine kullanılamaz.
+
+#### 6. ALET KUSURU — yayımlamadan önce yakalandı
+İlk sürümde `analyze_path` yalnız `return_reason=True` ile çağrıldı; demet
+kısaldığı için sebep **yanlış indeksten** okundu ve 12/12 kare `None` göründü.
+Üretimdeki çağrının (`61_rota_moloza_basma.py:96`) aynısına hizalandı; gerçek
+sebepler ancak ondan sonra çıktı. **Ölçüm değil aletin kusuruydu.**

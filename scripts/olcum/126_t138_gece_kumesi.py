@@ -1,0 +1,143 @@
+"""T138 — DJI GECE KARELERI: egitime uygun mu, ve baska bir ise yariyor mu?
+
+ON KAYIT: results/t138/on_kayit.md (bu betik KOSULMADAN ONCE yazildi, D-107).
+
+IKI SORU, IKISI DE OLCULUR:
+  A) EGITIME UYGUNLUK (on kayit SS2): kare kare zemin orani (ICERIK paydasi).
+     U2 bandi: 0,05 < oran < 0,95. Alt sinir KORLUGU, ust sinir D-210'un
+     tam-kare zemin kusurunu eler. TEK YONLU esik bu projede iki kez patladi.
+  B) BASKA BIR ISE YARAR MI (mimarin eki): uretim yolunun bu karelerdeki
+     davranisi. Kac kare REDDEDILDI, hangi SEBEPLE, kac karede ROTA URETILDI.
+     🔴 ON KAYITTA YAZILI HUKUM: rota uretilen kare sayisi SIFIR DEGILSE bu
+     CIDDI BIR BULGUDUR — sistem gormesi mumkun olmayan goruntude karar
+     uretiyor demektir. Sifirsa fail-closed tasarimin ILK GERCEK VERI
+     uzerindeki kanitidir.
+
+IKI OLCEK KIPI (ikisi de kosulur — biri digerini gizler):
+  · mpp=None : GERCEK uretim yolu. Olcek turetilemezse zaten reddeder;
+               tek basina olculurse "olcek yoktu" tum sebepleri gizler.
+  · mpp VERILDI : olcek BEDAVA. Maske tabanli kapilarin AYRICA tutup
+               tutmadigini sinar — asil soru budur.
+
+🔴 REGISTRY'YE YAZMAZ, ESIK DEGISTIRMEZ, dataset/ altina kume YAZMAZ.
+"""
+from __future__ import annotations
+
+import argparse
+import collections
+import io
+import json
+import sys
+import time
+from pathlib import Path
+
+KOK = Path(__file__).resolve().parents[2]
+CIKTI = KOK / "results" / "t138"
+U2_ALT, U2_UST = 0.05, 0.95      # on kayit SS2 · SONUCA GORE DEGISTIRILMEZ
+
+
+def main() -> int:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError, OSError):
+        pass
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--kareler", type=Path,
+                    default=KOK / "data" / "dji_prova_kareler")
+    ap.add_argument("--modeller", nargs="*",
+                    default=["navitas_seg_v35_best.pt", "navitas_seg_v34_best.pt",
+                             "navitas_seg_v30_best.pt"])
+    ap.add_argument("--mpp", type=float, default=0.01,
+                    help="olcek BEDAVA kipi icin mpp")
+    ap.add_argument("--en-fazla", type=int, default=0, help="0 = TUMU")
+    args = ap.parse_args()
+
+    sys.path.insert(0, str(KOK / "codes"))
+    import numpy as np                                        # noqa: E402
+    import cv2                                                # noqa: E402
+    from rpi_inference import (_preprocess, _maskeleri_icerige_kirp,  # noqa: E402
+                               get_masks, analyze_path, INFER_SIZE, )
+    from karar_sozlesmesi import zemin_kaplamasi              # noqa: E402
+    from ultralytics import YOLO                              # noqa: E402
+
+    kareler = sorted(args.kareler.rglob("*.jpg"))
+    if args.en_fazla:
+        kareler = kareler[:args.en_fazla]
+    print(f"kare: {len(kareler)} · model: {len(args.modeller)} · "
+          f"imgsz {INFER_SIZE}\n")
+
+    tum = {}
+    for model_ad in args.modeller:
+        yol = KOK / "models" / model_ad
+        if not yol.exists():
+            print(f"{model_ad}: AGIRLIK YOK -> atlandi")
+            continue
+        model = YOLO(str(yol), task="segment")
+        t0 = time.perf_counter()
+        satirlar = []
+        for p in kareler:
+            img = cv2.imread(str(p))
+            if img is None:
+                continue
+            sq, small, icerik = _preprocess(img)
+            h, w = sq.shape[:2]
+            sonuc = model.predict(small, imgsz=INFER_SIZE, conf=0.30, verbose=False)
+            mk = _maskeleri_icerige_kirp(get_masks(sonuc, h, w), icerik)
+            trav = mk[0] > 0
+            oran = zemin_kaplamasi(trav, icerik)
+            # (1) GERCEK uretim yolu: olcek YOK
+            # 🔴 CAGRI URETIMDEKININ AYNISI (61_rota_moloza_basma.py:96).
+            # Onceki surumde yalniz `return_reason=True` verilmisti ve demet
+            # KISALDIGI icin sebep yanlis indeksten okunuyordu: 12/12 kare
+            # "None" gorunuyordu. Kendi aletimin kusuruydu, olcum degil.
+            y1 = analyze_path(mk[0], icerik=icerik, engel_mask=mk[1], mpp=None,
+                              return_clean=True, return_reason=True,
+                              return_olcum=True)
+            # (2) olcek BEDAVA
+            y2 = analyze_path(mk[0], icerik=icerik, engel_mask=mk[1],
+                              mpp=args.mpp, return_clean=True,
+                              return_reason=True, return_olcum=True)
+            def coz(y):
+                yol, _guven, wps, _clean, red, _olcum = y
+                sebep = red[0] if isinstance(red, tuple) else red
+                return (sebep, len(wps) if wps else 0, yol)
+            s1, n1, yol1 = coz(y1)
+            s2, n2, yol2 = coz(y2)
+            satirlar.append({
+                "kare": p.name, "klip": p.parent.name[:38],
+                "zemin_orani": round(float(oran), 5),
+                "U2": bool(U2_ALT < oran < U2_UST),
+                "olceksiz_sebep": s1, "olceksiz_wp": n1, "olceksiz_yol": yol1,
+                "olcekli_sebep": s2, "olcekli_wp": n2, "olcekli_yol": yol2,
+            })
+        sure = time.perf_counter() - t0
+        u2 = sum(1 for s in satirlar if s["U2"])
+        rota1 = sum(1 for s in satirlar if s["olceksiz_wp"] > 0)
+        rota2 = sum(1 for s in satirlar if s["olcekli_wp"] > 0)
+        sb1 = collections.Counter(s["olceksiz_sebep"] for s in satirlar)
+        sb2 = collections.Counter(s["olcekli_sebep"] for s in satirlar)
+        klipler = sorted({s["klip"] for s in satirlar if s["U2"]})
+        print(f"── {model_ad}  ({sure:.0f} sn)")
+        print(f"   U2 bandinda ({U2_ALT}<oran<{U2_UST}): {u2}/{len(satirlar)} "
+              f"kare · {len(klipler)} ayri klip")
+        print(f"   ROTA URETILEN  olceksiz {rota1}  ·  olcek BEDAVA {rota2}")
+        print(f"   sebep (olceksiz)   : {dict(sb1.most_common(5))}")
+        print(f"   sebep (olcek bedava): {dict(sb2.most_common(5))}\n")
+        tum[model_ad] = {"sure_sn": round(sure, 1), "n": len(satirlar),
+                         "U2_gecen": u2, "U2_klip": klipler,
+                         "rota_olceksiz": rota1, "rota_olcekli": rota2,
+                         "sebep_olceksiz": dict(sb1), "sebep_olcekli": dict(sb2),
+                         "kareler": satirlar}
+
+    CIKTI.mkdir(parents=True, exist_ok=True)
+    io.open(CIKTI / "gece_kumesi.json", "w", encoding="utf-8").write(
+        json.dumps({"_ne": "T138 · DJI gece kareleri, uretim yolu davranisi",
+                    "_on_kayit": "results/t138/on_kayit.md",
+                    "_U2_bandi": [U2_ALT, U2_UST], "_mpp_bedava": args.mpp,
+                    "modeller": tum}, ensure_ascii=False, indent=1))
+    print(f"yazildi: {CIKTI / 'gece_kumesi.json'}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
