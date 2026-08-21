@@ -19295,7 +19295,7 @@ karelerde **hiç karar üretmiyor**, t127_temiz üretiyor.
 
 ---
 
-### D-255 · 📌 DEFTER BÜTÜNLÜĞÜ TARANDI · D-246 çakışmasını KENDİ kaydımı taşıyarak çözdüm (D-254); 6 tarihsel çakışma daha var ve 9 görev defterde anılıp kuyrukta YOK
+### D-258 · 📌 DEFTER BÜTÜNLÜĞÜ TARANDI · D-246 çakışmasını KENDİ kaydımı taşıyarak çözdüm (D-254); 6 tarihsel çakışma daha var ve 9 görev defterde anılıp kuyrukta YOK
 
 - **Yazan:** Claude 2 / Opus 5 (ustabaşı) · 2026-08-21 · Tarama betiği:
   `scratchpad/defter_butunlugu.py` (Codex'e görev vermeden ÖNCE doğrulama —
@@ -19491,3 +19491,81 @@ ve kayıtlar dürüst. Eksik olan şey **sürüm-ötesi görünürlük**. → **
     Karar: KULLANICI (D-133)
     Kapı çıktısı: 728 OK · 15/15 · altı hizalama noktası mimar tarafından
     tek tek ölçüldü · kabul zinciri defterin gösterdiği yoldan yeniden koşuldu
+
+---
+
+### D-259 · ⚖ USTABAŞI DENETİMİ · Codex'in İKİ teslimi de KABUL: ledger kapısı ve T130 çapraz denetimi — ikisini de KENDİ mutasyonlarımla sınadım, ikisi de GERÇEK
+
+- **Denetleyen:** Claude 2 / Opus 5 (ustabaşı) · **Yazan: Codex** ·
+  **Kapı çıktısı (ustabaşı koştu):** aşağıda §4 · 2026-08-21.
+- ⚠ Bu iki teslim çalışma ağacında **izlenmiyordu**; T130 commit'ine
+  karışmasınlar diye bilerek dışarıda tuttum (D-247 §5'teki "başkasının
+  hazırlanmamış değişikliğini `git add` ile süpürme" tuzağı). Şimdi
+  denetlenip **ayrı** commit'lenmiştir.
+
+#### 1. TESLİM A — `tests/test_defter_butunlugu.py` (13 test)
+Verdiğim üç değişmez de kurulmuş: D-numarası tekilliği · kuyruk→defter atıf
+bütünlüğü · bozuk satır tabanı; hepsi **taban-kilitleme** kalıbıyla (D-233).
+- ✔ **Kuralları saf fonksiyonlara ayırmış** ve sentetik metinle sınamış —
+  gerçek dosyalarda mutasyon yapmamış (istediğim buydu).
+- ✔ **Desen kusurumu düzeltmiş:** D-258'de `^###+`'in `####` alt başlıklarını
+  saydığını yazmıştım; Codex `^### ` (tam üç diyez) kullanmış ve yorumunda
+  `D-60b` gibi harfli başlıkların sayısal `D-60` olarak ölçüleceğini de
+  belirtmiş. Benim ölçümümden **daha dikkatli**.
+- 🔴 **Kapının GERÇEK olduğu ölçüldü:** D-255 çakışmasını düzelttiğimde kapı
+  kendiliğinden düştü —
+  `"BILINEN_CAKISMA listesi bayat: [255]; liste guncellenmeli"`.
+  Yani bayat-taban koruması **çalışıyor**; bu, benim istediğim ama
+  doğrulamadığım davranışın canlı kanıtıdır.
+- **Denetleyen olarak yaptığım tek değişiklik:** çakışma DÜZELTİLDİĞİ için
+  `255` bilinen-çakışma listesinden çıkarıldı ve tabanlar bugünkü ölçüme
+  çekildi (başlık 264 · tekil 258 · kuyruk atıf 203 · bozuk satır 13).
+  ⚠ Kalan 6 çakışma (D-39/40/41/60/61/62) **tarihseldir ve düzeltilmedi** —
+  defter eklenir-silinmez; onlar mimarın kararı.
+
+#### 2. TESLİM B — `scripts/onarim/t130_capraz_denetim.py` + raporu
+Yedi kontrol, Codex'in raporu: **7/7 GEÇTİ · 0 bulgu · 3/3 sentetik mutasyon
+beklendiği gibi düştü.** Sınırı da dürüstçe yazmış: ağırlıklar `.gitignore`'da
+olduğu için sha **dosyadan doğrulanmadı**, yalnız dize tutarlılığı ölçüldü.
+- 🔴 **"Geçti" raporunu doğrulamadan kabul etmedim** — kendi bağımsız
+  mutasyonlarımı koştum:
+```
+sha'yi tek karakter boz        -> kontrol 3 DUSTU
+model_id'yi v34'e cevir        -> kontrol 2 DUSTU
+registry ikizligini boz        -> kontrol 1 DUSTU
+D-256'da K2 18/256 -> 17/256   -> kontrol 7 DUSTU
+D-256'da kararlilik 9 -> 5     -> kontrol 7 DUSTU
+D-256'da sha ilk harfi degistir-> kontrol 7 DUSTU
+POZITIF: gercek dosyalarla     -> hepsi GECTI
+```
+  ⇒ Kapı **vakum değil**. Ve 7. kontrolün pozitif geçmesi şu demek:
+  **D-256'da yazdığım her sayı ham artefaktlarla tutuyor** — beni bağımsız
+  bir araç doğruladı.
+- ⚠ **Kendi alet hatam kayda geçer:** kontrol 7'yi ilk iki denememde YANLIŞ
+  çağırdım (bölümü kaba dilimledim; sonra `registry` yerine profili verdim) ve
+  ikisinde de "POZITIF: DUSTU" gördüm. İlk sonuca güvenmeyip çağrıyı
+  düzelttim. Aynı sınıf bu oturumda üçüncü kez (D-228 `-t` bayrağı, D-241
+  görsel). Ders sabit: **aleti doğrulamadan çıktısına hüküm verme.**
+
+#### 3. KARAR: **İKİSİ DE KABUL**
+Codex'in davranışı iki turdur doğru: uydurmuyor, sınırını yazıyor, korunan
+alana dokunmuyor, kuru-koşum varsayılanı bırakıyor. T115'te tespit ettiğim tek
+kusur (başlık–rapor çelişkisi) bu turlarda **tekrarlamadı**: rapor başlığı ile
+sayılar tutuyor.
+
+#### 4. KAPI ÇIKTISI (ustabaşı koştu)
+```
+codes/test_rota_sentetik.py            -> 15/15
+unittest discover -s tests -q          -> Ran 728 · OK
+olcum aynasi (scripts/olcum <-> canli) -> 77 cift · AYRISAN 0
+```
+
+#### 5. YAN KAYIT — çakışma zinciri
+Bu turda **iki** D-numarası çakışması daha çıktı ve ikisinde de kural gereği
+**kendi** kaydımı taşıdım: `D-246 → D-254` (mimarın T126 denetimiyle) ve
+`D-255 → D-258` (mimarın T127 denetimiyle; D-257'ye taşırken mimarın T130
+denetimiyle **ikinci kez** çakıştım, oradan D-258'e geçtim).
+🔴 Bu, eş zamanlı çalışan iki ajanın **yapısal** sorunudur: numara açık
+uçlu ve iki taraf da "bir sonraki boş" diye alıyor. Codex'in kapısı artık
+YENİ çakışmaları yakalıyor, ama **önlemiyor**. Öneri (öner-bekle): numara
+ayrımı (ör. mimar tek/amele çift, ya da ajan öneki) mimarın kararıdır.

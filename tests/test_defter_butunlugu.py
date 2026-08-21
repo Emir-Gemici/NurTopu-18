@@ -25,7 +25,10 @@ BOZUK_SATIR_DESENI = re.compile(r"^avitas", re.MULTILINE)
 # kontrolun gercek dosyada gecmesi icin bu eszamanli baslangic kusuru da adiyla
 # kilitlenir. Hicbir taban calisma aninda dosyadan TURETILMEZ.
 TARIHSEL_BILINEN_CAKISMA = frozenset({39, 40, 41, 60, 61, 62})
-ESZAMANLI_BASLANGIC_CAKISMA = frozenset({255})
+# D-259: bu cakisma BASELINE'LANMADI, DUZELTILDI — ustabasi kendi kaydini
+# D-255 -> D-258'e tasidi (mimarinkine dokunulmaz). Liste bos birakiliyor;
+# Codex'in bayat-koruması bu duzeltmeyi zaten YAKALADI ve kapiyi dusurdu.
+ESZAMANLI_BASLANGIC_CAKISMA = frozenset()
 BILINEN_CAKISMA = TARIHSEL_BILINEN_CAKISMA | ESZAMANLI_BASLANGIC_CAKISMA
 BILINEN_CAKISMA_ADETLERI = {
     39: 2,
@@ -34,11 +37,10 @@ BILINEN_CAKISMA_ADETLERI = {
     60: 2,
     61: 2,
     62: 2,
-    255: 2,
 }
-DEFTER_BASLIK_TABANI = 262
-DEFTER_TEKIL_TABANI = 255
-KUYRUK_ATIF_OLCUM_TABANI = 201
+DEFTER_BASLIK_TABANI = 264
+DEFTER_TEKIL_TABANI = 258
+KUYRUK_ATIF_OLCUM_TABANI = 203
 BOZUK_SATIR_TABANI = 13
 
 
