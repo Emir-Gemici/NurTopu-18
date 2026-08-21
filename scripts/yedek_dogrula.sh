@@ -3,6 +3,7 @@
 # Bu projede kosulmayan kapi GECTI sayilmaz; ayni ilke yedek icin de gecerli.
 
 set -u
+RCLONE="$(command -v rclone || find "$LOCALAPPDATA/Microsoft/WinGet/Packages" -name rclone.exe -print -quit 2>/dev/null)"
 UZAK="drive:navitas_yedek"
 KOK="O:/navitas"
 
@@ -14,7 +15,7 @@ echo "=============================================================="
 for D in dji models results data codes jetson_paket test_images rapor \
          navitas-local-train dataset rescuenet-roads; do
   printf '%-22s ' "$D"
-  rclone check "$KOK/$D" "$UZAK/$D" --one-way --fast-list 2>&1 \
+  "$RCLONE" check "$KOK/$D" "$UZAK/$D" --one-way --fast-list 2>&1 \
     | grep -E "^[0-9]{4}|ERROR|NOTICE" | tail -1
 done
 

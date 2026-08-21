@@ -16,6 +16,15 @@
 #   Kesilirse AYNI komutu tekrar calistir; rclone kaldigi yerden devam eder.
 
 set -u
+# rclone yolu: winget PATH'i degistirir ama ACIK kabuklara yansimaz.
+# Once PATH'te ara, yoksa winget paket dizininden coz. Ciplak yol YAZILMAZ.
+RCLONE="$(command -v rclone || true)"
+if [ -z "$RCLONE" ]; then
+  RCLONE="$(find "$LOCALAPPDATA/Microsoft/WinGet/Packages" -name rclone.exe -print -quit 2>/dev/null)"
+fi
+if [ -z "$RCLONE" ]; then echo "rclone BULUNAMADI — kurulum yapildi mi?" >&2; exit 2; fi
+echo "rclone: $RCLONE"
+
 UZAK="drive:navitas_yedek"
 KOK="O:/navitas"
 # --transfers: es zamanli dosya · --checkers: karsilastirma is parcacigi
@@ -27,7 +36,7 @@ kopyala () {   # $1 = yerel alt yol · $2 = uzak alt yol
   echo "=============================================================="
   echo "[$(date +%H:%M:%S)] $1  ->  $UZAK/$2"
   echo "=============================================================="
-  rclone copy "$KOK/$1" "$UZAK/$2" $BAYRAK
+  "$RCLONE" copy "$KOK/$1" "$UZAK/$2" $BAYRAK
   echo "[$(date +%H:%M:%S)] BITTI cikis=$?  ·  $1"
 }
 
@@ -54,7 +63,7 @@ kopyala "rescuenet-roads"     "rescuenet-roads" # 3,8 GB
 echo ""
 echo "[$(date +%H:%M:%S)] git bundle uretiliyor..."
 git -C "$KOK" bundle create "$KOK/navitas_depo.bundle" --all \
-  && rclone copy "$KOK/navitas_depo.bundle" "$UZAK/depo" $BAYRAK
+  && "$RCLONE" copy "$KOK/navitas_depo.bundle" "$UZAK/depo" $BAYRAK
 
 echo ""
 echo "=============================================================="
