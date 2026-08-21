@@ -19572,10 +19572,10 @@ ayrımı (ör. mimar tek/amele çift, ya da ajan öneki) mimarın kararıdır.
 
 ---
 
-### D-260 · 🔎 ÖLÇÜM · Google Drive gidiş-dönüşü BAYT-EŞ: 'i bozan sıkıştırma kusuru Drive yolunda YOK
+### D-260 · 🔎 ÖLÇÜM · Google Drive gidiş-dönüşü BAYT-EŞ: `data/raw_frames`'i bozan sıkıştırma kusuru Drive yolunda YOK
 Tarih: 2026-08-21 · Ölçen: Claude 1 (mimar) · Soru: kullanıcı ("DJI görüntülerini Drive'da depolasak sonra aktarsak WhatsApp'taki sıkıntıyı yaşar mıyız?")
 
-**Neden soruldu.**  WhatsApp'tan geçtiği için dokusu bozuk ve bu
+**Neden soruldu.** `data/raw_frames` WhatsApp'tan geçtiği için dokusu bozuk ve bu
 proje boyunca ölçülmüş bir kısıt (doku bu modelde belirleyici — D-12/D-18).
 Aynı kusurun yeni DJI verisinde tekrar etmesi, çekim emeğini boşa çıkarırdı.
 
@@ -19586,16 +19586,23 @@ Aynı kusurun yeni DJI verisinde tekrar etmesi, çekim emeğini boşa çıkarır
     donen  : 4.911.948 bayt · sha256 e4d56d6e0ab0138dc061e50052d20636...
     BAYT-ES: EVET
 
-Drive'a  ile yüklendi,  ile geri indirildi, sha256
-karşılaştırıldı. **Drive yeniden kodlamıyor.**
+`rclone copy` ile Drive'a yüklendi, `rclone copy` ile geri indirildi, sha256
+karşılaştırıldı. **Drive yeniden kodlamıyor.** Sınama klasörü Drive'dan silindi.
 
 **🔴 ASIL TUZAK DRIVE DEĞİL — KARIŞTIRILAN ŞEY:**
   · **Google Photos** "Depolama tasarrufu" kipinde **yeniden kodlar**. Aynı
     Google hesabı, **başka ürün**. Video/foto oraya düşerse kusur geri gelir.
   · Drive'ın **web önizlemesi** akış için transcode eder; **saklanan dosya
-    değişmez**. Her zaman "İndir", önizlemeden ekran/kayıt değil.
+    değişmez**. Her zaman "İndir" — önizlemeden ekran kaydı değil.
   · Risk hiçbir zaman Drive'da değil, **son adımda**: Drive'dan alıp
     WhatsApp/Telegram ile göndermek yeniden sıkıştırır.
 
 **Sonuç:** DJI → Drive → indir zinciri **güvenli**. DJI → WhatsApp → herhangi
-bir yer zinciri **güvenli değil**. Aradaki fark ölçüldü, varsayılmadı.
+bir yer zinciri **güvenli değil**. Aradaki fark **ölçüldü, varsayılmadı**.
+
+⚠ **KAYIT NOTU:** bu kayıt ilk yazımda bozuldu — kabuk, çift tırnak içindeki
+ters tırnakları **komut** sanıp çalıştırdı ve `data/raw_frames` ile `rclone`
+sözcüklerini metinden **sildi**. Aynı sınıf bu oturumda **üçüncü kez** oldu
+(D-194 §3: oktal kaçış; T115: yol bozulması). Ders sabit: **Windows yolu veya
+ters tırnak içeren metin kabuk dizgesine gömülmez** — dosyaya yazılıp oradan
+okunur.
