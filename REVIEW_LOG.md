@@ -20088,3 +20088,71 @@ biçim/görünürlük sınar, model hakkında hüküm vermez) · `codes/` altın
 **dokunulmadı** · metrik **değerleri** değişmedi, yalnız **biçim** genişledi ·
 iki defter kopyası **bayt-eş** (`test_jetson_comms_paketi` kilidi) · v35
 terfisi **geri alınmadı**.
+
+---
+
+### D-265 · ⚖ MİMAR DENETİMİ · T132 GEÇTİ — dört davranışı kendi sınamamla doğruladım; ve amele **benim iki belgem arasındaki çelişkiyi** doğru tarafta çözmüş
+Tarih: 2026-08-21 · Denetleyen: Claude 1 (mimar) · Denetlenen: `f1c5931` (T132)
+Kapılar mimar tarafından koşuldu: **765 OK** (728 → +37) · **15/15** · `codes/` temiz
+⚠ Aynı model uyarısı geçerli: uyuşma kanıt değil; kanıt **kendi koşumum**.
+
+#### 1. YENİ ÇIKTI — kendi koşumumdan
+
+    kabul kumesi: ...sentetik_arena_kadraj_t66
+                  parmak izi n=547 · sha256:604c037f780b7c6e...
+    K0 GECTI  figur %9.03 (uretim tabani %9.03 = v35'in degeri · oran 1.00)
+       SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49 · v35 %9.03
+                 (+4 kayit DONEM-TUTARLI DEGIL — 640 donemi; kiyasa ve
+                  medyana GIRMEZ, kayitta DURUR)
+       TABAN, soyagaci medyanindan (%7.90) 1.1x uzakta   <- SAYI, KURAL DEGIL
+
+Dört öneri ve benim ekim çıktıda **görünür**. "SAYI, KURAL DEĞİL" ibaresi
+korunmuş — bu, yarın birinin bunu kapıya çevirmesine karşı yazılı bariyerdir.
+640 dönemi kayıtları **medyandan dışlanmış ama silinmemiş**: istediğim tam buydu.
+
+#### 2. DÖRT DAVRANIŞI KENDİM SINADIM
+
+    1) SKALER defter (eski / saha paketi)   -> deger 0.0903 · bicim skaler   ✔
+    2) LISTE, siralama BOZUK (sonuncu v34)  -> deger 0.0903 · kimlik v35     ✔
+       ("sonuncu" alinsaydi 0.0049 = v34 = T131'in kusurunun TEKRARI olurdu)
+    3) uretim surumu defterde YOK           -> deger None, RAPORLANIYOR       ✔
+    4) jetson_paket aynasi                  -> liste, 8 kayit                 ✔
+
+(2) belirleyiciydi: geriye uyumluluk eklerken "listeyi al, sonuncuyu oku"
+demek en kolay yoldu ve **tam olarak düzeltmeye çalıştığımız kusuru** geri
+getirirdi. Tuzağı kurdum, kapı düşmedi.
+
+#### 3. 🔴 AMELE, BENİM İKİ BELGEM ARASINDAKİ ÇELİŞKİYİ DOĞRU TARAFTA ÇÖZMÜŞ
+
+D-263 §4.1'de *"denetçi **yine sonuncuyu** kullanır"* yazmıştım. T132 prompt'unda
+ise *"**sonuncuyu değil**, üretim `model_id`'sine karşılık geleni"* dedim.
+**İki belgem çelişiyordu.** Amele bunu fark etmiş, **dar ve güvenli** olanı
+seçmiş ve gerekçesini koda yazmış:
+
+> *"D-263 §4.1 'yine sonuncuyu kullanir' diyordu; kullanicinin T132 emri bunu
+> DARALTTI ve hakli: liste siralamasi bozulursa 'sonuncu' YANLIS tabani secer
+> ve bu, T131'in buldugu kusurun tam olarak tekrari olurdu."*
+
+Çelişkiyi sessizce birini seçerek değil, **yazarak** çözmüş. Doğru işlem.
+
+#### 4. KENDİ CÜMLEMİ DÜZELTİYORUM (D-263 §5)
+
+Yazmıştım: *"v34 terfisi günü bu satır olsaydı, aykırılık **o gün** görünürdü."*
+**Kısmen yanlış.** Soyağacı satırı **tabanın** medyana uzaklığını basar. v34
+terfisi günü taban **v30 (%7,96) idi ve normaldi**; aykırı olan **adaydı**
+(%0,49). O gün aykırılığı yakalayacak şey soyağacı satırı değil, **oran
+denetimi**dir (0,06× → YETENEK uyarısı) — ve o denetim **henüz yoktu**.
+
+Doğrusu: **iki mekanizma iki ayrı şeyi yakalar ve ikisi de gerekli.**
+
+    oran denetimi (vardi/yoktu)  ->  ADAY, tabana gore aykiri mi?
+    soyagaci satiri (T132)       ->  TABANIN KENDISI aykiri mi?
+
+v34 vakası birincinin yokluğuydu; v35 vakası ikincinin yokluğuydu. **Şimdi
+ikisi de var.** Cümlem bunu tek mekanizmaya yıkıyordu; düzeltildi.
+
+#### 5. DEFTER
+
+    Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
+    Kapı çıktısı: 765 OK · 15/15 · dört davranış mimar tarafından ayrı ayrı sınandı
+    ⚠ Bu commit İTİLMEDİ — push 2026-08-21'de donduruldu (`CLAUDE.md §5`).

@@ -19,6 +19,9 @@ Rol çift yönlüdür ve iki yön birbirinin yerine geçmez:
 
 ---
 
+> 🔴 **PUSH DONDURULDU (2026-08-21, ikinci emre kadar).** `git push` **YAPMA**.
+> `git commit` **SÜRER** — commit atmazsan işini kaybedersin. `CLAUDE.md §5`.
+
 ## Yapıştırılabilir prompt
 
 Aşağıdaki bloğun tamamı Claude 2 oturumuna yapıştırılır.

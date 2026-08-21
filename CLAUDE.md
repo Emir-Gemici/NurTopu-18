@@ -75,3 +75,29 @@
     - 🔴 **KORELASYONLU KÖR NOKTA (2026-08-20, model değişikliğinin sonucu).** Claude 2 artık **seninle aynı model**. Aynı modelin iki örneği **aynı kör noktalara** sahiptir; birbirini denetlemeleri, model-kaynaklı hatalarda **zayıf kanıttır**.
       ⚠ **İki tarafın ANLAŞMASI kanıt değildir.** Hakem hâlâ **ölçümdür**: koşulan komut, gerçek çıktı, ön kayıt, mutasyon kontrolü.
       Bu projede denetimi işleten şeyin **model farkı değil YORDAM** olduğu zaten ölçüldü — ham çıktının repoda durması bir kez yanlış hükmü engelledi (D-209 §4), ön kayıt bir kez eşik gevşetmesini engelledi (D-225 §3), 5 maddelik itiraz kalıbı bir GPU gecesi kurtardı (D-200). Model değişti; **bu yordamların hiçbiri gevşetilmez, aksine artık TEK dayanaktır.**
+
+---
+
+## 5. 🔴 PUSH DONDURULDU — 2026-08-21, kullanıcı emri (**ikinci emre kadar**)
+
+> **`git push` YAPILMAZ.** Bu, Claude 1, Claude 2 ve Codex'lerin **hepsi** için
+> geçerlidir ve kullanıcı kaldırana kadar sürer.
+
+**`git commit` SÜRER.** İkisini karıştırmak iş kaybettirir:
+
+| işlem | durum | neden |
+|---|---|---|
+| `git add` / `git commit` | ✅ **devam** | yerel geçmiş korunur; commit atmayan ajan işini kaybeder |
+| `git push` | ⛔ **YASAK** | uzak depo bilerek geride tutuluyor |
+| `git pull` / `fetch` | ⛔ **yapılmaz** | dondurulmuş uzak ile yerel arasında karışıklık üretir |
+
+**Sonuçları — bilerek kabul edilmiştir:**
+- Uzak depo (GitHub) her commit ile biraz daha **geride kalır**. Yani depo
+  **artık makine dışı yedek değildir**; tek kopya `O:` diskindedir.
+- Bu yüzden **Drive yedeği bu dönemde daha kritiktir** — `yedek_drive.sh`
+  sonunda `git bundle` ile tüm geçmişi tek dosya olarak gönderiyor.
+- Donma kalkınca **tek seferde** itilecek; commit'ler ayrı ayrı durduğu için
+  geçmiş bozulmaz.
+
+⚠ Bir ajan "push edeyim mi" diye sormaz: **cevap hayırdır.** Kullanıcı
+kaldırdığını **açıkça** söyleyene kadar bu madde yürürlüktedir.

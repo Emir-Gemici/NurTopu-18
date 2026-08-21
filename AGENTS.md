@@ -59,6 +59,8 @@ Kayıt biçimi, görev satırının altına:
 `- **Rol devri:** <tarih> · <ajan> ← <rol> · sebep: <ne> · denetim: <kim>`
 
 **Mutlak yasaklar (istisnasız, herkes için):**
+- 🔴 **`git push` — 2026-08-21'den beri DONDURULDU** (kullanıcı emri, ikinci emre kadar).
+  `git commit` **sürer**; ikisini karıştırmak iş kaybettirir. Ayrıntı: `CLAUDE.md §5`.
 - Kullanıcının dosyalarını **silmek**.
 - `REVIEW_LOG.md` içindeki mevcut kayıtları **değiştirmek veya silmek** — yalnız sona eklenir.
 - Başka bir ajanın `[IN_PROGRESS]` görevine dokunmak (bkz. §3).

@@ -12,6 +12,9 @@
 
 ---
 
+> 🔴 **PUSH DONDURULDU (2026-08-21, ikinci emre kadar).** `git push` **YAPMA**.
+> `git commit` **SÜRER** — commit atmazsan işini kaybedersin. `CLAUDE.md §5`.
+
 ## Yapıştırılabilir prompt
 
 Aşağıdaki blok Codex oturumuna olduğu gibi verilir.

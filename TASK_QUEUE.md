@@ -5866,6 +5866,9 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     (T104); geçiş yordamı **kilitli değil**.
 
 - [x] **T132 — UYGULANDI · K0 tabanı artık KİM OLDUĞUNU söylüyor (geçmiş + kimlik + soyağacı + küme parmak izi); eşik DEĞİŞMEDİ** · K0 tabanının GEÇMİŞİ ve KİMLİĞİ görünür olsun (T131'in uygulaması) · EŞİK YOK, KAPI YOK** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` (+ canlı ayna) · **ÖNEMLİ** · ölçüm **D-261**, karar **D-263 §4-5**
+  - **Yazan:** Claude 2 (Opus 5, başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `765 OK` (728 → +37) · `15/15` · mimar denetimi **D-265**
+  - **Mimarın kendi sınaması (dört davranış):** skaler defter çalışıyor · **sıralaması bozuk listede `model_id` ile doğru tabanı seçiyor** (sonuncu alınsaydı v34 = T131'in kusurunun tekrarı) · üretim sürümü kayıtta yoksa `None` **raporlanıyor** · `jetson_paket` aynası aynı biçimi taşıyor (8 kayıt).
+  - 🔴 **Mimarın cümlesi düzeltildi (D-265 §4):** soyağacı satırı **tabanın** aykırılığını yakalar, adayınkini değil. v34 vakasını yakalayacak olan **oran denetimi**ydi ve o gün henüz yoktu. İki mekanizma iki ayrı şey için gerekli; şimdi ikisi de var.
   - **Dört öneri (amele, hepsi KABUL):**
     1. `figur_zemin_orani` **eklenir liste** (`[{surum, deger}, …]`); denetçi **yine sonuncuyu** kullanır — **eşik değişmez** — geçmiş **silinmez**.
     2. Denetçi raporu **tabanın kimliğini** yazsın: *"taban = v34'ün değeri"*.
