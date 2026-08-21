@@ -1,0 +1,89 @@
+{
+ "_ne": "T131 · K0 figur tabani, uretim soyagaci, TEK ALET. KAPI DEGIL.",
+ "_alet": {
+  "fonksiyon": "65_kabul_denetcisi.kaplama (ice aktarildi)",
+  "CONF": 0.3,
+  "INFER_SIZE": 512,
+  "figur": "data\\arena_referans\\sartname_s9_arena.png",
+  "band": [
+   0.5,
+   2.0
+  ]
+ },
+ "olcumler": [
+  {
+   "surum": "v17",
+   "agirlik": "navitas_seg_v17_best.pt",
+   "figur": 0.0,
+   "donem_512": false
+  },
+  {
+   "surum": "v20",
+   "agirlik": "navitas_seg_v20_best.pt",
+   "figur": 0.0,
+   "donem_512": false
+  },
+  {
+   "surum": "v21",
+   "agirlik": "navitas_seg_v21_best.pt",
+   "figur": 0.0,
+   "donem_512": false
+  },
+  {
+   "surum": "v24",
+   "agirlik": "navitas_seg_v24_best.pt",
+   "figur": 0.34636074975857817,
+   "donem_512": false
+  },
+  {
+   "surum": "v27",
+   "agirlik": "navitas_seg_v27_best.pt",
+   "figur": 0.07839187645622173,
+   "donem_512": true
+  },
+  {
+   "surum": "v30",
+   "agirlik": "navitas_seg_v30_best.pt",
+   "figur": 0.07958137498539877,
+   "donem_512": true
+  },
+  {
+   "surum": "v34",
+   "agirlik": "navitas_seg_v34_best.pt",
+   "figur": 0.004938113084394653,
+   "donem_512": true
+  },
+  {
+   "surum": "v35",
+   "agirlik": "navitas_seg_v35_best.pt",
+   "figur": 0.09030469530914924,
+   "donem_512": true
+  }
+ ],
+ "terfi_zinciri": [
+  {
+   "terfi": "v27 -> v30",
+   "taban": 0.07839187645622173,
+   "figur": 0.07958137498539877,
+   "oran": 1.0151737473696185,
+   "band_disi": false,
+   "yon": null
+  },
+  {
+   "terfi": "v30 -> v34",
+   "taban": 0.07958137498539877,
+   "figur": 0.004938113084394653,
+   "oran": 0.062051115418660145,
+   "band_disi": true,
+   "yon": "YETENEK (< 0,5 · daha az zemin)"
+  },
+  {
+   "terfi": "v34 -> v35",
+   "taban": 0.004938113084394653,
+   "figur": 0.09030469530914924,
+   "oran": 18.287287829541352,
+   "band_disi": true,
+   "yon": "TEHLIKELI (> 2,0 · daha cok zemin)"
+  }
+ ]
+}

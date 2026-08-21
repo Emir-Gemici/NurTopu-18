@@ -9,7 +9,10 @@ Kullanim:
   venv\\Scripts\\python.exe 65_kabul_denetcisi.py --model <yol> [--ad v27]
 """
 import argparse
+import hashlib
 import json
+import re
+import statistics
 import subprocess
 import sys
 from pathlib import Path
@@ -90,6 +93,64 @@ K0_ORAN_ALT = 0.5     # bunun altinda YETENEK uyarisi (fail-closed yon)
 K0_ORAN_UST = 2.0     # bunun ustunde TEHLIKELI yon — K2/K3'e ayrica bakilir
 
 
+def surum_etiketi(model_id):
+    """'navitas-seg-v35-512' -> 'v35'. Bulunamazsa None — UYDURULMAZ."""
+    m = re.search(r"[-_](v\d+)[-_]", str(model_id))
+    return m.group(1) if m else None
+
+
+def k0_taban_kaydi(kok=None):
+    """URETIM model_id'sine KARSILIK GELEN taban kaydi (T132 · D-263 §4.1).
+
+    -> {"deger", "kimlik", "bicim", "gecmis", "not"}
+
+    IKI BICIM de kabul edilir — geriye uyumluluk ZORUNLU:
+      * SKALER (eski defter, saha paketi, `jetson_paket` kopyasi):
+        `figur_zemin_orani: 0.0903` -> deger okunur, kimlik BILINMEZ.
+      * LISTE (T132 bicimi):
+        `figur_zemin_orani: [{"surum": "v35", "deger": 0.0903, ...}, ...]`
+
+    🔴 LISTEDE "SONUNCU" DEGIL, URETIM `model_id`'sine KARSILIK GELEN kayit
+    secilir. D-263 §4.1 "yine sonuncuyu kullanir" diyordu; kullanicinin T132
+    emri bunu DARALTTI ve hakli: liste siralamasi bozulursa "sonuncu" YANLIS
+    tabani secer ve bu, T131'in bulduğu kusurun (sessizce kayan referans)
+    tam olarak tekrari olurdu. Siralamaya guvenmeyen tek dogru anahtar
+    `model_id`dir.
+
+    ⚠ Kayit YOKSA `deger=None` doner ve durum RAPORLANIR — yokluk ne BASARI
+    ne BASARISIZLIK sayilir (D-180 dersi).
+    """
+    yol = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
+    bos = {"deger": None, "kimlik": None, "bicim": None, "gecmis": [], "not": ""}
+    try:
+        veri = json.loads(yol.read_text(encoding="utf-8"))
+        profil = veri["profiles"][veri["default_profile"]]
+        ham = profil["metrics"]["k0_korluk"]["figur_zemin_orani"]
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError):
+        return dict(bos, **{"not": "taban kayitli DEGIL — oran hesaplanamadi"})
+
+    if isinstance(ham, (int, float)) and not isinstance(ham, bool):
+        return {"deger": float(ham), "kimlik": None, "bicim": "skaler",
+                "gecmis": [], "not": "eski SKALER bicim — taban KIMLIGI kayitli degil"}
+
+    if not isinstance(ham, list):
+        return dict(bos, **{"not": f"taban bicimi taninmiyor ({type(ham).__name__})"})
+
+    surum = surum_etiketi(profil.get("model_id"))
+    if surum is None:
+        return {"deger": None, "kimlik": None, "bicim": "liste", "gecmis": ham,
+                "not": f"model_id'den surum cikarilamadi ({profil.get('model_id')!r})"}
+    for kayit in ham:
+        if isinstance(kayit, dict) and kayit.get("surum") == surum:
+            try:
+                return {"deger": float(kayit["deger"]), "kimlik": surum,
+                        "bicim": "liste", "gecmis": ham, "not": ""}
+            except (KeyError, TypeError, ValueError):
+                break
+    return {"deger": None, "kimlik": None, "bicim": "liste", "gecmis": ham,
+            "not": f"gecmiste {surum} kaydi YOK — oran hesaplanamadi"}
+
+
 def k0_taban_orani(figur_kaplama, kok=None):
     """Figur kaplamasinin URETIM TABANINA orani. -> (oran|None, taban|None, not).
 
@@ -99,17 +160,14 @@ def k0_taban_orani(figur_kaplama, kok=None):
     kusur sinifidir (orada `None` sessizce "DUSTU" olmustu). Bu yuzden
     defterde AYRI ve SAYISAL bir alan tutulur: `figur_zemin_orani`.
 
-    ⚠ Alan YOKSA oran `None` doner ve durum RAPORLANIR — yokluk ne BASARI
-    ne BASARISIZLIK sayilir (D-180 dersi).
+    ⚠ IMZA DEGISMEDI (3'lu demet): `tests/test_k0_gorunurlugu.py` bu imzayi
+    kullaniyor ve o kapi T110'dan beri koruyor. Kimlik/soyagaci isteyen
+    `k0_taban_kaydi`yi cagirir.
     """
-    taban_yolu = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
-    try:
-        veri = json.loads(taban_yolu.read_text(encoding="utf-8"))
-        profil = veri["profiles"][veri["default_profile"]]
-        taban = profil["metrics"]["k0_korluk"]["figur_zemin_orani"]
-        taban = float(taban)
-    except (OSError, UnicodeError, ValueError, KeyError, TypeError):
-        return None, None, "taban kayitli DEGIL — oran hesaplanamadi"
+    kayit = k0_taban_kaydi(kok)
+    taban = kayit["deger"]
+    if taban is None:
+        return None, None, kayit["not"] or "taban kayitli DEGIL — oran hesaplanamadi"
     if not (taban > 0.0) or figur_kaplama is None:
         return None, taban, "taban 0 ya da figur olculemedi — oran hesaplanamadi"
     return float(figur_kaplama) / taban, taban, ""
@@ -161,6 +219,139 @@ def k0_dikkat_satiri(oran):
                "fail-closed yon.")
     return (f"  🔴 DIKKAT: figur kaplamasi uretim tabanindan {oran:.2f} kat "
             f"sapiyor.\n{yon}")
+
+
+# ── T132 · TABANIN KENDISI DE GORUNSUN (D-263 §5) ──────────────────────────
+# 🔴 BURADA KURAL YOKTUR, SAYI VARDIR. Denetci bugune kadar ADAYI tabana gore
+# sorguluyordu ama TABANI hic sorgulamiyordu; v34'un %0,49'u sorgusuz referans
+# oldu (T131/D-261). Asagidaki fonksiyonlar tabanin soyagacina gore NEREDE
+# durdugunu BASAR — esik koymaz, `gecti` sozlugune girmez, verdikti etkilemez.
+#
+# ⚠ BU, D-186'NIN REDDETTIGI SEY DEGILDIR ve yarin okuyan biri bunu kapiya
+# CEVIRMESIN:
+#     D-186'nin REDDETTIGI : n=1 figure MODEL uzerinde sert kural/tavan
+#     BURADA YAPILAN       : TABANIN soyagacindaki yerinin BASILMASI
+# Model hakkinda hukum YOKTUR. "Eksik kalmis" diye esik eklenmesi, reddedilmis
+# bir fikri arka kapidan geri getirmek olur (§9.2: yetki mimarindir).
+
+def soyagaci_donem_tutarli(gecmis):
+    """Kiyaslanabilir kayitlar. Donem-tutarsizlar DISLANIR ama SILINMEZ.
+
+    v17/v20/v21/v24 kendi URETIM DONEMLERINDE 640'ta kosuyordu (gecis v27 ile:
+    JETSON_KILAVUZ SS0-T76). Sayilari ALET-TUTARLI ama DONEM-TUTARLI DEGIL
+    (D-261 SS2); medyana katilirlarsa duz kiyas sanilir.
+    """
+    return [k for k in gecmis
+            if isinstance(k, dict) and k.get("donem_tutarli") is True
+            and isinstance(k.get("deger"), (int, float))]
+
+
+def taban_medyan_uzakligi(taban, gecmis):
+    """Tabanin soyagaci MEDYANINA uzakligi (kat). -> (uzaklik|None, medyan|None).
+
+    Uzaklik YONSUZDUR: 16,1x hem "16 kat asagida" hem "16 kat yukarida"
+    olabilir; hangi yon oldugu soyagaci satirinda zaten GORUNUR. Amac sira
+    disiligi gostermek, yon hukmu vermek degil.
+    """
+    kayitlar = soyagaci_donem_tutarli(gecmis)
+    if taban is None or not kayitlar:
+        return None, None
+    medyan = statistics.median([float(k["deger"]) for k in kayitlar])
+    if medyan <= 0.0 or taban <= 0.0:
+        return None, medyan
+    oran = float(taban) / medyan
+    return (oran if oran >= 1.0 else 1.0 / oran), medyan
+
+
+def k0_soyagaci_satirlari(kayit):
+    """K0 satirinin ALTINA basilacak GORUNURLUK satirlari. Kural YOK, sayi VAR."""
+    gecmis = kayit.get("gecmis") or []
+    if kayit.get("bicim") == "skaler":
+        return ["     SOYAGACI: kayitli DEGIL (eski SKALER bicim; "
+                "taban kimligi bilinmiyor)"]
+    if not gecmis:
+        return ["     SOYAGACI: kayitli DEGIL"]
+    tutarli = soyagaci_donem_tutarli(gecmis)
+    disarida = len(gecmis) - len(tutarli)
+    govde = " · ".join(f"{k['surum']} %{100*float(k['deger']):.2f}" for k in tutarli)
+    satirlar = [f"     SOYAGACI: {govde}"]
+    if disarida:
+        satirlar.append(f"{'':15s}(+{disarida} kayit DONEM-TUTARLI DEGIL — 640 "
+                        f"donemi; kiyasa ve medyana GIRMEZ, kayitta DURUR)")
+    uzaklik, medyan = taban_medyan_uzakligi(kayit.get("deger"), gecmis)
+    if uzaklik is not None:
+        satirlar.append(f"     TABAN, soyagaci medyanindan (%{100*medyan:.2f}) "
+                        f"{uzaklik:.1f}x uzakta   <- SAYI, KURAL DEGIL")
+    return satirlar
+
+
+def stdout_utf8_yap(akis=None):
+    """CLI ciktisini UTF-8'e sabitler. -> True/False (ZORLAMAZ, patlamaz).
+
+    🔴 OLCULEN KUSUR (T132, emrin disinda bulundu). Bu betik BIR DOSYA olarak
+    kosulup ciktisi YAKALANDIGINDA (pipe ya da yonlendirme) Windows'ta
+    `sys.stdout.encoding` **cp1254** olur; rapordaki `🔴 DIKKAT` satiri
+    `UnicodeEncodeError` firlatir ve DENETCI COKER.
+
+        betik + pipe        -> enc cp1254 -> UnicodeEncodeError
+        betik + yonlendirme -> enc cp1254 -> UnicodeEncodeError
+        konsol              -> enc utf-8  -> sorunsuz  (mimar D-255'te boyle kostu)
+
+    Yani uyari, TAM DA SOYLEYECEK SOZU OLDUGUNDA denetciyi olduruyordu; insan
+    izlerken calisip otomasyon yakalarken duserdi. T110'un butun amaci o satiri
+    GORUNUR kilmakti (D-186/D-188).
+
+    ⚠ YALNIZ `main()` icinde cagrilir. Ice aktarma sirasinda cagrilsaydi, bu
+    modulu import eden HER TEST'in stdout'unu degistirirdi — sinanan seyin
+    disinda yan etki uretmek bu projenin kendi kuralina aykiri.
+    `errors="replace"` : bilinmeyen bir kodlamada bile COKMEK yerine ISARET basar.
+    """
+    akis = sys.stdout if akis is None else akis
+    try:
+        akis.reconfigure(encoding="utf-8", errors="replace")
+        return True
+    except (AttributeError, ValueError, OSError):
+        return False
+
+
+def k0_taban_metni(kayit, oran, taban, oran_notu=""):
+    """K0 satirindaki PARANTEZ metni — tabanin KIMLIGI burada gorunur.
+
+    ⚠ SAF FONKSIYON OLARAK AYRILDI (T132). Metin `main()` icine gomulu
+    kalsaydi "basilan satir kimligi iceriyor mu" sorusu ancak tum denetciyi
+    (model yukleyerek) kosarak sinanabilirdi; bu projede o, sinanmayan bir
+    iddia demektir. Simdi kapiya girer.
+    """
+    if oran is None or taban is None:
+        return oran_notu or "oran YOK"
+    if kayit.get("kimlik"):
+        kimlik = f" = {kayit['kimlik']}'in degeri"
+    elif kayit.get("bicim") == "skaler":
+        kimlik = " (kimlik YOK · eski skaler bicim)"
+    else:
+        kimlik = ""
+    return f"uretim tabani %{100*taban:.2f}{kimlik} · oran {oran:.2f}"
+
+
+def kume_parmak_izi(kok):
+    """Kabul kumesinin TURETILMIS parmak izi. Elle liste TUTULMAZ.
+
+    Gerekce (D-263 §4.3): elle tutulan liste bu projede DORT kez bayatladi.
+    Ozet, dosya ADI + BOYUTU uzerinden alinir (icerik degil): 284 goruntunun
+    tamamini okumak denetciyi her kosumda yavaslatirdi ve yakalamak istedigimiz
+    sey "kume DEGISTI mi" sorusudur — dosya eklenmesi/silinmesi/boyut degisimi
+    bunu yakalar. ⚠ SINIRI ACIK: ayni boyutta icerik degisimi YAKALANMAZ.
+    """
+    kok = Path(kok)
+    if not kok.is_dir():
+        return {"n": 0, "ozet": None, "not": f"dizin yok: {kok}"}
+    dosyalar = sorted(p for p in kok.rglob("*") if p.is_file())
+    h = hashlib.sha256()
+    for p in dosyalar:
+        h.update(p.relative_to(kok).as_posix().encode("utf-8"))
+        h.update(str(p.stat().st_size).encode("ascii"))
+    return {"n": len(dosyalar), "ozet": f"sha256:{h.hexdigest()}",
+            "yontem": "sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ"}
 
 
 def kaplama(model, p):
@@ -226,6 +417,9 @@ def kos(betik, ek):
 
 
 def main():
+    # 🔴 ILK IS: cikti yakalandiginda uyari satiri denetciyi COKERTMESIN
+    # (T132'de olculdu; gerekce `stdout_utf8_yap` docstringinde).
+    stdout_utf8_yap()
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", type=Path, required=True)
     ap.add_argument("--ad", default=None)
@@ -334,10 +528,21 @@ def main():
     # ── RAPOR ───────────────────────────────────────────────────────────────
     print(f"\n{'='*66}\nKABUL DENETIMI · {ad}\n  esikler: REVIEW_LOG D-107 "
           f"(sonuc gorulmeden yazildi)\n{'='*66}")
+    # T132: kume parmak izi HER KOSUMDA basilir — hangi kume olculdu sorusu
+    # rapordan okunabilsin (D-263 §4.3; TURETILIR, elle tutulmaz).
+    pi = kume_parmak_izi(kume)
+    print(f"  kabul kumesi: {kume}\n{'':16s}parmak izi n={pi['n']} · "
+          f"{pi.get('ozet') or pi.get('not')}")
+    sonuc["kabul_kumesi"] = str(kume)
+    sonuc["kabul_kumesi_parmak_izi"] = pi
+
     f = sonuc["K0"]["figur"]
-    oran, taban, oran_notu = k0_taban_orani(f)
-    taban_metni = (f"uretim tabani %{100*taban:.2f} · oran {oran:.2f}"
-                   if oran is not None else (oran_notu or "oran YOK"))
+    # ⚠ `args.kok` GECIRILIYOR: kume T125'te --kok'a baglanmisti ama taban
+    # okumasi baglanmamisti; --kok verildiginde denetci kumeyi bir defterden,
+    # tabani BASKA defterden okuyordu. Tek satirlik tutarlilik onarimi (T132).
+    kayit = k0_taban_kaydi(args.kok)
+    oran, taban, oran_notu = k0_taban_orani(f, kok=args.kok)
+    taban_metni = k0_taban_metni(kayit, oran, taban, oran_notu)
     print(f"  K0 KORLUK YOK        {'GECTI' if gecti['K0'] else 'DUSTU':<6} "
           f"figur zemin %{100*f:.2f} ({taban_metni})")
     print(f"{'':23s}raw bos {k0['raw_frames']['bos']}/{k0['raw_frames']['n']} "
@@ -346,8 +551,14 @@ def main():
     dikkat = k0_dikkat_satiri(oran)
     if dikkat:
         print(dikkat)
+    # T132 · D-263 §5: TABANIN kendisi de gorunsun. Kural degil, SAYI.
+    for satir in k0_soyagaci_satirlari(kayit):
+        print(satir)
     sonuc["K0"]["figur_orani"] = oran
     sonuc["K0"]["figur_tabani"] = taban
+    sonuc["K0"]["figur_taban_kimligi"] = kayit.get("kimlik")
+    sonuc["K0"]["figur_taban_bicimi"] = kayit.get("bicim")
+    sonuc["K0"]["soyagaci"] = kayit.get("gecmis")
     sonuc["K0"]["oran_notu"] = oran_notu
     print(f"  K1 ROTA >= {ESIK['K1_rota_min']}       {k14['K1']:<11} "
           f"{sonuc['K1_rota']}")

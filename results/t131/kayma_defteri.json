@@ -1,0 +1,497 @@
+{
+ "_ne": "T131 · surum-otesi kayma defteri. KAPI DEGIL, ESIK KOYMAZ.",
+ "_kaynak": "git gecmisi · config/model_registry.json · 9 surum",
+ "_uyari": "Bulunamayan alan None yazilir ve sema FARKLI diye isaretlenir; deger UYDURULMAZ.",
+ "surumler": [
+  {
+   "commit": "81ca4471",
+   "tarih": "2026-08-01",
+   "konu": "resilience: harden perception comms and simulation",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "blocked_map50",
+    "mask_map50"
+   ],
+   "model_id": "navitas-seg-v4-640",
+   "imgsz": 640,
+   "sha256": "6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4",
+   "kabul_kumesi": null,
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": null,
+   "K1 rota": null,
+   "K2 basma %": null,
+   "K3 agir %": null,
+   "K4 arena disi %": null,
+   "K5 bariyer px": null,
+   "karar cevrilmesi": null,
+   "gercek kare kaplama": null,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": null
+  },
+  {
+   "commit": "2440c0b5",
+   "tarih": "2026-08-07",
+   "konu": "kod: model kayit defteri uzak daldan devralindi (S9 icin alt",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "blocked_map50",
+    "mask_map50"
+   ],
+   "model_id": "navitas-seg-v4-640",
+   "imgsz": 640,
+   "sha256": "6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4",
+   "kabul_kumesi": null,
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": null,
+   "K1 rota": null,
+   "K2 basma %": null,
+   "K3 agir %": null,
+   "K4 arena disi %": null,
+   "K5 bariyer px": null,
+   "karar cevrilmesi": null,
+   "gercek kare kaplama": null,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": null
+  },
+  {
+   "commit": "b4f8e402",
+   "tarih": "2026-08-14",
+   "konu": "uretim: v27 zincire alindi, model_yukleme halkasi kapandi (T",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "mask_map50"
+   ],
+   "model_id": "navitas-seg-v27-512",
+   "imgsz": 512,
+   "sha256": "1465ed3d288af37e1b3681dd6adabe7ab956a4ab3dc207003bca9ec4fcee489d",
+   "kabul_kumesi": null,
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": null,
+   "K1 rota": "255/260",
+   "K2 basma %": 7.1,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.4,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": null,
+   "gercek kare kaplama": null,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": null
+  },
+  {
+   "commit": "caef4a67",
+   "tarih": "2026-08-15",
+   "konu": "zemin kapisi: mimarin hipotezi OLCUMLE CURUTULDU, esik degis",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "mask_map50"
+   ],
+   "model_id": "navitas-seg-v27-512",
+   "imgsz": 512,
+   "sha256": "1465ed3d288af37e1b3681dd6adabe7ab956a4ab3dc207003bca9ec4fcee489d",
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": null,
+   "K1 rota": "255/260",
+   "K2 basma %": 7.1,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.4,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": null,
+   "gercek kare kaplama": null,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": null
+  },
+  {
+   "commit": "865f5910",
+   "tarih": "2026-08-15",
+   "konu": "olcek: kahin uretime baglandi — `drone` 0/12 -> 11/12; ama p",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "gercek_kare_gecen",
+    "k0_korluk",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "karar_cevrilmesi",
+    "mask_map50"
+   ],
+   "model_id": "navitas-seg-v30-512",
+   "imgsz": 512,
+   "sha256": "492e4508ec1ca3b183fa538f880bd4c2c3918533c0b57dd77bd371a2d6b104e9",
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": "figur zemin %8,0 · raw 0/8 · cp 0/8",
+   "K1 rota": "258/260",
+   "K2 basma %": 8.53,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.39,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": "8/260 (%3,08)",
+   "gercek kare kaplama": null,
+   "gercek kare (ESKI ad)": "65/67",
+   "cati kacagi": null
+  },
+  {
+   "commit": "10514303",
+   "tarih": "2026-08-19",
+   "konu": "S5 KAPANDI: imgsz TEK KAYNAKTAN turetiliyor ve her yuklemede",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "gercek_kare_gecen",
+    "k0_korluk",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "karar_cevrilmesi",
+    "mask_map50"
+   ],
+   "model_id": "navitas-seg-v30-512",
+   "imgsz": 512,
+   "sha256": "492e4508ec1ca3b183fa538f880bd4c2c3918533c0b57dd77bd371a2d6b104e9",
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": "figur zemin %8,0 · raw 0/8 · cp 0/8",
+   "K1 rota": "258/260",
+   "K2 basma %": 8.53,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.39,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": "8/260 (%3,08)",
+   "gercek kare kaplama": null,
+   "gercek kare (ESKI ad)": "65/67",
+   "cati kacagi": null
+  },
+  {
+   "commit": "3cebce22",
+   "tarih": "2026-08-19",
+   "konu": "URETIM MODELI v30 -> v34 (KULLANICI KARARI) — terfi ALTI hiz",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_fitness_notu",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "gercek_kare_zemin_kaplamasi",
+    "k0_korluk",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "karar_cevrilmesi"
+   ],
+   "model_id": "navitas-seg-v34-512",
+   "imgsz": 512,
+   "sha256": "6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8",
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": null,
+   "K0 figur (METINDEN)": "figur zemin %0,49 · raw bos 0/8 · cp bos 0/8",
+   "K1 rota": "258/260",
+   "K2 basma %": 4.65,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.39,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": "4/260 (%1,54)",
+   "gercek kare kaplama": 0.4551,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": null
+  },
+  {
+   "commit": "1b571665",
+   "tarih": "2026-08-19",
+   "konu": "T110 UYGULANDI ve DENETLENDI: K0 ornekleme kalkti, dusus GOR",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_fitness_notu",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "gercek_kare_zemin_kaplamasi",
+    "k0_korluk",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "karar_cevrilmesi"
+   ],
+   "model_id": "navitas-seg-v34-512",
+   "imgsz": 512,
+   "sha256": "6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8",
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": 0.0049,
+   "K0 figur (METINDEN)": "figur zemin %0,49 · raw bos 0/67 · cp bos 0/393",
+   "K1 rota": "258/260",
+   "K2 basma %": 4.65,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.39,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": "4/260 (%1,54)",
+   "gercek kare kaplama": 0.4551,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": null
+  },
+  {
+   "commit": "ee7508d7",
+   "tarih": "2026-08-21",
+   "konu": "URETIM MODELI v34 -> v35 (t127_temiz) — KULLANICI KARARI, al",
+   "profil": "competition",
+   "sema": "tanidik",
+   "_metrik_anahtarlari": [
+    "_egitim",
+    "_fitness_notu",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "cati_kacagi",
+    "fitness_epoch200",
+    "gercek_kare_zemin_kaplamasi",
+    "k0_korluk",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px",
+    "karar_cevrilmesi"
+   ],
+   "model_id": "navitas-seg-v35-512",
+   "imgsz": 512,
+   "sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+   "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
+   "kume parmak izi": null,
+   "kume dosya sayisi": null,
+   "K0 figur_zemin_orani": 0.0903,
+   "K0 figur (METINDEN)": "figur zemin %9.03 · raw bos 0/67 · cp bos 0/393",
+   "K1 rota": "256/260",
+   "K2 basma %": 7.03,
+   "K3 agir %": 0.0,
+   "K4 arena disi %": 0.39,
+   "K5 bariyer px": 0,
+   "karar cevrilmesi": "9/260 (%3,46)",
+   "gercek kare kaplama": 0.2855,
+   "gercek kare (ESKI ad)": null,
+   "cati kacagi": 0.0428
+  }
+ ],
+ "kaymalar": [
+  {
+   "gecis": "navitas-seg-v4-640 -> navitas-seg-v27-512",
+   "tarih": "2026-08-14",
+   "commit": "b4f8e402",
+   "degisen": {
+    "imgsz": {
+     "onceki": 640,
+     "yeni": 512
+    },
+    "K1 rota": {
+     "onceki": null,
+     "yeni": "255/260"
+    },
+    "K2 basma %": {
+     "onceki": null,
+     "yeni": 7.1
+    },
+    "K3 agir %": {
+     "onceki": null,
+     "yeni": 0.0
+    },
+    "K4 arena disi %": {
+     "onceki": null,
+     "yeni": 0.4
+    },
+    "K5 bariyer px": {
+     "onceki": null,
+     "yeni": 0
+    }
+   },
+   "alan_dogdu": [
+    "_egitim",
+    "_kapsam",
+    "_kaynak",
+    "_mask_map50_notu",
+    "fitness_epoch200",
+    "k1_rota_uretimi",
+    "k2_moloza_basma_yuzde",
+    "k3_agir_basma_yuzde",
+    "k4_arena_disi_yuzde",
+    "k5_bariyer_kesisimi_px"
+   ],
+   "alan_yok_oldu": [
+    "blocked_map50"
+   ]
+  },
+  {
+   "gecis": "navitas-seg-v27-512 -> navitas-seg-v30-512",
+   "tarih": "2026-08-15",
+   "commit": "865f5910",
+   "degisen": {
+    "K0 figur (METINDEN)": {
+     "onceki": null,
+     "yeni": "figur zemin %8,0 · raw 0/8 · cp 0/8"
+    },
+    "K1 rota": {
+     "onceki": "255/260",
+     "yeni": "258/260"
+    },
+    "K2 basma %": {
+     "onceki": 7.1,
+     "yeni": 8.53
+    },
+    "K4 arena disi %": {
+     "onceki": 0.4,
+     "yeni": 0.39
+    },
+    "karar cevrilmesi": {
+     "onceki": null,
+     "yeni": "8/260 (%3,08)"
+    },
+    "gercek kare (ESKI ad)": {
+     "onceki": null,
+     "yeni": "65/67"
+    }
+   },
+   "alan_dogdu": [
+    "gercek_kare_gecen",
+    "k0_korluk",
+    "karar_cevrilmesi"
+   ],
+   "alan_yok_oldu": []
+  },
+  {
+   "gecis": "navitas-seg-v30-512 -> navitas-seg-v34-512",
+   "tarih": "2026-08-19",
+   "commit": "3cebce22",
+   "degisen": {
+    "K0 figur (METINDEN)": {
+     "onceki": "figur zemin %8,0 · raw 0/8 · cp 0/8",
+     "yeni": "figur zemin %0,49 · raw bos 0/8 · cp bos 0/8"
+    },
+    "K2 basma %": {
+     "onceki": 8.53,
+     "yeni": 4.65
+    },
+    "karar cevrilmesi": {
+     "onceki": "8/260 (%3,08)",
+     "yeni": "4/260 (%1,54)"
+    },
+    "gercek kare kaplama": {
+     "onceki": null,
+     "yeni": 0.4551
+    },
+    "gercek kare (ESKI ad)": {
+     "onceki": "65/67",
+     "yeni": null
+    }
+   },
+   "alan_dogdu": [
+    "_fitness_notu",
+    "gercek_kare_zemin_kaplamasi"
+   ],
+   "alan_yok_oldu": [
+    "gercek_kare_gecen",
+    "mask_map50"
+   ]
+  },
+  {
+   "gecis": "navitas-seg-v34-512 -> navitas-seg-v35-512",
+   "tarih": "2026-08-21",
+   "commit": "ee7508d7",
+   "degisen": {
+    "K0 figur_zemin_orani": {
+     "onceki": 0.0049,
+     "yeni": 0.0903
+    },
+    "K0 figur (METINDEN)": {
+     "onceki": "figur zemin %0,49 · raw bos 0/67 · cp bos 0/393",
+     "yeni": "figur zemin %9.03 · raw bos 0/67 · cp bos 0/393"
+    },
+    "K1 rota": {
+     "onceki": "258/260",
+     "yeni": "256/260"
+    },
+    "K2 basma %": {
+     "onceki": 4.65,
+     "yeni": 7.03
+    },
+    "karar cevrilmesi": {
+     "onceki": "4/260 (%1,54)",
+     "yeni": "9/260 (%3,46)"
+    },
+    "gercek kare kaplama": {
+     "onceki": 0.4551,
+     "yeni": 0.2855
+    },
+    "cati kacagi": {
+     "onceki": null,
+     "yeni": 0.0428
+    }
+   },
+   "alan_dogdu": [
+    "cati_kacagi"
+   ],
+   "alan_yok_oldu": []
+  }
+ ]
+}

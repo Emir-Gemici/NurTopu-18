@@ -1,0 +1,1126 @@
+{
+ "_ne": "T118 · uretim tavaninin payi. KAPI DEGIL, ESIK DEGISTIRMEZ.",
+ "_tavanlar": {
+  "kaplama": 0.67,
+  "kenar": 0.5
+ },
+ "_uretim_modeli": "navitas-seg-v35-512",
+ "modeller": {
+  "v35 (URETIM)": {
+   "yol": "O:\\navitas\\models\\navitas_seg_v35_best.pt",
+   "ozet": {
+    "n": 67,
+    "red": 0,
+    "kaplama_icerik": {
+     "min": 0.370361328125,
+     "medyan": 0.5076429578993056,
+     "maks": 0.6626315646701388
+    },
+    "kenar": {
+     "min": 0.0,
+     "medyan": 0.2356070087609512,
+     "maks": 0.399874843554443
+    },
+    "kaplama_tavani_asan": 0,
+    "en_yakin_kare": "frame_000018_000002160.jpg",
+    "tavana_pay": 0.0073684353298612
+   },
+   "kareler": [
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.4144083658854167,
+     "kaplama_tuval": 0.23310470581054688,
+     "kenar_dayanmasi": 0.14205256570713393,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000001_000000600.jpg",
+     "kaplama_icerik": 0.4430881076388889,
+     "kaplama_tuval": 0.249237060546875,
+     "kenar_dayanmasi": 0.1414267834793492,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000002_000000672.jpg",
+     "kaplama_icerik": 0.4692314995659722,
+     "kaplama_tuval": 0.2639427185058594,
+     "kenar_dayanmasi": 0.1846057571964956,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000003_000000720.jpg",
+     "kaplama_icerik": 0.4814385308159722,
+     "kaplama_tuval": 0.2708091735839844,
+     "kenar_dayanmasi": 0.16082603254067585,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000004_000000768.jpg",
+     "kaplama_icerik": 0.5076429578993056,
+     "kaplama_tuval": 0.2855491638183594,
+     "kenar_dayanmasi": 0.16239048811013768,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000005_000000816.jpg",
+     "kaplama_icerik": 0.517578125,
+     "kaplama_tuval": 0.2911376953125,
+     "kenar_dayanmasi": 0.15081351689612016,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000006_000000864.jpg",
+     "kaplama_icerik": 0.5681898328993056,
+     "kaplama_tuval": 0.3196067810058594,
+     "kenar_dayanmasi": 0.19336670838548184,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000007_000000936.jpg",
+     "kaplama_icerik": 0.5919325086805556,
+     "kaplama_tuval": 0.3329620361328125,
+     "kenar_dayanmasi": 0.1583229036295369,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000008_000001008.jpg",
+     "kaplama_icerik": 0.6305067274305556,
+     "kaplama_tuval": 0.3546600341796875,
+     "kenar_dayanmasi": 0.27284105131414266,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000009_000001152.jpg",
+     "kaplama_icerik": 0.6259494357638888,
+     "kaplama_tuval": 0.3520965576171875,
+     "kenar_dayanmasi": 0.3548185231539424,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000010_000001200.jpg",
+     "kaplama_icerik": 0.5946384006076388,
+     "kaplama_tuval": 0.3344841003417969,
+     "kenar_dayanmasi": 0.14831038798498122,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000011_000001224.jpg",
+     "kaplama_icerik": 0.5980563693576388,
+     "kaplama_tuval": 0.3364067077636719,
+     "kenar_dayanmasi": 0.3188360450563204,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000012_000001248.jpg",
+     "kaplama_icerik": 0.5902845594618056,
+     "kaplama_tuval": 0.3320350646972656,
+     "kenar_dayanmasi": 0.3357321652065081,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000013_000001272.jpg",
+     "kaplama_icerik": 0.6018880208333334,
+     "kaplama_tuval": 0.33856201171875,
+     "kenar_dayanmasi": 0.3507509386733417,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000014_000001320.jpg",
+     "kaplama_icerik": 0.6137152777777778,
+     "kaplama_tuval": 0.34521484375,
+     "kenar_dayanmasi": 0.0,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.5470038519965278,
+     "kaplama_tuval": 0.3076896667480469,
+     "kenar_dayanmasi": 0.18648310387984982,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000001_000000336.jpg",
+     "kaplama_icerik": 0.5543687608506944,
+     "kaplama_tuval": 0.3118324279785156,
+     "kenar_dayanmasi": 0.21401752190237797,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000002_000000648.jpg",
+     "kaplama_icerik": 0.5385199652777778,
+     "kaplama_tuval": 0.30291748046875,
+     "kenar_dayanmasi": 0.18272841051314143,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000003_000000912.jpg",
+     "kaplama_icerik": 0.5379163953993056,
+     "kaplama_tuval": 0.3025779724121094,
+     "kenar_dayanmasi": 0.24718397997496871,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000004_000000960.jpg",
+     "kaplama_icerik": 0.5235595703125,
+     "kaplama_tuval": 0.29450225830078125,
+     "kenar_dayanmasi": 0.2615769712140175,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000005_000001008.jpg",
+     "kaplama_icerik": 0.5409206814236112,
+     "kaplama_tuval": 0.30426788330078125,
+     "kenar_dayanmasi": 0.3285356695869837,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000006_000001416.jpg",
+     "kaplama_icerik": 0.5043741861979166,
+     "kaplama_tuval": 0.2837104797363281,
+     "kenar_dayanmasi": 0.2853566958698373,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000007_000001440.jpg",
+     "kaplama_icerik": 0.5016276041666666,
+     "kaplama_tuval": 0.28216552734375,
+     "kenar_dayanmasi": 0.3119524405506884,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000008_000001488.jpg",
+     "kaplama_icerik": 0.4852634006076389,
+     "kaplama_tuval": 0.2729606628417969,
+     "kenar_dayanmasi": 0.2356070087609512,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000009_000001776.jpg",
+     "kaplama_icerik": 0.4707912868923611,
+     "kaplama_tuval": 0.2648200988769531,
+     "kenar_dayanmasi": 0.2546933667083855,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000010_000001824.jpg",
+     "kaplama_icerik": 0.4551052517361111,
+     "kaplama_tuval": 0.2559967041015625,
+     "kenar_dayanmasi": 0.2521902377972466,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000011_000001848.jpg",
+     "kaplama_icerik": 0.4506022135416667,
+     "kaplama_tuval": 0.2534637451171875,
+     "kenar_dayanmasi": 0.20994993742177723,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000012_000001872.jpg",
+     "kaplama_icerik": 0.4387071397569444,
+     "kaplama_tuval": 0.24677276611328125,
+     "kenar_dayanmasi": 0.1749061326658323,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000013_000001944.jpg",
+     "kaplama_icerik": 0.4610120985243056,
+     "kaplama_tuval": 0.2593193054199219,
+     "kenar_dayanmasi": 0.10075093867334167,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000014_000001992.jpg",
+     "kaplama_icerik": 0.4890407986111111,
+     "kaplama_tuval": 0.27508544921875,
+     "kenar_dayanmasi": 0.2546933667083855,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000015_000002040.jpg",
+     "kaplama_icerik": 0.52178955078125,
+     "kaplama_tuval": 0.2935066223144531,
+     "kenar_dayanmasi": 0.12202753441802253,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000016_000002088.jpg",
+     "kaplama_icerik": 0.6014336480034722,
+     "kaplama_tuval": 0.3383064270019531,
+     "kenar_dayanmasi": 0.3920525657071339,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000017_000002112.jpg",
+     "kaplama_icerik": 0.6421576605902778,
+     "kaplama_tuval": 0.36121368408203125,
+     "kenar_dayanmasi": 0.399874843554443,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000018_000002160.jpg",
+     "kaplama_icerik": 0.6626315646701388,
+     "kaplama_tuval": 0.3727302551269531,
+     "kenar_dayanmasi": 0.37453066332916146,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.5198635525173612,
+     "kaplama_tuval": 0.2924232482910156,
+     "kenar_dayanmasi": 0.311639549436796,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000001_000000168.jpg",
+     "kaplama_icerik": 0.5008951822916666,
+     "kaplama_tuval": 0.2817535400390625,
+     "kenar_dayanmasi": 0.27315394242803503,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000002_000000192.jpg",
+     "kaplama_icerik": 0.5047471788194444,
+     "kaplama_tuval": 0.2839202880859375,
+     "kenar_dayanmasi": 0.266270337922403,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000003_000000240.jpg",
+     "kaplama_icerik": 0.5075547960069444,
+     "kaplama_tuval": 0.28549957275390625,
+     "kenar_dayanmasi": 0.12828535669586985,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000004_000000264.jpg",
+     "kaplama_icerik": 0.4891425238715278,
+     "kaplama_tuval": 0.2751426696777344,
+     "kenar_dayanmasi": 0.3316645807259074,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000005_000000288.jpg",
+     "kaplama_icerik": 0.4909396701388889,
+     "kaplama_tuval": 0.276153564453125,
+     "kenar_dayanmasi": 0.30319148936170215,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000006_000000336.jpg",
+     "kaplama_icerik": 0.4798177083333333,
+     "kaplama_tuval": 0.2698974609375,
+     "kenar_dayanmasi": 0.12015018773466833,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000007_000000384.jpg",
+     "kaplama_icerik": 0.5059882269965278,
+     "kaplama_tuval": 0.2846183776855469,
+     "kenar_dayanmasi": 0.2706508135168961,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000008_000000432.jpg",
+     "kaplama_icerik": 0.5459526909722222,
+     "kaplama_tuval": 0.307098388671875,
+     "kenar_dayanmasi": 0.2887984981226533,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000009_000000480.jpg",
+     "kaplama_icerik": 0.5547010633680556,
+     "kaplama_tuval": 0.31201934814453125,
+     "kenar_dayanmasi": 0.2618898623279099,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000010_000000504.jpg",
+     "kaplama_icerik": 0.5796712239583334,
+     "kaplama_tuval": 0.3260650634765625,
+     "kenar_dayanmasi": 0.3194618272841051,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000011_000000600.jpg",
+     "kaplama_icerik": 0.5975206163194444,
+     "kaplama_tuval": 0.3361053466796875,
+     "kenar_dayanmasi": 0.3632665832290363,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000012_000000624.jpg",
+     "kaplama_icerik": 0.5752766927083334,
+     "kaplama_tuval": 0.3235931396484375,
+     "kenar_dayanmasi": 0.2575093867334168,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000013_000000648.jpg",
+     "kaplama_icerik": 0.4955037434895833,
+     "kaplama_tuval": 0.2787208557128906,
+     "kenar_dayanmasi": 0.15707133917396746,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000014_000000672.jpg",
+     "kaplama_icerik": 0.5311143663194444,
+     "kaplama_tuval": 0.2987518310546875,
+     "kenar_dayanmasi": 0.30319148936170215,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000015_000000696.jpg",
+     "kaplama_icerik": 0.51123046875,
+     "kaplama_tuval": 0.287567138671875,
+     "kenar_dayanmasi": 0.2784730913642053,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000016_000000720.jpg",
+     "kaplama_icerik": 0.5164998372395834,
+     "kaplama_tuval": 0.2905311584472656,
+     "kenar_dayanmasi": 0.2759699624530663,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000017_000000792.jpg",
+     "kaplama_icerik": 0.54876708984375,
+     "kaplama_tuval": 0.3086814880371094,
+     "kenar_dayanmasi": 0.19430538172715894,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000018_000000840.jpg",
+     "kaplama_icerik": 0.5501505533854166,
+     "kaplama_tuval": 0.3094596862792969,
+     "kenar_dayanmasi": 0.13078848560700876,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000019_000000888.jpg",
+     "kaplama_icerik": 0.5238918728298612,
+     "kaplama_tuval": 0.2946891784667969,
+     "kenar_dayanmasi": 0.09136420525657071,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000020_000000936.jpg",
+     "kaplama_icerik": 0.5001491970486112,
+     "kaplama_tuval": 0.28133392333984375,
+     "kenar_dayanmasi": 0.1204630788485607,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000021_000000984.jpg",
+     "kaplama_icerik": 0.5231730143229166,
+     "kaplama_tuval": 0.2942848205566406,
+     "kenar_dayanmasi": 0.10513141426783479,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000022_000001032.jpg",
+     "kaplama_icerik": 0.4622463650173611,
+     "kaplama_tuval": 0.2600135803222656,
+     "kenar_dayanmasi": 0.0,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000023_000001080.jpg",
+     "kaplama_icerik": 0.45953369140625,
+     "kaplama_tuval": 0.2584877014160156,
+     "kenar_dayanmasi": 0.11702127659574468,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000024_000001104.jpg",
+     "kaplama_icerik": 0.4550713433159722,
+     "kaplama_tuval": 0.2559776306152344,
+     "kenar_dayanmasi": 0.172090112640801,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000025_000001152.jpg",
+     "kaplama_icerik": 0.4569295247395833,
+     "kaplama_tuval": 0.2570228576660156,
+     "kenar_dayanmasi": 0.05381727158948686,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000026_000001200.jpg",
+     "kaplama_icerik": 0.4436374240451389,
+     "kaplama_tuval": 0.24954605102539062,
+     "kenar_dayanmasi": 0.20087609511889862,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000027_000001248.jpg",
+     "kaplama_icerik": 0.4270222981770833,
+     "kaplama_tuval": 0.24020004272460938,
+     "kenar_dayanmasi": 0.21339173967459324,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000028_000001296.jpg",
+     "kaplama_icerik": 0.370361328125,
+     "kaplama_tuval": 0.2083282470703125,
+     "kenar_dayanmasi": 0.2565707133917397,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000029_000001320.jpg",
+     "kaplama_icerik": 0.3800726996527778,
+     "kaplama_tuval": 0.2137908935546875,
+     "kenar_dayanmasi": 0.22903629536921152,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000030_000001344.jpg",
+     "kaplama_icerik": 0.37554931640625,
+     "kaplama_tuval": 0.21124649047851562,
+     "kenar_dayanmasi": 0.21339173967459324,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.4237128363715278,
+     "kaplama_tuval": 0.23833847045898438,
+     "kenar_dayanmasi": 0.3100750938673342,
+     "red": false,
+     "red_sebebi": null
+    },
+    {
+     "kare": "frame_000001_000000456.jpg",
+     "kaplama_icerik": 0.4233262803819444,
+     "kaplama_tuval": 0.23812103271484375,
+     "kenar_dayanmasi": 0.28035043804755944,
+     "red": false,
+     "red_sebebi": null
+    }
+   ]
+  },
+  "v34 (yedek)": {
+   "yol": "O:\\navitas\\models\\navitas_seg_v34_best.pt",
+   "ozet": {
+    "n": 67,
+    "red": 67,
+    "kaplama_icerik": {
+     "min": 0.7662556966145834,
+     "medyan": 0.8001912434895834,
+     "maks": 0.8739827473958334
+    },
+    "kenar": {
+     "min": 0.5394242803504381,
+     "medyan": 0.7121401752190237,
+     "maks": 0.951188986232791
+    },
+    "kaplama_tavani_asan": 67,
+    "en_yakin_kare": "frame_000024_000001104.jpg",
+    "tavana_pay": -0.20398274739583333
+   },
+   "kareler": [
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.7815280490451388,
+     "kaplama_tuval": 0.4396095275878906,
+     "kenar_dayanmasi": 0.6285982478097623,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000001_000000600.jpg",
+     "kaplama_icerik": 0.7781507703993056,
+     "kaplama_tuval": 0.4377098083496094,
+     "kenar_dayanmasi": 0.7280976220275344,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000002_000000672.jpg",
+     "kaplama_icerik": 0.7809380425347222,
+     "kaplama_tuval": 0.43927764892578125,
+     "kenar_dayanmasi": 0.6408010012515645,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000003_000000720.jpg",
+     "kaplama_icerik": 0.7850070529513888,
+     "kaplama_tuval": 0.44156646728515625,
+     "kenar_dayanmasi": 0.6545682102628285,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000004_000000768.jpg",
+     "kaplama_icerik": 0.7860989040798612,
+     "kaplama_tuval": 0.4421806335449219,
+     "kenar_dayanmasi": 0.8197747183979975,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000005_000000816.jpg",
+     "kaplama_icerik": 0.7755262586805556,
+     "kaplama_tuval": 0.4362335205078125,
+     "kenar_dayanmasi": 0.6871088861076345,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000006_000000864.jpg",
+     "kaplama_icerik": 0.7718438042534722,
+     "kaplama_tuval": 0.4341621398925781,
+     "kenar_dayanmasi": 0.682415519399249,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000007_000000936.jpg",
+     "kaplama_icerik": 0.7776896158854166,
+     "kaplama_tuval": 0.4374504089355469,
+     "kenar_dayanmasi": 0.6799123904881101,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000008_000001008.jpg",
+     "kaplama_icerik": 0.7838473849826388,
+     "kaplama_tuval": 0.4409141540527344,
+     "kenar_dayanmasi": 0.7913016270337923,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000009_000001152.jpg",
+     "kaplama_icerik": 0.7907307942708334,
+     "kaplama_tuval": 0.44478607177734375,
+     "kenar_dayanmasi": 0.7243429286608261,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000010_000001200.jpg",
+     "kaplama_icerik": 0.7835354275173612,
+     "kaplama_tuval": 0.4407386779785156,
+     "kenar_dayanmasi": 0.7315394242803505,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000011_000001224.jpg",
+     "kaplama_icerik": 0.7794121636284722,
+     "kaplama_tuval": 0.4384193420410156,
+     "kenar_dayanmasi": 0.6989987484355444,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000012_000001248.jpg",
+     "kaplama_icerik": 0.783447265625,
+     "kaplama_tuval": 0.4406890869140625,
+     "kenar_dayanmasi": 0.7121401752190237,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000013_000001272.jpg",
+     "kaplama_icerik": 0.7913343641493056,
+     "kaplama_tuval": 0.4451255798339844,
+     "kenar_dayanmasi": 0.8307259073842302,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000014_000001320.jpg",
+     "kaplama_icerik": 0.8091159396701388,
+     "kaplama_tuval": 0.4551277160644531,
+     "kenar_dayanmasi": 0.8366708385481852,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.8184882269965278,
+     "kaplama_tuval": 0.4603996276855469,
+     "kenar_dayanmasi": 0.8332290362953693,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000001_000000336.jpg",
+     "kaplama_icerik": 0.8097737630208334,
+     "kaplama_tuval": 0.45549774169921875,
+     "kenar_dayanmasi": 0.8748435544430538,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000002_000000648.jpg",
+     "kaplama_icerik": 0.7986924913194444,
+     "kaplama_tuval": 0.4492645263671875,
+     "kenar_dayanmasi": 0.6830413016270338,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000003_000000912.jpg",
+     "kaplama_icerik": 0.8001912434895834,
+     "kaplama_tuval": 0.4501075744628906,
+     "kenar_dayanmasi": 0.723404255319149,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000004_000000960.jpg",
+     "kaplama_icerik": 0.7862887912326388,
+     "kaplama_tuval": 0.4422874450683594,
+     "kenar_dayanmasi": 0.6786608260325406,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000005_000001008.jpg",
+     "kaplama_icerik": 0.7865125868055556,
+     "kaplama_tuval": 0.442413330078125,
+     "kenar_dayanmasi": 0.7274718397997497,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000006_000001416.jpg",
+     "kaplama_icerik": 0.7662556966145834,
+     "kaplama_tuval": 0.4310188293457031,
+     "kenar_dayanmasi": 0.684918648310388,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000007_000001440.jpg",
+     "kaplama_icerik": 0.7753634982638888,
+     "kaplama_tuval": 0.4361419677734375,
+     "kenar_dayanmasi": 0.9264705882352942,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000008_000001488.jpg",
+     "kaplama_icerik": 0.7784288194444444,
+     "kaplama_tuval": 0.4378662109375,
+     "kenar_dayanmasi": 0.8360450563204005,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000009_000001776.jpg",
+     "kaplama_icerik": 0.7713283962673612,
+     "kaplama_tuval": 0.4338722229003906,
+     "kenar_dayanmasi": 0.6702127659574468,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000010_000001824.jpg",
+     "kaplama_icerik": 0.7714979383680556,
+     "kaplama_tuval": 0.43396759033203125,
+     "kenar_dayanmasi": 0.6864831038798498,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000011_000001848.jpg",
+     "kaplama_icerik": 0.7752821180555556,
+     "kaplama_tuval": 0.43609619140625,
+     "kenar_dayanmasi": 0.6551939924906133,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000012_000001872.jpg",
+     "kaplama_icerik": 0.7808363172743056,
+     "kaplama_tuval": 0.4392204284667969,
+     "kenar_dayanmasi": 0.6620775969962454,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000013_000001944.jpg",
+     "kaplama_icerik": 0.7882012261284722,
+     "kaplama_tuval": 0.4433631896972656,
+     "kenar_dayanmasi": 0.6551939924906133,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000014_000001992.jpg",
+     "kaplama_icerik": 0.7880927191840278,
+     "kaplama_tuval": 0.4433021545410156,
+     "kenar_dayanmasi": 0.6192115143929913,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000015_000002040.jpg",
+     "kaplama_icerik": 0.7945014105902778,
+     "kaplama_tuval": 0.44690704345703125,
+     "kenar_dayanmasi": 0.6329787234042553,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000016_000002088.jpg",
+     "kaplama_icerik": 0.8066202799479166,
+     "kaplama_tuval": 0.4537239074707031,
+     "kenar_dayanmasi": 0.668648310387985,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000017_000002112.jpg",
+     "kaplama_icerik": 0.8094007703993056,
+     "kaplama_tuval": 0.4552879333496094,
+     "kenar_dayanmasi": 0.7490613266583229,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000018_000002160.jpg",
+     "kaplama_icerik": 0.8162638346354166,
+     "kaplama_tuval": 0.4591484069824219,
+     "kenar_dayanmasi": 0.8410513141426783,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.7803141276041666,
+     "kaplama_tuval": 0.43892669677734375,
+     "kenar_dayanmasi": 0.6889862327909887,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000001_000000168.jpg",
+     "kaplama_icerik": 0.7811686197916666,
+     "kaplama_tuval": 0.4394073486328125,
+     "kenar_dayanmasi": 0.6764705882352942,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000002_000000192.jpg",
+     "kaplama_icerik": 0.78131103515625,
+     "kaplama_tuval": 0.4394874572753906,
+     "kenar_dayanmasi": 0.564142678347935,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000003_000000240.jpg",
+     "kaplama_icerik": 0.7975870768229166,
+     "kaplama_tuval": 0.4486427307128906,
+     "kenar_dayanmasi": 0.590738423028786,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000004_000000264.jpg",
+     "kaplama_icerik": 0.7960883246527778,
+     "kaplama_tuval": 0.4477996826171875,
+     "kenar_dayanmasi": 0.6276595744680851,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000005_000000288.jpg",
+     "kaplama_icerik": 0.7985026041666666,
+     "kaplama_tuval": 0.44915771484375,
+     "kenar_dayanmasi": 0.6545682102628285,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000006_000000336.jpg",
+     "kaplama_icerik": 0.80059814453125,
+     "kaplama_tuval": 0.4503364562988281,
+     "kenar_dayanmasi": 0.5982478097622027,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000007_000000384.jpg",
+     "kaplama_icerik": 0.8131374782986112,
+     "kaplama_tuval": 0.45738983154296875,
+     "kenar_dayanmasi": 0.6320400500625782,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000008_000000432.jpg",
+     "kaplama_icerik": 0.8184611002604166,
+     "kaplama_tuval": 0.4603843688964844,
+     "kenar_dayanmasi": 0.5913642052565707,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000009_000000480.jpg",
+     "kaplama_icerik": 0.8299560546875,
+     "kaplama_tuval": 0.46685028076171875,
+     "kenar_dayanmasi": 0.5394242803504381,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000010_000000504.jpg",
+     "kaplama_icerik": 0.8378634982638888,
+     "kaplama_tuval": 0.4712982177734375,
+     "kenar_dayanmasi": 0.5622653316645807,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000011_000000600.jpg",
+     "kaplama_icerik": 0.8455810546875,
+     "kaplama_tuval": 0.47563934326171875,
+     "kenar_dayanmasi": 0.6426783479349186,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000012_000000624.jpg",
+     "kaplama_icerik": 0.8418307834201388,
+     "kaplama_tuval": 0.4735298156738281,
+     "kenar_dayanmasi": 0.6339173967459324,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000013_000000648.jpg",
+     "kaplama_icerik": 0.8591037326388888,
+     "kaplama_tuval": 0.483245849609375,
+     "kenar_dayanmasi": 0.8310387984981227,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000014_000000672.jpg",
+     "kaplama_icerik": 0.8547295464409722,
+     "kaplama_tuval": 0.4807853698730469,
+     "kenar_dayanmasi": 0.8785982478097623,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000015_000000696.jpg",
+     "kaplama_icerik": 0.84698486328125,
+     "kaplama_tuval": 0.4764289855957031,
+     "kenar_dayanmasi": 0.8260325406758448,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000016_000000720.jpg",
+     "kaplama_icerik": 0.8446451822916666,
+     "kaplama_tuval": 0.4751129150390625,
+     "kenar_dayanmasi": 0.8094493116395495,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000017_000000792.jpg",
+     "kaplama_icerik": 0.8543565538194444,
+     "kaplama_tuval": 0.4805755615234375,
+     "kenar_dayanmasi": 0.8075719649561952,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000018_000000840.jpg",
+     "kaplama_icerik": 0.8533732096354166,
+     "kaplama_tuval": 0.4800224304199219,
+     "kenar_dayanmasi": 0.8128911138923655,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000019_000000888.jpg",
+     "kaplama_icerik": 0.8542209201388888,
+     "kaplama_tuval": 0.480499267578125,
+     "kenar_dayanmasi": 0.8679599499374218,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000020_000000936.jpg",
+     "kaplama_icerik": 0.8548719618055556,
+     "kaplama_tuval": 0.480865478515625,
+     "kenar_dayanmasi": 0.688360450563204,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000021_000000984.jpg",
+     "kaplama_icerik": 0.8557264539930556,
+     "kaplama_tuval": 0.48134613037109375,
+     "kenar_dayanmasi": 0.6661451814768461,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000022_000001032.jpg",
+     "kaplama_icerik": 0.8619249131944444,
+     "kaplama_tuval": 0.484832763671875,
+     "kenar_dayanmasi": 0.7146433041301627,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000023_000001080.jpg",
+     "kaplama_icerik": 0.8690253363715278,
+     "kaplama_tuval": 0.4888267517089844,
+     "kenar_dayanmasi": 0.8720275344180225,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000024_000001104.jpg",
+     "kaplama_icerik": 0.8739827473958334,
+     "kaplama_tuval": 0.49161529541015625,
+     "kenar_dayanmasi": 0.9217772215269087,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000025_000001152.jpg",
+     "kaplama_icerik": 0.8708292643229166,
+     "kaplama_tuval": 0.4898414611816406,
+     "kenar_dayanmasi": 0.951188986232791,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000026_000001200.jpg",
+     "kaplama_icerik": 0.8662041558159722,
+     "kaplama_tuval": 0.4872398376464844,
+     "kenar_dayanmasi": 0.7656445556946183,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000027_000001248.jpg",
+     "kaplama_icerik": 0.8607245551215278,
+     "kaplama_tuval": 0.4841575622558594,
+     "kenar_dayanmasi": 0.7753441802252816,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000028_000001296.jpg",
+     "kaplama_icerik": 0.8537394205729166,
+     "kaplama_tuval": 0.4802284240722656,
+     "kenar_dayanmasi": 0.75,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000029_000001320.jpg",
+     "kaplama_icerik": 0.8554416232638888,
+     "kaplama_tuval": 0.4811859130859375,
+     "kenar_dayanmasi": 0.7916145181476846,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000030_000001344.jpg",
+     "kaplama_icerik": 0.8582763671875,
+     "kaplama_tuval": 0.48278045654296875,
+     "kenar_dayanmasi": 0.8016270337922403,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000000_000000000.jpg",
+     "kaplama_icerik": 0.8380669487847222,
+     "kaplama_tuval": 0.47141265869140625,
+     "kenar_dayanmasi": 0.7866082603254068,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    },
+    {
+     "kare": "frame_000001_000000456.jpg",
+     "kaplama_icerik": 0.8145073784722222,
+     "kaplama_tuval": 0.458160400390625,
+     "kenar_dayanmasi": 0.7606382978723404,
+     "red": true,
+     "red_sebebi": "ZEMIN_MASKESI_SUPHELI"
+    }
+   ]
+  }
+ }
+}

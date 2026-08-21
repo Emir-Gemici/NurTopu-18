@@ -24,10 +24,64 @@
      "olculen": "figur zemin %9.03 · raw bos 0/67 · cp bos 0/393",
      "sonuc": "GECTI",
      "not": "🔴 SAPMA: v34 tabanina (%0,49) gore oran 18,43x — denetcinin 'TEHLIKELI yon (daha cok zemin)' uyarisi tetiklendi ve kural geregi K2/K3'e AYRICA bakildi: %7,03 ve %0,00, ikisi de tavan alti. ⚠ YORUM (OLCUM DEGIL): figur n=1, YZ uretimi, alan disidir ve orada HICBIR MODEL rota uretemiyor (D-231); ayrica v34 ile ft maskeleri SIFIR piksel ortusuyor (D-229). Bu yuzden yuksek deger 'asiri zemin' yerine 'ilk kez segmentleyebiliyor' olabilir — AMA FIGURDE YER GERCEGI YOKTUR, bu iddia OLCULMEMISTIR. ⚠ TABAN KAYMASI: asagidaki `figur_zemin_orani` artik v35'in KENDI degeridir; bundan sonra denetcinin basacagi oran 1,00 gorunecektir. v34 tabanina gore 18,43x olan tarihsel sapma BURADA yazilidir.",
-     "figur_zemin_orani": 0.0903,
+     "figur_zemin_orani": [
+      {
+       "surum": "v17",
+       "deger": 0.0,
+       "donem_tutarli": false,
+       "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+       "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+      },
+      {
+       "surum": "v20",
+       "deger": 0.0,
+       "donem_tutarli": false,
+       "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+       "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+      },
+      {
+       "surum": "v21",
+       "deger": 0.0,
+       "donem_tutarli": false,
+       "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+       "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+      },
+      {
+       "surum": "v24",
+       "deger": 0.3464,
+       "donem_tutarli": false,
+       "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+       "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+      },
+      {
+       "surum": "v27",
+       "deger": 0.0784,
+       "donem_tutarli": true,
+       "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)"
+      },
+      {
+       "surum": "v30",
+       "deger": 0.0796,
+       "donem_tutarli": true,
+       "kaynak": "defterde DUZ METINDEYDI ('figur zemin %8,0'); D-261'de olculdu -> %7,96 (birebir)"
+      },
+      {
+       "surum": "v34",
+       "deger": 0.0049,
+       "donem_tutarli": true,
+       "kaynak": "defterin SKALER degeri (1b57166, 2026-08-19); D-261'de olculdu -> ayni"
+      },
+      {
+       "surum": "v35",
+       "deger": 0.0903,
+       "donem_tutarli": true,
+       "kaynak": "defterin SKALER degeri (ee7508d, T130/D-256); D-261'de olculdu -> ayni"
+      }
+     ],
      "raw_frames_bos": 0,
      "copy_paste_bos": 0,
-     "_sayisal_alan_notu": "T110/D-186 · Bu UC alan SAYISALDIR ve `65_kabul_denetcisi.py` figur oranini BURADAN okur; `olculen` metninden sayi AYIKLANMAZ (D-180). `figur_zemin_orani` URETIM MODELININ (artik v35) figur zemin kaplamasidir; kaynak bu terfinin kabul kosumu, YENIDEN OLCULMEDI."
+     "_sayisal_alan_notu": "T110/D-186 · Bu UC alan SAYISALDIR ve `65_kabul_denetcisi.py` figur oranini BURADAN okur; `olculen` metninden sayi AYIKLANMAZ (D-180). `figur_zemin_orani` URETIM MODELININ (artik v35) figur zemin kaplamasidir; kaynak bu terfinin kabul kosumu, YENIDEN OLCULMEDI.",
+     "_figur_zemin_orani_bicimi": "T132: SKALER -> EKLENIR LISTE. Denetci 'sonuncuyu' DEGIL, uretim model_id'sine KARSILIK GELEN kaydi okur (siralama bozulursa sonuncu yanlis tabani secer). Eski SKALER bicim HALA CALISIR (geriye uyumluluk: eski defter kopyalari + saha paketi). Gecmis SILINMEZ. 🔴 Bu bir ESIK DEGILDIR ve kural icermez — D-186'nin reddettigi sey n=1 figure MODEL uzerinde tavan koymakti; burada yalniz TABANIN soyagacindaki yeri GORUNUR kilinir (D-263 SS5)."
     },
     "k1_rota_uretimi": {
      "esik": ">=230",
@@ -80,7 +134,13 @@
    },
    "status": "competition",
    "_surum_karari": "2026-08-21 · KULLANICI KARARI (t127_temiz uretim olsun; uretim adi v35) · dayanak REVIEW_LOG D-249 (T127 sonucu) ve D-255 (mimar denetimi); on kayit results/t127_on_kayit.md OLCUMLER KOSULMADAN once yazildi (D-107). Onceki uretim: navitas-seg-v34-512 (sha 6730d777...) — SILINMEDI, T123'un YEDEK adayidir ve FARKLI HATA YAPAR: arena K2'de en iyi (%4,65) ve karar kararliliginda daha iyi (4/260), ama gercek karelerin 67/67'sini reddeder ve catinin %96'sini kacirir. Saha gununde secim icin JETSON_KILAVUZ SS6C birincil->yedek gecis yordami kullanilir. ⚠ Terfi KARARI INSANINDIR (D-133); basamele uygulamistir, mimar denetler.",
-   "_imgsz_notu": "S5 · CIKARIM boyudur, egitim boyu DEGIL. `codes/rpi_inference.py::INFER_SIZE` BU alandan turetilir ve `model_kayit_dogrula` her yuklemede bu alanla calisan degeri KIYASLAR (uyusmazlik fail-closed). Eskiden INFER_SIZE ciplak sabitti ve bu alanla hicbir yerde kiyaslanmiyordu; defter cevrilse kod 512'de kalir ve ses cikmazdi — D-116/5 kusurunun birebir aynisi."
+   "_imgsz_notu": "S5 · CIKARIM boyudur, egitim boyu DEGIL. `codes/rpi_inference.py::INFER_SIZE` BU alandan turetilir ve `model_kayit_dogrula` her yuklemede bu alanla calisan degeri KIYASLAR (uyusmazlik fail-closed). Eskiden INFER_SIZE ciplak sabitti ve bu alanla hicbir yerde kiyaslanmiyordu; defter cevrilse kod 512'de kalir ve ses cikmazdi — D-116/5 kusurunun birebir aynisi.",
+   "kabul_kumesi_parmak_izi": {
+    "n": 547,
+    "ozet": "sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586",
+    "olculdu": "2026-08-21 (T132)",
+    "yontem": "scripts/olcum/65_kabul_denetcisi.kume_parmak_izi — sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ. TURETILIR, elle tutulmaz (D-263 SS4.3). SINIR: ayni boyutta icerik degisimi YAKALANMAZ."
+   }
   },
   "arac_referansi": {
    "model_id": "dota-yolov8m-obb",

@@ -19966,3 +19966,125 @@ olsaydı, %0,49'un %7,9 medyandan 16× uzakta olduğu **o gün** görünürdü.
 T131 "ölç ve öner" idi; ölçüldü ve önerildi. Uygulama T132'dir.
 ⚠ **Eşik yok, kapı yok** — dördü de artı benim ekim **görünürlüktür**.
 ⚠ v35 terfisi geri alınmaz; altı kapıyı geçti ve kayıtlar dürüst.
+
+---
+
+### D-264 · ✅ T132 UYGULANDI · K0 tabanı artık **kim olduğunu söylüyor**: eklenir liste + kimlik + soyağacı + küme parmak izi · ve emrin dışında bir kusur bulundu — **uyarı satırı denetçiyi ÖLDÜRÜYORDU**
+
+- **Yazan:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3: yazan denetleyemez) · 2026-08-21 · karar **D-263 §4-5**, ölçüm **D-261**.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 765 · OK** (728 → 765, yeni kapı 37 test) ·
+  ölçüm aynası **77 çift · AYRIŞAN 0**.
+- 🔴 **EŞİK DEĞİŞMEDİ, KAPI EKLENMEDİ.** `K0_ORAN_ALT`/`K0_ORAN_UST` (0,5 / 2,0)
+  el değmedi ve bunu artık bir test **kilitliyor**. Yapılan işin tamamı
+  **görünürlüktür**; model hakkında hiçbir yeni hüküm yoktur.
+
+#### 1. DÖRT ÖNERİ + MİMARIN EKİ — hepsi uygulandı
+| # | ne | nerede |
+|---|---|---|
+| 1 | `figur_zemin_orani` **eklenir liste** (8 sürüm, `{surum, deger, donem_tutarli, kaynak}`) | `config/model_registry.json` + `jetson_paket` ikizi |
+| 2 | Rapor **tabanın kimliğini** yazıyor | `k0_taban_metni()` |
+| 3 | Kabul kümesinin **türetilmiş parmak izi** | `kume_parmak_izi()` · defterde `kabul_kumesi_parmak_izi` |
+| 4 | Metrik alanı **yok olduğunda** bağırıyor | `118_t131_kayma_defteri.py` stdout |
+| 5 | **Mimarın eki:** soyağacı + tabanın **medyana uzaklığı** | `k0_soyagaci_satirlari()` |
+
+**Gerçek koşumdan (v35, tam kabul zinciri):**
+```text
+  kabul kumesi: O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66
+                parmak izi n=547 · sha256:604c037f780b7c6e...e250586
+  K0 KORLUK YOK   GECTI  figur zemin %9.03 (uretim tabani %9.03 = v35'in degeri · oran 1.00)
+     SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49 · v35 %9.03
+               (+4 kayit DONEM-TUTARLI DEGIL — 640 donemi; kiyasa ve medyana GIRMEZ, kayitta DURUR)
+     TABAN, soyagaci medyanindan (%7.90) 1.1x uzakta   <- SAYI, KURAL DEGIL
+```
+⚠ **Bütün kabul sayıları BİREBİR aynı kaldı** (K1 256/260 · K2 18/256 ·
+K3 0/256 · K4 1/256 · K5 0/173 · VERDIKT: URETIME ALINIR). Biçim değişikliği
+**davranışsal olarak nötrdür**; bu, D-256'nın koşumuyla karşılaştırılarak
+doğrulandı.
+
+#### 2. 🔴 KARŞI-OLGUSAL: v34 terfisi günü bu satır ne derdi?
+Sentetik defterle (üretim v34, soyağacı o günkü hâliyle) koşuldu:
+```text
+taban 0.0049 · kimlik v34
+SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49
+TABAN, soyagaci medyanindan (%7.84) 16.0x uzakta
+```
+Yani T131'in çekirdek iddiası **doğrulandı**: bu satır 19 Ağustos'ta olsaydı,
+v34'ün aykırılığı **o gün** görünürdü. Mimarın tahmini 16,1×'ti; ölçülen 16,0×
+(fark: mimar medyana v35'i de katmış). Bu karşı-olgusal bir **teste** de
+bağlandı — sayı bozulursa kapı kırmızı yanar.
+
+#### 3. EMRİN BİR MADDESİNİ DARALTTIM — gerekçesiyle
+D-263 §4.1 *"denetçi **yine sonuncuyu** kullanır"* diyordu. Kullanıcının T132
+emri bunu **üretim `model_id`'sine karşılık gelen kayıt** diye daralttı ve
+uyguladığım budur. Gerekçe ölçülebilir: liste sıralaması bozulursa "sonuncu"
+**yanlış tabanı** seçer ve bu, T131'in bulduğu kusurun (sessizce kayan
+referans) **birebir tekrarı** olurdu. Sıralamaya güvenmeyen tek doğru anahtar
+`model_id`dir. Karışık sıralı listeyle sınandı: doğru taban geldi.
+
+#### 4. GERİYE UYUMLULUK — skaler biçim HÂLÂ çalışıyor
+Eski defter kopyaları ve saha paketi skaler taşıyabilir. Çözücü **iki biçimi de**
+kabul eder; skalerde değer okunur ama **kimlik YOK diye açıkça yazılır**
+(sessiz kalmaz — D-180 dersi). Bu, T110'un mevcut kapısıyla (`test_k0_gorunurlugu`,
+skaler defter kuruyor) da kendiliğinden doğrulandı: o kapı hâlâ yeşil.
+
+#### 5. 🔴 EMRİN DIŞINDA BULUNAN KUSUR — **uyarı, denetçiyi ÖLDÜRÜYORDU**
+K0 raporunu genişletirken ölçtüm:
+```text
+65'i BETIK olarak kos, ciktiyi YAKALA (pipe ya da yonlendirme):
+    sys.stdout.encoding -> cp1254
+    k0_dikkat_satiri'nin 🔴 karakteri -> UnicodeEncodeError -> DENETCI COKER
+konsolda kos: encoding utf-8 -> sorunsuz
+```
+Yani **uyarı satırı, tam da söyleyecek sözü olduğunda** denetçiyi öldürüyordu:
+insan izlerken çalışır, otomasyon yakalarken düşer. Mimar D-255'te bu satırı
+(oran 18,43) **konsolda** gördüğü için kusur görünmedi.
+⚠ Bu, T110'un amacının tersidir — o satırın var oluş sebebi **görünürlüktü**
+(D-186/D-188). Ve 30 Eylül saha günü çıktılar **dosyaya** yazılacak.
+- **Düzeltme:** `stdout_utf8_yap()` — yalnız `main()` içinde çağrılır
+  (içe aktarmada çağrılsa bu modülü import eden her testin stdout'unu
+  değiştirirdi), `errors="replace"` ile bilinmeyen kodlamada bile **çökmez**.
+- **Testle kilitlendi (5 test):** önce **riskin gerçek olduğu** sabitlendi
+  (`DIKKAT` satırı cp1254'e sığmıyor), sonra koruma; ayrıca bir test çağrının
+  modül gövdesine **kaçmadığını** doğruluyor.
+- ⚠ **ÖNER-BEKLE DEĞİL, YAPILDI.** Gerekçem: kusur emrin dışında ama emrin
+  **amacının tam merkezinde** (görünürlük), ve bırakılırsa saha günü sessizce
+  ısırırdı. Mimar aksini düşünürse geri alınması tek satırdır.
+- Aynı sınıf `118`de de vardı ve orada işaret **ASCII'ye** çevrildi.
+
+#### 6. KÜÇÜK TUTARLILIK ONARIMI (yan bulgu)
+`main()` kabul kümesini `args.kok`tan okuyordu ama **tabanı `--kok`suz**
+okuyordu; `--kok` verildiğinde denetçi kümeyi bir defterden, tabanı **başka**
+defterden alırdı. Tek satır hizalandı.
+
+#### 7. MUTASYON SINAVI (emrin istediği üç davranış)
+```text
+POZITIF KONTROL (mutasyonsuz)          dosya: 0/37 · takim: 0/765
+(a) gecmisten v34 kaydi SILINDI        dosya: 2/37 · takim: 2/765
+(b) satirdan taban KIMLIGI kaldirildi  dosya: 2/37 · takim: 2/765
+(c) SKALER geriye uyumluluk bozuldu    dosya: 2/37 · takim: 4/765
+GERI ALINDI -> 0/37 · 0/765 · dort dosya da BAYT-ES geri yazildi
+```
+⚠ (c)'de takım sayısının dosyadan **fazla** düşmesi anlamlıdır: T110'un eski
+kapısı (`test_k0_gorunurlugu`) skaler defter kurduğu için o da düşüyor —
+geriye uyumluluğu **iki bağımsız kapı** koruyor.
+⚠ Mutasyonlar hem repo hem **canlı** kopyaya uygulandı; yoksa ayna kapısı
+davranışla ilgisiz bir sebeple düşüp takım sayısını kirletirdi.
+
+#### 8. GERİYE DÖNÜK DOLDURMA — UYDURMA YOK
+Sekiz sürümün değeri D-261'de **tek aletle ölçüldü** ve defterin tarihsel
+sayılarıyla birebir tuttu (v30 %7,96 · v34 %0,49 · v35 %9,03). Her kaydın
+`kaynak` alanı yazılı; v34/v35 için "defterin skaler değeri", v30 için
+"defterde DÜZ METİNDEYDİ, ölçüldü → birebir".
+🔴 **v17/v20/v21/v24 `donem_tutarli: false`** ve her birinde uyarı metni var:
+kendi üretim dönemlerinde **640**'ta koşuyorlardı (geçiş v27 ile). Bu kayıtlar
+**medyana katılmaz** ve rapor kaç kaydın dışarıda kaldığını **yazar** — yoksa
+gelecekte biri o sayıları düz kıyas sanır.
+
+#### 9. YETKİ SINIRI — yapılmayanlar
+Eşik **değişmedi** ve bir testle kilitlendi · **kapı eklenmedi** (bu dosya
+biçim/görünürlük sınar, model hakkında hüküm vermez) · `codes/` altına
+**dokunulmadı** · metrik **değerleri** değişmedi, yalnız **biçim** genişledi ·
+iki defter kopyası **bayt-eş** (`test_jetson_comms_paketi` kilidi) · v35
+terfisi **geri alınmadı**.

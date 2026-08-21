@@ -5865,7 +5865,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     (hangi komut, hangi dosya, kaç dakika). Kılavuzun kurulum yordamı testle kilitli
     (T104); geçiş yordamı **kilitli değil**.
 
-- [ ] **T132 — K0 tabanının GEÇMİŞİ ve KİMLİĞİ görünür olsun (T131'in uygulaması) · EŞİK YOK, KAPI YOK** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` (+ canlı ayna) · **ÖNEMLİ** · ölçüm **D-261**, karar **D-263 §4-5**
+- [x] **T132 — UYGULANDI · K0 tabanı artık KİM OLDUĞUNU söylüyor (geçmiş + kimlik + soyağacı + küme parmak izi); eşik DEĞİŞMEDİ** · K0 tabanının GEÇMİŞİ ve KİMLİĞİ görünür olsun (T131'in uygulaması) · EŞİK YOK, KAPI YOK** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` (+ canlı ayna) · **ÖNEMLİ** · ölçüm **D-261**, karar **D-263 §4-5**
   - **Dört öneri (amele, hepsi KABUL):**
     1. `figur_zemin_orani` **eklenir liste** (`[{surum, deger}, …]`); denetçi **yine sonuncuyu** kullanır — **eşik değişmez** — geçmiş **silinmez**.
     2. Denetçi raporu **tabanın kimliğini** yazsın: *"taban = v34'ün değeri"*.
@@ -5883,6 +5883,50 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     Burada istenen **tabanın nerede durduğunun BASILMASI**; model hakkında hüküm **yok**.
   - ⚠ Eşik/kapı **eklenmez** (§9.2). Gerekli görürsen **öner ve bekle**.
   - **Kapı:** `15/15` · `discover -s tests -q` → **728 OK** (yeni testle artar) · ayna senkron.
+
+  - ✅ **UYGULANDI · 2026-08-21 · Claude-2 (başamele) · D-264.**
+    **Yazan:** Claude 2 · **Denetleyen:** mimar bekleniyor (§9.3) ·
+    **Kapı çıktısı:** `15/15` · `Ran 765 · OK` (728 → 765) · ayna **77 çift · AYRIŞAN 0**.
+    ```text
+    kabul kumesi: ...\sentetik_arena_kadraj_t66
+                  parmak izi n=547 · sha256:604c037f780b7c6e...e250586
+    K0 KORLUK YOK   GECTI  figur zemin %9.03 (uretim tabani %9.03 = v35'in degeri · oran 1.00)
+       SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49 · v35 %9.03
+                 (+4 kayit DONEM-TUTARLI DEGIL — 640 donemi; medyana GIRMEZ, kayitta DURUR)
+       TABAN, soyagaci medyanindan (%7.90) 1.1x uzakta   <- SAYI, KURAL DEGIL
+    ```
+    ⚠ **Kabul sayıları BİREBİR aynı** (K1 256/260 · K2 18/256 · K3 0/256 ·
+    K4 1/256 · K5 0/173 · VERDIKT: URETIME ALINIR) — biçim değişikliği
+    **davranışsal olarak nötr**.
+  - 🔴 **KARŞI-OLGUSAL DOĞRULANDI:** üretim v34 ve soyağacı o günkü hâliyle
+    kurulduğunda satır **"medyandan 16,0x uzakta"** basıyor. Yani bu satır
+    19 Ağustos'ta olsaydı aykırılık **o gün** görünürdü (mimarın tahmini 16,1×;
+    fark: mimar medyana v35'i de katmış). Teste bağlandı.
+  - **Emrin bir maddesi DARALTILDI (gerekçeli):** D-263 §4.1 "denetçi yine
+    **sonuncuyu** kullanır" diyordu; uygulanan **üretim `model_id`'sine karşılık
+    gelen kayıt**. Sıralama bozulursa "sonuncu" yanlış tabanı seçer — bu,
+    T131'in bulduğu kusurun birebir tekrarı olurdu.
+  - 🔴 **EMRİN DIŞINDA BULUNAN KUSUR — uyarı satırı denetçiyi ÖLDÜRÜYORDU.**
+    65 bir betik olarak koşup çıktısı yakalandığında (pipe/yönlendirme)
+    `stdout.encoding` **cp1254** oluyor ve `🔴 DIKKAT` satırı
+    `UnicodeEncodeError` ile denetçiyi çökertiyor; konsolda utf-8 olduğu için
+    **insan izlerken çalışıyor, otomasyon yakalarken düşüyordu**. T110'un
+    amacının tersi ve 30 Eylül'de çıktılar dosyaya yazılacak.
+    → `stdout_utf8_yap()` (yalnız `main()`'de, `errors="replace"`), 5 testle
+    kilitlendi; ilk test **riskin gerçek olduğunu** sabitliyor.
+  - **Mutasyon (emrin istediği üç davranış):**
+    ```text
+    POZITIF KONTROL                        dosya: 0/37 · takim: 0/765
+    (a) gecmisten v34 kaydi SILINDI        dosya: 2/37 · takim: 2/765
+    (b) satirdan taban KIMLIGI kaldirildi  dosya: 2/37 · takim: 2/765
+    (c) SKALER geriye uyumluluk bozuldu    dosya: 2/37 · takim: 4/765
+    GERI ALINDI -> 0/37 · 0/765 · dort dosya da BAYT-ES geri yazildi
+    ```
+    ⚠ (c)'de takımın dosyadan fazla düşmesi anlamlı: T110'un eski kapısı da
+    skaler defter kuruyor — geriye uyumluluğu **iki bağımsız kapı** koruyor.
+  - **Yetki sınırı:** eşik değişmedi (**testle kilitlendi**) · kapı eklenmedi ·
+    `codes/` altına dokunulmadı · metrik **değerleri** değişmedi, yalnız biçim
+    genişledi · iki defter kopyası **bayt-eş** · v35 geri alınmadı.
 
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
