@@ -20671,3 +20671,78 @@ Ajanın betiklerini **çalıştırmadan**, kendi kodunu yazarak aynı 30 kareyi
 `YOLO(...).names`. Kendi ifadesiyle: *"bu eşleme ters olsaydı tüm bulgu tersine
 dönerdi; ölçüldü, varsayılmadı."* Ayna kontrolü de yaptı: `codes/rpi_inference.py`
 ile `jetson_paket/kod/rpi_inference.py` **md5-eş**.
+
+---
+
+### D-271 · ⚖ MİMAR DENETİMİ · T136 · **Gece bulgusunu kendi ölçümümle doğruladım** (iki dağılım hiç örtüşmüyor) · tarih hesabı sağlam · ve bir ÇELİŞKİ buldum: V2 varsayımı kullanıcının kendi kararıyla çakışıyor
+Tarih: 2026-08-21 · Denetleyen: Claude 1 (mimar) · Denetlenen: `fe54f67` (T136)
+Kapılar mimar tarafından koşuldu: **793 OK** (777 → +16) · **15/15**
+
+#### 1. GECE BULGUSU — KENDİ ÖLÇÜMÜM, BAĞIMSIZ ÖRNEKLEMEYLE
+
+Yedi videodan 8'er kare (n=62), gri ortalama:
+
+    dosya sirasiyla ort_L : 71,5 · 65,2 · 23,2 · 22,1 · 19,2 · 14,3 · 17,7
+    DJI          medyan 23,0 · maks 74,6 · n=62
+    raw_frames   medyan 129,1 · min 118,7 · n=40
+    ORTUSME YOK  : DJI'nin EN AYDINLIK karesi (74,6) referansin EN KARANLIK
+                   karesinin (118,7) ALTINDA
+
+Amelenin sayılarıyla **birebir mertebede** (21,2 / 73,2 · 128,7 / 118,7).
+Parlaklık **çekim sırasıyla monoton düşüyor** — hava kararırken çekilmiş.
+**Bulgu doğrulandı: ilk DJI çekimi eğitim için kullanılamaz.**
+
+#### 2. AMELENİN EN İYİ HAMLESİ — GÖRSELE BAKMASI
+
+İlk ajan raporu *"model DJI dokusunda zemini görmüyor"* diye gelmiş. Amele bunu
+**model kusuru** diye yazmadan önce kareye bakmış: **kare neredeyse siyahmış.**
+Ajanın sayıları doğru, **yorumu eksikti**.
+
+Bu, D-201'in dersinin doğru uygulanmasıdır: yer gerçeği olmayan yerde "model
+kör" demek, bu projede defalarca kapattığımız hatanın kendisi. Sayıyı okuyup
+geçmek kolaydı; **bakmış**.
+
+⚠ Ve karıştırıcıyı da dürüstçe yazmış: elde **tek bir gündüz DJI karesi yok**,
+bu yüzden *"gece mi DJI dokusu mu"* sorusu **ayrılamıyor**. Doz-yanıt geceyi
+işaret ediyor ama bu **kanıt değil, güçlü işaret**. Doğru ayrım.
+
+#### 3. TARİH HESABI — SAĞLAM, VE DUYARLILIĞI YAZILI
+
+    27 Eylul (bitis hedefi; 30 Eylul CIHAZ GUNU)
+      - 9 is gunu (hat)                -> 16 Eylul
+      - 3 gun     (basarisiz cekim payi) -> 13 EYLUL
+
+Her varsayım (V1–V5) **işaretli ve düzeltilebilir** yazılmış; V1'e duyarlılık
+açıkça verilmiş (120 dk çekim → son tarih ~6 Eylül'e kayar). **Doğru biçim.**
+
+🔴 **Baskın terim COMPUTE DEĞİL İNSAN EMEĞİ:** 1566 kare için elle etiketleme
+~47 saat ≈ **6 iş günü**. Eğitim ~1 gün, kabul zinciri ~0,5 gün. Yani darboğaz
+GPU değil **poligon**.
+
+#### 4. 🔴 BULDUĞUM ÇELİŞKİ — V2 KULLANICININ KARARIYLA ÇAKIŞIYOR
+
+Hesabın **V2** varsayımı: *"elle etiketleme kapasitesi 1 kişi × 8 saat/gün —
+tek insan (siz)"*. Ama kullanıcının **kendi kararı** (D-211 §1b, brifingle
+gelen): *"insan YALNIZ veri toplar; etiketleme (71 hattı) ve eğitim (56/57
+zinciri) başamelenin işidir."*
+
+**Yani hesap, kullanıcının yapmayacağını söylediği işi kullanıcıya yüklüyor.**
+
+Bu bir hata değil — **ölçülmemiş bir soru**. Ve cevabı **son tarihi büyük
+ölçüde değiştirir**:
+  · İnsan etiketlerse: 6 iş günü seri iş → **13 Eylül** ayakta.
+  · Başamele etiketlerse: T121'de **56 kaynak kareyi elle+homografiyle** zaten
+    etiketledi (3 görsel doğrulama turu). 1566 kare **28 kat**tır; paralel
+    fan-out'a **uygun** ama **ölçülmedi** ve **kalite ölçeklenir mi bilinmiyor**.
+  · ⚠ Kötü etiket, etiketsizden **beterdir** — D-210 bunu ölçtü (448/448 tam-kare
+    zemin, üretim modelini çatıya kör yaptı). Hız uğruna kalite düşerse
+    **kazanç değil zarar** olur.
+
+→ **T137** açıldı: etiketleme kapasitesini ve **kalitesini** ölç, sonra son
+tarihi yeniden hesapla.
+
+#### 5. İNSAN İŞİ — DEĞİŞMEDİ, AMA ARTIK ŞARTI VAR
+
+Çekim **gün ışığında** tekrarlanacak ve doğrulama oturumu **ayrı** konacak.
+İlk çekim boşa gitmedi: **hattı prova etti ve bir kapı kazandırdı** (parlaklık
+kapısı, artık gece verisi sessizce eğitime giremez).

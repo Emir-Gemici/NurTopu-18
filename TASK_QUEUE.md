@@ -6147,6 +6147,30 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ Prova modeli **aday bile değildir** — 14 dosya yetersiz. Amaç **hattı**
     sınamak, model üretmek değil.
 
+- [ ] **T137 — 🔴 SON TARİHİN BASKIN TERİMİ ETİKETLEME VE KİM YAPACAĞI BELİRSİZ: kapasiteyi VE kaliteyi ölç** · `scripts/dji_hatti.py`, `O:\navitas-local-train\71_gercek_kare_etiketleyici.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-271 §4**
+  - **Çelişki (mimar buldu).** T136'nın **V2** varsayımı etiketlemeyi **insana**
+    yüklüyor (*1 kişi × 8 saat/gün*). Kullanıcının **kendi kararı** ise (D-211 §1b):
+    *"insan YALNIZ veri toplar; etiketleme ve eğitim başamelenin işidir."*
+    Hesap, kullanıcının **yapmayacağını söylediği işi** kullanıcıya yüklüyor.
+  - **Neden kritik.** Etiketleme son tarihin **baskın terimi**: 1566 kare için
+    ~47 saat ≈ **6 iş günü**. Eğitim ~1 gün, kabul zinciri ~0,5 gün. Kim yaptığı
+    **son tarihi haftalarca kaydırır**.
+  - **ÖLÇ (iki eksen, ikisi de gerekli):**
+    1. **KAPASİTE** — başamele kaç kare/saat etiketleyebiliyor? T121'de **56
+       kaynak kare** elle+homografiyle etiketlendi (3 görsel tur). 1566 kare
+       **28 kat**. Paralel fan-out'a uygun mu, uçtan uca **ölç**.
+    2. 🔴 **KALİTE ÖLÇEKLENİYOR MU** — asıl soru bu. Ölçüt: T121'de kullanılan
+       aynı ölçüm (çatı kaçağı / disk sondası) küçük ve büyük partide **aynı**
+       kalıyor mu?
+  - ⚠ **KÖTÜ ETİKET, ETİKETSİZDEN BETERDİR** — D-210 bunu ölçtü (448/448 tam-kare
+    zemin → üretim modeli çatıya kör). **Hız uğruna kalite düşerse kazanç değil
+    ZARAR olur** ve bu, düzeltmesi bir GPU gecesi süren bir zarardır.
+  - **Çıktı:** yeni **son güvenli geliş tarihi** — V2 ölçülmüş değerle
+    değiştirilerek `results/t136/son_guvenli_gelis_tarihi.md` yeniden koşulur.
+  - ⚠ Kapasite yetersizse bu bir **başarısızlık değil bulgudur**: o zaman insan
+    etiketler ve kullanıcı bunu **13 Eylül'den önce** bilmelidir.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **793 OK**
+
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
     Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
