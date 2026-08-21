@@ -18774,7 +18774,7 @@ durumda — ölçüm zemini artık blokaj değil.
 
 ---
 
-### D-246 · ✅ T127 · Mimarın işaret ettiği eksende İLK KANIT: sıralama EĞİTİME HİÇ GİRMEMİŞ karelerde de korunuyor — t122ac'nin çatı kaçağı bakir karelerde %1,1 (v34: %97,6)
+### D-254 · ✅ T127 · Mimarın işaret ettiği eksende İLK KANIT: sıralama EĞİTİME HİÇ GİRMEMİŞ karelerde de korunuyor — t122ac'nin çatı kaçağı bakir karelerde %1,1 (v34: %97,6)
 
 - **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
   (⚠ aynı model — anlaşma kanıt değil) · 2026-08-21 · Betikler (aynalı):
@@ -19203,3 +19203,92 @@ kabul zinciri      : K0 %1,55 · K1 257/260 · K2 16/257 · K3 1/257 · K4 0/257
   önce **küçük bir koşuyla** (2-3 epoch) yamanın gerçekten sırayı değiştirdiği
   doğrulanmalı — 40 epoch'la değil. Ben başlatmıyorum.
 - **Kapı çıktısı (ustabaşı):** 15/15 · `discover -s tests -q` → Ran 715 · OK.
+
+---
+
+### D-255 · ⚖ MİMAR DENETİMİ · T127 GEÇTİ · **İLK KEZ bir model tam kabul zincirini geçti** (kendi koşumumla doğruladım) — ve K2'de ÜÇ MODEL BOYUNCA TEK YÖNLÜ bir sürüklenme var
+Tarih: 2026-08-21 · Denetleyen: Claude 1 (mimar) · Denetlenen: gece koşumu (D-247…D-253)
+Kapılar mimar tarafından koşuldu: **715 OK · 15/15 · `codes/`+`config/` temiz**
+⚠ Aynı model uyarısı geçerli: uyuşma kanıt değil; kanıt **kendi koşumum**.
+
+#### 1. DOĞRULADIM — VERDİKT: ÜRETİME ALINIR
+
+`65_kabul_denetcisi` canlıdan, `t127_temiz` ağırlığıyla, kendi koşumum:
+
+    K0 GECTI  figur %9,03 (taban %0,49 · oran 18,43)  🔴 DIKKAT >2,0 TEHLIKELI yon
+    K1 GECTI  256/260   ·  K2 GECTI 18/256  ·  K3 GECTI 0/256  ·  K4 GECTI 1/256
+    K5 GECTI  kesen 0/173 kare · toplam 0 px   [zemin: POPULASYON, T126/D-243]
+    VERDIKT: URETIME ALINIR — D-107'nin ALTI olcutu de saglandi
+
+**Projede ilk kez** altı ölçüt birden sağlandı. K5'in popülasyon zemini
+(D-243) çalışıyor: 173 ölçülebilir kare, 0 kesişim.
+
+#### 2. T127'NİN SORUSU CEVAPLANDI
+
+`t122ac`'nin sayıları **kirli bölümden gelmiyor**. Temiz bölüm (`train 344 ·
+val 96 · kirli val 0/96`) ile eğitilen model aynı davranışı üretti:
+çatı kaçağı 0,043 · 67 gerçek karede red **0**.
+
+🔴 **Ve alan-içi endişeme (D-242 §3) kısmi cevap geldi:** eğitim dışı **11
+kare**de sıralama korunuyor — çatı kaçağı v34 **0,976** · t122ac 0,011 ·
+t127_temiz **0,015**; red 11 / 0 / **0**.
+⚠ 11 kare **azdır** ve aynı çekim/oturumdandır. T111 duvarını yıkmaz; yalnız
+"sıralama tamamen ezberdi" hipotezini zayıflatır.
+
+#### 3. 🔴 BENİM İŞARETLEDİĞİM ŞEY — K2'DE TEK YÖNLÜ SÜRÜKLENME
+
+Üç model, aynı kabul kümesi, moloza basma:
+
+    v34         12/258   %4,65
+    t122ac      16/257   %6,20
+    t127_temiz  18/256   %7,03      tavan %15
+
+Üçü de tavanın altında ve her biri tek başına sorun değil. Ama **yön tek**:
+çatıyı görme kabiliyeti arttıkça moloza basma da artıyor. Bu, madde 15'in
+**tehlikeli** ekseni ve tavana kadar sessizce ilerleyebilir.
+
+**Karar (mimar):** bu bir kapı değişikliği **değildir** — eşik %15 kalır.
+Ama bundan sonra her adayda **K2 eğilimi** raporlanır: yeni aday, üretim
+tabanının **üstündeyse** bu bir maliyet olarak yazılır, "tavan altı" diye
+geçiştirilmez. Tavana yaklaşan bir aday, tavanı geçmeden **tartışılmalıdır**.
+
+#### 4. K0 18,43 — YORUM, GEÇİŞTİRME DEĞİL
+
+    v34 0,0083 (1,01x) · t122ac 0,0259 (3,17x) · t127_temiz 0,0903 (18,43x)
+
+Sapma **tehlikeli** yönde (daha çok zemin) ve büyük. Ama ölçüldüğü yer
+`sartname_s9_arena.png`: **n=1, YZ üretimi, alan dışı** ve defterde "otorite
+değildir" yazılı. Üstelik D-231'de ölçüldü: bu figürde **hiçbir model rota
+üretemiyor**, ve K5'in bilgi satırı bunu teyit ediyor (`tek figur OLCULEMEDI`).
+Yani karar yolu o görüntüde **zaten hareket edemiyor**.
+
+Okuma: bu artış büyük olasılıkla "aşırı zemin görüyor" değil, **"bu görüntüyü
+ilk kez segmentleyebiliyor"**. Ama bu bir **yorumdur, ölçüm değildir** — ve
+figürde yer gerçeği olmadığı için **ölçülemez**. Kayda böyle geçiyor.
+
+#### 5. BENİM HATAM — USTABAŞI ÖLÇÜMLE DÜZELTTİ (D-247 §3)
+
+T115 gözleminde *"satırlar `[IN_PROGRESS: Codex-2]` gibi KORUNAN görevlere ait"*
+yazmıştım. Ustabaşı raporun dağılımını çıkardı:
+
+    korunan_gorev               : 1
+    kacis_tam_kayip_uydurulamaz : 7
+    oktal_kacis_karakteri_yok   : 3
+    onceki_satir_O_ile_bitmiyor : 2
+
+**12/13'ün sebebi koruma değil, bilginin yokluğu.** Ben raporun **ilk
+örneğine** bakıp genelledim — tam olarak başkalarına yasakladığım şey.
+Düzeltme kabul; T115'in gerekçesi bu kayıtla tashih edilir.
+
+#### 6. TERFİ SIRALAMASI (mimar sıralar, **seçim insanındır** — D-133)
+
+  1. **t127_temiz** — tam zinciri geçen **tek** model; temiz bölümde eğitildi;
+     eğitim dışı 11 karede sıralamayı koruyor. **Bedeli:** K2 %7,03 (üretimin
+     1,5 katı), K0 sapması 18,43× (tehlikeli yön, yorumlanabilir ama ölçülemez).
+  2. **t122ac** — aynı davranış, kirli bölümde eğitilmiş; artık gereksiz.
+  3. **v34 (mevcut üretim)** — arena K2'de en iyi (%4,65) ama gerçek karelerin
+     **67/67'sini reddediyor** ve çatıyı %96 kaçırıyor.
+
+⚠ **T111 duvarı ayakta.** Terfi edilirse, **alan dışı doğrulaması olmayan** bir
+model üretime alınmış olur. Bu, v34 için de doğruydu; fark şu: v34 gerçek
+karelerde **hiç karar üretmiyor**, t127_temiz üretiyor.

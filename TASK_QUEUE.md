@@ -5495,7 +5495,11 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Mimarın kendi koşumu (ŞART 1):** `YOLO_cagri_sayisi 0` · `YOLO_MODELI_ORNEKLENDI_MI false` · bariyer 174/284 karede bulundu → bariyere kör model kapıyı **trivial geçemez**.
   - 🔴 **Amele taşımadan ÖNCE var olan bir ŞART 4 ihlali buldu:** `66` içinde `"GECTI" if kesen == 0` — rota hiç üretilmezse emniyet kapısı **yokluk üzerinden** geçerdi. Zemin oraya taşınsaydı kusur K5'e miras kalacaktı.
 
-- [REVIEW: mimar] **T127 — 🔴 DOĞRULAMA KÜMESİ %100 KİRLİ: kazananın sayıları temiz bölümde de duruyor mu?** · `scripts/copy_paste_augmentation.py` (`bolum_sec`), `dataset/copy_paste_gercek/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-233**
+- [x] **T127 — KAPANDI · Temiz bölüm kazananı GEÇERLİ KILDI; `t127_temiz` projede İLK KEZ tam kabul zincirini geçti (VERDİKT: ÜRETİME ALINIR)** · `scripts/copy_paste_augmentation.py` (`bolum_sec`), `dataset/copy_paste_t127/` · **KRİTİK** · uygulama `REVIEW_LOG.md` **D-249**, mimar denetimi **D-255**
+  - **Yazan:** Claude 2 (Opus 5, başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `715 OK` · `15/15`
+  - **Mimarın kendi koşumu:** K0 GEÇTİ (%9,03 · oran 18,43 ⚠) · K1 256/260 · K2 18/256 · K3 0/256 · K4 1/256 · **K5 GEÇTİ 0/173 kare** → **ÜRETİME ALINIR**.
+  - 🔴 **Mimarın işaretlediği eğilim:** K2 üç modelde tek yönlü — v34 %4,65 → t122ac %6,20 → t127_temiz %7,03 (tavan %15). Eşik **değişmiyor**, ama bundan sonra her adayda **K2 eğilimi** raporlanır; tavana yaklaşan aday tavanı geçmeden **tartışılır**.
+  - ⚠ **T111 duvarı ayakta:** terfi, alan dışı doğrulaması olmayan bir modeli üretime almak demektir.
   - ✅ **ZİNCİR KOŞTU · 2026-08-21 · Claude-2 (Opus 5) · D-249.** Temiz bölüm
     kuruldu (train 344 · val 96 · **KIRLI val 0**), (a)+(c) reçetesi yeniden
     eğitildi (t127_temiz) ve ölçüldü. **ÖN KAYIT KURALI 1 SAĞLANDI:** K0–K5
