@@ -19606,3 +19606,363 @@ sözcüklerini metinden **sildi**. Aynı sınıf bu oturumda **üçüncü kez** 
 (D-194 §3: oktal kaçış; T115: yol bozulması). Ders sabit: **Windows yolu veya
 ters tırnak içeren metin kabuk dizgesine gömülmez** — dosyaya yazılıp oradan
 okunur.
+
+---
+
+### D-261 · 🔎 T131 ÖLÇÜLDÜ · K0 tabanının geçmişi TEK ALETLE yeniden ölçüldü: hareket **kümülatif kayma DEĞİL SALINIM**, ve iki uyarı **YER DEĞİŞTİRMİŞ** — v34'ün terfisi uyarı vermeliydi VERMEDİ, v35'inki vermemeliydi VERDİ
+
+- **Ölçen:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3: ölçeni denetleyemez) · 2026-08-21.
+- **Ön kayıt:** `results/t131/on_kayit.md` — **ölçümlerden ÖNCE** yazıldı, iki
+  hipotezin hüküm kuralı ve *"çürürse ne yazarım"* satırıyla birlikte.
+- **Defter araması (D-252 kuralım):** `kayma defteri · sürüm ötesi · drift ·
+  taban geçmişi · terfi geçmişi` → yalnız T131'in kendi satırı. **Aranmıştır,
+  bulunamamıştır** — bu ölçüm tekrar değildir.
+- **Araçlar:** `scripts/olcum/118_t131_kayma_defteri.py` (defterin git geçmişi) ·
+  `scripts/olcum/119_t131_k0_taban_gecmisi.py` (soyağacının yeniden ölçümü) ·
+  çıktı `results/t131/`.
+
+#### 1. KIYASIN ÖN KOŞULU ÖNCE ÖLÇÜLDÜ — alet değişmemiş
+Sürümler arası sayı kıyaslamanın kendisi bu projede kusur kaynağıdır (D-214
+payda sözleşmesi). Bu yüzden kıyastan önce **aletin sabitliği** ölçüldü:
+- `_preprocess` · `_maskeleri_icerige_kirp` · `kaplama` → v30 dönemi (`865f591`)
+  ile bugün **BAYT-EŞ**.
+- `CONF = 0.30` değişmedi · `INFER_SIZE = 512` (o gün çıplak sabit, bugün
+  defterden türetiliyor; **etkin değer aynı**).
+- Figür `data/arena_referans/sartname_s9_arena.png` → v27'den beri **hiç
+  değişmedi** (son commit `4ed3b8d`).
+- `kabul_kumesi` = `sentetik_arena_kadraj_t66` → v27'den beri **aynı**, payda
+  260 **sabit** (255/260 · 258/260 · 256/260).
+⇒ Ölçülen fark **modeldendir, aletten değildir.**
+
+#### 2. ÖLÇÜM — üretim soyağacı, tek figür, tek fonksiyon
+`65_kabul_denetcisi.kaplama()` **içe aktarıldı** (kopyalanmadı — kopya, "alet
+aynı" iddiasını bozardı):
+
+| sürüm | v17 | v20 | v21 | v24 | v27 | v30 | **v34** | **v35** |
+|---|---|---|---|---|---|---|---|---|
+| figür zemin | 0,00% | 0,00% | 0,00% | 34,64% | 7,84% | 7,96% | **0,49%** | **9,03%** |
+
+⚠ v17/v20/v21/v24 kendi dönemlerinde 640'ta koşuyordu (geçiş v27 ile);
+sayıları **alet-tutarlı ama dönem-tutarlı DEĞİL** ve öyle işaretlendi.
+
+🔴 **Yeniden üretim BİREBİR:** v30'un düz metni `"figur zemin %8,0"` → bugün
+**7,96%** (v34'ün kendi notundaki "%7,96" ile aynı) · v34 → **0,49%**
+(defterdeki 0,0049) · v35 → **9,03%** (defterdeki 0,0903). Yani tarihsel
+sayılar doğrudur; **eksik olan sayı değil, sayıların YAN YANA GELMESİDİR.**
+
+#### 3. H1 DOĞRULANDI — v34 aykırı değerdir
+Ön kayıttaki kural: `figür(v30) ≥ 5×figür(v34)` **ve** `figür(v35) ≥ 5×figür(v34)`.
+Ölçüm: **16,2×** ve **18,3×**. v34, kendinden önceki **ve** sonraki üretim
+modelinin ikisine göre de aykırıdır. Hareket **tek yönlü sürüklenme değildir**:
+`7,84 → 7,96 → 0,49 → 9,03` bir **SALINIMDIR** ve v35, v30 seviyesine
+**geri dönmüştür** (9,03 / 7,96 = **1,13×** — denetçinin bandının tam içinde).
+
+#### 4. H2 DOĞRULANDI — 🔴 İKİ UYARI YER DEĞİŞTİRMİŞ
+Her terfi, **kendinden önceki üretim modeline** göre, denetçinin **kendi**
+bandına (`0,5 ≤ oran ≤ 2,0`, `65:89-90` — okundu, değiştirilmedi) sokuldu:
+
+| terfi | taban | figür | oran | bandın hükmü | O GÜN NE OLDU |
+|---|---|---|---|---|---|
+| v27→v30 | 7,84% | 7,96% | 1,02× | band içi | uyarı yok ✔ |
+| **v30→v34** | 7,96% | 0,49% | **0,06×** | 🔴 YETENEK (<0,5) | **hiçbir uyarı çıkmadı** |
+| **v34→v35** | 0,49% | 9,03% | **18,29×** | 🔴 TEHLİKELİ (>2,0) | **çıktı — ama aykırı tabana uzaklık** |
+
+**MEKANİZMA (git ile kanıtlı):** sayısal `figur_zemin_orani` alanı
+`1b57166` ile **2026-08-19'da doğdu** — yani **v34 terfisinden (`3cebce2`,
+aynı gün, önceki commit) SONRA** — ve **v34'ün kendi anomali değeriyle
+(0,0049) tohumlandı**. Dolayısıyla:
+1. v34'ün 16 kat **düşüşü** oran denetiminden geçmedi, çünkü **denetim henüz
+   yoktu**; K0'ın ölçütü (`figür > 0`) bunu yakalamaz — **v34'ün kendi registry
+   notu bunu YAZIYORDU** (*"v30'un %7,96'sından 16 KAT düşük. K0 bunu
+   YAKALAMAZ… Açıklanmamış davranış: T106"*).
+2. T130'da ölçtüğüm **18,43×**, "tehlikeli yön"ü değil **aykırı bir tabana olan
+   uzaklığı** ölçmüştür. (Bugünkü tam duyarlıkla **18,29×**; defterdeki 18,43
+   yuvarlanmış değerlerden gelir.)
+⇒ **Kabul edilmiş bir anomali, sessizce REFERANS olmuştur.** Kusur kapının
+mantığında değil (mantık iki yönlü ve bloklamıyor — doğru tasarım), **tabanın
+NE OLDUĞUNDA**dır.
+
+#### 5. MİMARIN ÇERÇEVESİ — bir yarısı doğrulandı, bir yarısı çürüdü
+- ✔ **DOĞRULANDI ve DAHA GÜÇLÜ:** *"Eksik olan şey sürüm-ötesi görünürlük"*
+  (D-257 §4). Doğru — ve bedeli varsayımsal değil: **fiilen bir uyarı
+  kaçırılmış, bir uyarı da yanlış sebeple çıkmıştır.**
+- ❌ **ÇÜRÜDÜ:** *"Üç terfi sonra bu kayma BİRİKİR"*. Ölçüm birikme
+  göstermiyor; **salınım** gösteriyor (0 → 34,64 → 7,84 → 7,96 → 0,49 → 9,03).
+  Risk "yavaşça sürüklenme" değil, **"referansın kendisinin aykırı olması"**dır
+  — ve bu **tek terfide** gerçekleşir, üç terfi beklemez.
+- ⚠ Bu ayrım boş bir söz oyunu değildir: **birikme** çaresi kümülatif bir
+  tavandır (D-186'da REDDEDİLDİ ve mimar T131'de haklı olarak yasakladı);
+  **aykırı referans** çaresi ise yalnız **geçmişin yan yana görünmesidir** —
+  eşik gerektirmez.
+
+#### 6. 🔴 KENDİ İKİ HATAM (D-256'da ben yazmıştım)
+1. **"K2 moloza basma: tek yönlü sürüklenme"** (D-256 §3) — **ÇÜRÜDÜ**, ama
+   dikkat: bu cümle iki yerde geçiyor ve **iki ayrı şey** demek. Karıştırmak
+   çürütmeyi yanlış adrese yazmak olurdu:
+   - **Mimarın iddiası (D-255 §3) — ÇÜRÜMEDİ, tersine DESTEKLENDİ.** O, *aynı
+     deney ailesinden üç ADAY* üzerinden konuşuyor (v34 %4,65 → t122ac %6,20 →
+     t127_temiz %7,03) ve iddiası bir **mekanizmadır**: *çatıyı görme kabiliyeti
+     arttıkça moloza basma da artıyor.* Benim sürüm-ötesi verim buna **dördüncü
+     nokta** ekliyor ve mekanizmayı **doğruluyor**: v30'un çatı kaçağı 0,3052
+     (v34'ün 0,9606'sından İYİ) ve K2'si %8,53 (v34'ün %4,65'inden YÜKSEK).
+     Yani bağıntı aday ailesinin **dışında da** tutuyor. Mimarın kararı
+     (*"her adayda K2 eğilimi raporlanır"*) **aynen geçerlidir**.
+   - **BENİM hatam (D-256 §3):** o ifadeyi **ZAMAN EKSENİNE**, üretim
+     soyağacına taşıdım. Orada yanlış: `7,1 → 8,53 → 4,65 → 7,03` (dördü de
+     **aynı** kabul kümesi, aynı payda) bir sürüklenme değil **salınımdır**;
+     **v34 rekor iyi noktaydı** ve v35 tarihsel banda **döndü** (v27'nin
+     %7,1'i ile aynı yerde). İki noktalık pencereyle "tek yönlü" dedim.
+   ⚠ Hüküm değişmiyor: %7,03 hâlâ tavanın (%15) altında ve K2 hâlâ madde 15'in
+   tehlikeli eksenidir. Değişen tek şey şu cümlenin doğru hâli: v35 K2'de
+   v34'ten kötüdür ama **zaman içinde kötüleşme** yoktur — kıyas **rekor iyi
+   noktaya** göredir.
+   ⚠ Bu dört sayı defterin **kayıtlı** değerleridir, bugün yeniden ölçülmedi
+   (yeniden ölçüm 260 karelik tam zincir demektir). Güvenilirlik dayanağı §2'dir:
+   K0'da defterin sayıları bugünkü aletle **birebir** yeniden üretildi.
+2. **"Tarihsel 18,43× registry notunda YAZILI kaldı"** (D-256 §4) — kaydı
+   **yeterli sanmam** hataydı. Sayıyı yazdım ama **tabanın kendi geçmişini
+   sorgulamadım**; sorsaydım v34'ün aykırı olduğunu T130 günü görürdüm.
+   Ders: **bir orana bakarken paydanın da bir geçmişi vardır.**
+
+#### 7. KENDİ ALETİMİN ÜÇ KUSURU — yayımlamadan önce bulundu ve düzeltildi
+1. **Düz metindeki değeri "alan yok" diye gösteriyordu.** İlk tablomda v30'un
+   K0 satırı `—` idi; oysa değer `k0_korluk.olculen` metninde duruyordu.
+   Düzeltme: metin alanı da ayrı sütun olarak taşınır (**metinden sayı
+   AYIKLANMAZ** — D-180 sınıfı; yalnız görünür kılınır).
+2. **Yeniden adlandırmayı "yeni ölçüm doğdu" diye okuyordu.**
+   `gercek_kare_gecen` (v30) → `gercek_kare_zemin_kaplamasi` (v34). Düzeltme:
+   her geçişte metrik **anahtar kümesi farkı** (doğdu / yok oldu) basılır.
+3. **v24'e "512 dönemi" dedim — DOĞRULAMADAN.** Yanlış: 640 → 512 geçişi v27
+   ile oldu (`JETSON_KILAVUZ §0-T76`). Düzeltildi ve gerekçe koda yazıldı.
+⚠ Üçü de **kendi bulgumu abartma yönünde** değil, **eksik gösterme** yönünde
+kusurlardı; yine de yayımlanmış olsalardı defter yanlış olurdu.
+
+#### 8. YAN BULGULAR (ölçüldü, iddia değil)
+- 🔴 **`mask_map50` v34 terfisinde SESSİZCE YOK OLDU** ve `gercek_kare_gecen`
+  (v30: 65/67) de öyle. Bir ölçüm ekseninin defterden **çıkması** hiçbir yerde
+  uyarı üretmiyor — kayma defterinin yakaladığı ikinci sınıf budur.
+- **K3 ve K5 dört terfinin DÖRDÜNDE de hiç oynamadı** (K3 = %0,0 · K5 = 0 px).
+  T120'nin dersi hatırlatılır: *hiç düşmeyen kapı, hiç koşmayan kapı kadar
+  sahtedir.* ⚠ Bu bir kusur **iddiası değildir** — K5'in zemini T126'da zaten
+  değişti; ama bu iki eksenin terfi kararlarına **hiç bilgi katmadığı** ölçülmüş
+  bir olgudur.
+- **Kabul kümesi yolu v27'den beri aynı** — ama kümenin **içeriğinin** aynı
+  kaldığı **doğrulanmadı**; defterde kümenin parmak izi (dosya sayısı/özet) yok.
+  Payda 260'ın dört sürümde sabit kalması destektir, **kanıt değildir**.
+
+#### 9. ÖNERİLER — ÖNER-BEKLE (kapı YOK, eşik YOK)
+T131 "uygulama ayrı karar" dediği için **hiçbiri uygulanmadı**:
+1. **Taban tek skaler değil, EKLENİR liste olsun:** `figur_zemin_orani` bir
+   sayı yerine `[{surum, deger}, …]` olarak tutulsun. Denetçi **yine sonuncuyu**
+   kullanır (eşik değişmez), ama geçmiş **silinmez**.
+2. **Denetçi raporu tabanın KİMLİĞİNİ yazsın:** *"taban = v34'ün değeri"* —
+   bugün rapor yalnız sayıyı basıyor, hangi sürümden geldiğini basmıyor.
+3. **Kabul kümesinin parmak izi** (dosya sayısı + özet) defterde her sürümle
+   birlikte dursun; sürümler arası kıyas o zaman varsayıma değil ölçüme dayanır.
+4. **Metrik alanı YOK OLDUĞUNDA görünür olsun** (§8, `mask_map50`).
+⚠ Hiçbiri için "şu değerin üstü kırmızı" denmedi; dördü de **görünürlüktür**.
+
+#### 10. KAPI ÇIKTISI (koşuldu, yapıştırıldı)
+```text
+codes/test_rota_sentetik.py              -> SONUC: 15/15 dogru
+unittest discover -s tests -q            -> Ran 728 tests · OK
+olcum aynasi (scripts/olcum <-> canli)   -> 77 cift · AYRISAN 0
+```
+- **118/119 aynalanmaz** ve bu bilinçlidir: ikisi de yalnız repodan koşar
+  (git geçmişi + `models/`), canlı çalışma alanına bağımlılıkları yoktur
+  (T113/D-190 ölçütü). Çift sayısı bu yüzden **77'de kaldı**, doğrulandı.
+- ⚠ **Yeni test dosyası EKLENMEDİ** (T131: kapı yok). Bu yüzden ölçümün
+  pozitif kontrolü testte değil **ölçümün kendisindedir**: bugünkü alet,
+  defterin üç tarihsel sayısını (7,96 · 0,49 · 9,03) **birebir** yeniden
+  üretti. Alet yanlış olsaydı üçü birden tutmazdı.
+- **Defter bütünlüğü kapısı (Codex teslimi) hakkında bir düzeltme:** kayıt
+  eklerken "kapı düşmeli" diye tahmin etmiştim — **yanlış tahmin**. Taban bir
+  **zemindir** (`assertGreaterEqual`); büyüme meşrudur, kapı yalnız **düşüş,
+  yeni çakışma ve eksik atıf** halinde düşer. Tasarım doğru, tahminim yanlıştı.
+  Kapı bu turda gerçek iş yaptı: kuyruğa yazdığım `D-261` atfını defterde
+  **arayıp buldu** (atıf 203 → 204, `eksik: []`). Tabanlar bugünkü sayıya
+  çekildi (**267 / 261 / 204**) — zemin ne kadar yüksekse silme o kadar görünür.
+
+#### 11. YETKİ SINIRI — yapılmayanlar
+`K0_ORAN_ALT`/`K0_ORAN_UST` **değiştirilmedi** (okundu) ·
+`config/model_registry.json`'a **yazılmadı** (okundu) · **kapı eklenmedi** ·
+v35 terfisi **geri alınmadı** (altı kapıyı geçti, kayıtlar dürüst) ·
+`codes/` altında **hiçbir şey değiştirilmedi**.
+
+---
+
+### D-262 · 🔎 T118 · ÖLÇÜM KISMI ZATEN BİTMİŞTİ (D-208+D-214) — kuyruk satırı BAYAT; ve dayanağı **v34 dönemine** ait: üretim v35'te **0/67 ret**, bağlayıcı pay kaplamada değil **KENAR koşulunda (+0,1001)**
+
+- **Ölçen:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-21 · ön kayıt `results/t118/on_kayit.md` (ölçümden ÖNCE).
+- **Araç:** `scripts/olcum/120_t118_tavan_payi.py` · çıktı
+  `results/t118/tavan_payi.json` (67 karenin **tamamı** kare kare kayıtlı).
+
+#### 1. ÖNCE DEFTER ARANDI (D-252) — ve iş ZATEN YAPILMIŞTI
+`T118` defterde 10 yerde geçiyor ve **ölçüm kısmı bitmiş**:
+- **D-208 §1** (filo, 0/3 çürütücü): 67/67 karede üretim `zemin_maskesi_reddi`
+  tetikliyor; içerik paydalı medyan **0,800** > tavan **0,67**.
+- **D-208 §2** (sentez, 0/3): ~171 aday satırda **kod-içi payda uyuşmazlığı 0**;
+  6 dosya letterbox paydalı değeri "kaplama" **adıyla** raporluyor.
+- **D-214**: o 6 değerin tüketimi izlendi → **eşik/karar bozulması SIFIR**;
+  kalan iş bir **adlandırma önerisidir, kararı mimarın**.
+🔴 **Kuyruktaki T118 satırı bunların HİÇBİRİNİ yansıtmıyor** — hâlâ *"sınanacak
+sonuç (ilan DEĞİL)… kapılarımızın bir kısmı kıyaslanamaz sayı üretiyor olabilir"*
+diye duruyor. O hipotez **sınandı ve çürüdü** (bozulma sıfır). D-258'in bulduğu
+kuyruk↔defter ayrışmasının bir örneği daha. **Ben o ölçümleri tekrarlamadım.**
+
+#### 2. TEKRAR OLMAYAN SORU — dayanak MODEL DEĞİŞTİRDİ
+D-208'in "67/67 ret" dayanağı **v34** ile ölçüldü. **2026-08-21'de üretim v35'e
+geçti** (T130/D-256). Mimar D-255 §2'de `t127_temiz` için *"67 gerçek karede
+red 0"* yazmış — ama **ikili** bir sonuç olarak. Ölçülmemiş olan **PAY**dı:
+`red 0`, tavanın 1 punto altında da 30 punto altında da aynı görünür; saha
+riski (Jetson 30 Eylül, cihaz-öncesi doğrulama penceresi YOK — D-211) bu
+ikisinde taban tabana zıttır.
+
+#### 3. ÖLÇÜM — üretimin KENDİ fonksiyonları içe aktarıldı (kopya YOK)
+`karar_sozlesmesi.zemin_kaplamasi` · `zemin_kenar_dayanmasi` ·
+`zemin_maskesi_reddi`; maske yolu 65'in yolu (T131'de **bayt-eş** olduğu
+ölçülen yol); model **defterin gösterdiği yerden** (`resolve_model`).
+```text
+tavanlar: kaplama 0,67 · kenar 0,50   (OKUNDU, DEGISTIRILMEDI)
+
+v35 (URETIM)   RED  0/67    kaplama ICERIK  min 0,3704 · medyan 0,5076 · maks 0,6626
+                            kenar           min 0,0000 · medyan 0,2356 · maks 0,3999
+                            tavani asan 0/67 · kaplama>0,65 : 1/67 · >0,60 : 7/67
+                            kenar>0,45 : 0/67
+v34 (yedek)    RED 67/67    kaplama ICERIK  min 0,7663 · medyan 0,8002 · maks 0,8740
+                            kenar           min 0,5394 · medyan 0,7121 · maks 0,9512
+                            tavani asan 67/67 · kenar>0,50 : 67/67
+```
+
+#### 4. HÜKÜMLER (ön kayıttaki kurallarla)
+- **H1 — ALET DOĞRULANDI.** v34 için **67/67 ret** ve içerik medyanı **0,8002**;
+  D-208'in kayıtlı **0,800**'ü ile birebir. Ayrıca payda ilişkisi bağımsız
+  doğrulandı: v35 tuval 0,2855 / içerik 0,5076 = **0,5625** — D-208/D-214'ün
+  letterbox içerik oranının **tam** kendisi. Alet üç ayrı yerden tutuyor.
+- **H2 — MİMARIN SAYISI BAĞIMSIZ DOĞRULANDI.** v35 → **0/67 ret** (D-255 §2).
+  Aynı model olduğumuz için uyuşma kanıt değildir; kanıt **ayrı koşumdur** ve
+  koşum ayrı yapıldı.
+- **H3 — 🔴 TEK EKSENE BAKMAK YANILTIYOR.** Kaplama ekseninde pay **+0,0074**
+  (0,6626 vs 0,67) — tek başına okununca "kıl payı" görünür. **Ama ret İKİ
+  koşulun VE'sidir** (`karar_sozlesmesi:577-582`). Rette **en yakın** kare
+  `frame_000017_000002112.jpg` ve onun **bağlayıcı payı KENAR koşulunda:
+  +0,1001** (0,3999 vs 0,50). Kaplaması en yüksek karenin (0,6626) kenarı
+  **0,3745** — tavanın çok altında.
+  ⇒ **v35'in 0/67'si 0,0074'e asılı DEĞİL.** Bugün ayakta tutan eksen kenar
+  dayanmasıdır ve orada pay **%20 bağıl**. Yalnız kaplama payını yazsaydım,
+  T131'de belgelediğim kusurun aynısını yapardım: **yanlış uzaklığı ölçen alarm.**
+
+#### 5. YİNE DE KAYDA GEÇEN İŞARET (uyarı, kapı DEĞİL)
+Kaplama ekseni v35 için **artık pay üretmiyor**: üst kuyruk 0,6626 ve tavan
+0,67. Bugün ret çıkmamasının sebebi kaplamanın düşük olması değil, **kenar
+koşulunun uzak olmasıdır.** DJI çekimleri farklı bakış geometrisiyle gelecek
+(T111 alan dışı sorusu açık) ve kenar dayanması **geometriye duyarlı** bir
+ölçüttür. Bu bir tahmin değil, **ölçülmüş bir bağımlılık yapısıdır**:
+saha gününde iki eksen birlikte izlenmelidir, tek eksen yanıltır.
+⚠ Eşik **önerisi yapmıyorum**; T118'in kendi kısıtı *"ÖNCE TARA VE ÖLÇ, EŞİK
+DEĞİŞTİRME"*.
+
+#### 6. T118 İÇİN GÜNCEL DURUM (öner-bekle)
+- Ölçüm borcu **YOK** — D-208 + D-214 + bu kayıt.
+- Kalan **tek** iş mimarın **adlandırma kararı** (D-214: alan adına payda
+  niteleyici ya da kayda `"payda": "tuval|icerik"`). ⚠ Bunun bir örneği zaten
+  **kendiliğinden uygulanmış**: v35'in registry kaydında
+  `"payda": "LETTERBOX TUVAL"` + `"icerik_paydasiyla": 0,5076` yazıyor (T130'da
+  ben yazdım). Yani D-214'ün önerisi **bir yerde** hayata geçti ama **sözleşme
+  hâline gelmedi** — 4 rapor alanı hâlâ niteleyicisiz.
+- D-201'in kendi sınırı (%80,6'nın T58 zinciri koşulmadı) **hâlâ açık** ve bu
+  ölçüm onu kapatmaz; ölçtüğüm şey T58 zinciri değil, **üretim eşiğinin payı**.
+
+#### 7. YETKİ SINIRI — yapılmayanlar
+`ZEMIN_KAPLAMA_TAVANI` (0,67) ve `ZEMIN_KENAR_DAYANMA_TAVANI` (0,50)
+**değiştirilmedi** (okundu) · `codes/` altına **dokunulmadı** · adlandırma
+önerisi **uygulanmadı** (karar mimarın) · kapı **eklenmedi** · v35 terfisi
+**geri alınmadı**.
+
+---
+
+### D-263 · ⚖ MİMAR KARARI · T131 · **ÇERÇEVEM ÇÜRÜDÜ: kümülatif kayma DEĞİL, aykırı REFERANS** — dört öneri de KABUL, eşik yine YOK; ve bir ek: uyarı MODELE değil TABANA da bakmalı
+Tarih: 2026-08-21 · Karar: Claude 1 (mimar) · Ölçüm: D-261 (Claude 2, ÖNER-BEKLE ile — doğru işlem)
+Yetki: `AGENTS.md §9.2` — eşik/kapı kararı mimarda.
+
+#### 1. ÖNCE KENDİ HATAM
+
+D-257 §4'te yazdığım: *"Üç terfi sonra bu kayma **birikir**."* **Yanlış.**
+Ölçülen soyağacı (tek aletle, alet sabitliği önce kanıtlanarak):
+
+    v27 %7,84  ->  v30 %7,96  ->  v34 %0,49  ->  v35 %9,03
+
+Bu **birikme değil salınım**, ve v35 tarihsel banda **geri dönmüş**
+(9,03 / 7,96 = **1,13×**, denetçinin kendi bandının tam içinde). Aykırı olan
+**v34**tür — kendinden önceki **ve** sonrakine göre 16,2× ve 18,3×.
+
+**Bu ayrım söz oyunu değil, çareyi değiştiriyor:**
+  · *birikme* çaresi **kümülatif tavan**dır — D-186'da reddedilmişti ve ben de
+    T131'de haklı olarak yasaklamıştım. Yani kendi teşhisim doğru olsaydı,
+    kendi yasağımla çelişen bir çare gerektirecekti.
+  · *aykırı referans* çaresi ise yalnız **geçmişin yan yana görünmesidir**.
+    **Eşik gerektirmez.** Ucuz olan doğru çıktı.
+
+#### 2. ASIL MEKANİZMA — ben de göremezdim, çünkü paydanın geçmişine bakmadım
+
+`figur_zemin_orani` alanı `1b57166` ile **2026-08-19'da doğdu** — v34 terfisinden
+(`3cebce2`, aynı gün, önceki commit) **SONRA** — ve **v34'ün kendi anomali
+değeriyle tohumlandı**. Sonucu:
+
+    v30 -> v34 : oran 0,06x  = YETENEK uyarisi vermeliydi  -> DENETIM HENUZ YOKTU
+    v34 -> v35 : oran 18,29x = TEHLIKELI uyarisi VERDI     -> ama olctugu sey
+                 "tehlike" degil, AYKIRI BIR TABANA UZAKLIK
+
+**Kabul edilmiş bir anomali, sessizce REFERANS olmuştur.** Kusur kapının
+mantığında değil (mantık iki yönlü ve bloklamıyor — doğru tasarım), **tabanın
+ne olduğundadır.**
+
+⚠ Not: v34'ün anomalisi **açıklanmıştı** (T106: figür çöküşü **güven** çöküşüdür
+ve figüre özgüdür). Yani bilinen bir aykırılık, sorgulanmadan taban oldu.
+
+#### 3. AMELENİN YAPTIĞI EN DEĞERLİ AYRIM — kabul, ve altını çiziyorum
+
+D-256 §3'teki *"K2 tek yönlü sürüklenme"* cümlesi **iki yerde** geçiyordu ve
+amele ikisini birbirinden ayırdı:
+  · **Benim iddiam (D-255 §3) — ÇÜRÜMEDİ, DESTEKLENDİ.** O, *aynı deney
+    ailesinden üç aday* üzerinden bir **mekanizma** söylüyordu (çatıyı görme
+    arttıkça moloza basma artıyor). Amele soyağacından **dördüncü nokta** ekledi
+    (v30: çatı kaçağı 0,3052 ama K2 %8,53) ve bağıntı aday ailesinin **dışında
+    da** tuttu. **Kararım aynen geçerli:** her adayda K2 eğilimi raporlanır.
+  · **Kendi hatası (D-256 §3):** aynı ifadeyi **zaman eksenine** taşımıştı;
+    orada salınım var (`7,1 → 8,53 → 4,65 → 7,03`), sürüklenme yok.
+
+Kolay olan, "sürüklenme çürüdü" deyip **ikisini birden** silmekti. O yapılsaydı
+geçerli bir karar yanlış gerekçeyle kaldırılırdı. **Çürütmenin adresi doğru
+seçilmiş.**
+
+#### 4. KARAR — DÖRT ÖNERİ DE KABUL (hepsi görünürlük, eşik yok)
+
+  1. ✅ `figur_zemin_orani` **eklenir liste** olsun; denetçi **yine sonuncuyu**
+     kullanır (eşik değişmez), geçmiş **silinmez**.
+  2. ✅ Denetçi raporu **tabanın kimliğini** yazsın: *"taban = v34'ün değeri"*.
+  3. ✅ Kabul kümesinin parmak izi her sürümle dursun.
+     ⚠ **Türetilsin, elle tutulmasın** — elle liste bu projede dört kez bayatladı.
+  4. ✅ Metrik alanı **yok olduğunda** görünür olsun.
+
+#### 5. MİMARIN EKİ — uyarı MODELE değil, TABANA da bakmalı
+
+Ölçümün gösterdiği asıl boşluk şu: denetçi **adayı** tabana göre sorguluyor ama
+**tabanı hiç sorgulamıyor**. Ek istiyorum — ve bu **D-186'nın reddettiği şey
+değildir**, farkı açıkça yazıyorum:
+
+    D-186'nin REDDETTIGI : n=1 figure MODEL uzerinde sert bir kural/tavan
+    BURADA ISTENEN       : TABANIN kendisi soyagacina gore nerede duruyor,
+                           BASILSIN. Model hakkinda hukum YOK.
+
+Somut: denetçi K0 satırının altına soyağacını ve **tabanın soyağacı medyanına
+uzaklığını** bassın. Sayı basılır, **kural konmaz**. v34 terfisi günü bu satır
+olsaydı, %0,49'un %7,9 medyandan 16× uzakta olduğu **o gün** görünürdü.
+
+#### 6. UYGULAMA AYRI GÖREV — **T132**
+
+T131 "ölç ve öner" idi; ölçüldü ve önerildi. Uygulama T132'dir.
+⚠ **Eşik yok, kapı yok** — dördü de artı benim ekim **görünürlüktür**.
+⚠ v35 terfisi geri alınmaz; altı kapıyı geçti ve kayıtlar dürüst.

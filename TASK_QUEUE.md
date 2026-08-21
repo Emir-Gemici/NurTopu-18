@@ -5605,7 +5605,10 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Doğrulama:** terfiden sonra kabul zinciri **yeni yoldan** yeniden koşulur ve
     `VERDİKT: ÜRETİME ALINIR` çıktısı görev satırına yapıştırılır.
 
-- [ ] **T131 — 🔴 Terfi, kendisini uyaran kapıyı SUSTURUYOR: K0 referansı her terfide kayıyor ve kümülatif hareket HİÇBİR YERDE durmuyor** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-257 §4**
+- [x] **T131 — KAPANDI (ölçüm) · Hareket kümülatif kayma DEĞİL SALINIM; aykırı olan v34 ve o değer sessizce TABAN olmuş** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` · **ÖNEMLİ** · ölçüm `REVIEW_LOG.md` **D-261**, mimar kararı **D-263** · uygulama → **T132**
+  - **Ölçen:** Claude 2 (başamele) · **Karara bağlayan:** Claude 1 (mimar) · **Kapı çıktısı:** `728 OK` · `15/15` · ayna 77 çift, ayrışan 0
+  - 🔴 **Mimarın çerçevesi ÇÜRÜDÜ:** "üç terfi sonra kayma birikir" yanlıştı. Soyağacı `%7,84 → %7,96 → %0,49 → %9,03` **salınım**; v35, v30 seviyesine **döndü** (1,13×).
+  - **Çare de değişti:** birikme çaresi kümülatif tavandır (D-186'da reddedildi, T131'de ben de yasaklamıştım); aykırı referans çaresi yalnız **geçmişin görünmesidir** — eşik gerektirmez.
   - **Ölçüldü (mimar, aynı model aynı sayı):**
     ```text
     terfi ONCESI (v34 taban) : figur %9,03 · taban %0,49 · oran 18,43  🔴 DIKKAT
@@ -5622,7 +5625,39 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     D-186'da reddedilmiş bir fikrin (n=1 figüre sert kural) geri dönmesi olur.
   - ⚠ v35 terfisi bu görevle **geri alınmaz**; altı kapıyı geçti, kayıtlar dürüst.
 
-- [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
+  - **ÖLÇÜLDÜ (Claude 2 · 2026-08-21 · kanıt `REVIEW_LOG.md` D-261):**
+    ön kayıt `results/t131/on_kayit.md` ölçümlerden ÖNCE yazıldı; araçlar
+    `scripts/olcum/118_t131_kayma_defteri.py` (defterin git geçmişi) ve
+    `119_t131_k0_taban_gecmisi.py` (soyağacı, denetçinin KENDİ `kaplama()`
+    fonksiyonu içe aktarılarak). Çıktı: `results/t131/kayma_defteri.md`.
+    ```text
+    figur zemin (tek alet, bugun):
+      v17 0,00 · v20 0,00 · v21 0,00 · v24 34,64 (donem 640)
+      v27 7,84 · v30 7,96 · v34 0,49 · v35 9,03
+    terfi zinciri (her biri KENDINDEN ONCEKI uretim modeline gore):
+      v27->v30   1,02x  band ici
+      v30->v34   0,06x  YETENEK (<0,5)   -> O GUN UYARI CIKMADI (alan yoktu)
+      v34->v35  18,29x  TEHLIKELI (>2,0) -> cikti, ama AYKIRI TABANA uzaklik
+    ```
+  - 🔴 **İki uyarı YER DEĞİŞTİRMİŞ.** Sayısal `figur_zemin_orani` alanı
+    `1b57166` ile v34 terfisinden **SONRA** doğdu ve **v34'ün anomali
+    değeriyle tohumlandı**. v35'i v30 tabanıyla ölçmek **1,13×** verir —
+    band içi, uyarı yok.
+  - ❌ **Görevin bir öncülü çürüdü:** hareket **kümülatif kayma değil
+    SALINIM**dır (7,84 → 7,96 → 0,49 → 9,03). Risk "üç terfide birikme"
+    değil, **referansın kendisinin aykırı olması** — bu **tek terfide** olur.
+    ✔ Ama görevin ana hükmü (*"eksik olan sürüm-ötesi görünürlük"*)
+    **doğrulandı ve daha güçlü**: bedeli varsayımsal değil, fiilen bir uyarı
+    kaçırılmış, bir uyarı yanlış sebeple çıkmıştır.
+  - **KARAR BEKLEYEN (öner-bekle, hiçbiri uygulanmadı — D-261 §9):**
+    ① taban tek skaler değil **eklenir liste** olsun (eşik değişmez, geçmiş
+    silinmez) · ② denetçi raporu **tabanın hangi sürümden geldiğini** yazsın ·
+    ③ kabul kümesinin **parmak izi** her sürümle dursun · ④ metrik alanı
+    **yok olduğunda** görünsün (`mask_map50` v34'te sessizce düştü).
+  - ⚠ **Yetki sınırı korundu:** eşik değişmedi, kapı eklenmedi, registry'ye
+    YAZILMADI (okundu), v35 geri alınmadı, `codes/` altına dokunulmadı.
+
+- [ÖLÇÜLDÜ: D-208+D-214+D-262 · kalan tek iş MİMARIN ADLANDIRMA KARARI] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
   - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.
     Denetçi `kaplama()` → payda **letterbox karesi**. 1024×576'da içerik oranı 0,5625.
     Aynı maske: denetçi **%45,0** · üretim **%80,0**.
@@ -5634,6 +5669,49 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     (`ZEMIN_KAPLAMA_TAVANI` 0,67 · T59 / D-84 / D-85).
   - ⚠ **ÖNCE TARA VE ÖLÇ. EŞİK DEĞİŞTİRME** — eşik değişikliği ayrı karardır.
   - D-201'in kendi sınırı buraya girer: %80,6 tabanının T58 zinciri koşulmadı.
+
+  - 🔴 **BU SATIRIN HİPOTEZİ SINANDI ve ÇÜRÜDÜ — satır bayattı.**
+    Yukarıdaki *"kabul kapılarımızın bir kısmı üretim eşikleriyle kıyaslanamaz
+    sayı üretiyor olabilir"* önermesi ölçüldü: **eşik/karar bozulması SIFIR**.
+    - **D-208 §1** (filo, 0/3 çürütücü): 67/67 karede üretim reddi tetikliyor,
+      içerik paydalı medyan **0,800** > tavan 0,67.
+    - **D-208 §2** (0/3): ~171 aday satırda **kod-içi payda uyuşmazlığı 0**;
+      6 dosya letterbox paydalı değeri "kaplama" **adıyla** raporluyor.
+    - **D-214**: o 6 değerin **tüketimi** izlendi → eşiğe giren kıyaslar
+      **payda-sadeleşen** oranlar. Kalan iş **adlandırma**, kararı mimarın.
+  - **ÖLÇÜLDÜ (Claude 2 · 2026-08-21 · kanıt `REVIEW_LOG.md` D-262):** görevin
+    dayanağı **v34 dönemine** aitti; üretim 2026-08-21'de **v35**'e geçti.
+    Ön kayıt `results/t118/on_kayit.md`, araç
+    `scripts/olcum/120_t118_tavan_payi.py`, çıktı `results/t118/tavan_payi.json`.
+    ```text
+    tavanlar: kaplama 0,67 · kenar 0,50   (OKUNDU, DEGISTIRILMEDI)
+    v35 (URETIM)  RED  0/67   kaplama ICERIK medyan 0,5076 · maks 0,6626
+                              kenar          medyan 0,2356 · maks 0,3999
+                              kaplama>0,65 : 1/67 · kenar>0,45 : 0/67
+    v34 (yedek)   RED 67/67   kaplama ICERIK medyan 0,8002 · maks 0,8740
+                              kenar          medyan 0,7121 · kenar>0,50 : 67/67
+    ```
+  - **ALET DOĞRULANDI (üç ayrı yerden):** v34'ün 0,8002'si D-208'in kayıtlı
+    0,800'ü ile birebir · v34 reddi 67/67 ile birebir · v35'in
+    tuval/içerik oranı 0,2855/0,5076 = **0,5625**, letterbox içerik oranının
+    tam kendisi.
+  - 🔴 **TEK EKSENE BAKMAK YANILTIR.** Kaplama ekseninde pay yalnız **+0,0074**
+    (0,6626 vs 0,67) — ama ret **İKİ koşulun VE'sidir**
+    (`karar_sozlesmesi:577-582`). Rette en yakın kare
+    `frame_000017_000002112.jpg` ve **bağlayıcı payı KENAR koşulunda: +0,1001**
+    (0,3999 vs 0,50). Yani v35'in 0/67'si kıl payına asılı **değildir**;
+    bugün ayakta tutan eksen **kenar dayanmasıdır**.
+  - ⚠ **Kayda geçen işaret (uyarı, kapı DEĞİL):** kaplama ekseni v35 için artık
+    pay üretmiyor. DJI çekimleri farklı bakış geometrisiyle gelecek (T111 açık)
+    ve kenar dayanması geometriye duyarlıdır → saha gününde **iki eksen
+    birlikte** izlenmeli. Eşik önerisi YAPILMADI (görevin kendi kısıtı).
+  - **KALAN TEK İŞ — mimarın kararı (D-214 önerisi):** alan adına payda
+    niteleyici (`kaplama_tuval`) ya da kayda `"payda": "tuval|icerik"`.
+    ⚠ Bir örneği zaten uygulandı: v35'in registry kaydında
+    `"payda": "LETTERBOX TUVAL"` + `"icerik_paydasiyla"` yazıyor (T130) — ama
+    **sözleşme hâline gelmedi**, 4 rapor alanı hâlâ niteleyicisiz.
+  - ⚠ D-201'in sınırı (%80,6'nın T58 zinciri koşulmadı) **hâlâ açık**; bu ölçüm
+    onu kapatmaz — ölçülen şey T58 zinciri değil, **üretim eşiğinin payıdır**.
 
 - [STATUS: READY_FOR_REVIEW] **T117 — CEVAPLANDI (kök neden): model çatıyı ÖĞRENMİŞ (hasarsız bina recall %96,6) ama gerçek karelerin KENDİ ETİKETİ "zemin" diyor — 448/448 dosya TAM-KARE sınıf 0** · `scripts/copy_paste_augmentation.py`, `dataset/copy_paste_gercek/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-210** · ⚠ ölçümü MİMAR yaptı, kapatan **Fable 5** olacak (madde 19)
   - v34 RescueNet'te bina/ağaç/su/havuzu engel olarak gördü (D-199 §2, görsel) ama
@@ -5786,6 +5864,25 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Ek görev:** `JETSON_KILAVUZ.md`'ye **saha günü birincil→yedek geçiş yordamı**
     (hangi komut, hangi dosya, kaç dakika). Kılavuzun kurulum yordamı testle kilitli
     (T104); geçiş yordamı **kilitli değil**.
+
+- [ ] **T132 — K0 tabanının GEÇMİŞİ ve KİMLİĞİ görünür olsun (T131'in uygulaması) · EŞİK YOK, KAPI YOK** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` (+ canlı ayna) · **ÖNEMLİ** · ölçüm **D-261**, karar **D-263 §4-5**
+  - **Dört öneri (amele, hepsi KABUL):**
+    1. `figur_zemin_orani` **eklenir liste** (`[{surum, deger}, …]`); denetçi **yine sonuncuyu** kullanır — **eşik değişmez** — geçmiş **silinmez**.
+    2. Denetçi raporu **tabanın kimliğini** yazsın: *"taban = v34'ün değeri"*.
+    3. Kabul kümesinin **parmak izi** her sürümle dursun. ⚠ **Türetilsin, elle tutulmasın** (elle liste bu projede dört kez bayatladı).
+    4. Metrik alanı **yok olduğunda** görünür olsun.
+  - 🔴 **MİMARIN EKİ (D-263 §5):** denetçi **adayı** tabana göre sorguluyor ama **tabanı hiç sorgulamıyor**.
+    K0 satırının altına **soyağacı** ve **tabanın soyağacı medyanına uzaklığı** bassın:
+    ```text
+    K0 ... figur %9,03 (taban %0,49 = v34 · oran 18,29x)
+    SOYAGACI: v27 %7,84 · v30 %7,96 · v34 %0,49 · v35 %9,03
+    TABAN, soyagaci medyanindan 16,1x uzakta   <- SAYI, KURAL DEGIL
+    ```
+    v34 terfisi günü bu satır olsaydı, aykırılık **o gün** görünürdü.
+  - ⚠ **D-186 İLE ÇELİŞMEZ:** D-186 *n=1 figüre MODEL üzerinde sert kural* koymayı reddetti.
+    Burada istenen **tabanın nerede durduğunun BASILMASI**; model hakkında hüküm **yok**.
+  - ⚠ Eşik/kapı **eklenmez** (§9.2). Gerekli görürsen **öner ve bekle**.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **728 OK** (yeni testle artar) · ayna senkron.
 
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
