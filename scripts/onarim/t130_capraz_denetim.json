@@ -1,0 +1,526 @@
+{
+  "gorev": "T130 SONRASI MEKANIK CAPRAZ DENETIM",
+  "hukum_siniri": "Bu rapor mimarin T130 denetiminin yerine gecmez; onay veya terfi hukmu vermez.",
+  "sha_siniri": "models/*.pt ve jetson_paket/models/*.pt|*.onnx artefaktlari bu ortamda yoktur. sha DOSYADAN dogrulanmadi; yalniz committed JSON/metin SHA dizgeleri caprazlandi.",
+  "diger_sinirlar": [
+    "Kararlilik JSON payloadlarinda `tohum` alani yok; tohum 7 yalniz dosya adinda kayitli.",
+    "ONNX export manifestinde SHA alani yok; ONNX SHA paket manifesti dizgesinden caprazlandi.",
+    "kapilar kosulMADI (yerel)"
+  ],
+  "ozet": {
+    "kontrol": 7,
+    "GECTI": 7,
+    "DUSTU": 0,
+    "bulgu": 0,
+    "sentetik_mutasyon": 3,
+    "sentetik_mutasyon_beklendigi_gibi_DUSTU": 3
+  },
+  "kontroller": [
+    {
+      "no": 1,
+      "ad": "REGISTRY IKIZLIGI",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "config/model_registry.json",
+          "satir": 5,
+          "alan": "profiles.competition"
+        },
+        {
+          "dosya": "jetson_paket/config/model_registry.json",
+          "satir": 5,
+          "alan": "profiles.competition"
+        }
+      ],
+      "olcum": {
+        "fark_sayisi": 0
+      }
+    },
+    {
+      "no": 2,
+      "ad": "SURUM ADI TUTARLILIGI",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "config/model_registry.json",
+          "satir": 6,
+          "alan": "profiles.competition.model_id",
+          "deger": "navitas-seg-v35-512"
+        },
+        {
+          "dosya": "config/model_registry.json",
+          "satir": 7,
+          "alan": "profiles.competition.path",
+          "deger": "models/navitas_seg_v35_best.pt"
+        },
+        {
+          "dosya": "config/model_registry.json",
+          "satir": 9,
+          "alan": "profiles.competition.imgsz",
+          "deger": 512
+        }
+      ],
+      "olcum": {
+        "model_id": "navitas-seg-v35-512",
+        "path_basename": "navitas_seg_v35_best.pt",
+        "imgsz": 512
+      }
+    },
+    {
+      "no": 3,
+      "ad": "SHA DIZE TUTARLILIGI",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "config/model_registry.json",
+          "satir": 12,
+          "alan": "profiles.competition.sha256",
+          "deger": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b"
+        },
+        {
+          "dosya": "jetson_paket/models/jetson_derleme_manifest.json",
+          "satir": 98,
+          "alan": "paket_icerigi[navitas_seg_v35_best.pt].sha256"
+        }
+      ],
+      "olcum": {
+        "dosya": "navitas_seg_v35_best.pt",
+        "registry_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+        "paket_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b"
+      }
+    },
+    {
+      "no": 4,
+      "ad": "KUNYE REGISTRY",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "config/model_registry.json",
+          "satir": 7,
+          "alan": "profiles.competition.path"
+        },
+        {
+          "dosya": "jetson_paket/models/jetson_derleme_manifest.json",
+          "satir": 15,
+          "alan": "onnxler[0]"
+        },
+        {
+          "dosya": "jetson_paket/models/jetson_derleme_manifest.json",
+          "satir": 23,
+          "alan": "asil_model"
+        },
+        {
+          "dosya": "jetson_paket/models/jetson_derleme_manifest.json",
+          "satir": 24,
+          "alan": "asil_model_pt"
+        },
+        {
+          "dosya": "jetson_paket/models/jetson_derleme_manifest.json",
+          "satir": 20,
+          "alan": "jetson_komutlari"
+        }
+      ],
+      "olcum": {
+        "registry_pt": "navitas_seg_v35_best.pt",
+        "manifest_asil_model_pt": "navitas_seg_v35_best.pt",
+        "manifest_asil_model": "navitas_seg_v35_best_512_fp16.onnx",
+        "onnx_basename": [
+          "navitas_seg_v35_best_512_fp16.onnx"
+        ],
+        "jetson_komut_modeli": [
+          "navitas_seg_v35_best_512_fp16.onnx"
+        ]
+      }
+    },
+    {
+      "no": 5,
+      "ad": "KILAVUZ x2",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "JETSON_KILAVUZ.md",
+          "satir": 3,
+          "alan": "ASIL MODEL"
+        },
+        {
+          "dosya": "jetson_paket/JETSON_KILAVUZ.md",
+          "satir": 3,
+          "alan": "ASIL MODEL"
+        },
+        {
+          "dosya": "JETSON_KILAVUZ.md",
+          "satir": 633,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best.pt",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "JETSON_KILAVUZ.md",
+          "satir": 633,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best_512_fp16.onnx",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "JETSON_KILAVUZ.md",
+          "satir": 669,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best.pt",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "JETSON_KILAVUZ.md",
+          "satir": 669,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best_512_fp16.onnx",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "jetson_paket/JETSON_KILAVUZ.md",
+          "satir": 690,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best.pt",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "jetson_paket/JETSON_KILAVUZ.md",
+          "satir": 690,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best_512_fp16.onnx",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "jetson_paket/JETSON_KILAVUZ.md",
+          "satir": 726,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best.pt",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        },
+        {
+          "dosya": "jetson_paket/JETSON_KILAVUZ.md",
+          "satir": 726,
+          "alan": "navitas_seg_v34",
+          "deger": {
+            "dize": "navitas_seg_v34_best_512_fp16.onnx",
+            "sinif": "SS6C_YEDEK",
+            "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)"
+          }
+        }
+      ],
+      "olcum": {
+        "kilavuzlar": {
+          "JETSON_KILAVUZ.md": {
+            "asil_model_satirlari": [
+              {
+                "satir": 3,
+                "surum": "v35",
+                "metin": "> Hazırlanma: 2026-08-05 · **ASIL MODEL: v35** (2026-08-21, D-249/D-255 · kullanıcı kararı; T130) · eskiler: v34 → v30 → v27 → v24 → v21 → v17/v20"
+              }
+            ],
+            "v34_gecisleri": [
+              {
+                "satir": 633,
+                "dize": "navitas_seg_v34_best.pt",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              },
+              {
+                "satir": 633,
+                "dize": "navitas_seg_v34_best_512_fp16.onnx",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              },
+              {
+                "satir": 669,
+                "dize": "navitas_seg_v34_best.pt",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              },
+              {
+                "satir": 669,
+                "dize": "navitas_seg_v34_best_512_fp16.onnx",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              }
+            ]
+          },
+          "jetson_paket/JETSON_KILAVUZ.md": {
+            "asil_model_satirlari": [
+              {
+                "satir": 3,
+                "surum": "v35",
+                "metin": "> Hazırlanma: 2026-08-05 · **ASIL MODEL: v35** (2026-08-21, D-249/D-255 · kullanıcı kararı; T130) · eskiler: v34 → v30 → v27 → v24 → v21 → v17/v20"
+              }
+            ],
+            "v34_gecisleri": [
+              {
+                "satir": 690,
+                "dize": "navitas_seg_v34_best.pt",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              },
+              {
+                "satir": 690,
+                "dize": "navitas_seg_v34_best_512_fp16.onnx",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              },
+              {
+                "satir": 726,
+                "dize": "navitas_seg_v34_best.pt",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              },
+              {
+                "satir": 726,
+                "dize": "navitas_seg_v34_best_512_fp16.onnx",
+                "bolum": "6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)",
+                "sinif": "SS6C_YEDEK"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "no": 6,
+      "ad": "TEST IDDIASI AST",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "tests/test_model_registry.py",
+          "satir": 32,
+          "alan": "path.name",
+          "deger": "navitas_seg_v35_best.pt"
+        },
+        {
+          "dosya": "tests/test_model_registry.py",
+          "satir": 33,
+          "alan": "spec['imgsz']",
+          "deger": 512
+        },
+        {
+          "dosya": "tests/test_model_registry.py",
+          "satir": 34,
+          "alan": "spec['status']",
+          "deger": "competition"
+        },
+        {
+          "dosya": "tests/test_model_registry.py",
+          "satir": 35,
+          "alan": "spec['model_id']",
+          "deger": "navitas-seg-v35-512"
+        }
+      ],
+      "olcum": {
+        "iddialar": [
+          {
+            "hedef": "path.name",
+            "deger": "navitas_seg_v35_best.pt",
+            "satir": 32
+          },
+          {
+            "hedef": "spec['imgsz']",
+            "deger": 512,
+            "satir": 33
+          },
+          {
+            "hedef": "spec['status']",
+            "deger": "competition",
+            "satir": 34
+          },
+          {
+            "hedef": "spec['model_id']",
+            "deger": "navitas-seg-v35-512",
+            "satir": 35
+          }
+        ]
+      }
+    },
+    {
+      "no": 7,
+      "ad": "D256 SAYILARI ARTEFAKTLARLA TUTARLI MI",
+      "durum": "GECTI",
+      "bulgu_sayisi": 0,
+      "bulgular": [],
+      "kanit": [
+        {
+          "dosya": "REVIEW_LOG.md",
+          "satir": 19336,
+          "alan": "D-256"
+        },
+        {
+          "dosya": "scripts/olcum/results/t63/t130_v35_dogrulama_kabul_verdikt.json",
+          "alan": "olcum.K0/K1_rota/K2_basma/K3_agir/K4_arena_disi/K5_*"
+        },
+        {
+          "dosya": "results/t130_kararlilik_tohum7.json",
+          "alan": "kararsiz/n/sigma/tekrar"
+        },
+        {
+          "dosya": "results/t130_kararlilik_v34_tohum7.json",
+          "alan": "kararsiz/n/sigma/tekrar"
+        },
+        {
+          "dosya": "config/model_registry.json",
+          "alan": "profiles.competition.sha256"
+        },
+        {
+          "dosya": "jetson_paket/models/jetson_derleme_manifest.json",
+          "alan": "paket_icerigi[v35 PT/ONNX].sha256"
+        },
+        {
+          "dosya": "results/onnx_export_v35_20260821/jetson_derleme_manifest.json",
+          "alan": "onnxler[0] (SHA alani yok)"
+        }
+      ],
+      "olcum": {
+        "D256_baslangic_satiri": 19336,
+        "D256": {
+          "K0_figur_yuzde": 9.03,
+          "K0_taban_yuzde": 9.03,
+          "K0_figur_orani": 1.0,
+          "K1": "256/260",
+          "K2": "18/256",
+          "K3": "0/256",
+          "K4": "1/256",
+          "K5_kesen": 0,
+          "K5_olculebilir": 173,
+          "K2_v34_yuzde": 4.65,
+          "K2_v35_yuzde": 7.03,
+          "K2_v34_kesir": "12/258",
+          "K2_v35_kesir": "18/256",
+          "v34_kararsiz": 4,
+          "v34_n": 260,
+          "v35_kararsiz": 9,
+          "v35_n": 260,
+          "sigma_255": 2.0,
+          "tekrar": 3,
+          "tohum": 7,
+          "pt_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+          "onnx_sha256": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3"
+        },
+        "artefakt_modelleri": {
+          "verdikt.model": "navitas_seg_v35_best.pt",
+          "kararlilik_v35.model": "navitas_seg_v35_best.pt",
+          "kararlilik_v34.model": "navitas_seg_v34_best.pt"
+        },
+        "verdikt": {
+          "K0_figur": 0.09030469530914924,
+          "K0_figur_tabani": 0.0903,
+          "K0_figur_orani": 1.0000519967790613,
+          "K1": "256/260",
+          "K2": "18/256",
+          "K3": "0/256",
+          "K4": "1/256",
+          "K5_kesen": 0,
+          "K5_olculebilir": 173
+        },
+        "kararlilik_v35": {
+          "kararsiz": 9,
+          "n": 260,
+          "sigma": 2.0,
+          "tekrar": 3
+        },
+        "kararlilik_v34": {
+          "kararsiz": 4,
+          "n": 260,
+          "sigma": 2.0,
+          "tekrar": 3
+        },
+        "pt_sha256_registry": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+        "pt_sha256_paket": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+        "onnx_sha256_paket": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3",
+        "export_onnx_basename": "navitas_seg_v35_best_512_fp16.onnx",
+        "notlar": [
+          "Kararlilik JSON payloadlarinda `tohum` alani yok; tohum 7 yalniz dosya adlarinda kayitli.",
+          "ONNX export manifesti SHA alani tasimiyor; ONNX SHA yalniz paket manifesti dizgesinden caprazlandi."
+        ]
+      }
+    }
+  ],
+  "sentetik_mutasyon_sinamalari": [
+    {
+      "mutasyon": "registry_ikizligini_boz",
+      "hedef_kontrol": 1,
+      "beklenen": "DUSTU",
+      "gercek": "DUSTU",
+      "pozitif_kontrol": "GECTI",
+      "durum": "GECTI",
+      "kanit": [
+        {
+          "alan": "profiles.competition.imgsz",
+          "neden": "deger_farki",
+          "sol": 512,
+          "sag": 640
+        }
+      ]
+    },
+    {
+      "mutasyon": "manifest_sha_tek_karakter_degistir",
+      "hedef_kontrol": 3,
+      "beklenen": "DUSTU",
+      "gercek": "DUSTU",
+      "pozitif_kontrol": "GECTI",
+      "durum": "GECTI",
+      "kanit": [
+        {
+          "neden": "sha256_dizgeleri_farkli",
+          "registry": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "paket_manifest": "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "mutasyon": "SS6C_disina_v34_satiri_ekle",
+      "hedef_kontrol": 5,
+      "beklenen": "DUSTU",
+      "gercek": "DUSTU",
+      "pozitif_kontrol": "GECTI",
+      "durum": "GECTI",
+      "kanit": [
+        {
+          "dosya": "bir.md",
+          "neden": "v34_mesru_bolum_disinda",
+          "satir": 7,
+          "dize": "navitas_seg_v34_best.pt",
+          "bolum": "5. NORMAL BOLUM",
+          "sinif": "KAPSAM_DISI"
+        }
+      ]
+    }
+  ]
+}
