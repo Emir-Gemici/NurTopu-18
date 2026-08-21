@@ -20156,3 +20156,102 @@ ikisi de var.** Cümlem bunu tek mekanizmaya yıkıyordu; düzeltildi.
     Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
     Kapı çıktısı: 765 OK · 15/15 · dört davranış mimar tarafından ayrı ayrı sınandı
     ⚠ Bu commit İTİLMEDİ — push 2026-08-21'de donduruldu (`CLAUDE.md §5`).
+
+---
+
+### D-266 · 🔎 T133 TRİYAJ · 39 görev kanıtla ayrıldı — ve **çürütücü harness'i 35 "KAPANMALI" verdiktinin 17'sini YIKTI**; ayrıca birikme bir SÜREÇ kusurudur: durumun girişi kurallı, **çıkışı sahipsiz**
+
+- **Yazan:** Claude 2 / Fable 5 (ustabaşı) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-21 · görev **T133**.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 765 · OK**.
+- **Ham çıktı repoda:** `results/t133/triyaj_ham.json` (39 triyaj + 35 çürütücü,
+  74 ajan · 0 hata) · tablo `results/t133/triyaj_tablosu.md` ·
+  envanter `envanter.json` · yaş `bekleme_yasi.json` · süreç `surec_bulgusu.md`.
+- 🔴 **Görev durumlarına DOKUNULMADI.** Kapatma yetkisi mimarındır (§9.2).
+
+#### 1. SONUÇ — beş kova
+| kova | adet |
+|---|---|
+| KAPANMALI (çürütücü dayanamadı) | **18** |
+| KAPANIR + YENİ KAYIT ŞARTIYLA | **2** |
+| 🔴 KAPANMAZ (çürütücü YIKTI) | **15** |
+| HÂLÂ GEÇERLİ (triyaj) | **3** (T87 · T117 · T121) |
+| BELİRSİZ | **1** (T21) |
+
+#### 2. 🔴 HARNESS'İN KENDİSİ BULGUDUR
+Triyaj ajanları **35** göreve "KAPANMALI" dedi. Bağımsız çürütücüler bunların
+**17'sini yıktı** — yani harness olmasaydı bu tablo mimara **17 yanlış "kapat"**
+gönderecekti ve her biri **gerçek bir kusuru gömecekti**. Görevin uyarısı
+(*"KAPANMALI demek kolay ve yanlış olursa gerçek bir kusuru gömeriz"*) ölçümle
+doğrulandı: yanlış-kapatma oranı **%48,6**.
+
+⚠ Ama `curutuldu: true` tek başına "kapanmaz" demek DEĞİLDİR. Üçe ayırdım
+(elle, çünkü "aynı kusur mu yeni kusur mu" sorusu ölçümle değil **okumayla**
+ayrılır):
+- **A · KAPANMAZ (15):** görevin kendi iddiası ya da lafzen yazılı kapsamı
+  bugün hâlâ üretiliyor.
+- **B · KAPANIR + YENİ KAYIT (1 · T11):** kendi kapsamı gerçekten düzelmiş,
+  aynı mekanizma **başka çağrı yerinde** yaşıyor.
+- **C · ÇÜRÜTME TUTMADI (1 · T82):** çürütücü gerekçesinde *"onu çürütemedim"*
+  diyor ama bayrağı `true` işaretlemiş — **başlık↔sayı çelişkisi**. Triyajın
+  verdikti ayakta, çürütücünün notu yan bulgudur.
+
+#### 3. USTABAŞI 5 KALEMİ ELLE KOŞTU (39'un 5'i)
+Ajan çıktısını denetlemeden geçirmedim (§8: kısıt doğrulama kapasitesidir).
+```text
+T1  temiz worktree -> test_accuracy/test_batch --help exit 0   (KAPANMALI dogrulandi)
+T11 kendi kapisi exit 2 · curutmenin komutu exit 1, AYNI TypeError (B dogrulandi)
+T83 ls jetson_paket/kod/arac_maskesi.py -> YOK, pakette 10 .py  (A dogrulandi)
+T59 tests/test_gercek_arena_kapisi.py:44 -> navitas_seg_v24_best.pt (A dogrulandi)
+S9  iha_perceive.py:42 v2_best.pt  vs  hakem_log.py:68 defterden kunye (A dogrulandi)
+```
+Beşinde de ajanın sonucu **doğrulandı**. Kalan 34 kalem ajan kanıtına dayanır
+ve her satırda **çalıştırılabilir komut** vardır — mimar dilediğini yeniden koşar.
+
+#### 4. ÇÜRÜTÜCÜNÜN BULDUĞU EN AĞIR ÜÇ ŞEY (hepsi saha gününe bakıyor)
+1. **T48** — kapı iki rota üreticisinden **yalnız** `analyze_path`'e konmuş;
+   İKA'ya yayınlanan `rota.json`'u üreten yol çökmüş maskede (kaplama %96,5,
+   tavan %67) hâlâ `durum=ACIK · guven=1.0 · 22 waypoint` üretiyor.
+2. **T83** — `jetson_paket/kod/arac_maskesi.py` **YOK** (ustabaşı doğruladı):
+   sahaya giden mühürlü artefaktta ölçek katmanı ölü.
+3. **S9** — `iha_perceive.py` varsayılanı **v2**, hakem günlüğü künyeyi
+   defterden (**v35**) yazıyor: hakem, koşulmayan modelin adını görüyor.
+   Görevin özgün cümlesi birebir yeniden üretiliyor.
+Ayrıca **T59** ve **T73**: iki kapı da **yapısal olarak düşemeyen boş yeşil**
+(biri v24'e çivili sabiti yine v24 ile kıyaslıyor, diğeri mutasyonu geçiyor).
+
+#### 5. ASIL SORU — 39 NASIL BİRİKTİ (ölçüldü, ÖNER-BEKLE)
+`122_t133_bekleme_yasi.py` · TASK_QUEUE.md'nin **111 commit'i** tarandı:
+```text
+yas: en eski 14 gun (ALT SINIR) · ortanca 10 · en yeni 1
+adet: 2026-08-07 -> 15 · 2026-08-15 -> 36 · 2026-08-20 -> 39
+14 gunde GIRIS ~+31 · CIKIS ~-7  =>  4,4 : 1
+```
+**Sızıntı, patlama değil** — yani temizlik tek başına çözmez.
+**Kök neden:** kuyruk kuralı 1 iş **çekmeyi**, kural 4 duruma **girmeyi**
+tanımlıyor; **`READY_FOR_REVIEW`'den çekmeyi söyleyen kural YOK.**
+`AGENTS.md` durum makinesini çiziyor (:122-128) ve §9.3 **kimin** denetlediğini
+söylüyor — **ne zaman**ını hiçbiri söylemiyor. Girişi kuralla, çıkışı iyi
+niyetle işleyen durum büyür.
+Üç çarpan: (1) işaret ne **sahip** ne **tarih** taşıyor — bekleme kuyruktan
+okunamıyor, ben git'ten çıkarmak zorunda kaldım (D-194'ün **zaman eksenindeki**
+hâli); (2) üretici 3 · tüketici 1, §9.3 gereği Fable 5'in işini yalnız mimar
+denetleyebilir; (3) tavan yok. Öneriler `results/t133/surec_bulgusu.md` §4 —
+**hiçbiri uygulanmadı**.
+
+⚠ **Bu görevin kendisi de aynı kuyruğa giriyor.** T133 bitince sayı 39'dan
+38'e düşmüyor; triyaj **kapatmıyor**, kapatan mimar. Yani tablo okunana kadar
+kuyruk **40**'tır. Bu bir şikâyet değil, mekanizmanın kendi kanıtı.
+
+#### 6. YAN KAYIT — kendi aletimde üçüncü kez aynı kusur
+`121`de `→` karakteri, çıktı yakalandığında `cp1254` yüzünden betiği çökertti
+(T132/D-264'te ölçtüğüm sınıf, üçüncü örnek). `sys.stdout.reconfigure` ile
+düzeltildi. ⚠ Bu sınıf `scripts/olcum` altında **taranmadı**; kaç betiğin
+çıktı yakalandığında öldüğü **ÖLÇÜLMEDİ** — D-256 §7'deki D-226 taramasıyla
+aynı turda bakılabilir (Codex-1'e verilen prompt orada).
+
+#### 7. YETKİ SINIRI — yapılmayanlar
+Hiçbir görev **kapatılmadı/açılmadı** · `codes/` altına **dokunulmadı** ·
+eşik değişmedi · süreç önerileri **uygulanmadı** (kararı mimarın) ·
+push **YOK** (CLAUDE.md §5).

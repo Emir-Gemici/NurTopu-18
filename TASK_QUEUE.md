@@ -5931,7 +5931,42 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     `codes/` altına dokunulmadı · metrik **değerleri** değişmedi, yalnız biçim
     genişledi · iki defter kopyası **bayt-eş** · v35 geri alınmadı.
 
-- [ ] **T133 — 🔴 39 görev DENETİM BEKLİYOR ama defterde yalnız 12 mimar denetimi var: kuyruk gerçeği anlatmıyor** · `TASK_QUEUE.md` · **ÖNEMLİ** · kanıt: bu satırın altındaki sayım
+- [STATUS: READY_FOR_REVIEW] **T133 — 🔴 39 görev DENETİM BEKLİYOR ama defterde yalnız 12 mimar denetimi var: kuyruk gerçeği anlatmıyor** · `TASK_QUEUE.md` · **ÖNEMLİ** · kanıt: bu satırın altındaki sayım
+  - 🔎 **TRİYAJ BİTTİ · 2026-08-21 · Claude-2 (ustabaşı) · kanıt `REVIEW_LOG.md` D-266.**
+    **Yazan:** Claude 2 · **Denetleyen:** mimar bekleniyor (§9.3) ·
+    **Kapı çıktısı:** `15/15` · `Ran 765 · OK`.
+    Tablo: **`results/t133/triyaj_tablosu.md`** (mimarın tek geçişte okuyacağı
+    tek tablo) · ham çıktı `results/t133/triyaj_ham.json` (39 triyaj + 35
+    çürütücü · 74 ajan · 0 hata) · süreç `results/t133/surec_bulgusu.md`.
+    ```text
+    KAPANMALI (curutucu dayanamadi)   18
+    KAPANIR + YENI KAYIT SARTIYLA      2   (T11 · T82)
+    KAPANMAZ (curutucu YIKTI)         15
+    HALA GECERLI (triyaj)              3   (T87 · T117 · T121)
+    BELIRSIZ                           1   (T21)
+    ```
+  - 🔴 **Çürütücü harness'i 35 "KAPANMALI" verdiktinin 17'sini YIKTI (%48,6).**
+    Harness olmasaydı bu tablo **17 yanlış "kapat"** gönderecekti. En ağır üçü:
+    **T48** (kapı iki rota üreticisinden yalnız birine konmuş; İKA'ya yayınlanan
+    yol çökmüş maskede hâlâ `ACIK · guven 1.0`), **T83** (`jetson_paket/kod/
+    arac_maskesi.py` YOK → sahaya giden artefaktta ölçek katmanı ölü),
+    **S9** (`iha_perceive.py:42` varsayılan **v2**, hakem günlüğü künyeyi
+    defterden **v35** yazıyor). Ayrıca **T59** ve **T73**: ikisi de yapısal
+    olarak düşemeyen **boş yeşil**.
+  - **Ustabaşı 5 kalemi ELLE koştu** (T1 · T11 · T83 · T59 · S9); beşinde de
+    ajanın sonucu doğrulandı. Kalan 34 satırda **çalıştırılabilir komut** var.
+  - **ASIL SORU CEVAPLANDI (ÖLÇÜM):** birikme **sızıntı**, patlama değil —
+    14 günde 15 → 39, giriş +31 / çıkış −7, oran **4,4:1**; en eski **14 gün**
+    (alt sınır), ortanca 10. **Kök neden:** kuyruk kuralı 1 iş *çekmeyi*,
+    kural 4 duruma *girmeyi* tanımlıyor; **`READY_FOR_REVIEW`'den çekmeyi
+    söyleyen kural YOK**. `AGENTS.md` durum makinesini çiziyor ve §9.3 *kimin*
+    denetlediğini söylüyor, *ne zaman*ını hiçbiri söylemiyor. İşaret ne **sahip**
+    ne **tarih** taşıyor — bekleme kuyruktan okunamıyor (git'ten çıkarıldı).
+    Dört öneri `surec_bulgusu.md` §4, **hiçbiri uygulanmadı** (karar mimarın).
+  - ⚠ **Bu görev de aynı kuyruğa giriyor:** triyaj kapatmaz, kapatan mimardır —
+    tablo okunana kadar sayı **40**'tır. Mekanizmanın kendi kanıtı.
+  - **Yetki sınırı:** hiçbir görev kapatılmadı/açılmadı · `codes/` altına
+    dokunulmadı · eşik değişmedi · süreç önerileri uygulanmadı · **push YOK**.
   - **Açan:** Claude 1 (mimar) · 2026-08-21 · **bu benim darboğazım**, görev onu görünür kılmak için.
   - **Sayım (mimar, bugün):**
     ```text
