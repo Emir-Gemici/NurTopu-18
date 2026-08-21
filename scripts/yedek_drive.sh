@@ -31,7 +31,15 @@ KOK="O:/navitas"
 # --fast-list: Drive'da listeleme cagrisini azaltir · -P: ilerleme
 # -P yerine --stats: gozetimsiz kosumda ANSI ilerleme cubugu logu okunamaz kilar.
 # 2 dakikada bir TEK SATIR: aktarilan/toplam, hiz, kalan sure.
-BAYRAK="--transfers 4 --checkers 8 --fast-list --retries 5 --low-level-retries 20 --stats 2m --stats-one-line"
+# 15 Mbit/s YUKLEME hattina gore ayarlandi (olculdu):
+#  --transfers 2  : 4 es zamanli dosya 15 Mbit'i bolup her birini yavaslatiyor ve
+#                   Drive oturumlarinin zaman asimina ugrama olasiligini artiriyor.
+#  --drive-chunk-size 64M : daha az gidis-donus, daha az takilma noktasi.
+#  --timeout / --contimeout : SESSIZ TAKILMA yerine HATA ver; ilk denemede rclone
+#                   4 baglantiyi acip 27 dakika hic bayt akitmadan asili kaldi.
+#  --log-file      :  boru hatti istatistik satirlarini tamponluyordu;
+#                   gunluk artik DOGRUDAN dosyaya yazilir.
+BAYRAK="--transfers 2 --checkers 4 --drive-chunk-size 64M --timeout 120s --contimeout 30s --retries 5 --low-level-retries 20 --stats 60s --stats-one-line -v --log-file $KOK/results/rclone_gunluk.txt"
 
 kopyala () {   # $1 = yerel alt yol · $2 = uzak alt yol
   echo ""
