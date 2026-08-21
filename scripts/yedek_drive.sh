@@ -29,7 +29,9 @@ UZAK="drive:navitas_yedek"
 KOK="O:/navitas"
 # --transfers: es zamanli dosya · --checkers: karsilastirma is parcacigi
 # --fast-list: Drive'da listeleme cagrisini azaltir · -P: ilerleme
-BAYRAK="--transfers 4 --checkers 8 --fast-list --retries 5 --low-level-retries 20 -P"
+# -P yerine --stats: gozetimsiz kosumda ANSI ilerleme cubugu logu okunamaz kilar.
+# 2 dakikada bir TEK SATIR: aktarilan/toplam, hiz, kalan sure.
+BAYRAK="--transfers 4 --checkers 8 --fast-list --retries 5 --low-level-retries 20 --stats 2m --stats-one-line"
 
 kopyala () {   # $1 = yerel alt yol · $2 = uzak alt yol
   echo ""
