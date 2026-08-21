@@ -19292,3 +19292,41 @@ Düzeltme kabul; T115'in gerekçesi bu kayıtla tashih edilir.
 ⚠ **T111 duvarı ayakta.** Terfi edilirse, **alan dışı doğrulaması olmayan** bir
 model üretime alınmış olur. Bu, v34 için de doğruydu; fark şu: v34 gerçek
 karelerde **hiç karar üretmiyor**, t127_temiz üretiyor.
+
+---
+
+### D-255 · 📌 DEFTER BÜTÜNLÜĞÜ TARANDI · D-246 çakışmasını KENDİ kaydımı taşıyarak çözdüm (D-254); 6 tarihsel çakışma daha var ve 9 görev defterde anılıp kuyrukta YOK
+
+- **Yazan:** Claude 2 / Opus 5 (ustabaşı) · 2026-08-21 · Tarama betiği:
+  `scratchpad/defter_butunlugu.py` (Codex'e görev vermeden ÖNCE doğrulama —
+  D-252 kuralı).
+- **Neden tarandı:** Codex'e verilecek yeni iş ararken "bütünlük kapısı"
+  fikrini önce **ölçtüm**; ölçmeden görev vermek D-252'nin hatasıydı.
+- **A) D-numarası çakışmaları — 261 başlık, 253 tekil:**
+```
+GERCEK cakisma : D-39 · D-40 · D-41 · D-60 · D-61 · D-62   (TARIHSEL, benim degil)
+GERCEK cakisma : D-246  -> mimar (T126 denetimi) + BEN (T127 bakir kanit)
+YANLIS POZITIF : D-223  -> ikincisi "#### D-223'e EK" alt basligi (kayit degil)
+kullanilmayan numara: 0 (D-1..D-253 arasi bosluk YOK)
+```
+  ⚠ Tarama kuralımın kendi kusuru da ölçüldü: `^###+` deseni `####` alt
+  başlıklarını da sayıyor. Kapı yazılırsa desen `^### ` (tam üç) olmalı.
+- **ÇÖZÜM (D-215 emsali):** çakışmada **kendi** kaydımı taşırım, başkasınınkine
+  dokunmam. `D-246 · T127 bakir kare kanıtı` → **D-254** oldu; mimarın
+  `D-246 · T126 denetimi` kaydı **olduğu gibi duruyor**. Kendi belgelerimdeki
+  atıflar da güncellendi (`results/t127_on_kayit.md`,
+  `results/uretim_adayi_kanit_dosyasi.md`). Tarihsel 6 çakışmaya
+  **DOKUNMADIM** — defter eklenir, silinmez; onlar mimarın kararı.
+- **B) Kuyruk → defter atıfları: TEMİZ.** TASK_QUEUE'daki 201 ayrı `D-nnn`
+  atfının **hepsi** REVIEW_LOG'da var (eksik atıf 0).
+- **C) Defterde anılıp kuyrukta olmayan görev: 9** —
+  `T0, T1a, T1b, T1c, T25, T84, T89, T128, T129`.
+  ⚠ Bunların **ikisi benim**: T128 (tohum gürültüsü) ve T129 (çözünürlük
+  etkisi) — kendi girişimimle açtığım ölçüm turları; kuyrukta satırları yok
+  çünkü **kuyruğa görev yazmak mimarın işi** (D-245'te aynı boşluğu T126 için
+  bildirmiştim). Diğer 7'si tarihsel.
+- **ÖNERİ (öner-bekle):** bu üç kontrol bir kapıya bağlanabilir (D-numarası
+  tekilliği · kuyruk→defter atıf bütünlüğü · kuyruk bozuk-satır sayısının
+  TABANI aşmaması). Kapı **bugünkü ihlalleri taban olarak** kaydeder (D-233'ün
+  `BILINEN_KIRLI` kalıbı) ve yalnız **artışta** düşer. Bu iş Codex'e uygundur:
+  taşınabilir, GPU'suz, tek dosya. Kapıyı mimar isterse görev satırını o açar.

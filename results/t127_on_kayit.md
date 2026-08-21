@@ -64,5 +64,5 @@ egit -> kabul zinciri (65) -> kiyas (109) -> gercek kare reddi -> JSON.
   yeniden kuyruga alinacak.
 · Kume yine ALAN-ICI (D-242 §3); temiz bolum bunu COZMEZ, yalniz "val
   kirliligi sayilari sisirdi mi" sorusunu kapatir.
-· Bakir 11 kare (T127/D-246) bu egitimde de kullanilMADI — bagimsiz kalmaya
+· Bakir 11 kare (T127/D-254) bu egitimde de kullanilMADI — bagimsiz kalmaya
   devam ediyor ve sonrasinda AYNI sekilde olculecek.

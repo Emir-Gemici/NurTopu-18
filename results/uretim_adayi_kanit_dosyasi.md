@@ -39,7 +39,7 @@ aşağıdaki gerçek-kare ölçümlerinden gelir.
 | ölçüt (kaynak) | v30 | **v34** | **t122ac** | **t127_temiz** |
 |---|---|---|---|---|
 | çatı kaçağı · 55 kare (D-232/D-237) | 0,305 | **0,961** | **0,020** | 0,043 |
-| çatı kaçağı · 11 **bakir** kare (D-246) | 0,261 | **0,976** | **0,011** | 0,015 |
+| çatı kaçağı · 11 **bakir** kare (D-254) | 0,261 | **0,976** | **0,011** | 0,015 |
 | çatı kaçağı · 6 **ham foto** (D-248) | 0,079 | **0,459** | 0,075 | ölçülmedi |
 | kaplama İÇERİK (gerçek ≈ **0,47–0,52**, D-240) | 0,594 | **0,800** | 0,455 | **0,508** |
 | 67 gerçek karede red | 2 | **67** | **0** | **0** |
@@ -49,7 +49,7 @@ aşağıdaki gerçek-kare ölçümlerinden gelir.
 - v34 elimizdeki **tek gerçek görüntü kümesinin 67/67'sini reddediyor** ve
   çatının %96'sını zemin sayıyor. t122ac/t127_temiz red vermiyor.
 - t122ac'nin üstünlüğü **ezber değil**: eğitime hiç girmemiş 11 karede de
-  duruyor (D-246).
+  duruyor (D-254).
 - t122ac'nin sayıları **kirli bölümden gelmiyor**: temiz bölümle yeniden
   eğitilen t127_temiz aynı bandı tutturdu (D-249).
 - v34'ün çatı kusuru **koşullu**: ham fotoğrafta %96 değil %46 (D-248).
