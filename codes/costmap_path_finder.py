@@ -57,10 +57,10 @@ import numpy as np
 
 try:
     from .karar_sozlesmesi import (BERABERLIK_BANDI, hedef_bant_yuksekligi,
-                                   serit_no)
+                                   serit_no, zemin_maskesi_reddi)
 except ImportError:
     from karar_sozlesmesi import (BERABERLIK_BANDI, hedef_bant_yuksekligi,
-                                  serit_no)
+                                  serit_no, zemin_maskesi_reddi)
 
 logger = logging.getLogger("costmap_path_finder")
 
@@ -963,6 +963,60 @@ def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
     """
     import time
     t0 = time.perf_counter()
+
+    # ── ZEMIN MASKESI SAGLAMLIK KAPISI (T134 · karar D-267 §3) ─────────────
+    # NEDEN BURADA: kapi IKI rota ureticisinden yalnizca `analyze_path`te
+    # vardi (rpi_inference.py:1166); `rota_bul` hicbir katmanda denetlemiyordu
+    # ve kapisiz olan yol IKA'ya YAYINLANAN `rota.json`i ureten yoldu
+    # (simulation/scripts/iha_haritala.py:324 -> :365). Olculen davranis:
+    # kaplama %96,5 (tavan %67) iken `durum=ACIK · guven=1.0 · 22 waypoint`.
+    # Sinif: "iki kopya, biri zorlanmiyor" — DOKUZUNCU ornek ve ilk kez
+    # gorev-kritik karar yolunda. Madde 15: saglam olmayan maskeden rota
+    # uretilmez, CAGIRAN KIM OLURSA OLSUN.
+    #
+    # 🔴 UC SEY OLCULDU ve UCU DE bu yerlesimi ZORUNLU kildi (T134 ADIM 1):
+    #  1. OLCUM HAM MASKEDE. `serbest_alan`in CIKTISI olculseydi kapi
+    #     TERS DONERDI: tam cokmus maske ham 1,0000 iken serbest 0,5988'e
+    #     duser (kapi SUSAR), mesru delikli maske 0,5485 -> 0,7197'ye cikar
+    #     (kapi YANLIS ATESLER) ve sayi `mpp`ye baglanir. Esik 0,67 HAM
+    #     dagilimdan turetildi (karar_sozlesmesi: "morfoloji/engel cikarma
+    #     SONRASI degil"). Ham birlesim + `icerik` argumani ile kurulan bu
+    #     varyant `analyze_path`in kapisiyla DENKTIR (400 rastgele vakada
+    #     karar uyusmazligi 0/400).
+    #  2. KUTU DOGRULAMASI `rota_bul`UN KENDI FONKSIYONUYLA. Ikinci bir
+    #     dogrulayici (`karar_sozlesmesi.icerik_kutusu_gecerli_mi`) kullanmak
+    #     19 alt vakayi kirdi: o dogrulayici sozluk/kume/uretec/float kutuyu
+    #     GECERLI sayiyor, bu modulunki fail-closed bos ROI'ye ceviriyor.
+    #     (Iki dogrulayicinin AYRISMASI ayri bir bulgudur — D-268 §5.)
+    #  3. GECERSIZ KUTUDA KAPI KOSMAZ. `zemin_maskesi_reddi` tasarim geregi
+    #     fail-closed'dir (D-71) ve gecersiz kutuda `ALAN_YETERSIZ` doner;
+    #     oysa `rota_bul`un yayinlanan cevabi o durumda `MASKE_YOK`tur. Bos
+    #     ROI zaten rota URETMEZ — kapiyi orada kosturmak guvenlik EKLEMEZ,
+    #     yalnizca yayinlanan sebep kodunu degistirirdi.
+    #
+    # ⚠ SINIR (olculdu, kapatilmadi): `icerik=None` ile LETTERBOX tuvalinde
+    # ulasilabilir azami kaplama 0,5625 < 0,67 — orada bu kol MATEMATIKSEL
+    # OLARAK OLUDUR (kenar kolu calisir). Kare mozaikte (iha_haritala,
+    # MOZ_PX=1024) sinir yoktur. Kayit: D-268 §6, ONER-BEKLE.
+    _zemin_ham = None
+    for _c in yol_sinif_idler:
+        _m = maskeler.get(_c)
+        if _m is None:
+            continue
+        _m = (np.asarray(_m) > 0).astype(np.uint8)
+        _zemin_ham = _m if _zemin_ham is None else np.maximum(_zemin_ham, _m)
+    if _zemin_ham is not None:
+        _kh, _kw = _zemin_ham.shape
+        _kutu = _icerik_kutusunu_dogrula(icerik, _kh, _kw)
+        if _kutu[2] > 0 and _kutu[3] > 0:
+            _red = zemin_maskesi_reddi(_zemin_ham, _kutu)
+            if _red is not None:
+                return {"durum": _red[0], "yol_no": None, "guven": 0.0,
+                        "sebep": _red[1], "waypoints_px": [],
+                        "darbogaz_m": None, "adaylar": [],
+                        "en_iyi_aday": None, "ihlaller": [],
+                        "sure_ms": {"costmap": 0.0, "koridor": 0.0}}
+
     sonuc = serbest_alan(maskeler, mpp=mpp, yol_sinif_idler=yol_sinif_idler,
                          engel_sinif_idler=engel_sinif_idler, icerik=icerik)
     t1 = time.perf_counter()

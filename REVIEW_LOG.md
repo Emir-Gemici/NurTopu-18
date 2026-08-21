@@ -20341,3 +20341,121 @@ kendi kanıtıdır.
   · **S9:** `iha_perceive.py` varsayılanı **v2**, hakem günlüğü künyeyi
     defterden (**v35**) yazıyor → hakem **koşulmayan modelin adını** görüyor.
 İkisi de **KAPANMAZ** kovasında ve ikisi de **saha gününe** bakıyor.
+
+---
+
+### D-268 · ✅ T134 UYGULANDI · zemin sağlamlık kapısı **`rota_bul`a kondu** — İKA'ya yayınlayan yol artık kapısız değil · ölçüm **dört yerleşimi** eledi ve seçilen varyant `analyze_path`in kapısına **DENK** (0/400)
+
+- **Yazan:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-21 · görev **T134**, karar **D-267 §3**.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 777 · OK** (765 → 777, yeni kapı
+  12 test) · ölçüm aynası **77 çift · AYRIŞAN 0** · iki `costmap_path_finder`
+  kopyası **bayt-eş**.
+- **Ham çıktı repoda:** `results/t134/adim1_yerlesim_olcumu.md` ·
+  `results/t134/kapi_etkisi.json` · araç `scripts/olcum/124_t134_kapi_etkisi.py`.
+- 🔴 **EŞİK DEĞİŞMEDİ.** `ZEMIN_KAPLAMA_TAVANI` (0,67) ve
+  `ZEMIN_KENAR_DAYANMA_TAVANI` (0,50) yalnız **okundu**. Bu bir **YER** işiydi.
+
+#### 1. SIRA EMİRLE BAĞLIYDI: ÖLÇ → YER SEÇ → UYGULA
+Emrin uyardığı iki tuzağın **ikisi de doğmadı** ve bunu ölçüm gösterdi:
+- **K1 düşmedi, düşemezdi.** `61:96` · `63:71` · `66:141` — kabul zincirinin
+  üç alt betiği de **`analyze_path`** çağırır; `61·63·65·66·109`'da `rota_bul`
+  geçiş sayısı **0**. Kabul zinciri kapıdan **zaten geçiyordu**.
+- **Genel kapı (15/15) risk altındaydı** — çünkü `test_rota_sentetik.py`
+  `rota_bul`u **doğrudan** çağırır. 15 sahnenin tamamı ölçüldü:
+  kaplama maks **0,4262** (tavan 0,67 · pay +0,2438), kenar maks **0,0306**
+  (tavan 0,50 · pay +0,4694) → **REDDEDİLEN 0/15**.
+
+#### 2. DÖRT YERLEŞİM ÖLÇÜLDÜ (hepsi koşuldu, ağaç her seferinde bayt-eş geri)
+```text
+1  serbest_alan ONCESI, ham icerik            genel 15/15 · takim 19/765
+2  serbest_alan SONRASI, sonuc["icerik"]      genel 15/15 · takim 19/765
+3  ONCESI + karar_sozlesmesi dogrulayicisi    genel 15/15 · takim  4/765
+4  ONCESI + rota_bul'un KENDI dogrulayicisi   genel 15/15 · takim  0/765   <- SECILDI
+```
+Düşen hep **aynı tek testti** (`test_gecersiz_icerik_kutulari_fail_closed_kalir`,
+19 `subTest` alt vakası).
+⚠ **İlk okumam yanlıştı ve düzeltildi:** "19 dejenere fikstür" değil.
+Gerçek sebep: `zemin_maskesi_reddi` **fail-closed**tır (D-71) ve geçersiz
+kutuda **`ALAN_YETERSIZ`** döner; `rota_bul`un yayınlanan cevabı ise
+**`MASKE_YOK`**tur. İkisi de rota üretmez — çakışan tek şey **sebep kodu**ydu.
+Boş ROI zaten rota üretmediği için kapıyı orada koşturmak **güvenlik eklemez**.
+
+#### 3. ÖLÇÜM HAM MASKEDE — yanlış yer kapıyı İKİ YÖNDE de bozuyor
+Fan-out ajanı ölçtü, bağımsız çürütücü **kıramadı**:
+```text
+tam cokmus maske : HAM 1,0000 -> serbest_alan sonrasi 0,5988   KAPI SUSAR
+mesru delikli    : HAM 0,5485 -> serbest_alan sonrasi 0,7197   KAPI YANLIS ATESLER
+ayni maske       : mpp=0,05 -> 0,7197 RET · mpp=0,08 -> 0,5247 GECER
+```
+`analyze_path`in sayısı `mpp`den **bağımsızdır**; `serbest_alan` çıktısında
+ölçmek onu `mpp`ye bağlardı ve **başka bir kapı** yapardı. Eşik 0,67 **ham
+dağılımdan** türetilmişti — sözleşme bunu zaten yazıyordu.
+**Seçilen varyant DENK:** çürütücü 400 rastgele vakada karar uyuşmazlığı
+**0/400**; kırpık-vs-ham 300 vakada **0/300** fark.
+
+#### 4. ÇİFT KAPI — ölçüldü, İDEMPOTENT ("öyledir" denmedi)
+`iha_haritala.haritala()` tek üretim yolunda ikisini de çağırır
+(`:281 analyze_path` → `:324 rota_bul`, **aynı** `masks[0]` nesnesi). Kapı
+fonksiyonu **saf**tır (maskeye dokunmaz, serbest alanı büyütmez — madde 15
+açısından nötr); ikinci geçiş aynı sayıyı üretir. Çürütücü kıramadı.
+
+#### 5. 🔴 YAN BULGU — İKİ KUTU DOĞRULAYICISI ANLAŞMIYOR (ÖNER-BEKLE)
+Yerleşim 3'ün kalan 4 düşüşü bunu açtı:
+`karar_sozlesmesi.icerik_kutusu_gecerli_mi` şu dört bozuk biçimi **GEÇERLİ**
+sayıyor — `(0.0,0,64,64)` float · `{0:0,1:0,2:64,3:64}` sözlük ·
+`{0,1,63,64}` küme · üreteç — oysa `costmap._icerik_kutusunu_dogrula` dördünü
+de fail-closed boş ROI'ye çevirir. Bir sözlüğün "içerik kutusu" sayılması açık
+bir **fail-open**tur. **DÜZELTİLMEDİ** (T134 kapsamı dışı); yerleşim 4 ikinci
+doğrulayıcıyı hiç kullanmaz. Karar mimarın.
+
+#### 6. 🔴 KAPATILMAYAN SINIR — `icerik=None` + LETTERBOX (ÖNER-BEKLE)
+Letterbox tuvalinde içerik oranı 0,5625'tir; `icerik=None` geçen bir çağrıda
+kaplama **0,5625'i aşamaz** ve 0,67 tavanı **hiç ateşlenemez** (1920×1080,
+1280×720, 640×360 ölçüldü). Kenar kolu çalışmaya devam eder.
+- **İKA yolu ETKİLENMEZ:** `iha_haritala` kare mozaik kullanır (`MOZ_PX=1024`);
+  orada kaplama %96,5 ölçülmüştü — kapı **canlı**.
+- `icerik` geçmeyen diğer çağıranlar: `kamera_dogrula.py:118` ·
+  `saha_kuru_kosu.py:722` · `jetson_fps.py:226`. Kolun orada ölü olup olmadığı
+  **tuvale bağlıdır ve ÖLÇÜLMEDİ**.
+
+#### 7. MUTASYON + POZİTİF KONTROL
+```text
+POZITIF KONTROL (mutasyonsuz)                    dosya: 0/12 · takim: 0/777 · genel 15/15
+M1 kapi KALDIRILDI                               dosya: 5/12 · takim: 5/777 · genel 15/15
+M2 olcum SERBEST ALAN ciktisinda (YANLIS YER)    dosya: 1/12 · takim: 1/777 · genel 15/15
+GERI ALINDI -> 0/12 · 0/777 · iki dosya da BAYT-ES
+```
+**M2 anlamlıdır:** yeni kapı yalnızca "kapı var mı"yı değil **doğru yerde mi**
+sorusunu da kilitliyor — yanlış yerleşim, çökmüş maskede susardı ve test onu
+yakalıyor. Fikstürün ayırt ediciliği ayrı bir testle sabitlendi
+(HAM 1,0000 · SERBEST 0,4969).
+**Pozitif kontrol sahnesi kopyalanmadı:** genel kapının KENDİ `sahne_uret`i
+içe aktarıldı — kopya sahne, sahne değişince testi sessizce alakasız kılardı.
+
+#### 8. 🔴 DEĞİŞİKLİĞİN AŞAĞI-AKIŞ SONUÇLARI (fan-out buldu, ustabaşı doğruladı)
+Testler yeşil ama **ölçüm araçlarının anlamı** değişebilir. Bunlar
+düzeltilmedi, **kayda geçti**:
+1. **`scripts/olcum/75_koridor_envanteri.py`** aynı girdiyi hem
+   `analyze_path`e (:89) hem `rota_bul`a (:113) verir ve **iki yolun aynı
+   `adaylar`ı ürettiğini** kendi *pozitif kontrolü* sayar (`tutarli` bayrağı).
+   Çökmüş maskede `rota_bul` artık erken döner, `analyze_path` yarısı koşar →
+   **iki yol ayrışır** ve o bayrak çökmüş karelerde anlamını yitirir.
+   (Ustabaşı doğruladı: dosyanın kendi docstring'i bu kıyası yazıyor.)
+2. **`scripts/olcum/89 · 90 · 91`** ön kayıtlı tabanı *"rota_bul ACIK ≥ 31"*
+   ile kurulmuştu (D-159/D-164). Kapı o sayıyı **düşürebilir**; taban
+   yeniden ölçülmeden kıyaslanmamalı.
+3. **`scripts/copy_paste_augmentation.py:882`** veri seti üreticisidir.
+   Doygun bir kompozit üretilirse kapı ateşler ve **üretilen etiket değişir**.
+4. **`tests/test_rota_bul_aciklik_korumasi.py:79`** bugün geçiyor ama
+   kaplaması **0,660** — tavana pay yalnız **0,010**. Sahne biraz değişirse
+   bu test kapıya takılır; kırılganlık kayda geçti.
+5. **`jetson_paket/kod/kamera_dogrula.py:118`** `icerik` geçmez **ve** maske
+   `_maskeleri_icerige_kirp` ile tam tuvale yazılır → kaplama seyrelir,
+   kenar ≈ 0 → kapı orada **sessizce hiç ateşlemez** (§6'nın somut örneği).
+
+#### 9. YETKİ SINIRI — yapılmayanlar
+Eşik **değişmedi** (okundu) · `config/model_registry.json`'a **dokunulmadı** ·
+iki kutu doğrulayıcısının ayrışması **düzeltilmedi** (§5, öner-bekle) ·
+letterbox sınırı **kapatılmadı** (§6, öner-bekle) · **push YOK** (CLAUDE.md §5).

@@ -1,0 +1,117 @@
+{
+ "_ne": "T134 ADIM 1 · kapi rota_bul'a konsaydi ne reddedilirdi",
+ "_tavanlar": {
+  "kaplama": 0.67,
+  "kenar": 0.5
+ },
+ "_not": "Kabul zinciri (K1..K5) BU OLCUMUN DISINDA: 61/63/66 ucu de analyze_path cagirir, rota_bul DEGIL — kapidan zaten geciyor.",
+ "genel_kapi_sahneleri": [
+  {
+   "sahne": "harita1/kolay",
+   "kaplama_icerik": 0.426248,
+   "kenar_dayanmasi": 0.029559118236472944,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita1/orta",
+   "kaplama_icerik": 0.375836,
+   "kenar_dayanmasi": 0.01903807615230461,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita1/zor",
+   "kaplama_icerik": 0.307944,
+   "kenar_dayanmasi": 0.006513026052104208,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita2/kolay",
+   "kaplama_icerik": 0.419004,
+   "kenar_dayanmasi": 0.029559118236472944,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita2/orta",
+   "kaplama_icerik": 0.3894,
+   "kenar_dayanmasi": 0.01903807615230461,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita2/zor",
+   "kaplama_icerik": 0.298616,
+   "kenar_dayanmasi": 0.0070140280561122245,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita3/kolay",
+   "kaplama_icerik": 0.417564,
+   "kenar_dayanmasi": 0.03006012024048096,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita3/orta",
+   "kaplama_icerik": 0.363832,
+   "kenar_dayanmasi": 0.01903807615230461,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita3/zor",
+   "kaplama_icerik": 0.30994,
+   "kenar_dayanmasi": 0.006513026052104208,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita4/kolay",
+   "kaplama_icerik": 0.412244,
+   "kenar_dayanmasi": 0.03006012024048096,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita4/orta",
+   "kaplama_icerik": 0.378808,
+   "kenar_dayanmasi": 0.01903807615230461,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita4/zor",
+   "kaplama_icerik": 0.308636,
+   "kenar_dayanmasi": 0.006513026052104208,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita5/kolay",
+   "kaplama_icerik": 0.408988,
+   "kenar_dayanmasi": 0.030561122244488977,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita5/orta",
+   "kaplama_icerik": 0.36438,
+   "kenar_dayanmasi": 0.019539078156312624,
+   "reddedilir": false,
+   "sebep": null
+  },
+  {
+   "sahne": "harita5/zor",
+   "kaplama_icerik": 0.322204,
+   "kenar_dayanmasi": 0.006513026052104208,
+   "reddedilir": false,
+   "sebep": null
+  }
+ ],
+ "reddedilen": 0,
+ "toplam": 15
+}

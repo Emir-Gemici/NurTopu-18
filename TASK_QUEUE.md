@@ -5989,7 +5989,51 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     **süreç kusuruysa** görev tek tek temizlemekle bitmez, tekrar eder.
   - **Kapı:** `15/15` · `discover -s tests -q` → **765 OK**
 
-- [ ] **T134 — 🔴 GÖREV KRİTİK: zemin sağlamlık kapısı İKİ rota üreticisinden yalnız BİRİNDE; kapısız olan İKA'ya YAYINLAYAN yol** · `simulation/scripts/iha_haritala.py`, `codes/costmap_path_finder.py`, `codes/rpi_inference.py:1166` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-267 §2** (mimar ölçtü), triyaj **D-266 §4**
+- [STATUS: READY_FOR_REVIEW] **T134 — 🔴 GÖREV KRİTİK: zemin sağlamlık kapısı İKİ rota üreticisinden yalnız BİRİNDE; kapısız olan İKA'ya YAYINLAYAN yol** · `simulation/scripts/iha_haritala.py`, `codes/costmap_path_finder.py`, `codes/rpi_inference.py:1166` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-267 §2** (mimar ölçtü), triyaj **D-266 §4**
+  - ✅ **UYGULANDI · 2026-08-21 · Claude-2 (başamele) · kanıt `REVIEW_LOG.md` D-268.**
+    **Yazan:** Claude 2 · **Denetleyen:** mimar bekleniyor (§9.3) ·
+    **Kapı çıktısı:** `15/15` · `Ran 777 · OK` (765 → 777) · ayna **77 çift ·
+    AYRIŞAN 0** · iki `costmap_path_finder` kopyası **bayt-eş**.
+  - **ADIM 1 (ölç):** `results/t134/adim1_yerlesim_olcumu.md` ·
+    `results/t134/kapi_etkisi.json` · araç `scripts/olcum/124_t134_kapi_etkisi.py`.
+    ```text
+    KABUL ZINCIRI ETKILENMEZ: 61:96 · 63:71 · 66:141 ucu de analyze_path cagirir;
+                              61·63·65·66·109'da rota_bul gecisi = 0  -> K1 DUSMEDI
+    GENEL KAPI (15/15)      : 15 sahnenin REDDEDILENI 0/15
+                              kaplama maks 0,4262 (tavan 0,67 · pay +0,2438)
+                              kenar   maks 0,0306 (tavan 0,50 · pay +0,4694)
+    DORT YERLESIM OLCULDU   : 1) 19/765 · 2) 19/765 · 3) 4/765 · 4) 0/765  <- SECILDI
+    ```
+  - **ADIM 2 (yer seç):** **(b) · yerleşim 4** — ölçüm karar verdi. Kapı
+    `rota_bul` içinde, **HAM maskede**, `rota_bul`un **KENDİ** kutu
+    doğrulayıcısıyla. Seçilen varyant `analyze_path`in kapısına **DENK**
+    (çürütücü: 400 rastgele vakada uyuşmazlık **0/400**).
+    ⚠ Yanlış yerleşim kapıyı **iki yönde de** bozuyordu: çökmüş maske
+    HAM 1,0000 → serbest 0,5988 (**susar**), meşru delikli 0,5485 → 0,7197
+    (**yanlış ateşler**), ve sayı `mpp`ye bağlanırdı.
+  - **ADIM 3 (mutasyon + pozitif kontrol):**
+    ```text
+    POZITIF KONTROL                                dosya: 0/12 · takim: 0/777 · genel 15/15
+    M1 kapi KALDIRILDI                             dosya: 5/12 · takim: 5/777 · genel 15/15
+    M2 olcum SERBEST ALAN ciktisinda (YANLIS YER)  dosya: 1/12 · takim: 1/777 · genel 15/15
+    GERI ALINDI -> 0/12 · 0/777 · iki dosya da BAYT-ES
+    ```
+  - ⚠ **İlk okumam yanlıştı, düzeltildi:** düşen 19 şey "19 dejenere fikstür"
+    değil, **tek testin 19 alt vakası**; sebep de kaplama reddi değil,
+    geçersiz kutuda `ALAN_YETERSIZ` ↔ `MASKE_YOK` **sebep kodu çakışması**.
+  - 🔴 **İKİ ÖNER-BEKLE (düzeltilmedi):** ① iki içerik-kutusu doğrulayıcısı
+    anlaşmıyor — `icerik_kutusu_gecerli_mi` sözlük/küme/üreteç/float kutuyu
+    **geçerli** sayıyor (fail-open); ② `icerik=None` + letterbox tuvalinde
+    kaplama kolu **matematiksel olarak ölü** (azami 0,5625 < 0,67).
+    İKA yolu etkilenmez (kare mozaik, kaplama %96,5).
+  - 🔴 **AŞAĞI-AKIŞ (kayda geçti, düzeltilmedi):** `75_koridor_envanteri`nin
+    "iki yol aynı adayları üretir" pozitif kontrolü çökmüş karelerde ayrışır ·
+    `89/90/91`in ön kayıtlı tabanı yeniden ölçülmeli · `copy_paste_
+    augmentation:882` doygun kompozitte etiket değiştirebilir ·
+    `test_rota_bul_aciklik_korumasi:79` tavana **0,010** pay bırakıyor ·
+    `kamera_dogrula:118`de kapı sessizce hiç ateşlemiyor.
+  - **Yetki sınırı:** eşik **değişmedi** (okundu) · registry'ye dokunulmadı ·
+    iki öner-bekle uygulanmadı · **push YOK**.
   - **Mimarın kendi ölçümü (yapısal, kesin):**
     ```text
     codes/rpi_inference.py:1166      zemin_maskesi_reddi -> VAR, erken doner
