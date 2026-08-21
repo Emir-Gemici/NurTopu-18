@@ -1,0 +1,77 @@
+{
+ "_not": "KISMI OLABILIR — cekim bitmediyse bu kayit yalniz o ANIN durumudur.",
+ "dosya_sayisi": 14,
+ "toplam_bayt": 8504605603,
+ "dosyalar": [
+  {
+   "ad": "dji_fly_20260820_201722_0020_1787247400811_video_beautify.mp4",
+   "bayt": 63807530,
+   "sha256": "b69066697698fc367d5cfd97cf5487e0c5413b964f3bdfa8402bfb57f0caeedc"
+  },
+  {
+   "ad": "dji_fly_20260820_201756_0021_1787247388637_video_beautify.mp4",
+   "bayt": 200478676,
+   "sha256": "519b3a4a68e4f6d21ae9f039df106f1c2909c5cb8877066ed6ad4716bc922786"
+  },
+  {
+   "ad": "dji_fly_20260820_202028_0022_1787247356157_video_beautify.mp4",
+   "bayt": 1250544340,
+   "sha256": "9f078b536ea915b21995139d053af95f1b42d674e56bf63a1e6f7ee4117013cd"
+  },
+  {
+   "ad": "dji_fly_20260820_202420_0023_1787247185455_video_beautify.mp4",
+   "bayt": 1482651321,
+   "sha256": "17a0513e3b32b527ba5624cfaf95ce9a26c97fb51bcb6bd17ac8d32b14401a09"
+  },
+  {
+   "ad": "dji_fly_20260820_204144_0024_1787250461222_video_beautify.mp4",
+   "bayt": 627722002,
+   "sha256": "dbfb11a7b2cdd316bc511304d0dbae78193b86550f4f5f78ea5fc5f8dbc81f7f"
+  },
+  {
+   "ad": "dji_fly_20260820_204346_0025_1787250366598_photo_beautify.jpg",
+   "bayt": 5199674,
+   "sha256": "377dac1557dbf68d60ef712f8d1a9c1476b69d32ca29880e89365f974e87057c"
+  },
+  {
+   "ad": "dji_fly_20260820_204856_0026_1787250364745_photo_beautify.jpg",
+   "bayt": 4911948,
+   "sha256": "e4d56d6e0ab0138dc061e50052d20636b73d98284685098cd881b1b3f819a7b8"
+  },
+  {
+   "ad": "dji_fly_20260820_205716_0027_1787250362702_photo_beautify.jpg",
+   "bayt": 5164210,
+   "sha256": "6c9e692b483e97f3ad1e4e141d7b78c20355910c951c5726f35b337dddf80a10"
+  },
+  {
+   "ad": "dji_fly_20260820_205722_0028_1787250360538_photo_beautify.jpg",
+   "bayt": 5221469,
+   "sha256": "7cd0b4d43f699d55e6985966141d550eca51b7f5ab4b9988b6b7947f1f257df8"
+  },
+  {
+   "ad": "dji_fly_20260820_205730_0029_1787250358456_photo_beautify.jpg",
+   "bayt": 5147731,
+   "sha256": "81484a84c8baf8903806f96663679e12d6815c2aca048418bf4607d1b74cfcfc"
+  },
+  {
+   "ad": "dji_fly_20260820_205736_0030_1787250356547_photo_beautify.jpg",
+   "bayt": 5315709,
+   "sha256": "27397673cf5898978f1954cc0b3a43f60d58aceb0c2cf95914d9a0aac1a2f4d8"
+  },
+  {
+   "ad": "dji_fly_20260820_205742_0031_1787250354466_photo_beautify.jpg",
+   "bayt": 5215548,
+   "sha256": "009a9fff9f222bf6ebdede5f246c97339185670ea43b3a2e207adbbeba8475dc"
+  },
+  {
+   "ad": "dji_fly_20260820_205748_0032_1787250350300_video_beautify.mp4",
+   "bayt": 2306059466,
+   "sha256": "e2c5d22291d774311efdebd571769ef09d37a8b35a5f3f8316cf69380ee7d118"
+  },
+  {
+   "ad": "dji_fly_20260820_210528_0033_1787249994759_video_beautify.mp4",
+   "bayt": 2537165979,
+   "sha256": "11e20a9d28ec671f7032312ee112d220a970833f1915f993a93b65a127ad9511"
+  }
+ ]
+}
