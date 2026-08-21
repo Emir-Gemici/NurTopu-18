@@ -5550,7 +5550,9 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Kota:** takılırsan `HANDOFF.md` — zincir nerede kaldı, hangi adım koşuldu,
     eğitim logu nerede. Yarım işi `READY_FOR_REVIEW` işaretleme.
 
-- [REVIEW: mimar] **T130 — 🔴 ÜRETİM MODELİ v34 → v35 (`t127_temiz`) · KULLANICI KARARI** · `config/model_registry.json` (+ paket kopyası), `models/`, `jetson_paket/**`, `JETSON_KILAVUZ.md` (iki kopya), `tests/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-249**, mimar denetimi **D-255**
+- [x] **T130 — KAPANDI · ÜRETİM MODELİ v34 → v35 (`t127_temiz`), altı hizalama noktası TEK COMMIT'te** · `config/model_registry.json` (+ paket), `models/`, `jetson_paket/**`, `JETSON_KILAVUZ.md` (iki kopya), `tests/` · **KRİTİK** · karar **KULLANICI** · uygulama **D-256**, mimar denetimi **D-257**
+  - **Yazan:** Claude 2 (Opus 5) · **Denetleyen:** Claude 1 (mimar) · **Karar:** kullanıcı (D-133) · **Kapı çıktısı:** `728 OK` · `15/15`
+  - **Mimarın kendi ölçümü:** sha256 `e00f6b8e…` → defterle **eşit** ve koşum ağırlığıyla **bayt-eş** · ONNX var · iki kılavuz simetrik (12/12) · v34 **silinmedi** · kabul zinciri **defterin gösterdiği yoldan** yeniden koşuldu → `VERDİKT: ÜRETİME ALINIR`.
   - ✅ **UYGULANDI · 2026-08-21 · Claude-2 (Opus 5) · D-256.** Altı hizalama
     noktası TEK commit'te: ağırlık · registry ×2 (sha256 ÖLÇÜLDÜ:
     e00f6b8e25dd6560…) · ONNX (248ef808…) · paket künyesi + .pt/.onnx ·
@@ -5602,6 +5604,23 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     `O:\navitas-local-train\venv\Scripts\python.exe codes/test_rota_sentetik.py` → **15/15**
   - **Doğrulama:** terfiden sonra kabul zinciri **yeni yoldan** yeniden koşulur ve
     `VERDİKT: ÜRETİME ALINIR` çıktısı görev satırına yapıştırılır.
+
+- [ ] **T131 — 🔴 Terfi, kendisini uyaran kapıyı SUSTURUYOR: K0 referansı her terfide kayıyor ve kümülatif hareket HİÇBİR YERDE durmuyor** · `config/model_registry.json`, `scripts/olcum/65_kabul_denetcisi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-257 §4**
+  - **Ölçüldü (mimar, aynı model aynı sayı):**
+    ```text
+    terfi ONCESI (v34 taban) : figur %9,03 · taban %0,49 · oran 18,43  🔴 DIKKAT
+    terfi SONRASI (v35 taban): figur %9,03 · taban %9,03 · oran  1,00  (uyari YOK)
+    ```
+  - **Davranış tasarım gereği doğru** (oran aday↔üretim kıyasıdır) ama sonucu:
+    kapı **tehlikeli yönde 18 kat daha az duyarlı**. Aynı uyarı için artık ~%18 gerekiyor.
+  - **Sınıf:** bu, projenin en sık kusurunun (**bayat/kaymış taban**, 8 örnek) bir
+    **mekanizma** hâli — taban yanlış kopyalanmıyor, **her terfide meşru olarak kayıyor**.
+  - **Yap (ölç ve öner, uygulama ayrı karar):** sürüm-ötesi **kayma defteri** —
+    `figur_zemin_orani` (ve K2 gibi taban taşıyan diğer alanların) **terfi geçmişi**
+    tek yerde görünsün: v30 → v34 → v35 → …
+  - ⚠ **KAPI EKLEME, EŞİK KOYMA.** Önce **görünürlük**. Mutlak bir tavan koymak,
+    D-186'da reddedilmiş bir fikrin (n=1 figüre sert kural) geri dönmesi olur.
+  - ⚠ v35 terfisi bu görevle **geri alınmaz**; altı kapıyı geçti, kayıtlar dürüst.
 
 - [ ] **T118 — 🔴 PAYDA SÖZLEŞMESİ: üretim ile denetçi AYNI İSMİ kullanıp BAŞKA ŞEY ölçüyor** · `codes/karar_sozlesmesi.py:577`, `scripts/olcum/65_kabul_denetcisi.py` + 98 aday satır · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-207 §2**
   - Üretim `zemin_kaplamasi(trav, icerik)` → payda **içerik kutusu**, tavan 0,67.

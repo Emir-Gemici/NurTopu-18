@@ -19421,3 +19421,73 @@ altında aynı kalıbı taşıyan **23 dosya** var (65/66 dahil — onlarda yaln
 açıklama yorumu eşleşiyor). Bu betiklerin hangisinin **gürültülü** (çöker,
 güvenli) hangisinin **sessiz** (boş küme üzerinden rapor üretir, tehlikeli)
 düştüğü **ÖLÇÜLMEDİ**; ayrı bir tur gerektirir. Kayda geçti.
+
+---
+
+### D-257 · ⚖ MİMAR DENETİMİ · T130 GEÇTİ — altı hizalama noktasını tek tek kendim doğruladım · ve 🔴 TERFİNİN KENDİSİ K0 UYARISINI SİLDİ: referans 18 kat kaydı
+Tarih: 2026-08-21 · Denetleyen: Claude 1 (mimar) · Denetlenen: `ee7508d` (T130)
+Kapılar mimar tarafından koşuldu: **728 OK** (715 → +13) · **15/15**
+⚠ Aynı model uyarısı geçerli: uyuşma kanıt değil; kanıt **kendi ölçümüm**.
+
+#### 1. ALTI NOKTA — TEK TEK ÖLÇTÜM
+
+    agirlik models/navitas_seg_v35_best.pt        VAR   54.803.804 bayt
+    OLCTUGUM sha256                               e00f6b8e25dd65604755c3ce...
+      defterle esit                               EVET
+      kosum agirligiyla (t127_temiz/best.pt)      BAYT-ES
+    config/model_registry.json                    navitas-seg-v35-512 · imgsz 512
+    jetson_paket/config/model_registry.json       AYNI (ayna tuttu)
+    models/navitas_seg_v35_best.onnx              VAR   54.569.669 bayt
+    JETSON_KILAVUZ.md (kok / paket)               v35 gecisi 12 / 12  (simetrik)
+    jetson_derleme_manifest.json                  v35 x9 · v34 x7 (yedek kaydi)
+    v34 agirligi                                  DURUYOR (silinmedi)
+
+**Sürüm zinciri kopuk değil:** üretime konan ağırlık, eğitim koşumunun
+`best.pt`siyle **bayt-eş**. Bu, geçen terfide kırılan noktaydı.
+
+#### 2. DEFTERİN GÖSTERDİĞİ YOLDAN KOŞTUM — REGISTRY DOĞRU YERİ GÖSTERİYOR
+
+Yolu elle vermedim; `config/model_registry.json`'dan çözüp koştum:
+
+    defterden cozulen: O:/navitas/models/navitas_seg_v35_best.pt
+    K0 GECTI · K1 256/260 · K2 18/256 · K3 0/256 · K4 1/256
+    K5 GECTI kesen 0/173 kare
+    VERDIKT: URETIME ALINIR
+
+#### 3. İSTEDİĞİM ÜÇ KAYIT — ÜÇÜ DE DEFTERDE, GEÇİŞTİRİLMEDEN
+
+  · **K2 maliyeti:** *"🔴 MALIYET — TEK YONLU SURUKLENME: v34 %4,65 → v35 %7,03…
+    'tavan alti' diye gecistirilMEZ"* — ara aday `t122ac %6,23` de yazılmış.
+  · **K0 sapması:** 18,43× kaydı + *"⚠ YORUM (OLCUM DEGIL)"* ayrımı korunmuş.
+  · **T111 sınırı** `_kapsam`ta: *"11 kare AYNI SAHA ve AYNI OTURUMDANDIR:
+    KANIT DEGIL, ZAYIF DESTEKTIR. Alan disi soru DJI cekimi olmadan KAPANMAZ."*
+
+#### 4. 🔴 BENİM BULDUĞUM — TERFİ, KENDİSİNİ UYARAN KAPIYI SUSTURDU
+
+Terfiden **sonra** koştuğum için görünen şey:
+
+    terfi ONCESI (v34 taban)  : figur %9,03 · taban %0,49 · oran 18,43  🔴 DIKKAT
+    terfi SONRASI (v35 taban) : figur %9,03 · taban %9,03 · oran  1,00  (uyari YOK)
+
+Aynı model, aynı sayı, **uyarı kayboldu** — çünkü `figur_zemin_orani` alanı
+terfide **yeni üretimin değeriyle** güncellendi. Bu davranış **tasarım gereği**
+doğrudur (oran, aday ile üretimi kıyaslar). Ama sonucu şudur:
+
+🔴 **Kapı tehlikeli yönde 18 kat daha az duyarlı hâle geldi.**
+v34 tabanıyla %9,03 "TEHLİKELİ yön" uyarısı tetikliyordu; v35 tabanıyla aynı
+uyarı için **~%18** gerekiyor. Üç terfi sonra bu kayma **birikir** ve kimse
+figür kaplamasının %0,49'dan nereye gittiğini göremez.
+
+Bu, projenin en sık kusur sınıfının (**bayat/kaymış taban** — 8 örnek) bir
+**mekanizma** hâlidir: taban yanlış kopyalanmıyor, **her terfide meşru olarak
+kayıyor** ve kümülatif hareket hiçbir yerde durmuyor.
+
+⚠ **Bu terfiyi geri aldırmaz.** v35 altı kapıyı da geçti, karar kullanıcınındı
+ve kayıtlar dürüst. Eksik olan şey **sürüm-ötesi görünürlük**. → **T131**.
+
+#### 5. DEFTER
+
+    Yazan: Claude 2 (Opus 5, başamele) · Denetleyen: Claude 1 (mimar)
+    Karar: KULLANICI (D-133)
+    Kapı çıktısı: 728 OK · 15/15 · altı hizalama noktası mimar tarafından
+    tek tek ölçüldü · kabul zinciri defterin gösterdiği yoldan yeniden koşuldu
