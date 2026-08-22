@@ -1,23 +1,31 @@
 #!/usr/bin/env bash
-# NAVITAS -> Google Drive tam yedek (136 GB).
-# Hazirlayan: Claude 1 (mimar) · 2026-08-21 · kullanici komutuyla
+# NAVITAS -> Google Drive tam yedek · DONMAYA DAYANIKLI SURUM (2026-08-22)
+#
+# 🔴 NEDEN YENIDEN YAZILDI — OLCULDU:
+#   Ilk kosum 22 saatte 31 GB gonderdi (0,4 MB/s), oysa erken olcum 1,31 MiB/s
+#   idi. Fark HIZ DEGIL DONMA. Olculen belirti:
+#     surec CANLI · 2 baglanti ACIK · 20 sn'de 0 bayt okundu · logda 0 ERROR
+#     bayt sayaci 4 DAKIKA SABIT · hiz 40 B/s -> 0 B/s · ETA "25 yil"
+#   `--timeout 120s` bunu ATESLEMIYOR. Kok neden bulunamadi; care onu BEKLEMEK
+#   yerine MALIYETINI DUSURMEK:
+#
+#   1. --max-duration 20m : rclone her 20 dakikada TEMIZ cikar, dongu yeniden
+#      baslatir. Donma en fazla 20 dakikaya mal olur, SAATLERE degil.
+#      `copy` bitmis dosyalari ATLAR -> yeniden baslatma UCUZDUR.
+#   2. --transfers 16     : kalan is (codes/runs, dataset) COK SAYIDA KUCUK
+#      DOSYA; bunlar bant genisligi degil GECIKME sinirlidir, tek care
+#      paralelliktir. Ayrica 16'da bir baglanti donarsa kayip 1/16, 1/2 degil.
+#   3. --drive-chunk-size 16M : 64M x 16 = 1 GB RAM olurdu; ayrica donan parca
+#      ne kadar buyukse o kadar cok is bosa gider.
 #
 # NEDEN RCLONE, Drive for Desktop DEGIL:
-#   O: diskinde 207 GB bos yer kaldi (%89 dolu). Drive for Desktop yerel ayna
-#   tutmaya calisabilir ve diski doldurur. rclone aynasizdir, kesintiden devam
-#   eder ve aktarimi HASH ile dogrular.
+#   O: diskinde 207 GB bos kaldi (%89 dolu); Drive for Desktop yerel ayna
+#   tutmaya calisip diski doldurabilir. rclone aynasizdir ve HASH ile dogrular.
 #
-# KURULUM (bir kez):
-#   winget install Rclone.Rclone
-#   rclone config          # n -> ad: drive -> tur: drive -> tarayicidan yetkilendir
-#
-# KOSUM:
-#   bash O:/navitas/scripts/yedek_drive.sh
-#   Kesilirse AYNI komutu tekrar calistir; rclone kaldigi yerden devam eder.
+# KOSUM:  bash O:/navitas/scripts/yedek_drive.sh
+#   Kesilirse AYNI komut; kaldigi yerden devam eder.
 
 set -u
-# rclone yolu: winget PATH'i degistirir ama ACIK kabuklara yansimaz.
-# Once PATH'te ara, yoksa winget paket dizininden coz. Ciplak yol YAZILMAZ.
 RCLONE="$(command -v rclone || true)"
 if [ -z "$RCLONE" ]; then
   RCLONE="$(find "$LOCALAPPDATA/Microsoft/WinGet/Packages" -name rclone.exe -print -quit 2>/dev/null)"
@@ -27,49 +35,57 @@ echo "rclone: $RCLONE"
 
 UZAK="drive:navitas_yedek"
 KOK="O:/navitas"
-# --transfers: es zamanli dosya · --checkers: karsilastirma is parcacigi
-# --fast-list: Drive'da listeleme cagrisini azaltir · -P: ilerleme
-# -P yerine --stats: gozetimsiz kosumda ANSI ilerleme cubugu logu okunamaz kilar.
-# 2 dakikada bir TEK SATIR: aktarilan/toplam, hiz, kalan sure.
-# 15 Mbit/s YUKLEME hattina gore ayarlandi (olculdu):
-#  --transfers 2  : 4 es zamanli dosya 15 Mbit'i bolup her birini yavaslatiyor ve
-#                   Drive oturumlarinin zaman asimina ugrama olasiligini artiriyor.
-#  --drive-chunk-size 64M : daha az gidis-donus, daha az takilma noktasi.
-#  --timeout / --contimeout : SESSIZ TAKILMA yerine HATA ver; ilk denemede rclone
-#                   4 baglantiyi acip 27 dakika hic bayt akitmadan asili kaldi.
-#  --log-file      :  boru hatti istatistik satirlarini tamponluyordu;
-#                   gunluk artik DOGRUDAN dosyaya yazilir.
-BAYRAK="--transfers 2 --checkers 4 --drive-chunk-size 64M --timeout 120s --contimeout 30s --retries 5 --low-level-retries 20 --stats 60s --stats-one-line -v --log-file $KOK/results/rclone_gunluk.txt"
+BAYRAK="--transfers 16 --checkers 16 --drive-chunk-size 16M --timeout 120s \
+--contimeout 30s --retries 3 --low-level-retries 10 --max-duration 20m \
+--stats 5m --stats-one-line -v --log-file $KOK/results/rclone_gunluk.txt"
 
-kopyala () {   # $1 = yerel alt yol · $2 = uzak alt yol
+# Uzaktaki bayt sayisi — "ilerleme oldu mu" sorusunun tek DURUST cevabi.
+uzak_bayt () {
+  "$RCLONE" size "$UZAK/$1" --json 2>/dev/null \
+    | grep -o '"bytes":[0-9]*' | cut -d: -f2
+}
+
+kopyala () {   # $1 = alt yol
+  ad="$1"; onceki=-1; tur=0
   echo ""
   echo "=============================================================="
-  echo "[$(date +%H:%M:%S)] $1  ->  $UZAK/$2"
+  echo "[$(date +%H:%M:%S)] KADEME: $ad"
   echo "=============================================================="
-  "$RCLONE" copy "$KOK/$1" "$UZAK/$2" $BAYRAK
-  echo "[$(date +%H:%M:%S)] BITTI cikis=$?  ·  $1"
+  while [ "$tur" -lt 40 ]; do
+    tur=$((tur + 1))
+    "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK
+    simdi="$(uzak_bayt "$ad")"; simdi="${simdi:-0}"
+    echo "[$(date +%H:%M:%S)] $ad · tur $tur · uzakta $((simdi / 1048576)) MB"
+    # 🔴 "BITTI MI" SORUSU CIKIS KODUNA DEGIL SONUCA SORULUR.
+    #    D-267: ilk kosum "BITTI cikis=0" deyip TEK BAYT yuklememisti.
+    if [ "$simdi" = "$onceki" ]; then
+      echo "[$(date +%H:%M:%S)] $ad · iki turda ilerleme YOK -> kademe tamam"
+      break
+    fi
+    onceki="$simdi"
+  done
 }
 
 # ── KADEME 1 · YERI DOLDURULAMAZ ─────────────────────────────────────────────
-# Once bunlar: aktarim yarida kalirsa kaybi telafi edilemeyen sey gitmis olur.
-kopyala "dji"                 "dji"          # 8,5 GB · o kosullar tekrar cekilemez
-kopyala "models"              "models"       # 1,1 GB · uretim agirliklari (v35)
-kopyala "results"             "results"      # 1,2 GB · olcum kanitlari
-kopyala "data"                "data"         # 19 MB  · raw_frames + arena referansi
+kopyala "dji"
+kopyala "models"
+kopyala "results"
+kopyala "data"
 
 # ── KADEME 2 · PAHALI AMA YENIDEN URETILEBILIR ───────────────────────────────
-kopyala "codes"               "codes"        # 51 GB · 51 egitim kosumu
-kopyala "jetson_paket"        "jetson_paket" # 843 MB
-kopyala "test_images"         "test_images"  # 355 MB
-kopyala "rapor"               "rapor"        # 108 MB
-kopyala "navitas-local-train" "navitas-local-train"   # 4,4 GB
+kopyala "codes"
+kopyala "jetson_paket"
+kopyala "test_images"
+kopyala "rapor"
+kopyala "navitas-local-train"
 
-# ── KADEME 3 · GENEL KUMELER (yeniden indirilebilir) ─────────────────────────
-kopyala "dataset"             "dataset"        # 63 GB
-kopyala "rescuenet-roads"     "rescuenet-roads" # 3,8 GB
+# ── KADEME 3 · GENEL KUMELER — YENIDEN INDIRILEBILIR ─────────────────────────
+# ⚠ Bu iki kademe 48 GB'dir ve halka acik kaynaklardan yeniden indirilebilir.
+#    Sure onemliyse betigi BURADA durdurmak MESRUDUR.
+kopyala "dataset"
+kopyala "rescuenet-roads"
 
 # ── DEPONUN KENDISI ──────────────────────────────────────────────────────────
-# Kod ve belgeler GitHub'da zaten var; bu, gecmisiyle birlikte TEK DOSYA yedegi.
 echo ""
 echo "[$(date +%H:%M:%S)] git bundle uretiliyor..."
 git -C "$KOK" bundle create "$KOK/navitas_depo.bundle" --all \
@@ -78,5 +94,5 @@ git -C "$KOK" bundle create "$KOK/navitas_depo.bundle" --all \
 echo ""
 echo "=============================================================="
 echo "[$(date +%H:%M:%S)] TUM KADEMELER BITTI"
-echo "Dogrulama icin: bash O:/navitas/scripts/yedek_dogrula.sh"
+echo "Dogrulama: bash O:/navitas/scripts/yedek_kademe_dogrula.sh"
 echo "=============================================================="
