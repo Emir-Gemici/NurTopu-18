@@ -10,7 +10,7 @@
 #
 # NEDEN SADECE ASCII: PowerShell 5.1 BOM'suz .ps1'i ANSI okur; em-dash ve
 # Turkce harfler ayristirma hatasi verir (bir kez oldu).
-param([ValidateSet('durum','durdur','tekille')] [string]$Kip = 'durum')
+param([ValidateSet('durum','durdur','tekille','bekci-durdur')] [string]$Kip = 'durum')
 $ErrorActionPreference = 'SilentlyContinue'
 
 function Bul($desen) {
@@ -36,6 +36,15 @@ switch ($Kip) {
     foreach ($p in $bekci) { Stop-Process -Id $p.ProcessId -Force; "bekci oldurulda: " + $p.ProcessId }
     Start-Sleep -Seconds 2
     if (Get-Process rclone -ErrorAction SilentlyContinue) { "UYARI: rclone HALA VAR" } else { "dogrulama: rclone YOK" }
+  }
+  'bekci-durdur' {
+    # YALNIZ bekciyi durdurur; AKTARIM (yedek betigi + rclone) DOKUNULMAZ.
+    # Bekci surumunu guncellerken kullanilir.
+    if ($bekci) {
+      foreach ($p in $bekci) { Stop-Process -Id $p.ProcessId -Force; "bekci oldurulda: " + $p.ProcessId }
+    } else { "bekci zaten yok" }
+    $k = "O:\navitas\results\.bekci.kilit"
+    if (Test-Path $k) { Remove-Item $k -Force; "bayat kilit silindi" }
   }
   'tekille' {
     foreach ($grup in @(,$yedek), @(,$bekci)) {

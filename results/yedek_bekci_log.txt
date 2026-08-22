@@ -17,3 +17,17 @@
 [11:19:36] baslangic uzak toplam: 31789 MB
 [11:19:44] KADEME -> data · uzak toplam 31789 MB
 [11:19:44] KADEME -> data · uzak toplam 31789 MB
+[11:35:50] rclone sureci YOK (2 kez) — yedek bitmis olabilir. BEKCI DURUYOR.
+[11:35:50] rclone sureci YOK (2 kez) — yedek bitmis olabilir. BEKCI DURUYOR.
+[11:35:50] 🔴 DONMA #1 · kademe=data · uzak 32037 MB · 1787387636sn SABIT (tolerans 300sn, en buyuk dosya 1 MB) -> rclone OLDURULUYOR
+[11:35:50] 🔴 DONMA #1 · kademe=data · uzak 32037 MB · 1787387636sn SABIT (tolerans 300sn, en buyuk dosya 1 MB) -> rclone OLDURULUYOR
+[11:36:00]    rclone oldurulda; yedek betiginin dongusu yeniden baslatacak (copy tamamlanmisi ATLAR)
+[11:36:00]    rclone oldurulda; yedek betiginin dongusu yeniden baslatacak (copy tamamlanmisi ATLAR)
+scripts/yedek_bekcisi.sh: line 157: syntax error near unexpected token `)'
+scripts/yedek_bekcisi.sh: line 157: `  #  bayt sayaci 4 DAKIKA SABIT" — orada log da ilerlemiyordu.)'
+[11:36:48] ════════ BEKCI BASLADI · PID 26862 · aralik 120sn · taban tolerans 300sn
+[11:36:48] ════════ BEKCI BASLADI · PID 26862 · aralik 120sn · taban tolerans 300sn
+[11:36:52] baslangic uzak toplam: 32037 MB
+[11:36:52] baslangic uzak toplam: 32037 MB
+[11:37:00] KADEME -> data · uzak toplam 32037 MB
+[11:37:00] KADEME -> data · uzak toplam 32037 MB

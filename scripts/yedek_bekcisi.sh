@@ -85,6 +85,7 @@ trap 'rm -f "$KILIT"' EXIT INT TERM
 
 yaz "════════ BEKCI BASLADI · PID $$ · aralik ${ARALIK}sn · taban tolerans ${TABAN_TOLERANS}sn"
 onceki_bayt=-1
+onceki_log=0
 sabit_basladi=0
 mudahale=0
 kayip_sn=0
@@ -132,7 +133,25 @@ while true; do
     [ "$aday" -gt "$tol" ] && tol="$aday"
   fi
 
-  if [ "$toplam" = "$onceki_bayt" ]; then
+  # ── 🔴 YANLIS POZITIF KORUMASI (11:34 olcumu) ────────────────────────────
+  # OLCULDU: `results` kademesinde uzak bayt 21 DAKIKA sabit kaldi — ama
+  # DONMA DEGILDI: kademe zaten yuklenmisti, rclone yalniz surekli degisen
+  # gunluk dosyalarini yeniden yaziyordu (net bayt degismez). Bekci bunu
+  # donma sanip rclone'u OLDURSEYDI sonsuz yeniden baslatma dongusu olurdu.
+  #
+  # AYIRT EDICI: rclone LOGU BUYUYOR MU?
+  #   uzak sabit + log BUYUYOR  -> rclone CALISIYOR (yeni bayt yok) -> BEKLE
+  #   uzak sabit + log SABIT    -> GERCEK DONMA -> MUDAHALE
+  # (Mimarin olctugu ariza tam da bu ikincisiydi: "surec CANLI, logda 0 ERROR,
+  #  bayt sayaci 4 DAKIKA SABIT" — orada log da ilerlemiyordu.)
+  log_boyut=$(stat -c %s "$KOK/results/rclone_gunluk.txt" 2>/dev/null || echo 0)
+  if [ "$toplam" = "$onceki_bayt" ] && [ "$log_boyut" != "$onceki_log" ]; then
+    yaz "uzak bayt sabit AMA rclone logu buyuyor ($((log_boyut - onceki_log)) bayt) -> CALISIYOR, mudahale YOK"
+    sabit_basladi=0
+  fi
+  onceki_log="$log_boyut"
+
+  if [ "$toplam" = "$onceki_bayt" ] && true; then
     [ "$sabit_basladi" -eq 0 ] && sabit_basladi=$simdi_sn
     sabit_sure=$((simdi_sn - sabit_basladi))
     if [ "$sabit_sure" -ge "$tol" ]; then
