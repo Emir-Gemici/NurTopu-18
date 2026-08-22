@@ -46,7 +46,36 @@ MIN_SU_PX = 150    # bir bilesenin "suya bitisik" sayilmasi icin
 # ── ELLE DUZELTME — her biri GOZLE dogrulanip gerekcesiyle yazilir ──────────
 # Bicim: dosya_anahtari -> {"cikar": [poligon...], "ekle": [poligon...]}
 # Poligon: 960x540 olceginde [(x, y), ...]
-ELLE_DUZELTME: dict[str, dict] = {}
+#
+# 🔴 TASHIH 1 (2026-08-23) — kare 133'un koridoru TAMAMEN KALDIRILDI.
+# GEREKCE (dort bagimsiz kanit, hepsi OLCUM):
+#   a) Ustabasi bilesen analizi: bu karedeki "su" tohumlari
+#      BGR(17.6,27.3,14.5) S=120.5 · BGR(7.8,12.6,10.0) S=114.6 ·
+#      BGR(17.2,29.5,13.1) S=148.3 -> YESIL BASKIN, yuksek doygunluk =
+#      AGAC KANOPISI GOLGESI, su degil.
+#   b) Amele A (bagimsiz): ayni 3 adayi ham 3840x2160'ta tek tek inceledi —
+#      "ikisi agac tepesi golgesi, biri yola dusen agac golgesi". Gercek su
+#      bilesenleri >=23.176 px, bunlar <=6.319 px.
+#   c) Amele B (bagimsiz): ark ici "duzgun gri beton, toz/moloz; su tonu /
+#      yansima / su bitkisi YOK". Gercek suda yerel std 3,3-8,3 + yansima.
+#   d) Amele C (bagimsiz): ark ici notr gri S=8..18, BGR~(86,88,89) —
+#      golgede beton. Genislik 6 px @960 -> D-210 gereği etiketsiz.
+# Uc amele BIRBIRINDEN HABERSIZ ayni hukme vardi ve BENIM referansim yanlisti.
+# On kayit §2 bu hali ONGORMUSTU: "U2 duserse once REFERANSIN kendisi
+# sorgulanir; referans yanlissa REFERANS duzeltilir, ameleler suclanmaz."
+#
+# ⚠ NEDEN GLOBAL ESIK DEGIL, ELLE TASHIH: iki global duzeltme denendi ve
+#   OLCUMLE CURUTULDU — (1) doygunluk tavani: gercek suyun S medyani 16..179,
+#   golge 102, ayirmiyor; (2) ExG tavani: kare 133 ExG_med 9,0 ama gercek su
+#   iceren kare 040 8,0 ve 020 6,0, ayirmiyor. Yani 960 olceginde koyu suyu
+#   koyu bitki golgesinden ayiran GENEL bir kural bulunamadi. Bu bir SINIRDIR
+#   ve gizlenmiyor: referansin yontemi amelelerinkinden ZAYIF cikti (onlar her
+#   tohumu HAM cozunurlukte hukme bagladi).
+ELLE_DUZELTME: dict[str, dict] = {
+    "dji_20260822172613_0038_d__frame_000133_000005160": {
+        "cikar": [[(0, 0), (960, 0), (960, 540), (0, 540)]],
+    },
+}
 
 
 def su_maskesi(k: np.ndarray) -> np.ndarray:

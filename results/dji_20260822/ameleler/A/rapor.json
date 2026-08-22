@@ -1,0 +1,628 @@
+{
+ "_amele": "A",
+ "_tarih": "2026-08-23",
+ "_kare_sayisi": 8,
+ "_cikti_dizini": "O:\\navitas\\results\\dji_20260822\\ameleler\\A",
+ "_yorumlayici": "O:\\navitas-local-train\\venv\\Scripts\\python.exe",
+ "_kutuphaneler": "OpenCV 5.0.0 + NumPy 2.4.4 (SciPy / scikit-image KULLANILMADI)",
+ "_maske_bicimi": "960x540, tek kanal, yalniz 0 veya 255",
+ "_calisma_cozunurlugu": "1920x1080 (olcum), cikti INTER_AREA ile 960x540 + 128 esigi",
+ "_adlandirma": "<kaynak_dizin>__<stem>_sinif1.png (stem cakismasi nedeniyle; belirsizlik #7)",
+ "_bagimsizlik": "ameleler/B, ameleler/C ve referans dizinlerine BAKILMADI; olcum gecerlidir.",
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+   "maske_dosyasi": "dji_20260822172613_0038_d__frame_000000_000000000_sinif1.png",
+   "maske_md5": "92fa21c846fa8e179c219d699b5b6c32",
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "kapsam": "S1 acik su + kiyi sazligi + solda yol",
+   "rel_alt": 31.3,
+   "sinif1_oran": 0.4697,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "orta",
+   "notlar": "Acik su + HER IKI kiyida genis yogun sazlik/bogurtlen serıdi tek butun poligon. Soldaki stabilize yol ve kuru temizlenmis zemin disarida. Bu karede kiyi seridi en genis olcum: sudan uzaklik p50=59 px, maks=260 px (960 olcek).",
+   "olcumler": {
+    "su_oran_1920": 0.1178,
+    "kiyi_oran_1920": 0.3428,
+    "t_v_kare_otsu": 126.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 24685,
+      "medV": 69.0,
+      "med_std31": 7.3,
+      "merkez": [
+       1816,
+       423
+      ]
+     },
+     {
+      "alan": 18607,
+      "medV": 51.0,
+      "med_std31": 9.3,
+      "merkez": [
+       1421,
+       805
+      ]
+     },
+     {
+      "alan": 65138,
+      "medV": 69.0,
+      "med_std31": 3.2,
+      "merkez": [
+       1023,
+       927
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [
+     {
+      "alan": 148794,
+      "medV": 211.0,
+      "med_std31": 6.0,
+      "merkez": [
+       222,
+       439
+      ]
+     }
+    ],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 972339,
+      "kalinlik_960": 523.4
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     243507
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 0.0
+   },
+   "ad_cakismasi_notu": "bu stem 8 karenin IKISINDE ortak; duz <stem>_sinif1.png kullanilmadi"
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+   "maske_dosyasi": "dji_20260822172613_0038_d__frame_000022_000001530_sinif1.png",
+   "maske_md5": "8a15f776072ee40a5a5c9afc0712b96b",
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "kapsam": "S1 kivrilan kanal + solda moloz/atik",
+   "rel_alt": 32.6,
+   "sinif1_oran": 0.2012,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "yuksek",
+   "notlar": "Kivrilan kanal + sazlik seridi. Soldaki moloz/atik yigini SINIF 1 DEGILDIR (sartname bu turda yalniz su ve su kiyisini kapsiyor) - etiketlenmedi.",
+   "olcumler": {
+    "su_oran_1920": 0.0739,
+    "kiyi_oran_1920": 0.1262,
+    "t_v_kare_otsu": 107.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 117613,
+      "medV": 50.0,
+      "med_std31": 6.7,
+      "merkez": [
+       1573,
+       765
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 416062,
+      "kalinlik_960": 209.1
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     104284
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 0.0
+   },
+   "ad_cakismasi_notu": null
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+   "maske_dosyasi": "dji_20260822172613_0038_d__frame_000133_000005160_sinif1.png",
+   "maske_md5": "9a1d28d288c4d4b088b8edeb327fd81e",
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "kapsam": "S5 DAR ark — yolun kenarinda ince koyu serit",
+   "rel_alt": 31.7,
+   "sinif1_oran": 0.0,
+   "sinif1_var_mi": false,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "orta",
+   "notlar": "BU KAREDE SINIF 1 YOK - maske bilerek BOSTUR (kare eksik degildir, su yoktur). Iki bagimsiz gerekce: (a) yol kenarindaki beton ark tam cozunurlukte olculdu, medyan genislik 54,7 px @3840 = 13,7 px @960 < 15 px -> D-210/S5 geregi ETIKETSIZ; (b) arkta okunabilir ACIK SU YUZEYI yok, govde golgeli ve KURU gorunuyor. Ayrica su asamasinda cikan 3 aday (6319/5735/4398 px) tam cozunurlukte tek tek incelendi: ikisi agac tepesi golgesi, biri yola dusen agac golgesi -> hepsi REDDEDILDI.",
+   "olcumler": {
+    "su_oran_1920": 0.0,
+    "kiyi_oran_1920": 0.0,
+    "t_v_kare_otsu": 118.0,
+    "su_kabul_bilesenler": [],
+    "su_red_bilesenler_aydinlik": [],
+    "kalinlik_gecen": [],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 0.0
+   },
+   "ad_cakismasi_notu": null
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+   "maske_dosyasi": "dji_20260822172613_0038_d__frame_000178_000006660_sinif1.png",
+   "maske_md5": "5cfc51d4de373552cec7d428a1777e66",
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "kapsam": "S6 yol + kanal + saman balyalari birlikte",
+   "rel_alt": 31.2,
+   "sinif1_oran": 0.382,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "orta",
+   "notlar": "Genis kanal + iki yanda sazlik. Saman balyalari ve balyalarin durdugu kuru tarla maske DISINDA. Soldaki stabilize yol disarida.",
+   "olcumler": {
+    "su_oran_1920": 0.1565,
+    "kiyi_oran_1920": 0.2088,
+    "t_v_kare_otsu": 120.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 164285,
+      "medV": 45.0,
+      "med_std31": 7.0,
+      "merkez": [
+       1581,
+       512
+      ]
+     },
+     {
+      "alan": 38606,
+      "medV": 69.0,
+      "med_std31": 4.0,
+      "merkez": [
+       945,
+       948
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [
+     {
+      "alan": 64635,
+      "medV": 198.0,
+      "med_std31": 5.6,
+      "merkez": [
+       986,
+       141
+      ]
+     },
+     {
+      "alan": 89137,
+      "medV": 186.0,
+      "med_std31": 7.4,
+      "merkez": [
+       499,
+       796
+      ]
+     }
+    ],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 790492,
+      "kalinlik_960": 274.0
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     198023
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 4e-05
+   },
+   "ad_cakismasi_notu": null
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+   "maske_dosyasi": "dji_20260822172613_0038_d__frame_000222_000008220_sinif1.png",
+   "maske_md5": "bf391c95cc8ba0194a26230fddb19bf8",
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "kapsam": "S1 kanal kare kenarinda, kismi gorunur",
+   "rel_alt": 30.8,
+   "sinif1_oran": 0.2531,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "yuksek",
+   "notlar": "Kanal kare kenarinda kismi gorunur; su + sazlik seridi alindi. Sol ustteki genis kuru/tasli duzluk ve yol disarida.",
+   "olcumler": {
+    "su_oran_1920": 0.0974,
+    "kiyi_oran_1920": 0.1528,
+    "t_v_kare_otsu": 120.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 135429,
+      "medV": 35.0,
+      "med_std31": 5.8,
+      "merkez": [
+       1695,
+       781
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [
+     {
+      "alan": 116664,
+      "medV": 190.0,
+      "med_std31": 5.9,
+      "merkez": [
+       132,
+       240
+      ]
+     }
+    ],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 523327,
+      "kalinlik_960": 278.2
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     131213
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 0.0
+   },
+   "ad_cakismasi_notu": null
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+   "maske_dosyasi": "dji_20260822173231_0039_d__frame_000000_000000000_sinif1.png",
+   "maske_md5": "9b3909dc7e0f8441800f22ba390edf79",
+   "kaynak": "DJI_20260822173231_0039_D.MP4",
+   "kapsam": "S1/S6 kanal + asfalt yol yan yana",
+   "rel_alt": 29.3,
+   "sinif1_oran": 0.3532,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "yuksek",
+   "notlar": "Kanal + iki yanda sazlik. Sagdaki asfalt yol ve bordur SINIF 0, maske disinda (yolun sinif1 icinde kalan orani olculdu).",
+   "olcumler": {
+    "su_oran_1920": 0.1609,
+    "kiyi_oran_1920": 0.1909,
+    "t_v_kare_otsu": 121.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 139483,
+      "medV": 82.0,
+      "med_std31": 3.4,
+      "merkez": [
+       259,
+       429
+      ]
+     },
+     {
+      "alan": 36002,
+      "medV": 44.0,
+      "med_std31": 8.9,
+      "merkez": [
+       87,
+       942
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [
+     {
+      "alan": 213017,
+      "medV": 174.0,
+      "med_std31": 5.3,
+      "merkez": [
+       1522,
+       506
+      ]
+     }
+    ],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 731374,
+      "kalinlik_960": 489.4
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     183095
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 0.0
+   },
+   "ad_cakismasi_notu": "bu stem 8 karenin IKISINDE ortak; duz <stem>_sinif1.png kullanilmadi"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+   "maske_dosyasi": "dji_20260822173231_0039_d__frame_000020_000001410_sinif1.png",
+   "maske_md5": "df3875e106ffd0d95a122c51b317df3c",
+   "kaynak": "DJI_20260822173231_0039_D.MP4",
+   "kapsam": "S2 GOLGE/su bitisik + insan golgeleri",
+   "rel_alt": 31.4,
+   "sinif1_oran": 0.3167,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "yuksek",
+   "notlar": "S2 SINAMASI. Yol uzerindeki insan golgeleri (3 blok, 685/287/257 px @1920) tespit edildi ve %0,0 orani ile maske DISINDA kaldi: golgenin altindaki yol dokusu okunabiliyor -> golge altindaki yuzeyin sinifini aldi (SINIF 0). Yolun sagindaki ayri yesil calilik suya bitisik degil -> alinmadi.",
+   "olcumler": {
+    "su_oran_1920": 0.1548,
+    "kiyi_oran_1920": 0.1509,
+    "t_v_kare_otsu": 123.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 216164,
+      "medV": 92.0,
+      "med_std31": 2.9,
+      "merkez": [
+       402,
+       527
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [
+     {
+      "alan": 133437,
+      "medV": 180.0,
+      "med_std31": 7.2,
+      "merkez": [
+       861,
+       488
+      ]
+     }
+    ],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 655256,
+      "kalinlik_960": 263.2
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     164198
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 1e-05
+   },
+   "ad_cakismasi_notu": null
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+   "maske_dosyasi": "dji_20260822173231_0039_d__frame_000040_000002730_sinif1.png",
+   "maske_md5": "aba69dc3f39bd74d9dd9e4c028bcb96e",
+   "kaynak": "DJI_20260822173231_0039_D.MP4",
+   "kapsam": "S4 MENFEZ TABLIYESI suyun ustunde (gecilebilir)",
+   "rel_alt": 31.0,
+   "sinif1_oran": 0.2467,
+   "sinif1_var_mi": true,
+   "yontem": "OpenCV+NumPy olcumu, gozle okuma YOK. (1) yerel doku std31<12 -> DUZ kutle [olcum: su med 3-5, yol 6-8, sazlik 30-42, orman 20-33]; (2) DUZ bilesenler kare-genelinde Otsu(V) esigine gore koyu/aydinlik ayrilir, KOYU olanlar su [karar piksel basina degil BILESEN basina]; (3) cekirdegin kendi V bandiyla bitisik buyutme; (4) kiyi seridi: ExG>15 [olcum: kuru zemin med -8..0, sazlik med 29-62] ile su TEK aday kutle olarak birlestirilip suyu iceren bilesen alinir; (5) delik doldurma (S6); (6) 960 olcekte kalinlik<15px atilir (S5/D-210).",
+   "guven": "orta",
+   "notlar": "S4 SINAMASI. Beton menfez tabliyesi + yol (292.987 px @1920, medyan V=186, std31=6,0) su asamasinda AYDINLIK diye reddedildi ve maskenin %0,0 kismini olusturuyor -> tabliye SINIF 0, altindaki su gorunse bile. Maske tabliyenin kenarinda duruyor; kanal tabliyenin iki yaninda AYRI degil, tabliye onu kesiyor (bu delik degil, kesinti - S6 ihlali yok).",
+   "olcumler": {
+    "su_oran_1920": 0.0902,
+    "kiyi_oran_1920": 0.1368,
+    "t_v_kare_otsu": 120.0,
+    "su_kabul_bilesenler": [
+     {
+      "alan": 64796,
+      "medV": 40.0,
+      "med_std31": 7.7,
+      "merkez": [
+       783,
+       337
+      ]
+     },
+     {
+      "alan": 16482,
+      "medV": 43.0,
+      "med_std31": 9.9,
+      "merkez": [
+       479,
+       726
+      ]
+     },
+     {
+      "alan": 25812,
+      "medV": 44.0,
+      "med_std31": 9.6,
+      "merkez": [
+       350,
+       971
+      ]
+     }
+    ],
+    "su_red_bilesenler_aydinlik": [
+     {
+      "alan": 334018,
+      "medV": 186.0,
+      "med_std31": 6.3,
+      "merkez": [
+       1321,
+       554
+      ]
+     }
+    ],
+    "kalinlik_gecen": [
+     {
+      "alan_1920": 509863,
+      "kalinlik_960": 233.9
+     }
+    ],
+    "kalinlik_atilan": [],
+    "bilesen_alanlari_960": [
+     127878
+    ],
+    "delik_sayisi_960": 0,
+    "yol_benzeri_kirlenme_orani": 0.0
+   },
+   "ad_cakismasi_notu": null
+  }
+ ],
+ "sartname_kontrolleri": {
+  "S2_golge": {
+   "kare": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+   "yol_medyan_V": 180.0,
+   "yol_alani_px_1920": 159917,
+   "yol_uzerinde_bulunan_golge_bloklari": [
+    [
+     685,
+     [
+      798,
+      875
+     ]
+    ],
+    [
+     287,
+     [
+      861,
+      818
+     ]
+    ],
+    [
+     257,
+     [
+      853,
+      836
+     ]
+    ]
+   ],
+   "golge_px_toplam": 1410,
+   "golgenin_sinif1_icinde_kalan_orani": 0.0,
+   "yolun_sinif1_icinde_kalan_orani": 0.0,
+   "karar": "golge altindaki YOL DOKUSU okunabiliyor (golge blogu yol bileseninin icinde ve cevre doku surekli) -> golge, altindaki yuzeyin sinifini aldi = SINIF 0, isaretlenmedi"
+  },
+  "S4_tabliye": {
+   "kare": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+   "tabliye_beton_alani_px_1920": 292987,
+   "tabliye_medyan_V": 186.0,
+   "tabliye_medyan_std31": 6.0,
+   "tabliyenin_sinif1_icinde_kalan_orani": 0.0,
+   "su_asamasinda_reddedilen_aydinlik_bilesenler": [
+    {
+     "alan": 334018,
+     "medV": 186.0,
+     "med_std31": 6.3,
+     "merkez": [
+      1321,
+      554
+     ]
+    }
+   ],
+   "karar": "beton tabliye+yol bileseni su asamasinda AYDINLIK diye reddedildi; maske tabliye kenarinda duruyor -> tabliye SINIF 0"
+  },
+  "S5_dar_ark": {
+   "kare": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+   "olcum_yontemi": "tam cozunurlukte (3840x2160) mesafe donusumu, eksen boyunca 20 satir",
+   "genislik_3840_medyan": 54.7,
+   "genislik_3840_p90": 57.2,
+   "genislik_960_medyan": 13.7,
+   "genislik_960_p90": 14.3,
+   "esik_960": 15.0,
+   "karar": "13,7 px < 15 px -> D-210/S5: ETIKETSIZ birakildi"
+  },
+  "kiyi_seridi_sudan_uzaklik_960px": {
+   "dji_20260822172613_0038_d/frame_000000_000000000.jpg": {
+    "p50": 59.3,
+    "p90": 146.7,
+    "maks": 259.5
+   },
+   "dji_20260822172613_0038_d/frame_000022_000001530.jpg": {
+    "p50": 41.9,
+    "p90": 90.7,
+    "maks": 135.6
+   },
+   "dji_20260822172613_0038_d/frame_000178_000006660.jpg": {
+    "p50": 44.0,
+    "p90": 96.7,
+    "maks": 164.1
+   },
+   "dji_20260822172613_0038_d/frame_000222_000008220.jpg": {
+    "p50": 52.6,
+    "p90": 160.2,
+    "maks": 267.5
+   },
+   "dji_20260822173231_0039_d/frame_000000_000000000.jpg": {
+    "p50": 64.5,
+    "p90": 152.6,
+    "maks": 232.6
+   },
+   "dji_20260822173231_0039_d/frame_000020_000001410.jpg": {
+    "p50": 24.3,
+    "p90": 65.8,
+    "maks": 108.3
+   },
+   "dji_20260822173231_0039_d/frame_000040_000002730.jpg": {
+    "p50": 33.6,
+    "p90": 112.9,
+    "maks": 171.3
+   }
+  }
+ },
+ "sartname_belirsizligi": [
+  {
+   "no": 1,
+   "konu": "Kiyi seridinin DIS siniri tanimsiz",
+   "sartnamede": "\"su ile kara arasindaki gecilemez kiyi seridi\" - seridin nerede bittigi yazmiyor.",
+   "neden_onemli": "Olculdu: kiyi seridinin sudan uzakligi kareler arasi p50=24-65 px, maks=108-268 px (960 olcek). Yani serit bazi karelerde suyun 4 kati genislikte. Sabit bir serit genisligi (or. 30 px) varsayan bir ajanla benim maskem AYNI sartnameden COK farkli cikar - IoU dusuklugunun en buyuk tek kaynagi burasi olacaktir.",
+   "benim_kararim": "Serit, suya BITISIK ve kesintisiz olan yogun bitki kutlesinin TAMAMI olarak alindi; sinir, kuru/surulebilir zeminin basladigi yerdir (ExG>15 kesilmesi). Gerekce: sartnamenin ayrim noktasi \"IKA girerse cikabilir mi\" - 2 m sazliktan da 6 m sazliktan da cikamaz, dolayisiyla mesafe degil GECILEBILIRLIK sinir olmalidir."
+  },
+  {
+   "no": 2,
+   "konu": "KURU beton ark: su yok ama tuzak var",
+   "sartnamede": "Sinif 1 tanimi \"acik su yuzeyi\" ile basliyor; suyu OLMAYAN beton sulama arki hicbir maddeye girmiyor.",
+   "neden_onemli": "0038_t0133 karesindeki ark suyun degil, ~50 cm derinliginde beton oyugun kendisi. \"IKA buraya girerse cikabilir mi?\" olcutune gore ENGELDIR, ama \"acik su yuzeyi\" olcutune gore DEGILDIR. Iki olcut ayni nesnede ters cevap veriyor.",
+   "benim_kararim": "Bu turda ETIKETSIZ birakildi - ama bunun sebebi olcutlerin catismasi DEGIL, S5/D-210 cozunurluk kurali: genislik 13,7 px @960 < 15 px. Yani catisma bu karede TESADUFEN cozuldu. Ark 15 px'ten genis olsaydi sartnamenin cevabi YOKTU. Kural netlestirilmeli."
+  },
+  {
+   "no": 3,
+   "konu": "\"< ~15 px\" HANGI cozunurlukte?",
+   "sartnamede": "Cozunurluk alti esigi \"< ~15 px\" olarak veriliyor, olcek belirtilmiyor.",
+   "neden_onemli": "Ayni ark: 54,7 px @3840 (ham kare) · 27,4 px @1920 · 13,7 px @960 (etiket olcegi). Esik ham kareye uygulanirsa ark ETIKETLENIR, etiket olcegine uygulanirsa ETIKETLENMEZ. Tek bir kelime iki zit cikti veriyor.",
+   "benim_kararim": "Esigi 960x540 ETIKET olcegine uyguladim (cikti maskesi o olcekte uretiliyor ve model o olcekte ogreniyor)."
+  },
+  {
+   "no": 4,
+   "konu": "\"Golge okunabiliyor\" olcutu sayisallastirilmamis",
+   "sartnamede": "\"Golge, altindaki yuzey okunabiliyorsa o yuzeyin sinifini alir.\"",
+   "neden_onemli": "\"Okunabilir\" gozle karara birakilirsa ajandan ajana degisir.",
+   "benim_kararim": "Sayisallastirdim: golgeli bolgede alttaki yuzeyin YEREL DOKUSU (std31) cevresindeki yuzeyle surekliyse yuzey okunabilir sayildi. Uygulamada bu, golgeyi ayri bir sinif yapmak yerine altindaki bilesene birakir. 0039_t0020'de yol golgeleri boylece SINIF 0 kaldi (olculdu: golge pikselerinin %0,0'i maskede)."
+  },
+  {
+   "no": 5,
+   "konu": "Suya BITISIK OLMAYAN gecilemez ortu kapsam disinda",
+   "sartnamede": "Sinif 1'in her iki bileseni de (su, kiyi seridi) SUYA bagli tanimlanmis.",
+   "neden_onemli": "0038_t0133 karesinin sag yarisi sik agaclik - \"IKA girerse cikamaz\" olcutune gore acikca gecilemez, ama suya bitisik olmadigi icin sartnamenin hicbir maddesine girmiyor. Bu kareyi BOS birakmam, ormani isaretleyen bir ajanla IoU'yu 0'a dusurur.",
+   "benim_kararim": "Sartnameye HARFI HARFINE uydum: su yoksa sinif 1 de yok, kare bos. Ilk turda su asamasi bu ormani 0,39 oranla iceriye almisti; bunu kusur sayip ayikladim. Karar mimarindir: bu tur \"susuz gecilemez\" ortu ayri bir maddeye mi girecek?"
+  },
+  {
+   "no": 6,
+   "konu": "S3 (yol ustu su birikintisi) BU TURDA SINANMADI",
+   "sartnamede": "Birikinti kurali yazili ama sinanacak ornek atanmamis.",
+   "neden_onemli": "su_pilot_atama.json._kapsanmayan alani da bunu belirtiyor: 24 tarama karesinde NET ornek yok.",
+   "benim_kararim": "8 karenin hicbirinde yol ustu birikinti gormedim; kural uygulanmadi, dolayisiyla DOGRULANMADI da."
+  },
+  {
+   "no": 7,
+   "konu": "DOSYA ADI CAKISMASI (etiketleme disi, teknik)",
+   "sartnamede": "Gorev \"<kare_stem>_sinif1.png\" diyordu.",
+   "neden_onemli": "8 karenin IKISI ayni stem'e sahip (frame_000000_000000000; biri 0038, biri 0039). Duz adlandirma 8 yerine 7 PNG uretir ve bir kare SESSIZCE ezilir.",
+   "benim_kararim": "Ustabasinin zorunlu kildigi bicim kullanildi: <kaynak_dizin>__<stem>_sinif1.png. Dizinde tam 8 PNG var ve 8 md5 de essiz (dogrulandi)."
+  }
+ ],
+ "ozet": {
+  "toplam_kare": 8,
+  "sinif1_bulunan_kare": 7,
+  "bos_kare": [
+   "dji_20260822172613_0038_d/frame_000133_000005160.jpg"
+  ],
+  "oran_araligi": [
+   0.0,
+   0.4697
+  ],
+  "butun_karelerde_delik_sayisi": 0,
+  "en_yuksek_yol_kirlenmesi": 4e-05
+ }
+}

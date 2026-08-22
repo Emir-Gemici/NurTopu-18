@@ -1,0 +1,856 @@
+{
+ "_ne": "NAVITAS DJI 2026-08-22 su etiketleme - F3 sartname sinamasi - AMELE C",
+ "_amele": "C",
+ "_tarih": "2026-08-22",
+ "_sinif": "YALNIZ SINIF 1 (gecilemez). Sinif 0 bu turda istenmedi, cizilmedi.",
+ "_maske_bicimi": "960x540, tek kanal, yalniz 0 veya 255",
+ "_kaynak_kok": "O:\\navitas\\results\\dji_20260822\\kareler_1fps",
+ "_atama": "O:\\navitas\\results\\dji_20260822\\su_pilot_atama.json",
+ "_kare_varligi": "su_pilot_atama.json listesindeki 8 karenin 8i os.path.isfile ile DOGRULANDI; hepsi 3840x2160. Eksik YOK.",
+ "_bagimsizlik": "ameleler/A, ameleler/B ve referans dizinlerine BAKILMADI.",
+ "_kutuphane": "OpenCV + NumPy + saf Python. SciPy / scikit-image KULLANILMADI.",
+ "_esikler_olculmus": {
+  "su": "std9<10 & V<118 & ExG<25",
+  "bitki": "ExG>35",
+  "genislik_kapisi_px_960": 15.0,
+  "kiyi_bitkisi_taban": 0.1,
+  "ornek_olcumler": {
+   "dogrulanmis_su": "V 38..102 · ExG -8..+9 · std9 2.1..4.6",
+   "yol_stabilize": "V 121..208 · std9 4..28 · ExG -9..0",
+   "kuru_duzluk": "V 126..191 · std9 19..40 · ExG -15..+6",
+   "sazlik_sik_bitki": "ExG 36..157 · std9 24..36",
+   "k7_menfez_tabliyesi": "V 184.3 · std9 5.4 · S 7.9 (sinif 0)",
+   "k2_dar_ark_ici": "V 69..91 · S 8..18 · ExG ~0 (notr gri = golgede beton)"
+  }
+ },
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+   "maske": "dji_20260822172613_0038_d__frame_000000_000000000_sinif1.png",
+   "sinif1_oran": 0.434041,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "yuksek",
+   "notlar": "Genis acik kanal + iki yanda yogun sazlik/sik bitki, tek butun poligon. Sol taraftaki stabilize yol ve kuru duzluk sinif 1 DEGIL (sartname geregi) ve maskeye alinmadi. Sag ust kose: suya inen dik sev + moloz, kiyi seridine bitisik oldugu icin poligon icinde kaldi (sartname \"dik sev\" ifadesini acikca sinif 1 sayiyor).",
+   "olcum": {
+    "su_cekirdek_px": 29476,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 189,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 2,
+    "red_bilesen": 0,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 7425,
+      "ic_cap": 72.3,
+      "yakin_bitki": 0.47,
+      "merkez": [
+       904,
+       215
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 2,
+      "alan": 22051,
+      "ic_cap": 82.0,
+      "yakin_bitki": 0.74,
+      "merkez": [
+       541,
+       450
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     }
+    ]
+   },
+   "kapsam_atamadan": "S1 acik su + kiyi sazligi + solda yol",
+   "rel_alt_m": 31.3
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+   "maske": "frame_000022_000001530_sinif1.png",
+   "sinif1_oran": 0.20403,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "yuksek",
+   "notlar": "Kanal kare ic kenarinda (sag alt) kivriliyor; poligon kare kenarinda kesiliyor. Sahanin ORTASINDAKI koyu leke (merkez ~(516,471), alan 1212 px, ic_cap 21.6 px) HAM COZUNURLUKTE denetlendi: yanmis/kuru bitki ve golge, SU DEGIL -> disarida birakildi. Sag ust kosedeki koyu alan da kuru cali golgesi cikti (kiyi bitkisi orani 0.00) -> disarida.",
+   "olcum": {
+    "su_cekirdek_px": 21369,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 104,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 2,
+    "red_bilesen": 4,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 1695,
+      "ic_cap": 24.0,
+      "yakin_bitki": 0.0,
+      "merkez": [
+       941,
+       29
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     },
+     {
+      "bilesen": 2,
+      "alan": 319,
+      "ic_cap": 16.8,
+      "yakin_bitki": 0.47,
+      "merkez": [
+       953,
+       109
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 3,
+      "alan": 255,
+      "ic_cap": 10.0,
+      "yakin_bitki": 0.17,
+      "merkez": [
+       805,
+       141
+      ],
+      "R1_genislik": false,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": true,
+      "kabul": false
+     },
+     {
+      "bilesen": 4,
+      "alan": 303,
+      "ic_cap": 10.0,
+      "yakin_bitki": 0.38,
+      "merkez": [
+       753,
+       179
+      ],
+      "R1_genislik": false,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": false
+     },
+     {
+      "bilesen": 5,
+      "alan": 21050,
+      "ic_cap": 59.1,
+      "yakin_bitki": 0.68,
+      "merkez": [
+       774,
+       370
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 6,
+      "alan": 1212,
+      "ic_cap": 21.6,
+      "yakin_bitki": 0.29,
+      "merkez": [
+       516,
+       471
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": true,
+      "kabul": false
+     }
+    ]
+   },
+   "kapsam_atamadan": "S1 kivrilan kanal + solda moloz/atik",
+   "rel_alt_m": 32.6
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+   "maske": "frame_000133_000005160_sinif1.png",
+   "sinif1_oran": 0.0,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "orta",
+   "notlar": "BU KAREDE SINIF 1 YOK -> maske bilerek BOS. \"Kare yok\" degil, \"su yok\". Karedeki tek kanal-benzeri yapi yolun sag kenarindaki DAR ARK. OLCULDU: su imzali cekirdegin en genis ic capi 6.0 px (960 olceginde), koyu seridin tamami (beton dudak dahil) 14-17 px. Ic rengi notr gri (S=8..18, BGR ~ (86,88,89)) -> golgede BETON, dogrulanabilir acik su yuzeyi YOK. D-210: <~15 px yapiyi \"olabilir\" diye isaretleme -> ETIKETSIZ birakildi. Karenin sol ust kosesindeki koyu alan HAM COZUNURLUKTE denetlendi: agac golgesi altindaki STABILIZE YOL, doku okunabiliyor -> sartname geregi golge alttaki yuzeyin sinifini alir -> sinif 0. Sagdaki yogun agaclik SUYA BITISIK DEGIL; sartnamenin sinif 1 tanimi su+kiyi seridi oldugu icin cizilmedi (belirsizlik B2).",
+   "olcum": {
+    "su_cekirdek_px": 0,
+    "poligon_sayisi": 0,
+    "poligon_kose_sayisi": 0,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 0,
+    "red_bilesen": 3,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 2384,
+      "ic_cap": 52.0,
+      "yakin_bitki": 0.09,
+      "merkez": [
+       18,
+       40
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     },
+     {
+      "bilesen": 2,
+      "alan": 293,
+      "ic_cap": 16.0,
+      "yakin_bitki": 0.0,
+      "merkez": [
+       329,
+       85
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     },
+     {
+      "bilesen": 3,
+      "alan": 453,
+      "ic_cap": 6.0,
+      "yakin_bitki": 0.0,
+      "merkez": [
+       352,
+       492
+      ],
+      "R1_genislik": false,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     }
+    ]
+   },
+   "kapsam_atamadan": "S5 DAR ark — yolun kenarinda ince koyu serit",
+   "rel_alt_m": 31.7
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+   "maske": "frame_000178_000006660_sinif1.png",
+   "sinif1_oran": 0.354473,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "yuksek",
+   "notlar": "Yol | sazlik | kanal | sazlik dizilimi net. Poligon yolun sag kenarinda duruyor. Su uzerindeki sazlik adaciklari ve sazlik golgeleri poligon ICINDE kaldi (delik acilmaz kurali). Sag alttaki saman balyalari kuru zeminde, poligon disinda.",
+   "olcum": {
+    "su_cekirdek_px": 52800,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 170,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 8,
+    "red_bilesen": 1,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 31950,
+      "ic_cap": 79.2,
+      "yakin_bitki": 0.54,
+      "merkez": [
+       799,
+       226
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 2,
+      "alan": 2234,
+      "ic_cap": 23.6,
+      "yakin_bitki": 0.2,
+      "merkez": [
+       620,
+       358
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 3,
+      "alan": 815,
+      "ic_cap": 15.6,
+      "yakin_bitki": 0.25,
+      "merkez": [
+       777,
+       345
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true,
+      "kurtarildi": true
+     },
+     {
+      "bilesen": 4,
+      "alan": 2152,
+      "ic_cap": 34.4,
+      "yakin_bitki": 0.44,
+      "merkez": [
+       574,
+       381
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 5,
+      "alan": 11103,
+      "ic_cap": 78.7,
+      "yakin_bitki": 0.42,
+      "merkez": [
+       473,
+       471
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 6,
+      "alan": 1268,
+      "ic_cap": 24.8,
+      "yakin_bitki": 0.44,
+      "merkez": [
+       715,
+       410
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 7,
+      "alan": 1947,
+      "ic_cap": 22.0,
+      "yakin_bitki": 0.43,
+      "merkez": [
+       646,
+       490
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 8,
+      "alan": 1331,
+      "ic_cap": 29.6,
+      "yakin_bitki": 0.61,
+      "merkez": [
+       553,
+       481
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 9,
+      "alan": 266,
+      "ic_cap": 20.8,
+      "yakin_bitki": 0.0,
+      "merkez": [
+       688,
+       534
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     }
+    ]
+   },
+   "kapsam_atamadan": "S6 yol + kanal + saman balyalari birlikte",
+   "rel_alt_m": 31.2
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+   "maske": "frame_000222_000008220_sinif1.png",
+   "sinif1_oran": 0.247249,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "yuksek",
+   "notlar": "Kanal yalniz sag alt kosede gorunur; poligon kare kenarinda kesiliyor. Karenin geri kalani kuru duzluk + sol kenarda yol -> sinif 1 degil.",
+   "olcum": {
+    "su_cekirdek_px": 26389,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 121,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 2,
+    "red_bilesen": 1,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 291,
+      "ic_cap": 16.0,
+      "yakin_bitki": 0.0,
+      "merkez": [
+       875,
+       9
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     },
+     {
+      "bilesen": 2,
+      "alan": 23699,
+      "ic_cap": 76.3,
+      "yakin_bitki": 0.72,
+      "merkez": [
+       808,
+       380
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 3,
+      "alan": 2690,
+      "ic_cap": 39.5,
+      "yakin_bitki": 0.56,
+      "merkez": [
+       868,
+       501
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     }
+    ]
+   },
+   "kapsam_atamadan": "S1 kanal kare kenarinda, kismi gorunur",
+   "rel_alt_m": 30.8
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+   "maske": "dji_20260822173231_0039_d__frame_000000_000000000_sinif1.png",
+   "sinif1_oran": 0.345739,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "yuksek",
+   "notlar": "Kanal sol kenarda dusey; sag yanindaki yogun sazlik seridi poligona dahil. Sagdaki kuru duzluk ve asfalt/beton yol disarida. Yolun sagindaki (938,162) koyu leke ic_cap 14.4 px (<15) ve kiyi bitkisi orani 0.02 -> RED.",
+   "olcum": {
+    "su_cekirdek_px": 41310,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 101,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 5,
+    "red_bilesen": 1,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 38185,
+      "ic_cap": 95.9,
+      "yakin_bitki": 0.47,
+      "merkez": [
+       131,
+       221
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 2,
+      "alan": 651,
+      "ic_cap": 14.4,
+      "yakin_bitki": 0.02,
+      "merkez": [
+       938,
+       162
+      ],
+      "R1_genislik": false,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": false,
+      "kabul": false
+     },
+     {
+      "bilesen": 3,
+      "alan": 701,
+      "ic_cap": 19.6,
+      "yakin_bitki": 0.18,
+      "merkez": [
+       23,
+       154
+      ],
+      "R1_genislik": true,
+      "R2_ana": false,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true,
+      "kurtarildi": true
+     },
+     {
+      "bilesen": 4,
+      "alan": 983,
+      "ic_cap": 28.4,
+      "yakin_bitki": 0.77,
+      "merkez": [
+       7,
+       390
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 5,
+      "alan": 528,
+      "ic_cap": 17.2,
+      "yakin_bitki": 0.8,
+      "merkez": [
+       19,
+       446
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 6,
+      "alan": 913,
+      "ic_cap": 33.6,
+      "yakin_bitki": 0.58,
+      "merkez": [
+       147,
+       530
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     }
+    ]
+   },
+   "kapsam_atamadan": "S1/S6 kanal + asfalt yol yan yana",
+   "rel_alt_m": 29.3
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+   "maske": "frame_000020_000001410_sinif1.png",
+   "sinif1_oran": 0.310411,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "yuksek",
+   "notlar": "S2 sinamasi. Kanal + iki yandaki sazlik tek poligon. Yol uzerindeki IKI INSAN GOLGESI ve yol kenari golgeler poligon DISINDA: golge altindaki yol dokusu okunabiliyor -> sartname geregi alttaki yuzeyin sinifi = sinif 0. Poligon yol kenarinda temiz duruyor.",
+   "olcum": {
+    "su_cekirdek_px": 59975,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 136,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 2,
+    "red_bilesen": 0,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 2851,
+      "ic_cap": 28.8,
+      "yakin_bitki": 0.24,
+      "merkez": [
+       24,
+       64
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 2,
+      "alan": 57124,
+      "ic_cap": 103.1,
+      "yakin_bitki": 0.44,
+      "merkez": [
+       201,
+       264
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     }
+    ]
+   },
+   "kapsam_atamadan": "S2 GOLGE/su bitisik + insan golgeleri",
+   "rel_alt_m": 31.4
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+   "maske": "frame_000040_000002730_sinif1.png",
+   "sinif1_oran": 0.224398,
+   "yontem": "960x540 olcekleme -> kanal olcumu (HSV V, ExG=(2G-R-B)/(R+G+B), yerel 9x9 std, HSV S) -> su esigi (std9<10 & V<118 & ExG<25) -> connectedComponents -> D-210 genislik kapisi (2*distanceTransform>=15 px) + kiyi bitkisi kapisi (12px halkada ExG>35 orani>=0.10) -> suya bitisik (<=15 px) bitki bilesenleri koridora eklendi -> MORPH_CLOSE 11x11 -> dis kontur DOLU cizimi (delik acilmaz) -> approxPolyDP(eps=2.5) -> sinif0 (parlak+puruzsuz+dusuk doygunluk) cikarma",
+   "guven": "orta",
+   "notlar": "S4 sinamasi (menfez). Su buyuk olcude sazlik/ot altinda; kanal koridoru tek poligon olarak cizildi. MENFEZ/KOPRU TABLIYESI ve ona baglanan yol poligon DISINDA (sartname: tabliye sinif 0, altindaki su gorunse bile). Tabliye beton duvari poligonun sag-ust sinirini olusturuyor. Ek guvenlik: parlak+puruzsuz+dusuk doygunluk sinif 0 maskesi ile kesildi; kesisim 0 px cikti, yani tabliye zaten disaridaydi.",
+   "olcum": {
+    "su_cekirdek_px": 22489,
+    "poligon_sayisi": 1,
+    "poligon_kose_sayisi": 163,
+    "delik_sayisi": 0,
+    "sinif0_kesilen_px": 0,
+    "kabul_bilesen": 12,
+    "red_bilesen": 0,
+    "bilesenler": [
+     {
+      "bilesen": 1,
+      "alan": 3948,
+      "ic_cap": 50.8,
+      "yakin_bitki": 0.22,
+      "merkez": [
+       293,
+       78
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 2,
+      "alan": 383,
+      "ic_cap": 18.0,
+      "yakin_bitki": 0.59,
+      "merkez": [
+       356,
+       152
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 3,
+      "alan": 4983,
+      "ic_cap": 46.0,
+      "yakin_bitki": 0.72,
+      "merkez": [
+       420,
+       223
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 4,
+      "alan": 460,
+      "ic_cap": 18.0,
+      "yakin_bitki": 0.74,
+      "merkez": [
+       281,
+       268
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 5,
+      "alan": 835,
+      "ic_cap": 15.6,
+      "yakin_bitki": 0.37,
+      "merkez": [
+       548,
+       299
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 6,
+      "alan": 2538,
+      "ic_cap": 29.6,
+      "yakin_bitki": 0.45,
+      "merkez": [
+       225,
+       355
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 7,
+      "alan": 2102,
+      "ic_cap": 26.0,
+      "yakin_bitki": 0.54,
+      "merkez": [
+       351,
+       364
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 8,
+      "alan": 495,
+      "ic_cap": 10.0,
+      "yakin_bitki": 0.49,
+      "merkez": [
+       314,
+       426
+      ],
+      "R1_genislik": false,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true,
+      "kurtarildi": true
+     },
+     {
+      "bilesen": 9,
+      "alan": 534,
+      "ic_cap": 16.8,
+      "yakin_bitki": 0.35,
+      "merkez": [
+       190,
+       415
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 10,
+      "alan": 4244,
+      "ic_cap": 32.0,
+      "yakin_bitki": 0.29,
+      "merkez": [
+       156,
+       491
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 11,
+      "alan": 804,
+      "ic_cap": 26.0,
+      "yakin_bitki": 0.6,
+      "merkez": [
+       274,
+       458
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     },
+     {
+      "bilesen": 12,
+      "alan": 1163,
+      "ic_cap": 42.0,
+      "yakin_bitki": 0.55,
+      "merkez": [
+       258,
+       527
+      ],
+      "R1_genislik": true,
+      "R2_ana": true,
+      "R3_kiyi_bitkisi": true,
+      "kabul": true
+     }
+    ]
+   },
+   "kapsam_atamadan": "S4 MENFEZ TABLIYESI suyun ustunde (gecilebilir)",
+   "rel_alt_m": 31.0
+  }
+ ],
+ "sartname_belirsizligi": [
+  {
+   "id": "B1",
+   "baslik": "DOSYA ADI CAKISMASI - sartname disi ama OLCUMU BOZAR",
+   "durum": "Gorev '<kare_stem>_sinif1.png' istiyor. Ama 8 karenin IKISI ayni stem'e sahip: dji_20260822172613_0038_d/frame_000000_000000000.jpg ve dji_20260822173231_0039_d/frame_000000_000000000.jpg. Duz adlandirmada ikinci maske birincinin UZERINE YAZAR ve dizinde 8 degil 7 dosya olur - SESSIZCE.",
+   "kanit": "Ilk kosumda tam bunu urettim: dizinde 7 PNG olustu, k0 maskesi k5 tarafindan ezildi.",
+   "kararim": "Cakisan IKI kare icin ad '<kaynak_dizin>__<stem>_sinif1.png' yapildi; cakismayan 6 kare duz '<stem>_sinif1.png' kaldi. Boylece hicbir dosya SESSIZCE yanlis olamaz: duz ad bekleyen bir olcum betigi 6 dogru maske bulur, 2'sini BULAMAZ (gurultulu hata), asla YANLIS maske okumaz. Her karenin maske adi rapor.json'da 'maske' alanindadir.",
+   "mimara_soru": "Diger ameleler ve referans ayni cakismayi nasil cozdu? Adlandirma birlesmezse IoU yanlis eslesir. Tek bir ad sozlesmesi yayinlanmali."
+  },
+  {
+   "id": "B2",
+   "baslik": "Suya BITISIK OLMAYAN yogun agaclik/cali hangi sinif?",
+   "durum": "Sartname sinif 1'i 'acik su yuzeyi VE su ile kara arasindaki gecilemez kiyi seridi' diye tanimliyor. k2'de kare alaninin ~%40'i yogun agaclik ama SUYA BITISIK DEGIL. 'IKA girerse cikabilir mi?' testine gore GECILEMEZ, ama sartnamenin su-merkezli cumlesine gore kiyi seridi DEGIL.",
+   "kararim": "Cizmedim. Gerekce: bu tur SU ETIKETLEME turudur ve sartname cumlesi sinif 1'i suya BAGLAYARAK tanimliyor; suya bagli olmayan bitki ortusunu eklemek sartnameyi genisletmek olurdu. ⚠ Bu, ameleler arasi IoU'yu tek basina buyuk olcude dusurebilecek en buyuk serbestlik derecesidir.",
+   "mimara_soru": "Sinif 1 = 'su ve kiyisi' mi, yoksa 'her gecilemez yuzey' mi? Cumle bunu ayirt etmiyor ve iki okuma da tutarli sonuc uretiyor (D-273 tuzagi)."
+  },
+  {
+   "id": "B3",
+   "baslik": "'< ~15 px' kurali HANGI COZUNURLUKTE olculuyor?",
+   "durum": "Kareler 3840x2160, maskeler 960x540. k2'deki dar ark ayni yapi olarak: 960 olceginde su-imzali cekirdek 6.0 px / koyu serit tamami 14-17 px; ham 3840 olceginde 24 px / 56-68 px. Ayni kural ayni yapiyi bir olcekte ETIKETSIZ, digerinde ETIKETLI yapiyor.",
+   "kararim": "ETIKETLEME (960x540) olceginde olctum -> ETIKETSIZ. Ek gerekce: seridin ic rengi notr gri (S=8..18), yani golgede beton; acik su yuzeyi DOGRULANAMADI, ve 'emin olmadigini isaretleme' kurali bagliyor.",
+   "mimara_soru": "Kural 'ham kare px' mi 'maske px' mi olcuyor? Sartnameye yazilmali."
+  },
+  {
+   "id": "B4",
+   "baslik": "Beton kaplamali ARK: su gorunmuyorsa ne olur?",
+   "durum": "k2'deki ark fiziksel olarak bir hendek/tekne; IKA icine girerse cikamaz. Ama icinde ACIK SU YUZEYI okunamiyor. Sartname sinif 1'i 'acik su yuzeyi' uzerinden tanimliyor, ama ayrim noktasini 'IKA girerse cikabilir mi' diye koyuyor. IKI OLCUT CELISIYOR.",
+   "kararim": "Cizmedim (B3 ile ayni yapi). 'Acik su yuzeyi' okunamadigi ve genislik kapisi gectigi icin iki bagimsiz gerekce de cizmemeyi destekliyor.",
+   "mimara_soru": "Su GORUNMEYEN ama gecilemez olan kuru hendek/ark/kanal sinif 1 mi? Bu turda cevapsiz; sonraki 200 karede sik cikacak."
+  },
+  {
+   "id": "B5",
+   "baslik": "S3 (yol ustu su birikintisi) bu 8 karede SINANMADI",
+   "durum": "Atama dosyasinin kendi notu da boyle diyor (_kapsanmayan). 8 karenin hicbirinde yol uzerinde net su birikintisi YOK; sartnamenin o cumlesi bu turda test EDILMEDI.",
+   "kararim": "Uydurmadim; birikinti isaretlemedim.",
+   "mimara_soru": "Sartnamenin bu bendi olculmemis sayilmali; ölcek turunden once ayri ornek gerekli."
+  },
+  {
+   "id": "B6",
+   "baslik": "Kiyi seridinin DIS siniri nerede biter?",
+   "durum": "Sartname 'gecilemez kiyi seridi'ni sinif 1 yapiyor ama seridin KARADAN tarafindaki sinirini tanimlamiyor. k0'da suya inen sev uzerinde yogun bitki ile kuru duzluk arasindaki gecis kademeli; sinir secimi orani %5-10 oynatabilir.",
+   "kararim": "Sinir OLCUMLE kondu: ExG=(2G-R-B)/(R+G+B)*255 > 35 (olculen degerler: sazlik 36..157, kuru duzluk -15..+6, yol -9..0) ve bilesen suya <=15 px mesafede olacak. Kademeli gecis boyle tekrarlanabilir bir esige baglandi.",
+   "mimara_soru": "Sartnameye sayisal bir dis sinir olcutu ( or. bitki ortusu yogunlugu ya da su kenarindan azami mesafe) eklenmeli mi?"
+  }
+ ],
+ "ozet": {
+  "kare_sayisi": 8,
+  "sinif1_bulunan_kare": 7,
+  "bos_maske_kare": [
+   "dji_20260822172613_0038_d/frame_000133_000005160.jpg"
+  ],
+  "bos_maske_gerekce": "k2 (frame_000133_000005160): BU KAREDE SINIF 1 YOK. Kare mevcut ve okundu; icinde dogrulanabilir acik su yuzeyi ve ona bagli kiyi seridi YOK. Bos maske BILEREK yazildi.",
+  "delik_toplam": 0,
+  "delik_kurali": "Tum karelerde delik sayisi 0 - \"poligon butun cizilir, delik acilmaz\" saglandi."
+ }
+}

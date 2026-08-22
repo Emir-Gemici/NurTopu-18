@@ -1,0 +1,264 @@
+{
+ "_amele": "B",
+ "_gorev": "DJI 20260822 su pilotu - SINIF 1 (gecilemez) maskeleri, 8 kare",
+ "_cozunurluk": "960x540, tek kanal, 0/255",
+ "_kaynak_liste": "results/dji_20260822/su_pilot_atama.json (8/8 dosya os.path.isfile ile dogrulandi)",
+ "_yorumlayici": "O:\\navitas-local-train\\venv\\Scripts\\python.exe",
+ "_adlandirma": "<kaynak_dizin>__<stem>_sinif1.png - ZORUNLU. Duz <stem> adlandirmasi CAKISIR: 0038 ve 0039 videolarinin ilk karesi ayni stem'e sahip (frame_000000_000000000); duz adla ikinci maske birinciyi sessizce ezer ve dizinde 8 degil 7 PNG kalir.",
+ "_bagimsizlik": "Diger amelelerin (A, C) ve referansin dizinlerine BAKILMADI; ciktilar yalniz ameleler/B altina yazildi.",
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+   "maske": "dji_20260822172613_0038_d__frame_000000_000000000_sinif1.png",
+   "sinif1_oran": 0.44573,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "yuksek",
+   "notlar": "Ana kanal + iki yakadaki sazlik tek butun poligon. Bati siniri kuru/cakil zeminde; dogu yakasindaki yogun bitki kare kenarina kadar surdugu icin band orada kesilmedi. Iki su tohumu da (kanal govdesi ve sag ust kolu) 3840'ta su olarak dogrulandi.",
+   "olcumler": {
+    "acik_su_oran": 0.06219,
+    "kiyi_seridi_oran": 0.38355,
+    "poligon_sayisi": 1,
+    "toplam_kose": 101,
+    "kabul_edilen_su_tohumu": 2,
+    "reddedilen_su_tohumu": [],
+    "rel_alt_m": 31.3,
+    "kaynak_video": "DJI_20260822172613_0038_D.MP4"
+   }
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+   "maske": "dji_20260822172613_0038_d__frame_000022_000001530_sinif1.png",
+   "sinif1_oran": 0.18552,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "yuksek",
+   "notlar": "Kivrilan kanal + sazlik. IKI tohum REDDEDILDI: (1883,59) kuru cali/moloz golgesi, (1045,957) yanmis moloz yigini golgesi - ikisi de 3840'ta bakildi, su degil.",
+   "olcumler": {
+    "acik_su_oran": 0.05815,
+    "kiyi_seridi_oran": 0.12736,
+    "poligon_sayisi": 1,
+    "toplam_kose": 118,
+    "kabul_edilen_su_tohumu": 1,
+    "reddedilen_su_tohumu": [
+     {
+      "merkez": [
+       1883,
+       59
+      ],
+      "gerekce": "kuru cali/moloz golgesi"
+     },
+     {
+      "merkez": [
+       1045,
+       957
+      ],
+      "gerekce": "yanmis moloz yigini golgesi"
+     }
+    ],
+    "rel_alt_m": 32.6,
+    "kaynak_video": "DJI_20260822172613_0038_D.MP4"
+   }
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+   "maske": "dji_20260822172613_0038_d__frame_000133_000005160_sinif1.png",
+   "sinif1_oran": 0.0,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "orta",
+   "notlar": "BU KAREDE SINIF 1 YOK - bos maske BILEREK yazildi ('kare yok' degil, 'su yok'). Karedeki 'ince koyu serit' KURU BETON ARK'tir: 3840'ta serit boyunca bakildi, duzgun gri beton yuzey, icinde toz/moloz; su tonu, yansima ve su bitkisi YOK (karsilastirma: gercek suda yerel std 3.3-8.3 ve yuzey yansimasi var). Ark dik genisligi: koyu invert cizgisi ~17-25 px @3840 = 4-6 px @960; beton kanal bandi dahil ~55 px @3840 = ~14 px @960 - her iki olcumde de 960x540 ciktida ~15 px esiginin ALTINDA. Sol ust kosedeki koyu alan ASFALT YOL (3840'ta agrega dokusu gorunuyor), orman icindeki koyu lekeler KANOPI GOLGESI. Arkin dogusundaki sik orman gecilemez ama SU DEGIL ve su kiyi seridi de degil; bu tur yalniz su icin.",
+   "olcumler": {
+    "acik_su_oran": 0.0,
+    "kiyi_seridi_oran": 0.0,
+    "poligon_sayisi": 0,
+    "toplam_kose": 0,
+    "kabul_edilen_su_tohumu": 0,
+    "reddedilen_su_tohumu": [
+     {
+      "merkez": [
+       38,
+       82
+      ],
+      "gerekce": "asfalt yol kosesi"
+     },
+     {
+      "merkez": [
+       1528,
+       450
+      ],
+      "gerekce": "orman kanopi golgesi"
+     }
+    ],
+    "rel_alt_m": 31.7,
+    "kaynak_video": "DJI_20260822172613_0038_D.MP4"
+   },
+   "guven_gerekcesi": "En sonuclu karar bu karede: 'su yok' hukmu, arkin KURU oldugu yargisina dayaniyor. Yargi 3840 ham cozunurlukte serit boyunca gorsel inceleme ile verildi, ama 31.7 m irtifada sig/bulanik bir su tabakasi kuru betondan ayirt edilemeyebilir. Otomatik renk ayiricisi DENENDI ve yetersiz cikti (gercek su exg -1.8..+5.3, asfalt -10.4; ortusuyorlar) - bu yuzden uydurulmadi, karar elle ve gerekceli verildi.",
+   "sinif1_var_mi": false
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+   "maske": "dji_20260822172613_0038_d__frame_000178_000006660_sinif1.png",
+   "sinif1_oran": 0.34576,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "yuksek",
+   "notlar": "Kanal + sazlik. Su govdesi havai enerji hatlariyla 5 parcaya bolunmus gorunuyor; besi de su olarak dogrulandi ve tek poligonda birlestirildi. Saman balyalari ve yol sinif 1 disinda birakildi.",
+   "olcumler": {
+    "acik_su_oran": 0.12769,
+    "kiyi_seridi_oran": 0.21807,
+    "poligon_sayisi": 1,
+    "toplam_kose": 129,
+    "kabul_edilen_su_tohumu": 5,
+    "reddedilen_su_tohumu": [],
+    "rel_alt_m": 31.2,
+    "kaynak_video": "DJI_20260822172613_0038_D.MP4"
+   }
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+   "maske": "dji_20260822172613_0038_d__frame_000222_000008220_sinif1.png",
+   "sinif1_oran": 0.21851,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "yuksek",
+   "notlar": "Kanal kare kosesinde, kismi gorunur. Tek su tohumu. Kuru/tasli duzluk sinif 1 degil.",
+   "olcumler": {
+    "acik_su_oran": 0.07362,
+    "kiyi_seridi_oran": 0.14489,
+    "poligon_sayisi": 1,
+    "toplam_kose": 118,
+    "kabul_edilen_su_tohumu": 1,
+    "reddedilen_su_tohumu": [],
+    "rel_alt_m": 30.8,
+    "kaynak_video": "DJI_20260822172613_0038_D.MP4"
+   }
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+   "maske": "dji_20260822173231_0039_d__frame_000000_000000000_sinif1.png",
+   "sinif1_oran": 0.3154,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "yuksek",
+   "notlar": "Kanal solda, iki yakada sazlik. Sag taraftaki asfalt yol ve kuru duzluk disarida. BIR tohum REDDEDILDI: (27,819) golgede kuru sev - 3840'ta bakildi, su degil.",
+   "olcumler": {
+    "acik_su_oran": 0.07894,
+    "kiyi_seridi_oran": 0.23645,
+    "poligon_sayisi": 1,
+    "toplam_kose": 118,
+    "kabul_edilen_su_tohumu": 1,
+    "reddedilen_su_tohumu": [
+     {
+      "merkez": [
+       27,
+       819
+      ],
+      "gerekce": "golgede kuru sev, su degil"
+     }
+    ],
+    "rel_alt_m": 29.3,
+    "kaynak_video": "DJI_20260822173231_0039_D.MP4"
+   }
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+   "maske": "dji_20260822173231_0039_d__frame_000020_000001410_sinif1.png",
+   "sinif1_oran": 0.26953,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "yuksek",
+   "notlar": "Kanal ortada, iki yakada sazlik bandi. BIR tohum REDDEDILDI: (57,130) golgede kuru ot. Yolun DOGUSUNDAKI iki yogun cali sinif 1 DISINDA birakildi: suya bitisik degiller, aradaki stabilize yol surulebilir - IKA oradan cikabilir (bkz belirsizlik #4).",
+   "olcumler": {
+    "acik_su_oran": 0.1141,
+    "kiyi_seridi_oran": 0.15543,
+    "poligon_sayisi": 1,
+    "toplam_kose": 126,
+    "kabul_edilen_su_tohumu": 1,
+    "reddedilen_su_tohumu": [
+     {
+      "merkez": [
+       57,
+       130
+      ],
+      "gerekce": "golgede kuru ot, su degil"
+     }
+    ],
+    "rel_alt_m": 31.4,
+    "kaynak_video": "DJI_20260822173231_0039_D.MP4"
+   }
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+   "maske": "dji_20260822173231_0039_d__frame_000040_000002730_sinif1.png",
+   "sinif1_oran": 0.20495,
+   "yontem": "OpenCV+NumPy. Su tohumu = 15px pencerede yerel parlaklik std<12 VE HSV V<130 VE fazla-yesil exg<30 VE kanopi-yogunlugu<=0.40; morfolojik acma/kapama; connectedComponentsWithStats. Her tohum 3840x2160 HAM cozunurlukte gozle adjudike edildi. Kiyi seridi = (su VEYA exg>30 yogun bitki) EKSI surulebilir zemin (V>150 & S<70 & exg<15); suyu iceren baglantili bilesen alindi. Delikler dolduruldu, approxPolyDP (eps=0.0015*cevre) ile duzlestirilip 960x540'ta yeniden cizildi. SciPy/scikit-image kullanilmadi.",
+   "guven": "orta",
+   "notlar": "MENFEZ TABLIYESI sartname geregi SINIF 0: poligon korkuluk/tabliye kenarinda kesiliyor, tabliyenin uzerine tasmiyor. Tabliyenin GOLGESINDEKI alan 2.6x parlatilarak incelendi; altindaki yuzey OKUNABILIR (yogun yesil bitki) oldugu icin sartname geregi o yuzeyin sinifini aldi = kiyi seridi, sinif 1. Kanalin kendisi (tas ve sazlik obekleri arasinda orgulu akarsu) 3840'ta dogrulandi. Batidaki kuru kahverengi saz stoplasi kuru ve duz, sinif 1 degil. Tabliyenin ALTINDAN gecen ve GORUNMEYEN su etiketlenmedi.",
+   "olcumler": {
+    "acik_su_oran": 0.07548,
+    "kiyi_seridi_oran": 0.12948,
+    "poligon_sayisi": 1,
+    "toplam_kose": 133,
+    "kabul_edilen_su_tohumu": 7,
+    "reddedilen_su_tohumu": [],
+    "rel_alt_m": 31.0,
+    "kaynak_video": "DJI_20260822173231_0039_D.MP4"
+   },
+   "guven_gerekcesi": "Tabliye golgesi altindaki yuzeyin 'okunabilir' sayilmasi parlatma sonrasi yargidir; sinirin tam yeri golge kenarinda +-birkac piksel oynayabilir."
+  }
+ ],
+ "sartname_belirsizligi": [
+  {
+   "no": 1,
+   "konu": "Kiyi seridinin DIS siniri tanimsiz",
+   "sartname_ne_diyor": "'su ile kara arasindaki gecilemez kiyi seridi' - bandin nerede bittigi yazmiyor.",
+   "kararim": "Band, surulebilir zemin (yol/stabilize/kuru duzluk) baslayana kadar surdurulur; genislik UYDURULMADI. Gecilemez bitki kare kenarina kadar surerse band kare kenarinda biter (f0 dogu yakasi).",
+   "gerekce": "Sabit bir band genisligi secmek, olculmemis bir sayi uydurmak olurdu. Sartnamenin verdigi olcut mesafe degil, gecilebilirliktir."
+  },
+  {
+   "no": 2,
+   "konu": "KURU beton ark (kaplamali hendek) sartnamede hic gecmiyor",
+   "sartname_ne_diyor": "Sinif 1 'acik su yuzeyi' ile tanimli; susuz kaplamali kanal icin hukum yok.",
+   "kararim": "f2'deki ark ETIKETLENMEDI (sinif 1 degil).",
+   "gerekce": "Acik su yuzeyi degil (3840'ta kuru beton olarak dogrulandi). IKA icin dik duvarli hendek olarak gecilemez OLABILIR, ama bu tur SU turudur ve 'olabilir' diye isaretlemek yasak kusur sinifi. NOT: mimar bunu sinif 1 saymak isterse karar TEK karede (f2) degisir ve orani 0.00 -> ~%61'e cikarir (ark + dogusundaki bitisik sik orman), yani bu secim IoU'da en buyuk tek kalemdir."
+  },
+  {
+   "no": 3,
+   "konu": "'~15 px alti' kurali HANGI cozunurlukte olculur?",
+   "sartname_ne_diyor": "'Cozunurluk alti (< ~15 px) yapilari isaretleme' - referans cozunurluk yazmiyor.",
+   "kararim": "Etiketin yasadigi cozunurlukte, yani 960x540'ta olctum.",
+   "gerekce": "Ayni yapi kaynakta (3840x2160) esigin ustunde, ciktida altinda olabiliyor - f2 arki tam bu durumda (~23 px @3840 / ~6 px @960). 960x540 maskede 6 px genisligindeki bir seritte 3 px'lik kayma IoU'yu yariya dusurur; kuralin korumaya calistigi sey tam da budur."
+  },
+  {
+   "no": 4,
+   "konu": "Suya BITISIK OLMAYAN gecilemez bitki sinif 1 mi?",
+   "sartname_ne_diyor": "Sinif 1 su + KIYI seridi; sudan uzaktaki sik bitki icin hukum yok.",
+   "kararim": "Sinif 1 DEGIL. Surulebilir zemin (yol) bitisikligi keser.",
+   "gerekce": "'IKA buraya girerse cikabilir mi?' olcutu: yolun karsisindaki caliya giren arac yoldan geri cikar. Etkiledigi yerler: f6'da yolun dogusundaki iki cali (disarida), f2'de arkin dogusundaki orman (disarida)."
+  },
+  {
+   "no": 5,
+   "konu": "Ikili (0/255) maske 'ETIKETSIZ'i ifade edemez",
+   "sartname_ne_diyor": "Okunamayan golge 'etiketsiz birakilir' - ama ciktida etiketsiz ile sinif 0 ayni piksel degerine (0) dusuyor.",
+   "kararim": "Bu 8 karede fiilen catisma CIKMADI: karsilasilan tek buyuk golge (f7 menfez tabliyesi golgesi) 2.6x parlatildiginda altindaki yuzey OKUNABILIR cikti, yani 'etiketsiz' kovasina hic dusmedi.",
+   "gerekce": "Yine de bicim bu ayrimi tasiyamiyor; okunamayan golge cikan bir karede ucuncu bir deger (or. 128) veya ayri bir 'gecersiz' maskesi gerekir."
+  },
+  {
+   "no": 6,
+   "konu": "S3 (yol ustu su birikintisi) bu turda HIC GORULMEDI",
+   "sartname_ne_diyor": "Birikinti icin cevre yol dokusuna bakan ayrintili bir kural var.",
+   "kararim": "Kural UYGULANMADI cunku 8 karenin hicbirinde yol ustu su birikintisi yok.",
+   "gerekce": "Atama dosyasi da bunu onceden yaziyor (_kapsanmayan). Yani sartnamenin bu maddesi bu sinamada SINANMAMISTIR; IoU sonucu o madde hakkinda kanit vermez."
+  },
+  {
+   "no": 7,
+   "konu": "Tabliye ALTINDAN gecen gorunmeyen su",
+   "sartname_ne_diyor": "'Tabliye sinif 0'dir, altindaki su gorunse bile' - gorunmeyen su icin hukum yok.",
+   "kararim": "Etiketlenmedi. Poligon tabliye kenarinda kesildi, tabliyenin altindan karsi tarafa kopru kurulmadi.",
+   "gerekce": "Gorunmeyeni etiketlemek olcum degil tahmindir."
+  }
+ ],
+ "ozet": {
+  "kare_sayisi": 8,
+  "sinif1_bulunan_kare": 7,
+  "sinif1_bos_kare": [
+   "dji_20260822172613_0038_d/frame_000133_000005160.jpg"
+  ],
+  "sinif1_oran_ortalama": 0.24818,
+  "sinif0_cizildi_mi": false
+ }
+}
