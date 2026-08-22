@@ -31,3 +31,19 @@ scripts/yedek_bekcisi.sh: line 157: `  #  bayt sayaci 4 DAKIKA SABIT" — orada 
 [11:36:52] baslangic uzak toplam: 32037 MB
 [11:37:00] KADEME -> data · uzak toplam 32037 MB
 [11:37:00] KADEME -> data · uzak toplam 32037 MB
+[11:41:43] KADEME -> results · uzak toplam 32037 MB
+[11:41:43] KADEME -> results · uzak toplam 32037 MB
+[11:43:50] KADEME -> data · uzak toplam 32053 MB
+[11:43:50] KADEME -> data · uzak toplam 32053 MB
+[11:56:48] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[11:56:48] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[12:06:55] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[12:06:55] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+12:07:43 DENEY ICIN DURAKLATILDI uzak=34269053313
+[12:17:56] bayat kilit temizlendi (PID 26862 yok)
+[12:17:56] ════════ BEKCI BASLADI · PID 27442 · aralik 120sn · taban tolerans 300sn
+[12:17:56] ════════ BEKCI BASLADI · PID 27442 · aralik 120sn · taban tolerans 300sn
+[12:18:01] baslangic uzak toplam: 32681 MB
+[12:18:01] baslangic uzak toplam: 32681 MB
+[12:18:59] KADEME -> results · uzak toplam 32681 MB
+[12:18:59] KADEME -> results · uzak toplam 32681 MB

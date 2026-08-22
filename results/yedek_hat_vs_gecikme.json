@@ -1,0 +1,1 @@
+{"_ne":"T140 · dosya basi gecikme mi hat mi","sonuc":[{"test":"A) 1x50MB   transfers 1","saniye":36,"bayt":52428800,"transfers":1},{"test":"B) 50x1MB   transfers 4","saniye":143,"bayt":52428800,"transfers":4},{"test":"C) 50x1MB   transfers 16","saniye":79,"bayt":52428800,"transfers":16},{"test":"D) 50x1MB   transfers 32","saniye":172,"bayt":49283072,"transfers":32}]}
