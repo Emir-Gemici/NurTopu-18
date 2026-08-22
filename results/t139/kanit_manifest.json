@@ -1,0 +1,194 @@
+{
+ "_ne": "T139 · kanit paketi — rota ureten kareler + kontroller",
+ "_ad_semasi": "extract_key_frames.py:169 -> frame_{KACINCI_KAYDEDILEN:06d}_{VIDEO_KARE_NO:09d}.jpg. IKINCI SAYI MILISANIYE DEGIL, VIDEO KARE NUMARASIDIR. 9 haneli sifir dolgusu ms gibi gosterir; zaman icin `zaman_sn` alanini kullanin.",
+ "_adresleme": "Kareyi videodan cozmek icin: cv2.VideoCapture(kaynak_video) + CAP_PROP_POS_FRAMES = video_kare_no. `yaklasik_ms` ile SEEK ETMEYIN — kodlayici anahtar kareye yuvarlar.",
+ "_olcum": "results/t138/gece_kumesi.json",
+ "toplam": 9,
+ "kayitlar": [
+  {
+   "rol": "rota_uretildi",
+   "dosya": "rota_uretildi__dji_fly_20260820_205748_0032_17872__frame_000064_000004740.jpg",
+   "kaynak_video": "dji_fly_20260820_205748_0032_1787250350300_video_beautify.mp4",
+   "video_kare_no": 4740,
+   "zaman_sn": 158.158,
+   "yaklasik_ms": 158158,
+   "sha256": "8d71da26007651a7b932aefd3f85e213f1b9cdc514753ac20b86a725403ff9ab",
+   "bayt": 873353,
+   "L_ort": 18.39,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "uretien_modeller": [
+    "v35"
+   ],
+   "zemin_orani": 0.10765,
+   "wp_olceksiz": 8,
+   "wp_olcekli": 8,
+   "yol_olceksiz": 2
+  },
+  {
+   "rol": "rota_uretildi",
+   "dosya": "rota_uretildi__dji_fly_20260820_210528_0033_17872__frame_000037_000005520.jpg",
+   "kaynak_video": "dji_fly_20260820_210528_0033_1787249994759_video_beautify.mp4",
+   "video_kare_no": 5520,
+   "zaman_sn": 184.184,
+   "yaklasik_ms": 184184,
+   "sha256": "6746ea25234141e19b4bf7094616ed2ed2a7b29122257478882295fae322e7d3",
+   "bayt": 903365,
+   "L_ort": 23.03,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "uretien_modeller": [
+    "v34",
+    "v30"
+   ],
+   "zemin_orani": 0.17939,
+   "wp_olceksiz": 8,
+   "wp_olcekli": 8,
+   "yol_olceksiz": 2
+  },
+  {
+   "rol": "rota_uretildi",
+   "dosya": "rota_uretildi__dji_fly_20260820_210528_0033_17872__frame_000038_000005580.jpg",
+   "kaynak_video": "dji_fly_20260820_210528_0033_1787249994759_video_beautify.mp4",
+   "video_kare_no": 5580,
+   "zaman_sn": 186.186,
+   "yaklasik_ms": 186186,
+   "sha256": "0b79e9d6bc2dd8002d91822a4f25e4cf178efc57cb4ce590fbff1bd05813b5ad",
+   "bayt": 895106,
+   "L_ort": 22.95,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "uretien_modeller": [
+    "v30"
+   ],
+   "zemin_orani": 0.0965,
+   "wp_olceksiz": 8,
+   "wp_olcekli": 0,
+   "yol_olceksiz": 1
+  },
+  {
+   "rol": "rota_uretildi",
+   "dosya": "rota_uretildi__dji_fly_20260820_210528_0033_17872__frame_000043_000005820.jpg",
+   "kaynak_video": "dji_fly_20260820_210528_0033_1787249994759_video_beautify.mp4",
+   "video_kare_no": 5820,
+   "zaman_sn": 194.194,
+   "yaklasik_ms": 194194,
+   "sha256": "90ca42a9541ba56c9b97f7c52eae0e30942eba58d2cdbe3efdc36c12e958007c",
+   "bayt": 859284,
+   "L_ort": 15.81,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "uretien_modeller": [
+    "v30"
+   ],
+   "zemin_orani": 0.17032,
+   "wp_olceksiz": 8,
+   "wp_olcekli": 8,
+   "yol_olceksiz": 2
+  },
+  {
+   "rol": "rota_uretildi",
+   "dosya": "rota_uretildi__dji_fly_20260820_210528_0033_17872__frame_000047_000006540.jpg",
+   "kaynak_video": "dji_fly_20260820_210528_0033_1787249994759_video_beautify.mp4",
+   "video_kare_no": 6540,
+   "zaman_sn": 218.218,
+   "yaklasik_ms": 218218,
+   "sha256": "3cf953c80161f2d923d0c6fdc55bc272113b91b5a14a52ec1ad424624618324f",
+   "bayt": 958100,
+   "L_ort": 23.68,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "uretien_modeller": [
+    "v34",
+    "v30"
+   ],
+   "zemin_orani": 0.056,
+   "wp_olceksiz": 8,
+   "wp_olcekli": 0,
+   "yol_olceksiz": 1
+  },
+  {
+   "rol": "rota_uretildi",
+   "dosya": "rota_uretildi__dji_fly_20260820_210528_0033_17872__frame_000094_000010500.jpg",
+   "kaynak_video": "dji_fly_20260820_210528_0033_1787249994759_video_beautify.mp4",
+   "video_kare_no": 10500,
+   "zaman_sn": 350.35,
+   "yaklasik_ms": 350350,
+   "sha256": "b7daa24eb144c0a8213faf63ada7db372f92e9394973aadbff845c2aabcf79a4",
+   "bayt": 939248,
+   "L_ort": 24.77,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "uretien_modeller": [
+    "v35",
+    "v34",
+    "v30"
+   ],
+   "zemin_orani": 0.0686,
+   "wp_olceksiz": 8,
+   "wp_olcekli": 0,
+   "yol_olceksiz": 3
+  },
+  {
+   "rol": "kontrol_en_dusuk_zemin",
+   "dosya": "kontrol_en_dusuk_zemin__dji_fly_20260820_201722_0020_17872__frame_000000_000000000.jpg",
+   "kaynak_video": "dji_fly_20260820_201722_0020_1787247400811_video_beautify.mp4",
+   "video_kare_no": 0,
+   "zaman_sn": 0.0,
+   "yaklasik_ms": 0,
+   "sha256": "83cc852cfe5eacd1ab8e12f4e7074b3c9c1b02fb71f3c6b094749bf80fa47114",
+   "bayt": 1079278,
+   "L_ort": 70.08,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "zemin_orani": 0.0,
+   "sebep": "MASKE_YOK"
+  },
+  {
+   "rol": "kontrol_en_yuksek_zemin_ama_RED",
+   "dosya": "kontrol_en_yuksek_zemin_ama_RED__dji_fly_20260820_202028_0022_17872__frame_000000_000000000.jpg",
+   "kaynak_video": "dji_fly_20260820_202028_0022_1787247356157_video_beautify.mp4",
+   "video_kare_no": 0,
+   "zaman_sn": 0.0,
+   "yaklasik_ms": 0,
+   "sha256": "91d2badeac6de550066a13184350375dc9bc3051950d18417a34b96622e0020e",
+   "bayt": 869970,
+   "L_ort": 32.31,
+   "cozunurluk": [
+    3840,
+    2160
+   ],
+   "zemin_orani": 0.08722,
+   "sebep": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "rol": "kontrol_gunduz",
+   "dosya": "kontrol_gunduz__whatsapp_video_2026_07_30_at_11_44__frame_000018_000002160.jpg",
+   "kaynak_video": "whatsapp_video_2026_07_30_at_11_44_23",
+   "video_kare_no": null,
+   "zaman_sn": null,
+   "yaklasik_ms": null,
+   "sha256": "fa65a007d73e3c9806925b4558bbff53651abf2c27320373c65e178624e9b20d",
+   "bayt": 195798,
+   "L_ort": 138.09,
+   "cozunurluk": [
+    1024,
+    576
+   ]
+  }
+ ]
+}
