@@ -5844,7 +5844,43 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ Bu görev yeni çekimi **beklemez** — hat, eldeki 448 kare üzerinde düzeltilip
     doğrulanabilir.
 
-- [ ] **T123 — İKİ ÜRETİM ADAYI (birincil + yedek) ön kaydı: Jetson 30 Eylül'de geliyor, cihaz-öncesi doğrulama penceresi YOK** · `config/model_registry.json`, `jetson_paket/` · **KRİTİK** · kanıt: **D-211**
+- [STATUS: READY_FOR_REVIEW] **T123 — İKİ ÜRETİM ADAYI (birincil + yedek) ön kaydı: Jetson 30 Eylül'de geliyor, cihaz-öncesi doğrulama penceresi YOK** · `config/model_registry.json`, `jetson_paket/` · **KRİTİK** · kanıt: **D-211**
+  - 🔎 **ÖLÇÜLDÜ · 2026-08-22 · Claude-2 · kanıt `REVIEW_LOG.md` D-276.**
+    **Kapı:** 15/15 · **799 OK** (793 → 799) · ham çıktı `results/t123/`.
+    ⛔ Terfi YOK · registry'ye yazılmadı · yeniden eğitim yok.
+  - 🔴 **"YEDEK HANGİ ARIZAYA KARŞI" — CEVAPLANDI:**
+    **(a) çok moloza basıyor** → v34 daha iyi (%4,65 vs %7,03) **ama** K2
+    sentetik kümede ölçülür; sahada ancak İKA **bastıktan sonra** görülür —
+    **en geç fark edilen senaryo**. · **(b) göremiyor** → 🔴 **v34 YEDEK
+    OLAMAZ**: gerçek karelerin 67/67'sini, bakir 11 karenin 11/11'ini
+    reddediyor; "göremiyor" diye ona geçmek **daha az gören** modele geçmektir,
+    ve bu senaryo sahada **en görünür** olanıdır. · **(c) teknik** → herhangi
+    bir doğrulanmış ağırlık.
+    ⇒ **(b) için bugün sabitlenmiş yedek YOKTUR; "iki aday" hedefi KISMEN
+    karşılanmıştır.** t122ac en yakın aday (0/67 red · çatı v35'ten iyi
+    0,020/0,011 · tam zinciri geçmiş) ama **kontrol noktası KİRLİ bölümle
+    seçildi** (D-233/D-249) ve **K3=1**. ÖNER-BEKLE: t122ac'yi temiz bölümle
+    yeniden seç **ya da** v35'in `last.pt`'sini ikinci ağırlık yap.
+  - 🔴 **GEÇİŞ YORDAMI HİÇ KOŞULMAMIŞ — İKİ KUSUR, ikisi de saha günü çökerdi:**
+    ① **G2**: `man["paket_icerigi"].get("models/"+ad)` → `AttributeError`
+    (liste/sözlük **ve** anahtar biçimi, iki hata bir satırda). G2 *"bozuk
+    yedekle geçme"* kapısıdır. ② **G6**: `--girdi data/test_goruntuleri/...`
+    → dizin **yok** (gerçeği `test_goruntuleri/...`), iki kılavuzda ikişer yerde.
+    İkisi de **T104/D-193 sınıfı**; 7 testlik metin kilidi **yakalamadı**.
+    Her ikisi de düzeltildi.
+  - **UÇTAN UCA PROVA (gerçek dosyalar, bayt-eş geri alma):**
+    ```text
+    G2 0,1sn · G3 0,0 · G4 0,0 · G5 0,0 · G6/1 5,9sn (exit=0) · G8 0,0
+                                                      TOPLAM 5,9 sn
+    ```
+    ⚠ PC ölçümüdür; Jetson'da G6 daha yavaş ve **cihaz gelmeden ölçülemez**.
+  - **KİLİT — artık İCRA testli** (`tests/test_t123_gecis_provasi.py`, 6 test):
+    G2 kodu kılavuzdan **ayıklanıp çalıştırılıyor**. Mutasyon:
+    `M1 bozuk G2 → 3/6 DÜŞTÜ` (eski metin kilidi **0/7 — yakalamıyor**) ·
+    `M2 adım silindi → 3/6 DÜŞTÜ` · pozitif kontrol 0/6.
+  - **SAHA GÜNÜ KONTROL LİSTESİ:** `results/t123/saha_gunu_kontrol_listesi.md`
+    — tek sayfa; 9 kalemlik envanter, 3 komut, **hangi arızada hangi model**
+    tablosu, geçiş + geri alma, saha defteri satırı.
   - 🔧 **YORDAM YAZILDI · 2026-08-20 · Claude-2 (ustabaşı) · D-223.** İki kılavuza
     §6C (G1..G8, <YEDEK> yer tutuculu — aday adı T121/T123 kapanınca);
     kilit: tests/test_kilavuz_gecis_yordami.py 7/7 OK. Mutasyon kanıtı

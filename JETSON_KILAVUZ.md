@@ -383,7 +383,7 @@ yolo predict task=segment model=navitas_seg_v30_best_512_fp16.engine \
 ```bash
 cd ~/navitas
 python3 scripts/jetson_fps.py \
-  --girdi data/test_goruntuleri/sentetik_arena \
+  --girdi test_goruntuleri/sentetik_arena \
   --pt models/navitas_seg_v35_best.pt \
   --onnx models/navitas_seg_v35_best_512_fp16.onnx \
   --engine models/navitas_seg_v30_best_512_fp16.engine \
@@ -630,9 +630,15 @@ python3 - <<'PY'
 import hashlib, json, pathlib
 kok = pathlib.Path.home() / "navitas"
 man = json.loads((kok / "models/jetson_derleme_manifest.json").read_text(encoding="utf-8"))
+# 🔴 T123'te KOSULARAK olculdu: onceki surum `man["paket_icerigi"].get("models/" + ad)`
+#    diyordu ve SAHA GUNU `AttributeError: 'list' object has no attribute 'get'`
+#    ile COKERDI. Iki hata bir satirda: (1) `paket_icerigi` SOZLUK DEGIL LISTE,
+#    (2) anahtarlari CIPLAK dosya adi, "models/" oneki YOK. G2, "bozuk yedekle
+#    gecme" KAPISIDIR; coktugunde operatör ya kapiyi atlar ya da tikanir.
+kunye = {x["dosya"]: x["sha256"] for x in man["paket_icerigi"]}
 for ad in ("navitas_seg_v34_best.pt", "navitas_seg_v34_best_512_fp16.onnx"):   # T130: yedek = v34
     yol = kok / "models" / ad
-    beklenen = man["paket_icerigi"].get("models/" + ad)
+    beklenen = kunye.get(ad)
     ozet = hashlib.sha256(yol.read_bytes()).hexdigest()
     print(ad, "OK" if ozet == beklenen else f"UYUSMAZ ({ozet[:12]} != {str(beklenen)[:12]})")
 PY
@@ -665,7 +671,7 @@ defterle tutarlılığı `tests/test_saha_parametrik.py` sınıfı kilitler.
    sahada YASAK):
 ```bash
 python3 scripts/jetson_fps.py \
-  --girdi data/test_goruntuleri/sentetik_arena \
+  --girdi test_goruntuleri/sentetik_arena \
   --pt models/navitas_seg_v34_best.pt --onnx models/navitas_seg_v34_best_512_fp16.onnx \
   --imgsz 512 --isinma 1 --tekrar 3 --conf 0.30 --cihaz 0 \
   --cikti results/gecis_dogrulama_$(date +%Y%m%d_%H%M%S)

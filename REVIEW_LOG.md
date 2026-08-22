@@ -21110,3 +21110,102 @@ gördü, ama o da 3 model koşumu gerektiriyor — üretimde ucuz değil).
 #### 7. YETKİ SINIRI
 Eşik **konmadı/önerilmedi** · `codes/` altına **girilmedi** · registry'ye
 **dokunulmadı** · `dataset/` altına kalıcı küme **yazılmadı** · **push YOK**.
+
+---
+
+### D-276 · 🔴 T123 · "YEDEK" SORUSU CEVAPLANDI: **v34 üç senaryonun yalnız BİRİNDE doğru yedek** ve o senaryo sahada en geç fark edilen — ve geçiş yordamı **hiç koşulmamıştı: İKİ kusur bulundu, ikisi de saha günü çökerdi**
+
+- **Ölçen:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-22 · görev **T123**.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 799 · OK** (793 → 799, yeni kapı 6 test).
+- **Ham çıktı repoda:** `results/t123/yedek_hangi_arizaya_karsi.md` ·
+  `saha_gunu_kontrol_listesi.md` · `gece_kumesi_adaylar.json`.
+- ⛔ **TERFİ EDİLMEDİ** · registry'ye **yazılmadı** · eşik değişmedi · yeniden
+  eğitim **yok** · **push YOK**.
+
+#### 1. BEŞ MODEL, AYNI KABUL KÜMESİ (n=260) — yeniden eğitim YOK
+```text
+model     K1   K2      K3  K4   cati(egitim/bakir)  gercek red  gece sizinti
+v35      256  %7,03    0   1    0,043 / -           0/67        2
+v34      258  %4,65    0   1    0,961 / 0,976       67/67       3
+t122ac   257  %6,23    1   0    0,020 / 0,011       0/67        3
+v30      258  %5,43    0   1    0,305 / -           -           5
+t121_ft  259  %4,63    0   1    0,131 / 0,175       -           -
+```
+Gece sızıntısı bu turda ölçüldü (T138 yöntemi, 569 kare, `results/t123/`).
+
+#### 2. 🔴 SENARYO AYRIMI — görevin sormadan geçilmesini yasakladığı soru
+- **(a) çok moloza basıyor:** v34 **daha iyi** (%4,65 vs %7,03).
+  ⚠ Ama K2 **yer gerçeği olan sentetik kümede** ölçülür; sahada bunu ancak
+  İKA **fiilen bastıktan sonra** görürsünüz. **En geç fark edilen senaryo.**
+- **(b) göremiyor / rota üretmiyor:** 🔴 **v34 YEDEK OLAMAZ** — gerçek
+  karelerin **67/67'sini**, bakir 11 karenin **11/11'ini** reddediyor.
+  "Göremiyor" diye v34'e geçmek, **daha az gören** bir modele geçmektir.
+  ⚠ Bu senaryo sahada **en görünür** olanıdır (ekran rota çizmez).
+- **(c) teknik çökme:** doğrulanmış herhangi bir ağırlık; ayırt edici G2'dir.
+
+**CEVAP:** *"Hiçbir senaryoda v34 daha iyi değilse bunu yaz"* dendi; cevap
+nüanslı: **v34 (a)'da daha iyidir, (b)'de belirgin biçimde kötüdür.**
+⇒ **(b) senaryosu için bugün sabitlenmiş bir yedek YOKTUR.** "İki aday" hedefi
+**kısmen** karşılanmıştır ve mimar bunu bilerek karar vermelidir.
+
+**t122ac** o boşluğa en yakın adaydır (0/67 red · çatı **v35'ten iyi**:
+0,020 vs 0,043, bakirde 0,011) ve **tam kabul zincirini geçmiştir**. İki
+çekincesi yazılıdır: (1) 🔴 kontrol noktası **kirli bölümle seçildi**
+(D-233/D-249 — T127 zaten bu yüzden tekrarlandı), (2) **K3 = 1**.
+**ÖNER-BEKLE:** ya t122ac **temiz bölümle yeniden seçilir**, ya v35'in
+`last.pt`'si ikinci ağırlık olarak sabitlenir. **Bu turda uygulanmadı.**
+
+#### 3. 🔴 GEÇİŞ YORDAMI HİÇ KOŞULMAMIŞ — İKİ KUSUR
+Yordam 7 testle **metin olarak** kilitliydi. Koşunca:
+1. **G2 ÇÖKÜYORDU:** `man["paket_icerigi"].get("models/" + ad)` →
+   `AttributeError: 'list' object has no attribute 'get'`. İki hata bir
+   satırda: `paket_icerigi` **sözlük değil liste**, anahtarları **çıplak dosya
+   adı**. G2 *"bozuk yedekle geçme"* kapısıdır; çöktüğünde operatörün önünde
+   kapıyı **atlamak** ya da tıkanmak kalır.
+2. **G6 girdisi YANLIŞ YOLU gösteriyordu:** `data/test_goruntuleri/...` →
+   o dizin **yok**; gerçeği `test_goruntuleri/...`. İki kılavuzda **ikişer**
+   yerde. Yani geçişin doğruluğunu kanıtlayacak adım da çökerdi.
+
+İkisi de **T104/D-193'ün birebir sınıfı**. `test_kilavuz_gecis_yordami.py`'nin
+kendi docstring'i bu riski **yazıyordu**, yine de metin kilidi yakalamadı.
+**Ders: çalıştırılabilir bir yordam ancak ÇALIŞTIRILARAK kilitlenir.**
+Her iki kusur da iki kılavuzda düzeltildi.
+
+#### 4. UÇTAN UCA PROVA — SÜRE ÖLÇÜLDÜ
+Gerçek dosyalarda koşuldu, `finally` ile **bayt-eş** geri alındı:
+```text
+G2 butunluk 0,1sn · G3 kopya 0,0 · G4 defter 0,0 · G5 kunye 0,0
+G6/1 dogrulama 5,9sn (exit=0 · "2/2 vaka olculdu") · G8 geri alma 0,0
+                                            TOPLAM 5,9 sn
+```
+⚠ **PC ölçümüdür (RTX 5080).** Jetson'da G6 belirgin daha yavaş olacaktır ve
+**cihaz gelmeden ölçülemez** (D-211 §5); kalan beş adım cihazdan bağımsız.
+
+#### 5. KİLİT — artık İCRA testli (T104 kalıbı)
+`tests/test_t123_gecis_provasi.py` (6 test): G2 kodu kılavuzdan **ayıklanıp
+ÇALIŞTIRILIYOR**; yalnız saha kök satırı çevriliyor ve *başka satırın
+değişmediği* ayrıca doğrulanıyor.
+```text
+POZITIF KONTROL            T123 provasi 0/6 · eski metin kilidi 0/7
+M1 G2 BOZUK haline donduruldu   3/6 DUSTU  ·  eski kilit 0/7  (YAKALAMIYOR)
+M2 yordamdan BIR ADIM cikarildi 3/6 DUSTU
+GERI ALINDI                     0/6 · iki kilavuz bayt-es
+```
+🔴 **M1'in anlamı:** eski metin kilidi, saha günü çökecek kodu **0/7 ile
+geçiriyordu**. Boşluk ölçüldü ve kapatıldı.
+⚠ **Kendi alet kusurum:** M2'nin ilk koşumunda mutasyon **hiç uygulanmadı**
+(kılavuzlar CRLF, desenim `\n` arıyordu) ve "düşmedi" göründü. CRLF-duyarlı
+hâliyle tekrarlandı, **düşüyor**. Yanlış sonuç yayımlanmadan yakalandı.
+
+#### 6. SAHA GÜNÜ KONTROL LİSTESİ
+`results/t123/saha_gunu_kontrol_listesi.md` — tek sayfa, elle okunur:
+elde ne olmalı (9 kalem) · sırayla çalıştırılacak 3 komut · **hangi arızada
+hangi model** tablosu · geçiş ve geri alma · saha defteri satırı.
+⚠ Listede tek "o gün yapılacak" kalem `.engine` derlemesidir (T109).
+
+#### 7. YETKİ SINIRI
+Terfi **yok** · `config/model_registry.json`'a **yazılmadı** (yordam yazıldı,
+uygulama saha günü) · eşik **değişmedi** · yeniden eğitim **yok** ·
+`codes/` altına **girilmedi** · **push YOK**.
