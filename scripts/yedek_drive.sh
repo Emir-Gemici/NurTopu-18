@@ -52,8 +52,8 @@ uzak_bayt () {
     | grep -o '"bytes":[0-9]*' | cut -d: -f2
 }
 
-kopyala () {   # $1 = alt yol
-  ad="$1"; onceki=-1; tur=0
+kopyala () {   # $1 = alt yol · $2 = HARIC tutulacak desen (istege bagli)
+  ad="$1"; haric="${2:-}"; onceki=-1; tur=0
   echo ""
   echo "=============================================================="
   echo "[$(date +%H:%M:%S)] KADEME: $ad"
@@ -61,7 +61,13 @@ kopyala () {   # $1 = alt yol
   while [ "$tur" -lt 40 ]; do
     tur=$((tur + 1))
     t0=$(date +%s)
-    "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK
+    # `$haric` TIRNAKLI gecirilir: tirnaksiz birakilirsa kabuk `venv/**`
+    # desenini CWD'ye gore glob'lamaya calisir.
+    if [ -n "$haric" ]; then
+      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK --exclude "$haric"
+    else
+      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK
+    fi
     gecen=$(( $(date +%s) - t0 ))
     simdi="$(uzak_bayt "$ad")"
     # T140: OLCULEMEDI != 0 (D-180 sinifi). Olculdu 11:05:49 —
@@ -103,7 +109,19 @@ kopyala "codes"
 kopyala "jetson_paket"
 kopyala "test_images"
 kopyala "rapor"
-kopyala "navitas-local-train"
+# 🔴 venv/ HARIC — kullanici karari 2026-08-22 21:40, OLCUMLE alindi.
+#   Olculen: venv 42.817 dosya / 5,25 GB · kademe hizi 0,80 DOSYA/sn (bayt
+#   degil dosya sinirli; son 23 dk'da 2,2 MB ama 1.447 dosya kopyalandi).
+#   Kalan is venv ile 41.866 dosya = 14,5 saat · venv'siz 14.787 = 5,1 saat.
+#   Kullanicinin 1 gun kisiti venv ile TUTMUYORDU.
+#   YENIDEN URETILEBILIR: tarif `results/t140/venv_tarifi_pip_freeze.txt`
+#   (70 paket · Python 3.13.7 AMD64 · torch 2.11.0+cu128 · ultralytics 8.4.92).
+#   ⚠ SINIR: pip freeze paket surumlerini verir, torch'un CUDA tekerlegi icin
+#     ek indeks gerekir (+cu128). Kurulum tarifi tek satirda degildir.
+#   ⚠ Drive'a ONCEDEN yuklenmis 15.776 venv dosyasi SILINMEDI, orada duruyor;
+#     `copy` kullaniliyor, `sync` DEGIL (kullanici kisiti) — yani dislama
+#     yalnizca BUNDAN SONRASINI etkiler, mevcut yedegi BOZMAZ.
+kopyala "navitas-local-train" "venv/**"
 
 # ── KADEME 3 · dataset — SECICI (kullanici karari 2026-08-22) ────────────────
 # 🔴 dataset/ 63 GB ve KULLANICI ONU YEDEKTEN CIKARDI (sure kisiti).
