@@ -6299,7 +6299,14 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     **bilinmeyen sayılmıyor** çünkü **hiç ölçülmüyor**. Bu boşluğu ölç.
   - **Kapı:** `15/15` · `discover -s tests -q` → **793 OK**
 
-- [ ] **T141 — (b) senaryosu için MODEL DEĞİL PROSEDÜR: "rota üretilmiyorsa İKA sürmez" saha yordamına yazılacak** · `JETSON_KILAVUZ.md` (iki kopya), `results/t123/saha_gunu_kontrol_listesi.md` · **KRİTİK** · karar `REVIEW_LOG.md` **D-277 §3-4**
+- [STATUS: READY_FOR_REVIEW] **T141 — (b) senaryosu için MODEL DEĞİL PROSEDÜR: "rota üretilmiyorsa İKA sürmez" saha yordamına yazılacak** · `JETSON_KILAVUZ.md` (iki kopya), `results/t123/saha_gunu_kontrol_listesi.md` · **KRİTİK** · karar `REVIEW_LOG.md` **D-277 §3-4**
+  - ✅ **YAPILDI · 2026-08-22 · Claude 2 (başamele) · kayıt `REVIEW_LOG.md` D-278.** Kapatma yetkim yok (§9.2) — **mimar denetimi bekliyor**.
+  - **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** · `discover -s tests -q` → **Ran 806 · OK** (799 → +7).
+  - **Yapılan:** G1'e makine-okunur `T141-KURAL` bloğu ((a)/(c) SERBEST · **(b) YASAK**) + D-277 §4/2 cümlesi üç belgeye; kontrol listesi §C'de (b) satırı *"takım kararı"*ndan **kesin talimata** çevrildi.
+  - **İddia önce koşuldu, sonra yazıldı** (ön kayıt `results/t141_on_kayit.md` §1): `NO_ROUTE etkin komut=3, sıfır-olmayan=0`. Mimarın D-277 §3'teki *"kapı var"* varsayımı **doğrulandı**.
+  - **Mutasyon (ham: `results/t141/mutasyon_olcumu.txt`):** M1 **1/7** · M2' **1/7** (mevcut kilit **0/3 KÖR**) · M3 belge tersine çevrildi **3/7** (mevcut kilit **0/3 KÖR**) · M3b **1/7** · pozitif kontrol 0/7 · geri alma bayt-eş.
+  - ⚠ **Ön kayıtta yanıldım, düzeltmedim — raporladım:** M2 düşmedi; nedeni kilit değil **kod** (`receiver_rota_gecerli` `no_route`'u iki kez denetliyor). Etkisiz mutasyon tablodan **çıkarılmadı**.
+  - 🔴 **YAN BULGU (kullanıcı talebiyle ilgili):** *"t122ac'yi temiz bölümle yeniden seç"* **zaten yapılmıştı** — T127'nin ürünü **v35'in kendisi**. `args.yaml` 112 alandan 3'ü farklı (name/save_dir/data), sha256 birebir. Yeniden koşum bir **GPU gecesi** harcayıp v35'i üretirdi. Ayrıntı D-278 §1.
   - **Mimarın hükmü:** (b) *"göremiyor / rota üretmiyor"* senaryosunun **model
     düzeyinde cevabı YOKTUR**. Birincil göremiyorsa sahne okunamıyor demektir;
     t122ac'nin üstünlüğü **çatıda**dır, **görebilmekte** değil. Okunamayan sahnede

@@ -673,10 +673,33 @@ kaydet; eğitim verisi kararı için değerli.
 > İNSANINDIR (D-133)** — yordam yalnız mekaniktir.
 
 ### G1 · Tetik ve karar
-Birincil model sahada şu ikisinden birinde sistematik düşüyorsa geçiş
-değerlendirilir: **§5 "Karar kıyası"** (üç modeli ayıran test) veya
-**§5 "Domain kontrolü"**. Karar veren: takım (insan). Saat + gerekçe saha
-defterine yazılır.
+
+🔴 **ÖNCE SENARYOYU AYIR — her arıza geçişle çözülmez** (D-277 §3-4).
+Aşağıdaki tablo **bağlayıcıdır** ve `tests/test_t141_rota_yoksa_surme.py`
+bunu kılavuzdan **okuyup kodda koşarak** doğrular (T104/T123 kalıbı).
+
+```text
+T141-KURAL
+SENARYO (a) cok moloza basiyor        -> GECIS SERBEST
+SENARYO (b) rota uretilmiyor          -> GECIS YASAK
+SENARYO (c) teknik cokme / yuklenmiyor -> GECIS SERBEST
+```
+
+- **(a) ve (c) — geçiş meşru.** Tetik: **§5 "Karar kıyası"** (üç modeli ayıran
+  test) veya **§5 "Domain kontrolü"**. Karar veren: takım (insan). Saat +
+  gerekçe saha defterine yazılır. Yedek: **v34**; (c)'de doğrulanmış herhangi
+  bir ağırlık yeter.
+- 🔴 **(b) — GEÇİŞ YASAK.** Birincil "göremiyor" ise **sahne okunamıyor**
+  demektir; okunamayan sahnede model değiştirmek *aynı körlüğü başka bir
+  modelle denemektir* (D-277 §3). Yedek v34 bu eksende **daha kötüdür**:
+  gerçek karelerin **67/67'sini** reddeder (D-249).
+  **Yapılacak, aynen:**
+
+  > **Rota üretilmiyorsa model değiştirilmez; İKA sürmez ve sebep kaydedilir.**
+
+  Bu bir temenni değil, **kodda zorlanan** davranıştır: `ika_nav` NO_ROUTE
+  boyunca sıfır-olmayan motor komutu vermez (ölçüldü: 3 komut, **0**
+  sıfır-olmayan). Sebep saha defterine §G7 satırıyla yazılır.
 
 ### G2 · Yedeğin varlığı ve bütünlüğü
 Yedeğin `.pt` ve `.onnx` dosyaları pakette olmalı ve sha256'ları

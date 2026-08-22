@@ -21281,3 +21281,101 @@ anlamlıdır; (b) için aday değil **prosedür** gerekir.
      (D-140: tohum etkisiz). Yedeklilik **farklı arıza** demektir, farklı dosya değil.
 
 #### 5. AÇILAN GÖREV — **T141**
+
+---
+
+### D-278 · ✅ T141 · (b) senaryosunun cevabı yordama YAZILDI ve **koşularak** kilitlendi — ve kullanıcının verdiği iş **zaten yapılmıştı**: "t122ac'yi temiz bölümle yeniden seç" = **v35'in kendisi**
+
+- **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
+  (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-22 · görev **T141**.
+- **Ön kayıt:** `results/t141_on_kayit.md` — D-107; kilit **yazılmadan önce**
+  yazıldı, mutasyonlar önceden listelendi, iddia **zayıflatılmadı**.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 806 · OK** (799 → 806, yeni kapı 7 test).
+- **Ham çıktı repoda:** `results/t141/mutasyon_olcumu.txt` ·
+  ölçüm betiği `scripts/olcum/129_t141_mutasyon_olcumu.py`.
+- ⛔ Terfi **yok** · registry'ye **yazılmadı** · eşik **değişmedi** · yeniden
+  eğitim **yok** · `codes/` altına **girilmedi** · **push YOK**.
+
+#### 1. 🔴 ÖNCE BENİM KUSURUM: D-276'nın ÖNER-BEKLE'si GEÇERSİZDİ
+Kullanıcı D-276 §2'deki birinci şıkkı seçti: *"t122ac'yi temiz bölümle
+yeniden seç."* Ölçtüm — **o iş 21 Ağustos'ta T127'de yapılmış ve ürünü bugünkü
+üretim modeli v35.**
+```text
+args.yaml farki  : 112 alandan 3'u — name · save_dir · data   (hiperparametre farki YOK)
+                   ikisinde de seed=0 · deterministic=True · epochs=40 · patience=15
+yaml farki       : yalniz copy_paste_t122ac -> copy_paste_t127
+                   T127 baslik: "goruntuler t122ac ile AYNI, yalniz train/val dagilimi"
+sha256           : models/navitas_seg_v35_best.pt == t127_temiz/weights/best.pt  (BIREBIR)
+```
+⇒ Yeniden koşmak **bir GPU gecesi harcayıp v35'i yeniden üretirdi**; ikinci aday
+çıkmazdı. Öneriyi yazarken T127'nin ürününün v35 olduğunu **öneriye
+bağlamamıştım**. Ders: öner-bekle şıkkı, *"bu şık koşulursa elde ne olur"*
+sorusu **ölçülmeden** yazılmaz.
+Ayrıca D-249 §3 bunu zaten ölçmüştü: temiz seçim çatı kaçağını **iyileştirmedi,
+kötüleştirdi** (0,020 → 0,043; bakirde 0,011 → 0,015).
+
+**Mimar bunu benden önce görmüş:** D-277 §4 her iki şıkkı da reddediyor —
+*"yedeklilik farklı DOSYA değil farklı ARIZA demektir"* — ve **T141**'i açıyor.
+Defter araması (D-252) bir GPU gecesini ve kapanmış bir kararın yeniden
+açılmasını **önledi**.
+
+#### 2. YAPILAN İŞ — (b) için MODEL DEĞİL PROSEDÜR (D-277 §4/2)
+Üç belgeye girdi: `JETSON_KILAVUZ.md` **§6C/G1** (iki kopya) ve
+`results/t123/saha_gunu_kontrol_listesi.md` **§C**.
+```text
+T141-KURAL   (kilavuzdan MAKINE ile okunur, elle tekrar edilmez)
+SENARYO (a) cok moloza basiyor         -> GECIS SERBEST
+SENARYO (b) rota uretilmiyor           -> GECIS YASAK
+SENARYO (c) teknik cokme / yuklenmiyor -> GECIS SERBEST
+```
+> **Rota üretilmiyorsa model değiştirilmez; İKA sürmez ve sebep kaydedilir.**
+
+🔴 **G1'in eski hâli bu yasağı okutmuyordu:** *"birincil sahada sistematik
+düşüyorsa geçiş değerlendirilir"* — ekranda rota çizilmemesi de "düşüyor" diye
+okunur. Yani operatör 30 Eylül sabahı **v34'e geçmeyi yordama uygun** sanabilirdi;
+v34 gerçek karelerin **67/67'sini** reddediyor (D-249).
+
+#### 3. İDDİA ÖNCE **KOŞULARAK** DOĞRULANDI, SONRA YAZILDI
+Ön kayıt §1 gereği: cümle bir **davranış iddiasıdır**; yanlışsa yazılmaz.
+```text
+tests/test_ika_surus_no_route  -> Ran 3 · OK
+[KAPI] NO_ROUTE etkin komut=3, sifir-olmayan=0
+```
+Kod üç noktada koruyor: döngü başı · sıfır-olmayan motor çıkışından hemen önce ·
+karar kilidi altındaki `receiver_korumali_hiz_gonder`. Mimarın D-277 §3'teki
+*"kapı var"* varsayımı bu kez **doğrulandı** (T104'te aynı varsayım yanlış çıkmıştı).
+
+#### 4. KİLİT — belge ↔ kod BAĞI (T104/T123 kalıbı)
+`tests/test_t141_rota_yoksa_surme.py` (7 test): kural **kılavuzdan ayıklanır**,
+`GECIS YASAK` işaretli senaryo **belgeden** çıkarılır, sonra o senaryonun iddia
+ettiği davranış `ika_nav` üzerinde **gerçekten koşulur**.
+```text
+                                                 T141 icra kilidi   mevcut kod kilidi
+POZITIF KONTROL (mutasyonsuz)                        0/7                0/3
+M1  navigate rota kapisi devre disi                  1/7                1/3
+M2  receiver ILK NO_ROUTE denetimi yok (ETKISIZ)     0/7                0/3
+M2' HER IKI NO_ROUTE denetimi de yok                 1/7             -> 0/3  KOR
+M3  belgede (b) YASAK -> SERBEST                     3/7             -> 0/3  KOR
+M3b zorunlu CUMLE listeden silindi                   1/7             -> 0/3  KOR
+GERI ALINDI                                          0/7                0/3 · bayt-es
+```
+🔴 **M3/M3b'nin anlamı:** mevcut kod kilidi, saha yordamı **sessizce tersine
+çevrilse** hiçbir şey demez. Yeni kilidin eklediği şey budur.
+🔴 **M2' beklenmedik ek bulgu:** iki `no_route` denetimi birden kaldırıldığında
+**mevcut kilit de kör** (0/3); yeni kilit yakalıyor. Yani bağ yalnız belgeye
+değil, koda da kapsam ekledi.
+
+#### 5. ⚠ ÖN KAYITTA YANILDIĞIM YER — DÜZELTİLMEDİ, RAPORLANDI
+Ön kayıt *"M2 düşmeli"* diyordu; **düşmedi**. Nedeni kilit değil **kod** çıktı:
+`receiver_rota_gecerli` `no_route`'u **iki kez** denetliyor (satır 225 **ve**
+238). Tek denetimi kaldırmak **davranışı değiştirmiyor** — dolayısıyla
+yakalanmaması **doğrudur**. Mutasyonu sertleştirdim (M2') ve o yakalanıyor.
+**Etkisiz mutasyon tablodan çıkarılmadı**; çıkarılsaydı ölçüm kendini haklı
+gösterirdi. Ön kaydın işi tam olarak buydu.
+
+#### 6. YETKİ SINIRI
+Yeni model **aranmadı**, yeniden eğitim **yok** (D-277 §5 kısıtı) · eşik
+**değişmedi** · `config/model_registry.json`'a **dokunulmadı** · `codes/`
+altına **girilmedi** · terfi **yok** · **push YOK**.
+

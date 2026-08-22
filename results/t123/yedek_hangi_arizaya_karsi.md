@@ -64,13 +64,28 @@ geçmiştir (`t126_t122ac_kabul_verdikt.json` → `verdikt: True`). Ama iki
    **seçimi** şaibelidir.
 2. **K3 = 1** (bir ağır basma) — v35, v34 ve v30'da 0.
 
-⇒ **ÖNERİ (öner-bekle, karar insanın/mimarın):** (b) senaryosu için yedek
-gerekiyorsa iki meşru yol var:
-- **t122ac'yi TEMİZ bölümle yeniden seç** (T127'nin yaptığının aynısı, farklı
-  reçete değil) — GPU maliyeti bir koşum; ya da
-- **v35'in `last.pt`'sini** ikinci ağırlık olarak sabitle: aynı eğitimin farklı
-  kontrol noktası, (c) için tam, (b) için v34'ten kesinlikle iyi.
-⚠ Hiçbiri **bu turda uygulanmadı**; T123 aday sabitleme turudur, eğitim turu değil.
+> ## ⛔ AŞAĞIDAKİ ÖNERİ GEÇERSİZDİR — mimar reddetti (D-277 §4), T141'de kapandı
+>
+> Bu bölümde iki şık önerilmişti. **İkisi de reddedildi ve birincisi zaten
+> ölçülmeden yazılmıştı:**
+>
+> 1. ~~*t122ac'yi TEMİZ bölümle yeniden seç*~~ → **O iş 21 Ağustos'ta T127'de
+>    yapıldı ve ürünü bugünkü üretim modeli v35.** `args.yaml` 112 alandan
+>    3'ü farklı (yalnız `name`/`save_dir`/`data`), sha256
+>    `navitas_seg_v35_best.pt` = `t127_temiz/weights/best.pt` **birebir**.
+>    Yeniden koşmak bir **GPU gecesi** harcayıp v35'i yeniden üretirdi.
+> 2. ~~*v35'in `last.pt`'sini ikinci ağırlık olarak sabitle*~~ → **aynı eğitim,
+>    aynı arıza ailesi.** Yedeklilik farklı **DOSYA** değil farklı **ARIZA**
+>    demektir (D-277 §4/4).
+>
+> 🔴 **(b) senaryosunun MODEL DÜZEYİNDE cevabı YOKTUR ve aranmayacaktır.**
+> Doğru cevap prosedürdür ve **T141'de yazıldı** (`D-278`):
+> *"Rota üretilmiyorsa model değiştirilmez; İKA sürmez ve sebep kaydedilir."*
+> Saha günü uygulanacak hâli: `saha_gunu_kontrol_listesi.md §C`.
+
+⇒ ~~**ÖNERİ (öner-bekle, karar insanın/mimarın):** (b) senaryosu için yedek
+gerekiyorsa iki meşru yol var: t122ac'yi temiz bölümle yeniden seçmek, ya da
+v35'in `last.pt`'sini ikinci ağırlık olarak sabitlemek.~~ **GEÇERSİZ** — yukarı bak.
 
 ## 4. GEÇİŞ YORDAMI — SINANDI ve İKİ KUSUR BULUNDU
 

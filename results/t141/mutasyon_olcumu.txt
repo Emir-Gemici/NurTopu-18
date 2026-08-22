@@ -1,0 +1,14 @@
+============================================================================================
+POZITIF KONTROL (mutasyon YOK — hepsi gecmeli)
+  mutasyonsuz                                      T141 icra kilidi   0/7 · mevcut kod kilidi  0/3
+
+MUTASYONLAR (on kayitta, kilit yazilmadan ONCE listelendi)
+  M1 navigate rota kapisi DEVRE DISI               T141 icra kilidi   1/7 · mevcut kod kilidi  1/3
+  M2 receiver ilk NO_ROUTE denetimi yok (ETKISIZ)  T141 icra kilidi   0/7 · mevcut kod kilidi  0/3
+  M2' HER IKI NO_ROUTE denetimi de yok             T141 icra kilidi   1/7 · mevcut kod kilidi  0/3
+  M3 belgede (b) YASAK -> SERBEST                  T141 icra kilidi   3/7 · mevcut kod kilidi  0/3
+  M3b zorunlu CUMLE listeden silindi               T141 icra kilidi   1/7 · mevcut kod kilidi  0/3
+
+GERI ALINDI
+  mutasyonsuz (geri alma dogrulamasi)              T141 icra kilidi   0/7 · mevcut kod kilidi  0/3
+bayt-es geri alindi: True

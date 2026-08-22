@@ -47,12 +47,30 @@ Beklenen: `exit=0` ve özet dosyası yazılır. **`--kayit-dogrulamasiz` SAHADA 
 
 | gördüğün | senaryo | ne yap |
 |---|---|---|
-| Ekran **rota çizmiyor**, `road` yayınlanmıyor | (b) göremiyor | 🔴 **v34'e GEÇME.** v34 gerçek karelerin **67/67'sini reddeder** — daha az görür. Önce §5 domain kontrolü, sonra takım kararı. |
+| Ekran **rota çizmiyor**, `road` yayınlanmıyor | (b) göremiyor | 🔴 **MODEL DEĞİŞTİRİLMEZ.** → aşağıdaki kutu |
 | İKA **moloza basıyor** | (a) çok basıyor | v34 bu eksende daha iyi (%4,65 vs %7,03) → §6C geçişi meşru |
 | Süreç **çöküyor / model yüklenmiyor** | (c) teknik | G2 → geçiş; herhangi bir doğrulanmış ağırlık |
 
-⚠ **(b) için bugün sabitlenmiş bir yedek YOKTUR** — gerekçesi ve iki seçenek
-`results/t123/yedek_hangi_arizaya_karsi.md §3`'te. Saha günü bunu bilerek gidin.
+### 🔴 (b) SENARYOSUNUN CEVABI MODEL DEĞİL, PROSEDÜRDÜR (D-277 §3-4)
+
+> **Rota üretilmiyorsa model değiştirilmez; İKA sürmez ve sebep kaydedilir.**
+
+**Neden geçmiyoruz:** birincil "göremiyor" ise sahne **okunamıyor** demektir.
+Model değiştirmek *aynı körlüğü başka bir modelle denemektir*. Yedek v34 bu
+eksende **daha kötüdür** — gerçek karelerin **67/67'sini** reddeder (D-249).
+t122ac ve v35-`last.pt` de yedek **değildir**: aynı arıza ailesinden gelirler.
+**Yedeklilik farklı DOSYA değil, farklı ARIZA demektir.**
+
+**Ne yapılır (sırayla):**
+1. **İKA'yı sürdürme.** Bu davranış kodda zorlanır (`ika_nav`, NO_ROUTE boyunca
+   sıfır-olmayan motor komutu vermez) — ama operatör de **bilerek** uygular.
+2. **Sebebi saha defterine yaz:** saat · ne görüldü · İHA irtifa/açı · sahne.
+3. Sahneyi düzelt: **irtifa/açı/aydınlatma** — model değil. `NO_ROUTE`
+   sözleşmede **geçici** bir durumdur (`CONTRACTS.md §6`), kalıcı arıza değil.
+4. Rota gelirse İKA **aynı waypoint'ten** devam eder; ek işlem gerekmez.
+
+⚠ **(b) için sabitlenmiş bir yedek model YOKTUR ve aranmayacaktır** — gerekçe
+`REVIEW_LOG.md` **D-277 §3-4**. Bu bir eksik değil, **karardır**.
 
 ## D · GEÇİŞ (yalnız karar verildiyse)
 `JETSON_KILAVUZ §6C` → **G2 → G3 → G4 → G5 → G6 → G7**.
