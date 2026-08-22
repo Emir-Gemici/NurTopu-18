@@ -35,9 +35,16 @@ echo "rclone: $RCLONE"
 
 UZAK="drive:navitas_yedek"
 KOK="O:/navitas"
+# 🔴 GUNLUK YEDEKLENEN AGACIN DISINDA DURUR. Ilk denemede results/ icindeydi ve
+#    rclone KENDI LOGUNU kopyalamaya calisti: dosya transfer sirasinda buyuyor,
+#    md5 tutmuyor -> "corrupted on transfer" (16 hata) VE results/ boyutu her
+#    turda degistigi icin "ilerleme yok -> bitti" kontrolu HIC atesleyemedi
+#    (7 tur bosa dondu, exit 255). Yedek kendi ciktisini yedekleyemez.
+GUNLUK="${TEMP:-/tmp}/navitas_rclone_gunluk.txt"
+echo "gunluk: $GUNLUK"
 BAYRAK="--transfers 16 --checkers 16 --drive-chunk-size 16M --timeout 120s \
 --contimeout 30s --retries 3 --low-level-retries 10 --max-duration 20m \
---stats 5m --stats-one-line -v --log-file $KOK/results/rclone_gunluk.txt"
+--stats 5m --stats-one-line -v --log-file $GUNLUK"
 
 # Uzaktaki bayt sayisi — "ilerleme oldu mu" sorusunun tek DURUST cevabi.
 uzak_bayt () {
@@ -53,11 +60,21 @@ kopyala () {   # $1 = alt yol
   echo "=============================================================="
   while [ "$tur" -lt 40 ]; do
     tur=$((tur + 1))
+    t0=$(date +%s)
     "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK
+    gecen=$(( $(date +%s) - t0 ))
     simdi="$(uzak_bayt "$ad")"; simdi="${simdi:-0}"
-    echo "[$(date +%H:%M:%S)] $ad · tur $tur · uzakta $((simdi / 1048576)) MB"
-    # 🔴 "BITTI MI" SORUSU CIKIS KODUNA DEGIL SONUCA SORULUR.
-    #    D-267: ilk kosum "BITTI cikis=0" deyip TEK BAYT yuklememisti.
+    echo "[$(date +%H:%M:%S)] $ad · tur $tur · ${gecen}sn · uzakta $((simdi / 1048576)) MB"
+    # 🔴 IKI OLCUT, IKISI DE CIKIS KODUNDAN BAGIMSIZ (D-267: ilk kosum
+    #    "BITTI cikis=0" deyip TEK BAYT yuklememisti).
+    #  a) SURE: rclone --max-duration 20m'e TAKILMADIYSA isini bitirmistir.
+    #     Bu, sürekli DEGISEN dizinlerde (results/) de calisan tek olcuttur —
+    #     bayt esitligi orada asla saglanmaz.
+    if [ "$gecen" -lt 1140 ]; then
+      echo "[$(date +%H:%M:%S)] $ad · sure sinirina TAKILMADI -> kademe tamam"
+      break
+    fi
+    #  b) BAYT: degismiyorsa ilerleme yok.
     if [ "$simdi" = "$onceki" ]; then
       echo "[$(date +%H:%M:%S)] $ad · iki turda ilerleme YOK -> kademe tamam"
       break
