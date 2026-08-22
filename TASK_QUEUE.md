@@ -6204,7 +6204,39 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     etiketler ve kullanıcı bunu **13 Eylül'den önce** bilmelidir.
   - **Kapı:** `15/15` · `discover -s tests -q` → **793 OK**
 
-- [ ] **T139 — 🔴 Üretim yolunda GÖRÜNÜRLÜK kavramı HİÇ YOK: fail-closed davranış kapı değil YAN ETKİ** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `results/t138/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-274 §3**
+- [STATUS: READY_FOR_REVIEW] **T139 — 🔴 Üretim yolunda GÖRÜNÜRLÜK kavramı HİÇ YOK: fail-closed davranış kapı değil YAN ETKİ** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `results/t138/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-274 §3**
+  - 🔎 **ÖLÇÜLDÜ · 2026-08-22 · Claude-2 · kanıt `REVIEW_LOG.md` D-275.**
+    **Kapı:** 15/15 · 793 OK · ham çıktı `results/t139/`.
+  - **ADIM 1 — kanıt kurtarıldı + kök neden:** ad şeması yanıltıcı
+    (`frame_{KAYDEDILEN}_{VIDEO_KARE_NO:09d}` — ikinci sayı **ms değil**).
+    Aynı dosya üç okuma: kare_no=4740 → L=18,5 · "4740 ms" → L=22,8 ·
+    "indeks 64" → L=22,5. **İddia yanlış değildi, adreslenemiyordu.**
+    Yeniden üretildi: `L=18,4 → YOL=2 · güven=1,000 · wp=8`. 9 kare + sha256
+    manifest repoda.
+  - **ADIM 2 — vekil İCAT EDİLMEDİ:** `BAND_ORANI` (93_t106, D-184) içe aktarıldı.
+  - **ADIM 3 — DOZ-YANIT (636 kare):**
+    ```text
+    L<10 : bos maske 123/123 · L<20 : 263/274 · L<30 : 142/150
+    MODELLER ARASI IoU:  karanlik 0,0000   ·   gunduz 0,66-0,68
+    ```
+    ⚠ Önceden ilan edilen boşluk gerçekleşti: L≈73–118'de **hiç kare yok**,
+    geçiş noktası belirlenemez, oraya çizgi çekilmedi.
+  - 🔴 **BOŞLUK SAYIYLA KONDU:** 569 gece karesinin yalnız **23'ünde** maske
+    boş değil; bunların modeller arası IoU **medyanı 0,0307** (gündüz 0,66).
+    Yani boş olmayan gece maskesi kural olarak **ortak sinyal taşımıyor** —
+    ve sistem ona koşulsuz güveniyor.
+  - ⚠ **Ama tek tip değil:** `frame_000094`'te üç model **IoU 0,7446** ile
+    anlaşıyor (görselde gerçekten gece asfaltı var). Düz bir "karanlık ⇒
+    güvenme" kuralı **yanlış** olurdu — eşik yasağı haklı çıktı.
+  - 🔴 **BİRİNCİL VEKİL ELENDİ:** görevin sebebi olan `frame_000064`'te
+    (`YOL=2 · güven=1,000`) **BAND_ORANI = 1,000** — vekil o kareyi "sağlam"
+    sayıyor. Aradığımız şeyi ölçmüyor; karanlık kovalarda zaten çoğunlukla
+    **TANIMSIZ** (payda boş maskede sıfır).
+  - **ÖNER-BEKLE:** modeller arası uyum işe yarıyor ama **pahalı** (3 model);
+    tek modelle ölçülebilen bir vekil aranmalı. Ayrıca `extract_key_frames`
+    ad şeması ms sanılıyor — yeniden adlandırma ya da manifest zorunluluğu.
+  - **Yetki sınırı:** eşik konmadı/önerilmedi · `codes/` · registry · dataset:
+    dokunulmadı · **push YOK**.
   - **Mimarın ölçümü:** `grep -rniE "parlaklik|brightness|luminan|karanlik|exposure|isik" codes/`
     → yorum satırları dışında **hiçbir geçiş**. Sistem yalnız *maskeden* karar
     veriyor; maskenin **hangi koşullarda üretildiğini** hiç sormuyor.

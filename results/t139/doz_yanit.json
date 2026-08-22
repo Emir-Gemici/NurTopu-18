@@ -1,0 +1,8875 @@
+{
+ "_ne": "T139 · gorunurluk doz-yanit. ESIK KOYMAZ, ONERMEZ.",
+ "_on_kayit": "results/t139/on_kayit.md",
+ "_y1": "BAND_ORANI = kaplama(conf 0,10)/kaplama(conf 0,30) — 93_t106'dan ICE AKTARILDI",
+ "_y2": "modeller arasi zemin maskesi IoU (v35/v34/v30)",
+ "_sinir": "L ~73-118 arasinda HIC KARE YOK; egri orada BOSLUK tasir",
+ "kova_ozeti": {
+  "<10": {
+   "n": 123,
+   "bos_maske": 123,
+   "band_olculen": 0,
+   "band_medyan": null,
+   "zemin30_medyan": 0.0
+  },
+  "<20": {
+   "n": 274,
+   "bos_maske": 263,
+   "band_olculen": 11,
+   "band_medyan": 1.154,
+   "zemin30_medyan": 0.0,
+   "iou_medyan": 0.0,
+   "iou_n": 4
+  },
+  "<30": {
+   "n": 150,
+   "bos_maske": 142,
+   "band_olculen": 8,
+   "band_medyan": 3.0614999999999997,
+   "zemin30_medyan": 0.0,
+   "iou_medyan": 0.0,
+   "iou_n": 7
+  },
+  "<40": {
+   "n": 12,
+   "bos_maske": 9,
+   "band_olculen": 3,
+   "band_medyan": 1.178,
+   "zemin30_medyan": 0.0,
+   "iou_medyan": 0.0,
+   "iou_n": 1
+  },
+  "<60": {
+   "n": 8,
+   "bos_maske": 7,
+   "band_olculen": 1,
+   "band_medyan": 1.0,
+   "zemin30_medyan": 0.0
+  },
+  "<80": {
+   "n": 2,
+   "bos_maske": 2,
+   "band_olculen": 0,
+   "band_medyan": null,
+   "zemin30_medyan": 0.0
+  },
+  "<140": {
+   "n": 63,
+   "bos_maske": 0,
+   "band_olculen": 63,
+   "band_medyan": 1.0,
+   "zemin30_medyan": 0.28462,
+   "iou_medyan": 0.6624,
+   "iou_n": 15
+  },
+  ">=140": {
+   "n": 4,
+   "bos_maske": 0,
+   "band_olculen": 4,
+   "band_medyan": 1.0005,
+   "zemin30_medyan": 0.30956,
+   "iou_medyan": 0.6813,
+   "iou_n": 1
+  }
+ },
+ "y1": [
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "dji_fly_20260820_201722_0020_178724740",
+   "L": 70.08,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53605,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000150.jpg",
+   "klip": "dji_fly_20260820_201722_0020_178724740",
+   "L": 76.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54761,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000480.jpg",
+   "klip": "dji_fly_20260820_201756_0021_178724738",
+   "L": 59.38,
+   "zemin30": 0.0,
+   "zemin10": 0.00936,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000510.jpg",
+   "klip": "dji_fly_20260820_201756_0021_178724738",
+   "L": 59.96,
+   "zemin30": 0.04163,
+   "zemin10": 0.04163,
+   "engel30": 0.00186,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000780.jpg",
+   "klip": "dji_fly_20260820_201756_0021_178724738",
+   "L": 56.25,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.04266,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000810.jpg",
+   "klip": "dji_fly_20260820_201756_0021_178724738",
+   "L": 56.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.04236,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000840.jpg",
+   "klip": "dji_fly_20260820_201756_0021_178724738",
+   "L": 56.67,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.07871,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000005_000000870.jpg",
+   "klip": "dji_fly_20260820_201756_0021_178724738",
+   "L": 50.48,
+   "zemin30": 0.0,
+   "zemin10": 0.00044,
+   "engel30": 0.18763,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 32.31,
+   "zemin30": 0.04906,
+   "zemin10": 0.04944,
+   "engel30": 0.00349,
+   "BAND_ORANI": 1.008,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000420.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 26.57,
+   "zemin30": 0.0,
+   "zemin10": 0.40531,
+   "engel30": 0.00272,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000480.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 32.96,
+   "zemin30": 0.00146,
+   "zemin10": 0.28088,
+   "engel30": 0.0258,
+   "BAND_ORANI": 192.092,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000540.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 15.42,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55314,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000570.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 15.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55536,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000005_000000600.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 16.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55064,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000006_000000690.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.33,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55055,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000007_000000720.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55675,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000000780.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.28,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54922,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000009_000000810.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.82,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55376,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000010_000000840.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.93,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55058,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000011_000000870.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55837,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000000930.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.39,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.557,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000000960.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55086,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000014_000001140.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55782,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000015_000001170.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.14,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55612,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000016_000001230.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.9,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5584,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000017_000001290.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.24,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5565,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000001380.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.89,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50922,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000019_000001440.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54745,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000001530.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.61,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55668,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000021_000001560.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.54,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55516,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000022_000001590.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.8,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.56068,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000023_000001710.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55851,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000024_000001740.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54378,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000025_000001800.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.8,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55757,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000001830.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55536,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000027_000002040.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.3,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55575,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000028_000002220.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55602,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000002280.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 18.78,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.41755,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000030_000002310.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 24.44,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55847,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000031_000002340.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.06,
+   "zemin30": 0.01155,
+   "zemin10": 0.01155,
+   "engel30": 0.55064,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000032_000002370.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 22.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.01635,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000002400.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 42.48,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49642,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000002430.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 34.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51249,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000035_000002460.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 18.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47635,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000002490.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 17.22,
+   "zemin30": 0.00276,
+   "zemin10": 0.01294,
+   "engel30": 0.37068,
+   "BAND_ORANI": 4.684,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000037_000002550.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 14.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55826,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000002700.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.0,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55689,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000002760.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 22.5,
+   "zemin30": 0.0,
+   "zemin10": 0.00137,
+   "engel30": 0.55399,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000040_000002790.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.35,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5584,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000041_000002820.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.78,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55627,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000042_000002850.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.5,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55606,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000002880.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.22,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55768,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000044_000002940.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.73,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5553,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000045_000003000.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.24,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55486,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000046_000003030.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55112,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000047_000003270.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.74,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55342,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000048_000003360.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.18,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55653,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000049_000003390.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.64,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55606,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000050_000003450.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55799,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000051_000003480.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55155,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000052_000003510.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55825,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000053_000003540.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.58,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55291,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000054_000003570.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55686,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000055_000003600.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.87,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55597,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000056_000003630.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 23.61,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55905,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000057_000003660.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.59,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55655,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000058_000003690.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55481,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000059_000003720.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.63,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54344,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000060_000003750.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.28,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55471,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000003780.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.39,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55814,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000062_000003810.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55524,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000063_000003930.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55559,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000064_000003960.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55487,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000065_000003990.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55506,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000066_000004020.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.16,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55497,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000067_000004050.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55488,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000068_000004080.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55515,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000069_000004110.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5552,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000070_000004140.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.19,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55497,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000071_000004170.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55491,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000072_000004200.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55487,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000073_000004230.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55835,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000074_000004260.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55507,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000075_000004290.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.38,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55225,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000076_000004320.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.82,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55273,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000077_000004350.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.64,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55464,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000078_000004380.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55464,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000079_000004410.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 18.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55734,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000080_000004440.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.01,
+   "zemin30": 0.0,
+   "zemin10": 0.00776,
+   "engel30": 0.55114,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000081_000004470.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.6,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55346,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000082_000004500.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55617,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000083_000004530.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.31,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55593,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000084_000004560.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.31,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.56011,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000085_000004590.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 22.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5553,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000086_000004620.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.41,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54295,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000087_000004650.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.97,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55537,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000088_000004680.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55457,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000089_000004710.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.52,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55452,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000090_000004740.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 18.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54744,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000091_000004770.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 22.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55213,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000092_000004800.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55026,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000093_000004830.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.35,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54993,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000094_000004860.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 11.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55097,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000095_000004890.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 15.47,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55404,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000096_000004920.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 29.18,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54579,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000097_000004950.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 25.01,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55637,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000098_000004980.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.38,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55446,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000099_000005010.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.24,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54715,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000100_000005040.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 11.85,
+   "zemin30": 0.0,
+   "zemin10": 0.05852,
+   "engel30": 0.49347,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000101_000005070.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 18.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54832,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000102_000005100.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55578,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000103_000005130.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.59,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55091,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000104_000005160.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.52,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55645,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000105_000005190.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.74,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55522,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000106_000005220.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55584,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000107_000005280.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.12,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55481,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000108_000005310.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 16.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55413,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000109_000005340.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.11,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55489,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000110_000005370.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 20.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55499,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000111_000005400.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.32,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55475,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000112_000005430.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 18.89,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55173,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000113_000005460.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 19.15,
+   "zemin30": 0.0,
+   "zemin10": 0.00115,
+   "engel30": 0.55612,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000114_000005490.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 23.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55667,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000115_000005520.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 21.58,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55788,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000116_000005610.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 6.29,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5541,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000117_000005640.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 10.34,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53647,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000118_000005760.jpg",
+   "klip": "dji_fly_20260820_202028_0022_178724735",
+   "L": 8.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.4568,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000210.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 40.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00292,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000270.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 4.25,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55803,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000300.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 12.31,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55434,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000330.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 12.42,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54125,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000420.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.74,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55327,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000005_000000480.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.67,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55186,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000006_000000510.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.96,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55096,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000007_000000540.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.86,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55282,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000000570.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.19,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5512,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000009_000000600.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.32,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55093,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000010_000000630.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55508,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000011_000000660.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55377,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000000690.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.78,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54809,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000000720.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 14.99,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55062,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000014_000000750.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.87,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54475,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000015_000000780.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54939,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000016_000000810.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54645,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000017_000001050.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.6,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54987,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000001110.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.86,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54993,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000019_000001140.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.27,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55142,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000001170.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.28,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55367,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000021_000001200.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.95,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55105,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000022_000001230.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.33,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54999,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000023_000001260.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55057,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000024_000001290.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.44,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55597,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000025_000001320.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.05,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55613,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000001350.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55586,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000027_000001380.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.25,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55546,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000028_000001410.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5554,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000001440.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.93,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55592,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000030_000001470.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.37,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55617,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000031_000001500.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.92,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55848,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000032_000001530.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.75,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5512,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000001560.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 15.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55195,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000001590.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55834,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000035_000001620.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.84,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5559,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000001650.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55553,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000037_000001680.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.5,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.552,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000001710.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.61,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55846,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000001740.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.71,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55493,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000040_000001830.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.84,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53576,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000041_000001860.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 21.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53442,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000042_000001950.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.19,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55743,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000001980.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55722,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000044_000002040.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.24,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55827,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000045_000002130.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55777,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000046_000002220.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55798,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000047_000002280.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55416,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000048_000002400.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.553,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000049_000002460.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.34,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55079,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000050_000002490.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.64,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55479,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000051_000002640.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.56068,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000052_000002670.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55843,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000053_000002700.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.21,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55837,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000054_000002730.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.7,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5586,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000055_000002760.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.92,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55839,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000056_000002790.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55638,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000057_000002820.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.0,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55134,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000058_000002850.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.7,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55523,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000059_000002880.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.6,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55843,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000060_000002910.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.31,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55176,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000002940.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.91,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55647,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000062_000002970.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.84,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55662,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000063_000003000.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.27,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54949,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000064_000003030.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5556,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000065_000003360.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55398,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000066_000003390.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.52,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55709,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000067_000003600.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55667,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000068_000003660.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55583,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000069_000003690.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55534,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000070_000003720.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.72,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55514,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000071_000003810.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54683,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000072_000003840.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.17,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54289,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000073_000003870.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.37,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55579,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000074_000003900.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.96,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55561,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000075_000003960.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.21,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55072,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000076_000003990.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55707,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000077_000004020.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55534,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000078_000004050.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.58,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55576,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000079_000004110.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55613,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000080_000004140.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5551,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000081_000004230.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.1,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55463,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000082_000004350.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.59,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55736,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000083_000004470.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.25,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55508,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000084_000004560.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 14.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55641,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000085_000004590.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55037,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000086_000004620.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.22,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55076,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000087_000004650.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55537,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000088_000004680.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55594,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000089_000004710.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55506,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000090_000004740.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55831,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000091_000004770.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 20.8,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55527,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000092_000004800.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55563,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000093_000004830.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55565,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000094_000004860.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55516,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000095_000004890.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55488,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000096_000004920.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.51,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55507,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000097_000004950.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55858,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000098_000004980.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55558,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000099_000005010.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55794,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000100_000005040.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55625,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000101_000005070.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.63,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55531,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000102_000005100.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55501,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000103_000005190.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55243,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000104_000005220.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 11.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54811,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000105_000005250.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 25.53,
+   "zemin30": 0.00491,
+   "zemin10": 0.00733,
+   "engel30": 0.55275,
+   "BAND_ORANI": 1.493,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000106_000005280.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 36.7,
+   "zemin30": 0.03769,
+   "zemin10": 0.0444,
+   "engel30": 0.03994,
+   "BAND_ORANI": 1.178,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000107_000005310.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 31.29,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52914,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000108_000005580.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.73,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.01803,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000109_000005610.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 11.45,
+   "zemin30": 0.0,
+   "zemin10": 0.00937,
+   "engel30": 0.08271,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000110_000005640.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 19.59,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5112,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000111_000005760.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 8.18,
+   "zemin30": 0.0,
+   "zemin10": 0.00405,
+   "engel30": 0.55163,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000112_000005790.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 12.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55628,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000113_000005820.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 16.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55588,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000114_000005850.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.58,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55716,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000115_000006030.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 17.29,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55789,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000116_000006450.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.55,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55491,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000117_000006540.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.56,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54808,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000118_000006630.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.35,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54937,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000119_000006690.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55034,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000120_000006720.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.73,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54979,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000121_000006780.jpg",
+   "klip": "dji_fly_20260820_202420_0023_178724718",
+   "L": 18.01,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55435,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 15.85,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55668,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000240.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 14.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55781,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000570.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 11.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55582,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000600.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 15.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55236,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000630.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 21.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5573,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000005_000000660.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 16.23,
+   "zemin30": 0.0,
+   "zemin10": 0.00098,
+   "engel30": 0.47845,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000006_000000750.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 15.18,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54022,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000007_000000780.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 8.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55344,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000000810.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 13.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55643,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000009_000000840.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 17.7,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55817,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000010_000001290.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 11.78,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54296,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000011_000001320.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 10.71,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55181,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000001350.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 20.1,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5503,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000001380.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 19.34,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52637,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000014_000001620.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 14.41,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52477,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000015_000001650.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 17.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54083,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000016_000001710.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 14.64,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5432,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000017_000001740.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 15.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54544,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000001860.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 16.4,
+   "zemin30": 0.00199,
+   "zemin10": 0.00325,
+   "engel30": 0.51345,
+   "BAND_ORANI": 1.627,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000019_000001890.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 15.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52086,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000002070.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 17.5,
+   "zemin30": 0.00116,
+   "zemin10": 0.00116,
+   "engel30": 0.53138,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000021_000002160.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 14.77,
+   "zemin30": 0.0,
+   "zemin10": 0.00128,
+   "engel30": 0.52868,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000022_000002340.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 17.54,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52675,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000023_000002400.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 15.5,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55464,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000024_000002430.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 6.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50665,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000025_000002460.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 8.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52979,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000002490.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 10.07,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50508,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000027_000002550.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 19.36,
+   "zemin30": 0.00069,
+   "zemin10": 0.00069,
+   "engel30": 0.55383,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000028_000002580.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 14.53,
+   "zemin30": 0.0,
+   "zemin10": 0.00117,
+   "engel30": 0.44206,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000002610.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 6.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.43608,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000030_000002640.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 12.0,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55339,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000031_000002670.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 16.06,
+   "zemin30": 0.0,
+   "zemin10": 0.00162,
+   "engel30": 0.55803,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000032_000002700.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 26.25,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.56011,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000002730.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 11.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.543,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000002760.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 5.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47029,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000035_000002820.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 6.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000002850.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 9.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51358,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000037_000002880.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 12.0,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54304,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000002910.jpg",
+   "klip": "dji_fly_20260820_204144_0024_178725046",
+   "L": 14.77,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51713,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000180.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.06,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47904,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000270.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.37,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.56238,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000360.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 31.89,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000390.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 26.03,
+   "zemin30": 0.0,
+   "zemin10": 0.00106,
+   "engel30": 0.00298,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000480.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 24.98,
+   "zemin30": 0.0,
+   "zemin10": 0.00238,
+   "engel30": 0.01497,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000005_000000540.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 24.06,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.16582,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000006_000000570.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 24.61,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.20625,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000007_000000780.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00755,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000001050.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 21.7,
+   "zemin30": 0.0,
+   "zemin10": 0.00098,
+   "engel30": 0.26738,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000009_000001110.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 22.54,
+   "zemin30": 0.0,
+   "zemin10": 0.00167,
+   "engel30": 0.18931,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000010_000001230.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 15.35,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00544,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000011_000001260.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 13.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5038,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000001620.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 13.17,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54126,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000001680.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.47,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5508,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000014_000001740.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 6.54,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52717,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000015_000001800.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.05,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55416,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000016_000001890.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 17.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51433,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000017_000001980.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52551,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000002040.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 23.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.39524,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000019_000002370.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 26.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.21705,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000002400.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 19.94,
+   "zemin30": 0.0,
+   "zemin10": 0.00625,
+   "engel30": 0.29638,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000021_000002460.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.18,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.27748,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000022_000002580.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 24.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5207,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000023_000002670.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 21.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54785,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000024_000002700.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54209,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000025_000002730.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.15001,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000002760.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 18.57,
+   "zemin30": 0.0,
+   "zemin10": 0.00208,
+   "engel30": 0.21443,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000027_000002820.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.37,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.23388,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000028_000002880.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 21.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0005,
+   "engel30": 0.23591,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000002940.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 30.79,
+   "zemin30": 0.0,
+   "zemin10": 0.00112,
+   "engel30": 0.05173,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000030_000002970.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 18.35,
+   "zemin30": 0.0,
+   "zemin10": 0.00295,
+   "engel30": 0.19813,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000031_000003030.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 15.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52681,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000032_000003060.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.87,
+   "zemin30": 0.0,
+   "zemin10": 0.00178,
+   "engel30": 0.24928,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000003240.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.25,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49686,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000003420.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.07,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48586,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000035_000003510.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.78,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5061,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000003540.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.8,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48134,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000037_000003570.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48865,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000003600.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.79,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49755,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000003660.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.71,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47097,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000040_000003690.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48263,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000041_000003720.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47298,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000042_000003750.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47331,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000003780.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.67,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48429,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000044_000003810.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48519,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000045_000003840.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.72,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48314,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000046_000003900.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48888,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000047_000003930.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.21,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48485,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000048_000003960.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.27,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51953,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000049_000003990.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48543,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000050_000004020.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49482,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000051_000004050.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50388,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000052_000004080.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49806,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000053_000004110.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51297,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000054_000004140.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.12,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5179,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000055_000004260.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 13.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48517,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000056_000004290.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.99,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000057_000004320.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000058_000004350.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.9,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50045,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000059_000004380.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 6.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48543,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000060_000004410.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 10.39,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000004470.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.39,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000062_000004530.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000063_000004620.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.51,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000064_000004740.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 18.39,
+   "zemin30": 0.06055,
+   "zemin10": 0.06055,
+   "engel30": 0.0,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000065_000004830.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 23.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000066_000004890.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 22.1,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00342,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000067_000004920.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 17.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000068_000005010.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.33,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.43556,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000069_000005040.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.07,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000070_000005100.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.18,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.39839,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000071_000005130.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 8.97,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.4091,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000072_000005220.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.51,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51941,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000073_000005250.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.08,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47264,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000074_000005280.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 8.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48999,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000075_000005310.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.41,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49979,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000076_000005340.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.24,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.4958,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000077_000005370.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49929,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000078_000005400.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49124,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000079_000005460.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 10.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51147,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000080_000005550.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.76,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48465,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000081_000005790.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 18.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000082_000005850.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 19.52,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.30199,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000083_000005910.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 29.33,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000084_000006090.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 38.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000085_000006210.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 32.99,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00096,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000086_000006240.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.22,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000087_000006270.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 15.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000088_000006300.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 20.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000089_000006330.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 17.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000090_000006360.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.91,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00164,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000091_000006390.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000092_000006420.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.85,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.43533,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000093_000006450.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 21.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5031,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000094_000006480.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 17.54,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.41338,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000095_000006510.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 17.41,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50415,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000096_000006540.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.23,
+   "zemin30": 0.0,
+   "zemin10": 0.03792,
+   "engel30": 0.55476,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000097_000006570.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.85,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55086,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000098_000006600.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 13.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.44198,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000099_000006630.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.92,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5462,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000100_000006660.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 8.1,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54353,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000101_000006720.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 6.34,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53918,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000102_000006750.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 6.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52557,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000103_000006780.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.75,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52181,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000104_000006810.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.32,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5325,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000105_000006840.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51359,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000106_000006870.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51668,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000107_000006900.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51038,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000108_000006930.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.96,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49066,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000109_000006960.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.71,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51611,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000110_000006990.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.3,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.4887,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000111_000007020.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.12,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48497,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000112_000007050.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.11,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49115,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000113_000007080.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.22,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49226,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000114_000007110.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.16,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49333,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000115_000007140.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.12,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50739,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000116_000007170.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.98,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48381,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000117_000007200.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.64,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49817,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000118_000007230.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.8,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50048,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000119_000007260.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49224,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000120_000007290.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.86,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49778,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000121_000007320.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50127,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000122_000007350.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.91,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49896,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000123_000007380.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.88,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48542,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000124_000007410.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47123,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000125_000007470.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50542,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000126_000007500.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.39,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50224,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000127_000007530.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49455,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000128_000007560.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.3,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51061,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000129_000007590.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49045,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000130_000007650.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.9,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50395,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000131_000007710.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.44,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55813,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000132_000007740.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 17.37,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5468,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000133_000007800.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 19.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54959,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000134_000007950.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 35.77,
+   "zemin30": 0.0,
+   "zemin10": 0.0002,
+   "engel30": 0.13522,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000135_000007980.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 28.64,
+   "zemin30": 0.0,
+   "zemin10": 0.00136,
+   "engel30": 0.1664,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000136_000008010.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 24.49,
+   "zemin30": 0.0,
+   "zemin10": 0.00081,
+   "engel30": 0.18906,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000137_000008040.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 22.48,
+   "zemin30": 0.0,
+   "zemin10": 0.00423,
+   "engel30": 0.20066,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000138_000008070.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 18.28,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.21595,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000139_000009060.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 22.53,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.01564,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000140_000009120.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 8.48,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000141_000009150.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49493,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000142_000009210.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.41,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49354,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000143_000009240.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.08,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52087,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000144_000009270.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 3.94,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51565,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000145_000009300.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.05,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49415,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000146_000009330.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.05,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52149,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000147_000009360.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.19,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.518,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000148_000009390.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.4,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50887,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000149_000009420.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51529,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000150_000009450.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.6,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51269,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000151_000009480.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.0,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52041,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000152_000009510.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 6.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54151,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000153_000009660.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 8.44,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52329,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000154_000009690.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.47,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48528,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000155_000009720.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50255,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000156_000009750.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.64,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000157_000009780.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.35,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50309,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000158_000009810.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.41,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000159_000009840.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 4.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000160_000009870.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 5.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000161_000009930.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 13.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52898,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000162_000009960.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.85,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54062,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000163_000009990.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 12.32,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53936,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000164_000010050.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 11.82,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54224,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000165_000010170.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.87,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5528,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000166_000010200.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55398,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000167_000010230.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 9.32,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55087,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000168_000010260.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 10.07,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5503,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000169_000010290.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.69,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5471,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000170_000010320.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 28.15,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55248,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000171_000010380.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 10.97,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49205,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000172_000010410.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 14.51,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53108,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000173_000010440.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.95,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53625,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000174_000010470.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 26.64,
+   "zemin30": 0.0,
+   "zemin10": 0.00625,
+   "engel30": 0.54993,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000175_000010590.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 7.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49112,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000176_000010680.jpg",
+   "klip": "dji_fly_20260820_205748_0032_178725035",
+   "L": 16.18,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.38942,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.49,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.40446,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000120.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 7.47,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54431,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000240.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.09,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54225,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000270.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 14.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54757,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000330.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54024,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000005_000000360.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.45,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53493,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000006_000000420.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 30.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54892,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000007_000000480.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 32.54,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.04976,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000000540.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.25,
+   "zemin30": 0.0,
+   "zemin10": 0.04633,
+   "engel30": 0.00485,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000009_000000600.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.04304,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000010_000000660.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 24.24,
+   "zemin30": 0.0,
+   "zemin10": 0.00749,
+   "engel30": 0.06818,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000011_000000810.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.31,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.11943,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000000870.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.01,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.15678,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000001140.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 13.36,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00326,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000014_000001200.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 11.21,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.46689,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000015_000001350.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.39,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49286,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000016_000001530.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 19.2,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000017_000001770.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 19.02,
+   "zemin30": 0.0,
+   "zemin10": 0.00142,
+   "engel30": 0.08709,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000001800.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 17.13,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00557,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000019_000001890.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 12.99,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00322,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000002190.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 11.9,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.18302,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000021_000002340.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.44176,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000022_000002460.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 12.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.46706,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000023_000002760.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 25.17,
+   "zemin30": 0.0,
+   "zemin10": 0.01973,
+   "engel30": 0.00428,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000024_000002820.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 24.47,
+   "zemin30": 0.0,
+   "zemin10": 0.00304,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000025_000003990.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 21.95,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.09048,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000004020.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.65,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.12732,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000027_000004290.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 17.81,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.13121,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000028_000004440.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 21.4,
+   "zemin30": 0.0,
+   "zemin10": 0.02059,
+   "engel30": 0.01262,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000004470.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 18.29,
+   "zemin30": 0.04491,
+   "zemin10": 0.05184,
+   "engel30": 0.00682,
+   "BAND_ORANI": 1.154,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000030_000004560.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 18.93,
+   "zemin30": 0.00346,
+   "zemin10": 0.04082,
+   "engel30": 0.04724,
+   "BAND_ORANI": 11.791,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000031_000004620.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 16.45,
+   "zemin30": 0.0,
+   "zemin10": 0.00159,
+   "engel30": 0.00754,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000032_000004650.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 12.5,
+   "zemin30": 0.0,
+   "zemin10": 0.00434,
+   "engel30": 0.00196,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000004680.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 13.69,
+   "zemin30": 0.00284,
+   "zemin10": 0.00716,
+   "engel30": 0.00158,
+   "BAND_ORANI": 2.526,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000005040.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 8.04,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000035_000005130.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 21.68,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48067,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000005310.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.86,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.01362,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000037_000005520.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.03,
+   "zemin30": 0.01899,
+   "zemin10": 0.15401,
+   "engel30": 0.00852,
+   "BAND_ORANI": 8.109,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000005580.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.95,
+   "zemin30": 0.01059,
+   "zemin10": 0.10456,
+   "engel30": 0.00728,
+   "BAND_ORANI": 9.875,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000005640.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.07,
+   "zemin30": 0.00451,
+   "zemin10": 0.03668,
+   "engel30": 0.06865,
+   "BAND_ORANI": 8.139,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000040_000005730.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 20.1,
+   "zemin30": 0.0,
+   "zemin10": 0.0037,
+   "engel30": 0.00358,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000041_000005760.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 19.14,
+   "zemin30": 0.02956,
+   "zemin10": 0.03514,
+   "engel30": 0.0024,
+   "BAND_ORANI": 1.189,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000042_000005790.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 18.33,
+   "zemin30": 0.0,
+   "zemin10": 0.0095,
+   "engel30": 0.00855,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000005820.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 15.81,
+   "zemin30": 0.0,
+   "zemin10": 0.34381,
+   "engel30": 0.00847,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000044_000005850.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 15.95,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00101,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000045_000005880.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 16.87,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000046_000005910.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 17.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0146,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000047_000006540.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.68,
+   "zemin30": 0.0,
+   "zemin10": 0.04316,
+   "engel30": 0.00344,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000048_000007470.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 26.4,
+   "zemin30": 0.0,
+   "zemin10": 0.00265,
+   "engel30": 0.00392,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000049_000007530.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 26.98,
+   "zemin30": 0.0,
+   "zemin10": 0.00441,
+   "engel30": 0.00123,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000050_000007560.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 27.26,
+   "zemin30": 0.0,
+   "zemin10": 0.00179,
+   "engel30": 0.01164,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000051_000007590.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 28.11,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.04283,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000052_000007620.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 25.99,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.04084,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000053_000007650.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 25.09,
+   "zemin30": 0.0,
+   "zemin10": 0.00396,
+   "engel30": 0.08896,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000054_000007680.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 24.45,
+   "zemin30": 0.0,
+   "zemin10": 0.00091,
+   "engel30": 0.05255,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000055_000007710.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.89,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.03245,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000056_000007740.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 20.95,
+   "zemin30": 0.02819,
+   "zemin10": 0.05742,
+   "engel30": 0.05962,
+   "BAND_ORANI": 2.037,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000057_000007770.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 19.82,
+   "zemin30": 0.0,
+   "zemin10": 0.0543,
+   "engel30": 0.0033,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000058_000008040.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 12.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52493,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000059_000008070.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 11.5,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51831,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000060_000008100.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.92,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55416,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000008190.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5515,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000062_000008220.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.9,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.55166,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000063_000008250.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 13.74,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54622,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000064_000008370.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 17.97,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00295,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000065_000008550.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 18.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51282,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000066_000008580.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 12.03,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50328,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000067_000008700.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.02,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53027,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000068_000008730.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 8.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47025,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000069_000008760.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 7.66,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48005,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000070_000008790.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 7.57,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.44525,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000071_000008940.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 7.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49144,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000072_000009000.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 7.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51271,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000073_000009030.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 7.55,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.5104,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000074_000009060.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 8.46,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50555,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000075_000009090.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.99,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52384,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000076_000009120.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 17.34,
+   "zemin30": 0.00935,
+   "zemin10": 0.01046,
+   "engel30": 0.4892,
+   "BAND_ORANI": 1.119,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000077_000009150.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 26.33,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.48466,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000078_000009180.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 29.62,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.00121,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000079_000009210.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.93,
+   "zemin30": 0.0,
+   "zemin10": 0.00321,
+   "engel30": 0.00458,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000080_000009240.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 20.75,
+   "zemin30": 0.00678,
+   "zemin10": 0.01655,
+   "engel30": 0.01463,
+   "BAND_ORANI": 2.44,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000081_000009270.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 22.26,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0258,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000082_000009300.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 25.67,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000083_000009420.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 19.15,
+   "zemin30": 0.0,
+   "zemin10": 0.00063,
+   "engel30": 0.00055,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000084_000009480.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 13.3,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53409,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000085_000009510.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 12.74,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54234,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000086_000009600.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.42,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.50603,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000087_000009690.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 8.61,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49358,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000088_000009900.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 16.12,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54927,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000089_000009930.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 15.06,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.53984,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000090_000009960.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 13.43,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54378,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000091_000009990.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 10.83,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54006,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000092_000010020.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 15.56,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.54595,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000093_000010350.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 23.66,
+   "zemin30": 0.01654,
+   "zemin10": 0.01874,
+   "engel30": 0.00981,
+   "BAND_ORANI": 1.133,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000094_000010500.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 24.77,
+   "zemin30": 0.03859,
+   "zemin10": 0.14213,
+   "engel30": 0.00544,
+   "BAND_ORANI": 3.683,
+   "bos_mu": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000095_000010740.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 17.3,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.0,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000096_000010980.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 5.38,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49726,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000097_000011520.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.67,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.526,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000098_000011610.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.42,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51968,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000099_000011640.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.31,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51636,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000100_000011670.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.23,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.47316,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000101_000011700.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.11,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.49924,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000102_000011730.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 4.51,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.52199,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000103_000011760.jpg",
+   "klip": "dji_fly_20260820_210528_0033_178724999",
+   "L": 5.29,
+   "zemin30": 0.0,
+   "zemin10": 0.0,
+   "engel30": 0.51404,
+   "BAND_ORANI": null,
+   "bos_mu": true
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 134.18,
+   "zemin30": 0.2331,
+   "zemin10": 0.2331,
+   "engel30": 0.20924,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000001_000000600.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 133.57,
+   "zemin30": 0.24924,
+   "zemin10": 0.24924,
+   "engel30": 0.21252,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000002_000000672.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 136.03,
+   "zemin30": 0.26394,
+   "zemin10": 0.26394,
+   "engel30": 0.20257,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000003_000000720.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 135.1,
+   "zemin30": 0.27081,
+   "zemin10": 0.27081,
+   "engel30": 0.20937,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000004_000000768.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 136.13,
+   "zemin30": 0.28555,
+   "zemin10": 0.28555,
+   "engel30": 0.2049,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000005_000000816.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 134.87,
+   "zemin30": 0.29114,
+   "zemin10": 0.29114,
+   "engel30": 0.20362,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000006_000000864.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 132.94,
+   "zemin30": 0.31961,
+   "zemin10": 0.32112,
+   "engel30": 0.19879,
+   "BAND_ORANI": 1.005,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000007_000000936.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 130.47,
+   "zemin30": 0.33296,
+   "zemin10": 0.3386,
+   "engel30": 0.18771,
+   "BAND_ORANI": 1.017,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000008_000001008.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 128.78,
+   "zemin30": 0.35466,
+   "zemin10": 0.35466,
+   "engel30": 0.18534,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000009_000001152.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 127.46,
+   "zemin30": 0.3521,
+   "zemin10": 0.3521,
+   "engel30": 0.1747,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000010_000001200.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 131.82,
+   "zemin30": 0.33448,
+   "zemin10": 0.33448,
+   "engel30": 0.1829,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000011_000001224.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 133.95,
+   "zemin30": 0.33641,
+   "zemin10": 0.33641,
+   "engel30": 0.18303,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000012_000001248.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 136.01,
+   "zemin30": 0.33204,
+   "zemin10": 0.33204,
+   "engel30": 0.18153,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000013_000001272.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 134.84,
+   "zemin30": 0.33856,
+   "zemin10": 0.33856,
+   "engel30": 0.17422,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000014_000001320.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_03",
+   "L": 135.43,
+   "zemin30": 0.34521,
+   "zemin10": 0.34521,
+   "engel30": 0.15912,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 137.2,
+   "zemin30": 0.30769,
+   "zemin10": 0.30769,
+   "engel30": 0.1611,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000001_000000336.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 137.81,
+   "zemin30": 0.31183,
+   "zemin10": 0.31183,
+   "engel30": 0.16265,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000002_000000648.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 137.58,
+   "zemin30": 0.30292,
+   "zemin10": 0.30292,
+   "engel30": 0.16767,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000003_000000912.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 139.73,
+   "zemin30": 0.30258,
+   "zemin10": 0.30258,
+   "engel30": 0.17555,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000004_000000960.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 140.57,
+   "zemin30": 0.2945,
+   "zemin10": 0.2945,
+   "engel30": 0.17893,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000005_000001008.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 139.16,
+   "zemin30": 0.30427,
+   "zemin10": 0.30427,
+   "engel30": 0.17576,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000006_000001416.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 139.29,
+   "zemin30": 0.28371,
+   "zemin10": 0.28371,
+   "engel30": 0.18466,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000007_000001440.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 138.48,
+   "zemin30": 0.28217,
+   "zemin10": 0.28217,
+   "engel30": 0.18455,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000008_000001488.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 138.33,
+   "zemin30": 0.27296,
+   "zemin10": 0.27994,
+   "engel30": 0.18388,
+   "BAND_ORANI": 1.026,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000009_000001776.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 137.84,
+   "zemin30": 0.26482,
+   "zemin10": 0.26482,
+   "engel30": 0.18441,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000010_000001824.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 136.81,
+   "zemin30": 0.256,
+   "zemin10": 0.256,
+   "engel30": 0.18207,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000011_000001848.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 137.14,
+   "zemin30": 0.25346,
+   "zemin10": 0.25346,
+   "engel30": 0.1804,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000012_000001872.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 136.79,
+   "zemin30": 0.24677,
+   "zemin10": 0.24677,
+   "engel30": 0.17706,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000013_000001944.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 138.18,
+   "zemin30": 0.25932,
+   "zemin10": 0.25932,
+   "engel30": 0.17076,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000014_000001992.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 136.9,
+   "zemin30": 0.27509,
+   "zemin10": 0.28139,
+   "engel30": 0.16863,
+   "BAND_ORANI": 1.023,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000015_000002040.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 135.44,
+   "zemin30": 0.29351,
+   "zemin10": 0.29364,
+   "engel30": 0.15381,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000016_000002088.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 135.49,
+   "zemin30": 0.33831,
+   "zemin10": 0.33868,
+   "engel30": 0.13861,
+   "BAND_ORANI": 1.001,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000017_000002112.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 136.95,
+   "zemin30": 0.36121,
+   "zemin10": 0.36551,
+   "engel30": 0.12029,
+   "BAND_ORANI": 1.012,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000018_000002160.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_23",
+   "L": 138.09,
+   "zemin30": 0.37273,
+   "zemin10": 0.37273,
+   "engel30": 0.11754,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 137.48,
+   "zemin30": 0.29242,
+   "zemin10": 0.29242,
+   "engel30": 0.17934,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000001_000000168.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 137.91,
+   "zemin30": 0.28175,
+   "zemin10": 0.28175,
+   "engel30": 0.17934,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000002_000000192.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 137.61,
+   "zemin30": 0.28392,
+   "zemin10": 0.28392,
+   "engel30": 0.18068,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000003_000000240.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 138.95,
+   "zemin30": 0.2855,
+   "zemin10": 0.2855,
+   "engel30": 0.16908,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000004_000000264.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 138.87,
+   "zemin30": 0.27514,
+   "zemin10": 0.27514,
+   "engel30": 0.17309,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000005_000000288.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 139.03,
+   "zemin30": 0.27615,
+   "zemin10": 0.27931,
+   "engel30": 0.17104,
+   "BAND_ORANI": 1.011,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000006_000000336.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 138.68,
+   "zemin30": 0.2699,
+   "zemin10": 0.2699,
+   "engel30": 0.16628,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000007_000000384.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 139.85,
+   "zemin30": 0.28462,
+   "zemin10": 0.28584,
+   "engel30": 0.1593,
+   "BAND_ORANI": 1.004,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000008_000000432.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 140.11,
+   "zemin30": 0.3071,
+   "zemin10": 0.30729,
+   "engel30": 0.15289,
+   "BAND_ORANI": 1.001,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000009_000000480.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 140.62,
+   "zemin30": 0.31202,
+   "zemin10": 0.31714,
+   "engel30": 0.14468,
+   "BAND_ORANI": 1.016,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000010_000000504.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 140.17,
+   "zemin30": 0.32607,
+   "zemin10": 0.32607,
+   "engel30": 0.14359,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000011_000000600.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 136.42,
+   "zemin30": 0.33611,
+   "zemin10": 0.33828,
+   "engel30": 0.13166,
+   "BAND_ORANI": 1.006,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000012_000000624.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 135.89,
+   "zemin30": 0.32359,
+   "zemin10": 0.32359,
+   "engel30": 0.13825,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000013_000000648.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 136.49,
+   "zemin30": 0.27872,
+   "zemin10": 0.28972,
+   "engel30": 0.12927,
+   "BAND_ORANI": 1.039,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000014_000000672.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 136.8,
+   "zemin30": 0.29875,
+   "zemin10": 0.29875,
+   "engel30": 0.13153,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000015_000000696.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 138.12,
+   "zemin30": 0.28757,
+   "zemin10": 0.28757,
+   "engel30": 0.13688,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000016_000000720.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 138.46,
+   "zemin30": 0.29053,
+   "zemin10": 0.29348,
+   "engel30": 0.1408,
+   "BAND_ORANI": 1.01,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000017_000000792.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 138.36,
+   "zemin30": 0.30868,
+   "zemin10": 0.30868,
+   "engel30": 0.1288,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000018_000000840.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 137.24,
+   "zemin30": 0.30946,
+   "zemin10": 0.30946,
+   "engel30": 0.12444,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000019_000000888.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 136.78,
+   "zemin30": 0.29469,
+   "zemin10": 0.31228,
+   "engel30": 0.11853,
+   "BAND_ORANI": 1.06,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000020_000000936.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 136.78,
+   "zemin30": 0.28133,
+   "zemin10": 0.31284,
+   "engel30": 0.11236,
+   "BAND_ORANI": 1.112,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000021_000000984.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 134.4,
+   "zemin30": 0.29428,
+   "zemin10": 0.29428,
+   "engel30": 0.11047,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000022_000001032.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 135.33,
+   "zemin30": 0.26001,
+   "zemin10": 0.26243,
+   "engel30": 0.10716,
+   "BAND_ORANI": 1.009,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000023_000001080.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 134.85,
+   "zemin30": 0.25849,
+   "zemin10": 0.25849,
+   "engel30": 0.13133,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000024_000001104.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 132.38,
+   "zemin30": 0.25598,
+   "zemin10": 0.25598,
+   "engel30": 0.13186,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000025_000001152.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 133.22,
+   "zemin30": 0.25702,
+   "zemin10": 0.25737,
+   "engel30": 0.12633,
+   "BAND_ORANI": 1.001,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000026_000001200.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 133.21,
+   "zemin30": 0.24955,
+   "zemin10": 0.24955,
+   "engel30": 0.12588,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000027_000001248.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 133.32,
+   "zemin30": 0.2402,
+   "zemin10": 0.2402,
+   "engel30": 0.12796,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000028_000001296.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 134.79,
+   "zemin30": 0.20833,
+   "zemin10": 0.20833,
+   "engel30": 0.16339,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000029_000001320.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 135.43,
+   "zemin30": 0.21379,
+   "zemin10": 0.21379,
+   "engel30": 0.15993,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000030_000001344.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_39",
+   "L": 135.04,
+   "zemin30": 0.21125,
+   "zemin10": 0.21169,
+   "engel30": 0.15649,
+   "BAND_ORANI": 1.002,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000000_000000000.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_46",
+   "L": 134.68,
+   "zemin30": 0.23834,
+   "zemin10": 0.23834,
+   "engel30": 0.16732,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000001_000000456.jpg",
+   "klip": "whatsapp_video_2026_07_30_at_11_44_46",
+   "L": 136.87,
+   "zemin30": 0.23812,
+   "zemin10": 0.23812,
+   "engel30": 0.1638,
+   "BAND_ORANI": 1.0,
+   "bos_mu": false
+  }
+ ],
+ "y2": [
+  {
+   "kume": "gece",
+   "kare": "frame_000041_000003720.jpg",
+   "L": 3.62,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000003780.jpg",
+   "L": 3.67,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000003600.jpg",
+   "L": 3.79,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000119_000007260.jpg",
+   "L": 3.83,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000123_000007380.jpg",
+   "L": 3.88,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000116_000007170.jpg",
+   "L": 3.98,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000143_000009240.jpg",
+   "L": 4.08,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000115_000007140.jpg",
+   "L": 4.12,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000047_000003930.jpg",
+   "L": 4.21,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000100_000011670.jpg",
+   "L": 4.23,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000099_000011640.jpg",
+   "L": 4.31,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000148_000009390.jpg",
+   "L": 4.4,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000127_000007530.jpg",
+   "L": 4.43,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000150_000009450.jpg",
+   "L": 4.6,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000109_000006960.jpg",
+   "L": 4.71,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000107_000006900.jpg",
+   "L": 5.09,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000003240.jpg",
+   "L": 5.25,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000160_000009870.jpg",
+   "L": 5.46,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000002760.jpg",
+   "L": 5.98,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000116_000005610.jpg",
+   "L": 6.29,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000035_000002820.jpg",
+   "L": 6.81,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000076_000005340.jpg",
+   "L": 7.24,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000154_000009690.jpg",
+   "L": 7.47,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000070_000008790.jpg",
+   "L": 7.57,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000034_000005040.jpg",
+   "L": 8.04,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000074_000009060.jpg",
+   "L": 8.46,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000007_000000780.jpg",
+   "L": 8.68,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000167_000010230.jpg",
+   "L": 9.32,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000002850.jpg",
+   "L": 9.49,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000002490.jpg",
+   "L": 10.07,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000060_000004410.jpg",
+   "L": 10.39,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000008190.jpg",
+   "L": 10.57,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000062_000008220.jpg",
+   "L": 10.9,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000014_000001200.jpg",
+   "L": 11.21,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000033_000002730.jpg",
+   "L": 11.62,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000100_000005040.jpg",
+   "L": 11.85,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000066_000008580.jpg",
+   "L": 12.03,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000004470.jpg",
+   "L": 12.39,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000058_000008040.jpg",
+   "L": 12.62,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000162_000009960.jpg",
+   "L": 12.85,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000000810.jpg",
+   "L": 13.09,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000001140.jpg",
+   "L": 13.36,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000063_000008250.jpg",
+   "L": 13.74,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000086_000006240.jpg",
+   "L": 14.22,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000013_000001680.jpg",
+   "L": 14.47,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000080_000005550.jpg",
+   "L": 14.76,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000091_000006390.jpg",
+   "L": 14.81,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000010_000000630.jpg",
+   "L": 15.02,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000004_000000570.jpg",
+   "L": 15.26,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000031_000003030.jpg",
+   "L": 15.45,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000092_000010020.jpg",
+   "L": 15.56,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000087_000006270.jpg",
+   "L": 15.69,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000001110.jpg",
+   "L": 15.86,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000044_000005850.jpg",
+   "L": 15.95,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": 0.0,
+    "v34_v30": 0.0
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000069_000005040.jpg",
+   "L": 16.07,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000008_000000570.jpg",
+   "L": 16.19,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000001170.jpg",
+   "L": 16.28,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000062_000004530.jpg",
+   "L": 16.4,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000016_000000810.jpg",
+   "L": 16.53,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000089_000004710.jpg",
+   "L": 16.79,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000173_000010440.jpg",
+   "L": 16.95,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000015_000001650.jpg",
+   "L": 17.13,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000036_000002490.jpg",
+   "L": 17.22,
+   "ciftler": {
+    "v35_v34": 0.0,
+    "v35_v30": 0.0,
+    "v34_v30": null
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000095_000010740.jpg",
+   "L": 17.3,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000095_000006510.jpg",
+   "L": 17.41,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000020_000002070.jpg",
+   "L": 17.5,
+   "ciftler": {
+    "v35_v34": 0.0,
+    "v35_v30": 0.0,
+    "v34_v30": null
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000094_000006480.jpg",
+   "L": 17.54,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000088_000004680.jpg",
+   "L": 17.66,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000054_000002730.jpg",
+   "L": 17.7,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000103_000005190.jpg",
+   "L": 17.83,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000001440.jpg",
+   "L": 17.93,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000065_000008550.jpg",
+   "L": 18.02,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000081_000004230.jpg",
+   "L": 18.1,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000086_000004620.jpg",
+   "L": 18.22,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000029_000004470.jpg",
+   "L": 18.29,
+   "ciftler": {
+    "v35_v34": 0.0,
+    "v35_v30": 0.0,
+    "v34_v30": null
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000030_000001470.jpg",
+   "L": 18.37,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000066_000003390.jpg",
+   "L": 18.52,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000116_000006450.jpg",
+   "L": 18.55,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000056_000002790.jpg",
+   "L": 18.66,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000046_000002220.jpg",
+   "L": 18.79,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000090_000004740.jpg",
+   "L": 18.88,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000061_000002940.jpg",
+   "L": 18.91,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000080_000004440.jpg",
+   "L": 19.01,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000107_000005280.jpg",
+   "L": 19.12,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000047_000002280.jpg",
+   "L": 19.15,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000053_000002700.jpg",
+   "L": 19.21,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000027_000002040.jpg",
+   "L": 19.3,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000111_000005400.jpg",
+   "L": 19.32,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000000930.jpg",
+   "L": 19.39,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000082_000005850.jpg",
+   "L": 19.52,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000101_000005070.jpg",
+   "L": 19.63,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000001740.jpg",
+   "L": 19.71,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000018_000001380.jpg",
+   "L": 19.89,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000052_000002670.jpg",
+   "L": 19.98,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000012_000001350.jpg",
+   "L": 20.1,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000048_000003360.jpg",
+   "L": 20.18,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000002880.jpg",
+   "L": 20.22,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000043_000001980.jpg",
+   "L": 20.26,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000072_000004200.jpg",
+   "L": 20.36,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000019_000001440.jpg",
+   "L": 20.4,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000065_000003990.jpg",
+   "L": 20.46,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000063_000004620.jpg",
+   "L": 20.51,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000001710.jpg",
+   "L": 20.61,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000059_000003720.jpg",
+   "L": 20.63,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000058_000002850.jpg",
+   "L": 20.7,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000041_000002820.jpg",
+   "L": 20.78,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000051_000003480.jpg",
+   "L": 20.81,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000024_000001740.jpg",
+   "L": 20.83,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000110_000005370.jpg",
+   "L": 20.98,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000093_000006450.jpg",
+   "L": 21.04,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000001830.jpg",
+   "L": 21.26,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000098_000004980.jpg",
+   "L": 21.38,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000028_000002880.jpg",
+   "L": 21.45,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000067_000004050.jpg",
+   "L": 21.62,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000055_000003600.jpg",
+   "L": 21.87,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000005640.jpg",
+   "L": 22.07,
+   "ciftler": {
+    "v35_v34": 0.0,
+    "v35_v30": 0.0,
+    "v34_v30": 0.092
+   },
+   "IoU_ort": 0.0307,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000039_000002760.jpg",
+   "L": 22.5,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000026_000004020.jpg",
+   "L": 22.65,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000038_000005580.jpg",
+   "L": 22.95,
+   "ciftler": {
+    "v35_v34": 0.547,
+    "v35_v30": 0.1692,
+    "v34_v30": 0.1368
+   },
+   "IoU_ort": 0.2843,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000011_000000810.jpg",
+   "L": 23.31,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": 0.0,
+    "v34_v30": 0.0
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000009_000000600.jpg",
+   "L": 23.65,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000022_000002580.jpg",
+   "L": 24.03,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000054_000007680.jpg",
+   "L": 24.45,
+   "ciftler": {
+    "v35_v34": 0.0,
+    "v35_v30": null,
+    "v34_v30": 0.0
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000094_000010500.jpg",
+   "L": 24.77,
+   "ciftler": {
+    "v35_v34": 0.7766,
+    "v35_v30": 0.6989,
+    "v34_v30": 0.7584
+   },
+   "IoU_ort": 0.7446,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000023_000002760.jpg",
+   "L": 25.17,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000032_000002700.jpg",
+   "L": 26.25,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000001_000000420.jpg",
+   "L": 26.57,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": 0.0,
+    "v34_v30": 0.0
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000051_000007590.jpg",
+   "L": 28.11,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": 0.0,
+    "v34_v30": 0.0
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000078_000009180.jpg",
+   "L": 29.62,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000002_000000360.jpg",
+   "L": 31.89,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000085_000006210.jpg",
+   "L": 32.99,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000084_000006090.jpg",
+   "L": 38.49,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": 0.0,
+    "v34_v30": 0.0
+   },
+   "IoU_ort": 0.0,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000003_000000810.jpg",
+   "L": 56.65,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gece",
+   "kare": "frame_000000_000000000.jpg",
+   "L": 70.08,
+   "ciftler": {
+    "v35_v34": null,
+    "v35_v30": null,
+    "v34_v30": null
+   },
+   "IoU_ort": null,
+   "hepsi_bos": true
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000007_000000936.jpg",
+   "L": 130.47,
+   "ciftler": {
+    "v35_v34": 0.7592,
+    "v35_v30": 0.7992,
+    "v34_v30": 0.7938
+   },
+   "IoU_ort": 0.7841,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000026_000001200.jpg",
+   "L": 133.21,
+   "ciftler": {
+    "v35_v34": 0.51,
+    "v35_v30": 0.5008,
+    "v34_v30": 0.7396
+   },
+   "IoU_ort": 0.5835,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000000_000000000.jpg",
+   "L": 134.18,
+   "ciftler": {
+    "v35_v34": 0.53,
+    "v35_v30": 0.5986,
+    "v34_v30": 0.6528
+   },
+   "IoU_ort": 0.5938,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000013_000001272.jpg",
+   "L": 134.84,
+   "ciftler": {
+    "v35_v34": 0.76,
+    "v35_v30": 0.8152,
+    "v34_v30": 0.7626
+   },
+   "IoU_ort": 0.7793,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000003_000000720.jpg",
+   "L": 135.1,
+   "ciftler": {
+    "v35_v34": 0.6128,
+    "v35_v30": 0.7146,
+    "v34_v30": 0.6713
+   },
+   "IoU_ort": 0.6662,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000015_000002040.jpg",
+   "L": 135.44,
+   "ciftler": {
+    "v35_v34": 0.6567,
+    "v35_v30": 0.686,
+    "v34_v30": 0.6609
+   },
+   "IoU_ort": 0.6678,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000004_000000768.jpg",
+   "L": 136.13,
+   "ciftler": {
+    "v35_v34": 0.6451,
+    "v35_v30": 0.7715,
+    "v34_v30": 0.6983
+   },
+   "IoU_ort": 0.705,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000020_000000936.jpg",
+   "L": 136.78,
+   "ciftler": {
+    "v35_v34": 0.5846,
+    "v35_v30": 0.5673,
+    "v34_v30": 0.7341
+   },
+   "IoU_ort": 0.6287,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000001_000000456.jpg",
+   "L": 136.87,
+   "ciftler": {
+    "v35_v34": 0.5141,
+    "v35_v30": 0.5272,
+    "v34_v30": 0.7687
+   },
+   "IoU_ort": 0.6034,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000000_000000000.jpg",
+   "L": 137.2,
+   "ciftler": {
+    "v35_v34": 0.6678,
+    "v35_v30": 0.666,
+    "v34_v30": 0.7246
+   },
+   "IoU_ort": 0.6861,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000001_000000336.jpg",
+   "L": 137.81,
+   "ciftler": {
+    "v35_v34": 0.6836,
+    "v35_v30": 0.7257,
+    "v34_v30": 0.7283
+   },
+   "IoU_ort": 0.7125,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000015_000000696.jpg",
+   "L": 138.12,
+   "ciftler": {
+    "v35_v34": 0.6035,
+    "v35_v30": 0.6721,
+    "v34_v30": 0.6911
+   },
+   "IoU_ort": 0.6556,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000016_000000720.jpg",
+   "L": 138.46,
+   "ciftler": {
+    "v35_v34": 0.6112,
+    "v35_v30": 0.6846,
+    "v34_v30": 0.6913
+   },
+   "IoU_ort": 0.6624,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000003_000000240.jpg",
+   "L": 138.95,
+   "ciftler": {
+    "v35_v34": 0.6362,
+    "v35_v30": 0.6556,
+    "v34_v30": 0.6737
+   },
+   "IoU_ort": 0.6552,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000007_000000384.jpg",
+   "L": 139.85,
+   "ciftler": {
+    "v35_v34": 0.622,
+    "v35_v30": 0.6074,
+    "v34_v30": 0.698
+   },
+   "IoU_ort": 0.6424,
+   "hepsi_bos": false
+  },
+  {
+   "kume": "gunduz",
+   "kare": "frame_000009_000000480.jpg",
+   "L": 140.62,
+   "ciftler": {
+    "v35_v34": 0.668,
+    "v35_v30": 0.6485,
+    "v34_v30": 0.7275
+   },
+   "IoU_ort": 0.6813,
+   "hepsi_bos": false
+  }
+ ]
+}

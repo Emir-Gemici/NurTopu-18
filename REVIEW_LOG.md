@@ -21004,3 +21004,109 @@ mesele modelin halüsinasyon görmesi değil, **güvenin 1,000 olması**. Sistem
 "zor görüyorum" diyemiyor çünkü öyle bir eksen yok (§3).
 
 #### 5. AÇILAN GÖREV — **T139**
+
+---
+
+### D-275 · 🔎 T139 · GÖRÜNÜRLÜK DOZ-YANIT ÖLÇÜLDÜ: karanlıkta **modeller arası IoU 0,000** (gündüz 0,66) — boşluk sayıyla kondu; ve yeniden kullandığım vekil (**BAND_ORANI**) tam da sorunlu vakada **1,0** diyor
+
+- **Ölçen:** Claude 2 / Fable 5 (başamele) · **Denetleyen: mimar bekleniyor**
+  (§9.3) · 2026-08-22 · görev **T139** · ön kayıt `results/t139/on_kayit.md`
+  (ölçümlerden **ÖNCE**, D-107).
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` → **15/15** ·
+  `unittest discover -s tests -q` → **Ran 793 · OK**.
+- **Ham çıktı repoda:** `results/t139/doz_yanit.json` (636 kare) ·
+  `kanit/` (9 kare + `kanit_manifest.json`) · araçlar
+  `scripts/olcum/127_t139_kanit_paketi.py` · `128_t139_doz_yanit.py`.
+- ⛔ **EŞİK KONMADI ve ÖNERİLMEDİ** (D-186; karar mimarın, §9.2).
+
+#### 1. ADIM 1 — KANIT KURTARILDI ve mimarın doğrulayamamasının KÖK NEDENİ
+Mimar iddiayı doğrulamak istedi, **iki kez yanlış kare** aldı. Sebep ölçüldü:
+**ad şeması yanıltıcı.** `extract_key_frames.py:169` →
+`frame_{KACINCI_KAYDEDILEN:06d}_{VIDEO_KARE_NO:09d}.jpg`; ikinci sayı
+**milisaniye değil video kare numarası**, ama 9 haneli sıfır dolgusu onu ms
+gibi gösteriyor.
+```text
+ayni dosya, uc okuma:
+  kare_no=4740 (DOGRU)          -> L=18,5
+  "4740 ms" = video karesi 142  -> L=22,8   <- mimarin 1. okumasi
+  "indeks 64"                   -> L=22,5   <- mimarin 2. okumasi
+  cikarilmis jpg                -> L=18,4
+```
+**İddia yanlış değildi, ADRESLENEMİYORDU.** Yeniden üretildi (v35, çıkarılmış
+jpg): `L=18,4 → YOL=2 · güven=1,000 · wp=8 · red=None` — **birebir aynı**.
+Kanıt artık repoda: 9 kare, 7,6 MB, `sha256 + video_kare_no + zaman_sn` ile.
+
+#### 2. ADIM 2 — VEKİL İCAT EDİLMEDİ, DEFTERDEN ALINDI
+`BAND_ORANI = kaplama(conf 0,10)/kaplama(conf 0,30)` zaten vardı
+(`93_t106_guven_bandi.py`, D-184'te kullanılmış). `kaplamalar()` **içe
+aktarıldı**, kopyalanmadı.
+
+#### 3. ADIM 3 — DOZ-YANIT EĞRİSİ (636 kare: 569 gece + 67 gündüz)
+```text
+L kovasi    n   bos maske   BAND_ORANI   zemin30    MODELLER ARASI IoU
+<10       123   123/123     TANIMSIZ     0.00000    -
+<20       274   263/274        1,154     0.00000    0,0000
+<30       150   142/150        3,061     0.00000    0,0000
+<40        12     9/12         1,178     0.00000    0,0000
+<60         8     7/8          1,000     0.00000    -
+<80         2     2/2       TANIMSIZ     0.00000    -
+<140       63     0/63         1,000     0.28462    0,6624
+>=140       4     0/4          1,000     0.30956    0,6813
+```
+⚠ **Önceden ilan edilen boşluk gerçekleşti:** L ≈ 73–118 arasında **hiç kare
+yok**; geçiş noktası **belirlenemez** ve oraya çizgi çekilmedi.
+
+**H2 KESİN DOĞRULANDI (ikincil ölçüt):** karanlıkta modeller arası zemin
+maskesi IoU'su **0,0000**, gündüzde **0,66–0,68**. Üç bağımsız eğitilmiş model
+gündüzde büyük ölçüde anlaşıyor, karanlıkta **hiçbir şeyde anlaşmıyor**.
+⚠ Korelasyonlu kör nokta kuralı gereği: anlaşmaları zayıf kanıt, **anlaşmamaları
+güçlü işarettir** — ve burada olan ikincisidir.
+
+**H1 (BİRİNCİL vekil) YETERSİZ ÇIKTI — dürüstçe yazılıyor:** `BAND_ORANI`
+karanlık kovalarda **çoğunlukla TANIMSIZ**, çünkü paydası (conf 0,30
+kaplaması) **boş maskede sıfırdır** ve kareler %87–100 oranında boştur.
+Yani vekil, ihtiyaç duyulan yerde **tanımlı değil**.
+
+#### 4. 🔴 BOŞLUK SAYIYLA KONDU
+Mimarın çerçevesi:
+```text
+maske BOS       -> MASKE_YOK -> fail-closed        ZATEN CALISIYOR
+maske BOS DEGIL -> KOSULSUZ GUVEN                  BOSLUK
+```
+Ölçüldü: **569 gece karesinin yalnız 23'ünde maske BOŞ DEĞİL.** Bu 23'ün
+örneklemdeki 7'sinin modeller arası IoU **medyanı 0,0307** (gündüz 0,66).
+⇒ **Boş olmayan gece maskesi, kural olarak ortak sinyal taşımıyor** — ve
+sistem ona koşulsuz güveniyor. Boşluk artık bir cümle değil, bir sayı.
+
+#### 5. ⚠ AMA TEK TİP DEĞİL — ve bu, eşik koymamanın gerekçesi
+Rota üreten 6 kare eğride şuraya düşüyor:
+```text
+frame_000037  L=23,0  zemin30=0,0190  BAND=8,109   IoU=orneklem disi
+frame_000038  L=22,9  zemin30=0,0106  BAND=9,875   IoU=0,2843
+frame_000043  L=15,8  zemin30=0,0000  BAND=yok     (rota v30'dan geldi)
+frame_000047  L=23,7  zemin30=0,0000  BAND=yok     (rota v34/v30'dan)
+frame_000064  L=18,4  zemin30=0,0605  BAND=1,000   <- YOL=2 · guven=1,000
+frame_000094  L=24,8  zemin30=0,0386  BAND=3,683   IoU=0,7446  <- GERCEK SINYAL
+```
+`frame_000094`'te üç model **0,74 IoU ile anlaşıyor** — orada gerçekten yol
+var (görsel D-80'de doğrulandı: gece asfaltı). Yani *"karanlık ⇒ güvenme"*
+biçiminde düz bir kural **yanlış** olurdu. Görevin eşik yasağı haklı çıktı.
+
+🔴 **VE EN ÖNEMLİSİ:** görevin sebebi olan vaka `frame_000064`'te
+**BAND_ORANI = 1,000** — yani yeniden kullandığım birincil vekil o kareyi
+**"sağlam" diye işaretliyor**. Vekil, aradığımız şeyi **ölçmüyor**.
+Bu bir başarısızlık değil ölçümdür ve şunu söyler: görünürlük için
+**BAND_ORANI'ndan başka bir eksen gerekir** (bu turda ikincil ölçüt o işi
+gördü, ama o da 3 model koşumu gerektiriyor — üretimde ucuz değil).
+
+#### 6. ÖNER-BEKLE (uygulanmadı, karar mimarın)
+- Görünürlük göstergesi olarak **modeller arası uyum** işe yarıyor ama
+  **pahalı** (3 model). Tek modelle ölçülebilen bir vekil aranmalı;
+  `BAND_ORANI` bu iş için **elenmiştir** (§5).
+- Ad şeması (`_{VIDEO_KARE_NO:09d}`) ms sanılıyor; **yeniden adlandırma ya da
+  manifestin zorunlu kılınması** önerilir. T139 kanıt paketi manifestli
+  yazıldı, ama `extract_key_frames` çıktısı hâlâ bu adı üretiyor.
+
+#### 7. YETKİ SINIRI
+Eşik **konmadı/önerilmedi** · `codes/` altına **girilmedi** · registry'ye
+**dokunulmadı** · `dataset/` altına kalıcı küme **yazılmadı** · **push YOK**.

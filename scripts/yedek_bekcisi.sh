@@ -37,7 +37,10 @@ if [ -z "$RCLONE" ]; then
 fi
 [ -z "$RCLONE" ] && { echo "rclone BULUNAMADI" >&2; exit 2; }
 
-yaz () { echo "[$(date +%H:%M:%S)] $*" | tee -a "$GUNLUK"; }
+# ⚠ YALNIZ DOSYAYA yazar. Onceki surum `tee -a` kullaniyordu VE cagiran
+# stdout'u AYNI dosyaya yonlendiriyordu -> her satir IKI KEZ dusuyordu.
+# Bunu "iki bekci ornegi kosuyor" diye yanlis yorumlamistim; sebep tee idi.
+yaz () { echo "[$(date +%H:%M:%S)] $*" >> "$GUNLUK"; }
 
 uzak_bayt () {   # $1 = alt yol ("" ise tum yedek)
   local hedef="$UZAK"; [ -n "${1:-}" ] && hedef="$UZAK/$1"
