@@ -79,10 +79,25 @@ kopyala "test_images"
 kopyala "rapor"
 kopyala "navitas-local-train"
 
-# ── KADEME 3 · GENEL KUMELER — YENIDEN INDIRILEBILIR ─────────────────────────
-# ⚠ Bu iki kademe 48 GB'dir ve halka acik kaynaklardan yeniden indirilebilir.
-#    Sure onemliyse betigi BURADA durdurmak MESRUDUR.
-kopyala "dataset"
+# ── KADEME 3 · dataset — SECICI (kullanici karari 2026-08-22) ────────────────
+# 🔴 dataset/ 63 GB ve KULLANICI ONU YEDEKTEN CIKARDI (sure kisiti).
+#    AMA TUMU ATILAMAZ: copy_paste_* ailesi URETIM MODELININ EGITIM KUMESIDIR.
+#    dataset/karisim_t127.yaml -> copy_paste_t127 = URETIMDEKI v35'in
+#    egitim verisi. Kaybedilirse v35'in NASIL egitildigi bir daha uretilemez
+#    ve denetlenemez. Toplam 1,5 GB — sureye etkisi YOK.
+#
+#    ATILAN (61,5 GB, hepsi YENIDEN URETILEBILIR):
+#      rescuenet_ham 44G (halka acik indirme) · rescuenet_2sinif_engelli 8,7G
+#      (57 betigi uretir) · sentetik_arena 3,9G (51 betigi uretir) ·
+#      rescuenet_11sinif 2,0G (41 betigi uretir) · rescuenet_1024/yolo/kirpik/
+#      yolo_256 · gercek_otopark(_2x) (raw_frames'ten turer — raw_frames YEDEKTE)
+#    ⚠ sentetik_arena'nin yeniden uretimi TOHUMA baglidir; tohum sabit degilse
+#      birebir ayni kume gelmez. Bu bir SINIRDIR, kayda geciyor.
+for K in copy_paste_gercek copy_paste_t121 copy_paste_t122a copy_paste_t122ac          copy_paste_t127 copy_paste_smoke gercek_kompozit; do
+  [ -d "$KOK/dataset/$K" ] && kopyala "dataset/$K"
+done
+# karisim yaml'lari kucuk ama kumeleri TARIF EDER — onlarsiz kume anlamsizdir
+"$RCLONE" copy "$KOK/dataset" "$UZAK/dataset" --include "*.yaml"    --include "*.json" --max-depth 1 $BAYRAK
 kopyala "rescuenet-roads"
 
 # ── DEPONUN KENDISI ──────────────────────────────────────────────────────────
