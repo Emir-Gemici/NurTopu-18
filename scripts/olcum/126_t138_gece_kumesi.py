@@ -50,6 +50,17 @@ def main() -> int:
     ap.add_argument("--mpp", type=float, default=0.01,
                     help="olcek BEDAVA kipi icin mpp")
     ap.add_argument("--en-fazla", type=int, default=0, help="0 = TUMU")
+    # 🔴 CIKTI PARAMETRELESTIRILDI (2026-08-22): betik BASKA bir kare kumesine
+    #    de kosuluyor (yeni gunduz DJI cekimleri). Varsayilanlar DEGISMEDI, yani
+    #    argumansiz kosum T138'in ciktisini AYNEN uretir; T138'in kaniti
+    #    (results/t138/gece_kumesi.json) UZERINE YAZILMAZ.
+    ap.add_argument("--cikti", type=Path, default=CIKTI,
+                    help="Cikti dizini (varsayilan: results/t138)")
+    ap.add_argument("--dosya", default="gece_kumesi.json",
+                    help="Cikti dosya adi")
+    ap.add_argument("--etiket", default="T138 · DJI gece kareleri, "
+                                        "uretim yolu davranisi",
+                    help="Ciktinin `_ne` alani")
     args = ap.parse_args()
 
     sys.path.insert(0, str(KOK / "codes"))
@@ -129,13 +140,14 @@ def main() -> int:
                          "sebep_olceksiz": dict(sb1), "sebep_olcekli": dict(sb2),
                          "kareler": satirlar}
 
-    CIKTI.mkdir(parents=True, exist_ok=True)
-    io.open(CIKTI / "gece_kumesi.json", "w", encoding="utf-8").write(
-        json.dumps({"_ne": "T138 · DJI gece kareleri, uretim yolu davranisi",
+    args.cikti.mkdir(parents=True, exist_ok=True)
+    io.open(args.cikti / args.dosya, "w", encoding="utf-8").write(
+        json.dumps({"_ne": args.etiket,
                     "_on_kayit": "results/t138/on_kayit.md",
+                    "_kareler": str(args.kareler),
                     "_U2_bandi": [U2_ALT, U2_UST], "_mpp_bedava": args.mpp,
                     "modeller": tum}, ensure_ascii=False, indent=1))
-    print(f"yazildi: {CIKTI / 'gece_kumesi.json'}")
+    print(f"yazildi: {args.cikti / args.dosya}")
     return 0
 
 

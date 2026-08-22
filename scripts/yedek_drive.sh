@@ -42,9 +42,25 @@ KOK="O:/navitas"
 #    (7 tur bosa dondu, exit 255). Yedek kendi ciktisini yedekleyemez.
 GUNLUK="${TEMP:-/tmp}/navitas_rclone_gunluk.txt"
 echo "gunluk: $GUNLUK"
+# 🔴 --max-duration ARTIK KADEME BASINA (2026-08-22, OLCULDU).
+#   20 dakikalik giyotin BEKCIDEN ONCEKI caredir. Bekci artik var ve
+#   calistigini gosterdi (DONMA #1'i yakaladi, 14:31). Buyuk dosyada bu
+#   giyotin gereksiz DEGIL, DOGRUDAN ZARARLI:
+#     22:04:57 dji basladi · 3 MP4 (7,37 GiB) paralel
+#     22:24:58 ERROR: max transfer duration reached  -> UCU DE "Failed to copy"
+#              1.919 GiB aktarilmisti, HEPSI ATILDI
+#     22:35:37 ikinci tur: 998 MiB / 7,368 GiB, ETA 1s32d  -> yine 20 dk'da olecek
+#   1,2 MiB/s'de 7,37 GiB ~1,7 SAAT surer; 20 dakikada BITEMEZ, yani dosya
+#   ASLA tamamlanmaz. Ustelik olcut (b) iki turda bayt ilerlemeyince kademeyi
+#   "tamam" ilan edip GECERDI -> yeri doldurulamaz cekim yedeklenmemis halde
+#   BASARI sayilirdi. (D-180 sinifi: YAPILMAYANI BASARI SAYMAK.)
 BAYRAK="--transfers 16 --checkers 16 --drive-chunk-size 16M --timeout 120s \
---contimeout 30s --retries 3 --low-level-retries 10 --max-duration 20m \
---stats 5m --stats-one-line -v --log-file $GUNLUK"
+--contimeout 30s --retries 3 --low-level-retries 10 \
+--stats 1m --stats-one-line -v --log-file $GUNLUK"
+# ⚠ --stats 1m (5m DEGIL): bekci CANLILIGI gunlugun BUYUMESINDEN anliyor.
+#   Buyuk dosya yuklenirken uzak bayt SABIT gorunur (Drive dosyayi ancak
+#   tamamlaninca sayar), tek canlilik sinyali gunluktur. 5 dakikalik aralik
+#   bekcinin 300 sn'lik taban toleransiyla CAKISIYORDU -> yanlis "donma".
 
 # Uzaktaki bayt sayisi — "ilerleme oldu mu" sorusunun tek DURUST cevabi.
 uzak_bayt () {
@@ -52,8 +68,15 @@ uzak_bayt () {
     | grep -o '"bytes":[0-9]*' | cut -d: -f2
 }
 
-kopyala () {   # $1 = alt yol · $2 = HARIC tutulacak desen (istege bagli)
-  ad="$1"; haric="${2:-}"; onceki=-1; tur=0
+kopyala () {   # $1 = alt yol · $2 = HARIC desen · $3 = max-duration · $4 = TAM sarti
+  ad="$1"; haric="${2:-}"; sure="${3:-20m}"; tam_sart="${4:-0}"
+  onceki=-1; tur=0
+  case "$sure" in
+    *h) sure_sn=$(( ${sure%h} * 3600 )) ;;
+    *m) sure_sn=$(( ${sure%m} * 60 )) ;;
+    *)  sure_sn=1200 ;;
+  esac
+  esik=$(( sure_sn - 60 ))
   echo ""
   echo "=============================================================="
   echo "[$(date +%H:%M:%S)] KADEME: $ad"
@@ -64,9 +87,10 @@ kopyala () {   # $1 = alt yol · $2 = HARIC tutulacak desen (istege bagli)
     # `$haric` TIRNAKLI gecirilir: tirnaksiz birakilirsa kabuk `venv/**`
     # desenini CWD'ye gore glob'lamaya calisir.
     if [ -n "$haric" ]; then
-      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK --exclude "$haric"
+      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK \
+        --max-duration "$sure" --exclude "$haric"
     else
-      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK
+      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK --max-duration "$sure"
     fi
     gecen=$(( $(date +%s) - t0 ))
     simdi="$(uzak_bayt "$ad")"
@@ -85,12 +109,34 @@ kopyala () {   # $1 = alt yol · $2 = HARIC tutulacak desen (istege bagli)
     #  a) SURE: rclone --max-duration 20m'e TAKILMADIYSA isini bitirmistir.
     #     Bu, sürekli DEGISEN dizinlerde (results/) de calisan tek olcuttur —
     #     bayt esitligi orada asla saglanmaz.
-    if [ "$gecen" -lt 1140 ]; then
+    if [ "$gecen" -lt "$esik" ]; then
+      #  🔴 c) TAM SARTI: "sure sinirina takilmadi" ile "is bitti" AYRI
+      #     SEYLERDIR. Yeri doldurulamaz ve DEGISMEYEN kademelerde (dji)
+      #     uzak >= yerel aranir; degilse tur TEKRARLANIR. Degisen dizinlerde
+      #     (results/) bu sart ARANMAZ, orada bayt esitligi asla saglanmaz.
+      if [ "$tam_sart" = "1" ]; then
+        yerel="$(du -sb "$KOK/$ad" 2>/dev/null | cut -f1)"
+        if [ -n "$yerel" ] && [ "$simdi" -lt "$yerel" ]; then
+          echo "[$(date +%H:%M:%S)] $ad · sure sinirina takilmadi AMA uzak" \
+               "$((simdi / 1048576)) MB < yerel $((yerel / 1048576)) MB -> DEVAM"
+          onceki="$simdi"
+          continue
+        fi
+      fi
       echo "[$(date +%H:%M:%S)] $ad · sure sinirina TAKILMADI -> kademe tamam"
       break
     fi
     #  b) BAYT: degismiyorsa ilerleme yok.
     if [ "$simdi" = "$onceki" ]; then
+      if [ "$tam_sart" = "1" ]; then
+        yerel="$(du -sb "$KOK/$ad" 2>/dev/null | cut -f1)"
+        if [ -n "$yerel" ] && [ "$simdi" -lt "$yerel" ]; then
+          echo "[$(date +%H:%M:%S)] 🔴 $ad · ILERLEME YOK ve kademe EKSIK" \
+               "(uzak $((simdi / 1048576)) MB < yerel $((yerel / 1048576)) MB)" \
+               "-> kademe BITIRILIYOR ama EKSIK; dogrulayiciyi kosun"
+          break
+        fi
+      fi
       echo "[$(date +%H:%M:%S)] $ad · iki turda ilerleme YOK -> kademe tamam"
       break
     fi
@@ -99,10 +145,13 @@ kopyala () {   # $1 = alt yol · $2 = HARIC tutulacak desen (istege bagli)
 }
 
 # ── KADEME 1 · YERI DOLDURULAMAZ ─────────────────────────────────────────────
-kopyala "dji"
-kopyala "models"
-kopyala "results"
-kopyala "data"
+# dji: 2-3 GB'lik HAM CEKIMLER. 1,2 MiB/s'de tek tur ~1,7 saat surer -> 4h.
+#      TAM sarti 1: bu kademe YERI DOLDURULAMAZ ve DEGISMEZ; uzak < yerel
+#      iken "tamam" denmez. (2026-08-22'de tam bu yuzden 7,38 GiB eksik kaldi.)
+kopyala "dji" "" "4h" 1
+kopyala "models" "" "20m" 1
+kopyala "results"                 # DEGISEN dizin — TAM sarti ARANMAZ
+kopyala "data" "" "40m" 1
 
 # ── KADEME 2 · PAHALI AMA YENIDEN URETILEBILIR ───────────────────────────────
 kopyala "codes"

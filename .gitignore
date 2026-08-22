@@ -147,3 +147,11 @@ dataset/gercek_otopark/
 # export dizini de izlenmiyor). D-182: bir terfide yanlislikla eklendi, geri alindi.
 results/**/*.onnx
 results/**/*.pt
+
+# 2026-08-22: yeni GUNDUZ DJI cekiminden cikarilan 768 kare — 2,3 GB.
+# Kaynak videolar `dji/` altinda ve YEDEKLENIYOR; kareler
+# `scripts/extract_key_frames.py` + `manifest.json` ile YENIDEN URETILIR.
+# T84 kalibinin aynisi: uretec depoda, kumenin kendisi degil.
+# ⚠ `manifest.json` TUTULUR (uretim tarifi odur), yalniz goruntular haric.
+results/dji_20260822/kareler_1fps/**/*.jpg
+results/dji_20260822/kareler/*.jpg

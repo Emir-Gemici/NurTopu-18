@@ -1,0 +1,6185 @@
+{
+  "parametreler": {
+    "aralik_sn": 1.0,
+    "en_fazla_kaynak": 300,
+    "hash_esik": 0.12,
+    "jpeg_kalite": 95,
+    "tam_kare": true,
+    "merkez_crop": false
+  },
+  "kaynaklar": [
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "fps": 29.97,
+      "taranan_kare": 11221,
+      "aday_kare": 375,
+      "yakin_kopya": 75,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 300
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "fps": 29.97,
+      "taranan_kare": 9145,
+      "aday_kare": 305,
+      "yakin_kopya": 59,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 246
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "fps": 29.97,
+      "taranan_kare": 12332,
+      "aday_kare": 412,
+      "yakin_kopya": 190,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 222
+    }
+  ],
+  "kareler": [
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "dji_20260822170832_0037_d/frame_000000_000000000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 30,
+      "zaman_sn": 1.001,
+      "dosya": "dji_20260822170832_0037_d/frame_000001_000000030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 60,
+      "zaman_sn": 2.002,
+      "dosya": "dji_20260822170832_0037_d/frame_000002_000000060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 90,
+      "zaman_sn": 3.003,
+      "dosya": "dji_20260822170832_0037_d/frame_000003_000000090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 120,
+      "zaman_sn": 4.004,
+      "dosya": "dji_20260822170832_0037_d/frame_000004_000000120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 180,
+      "zaman_sn": 6.006,
+      "dosya": "dji_20260822170832_0037_d/frame_000005_000000180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 240,
+      "zaman_sn": 8.008,
+      "dosya": "dji_20260822170832_0037_d/frame_000006_000000240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 300,
+      "zaman_sn": 10.01,
+      "dosya": "dji_20260822170832_0037_d/frame_000007_000000300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 330,
+      "zaman_sn": 11.011,
+      "dosya": "dji_20260822170832_0037_d/frame_000008_000000330.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 360,
+      "zaman_sn": 12.012,
+      "dosya": "dji_20260822170832_0037_d/frame_000009_000000360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 420,
+      "zaman_sn": 14.014,
+      "dosya": "dji_20260822170832_0037_d/frame_000010_000000420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 450,
+      "zaman_sn": 15.015,
+      "dosya": "dji_20260822170832_0037_d/frame_000011_000000450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 480,
+      "zaman_sn": 16.016,
+      "dosya": "dji_20260822170832_0037_d/frame_000012_000000480.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 510,
+      "zaman_sn": 17.017,
+      "dosya": "dji_20260822170832_0037_d/frame_000013_000000510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 540,
+      "zaman_sn": 18.018,
+      "dosya": "dji_20260822170832_0037_d/frame_000014_000000540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 570,
+      "zaman_sn": 19.019,
+      "dosya": "dji_20260822170832_0037_d/frame_000015_000000570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 600,
+      "zaman_sn": 20.02,
+      "dosya": "dji_20260822170832_0037_d/frame_000016_000000600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 630,
+      "zaman_sn": 21.021,
+      "dosya": "dji_20260822170832_0037_d/frame_000017_000000630.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 660,
+      "zaman_sn": 22.022,
+      "dosya": "dji_20260822170832_0037_d/frame_000018_000000660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 690,
+      "zaman_sn": 23.023,
+      "dosya": "dji_20260822170832_0037_d/frame_000019_000000690.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 720,
+      "zaman_sn": 24.024,
+      "dosya": "dji_20260822170832_0037_d/frame_000020_000000720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 750,
+      "zaman_sn": 25.025,
+      "dosya": "dji_20260822170832_0037_d/frame_000021_000000750.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 780,
+      "zaman_sn": 26.026,
+      "dosya": "dji_20260822170832_0037_d/frame_000022_000000780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 810,
+      "zaman_sn": 27.027,
+      "dosya": "dji_20260822170832_0037_d/frame_000023_000000810.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 840,
+      "zaman_sn": 28.028,
+      "dosya": "dji_20260822170832_0037_d/frame_000024_000000840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 870,
+      "zaman_sn": 29.029,
+      "dosya": "dji_20260822170832_0037_d/frame_000025_000000870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 900,
+      "zaman_sn": 30.03,
+      "dosya": "dji_20260822170832_0037_d/frame_000026_000000900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 930,
+      "zaman_sn": 31.031,
+      "dosya": "dji_20260822170832_0037_d/frame_000027_000000930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 960,
+      "zaman_sn": 32.032,
+      "dosya": "dji_20260822170832_0037_d/frame_000028_000000960.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 990,
+      "zaman_sn": 33.033,
+      "dosya": "dji_20260822170832_0037_d/frame_000029_000000990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1020,
+      "zaman_sn": 34.034,
+      "dosya": "dji_20260822170832_0037_d/frame_000030_000001020.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1050,
+      "zaman_sn": 35.035,
+      "dosya": "dji_20260822170832_0037_d/frame_000031_000001050.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1080,
+      "zaman_sn": 36.036,
+      "dosya": "dji_20260822170832_0037_d/frame_000032_000001080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1110,
+      "zaman_sn": 37.037,
+      "dosya": "dji_20260822170832_0037_d/frame_000033_000001110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1140,
+      "zaman_sn": 38.038,
+      "dosya": "dji_20260822170832_0037_d/frame_000034_000001140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1170,
+      "zaman_sn": 39.039,
+      "dosya": "dji_20260822170832_0037_d/frame_000035_000001170.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1200,
+      "zaman_sn": 40.04,
+      "dosya": "dji_20260822170832_0037_d/frame_000036_000001200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1230,
+      "zaman_sn": 41.041,
+      "dosya": "dji_20260822170832_0037_d/frame_000037_000001230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1260,
+      "zaman_sn": 42.042,
+      "dosya": "dji_20260822170832_0037_d/frame_000038_000001260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1320,
+      "zaman_sn": 44.044,
+      "dosya": "dji_20260822170832_0037_d/frame_000039_000001320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1350,
+      "zaman_sn": 45.045,
+      "dosya": "dji_20260822170832_0037_d/frame_000040_000001350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1380,
+      "zaman_sn": 46.046,
+      "dosya": "dji_20260822170832_0037_d/frame_000041_000001380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1410,
+      "zaman_sn": 47.047,
+      "dosya": "dji_20260822170832_0037_d/frame_000042_000001410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1440,
+      "zaman_sn": 48.048,
+      "dosya": "dji_20260822170832_0037_d/frame_000043_000001440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1470,
+      "zaman_sn": 49.049,
+      "dosya": "dji_20260822170832_0037_d/frame_000044_000001470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1500,
+      "zaman_sn": 50.05,
+      "dosya": "dji_20260822170832_0037_d/frame_000045_000001500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1530,
+      "zaman_sn": 51.051,
+      "dosya": "dji_20260822170832_0037_d/frame_000046_000001530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1560,
+      "zaman_sn": 52.052,
+      "dosya": "dji_20260822170832_0037_d/frame_000047_000001560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1590,
+      "zaman_sn": 53.053,
+      "dosya": "dji_20260822170832_0037_d/frame_000048_000001590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1620,
+      "zaman_sn": 54.054,
+      "dosya": "dji_20260822170832_0037_d/frame_000049_000001620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1650,
+      "zaman_sn": 55.055,
+      "dosya": "dji_20260822170832_0037_d/frame_000050_000001650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1710,
+      "zaman_sn": 57.057,
+      "dosya": "dji_20260822170832_0037_d/frame_000051_000001710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1740,
+      "zaman_sn": 58.058,
+      "dosya": "dji_20260822170832_0037_d/frame_000052_000001740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1770,
+      "zaman_sn": 59.059,
+      "dosya": "dji_20260822170832_0037_d/frame_000053_000001770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1800,
+      "zaman_sn": 60.06,
+      "dosya": "dji_20260822170832_0037_d/frame_000054_000001800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1830,
+      "zaman_sn": 61.061,
+      "dosya": "dji_20260822170832_0037_d/frame_000055_000001830.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1860,
+      "zaman_sn": 62.062,
+      "dosya": "dji_20260822170832_0037_d/frame_000056_000001860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1890,
+      "zaman_sn": 63.063,
+      "dosya": "dji_20260822170832_0037_d/frame_000057_000001890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 1920,
+      "zaman_sn": 64.064,
+      "dosya": "dji_20260822170832_0037_d/frame_000058_000001920.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2010,
+      "zaman_sn": 67.067,
+      "dosya": "dji_20260822170832_0037_d/frame_000059_000002010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2070,
+      "zaman_sn": 69.069,
+      "dosya": "dji_20260822170832_0037_d/frame_000060_000002070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2100,
+      "zaman_sn": 70.07,
+      "dosya": "dji_20260822170832_0037_d/frame_000061_000002100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2130,
+      "zaman_sn": 71.071,
+      "dosya": "dji_20260822170832_0037_d/frame_000062_000002130.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2160,
+      "zaman_sn": 72.072,
+      "dosya": "dji_20260822170832_0037_d/frame_000063_000002160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2190,
+      "zaman_sn": 73.073,
+      "dosya": "dji_20260822170832_0037_d/frame_000064_000002190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2250,
+      "zaman_sn": 75.075,
+      "dosya": "dji_20260822170832_0037_d/frame_000065_000002250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2400,
+      "zaman_sn": 80.08,
+      "dosya": "dji_20260822170832_0037_d/frame_000066_000002400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2430,
+      "zaman_sn": 81.081,
+      "dosya": "dji_20260822170832_0037_d/frame_000067_000002430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2490,
+      "zaman_sn": 83.083,
+      "dosya": "dji_20260822170832_0037_d/frame_000068_000002490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2550,
+      "zaman_sn": 85.085,
+      "dosya": "dji_20260822170832_0037_d/frame_000069_000002550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2610,
+      "zaman_sn": 87.087,
+      "dosya": "dji_20260822170832_0037_d/frame_000070_000002610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2670,
+      "zaman_sn": 89.089,
+      "dosya": "dji_20260822170832_0037_d/frame_000071_000002670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2700,
+      "zaman_sn": 90.09,
+      "dosya": "dji_20260822170832_0037_d/frame_000072_000002700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2760,
+      "zaman_sn": 92.092,
+      "dosya": "dji_20260822170832_0037_d/frame_000073_000002760.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2820,
+      "zaman_sn": 94.094,
+      "dosya": "dji_20260822170832_0037_d/frame_000074_000002820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2880,
+      "zaman_sn": 96.096,
+      "dosya": "dji_20260822170832_0037_d/frame_000075_000002880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2910,
+      "zaman_sn": 97.097,
+      "dosya": "dji_20260822170832_0037_d/frame_000076_000002910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2940,
+      "zaman_sn": 98.098,
+      "dosya": "dji_20260822170832_0037_d/frame_000077_000002940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 2970,
+      "zaman_sn": 99.099,
+      "dosya": "dji_20260822170832_0037_d/frame_000078_000002970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3000,
+      "zaman_sn": 100.1,
+      "dosya": "dji_20260822170832_0037_d/frame_000079_000003000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3030,
+      "zaman_sn": 101.101,
+      "dosya": "dji_20260822170832_0037_d/frame_000080_000003030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3060,
+      "zaman_sn": 102.102,
+      "dosya": "dji_20260822170832_0037_d/frame_000081_000003060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3120,
+      "zaman_sn": 104.104,
+      "dosya": "dji_20260822170832_0037_d/frame_000082_000003120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3150,
+      "zaman_sn": 105.105,
+      "dosya": "dji_20260822170832_0037_d/frame_000083_000003150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3180,
+      "zaman_sn": 106.106,
+      "dosya": "dji_20260822170832_0037_d/frame_000084_000003180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3210,
+      "zaman_sn": 107.107,
+      "dosya": "dji_20260822170832_0037_d/frame_000085_000003210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3240,
+      "zaman_sn": 108.108,
+      "dosya": "dji_20260822170832_0037_d/frame_000086_000003240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3270,
+      "zaman_sn": 109.109,
+      "dosya": "dji_20260822170832_0037_d/frame_000087_000003270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3300,
+      "zaman_sn": 110.11,
+      "dosya": "dji_20260822170832_0037_d/frame_000088_000003300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3360,
+      "zaman_sn": 112.112,
+      "dosya": "dji_20260822170832_0037_d/frame_000089_000003360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3420,
+      "zaman_sn": 114.114,
+      "dosya": "dji_20260822170832_0037_d/frame_000090_000003420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3600,
+      "zaman_sn": 120.12,
+      "dosya": "dji_20260822170832_0037_d/frame_000091_000003600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3750,
+      "zaman_sn": 125.125,
+      "dosya": "dji_20260822170832_0037_d/frame_000092_000003750.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3780,
+      "zaman_sn": 126.126,
+      "dosya": "dji_20260822170832_0037_d/frame_000093_000003780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3900,
+      "zaman_sn": 130.13,
+      "dosya": "dji_20260822170832_0037_d/frame_000094_000003900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3930,
+      "zaman_sn": 131.131,
+      "dosya": "dji_20260822170832_0037_d/frame_000095_000003930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3960,
+      "zaman_sn": 132.132,
+      "dosya": "dji_20260822170832_0037_d/frame_000096_000003960.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 3990,
+      "zaman_sn": 133.133,
+      "dosya": "dji_20260822170832_0037_d/frame_000097_000003990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4080,
+      "zaman_sn": 136.136,
+      "dosya": "dji_20260822170832_0037_d/frame_000098_000004080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4110,
+      "zaman_sn": 137.137,
+      "dosya": "dji_20260822170832_0037_d/frame_000099_000004110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4140,
+      "zaman_sn": 138.138,
+      "dosya": "dji_20260822170832_0037_d/frame_000100_000004140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4200,
+      "zaman_sn": 140.14,
+      "dosya": "dji_20260822170832_0037_d/frame_000101_000004200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4230,
+      "zaman_sn": 141.141,
+      "dosya": "dji_20260822170832_0037_d/frame_000102_000004230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4350,
+      "zaman_sn": 145.145,
+      "dosya": "dji_20260822170832_0037_d/frame_000103_000004350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4410,
+      "zaman_sn": 147.147,
+      "dosya": "dji_20260822170832_0037_d/frame_000104_000004410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4440,
+      "zaman_sn": 148.148,
+      "dosya": "dji_20260822170832_0037_d/frame_000105_000004440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4500,
+      "zaman_sn": 150.15,
+      "dosya": "dji_20260822170832_0037_d/frame_000106_000004500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4530,
+      "zaman_sn": 151.151,
+      "dosya": "dji_20260822170832_0037_d/frame_000107_000004530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4560,
+      "zaman_sn": 152.152,
+      "dosya": "dji_20260822170832_0037_d/frame_000108_000004560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4590,
+      "zaman_sn": 153.153,
+      "dosya": "dji_20260822170832_0037_d/frame_000109_000004590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4620,
+      "zaman_sn": 154.154,
+      "dosya": "dji_20260822170832_0037_d/frame_000110_000004620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4650,
+      "zaman_sn": 155.155,
+      "dosya": "dji_20260822170832_0037_d/frame_000111_000004650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4680,
+      "zaman_sn": 156.156,
+      "dosya": "dji_20260822170832_0037_d/frame_000112_000004680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4800,
+      "zaman_sn": 160.16,
+      "dosya": "dji_20260822170832_0037_d/frame_000113_000004800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4890,
+      "zaman_sn": 163.163,
+      "dosya": "dji_20260822170832_0037_d/frame_000114_000004890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 4950,
+      "zaman_sn": 165.165,
+      "dosya": "dji_20260822170832_0037_d/frame_000115_000004950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5010,
+      "zaman_sn": 167.167,
+      "dosya": "dji_20260822170832_0037_d/frame_000116_000005010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5040,
+      "zaman_sn": 168.168,
+      "dosya": "dji_20260822170832_0037_d/frame_000117_000005040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5070,
+      "zaman_sn": 169.169,
+      "dosya": "dji_20260822170832_0037_d/frame_000118_000005070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5100,
+      "zaman_sn": 170.17,
+      "dosya": "dji_20260822170832_0037_d/frame_000119_000005100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5130,
+      "zaman_sn": 171.171,
+      "dosya": "dji_20260822170832_0037_d/frame_000120_000005130.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5160,
+      "zaman_sn": 172.172,
+      "dosya": "dji_20260822170832_0037_d/frame_000121_000005160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5190,
+      "zaman_sn": 173.173,
+      "dosya": "dji_20260822170832_0037_d/frame_000122_000005190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5220,
+      "zaman_sn": 174.174,
+      "dosya": "dji_20260822170832_0037_d/frame_000123_000005220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5250,
+      "zaman_sn": 175.175,
+      "dosya": "dji_20260822170832_0037_d/frame_000124_000005250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5280,
+      "zaman_sn": 176.176,
+      "dosya": "dji_20260822170832_0037_d/frame_000125_000005280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5310,
+      "zaman_sn": 177.177,
+      "dosya": "dji_20260822170832_0037_d/frame_000126_000005310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5340,
+      "zaman_sn": 178.178,
+      "dosya": "dji_20260822170832_0037_d/frame_000127_000005340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5370,
+      "zaman_sn": 179.179,
+      "dosya": "dji_20260822170832_0037_d/frame_000128_000005370.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5400,
+      "zaman_sn": 180.18,
+      "dosya": "dji_20260822170832_0037_d/frame_000129_000005400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5430,
+      "zaman_sn": 181.181,
+      "dosya": "dji_20260822170832_0037_d/frame_000130_000005430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5460,
+      "zaman_sn": 182.182,
+      "dosya": "dji_20260822170832_0037_d/frame_000131_000005460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5490,
+      "zaman_sn": 183.183,
+      "dosya": "dji_20260822170832_0037_d/frame_000132_000005490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5520,
+      "zaman_sn": 184.184,
+      "dosya": "dji_20260822170832_0037_d/frame_000133_000005520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5550,
+      "zaman_sn": 185.185,
+      "dosya": "dji_20260822170832_0037_d/frame_000134_000005550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5580,
+      "zaman_sn": 186.186,
+      "dosya": "dji_20260822170832_0037_d/frame_000135_000005580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5610,
+      "zaman_sn": 187.187,
+      "dosya": "dji_20260822170832_0037_d/frame_000136_000005610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5640,
+      "zaman_sn": 188.188,
+      "dosya": "dji_20260822170832_0037_d/frame_000137_000005640.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5670,
+      "zaman_sn": 189.189,
+      "dosya": "dji_20260822170832_0037_d/frame_000138_000005670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5700,
+      "zaman_sn": 190.19,
+      "dosya": "dji_20260822170832_0037_d/frame_000139_000005700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5730,
+      "zaman_sn": 191.191,
+      "dosya": "dji_20260822170832_0037_d/frame_000140_000005730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5760,
+      "zaman_sn": 192.192,
+      "dosya": "dji_20260822170832_0037_d/frame_000141_000005760.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5790,
+      "zaman_sn": 193.193,
+      "dosya": "dji_20260822170832_0037_d/frame_000142_000005790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5820,
+      "zaman_sn": 194.194,
+      "dosya": "dji_20260822170832_0037_d/frame_000143_000005820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5850,
+      "zaman_sn": 195.195,
+      "dosya": "dji_20260822170832_0037_d/frame_000144_000005850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5880,
+      "zaman_sn": 196.196,
+      "dosya": "dji_20260822170832_0037_d/frame_000145_000005880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5910,
+      "zaman_sn": 197.197,
+      "dosya": "dji_20260822170832_0037_d/frame_000146_000005910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5940,
+      "zaman_sn": 198.198,
+      "dosya": "dji_20260822170832_0037_d/frame_000147_000005940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 5970,
+      "zaman_sn": 199.199,
+      "dosya": "dji_20260822170832_0037_d/frame_000148_000005970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6000,
+      "zaman_sn": 200.2,
+      "dosya": "dji_20260822170832_0037_d/frame_000149_000006000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6030,
+      "zaman_sn": 201.201,
+      "dosya": "dji_20260822170832_0037_d/frame_000150_000006030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6060,
+      "zaman_sn": 202.202,
+      "dosya": "dji_20260822170832_0037_d/frame_000151_000006060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6090,
+      "zaman_sn": 203.203,
+      "dosya": "dji_20260822170832_0037_d/frame_000152_000006090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6120,
+      "zaman_sn": 204.204,
+      "dosya": "dji_20260822170832_0037_d/frame_000153_000006120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6150,
+      "zaman_sn": 205.205,
+      "dosya": "dji_20260822170832_0037_d/frame_000154_000006150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6180,
+      "zaman_sn": 206.206,
+      "dosya": "dji_20260822170832_0037_d/frame_000155_000006180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6210,
+      "zaman_sn": 207.207,
+      "dosya": "dji_20260822170832_0037_d/frame_000156_000006210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6240,
+      "zaman_sn": 208.208,
+      "dosya": "dji_20260822170832_0037_d/frame_000157_000006240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6270,
+      "zaman_sn": 209.209,
+      "dosya": "dji_20260822170832_0037_d/frame_000158_000006270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6300,
+      "zaman_sn": 210.21,
+      "dosya": "dji_20260822170832_0037_d/frame_000159_000006300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6330,
+      "zaman_sn": 211.211,
+      "dosya": "dji_20260822170832_0037_d/frame_000160_000006330.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6360,
+      "zaman_sn": 212.212,
+      "dosya": "dji_20260822170832_0037_d/frame_000161_000006360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6390,
+      "zaman_sn": 213.213,
+      "dosya": "dji_20260822170832_0037_d/frame_000162_000006390.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6420,
+      "zaman_sn": 214.214,
+      "dosya": "dji_20260822170832_0037_d/frame_000163_000006420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6450,
+      "zaman_sn": 215.215,
+      "dosya": "dji_20260822170832_0037_d/frame_000164_000006450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6480,
+      "zaman_sn": 216.216,
+      "dosya": "dji_20260822170832_0037_d/frame_000165_000006480.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6510,
+      "zaman_sn": 217.217,
+      "dosya": "dji_20260822170832_0037_d/frame_000166_000006510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6540,
+      "zaman_sn": 218.218,
+      "dosya": "dji_20260822170832_0037_d/frame_000167_000006540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6570,
+      "zaman_sn": 219.219,
+      "dosya": "dji_20260822170832_0037_d/frame_000168_000006570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6600,
+      "zaman_sn": 220.22,
+      "dosya": "dji_20260822170832_0037_d/frame_000169_000006600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6630,
+      "zaman_sn": 221.221,
+      "dosya": "dji_20260822170832_0037_d/frame_000170_000006630.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6780,
+      "zaman_sn": 226.226,
+      "dosya": "dji_20260822170832_0037_d/frame_000171_000006780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6840,
+      "zaman_sn": 228.228,
+      "dosya": "dji_20260822170832_0037_d/frame_000172_000006840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6900,
+      "zaman_sn": 230.23,
+      "dosya": "dji_20260822170832_0037_d/frame_000173_000006900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 6990,
+      "zaman_sn": 233.233,
+      "dosya": "dji_20260822170832_0037_d/frame_000174_000006990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7020,
+      "zaman_sn": 234.234,
+      "dosya": "dji_20260822170832_0037_d/frame_000175_000007020.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7050,
+      "zaman_sn": 235.235,
+      "dosya": "dji_20260822170832_0037_d/frame_000176_000007050.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7110,
+      "zaman_sn": 237.237,
+      "dosya": "dji_20260822170832_0037_d/frame_000177_000007110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7140,
+      "zaman_sn": 238.238,
+      "dosya": "dji_20260822170832_0037_d/frame_000178_000007140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7170,
+      "zaman_sn": 239.239,
+      "dosya": "dji_20260822170832_0037_d/frame_000179_000007170.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7200,
+      "zaman_sn": 240.24,
+      "dosya": "dji_20260822170832_0037_d/frame_000180_000007200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7230,
+      "zaman_sn": 241.241,
+      "dosya": "dji_20260822170832_0037_d/frame_000181_000007230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7260,
+      "zaman_sn": 242.242,
+      "dosya": "dji_20260822170832_0037_d/frame_000182_000007260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7290,
+      "zaman_sn": 243.243,
+      "dosya": "dji_20260822170832_0037_d/frame_000183_000007290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7320,
+      "zaman_sn": 244.244,
+      "dosya": "dji_20260822170832_0037_d/frame_000184_000007320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7350,
+      "zaman_sn": 245.245,
+      "dosya": "dji_20260822170832_0037_d/frame_000185_000007350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7380,
+      "zaman_sn": 246.246,
+      "dosya": "dji_20260822170832_0037_d/frame_000186_000007380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7410,
+      "zaman_sn": 247.247,
+      "dosya": "dji_20260822170832_0037_d/frame_000187_000007410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7440,
+      "zaman_sn": 248.248,
+      "dosya": "dji_20260822170832_0037_d/frame_000188_000007440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7470,
+      "zaman_sn": 249.249,
+      "dosya": "dji_20260822170832_0037_d/frame_000189_000007470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7530,
+      "zaman_sn": 251.251,
+      "dosya": "dji_20260822170832_0037_d/frame_000190_000007530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7560,
+      "zaman_sn": 252.252,
+      "dosya": "dji_20260822170832_0037_d/frame_000191_000007560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7590,
+      "zaman_sn": 253.253,
+      "dosya": "dji_20260822170832_0037_d/frame_000192_000007590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7620,
+      "zaman_sn": 254.254,
+      "dosya": "dji_20260822170832_0037_d/frame_000193_000007620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7680,
+      "zaman_sn": 256.256,
+      "dosya": "dji_20260822170832_0037_d/frame_000194_000007680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7710,
+      "zaman_sn": 257.257,
+      "dosya": "dji_20260822170832_0037_d/frame_000195_000007710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7740,
+      "zaman_sn": 258.258,
+      "dosya": "dji_20260822170832_0037_d/frame_000196_000007740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7770,
+      "zaman_sn": 259.259,
+      "dosya": "dji_20260822170832_0037_d/frame_000197_000007770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7800,
+      "zaman_sn": 260.26,
+      "dosya": "dji_20260822170832_0037_d/frame_000198_000007800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7830,
+      "zaman_sn": 261.261,
+      "dosya": "dji_20260822170832_0037_d/frame_000199_000007830.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7860,
+      "zaman_sn": 262.262,
+      "dosya": "dji_20260822170832_0037_d/frame_000200_000007860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7920,
+      "zaman_sn": 264.264,
+      "dosya": "dji_20260822170832_0037_d/frame_000201_000007920.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7950,
+      "zaman_sn": 265.265,
+      "dosya": "dji_20260822170832_0037_d/frame_000202_000007950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 7980,
+      "zaman_sn": 266.266,
+      "dosya": "dji_20260822170832_0037_d/frame_000203_000007980.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8010,
+      "zaman_sn": 267.267,
+      "dosya": "dji_20260822170832_0037_d/frame_000204_000008010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8040,
+      "zaman_sn": 268.268,
+      "dosya": "dji_20260822170832_0037_d/frame_000205_000008040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8070,
+      "zaman_sn": 269.269,
+      "dosya": "dji_20260822170832_0037_d/frame_000206_000008070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8100,
+      "zaman_sn": 270.27,
+      "dosya": "dji_20260822170832_0037_d/frame_000207_000008100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8130,
+      "zaman_sn": 271.271,
+      "dosya": "dji_20260822170832_0037_d/frame_000208_000008130.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8160,
+      "zaman_sn": 272.272,
+      "dosya": "dji_20260822170832_0037_d/frame_000209_000008160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8190,
+      "zaman_sn": 273.273,
+      "dosya": "dji_20260822170832_0037_d/frame_000210_000008190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8220,
+      "zaman_sn": 274.274,
+      "dosya": "dji_20260822170832_0037_d/frame_000211_000008220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8250,
+      "zaman_sn": 275.275,
+      "dosya": "dji_20260822170832_0037_d/frame_000212_000008250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8340,
+      "zaman_sn": 278.278,
+      "dosya": "dji_20260822170832_0037_d/frame_000213_000008340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8370,
+      "zaman_sn": 279.279,
+      "dosya": "dji_20260822170832_0037_d/frame_000214_000008370.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8400,
+      "zaman_sn": 280.28,
+      "dosya": "dji_20260822170832_0037_d/frame_000215_000008400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8430,
+      "zaman_sn": 281.281,
+      "dosya": "dji_20260822170832_0037_d/frame_000216_000008430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8460,
+      "zaman_sn": 282.282,
+      "dosya": "dji_20260822170832_0037_d/frame_000217_000008460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8490,
+      "zaman_sn": 283.283,
+      "dosya": "dji_20260822170832_0037_d/frame_000218_000008490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8520,
+      "zaman_sn": 284.284,
+      "dosya": "dji_20260822170832_0037_d/frame_000219_000008520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8550,
+      "zaman_sn": 285.285,
+      "dosya": "dji_20260822170832_0037_d/frame_000220_000008550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8580,
+      "zaman_sn": 286.286,
+      "dosya": "dji_20260822170832_0037_d/frame_000221_000008580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8610,
+      "zaman_sn": 287.287,
+      "dosya": "dji_20260822170832_0037_d/frame_000222_000008610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8640,
+      "zaman_sn": 288.288,
+      "dosya": "dji_20260822170832_0037_d/frame_000223_000008640.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8670,
+      "zaman_sn": 289.289,
+      "dosya": "dji_20260822170832_0037_d/frame_000224_000008670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8700,
+      "zaman_sn": 290.29,
+      "dosya": "dji_20260822170832_0037_d/frame_000225_000008700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8730,
+      "zaman_sn": 291.291,
+      "dosya": "dji_20260822170832_0037_d/frame_000226_000008730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8760,
+      "zaman_sn": 292.292,
+      "dosya": "dji_20260822170832_0037_d/frame_000227_000008760.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8790,
+      "zaman_sn": 293.293,
+      "dosya": "dji_20260822170832_0037_d/frame_000228_000008790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8820,
+      "zaman_sn": 294.294,
+      "dosya": "dji_20260822170832_0037_d/frame_000229_000008820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8850,
+      "zaman_sn": 295.295,
+      "dosya": "dji_20260822170832_0037_d/frame_000230_000008850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8880,
+      "zaman_sn": 296.296,
+      "dosya": "dji_20260822170832_0037_d/frame_000231_000008880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8910,
+      "zaman_sn": 297.297,
+      "dosya": "dji_20260822170832_0037_d/frame_000232_000008910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8940,
+      "zaman_sn": 298.298,
+      "dosya": "dji_20260822170832_0037_d/frame_000233_000008940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 8970,
+      "zaman_sn": 299.299,
+      "dosya": "dji_20260822170832_0037_d/frame_000234_000008970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9000,
+      "zaman_sn": 300.3,
+      "dosya": "dji_20260822170832_0037_d/frame_000235_000009000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9030,
+      "zaman_sn": 301.301,
+      "dosya": "dji_20260822170832_0037_d/frame_000236_000009030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9060,
+      "zaman_sn": 302.302,
+      "dosya": "dji_20260822170832_0037_d/frame_000237_000009060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9090,
+      "zaman_sn": 303.303,
+      "dosya": "dji_20260822170832_0037_d/frame_000238_000009090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9120,
+      "zaman_sn": 304.304,
+      "dosya": "dji_20260822170832_0037_d/frame_000239_000009120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9150,
+      "zaman_sn": 305.305,
+      "dosya": "dji_20260822170832_0037_d/frame_000240_000009150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9180,
+      "zaman_sn": 306.306,
+      "dosya": "dji_20260822170832_0037_d/frame_000241_000009180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9210,
+      "zaman_sn": 307.307,
+      "dosya": "dji_20260822170832_0037_d/frame_000242_000009210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9240,
+      "zaman_sn": 308.308,
+      "dosya": "dji_20260822170832_0037_d/frame_000243_000009240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9270,
+      "zaman_sn": 309.309,
+      "dosya": "dji_20260822170832_0037_d/frame_000244_000009270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9330,
+      "zaman_sn": 311.311,
+      "dosya": "dji_20260822170832_0037_d/frame_000245_000009330.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9390,
+      "zaman_sn": 313.313,
+      "dosya": "dji_20260822170832_0037_d/frame_000246_000009390.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9420,
+      "zaman_sn": 314.314,
+      "dosya": "dji_20260822170832_0037_d/frame_000247_000009420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9450,
+      "zaman_sn": 315.315,
+      "dosya": "dji_20260822170832_0037_d/frame_000248_000009450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9480,
+      "zaman_sn": 316.316,
+      "dosya": "dji_20260822170832_0037_d/frame_000249_000009480.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9510,
+      "zaman_sn": 317.317,
+      "dosya": "dji_20260822170832_0037_d/frame_000250_000009510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9540,
+      "zaman_sn": 318.318,
+      "dosya": "dji_20260822170832_0037_d/frame_000251_000009540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9570,
+      "zaman_sn": 319.319,
+      "dosya": "dji_20260822170832_0037_d/frame_000252_000009570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9600,
+      "zaman_sn": 320.32,
+      "dosya": "dji_20260822170832_0037_d/frame_000253_000009600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9660,
+      "zaman_sn": 322.322,
+      "dosya": "dji_20260822170832_0037_d/frame_000254_000009660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9690,
+      "zaman_sn": 323.323,
+      "dosya": "dji_20260822170832_0037_d/frame_000255_000009690.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9720,
+      "zaman_sn": 324.324,
+      "dosya": "dji_20260822170832_0037_d/frame_000256_000009720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9750,
+      "zaman_sn": 325.325,
+      "dosya": "dji_20260822170832_0037_d/frame_000257_000009750.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9810,
+      "zaman_sn": 327.327,
+      "dosya": "dji_20260822170832_0037_d/frame_000258_000009810.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9840,
+      "zaman_sn": 328.328,
+      "dosya": "dji_20260822170832_0037_d/frame_000259_000009840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9870,
+      "zaman_sn": 329.329,
+      "dosya": "dji_20260822170832_0037_d/frame_000260_000009870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9930,
+      "zaman_sn": 331.331,
+      "dosya": "dji_20260822170832_0037_d/frame_000261_000009930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 9960,
+      "zaman_sn": 332.332,
+      "dosya": "dji_20260822170832_0037_d/frame_000262_000009960.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10020,
+      "zaman_sn": 334.334,
+      "dosya": "dji_20260822170832_0037_d/frame_000263_000010020.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10080,
+      "zaman_sn": 336.336,
+      "dosya": "dji_20260822170832_0037_d/frame_000264_000010080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10110,
+      "zaman_sn": 337.337,
+      "dosya": "dji_20260822170832_0037_d/frame_000265_000010110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10170,
+      "zaman_sn": 339.339,
+      "dosya": "dji_20260822170832_0037_d/frame_000266_000010170.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10200,
+      "zaman_sn": 340.34,
+      "dosya": "dji_20260822170832_0037_d/frame_000267_000010200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10230,
+      "zaman_sn": 341.341,
+      "dosya": "dji_20260822170832_0037_d/frame_000268_000010230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10260,
+      "zaman_sn": 342.342,
+      "dosya": "dji_20260822170832_0037_d/frame_000269_000010260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10320,
+      "zaman_sn": 344.344,
+      "dosya": "dji_20260822170832_0037_d/frame_000270_000010320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10350,
+      "zaman_sn": 345.345,
+      "dosya": "dji_20260822170832_0037_d/frame_000271_000010350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10380,
+      "zaman_sn": 346.346,
+      "dosya": "dji_20260822170832_0037_d/frame_000272_000010380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10410,
+      "zaman_sn": 347.347,
+      "dosya": "dji_20260822170832_0037_d/frame_000273_000010410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10440,
+      "zaman_sn": 348.348,
+      "dosya": "dji_20260822170832_0037_d/frame_000274_000010440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10470,
+      "zaman_sn": 349.349,
+      "dosya": "dji_20260822170832_0037_d/frame_000275_000010470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10500,
+      "zaman_sn": 350.35,
+      "dosya": "dji_20260822170832_0037_d/frame_000276_000010500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10530,
+      "zaman_sn": 351.351,
+      "dosya": "dji_20260822170832_0037_d/frame_000277_000010530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10560,
+      "zaman_sn": 352.352,
+      "dosya": "dji_20260822170832_0037_d/frame_000278_000010560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10590,
+      "zaman_sn": 353.353,
+      "dosya": "dji_20260822170832_0037_d/frame_000279_000010590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10620,
+      "zaman_sn": 354.354,
+      "dosya": "dji_20260822170832_0037_d/frame_000280_000010620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10650,
+      "zaman_sn": 355.355,
+      "dosya": "dji_20260822170832_0037_d/frame_000281_000010650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10680,
+      "zaman_sn": 356.356,
+      "dosya": "dji_20260822170832_0037_d/frame_000282_000010680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10710,
+      "zaman_sn": 357.357,
+      "dosya": "dji_20260822170832_0037_d/frame_000283_000010710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10740,
+      "zaman_sn": 358.358,
+      "dosya": "dji_20260822170832_0037_d/frame_000284_000010740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10770,
+      "zaman_sn": 359.359,
+      "dosya": "dji_20260822170832_0037_d/frame_000285_000010770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10800,
+      "zaman_sn": 360.36,
+      "dosya": "dji_20260822170832_0037_d/frame_000286_000010800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10830,
+      "zaman_sn": 361.361,
+      "dosya": "dji_20260822170832_0037_d/frame_000287_000010830.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10860,
+      "zaman_sn": 362.362,
+      "dosya": "dji_20260822170832_0037_d/frame_000288_000010860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10890,
+      "zaman_sn": 363.363,
+      "dosya": "dji_20260822170832_0037_d/frame_000289_000010890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10920,
+      "zaman_sn": 364.364,
+      "dosya": "dji_20260822170832_0037_d/frame_000290_000010920.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10950,
+      "zaman_sn": 365.365,
+      "dosya": "dji_20260822170832_0037_d/frame_000291_000010950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 10980,
+      "zaman_sn": 366.366,
+      "dosya": "dji_20260822170832_0037_d/frame_000292_000010980.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11010,
+      "zaman_sn": 367.367,
+      "dosya": "dji_20260822170832_0037_d/frame_000293_000011010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11040,
+      "zaman_sn": 368.368,
+      "dosya": "dji_20260822170832_0037_d/frame_000294_000011040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11070,
+      "zaman_sn": 369.369,
+      "dosya": "dji_20260822170832_0037_d/frame_000295_000011070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11100,
+      "zaman_sn": 370.37,
+      "dosya": "dji_20260822170832_0037_d/frame_000296_000011100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11160,
+      "zaman_sn": 372.372,
+      "dosya": "dji_20260822170832_0037_d/frame_000297_000011160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11190,
+      "zaman_sn": 373.373,
+      "dosya": "dji_20260822170832_0037_d/frame_000298_000011190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822170832_0037_D.MP4",
+      "kare_no": 11220,
+      "zaman_sn": 374.374,
+      "dosya": "dji_20260822170832_0037_d/frame_000299_000011220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 90,
+      "zaman_sn": 3.003,
+      "dosya": "dji_20260822172613_0038_d/frame_000001_000000090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 150,
+      "zaman_sn": 5.005,
+      "dosya": "dji_20260822172613_0038_d/frame_000002_000000150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 180,
+      "zaman_sn": 6.006,
+      "dosya": "dji_20260822172613_0038_d/frame_000003_000000180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 360,
+      "zaman_sn": 12.012,
+      "dosya": "dji_20260822172613_0038_d/frame_000004_000000360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 540,
+      "zaman_sn": 18.018,
+      "dosya": "dji_20260822172613_0038_d/frame_000005_000000540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 810,
+      "zaman_sn": 27.027,
+      "dosya": "dji_20260822172613_0038_d/frame_000006_000000810.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 870,
+      "zaman_sn": 29.029,
+      "dosya": "dji_20260822172613_0038_d/frame_000007_000000870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 900,
+      "zaman_sn": 30.03,
+      "dosya": "dji_20260822172613_0038_d/frame_000008_000000900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 930,
+      "zaman_sn": 31.031,
+      "dosya": "dji_20260822172613_0038_d/frame_000009_000000930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 990,
+      "zaman_sn": 33.033,
+      "dosya": "dji_20260822172613_0038_d/frame_000010_000000990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1080,
+      "zaman_sn": 36.036,
+      "dosya": "dji_20260822172613_0038_d/frame_000011_000001080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1200,
+      "zaman_sn": 40.04,
+      "dosya": "dji_20260822172613_0038_d/frame_000012_000001200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1230,
+      "zaman_sn": 41.041,
+      "dosya": "dji_20260822172613_0038_d/frame_000013_000001230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1290,
+      "zaman_sn": 43.043,
+      "dosya": "dji_20260822172613_0038_d/frame_000014_000001290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1320,
+      "zaman_sn": 44.044,
+      "dosya": "dji_20260822172613_0038_d/frame_000015_000001320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1350,
+      "zaman_sn": 45.045,
+      "dosya": "dji_20260822172613_0038_d/frame_000016_000001350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1380,
+      "zaman_sn": 46.046,
+      "dosya": "dji_20260822172613_0038_d/frame_000017_000001380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1410,
+      "zaman_sn": 47.047,
+      "dosya": "dji_20260822172613_0038_d/frame_000018_000001410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1440,
+      "zaman_sn": 48.048,
+      "dosya": "dji_20260822172613_0038_d/frame_000019_000001440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1470,
+      "zaman_sn": 49.049,
+      "dosya": "dji_20260822172613_0038_d/frame_000020_000001470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1500,
+      "zaman_sn": 50.05,
+      "dosya": "dji_20260822172613_0038_d/frame_000021_000001500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1530,
+      "zaman_sn": 51.051,
+      "dosya": "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1560,
+      "zaman_sn": 52.052,
+      "dosya": "dji_20260822172613_0038_d/frame_000023_000001560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1590,
+      "zaman_sn": 53.053,
+      "dosya": "dji_20260822172613_0038_d/frame_000024_000001590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1620,
+      "zaman_sn": 54.054,
+      "dosya": "dji_20260822172613_0038_d/frame_000025_000001620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1650,
+      "zaman_sn": 55.055,
+      "dosya": "dji_20260822172613_0038_d/frame_000026_000001650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1680,
+      "zaman_sn": 56.056,
+      "dosya": "dji_20260822172613_0038_d/frame_000027_000001680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1710,
+      "zaman_sn": 57.057,
+      "dosya": "dji_20260822172613_0038_d/frame_000028_000001710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1740,
+      "zaman_sn": 58.058,
+      "dosya": "dji_20260822172613_0038_d/frame_000029_000001740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1770,
+      "zaman_sn": 59.059,
+      "dosya": "dji_20260822172613_0038_d/frame_000030_000001770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1800,
+      "zaman_sn": 60.06,
+      "dosya": "dji_20260822172613_0038_d/frame_000031_000001800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1830,
+      "zaman_sn": 61.061,
+      "dosya": "dji_20260822172613_0038_d/frame_000032_000001830.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1860,
+      "zaman_sn": 62.062,
+      "dosya": "dji_20260822172613_0038_d/frame_000033_000001860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1890,
+      "zaman_sn": 63.063,
+      "dosya": "dji_20260822172613_0038_d/frame_000034_000001890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1920,
+      "zaman_sn": 64.064,
+      "dosya": "dji_20260822172613_0038_d/frame_000035_000001920.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1950,
+      "zaman_sn": 65.065,
+      "dosya": "dji_20260822172613_0038_d/frame_000036_000001950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 1980,
+      "zaman_sn": 66.066,
+      "dosya": "dji_20260822172613_0038_d/frame_000037_000001980.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2010,
+      "zaman_sn": 67.067,
+      "dosya": "dji_20260822172613_0038_d/frame_000038_000002010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2040,
+      "zaman_sn": 68.068,
+      "dosya": "dji_20260822172613_0038_d/frame_000039_000002040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2070,
+      "zaman_sn": 69.069,
+      "dosya": "dji_20260822172613_0038_d/frame_000040_000002070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2100,
+      "zaman_sn": 70.07,
+      "dosya": "dji_20260822172613_0038_d/frame_000041_000002100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2130,
+      "zaman_sn": 71.071,
+      "dosya": "dji_20260822172613_0038_d/frame_000042_000002130.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2160,
+      "zaman_sn": 72.072,
+      "dosya": "dji_20260822172613_0038_d/frame_000043_000002160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2190,
+      "zaman_sn": 73.073,
+      "dosya": "dji_20260822172613_0038_d/frame_000044_000002190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2220,
+      "zaman_sn": 74.074,
+      "dosya": "dji_20260822172613_0038_d/frame_000045_000002220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2250,
+      "zaman_sn": 75.075,
+      "dosya": "dji_20260822172613_0038_d/frame_000046_000002250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2280,
+      "zaman_sn": 76.076,
+      "dosya": "dji_20260822172613_0038_d/frame_000047_000002280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2310,
+      "zaman_sn": 77.077,
+      "dosya": "dji_20260822172613_0038_d/frame_000048_000002310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2340,
+      "zaman_sn": 78.078,
+      "dosya": "dji_20260822172613_0038_d/frame_000049_000002340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2370,
+      "zaman_sn": 79.079,
+      "dosya": "dji_20260822172613_0038_d/frame_000050_000002370.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2400,
+      "zaman_sn": 80.08,
+      "dosya": "dji_20260822172613_0038_d/frame_000051_000002400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2430,
+      "zaman_sn": 81.081,
+      "dosya": "dji_20260822172613_0038_d/frame_000052_000002430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2460,
+      "zaman_sn": 82.082,
+      "dosya": "dji_20260822172613_0038_d/frame_000053_000002460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2490,
+      "zaman_sn": 83.083,
+      "dosya": "dji_20260822172613_0038_d/frame_000054_000002490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2550,
+      "zaman_sn": 85.085,
+      "dosya": "dji_20260822172613_0038_d/frame_000055_000002550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2580,
+      "zaman_sn": 86.086,
+      "dosya": "dji_20260822172613_0038_d/frame_000056_000002580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2610,
+      "zaman_sn": 87.087,
+      "dosya": "dji_20260822172613_0038_d/frame_000057_000002610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2640,
+      "zaman_sn": 88.088,
+      "dosya": "dji_20260822172613_0038_d/frame_000058_000002640.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2670,
+      "zaman_sn": 89.089,
+      "dosya": "dji_20260822172613_0038_d/frame_000059_000002670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2700,
+      "zaman_sn": 90.09,
+      "dosya": "dji_20260822172613_0038_d/frame_000060_000002700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2760,
+      "zaman_sn": 92.092,
+      "dosya": "dji_20260822172613_0038_d/frame_000061_000002760.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2820,
+      "zaman_sn": 94.094,
+      "dosya": "dji_20260822172613_0038_d/frame_000062_000002820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2850,
+      "zaman_sn": 95.095,
+      "dosya": "dji_20260822172613_0038_d/frame_000063_000002850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2910,
+      "zaman_sn": 97.097,
+      "dosya": "dji_20260822172613_0038_d/frame_000064_000002910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 2970,
+      "zaman_sn": 99.099,
+      "dosya": "dji_20260822172613_0038_d/frame_000065_000002970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3000,
+      "zaman_sn": 100.1,
+      "dosya": "dji_20260822172613_0038_d/frame_000066_000003000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3030,
+      "zaman_sn": 101.101,
+      "dosya": "dji_20260822172613_0038_d/frame_000067_000003030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3060,
+      "zaman_sn": 102.102,
+      "dosya": "dji_20260822172613_0038_d/frame_000068_000003060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3090,
+      "zaman_sn": 103.103,
+      "dosya": "dji_20260822172613_0038_d/frame_000069_000003090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3120,
+      "zaman_sn": 104.104,
+      "dosya": "dji_20260822172613_0038_d/frame_000070_000003120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3180,
+      "zaman_sn": 106.106,
+      "dosya": "dji_20260822172613_0038_d/frame_000071_000003180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3210,
+      "zaman_sn": 107.107,
+      "dosya": "dji_20260822172613_0038_d/frame_000072_000003210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3240,
+      "zaman_sn": 108.108,
+      "dosya": "dji_20260822172613_0038_d/frame_000073_000003240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3270,
+      "zaman_sn": 109.109,
+      "dosya": "dji_20260822172613_0038_d/frame_000074_000003270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3300,
+      "zaman_sn": 110.11,
+      "dosya": "dji_20260822172613_0038_d/frame_000075_000003300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3360,
+      "zaman_sn": 112.112,
+      "dosya": "dji_20260822172613_0038_d/frame_000076_000003360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3390,
+      "zaman_sn": 113.113,
+      "dosya": "dji_20260822172613_0038_d/frame_000077_000003390.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3450,
+      "zaman_sn": 115.115,
+      "dosya": "dji_20260822172613_0038_d/frame_000078_000003450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3510,
+      "zaman_sn": 117.117,
+      "dosya": "dji_20260822172613_0038_d/frame_000079_000003510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3540,
+      "zaman_sn": 118.118,
+      "dosya": "dji_20260822172613_0038_d/frame_000080_000003540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3570,
+      "zaman_sn": 119.119,
+      "dosya": "dji_20260822172613_0038_d/frame_000081_000003570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3600,
+      "zaman_sn": 120.12,
+      "dosya": "dji_20260822172613_0038_d/frame_000082_000003600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3660,
+      "zaman_sn": 122.122,
+      "dosya": "dji_20260822172613_0038_d/frame_000083_000003660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3690,
+      "zaman_sn": 123.123,
+      "dosya": "dji_20260822172613_0038_d/frame_000084_000003690.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3720,
+      "zaman_sn": 124.124,
+      "dosya": "dji_20260822172613_0038_d/frame_000085_000003720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3750,
+      "zaman_sn": 125.125,
+      "dosya": "dji_20260822172613_0038_d/frame_000086_000003750.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3780,
+      "zaman_sn": 126.126,
+      "dosya": "dji_20260822172613_0038_d/frame_000087_000003780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3810,
+      "zaman_sn": 127.127,
+      "dosya": "dji_20260822172613_0038_d/frame_000088_000003810.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3840,
+      "zaman_sn": 128.128,
+      "dosya": "dji_20260822172613_0038_d/frame_000089_000003840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3870,
+      "zaman_sn": 129.129,
+      "dosya": "dji_20260822172613_0038_d/frame_000090_000003870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3900,
+      "zaman_sn": 130.13,
+      "dosya": "dji_20260822172613_0038_d/frame_000091_000003900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3930,
+      "zaman_sn": 131.131,
+      "dosya": "dji_20260822172613_0038_d/frame_000092_000003930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3960,
+      "zaman_sn": 132.132,
+      "dosya": "dji_20260822172613_0038_d/frame_000093_000003960.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 3990,
+      "zaman_sn": 133.133,
+      "dosya": "dji_20260822172613_0038_d/frame_000094_000003990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4020,
+      "zaman_sn": 134.134,
+      "dosya": "dji_20260822172613_0038_d/frame_000095_000004020.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4050,
+      "zaman_sn": 135.135,
+      "dosya": "dji_20260822172613_0038_d/frame_000096_000004050.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4080,
+      "zaman_sn": 136.136,
+      "dosya": "dji_20260822172613_0038_d/frame_000097_000004080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4110,
+      "zaman_sn": 137.137,
+      "dosya": "dji_20260822172613_0038_d/frame_000098_000004110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4140,
+      "zaman_sn": 138.138,
+      "dosya": "dji_20260822172613_0038_d/frame_000099_000004140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4170,
+      "zaman_sn": 139.139,
+      "dosya": "dji_20260822172613_0038_d/frame_000100_000004170.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4200,
+      "zaman_sn": 140.14,
+      "dosya": "dji_20260822172613_0038_d/frame_000101_000004200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4230,
+      "zaman_sn": 141.141,
+      "dosya": "dji_20260822172613_0038_d/frame_000102_000004230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4260,
+      "zaman_sn": 142.142,
+      "dosya": "dji_20260822172613_0038_d/frame_000103_000004260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4290,
+      "zaman_sn": 143.143,
+      "dosya": "dji_20260822172613_0038_d/frame_000104_000004290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4320,
+      "zaman_sn": 144.144,
+      "dosya": "dji_20260822172613_0038_d/frame_000105_000004320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4350,
+      "zaman_sn": 145.145,
+      "dosya": "dji_20260822172613_0038_d/frame_000106_000004350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4380,
+      "zaman_sn": 146.146,
+      "dosya": "dji_20260822172613_0038_d/frame_000107_000004380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4410,
+      "zaman_sn": 147.147,
+      "dosya": "dji_20260822172613_0038_d/frame_000108_000004410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4440,
+      "zaman_sn": 148.148,
+      "dosya": "dji_20260822172613_0038_d/frame_000109_000004440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4470,
+      "zaman_sn": 149.149,
+      "dosya": "dji_20260822172613_0038_d/frame_000110_000004470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4500,
+      "zaman_sn": 150.15,
+      "dosya": "dji_20260822172613_0038_d/frame_000111_000004500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4530,
+      "zaman_sn": 151.151,
+      "dosya": "dji_20260822172613_0038_d/frame_000112_000004530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4560,
+      "zaman_sn": 152.152,
+      "dosya": "dji_20260822172613_0038_d/frame_000113_000004560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4590,
+      "zaman_sn": 153.153,
+      "dosya": "dji_20260822172613_0038_d/frame_000114_000004590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4620,
+      "zaman_sn": 154.154,
+      "dosya": "dji_20260822172613_0038_d/frame_000115_000004620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4650,
+      "zaman_sn": 155.155,
+      "dosya": "dji_20260822172613_0038_d/frame_000116_000004650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4680,
+      "zaman_sn": 156.156,
+      "dosya": "dji_20260822172613_0038_d/frame_000117_000004680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4710,
+      "zaman_sn": 157.157,
+      "dosya": "dji_20260822172613_0038_d/frame_000118_000004710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4740,
+      "zaman_sn": 158.158,
+      "dosya": "dji_20260822172613_0038_d/frame_000119_000004740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4770,
+      "zaman_sn": 159.159,
+      "dosya": "dji_20260822172613_0038_d/frame_000120_000004770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4800,
+      "zaman_sn": 160.16,
+      "dosya": "dji_20260822172613_0038_d/frame_000121_000004800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4830,
+      "zaman_sn": 161.161,
+      "dosya": "dji_20260822172613_0038_d/frame_000122_000004830.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4860,
+      "zaman_sn": 162.162,
+      "dosya": "dji_20260822172613_0038_d/frame_000123_000004860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4890,
+      "zaman_sn": 163.163,
+      "dosya": "dji_20260822172613_0038_d/frame_000124_000004890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4920,
+      "zaman_sn": 164.164,
+      "dosya": "dji_20260822172613_0038_d/frame_000125_000004920.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4950,
+      "zaman_sn": 165.165,
+      "dosya": "dji_20260822172613_0038_d/frame_000126_000004950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 4980,
+      "zaman_sn": 166.166,
+      "dosya": "dji_20260822172613_0038_d/frame_000127_000004980.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5010,
+      "zaman_sn": 167.167,
+      "dosya": "dji_20260822172613_0038_d/frame_000128_000005010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5040,
+      "zaman_sn": 168.168,
+      "dosya": "dji_20260822172613_0038_d/frame_000129_000005040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5070,
+      "zaman_sn": 169.169,
+      "dosya": "dji_20260822172613_0038_d/frame_000130_000005070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5100,
+      "zaman_sn": 170.17,
+      "dosya": "dji_20260822172613_0038_d/frame_000131_000005100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5130,
+      "zaman_sn": 171.171,
+      "dosya": "dji_20260822172613_0038_d/frame_000132_000005130.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5160,
+      "zaman_sn": 172.172,
+      "dosya": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5190,
+      "zaman_sn": 173.173,
+      "dosya": "dji_20260822172613_0038_d/frame_000134_000005190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5220,
+      "zaman_sn": 174.174,
+      "dosya": "dji_20260822172613_0038_d/frame_000135_000005220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5250,
+      "zaman_sn": 175.175,
+      "dosya": "dji_20260822172613_0038_d/frame_000136_000005250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5280,
+      "zaman_sn": 176.176,
+      "dosya": "dji_20260822172613_0038_d/frame_000137_000005280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5310,
+      "zaman_sn": 177.177,
+      "dosya": "dji_20260822172613_0038_d/frame_000138_000005310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5340,
+      "zaman_sn": 178.178,
+      "dosya": "dji_20260822172613_0038_d/frame_000139_000005340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5370,
+      "zaman_sn": 179.179,
+      "dosya": "dji_20260822172613_0038_d/frame_000140_000005370.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5400,
+      "zaman_sn": 180.18,
+      "dosya": "dji_20260822172613_0038_d/frame_000141_000005400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5430,
+      "zaman_sn": 181.181,
+      "dosya": "dji_20260822172613_0038_d/frame_000142_000005430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5460,
+      "zaman_sn": 182.182,
+      "dosya": "dji_20260822172613_0038_d/frame_000143_000005460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5490,
+      "zaman_sn": 183.183,
+      "dosya": "dji_20260822172613_0038_d/frame_000144_000005490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5520,
+      "zaman_sn": 184.184,
+      "dosya": "dji_20260822172613_0038_d/frame_000145_000005520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5550,
+      "zaman_sn": 185.185,
+      "dosya": "dji_20260822172613_0038_d/frame_000146_000005550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5580,
+      "zaman_sn": 186.186,
+      "dosya": "dji_20260822172613_0038_d/frame_000147_000005580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5640,
+      "zaman_sn": 188.188,
+      "dosya": "dji_20260822172613_0038_d/frame_000148_000005640.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5670,
+      "zaman_sn": 189.189,
+      "dosya": "dji_20260822172613_0038_d/frame_000149_000005670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5700,
+      "zaman_sn": 190.19,
+      "dosya": "dji_20260822172613_0038_d/frame_000150_000005700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5730,
+      "zaman_sn": 191.191,
+      "dosya": "dji_20260822172613_0038_d/frame_000151_000005730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5760,
+      "zaman_sn": 192.192,
+      "dosya": "dji_20260822172613_0038_d/frame_000152_000005760.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5790,
+      "zaman_sn": 193.193,
+      "dosya": "dji_20260822172613_0038_d/frame_000153_000005790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5820,
+      "zaman_sn": 194.194,
+      "dosya": "dji_20260822172613_0038_d/frame_000154_000005820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5850,
+      "zaman_sn": 195.195,
+      "dosya": "dji_20260822172613_0038_d/frame_000155_000005850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5880,
+      "zaman_sn": 196.196,
+      "dosya": "dji_20260822172613_0038_d/frame_000156_000005880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5910,
+      "zaman_sn": 197.197,
+      "dosya": "dji_20260822172613_0038_d/frame_000157_000005910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5940,
+      "zaman_sn": 198.198,
+      "dosya": "dji_20260822172613_0038_d/frame_000158_000005940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 5970,
+      "zaman_sn": 199.199,
+      "dosya": "dji_20260822172613_0038_d/frame_000159_000005970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6000,
+      "zaman_sn": 200.2,
+      "dosya": "dji_20260822172613_0038_d/frame_000160_000006000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6030,
+      "zaman_sn": 201.201,
+      "dosya": "dji_20260822172613_0038_d/frame_000161_000006030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6060,
+      "zaman_sn": 202.202,
+      "dosya": "dji_20260822172613_0038_d/frame_000162_000006060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6090,
+      "zaman_sn": 203.203,
+      "dosya": "dji_20260822172613_0038_d/frame_000163_000006090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6120,
+      "zaman_sn": 204.204,
+      "dosya": "dji_20260822172613_0038_d/frame_000164_000006120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6150,
+      "zaman_sn": 205.205,
+      "dosya": "dji_20260822172613_0038_d/frame_000165_000006150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6180,
+      "zaman_sn": 206.206,
+      "dosya": "dji_20260822172613_0038_d/frame_000166_000006180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6210,
+      "zaman_sn": 207.207,
+      "dosya": "dji_20260822172613_0038_d/frame_000167_000006210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6240,
+      "zaman_sn": 208.208,
+      "dosya": "dji_20260822172613_0038_d/frame_000168_000006240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6270,
+      "zaman_sn": 209.209,
+      "dosya": "dji_20260822172613_0038_d/frame_000169_000006270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6300,
+      "zaman_sn": 210.21,
+      "dosya": "dji_20260822172613_0038_d/frame_000170_000006300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6360,
+      "zaman_sn": 212.212,
+      "dosya": "dji_20260822172613_0038_d/frame_000171_000006360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6420,
+      "zaman_sn": 214.214,
+      "dosya": "dji_20260822172613_0038_d/frame_000172_000006420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6450,
+      "zaman_sn": 215.215,
+      "dosya": "dji_20260822172613_0038_d/frame_000173_000006450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6510,
+      "zaman_sn": 217.217,
+      "dosya": "dji_20260822172613_0038_d/frame_000174_000006510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6570,
+      "zaman_sn": 219.219,
+      "dosya": "dji_20260822172613_0038_d/frame_000175_000006570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6600,
+      "zaman_sn": 220.22,
+      "dosya": "dji_20260822172613_0038_d/frame_000176_000006600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6630,
+      "zaman_sn": 221.221,
+      "dosya": "dji_20260822172613_0038_d/frame_000177_000006630.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6660,
+      "zaman_sn": 222.222,
+      "dosya": "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6690,
+      "zaman_sn": 223.223,
+      "dosya": "dji_20260822172613_0038_d/frame_000179_000006690.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6720,
+      "zaman_sn": 224.224,
+      "dosya": "dji_20260822172613_0038_d/frame_000180_000006720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6750,
+      "zaman_sn": 225.225,
+      "dosya": "dji_20260822172613_0038_d/frame_000181_000006750.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6780,
+      "zaman_sn": 226.226,
+      "dosya": "dji_20260822172613_0038_d/frame_000182_000006780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6840,
+      "zaman_sn": 228.228,
+      "dosya": "dji_20260822172613_0038_d/frame_000183_000006840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6870,
+      "zaman_sn": 229.229,
+      "dosya": "dji_20260822172613_0038_d/frame_000184_000006870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6930,
+      "zaman_sn": 231.231,
+      "dosya": "dji_20260822172613_0038_d/frame_000185_000006930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6960,
+      "zaman_sn": 232.232,
+      "dosya": "dji_20260822172613_0038_d/frame_000186_000006960.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 6990,
+      "zaman_sn": 233.233,
+      "dosya": "dji_20260822172613_0038_d/frame_000187_000006990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7050,
+      "zaman_sn": 235.235,
+      "dosya": "dji_20260822172613_0038_d/frame_000188_000007050.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7080,
+      "zaman_sn": 236.236,
+      "dosya": "dji_20260822172613_0038_d/frame_000189_000007080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7110,
+      "zaman_sn": 237.237,
+      "dosya": "dji_20260822172613_0038_d/frame_000190_000007110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7140,
+      "zaman_sn": 238.238,
+      "dosya": "dji_20260822172613_0038_d/frame_000191_000007140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7170,
+      "zaman_sn": 239.239,
+      "dosya": "dji_20260822172613_0038_d/frame_000192_000007170.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7200,
+      "zaman_sn": 240.24,
+      "dosya": "dji_20260822172613_0038_d/frame_000193_000007200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7230,
+      "zaman_sn": 241.241,
+      "dosya": "dji_20260822172613_0038_d/frame_000194_000007230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7260,
+      "zaman_sn": 242.242,
+      "dosya": "dji_20260822172613_0038_d/frame_000195_000007260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7290,
+      "zaman_sn": 243.243,
+      "dosya": "dji_20260822172613_0038_d/frame_000196_000007290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7320,
+      "zaman_sn": 244.244,
+      "dosya": "dji_20260822172613_0038_d/frame_000197_000007320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7350,
+      "zaman_sn": 245.245,
+      "dosya": "dji_20260822172613_0038_d/frame_000198_000007350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7380,
+      "zaman_sn": 246.246,
+      "dosya": "dji_20260822172613_0038_d/frame_000199_000007380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7410,
+      "zaman_sn": 247.247,
+      "dosya": "dji_20260822172613_0038_d/frame_000200_000007410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7440,
+      "zaman_sn": 248.248,
+      "dosya": "dji_20260822172613_0038_d/frame_000201_000007440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7470,
+      "zaman_sn": 249.249,
+      "dosya": "dji_20260822172613_0038_d/frame_000202_000007470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7500,
+      "zaman_sn": 250.25,
+      "dosya": "dji_20260822172613_0038_d/frame_000203_000007500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7530,
+      "zaman_sn": 251.251,
+      "dosya": "dji_20260822172613_0038_d/frame_000204_000007530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7560,
+      "zaman_sn": 252.252,
+      "dosya": "dji_20260822172613_0038_d/frame_000205_000007560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7590,
+      "zaman_sn": 253.253,
+      "dosya": "dji_20260822172613_0038_d/frame_000206_000007590.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7620,
+      "zaman_sn": 254.254,
+      "dosya": "dji_20260822172613_0038_d/frame_000207_000007620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7650,
+      "zaman_sn": 255.255,
+      "dosya": "dji_20260822172613_0038_d/frame_000208_000007650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7680,
+      "zaman_sn": 256.256,
+      "dosya": "dji_20260822172613_0038_d/frame_000209_000007680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7710,
+      "zaman_sn": 257.257,
+      "dosya": "dji_20260822172613_0038_d/frame_000210_000007710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7740,
+      "zaman_sn": 258.258,
+      "dosya": "dji_20260822172613_0038_d/frame_000211_000007740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7770,
+      "zaman_sn": 259.259,
+      "dosya": "dji_20260822172613_0038_d/frame_000212_000007770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7800,
+      "zaman_sn": 260.26,
+      "dosya": "dji_20260822172613_0038_d/frame_000213_000007800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7830,
+      "zaman_sn": 261.261,
+      "dosya": "dji_20260822172613_0038_d/frame_000214_000007830.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7860,
+      "zaman_sn": 262.262,
+      "dosya": "dji_20260822172613_0038_d/frame_000215_000007860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7890,
+      "zaman_sn": 263.263,
+      "dosya": "dji_20260822172613_0038_d/frame_000216_000007890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7950,
+      "zaman_sn": 265.265,
+      "dosya": "dji_20260822172613_0038_d/frame_000217_000007950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 7980,
+      "zaman_sn": 266.266,
+      "dosya": "dji_20260822172613_0038_d/frame_000218_000007980.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8010,
+      "zaman_sn": 267.267,
+      "dosya": "dji_20260822172613_0038_d/frame_000219_000008010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8040,
+      "zaman_sn": 268.268,
+      "dosya": "dji_20260822172613_0038_d/frame_000220_000008040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8100,
+      "zaman_sn": 270.27,
+      "dosya": "dji_20260822172613_0038_d/frame_000221_000008100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8220,
+      "zaman_sn": 274.274,
+      "dosya": "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8250,
+      "zaman_sn": 275.275,
+      "dosya": "dji_20260822172613_0038_d/frame_000223_000008250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8280,
+      "zaman_sn": 276.276,
+      "dosya": "dji_20260822172613_0038_d/frame_000224_000008280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8310,
+      "zaman_sn": 277.277,
+      "dosya": "dji_20260822172613_0038_d/frame_000225_000008310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8340,
+      "zaman_sn": 278.278,
+      "dosya": "dji_20260822172613_0038_d/frame_000226_000008340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8430,
+      "zaman_sn": 281.281,
+      "dosya": "dji_20260822172613_0038_d/frame_000227_000008430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8460,
+      "zaman_sn": 282.282,
+      "dosya": "dji_20260822172613_0038_d/frame_000228_000008460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8490,
+      "zaman_sn": 283.283,
+      "dosya": "dji_20260822172613_0038_d/frame_000229_000008490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8520,
+      "zaman_sn": 284.284,
+      "dosya": "dji_20260822172613_0038_d/frame_000230_000008520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8610,
+      "zaman_sn": 287.287,
+      "dosya": "dji_20260822172613_0038_d/frame_000231_000008610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8670,
+      "zaman_sn": 289.289,
+      "dosya": "dji_20260822172613_0038_d/frame_000232_000008670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8730,
+      "zaman_sn": 291.291,
+      "dosya": "dji_20260822172613_0038_d/frame_000233_000008730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8790,
+      "zaman_sn": 293.293,
+      "dosya": "dji_20260822172613_0038_d/frame_000234_000008790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8820,
+      "zaman_sn": 294.294,
+      "dosya": "dji_20260822172613_0038_d/frame_000235_000008820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8850,
+      "zaman_sn": 295.295,
+      "dosya": "dji_20260822172613_0038_d/frame_000236_000008850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8880,
+      "zaman_sn": 296.296,
+      "dosya": "dji_20260822172613_0038_d/frame_000237_000008880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8910,
+      "zaman_sn": 297.297,
+      "dosya": "dji_20260822172613_0038_d/frame_000238_000008910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8940,
+      "zaman_sn": 298.298,
+      "dosya": "dji_20260822172613_0038_d/frame_000239_000008940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 8970,
+      "zaman_sn": 299.299,
+      "dosya": "dji_20260822172613_0038_d/frame_000240_000008970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 9000,
+      "zaman_sn": 300.3,
+      "dosya": "dji_20260822172613_0038_d/frame_000241_000009000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 9030,
+      "zaman_sn": 301.301,
+      "dosya": "dji_20260822172613_0038_d/frame_000242_000009030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 9060,
+      "zaman_sn": 302.302,
+      "dosya": "dji_20260822172613_0038_d/frame_000243_000009060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 9090,
+      "zaman_sn": 303.303,
+      "dosya": "dji_20260822172613_0038_d/frame_000244_000009090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822172613_0038_D.MP4",
+      "kare_no": 9120,
+      "zaman_sn": 304.304,
+      "dosya": "dji_20260822172613_0038_d/frame_000245_000009120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 180,
+      "zaman_sn": 6.006,
+      "dosya": "dji_20260822173231_0039_d/frame_000001_000000180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 300,
+      "zaman_sn": 10.01,
+      "dosya": "dji_20260822173231_0039_d/frame_000002_000000300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 360,
+      "zaman_sn": 12.012,
+      "dosya": "dji_20260822173231_0039_d/frame_000003_000000360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 420,
+      "zaman_sn": 14.014,
+      "dosya": "dji_20260822173231_0039_d/frame_000004_000000420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 600,
+      "zaman_sn": 20.02,
+      "dosya": "dji_20260822173231_0039_d/frame_000005_000000600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 660,
+      "zaman_sn": 22.022,
+      "dosya": "dji_20260822173231_0039_d/frame_000006_000000660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 690,
+      "zaman_sn": 23.023,
+      "dosya": "dji_20260822173231_0039_d/frame_000007_000000690.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 720,
+      "zaman_sn": 24.024,
+      "dosya": "dji_20260822173231_0039_d/frame_000008_000000720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 750,
+      "zaman_sn": 25.025,
+      "dosya": "dji_20260822173231_0039_d/frame_000009_000000750.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 840,
+      "zaman_sn": 28.028,
+      "dosya": "dji_20260822173231_0039_d/frame_000010_000000840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 870,
+      "zaman_sn": 29.029,
+      "dosya": "dji_20260822173231_0039_d/frame_000011_000000870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 930,
+      "zaman_sn": 31.031,
+      "dosya": "dji_20260822173231_0039_d/frame_000012_000000930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1110,
+      "zaman_sn": 37.037,
+      "dosya": "dji_20260822173231_0039_d/frame_000013_000001110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1140,
+      "zaman_sn": 38.038,
+      "dosya": "dji_20260822173231_0039_d/frame_000014_000001140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1200,
+      "zaman_sn": 40.04,
+      "dosya": "dji_20260822173231_0039_d/frame_000015_000001200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1230,
+      "zaman_sn": 41.041,
+      "dosya": "dji_20260822173231_0039_d/frame_000016_000001230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1260,
+      "zaman_sn": 42.042,
+      "dosya": "dji_20260822173231_0039_d/frame_000017_000001260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1290,
+      "zaman_sn": 43.043,
+      "dosya": "dji_20260822173231_0039_d/frame_000018_000001290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1350,
+      "zaman_sn": 45.045,
+      "dosya": "dji_20260822173231_0039_d/frame_000019_000001350.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1410,
+      "zaman_sn": 47.047,
+      "dosya": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1560,
+      "zaman_sn": 52.052,
+      "dosya": "dji_20260822173231_0039_d/frame_000021_000001560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1620,
+      "zaman_sn": 54.054,
+      "dosya": "dji_20260822173231_0039_d/frame_000022_000001620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1800,
+      "zaman_sn": 60.06,
+      "dosya": "dji_20260822173231_0039_d/frame_000023_000001800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1890,
+      "zaman_sn": 63.063,
+      "dosya": "dji_20260822173231_0039_d/frame_000024_000001890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 1950,
+      "zaman_sn": 65.065,
+      "dosya": "dji_20260822173231_0039_d/frame_000025_000001950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2010,
+      "zaman_sn": 67.067,
+      "dosya": "dji_20260822173231_0039_d/frame_000026_000002010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2070,
+      "zaman_sn": 69.069,
+      "dosya": "dji_20260822173231_0039_d/frame_000027_000002070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2130,
+      "zaman_sn": 71.071,
+      "dosya": "dji_20260822173231_0039_d/frame_000028_000002130.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2190,
+      "zaman_sn": 73.073,
+      "dosya": "dji_20260822173231_0039_d/frame_000029_000002190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2250,
+      "zaman_sn": 75.075,
+      "dosya": "dji_20260822173231_0039_d/frame_000030_000002250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2280,
+      "zaman_sn": 76.076,
+      "dosya": "dji_20260822173231_0039_d/frame_000031_000002280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2310,
+      "zaman_sn": 77.077,
+      "dosya": "dji_20260822173231_0039_d/frame_000032_000002310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2370,
+      "zaman_sn": 79.079,
+      "dosya": "dji_20260822173231_0039_d/frame_000033_000002370.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2490,
+      "zaman_sn": 83.083,
+      "dosya": "dji_20260822173231_0039_d/frame_000034_000002490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2550,
+      "zaman_sn": 85.085,
+      "dosya": "dji_20260822173231_0039_d/frame_000035_000002550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2580,
+      "zaman_sn": 86.086,
+      "dosya": "dji_20260822173231_0039_d/frame_000036_000002580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2610,
+      "zaman_sn": 87.087,
+      "dosya": "dji_20260822173231_0039_d/frame_000037_000002610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2640,
+      "zaman_sn": 88.088,
+      "dosya": "dji_20260822173231_0039_d/frame_000038_000002640.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2700,
+      "zaman_sn": 90.09,
+      "dosya": "dji_20260822173231_0039_d/frame_000039_000002700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2730,
+      "zaman_sn": 91.091,
+      "dosya": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2760,
+      "zaman_sn": 92.092,
+      "dosya": "dji_20260822173231_0039_d/frame_000041_000002760.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2790,
+      "zaman_sn": 93.093,
+      "dosya": "dji_20260822173231_0039_d/frame_000042_000002790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2820,
+      "zaman_sn": 94.094,
+      "dosya": "dji_20260822173231_0039_d/frame_000043_000002820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2850,
+      "zaman_sn": 95.095,
+      "dosya": "dji_20260822173231_0039_d/frame_000044_000002850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2880,
+      "zaman_sn": 96.096,
+      "dosya": "dji_20260822173231_0039_d/frame_000045_000002880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2910,
+      "zaman_sn": 97.097,
+      "dosya": "dji_20260822173231_0039_d/frame_000046_000002910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2940,
+      "zaman_sn": 98.098,
+      "dosya": "dji_20260822173231_0039_d/frame_000047_000002940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 2970,
+      "zaman_sn": 99.099,
+      "dosya": "dji_20260822173231_0039_d/frame_000048_000002970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3030,
+      "zaman_sn": 101.101,
+      "dosya": "dji_20260822173231_0039_d/frame_000049_000003030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3090,
+      "zaman_sn": 103.103,
+      "dosya": "dji_20260822173231_0039_d/frame_000050_000003090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3120,
+      "zaman_sn": 104.104,
+      "dosya": "dji_20260822173231_0039_d/frame_000051_000003120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3150,
+      "zaman_sn": 105.105,
+      "dosya": "dji_20260822173231_0039_d/frame_000052_000003150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3180,
+      "zaman_sn": 106.106,
+      "dosya": "dji_20260822173231_0039_d/frame_000053_000003180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3240,
+      "zaman_sn": 108.108,
+      "dosya": "dji_20260822173231_0039_d/frame_000054_000003240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3270,
+      "zaman_sn": 109.109,
+      "dosya": "dji_20260822173231_0039_d/frame_000055_000003270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3330,
+      "zaman_sn": 111.111,
+      "dosya": "dji_20260822173231_0039_d/frame_000056_000003330.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3360,
+      "zaman_sn": 112.112,
+      "dosya": "dji_20260822173231_0039_d/frame_000057_000003360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3390,
+      "zaman_sn": 113.113,
+      "dosya": "dji_20260822173231_0039_d/frame_000058_000003390.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3420,
+      "zaman_sn": 114.114,
+      "dosya": "dji_20260822173231_0039_d/frame_000059_000003420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3480,
+      "zaman_sn": 116.116,
+      "dosya": "dji_20260822173231_0039_d/frame_000060_000003480.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3510,
+      "zaman_sn": 117.117,
+      "dosya": "dji_20260822173231_0039_d/frame_000061_000003510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3540,
+      "zaman_sn": 118.118,
+      "dosya": "dji_20260822173231_0039_d/frame_000062_000003540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3570,
+      "zaman_sn": 119.119,
+      "dosya": "dji_20260822173231_0039_d/frame_000063_000003570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3600,
+      "zaman_sn": 120.12,
+      "dosya": "dji_20260822173231_0039_d/frame_000064_000003600.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3630,
+      "zaman_sn": 121.121,
+      "dosya": "dji_20260822173231_0039_d/frame_000065_000003630.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3690,
+      "zaman_sn": 123.123,
+      "dosya": "dji_20260822173231_0039_d/frame_000066_000003690.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3720,
+      "zaman_sn": 124.124,
+      "dosya": "dji_20260822173231_0039_d/frame_000067_000003720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3780,
+      "zaman_sn": 126.126,
+      "dosya": "dji_20260822173231_0039_d/frame_000068_000003780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3870,
+      "zaman_sn": 129.129,
+      "dosya": "dji_20260822173231_0039_d/frame_000069_000003870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 3930,
+      "zaman_sn": 131.131,
+      "dosya": "dji_20260822173231_0039_d/frame_000070_000003930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4020,
+      "zaman_sn": 134.134,
+      "dosya": "dji_20260822173231_0039_d/frame_000071_000004020.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4050,
+      "zaman_sn": 135.135,
+      "dosya": "dji_20260822173231_0039_d/frame_000072_000004050.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4080,
+      "zaman_sn": 136.136,
+      "dosya": "dji_20260822173231_0039_d/frame_000073_000004080.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4140,
+      "zaman_sn": 138.138,
+      "dosya": "dji_20260822173231_0039_d/frame_000074_000004140.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4260,
+      "zaman_sn": 142.142,
+      "dosya": "dji_20260822173231_0039_d/frame_000075_000004260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4290,
+      "zaman_sn": 143.143,
+      "dosya": "dji_20260822173231_0039_d/frame_000076_000004290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4320,
+      "zaman_sn": 144.144,
+      "dosya": "dji_20260822173231_0039_d/frame_000077_000004320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4380,
+      "zaman_sn": 146.146,
+      "dosya": "dji_20260822173231_0039_d/frame_000078_000004380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4470,
+      "zaman_sn": 149.149,
+      "dosya": "dji_20260822173231_0039_d/frame_000079_000004470.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4500,
+      "zaman_sn": 150.15,
+      "dosya": "dji_20260822173231_0039_d/frame_000080_000004500.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4560,
+      "zaman_sn": 152.152,
+      "dosya": "dji_20260822173231_0039_d/frame_000081_000004560.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4620,
+      "zaman_sn": 154.154,
+      "dosya": "dji_20260822173231_0039_d/frame_000082_000004620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4650,
+      "zaman_sn": 155.155,
+      "dosya": "dji_20260822173231_0039_d/frame_000083_000004650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4680,
+      "zaman_sn": 156.156,
+      "dosya": "dji_20260822173231_0039_d/frame_000084_000004680.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4740,
+      "zaman_sn": 158.158,
+      "dosya": "dji_20260822173231_0039_d/frame_000085_000004740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4800,
+      "zaman_sn": 160.16,
+      "dosya": "dji_20260822173231_0039_d/frame_000086_000004800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4860,
+      "zaman_sn": 162.162,
+      "dosya": "dji_20260822173231_0039_d/frame_000087_000004860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4920,
+      "zaman_sn": 164.164,
+      "dosya": "dji_20260822173231_0039_d/frame_000088_000004920.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 4950,
+      "zaman_sn": 165.165,
+      "dosya": "dji_20260822173231_0039_d/frame_000089_000004950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5040,
+      "zaman_sn": 168.168,
+      "dosya": "dji_20260822173231_0039_d/frame_000090_000005040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5100,
+      "zaman_sn": 170.17,
+      "dosya": "dji_20260822173231_0039_d/frame_000091_000005100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5190,
+      "zaman_sn": 173.173,
+      "dosya": "dji_20260822173231_0039_d/frame_000092_000005190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5220,
+      "zaman_sn": 174.174,
+      "dosya": "dji_20260822173231_0039_d/frame_000093_000005220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5250,
+      "zaman_sn": 175.175,
+      "dosya": "dji_20260822173231_0039_d/frame_000094_000005250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5280,
+      "zaman_sn": 176.176,
+      "dosya": "dji_20260822173231_0039_d/frame_000095_000005280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5310,
+      "zaman_sn": 177.177,
+      "dosya": "dji_20260822173231_0039_d/frame_000096_000005310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5340,
+      "zaman_sn": 178.178,
+      "dosya": "dji_20260822173231_0039_d/frame_000097_000005340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5430,
+      "zaman_sn": 181.181,
+      "dosya": "dji_20260822173231_0039_d/frame_000098_000005430.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5460,
+      "zaman_sn": 182.182,
+      "dosya": "dji_20260822173231_0039_d/frame_000099_000005460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5490,
+      "zaman_sn": 183.183,
+      "dosya": "dji_20260822173231_0039_d/frame_000100_000005490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5520,
+      "zaman_sn": 184.184,
+      "dosya": "dji_20260822173231_0039_d/frame_000101_000005520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5580,
+      "zaman_sn": 186.186,
+      "dosya": "dji_20260822173231_0039_d/frame_000102_000005580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5640,
+      "zaman_sn": 188.188,
+      "dosya": "dji_20260822173231_0039_d/frame_000103_000005640.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5670,
+      "zaman_sn": 189.189,
+      "dosya": "dji_20260822173231_0039_d/frame_000104_000005670.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5700,
+      "zaman_sn": 190.19,
+      "dosya": "dji_20260822173231_0039_d/frame_000105_000005700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5730,
+      "zaman_sn": 191.191,
+      "dosya": "dji_20260822173231_0039_d/frame_000106_000005730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5790,
+      "zaman_sn": 193.193,
+      "dosya": "dji_20260822173231_0039_d/frame_000107_000005790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5820,
+      "zaman_sn": 194.194,
+      "dosya": "dji_20260822173231_0039_d/frame_000108_000005820.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5880,
+      "zaman_sn": 196.196,
+      "dosya": "dji_20260822173231_0039_d/frame_000109_000005880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 5910,
+      "zaman_sn": 197.197,
+      "dosya": "dji_20260822173231_0039_d/frame_000110_000005910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6000,
+      "zaman_sn": 200.2,
+      "dosya": "dji_20260822173231_0039_d/frame_000111_000006000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6030,
+      "zaman_sn": 201.201,
+      "dosya": "dji_20260822173231_0039_d/frame_000112_000006030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6060,
+      "zaman_sn": 202.202,
+      "dosya": "dji_20260822173231_0039_d/frame_000113_000006060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6120,
+      "zaman_sn": 204.204,
+      "dosya": "dji_20260822173231_0039_d/frame_000114_000006120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6180,
+      "zaman_sn": 206.206,
+      "dosya": "dji_20260822173231_0039_d/frame_000115_000006180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6210,
+      "zaman_sn": 207.207,
+      "dosya": "dji_20260822173231_0039_d/frame_000116_000006210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6270,
+      "zaman_sn": 209.209,
+      "dosya": "dji_20260822173231_0039_d/frame_000117_000006270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6300,
+      "zaman_sn": 210.21,
+      "dosya": "dji_20260822173231_0039_d/frame_000118_000006300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6330,
+      "zaman_sn": 211.211,
+      "dosya": "dji_20260822173231_0039_d/frame_000119_000006330.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6360,
+      "zaman_sn": 212.212,
+      "dosya": "dji_20260822173231_0039_d/frame_000120_000006360.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6390,
+      "zaman_sn": 213.213,
+      "dosya": "dji_20260822173231_0039_d/frame_000121_000006390.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6420,
+      "zaman_sn": 214.214,
+      "dosya": "dji_20260822173231_0039_d/frame_000122_000006420.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6450,
+      "zaman_sn": 215.215,
+      "dosya": "dji_20260822173231_0039_d/frame_000123_000006450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6480,
+      "zaman_sn": 216.216,
+      "dosya": "dji_20260822173231_0039_d/frame_000124_000006480.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6540,
+      "zaman_sn": 218.218,
+      "dosya": "dji_20260822173231_0039_d/frame_000125_000006540.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6630,
+      "zaman_sn": 221.221,
+      "dosya": "dji_20260822173231_0039_d/frame_000126_000006630.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6660,
+      "zaman_sn": 222.222,
+      "dosya": "dji_20260822173231_0039_d/frame_000127_000006660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6720,
+      "zaman_sn": 224.224,
+      "dosya": "dji_20260822173231_0039_d/frame_000128_000006720.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6780,
+      "zaman_sn": 226.226,
+      "dosya": "dji_20260822173231_0039_d/frame_000129_000006780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6810,
+      "zaman_sn": 227.227,
+      "dosya": "dji_20260822173231_0039_d/frame_000130_000006810.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6870,
+      "zaman_sn": 229.229,
+      "dosya": "dji_20260822173231_0039_d/frame_000131_000006870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6900,
+      "zaman_sn": 230.23,
+      "dosya": "dji_20260822173231_0039_d/frame_000132_000006900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6930,
+      "zaman_sn": 231.231,
+      "dosya": "dji_20260822173231_0039_d/frame_000133_000006930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 6990,
+      "zaman_sn": 233.233,
+      "dosya": "dji_20260822173231_0039_d/frame_000134_000006990.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7050,
+      "zaman_sn": 235.235,
+      "dosya": "dji_20260822173231_0039_d/frame_000135_000007050.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7200,
+      "zaman_sn": 240.24,
+      "dosya": "dji_20260822173231_0039_d/frame_000136_000007200.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7260,
+      "zaman_sn": 242.242,
+      "dosya": "dji_20260822173231_0039_d/frame_000137_000007260.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7290,
+      "zaman_sn": 243.243,
+      "dosya": "dji_20260822173231_0039_d/frame_000138_000007290.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7320,
+      "zaman_sn": 244.244,
+      "dosya": "dji_20260822173231_0039_d/frame_000139_000007320.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7380,
+      "zaman_sn": 246.246,
+      "dosya": "dji_20260822173231_0039_d/frame_000140_000007380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7440,
+      "zaman_sn": 248.248,
+      "dosya": "dji_20260822173231_0039_d/frame_000141_000007440.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7620,
+      "zaman_sn": 254.254,
+      "dosya": "dji_20260822173231_0039_d/frame_000142_000007620.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7650,
+      "zaman_sn": 255.255,
+      "dosya": "dji_20260822173231_0039_d/frame_000143_000007650.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7740,
+      "zaman_sn": 258.258,
+      "dosya": "dji_20260822173231_0039_d/frame_000144_000007740.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7860,
+      "zaman_sn": 262.262,
+      "dosya": "dji_20260822173231_0039_d/frame_000145_000007860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 7950,
+      "zaman_sn": 265.265,
+      "dosya": "dji_20260822173231_0039_d/frame_000146_000007950.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8010,
+      "zaman_sn": 267.267,
+      "dosya": "dji_20260822173231_0039_d/frame_000147_000008010.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8070,
+      "zaman_sn": 269.269,
+      "dosya": "dji_20260822173231_0039_d/frame_000148_000008070.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8160,
+      "zaman_sn": 272.272,
+      "dosya": "dji_20260822173231_0039_d/frame_000149_000008160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8310,
+      "zaman_sn": 277.277,
+      "dosya": "dji_20260822173231_0039_d/frame_000150_000008310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8400,
+      "zaman_sn": 280.28,
+      "dosya": "dji_20260822173231_0039_d/frame_000151_000008400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8460,
+      "zaman_sn": 282.282,
+      "dosya": "dji_20260822173231_0039_d/frame_000152_000008460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8520,
+      "zaman_sn": 284.284,
+      "dosya": "dji_20260822173231_0039_d/frame_000153_000008520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8580,
+      "zaman_sn": 286.286,
+      "dosya": "dji_20260822173231_0039_d/frame_000154_000008580.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8700,
+      "zaman_sn": 290.29,
+      "dosya": "dji_20260822173231_0039_d/frame_000155_000008700.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8790,
+      "zaman_sn": 293.293,
+      "dosya": "dji_20260822173231_0039_d/frame_000156_000008790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8850,
+      "zaman_sn": 295.295,
+      "dosya": "dji_20260822173231_0039_d/frame_000157_000008850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8880,
+      "zaman_sn": 296.296,
+      "dosya": "dji_20260822173231_0039_d/frame_000158_000008880.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 8940,
+      "zaman_sn": 298.298,
+      "dosya": "dji_20260822173231_0039_d/frame_000159_000008940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9000,
+      "zaman_sn": 300.3,
+      "dosya": "dji_20260822173231_0039_d/frame_000160_000009000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9030,
+      "zaman_sn": 301.301,
+      "dosya": "dji_20260822173231_0039_d/frame_000161_000009030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9060,
+      "zaman_sn": 302.302,
+      "dosya": "dji_20260822173231_0039_d/frame_000162_000009060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9240,
+      "zaman_sn": 308.308,
+      "dosya": "dji_20260822173231_0039_d/frame_000163_000009240.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9300,
+      "zaman_sn": 310.31,
+      "dosya": "dji_20260822173231_0039_d/frame_000164_000009300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9390,
+      "zaman_sn": 313.313,
+      "dosya": "dji_20260822173231_0039_d/frame_000165_000009390.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9450,
+      "zaman_sn": 315.315,
+      "dosya": "dji_20260822173231_0039_d/frame_000166_000009450.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9480,
+      "zaman_sn": 316.316,
+      "dosya": "dji_20260822173231_0039_d/frame_000167_000009480.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9510,
+      "zaman_sn": 317.317,
+      "dosya": "dji_20260822173231_0039_d/frame_000168_000009510.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9570,
+      "zaman_sn": 319.319,
+      "dosya": "dji_20260822173231_0039_d/frame_000169_000009570.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9630,
+      "zaman_sn": 321.321,
+      "dosya": "dji_20260822173231_0039_d/frame_000170_000009630.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9660,
+      "zaman_sn": 322.322,
+      "dosya": "dji_20260822173231_0039_d/frame_000171_000009660.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9780,
+      "zaman_sn": 326.326,
+      "dosya": "dji_20260822173231_0039_d/frame_000172_000009780.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9810,
+      "zaman_sn": 327.327,
+      "dosya": "dji_20260822173231_0039_d/frame_000173_000009810.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9840,
+      "zaman_sn": 328.328,
+      "dosya": "dji_20260822173231_0039_d/frame_000174_000009840.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9870,
+      "zaman_sn": 329.329,
+      "dosya": "dji_20260822173231_0039_d/frame_000175_000009870.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9900,
+      "zaman_sn": 330.33,
+      "dosya": "dji_20260822173231_0039_d/frame_000176_000009900.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 9930,
+      "zaman_sn": 331.331,
+      "dosya": "dji_20260822173231_0039_d/frame_000177_000009930.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10020,
+      "zaman_sn": 334.334,
+      "dosya": "dji_20260822173231_0039_d/frame_000178_000010020.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10110,
+      "zaman_sn": 337.337,
+      "dosya": "dji_20260822173231_0039_d/frame_000179_000010110.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10230,
+      "zaman_sn": 341.341,
+      "dosya": "dji_20260822173231_0039_d/frame_000180_000010230.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10380,
+      "zaman_sn": 346.346,
+      "dosya": "dji_20260822173231_0039_d/frame_000181_000010380.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10530,
+      "zaman_sn": 351.351,
+      "dosya": "dji_20260822173231_0039_d/frame_000182_000010530.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10710,
+      "zaman_sn": 357.357,
+      "dosya": "dji_20260822173231_0039_d/frame_000183_000010710.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10770,
+      "zaman_sn": 359.359,
+      "dosya": "dji_20260822173231_0039_d/frame_000184_000010770.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10800,
+      "zaman_sn": 360.36,
+      "dosya": "dji_20260822173231_0039_d/frame_000185_000010800.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10860,
+      "zaman_sn": 362.362,
+      "dosya": "dji_20260822173231_0039_d/frame_000186_000010860.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10890,
+      "zaman_sn": 363.363,
+      "dosya": "dji_20260822173231_0039_d/frame_000187_000010890.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 10980,
+      "zaman_sn": 366.366,
+      "dosya": "dji_20260822173231_0039_d/frame_000188_000010980.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11040,
+      "zaman_sn": 368.368,
+      "dosya": "dji_20260822173231_0039_d/frame_000189_000011040.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11100,
+      "zaman_sn": 370.37,
+      "dosya": "dji_20260822173231_0039_d/frame_000190_000011100.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11160,
+      "zaman_sn": 372.372,
+      "dosya": "dji_20260822173231_0039_d/frame_000191_000011160.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11190,
+      "zaman_sn": 373.373,
+      "dosya": "dji_20260822173231_0039_d/frame_000192_000011190.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11220,
+      "zaman_sn": 374.374,
+      "dosya": "dji_20260822173231_0039_d/frame_000193_000011220.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11250,
+      "zaman_sn": 375.375,
+      "dosya": "dji_20260822173231_0039_d/frame_000194_000011250.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11280,
+      "zaman_sn": 376.376,
+      "dosya": "dji_20260822173231_0039_d/frame_000195_000011280.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11310,
+      "zaman_sn": 377.377,
+      "dosya": "dji_20260822173231_0039_d/frame_000196_000011310.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11340,
+      "zaman_sn": 378.378,
+      "dosya": "dji_20260822173231_0039_d/frame_000197_000011340.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11370,
+      "zaman_sn": 379.379,
+      "dosya": "dji_20260822173231_0039_d/frame_000198_000011370.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11400,
+      "zaman_sn": 380.38,
+      "dosya": "dji_20260822173231_0039_d/frame_000199_000011400.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11460,
+      "zaman_sn": 382.382,
+      "dosya": "dji_20260822173231_0039_d/frame_000200_000011460.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11490,
+      "zaman_sn": 383.383,
+      "dosya": "dji_20260822173231_0039_d/frame_000201_000011490.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11520,
+      "zaman_sn": 384.384,
+      "dosya": "dji_20260822173231_0039_d/frame_000202_000011520.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11550,
+      "zaman_sn": 385.385,
+      "dosya": "dji_20260822173231_0039_d/frame_000203_000011550.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11610,
+      "zaman_sn": 387.387,
+      "dosya": "dji_20260822173231_0039_d/frame_000204_000011610.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11730,
+      "zaman_sn": 391.391,
+      "dosya": "dji_20260822173231_0039_d/frame_000205_000011730.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11790,
+      "zaman_sn": 393.393,
+      "dosya": "dji_20260822173231_0039_d/frame_000206_000011790.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11850,
+      "zaman_sn": 395.395,
+      "dosya": "dji_20260822173231_0039_d/frame_000207_000011850.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11910,
+      "zaman_sn": 397.397,
+      "dosya": "dji_20260822173231_0039_d/frame_000208_000011910.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11940,
+      "zaman_sn": 398.398,
+      "dosya": "dji_20260822173231_0039_d/frame_000209_000011940.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 11970,
+      "zaman_sn": 399.399,
+      "dosya": "dji_20260822173231_0039_d/frame_000210_000011970.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12000,
+      "zaman_sn": 400.4,
+      "dosya": "dji_20260822173231_0039_d/frame_000211_000012000.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12030,
+      "zaman_sn": 401.401,
+      "dosya": "dji_20260822173231_0039_d/frame_000212_000012030.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12060,
+      "zaman_sn": 402.402,
+      "dosya": "dji_20260822173231_0039_d/frame_000213_000012060.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12090,
+      "zaman_sn": 403.403,
+      "dosya": "dji_20260822173231_0039_d/frame_000214_000012090.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12120,
+      "zaman_sn": 404.404,
+      "dosya": "dji_20260822173231_0039_d/frame_000215_000012120.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12150,
+      "zaman_sn": 405.405,
+      "dosya": "dji_20260822173231_0039_d/frame_000216_000012150.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12180,
+      "zaman_sn": 406.406,
+      "dosya": "dji_20260822173231_0039_d/frame_000217_000012180.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12210,
+      "zaman_sn": 407.407,
+      "dosya": "dji_20260822173231_0039_d/frame_000218_000012210.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12270,
+      "zaman_sn": 409.409,
+      "dosya": "dji_20260822173231_0039_d/frame_000219_000012270.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12300,
+      "zaman_sn": 410.41,
+      "dosya": "dji_20260822173231_0039_d/frame_000220_000012300.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    },
+    {
+      "kaynak": "DJI_20260822173231_0039_D.MP4",
+      "kare_no": 12330,
+      "zaman_sn": 411.411,
+      "dosya": "dji_20260822173231_0039_d/frame_000221_000012330.jpg",
+      "genislik": 3840,
+      "yukseklik": 2160
+    }
+  ]
+}
