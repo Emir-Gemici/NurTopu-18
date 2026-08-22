@@ -20935,3 +20935,72 @@ bayatlayan **"elle liste"** kusurunun aynısı.
 `dataset/` altına **kalıcı küme yazılmadı** (ölçüm turu) · registry'ye
 **dokunulmadı** · eşik **değiştirilmedi** · `codes/` altına **girilmedi** ·
 şartname önerisi **uygulanmadı** (karar mimarın) · **push YOK**.
+
+---
+
+### D-274 · ⚖ MİMAR DENETİMİ · T138 · Eğitime uygunluk hükmü DOĞRU ve disiplinli · rota iddiası **ÇÜRÜTÜLMEDİ ama BAĞIMSIZ DOĞRULANAMADI** (kareler diskte yok) · ve daha derin bir şey ölçtüm: **üretim yolunda GÖRÜNÜRLÜK kavramı HİÇ YOK**
+Tarih: 2026-08-22 · Denetleyen: Claude 1 (mimar) · Denetlenen: `19acf44` (T138)
+Kapılar mimar tarafından koşuldu: **793 OK · 15/15**
+
+#### 1. EĞİTİME UYGUNLUK — HÜKÜM DOĞRU, DİSİPLİN DOĞRU
+
+Ön kayıttaki eşik (**≥30 kare VE ≥2 klip**) karşısında `v35 8/569 · v34 4/569 ·
+v30 7/569` → **küme kurulmadı, etiketleme yapılmadı.** Kullanıcının yargısı
+(*"çoğunu kullanmazdım"*) doğrulandı ve **aşıldı**: "çoğu" değil fiilen tamamı.
+
+⛔ *"Az da olsa etiketleyelim"* **yapılmamış.** D-210'un dersi uygulanmış.
+Ve U2 bandı **iki yönlü** kurulmuş (alt sınır körlüğü, üst sınır tam-kare zemin
+kusurunu eler) — tek yönlü bir eşik D-210'u tekrar içeri alırdı.
+
+#### 2. ⚠ ROTA İDDİASI — ÇÜRÜTMEDİM, AMA DOĞRULAYAMADIM DA
+
+İddia: gece karesinde `YOL=2 · güven=1,000 · wp=8`.
+Bunu bağımsız koşmayı denedim ve **iki kez yanlış kare aldım**:
+
+    dosya adi frame_000064_000004740.jpg
+      kare indeksi 64 olarak okudum  -> L=23,4   (iddia edilen kare L=18,4)
+      4740 ms olarak okudum          -> L=23,6   (yine tutmadi)
+    iki denemede de v35/v30 -> (None, 0.0, [])  = ROTA YOK
+
+**Aldığım kare onların karesi değil.** Dolayısıyla *"üretmiyor"* diyemem —
+D-209'da tam bu hatayı yapıp doğru bir bulguyu çürütecektim.
+
+**İddiayı destekleyen şey:** ham JSON makine üretimi ve yapısı sağlam —
+`rota_olceksiz: 2 · rota_olcekli: 1`. Yani rota **varsayımsal ölçekli kolda
+değil, GERÇEK üretim yolunda** (`mpp=None`) üretilmiş. Bu, iddiayı **ciddiye
+almak için yeterli**; **kapatmak için değil.**
+
+🔴 **KÖK SORUN: KANIT YENİDEN ÜRETİLEMİYOR.**
+`find results/t138 results/t136 -name "*.jpg"` → **0**.
+Oturumun **en güvenlik-kritik** bulgusunun girdisi diskte **yok**. Altı kare,
+birkaç MB. Bu, D-209 §4'te yazdığım kuralın (*"ham çıktı denetlenebilirdir"*)
+**görüntü** tarafındaki boşluğu: sayılar bırakılmış, **girdiler bırakılmamış**.
+
+#### 3. 🔴 KENDİ ÖLÇÜMÜM — DAHA DERİN VE ROTA SAYISINDAN BAĞIMSIZ
+
+    grep -rniE "parlaklik|brightness|luminan|karanlik|exposure|isik" codes/
+      -> yorum satirlari disinda HICBIR GECIS
+
+**Üretim karar yolunda "görüntü yargılanamayacak kadar karanlık" diye bir
+kavram YOK.** Sistem yalnız *maskeden* karar veriyor; maskenin **hangi
+koşullarda üretildiğini** hiç sormuyor.
+
+Bu, o iki rotanın yeniden üretilip üretilmemesinden **bağımsız** bir tasarım
+boşluğudur:
+  · Bugün fail-closed davranışı **kazara** çalışıyor — model karanlıkta boş
+    maske ürettiği için (546/569 `MASKE_YOK`). Bu bir **kapı değil, yan etki**.
+  · Model bir gün karanlıkta **boş olmayan ama yanlış** maske üretirse
+    (8/569'da zaten üretti), fail-closed davranış **ortadan kalkar**.
+  · Gerçek uçuşta bulut gölgesi, alacakaranlık, tünel/çatı gölgesi bu koşulu
+    **saniyeler içinde** yaratır ve 3 FPS'te fark edilmez.
+
+Madde 15'in dili buna hazır: *bilinmeyen → engel*. Ama "göremiyorum" durumu
+bugün **bilinmeyen sayılmıyor**, çünkü **hiç ölçülmüyor**.
+
+#### 4. AMELENİN DÜRÜST OKUMASI KABUL
+
+*"Rota SAÇMA DEĞİL — nadir gece karesinde şeritli bir yol var."* Doğru ayrım:
+mesele modelin halüsinasyon görmesi değil, **güvenin 1,000 olması**. Sistem
+"zor görüyorum" diyemiyor çünkü öyle bir eksen yok (§3).
+
+#### 5. AÇILAN GÖREV — **T139**

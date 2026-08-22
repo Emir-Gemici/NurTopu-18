@@ -6204,6 +6204,30 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     etiketler ve kullanıcı bunu **13 Eylül'den önce** bilmelidir.
   - **Kapı:** `15/15` · `discover -s tests -q` → **793 OK**
 
+- [ ] **T139 — 🔴 Üretim yolunda GÖRÜNÜRLÜK kavramı HİÇ YOK: fail-closed davranış kapı değil YAN ETKİ** · `codes/karar_sozlesmesi.py`, `codes/rpi_inference.py`, `results/t138/` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-274 §3**
+  - **Mimarın ölçümü:** `grep -rniE "parlaklik|brightness|luminan|karanlik|exposure|isik" codes/`
+    → yorum satırları dışında **hiçbir geçiş**. Sistem yalnız *maskeden* karar
+    veriyor; maskenin **hangi koşullarda üretildiğini** hiç sormuyor.
+  - **Neden kritik.** Bugünkü fail-closed davranış **kazara** çalışıyor: model
+    karanlıkta boş maske ürettiği için (546/569 `MASKE_YOK`). Bu bir **kapı değil
+    yan etki**. Model karanlıkta **boş olmayan ama yanlış** maske üretirse
+    (8/569'da zaten üretti) fail-safe **ortadan kalkar**. Gerçek uçuşta bulut
+    gölgesi / alacakaranlık bunu **saniyeler içinde** yaratır, 3 FPS'te fark edilmez.
+  - **ADIM 1 — KANITI KURTAR (önce bu).** `results/t138`de **0 jpg** var; oturumun
+    en güvenlik-kritik bulgusunun girdisi diskte **yok**. Rota üreten **6 kareyi**
+    (ve birkaç kontrol karesini) repoya **kalıcı** koy. Altı kare, birkaç MB.
+    Sonra iddiayı **yeniden üret**: `YOL=2 · güven=1,000` çıkıyor mu?
+    ⚠ Mimar iki kez **yanlış kare** aldı (L=23,4 ve 23,6; iddia edilen 18,4) —
+    kare kimliği **dosya adından** güvenilir biçimde çözülemiyor. Bunu da düzelt.
+  - **ADIM 2 — ÖLÇ, KAPI KURMA.** Görünürlük eksenini ölç: parlaklık dağılımı ile
+    maske güvenilirliği arasındaki ilişki. Hangi L değerinin altında maske
+    **anlamsızlaşıyor**? Doz-yanıt eğrisi çıkar.
+  - ⚠ **EŞİK ÖNERME, ÖLÇ.** Bir "karanlık eşiği" koymak D-186'nın reddettiği
+    kalıba çok yakın; önce **görünürlük**. Kapı kararı mimarındır.
+  - ⚠ Madde 15'in dili hazır: *bilinmeyen → engel*. Ama "göremiyorum" bugün
+    **bilinmeyen sayılmıyor** çünkü **hiç ölçülmüyor**. Bu boşluğu ölç.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **793 OK**
+
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
     Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
