@@ -63,7 +63,16 @@ kopyala () {   # $1 = alt yol
     t0=$(date +%s)
     "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK
     gecen=$(( $(date +%s) - t0 ))
-    simdi="$(uzak_bayt "$ad")"; simdi="${simdi:-0}"
+    simdi="$(uzak_bayt "$ad")"
+    # T140: OLCULEMEDI != 0 (D-180 sinifi). Olculdu 11:05:49 —
+    #   `uzak_bayt` BOS dondu, betik 0 sayip "uzakta 0 MB" yazdi;
+    #   oysa uzakta 1218 MB vardi. Bos olcum (b) olcutunu YANLIS
+    #   ateslerdi. Artik tur TEKRARLANIR.
+    if [ -z "$simdi" ]; then
+      echo "[$(date +%H:%M:%S)] $ad · tur $tur · uzak bayt OLCULEMEDI -> tekrar"
+      sleep 15
+      continue
+    fi
     echo "[$(date +%H:%M:%S)] $ad · tur $tur · ${gecen}sn · uzakta $((simdi / 1048576)) MB"
     # 🔴 IKI OLCUT, IKISI DE CIKIS KODUNDAN BAGIMSIZ (D-267: ilk kosum
     #    "BITTI cikis=0" deyip TEK BAYT yuklememisti).
@@ -114,7 +123,16 @@ for K in copy_paste_gercek copy_paste_t121 copy_paste_t122a copy_paste_t122ac   
   [ -d "$KOK/dataset/$K" ] && kopyala "dataset/$K"
 done
 # karisim yaml'lari kucuk ama kumeleri TARIF EDER — onlarsiz kume anlamsizdir
-"$RCLONE" copy "$KOK/dataset" "$UZAK/dataset" --include "*.yaml"    --include "*.json" --max-depth 1 $BAYRAK
+"$RCLONE" copy "$KOK/dataset" "$UZAK/dataset" --include "*.yaml" --include "*.json" --max-depth 1 $BAYRAK
+# 🔴 T140 OLCUMU: atilan kumelerin URETIM TARIFI alt dizindeki data.yaml
+#    icinde duruyor ve --max-depth 1 onu KACIRIYORDU. Ornek (olculdu):
+#      dataset/sentetik_arena/data.yaml ilk satiri:
+#      "51_sentetik_arena.py (seed=7, ayni_malzeme=0.45, dar=0.28, kadraj=False)"
+#    Ureteci denetledim: satir 1531-1532 HEM `random.Random(args.seed)` HEM
+#    `np.random.seed(args.seed)` ile tohumlanir -> uretim DETERMINISTIKTIR.
+#    Yani tarif yedeklenirse 61,5 GB atmak GUVENLIDIR; tarif kaybolursa
+#    kume bir daha BIREBIR uretilemez. Tarifler birkac KB.
+"$RCLONE" copy "$KOK/dataset" "$UZAK/dataset" --include "*/data.yaml" --include "*/*.json" --max-depth 2 $BAYRAK
 kopyala "rescuenet-roads"
 
 # ── DEPONUN KENDISI ──────────────────────────────────────────────────────────

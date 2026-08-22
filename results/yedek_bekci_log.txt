@@ -1,0 +1,19 @@
+[10:53:23] ════════ BEKCI BASLADI · aralik 120sn · taban tolerans 300sn
+[10:53:30] baslangic uzak toplam: 31710 MB
+[10:53:39] KADEME -> results · uzak toplam 31710 MB
+11:05:49 DURDURMA ONCESI uzak=33251374550
+[11:09:46] rclone sureci YOK (2 kez) — yedek bitmis olabilir. BEKCI DURUYOR.
+[11:09:50] ════════ BEKCI BITTI · sure 16 dk · uzak 31710 MB
+[11:09:51] mudahale: 0 · toplam sabit-kalma 0 dk
+[11:13:49] ════════ BEKCI BASLADI · aralik 120sn · taban tolerans 300sn
+[11:13:49] ════════ BEKCI BASLADI · aralik 120sn · taban tolerans 300sn
+[11:13:53] baslangic uzak toplam: 31710 MB
+[11:13:53] baslangic uzak toplam: 31710 MB
+[11:14:02] KADEME -> results · uzak toplam 31710 MB
+[11:14:02] KADEME -> results · uzak toplam 31710 MB
+[11:19:19] ════════ BEKCI BASLADI · aralik 120sn · taban tolerans 300sn
+[11:19:19] ════════ BEKCI BASLADI · aralik 120sn · taban tolerans 300sn
+[11:19:36] baslangic uzak toplam: 31789 MB
+[11:19:36] baslangic uzak toplam: 31789 MB
+[11:19:44] KADEME -> data · uzak toplam 31789 MB
+[11:19:44] KADEME -> data · uzak toplam 31789 MB
