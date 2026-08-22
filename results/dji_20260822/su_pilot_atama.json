@@ -1,0 +1,89 @@
+{
+ "_ne": "F2/F3 sartname sinamasi — 8 kare, DISKTEN TURETILDI, varlik+irtifa DOGRULANDI",
+ "_on_kayit": "results/dji_20260822/su_on_kayit.md",
+ "_sartname": "results/dji_20260822/SU_ETIKETLEME_PLANI.md §4b",
+ "_kapsanmayan": "S3 (yol ustu su birikintisi): 24 tarama karesinde NET ornek yok -> bu soru BU TURDA SINANMAZ, raporda oyle yazilir",
+ "_nadir_filtresi": "rel_alt >= 20 m; 768 karenin 30'u (%3,9) bu esigin altinda",
+ "kareler": [
+  {
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "sira": 0,
+   "dosya": "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+   "rel_alt": 31.3,
+   "zaman_sn": 0.0,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S1 acik su + kiyi sazligi + solda yol"
+  },
+  {
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "sira": 22,
+   "dosya": "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+   "rel_alt": 32.6,
+   "zaman_sn": 51.051,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S1 kivrilan kanal + solda moloz/atik"
+  },
+  {
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "sira": 133,
+   "dosya": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+   "rel_alt": 31.7,
+   "zaman_sn": 172.172,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S5 DAR ark — yolun kenarinda ince koyu serit"
+  },
+  {
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "sira": 178,
+   "dosya": "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+   "rel_alt": 31.2,
+   "zaman_sn": 222.222,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S6 yol + kanal + saman balyalari birlikte"
+  },
+  {
+   "kaynak": "DJI_20260822172613_0038_D.MP4",
+   "sira": 222,
+   "dosya": "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+   "rel_alt": 30.8,
+   "zaman_sn": 274.274,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S1 kanal kare kenarinda, kismi gorunur"
+  },
+  {
+   "kaynak": "DJI_20260822173231_0039_D.MP4",
+   "sira": 0,
+   "dosya": "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+   "rel_alt": 29.3,
+   "zaman_sn": 0.0,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S1/S6 kanal + asfalt yol yan yana"
+  },
+  {
+   "kaynak": "DJI_20260822173231_0039_D.MP4",
+   "sira": 20,
+   "dosya": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+   "rel_alt": 31.4,
+   "zaman_sn": 47.047,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S2 GOLGE/su bitisik + insan golgeleri"
+  },
+  {
+   "kaynak": "DJI_20260822173231_0039_D.MP4",
+   "sira": 40,
+   "dosya": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+   "rel_alt": 31.0,
+   "zaman_sn": 91.091,
+   "genislik": 3840,
+   "yukseklik": 2160,
+   "kapsam": "S4 MENFEZ TABLIYESI suyun ustunde (gecilebilir)"
+  }
+ ]
+}

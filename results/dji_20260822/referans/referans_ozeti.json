@@ -1,0 +1,69 @@
+{
+ "_ne": "F2 referans SINIF 1 (su + gecilemez kiyi) — ustabasi",
+ "_on_kayit": "results/dji_20260822/su_on_kayit.md",
+ "_parametreler": {
+  "olcek": 4,
+  "su_std": 8.0,
+  "su_v": 100,
+  "yesil_esik": 18,
+  "min_su_px": 150
+ },
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+   "kapsam": "S1 acik su + kiyi sazligi + solda yol",
+   "sinif1_oran": 0.4955,
+   "su_oran": 0.0661,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+   "kapsam": "S1 kivrilan kanal + solda moloz/atik",
+   "sinif1_oran": 0.2794,
+   "su_oran": 0.0716,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+   "kapsam": "S5 DAR ark — yolun kenarinda ince koyu serit",
+   "sinif1_oran": 0.5427,
+   "su_oran": 0.0189,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+   "kapsam": "S6 yol + kanal + saman balyalari birlikte",
+   "sinif1_oran": 0.3744,
+   "su_oran": 0.1112,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+   "kapsam": "S1 kanal kare kenarinda, kismi gorunur",
+   "sinif1_oran": 0.267,
+   "su_oran": 0.0712,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+   "kapsam": "S1/S6 kanal + asfalt yol yan yana",
+   "sinif1_oran": 0.3552,
+   "su_oran": 0.0946,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+   "kapsam": "S2 GOLGE/su bitisik + insan golgeleri",
+   "sinif1_oran": 0.3119,
+   "su_oran": 0.0756,
+   "elle_duzeltme": 0
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000040_000002730.jpg",
+   "kapsam": "S4 MENFEZ TABLIYESI suyun ustunde (gecilebilir)",
+   "sinif1_oran": 0.2851,
+   "su_oran": 0.057,
+   "elle_duzeltme": 0
+  }
+ ]
+}
