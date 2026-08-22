@@ -35,9 +35,19 @@ RescueNet'in suyu **engel** olarak eğitimde var. Kusur o hâlde şudur:
 AKTARILMIYOR.** Plan bunu hedefler; "eksik sınıfı eklemeyi" değil.
 
 ### 1c. 🔴 İkinci ve DAHA BÜYÜK kusur: yol da görülmüyor
-Aynı karelerde zemin oranı **0,000–0,113**. Model bu domende yolu da kaçırıyor
-(0038_t0000'de geniş stabilize yol tamamen ıskalanmış). Bu, planın şeklini
-değiştirir — §3'e bakınız.
+İlk belirti 4 karede zemin oranının **0,000–0,113** olmasıydı. **768 karenin
+tamamında ölçüldü** (`uretim_yolu_olcumu.json`, üretim yolu, 2 model, ~1,8 saat):
+
+```text
+model            MASKE_YOK        rota URETTI      diger sebepler
+v35 (uretim)   395/768  %51,4   238/768  %31,0   UC_BANT_TEMAS_YOK 132
+v34 (yedek)    416/768  %54,2   253/768  %32,9   UC_BANT_TEMAS_YOK  92
+```
+🔴 **Üretim modeli bu domende karelerin YARISINDAN FAZLASINDA hiçbir zemin
+maskesi üretmiyor.** Yedek v34 daha da kötü. Bu, planın şeklini değiştirir —
+§3'e bakınız.
+⚠ Bu bir **domain** ölçümüdür, arena performansı hakkında hiçbir şey söylemez;
+arenayı bozup bozmadığı ancak kabul zinciriyle ölçülür (§6).
 
 ### 1d. Küme ve alan
 768 kare (300 + 246 + 222), 1 fps, algısal hash ile dedup.
@@ -65,9 +75,9 @@ GPS kutuları (hesaplandı, `du`/elle değil):
 
 ## 3. 🔴 YALNIZ SUYU ETİKETLEMEK YETMEZ — ve tek başına ZARARLI olabilir
 
-§1c ölçümü: model bu domende zemini zaten **neredeyse hiç** görmüyor
-(0,000–0,113). Yalnız suyu "engel" diye eklersek serbest alan **daha da**
-küçülür ve model bu sahnede **hiç rota üretmez**.
+§1c ölçümü (768 kare): model bu domende karelerin **%51,4'ünde hiç zemin
+maskesi üretmiyor** ve yalnız **%31'inde** rota çıkarıyor. Yalnız suyu "engel"
+diye eklersek serbest alan **daha da** küçülür ve kalan %31 de kapanır.
 
 Bu **güvenlidir** (fail-closed, D-277 §3) ama **işe yaramaz**: İKA duracaktır.
 

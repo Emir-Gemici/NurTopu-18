@@ -102,7 +102,16 @@ def main() -> int:
         h, w = im.shape[:2]
         k = cv2.resize(im, (w // OLCEK, h // OLCEK), interpolation=cv2.INTER_AREA)
         m, su = koridor(k)
-        anahtar = Path(a["dosya"]).stem
+        # 🔴 CAKISMA KUSURU (amele C buldu, 2026-08-23): atamadaki 8 karenin
+        #    IKISI ayni `stem`'e sahip — 0038_d/frame_000000_000000000 ve
+        #    0039_d/frame_000000_000000000. `Path(dosya).stem` ile adlandirinca
+        #    ikinci maske birincinin uzerine SESSIZCE yazdi ve dizinde 8 degil
+        #    7 PNG olustu. Dogrulama sayfasi BELLEKTEKI maskelerden uretildigi
+        #    icin 8 satir gosterdi ve kusur GORUNMEDI.
+        #    Bu kapi kosulsaydi F3'un tamami gecersiz olurdu: 0038 karesinin
+        #    amele maskesi 0039'un referansiyla kiyaslanacakti.
+        #    ANAHTAR ARTIK KAYNAK DIZINI ICERIR.
+        anahtar = a["dosya"].rsplit(".", 1)[0].replace("/", "__").replace("\\", "__")
         m, n_duz = duzelt(m, anahtar)
         cv2.imwrite(str(CIKTI / f"{anahtar}_sinif1.png"), (m * 255).astype(np.uint8))
         ozet.append({"dosya": a["dosya"], "kapsam": a["kapsam"],
@@ -118,6 +127,14 @@ def main() -> int:
                          + (f" ELLE:{n_duz}" if n_duz else ""))
         print(f"  {a['dosya']:52s} sinif1 %{100*m.mean():5.1f} · su %{100*su.mean():4.1f}"
               f" · elle {n_duz}")
+
+    # FAIL-CLOSED: yazilan PNG sayisi kare sayisina ESIT olmali. Cakisma
+    # sessizce dosya EZER; sayarak yakalanir.
+    yazilan = sorted(CIKTI.glob("*_sinif1.png"))
+    if len(yazilan) != len(at["kareler"]):
+        raise SystemExit(
+            f"\n[DUR] {len(at['kareler'])} kare icin {len(yazilan)} PNG var — "
+            f"ADLANDIRMA CAKISMASI. Yazilanlar: {[p.name for p in yazilan]}")
 
     hh = paneller[0].shape[0]
     sayfa = np.vstack(paneller)

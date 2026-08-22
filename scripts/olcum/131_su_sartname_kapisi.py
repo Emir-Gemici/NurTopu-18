@@ -58,6 +58,36 @@ def maske_oku(yol: Path, bicim: tuple[int, int]) -> np.ndarray | None:
     return m > 127
 
 
+def maske_coz(dizin: Path, dosya: str, stem_tekil: bool,
+              bicim: tuple[int, int]) -> tuple[np.ndarray | None, str]:
+    """Maskeyi CAKISMAYA DAYANIKLI coz. -> (maske, aciklama)
+
+    🔴 NEDEN (amele C buldu, 2026-08-23): atamadaki 8 karenin IKISI ayni
+    `stem`'e sahip (0038_d ve 0039_d'nin `frame_000000_000000000`'i). Duz
+    `<stem>_sinif1.png` adlandirmasinda ikinci maske birincini SESSIZCE ezer.
+    Ustabasinin referansi tam bu kusurla uretilmisti: 8 kare icin 7 PNG.
+    Bu kapi kosulsaydi 0038'in amele maskesi 0039'un referansiyla
+    kiyaslanacakti — olcumun tamami gecersiz olurdu.
+
+    Kural: once GUVENLI ad (`<kaynak_dizin>__<stem>`) aranir. Yoksa duz ad
+    yalniz stem BENZERSIZSE kabul edilir. Stem cakisiyorsa duz ad HANGI kareye
+    ait belli DEGILDIR -> OLCULEMEDI (sessizce yanlis okumaktansa gurultulu
+    eksik; D-180 sinifi).
+    """
+    govde = dosya.rsplit(".", 1)[0]
+    guvenli = govde.replace("/", "__").replace("\\", "__")
+    p = dizin / f"{guvenli}_sinif1.png"
+    if p.is_file():
+        return maske_oku(p, bicim), "guvenli ad"
+    duz = Path(dosya).stem
+    p2 = dizin / f"{duz}_sinif1.png"
+    if p2.is_file():
+        if stem_tekil:
+            return maske_oku(p2, bicim), "duz ad (stem benzersiz)"
+        return None, "🔴 duz ad AMA stem CAKISIYOR -> hangi kare oldugu belirsiz"
+    return None, "dosya YOK"
+
+
 def medyan(dizi):
     d = sorted(dizi)
     n = len(d)
@@ -71,18 +101,25 @@ def main() -> int:
     at = json.load(open(ATAMA, encoding="utf-8"))
     bicim = (960, 540)
 
+    from collections import Counter
+    stem_sayaci = Counter(Path(k["dosya"]).stem for k in at["kareler"])
+    cakisan = [s for s, n in stem_sayaci.items() if n > 1]
+    if cakisan:
+        print(f"⚠ CAKISAN STEM ({len(cakisan)}): {cakisan} -> guvenli ad ZORUNLU\n")
+
     satirlar, eksik, bos = [], [], []
     for a in at["kareler"]:
         stem = Path(a["dosya"]).stem
-        ref = maske_oku(REFERANS / f"{stem}_sinif1.png", bicim)
+        tekil = stem_sayaci[stem] == 1
+        ref, nasil = maske_coz(REFERANS, a["dosya"], tekil, bicim)
         if ref is None:
-            eksik.append(f"REFERANS {stem}")
+            eksik.append(f"REFERANS {a['dosya']} ({nasil})")
             continue
         maskeler = {}
         for ad in AMELELER:
-            m = maske_oku(AMELE_KOK / ad / f"{stem}_sinif1.png", bicim)
+            m, nasil = maske_coz(AMELE_KOK / ad, a["dosya"], tekil, bicim)
             if m is None:
-                eksik.append(f"{ad} {stem}")
+                eksik.append(f"{ad} {a['dosya']} ({nasil})")
             else:
                 maskeler[ad] = m
                 if not m.any():
