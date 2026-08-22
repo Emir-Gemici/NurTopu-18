@@ -21209,3 +21209,75 @@ hangi model** tablosu · geçiş ve geri alma · saha defteri satırı.
 Terfi **yok** · `config/model_registry.json`'a **yazılmadı** (yordam yazıldı,
 uygulama saha günü) · eşik **değişmedi** · yeniden eğitim **yok** ·
 `codes/` altına **girilmedi** · **push YOK**.
+
+---
+
+### D-277 · ⚖ MİMAR DENETİMİ + KARARI · T123 · Metin kilidinin KÖR olduğunu kendi mutasyonumla gördüm (0/7 vs 3/6) · ve senaryo ayrımı bir şeyi açığa çıkardı: **(b) senaryosunun MODEL DÜZEYİNDE cevabı YOK**
+Tarih: 2026-08-22 · Denetleyen/karar: Claude 1 (mimar) · Denetlenen: `ed03266` (T123)
+Kapılar mimar tarafından koşuldu: **799 OK** (793 → +6) · **15/15**
+
+#### 1. İKİ KİLİT, AYNI MUTASYON — KENDİ ÖLÇÜMÜM
+
+G2'yi eski bozuk hâline döndürdüm (`kunye = man["paket_icerigi"]`):
+
+    YENI icra kilidi  (test_t123_gecis_provasi)     : Ran 6 · FAILED (errors=3)
+    ESKI metin kilidi (test_kilavuz_gecis_yordami)  : Ran 7 · OK        <- KOR
+    geri alindi · git status iki kilavuzda da BOS
+
+**Metin kilidi 7 testle yeşil kalıyor**, çalıştırılabilir yordam ise çöküyor.
+Amelenin dersi ölçümle doğrulandı: **çalıştırılabilir bir yordam ancak
+ÇALIŞTIRILARAK kilitlenir.** T104'te aynı sınıfı kurulum yordamı için
+kapatmıştık; geçiş yordamı **metin kilidiyle** bırakılmıştı ve o kilit
+iki gerçek kusuru kaçırdı.
+
+#### 2. BULUNAN İKİ KUSUR — İKİSİ DE SAHA GÜNÜ ÇÖKERDİ
+
+  · **G2** (*"bozuk yedekle geçme"* kapısı) `AttributeError` ile çöküyordu.
+    Çöken bir kapının önünde operatöre iki seçenek kalır: **kapıyı atlamak**
+    ya da tıkanmak. İkisi de 30 Eylül sabahı istemediğimiz şey.
+  · **G6** girdisi olmayan bir dizini gösteriyordu — yani geçişin **doğru
+    yapıldığını kanıtlayacak** adım da çökerdi.
+
+Prova süresi ölçüldü: **5,9 sn** (PC). ⚠ Jetson'da G6 daha yavaş olacak ve
+**cihaz gelmeden ölçülemez**; kalan beş adım cihazdan bağımsız.
+
+#### 3. 🔴 SENARYO AYRIMI — VE BENİM ÇIKARDIĞIM SONUÇ
+
+Amelenin cevabı doğru ve nüanslı: **v34 (a)'da daha iyi, (b)'de belirgin kötü.**
+
+    (a) cok moloza basiyor  -> v34 daha iyi (%4,65 vs %7,03)
+        ⚠ ama K2 sentetik yer gercegiyle olculur; sahada bunu ancak IKA
+          FIILEN BASTIKTAN SONRA gorursunuz -> EN GEC fark edilen senaryo
+    (b) goremiyor / rota uretmiyor -> v34 YEDEK OLAMAZ (67/67 · 11/11 red)
+        ⚠ sahada EN GORUNUR senaryo (ekran rota cizmez)
+    (c) teknik cokme -> dogrulanmis herhangi bir agirlik
+
+**Buradan benim çıkardığım sonuç, amelenin yazdığından bir adım öte:**
+🔴 **(b) senaryosunun MODEL DÜZEYİNDE bir cevabı yoktur — ve olamaz.**
+Birincil "göremiyor" ise, sahne okunamıyor demektir. t122ac'nin v35'e üstünlüğü
+**çatıda**dır, **görebilmekte** değil; ikisi de neredeyse aynı reçeteden geliyor.
+Okunamayan bir sahnede model değiştirmek, **aynı körlüğü başka bir modelle**
+denemektir.
+
+⇒ **(b)'nin doğru cevabı bir yedek model değil, bir OPERASYON kararıdır:**
+*"sistem karar üretmiyorsa İKA sürmez."* Bu zaten mimarinin fail-safe yönü
+(madde 15) ve T134'ten beri yayınlayan yolda kapı **var**. Yani (b) için
+yapılacak şey **yeni model aramak değil, o davranışın saha yordamında
+YAZILI olması**.
+
+⚠ Bu, "iki aday" hedefini **küçültmez, DÜZELTİR**: iki aday (a) ve (c) için
+anlamlıdır; (b) için aday değil **prosedür** gerekir.
+
+#### 4. KARAR
+
+  1. **Birincil v35, yedek v34** — yalnız **(a) ve (c)** senaryoları için,
+     ve saha listesinde **hangi senaryoda geçileceği yazılı** olmak şartıyla.
+  2. **(b) için model geçişi YAPILMAZ.** Saha yordamına şu satır girer:
+     *"Rota üretilmiyorsa model değiştirilmez; İKA sürmez ve sebep kaydedilir."*
+  3. **t122ac yedek olarak sabitlenmez.** Gerekçe: (b)'yi çözmüyor (aynı
+     körlük ailesi), ve seçimi **kirli bölümle** yapıldı (D-233/D-249).
+     Çatıdaki üstünlüğü gerçek ama o **(a)/(c)** senaryolarını değiştirmiyor.
+  4. **v35'in `last.pt`'si de yedek DEĞİLDİR** — aynı eğitim, aynı arıza ailesi
+     (D-140: tohum etkisiz). Yedeklilik **farklı arıza** demektir, farklı dosya değil.
+
+#### 5. AÇILAN GÖREV — **T141**

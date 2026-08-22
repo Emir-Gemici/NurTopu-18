@@ -5844,7 +5844,10 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ Bu görev yeni çekimi **beklemez** — hat, eldeki 448 kare üzerinde düzeltilip
     doğrulanabilir.
 
-- [STATUS: READY_FOR_REVIEW] **T123 — İKİ ÜRETİM ADAYI (birincil + yedek) ön kaydı: Jetson 30 Eylül'de geliyor, cihaz-öncesi doğrulama penceresi YOK** · `config/model_registry.json`, `jetson_paket/` · **KRİTİK** · kanıt: **D-211**
+- [x] **T123 — KAPANDI · "Yedek hangi arızaya karşı" cevaplandı ve geçiş yordamı İCRA ile kilitlendi (iki kusur bulundu)** · `JETSON_KILAVUZ.md` (iki kopya), `tests/test_t123_gecis_provasi.py` · **KRİTİK** · uygulama `REVIEW_LOG.md` **D-276**, mimar kararı **D-277** · (b) senaryosu → **T141**
+  - **Yazan:** Claude 2 (başamele) · **Denetleyen:** Claude 1 (mimar) · **Kapı çıktısı:** `799 OK` (793 → +6) · `15/15`
+  - **Mimarın kendi mutasyonu:** G2 eski bozuk hâline döndürüldü → **yeni icra kilidi 3/6 DÜŞTÜ · eski metin kilidi 7/7 OK (KÖR)**. Geri alındı.
+  - **Karar:** birincil **v35**, yedek **v34** — yalnız **(a)** ve **(c)** için. **(b)'ye model cevabı yok** → T141. t122ac ve v35-`last.pt` yedek **değildir** (aynı arıza ailesi; yedeklilik farklı DOSYA değil farklı ARIZA demektir).
   - 🔎 **ÖLÇÜLDÜ · 2026-08-22 · Claude-2 · kanıt `REVIEW_LOG.md` D-276.**
     **Kapı:** 15/15 · **799 OK** (793 → 799) · ham çıktı `results/t123/`.
     ⛔ Terfi YOK · registry'ye yazılmadı · yeniden eğitim yok.
@@ -6295,6 +6298,20 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ Madde 15'in dili hazır: *bilinmeyen → engel*. Ama "göremiyorum" bugün
     **bilinmeyen sayılmıyor** çünkü **hiç ölçülmüyor**. Bu boşluğu ölç.
   - **Kapı:** `15/15` · `discover -s tests -q` → **793 OK**
+
+- [ ] **T141 — (b) senaryosu için MODEL DEĞİL PROSEDÜR: "rota üretilmiyorsa İKA sürmez" saha yordamına yazılacak** · `JETSON_KILAVUZ.md` (iki kopya), `results/t123/saha_gunu_kontrol_listesi.md` · **KRİTİK** · karar `REVIEW_LOG.md` **D-277 §3-4**
+  - **Mimarın hükmü:** (b) *"göremiyor / rota üretmiyor"* senaryosunun **model
+    düzeyinde cevabı YOKTUR**. Birincil göremiyorsa sahne okunamıyor demektir;
+    t122ac'nin üstünlüğü **çatıda**dır, **görebilmekte** değil. Okunamayan sahnede
+    model değiştirmek **aynı körlüğü başka modelle denemektir**.
+  - **Yap:** saha yordamına ve kontrol listesine şu davranış **yazılı** girsin:
+    *"Rota üretilmiyorsa model DEĞİŞTİRİLMEZ; İKA sürmez, sebep kaydedilir."*
+    Ve **hangi senaryoda v34'e geçileceği** (yalnız **(a)** ve **(c)**) listede
+    tek cümleyle dursun — operatör 30 Eylül sabahı bunu **okuyarak** karar versin.
+  - ⚠ **T104/T123 kalıbı:** yordam **çalıştırılarak** kilitlenir. Metin kilidi bu
+    projede **iki kez** kör çıktı (D-193, ve şimdi 0/7 vs 3/6).
+  - ⚠ Yeni model **aranmaz**, yeniden eğitim **yok**. Bu bir **prosedür** işidir.
+  - **Kapı:** `15/15` · `discover -s tests -q` → **799 OK** (yeni testle artar)
 
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
