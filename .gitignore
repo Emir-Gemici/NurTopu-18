@@ -155,3 +155,7 @@ results/**/*.pt
 # ⚠ `manifest.json` TUTULUR (uretim tarifi odur), yalniz goruntular haric.
 results/dji_20260822/kareler_1fps/**/*.jpg
 results/dji_20260822/kareler/*.jpg
+
+# Su bindirme kanitlarinin TAM COZUNURLUKLU hali (4-5 MB x 4). Depoya
+# `kucuk_*` surumleri konur (~800 KB); tam hali betikle yeniden uretilir.
+results/dji_20260822/su_bindirme/DJI_*.jpg

@@ -27,6 +27,18 @@ set -u
 KOK="O:/navitas"
 UZAK="drive:navitas_yedek"
 GUNLUK="$KOK/results/yedek_bekci_log.txt"
+# 🔴 RCLONE GUNLUGU — yedek_drive.sh ile AYNI YOL OLMAK ZORUNDA.
+#    OLCULDU 2026-08-22 22:52: burada `$KOK/results/rclone_gunluk.txt` yaziyordu.
+#    O dosya VAR ama BAYAT: yedek betiginin ILK surumunun gunluguydu, 11:05'te
+#    468.999 baytta dondu ve artik kimse yazmiyor. Yani `stat` BASARISIZ
+#    OLMUYORDU — SABIT bir dosyayi okuyordu ve "$log_boyut != $onceki_log"
+#    kosulu HIC dogru cikmadi. Ayirt edici OLU KODDU.
+#    Sonuc: saglikli bir aktarim (792->884->979 MiB, 1,6 MiB/s) DONMA sanilip
+#    OLDURULDU ve 979 MiB'lik is COPE GITTI.
+#    ⚠ DERS: "dosya var ve okunuyor" ile "dosya CANLI" AYRI SEYLERDIR. Bu
+#      yuzden canlilik artik BOYUTA degil DEGISIM ZAMANINA bakar; bayat bir
+#      dosyanin boyutu da sabittir ve ayni tuzagi kurar.
+RCLONE_GUNLUK="${TEMP:-/tmp}/navitas_rclone_gunluk.txt"
 OLCUM="$KOK/results/yedek_bekci_olcum.jsonl"
 ARALIK=120          # saniye · uzak bayt orneklemesi
 TABAN_TOLERANS=300  # saniye · kucuk dosyali kademede en az bu kadar bekle
@@ -88,7 +100,6 @@ trap 'rm -f "$KILIT"' EXIT INT TERM
 
 yaz "════════ BEKCI BASLADI · PID $$ · aralik ${ARALIK}sn · taban tolerans ${TABAN_TOLERANS}sn"
 onceki_bayt=-1
-onceki_log=0
 sabit_basladi=0
 mudahale=0
 kayip_sn=0
@@ -130,8 +141,19 @@ while true; do
   # ── TOLERANSI VERIDEN TURET ────────────────────────────────────────────
   buyuk="$(en_buyuk_dosya "$kademe")"; buyuk="${buyuk:-0}"
   tol="$TABAN_TOLERANS"
-  if [ "$hiz_bps" -gt 0 ] && [ "$buyuk" -gt 0 ]; then
-    dosya_sn=$(( buyuk / hiz_bps ))
+  # 🔴 OLCULDU 2026-08-22 22:52: bu turetme TAM GEREKTIGI ANDA COKUYORDU.
+  #    `hiz_bps` UZAK BAYT artisindan hesaplaniyor; buyuk dosya havadayken
+  #    uzak bayt SABIT -> artis 0 -> hiz 0 -> `-gt 0` korumasi duser ->
+  #    tolerans 300'de kalir. Yani "buyuk dosyayi koru" formulunu BUYUK DOSYA
+  #    devre disi birakiyordu. Dairesel kusur; 2809 MB'lik dosyada tolerans
+  #    2633sn olmaliyken 300sn kullanildi ve saglikli aktarim olduruldu.
+  #    CARE: hiz olculemiyorsa TABAN HIZ varsayilir. 0,5 MiB/s bu hatta
+  #    OLCULEN en dusuk degerin (1,0 MiB/s) yarisidir — muhafazakar.
+  taban_hiz=$((512 * 1024))
+  hiz_tol="$hiz_bps"
+  [ "$hiz_tol" -lt "$taban_hiz" ] && hiz_tol="$taban_hiz"
+  if [ "$buyuk" -gt 0 ]; then
+    dosya_sn=$(( buyuk / hiz_tol ))
     aday=$(( dosya_sn * 3 / 2 ))
     [ "$aday" -gt "$tol" ] && tol="$aday"
   fi
@@ -147,12 +169,32 @@ while true; do
   #   uzak sabit + log SABIT    -> GERCEK DONMA -> MUDAHALE
   # (Mimarin olctugu ariza tam da bu ikincisiydi: "surec CANLI, logda 0 ERROR,
   #  bayt sayaci 4 DAKIKA SABIT" — orada log da ilerlemiyordu.)
-  log_boyut=$(stat -c %s "$KOK/results/rclone_gunluk.txt" 2>/dev/null || echo 0)
-  if [ "$toplam" = "$onceki_bayt" ] && [ "$log_boyut" != "$onceki_log" ]; then
-    yaz "uzak bayt sabit AMA rclone logu buyuyor ($((log_boyut - onceki_log)) bayt) -> CALISIYOR, mudahale YOK"
+  # CANLILIK = gunlugun SON DEGISIM ZAMANI (boyut DEGIL — bayat dosya tuzagi).
+  log_mtime=$(stat -c %Y "$RCLONE_GUNLUK" 2>/dev/null || echo 0)
+  if [ "$log_mtime" -eq 0 ]; then
+    # ⚠ Gunluk OKUNAMIYORSA bu bir DEGER DEGILDIR (D-180 sinifi): "sabit"
+    #   sayilmaz. Ayirt edici KULLANILAMAZ ilan edilir ve MUDAHALE EDILMEZ;
+    #   koru-kapali degil, dokunma-kapali.
+    yaz "[!] rclone gunlugu OKUNAMADI ($RCLONE_GUNLUK) -> ayirt edici YOK, mudahale EDILMEZ"
+    onceki_bayt="$toplam"
+    sleep "$ARALIK"
+    continue
+  fi
+  # ⚠ `simdi_sn` DONGU BASINDA alinir; arada iki `rclone size` cagrisi var ve
+  #   OLCULDU: 23:02:57 -> 23:07:56 arasi 299sn, yani cagrilar ~180sn suruyor.
+  #   Bayat saatle hesaplayinca yas NEGATIF cikti (-176sn) ve gunluge oyle
+  #   yazildi. Hukum dogruydu ama SAYI yanlisti; taze saatle hesaplanir.
+  log_yas=$(( $(date +%s) - log_mtime ))
+  # Gunluk SON ORNEKLEME ARALIGI icinde yazildiysa rclone CALISIYOR — uzak
+  # bayt sabit olsa bile. Buyuk dosya havadayken Drive dosyayi ancak
+  # TAMAMLANINCA sayar; tek canlilik sinyali budur.
+  # (yedek_drive.sh `--stats 1m` ile dakikada bir satir yazar; ARALIK=120sn.)
+  if [ "$log_yas" -lt "$ARALIK" ]; then
+    if [ "$toplam" = "$onceki_bayt" ]; then
+      yaz "uzak bayt sabit AMA rclone logu ${log_yas}sn once yazilmis -> CALISIYOR, mudahale YOK"
+    fi
     sabit_basladi=0
   fi
-  onceki_log="$log_boyut"
 
   if [ "$toplam" = "$onceki_bayt" ] && true; then
     [ "$sabit_basladi" -eq 0 ] && sabit_basladi=$simdi_sn
