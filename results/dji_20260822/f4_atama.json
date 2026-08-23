@@ -1,0 +1,168 @@
+{
+ "_ne": "F4 PILOT — 24 kare, kaynak-dengeli + yuk-dengeli, DISKTEN turetildi",
+ "_sartname": "SU_ETIKETLEME_PLANI.md §4b + §4b-EK (dort cumle netlestirildi)",
+ "_nadir_kapisi": "rel_alt >= 20 m",
+ "_f3_kareleri_haric": [
+  "dji_20260822172613_0038_d/frame_000000_000000000.jpg",
+  "dji_20260822172613_0038_d/frame_000022_000001530.jpg",
+  "dji_20260822172613_0038_d/frame_000133_000005160.jpg",
+  "dji_20260822172613_0038_d/frame_000178_000006660.jpg",
+  "dji_20260822172613_0038_d/frame_000222_000008220.jpg",
+  "dji_20260822173231_0039_d/frame_000000_000000000.jpg",
+  "dji_20260822173231_0039_d/frame_000020_000001410.jpg",
+  "dji_20260822173231_0039_d/frame_000040_000002730.jpg"
+ ],
+ "_yuk_vekili": "koridor benzeri piksel orani (su|yesil) 1/8 olcekte — SIRALAMA icin, mutlak deger degil",
+ "gruplar": {
+  "A": [
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000099_000004140.jpg",
+    "rel_alt": 32.3,
+    "zaman_sn": 138.138,
+    "yuk_vekili": 0.9008
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000177_000009930.jpg",
+    "rel_alt": 29.8,
+    "zaman_sn": 331.331,
+    "yuk_vekili": 0.2807
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000031_000002280.jpg",
+    "rel_alt": 31.2,
+    "zaman_sn": 76.076,
+    "yuk_vekili": 0.2278
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000090_000005040.jpg",
+    "rel_alt": 30.2,
+    "zaman_sn": 168.168,
+    "yuk_vekili": 0.1882
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000171_000006780.jpg",
+    "rel_alt": 31.1,
+    "zaman_sn": 226.226,
+    "yuk_vekili": 0.1679
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000061_000003510.jpg",
+    "rel_alt": 30.8,
+    "zaman_sn": 117.117,
+    "yuk_vekili": 0.0964
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000256_000009720.jpg",
+    "rel_alt": 31.1,
+    "zaman_sn": 324.324,
+    "yuk_vekili": 0.0774
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000214_000008370.jpg",
+    "rel_alt": 30.6,
+    "zaman_sn": 279.279,
+    "yuk_vekili": 0.0284
+   }
+  ],
+  "B": [
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000131_000005100.jpg",
+    "rel_alt": 31.7,
+    "zaman_sn": 170.17,
+    "yuk_vekili": 0.5962
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000165_000006150.jpg",
+    "rel_alt": 31.7,
+    "zaman_sn": 205.205,
+    "yuk_vekili": 0.3018
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000001_000000180.jpg",
+    "rel_alt": 31.4,
+    "zaman_sn": 6.006,
+    "yuk_vekili": 0.2267
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000129_000005400.jpg",
+    "rel_alt": 31.2,
+    "zaman_sn": 180.18,
+    "yuk_vekili": 0.1924
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000299_000011220.jpg",
+    "rel_alt": 31.1,
+    "zaman_sn": 374.374,
+    "yuk_vekili": 0.1639
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000119_000006330.jpg",
+    "rel_alt": 30.1,
+    "zaman_sn": 211.211,
+    "yuk_vekili": 0.1238
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000198_000007350.jpg",
+    "rel_alt": 30.7,
+    "zaman_sn": 245.245,
+    "yuk_vekili": 0.0618
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000086_000003240.jpg",
+    "rel_alt": 29.8,
+    "zaman_sn": 108.108,
+    "yuk_vekili": 0.038
+   }
+  ],
+  "C": [
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000001_000000090.jpg",
+    "rel_alt": 31.3,
+    "zaman_sn": 3.003,
+    "yuk_vekili": 0.3775
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000066_000003000.jpg",
+    "rel_alt": 32.6,
+    "zaman_sn": 100.1,
+    "yuk_vekili": 0.3734
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000002_000000060.jpg",
+    "rel_alt": 20.3,
+    "zaman_sn": 2.002,
+    "yuk_vekili": 0.2113
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000232_000008670.jpg",
+    "rel_alt": 20.3,
+    "zaman_sn": 289.289,
+    "yuk_vekili": 0.2004
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000034_000001890.jpg",
+    "rel_alt": 32.5,
+    "zaman_sn": 63.063,
+    "yuk_vekili": 0.1558
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000148_000008070.jpg",
+    "rel_alt": 29.7,
+    "zaman_sn": 269.269,
+    "yuk_vekili": 0.1541
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000206_000011790.jpg",
+    "rel_alt": 22.3,
+    "zaman_sn": 393.393,
+    "yuk_vekili": 0.0455
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000044_000001470.jpg",
+    "rel_alt": 34.8,
+    "zaman_sn": 49.049,
+    "yuk_vekili": 0.0387
+   }
+  ]
+ }
+}

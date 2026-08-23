@@ -121,6 +121,57 @@ yanlış çözer:
 > sınıf 0; kenarları çökmüş/oyulmuşsa sınıf 1.
 
 ⚠ Bu **öneridir**. Onaylanmadan pilot başlamaz.
+**Kullanıcı 2026-08-22'de onayladı; F3 kapısı bu hâliyle geçti (U1 0,910 · U2 0,899).**
+
+### 4b-EK · DÖRT CÜMLE NETLEŞTİRİLDİ (2026-08-23, kullanıcı talimatı)
+
+F3'te **üç amele de bağımsız olarak aynı dört boşluğu** bildirdi. Kapı geçti ama
+uyum şartname söylediği için değil **üçü de aynı akıl yürüttüğü için** çıktı;
+8 karede tuttu, 200+ karede tutacağının garantisi yok. Dördü de **ölçümle**
+kapatıldı:
+
+**(1) Kıyı şeridinin DIŞ SINIRI — sabit genişlik değildir.**
+> Sınır, geçilemez örtünün bittiği ve **sürülebilir zeminin başladığı** yerdir;
+> gerekirse kare kenarına kadar uzar. **Mesafe ölçütü kullanılmaz.**
+
+*Ölçüm:* A, şeridin sudan uzaklığını p50 **24–65 px**, maks **108–268 px**
+buldu (960 ölçeği). Sabit genişlik varsayan bir amele bu karelerde bambaşka
+maske üretirdi; üçü de mesafe yerine geçilebilirliği aldığı için uyuştular.
+
+**(2) "< ~15 px" kuralı ETİKET ÖLÇEĞİNDE ölçülür.**
+> Çözünürlük kuralı **960×540 etiket ölçeğinde** uygulanır, ham karede değil.
+> Etiket ölçeğinde **15 pikselden dar** yapılar **etiketsiz** bırakılır.
+
+*Gerekçe (ölçüldü):* aynı ark **6 px @960 · 24 px @3840** (C) ve
+**13,7 px @960 · 54,7 px @3840** (A). Aynı kural bir ölçekte etiketsiz,
+diğerinde etiketli yapıyordu. Etiket 512–768 piksel girdide eğitime giriyor;
+960'ta 15 pikselin altındaki yapı orada **8 pikselin altına** düşer.
+
+**(3) SU GÖRÜNMESE de geçilemez hendek/ark SINIF 1'dir.**
+> Belirleyici ölçüt **geçilebilirliktir**, suyun görünürlüğü değil. Kenarları
+> dik ve İKA'nın çıkamayacağı kuru ark/hendek **sınıf 1**'dir — ama ancak
+> yapı **etiket ölçeğinde ≥15 px** ve kenar profili **okunabiliyorsa**;
+> okunamıyorsa **etiketsiz**.
+
+*Neden gerekliydi:* A'nın notu — bu karede çatışma **tesadüfen** çözüldü
+(13,7 px < 15 px). Ark daha geniş olsaydı **şartnamenin cevabı yoktu.**
+Madde 15 uyumu: geçilemezi engel yazmak serbest alanı **küçültür**.
+
+**(4) SUYA BİTİŞİK OLMAYAN geçilemez örtü de SINIF 1'dir.**
+> Sınıf 1'in tanımı *"suya bitişik olmak"* değil **"geçilememek"**tir.
+> Sık ağaçlık, çalılık, dik şev — suya değmese de **sınıf 1**. Su bu turda
+> yalnızca **öncelikli örnektir**, tanımın kendisi değil.
+
+🔴 *Bu, mevcut veriyle TUTARLILIĞI GERİ GETİRİR:*
+`scripts/olcum/57_t54_engel_eslemesi.py:44` → `ESLEME = {0:0, 1..9:1}` —
+RescueNet'te **ağaç (8), bina, su (2), havuz (9) hepsi sınıf 1**. Yani mevcut
+eğitim kümesinde geçilemez örtü zaten suya bitişiklikten bağımsız olarak
+engeldir. İlk şartnamem bunu **istemeden daraltmıştı**; F3'te üç amele de
+harfi harfine uyup ağaçlığı dışarıda bıraktı ve bunu **itiraz olarak** bildirdi.
+
+⚠ **Bu (4) etiketleme yükünü ARTIRIR** (kare 133'ün ~%40'ı ağaçlık). Kapasite
+tahmini bu yüzden F4'te **yeniden ölçülecek**; D-273'ün 19,9 kare/saat değeri
+çatı etiketlemesinden geliyordu ve bu iş daha ağır olabilir.
 
 ### 4c. Şartname DOĞRULAMASI — kapı
 3 ajan, **birbirinden habersiz**, **aynı 8 kare**. Ölçülür:

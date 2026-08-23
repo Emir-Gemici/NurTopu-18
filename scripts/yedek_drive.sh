@@ -68,18 +68,41 @@ uzak_bayt () {
     | grep -o '"bytes":[0-9]*' | cut -d: -f2
 }
 
-kopyala () {   # $1 = alt yol · $2 = HARIC desen · $3 = max-duration · $4 = TAM sarti
-  ad="$1"; haric="${2:-}"; sure="${3:-20m}"; tam_sart="${4:-0}"
+kopyala () {   # $1 = yol · $2 = HARIC · $3 = sure · $4 = TAM · $5 = UZAK AD
+  ad="$1"; haric="${2:-}"; sure="${3:-20m}"; tam_sart="${4:-0}"; uzak_zorla="${5:-}"
   onceki=-1; tur=0
+  # 🔴 MUTLAK YOL DESTEGI (2026-08-23): `O:/navitas-local-train` KOK'un ALTINDA
+  #    DEGIL, KARDESI. Kademe listesi hep `$KOK/$ad` varsaydigi icin o dizin
+  #    HIC YEDEKLENMIYORDU — icinde 129 egitim betigi ve venv disi 9.850 dosya
+  #    (2.148 MB) var ve HICBIRI depoda izlenmiyor. Uretim modellerini ureten
+  #    kod, tek kopya diskteydi.
+  #    🔴 UZAK AD CAKISMASI (ilk denemede YAPTIM, 07:09'da yakalandi):
+  #      `$KOK/navitas-local-train` DIYE AYRI BIR DIZIN VAR (saplama: 7 betik +
+  #      kendi venv'i). `basename "O:/navitas-local-train"` de AYNI adi verir,
+  #      yani ikisi AYNI uzak klasore yaziyordu ve icerikleri karisiyordu;
+  #      dogrulayici da yanlis kiyaslardi. `basename`'e GUVENILMEZ — uzak ad
+  #      $5 ile ACIKCA verilir.
+  case "$ad" in
+    [A-Za-z]:*|/*) kaynak="$ad"; uzak_ad="${uzak_zorla:-$(basename "$ad")}" ;;
+    *)             kaynak="$KOK/$ad"; uzak_ad="${uzak_zorla:-$ad}" ;;
+  esac
   case "$sure" in
     *h) sure_sn=$(( ${sure%h} * 3600 )) ;;
     *m) sure_sn=$(( ${sure%m} * 60 )) ;;
     *)  sure_sn=1200 ;;
   esac
   esik=$(( sure_sn - 60 ))
+  # 🔴 TAM SARTI ile HARIC BIRLIKTE KULLANILAMAZ: `du -sb` yerel agacin
+  #    TAMAMINI sayar, disladigimiz dosyalar dahil. O yuzden uzak ASLA yerele
+  #    erisemez ve kademe SONSUZ DONER (40 tur x sure). Fail-loud kapatilir.
+  if [ -n "$haric" ] && [ "$tam_sart" = "1" ]; then
+    echo "[$(date +%H:%M:%S)] [!] $uzak_ad · TAM sarti HARIC ile birlikte" \
+         "kullanilamaz (du yerelin TAMAMINI sayar) -> TAM sarti KAPATILDI"
+    tam_sart=0
+  fi
   echo ""
   echo "=============================================================="
-  echo "[$(date +%H:%M:%S)] KADEME: $ad"
+  echo "[$(date +%H:%M:%S)] KADEME: $uzak_ad   (kaynak: $kaynak)"
   echo "=============================================================="
   while [ "$tur" -lt 40 ]; do
     tur=$((tur + 1))
@@ -87,13 +110,13 @@ kopyala () {   # $1 = alt yol · $2 = HARIC desen · $3 = max-duration · $4 = T
     # `$haric` TIRNAKLI gecirilir: tirnaksiz birakilirsa kabuk `venv/**`
     # desenini CWD'ye gore glob'lamaya calisir.
     if [ -n "$haric" ]; then
-      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK \
+      "$RCLONE" copy "$kaynak" "$UZAK/$uzak_ad" $BAYRAK \
         --max-duration "$sure" --exclude "$haric"
     else
-      "$RCLONE" copy "$KOK/$ad" "$UZAK/$ad" $BAYRAK --max-duration "$sure"
+      "$RCLONE" copy "$kaynak" "$UZAK/$uzak_ad" $BAYRAK --max-duration "$sure"
     fi
     gecen=$(( $(date +%s) - t0 ))
-    simdi="$(uzak_bayt "$ad")"
+    simdi="$(uzak_bayt "$uzak_ad")"
     # T140: OLCULEMEDI != 0 (D-180 sinifi). Olculdu 11:05:49 —
     #   `uzak_bayt` BOS dondu, betik 0 sayip "uzakta 0 MB" yazdi;
     #   oysa uzakta 1218 MB vardi. Bos olcum (b) olcutunu YANLIS
@@ -115,7 +138,7 @@ kopyala () {   # $1 = alt yol · $2 = HARIC desen · $3 = max-duration · $4 = T
       #     uzak >= yerel aranir; degilse tur TEKRARLANIR. Degisen dizinlerde
       #     (results/) bu sart ARANMAZ, orada bayt esitligi asla saglanmaz.
       if [ "$tam_sart" = "1" ]; then
-        yerel="$(du -sb "$KOK/$ad" 2>/dev/null | cut -f1)"
+        yerel="$(du -sb "$kaynak" 2>/dev/null | cut -f1)"
         if [ -n "$yerel" ] && [ "$simdi" -lt "$yerel" ]; then
           echo "[$(date +%H:%M:%S)] $ad · sure sinirina takilmadi AMA uzak" \
                "$((simdi / 1048576)) MB < yerel $((yerel / 1048576)) MB -> DEVAM"
@@ -129,7 +152,7 @@ kopyala () {   # $1 = alt yol · $2 = HARIC desen · $3 = max-duration · $4 = T
     #  b) BAYT: degismiyorsa ilerleme yok.
     if [ "$simdi" = "$onceki" ]; then
       if [ "$tam_sart" = "1" ]; then
-        yerel="$(du -sb "$KOK/$ad" 2>/dev/null | cut -f1)"
+        yerel="$(du -sb "$kaynak" 2>/dev/null | cut -f1)"
         if [ -n "$yerel" ] && [ "$simdi" -lt "$yerel" ]; then
           echo "[$(date +%H:%M:%S)] 🔴 $ad · ILERLEME YOK ve kademe EKSIK" \
                "(uzak $((simdi / 1048576)) MB < yerel $((yerel / 1048576)) MB)" \
@@ -148,7 +171,21 @@ kopyala () {   # $1 = alt yol · $2 = HARIC desen · $3 = max-duration · $4 = T
 # dji: 2-3 GB'lik HAM CEKIMLER. 1,2 MiB/s'de tek tur ~1,7 saat surer -> 4h.
 #      TAM sarti 1: bu kademe YERI DOLDURULAMAZ ve DEGISMEZ; uzak < yerel
 #      iken "tamam" denmez. (2026-08-22'de tam bu yuzden 7,38 GiB eksik kaldi.)
+# 🔴 EGITIM CALISMA ALANI — 2026-08-23'e kadar HIC YEDEKLENMEMISTI.
+#   `O:/navitas-local-train` KOK'un kardesi oldugu icin kademe listesine hic
+#   girmemis. Icinde 129 numarali egitim betigi (01_kontrol.py .. 102_*.py) ve
+#   venv disi 9.850 dosya / 2.148 MB var. Ornekleme ile dogrulandi: bu
+#   betiklerin HICBIRI git'te izlenmiyor. Yani uretim modellerini ureten kod
+#   ne depoda ne yedekte, TEK KOPYA disktedir — ve push DONDURULMUS durumda
+#   (CLAUDE.md §5), yani depo da makine disi yedek degil.
+#   2,1 GB'lik bu betikler, `codes/`'un eksik 28 GB'lik kosum ciktisindan
+#   (yeniden uretilebilir) kat kat degerlidir; bu yuzden KADEME 1'e, dji'den
+#   HEMEN SONRA kondu.
+#   venv HARIC: tarifi `results/t140/venv_tarifi_pip_freeze.txt`.
 kopyala "dji" "" "4h" 1
+#   ⚠ UZAK AD ACIKCA verilir: `$KOK/navitas-local-train` saplamasi da ayni
+#     basename'e sahip ve ayni klasore yazardi (07:09'da yakalandi).
+kopyala "O:/navitas-local-train" "venv/**" "40m" 0 "egitim_calisma_alani"
 kopyala "models" "" "20m" 1
 kopyala "results"                 # DEGISEN dizin — TAM sarti ARANMAZ
 kopyala "data" "" "40m" 1
