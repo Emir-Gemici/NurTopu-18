@@ -191,7 +191,17 @@ kopyala "results"                 # DEGISEN dizin — TAM sarti ARANMAZ
 kopyala "data" "" "40m" 1
 
 # ── KADEME 2 · PAHALI AMA YENIDEN URETILEBILIR ───────────────────────────────
-kopyala "codes"
+# 🔴 codes/: ARA KONTROL NOKTALARI HARIC (olculdu 2026-08-24).
+#   Eksik 451 dosya = 27,87 GB. Bunun %84'u (23,51 GB) `epochN.pt`, yani
+#   egitim sirasinda her N epoch'ta bir atilan ARA agirlik — ne dagitima
+#   girer ne bir olcumu yeniden uretir. Kalan 4,36 GB (37 best/last.pt +
+#   grafikler + csv/yaml) hangi modelin nasil davrandiginin KAYDIDIR ve
+#   TUTULUR.
+#   ✅ Uretim adaylarinin agirliklari ZATEN UZAKTA (dogrulandi):
+#      t127_temiz/best.pt (=v35) · t122ac_daralt_cati/best.pt · t121_etiket_ft/best.pt
+#   ⚠ Geri almak icin: bu satirdaki `--exclude` desenini kaldirip yeniden kos.
+#   ⚠ TAM sarti VERILEMEZ (haric ile birlikte calismaz — betikte fail-loud).
+kopyala "codes" "**/epoch*.pt" "40m" 0
 kopyala "jetson_paket"
 kopyala "test_images"
 kopyala "rapor"
