@@ -1,0 +1,88 @@
+{
+ "amele": "C",
+ "grup": "F4",
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000001_000000090.jpg",
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi (bu turda dokunulmadi); PNG gecerliligi bu turda dogrulandi: 960x540, tek kanal, yalniz 0/255",
+   "guven": "onceki oturum",
+   "notlar": "bu turda yeniden cizilmedi",
+   "sinif1_oran": 0.36325,
+   "_md5": "975ff7c1e99cfcb1b568c784f756d3d3"
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000066_000003000.jpg",
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi (bu turda dokunulmadi); PNG gecerliligi bu turda dogrulandi: 960x540, tek kanal, yalniz 0/255",
+   "guven": "onceki oturum",
+   "notlar": "bu turda yeniden cizilmedi",
+   "sinif1_oran": 0.65941,
+   "_md5": "5f723f3e8da3cc189270a062b052f004"
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000002_000000060.jpg",
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi (bu turda dokunulmadi); PNG gecerliligi bu turda dogrulandi: 960x540, tek kanal, yalniz 0/255",
+   "guven": "onceki oturum",
+   "notlar": "bu turda yeniden cizilmedi",
+   "sinif1_oran": 0.25717,
+   "_md5": "02ff8fe72a3fcb03d0a86c1b27b8c432"
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000232_000008670.jpg",
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi (bu turda dokunulmadi); PNG gecerliligi bu turda dogrulandi: 960x540, tek kanal, yalniz 0/255",
+   "guven": "onceki oturum",
+   "notlar": "bu turda yeniden cizilmedi",
+   "sinif1_oran": 0.23714,
+   "_md5": "f108bce48f7467811c11f6b6f4f9ea71"
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000034_000001890.jpg",
+   "saniye": 564,
+   "yontem": "HAM 3840x2160'ta olculdu. Sik cali: ExG=(2G-R-B)/(R+G+B)*255>10 -> 61x61 ham pencerede yogunluk>0.55 VE 25x25 yerel gri std>40 (olcum: cali tepesi std 45-53, alcak ot orgusu std 30, ciplak toprak std 23-25). Lastik/branda yigini: (gri<118 VEYA mavi-baskin VEYA parlak-dusuk-doygunluk) -> ayni 61x61 yogunluk>0.55 (yogunluk sarti olmadan dagilmis koyu benekler yigini sagdaki surulebilir topraga tasiriyordu, bindirmede goruldu). Beyaz insaat molozu: std>45 yogunlugu. Tas yigini: V>180 & S<32. Birlestir -> kapama/acma -> 960'a indir -> dis kontur dolu cizilerek delikler kapatildi (0 delik dogrulandi) -> 15x15 px'ten kucuk bilesenler atildi.",
+   "guven": "orta",
+   "notlar": "Coplik/lastik sahasi. SU YOK - bu karede acik su yuzeyi yok; sinif 1 tamamen gecilemez ORTU (lastik yigini, branda, beyaz moloz, tas yigini, sik yesil cali). Alcak ot/kuru ot ortusu ve tekerlek izli toprak sinif 0 birakildi (surulebilir). Kare alt-ortasindaki koyu hoyuk (~300-490, 440-540 @960) ISARETLENMEDI: ham cozunurlukte yigin mi yoksa sadece koyu/nemli duz toprak mi ayirt edilemedi - DURUSTLUK kurali geregi 'olabilir' diye isaretlenmedi. Sag alttaki buyuk golge: altindaki kuru ot okunabiliyor, o yuzeyin sinifini (0) aldi.",
+   "sinif1_oran": 0.1787,
+   "_md5": "c5e45e47048eeb3a66cdc4921296677b"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000148_000008070.jpg",
+   "saniye": 383,
+   "yontem": "HAM 3840x2160'ta olculdu. (a) HENDEK: yol solunda gri<65 koyu bant; 61x61 ham pencerede yogunluk>0.60, ROI x=250..420 @960. Kesit profili olculdu (y=200: parlak 130-155 -> 294..362 arasi 23-55; y=420: 315..360 arasi 24-38) => bant genisligi 46-68 px @960, 15 px kuralini gecer, kenar profili KESKIN ve okunabilir. (b) IBRELI AGAC: gri<125 & G>R+4 & G>B+4 yogunluk>0.60. (c) genel sik yesil: ExG>15 yogunluk>0.60 & std>40. Birlestir -> kapama 45/acma 29 -> 960 -> dis kontur dolu -> <15x15 bilesen at.",
+   "guven": "orta",
+   "notlar": "SU GORUNMUYOR; sinif 1 = gecilemez HENDEK + iki ibreli agac (sartname madde 3 ve 4). GOLGE HIPOTEZI CURUTULDU: iki insanin golgesi olculdu (bas (458,297) -> golge ucu, 960 olceginde ~70 px, yon guney-dogu). Golge boyu/insan boyundan gunes yuksekligi ~45 derece; duvar dogrultusuna DIK bilesen metre basina ~10,6 px. Koyu bandin 46-68 px genisligi bir golge olsaydi ~4-6 m yuksekliginde bir duvar gerekirdi - yol kenarinda yok. Ayrica bant icinde COP birikmis (yesil sise, mavi poset, beyaz ambalaj RENKLERI okunabiliyor) - derin golgede renk bu kadar okunmaz; cop birikmesi hendege isaret eder. Bandin sol kenarindaki dar beton kenar/parapet (7-13 px @960) 15 px kuralinin ALTINDA kaldigi icin poligona KATILMADI (bkz. sartname_belirsizligi). SAG TARAFTAKI kazi alani sinif 0 birakildi: yuzeyde PALETLI IS MAKINESI palet izleri (merdiven desenli ayak izleri) var - makineler uzerinde YURUMUS, yani surulebilir. Soldaki yesil tarla ve kuru ot bantlari sinif 0.",
+   "sinif1_oran": 0.0797,
+   "_md5": "1fa8d265c2dd7c91a2129d3eff5fdb34"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000206_000011790.jpg",
+   "saniye": 246,
+   "yontem": "HAM 3840x2160'ta olculdu. (a) KURU SIK CALI/DIKENLIK: gri<118 VE 25x25 yerel std>15 -> 61x61 pencerede yogunluk>0.55. Esik olcumle secildi: kuru cali gri 89-104 / std 19,5-22,2; ciplak sikistirilmis toprak gri 156-163 / std 6-12; asfalt std 3,7. (b) YESIL CIT/CALI: ExG>15 yogunluk>0.55 (sag ust kose citi golgede, gri 34 ama ExG 28). Kapama 45 / acma 29 -> 960 -> dis kontur dolu -> <15x15 bilesen at.",
+   "guven": "orta",
+   "notlar": "BU KAREDE SU YOK. Sinif 1 = sol kenar ve sol alttaki sik kuru cali/dikenlik bandi, sag ust kosedeki yesil cit, ve yol sedde omuzundaki bitki serdi. ASFALT YOL sinif 0: uzerindeki AGAC GOLGESI icinde serit cizgileri ve rogar kapagi OKUNUYOR, yani golge altindaki yuzey okunabilir -> o yuzeyin sinifini (0) aldi (sartname madde 0). Buyuk toprak duzluk sinif 0: yuzeyde paletli is makinesi izleri var. SAG ALTTAKI TASLI ALAN sinif 0 birakildi: taslar dagilmis, aralarindan surekli toprak yuzey geciyor ve icinden arac izi gecmis; tek tek taslar zaten 15 px altinda. SOL KENARDA (yaklasik x 0-40, y 105-190 @960) altindaki yuzeyin OKUNAMADIGI koyu golge var - sartname 'okunamiyorsa etiketsiz' diyor; ikili maskede etiketsiz ifade edilemedigi icin zorunlu olarak 0 yazildi (bkz. sartname_belirsizligi 1).",
+   "sinif1_oran": 0.05559,
+   "_md5": "5c2063da856e193dec23871e98d416a7"
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000044_000001470.jpg",
+   "saniye": 329,
+   "yontem": "HAM 3840x2160'ta olculdu. KIRIK BETON MOLOZU: 25x25 yerel gri std>45 -> 61x61 pencerede yogunluk>0.50, ROI x<480 @960; kapama 71 / acma 29 -> 960 -> dis kontur dolu -> <15x15 bilesen at. Esik olcumle secildi: beyaz moloz std 61-65, hasir demirli moloz std 50, duz beton plak std 12, cakil yol std 6,9, izli toprak std 19,5.",
+   "guven": "orta",
+   "notlar": "BU KAREDE SU YOK. Sinif 1 = yikim molozu (kirik beton parcalari) alani ve icindeki hasir demirli moloz obegi. Duz beton plak, palet/tekerlek izli toprak ve cakil yol sinif 0 (surulebilir; yuzeyde arac izleri var). YOLUN SAGINDAKI BITKI SINIF 1 YAPILMADI ve bu bilincli: 6,4 px/960-birim buyutmede bakildiginda bunlar TEK TEK OT OBEKLERI (yaklasik 26 px @960, belirgin golgeli) ve aralarinda surekli ciplak zemin var - sartname 'SIK agaclik/calilik' diyor, bunlar sik degil ve odunsu tac yapisi yok. Kare 1 ve 3'te isaretlediklerim ise surekli, tac golgeli kutle idi. SAG KENARDAKI koyu bant (yaklasik x 900-960) altindaki yuzey OKUNAMIYOR -> sartnameye gore etiketsiz olmali, ikili maskede 0 yazildi. HASIR DEMIR obegi (yaklasik 170-330, 340-500 @960) sinif 1 sayildi cunku govdesi gevsek moloz; ama demir cubuklarin kendisi 5 px @960 (15 px altinda) - bu obek icin guvenim DUSUK.",
+   "sinif1_oran": 0.11161,
+   "_md5": "bee651f9c3c4703ba36f4524c526e7f5"
+  }
+ ],
+ "toplam_saniye": 1522,
+ "sartname_belirsizligi": [
+  "CIKTI FORMATI 'etiketsiz'i IFADE EDEMIYOR: sartname dort ayri yerde 'etiketsiz birak' diyor (golge okunamazsa, <15 px yapilar, kenar profili okunamayan hendek, emin olmadigin sey), ama istenen cikti tek kanal ve YALNIZ 0/255. 'Etiketsiz' zorunlu olarak 0 (=engel degil) yaziliyor; yani belirsizlik SESSIZCE 'gecilebilir' yonune yuvarlaniyor - egitimde riskli yon. Cozum: ucuncu bir yoksay degeri (or. 128) veya ayri bir 'yoksay' maskesi.",
+  "SARTNAME SU ETRAFINDA YAZILMIS ama bu turdaki 4 karenin 3'unde HIC SU YOK. Madde (4) gecilemezligi olcut yapiyor, fakat verdigi ORNEKLER yalniz bitki/arazi (sik agaclik, calilik, dik sev). INSAN YAPIMI yiginlar - lastik yigini, insaat molozu, kum/tas yigini, yere serili hasir demiri, branda - sartnamede HIC gecmiyor. Ben (4)'un olcutunu (gecilememek) uygulayip bunlari sinif 1 saydim; baska bir amele ornek listesine bakip sinif 0 sayabilir. Bu, amele arasi tutarsizligin EN BUYUK kaynagi.",
+  "'SIK agaclik/calilik' ile alcak ot-yabani ot ortusu arasinda OLCULEBILIR esik verilmemis (yukseklik, ortu yuzdesi, tac capi). Nadir goruntude yukseklik dogrudan okunamiyor. Ben ExG yogunlugu + yerel doku (tac golgesi) ile ayirdim ve esigi kare basina kalibre ettim; bu esik sartnameden DEGIL benden geliyor.",
+  "Madde (2)'nin 15 px kurali bir yapinin KENDISI icin mi yoksa bitisik yapilar butunu icin mi? Ornek: hendek 46-68 px (gecer) ama onun beton kenari 7-13 px (kalir). Ikisi tek fiziksel yapi. Sartname 'poligon BUTUN cizilir' diyor ama <15 px parcanin butune katilip katilmayacagini soylemiyor. Ben KATMADIM.",
+  "GOLGE kurali ile 15 px kurali kendi iclerinde 'etiketsiz' uretiyor ama sartname bunun ikili maskede NASIL yazilacagini soylemiyor. Bu turda uc ayri yerde bu duruma dustum (kare 3 sol kenar koyu golge, kare 4 sag kenar koyu bant, kare 2 beton parapet) ve ucunde de 0 yazmak ZORUNDA kaldim.",
+  "OT OBEGI / TUSSOCK: tek tek ot obekleri 960 olceginde 15 px'i GECIYOR (olculdu: ~26 px), yani madde (2) onlari etiketlenebilir sayiyor; madde (4) ise 'SIK calilik' diyor, yani seyrek obekleri disliyor. Iki madde ayni piksel icin ters yone isaret ediyor. Ben (4)'u ustun tuttum (seyrek obekleri isaretlemedim) - ama bu benim tercihim, sartname soylemiyor.",
+  "TUTARLILIK KONTROLU (dogrulama sayfasi uzerinden yapildi): onceki oturumda cizilen 4 karede genis KURU CALI bantlari sinif 1 isaretlenmis; bu turdaki kare 4'te ise yol kenari bitkisini sinif 1 YAPMADIM. Ceviskeni kontrol ettim: frame_000232'nin en dolu penceresi (180,180)-(340,320) ham cozunurlukte SUREKLI, zemini kapatan kuru+yesil cali ortusu (icinde duran insanlar bitki icinde kayboluyor); kare 4'un yol kenari ise arasindan surekli ciplak zemin gecen AYRIK obekler. Yani ikisi celismiyor - ama ikisini ayiran esik sartnamede TANIMSIZ, sadece benim olcumumde var. Bu esik yazili hale getirilmezse ameleler arasi tutarsizlik kacinilmaz."
+ ]
+}

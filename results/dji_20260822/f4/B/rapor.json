@@ -1,0 +1,81 @@
+{
+ "amele": "B",
+ "grup_kare_sayisi": 8,
+ "bu_turda_cizilen": 2,
+ "onceki_oturumdan_devralinan": 6,
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000131_000005100.jpg",
+   "sinif1_oran": 0.6642,
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi; bu turda yalniz DISKTEN gecerlilik dogrulamasi yapildi (960x540, tek kanal uint8, yalniz {0,255}) -- yeniden cizilmedi",
+   "guven": "onceki oturum - bu turda yeniden degerlendirilmedi",
+   "notlar": "Bu turda yalniz dosya gecerliligi ve md5 essizligi dogrulandi; maske ICERIGI denetlenmedi."
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000165_000006150.jpg",
+   "sinif1_oran": 0.3309,
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi; bu turda yalniz DISKTEN gecerlilik dogrulamasi yapildi (960x540, tek kanal uint8, yalniz {0,255}) -- yeniden cizilmedi",
+   "guven": "onceki oturum - bu turda yeniden degerlendirilmedi",
+   "notlar": "Bu turda yalniz dosya gecerliligi ve md5 essizligi dogrulandi; maske ICERIGI denetlenmedi."
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000001_000000180.jpg",
+   "sinif1_oran": 0.3415,
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi; bu turda yalniz DISKTEN gecerlilik dogrulamasi yapildi (960x540, tek kanal uint8, yalniz {0,255}) -- yeniden cizilmedi",
+   "guven": "onceki oturum - bu turda yeniden degerlendirilmedi",
+   "notlar": "Bu turda yalniz dosya gecerliligi ve md5 essizligi dogrulandi; maske ICERIGI denetlenmedi."
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000129_000005400.jpg",
+   "sinif1_oran": 0.2002,
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi; bu turda yalniz DISKTEN gecerlilik dogrulamasi yapildi (960x540, tek kanal uint8, yalniz {0,255}) -- yeniden cizilmedi",
+   "guven": "onceki oturum - bu turda yeniden degerlendirilmedi",
+   "notlar": "Bu turda yalniz dosya gecerliligi ve md5 essizligi dogrulandi; maske ICERIGI denetlenmedi."
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000299_000011220.jpg",
+   "sinif1_oran": 0.0182,
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi; bu turda yalniz DISKTEN gecerlilik dogrulamasi yapildi (960x540, tek kanal uint8, yalniz {0,255}) -- yeniden cizilmedi",
+   "guven": "onceki oturum - bu turda yeniden degerlendirilmedi",
+   "notlar": "Bu turda yalniz dosya gecerliligi ve md5 essizligi dogrulandi; maske ICERIGI denetlenmedi."
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000119_000006330.jpg",
+   "sinif1_oran": 0.0764,
+   "saniye": null,
+   "yontem": "onceki oturumda cizildi; bu turda yalniz DISKTEN gecerlilik dogrulamasi yapildi (960x540, tek kanal uint8, yalniz {0,255}) -- yeniden cizilmedi",
+   "guven": "onceki oturum - bu turda yeniden degerlendirilmedi",
+   "notlar": "Bu turda yalniz dosya gecerliligi ve md5 essizligi dogrulandi; maske ICERIGI denetlenmedi."
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000198_000007350.jpg",
+   "sinif1_oran": 0.4908,
+   "saniye": 483,
+   "yontem": "Ham 3840x2160 kirpmalarla inceleme + olculu sinir. Sinir gozle degil OLCUMLE kuruldu: 960 olceginde (G>165 & S<25) ile parlak beton yol omzu bandi cikarildi, baglantili bilesen analizi ile yol koridoruna ait iki parca secildi, 940 kolonun her birinde bandin ust kenari alindi ve robust IRLS (2.5 sigma, 8 tur) 2. derece polinom uyduruldu -> artik sigma = 1.78 px, 836/940 iclik, |artik| > 8 px olan kolon 73/940. Yol omzunda biten ve sinif1 bolgesine DEGEN yesil calilar ExG>18 ile egrinin altina eklendi (yalniz min(w,h) >= 12 px olanlar). Ardindan kapali delikler dolduruldu (poligon butun). Dogrulama: 960 bindirmesi + ham cozunurlukte iki yakinlastirilmis kontur kontrolu (sol x0-240/y300-400, sag x620-960/y160-280).",
+   "guven": "yuksek",
+   "notlar": "Bu karede SU YOK. Sinif 1'in tamami sartname (4) geregi: yolun ustundeki dik yamac, sik kuru cali/agaclik, palmiye ve celik kafes kule; kare ust kenarina kadar (sartname (1): mesafe olcutu KULLANILMADI, surulebilir zeminin basladigi yere kadar gidildi). Asfalt yol + beton omuz + alttaki genis stabilize duzluk sinif 0. Sol kenardaki acik renkli serit yamacin ICINDE kaldi; delik acilmaz kurali geregi sinif 1 birakildi. Alt yarideki acik alan ham cozunurlukte tarandi (x150-560/y360-480 ve x480-960/y340-540): hendek/ark YOK, seyrek kuru ot + dagilmis tas -> sinif 0."
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000086_000003240.jpg",
+   "sinif1_oran": 0.131,
+   "saniye": 874,
+   "yontem": "Ham cozunurlukte kirpma incelemesi + olcum. (a) Plastik sarili balya yigini B-R (mavi eksi kirmizi) kanaliyla ayrildi: balya B-R = +32..+39, mavi varil +143; buna karsi cakil yol -38, kuru ot -29, ciplak toprak -17, duvar -16 -> B-R > 12 esigi temiz ayirdi. (b) Beyaz/notr cuvallar (S<45 & B-R>-12 & G>90) eklenip plastik cekirdegine degen bilesenler bolge-buyutmeyle alindi; ayri duran cuval icin (G>160 & S<30 & B-R>-8, alan >= 400, min(w,h) >= 15) olcutu -> 43x50 px'lik tek cuval bulundu. (c) Yesil cali obekleri ExG>25 ile; yalniz min(w,h) >= 15 px ve alan >= 250 olanlar alindi (sartname (2) cozunurluk kurali) -> 10 obek kabul, 5 obek 15 px kuralindan REDDEDILDI. (d) Delik doldurma + cevresinin %75+'i sinif1 olan girintilerin doldurulmasi (3 girinti, ucunun de cevresi %100 sinif1). DUVAR OLCUMU: duvar ekseni boyunca ham cozunurlukte 800 ornekli, dik yonde 1 px adimli medyan kesit profili cikarildi; (gri>125 & S<45) olcutuyle duvarin ham genisligi 55 px = ETIKET OLCEGINDE 13.75 px olculdu -> sartname (2)'nin 15 px esiginin ALTINDA kaldigi icin ETIKETSIZ birakildi (sartname_belirsizligi 1. madde).",
+   "guven": "orta",
+   "notlar": "Bu karede SU YOK. Sinif 1 = (i) sol ust tesis: plastik sarili silaj balyalari + metal sundurma catisi + mavi varil + ayri duran cuvallar, (ii) 15 px kuralini gecen yogun yesil cali obekleri. Sinif 0 / etiketsiz = genis cakil yol-avlu, ciplak sikistirilmis toprak, kuru ot bantlari, TEL CIT DIREKLERI (~2-3 px) ve BETON DUVAR (13.75 px). Sag ust kose ham cozunurlukte kontrol edildi: kuru ot + alcak yesil ot serpintisi; dik sev veya sik calilik YOK -> sinif 0. Duvarin golgesi sartname (0) geregi altindaki zeminin sinifini aldi (golgede zemin dokusu okunabiliyordu)."
+  }
+ ],
+ "toplam_saniye": 1357.0,
+ "sartname_belirsizligi": [
+  "15 PX KURALI GERCEK BIR SERT ENGELI SILDI (kanit: frame_000086). Kareyi bastan basa bolen beton duvar + tel cit, ham cozunurlukte duvar ekseni boyunca 800 ornekli dik medyan kesitle 55 ham px = ETIKET OLCEGINDE 13.75 px olculdu. Sartname (2) '15 pikselden dar yapilar etiketsiz' dedigi icin duvari ETIKETSIZ biraktim. Ama bu duvar bir IKA'nin kesinlikle gecemeyecegi, kare boyunca kesintisiz uzanan bir engeldir ve sartname (0)'in 'buraya girerse cikabilir mi' olcutune gore net SINIF 1'dir. Iki madde CELISIYOR ve celiskiyi 1,25 piksel cozuyor. Karar gerek: (a) dogrusal sert yapilar icin 15 px kuralina istisna, (b) esigin 12 px'e cekilmesi, yoksa (c) etiketsiz mi kalacak?",
+  "ETIKETSIZ'IN CIKTI BICIMINDE KARSILIGI YOK. Cikti tek kanal ve yalniz {0,255}. Sartname (0), (2) ve (3) 'etiketsiz birak' hukmu uretiyor, ama etiketsiz piksel de 0 yaziliyor -- yani egitimde SERBEST ALAN ile ayni sey. Sonuc: her belirsizlik guvenli olmayan yone (serbest alan) dusuyor; yukaridaki duvar bunun somut ornegi. Ucuncu bir deger (or. 128 = yok say) ya da ayri bir etiketsiz maskesi gerekiyor.",
+  "KURU OT BANDI ILE 'CALILIK' ARASINDAKI SINIR TANIMSIZ. Sartname (4) 'sik agaclik, calilik, dik sev' diyor; kuru ot bantlarindan hic soz etmiyor. frame_000086'da duvar ile cakil yol arasindaki serit bastan basa kuru ot obekleri + gevsek tas; frame_000198'de yol omzunda benzeri var. Ben duz zemindeki kuru otu GECILEBILIR (sinif 0), yogun yesil yaprakli caliyi GECILEMEZ (sinif 1) saydim. Bu ayrim BENIM kararim, sartnamede yok -- ve bu iki karedeki sinif1 alaninin en buyuk oynaklik kaynagi bu.",
+  "INSAN YAPIMI DEPOLANMIS ESYA ACIKCA SINIFLANDIRILMAMIS. Sartname (4) dogal ortuden bahsediyor; oysa frame_000086'nin sinif 1'inin neredeyse tamami plastik sarili silaj balyalari, cuvallar, bir varil ve bir sundurma catisi. Sartnamenin andigi RescueNet eslemesinde 'bina' sinif 1 oldugu icin bunlari sinif 1 yazdim, ama 'istiflenmis mal / arac / ekipman' hicbir maddede gecmiyor. Ayrica tek basina duran cuval icin 'ne kadar buyukse engeldir' esigini (alan >= 400 px, min kenar >= 15 px) ben sectim.",
+  "SU ETIKETLEME GOREVINDE SUSUZ KARE. Bana dusen iki karenin IKISINDE DE su yok; frame_000198'in %49'u yalniz sartname (4) uzerinden sinif 1 oldu. Bu, sinif 1'in fiilen 'su' degil 'engel' oldugu anlamina geliyor. Isin adi ile fiili tanim arasindaki fark bilincli ise sorun yok; degilse susuz karelerin bu kumeye girip girmeyecegi netlesmeli.",
+  "GOLGE KURALI YUKSEKLIGI OLAN YAPIDA EKSIK KALIYOR. Sartname (0) golgeyi 'altindaki yuzey okunabiliyorsa o yuzeyin sinifi' diye cozuyor; frame_000086'da duvarin golgesi altindaki zemin okunabiliyordu, o yuzden sinif 0 verdim. Ama golgenin VARLIGI yapinin yuksekligi oldugunun kanitidir: nadir goruntude sifir yukseklikli bir boya seridi ile 40 cm'lik bir duvar ayni genislikte gorunur, ikisini ayiran tek isaret golgedir. Golge, bir yapinin engel olup olmadigina karar verirken KANIT olarak kullanilabilir mi?"
+ ]
+}

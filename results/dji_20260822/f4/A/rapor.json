@@ -1,0 +1,121 @@
+{
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000099_000004140.jpg",
+   "cikti": "dji_20260822172613_0038_d__frame_000099_000004140_sinif1.png",
+   "sinif1_oran": 0.9089,
+   "saniye": 117.0,
+   "yontem": "HSV S<70 + ExG<18 esigi ile HAM 3840x2160'ta yol koridoru bilesen olcumu (satir profili 120 px adim), sonra 960'a bolme; ust-sol kuru ot omuzu tam cozunurluk kirpmasiyla dogrulanip serbest birakildi",
+   "guven": "yuksek",
+   "notlar": "Karede ACIK SU YOK. Sinif 1 = yolun iki yanindaki SIK CALILIK/AGACLIK (sartname md.4: suya bitisik olmayan gecilemez ortu de sinif 1). Stabilize yol koridoru + ust-sol kuru ot omuzu sinif 0. Iki ayri poligon olustu (yol kareyi ustten alta boluyor) - delik acilmadi.",
+   "md5": "c5d58b743f486003dcc127cfb0b4ea30",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000177_000009930.jpg",
+   "cikti": "dji_20260822173231_0039_d__frame_000177_000009930_sinif1.png",
+   "sinif1_oran": 0.2163,
+   "saniye": 458.3,
+   "yontem": "HAM 3840x2160'ta izgarali kirpmalar (960 koordinat etiketli) + ExG/S/V satir kesiti; doku-kabaligi (yerel std) esigi denendi ve CURUTULDU (kazi duzlugu sd=36.3 ~ sik cali sd=34.7) - sinirlar tam cozunurlukte gozle hukme baglandi | SONRADAN OLCULDU (k5 ile tutarlilik icin): bordur/cit hattinin dik genisligi HSV S<48 + yinelemeli dogru uydurma ile 18.1 px @960 (n=20 satir, rms=5.4) -> md.2'nin 15 px esigini GECIYOR, cizim DOGRULANDI.",
+   "guven": "orta-yuksek",
+   "notlar": "ACIK SU YOK. Sinif 1: (A) yolun solundaki SIK CALI seridi - solundaki bicilmis ot tarlasi surulebilir, sinif 0; (B) ibreli agac zinciri + boyunca giden BETON BORDUR/TEL CIT hatti (HAM'da x~1090-1150 arasi beton, yesil cit direkleri gorunuyor) - md.4 gecilemez ortu; (C) sag altta CELIK KAFES ELEKTRIK DIREGI (~35x40 px, >=15 px). Bordurun sagindaki KOYU BANT su DEGIL: golge altindaki cakil/toprak dokusu ve uzerindeki cop okunuyor -> md.0 golge kurali ile sinif 0. Kazi/dozer izli duzluk ve stabilize yol sinif 0.",
+   "md5": "061af2f8771391ab62f16ca006c4a47c",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000031_000002280.jpg",
+   "cikti": "dji_20260822173231_0039_d__frame_000031_000002280_sinif1.png",
+   "sinif1_oran": 0.5627,
+   "saniye": 382.7,
+   "yontem": "HAM 3840x2160 izgarali kirpmalar + bolge renk/puruz olcumu (yerel std 21px): SU sd=5.1 V=32.6 a*=-4.1; solda supheli koyu bolge sd=6.3 -> kuru bank (sd 12-18) DEGIL, su/islak yatak olarak hukme baglandi. KoprÃ¼ korkulugu HAM'da gorulup tabliye kenari oradan cizildi.",
+   "guven": "orta",
+   "notlar": "SU VAR: sol ucta kuzey-guney akan dere. md.0 uyarinca su + cevresindeki gecilemez ortu (sazlik/kamis + kuru kesik cali kaplÄ± sev) TEK BUTUN poligon cizildi. Kopru TABLIYESI sinif 0 birakildi (md.0) - poligonun ust siniri korkuluk hattidir, delik acilmadi. Sag alttaki kesik cali/dal yigini + kamis ayri poligon (md.4). Ust seritteki stabilize yol, sag/orta cakil zemin ve seyrek kuru ot sinif 0.",
+   "md5": "ba5989017965d4e8ad1a13ebf5284a3d",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000090_000005040.jpg",
+   "cikti": "dji_20260822173231_0039_d__frame_000090_000005040_sinif1.png",
+   "sinif1_oran": 0.2766,
+   "saniye": 747.0,
+   "yontem": "Yol kenarindaki bitki obekleri OBJEKTIF cikarildi: HAM'da ExG>8, md.2 icin 15 px@960 (=60 px@HAM) elips ACMA -> tohum, sonra ACMA-ILE-GERI-CATMA (tohumu iceren TAM bilesen) - 15 px kurali eler ama kenar kirpmaz; hayatta kalan 6 bilesenin HER BIRI HAM kirpmada gozle dogrulandi. ExG>25 ve ExG>12 ONCE denendi ve YETERSIZ cikti (sag yamacin mat calilarini eledi) - esik gozle dogrulamayla 8'e cekildi, bu KAYIT ALTINDA. Balya yigini, cali seridi ve kafes kule izgarali HAM kirpmalarindan elle. Sol ust yesil alan 1.6x HAM buyutmede INCE DUZGUN OT dokusu -> surulebilir, sinif 0.",
+   "guven": "yuksek",
+   "notlar": "ACIK SU YOK. Sinif 1: (A) beyaz sarilmis SILAJ BALYA yigini + bitisigindeki sik cali seridi (komsu olduklari icin TEK poligon); (B) sag ustteki GERGI TELLI KAFES KULE govdesi; (C) yol kenari ibreli agac obekleri ve sag yamactaki cali kumesi (oto maske, 6 bilesen). Beton bordur hatti bu karede etiket olceginde ~6 px -> md.2 uyarinca ETIKETSIZ; sagindaki koyu bant golge, altindaki ot/cop okunuyor -> md.0 golge kurali ile sinif 0. Sag yamactaki DAGINIK kucuk otlar 15 px esigini gecemedi -> etiketsiz.",
+   "md5": "30e321aa0ba79f5f543c013347bd199f",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000171_000006780.jpg",
+   "cikti": "dji_20260822170832_0037_d__frame_000171_000006780_sinif1.png",
+   "sinif1_oran": 0.2231,
+   "saniye": 575.9,
+   "yontem": "Bitki adaylari objektif tarandi (HAM ExG>8 + 15 px@960 acma + acma-ile-geri-catma): 3 bilesen cikti, UCU DE HAM buyutmede tek tek incelendi - x340-414 seridi ile sol tarla ince duzgun OT (surulebilir), x650-708 y285-330 tek bir otsu devedikeni obegi (odunsu degil). Hicbiri sinif 1 sayilmadi. Balya yigini siniri izgarali HAM kirpmasindan (x90-370) olculdu. Beton bordur/direk hatti (960: x~555-620 capraz) etiket olceginde ~9 px olculdu.",
+   "guven": "yuksek",
+   "notlar": "ACIK SU YOK. Karede TEK sinif 1 nesnesi var: beyaz sarilmis SILAJ BALYA yigini. Sol yesil tarla ince duzgun ot dokusu (1.6x HAM buyutmede dogrulandi) -> surulebilir. Ortadaki kuru olu ot seritleri ve cakil izi surulebilir. Capraz giden BETON BORDUR/DIREK hatti etiket olceginde ~9 px, md.2'nin 15 px esiginin ALTINDA -> etiketsiz. Sag taraf stabilize yol.",
+   "md5": "0d5b799964e9e90c3213c4a155f126a8",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000061_000003510.jpg",
+   "cikti": "dji_20260822173231_0039_d__frame_000061_000003510_sinif1.png",
+   "sinif1_oran": 0.0794,
+   "saniye": 3151.9,
+   "yontem": "BORDUR OLCULDU, GOZLE KESTIRILMEDI: HSV S<48 maskesi + 9px acma, merkez dogrusuna yinelemeli dogru uydurma (n=49 satir, rms=5.6 px) -> merkez x=-1.180*y+743.2; yatay kesit medyani 17.8 px, egimden dik genislik = 17.8*cos(atan(1.18)) = 11.5 px @960. Gozle ilk okumam 18-24 px idi, OLCUM CURUTTU. Ayni yordam k1 karesine de uygulandi (orada 18.1 px cikti, orada CIZILDI) - kural tutarli uygulandi. Balya kumesi izgarali HAM kirpmasindan (x0-400,y0-380) elle; bitki adaylari ExG>8 + 15px acma + geri-catma.",
+   "guven": "orta",
+   "notlar": "ACIK SU YOK. Sinif 1: (A) sol ustteki dagilmis SILAJ BALYA kumesi (+ icindeki mavi varil) - balyalar ayrik nesneler, aralarindaki ~1 m'lik bosluklar bant icine ALINDI (md: delik acilmaz); (B) balya kumesinin sagindaki yesil YAPRAKLI CALI obegi (960 x274-346 y40-120); (C) yol kenarindaki yesil odunsu cali (960 x403-491 y160-221, oto maske). Capraz BETON BORDUR hatti OLCULDU: dik genislik 11.5 px < 15 px -> md.2 uyarinca ETIKETSIZ. Sol yesil tarla (ince duzgun ot) ve genis stabilize yol/kavsak sinif 0. Bordur boyunca uzanan ince GERGI TELLERI de <15 px -> etiketsiz.",
+   "md5": "007269f14139845277f31b154367dc08",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000256_000009720.jpg",
+   "cikti": "dji_20260822170832_0037_d__frame_000256_000009720_sinif1.png",
+   "sinif1_oran": 0.0459,
+   "saniye": 781.4,
+   "yontem": "Bitki ortusu objektif: HAM ExG>8 + md.2 icin 15 px@960 elips ACMA -> tohum -> ACMA-ILE-GERI-CATMA; hayatta kalan 5 bilesen izgarali HAM kirpmalarinda (x0-240 y380-540 ve x0-200 y0-300) tek tek dogrulandi, hepsi gercek IBRELI AGAC / kenar bitki ortusu cikti. Devrilmis kafes kule 960 x240-500 y390-540 kirpmasinda (3.46x) elle cizildi.",
+   "guven": "yuksek",
+   "notlar": "ACIK SU YOK. Sinif 1: (A) yolun solundaki uc IBRELI AGAC ve sol kenar bitki seridi (oto maske, 5 bilesen); (B) yol kenarina DEVRILMIS CELIK KAFES ENERJI DIREGI (govde 960 x~258-455, y~408-515; izolator zincirleri dahil govde icinde). Sag taraftaki genis DOZER IZLI KAZI DUZLUGU surulebilir -> sinif 0; yuksek doku kabaligina ragmen bitki ortusu yok. Solda ince TEL CIT DIREKLERI (~5-8 px) md.2 esiginin altinda -> etiketsiz. Agac GOLGELERI altindaki cakil/toprak okunabildigi icin md.0 uyarinca sinif 0 birakildi (golgeler maskeye ALINMADI).",
+   "md5": "3ae90655f8365a42f8dd7d2441afc1f0",
+   "boyut": "960x540 tek kanal 0/255"
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000214_000008370.jpg",
+   "cikti": "dji_20260822170832_0037_d__frame_000214_000008370_sinif1.png",
+   "sinif1_oran": 0.0535,
+   "saniye": 817.2,
+   "yontem": "Once objektif tarama (HAM ExG>8 + 15 px@960 acma + geri-catma) kosuldu: 8 bilesen. Sonra HER BIRI izgarali HAM kirpmasinda (x80-340 y100-500, 3x) incelendi ve tarama CURUTULDU: (a) en buyuk bilesen (x90-323 y167-455) aslinda GOLGE VERMEYEN duz yesil ot/yabani ortu matini iceriyordu; (b) tarama, GOLGE VEREN gercek calilarin bir kismini (960 x277-330 y308-500) mat yesil olduklari icin KACIRDI. Bu yuzden calilar ELLE, 'golge veriyor mu' olcutuyle cizildi. Rutlar: 960 x375-391 y204 kesitinde ~10 px genislik olculdu.",
+   "guven": "orta",
+   "notlar": "ACIK SU YOK. Sinif 1: yol kenari sekisindeki YUKSEK CALI obekleri - ayrim olcutu GOLGE: 1.5-2.2x HAM buyutmede belirgin golge veren (dolayisiyla yuksekligi olan) odunsu obekler sinif 1; golge vermeyen, duz seren yesil OT/YABANI MATI (960 x~85-245 y~255-500) surulebilir kabul edilip sinif 0 birakildi. Toprakta capraz uzanan EROZYON RUTLARI ~10 px genislikte olculdu -> md.2'nin 15 px esiginin altinda VE gecilemez hendek degil (sig oluk) -> etiketsiz. Sagdaki genis dozer izli kazi duzlugu, cakil ve sol ustteki stabilize yol sinif 0.",
+   "md5": "bf65fced313d93055dd09c5c4e4ecd25",
+   "boyut": "960x540 tek kanal 0/255"
+  }
+ ],
+ "toplam_saniye": 7031.3,
+ "sartname_belirsizligi": [
+  "Sartname ayrik INSAN YAPIMI YAPILARI (elektrik direÄŸi, tel cit, bordur) acikca ele almiyor; olcut olarak yalniz 'gecilememek' verildigi icin celik kafes direk sinif 1 cizildi. Nesne katmani ile ortusme riski var (mimari: 'nesne katmani yalnizca CIKARIR').",
+  "Tel cit + beton bordur hatti etiket olceginde ~25 px; 15 px esigini gecti ama ustteki bolumde (y<380) bordur gorunmuyor, yalniz agaclar var. Bant surekli mi kesikli mi cizilecegi sartnamede tanimli degil - SUREKLI cizildi (bariyer fiziken surekli).",
+  "Sag ustteki buyuk BETON PLAKA (960: x~800-960, y~20-200) yukseltilmis; altindaki golge SIYAH ve okunamiyor. Sartname 'menfez/kopru tabliyesi sinif 0' diyor ama bunun tabliye mi istinat duvari mi oldugu karede belirlenemiyor -> md 'emin olmadigini etiketsiz birak' uygulanip 0 birakildi.",
+  "Sevi kaplayan KURU KESIK CALI/DAL yigini: sartname yasayan sik caliligi sinif 1 sayiyor, ama kesilmis-kurumus dal yiginini adlandirmiyor. Odunsu sap yumagi IKA icin gecilemez kabul edilip sinif 1 cizildi.",
+  "Kafes kulenin INCE capraz kollari ve gergi telleri etiket olceginde <15 px; md.2 uyarinca etiketsiz birakildi ama fiziken gecilemezler. Sartname 'gecilemezlik' ile 'cozunurluk' cakistiginda hangisinin ustun oldugunu soylemiyor - md.2 (cozunurluk) ustun tutuldu.",
+  "Kafes kulenin INCE capraz kollari ve gergi telleri etiket olceginde <15 px; md.2 uyarinca etiketsiz birakildi ama fiziken gecilemezler. Sartname 'gecilemezlik' ile 'cozunurluk' cakistiginda hangisinin ustun oldugunu soylemiyor - md.2 ustun tutuldu.",
+  "Sartname yesil bitki ile KURU/OLU bitki ortusunu ayirmiyor. Sag yamacta kuru kahverengi ot ortusu (a*=+4.8, ExG=-6.1 olculdu) surulebilir kabul edildi; yalniz YESIL odunsu calilar sinif 1 yazildi.",
+  "Capraz bordur/direk fiziken bir bariyer ama etiket olceginde ~9 px. md.2 uyarinca etiketsiz birakildi; sartname bu carpismayi cozmuyor (bkz. k3 ayni sorun).",
+  "Tek basina duran otsu (odunsu olmayan) bitki obekleri: sartname 'calilik' diyor ama otsu/odunsu ayrimini yapmiyor. Ustunden gecilebilecegi kabul edilip etiketsiz birakildi.",
+  "md.2'nin 15 px esigi bu karede bir GERCEK BARIYERI (beton bordur, 11.5 px) disarida birakiyor. Sartname 'gecilemezlik' ile 'cozunurluk' cakistiginda hangisinin ustun oldugunu SOYLEMIYOR. Olcum kayitli: k5'te 11.5 px (etiketsiz), k1'de 18.1 px (etiketli) - ayni fiziksel yapi iki karede esigin iki yanina dustu. Bu, esigin bu veri icin KIRILGAN oldugunu gosteriyor.",
+  "Ayrik nesnelerin (balya) aralarindaki bosluklarin doldurulup doldurulmayacagi sartnamede tanimli degil; 'delik acilmaz' maddesi geregi doldurdum.",
+  "Devrilmis direk yerde YATIYOR; yuksekligi az. Sartname 'gecilemezlik' diyor - kafes govde IKA icin gecilemez kabul edildi, ama yatay yatan bir yapinin uzerinden gecilebilirligi sartnamede tanimli degil.",
+  "Kule izolator zincirleri (siyah boncuk dizileri) yolun uzerine tasiyor; her biri ~10 px, tek tek 15 px esiginin altinda. Govde poligonuna giren kismi dahil, disarda kalanlar etiketsiz.",
+  "Sartname 'sik calilik'i sinif 1 sayiyor ama YUKSEKLIK esigi vermiyor. Duz seren yogun yesil ot/yabani ortusu ile golge veren odunsu cali arasindaki siniri sartname CIZMIYOR; ben 'golge veriyor mu' olcutunu kullandim ve bunu kayda gectim. Baska bir amele mati sinif 1 sayarsa oran ~0.02'den ~0.09'a cikar - bu karede uyusmazligin ana kaynagi burasidir.",
+  "Toprak yuzeydeki uzun EROZYON RUTLARI: md.3 'su gorunmese de gecilemez hendek/ark sinif 1' diyor. Bu rutlar sig ve ~10 px; 'gecilemez' saymadim, ama sartname derinlik/genislik esigini yalniz 15 px cozunurluk uzerinden veriyor.",
+  "KARELER ARASI CELISKI (olculdu): ayni fiziksel beton bordur/cit hatti k1'de 18.1 px, k5'te 11.5 px dik genislige sahip -> md.2'nin 15 px esigi bu yapiyi bir karede sinif 1, digerinde etiketsiz yapiyor. Sartname bu durumu ongormuyor; sonuc, ameleler arasi degil KARELER arasi tutarsizlik uretir."
+ ],
+ "dogrulama": {
+  "png_sayisi": 8,
+  "beklenen": 8,
+  "md5_essiz": true,
+  "hepsi_960x540_tek_kanal_0_255": true,
+  "sorunlar": [],
+  "sure_turetimi": "GERCEK: her PNG'nin disk mtime'i ile bir onceki PNG'nin mtime'i arasindaki fark; ilk kare icin baslangic = onizlemelerin uretildigi an (2026-08-24 23:31:42). Araliklar o kareye ait ARASTIRMA+CIZIM+DOGRULAMA'nin tamamini icerir; k3 ve k5 araliklari YENIDEN CIZIM'i, k5 araligi ayrica k1'in bordur olcumunun tekrarini da icerir."
+ },
+ "amele": "A",
+ "grup": "F4 pilot"
+}

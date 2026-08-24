@@ -21379,3 +21379,103 @@ Yeni model **aranmadı**, yeniden eğitim **yok** (D-277 §5 kısıtı) · eşik
 **değişmedi** · `config/model_registry.json`'a **dokunulmadı** · `codes/`
 altına **girilmedi** · terfi **yok** · **push YOK**.
 
+---
+
+### D-279 · ✅ F4 PİLOT · Kapasite **5,1 kare/saat** ölçüldü (19,9 DEĞİL — 2,7 kat ağır) · ve üç amele bağımsız olarak **şartnamemdeki İKİ MADDENİN ÇELİŞTİĞİNİ** gösterdi
+
+- **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
+  (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-25 · **F4**.
+- **Ön kayıt:** `results/dji_20260822/su_on_kayit.md` · şartname
+  `SU_ETIKETLEME_PLANI.md §4b + §4b-EK` (kullanıcı onayladı).
+- **Ham çıktı repoda:** `results/dji_20260822/f4/{A,B,C}/` (24 maske + raporlar).
+- ⛔ Eğitim **yok** · `dataset/` altına kalıcı küme **yazılmadı** · registry'ye
+  **dokunulmadı** · terfi **yok** · **push YOK**.
+
+#### 1. ÇIKTI DOĞRULANDI (iddia değil, sayım)
+```text
+A 8 · B 8 · C 8  = 24/24 maske
+960x540 · tek kanal · yalniz {0,255}  -> bozuk 0
+benzersiz md5 24/24                   -> ikiz YOK
+her maske kendi grubunun atamasinda   -> fazla dosya YOK
+```
+
+#### 2. 🔴 KAPASİTE — D-273'ün değeri BU İŞ İÇİN GEÇERSİZ
+```text
+OLCULEN kare       : 14   (10 kare oturum kesintisinde SURE kaybetti)
+toplam ajan-saniye : 9.910
+kare basina        : 708 sn  -> ajan basina  5,1 kare/saat
+D-273 (cati isi)   : 261 sn  -> ajan basina 13,8 kare/saat
+                               ORAN: bu is 2,7 KAT AGIR
+```
+Sebep **madde (4)**: *"suya bitişik olmayan geçilemez örtü de sınıf 1"*. Bunu
+mevcut veriyle tutarlılık için ben ekledim (RescueNet eşlemesi zaten öyle) ve
+**yükü artırdığını F4'te ölçtüm** — tahmin etmedim.
+
+🔴 **Dengeleme YİNE tutmadı.** Yük vekilim (koridor benzeri piksel oranı)
+gerçek süreyi öngörmedi:
+```text
+A: 8 kare · 7.031 sn · min 117 · maks 3.152 -> 26,9 KAT yayilim
+B: 2 kare · 1.357 sn   C: 4 kare · 1.522 sn
+```
+D-273'te 81 kattı, vekille 26,9'a indi ama faz duvar saatini **hâlâ tek kare**
+belirliyor. Paralel verim 3×5,1=15,3 değil **7,2 kare/saat**.
+⇒ 200 kare **27,8 saat** (plan §7'nin ilk hâli 10,1 diyordu). **T137/D-273'ün
+19 Eylül tarihi yeniden hesaplanmalıdır** — ÖNER-BEKLE.
+
+#### 3. 🔴 ÜÇ AMELE, AYNI ÇELİŞKİ: madde (2) ile madde (0) BİRBİRİNİ KESİYOR
+Şartnamem *"etiket ölçeğinde <15 px → etiketsiz"* (2) derken *"geçilemezse
+engeldir"* (0) diyor. **Hangisinin üstün olduğunu YAZMAMIŞIM.**
+```text
+amele A: ayni fiziksel bordur hatti k1'de 18,1 px · k5'te 11,5 px
+         -> BIR KAREDE sinif 1, DIGERINDE etiketsiz
+amele B: kareyi bastan basa bolen BETON DUVAR = 55 ham px = 13,75 px @960
+         -> (2) geregi ETIKETSIZ, (0) geregi kesin SINIF 1
+         "celiskiyi 1,25 PIKSEL cozuyor"
+```
+⚠ A'nın teşhisi tam: bu **ameleler arası değil KARELER ARASI** tutarsızlık
+üretir — yani IoU ile yakalanmaz, ölçekte sessizce birikir.
+
+#### 4. 🔴 DAHA AĞIRI (amele B): "ETİKETSİZ"İN ÇIKTIDA KARŞILIĞI YOK
+Çıktı biçimi `{0,255}`. Maddelerin ürettiği **"etiketsiz"** hükmü diske **0**
+olarak yazılıyor — yani eğitimde **serbest alanla AYNI**.
+> *"Her belirsizlik güvensiz yöne düşüyor."*
+
+Bu, projenin çekirdek kuralının tersidir: **madde 15** serbest alanı büyüten
+işlem yasaklar, **D-210** bilinmeyenin zemin ilan edilmesini yasaklar. Kendi
+çıktı sözleşmem bu iki kuralı **sessizce çiğniyor**. Üç durumlu bir gösterim
+(0 / 1 / etiketsiz) gerekir — bu bir **sözleşme** kararıdır, mimarındır.
+
+#### 5. 🔴 ALTYAPI: AMELELER SCRATCHPAD'İ PAYLAŞIYOR — dosya EZİLDİ
+Amele B bildirdi, **ustabaşı doğruladı**:
+```text
+paylasimli scratchpad'de duran `yaz.py` -> hedefi `f4\C`
+B'nin ayni adli dosyasi C'nin surumuyle EZILMIS
+B kendini `scratchpad/amele_B/` altina tasimis (dizin diskte MEVCUT)
+```
+B yakaladı çünkü betik farklı argümanlarla hata verdi. **Adlar semantik olarak
+uysaydı B'nin maskesi sessizce C'nin dizinine yazılabilirdi.**
+✅ **Bulaşma OLMADI** (ustabaşı ölçtü): 24 benzersiz md5, gruplar arası aynı
+maske yok, her maske kendi atamasında.
+⇒ Bundan sonra her amele **kendi scratchpad alt dizinini** alacak. Bu, bu
+projede tekrarlayan **"iki kopya, biri sessizce eziliyor"** sınıfının yeni bir
+örneğidir (stem çakışması · bayat günlük yolu · uzak ad çakışması · şimdi bu).
+
+#### 6. AMELELERİN BULDUĞU DİĞER ŞARTNAME BOŞLUKLARI (hepsi kayıtlı)
+- **İnsan yapımı ayrık yapılar** (kafes kule, devrilmiş direk, tel çit, beton
+  plaka, silaj balyası) şartnamede yok. Üçü de *"geçilememek"* ölçütüyle
+  sınıf 1 çizdi. ⚠ A uyardı: mimarinin *"nesne katmanı yalnızca ÇIKARIR"*
+  ilkesiyle örtüşme riski var.
+- **Yükseklik ölçütü yok**: nadirde sıfır yükseklikli boya şeridi ile 40 cm
+  duvar aynı genişlikte görünür; ayıran tek işaret gölge, ama gölge kanıt
+  sayılmıyor. A bu yüzden *"gölge veriyor mu"* ölçütünü **kendi uydurdu** ve
+  kayda geçirdi (doğru davranış).
+- **Canlı/ölü bitki ayrımı yok**: kuru ot sürülebilir, kesilmiş dal yığını
+  engel sayıldı — şartname söylemiyor.
+- **S3 (yol üstü birikinti) 24 karede de HİÇ görülmedi** → o bent **hâlâ
+  sınanmamıştır**; F3'te de öyleydi.
+
+#### 7. YETKİ SINIRI
+Eğitim **yok** · `dataset/` altına kalıcı küme **yazılmadı** · eşik
+**değişmedi** · `CONTRACTS.md` **değişmedi** · `codes/` altına **girilmedi** ·
+terfi **yok** · **push YOK**. §3, §4, §5'in üçü de **mimar kararı** bekliyor.
+

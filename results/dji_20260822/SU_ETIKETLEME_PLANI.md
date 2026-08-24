@@ -236,22 +236,41 @@ gündüz, gimbal 90°, tek doğrulama uçuşu; `dji/DOGRULAMA/` altına konacak.
 
 ---
 
-## 7. TAKVİM — ölçülen 19,9 kare/saat ile (projeksiyon değil)
+## 7. TAKVİM — 🔴 F4'te YENİDEN ÖLÇÜLDÜ: **5,1 kare/saat** (19,9 DEĞİL)
+
+D-273'ün 19,9 kare/saat değeri **çatı** etiketlemesinden geliyordu. Madde (4)
+(*"suya bitişik olmayan geçilemez örtü de sınıf 1"*) yükü artırdı ve F4'te
+yeniden ölçüldü:
 
 ```text
-F2 referans  8 kare  · ustabasi          ~1 saat
-F3 sartname  8 kare x 3 ajan             ~1,2 saat (paralel)
-F4 pilot    24 kare                      ~1,2 saat
-F5 olcek   200 kare                      ~10,1 saat   (768 kare -> 38,6 saat)
-F6 egitim                                ~1 GPU gecesi
-F7 olcum                                 ~1 saat
+OLCULEN kare        : 14  (kalan 10 kare kesintide sure kaybetti)
+toplam ajan-saniye  : 9.910
+kare basina         : 708 sn   -> ajan basina 5,1 kare/saat
+D-273 (cati)        : 261 sn   -> ajan basina 13,8 kare/saat
+                                  ORAN: bu is 2,7 KAT AGIR
 ```
-⚠ 19,9 **ölçülen** değerdir. Dengeli dağıtım + 25 px ızgara ile **96,5
-kare/saat** projeksiyonu vardır (D-273 §1) ama plana **ölçülen** kondu.
-⚠ Bu takvim `T137`/D-273'ün **19 Eylül** son güvenli tarihine **eklenir**;
-o tarihin ön koşulu olan şartname düzeltmesi hâlâ mimar onayında.
 
----
+🔴 **Dengeleme yine tutmadı.** Yük vekilim (koridor benzeri piksel oranı)
+gerçek etiketleme süresini **öngörmedi**:
+```text
+A: 8 kare · 7.031 sn · min 117 · maks 3.152  -> 26,9 KAT yayilim
+B: 2 kare · 1.357 sn                          C: 4 kare · 1.522 sn
+```
+D-273'te 81 kat vardı, vekil dengelemeyle 26,9 kata indi ama **hâlâ faz duvar
+saatini tek kare belirliyor**. Paralel verim bu yüzden 3×5,1=15,3 değil,
+**7,2 kare/saat** (14 kare / A'nın 7.031 sn'si).
+
+**Ölçülen değerle takvim:**
+```text
+ 24 kare (F4)   :   3,3 saat   (olculdu: ~2 saat, kismen onceki oturumdan)
+200 kare        :  27,8 saat   (7,2 kare/saat, 3 amele)
+768 kare (tumu) : 106,7 saat = 4,4 gun kesintisiz
+```
+⚠ Plan §7'nin ilk hâli 200 kare için **10,1 saat** diyordu; ölçüm **27,8 saat**
+gösteriyor — **2,7 kat**. Bu, T137/D-273'ün **19 Eylül** son güvenli tarihini
+doğrudan etkiler ve o tarih **yeniden hesaplanmalıdır** (öner-bekle).
+⚠ Dengeleme düzeltilirse tavan 15,3 kare/saat; ama bu **projeksiyondur**,
+plana **ölçülen 7,2** kondu.
 
 ## 8. RİSKLER
 
