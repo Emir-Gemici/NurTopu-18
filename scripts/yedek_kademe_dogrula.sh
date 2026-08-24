@@ -59,7 +59,7 @@ KADEMELER=("$@")
     data codes jetson_paket test_images rapor navitas-local-train dataset rescuenet-roads)
 
 printf '%-22s %10s %10s %10s %10s  %s\n' KADEME "yerel_n" "uzak_n" "yerel_GB" "uzak_GB" DURUM
-eksik=0; olculemedi=0
+eksik=0; olculemedi=0; beklenen=0
 for D in "${KADEMELER[@]}"; do
   bilgi="$(yerel_yolu "$D")"
   yol="${bilgi%%|*}"; har="${bilgi##*|}"
@@ -93,7 +93,20 @@ for D in "${KADEMELER[@]}"; do
   elif [ "$un" -lt "$yn" ]; then durum="EKSIK ($((yn-un)) dosya)"
   elif [ "$ub" -lt "$yb" ]; then durum="BAYT EKSIK"
   else durum="TAM"; fi
-  [ "$durum" != "TAM" ] && eksik=$((eksik+1))
+
+  # 🔴 ALARM YORGUNLUGU KARSITI (2026-08-25): iki kademe HER KOSUMDA "eksik"
+  #    cikiyor ve IKISI DE BEKLENEN:
+  #      dataset  — kullanicinin 2026-08-22 karari: 61,5 GB yeniden uretilebilir
+  #                 kume disarida, yalniz copy_paste_* ailesi tutulur.
+  #      results  — DEGISEN dizin; olcum sirasinda bile yazilir, bayt esitligi
+  #                 asla saglanmaz (yedek betiginin kendi (a) olcutu de bunu
+  #                 varsayar).
+  #    Bunlari GERCEK eksikle ayni kefeye koymak, insani "🔴" isaretini
+  #    gormezden gelmeye alistirir — yani uyariyi ISLEVSIZ kilar. Ayri sayilir.
+  case "$D" in
+    dataset|results) [ "$durum" != "TAM" ] && { durum="$durum · BEKLENEN";                         beklenen=$((beklenen+1)); } ;;
+    *)               [ "$durum" != "TAM" ] && eksik=$((eksik+1)) ;;
+  esac
 
   printf '%-22s %10s %10s %10.2f %10.2f  %s%s\n' "$D" "$yn" "$un" \
      "$(echo "$yb" | awk '{print $1/1073741824}')" \
@@ -103,9 +116,10 @@ done
 
 echo ""
 [ "$olculemedi" -gt 0 ] && echo "⚠ $olculemedi kademe OLCULEMEDI — bu 'eksik' DEMEK DEGILDIR, hukum verilmedi."
+[ "$beklenen" -gt 0 ] && echo "· $beklenen kademe BEKLENEN eksik (dataset: kullanici karari · results: degisen dizin) — kusur DEGIL."
 if [ "$eksik" -eq 0 ] && [ "$olculemedi" -eq 0 ]; then
-  echo "TUM KADEMELER TAM. (Hash dogrulamasi ayri: scripts/yedek_dogrula.sh)"
+  echo "✅ GERCEK EKSIK YOK. (Hash dogrulamasi ayri: scripts/yedek_dogrula.sh)"
 else
-  [ "$eksik" -gt 0 ] && echo "🔴 $eksik KADEME EKSIK — ayni komutu tekrar kosmak yeterlidir."
+  [ "$eksik" -gt 0 ] && echo "🔴 $eksik KADEME GERCEKTEN EKSIK — ayni komutu tekrar kosmak yeterlidir."
   exit 1
 fi
