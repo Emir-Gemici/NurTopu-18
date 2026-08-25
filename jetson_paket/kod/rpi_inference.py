@@ -357,9 +357,9 @@ def _arac_kisa_kenari(bgr, arac_modeli, conf):
     if bgr is None:
         return None, "kare goruntusu cozucuye verilmedi"
     try:
-        # Ic ice bagimlilik yaratmamak icin GECIKMELI import: `arac_maskesi`
-        # saha paketinde YOKTUR (jetson_paket_hazirla.py kopya listesi) ve
-        # orada bu katman calismaz — sessizce degil, ASAGIDAKI notla.
+        # Ic ice bagimlilik yaratmamak icin GECIKMELI import. `arac_maskesi`
+        # T83 onarimina kadar saha paketinde YOKTU ve bu katman sahada olu
+        # kaliyordu; artik KOPYALAR'da, tests/test_jetson_comms_paketi kilitler.
         if __package__:
             from .arac_maskesi import arac_olcek_kenari
         else:

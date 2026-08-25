@@ -25,6 +25,12 @@ KOPYALAR = {
     KOK / "codes" / "karar_sozlesmesi.py": PAKET_KOD / "karar_sozlesmesi.py",
     KOK / "codes" / "rpi_inference.py": PAKET_KOD / "rpi_inference.py",
     KOK / "codes" / "costmap_path_finder.py": PAKET_KOD / "costmap_path_finder.py",
+    # 🔴 OLCEK KATMANI — T83 onarimi. `rpi_inference._arac_kisa_kenari` bu
+    # modulu GECIKMELI + try/except ile import eder; dosya pakette YOKSA
+    # kahin SESSIZCE "arac_maskesi modulu yok" notuyla None doner ve arac
+    # govdesinden mpp turetme (CONTRACTS SS5.4, 3. katman) sahada OLU kalir.
+    # Cokmeden kotu: hicbir kapi dusmuyordu. Kilit: tests/test_jetson_comms_paketi.
+    KOK / "codes" / "arac_maskesi.py": PAKET_KOD / "arac_maskesi.py",
     KOK / "scripts" / "jetson_fps.py": PAKET_KOD / "jetson_fps.py",
     KOK / "comms" / "protocol.py": PAKET_KOD / "protocol.py",
     KOK / "comms" / "link.py": PAKET_KOD / "link.py",

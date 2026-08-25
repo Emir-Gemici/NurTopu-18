@@ -25,9 +25,11 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         # olmamalidir. T103'te 9 -> 10 oldu; eklenen
         # `config/model_registry.json`dur (REVIEW_LOG D-178). Bu kapi
         # degisikligi YAKALADI ve dogru davrandi — gevsetilmedi, GUNCELLENDI.
-        self.assertEqual(10, len(KOPYALAR),
-                         "paket kopya sozlesmesi 10 dosya olmali "
-                         "(9 .py + config/model_registry.json · T103)")
+        # T83 onariminda 10 -> 11: eklenen `codes/arac_maskesi.py`dir (olcek
+        # kahininin 3. katmani; pakette yokken kahin SESSIZCE None donuyordu).
+        self.assertEqual(11, len(KOPYALAR),
+                         "paket kopya sozlesmesi 11 dosya olmali "
+                         "(10 .py + config/model_registry.json · T103/T83)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")
@@ -88,6 +90,63 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         self.assertEqual(0, sonuc.returncode,
                          f"stdout={sonuc.stdout}\nstderr={sonuc.stderr}")
         self.assertIn("JETSON_RPI_CANLI_OLCEK_IMPORT=OK", sonuc.stdout)
+
+    # ── T83 · OLCEK KATMANI PAKETTE CANLI MI? ────────────────────────────
+    # KUSUR: `rpi_inference._arac_kisa_kenari` `arac_maskesi`yi gecikmeli +
+    # try/except ile import eder; dosya pakette YOKSA ImportError yutulur ve
+    # kahin "arac_maskesi modulu yok" notuyla None doner. Hicbir kapi dusmez,
+    # hicbir sey cokmez — muhurlu pakette 3. katman (arac govdesinden mpp)
+    # OLU gider. Iki kilit: (a) kopya kanonikle bayt-es, (b) izole paket
+    # dizininden kosulunca import GERCEKTEN basarili.
+    def test_arac_maskesi_paket_kopyasi_kanonikle_bayt_es(self):
+        kaynak = KOK / "codes" / "arac_maskesi.py"
+        hedef = PAKET / "arac_maskesi.py"
+        self.assertEqual(hedef, KOPYALAR.get(kaynak),
+                         "arac_maskesi.py KOPYALAR sozlesmesinde yok — paket "
+                         "yenilenince tasinmaz, olcek katmani sahada olur")
+        self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")
+        self.assertEqual(kaynak.read_bytes(), hedef.read_bytes(),
+                         "paket kopyasi bayat: arac_maskesi.py")
+
+    def test_olcek_kahini_arac_katmani_izole_pakette_IMPORT_EDILIYOR(self):
+        """Paket dizininden TEK BASINA: 'arac_maskesi modulu yok' DONMEMELI.
+
+        Sahte OBB dedektoru hicbir kutu dondurmez; boylece beklenen not
+        `arac_maskesi.arac_olcek_kenari`nin KENDI metni olur ("sahnede
+        olculebilir arac YOK"). Not oradan geldiyse import basarilmistir.
+        """
+        kod = (
+            "import pathlib,sys; "
+            f"p=pathlib.Path({str(PAKET)!r}).resolve(); "
+            "sys.path[:]=[str(p)]+[x for x in sys.path if x not in ('',str(p))]; "
+            "import numpy as np; "
+            "import rpi_inference as r; "
+            "assert pathlib.Path(r.__file__).resolve().parent == p\n"
+            "class M:\n"
+            "    task='obb'; names={0:'small vehicle',1:'large vehicle'}\n"
+            "    def predict(self,*a,**k): return []\n"
+            "bgr=np.zeros((96,128,3),np.uint8); "
+            "kenar,notu=r._arac_kisa_kenari(bgr, M(), 0.25); "
+            "print('ARAC_NOTU='+notu); "
+            "assert kenar is None; "
+            "assert 'modulu yok' not in notu, notu; "
+            "assert notu == 'sahnede olculebilir arac YOK', notu; "
+            "import arac_maskesi as a; "
+            "assert pathlib.Path(a.__file__).resolve().parent == p; "
+            "k=r.kare_olcek_kahini(None, None, (None,None,None), bgr=bgr, arac_modeli=M()); "
+            "d=dict(k['denenen']); "
+            "assert r.OLCEK_KAYNAK_ARAC in d, d; "
+            "assert 'modulu yok' not in d[r.OLCEK_KAYNAK_ARAC], d; "
+            "print('JETSON_ARAC_OLCEK_IMPORT=OK')"
+        )
+        sonuc = subprocess.run(
+            [sys.executable, "-B", "-c", kod], cwd=PAKET,
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(0, sonuc.returncode,
+                         f"stdout={sonuc.stdout}\nstderr={sonuc.stderr}")
+        self.assertIn("ARAC_NOTU=sahnede olculebilir arac YOK", sonuc.stdout)
+        self.assertNotIn("modulu yok", sonuc.stdout)
+        self.assertIn("JETSON_ARAC_OLCEK_IMPORT=OK", sonuc.stdout)
 
 
 if __name__ == "__main__":
