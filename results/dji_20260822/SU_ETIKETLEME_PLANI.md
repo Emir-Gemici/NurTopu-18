@@ -170,19 +170,67 @@ engeldir. İlk şartnamem bunu **istemeden daraltmıştı**; F3'te üç amele de
 harfi harfine uyup ağaçlığı dışarıda bıraktı ve bunu **itiraz olarak** bildirdi.
 
 ⚠ **Bu (4) etiketleme yükünü ARTIRIR** (kare 133'ün ~%40'ı ağaçlık). Kapasite
-tahmini bu yüzden F4'te **yeniden ölçülecek**; D-273'ün 19,9 kare/saat değeri
-çatı etiketlemesinden geliyordu ve bu iş daha ağır olabilir.
+F4'te **yeniden ölçüldü**: 708 sn/kare = **5,1 kare/saat** (D-273'ün 19,9'u değil).
 
-### 4c. Şartname DOĞRULAMASI — kapı
-3 ajan, **birbirinden habersiz**, **aynı 8 kare**. Ölçülür:
+---
+
+### 4b-EK-2 · İKİ ÇELİŞKİ KAPATILDI (2026-08-25, kullanıcı kararı)
+
+F4'te **üç amele de bağımsız olarak** aynı iki kusuru buldu. İkisi de kapatıldı.
+
+#### (A) 🔴 ÇELİŞKİ: madde (2) ile madde (0) — **(0) ÜSTÜNDÜR**
+
+Eski hâl çelişiyordu: (2) *"<15 px → etiketsiz"*, (0) *"geçilemezse engel"*.
+Hangisinin üstün olduğu **yazılmamıştı**. Ölçülen sonuç:
 ```text
-ajanlar arasi IoU medyan  (D-273'te 0,88 cikti)
-USTABASI REFERANSINA gore IoU  (D-273'te 0,55 cikti -> SARTNAME KUSURU)
+amele A: ayni fiziksel bordur k1'de 18,1 px · k5'te 11,5 px
+         -> BIR KAREDE sinif 1, DIGERINDE etiketsiz
+amele B: kareyi bastan basa bolen BETON DUVAR = 13,75 px @960
+         -> (2) "etiketsiz" der, (0) "kesin engel" der
+         celiskiyi 1,25 PIKSEL cozuyor
 ```
-🔴 **Kapı kuralı:** ajanlar birbiriyle yüksek, referansla düşük uyuşuyorsa
-**şartname hâlâ belirsizdir** → cümle düzeltilir, **ölçeklenmez**.
-⚠ Referansı **ben** çizerim ve **ajanlardan önce** çizerim; sonra çizersem
-onların yorumuna kayarım.
+**KARAR (kullanıcı, 2026-08-25): madde (0) üstündür.**
+
+> **Yeni (2):** Çözünürlük kuralı bir **ölçüm güvenilirliği** kuralıdır, bir
+> **sınıf** kuralı değildir. Etiket ölçeğinde 15 pikselden dar bir yapı, **ne
+> olduğu okunamıyorsa** etiketsiz bırakılır. Ama yapı **tanınıyorsa** — beton
+> duvar, bordur, ark, çit gibi — **genişliği ne olursa olsun madde (0) geçerlidir
+> ve sınıf 1'dir.** Dar olmak "geçilebilir" demek değildir.
+
+*Gerekçe:* kural D-210'dan geliyordu ve amacı *"bilinmeyeni zemin ilan etme"*
+idi. Tanınan bir duvarı dar diye etiketsiz bırakmak, o amacın **tam tersini**
+yapıyordu: çıktı biçiminde etiketsiz = 0 = serbest alan (bkz. (B)).
+⚠ A'nın teşhisi: bu **kareler arası** tutarsızlık üretiyordu — IoU ile
+yakalanmaz, ölçekte sessizce birikir.
+
+#### (B) 🔴 ÜÇ DURUMLU ÇIKTI — "etiketsiz" artık DİSKTE VAR
+
+Amele B'nin bulduğu: çıktı `{0,255}` idi; maddelerin ürettiği **"etiketsiz"**
+hükmü diske **0** yazılıyordu, yani eğitimde **serbest alanla aynı**.
+> *"Her belirsizlik güvensiz yöne düşüyor."*
+
+Bu, **madde 15** (serbest alanı büyüten işlem yasak) ve **D-210** (bilinmeyen
+zemin ilan edilmez) ile doğrudan çelişiyordu.
+
+**KARAR (kullanıcı, 2026-08-25): üç durumlu çıktıya geçildi.**
+```text
+PNG degeri   anlam                      YOLO etiketine cevrilirken
+    0        ETIKETSIZ / bilinmiyor     HICBIR poligon uretilmez
+    1        SINIF 0 — surulebilir      class 0 poligonu
+    2        SINIF 1 — gecilemez        class 1 poligonu
+```
+⚠ **0'ın "etiketsiz" olması TASARIMDIR, keyfi değil:** bir maske yarım yazılır,
+yanlış okunur ya da bir araç biçimi bilmezse sonuç **"anotasyon yok"** olur —
+*"burası sürülebilir"* değil. Yani biçim **fail-safe**tir. Eski şemada aynı kaza
+"her yer sürülebilir" üretirdi.
+⚠ `CONTRACTS.md` **değişmez**: sınıf id sözleşmesi hâlâ `{0: traversable,
+1: blocked}`. Değişen şey **etiket dosyası biçimi**, sınıf sözleşmesi değil.
+
+🔴 **MEVCUT 32 MASKENİN SONUCU:** F3/F4'te ameleler yalnız **sınıf 1** çizdi;
+"burayı sürülebilir diye DOĞRULADIM" ile "buraya BAKMADIM" ayrımı yok. O yüzden
+eski maskeler yeni şemada ancak `255 → 2` ve `0 → 0` olarak okunabilir —
+**içlerinde sınıf 0 bilgisi YOKTUR** ve F5'te sınıf 0 için yeniden geçilmeleri
+gerekir. Bu, kararın kabul edilmiş bedelidir.
 
 ---
 
