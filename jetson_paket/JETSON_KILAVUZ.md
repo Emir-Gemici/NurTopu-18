@@ -386,6 +386,39 @@ cd ~/navitas/comms
 python3 iha_inis_yayinci.py --mavlink udp:127.0.0.1:14550 --kanit-timeout 5 --serial /dev/ttyUSB0
 ```
 
+**K6 (2026-08-26):** yayıncı IHA_LANDED'i yayınladıktan sonra **heartbeat'i
+sürdürür** — varsayılan `--heartbeat-sure 600` (şartname §6.2 İKA görev
+süresi, `karar_sozlesmesi.IHA_INIS_HEARTBEAT_SURESI_S`), aralık
+`--heartbeat-aralik 0.5` (< İKA alıcısı `hb_timeout` 3 s). Süreç **İKA
+sürüşü bitene kadar kapatılmaz**; kapatılırsa İKA 3 s sonra `link_lost`
+ile güvenli duruşa geçer (tasarım gereği). `--heartbeat-sure 0` yalnız
+test içindir.
+
+### İKA tarafı — `ika_nav.py` saha komutu (K5, 2026-08-26)
+
+İKA'da iki **AYRI** son tarih vardır (şartname §6.2 alıntıları
+`karar_sozlesmesi.py` sonunda):
+
+| süre | anlam | varsayılan | kaynak |
+|---|---|---|---|
+| `--bekleme-suresi` (eski adı `--timeout`) | rota + IHA_LANDED + IKA_GO gelene kadar | **900 s** | §6.2 İHA görev süresi 15 dk |
+| `--surus-suresi` | izin geldiği andan HB'ye kadar | **600 s** | §6.2 İKA görev süresi 10 dk |
+
+Beklemede geçen süre sürüşten **düşülmez**; sürüş saati izin geldiği an
+başlar. Eski `--timeout 60` sahada İKA'yı iniş gelmeden görevden
+düşürüyordu — **artık `--timeout` vermeyin**, varsayılanlar sözleşmeden gelir.
+
+```bash
+cd ~/navitas
+python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006
+# açıkça yazmak isterseniz (aynı şey):
+python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --bekleme-suresi 900 --surus-suresi 600
+```
+
+Çıkış kodları: `0` HB'ye ulaşıldı · `1` bekleme süresi doldu, rota gelmedi ·
+`2` NO_ROUTE · `3` IKA_GO/IHA_LANDED gelmedi · `4` sürüş süresi doldu
+(İKA durdu, HB'ye ulaşılamadı).
+
 ⚠ **`pip install torch` YAPMA.** Jetson'da PyTorch NVIDIA'nın JetPack'e özel
 wheel'i ile gelir; PyPI sürümü CUDA'sız kurulur ve her şey CPU'ya düşer.
 Zaten kuruluysa dokunma. Değilse NVIDIA Jetson forumundaki JetPack sürümüne

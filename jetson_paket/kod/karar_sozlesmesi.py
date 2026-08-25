@@ -1272,3 +1272,35 @@ def hedef_yok_reddi(detay=None):
     return (HEDEF_YOK_SEBEBI,
             detay or ("HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; "
                       "varis noktasi bilinmeden rota uretilmez."))
+
+
+# ── Sartname sure limitleri (§6.2 / §6.4) — K5+K6 (2026-08-26) ───────────────
+# Kaynak: Ileri_Otonom_Sistemler_Tasarim_ve_Operasyon_Yarismasi_Sartname_TR_Ltktw.pdf
+# (venv fitz ile okundu, sayfa 23-24):
+#   §6.2 "Ucus suresi, IHA'nin mancinik sisteminden ayrilmasi (firlatma) ile
+#        baslar. Guzergah tespiti, veri aktarimi ve IHA'nin parasutle inisini
+#        tamamlamasi ile sona erer. Bu islemler icin taninan maksimum sure
+#        15 dakikadir."
+#   §6.2 "... IKA'nin HB'ye ulasmasi icin verilen maksimum sure 10 dakikadir.
+#        Bu surenin asilmasi durumunda IKA gorevi basarisiz kabul edilecektir."
+#   §6.4 "Sure Asimi: IHA gorev suresi ... Bu surecler icin tanimlanan azami
+#        sure 15 dakikadir."
+# (sayfa 19, §5 FDR gorev test ucusu: tum operasyon "maksimum 10 dakika" —
+#  bu final sahasi icin degil, FDR test ucusu icindir; saha degeri §6.2'dir.)
+#
+# NEDEN IKI AYRI DEADLINE (K5): ika_nav eskiden TEK 60 s deadline ile
+# rota + IHA_LANDED + IKA_GO bekliyordu. Sahada inis firlatmadan dakikalar
+# sonra gelir; 60 s'de IKA gorevi birakirdi. Bekleme suresi IHA gorev suresine
+# (15 dk), surus suresi IKA gorev suresine (10 dk) baglanir; surus saati izin
+# geldigi ANDA baslar, beklemeye harcanan sure surusten dusulmez.
+SARTNAME_IHA_GOREV_SURESI_S = 15 * 60.0   # §6.2 / §6.4 · firlatma -> inis
+SARTNAME_IKA_GOREV_SURESI_S = 10 * 60.0   # §6.2 · HB'ye ulasma
+IKA_BEKLEME_SURESI_S = SARTNAME_IHA_GOREV_SURESI_S   # rota+inis+IKA_GO beklemesi
+IKA_SURUS_SURESI_S = SARTNAME_IKA_GOREV_SURESI_S     # izin -> HB
+
+# NEDEN (K6): iha_inis_yayinci CLI IHA_LANDED'i yayinlayip cikiyordu; alici
+# hb_timeout (3 s) sonra link_lost'a dusup IKA'yi guvenli durusta kilitliyordu.
+# Inis sonrasi heartbeat en az IKA gorev suresi kadar surdurulur; link_lost
+# ancak heartbeat GERCEKTEN kesilince olusur.
+IHA_INIS_HEARTBEAT_SURESI_S = SARTNAME_IKA_GOREV_SURESI_S
+IHA_INIS_HEARTBEAT_ARALIGI_S = 0.5        # < ika_receiver hb_timeout (3 s)

@@ -92,48 +92,22 @@ def iha_ucus_ve_inis_gorevi(speed, landed_peers, heartbeat_until=None):
         landed_peers, heartbeat_until=heartbeat_until)
 
 
-def dinamik_ika_gorevi(bind, timeout):
+def dinamik_ika_gorevi(bind, timeout, surus_suresi=None):
     """İKA'yı yalnız İHA'nın geçerli dinamik rota mesajıyla sür.
 
+    ``timeout`` = bekleme süresi (rota + IHA_LANDED + IKA_GO); ``surus_suresi``
+    = izin sonrası HB'ye ulaşma süresi (K5, ayrı deadline; None → sözleşme).
     Alıcı sürüş boyunca açık kalır; bağlantı kesilirse ``ika_nav.navigate``
     hız komutunu sıfırlar. Eski senaryo→arena rotasına geri dönüş yoktur.
     """
-    timeout = max(0.0, float(timeout))
-    deadline = time.monotonic() + timeout
-    alindi = ika_nav.wait_open_route_from_comms(
-        bind=bind,
-        timeout=timeout,
-        keep_receiver=True,
-        deadline_monotonic=deadline,
-    )
-    if alindi is None:
+    if surus_suresi is None:
+        surus_suresi = ika_nav.IKA_SURUS_SURESI_S
+    kod = ika_nav.ika_gorevi(bind, timeout, surus_suresi)
+    if kod == 1:
         print("[sim] Geçerli dinamik rota gelmedi — İKA güvenli duruşta")
-        return False
-    if isinstance(alindi, dict) and alindi.get("type") == "NO_ROUTE":
-        print(f"[sim] İHA rota yok bildirdi: {alindi.get('sebep', 'bilinmeyen neden')}")
-        return False
-    route, receiver = alindi
-    try:
-        kalan = max(0.0, deadline - time.monotonic())
-        if not ika_nav.receiver_surus_izni_bekle(
-                receiver, kalan, deadline_monotonic=deadline):
-            return False
-        return ika_nav.navigate_route(
-            route,
-            link_ok=lambda: receiver.link_ok,
-            rota_gecerli=lambda: ika_nav.receiver_rota_gecerli(receiver),
-            rota_korumali_gonder=lambda r, l: (
-                ika_nav.receiver_korumali_hiz_gonder(receiver, r, l)
-            ),
-        )
-    finally:
-        try:
-            ika_nav.send_vel(0, 0)
-        finally:
-            try:
-                receiver.stop()
-            finally:
-                receiver.link.close()
+    elif kod == 2:
+        print("[sim] İHA rota yok bildirdi — İKA güvenli duruşta")
+    return kod == 0
 
 
 def main():
@@ -152,7 +126,13 @@ def main():
     parser.add_argument("--bind", default="0.0.0.0:5006",
                         help="İHA dinamik rota dinleme adresi")
     parser.add_argument("--route-timeout", type=float, default=60.0,
-                        help="geçerli dinamik rota için azami bekleme (sn)")
+                        help="geçerli dinamik rota + IHA_LANDED + IKA_GO için "
+                             "azami bekleme (sn); simülasyonda 60, sahada "
+                             "ika_nav.py varsayılanı şartname §6.2 (900)")
+    parser.add_argument("--surus-suresi", type=float,
+                        default=ika_nav.IKA_SURUS_SURESI_S,
+                        help="izin sonrası HB'ye ulaşma süresi (sn); ayrı "
+                             "deadline (K5), şartname §6.2 İKA görev süresi")
     parser.add_argument("--landed-ika", type=udp_adres,
                         help="harici İKA IHA_LANDED hedefi host:port")
     parser.add_argument("--landed-yks", type=udp_adres,
@@ -226,7 +206,7 @@ def main():
             try:
                 gorev_kos(
                     "ika", lambda: dinamik_ika_gorevi(
-                        args.bind, args.route_timeout))
+                        args.bind, args.route_timeout, args.surus_suresi))
             finally:
                 ika_bitti.set()
         t_ika = threading.Thread(target=run_ika, name="ika-nav", daemon=True)
