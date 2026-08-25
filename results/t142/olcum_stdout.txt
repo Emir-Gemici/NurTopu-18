@@ -1,0 +1,105 @@
+v35 a_sentetik_kadraj_t66 n=260 24.6s
+    kap_none {'n': 260, 'min': np.float64(0.1795), 'p05': 0.2197, 'p50': 0.3298, 'p95': 0.5075, 'maks': np.float64(0.6442)}
+    ken_none {'n': 260, 'min': np.float64(0.0), 'p05': 0.0125, 'p50': 0.1377, 'p95': 0.2778, 'maks': np.float64(0.5004)}
+    kap_box {'n': 260, 'min': np.float64(0.1795), 'p05': 0.2197, 'p50': 0.3298, 'p95': 0.5075, 'maks': np.float64(0.6442)}
+    ken_box {'n': 260, 'min': np.float64(0.0), 'p05': 0.0125, 'p50': 0.1377, 'p95': 0.2778, 'maks': np.float64(0.5004)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 1, 'n': 260}
+    0.67/0.50/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 1, 'n': 260}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 5, 'kenar_asan': 1, 'n': 260}
+    0.60/0.45/box {'ret_AND': 0, 'kaplama_asan': 5, 'kenar_asan': 1, 'n': 260}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 8, 'kenar_asan': 1, 'n': 260}
+    0.55/0.40/box {'ret_AND': 0, 'kaplama_asan': 8, 'kenar_asan': 1, 'n': 260}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 14, 'kenar_asan': 1, 'n': 260}
+    0.50/0.35/box {'ret_AND': 0, 'kaplama_asan': 14, 'kenar_asan': 1, 'n': 260}
+v35 b_otopark_raw_frames n=67 37.5s
+    kap_none {'n': 67, 'min': np.float64(0.2083), 'p05': 0.2346, 'p50': 0.2855, 'p95': 0.35, 'maks': np.float64(0.3727)}
+    ken_none {'n': 67, 'min': np.float64(0.0), 'p05': 0.0054, 'p50': 0.0904, 'p95': 0.1759, 'maks': np.float64(0.2273)}
+    kap_box {'n': 67, 'min': np.float64(0.3704), 'p05': 0.4171, 'p50': 0.5076, 'p95': 0.6223, 'maks': np.float64(0.6626)}
+    ken_box {'n': 67, 'min': np.float64(0.0), 'p05': 0.0942, 'p50': 0.2356, 'p95': 0.3607, 'maks': np.float64(0.3999)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.67/0.50/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.60/0.45/box {'ret_AND': 0, 'kaplama_asan': 7, 'kenar_asan': 0, 'n': 67}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.55/0.40/box {'ret_AND': 0, 'kaplama_asan': 18, 'kenar_asan': 0, 'n': 67}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.50/0.35/box {'ret_AND': 6, 'kaplama_asan': 41, 'kenar_asan': 6, 'n': 67}
+v35 c_dji_0038_val n=59 35.1s
+    kap_none {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0535, 'maks': np.float64(0.0776)}
+    ken_none {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0157, 'maks': np.float64(0.021)}
+    kap_box {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0951, 'maks': np.float64(0.138)}
+    ken_box {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0405, 'maks': np.float64(0.0617)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.67/0.50/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.60/0.45/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.55/0.40/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.50/0.35/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+v35 d_arena_s9 n=1 0.2s
+    kap_none {'n': 1, 'min': np.float64(0.0903), 'p05': 0.0903, 'p50': 0.0903, 'p95': 0.0903, 'maks': np.float64(0.0903)}
+    ken_none {'n': 1, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0, 'maks': np.float64(0.0)}
+    kap_box {'n': 1, 'min': np.float64(0.1508), 'p05': 0.1508, 'p50': 0.1508, 'p95': 0.1508, 'maks': np.float64(0.1508)}
+    ken_box {'n': 1, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0, 'maks': np.float64(0.0)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.67/0.50/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.60/0.45/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.55/0.40/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.50/0.35/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+v24 a_sentetik_kadraj_t66 n=260 17.8s
+    kap_none {'n': 260, 'min': np.float64(0.0), 'p05': 0.0231, 'p50': 0.2723, 'p95': 0.5131, 'maks': np.float64(0.7651)}
+    ken_none {'n': 260, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0692, 'p95': 0.3245, 'maks': np.float64(0.6882)}
+    kap_box {'n': 260, 'min': np.float64(0.0), 'p05': 0.0231, 'p50': 0.2723, 'p95': 0.5131, 'maks': np.float64(0.7651)}
+    ken_box {'n': 260, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0692, 'p95': 0.3245, 'maks': np.float64(0.6882)}
+    0.67/0.50/none {'ret_AND': 1, 'kaplama_asan': 5, 'kenar_asan': 5, 'n': 260}
+    0.67/0.50/box {'ret_AND': 1, 'kaplama_asan': 5, 'kenar_asan': 5, 'n': 260}
+    0.60/0.45/none {'ret_AND': 3, 'kaplama_asan': 8, 'kenar_asan': 6, 'n': 260}
+    0.60/0.45/box {'ret_AND': 3, 'kaplama_asan': 8, 'kenar_asan': 6, 'n': 260}
+    0.55/0.40/none {'ret_AND': 4, 'kaplama_asan': 10, 'kenar_asan': 8, 'n': 260}
+    0.55/0.40/box {'ret_AND': 4, 'kaplama_asan': 10, 'kenar_asan': 8, 'n': 260}
+    0.50/0.35/none {'ret_AND': 5, 'kaplama_asan': 19, 'kenar_asan': 10, 'n': 260}
+    0.50/0.35/box {'ret_AND': 5, 'kaplama_asan': 19, 'kenar_asan': 10, 'n': 260}
+v24 b_otopark_raw_frames n=67 37.3s
+    kap_none {'n': 67, 'min': np.float64(0.4333), 'p05': 0.4347, 'p50': 0.4507, 'p95': 0.4842, 'maks': np.float64(0.4869)}
+    ken_none {'n': 67, 'min': np.float64(0.089), 'p05': 0.1097, 'p50': 0.2605, 'p95': 0.2815, 'maks': np.float64(0.2815)}
+    kap_box {'n': 67, 'min': np.float64(0.7703), 'p05': 0.7727, 'p50': 0.8013, 'p95': 0.8608, 'maks': np.float64(0.8656)}
+    ken_box {'n': 67, 'min': np.float64(0.5792), 'p05': 0.6604, 'p50': 0.8501, 'p95': 0.9516, 'maks': np.float64(0.9712)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.67/0.50/box {'ret_AND': 67, 'kaplama_asan': 67, 'kenar_asan': 67, 'n': 67}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.60/0.45/box {'ret_AND': 67, 'kaplama_asan': 67, 'kenar_asan': 67, 'n': 67}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.55/0.40/box {'ret_AND': 67, 'kaplama_asan': 67, 'kenar_asan': 67, 'n': 67}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 67}
+    0.50/0.35/box {'ret_AND': 67, 'kaplama_asan': 67, 'kenar_asan': 67, 'n': 67}
+v24 c_dji_0038_val n=59 27.5s
+    kap_none {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0845, 'maks': np.float64(0.1242)}
+    ken_none {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0188, 'maks': np.float64(0.0856)}
+    kap_box {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.1503, 'maks': np.float64(0.2208)}
+    ken_box {'n': 59, 'min': np.float64(0.0), 'p05': 0.0, 'p50': 0.0, 'p95': 0.0719, 'maks': np.float64(0.1095)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.67/0.50/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.60/0.45/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.55/0.40/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+    0.50/0.35/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 59}
+v24 d_arena_s9 n=1 0.1s
+    kap_none {'n': 1, 'min': np.float64(0.3464), 'p05': 0.3464, 'p50': 0.3464, 'p95': 0.3464, 'maks': np.float64(0.3464)}
+    ken_none {'n': 1, 'min': np.float64(0.1907), 'p05': 0.1907, 'p50': 0.1907, 'p95': 0.1907, 'maks': np.float64(0.1907)}
+    kap_box {'n': 1, 'min': np.float64(0.5785), 'p05': 0.5785, 'p50': 0.5785, 'p95': 0.5785, 'maks': np.float64(0.5785)}
+    ken_box {'n': 1, 'min': np.float64(0.5846), 'p05': 0.5846, 'p50': 0.5846, 'p95': 0.5846, 'maks': np.float64(0.5846)}
+    0.67/0.50/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.67/0.50/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 1, 'n': 1}
+    0.60/0.45/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.60/0.45/box {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 1, 'n': 1}
+    0.55/0.40/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.55/0.40/box {'ret_AND': 1, 'kaplama_asan': 1, 'kenar_asan': 1, 'n': 1}
+    0.50/0.35/none {'ret_AND': 0, 'kaplama_asan': 0, 'kenar_asan': 0, 'n': 1}
+    0.50/0.35/box {'ret_AND': 1, 'kaplama_asan': 1, 'kenar_asan': 1, 'n': 1}
+YAZILDI results/t142/olcum.json
