@@ -78,13 +78,38 @@ Bu 18 kalem **Codex denetiminden** geçerse kapanır (§3).
 
 ## 4. ÖLÇÜLEBİLİR ÇIKTI (süre sonunda bu tablo doldurulur)
 
-| iş | hedef | sonuç |
+| iş | hedef | sonuç (2026-08-26) |
 |---|---|---|
-| kuyruk triyajı | 44 READY_FOR_REVIEW + 27 açık → her biri hükümlü | |
-| başkalarının işi | kanıtla kapat / geri çevir | |
-| kendi işim | bağımsız denetimden geçir (kapatma YOK) | |
-| bekleyen mimar kararları | karara bağla (kendi öner-bekle'lerim hariç) | |
-| insan görevleri | kuyruğa yaz | |
+| kuyruk triyajı | 44 READY_FOR_REVIEW + 27 açık → her biri hükümlü | **44 RFR:** 35 taze doğrulama (`results/t133/taze_dogrulama_35.json`) → **20 KAPANDI (vekil)**, kanıt satırlarıyla; 9'u KAPANMAZ (gerçek kusur gömüyor). **27 açık:** triyaj (`acik_27_triyaj.json`) → 10 kapatma adayı → **çürütme turu: 8 YIKILDI, 2 KAPANDI** (T33, T46) — **D-284**. ⚠ Triyajın kalan 17 hükmü (3 BLOKE_CİHAZ T15/16/17, T109→T16 birleştirme, 13 GEÇERLİ_AÇIK öncelik notu) **kuyruğa İŞLENMEDİ** — tablo `results/t133/triyaj_tablosu.md`'de; ve D-284 gösterdi ki triyaj hükmü tek başına %80 yanlış, bunlar da çürütmeden geçmeden yazılmamalı. |
+| başkalarının işi | kanıtla kapat / geri çevir | 3 onarım worktree'den **birleştirildi** ve kapıyla doğrulandı: T83 (paket `arac_maskesi` + test), S9 (`iha_perceive` kayıt defterine bağlı), T59 (test MODEL'i kayıt defterinden). T59 birleşimi **D-283**'ü ortaya çıkardı (sabit v24'e çivili, v24 çökmüş). |
+| kendi işim | bağımsız denetimden geçir (kapatma YOK) | Codex çürütme prompt'u hazır: `results/codex_denetim_prompt_20260825.md`. **Kullanıcı henüz yapıştırmadı → D-278…D-282 AÇIK, kapanmadı.** Kendi işimi kapatmadım (§1). |
+| bekleyen mimar kararları | karara bağla (kendi öner-bekle'lerim hariç) | **0 karar** — §3b: 18/19 benim; bağlayabileceğim başkasına ait karar yoktu. Yeni bir **eşik kararı** açıldı ve **verilmedi**: **T142** (0,67 kaplama / 0,50 kenar, v35'e kalibre edilmemiş). |
+| insan görevleri | kuyruğa yaz | Kuyruğa **yazılmadı**; §5'te kullanıcıya raporlanıyor (2 görev). |
+| **yeni bulgular** | — | **D-283** (0,67 tavanının gerekçesi çökmüş maskeydi; v35 tek arena karesinde yol=None), **D-284** (çürütme turu). Yeni görev: **T142** (eşik), **T143** (`.engine` kayıt reddi + sessiz kamera bitişi — 30 Eylül), **T144** (`len(l)` kırpması %32-90 engel alanı atıyor). |
 
-## 5. KAPANIŞ KAYDI
-*(süre sonunda doldurulacak)*
+## 5. KAPANIŞ KAYDI — 2026-08-26
+
+**Rol başameleye döndü.** Vekâlet süresi doldu; bu dosyadan sonra mimar yetkisi
+kullanılmaz (görev açma/kapama dâhil — kuyruk satırı yalnız durum güncellemesi).
+
+### Sayılar
+- Kapanan görev: **22** (20 taze-doğrulamalı RFR + T33 + T46). Açılan: **3** (T142–T144).
+- Kapatma **reddi**: 8 (D-284) + 9 (T133 taze doğrulama) = **17 görev "zaten yapılmış" sanılıp yapılmamıştı.**
+- Defter kaydı: D-283, D-284. Kapı: **15/15 · 819 test OK (2 gerekçeli skip)**.
+- Ölçüm ajanı: 10 çürütücü (1,0 M token, 270 araç çağrısı) + 35 taze doğrulama + 27 triyaj.
+
+### Yapılmayanlar (dürüst liste)
+1. D-278…D-282 **kapanmadı** — Codex prompt'u kullanıcının elinde.
+2. Triyajın 17 hükmü kuyruğa işlenmedi (gerekçe §4).
+3. D-284'ün ortaya çıkardığı, T142–T144 dışındaki gömülü kusurlar **açık görevlerin içinde** duruyor (T53 hipotez çürümesi, T47 çim/toprak %37, T100 işlenmemiş koşum, T124 v35 registry cümlesi, T52 kenar 0,5004, T54 mutasyon deliği) — her biri o görevin `🔴 VEKİL KAPATMA REDDİ` satırında; **ayrı görev açılmadı**, çünkü görev zaten açık.
+4. Vekâlet §3'ün *"bağlayabileceğim karar"* kısmı boş çıktı; bu bir başarısızlık değil §1'in çalışmasıdır — ama mimar döndüğünde 19 öner-bekle + T142 onu bekliyor.
+
+### Kullanıcıya raporlanan İNSAN görevleri (madde 9 — kuyruğa yazılmadı, buradan)
+- **H-A · DOĞRULAMA uçuşu (arena, gündüz, gimbal 90°):** tek gerçek arena karesi n=1 ve v35 onda yol=None (D-283). Bu sayı ancak yeni kareyle büyür.
+- **H-B · Hakem ekranı saha doğrulaması:** T46 ölçümle kapandı (36/67 rota, v35) ama kullanıcının 2026-08-11 bildirimi *"asla düzgün çalışmıyor"* insan gözlemidir; v35 ile **yeniden bakılmalı**.
+
+### Mimara devir (ilk okunacak)
+1. **T142** — eşik kararı (0,67/0,50 v35'e kalibre değil; D-283 §3-4). Eşiğe dokunmadım.
+2. **T143** — 30 Eylül sahası için KRİTİK: `.engine` kayıt defterinden geçmiyor.
+3. **D-284 kalıp 1** — "Yap sınandı, iddia sınanmadı": triyaj yordamı iki turlu olmalı.
+4. `results/codex_denetim_prompt_20260825.md` — kullanıcı yapıştırınca D-278…D-282 kapanır ya da düzelir.

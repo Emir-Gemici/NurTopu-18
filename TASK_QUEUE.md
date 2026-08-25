@@ -1931,6 +1931,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ifadesiyle bu test *"rota aktarımını, ACK'i ve İKA'nın hareket etmesini kanıtlayamaz."*
 
 - [ ] **T18 — DroidCam kamera kaynağının algı hattına bağlanması** · `codes/rpi_inference.py` · bağımlı: **H3**
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "ZATEN_YAPILMIS" dedi, çürütücü YIKTI — yazılım parametrik (kamera_kaynagi_coz ✓) ama kayıt defteri ad kıyası HER `.engine`'i ESLESMIYOR diye reddediyor (3/3 engine → fail-closed RuntimeError) ve canlı kamera hattı ilk düşen karede sessizce bitiyor → **T143**. Kapanırsa ikisi 30 Eylül sahasına gömülür.
   - 🔎 **FİLO 2 · D-215 (2026-08-20):** 3 kanıt cümlesinin 3'ü v34'te yeniden
     üretilemedi (oy 1/2) — kanıt ARTIK YOK; kapanış/yeniden-gerekçelendirme mimarın.
   - **Yap:** Kamera kaynağını CLI parametresi yap (dosya / video düğümü / RTSP). Bağlantı koparsa yeniden deneme mantığı zaten var, kaynak değişimiyle bozulmadığını doğrula.
@@ -2319,7 +2320,9 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     `KATMAN_ARAC=10`) hâlâ **yalnız** `iha_haritala.py`'de. Ölçüldü:
     `rpi_inference` / `iha_perceive` / `yks_gui` → araç referansı **0**.
 
-- [ ] **T33 — Araç katmanı (DOTA OBB) algı karar yoluna bağlı değil** · `codes/rpi_inference.py`, `simulation/scripts/iha_perceive.py`, `comms/yks_gui.py` · ÖNEMLİ · kanıt: S4 (b) ölçümü
+- [x] **T33 — KAPANDI (vekil, 2026-08-26) · Araç katmanı (DOTA OBB) algı karar yoluna bağlı değil → ÖLÇÜLDÜ: araç serbest alana SIZMIYOR, ayrı katman gereksiz** · `codes/rpi_inference.py`, `simulation/scripts/iha_perceive.py`, `comms/yks_gui.py` · ÖNEMLİ · kanıt: S4 (b) ölçümü · kapanış `REVIEW_LOG.md` **D-284**
+  - ✅ **Kapanış kanıtı (çürütücü, `results/t133/kapatma_curutme_10.json`):** 67 otopark karesi, DOTA araç px 6,58 M (67/67 karede — triyajın "DOTA boş" dayanağı YANLIŞTI, D-199 §1b RescueNet'e özgü). Üretim v35: araç px'inin **%0,29**'u serbest alanda (kare medyan %0,27 · maks %0,82 · >%10 olan 0); v34 %1,14 · v21 %1,14 · dji_kirsal_v1 %0,07. İkinci yarı (analyze_path'e `engel_mask` geçirme) `rpi_inference.py:1586/1689/1781`, `iha_perceive.py:108` uygulanmış; `test_yks_gui_rota_engel` 6 OK · `test_monotonluk` 16 OK.
+  - ⚠ **Açık kalan (kapanışa engel değil):** kabul zincirinde (`65_kabul_denetcisi.py`) araç-sızıntı kapısı YOK — dört modelde ampirik sağlam (%0,07–1,14) ama kilitli değil; alan-dışı (gündüz DJI) kare olmadığından "yeni sahada araç yine engel mi" ÖLÇÜLEMEDİ (D-270 gece kısıtı).
   - **Kanıt (2026-08-10):** araç maskesi referansı — `iha_haritala.py` **8**,
     `rpi_inference.py` **0**, `iha_perceive.py` **0**, `yks_gui.py` **0**.
     `CONTRACTS.md` §1.3 `COSTMAP_ENGEL_KATMANLARI = (KATMAN_MOLOZ, KATMAN_ARAC)`
@@ -2859,6 +2862,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     görevinde yapılmadı.
 
 - [ ] **T53 — Koşulmamış hücre: 11-sınıf ön-eğitim + GERÇEK DOKU karışımı aynı koşuda** · `O:\navitas-local-train` · **TIKAYICI** · kanıt: T50 FAZ 2 tablosu, `karisim_arena_gercek.yaml` başlığı
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "ZATEN_YAPILMIS" dedi, çürütücü YIKTI — hücre koşuldu (v22) ama HİPOTEZ ÇÜRÜDÜ ve yazılmadı: KAPI 2 (56_uc_kapili, otopark n=67) v15 %24,1 (fren) · v21 %81,0 · **v22 %80,5** · v34 %81,2 · v35 %51,4 — fren kayıp, hiçbiri kabul bandında (%0-20). "v34 üretimde" bayat (v35, T130). Görev "ÇÜRÜDÜ" hükmüyle kapanmalı, "yapıldı" ile değil.
   - 🔎 **FİLO 2 · D-215 (2026-08-20):** "koşulmamış hücre" öncülü ARTIK YOK —
     hücre koşuldu, soyu v34 olarak üretimde (oy 1/2); v34 otopark kaplaması
     %81,2 (İÇERİK paydası, n=67) ≈ v21 %81,0. Kapanış kararı mimarın.
@@ -3043,6 +3047,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     kapisi.py` iki sinyalli hâli kapsamıyor. Denetim bunu da kapsamalı.
 
 - [ ] **T54 — ADIM 1-3 KABUL · ADIM 4 GEÇERLİ SAYILDI (itiraz kabul, D-200) · HEDEFİ HÂLÂ ÖLÇÜLMEDİ → T116** · `dataset/download_and_convert.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-199**, hüküm **D-200**
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "GECERSIZ_BAYAT" dedi, çürütücü YIKTI — MUTASYON: `download_and_convert.py:116` D-67 kök-neden satırına (`blocked_mask = (lbl_np == 8)`) geri döndürüldü → `test_donusum_esleme` **8/8 YEŞİL KALDI** (engel px 7/9 → 1/9 olduğu hâlde). Testler BLOCKED_HAM kümesini çiviliyor, maskeye uygulanmasını değil; dönüştürücü yeni eşlemeyle hiç koşulmadı (`--temizle` yok), üretim verisi 41→57 zincirinden. Koruma delik.
   - ✅ **ADIM 1-3 · 2026-08-20 · Claude-2 (Fable 5)** · kayıt `REVIEW_LOG.md`
     **D-199** · ölçüm düzeneği: **dinamik workflow, 3 paralel ajan**
     (provenans · araç-DOTA · dağılım), çıktıları ana döngüde denetlendi.
@@ -5462,6 +5467,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     Bulgu çıkmazsa da yaz: "denetlendi, bulgu yok" da bir kayıttır.
 
 - [ ] **T116 — ÖLÇÜLDÜ (D-201/D-202): T54 hedefine ULAŞMAMIŞ — v34 otopark kaplaması v21 ile eşdeğer; %80,6→%45,7 'düşüşü' PAYDA FARKI. Karar mimarın** · `models/navitas_seg_v34_best.pt`, `data/raw_frames/` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-200 §3 → D-201/D-202**
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "ZATEN_YAPILMIS" dedi, çürütücü YIKTI — D-202'nin "tavan kırpmıyor (en kötü 0,016)" hükmü YANLIŞ sıralama modeliyle alınmış: gerçek `len(l)` kırpması (tavan 15) train 21/3595 + test 3/450 maskede aşıyor, aşanlarda engel alanının **%31,6 / %38,2**'sini atıyor, en kötü `13077_lab.png` **%90,4** (52.774 px bina atılıp 200 px yamalar tutuluyor; alan-sıralı olsa %1,1). Ayrıca betiğin gerçek girdisi (HF, 2964 karede yalnız {0,7,8}) T54 eşlemesini hiç tetiklemiyor → **T144**.
   - ✅ **ÖLÇÜM · 2026-08-20 · Claude-2 (Fable 5) · dinamik workflow (22 ajan:
     5 lane + 15 çürütücü + sentez + tamlık; düşen lane YOK).**
   - **A (D-201):** eşleştirilmiş 67 karede medyan kaplama — v21 %44,96 ·
@@ -6365,7 +6371,25 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ Yeni model **aranmaz**, yeniden eğitim **yok**. Bu bir **prosedür** işidir.
   - **Kapı:** `15/15` · `discover -s tests -q` → **799 OK** (yeni testle artar)
 
+- [ ] **T142 — Zemin sağlamlık kapısının iki eşiği (kaplama 0,67 · kenar 0,50) üretim modeli v35'e karşı KALİBRE EDİLMEMİŞ; 0,67'nin gerekçesi v24'ün ÇÖKMÜŞ arena maskesiydi** · `codes/karar_sozlesmesi.py`, `tests/test_gercek_arena_kapisi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-283** · ⚠ **EŞİK KARARI — mimar/kullanıcı; vekil dokunmadı**
+  - **Kanıt:** tek gerçek arena karesinde v24 0,579 (sahnenin tamamı yeşil — ÇÖKÜŞ, `results/t133/arena_v24_v35_bindirme.jpg`) · v35 **0,151** / kenar **0,000**, yalnız orta koridor (sol 0,000 / orta 0,426 / sağ 0,026) → `UC_BANT_TEMAS_YOK`, yol=None. D-86 tavanı 0,67'ye o 0,579 geçsin diye çıkarmış ve bedelini (sa_000150 çöküşü kaçıyor) ölçmüştü — bedel hiç uğruna. T52 çürütücüsü: v35 meşru kümede kenar maks 0,5004 > 0,50 (1/260); otopark 0/67 ret (çöküş sınıfı v35'te yok).
+  - **Yap:** (1) v35 ile meşru küme (kadraj_t66 n=260) ve çöküş kümesi (varsa; yoksa YOK diye yaz) için kaplama/kenar dağılımlarını ön kayıtla ölç; (2) iki tavanın v35'teki ayırt ediciliğini raporla; (3) eşik önerisini **karar için** yaz — değiştirme.
+  - **Kapı:** ölçüm ön kayıtlı; `test_gercek_arena_kapisi` + `test_zemin_kapisi_iki_sinyal` yeşil; eşik değişikliği YALNIZ mimar/kullanıcı kararıyla ve `CONTRACTS.md`'ye işlenerek.
+  - **Yapılmaz:** eşiği "geçsin diye" oynatmak (D-86'nın hatası); n=1 arena karesini büyütmek — DOĞRULAMA uçuşu insan görevidir.
+
+- [ ] **T143 — Kayıt defteri ad kıyası HER `.engine`'i reddediyor (fail-closed) → Jetson'da TensorRT yalnız `--kayit-dogrulamasiz` ile yüklenir; canlı kamera hattı ilk düşen karede SESSİZCE bitiyor** · `codes/rpi_inference.py` (load_model, kamera döngüsü), `config/model_registry.json` · **KRİTİK (30 Eylül sahası)** · kanıt: `REVIEW_LOG.md` **D-284** (T18 çürütücüsü) · bağımlı: **H3**
+  - **Kanıt:** registry `competition.path = models/navitas_seg_v35_best.pt`; `--model navitas_seg_v35_best.engine` / `_512_fp16.engine` / `v17_best_640.engine` → 3/3 `uyumlu=False ESLESMIYOR` → `RuntimeError "MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed"` (YOLO'ya ulaşmadan). Kamera: yeniden deneme / düşen-kare sayacı yok.
+  - **Yap:** kayıt defterine `.engine` türevini **aynı soy** olarak tanıtan bir eşleme (SHA'sı ayrı, kaynağı `.pt`'ye bağlı) — fail-closed KALIR, bypass bayrağı saha yordamına GİRMEZ; kamera döngüsüne düşen-kare sayacı + üst sınırlı yeniden deneme + loglu bitiş.
+  - **Kapı:** her iki davranış için test (mock kamera: N düşen kare → sayaç ve log; `.engine` adı → doğrulama GEÇER, yabancı `.engine` → yine RED). Cihaz kapısı (60 sn DroidCam + `.engine` tek kare) H3/Jetson günü.
+  - **Yapılmaz:** `--kayit-dogrulamasiz`'ı `JETSON_KILAVUZ.md`'ye yazmak.
+
+- [ ] **T144 — `dataset/download_and_convert.py` poligon kırpması `len(l)` (satır uzunluğu) sıralı: aşan maskelerde engel alanının %32-38'i, en kötüsünde %90'ı atılıyor** · `dataset/download_and_convert.py:122-123` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-284** (T116 çürütücüsü) · ilgili: T116, T54
+  - **Kanıt:** rescuenet_ham TAM küme, blocked tavan 15: train 21/3595 · test 3/450 aşıyor; atılan engel alanı len(l)-sıralı %31,6 / %38,2, alan-sıralı olsaydı %1,1 / %0,5; `13077_lab.png` 94.997 px'in 85.895'i atılmış (52.774 px bina ÇIKTI, 200-1300 px 15 kırık poligon KALDI). 24 aşan maskenin 24'ünde atılan en büyük > tutulan en küçük. D-202'nin 0,016'sı yanlış sıralama modeliyle ölçülmüş.
+  - **Yap:** sıralamayı alana çevir (`41_cok_sinifli_veri.py:83-84` zaten alan-sıralı — aynı semantik); tavanı aşan maskeleri say ve logla; **ayrıca** betiğin gerçek girdisinin (HF, {0,7,8}) T54 eşlemesini hiç tetiklemediğini kayda geç — D-199/D-202 ölçümleri betiğin okumadığı veride.
+  - **Kapı:** mutasyon testi — sıralama `len(l)`'e geri dönünce test DÜŞMELİ (T54'ün deliği tekrarlanmasın); üretim karışımına etkisi ölçülmeden yeniden eğitim YOK.
+
 - [ ] **T124 — "En çok gören model" bir ERDEM olarak yazılmış: kaplama artışı madde 15'in TEHLİKELİ yönü** · `config/model_registry.json`, `REVIEW_LOG.md` cümle kalıbı · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-222 §2**
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "GECERSIZ_BAYAT" dedi, çürütücü YIKTI — v34 cümlesi gerçekten yok, ama AYNI KALIP v35'in kendi registry girdisinde (:127, ee7508d 2026-08-21 — D-224 taraması bu cümleyi görmedi) + paket aynasında + D-249'da: "v35 gerçeğe EN YAKIN olan adaydır". Ölçüm (n=56, 112 betiğinin kümesi): v35 iyimser zeminin %30'unu görmüyor + maskesinin %30'u iyimser zemin DIŞINDA; toplam uyumu iki zıt hatanın götürmesi, kare-başı korelasyon **-0,12**. Görev metin değil SÖZLEŞME işi: bölgesel ölçüm olmadan lehte cümle kurulamaz — AÇIK.
   - 🔎 **TARANDI + ÖNERİ HAZIR · 2026-08-20 · Claude-2 (ustabaşı) · D-224.**
     Kalıp yalnız registry çifti ×2 yerde; sınır cümleleri verbatim D-224'te,
     registry'ye DOKUNULMADI (kısıt) — mimar onayı bekliyor (ÖNER-BEKLE).
@@ -6927,6 +6951,7 @@ avitas-local-train` tümüyle yedek
   - ⚠ Bulgu çıkarsa **geri alma seçeneği açıktır**; değişiklik tek satırdır.
   - **KAPI:** ölçüm koşulmadan hiçbir kod değişmez.
 - [ ] **T100 — `76_serit_etiketi_celiskisi.py` sayıları T95'le kaymış olabilir** · `scripts/olcum/76_serit_etiketi_celiskisi.py` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-164 §7.5**
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "GECERSIZ_BAYAT" dedi, çürütücü YIKTI — D-204 76'nın ölçtüğü HİÇBİR alanı ölçmemiş (`t91t92.json`'da baskin_serit/H1/H2 grep 0). 76 fiilen 2026-08-20'de yeniden koşulmuş: `results/filo_turu/filo2_t100_76_yeniden_20260820.json` → "SAYI KAYMIŞ", kapanma_adayi=false — deftere HİÇ işlenmemiş. v35'te sa_000148 iki karar yolu farklı koridor seçiyor; D-146'nın 230/16/1'i aynı v30 ile bile yeniden üretilemiyor (232/14/1).
   - Betik `rota_bul` kullanır ve T95 `waypoints`i değiştirdi; yeniden koşulmadı.
   - **YAP:** yeniden koş, D-146/D-147'deki sayılarla kıyasla, kaydı güncelle.
 - [x] **T96 — İki kollu sahnede `road` çatal altındaki ORTAK gövdeyi adlandırıyor** · `codes/rpi_inference.py:1255` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-158** (denetim bulgusu 5)
@@ -8022,6 +8047,7 @@ avitas-local-train\calisma\sentetik_arena_kadraj` (manifest dahil);
     Denetimde sorulacak; doğrulanmadan kullanılmayacak.
 
 - [ ] **T52 — özgün kayıt (mimar denetimi bekliyor)** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "ZATEN_YAPILMIS" dedi, çürütücü YIKTI — D-215 T52 için YALNIZ kaplama eksenini ölçmüş (`filo2_g15_t52_v34.json`'da `kenar` anahtarı YOK) — görevin seçtiği ölçüt sınanmamış. v35 (üretim): meşru kadraj n=260'ta kenar maks **0,5004 (sa_000176) tavan 0,50 ÜSTÜNDE**; otopark 0/67 ret → çöküş sınıfı v35'te yok; tavanlar (0,67 v24 · 0,50 v21 türevi) v35'e hiç kalibre edilmemiş. Kapalı kopyanın "kenar TEK AYIRAN +0,240" iddiası v24'te D-86 ile çürümüştü; istenen "DOĞRULANAMADI" kaydı hiç yazılmadı → **D-283 §4 / T142**.
   - 🔎 **FİLO 2 · D-215 (2026-08-20):** v34'te çakışma yeniden üretilemedi —
     meşru-maks 0,638 / çöküş-min 0,766 (+0,128 boşluk; 67+260 kare, oy 1/2);
     kanıt ARTIK YOK, karar mimarın.
@@ -8261,6 +8287,7 @@ esults	50_uc_kapi\`):
     aynen yazılacak.
 
 - [ ] **T47 — v21'in "geçilebilir" sınıfı bu alanda anlamsız: çatı ve çim yol sayılıyor** · model / veri · **TIKAYICI** · kanıt: `REVIEW_LOG.md` D-61 + görsel
+  - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "GECERSIZ_BAYAT" dedi, çürütücü YIKTI — ÇATI düzeldi, ÇİM/TOPRAK düzelmedi: v35 kuru ot/toprak/çalı proxy alanının **%37**'sini zemin sayıyor (64/67 kare >%20, 9/67 >%50; v21/v34 %84, 67/67). Gözle 3/3 kare: çatılar gri, sol üst çalılık/toprak yamaç ve sağ kuru ot bayırı YEŞİL. Kaplama tavanı bunu yapısal olarak yakalayamaz (D-62: kaplama kapısı, doku kapısı değil). Görev v35 sayılarıyla AÇIK.
   - 🔎 **FİLO 2 · D-215 (2026-08-20) · SAYI KAYMIŞ:** v21 %74 → v34 %45,67
     (n=67; ⚠ LETTERBOX paydası — D-214 notuyla oku); 0/67 kare 0,67 tavanını aşıyor.
   - **Kullanıcı bildirdi, gözle doğrulandı.** v21 bu karelerde pratikte
@@ -8285,7 +8312,9 @@ esults	50_uc_kapi\`):
   - **Kapı:** Üç alan için kaplama tablosu + her alandan gözle doğrulanmış 2
     görsel. "Model bozuk/sağlam" ilanı **tek başına mAP ile yapılmayacak** (K-3).
 
-- [ ] **T46 — [BLOKE · D-61] Hakem ekranı HİÇBİR kaynakta rota göstermiyor: `OLCEK_YOK` politikası ekranı öldürdü**
+- [x] **T46 — KAPANDI (vekil, 2026-08-26) · [eski: BLOKE · D-61] Hakem ekranı rota göstermiyor → ÖLÇÜLDÜ: üretim v35 ile gerçek GUI worker'ı drone kaynağında 36/67 karede rota ÇİZİYOR, OLCEK_YOK 0/67** · kapanış `REVIEW_LOG.md` **D-284**
+  - ✅ **Kapanış kanıtı (çürütücü, `results/t133/kapatma_curutme_10.json`):** `YksArayuz._algi_kos` (`comms/yks_gui.py:1386`) GUI'nin kendi yükleyicisiyle (registry etkin profil v35, SHA e00f6b8e) 67 drone karesinde koşuldu: **36 ROTA VAR** · 25 RED/GORUS_HATTI_KOPUK · 6 RED/UC_BANT_TEMAS_YOK · ZEMIN_MASKESI_SUPHELI **0** · OLCEK_YOK **0**; ölçek 67/67 karede katman 3 `arac_referansi` (mpp 0,060–0,109). D-61 korkusu (çatı üstünden kendinden emin rota) ölçüldü: 32 rotalı karede çatı-üstü wp **0/32** (>%25), tek karede 1/8 wp (bant %3,9). Varsayım artık İLAN EDİLİYOR: ekranda "ARAÇ REFERANSI · güven ×0,86 · araç kısa kenarı 28,9 px = 1,80 m".
+  - ⚠ Çim ekseni yer gerçeği yok → ÖLÇÜLEMEDİ; bu **T47**'nin konusudur (açık, çürütücü v35'te kuru ot/toprak %37 zemin buldu). Kullanıcının 2026-08-11 bildirimi ("asla düzgün çalışmıyor") v34/OLCEK_YOK dönemine aitti; **sahada yeniden doğrulanmalı** (insan görevi — kullanıcıya).
   - 🔎 **FİLO 2 · D-215 (2026-08-20):** bloke gerekçesi değişmiş — 67/67 ret
     artık ZEMIN_MASKESI_SUPHELI, OLCEK_YOK 0/67 (mpp katman 3'ten çözülüyor);
     özgün kanıt ARTIK YOK.

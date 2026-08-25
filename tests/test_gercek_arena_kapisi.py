@@ -64,10 +64,18 @@ def _kayittan_uretim_modeli():
 
 MODEL, MODEL_KIMLIGI = _kayittan_uretim_modeli()
 
-# T59 · v24 ile OLCULEN degerler (bkz. REVIEW_LOG D-86). Agirliksiz ortamda da
-# esik mantiginin sinanabilmesi icin sabit tutulur.
-ARENA_KAPLAMA = 0.579
-ARENA_KENAR = 0.585
+# 🔴 SABITLER URETIM MODELINE AITTIR, v24'e DEGIL (mimar vekili, 2026-08-26, D-283).
+# Eski cift (0.579, 0.585) v24 ile olculmustu ve 12 gun boyunca test v24'e civili
+# kaldigi icin "bayat sabit" hicbir zaman ateslemedi. MODEL defterden okunur hale
+# gelince (T59 onarimi, D-266) sabit ILK KEZ gercek modelle karsilastirildi ve
+# 0.579 != 0.1508 cikti. Fark bir gerileme DEGIL: v24'un 0.579'u COKMUS bir
+# maskeydi (arena disini, moloz kenarlarini ve H pedini zemin sayiyordu —
+# results/t133/arena_v24_v35_bindirme.jpg); v35 yalniz orta koridoru zemin
+# sayiyor. D-62'nin dersi: yuksek kaplama "cok gorme" DEGIL, cokme olabilir.
+# ⚠ Bu sabitler YENIDEN v35'e civilenmis oluyor. Model degisince test yine
+#   "bayat sabit" diye DUSECEK — bu bilincli: kapinin isi tam da budur.
+ARENA_KAPLAMA = 0.1508
+ARENA_KENAR = 0.0000
 
 _ATLA = not (ARENA.is_file() and MODEL.is_file())
 _ATLA_SEBEBI = (f"gercek arena karesi ve/veya uretim agirligi ({MODEL_KIMLIGI}: "
@@ -104,6 +112,10 @@ class OlculenDegerlerKapidanGecerTests(unittest.TestCase):
 
     def test_kenar_TEK_BASINA_reddi_getirmez(self):
         """Arena kenari tavanin USTUNDE; reddi ancak kaplama ile BIRLIKTE verir."""
+        if ARENA_KENAR <= ZEMIN_KENAR_DAYANMA_TAVANI:
+            self.skipTest("v24-donemi kilidi: uretim modelinde kenar dayanma "
+                          f"{ARENA_KENAR} tavanin ALTINDA — AND birlesimi bu "
+                          "modelde sinanamiyor (D-283)")
         self.assertGreater(
             ARENA_KENAR, ZEMIN_KENAR_DAYANMA_TAVANI,
             "olcum bayat: arena kenari artik tavanin ustunde degil")
@@ -114,6 +126,10 @@ class OlculenDegerlerKapidanGecerTests(unittest.TestCase):
     def test_ESKI_esik_bu_kareyi_ELIYORDU(self):
         """Regresyonun neye karsi oldugu testte GORUNUR olsun."""
         eski_kaplama_tavani = 0.55
+        if ARENA_KAPLAMA <= eski_kaplama_tavani:
+            self.skipTest("v24-donemi regresyon kilidi: uretim modelinin kaplamasi "
+                          f"{ARENA_KAPLAMA} ESKI tavani (0.55) bile ASMIYOR. 0.67 "
+                          "tavaninin bu kare icin GEREKCESI KALMADI (D-283, T142)")
         self.assertGreater(ARENA_KAPLAMA, eski_kaplama_tavani)
         self.assertGreater(ARENA_KENAR, ZEMIN_KENAR_DAYANMA_TAVANI)
 

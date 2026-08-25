@@ -47,3 +47,175 @@ scripts/yedek_bekcisi.sh: line 157: `  #  bayt sayaci 4 DAKIKA SABIT" — orada 
 [12:18:01] baslangic uzak toplam: 32681 MB
 [12:18:59] KADEME -> results · uzak toplam 32681 MB
 [12:18:59] KADEME -> results · uzak toplam 32681 MB
+[12:21:41] KADEME -> data · uzak toplam 32689 MB
+[12:21:41] KADEME -> data · uzak toplam 32689 MB
+[12:31:45] KADEME -> codes · uzak toplam 32868 MB
+[12:31:45] KADEME -> codes · uzak toplam 32868 MB
+[13:02:33] ════════ BEKCI BASLADI · PID 27970 · aralik 120sn · taban tolerans 300sn
+[13:02:41] baslangic uzak toplam: 34011 MB
+[13:02:53] KADEME -> codes · uzak toplam 34011 MB
+[14:31:46] 🔴 DONMA #1 · kademe=codes · uzak 35075 MB · 1573sn SABIT (tolerans 1558sn, en buyuk dosya 208 MB) -> rclone OLDURULUYOR
+[14:31:57]    rclone oldurulda; yedek betiginin dongusu yeniden baslatacak (copy tamamlanmisi ATLAR)
+[14:35:06] KADEME -> jetson_paket · uzak toplam 35082 MB
+[14:46:39] KADEME -> test_images · uzak toplam 35921 MB
+[15:54:01] KADEME -> rapor · uzak toplam 36266 MB
+[15:59:41] KADEME -> navitas-local-train · uzak toplam 36367 MB
+[18:49:48] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[21:47:51] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[21:50:02] ════════ BEKCI BASLADI · PID 33857 · aralik 120sn · taban tolerans 300sn
+[21:52:36] baslangic uzak toplam: 37951 MB
+[21:53:01] KADEME -> codes · uzak toplam 37952 MB
+[22:05:03] ════════ BEKCI BASLADI · PID 34140 · aralik 120sn · taban tolerans 300sn
+[22:06:27] baslangic uzak toplam: 37952 MB
+[22:06:47] KADEME -> dji · uzak toplam 37962 MB
+[22:39:11] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[22:41:55] ════════ BEKCI BASLADI · PID 34848 · aralik 120sn · taban tolerans 300sn
+[22:42:45] baslangic uzak toplam: 37962 MB
+[22:43:43] KADEME -> dji · uzak toplam 37962 MB
+[22:52:51] 🔴 DONMA #1 · kademe=dji · uzak 37962 MB · 314sn SABIT (tolerans 300sn, en buyuk dosya 2809 MB) -> rclone OLDURULUYOR
+[22:53:01]    rclone oldurulda; yedek betiginin dongusu yeniden baslatacak (copy tamamlanmisi ATLAR)
+[23:01:43] ════════ BEKCI BASLADI · PID 35235 · aralik 120sn · taban tolerans 300sn
+[23:02:01] baslangic uzak toplam: 37962 MB
+[23:02:57] KADEME -> dji · uzak toplam 37962 MB
+[23:07:56] uzak bayt sabit AMA rclone logu -176sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:09:18] ════════ BEKCI BASLADI · PID 35353 · aralik 120sn · taban tolerans 300sn
+[23:09:44] baslangic uzak toplam: 37962 MB
+[23:10:39] KADEME -> dji · uzak toplam 37962 MB
+[23:12:59] uzak bayt sabit AMA rclone logu 5sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:17:46] uzak bayt sabit AMA rclone logu 52sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:20:30] uzak bayt sabit AMA rclone logu 36sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:22:47] uzak bayt sabit AMA rclone logu 53sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:25:40] uzak bayt sabit AMA rclone logu 46sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:27:59] uzak bayt sabit AMA rclone logu 5sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:31:28] uzak bayt sabit AMA rclone logu 34sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:33:48] uzak bayt sabit AMA rclone logu 54sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:36:42] uzak bayt sabit AMA rclone logu 48sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:39:02] uzak bayt sabit AMA rclone logu 8sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:41:56] uzak bayt sabit AMA rclone logu 2sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:44:42] uzak bayt sabit AMA rclone logu 48sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:47:01] uzak bayt sabit AMA rclone logu 7sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:49:55] uzak bayt sabit AMA rclone logu 1sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:52:56] uzak bayt sabit AMA rclone logu 2sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:55:40] uzak bayt sabit AMA rclone logu 46sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:57:59] uzak bayt sabit AMA rclone logu 5sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:00:55] uzak bayt sabit AMA rclone logu 1sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:05:37] uzak bayt sabit AMA rclone logu 43sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:07:56] uzak bayt sabit AMA rclone logu 2sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:10:44] uzak bayt sabit AMA rclone logu 50sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:13:04] uzak bayt sabit AMA rclone logu 10sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:15:57] uzak bayt sabit AMA rclone logu 3sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:21:49] uzak bayt sabit AMA rclone logu 55sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:24:41] uzak bayt sabit AMA rclone logu 47sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:27:00] uzak bayt sabit AMA rclone logu 6sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:30:56] uzak bayt sabit AMA rclone logu 2sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:36:42] uzak bayt sabit AMA rclone logu 48sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:39:01] uzak bayt sabit AMA rclone logu 7sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:44:39] uzak bayt sabit AMA rclone logu 45sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:46:58] uzak bayt sabit AMA rclone logu 4sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:49:56] uzak bayt sabit AMA rclone logu 2sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:56:43] uzak bayt sabit AMA rclone logu 49sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:59:04] uzak bayt sabit AMA rclone logu 10sn once yazilmis -> CALISIYOR, mudahale YOK
+[01:06:00] KADEME -> results · uzak toplam 45523 MB
+[03:08:42] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[03:30:07] KADEME -> codes · uzak toplam 47861 MB
+[03:32:47] uzak bayt sabit AMA rclone logu 53sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:35:35] uzak bayt sabit AMA rclone logu 41sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:37:56] uzak bayt sabit AMA rclone logu 2sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:42:06] uzak bayt sabit AMA rclone logu 12sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:45:02] uzak bayt sabit AMA rclone logu 8sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:47:58] uzak bayt sabit AMA rclone logu 0sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:51:07] uzak bayt sabit AMA rclone logu 8sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:54:11] uzak bayt sabit AMA rclone logu 12sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:56:50] uzak bayt sabit AMA rclone logu 51sn once yazilmis -> CALISIYOR, mudahale YOK
+[03:59:37] uzak bayt sabit AMA rclone logu 38sn once yazilmis -> CALISIYOR, mudahale YOK
+[04:02:00] uzak bayt sabit AMA rclone logu 1sn once yazilmis -> CALISIYOR, mudahale YOK
+[04:04:57] uzak bayt sabit AMA rclone logu 58sn once yazilmis -> CALISIYOR, mudahale YOK
+[04:08:45] uzak bayt sabit AMA rclone logu 46sn once yazilmis -> CALISIYOR, mudahale YOK
+[04:11:38] KADEME -> navitas-local-train · uzak toplam 47861 MB
+[04:15:00] KADEME -> dataset/copy_paste_gercek · uzak toplam 47867 MB
+[04:57:53] KADEME -> dataset/copy_paste_t121 · uzak toplam 48750 MB
+[05:07:45] KADEME -> dataset/copy_paste_t122a · uzak toplam 48882 MB
+[05:21:00] uzak bayt sabit AMA rclone logu 37sn once yazilmis -> CALISIYOR, mudahale YOK
+[05:24:44] uzak bayt sabit AMA rclone logu 21sn once yazilmis -> CALISIYOR, mudahale YOK
+[05:27:39] uzak bayt sabit AMA rclone logu 35sn once yazilmis -> CALISIYOR, mudahale YOK
+[05:29:59] KADEME -> dataset/copy_paste_t122ac · uzak toplam 49031 MB
+[05:42:57] KADEME -> dataset/copy_paste_t127 · uzak toplam 49195 MB
+[05:46:29] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[05:48:48] KADEME -> dataset/copy_paste_smoke · uzak toplam 49280 MB
+[05:51:54] KADEME -> dataset/gercek_kompozit · uzak toplam 49291 MB
+[05:55:54] KADEME -> rescuenet-roads · uzak toplam 49292 MB
+[07:09:47] ════════ BEKCI BASLADI · PID 41294 · aralik 120sn · taban tolerans 300sn
+[07:10:18] baslangic uzak toplam: 49675 MB
+[07:11:56] KADEME -> navitas-local-train · uzak toplam 49683 MB
+[07:17:14] ════════ BEKCI BASLADI · PID 41488 · aralik 120sn · taban tolerans 300sn
+[07:19:38] baslangic uzak toplam: 49703 MB
+[07:19:59] KADEME -> egitim_calisma_alani · uzak toplam 49715 MB
+[11:03:29] ════════ BEKCI BASLADI · PID 946 · aralik 120sn · taban tolerans 300sn
+[11:06:38] baslangic uzak toplam: 50770 MB
+[11:11:53] KADEME -> egitim_calisma_alani · uzak toplam 50778 MB
+[11:28:50] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[13:45:58] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[14:16:38] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[14:34:14] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[14:36:49] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[14:41:03] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[15:34:22] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[15:46:05] KADEME -> codes · uzak toplam 51831 MB
+[15:49:17] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:02:27] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:14:29] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:19:01] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:31:02] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:37:34] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:39:47] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:50:14] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[16:55:19] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:01:08] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:03:13] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:05:18] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:07:24] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:09:29] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:11:34] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:13:39] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:15:45] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:17:50] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:19:55] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:22:00] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:24:06] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:26:11] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:28:16] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:30:21] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:32:27] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:34:32] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:36:37] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:38:42] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:40:48] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:42:53] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:44:58] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:47:03] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:49:09] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:53:02] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[17:55:08] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[19:32:42] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[19:42:59] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[19:58:09] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[20:05:49] KADEME -> rapor · uzak toplam 51831 MB
+[20:10:55] KADEME -> dataset/copy_paste_t127 · uzak toplam 51831 MB
+[20:20:46] KADEME -> rescuenet-roads · uzak toplam 51842 MB
+[23:38:19] ════════ BEKCI BASLADI · PID 1602 · aralik 120sn · taban tolerans 300sn
+[23:42:03] baslangic uzak toplam: 55578 MB
+[23:45:04] KADEME -> egitim_calisma_alani · uzak toplam 55578 MB
+[23:49:01] uzak bayt sabit AMA rclone logu 1sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:53:01] uzak bayt sabit AMA rclone logu 0sn once yazilmis -> CALISIYOR, mudahale YOK
+[23:57:34] uzak bayt sabit AMA rclone logu 28sn once yazilmis -> CALISIYOR, mudahale YOK
+[00:00:44] KADEME -> codes · uzak toplam 55578 MB
+[00:50:45] uzak bayt OLCULEMEDI -> ornek ATLANDI (donma sayaci ilerlemedi)
+[01:22:02] uzak bayt sabit AMA rclone logu 0sn once yazilmis -> CALISIYOR, mudahale YOK
+[01:26:01] uzak bayt sabit AMA rclone logu 0sn once yazilmis -> CALISIYOR, mudahale YOK
+[01:34:03] uzak bayt sabit AMA rclone logu 1sn once yazilmis -> CALISIYOR, mudahale YOK
+[01:43:57] KADEME -> rapor · uzak toplam 60049 MB
+[01:49:02] KADEME -> dataset/gercek_kompozit · uzak toplam 60049 MB
+[01:52:52] KADEME -> rescuenet-roads · uzak toplam 60049 MB
+[02:02:54] rclone sureci YOK (2 kez) — yedek bitmis olabilir. BEKCI DURUYOR.
+[02:05:50] ════════ BEKCI BITTI · sure 147 dk · uzak 60051 MB
+[02:05:50] mudahale: 0 · toplam sabit-kalma 0 dk

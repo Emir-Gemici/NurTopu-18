@@ -21770,3 +21770,72 @@ rota üretimi neredeyse hiç değişmedi.
    ve mimarındır — ben eşiğe/sözleşmeye dokunmadım.
 3. Bu turdan sonra **daha fazla etiketleme önerilmiyor**: ölçüm, kapsamın
    bağlayıcı olmadığını gösterdi.
+
+---
+
+### D-283 · 🔴 KAPLAMA TAVANI 0,67'NİN GEREKÇESİ KALMADI · v24'ün "geçmesi gereken" arena maskesi **ÇÖKMÜŞ** bir maskeymiş · ve kapının İKİ eşiği de v35'e karşı **hiç kalibre edilmemiş**
+
+**Yazan:** Claude 2 (mimar vekili) · 2026-08-25/26 · **eşik kararı DEĞİL, kayıt** — vekil eşiğe dokunmaz (`results/mimar_vekaleti_20260825.md` §1) → **T142**.
+**Ham çıktı repoda:** `results/t133/arena_v24_v35_bindirme.jpg` (v24/v35 maskesi gerçek arena karesi üstünde), `results/t133/kapatma_curutme_10.json` (T52 çürütücüsü, v35 kenar ölçümü), `tests/test_gercek_arena_kapisi.py` (sabitler + gerekçe bloğu).
+
+#### 1. Nasıl çıktı
+T59'un worktree'den birleştirilen testi (`tests/test_gercek_arena_kapisi.py`) MODEL'i artık kayıt defterinden okuyor; sabitleri ise **v24** ölçümüne (kaplama 0,579 · kenar 0,585) 12 gündür çivili. Birleştirme sonrası kapı **1 gerçek düşüş** verdi: üretim modeli v35 aynı karede o sayıları vermiyor. Sabit bayat, kapı değil — ama *neden* bayat olduğuna bakınca eşik gerekçesi çöktü.
+
+#### 2. Ölçüm — tek gerçek arena karesi `data/arena_referans/sartname_s9_arena.png`, conf 0,30
+| model | kaplama | kenar | maske ne görüyor |
+|---|---|---|---|
+| v24 (D-85/D-86 dayanağı) | **0,579** | 0,585 | **ÇÖKÜŞ**: sahnenin tamamı — arena DIŞI, H pisti, çevre — yeşil (`arena_v24_v35_bindirme.jpg`, gözle) |
+| v27 | 0,131 | — | |
+| v30 | 0,133 | — | |
+| v34 | 0,008 | — | neredeyse boş |
+| **v35 (üretim)** | **0,151** | **0,000** | yalnız **orta koridor** — şerit kaplaması sol 0,000 / orta 0,426 / sağ 0,026 |
+
+v35'in üretim kararı bu karede: **`UC_BANT_TEMAS_YOK`, yol=None.** Yani tek gerçek arena karesinde üretim modeli **rota üretmiyor** — ve 12 gün boyunca v24'e çivili test bunu **gizledi**.
+
+#### 3. Çıkarım — 0,67 tavanı neye göre konmuştu
+D-85/D-86: tavan 0,67'ye, *"gerçek arena karesi 0,579 ile geçsin"* diye **yükseltildi**, ve D-86 bunun bedelini ölçtü: sa_000150 çöküş karesi kapıdan **kaçıyor**. Bugün ölçülen şey: o 0,579 **meşru bir arena maskesi değil, çökmüş bir maskeydi.** Tavan, bir çöküşü geçirmek için gevşetilmiş; bedeli (başka bir çöküşün kaçması) **hiç uğruna** ödenmiş.
+
+#### 4. T52 çürütücüsünün eklediği ikinci yarı (`kapatma_curutme_10.json`, T52 kaydı)
+Üretim v35, `codes/karar_sozlesmesi.py` tavanları kaplama 0,67 · kenar 0,50 ile:
+- kadraj_t66 MEŞRU n=260 → ret 0 · kaplama maks 0,644 (tavan altı) · **kenar maks 0,5004 (sa_000176) — tavan ÜSTÜNDE, 1/260**; ikinci en yüksek 0,318.
+- otopark raw_frames n=67 → ret **0/67**: tavanların türetildiği **çöküş sınıfı v35'te yok**.
+- `test_zemin_kapisi_iki_sinyal.py` 22 test, mutasyona duyarlı (6 ve 5 düşüyor) — ama **sentetik maske** sınıyor; eşiğin **canlı modelde** ayırt ediciliğini sınamıyor.
+⇒ Kaplama tavanı **v24** türevi, kenar tavanı **v21** türevi; ikisi de **v35'e karşı hiç kalibre edilmedi**. Kodun kendi kuralı *"model değişince kalibrasyon zorunlu"* — v35 için çalışmamış.
+
+#### 5. Ne yapıldı / ne yapılMADI
+- ✅ Test sabitleri v35 ölçümüne çekildi (0,1508 / 0,0000), gerekçe bloğu ve D-283/T142 atfıyla; iki test `skipTest` (v35'te "kenar tek başına ret" ve "eski eşik eliyordu" senaryoları **anlamsız**, kaplama zaten 0,15). `Ran 8 OK (skipped=2)`, tam kapı **15/15 · 819 OK**.
+- ⛔ **Eşiğe dokunulmadı.** 0,67'nin doğru değeri ne — bunu ben koyamam; ve D-86'nın bedelini geri almak (tavanı düşürmek) meşru kümede ret üretir mi, ölçülmeli. Karar: **T142** (mimar/kullanıcı).
+- ⚠ Daha büyük soru eşik değil: tek gerçek arena karesinde v35 **yalnız orta koridoru** görüyor. Bu D-280 §"kırsalda görme arttı, rotaya dönüşmedi" ile aynı fenomen — **arena** karesinde de. Gerçek arena karesi n=1; **DOĞRULAMA uçuşu** (insan görevi, madde 9 → kullanıcıya) olmadan bu sayı büyütülemez.
+
+---
+
+### D-284 · 🔴 VEKİL KAPATMA ÇÜRÜTMESİ · 10 kapatma adayının **8'i YIKILDI** · triyaj tek başına güvenilmez — ve dördü aynı kalıp: *"Yap" satırı sınandı, ASIL İDDİA sınanmadı*
+
+**Yazan:** Claude 2 (mimar vekili) · 2026-08-26.
+**Ham çıktı repoda:** `results/t133/kapatma_adaylari_10.json` (triyaj hükümleri), `results/t133/kapatma_curutme_10.json` (10 çürütücü: komut · çıktı · gerekçe · gömülen kusur).
+**Yordam:** 27 açık görevin triyajı 10 kapatma adayı verdi (ZATEN_YAPILMIS / GECERSIZ_BAYAT). Kapatmadan önce her adaya **ayrı** bir çürütücü koştu: *"varsayılan: triyaj yanılıyor; kapanırsa gömülecek kusuru bul, ölç."* T133'te aynı yordam kapanmış görevlerin **%48,6**'sını yıkmıştı; burada **%80**.
+
+| görev | triyaj | çürütücü | kapanırsa gömülen (ölçülmüş) |
+|---|---|---|---|
+| T18 | ZATEN_YAPILMIS | **YIKILDI** | kayıt defteri ad kıyası **her `.engine`'i ESLESMIYOR** diye reddediyor → Jetson'da TensorRT ancak `--kayit-dogrulamasiz` ile (fail-closed kapatılarak) yüklenir; canlı kamera hattı ilk düşen karede **sessizce** sonlanıyor (yeniden deneme/sayaç yok) → **T143** |
+| T53 | ZATEN_YAPILMIS | **YIKILDI** | hücre koşuldu ama **hipotez ÇÜRÜDÜ**: v22 otopark %80,5 ≈ v21 %81,0 — 11-sınıf ön-eğitimin freni (%24,1) kayıp; kimse yazmamış. "v34 üretimde" bayat (v35, T130); v35 %51,4 kabul bandının (%0-20) üstünde |
+| T54 | GECERSIZ_BAYAT | **YIKILDI** | **mutasyon**: D-67 kök-neden satırı (`blocked_mask = (lbl==8)`) geri getirildi → 8/8 test **YEŞİL KALDI**; testler kümeyi çiviliyor, uygulamasını değil; dönüştürücü yeni eşlemeyle hiç koşulmadı (`--temizle` yok) |
+| T100 | GECERSIZ_BAYAT | **YIKILDI** | D-204, 76'nın ölçtüğü hiçbir alanı ölçmemiş (grep 0); filo2'nin 76 yeniden koşumu (`filo2_t100_76_yeniden_20260820.json`, "SAYI KAYMIŞ") deftere **hiç işlenmemiş**; v35'te sa_000148 iki karar yolu **farklı koridor** seçiyor |
+| T47 | GECERSIZ_BAYAT | **YIKILDI** | çatı düzeldi, **çim/toprak düzelmedi**: v35 kuru ot/toprak/çalı alanının %37'sini zemin sayıyor, 64/67 kare >%20 (v21/v34 %84); gözle 3/3 kare doğrulandı |
+| T116 | ZATEN_YAPILMIS | **YIKILDI** | D-202'nin "tavan kırpmıyor (en kötü 0,016)" hükmü **yanlış sıralama modeliyle** alınmış: gerçek `len(l)` kırpması aşan maskelerde engel alanının **%32-38**'ini, en kötüsünde **%90**'ını atıyor (52.774 px bina atılıp 200 px yamalar tutuluyor) → **T144** |
+| T124 | GECERSIZ_BAYAT | **YIKILDI** | aynı kalıp v35'in **kendi** registry girdisinde yeniden doğmuş (*"gerçeğe EN YAKIN"*, :127 + paket aynası + D-249): toplam uyumu **%30 eksik + %30 fazla** zeminin birbirini götürmesi; kare-başı korelasyon **-0,12** |
+| T52 | ZATEN_YAPILMIS | **YIKILDI** | D-215 yalnız kaplama eksenini ölçmüş (JSON'da `kenar` yok); v35'te kenar meşru kümede tavanı aşıyor (0,5004) → **D-283 §4** |
+| T33 | GECERSIZ_BAYAT | AYAKTA | triyajın dayanağı **yanlış** ("DOTA bu veride boş" — RescueNet'e özgü; otoparkta 67/67 karede 6,58 M araç px) ama görev yine kapanır: v35'te araç px'inin **%0,29**'u serbest alana düşüyor (en kötü kare %0,82), dji_kirsal_v1 %0,07 |
+| T46 | GECERSIZ_BAYAT | AYAKTA | gerçek GUI worker'ı (`YksArayuz._algi_kos`) v35 ile drone kaynağında **36/67 rota çiziyor**, OLCEK_YOK 0/67, çatı-üstü rota 0/32 (tek karede 1/8 wp) — ekran ölü değil; triyajın "67/67 ZEMIN_MASKESI_SUPHELI" cümlesi v34 dönemine ait |
+
+#### Kalıplar
+1. **"Yap" sınandı, iddia sınanmadı** (T53, T54, T124, T52): görev "şunu yap" diyor, triyaj "yapılmış" diyor; ama görevin *neden* açıldığı — hipotez, ölçüt, sözleşme sorusu — hiç sınanmamış. İkisinde hipotez **çürümüş** ve bu deftere yazılmamış.
+2. **Dayanak bayat** (T46, T47, T18, T33): v34 dönemi ölçümleri v35'e taşınmış. Kapanış notu bayat cümleyle yazılsaydı defter ekranı ölü, DOTA'yı boş sanmaya devam ederdi.
+3. **Mutasyon deliği** (T54): "8/8 yeşil" korumayı kanıtlamıyor — kök-neden satırı geri gelince de yeşil.
+4. Ölçülmemişi "tamam" sayma sınıfı bir kez daha: T100'de bir koşum **yapılmış ama deftere işlenmemiş**; T116'da ölçüm betiğin **okumadığı** veride yapılmış.
+
+#### Ne yapıldı
+- T33, T46 → **KAPANDI (vekil)** — çürütücünün ölçümüyle, triyajın metniyle değil.
+- 8 görev **açık kaldı**; her birine `🔴 VEKİL KAPATMA REDDİ · D-284` satırı ve gömülen kusur yazıldı.
+- Yeni görev: **T142** (D-283, eşik), **T143** (T18: `.engine` kayıt reddi + sessiz kamera bitişi — 30 Eylül sahası), **T144** (T116: `len(l)` kırpması).
+- **Süreç dersi (vekâlet kapanışına):** triyaj → kapatma zinciri **iki turlu** olmak zorunda; tek ajanın "zaten yapılmış" hükmü %80 yanlış çıktı. Bu D-252'nin (defter-önce-ara) gerektirdiği okumanın *derinliği* meselesi: görev başlığını değil **iddiasını** aramak.

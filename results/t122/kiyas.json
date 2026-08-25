@@ -92,6 +92,21 @@
    "figur_engel_orani": 0.22091,
    "yol": "O:\\navitas\\codes\\runs\\segment\\t127_temiz\\weights\\best.pt",
    "figur_v34_ile_IoU": 0.0093
+  },
+  "dji_kirsal_v1": {
+   "cati_kacak_ort": 0.0158,
+   "cati_kacak_medyan": 0.0041,
+   "disk_cati_engel": 0.9846,
+   "disk_cati_zemin": 0.0,
+   "disk_zemin_zemin": 0.9081,
+   "cati_dondu": true,
+   "kaplama67_icerik_medyan": 0.3829,
+   "kaplama67_tuval_medyan": 0.2154,
+   "zemin_maskesi_reddi": 0,
+   "figur_zemin_orani": 0.38997,
+   "figur_engel_orani": 0.01192,
+   "yol": "O:\\navitas\\codes\\runs\\segment\\dji_kirsal_v1\\weights\\best.pt",
+   "figur_v34_ile_IoU": 0.0083
   }
  }
 }
