@@ -70,7 +70,13 @@ if __package__:
                                    olcek_gecerli_mi,
                                    olcek_kahini,
                                    olcek_guveni_uygula,
-                                   rota_olcek_reddi, serit_no)
+                                   rota_olcek_reddi, serit_no,
+                                   KAMERA_DUSEN_KARE_UST_SINIRI,
+                                   KAMERA_DUSEN_KARE_BEKLEME_S,
+                                   KAMERA_BITIS_KULLANICI,
+                                   KAMERA_BITIS_DUSEN_KARE,
+                                   KAMERA_BITIS_ACILAMADI,
+                                   MODEL_TUREV_SHA_YER_TUTUCU)
 else:
     from costmap_path_finder import (R_GEREKLI_M, _bagli_mi,
                                      _bresenham_noktalari,
@@ -107,7 +113,13 @@ else:
                                   olcek_gecerli_mi,
                                   olcek_kahini,
                                   olcek_guveni_uygula,
-                                  rota_olcek_reddi, serit_no)
+                                  rota_olcek_reddi, serit_no,
+                                  KAMERA_DUSEN_KARE_UST_SINIRI,
+                                  KAMERA_DUSEN_KARE_BEKLEME_S,
+                                  KAMERA_BITIS_KULLANICI,
+                                  KAMERA_BITIS_DUSEN_KARE,
+                                  KAMERA_BITIS_ACILAMADI,
+                                  MODEL_TUREV_SHA_YER_TUTUCU)
 
 _here = Path(__file__).parent
 MODEL_DIR = next(
@@ -546,12 +558,82 @@ def model_kayit_dogrula(model_yolu, kok=None, calisan_imgsz=None):
         return False, detay
     ad_uyumlu = Path(beklenen).name == Path(model_yolu).name
     if not ad_uyumlu:
-        detay["durum"] = "ESLESMIYOR"
-    elif not imgsz_uyumlu:
+        # T143 (D-284): ad uymuyorsa ANINDA red YOK — once profilin `turevler`
+        # sozlugune bakilir (.engine/.onnx ayni soy). Eskiden her .engine
+        # "ESLESMIYOR" ile reddediliyor, Jetson'da TensorRT ancak
+        # --kayit-dogrulamasiz ile (fail-closed KAPATILARAK) yukleniyordu.
+        return _turev_kayit_dogrula(profil, model_yolu, calisan, detay)
+    if not imgsz_uyumlu:
         detay["durum"] = "IMGSZ ESLESMIYOR"
     else:
         detay["durum"] = "eslesti"
-    return (ad_uyumlu and imgsz_uyumlu), detay
+    return imgsz_uyumlu, detay
+
+
+def _sha256_dosya(yol):
+    import hashlib
+    ozet = hashlib.sha256()
+    with Path(yol).open("rb") as akis:
+        for parca in iter(lambda: akis.read(1024 * 1024), b""):
+            ozet.update(parca)
+    return ozet.hexdigest()
+
+
+def _sha256_dogrulanmis_mi(ozet):
+    """Yer tutucu / bos / bicimsiz ozet DOGRULANMAMIS sayilir (fail-closed)."""
+    if not isinstance(ozet, str) or ozet == MODEL_TUREV_SHA_YER_TUTUCU or len(ozet) != 64:
+        return False
+    try:
+        int(ozet, 16)
+    except ValueError:
+        return False
+    return True
+
+
+def _turev_kayit_dogrula(profil, model_yolu, calisan_imgsz, detay):
+    """T143: `.engine`/`.onnx` turevini profilin `turevler` kaydiyla kiyasla.
+
+    `codes/model_registry.py::turev_dogrula` ile AYNI kural (saha paketinde
+    o modul yoktur; ikisi `tests/test_t143_turev_ve_kamera.py`de ayni
+    girdilerde ayni hukmu vermeye zorlanir). Fail-closed siralamasi:
+      kayitsiz ad -> ESLESMIYOR · yetim kaynak -> TUREV KAYNAGI ESLESMIYOR ·
+      yer tutucu -> TUREV SHA YER TUTUCU · imgsz -> IMGSZ ESLESMIYOR ·
+      disk ozeti farkli -> TUREV SHA ESLESMIYOR · hepsi tamam -> turev_eslesti
+    """
+    yol = Path(model_yolu)
+    turevler = profil.get("turevler")
+    detay["turev"] = yol.name
+    if not isinstance(turevler, dict) or yol.name not in turevler:
+        detay["durum"] = "ESLESMIYOR"
+        return False, detay
+    kayit = turevler[yol.name]
+    detay.update({"beklenen_sha256": kayit.get("sha256"),
+                  "beklenen_imgsz": kayit.get("imgsz"),
+                  "kaynak": kayit.get("kaynak")})
+    if kayit.get("kaynak") != profil.get("path") or \
+            kayit.get("kaynak_sha256") != profil.get("sha256"):
+        detay["durum"] = "TUREV KAYNAGI ESLESMIYOR"
+        return False, detay
+    if not _sha256_dogrulanmis_mi(kayit.get("sha256")):
+        detay["durum"] = "TUREV SHA YER TUTUCU (dogrulanmamis)"
+        return False, detay
+    try:
+        if int(kayit.get("imgsz")) != int(calisan_imgsz):
+            detay["durum"] = "IMGSZ ESLESMIYOR"
+            return False, detay
+    except (TypeError, ValueError):
+        detay["durum"] = "turevde `imgsz` gecersiz"
+        return False, detay
+    if not yol.is_file():
+        detay["durum"] = "turev dosyasi yok"
+        return False, detay
+    gercek = _sha256_dosya(yol)
+    detay["gercek_sha256"] = gercek
+    if gercek != kayit["sha256"]:
+        detay["durum"] = "TUREV SHA ESLESMIYOR"
+        return False, detay
+    detay["durum"] = "turev_eslesti"
+    return True, detay
 
 
 def load_model(model_yolu=None, kok=None, kayit_zorunlu=None, ayrinti=False):
@@ -1747,16 +1829,15 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     cap = cv2.VideoCapture(coz)
     if not cap.isOpened():
         print(f"Kamera acilamadi (kaynak={coz!r}).")
-        return
+        return {"bitis": KAMERA_BITIS_ACILAMADI, "okunan": 0,
+                "dusen_toplam": 0, "dusen_ardisik_maks": 0}
 
     print("Kamera acik — cikmak icin 'q'")
     fps_buf = []
+    ozet = {"bitis": None, "okunan": 0, "dusen_toplam": 0, "dusen_ardisik_maks": 0}
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
+    # T143 (D-284): eskiden `if not ret: break` — ilk dusen karede SESSIZ bitis.
+    for frame in kamera_kareleri(cap, ozet):
         frame = cv2.flip(frame, 1)
         sq, small, icerik = _preprocess(frame)
         orig_h, orig_w = sq.shape[:2]
@@ -1805,10 +1886,63 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
 
         cv2.imshow("Navitas", vis)
         if cv2.waitKey(1) & 0xFF == ord("q"):
+            ozet["bitis"] = KAMERA_BITIS_KULLANICI
             break
 
     cap.release()
     cv2.destroyAllWindows()
+    print(kamera_bitis_raporu(ozet))
+    return ozet
+
+
+def kamera_kareleri(cap, ozet, *, ust_sinir=None, bekleme_s=None,
+                    bekle=None, log=print):
+    """Canli kaynaktan kare uret; dusen kareyi SAY, sinirli YENIDEN DENE, LOGLA.
+
+    T143 (D-284, T18 curutucusu): eski dongu `if not ret: break` idi — USB /
+    DroidCam hattinda TEK kare kaybi algi hattini sessizce kapatiyordu.
+    Simdi:
+      * `ret=False` -> `dusen_toplam` ve ardisik sayac artar, `bekleme_s`
+        beklenir, tekrar denenir; basarili okuma ardisik sayaci SIFIRLAR.
+      * ardisik dusen kare `ust_sinir`a ulasinca dongu KONTROLLU biter:
+        `ozet["bitis"] = KAMERA_BITIS_DUSEN_KARE`, log basilir.
+    Sabitler `karar_sozlesmesi`nden (KAMERA_DUSEN_KARE_*) gelir; parametreler
+    yalniz test icindir. `ozet` cagiranin sozlugudur: okunan / dusen_toplam /
+    dusen_ardisik_maks / bitis alanlari yerinde guncellenir (YKS/loga rapor).
+    """
+    if ust_sinir is None:
+        ust_sinir = KAMERA_DUSEN_KARE_UST_SINIRI
+    if bekleme_s is None:
+        bekleme_s = KAMERA_DUSEN_KARE_BEKLEME_S
+    if bekle is None:
+        bekle = time.sleep
+    ardisik = 0
+    while True:
+        ret, frame = cap.read()
+        if not ret or frame is None:
+            ardisik += 1
+            ozet["dusen_toplam"] = ozet.get("dusen_toplam", 0) + 1
+            ozet["dusen_ardisik_maks"] = max(ozet.get("dusen_ardisik_maks", 0), ardisik)
+            if ardisik >= ust_sinir:
+                ozet["bitis"] = KAMERA_BITIS_DUSEN_KARE
+                log(f"KAMERA: {ardisik} ardisik dusen kare (ust sinir {ust_sinir}) "
+                    f"— hat KOPTU sayildi, dongu kontrollu bitiyor. "
+                    f"toplam dusen={ozet['dusen_toplam']} okunan={ozet.get('okunan', 0)}")
+                return
+            log(f"KAMERA: kare dusdu ({ardisik}/{ust_sinir} ardisik, "
+                f"toplam {ozet['dusen_toplam']}) — yeniden deneniyor")
+            bekle(bekleme_s)
+            continue
+        ardisik = 0
+        ozet["okunan"] = ozet.get("okunan", 0) + 1
+        yield frame
+
+
+def kamera_bitis_raporu(ozet):
+    """Bitis satiri (log/YKS): neden + okunan + dusen (toplam / ardisik maks)."""
+    return (f"KAMERA BITIS: neden={ozet.get('bitis')} okunan={ozet.get('okunan', 0)} "
+            f"dusen_toplam={ozet.get('dusen_toplam', 0)} "
+            f"dusen_ardisik_maks={ozet.get('dusen_ardisik_maks', 0)}")
 
 
 def _arguman_ayristirici():
@@ -1824,8 +1958,10 @@ def _arguman_ayristirici():
               "dosya. Verilmezse indeks 0 (eski davranis)."))
     parser.add_argument(
         "--model", type=str, default=None,
-        help=("Model agirligi (.pt). Verilmezse Jetson uretim manifestindeki "
-              "`asil_model_pt` alanindan turetilir — ciplak varsayilan YOK."))
+        help=("Model agirligi (.pt) ya da kayit defterinde `turevler` altinda "
+              "DOGRULANMIS sha256 ile kayitli .engine/.onnx turevi (T143). "
+              "Verilmezse Jetson uretim manifestindeki `asil_model_pt` "
+              "alanindan turetilir — ciplak varsayilan YOK."))
     parser.add_argument(
         "--kayit-dogrulamasiz", dest="kayit_dogrulamasiz", action="store_true",
         help=("Kayit defteri (config/model_registry.json) uyusmazliginda "
