@@ -29,7 +29,8 @@ detect_open_path() → road       yks_monitor.py              ika_receiver.py
 | `protocol.py` | Mesaj şeması (OPEN_ROUTE/HEARTBEAT/ACK) + encode/decode + FrameReader |
 | `link.py` | Taşıyıcılar: `UDPLink` (dev/sim), `SerialLink` (SiK telsiz) |
 | `iha_sender.py` | İHA → açık yolu gönderir, ACK toplar |
-| `ika_receiver.py` | İKA → alır, ACK döner, `latest` rotayı dışa açar (nav kullanır) |
+| `ika_receiver.py` | İKA → alır, ACK döner (`ref_tip` ile; kopyası `--yks`'e), `latest` rotayı dışa açar (nav kullanır) |
+| `komut_tekrar.py` | YKS → `IKA_GO` ACK'lı, aynı-seq, üst sınırlı tekrar durum makinesi (Tk'dan bağımsız; CONTRACTS §6.5) |
 | `yks_monitor.py` | YKS → hakem monitörü, canlı izler + onaylar |
 | `test_comms.py` | Loopback testi (İHA→İKA/YKS + ACK) |
 
@@ -39,8 +40,9 @@ detect_open_path() → road       yks_monitor.py              ika_receiver.py
 # Terminal 1 — YKS (hakem monitörü)
 python3 comms/yks_monitor.py --bind 0.0.0.0:5005
 
-# Terminal 2 — İKA (alıcı)
-python3 comms/ika_receiver.py --bind 0.0.0.0:5006
+# Terminal 2 — İKA (alıcı). --yks ZORUNLU sayılır: OPEN_ROUTE ACK kopyası hakem
+# ekranına gider; verilmezse YKS'de "İKA'ya aktarıldı" 2. onayı HİÇ açılmaz (K8)
+python3 comms/ika_receiver.py --bind 0.0.0.0:5006 --yks 127.0.0.1:5005
 
 # Terminal 3 — İHA (açık yol = orta gönder)
 python3 comms/iha_sender.py --road 2 --conf 0.91 \

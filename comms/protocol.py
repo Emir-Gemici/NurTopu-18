@@ -85,9 +85,17 @@ def heartbeat(node, seq=None):
             "seq": next(_seq) if seq is None else int(seq), "t": round(time.time(), 3)}
 
 
-def ack(ref_seq, node):
-    return {"v": PROTOCOL_VERSION, "type": "ACK", "ref": int(ref_seq),
-            "node": node, "t": round(time.time(), 3)}
+def ack(ref_seq, node, ref_tip=None):
+    """Alındı onayı. ``ref_tip`` (isteğe bağlı): onaylanan mesajın tipi
+    (``"OPEN_ROUTE"``, ``"CMD"`` …). NEDEN: `seq` sayaçları düğüm başınadır;
+    YKS'nin IKA_GO seq'i ile İHA'nın OPEN_ROUTE seq'i çakışabilir. YKS, İKA'dan
+    gelen ACK'ı hangi bekleyene bağlayacağını `ref_tip` ile ayırt eder.
+    Alan yoksa alıcı yalnız `ref` ile eşler (geriye uyumlu, CONTRACTS §6.5)."""
+    msg = {"v": PROTOCOL_VERSION, "type": "ACK", "ref": int(ref_seq),
+           "node": node, "t": round(time.time(), 3)}
+    if ref_tip is not None:
+        msg["ref_tip"] = str(ref_tip)
+    return msg
 
 
 def command(cmd, hedef, seq=None):

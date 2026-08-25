@@ -38,6 +38,9 @@ class YksAktarimZamaniTests(unittest.TestCase):
         arayuz.sayac = {"ACK_TX": 0}
         arayuz.t_iha1 = t_iha1
         arayuz.iha_landed_seq = iha_landed_seq
+        # K8: 2. onay İKA'nın OPEN_ROUTE ACK kanıtı olmadan verilmez;
+        # bu testler aktarım-zamanı metnini sınar, kanıt hazır verilir.
+        arayuz.ika_rota_ack = {8801: 1_700_000_000.0}
         arayuz.btn_onay = _SahteWidget()
         arayuz.lbl_onay = _SahteWidget()
         arayuz._logla = mock.Mock()

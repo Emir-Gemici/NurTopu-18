@@ -46,6 +46,10 @@ class IkaGoGateTests(unittest.TestCase):
         arayuz.son_adr = {} if ika_peer is None else {"ika": ika_peer}
         arayuz.sabit_adr = {} if ika_peer is None else {"ika": ika_peer}
         arayuz._logla = mock.Mock()
+        # K4: ika_baslat artık ACK'lı tekrar makinesi üzerinden gönderir
+        arayuz.ika_go_tekrar = yks_gui.AckliTekrar(
+            arayuz._ham_gonder, yks_gui.IKA_GO_TEKRAR_ARALIGI_S,
+            yks_gui.IKA_GO_TEKRAR_UST_SINIRI)
         return arayuz
 
     def test_gercek_udp_ika_go_oncesi_hareket_yok_sonrasi_var(self):

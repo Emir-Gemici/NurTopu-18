@@ -1,0 +1,31 @@
+== M1 tekrar döngüsü kaldırıldı (komut_tekrar.tik gönderim satırı)
+   FAIL: test_ack_hic_gelmezse_ust_sinirda_vazgecer (test_ika_go_ackli_tekrar.AckliTekrarDurumMakinesiTests.test_ack_hic_gelmezse_ust_sinirda_vazgecer)
+   FAIL: test_ilk_uc_kayip_dorduncu_ulasir_ack_tekrari_durdurur (test_ika_go_ackli_tekrar.AckliTekrarDurumMakinesiTests.test_ilk_uc_kayip_dorduncu_ulasir_ack_tekrari_durdurur)
+   FAIL: test_ack_hic_gelmez_ust_sinir_kirmizi_hata_dugme_yeniden_aktif (test_ika_go_ackli_tekrar.IkaGoGercekUdpPaketDusurmeTests.test_ack_hic_gelmez_ust_sinir_kirmizi_hata_dugme_yeniden_aktif)
+   FAIL: test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur (test_ika_go_ackli_tekrar.IkaGoGercekUdpPaketDusurmeTests.test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur)
+   Ran 11 tests in 0.252s
+   FAILED (failures=4)
+   geri alma bayt-eş: True  sha256=b9c6ef99e9c8a9c6
+== M2 YKS ACK dalı kaldırıldı (_mesaj_isle)
+   FAIL: test_ika_open_route_ack_gelince_dugme_acilir_ve_onay_verilir (test_ika_go_ackli_tekrar.HakemAktarimOnayiKanitsizPasifTests.test_ika_open_route_ack_gelince_dugme_acilir_ve_onay_verilir)
+   FAIL: test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur (test_ika_go_ackli_tekrar.IkaGoGercekUdpPaketDusurmeTests.test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur)
+   Ran 11 tests in 0.254s
+   FAILED (failures=2)
+   geri alma bayt-eş: True  sha256=d24b21929713546b
+== M3 hakem fail-closed kapısı kaldırıldı (onayla)
+   ERROR: test_kanit_yokken_ikinci_onay_verilmez_dugme_pasif_gerekce_gorunur (test_ika_go_ackli_tekrar.HakemAktarimOnayiKanitsizPasifTests.test_kanit_yokken_ikinci_onay_verilmez_dugme_pasif_gerekce_gorunur)
+   Ran 11 tests in 0.315s
+   FAILED (errors=1)
+   geri alma bayt-eş: True  sha256=d24b21929713546b
+== M4 İKA rota ACK'ı YKS'ye yansıtılmıyor (_rota_ack)
+   FAIL: test_open_route_ack_yks_akranina_yansitilir (test_ika_go_ackli_tekrar.IkaMukerrerIkaGoIdempotentTests.test_open_route_ack_yks_akranina_yansitilir)
+   Ran 11 tests in 0.320s
+   FAILED (failures=1)
+   geri alma bayt-eş: True  sha256=2ea93b06693a959b
+== M5 İKA mükerrer IKA_GO ACK'lamıyor (_handle CMD)
+   FAIL: test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur (test_ika_go_ackli_tekrar.IkaGoGercekUdpPaketDusurmeTests.test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur)
+   FAIL: test_ayni_ika_go_uc_kez_gelir_latch_bir_kez_kurulur_her_seferinde_ack (test_ika_go_ackli_tekrar.IkaMukerrerIkaGoIdempotentTests.test_ayni_ika_go_uc_kez_gelir_latch_bir_kez_kurulur_her_seferinde_ack)
+   Ran 11 tests in 0.320s
+   FAILED (failures=2)
+   geri alma bayt-eş: True  sha256=2ea93b06693a959b
+TUM MUTASYONLAR YAKALANDI

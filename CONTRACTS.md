@@ -347,6 +347,34 @@ kendi fail-closed reddidir.
 - Sürüş sırasında `NO_ROUTE` gelirse araç **güvenli duruşa** geçer; yeni geçerli
   `OPEN_ROUTE` gelince devam eder.
 
+### 6.5 ACK bağlama ve `IKA_GO` tekrar sözleşmesi — bağlayıcı (K4+K8, şartname §2.2.5 / §2.2.3)
+
+**Gerekçe (ölçüldü, `results/sartname_bosluk/rapor.md` K4/K8):** `IKA_GO` tek paketti,
+ACK beklenmiyordu, düğme kilitleniyordu — tek paket kaybı görevi geri dönülmez bitiriyordu
+(`REVIEW_LOG` D-02). YKS, İKA'nın `ACK`'ını hiç işlemiyordu; hakem "İKA'ya aktarıldı" onayını
+ekranda kanıt görmeden veriyordu.
+
+- **`ACK.ref_tip` (isteğe bağlı alan):** onaylanan mesajın `type`'ı (`"OPEN_ROUTE"`, `"NO_ROUTE"`,
+  `"CMD"`, `"IHA_LANDED"`). NEDEN: `seq` sayaçları **düğüm başınadır**; YKS'nin `IKA_GO` seq'i ile
+  İHA'nın `OPEN_ROUTE` seq'i çakışabilir. Alıcı, `ref_tip` varsa `ref` **ve** tiple eşler; yoksa
+  yalnız `ref` ile (geriye uyumlu — eski ACK'lar reddedilmez). Üretici: `protocol.ack(ref, node, ref_tip)`.
+- **`IKA_GO` tekrar gönderimi (YKS):** aynı `seq` ile, `IKA_GO_TEKRAR_ARALIGI_S` aralıkla, en çok
+  `IKA_GO_TEKRAR_UST_SINIRI` kez (`codes/karar_sozlesmesi.py`, gerekçeli). İKA'dan `ACK(ref=seq,
+  ref_tip="CMD")` gelince durur. Üst sınır aşılırsa ekranda **KIRMIZI "İKA ONAY VERMEDİ"**, düğme
+  yeniden aktif, İKA kronometresi başlamamış sayılır — **görev kaybedilmez**. Durum makinesi
+  `comms/komut_tekrar.py` (Tk'dan bağımsız).
+- **İKA idempotentliği:** mükerrer `IKA_GO` latch'i yeniden kurmaz (`ika_go_monotonic` ilk alımda
+  sabitlenir) ama **her alım ACK'lanır** — YKS'nin tekrarı ancak böyle durur.
+- **Aktarım kanıtı (K8):** İKA, `OPEN_ROUTE`/`NO_ROUTE` ACK'ını gönderene (İHA) **ve** bildiği YKS
+  adresine (`--yks` ya da ilk geçerli `IKA_GO`'nun kaynağı) gönderir. Seri (SiK) hatta ortam yayın
+  olduğundan kopya gerekmez. YKS hakem düğmesi **fail-closed**: geçerli rota `seq`'i için İKA'dan
+  `ACK(ref_tip="OPEN_ROUTE")` ekranda görünmeden 2. onay ("İKA'ya aktarıldı") **verilemez**; düğme
+  pasif, gerekçe metni görünür; kanıt gelince düğme açılır ve zaman damgası yazılır.
+  ⚠ UDP kurulumunda İKA `--yks host:port` ile başlatılmazsa kanıt YKS'ye ulaşmaz ve 2. onay
+  **hiç açılmaz** — bu bilinçli bir seçimdir (kanıtsız onay yerine görünür ret).
+- Kilit: `tests/test_ika_go_ackli_tekrar.py` (paket düşürme gerçek UDP loopback, ACK yok → üst
+  sınır, mükerrer IKA_GO, kanıtsız düğme pasif; 5 mutasyonun tamamı yakalandı).
+
 ### 6.2 `road` sözleşmesi
 
 `{1: "sol", 2: "orta", 3: "sag"}` — `open_route()` bu aralık dışında `ValueError` fırlatır.
@@ -766,6 +794,8 @@ Sabitler `codes/karar_sozlesmesi.py` sonunda, PDF alıntılarıyla:
 
 Testler: `tests/test_k5_k6_sure_limitleri.py` (sahte saat + gerçek UDP loopback;
 4 mutasyonla düştüğü gösterildi).
+✅ **`IKA_GO` kısmı kapatıldı (K4, §6.5):** ACK'lı, aynı-seq tekrar gönderimi + üst sınırda
+görünür hata ve yeniden tetiklenebilir düğme; İKA mükerrer alımı idempotent işler.
 
 ---
 
