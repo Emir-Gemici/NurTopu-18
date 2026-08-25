@@ -448,7 +448,7 @@ def r_gerekli_piksel(mpp, r_gerekli_m):
 # deniyordu; fakat (1) v13 agirligi depoda YOK, olculemedi; (2) satirin kendi
 # iki sayisi tek tanim altinda tutarsiz (%43,4 ve "goruntunun %84,7'sini
 # boyuyor"). Bu yuzden tavan olculebilen kaynaklardan turetildi.
-ZEMIN_KAPLAMA_TAVANI = 0.67
+ZEMIN_KAPLAMA_TAVANI = 0.55      # T142 · D-286: v35 kalibrasyonu (0.67 v24 COKUSUNE gore konmustu, D-283)
 
 
 def zemin_kaplamasi(trav, icerik=None):
@@ -505,7 +505,7 @@ def zemin_kaplamasi(trav, icerik=None):
 #
 # ONCEKI 0,45 olculen mesru azaminin (0,453) ALTINDAYDI: payi -0,002 ve
 # 1/320 mesru kareyi eliyordu (D-69).
-ZEMIN_KENAR_DAYANMA_TAVANI = 0.50
+ZEMIN_KENAR_DAYANMA_TAVANI = 0.40  # T142 · D-286: v35 mesru maks kenar 0.5004 (kaplama 0.494 < 0.55, AND kurtarir)
 
 
 def zemin_kenar_dayanmasi(trav, icerik=None):

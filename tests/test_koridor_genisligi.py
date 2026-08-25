@@ -224,6 +224,11 @@ class AnalyzePathEntegrasyonTests(unittest.TestCase):
     ekledi. Bu sinif o BAGLANTIYI kilitler: cagri silinirse buradan duser.
     """
 
+    # T142 (D-286): zemin kapisi tavanlari (0.55, 0.40) oldu. 0.80 bant kenar-dayanmasi
+    # 2*240/(4*300-4) = 0.4013 > 0.40 verip AND kapisina TAKILIYORDU; 0.76 -> 0.3813.
+    # Bant hala KORIDOR_DEGIL icin 'asiri genis' (tavan serit basina 100 px, bant 228 px).
+    ASIRI_GENIS = 0.76
+
     @staticmethod
     def _bant(yan, oran):
         """Ortada `oran` genisliginde dikey bant.
@@ -241,7 +246,7 @@ class AnalyzePathEntegrasyonTests(unittest.TestCase):
     def test_fikstur_gercekten_istenen_darbogazi_uretiyor(self):
         """Once fiksturun kendisini dogrula (kor kapi kurma)."""
         yan = 300
-        genis = self._bant(yan, 0.80)
+        genis = self._bant(yan, self.ASIRI_GENIS)
         _y, _g, _w, ret = analyze_path(genis, return_reason=True,
                                        min_area_ratio=0.001)
         self.assertIsNotNone(ret, "genis bant hic reddedilmedi")
@@ -252,7 +257,7 @@ class AnalyzePathEntegrasyonTests(unittest.TestCase):
     def test_ASIRI_GENIS_koridor_KORIDOR_DEGIL_ile_reddedilir(self):
         yan = 300
         _yol, _guven, _wp, ret = analyze_path(
-            self._bant(yan, 0.80), return_reason=True, min_area_ratio=0.001)
+            self._bant(yan, self.ASIRI_GENIS), return_reason=True, min_area_ratio=0.001)
         self.assertIsNotNone(ret)
         self.assertEqual(KORIDOR_DEGIL_SEBEBI, ret[0])
         self.assertIn("px", ret[1])
@@ -260,7 +265,7 @@ class AnalyzePathEntegrasyonTests(unittest.TestCase):
     def test_ret_FAIL_CLOSED(self):
         """Reddedilen karede yol, guven ve waypoint YAYINLANMAZ."""
         yol, guven, wps, ret = analyze_path(
-            self._bant(300, 0.80), return_reason=True, min_area_ratio=0.001)
+            self._bant(300, self.ASIRI_GENIS), return_reason=True, min_area_ratio=0.001)
         self.assertIsNone(yol)
         self.assertEqual(0.0, guven)
         self.assertEqual([], wps, "reddedilen karede waypoint uretildi")
@@ -276,7 +281,7 @@ class AnalyzePathEntegrasyonTests(unittest.TestCase):
         self.assertGreaterEqual(len(wps), 2)
 
     def test_MADDE_15_kisit_maskeye_DOKUNMAZ(self):
-        m = self._bant(300, 0.80)
+        m = self._bant(300, self.ASIRI_GENIS)
         kopya = m.copy()
         analyze_path(m, return_reason=True, min_area_ratio=0.001)
         self.assertTrue(np.array_equal(kopya, m),
@@ -297,7 +302,7 @@ class AnalyzePathEntegrasyonTests(unittest.TestCase):
         """
         from unittest import mock
         import rpi_inference
-        m = self._bant(300, 0.80)
+        m = self._bant(300, self.ASIRI_GENIS)
         with mock.patch.object(rpi_inference, "rota_koridor_genisligi_reddi",
                                lambda *a, **k: None):
             yol, _guven, wps, ret = analyze_path(

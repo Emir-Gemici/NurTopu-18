@@ -530,7 +530,7 @@ string yazılmaz** (madde 16).
 maske üzerinde, morfoloji ve engel çıkarmadan **önce** ölçülür.
 
 ```python
-ZEMIN_KAPLAMA_TAVANI = 0.67      # T59 · D-85/D-86 · önceki 0.55 (v21 dönemi)
+ZEMIN_KAPLAMA_TAVANI = 0.55      # T142 · D-286 · önceki 0.67 (T59, v24 dönemi) · 0.55 (v21 dönemi)
 ```
 
 **Ölçüm** (üretim zinciri, `conf=0.30`) — üç bağımsız meşru kaynak, iki çökmüş küme:
@@ -590,6 +590,31 @@ Regresyon kilidi: `tests/test_gercek_arena_kapisi.py` — eşik ileride yeniden
 oynatılır ve gerçek arenayı tekrar elerse bu paket düşer.
 
 Kapı madde 15 açısından nötrdür: yalnız reddeder, hiçbir piksel eklemez.
+
+#### T142 · yeniden kalibrasyon — `(0.67, 0.50) → (0.55, 0.40)` (D-283, D-286 · 2026-08-26)
+
+D-283 ölçtü: T59'un "geçmesi gereken" gerçek arena maskesi (v24, kaplama 0.579)
+**çökmüş** bir maskeydi (sahnenin tamamı yeşil); 0.67 tavanı bir çöküşü geçirmek
+için gevşetilmişti. Üretim v35 ile **dört kümede** yeniden kalibre edildi
+(`results/t142/olcum.md`, kutu paydası, conf 0,30, imgsz 512):
+
+| çift K/E | v35 meşru sentetik RET (260) | v35 otopark RET (67) | v35 DJI RET (59) | v35 arena RET (1) | v24 otopark ÇÖKÜŞ yakalama (67) | v24 arena ÇÖKÜŞ yakalama (1) |
+|---|---:|---:|---:|---:|---:|---:|
+| `(0.67, 0.50)` eski | 0 | 0 | 0 | 0 | 67/67 | **0/1** |
+| `(0.60, 0.45)` | 0 | 0 | 0 | 0 | 67/67 | 0/1 |
+| **`(0.55, 0.40)` yeni** | **0** | **0** | **0** | **0** | **67/67** | **1/1** |
+| `(0.50, 0.35)` | 0 | **6** | 0 | 0 | 67/67 | 1/1 |
+
+**Karar (mimar vekili 2):** `(0.55, 0.40)` — meşru v35 kümelerinde **0 ret** ile
+v24 arena çöküşünü de yakalayan en muhafazakâr çift. Pay dar: v35 meşru sentetikte
+8 kare kaplama kolunu tek başına aşıyor, `sa_000176` kenar 0.5004 > 0.40 ama
+kaplama 0.494 < 0.55 — **AND** birleşimi kurtarıyor (pay 0,056).
+
+⚠ **Sınırlar:** çöküş sınıfı **v24 vekilidir** — v35'in kendi ölçülmüş çöküşü yok;
+gerçek arena n=1. **T135:** `icerik=None` + 16:9 letterbox paydasında **iki kol da
+ölüdür** (kenar tavanı 2h/(4w−4) = 0.2815 — D-268 §6'nın "kenar kolu çalışır"
+cümlesi kırpık maske için yanlış); kapı yalnız gerçek içerik kutusu geçirilince
+çalışır. Çağıranlar `icerik` geçirmek **zorundadır**.
 
 #### `KORIDOR_DEGIL` — koridor genişlik tavanı (T65)
 
