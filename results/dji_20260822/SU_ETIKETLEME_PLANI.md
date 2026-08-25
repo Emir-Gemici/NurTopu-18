@@ -232,6 +232,81 @@ eski maskeler yeni şemada ancak `255 → 2` ve `0 → 0` olarak okunabilir —
 **içlerinde sınıf 0 bilgisi YOKTUR** ve F5'te sınıf 0 için yeniden geçilmeleri
 gerekir. Bu, kararın kabul edilmiş bedelidir.
 
+
+### 4b-EK-3 · İKİ SORU **ÖLÇÜMLE** CEVAPLANDI (2026-08-25) — eşikler artık FİZİKSEL
+
+F5, sınıf 1 alanının aynı karelerde **4,64 kata** kadar oynadığını gösterdi ve
+sebebi iki tanımsız kalemdi: **ayakta kuru ot (tussock)** ve **gevşek taş boyutu**.
+İkisi de artık **türetiliyor**, tercihle değil.
+
+#### (i) GSD ÖLÇÜLDÜ — tahmin değil
+`scripts/olcum` yordamı: ardışık kare çiftlerinde **GPS ötelenmesi (m)** /
+**faz korelasyonu piksel kayması**. İrtifa sabit (<0,5 m fark), ötelenme 3–25 m,
+n=**81** çift, irtifa 29,6–34,8 m.
+```text
+GSD @960 : medyan 4,39 cm/px  (p25 4,04 · p75 4,65)
+    ham   : 1,10 cm/px        model girdisi (512): 8,23 cm/px
+```
+⚠ Amele A'nın lastik çapından tahmini 5 cm/px idi — **%14 yüksek**, ama doğru
+mertebede. Ham çıktı: `results/dji_20260822/gsd_olcumu.json`.
+
+#### (ii) 🔴 İKA'NIN UMURSADIĞI BOYUTLAR MODEL GİRDİSİNDE **GÖRÜNMÜYOR**
+İKA geometrisi `simulation/models/ika/model.sdf`'ten **aritmetikle**:
+gövde 0,66×0,50×0,14 · tekerlek yarıçapı **0,11 m** · **karın boşluğu 0,07 m**.
+```text
+engel                      cm   ham3840   @960   model512
+karin boslugu (asilmaz)   7,0      6,4     1,6      0,9   <- BIR PIKSELDEN KUCUK
+tekerlek capi            22,0     20,0     5,0      2,7
+govde genisligi          66,0     60,1    15,0      8,0
+```
+🔴 **İKA'yı durduran 7 cm'lik bir taş, modelin girdisinde 0,9 pikseldir.**
+Model girdisinde güvenilir en küçük yapı (3 px) = **24,7 cm**.
+
+⚠ **Bu YENİ bir kusur DEĞİL — sisteme zaten yazılı.** `costmap_path_finder.py:73`
+`MASKE_HATA_M = 0.25` (*"512-proto maskeyi tam çözünürlüğe bilineer resize"*) ve
+`R_GEREKLI_M = 0,35 + 0,25 + 0,50 = 1,10 m`. Yani mimari bu sınırı **çözünürlükle
+değil PAYLA** karşılıyor: küçük engeli görmeye çalışmaz, **geniş koridor** ister.
+İki bağımsız türetmenin (ölçülen GSD × 3 px = 24,7 cm · kodun 25 cm'si) aynı yere
+düşmesi bu okumayı destekler.
+
+#### (iii) CEVAP 1 — **gevşek taş eşiği = 25 cm** (türetildi)
+> **25 cm'den küçük tekil taş/moloz ETIKETLENMEZ.** Model onu zaten
+> temsil edemez (< 3 px) ve planlayıcı ondan korunmayı `MASKE_HATA_M` +
+> `R_GEREKLI_M` payıyla üstlenmiştir.
+> **Bu boyutta taşlardan oluşan bir YÜZEY, yüzey olarak hükme bağlanır:**
+> stabilize/çakıl yol **sınıf 0**'dır. Ama taşlar zemini **okunamaz** kılıyorsa
+> (aralarını göremiyorsan) **etiketsiz**.
+> **25 cm'den büyük tekil taş/kaya sınıf 1'dir** — karın boşluğunun (7 cm) üç
+> katından fazladır, aşılamaz.
+
+⇒ Amele B'nin *"7–50 cm kayaları sınıf 1 saydım"* kararı **alt uçta ölçüsüzdü**:
+7 cm hem modelde 0,9 px hem de zaten payla karşılanıyor. Sapmanın (0,056 → 0,258)
+baskın kaynağı buydu.
+
+#### (iv) CEVAP 2 — **tussock: ETİKETSİZ** (türetildi, tercih değil)
+Ayakta kuru ot **sıkışır**, yani *"İKA girerse çıkabilir mi"* ölçütüne göre
+**engel değildir** → sınıf 1 olamaz.
+Ama otun **altındaki zemin görünmez** → *"sınıf 0 = burayı inceledim ve
+geçilebilir"* iddiası **doğrulanamaz** → sınıf 0 da olamaz.
+> **Ayakta kuru ot/bitki örtüsü, altındaki zemin okunamıyorsa ETİKETSİZ (0)
+> bırakılır.** Zemin okunabiliyorsa (seyrek ot, dokusu görünen sert yüzey)
+> **o zeminin sınıfını** alır.
+
+🔴 **Bu cevap ancak ÜÇ DURUMLU biçimde MÜMKÜNDÜR.** İkili biçimde doğru cevap
+**yoktu**: amele ya "engel" ya "zemin" demek zorundaydı ve hangisini seçerse
+seçsin yanılıyordu. F4→F5'teki **3,93 kat** sapmanın kaynağı tam olarak buydu.
+Yani üç durumlu çıktı kararı, bu belirsizliği **çözülebilir** hâle getirdi.
+
+#### (v) BUNDAN SONRAKİ EŞİKLER PİKSELDE YAZILMAZ
+> Şartnamedeki her boyut eşiği **santimetreyle** yazılır ve ölçülen GSD ile
+> piksele çevrilir. Gerekçe: aynı yapı 960'ta 15 px, ham'da 60 px'tir; piksel
+> eşiği **ölçeğe göre anlam değiştirir**, santimetre değiştirmez.
+> Referans: **@960 → 4,39 cm/px** (ölçüldü, n=81). İrtifa değişirse GSD
+> yeniden ölçülür.
+
+⚠ **Kalan sınır:** İKA ölçüleri **simülasyon modelinden** alındı. Gerçek araç
+farklıysa 25 cm eşiği kayar. Doğrulanması gereken tek girdi budur.
+
 ---
 
 ## 5. FAZLAR

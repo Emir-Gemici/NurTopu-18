@@ -1,0 +1,554 @@
+{
+ "_ne": "GSD olcumu — GPS otelenmesi / faz korelasyonu",
+ "_yontem": "irtifa sabit <0,5 m · seyir >=25 m · otelenme 3-25 m · piksel >=15 · guven >=0,15",
+ "ozet_cm_px_960": {
+  "n": 81,
+  "medyan": 4.389,
+  "p25": 4.042,
+  "p75": 4.648,
+  "min": 2.851,
+  "maks": 6.43
+ },
+ "ornekler": [
+  {
+   "kaynak": "0037_D",
+   "kare": 1260,
+   "metre": 4.353,
+   "piksel": 110.91,
+   "gsd_cm_px_960": 3.924,
+   "guven": 0.261,
+   "rel_alt": 34.8
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 1650,
+   "metre": 4.155,
+   "piksel": 76.67,
+   "gsd_cm_px_960": 5.419,
+   "guven": 0.289,
+   "rel_alt": 34.7
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 1920,
+   "metre": 6.158,
+   "piksel": 133.95,
+   "gsd_cm_px_960": 4.597,
+   "guven": 0.207,
+   "rel_alt": 33.9
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 2010,
+   "metre": 4.753,
+   "piksel": 86.87,
+   "gsd_cm_px_960": 5.471,
+   "guven": 0.274,
+   "rel_alt": 33.9
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 2490,
+   "metre": 4.166,
+   "piksel": 112.31,
+   "gsd_cm_px_960": 3.709,
+   "guven": 0.204,
+   "rel_alt": 30.3
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 2550,
+   "metre": 4.356,
+   "piksel": 104.13,
+   "gsd_cm_px_960": 4.183,
+   "guven": 0.19,
+   "rel_alt": 30.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 2820,
+   "metre": 3.155,
+   "piksel": 91.42,
+   "gsd_cm_px_960": 3.451,
+   "guven": 0.455,
+   "rel_alt": 29.7
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 6450,
+   "metre": 4.496,
+   "piksel": 106.16,
+   "gsd_cm_px_960": 4.235,
+   "guven": 0.299,
+   "rel_alt": 31.1
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 6480,
+   "metre": 5.231,
+   "piksel": 120.07,
+   "gsd_cm_px_960": 4.356,
+   "guven": 0.35,
+   "rel_alt": 31.1
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 6600,
+   "metre": 3.149,
+   "piksel": 106.56,
+   "gsd_cm_px_960": 2.955,
+   "guven": 0.366,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 6840,
+   "metre": 4.104,
+   "piksel": 108.26,
+   "gsd_cm_px_960": 3.791,
+   "guven": 0.187,
+   "rel_alt": 31.0
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 7050,
+   "metre": 3.372,
+   "piksel": 88.4,
+   "gsd_cm_px_960": 3.814,
+   "guven": 0.418,
+   "rel_alt": 31.0
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 7620,
+   "metre": 4.023,
+   "piksel": 102.34,
+   "gsd_cm_px_960": 3.931,
+   "guven": 0.217,
+   "rel_alt": 31.0
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 7860,
+   "metre": 3.822,
+   "piksel": 97.4,
+   "gsd_cm_px_960": 3.924,
+   "guven": 0.278,
+   "rel_alt": 31.1
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 8340,
+   "metre": 5.38,
+   "piksel": 125.48,
+   "gsd_cm_px_960": 4.288,
+   "guven": 0.18,
+   "rel_alt": 30.7
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 8370,
+   "metre": 5.455,
+   "piksel": 181.25,
+   "gsd_cm_px_960": 3.01,
+   "guven": 0.199,
+   "rel_alt": 30.6
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 8400,
+   "metre": 4.921,
+   "piksel": 121.74,
+   "gsd_cm_px_960": 4.042,
+   "guven": 0.177,
+   "rel_alt": 30.7
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 9270,
+   "metre": 3.911,
+   "piksel": 87.36,
+   "gsd_cm_px_960": 4.477,
+   "guven": 0.152,
+   "rel_alt": 31.1
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 9330,
+   "metre": 3.849,
+   "piksel": 89.59,
+   "gsd_cm_px_960": 4.297,
+   "guven": 0.158,
+   "rel_alt": 30.9
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 9600,
+   "metre": 4.253,
+   "piksel": 96.72,
+   "gsd_cm_px_960": 4.397,
+   "guven": 0.256,
+   "rel_alt": 31.0
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 9750,
+   "metre": 3.658,
+   "piksel": 94.74,
+   "gsd_cm_px_960": 3.861,
+   "guven": 0.197,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 9870,
+   "metre": 3.955,
+   "piksel": 96.6,
+   "gsd_cm_px_960": 4.094,
+   "guven": 0.178,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 9960,
+   "metre": 3.932,
+   "piksel": 87.45,
+   "gsd_cm_px_960": 4.496,
+   "guven": 0.208,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 10020,
+   "metre": 3.82,
+   "piksel": 91.16,
+   "gsd_cm_px_960": 4.19,
+   "guven": 0.192,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 10110,
+   "metre": 3.999,
+   "piksel": 94.43,
+   "gsd_cm_px_960": 4.235,
+   "guven": 0.187,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 10260,
+   "metre": 4.063,
+   "piksel": 93.02,
+   "gsd_cm_px_960": 4.368,
+   "guven": 0.361,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0037_D",
+   "kare": 11190,
+   "metre": 6.79,
+   "piksel": 159.27,
+   "gsd_cm_px_960": 4.263,
+   "guven": 0.178,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 810,
+   "metre": 4.024,
+   "piksel": 81.92,
+   "gsd_cm_px_960": 4.912,
+   "guven": 0.476,
+   "rel_alt": 32.5
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 1230,
+   "metre": 3.902,
+   "piksel": 87.85,
+   "gsd_cm_px_960": 4.441,
+   "guven": 0.348,
+   "rel_alt": 32.5
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 3390,
+   "metre": 3.82,
+   "piksel": 89.83,
+   "gsd_cm_px_960": 4.253,
+   "guven": 0.257,
+   "rel_alt": 32.3
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 3450,
+   "metre": 4.221,
+   "piksel": 94.12,
+   "gsd_cm_px_960": 4.484,
+   "guven": 0.174,
+   "rel_alt": 32.3
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 3600,
+   "metre": 4.231,
+   "piksel": 112.13,
+   "gsd_cm_px_960": 3.773,
+   "guven": 0.193,
+   "rel_alt": 32.4
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 4860,
+   "metre": 4.314,
+   "piksel": 98.3,
+   "gsd_cm_px_960": 4.389,
+   "guven": 0.37,
+   "rel_alt": 31.6
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5400,
+   "metre": 6.531,
+   "piksel": 152.3,
+   "gsd_cm_px_960": 4.288,
+   "guven": 0.209,
+   "rel_alt": 31.6
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5430,
+   "metre": 6.745,
+   "piksel": 152.24,
+   "gsd_cm_px_960": 4.431,
+   "guven": 0.206,
+   "rel_alt": 31.6
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5520,
+   "metre": 5.858,
+   "piksel": 149.76,
+   "gsd_cm_px_960": 3.911,
+   "guven": 0.213,
+   "rel_alt": 31.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5670,
+   "metre": 5.494,
+   "piksel": 135.58,
+   "gsd_cm_px_960": 4.052,
+   "guven": 0.309,
+   "rel_alt": 31.6
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5850,
+   "metre": 5.056,
+   "piksel": 133.38,
+   "gsd_cm_px_960": 3.791,
+   "guven": 0.263,
+   "rel_alt": 31.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5940,
+   "metre": 5.204,
+   "piksel": 112.29,
+   "gsd_cm_px_960": 4.634,
+   "guven": 0.556,
+   "rel_alt": 31.6
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 5970,
+   "metre": 5.066,
+   "piksel": 112.41,
+   "gsd_cm_px_960": 4.507,
+   "guven": 0.545,
+   "rel_alt": 31.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6120,
+   "metre": 6.761,
+   "piksel": 148.33,
+   "gsd_cm_px_960": 4.558,
+   "guven": 0.44,
+   "rel_alt": 31.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6150,
+   "metre": 6.695,
+   "piksel": 140.43,
+   "gsd_cm_px_960": 4.767,
+   "guven": 0.343,
+   "rel_alt": 31.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6210,
+   "metre": 3.663,
+   "piksel": 115.34,
+   "gsd_cm_px_960": 3.176,
+   "guven": 0.169,
+   "rel_alt": 31.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6240,
+   "metre": 3.028,
+   "piksel": 103.95,
+   "gsd_cm_px_960": 2.913,
+   "guven": 0.226,
+   "rel_alt": 31.6
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6300,
+   "metre": 3.338,
+   "piksel": 71.94,
+   "gsd_cm_px_960": 4.64,
+   "guven": 0.323,
+   "rel_alt": 31.4
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6360,
+   "metre": 4.09,
+   "piksel": 81.37,
+   "gsd_cm_px_960": 5.027,
+   "guven": 0.29,
+   "rel_alt": 31.3
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6450,
+   "metre": 3.292,
+   "piksel": 63.37,
+   "gsd_cm_px_960": 5.196,
+   "guven": 0.175,
+   "rel_alt": 31.2
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6780,
+   "metre": 4.083,
+   "piksel": 86.36,
+   "gsd_cm_px_960": 4.728,
+   "guven": 0.153,
+   "rel_alt": 30.8
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6870,
+   "metre": 4.279,
+   "piksel": 108.17,
+   "gsd_cm_px_960": 3.956,
+   "guven": 0.173,
+   "rel_alt": 30.8
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 6990,
+   "metre": 4.292,
+   "piksel": 77.31,
+   "gsd_cm_px_960": 5.552,
+   "guven": 0.257,
+   "rel_alt": 30.7
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 8340,
+   "metre": 6.55,
+   "piksel": 110.31,
+   "gsd_cm_px_960": 5.938,
+   "guven": 0.434,
+   "rel_alt": 30.9
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 8430,
+   "metre": 5.306,
+   "piksel": 114.21,
+   "gsd_cm_px_960": 4.646,
+   "guven": 0.489,
+   "rel_alt": 30.9
+  },
+  {
+   "kaynak": "0038_D",
+   "kare": 8460,
+   "metre": 5.677,
+   "piksel": 199.11,
+   "gsd_cm_px_960": 2.851,
+   "guven": 0.2,
+   "rel_alt": 30.9
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 300,
+   "metre": 4.22,
+   "piksel": 84.86,
+   "gsd_cm_px_960": 4.972,
+   "guven": 0.214,
+   "rel_alt": 31.4
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 360,
+   "metre": 4.011,
+   "piksel": 89.22,
+   "gsd_cm_px_960": 4.495,
+   "guven": 0.241,
+   "rel_alt": 31.4
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 1140,
+   "metre": 3.477,
+   "piksel": 91.43,
+   "gsd_cm_px_960": 3.803,
+   "guven": 0.204,
+   "rel_alt": 31.4
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 1890,
+   "metre": 3.431,
+   "piksel": 76.04,
+   "gsd_cm_px_960": 4.513,
+   "guven": 0.275,
+   "rel_alt": 31.4
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 2490,
+   "metre": 3.158,
+   "piksel": 68.06,
+   "gsd_cm_px_960": 4.641,
+   "guven": 0.368,
+   "rel_alt": 31.0
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 3870,
+   "metre": 3.495,
+   "piksel": 82.94,
+   "gsd_cm_px_960": 4.215,
+   "guven": 0.176,
+   "rel_alt": 30.1
+  },
+  {
+   "kaynak": "0039_D",
+   "kare": 4140,
+   "metre": 4.629,
+   "piksel": 105.58,
+   "gsd_cm_px_960": 4.384,
+   "guven": 0.191,
+   "rel_alt": 30.1
+  }
+ ]
+}
