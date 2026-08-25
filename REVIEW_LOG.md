@@ -21676,3 +21676,97 @@ kaybettiriyor**. 59 karelik kümede **net kazanç +3…+5 kare (%5–8)**, 14 de
 (6/18 vs 14/18). Anlaşmalarını kanıt saymadım; **kontrol verisine** gittim.
 CLAUDE.md §19'un *"iki tarafın ANLAŞMASI kanıt değildir; hakem ölçümdür"*
 kuralı bu turda **fiilen** işledi.
+
+---
+
+### D-282 · 🔴 BANT TAMAMLAMA · 640.495 piksel eklendi, **rota kazancı +1 kare** — etiket kapsamı BAĞLAYICI KISIT DEĞİLMİŞ
+
+- **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3) ·
+  2026-08-25 · kullanıcı talimatı: *"etiket kapsamını artır, o karelerde eksik
+  bantları tamamlat"* + *"her karenin modelimize uygun olduğunu doğrula,
+  gürültü olmasın"*.
+- **Kapı çıktısı:** `15/15` · `discover -s tests -q` **811 OK**.
+- **Ham çıktı:** `results/dji_kirsal/` — `bant_bosluk.json` ·
+  `kare_uygunluk.json` · `bant_tamamlama/{A,B,C}/` · `bant_tamamlama_etkisi.json`.
+- ⛔ Terfi yok · `dataset/` altına yazılmadı · eşik/`CONTRACTS.md` değişmedi ·
+  **PUSH YOK**.
+
+#### 1. HEDEFLEME — körlemesine tamamlanmadı
+`137_bant_bosluk_tanisi.py`: başarısız bandın **içeriği** ölçüldü. Bandın
+etiketsiz kısmı tamamen sınıf 0 olsaydı temas yeter miydi?
+```text
+ZATEN_YETER 129/160 · KURTARILABILIR 27 · ENGEL 4
+eksik bantlardaki ETIKETSIZ payi: medyan 0,80 · maks 1,00
+```
+⇒ iş listesi **31 kare** (27 bant + 8 etiket-seyrek, kesişim 4).
+
+#### 2. 🔴 UYGUNLUK DENETİMİ — İLK SÜRÜMÜM İKİ YANLIŞ BAYRAK ÜRETTİ
+Eşikleri `data/raw_frames`ten (otopark) türettim — T136 parlaklık kapısının
+kalıbını taklit ederek. **İkisi de yanlış çıktı, GÖZLE (D-80) yakaladım:**
+- **POZLAMA 61 kare** → kırpma tamamen **beyaz silaj balyalarından**; kareler
+  kusursuz. Referansın kırpma p95'i 0,0004; bizim sahnede %1–3 **meşru**.
+- **NADIR_ŞÜPHELİ 23 kare** → **6/6 kusursuz nadir**, gök yok ufuk yok.
+  "Gök puanı" dediğim şey üst şeridin alttan parlak/düzgün olmasını ölçüyordu;
+  kırsalda üstte çıplak toprak altta bitki olunca bu **doğal**. **Ölçüt iddia
+  ettiğim şeyi ölçmüyordu.**
+
+🔴 **DERS:** farklı domenden türetilen eşik **kalite değil DOMEN FARKI** ölçer.
+T136'nın parlaklık kapısı çalışıyordu çünkü gece/gündüz için *"örtüşme"* doğru
+soruydu; kırpma ve üst/alt gradyanı **taşınabilir değil**.
+
+**Düzeltilmiş (mutlak) ölçütlerle:**
+```text
+BAYRAKSIZ 152/160 · ETIKET_COK_SEYREK 8
+BULANIK 0 · POZLAMA 0 · NADIR_SUPHELI 0 · IKIZ 0
+keskinlik 2135-14952 (referans 406-961) -> bulaniklik YOK
+```
+Sağlık kontrolü: yeni gök ölçütü referansta 0,0000–0,0309 veriyor (otoparkta
+gök yok) → ölçüt artık **doğru şeyi** ölçüyor.
+⇒ **Kümede gürültü bulunamadı.** Tek bulgu: 8 karenin etiket sinyali zayıf.
+
+#### 3. TAMAMLAMA YAPILDI — ve amele DİSİPLİNİ tuttu
+```text
+31/31 PNG · gecerli · benzersiz md5
+MEVCUT ETIKET BOZULMASI: 0 piksel  (bagimsiz dogrulandi)
+EKLENEN: sinif0 593.683 · sinif1 46.812 · toplam 640.495 px
+```
+⚠ Amele A **bilerek geçirmedi**: *"Bu leke boyansaydı ~23 sütun verip bandı tek
+başına eşikten geçirecekti (eşik 20); geçirmedim"* — ayırt edemediği için 0
+bıraktı. Amele B 7 karede **hiç piksel yazmadı**. İstenen davranış tam buydu:
+amaç *"kare geçsin"* değil, **bakılmış olması**.
+
+#### 4. 🔴 SONUÇ: KAZANÇ +1 KARE
+```text
+TUM 160 KARE          ONCE   SONRA
+GECER                   98      99     <- +1
+PARCALILIK              31      45     <- +14
+YAPISAL                 29      15     <- -14
+BAKIR 0038 (60 kare): GECER 29 -> 29   <- DEGISMEDI
+```
+Tamamlanan bantlar YAPISAL'ı **PARÇALILIK'a taşıdı**, GEÇER'e değil: yeni
+etiketlenen bant bölgeleri ana koridordan **KOPUK**.
+Ve D-281 zaten ölçmüştü: *"en büyük bileşen"* kuralı kaldırılınca **0 kare**
+rota kazanıyor — parçalar gerçekten birleşmiyor.
+
+⇒ **ETİKET KAPSAMI BAĞLAYICI KISIT DEĞİLMİŞ.** 640 bin piksel dürüstçe eklendi,
+rota üretimi neredeyse hiç değişmedi.
+
+#### 5. NE ÖĞRENDİK
+- D-281'in hükmü **güçlendi**: sorun sahne geometrisi/yönelimi. Bu karelerde
+  sürülebilir zemin alttan üste **gerçekten bağlantılı değil**.
+- Kullanıcının talimatı makuldü ve **eksiksiz uygulandı**; ölçüm işe yaramadığını
+  söylüyor. Bu **meşru bir olumsuz sonuçtur** ve gizlenmiyor.
+- Denetim tarafında asıl kazanç: **kümede gürültü olmadığı kanıtlandı**
+  (152/160 bayraksız, bulanık/ikiz/pozlama yok) — yani zayıf sonucun sebebi
+  veri kalitesi **değil**.
+
+#### 6. ÖNER-BEKLE
+1. Kalan tek ölçülmüş kaldıraç **uçuş ekseni** (D-281 §7): gimbal 90° nadirken
+   uçuş yönü yol/koridor eksenine hizalanmalı. Ölçülen net etki %5–8 — mütevazı
+   ama **tek** çalışan kaldıraç.
+2. **K-A sözleşmesinin kendisi** sorgulanmalı: *"alt→üst bant teması"* arena
+   geometrisinden geliyor (İKA altta, hedef üstte). Kırsal koridor kareyi
+   **enine** kesiyorsa bu tanım o sahneye uymuyor. Bu bir **sözleşme** sorusudur
+   ve mimarındır — ben eşiğe/sözleşmeye dokunmadım.
+3. Bu turdan sonra **daha fazla etiketleme önerilmiyor**: ölçüm, kapsamın
+   bağlayıcı olmadığını gösterdi.

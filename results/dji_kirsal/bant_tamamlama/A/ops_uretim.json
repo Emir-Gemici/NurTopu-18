@@ -1,0 +1,370 @@
+{
+ "0": {
+  "saniye": 420,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     365,
+     0,
+     960,
+     43
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     365,
+     0,
+     960,
+     43
+    ],
+    "k": 3.0,
+    "min_kenar": 5,
+    "min_alan": 30
+   }
+  ],
+  "hukum_gerekce": "UST bant: silindir/paletli makine tirnak izleriyle SIKISTIRILMIS ciplak dolgu zemini; zemin dokusu tamamen okunuyor, ortu yok, yapi yok. x>=365 (@960) kesiminde yuzey tekduze -> sinif 0. Sol kesim (x<365) tasli sirt: 30-40 px (33-44 cm) araligina cikan koyu/parlak leke adaylari golgeden ayrilamadi -> KARAR VERMEDIM, 0 birakildi. Boyanan alan icinde olculmus derin golge/bosluk lekeleri (med-3*1.4826*MAD altinda, >=5px bagli) 0 birakildi.",
+  "guven": "yuksek"
+ },
+ "1": {
+  "saniye": 700,
+  "ops": [],
+  "hukum_gerekce": "UST bant KARAR VERILEMEDI, tamami 0 birakildi. Sol yari ayakta KURU OT tarlasi, sag yari yogun yesil ot; x=1300-2000 (@3840) 'gri' gorunen alan yakinlastirildi -> ciplak cakil DEGIL, kurumus dikenli ot mati. Hicbirinde zemin okunmuyor -> madde 6 -> 0. TEK ADAY: x=2560-2660, y=50-180 (@3840) ~1,0x1,4 m soluk aciklik. Bu leke ile AYNI KARENIN mevcut sinif 0 toprak yolu esit yakinlastirmada yan yana konuldu (kiyas01.jpg): yol duz ve tekduze, aday leke ise benekli/taneli ve cevresi yogun yesil ortu. Ciplak zemin mi kurumus yatik ortu mu AYIRT EDILEMEDI -> 0 BIRAKILDI. NOT: bu leke boyansaydi ~23 sutun temas verip bandi TEK BASINA esikten gecirecekti (esik 20); 'kare gecsin' diye boyamadim.",
+  "guven": "karar_verilemedi"
+ },
+ "3": {
+  "saniye": 520,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     480,
+     0,
+     720,
+     43
+    ],
+    "deger": 2
+   },
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     730,
+     0,
+     960,
+     43
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     730,
+     0,
+     960,
+     43
+    ],
+    "k": 3.0,
+    "min_kenar": 5,
+    "min_alan": 30
+   }
+  ],
+  "hukum_gerekce": "UST bant OLCULDU (yerel kontrast + bagli bilesen, >=23px@3840 = >=25cm): x=1920-2880 kesiminde 40+ adet >=25 cm kose ta$ adayi -> yogun KAYA/MOLOZ tarlasi, IKA giremez -> sinif 1 (deger 2). x=2880-3840 kesiminde ayni olcumde tek aday cikti; yuzey ince taneli SIKISTIRILMIS santiye zemini, paletli iz okunuyor -> sinif 0 (deger 1), x>=730@960. x<480@960 (moloz+beyaz plastik atik ile tasli karisim) ile x=480 solu: molozla sikistirilmis zemin ayrilamadi -> 0 birakildi. Boyanan sinif 0 alaninda olculmus derin golge/tas kumeleri 0 birakildi.",
+  "guven": "yuksek"
+ },
+ "4": {
+  "saniye": 460,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     0,
+     497,
+     960,
+     540
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     0,
+     497,
+     960,
+     540
+    ],
+    "k": 3.0,
+    "min_kenar": 5,
+    "min_alan": 30
+   }
+  ],
+  "hukum_gerekce": "ALT bant: bant boyunca (0-3840) SIKISTIRILMIS ciplak dolgu zemini; paletli makine tirnak izleri KESKIN ve BOZULMAMIS -> zemin sIKI (gevsek olsaydi izler cokerdi). Izler bantta EN AZ UC AYRI DOGRULTUDA kesisiyor: makine serbestce manevra etmis, yani sev yuzu degil CALISMA PLATFORMU; erozyon cizgisi, golge kenari veya ortude ani kesinti YOK -> madde 9 egim ipucu yok. Tas olcumu: tum bantta yalniz 19 adet >=25 cm aday (kiyas: kare 03'un kaya tarlasi ceyrek genislikte 40+) -> madde 5 geregi yuzey olarak hukum: sinif 0. Olculmus derin golge/tas lekeleri 0 birakildi.",
+  "guven": "yuksek"
+ },
+ "5": {
+  "saniye": 690,
+  "ops": [
+   {
+    "tip": "esik",
+    "kutu": [
+     600,
+     0,
+     722,
+     43
+    ],
+    "yuzde": 42,
+    "yon": "parlak",
+    "min_alan": 25,
+    "deger": 1
+   }
+  ],
+  "hukum_gerekce": "UST bant: x=2400-2888 (@3840) kesiminde SOLUK CIPLAK TOPRAK seritleri var ve uzerlerinde net LASTIK DIS IZI okunuyor (x~2510-2585, y~100-230 @3840) -> arac gecmis, zemin siki ve okunuyor. Bu seritler bandin kendi parlaklik dagiliminda p42 esigiyle ayrildi (aradaki koyu bantlar alcak kuru ot; madde 6 geregi 0 kaldi) -> sinif 0. Bandin geri kalani (x<2400 ve x>2888): benekli kuru ot/dikenli ortu, zemin okunmuyor -> 0. Lastik yigini ve moloz zaten sinif 1 olarak etiketliydi. ALT bant: KARAR VERILEMEDI -> tamami 0 birakildi; x=200-1000 kirmizi (tugla tozu/toprak) alan bitki ile ic ice, x=1000-1800 cakil+kuru cali kumeleri, x>2880 buyuk agac golgesi altinda ot; hicbirinde 'IKA girerse cikar' hukmu kanitlanamadi.",
+  "guven": "ust=orta, alt=karar_verilemedi"
+ },
+ "6": {
+  "saniye": 500,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     798,
+     0,
+     918,
+     43
+    ],
+    "deger": 1
+   }
+  ],
+  "hukum_gerekce": "UST bant: kirsal CAKIL YOL bandin icinden geciyor (x=3190-3670 @3840). Yakinlastirmada agac golgesi altinda bile cakil dokusu ve lastik asinma izi OKUNUYOR (madde 0 golge kurali: alttaki yuzey okunuyorsa o yuzeyin sinifi) -> sinif 0. Yolun iki yanindaki sik calilik zaten sinif 1 etiketliydi; boya yalniz ETIKETSIZ piksellere uygulandigi icin boyanan alan tam olarak yol koridoru oldu (dogrulama gorseliyle teyit edildi). Bandin geri kalani sik calilik/agaclik, zaten sinif 1.",
+  "guven": "yuksek"
+ },
+ "7": {
+  "saniye": 780,
+  "ops": [],
+  "hukum_gerekce": "IKI BANT DA KARAR VERILEMEDI -> 0 birakildi. UST bant: x<1900 kesilmis dal/cali demetleri; x=1900-3840 yatik KURU OT MATI; zemin hicbir yerde gorunmuyor -> madde 6 -> 0. x=250-360,y=167-233 (@3840) ~120x72 cm gri ortu/naylon ve x=161-233,y=100-155 ~79x60 cm gri nesne: madde 10'a gore sinif 1 adayi ama NE OLDUKLARI okunamadigi icin (madde 2) 0 birakildi. ALT bant: x<2650 su ve saz ZATEN sinif 1 etiketli; x=2650-3840 kuru ot mati + kesik aniz -> 0. DENETIM: 'mevcut etiket ayni ortuyu sinif 0 saymis mi' diye kontrol edildi - HAYIR. Mevcut sinif 0 bolgesi esit yakinlastirmada ayri bir yuzey cikti (kiyas07.jpg: duz gri-kahve CIPLAK TOPRAK YOL); 9x9 yerel std ile de ayrisiyor: mevcut sinif0 = 8,11 · ust bant sol = 19,24 · ust bant sag = 23,55 · alt bant sag = 17,38. Yani celiski YOK; insan etiketci YOLU boyamis, ortuyu degil.",
+  "guven": "karar_verilemedi"
+ },
+ "8": {
+  "saniye": 610,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     0,
+     0,
+     478,
+     43
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     0,
+     0,
+     478,
+     43
+    ],
+    "k": 3.0,
+    "min_kenar": 5,
+    "min_alan": 30
+   }
+  ],
+  "hukum_gerekce": "UST bant: x=0-1200 (@3840) YOL/KAPLAMA yuzeyi - yakinlastirmada ince agrega benegi, koyu zerreler ve silik lastik surtme izleri okunuyor; madde 10'un 'parlak+dokusuz' uyarisi burada GECERLI DEGIL cunku doku VAR ve yuzey asagidaki yol ile kesintisiz surüyor -> sinif 0. x=1200-1912: greyder gecmis STABILIZE banket; kirmizimsi toprak, seyrek yabani ot, taneler 10-20 px (11-22 cm, madde 5 esigi altinda) -> sinif 0. x>1912: kuru ot tarlasi, zemin ortu altinda okunmuyor -> madde 6 geregi 0 BIRAKILDI. Boyanan alandaki olculmus koyu bitki kumeleri 0 birakildi. Celik kafes direk ve calilar zaten sinif 1 etiketliydi.",
+  "guven": "yuksek"
+ },
+ "9": {
+  "saniye": 650,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     0,
+     0,
+     462,
+     43
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     0,
+     0,
+     462,
+     43
+    ],
+    "k": 3.0,
+    "min_kenar": 5,
+    "min_alan": 30
+   },
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     875,
+     0,
+     940,
+     43
+    ],
+    "deger": 2
+   }
+  ],
+  "hukum_gerekce": "UST bant: x=0-1848 (@3840) SIKISTIRILMIS toprak/cakil onluk; yakinlastirmada zemin tamamen okunuyor, taneler tipik <20 px (<22 cm), yalniz seyrek fide boyu yabani ot var -> sinif 0. DAYANAK: mevcut etikette AYNI yuzey bandin hemen altindan basliyor (x=0 icin satir 50, x=80 icin 121) - ayni yuzeyi 43 satir yukari surdurdum. x=1920-3400: kesilmis dal/cali yiginlari ve sik agaclik -> zemin okunmuyor, 0 birakildi (agacligin bir kismi zaten sinif 1). x=3500-3760: ACIK SU yuzeyi ETIKETSIZ kalmisti -> madde 3 geregi sinif 1 (deger 2) yazildi. Boyanan sinif 0 alanindaki olculmus koyu lekeler 0 birakildi.",
+  "guven": "yuksek"
+ },
+ "2": {
+  "saniye": 760,
+  "ops": [
+   {
+    "tip": "poligon",
+    "nokta": [
+     [
+      405,
+      0
+     ],
+     [
+      495,
+      0
+     ],
+     [
+      500,
+      140
+     ],
+     [
+      500,
+      280
+     ],
+     [
+      492,
+      400
+     ],
+     [
+      460,
+      470
+     ],
+     [
+      430,
+      538
+     ],
+     [
+      350,
+      538
+     ],
+     [
+      330,
+      470
+     ],
+     [
+      345,
+      400
+     ],
+     [
+      372,
+      300
+     ],
+     [
+      395,
+      200
+     ],
+     [
+      400,
+      100
+     ]
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     320,
+     0,
+     510,
+     540
+    ],
+    "k": 2.5,
+    "min_kenar": 4,
+    "min_alan": 20
+   },
+   {
+    "tip": "poligon",
+    "nokta": [
+     [
+      960,
+      330
+     ],
+     [
+      960,
+      539
+     ],
+     [
+      878,
+      539
+     ],
+     [
+      895,
+      500
+     ],
+     [
+      905,
+      460
+     ],
+     [
+      920,
+      410
+     ],
+     [
+      940,
+      360
+     ],
+     [
+      950,
+      330
+     ]
+    ],
+    "deger": 2
+   }
+  ],
+  "hukum_gerekce": "Bant zaten yeterliydi (ust 140, alt 72 sutun); gorev +SEYREK oldugu icin buyuk ETIKETSIZ alanlara bakildi. (a) Karenin ortasindan gecen CAKIL YOL: yakinlastirmada ince gri cakil dokusu net okunuyor, uzerinde ot yok -> madde 5 'cakil yol sinif 0' -> deger 1 (poligon, yolun kenarini takip eder). Yol icindeki ot tutamlari olculmus koyu-oyma ile 0 birakildi (dogrulama gorselinde siyah delikler). (b) Sag alt kosedeki KANAL: acik su yuzeyi -> madde 3 geregi sinif 1 (deger 2); yalniz kesin su olan cekirdek boyandi, saz kusagi 0 birakildi. (c) Soldaki yesil mera ve sagdaki genis kuru/bicilmis tarla: zemin ortu altinda okunmuyor -> madde 6 geregi 0 BIRAKILDI (kare genelindeki etiketsizligin buyuk kismi budur).",
+  "guven": "cakil yol=yuksek, su=yuksek, tarla=karar_verilemedi"
+ },
+ "10": {
+  "saniye": 640,
+  "ops": [
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     545,
+     0,
+     875,
+     540
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "dikdortgen",
+    "kutu": [
+     875,
+     0,
+     960,
+     290
+    ],
+    "deger": 1
+   },
+   {
+    "tip": "karanlik",
+    "kutu": [
+     545,
+     0,
+     960,
+     540
+    ],
+    "k": 3.0,
+    "min_kenar": 5,
+    "min_alan": 30
+   }
+  ],
+  "hukum_gerekce": "Bant zaten yeterliydi (ust 84, alt 95); +SEYREK oldugu icin kare genelindeki buyuk ETIKETSIZ alana bakildi. Karenin sag yarisi (x>=545 @960) bastan basa SIKISTIRILMIS santiye/dolgu zemini: paletli ve lastik iz desenleri KESKIN, cok sayida dogrultuda kesisiyor (manevra platformu), zemin dokusu tamamen okunuyor, ortu yok. Tas olcumu (alt bant, tum genislik): yalniz 36 adet >=25 cm aday; yakinlastirmada taneler tipik 10-20 px (11-22 cm) yani madde 5 esiginin ALTINDA -> yuzey olarak hukum: sinif 0. HARIC TUTULANLAR: x>875 & y>290 kaba moloz/iri tas alani ve x<545 yol kenari beyaz atik+tas seridi -> 0 birakildi. Olculmus derin golge/oyuk lekeleri 0 birakildi. Yoldaki INSAN ve golgesi zaten sinif 1 etiketli (madde 11).",
+  "guven": "yuksek"
+ }
+}

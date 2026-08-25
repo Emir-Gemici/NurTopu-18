@@ -1,0 +1,352 @@
+{
+ "dji_20260822170832_0037_d__frame_000133_000005520": {
+  "kare": "dji_20260822170832_0037_d__frame_000133_000005520",
+  "saniye": 0.1,
+  "degisen_piksel": 13681,
+  "once": {
+   "etiketsiz": 427166,
+   "sinif0": 46439,
+   "sinif1": 44795
+  },
+  "sonra": {
+   "etiketsiz": 413485,
+   "sinif0": 60070,
+   "sinif1": 44845
+  },
+  "bant_temas_once": {
+   "ust": 0,
+   "alt": 137
+  },
+  "bant_temas_sonra": {
+   "ust": 317,
+   "alt": 137
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "UST BANT (tamami etiketsizdi): x700-955 kisa mera - bitki mati alcak, aralarindan gri-kahve toprak HAM 3840'ta acikca okunuyor, >=25 cm engel yok -> SINIF 0. x400-462 stabilize/cakil izi (asagidaki etiketli toprak yolun kuzey devami); taslar <25 cm, yuzey okunuyor -> SINIF 0 (sartname 5). x332-340 beton cit rayi - asagida SINIF 1 etiketli, y=43..109 arasi olculup egimi (dx/dy=0.182) yukari tasindi -> SINIF 1 (sartname 2, taniniyor). x550-672 parlak beyaz balya ortusu -> SINIF 1 (sartname 10, >=25 cm nesne). x0-300 kuru ayakta ot mati: zemin OKUNMUYOR, sartname 6 -> 0 BIRAKILDI. x340-395 yol kenari yesil cali ve x465-545 kuru ot/golge gecisi de KARAR VERILEMEDI -> 0.",
+  "guven": "orta-yuksek",
+  "bant_yeterli_once": {
+   "ust": false,
+   "alt": true
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822170832_0037_d__frame_000144_000005850": {
+  "kare": "dji_20260822170832_0037_d__frame_000144_000005850",
+  "saniye": 0.1,
+  "degisen_piksel": 6348,
+  "once": {
+   "etiketsiz": 361080,
+   "sinif0": 30672,
+   "sinif1": 126648
+  },
+  "sonra": {
+   "etiketsiz": 354732,
+   "sinif0": 35708,
+   "sinif1": 127960
+  },
+  "bant_temas_once": {
+   "ust": 108,
+   "alt": 0
+  },
+  "bant_temas_sonra": {
+   "ust": 108,
+   "alt": 128
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "ALT BANT: x0-58 alcak mera - acik gri-kahve toprak bitki arasindan okunuyor, duz -> SINIF 0. x502-572 ciplak sikismis toprak/mikstas yuzey, tekil taslar <25 cm -> SINIF 0 (sartname 5). x925-959 dere suyu - dokusuz, duz, koyu; UZERINDE (y<505) zaten SINIF 1 etiketli dere ile SUREKLI -> SINIF 1 (sartname 3). x578-700 beyaz balya -> SINIF 1 (sartname 10). x60-160 zaten SINIF 1 etiketli (sik cali) - DOKUNULMADI. x160-300 balya golgesi + koyu cali: zemin okunamiyor -> 0. x700-920 kuru saz/dal ortusu ve dere sevi: gecilebilirlik OKUNAMIYOR -> 0 BIRAKILDI.",
+  "guven": "orta",
+  "bant_yeterli_once": {
+   "ust": true,
+   "alt": false
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822170832_0037_d__frame_000174_000006990": {
+  "kare": "dji_20260822170832_0037_d__frame_000174_000006990",
+  "saniye": 0.1,
+  "degisen_piksel": 6206,
+  "once": {
+   "etiketsiz": 282066,
+   "sinif0": 174935,
+   "sinif1": 61399
+  },
+  "sonra": {
+   "etiketsiz": 275860,
+   "sinif0": 180224,
+   "sinif1": 62316
+  },
+  "bant_temas_once": {
+   "ust": 509,
+   "alt": 0
+  },
+  "bant_temas_sonra": {
+   "ust": 509,
+   "alt": 123
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "ALT BANT: x415-538 genis stabilize/cakil koy yolunun guney devami - yuzey HAM'da temiz okunuyor, taslar <25 cm, kareyi capraz kesen ve ustte SINIF 0 etiketli yolun aynisi -> SINIF 0. x648-802 beton ark/bordur - kare boyunca SINIF 1 etiketli yapinin bant icindeki devami, egim olculdu -> SINIF 1 (sartname 2). x540-648 ve x800-960 kuru ot/saman ortulu banket: zemin okunamiyor, ayrica ark sevi -> 0 BIRAKILDI. x320-415 kuru ot -> 0.",
+  "guven": "yuksek",
+  "bant_yeterli_once": {
+   "ust": true,
+   "alt": false
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822170832_0037_d__frame_000284_000010740": {
+  "kare": "dji_20260822170832_0037_d__frame_000284_000010740",
+  "saniye": 0.08,
+  "degisen_piksel": 1170,
+  "once": {
+   "etiketsiz": 458439,
+   "sinif0": 56328,
+   "sinif1": 3633
+  },
+  "sonra": {
+   "etiketsiz": 457269,
+   "sinif0": 57498,
+   "sinif1": 3633
+  },
+  "bant_temas_once": {
+   "ust": 115,
+   "alt": 119
+  },
+  "bant_temas_sonra": {
+   "ust": 129,
+   "alt": 119
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "ZATEN_YETER (iki bant da geciyordu). UST BANT: x176-302 cakil koy yolunun bant icindeki temiz yuzeyi, x200-300 zaten SINIF 0 idi, kenarlara tamamlandi -> SINIF 0. BAKILDI AMA 0 BIRAKILDI: karenin sag 2/3'u paletli is makinesi izleriyle dolu GEVSEK MOLOZ dolgu; HAM'da olculen tekil taslarin cogu 25 cm esiginin ustunde ve gevsek, ayrica derin palet olukları var - sartname 5 geregi 'taslar zemini okunamaz kiliyor' -> ETIKETSIZ. x340-500 kuru ot banketi ve x465-500 devrik celik kafes kule (bir kismi zaten SINIF 1) -> dokunulmadi.",
+  "guven": "yuksek",
+  "bant_yeterli_once": {
+   "ust": true,
+   "alt": true
+  },
+  "iki_bant_baglantili": true,
+  "baglanti_notu": "ust ve alt bant AYNI sinif0 bileseninde"
+ },
+ "dji_20260822172613_0038_d__frame_000025_000001620": {
+  "kare": "dji_20260822172613_0038_d__frame_000025_000001620",
+  "saniye": 0.08,
+  "degisen_piksel": 2494,
+  "once": {
+   "etiketsiz": 398714,
+   "sinif0": 14152,
+   "sinif1": 105534
+  },
+  "sonra": {
+   "etiketsiz": 396220,
+   "sinif0": 16646,
+   "sinif1": 105534
+  },
+  "bant_temas_once": {
+   "ust": 213,
+   "alt": 0
+  },
+  "bant_temas_sonra": {
+   "ust": 213,
+   "alt": 58
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "ALT BANT: x258-316 ciplak kuru toprak - HAM'da toprak dokusu ve seyrek kisa ot arasindan zemin okunuyor, >=25 cm engel yok, tarla duzleminin devami -> SINIF 0. BAKILDI AMA 0 BIRAKILDI: x0-240 solgun MOLOZ/tas serpintisi - olculen tekil taslarin bir kismi ~25-40 cm ve aralarindaki zemin okunamiyor (sartname 5) -> 0. x316-345 yere dusmus beyaz dal; x330-480 kuru dal/calilik yigini ve icinde bir lastik: gecilebilirlik OKUNAMIYOR -> 0. x540-660 yatik kuru ot ortusu, zemin gorunmuyor (sartname 6) -> 0. x660-960 zaten SINIF 1 (dere ve calilik).",
+  "guven": "orta",
+  "bant_yeterli_once": {
+   "ust": true,
+   "alt": false
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822172613_0038_d__frame_000085_000003720": {
+  "kare": "dji_20260822172613_0038_d__frame_000085_000003720",
+  "saniye": 0.09,
+  "degisen_piksel": 5293,
+  "once": {
+   "etiketsiz": 184884,
+   "sinif0": 93810,
+   "sinif1": 239706
+  },
+  "sonra": {
+   "etiketsiz": 179591,
+   "sinif0": 95384,
+   "sinif1": 243425
+  },
+  "bant_temas_once": {
+   "ust": 0,
+   "alt": 402
+  },
+  "bant_temas_sonra": {
+   "ust": 43,
+   "alt": 402
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "UST BANT: x714-756 orman ici stabilize yol - agac golgesinde ama HAM'da cakil dokusu OKUNUYOR (sartname 0 golge kurali), ve y=76..132 arasinda ZATEN SINIF 0 etiketli yolun dogrudan yukari devami (kenarlari olculdu: sol 718-722, sag 760-769) -> SINIF 0. x520-600 ve x800-840 sik agac tepe ortusu, zemin hic gorunmuyor -> SINIF 1 (sartname 4). Bandin geri kalani zaten SINIF 1 idi.",
+  "guven": "orta-yuksek",
+  "bant_yeterli_once": {
+   "ust": false,
+   "alt": true
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822172613_0038_d__frame_000114_000004590": {
+  "kare": "dji_20260822172613_0038_d__frame_000114_000004590",
+  "saniye": 0.09,
+  "degisen_piksel": 5792,
+  "once": {
+   "etiketsiz": 257775,
+   "sinif0": 8788,
+   "sinif1": 251837
+  },
+  "sonra": {
+   "etiketsiz": 251983,
+   "sinif0": 8788,
+   "sinif1": 257629
+  },
+  "bant_temas_once": {
+   "ust": 0,
+   "alt": 226
+  },
+  "bant_temas_sonra": {
+   "ust": 0,
+   "alt": 226
+  },
+  "bant_yeterli_sonra": {
+   "ust": false,
+   "alt": true
+  },
+  "hukum_gerekce": "UST BANT: KARAR VERILEMEDI, bant temasi SAGLANAMADI. x0-236 sik cali/agac tepe ortusu, zemin hic gorunmuyor -> SINIF 1 (sartname 4). x236-580 boylu ot/mera: HAM 3840'ta ot bicaklari tek tek cozuluyor ama ALTINDAKI ZEMIN HIC OKUNMUYOR; sartname 6 geregi ETIKETSIZ birakildi - 'kare gecsin' diye SINIF 0 YAZILMADI. x580-960 zaten SINIF 1. Bu karenin ust bandinda surulebilir oldugu KANITLANABILIR hicbir yuzey yok.",
+  "guven": "orta-yuksek",
+  "bant_yeterli_once": {
+   "ust": false,
+   "alt": true
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822172613_0038_d__frame_000200_000007410": {
+  "kare": "dji_20260822172613_0038_d__frame_000200_000007410",
+  "saniye": 0.08,
+  "degisen_piksel": 2309,
+  "once": {
+   "etiketsiz": 332787,
+   "sinif0": 86498,
+   "sinif1": 99115
+  },
+  "sonra": {
+   "etiketsiz": 330478,
+   "sinif0": 86498,
+   "sinif1": 101424
+  },
+  "bant_temas_once": {
+   "ust": 0,
+   "alt": 429
+  },
+  "bant_temas_sonra": {
+   "ust": 0,
+   "alt": 429
+  },
+  "bant_yeterli_sonra": {
+   "ust": false,
+   "alt": true
+  },
+  "hukum_gerekce": "UST BANT: KARAR VERILEMEDI, bant temasi SAGLANAMADI. x62-116 beton kapli ark/su oluğu - yol seviyesine inen cizgisel yapi, TANINIYOR -> SINIF 1 (sartname 2 ve 3). x116-500 sik yesil cali (buyuk kismi zaten SINIF 1). x500-960 kuru cali ortulu YARMA SEVI: sartname 9'un aradigi gorunur ipuclari VAR (capraz erozyon/oluk cizgileri, ortude ani kesinti, alttaki yolun yarma kenari) -> egimli sayildi, SINIF 0 YAZILMADI, ETIKETSIZ birakildi. Alt banttaki asfalt yol zaten SINIF 0.",
+  "guven": "orta-yuksek",
+  "bant_yeterli_once": {
+   "ust": false,
+   "alt": true
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822172613_0038_d__frame_000217_000007950": {
+  "kare": "dji_20260822172613_0038_d__frame_000217_000007950",
+  "saniye": 0.08,
+  "degisen_piksel": 15910,
+  "once": {
+   "etiketsiz": 395309,
+   "sinif0": 98430,
+   "sinif1": 24661
+  },
+  "sonra": {
+   "etiketsiz": 379399,
+   "sinif0": 114340,
+   "sinif1": 24661
+  },
+  "bant_temas_once": {
+   "ust": 0,
+   "alt": 289
+  },
+  "bant_temas_sonra": {
+   "ust": 370,
+   "alt": 289
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "UST BANT (tamami etiketsizdi): x0-150 ve x240-460 makine ile TESVIYE EDILMIS ciplak toprak platform - HAM'da y=0'dan y=330'a kadar KESINTISIZ ayni doku, erozyon oluğu/teras kirilmasi/golge kenari YOK, ve asagida (y~300) ZATEN SINIF 0 etiketli yol yuzeyiyle sureklidir; bu yuzden 'duz gorunuyor' cikarimi degil SUREKLILIK kanitiyla -> SINIF 0. x150-240 kesilmis kuru dal yigini, x460-960 tasli/molozlu ve ortude ani kesinti gosteren sev -> ETIKETSIZ birakildi. NOT: x20-60 civarinda olculen birkac tekil tas ~25-30 cm sinirinda; yuzey hukmu korundu ama guven ORTA.",
+  "guven": "orta",
+  "bant_yeterli_once": {
+   "ust": false,
+   "alt": true
+  },
+  "iki_bant_baglantili": false,
+  "baglanti_notu": "UYARI: bantlar sinif0 duzeyinde BAGLI DEGIL - aradaki bolge ETIKETSIZ birakildi (bu turun kapsami disi)"
+ },
+ "dji_20260822173231_0039_d__frame_000112_000006030": {
+  "kare": "dji_20260822173231_0039_d__frame_000112_000006030",
+  "saniye": 0.09,
+  "degisen_piksel": 1753,
+  "once": {
+   "etiketsiz": 443569,
+   "sinif0": 42260,
+   "sinif1": 32571
+  },
+  "sonra": {
+   "etiketsiz": 441816,
+   "sinif0": 44013,
+   "sinif1": 32571
+  },
+  "bant_temas_once": {
+   "ust": 80,
+   "alt": 99
+  },
+  "bant_temas_sonra": {
+   "ust": 91,
+   "alt": 120
+  },
+  "bant_yeterli_sonra": {
+   "ust": true,
+   "alt": true
+  },
+  "hukum_gerekce": "ZATEN_YETER (iki bant da geciyordu). ALT BANT x120-230 ve UST BANT x232-322: cakil koy yolunun bant icindeki temiz yuzeyi - her iki bantta da mevcut SINIF 0 lekesinin dogrudan devami, kenarlara tamamlandi -> SINIF 0. BAKILDI AMA 0 BIRAKILDI: x340-960 tesviye dolgu alani DERIN PALET OLUKLARI ve gevsek tas serpintisiyle kapli; oluk derinligi IKA'nin 7 cm karin bosluguna gore okunamiyor -> ETIKETSIZ. x0-115 agac dizisi ve golgesi (bir kismi zaten SINIF 1) -> dokunulmadi.",
+  "guven": "yuksek",
+  "bant_yeterli_once": {
+   "ust": true,
+   "alt": true
+  },
+  "iki_bant_baglantili": true,
+  "baglanti_notu": "ust ve alt bant AYNI sinif0 bileseninde"
+ }
+}

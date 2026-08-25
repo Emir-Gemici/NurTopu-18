@@ -1,0 +1,389 @@
+{
+ "_ne": "BANT TAMAMLAMA grubu B — hedefli; yalniz ETIKETSIZ(0) piksellere yazildi",
+ "_bant": "bant yuksekligi 43 px @540; ust [0,43) alt [497,540)",
+ "_temas": "temas = bant icinde deger 1 (SINIF 0) iceren benzersiz x sutunu; gereken = ceil(960*0.02) = 20",
+ "_saniye": "saniye alanlari inceleme suresinin ajan tahminidir, sayacla olculmedi",
+ "kareler": [
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000082_000003120",
+   "saniye": 150,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 274083,
+    "sinif0": 130858,
+    "sinif1": 113459
+   },
+   "sonra": {
+    "etiketsiz": 274083,
+    "sinif0": 130858,
+    "sinif1": 113459
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 0,
+    "alt": 754
+   },
+   "bant_temas_sonra": {
+    "ust": 0,
+    "alt": 754
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": false,
+    "alt": true
+   },
+   "bant_yeter_sonra": {
+    "ust": false,
+    "alt": true
+   },
+   "hukum_gerekce": "UST BANT: bandin tamami sarilmis silaj balyasi sirasi (ham 3840'ta incelendi; balya capi ~100-140 px @960, 25 cm esiginin cok ustunde). Madde (10)/(2) geregi zaten SINIF 1 etiketli (%99,77). Etiketsiz kalan %0,23 dagilmis kirintidir. Bantta surulebilir zemin YOK; kare bant tamamlamasiyla kurtarilamaz. Degisiklik yapilmadi.",
+   "guven": 0.85
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000142_000005790",
+   "saniye": 210,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 334754,
+    "sinif0": 53836,
+    "sinif1": 129810
+   },
+   "sonra": {
+    "etiketsiz": 334754,
+    "sinif0": 53836,
+    "sinif1": 129810
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 0,
+    "alt": 102
+   },
+   "bant_temas_sonra": {
+    "ust": 0,
+    "alt": 102
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": false,
+    "alt": true
+   },
+   "bant_yeter_sonra": {
+    "ust": false,
+    "alt": true
+   },
+   "hukum_gerekce": "UST BANT: x0-250 ayakta kuru cali/ot ortusu, 2x buyutmede zemin OKUNMUYOR -> madde (6) geregi 0 birakildi. x250-480 golge + yesil servi/ardic agaclari, x480-700 agac + silaj balyalari, x700-960 kuru cali + balya. Bandin hicbir yerinde okunabilir surulebilir zemin yok. Degisiklik yapilmadi.",
+   "guven": 0.7
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000157_000006240",
+   "saniye": 430,
+   "degisen_piksel": 25800,
+   "once": {
+    "etiketsiz": 439438,
+    "sinif0": 49200,
+    "sinif1": 29762
+   },
+   "sonra": {
+    "etiketsiz": 413638,
+    "sinif0": 75000,
+    "sinif1": 29762
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 191,
+    "alt": 0
+   },
+   "bant_temas_sonra": {
+    "ust": 191,
+    "alt": 300
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": true,
+    "alt": false
+   },
+   "bant_yeter_sonra": {
+    "ust": true,
+    "alt": true
+   },
+   "hukum_gerekce": "ALT BANT: x0-300 otlatilmis kisa mera; 2x buyutmede zemin okunuyor (toprak lekeleri gorunur), uzerinde soluk capraz bicme/arac izleri ve x248-272'de asinmis ciplak patika var -> madde (9)'un aradigi gorunur ipucu mevcut, madde (6) 'zemin okunuyor' -> SINIF 0. Icindeki ~50x60 cm beyaz plastik ortu madde (10) -> SINIF 1. x300-330 gergin kablo + balya sirasi, x330-430 balya (zaten SINIF 1), x430-700 moloz/tas yuzey (taslar 11-22 cm ama yuzey duzensiz, KARAR VERILEMEDI -> 0), x700-960 sik ayakta kuru ot, zemin okunmuyor -> 0.",
+   "guven": 0.8
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000237_000009060",
+   "saniye": 390,
+   "degisen_piksel": 159853,
+   "once": {
+    "etiketsiz": 442661,
+    "sinif0": 50213,
+    "sinif1": 25526
+   },
+   "sonra": {
+    "etiketsiz": 282808,
+    "sinif0": 200113,
+    "sinif1": 35479
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "neden": "BANT+SEYREK",
+   "bant_temas_once": {
+    "ust": 0,
+    "alt": 397
+   },
+   "bant_temas_sonra": {
+    "ust": 450,
+    "alt": 397
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": false,
+    "alt": true
+   },
+   "bant_yeter_sonra": {
+    "ust": true,
+    "alt": true
+   },
+   "hukum_gerekce": "UST BANT: x30-480 is makinesi paletli/lastikli izleriyle dolu sikistirilmis tesviye zemin — madde (9)'un aradigi 'makine izleri' ipucu birebir mevcut, tas boyutlari <25 cm -> SINIF 0. x480-630 karisik tasli gecis, KARAR VERILEMEDI -> 0. x630-850 kirmizi toprak+tas siriti; icinde ~38 cm beyaz kaya ve 25-33 cm bloklar var, madde (5) >25 cm -> SINIF 1. x855-960 zaten SINIF 1 (toprak yigini). +SEYREK: kare govdesindeki ayni paletli tesviye alan (x300-700, y86-400) ham cozunurlukte dogrulandi -> SINIF 0. Yol kenarindaki moloz/kuru ot seridi ve sagdaki tas yiginlari 0 birakildi.",
+   "guven": 0.85
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000021_000001500",
+   "saniye": 270,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 325133,
+    "sinif0": 0,
+    "sinif1": 193267
+   },
+   "sonra": {
+    "etiketsiz": 325133,
+    "sinif0": 0,
+    "sinif1": 193267
+   },
+   "eksik_taraf": [
+    "alt",
+    "ust"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 0,
+    "alt": 0
+   },
+   "bant_temas_sonra": {
+    "ust": 0,
+    "alt": 0
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": false,
+    "alt": false
+   },
+   "bant_yeter_sonra": {
+    "ust": false,
+    "alt": false
+   },
+   "hukum_gerekce": "UST BANT: x0-240 ayakta yari-kuru ot/yabani ortu, zemin okunmuyor -> madde (6) 0. x240-460 taze riper/pulluk gecmis parcali toprak; kesekler 13-30 cm, IKA'nin 7 cm karin bosluguyla girip cikabilecegi TEK KAREDEN belirlenemedi -> 0. x480-960 sik cali/agac ortusu -> 0. ALT BANT: x0-240 moloz + beyaz plastik atik + ot karisimi; x240-480 sik kuru ortu (zemin yok); x480-620 cali, x620-700 KOYU SU (zaten SINIF 1); x700-960 kuru cali. Iki bantta da hukum verilebilir surulebilir zemin YOK. Degisiklik yapilmadi.",
+   "guven": 0.65
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550",
+   "saniye": 340,
+   "degisen_piksel": 3850,
+   "once": {
+    "etiketsiz": 404231,
+    "sinif0": 56937,
+    "sinif1": 57232
+   },
+   "sonra": {
+    "etiketsiz": 400381,
+    "sinif0": 60787,
+    "sinif1": 57232
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 141,
+    "alt": 0
+   },
+   "bant_temas_sonra": {
+    "ust": 141,
+    "alt": 55
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": true,
+    "alt": false
+   },
+   "bant_yeter_sonra": {
+    "ust": true,
+    "alt": true
+   },
+   "hukum_gerekce": "ALT BANT: x398-453 asinmis, ciplak, sikismis toprak yamasi — 5x buyutmede zemin dogrudan okunuyor, >=25 cm engel yok, yama suregen olarak banda iniyor (yipranma pozitif gecis ipucu) -> SINIF 0, guven ORTA. x0-240 sik yesil cali (zaten SINIF 1), x240-395 cali + kuru ot, x455-720 ayakta kuru ot: zemin okunmuyor -> madde (6) 0; x500-600'de cali golgesi. x720-960 sik cali. Cakil yol (SINIF 0) alt banda GIRMIYOR, kareyi solundan terk ediyor.",
+   "guven": 0.65
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380",
+   "saniye": 170,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 60743,
+    "sinif0": 60367,
+    "sinif1": 397290
+   },
+   "sonra": {
+    "etiketsiz": 60743,
+    "sinif0": 60367,
+    "sinif1": 397290
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 0,
+    "alt": 398
+   },
+   "bant_temas_sonra": {
+    "ust": 0,
+    "alt": 398
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": false,
+    "alt": true
+   },
+   "bant_yeter_sonra": {
+    "ust": false,
+    "alt": true
+   },
+   "hukum_gerekce": "UST BANT: x240-960 sik meyve bahcesi/agac tepesi — zaten SINIF 1. Etiketsiz kalan x0-240 bir avlu: boyuna kalkmis yabani ot (zemin okunmuyor -> madde 6) ve icinde YESIL METAL BORU (x~140-172) ile iki buyuk BEYAZ SAC LEVHA (x~107-167 ve x~19-54) duruyor; bunlar madde (2)/(10) geregi gecilemez, ama aralarindaki zemin okunamadigi icin bant hukumsuz kaldi. Surulebilir zemin YOK. Kutu konumlarinin piksel dogrulugundan emin olmadigim icin isaretleme YAZILMADI.",
+   "guven": 0.8
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320",
+   "saniye": 180,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 240092,
+    "sinif0": 232298,
+    "sinif1": 46010
+   },
+   "sonra": {
+    "etiketsiz": 240092,
+    "sinif0": 232298,
+    "sinif1": 46010
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 0,
+    "alt": 879
+   },
+   "bant_temas_sonra": {
+    "ust": 0,
+    "alt": 879
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": false,
+    "alt": true
+   },
+   "bant_yeter_sonra": {
+    "ust": false,
+    "alt": true
+   },
+   "hukum_gerekce": "UST BANT: x0-250 sik odunsu kuru cali/cirpi (dal yapisi gorunuyor, zemin yok), x250-450 kuru cali + yesil cam agaci, x480-720 yol yarmasinin USTUNDEKI dik kuru ot sevesi — madde (9) gorunur ipucu (yarma kenari, ortude ani kesinti) egimi isaret ediyor, 'duz gorunuyor' diye SINIF 0 yazilmadi -> 0. x720-960 celik kafes koprü/konveyor (zaten SINIF 1). Surulebilir zemin YOK. Degisiklik yapilmadi.",
+   "guven": 0.8
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620",
+   "saniye": 210,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 405602,
+    "sinif0": 69673,
+    "sinif1": 43125
+   },
+   "sonra": {
+    "etiketsiz": 405602,
+    "sinif0": 69673,
+    "sinif1": 43125
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "neden": "BANT",
+   "bant_temas_once": {
+    "ust": 142,
+    "alt": 0
+   },
+   "bant_temas_sonra": {
+    "ust": 142,
+    "alt": 0
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": true,
+    "alt": false
+   },
+   "bant_yeter_sonra": {
+    "ust": true,
+    "alt": false
+   },
+   "hukum_gerekce": "ALT BANT: asfalt yol ve beton kanal 4x buyutmede olculdu — bant cizgisinin (y=497) USTUNDE kaliyor, alt banda GIRMIYOR. Bandin tamami yol yarmasinin ALTINDAKI tasli kuru ot sevesi: 25 cm ustu tekil kayalar (x200-240, x395-420) ve x570-660'ta buyuk cam/cali var; madde (9) ipucu (yarma, istinat duvari, kaya dizisi) egimi isaret ediyor. x720-960 sik yesil cali. Surulebilir zemin YOK. Degisiklik yapilmadi.",
+   "guven": 0.75
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250",
+   "saniye": 160,
+   "degisen_piksel": 0,
+   "once": {
+    "etiketsiz": 454681,
+    "sinif0": 36634,
+    "sinif1": 27085
+   },
+   "sonra": {
+    "etiketsiz": 454681,
+    "sinif0": 36634,
+    "sinif1": 27085
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "neden": "BANT+SEYREK",
+   "bant_temas_once": {
+    "ust": 652,
+    "alt": 0
+   },
+   "bant_temas_sonra": {
+    "ust": 652,
+    "alt": 0
+   },
+   "bant_temas_gereken": 20,
+   "bant_yeter_once": {
+    "ust": true,
+    "alt": false
+   },
+   "bant_yeter_sonra": {
+    "ust": true,
+    "alt": false
+   },
+   "hukum_gerekce": "ALT BANT: x0-480 kesilmis dal/cirpi yiginlari + bodur cali — dagilmis odunsu artik; madde (4) gecilemez ortu egilimli ama dagilimi duzensiz, hukum verilemedi -> 0. x480-720 sik yesil cali (buyuk kismi zaten SINIF 1). x720-960 ciplak asinmis toprak SET/seve; erozyon kenari belirgin -> madde (9) egim ipucu var, SINIF 0 YAZILMADI. +SEYREK: kare govdesi genc agac + kutuk dolu temizlenmis yamac, erozyon oluklari gorunur; ust bant zaten SINIF 0 etiketli. Alt bantta surulebilir zemin YOK. Degisiklik yapilmadi.",
+   "guven": 0.7
+  }
+ ]
+}
