@@ -38,8 +38,39 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "codes"))     # get_masks, analyze_path, draw_masks, generate_ika_map
 
 from karar_sozlesmesi import rota_guven_reddi
+from model_registry import DEFAULT_REGISTRY, ModelRegistryError, load_registry
 
-DEFAULT_MODEL = ROOT / "models" / "navitas_seg_v2_best.pt"
+
+def varsayilan_model_yolu(kayit=None):
+    """Varsayılan ağırlık — `config/model_registry.json` etkin profilinin `path`'i.
+
+    KUSUR (S9): burası `models/navitas_seg_v2_best.pt` diye ÇIPLAK yazılıydı
+    (anayasa madde 16). Hakem günlüğü (`hakem_log._model_kunyesi`) künyeyi kayıt
+    defterinden türetiyordu → hakem, KOŞULMAYAN modelin adını görüyordu (defter v35
+    derken burada v2 yükleniyordu). Artık iki uç da BU fonksiyondan okur; defter
+    çevrilince ikisi birlikte döner, biri çevrilip diğeri unutulamaz.
+
+    Fail-closed: defter yoksa/bozuksa/profil yoksa ad UYDURULMAZ
+    (`comms/yks_gui.py::_kayit_profili` deseni). `kayit` yalnız sınama içindir
+    (geçici defter kopyası); üretimde verilmez. Yol depo köküne görelidir —
+    `codes/model_registry.py::resolve_model` ile aynı çözümleme.
+    """
+    defter = Path(kayit) if kayit is not None else DEFAULT_REGISTRY
+    try:
+        veri = load_registry(defter)
+        profil = veri["profiles"][veri["default_profile"]]
+        yol = profil["path"]
+    except (ModelRegistryError, KeyError, TypeError) as exc:
+        raise RuntimeError(
+            f"Üretim model kayıt defteri okunamadı ({defter}); İHA algısı hangi "
+            "ağırlığı yükleyeceğini UYDURMAZ.") from exc
+    if not str(yol).endswith(".pt"):
+        raise RuntimeError(
+            f"Kayıt defterindeki etkin profil `.pt` ağırlık göstermiyor: {yol!r}")
+    return ROOT / str(yol)
+
+
+DEFAULT_MODEL = varsayilan_model_yolu()
 OUT_DIR = ROOT / "results" / "iha_algi"
 LABEL = {1: "sol", 2: "orta", 3: "sag"}
 SUPPORTED_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
