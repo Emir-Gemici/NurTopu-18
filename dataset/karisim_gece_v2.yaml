@@ -1,0 +1,19 @@
+# GECE v2 (on kayit: results/gece_20260826/ON_KAYIT.md)
+# Mevcut karisim AYNEN + dji_kirsal_x20 (train x20) + 0038 CIFT konum val.
+# 0038 TEK konum = TEST, hicbir egitim/durdurma kararinda YOK.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_t127\images\train
+  - O:\navitas\dataset\dji_kirsal_x20\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_t127\images\val
+  - O:\navitas\dataset\dji_kirsal_0038_bolum\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

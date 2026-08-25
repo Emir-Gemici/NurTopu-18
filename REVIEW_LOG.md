@@ -21285,6 +21285,7 @@ anlamlıdır; (b) için aday değil **prosedür** gerekir.
 ---
 
 ### D-278 · ✅ T141 · (b) senaryosunun cevabı yordama YAZILDI ve **koşularak** kilitlendi — ve kullanıcının verdiği iş **zaten yapılmıştı**: "t122ac'yi temiz bölümle yeniden seç" = **v35'in kendisi**
+> ✅ **KAPANDI — 2026-08-26.** Codex bağımsız denetimi GEÇTİ (`results/codex_denetim/rapor.md`); kapanış kullanıcı yetkisiyle, ayrıntı **D-285 §1**.
 
 - **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
   (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-22 · görev **T141**.
@@ -21839,3 +21840,44 @@ D-85/D-86: tavan 0,67'ye, *"gerçek arena karesi 0,579 ile geçsin"* diye **yük
 - 8 görev **açık kaldı**; her birine `🔴 VEKİL KAPATMA REDDİ · D-284` satırı ve gömülen kusur yazıldı.
 - Yeni görev: **T142** (D-283, eşik), **T143** (T18: `.engine` kayıt reddi + sessiz kamera bitişi — 30 Eylül sahası), **T144** (T116: `len(l)` kırpması).
 - **Süreç dersi (vekâlet kapanışına):** triyaj → kapatma zinciri **iki turlu** olmak zorunda; tek ajanın "zaten yapılmış" hükmü %80 yanlış çıktı. Bu D-252'nin (defter-önce-ara) gerektirdiği okumanın *derinliği* meselesi: görev başlığını değil **iddiasını** aramak.
+
+---
+
+### D-285 · ✅ CODEX BAĞIMSIZ DENETİMİ İŞLENDİ · D-278 **KAPANDI** · D-279…D-282 **KISMEN → düzeltmeler burada** · ve Codex'in de görmediği bir reçete kusuru: dji_kirsal_v1 **lr0 0,01 ile koşmuş** (t127: 0,001)
+
+**Yazan:** Claude 2 (mimar vekili 2 — kullanıcı 2026-08-26: *"bugünlük başamele de mimar da sensin"*).
+**Denetçi:** Codex (farklı model, `results/codex_denetim/rapor.md`, HEAD 020aaec) — her hükmünde koşulan komut ve ham sayı var; §3 yordamının şartı sağlandı.
+**Ham çıktı:** `results/codex_denetim/bagimsiz_sayim.json`, `d280/`, `d282/`.
+
+#### 1. D-278 — GEÇTİ → **KAPANDI** (kullanıcı yetkisi, vekâlet §3)
+Codex mutasyon tablosunu (POZİTİF 0/7 · M1 1/7 · M2 0/7 · M2' 1/7 · M3 3/7 · M3b 1/7 · geri alındı 0/7, bayt-eş) ve 7+3 testi yeniden üretti; üç koruma noktasını kaynakta buldu (`ika_nav.py:347/:383/:244-256`). İki **kapsam notu** kayda geçer, iddiayı çürütmez:
+- `navigate` API'sinde callback'ler varsayılan `None` — koruma **üretimde bağlı iki çağrı yolu** için kanıtlıdır, keyfi dış çağrı için değil.
+- `129_t141_mutasyon_olcumu.py` desen bulamazsa yine 0 döner — **tek başına CI kapısı değildir**; davranış unittest'i kapıdır.
+
+#### 2. D-279 — KISMEN → düzeltme
+- 5,1 kare/saat **yalnız 14/24 zamanlı kare** üzerinden; 10 `null` süre B/C'nin önceki oturumlarından (rastgele eksik DEĞİL). Başlık *"14 zamanlı karelik pilot alt kümesi"* koşuluyla okunur; en yavaş/en hızlı arası **26,9 kat** — ortalama kuyruğu temsil etmiyor.
+- Paralel cebir 7,168 kare/saat → 27,90 saat: kayıttaki 7,2/27,8 doğru yuvarlama; duvar saati damgası olmadığı için **ÖLÇÜLEMEDİ** olarak kalır.
+- F4 maskelerini baştan üreten tek betik yok → üretici yeniden koşumu **ÖLÇÜLEMEDİ** (D-180).
+
+#### 3. D-280 — KISMEN → düzeltme: *"maske kazanan 6 kare rotaya dönüşmedi"* cümlesi kare düzeyinde **YANLIŞ**
+Codex'in geçiş matrisi (aynı 59 kare):
+```text
+v35 MASKE_YOK -> aday MASKE_YOK 24 · ROTA 2 · UC_BANT 9
+v35 ROTA      -> aday MASKE_YOK  2 · ROTA 6 · UC_BANT 3
+v35 UC_BANT   -> aday MASKE_YOK  3 · ROTA 2 · UC_BANT 8
+```
+35→29 **net** farktır: 11 kare maskesizlikten çıktı (2'si rota kazandı), 5 kare maskesizliğe **geriledi**; eski rotalardan 3'ü düştü, eski UC_BANT'lardan 2'si rota kazandı. **Yüksek churn** var; "altı tekil kare, hiçbiri rotaya dönmedi" hikâyesi çürüdü. Sayısal sonuçlar (K0–K5, 2,6×, kaplama −12,47 puan) **doğru**.
+🔴 **Codex'in görmediği, benim bu gece bulduğum:** `135_dji_kirsal_zincir.py` `adim4_egit` t127 `args.yaml`'dan **yalnız** epochs/imgsz/batch/seed/deterministic/patience geçiriyor; `lr0` ve `warmup_epochs` geçmiyor → koşum **lr0 0,01 · warmup 3** (t127: **0,001 · 5**). D-280 §4'teki *"reçete t127'den aynen"* cümlesi **yanlıştır**; aday 10× yüksek öğrenme hızıyla koşmuş, "best = epoch 1" bunun da izi olabilir. Ayrıca dji payı eğitimde **101/12.849 = %0,8** ve val'de dji **yok** → erken durdurma kırsalı hiç ölçmedi. Bu iki kusur `139_gece_egitim.py`'de düzeltildi (ön kayıt `results/gece_20260826/ON_KAYIT.md`).
+
+#### 4. D-281 — KISMEN → düzeltme
+- Açı süpürmesinin tamamı **−6…+5** (10°'de −6, 60°'de −1, dört açıda 0); 30/40/90/120/160'ı seçip *"+3…+5"* demek **in-sample seçimdir**. Ön kayıtlı açı politikası yoktu → *"net +3…+5"* cümlesi **"seçilmiş açılarda +3…+5, tüm süpürmede −6…+5"** diye okunur.
+- Döndürme, gerçek uçuş yönünün nedensel karşı-olgusu **değildir** (interpolasyon, topoloji, kadraja girecek yeni içerik ayrılmadı). *"%5–8 saha kazancı"* **kanıtlanmamıştır**; yönelim **güçlü birliktelik + aday müdahale**dir. Bu gece S2 olarak **ön kayıtla** sınanıyor.
+- *"7 kare hiçbir eksende geçmiyor"* kapsamı: hamda hiç GEÇER olmayan 11 kare; 2 `SINIF0_YOK` çıkınca 9; **7 yalnız `en_iyi=PARCALILIK` alt kümesidir**.
+
+#### 5. D-282 — KISMEN → düzeltme
+- **Tablo hatası:** *"BAKIR 0038 (60 kare): GECER 29→29"* **yanlış**; etki JSON'unda 0038 **59 kare, GECER 28→28**. Düzeltilmiş satır budur.
+- *"Kümede gürültü olmadığı kanıtlandı"* → **"bu kümede bu dört bayrak görülmedi"**. Codex karşı örneği mekanik üretti: gözle okunamayacak kadar **karanlık + gürültülü** kare dört bayrağın hepsinden **geçiyor** (gürültü Laplacian keskinliği yükseltiyor; parlaklık **alt sınırı yok**). `138`'in bu deliği açıktır → **T145**.
+- *"Etiket kapsamı bağlayıcı değil / daha fazla etiketleme önerilmez"* **fazla güçlü**: yalnız uç bantlar tamamlandı; iç bağlantı/bütün kapsam tamamlanmadı; D-281'in kural-kaldırma deneyi 160 maskede yeniden koşulmadı. Kanıtlı olan **"bant tamamlama +1 getirdi"**dir.
+
+#### 6. Sonuç
+D-278 kapalı. D-279…D-282 **bu kayıtla düzeltilmiş sayılır**; orijinal metinler silinmedi (defter kuralı), düzeltmeler burada. Yeni görev: **T145** (kare uygunluk denetçisine parlaklık alt sınırı + gürültü sınaması; mutasyon: Codex'in karanlık+gürültü karşı örneği DÜŞMELİ).
