@@ -1,0 +1,86 @@
+{
+ "_ne": "F5 OLCUM TURU — ayni kareler, UC DURUMLU + IKI SINIF. F4 ile ESLESTIRMELI kiyas.",
+ "_neden": "F4'un 708 sn/kare degeri YALNIZ sinif 1'in maliyetiydi; sinif 0'in ek maliyeti OLCULMEDI.",
+ "_yontem": "F4'te suresi olculen 14 kareden sure ekseninde esit arali 12 kare; ayni kare -> kare zorlugu DEGISKEN OLMAKTAN CIKAR.",
+ "_on_kayit": "results/dji_20260822/f5_on_kayit.md",
+ "gruplar": {
+  "A": [
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000061_000003510.jpg",
+    "f4_saniye": 3151.9,
+    "f4_sinif1_oran": 0.0794,
+    "f4_grup": "A"
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000034_000001890.jpg",
+    "f4_saniye": 564.0,
+    "f4_sinif1_oran": 0.1787,
+    "f4_grup": "C"
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000198_000007350.jpg",
+    "f4_saniye": 483.0,
+    "f4_sinif1_oran": 0.4908,
+    "f4_grup": "B"
+   },
+   {
+    "dosya": "dji_20260822172613_0038_d/frame_000099_000004140.jpg",
+    "f4_saniye": 117.0,
+    "f4_sinif1_oran": 0.9089,
+    "f4_grup": "A"
+   }
+  ],
+  "B": [
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000086_000003240.jpg",
+    "f4_saniye": 874.0,
+    "f4_sinif1_oran": 0.131,
+    "f4_grup": "B"
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000171_000006780.jpg",
+    "f4_saniye": 575.9,
+    "f4_sinif1_oran": 0.2231,
+    "f4_grup": "A"
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000177_000009930.jpg",
+    "f4_saniye": 458.3,
+    "f4_sinif1_oran": 0.2163,
+    "f4_grup": "A"
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000206_000011790.jpg",
+    "f4_saniye": 246.0,
+    "f4_sinif1_oran": 0.05559,
+    "f4_grup": "C"
+   }
+  ],
+  "C": [
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000214_000008370.jpg",
+    "f4_saniye": 817.2,
+    "f4_sinif1_oran": 0.0535,
+    "f4_grup": "A"
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000090_000005040.jpg",
+    "f4_saniye": 747.0,
+    "f4_sinif1_oran": 0.2766,
+    "f4_grup": "A"
+   },
+   {
+    "dosya": "dji_20260822173231_0039_d/frame_000148_000008070.jpg",
+    "f4_saniye": 383.0,
+    "f4_sinif1_oran": 0.0797,
+    "f4_grup": "C"
+   },
+   {
+    "dosya": "dji_20260822170832_0037_d/frame_000044_000001470.jpg",
+    "f4_saniye": 329.0,
+    "f4_sinif1_oran": 0.11161,
+    "f4_grup": "C"
+   }
+  ]
+ }
+}
