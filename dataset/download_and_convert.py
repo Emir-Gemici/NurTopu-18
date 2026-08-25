@@ -96,11 +96,41 @@ def mask_to_yolo_polygons(mask: np.ndarray, class_id: int, min_area: int = MIN_A
     return lines
 
 
+def poligon_alani(line: str, img_size: int = IMG_SIZE) -> float:
+    """YOLO seg satiri -> piksel alani (cv2.contourArea, normalize koordinat x img_size)."""
+    parca = line.split()
+    pts = np.array(parca[1:], dtype=float).reshape(-1, 2) * img_size
+    return float(cv2.contourArea(pts.astype(np.float32)))
+
+
+def alana_gore_kirp(lines, tavan: int, img_size: int = IMG_SIZE):
+    """En buyuk ALANLI `tavan` poligonu tut (T144). Kirpma sayimini da dondurur.
+
+    Dondurur: (tutulan_satirlar, {"asti", "toplam_alan", "atilan_alan", "atilan_poligon"})
+    """
+    alanli = sorted(((poligon_alani(l, img_size), l) for l in lines),
+                    key=lambda t: t[0], reverse=True)
+    tutulan = alanli[:tavan]
+    atilan = alanli[tavan:]
+    kayit = {
+        "asti": bool(atilan),
+        "toplam_alan": sum(a for a, _ in alanli),
+        "atilan_alan": sum(a for a, _ in atilan),
+        "atilan_poligon": len(atilan),
+    }
+    return [l for _, l in tutulan], kayit
+
+
 def process_split(dataset_split, split_name: str, img_dir: Path, lbl_dir: Path):
     img_dir.mkdir(parents=True, exist_ok=True)
     lbl_dir.mkdir(parents=True, exist_ok=True)
 
     stats = {"total": 0, "skipped": 0, "road_instances": 0, "blocked_instances": 0}
+    for onek in ("road", "blocked"):
+        stats[f"{onek}_alan_px"] = 0.0
+        stats[f"{onek}_tavan_asan"] = 0
+        stats[f"{onek}_atilan_alan_px"] = 0.0
+        stats[f"{onek}_atilan_poligon"] = 0
 
     for i, sample in enumerate(tqdm(dataset_split, desc=split_name)):
         img = sample["image"]         # PIL.Image RGB
@@ -118,9 +148,17 @@ def process_split(dataset_split, split_name: str, img_dir: Path, lbl_dir: Path):
         road_lines = mask_to_yolo_polygons(road_mask, class_id=0)
         blocked_lines = mask_to_yolo_polygons(blocked_mask, class_id=1)
 
-        # Çok fazla instance varsa en büyükleri al
-        road_lines = sorted(road_lines, key=lambda l: len(l), reverse=True)[:MAX_POLYGONS]
-        blocked_lines = sorted(blocked_lines, key=lambda l: len(l), reverse=True)[:MAX_POLYGONS // 2]
+        # T144 (D-284): tavan ALAN sirali — 41_cok_sinifli_veri ile ayni semantik.
+        # Eski `len(l)` (satir uzunlugu = kose sayisi) sirasi, asan maskelerde
+        # engel alaninin %32-38'ini, en kotusunde %90'ini atiyordu.
+        road_lines, r_k = alana_gore_kirp(road_lines, MAX_POLYGONS)
+        blocked_lines, b_k = alana_gore_kirp(blocked_lines, MAX_POLYGONS // 2)
+        for onek, k in (("road", r_k), ("blocked", b_k)):
+            stats[f"{onek}_alan_px"] += k["toplam_alan"]
+            if k["asti"]:
+                stats[f"{onek}_tavan_asan"] += 1
+                stats[f"{onek}_atilan_alan_px"] += k["atilan_alan"]
+                stats[f"{onek}_atilan_poligon"] += k["atilan_poligon"]
 
         all_lines = road_lines + blocked_lines
 
@@ -202,6 +240,13 @@ def main():
         stats = process_split(split_data, split_name, img_dir, lbl_dir)
         total_stats[split_name] = stats
         print(f"\n{split_name}: {stats}")
+        for onek in ("road", "blocked"):
+            top = stats[f"{onek}_alan_px"]
+            at = stats[f"{onek}_atilan_alan_px"]
+            print(f"  T144 tavan kirpmasi [{onek}]: tavani asan maske "
+                  f"{stats[f'{onek}_tavan_asan']}/{stats['total']}, atilan poligon "
+                  f"{stats[f'{onek}_atilan_poligon']}, atilan alan {at:.0f} px "
+                  f"(%{100.0 * at / top if top else 0.0:.2f} of {top:.0f} px)")
 
     write_yaml(OUTPUT_DIR)
 

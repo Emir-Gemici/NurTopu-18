@@ -1,0 +1,314 @@
+{
+ "train": {
+  "maske": 3595,
+  "road": {
+   "asan": 0,
+   "toplam_alan_asan": 0.0,
+   "atilan_len": 0.0,
+   "atilan_alan": 0.0,
+   "etiket_degisen": 0,
+   "en_kotu": null,
+   "asanlar": [],
+   "atilan_len_oran": 0.0,
+   "atilan_alan_oran": 0.0,
+   "ters_sira_sayisi": 0
+  },
+  "blocked": {
+   "asan": 21,
+   "toplam_alan_asan": 1465579.0005101878,
+   "atilan_len": 462617.229827117,
+   "atilan_alan": 16473.979588729926,
+   "etiket_degisen": 21,
+   "en_kotu": {
+    "dosya": "13077_lab.png",
+    "oran": 0.9041816551714146,
+    "toplam": 94997.46491179493,
+    "atilan_len": 85894.96506103512,
+    "atilan_alan": 1523.4995879650814
+   },
+   "asanlar": [
+    {
+     "dosya": "10789_lab.png",
+     "n": 16,
+     "toplam": 60256.00824211398,
+     "atilan_len": 6939.498653410235,
+     "atilan_alan": 524.9954208019553,
+     "atilan_en_buyuk_len": 6939.498653410235,
+     "tutulan_en_kucuk_len": 524.9954208019553
+    },
+    {
+     "dosya": "10816_lab.png",
+     "n": 18,
+     "toplam": 21503.02299947358,
+     "atilan_len": 9688.51651215432,
+     "atilan_alan": 1295.9888384409714,
+     "atilan_en_buyuk_len": 8673.009867076013,
+     "tutulan_en_kucuk_len": 351.9961167485453
+    },
+    {
+     "dosya": "10853_lab.png",
+     "n": 16,
+     "toplam": 97627.5186990381,
+     "atilan_len": 4625.495174396958,
+     "atilan_alan": 224.4921264667064,
+     "atilan_en_buyuk_len": 4625.495174396958,
+     "tutulan_en_kucuk_len": 224.4921264667064
+    },
+    {
+     "dosya": "10871_lab.png",
+     "n": 25,
+     "toplam": 69683.35256112911,
+     "atilan_len": 59568.35122805559,
+     "atilan_alan": 3220.0091168980744,
+     "atilan_en_buyuk_len": 22388.8846816438,
+     "tutulan_en_kucuk_len": 246.0065919086337
+    },
+    {
+     "dosya": "10872_lab.png",
+     "n": 21,
+     "toplam": 68656.94577766175,
+     "atilan_len": 50839.42896737683,
+     "atilan_alan": 1897.496135772497,
+     "atilan_en_buyuk_len": 21419.94299624824,
+     "tutulan_en_kucuk_len": 215.00089630001457
+    },
+    {
+     "dosya": "10873_lab.png",
+     "n": 17,
+     "toplam": 65727.95191000677,
+     "atilan_len": 28788.002448135754,
+     "atilan_alan": 536.511718666181,
+     "atilan_en_buyuk_len": 20145.020484093402,
+     "tutulan_en_kucuk_len": 221.0068282787688
+    },
+    {
+     "dosya": "10886_lab.png",
+     "n": 16,
+     "toplam": 108084.94879198604,
+     "atilan_len": 9300.972306271025,
+     "atilan_alan": 371.4943389973487,
+     "atilan_en_buyuk_len": 9300.972306271025,
+     "tutulan_en_kucuk_len": 371.4943389973487
+    },
+    {
+     "dosya": "10887_lab.png",
+     "n": 16,
+     "toplam": 105609.0060930578,
+     "atilan_len": 9644.950531071052,
+     "atilan_alan": 328.50070930842776,
+     "atilan_en_buyuk_len": 9644.950531071052,
+     "tutulan_en_kucuk_len": 328.50070930842776
+    },
+    {
+     "dosya": "10888_lab.png",
+     "n": 17,
+     "toplam": 90516.98090937769,
+     "atilan_len": 19471.52882764925,
+     "atilan_alan": 674.4986953171901,
+     "atilan_en_buyuk_len": 9863.02327346307,
+     "tutulan_en_kucuk_len": 321.4966430272907
+    },
+    {
+     "dosya": "11486_lab.png",
+     "n": 16,
+     "toplam": 28644.499559729207,
+     "atilan_len": 2852.0080814197063,
+     "atilan_alan": 497.503570638597,
+     "atilan_en_buyuk_len": 2852.008081419708,
+     "tutulan_en_kucuk_len": 497.503570638597
+    },
+    {
+     "dosya": "11487_lab.png",
+     "n": 17,
+     "toplam": 43489.02478425038,
+     "atilan_len": 29662.52461041569,
+     "atilan_alan": 964.4952393081039,
+     "atilan_en_buyuk_len": 18536.007331797155,
+     "tutulan_en_kucuk_len": 411.99821473751217
+    },
+    {
+     "dosya": "11662_lab.png",
+     "n": 18,
+     "toplam": 99663.58449131763,
+     "atilan_len": 42913.03863505281,
+     "atilan_alan": 1063.4936556212233,
+     "atilan_en_buyuk_len": 15569.510116632096,
+     "tutulan_en_kucuk_len": 293.9978027269244
+    },
+    {
+     "dosya": "12212_lab.png",
+     "n": 16,
+     "toplam": 40589.02743010358,
+     "atilan_len": 2345.4908604251686,
+     "atilan_alan": 239.00090791343246,
+     "atilan_en_buyuk_len": 2345.4908604251646,
+     "tutulan_en_kucuk_len": 239.00090791343246
+    },
+    {
+     "dosya": "12601_lab.png",
+     "n": 17,
+     "toplam": 49028.551846168084,
+     "atilan_len": 12512.992336357362,
+     "atilan_alan": 669.997732665026,
+     "atilan_en_buyuk_len": 6307.9966736305505,
+     "tutulan_en_kucuk_len": 312.9993193816481
+    },
+    {
+     "dosya": "13075_lab.png",
+     "n": 16,
+     "toplam": 119537.57555089597,
+     "atilan_len": 59786.97595214471,
+     "atilan_alan": 337.5023126969463,
+     "atilan_en_buyuk_len": 59786.97595214471,
+     "tutulan_en_kucuk_len": 337.5023126969463
+    },
+    {
+     "dosya": "13077_lab.png",
+     "n": 20,
+     "toplam": 94997.46491179493,
+     "atilan_len": 85894.96506103512,
+     "atilan_alan": 1523.4995879650814,
+     "atilan_en_buyuk_len": 52773.94752310915,
+     "tutulan_en_kucuk_len": 263.0048219411401
+    },
+    {
+     "dosya": "13875_lab.png",
+     "n": 16,
+     "toplam": 42181.50049490046,
+     "atilan_len": 2221.99521586857,
+     "atilan_alan": 399.9959718666505,
+     "atilan_en_buyuk_len": 2221.99521586857,
+     "tutulan_en_kucuk_len": 399.9959718666505
+    },
+    {
+     "dosya": "15468_lab.png",
+     "n": 16,
+     "toplam": 87801.55903985613,
+     "atilan_len": 4692.012695297599,
+     "atilan_alan": 252.99749745742884,
+     "atilan_en_buyuk_len": 4692.012695297599,
+     "tutulan_en_kucuk_len": 252.99749745742884
+    },
+    {
+     "dosya": "16496_lab.png",
+     "n": 18,
+     "toplam": 85643.49551166706,
+     "atilan_len": 11547.507929943327,
+     "atilan_alan": 938.4992216778919,
+     "atilan_en_buyuk_len": 6128.505473223337,
+     "tutulan_en_kucuk_len": 318.00458511477336
+    },
+    {
+     "dosya": "20429_lab.png",
+     "n": 16,
+     "toplam": 45381.48676915692,
+     "atilan_len": 5680.47772215493,
+     "atilan_alan": 270.50492873380426,
+     "atilan_en_buyuk_len": 5680.47772215493,
+     "tutulan_en_kucuk_len": 270.50492873380426
+    },
+    {
+     "dosya": "20430_lab.png",
+     "n": 16,
+     "toplam": 40955.49413650246,
+     "atilan_len": 3640.4960784809664,
+     "atilan_alan": 242.50186151638627,
+     "atilan_en_buyuk_len": 3640.49607848097,
+     "tutulan_en_kucuk_len": 242.50186151638627
+    }
+   ],
+   "atilan_len_oran": 0.3156549252316482,
+   "atilan_alan_oran": 0.011240594729451712,
+   "ters_sira_sayisi": 21
+  }
+ },
+ "val": {
+  "maske": 449,
+  "road": {
+   "asan": 0,
+   "toplam_alan_asan": 0.0,
+   "atilan_len": 0.0,
+   "atilan_alan": 0.0,
+   "etiket_degisen": 0,
+   "en_kotu": null,
+   "asanlar": [],
+   "atilan_len_oran": 0.0,
+   "atilan_alan_oran": 0.0,
+   "ters_sira_sayisi": 0
+  },
+  "blocked": {
+   "asan": 0,
+   "toplam_alan_asan": 0.0,
+   "atilan_len": 0.0,
+   "atilan_alan": 0.0,
+   "etiket_degisen": 0,
+   "en_kotu": null,
+   "asanlar": [],
+   "atilan_len_oran": 0.0,
+   "atilan_alan_oran": 0.0,
+   "ters_sira_sayisi": 0
+  }
+ },
+ "test": {
+  "maske": 450,
+  "road": {
+   "asan": 0,
+   "toplam_alan_asan": 0.0,
+   "atilan_len": 0.0,
+   "atilan_alan": 0.0,
+   "etiket_degisen": 0,
+   "en_kotu": null,
+   "asanlar": [],
+   "atilan_len_oran": 0.0,
+   "atilan_alan_oran": 0.0,
+   "ters_sira_sayisi": 0
+  },
+  "blocked": {
+   "asan": 3,
+   "toplam_alan_asan": 341455.08077926876,
+   "atilan_len": 130329.99280208522,
+   "atilan_alan": 1761.4973094435409,
+   "etiket_degisen": 3,
+   "en_kotu": {
+    "dosya": "13076_lab.png",
+    "oran": 0.9117852718324427,
+    "toplam": 118585.45048424634,
+    "atilan_len": 108124.46720515122,
+    "atilan_alan": 1026.4967857830343
+   },
+   "asanlar": [
+    {
+     "dosya": "10801_lab.png",
+     "n": 16,
+     "toplam": 129829.07300556208,
+     "atilan_len": 21152.030561921725,
+     "atilan_alan": 346.49719709920464,
+     "atilan_en_buyuk_len": 21152.030561921725,
+     "tutulan_en_kucuk_len": 346.49719709920464
+    },
+    {
+     "dosya": "11661_lab.png",
+     "n": 16,
+     "toplam": 93040.55728946032,
+     "atilan_len": 1053.4950350122817,
+     "atilan_alan": 388.50332656130195,
+     "atilan_en_buyuk_len": 1053.4950350122745,
+     "tutulan_en_kucuk_len": 388.50332656130195
+    },
+    {
+     "dosya": "13076_lab.png",
+     "n": 18,
+     "toplam": 118585.45048424634,
+     "atilan_len": 108124.46720515122,
+     "atilan_alan": 1026.4967857830343,
+     "atilan_en_buyuk_len": 57622.9732704123,
+     "tutulan_en_kucuk_len": 309.99431393743725
+    }
+   ],
+   "atilan_len_oran": 0.3816900088428795,
+   "atilan_alan_oran": 0.005158796599023953,
+   "ters_sira_sayisi": 3
+  }
+ },
+ "_sure_sn": 252.9590983390808
+}
