@@ -1,0 +1,212 @@
+[
+ {
+  "gorev": "T22",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B scripts/saha_kuru_kosu.py --cikti <scratchpad>\\t22_triaj  ·  O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p \"test_saha_kuru_kosu.py\" -q  ·  O:\\navitas\\scripts\\saha_kuru_kosu.py:952-1034 (kosuyu_yap + main: cikis kodu 1/0, ozet.json)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T23",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_saha_kuru_kosu.py -v  ·  O:\\navitas\\tests\\test_saha_kuru_kosu.py:34 (DORT_KOPUKLUK), :185 (MutasyonKanitiTests), :201 (_mutasyonu_dogrula), :247 (DenetimRegresyonTests)  ·  O:\\navitas\\scripts\\saha_kuru_kosu.py:898-903 (metin araması yerine ast.Call)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T1",
+  "kova": "KAPANMALI",
+  "komut": "git log --oneline -S\"_maskeleri_icerige_kirp\" -- codes/rpi_inference.py  →  36ca360 ; git status --porcelain codes/ (bos) ; cd O:/navitas/codes && O:/navitas-local-train/venv/Scripts/python.exe test_accuracy.py --help ; echo $? && O:/navitas-local-train/venv/Scripts/python.exe test_batch.py --help ; echo $?",
+  "cumle": ""
+ },
+ {
+  "gorev": "T2",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p test_ika_no_route_recovery.py -v   ·   simulation/scripts/ika_nav.py:516-528 (NO_ROUTE yalnız yazdırılır, `return` yok; soket sadece 529-532 `finally`de kapanır)   ·   mutasyon betiği: C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\mutasyon_t2.py",
+  "cumle": ""
+ },
+ {
+  "gorev": "T3",
+  "kova": "KAPANMALI",
+  "komut": "codes/test_rota_guvenlik.py:154-195 (`_merkez_tohumu(..., *, icerik)`, pay = (icerik_y1-y0)*0.08, icerik_maskesi ile AND); mutasyon: `O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -c \"import numpy as np; from codes import test_rota_guvenlik as g; gec=np.zeros((896,896),np.uint8); gec[196:700,:]=1; print(bool(g._merkez_tohumu(gec,'alt',3,icerik=(0,0,896,896)).any()), bool(g._merkez_tohumu(gec,'alt',3,icerik=(0,196,896,504)).any()))\"`; regresyon: `O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p \"test_rota_guvenlik_tohum.py\" -q`; arşiv kanıtı: results/costma",
+  "cumle": ""
+ },
+ {
+  "gorev": "T4",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas\\tests\\test_costmap_on_images.py:178 (`elif enj_karar == 0: durum = \"OLCUM_YOK\"`) + :204 `ozet_cikis_kodu` + :329/:411 SystemExit(main()) — ve `cd /o/navitas/tests && \"O:/navitas-local-train/venv/Scripts/python.exe\" -B -c \"import test_costmap_on_images as m; r=[m.KareSonucu(kaynak='s.jpg',tur='foto',kare_no=i,ham_karar_var=True,ham_ihlal=(i<2),ham_min_aciklik_px=0.0 if i<2 else 100.0,enjekte_karar_var=False,enjekte_ihlal=False,enjekte_min_aciklik_px=None,r_gerekli_px=10.0,mpp=0.1) for i in range(6)]; o=m.guvenlik_ozeti(r); print(o['durum'], m.ozet_cikis_kodu(o), o['enjekte_kesisim_di",
+  "cumle": ""
+ },
+ {
+  "gorev": "T5",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -B -m unittest discover -s tests -p test_rpi_letterbox.py -v  ·  codes/karar_sozlesmesi.py:42-54 (serit_no)  ·  codes/rpi_inference.py:1081,1146-1152,1211,1318  ·  codes/rpi_inference.py:1587,1690,1782 (icerik=icerik gecen uretim cagri yerleri)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T6",
+  "kova": "KAPANMALI",
+  "komut": "& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -m unittest discover -s tests -p test_ika_surus_no_route.py -v  |  ayrica: simulation/scripts/ika_nav.py:290-330 (rota_gecerli parametresi + rota_kapisi_acik/rota_gecersiz_dur), :383-393 (nonzero komut oncesi ikinci kapi + atomik rota_korumali_gonder), :213-241 (receiver_rota_gecerli snapshot/generation), :567-574 ve simulation/scripts/navitas_sim.py:121-128 (uretim cagri yerlerinde kablolama)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T7",
+  "kova": "KAPANMALI",
+  "komut": "codes/rpi_inference.py:769-771 ve :1230 (`_koridor_alani_yeterli(clean, icerik_w, icerik_h, min_area_ratio)`); kilit testi: `& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -m unittest discover -s tests -p \"test_rpi_letterbox.py\" -q`",
+  "cumle": ""
+ },
+ {
+  "gorev": "T8",
+  "kova": "KAPANMALI",
+  "komut": "& 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -c \"import sys; sys.path.insert(0, r'O:/navitas/codes'); import test_accuracy, rpi_inference; print('IDENTITY ->', test_accuracy.analyze_path is rpi_inference.analyze_path)\"  ·  & 'O:\\navitas-local-train\\venv\\Scripts\\python.exe' -B -m unittest discover -s O:\\navitas\\tests -p test_accuracy_uses_production.py -v  ·  O:\\navitas\\codes\\test_accuracy.py:31-36 (import), :182 (analyze_path(masks[0], icerik=icerik))",
+  "cumle": ""
+ },
+ {
+  "gorev": "T9",
+  "kova": "KAPANMALI",
+  "komut": "codes/test_rota_guvenlik.py:291-298 (mpp None ise `olc=None`, `_rota_uret` cagrilmaz) + :376-390 (`olcekli` filtresi) ; `O:\\navitas-local-train\\venv\\Scripts\\python.exe -B -m unittest discover -s tests -p \"test_rota_guvenlik_olcek.py\" -v`",
+  "cumle": ""
+ },
+ {
+  "gorev": "T10",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas\\simulation\\scripts\\navitas_sim.py:272 (`all(results.get(ad, False) for ad in beklenen)`), :271 (`bool(beklenen)` korumasi), :274 (`return` rapor blogundan SONRA), :193-201 (`gorev_kos` BaseException yakalar, False yazar), :206/:222 (on-tohumlama). Kapi: `cd O:/navitas && O:/navitas-local-train/venv/Scripts/python.exe -B -m unittest discover -s tests -p \"test_navitas_sim_reporting.py\" -v`. Mutasyon kontrolu: `cd O:/navitas/simulation/scripts && O:/navitas-local-train/venv/Scripts/python.exe -B C:/Users/yunus/AppData/Local/Temp/claude/O--navitas/3e104177-9b44-4ec7-a18f-1f32ed2c3f72/sc",
+  "cumle": ""
+ },
+ {
+  "gorev": "T11",
+  "kova": "KAPANMALI",
+  "komut": "comms/iha_sender.py:210-211 (guard, commit 91010be, calisma agaci temiz) · `cd O:/navitas/comms && O:/navitas-local-train/venv/Scripts/python.exe -B iha_sender.py --no-route KAPALI_DAR --detay test` · `cd O:/navitas && O:/navitas-local-train/venv/Scripts/python.exe -B -m unittest discover -s tests -p test_iha_sender_cli.py -v` · mutasyon: iha_sender.py'nin scratchpad kopyasindan 210-211 satirlari silinip kosuldu",
+  "cumle": ""
+ },
+ {
+  "gorev": "T48",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -c \"import sys,numpy as np; sys.path.insert(0,'codes'); from rpi_inference import analyze_path; H,W=480,640; [print(o, analyze_path((lambda m: (m.__setitem__((slice(0,int(H*o)),slice(None)),255), m)[1])(np.zeros((H,W),np.uint8)), return_reason=True)[3]) for o in (0.20,0.55,0.65,0.70,0.85,1.00)]\"  ·  codes/karar_sozlesmesi.py:423,552  ·  codes/rpi_inference.py:1161-1169  ·  comms/yks_gui.py:1645-1648  ·  CONTRACTS.md:511,522-534  ·  O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_zemin_kaplama_kapisi.py\" -q",
+  "cumle": ""
+ },
+ {
+  "gorev": "T49",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas\\results\\t49_sentetik_arena_tani_20260811\\rapor.md:29 (a-Net), :39 (b-Net), :46 (c-Net) · O:\\navitas\\codes\\karar_sozlesmesi.py:13 (HEDEF_BANT_ORANI = 0.08) · komut: `git log -S \"HEDEF_BANT_ORANI = 0.\" --oneline -- codes/karar_sozlesmesi.py` ve `ls \"O:/navitas/results/t49_sentetik_arena_tani_20260811/\" \"O:/navitas/results/t49_sentetik_arena_tani_20260811/gorseller/\"` · O:\\navitas\\TASK_QUEUE.md:7654 (T51 KAPANDI) · O:\\navitas\\REVIEW_LOG.md:3772-3776 (D-62)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T86",
+  "kova": "KAPANMALI",
+  "komut": "codes/rpi_inference.py:1579,1682,1774 (kare_olcek_kahini üç üretim yolunda da çağrılıyor) · comms/yks_gui.py:1463,1478 · scripts/olcum/72_kaynak_taramasi.py:37 · `O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_olcek_uretim_baglantisi.py\" -q`",
+  "cumle": ""
+ },
+ {
+  "gorev": "T85",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_uretim_modeli_hizasi.py\" -q  ·  O:\\navitas\\scripts\\olcum\\ayarlar.py:24-54  ·  O:\\navitas\\tests\\test_uretim_modeli_hizasi.py:150-158,286-304",
+  "cumle": ""
+ },
+ {
+  "gorev": "T83",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_olcek_kahini.py\" -q  ·  O:/navitas-local-train/venv/Scripts/python.exe -c \"import sys;sys.path.insert(0,'codes');from karar_sozlesmesi import olcek_kahini;k=olcek_kahini(goruntu_genislik_px=1920,arac_kisa_kenar_px=24.0);print(k['kaynak'],round(k['mpp'],5),k['guven_carpani'])\"  ·  codes/karar_sozlesmesi.py:1000 (olcek_kahini) · codes/rpi_inference.py:379,1579,1682,1774 · comms/yks_gui.py:600,1463",
+  "cumle": ""
+ },
+ {
+  "gorev": "T82",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -c \"import json,statistics as st;d=json.load(open('results/t82_delik_yapisi/olcum.json',encoding='utf-8'));from collections import Counter;c=Counter(r['kume'] for r in d);print(len(d),c);[print(g,min(v),st.median(v),max(v)) for g in sorted(c) for v in [[r['delik_sayisi'] for r in d if r['kume']==g]]]\"  +  grep -rn \"delik\\|euler\\|delik_yogunlugu\" --include=*.py codes/ comms/  +  REVIEW_LOG.md:8636 (D-125), REVIEW_LOG.md:9048, REVIEW_LOG.md:9683",
+  "cumle": ""
+ },
+ {
+  "gorev": "T81",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_yks_gui_uretim_hizasi.py\" -q  |  comms/yks_gui.py:542-611 (KUTU_VARSAYILAN/KUTU_BASLIK/YEREL_IMZA/_kutu_kaynagi/_kutu_yaz/_kutu_ciz/_yerel_karari_goster), comms/yks_gui.py:791 (tüketici), comms/yks_gui.py:1691-1705 (yapısal karar sözlüğü üreticisi), comms/yks_gui.py:1320-1324 (gorunum() geçişte _kutu_ciz), tests/test_yks_gui_uretim_hizasi.py:765-880 (KararKutusuKaynakAyrimiTests, 7 test)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T80",
+  "kova": "KAPANMALI",
+  "komut": "comms/yks_gui.py:66,2065-2070,2108-2116 · `O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_yks_gui_uretim_hizasi.py\" -q -k AcilisArgumanlari` · `cd /o/navitas/comms && O:/navitas-local-train/venv/Scripts/python.exe yks_gui.py --ika 127.0.0.1:5006 --kaynak xyz` · tests/test_yks_gui_uretim_hizasi.py:653-762 · results/t80/acilis_arena.png",
+  "cumle": ""
+ },
+ {
+  "gorev": "T78",
+  "kova": "KAPANMALI",
+  "komut": "\"O:/navitas-local-train/venv/Scripts/python.exe\" -c \"import json,statistics as st;d=json.load(open(r'O:/navitas/results/t78_zemin_kalibrasyon/olcum_t66.json',encoding='utf-8'));r=d['satirlar'];[print(m,len([x for x in r if x['model']==m]),'max %.3f'%max(x['kaplama'] for x in r if x['model']==m),'>0.67:',sum(1 for x in r if x['model']==m and x['kaplama']>0.67),'red:',sum(x['kapi_reddi'] for x in r if x['model']==m)) for m in ('v24','v27')]\"  ·  codes/karar_sozlesmesi.py:423 ve :480  ·  REVIEW_LOG.md:8030 (D-118)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T77",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_yks_gui_uretim_hizasi.py\" -v -k KABUL_KUMESIDIR -k CIPLAK_YAZILMAMIS -k ESKI_T60_DEGIL -k ekran_UYDURMAZ  |  comms/yks_gui.py:143-167 (`_kabul_kumesi_koku`), comms/yks_gui.py:1118 (`ALGI_ARENA_KADRAJ_KOKU = _kabul_kumesi_koku()`), config/model_registry.json:10 (`kabul_kumesi` = .../sentetik_arena_kadraj_t66), tests/test_yks_gui_uretim_hizasi.py:461-509",
+  "cumle": ""
+ },
+ {
+  "gorev": "T76",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_uretim_modeli_hizasi.py\" -q  ·  comms/yks_gui.py:1104 (`ALGI_MODEL_DOSYA = _uretim_modeli_adi()`) · comms/yks_gui.py:100-117 · results/saha_kuru_kosu_20260815_222753/ozet.json (sayim: GECTI 7 · DUSTU 1 · SAHIPSIZ 2)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T73",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe \"C:/Users/yunus/AppData/Local/Temp/claude/O--navitas/3e104177-9b44-4ec7-a18f-1f32ed2c3f72/scratchpad/t73_triyaj.py\"  (saha_kuru_kosu.halka_kamera + halka_model dogrudan kosuluyor) · ayrica O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_saha_parametrik.py\" -q · config/model_registry.json:7 · jetson_paket/models/jetson_derleme_manifest.json:24",
+  "cumle": ""
+ },
+ {
+  "gorev": "T74",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe \"C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\t74_gt_moloza.py\" 300  (yer gercegi, n=260, 16 sn) → 1/260; mutasyon kontrolu aynı klasordeki t74_mutasyon.py (yalnizca `dt_px` dusurulur) → 24/260. Kod capalari: codes/costmap_path_finder.py:778-830 (`yol_duzelt` goreli aciklik korumasi) ve codes/rpi_inference.py:935-1245 (`dt_px=dist` gecirilir).",
+  "cumle": ""
+ },
+ {
+  "gorev": "T67",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_ince_bariyer.py\" -q  ·  codes/karar_sozlesmesi.py:666 (ince_bariyer_maskesi) · codes/rpi_inference.py:629 (_ince_bariyeri_ekle cagrisi, r.masks is None dalindan SONRA) · canli: python -c \"import rpi_inference,costmap_path_finder as cpf; m=rpi_inference.get_masks([R(cv2.imread('data/arena_referans/sartname_s9_arena.png'))],634,1059); print(m[1].sum()); print(cpf.serbest_alan({0:ones,1:m[1]},mpp=0.01)['serbest'][m[1]>0].sum())\"",
+  "cumle": ""
+ },
+ {
+  "gorev": "T59",
+  "kova": "KAPANMALI",
+  "komut": "codes/karar_sozlesmesi.py:423 (ZEMIN_KAPLAMA_TAVANI = 0.67) · codes/karar_sozlesmesi.py:480 (ZEMIN_KENAR_DAYANMA_TAVANI = 0.50) · tests/test_zemin_kapisi_iki_sinyal.py:94-99 (önerilen asgari düzeltme uygulanmış: `for carpan in (1.05, 1.20, 1.35): oran = min(0.98, ZEMIN_KAPLAMA_TAVANI * carpan)`) · CONTRACTS.md:533,548-580 · komutlar: `O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_zemin_kapisi_iki_sinyal.py\" -q` ve `... -p \"test_gercek_arena_kapisi.py\" -q` · `git log -S \"carpan\" -- tests/test_zemin_kapisi_iki_sinyal.py`",
+  "cumle": ""
+ },
+ {
+  "gorev": "T57",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas-local-train\\51_sentetik_arena.py:291-296 (`ince`/`kaba` (boyut,boyut) tek kanal, `im += (ince + kaba)[:, :, None]  # UC KANALA AYNI`, `RENK_SAPMASI = 1.5` satir 266, `PROSEDUREL_PAYI = {\"zemin\":0.70,\"yol\":0.35}` satir 278) · yeniden uretim denemesi: `O:\\navitas-local-train\\venv\\Scripts\\python.exe C:\\Users\\yunus\\AppData\\Local\\Temp\\claude\\O--navitas\\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\\scratchpad\\t57_dogrula.py` (modulu import edip 40'ar yamada 6 px Gauss yuksek-gecirgen DOKU kroma/parlaklik ve kanal-farki std'si olcer; ESKI kanal-bagimsiz kip kontrol olarak yeniden kurulur)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T56",
+  "kova": "KAPANMALI",
+  "komut": "O:\\navitas-local-train\\venv\\Scripts\\python.exe -c \"import sys,importlib.util,random,numpy as np; sys.path.insert(0,r'O:\\navitas-local-train'); s=importlib.util.spec_from_file_location('sa',r'O:\\navitas-local-train\\51_sentetik_arena.py'); sa=importlib.util.module_from_spec(s); s.loader.exec_module(sa); f=lambda d:max(abs(((lambda p:(p[:len(p)//2,0]+p[len(p)//2:][::-1,0])/2)(sa.serit(random.Random(t),400.,120.,0.,1.,duz=d)))-400.).max() for t in range(200)); print(f(True),f(False)); print(sum(sa.hb_karari(random.Random(t),True)[0] for t in range(500)), sa.HB_KIRMIZI)\"  ||  51_sentetik_arena.py:3",
+  "cumle": ""
+ },
+ {
+  "gorev": "T55",
+  "kova": "KAPANMALI",
+  "komut": "cd O:/navitas-local-train && PYTHONIOENCODING=utf-8 ./venv/Scripts/python.exe 51_sentetik_arena.py --kadraj --adet 4 --cikti <scratch>/t55_kadraj --seed 7   ·  O:\\navitas\\scripts\\olcum\\51_sentetik_arena.py:903 (`\"acik_serit\": acik`) ve :1595-1618 (kadraj kipinde `manifest.json` yazımı) · tüketici O:\\navitas\\scripts\\olcum\\60_kadraj_karar_dogrulugu.py:101",
+  "cumle": ""
+ },
+ {
+  "gorev": "T50",
+  "kova": "KAPANMALI",
+  "komut": "cd O:\\navitas && sha256sum models/navitas_seg_v35_best.pt (== config/model_registry.json:16) ; cat scripts/olcum/results/t63/t127_temiz_kabul_verdikt.json ; grep -niE \"map|fitness\" scripts/olcum/65_kabul_denetcisi.py ; python -c \"import json;print(json.load(open('results/t127/kiyas.json'))['modeller'])\" ; REVIEW_LOG.md:18345 (D-240)",
+  "cumle": ""
+ },
+ {
+  "gorev": "T43",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -B -c \"import sys;sys.path.insert(0,'O:/navitas/codes');import numpy as np,rpi_inference as R;m=np.zeros((400,400),np.uint8);m[:,190:210]=1;[print(mpp,R.analyze_path(m,mpp=mpp,return_reason=True,return_olcum=True)[3]) for mpp in (None,0.05,0.20)]\"  ·  codes/rpi_inference.py:1247-1276 (C-uzayı) · codes/karar_sozlesmesi.py:272-343 (mpp_irtifadan/olcek_gecerli_mi/rota_olcek_reddi/r_gerekli_piksel) · codes/rpi_inference.py:1585,1688,1780 (üç görev çağrı yeri fail-closed) · CONTRACTS.md:223-225, 794 · tests/test_olcek_ve_c_uzayi.py",
+  "cumle": ""
+ },
+ {
+  "gorev": "S9",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_uretim_modeli_hizasi.py\" -q  ·  grep -nE \"0\\.6751|8e8d46a6\" comms/yks_gui.py  ·  comms/yks_gui.py:1104 (ALGI_MODEL_DOSYA=_uretim_modeli_adi()), :1404-1410 (hashlib), :1146+:1154 (drone + rglob), :1097 (ALGI_KAYNAKLAR)",
+  "cumle": ""
+ },
+ {
+  "gorev": "S10",
+  "kova": "KAPANMALI",
+  "komut": "O:/navitas-local-train/venv/Scripts/python.exe -m unittest discover -s tests -p \"test_yks_gui_dayaniklilik.py\" -q  →  Ran 6 tests, OK  ·  düzeltmeler kodda: comms/link.py:46 (`except (socket.timeout, ConnectionResetError, ConnectionRefusedError)`), comms/yks_gui.py:751-762 (`_dinle` geçici OSError'da loglayıp continue, yalnız `sock.fileno()==-1` iken return), comms/yks_gui.py:778-782 (`_tik` içinde `try: self._mesaj_isle(...) except Exception: _logla(\"⚠ BOZUK ÇERÇEVE ...\",\"sari\")`), comms/yks_gui.py:839 (`_ref = m.get(\"ref_xy\") or (\"—\",\"—\")`)  ·  mutasyon kontrolü: python -c ile ölü porta UDP ",
+  "cumle": ""
+ }
+]
