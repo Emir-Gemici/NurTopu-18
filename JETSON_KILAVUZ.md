@@ -369,6 +369,25 @@ yolo predict task=segment model=navitas_seg_v30_best_512_fp16.engine \
   source=~/navitas/data/test_goruntuleri/sentetik_arena --imgsz 512
 ```
 
+### 4b. Derlenen `.engine`'i kayıt defterine TANIT (T143 · D-284) — atlanırsa yükleme DÜŞER
+
+`load_model` artık `.engine`/`.onnx` türevlerini `config/model_registry.json`
+içindeki `competition.turevler` sözlüğünden tanır (aynı soy, **her türevin KENDİ
+sha256'sı**). Derlenmemiş türevin özeti `DERLENINCE_YAZILIR` yer tutucusudur ve
+yer tutucu = doğrulanmamış = **RED** (fail-closed). Bu yüzden T16 kapısı geçince
+**Jetson'da** özeti yaz; `--kaynak-pt` ile `.pt` özeti de kıyaslanır (yanlış soydan
+derlenen engine reddedilir):
+
+```bash
+cd ~/navitas
+python3 codes/model_registry.py --turev-kaydet models/navitas_seg_v35_best_512_fp16.engine \
+  --kaynak-pt models/navitas_seg_v35_best.pt
+```
+
+Kayıtsız/yabancı `.engine` yine RED; `.pt` davranışı değişmedi. Defteri ELLE
+düzenleme — CLI paket aynasını da bayt-eş yazar. Değişen defter PC'ye geri
+taşınır (`tests/test_jetson_paket_defteri` aynayı kilitler).
+
 ### `yolo export` hata verirse — `trtexec` yedeği
 ```bash
 /usr/src/tensorrt/bin/trtexec \

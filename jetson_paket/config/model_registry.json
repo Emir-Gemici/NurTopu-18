@@ -10,6 +10,41 @@
    "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
    "_kabul_kumesi_notu": "T77 · D-115/D-133: uretim modeli BU kume uzerinde kabul edilir (T66 ada geometrisi, n=260); v27 de v30 da burada olculdu. Hakem ekrani `arena_kadraj` kaynagini buradan okur; onceden T60 yolu comms/yks_gui.py'de CIPLAK yaziliydi ve surum v27'ye gecince cevrilmedi (kusur D-116/5) — ekran modeli KABUL EDILMEDIGI bir dagilimda gosteriyordu (olculdu: T60 11/12, T66 12/12). Surum degisirse BU alan da degismelidir; ikisi ayni profilde durur ki ayri ayri unutulamasin.",
    "sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+   "turevler": {
+    "navitas_seg_v35_best.engine": {
+     "backend": "tensorrt",
+     "imgsz": 512,
+     "sha256": "DERLENINCE_YAZILIR",
+     "kaynak": "models/navitas_seg_v35_best.pt",
+     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
+    },
+    "navitas_seg_v35_best_512_fp16.engine": {
+     "backend": "tensorrt",
+     "imgsz": 512,
+     "sha256": "DERLENINCE_YAZILIR",
+     "kaynak": "models/navitas_seg_v35_best.pt",
+     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. FP16 derlemesi ayri dosya, ayri ozet."
+    },
+    "navitas_seg_v35_best.onnx": {
+     "backend": "onnx",
+     "imgsz": 512,
+     "sha256": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3",
+     "kaynak": "models/navitas_seg_v35_best.pt",
+     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
+    },
+    "navitas_seg_v35_best_512_fp16.onnx": {
+     "backend": "onnx",
+     "imgsz": 512,
+     "sha256": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3",
+     "kaynak": "models/navitas_seg_v35_best.pt",
+     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. Saha paketindeki ad (jetson_paket/models, JETSON_KILAVUZ SS4 `yolo export` girdisi)."
+    }
+   },
+   "_turevler_notu": "T143: eskiden `model_kayit_dogrula` yalniz DOSYA ADI kiyasliyordu; her .engine 'ESLESMIYOR' ile reddediliyor ve Jetson'da TensorRT ancak `--kayit-dogrulamasiz` ile (fail-closed KAPATILARAK) yukleniyordu (D-284, T18 curutucusu). Artik `turevler` anahtari dosya ADIYLA eslesir; turevin sha256'si yer tutucu degilse ve diskteki dosyanin ozetiyle BIREBIR ayniysa GECER. Kayitsiz/yabanci .engine yine RED; .pt davranisi DEGISMEDI (ad + imgsz kiyasi).",
    "classes": {
     "0": "traversable",
     "1": "blocked"

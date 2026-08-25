@@ -268,6 +268,34 @@ IRTIFA_MAKUL_UST_M = 200.0        # ustu telemetri hatasi sayilir (fail-closed)
 # OLCEK_YOK ile fail-closed durdurur. Host monotonic saati kullanilir.
 TELEMETRI_IRTIFA_TAZELIK_S = 0.50
 
+# ── T143 · CANLI KAMERA DUSEN KARE SOZLESMESI (D-284, T18 curutucusu) ────────
+# Kusur: `run_camera` dongusu `cap.read()` ilk `False` dondugunde SESSIZCE
+# bitiyordu — ne sayac, ne yeniden deneme, ne log. USB/DroidCam hattinda tek
+# bir kare kaybi (kablo titremesi, bant genisligi) butun algi hattini kapatir
+# ve sahada kimse NEDEN durdugunu bilmezdi.
+#
+# Gerekce (tahmin degil, tasarim kisiti):
+#  * UST SINIR ardisik dusen kareye uygulanir (toplam degil): kamera gercekten
+#    koptuysa ardisik kayip surer, gecici titremede bir sonraki kare gelir ve
+#    ardisik sayac sifirlanir. 30 kare, 30 fps kaynakta ~1 s'lik kesintiye
+#    tekabul eder; daha uzunu "kamera yok" sayilir ve dongu LOGLU biter
+#    (fail-closed: kamerasiz sonsuz bekleme YOK).
+#  * BEKLEME her basarisiz okumadan sonra uygulanir ki cap.read() aninda
+#    donerken mesgul dongu CPU'yu yemesin; 20 ms x 30 = ~0,6 s ek gecikme.
+# Toplam dusen kare sayisi da tutulur ve bitiste raporlanir (YKS/log).
+KAMERA_DUSEN_KARE_UST_SINIRI = 30      # ARDISIK dusen kare; asilinca kontrollu bitis
+KAMERA_DUSEN_KARE_BEKLEME_S = 0.02     # her basarisiz okumadan sonra bekleme (s)
+KAMERA_BITIS_KULLANICI = "KULLANICI_DURDURDU"
+KAMERA_BITIS_DUSEN_KARE = "DUSEN_KARE_UST_SINIRI"
+KAMERA_BITIS_ACILAMADI = "KAMERA_ACILAMADI"
+
+# ── T143 · KAYIT DEFTERI TUREV YER TUTUCUSU ──────────────────────────────────
+# `.engine`/`.onnx` turevleri kayit defterinde `turevler` altinda ayni SOYDAN
+# tanitilir; her turevin KENDI sha256'si vardir. Derlenmemis turevin ozeti bu
+# yer tutucudur ve yer tutucu = DOGRULANMAMIS = RED (fail-closed). Gercek ozet
+# `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir.
+MODEL_TUREV_SHA_YER_TUTUCU = "DERLENINCE_YAZILIR"
+
 
 def mpp_irtifadan(irtifa_m, goruntu_genislik_px, *, yatay_fov_derece=None,
                   odak_px=None):
