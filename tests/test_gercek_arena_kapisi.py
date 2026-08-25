@@ -15,7 +15,12 @@ segmentlenmis gercek arena kapidan GECER". Esik ileride yeniden oynatilirsa
 (model degisiminde bu ZORUNLUDUR) ve gercek arenayi tekrar elerse, bu test
 duser. Sessiz geri donus mumkun olmaz.
 
-⚠ Bu paket MODEL AGIRLIGI GEREKTIRIR (v24 · ~55 MB, `.gitignore` disinda).
+⚠ Bu paket MODEL AGIRLIGI GEREKTIRIR. Hangi agirlik oldugu BURADA YAZILMAZ:
+`config/model_registry.json` etkin profilinden okunur (madde 16; 2026-08-26
+itibariyla v35 · ~55 MB, `.gitignore` disinda). D-266'ya kadar `MODEL` v24'e
+CIVILIYDI — uretim v35'e gectikten sonra bile kapi eski modeli kosuyor, uretim
+modeli ne kadar bozulursa bozulsun DUSEMIYORDU ("yapisal olarak dusemeyen bos
+yesil"). Artik uretim modeli degisince bu kapi YENI modeli kosar.
 Agirlik ya da kare yoksa testler ATLANIR — temiz klonda yanlis sebeple kirmizi
 yanmaz. Olculen degerler ayrica SABIT olarak da sinanir (agirliksiz kosar),
 boylece kapinin esik mantigi her ortamda kilitli kalir.
@@ -37,12 +42,27 @@ from karar_sozlesmesi import (ZEMIN_KAPLAMA_TAVANI,  # noqa: E402
                               ZEMIN_KENAR_DAYANMA_TAVANI,
                               ZEMIN_MASKESI_SUPHELI_SEBEBI, zemin_kaplamasi,
                               zemin_kenar_dayanmasi, zemin_maskesi_reddi)
+from model_registry import load_registry  # noqa: E402
 from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            _preprocess, analyze_path, get_masks)
 
 ARENA = KOK / "data" / "arena_referans" / "sartname_s9_arena.png"
-MODEL = KOK / "models" / "navitas_seg_v24_best.pt"
+KAYIT_DEFTERI = KOK / "config" / "model_registry.json"
 CONF = 0.30
+
+
+def _kayittan_uretim_modeli():
+    """Etkin profilin agirlik yolu ve kimligi — CIPLAK surum adi YAZILMAZ.
+
+    Defter okunamazsa istisna FIRLATIR (fail-closed): defter repoda tutulur,
+    yoklugu "agirlik yok" gibi ATLANACAK bir durum degil, KUSURDUR.
+    """
+    veri = load_registry(KAYIT_DEFTERI)
+    profil = veri["profiles"][veri["default_profile"]]
+    return KOK / profil["path"], str(profil.get("model_id", "?"))
+
+
+MODEL, MODEL_KIMLIGI = _kayittan_uretim_modeli()
 
 # T59 · v24 ile OLCULEN degerler (bkz. REVIEW_LOG D-86). Agirliksiz ortamda da
 # esik mantiginin sinanabilmesi icin sabit tutulur.
@@ -50,12 +70,30 @@ ARENA_KAPLAMA = 0.579
 ARENA_KENAR = 0.585
 
 _ATLA = not (ARENA.is_file() and MODEL.is_file())
-_ATLA_SEBEBI = (f"gercek arena karesi ve/veya v24 agirligi yok "
-                f"(arena={ARENA.is_file()} model={MODEL.is_file()})")
+_ATLA_SEBEBI = (f"gercek arena karesi ve/veya uretim agirligi ({MODEL_KIMLIGI}: "
+                f"{MODEL.name}) yok (arena={ARENA.is_file()} "
+                f"model={MODEL.is_file()})")
 
 
 class OlculenDegerlerKapidanGecerTests(unittest.TestCase):
     """Agirliksiz kosar: OLCULEN sayilar kapiyi atesliyor mu?"""
+
+    def test_MODEL_kayit_defterinden_geliyor_CIVILI_DEGIL(self):
+        """D-266 kilidi: `MODEL` satiri bir daha surum adina CIVILENEMEZ.
+
+        Civili kalsaydi uretim modeli degisince bu kapi ESKI modeli kosar,
+        uretim ne kadar bozulursa bozulsun dusemezdi.
+        """
+        kaynak = Path(__file__).read_text(encoding="utf-8")
+        self.assertNotRegex(
+            kaynak, r'(?m)^MODEL\s*=.*\.pt',
+            "`MODEL` dogrudan bir `.pt` adina baglanmis — defterden okunmali")
+        # Desen kendi metniyle ESLESMEZ (`\d+` harfleri rakam degildir).
+        self.assertNotRegex(kaynak, r'navitas_seg_v\d+_best\.pt',
+                            "bir surum agirligi koda civilenmis (D-266)")
+        veri = load_registry(KAYIT_DEFTERI)
+        beklenen = KOK / veri["profiles"][veri["default_profile"]]["path"]
+        self.assertEqual(beklenen, MODEL)
 
     def test_gercek_arena_kaplamasi_TAVANIN_ALTINDA(self):
         self.assertLessEqual(
