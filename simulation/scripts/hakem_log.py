@@ -39,24 +39,29 @@ CONF = {"kolay": 0.94, "orta": 0.88, "zor": 0.79}
 # Eskiden `navitas_seg_v2_best.pt` ve `mAP50=0.619` sabit yazılıydı; üretim
 # v21 yüklüyordu ve imgsz=1024 iddiası CONTRACTS §8 ile de çelişiyordu.
 # Yanlış künye kod hatası değil, KANIT BÜTÜNLÜĞÜ hatasıdır.
-def _model_kunyesi():
-    """(ad, imgsz, sha8) — YKS ile AYNI tek kaynaktan."""
-    try:
-        sys.path.insert(0, str(KOK / "comms"))
-        from yks_gui import YksArayuz
-        ad = YksArayuz.ALGI_MODEL_DOSYA
-    except Exception:
-        ad = None
-    yol = (KOK / "models" / ad) if ad else None
+def _model_kunyesi(kayit=None):
+    """(ad, imgsz, sha8) — İHA algısının YÜKLEDİĞİ ağırlıkla AYNI tek kaynaktan.
+
+    KUSUR (S9): ad `yks_gui.YksArayuz.ALGI_MODEL_DOSYA`'dan (kayıt defteri → v35)
+    geliyordu; ama `detections.json`'ı üreten `iha_perceive.DEFAULT_MODEL` v2'yi
+    ÇIPLAK yazıyordu. Hakem, koşulmayan modelin adını okuyordu. Artık ad
+    `iha_perceive.varsayilan_model_yolu`'ndan gelir: algının yüklediği yol ile
+    günlüğe yazılan künye TEK fonksiyondan türetilir (YKS ekranı da aynı defteri
+    okur — üç uç tek bildirimden beslenir). `kayit` yalnız sınama içindir.
+
+    Fail-closed: defter okunamazsa künye "BILINMIYOR" diye YUTULMAZ — eski kod
+    istisnayı yutuyordu ve tam bu sınıf kaymayı gizliyordu.
+    """
+    from iha_perceive import varsayilan_model_yolu
+    yol = varsayilan_model_yolu(kayit)
+    ad = yol.name
     sha8 = "?"
-    if yol is not None and yol.exists():
+    if yol.exists():
         _h = hashlib.sha256()
         with open(yol, "rb") as _fh:
             for _blok in iter(lambda: _fh.read(1 << 20), b""):
                 _h.update(_blok)
         sha8 = _h.hexdigest()[:8]
-    else:
-        ad = ad or "BILINMIYOR"
     try:
         sys.path.insert(0, str(KOK / "codes"))
         from rpi_inference import INFER_SIZE as _imgsz
