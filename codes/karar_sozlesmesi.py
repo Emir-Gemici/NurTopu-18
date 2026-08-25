@@ -85,6 +85,24 @@ DUSUK_GUVEN_SEBEBI = "DUSUK_GUVEN"
 KORIDOR_DEGIL_SEBEBI = "KORIDOR_DEGIL"      # T65 · D-94
 HEDEF_YOK_SEBEBI = "HEDEF_YOK"              # T72 · D-105
 
+# K1 (sartname SS2.2.3 · CONTRACTS SS6.5): uretim algi yolu (rpi_inference)
+# her karede telsize YA OPEN_ROUTE YA NO_ROUTE yazar; sessizlik yoktur.
+# analyze_path "karar yok" (open_path None, sebep None) dondurdugunde bu
+# YAYIN sebebi kullanilir. ROTA_RET_SEBEPLERI'ne GIRMEZ: o kume analiz
+# katmaninin ret sebepleridir (test_rota_ret_nedenleri kumeyi kilitler);
+# KARAR_YOK ise yayin katmaninin fail-closed varsayilanidir.
+KARAR_YOK_SEBEBI = "KARAR_YOK"
+# Piksel rota telsiz geometri sozlesmesine (iha_sender.rota_geometrisini_dogrula)
+# cevrilemediginde yayinlanan NO_ROUTE sebebi.
+ROTA_GEOMETRI_SEBEBI = "ROTA_GEOMETRI"
+# HEARTBEAT aralığı (sn). ika_receiver hb_timeout=3.0 s ile SOZLESME: aralik
+# zaman asiminin ucte biri — art arda 2 kayip HEARTBEAT baglantiyi dusurmez,
+# 3. kayip dusurur. Bu sabit degisirse hb_timeout ile birlikte degisir.
+IHA_HEARTBEAT_ARALIK_S = 1.0
+# Saha yayin referansi (CONTRACTS SS6.5): uretim yolunda dunya cercevesi
+# YOKTUR; ref_xy her zaman yerel ankor [0, 0]'dir ve IKA saf oteleme yapar.
+YAYIN_REF_XY = (0.0, 0.0)
+
 ROTA_RET_SEBEPLERI = frozenset({
     OLCEK_YOK_SEBEBI,
     ZEMIN_MASKESI_SUPHELI_SEBEBI,

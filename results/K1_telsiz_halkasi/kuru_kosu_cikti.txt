@@ -1,0 +1,23 @@
+==============================================================================
+SAHA KURU KOSUSU — CONTRACTS.md §11 · Gazebo YOK · donanim YOK
+==============================================================================
+  kamera         DUSTU      okunabilir kare bulunamadi (data/raw_frames bos?)  [31 ms]
+                            -> codes/rpi_inference.py:505
+  model_yukleme  ATLANDI    onceki halka dustu: kamera
+  cikarim        ATLANDI    onceki halka dustu: kamera
+  maske          ATLANDI    onceki halka dustu: kamera
+  olcek          DUSTU      OLCEK_YOK: kare icerik genisligi yok; canli olcek bu kare icin turetilemedi
+                            -> codes/rpi_inference.py
+  hedef_konumu   SAHIPSIZ   HB'nin tek kaynagi Gazebo meta.txt; saha kod yolunda --hb girisi yok ve etkin model profili 2 sinifli (kirmizi H'yi goren bilesen yok)
+  rota           ATLANDI    onceki halka dustu: maske
+  aktarim        GECTI      saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
+                            -> codes/rpi_inference.py:run_camera
+  telsiz halkasi  GECTI      run_camera -> KararYayinci -> loopback IKA: {'open_route_alindi': True, 'heartbeat': 3, 'ack': ['ika'], 'hata': None}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+                            -> comms/iha_inis_yayinci.py:44
+  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda
+------------------------------------------------------------------------------
+GECTI 2 · DUSTU 2 · SAHIPSIZ 2 · ATLANDI 4
+KOPUK HALKALAR (4): kamera, olcek, hedef_konumu, motor
+Zincir saha kosumunda TAMAMLANMAZ.
+Cikti: results\K1_telsiz_halkasi\kuru_kosu

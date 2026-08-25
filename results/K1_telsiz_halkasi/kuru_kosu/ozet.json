@@ -1,0 +1,196 @@
+{
+ "tarih": "20260826_022902",
+ "sozlesme": "CONTRACTS.md §11",
+ "halka_sirasi": [
+  "kamera",
+  "model_yukleme",
+  "cikarim",
+  "maske",
+  "olcek",
+  "hedef_konumu",
+  "rota",
+  "aktarim",
+  "surus_izni",
+  "motor"
+ ],
+ "satirlar": [
+  {
+   "halka": "kamera",
+   "durum": "DUSTU",
+   "sebep": "okunabilir kare bulunamadi (data/raw_frames bos?)",
+   "dosya": "codes/rpi_inference.py:505",
+   "detay": {},
+   "sure_ms": 31.2
+  },
+  {
+   "halka": "model_yukleme",
+   "durum": "ATLANDI",
+   "sebep": "onceki halka dustu: kamera",
+   "dosya": null,
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "cikarim",
+   "durum": "ATLANDI",
+   "sebep": "onceki halka dustu: kamera",
+   "dosya": null,
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "maske",
+   "durum": "ATLANDI",
+   "sebep": "onceki halka dustu: kamera",
+   "dosya": null,
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "olcek",
+   "durum": "DUSTU",
+   "sebep": "OLCEK_YOK: kare icerik genisligi yok; canli olcek bu kare icin turetilemedi",
+   "dosya": "codes/rpi_inference.py",
+   "detay": {
+    "besleme_cagrildi": false,
+    "icerik_genisligi_px": null,
+    "mpp": null,
+    "saglayici_sinifi": "CanliOlcekSaglayici"
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "hedef_konumu",
+   "durum": "SAHIPSIZ",
+   "sebep": "HB'nin tek kaynagi Gazebo meta.txt; saha kod yolunda --hb girisi yok ve etkin model profili 2 sinifli (kirmizi H'yi goren bilesen yok)",
+   "dosya": null,
+   "detay": {
+    "saha_cli_sahibi": null,
+    "etkin_profil": "competition",
+    "etkin_profilde_hedef_sinifi": false,
+    "gazebo_haritalayici_argparse": [
+     "--arac-conf",
+     "--arac-model",
+     "--conf",
+     "--debug",
+     "--htab",
+     "--kare-ofset",
+     "--levels",
+     "--model",
+     "--once",
+     "--rot-isaret",
+     "--watch"
+    ],
+    "meta_okuyucu": "simulation/scripts/iha_haritala.py:507",
+    "meta_yazici": "simulation/scripts/world_generator.py:590",
+    "kayit": "REVIEW_LOG.md D-23"
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "rota",
+   "durum": "ATLANDI",
+   "sebep": "onceki halka dustu: maske",
+   "dosya": null,
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "aktarim",
+   "durum": "GECTI",
+   "sebep": "saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi",
+   "dosya": "codes/rpi_inference.py:run_camera",
+   "detay": {
+    "paket_icerigi": [
+     "costmap_path_finder.py",
+     "iha_inis_yayinci.py",
+     "iha_sender.py",
+     "inis_kaniti.py",
+     "jetson_fps.py",
+     "kamera_dogrula.py",
+     "karar_sozlesmesi.py",
+     "link.py",
+     "protocol.py",
+     "rpi_inference.py"
+    ],
+    "eksik_moduller": [],
+    "eksik_semboller": {},
+    "pyserial_bagimliligi": true,
+    "depo_comms_loopback": {
+     "seq": 1,
+     "ack": [
+      "ika"
+     ],
+     "alindi": true
+    },
+    "uretim_yolu_telsiz": {
+     "open_route_alindi": true,
+     "heartbeat": 3,
+     "ack": [
+      "ika"
+     ],
+     "hata": null
+    }
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "surus_izni",
+   "durum": "GECTI",
+   "sebep": "IHA_LANDED saha kod yolunda uretiliyor",
+   "dosya": "comms/iha_inis_yayinci.py:44",
+   "detay": {
+    "tum_ureticiler": [
+     "comms/iha_inis_yayinci.py:44",
+     "jetson_paket/kod/iha_inis_yayinci.py:44"
+    ],
+    "saha_ureticileri": [
+     "comms/iha_inis_yayinci.py:44",
+     "jetson_paket/kod/iha_inis_yayinci.py:44"
+    ],
+    "kapi_probu": {
+     "bos_kapali": true,
+     "yalniz_ika_go_kapali": true,
+     "ika_go_alindi": true,
+     "iki_latch_ile_acik": true,
+     "iha_landed_alindi": true,
+     "prob_gecerli": true
+    }
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "motor",
+   "durum": "SAHIPSIZ",
+   "sebep": "gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda",
+   "dosya": null,
+   "detay": {
+    "gz_subprocess": true,
+    "saha_surucu_importlari": [],
+    "taranan_dizinler": [
+     "codes",
+     "comms",
+     "drone",
+     "jetson_paket",
+     "scripts"
+    ],
+    "simulasyon_sahibi": "simulation/scripts/ika_nav.py:90-99",
+    "not": "capture_output=True oldugu icin gz yoksa hata YUTULUYOR"
+   },
+   "sure_ms": null
+  }
+ ],
+ "sayim": {
+  "GECTI": 2,
+  "DUSTU": 2,
+  "SAHIPSIZ": 2,
+  "ATLANDI": 4
+ },
+ "kopuk_halkalar": [
+  "kamera",
+  "olcek",
+  "hedef_konumu",
+  "motor"
+ ],
+ "cikis_kodu": 1
+}

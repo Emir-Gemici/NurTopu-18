@@ -465,9 +465,11 @@ class CanliOlcekCliTesti(unittest.TestCase):
         # T86: olcek kahininin 2. ve 3. katmani da tasinir. Ikisi de burada
         # None'dur — `--arac-modeli` / `--senaryo` VERILMEDIGINDE davranis T86
         # oncesiyle BIREBIR aynidir; bu beklenti tam da onu kilitler.
+        # K1: telsiz hedefi VERILMEDIGINDE yayinci None'dur — gonderici hic
+        # kurulmaz, davranis bayt-es aynidir (tests/test_rpi_telsiz_yayin.py).
         run_camera.assert_called_once_with(
             model, 0.30, canli_olcek=saglayici, kaynak=None,
-            arac_modeli=None, senaryo=None)
+            arac_modeli=None, senaryo=None, yayinci=None)
         saglayici.kapat.assert_called_once_with()
 
     def test_model_yukleme_hatasinda_poller_kapatilir(self):
