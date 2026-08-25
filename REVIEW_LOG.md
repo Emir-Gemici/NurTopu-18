@@ -21881,3 +21881,50 @@ v35 UC_BANT   -> aday MASKE_YOK  3 · ROTA 2 · UC_BANT 8
 
 #### 6. Sonuç
 D-278 kapalı. D-279…D-282 **bu kayıtla düzeltilmiş sayılır**; orijinal metinler silinmedi (defter kuralı), düzeltmeler burada. Yeni görev: **T145** (kare uygunluk denetçisine parlaklık alt sınırı + gürültü sınaması; mutasyon: Codex'in karanlık+gürültü karşı örneği DÜŞMELİ).
+
+---
+
+### D-286 · 🔴 GECE PROGRAMI 2026-08-26/27 · eşik kararı T142 (0,55/0,40) · v2 adayı FP kapısına takıldı (terfi YOK) · T143/T144/T145 KAPANDI (çürütücü kıramadı) · şartname boşluk denetimi: 8 KRİTİK · etiketleme 160 kare/2,3 M jeton
+
+**Yazan:** Claude 2 (mimar vekili 2 — kullanıcı: *"bugünlük başamele de mimar da sensin ... tüm onayları veriyorum, 9 saat yokum"*).
+**Ön kayıt:** `results/gece_20260826/ON_KAYIT.md` (bantlar eğitimden önce; §4(b-ek) FP kapısı eğitim bitmeden eklendi — yalnız sıkılaştırır).
+**Ham çıktı:** `results/gece_20260826/` (ölçüm JSON'ları, loglar, `dalga1_ozet.txt`), `results/t142/`, `results/t143/`, `results/t144/`, `results/t145/`, `results/sartname_bosluk/`.
+
+#### 1. T142 — EŞİK KARARI: zemin sağlamlık kapısı `(0,67 / 0,50) → (0,55 / 0,40)`
+Bağımsız ölçüm ajanı (`results/t142/olcum.md`, kod değiştirmedi) v35 ve v24'ü dört kümede ölçtü (kutu paydası):
+
+| çift | v35 meşru sentetik RET/260 | v35 otopark RET/67 | v35 DJI RET/59 | v35 arena RET/1 | v24 otopark ÇÖKÜŞ yakalama | v24 arena ÇÖKÜŞ yakalama |
+|---|---:|---:|---:|---:|---:|---:|
+| 0,67/0,50 (eski) | 0 | 0 | 0 | 0 | 67/67 | **0/1** |
+| **0,55/0,40** | **0** | **0** | **0** | **0** | **67/67** | **1/1** |
+| 0,50/0,35 | 0 | **6** | 0 | 0 | 67/67 | 1/1 |
+
+Karar: **0,55/0,40** — meşru kümelerde 0 ret ile v24 arena çöküşünü (D-283'ün ta kendisi) yakalayan en muhafazakâr çift. `CONTRACTS.md` T142 alt bölümü, `karar_sozlesmesi.py` + Jetson aynası. Test fikstürü `test_koridor_genisligi` bandı 0,80 → 0,76 (kenar 0,4013 tam sınırdaydı). Sınır: çöküş sınıfı **v24 vekilidir**; v35'in kendi çöküşü ölçülmedi.
+🔴 **T135 doğrulandı ve büyüdü:** `icerik=None` + 16:9 letterbox paydasında **iki kol da ölü** (kenar tavanı 2h/(4w−4) = 0,2815); D-268 §6'nın "kenar kolu çalışır" cümlesi kırpık maske için yanlış. `kamera_dogrula.py:118` icerik geçirmiyor → dalga 2'de düzeltiliyor.
+
+#### 2. EĞİTİM — `gece_v2_v35taban` (v35 taban, t127 reçetesi birebir, dji ×20, 0038 çift-konum val)
+`142_gece_olcum.py` ön kayıtlı kapı (aynı 29 test karesi; v35 tabanı ROTA 6 · MASKE_YOK 16):
+
+| kapı | eşik | v2 | sonuç |
+|---|---|---|---|
+| (a) kabul zinciri / K1 / 67'de red / çatı | True / ≥230 / ≤5 / ≤0,10 | True / 255 / 0 / — | **GEÇTİ** |
+| (b) ROTA test29 | ≥ 10 | **11** | GEÇTİ |
+| (b) MASKE_YOK test29 | ≤ 10 | **3** | GEÇTİ |
+| (b-ek) FP (etiket tavanı 13'e karşı) | ≤ 1 | **2** | **DÜŞTÜ** |
+
+TP 9 (v35: 6) · FN 4 · FP 2: `frame_000025` (zemin oranı **0,928** — çayırın tamamı zemin, `fp_kareler_v2.jpg`), `frame_000035` (0,816). Bilgi ekseni aynı yönü gösteriyor: figür zemin **0,516** (v35 0,151, **3,4×** — "tehlikeli yön"), kaplama67 0,452. Eğitim 19 epoch'ta durdu, best **epoch 4** (v1'de epoch 1'di) — val hâlâ rescuenet/sentetik ağırlıklı.
+⇒ **Terfi YOK.** Model daha çok görüyor ama **fazla** görüyor; FP kuralı olmasaydı (b) geçerdi — ön kayıt eklemesi işe yaradı. Yeni ZEMIN_MASKESI_SUPHELI 2 kare (0,55/0,40 ile) aynı fazla-görmeyi yakaladı.
+
+#### 3. DALGA 1 — üç kapanış, çürütücü kıramadı (`dalga1_ozet.txt`)
+- **T143 KAPANDI:** kayıt defteri `turevler` (her .engine/.onnx kendi sha256'sı, kaynağı .pt'ye bağlı, yer tutucu `DERLENINCE_YAZILIR` = RED, yabancı RED), `--turev-kaydet` CLI; kamera döngüsü düşen-kare sayacı + ardışık üst sınır 30 + loglu bitiş; 28 test, 3 mutasyon. Çürütücü: kıramadı; kusurlar: `--kaynak-pt` isteğe bağlıydı (→ zorunlu, dalga 2), mock M6'da asılı kalıyor (→ çağrı tavanı, dalga 2). Cihaz kapısı ÖLÇÜLEMEDİ (H3).
+- **T144 KAPANDI:** `download_and_convert.py` tavan kırpması ALAN sıralı; D-284 sayıları birebir yeniden üretildi (%31,6/%38,2 → %1,1/%0,5; 13077 %90,4). Bulgu: betiğin gerçek HF girdisi yalnız {0,7,8} → T54 eşlemesi orada hiç tetiklenmez; üretim karışımı `rescuenet_2sinif_engelli` 41+57 zincirinden gelir, **etkilenmez**. Çürütücü notu: tavan altı maskelerde satır SIRASI da değişir (17/254 bayt-eş, 254/254 küme-eş) — YOLO için anlamsız.
+- **T145 KAPANDI:** `138`'e KARANLIK (parlaklık < 85) ve GURULTULU (Laplacian/yapı oranı > 3,5); Codex karşı örneği artık [KARANLIK, GURULTULU]; 160 karede fark yok (152/8). Çürütücü: marj kareye bağımlı (3,77–3,95 vs 3,5), hafif gürültü yakalanmıyor — bilgi.
+- **Şartname boşluk denetimi** (`results/sartname_bosluk/rapor.md`, 18 hüküm satırı): fail-closed zinciri, hakem ekranı (rota + ret sebebi + 2 aşamalı onay) ve iniş kapısı (`iha_inis_yayinci`, Pixhawk kanıtlı — CONTRACTS §7 "üretici yok" notu **bayat**) test kilitli. **8 KRİTİK boşluk:** K1 üretim algı yolu (`run_camera`) telsize **hiç yazmıyor** — OPEN_ROUTE üreticisi yalnız Gazebo betiği; K2 gerçek İKA motor sürücüsü/konum kaynağı yok (`gz` sahada sessizce yutulur); K3 HB dedektörü üretime bağlı değil (4 üretim çağrısı `goruntu=` geçmiyor); K4 IKA_GO tek paket ACK'siz (D-02 hâlâ geçerli); K5 `ika_nav --timeout 60` tek deadline; K6 iniş sonrası heartbeat yok → 3 s'de link_lost; K7 saha yolu `koridor_adaylari` kullanmıyor (iki üretim yolu: `analyze_path` vs `rota_bul`, hangisi yayına gidiyor BELİRSİZ); K8 hakem "İKA'ya aktarıldı" onayını kanıtsız veriyor. K1/K4+K8/K5+K6 dalga 2'de kodlanıyor; K2/K7 insan+mimar kararı.
+
+#### 4. ETİKETLEME — kapasite 4× ucuzladı, tutarsızlık kalıbı bir kez daha
+`140_uc_maske_araci.py` (tek deterministik araç: ızgara → ops.json → PNG + bindirme) ile **dalga 2: 40 kare / 8 amele / 4,5 dk / 544 k jeton (13,6 k/kare — F5'in 56 k'sının 1/4'ü)**; **dalga 3: 120 kare / 24 amele + 3 denetçi / 1,74 M jeton** (ilk deneme oturum limitine takıldı, 843 k boşa; yeniden koşumda mevcut maskeler atlandı). Toplam gerçek-kare etiketi **160 → 320**.
+🔴 Dalga 2'de gözle bulunan tek tutarsızlık: **çiğ/kazılmış/paletle çiğnenmiş toprak** bazı amelelerde sınıf 0. Şartnameye **madde (12)** eklendi (`SU_ETIKETLEME_PLANI.md` 4b-EK-5: sıkışmışlığı doğrulanamayan yumuşak zemin ETİKETSİZ) ve denetçi 15 kareyi düzeltti (sınıf 1'e dokunmadan). Dalga 3'te madde 12 prompt'ta olduğu için denetçi A–H'de **1** düzeltme buldu. Amelelerin açtığı yeni boşluklar (banket, gölge, yığın, dar beton şerit genişliği) `etiket_dalga3` raporlarında — şartname EK-6 adayı.
+Etiket tavanı (`143_etiket_tavani.py`): 29 test karesinin **13**'ünde elle etiket rota üretiyor (15 UC_BANT, 1 MASKE_YOK) — model için üst sınır ve FP referansı.
+
+#### 5. Devam eden (bu kayıt yazılırken)
+`gece_v3_v35taban` (v2 + dalga 2/3 etiketleri, aynı reçete) eğitimde; S2 yönelim ve dalga 2 (K1, K4+K8, K5+K6, T135+T143 kalıntıları) ajanlarda. Sonuçları **D-287**'de.
