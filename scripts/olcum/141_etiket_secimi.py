@@ -18,7 +18,8 @@ KARE_KOK = KOK / "results" / "dji_20260822" / "kareler_1fps"
 IRTIFA = KOK / "results" / "dji_20260822" / "kareler_irtifa.json"
 MASKE_KOKLERI = [KOK / "results" / "dji_20260822" / "f5_olcek", KOK / "results" / "dji_20260822" / "f4",
                  KOK / "results" / "dji_20260822" / "f5", KOK / "results" / "dji_20260822" / "referans",
-                 KOK / "results" / "dji_kirsal" / "bant_tamamlama", KOK / "results" / "dji_20260822" / "su_bindirme"]
+                 KOK / "results" / "dji_kirsal" / "bant_tamamlama", KOK / "results" / "dji_20260822" / "su_bindirme",
+                 KOK / "results" / "gece_20260826" / "etiket_dalga2", KOK / "results" / "gece_20260826" / "etiket_dalga3"]
 
 
 def ozellik(p: Path) -> np.ndarray:

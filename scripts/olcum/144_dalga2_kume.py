@@ -15,7 +15,7 @@ from pathlib import Path
 import cv2
 
 KOK = Path(__file__).resolve().parents[2]
-KAYNAK = KOK / "results" / "gece_20260826" / "etiket_dalga2"
+KAYNAKLAR = [KOK / "results" / "gece_20260826" / "etiket_dalga2", KOK / "results" / "gece_20260826" / "etiket_dalga3"]
 KARE_KOK = KOK / "results" / "dji_20260822" / "kareler_1fps"
 KUME = KOK / "dataset" / "dji_kirsal_dalga2"
 X20 = KOK / "dataset" / "dji_kirsal_dalga2_x20"
@@ -47,7 +47,7 @@ def main():
     if X20.exists():
         shutil.rmtree(X20)
     say = {"train": 0, "val": 0, "bos": []}
-    for p in sorted(KAYNAK.glob("*/*_uc.png")):
+    for p in sorted(q for k in KAYNAKLAR if k.exists() for q in k.glob("*/*_uc.png")):
         govde = p.name[:-len("_uc.png")]
         kaynak, stem = govde.split("__", 1)
         kare = KARE_KOK / kaynak / (stem + ".jpg")
