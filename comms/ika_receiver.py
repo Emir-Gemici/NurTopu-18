@@ -24,10 +24,17 @@ from protocol import encode, ack, FrameReader
 
 
 class IkaReceiver:
-    def __init__(self, link, node="ika", send_ack=True, hb_timeout=3.0):
+    def __init__(self, link, node="ika", send_ack=True, hb_timeout=3.0,
+                 yks_peer=None):
         self.link = link
         self.node = node
         self.send_ack = send_ack
+        # K8 (şartname §2.2.3): hakem "İKA'ya aktarıldı" onayını ekranda KANIT
+        # görmeden veremez. UDP'de OPEN_ROUTE ACK'ı yalnız gönderene (İHA)
+        # gider; YKS adresi biliniyorsa ACK'ın kopyası YKS'ye de yansıtılır.
+        # Seri (SiK) hatta ortam zaten yayındır, yansıtma gerekmez. Adres CLI
+        # ile verilmemişse ilk geçerli IKA_GO'nun kaynağından öğrenilir.
+        self.yks_addr = yks_peer
         self.hb_timeout = hb_timeout    # sn: bu süre mesaj gelmezse bağlantı KAYIP
         self.reader = FrameReader()
         # RLock: navigasyonun atomik karar+motor korumasında aynı thread'den
@@ -150,20 +157,32 @@ class IkaReceiver:
             self._surus_iznini_guncelle_unlocked()
             return geri_geldi
 
-    def _kontrol_mesaji_ack(self, ref_seq, addr):
+    def _kontrol_mesaji_ack(self, ref_seq, addr, ref_tip=None):
         """Kontrol olayı ACK hatasının alıcı thread'ini öldürmesini engelle."""
         if not self.send_ack:
             return
         if addr is None and not isinstance(self.link, SerialLink):
             return
         try:
-            data = encode(ack(ref_seq, self.node))
+            data = encode(ack(ref_seq, self.node, ref_tip))
             if addr is None:
                 self.link.send(data)
             else:
                 self.link.send(data, addr)
         except (OSError, TypeError, ValueError):
             pass
+
+    def _rota_ack(self, msg, addr):
+        """OPEN_ROUTE/NO_ROUTE ACK'ı gönderene (İHA) + kopyası YKS'ye (K8)."""
+        if not self.send_ack or addr is None:
+            return
+        data = encode(ack(msg["seq"], self.node, msg.get("type")))
+        self.link.send(data, addr)
+        if self.yks_addr is not None and tuple(self.yks_addr) != tuple(addr):
+            try:
+                self.link.send(data, self.yks_addr)
+            except (OSError, TypeError, ValueError):
+                pass                          # yansıtma hatası İHA ACK'ını bozmaz
 
     def set_decision_deadline(self, deadline_monotonic):
         """Deadline anındaki son kararı, sonraki mesajlardan bağımsız koru."""
@@ -212,8 +231,7 @@ class IkaReceiver:
                 self._decision_monotonic = alindi_monotonic
                 self._capture_deadline_snapshot_unlocked()
             self._link_geri_bildir(geri_geldi)
-            if self.send_ack and addr is not None:
-                self.link.send(encode(ack(msg["seq"], self.node)), addr)
+            self._rota_ack(msg, addr)
             if self.on_route:
                 self.on_route(msg)
         elif tip == "NO_ROUTE":
@@ -227,8 +245,7 @@ class IkaReceiver:
                 self._decision_monotonic = alindi_monotonic
                 self._capture_deadline_snapshot_unlocked()
             self._link_geri_bildir(geri_geldi)
-            if self.send_ack and addr is not None:
-                self.link.send(encode(ack(msg["seq"], self.node)), addr)
+            self._rota_ack(msg, addr)
             if self.on_no_route:
                 self.on_no_route(msg)
         elif tip == "HEARTBEAT" and msg.get("node") == "iha":
@@ -242,7 +259,7 @@ class IkaReceiver:
                 return
             geri_geldi = self.iha_inisini_bildir(alindi_monotonic)
             self._link_geri_bildir(geri_geldi)
-            self._kontrol_mesaji_ack(ref_seq, addr)
+            self._kontrol_mesaji_ack(ref_seq, addr, "IHA_LANDED")
             if self.on_iha_landed:
                 self.on_iha_landed(msg)
         elif (tip == "CMD"
@@ -257,7 +274,10 @@ class IkaReceiver:
                     self.ika_go_monotonic = alindi_monotonic
                 self._ika_go_event.set()
                 self._surus_iznini_guncelle_unlocked()
-            self._kontrol_mesaji_ack(ref_seq, addr)
+                if self.yks_addr is None and addr is not None:
+                    self.yks_addr = tuple(addr)   # K8: rota ACK kopyası buraya
+            # Mükerrer IKA_GO idempotent: latch zaten kurulu, yalnız ACK tekrarlanır
+            self._kontrol_mesaji_ack(ref_seq, addr, "CMD")
             if self.on_ika_go:
                 self.on_ika_go(msg)
 
@@ -296,6 +316,8 @@ def main():
     ap.add_argument("--bind", default="0.0.0.0:5006", help="UDP bind host:port")
     ap.add_argument("--serial", help="SiK telsiz seri portu (saha)")
     ap.add_argument("--baud", type=int, default=57600)
+    ap.add_argument("--yks", help="YKS adresi host:port — OPEN_ROUTE ACK "
+                    "kopyası hakem ekranına yansıtılır (K8, UDP)")
     args = ap.parse_args()
 
     if args.serial:
@@ -305,7 +327,11 @@ def main():
         link = UDPLink(bind=(h, int(p)))
         print(f"[İKA] Dinleniyor: {args.bind}")
 
-    rx = IkaReceiver(link)
+    yks_peer = None
+    if args.yks:
+        h, p = args.yks.split(":")
+        yks_peer = (h, int(p))
+    rx = IkaReceiver(link, yks_peer=yks_peer)
     rx.on_route = lambda m: print(
         f"[İKA] ✓ Açık yol alındı: {m['label'].upper()} ({m['road']}) "
         f"conf={m['conf']} seq={m['seq']} ref={m.get('ref_xy')} "

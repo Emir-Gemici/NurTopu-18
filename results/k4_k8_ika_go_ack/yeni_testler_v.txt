@@ -1,0 +1,17 @@
+test_ack_hic_gelmezse_ust_sinirda_vazgecer (test_ika_go_ackli_tekrar.AckliTekrarDurumMakinesiTests.test_ack_hic_gelmezse_ust_sinirda_vazgecer) ... ok
+test_ilk_uc_kayip_dorduncu_ulasir_ack_tekrari_durdurur (test_ika_go_ackli_tekrar.AckliTekrarDurumMakinesiTests.test_ilk_uc_kayip_dorduncu_ulasir_ack_tekrari_durdurur) ... ok
+test_tasiyici_reddederse_bos_kalir (test_ika_go_ackli_tekrar.AckliTekrarDurumMakinesiTests.test_tasiyici_reddederse_bos_kalir) ... ok
+test_yanlis_ref_veya_ref_tip_tekrari_durdurmaz (test_ika_go_ackli_tekrar.AckliTekrarDurumMakinesiTests.test_yanlis_ref_veya_ref_tip_tekrari_durdurmaz) ... ok
+test_ika_open_route_ack_gelince_dugme_acilir_ve_onay_verilir (test_ika_go_ackli_tekrar.HakemAktarimOnayiKanitsizPasifTests.test_ika_open_route_ack_gelince_dugme_acilir_ve_onay_verilir) ... ok
+test_kanit_yokken_ikinci_onay_verilmez_dugme_pasif_gerekce_gorunur (test_ika_go_ackli_tekrar.HakemAktarimOnayiKanitsizPasifTests.test_kanit_yokken_ikinci_onay_verilmez_dugme_pasif_gerekce_gorunur) ... ok
+test_sabit_degerler_sozlesmeden (test_ika_go_ackli_tekrar.HakemAktarimOnayiKanitsizPasifTests.test_sabit_degerler_sozlesmeden) ... ok
+test_ack_hic_gelmez_ust_sinir_kirmizi_hata_dugme_yeniden_aktif (test_ika_go_ackli_tekrar.IkaGoGercekUdpPaketDusurmeTests.test_ack_hic_gelmez_ust_sinir_kirmizi_hata_dugme_yeniden_aktif) ... ok
+test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur (test_ika_go_ackli_tekrar.IkaGoGercekUdpPaketDusurmeTests.test_ilk_uc_ika_go_dusurulur_dorduncu_ack_alir_tekrar_durur) ... ok
+test_ayni_ika_go_uc_kez_gelir_latch_bir_kez_kurulur_her_seferinde_ack (test_ika_go_ackli_tekrar.IkaMukerrerIkaGoIdempotentTests.test_ayni_ika_go_uc_kez_gelir_latch_bir_kez_kurulur_her_seferinde_ack) ... ok
+test_open_route_ack_yks_akranina_yansitilir (test_ika_go_ackli_tekrar.IkaMukerrerIkaGoIdempotentTests.test_open_route_ack_yks_akranina_yansitilir) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.318s
+
+OK
+[K4_UDP] dusurulen=3 ulasan_deneme=4 ika_go=True tekrar_durdu=1

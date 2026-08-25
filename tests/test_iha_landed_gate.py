@@ -331,6 +331,7 @@ class IhaLandedGateTests(unittest.TestCase):
         yks.onaylandi = True
         yks.btn_ika_go = mock.Mock()
         yks.btn_hb = mock.Mock()
+        yks.lbl_ika_go = mock.Mock()     # K4: ACK bekleme etiketi
 
         yks._mesaj_isle(iha_landed(seq=9501), ("127.0.0.1", 5010))
 

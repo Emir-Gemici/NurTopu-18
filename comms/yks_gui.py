@@ -34,13 +34,16 @@ from tkinter import font as tkfont
 
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
+from komut_tekrar import AckliTekrar, ONAYLANDI, VAZGECILDI
 from protocol import (encode, ack, command, heartbeat, open_route,
                       FrameReader, ROAD_LABEL)
 
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
 if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
-from karar_sozlesmesi import (ZEMIN_KAPLAMA_TAVANI,
+from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
+                              IKA_GO_TEKRAR_UST_SINIRI,
+                              ZEMIN_KAPLAMA_TAVANI,
                               ZEMIN_MASKESI_SUPHELI_SEBEBI,
                               OLCEK_KAYNAK_ARAC,
                               OLCEK_KAYNAK_ETIKETI,
@@ -212,6 +215,13 @@ class YksArayuz:
             "ACK_TX": 0,
         }
         self.iha_landed_seq = None       # üretim İHA'sından gelen son iniş olayı
+        # K4: IKA_GO ACK'lı tekrar gönderimi (durum makinesi Tk'dan bağımsız)
+        self.ika_go_tekrar = AckliTekrar(
+            self._ham_gonder, IKA_GO_TEKRAR_ARALIGI_S, IKA_GO_TEKRAR_UST_SINIRI)
+        self.ika_go_ack_zamani = None    # İKA'nın IKA_GO ACK'ı (duvar saati)
+        # K8: İKA'nın OPEN_ROUTE ACK kanıtı: seq -> duvar saati. Hakem 2. onayı
+        # ancak geçerli rota seq'i bu sözlükte varsa verebilir (fail-closed).
+        self.ika_rota_ack = {}
         self.arm_acik = False
         self.tespit_onayli = False          # §2.2.3 iki aşamalı onayın 1. adımı
         self.t_iha0 = self.t_iha1 = None    # İHA görev kronometresi
@@ -500,6 +510,9 @@ class YksArayuz:
         self.lbl_arm = tk.Label(satir2, text="SİSTEM: DISARM — güvenli",
                                 font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_arm.pack(side="left", padx=10)
+        self.lbl_ika_go = tk.Label(satir2, text="İKA_GO: —",
+                                   font=self.f_orta, fg=SOLUK, bg=PANEL)
+        self.lbl_ika_go.pack(side="left", padx=10)
         self.lbl_kron_ika = tk.Label(satir2, text="İKA ⏱ --:-- / 10:00",
                                      font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_kron_ika.pack(side="right", padx=10)
@@ -886,6 +899,8 @@ class YksArayuz:
                 self._logla(f"NO_ROUTE · {sebep}"
                             + (f" · {detay}" if detay else "")
                             + " → güvenli duruş ACK'i gönderildi", "sari")
+        elif tip == "ACK":
+            self._ack_isle(m, adr)
         elif tip == "IHA_LANDED":
             seq = m.get("seq")
             if (m.get("node") != "iha" or isinstance(seq, bool)
@@ -969,10 +984,14 @@ class YksArayuz:
         if not self.tespit_onayli:
             self.tespit_onayli = True
             self._logla("HAKEM 1/2: güzergâh TESPİTİ doğrulandı (§2.2.3)", "sari")
-            self.btn_onay.config(text="2) İKA'YA AKTARIMI ONAYLA → ACK", bg=SARI)
-            self.lbl_onay.config(text="Tespit doğrulandı ✓ — İKA'ya aktarımın da "
-                                      "onaylanması gerekiyor (§2.2.3 ikinci onay)",
-                                 fg=SARI)
+            self._aktarim_onay_dugmesini_kur()
+            return
+        # K8 fail-closed: İKA'nın bu rota için OPEN_ROUTE ACK kanıtı ekranda
+        # görünmeden "İKA'ya aktarıldı" onayı VERİLMEZ (şartname §2.2.3).
+        if not self.ika_aktarim_kaniti_var():
+            self._aktarim_onay_dugmesini_kur()
+            self._logla("HAKEM 2/2 REDDEDİLDİ: İKA'dan OPEN_ROUTE ACK kanıtı yok "
+                        f"(seq={self.rota['seq']}) — kanıtsız onay verilmez", "sari")
             return
         if self.rota_adr is not None:
             self.link.send(encode(ack(self.rota["seq"], "yks")), self.rota_adr)
@@ -986,13 +1005,70 @@ class YksArayuz:
             havada = " · AKTARIM ZAMANI BİLİNMİYOR (IHA_LANDED kanıtı var)"
         else:
             havada = " · İHA henüz inmedi"
+        kanit = time.strftime("%H:%M:%S", time.localtime(
+            self.ika_rota_ack[self.rota["seq"]]))
         self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓✓")
         self.lbl_onay.config(text=f"Hakem onayı tam — ACK(seq={self.rota['seq']}) "
-                                  f"İHA'ya iletildi{havada}", fg=YESIL)
+                                  f"İHA'ya iletildi · İKA ACK kanıtı {kanit}"
+                                  f"{havada}", fg=YESIL)
         self._logla(f"HAKEM 2/2: İKA'ya aktarım doğrulandı → ACK ref={self.rota['seq']}",
                     "sari")
         self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
                       "433 MHz TX", "YKS (bu ekran)", "İKA"))
+
+    # ── K8: İKA aktarım kanıtı (fail-closed hakem kapısı) ────────────────────
+    def ika_aktarim_kaniti_var(self):
+        """Geçerli rota seq'i için İKA'dan OPEN_ROUTE ACK görüldü mü?"""
+        return bool(self.rota) and self.rota["seq"] in self.ika_rota_ack
+
+    def _aktarim_onay_dugmesini_kur(self):
+        """Tespit onaylandıktan sonra 2. düğmenin hâli: kanıt varsa aktif,
+        yoksa PASİF + gerekçe metni (kanıt gelince `_ack_isle` yeniden çağırır)."""
+        if self.ika_aktarim_kaniti_var():
+            kanit = time.strftime("%H:%M:%S", time.localtime(
+                self.ika_rota_ack[self.rota["seq"]]))
+            self.btn_onay.config(state="normal", bg=SARI,
+                                 text="2) İKA'YA AKTARIMI ONAYLA → ACK")
+            self.lbl_onay.config(
+                text=f"Tespit doğrulandı ✓ · İKA ALDI ✓ {kanit} "
+                     f"(OPEN_ROUTE ACK seq={self.rota['seq']}) — aktarımı "
+                     "onaylayabilirsiniz (§2.2.3 ikinci onay)", fg=SARI)
+        else:
+            self.btn_onay.config(state="disabled", bg="#232e3a",
+                                 text="2) İKA ACK KANITI BEKLENİYOR")
+            self.lbl_onay.config(
+                text="Tespit doğrulandı ✓ — ama İKA'dan OPEN_ROUTE ACK kanıtı "
+                     f"GÖRÜNMEDİ (seq={self.rota['seq']}). Kanıt gelmeden "
+                     "'İKA'ya aktarıldı' onayı verilemez (§2.2.3, fail-closed).",
+                fg=KIRMIZI)
+
+    def _ack_isle(self, m, adr):
+        """Gelen ACK'ları bekleyenlere bağla: IKA_GO tekrarı (K4) ve İKA rota
+        kanıtı (K8). `ref_tip` yoksa yalnız `ref` ile eşlenir (CONTRACTS §6.5)."""
+        ref = m.get("ref")
+        if isinstance(ref, bool) or not isinstance(ref, int):
+            return
+        if m.get("node") != "ika":
+            return
+        self._dugum_adresini_ogren("ika", adr)
+        ref_tip = m.get("ref_tip")
+        if self.ika_go_tekrar.ack_geldi(m):
+            self.ika_go_ack_zamani = time.time()
+            damga = time.strftime("%H:%M:%S", time.localtime(self.ika_go_ack_zamani))
+            self.lbl_ika_go.config(text=f"İKA ALDI ✓ {damga}", fg=YESIL)
+            self._logla(f"İKA ALDI ✓ IKA_GO ACK ref={ref} · {damga} · "
+                        f"{self.ika_go_tekrar.deneme} gönderim", "yesil")
+        if (self.rota and ref == self.rota["seq"]
+                and ref_tip in (None, "OPEN_ROUTE")
+                and ref not in self.ika_rota_ack):
+            self.ika_rota_ack[ref] = time.time()
+            damga = time.strftime("%H:%M:%S", time.localtime(self.ika_rota_ack[ref]))
+            self._logla(f"İKA ALDI ✓ OPEN_ROUTE ACK ref={ref} · {damga} "
+                        "(aktarım kanıtı ekranda)", "yesil")
+            if self.tespit_onayli and not self.onaylandi:
+                self._aktarim_onay_dugmesini_kur()
+                if self.otomatik_onay:
+                    self.kok.after(500, self.onayla)
 
     # ── Acil durum senaryoları (arıza emniyet tatbikatı) ─────────────────────
     # Davranışlar takım tasarımından: avionics_software.md "Arıza Emniyet
@@ -1759,9 +1835,11 @@ class YksArayuz:
         if adr is not None and dugum not in self.sabit_adr:
             self.son_adr[dugum] = adr
 
-    def _cmd_gonder(self, cmd, hedef_dugum):
+    def _ham_gonder(self, komut_mesaji):
+        """Hazır komut mesajını (AYNI seq) taşıyıcıya ver — tekrarlar bunu kullanır."""
+        hedef_dugum = komut_mesaji["hedef"]
         adr = self.son_adr.get(hedef_dugum)
-        komut_mesaji = command(cmd, hedef_dugum)
+        cmd = komut_mesaji["cmd"]
         mesaj = encode(komut_mesaji)
         try:
             if isinstance(self.link, SerialLink):
@@ -1777,6 +1855,12 @@ class YksArayuz:
         except (OSError, TypeError, ValueError) as exc:
             self._logla(
                 f"CMD GÖNDERİLEMEDİ → {hedef_dugum}: {cmd} — {exc}", "kirmizi")
+            return False
+        return True
+
+    def _cmd_gonder(self, cmd, hedef_dugum):
+        komut_mesaji = command(cmd, hedef_dugum)
+        if not self._ham_gonder(komut_mesaji):
             return False
         self._logla(f"CMD → {hedef_dugum}: {cmd}", "mavi")
         return komut_mesaji["seq"]
@@ -1834,13 +1918,37 @@ class YksArayuz:
             return
         if self.t_ika0:
             return
-        if not self._cmd_gonder("IKA_GO", "ika"):
+        # K4: IKA_GO ACK gelene dek AYNI seq ile tekrar gönderilir (D-02).
+        komut_mesaji = command("IKA_GO", "ika")
+        if not self.ika_go_tekrar.baslat(komut_mesaji):
             return
+        self._logla(f"CMD → ika: IKA_GO (seq={komut_mesaji['seq']}, ACK bekleniyor · "
+                    f"{IKA_GO_TEKRAR_ARALIGI_S:.2f} s × ≤{IKA_GO_TEKRAR_UST_SINIRI})",
+                    "mavi")
         self.t_ika0 = time.time()
         self._logla("GÖREV · İKA İNTİKALİ BAŞLADI — kronometre limit 10:00 "
                     "(kilit koşulları sağlandı ✓)", "mavi")
         self.btn_ika_go.config(state="disabled", bg="#232e3a")
         self.btn_hb.config(state="normal", bg=SARI)
+        self.lbl_ika_go.config(text="İKA_GO gönderildi · ACK bekleniyor…", fg=SARI)
+        self.kok.after(int(IKA_GO_TEKRAR_ARALIGI_S * 1000), self._ika_go_tik)
+
+    def _ika_go_tik(self):
+        """Zamanlayıcı adımı: ACK yoksa tekrar; üst sınırda KIRMIZI hata + düğme
+        yeniden aktif (görev kaybedilmez, operatör tekrar tetikler)."""
+        durum = self.ika_go_tekrar.tik()
+        if durum == ONAYLANDI:
+            return
+        if durum == VAZGECILDI:
+            self._logla(f"İKA ONAY VERMEDİ ✗ IKA_GO {self.ika_go_tekrar.deneme} kez "
+                        "gönderildi, ACK gelmedi — düğme yeniden aktif", "kirmizi")
+            self.lbl_ika_go.config(text="İKA ONAY VERMEDİ ✗", fg=KIRMIZI)
+            self.t_ika0 = None                 # kronometre başlamamış sayılır
+            self.btn_ika_go.config(state="normal", bg=KIRMIZI)
+            self.btn_hb.config(state="disabled", bg="#232e3a")
+            return
+        if self.ika_go_tekrar.bekliyor:
+            self.kok.after(int(IKA_GO_TEKRAR_ARALIGI_S * 1000), self._ika_go_tik)
 
     def hb_temas(self):
         if not self.t_ika0 or self.t_ika1:
@@ -1990,6 +2098,8 @@ def demo_besle(yks_port, durum):
     İHA: 1 Hz heartbeat + ACK gelene dek OPEN_ROUTE tekrar gönderimi.
     İKA: 1 Hz heartbeat. `durum` anahtarları senaryo butonlarıyla kesilir."""
     hedef = ("127.0.0.1", yks_port)
+    ika_link = UDPLink()
+    ika_hedef = ("127.0.0.1", ika_link.port)
 
     def iha():
         link = UDPLink()
@@ -2016,6 +2126,7 @@ def demo_besle(yks_port, durum):
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:
                     link.send(encode(rota), hedef)         # ACK yok → tekrar
+                    link.send(encode(rota), ika_hedef)     # İKA ACK'ı YKS'ye yansır
                     son_tx = time.time()
             d, _ = link.recv()
             for m in reader.feed(d) if d else []:
@@ -2024,8 +2135,8 @@ def demo_besle(yks_port, durum):
             time.sleep(0.5)
 
     def ika():
-        link = UDPLink()
-        receiver = IkaReceiver(link)
+        link = ika_link
+        receiver = IkaReceiver(link, yks_peer=hedef)     # K8: rota ACK kopyası
         t0 = time.time()
         while time.time() - t0 < 600:
             if durum["ika_hb"]:                            # İKA-kaybı senaryosu keser

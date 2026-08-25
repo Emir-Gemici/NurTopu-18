@@ -1272,3 +1272,17 @@ def hedef_yok_reddi(detay=None):
     return (HEDEF_YOK_SEBEBI,
             detay or ("HB (2 m x 2 m kirmizi H bolgesi) karede bulunamadi; "
                       "varis noktasi bilinmeden rota uretilmez."))
+
+
+# ── K4 (sartname SS2.2.5): IKA_GO ACK'li tekrar gonderimi ─────────────────
+# NEDEN: IKA_GO tek UDP/seri paketiydi; tek paket kaybi gorevi geri donulmez
+# bitiriyordu (REVIEW_LOG D-02). YKS, IKA'dan ACK gelene dek AYNI seq ile
+# tekrar gonderir; IKA tarafi latch oldugu icin mukerrer alim idempotenttir.
+#   aralik   : SiK 433 MHz 57600 baud'da ~200 B cerceve + ACK gidis-donusu
+#              < 100 ms; 0,25 s hem RTT'yi asar hem hatti bogmaz (4 pkt/s).
+#   ust sinir: 20 deneme x 0,25 s = 5 s. IKA'nin baglanti-kaybi esigi
+#              (`ika_receiver.hb_timeout` = 3 s) asildiktan sonra da 2 s
+#              beklenir; sonra ekran KIRMIZI "IKA ONAY VERMEDI" der ve dugme
+#              yeniden acilir — gorev kaybedilmez, operator tekrar tetikler.
+IKA_GO_TEKRAR_ARALIGI_S = 0.25
+IKA_GO_TEKRAR_UST_SINIRI = 20
