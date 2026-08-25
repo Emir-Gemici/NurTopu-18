@@ -1,0 +1,437 @@
+{
+ "_ne": "BANT TAMAMLAMA is listesi — hedefli, TUM kare yeniden etiketlenmez",
+ "_secim": "bant_bosluk.json KURTARILABILIR + kare_uygunluk.json ETIKET_COK_SEYREK",
+ "_uygunluk": "160 karenin 152'si BAYRAKSIZ; bulanik/pozlama/nadir/ikiz YOK",
+ "gruplar": {
+  "A": [
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000018_000000660",
+    "maske": "A/dji_20260822170832_0037_d__frame_000018_000000660_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000018_000000660.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 1.0
+    },
+    "kare_etiketsiz_oran": 0.7557,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000135_000005580",
+    "maske": "C/dji_20260822170832_0037_d__frame_000135_000005580_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000135_000005580.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.8778
+    },
+    "kare_etiketsiz_oran": 0.8665,
+    "neden": "BANT+SEYREK"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000146_000005910",
+    "maske": "C/dji_20260822170832_0037_d__frame_000146_000005910_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000146_000005910.jpg",
+    "eksik_taraf": [],
+    "hukum": "ZATEN_YETER",
+    "bant_etiketsiz_pay": {},
+    "kare_etiketsiz_oran": 0.87,
+    "neden": "+SEYREK"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000205_000008040",
+    "maske": "A/dji_20260822170832_0037_d__frame_000205_000008040_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000205_000008040.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.9747
+    },
+    "kare_etiketsiz_oran": 0.8319,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000285_000010770",
+    "maske": "C/dji_20260822170832_0037_d__frame_000285_000010770_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000285_000010770.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 1.0
+    },
+    "kare_etiketsiz_oran": 0.9145,
+    "neden": "BANT+SEYREK"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000035_000001920",
+    "maske": "C/dji_20260822172613_0038_d__frame_000035_000001920_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000035_000001920.jpg",
+    "eksik_taraf": [
+     "alt",
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.8727,
+     "ust": 0.914
+    },
+    "kare_etiketsiz_oran": 0.8463,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000105_000004320",
+    "maske": "D/dji_20260822172613_0038_d__frame_000105_000004320_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000105_000004320.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.2281
+    },
+    "kare_etiketsiz_oran": 0.2709,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000176_000006600",
+    "maske": "B/dji_20260822172613_0038_d__frame_000176_000006600_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000176_000006600.jpg",
+    "eksik_taraf": [
+     "alt",
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.3398,
+     "ust": 0.9633
+    },
+    "kare_etiketsiz_oran": 0.5885,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000205_000007560",
+    "maske": "B/dji_20260822172613_0038_d__frame_000205_000007560_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000205_000007560.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 1.0
+    },
+    "kare_etiketsiz_oran": 0.8014,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000218_000007980",
+    "maske": "A/dji_20260822172613_0038_d__frame_000218_000007980_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000218_000007980.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.8608
+    },
+    "kare_etiketsiz_oran": 0.7491,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822173231_0039_d__frame_000115_000006180",
+    "maske": "C/dji_20260822173231_0039_d__frame_000115_000006180_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822173231_0039_d/frame_000115_000006180.jpg",
+    "eksik_taraf": [],
+    "hukum": "ZATEN_YETER",
+    "bant_etiketsiz_pay": {},
+    "kare_etiketsiz_oran": 0.8766,
+    "neden": "+SEYREK"
+   }
+  ],
+  "B": [
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000082_000003120",
+    "maske": "A/dji_20260822170832_0037_d__frame_000082_000003120_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000082_000003120.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR_ZAYIF",
+    "bant_etiketsiz_pay": {
+     "ust": 0.0023
+    },
+    "kare_etiketsiz_oran": 0.5287,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000142_000005790",
+    "maske": "A/dji_20260822170832_0037_d__frame_000142_000005790_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000142_000005790.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.6724
+    },
+    "kare_etiketsiz_oran": 0.6457,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000157_000006240",
+    "maske": "C/dji_20260822170832_0037_d__frame_000157_000006240_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000157_000006240.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.9315
+    },
+    "kare_etiketsiz_oran": 0.8477,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000237_000009060",
+    "maske": "C/dji_20260822170832_0037_d__frame_000237_000009060_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000237_000009060.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.8589
+    },
+    "kare_etiketsiz_oran": 0.8539,
+    "neden": "BANT+SEYREK"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000021_000001500",
+    "maske": "B/dji_20260822172613_0038_d__frame_000021_000001500_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000021_000001500.jpg",
+    "eksik_taraf": [
+     "alt",
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.6095,
+     "ust": 0.7972
+    },
+    "kare_etiketsiz_oran": 0.6272,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000055_000002550",
+    "maske": "C/dji_20260822172613_0038_d__frame_000055_000002550_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000055_000002550.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.6906
+    },
+    "kare_etiketsiz_oran": 0.7798,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000107_000004380",
+    "maske": "D/dji_20260822172613_0038_d__frame_000107_000004380_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000107_000004380.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.2227
+    },
+    "kare_etiketsiz_oran": 0.1172,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000197_000007320",
+    "maske": "D/dji_20260822172613_0038_d__frame_000197_000007320_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000197_000007320.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.6772
+    },
+    "kare_etiketsiz_oran": 0.4631,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000207_000007620",
+    "maske": "C/dji_20260822172613_0038_d__frame_000207_000007620_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000207_000007620.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.9538
+    },
+    "kare_etiketsiz_oran": 0.7824,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000223_000008250",
+    "maske": "A/dji_20260822172613_0038_d__frame_000223_000008250_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000223_000008250.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.5702
+    },
+    "kare_etiketsiz_oran": 0.8771,
+    "neden": "BANT+SEYREK"
+   }
+  ],
+  "C": [
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000133_000005520",
+    "maske": "D/dji_20260822170832_0037_d__frame_000133_000005520_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000133_000005520.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.91
+    },
+    "kare_etiketsiz_oran": 0.824,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000144_000005850",
+    "maske": "C/dji_20260822170832_0037_d__frame_000144_000005850_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000144_000005850.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.7094
+    },
+    "kare_etiketsiz_oran": 0.6965,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000174_000006990",
+    "maske": "C/dji_20260822170832_0037_d__frame_000174_000006990_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000174_000006990.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.7041
+    },
+    "kare_etiketsiz_oran": 0.5441,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822170832_0037_d__frame_000284_000010740",
+    "maske": "C/dji_20260822170832_0037_d__frame_000284_000010740_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822170832_0037_d/frame_000284_000010740.jpg",
+    "eksik_taraf": [],
+    "hukum": "ZATEN_YETER",
+    "bant_etiketsiz_pay": {},
+    "kare_etiketsiz_oran": 0.8843,
+    "neden": "+SEYREK"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000025_000001620",
+    "maske": "A/dji_20260822172613_0038_d__frame_000025_000001620_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000025_000001620.jpg",
+    "eksik_taraf": [
+     "alt"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "alt": 0.633
+    },
+    "kare_etiketsiz_oran": 0.7691,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000085_000003720",
+    "maske": "C/dji_20260822172613_0038_d__frame_000085_000003720_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000085_000003720.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.2668
+    },
+    "kare_etiketsiz_oran": 0.3566,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000114_000004590",
+    "maske": "B/dji_20260822172613_0038_d__frame_000114_000004590_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000114_000004590.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.505
+    },
+    "kare_etiketsiz_oran": 0.4973,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000200_000007410",
+    "maske": "A/dji_20260822172613_0038_d__frame_000200_000007410_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000200_000007410.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 0.6302
+    },
+    "kare_etiketsiz_oran": 0.642,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000217_000007950",
+    "maske": "A/dji_20260822172613_0038_d__frame_000217_000007950_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822172613_0038_d/frame_000217_000007950.jpg",
+    "eksik_taraf": [
+     "ust"
+    ],
+    "hukum": "KURTARILABILIR",
+    "bant_etiketsiz_pay": {
+     "ust": 1.0
+    },
+    "kare_etiketsiz_oran": 0.7626,
+    "neden": "BANT"
+   },
+   {
+    "kare": "dji_20260822173231_0039_d__frame_000112_000006030",
+    "maske": "A/dji_20260822173231_0039_d__frame_000112_000006030_uc.png",
+    "goruntu": "results/dji_20260822/kareler_1fps/dji_20260822173231_0039_d/frame_000112_000006030.jpg",
+    "eksik_taraf": [],
+    "hukum": "ZATEN_YETER",
+    "bant_etiketsiz_pay": {},
+    "kare_etiketsiz_oran": 0.8557,
+    "neden": "+SEYREK"
+   }
+  ]
+ }
+}
