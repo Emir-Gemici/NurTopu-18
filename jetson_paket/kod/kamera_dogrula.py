@@ -22,6 +22,20 @@ import cv2
 import numpy as np
 
 
+def zincir_durumu(bgr, tahmin_maskeleri, *, rota_bul, preprocess, kirp):
+    """Tek kare icin algi zinciri: letterbox -> maske -> kirp -> rota_bul -> durum.
+
+    T135 (D-268 §6, results/t142/olcum.md §3): `icerik` kutusu `rota_bul`a
+    GECIRILIR. Gecirilmezse 16:9 karede kirpilmis maske + tam tuval paydasi
+    zemin saglamlik kapisinin iki kolunu da oldurur (kaplama <= 0,5625,
+    kenar <= 0,2815) — kapi hic ateslemez. `tahmin_maskeleri(tuval)` model
+    cagrisini sarar; test sahte maske verir.
+    """
+    tuval, _, icerik = preprocess(bgr)
+    mk = kirp(tahmin_maskeleri(tuval), icerik)
+    return rota_bul(mk, mpp=None, plan=False, gorsel_cikti=False, icerik=icerik)["durum"]
+
+
 def kaynagi_coz(metin: str):
     """Sayi ise kamera indeksi, degilse yol/URL olarak birak."""
     try:
@@ -109,13 +123,15 @@ def main() -> int:
         model = YOLO(str(args.model), task="segment")
         print(f"Zincir acik: {args.model.name}")
 
-        def zincir_fn(bgr):
-            tuval, _, icerik = _preprocess(bgr)
+        def tahmin_maskeleri(tuval):
             giris = cv2.resize(tuval, (args.imgsz, args.imgsz), interpolation=cv2.INTER_AREA)
             r = model.predict(giris, imgsz=args.imgsz, conf=args.conf, verbose=False)
             yan = tuval.shape[0]
-            mk = _maskeleri_icerige_kirp(get_masks(r, yan, yan, sinif_idler=(0, 1)), icerik)
-            return rota_bul(mk, mpp=None, plan=False, gorsel_cikti=False)["durum"]
+            return get_masks(r, yan, yan, sinif_idler=(0, 1))
+
+        def zincir_fn(bgr):
+            return zincir_durumu(bgr, tahmin_maskeleri, rota_bul=rota_bul,
+                                 preprocess=_preprocess, kirp=_maskeleri_icerige_kirp)
 
     for i in range(args.isinma):
         ok, kare = cap.read()
