@@ -331,6 +331,7 @@ jetson_paket/
 │   ├── rpi_inference.py         ← _preprocess / get_masks kaynagi
 │   ├── costmap_path_finder.py   ← Katman A karari
 │   ├── karar_sozlesmesi.py      ← rota karar sabitleri
+│   ├── arac_maskesi.py          ← olcek kahini 3. katman (arac govdesinden mpp) — T83
 │   ├── protocol.py              ← ortak mesaj cercevesi
 │   ├── link.py                  ← UDP / SiK seri tasiyicilari
 │   ├── iha_sender.py            ← ACK'li rota ve olay yayini
@@ -346,7 +347,7 @@ jetson_paket/
 Jetson'da klasör yapısını koru:
 ```bash
 mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
-cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py ~/navitas/codes/
+cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py kod/arac_maskesi.py ~/navitas/codes/
 cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py ~/navitas/comms/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
