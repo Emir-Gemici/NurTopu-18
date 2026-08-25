@@ -296,6 +296,20 @@ KAMERA_BITIS_ACILAMADI = "KAMERA_ACILAMADI"
 # `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir.
 MODEL_TUREV_SHA_YER_TUTUCU = "DERLENINCE_YAZILIR"
 
+# ── T135 · `rota_bul(icerik=None)` LETTERBOX SUPHESI (yalniz NOT; karar DEGISMEZ) ──
+# `rota_bul` `icerik=None`da tum tuvali icerik sayar. Cagiran letterbox tuvali
+# (kare tuval, 16:9 icerik) verip `icerik`i GECIRMEZSE zemin saglamlik kapisi
+# matematiksel olarak olur: kaplama <= 0,5625, kenar <= 0,2815 (results/t142
+# /olcum.md §3) — sessiz fail-open. Davranis degistirilmez (geriye uyumluluk),
+# ama supheli durum sebebe/loga bu notla islenir. Suphe kosulu: tuval KARE, en
+# az bir maske pikseli var ve ust+alt (ya da sol+sag) bantlarin ikisi de tum
+# maskelerde TAMAMEN bos. Bant orani 0,10: 4:3 icerik karede 0,125'lik, 16:9
+# icerik 0,219'luk bos bant birakir; 0,10 ikisini de yakalar, mesru kare
+# mozaikte (iha_haritala) zemin sinifi cerceveye dayanmasa bile her iki
+# karsit bantin birden bos olmasi gerekir.
+ICERIK_YOK_LETTERBOX_SUPHESI_NOTU = "ICERIK_YOK_LETTERBOX_SUPHESI"
+LETTERBOX_SUPHE_BANT_ORANI = 0.10
+
 
 def mpp_irtifadan(irtifa_m, goruntu_genislik_px, *, yatay_fov_derece=None,
                   odak_px=None):

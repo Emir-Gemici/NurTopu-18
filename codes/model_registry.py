@@ -116,9 +116,11 @@ def turev_dogrula(profil: dict, dosya: str | Path, *, calisan_imgsz=None,
 
 
 def resolve_model(profile: str | None = None, *, registry_path: str | Path = DEFAULT_REGISTRY,
-                  verify: bool = True, turev: str | Path | None = None) -> tuple[Path, dict]:
+                  verify: bool = True, turev: str | Path | None = None,
+                  calisan_imgsz=None) -> tuple[Path, dict]:
     """Etkin profilin artefaktini coz. `turev` verilirse o dosya profilin
-    `turevler` kaydiyla dogrulanir (T143); .pt yolu DEGISMEZ."""
+    `turevler` kaydiyla dogrulanir (T143); .pt yolu DEGISMEZ. `calisan_imgsz`
+    verilirse turev kaydinin `imgsz`i ile kiyaslanir (uyusmazsa RED)."""
     registry = load_registry(registry_path)
     name = profile or registry.get("default_profile")
     try:
@@ -127,7 +129,8 @@ def resolve_model(profile: str | None = None, *, registry_path: str | Path = DEF
         choices = ", ".join(sorted(registry["profiles"]))
         raise ModelRegistryError(f"bilinmeyen model profili {name!r}; seçenekler: {choices}") from exc
     if turev is not None:
-        uyumlu, detay = turev_dogrula(spec, turev, ozet_hesapla=verify)
+        uyumlu, detay = turev_dogrula(spec, turev, calisan_imgsz=calisan_imgsz,
+                                      ozet_hesapla=verify)
         if not uyumlu:
             raise ModelRegistryError(f"{name}: turev {Path(turev).name} RED — {detay['durum']}")
         spec["profile"] = name
@@ -177,10 +180,15 @@ def turev_kaydet(dosya: str | Path, *, registry_path: str | Path = DEFAULT_REGIS
 
     Guvenlik: (1) dosya var ve uzantisi turev uzantisi; (2) turev ad olarak
     profilde ZATEN kayitli olmali — bu CLI yabanci dosyayi soya SOKMAZ, yalniz
-    yer tutucuyu doldurur / ozeti tazeler; (3) `kaynak_pt` verilirse diskteki
-    .pt ozeti profilin sha256'siyla birebir olmali (yanlis soydan derleme RED);
+    yer tutucuyu doldurur / ozeti tazeler; (3) `kaynak_pt` ZORUNLUDUR ve
+    diskteki .pt ozeti profilin sha256'siyla birebir olmali (yanlis soydan
+    derleme RED; kaynak verilmeden kayit RED — T143 curutucu kusuru 1);
     (4) competition.path ve .pt sha256 DEGISMEZ.
     """
+    if kaynak_pt is None:
+        raise ModelRegistryError(
+            "--kaynak-pt ZORUNLU: turev ozeti, derlendigi .pt profil sha256 ile "
+            "kiyaslanmadan deftere yazilmaz (soy kaniti olmadan kayit RED)")
     yol = Path(dosya)
     if not yol.is_file():
         raise ModelRegistryError(f"turev dosyasi yok: {yol}")
@@ -194,14 +202,13 @@ def turev_kaydet(dosya: str | Path, *, registry_path: str | Path = DEFAULT_REGIS
         raise ModelRegistryError(
             f"{yol.name} profil {name!r} turevlerinde KAYITLI DEGIL — bu CLI yabanci dosyayi "
             "soya sokmaz; once defterde (kaynak baglantisiyla) tanimlanmali.")
-    if kaynak_pt is not None:
-        kaynak_yol = Path(kaynak_pt)
-        if not kaynak_yol.is_file():
-            raise ModelRegistryError(f"kaynak .pt yok: {kaynak_yol}")
-        kaynak_ozet = _sha256(kaynak_yol)
-        if kaynak_ozet != profil.get("sha256"):
-            raise ModelRegistryError(
-                f"kaynak .pt ozeti profil sha256 ile uyusmuyor: {kaynak_ozet} != {profil.get('sha256')}")
+    kaynak_yol = Path(kaynak_pt)
+    if not kaynak_yol.is_file():
+        raise ModelRegistryError(f"kaynak .pt yok: {kaynak_yol}")
+    kaynak_ozet = _sha256(kaynak_yol)
+    if kaynak_ozet != profil.get("sha256"):
+        raise ModelRegistryError(
+            f"kaynak .pt ozeti profil sha256 ile uyusmuyor: {kaynak_ozet} != {profil.get('sha256')}")
     kayit = turevler[yol.name]
     if kayit.get("kaynak") != profil.get("path") or kayit.get("kaynak_sha256") != profil.get("sha256"):
         raise ModelRegistryError(f"{yol.name}: turev kaynagi profilin .pt kaydiyla uyusmuyor (yetim)")
@@ -220,7 +227,7 @@ def _cli(argv=None) -> int:
     parser.add_argument("--turev-kaydet", metavar="DOSYA",
                         help="derlenmis .engine/.onnx turevinin sha256'sini deftere yaz")
     parser.add_argument("--kaynak-pt", metavar="PT", default=None,
-                        help="turevin derlendigi .pt; verilirse ozeti profil sha256 ile kiyaslanir")
+                        help="ZORUNLU: turevin derlendigi .pt; ozeti profil sha256 ile kiyaslanir")
     parser.add_argument("--defter", default=str(DEFAULT_REGISTRY))
     parser.add_argument("--profil", default=None)
     parser.add_argument("--ayna-yok", action="store_true",

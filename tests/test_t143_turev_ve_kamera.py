@@ -39,6 +39,7 @@ PAKET_DEFTER = KOK / "jetson_paket" / "config" / "model_registry.json"
 URETIM_PT = "models/navitas_seg_v35_best.pt"
 URETIM_SHA = "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b"
 ENGINE_ADI = "navitas_seg_v35_best.engine"
+PT_VEKIL_ICERIK = b"URETIM-PT-VEKIL-ICERIGI"
 
 
 def _sha(yol: Path) -> str:
@@ -56,6 +57,21 @@ class _GeciciKok:
         shutil.copy(DEFTER, self.defter)
         self.engine = self.dizin / "models" / ENGINE_ADI
         self.engine.write_bytes(b"TRT-ENGINE-SAHTE-ICERIK-" * 64)
+        # T143 kalinti (1): --kaynak-pt ZORUNLU. Uretim .pt worktree'de yok;
+        # vekil dosya + yalniz BU dosya/BU icerik icin sha vekili (asagida).
+        self.pt = self.dizin / "models" / "navitas_seg_v35_best.pt"
+        self.pt.write_bytes(PT_VEKIL_ICERIK)
+
+    def sha_vekili(self):
+        """`MR._sha256` yamasi: vekil .pt (ayni icerikle) -> URETIM_SHA; digerleri gercek."""
+        gercek = MR._sha256
+
+        def _sha256(yol):
+            yol = Path(yol)
+            if yol == self.pt and yol.read_bytes() == PT_VEKIL_ICERIK:
+                return URETIM_SHA
+            return gercek(yol)
+        return mock.patch.object(MR, "_sha256", side_effect=_sha256)
 
     def veri(self) -> dict:
         return json.loads(self.defter.read_text(encoding="utf-8"))
@@ -219,15 +235,30 @@ class TurevDogrulamaTests(unittest.TestCase):
         self.assertEqual(self.k.engine, yol)
         self.assertEqual(URETIM_PT, spec["path"])            # .pt yolu degismedi
 
+    def test_resolve_model_turev_CALISAN_IMGSZ_iletir(self):
+        """T143 kalinti (3): `calisan_imgsz` turev kaydinin imgsz'i ile kiyaslanir."""
+        self.k.turev_sha_yaz(_sha(self.k.engine))
+        with self.assertRaises(MR.ModelRegistryError) as ctx:
+            MR.resolve_model(registry_path=self.k.defter, turev=self.k.engine, calisan_imgsz=640)
+        self.assertIn("IMGSZ ESLESMIYOR", str(ctx.exception))
+        yol, spec = MR.resolve_model(registry_path=self.k.defter, turev=self.k.engine,
+                                     calisan_imgsz=512)
+        self.assertEqual(self.k.engine, yol)
+        self.assertEqual("turev_eslesti", spec["turev_detay"]["durum"])
+
 
 class TurevKaydetCliTests(unittest.TestCase):
     def setUp(self):
         self.k = _GeciciKok()
         self.addCleanup(self.k.kapat)
+        yama = self.k.sha_vekili()
+        yama.start()
+        self.addCleanup(yama.stop)
 
     def test_turev_kaydet_yer_tutucuyu_GERCEK_ozetle_degistirir_ve_aynayi_yazar(self):
         ayna = self.k.dizin / "ayna.json"
-        sonuc = MR.turev_kaydet(self.k.engine, registry_path=self.k.defter, ayna_yollari=(ayna,))
+        sonuc = MR.turev_kaydet(self.k.engine, registry_path=self.k.defter, ayna_yollari=(ayna,),
+                                kaynak_pt=self.k.pt)
         self.assertEqual(MODEL_TUREV_SHA_YER_TUTUCU, sonuc["eski_sha256"])
         self.assertEqual(_sha(self.k.engine), sonuc["yeni_sha256"])
         veri = self.k.veri()
@@ -243,9 +274,26 @@ class TurevKaydetCliTests(unittest.TestCase):
         yabanci = self.k.dizin / "models" / "baska.engine"
         yabanci.write_bytes(b"y" * 10)
         with self.assertRaises(MR.ModelRegistryError):
-            MR.turev_kaydet(yabanci, registry_path=self.k.defter)
+            MR.turev_kaydet(yabanci, registry_path=self.k.defter, kaynak_pt=self.k.pt)
         with self.assertRaises(MR.ModelRegistryError):
-            MR.turev_kaydet(self.k.dizin / "models" / "x.pt", registry_path=self.k.defter)
+            MR.turev_kaydet(self.k.dizin / "models" / "x.pt", registry_path=self.k.defter,
+                            kaynak_pt=self.k.pt)
+
+    def test_turev_kaydet_KAYNAK_PT_YOKSA_RED(self):
+        """T143 kalinti (1): soy kaniti olmadan kayit yazilmaz (API + CLI)."""
+        with self.assertRaises(MR.ModelRegistryError) as ctx:
+            MR.turev_kaydet(self.k.engine, registry_path=self.k.defter)
+        self.assertIn("--kaynak-pt ZORUNLU", str(ctx.exception))
+        self.assertEqual(MODEL_TUREV_SHA_YER_TUTUCU,
+                         self.k.veri()["profiles"]["competition"]["turevler"][ENGINE_ADI]["sha256"])
+        with mock.patch("builtins.print") as p:
+            kod = MR._cli(["--turev-kaydet", str(self.k.engine),
+                           "--defter", str(self.k.defter), "--ayna-yok"])
+        self.assertEqual(1, kod)
+        basilan = " ".join(str(c.args[0]) for c in p.call_args_list if c.args)
+        self.assertIn("RED", basilan); self.assertIn("--kaynak-pt", basilan)
+        self.assertEqual(MODEL_TUREV_SHA_YER_TUTUCU,
+                         self.k.veri()["profiles"]["competition"]["turevler"][ENGINE_ADI]["sha256"])
 
     def test_turev_kaydet_YANLIS_kaynak_pt_RED(self):
         sahte_pt = self.k.dizin / "models" / "navitas_seg_v35_best.pt"
@@ -257,21 +305,30 @@ class TurevKaydetCliTests(unittest.TestCase):
 
     def test_cli_cikis_kodu(self):
         self.assertEqual(1, MR._cli(["--turev-kaydet", str(self.k.dizin / "yok.engine"),
-                                     "--defter", str(self.k.defter)]))
-        self.assertEqual(0, MR._cli(["--turev-kaydet", str(self.k.engine),
+                                     "--kaynak-pt", str(self.k.pt), "--defter", str(self.k.defter)]))
+        self.assertEqual(0, MR._cli(["--turev-kaydet", str(self.k.engine), "--kaynak-pt", str(self.k.pt),
                                      "--defter", str(self.k.defter), "--ayna-yok"]))
         self.assertEqual(2, MR._cli([]))
 
 
 class _SahteKamera:
-    """`cap.read()` senaryosu: 'K' kare, '-' dusen kare; bitince hep dusen."""
+    """`cap.read()` senaryosu: 'K' kare, '-' dusen kare; bitince hep dusen.
 
-    def __init__(self, senaryo: str):
+    T143 kalinti (2): bitince SONSUZA dek (False, None) donuyordu -> ust sinir
+    mutasyonunda (M6) test ASILIYORDU. Cagri tavani: senaryo + 10 x ust_sinir
+    asilinca RuntimeError — mutasyon artik DUSER, asmaz.
+    """
+
+    def __init__(self, senaryo: str, ust_sinir: int = KAMERA_DUSEN_KARE_UST_SINIRI):
         self.senaryo = list(senaryo)
         self.cagri = 0
+        self.cagri_tavani = len(senaryo) + 10 * int(ust_sinir)
 
     def read(self):
         self.cagri += 1
+        if self.cagri > self.cagri_tavani:
+            raise RuntimeError(f"_SahteKamera: cagri tavani asildi ({self.cagri_tavani}) — "
+                               "kamera dongusu ust sinirda BITMIYOR")
         if self.senaryo:
             s = self.senaryo.pop(0)
             if s == "K":
@@ -283,7 +340,7 @@ class KameraDusenKareTests(unittest.TestCase):
     def _kos(self, senaryo, ust_sinir=5):
         ozet = {"bitis": None, "okunan": 0, "dusen_toplam": 0, "dusen_ardisik_maks": 0}
         loglar, beklemeler = [], []
-        kareler = list(R.kamera_kareleri(_SahteKamera(senaryo), ozet, ust_sinir=ust_sinir,
+        kareler = list(R.kamera_kareleri(_SahteKamera(senaryo, ust_sinir), ozet, ust_sinir=ust_sinir,
                                          bekleme_s=0.01, bekle=beklemeler.append,
                                          log=loglar.append))
         return kareler, ozet, loglar, beklemeler
@@ -323,7 +380,7 @@ class KameraDusenKareTests(unittest.TestCase):
         self.assertEqual(8 + 5, ozet["dusen_toplam"])
 
     def test_ust_sinir_asilinca_KONTROLLU_bitis(self):
-        kam = _SahteKamera("")
+        kam = _SahteKamera("", ust_sinir=3)
         ozet = {}
         loglar = []
         list(R.kamera_kareleri(kam, ozet, ust_sinir=3, bekleme_s=0, bekle=lambda s: None,

@@ -56,10 +56,12 @@ import cv2
 import numpy as np
 
 try:
-    from .karar_sozlesmesi import (BERABERLIK_BANDI, hedef_bant_yuksekligi,
+    from .karar_sozlesmesi import (BERABERLIK_BANDI, ICERIK_YOK_LETTERBOX_SUPHESI_NOTU,
+                                   LETTERBOX_SUPHE_BANT_ORANI, hedef_bant_yuksekligi,
                                    serit_no, zemin_maskesi_reddi)
 except ImportError:
-    from karar_sozlesmesi import (BERABERLIK_BANDI, hedef_bant_yuksekligi,
+    from karar_sozlesmesi import (BERABERLIK_BANDI, ICERIK_YOK_LETTERBOX_SUPHESI_NOTU,
+                                  LETTERBOX_SUPHE_BANT_ORANI, hedef_bant_yuksekligi,
                                   serit_no, zemin_maskesi_reddi)
 
 logger = logging.getLogger("costmap_path_finder")
@@ -948,10 +950,63 @@ def rota_dogrula(waypoints_px, engel_ham, dt_px_tam, r_gerekli_px, *, katı=Fals
 # ────────────────────────────────────────────────────────────────────────────
 # 8) UST SEVIYE
 # ────────────────────────────────────────────────────────────────────────────
+def letterbox_suphesi(maskeler, icerik):
+    """T135: `icerik=None` iken tuval letterbox gibi gorunuyor mu? (yalniz NOT)
+
+    Kosul: icerik None, tuval kare, en az bir maske pikseli var ve ust+alt ya da
+    sol+sag bantlarin (LETTERBOX_SUPHE_BANT_ORANI) IKISI de tum maskelerde bos.
+    Karar DEGISMEZ; cagiranin `icerik`i gecirmedigini loga/sebebe isler.
+    """
+    if icerik is not None:
+        return False
+    birlesim = None
+    for _m in maskeler.values():
+        if _m is None:
+            continue
+        _m = (np.asarray(_m) > 0)
+        if _m.ndim != 2:
+            continue
+        birlesim = _m if birlesim is None else (birlesim | _m)
+    if birlesim is None or not birlesim.any():
+        return False
+    h, w = birlesim.shape
+    if h != w:
+        return False
+    bant = int(round(h * LETTERBOX_SUPHE_BANT_ORANI))
+    if bant <= 0:
+        return False
+    ust_alt = (not birlesim[:bant, :].any()) and (not birlesim[h - bant:, :].any())
+    sol_sag = (not birlesim[:, :bant].any()) and (not birlesim[:, w - bant:].any())
+    return bool(ust_alt or sol_sag)
+
+
 def rota_bul(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
              yol_sinif_idler=(0,), engel_sinif_idler=(1,), gorsel_cikti=False,
              icerik=None):
-    """Ust seviye giris noktasi. Dondugu dict:
+    """Ust seviye giris noktasi (`_rota_bul_cekirdek` sarmalayicisi).
+
+    T135: `icerik=None` + letterbox gorunumlu maske -> karar AYNI kalir, yalniz
+    `sebep`e ve loga ICERIK_YOK_LETTERBOX_SUPHESI notu eklenir, `uyari` alani
+    dolar (sessiz fail-open artik sessiz degil). Ayrinti: `_rota_bul_cekirdek`.
+    """
+    cikti = _rota_bul_cekirdek(maskeler, mpp=mpp, baslangic=baslangic, hedef=hedef,
+                               plan=plan, yol_sinif_idler=yol_sinif_idler,
+                               engel_sinif_idler=engel_sinif_idler,
+                               gorsel_cikti=gorsel_cikti, icerik=icerik)
+    if letterbox_suphesi(maskeler, icerik):
+        notu = (f"[{ICERIK_YOK_LETTERBOX_SUPHESI_NOTU}: icerik=None ile tuval "
+                "letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; "
+                "cagiran `icerik` gecirmeli]")
+        cikti["uyari"] = ICERIK_YOK_LETTERBOX_SUPHESI_NOTU
+        cikti["sebep"] = (str(cikti.get("sebep") or "") + " " + notu).strip()
+        logger.warning("rota_bul: %s", notu)
+    return cikti
+
+
+def _rota_bul_cekirdek(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=True,
+                       yol_sinif_idler=(0,), engel_sinif_idler=(1,), gorsel_cikti=False,
+                       icerik=None):
+    """Ust seviye giris noktasinin govdesi (`rota_bul` sarar). Dondugu dict:
       durum: "ACIK" | "MASKE_YOK" | "KAPALI_KOPUK" | "KAPALI_DAR"
            | "BELIRSIZ_COKLU" | "BELIRSIZ_TEK_KAPI" | "DOGRULAMA_BASARISIZ"
       yol_no: 1|2|3|None, guven: float, waypoints_px: [(x,y),...]
