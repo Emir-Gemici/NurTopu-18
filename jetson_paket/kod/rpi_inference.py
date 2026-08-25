@@ -233,6 +233,41 @@ def _inis_kaniti_modulu():
     return importlib.import_module("inis_kaniti")
 
 
+def _iha_sender_modulu():
+    """K1 · telsiz halkasi: `comms/iha_sender` (repo) ya da duz paket kopyasi.
+
+    YALNIZ --yks-hedef/--ika-hedef/--telsiz-seri verilince cagrilir; gonderici
+    istenmeyen kosumda bu modul HIC ice aktarilmaz (davranis bayt-es).
+    """
+    repo_comms = _here.parent / "comms"
+    if (repo_comms / "iha_sender.py").is_file():
+        yol = str(repo_comms)
+        eklendi = yol not in sys.path
+        if eklendi:
+            sys.path.insert(0, yol)
+        try:
+            return importlib.import_module("iha_sender")
+        finally:
+            if eklendi:
+                try:
+                    sys.path.remove(yol)
+                except ValueError:
+                    pass
+    return importlib.import_module("iha_sender")
+
+
+def _karari_yayinla(yayinci, open_path, path_conf, waypoints, kare_mpp,
+                    karar_reddi):
+    """Kare karari -> telsiz (K1). `yayinci` None ise HICBIR SEY yapmaz.
+
+    Fail-closed: ret sebebi olan ya da yolu olmayan karar NO_ROUTE olur;
+    OPEN_ROUTE guven kapisi IhaSender.send_open_route icindedir (cogaltilmaz).
+    """
+    if yayinci is None:
+        return
+    yayinci.karar(open_path, path_conf, waypoints, kare_mpp, karar_reddi)
+
+
 class CanliOlcekSaglayici:
     """Taze MAVLink bagil irtifasini kareye ozgu metre/piksele cevirir.
 
@@ -1709,7 +1744,7 @@ def run_image(model, path_str, conf, mpp=None, canli_olcek=None,
 
 
 def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
-              arac_modeli=None, senaryo=None):
+              arac_modeli=None, senaryo=None, yayinci=None):
     path = Path(path_str)
     if not path.is_file():
         print(f"Dosya bulunamadi: {path}")
@@ -1779,6 +1814,9 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
             karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
             open_path, path_conf, waypoints, karar_reddi)
+        # K1: kare karari telsize (YKS + IKA). `yayinci` yoksa satir etkisizdir.
+        _karari_yayinla(yayinci, open_path, path_conf, waypoints, kare_mpp,
+                        karar_reddi)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -1815,7 +1853,7 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
 
 
 def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
-               arac_modeli=None, senaryo=None):
+               arac_modeli=None, senaryo=None, yayinci=None):
     # Imza geriye uyumludur; ancak canli kamera kararinda statik mpp artik
     # otorite degildir. Eski bir cagirici mpp verse bile telemetri yoksa
     # `_kare_olcegi` None doner ve rota OLCEK_YOK ile fail-closed kalir.
@@ -1870,6 +1908,10 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
             karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
             open_path, path_conf, waypoints, karar_reddi)
+        # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
+        # `yayinci` None ise (hedef verilmedi) davranis bayt-es aynidir.
+        _karari_yayinla(yayinci, open_path, path_conf, waypoints, kare_mpp,
+                        karar_reddi)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -1999,6 +2041,19 @@ def _arguman_ayristirici():
         "--senaryo", type=str, default=None, choices=sorted(SENARYO_BOYUTLARI_M),
         help=("Katman 2 icin arena senaryosu — BEYAN EDILIR, tahmin edilmez. "
               "Yanlis senaryo 2,5 kat olcek hatasidir (50 m / 20 m)"))
+    # K1 · sartname SS2.2.3 · CONTRACTS SS6.5: uretim algi yolu telsiz halkasi.
+    # Hicbiri verilmezse gonderici KURULMAZ; --camera/--video davranisi
+    # hedefsiz kosumla bayt-es aynidir.
+    parser.add_argument(
+        "--yks-hedef", type=str, default=None, metavar="IP:PORT",
+        help="YKS UDP hedefi; her karede OPEN_ROUTE/NO_ROUTE + surekli HEARTBEAT")
+    parser.add_argument(
+        "--ika-hedef", type=str, default=None, metavar="IP:PORT",
+        help="IKA UDP hedefi; rota road sozlesmesi (yerel metre waypoint) ile gider")
+    parser.add_argument(
+        "--telsiz-seri", type=str, default=None, metavar="PORT",
+        help="SiK telsiz seri portu (saha yayin; ACK beklenmez)")
+    parser.add_argument("--telsiz-baud", type=int, default=57600)
     return parser
 
 
@@ -2020,6 +2075,14 @@ def _argumanlari_dogrula(parser, args):
             parser.error("--mavlink icin --fov veya --odak zorunludur")
     elif args.fov is not None or args.odak is not None:
         parser.error("--fov/--odak yalniz --mavlink ile kullanilir")
+    telsiz = (args.yks_hedef, args.ika_hedef, args.telsiz_seri)
+    if any(telsiz) and not (args.camera or args.video):
+        parser.error("--yks-hedef/--ika-hedef/--telsiz-seri yalniz --camera "
+                     "veya --video ile kullanilir")
+    for hedef in (args.yks_hedef, args.ika_hedef):
+        if hedef is not None and (":" not in hedef
+                                  or not hedef.rsplit(":", 1)[1].isdigit()):
+            parser.error(f"hedef ip:port bicminde olmali: {hedef!r}")
 
 
 def main():
@@ -2056,6 +2119,18 @@ def main():
               "Telemetrisiz goruntude --arac-modeli (katman 3) ya da "
               "--senaryo (katman 2) olcegi kurtarabilir.")
 
+    # K1: telsiz halkasi YALNIZ hedef verilince kurulur. Kurulamiyorsa
+    # (port/seri yok) sessiz devam YOK — kosum durur; hakem ekrani ve IKA
+    # sessiz kalan bir IHA'yi baglanti kaybi sanir.
+    yayinci = None
+    if args.yks_hedef or args.ika_hedef or args.telsiz_seri:
+        yayinci = _iha_sender_modulu().yayinci_kur(
+            yks=args.yks_hedef, ika=args.ika_hedef, seri=args.telsiz_seri,
+            baud=args.telsiz_baud).start()
+        print(f"telsiz halkasi: yks={args.yks_hedef} ika={args.ika_hedef} "
+              f"seri={args.telsiz_seri} · heartbeat "
+              f"{yayinci.heartbeat_aralik:g} s")
+
     try:
         # T73: agirlik ARTIK argumandan gelir; verilmezse uretim manifestinden
         # turetilir. Kayit defteri uyusmazliginda `load_model` FAIL-CLOSED
@@ -2083,12 +2158,20 @@ def main():
         elif args.video:
             run_video(model, args.video, args.conf, save=not args.no_save,
                       mpp=mpp, canli_olcek=canli_olcek,
-                      arac_modeli=arac_modeli, senaryo=args.senaryo)
+                      arac_modeli=arac_modeli, senaryo=args.senaryo,
+                      yayinci=yayinci)
         elif args.camera:
             run_camera(model, args.conf, canli_olcek=canli_olcek,
                        kaynak=args.kaynak, arac_modeli=arac_modeli,
-                       senaryo=args.senaryo)
+                       senaryo=args.senaryo, yayinci=yayinci)
     finally:
+        if yayinci is not None:
+            if yayinci.stop() is not True:
+                print("UYARI: telsiz yayinci is parcacigi durmadi.")
+            if yayinci.hata:
+                print(f"UYARI: telsiz yayin hatalari ({len(yayinci.hata)}): "
+                      f"{yayinci.hata[-1]}")
+            yayinci.sender.link.close()
         if canli_olcek is not None:
             if canli_olcek.kapat() is not True:
                 print("UYARI: irtifa poller'i durmadi; MAVLink baglantisi "

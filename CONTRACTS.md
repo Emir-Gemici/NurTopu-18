@@ -747,6 +747,37 @@ güven dağılımı ölçülüp eşik yeniden değerlendirilecek — *aşırı �
 kullanılamaz demektir* (T26 kapısının istediği önce/sonra tablosu). Değer değişecekse
 **önce burası** değişir, sonra kod.
 
+### 6.5 Üretim algı yolu yayın sözleşmesi — K1 (şartname §2.2.3, 2026-08-26)
+
+> **Neden var:** `results/sartname_bosluk/rapor.md` K1 — `codes/rpi_inference.py`
+> `run_camera`/`run_video` telsize **hiç** yazmıyordu; OPEN_ROUTE/NO_ROUTE üreticisi
+> yalnız Gazebo betiğiydi (§11.1/1 gereği sahip sayılmaz). Sahada İHA kararı YKS'ye
+> ve İKA'ya ulaşmıyordu.
+
+**Üretici:** `comms/iha_sender.py` `KararYayinci` (jetson paketinde aynı dosya).
+Kurulum yalnız `--yks-hedef ip:port` / `--ika-hedef ip:port` / `--telsiz-seri PORT`
+verilince; **hedef yoksa gönderici hiç yüklenmez, davranış bayt-eş aynıdır**.
+
+| kural | değer / davranış | kaynak |
+|---|---|---|
+| Her karede **tam bir** mesaj | `OPEN_ROUTE` **veya** `NO_ROUTE` — sessizlik yok | `rpi_inference._karari_yayinla` |
+| Ret sebepli karar | `NO_ROUTE(sebep, detay)`; **hiçbir koşulda** OPEN_ROUTE | `KararYayinci._karari_gonder` |
+| `open_path is None`, sebep yok | `NO_ROUTE(KARAR_YOK)` | `karar_sozlesmesi.KARAR_YOK_SEBEBI` |
+| Güven kapısı (K-B) | **çoğaltılmaz**: OPEN_ROUTE yalnız `IhaSender.send_open_route` üzerinden geçer, eşik altı orada NO_ROUTE olur | `iha_sender.py:128-132` |
+| `ref_xy` | daima `[0, 0]` — sahada dünya çerçevesi yoktur, İKA saf öteleme yapar (§3.2) | `YAYIN_REF_XY` |
+| waypoint çerçevesi | tuval-piksel → **yerel metre**: `x=(px−px₀)·mpp`, `y=(py₀−py)·mpp` (piksel y aşağı, yerel y **ileri**; `iha_haritala.piksel_to_dunya` ile aynı yön kuralı); ilk nokta `[0,0]`; kenar `MAX_SEGMENT_M`'i aşarsa **mevcut kenar bölünür**, yeni geometri eklenmez; sonuç `rota_geometrisini_dogrula`'dan geçer | `iha_sender.piksel_rotayi_yerele_cevir` |
+| çevrim düşerse | `NO_ROUTE(OLCEK_YOK)` (mpp geçersiz) ya da `NO_ROUTE(ROTA_GEOMETRI)` | `ROTA_GEOMETRI_SEBEBI` |
+| `HEARTBEAT` | ayrı iş parçacığı, aralık `IHA_HEARTBEAT_ARALIK_S = 1.0 s` < `IkaReceiver.hb_timeout = 3.0 s` (2 ardışık kayıp bağlantıyı düşürmez) | `karar_sozlesmesi` |
+| Kuyruk | **latest-wins** tek yuva: kamera döngüsü ACK beklemez; ACK'li gönderim ayrı iş parçacığındadır; `stop()` bekleyen son kararı gönderip durur | `KararYayinci` |
+| Telsiz hatası | kamera döngüsünü düşürmez; `yayinci.hata`'ya yazılır ve çıkışta basılır | |
+
+`KARAR_YOK` ve `ROTA_GEOMETRI` **`ROTA_RET_SEBEPLERI` kümesine girmez** — o küme analiz
+katmanının ret sebepleridir (`test_rota_ret_nedenleri` kilitler); bunlar yayın katmanının
+fail-closed varsayılanlarıdır.
+
+Doğrulama: `tests/test_rpi_telsiz_yayin.py` (gerçek loopback UDP, `IkaReceiver` ACK'li);
+`scripts/saha_kuru_kosu.py` halka 8 artık **üretim yolunu** ölçer (`uretim_yolu_telsiz`).
+
 ---
 
 ## 7. Görev kapısı sözleşmesi (şartname §2.2.5)
@@ -878,7 +909,7 @@ Bir halkanın **sahibi**, o halkayı sahada gerçekten koşturan dosyadır.
 | 5 | Ölçek (`mpp`) | irtifa + FOV/odak | m/piksel | `codes/karar_sozlesmesi.py` — `mpp_irtifadan`, `rota_olcek_reddi` | **GEÇERLİ** · T43 |
 | 6 | Hedef konumu (HB) | kare / dış girdi | `hb_xy` | — (yalnız Gazebo `meta.txt`) | **SAHİPSİZ** · D-22, D-23 |
 | 7 | Rota üretimi | maskeler + `mpp` + `hb_xy` | `road`, `waypoints`, `durum` | `codes/costmap_path_finder.py:729` (`rota_bul`) | **KUSURLU** · D-25 |
-| 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK | — (`jetson_paket/kod/` içinde yok) | **SAHİPSİZ** · D-22 |
+| 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK + HEARTBEAT | `codes/rpi_inference.py` `run_camera`/`run_video` → `comms/iha_sender.py` `KararYayinci` (§6.5 · K1, 2026-08-26) | **GEÇERLİ** · UDP loopback ölçüldü; SiK seri **ÖLÇÜLMEDİ** |
 | 9 | İKA sürüş izni | rota ∧ IKA_GO ∧ IHA_LANDED | izin `bool` | kapı: `comms/ika_receiver.py:119-121` · `IHA_LANDED` üreticisi: **yalnız `simulation/scripts/navitas_sim.py:95`** | **KUSURLU** · D-22 |
 | 10 | Motor komutu | izin + waypoint | tekerlek hızı | — (`gz` subprocess'i sahip değil) | **SAHİPSİZ** · D-22 |
 

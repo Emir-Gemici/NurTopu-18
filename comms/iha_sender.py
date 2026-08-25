@@ -16,6 +16,7 @@ import argparse
 import json
 import math
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -26,7 +27,10 @@ from protocol import (open_route, rota_yok, heartbeat, iha_landed, encode,
 _KOK = Path(__file__).resolve().parents[1]
 if str(_KOK / "codes") not in sys.path:
     sys.path.insert(0, str(_KOK / "codes"))
-from karar_sozlesmesi import rota_guven_reddi
+from karar_sozlesmesi import (rota_guven_reddi, olcek_gecerli_mi,
+                              KARAR_YOK_SEBEBI, OLCEK_YOK_SEBEBI,
+                              ROTA_GEOMETRI_SEBEBI,
+                              IHA_HEARTBEAT_ARALIK_S, YAYIN_REF_XY)
 
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -161,8 +165,170 @@ class IhaSender:
             msg, repeat=repeat, interval=interval, wait_ack=wait_ack)
 
 
+def piksel_rotayi_yerele_cevir(waypoints_px, mpp):
+    """Tuval-piksel waypoint'lerini ref=ilk nokta olan YEREL metreye cevir.
+
+    CONTRACTS SS6.5: x saga (+), y ILERIYE (+) — piksel y asagi buyudugu icin
+    isaret ters cevrilir (iha_haritala.piksel_to_dunya ile ayni yon kurali).
+    Ilk yerel nokta daima [0, 0]; ardisik segmentler MAX_SEGMENT_M'i asarsa
+    dogrusal ara nokta eklenir (geometri EKLENMEZ, mevcut kenar bolunur).
+    Sonuc `rota_geometrisini_dogrula` ile denetlenir; gecmezse ValueError.
+    """
+    if not olcek_gecerli_mi(mpp):
+        raise ValueError("olcek (mpp) gecersiz; piksel rota metreye cevrilemez")
+    if not isinstance(waypoints_px, (list, tuple)) or len(waypoints_px) < 2:
+        raise ValueError("en az 2 piksel waypoint gerekli")
+    m = float(mpp)
+    px0, py0 = float(waypoints_px[0][0]), float(waypoints_px[0][1])
+    ham = [((float(px) - px0) * m, (py0 - float(py)) * m)
+           for px, py in waypoints_px]
+    yerel = [ham[0]]
+    for a, b in zip(ham, ham[1:]):
+        uzunluk = math.dist(a, b)
+        bolum = max(1, int(math.ceil(uzunluk / MAX_SEGMENT_M)))
+        if bolum > MAX_WAYPOINTS:
+            raise ValueError("segment yogunlastirma waypoint tavanini asiyor")
+        for k in range(1, bolum + 1):
+            t = k / bolum
+            yerel.append((a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t))
+    yerel = [[round(x, 2), round(y, 2)] for x, y in yerel]
+    return rota_geometrisini_dogrula(list(YAYIN_REF_XY), yerel)
+
+
+class KararYayinci:
+    """Uretim algi yolunun (rpi_inference) telsiz halkasi — K1 / SS2.2.3.
+
+    Iki is parcacigi: (a) KARAR — son karar 'latest-wins' yuvasindan alinip
+    ACK'li gonderilir (kamera dongusunu bloklamaz); (b) HEARTBEAT —
+    IHA_HEARTBEAT_ARALIK_S ile surekli yayin. Guven kapisi BURADA
+    COGALTILMAZ: OPEN_ROUTE her zaman IhaSender.send_open_route uzerinden
+    gecer, esik alti orada NO_ROUTE'a doner. Fail-closed: karar None ise
+    NO_ROUTE(KARAR_YOK); ret sebebi olan karar HICBIR KOSULDA OPEN_ROUTE
+    olarak yayinlanmaz.
+    """
+
+    def __init__(self, sender, heartbeat_aralik=IHA_HEARTBEAT_ARALIK_S,
+                 repeat=4, interval=0.25, wait_ack=True):
+        if heartbeat_aralik <= 0:
+            raise ValueError("heartbeat araligi pozitif olmali")
+        self.sender = sender
+        self.heartbeat_aralik = float(heartbeat_aralik)
+        self.repeat, self.interval, self.wait_ack = repeat, interval, wait_ack
+        self._kilit = threading.Lock()
+        self._bekleyen = None
+        self._yeni = threading.Event()
+        self._dur = threading.Event()
+        self._karar_thr = threading.Thread(target=self._karar_dongusu,
+                                           name="iha-karar", daemon=True)
+        self._hb_thr = threading.Thread(target=self._heartbeat_dongusu,
+                                        name="iha-heartbeat", daemon=True)
+        self.gonderilen = []        # [(tip, sebep|road, seq, acked)] tani icin
+        self.hata = []              # yakalanan istisnalar (str)
+        self.heartbeat_sayisi = 0
+
+    # ── uretim yolu API'si ────────────────────────────────────────────────
+    def start(self):
+        self._karar_thr.start()
+        self._hb_thr.start()
+        return self
+
+    def stop(self, zaman_asimi=5.0):
+        """Bekleyen son karari GONDERIP durur (son karar telde kalmaz)."""
+        self._dur.set()
+        self._yeni.set()
+        self._karar_thr.join(zaman_asimi)
+        self._hb_thr.join(zaman_asimi)
+        return not (self._karar_thr.is_alive() or self._hb_thr.is_alive())
+
+    def karar(self, open_path, conf, waypoints_px, mpp, karar_reddi=None):
+        """Kare karari -> yuva. Ret sebebi varsa OPEN_ROUTE ASLA olusmaz."""
+        with self._kilit:
+            self._bekleyen = (open_path, conf, list(waypoints_px or []),
+                              mpp, karar_reddi)
+        self._yeni.set()
+
+    # ── ic dongu ──────────────────────────────────────────────────────────
+    def _yuvayi_al(self):
+        with self._kilit:
+            k, self._bekleyen = self._bekleyen, None
+        return k
+
+    def _karar_dongusu(self):
+        while True:
+            self._yeni.wait()
+            self._yeni.clear()
+            k = self._yuvayi_al()
+            if k is not None:
+                self._karari_gonder(*k)
+            if self._dur.is_set() and self._yuvayi_al() is None:
+                return
+
+    def _karari_gonder(self, open_path, conf, waypoints_px, mpp, karar_reddi):
+        try:
+            if karar_reddi is not None:
+                seq, acked = self.sender.send_no_route(
+                    karar_reddi[0], karar_reddi[1] if len(karar_reddi) > 1 else None,
+                    repeat=self.repeat, interval=self.interval,
+                    wait_ack=self.wait_ack)
+                self.gonderilen.append(("NO_ROUTE", karar_reddi[0], seq, acked))
+                return
+            if open_path is None:
+                seq, acked = self.sender.send_no_route(
+                    KARAR_YOK_SEBEBI, "analyze_path yol uretmedi; sessizlik yok.",
+                    repeat=self.repeat, interval=self.interval,
+                    wait_ack=self.wait_ack)
+                self.gonderilen.append(("NO_ROUTE", KARAR_YOK_SEBEBI, seq, acked))
+                return
+            try:
+                yerel = piksel_rotayi_yerele_cevir(waypoints_px, mpp)
+            except ValueError as exc:
+                sebep = OLCEK_YOK_SEBEBI if not olcek_gecerli_mi(mpp) else ROTA_GEOMETRI_SEBEBI
+                seq, acked = self.sender.send_no_route(
+                    sebep, f"rota telsiz sozlesmesine cevrilemedi: {exc}",
+                    repeat=self.repeat, interval=self.interval,
+                    wait_ack=self.wait_ack)
+                self.gonderilen.append(("NO_ROUTE", sebep, seq, acked))
+                return
+            # Guven kapisi send_open_route icindedir (SS6.3/K-B son savunma).
+            seq, acked = self.sender.send_open_route(
+                int(open_path), conf, yerel, list(YAYIN_REF_XY),
+                repeat=self.repeat, interval=self.interval,
+                wait_ack=self.wait_ack)
+            self.gonderilen.append(("OPEN_ROUTE", int(open_path), seq, acked))
+        except Exception as exc:  # telsiz hatasi kamera dongusunu dusurmez
+            self.hata.append(f"{type(exc).__name__}: {exc}")
+
+    def _heartbeat_dongusu(self):
+        while not self._dur.is_set():
+            try:
+                self.sender.send_heartbeat()
+                self.heartbeat_sayisi += 1
+            except Exception as exc:
+                self.hata.append(f"heartbeat {type(exc).__name__}: {exc}")
+            self._dur.wait(self.heartbeat_aralik)
+
+
+def yayinci_kur(yks=None, ika=None, seri=None, baud=57600, **kw):
+    """--yks-hedef/--ika-hedef/--telsiz-seri'den KararYayinci uret; hicbiri
+    yoksa None (davranis bayt-es: telsiz halkasi HIC kurulmaz)."""
+    if not (yks or ika or seri):
+        return None
+    if seri:
+        link = SerialLink(seri, baud)
+        peers = {"broadcast": None}
+        kw.setdefault("wait_ack", False)
+    else:
+        link = UDPLink()
+        peers = {}
+        if ika:
+            peers["ika"] = _addr(ika)
+        if yks:
+            peers["yks"] = _addr(yks)
+    return KararYayinci(IhaSender(link, peers), **kw)
+
+
 def _addr(s):
-    h, p = s.split(":")
+    h, p = s.rsplit(":", 1)
     return (h, int(p))
 
 

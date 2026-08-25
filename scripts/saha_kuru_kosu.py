@@ -801,6 +801,12 @@ def halka_aktarim(rapor: Rapor, kok: Path = KOK) -> str:
     except (ImportError, OSError, socket.error, AttributeError) as exc:
         detay["depo_comms_loopback"] = f"HATA: {type(exc).__name__}: {exc}"
 
+    # K1 · TELSIZ HALKASI: kutuphane calisiyor olmasi yetmez — URETIM ALGI
+    # YOLU (rpi_inference.run_camera) bu kutuphaneyi GERCEKTEN cagiriyor mu?
+    # Sahte kamera + sahte model + loopback IkaReceiver ile olculur; karar
+    # OPEN_ROUTE olarak aliciya ulasmazsa halka DUSER (sahipsiz degil, kusurlu).
+    detay["uretim_yolu_telsiz"] = _uretim_yolu_telsiz_probu()
+
     if eksik or eksik_semboller or not pyserial_var:
         parcalar = []
         if eksik:
@@ -813,9 +819,92 @@ def halka_aktarim(rapor: Rapor, kok: Path = KOK) -> str:
             "aktarim", SAHIPSIZ,
             f"saha paketi haberlesme kodunu tasimiyor ({'; '.join(parcalar)})",
             None, detay)
+    telsiz = detay["uretim_yolu_telsiz"]
+    if not (isinstance(telsiz, dict) and telsiz.get("open_route_alindi")):
+        return rapor.yaz(
+            "aktarim", DUSTU,
+            f"uretim algi yolu (run_camera) karari telsize yazmadi: {telsiz}",
+            "codes/rpi_inference.py:run_camera", detay)
     return rapor.yaz("aktarim", GECTI,
-                     "saha paketi haberlesme kodunu ve gerekli API'yi tasiyor",
-                     "jetson_paket/kod/iha_sender.py", detay)
+                     "saha paketi haberlesme kodunu tasiyor; uretim yolu "
+                     "run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi",
+                     "codes/rpi_inference.py:run_camera", detay)
+
+
+def _uretim_yolu_telsiz_probu() -> dict | str:
+    """run_camera -> KararYayinci -> loopback IkaReceiver zincirini OLC.
+
+    Kamera/model/analiz sahtedir (donanim yok); telsiz halkasi GERCEKTIR:
+    UDP soketi, IhaSender, ACK. Donen sozluk 'telsiz halkasi' satirina yazilir.
+    """
+    import contextlib
+    import io
+    import threading
+    from types import SimpleNamespace
+    from unittest import mock
+    try:
+        import cv2
+        import rpi_inference as ri
+        import iha_sender
+        from ika_receiver import IkaReceiver
+        from link import UDPLink
+    except ImportError as exc:
+        return f"HATA: ImportError: {exc}"
+
+    class _Kamera:
+        def __init__(self):
+            self.kalan = 1
+
+        def isOpened(self):
+            return True
+
+        def read(self):
+            if self.kalan <= 0:
+                return False, None
+            self.kalan -= 1
+            return True, np.full((360, 640, 3), 127, np.uint8)
+
+        def release(self):
+            pass
+
+    maskeler = {0: np.ones((640, 640), np.uint8), 1: np.zeros((640, 640), np.uint8)}
+    analyze = mock.Mock(return_value=(2, 0.9, [(320, 600), (320, 300), (320, 40)], None))
+    geldi = threading.Event()
+    sonuc: dict = {"open_route_alindi": False, "heartbeat": 0, "ack": [], "hata": None}
+    try:
+        alici_link = UDPLink(bind=("127.0.0.1", 0))
+        rx = IkaReceiver(alici_link).start()
+        rx.on_route = lambda _m: geldi.set()
+        yayinci = iha_sender.yayinci_kur(
+            ika=f"127.0.0.1:{alici_link.port}", repeat=4, interval=0.1,
+            heartbeat_aralik=0.05).start()
+        try:
+            with mock.patch.object(cv2, "VideoCapture", return_value=_Kamera()), \
+                    mock.patch.object(cv2, "imshow"), \
+                    mock.patch.object(cv2, "waitKey", return_value=ord("q")), \
+                    mock.patch.object(cv2, "destroyAllWindows"), \
+                    mock.patch.object(ri, "get_masks", return_value=maskeler), \
+                    mock.patch.object(ri, "analyze_path", analyze), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                ri.run_camera(SimpleNamespace(predict=lambda *a, **k: [object()]),
+                              0.30, canli_olcek=(lambda _w: 0.05), yayinci=yayinci)
+        finally:
+            yayinci.stop()
+            yayinci.sender.link.close()
+        geldi.wait(5.0)
+        msg = rx.latest
+        sonuc.update({
+            "open_route_alindi": bool(msg) and msg.get("type") == "OPEN_ROUTE"
+            and msg.get("road") == 2 and msg.get("waypoints", [[None]])[0] == [0.0, 0.0],
+            "heartbeat": yayinci.heartbeat_sayisi,
+            "ack": sorted(yayinci.gonderilen[0][3]) if yayinci.gonderilen else [],
+            "hata": yayinci.hata or None,
+        })
+        rx.stop()
+        alici_link.close()
+    except (OSError, socket.error, AttributeError, TypeError) as exc:
+        sonuc["hata"] = f"{type(exc).__name__}: {exc}"
+    return sonuc
 
 
 def _surus_kapisi_probu() -> dict:
@@ -999,6 +1088,13 @@ def main() -> int:
         print(f"  {s['halka']:<{genislik}}  {s['durum']:<9}  {s['sebep']}{sure}")
         if s["dosya"]:
             print(f"  {'':<{genislik}}  {'':<9}  -> {s['dosya']}")
+        if s["halka"] == "aktarim" and isinstance(s.get("detay"), dict):
+            # K1: uretim algi yolunun telsize yazip yazmadigi AYRI satirdir —
+            # kutuphane loopback'i ile karistirilmasin (CONTRACTS SS11 halka 8).
+            t = s["detay"].get("uretim_yolu_telsiz")
+            ok = isinstance(t, dict) and t.get("open_route_alindi")
+            print(f"  {'telsiz halkasi':<{genislik}}  {(GECTI if ok else DUSTU):<9}  "
+                  f"run_camera -> KararYayinci -> loopback IKA: {t}")
     print("-" * 78)
 
     sayim = {d: sum(1 for s in rapor.satirlar if s["durum"] == d)

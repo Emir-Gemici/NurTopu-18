@@ -714,6 +714,33 @@ python3 ~/navitas/codes/kamera_dogrula.py \
 değil, domain boşluğunun canlı görüntüde de sürdüğünün kanıtıdır. Sayıyı yine de
 kaydet; eğitim verisi kararı için değerli.
 
+### Saha görev komutu — telsiz halkasıyla (K1 · CONTRACTS §6.5)
+
+Üretim algı yolu artık her karede YKS'ye ve İKA'ya **OPEN_ROUTE / NO_ROUTE** yazar
+ve ayrı iş parçacığında **HEARTBEAT** yayınlar. Hedef vermezsen telsiz halkası
+**hiç kurulmaz** (eski davranış). UDP (dev/LAN):
+
+```bash
+python3 ~/navitas/codes/rpi_inference.py --camera \
+  --kaynak "http://<TELEFON_IP>:4747/video" \
+  --mavlink udpin:0.0.0.0:14550 --mav-sysid 1 --fov 78 \
+  --yks-hedef <YKS_IP>:5005 --ika-hedef <IKA_IP>:5006
+```
+
+SiK 433 MHz telsiz (saha, ACK beklenmez — tek hatta yayın):
+
+```bash
+python3 ~/navitas/codes/rpi_inference.py --camera \
+  --kaynak "http://<TELEFON_IP>:4747/video" \
+  --mavlink udpin:0.0.0.0:14550 --mav-sysid 1 --fov 78 \
+  --telsiz-seri /dev/ttyUSB0 --telsiz-baud 57600
+```
+
+Başlangıçta `telsiz halkasi: yks=... ika=... seri=... · heartbeat 1 s` satırını
+gör; çıkışta `UYARI: telsiz yayin hatalari` basılırsa halka kopuktur. YKS tarafında
+`comms/yks_gui.py`, İKA tarafında `IkaReceiver` dinler. ⚠ SiK üzerinde ölçüm
+**henüz yapılmadı**; UDP loopback ölçüldü (`tests/test_rpi_telsiz_yayin.py`).
+
 ---
 
 ## 6C. BİRİNCİL→YEDEK MODEL GEÇİŞ YORDAMI (T123)

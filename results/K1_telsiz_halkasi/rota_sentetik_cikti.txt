@@ -1,0 +1,5 @@
+     5     orta       3       3  1.000               ACIK   49  OK
+     5      zor       2       2  0.797               ACIK   42  OK
+------------------------------------------------------------------------------
+SONUC: 15/15 dogru
+[OK] TUM DETERMINISTIK SAHNELER GECTI
