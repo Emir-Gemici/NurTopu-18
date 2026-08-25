@@ -1,0 +1,93 @@
+{
+ "amele": "A",
+ "tur": "F5 uc durumlu (0=etiketsiz, 1=sinif0 surulebilir, 2=sinif1 engel)",
+ "kareler": [
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000061_000003510.jpg",
+   "png": "dji_20260822173231_0039_d__frame_000061_000003510_uc.png",
+   "saniye": 689.5,
+   "sinif1_oran": 0.0798,
+   "sinif0_oran": 0.4131,
+   "etiketsiz_oran": 0.507,
+   "yontem": "Duvar/cit hatti HAM 3840x2160'ta yonlu sirt suzgeciyle bulundu, cv2.fitLine (Huber) ile dogru gecirildi (artik medyan 13,4 ham px = 3,4 px @960); dik profillerle genislik olculdu (medyan 49 ham px = 12,25 px @960, merkez kaymasi -12,5 ham px) -> 16 px @960 bant. Zemin/bitki ayrimi 7x7 yerel std ile: histogram CIFT TEPELI (2-4 duz zemin, 15-25 bitki), vadi 8,5'ta -> guclu tohum std<8,5 & S<45 & V>120, zayif std<15 & S<60 & V>100, histerezis. Balya: plastik sarginin MAVI kacisi olculdu (B-R = +7..+43); yol -13, kuru ot -48, mera -47 -> B-R>10 temiz ayirici. Iki insan ham olcekte dogrulandi (2976,1963) ve (2836,2058).",
+   "guven": "yuksek (sinif 1) / orta (sinif 0 - kuru ot ve moloz bilerek etiketsiz birakildi)",
+   "notlar": "Sahne: beton bordur uzerine tel cit hatti kareyi capraz kesiyor -> SINIF 1 (madde 2: yapi TANINIYOR, dar olmasi gecilebilir yapmaz; madde 3: su gorunmese de gecilemez hat). Silaj balyasi yigini + mavi su tanki -> sinif 1. Iki insan -> sinif 1. Tek koyu yesil cali kumesi (madde 4 calilik) -> sinif 1. SINIF 0 = yalniz POZITIF OKUDUGUM zemin: cakil/toprak yol, ikincil toprak iz, sol alcak yesil mera. ETIKETSIZ birakilanlar ve NEDENI: (a) citin dogusundaki GEVSEK MOLOZ/kirik tas dolgu bandi - ham olcekte tas boyu ~30-50 px, IKA'nin gecip gecemeyecegini DOGRULAYAMADIM; (b) yuksek tumsekli kuru ot obeklerinin altindaki zemin kotu okunamiyor; (c) balya yigininin derin golgesi. Elektrik/telefon telleri havada - ENGEL DEGIL; yerdeki golgeleri altindaki yol okunabildigi icin sinif 0 birakildi (madde 0 golge kurali). Sinif 0 bu karede GERCEKTEN VAR ve genis (%41,3) - bos birakilmadi. F4 karsilastirmasi: benim sinif1 %7,98, F4 %7,94 - bagimsiz olarak ortustu.",
+   "f4_saniye": 3151.9,
+   "f4_sinif1_oran": 0.0794,
+   "eslestirilmis_oran_F5_bolu_F4": 0.219,
+   "sinif1_fark_F5_eksi_F4": 0.0004
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000034_000001890.jpg",
+   "png": "dji_20260822172613_0038_d__frame_000034_000001890_uc.png",
+   "saniye": 585.9,
+   "sinif1_oran": 0.1705,
+   "sinif0_oran": 0.4034,
+   "etiketsiz_oran": 0.4261,
+   "yontem": "Bu karede DUZ YUZEY YOK: 7x7 yerel std'nin 5. yuzdeligi 10,7 (A1'de 2,2) -> A1'in doku esigi BURADA KULLANILAMAZ, olcumle curutuldu. Yerine RENK ayiricilari olculdu: sikistirilmis kirmizi toprak R-B=+59 / kuru ot +22 / cali +9 -> apron tohumu (r-b>40 & V>140), histerezis ile (r-b>12 & V>115) icine buyutuldu. Parlak yiginlar (mermer kirigi V=211 S=11, insaat molozu V=196 S=22) V>182 & S<40 + 15x15 YOGUNLUK>0,42. Calilik maskesi 960'ta serpintili: 5x5 acma maskeyi TAMAMEN oldurdu (olculdu, oran 0,0000) -> 21x21 yogunluk>0,40 kullanildi. Sag kuru ot tarlasi golgeli kismiyla birlikte tek bilesen olarak buyutuldu (madde 0 golge kurali).",
+   "guven": "yuksek (lastik/yigin/calilik) / yuksek (sol apron - teker izi kaniti) / dusuk (orta doku alani)",
+   "notlar": "Sahne: MOLOZ/ATIK DOKUM alani. Sinif 1: (a) buyuk LASTIK yigini + brandası (sol), (b) beyaz mermer/tas kirigi yigini, (c) insaat molozu yigini, (d) sik CALILIK kutleleri (madde 4). SINIF 0: sol kirmizi sikistirilmis toprak apron - uzerinde ARAC TEKER IZLERI var, gecilebilirligin DOGRUDAN kaniti; ve sagdaki duz kisa kuru ot tarlasi. Sagdaki buyuk GOLGE alani ot dokusu golgede de OKUNDUGU icin sinif 0 sayildi (madde 0). ETIKETSIZ birakilan orta bolge (%42,6) ve NEDENI: kazi/dokum yuzunden HOYUK ve CUKURLARLA dolu; hoyuklerin uzun golgeleri belirgin kabartma gosteriyor, alt kotu okunamiyor, IKA'nin girip cikip cikamayacagini DOGRULAYAMADIM. Alt ortadaki koyu yigin/cukur da ayni nedenle etiketsiz -- sinif 1 yazmadim cunku cukur oldugunu DOGRULAYAMADIM, sadece koyu malzeme de olabilir. F4 karsilastirmasi: benim sinif1 %17,05, F4 %17,87 - bagimsiz olarak ortustu.",
+   "f4_saniye": 564.0,
+   "f4_sinif1_oran": 0.1787,
+   "eslestirilmis_oran_F5_bolu_F4": 1.039,
+   "sinif1_fark_F5_eksi_F4": -0.0082
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000198_000007350.jpg",
+   "png": "dji_20260822172613_0038_d__frame_000198_000007350_uc.png",
+   "saniye": 592.0,
+   "sinif1_oran": 0.5801,
+   "sinif0_oran": 0.1892,
+   "etiketsiz_oran": 0.2307,
+   "yontem": "Yol yuzeyi 7x7 std histerezisiyle bulundu (guclu std<10 & S<22 & V>130 ; zayif std<18 & S<32 & V>115) -> tek buyuk bilesen, sinirli delik doldurma. Sinif 1 / sinif 0 sinirini SABIT GENISLIKLE degil, yol bileseninin SUTUN BASINA ust siniriyla cizdim (madde 1: mesafe olcutu KULLANILMAZ, sinir surulebilir zeminin basladigi yerdir). Kanal duz bir dogru DEGIL: ham olcekte dogru fiti artik medyani 55,5 px verdi (A1'deki duvarda 13,4 idi) -> dogru fiti BIRAKILDI, sutun-basi sinir kullanildi. Beton apron + koyu ark bandi genisligi dik profillerle olculdu: medyan 72,5 ham px; irtifa 30,7 m ve lastik capindan tahmin edilen ~1,25 cm/px ile ~90 cm.",
+   "guven": "yuksek (yol yuzeyi ve sinir) / orta (yamacin tamamini sinif 1 saymak)",
+   "notlar": "Sahne: yamac eteginde yol/otopark aprononu. SINIF 1: (a) beton bordur + koyu ARK/HENDEK bandi (madde 3: su gorunmese de gecilemez ark sinif 1), (b) ustundeki YAMACIN TAMAMI - sik kuru calilik/olu dal orgusu, kaya bloklari, yesil calilar ve dik sev (madde 4), (c) yamaca uzanmis CELIK KAFES KULE/DIREK. SINIF 0: asfalt/cakil yol-otopark yuzeyi. ETIKETSIZ (%23,1): yolun ALT kenarindaki kirmizimsi TASLI/MOLOZLU banket - duz gorunuyor ama tas boyu ~20-30 ham px (~25-38 cm) ve IKA'nin bunu asip asamayacagi DOGRULANAMADI; ayrica soldaki soluk seritte patika mi erozyon olugu mu oldugu okunamadi. F4 karsilastirmasi: benim sinif1 %58,0, F4 %49,1 -- 9 puan FAZLA. Fark buyuk olasilikla yamacin ust kismini benim BASTAN SONA sinif 1 saymam; F4'te bir bolumu sinif 1 sayilmamis olabilir. Bu, sinif 1 tanimindaki 'dik sev / sik calilik' esiginin ameleden ameleye kaydigini gosterir.",
+   "f4_saniye": 483.0,
+   "f4_sinif1_oran": 0.4908,
+   "eslestirilmis_oran_F5_bolu_F4": 1.226,
+   "sinif1_fark_F5_eksi_F4": 0.0893
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000099_000004140.jpg",
+   "png": "dji_20260822172613_0038_d__frame_000099_000004140_uc.png",
+   "saniye": 219.6,
+   "sinif1_oran": 0.8931,
+   "sinif0_oran": 0.0896,
+   "etiketsiz_oran": 0.0174,
+   "yontem": "ExG = 2G-R-B histogrami CIFT TEPELI olculdu: yol tepesi -10..0, bitki humbu 25..120, en dusuk kova 0..5 -> VADI 5'te. Sinif 0 = ExG<5 (tek buyuk bilesen, sinirli delik doldurma), sinif 1 = ExG>18 (acma 5 + kapama 11, alan>=600). Iki esik arasi (5..18) bilerek ETIKETSIZ birakildi: bu, yola sarkan yaprak/kenar gecis kusagi. Sinir HAM 3840x2160'ta bindirmeyle dogrulandi: sinif 0 kenari cıplak yol kenarina, sinif 1 kenari bitki kenarina oturuyor, aralarinda 4-8 ham px'lik etiketsiz gecis var.",
+   "guven": "yuksek",
+   "notlar": "Sahne: sik yesil calilik/agaclik icinden gecen DAR TOPRAK YOL. SINIF 1: yolun iki yanindaki sik yesil ortu (madde 4: sik agaclik/calilik, suya bitisik olmasa da gecilemez). SINIF 0: toprak yol yuzeyi - golgede kalan kismi DAHIL, cunku golge altindaki yol dokusu OKUNUYOR (madde 0 golge kurali); golgeyi ayri bir sinif saymadim. ETIKETSIZ (%1,74): yalniz yol-bitki gecis kusagi ve calilik icinde kalan, yola BAGLI OLMAYAN birkac kucuk cıplak leke (oraya girilemedigi icin hukum verilmedi). Bu kare sinif 0'in GERCEKTEN kucuk oldugu bir ornek (%9) ama sinif 0 VAR ve cizildi. F4 karsilastirmasi: benim sinif1 %89,3, F4 %90,9 - bagimsiz olarak ortustu.",
+   "f4_saniye": 117.0,
+   "f4_sinif1_oran": 0.9089,
+   "eslestirilmis_oran_F5_bolu_F4": 1.877,
+   "sinif1_fark_F5_eksi_F4": -0.0158
+  }
+ ],
+ "toplam_saniye": 2087.0,
+ "sartname_belirsizligi": [
+  "GEVSEK MOLOZ / KIRIK TAS DOLGU: sartname ne madde (4)'un 'sik agaclik/calilik/dik sev' listesine giriyor ne de surulebilir zemin sayilabiliyor. Tas boyu okunuyor ama IKA'nin tirmanma yetenegi bilinmedigi icin hukum verilemedi -> etiketsiz birakildi. Sartname bir tas-boyu/engel-yuksekligi olcutu vermiyor.",
+  "OTLU AMA DUZ GORUNEN ZEMIN: sartname 'sinif 0 = DOGRULADIN' diyor ama bitki ortusu zemini gizlerken neyin 'dogrulama' sayildigini soylemiyor. Alcak tekduze mera ortusunu sinif 0, yuksek tumsekli kuru ot obegini etiketsiz saydim; bu ayrimin esigi sartnamede YOK, benim koydugum olcuttur (7x7 yerel std histogramindaki vadi = 8,5).",
+  "INSAN/HAREKETLI NESNE: sartname insanlari anmiyor. Gecilemez oldugu icin sinif 1 verdim, ama bunlar SABIT ENGEL DEGIL; egitim kumesinde kalici engel gibi ogrenilmesi istenmiyorsa kural gerekir.",
+  "HOYUK/CUKUR ARAZI: sartname 'dik sev'i sinif 1 sayiyor ama tek kareden EGIM olculemiyor; yalniz golge uzunlugundan dolayli cikarim yapilabiliyor. Golge uzunlugu -> yukseklik cevrimi icin gunes acisi gerekiyor, veri yok. Bu yuzden hoyuklu dokum alani etiketsiz birakildi.",
+  "CUKUR vs KOYU MALZEME: koyu bir leke 'cukur' (sinif 1, girer cikamaz) ya da 'koyu toprak/kul' (sinif 0) olabilir; nadir tek kareden ayrilamiyor. Sartname bu ayrim icin olcut vermiyor.",
+  "SEV DIKLIGI: madde (4) 'dik sev'i sinif 1 sayiyor ama tek nadir kareden EGIM olculemez. Bu karede yamaci sinif 1 saymamin dayanagi egim degil, ortu YOGUNLUGU (sik olu dal/calilik) oldu. Sartname 'ne kadar sik = gecilemez' esigini vermiyor; F4 ile aramdaki 9 puanlik fark buradan geliyor olabilir.",
+  "ARK GENISLIGI/DERINLIGI: madde (3) arki kosulsuz sinif 1 sayiyor. Bu karedeki ark ~90 cm genislikte beton bir yol olugu. Kucuk bir IKA icin gecilemez, buyugu icin gecilebilir olabilir; sartname arac boyutundan bagimsiz kural verdigi icin kosulsuz sinif 1 yazdim -- ama bu kararin ARACA BAGLI oldugunu belirtmek gerek.",
+  "GOLGE-ALTINDA-YOL: madde (0) golge kuralini uyguladim (yuzey okunuyorsa o sinif). Ama sartname 'okunabiliyor'un esigini vermiyor. Bu karede golgeli yol dokusu ExG isaretini korudugu icin (golgede ExG=-7,5, gunesli yolda -9,9) olcumle karar verebildim; daha karanlik golgelerde bu olcut coker."
+ ],
+ "ozet": {
+  "kare_sayisi": 4,
+  "toplam_saniye": 2087.0,
+  "kare_basi_ortalama_saniye": 521.8,
+  "eslestirilmis_oranlar_F5_bolu_F4": [
+   0.219,
+   1.039,
+   1.226,
+   1.877
+  ],
+  "MEDYAN_eslestirilmis_oran": 1.132,
+  "sinif0_orani_sifira_yakin_kare_var_mi": "HAYIR - en dusuk %8,96 (A4, dar orman yolu); digerleri %18,9 / %40,3 / %41,3. On kayit s4'teki gecersizlik kosulu OLUSMADI.",
+  "GSD_tahmini": "~1,25 cm/px ham, ~5 cm/px @960. Turetim: rel_alt 30,7-32,5 m (kareler_irtifa.json) + A2'deki otomobil lastigi capi ~50 ham px ve gercek cap ~0,63 m. TAHMINDIR, olculmus degil - kamera FOV'u bilinmedigi icin bagimsiz dogrulanamadi.",
+  "SURE_OLCUMUNU_KIRLETEN_ETKEN": "A1'in 689,5 sn'si ortak ALTYAPININ da suresini iceriyor: bu turda ilk kez yazilan bak.py/kirp.py/prob.py/dok.py/ortak.py yardimci betikleri ve delik doldurma islevindeki bir KUSURUN bulunup duzeltilmesi A1 sirasinda oldu. A2-A4 bunlari HAZIR buldu. Yani A1'in orani (0,219) asagi degil YUKARI yanlidir; buna ragmen 0,219 cikmasinin nedeni F4'te bu karenin 3151,9 sn ile aykiri deger olmasidir.",
+  "not": "Ortalama DEGIL medyan kullanilmali (on kayit s3): oranlarin yayilimi 0,219-1,877, 8,6 kat."
+ }
+}

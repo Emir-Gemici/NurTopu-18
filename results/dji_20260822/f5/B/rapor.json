@@ -1,0 +1,129 @@
+{
+ "ameleler": "B",
+ "kareler": [
+  {
+   "saniye": 1022.6,
+   "yontem": "HAM 3840x2160 uzerinde olcum: (a) duvar/cit merkez cizgisi S<32&V>95 dik profil taramasiyla 84 noktada olculdu, 2. derece polinom artik std=19.5 px, dik genislik medyani 44 ham px; (b) olcek balyadan turetildi (~180 ham px/balya, ~1.2 m -> GSD ~6.7 mm/px, kare ~26x14 m); (c) ayakta ortu = (yerel SD>18 & S>45) 15x15 pencerede ham olcekte olculup 960a indirildi, Gauss 9 + esik 0.38; (d) balya plastigi TON ile ayrildi (H 92-130 mavi-beyaz) cunku golgedeki balyalar parlaklik esigini gecemiyordu; (e) surulebilir alan engel-disi bilesenlerden 7 tohumla buyutuldu, kenarda 2 px gecis seridi etiketsiz birakildi.",
+   "guven": "orta-yuksek",
+   "notlar": "Kare: balya deposu (sol ust, sinif 1) + iki surulebilir yuzey (ortadaki toprak iz ve sagdaki genis stabilize yol) + aralarinda kuru ot serifi ve icinde beton bordur/tel cit. Cit HAM olcekte tanindi -> madde (2) geregi genisligi (44 ham px = ~0.29 m, 960 olceginde ~11 px) ne olursa olsun sinif 1. Yolun sag omuzu ilk otomatik gecist e yanlislikla ortu sayilmisti; HAM 3840te bakildiginda DUZ sert zemin uzerinde YATIK olu ot oldugu goruldu -> sinif 0 yapildi (gozle karar verilseydi yanlis kalacakti). Catinin sagindaki derin golge OKUNAMIYOR -> madde (0) geregi etiketsiz. Sinif 0 bu karede GERCEKTEN var ve bariz (yol + iz + alt sol avlu).",
+   "dosya": "dji_20260822170832_0037_d/frame_000086_000003240.jpg",
+   "png": "dji_20260822170832_0037_d__frame_000086_000003240_uc.png",
+   "md5": "028b338982e9bf76ea51a3b1b2082e6c",
+   "sinif1_oran": 0.51432,
+   "sinif0_oran": 0.46475,
+   "etiketsiz_oran": 0.02093
+  },
+  {
+   "saniye": 332.3,
+   "yontem": "HAM 3840x2160 uzerinde olcum: (a) bordur/cit merkez cizgisi S<32&V>95 dik profil taramasiyla 64 noktada olculdu (artik std=10.3 px, dik genislik medyani 41.6 ham px ~ 10.4 px @960); (b) bu kare k1den BELIRGIN KOYU (kuru ot V=42-81, k1de 100-140) -- esikler kare basina YENIDEN olculdu, k1 esikleri tasinmadi; (c) balya plastigi ton ile (H 92-132); (d) mera ExG>38 & H 27-47 ile ayrildi (mera ExG 50-57, golgedeki cali ExG 6-23 -- ters yonde, gozle ayrilmazdi); (e) ayakta kuru ortu (SD>12&S>55&H<28)|(SD>18&S>75), Gauss 9, esik 0.40.",
+   "guven": "orta-yuksek",
+   "notlar": "Dusey seritli kare: sol kenar YESIL MERA, sonra balya sirasi (sinif 1), koyu cali seridi (sinif 1), kuru ot, ortada iki izli toprak yol (sinif 0), kuru ot + bordur/cit (sinif 1), sagda genis stabilize yol (sinif 0). MERA (%12.9) BILEREK ETIKETSIZ BIRAKILDI: kisa ve duzgun gorunuyor ama nadir gorusten ne bitki yuksekligi ne alttaki zemin okunuyor; \"inceledim, IKA gecer\" diyemem. Bu, sartnamenin cevaplamadigi bir durum -- sartname_belirsizligine yazildi. Sinif 0 bu karede var (orta iz + sag yol, toplam %32.9).",
+   "dosya": "dji_20260822170832_0037_d/frame_000171_000006780.jpg",
+   "png": "dji_20260822170832_0037_d__frame_000171_000006780_uc.png",
+   "md5": "6efcdb048385a2c024157233df40d4bf",
+   "sinif1_oran": 0.52523,
+   "sinif0_oran": 0.32937,
+   "etiketsiz_oran": 0.1454
+  },
+  {
+   "saniye": 639.3,
+   "yontem": "HAM 3840x2160 uzerinde olcum: (a) OLCULDU VE CURUTULDU -- ciplak toprak ile ayakta kuru otun RENGI ayni: kromatiklik (r-g)/(b+g+r) toprakta 0.0994, kuru otta 0.1004; renk esigi bu kareyi AYIRAMAZ; (b) ayiran olcut PARLAKLIK cikti: ciplak dozer izli toprak Vb=139-148, ayakta kuru ot Vb=86-96 (Gauss sigma 6). Iki esikli kural: Vb>=128 ciplak, Vb<105 ortu, arasi ETIKETSIZ; (c) yol/dar iz ayrica S<26 & SD<21 ile korundu (golgeli dar iz karanlik ama bitki degil); (d) yesil kutle ExG>18; (e) celik kafes kule, halka yapi, gergi teli ve IKI INSAN HAM olcekte tanindi, elle olculmus kutu/cizgi ile sinif 1 yazildi.",
+   "guven": "orta",
+   "notlar": "Kare uc bolgeli: solda sik yesil kutle + servi fidanlari (sinif 1), ortada genis stabilize YOL (sinif 0) ve solunda dar ikincil iz (sinif 0), sagda DOZER PALETI IZLI ciplak platform (sinif 0). Yolun uzerinde IKI INSAN duruyor -> sinif 1 yazildi; golgeleri okunabilir yol yuzeyi uzerinde oldugu icin madde (0) geregi golge sinif 0 birakildi. Sag platformun tasli/molozlu yamalari ile ot arasi gecis seridi ETIKETSIZ. Guven ORTA: platformun EGIMI nadir gorusten okunamiyor -- duz gorunuyor ve uzerinde is makinesi paleti izi var (fiili gecis kaniti), bu yuzden sinif 0 dedim, ama bir sev olsaydi ayirt edemezdim. Sinif 0 bu karede bol (%40).",
+   "dosya": "dji_20260822173231_0039_d/frame_000177_000009930.jpg",
+   "png": "dji_20260822173231_0039_d__frame_000177_000009930_uc.png",
+   "md5": "8a555f175c5422cdcb1cd81e95b5fe99",
+   "sinif1_oran": 0.47214,
+   "sinif0_oran": 0.40134,
+   "etiketsiz_oran": 0.12652
+  },
+  {
+   "saniye": 607.3,
+   "yontem": "HAM 3840x2160 uzerinde olcum: (a) ayirici olcut YEREL DOKU cikti -- ciplak greyder apronu SD=4.4-6.8, asfalt SD=2.4-5.2, bitki/moloz SD=16.7-41.7; esik SD<11 & V>85 (V esigi AGAC GOLGESINDEKI asfalti (V=89-103) korumak icin, o golgede yuzey OKUNUYOR -> madde (0) geregi sinif 0); (b) SD>16 kaba yuzey -> sinif 1; (c) sag yolun uzerindeki ince beyaz serit HAM 1.8x buyutmede YOL BOYASI olarak taninip (yuzeyle ayni duzlem) engel listesinden CIKARILDI ve sinif 0 yazildi -- yalniz doku olcutu kullanilsaydi bariyer sanilacakti; (d) iki insan ve apron uzerindeki ~25-30 cm koyu nesne (kendi golgesi var) HAM olcekte tanindi -> sinif 1; (e) kucuk delik doldurma kullanildi (400 px alti), boylece buyuk kaya/moloz delikleri ACIK kaldi.",
+   "guven": "yuksek",
+   "notlar": "Kare buyuk oranda SURULEBILIR: greyder ile duzlenmis genis toprak apron + sag ustte asfalt yol. Sinif 1 esas olarak kenarlarda: sol alt/sol kenar kuru ot ve moloz, sag kenarda 7-50 cm gevsek kaya obekleri (HAM 0.85x kirpimda olculdu), apron uzerinde birkac tas obegi ve bir kucuk seddeleme basamagi. Sol kenardaki DERIN GOLGE (V=44-50) okunamiyor -> etiketsiz. Apron uzerindeki insan golgeleri okunabilir zemin uzerinde -> sinif 0. Bu karede sinif 0 baskin (%65.6); f4te ayni kare icin sinif 1 orani 0.056 idi, benim olcumum 0.258 -- fark esas olarak sag kenardaki kaya obekleri ve sol alt moloz seridinden geliyor.",
+   "dosya": "dji_20260822173231_0039_d/frame_000206_000011790.jpg",
+   "png": "dji_20260822173231_0039_d__frame_000206_000011790_uc.png",
+   "md5": "5ff153733fc2ca72cebfb1204d2d3760",
+   "sinif1_oran": 0.25805,
+   "sinif0_oran": 0.65631,
+   "etiketsiz_oran": 0.08564
+  }
+ ],
+ "toplam_saniye": 2601.5,
+ "sartname_belirsizligi": [
+  {
+   "konu": "Kuru ot yigini (tussock) hangi sinif?",
+   "durum": "Sartname madde (4) \"sik agaclik, calilik, dik sev\" diyor; AYAKTA DURAN KURU OT sayilmamis. Kare 1 ve 2de karenin ~%40i bu.",
+   "benim_karari": "Yogun, sureklice ayakta duran kuru ot ortusunu madde (4)e benzeterek SINIF 1 yazdim; seyrek/yatik olu otu sinif 0 ya da etiketsiz biraktim.",
+   "etki": "Kare 1 ve 2 icin sinif1 oraninin buyuk kismi bu karardan geliyor. Karar tersine cevrilse iki karede sinif1 ~0.51-0.53ten ~0.15e duser."
+  },
+  {
+   "konu": "Kisa, duzgun YESIL MERA (kare 2 sol kenar, %12.9)",
+   "durum": "Ne \"gecilemez ortu\" ne de dogrulanmis surulebilir zemin. Nadir gorusten bitki yuksekligi ve alttaki zemin OKUNMUYOR.",
+   "benim_karari": "ETIKETSIZ (0) biraktim. \"1 yazmak inceledim ve IKA gecer demektir\" kuralina uydum.",
+   "etki": "Kare 2 etiketsiz orani %14.5. Sartname \"tarim arazisi/mera\" icin acik hukum verirse bu blok tek hamlede degisir."
+  },
+  {
+   "konu": "DINAMIK NESNE (insan) sartnamede yok",
+   "durum": "Kare 3te yol uzerinde 2 insan, kare 4te apron uzerinde 2 insan var.",
+   "benim_karari": "Insanlarin kendisi SINIF 1; GOLGELERI okunabilir yuzey uzerinde oldugu icin madde (0) geregi altindaki yuzeyin sinifi (sinif 0).",
+   "etki": "Alan kucuk (<%1) ama egitim kumesinde \"yol ustunde engel\" ornegi uretir; kasitli mi degil mi belirsiz."
+  },
+  {
+   "konu": "Gevsek TAS/KAYA obegi ne zaman engel?",
+   "durum": "Kare 4 sag kenarinda 7-50 cm arasi gevsek kayalar, apron uzerinde 7-20 cm tas obekleri var. Sartname tas boyutu icin esik vermiyor.",
+   "benim_karari": "Gorsel olarak ayirt edilen tas obeklerini SINIF 1 yazdim (yerel doku SD>16).",
+   "etki": "Kare 4te sinif1 orani 0.258 cikti; F4te ayni kare 0.056 idi. Fark buyuk olcude bu karardan."
+  },
+  {
+   "konu": "Ciplak EGIM (sev) nadir gorusten okunamiyor",
+   "durum": "Kare 3 sagindaki dozer izli platform ve kare 4 apronu duz gorunuyor ama EGIM olculemiyor. Madde (4) \"dik sev\"i sinif 1 sayiyor; nadirde sev ile duzlugu ayiramiyorum.",
+   "benim_karari": "Uzerinde is makinesi paleti izi olan yuzeyleri (fiili gecis kaniti) sinif 0 yazdim; kaniti olmayan kaba yuzeyleri etiketsiz biraktim.",
+   "etki": "Kare 3 guveni bu yuzden \"orta\". Stereo/irtifa verisi olmadan bu belirsizlik kapanmaz."
+  },
+  {
+   "konu": "Yol boyasi / yuzeyle ayni duzlemdeki ince serit",
+   "durum": "Kare 4te asfalt uzerindeki beyaz serit yalniz dokuya bakan bir kural tarafindan \"bariyer\" sanildi.",
+   "benim_karari": "HAM 1.8x buyutmede BOYA oldugu goruldu -> sinif 0. Madde (2) \"taniniyorsa sinif 1\" kurali YAPI icin gecerli; boya yapi degil.",
+   "etki": "Madde (2)nin \"dar ama tanininan yapi\" kurali ile \"dar ama yapi olmayan isaret\" ayrimini sartname yazmiyor; bir cumle eklenmesi iyi olur."
+  }
+ ],
+ "amele": "B",
+ "tur": "F5 - uc durumlu (0=etiketsiz, 1=sinif 0 surulebilir, 2=sinif 1 engel)",
+ "png_boyut": "960x540, tek kanal, degerler {0,1,2}",
+ "sure_olcumu": "her kare icin duvar saati: kare acilmadan once ve PNG yazilmadan hemen once os saat damgasi (date +%s.%N), scratchpadde k*_baslangic.txt / k*_bitis.txt olarak DURUYOR",
+ "ogrenme_etkisi_uyarisi": "Kare 1 (1022.6 sn) ilk karedir ve icinde ARAC INSASI da vardir (ozellik cikarici, duvar merkez-cizgisi olcum betigi, PNG/rapor yazici, zoom denetleyici -- hepsi scratchpaddedir). Kare 2 (332.3 sn) bu araclari HAZIR buldu. Kare 3 ve 4 yeni videodan geldigi icin esikler sifirdan yeniden olculdu ve sure tekrar yukseldi (639.3 / 607.3). Bu yuzden 4 karenin MEDYANI (623.3 sn) tek karelik oranlardan daha durustur; kare 1 ile kare 2 tek baslarina F5/F4 oranini sirasiyla ASIRI YUKSEK ve ASIRI DUSUK gosterir.",
+ "f4_karsilastirma": {
+  "dji_20260822170832_0037_d/frame_000086_000003240.jpg": {
+   "f4_saniye": 874.0,
+   "f5_saniye": 1022.6,
+   "oran": 1.17,
+   "f4_sinif1": 0.131,
+   "f5_sinif1": 0.51432
+  },
+  "dji_20260822170832_0037_d/frame_000171_000006780.jpg": {
+   "f4_saniye": 575.9,
+   "f5_saniye": 332.3,
+   "oran": 0.577,
+   "f4_sinif1": 0.2231,
+   "f5_sinif1": 0.52523
+  },
+  "dji_20260822173231_0039_d/frame_000177_000009930.jpg": {
+   "f4_saniye": 458.3,
+   "f5_saniye": 639.3,
+   "oran": 1.395,
+   "f4_sinif1": 0.2163,
+   "f5_sinif1": 0.47214
+  },
+  "dji_20260822173231_0039_d/frame_000206_000011790.jpg": {
+   "f4_saniye": 246.0,
+   "f5_saniye": 607.3,
+   "oran": 2.469,
+   "f4_sinif1": 0.05559,
+   "f5_sinif1": 0.25805
+  }
+ },
+ "esleştirilmis_oran_medyani": 1.282,
+ "sinif0_gercekten_var_mi": "Dort karenin HEPSINDE sinif 0 fiilen cizildi ve baskin yuzeylerdir: kare1 %46.5, kare2 %32.9, kare3 %40.1, kare4 %65.6. Hicbir karede \"sinif 0 yok\" durumu olusmadi."
+}

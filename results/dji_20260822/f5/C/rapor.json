@@ -1,0 +1,62 @@
+{
+ "kareler": [
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000214_000008370.jpg",
+   "saniye": 753.0,
+   "sinif1_oran": 0.1298,
+   "sinif0_oran": 0.76243,
+   "etiketsiz_oran": 0.10777,
+   "yontem": "960 olcekte ExG/HSV/yerel-std haritalari + HAM 3840x2160 kirpma ile hukum. Yol kenari sutun profiliyle olculdu (std<12 & S<20 & V>120; y=250-350 icin yol x=16..112). Cali: ExG>5, bilesen>=60 px (>=0.55 m). Moloz: std>52 yerel yogunluk; >0.62 ENGEL (0.2-0.4 m blok, ham kirpmada dogrulandi), 0.42-0.62 BELIRSIZ (0.1-0.25 m cakil). Dar koyu cizgi HAM cozunurlukte satir satir izlendi (kontrast 20-78, cukur degeri 20-40).",
+   "guven": "orta-yuksek",
+   "notlar": "Santiye/tas ocagi alani. SINIF 0 GERCEKTEN VAR ve baskin: sol capraz stabilize yol (olculdu, std~7) + islek sikistirilmis dolgu platformu (paletli iz desenleri her yerde) + kuru otlu verev. SINIF 1: sol verevdeki odunsu calilar ve yogun calilik kutlesi (~x110-250,y280-470) + sag kenardaki blok kaya tarlasi (0.2-0.4 m, golgeli, ham kirpmada dogrulandi). ETIKETSIZ birakilanlar ve NEDENI: (a) yolun solundaki dar kuru ayakta ot seridi — zemin okunamiyor, omuzda koyu bant var, hendek olabilir; (b) x~305-424 boyunca inen dar koyu cizgi — HAM cozunurlukte golge+isikli dudak imzasi var, yani bir BASAMAK, ama bordur mu salt toprak kesigi mi OKUNAMADI (madde 2 geregi 0); (c) sag ust taze soklenmis kirmizi kesekli toprak — paletli makine gecmis ama IKA icin kesek boyu okunamiyor; (d) orta yogunluklu cakil serileri. Tel/kablo benzeri ince cizgi (x~355-400, y 0-160) zemin sinifini degistirmedi."
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000090_000005040.jpg",
+   "saniye": 605.0,
+   "sinif1_oran": 0.28839,
+   "sinif0_oran": 0.463,
+   "etiketsiz_oran": 0.24861,
+   "yontem": "Sahne dusey bantlardan olusuyor; her bant sinirini profille OLCTUM. Asfalt yol: x=501..591 (std 3-6 icerde, kenarda 22-34; S 8-12 icerde, 65-100 disarda) — GOZLE 470..620 sanmistim, 30 px hata, olcum duzeltti. Beton duvar+cit: HAM 3840x2160 kirpmada bulundu, x=388..401 parlak beton seridi + x=401..413 golgesi; cit kollari HAM cozunurlukte gorunuyor. Duvar yuksekligi golgeden kestirildi: iki insanin golgesi ~25 px (1,75 m) -> gunes yuksekligi ~44 derece; duvar golgesi ~11 px (0,77 m) -> yukseklik ~0,74 m. Bitki: exg>18; ODUNSU (x 170-280 cit serisi, x>280 icin V<80 veya std>32) sinif 1, OTSU ortu etiketsiz. Direk: kutu icinde std>38 -> disbukey zarf.",
+   "guven": "yuksek",
+   "notlar": "SINIF 0 VAR ve olculdu: (a) asfalt koy yolu x 501-591 (~6,3 m), (b) toprak tarla yolu x ~265-355, (c) sagdaki cakilli/sikistirilmis toprak alan x>595 (tekerlek izleri, okunabilir zemin). SINIF 1: sarilmis silaj balyasi yigini (cok katli, kesin engel), cit/agac serisi x 170-280, beton duvar + cit x 388-401, elektrik kafes diregi, sag taraftaki odunsu calilar, ve YOLDA DURAN IKI INSAN. ETIKETSIZ: (a) sol yem/mera tarlasi — surekli yesil otsu ortu, ZEMIN OKUNMUYOR, odunsu yapi da yok, ne sinif 0 ne sinif 1 diyebildim; (b) yolun iki yanindaki UZUN KURU OT serileri (x 355-388 ve 413-500) — HAM kirpmada ot ~40-70 cm ayakta, altindaki zemin hic gorunmuyor, hendek olup olmadigi bilinmiyor; (c) duvarin golge seridi. Havai iletkenler (ince beyaz cizgiler) zemini kapatmadigi icin sinif degistirmedi — altlari okunabiliyor, madde (0) geregi zemin sinifini aldilar."
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000148_000008070.jpg",
+   "saniye": 798.0,
+   "sinif1_oran": 0.034,
+   "sinif0_oran": 0.75814,
+   "etiketsiz_oran": 0.20786,
+   "yontem": "HAM 3840x2160 kirpmalarina 960-koordinatli IZGARA bindirerek konum okudum (gozle tahmin yerine). Beton duvar ekseni izgarayla satir satir okundu: y=150 x 272-285, y=200 x 277-291, y=400 x 298-311, y=500 x 307-320 -> eksen wc(y)=278,5+0,10*(y-150), genislik 13 px. Yol: std profili y 150-220 -> x 405..497 (icerde std 5-6, disarda 20-30). Tarla/cakil siniri: (S<40 & V>105) yogunlugu ile satir satir -> xb(y)=143+0,055*y. Gunes yonu insan golgelerinden dogrulandi (asagi-SAGA, yani gunes yukari-SOLDA) — duvarin sagindaki koyu bant BOYLECE duvarin GOLGESI oldugu kanitlandi, hendek degil. Derin golge (V<55 & std<15) okunamaz sayilip 0 birakildi.",
+   "guven": "yuksek",
+   "notlar": "SINIF 0 GERCEKTEN VAR ve baskin (0,758): cakil/stabilize serit x~150-260, cakil koy yolu x 405-497, ve sagdaki BUYUK paletli-iz platformu (x>~700; grouser izleri her yeri kapliyor, yani makine her yerinden gecmis, zemin sikismis ve okunabilir). Yolun iki yanindaki kuru ot YATMIS/matlasmis, altindaki toprak okunabiliyor -> sinif 0. DIKKAT: bu kare 2 numarali kareyle AYNI koridorun 58 sn ilerisi ama oradaki ot AYAKTA ve uzundu, burada YATMIS; bu yuzden orada etiketsiz, burada sinif 0 dedim — ayrimin dayanagi ham kirpmada otun ayakta olup olmadigi. SINIF 1: beton duvar + uzerindeki cit kollari (ham cozunurlukte kollar net), iki kokar agac, yoldaki iki insan, bir cali. ETIKETSIZ: (a) sol yogun yesil tarla ve bitisigindeki yogun otsu bant (x<143+0,055y) — zemin okunmuyor; (b) duvarin ve agaclarin DERIN golgeleri — V~28, std~5, hicbir doku yok, madde (0) geregi 0."
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000044_000001470.jpg",
+   "saniye": 784.0,
+   "sinif1_oran": 0.08847,
+   "sinif0_oran": 0.80005,
+   "etiketsiz_oran": 0.11148,
+   "yontem": "Kritik ayrimi OLCTUM: kaya tarlasi mi surulur cakil mi? HAM 3840x2160 kaydinda parlak tas bilesenleri (yerel ortalama+18) etiketlendi, cap dagilimi cikarildi: sol moloz p90 cap 0,27 m / ortu 0,37; orta sirt p90 0,17 m / 0,29; paletli izli cakil p90 0,15 m / 0,26; beton pad p90 0,10 m / 0,05. SONUC: orta sirt ile SURULEN izli cakil boyut ve ortu bakimindan AYNI -> sirt sinif 1 DEGIL. Bunun uzerine >=0,20 m capindaki taslarin yerel yogunlugu olcut yapildi: >0,25 SINIF 1, 0,16-0,25 BELIRSIZ, altinda SINIF 0 (sol moloz 0,359 / sirt 0,147 / izli cakil 0,123 / pad 0,000). Hendek HAM cozunurlukte satir satir izlendi: y 25-250 arasi kontrast 70-105 ve deger 17-55; y>270 kontrast 30-56 degere 65-105 yukseliyor, yani hendek orada BITIYOR — asagisi tekerlek izi. Golge genisligi ~12 px (~0,6 m) ve gunes yuksekligi ~27 derece -> derinlik ~0,3 m.",
+   "guven": "orta-yuksek",
+   "notlar": "Kare 1 ile AYNI ucusun (0037) 115 sn oncesi; ayni santiye. SINIF 0 GERCEKTEN VAR ve cok baskin (0,800): buyuk sikistirilmis platform, paletli iz desenleriyle kapli toprak, ve sagdaki stabilize yol (x 797-868, std 5,1). SINIF 1: sol blok kaya tarlasi (x~0-190, y~90-320; p90 cap 0,27 m), x 625-655 / y 25-250 arasindaki HENDEK (tek yonlu golge -> cukur, ~0,6-0,9 m genis ~0,3 m derin; sartname madde 3 geregi su gorunmese de sinif 1), ve sag verevdeki yogun yesil calilar. ETIKETSIZ: (a) x 165-320 y 355-475 gevsek kirmizi kesek yayilimi (kare 1 ile ayni karar), (b) ara yogunluklu tasli lekeler, (c) sag kenardaki (x>915) COK KOYU seride — V~30, std~6, hicbir doku yok, ne oldugu okunmuyor."
+  }
+ ],
+ "genel": {
+  "amele": "C",
+  "kare_sayisi": 4,
+  "toplam_saniye": 2940.0,
+  "kare_basi_ortalama_saniye": 735.0,
+  "sure_olcum_yontemi": "Her karede duvar saati: kareye ilk bakistan (onizleme/analiz komutu) PNG diske yazilana kadar, epoch saniye damgalariyla. Rapor yazimi ve dogrulama sayfasi bu surelere DAHIL DEGIL.",
+  "isletim_kurali_kendi_koydugum": "Sartnamede olmayan ama dort karede de AYNI uygulanan kural: (a) belirgin odunsu yapisi olan yesil (tek tek cali taci, agac, cit serisi) SINIF 1; (b) zemini OKUNMAYAN surekli otsu ortu ETIKETSIZ; (c) zemini OKUNAN, duz, sikismis yuzey SINIF 0; (d) kaya/moloz iki kademe: HAM cozunurlukte olculen >=0,20 m capli tas yogunluguna gore yuksek kademe SINIF 1, ara kademe ETIKETSIZ.",
+  "sartname_belirsizligi": [
+   "DINAMIK NESNE: Kare 2 ve 3'te yolun UZERINDE duran insanlar var. Sartname yalniz ORTU/zemin hakkinda konusuyor; hareketli nesne icin hukum YOK. SINIF 1 verdim (o anda gecilemez), ama bu benim karariM — sartname soylemedi. Golgelerini zemin sinifinda biraktim (madde 0).",
+   "OTSU ORTU ESIGI: Madde (4) 'sik agaclik, calilik, dik sev' diyor ama ALCAK OTSU ORTUYU (mera, yonca, kuru ot) hic anmiyor. 'Sik calilik' ile 'yuksek cimen' arasindaki esik tanimsiz. Ben zemin OKUNABILIRLIGINI olcut aldim: ot altindaki toprak gorunuyorsa sinif 0, gorunmuyorsa etiketsiz. AYNI koridorun iki karesinde bu FARKLI sonuc verdi (kare 2 etiketsiz, kare 3 sinif 0) cunku otun biri ayakta biri yatmis. Sartname bunu ongormuyor.",
+   "GEVSEK MALZEME / KESEK: Paletli makinenin gectigi, uzeri 0,15-0,30 m gevsek kesek/cakil ile kapli sikismis yuzey. Madde (0) 'IKA girerse cikabilir mi' diyor ama IKA'nin boyutu/tirmanma yetenegi verilmemis; 0,25 m'lik gevsek kesek gecilir mi bilinmiyor. Etiketsiz biraktim (kare 1 ve 4).",
+   "TAS BOYU ESIGI: Kaya tarlasi ile surulebilir cakil arasindaki sinir sartnamede sayisal degil. Kare 4'te olcumle karar verdim (>=0,20 m capli tas yogunlugu); esigin kendisi (0,25) benim secimim.",
+   "DAR CIZGISEL YAPI, TANI BELIRSIZ: Kare 1'de x~305-424 boyunca inen dar cizgi HAM cozunurlukte golge+isikli dudak imzasi veriyor, yani bir BASAMAK var — ama bordur mu yoksa salt toprak kesigi mi ayirt EDILEMEDI. Madde (2) 'taniniyorsa sinif 1, okunamiyorsa 0' diyor; 'bir seyin VARLIGINI goruyorum ama NE oldugunu okuyamiyorum' hali icin madde 2 sadece 0 birakmayi birakiyor, bu da bilinen bir engeli kaybettiriyor.",
+   "HAVAI ILETKEN: Kare 2'de elektrik iletkenleri kareyi bastan basa gecen ince cizgiler olarak gorunuyor. Zemini kapatmadiklari icin sinif degistirmedim, ama sartname havai (zemine degmeyen) yapi icin acik hukum icermiyor.",
+   "GOLGE ICINDE GOLGE: Kare 3'te duvarin golgesinin ic kismi tamamen okunamaz (V~28, std~5) ama dis kismi okunabiliyor. Madde (0) 'okunabiliyorsa' diyor; okunabilirligin esigi tanimsiz. Ben (V<55 & std<15) esigini kendim koydum."
+  ],
+  "kapasite_notu": "Dort karede sure 605-798 sn, ortalama 735 sn. Sure kare zorluguyla degil, KARAR SAYISIYLA orantili gitti: en uzun kareler (798 ve 784 sn) en cok OLCUM gerektirenlerdi (kare 3 duvar ekseninin satir satir okunmasi; kare 4 tas capi dagiliminin cikarilmasi). En kisa kare (605 sn, kare 2) en cok SINIF 1 iceren kareydi (0,288) — yani sinif 1 orani ile sure arasinda ters iliski gorundu: buyuk ve kesin engeller (balya yigini, cit) HIZLI etiketleniyor, kararsiz zeminler YAVAS."
+ }
+}
