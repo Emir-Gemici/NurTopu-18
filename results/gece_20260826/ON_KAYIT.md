@@ -84,6 +84,14 @@ v34 ROTA 7 · MASKE_YOK 19 · dji_kirsal_v1 ROTA 6 · MASKE_YOK 14 · UC_BANT 9.
 ⇒ **Sayısal terfi eşiği: ROTA ≥ 10/29 ve MASKE_YOK ≤ 10/29.** Bu satır eğitim
 başlamadan yazıldı ve değişmez.
 
+### (b-ek) EK KAPI — 01:2x'te, eğitim bitmeden ve aday görülmeden eklendi; YALNIZ SIKILAŞTIRIR
+Gözle bakınca (frame_000021: yol yok, tarla) anlaşıldı ki 0038'de **yolu olmayan kareler var**;
+orada `MASKE_YOK` **doğru** cevaptır ve rota üretmek **yanlış pozitiftir** (şartname: yanlış
+güzergâh = 0 puan). Bu yüzden rota sayısı tek başına yetmez:
+- Elle etiket tavanı aynı 29 karede üretim yolundan geçirilir (`143_etiket_tavani.py`).
+- **FP** = model rota üretir, etiket tavanı üretmez → **FP ≤ 1** ek kapıdır (`142`, `kapi_b`).
+- TP/FN raporlanır. (b)'nin ROTA ≥ 10 eşiği olduğu gibi kalır (gevşetilmedi).
+
 ### (c) Raporlanır, kapı DEĞİL
 `figur_zemin_orani` (v35 0,1508) · `kaplama67_icerik_medyan` (v35 0,5076) ·
 arena figüründe yol var/yok · mAP eğrisi (best epoch — 1 ise "v35+1 epoch").

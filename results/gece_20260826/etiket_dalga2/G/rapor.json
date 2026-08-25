@@ -1,0 +1,15 @@
+{"grup":"G","baslangic_epoch":1787696026,"bitis_epoch":1787696240,"toplam_sn":214,
+"kareler":[
+{"govde":"dji_20260822170832_0037_d__frame_000166_000006510","sure_sn":55,"etiketsiz":0.4184,"sinif0":0.3366,"sinif1":0.2449,"yol_kenardan_kenara":true,"not":"Iki dikey yol (cakil serit 545-655 ve genis toprak alan 745-960) ust-alt kenara kadar sinif 0; tel cit+golge 718-748 sinif 1; balya kumesi, sundurma cati, mavi varil, yesil cali sinif 1; sol cayir ve kuru ot seritleri etiketsiz."},
+{"govde":"dji_20260822172613_0038_d__frame_000141_000005400","sure_sn":50,"etiketsiz":0.2181,"sinif0":0.2404,"sinif1":0.5416,"yol_kenardan_kenara":true,"not":"Sol cakil yol ve sag toprak yol ust-alt kenara kadar sinif 0; ortadaki sik cali tumsegi, moloz/tas yigini ve sag agaclik sinif 1; sol ciplak tarla egim ipucu olmadigindan etiketsiz birakildi."},
+{"govde":"dji_20260822170832_0037_d__frame_000131_000005460","sure_sn":60,"etiketsiz":0.6193,"sinif0":0.2351,"sinif1":0.1456,"yol_kenardan_kenara":true,"not":"Toprak yol 315-610 ust-alt kenara kadar sinif 0; capraz tel cit+golge sinif 1; balya dizisi, cop/torba yigini, mavi branda sinif 1; sol ayakta kuru ot ve sag yesil mera etiketsiz (zemin okunmuyor). 2 tur (balya poligonu kaydirildi)."},
+{"govde":"dji_20260822170832_0037_d__frame_000009_000000360","sure_sn":95,"etiketsiz":0.5546,"sinif0":0.3784,"sinif1":0.067,"yol_kenardan_kenara":true,"not":"Genis cakil yol (ust kenar -> sol kenar) ve capraz ikinci cakil iz (ust kenar -> alt kenar) sinif 0; iki insan+golge, agac dizisi, tel cit sinif 1; ot seridi, dolgu sevi ve sag surulmus tarla etiketsiz. 3 tur: yol/iz siniri 40 px kaydi, en zor kare."},
+{"govde":"dji_20260822170832_0037_d__frame_000112_000004680","sure_sn":40,"etiketsiz":0.3832,"sinif0":0.3615,"sinif1":0.2553,"yol_kenardan_kenara":true,"not":"Sol genis toprak yol 0-245 ve cakil serit 415-560 ust-alt kenara kadar sinif 0; capraz tel cit+golge, balya kumesi, sundurma cati sinif 1; kuru ot seritleri ve sag mera etiketsiz."}
+],
+"sartname_bosluklari":[
+"Ciplak, kuru, duz gorunen tarla/arsa (0038_f141 sol taraf): zemin dokusu okunuyor ama madde (9) egim ipucu yoksa etiketsiz der; 'yol olmayan ama okunan sert toprak' icin acik hukum yok — etiketsiz biraktim.",
+"Surulmus/tirmiklanmis tarla (0037_f009 sag): doku okunuyor ama gevsek toprak; sert duz zemin sayilir mi? Etiketsiz biraktim.",
+"Tel cit + golgesi: cit sinif 1 (madde 2 yeni hali), ama gologesi altindaki yol okunuyor; ben cit+golgeyi ~25 px tek serit sinif 1 yaptim — golge payinin sinif 1 mi sinif 0 mi olacagi yazili degil.",
+"Yol kenarindaki dolgu/sev seridi (0037_f009, kahverengi toprak bant): egim ipucu var (renk/doku kesintisi) ama sinif 1 mi etiketsiz mi karar kurali net degil; etiketsiz biraktim.",
+"Cop/torba/plastik yiginlari (0037_f131): tek tek <25 cm olabilir ama yigin >25 cm; yigini nesne sayip sinif 1 yaptim."
+]}

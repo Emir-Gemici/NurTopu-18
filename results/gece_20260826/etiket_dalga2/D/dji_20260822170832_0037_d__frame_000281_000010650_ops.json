@@ -1,0 +1,5 @@
+{"islemler":[
+ {"tip":"dikdortgen","deger":1,"kutu":[150,0,960,540]},
+ {"tip":"poligon","deger":0,"nokta":[[345,0],[960,0],[960,540],[345,540]],"not":"tutarlilik_denetimi_20260826"},
+ {"tip":"dikdortgen","deger":2,"kutu":[25,0,115,540]}
+]}

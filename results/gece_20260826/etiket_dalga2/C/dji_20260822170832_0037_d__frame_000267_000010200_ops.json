@@ -1,0 +1,5 @@
+{"islemler":[
+ {"tip":"poligon","deger":1,"nokta":[[40,0],[960,0],[960,540],[40,540]]},
+ {"tip":"poligon","deger":0,"nokta":[[0,0],[40,0],[40,540],[0,540]]},
+ {"tip":"poligon","deger":0,"nokta":[[178,0],[960,0],[960,540],[178,540]],"not":"tutarlilik_denetimi_20260826"}
+]}

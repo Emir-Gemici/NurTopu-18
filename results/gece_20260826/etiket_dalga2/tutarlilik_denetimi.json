@@ -1,0 +1,255 @@
+{
+ "incelenen": 40,
+ "tarih": "2026-08-26",
+ "denetci": "etiket tutarlilik denetcisi (madde 12, mimar karari 2026-08-26)",
+ "yontem": "40 *_bindirme.jpg sirayla goruldu; supheli karelerde *_izgara.jpg ile sinir okundu. Ihlalde <govde>_ops.json'a deger-0 poligon eklendi (ILK deger-2 islemden ONCE, boylece sinif 1 hic degismedi; deger-2 yoksa sona), 140_uc_maske_araci.py uret ile maske+bindirme yeniden uretildi, yeni bindirme GORULDU. Eklenen islemler \"not\":\"tutarlilik_denetimi_20260826\" alaniyla isaretli; orijinal ops dosyalari tutarlilik_ops_yedek.json icinde (govde -> ops).",
+ "duzeltilen_sayisi": 15,
+ "duzeltilen_madde12": 13,
+ "duzeltilen_madde8": 2,
+ "duzeltilen_gruplar": {
+  "B": [
+   "31",
+   "37",
+   "28"
+  ],
+  "C": [
+   "231",
+   "240",
+   "267"
+  ],
+  "D": [
+   "33",
+   "281",
+   "10"
+  ],
+  "E": [
+   "17"
+  ],
+  "F": [
+   "277"
+  ],
+  "G": [
+   "112",
+   "166"
+  ],
+  "H": [
+   "13",
+   "287"
+  ]
+ },
+ "temiz_gruplar": [
+  "A"
+ ],
+ "duzeltilen": [
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000031_000001050",
+   "grup": "B",
+   "kural": "madde 12",
+   "neden": "madde 12: paletle cignenmis santiye toprağı (x>=380) sinif 0 idi -> etiketsiz; sol gri duz platform ve sag yesil ortu korundu",
+   "sinif0_once": 0.8054,
+   "sinif0_sonra": 0.3555,
+   "sinif1_once": 0.0399,
+   "sinif1_sonra": 0.0399,
+   "etiketsiz_once": 0.1547,
+   "etiketsiz_sonra": 0.6045,
+   "eklenen_islem_indeksi": 4
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000037_000001230",
+   "grup": "B",
+   "kural": "madde 12",
+   "neden": "madde 12: paletle cignenmis toprak + molozlu yol omzu (x330-790) sinif 0 idi -> etiketsiz; sol gri platform ve sag yol korundu",
+   "sinif0_once": 0.7466,
+   "sinif0_sonra": 0.3358,
+   "sinif1_once": 0.0,
+   "sinif1_sonra": 0.0,
+   "etiketsiz_once": 0.2534,
+   "etiketsiz_sonra": 0.6642,
+   "eklenen_islem_indeksi": 5
+  },
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000028_000001710",
+   "grup": "B",
+   "kural": "madde 12",
+   "neden": "madde 12: yamacta kirmizi cig toprak uzerindeki arac izi (kurulu yol degil) sinif 0 idi -> etiketsiz (madde 9 egim de okunmuyor)",
+   "sinif0_once": 0.1313,
+   "sinif0_sonra": 0.0,
+   "sinif1_once": 0.1967,
+   "sinif1_sonra": 0.1967,
+   "etiketsiz_once": 0.672,
+   "etiketsiz_sonra": 0.8033,
+   "eklenen_islem_indeksi": 1
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000231_000008880",
+   "grup": "C",
+   "kural": "madde 12",
+   "neden": "madde 12: yolun sagindaki tum taranmis/paletli toprak sinif 0 idi -> etiketsiz; cakil yol poligonu korundu",
+   "sinif0_once": 0.8429,
+   "sinif0_sonra": 0.089,
+   "sinif1_once": 0.0057,
+   "sinif1_sonra": 0.0057,
+   "etiketsiz_once": 0.1514,
+   "etiketsiz_sonra": 0.9052,
+   "eklenen_islem_indeksi": 3
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000240_000009150",
+   "grup": "C",
+   "kural": "madde 12",
+   "neden": "madde 12: taranmis/paletli toprak (yol disindaki her sey) sinif 0 idi -> etiketsiz; sol alt cakil yol korundu (2. tur: x20-40/y120-250 yesil kiymik temizlendi)",
+   "sinif0_once": 0.754,
+   "sinif0_sonra": 0.0612,
+   "sinif1_once": 0.0,
+   "sinif1_sonra": 0.0,
+   "etiketsiz_once": 0.246,
+   "etiketsiz_sonra": 0.9388,
+   "eklenen_islem_indeksi": 5
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000267_000010200",
+   "grup": "C",
+   "kural": "madde 12",
+   "neden": "madde 12: x>=178 taranmis ciplak toprak sinif 0 idi -> etiketsiz; cakil yol x40-175 korundu",
+   "sinif0_once": 0.9573,
+   "sinif0_sonra": 0.1427,
+   "sinif1_once": 0.0,
+   "sinif1_sonra": 0.0,
+   "etiketsiz_once": 0.0427,
+   "etiketsiz_sonra": 0.8573,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000033_000001110",
+   "grup": "D",
+   "kural": "madde 12",
+   "neden": "madde 12: paletle cignenmis toprak (x355-760) sinif 0 idi -> etiketsiz; sol gri duz platform ve sag yol korundu",
+   "sinif0_once": 0.7791,
+   "sinif0_sonra": 0.3946,
+   "sinif1_once": 0.0,
+   "sinif1_sonra": 0.0,
+   "etiketsiz_once": 0.2209,
+   "etiketsiz_sonra": 0.6054,
+   "eklenen_islem_indeksi": 4
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000281_000010650",
+   "grup": "D",
+   "kural": "madde 12",
+   "neden": "madde 12: yolun sagindaki paletli cig toprak + kuru ot omzu (x>=345) sinif 0 idi -> etiketsiz; yol x150-345 korundu",
+   "sinif0_once": 0.8438,
+   "sinif0_sonra": 0.2031,
+   "sinif1_once": 0.0938,
+   "sinif1_sonra": 0.0938,
+   "etiketsiz_once": 0.0625,
+   "etiketsiz_sonra": 0.7031,
+   "eklenen_islem_indeksi": 1
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000010_000000840",
+   "grup": "D",
+   "kural": "madde 12",
+   "neden": "madde 12: yol ustundeki kazilmis cig toprak yamasi yalniz 26 px serit etiketsizdi; yama y340-455 boyunca -> etiketsiz",
+   "sinif0_once": 0.1532,
+   "sinif0_sonra": 0.1275,
+   "sinif1_once": 0.3001,
+   "sinif1_sonra": 0.3001,
+   "etiketsiz_once": 0.5466,
+   "etiketsiz_sonra": 0.5723,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000017_000000630",
+   "grup": "E",
+   "kural": "madde 12",
+   "neden": "madde 12+9: kazi benti (cig toprak, izler, moloz) ve egimli erisim rampasi sinif 0 idi -> etiketsiz; asfalt/cakil yol korundu",
+   "sinif0_once": 0.4592,
+   "sinif0_sonra": 0.1679,
+   "sinif1_once": 0.0006,
+   "sinif1_sonra": 0.0006,
+   "etiketsiz_once": 0.5402,
+   "etiketsiz_sonra": 0.8315,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000277_000010530",
+   "grup": "F",
+   "kural": "madde 12",
+   "neden": "madde 12: yolun sagindaki paletli kazi toprağı (x>=400) sinif 0 idi -> etiketsiz; yol x130-315 ve ekskavator (sinif 1) korundu",
+   "sinif0_once": 0.7383,
+   "sinif0_sonra": 0.1927,
+   "sinif1_once": 0.1003,
+   "sinif1_sonra": 0.1003,
+   "etiketsiz_once": 0.1615,
+   "etiketsiz_sonra": 0.707,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000112_000004680",
+   "grup": "G",
+   "kural": "madde 8 / Ilke B",
+   "neden": "madde 8 (Ilke B): sol yesil mera (x0-245, zemin gorunmuyor) sinif 0 idi -> etiketsiz; A/f161 ve G/f166-sol ile tutarli",
+   "sinif0_once": 0.3615,
+   "sinif0_sonra": 0.1026,
+   "sinif1_once": 0.2553,
+   "sinif1_sonra": 0.2553,
+   "etiketsiz_once": 0.3832,
+   "etiketsiz_sonra": 0.6421,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000166_000006510",
+   "grup": "G",
+   "kural": "madde 8 / Ilke B",
+   "neden": "madde 8 (Ilke B): sag yesil mera (x>=745, zemin gorunmuyor) sinif 0 idi -> etiketsiz; ayni karede sol mera zaten etiketsizdi",
+   "sinif0_once": 0.3366,
+   "sinif0_sonra": 0.1169,
+   "sinif1_once": 0.2449,
+   "sinif1_sonra": 0.2449,
+   "etiketsiz_once": 0.4184,
+   "etiketsiz_sonra": 0.6382,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000013_000000510",
+   "grup": "H",
+   "kural": "madde 12",
+   "neden": "madde 12+9: sol ust paletli sev + kazi benti + egimli rampa sinif 0 idi -> etiketsiz (E/f17 ile tutarli); yol korundu",
+   "sinif0_once": 0.5287,
+   "sinif0_sonra": 0.2295,
+   "sinif1_once": 0.095,
+   "sinif1_sonra": 0.095,
+   "etiketsiz_once": 0.3763,
+   "etiketsiz_sonra": 0.6755,
+   "eklenen_islem_indeksi": 2
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000287_000010830",
+   "grup": "H",
+   "kural": "madde 12",
+   "neden": "madde 12: yolun solundaki paletli cig toprak + omuz sinif 0 idi -> etiketsiz; yol ve devrik direk (sinif 1) korundu",
+   "sinif0_once": 0.6725,
+   "sinif0_sonra": 0.2277,
+   "sinif1_once": 0.1447,
+   "sinif1_sonra": 0.1447,
+   "etiketsiz_once": 0.1828,
+   "etiketsiz_sonra": 0.6276,
+   "eklenen_islem_indeksi": 3
+  }
+ ],
+ "eklenen_sinif1": [],
+ "sinif1_kontrolu": "40 karede >=%3 buyuklugunde acikca gorunen ama kirmizi olmayan su/sazlik/agaclik/duvar/arac/insan bulunmadi. Sinirda kalan ve EKLENMEYENLER: H/0038_f41 sol ust yesil ortu (x0-120,y0-260, ~%6) — izgarada alcak yesil ot/cayir gibi okunuyor, cali oldugu dogrulanamadi (Ilke A: sinif 1 gozlemdir); A/0038_f151 sol koyu yigin (x0-120,y100-350, ~%6) — moloz/gubre yigini mi zemin mi okunamiyor, etiketsiz birakildi; F/0038_f150 sol ust lastikler (<%1).",
+ "yargi_notlari": [
+  "PLATFORM ISTISNASI UYGULANDI: 0037 santiyesinin SOL gri-mavi duz, izsiz zemini (B/f31 x<380, B/f37 x<330, D/f33 x<355) madde 12'nin 'duz-izsiz-sikistirilmis santiye platformu' hukmuyle SINIF 0 birakildi. Paletli/izli bolgeler ve orange dolgu cevresi etiketsiz yapildi. Bu uc karede ayni sinir kullanildi (tutarli).",
+  "RAMPA/BENT: 0037 f13 (H) ve f17 (E) ayni kazi sevi + bent + acik renkli erisim rampasi. Rampa egimli (madde 9: egim tek kareden okunmuyor) ve bent cig toprak (madde 12) oldugundan IKISINDE DE etiketsiz yapildi; yalniz alt yol sinif 0 kaldi. Mimar rampayi 'toprak yol' sayarsa H/f13'te [[330,0],[540,0],[560,60],[540,120],[500,180],[470,240],[450,266],[300,272],[340,240],[380,180],[380,120],[350,60]] deger-1 poligonu geri eklenebilir.",
+  "SINIF 0 BIRAKILAN SERT TOPRAK ALANLAR (madde 12 ihlali sayilmadi): B/0039_f66 yol sagindaki duz sikismis toprak avlu (amele notu 'sert toprak'); F/0039_f32 sag toprak avlu; F/0039_f59 ve H/0037_f78 yol kavsagi; H/0038_f41 tarla ici acik renkli asinmis arac izi (~%4) — kurulu iz, cig toprak degil. B/0038_f28'deki iz ise kirmizi CIG toprak uzerinde ve yamacta oldugu icin etiketsiz yapildi; bu ayrim mimar onayina acik.",
+  "MADDE 8 (mera) iki G karesinde duzeltildi: G/f112 sol yesil mera ve G/f166 sag yesil mera sinif 0 idi. Ayni amele G/f166'da SOL merayi etiketsiz birakmisti, A/f161 de merayi etiketsiz birakti — duzeltme mevcut cogunluk yorumuyla tutarli. Madde 12 kapsaminda degil; ayri isaretlendi, geri alinabilir.",
+  "D/0037_f33: amelenin sag yol poligonu (x905-960 ust / 865-960 alt) yolun yalniz sag yarisini kapsiyor, x840-905 yol serit etiketsiz — guvenli yonde, dokunulmadi.",
+  "Butun duzeltmelerde sinif1 orani degismedi (once==sonra), yani hicbir kirmizi bolge kapatilmadi."
+ ],
+ "yeniden_uretim_komutu": "O:\\navitas-local-train\\venv\\Scripts\\python.exe scripts/olcum/140_uc_maske_araci.py uret --kare results/dji_20260822/kareler_1fps/<kaynak_dizin>/<frame>.jpg --ops <govde>_ops.json --cikti <govde>_uc.png --bindirme <govde>_bindirme.jpg",
+ "dosyalar": {
+  "yedek_ops": "results/gece_20260826/etiket_dalga2/tutarlilik_ops_yedek.json",
+  "ham_kayit": "results/gece_20260826/etiket_dalga2/tutarlilik_duzeltme_ham.json"
+ }
+}

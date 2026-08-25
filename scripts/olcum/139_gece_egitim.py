@@ -27,6 +27,9 @@ KAYNAK = DS / "dji_kirsal"
 X20 = DS / "dji_kirsal_x20"
 BOLUM = DS / "dji_kirsal_0038_bolum"          # val (cift) / test (tek)
 YAML = DS / "karisim_gece_v2.yaml"
+YAML_V3 = DS / "karisim_gece_v3.yaml"
+DALGA2 = DS / "dji_kirsal_dalga2"
+DALGA2_X20 = DS / "dji_kirsal_dalga2_x20"
 CIKTI = KOK / "results" / "gece_20260826"
 KAT = 20
 TABANLAR = {"v35": KOK / "models" / "navitas_seg_v35_best.pt",
@@ -86,6 +89,16 @@ names:
   1: blocked
 """
     YAML.write_text(yaml_metin, encoding="utf-8")
+    # v3: dalga 2 etiketleri (144 betigi) eklenir — train x20 (0037/0039), val (0038 yeni kareler)
+    if DALGA2_X20.exists():
+        v3 = yaml_metin.replace("# GECE v2", "# GECE v3 = v2 + etiket dalga 2 (144_dalga2_kume)")
+        nl = "\n"
+        v3 = v3.replace(f"  - {X20 / 'images' / 'train'}{nl}",
+                        f"  - {X20 / 'images' / 'train'}{nl}  - {DALGA2_X20 / 'images' / 'train'}{nl}")
+        v3 = v3.replace(f"  - {BOLUM / 'images' / 'val'}{nl}",
+                        f"  - {BOLUM / 'images' / 'val'}{nl}  - {DALGA2 / 'images' / 'val'}{nl}")
+        assert v3.count("dalga2") == 3, v3
+        YAML_V3.write_text(v3, encoding="utf-8")
     # 4) taban sayilari: ayni 29 test karesinde v35 ve v1 (mevcut olcumden)
     def sebepler(dosya, secici):
         d = json.load(open(KOK / dosya, encoding="utf-8"))
@@ -109,13 +122,14 @@ names:
     print(json.dumps({k: v for k, v in ozet.items() if k != "bolum"}, indent=1, ensure_ascii=False))
 
 
-def egit(taban: str):
+def egit(taban: str, surum: str = "v2"):
     import yaml as _y
     ref = _y.safe_load(open(KOK / "codes" / "runs" / "segment" / "t127_temiz" / "args.yaml", encoding="utf-8"))
     from ultralytics import YOLO
-    ad = f"gece_v2_{taban}taban"
+    ad = f"gece_{surum}_{taban}taban"
+    yaml_yolu = YAML if surum == "v2" else YAML_V3
     model = YOLO(str(TABANLAR[taban]))
-    recete = dict(data=str(YAML), epochs=ref["epochs"], imgsz=ref["imgsz"], batch=ref["batch"],
+    recete = dict(data=str(yaml_yolu), epochs=ref["epochs"], imgsz=ref["imgsz"], batch=ref["batch"],
                   seed=ref["seed"], deterministic=ref["deterministic"], patience=ref["patience"],
                   lr0=ref["lr0"], warmup_epochs=ref["warmup_epochs"], workers=ref.get("workers", 8),
                   project=str(KOK / "codes" / "runs" / "segment"), name=ad, exist_ok=True)
@@ -134,12 +148,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("komut", choices=["hazirla", "egit"])
     ap.add_argument("--taban", choices=list(TABANLAR), default="v35")
+    ap.add_argument("--surum", choices=["v2", "v3"], default="v2")
     a = ap.parse_args()
     if a.komut == "hazirla":
         hazirla()
     else:
         assert YAML.exists(), "once hazirla"
-        egit(a.taban)
+        egit(a.taban, a.surum)
 
 
 if __name__ == "__main__":

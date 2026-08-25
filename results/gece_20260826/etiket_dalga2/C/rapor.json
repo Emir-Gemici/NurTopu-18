@@ -1,0 +1,22 @@
+{
+  "grup": "C",
+  "toplam_sure_sn": 139,
+  "kareler": [
+    {"govde": "dji_20260822170832_0037_d__frame_000267_000010200", "maske": "results/gece_20260826/etiket_dalga2/C/dji_20260822170832_0037_d__frame_000267_000010200_uc.png", "sure_sn": 25, "etiketsiz": 0.0427, "sinif0": 0.9573, "sinif1": 0.0, "yol_kenardan_kenara": true,
+     "not": "Cakil yol dikey x40-175, ust kenardan alt kenara; sagi tamamen greyderle taranmis ciplak toprak (izler okunuyor) -> sinif 0. x0-40 sol serit ot -> etiketsiz. Sag ust golge altindaki toprak okunuyor -> sinif 0. Engel yok."},
+    {"govde": "dji_20260822170832_0037_d__frame_000179_000007170", "maske": "results/gece_20260826/etiket_dalga2/C/dji_20260822170832_0037_d__frame_000179_000007170_uc.png", "sure_sn": 40, "etiketsiz": 0.4748, "sinif0": 0.4893, "sinif1": 0.0359, "yol_kenardan_kenara": true,
+     "not": "Genis cakil yol/plati: sol kenardan (y180-420) girer, sag ust koseye (x940,y0 / sag kenar y0-330) ve alt kenara (x180-300) cikar. Sag altta capraz beton bordur/duvar seridi sinif 1 (960,330)->(590,540). Kuru ot omuz ve tepe seridi etiketsiz; ust kosede 3 agac/cali kumesi ve sag altta 1 agac sinif 1. 1 duzeltme turu (ust kenar kuru ot omzu disari alindi)."},
+    {"govde": "dji_20260822170832_0037_d__frame_000231_000008880", "maske": "results/gece_20260826/etiket_dalga2/C/dji_20260822170832_0037_d__frame_000231_000008880_uc.png", "sure_sn": 30, "etiketsiz": 0.1514, "sinif0": 0.8429, "sinif1": 0.0057, "yol_kenardan_kenara": true,
+     "not": "Cakil yol sol ust koseden (y60-150) alt kenara (x220-340) capraz iner; sagindaki taranmis toprak sinif 0. Yolda insan+golge (133,405) sinif 1; tas yigini (632,200) sinif 1. Sag ust kirmizi dolgu yigini (egim okunmuyor) ve sol ust/sol bitki seridi etiketsiz."},
+    {"govde": "dji_20260822172613_0038_d__frame_000113_000004560", "maske": "results/gece_20260826/etiket_dalga2/C/dji_20260822172613_0038_d__frame_000113_000004560_uc.png", "sure_sn": 24, "etiketsiz": 0.362, "sinif0": 0.0939, "sinif1": 0.5441, "yol_kenardan_kenara": true,
+     "not": "Asfalt yol sol ust koseden (y50-130) alt kenara (x300-440) capraz; kenara kadar cizildi. Sik cali/agaclik sag yari ve sol alt sinif 1; kamp/karavan+mavi branda ve dagilmis levhalar sinif 1. Yesil mera ve uzun sari ot altindaki zemin okunmuyor -> etiketsiz."},
+    {"govde": "dji_20260822170832_0037_d__frame_000240_000009150", "maske": "results/gece_20260826/etiket_dalga2/C/dji_20260822170832_0037_d__frame_000240_000009150_uc.png", "sure_sn": 20, "etiketsiz": 0.246, "sinif0": 0.754, "sinif1": 0.0, "yol_kenardan_kenara": true,
+     "not": "Cakil yol sol kenardan (y250) alt kenara (x0-200); taranmis toprak sinif 0. Sag ustteki kirmizi moloz/tas yiginlari (tas boyutu 25 cm esigine gore okunamadi, arasi gorunmuyor) iki kaba dikdortgenle etiketsiz; sol bitki seritleri etiketsiz. 1 duzeltme turu."}
+  ],
+  "sartname_bosluklari": [
+    "Greyderle taranmis / yeni surulmus GEVSEK toprak 'sert duz zemin' midir? Toprak yolla ayni sayip sinif 0 verdim; batma riski sartnamede yok.",
+    "Yigin halinde (dolgu) toprak: egim okunamiyor diye etiketsiz biraktim ama yiginin AYAK kismi duz toprakla surekli; sinirin nerede kesilecegi yazilmiyor.",
+    "Kucuk agac/cali kumeleri (tekil, ~1-2 m) sinif 1 mi, yoksa yalniz 'sik' agaclik mi? Tekil kumeleri de sinif 1 saydim.",
+    "Yolun uzerine dusen agac golgesinde (0038 kare 113, x260-420 y430-540) asfalt okunuyor kabul ettim; koyu golgede 'okunuyor' esigi tanimsiz."
+  ]
+}

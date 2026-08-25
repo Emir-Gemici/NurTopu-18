@@ -1,0 +1,16 @@
+{"grup":"A","toplam_sure_sn":97,"olcum_notu":"t0 izgara uretiminden once date +%s ile yazildi; son uret sonrasi fark 97 sn (5 kare, ort 19 sn/kare). Iki kare 2. turda duzeltildi.",
+"kareler":[
+{"govde":"dji_20260822172613_0038_d__frame_000075_000003300","etiketsiz":0.2995,"sinif0":0.2255,"sinif1":0.475,"yol_kenardan_kenara":true,"not":"Iki paralel cakil yol ust-alt kenar boyunca (x300-430 ve x660-770), ikisi de kenara kadar sinif 0. Sol ve sag sik agaclik sinif 1. Aradaki kuru ot/cali/kuru dere yatagi seridi ETIKETSIZ (zemin okunmuyor). Sol-alt cakil/moloz seridi etiketsiz."},
+{"govde":"dji_20260822170832_0037_d__frame_000070_000002610","etiketsiz":0.574,"sinif0":0.2823,"sinif1":0.1437,"yol_kenardan_kenara":true,"not":"Stabilize yol ust->alt kenar (x330-560 ust, 300-610 alt) sinif 0. Beton kanal/bordur capraz cizgi (600,0)->(720,540) ~16 px sinif 1 (EK-2 A). Sagdaki balya yigini sinif 1. Sol toprak+anız ve sag kuru ot siralari ETIKETSIZ."},
+{"govde":"dji_20260822170832_0037_d__frame_000182_000007260","etiketsiz":0.5544,"sinif0":0.4332,"sinif1":0.0124,"yol_kenardan_kenara":true,"not":"Genis stabilize yol sol kenardan girip sag ust koseye kivriliyor, alt kenara kadar sinif 0. Sag-alt beton kanal sinif 1; sol-alt kucuk kirmizi nesne (muhtemel insan, madde 11) daire sinif 1. Ust anız/kuru ot ETIKETSIZ."},
+{"govde":"dji_20260822172613_0038_d__frame_000151_000005730","etiketsiz":0.7753,"sinif0":0.1668,"sinif1":0.0579,"yol_kenardan_kenara":true,"not":"Cakil yol ust kenardan (x410-560) alt kenara (x540-720) capraz sinif 0. Yol sagindaki tas/kaya yigini (>=25 cm taslar gorunuyor) sinif 1. Sol yesil cali/ot, sol-uc koyu moloz, sag anız+kucuk calilar ETIKETSIZ."},
+{"govde":"dji_20260822170832_0037_d__frame_000161_000006360","etiketsiz":0.6681,"sinif0":0.1677,"sinif1":0.1642,"yol_kenardan_kenara":true,"not":"Toprak yol ust->alt kenar (x430-610) sinif 0. Balya kumesi (sol ust) + balya sutunu (x260-430) + mavi varil sinif 1. Beton direk/kiris capraz (620,0)->(720,540) sinif 1. Sol bicilmis yesil mera ve sag kuru ot ETIKETSIZ."}
+],
+"sartname_bosluklari":[
+"Kare 1: iki cakil yol arasindaki kuru dere yatagi/kuru ot seridi — kuru ark mi yoksa duz zemin mi tek kareden okunmuyor; etiketsiz biraktim, sartname 'kenar profili okunmuyorsa etiketsiz' diyor ama bu sekilde ~%30 kare bosta kaliyor.",
+"Kare 2/3: seyrek anız altinda toprak dokusu kismen gorunuyor (bicilmis tarla). 'Zemin okunuyorsa o sinif' kuralinda okunma esigi yok; muhafazakar olarak etiketsiz biraktim, baska amele sinif 0 diyebilir.",
+"Kare 5: bicilmis kisa yesil mera — toprak gorunmuyor ama sikisir/gecilebilir; madde (8) geregi etiketsiz. Mera icin ayrica bir hukum yazilmasi tutarliligi artirir.",
+"Kare 4: yol kenarindaki kaya yigini icinde <25 cm ve >=25 cm taslar karisik; yigini tek poligonla sinif 1 yaptim (yuzey olarak gecilemez). 'Karisik boyutlu yigin' icin acik kural yok.",
+"Yol kenari toprak banket (yol dokusu ile anız arasi) sinirini kaba cizdim; banketin sinif 0'a dahil olup olmadigi belirsiz."
+],
+"komutlar":"VENV scripts/olcum/140_uc_maske_araci.py izgara --kare <jpg> --cikti <govde>_izgara.jpg; ... uret --kare <jpg> --ops <govde>_ops.json --cikti <govde>_uc.png --bindirme <govde>_bindirme.jpg"}

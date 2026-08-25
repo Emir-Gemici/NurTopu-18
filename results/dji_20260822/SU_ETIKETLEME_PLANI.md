@@ -367,6 +367,22 @@ zaman güvenli taraftır). Kullanılabilirler; ikinci geçiş **öner-bekle**.
 
 ---
 
+### 4b-EK-5 · MADDE (12) — ÇİĞ TOPRAK (2026-08-26, mimar vekili 2 kararı)
+
+Etiket dalga 2'de (40 kare, 8 amele) gözle bulunan tek tutarsızlık: **sürülmüş
+tarla / kazılmış çiğ toprak / paletle çiğnenmiş şantiye toprağı** — bazı ameleler
+sınıf 0, bazıları etiketsiz. Kural örnekle değil ilkeyle yazılıyor (EK-4 (8) dersi):
+> **(12) Sıkışmışlığı tek kareden doğrulanamayan yumuşak zemin — sürülmüş tarla,
+> kazılmış/çiğ toprak, paletle çiğnenmiş toprak, dolgu yığını çevresi — ETİKETSİZ
+> bırakılır** (İlke B). **Sınıf 0 yalnız** çakıl/stabilize/asfalt/toprak YOL ve
+> düz, izsiz, sıkıştırılmış platformdur (greyderle taranmış açık renkli düz zemin
+> dâhil). Bu madde sınıf 1'e dokunmaz.
+
+*Gerekçe:* İKA karın boşluğu 7 cm (EK-3 ii); çiğ toprakta batma/iz derinliği
+görüntüden okunamaz. "Zemin dokusu görünüyor" ≠ "taşır". Ayrıca risk yönü
+asimetriktir: arenada moloz kenarındaki kabarık zemini sınıf 0 öğrenen model
+serbest alanı **büyütür** (madde 15'in tehlikeli yönü).
+
 ## 5. FAZLAR
 
 | faz | iş | kim | çıktı | kapı |
