@@ -67,6 +67,8 @@ simulation/
 ├── scripts/
 │   ├── world_generator.py     ← dünyayı/arenayı üreten kod (DÜZENLENECEK yer)
 │   ├── iha_flight.py, ika_nav.py ← gerçek kontrol (HIL/donanım testi için)
+│   │       ika_nav: --bekleme-suresi (900, eski --timeout) ve --surus-suresi (600)
+│   │       AYRI deadline'lar — şartname §6.2, CONTRACTS §7.1 (K5)
 │   └── navitas_sim.py
 ├── plugins/
 │   └── navitas_anim.cc        ← kayıt için pürüzsüz hareket plugin'i (libnavitas_anim.so)

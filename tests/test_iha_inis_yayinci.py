@@ -139,6 +139,7 @@ class SahaCliTests(unittest.TestCase):
                 sonuc = yayinci.main([
                     "--mavlink", "mock:pixhawk",
                     "--kanit-timeout", "2",
+                    "--heartbeat-sure", "0",
                     "--ika", f"127.0.0.1:{alici_link.port}",
                 ])
             self.assertEqual(0, sonuc)
@@ -160,6 +161,7 @@ class SahaCliTests(unittest.TestCase):
             sonuc = yayinci.main([
                 "--mavlink", "udp:127.0.0.1:14550",
                 "--kanit-timeout", "5",
+                "--heartbeat-sure", "0",
                 "--serial", "COM7",
             ])
         self.assertEqual(3, sonuc)
@@ -176,13 +178,15 @@ class SahaCliTests(unittest.TestCase):
             sonuc = yayinci.main([
                 "--mavlink", "udp:127.0.0.1:14550",
                 "--kanit-timeout", "5",
+                "--heartbeat-sure", "0",
                 "--ika", "127.0.0.1:5006", "--yks", "127.0.0.1:5005",
             ])
         self.assertEqual(0, sonuc)
         yayin.assert_called_once_with({
             "ika": ("127.0.0.1", 5006),
             "yks": ("127.0.0.1", 5005),
-        })
+        }, heartbeat_suresi=0.0,
+            heartbeat_araligi=yayinci.IHA_INIS_HEARTBEAT_ARALIGI_S)
         self.assertTrue(mav.kapandi)
         self.assertGreater(mav.inis_kaniti_deadline_monotonic,
                            yayinci.time.monotonic())
@@ -198,11 +202,14 @@ class SahaCliTests(unittest.TestCase):
             sonuc = yayinci.main([
                 "--mavlink", "/dev/ttyACM0", "--serial", "/dev/ttyUSB0",
                 "--kanit-timeout", "5",
+                "--heartbeat-sure", "0",
                 "--baud", "57600",
             ])
         self.assertEqual(0, sonuc)
         serial.assert_called_once_with("/dev/ttyUSB0", 57600)
-        yayin.assert_called_once_with({"ika": None}, tasiyici=link)
+        yayin.assert_called_once_with(
+            {"ika": None}, tasiyici=link, heartbeat_suresi=0.0,
+            heartbeat_araligi=yayinci.IHA_INIS_HEARTBEAT_ARALIGI_S)
 
     def test_pymavlink_eksigi_acik_nonzero_doner(self):
         hata = io.StringIO()
@@ -213,6 +220,7 @@ class SahaCliTests(unittest.TestCase):
             sonuc = yayinci.main([
                 "--mavlink", "udp:127.0.0.1:14550",
                 "--kanit-timeout", "5",
+                "--heartbeat-sure", "0",
                 "--ika", "127.0.0.1:5006",
             ])
         self.assertEqual(2, sonuc)
@@ -224,6 +232,7 @@ class SahaCliTests(unittest.TestCase):
             sonuc = yayinci.main([
                 "--mavlink", "udp:127.0.0.1:14550",
                 "--kanit-timeout", "5",
+                "--heartbeat-sure", "0",
                 "--ika", "bozuk-hedef",
             ])
         self.assertEqual(4, sonuc)

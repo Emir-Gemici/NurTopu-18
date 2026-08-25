@@ -6,7 +6,12 @@ Navitas — İKA Otonom Navigasyon
 Waypoint'ler arasında gezinir, DiffDrivePlugin'i gz topic ile kullanır.
 
 Kullanım:
-  python3 scripts/ika_nav.py [comms] [--bind 0.0.0.0:5006] [--timeout 60]
+  python3 scripts/ika_nav.py [comms] [--bind 0.0.0.0:5006] \
+      [--bekleme-suresi 900] [--surus-suresi 600]
+
+İki AYRI son tarih vardır (K5, şartname §6.2):
+  bekleme  — rota + IHA_LANDED + IKA_GO gelene kadar (İHA görev süresi, 15 dk)
+  sürüş    — izin geldiği andan HB'ye kadar (İKA görev süresi, 10 dk)
 """
 
 import subprocess
@@ -24,7 +29,9 @@ for _akim in (sys.stdout, sys.stderr):
 
 # comms (dinamik A* rotasını İHA'dan al)
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comms"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "codes"))
 from protocol import ROAD_LABEL
+from karar_sozlesmesi import IKA_BEKLEME_SURESI_S, IKA_SURUS_SURESI_S
 
 # ── Kontrol parametreleri ─────────────────────────────────────────────────────
 MAX_SPEED   = 2.0   # m/s
@@ -289,10 +296,15 @@ def receiver_surus_izni_bekle(
 
 def navigate(
         wps, label="rota", verbose=True, link_ok=None, rota_gecerli=None,
-        rota_korumali_gonder=None):
+        rota_korumali_gonder=None, surus_deadline_monotonic=None,
+        saat=time.monotonic):
+    """Waypoint'leri izle. ``surus_deadline_monotonic`` (K5) dolarsa
+    İKA durur ve False döner: şartname §6.2 İKA görev süresi aşıldı."""
     if len(wps) < 2:
         raise ValueError("Navigate için en az iki waypoint gerekli")
     dt = 1.0 / CTRL_HZ
+    surus_deadline = (None if surus_deadline_monotonic is None
+                      else float(surus_deadline_monotonic))
 
     # Heading'i konum geçmişinden tahmin edeceğiz
     prev_x = prev_y = None
@@ -334,6 +346,11 @@ def navigate(
 
         at_wp = False
         while not at_wp:
+            if surus_deadline is not None and saat() >= surus_deadline:
+                send_vel(0, 0)
+                print("[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — "
+                      "GÜVENLİ DURMA, HB'ye ulaşılamadı")
+                return False
             if link_ok is not None and not link_ok():
                 send_vel(0, 0)
                 if not baglanti_kayip_yazildi:
@@ -406,7 +423,8 @@ def navigate(
 
 def navigate_route(
         route, verbose=True, link_ok=None, rota_gecerli=None,
-        rota_korumali_gonder=None):
+        rota_korumali_gonder=None, surus_deadline_monotonic=None,
+        saat=time.monotonic):
     """Sadece İHA'dan gelen dinamik waypoint rotasını takip et."""
     wps = route_to_world_waypoints(route)
     road = (route.get("road", route.get("yol_no"))
@@ -419,7 +437,74 @@ def navigate_route(
         link_ok=link_ok,
         rota_gecerli=rota_gecerli,
         rota_korumali_gonder=rota_korumali_gonder,
+        surus_deadline_monotonic=surus_deadline_monotonic,
+        saat=saat,
     )
+
+
+def ika_gorevi(bind, bekleme_suresi=IKA_BEKLEME_SURESI_S,
+               surus_suresi=IKA_SURUS_SURESI_S, *, saat=time.monotonic,
+               rota_bekle=None, izin_bekle=None, sur=None):
+    """İKA görevi: BEKLE (rota + IHA_LANDED + IKA_GO) sonra SÜR (HB'ye).
+
+    K5 — iki AYRI son tarih (şartname §6.2):
+      bekleme deadline = başlangıç + ``bekleme_suresi``   (İHA görev süresi)
+      sürüş deadline   = izin anı  + ``surus_suresi``     (İKA görev süresi)
+    Beklemede geçen süre sürüşten DÜŞÜLMEZ; sürüş saati izin geldiği an başlar.
+
+    Döner: 0 başarı · 1 rota gelmedi · 2 NO_ROUTE · 3 sürüş izni gelmedi ·
+    4 sürüş süresi doldu / HB'ye ulaşılamadı.
+    """
+    rota_bekle = rota_bekle or wait_open_route_from_comms
+    izin_bekle = izin_bekle or receiver_surus_izni_bekle
+    sur = sur or navigate_route
+    bekleme_suresi = max(0.0, float(bekleme_suresi))
+    surus_suresi = max(0.0, float(surus_suresi))
+
+    bekleme_deadline = saat() + bekleme_suresi
+    alindi = rota_bekle(
+        bind,
+        bekleme_suresi,
+        keep_receiver=True,
+        deadline_monotonic=bekleme_deadline,
+    )
+    if alindi is None:
+        print("[ika_nav] ✗ Geçerli dinamik rota gelmedi (bekleme süresi "
+              f"{bekleme_suresi:.0f} s doldu) — İKA hareket etmez")
+        return 1
+    if isinstance(alindi, dict) and alindi.get("type") == "NO_ROUTE":
+        print("[ika_nav] ✗ Rota yok bildirimi alındı — timeout değil, güvenli ret")
+        return 2
+    route, receiver = alindi
+    try:
+        kalan = max(0.0, bekleme_deadline - saat())
+        if not izin_bekle(receiver, kalan, deadline_monotonic=bekleme_deadline):
+            return 3
+        # Sürüş saati ŞİMDİ başlar — bekleme deadline'ından bağımsız.
+        surus_deadline = saat() + surus_suresi
+        print(f"[ika_nav] sürüş süresi başladı: {surus_suresi:.0f} s "
+              "(şartname §6.2 İKA görev süresi)")
+        basarili = sur(
+            route,
+            link_ok=lambda: receiver.link_ok,
+            rota_gecerli=lambda: receiver_rota_gecerli(receiver),
+            rota_korumali_gonder=lambda r, l: receiver_korumali_hiz_gonder(
+                receiver, r, l
+            ),
+            surus_deadline_monotonic=surus_deadline,
+            saat=saat,
+        )
+        return 0 if basarili else 4
+    finally:
+        # Durdurma komutu fiziksel olarak onemli, ama gonderim hatasi olsa bile
+        # arka plan alicisini ve soketi kapatmak zorundayiz.
+        try:
+            send_vel(0, 0)
+        finally:
+            try:
+                receiver.stop()
+            finally:
+                receiver.link.close()
 
 
 def navigate_road(
@@ -542,43 +627,14 @@ if __name__ == "__main__":
     ap.add_argument("mode", nargs="?", default="comms", choices=["comms"],
                     help="yalnızca comms ile gelen dinamik rota izlenir")
     ap.add_argument("--bind", default="0.0.0.0:5006", help="comms modu dinleme adresi")
-    ap.add_argument("--timeout", type=float, default=60)
+    ap.add_argument("--bekleme-suresi", "--timeout", dest="bekleme_suresi",
+                    type=float, default=IKA_BEKLEME_SURESI_S,
+                    help="rota + IHA_LANDED + IKA_GO için azami bekleme (sn); "
+                         "şartname §6.2 İHA görev süresi (varsayılan "
+                         f"{IKA_BEKLEME_SURESI_S:.0f})")
+    ap.add_argument("--surus-suresi", type=float, default=IKA_SURUS_SURESI_S,
+                    help="izin geldikten sonra HB'ye ulaşma süresi (sn); "
+                         "şartname §6.2 İKA görev süresi (varsayılan "
+                         f"{IKA_SURUS_SURESI_S:.0f})")
     args = ap.parse_args()
-
-    deadline = time.monotonic() + max(0.0, args.timeout)
-    alindi = wait_open_route_from_comms(
-        args.bind,
-        args.timeout,
-        keep_receiver=True,
-        deadline_monotonic=deadline,
-    )
-    if alindi is None:
-        print("[ika_nav] ✗ Geçerli dinamik rota gelmedi (timeout) — İKA hareket etmez")
-        sys.exit(1)
-    if isinstance(alindi, dict) and alindi.get("type") == "NO_ROUTE":
-        print("[ika_nav] ✗ Rota yok bildirimi alındı — timeout değil, güvenli ret")
-        sys.exit(2)
-    route, receiver = alindi
-    try:
-        kalan = max(0.0, deadline - time.monotonic())
-        if not receiver_surus_izni_bekle(
-                receiver, kalan, deadline_monotonic=deadline):
-            sys.exit(3)
-        navigate_route(
-            route,
-            link_ok=lambda: receiver.link_ok,
-            rota_gecerli=lambda: receiver_rota_gecerli(receiver),
-            rota_korumali_gonder=lambda r, l: receiver_korumali_hiz_gonder(
-                receiver, r, l
-            ),
-        )
-    finally:
-        # Durdurma komutu fiziksel olarak onemli, ama gonderim hatasi olsa bile
-        # arka plan alicisini ve soketi kapatmak zorundayiz.
-        try:
-            send_vel(0, 0)
-        finally:
-            try:
-                receiver.stop()
-            finally:
-                receiver.link.close()
+    sys.exit(ika_gorevi(args.bind, args.bekleme_suresi, args.surus_suresi))

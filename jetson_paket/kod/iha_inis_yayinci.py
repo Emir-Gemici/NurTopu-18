@@ -11,6 +11,7 @@ doğrulandıktan sonra, İKA/YKS haberleşme protokolünün ACK'li yayın yoluyl
 import argparse
 import math
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -23,10 +24,25 @@ from iha_sender import IhaSender, _addr as udp_adres  # noqa: E402
 from inis_kaniti import mavlink_baglantisi_ac, yerde_mi  # noqa: E402
 from link import SerialLink, UDPLink  # noqa: E402
 
+_KOK = _BU_DIZIN.parent
+for _aday in (_BU_DIZIN, _KOK / "codes"):
+    if str(_aday) not in sys.path:
+        sys.path.insert(0, str(_aday))
+from karar_sozlesmesi import (  # noqa: E402
+    IHA_INIS_HEARTBEAT_ARALIGI_S, IHA_INIS_HEARTBEAT_SURESI_S)
+
 
 def iha_inisini_yayinla(
-        peers, heartbeat_until=None, repeat=8, interval=0.25, *, tasiyici=None):
+        peers, heartbeat_until=None, repeat=8, interval=0.25, *, tasiyici=None,
+        heartbeat_suresi=None, heartbeat_araligi=IHA_INIS_HEARTBEAT_ARALIGI_S,
+        saat=time.monotonic):
     """IHA_LANDED olayını ACK'li yayınla, görev bitene dek heartbeat sürdür.
+
+    Heartbeat iki koşuldan biri sağlanana dek sürer (K6):
+      * ``heartbeat_until`` (Event) set edilene dek — simülasyon İKA bitti der;
+      * ``heartbeat_suresi`` saniye dolana dek — saha CLI, sözleşmeden.
+    İkisi de None ise heartbeat gönderilmez (eski davranış, yalnız test/araç).
+    Alıcıdaki ``link_lost`` ancak heartbeat GERÇEKTEN kesilince oluşur.
 
     ``tasiyici`` verilirse de bu fonksiyon onun yaşam döngüsünü sahiplenir ve
     çıkışta kapatır. Bu, UDP ve saha SerialLink yolunun aynı kanonik gövdeyi
@@ -53,7 +69,24 @@ def iha_inisini_yayinla(
         # İKA landed latch'ini açmış olsa bile ikinci bir akran ACK'i kayıp
         # olabilir. Görev sonucunu False tutarken İKA bitene dek canlılığı
         # kesmemek, alıcının link-timeout ile kilitlenmesini önler.
-        while heartbeat_until is not None and not heartbeat_until.wait(0.5):
+        hb_deadline = None
+        if heartbeat_suresi is not None:
+            hb_deadline = saat() + max(0.0, float(heartbeat_suresi))
+        if heartbeat_until is None and hb_deadline is None:
+            return aktarim_tam
+        durdur = (heartbeat_until if heartbeat_until is not None
+                  else threading.Event())
+        araligi = max(0.0, float(heartbeat_araligi))
+        while True:
+            if hb_deadline is not None:
+                kalan = hb_deadline - saat()
+                if kalan <= 0.0:
+                    break
+                bekle = min(araligi, kalan)
+            else:
+                bekle = araligi
+            if durdur.wait(bekle):
+                break
             sender.send_heartbeat("iha")
         return aktarim_tam
     finally:
@@ -74,6 +107,15 @@ def _arg_parser():
                         help="SiK seri baud değeri (verilmezse link varsayılanı)")
     parser.add_argument("--ika", help="IKA adresi host:port (UDP)")
     parser.add_argument("--yks", help="YKS adresi host:port (UDP)")
+    parser.add_argument(
+        "--heartbeat-sure", type=float, default=IHA_INIS_HEARTBEAT_SURESI_S,
+        help="iniş sonrası heartbeat süresi (sn); İKA sürüşü boyunca link "
+             "canlı kalır (K6). Varsayılan şartname §6.2 İKA görev süresi "
+             f"({IHA_INIS_HEARTBEAT_SURESI_S:.0f})")
+    parser.add_argument(
+        "--heartbeat-aralik", type=float, default=IHA_INIS_HEARTBEAT_ARALIGI_S,
+        help="heartbeat aralığı (sn); ika_receiver hb_timeout'undan küçük "
+             f"olmalı (varsayılan {IHA_INIS_HEARTBEAT_ARALIGI_S})")
     return parser
 
 
@@ -99,6 +141,11 @@ def main(argv=None):
         parser.error("--baud pozitif olmalı")
     if not math.isfinite(args.kanit_timeout) or args.kanit_timeout <= 0:
         parser.error("--kanit-timeout sonlu ve pozitif olmalı")
+    if not math.isfinite(args.heartbeat_sure) or args.heartbeat_sure < 0:
+        parser.error("--heartbeat-sure sonlu ve negatif olmayan olmalı")
+    if (not math.isfinite(args.heartbeat_aralik)
+            or args.heartbeat_aralik <= 0):
+        parser.error("--heartbeat-aralik sonlu ve pozitif olmalı")
 
     peers = None
     if not args.serial:
@@ -139,9 +186,15 @@ def main(argv=None):
                 print(f"[İHA] HATA: SiK hattı açılamadı: {exc}", file=sys.stderr)
                 return 4
             peers = {"ika": None}
-            basarili = iha_inisini_yayinla(peers, tasiyici=link)
+            basarili = iha_inisini_yayinla(
+                peers, tasiyici=link,
+                heartbeat_suresi=args.heartbeat_sure,
+                heartbeat_araligi=args.heartbeat_aralik)
         else:
-            basarili = iha_inisini_yayinla(peers)
+            basarili = iha_inisini_yayinla(
+                peers,
+                heartbeat_suresi=args.heartbeat_sure,
+                heartbeat_araligi=args.heartbeat_aralik)
         return 0 if basarili else 5
     finally:
         _mavlink_kapat(mav)

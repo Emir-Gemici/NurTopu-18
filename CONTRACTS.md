@@ -737,6 +737,35 @@ sür  ⟺  (geçerli OPEN_ROUTE)  ∧  (İHA inişi tamamlandı)  ∧  (YKS'den 
 ⚠ **Denetimde bulundu:** Kapı kurulu ama **üretim zincirinde iniş sinyalini üreten
 yok** — varsayılan koşumda kilit hiç açılmıyor. Ayrıca `IKA_GO` tek atışlık ve ACK'siz;
 tek paket kaybı görevi geri dönülmez bitiriyor. Kayıt: `REVIEW_LOG.md`.
+> *(2026-08-26 güncelleme: iniş sinyalini `comms/iha_inis_yayinci.py` üretir —
+> `inis_kaniti.yerde_mi` Pixhawk kanıtı; şartname boşluk denetimi K5/K6 raporu.)*
+
+### 7.1 Süre limitleri sözleşmesi (şartname §6.2 / §6.4 · K5+K6 · 2026-08-26)
+
+Sabitler `codes/karar_sozlesmesi.py` sonunda, PDF alıntılarıyla:
+
+| sabit | değer | şartname |
+|---|---|---|
+| `SARTNAME_IHA_GOREV_SURESI_S` | 900 | §6.2 *"Bu işlemler için tanınan maksimum süre 15 dakikadır."* (fırlatma → paraşütle iniş) |
+| `SARTNAME_IKA_GOREV_SURESI_S` | 600 | §6.2 *"İKA'nın HB'ye ulaşması için verilen maksimum süre 10 dakikadır."* |
+| `IKA_BEKLEME_SURESI_S` | = İHA süresi | `ika_nav`: rota + IHA_LANDED + IKA_GO beklemesi |
+| `IKA_SURUS_SURESI_S` | = İKA süresi | `ika_nav`: izin anından HB'ye |
+| `IHA_INIS_HEARTBEAT_SURESI_S` | = İKA süresi | `iha_inis_yayinci` CLI iniş sonrası heartbeat |
+| `IHA_INIS_HEARTBEAT_ARALIGI_S` | 0,5 | < `IkaReceiver.hb_timeout` (3 s) |
+
+**Bağlayıcı kurallar:**
+1. İKA'da **iki ayrı son tarih** vardır: bekleme ve sürüş. Sürüş saati izin
+   geldiği **anda** başlar; beklemede geçen süre sürüşten düşülmez. Tek ortak
+   deadline (eski `--timeout 60`) **yasaktır** — sahada iniş dakikalar sonra gelir.
+2. Sürüş süresi dolunca İKA `send_vel(0,0)` ile durur, `navigate` False döner
+   (çıkış kodu 4). Serbest alan/rota kararına dokunulmaz (madde 15).
+3. `IHA_LANDED` yayıncısı iniş sonrası heartbeat'i en az İKA görev süresi kadar
+   sürdürür; alıcıdaki `link_lost` **yalnız heartbeat gerçekten kesilince** oluşur.
+4. Simülasyon (`navitas_sim.py --route-timeout 60`) bekleme süresini kısa tutabilir;
+   sürüş süresi orada da sözleşmeden gelir (`--surus-suresi`).
+
+Testler: `tests/test_k5_k6_sure_limitleri.py` (sahte saat + gerçek UDP loopback;
+4 mutasyonla düştüğü gösterildi).
 
 ---
 
