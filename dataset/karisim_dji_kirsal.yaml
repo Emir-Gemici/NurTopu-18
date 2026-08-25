@@ -1,0 +1,22 @@
+# DJI KIRSAL — mevcut karisima EK bilesen.
+# arena + RescueNet + copy_paste_t127 AYNEN korunur; degisen tek sey
+# `dji_kirsal` eklenmesidir. Boylece 'kirsal veri arenayi bozdu mu'
+# sorusu TEK degiskenle olculur.
+# BOLUM: kaynak duzeyinde, GPS ile ayrik (0037+0039 egitim · 0038 BAKIR).
+# val'e dji_kirsal KONMADI: bakir 0038 AYRI olculur, egitimin erken
+# durdurmasi kirsal veriye gore yapilmasin diye.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_t127\images\train
+  - O:\navitas\dataset\dji_kirsal\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_t127\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked
