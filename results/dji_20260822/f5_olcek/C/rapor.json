@@ -1,0 +1,160 @@
+{
+ "_ne": "F5 OLCEK — PARTI 1 — AMELE C (10 kare)",
+ "kareler": [
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000133_000006930.jpg",
+   "saniye": 231.231,
+   "rel_alt": 29.6,
+   "png": "dji_20260822173231_0039_d__frame_000133_000006930_uc.png",
+   "sinif0_oran": 0.49567,
+   "sinif1_oran": 0.02348,
+   "etiketsiz_oran": 0.48084,
+   "guven": "yuksek",
+   "yontem": "960 olcekte ExG/S/V/yerel-std haritalari + HAM 3840x2160 kirpma. ANA YOL: olculen esik (S<28, V>115, std<22; y=300-350 bandinda yol icinde S 5-14, V 135-185, std 4-14 — disinda S 45-69, V 87-137, std 13-31) -> en buyuk bilesen x464-749, y0-540. IKINCIL CAKIL PATIKA ayni esikten iki bilesen olarak dustu (x252-317). BETON ARK: her satirda (V-1,4*S) skorunun ARGMAX'i ile izlendi, sonra 2. derece polinom + artik reddi (3 tur) ile duzeltildi — 340/540 ic nokta, artik std 3,01 px, y=0'da x=348,7 y=539'da x=391,7. Genislik HAM 4x kirpmada olculdu: x364..381 = 17 px = 75 cm. SAG DOLGU ALANI: exg<3 & S>25 & V>55 (exg tum sag alanda -5..-20, yani YESIL DEGIL, ciplak toprak). Agac: V<72 & exg>2 penceresinde bilesen (x309-369, y155-209).",
+   "notlar": "Koy yolu + sulama arki + makine ile islenmis dolgu sahasi. SINIF 0 GERCEKTEN VAR ve baskin (%49,6): (a) ana stabilize/cakil yol (x~465-610, ~6,3 m), (b) yolun solundaki ikincil cakil patika (x~252-317), (c) yolun sagindaki sikistirilmis dolgu sahasi — HAM 3840 kirpmada PALETLI IZ desenleri (tirtil imzasi) her yerde okunuyor, kesek/tas boyu 8-22 cm olculdu, madde (5) esigi 25 cm'in ALTINDA. SINIF 1 (%2,3): (a) BETON SULAMA ARKI — HAM 4x kirpmada beton derz cizgileri ve duzenli araliklarla sola cikan SIYAH BORU/vana agizlari gorundu; madde (2) 'ark' adiyla saydigi icin 17 px (75 cm) genislige ragmen sinif 1, madde (3) su gorunmese de gecilemez, (b) arkin uzerindeki ibreli agac, (c) yolda YURUYEN IKI INSAN (golgeleri sinif 1 DEGIL — altindaki yol dokusu okunuyor, golge kurali geregi zeminin sinifini aldi). ETIKETSIZ (%48,1) ve NEDENI: (a) sol taraftaki surekli yesil mera — HAM kirpmada zemin HIC gorunmuyor, madde (6) geregi ne sinif 0 ne sinif 1, (b) ark ile yol arasindaki x~385-490 yogun otsu/yabani ortu seridi — ot sikisir yani sinif 1 olamaz, zemin okunmadigi icin sinif 0 da olamaz; arkin hemen yaninda oldugu icin altinda hendek OLABILIR ama dogrulanamadi, (c) ikincil patikanin iki yanindaki kuru ayakta ot bantlari (x~200-250 ve x~318-360), (d) x~140-195 parlak yesil taze yabani serit — kenarinda golge cizgisi var, altinda basamak/sev olabilir ama okunamadi, (e) yol ile sag dolgu sahasi arasindaki x~590-615 koyu dar omuz seridi."
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000111_000004500.jpg",
+   "saniye": 150.15,
+   "rel_alt": 32.1,
+   "png": "dji_20260822172613_0038_d__frame_000111_000004500_uc.png",
+   "sinif0_oran": 0.10511,
+   "sinif1_oran": 0.5837,
+   "etiketsiz_oran": 0.31119,
+   "guven": "yuksek",
+   "yontem": "AYIRT EDICI OLCUM: HSV tonu (H). Olculen ortalamalar — sik yesil calilik H=39,3+-6 (S=140-151, exg 62-68); ayakta kuru ot/saz H=25..30 (S=129-149); toprak yol S=40-42, exg=-9..-15. ExG bu ikisini AYIRAMIYOR (kuru sari-yesil otta da exg=52), ton ayirdi. CALILIK: H 34..60 & S>85 & exg>20, ac/kapa 3/15, bilesen>=900, kucuk delikler dolduruldu. YOL: exg<8 & S<95 & V>60 & std<30 -> tek bilesen x0-389, y0-540 (51792 px). V esigi 100'den 60'a INDIRILDI cunku HAM 1,5x kirpmada golge altindaki yol dokusu (cakil taneleri) OKUNUYOR — golge kurali geregi zeminin sinifini alir; golgeli yol olculdu S=38 V=93 exg=-14,7, golgeli calilik S=106 exg=+22,8, yani S/exg ikilisi golgede de ayiriyor. KAMP: H>55 | V>205 | std>62 penceresi -> x214-395,y0-119 (16213 px) + iki kucuk cisim.",
+   "notlar": "Yol + terkedilmis kamp/hurda yigini + sik bogucu calilik. SINIF 0 (%10,5): sadece sol capraz toprak/cakil yol — HAM kirpmada cakil dokusu ve tekerlek izleri okunuyor; uzerindeki 3 koyu tekil cisim OLCULDU (17-22 cm), madde (5) 25 cm esiginin ALTINDA kaldigi icin ETIKETLENMEDI ve yol yuzeyinin sinifini aldi. SINIF 1 (%58,4): (a) kadrajin ucte ikisini kaplayan SIK YAPRAKLI CALILIK — HAM 1,4x kirpmada ayri ayri tac kubbeleri ve taclar arasi golge okunuyor, odunsu yapi; madde (4) 'suya bitisik olmayan gecilemez ortu / sik calilik' geregi sinif 1, (b) mavi brandali kamp/hurda yigini ve yanindaki iki cisim (beyaz tekne benzeri, turuncu kap). ETIKETSIZ (%31,1) ve NEDENI: (a) sag ust AYAKTA KURU OT/SAZ alani (x~620-830, y~0-200) — madde (6) tam bu durum: ot sikisir yani sinif 1 olamaz, altindaki zemin HAM kirpmada hic gorunmuyor yani sinif 0 da olamaz, (b) yol ile calilik arasindaki kuru ot omuzlari, (c) sol alt kose ve sol kenardaki golge altinda kalan ot/cali karisimi — orada golgenin ALTI okunmadi (yolun aksine), (d) ust orta yesilimsi-sari ortu (H=26,8) — ot olarak okundu, cali degil.",
+   "sartname_belirsizligi": [
+    "Kamp yigininin kendisi acikca sinif 1; ama yiginin cevresindeki ezilmis/duzlenmis alanin (x~200-420, y~100-140) IKA gecebilecegi bir aciklik mi yoksa hurda mi oldugu 960'ta da HAM'da da okunamadi — etiketsiz birakildi."
+   ]
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000228_000008790.jpg",
+   "saniye": 293.293,
+   "rel_alt": 31.2,
+   "png": "dji_20260822170832_0037_d__frame_000228_000008790_uc.png",
+   "sinif0_oran": 0.97119,
+   "sinif1_oran": 0.00219,
+   "etiketsiz_oran": 0.02662,
+   "guven": "yuksek",
+   "yontem": "Bolge ortalamalari olculdu: sikistirilmis toprak H=11..16 S=48..71 V=110..160; cakil yol S=9 V=155; yesil ot H=66 S=44 exg=+3. ZEMIN = (H<32 & V>55) | (S<22 & V>110), yesil bitki maskesi (H 33..95 & S>28) CIKARILARAK -> tek bilesen 497413 px. BUYUK MOLOZ SINAMASI (madde 5): V < yerel_ortalama(31x31) - 26 ile koyu lekeler cikarildi, sadece alan>=33 px VE min(w,h)>=5 px olanlar (yani 25 cm = 5,7 px @960 esigini gecenler) sayildi -> tum karede 132 leke, 61x61 yogunluk haritasinda en yuksek deger insanin GOLGESINDE (0,20); zeminin geri kalaninda yogunluk 0,00-0,09. Yani 25 cm ustu tekil engel KUMELENMESI YOK. Ilk bakista 'kumeli/molozlu' sandigim y~250-380 bandi HAM 0,9x genis kirpmada COZULDU: o bant capraz kesisen PALETLI IZ desenleridir, sev veya moloz degil. Insan: S>110 | V<55 penceresi (x52-102, y422-458).",
+   "notlar": "Bastan asagi makine ile islenmis dolgu/dokum sahasi. SINIF 0 %97,1 — bu kadar yuksek olmasi gercek: HAM 0,9x kirpmada tirtil (paletli) iz desenleri kadrajin HER yerinde okunuyor, yani agir is makinesi bu yuzeyin tamamindan gecmis; ayrica sol alt caprazda sikistirilmis cakil yol var. Yuzeydeki dagilmis COP (plastik torba, kagit) HAM 1,3x kirpmada olculdu: 34-59 cm boyutunda ama YUMUSAK ortu — 'IKA girerse cikabilir mi' olcutune gore engel degil, ustelik altindaki zemin dokusu okunuyor; bu yuzden sinif 0 birakildi ve engel olarak isaretlenmedi. SINIF 1 %0,22: kadrajda tek gercek engel — sol alt kosede duran INSAN (kirmizi/beyaz giysi, x~58-97 y~429-451). Golgesi sinif 1 DEGIL: golgenin altindaki cakil yol dokusu okunuyor, golge kurali geregi zeminin sinifini aldi. ETIKETSIZ %2,7: yalniz iki yesil ot yamasi (sol alt kose x0-112 y484-540 ve x426-560 y452-540) — zemin gorunmuyor, madde (6).",
+   "sartname_belirsizligi": [
+    "Yuzeydeki 34-59 cm'lik plastik cop parcalarini sartname adiyla saymiyor: madde (5) yalniz TAS/MOLOZ icin 25 cm esigi koyuyor. Yumusak cop icin ayri hukum yok; 'gecilebilirlik' asil olcutune (madde 0) gore sinif 0 sayildi, ama bu bir YORUM."
+   ]
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000089_000003840.jpg",
+   "saniye": 128.128,
+   "rel_alt": 32.4,
+   "png": "dji_20260822172613_0038_d__frame_000089_000003840_uc.png",
+   "sinif0_oran": 0.08232,
+   "sinif1_oran": 0.88074,
+   "etiketsiz_oran": 0.03694,
+   "guven": "yuksek",
+   "yontem": "Olculen bolge ortalamalari: sik calilik H=43,6 S=138 V=126 exg=84; agac golgesindeki tac H=44,5 S=139 exg=52; ACIK yol S=21 V=184 exg=-5,9 std=9,6; GOLGELI yol S=46 V=113 exg=-5,3 std=12,2; derin golgedeki tac S=71 V=61 std=18,8. YOL: exg<12 & S<72 & V>70 & std<32 (esikler y=195-215 satir profilinden okundu: yol x=625..718, kenarda exg 45->-6 ve S 137->17 ile kesin gecis). CALILIK iki asamada: (1) guvenli cekirdek H 33..65 & S>95 & exg>25, (2) GOLGEDEKI tac icin gevsek maske S>50 & std>15 & exg>-2 & H 22..100 uygulanip YALNIZ cekirdege DEGEN bilesenler tutuldu (seg.buyut) — ayirici olcum DOKU: golgeli tac std 19-44, golgeli yol std 8-15. Sonra 31x31 kapama, ardindan yol maskesi cikarildi.",
+   "notlar": "Sik calilik/agaclik icinden gecen dar toprak orman yolu. SINIF 1 %88,1: kadrajin neredeyse tamami SIK YAPRAKLI CALILIK ve AGAC TACI — madde (4) geregi gecilemez ortu. SINIF 0 %8,2: capraz toprak yol (ust ortadan sag alta) + sol alt kosedeki yol parcasi. Yolun golgede kalan orta seridi de SINIF 0: HAM 1,4x kirpmada golge altindaki cakil dokusu ve tekerlek izi OKUNUYOR, golge kurali geregi zeminin sinifini aldi. Yol uzerindeki koyu tekil lekeler (tas/gubre) HAM'da 12-20 cm olculdu -> madde (5) 25 cm esiginin altinda, etiketlenmedi. ETIKETSIZ %3,7: (a) yolun SAG kenarindaki derin golge seridi (V=31..59) — orada doku artik okunmuyor, 'inceledim ve gecilebilir' diyemem, (b) alt ortadaki kuru/olu bitki yamasi (x~310-440, y~495-540) — HAM 2,4x kirpmada kurumus ot oldugu gorundu, zemin gorunmuyor; ot sikistigi icin sinif 1 de olamaz (madde 6)."
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000016_000000600.jpg",
+   "saniye": 20.02,
+   "rel_alt": 34.8,
+   "png": "dji_20260822170832_0037_d__frame_000016_000000600_uc.png",
+   "sinif0_oran": 0.88404,
+   "sinif1_oran": 0.00143,
+   "etiketsiz_oran": 0.11453,
+   "guven": "yuksek",
+   "yontem": "ZEMIN: (H<33 | S<25) & V>60, bitki maskesi cikarilarak -> tek bilesen 462511 px. Yol/ot SINIRI GOZLE DEGIL SUTUN PROFILIYLE bulundu (x=200-400 bandi): y=488'de exg=-3,3 S=4,6 V=152 (yol) ; y=504'te exg=+2,7 S=41,5 V=99 ; y=512'de exg=+7,8 S=62 V=72 (ot) -> gecis y~498. Alt seritteki ot KURU ve H=22, yani toprakla AYNI ton — ton ayirmadi, ayiran exg ve V oldu; bu yuzden bitki maskesi iki kolla kuruldu: (exg>1 & S>30 & V<130) veya (H 33..95 & S>30 & exg>5). INSANLAR: iki tanesi de HAM kirpmada dogrulandi — yoldaki (x~415-450, y~470-495, golgesi net) ve dolgu uzerindeki COMELMIS kisi (HAM 6x kirpmada pembe basortusu + acik renk giysi + koyu govde + govdeden cikan uzun golge; olculen boyut 11x14 px = 48x61 cm). YOLDAKI INCE PARLAK CIZGILER: HAM 8x kirpmada YANINDA GOLGE YOK ve zemin girinti-cikintisini takip ediyor -> YERDE YATAN KABLO, asili tel veya cit DEGIL; genisligi 1-2 px (1-2 cm), madde (5) esiginin cok altinda, zemin sinifini degistirmedi ve CIT olarak sayilmadi (madde 2'nin 'cit' hukmu uygulanmaz cunku direk yok).",
+   "notlar": "Makine ile islenmis dolgu sahasi + altindan gecen sikistirilmis cakil yol. SINIF 0 %88,4: (a) alt taraftaki genis cakil yol (S=5,7 V=168 std=8 — olculdu), (b) ustteki tum dolgu terasi; HAM kirpmalarda paletli iz desenleri okunuyor. SINIF 1 %0,14: iki INSAN. Golgeleri sinif 1 DEGIL (altindaki yol/toprak dokusu okunuyor). ETIKETSIZ %11,5: (a) yolun alt kenarindaki ot/bitki seridi (y>498) — zemin gorunmuyor, madde (6), (b) dolgu ile yol arasindaki x~440-960, y~300-380 koyu bitki/moloz omzu, (c) yolun sag omzundaki kuru dal/cali yigini (x~865-917, y~455-483) — HAM 2,4x kirpmada bir kisminin OLU CALI bir kisminin sadece GOLGE oldugu ayirt edilemedi, madde (2) geregi 0 birakildi."
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000154_000006150.jpg",
+   "saniye": 205.205,
+   "rel_alt": 31.0,
+   "png": "dji_20260822170832_0037_d__frame_000154_000006150_uc.png",
+   "sinif0_oran": 0.1074,
+   "sinif1_oran": 0.04368,
+   "etiketsiz_oran": 0.84893,
+   "guven": "yuksek",
+   "yontem": "DUVAR/CIT: satir-argmax(V-1,4*S) izi + 4 turda YENIDEN MERKEZLENEN arama penceresi ve 2. derece polinom + artik reddi -> 384/540 ic nokta, artik std 2,33 px; y=0'da x=775,3, y=539'da x=418,7. Duvar genisligi HAM 3x kirpmada olculdu ~12,5 px (55 cm); serit +-8 px cizildi (cit direkleri payi dahil). BALYA: parlaklik TEK BASINA AYIRMADI (balya V=173..211, yanindaki parlak toprak V=175 tepe 235) — BILESEN DUZEYINDE TON sinamasi kullanildi: V>200 & S<60 bilesenlerinden ortalama H>40 olanlar balya (olculen H: 64,5 / 70,9 / 77,4 / 91,3 / 95,7 / 102,1), H<20 olanlar (14,2 / 16,0 / 16,9 / 17,0 / 18,5 / 12,2 / 13,6) parlak toprak ve beton direk olarak REDDEDILDI. YOL: S<42 & V>140 & std<20 & exg<6 (olculdu: yol S=23,6 V=170,5 std=9,2 ; kuru ot S=64 V=142 std=25,1).",
+   "notlar": "Mera/yem alani: solda yesil otlak, ortada toprak tarla yolu, sagda kuru ot tarlasi, aralarinda beton duvar+cit. SINIF 0 %10,7: ortadaki toprak/sikistirilmis tarla yolu — HAM 1,5x kirpmada duz sikistirilmis toprak dokusu okunuyor, tas yok. SINIF 1 %4,4: (a) BETON DUVAR + uzerindeki CIT — HAM 3x kirpmada beton seridin kendisi ve sagindaki duzenli arali CIT DIREKLERININ golgeleri net gorundu; madde (2) 'duvar/cit' adiyla saydigi icin 55 cm genislige ragmen sinif 1, (b) SARILMIS SILAJ BALYASI DIZISI — capraz uzanan ~15 balya, HAM 1,1x kirpmada cap 90-110 cm olculdu, kesin engel, (c) elektrik diregi (HAM 1,2x kirpmada capraz kollu direk basligi ve uc kablo goruldu). Kablolarin KENDISI havada, zemin sinifini degistirmedi. ETIKETSIZ %84,9 — bu karede baskin olmasi GERCEK: (a) sagdaki genis KURU OT/TUSSOCK tarlasi — HAM 1,4x kirpmada ayakta kuru ot ortusu, zemin HIC gorunmuyor; madde (6) geregi ne sinif 1 (ot sikisir) ne sinif 0 (dogrulanamaz), (b) soldaki surekli yesil otlak — ayni gerekce, HAM 1,5x kirpmada zemin okunmuyor, (c) balya dizisi ile yol arasindaki kuru ot/cali karisimi ve alt ortadaki genc ibreli fidanlar cevresi."
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000032_000001830.jpg",
+   "saniye": 61.061,
+   "rel_alt": 32.5,
+   "png": "dji_20260822172613_0038_d__frame_000032_000001830_uc.png",
+   "sinif0_oran": 0.5497,
+   "sinif1_oran": 0.07302,
+   "etiketsiz_oran": 0.37727,
+   "guven": "orta-yuksek",
+   "yontem": "Madde (6)'yi OLCUYE bagladim: 17x17 pencerede exg>14 pikselin ORANI (yesil ortu fraksiyonu). Olculdu: okunabilir ciplak zemin 0,02 ; otlu alanlar 0,32-0,40 -> esik 0,22. Bu, 'seyrek ot / zemin okunuyor' ile 'ortu zemini kapatmis' arasindaki ayrimi tek sayiya indirdi. KOYU MOLOZ: V<95 & std>24 & yesil_frak<0,2 (olculdu V=71,5 std=35,0). LASTIK YIGINI: (V<120 | std>40) penceresi -> bilesen x0-114, y0-319 (24768 px). BEYAZ KIRMATAS YIGINI: V>150 & S<55 -> bilesen x570-700, y15-140 (10101 px). Tas boyutlari HAM kirpmayla olculdu: genel zeminde ve molozda parcalar 11-26 cm; kirmatas yiginindaki parcalar 22-37 cm ve yigin GOLGE VERIYOR (golge boyu ~110 cm, gunes yuksekligi ~44 derece kabuluyle yukseklik ~1,1 m).",
+   "notlar": "Terkedilmis dokum/hurda alani. SINIF 0 %55,0: kirmizimsi ciplak toprak zemin — HAM 1,4x kirpmada toprak dokusu ve tekerlek izleri okunuyor, aradaki otlar SEYREK (yesil frak 0,02), tas boyu 25 cm'in altinda; madde (5)+(6) geregi yuzey olarak sinif 0. SINIF 1 %7,3: (a) SOL UST LASTIK YIGINI — yuzlerce ust uste dizilmis lastik, kesin engel, (b) beyaz KIRMATAS/MOLOZ YIGINI (x~570-700, y~15-140) — golgesi oldugu icin YUKSEKLIGI VAR, ~1 m; parcalari 22-37 cm, madde (5) esigini gecen kaya boyutu. ETIKETSIZ %37,7 ve NEDENI: (a) yesil ortu fraksiyonu 0,22'yi gecen tum ot/yabani yamalari — zemin gorunmuyor, madde (6), (b) ORTA-ALTTAKI KOYU MOLOZ CUKURU/YIGINI (x~289-652, y~345-540) — HAM 5x kirpmada parcalar 11-26 cm cikti, yani 25 cm esiginin TAM USTUNDE/ALTINDA; ustelik derin golgede oldugu icin cukur mu yigin mi oldugu OKUNAMADI, madde (2) geregi 0 birakildi, (c) ust-orta ve sag-alttaki diger koyu-doku yamalari.",
+   "sartname_belirsizligi": [
+    "Koyu moloz alani (x~289-652, y~345-540) icin sartname net karar vermiyor: madde (5) 25 cm ustu TEKIL kayayi sinif 1 sayiyor, altindakileri yuzey olarak hukme bagliyor; burada parcalar TAM esikte (11-26 cm) ve yuzeyin kendisi (cukur mu, gevsek yigin mi) golgede okunmuyor. 'Gevsek moloz YIGINI' icin ayri hukum yok — 0 birakildi."
+   ]
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000123_000004860.jpg",
+   "saniye": 162.162,
+   "rel_alt": 31.6,
+   "png": "dji_20260822172613_0038_d__frame_000123_000004860_uc.png",
+   "sinif0_oran": 0.12559,
+   "sinif1_oran": 0.82019,
+   "etiketsiz_oran": 0.05421,
+   "guven": "yuksek",
+   "yontem": "Kare 3 ile ayni ucus/ayni saha oldugu icin AYNI YORDAM tekrar kullanildi, esikler bu kare icin YENIDEN olculdu: yol S=39..44 V=88..173 exg=-9..+3 std=16..18 ; calilik S=109..142 exg=44..91 std=27..45. YOL = exg<15 & S<75 & V>70 & std<32 -> tek bilesen 64211 px, x79-930, y0-540. CALILIK iki asamada: guvenli cekirdek (H 33..65 & S>95 & exg>25), sonra golgedeki tac icin gevsek maske (S>50 & std>15 & exg>-2) uygulanip YALNIZ cekirdege degen bilesenler tutuldu; ayirici olcum DOKU (golgeli tac std 27-45, golgeli yol std 16-18). Yol sinirlari satir satir yazdirildi: y=20'de x=125-263, y=200'de x=607-774, y=500'de x=842-912.",
+   "notlar": "Kare 3 ile ayni orman/calilik sahasi, yol bu sefer S kivrimi ciziyor. SINIF 1 %82,0: sik yaprakli calilik ve agac taci — HAM kirpmada ayri tac kubbeleri gorunuyor, madde (4). SINIF 0 %12,6: kivrilan toprak yol; HAM 1,4x kirpmada duz sikistirilmis toprak yuzeyi, uzerindeki koyu tekil lekeler 25 cm'in altinda, madde (5) geregi etiketlenmedi. ETIKETSIZ %5,4: (a) yolun SOL/UST kenarindaki dar derin golge seridi — orada zemin dokusu okunmuyor, (b) yolun sag omzundaki dar kuru ot seridi (HAM kirpmada ayakta kuru ot, zemin gorunmuyor — madde 6), (c) sag alt kosede tac ile yol arasinda kalan birkac koyu yama."
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000051_000002400.jpg",
+   "saniye": 80.08,
+   "rel_alt": 32.5,
+   "png": "dji_20260822172613_0038_d__frame_000051_000002400_uc.png",
+   "sinif0_oran": 0.35104,
+   "sinif1_oran": 0.39237,
+   "etiketsiz_oran": 0.2566,
+   "guven": "orta-yuksek",
+   "yontem": "Yesil ortu fraksiyonu (17x17, exg>14) olculdu: cakil yol 0,00 ; ortadaki kuru duz zemin 0,02 ; sol calilik 0,88 ; sag agaclik 0,99 -> calilik esigi frak>0,5 & exg>25, sonra golgedeki tac icin gevsek maske (S>55 & std>15 & exg>0) ile cekirdege degen bilesenler buyutuldu. ZEMIN: frak<0,25 & V>120 & std<30 -> iki bilesen (cakil yol 40120 px; orta kuru duzluk 127426 px). KOYU/YANIK YAMA: V<118 & std>17 -> dort bilesen, en onemlisi x330-478 y263-439 (10404 px) ve sag taraftaki x561-824 y0-471 (26451 px). Ortadaki kuru alanin AYAKTA OT mu yoksa OKUNABILIR yuzey mi oldugu HAM 6x kirpmayla sinandi: ayakta tussock DEGIL — soluk, duz, ince dokulu zemin uzerinde yatik kuru bitki artigi ve capraz surukleme izleri gorunuyor; madde (6)'nin 'dokusu gorunen sert yuzey' kolu geregi SINIF 0.",
+   "notlar": "Calilik icinde acilmis bir duzluk. SINIF 0 %35,1: (a) sol ust kosedeki stabilize/cakil yol (S=13,9 V=185,8 std=11,5 — olculdu; uzerindeki koyu taslar HAM 1,6x'te 14-27 cm, cogu 25 cm altinda), (b) ortadaki genis soluk kuru duzluk — HAM 6x kirpmada zemin dokusu OKUNUYOR. SINIF 1 %39,2: soldaki ve sagdaki sik calilik/agaclik kutleleri (yesil frak 0,88-0,99, madde 4). ETIKETSIZ %25,7 ve NEDENI: (a) sag taraftaki KABA/RUTLU bozuk toprak seridi (x~561-824) — std 37,8-39,3, HAM 1,4x kirpmada 16-32 cm kesekler ve derinligi OKUNAMAYAN koyu bir oyuk/furrow var; gecilebilirlik dogrulanamadi, (b) ORTADAKI YANIK YAMA + OLU CALI ISKELETI (x~330-478, y~263-439) — HAM 1,6x kirpmada kararmis zemin, ayakta olu dallar ve bir mavi sise gorundu; zemin okunmuyor, olu dal 'sikisan ot' da degil, madde (2) geregi 0, (c) yol ile calilik arasindaki koyu golge/gecis bantlari.",
+   "sartname_belirsizligi": [
+    "Sag taraftaki koyu oyuk/furrow (x~640-700, y~30-200) icin karar veremedim: genisligi HAM'da 23-40 cm olculdu, IKA govdesi 66 cm oldugu icin GENISLIK acisindan gecilebilir gorunuyor; ama DERINLIK tek kareden olculemez ve sartname derinlik icin bir yordam vermiyor. 0 birakildi."
+   ]
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000084_000003180.jpg",
+   "saniye": 106.106,
+   "rel_alt": 29.7,
+   "png": "dji_20260822170832_0037_d__frame_000084_000003180_uc.png",
+   "sinif0_oran": 0.53644,
+   "sinif1_oran": 0.03914,
+   "etiketsiz_oran": 0.42443,
+   "guven": "yuksek",
+   "yontem": "DUVAR YATAY oldugu icin iz SUTUN yonunde alindi: her x icin (V-1,4*S) tepesi, 4 turda YENIDEN MERKEZLENEN pencere + 2. derece polinom + artik reddi -> 758/960 ic nokta, artik std 2,37 px; x=0'da y=273,3, x=959'da y=187,6. Duvar genisligi HAM 3x kirpmada olculdu ~18 px (79 cm); serit +-9 px cizildi. ZEMIN esikleri olculdu: alt yol/avlu S=30,2 V=179,3 std=4,0 ; ust yol S=26,8 V=140,4 std=14,3 ; kuru ot S=87,8 std=23,1 ; tasli kenar S=74,1 std=27,9 -> esik S<68 & V>110 & std<22 (S=68, kuru ot 88 ile toprak 60 arasinda; sol alt toprak HAM 1,4x kirpmada YATIK kuru ot artigi + okunabilir zemin cikinca esik 55'ten 68'e cikarildi). CUVALLAR: V>175 & S<60, HAM 3x'te boyutlari 111x148 / 111x137 / 122x133 cm.",
+   "notlar": "Iki kademeli cakil avlu/yol, arasinda beton duvar. SINIF 1 %3,9: (a) BETON DUVAR + UZERINDEKI TEL CIT — HAM 3x kirpmada duvarin beton govdesi, uzerindeki L bukumlu dikenli tel direkleri VE yerdeki KAFES GOLGESI (baklava desenli) net gorundu; madde (2) 'duvar/cit' geregi sinif 1, (b) sol ust kosedeki UC BEYAZ DOLU CUVAL — her biri ~1,1-1,5 m, kesin engel. SINIF 0 %53,6: duvarin altindaki ve ustundeki stabilize/cakil yol ve avlu yuzeyleri — HAM kirpmada cakil dokusu ve tekerlek izleri okunuyor; sol alttaki yatik kuru ot artigi altindaki zemin de okunuyor (madde 6'nin 'dokusu gorunen sert yuzey' kolu). ETIKETSIZ %42,4: (a) duvarin hemen ustundeki ve altindaki AYAKTA KURU OT seritleri (S=88) — zemin gorunmuyor, madde (6), (b) duvarin altindaki TASLI/MOLOZLU sev omzu (S=74, std=28) — taslarin boyu ve sevin egimi okunamadi, (c) sag alt ve sol alt kosede daha koyu, dokusu okunmayan yamalar. Cit direklerinin GOLGELERI sinif 1 DEGIL — altindaki tasli zemin zaten etiketsiz, cakilda kalan kisimlar zeminin sinifini aldi."
+  }
+ ],
+ "_kok": "O:\\navitas\\results\\dji_20260822\\kareler_1fps",
+ "_gsd": "4,39 cm/px @960 (n=81 kare cifti fotogrametrik olcum); 25 cm = 5,7 px @960",
+ "_kodlama": {
+  "0": "ETIKETSIZ",
+  "1": "SINIF 0 (surulebilir)",
+  "2": "SINIF 1 (gecilemez engel)"
+ },
+ "toplam_saniye": 4152,
+ "toplam_saniye_nasil_olculdu": "ilk yardimci betigin diske yazildigi an (12:34:15) ile son ciktinin diske yazildigi an (13:43:27) arasindaki DOSYA ZAMAN DAMGASI farki. Bu duvar saatidir; icinde arac insasi da vardir. Kare basina 415 sn. Arac insasi ilk iki kareye bindigi icin kare basina maliyet turun sonuna dogru DUSMUSTUR; ayrik olarak olculmedi.",
+ "kare_basina_saniye": 415.2,
+ "ortalama_oranlar": {
+  "sinif0": 0.42085,
+  "sinif1": 0.28599,
+  "etiketsiz": 0.29316
+ },
+ "sartname_belirsizligi": [
+  "KARE 2 — Yuzeydeki 34-59 cm plastik cop (torba/kagit): madde (5) 25 cm esigini yalniz TAS/MOLOZ icin koyuyor. Yumusak cop icin hukum yok. Asil olcut madde (0) gecilebilirlik oldugu icin sinif 0 sayildi; bu bir YORUMDUR, sartname bunu soylemiyor.",
+  "KARE 6 — Gevsek MOLOZ YIGINI: madde (5) 25 cm ustu TEKIL kayayi sinif 1, altindakileri yuzey olarak hukme bagliyor; ama \"gevsek moloz yigini\" icin ayri hukum yok. Kare 6'daki koyu moloz alaninda parcalar TAM esikte (11-26 cm) ve yuzeyin cukur mu yigin mi oldugu golgede okunmadi -> 0 birakildi.",
+  "KARE 8 — HENDEK/FURROW DERINLIGI: madde (3) \"gecilemez hendek/ark sinif 1\" diyor ama derinligi tek kareden olcecek bir yordam VERMIYOR. Kare 8'deki 23-40 cm genisligindeki koyu oyuk genislik acisindan IKA govdesinden (66 cm) dar, ama derinligi bilinmiyor -> 0 birakildi.",
+  "KARE 1 — Kamp/hurda yigininin CEVRESINDEKI ezilmis alan: yigin acikca sinif 1, ama cevresindeki duzlenmis serit aciklik mi hurda mi 960'ta da HAM'da da okunmadi -> 0.",
+  "KARE 4 — Yol omzundaki kuru dal yigini: bir kisminin olu cali, bir kisminin sadece golge oldugu ayirt edilemedi -> 0.",
+  "GENEL — YERDE YATAN KABLO (kare 0, 2, 4): HAM 8x kirpmada golgesiz, zemine yapisik, 1-2 cm genisliginde cizgiler. Madde (2) \"cit\"i sinif 1 sayiyor ama bunlar cit DEGIL (direk yok). Zemin sinifini degistirmedim; sartname zeminde yatan kablo icin hukum icermiyor."
+ ]
+}

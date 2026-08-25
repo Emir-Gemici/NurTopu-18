@@ -1,0 +1,119 @@
+{
+ "amele": "D",
+ "parti": "F5_OLCEK_PARTI1",
+ "_saniye_ne_demek": "kare basindaki 'saniye' = kaynak videodaki zaman damgasi; 'calisma_saniyesi' ve 'toplam_saniye' = etiketlemeye harcanan GERCEK duvar saati suresi (ardisik olculdu, kare 0 icin onizleme uretiminin bitisinden itibaren).",
+ "kareler": [
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000087_000003780.jpg",
+   "saniye": 126.126,
+   "sinif0_oran": 0.1797,
+   "sinif1_oran": 0.7682,
+   "etiketsiz_oran": 0.0522,
+   "guven": "yuksek",
+   "notlar": "Kadrajin %77'si sik cali/bodur agaclik -> madde (4) sinif 1. Iki stabilize yol: sag ust capraz (x~590-900) ve sol alt capraz. Sag yolun golgeli yarisi HAM 3840'ta gamma 2.2 ile okundu, yuzey dokusu ve tekerlek izi gorunuyor -> golge kurali geregi altindaki yuzeyin sinifi (0). Yol/cali siniri ExG=2G-R-B>12 ile OLCULDU (gozle degil). Sol alt bantta kuru ot ayri ayrildi: doygunluk olcumu yol S=23-52 vs kuru ot S=72-75, esik 62. Kuru ot altindaki zemin okunmuyor -> madde (6) ETIKETSIZ. Yol uzerindeki koyu tekil taslar HAM'da olculdu: ~4,7-6,2 px @960 = 20-27 cm, esik 25 cm'in etrafinda; madde (5) geregi etiketlenmedi, yuzey cakil yolu olarak sinif 0.",
+   "calisma_saniyesi": 428.2
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000118_000005070.jpg",
+   "saniye": 169.169,
+   "sinif0_oran": 0.3833,
+   "sinif1_oran": 0.1806,
+   "etiketsiz_oran": 0.4362,
+   "guven": "orta",
+   "notlar": "Ciftlik avlusu. Sol yarida genis sikistirilmis toprak avlu -> sinif 0. Kadraji capraz kesen dar seride HAM 3840'ta bakildi: duzenli direk/konsol izleri olan BETON DUVAR/CIT hatti, genisligi olculdu 11-14 px @960 = 48-61 cm -> madde (2) geregi 'taniniyor' oldugu icin dar olmasina ragmen sinif 1. Sag kenardaki beyaz sarilmis silaj balya istifi sinif 1 (istif iki kat, cikilamaz). Sol ust ve sol kenardaki iki metal izgara/menfez yapisi sinif 1. Onlarin cevresindeki duz beton onluk ETIKETSIZ birakildi: avluyla ayni kotta mi yoksa silaj cukuru duvarinin ustu mu OKUNAMADI, 'surulebilir' iddiasi dogrulanamadi. Yol/kuru ot ayrimi doygunlukla OLCULDU: yol S=19-25, kuru ot/tasli kenar S=66-71, esik 45. Yol ustundeki tekil taslar HAM'da 8-15 cm olculdu -> madde (5) esiginin altinda, etiketlenmedi.",
+   "calisma_saniyesi": 359.6
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000138_000005670.jpg",
+   "saniye": 189.189,
+   "sinif0_oran": 0.2062,
+   "sinif1_oran": 0.0631,
+   "etiketsiz_oran": 0.7307,
+   "guven": "orta",
+   "notlar": "Kadrajin %73'u ETIKETSIZ birakildi ve bu BILINCLI. Sol ucte bicilmis/kurumus ot tarlasi -> madde (6), zemin okunmuyor -> 0. Sag ucte alcak YESIL otlak/mera: sik agaclik ya da cali DEGIL (madde 4 kapsamina girmiyor), ama HAM 3840'ta bakildiginda zemin ancak yer yer gorunuyor -> 'IKA gecer' iddiasi dogrulanamadi -> 0. Sinif 0 verilen tek yerler: ortadaki cakil yol bandi ve alt ortadaki toprak iz; ikisi de dusuk doygunluklu (S=26-36) ve dokusu okunur. Sinif 1: (a) cam/servi fidan obegi, (b) capraz uzanan BETON DIREK/plak — HAM'da genisligi 12 px @960 = 53 cm olculdu, taniniyor -> madde (2), (c) beyaz sarilmis silaj balya diziligi (iki obek). Balyalar ROI icinde 'dusuk doygunluk + parlak' olarak ayrildi, cevresindeki kuru ota engel denmedi.",
+   "calisma_saniyesi": 321.1
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000286_000010800.jpg",
+   "saniye": 360.36,
+   "sinif0_oran": 0.7423,
+   "sinif1_oran": 0.1143,
+   "etiketsiz_oran": 0.1434,
+   "guven": "yuksek",
+   "notlar": "Ust bantta asfalt/stabilize yol, alt ucte buyuk TESVIYE EDILMIS toprak alan; toprak alanda her yone lastik izi var, HAM'da taslar 9-22 cm olculdu (esik 25 cm'in altinda) -> sinif 0. Ikisinin arasinda iki serit: (a) yol kenari IRI TAS DOLGU (riprap) — HAM 3840'ta uc tas olculdu 30x20, 40x20, 45x25 cm; madde (5) geregi 25 cm ustu -> sinif 1 verildi, (b) onun altinda kuru ot + yesil yabani ot serdi, zemin okunmuyor -> madde (6) ETIKETSIZ. Ortada YUKSEK GERILIM DIREGI (celik kafes) sinif 1; direk govdesi ve kollari nadirde zemine izdusuyor, poligon govdeyi ICEREN sekilde cizildi (serbest alani KUCULTEN yon). Bu karede doygunluk ayrimi CALISMADI ve KULLANILMADI: tesviye topragi S=43-83, kuru ot S=43-69 — ortusuyorlar; siniri gozle degil, HAM kirpiklerinde doku degisimiyle gecirdim.",
+   "calisma_saniyesi": 353.1
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000227_000008760.jpg",
+   "saniye": 292.292,
+   "sinif0_oran": 0.8681,
+   "sinif1_oran": 0.0432,
+   "etiketsiz_oran": 0.0888,
+   "guven": "yuksek",
+   "notlar": "Buyuk hafriyat/tesviye sahasi + capraz stabilize yol. Kadrajin ust yarisi PALETLI IS MAKINESI izleriyle yarilmis toprak; 'gecilir mi' sorusu GOLGE UZUNLUGUYLA olculdu: karedeki INSANIN golgesi (215,395)->(300,398) = 85 px @960 = 373 cm; 1,70 m boy varsayimiyla gunes yuksekligi atan(170/373) = 24,5 derece. Karik/iz cizgilerinin koyu bandi HAM'da 10-20 cm olculdu -> golgeden turetilen DERINLIK ust siniri 10/2,2 ... 20/2,2 = 4,5-9 cm. IKA karin boslugu 7 cm, teker capi 22 cm; 10-20 cm genislikteki bu karikleri teker KOPRULER -> sinif 0. Sinif 1 verilenler: (a) yolda duran INSAN (HAM'da 37x24 px @960 = 162x105 cm, kirmizi/beyaz esyasiyla), golgesi ise ALTINDAKI YOL DOKUSU OKUNDUGU icin sinif 0 birakildi, (b) sol altta yukselen AHSAP/BETON KIRIS (HAM'da genislik 15 px @960 = 66 cm, altinda golge cizgisi var yani zeminden yuksek) ve icinden gectigi koyu yesil cali/cit kutlesi -> madde (4). Yol kenarindaki alcak yesil ot seritleri madde (6) mantigiyla ETIKETSIZ (zemin okunmuyor). Sag alt bolgede dagilmis beyaz cop/plastik parcalari 25 cm altinda kaldigi icin etiketlenmedi.",
+   "calisma_saniyesi": 476.8
+  },
+  {
+   "dosya": "dji_20260822173231_0039_d/frame_000074_000004140.jpg",
+   "saniye": 138.138,
+   "sinif0_oran": 0.2252,
+   "sinif1_oran": 0.2076,
+   "etiketsiz_oran": 0.5672,
+   "guven": "yuksek",
+   "notlar": "Sol ucte cok sirali beyaz silaj balya istifi + sundurma catisi -> sinif 1 (istif ikiden fazla kat, cikilamaz). Kadraji dikey kesen serit HAM 3840'ta okundu: duzenli konsol/direk izleri olan BETON DUVAR/CIT, genisligi 10 px @960 = 44 cm -> madde (2), taniniyor, sinif 1. Ortada iki INSAN (508,286)-(536,305) -> sinif 1; golgeleri (575,368)'e kadar uzuyor, uzunluk 89 px @960 = 391 cm, 1,70 m boyla gunes yuksekligi 23,5 derece — kare 4'te 0037 videosundan bulunan 24,5 derece ile UYUMLU (bagimsiz capraz kontrol). Golgelerin altindaki asfalt/stabilize dokusu okundugu icin golge sinif 0 birakildi. Yol/kuru ot ayrimi doygunlukla OLCULDU: yol S=29, kuru ot S=77-99, esik 50. Sag ucteki kaba kuru ot + tas ortusu ve sol ortadaki kuru ot serdi ETIKETSIZ (madde 6, zemin okunmuyor). x=250-320 arasindaki iki ince cakil tekerlek izi olculebilir dokuya sahip -> sinif 0.",
+   "calisma_saniyesi": 328.1
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000109_000004440.jpg",
+   "saniye": 148.148,
+   "sinif0_oran": 0.1268,
+   "sinif1_oran": 0.8165,
+   "etiketsiz_oran": 0.0567,
+   "guven": "yuksek",
+   "notlar": "Kadrajin %82'si SIK CALILIK/bodur agaclik -> madde (4) sinif 1; tabana 2 verildi ve yalniz yol koridoru icinde olcume basvuruldu. Yol koridoru poligonu icinde uc yollu ayrim: ExG>20 yesil ortu -> sinif 1, doygunluk S>=55 kuru ot -> ETIKETSIZ, kalan dusuk doygunluklu toprak yuzey -> sinif 0. Koridor disindaki calilikta cikan kuru/sari yamalar KASITLI olarak 2 birakildi: onlar calilik icindeki kurumus dallar, zemin degil. Kadrajin ust orta kisminda MASA, SANDALYE, KUTU, turuncu levha vb. kamp/piknik esyasi obegi var; taban 2 oldugu icin sinif 1 kaldi (serbest alani buyutmeyen yon). Yolun golgede kalan bolumunde yuzey dokusu okunuyor -> golge kurali geregi sinif 0; yalniz sol kenardaki en koyu serit kuru ot olarak ayrilip ETIKETSIZ kaldi.",
+   "calisma_saniyesi": 199.7
+  },
+  {
+   "dosya": "dji_20260822172613_0038_d/frame_000120_000004770.jpg",
+   "saniye": 159.159,
+   "sinif0_oran": 0.0815,
+   "sinif1_oran": 0.727,
+   "etiketsiz_oran": 0.1915,
+   "guven": "orta",
+   "notlar": "Kare 6 ile AYNI saha, farkli konum. Kadrajin %73'u sik calilik -> madde (4) sinif 1 (taban 2). Sag ust kosegende toprak yol; koridor poligonu icinde ExG ve doygunlukla ayrildi, yolun golgeli/kenar seritleri 'kuru ot' tarafina dustugu icin ETIKETSIZ birakildi (iddia edilmedi). Alt solda ALCAK SARI-YESIL OT bandi: calilik degil, ama zemini de gorunmuyor -> kare 2'deki ayni gerekce ile ETIKETSIZ. Alt ortada kamp/piknik esya obegi (masa, sandalye, kutular, mavi brandalar) -> sinif 1; poligon obegi cevreleyecek sekilde biraz genis cizildi, bu SERBEST ALANI KUCULTEN yon. Otun uzerindeki turuncu levha etiketsiz bandin icinde birakildi: kalinligi okunamadigi icin ne engel ne surulebilir denildi.",
+   "calisma_saniyesi": 243.3
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000127_000005340.jpg",
+   "saniye": 178.178,
+   "sinif0_oran": 0.19,
+   "sinif1_oran": 0.1153,
+   "etiketsiz_oran": 0.6948,
+   "guven": "yuksek",
+   "notlar": "Ortada toprak yol (S=24, dokusu okunur) -> sinif 0. Sol ucte bicilmis kuru ot tarlasi (S=77) ve sag ucte alcak yesil mera (ExG=31): ikisinde de zemin okunmuyor -> ETIKETSIZ (madde 6 ve onun yesil ortuye uygulanmis hali). Kadraji capraz kesen BETON ELEKTRIK DIREGI sinif 1: HAM 3840'ta genisligi 13-14 px @960 = 57-61 cm, S=15 ile cevresinden kesin ayriliyor; dibindeki beton kaide (399,424)-(421,445)'te gorunuyor. Diregin uzun koyu GOLGELERI sinif 1 YAPILMADI — altlarindaki toprak dokusu okunuyor, golge kurali geregi zeminin sinifini aldilar. Sagda beyaz sarilmis yem/silaj torbalari: doygunlukla ayrilamadilar (torba S=18-50, cevre kuru ot S=54-77 ortusuyor), bu yuzden ROI icinde PARLAKLIK esigi kullanildi (V>=155, olculdu: torba V=187-202, aradaki kuru ot V=68, yesil V=101). Golgede kalan torba yuzeyleri esigin altinda kaldi ve ETIKETSIZ birakildi — engel olduklari kesin ama sinirlari olculemedi, uydurulmadi. Mavi varil ayri poligonla sinif 1.",
+   "calisma_saniyesi": 433.0
+  },
+  {
+   "dosya": "dji_20260822170832_0037_d/frame_000290_000010920.jpg",
+   "saniye": 364.364,
+   "sinif0_oran": 0.7546,
+   "sinif1_oran": 0.0,
+   "etiketsiz_oran": 0.2454,
+   "guven": "orta",
+   "notlar": "BU KAREDE HIC SINIF 1 YOK — acikca belirtiyorum: kadrajda gecilemez engel bulamadim, sinif1_oran gercekten 0,0000. Kare 3/4 ile ayni hafriyat sahasi. Sol ucte tasli tesviye zemini + ince toprak: her yone lastik izi var, sinif 0. Ortada 128 px @960 (= 5,6 m) genisliginde CAKIL YOL, sinif 0. Aralarindaki kuru ot/yabani ot seridi ve sag kenardaki golgeli kaba kenar ETIKETSIZ (madde 6). Sag ucteki AYAKTA KURU OT OBEGI (880,90)-(930,140) madde (6)'nin tam ornegi: sikisir, engel degil; alti gorunmuyor, surulebilir de denemez -> 0. En sag serit (x>935) tam golgede, yuzey OKUNMUYOR -> golge kurali geregi 0. Bu karede doygunluk ayrimi CALISMADI (cakil yol S=30, tesviye S=49, kuru kenar S=52, sag kenar S=38 — ic ice), o yuzden hicbir esik kullanilmadi; sinirlar HAM 3840 kirpiklerinde doku degisiminden gecirildi.",
+   "calisma_saniyesi": 339.1
+  }
+ ],
+ "toplam_saniye": 3482.0,
+ "kare_basina_saniye": 348.2,
+ "sartname_belirsizligi": [
+  "kare 0 (0038_d/frame_000087): sag yolun uzerindeki tekil taslar olcumle 20-27 cm cikti, 25 cm esiginin tam ustunde/altinda. Sartname esigi net ama OLCUM BELIRSIZLIGI esigi asiyor; bu boyutta taslar icin karar kurali (yuvarla/etiketle/birak) belirtilmemis. Bu karede 'etiketleme' yonunde karar verildi.",
+  "kare 1 (0037_d/frame_000118): tas + kurumus bitki artigi KARISIK yuzey (x=430-500 seridi). Madde (5) tas yuzeyi icin 'stabilize -> sinif 0' der, madde (6) kuru ot icin 'zemin okunmuyorsa 0' der. Karisik yuzeyde hangisinin gecerli oldugu yazili degil; ETIKETSIZ secildi.",
+  "kare 1 (0037_d/frame_000118): ciftlik yapisi (beton onluk + metal izgara). Sartname dogal ortu ve su icin yazilmis; INSA EDILMIS duz beton yuzeyin (avluyla ayni kotta olabilir, duvar ustu de olabilir) nasil hukme baglanacagi belirtilmemis. ETIKETSIZ secildi.",
+  "kare 2 (0037_d/frame_000138): ALCAK YESIL ORTU (mera/otlak) icin sartnamede kural YOK. Madde (4) 'sik agaclik/calilik' der — bu ona uymuyor; madde (6) yalniz KURU ot icin yazilmis. Madde (6)'nin mantigi (ot sikisir -> engel degil; zemin okunmuyor -> iddia edilemez) yesil ota da uygulandi ve 0 verildi. Kural yazili olsaydi bu alan buyuk ihtimalle sinif 0 olacakti; kadrajin ucte biri bu karara bagli.",
+  "kare 3 (0037_d/frame_000286): yol kenarindaki iri tas dolgu BANT halinde. Madde (5) TEKIL tas icin esik verir; birden cok 25 cm ustu tasin olusturdugu bandin tumden sinif 1 mi yoksa tas tas mi etiketlenecegi yazili degil. Bant olarak sinif 1 verildi.",
+  "kare 3 (0037_d/frame_000286): YUKSEK GERILIM DIREGI gibi nadirden izdusumu ayak izinden BUYUK olan yapilarda, etiketin gercek ayak izi mi yoksa gorunen izdusum mu olacagi sartnamede yok. Gorunen izdusum secildi (serbest alani buyutmeyen yon).",
+  "kare 7 (0038_d/frame_000120): ot uzerinde duran duz TURUNCU LEVHA/MINDER gibi ince yassi cisimler. Kalinlik nadirden okunamiyor; 'engel' mi 'uzerinden gecilir' mi sartnamede yok. ETIKETSIZ birakildi.",
+  "kare 9 (0037_d/frame_000290): madde (5)'in 25 cm esigi nadirden ancak AYAK IZI olarak olculebiliyor, oysa gecilebilirligi belirleyen YUKSEKLIK. Bu karede tesviye zemininde ayak izi 48x19 cm olan YASSI bir tas levha olculdu; ayak izi esigi asiyor ama yassi. Golge boyundan tureyen yukseklik ~10 cm cikti (gunes yuksekligi 24,5 derece, kare 4'te olculdu) ama bu olcum bu olcekte cok gurultulu. Sartname 'buyuk' derken ayak izini mi yuksekligi mi kastettigini soylemiyor; yuzey butun olarak sinif 0 sayildi."
+ ]
+}

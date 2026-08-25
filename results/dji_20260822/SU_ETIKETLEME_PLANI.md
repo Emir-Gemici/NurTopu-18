@@ -307,6 +307,64 @@ Yani üç durumlu çıktı kararı, bu belirsizliği **çözülebilir** hâle ge
 ⚠ **Kalan sınır:** İKA ölçüleri **simülasyon modelinden** alındı. Gerçek araç
 farklıysa 25 cm eşiği kayar. Doğrulanması gereken tek girdi budur.
 
+
+### 4b-EK-4 · PARTİ 1'İN AÇTIĞI BEŞ BOŞLUK — hepsi TÜRETİLDİ (2026-08-25)
+
+Parti 1'de dört amele beş kusur bildirdi. Beşi de **aynı iki ilkeden** çözülüyor,
+tercihle değil:
+> **İlke A — sınıf 1 bir GÖZLEMdir, sınıf 0 bir İDDİAdır.** Engeli *görmek*
+> onu doğrular. "Sürülebilir" demek ise zemini *incelediğini* iddia etmektir.
+> **İlke B — doğrulayamadığın şey ETİKETSİZdir**, sınıf 0 değil.
+
+#### (7) 🔴 madde (5) ↔ (6) ÇAKIŞMASI — **(5) üstündür, ama YALNIZ TAŞIN KENDİSİNDE**
+Amele B: *"kuru ot yamacında ot arasından 25 cm üstü tekil kayalar görünüyor;
+(5) sınıf 1 diyor, (6) etiketsiz diyor."*
+> **Gördüğün ≥25 cm taş SINIF 1'dir** — görmek doğrulamadır (İlke A) ve engeli
+> işaretlemek serbest alanı **küçültür** (madde 15 uyumlu).
+> **Çevresindeki ot ETİKETSİZ kalır** — taşı görmüş olman otun altını görmüş
+> olmanı sağlamaz. İki hüküm **çelişmiyor, farklı piksellere ait.**
+
+#### (8) MADDE (6) FAZLA DAR YAZILMIŞ — genelleştirildi
+Amele B: *"(6) açıkça 'AYAKTA KURU OT' başlıklı; kısa yeşil mera kapsam dışı —
+harfiyen uygulayınca o karede ~%55 piksel yer değiştiriyor."*
+Kusur bende: kuralı **örnekle** yazmışım, **ilkeyle** değil.
+> **Yeni (6):** *Zemini gizleyen HER bitki örtüsü* — ayakta kuru ot, mera,
+> yoğun yeşil ot — altındaki zemin **okunamıyorsa ETİKETSİZ**; okunuyorsa
+> (dokusu görünen sert yüzey) **o zeminin sınıfı**. Bitkinin türü, rengi ve
+> mevsimi ölçüt DEĞİLDİR; **zemini gizleyip gizlemediği** ölçüttür.
+
+#### (9) 🔴 EĞİM TEK NADİR KAREDEN ÖLÇÜLEMEZ — madde (4) o kısmıyla UYGULANAMAZ
+Amele A: *"(4) 'dik şev sınıf 1' diyor ama eğim tek nadir kareden türetilemez.
+Stereo/DSM olmadan bu madde uygulanamaz."* **A haklı.**
+> **Eğim, tek nadir kareden ÖLÇÜLEMEZ.** Görünür ipucu varsa (erozyon çizgileri,
+> gölge kenarı, bitki örtüsünde ani kesinti, dolgu şevine dik makine izleri)
+> ipucuna göre hüküm ver; **ipucu yoksa ETİKETSİZ** — "düz görünüyor" diye
+> **sınıf 0 YAZMA** (İlke B).
+⚠ Bunun bedeli ölçüldü: A'nın iki karesi **%87,7** ve **%75,6** etiketsiz kaldı.
+Bu bir kusur değil, **dürüst çıktıdır**; alternatifi uydurmaktı.
+
+#### (10) PARLAK + DOKUSUZ OLMAK ZEMİN KANITI DEĞİLDİR
+Amele A: *"beyaz silaj balyaları L=214–251, yoldan daha parlak ve dokusuz —
+her ölçüm tabanlı zemin kuralı onları YOL sanıyor."*
+> Sınıf 0 için **zemin dokusu** aranır; yalnız *pürüzsüz + parlak* olmak yetmez.
+> Zemin olmayan bir **nesne** (balya, çuval, branda, beton plaka) ≥25 cm ise
+> **sınıf 1**'dir.
+
+#### (11) DİNAMİK NESNELER — **sınıf 1**
+Amele A: *"insanı etiketsiz, iş makinesini sınıf 1 yaptım — çelişkili."* Haklı.
+> **İnsan, araç, iş makinesi ve benzeri hareketli nesneler SINIF 1'dir.**
+> Gerekçe: hepsi *"İKA girerse çıkabilir mi"* ölçütüne göre engeldir ve
+> işaretlemek serbest alanı **küçültür** (madde 15 uyumlu). Geçici olmaları
+> hükmü değiştirmez — etiket **o karenin** hükmüdür, gelecek tahmini değil.
+
+---
+
+⚠ **PARTİ 1'İN DURUMU:** bu beş madde parti 1'de **yoktu**. Etkileri hep aynı
+yönde: (7),(10),(11) etiketsiz/yanlış-sınıf-0 alanları **sınıf 1'e** çeviriyor,
+(8),(9) belirsizi **etiketsizde** tutuyor. Yani parti 1'in maskeleri
+**MUHAFAZAKÂR** — eksik etiketli ama **yanlış yönde değil** (etiketsiz her
+zaman güvenli taraftır). Kullanılabilirler; ikinci geçiş **öner-bekle**.
+
 ---
 
 ## 5. FAZLAR
