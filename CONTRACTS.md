@@ -347,7 +347,7 @@ kendi fail-closed reddidir.
 - Sürüş sırasında `NO_ROUTE` gelirse araç **güvenli duruşa** geçer; yeni geçerli
   `OPEN_ROUTE` gelince devam eder.
 
-### 6.5 ACK bağlama ve `IKA_GO` tekrar sözleşmesi — bağlayıcı (K4+K8, şartname §2.2.5 / §2.2.3)
+### 6.6 ACK bağlama ve `IKA_GO` tekrar sözleşmesi — bağlayıcı (K4+K8, şartname §2.2.5 / §2.2.3)
 
 **Gerekçe (ölçüldü, `results/sartname_bosluk/rapor.md` K4/K8):** `IKA_GO` tek paketti,
 ACK beklenmiyordu, düğme kilitleniyordu — tek paket kaybı görevi geri dönülmez bitiriyordu
@@ -825,7 +825,7 @@ Sabitler `codes/karar_sozlesmesi.py` sonunda, PDF alıntılarıyla:
 
 Testler: `tests/test_k5_k6_sure_limitleri.py` (sahte saat + gerçek UDP loopback;
 4 mutasyonla düştüğü gösterildi).
-✅ **`IKA_GO` kısmı kapatıldı (K4, §6.5):** ACK'lı, aynı-seq tekrar gönderimi + üst sınırda
+✅ **`IKA_GO` kısmı kapatıldı (K4, §6.6):** ACK'lı, aynı-seq tekrar gönderimi + üst sınırda
 görünür hata ve yeniden tetiklenebilir düğme; İKA mükerrer alımı idempotent işler.
 
 ---

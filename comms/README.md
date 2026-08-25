@@ -30,7 +30,7 @@ detect_open_path() → road       yks_monitor.py              ika_receiver.py
 | `link.py` | Taşıyıcılar: `UDPLink` (dev/sim), `SerialLink` (SiK telsiz) |
 | `iha_sender.py` | İHA → açık yolu gönderir, ACK toplar |
 | `ika_receiver.py` | İKA → alır, ACK döner (`ref_tip` ile; kopyası `--yks`'e), `latest` rotayı dışa açar (nav kullanır) |
-| `komut_tekrar.py` | YKS → `IKA_GO` ACK'lı, aynı-seq, üst sınırlı tekrar durum makinesi (Tk'dan bağımsız; CONTRACTS §6.5) |
+| `komut_tekrar.py` | YKS → `IKA_GO` ACK'lı, aynı-seq, üst sınırlı tekrar durum makinesi (Tk'dan bağımsız; CONTRACTS §6.6) |
 | `yks_monitor.py` | YKS → hakem monitörü, canlı izler + onaylar |
 | `test_comms.py` | Loopback testi (İHA→İKA/YKS + ACK) |
 

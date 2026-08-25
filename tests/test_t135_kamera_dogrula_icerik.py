@@ -35,7 +35,8 @@ import kamera_dogrula as KD  # noqa: E402
 import rpi_inference as R  # noqa: E402
 from karar_sozlesmesi import (  # noqa: E402
     ICERIK_YOK_LETTERBOX_SUPHESI_NOTU, LETTERBOX_SUPHE_BANT_ORANI,
-    ZEMIN_KAPLAMA_TAVANI, ZEMIN_MASKESI_SUPHELI_SEBEBI)
+    ZEMIN_KAPLAMA_TAVANI, ZEMIN_KENAR_DAYANMA_TAVANI, ZEMIN_MASKESI_SUPHELI_SEBEBI,
+    zemin_kenar_dayanmasi)
 
 
 def _kare_16_9(w=320, h=180):
@@ -64,7 +65,13 @@ class KameraDogrulaIcerikTests(unittest.TestCase):
         duzeltmeyi kilitler."""
         tuval, _, icerik = R._preprocess(_kare_16_9())
         mk = R._maskeleri_icerige_kirp(_cokus_maskeleri(tuval), icerik)
-        self.assertLessEqual(float(mk[0].mean()), ZEMIN_KAPLAMA_TAVANI)
+        # T142 (D-286) sonrasi tavan 0,55: letterbox paydasinda kaplama 0,5625 artik
+        # tavani ASAR ama kenar kolu olu (tavan 2h/(4w-4)=0,2815 < 0,40) -> AND kapisi susar.
+        yan = mk[0].shape[0]
+        kap = float(mk[0].mean())
+        ken = zemin_kenar_dayanmasi(mk[0], (0, 0, yan, yan))
+        self.assertFalse(kap > ZEMIN_KAPLAMA_TAVANI and ken > ZEMIN_KENAR_DAYANMA_TAVANI,
+                         f"kap={kap:.4f} ken={ken:.4f}")
         durum_none = CPF.rota_bul(mk, mpp=None, plan=False, gorsel_cikti=False)["durum"]
         self.assertNotEqual(ZEMIN_MASKESI_SUPHELI_SEBEBI, durum_none)
 

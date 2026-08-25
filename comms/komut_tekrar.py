@@ -77,7 +77,7 @@ class AckliTekrar:
         """Gelen ACK bekleyen komuta aitse tekrarı durdur, True döner.
 
         Eşleme: ref == mesaj.seq; ACK `ref_tip` taşıyorsa mesaj tipiyle de
-        eşleşmeli (CONTRACTS §6.5). Bekleyen yoksa ya da eşleşmezse False.
+        eşleşmeli (CONTRACTS §6.6). Bekleyen yoksa ya da eşleşmezse False.
         """
         if self.durum != BEKLIYOR or self.mesaj is None:
             return False

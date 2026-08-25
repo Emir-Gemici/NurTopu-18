@@ -1044,7 +1044,7 @@ class YksArayuz:
 
     def _ack_isle(self, m, adr):
         """Gelen ACK'ları bekleyenlere bağla: IKA_GO tekrarı (K4) ve İKA rota
-        kanıtı (K8). `ref_tip` yoksa yalnız `ref` ile eşlenir (CONTRACTS §6.5)."""
+        kanıtı (K8). `ref_tip` yoksa yalnız `ref` ile eşlenir (CONTRACTS §6.6)."""
         ref = m.get("ref")
         if isinstance(ref, bool) or not isinstance(ref, int):
             return

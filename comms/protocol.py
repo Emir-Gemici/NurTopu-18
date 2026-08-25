@@ -90,7 +90,7 @@ def ack(ref_seq, node, ref_tip=None):
     (``"OPEN_ROUTE"``, ``"CMD"`` …). NEDEN: `seq` sayaçları düğüm başınadır;
     YKS'nin IKA_GO seq'i ile İHA'nın OPEN_ROUTE seq'i çakışabilir. YKS, İKA'dan
     gelen ACK'ı hangi bekleyene bağlayacağını `ref_tip` ile ayırt eder.
-    Alan yoksa alıcı yalnız `ref` ile eşler (geriye uyumlu, CONTRACTS §6.5)."""
+    Alan yoksa alıcı yalnız `ref` ile eşler (geriye uyumlu, CONTRACTS §6.6)."""
     msg = {"v": PROTOCOL_VERSION, "type": "ACK", "ref": int(ref_seq),
            "node": node, "t": round(time.time(), 3)}
     if ref_tip is not None:
