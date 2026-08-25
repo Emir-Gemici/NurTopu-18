@@ -1,0 +1,594 @@
+{
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000021_000001500",
+   "durum_ustabasi": "SINIF0_YOK",
+   "s0_px": 0,
+   "open_sonrasi_px": 0,
+   "open_kaybi_pay": null,
+   "uretim": "MASKE_YOK",
+   "kuralsiz": "MASKE_YOK",
+   "opensiz": "MASKE_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 14152,
+   "open_sonrasi_px": 8413,
+   "open_kaybi_pay": 0.4055,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000032_000001830",
+   "durum_ustabasi": "GECER",
+   "s0_px": 284965,
+   "open_sonrasi_px": 271654,
+   "open_kaybi_pay": 0.0467,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920",
+   "durum_ustabasi": "SINIF0_YOK",
+   "s0_px": 0,
+   "open_sonrasi_px": 0,
+   "open_kaybi_pay": null,
+   "uretim": "MASKE_YOK",
+   "kuralsiz": "MASKE_YOK",
+   "opensiz": "MASKE_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000037_000001980",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 70012,
+   "open_sonrasi_px": 58725,
+   "open_kaybi_pay": 0.1612,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 65852,
+   "open_sonrasi_px": 52162,
+   "open_kaybi_pay": 0.2079,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000044_000002190",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 86221,
+   "open_sonrasi_px": 68758,
+   "open_kaybi_pay": 0.2025,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 88732,
+   "open_sonrasi_px": 52201,
+   "open_kaybi_pay": 0.4117,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000051_000002400",
+   "durum_ustabasi": "GECER",
+   "s0_px": 181977,
+   "open_sonrasi_px": 177029,
+   "open_kaybi_pay": 0.0272,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460",
+   "durum_ustabasi": "GECER",
+   "s0_px": 184284,
+   "open_sonrasi_px": 157603,
+   "open_kaybi_pay": 0.1448,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 56937,
+   "open_sonrasi_px": 55330,
+   "open_kaybi_pay": 0.0282,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820",
+   "durum_ustabasi": "GECER",
+   "s0_px": 80589,
+   "open_sonrasi_px": 75165,
+   "open_kaybi_pay": 0.0673,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000072_000003210",
+   "durum_ustabasi": "GECER",
+   "s0_px": 48811,
+   "open_sonrasi_px": 45923,
+   "open_kaybi_pay": 0.0592,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 93810,
+   "open_sonrasi_px": 89013,
+   "open_kaybi_pay": 0.0511,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000087_000003780",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 93144,
+   "open_sonrasi_px": 85427,
+   "open_kaybi_pay": 0.0829,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 42676,
+   "open_sonrasi_px": 41603,
+   "open_kaybi_pay": 0.0251,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000090_000003870",
+   "durum_ustabasi": "GECER",
+   "s0_px": 39102,
+   "open_sonrasi_px": 37399,
+   "open_kaybi_pay": 0.0436,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 21794,
+   "open_sonrasi_px": 16877,
+   "open_kaybi_pay": 0.2256,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000097_000004080",
+   "durum_ustabasi": "GECER",
+   "s0_px": 39377,
+   "open_sonrasi_px": 38938,
+   "open_kaybi_pay": 0.0111,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170",
+   "durum_ustabasi": "GECER",
+   "s0_px": 31081,
+   "open_sonrasi_px": 27213,
+   "open_kaybi_pay": 0.1244,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000102_000004230",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 19138,
+   "open_sonrasi_px": 18679,
+   "open_kaybi_pay": 0.024,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 80324,
+   "open_sonrasi_px": 79362,
+   "open_kaybi_pay": 0.012,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 102173,
+   "open_sonrasi_px": 101463,
+   "open_kaybi_pay": 0.0069,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 23716,
+   "open_sonrasi_px": 18103,
+   "open_kaybi_pay": 0.2367,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000106_000004350",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 29756,
+   "open_sonrasi_px": 26530,
+   "open_kaybi_pay": 0.1084,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 60367,
+   "open_sonrasi_px": 47228,
+   "open_kaybi_pay": 0.2177,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000109_000004440",
+   "durum_ustabasi": "GECER",
+   "s0_px": 65724,
+   "open_sonrasi_px": 59118,
+   "open_kaybi_pay": 0.1005,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500",
+   "durum_ustabasi": "GECER",
+   "s0_px": 54491,
+   "open_sonrasi_px": 53242,
+   "open_kaybi_pay": 0.0229,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 8788,
+   "open_sonrasi_px": 8508,
+   "open_kaybi_pay": 0.0319,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 14888,
+   "open_sonrasi_px": 14236,
+   "open_kaybi_pay": 0.0438,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000117_000004680",
+   "durum_ustabasi": "PARCALILIK",
+   "s0_px": 16746,
+   "open_sonrasi_px": 15799,
+   "open_kaybi_pay": 0.0566,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "GORUS_HATTI_KOPUK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770",
+   "durum_ustabasi": "GECER",
+   "s0_px": 42249,
+   "open_sonrasi_px": 35171,
+   "open_kaybi_pay": 0.1675,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000123_000004860",
+   "durum_ustabasi": "GECER",
+   "s0_px": 65106,
+   "open_sonrasi_px": 62954,
+   "open_kaybi_pay": 0.0331,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890",
+   "durum_ustabasi": "GECER",
+   "s0_px": 86665,
+   "open_sonrasi_px": 86076,
+   "open_kaybi_pay": 0.0068,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 66333,
+   "open_sonrasi_px": 65920,
+   "open_kaybi_pay": 0.0062,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 33486,
+   "open_sonrasi_px": 32438,
+   "open_kaybi_pay": 0.0313,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000130_000005070",
+   "durum_ustabasi": "GECER",
+   "s0_px": 64325,
+   "open_sonrasi_px": 62058,
+   "open_kaybi_pay": 0.0352,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220",
+   "durum_ustabasi": "GECER",
+   "s0_px": 56316,
+   "open_sonrasi_px": 53545,
+   "open_kaybi_pay": 0.0492,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000137_000005280",
+   "durum_ustabasi": "GECER",
+   "s0_px": 160312,
+   "open_sonrasi_px": 148958,
+   "open_kaybi_pay": 0.0708,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340",
+   "durum_ustabasi": "GECER",
+   "s0_px": 90602,
+   "open_sonrasi_px": 87821,
+   "open_kaybi_pay": 0.0307,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000142_000005430",
+   "durum_ustabasi": "GECER",
+   "s0_px": 63080,
+   "open_sonrasi_px": 60381,
+   "open_kaybi_pay": 0.0428,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460",
+   "durum_ustabasi": "GECER",
+   "s0_px": 109164,
+   "open_sonrasi_px": 102600,
+   "open_kaybi_pay": 0.0601,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000144_000005490",
+   "durum_ustabasi": "GECER",
+   "s0_px": 67669,
+   "open_sonrasi_px": 65849,
+   "open_kaybi_pay": 0.0269,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760",
+   "durum_ustabasi": "GECER",
+   "s0_px": 301840,
+   "open_sonrasi_px": 274691,
+   "open_kaybi_pay": 0.0899,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000158_000005940",
+   "durum_ustabasi": "GECER",
+   "s0_px": 294214,
+   "open_sonrasi_px": 247320,
+   "open_kaybi_pay": 0.1594,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000",
+   "durum_ustabasi": "GECER",
+   "s0_px": 116124,
+   "open_sonrasi_px": 114748,
+   "open_kaybi_pay": 0.0118,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 91550,
+   "open_sonrasi_px": 87571,
+   "open_kaybi_pay": 0.0435,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290",
+   "durum_ustabasi": "GECER",
+   "s0_px": 275058,
+   "open_sonrasi_px": 239219,
+   "open_kaybi_pay": 0.1303,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 232298,
+   "open_sonrasi_px": 210194,
+   "open_kaybi_pay": 0.0952,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 86498,
+   "open_sonrasi_px": 84210,
+   "open_kaybi_pay": 0.0265,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000201_000007440",
+   "durum_ustabasi": "GECER",
+   "s0_px": 185431,
+   "open_sonrasi_px": 159956,
+   "open_kaybi_pay": 0.1374,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470",
+   "durum_ustabasi": "GECER",
+   "s0_px": 192375,
+   "open_sonrasi_px": 169213,
+   "open_kaybi_pay": 0.1204,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000203_000007500",
+   "durum_ustabasi": "GECER",
+   "s0_px": 52690,
+   "open_sonrasi_px": 51475,
+   "open_kaybi_pay": 0.0231,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 54314,
+   "open_sonrasi_px": 45124,
+   "open_kaybi_pay": 0.1692,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 69673,
+   "open_sonrasi_px": 68143,
+   "open_kaybi_pay": 0.022,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860",
+   "durum_ustabasi": "GECER",
+   "s0_px": 232107,
+   "open_sonrasi_px": 194355,
+   "open_kaybi_pay": 0.1626,
+   "uretim": "ROTA_VAR",
+   "kuralsiz": "ROTA_VAR",
+   "opensiz": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 98430,
+   "open_sonrasi_px": 90105,
+   "open_kaybi_pay": 0.0846,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 76696,
+   "open_sonrasi_px": 75427,
+   "open_kaybi_pay": 0.0165,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250",
+   "durum_ustabasi": "YAPISAL",
+   "s0_px": 36634,
+   "open_sonrasi_px": 35454,
+   "open_kaybi_pay": 0.0322,
+   "uretim": "UC_BANT_TEMAS_YOK",
+   "kuralsiz": "UC_BANT_TEMAS_YOK",
+   "opensiz": "UC_BANT_TEMAS_YOK"
+  }
+ ]
+}

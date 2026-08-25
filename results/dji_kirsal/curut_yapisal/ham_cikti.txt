@@ -1,0 +1,33 @@
+=== c3 (letterbox aritmetigi + dort kenar) ===
+URETIM ARITMETIGI (dji_20260822172613_0038_d__frame_000021_000001500.jpg)
+  goruntu 3840x2160 -> tuval (3840, 3840) · icerik=(x0=0,y0=840,w=3840,h=2160)
+  bant_h=172  (0.0796 · h)  gereken_temas=77 px (0.0201 · w)
+  UST bant tuval satirlari [840,1012) = ORIJINAL satir [0,172)
+  ALT bant tuval satirlari [2828,3000) = ORIJINAL satir [1988,2160)
+  SONDA (orijinalin ust+alt 172 satiri): ust=3840 alt=3840 -> kaydirma YOK
+
+yazildi c3_dort_kenar.json (59 kare)
+
+=== c6 (bant kalinligi x temas bari taramasi) ===
+ORIJINAL kadrajda, elle cizilen SINIF0 (TAM maske), 18 YAPISAL kare:
+bant_h \ gereken        77      43      20       1
+  172 px (% 8.0)          0       0       0       1
+  307 px (%14.2)          2       5       5       5
+  432 px (%20.0)          6       7       8       8
+  648 px (%30.0)         11      11      11      11
+ 1080 px (%50.0)         14      14      14      14
+
+(hucre = 18 karenin kacinda ALT ve UST bandin IKISINE birden temas)
+URETIM hucresi = bant_h 172, gereken 77
+DONDURULMUS testin kullandigi gevsek parametre = 307 / 43
+
+=== c9 (koridor ana eksen acisi) ===
+durum         n | ana eksen acisi (0=yatay) | SINIF0 alan orani      | enb dikey/yatay yayilim
+GECER        28 | p50  61.1  (min  3.0 maks 84.4) | p50 0.167 (min 0.060) | 1.00 / 0.42
+PARCALILIK   11 | p50  69.4  (min 37.0 maks 89.7) | p50 0.082 (min 0.029) | 0.61 / 0.27
+YAPISAL      18 | p50  19.5  (min  4.2 maks 33.6) | p50 0.134 (min 0.017) | 0.65 / 0.83
+
+YATAYA YAKIN koridor (aci < 30 derece) orani:
+  GECER        6/28
+  PARCALILIK   0/11
+  YAPISAL     14/18

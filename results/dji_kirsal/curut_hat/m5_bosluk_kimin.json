@@ -1,0 +1,114 @@
+{
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000037_000001980",
+   "A_B_uzaklik_px": 468.0,
+   "bosluk_engel_pay": 0.0,
+   "bosluk_etiketsiz_pay": 1.0,
+   "icerik_s0_pay": 0.1351,
+   "icerik_s1_pay": 0.1906,
+   "icerik_etiketsiz_pay": 0.6743,
+   "etiketsiz_serbest_sebep": "ZEMIN_MASKESI_SUPHELI"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040",
+   "A_B_uzaklik_px": 731.1,
+   "bosluk_engel_pay": 0.241,
+   "bosluk_etiketsiz_pay": 0.759,
+   "icerik_s0_pay": 0.127,
+   "icerik_s1_pay": 0.2619,
+   "icerik_etiketsiz_pay": 0.611,
+   "etiketsiz_serbest_sebep": "ZEMIN_MASKESI_SUPHELI"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000044_000002190",
+   "A_B_uzaklik_px": 151.0,
+   "bosluk_engel_pay": 0.0,
+   "bosluk_etiketsiz_pay": 1.0,
+   "icerik_s0_pay": 0.1663,
+   "icerik_s1_pay": 0.4525,
+   "icerik_etiketsiz_pay": 0.3812,
+   "etiketsiz_serbest_sebep": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310",
+   "A_B_uzaklik_px": 98.5,
+   "bosluk_engel_pay": 0.012,
+   "bosluk_etiketsiz_pay": 0.988,
+   "icerik_s0_pay": 0.1712,
+   "icerik_s1_pay": 0.5127,
+   "icerik_etiketsiz_pay": 0.3161,
+   "etiketsiz_serbest_sebep": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000087_000003780",
+   "A_B_uzaklik_px": 402.2,
+   "bosluk_engel_pay": 0.827,
+   "bosluk_etiketsiz_pay": 0.173,
+   "icerik_s0_pay": 0.1797,
+   "icerik_s1_pay": 0.7682,
+   "icerik_etiketsiz_pay": 0.0522,
+   "etiketsiz_serbest_sebep": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840",
+   "A_B_uzaklik_px": 42.9,
+   "bosluk_engel_pay": 0.768,
+   "bosluk_etiketsiz_pay": 0.232,
+   "icerik_s0_pay": 0.0823,
+   "icerik_s1_pay": 0.8807,
+   "icerik_etiketsiz_pay": 0.0369,
+   "etiketsiz_serbest_sebep": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990",
+   "A_B_uzaklik_px": 3.6,
+   "bosluk_engel_pay": 0.0,
+   "bosluk_etiketsiz_pay": 1.0,
+   "icerik_s0_pay": 0.042,
+   "icerik_s1_pay": 0.9299,
+   "icerik_etiketsiz_pay": 0.0281,
+   "etiketsiz_serbest_sebep": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000102_000004230",
+   "A_B_uzaklik_px": 156.6,
+   "bosluk_engel_pay": 0.0,
+   "bosluk_etiketsiz_pay": 1.0,
+   "icerik_s0_pay": 0.0369,
+   "icerik_s1_pay": 0.8296,
+   "icerik_etiketsiz_pay": 0.1335,
+   "etiketsiz_serbest_sebep": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000106_000004350",
+   "A_B_uzaklik_px": 140.6,
+   "bosluk_engel_pay": 0.04,
+   "bosluk_etiketsiz_pay": 0.96,
+   "icerik_s0_pay": 0.0574,
+   "icerik_s1_pay": 0.7046,
+   "icerik_etiketsiz_pay": 0.238,
+   "etiketsiz_serbest_sebep": "ROTA_VAR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650",
+   "A_B_uzaklik_px": 22.0,
+   "bosluk_engel_pay": 0.857,
+   "bosluk_etiketsiz_pay": 0.143,
+   "icerik_s0_pay": 0.0287,
+   "icerik_s1_pay": 0.5868,
+   "icerik_etiketsiz_pay": 0.3845,
+   "etiketsiz_serbest_sebep": "UC_BANT_TEMAS_YOK"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000117_000004680",
+   "A_B_uzaklik_px": 181.9,
+   "bosluk_engel_pay": 0.153,
+   "bosluk_etiketsiz_pay": 0.847,
+   "icerik_s0_pay": 0.0323,
+   "icerik_s1_pay": 0.565,
+   "icerik_etiketsiz_pay": 0.4027,
+   "etiketsiz_serbest_sebep": "ROTA_VAR"
+  }
+ ]
+}

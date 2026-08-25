@@ -1,0 +1,1178 @@
+{
+ "_ne": "etiket maskelerinde bilesen bazli bant temasi",
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000021_000001500",
+   "gereken": 77,
+   "bilesen": 0,
+   "toplam_px": 0,
+   "durum_ustabasi": "SINIF0_YOK",
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 226432,
+   "enbuyuk_px": 226432,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 0,
+   "enb_ust": 852,
+   "tam_alt": 0,
+   "tam_ust": 852,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000032_000001830",
+   "gereken": 77,
+   "bilesen": 17,
+   "toplam_px": 4559440,
+   "enbuyuk_px": 4498608,
+   "enbuyuk_pay": 0.9867,
+   "enb_alt": 2168,
+   "enb_ust": 2248,
+   "tam_alt": 2264,
+   "tam_ust": 2340,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 4498608,
+     "alt": 2168,
+     "ust": 2248,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920",
+   "gereken": 77,
+   "bilesen": 0,
+   "toplam_px": 0,
+   "durum_ustabasi": "SINIF0_YOK",
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000037_000001980",
+   "gereken": 77,
+   "bilesen": 11,
+   "toplam_px": 1120192,
+   "enbuyuk_px": 754800,
+   "enbuyuk_pay": 0.6738,
+   "enb_alt": 0,
+   "enb_ust": 892,
+   "tam_alt": 424,
+   "tam_ust": 940,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040",
+   "gereken": 77,
+   "bilesen": 13,
+   "toplam_px": 1053632,
+   "enbuyuk_px": 696672,
+   "enbuyuk_pay": 0.6612,
+   "enb_alt": 0,
+   "enb_ust": 0,
+   "tam_alt": 424,
+   "tam_ust": 868,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000044_000002190",
+   "gereken": 77,
+   "bilesen": 11,
+   "toplam_px": 1379536,
+   "enbuyuk_px": 820800,
+   "enbuyuk_pay": 0.595,
+   "enb_alt": 788,
+   "enb_ust": 0,
+   "tam_alt": 1228,
+   "tam_ust": 948,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310",
+   "gereken": 77,
+   "bilesen": 21,
+   "toplam_px": 1419712,
+   "enbuyuk_px": 888176,
+   "enbuyuk_pay": 0.6256,
+   "enb_alt": 0,
+   "enb_ust": 776,
+   "tam_alt": 1160,
+   "tam_ust": 776,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000051_000002400",
+   "gereken": 77,
+   "bilesen": 4,
+   "toplam_px": 2911632,
+   "enbuyuk_px": 2244608,
+   "enbuyuk_pay": 0.7709,
+   "enb_alt": 2244,
+   "enb_ust": 1120,
+   "tam_alt": 2244,
+   "tam_ust": 2920,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 2,
+     "px": 2244608,
+     "alt": 2244,
+     "ust": 1120,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460",
+   "gereken": 77,
+   "bilesen": 7,
+   "toplam_px": 2948544,
+   "enbuyuk_px": 2791392,
+   "enbuyuk_pay": 0.9467,
+   "enb_alt": 592,
+   "enb_ust": 3388,
+   "tam_alt": 1188,
+   "tam_ust": 3388,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 2791392,
+     "alt": 592,
+     "ust": 3388,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 910992,
+   "enbuyuk_px": 910992,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 0,
+   "enb_ust": 564,
+   "tam_alt": 0,
+   "tam_ust": 564,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 1289424,
+   "enbuyuk_px": 765536,
+   "enbuyuk_pay": 0.5937,
+   "enb_alt": 468,
+   "enb_ust": 468,
+   "tam_alt": 660,
+   "tam_ust": 1096,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 2,
+     "px": 765536,
+     "alt": 468,
+     "ust": 468,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000072_000003210",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 780976,
+   "enbuyuk_px": 478064,
+   "enbuyuk_pay": 0.6121,
+   "enb_alt": 284,
+   "enb_ust": 312,
+   "tam_alt": 400,
+   "tam_ust": 628,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 2,
+     "px": 478064,
+     "alt": 284,
+     "ust": 312,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720",
+   "gereken": 77,
+   "bilesen": 14,
+   "toplam_px": 1500960,
+   "enbuyuk_px": 997504,
+   "enbuyuk_pay": 0.6646,
+   "enb_alt": 1060,
+   "enb_ust": 0,
+   "tam_alt": 1608,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000087_000003780",
+   "gereken": 77,
+   "bilesen": 89,
+   "toplam_px": 1490304,
+   "enbuyuk_px": 705872,
+   "enbuyuk_pay": 0.4736,
+   "enb_alt": 0,
+   "enb_ust": 400,
+   "tam_alt": 2348,
+   "tam_ust": 488,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 682816,
+   "enbuyuk_px": 545728,
+   "enbuyuk_pay": 0.7992,
+   "enb_alt": 328,
+   "enb_ust": 0,
+   "tam_alt": 756,
+   "tam_ust": 452,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000090_000003870",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 625632,
+   "enbuyuk_px": 587296,
+   "enbuyuk_pay": 0.9387,
+   "enb_alt": 424,
+   "enb_ust": 412,
+   "tam_alt": 980,
+   "tam_ust": 412,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 587296,
+     "alt": 424,
+     "ust": 412,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 348704,
+   "enbuyuk_px": 158672,
+   "enbuyuk_pay": 0.455,
+   "enb_alt": 280,
+   "enb_ust": 0,
+   "tam_alt": 280,
+   "tam_ust": 268,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000097_000004080",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 630032,
+   "enbuyuk_px": 630032,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 264,
+   "enb_ust": 444,
+   "tam_alt": 264,
+   "tam_ust": 444,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 630032,
+     "alt": 264,
+     "ust": 444,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 497296,
+   "enbuyuk_px": 497296,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 368,
+   "enb_ust": 548,
+   "tam_alt": 368,
+   "tam_ust": 548,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 497296,
+     "alt": 368,
+     "ust": 548,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000102_000004230",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 306208,
+   "enbuyuk_px": 236624,
+   "enbuyuk_pay": 0.7728,
+   "enb_alt": 0,
+   "enb_ust": 224,
+   "tam_alt": 264,
+   "tam_ust": 224,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1285184,
+   "enbuyuk_px": 1285184,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 16,
+   "enb_ust": 416,
+   "tam_alt": 16,
+   "tam_ust": 416,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 1634768,
+   "enbuyuk_px": 1634640,
+   "enbuyuk_pay": 0.9999,
+   "enb_alt": 0,
+   "enb_ust": 0,
+   "tam_alt": 0,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320",
+   "gereken": 77,
+   "bilesen": 4,
+   "toplam_px": 379456,
+   "enbuyuk_px": 296112,
+   "enbuyuk_pay": 0.7804,
+   "enb_alt": 512,
+   "enb_ust": 0,
+   "tam_alt": 512,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000106_000004350",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 476096,
+   "enbuyuk_px": 307792,
+   "enbuyuk_pay": 0.6465,
+   "enb_alt": 908,
+   "enb_ust": 0,
+   "tam_alt": 908,
+   "tam_ust": 308,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 965872,
+   "enbuyuk_px": 965872,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 1592,
+   "enb_ust": 0,
+   "tam_alt": 1592,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000109_000004440",
+   "gereken": 77,
+   "bilesen": 172,
+   "toplam_px": 1051584,
+   "enbuyuk_px": 1017456,
+   "enbuyuk_pay": 0.9675,
+   "enb_alt": 1544,
+   "enb_ust": 460,
+   "tam_alt": 1620,
+   "tam_ust": 660,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1017456,
+     "alt": 1544,
+     "ust": 460,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 871856,
+   "enbuyuk_px": 871856,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 824,
+   "enb_ust": 436,
+   "tam_alt": 824,
+   "tam_ust": 436,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 871856,
+     "alt": 824,
+     "ust": 436,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 140608,
+   "enbuyuk_px": 140608,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 904,
+   "enb_ust": 0,
+   "tam_alt": 904,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 238208,
+   "enbuyuk_px": 215408,
+   "enbuyuk_pay": 0.9043,
+   "enb_alt": 184,
+   "enb_ust": 0,
+   "tam_alt": 184,
+   "tam_ust": 184,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000117_000004680",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 267936,
+   "enbuyuk_px": 218000,
+   "enbuyuk_pay": 0.8136,
+   "enb_alt": 0,
+   "enb_ust": 380,
+   "tam_alt": 240,
+   "tam_ust": 380,
+   "durum_ustabasi": "PARCALILIK",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770",
+   "gereken": 77,
+   "bilesen": 196,
+   "toplam_px": 675984,
+   "enbuyuk_px": 643616,
+   "enbuyuk_pay": 0.9521,
+   "enb_alt": 476,
+   "enb_ust": 308,
+   "tam_alt": 600,
+   "tam_ust": 552,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 4,
+     "px": 643616,
+     "alt": 476,
+     "ust": 308,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000123_000004860",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1041696,
+   "enbuyuk_px": 1041696,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 376,
+   "enb_ust": 980,
+   "tam_alt": 376,
+   "tam_ust": 980,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1041696,
+     "alt": 376,
+     "ust": 980,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1386640,
+   "enbuyuk_px": 1386640,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 628,
+   "enb_ust": 400,
+   "tam_alt": 628,
+   "tam_ust": 400,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1386640,
+     "alt": 628,
+     "ust": 400,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1061328,
+   "enbuyuk_px": 1061328,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 560,
+   "enb_ust": 0,
+   "tam_alt": 560,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 535776,
+   "enbuyuk_px": 459440,
+   "enbuyuk_pay": 0.8575,
+   "enb_alt": 1192,
+   "enb_ust": 0,
+   "tam_alt": 1192,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000130_000005070",
+   "gereken": 77,
+   "bilesen": 4,
+   "toplam_px": 1029200,
+   "enbuyuk_px": 852608,
+   "enbuyuk_pay": 0.8284,
+   "enb_alt": 424,
+   "enb_ust": 648,
+   "tam_alt": 620,
+   "tam_ust": 956,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 852608,
+     "alt": 424,
+     "ust": 648,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 901056,
+   "enbuyuk_px": 453056,
+   "enbuyuk_pay": 0.5028,
+   "enb_alt": 336,
+   "enb_ust": 332,
+   "tam_alt": 852,
+   "tam_ust": 332,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 453056,
+     "alt": 336,
+     "ust": 332,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000137_000005280",
+   "gereken": 77,
+   "bilesen": 4,
+   "toplam_px": 2564992,
+   "enbuyuk_px": 1483808,
+   "enbuyuk_pay": 0.5785,
+   "enb_alt": 616,
+   "enb_ust": 676,
+   "tam_alt": 952,
+   "tam_ust": 1396,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 2,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1483808,
+     "alt": 616,
+     "ust": 676,
+     "alan_sirasi": 1
+    },
+    {
+     "i": 2,
+     "px": 1058208,
+     "alt": 336,
+     "ust": 720,
+     "alan_sirasi": 2
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 1449632,
+   "enbuyuk_px": 734016,
+   "enbuyuk_pay": 0.5063,
+   "enb_alt": 416,
+   "enb_ust": 444,
+   "tam_alt": 736,
+   "tam_ust": 840,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 2,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 734016,
+     "alt": 416,
+     "ust": 444,
+     "alan_sirasi": 1
+    },
+    {
+     "i": 2,
+     "px": 715616,
+     "alt": 320,
+     "ust": 396,
+     "alan_sirasi": 2
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000142_000005430",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 1009280,
+   "enbuyuk_px": 706176,
+   "enbuyuk_pay": 0.6997,
+   "enb_alt": 380,
+   "enb_ust": 400,
+   "tam_alt": 872,
+   "tam_ust": 400,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 706176,
+     "alt": 380,
+     "ust": 400,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 1746624,
+   "enbuyuk_px": 1743264,
+   "enbuyuk_pay": 0.9981,
+   "enb_alt": 1332,
+   "enb_ust": 1236,
+   "tam_alt": 1332,
+   "tam_ust": 1236,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1743264,
+     "alt": 1332,
+     "ust": 1236,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000144_000005490",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1082704,
+   "enbuyuk_px": 1082704,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 320,
+   "enb_ust": 624,
+   "tam_alt": 320,
+   "tam_ust": 624,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1082704,
+     "alt": 320,
+     "ust": 624,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760",
+   "gereken": 77,
+   "bilesen": 14,
+   "toplam_px": 4829440,
+   "enbuyuk_px": 4761168,
+   "enbuyuk_pay": 0.9859,
+   "enb_alt": 1932,
+   "enb_ust": 3260,
+   "tam_alt": 2300,
+   "tam_ust": 3260,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 4761168,
+     "alt": 1932,
+     "ust": 3260,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000158_000005940",
+   "gereken": 77,
+   "bilesen": 21,
+   "toplam_px": 4707424,
+   "enbuyuk_px": 3078176,
+   "enbuyuk_pay": 0.6539,
+   "enb_alt": 728,
+   "enb_ust": 2588,
+   "tam_alt": 2064,
+   "tam_ust": 3264,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 2,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 3078176,
+     "alt": 728,
+     "ust": 2588,
+     "alan_sirasi": 1
+    },
+    {
+     "i": 2,
+     "px": 1077856,
+     "alt": 692,
+     "ust": 84,
+     "alan_sirasi": 2
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1857984,
+   "enbuyuk_px": 1857984,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 1476,
+   "enb_ust": 640,
+   "tam_alt": 1476,
+   "tam_ust": 640,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 1857984,
+     "alt": 1476,
+     "ust": 640,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600",
+   "gereken": 77,
+   "bilesen": 5,
+   "toplam_px": 1464800,
+   "enbuyuk_px": 862848,
+   "enbuyuk_pay": 0.5891,
+   "enb_alt": 0,
+   "enb_ust": 0,
+   "tam_alt": 0,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290",
+   "gereken": 77,
+   "bilesen": 8,
+   "toplam_px": 4400928,
+   "enbuyuk_px": 4259360,
+   "enbuyuk_pay": 0.9678,
+   "enb_alt": 2536,
+   "enb_ust": 1552,
+   "tam_alt": 2648,
+   "tam_ust": 1740,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 2,
+     "px": 4259360,
+     "alt": 2536,
+     "ust": 1552,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320",
+   "gereken": 77,
+   "bilesen": 8,
+   "toplam_px": 3716768,
+   "enbuyuk_px": 3498640,
+   "enbuyuk_pay": 0.9413,
+   "enb_alt": 3516,
+   "enb_ust": 0,
+   "tam_alt": 3516,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1383968,
+   "enbuyuk_px": 1383968,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 1716,
+   "enb_ust": 0,
+   "tam_alt": 1716,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000201_000007440",
+   "gereken": 77,
+   "bilesen": 17,
+   "toplam_px": 2966896,
+   "enbuyuk_px": 1741392,
+   "enbuyuk_pay": 0.5869,
+   "enb_alt": 980,
+   "enb_ust": 472,
+   "tam_alt": 1428,
+   "tam_ust": 1712,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 4,
+     "px": 1741392,
+     "alt": 980,
+     "ust": 472,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470",
+   "gereken": 77,
+   "bilesen": 25,
+   "toplam_px": 3078000,
+   "enbuyuk_px": 1635232,
+   "enbuyuk_pay": 0.5313,
+   "enb_alt": 464,
+   "enb_ust": 1004,
+   "tam_alt": 2100,
+   "tam_ust": 2616,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 2,
+     "px": 1635232,
+     "alt": 464,
+     "ust": 1004,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000203_000007500",
+   "gereken": 77,
+   "bilesen": 2,
+   "toplam_px": 843040,
+   "enbuyuk_px": 842848,
+   "enbuyuk_pay": 0.9998,
+   "enb_alt": 548,
+   "enb_ust": 528,
+   "tam_alt": 548,
+   "tam_ust": 532,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 842848,
+     "alt": 548,
+     "ust": 528,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560",
+   "gereken": 77,
+   "bilesen": 6,
+   "toplam_px": 869024,
+   "enbuyuk_px": 409056,
+   "enbuyuk_pay": 0.4707,
+   "enb_alt": 0,
+   "enb_ust": 0,
+   "tam_alt": 336,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 1114768,
+   "enbuyuk_px": 1114480,
+   "enbuyuk_pay": 0.9997,
+   "enb_alt": 0,
+   "enb_ust": 568,
+   "tam_alt": 0,
+   "tam_ust": 568,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860",
+   "gereken": 77,
+   "bilesen": 16,
+   "toplam_px": 3713712,
+   "enbuyuk_px": 3322288,
+   "enbuyuk_pay": 0.8946,
+   "enb_alt": 1832,
+   "enb_ust": 1252,
+   "tam_alt": 2544,
+   "tam_ust": 1292,
+   "durum_ustabasi": "GECER",
+   "gecen_bilesen_sayisi": 1,
+   "gecen_bilesenler": [
+    {
+     "i": 1,
+     "px": 3322288,
+     "alt": 1832,
+     "ust": 1252,
+     "alan_sirasi": 1
+    }
+   ],
+   "herhangi_bilesen_gecer": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 1574880,
+   "enbuyuk_px": 1437712,
+   "enbuyuk_pay": 0.9129,
+   "enb_alt": 376,
+   "enb_ust": 0,
+   "tam_alt": 1156,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980",
+   "gereken": 77,
+   "bilesen": 1,
+   "toplam_px": 1227136,
+   "enbuyuk_px": 1227136,
+   "enbuyuk_pay": 1.0,
+   "enb_alt": 1092,
+   "enb_ust": 0,
+   "tam_alt": 1092,
+   "tam_ust": 0,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250",
+   "gereken": 77,
+   "bilesen": 3,
+   "toplam_px": 586144,
+   "enbuyuk_px": 288784,
+   "enbuyuk_pay": 0.4927,
+   "enb_alt": 0,
+   "enb_ust": 1044,
+   "tam_alt": 0,
+   "tam_ust": 2608,
+   "durum_ustabasi": "YAPISAL",
+   "gecen_bilesen_sayisi": 0,
+   "gecen_bilesenler": [],
+   "herhangi_bilesen_gecer": false
+  }
+ ]
+}

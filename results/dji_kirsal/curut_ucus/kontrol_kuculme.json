@@ -1,0 +1,308 @@
+[
+ [
+  0,
+  3840,
+  2160,
+  {
+   "SINIF0_YOK": 2,
+   "YAPISAL": 18,
+   "GECER": 28,
+   "PARCALILIK": 11
+  },
+  {
+   "SINIF0_YOK": 2,
+   "YAPISAL": 18,
+   "GECER": 28,
+   "PARCALILIK": 11
+  }
+ ],
+ [
+  10,
+  2969,
+  1670,
+  {
+   "SINIF0_YOK": 4,
+   "YAPISAL": 19,
+   "GECER": 24,
+   "PARCALILIK": 12
+  },
+  {
+   "SINIF0_YOK": 4,
+   "YAPISAL": 16,
+   "GECER": 30,
+   "PARCALILIK": 9
+  }
+ ],
+ [
+  20,
+  2481,
+  1396,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 28,
+   "PARCALILIK": 8,
+   "YAPISAL": 17
+  },
+  {
+   "SINIF0_YOK": 5,
+   "YAPISAL": 19,
+   "GECER": 27,
+   "PARCALILIK": 8
+  }
+ ],
+ [
+  30,
+  2188,
+  1231,
+  {
+   "SINIF0_YOK": 7,
+   "GECER": 29,
+   "PARCALILIK": 5,
+   "YAPISAL": 18
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 9,
+   "YAPISAL": 19
+  }
+ ],
+ [
+  40,
+  2012,
+  1132,
+  {
+   "SINIF0_YOK": 7,
+   "GECER": 29,
+   "PARCALILIK": 4,
+   "YAPISAL": 19
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 24,
+   "PARCALILIK": 6,
+   "YAPISAL": 23
+  }
+ ],
+ [
+  50,
+  1916,
+  1077,
+  {
+   "SINIF0_YOK": 9,
+   "GECER": 25,
+   "PARCALILIK": 8,
+   "YAPISAL": 17
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 6,
+   "YAPISAL": 22
+  }
+ ],
+ [
+  60,
+  1883,
+  1059,
+  {
+   "SINIF0_YOK": 8,
+   "GECER": 23,
+   "PARCALILIK": 10,
+   "YAPISAL": 18
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 24,
+   "PARCALILIK": 7,
+   "YAPISAL": 22
+  }
+ ],
+ [
+  70,
+  1908,
+  1073,
+  {
+   "SINIF0_YOK": 8,
+   "GECER": 25,
+   "PARCALILIK": 9,
+   "YAPISAL": 17
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 6,
+   "YAPISAL": 22
+  }
+ ],
+ [
+  80,
+  1995,
+  1122,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 27,
+   "PARCALILIK": 10,
+   "YAPISAL": 16
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 24,
+   "PARCALILIK": 6,
+   "YAPISAL": 23
+  }
+ ],
+ [
+  90,
+  2160,
+  1215,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 28,
+   "PARCALILIK": 12,
+   "YAPISAL": 13
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 7,
+   "YAPISAL": 21
+  }
+ ],
+ [
+  100,
+  1995,
+  1122,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 28,
+   "PARCALILIK": 8,
+   "YAPISAL": 17
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 24,
+   "PARCALILIK": 6,
+   "YAPISAL": 23
+  }
+ ],
+ [
+  110,
+  1908,
+  1073,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 28,
+   "PARCALILIK": 9,
+   "YAPISAL": 16
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 6,
+   "YAPISAL": 22
+  }
+ ],
+ [
+  120,
+  1883,
+  1059,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 28,
+   "PARCALILIK": 10,
+   "YAPISAL": 15
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 24,
+   "PARCALILIK": 7,
+   "YAPISAL": 22
+  }
+ ],
+ [
+  130,
+  1916,
+  1077,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 11,
+   "YAPISAL": 17
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 6,
+   "YAPISAL": 22
+  }
+ ],
+ [
+  140,
+  2012,
+  1132,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 28,
+   "YAPISAL": 14,
+   "PARCALILIK": 11
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 24,
+   "PARCALILIK": 6,
+   "YAPISAL": 23
+  }
+ ],
+ [
+  150,
+  2188,
+  1231,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 30,
+   "PARCALILIK": 10,
+   "YAPISAL": 13
+  },
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 25,
+   "PARCALILIK": 9,
+   "YAPISAL": 19
+  }
+ ],
+ [
+  160,
+  2481,
+  1396,
+  {
+   "SINIF0_YOK": 6,
+   "GECER": 32,
+   "PARCALILIK": 9,
+   "YAPISAL": 12
+  },
+  {
+   "SINIF0_YOK": 5,
+   "YAPISAL": 19,
+   "GECER": 27,
+   "PARCALILIK": 8
+  }
+ ],
+ [
+  170,
+  2969,
+  1670,
+  {
+   "SINIF0_YOK": 3,
+   "YAPISAL": 16,
+   "GECER": 32,
+   "PARCALILIK": 8
+  },
+  {
+   "SINIF0_YOK": 4,
+   "YAPISAL": 16,
+   "GECER": 30,
+   "PARCALILIK": 9
+  }
+ ]
+]

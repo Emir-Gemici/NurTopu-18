@@ -1,0 +1,621 @@
+{
+ "_ne": "bant kalinligi x temas bari duyarlilik taramasi (orijinal kadraj, 18 YAPISAL kare)",
+ "izgara": {
+  "172/77": 0,
+  "172/43": 0,
+  "172/20": 0,
+  "172/1": 1,
+  "307/77": 2,
+  "307/43": 5,
+  "307/20": 5,
+  "307/1": 5,
+  "432/77": 6,
+  "432/43": 7,
+  "432/20": 8,
+  "432/1": 8,
+  "648/77": 11,
+  "648/43": 11,
+  "648/20": 11,
+  "648/1": 11,
+  "1080/77": 14,
+  "1080/43": 14,
+  "1080/20": 14,
+  "1080/1": 14
+ },
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "bh172": {
+    "enb_ust": 852,
+    "enb_alt": 0,
+    "tam_ust": 852,
+    "tam_alt": 0
+   },
+   "bh307": {
+    "enb_ust": 852,
+    "enb_alt": 0,
+    "tam_ust": 852,
+    "tam_alt": 0
+   },
+   "bh432": {
+    "enb_ust": 852,
+    "enb_alt": 0,
+    "tam_ust": 852,
+    "tam_alt": 0
+   },
+   "bh648": {
+    "enb_ust": 852,
+    "enb_alt": 0,
+    "tam_ust": 852,
+    "tam_alt": 0
+   },
+   "bh1080": {
+    "enb_ust": 852,
+    "enb_alt": 0,
+    "tam_ust": 852,
+    "tam_alt": 0
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
+   "bh172": {
+    "enb_ust": 564,
+    "enb_alt": 0,
+    "tam_ust": 564,
+    "tam_alt": 0
+   },
+   "bh307": {
+    "enb_ust": 664,
+    "enb_alt": 0,
+    "tam_ust": 664,
+    "tam_alt": 0
+   },
+   "bh432": {
+    "enb_ust": 836,
+    "enb_alt": 64,
+    "tam_ust": 836,
+    "tam_alt": 64
+   },
+   "bh648": {
+    "enb_ust": 1012,
+    "enb_alt": 528,
+    "tam_ust": 1012,
+    "tam_alt": 528
+   },
+   "bh1080": {
+    "enb_ust": 2052,
+    "enb_alt": 1284,
+    "tam_ust": 2052,
+    "tam_alt": 1284
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 1060,
+    "tam_ust": 0,
+    "tam_alt": 1608
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 1068,
+    "tam_ust": 56,
+    "tam_alt": 1688
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 1208,
+    "tam_ust": 208,
+    "tam_alt": 1812
+   },
+   "bh648": {
+    "enb_ust": 296,
+    "enb_alt": 1496,
+    "tam_ust": 680,
+    "tam_alt": 2572
+   },
+   "bh1080": {
+    "enb_ust": 764,
+    "enb_alt": 2324,
+    "tam_ust": 1508,
+    "tam_alt": 3172
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "bh172": {
+    "enb_ust": 416,
+    "enb_alt": 16,
+    "tam_ust": 416,
+    "tam_alt": 16
+   },
+   "bh307": {
+    "enb_ust": 532,
+    "enb_alt": 472,
+    "tam_ust": 532,
+    "tam_alt": 472
+   },
+   "bh432": {
+    "enb_ust": 608,
+    "enb_alt": 1144,
+    "tam_ust": 608,
+    "tam_alt": 1144
+   },
+   "bh648": {
+    "enb_ust": 760,
+    "enb_alt": 1936,
+    "tam_ust": 760,
+    "tam_alt": 1936
+   },
+   "bh1080": {
+    "enb_ust": 1176,
+    "enb_alt": 2196,
+    "tam_ust": 1176,
+    "tam_alt": 2196
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 0,
+    "tam_ust": 0,
+    "tam_alt": 0
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 432,
+    "tam_ust": 0,
+    "tam_alt": 432
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 1072,
+    "tam_ust": 0,
+    "tam_alt": 1072
+   },
+   "bh648": {
+    "enb_ust": 504,
+    "enb_alt": 2276,
+    "tam_ust": 504,
+    "tam_alt": 2276
+   },
+   "bh1080": {
+    "enb_ust": 1396,
+    "enb_alt": 3576,
+    "tam_ust": 1396,
+    "tam_alt": 3576
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 512,
+    "tam_ust": 0,
+    "tam_alt": 512
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 1060,
+    "tam_ust": 56,
+    "tam_alt": 1060
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 1180,
+    "tam_ust": 132,
+    "tam_alt": 1260
+   },
+   "bh648": {
+    "enb_ust": 0,
+    "enb_alt": 1532,
+    "tam_ust": 312,
+    "tam_alt": 1552
+   },
+   "bh1080": {
+    "enb_ust": 100,
+    "enb_alt": 1808,
+    "tam_ust": 616,
+    "tam_alt": 1920
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 1592,
+    "tam_ust": 0,
+    "tam_alt": 1592
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 2236,
+    "tam_ust": 0,
+    "tam_alt": 2236
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 2376,
+    "tam_ust": 0,
+    "tam_alt": 2376
+   },
+   "bh648": {
+    "enb_ust": 336,
+    "enb_alt": 2624,
+    "tam_ust": 336,
+    "tam_alt": 2624
+   },
+   "bh1080": {
+    "enb_ust": 896,
+    "enb_alt": 3236,
+    "tam_ust": 896,
+    "tam_alt": 3236
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 904,
+    "tam_ust": 0,
+    "tam_alt": 904
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 904,
+    "tam_ust": 0,
+    "tam_alt": 904
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 904,
+    "tam_ust": 0,
+    "tam_alt": 904
+   },
+   "bh648": {
+    "enb_ust": 0,
+    "enb_alt": 904,
+    "tam_ust": 0,
+    "tam_alt": 904
+   },
+   "bh1080": {
+    "enb_ust": 0,
+    "enb_alt": 904,
+    "tam_ust": 0,
+    "tam_alt": 904
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 560,
+    "tam_ust": 0,
+    "tam_alt": 560
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 728,
+    "tam_ust": 0,
+    "tam_alt": 728
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 912,
+    "tam_ust": 0,
+    "tam_alt": 912
+   },
+   "bh648": {
+    "enb_ust": 344,
+    "enb_alt": 1428,
+    "tam_ust": 344,
+    "tam_alt": 1428
+   },
+   "bh1080": {
+    "enb_ust": 1384,
+    "enb_alt": 2556,
+    "tam_ust": 1384,
+    "tam_alt": 2556
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 1192,
+    "tam_ust": 0,
+    "tam_alt": 1192
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 1632,
+    "tam_ust": 0,
+    "tam_alt": 1632
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 1904,
+    "tam_ust": 0,
+    "tam_alt": 1904
+   },
+   "bh648": {
+    "enb_ust": 0,
+    "enb_alt": 2260,
+    "tam_ust": 0,
+    "tam_alt": 2352
+   },
+   "bh1080": {
+    "enb_ust": 0,
+    "enb_alt": 2260,
+    "tam_ust": 0,
+    "tam_alt": 2676
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 0,
+    "tam_ust": 0,
+    "tam_alt": 0
+   },
+   "bh307": {
+    "enb_ust": 632,
+    "enb_alt": 0,
+    "tam_ust": 632,
+    "tam_alt": 0
+   },
+   "bh432": {
+    "enb_ust": 1060,
+    "enb_alt": 0,
+    "tam_ust": 1060,
+    "tam_alt": 0
+   },
+   "bh648": {
+    "enb_ust": 1560,
+    "enb_alt": 0,
+    "tam_ust": 1560,
+    "tam_alt": 0
+   },
+   "bh1080": {
+    "enb_ust": 1792,
+    "enb_alt": 520,
+    "tam_ust": 3492,
+    "tam_alt": 2412
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 3516,
+    "tam_ust": 0,
+    "tam_alt": 3516
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 3724,
+    "tam_ust": 0,
+    "tam_alt": 3724
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 3840,
+    "tam_ust": 332,
+    "tam_alt": 3840
+   },
+   "bh648": {
+    "enb_ust": 360,
+    "enb_alt": 3840,
+    "tam_ust": 884,
+    "tam_alt": 3840
+   },
+   "bh1080": {
+    "enb_ust": 2040,
+    "enb_alt": 3840,
+    "tam_ust": 2804,
+    "tam_alt": 3840
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 1716,
+    "tam_ust": 0,
+    "tam_alt": 1716
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 2228,
+    "tam_ust": 0,
+    "tam_alt": 2228
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 3672,
+    "tam_ust": 0,
+    "tam_alt": 3672
+   },
+   "bh648": {
+    "enb_ust": 0,
+    "enb_alt": 3764,
+    "tam_ust": 0,
+    "tam_alt": 3764
+   },
+   "bh1080": {
+    "enb_ust": 0,
+    "enb_alt": 3764,
+    "tam_ust": 0,
+    "tam_alt": 3764
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 0,
+    "tam_ust": 0,
+    "tam_alt": 336
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 0,
+    "tam_ust": 0,
+    "tam_alt": 372
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 0,
+    "tam_ust": 40,
+    "tam_alt": 400
+   },
+   "bh648": {
+    "enb_ust": 2168,
+    "enb_alt": 0,
+    "tam_ust": 2472,
+    "tam_alt": 456
+   },
+   "bh1080": {
+    "enb_ust": 3448,
+    "enb_alt": 0,
+    "tam_ust": 3828,
+    "tam_alt": 516
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
+   "bh172": {
+    "enb_ust": 568,
+    "enb_alt": 0,
+    "tam_ust": 568,
+    "tam_alt": 0
+   },
+   "bh307": {
+    "enb_ust": 852,
+    "enb_alt": 0,
+    "tam_ust": 852,
+    "tam_alt": 0
+   },
+   "bh432": {
+    "enb_ust": 1236,
+    "enb_alt": 0,
+    "tam_ust": 1236,
+    "tam_alt": 0
+   },
+   "bh648": {
+    "enb_ust": 1808,
+    "enb_alt": 0,
+    "tam_ust": 1808,
+    "tam_alt": 0
+   },
+   "bh1080": {
+    "enb_ust": 3660,
+    "enb_alt": 1736,
+    "tam_ust": 3660,
+    "tam_alt": 1736
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 376,
+    "tam_ust": 0,
+    "tam_alt": 1156
+   },
+   "bh307": {
+    "enb_ust": 0,
+    "enb_alt": 896,
+    "tam_ust": 0,
+    "tam_alt": 1880
+   },
+   "bh432": {
+    "enb_ust": 0,
+    "enb_alt": 1632,
+    "tam_ust": 0,
+    "tam_alt": 2596
+   },
+   "bh648": {
+    "enb_ust": 0,
+    "enb_alt": 2736,
+    "tam_ust": 0,
+    "tam_alt": 3076
+   },
+   "bh1080": {
+    "enb_ust": 660,
+    "enb_alt": 3840,
+    "tam_ust": 660,
+    "tam_alt": 3840
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "bh172": {
+    "enb_ust": 0,
+    "enb_alt": 1092,
+    "tam_ust": 0,
+    "tam_alt": 1092
+   },
+   "bh307": {
+    "enb_ust": 72,
+    "enb_alt": 1456,
+    "tam_ust": 72,
+    "tam_alt": 1456
+   },
+   "bh432": {
+    "enb_ust": 240,
+    "enb_alt": 1740,
+    "tam_ust": 240,
+    "tam_alt": 1740
+   },
+   "bh648": {
+    "enb_ust": 444,
+    "enb_alt": 2224,
+    "tam_ust": 444,
+    "tam_alt": 2224
+   },
+   "bh1080": {
+    "enb_ust": 1204,
+    "enb_alt": 3120,
+    "tam_ust": 1204,
+    "tam_alt": 3120
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
+   "bh172": {
+    "enb_ust": 1044,
+    "enb_alt": 0,
+    "tam_ust": 2608,
+    "tam_alt": 0
+   },
+   "bh307": {
+    "enb_ust": 1044,
+    "enb_alt": 0,
+    "tam_ust": 2608,
+    "tam_alt": 336
+   },
+   "bh432": {
+    "enb_ust": 1044,
+    "enb_alt": 0,
+    "tam_ust": 2608,
+    "tam_alt": 336
+   },
+   "bh648": {
+    "enb_ust": 1044,
+    "enb_alt": 0,
+    "tam_ust": 2608,
+    "tam_alt": 352
+   },
+   "bh1080": {
+    "enb_ust": 1044,
+    "enb_alt": 0,
+    "tam_ust": 2608,
+    "tam_alt": 352
+   }
+  }
+ ]
+}

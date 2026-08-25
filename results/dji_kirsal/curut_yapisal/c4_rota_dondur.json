@@ -1,0 +1,349 @@
+{
+ "_ne": "18 YAPISAL karede uretim analyze_path — orijinal vs 90 derece dondurulmus kadraj (elle cizilen etiket)",
+ "orijinal_rota": 0,
+ "dondurulmus_rota": 6,
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=605/3840px; gereken >= 77px.",
+    "sn": 4.2
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=171/2160px; gereken >= 44px.",
+    "sn": 3.7
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=499/3840px; gereken >= 77px.",
+    "sn": 3.6
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=853/2160px; gereken >= 44px.",
+    "sn": 3.9
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1003/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.3
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=1338/2160px; gereken >= 44px.",
+    "sn": 4.0
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=16/3840px, ust=404/3840px; gereken >= 77px.",
+    "sn": 3.9
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=366/2160px, ust=0/2160px; gereken >= 44px.",
+    "sn": 3.6
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.1
+   },
+   "dondurulmus": {
+    "serit": 2,
+    "guven": 1.0,
+    "wp": 8,
+    "sebep": null,
+    "detay": null,
+    "sn": 4.8
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.8
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=0/2160px; gereken >= 44px.",
+    "sn": 4.3
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1506/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.6
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "GORUS_HATTI_KOPUK",
+    "detay": "Koridor uclari bagli, ancak dogrulanmis waypoint zinciri kurulamadi; olculen alt_tohum=76254px, ust_tohum=45590px, plan_hucre_butcesi=32768, denenen_plan_adim_hucre=[(64, 1560), (15, 28672)].",
+    "sn": 4.4
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=772/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.5
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=315/2160px; gereken >= 44px.",
+    "sn": 4.6
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=554/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.1
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=466/2160px; gereken >= 44px.",
+    "sn": 3.4
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1000/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.2
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=0/2160px; gereken >= 44px.",
+    "sn": 4.1
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 3.9
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=501/2160px; gereken >= 44px.",
+    "sn": 4.0
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=2229/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.0
+   },
+   "dondurulmus": {
+    "serit": 2,
+    "guven": 1.0,
+    "wp": 8,
+    "sebep": null,
+    "detay": null,
+    "sn": 4.3
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1622/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 3.9
+   },
+   "dondurulmus": {
+    "serit": 1,
+    "guven": 0.714,
+    "wp": 8,
+    "sebep": null,
+    "detay": null,
+    "sn": 4.3
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt/ust uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.0
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=335/2160px, ust=0/2160px; gereken >= 44px.",
+    "sn": 4.0
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=557/3840px; gereken >= 77px.",
+    "sn": 4.2
+   },
+   "dondurulmus": {
+    "serit": 2,
+    "guven": 0.396,
+    "wp": 8,
+    "sebep": null,
+    "detay": null,
+    "sn": 4.8
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=412/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.0
+   },
+   "dondurulmus": {
+    "serit": 1,
+    "guven": 1.0,
+    "wp": 8,
+    "sebep": null,
+    "detay": null,
+    "sn": 4.3
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor ust uc bandina yeterli temas etmiyor; olculen alt=1015/3840px, ust=0/3840px; gereken >= 77px.",
+    "sn": 4.0
+   },
+   "dondurulmus": {
+    "serit": 2,
+    "guven": 0.454,
+    "wp": 8,
+    "sebep": null,
+    "detay": null,
+    "sn": 4.4
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
+   "orijinal": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/3840px, ust=1046/3840px; gereken >= 77px.",
+    "sn": 4.1
+   },
+   "dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "wp": 0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "detay": "Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/2160px, ust=654/2160px; gereken >= 44px.",
+    "sn": 4.0
+   }
+  }
+ ]
+}

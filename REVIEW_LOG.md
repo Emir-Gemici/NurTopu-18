@@ -21578,3 +21578,101 @@ kurulmuştu ve **işini yaptı**. Senkronlandı, 811 OK.
 3. Kalan **546 kare** etiketsiz. Bu sonuç, devam etmenin **otomatik olarak
    doğru olmadığını** gösteriyor: 160 kare görmeyi artırdı, rota üretmedi.
    Önce (1) ölçülmeli.
+
+---
+
+### D-281 · 🔴 ADVERSARYAL DENETİM · Üç refuter, üç açı: **betimlemem doğru, İKİ NEDENSEL İDDİAM YANLIŞ** — ve düzeltmenin büyüklüğünü de abartmışım
+
+- **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3) ·
+  2026-08-25 · D-280 §8/1'in cevabı.
+- **Yöntem:** üç bağımsız refuter, varsayılanları *"ustabaşı yanılıyor"*;
+  üç ayrı açı (yapısal · hat · uçuş). Ham çıktı: `results/dji_kirsal/curut_*/`.
+- **Kapı çıktısı:** `15/15` · `discover -s tests -q` **811 OK**.
+- ⛔ Terfi yok · registry'ye dokunulmadı · eşik/`CONTRACTS.md` değişmedi ·
+  **PUSH YOK**.
+
+#### 1. AYAKTA KALAN — betimleme (iki refuter bağımsız doğruladı)
+```text
+bakir 0038 · 59 kare · ELLE CIZILEN etiketlerle bant testi
+  GECER 28 · PARCALILIK 11 · YAPISAL 18 · sinif0 yok 2
+refuter "ucus": olcumu birebir yeniden uretti -> 0 FARK / 57 kare
+refuter "yapisal": letterbox kaydirmasi YOK (ust=3840 alt=3840),
+                   esik suclu DEGIL (bar 77->1 -> 18/18 yerine 17/18 red)
+```
+⇒ **Ölçüm ve yöntem sağlam.** Kırmaya çalıştılar, kıramadılar.
+
+#### 2. 🔴 YANILDIĞIM YER 1 — "hat geçerli zemini atıyor" (iddia II) **YANLIŞ**
+D-280 sonrası *"elle çizilen doğru etiketler **yalnız en büyük bileşen** kuralınca
+eleniyor; bu bir HAT kusurudur"* demiştim. Refuter kuralı **kaldırıp** üretim
+`analyze_path`'i koştu:
+```text
+KURAL KALKINCA ROTA KAZANAN : 0 / 59
+PARCALILIK 11 karenin hepsi : UC_BANT_TEMAS_YOK -> GORUS_HATTI_KOPUK
+```
+Parçalar **gerçekten birleşmiyor**; kural geçerli zemini atmıyor, aynı olguyu
+**başka aşamada** yakalıyor. *"Parçalılık = hat kusuru"* çerçevem **yanlıştı**;
+PARÇALILIK ile YAPISAL **aynı olgunun** iki ölçüm yüzüdür.
+
+#### 3. 🔴 YANILDIĞIM YER 2 — nedensellik: **irtifa değil YÖNELİM**
+*"30 m nadirde zemin kadraja sığmıyor"* demiştim. Ölçüm bunu çürüttü:
+```text
+zemin ALAN orani:  YAPISAL 0,134   vs   GECER 0,167   -> zemin AZ DEGIL
+yol ekseni acisi:  YAPISAL ve GECER gruplari BELIRGIN AYRISIYOR
+  (refuter "yapisal": YAPISAL p50 19,5° · GECER 61,1°  [yataydan]
+   refuter "ucus"   : YAPISAL p50 71,7° · GECER 33,0°  [dikeyden]
+   iki olcum AYNI SEYI soyluyor: YAPISAL karelerde yol BANT EKSENINE DIK)
+```
+⇒ Sebep *"yeterli zemin yok"* değil, **zemin yanlış yönde**. K-A sözleşmesi
+alt→üst tanımlı; yol kadrajı **enine** kesiyorsa etiket ne kadar iyi olursa olsun
+reddedilir.
+
+#### 4. 🔴 YANILDIĞIM YER 3 — düzeltmenin BÜYÜKLÜĞÜNÜ abarttım
+Refuterlar farklı sayılar verdi (6/18 · 14/18). **İkisinin sözüne değil veriye
+baktım** ve refuter "ucus"un **kendi kontrolünü** kullandım — döndürüp yeniden
+kırpmak içeriği küçültür, bu tek başına sayıyı değiştirir:
+```text
+aci   donuk GECER   KONTROL (yalniz kucultulmus)   NET
+ 30       29                 25                    +4
+ 40       29                 24                    +5
+ 90       28                 25                    +3
+120       28                 24                    +4
+160       32                 27                    +5
+ 10       24                 30                    -6   <- DONDURME KOTULESTIRDI
+```
+YAPISAL 18 karenin **14'ü** bir açıda geçiyor — ama döndürme **kazandığı kadar
+kaybettiriyor**. 59 karelik kümede **net kazanç +3…+5 kare (%5–8)**, 14 değil.
+⚠ *"Yalpa hizalaması sorunu çözer"* demek **abartı olurdu**; ölçülen etki
+**gerçek ama mütevazı**.
+
+#### 5. REFUTERLERİN GÖRDÜĞÜ, BENİM GÖRMEDİĞİM
+- 🔴 **"Tavan 28" gerçek tavan DEĞİL:** elle çizilen maskelerin medyan **%38'i
+  ETİKETSİZ** (YAPISAL grubunda p50 **0,543**, GEÇER'de 0,344) ve bant testi
+  ETİKETSİZ'i sessizce *"zemin değil"* sayıyor. İki karede başarısız bandın
+  **%100'ü etiketsiz** — insan oraya hiçbir şey çizmemiş, oysa bindirmede yolun
+  kendisiyle aynı malzeme. ⇒ *"yapısal"* hükmü **etiket seyrekliğiyle birlikte
+  artıyor**; kısmen kendi eksik etiketlemenizi ölçüyorsunuz.
+- **İki kare 4 ve 12 PİKSEL farkla** "imkânsız" ilan edilmiş (`frame_000218`
+  üst boşluk 176 px, eşik 172). 2160 satırın 4'ünde verilen bir hüküm.
+- 7 kare **hiçbir eksende** geçmiyor — orada *"yapısal"* tam doğru.
+
+#### 6. DÜZELTİLMİŞ HÜKÜM
+| D-280 §8/1'de dediğim | ölçümden sonra |
+|---|---|
+| "etiket mi hat mı" ikilemi | **yanlış kurulmuş soru** — üçü de var |
+| PARÇALILIK = hat kusuru | ❌ **YANLIŞ** (kural kalkınca 0 kare kazanıyor) |
+| YAPISAL = 30 m'de zemin yetmiyor | ❌ **YANLIŞ** (alan 0,134 vs 0,167) |
+| YAPISAL = etiketle çözülemez | ✅ **büyük ölçüde doğru**, ama tavan sızıyor |
+| çözüm hat/uçuş parametresi | ✅ **doğru — ama İRTİFA değil YALPA**, ve etki **+3…+5 kare** |
+
+#### 7. SAHA PLANINA DOĞRUDAN SONUÇ (öner-bekle)
+> Gimbal 90° nadirken **uçuş ekseni yol/koridor eksenine hizalanmalı.** 0038
+> uçuşunda yol kadrajı enine kesiyor ve bu kareler **etiketten bağımsız**
+> reddediliyor.
+⚠ Ama tek başına yeterli değil: net kazanç %5–8. Asıl kaldıraç hâlâ
+**etiket kapsamı** (medyan %38 etiketsiz) ve **model tavanı** (tavan 28, model 10).
+
+#### 8. YÖNTEM NOTU — bu tur neden işe yaradı
+Üç refuter **çelişik açılarla** kuruldu ve ikisi birbirine de karşı çıktı
+(6/18 vs 14/18). Anlaşmalarını kanıt saymadım; **kontrol verisine** gittim.
+CLAUDE.md §19'un *"iki tarafın ANLAŞMASI kanıt değildir; hakem ölçümdür"*
+kuralı bu turda **fiilen** işledi.

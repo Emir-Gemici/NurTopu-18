@@ -1,0 +1,491 @@
+{
+ "_ne": "dondurme kazanci EKSEN mi PARAMETRE mi — uretim analyze_path, elle cizilen etiket",
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": 3,
+    "guven": 0.327,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": true
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": 2,
+    "guven": 1.0,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": true
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "GORUS_HATTI_KOPUK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": 2,
+    "guven": 1.0,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": true
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": 1,
+    "guven": 0.714,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": true
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": 2,
+    "guven": 0.396,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": true
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": 1,
+    "guven": 1.0,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": true
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": 2,
+    "guven": 0.06,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": 2,
+    "guven": 0.454,
+    "sebep": null,
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": true
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
+   "A_orij_uretim": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 172,
+    "gereken": 77,
+    "kb_gecer": false
+   },
+   "B_orij_gevsek": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 43,
+    "kb_gecer": false
+   },
+   "C_dondurulmus": {
+    "serit": null,
+    "guven": 0.0,
+    "sebep": "UC_BANT_TEMAS_YOK",
+    "bant_h": 307,
+    "gereken": 44,
+    "kb_gecer": false
+   }
+  }
+ ]
+}
