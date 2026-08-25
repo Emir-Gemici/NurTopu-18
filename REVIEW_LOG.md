@@ -21479,3 +21479,102 @@ Eğitim **yok** · `dataset/` altına kalıcı küme **yazılmadı** · eşik
 **değişmedi** · `CONTRACTS.md` **değişmedi** · `codes/` altına **girilmedi** ·
 terfi **yok** · **push YOK**. §3, §4, §5'in üçü de **mimar kararı** bekliyor.
 
+---
+
+### D-280 · ✅ DJİ KIRSAL EĞİTİM TURU · **arena kapısı 4/4 GEÇTİ** · kırsalda **görme arttı ama rotaya dönüşmedi** · ve kapının DIŞINDA iki gerileme
+
+- **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
+  (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-25.
+- **Yetki:** kullanıcı — *"otomatik karar ver, onay beklemeden eğitmeye başla."*
+  **KORUNAN SINIRLAR:** PUSH YOK (§5) · **TERFİ YOK** (D-133) · registry'ye
+  **dokunulmadı** · eşik/`CONTRACTS.md` **değişmedi**.
+- **Ön kayıt:** `results/dji_20260822/egitim_on_kayit.md` — bantlar **eğitim
+  başlamadan** sabitlendi.
+- **Kapı çıktısı:** `codes/test_rota_sentetik.py` **15/15** ·
+  `discover -s tests -q` **811 OK**.
+- **Ham çıktı:** `results/dji_kirsal/` (SONUC.md · bakir_0038.json ·
+  bakir_0038_taban.json · kiyas_109.txt · zincir_ozeti.json).
+
+#### 1. ARENA KAPISI — **GEÇTİ (4/4)**
+```text
+kabul zinciri  VERDIKT: URETIME ALINIR (K0..K5 hepsi)   bant: True   ✅
+K1 rota                  255/260                        bant: >=230  ✅
+67 gercek kare red         0/67                         bant: <=5    ✅
+cati kacagi              0,0158                         bant: <=0,10 ✅
+```
+Çatı kaçağı **ölçülen tüm modellerin en iyisi**: v34 0,961 · v30 0,305 ·
+t121_ft 0,131 · v35 0,043 · t122ac 0,020 · **dji_kirsal_v1 0,0158**.
+
+#### 2. 🔴 KIRSAL ÖLÇÜM BÖLÜNDÜ — biri iyi, biri kötü
+Bakır 0038, **aynı 59 kare** (alan-ayrımlı, GPS ile ölçülmüş):
+```text
+model            MASKE_YOK        rota      UC_BANT_TEMAS_YOK
+v35            35/59 (59,3%)   11 (18,6%)         13
+v34            41/59 (69,5%)   11 (18,6%)          6
+dji_kirsal_v1  29/59 (49,2%)   10 (16,9%)         20
+```
+- `MASKE_YOK` **59,3 → 49,2** = **İYİLEŞTİ** (10,1 puan)
+- rota oranı **18,6 → 16,9** = **KÖTÜLEŞTİ**
+
+🔴 **Sebep ölçüldü:** maske kazanan 6 kare rotaya dönüşmedi,
+`UC_BANT_TEMAS_YOK`'a kaydı (13 → 20). **Model daha çok görüyor ama gördüğü
+zemin bantlara ulaşmıyor** — parçalı/kopuk.
+⚠ Ön kayıt §3(b) böyle bir **bölünmeyi öngörmemişti**; ikisi de raporlanıyor,
+iyi olan seçilip kötü olan gizlenmiyor.
+
+#### 3. 🔴 KAPININ DIŞINDA KALAN İKİ GERİLEME
+| ölçüt | v35 | dji_kirsal_v1 | yön |
+|---|---|---|---|
+| `figur_zemin_orani` | 0,1508 | **0,3900** | **2,6 kat kötü** |
+| `kaplama67_icerik_medyan` | 0,5076 | **0,3829** | **12,5 puan düşük** |
+
+- **Figür zemin:** D-249 §5 bu ekseni *"TEHLİKELİ yön"* diye işaretlemişti.
+  K0 kendi eşiğini geçti ama **sapma büyüdü**.
+- **Kaplama:** D-240'ın bağımsız tahmini gerçek otoparkta **%47–52**; v35 o
+  aralığın **içinde**, yeni aday **altında** → gerçek karelerde **eksik görüyor**.
+
+⚠ Bu iki eksen ön kayıttaki kapıda **yoktu**. Kapıyı sonradan genişletmiyorum;
+**ölçümü kayda geçiriyorum** ki karar bilerek verilsin.
+
+#### 4. ADAY FİİLEN "v34 + 1 EPOCH"
+```text
+16 epoch · EarlyStopping: son 15 epoch'ta iyilesme YOK · best.pt = EPOCH 1
+mAP50(M)    epoch1 0,3244 · epoch10 0,3258 · epoch16 0,3138  -> DUZ
+mAP50-95(M) epoch1 0,1978 (EN YUKSEK) · v35'in en iyisi 0,1905
+```
+Reçete `t127_temiz`'den **aynen** alındığı için başlangıç ağırlığı **v34**'tür.
+Val kümesi v35'inkiyle **aynıdır** (`dji_kirsal` val'e bilerek konmadı), o yüzden
+epoch-1 karşılaştırması geçerlidir — ama **tek koşumdur** ve D-140 bu projede
+*"tohum etkisiz"* ölçmüştü; **tek koşumdan üstünlük iddia edilmez.**
+
+#### 5. VERİ VE BÖLÜM
+160 kare etiketlendi (F5 ölçek, 2 parti). Bölüm **kaynak düzeyinde**, GPS ile:
+train 101 (0037+0039) · **BAKIR 59 (0038)** · ortak kaynak **0** (fail-closed geçti).
+⚠ Bakır 0038 bir **ALAN** ayrımıdır, **OTURUM** ayrımı değildir (aynı gün, kamera,
+operatör). Ayrı doğrulama uçuşunun yerini **tutmaz** (D-256 §5).
+Etiketlerin **%48,1'i ETİKETSİZ** — üç durumlu biçimin dürüst çıktısı.
+
+#### 6. 🔴 KAPI BİR AYRIŞMA YAKALADI (bu turda, benim kusurum)
+`109_t122_kiyas.py` ve `115_t127_bakir_kiyas.py`'ye yeni adayı eklerken
+**yalnız repo kopyasını** düzenledim; canlı `O:\navitas-local-train` kopyaları
+geride kaldı. `test_olcum_ayna_senkronu` **düştü** ve yakaladı.
+⇒ Bu, projede **beşinci kez** tekrarlayan *"iki kopya, biri zorlanmıyor"*
+sınıfıdır (D-158 §4 · D-170 · T104 · D-188 · şimdi). Kapı T112'de tam bu yüzden
+kurulmuştu ve **işini yaptı**. Senkronlandı, 811 OK.
+
+#### 7. HÜKÜM
+> **Kırsal veri arenayı BOZMADI.** Dört kapı kalemi de geçti, çatı kaçağı en iyi.
+> **Kırsalda kısmen işe yaradı:** görme arttı, **rotaya dönüşmedi**.
+> **İki eksende geriledi** ve o eksenler kapıda yoktu.
+
+⛔ **TERFİ ÖNERİSİ DEĞİLDİR** (D-133). Aday sabitlendi; seçim insanındır.
+
+#### 8. ÖNER-BEKLE
+1. **Asıl soru:** `UC_BANT_TEMAS_YOK` 13→20. Maske **parçalı** mı, yoksa bantlar
+   30 m irtifada **yapısal olarak** mı karşılanamıyor? İkincisiyse sorun etiket
+   değil **hat**tır ve daha fazla etiketleme çözmez.
+2. Kaplama düşüşü bir **transfer bedeli**dir. Karışım oranı ayarı ayrı tur +
+   ayrı ön kayıt ister (ön kayıt §3(c) bu turda yasakladı).
+3. Kalan **546 kare** etiketsiz. Bu sonuç, devam etmenin **otomatik olarak
+   doğru olmadığını** gösteriyor: 160 kare görmeyi artırdı, rota üretmedi.
+   Önce (1) ölçülmeli.

@@ -1,0 +1,14 @@
+{
+ "train": 101,
+ "val": 59,
+ "bos_etiket": 0,
+ "train_kaynak": [
+  "dji_20260822170832_0037_d",
+  "dji_20260822173231_0039_d"
+ ],
+ "val_kaynak": [
+  "dji_20260822172613_0038_d"
+ ],
+ "agirlik": "O:\\navitas\\codes\\runs\\segment\\dji_kirsal_v1\\weights\\best.pt",
+ "_on_kayit": "results/dji_20260822/egitim_on_kayit.md"
+}

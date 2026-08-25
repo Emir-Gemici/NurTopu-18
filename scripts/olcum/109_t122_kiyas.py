@@ -54,6 +54,8 @@ VARSAYILAN = [
     ("t122ac_(a+c)", RUNS / "t122ac_daralt_cati" / "weights" / "best.pt"),
     # T127: TEMIZ bolumle egitilmis ayni recete (D-233 duzeltmesi sonrasi).
     ("t127_temiz", RUNS / "t127_temiz" / "weights" / "best.pt"),
+    # 2026-08-25: DJI kirsal veriyle egitilen aday (D-107 on kayitli tur).
+    ("dji_kirsal_v1", RUNS / "dji_kirsal_v1" / "weights" / "best.pt"),
 ]
 
 
