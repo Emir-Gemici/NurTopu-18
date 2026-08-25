@@ -62,6 +62,20 @@ Bunları **onaylamayacağım**. Yerine:
   bekliyor"* olarak işaretlenir. **Kapanmaz.** Kapanış kullanıcıya/mimara kalır.
 - Denetim **düşerse** kusur kayda geçer ve düzeltilir.
 
+## 3b. 🔴 ÖLÇÜLDÜ: BEKLEYEN 19 ÖNER-BEKLE KARARININ 18'İ BENİM
+
+Vekâletin "mimar kararı bekleyen kalemleri karara bağla" yetkisini kullanmadan
+önce saydım (`REVIEW_LOG.md`, D-255 sonrası):
+```text
+oner-bekle iceren kayit   : 19
+  yazan Claude-2 (ben)    : 18   -> §1 geregi KENDIM karara BAGLAYAMAM
+  yazan mimar (D-263)     :  1   -> mimarin kendi notu, karar degil
+```
+⇒ Vekâletin "karar ver" kısmı **fiilen boş**: bağlayabileceğim tek bir karar
+bile başkasının değil. Bu bir eksiklik değil, **§1'in doğru çalışması**:
+vekâlet, kendi önerilerimi kendime onaylatmanın yolu olmamalı.
+Bu 18 kalem **Codex denetiminden** geçerse kapanır (§3).
+
 ## 4. ÖLÇÜLEBİLİR ÇIKTI (süre sonunda bu tablo doldurulur)
 
 | iş | hedef | sonuç |
