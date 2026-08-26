@@ -22541,6 +22541,9 @@ Genel kapı iki kolda GEÇTİ (kol1 15/15 · kol2 rota 15/15 · şerit 15/15); `
 - **`UC_BANT` kareleri (4–6. satır):** modelin **sınıf 0'ı beton sulama kanalının üstünde** duruyor. Kanal yukarıdan bakıldığında düzgün, açık gri, **çizgisel** bir yapıdır — yoldan ayırt edilmesi öğrenilmemiş. Asıl **toprak yol** ise ya işaretsiz ya da sınıf 1. Yani koridor "yol"u değil **kanalı** takip ediyor; uç bantlara ulaşamayınca zincir reddediyor.
 - **`MASKE_YOK` kareleri (1–3. satır):** conf 0,30'da zemin **tam sıfır**. conf 0,10'a inince ortaya çıkan şey **yol değil, daha çok ENGEL kütlesi** (kırmızı alanlar büyüyor). Yani eşik düşürmek körlüğü "yol görerek" değil, **engel görerek** kapatıyor — §18-A'nın "eşik çare değil" hükmünün görsel karşılığı.
 
+#### 1b. ⚠ Bu bir KEŞİF DEĞİL, önceki ölçümün GÖRSEL DOĞRULAMASIDIR (atıf borcu)
+`results/gece_20260826/sizinti/rapor.md` (ON_KAYIT §12, D-290) aynı motifi **ölçmüştü** ve harfiyen şöyle yazıyor: *"f157 · 0,73 — **beton drenaj kanalı** (sağdaki beyaz şerit) tümüyle zemin; toprak yolun kendisi HİÇ yakalanmamış"*; f213/f210/f156 de aynı motif. §18-A süpürmesinin hükmü de *"darboğaz eşik değil, beton kanal / toprak yol ayrımı"* diyordu. Bu kayıt o bulguyu **yeniden keşfetmiyor**, kullanıcının kendi gözlemiyle eşleştirilebilir hâle getiriyor ve **üretim modeli v36** için gösteriyor — çünkü o sızıntı tablosunda v35/v3/v6 vardı, **v36 YOKTU** (terfi sızıntıyı hiç ölçmemişti).
+
 #### 2. Bu neden ÖNEMLİ (ve neden yalnız bir doğruluk sorunu değil)
 Kanal üstüne rota yayınlamak, İKA'yı **su kanalına** sürmek demektir. Bugün bunu **kapılar tutuyor**: K6 "rota yol üstünde" ölçütü (D-290) ve gerçek-kare kapısındaki **YANLIŞ GÜZERGÂH = 0** şartı (CONTRACTS §12). D-289'da 196 numaralı karenin rotasının **beton kanal üstünde** olduğu zaten ölçülmüştü; bu panel o ölçümün **görsel** karşılığıdır. Yani sistem yanlış görüyor ama **yanlış sürmüyor** — fail-closed çalışıyor.
 
@@ -22549,3 +22552,22 @@ Bu kusur **kırsal DJI dağılımına** aittir. Şartname arenası (HTAB 50×50 
 
 #### 4. Sonuç — iş model/veri tarafında
 Çözüm eşikte değil (ölçüldü, §18-A: aday eşik yok), geometride değil (ölçüldü, D-298 §2), ölçekte değil (ölçüldü, D-298 §1). **Beton kanal ↔ toprak yol ayrımı** için etiket/veri gerekir; etiket dalgası 4 bunu zaten vurgulamıştı (ON_KAYIT §14: "beton kanal / bordür / oluk / banket → sınıf 1") ve v36 hâlâ karıştırıyor. Bir sonraki tur için doğru soru: **bu ayrımı taşıyan kare sayısı yeterli mi**, ve **kanalın kendisi sınıf 1 olarak yeterince örneklenmiş mi** — ölçülmeden yeni eğitim koşulmamalı.
+
+---
+
+### D-306 · v36 sızıntı/geri çağırma ölçüldü (terfi bunu hiç ölçmemişti): körlük büyük ölçüde kapandı, kalan kusur **beton kanalda yoğunlaştı** (2026-08-27)
+
+**Kanıt:** `results/gece_20260826/sizinti/olcum_sizinti_v36.json` + `rapor.md` EK bölümü. Aynı betik, aynı 111 kare, aynı referans (uzlaşı v3), aynı çıkarım (imgsz 512, conf 0,30).
+
+| ölçüt (111 gerçek kare) | v35 | **v36** |
+|---|---:|---:|
+| sızıntı (GT sınıf1 üstünde model zemin) | 0,023 | **0,013** |
+| geri çağırma (GT sınıf0'ın yakalanan payı) | 0,091 | **0,532** |
+| geri çağırma kare medyanı | 0,000 | **0,562** |
+| model zemini BOŞ kare | 65 | **51** |
+| etiketsiz payı | 0,179 | 0,254 |
+
+**Hüküm (ölçüm, kapı DEĞİL):** v36 gerçek domende **5,8 kat** daha çok yol yakalıyor ve engel üstüne **daha az** taşıyor; kör kare 65 → 51. Bu, v36 terfisinin (D-294, ön kayıtlı eşikler geçilmeden alınan **insan kararı**) gerçek domende **karşılığı olduğunun** ilk doğrudan kanıtıdır — terfi kaydında bu eksen **ölçülmemişti**.
+**Kalan kusur yoğunlaşmış:** en kötü 5 kare aynı motif — `f157` **0,83** (v35'te 0,73 → **orada kötüleşti**), `f156` 0,45, `f210` 0,44, `f217` 0,30, `f153` 0,29; hepsi **beton sulama/drenaj kanalı**. D-305 paneli aynı motifi gözle gösteriyor.
+**Yön:** artık sorun "model yolu göremiyor" **değil**, **"beton kanalı yol sanıyor"**dur. Sonraki eğitim turunun hedefi **hacim değil AYRIM**: kanalın sınıf 1 olarak kaç karede örneklendiği ölçülmeden yeni koşum başlatılmamalı (D-305 §4).
+**⚠ Ölçülemedi:** `etiketsiz payı` 0,179 → 0,254 arttı; bu, modelin insanın etiketlemediği alanlara da zemin dediği anlamına gelir — iyi mi kötü mü olduğu **referansın kapsamına** bağlıdır ve bu turda ayrıştırılmadı.

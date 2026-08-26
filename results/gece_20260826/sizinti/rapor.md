@@ -11,6 +11,7 @@ Tanımlar: sızıntı = |GT sınıf1 ∧ model zemin| / |GT sınıf1| · geri ç
 
 | model | sızıntı px (111/29/82) | sızıntı kare med | geri çağırma px (111/29/82) | geri çağ. kare med | etiketsiz payı px (111/29/82) | model zemin BOŞ kare (111) | val82 ROTA (tavan 43) | val82 YANLIŞ GÜZERGÂH | val82 FP (tavana göre) |
 |---|---|---|---|---|---|---|---|---|---|
+| **v36 (ÜRETİM)** | **0,013 / 0,007 / 0,016** | 0,0000 | **0,532 / 0,507 / 0,540** | **0,562** | 0,254 / 0,211 / 0,265 | **51** | — | — | — |
 | v35 | 0,023 / 0,018 / 0,025 | 0,0000 | 0,091 / 0,119 / 0,083 | 0,000 | 0,179 / 0,234 / 0,158 | 65 | 15 | 10 | 0 |
 | v3 | 0,023 / 0,017 / 0,026 | 0,0011 | 0,576 / 0,618 / 0,564 | 0,639 | 0,341 / 0,342 / 0,341 | 41 | 31 | 5 | 1 |
 | v6 | 0,046 / 0,058 / 0,041 | 0,0040 | 0,643 / 0,655 / 0,639 | 0,736 | 0,391 / 0,392 / 0,391 | 28 | 35 | 8 | 2 |
@@ -57,3 +58,25 @@ v6:
 - `cv2.imread(..., IMREAD_GRAYSCALE)` `rpi_inference` içe aktarıldıktan sonra (540,960,1) döndürüyor; betikte `np.squeeze` ile giderildi. Kod değişmedi, yalnız ölçüm betiği.
 - GT'de sınıf1 olmayan 2 kare ve sınıf0 olmayan 18 kare kare-başına medyanların dışında; toplam piksel oranı hepsini kapsar.
 - "Kanal/bordür/ağaç/çim" hükümleri gözle bindirmeden okundu; piksel bazlı nesne sınıfı etiketi yok (GT ikili). Kanal genişliği 960×540'ta ~10 px olduğundan INTER_NEAREST kenar payı ±1 px.
+
+
+## EK — v36 (ÜRETİM) satırı · 2026-08-27 · D-306
+
+Terfi (D-294) sızıntıyı **hiç ölçmemişti**; tablo v35/v3/v6 ile kalmıştı. Aynı betik
+(`sizinti_olc.py v36`), aynı 111 kare, aynı referans ve aynı çıkarım ayarları:
+
+| ölçüt (111 kare) | v35 | **v36** | yön |
+|---|---:|---:|---|
+| sızıntı (GT sınıf1 üstünde model zemin) | 0,023 | **0,013** | ✅ azaldı |
+| geri çağırma (GT sınıf0'ın yakalanan payı) | 0,091 | **0,532** | ✅ **5,8×** arttı |
+| geri çağırma kare medyanı | 0,000 | **0,562** | ✅ artık ÇOĞU karede yol görülüyor |
+| etiketsiz payı | 0,179 | 0,254 | ⚠ arttı |
+| model zemini BOŞ kare | 65 | **51** | ✅ körlük azaldı |
+
+**Yorum (ölçüm, kapı değil):** v36 gerçek domende **belirgin biçimde daha çok yol
+görüyor** ve engel üstüne daha az taşıyor. Kalan kusur **yoğunlaşmış**: en kötü 5
+kare hâlâ aynı motif — `f157` sızıntı **0,83** (v35'te 0,73, yani orada **kötüleşti**),
+`f156` 0,45, `f210` 0,44, `f217` 0,30, `f153` 0,29. Bunların hepsi **beton sulama /
+drenaj kanalı** kareleridir (D-305 paneli aynı motifi gözle gösteriyor).
+**Sonuç:** artık sorun "model yolu göremiyor" değil, **"beton kanalı yol sanıyor"**dur.
+Bir sonraki eğitim turunun hedefi bu ayrımdır; hacim değil **ayrım** gerekiyor.

@@ -1,0 +1,7 @@
+kare 111 · test29 29 · val82 82 · imgsz 512
+== v36 (26 sn)
+  hepsi   n=111 sizinti px 0.0134 med 0.0 | geri px 0.5324 med 0.562 | etiketsiz px 0.2539 med 0.1826 | zemin bos 51
+  test29  n= 29 sizinti px 0.0074 med 0.0 | geri px 0.507 med 0.4735 | etiketsiz px 0.211 med 0.1745 | zemin bos 16
+  val82   n= 82 sizinti px 0.0159 med 0.0 | geri px 0.5399 med 0.5682 | etiketsiz px 0.2648 med 0.1835 | zemin bos 35
+  kotu5: [('000157_000005910', 0.8268), ('000156_000005880', 0.4488), ('000210_000007710', 0.436), ('000217_000007950', 0.2999), ('000153_000005790', 0.2888)]
+yazildi: O:\navitas\results\gece_20260826\sizinti\olcum_sizinti_v36.json

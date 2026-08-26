@@ -20,6 +20,9 @@ KARE = KOK / "results" / "dji_20260822" / "kareler_1fps"
 V3 = KOK / "dataset" / "dji_kirsal_0038_bolum_v3" / "images"
 CIK = R / "sizinti"
 MODELLER = {
+    # D-305: URETIM modeli v36 bu tabloda YOKTU; terfi (D-294) sizintiyi hic
+    # olcmemisti. Beton kanal <-> toprak yol karisikligi tam bu olcumun konusu.
+    "v36": KOK / "models" / "navitas_seg_v36_best.pt",
     "v35": KOK / "models" / "navitas_seg_v35_best.pt",
     "v3": KOK / "codes" / "runs" / "segment" / "gece_v3_v35taban" / "weights" / "best.pt",
     "v6": KOK / "codes" / "runs" / "segment" / "gece_v6_v35taban" / "weights" / "best.pt",
@@ -45,7 +48,11 @@ def main():
                         "geri_cagirma": "|GT sinif0 & model zemin| / |GT sinif0|",
                         "etiketsiz_payi": "|GT etiketsiz & model zemin| / |model zemin|"},
              "modeller": {}}
-    for ad, yol in MODELLER.items():
+    # D-305: yalniz belirli modelleri kosmak icin (eski olcum EZILMESIN diye
+    # cikti adi da secilen kumeye gore ayrisir).
+    secim = [a for a in sys.argv[1:] if not a.startswith("-")]
+    modeller = ({a: MODELLER[a] for a in secim} if secim else MODELLER)
+    for ad, yol in modeller.items():
         model = YOLO(str(yol), task="segment")
         t0 = time.perf_counter()
         satirlar = []
@@ -112,8 +119,10 @@ def main():
         for b, o in ozet.items():
             print(f"  {b:7s} n={o['n']:3d} sizinti px {o['sizinti_toplam_px']} med {o['sizinti_kare_medyan']} | geri px {o['geri_cagirma_toplam_px']} med {o['geri_cagirma_kare_medyan']} | etiketsiz px {o['etiketsiz_payi_toplam_px']} med {o['etiketsiz_payi_kare_medyan']} | zemin bos {o['model_zemin_bos_kare']}")
         print("  kotu5:", [(s["govde"][-16:], s["sizinti"]) for s in kotu])
-    (CIK / "olcum_sizinti.json").write_text(json.dumps(cikti, indent=1, ensure_ascii=False), encoding="utf-8")
-    print("yazildi:", CIK / "olcum_sizinti.json")
+    ad_dosya = ("olcum_sizinti.json" if not secim
+                else "olcum_sizinti_" + "_".join(secim) + ".json")
+    (CIK / ad_dosya).write_text(json.dumps(cikti, indent=1, ensure_ascii=False), encoding="utf-8")
+    print("yazildi:", CIK / ad_dosya)
 
 
 if __name__ == "__main__":
