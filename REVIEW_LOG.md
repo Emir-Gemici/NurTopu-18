@@ -22066,3 +22066,31 @@ Gözle (en kötü 5'er kare): v35 ve v3'te sızıntı **hep beton drenaj kanalı
 - Eğitim verisinde **"beton kanal / bordür = engel"** örneği belirgin eksik; uzlaşı maskelerinde kanal her iki geçişte de sınıf 1 — yani etiket var, **model öğrenmiyor** (512'de ~5 px genişlik; çözünürlük ve ağırlık sorusu).
 - v6 tarzı geri çağırma artışı bitki örtüsünü zemine çekiyor — "daha çok gör" ile "kanala basma" birbirine karşı; ikisini birden tutan reçete bu kümede yok.
 - Arena için kanal yok ama **ince beton yapı** (bariyer, moloz kenarı) var; aynı zayıflık orada da geçerli olabilir (D-92: model bariyeri görmüyordu → T67 Katman 2 dedektörü). **Öneri (madde 15 uyumlu):** kanal/bordür tipi ince beton şeritler için T67 benzeri bir **Katman 2 çıkarıcı** — serbest alanı yalnız küçültür; ölçümü (val82'de yanlış güzergâh kaç düşer, meşru rota kaç kaybeder) ön kayıtla ayrı tur.
+
+---
+
+### D-291 · ⚖ T153 ölçüldü: Katman 2 "ince beton şerit" çıkarıcı teknik olarak çalışıyor ama **sorunu çözmüyor** (v35 yanlış güzergâh 15→14, %6,7) — sızıntının kaynağı ince şerit değil, modelin **kanal+oluk+banketi tek zemin blobu** sayması · dedektör KAPALI kaldı
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-26. Ön kayıt `ON_KAYIT.md §13`. Ham çıktı `results/t153/` (rapor, analiz.json, bindirme/, kabul/, olcum/, mutasyon.log). Çürütücü kıramadı (KAPALI bayt-eşlik T153-öncesi master koduyla 5 gerçek karede md5-eş; madde 15: yalnız masks[1]'e OR, serbest alan büyümesi 0 px).
+
+#### 1. Ne yapıldı
+`karar_sozlesmesi.ince_beton_serit_maskesi` (LAB L ≥ 225 ∧ kroma ≤ 20, açma/kapama, genişlik 3–14 px @512, uzunluk ≥ 40 px ve ≥ 4× genişlik, halka kontrastı ≥ 30) — T67 kalıbıyla `get_masks` içinde engel maskesine OR; `INCE_BETON_SERIT_ETKIN = False` varsayılan, `NAVITAS_INCE_BETON_SERIT=1` ile açılır; 22 test + 2 mutasyon; Jetson aynaları ikiz.
+
+#### 2. Ölçüm (AÇIK vs KAPALI, 111 uzlaşı karesi, GPU sıralı, üretim yolu `get_masks`)
+| model | YANLIŞ GÜZERGÂH K→A | ROTA | TP | FP | meşru rota kaybı | sentetik K1–K6 | 67'de red |
+|---|---|---|---|---|---:|---|---:|
+| v35 | **15 → 14** | 21→20 | 20→19 | 1→1 | 1 (f158) | birebir | 0 |
+| v3 | 9 → 9 | 41 | 39 | 2 | 0 | birebir | 0 |
+| v6 | 13 → 13 | 47 | 43 | 4 | 0 | birebir | 0 |
+Dedektör 111 karede 25 kez ateşliyor; piksellerinin %66,5'i yer gerçeği sınıf 1, %8,6 sınıf 0 (f152'de uzlaşı kanalı sınıf 0 etiketlemiş — etiket tutarsızlığı), %24,9 etiketsiz. Sentetik t66'da 5/284 ateşleme (K1–K6 değişmedi), arena figüründe 0.
+**Benimseme kuralı SAĞLANMADI** (≥ %50 azalma istendi, %6,7 ölçüldü) → **KAPALI kalır**; eşik oynatılmadı.
+
+#### 3. Neden işe yaramadı (bindirmeler, `results/t153/bindirme/`)
+Mor şerit (dedektör) beton kanalın üst yüzeyini kaplıyor, ama yeşil zemin blobu **kanal + oluk + banket**i birlikte kapsıyor; şerit çıkınca A* rotayı **yanındaki kalan zemine** kaydırıyor — yani rota hâlâ yolun dışında. f196'daki bordür 512 tuvalde 1–2 px, dedektör altında. Sorun ince bir nesnenin kaçması değil, **modelin yol ile yol-kenarı yapısını ayırmaması**. "Şerit + iki yanda tampon" varyantı meşru rotayı da (dar banket–yol arası) düşürür; denenecekse yeni ön kayıt.
+
+#### 4. Ölçüm kısıtları (çürütücü + teslim)
+- §13'ün "67'de red ≤ 5" koşulu `109`'un `zemin_maskesi_reddi` ölçütüyle yapısal olarak ölçülemiyor (yalnız zemin maskesine bakar; T67 dâhil hiçbir Katman 2 dedektörünün 67 karedeki etkisi "zemin ∧ ¬engel" üzerinden ölçülmüyor) — **ayrı ölçüm borcu**.
+- Sabitler değerlendirme kümesindeki 3 kareyle seçildi (bağımsız kalibrasyon kümesi yok); sonuç "sağlanmadı" olduğu için lehte yanlılık üretmedi.
+
+#### 5. Hüküm
+Yazılım tarafında kalan kaldıraçlar tükendi: yönelim (S2: model maskesinde 0), eşik (T142), bant tamamlama (+1), Katman 2 şerit (−1). Gerçek karede yanlış güzergâhın kaynağı **modelin zemin sınırı** — bu ancak **veriyle** (kanal/banket/yol-kenarı örnekleri, farklı saha) ve **kabul zincirinin gerçek-kare kapısıyla** (b-ek2, artık `142`'de) ilerler. T153 açık kalır (model tarafı); dedektör kodu KAPALI olarak depoda.
