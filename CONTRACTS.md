@@ -397,29 +397,78 @@ ekranda kanıt görmeden veriyordu.
 `{1: "sol", 2: "orta", 3: "sag"}` — `open_route()` bu aralık dışında `ValueError` fırlatır.
 Rota yoksa `NO_ROUTE` gönderilir; `open_route`'a `None` geçilmez.
 
-**`road` HANGİ İSTATİSTİKTİR** (T96 · `REVIEW_LOG.md` D-167/D-168 · olgu beyanı):
+**`road` HANGİ İSTATİSTİKTİR** (🔴 T155 · 2026-08-26 · `REVIEW_LOG.md` D-296):
 
-    road = olcum["darbogaz_serit"]        # rpi_inference.py:1255
-         = rotanın EN DAR geçtiği noktanın `serit_no()` şeridi
+    road = olcum["serit_karari"]          # rpi_inference.py — yayınlanan alan
+         = karar_sozlesmesi.rota_serit_karari(rota_pikselleri, icerik_x0, icerik_w)
+         = rotanın GÖVDESİNİ taşıyan şerit (en çok rota pikseli olan `serit_no()`)
 
-`baskin_serit` (en çok rota pikseli taşıyan şerit) **hesaplanır ama yayınlanmaz**.
-Bu bir eksiklik değildir: ölçüldü (n=209, yer gerçekli sentetik küme),
-`darbogaz_serit` `baskin_serit`i ayrıştıkları 2 karenin **2'sinde de** yeniyor.
+Tanım **TEK YERDEDİR** (`karar_sozlesmesi.rota_serit_karari`, madde 16); hem
+üretim yolu (`analyze_path`) hem `rota_bul` onu çağırır. `rota_bul`daki çağrı
+**çapraz denetimdir** (`cikti["rota_serit"]`, `cikti["serit_uyumu"]`): o yolun
+otoritesi kapıdır, `yol_no` DEĞİŞTİRİLMEZ.
 
-⚠ **"En iyi istatistik budur" DİYE OKUNMAMALIDIR.** Üç aday ölçüldü —
-`darbogaz_serit` 198/209 · `cikis_serit` 197 · `baskin_serit` 196 — ama farkı
-belirleyen 11 karenin **yer gerçeği kırılgandır**: o karelerde açık şeridin
-merkezi `serit_no` sınırına medyan **4,6 px** uzaklıktadır (şerit genişliği
-109-210 px; doğru çıkan 191 karede pay 45,7 px). Yani sıralama bu kümede
-**karara bağlanamaz**; yayınlanan istatistik `darbogaz_serit`tir çünkü
-**öyle yazılmıştır** (D-41), daha iyi olduğu **gösterilmemiştir**.
+`darbogaz_serit` (rotanın en dar noktasının şeridi) **hesaplanır ama artık
+YAYINLANMAZ** — ölçüm sözlüğünde **tanı** alanı olarak kalır ve hakem ekranında
+kanıt satırında "(tanı)" etiketiyle görünür. Darboğaz **açıklığı** güvenin
+girdisi olmaya devam eder (değişmedi).
 
-🔴 **ÖLÇÜLDÜ — 2026-08-26 (T151 · D-295): üretim yolunun yayınladığı `road` 15 yer gerçekli
-sahnenin 9'unda YANLIŞ** (`analyze_path` 6/15; aynı maske ve aynı sahnelerde `rota_bul` **15/15**).
-Rotanın geometrisi 15/15 doğru koridordadır — yanlış olan **yayınlanan numaradır**. D-167/D-168'in
-açık bıraktığı *"daha iyi olduğu gösterilmemiştir"* sorusu böylece **kapandı**: `darbogaz_serit`
-üretim yolunda yanlış istatistiktir. Ham çıktı `results/t151/iki_yol_kiyasi.json` (mimar vekili
-bağımsız yeniden koştu). Düzeltme **T155**; şartname §2.2.3'te hakem bu etiketi canlı onaylar.
+**ÖLÇÜM — neden değişti** (`results/t155/`, yer gerçekli 15 arena sahnesi;
+yer gerçeği = üretecin açık bıraktığı güzergâh, karar yoluna HİÇ verilmez):
+
+| yayınlanan alan | doğru | not |
+|---|---|---|
+| `darbogaz_serit` (T155 öncesi) | **6/15** | 9 sahnede yanlış |
+| `serit_karari` (T155 sonrası) | **15/15** | ön kayıt §17 eşiği ≥ 14/15 |
+| `rota_bul` `yol_no` (bağımsız referans) | 15/15 | aynı maske, aynı sahneler |
+
+**Mekanizma:** `darbogaz_serit` şeridi **tek pikselden** okuyordu ve o piksel 15
+sahnenin **13'ünde rotanın UCUNDA** ölçülüyordu (y=39 ya da y=460) — KB/HB
+yakınında üç güzergâh **birleşir**, yani şerit kimliğinin **tanımsız** olduğu
+yerde. Örnek (şerit başına rota pikseli):
+
+    harita 1/kolay : 419/3/0    yer gerçeği 1 -> yayın 2   (422 pikselin 3'ü karar verdi)
+    harita 5/zor   : 7/416/0    yer gerçeği 2 -> yayın 1   (423 pikselin 7'si)
+    harita 3/zor   : 427/189/7  yer gerçeği 1 -> yayın 3   (623 pikselin 7'si)
+
+**Bozulmama (ön kayıt §17 ek şartı, ölçüldü):** aynı 15 sahnede waypoint
+listeleri, ret sebepleri, güven ve tüm tanı alanları **BAYT-EŞ** aynı kaldı
+(142 waypoint, 0 fark — `results/t155/bozulmama_kiyas.py`). Değişen tek şey
+yayınlanan sayıdır; 9 sahnenin 9'u da **düzeldi**, hiçbiri bozulmadı.
+
+**D-167/D-168 NOTU KALIR (tarih).** T96'da (n=209, kadraj kümesi) üç aday
+ölçülmüştü — `darbogaz_serit` 198/209 · `cikis_serit` 197 · `baskin_serit` 196 —
+ve o kayıt farkı belirleyen 11 karenin yer gerçeğinin **kırılgan** olduğunu
+(açık şeridin merkezi `serit_no` sınırına medyan **4,6 px**) açıkça yazmıştı;
+"daha iyi olduğu **gösterilmemiştir**" hükmü oradan geliyordu. T155 o soruyu
+**yer gerçeği sağlam** bir kümede kapatmıştır.
+
+⚠ **T96'nın n=209 kümesi bu turda YENİDEN ÖLÇÜLEMEDİ** (o kümenin maskeleri
+model koşumu ister; oturumda GPU yasaktı). Yani 198→196 sıralamasının yeni
+tanımla ne olacağı **ÖLÇÜLMEDİ**; kapanan şey T96 sıralaması değil, **hangi
+tanımın yer gerçekli arena geometrisinde doğru olduğu** sorusudur.
+
+🔴 **AÇIK ÇELİŞKİ — mimarın kararına bırakıldı (T155 raporu, açık soru).**
+`tests/test_t119_yayinlanan_road_kapisi.py`nin `_zikzak` sahnesinde alt/üst
+dikeyler şerit 3'te, tek geçiş şerit 1'deki dar kapıdadır: "hangi güzergâh
+açık" (gövde, **3**) ile "darboğaz hangi şeritte" (kapı, **1**) **ayrışır**.
+Şartnamenin sorduğu soru birincisidir ve arena üç koridoru **paraleldir**
+(açık rota gövdesiyle tek şeritte kalır); `_zikzak` gibi üç şeride dengeli
+yayılan bir rota arena geometrisinde **oluşmaz**. Ayrıca ölçüldü: **`rota_bul`
+bu sahnelerin hiçbirinde karar vermiyor** (`BELIRSIZ_TEK_KAPI`, `yol_no=None`),
+yani bağımsız karar yolu bu çelişkide **hakemlik yapamıyor**. T119 yeni
+sözleşmeye nişanlandı ve çelişki o dosyanın başlığında **kayıtlı** tutuldu.
+Önerilen takip (ayrı ön kayıt ister, bu turda **GİRMEDİ**): rota gerçekten üç
+şeride dengeli yayıldığında tek etiket yayınlamak yerine **fail-closed** durmak
+— `rota_bul`un bu sahnelerde zaten yaptığı şey. Gerçek karede ret oranını
+değiştireceği için GPU'lu ölçüm olmadan bağlanmaz.
+
+📜 **TARİHÇE — D-41 geri ALINMADI.** T31/T32 (D-41) şeridi koridorun üst %30
+bandından değil **rotanın kendisinden** okutmuştu; o düzeltme yerinde duruyor.
+T155 yalnızca rotanın **hangi noktasından** okunacağını değiştirdi: tek uç
+değerden (darboğaz) **gövdeye**. T151/D-295 kusuru ölçüp belgeledi
+(`results/t151/iki_yol_kiyasi.json`, mimar vekili bağımsız yeniden koştu);
+T155 kapattı.
 
 ⚠ `road` **İKA'nın sürüş girdisi DEĞİLDİR** (D-166). Sürüş `waypoints`+`ref_xy`
 ile olur (`simulation/scripts/ika_nav.py:178-182` sayısal `road`'u geometri

@@ -1740,8 +1740,11 @@ class YksArayuz:
             if rota_olcumu is not None:
                 # Kanıt satırı: güvenin NEREDEN geldiği ekranda görünür olmalı.
                 n1, n2, n3 = rota_olcumu["seritler"]
+                # T155: yayınlanan `road` artık GÖVDE kararıdır; darboğaz
+                # şeridi TANI olarak kalır (ikisi ayrışırsa hakem görsün).
                 bilgi += (f" · darboğaz {rota_olcumu['darbogaz_px']:.1f} px"
-                          f" @ şerit {rota_olcumu['darbogaz_serit']}"
+                          f" @ şerit {rota_olcumu['darbogaz_serit']} (tanı)"
+                          f" · yayınlanan şerit {rota_olcumu['serit_karari']}"
                           f" · rota şerit dağılımı {n1}/{n2}/{n3} px")
                 if rota_olcumu["cok_seritli"]:
                     bilgi += " · ⚠ ROTA ŞERİT DEĞİŞTİRİYOR (tek etiket eksik kalır)"
@@ -1753,10 +1756,11 @@ class YksArayuz:
                 # anlatmıyor. Fail-closed değil — rota doğrulanmış, yalnız ADI
                 # eksik; kararı yumuşatmadan görünür kılıyoruz (SS6.4/3).
                 self.algi_kuyruk.put(("log",
-                    f"⚠ ROTA ŞERİT DEĞİŞTİRİYOR: darboğaz şerit "
-                    f"{rota_olcumu['darbogaz_serit']}, dağılım "
-                    f"{rota_olcumu['seritler']} px — yayınlanan `road` "
-                    "yalnız darboğaz şeridini adlandırır"))
+                    f"⚠ ROTA ŞERİT DEĞİŞTİRİYOR: yayınlanan şerit "
+                    f"{rota_olcumu['serit_karari']}, dağılım "
+                    f"{rota_olcumu['seritler']} px (darboğaz şeridi "
+                    f"{rota_olcumu['darbogaz_serit']}, tanı) — yayınlanan "
+                    "`road` rotanın GÖVDESİNİ adlandırır, tamamını değil"))
             # T81: sağ paneldeki AÇIK YOL TESPİTİ kutusu için YAPISAL karar.
             # Bilgi METNİ ayrıştırılmaz — ayrıştırma sessizce bozulur ve kutu
             # yanlış değer gösterir; hakem onayı buna dayanır (§6.2).

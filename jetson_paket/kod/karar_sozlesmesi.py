@@ -54,6 +54,50 @@ def serit_no(x, icerik_x0, icerik_w):
     return 3
 
 
+def rota_serit_karari(rota_pikselleri, icerik_x0, icerik_w):
+    """YAYINLANAN `road` — TEK TANIM (T155 · REVIEW_LOG D-296).
+
+    Rotanin serit numarasi rotanin GOVDESINDEN okunur: her rota pikseli
+    `serit_no()` ile bir seride sayilir, en cok piksel tasiyan serit kazanir.
+
+    NEDEN (OLCULDU, 2026-08-26 · yer gercekli 15 sentetik sahne, T151 kumesi):
+    eski yayin alani `darbogaz_serit` rotanin EN DAR noktasinin — yani TEK
+    PIKSELIN — seridini yayinliyordu ve 15 sahnenin 9'unda YANLISTI (6/15).
+    O tek piksel 15 sahnenin 13'unde rotanin UCUNDA olculdu (y=39 ya da
+    y=460): KB/HB yakininda uc guzergah BIRLESIR, yani serit kimliginin
+    TANIMSIZ oldugu yerde. Uc ornek (sayim = serit1/serit2/serit3 px):
+
+        harita 1 kolay : 419/3/0   yer gercegi 1 -> darbogaz 2   (3 px, 422'de)
+        harita 5 zor   : 7/416/0   yer gercegi 2 -> darbogaz 1   (7 px, 423'te)
+        harita 3 zor   : 427/189/7 yer gercegi 1 -> darbogaz 3   (7 px, 623'te)
+
+    Govdeden okunan karar AYNI 15 sahnenin 15'inde dogrudur ve `rota_bul`un
+    bagimsiz kapi-tabanli etiketiyle 15/15 uyusur. Ortak nokta ILKEDIR:
+    serit, rotanin AYIRT EDICI oldugu yerden okunur — bir uc degerden degil.
+    `rota_bul` ayni ilkeyi yapisal olarak uygular (etiket, koridorlarin
+    ayrildigi banttaki KAPI merkezinden gelir), bu yuzden iki yol ayni
+    cevabi verir.
+
+    ⚠ `darbogaz_serit` SILINMEZ: darbogaz ACIKLIGI guvenin girdisidir ve
+    darbogazin hangi seritte olculdugu bir TANI bilgisidir. Yayin alani
+    degisti, tani alani kalmadi.
+
+    `rota_pikselleri`: (x, y) ikilileri — rasterlestirilmis rota (waypoint
+      DUGUMLERI degil; ornekleme sayisi karara giremez, CONTRACTS SS6.4/5).
+    Doner: ``(karar, sayim)`` — `karar` 1|2|3 ya da rota bossa ``None``;
+      `sayim` serit basina piksel sayisi (n1, n2, n3).
+    Beraberlik DETERMINISTIK bozulur: esit sayimda KUCUK serit indisi.
+    """
+    sayim = [0, 0, 0]
+    for nokta in rota_pikselleri:
+        x = int(nokta[0])
+        sayim[serit_no(x, icerik_x0, icerik_w) - 1] += 1
+    mevcut = [i for i in range(3) if sayim[i] > 0]
+    if not mevcut:
+        return None, tuple(sayim)
+    return int(max(mevcut, key=lambda i: (sayim[i], -i)) + 1), tuple(sayim)
+
+
 def rota_darbogaz_guveni(darbogaz_px, icerik_w):
     """Rotanin en dar noktasindaki acikligi [0,1] guvenine cevir.
 

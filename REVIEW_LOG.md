@@ -22194,3 +22194,43 @@ Eşli koşum (aynı oturum, aynı gürültü gerçekleştirmeleri): **v36 14/260
 #### 4. ✅ T154 KAPANDI — ve kapı ilk koşuda gerçek bayatlık yakaladı
 Kör noktanın gerçekliği **ölçüldü** (eski kapıya v30 enjekte edildi → 4/4 OK, yani kördü). Yeni `KilavuzKomutSatirlariTests` (7 test): kılavuzda model adı/türevi ya da sürümlü `--cikti` geçen **her satır** üretim sürümünü taşımalı; istisnalar (yedek §6C, domain kontrolü, aşılmış başlıklar) açık ve **defterden** türetilir. Üç satır tipi için ayrı mutasyon, bayt-eş geri alma. 🔴 Kapı ilk koşuda §6B'de **`navitas_seg_v17_best_640…`** buldu — **altı sürüm** bayat, 13 Ağustos'tan beri.
 **Çürütücünün bulduğu kalan delikler (T154 ikinci tur → T157):** `--imgsz` denetlenmiyor (640 enjekte edilince kaçıyor); **uzantısız** model yolu kapıyı atlıyor; çıplak `vNN` başlık metni denetim dışı — **ve şu an kılavuz satır 15'te "asıl model v27 → v30" başlığı duruyor, gövdesi v36 diyor**; ağaç istisnası bölüm bağlamına bağlı değil; `test_k0_iki_olcum_hatti`de `0.1508` çıplak yazılı.
+
+---
+
+### D-296 · ✅ T155 KAPANDI · **yayınlanan `road` düzeltildi: 6/15 → 15/15** — ve düzeltme bir SÖZLEŞME ÇELİŞKİSİNİ açığa çıkardı (T119, mimara açık soru)
+
+**Ön kayıt:** `results/gece_20260826/ON_KAYIT.md` §17 (sonuç görülmeden yazıldı).
+**Ham çıktı:** `results/t155/` — `rapor.md`, `once_master.json`, `sonra_t155.json`, `serit_kapisi.py`, `bozulmama_kiyas.py`.
+
+#### 1. Kusur ve mekanizması (D-295'in bıraktığı iş)
+Üretim yolu (`analyze_path`) `road`'u `olcum["darbogaz_serit"]`ten yayınlıyordu: **rotanın en dar noktasının şeridi**, yani **TEK PİKSELİN** şeridi. Yer gerçekli 15 arena sahnesinde **6/15** doğruydu.
+🔴 **Mekanizma ölçüldü:** o tek piksel 15 sahnenin **13'ünde rotanın UCUNDA** ölçülüyor (y=39 ya da y=460) — KB/HB yakınında üç güzergâh **birleşir**, yani şerit kimliğinin **tanımsız** olduğu yerde. Kararı taşıyan piksel sayısı gülünç derecede küçüktü:
+
+| sahne | rota piksel dağılımı (ş1/ş2/ş3) | yer gerçeği | yayınlanan | kararı veren piksel |
+|---|---|---|---|---|
+| 1/kolay | 419 / 3 / 0 | 1 | **2** | 422'nin **3'ü** |
+| 5/zor | 7 / 416 / 0 | 2 | **1** | 423'ün **7'si** |
+| 3/zor | 427 / 189 / 7 | 1 | **3** | 623'ün **7'si** |
+
+#### 2. Düzeltme — TEK TANIM (madde 16)
+`karar_sozlesmesi.rota_serit_karari(rota_pikselleri, icerik_x0, icerik_w)` eklendi: şerit rotanın **gövdesinden** okunur (en çok rota pikseli taşıyan `serit_no()` şeridi; beraberlikte deterministik olarak küçük indis). Yayınlanan alan `olcum["serit_karari"]`. `darbogaz_serit` **silinmedi** — ölçüm sözlüğünde **tanı** alanı olarak duruyor, hakem ekranında "(tanı)" etiketiyle görünüyor; darboğaz **açıklığı** güvenin girdisi olmaya devam ediyor.
+İkinci çağıran: `rota_bul` aynı fonksiyonu **çapraz denetim** olarak çağırır (`rota_serit`, `serit_uyumu`) — o yolun otoritesi kapıdır, `yol_no` **değiştirilmedi**.
+
+#### 3. Kapı sonucu (ön kayıt §17)
+| ölçü | önce | sonra | eşik | sonuç |
+|---|---|---|---|---|
+| yayınlanan `road` doğru | 6/15 | **15/15** | ≥ 14/15 | **GEÇTİ** |
+| bozulmama (waypoint, ret, güven, tanı alanları) | — | **0 fark / 142 waypoint** | bayt-eş | **GEÇTİ** |
+
+9 sahnenin **9'u da düzeldi**, hiçbiri bozulmadı. `codes/test_rota_sentetik.py` **15/15**. `discover` hata kümesi tabanla **birebir aynı** (worktree'de model/veri yokluğundan gelen 15 hata öncesinde de vardı; 976 → 989 test).
+
+#### 4. 🔴 AÇIK SORU — MİMARIN KARARINI BEKLİYOR (ajan kapatmadı)
+`tests/test_t119_yayinlanan_road_kapisi.py` **eski sözleşmeyi assert ediyordu** ve bu değişiklikle düştü. İncelendiğinde çelişkinin **gerçek** olduğu görüldü: T119'un `_zikzak` sahnesinde alt/üst dikeyler şerit 3'te, tek geçiş şerit 1'deki dar kapıdadır — *"hangi güzergâh açık"* (gövde, **3**) ile *"darboğaz hangi şeritte"* (kapı, **1**) **ayrışır**. İki tanım aynı ismi (`road`) taşıyan **iki farklı soruyu** yanıtlıyor.
+**Ajanın hükmü ve gerekçesi (ratifikasyona açık):** şartname §2.2.3'ün sorduğu soru birincisidir; arena üç koridoru **paraleldir**, açık rota gövdesiyle tek şeritte kalır ve `_zikzak` gibi üç şeride **dengeli** yayılan bir rota arena geometrisinde **oluşmaz**. Arena kümesinin yer gerçeği **üreteçten gelir ve algoritmadan gizlidir**; T119'un yer gerçeği ise sahne yazarının **beyanıdır** ve kendi kabulüyle yalnız dar kapılarda (16/24 px) tutar — 48/64 px'te `darbogaz_serit` zaten 3 veriyor.
+⚠ **Hakemlik denendi, olmadı:** `rota_bul` (arena'da 15/15 olan bağımsız yol) bu sahnelerin **hiçbirinde karar vermiyor** — dördünde de `BELIRSIZ_TEK_KAPI`, `yol_no=None`. Yani görevin *"rota_bul'un kararını üretim yoluna taşı"* tarifi bu sahne ailesinde **uygulanamaz**; rota_bul'un mekanizmasını (koridor kapıları) `analyze_path`e taşımak T119/T31 sahnelerini topluca `NO_ROUTE`'a çevirirdi.
+**Yapılan:** T119 yeni sözleşmeye **nişanlandı** (mutasyon muhafızı **korundu** — yayın hattı eski alana çevrilince T119'dan 6, T155'ten 19 assert düşüyor), çelişki o dosyanın başlığında ve `CONTRACTS.md` §6.2'de **kayıtlı** bırakıldı. Bu bir kapı **gevşetmesi değil**, kapının yeni sözleşmeye nişanlanmasıdır — ama **hükmü mimar onaylamalıdır.**
+**Önerilen takip (ayrı ön kayıt ister, bu turda GİRMEDİ):** rota gerçekten üç şeride dengeli yayıldığında tek etiket yayınlamak yerine **fail-closed** durmak — `rota_bul`un bu sahnelerde zaten yaptığı şey. Gerçek karede ret oranını değiştireceği için **GPU'lu ölçüm olmadan bağlanmaz**.
+
+#### 5. ÖLÇÜLEMEDİ (dürüstlük kaydı)
+- **T96'nın n=209 kadraj kümesi yeniden ölçülemedi** — o kümenin maskeleri **model koşumu** ister, oturumda GPU yasaktı. D-167/D-168'in `darbogaz 198 · cikis 197 · baskin 196` sıralamasının yeni tanımla ne olacağı **ÖLÇÜLMEDİ**. Kapanan şey o sıralama değil, **yer gerçeği sağlam** arena geometrisinde hangi tanımın doğru olduğudur.
+- **Gerçek kare etkisi ÖLÇÜLEMEDİ** (GPU yasak). Sentetik kabul K0–K6 koşulmadı; bunun yerine **etkilenmediği kanıtlandı**: `scripts/olcum/61_rota_moloza_basma.py`'nin kapı alanları (`basma_orani`, `arena_disi_orani`, `yol_payi`, `engel_wp`, `yanlis_guzergah`) yalnız **waypoint'lerden** türer — yayınlanan şerit numarasını **hiç okumaz** (`kayit["serit"]` kaydedilir ama hiçbir kapıya girmez). Waypoint'ler bayt-eş aynı kaldığı için T152 `rota_yol_olcumu` mantığı da **etkilenmez**.

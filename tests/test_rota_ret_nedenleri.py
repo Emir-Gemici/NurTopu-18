@@ -202,6 +202,8 @@ class _SahteLink:
 # dondurur ve GUI onu ekrana basar. Sahte analizorlerin de ayni ariteyi
 # tasimasi gerekir — yoksa test uretim sozlesmesinden sessizce ayrisir.
 _SAHTE_OLCUM = {
+    # T155: YAYINLANAN alan; sahte olcum de tasimak zorunda.
+    "serit_karari": 2,
     "darbogaz_serit": 2,
     "baskin_serit": 2,
     "seritler": (0, 120, 0),

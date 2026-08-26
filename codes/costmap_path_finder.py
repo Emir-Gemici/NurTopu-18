@@ -58,11 +58,13 @@ import numpy as np
 try:
     from .karar_sozlesmesi import (BERABERLIK_BANDI, ICERIK_YOK_LETTERBOX_SUPHESI_NOTU,
                                    LETTERBOX_SUPHE_BANT_ORANI, hedef_bant_yuksekligi,
-                                   serit_no, zemin_maskesi_reddi)
+                                   rota_serit_karari, serit_no,
+                                   zemin_maskesi_reddi)
 except ImportError:
     from karar_sozlesmesi import (BERABERLIK_BANDI, ICERIK_YOK_LETTERBOX_SUPHESI_NOTU,
                                   LETTERBOX_SUPHE_BANT_ORANI, hedef_bant_yuksekligi,
-                                  serit_no, zemin_maskesi_reddi)
+                                  rota_serit_karari, serit_no,
+                                  zemin_maskesi_reddi)
 
 logger = logging.getLogger("costmap_path_finder")
 
@@ -1332,6 +1334,20 @@ def _rota_bul_cekirdek(maskeler, *, mpp=None, baslangic=None, hedef=None, plan=T
         return cikti
 
     cikti["waypoints_px"] = waypoints
+    # T155 CAPRAZ DENETIM (REVIEW_LOG D-296). `yol_no` bu yolda KAPIDAN gelir
+    # (koridorlarin ayrildigi banttaki kapi merkezi, `koridor_adaylari`).
+    # `analyze_path` ayni sayiyi ROTANIN GOVDESINDEN okur. Iki tanim ayni
+    # ilkeyi uygular ve yer gercekli 15 sahnede 15/15 uyusur; ayrisirlarsa
+    # bu bir TANI sinyalidir. Fail-closed DEGIL: `yol_no` DEGISTIRILMEZ —
+    # bu yolun otoritesi kapidir, olcum yalnizca gorunur kilinir.
+    ix0, _iy0, iw, _ih = sonuc["icerik"]
+    _rota_px = []
+    for _a, _b in zip(waypoints, waypoints[1:]):
+        _rota_px.extend(_bresenham_noktalari(_a, _b))
+    _rota_serit, _rota_sayim = rota_serit_karari(_rota_px, ix0, iw)
+    cikti["rota_serit"] = _rota_serit
+    cikti["rota_serit_sayimi"] = _rota_sayim
+    cikti["serit_uyumu"] = (_rota_serit is None or _rota_serit == cikti["yol_no"])
     return cikti
 
 

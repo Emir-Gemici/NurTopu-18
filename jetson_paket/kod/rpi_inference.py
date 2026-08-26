@@ -76,6 +76,7 @@ if __package__:
                                    olcek_kahini,
                                    olcek_guveni_uygula,
                                    rota_olcek_reddi, serit_no,
+                                   rota_serit_karari,
                                    KAMERA_DUSEN_KARE_UST_SINIRI,
                                    KAMERA_DUSEN_KARE_BEKLEME_S,
                                    KAMERA_BITIS_KULLANICI,
@@ -122,6 +123,7 @@ else:
                                   olcek_kahini,
                                   olcek_guveni_uygula,
                                   rota_olcek_reddi, serit_no,
+                                  rota_serit_karari,
                                   KAMERA_DUSEN_KARE_UST_SINIRI,
                                   KAMERA_DUSEN_KARE_BEKLEME_S,
                                   KAMERA_BITIS_KULLANICI,
@@ -1199,9 +1201,16 @@ def _rota_serit_olcumu(rota, dist, icerik):
     degil, IKA'nin planlama girdisidir (`comms/ika_receiver.py:11`), bu
     yuzden rotanin kendisinden okunur.
 
+    🔴 YAYIN ALANI DEGISTI (T155 · 2026-08-26 · REVIEW_LOG D-296).
+    `road` artik `serit_karari`dir (`karar_sozlesmesi.rota_serit_karari`,
+    rotanin govdesi). `darbogaz_serit` TANI alani olarak kalir. Gerekce ve
+    olculen sayilar ortak fonksiyonun docstring'indedir; ozeti: yer gercekli
+    15 sahnede `darbogaz_serit` 6/15, `serit_karari` 15/15.
+
     Doner (rota olculemezse ``None``):
-      darbogaz_serit : rotanin EN DAR gectigi serit  -> yayinlanan `road`
-      baskin_serit   : en cok rota pikseli tasiyan serit (karsilastirma icin)
+      serit_karari   : rotanin GOVDESINI tasiyan serit  -> yayinlanan `road`
+      darbogaz_serit : rotanin EN DAR gectigi serit (TANI — artik yayinlanmaz)
+      baskin_serit   : `serit_karari` ile AYNI sayi, istatistigin kendi adi
       seritler       : serit basina rota pikseli sayisi (n1, n2, n3)
       darbogaz_px    : rota boyunca olculen en kucuk aciklik (dt yaricapi)
       darbogaz_xy    : o acikligin olculdugu piksel
@@ -1213,16 +1222,20 @@ def _rota_serit_olcumu(rota, dist, icerik):
     pikseller = _rota_pikselleri(rota)
     if not pikseller:
         return None
-    sayim = [0, 0, 0]
+    # Kirpma bir kez yapilir ve serit sayimi ile darbogaz olcumu AYNI piksel
+    # listesini gorur; yoksa iki olcu farkli koordinatlardan turer.
+    kirpilmis = [(min(w - 1, max(0, int(px))), min(h - 1, max(0, int(py))))
+                 for px, py in pikseller]
+    # TEK TANIM (madde 16): yayinlanan serit karari burada URETILMEZ, ortak
+    # fonksiyondan gelir — `rota_bul` tarafi da ayni fonksiyonu cagirir.
+    serit_karari, sayim = rota_serit_karari(kirpilmis, icerik_x0, icerik_w)
+    sayim = list(sayim)
     serit_min = [None, None, None]
     darbogaz_px = float("inf")
     darbogaz_xy = None
-    for px, py in pikseller:
-        xx = min(w - 1, max(0, int(px)))
-        yy = min(h - 1, max(0, int(py)))
+    for xx, yy in kirpilmis:
         aciklik = float(dist[yy, xx])
         s = serit_no(xx, icerik_x0, icerik_w) - 1
-        sayim[s] += 1
         if serit_min[s] is None or aciklik < serit_min[s]:
             serit_min[s] = aciklik
         if aciklik < darbogaz_px:
@@ -1243,10 +1256,10 @@ def _rota_serit_olcumu(rota, dist, icerik):
     if not adaylar:
         adaylar = mevcut
     darbogaz_serit = min(adaylar, key=lambda i: (-sayim[i], i)) + 1
-    baskin_serit = max(mevcut, key=lambda i: (sayim[i], -i)) + 1
     return {
+        "serit_karari": int(serit_karari),
         "darbogaz_serit": int(darbogaz_serit),
-        "baskin_serit": int(baskin_serit),
+        "baskin_serit": int(serit_karari),
         "seritler": tuple(sayim),
         "darbogaz_px": float(darbogaz_px),
         "darbogaz_xy": darbogaz_xy,
@@ -1704,7 +1717,12 @@ def _analyze_path_cekirdek(trav_mask, n_waypoints=8, return_clean=False,
     if kg_reddi is not None:
         return _don(None, 0.0, [], clean, kg_reddi, olcum)
 
-    open_path = olcum["darbogaz_serit"]
+    # T155 (REVIEW_LOG D-296): YAYINLANAN alan `serit_karari`dir.
+    # Eski `darbogaz_serit` olcum sozlugunde TANI olarak durur ama
+    # YAYINLANMAZ: yer gercekli 15 sahnede 6/15 dogruydu (tek pikselden
+    # okunuyordu, 13 sahnede o piksel rotanin UCUNDA — guzergahlarin
+    # birlestigi, serit kimliginin tanimsiz oldugu yerde).
+    open_path = olcum["serit_karari"]
     # T83: OLCEK KAYNAGI KARAR NESNESINE YAZILIR ve GUVENE YANSIR.
     # Sessiz dusus yasak: olcek telemetri disi bir katmandan geldiyse rota
     # telemetriyle AYNI guvende sunulamaz. Varsayilan `telemetri` ve carpani

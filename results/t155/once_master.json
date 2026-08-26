@@ -1,0 +1,907 @@
+{
+ "ozet": {
+  "n": 15,
+  "rota_bul_dogru": 15,
+  "yayinlanan_dogru": 6
+ },
+ "satirlar": [
+  {
+   "guven": "0.822",
+   "harita": 1,
+   "ret": null,
+   "rota_bul_yol_no": 1,
+   "senaryo": "kolay",
+   "tani_darbogaz_px": "14.387598037719727",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    169,
+    460
+   ],
+   "tani_seritler": [
+    419,
+    3,
+    0
+   ],
+   "waypointler": [
+    [
+     169,
+     460
+    ],
+    [
+     94,
+     378
+    ],
+    [
+     72,
+     282
+    ],
+    [
+     70,
+     274
+    ],
+    [
+     70,
+     242
+    ],
+    [
+     110,
+     186
+    ],
+    [
+     110,
+     90
+    ],
+    [
+     137,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 1
+  },
+  {
+   "guven": "0.742",
+   "harita": 1,
+   "ret": null,
+   "rota_bul_yol_no": 2,
+   "senaryo": "orta",
+   "tani_darbogaz_px": "12.984498977661133",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    304,
+    39
+   ],
+   "tani_seritler": [
+    0,
+    422,
+    0
+   ],
+   "waypointler": [
+    [
+     273,
+     460
+    ],
+    [
+     269,
+     375
+    ],
+    [
+     245,
+     343
+    ],
+    [
+     245,
+     287
+    ],
+    [
+     277,
+     215
+    ],
+    [
+     277,
+     183
+    ],
+    [
+     229,
+     135
+    ],
+    [
+     304,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 2
+  },
+  {
+   "guven": "0.662",
+   "harita": 1,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "zor",
+   "tani_darbogaz_px": "11.58759880065918",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    299,
+    460
+   ],
+   "tani_seritler": [
+    12,
+    202,
+    427
+   ],
+   "waypointler": [
+    [
+     299,
+     460
+    ],
+    [
+     343,
+     436
+    ],
+    [
+     431,
+     412
+    ],
+    [
+     439,
+     404
+    ],
+    [
+     439,
+     380
+    ],
+    [
+     383,
+     332
+    ],
+    [
+     375,
+     300
+    ],
+    [
+     375,
+     244
+    ],
+    [
+     407,
+     204
+    ],
+    [
+     407,
+     164
+    ],
+    [
+     351,
+     108
+    ],
+    [
+     155,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.742",
+   "harita": 2,
+   "ret": null,
+   "rota_bul_yol_no": 1,
+   "senaryo": "kolay",
+   "tani_darbogaz_px": "12.984498977661133",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    173,
+    460
+   ],
+   "tani_seritler": [
+    424,
+    7,
+    0
+   ],
+   "waypointler": [
+    [
+     173,
+     460
+    ],
+    [
+     85,
+     381
+    ],
+    [
+     82,
+     378
+    ],
+    [
+     106,
+     330
+    ],
+    [
+     93,
+     242
+    ],
+    [
+     82,
+     170
+    ],
+    [
+     122,
+     82
+    ],
+    [
+     157,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 1
+  },
+  {
+   "guven": "0.674",
+   "harita": 2,
+   "ret": null,
+   "rota_bul_yol_no": 1,
+   "senaryo": "orta",
+   "tani_darbogaz_px": "11.787599563598633",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    298,
+    41
+   ],
+   "tani_seritler": [
+    465,
+    166,
+    0
+   ],
+   "waypointler": [
+    [
+     193,
+     460
+    ],
+    [
+     78,
+     391
+    ],
+    [
+     94,
+     367
+    ],
+    [
+     118,
+     335
+    ],
+    [
+     118,
+     311
+    ],
+    [
+     78,
+     255
+    ],
+    [
+     78,
+     199
+    ],
+    [
+     54,
+     159
+    ],
+    [
+     54,
+     127
+    ],
+    [
+     305,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 1
+  },
+  {
+   "guven": "0.662",
+   "harita": 2,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "zor",
+   "tani_darbogaz_px": "11.58759880065918",
+   "tani_darbogaz_serit": 3,
+   "tani_darbogaz_xy": [
+    357,
+    116
+   ],
+   "tani_seritler": [
+    0,
+    210,
+    399
+   ],
+   "waypointler": [
+    [
+     289,
+     460
+    ],
+    [
+     421,
+     380
+    ],
+    [
+     445,
+     348
+    ],
+    [
+     437,
+     308
+    ],
+    [
+     405,
+     276
+    ],
+    [
+     405,
+     236
+    ],
+    [
+     429,
+     204
+    ],
+    [
+     429,
+     172
+    ],
+    [
+     397,
+     132
+    ],
+    [
+     169,
+     39
+    ]
+   ],
+   "yayinlanan_road": 3,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.662",
+   "harita": 3,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "kolay",
+   "tani_darbogaz_px": "11.58759880065918",
+   "tani_darbogaz_serit": 3,
+   "tani_darbogaz_xy": [
+    336,
+    460
+   ],
+   "tani_seritler": [
+    0,
+    0,
+    440
+   ],
+   "waypointler": [
+    [
+     336,
+     460
+    ],
+    [
+     436,
+     378
+    ],
+    [
+     415,
+     278
+    ],
+    [
+     412,
+     266
+    ],
+    [
+     406,
+     166
+    ],
+    [
+     404,
+     130
+    ],
+    [
+     372,
+     66
+    ],
+    [
+     355,
+     39
+    ]
+   ],
+   "yayinlanan_road": 3,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.753",
+   "harita": 3,
+   "ret": null,
+   "rota_bul_yol_no": 2,
+   "senaryo": "orta",
+   "tani_darbogaz_px": "13.181398391723633",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    298,
+    39
+   ],
+   "tani_seritler": [
+    0,
+    430,
+    0
+   ],
+   "waypointler": [
+    [
+     234,
+     460
+    ],
+    [
+     231,
+     391
+    ],
+    [
+     279,
+     343
+    ],
+    [
+     279,
+     303
+    ],
+    [
+     271,
+     271
+    ],
+    [
+     271,
+     231
+    ],
+    [
+     287,
+     207
+    ],
+    [
+     287,
+     191
+    ],
+    [
+     223,
+     135
+    ],
+    [
+     298,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 2
+  },
+  {
+   "guven": "0.719",
+   "harita": 3,
+   "ret": null,
+   "rota_bul_yol_no": 1,
+   "senaryo": "zor",
+   "tani_darbogaz_px": "12.5906982421875",
+   "tani_darbogaz_serit": 3,
+   "tani_darbogaz_xy": [
+    339,
+    39
+   ],
+   "tani_seritler": [
+    427,
+    189,
+    7
+   ],
+   "waypointler": [
+    [
+     188,
+     460
+    ],
+    [
+     81,
+     404
+    ],
+    [
+     81,
+     380
+    ],
+    [
+     105,
+     348
+    ],
+    [
+     105,
+     316
+    ],
+    [
+     49,
+     268
+    ],
+    [
+     41,
+     228
+    ],
+    [
+     49,
+     188
+    ],
+    [
+     129,
+     124
+    ],
+    [
+     340,
+     39
+    ]
+   ],
+   "yayinlanan_road": 3,
+   "yer_gercegi": 1
+  },
+  {
+   "guven": "0.685",
+   "harita": 4,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "kolay",
+   "tani_darbogaz_px": "11.984498977661133",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    330,
+    460
+   ],
+   "tani_seritler": [
+    0,
+    4,
+    421
+   ],
+   "waypointler": [
+    [
+     330,
+     460
+    ],
+    [
+     414,
+     378
+    ],
+    [
+     406,
+     322
+    ],
+    [
+     406,
+     242
+    ],
+    [
+     422,
+     194
+    ],
+    [
+     422,
+     130
+    ],
+    [
+     350,
+     42
+    ],
+    [
+     346,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.742",
+   "harita": 4,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "orta",
+   "tani_darbogaz_px": "12.984498977661133",
+   "tani_darbogaz_serit": 3,
+   "tani_darbogaz_xy": [
+    316,
+    460
+   ],
+   "tani_seritler": [
+    0,
+    28,
+    437
+   ],
+   "waypointler": [
+    [
+     316,
+     460
+    ],
+    [
+     408,
+     391
+    ],
+    [
+     400,
+     375
+    ],
+    [
+     376,
+     343
+    ],
+    [
+     384,
+     319
+    ],
+    [
+     440,
+     263
+    ],
+    [
+     440,
+     247
+    ],
+    [
+     392,
+     207
+    ],
+    [
+     384,
+     199
+    ],
+    [
+     384,
+     167
+    ],
+    [
+     408,
+     135
+    ],
+    [
+     408,
+     111
+    ],
+    [
+     324,
+     39
+    ]
+   ],
+   "yayinlanan_road": 3,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.742",
+   "harita": 4,
+   "ret": null,
+   "rota_bul_yol_no": 1,
+   "senaryo": "zor",
+   "tani_darbogaz_px": "12.984498977661133",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    188,
+    460
+   ],
+   "tani_seritler": [
+    458,
+    23,
+    0
+   ],
+   "waypointler": [
+    [
+     189,
+     460
+    ],
+    [
+     74,
+     404
+    ],
+    [
+     82,
+     380
+    ],
+    [
+     130,
+     332
+    ],
+    [
+     130,
+     308
+    ],
+    [
+     106,
+     276
+    ],
+    [
+     106,
+     220
+    ],
+    [
+     114,
+     204
+    ],
+    [
+     106,
+     172
+    ],
+    [
+     82,
+     140
+    ],
+    [
+     82,
+     108
+    ],
+    [
+     139,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 1
+  },
+  {
+   "guven": "0.731",
+   "harita": 5,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "kolay",
+   "tani_darbogaz_px": "12.787599563598633",
+   "tani_darbogaz_serit": 2,
+   "tani_darbogaz_xy": [
+    220,
+    39
+   ],
+   "tani_seritler": [
+    0,
+    124,
+    381
+   ],
+   "waypointler": [
+    [
+     324,
+     460
+    ],
+    [
+     408,
+     378
+    ],
+    [
+     392,
+     338
+    ],
+    [
+     400,
+     258
+    ],
+    [
+     395,
+     172
+    ],
+    [
+     392,
+     130
+    ],
+    [
+     306,
+     84
+    ],
+    [
+     220,
+     39
+    ]
+   ],
+   "yayinlanan_road": 2,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.731",
+   "harita": 5,
+   "ret": null,
+   "rota_bul_yol_no": 3,
+   "senaryo": "orta",
+   "tani_darbogaz_px": "12.793798446655273",
+   "tani_darbogaz_serit": 3,
+   "tani_darbogaz_xy": [
+    402,
+    404
+   ],
+   "tani_seritler": [
+    0,
+    6,
+    463
+   ],
+   "waypointler": [
+    [
+     328,
+     460
+    ],
+    [
+     420,
+     391
+    ],
+    [
+     420,
+     367
+    ],
+    [
+     404,
+     343
+    ],
+    [
+     404,
+     183
+    ],
+    [
+     436,
+     135
+    ],
+    [
+     436,
+     111
+    ],
+    [
+     364,
+     63
+    ],
+    [
+     352,
+     39
+    ]
+   ],
+   "yayinlanan_road": 3,
+   "yer_gercegi": 3
+  },
+  {
+   "guven": "0.674",
+   "harita": 5,
+   "ret": null,
+   "rota_bul_yol_no": 2,
+   "senaryo": "zor",
+   "tani_darbogaz_px": "11.787599563598633",
+   "tani_darbogaz_serit": 1,
+   "tani_darbogaz_xy": [
+    163,
+    39
+   ],
+   "tani_seritler": [
+    7,
+    416,
+    0
+   ],
+   "waypointler": [
+    [
+     226,
+     461
+    ],
+    [
+     199,
+     340
+    ],
+    [
+     199,
+     324
+    ],
+    [
+     271,
+     252
+    ],
+    [
+     287,
+     204
+    ],
+    [
+     279,
+     188
+    ],
+    [
+     199,
+     108
+    ],
+    [
+     163,
+     39
+    ]
+   ],
+   "yayinlanan_road": 1,
+   "yer_gercegi": 2
+  }
+ ]
+}
