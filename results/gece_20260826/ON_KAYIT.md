@@ -213,3 +213,13 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 2. Kuru koşu yeniden koşulur; `rota` halkasının `detay` alanında `karar_yolu == "analyze_path"` ve üretim ret sebebi yazılı olur.
 3. **Mutasyon (boş kapı yasağı, TEST_SPECS §4.1):** üretim çağrısı zorla `yol yok` döndürülürse halka **DÜŞMELİ**; zorla rota döndürülürse **GEÇMELİ**. İkisi de doğrulanır.
 ⚠ **Sonuç ne çıkarsa yazılır.** Üretim yolu da reddederse halka `DÜŞTÜ` kalır — hüküm gevşetilmez, `rota_bul` koluna **geri dönülmez**. Ölçüm sonrası `CONTRACTS §11.2` halka tablosu ve `results/sartname_bosluk/rapor.md` bu halkanın sahibiyle tazelenir.
+
+## 22. EK — T161: worktree'de kapılar ANA DEPOYU ölçüyor (2026-08-27, sonuç görülmeden)
+**Kusur (D-299 §4, T156 ajanının yan bulgusu; mimar vekili kök sebebi ölçtü):** `scripts/olcum/ayarlar.py:12` `REPO = Path(r"O:\navitas")` — **çıplak mutlak yol**. 36 ölçüm betiği `from ayarlar import REPO` sonra `sys.path.insert(0, str(REPO / "codes"))` yapıyor; 4 betiğin de kendi çıplak `REPO`'su var. Bir test bu betiklerden birini import ettiği an **ana deponun `codes/`i `sys.path[0]`a giriyor** ve o koşumun geri kalanında `rpi_inference`, `costmap_path_finder`, `test_rota_sentetik` **worktree'den değil ana depodan** yükleniyor. Sonuç: **worktree ajanının yazdığı kod ölçülmeden yeşil görünebilir** — D-15 sınıfı vakum kapı.
+**Değişiklik (5 dosya):** `scripts/olcum/ayarlar.py` + `navitas-local-train/ayarlar.py` + `63/69/70/71` — kök `__file__`den türetilir. Türetme **işaretçi arayarak** yapılır (yukarı doğru `CLAUDE.md` **ve** `codes/` taşıyan ilk dizin), böylece dosya kopyalansa da doğru kökü bulur; işaretçi bulunamazsa **fail-closed**: `ImportError`, sessiz `O:\navitas` varsayımı **yok**.
+**Kapılar (sonuca göre değişmez):**
+1. **Bozulmama:** ana depoda `ayarlar.REPO` ve dört betiğin `REPO`'su **hâlâ `O:\navitas`** olmalı; genel kapı **iki kolda da** geçmeli; `unittest discover` **1030 OK** (2 skip) kalmalı.
+2. **Türeme:** sahte bir ağaca (`<tmp>/CLAUDE.md` + `<tmp>/codes/`) kopyalanan `ayarlar.py`'nin `REPO`'su **o geçici kökü** göstermeli, `O:\navitas`'ı değil.
+3. **Mutasyon (boş kapı yasağı):** beş dosyadan herhangi birine çıplak mutlak depo kökü geri konursa yeni test **DÜŞMELİ**.
+4. **Uçtan uca:** geçici bir ağaçta `codes/test_rota_sentetik.py` bozulup o ağaçtan koşulduğunda kapı **DÜŞMELİ** (bugün ana depodan yüklendiği için yeşil kalıyor — bu, kusurun kendisinin kanıtıdır ve düzeltmeden ÖNCE de ölçülür).
+⚠ Ölçüm 4 düzeltmeden **önce** koşulur ve ham çıktısı saklanır; "önce yeşildi, sonra kırmızı" farkı gösterilemezse T161 **kapanmaz**.

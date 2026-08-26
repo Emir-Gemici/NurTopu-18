@@ -1,0 +1,6 @@
+{
+ "REPO": "C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpw4ofhmgz\\sahte_depo",
+ "SENTINEL": "TMP",
+ "kaynak": "C:\\Users\\yunus\\AppData\\Local\\Temp\\tmpw4ofhmgz\\sahte_depo\\codes\\rpi_inference.py",
+ "hukum": "SAGLAM: kopya agac KENDI kodunu yukluyor"
+}

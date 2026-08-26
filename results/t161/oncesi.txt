@@ -1,0 +1,6 @@
+{
+ "REPO": "O:\\navitas",
+ "SENTINEL": "YOK",
+ "kaynak": "O:\\navitas\\codes\\rpi_inference.py",
+ "hukum": "KUSURLU: kopya agac ANA DEPOYU yukluyor"
+}

@@ -1,0 +1,17 @@
+T161 — GERCEK GIT WORKTREE KANITI (ON_KAYIT SS22)
+=================================================
+Worktree: git worktree add <tmp>/t161_wt HEAD   (HEAD = duzeltme ONCESI kod)
+
+[1] DUZELTME ONCESI (worktree'nin kendi HEAD kopyasi, ciplak yollu ayarlar.py)
+    $ python -c "sys.path.insert(0, <wt>/scripts/olcum); from ayarlar import REPO; print(REPO)"
+    worktree REPO: O:\navitas
+    -> worktree KENDI agacini degil ANA DEPOYU gosteriyor.
+
+[2] DUZELTME SONRASI (ayni worktree, yalniz ayarlar.py duzeltilmis haliyle)
+    $ python -c "... from ayarlar import REPO; sys.path.insert(0, REPO/'codes'); import rpi_inference"
+    REPO=C:\Users\yunus\AppData\Local\Temp\t161_wt
+    MODUL=C:\Users\yunus\AppData\Local\Temp\t161_wt\codes\rpi_inference.py
+    -> worktree KENDI kodunu yukluyor.
+
+Yalitilmis sahte agac olcumu (results/t161/oncesi.txt, sonrasi.txt) ayni farki
+sentinel modulle gosterir: SENTINEL YOK -> TMP.

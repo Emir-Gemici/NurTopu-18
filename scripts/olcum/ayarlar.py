@@ -9,7 +9,60 @@ import os
 import subprocess
 from pathlib import Path
 
-REPO    = Path(r"O:\navitas")
+def _depo_koku(baslangic):
+    """Depo kokunu `__file__`den TURET — ciplak mutlak yol YAZILMAZ (madde 16).
+
+    T161 (ON_KAYIT SS22 · REVIEW_LOG D-300): burada depo koku CIPLAK MUTLAK YOL
+    olarak yaziliydi. 36 olcum betigi bu sabiti alip
+    `sys.path.insert(0, REPO / "codes")` yaptigi icin, bir worktree'de (ya da
+    deponun herhangi bir kopyasinda) kosan kapilar KENDI kodunu degil ANA
+    DEPONUNKINI import ediyordu — yani ajanin yazdigi kod OLCULMEDEN yesil
+    gorunebiliyordu (D-15 sinifi vakum kapi).
+
+    ISARETCI: `CLAUDE.md` VE `codes/` tasiyan dizin. Uc kademe, bu sirayla:
+      1. `NAVITAS_DEPO` ortam degiskeni (isaretci dogrulanir) — elle ezme yolu;
+      2. `__file__`den YUKARI dogru ilk isaretcili dizin — worktree/kopya bunu
+         bulur ve KENDI agacini gosterir (T161'in asil derdi);
+      3. bu dosya deponun DISINDA calisiyorsa (canli calisma klasoru
+         `olcum_ayna.py` ile buraya kopyalanir) ust dizinlerin KARDESLERINDE
+         isaretcili dizin aranir; TEK aday varsa kabul edilir, BIRDEN COKSA
+         reddedilir — ad tahmin edilmez.
+    Hicbiri tutmazsa FAIL-CLOSED: sessizce eski sabit varsayilmaz.
+    """
+    import os
+
+    def _isaretci(d):
+        return (d / "CLAUDE.md").is_file() and (d / "codes").is_dir()
+
+    ortam = os.environ.get("NAVITAS_DEPO")
+    if ortam:
+        aday = Path(ortam).expanduser().resolve()
+        if _isaretci(aday):
+            return aday
+        raise ImportError(
+            f"NAVITAS_DEPO isaretci tasimiyor: {aday} (CLAUDE.md + codes/)")
+
+    baslangic = Path(baslangic).resolve()
+    for aday in (baslangic, *baslangic.parents):
+        if _isaretci(aday):
+            return aday
+
+    adaylar = []
+    for ust in baslangic.parents:
+        try:
+            adaylar = sorted(d for d in ust.iterdir() if d.is_dir() and _isaretci(d))
+        except OSError:
+            adaylar = []
+        if adaylar:
+            break
+    if len(adaylar) == 1:
+        return adaylar[0]
+    raise ImportError(
+        f"depo koku bulunamadi ({baslangic}); isaretci: CLAUDE.md + codes/; "
+        f"kardes aday sayisi: {len(adaylar)}. Ciplak yol varsayilmadi (T161).")
+
+
+REPO    = _depo_koku(__file__)
 BURASI  = Path(__file__).parent
 CALISMA = BURASI / "calisma"          # log + kanıt dosyaları buraya
 CALISMA.mkdir(exist_ok=True)

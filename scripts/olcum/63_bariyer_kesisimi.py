@@ -14,7 +14,9 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-REPO = Path(r"O:\navitas")
+# T161: kok `ayarlar`dan gelir — ciplak yol yazilmaz; kopya
+# agacta (worktree) KENDI deposunu gosterir (ON_KAYIT SS22).
+from ayarlar import REPO  # noqa: E402
 sys.path.insert(0, str(REPO / "codes"))
 
 from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp, _preprocess,

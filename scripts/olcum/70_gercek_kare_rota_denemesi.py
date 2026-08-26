@@ -34,7 +34,9 @@ import numpy as np
 
 from ayarlar import uretim_pt                                 # noqa: E402
 
-REPO = Path(r"O:\navitas")
+# T161: kok `ayarlar`dan gelir — ciplak yol yazilmaz; kopya
+# agacta (worktree) KENDI deposunu gosterir (ON_KAYIT SS22).
+from ayarlar import REPO  # noqa: E402
 BURASI = Path(__file__).parent
 sys.path.insert(0, str(REPO / "codes"))
 

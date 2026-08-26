@@ -29,7 +29,9 @@ from pathlib import Path
 
 import numpy as np
 
-REPO = Path(r"O:\navitas")
+# T161: kok `ayarlar`dan gelir — ciplak yol yazilmaz; kopya
+# agacta (worktree) KENDI deposunu gosterir (ON_KAYIT SS22).
+from ayarlar import REPO  # noqa: E402
 BURASI = Path(__file__).parent
 
 # Binek arac gercek genisligi (ayna haric). Kaynak: TS/EU M1 sinifi tipik

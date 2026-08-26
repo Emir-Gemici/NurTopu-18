@@ -22373,3 +22373,39 @@ Yani worktree'de koşan tam süit, worktree'nin `codes/` dosyalarını **değil 
 > ⚠ **Numara düzeltmesi (mimar vekili, 2026-08-27):** bu kayıt worktree dalında
 > `D-297` olarak yazılmıştı; master'da `D-297` (saha zinciri tazeleme) ve `D-298`
 > (T159/T160) zaten doluydu. İçerik **değişmedi**, yalnız numara `D-299` yapıldı.
+
+---
+
+### D-300 · ✅ T161 KAPANDI — worktree'de kapılar ANA DEPOYU ölçüyordu; kök artık `__file__`den türetiliyor (2026-08-27)
+
+**Ön kayıt:** `results/gece_20260826/ON_KAYIT.md` §22 (sonuç görülmeden). **Kanıt:** `results/t161/{oncesi.txt,sonrasi.txt,worktree_kaniti.txt,olc.py}`.
+
+#### 1. Kök sebep (ölçüldü, tahmin değil)
+`scripts/olcum/ayarlar.py:12` → `REPO = Path(r"O:\navitas")`, **çıplak mutlak yol**. Ölçüm: `sys.path`e depo kodu ekleyen **52** betiğin **40**'ı bu köke bağlı — **36**'sı `from ayarlar import REPO`, **4**'ü (`63/69/70/71`) kendi çıplak kopyasıyla. Hepsi `sys.path.insert(0, str(REPO / "codes"))` yapıyor. Bir test bu betiklerden **birini** import ettiği an **ana deponun `codes/`i `sys.path[0]`a** giriyor ve o koşumun geri kalanında `rpi_inference`, `costmap_path_finder`, `test_rota_sentetik` **worktree'den değil ana depodan** yükleniyor.
+**Sonuç:** worktree ajanının yazdığı kod **ölçülmeden yeşil görünebiliyordu.** D-299 §4 bunu belirtiyle (`URETIM KOLU VAR MI: False`) yakalamıştı; kök sebep burada ölçüldü.
+
+#### 2. Öncesi/sonrası — GERÇEK git worktree'de
+| | `ayarlar.REPO` | yüklenen `rpi_inference` |
+|---|---|---|
+| **öncesi** (HEAD kopyası) | `O:\navitas` | `O:\navitas\codes\rpi_inference.py` |
+| **sonrası** (yalnız `ayarlar.py` düzeltilmiş) | `<wt>` | `<wt>\codes\rpi_inference.py` |
+
+Yalıtılmış sahte ağaç ölçümü aynı farkı sentinel modülle gösterir: `SENTINEL: YOK` → `SENTINEL: TMP`.
+
+#### 3. Değişiklik — üç kademeli, fail-closed bulucu (tek işaretçi: `CLAUDE.md` + `codes/`)
+1. `NAVITAS_DEPO` ortam değişkeni (işaretçi **doğrulanır**, körü körüne kabul edilmez);
+2. `__file__`den **yukarı** ilk işaretçili dizin — worktree/kopya kendi ağacını bulur;
+3. dosya deponun **dışındaysa** (canlı çalışma klasörü `O:\navitas-local-train`, `olcum_ayna.py` oraya kopyalıyor) üst dizinlerin **kardeşlerinde** işaretçili dizin aranır; **tek aday** varsa kabul, **birden çoksa RED** — ad tahmin edilmez.
+Hiçbiri tutmazsa **`ImportError`**: sessizce eski sabit varsayılmaz. `63/69/70/71` artık kendi kökünü tanımlamaz, `ayarlar`dan alır.
+⚠ **Ayna:** `scripts/olcum/ayarlar.py` canlı klasöre kopyalanıyor ve orada işaretçi **yukarıda yoktur** — 3. kademe tam bu yüzden var. Düzeltmeden sonra `olcum_ayna.py --uygula --repodan` ile 5 çift hizalandı; canlı `REPO` hâlâ `O:\navitas`, `CALISMA` hâlâ `O:\navitas-local-train\calisma` (eğitim betikleri bozulmadı).
+
+#### 4. Kapı (`tests/test_depo_koku_turetilir.py`, **11/11**)
+Çıplak yol yasağı (6 dosya) · iki `ayarlar.py`deki bulucunun **AST-eş** olması (ayna, ithal edilemiyor) · ana depoda değerin **değişmemesi** · **uçtan uca** kopya ağaç alt süreçte kendi modülünü yüklüyor · depo dışında kardeş taramasıyla bulunuyor · işaretçisiz ağaçta **fail-closed** · `NAVITAS_DEPO` ezmesi.
+**Mutasyon (boş kapı yasağı, TEST_SPECS §4.1):** çıplak yollu bir `ayarlar.py` aynı ağaçta ana depoyu yükler → kapı **düşer**. Yani kapı iki durumu **ayırt ediyor**.
+
+#### 5. Bozulmama
+Genel kapı **iki kolda da** GEÇTİ (KOL 1 15/15 · KOL 2 rota 15/15 · şerit 15/15). `unittest discover -s tests` → **1041 OK** (2 skip). Ana depoda `ayarlar.REPO` ve dört betiğin `REPO`'su hâlâ `O:\navitas` — davranış aynı, yalnız **türetme** değişti.
+
+#### 6. ÖLÇÜLEMEDİ (dürüstlük kaydı)
+- **Diğer çıplak yollar kapsam dışıdır ve DURUYOR:** `O:\navitas-local-train\...` altındaki veri/ağırlık/venv yolları (ör. `73_serit_payi.py` model yolları, `107/112` etiket kökleri, `129/135` yorumlayıcı yolu). Bunlar `sys.path` kirlenmesi üretmez; worktree'de **veri** bulunamaması olarak görünürler — ayrı iş.
+- **T156 ajanının `importlib` bağışıklığı** yerinde bırakıldı; artık gereksiz olabilir ama kaldırılması ölçülmedi.
