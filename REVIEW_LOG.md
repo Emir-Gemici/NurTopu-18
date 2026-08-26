@@ -22409,3 +22409,40 @@ Genel kapı **iki kolda da** GEÇTİ (KOL 1 15/15 · KOL 2 rota 15/15 · şerit 
 #### 6. ÖLÇÜLEMEDİ (dürüstlük kaydı)
 - **Diğer çıplak yollar kapsam dışıdır ve DURUYOR:** `O:\navitas-local-train\...` altındaki veri/ağırlık/venv yolları (ör. `73_serit_payi.py` model yolları, `107/112` etiket kökleri, `129/135` yorumlayıcı yolu). Bunlar `sys.path` kirlenmesi üretmez; worktree'de **veri** bulunamaması olarak görünürler — ayrı iş.
 - **T156 ajanının `importlib` bağışıklığı** yerinde bırakıldı; artık gereksiz olabilir ama kaldırılması ölçülmedi.
+
+---
+
+### D-301 · ✅ T38 KAPANDI — kuru koşunun halka 7'si artık MEŞRU sınanıyor: kök kare seçimi değil, **kare↔ölçek tutarsızlığı**ydı (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §23 + §24 (ikisi de sonuç görülmeden). **Kanıt:** `results/t38/{olcum.json,olc.py,olc.log}`, `results/saha_zinciri_20260827/{kosu_t38,kosu_negatif}`.
+
+#### 1. Ölçüm — üç kaynak, kuru koşunun KENDİ `halka_rota` çağrısı
+| kaynak | mpp kaynağı | halka 7 GEÇTİ |
+|---|---|---:|
+| otopark (bugünkü varsayılan, `data/raw_frames`) | sahte telemetri 0,0338 | **0/1** |
+| kabul kümesi (depo **dışı**, T66 kadraj) | sahte telemetri 0,0338 | **6/12** |
+| kabul kümesi | **kendi manifesti** 0,078125 | **12/12** |
+| depo içi `dataset/sentetik_arena/images/val` | üreteç beyanı `HTAB_M/genişlik` = 0,078125 | **0/12** |
+
+§23'ün ön kayıtlı kuralı (**depo içi ≥ 10/12**) **SAĞLANMADI** → varsayılan o turda **değiştirilmedi**; kural gevşetilmedi.
+
+#### 2. 🔴 Ölçümün açığa çıkardığı kök sebep
+Aynı kareler GUI yolunda **12/12** rota veriyordu (D-298 §1) çünkü orada mpp **kare başına manifestten** geliyor. Kuru koşuda ise mpp **sahte telemetriden** türetiliyordu ve **kareyle hiçbir ilgisi yoktu** — halka 7'nin sonucunu kod değil, **kareye ait olmayan bir ölçek** belirliyordu. Yani T38 "yanlış kare" değil, **"kare ile ölçek aynı sahneden değil"** kusuruydu. Ayrıca `dataset/sentetik_arena` **kabul dağılımı değildir** (T66 kadraj ayrı bir çerçevelemedir, D-115/D-116) — doğru ölçekle bile 0/12 verir; bu, "ölçeği düzeltince her şey geçer" kolaycılığını da çürütür.
+
+#### 3. Yapılan — depo İÇİ fikstür (kare **ve** o karenin ölçeği)
+`data/kuru_kosu_fikstur/` (3 kare, 304 KB): kabul kümesinden kareler + `manifest.json` (dosya, **sha256**, genişlik, `mpp`, `irtifa_m`). `irtifa_m`, üretim fonksiyonu `karar_sozlesmesi.mpp_irtifadan` ile fikstürün mpp'sini verecek şekilde **çözüldü** (43,30127 m; şartname asgari 30 m'nin üstünde, 50 m'lik HTAB'ı 60° FOV ile görmek için gereken irtifa). Matematik **kopyalanmadı** — aynı fonksiyon çözüldü ve `kuru_kosu_fiksturu()` çalışma anında eşitliği **yeniden doğruluyor**; tutmazsa fikstür **kullanılmaz** (fail-closed). Sahte telemetri yolu **kaldırılmadı**: yalnız yayınlanan **irtifa** fikstürden geliyor, böylece halka 5 hâlâ gerçekten sınanıyor.
+**Sessiz düşüş yok:** fikstür yok/geçersizse eski davranışa dönülür ve `kamera.detay.fikstur_notu` bunu **yazar**.
+
+#### 4. Sonuç — zincir bir halka daha kazandı
+`GEÇTİ 8 · DÜŞTÜ 0 · SAHİPSİZ 2 · ATLANDI 0` (önce: GEÇTİ 7 · DÜŞTÜ 1). `rota GECTI — yol_no=2`, kaynak `codes/rpi_inference.py:analyze_path (run_camera yolu)` (T160). Kalan iki kopuk halka **`hedef_konumu`** (HB — H-E insan görevine bağlı) ve **`motor`** (T149, donanım).
+
+#### 5. Kapı — İKİ YÖNLÜ + mutasyonlu (`tests/test_t38_kuru_kosu_fiksturu.py`, **11/11**)
+1. fikstür kareyle halka 7 **GEÇER**; 2. `--kare <otopark>` verilince halka 7 **hâlâ DÜŞER** (`GORUS_HATTI_KOPUK`) — halka ayırt ediyor, ölçüldü; 3. fikstürün `irtifa_m`/`mpp`/dosya tutarlılığı bozulursa fikstür **REDDEDİLİR**; 4. ölçek 6 kat küçültülünce (gövde açıklığı piksel olarak büyür) halka **DÜŞER** — ölçeğe gerçekten duyarlı.
+⚠ **Yön notu (dürüstlük):** §24'te mutasyon örneği "×3" yazılmıştı; ölçek **büyütmek** kapıyı KOLAYLAŞTIRIR (gereken açıklık piksel olarak küçülür), dolayısıyla ayırt edici mutasyon **küçültmedir** (÷6). Ön kayıttaki örnek yön yanlıştı; **eşik değil yön** düzeltildi ve burada yazılıyor.
+
+#### 6. Bozulmama
+Genel kapı iki kolda GEÇTİ (kol1 15/15 · kol2 rota 15/15 · şerit 15/15); `unittest discover` **1052 OK** (2 skip). Etkilenen tek mevcut test (`test_kosuyu_yap_varsayilaninda_sahte_uretim_zinciri_kurulur`) **gevşetilmedi, güçlendirildi**: fabrikaya geçen `irtifa_m`/`fov_derece` artık fikstürün manifestiyle karşılaştırılıyor.
+
+#### 7. ÖLÇÜLEMEDİ (dürüstlük kaydı)
+- **Gerçek arena** hâlâ yok: fikstür **sentetik** kabul kümesindendir. Kuru koşu bir **zincir** sınamasıdır, doğruluk ölçümü değildir.
+- **Otopark karesi silinmedi**; `--kare` ile erişilebilir ve artık belgelenmiş bir **negatif kontroldür**.

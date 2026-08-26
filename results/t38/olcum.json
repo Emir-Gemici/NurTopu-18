@@ -1,0 +1,195 @@
+{
+ "otopark": {
+  "n": 1,
+  "GECTI": 0,
+  "kareler": [
+   {
+    "kare": "frame_000000_000000000.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   }
+  ]
+ },
+ "kabul_kumesi": {
+  "n": 12,
+  "GECTI": 6,
+  "kareler": [
+   {
+    "kare": "sa_000000.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000002.jpg",
+    "durum": "GECTI",
+    "uretim_durum": "ACIK",
+    "yol_no": 3,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000004.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000006.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000008.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000010.jpg",
+    "durum": "GECTI",
+    "uretim_durum": "ACIK",
+    "yol_no": 2,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000012.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000014.jpg",
+    "durum": "GECTI",
+    "uretim_durum": "ACIK",
+    "yol_no": 2,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000016.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000018.jpg",
+    "durum": "GECTI",
+    "uretim_durum": "ACIK",
+    "yol_no": 2,
+    "tanisal": "BELIRSIZ_COKLU"
+   },
+   {
+    "kare": "sa_000020.jpg",
+    "durum": "GECTI",
+    "uretim_durum": "ACIK",
+    "yol_no": 2,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000022.jpg",
+    "durum": "GECTI",
+    "uretim_durum": "ACIK",
+    "yol_no": 3,
+    "tanisal": "KAPI_YOK"
+   }
+  ]
+ },
+ "depo_ici_arena": {
+  "n": 12,
+  "GECTI": 0,
+  "kareler": [
+   {
+    "kare": "sa_000000.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000025.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000050.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000075.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000100.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000125.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000150.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "GORUS_HATTI_KOPUK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000175.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "MASKE_YOK"
+   },
+   {
+    "kare": "sa_000200.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000225.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   },
+   {
+    "kare": "sa_000250.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "BELIRSIZ_TEK_KAPI"
+   },
+   {
+    "kare": "sa_000275.jpg",
+    "durum": "DUSTU",
+    "uretim_durum": "UC_BANT_TEMAS_YOK",
+    "yol_no": null,
+    "tanisal": "KAPI_YOK"
+   }
+  ]
+ }
+}

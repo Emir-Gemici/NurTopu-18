@@ -606,8 +606,15 @@ class OlcekHalkasiTests(unittest.TestCase):
 
         olaylar = []
 
-        def saglayici_uret():
+        # T38 (ON_KAYIT SS24): varsayilan kare fiksturden geldiginde fabrika
+        # ARTIK fiksturun kendi irtifasi/FOV'uyla cagrilir — olcek KAREYE AIT
+        # olsun diye. Test zayiflatilmadi, GUCLENDIRILDI: cagri argumanlari da
+        # fiksturun manifestiyle karsilastirilir.
+        cagri_kwargs = []
+
+        def saglayici_uret(**kw):
             olaylar.append("sahte_yayin")
+            cagri_kwargs.append(kw)
             return saglayici
 
         def cikarim(*_args, **_kwargs):
@@ -627,7 +634,14 @@ class OlcekHalkasiTests(unittest.TestCase):
               mock.patch.object(sk, "halka_motor", return_value=sk.GECTI)):
             sk.kosuyu_yap(None, False)
 
-        fabrika.assert_called_once_with()
+        self.assertEqual(1, fabrika.call_count)
+        _fk = sk.kuru_kosu_fiksturu()
+        if _fk is None:
+            self.assertEqual([{}], cagri_kwargs)
+        else:
+            self.assertEqual([{"irtifa_m": _fk[2], "fov_derece": _fk[3]}],
+                             cagri_kwargs,
+                             "fiksturun irtifasi/FOV'u saglayiciya gecmedi (T38)")
         self.assertEqual(["cikarim", "sahte_yayin"], olaylar)
         self.assertEqual([8], saglayici.genislikler)
         self.assertEqual(0.0546875, rota.call_args.kwargs["mpp"])

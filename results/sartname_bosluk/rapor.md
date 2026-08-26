@@ -48,7 +48,7 @@ GECTI 7 · DUSTU 1 · SAHIPSIZ 2 · ATLANDI 0
 Sabahki kosum `--atla-cikarim` ile yapildigi icin `olcek DUSTU` gorunuyordu; **o bir
 zincir kopuklugu degil, atlanan cikarimin yan etkisiydi.** Bugun tam zincirde GECTI.
 
-**Halka 7 ALDATICIYDI (T160 ile kapandi, 2026-08-27):** kuru kosu `rota_bul` cagiriyordu
+**Halka 7 IKI kusur tasiyordu, IKISI DE KAPANDI (2026-08-27):** (T160) kuru kosu `rota_bul` cagiriyordu; (T38/D-301) ve OTOPARK karesiyle, kareyle ilgisiz sahte bir olcekle sinaniyordu — artik kabul dagilimindan kare + o karenin olcegiyle kosuyor ve halka GECIYOR
 (`scripts/saha_kuru_kosu.py:709`), oysa D-295/T151 ile **uretim yolu `analyze_path`**
 ilan edildi. Yani tek `DUSTU` satiri **tanisal** yolun sonucudur; uretim karar yolu
 kuru kosuda **hic olculmuyor** (D-297 §1, T156).

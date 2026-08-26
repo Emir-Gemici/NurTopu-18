@@ -16,7 +16,8 @@ yoktur. Bu yuzden bir halkanin sahibi simulation/ altindaysa halka SAHIPSIZ
 sayilir (CONTRACTS.md §11.1 kural 1).
 
 YASAKLAR (bu betikte gecmez): gz cagrisi, ROS, gercek kamera, gercek telsiz.
-Ikameler: kamera -> data/raw_frames'ten gercek kare · aktarim -> loopback UDP
+Ikameler: kamera -> data/kuru_kosu_fikstur (T38; kabul dagilimindan
+kare + O KARENIN olcegi) · aktarim -> loopback UDP
 ve sahte seri · motor -> cagri sayan sahte surucu.
 
 Kullanim:
@@ -97,15 +98,60 @@ class _SahteIrtifaYayincisi:
         return self._mesajlar.pop(0) if self._mesajlar else None
 
 
-def _sahte_canli_olcek_saglayicisi():
-    """Sahte yayin + ORTAK okuyucu + URETIM saglayicisindan pozitif prob."""
+FIKSTUR_DIZINI = KOK / "data" / "kuru_kosu_fikstur"
+
+
+def kuru_kosu_fiksturu():
+    """T38 (ON_KAYIT SS24): kare + O KARENIN olcegi, depo ICINDE.
+
+    Kuru kosu halka 7'yi `data/raw_frames`ten bir OTOPARK karesiyle siniyordu
+    (kuyruk T38 / D-53) ve olcegi kareyle ILGISIZ sahte telemetriden turetiyordu.
+    Olculdu (`results/t38/`): otopark 0/1 · kabul kumesi sahte mpp ile 6/12,
+    KENDI manifest mpp'siyle 12/12 · depo ici `sentetik_arena` beyan edilen
+    mpp'yle 0/12 (farkli dagilim). Yani zinciri MESRU sinamak icin kabul
+    dagilimindan kare VE o karenin olcegi gerekir.
+
+    Doner: `(kare_yolu, mpp, irtifa_m, fov)` — fikstur yoksa `None` (cagiran
+    eski davranisa duser ve bunu RAPORA yazar; sessiz dusus yok).
+    """
+    mf = FIKSTUR_DIZINI / "manifest.json"
+    if not mf.is_file():
+        return None
+    try:
+        veri = json.loads(mf.read_text(encoding="utf-8"))
+        kayit = veri["kareler"][0]
+        yol = FIKSTUR_DIZINI / kayit["dosya"]
+        if not yol.is_file():
+            return None
+        from karar_sozlesmesi import mpp_irtifadan
+        fov = float(veri["yatay_fov_derece"])
+        mpp = float(kayit["mpp"])
+        irtifa = float(kayit["irtifa_m"])
+        # FAIL-CLOSED: manifestteki irtifa ile mpp URETIM fonksiyonuyla
+        # birbirini dogrulamali; tutmuyorsa fikstur KULLANILMAZ.
+        olculen = mpp_irtifadan(irtifa, int(kayit["genislik_px"]),
+                                yatay_fov_derece=fov)
+        if olculen is None or abs(olculen - mpp) > 1e-6:
+            return None
+        return yol, mpp, irtifa, fov
+    except (KeyError, ValueError, TypeError, OSError):
+        return None
+
+
+def _sahte_canli_olcek_saglayicisi(irtifa_m=None, fov_derece=None):
+    """Sahte yayin + ORTAK okuyucu + URETIM saglayicisindan pozitif prob.
+
+    T38: `irtifa_m`/`fov_derece` verilirse fiksturun kendi degerleri yayinlanir
+    — boylece uretilen `mpp` KAREYE AIT olur. Verilmezse davranis eskisiyle
+    bayt-es aynidir (sartname asgari irtifa + KURU_KOSU_SAHTE_FOV_DERECE).
+    """
     from inis_kaniti import BagilIrtifaOkuyucu
     from karar_sozlesmesi import (SARTNAME_ASGARI_IRTIFA_M,
                                   TELEMETRI_IRTIFA_TAZELIK_S)
     from rpi_inference import CanliOlcekSaglayici
 
     yayinci = _SahteIrtifaYayincisi()
-    yayinci.yayinla(SARTNAME_ASGARI_IRTIFA_M)
+    yayinci.yayinla(SARTNAME_ASGARI_IRTIFA_M if irtifa_m is None else irtifa_m)
     okuyucu = BagilIrtifaOkuyucu(
         yayinci,
         TELEMETRI_IRTIFA_TAZELIK_S,
@@ -118,7 +164,8 @@ def _sahte_canli_olcek_saglayicisi():
         raise RuntimeError("sahte irtifa yayini ortak okuyucuyu besleyemedi")
     return CanliOlcekSaglayici(
         okuyucu,
-        yatay_fov_derece=KURU_KOSU_SAHTE_FOV_DERECE,
+        yatay_fov_derece=(KURU_KOSU_SAHTE_FOV_DERECE if fov_derece is None
+                          else fov_derece),
     )
 
 
@@ -380,12 +427,21 @@ def halka_kamera(rapor: Rapor, kare_yolu: Path | None) -> tuple[str, np.ndarray 
     secenekler = _argparse_secenekleri(uretim)
     parametrik = bool({"--kaynak", "--source", "--kamera", "--girdi"} & secenekler)
 
+    fikstur_kullanildi = False
     if kare_yolu is None:
-        adaylar = sorted(
-            p for p in (KOK / "data" / "raw_frames").rglob("*")
-            if p.suffix.lower() in (".jpg", ".jpeg", ".png")
-        )
-        kare_yolu = adaylar[0] if adaylar else None
+        # T38 (ON_KAYIT SS24): varsayilan artik KABUL DAGILIMINDAN bir kare +
+        # o karenin olcegi. Eskiden `data/raw_frames`ten OTOPARK karesi
+        # geliyordu ve halka 7 orada MESRU sekilde gecemiyordu (0/1).
+        fk = kuru_kosu_fiksturu()
+        if fk is not None:
+            kare_yolu, _mpp, _irtifa, _fov = fk
+            fikstur_kullanildi = True
+        else:
+            adaylar = sorted(
+                p for p in (KOK / "data" / "raw_frames").rglob("*")
+                if p.suffix.lower() in (".jpg", ".jpeg", ".png")
+            )
+            kare_yolu = adaylar[0] if adaylar else None
 
     kare = cv2.imread(str(kare_yolu)) if kare_yolu else None
     sure = (time.perf_counter() - t0) * 1000
@@ -399,6 +455,12 @@ def halka_kamera(rapor: Rapor, kare_yolu: Path | None) -> tuple[str, np.ndarray 
     besledi, alinan, hata = _kamera_beslemesi_olc("/dev/video7")
     besledi_i, alinan_i, _h2 = _kamera_beslemesi_olc("3")
     detay = {
+        # T38: hangi kare ve NEDEN — sessiz dusus gorunur olsun.
+        "kare": None if kare_yolu is None else str(kare_yolu),
+        "fikstur_kullanildi": fikstur_kullanildi,
+        "fikstur_notu": (None if fikstur_kullanildi else
+                         "fikstur yok/gecersiz -> data/raw_frames'e dusuldu; "
+                         "halka 7 bu karede MESRU sekilde gecemez (T38)"),
         "argparse_secenekleri": sorted(secenekler),
         "parametrik_secenek": parametrik,
         "besleme_cihaz_yolu": {"verilen": "/dev/video7", "VideoCapture_aldi": alinan},
@@ -1093,7 +1155,18 @@ def kosuyu_yap(kare_yolu: Path | None, atla_cikarim: bool,
         # Paketi cikarimdan once damgalamak, yavas bir inference'i telemetri
         # kesintisi sanip pozitif probi haksiz yere bayatlatirdi. Uretimdeki
         # arka-plan poller'i ise model cikarimi boyunca surekli calisir.
-        olcek_saglayici = _sahte_canli_olcek_saglayicisi()
+        #
+        # T38 (ON_KAYIT SS24): kare fiksturden geldiyse yayinlanan IRTIFA da
+        # ondan gelir — boylece uretilen `mpp` KAREYE AIT olur. Olculdu: ayni
+        # kabul kumesi kareleri kareyle ilgisiz sahte mpp ile 6/12, kendi
+        # olcegiyle 12/12 (results/t38/). Telemetri yolu yine SINANIR; degisen
+        # tek sey, yayinlanan irtifanin sahneyle tutarli olmasidir.
+        _fk = kuru_kosu_fiksturu() if kare_yolu is None else None
+        if _fk is not None:
+            olcek_saglayici = _sahte_canli_olcek_saglayicisi(
+                irtifa_m=_fk[2], fov_derece=_fk[3])
+        else:
+            olcek_saglayici = _sahte_canli_olcek_saglayicisi()
     _olcek_durum, mpp = halka_olcek(rapor, olcek_saglayici, icerik)
     halka_hedef(rapor)
     halka_rota(rapor, maskeler, icerik, "maske", mpp=mpp)
@@ -1108,7 +1181,7 @@ def main() -> int:
     ap.add_argument("--cikti", type=Path, default=None,
                     help="sonuc dizini (varsayilan results/saha_kuru_kosu_<tarih>)")
     ap.add_argument("--kare", type=Path, default=None,
-                    help="kullanilacak kare; verilmezse data/raw_frames'ten ilk kare")
+                    help="kullanilacak kare; verilmezse data/kuru_kosu_fikstur (T38)")
     ap.add_argument("--atla-cikarim", action="store_true",
                     help="model cikarimini atla (hizli kosum; cikarim/maske ATLANDI olur)")
     args = ap.parse_args()

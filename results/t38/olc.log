@@ -1,0 +1,53 @@
+model yukleniyor...
+  otopark: 1 kare
+    [1/1] frame_000000_000000000.jpg             DUSTU  GORUS_HATTI_KOPUK
+otopark          GECTI 0/1
+  kabul_kumesi: 12 kare
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [1/12] sa_000000.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [2/12] sa_000002.jpg                          GECTI  ACIK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [3/12] sa_000004.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [4/12] sa_000006.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [5/12] sa_000008.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [6/12] sa_000010.jpg                          GECTI  ACIK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [7/12] sa_000012.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [8/12] sa_000014.jpg                          GECTI  ACIK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [9/12] sa_000016.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [10/12] sa_000018.jpg                          GECTI  ACIK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [11/12] sa_000020.jpg                          GECTI  ACIK
+    [12/12] sa_000022.jpg                          GECTI  ACIK
+kabul_kumesi     GECTI 6/12
+  depo_ici_arena: 12 kare
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [1/12] sa_000000.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [2/12] sa_000025.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+    [3/12] sa_000050.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+    [4/12] sa_000075.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [5/12] sa_000100.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [6/12] sa_000125.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [7/12] sa_000150.jpg                          DUSTU  GORUS_HATTI_KOPUK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [8/12] sa_000175.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [9/12] sa_000200.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+    [10/12] sa_000225.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [11/12] sa_000250.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+    [12/12] sa_000275.jpg                          DUSTU  UC_BANT_TEMAS_YOK
+depo_ici_arena   GECTI 0/12
+yazildi: O:\navitas\results\t38\olcum.json

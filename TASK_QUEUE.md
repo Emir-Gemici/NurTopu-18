@@ -8874,7 +8874,7 @@ esults	50_uc_kapi\`):
   - **Kapı:** Üreteç N/N bayt-eşit · letterbox'lı girdide `KAPALI_DAR` kalkıyor ·
     `codes/test_rota_sentetik.py` **15/15** · tam paket **OK**.
 
-- [ ] **T38 — Saha kuru koşusunun `rota` halkası OTOPARK karesiyle sınanıyor: meşru şekilde geçemez** · `scripts/saha_kuru_kosu.py:250` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-53
+- [x] **T38 — KAPANDI (2026-08-27 · D-301): kök kare seçimi DEĞİL, kare↔ölçek tutarsızlığıydı. Ölçüldü: otopark 0/1 · kabul kümesi sahte mpp ile 6/12, KENDİ manifest ölçeğiyle 12/12 · depo içi `sentetik_arena` doğru ölçekle bile 0/12 (kabul dağılımı değil). Çözüm: depo içi `data/kuru_kosu_fikstur` (kare + o karenin ölçeği; irtifa üretim fonksiyonu `mpp_irtifadan` ile ÇÖZÜLDÜ ve koşum anında yeniden doğrulanıyor). Zincir GEÇTİ 7→**8**, DÜŞTÜ 1→**0**. Kapı iki yönlü + mutasyonlu 11/11 · Saha kuru koşusunun `rota` halkası OTOPARK karesiyle sınanıyor: meşru şekilde geçemez** · `scripts/saha_kuru_kosu.py:250` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-53
   - **Kanıt:** `:250` halka girdisini `data/raw_frames/**` içinden seçiyor.
     O kareleri gözle inceledim (iki ayrı video, aynı sahne): **bir otopark** —
     onlarca park hâlinde araç, bina, ağaçlar. Şartnamenin 3 işaretli güzergâhı

@@ -1,0 +1,34 @@
+{
+ "_ne": "T38 KURU KOSU FIKSTURU (ON_KAYIT SS24) — kare + O KARENIN olcegi.",
+ "_neden": "Kuru kosu halka 7'yi otopark karesiyle sinamiyordu (kuyruk T38, D-53) ve olcegi kareyle ILGISIZ sahte telemetriden turetiyordu. Olculdu (results/t38/): otopark 0/1; kabul kumesi sahte mpp ile 6/12, KENDI manifest mpp'siyle 12/12; depo ici sentetik_arena beyan edilen mpp ile 0/12 (farkli dagilim, kabul kumesi DEGIL). Yani zinciri mesru sinamak icin KABUL DAGILIMINDAN kare ve O KARENIN olcegi gerekiyor — ikisi de depo disindaydi.",
+ "_kaynak": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+ "_kaynak_manifest": "manifest.json (arena.mpp), uretec: 51_sentetik_arena.py",
+ "_olcek_beyani": "mpp = HTAB_M / genislik (sartname HTAB 50x50 m). irtifa_m, URETIM fonksiyonu karar_sozlesmesi.mpp_irtifadan ile bu mpp'yi verecek sekilde COZULDU; kuru kosu calisma aninda esitligi YENIDEN dogrular (fail-closed).",
+ "yatay_fov_derece": 60.0,
+ "kareler": [
+  {
+   "dosya": "images/sa_000000.jpg",
+   "sha256": "56cc7e34d2be376ee883298978b844a886a685093ca51eb9955df0e327759f3f",
+   "genislik_px": 640,
+   "yukseklik_px": 640,
+   "mpp": 0.078125,
+   "irtifa_m": 43.30127
+  },
+  {
+   "dosya": "images/sa_000001.jpg",
+   "sha256": "8eb9021a59e8d6451f6c179a92528148f7d432bd199550466f021b2c19e487e6",
+   "genislik_px": 640,
+   "yukseklik_px": 640,
+   "mpp": 0.078125,
+   "irtifa_m": 43.30127
+  },
+  {
+   "dosya": "images/sa_000002.jpg",
+   "sha256": "1e30493d1aa3b5907e7656161d5001be5339ac2456469d3a1fc9fd667c32a0e7",
+   "genislik_px": 640,
+   "yukseklik_px": 640,
+   "mpp": 0.078125,
+   "irtifa_m": 43.30127
+  }
+ ]
+}
