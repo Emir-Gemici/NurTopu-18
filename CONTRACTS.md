@@ -1035,3 +1035,33 @@ Halka adları (koşucunun kullanacağı anahtarlar, değişmez):
 
 Dört `SAHİPSİZ` halka D-22'nin dört kopukluğudur. **T22 bu tabloyu tek koşuda
 üretmelidir**; ilk düşüşte çıkan bir koşucu bu görevi karşılamaz.
+
+---
+
+## 12. DOĞRULAMA kümesi ve gerçek-kare kapısı (kullanıcı kararı 2026-08-26 · D-292)
+
+> **Neden var:** T111/D-198'den beri her kabul ölçümü eğitim dağılımının içindeydi ve "alan
+> dışı doğrulama DJI çekimi olmadan kapanmaz" deniyordu. Kullanıcı 2026-08-26'da mevcut
+> karelerden bir DOĞRULAMA kümesi ayrılmasını kabul etti.
+
+**Küme:** `dji/DOGRULAMA/` = **DJI_20260822172613_0038_D** (sabit bağlantı; `KAYNAK.md`).
+0037/0039 ile GPS örtüşmesi 0 m² / %1,5 (alan ayrık); hiçbir eğitim kararına girmez —
+`dataset/dji_kirsal_0038_bolum_v3/{test,val}` (29 + 82 kare, iki bağımsız **kör** etiket
+geçişinin uzlaşısı: sınıf 0 = A∧B, sınıf 1 = A∨B; D-289). ⚠ **Sınır (bilerek kabul edildi):**
+aynı gün, aynı kamera, aynı saha türü (kırsal), **arena değil** — "alan dışı" sorusunu
+**kısmen** kapatır; arena benzeri saha + kırmızı H çekimi hâlâ ayrı bir insan görevidir.
+
+**Bağlayıcı kural:** 0038 kareleri (test **ve** val) **eğitime ve erken durdurmaya girmez**
+(ON_KAYIT §2'deki "val erken durdurmada" istisnası bu maddeyle **kalkar**); ölçek/etiket
+düzeltmeleri yalnız **model çıktısı görülmeden** (kör) yapılır.
+
+**Gerçek-kare kapısı** (`scripts/olcum/142_gece_olcum.py --test-dizin … --etiket-dizin … --tavan …`,
+üretim yolu `126`/`analyze_path`): her aday için test29 **ve** val82 ayrı raporlanır; terfi
+için ON_KAYIT §4(b), §4(b-ek) ve §11(2) ölçütleri (ROTA ≥ 10/29, MASKE_YOK ≤ 10/29, FP ≤ 1,
+**YANLIŞ GÜZERGÂH = 0**: rota çizgisinin sınıf 0 payı ≥ 0,90 ∧ sınıf 1 üstünde 0 waypoint —
+tanım `rota_yol_olcumu.py`, sentetik eşdeğeri K6 ≤ %5). Sentetik kabul zinciri (§10, K0–K6)
+**bu kapıyı ikame etmez**: sentetik arena kanal/çim/tarla içermez (D-290).
+
+**Ölçülmüş taban (2026-08-27, referans v3):** v35 test29 ROTA 6 · TP 5 · FP 1 · YANLIŞ 5/6;
+val82 ROTA 15 · YANLIŞ 10 (D-289/D-290). Üretim modeli bu kapıyı **geçmiyor** — kullanıcı
+kararıyla üretimde kalır; kapı **gelecek terfileri** bağlar.

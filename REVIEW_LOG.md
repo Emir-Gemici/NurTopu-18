@@ -22094,3 +22094,12 @@ Mor şerit (dedektör) beton kanalın üst yüzeyini kaplıyor, ama yeşil zemin
 
 #### 5. Hüküm
 Yazılım tarafında kalan kaldıraçlar tükendi: yönelim (S2: model maskesinde 0), eşik (T142), bant tamamlama (+1), Katman 2 şerit (−1). Gerçek karede yanlış güzergâhın kaynağı **modelin zemin sınırı** — bu ancak **veriyle** (kanal/banket/yol-kenarı örnekleri, farklı saha) ve **kabul zincirinin gerçek-kare kapısıyla** (b-ek2, artık `142`'de) ilerler. T153 açık kalır (model tarafı); dedektör kodu KAPALI olarak depoda.
+
+---
+
+### D-292 · ✅ KULLANICI KARARI · DOĞRULAMA kümesi = 0038 uçuşu (`dji/DOGRULAMA/`) · T111 "alan dışı doğrulama" **kısmen kapandı** (sınırı yazılı) · gerçek-kare kapısı CONTRACTS §12'ye bağlandı
+
+**Kullanıcı (2026-08-26):** *"sen doğrulama uçuşu olarak al bazı frameleri sıkıntı yok."*
+**Adaylar (ölçüldü, `results/gece_20260826/dogrulama_adaylari.jpg`):** 20 Ağustos DJI fotoğrafları (7) gece/yer seviyesi (L ≈ 28) — elendi; WhatsApp görselleri (9) = `data/raw_frames` otopark kareleri, `copy_paste_t127` ile **eğitimde** — elendi; 20 Ağustos videoları gece (T138) — elendi. Kalan tek aday **0038**: alan ayrık (GPS 0 m² / %1,5), hiç eğitilmedi, referansı iki kör geçişle uzlaştırıldı.
+**Yapılan:** `dji/DOGRULAMA/DJI_20260822172613_0038_D.{MP4,SRT}` sabit bağlantı (sha eş, `KAYNAK.md`); T136 hattının oturum kapısı bunu **DOĞRULAMA oturumu** olarak görür; CONTRACTS **§12**: küme tanımı, "0038 eğitime/erken durdurmaya girmez" kuralı (ON_KAYIT §2 istisnası kalktı — gelecek koşumlarda val erken durdurma için **0037/0039 içinden** ayrılmalı), gerçek-kare kapısı ve ölçülmüş taban.
+**Sınır (kullanıcı bilerek kabul etti):** aynı gün/kamera/saha türü; arena değil. Arena benzeri saha + kırmızı H çekimi (H-A) **hâlâ açık** insan görevidir; T150 (HB dedektörü ölçümü) buna bağlı.

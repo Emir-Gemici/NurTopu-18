@@ -6617,6 +6617,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
     sıkışmanın görüldüğü tek girdi (figür) ise **tek alan dışı örnektir, n=1**.
     Yani "figüre özgü" ile "alan dışı olmaya özgü" **ayrılamıyor** → **T111**.
 - [x] **T111 — KAPANDI · Bakırlık envanteri: GERÇEKTEN alan dışı + etiketli doğrulama kümesi YOK; 6 aday kümenin 6sı da eğitim türevi (ölçüldü) · combined_data.yaml ÖLÜ (5/5 yol çözülmüyor) · kayıt D-198**
+  - ✅ **DOĞRULAMA KÜMESİ TANIMLANDI · 2026-08-26 · kullanıcı kararı · D-292:** `dji/DOGRULAMA/` = 0038 uçuşu (alan ayrık, hiç eğitilmedi, kör uzlaşı referansı); CONTRACTS §12. Sınır: arena değil — arena benzeri saha + kırmızı H çekimi (H-A) açık.
   - Doğrulandı: `copy_paste_gercek` v34'ün **eğitim verisidir**
     (`karisim_t54_engelli.yaml:25`); `sentetik_arena` aynı yaml'da; `kadraj_t66`
     o üretecin ailesinden; `raw_frames` `copy_paste_gercek`in **kaynak

@@ -1,0 +1,19 @@
+{
+ "_ne": "T136 · DJI hatti kosumu",
+ "ad": "dogrulama_kapisi",
+ "kaynak": "dji",
+ "kahin": "models\\navitas_seg_v35_best.pt",
+ "oturum": {
+  "gecti": true,
+  "prova_mi": false,
+  "egitim_dosya": 17,
+  "dogrulama_dosya": 1
+ },
+ "zamanlama": [
+  {
+   "adim": "0-oturum_kapisi",
+   "saniye": 0.01
+  }
+ ],
+ "toplam_saniye": 0.01
+}
