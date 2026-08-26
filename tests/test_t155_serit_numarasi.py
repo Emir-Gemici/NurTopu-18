@@ -156,6 +156,30 @@ class T155BozulmamaTests(unittest.TestCase):
         (5, "kolay"): 8, (5, "orta"): 9, (5, "zor"): 8,
     }
 
+    def test_waypoint_KOORDINATLARI_t155_oncesiyle_BAYT_ES(self):
+        """ON_KAYIT §17 BOZULMAMA sarti — SAYI degil KOORDINAT kilidi (D-296).
+
+        Cururtucu olctu: sayi kilidi, waypoint'leri sayiyi koruyarak KAYDIRAN
+        bir degisikligi yakalamaz; on kayit tam olarak bunu sart kosuyordu.
+        Referans `results/t155/once_master.json` (T155 ONCESI master kodu).
+        """
+        import json as _json
+        ref_yol = KOK / "results" / "t155" / "once_master.json"
+        self.assertTrue(ref_yol.is_file(), f"referans yok: {ref_yol}")
+        ref = {(s["harita"], s["senaryo"]): s for s in
+               _json.loads(ref_yol.read_text(encoding="utf-8"))["satirlar"]}
+        self.assertEqual(15, len(ref), "referans 15 sahne olmali")
+        for anahtar, s in sorted(ref.items()):
+            with self.subTest(sahne=anahtar):
+                _g, _yol, wps, ret, _olc = _kos(anahtar[0], anahtar[1])
+                self.assertEqual(
+                    [[int(x), int(y)] for x, y in s["waypointler"]],
+                    [[int(x), int(y)] for x, y in wps],
+                    f"{anahtar}: waypoint KOORDINATLARI degisti — T155 yalniz "
+                    "YAYINLANAN sayiyi degistirmeliydi (madde 15, on kayit §17)")
+                self.assertEqual(s["ret"], ret[0] if isinstance(ret, tuple) else ret,
+                                 f"{anahtar}: ret sebebi degisti")
+
     def test_waypoint_sayilari_t155_oncesiyle_ayni(self):
         """KAPI (ON_KAYIT SS17 ek sart): rota DEGISMEDI, yalniz ADI degisti."""
         for hid in range(1, arena.HARITA_N + 1):

@@ -443,10 +443,29 @@ ve o kayıt farkı belirleyen 11 karenin yer gerçeğinin **kırılgan** olduğu
 "daha iyi olduğu **gösterilmemiştir**" hükmü oradan geliyordu. T155 o soruyu
 **yer gerçeği sağlam** bir kümede kapatmıştır.
 
-⚠ **T96'nın n=209 kümesi bu turda YENİDEN ÖLÇÜLEMEDİ** (o kümenin maskeleri
-model koşumu ister; oturumda GPU yasaktı). Yani 198→196 sıralamasının yeni
-tanımla ne olacağı **ÖLÇÜLMEDİ**; kapanan şey T96 sıralaması değil, **hangi
-tanımın yer gerçekli arena geometrisinde doğru olduğu** sorusudur.
+⚠ **DÜZELTME (2026-08-26, çürütücü bulgusu · D-296):** yukarıdaki paragrafın ilk
+sürümü *"198→196 sıralamasının yeni tanımla ne olacağı ÖLÇÜLMEDİ"* diyordu —
+**yanlıştı.** `rota_serit_karari` master'ın `baskin_serit` formülünün **birebir
+aynısıdır** (en çok rota pikseli taşıyan şerit, beraberlikte küçük indis;
+`rpi_inference.py` eski `:1246` ile metin olarak özdeş, 20.000 rastgele girdide
+0 ayrışma ölçüldü). Yani yeni yayınlanan alan **T96'nın B adayıdır** ve o
+kümedeki skoru zaten defterdedir: **`B_baskin` 196/209 (%93,8)** — `A_darbogaz`
+198/209'un **2 kare** altında. İki küme birlikte okunur:
+
+| küme | yer gerçeği | `darbogaz` (eski yayın) | `baskin` = yeni yayın |
+|---|---|---:|---:|
+| T96 kadraj (n=209) | **kırılgan** (ayrışan 11 karede merkez `serit_no` sınırına medyan 4,6 px) | 198 | 196 |
+| T151 arena (n=15) | **sağlam** (üç koridor paralel, üreteç yer gerçeği) | **6** | **15** |
+
+D-167 o 2 karelik farkı zaten *"karara bağlanamaz"* diye yazmıştı; 9 karelik
+fark ise yer gerçeği sağlam kümededir. Karar bu iki sayıya birlikte dayanır.
+
+⚠ **T119'un yeni pozitif kontrolü DAR MARJA dayanıyor (çürütücü ölçtü, D-296):**
+`_zikzak` şerit dağılımı **(389, 600, 640)** — kazanan şerit 3, şerit 2'yi 1.629
+pikselde yalnız **40 px (%2,5)** geçiyor. `test_zikzak_sahne_gecerliligi_govde_hala_uc`
+sabit **3** assert ediyor; sahne geometrisinde 40 piksellik bir oynama kararı 2'ye
+çevirir ve o kapı kırmızı yanar. Bu bir kusur değil **kırılganlık kaydıdır**: sahne
+değişirse önce bu marj ölçülmelidir.
 
 🔴 **AÇIK ÇELİŞKİ — mimarın kararına bırakıldı (T155 raporu, açık soru).**
 `tests/test_t119_yayinlanan_road_kapisi.py`nin `_zikzak` sahnesinde alt/üst
