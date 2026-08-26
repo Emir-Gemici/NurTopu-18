@@ -1,0 +1,61 @@
+{
+ "islemler": [
+  {
+   "tip": "poligon",
+   "deger": 1,
+   "nokta": [
+    [
+     824,
+     0
+    ],
+    [
+     884,
+     0
+    ],
+    [
+     856,
+     60
+    ],
+    [
+     808,
+     60
+    ]
+   ]
+  },
+  {
+   "tip": "poligon",
+   "deger": 1,
+   "nokta": [
+    [
+     360,
+     540
+    ],
+    [
+     620,
+     540
+    ],
+    [
+     612,
+     482
+    ],
+    [
+     580,
+     442
+    ],
+    [
+     500,
+     432
+    ],
+    [
+     452,
+     472
+    ],
+    [
+     405,
+     512
+    ]
+   ]
+  }
+ ],
+ "not": "uret sonrasi taban sinif1 pikselleri (1186 px, kenar ortusmesi) geri yuklendi: b[(a==2)&(b!=2)]=2 -> sinif1 0.6825 korundu"
+}

@@ -1,0 +1,7 @@
+{"grup":"A","kareler":[
+{"govde":"dji_20260822172613_0038_d__frame_000025_000001620","degisti":false,"sinif0_once":0.0343,"sinif0_sonra":0.0343,"not":"Kareyi kesen yol yok; mera/krater/kanal maskesi tutarli. Sol kenardaki kirmizi toprak serit yol olarak dogrulanamadi (madde 12) -> etiketsiz birakildi."},
+{"govde":"dji_20260822172613_0038_d__frame_000085_000003720","degisti":true,"sinif0_once":0.1832,"sinif0_sonra":0.2137,"not":"Sag cakil yol ust kenara (y=0) ve sag kenara (y 285-368) kadar uzatildi; golgeli yol yarisi da sinif 0. 3 turda poligon daraltildi, mevcut sinif 1 kaybi 17 px."},
+{"govde":"dji_20260822172613_0038_d__frame_000107_000004380","degisti":true,"sinif0_once":0.1192,"sinif0_sonra":0.1233,"not":"Virajdaki agac golgesi altinda kalan, zemini okunabilen yol parcasi (x 566-798, y 262-436) sinif 0 yapildi. Sinif 1 kaybi 328 px (sinir pikselleri)."},
+{"govde":"dji_20260822172613_0038_d__frame_000135_000005220","degisti":true,"sinif0_once":0.1125,"sinif0_sonra":0.139,"not":"Sol yol ust kenara, sag yol ust ve alt kenara kadar uzatildi; sol yolun golgeli alt ucu eklendi. Ortadaki kuru otlu serit ve sagdaki kayalik etiketsiz kaldi. Sinif 1 kaybi 22 px."},
+{"govde":"dji_20260822172613_0038_d__frame_000200_000007410","degisti":false,"sinif0_once":0.1693,"sinif0_sonra":0.1693,"not":"Yol sol ve sag kenara kadar zaten cizili; beton kanal sinif 1 dogru. Sol usttaki dar toprak patika sikismisligi dogrulanamadigi icin etiketsiz (Ilke B); alttaki cig toprak madde 12 geregi etiketsiz."}
+]}

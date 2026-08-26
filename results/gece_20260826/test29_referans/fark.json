@@ -1,0 +1,234 @@
+[
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000025_000001620",
+  "sinif0_once": 0.0343,
+  "sinif0_sonra": 0.0,
+  "sinif1_once": 0.2041,
+  "sinif1_sonra": 0.2041,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000035_000001920",
+  "sinif0_once": 0.0,
+  "sinif0_sonra": 0.0,
+  "sinif1_once": 0.1531,
+  "sinif1_sonra": 0.1531,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000039_000002040",
+  "sinif0_once": 0.1308,
+  "sinif0_sonra": 0.0,
+  "sinif1_once": 0.2639,
+  "sinif1_sonra": 0.2639,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000048_000002310",
+  "sinif0_once": 0.1748,
+  "sinif0_sonra": 0.0,
+  "sinif1_once": 0.5219,
+  "sinif1_sonra": 0.5219,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000053_000002460",
+  "sinif0_once": 0.3638,
+  "sinif0_sonra": 0.1875,
+  "sinif1_once": 0.3885,
+  "sinif1_sonra": 0.3885,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000062_000002820",
+  "sinif0_once": 0.16,
+  "sinif0_sonra": 0.16,
+  "sinif1_once": 0.4292,
+  "sinif1_sonra": 0.4292,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000085_000003720",
+  "sinif0_once": 0.1832,
+  "sinif0_sonra": 0.2137,
+  "sinif1_once": 0.4613,
+  "sinif1_sonra": 0.4613,
+  "sinif1_geri_konan_px": 17
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000089_000003840",
+  "sinif0_once": 0.0819,
+  "sinif0_sonra": 0.0831,
+  "sinif1_once": 0.8782,
+  "sinif1_sonra": 0.8782,
+  "sinif1_geri_konan_px": 4768
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000094_000003990",
+  "sinif0_once": 0.0435,
+  "sinif0_sonra": 0.0489,
+  "sinif1_once": 0.9277,
+  "sinif1_sonra": 0.9277,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000100_000004170",
+  "sinif0_once": 0.0635,
+  "sinif0_sonra": 0.0905,
+  "sinif1_once": 0.7773,
+  "sinif1_sonra": 0.7773,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000103_000004260",
+  "sinif0_once": 0.1519,
+  "sinif0_sonra": 0.152,
+  "sinif1_once": 0.8435,
+  "sinif1_sonra": 0.8435,
+  "sinif1_geri_konan_px": 1346
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000105_000004320",
+  "sinif0_once": 0.0459,
+  "sinif0_sonra": 0.0763,
+  "sinif1_once": 0.6825,
+  "sinif1_sonra": 0.6825,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000107_000004380",
+  "sinif0_once": 0.1192,
+  "sinif0_sonra": 0.1226,
+  "sinif1_once": 0.7668,
+  "sinif1_sonra": 0.7668,
+  "sinif1_geri_konan_px": 328
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000111_000004500",
+  "sinif0_once": 0.1054,
+  "sinif0_sonra": 0.1054,
+  "sinif1_once": 0.5862,
+  "sinif1_sonra": 0.5862,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000116_000004650",
+  "sinif0_once": 0.0282,
+  "sinif0_sonra": 0.0399,
+  "sinif1_once": 0.6155,
+  "sinif1_sonra": 0.6155,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000120_000004770",
+  "sinif0_once": 0.0786,
+  "sinif0_sonra": 0.0917,
+  "sinif1_once": 0.7296,
+  "sinif1_sonra": 0.7296,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000124_000004890",
+  "sinif0_once": 0.1655,
+  "sinif0_sonra": 0.1657,
+  "sinif1_once": 0.8304,
+  "sinif1_sonra": 0.8304,
+  "sinif1_geri_konan_px": 51
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000126_000004950",
+  "sinif0_once": 0.0626,
+  "sinif0_sonra": 0.0626,
+  "sinif1_once": 0.9248,
+  "sinif1_sonra": 0.9248,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000135_000005220",
+  "sinif0_once": 0.1125,
+  "sinif0_sonra": 0.139,
+  "sinif1_once": 0.3599,
+  "sinif1_sonra": 0.3599,
+  "sinif1_geri_konan_px": 22
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000139_000005340",
+  "sinif0_once": 0.1771,
+  "sinif0_sonra": 0.1771,
+  "sinif1_once": 0.3625,
+  "sinif1_sonra": 0.3625,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000143_000005460",
+  "sinif0_once": 0.2209,
+  "sinif0_sonra": 0.2323,
+  "sinif1_once": 0.1526,
+  "sinif1_sonra": 0.1526,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000152_000005760",
+  "sinif0_once": 0.6211,
+  "sinif0_sonra": 0.1743,
+  "sinif1_once": 0.2408,
+  "sinif1_sonra": 0.2408,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000160_000006000",
+  "sinif0_once": 0.226,
+  "sinif0_sonra": 0.1792,
+  "sinif1_once": 0.0513,
+  "sinif1_sonra": 0.0513,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000196_000007290",
+  "sinif0_once": 0.5863,
+  "sinif0_sonra": 0.2876,
+  "sinif1_once": 0.0716,
+  "sinif1_sonra": 0.0716,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000200_000007410",
+  "sinif0_once": 0.1693,
+  "sinif0_sonra": 0.1693,
+  "sinif1_once": 0.1926,
+  "sinif1_sonra": 0.1926,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000202_000007470",
+  "sinif0_once": 0.3931,
+  "sinif0_sonra": 0.1557,
+  "sinif1_once": 0.3483,
+  "sinif1_sonra": 0.3484,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000205_000007560",
+  "sinif0_once": 0.109,
+  "sinif0_sonra": 0.3139,
+  "sinif1_once": 0.0946,
+  "sinif1_sonra": 0.0946,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000215_000007860",
+  "sinif0_once": 0.5243,
+  "sinif0_sonra": 0.2232,
+  "sinif1_once": 0.0412,
+  "sinif1_sonra": 0.0412,
+  "sinif1_geri_konan_px": 0
+ },
+ {
+  "govde": "dji_20260822172613_0038_d__frame_000218_000007980",
+  "sinif0_once": 0.1484,
+  "sinif0_sonra": 0.1534,
+  "sinif1_once": 0.1069,
+  "sinif1_sonra": 0.1069,
+  "sinif1_geri_konan_px": 0
+ }
+]

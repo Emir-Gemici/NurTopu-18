@@ -1,0 +1,34 @@
+{
+ "grup": "F",
+ "kareler": [
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000062_000002820",
+   "degisti": false,
+   "sinif0_once": 0.16,
+   "sinif0_sonra": 0.16,
+   "not": "Iki yol koridoru (sol cakil alan, orta stabilize yol) zaten ust ve alt kenara kadar sinif 0; aradaki calilik ve sag agaclik sinif 1; sag taraftaki cig toprak/koyu leke etiketsiz (madde 12). Tutarli, degistirilmedi."
+  },
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000105_000004320",
+   "degisti": true,
+   "sinif0_once": 0.0459,
+   "sinif0_sonra": 0.0763,
+   "not": "Yol ust kenarda (x 824-884, y 0-60) ve alt kenarda genisleyen cakil apron (x 360-620, y 432-540) etiketsizdi; 4K buyutme ile dogrulanip sinif 0 yapildi (banket kuru ot haric). Poligonlarin taban sinif1 ile ortusen 1186 pikseli geri yuklendi; sinif1 0.6825 -> 0.6825 degismedi. Sol taraftaki cop yigini sinif1, cayir etiketsiz korundu."
+  },
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000126_000004950",
+   "degisti": false,
+   "sinif0_once": 0.0626,
+   "sinif0_sonra": 0.0626,
+   "not": "Sol alt yol sol kenardan (y~290-360) alt kenara (x~450-620) kadar sinif 0 cizili; geri kalan sik bitki ortusu sinif 1. Tutarli, degistirilmedi."
+  },
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000196_000007290",
+   "degisti": false,
+   "sinif0_once": 0.5863,
+   "sinif0_sonra": 0.5863,
+   "not": "Sag/alt platform sinif 0 olarak sag ve alt kenara kadar cizili; diyagonal beton kanal/serit ve calilar sinif 1 (silinmez); sol calilik etiketsiz. Yasak listesi geregi mevcut sinif 1 korundu, degistirilmedi."
+  }
+ ],
+ "komutlar": "VENV scripts/olcum/140_uc_maske_araci.py goster/buyut/uret (bkz. F/*_ops.json); 105 icin ek: numpy ile taban sinif1 geri yukleme + goster ile bindirme yenilendi"
+}

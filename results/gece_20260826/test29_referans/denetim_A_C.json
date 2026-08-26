@@ -1,0 +1,37 @@
+{
+ "_ne": "test29 referans tutarlilik denetimi, gruplar A,B,C (15 kare), 2026-08-26",
+ "sartname": "SU_ETIKETLEME_PLANI.md §4b-EK-4 (8), §4b-EK-5 (12)",
+ "incelenen": 15,
+ "duzeltilen": [
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000025_000001620",
+   "grup": "A",
+   "neden": "Sol-ust (x0-260,y0-200) sinif 0 yapilmis alan lastik izli turuncu cig toprak + seyrek ot; kareyi kesen yol yok. Madde 12 -> etiketsiz. sinif0 0.0343->0.0; kirmizi kayip 0 px."
+  },
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000202_000007470",
+   "grup": "B",
+   "neden": "Asfalt yolun sagi (x>~800, cig kirmizi toprak/kuru ot), ust bant (x180-640,y0-120 kuru ot), orta parcalar (x420-640) ve beyaz patikanin solundaki cig toprak sinif 0 idi. Madde 8/12 -> etiketsiz; yol (x~700-800) ve beton kanal banki korundu. sinif0 0.3931->0.1557; kirmizi kayip 0 px (+30 px kontur dolgusu). B amelesi rapor.json'da ayni kusuru mimara not etmisti."
+  },
+  {
+   "govde": "dji_20260822172613_0038_d__frame_000039_000002040",
+   "grup": "C",
+   "neden": "Lastik sahasinda yol yok; sinif 0 alanlari (x180-480,y0-360 ve x600-900,y0-330) tekerlek izli tarla/cig toprak. Ayni sahanin B/000035 karesinde sinif 0 hic yok — tutarsizlik. Madde 12 -> tum sinif 0 geri alindi. sinif0 0.1308->0.0; kirmizi kayip 0 px."
+  }
+ ],
+ "degismeyen": [
+  "A/000085",
+  "A/000107",
+  "A/000135",
+  "A/000200",
+  "B/000035",
+  "B/000089",
+  "B/000111",
+  "B/000139",
+  "C/000094",
+  "C/000116",
+  "C/000143",
+  "C/000205"
+ ],
+ "not": "Kirmizi hic silinmedi: deger-0 islemlerinin kapsadigi kirmizi, tabandan kontur poligonlariyla ayni ops.json icinde geri konuldu (deger 2). Tum 58 *_uc.png (29 grup + 29 taban) 960x540 ve {0,1,2} dogrulandi. Sinirda birakilan: C/000143 x420-700 genis gri taranmis platform sinif 0 (greyderle taranmis duz zemin sayildi); A/000085 alt-sol yol bandi yol kenarindaki kuru otu bir miktar kapsiyor olabilir — degistirilmedi."
+}

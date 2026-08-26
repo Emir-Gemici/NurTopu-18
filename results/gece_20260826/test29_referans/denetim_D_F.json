@@ -1,0 +1,239 @@
+{
+ "denetci": "tutarlilik denetcisi D-F",
+ "tarih": "2026-08-26",
+ "incelenen": 14,
+ "duzeltilen": [
+  {
+   "govde": "D/dji_20260822172613_0038_d__frame_000048_000002310",
+   "neden": "Karede yol yok; bicilmis aniz tarlasi (yumusak zemin, madde 12) tumuyle sinif 0 yapilmisti -> tum sinif 0 etiketsize alindi (0.1748 -> 0.0). Kirmizi 0.5219 aynen korundu."
+  },
+  {
+   "govde": "D/dji_20260822172613_0038_d__frame_000152_000005760",
+   "neden": "Sol kuru ot/calilik yamaci (madde 8) ve orta paletle cignenmis toprak seridi (madde 12) sinif 0 idi -> etiketsiz; yalnizca cakil yol (x~335-460 ust, 322-497 alt) ve beton yol (x~772-805 ust, 845-880 alt) sinif 0 birakildi (0.6226 -> 0.1743). Kirmizi 0.2408 korundu."
+  },
+  {
+   "govde": "D/dji_20260822172613_0038_d__frame_000215_000007860",
+   "neden": "Yolun sol-ustundeki cig/erozyonlu yamac (seyrek calili, madde 12) sinif 0 idi -> etiketsiz; yol ust kenari (770,0)-(290,540) hattina kadar sinif 0 kaldi (0.5243 -> 0.2232). Kirmizi 0.0412 korundu."
+  },
+  {
+   "govde": "E/dji_20260822172613_0038_d__frame_000053_000002460",
+   "neden": "Cakil sahanin altindaki kuru ot + kazilmis koyu toprak bolgesi (x 300-960, y>~30-130) sinif 0 idi (madde 8/12) -> etiketsiz; cakil yol/saha ust bant korundu (0.3638 -> 0.1875). Kirmizi 0.3885 korundu."
+  },
+  {
+   "govde": "E/dji_20260822172613_0038_d__frame_000160_000006000",
+   "neden": "Yolun sagindaki beton hendek + duvar seridi (722-780 ust, 800-870 alt) yesile dahil edilmisti (uydurma surulebilir alan) -> etiketsiz (0.226 -> 0.1792). Kirmizi eklenmedi/dokunulmadi (0.0513)."
+  },
+  {
+   "govde": "F/dji_20260822172613_0038_d__frame_000196_000007290",
+   "neden": "Platformun sag-alt kismindaki kizil cig toprak/fidanli kabarik zemin (madde 12) sinif 0 idi -> etiketsiz; gri sikistirilmis platform ve yol sinif 0 kaldi (0.5863 -> 0.2876). Kirmizi 0.0716 korundu."
+  }
+ ],
+ "degismeyen": [
+  "D/frame_000100",
+  "D/frame_000120",
+  "E/frame_000103",
+  "E/frame_000124",
+  "E/frame_000218",
+  "F/frame_000062",
+  "F/frame_000105",
+  "F/frame_000126"
+ ],
+ "yontem": "140_uc_maske_araci uret --taban + deger-0 poligon; ardindan taban ve onceki maskenin sinif1 pikselleri numpy ile geri yuklendi (kirmizi degismedi), goster ile bindirme yenilendi",
+ "dogrulama": {
+  "D/dji_20260822172613_0038_d__frame_000048_000002310_uc.png": {
+   "benzersiz": [
+    0,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.0,
+   "sinif1": 0.5219
+  },
+  "D/dji_20260822172613_0038_d__frame_000100_000004170_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.0905,
+   "sinif1": 0.7773
+  },
+  "D/dji_20260822172613_0038_d__frame_000120_000004770_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.0917,
+   "sinif1": 0.7296
+  },
+  "D/dji_20260822172613_0038_d__frame_000152_000005760_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.1743,
+   "sinif1": 0.2408
+  },
+  "D/dji_20260822172613_0038_d__frame_000215_000007860_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.2232,
+   "sinif1": 0.0412
+  },
+  "E/dji_20260822172613_0038_d__frame_000053_000002460_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.1875,
+   "sinif1": 0.3885
+  },
+  "E/dji_20260822172613_0038_d__frame_000103_000004260_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.1546,
+   "sinif1": 0.8409
+  },
+  "E/dji_20260822172613_0038_d__frame_000124_000004890_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.1658,
+   "sinif1": 0.8303
+  },
+  "E/dji_20260822172613_0038_d__frame_000160_000006000_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.1792,
+   "sinif1": 0.0513
+  },
+  "E/dji_20260822172613_0038_d__frame_000218_000007980_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.1534,
+   "sinif1": 0.1069
+  },
+  "F/dji_20260822172613_0038_d__frame_000062_000002820_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.16,
+   "sinif1": 0.4292
+  },
+  "F/dji_20260822172613_0038_d__frame_000105_000004320_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.0763,
+   "sinif1": 0.6825
+  },
+  "F/dji_20260822172613_0038_d__frame_000126_000004950_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.0626,
+   "sinif1": 0.9248
+  },
+  "F/dji_20260822172613_0038_d__frame_000196_000007290_uc.png": {
+   "benzersiz": [
+    0,
+    1,
+    2
+   ],
+   "gecerli": true,
+   "boyut": [
+    540,
+    960
+   ],
+   "sinif0": 0.2876,
+   "sinif1": 0.0716
+  }
+ }
+}

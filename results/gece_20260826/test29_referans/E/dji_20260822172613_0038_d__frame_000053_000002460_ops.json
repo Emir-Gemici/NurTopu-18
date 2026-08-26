@@ -1,0 +1,48 @@
+{
+ "islemler": [
+  {
+   "tip": "poligon",
+   "deger": 0,
+   "nokta": [
+    [
+     300,
+     130
+    ],
+    [
+     400,
+     110
+    ],
+    [
+     520,
+     85
+    ],
+    [
+     640,
+     65
+    ],
+    [
+     760,
+     40
+    ],
+    [
+     880,
+     30
+    ],
+    [
+     960,
+     60
+    ],
+    [
+     960,
+     540
+    ],
+    [
+     300,
+     540
+    ]
+   ],
+   "not": "denetim D-F: madde 8/12 geri alma"
+  }
+ ],
+ "denetim_notu": "uret sonrasi taban sinif1 pikselleri geri yuklendi (b[(a==2)&(b!=2)]=2)"
+}

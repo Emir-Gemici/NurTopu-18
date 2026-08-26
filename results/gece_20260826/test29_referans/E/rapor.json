@@ -1,0 +1,7 @@
+{"grup":"E","kareler":[
+{"govde":"dji_20260822172613_0038_d__frame_000053_000002460","degisti":false,"sinif0_once":0.3638,"sinif0_sonra":0.3638,"not":"Yol ust ve sol kenara zaten ulasiyor; etiketsiz kalan bolge cig/cali toprak (madde 12) — degistirilmedi."},
+{"govde":"dji_20260822172613_0038_d__frame_000103_000004260","degisti":true,"sinif0_once":0.1519,"sinif0_sonra":0.1546,"not":"Yolun sag kenardaki ucu (x 880-960, y 395-475) sinif 0 ile kare kenarina uzatildi."},
+{"govde":"dji_20260822172613_0038_d__frame_000124_000004890","degisti":true,"sinif0_once":0.1655,"sinif0_sonra":0.1658,"not":"Yolun alt kenardaki ucu (x 775-880, y 470-540) sinif 0 ile kare kenarina uzatildi."},
+{"govde":"dji_20260822172613_0038_d__frame_000160_000006000","degisti":false,"sinif0_once":0.226,"sinif0_sonra":0.226,"not":"Yol ust ve alt kenara zaten ulasiyor; sol sev cig toprak/cali etiketsiz (madde 12) — degistirilmedi."},
+{"govde":"dji_20260822172613_0038_d__frame_000218_000007980","degisti":true,"sinif0_once":0.1484,"sinif0_sonra":0.1534,"not":"Yolun alt-sag ucu (x 820-930, y 470-540) kare kenarina uzatildi; kanal (sinif 1) korundu. Kanal altindaki soluk serit dogrulanamadi, etiketsiz birakildi."}
+]}
