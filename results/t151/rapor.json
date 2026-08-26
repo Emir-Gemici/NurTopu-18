@@ -1,0 +1,164 @@
+{
+ "gorev": "T151",
+ "baslik": "Tek karar yolu — analyze_path vs rota_bul/koridor_adaylari",
+ "tarih": "2026-08-26",
+ "kapsam": "ana dizin, salt okuma; uretim kodu degismedi; yalniz results/t151 yazildi",
+ "gpu_kullanildi": false,
+ "karar_verildi": false,
+ "cagri_haritasi": {
+  "saha_gununde_yayina_giden_tek_yol": {
+   "zincir": "JETSON_KILAVUZ.md:638/647 -> codes/rpi_inference.py:2141 run_camera -> analyze_path -> _rota_kararini_esikle:1720 -> _karari_yayinla:267 -> comms/iha_sender.py:243 KararYayinci -> send_open_route/send_no_route",
+   "yol": "analyze_path"
+  },
+  "analyze_path_cagri_yerleri": [
+   {"yer": "codes/rpi_inference.py:2141", "rol": "URETIM run_camera", "saha": true},
+   {"yer": "codes/rpi_inference.py:2047", "rol": "run_video", "saha": "kosulursa"},
+   {"yer": "codes/rpi_inference.py:1944", "rol": "run_image", "saha": false},
+   {"yer": "comms/yks_gui.py:1569", "rol": "YKS yerel algi paneli (yayin degil)", "saha": "YKS"},
+   {"yer": "simulation/scripts/iha_perceive.py:139", "rol": "Gazebo (CONTRACTS 11.1/1: sahip degil)", "saha": false},
+   {"yer": "codes/test_accuracy.py:182", "rol": "dogruluk olcumu", "saha": false},
+   {"yer": "scripts/olcum/61_rota_moloza_basma.py:99", "rol": "model kabul kapisi K1-K4/K6 rota ureticisi (65_kabul_denetcisi.py:490)", "saha": false},
+   {"yer": "scripts/olcum/126_t138_gece_kumesi.py:104,108", "rol": "T152 rota-yol kapisi", "saha": false}
+  ],
+  "rota_bul_cagri_yerleri": [
+   {"yer": "jetson_paket/kod/kamera_dogrula.py:36", "rol": "saha kamera dogrulama (JETSON_KILAVUZ:586/599/621), plan=False", "saha": "tanisal"},
+   {"yer": "scripts/jetson_fps.py:226", "rol": "FPS zinciri (JETSON_KILAVUZ:409/439/462), plan=False", "saha": "tanisal"},
+   {"yer": "scripts/saha_kuru_kosu.py:709", "rol": "CONTRACTS 11.4 kuru kosu halka 'rota'", "saha": "PC, ucus oncesi"},
+   {"yer": "simulation/scripts/iha_haritala.py:324", "rol": "Gazebo rota.json (sahip degil)", "saha": false},
+   {"yer": "codes/test_rota_sentetik.py:134,196", "rol": "GENEL KAPI 15/15", "saha": false},
+   {"yer": "codes/test_rota_guvenlik.py", "rol": "rota guvenlik kapisi", "saha": false},
+   {"yer": "scripts/copy_paste_augmentation.py:882", "rol": "veri uretimi rota kapisi", "saha": false},
+   {"yer": "scripts/v21_degerlendir_ve_paketle.py:71", "rol": "model degerlendirme; docstring 'uretim yolunun aynisi' YANLIS", "saha": false},
+   {"yer": "codes/costmap_path_finder.py:1080", "rol": "koridor_adaylari — yalniz rota_bul icinden", "saha": false},
+   {"yer": "codes/costmap_path_finder.py:1360", "rol": "analyze_path_uyumlu koprusu — 0 cagri yeri", "saha": false}
+  ],
+  "ayna_diff": "codes<->jetson_paket/kod: rpi_inference, costmap_path_finder, karar_sozlesmesi, jetson_fps -> fark YOK; kamera_dogrula.py kok kopyasi YOK",
+  "yan_bulgu": "JETSON_KILAVUZ.md:300 cp listesinde kamera_dogrula.py yok, ama :586 onu ~/navitas/codes/ altinda cagiriyor"
+ },
+ "sozlesme_farki": {
+  "cikti": {
+   "analyze_path": "demet (open_path, confidence, waypoints[, clean][, (sebep,detay)][, olcum])",
+   "rota_bul": "sozluk {durum, yol_no, guven, waypoints_px, darbogaz_m, adaylar, en_iyi_aday, ihlaller, sure_ms, sebep}"
+  },
+  "road_kaynagi": {
+   "analyze_path": "olcum['darbogaz_serit'] (rpi_inference.py:1245) — rotanin EN DAR noktasinin seridi",
+   "rota_bul": "kazanan['etiket'] (costmap_path_finder.py:1160) — kapi agirlik merkezinin serit_no'su"
+  },
+  "kapilar": {
+   "zemin_saglamlik_ZEMIN_MASKESI_SUPHELI": {"analyze_path": "VAR :1524", "rota_bul": "VAR :1067"},
+   "K_A_uc_bant_UC_BANT_TEMAS_YOK": {"analyze_path": "VAR :1581", "rota_bul": "DOLAYLI (_bagli_mi tohum bantlari), kanonik sebep yok"},
+   "C_uzayi": {"analyze_path": "VAR :1615", "rota_bul": "VAR :313"},
+   "astar_tanik_yol_plan_butcesi": {"analyze_path": "VAR :1630-1680", "rota_bul": "VAR :1195-"},
+   "KENAR_GUVENSIZ": {"analyze_path": "VAR :1665", "rota_bul": "YOK"},
+   "rota_dogrula_K2_K3_ihlaller_ankor": {"analyze_path": "YOK", "rota_bul": "VAR :1305-1330 DOGRULAMA_BASARISIZ"},
+   "koridor_adaylari_uc_guzergah_kapisi_sartname_2_1": {"analyze_path": "YOK", "rota_bul": "VAR BELIRSIZ_TEK_KAPI / BELIRSIZ_COKLU"},
+   "etiket_cakismasi_fail_closed_T90": {"analyze_path": "YOK", "rota_bul": "VAR :1150-1158"},
+   "KORIDOR_DEGIL_T65": {"analyze_path": "VAR :1703", "rota_bul": "YOK"},
+   "K_B_guven_esigi": {"analyze_path": "VAR :1730", "rota_bul": "YOK (yalniz yayinci/GUI)"},
+   "OLCEK_YOK_halka5": {"analyze_path": "cagri yerinde :1943/:2046/:2140", "rota_bul": "cagri yerinde saha_kuru_kosu.py:690"},
+   "HEDEF_YOK_HB_T72": {"analyze_path": "VAR :1643 ama uretimde goruntu= geciren yok", "rota_bul": "dis hedef argumani var, besleyen yok (halka 6 SAHIPSIZ)"},
+   "beraberlik_bandi_D112": {"analyze_path": "VAR :1241", "rota_bul": "YOK"},
+   "rota_ekseni_S2": {"analyze_path": "VAR :1396", "rota_bul": "YOK"},
+   "letterbox_icerik": {"analyze_path": "VAR", "rota_bul": "VAR (T135, icerik=None'da uyari :1015)"},
+   "T152_rota_yol_ustunde": {"analyze_path": "OLCULUYOR", "rota_bul": "OLCULMEDI"},
+   "genel_kapi_test_rota_sentetik_15_15": {"analyze_path": "SINANMIYOR", "rota_bul": "SINANIYOR"}
+  },
+  "ret_sozlugu_uyusmazligi": "karar_sozlesmesi.ROTA_RET_SEBEPLERI (:106-118, tests/test_rota_ret_nedenleri.py:71 kilitli) 11 kod icerir; rota_bul'un BELIRSIZ_TEK_KAPI/BELIRSIZ_COKLU/KAPALI_DAR/KAPALI_KOPUK/DOGRULAMA_BASARISIZ/KAPI_YOK kodlarinin HICBIRI kumede yok. KararYayinci._karari_gonder (iha_sender.py:273) karar_reddi[0]'i dogrudan NO_ROUTE.sebep yapar."
+ },
+ "olcum": {
+  "yeni": {
+   "betik": "results/t151/iki_yol_kiyasi.py",
+   "json": "results/t151/iki_yol_kiyasi.json",
+   "kume": "simulation/scripts/arena.py 5 harita x 3 senaryo = 15 yer gercekli sahne; kusursuz maske; mpp=0.10; tuval 500x500",
+   "yordam": "AYNI {0:zemin,1:engel} sozlugu hem rota_bul(plan=True, baslangic, hedef) hem analyze_path(icerik=None, engel_mask, mpp) ile kosuldu; model KOSULMADI",
+   "sonuc": {
+    "n_sahne": 15,
+    "rota_bul_karar_verdi": 15,
+    "rota_bul_dogru": 15,
+    "rota_bul_yanlis_guzergah": 0,
+    "analyze_path_karar_verdi": 15,
+    "analyze_path_dogru": 6,
+    "analyze_path_yanlis_guzergah": 9,
+    "ikisi_karar_verdiginde_uyusan": 6,
+    "analyze_path_rotasi_ACIK_guzergahta": 15,
+    "rota_bul_rotasi_ACIK_guzergahta": 15,
+    "analyze_path_baskin_serit_dogru": 15,
+    "yanlis_etikette_yayinlanan_seridin_rota_payi_yuzde2_altinda": 5,
+    "zemin_kaplama_araligi": [0.2986, 0.4262],
+    "zemin_kaplama_tavani": 0.55
+   },
+   "yorum": "Ayrisan sey ROTA GEOMETRISI DEGIL, YAYINLANAN road NUMARASI. Iki yolun waypointleri de 15/15 acik guzergahin ustunde. analyze_path road'u darbogaz_serit'ten okur; arena topolojisinde guzergahlar uclarda birlestigi icin darbogaz komsu seride tasan birkac piksele dusuyor.",
+   "sinirlar": [
+    "maske KUSURSUZ — MANTIK olcumu, ALGI olcumu degil",
+    "rota_bul KB/HB tohumunu ARGUMAN aldi; analyze_path'in tohum argumani YOK (bu esitsizlik olculen sozlesme farkinin kendisi)",
+    "n=15; oran degil MEKANIZMA kanit",
+    "waypoint->guzergah eslemesi +-2 m bant toleransiyla (olcumun kendi toleransi)"
+   ],
+   "contracts_6_2_ile_iliski": "CELISMEZ, KUMESI FARKLI. §6.2'nin darbogaz 198/209 vs baskin 196/209 sayisi sentetik_arena_kadraj_t66 kumesindendir; orada iki istatistik 258 karenin 5'inde (%1,9) ayrisir (D-145 §3) cunku 260 karenin 226'sinda uc kapi gorunmez. §6.2 zaten 'siralama bu kumede karara baglanamaz' der."
+  },
+  "repoda_kayitli": [
+   {"kayit": "D-145 (REVIEW_LOG.md:10470)", "kume": "sentetik_arena_kadraj_t66 n=260", "sayi": "uretim cevrilen 8/260, envanter yol_no cevrilen 10/260, durum==ACIK 34/260 (226 karede n_kapi!=3), on kayit (B)+(D) atesledi -> envantere baglama REDDEDILDI"},
+   {"kayit": "D-145 §2", "kume": "470 aday kapi", "sayi": "etiket != serit_no 104/470 (%22,1); canli kusur 1/34 -> T90/D-146 ile kapatildi"},
+   {"kayit": "D-147 (:10793)", "kume": "ayni", "sayi": "bant secimi 41/260 (%15,8) kararsiz; T90 oncesi=sonrasi"},
+   {"kayit": "D-122 (:8454)", "kume": "n=260", "sayi": "analyze_path karar cevrilmesi 9/260 (%3,46) — TABAN"},
+   {"kayit": "results/saha_kuru_kosu_20260826_001414/ozet.json", "kume": "1 gercek kare", "sayi": "halka rota DUSTU, durum=BELIRSIZ_TEK_KAPI, yol_no=null, mpp=0.0338; dosya alani hala costmap_path_finder.py:729 (bugun :983)"}
+  ]
+ },
+ "olculemedi": [
+  "Gercek karelerde iki yolun AYNI kare uzerindeki kiyasi — repoda boyle bir kayit YOK (D-145 'DOGRULANAMADI #4' bunu zaten yazar)",
+  "rota_bul'un v36 ile gercek karelerde cekimserlik ORANI — elde tek nokta var (kuru kosu 1 kare), n=1 oran degildir",
+  "Yayinlanan road'un hakem PUANINA gercek etkisi (D-145 'DOGRULANAMADI #5')",
+  "A* maliyet beraberligi (T79'un kalan tek mekanizmasi) — astar() toplam maliyeti dondurmuyor",
+  "SiK telsiz uzerinde yayin (CONTRACTS §11.2 halka 8 zaten 'OLCULMEDI')"
+ ],
+ "nasil_olculur": {
+  "O1_gercek_kare_iki_yol_kiyasi": {
+   "betik_kalibi": "scripts/olcum/126_t138_gece_kumesi.py (D-139: kare basina model YALNIZ BIR KEZ; ayni mk+icerik ikisine de)",
+   "kume": "CONTRACTS §12 DOGRULAMA kumesi + dataset/dji_kirsal_0038_bolum_v3/labels/test + data/arena_referans/sartname_s9_arena.png",
+   "esit_kosullar": "ayni model (codes/model_registry.resolve_model), conf=0.30, ayni imgsz, ayni icerik, ayni mpp (kahin), plan=True",
+   "yazilacak": "ap_yol, ap_red, ap_baskin_serit, rb_durum, rb_yol_no, rb_n_kapi + T152 rota_yol_olc (yol_payi, engel_wp) IKISI ICIN AYRI",
+   "on_kayit": "sonuc gorulmeden: rota_bul cekimserligi esigi + 'yol_payi farki <= 1 kare ise geometri denk' kurali"
+  },
+  "O2_road_istatistigi": "scripts/olcum/92_t96_road_istatistigi.py TAM ARENA gorusunde (kadrajsiz) yeniden kosulur; A/B/C ayni ciktidan turetilir; 6/15 vs 198/209 ayni tabloda raporlanir",
+  "O3_mutasyon": "bu gorevde uretim kodu degismedi -> mutasyon borcu yok; O1/O2 betikleri yazilirsa kok satir bozulup test dusmeli, bayt-es geri alinmali"
+ },
+ "oneriler": [
+  {
+   "secenek": "A",
+   "ozet": "analyze_path TEK URETIM YOLU ilan edilir; rota_bul tanisal olur",
+   "tasinmasi_gereken_kapilar": ["koridor_adaylari uc-guzergah kapisi (ya tasinir ya CONTRACTS'a 'uretim ucu ayirt etmez' diye YAZILIR)", "rota_dogrula K2/K3 ihlaller", "road istatistigi karari (O2)"],
+   "30_eylul_maliyeti": "DUSUK — kod zaten sahada kosan yol; K1 telsiz, T152 kapisi, model kabul kapilari, _rota_kararini_esikle buna bagli; degisiklik = EKLEME",
+   "risk": "yanlis road yayini riski olculmus ve kapatilmamis kalir (6/15)"
+  },
+  {
+   "secenek": "B",
+   "ozet": "rota_bul TEK URETIM YOLU (CONTRACTS §11.2'nin bugunku iddiasi)",
+   "tasinmasi_gereken_kapilar": ["KENAR_GUVENSIZ", "KORIDOR_DEGIL", "K-B guven esigi", "HEDEF_YOK/HB", "beraberlik bandi", "rota ekseni", "§6.4 kanonik ret sozlugu (ROTA_RET_SEBEPLERI genisletme veya esleme katmani)"],
+   "30_eylul_maliyeti": "YUKSEK — K1 telsiz halkasi, _rota_kararini_esikle, T152 kapisi, model kabul kapilari, YKS hakem ekrani analyze_path donus sekline bagli; kopru (analyze_path_uyumlu:1341) return_reason/return_olcum DESTEKLEMIYOR",
+   "olculmus_engel": "cekimserlik: D-145 ACIK 34/260; kuru kosuda gercek karede BELIRSIZ_TEK_KAPI; halka 6 SAHIPSIZ oldugu icin baslangic/hedef argumanlari sahada BESLENEMIYOR",
+   "not": "O1 olculmeden secilirse KANITSIZDIR"
+  },
+  {
+   "secenek": "C",
+   "ozet": "Roller AYRILIR ve BEYAN EDILIR: uretim analyze_path, tanisal/kapi rota_bul (mevcut fiili durum)",
+   "adimlar": [
+    "CONTRACTS §11.2 halka 7 sahibi rpi_inference.analyze_path olarak duzeltilir; rota_bul ayri satir (7b)",
+    "scripts/saha_kuru_kosu.py halka rota IKI satir uretir: rota_uretim (analyze_path) + rota_tani (rota_bul) — bugun kuru kosu SAHADA KOSMAYAN yolu olcup 'rota DUSTU' diyor",
+    "codes/test_rota_sentetik.py genel kapisina analyze_path kolu EKLENIR (rota_bul kolu aynen kalir, 15/15 bozulmaz); esik on kayitla konur (bugunku taban 6/15)",
+    "analyze_path_uyumlu ya silinir ya 'yalniz tani' isaretlenir (0 cagri yeri, bakirlik)"
+   ],
+   "30_eylul_maliyeti": "EN DUSUK — davranis degismez, BEYAN ve KAPI degisir",
+   "risk": "6/15 road bulgusu kapanmaz ama GORUNUR olur ve on kayitli bir kapiya baglanir"
+  }
+ ],
+ "contracts_11_2_taslak": {
+  "halka_7": "| 7 | Rota uretimi | maskeler + mpp (+ hb_xy) | road, waypoints, (sebep, detay) | codes/rpi_inference.py:1322 (analyze_path) — run_camera/run_video ve yks_gui bu yolu cagirir; yayin comms/iha_sender.KararYayinci (§6.5) | KUSURLU · D-25 · T151 |",
+  "halka_7b": "| 7b | Rota kapisi / tani | maskeler + mpp + KB/HB tohumu | durum, yol_no, adaylar, ihlaller | codes/costmap_path_finder.py:983 (rota_bul) — genel kapi codes/test_rota_sentetik.py, saha tani jetson_paket/kod/kamera_dogrula.py:36, FPS scripts/jetson_fps.py:226 | URETIM DEGIL · T151 |",
+  "baglayici_cumle": "Saha gununde telsize yazan tek karar yolu halka 7'dir. Halka 7b sahada yalniz tani uretir; hicbir OPEN_ROUTE/NO_ROUTE mesaji 7b'den dogmaz. Iki yolun kapi kumeleri farklidir (T151 §2.2); birinde olup digerinde olmayan bir kapi, o yol uretime alinmadan tasinmak zorundadir. scripts/saha_kuru_kosu.py halka rota'yi 7 uzerinden olcer; 7b olcumu ayri satirdir."
+ },
+ "kosulan_komutlar": [
+  {"komut": "O:/navitas-local-train/venv/Scripts/python.exe -B results/t151/iki_yol_kiyasi.py", "cikti": "15 satirlik tablo + ozet; yazildi: results/t151/iki_yol_kiyasi.json"},
+  {"komut": "O:/navitas-local-train/venv/Scripts/python.exe -B codes/test_rota_sentetik.py", "cikti": "SONUC: 15/15 dogru · [OK] TUM DETERMINISTIK SAHNELER GECTI"},
+  {"komut": "diff -q codes/{rpi_inference,costmap_path_finder,karar_sozlesmesi}.py jetson_paket/kod/ ; diff -q scripts/jetson_fps.py jetson_paket/kod/jetson_fps.py", "cikti": "fark yok (bos)"}
+ ]
+}

@@ -1,0 +1,600 @@
+{
+ "olcum": "T151 iki karar yolu, ayni maske, yer gercekli sentetik arena",
+ "kume": "simulation/scripts/arena.py — 5 harita x 3 senaryo",
+ "mpp": 0.1,
+ "tuval": 500,
+ "ozet": {
+  "n_sahne": 15,
+  "analyze_path_rotasi_ACIK_guzergahta": 15,
+  "rota_bul_rotasi_ACIK_guzergahta": 15,
+  "zemin_kaplama_tavani": 0.55,
+  "zemin_kaplama_min": 0.2986,
+  "zemin_kaplama_max": 0.4262,
+  "rota_bul_karar_verdi": 15,
+  "rota_bul_dogru": 15,
+  "rota_bul_yanlis_guzergah": 0,
+  "analyze_path_karar_verdi": 15,
+  "analyze_path_dogru": 6,
+  "analyze_path_yanlis_guzergah": 9,
+  "ikisi_de_karar_verdi": 15,
+  "ikisi_karar_verdiginde_uyusan": 6,
+  "rota_bul_durum_dagilimi": {
+   "ACIK": 15
+  },
+  "analyze_path_ret_dagilimi": {
+   "-": 15
+  }
+ },
+ "satirlar": [
+  {
+   "harita": 1,
+   "senaryo": "kolay",
+   "yer_gercegi": 1,
+   "zemin_kaplama": 0.4262,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 1,
+    "guven": 1.0,
+    "n_waypoint": 43,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.822,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 14.387598037719727,
+    "baskin_serit": 1,
+    "seritler": [
+     419,
+     3,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 1.0,
+     "2": 0.125,
+     "3": 0.125
+    },
+    "rota_bul": {
+     "1": 1.0,
+     "2": 0.14,
+     "3": 0.116
+    }
+   }
+  },
+  {
+   "harita": 1,
+   "senaryo": "orta",
+   "yer_gercegi": 2,
+   "zemin_kaplama": 0.3758,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 2,
+    "guven": 1.0,
+    "n_waypoint": 43,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.742,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 12.984498977661133,
+    "baskin_serit": 2,
+    "seritler": [
+     0,
+     422,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.125,
+     "2": 0.75,
+     "3": 0.125
+    },
+    "rota_bul": {
+     "1": 0.256,
+     "2": 1.0,
+     "3": 0.14
+    }
+   }
+  },
+  {
+   "harita": 1,
+   "senaryo": "zor",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.3079,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 0.797,
+    "n_waypoint": 67,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.662,
+    "n_waypoint": 12,
+    "red": null,
+    "darbogaz_px": 11.58759880065918,
+    "baskin_serit": 3,
+    "seritler": [
+     12,
+     202,
+     427
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.0,
+     "2": 0.083,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.075,
+     "2": 0.119,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 2,
+   "senaryo": "kolay",
+   "yer_gercegi": 1,
+   "zemin_kaplama": 0.419,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 1,
+    "guven": 1.0,
+    "n_waypoint": 45,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.742,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 12.984498977661133,
+    "baskin_serit": 1,
+    "seritler": [
+     424,
+     7,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 1.0,
+     "2": 0.125,
+     "3": 0.125
+    },
+    "rota_bul": {
+     "1": 1.0,
+     "2": 0.089,
+     "3": 0.089
+    }
+   }
+  },
+  {
+   "harita": 2,
+   "senaryo": "orta",
+   "yer_gercegi": 1,
+   "zemin_kaplama": 0.3894,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 1,
+    "guven": 1.0,
+    "n_waypoint": 64,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.674,
+    "n_waypoint": 10,
+    "red": null,
+    "darbogaz_px": 11.787599563598633,
+    "baskin_serit": 1,
+    "seritler": [
+     465,
+     166,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 1.0,
+     "2": 0.0,
+     "3": 0.0
+    },
+    "rota_bul": {
+     "1": 1.0,
+     "2": 0.125,
+     "3": 0.062
+    }
+   }
+  },
+  {
+   "harita": 2,
+   "senaryo": "zor",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.2986,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 0.797,
+    "n_waypoint": 58,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 3,
+    "guven": 0.662,
+    "n_waypoint": 10,
+    "red": null,
+    "darbogaz_px": 11.58759880065918,
+    "baskin_serit": 3,
+    "seritler": [
+     0,
+     210,
+     399
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.0,
+     "2": 0.1,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.069,
+     "2": 0.138,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 3,
+   "senaryo": "kolay",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.4176,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 1.0,
+    "n_waypoint": 44,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 3,
+    "guven": 0.662,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 11.58759880065918,
+    "baskin_serit": 3,
+    "seritler": [
+     0,
+     0,
+     440
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.125,
+     "2": 0.125,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.091,
+     "2": 0.091,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 3,
+   "senaryo": "orta",
+   "yer_gercegi": 2,
+   "zemin_kaplama": 0.3638,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 2,
+    "guven": 1.0,
+    "n_waypoint": 43,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.753,
+    "n_waypoint": 10,
+    "red": null,
+    "darbogaz_px": 13.181398391723633,
+    "baskin_serit": 2,
+    "seritler": [
+     0,
+     430,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.2,
+     "2": 0.9,
+     "3": 0.0
+    },
+    "rota_bul": {
+     "1": 0.256,
+     "2": 1.0,
+     "3": 0.116
+    }
+   }
+  },
+  {
+   "harita": 3,
+   "senaryo": "zor",
+   "yer_gercegi": 1,
+   "zemin_kaplama": 0.3099,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 1,
+    "guven": 0.797,
+    "n_waypoint": 60,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 3,
+    "guven": 0.719,
+    "n_waypoint": 10,
+    "red": null,
+    "darbogaz_px": 12.5906982421875,
+    "baskin_serit": 1,
+    "seritler": [
+     427,
+     189,
+     7
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 1.0,
+     "2": 0.1,
+     "3": 0.0
+    },
+    "rota_bul": {
+     "1": 1.0,
+     "2": 0.167,
+     "3": 0.067
+    }
+   }
+  },
+  {
+   "harita": 4,
+   "senaryo": "kolay",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.4122,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 1.0,
+    "n_waypoint": 43,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.685,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 11.984498977661133,
+    "baskin_serit": 3,
+    "seritler": [
+     0,
+     4,
+     421
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.25,
+     "2": 0.25,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.116,
+     "2": 0.116,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 4,
+   "senaryo": "orta",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.3788,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 1.0,
+    "n_waypoint": 51,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 3,
+    "guven": 0.742,
+    "n_waypoint": 13,
+    "red": null,
+    "darbogaz_px": 12.984498977661133,
+    "baskin_serit": 3,
+    "seritler": [
+     0,
+     28,
+     437
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.077,
+     "2": 0.077,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.098,
+     "2": 0.098,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 4,
+   "senaryo": "zor",
+   "yer_gercegi": 1,
+   "zemin_kaplama": 0.3086,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 1,
+    "guven": 0.797,
+    "n_waypoint": 48,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.742,
+    "n_waypoint": 12,
+    "red": null,
+    "darbogaz_px": 12.984498977661133,
+    "baskin_serit": 1,
+    "seritler": [
+     458,
+     23,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 1.0,
+     "2": 0.083,
+     "3": 0.083
+    },
+    "rota_bul": {
+     "1": 1.0,
+     "2": 0.104,
+     "3": 0.104
+    }
+   }
+  },
+  {
+   "harita": 5,
+   "senaryo": "kolay",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.409,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 1.0,
+    "n_waypoint": 52,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 2,
+    "guven": 0.731,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 12.787599563598633,
+    "baskin_serit": 3,
+    "seritler": [
+     0,
+     124,
+     381
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.0,
+     "2": 0.0,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.077,
+     "2": 0.135,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 5,
+   "senaryo": "orta",
+   "yer_gercegi": 3,
+   "zemin_kaplama": 0.3644,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 3,
+    "guven": 1.0,
+    "n_waypoint": 49,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 3,
+    "guven": 0.731,
+    "n_waypoint": 9,
+    "red": null,
+    "darbogaz_px": 12.793798446655273,
+    "baskin_serit": 3,
+    "seritler": [
+     0,
+     6,
+     463
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.111,
+     "2": 0.111,
+     "3": 1.0
+    },
+    "rota_bul": {
+     "1": 0.082,
+     "2": 0.082,
+     "3": 1.0
+    }
+   }
+  },
+  {
+   "harita": 5,
+   "senaryo": "zor",
+   "yer_gercegi": 2,
+   "zemin_kaplama": 0.3222,
+   "rota_bul": {
+    "durum": "ACIK",
+    "yol_no": 2,
+    "guven": 0.797,
+    "n_waypoint": 42,
+    "n_aday": 3
+   },
+   "analyze_path": {
+    "yol": 1,
+    "guven": 0.674,
+    "n_waypoint": 8,
+    "red": null,
+    "darbogaz_px": 11.787599563598633,
+    "baskin_serit": 2,
+    "seritler": [
+     7,
+     416,
+     0
+    ]
+   },
+   "rota_guzergah_payi": {
+    "analyze_path": {
+     "1": 0.0,
+     "2": 1.0,
+     "3": 0.25
+    },
+    "rota_bul": {
+     "1": 0.095,
+     "2": 1.0,
+     "3": 0.214
+    }
+   }
+  }
+ ]
+}
