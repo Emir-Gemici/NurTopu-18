@@ -17,7 +17,7 @@ duser. Sessiz geri donus mumkun olmaz.
 
 ⚠ Bu paket MODEL AGIRLIGI GEREKTIRIR. Hangi agirlik oldugu BURADA YAZILMAZ:
 `config/model_registry.json` etkin profilinden okunur (madde 16; 2026-08-26
-itibariyla v35 · ~55 MB, `.gitignore` disinda). D-266'ya kadar `MODEL` v24'e
+itibariyla v36 · ~55 MB, `.gitignore` disinda). D-266'ya kadar `MODEL` v24'e
 CIVILIYDI — uretim v35'e gectikten sonra bile kapi eski modeli kosuyor, uretim
 modeli ne kadar bozulursa bozulsun DUSEMIYORDU ("yapisal olarak dusemeyen bos
 yesil"). Artik uretim modeli degisince bu kapi YENI modeli kosar.
@@ -72,9 +72,22 @@ MODEL, MODEL_KIMLIGI = _kayittan_uretim_modeli()
 # maskeydi (arena disini, moloz kenarlarini ve H pedini zemin sayiyordu —
 # results/t133/arena_v24_v35_bindirme.jpg); v35 yalniz orta koridoru zemin
 # sayiyor. D-62'nin dersi: yuksek kaplama "cok gorme" DEGIL, cokme olabilir.
-# ⚠ Bu sabitler YENIDEN v35'e civilenmis oluyor. Model degisince test yine
-#   "bayat sabit" diye DUSECEK — bu bilincli: kapinin isi tam da budur.
-ARENA_KAPLAMA = 0.1508
+# ⚠ Bu sabitler URETIM MODELINE civilenmis olur. Model degisince test
+#   "bayat sabit" diye DUSER — bu bilincli: kapinin isi tam da budur ve
+#   nitekim v35 -> v36 gecisinde DUSTU, sabitler yeniden OLCULEREK yazildi.
+#
+# v36 OLCUMU (2026-08-26, uretim v35 -> v36 terfisi): kaplama 0.1508 -> 0.0444,
+# kenar 0.0000 -> 0.0000. Zincir test_OLCULEN_degerler_SABITLERLE_tutarli ile
+# AYNI: `_preprocess` -> `predict(imgsz=INFER_SIZE, conf=0.30)` ->
+# `_maskeleri_icerige_kirp` -> `zemin_kaplamasi` / `zemin_kenar_dayanmasi`;
+# agirlik DEFTERDEN cozuldu (competition profili, sha 1d1caca6...) — surum
+# adi buraya YAZILMAZ, D-266 kilidi onu zaten reddeder.
+# Ayni sayi bagimsiz olarak `scripts/olcum/109`
+# kosumunda da cikti: results/gece_20260826/gece_v7a_olcum.json
+# k109.figur_zemin_orani = 0.0444 (v35 tabani 0.1508).
+# ⚠ Bu figurde YER GERCEGI YOKTUR: dusus "daha dogru" DEGIL "daha az zemin"
+#   demektir (D-186 bu figur uzerinde model tavani koymayi reddetti).
+ARENA_KAPLAMA = 0.0444
 ARENA_KENAR = 0.0000
 
 _ATLA = not (ARENA.is_file() and MODEL.is_file())
@@ -113,9 +126,10 @@ class OlculenDegerlerKapidanGecerTests(unittest.TestCase):
     def test_kenar_TEK_BASINA_reddi_getirmez(self):
         """Arena kenari tavanin USTUNDE; reddi ancak kaplama ile BIRLIKTE verir."""
         if ARENA_KENAR <= ZEMIN_KENAR_DAYANMA_TAVANI:
-            self.skipTest("v24-donemi kilidi: uretim modelinde kenar dayanma "
+            self.skipTest("v24-donemi kilidi: uretim modelinde (v36) kenar dayanma "
                           f"{ARENA_KENAR} tavanin ALTINDA — AND birlesimi bu "
-                          "modelde sinanamiyor (D-283)")
+                          "modelde sinanamiyor (D-283; v35'te de ATLANIYORDU, "
+                          "v36 ile de 0.0000 olculdu)")
         self.assertGreater(
             ARENA_KENAR, ZEMIN_KENAR_DAYANMA_TAVANI,
             "olcum bayat: arena kenari artik tavanin ustunde degil")
@@ -127,9 +141,10 @@ class OlculenDegerlerKapidanGecerTests(unittest.TestCase):
         """Regresyonun neye karsi oldugu testte GORUNUR olsun."""
         eski_kaplama_tavani = 0.55
         if ARENA_KAPLAMA <= eski_kaplama_tavani:
-            self.skipTest("v24-donemi regresyon kilidi: uretim modelinin kaplamasi "
+            self.skipTest("v24-donemi regresyon kilidi: uretim modelinin (v36) kaplamasi "
                           f"{ARENA_KAPLAMA} ESKI tavani (0.55) bile ASMIYOR. 0.67 "
-                          "tavaninin bu kare icin GEREKCESI KALMADI (D-283, T142)")
+                          "tavaninin bu kare icin GEREKCESI KALMADI (D-283, T142); "
+                          "v35 0.1508 ile de ASMIYORDU, v36 0.0444 ile ARASI ACILDI")
         self.assertGreater(ARENA_KAPLAMA, eski_kaplama_tavani)
         self.assertGreater(ARENA_KENAR, ZEMIN_KENAR_DAYANMA_TAVANI)
 

@@ -3,45 +3,45 @@
  "default_profile": "competition",
  "profiles": {
   "competition": {
-   "model_id": "navitas-seg-v35-512",
-   "path": "models/navitas_seg_v35_best.pt",
+   "model_id": "navitas-seg-v36-512",
+   "path": "models/navitas_seg_v36_best.pt",
    "backend": "pytorch",
    "imgsz": 512,
    "kabul_kumesi": "O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66",
    "_kabul_kumesi_notu": "T77 · D-115/D-133: uretim modeli BU kume uzerinde kabul edilir (T66 ada geometrisi, n=260); v27 de v30 da burada olculdu. Hakem ekrani `arena_kadraj` kaynagini buradan okur; onceden T60 yolu comms/yks_gui.py'de CIPLAK yaziliydi ve surum v27'ye gecince cevrilmedi (kusur D-116/5) — ekran modeli KABUL EDILMEDIGI bir dagilimda gosteriyordu (olculdu: T60 11/12, T66 12/12). Surum degisirse BU alan da degismelidir; ikisi ayni profilde durur ki ayri ayri unutulamasin.",
-   "sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+   "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
    "turevler": {
-    "navitas_seg_v35_best.engine": {
+    "navitas_seg_v36_best.engine": {
      "backend": "tensorrt",
      "imgsz": 512,
      "sha256": "DERLENINCE_YAZILIR",
-     "kaynak": "models/navitas_seg_v35_best.pt",
-     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
-     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
+     "kaynak": "models/navitas_seg_v36_best.pt",
+     "kaynak_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya> --kaynak-pt models/navitas_seg_v36_best.pt` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
     },
-    "navitas_seg_v35_best_512_fp16.engine": {
+    "navitas_seg_v36_best_512_fp16.engine": {
      "backend": "tensorrt",
      "imgsz": 512,
      "sha256": "DERLENINCE_YAZILIR",
-     "kaynak": "models/navitas_seg_v35_best.pt",
-     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
-     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. FP16 derlemesi ayri dosya, ayri ozet."
+     "kaynak": "models/navitas_seg_v36_best.pt",
+     "kaynak_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya> --kaynak-pt models/navitas_seg_v36_best.pt` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. FP16 derlemesi ayri dosya, ayri ozet."
     },
-    "navitas_seg_v35_best.onnx": {
+    "navitas_seg_v36_best.onnx": {
      "backend": "onnx",
      "imgsz": 512,
-     "sha256": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3",
-     "kaynak": "models/navitas_seg_v35_best.pt",
-     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
-     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
+     "sha256": "f4c9f5fe08883d1aecc9b4ac3ce9f98cea61de2f5298edde5d2c2a7a5056deab",
+     "kaynak": "models/navitas_seg_v36_best.pt",
+     "kaynak_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya> --kaynak-pt models/navitas_seg_v36_best.pt` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
     },
-    "navitas_seg_v35_best_512_fp16.onnx": {
+    "navitas_seg_v36_best_512_fp16.onnx": {
      "backend": "onnx",
      "imgsz": 512,
-     "sha256": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3",
-     "kaynak": "models/navitas_seg_v35_best.pt",
-     "kaynak_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
-     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya>` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. Saha paketindeki ad (jetson_paket/models, JETSON_KILAVUZ SS4 `yolo export` girdisi)."
+     "sha256": "f4c9f5fe08883d1aecc9b4ac3ce9f98cea61de2f5298edde5d2c2a7a5056deab",
+     "kaynak": "models/navitas_seg_v36_best.pt",
+     "kaynak_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya> --kaynak-pt models/navitas_seg_v36_best.pt` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. Saha paketindeki ad (jetson_paket/models, JETSON_KILAVUZ SS4 `yolo export` girdisi)."
     }
    },
    "_turevler_notu": "T143: eskiden `model_kayit_dogrula` yalniz DOSYA ADI kiyasliyordu; her .engine 'ESLESMIYOR' ile reddediliyor ve Jetson'da TensorRT ancak `--kayit-dogrulamasiz` ile (fail-closed KAPATILARAK) yukleniyordu (D-284, T18 curutucusu). Artik `turevler` anahtari dosya ADIYLA eslesir; turevin sha256'si yer tutucu degilse ve diskteki dosyanin ozetiyle BIREBIR ayniysa GECER. Kayitsiz/yabanci .engine yine RED; .pt davranisi DEGISMEDI (ad + imgsz kiyasi).",
@@ -50,15 +50,14 @@
     "1": "blocked"
    },
    "metrics": {
-    "_kaynak": "REVIEW_LOG D-249 (T127 zinciri) · K0..K5 TEK kabul kosumundan: scripts/olcum/results/t63/t127_temiz_kabul_verdikt.json. Kabul kurali on kayitta SONUC GORULMEDEN yazildi (results/t127_on_kayit.md, D-107).",
-    "_kapsam": "ARENA OLCUMLERININ TAMAMI SENTETIKTIR (T66 ada kadraji, n=260). Gercek arena karesi YOKTUR (D-88/D-99) — bu alan SAHA BASARIMI IDDIA ETMEZ. 🔴 T111 SINIRI: bu model ALAN DISI DOGRULAMASI OLMADAN terfi etti. Egitim disi 11 gercek karede siralama korunuyor (cati kacagi 0,0153; red 0/11 — D-254) ama o 11 kare AYNI SAHA ve AYNI OTURUMDANDIR: KANIT DEGIL, ZAYIF DESTEKTIR. Alan disi soru DJI cekimi olmadan KAPANMAZ.",
-    "_egitim": "T122 secenek (a)+(c): zemin `aday_v5c` kahiniyle DARALTILDI (tam-kare zemin sozlesmesi kaldirildi, D-210) ve CATI sinif 1 olarak eklendi. T127'de ayni recete TEMIZ train/val bolumuyle yeniden egitildi (bolum artik KAYNAK bazinda — D-233; kirli val 55/55 -> 0/96). Kosum adi `t127_temiz`, taban v34, epochs 40 · patience 15 · imgsz 512. ⚠ Temiz val'de egitim 18 epoch'ta DURDU, en iyi epoch 10 (v34-tabanli kirli-val kosumunda 40 epoch, en iyi 27): kirli val ezberi odullendiriyordu.",
-    "fitness_epoch200": null,
+    "_kaynak": "REVIEW_LOG D-293 (etiket dalga 4 + v7a/v7b) · K0..K6 TEK kabul kosumundan: scripts/olcum/results/t63/gece_v7a_kabul_verdikt.json. Gercek-kare sayilari results/gece_20260826/gece_v7a_olcum.json (test29) ve gece_v7a_val82_olcum.json (val82). Kabul kurali ve esikler on kayitta SONUC GORULMEDEN yazildi (results/gece_20260826/ON_KAYIT.md SS12/SS14, D-107).",
+    "_kapsam": "ARENA OLCUMLERININ TAMAMI SENTETIKTIR (T66 ada kadraji, n=260); gercek ARENA karesi YOKTUR (D-88/D-99) - K0..K6 SAHA BASARIMI IDDIA ETMEZ. 🔴 Bu surumle birlikte artik AYRI BIR DOGRULAMA KUMESI vardir: `dji/DOGRULAMA/` = DJI_..._0038_D, `dataset/dji_kirsal_0038_bolum_v3/{test,val}` (29 + 82 kare, iki bagimsiz KOR etiket gecisinin uzlasisi; CONTRACTS SS12, D-289/D-292). 0038 egitime ve erken durdurmaya GIRMEDI. ⚠ SINIRI (bilerek kabul edildi): ayni gun, ayni kamera, ayni saha turu (kirsal) ve ARENA DEGIL - 'alan disi' sorusunu KISMEN kapatir. 🔴 ARENA BENZERI SAHA (kirmizi H, moloz, bariyer) KANITI HALA YOKTUR; T111/D-198 acik, ayri bir insan gorevidir (DJI arena cekimi).",
+    "_egitim": "gece_v7a (`codes/runs/segment/gece_v7a_v35taban`): taban v35, recete t127 birebir, imgsz 512. Karisim = rescuenet + sentetik + copy_paste + DJI x5 (0037/0039'un TUM etiketli kareleri: F5 101 + dalga 2/3 108 + dalga 4 277 = 486 kare; train x5 = 2.065 kopya). Val = 0037/0039'dan rastgele %15 (73 kare, tohum 0) ve YALNIZ erken durdurma icin - 0038 hicbir karara girmedi. 17 epoch kosuldu, EN IYI EPOCH 2, val mAP50-95(M) 0,155. Dalga 4 etiketleri KOR toplandi (56 amele + 7 tutarlilik denetcisi), vurgu: beton kanal / bordur / oluk / banket -> sinif 1.",
     "k0_korluk": {
      "esik": "korluk YOK (figur > 0 · bos maske yok)",
-     "olculen": "figur zemin %9.03 · raw bos 0/67 · cp bos 0/393",
+     "olculen": "figur zemin %2,66 · raw bos 0/67 · cp bos 0/393",
      "sonuc": "GECTI",
-     "not": "🔴 SAPMA: v34 tabanina (%0,49) gore oran 18,43x — denetcinin 'TEHLIKELI yon (daha cok zemin)' uyarisi tetiklendi ve kural geregi K2/K3'e AYRICA bakildi: %7,03 ve %0,00, ikisi de tavan alti. ⚠ YORUM (OLCUM DEGIL): figur n=1, YZ uretimi, alan disidir ve orada HICBIR MODEL rota uretemiyor (D-231); ayrica v34 ile ft maskeleri SIFIR piksel ortusuyor (D-229). Bu yuzden yuksek deger 'asiri zemin' yerine 'ilk kez segmentleyebiliyor' olabilir — AMA FIGURDE YER GERCEGI YOKTUR, bu iddia OLCULMEMISTIR. ⚠ TABAN KAYMASI: asagidaki `figur_zemin_orani` artik v35'in KENDI degeridir; bundan sonra denetcinin basacagi oran 1,00 gorunecektir. v34 tabanina gore 18,43x olan tarihsel sapma BURADA yazilidir.",
+     "not": "Taban v35 (%9,03) ile oran 0,294 - denetcinin 'TEHLIKELI yon (daha cok zemin)' uyarisi TETIKLENMEDI; sapma YETENEK yonundedir (model figurde DAHA AZ zemin goruyor). ⚠ YORUM (OLCUM DEGIL): figurde YER GERCEGI YOKTUR (n=1, YZ uretimi, alan disi) - bu sayi 'daha dogru' demez, yalnizca 'daha az zemin' der; D-186 bu figur uzerinde model tavani koymayi zaten reddetti. ⚠ TABAN KAYMASI: asagidaki `figur_zemin_orani` listesine v36 satiri EKLENDI ve denetci bundan sonra uretim icin oran 1,00 basacak; v35'e gore 0,294 olan bu tarihsel sapma BURADA yazilidir (D-256 SS4 kalibi). Gecmis satirlar SILINMEDI.",
      "figur_zemin_orani": [
       {
        "surum": "v17",
@@ -111,71 +110,131 @@
        "deger": 0.0903,
        "donem_tutarli": true,
        "kaynak": "defterin SKALER degeri (ee7508d, T130/D-256); D-261'de olculdu -> ayni"
+      },
+      {
+       "surum": "v36",
+       "deger": 0.0266,
+       "donem_tutarli": true,
+       "kaynak": "scripts/olcum/65_kabul_denetcisi.py kaplama() · gece_v7a kabul kosumu (scripts/olcum/results/t63/gece_v7a_kabul_verdikt.json: olcum.K0.figur = 0,026580); CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png"
       }
      ],
      "raw_frames_bos": 0,
      "copy_paste_bos": 0,
-     "_sayisal_alan_notu": "T110/D-186 · Bu UC alan SAYISALDIR ve `65_kabul_denetcisi.py` figur oranini BURADAN okur; `olculen` metninden sayi AYIKLANMAZ (D-180). `figur_zemin_orani` URETIM MODELININ (artik v35) figur zemin kaplamasidir; kaynak bu terfinin kabul kosumu, YENIDEN OLCULMEDI.",
+     "_sayisal_alan_notu": "T110/D-186 · Bu UC alan SAYISALDIR ve `65_kabul_denetcisi.py` figur oranini BURADAN okur; `olculen` metninden sayi AYIKLANMAZ (D-180). `figur_zemin_orani` URETIM MODELININ (artik v36) figur zemin kaplamasidir; kaynak bu terfinin kabul kosumu, YENIDEN OLCULMEDI.",
      "_figur_zemin_orani_bicimi": "T132: SKALER -> EKLENIR LISTE. Denetci 'sonuncuyu' DEGIL, uretim model_id'sine KARSILIK GELEN kaydi okur (siralama bozulursa sonuncu yanlis tabani secer). Eski SKALER bicim HALA CALISIR (geriye uyumluluk: eski defter kopyalari + saha paketi). Gecmis SILINMEZ. 🔴 Bu bir ESIK DEGILDIR ve kural icermez — D-186'nin reddettigi sey n=1 figure MODEL uzerinde tavan koymakti; burada yalniz TABANIN soyagacindaki yeri GORUNUR kilinir (D-263 SS5)."
     },
     "k1_rota_uretimi": {
      "esik": ">=230",
-     "olculen": "256/260",
-     "sonuc": "GECTI"
+     "olculen": "255/260",
+     "sonuc": "GECTI",
+     "not": "v35 256/260 · fark 1 kare."
     },
     "k2_moloza_basma_yuzde": {
      "esik": "<=15",
-     "olculen": 7.03,
+     "olculen": 5.88,
      "sonuc": "GECTI",
-     "not": "🔴 MALIYET — TEK YONLU SURUKLENME: v34 %4,65 (12/258) -> v35 %7,03 (18/256). Tavanin altinda ama madde 15'in TEHLIKELI eksenindedir ve 'tavan alti' diye gecistirilMEZ. Ara adaylar: t122ac %6,23 (16/257). Kaynak: bu terfinin kabul kosumu (D-249) · mimar denetimi D-255 SS3."
+     "not": "15/255 · v35 %7,03 (18/256) -> v36 %5,88. D-256'da kayda gecen TEK YONLU SURUKLENME (v34 %4,65 -> v35 %7,03) bu terfide GERI DONDU; madde 15'in tehlikeli ekseni iyilesti."
     },
     "k3_agir_basma_yuzde": {
      "esik": "<=3",
-     "olculen": 0.0,
+     "olculen": 0.39,
      "sonuc": "GECTI",
-     "not": "0/256 · v34 ile AYNI (0/258); t122ac 1/257 idi."
+     "not": "🔴 MALIYET: 1/255 · v35 0/256 idi. Tavanin (%3) altinda ama tehlikeli yonde +1 kare."
     },
     "k4_arena_disi_yuzde": {
      "esik": "<=5",
-     "olculen": 0.39,
+     "olculen": 1.57,
      "sonuc": "GECTI",
-     "not": "1/256 · v34 1/258"
+     "not": "🔴 MALIYET: 4/255 · v35 1/256 idi. Tavan alti, ama 1 -> 4 kare."
     },
     "k5_bariyer_kesisimi_px": {
      "esik": "=0",
      "olculen": 0,
      "sonuc": "GECTI",
-     "not": "0/173 OLCULEBILIR kare (bariyerli + olcekli + rotali), toplam 0 px. ⚠ K5'in ZEMINI T126'da degisti (D-243/D-244): tek OOD figuru yerine kabul kumesinin populasyonu. Bariyer geometrisi MODELDEN GELMEZ (63'un LAB a* dedektoru; kanit: hicbir YOLO modeli orneklenmeden 174/284 karede bariyer bulundu). Eski figur olcumu BILGI olarak korunur ve v35'te de OLCULEMEDI doner — o figurde rota dogmuyor."
+     "not": "0/172 OLCULEBILIR kare (bariyerli 173), toplam 0 px · v35 0/173. Bariyer geometrisi MODELDEN GELMEZ (63'un LAB a* dedektoru, D-243/D-244). Tek OOD figur olcumu v36'da da OLCULEMEDI doner - o figurde rota dogmuyor."
     },
-    "karar_cevrilmesi": {
-     "olculen": "9/260 (%3,46)",
-     "sonuc": "OLCUM",
-     "not": "🔴 IKINCI MALIYET: v34 4/260 · v35 9/260 — AYNI KOSUMDA olculdu (68_karar_kararliligi, sigma 2/255, tekrar 3, tohum 7; results/t130_kararlilik_*.json). Bayat sayi TASINMADI. ⚠ Bu eksen v34 TERFISINDE KAPIYDI (v22_v23_on_kayit.md olcut 5, esik <= 8/260 = v30'un degeri); v35 o esigin USTUNDEDIR. Bugunku kabul zincirinde (65) kararlilik KAPI DEGILDIR, bu yuzden terfi bloklanmadi — ama karar sahibinin bilmesi gereken bir bedeldir. ⚠ D-203: bu olcutun kendisi tohuma duyarlidir (v34 tohum 42'de 7/260); tek tohumla 'kotulesti' hukmu KESIN DEGILDIR, ISARET olarak durur."
+    "k6_yanlis_guzergah_yuzde": {
+     "esik": "<=5",
+     "olculen": 2.75,
+     "sonuc": "GECTI",
+     "not": "🔴 MALIYET: 7/255 · v35 5/256 idi (K6 v35 icin de GECTI). K6 YENI olcuttur - ON_KAYIT SS12'de sonuc gorulmeden yazildi: rota cizgisinin yer gercegi sinif 0 ustundeki payi >= 0,90 VE sinif 1 ustunde 0 waypoint; tutmayan kare YANLIS GUZERGAH, kapi <= %5. Payda = rota uretilen kare (255). Yanlis kareler verdikt JSON'unda listeli. ⚠ SENTETIK esdegerdir: sentetik arena kanal/cim/tarla ICERMEZ - gercek-kare kapisini IKAME ETMEZ (D-290, CONTRACTS SS12)."
     },
-    "_mask_map50_notu": "OLCULMEDI ve karara girmedi (K-3). ⚠ Ayrica T127'den sonra val KUMESI DEGISTI (temiz bolum) — v34 ile val mAP kiyasi KIYASLANAMAZ (D-249).",
-    "_fitness_notu": "BAKILMADI ve karara GIRMEDI (K-3).",
+    "gercek_kare_kapisi": {
+     "_ne": "CONTRACTS SS12 · DOGRULAMA kumesi `dataset/dji_kirsal_0038_bolum_v3` (uzlasi referansi v3). Terfi olcutu (ON_KAYIT SS4(b)/SS11(2)/SS14, sonuc gorulmeden): ROTA >= 10/29 · MASKE_YOK <= 10/29 · FP <= 1 · YANLIS GUZERGAH = 0. Olcen: `scripts/olcum/142_gece_olcum.py --test-dizin ... --etiket-dizin ... --tavan ...`.",
+     "test29": {
+      "n": 29,
+      "rota": 8,
+      "maske_yok": 16,
+      "TP": 7,
+      "FP": 1,
+      "FN": 5,
+      "yanlis_guzergah": 0,
+      "tavan_rota": 12,
+      "kaynak": "results/gece_20260826/gece_v7a_olcum.json"
+     },
+     "val82": {
+      "n": 82,
+      "rota": 30,
+      "maske_yok": 35,
+      "TP": 28,
+      "FP": 2,
+      "FN": 15,
+      "yanlis_guzergah": 7,
+      "tavan_rota": 43,
+      "kaynak": "results/gece_20260826/gece_v7a_val82_olcum.json"
+     },
+     "v35_tabani": {
+      "test29": {
+       "rota": 6,
+       "maske_yok": 16,
+       "TP": 5,
+       "FP": 1,
+       "yanlis_guzergah": 5
+      },
+      "val82": {
+       "rota": 15,
+       "TP": 15,
+       "FP": 0,
+       "yanlis_guzergah": 10
+      },
+      "kaynak": "REVIEW_LOG D-289/D-290/D-293 · CONTRACTS SS12"
+     },
+     "sonuc": "🔴 ON KAYITLI ESIKLER GECILMEDI: ROTA >= 10 istendi, olculen 8; MASKE_YOK <= 10 istendi, olculen 16. GECILEN: FP <= 1 (1) ve YANLIS GUZERGAH = 0 (0). Terfi bu esikleri GECEREK degil, KULLANICI KARARIYLA yapildi (bkz. `_surum_karari`). ESIKLER DEGISMEDI ve sonraki terfileri baglar (CONTRACTS SS12 ISTISNA satiri).",
+     "not": "111 kare toplaminda (test29 + val82) yanlis guzergah payi: v35 15/21 (%71) -> v36 7/38 (%18). Engel (sinif 1) ustunde waypoint toplami: v35 79 -> v36 3 (curutucu: results/gece_20260826/v7a_curut/guvenlik/yeniden_olc.json). 🔴 KARSI KALEM: v36 val82'de 2 FP uretiyor (v35 0) ve bunlarin biri (kare 223) YOL OLMAYAN corak tarlada rota uretiyor - curutucunun KUSUR-3'u, yeni ve gercek risk."
+    },
     "gercek_kare_zemin_kaplamasi": {
-     "olculen": 0.2855,
-     "payda": "LETTERBOX TUVAL (v34'un 0,4551'i ile AYNI payda — kiyaslanabilir)",
-     "icerik_paydasiyla": 0.5076,
+     "olculen": 0.2346,
+     "payda": "LETTERBOX TUVAL (v34 0,4551 · v35 0,2855 ile AYNI payda - kiyaslanabilir)",
+     "icerik_paydasiyla": 0.4171,
      "sonuc": "OLCUM",
-     "not": "🔴 PAYDA YAZILI (T118/D-214). TUVAL: v34 0,4551 -> v35 0,2855. ICERIK: v34 0,8002 -> v35 0,5076. Dusus KUSUR DEGIL: bagimsiz (modelsiz) tahmine gore gercek surulebilir oran %47-52'dir (D-240), yani v34 GERCEGIN COK USTUNDE goruyordu; v35 gercege EN YAKIN olan adaydir. Cati kacagi 0,961 -> 0,0428 (55 kare) ve 67 gercek karede red 67 -> 0 ayni kosumda olculdu."
+     "not": "🔴 PAYDA YAZILI (T118/D-214). TUVAL: v34 0,4551 -> v35 0,2855 -> v36 0,2346. ICERIK: v34 0,8002 -> v35 0,5076 -> v36 0,4171. Bagimsiz (modelsiz) tahmine gore gercek surulebilir oran %47-52'dir (D-240): v35 o araligin ALT ucundaydi, v36 ALTINA DUSTU. Yani bu terfi 'daha az goruyor' yonundedir - kabul edilen bedel budur (gercek-kare MASKE_YOK 16/29). 67 gercek karede zemin maskesi reddi 0 (v35 de 0). Kaynak: results/gece_20260826/gece_v7a_olcum.json k109."
     },
     "cati_kacagi": {
-     "olculen": 0.0428,
+     "olculen": 0.023,
+     "medyan": 0.0119,
      "sonuc": "OLCUM",
-     "not": "55 catili gercek karede TAM MASKE olcumu; yer gercegi T121'in elle cizilip UC gorsel turda dogrulanmis cati maskeleri. v34 0,9606 · v30 0,3052 · t122ac 0,0201. Egitim DISI 11 karede 0,0153 (D-254). ⚠ Kusurun buyuklugu KAYNAK KALITESINE bagli: v34 ham fotografta 0,961 degil 0,459 kacirir (D-248) — siralama yine degismiyor."
+     "not": "55 catili gercek karede TAM MASKE olcumu (yer gercegi T121'in elle cizilip UC gorsel turda dogrulanmis cati maskeleri). v34 0,9606 · v30 0,3052 · v35 0,0428 · v36 0,0230. Ayni kosumda disk sinamasi: cati->engel 0,9908 · cati->zemin 0,0000 · zemin->zemin 0,9476."
+    },
+    "_mask_map50_notu": "OLCULMEDI ve karara girmedi (K-3). val mAP50-95(M) 0,155 EGITIM LOGUNDADIR (`results/gece_20260826/egitim_v7a.log`) ve val kumesi 0037/0039'dan turetildigi icin v35'in temiz-bolum val'i ile KIYASLANAMAZ.",
+    "_fitness_notu": "BAKILMADI ve karara GIRMEDI (K-3).",
+    "fitness_epoch200": null,
+    "karar_cevrilmesi": {
+     "olculen": null,
+     "sonuc": "OLCULMEDI",
+     "not": "🔴 v36 icin OLCULMEDI - ve v35'in sayisi BAYAT OLDUGU ICIN TASINMADI (D-256 SS3 kurali). Tarihsel: v34 4/260 · v35 9/260 (68_karar_kararliligi, sigma 2/255, tekrar 3, tohum 7; results/t130_kararlilik_*.json). Bu eksen v34 terfisinde KAPIYDI (esik <= 8/260), bugunku kabul zincirinde (65) KAPI DEGILDIR. v36'nin bu eksende nerede durdugu BILINMIYOR; olculmeden 'iyi' ya da 'kotu' denemez. ⚠ D-203: olcut tohuma duyarlidir."
     }
    },
    "status": "competition",
-   "_surum_karari": "2026-08-21 · KULLANICI KARARI (t127_temiz uretim olsun; uretim adi v35) · dayanak REVIEW_LOG D-249 (T127 sonucu) ve D-255 (mimar denetimi); on kayit results/t127_on_kayit.md OLCUMLER KOSULMADAN once yazildi (D-107). Onceki uretim: navitas-seg-v34-512 (sha 6730d777...) — SILINMEDI, T123'un YEDEK adayidir ve FARKLI HATA YAPAR: arena K2'de en iyi (%4,65) ve karar kararliliginda daha iyi (4/260), ama gercek karelerin 67/67'sini reddeder ve catinin %96'sini kacirir. Saha gununde secim icin JETSON_KILAVUZ SS6C birincil->yedek gecis yordami kullanilir. ⚠ Terfi KARARI INSANINDIR (D-133); basamele uygulamistir, mimar denetler.",
+   "_surum_karari": "2026-08-26 · KULLANICI KARARI · on kayitli ROTA >= 10 / MASKE_YOK <= 10 esikleri GECILMEDI (8/16); gerekce: gercek karede yanlis guzergah 15/21 -> 7/38, engel ustu waypoint 79 -> 3; bedel: K3 0->1, K4 1->4, K6 5->7 (kapi icinde), kaplama67 0,51->0,42, figur zemin 0,15->0,04, val82 FP 0->2; dayanak D-293, ON_KAYIT SS15, curutucu results/gece_20260826/v7a_curut/. Onceki uretim: navitas-seg-v35-512 (sha e00f6b8e...) - SILINMEDI, YEDEK adaydir ve FARKLI HATA YAPAR: arena K3/K4/K6'da daha iyi (0/1/5) ve val82'de FP uretmez, ama gercek karelerin cogunda rotayi beton kanal ustunden gecirir (79 engel-uzeri waypoint). Saha gununde secim icin JETSON_KILAVUZ SS6C birincil->yedek gecis yordami kullanilir. ⚠ Terfi KARARI INSANINDIR (D-133); basamele uygulamistir, mimar denetler. ⚠ Bu terfi KURAL DISIDIR: esikler DEGISTIRILMEDI, gevsetilmedi; CONTRACTS SS12'ye ISTISNA satiri yazildi ve esikler sonraki terfileri baglar.",
    "_imgsz_notu": "S5 · CIKARIM boyudur, egitim boyu DEGIL. `codes/rpi_inference.py::INFER_SIZE` BU alandan turetilir ve `model_kayit_dogrula` her yuklemede bu alanla calisan degeri KIYASLAR (uyusmazlik fail-closed). Eskiden INFER_SIZE ciplak sabitti ve bu alanla hicbir yerde kiyaslanmiyordu; defter cevrilse kod 512'de kalir ve ses cikmazdi — D-116/5 kusurunun birebir aynisi.",
    "kabul_kumesi_parmak_izi": {
     "n": 547,
     "ozet": "sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586",
     "olculdu": "2026-08-21 (T132)",
     "yontem": "scripts/olcum/65_kabul_denetcisi.kume_parmak_izi — sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ. TURETILIR, elle tutulmaz (D-263 SS4.3). SINIR: ayni boyutta icerik degisimi YAKALANMAZ."
-   }
+   },
+   "_turevler_v35_notu": "2026-08-26 (v36 terfisi): v35 turev girdileri BU PROFILDEN CIKARILDI. Sebep mekaniktir, kanaat degil: `turev_dogrula` her turevin `kaynak_sha256`sini profilin .pt ozetiyle kiyaslar; kaynak artik v36 oldugu icin v35 turevleri YETIM (RED) doner ve defterde durmalari yalniz yanilticidir. v35'in .pt/.onnx DOSYALARI DISKTE ve saha paketinde DURUYOR (yedek, SS6C gecis yordami); geri alinirsa bu profile v35 kaydi (pt sha e00f6b8e... / onnx 248ef808...) geri yazilir.",
+   "_kapsam": "DOGRULAMA = `dji/DOGRULAMA/` (DJI_..._0038_D), CONTRACTS SS12: 0038 kareleri egitime ve erken durdurmaya GIRMEDI; test29 + val82 uzlasi referansi v3 uzerinden olculdu ve sayilar `metrics.gercek_kare_kapisi` altindadir. 🔴 ARENA BENZERI SAHA KANITI YOK: 0038 kirsal bir yol cekimidir - kirmizi H, moloz yigini, bariyer ICERMEZ; sentetik K0..K6 bu boslugu doldurmaz (D-290). T111/D-198 (alan disi arena dogrulamasi) HALA ACIK ve insan gorevidir."
   },
   "arac_referansi": {
    "model_id": "dota-yolov8m-obb",

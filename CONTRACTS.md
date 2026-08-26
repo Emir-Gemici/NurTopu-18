@@ -1065,3 +1065,15 @@ tanım `rota_yol_olcumu.py`, sentetik eşdeğeri K6 ≤ %5). Sentetik kabul zinc
 **Ölçülmüş taban (2026-08-27, referans v3):** v35 test29 ROTA 6 · TP 5 · FP 1 · YANLIŞ 5/6;
 val82 ROTA 15 · YANLIŞ 10 (D-289/D-290). Üretim modeli bu kapıyı **geçmiyor** — kullanıcı
 kararıyla üretimde kalır; kapı **gelecek terfileri** bağlar.
+
+> 🔴 **İSTİSNA (2026-08-26):** **v36 terfisi ROTA/MASKE_YOK eşiklerini geçmeden kullanıcı
+> kararıyla yapıldı; eşikler DEĞİŞMEDİ, sonraki terfileri bağlar.**
+> Ölçülen: v36 (koşum `gece_v7a_v35taban`) test29 ROTA **8** (eşik ≥ 10) · MASKE_YOK **16**
+> (eşik ≤ 10) · TP 7 · FP 1 (eşik ≤ 1 ✔) · YANLIŞ GÜZERGÂH **0** (eşik = 0 ✔); val82 ROTA 30 ·
+> TP 28 · FP 2 · YANLIŞ 7. Karar dayanağı `REVIEW_LOG.md` **D-293**, ön kayıt
+> `results/gece_20260826/ON_KAYIT.md` §15 ("izin veriyorum kurala rağmen"), üç lensli çürütücü
+> `results/gece_20260826/v7a_curut/` (terfi engeli bulunmadı).
+> ⚠ Bu satır bir **muafiyet değil, bir kayıttır**: eşikler gevşetilmedi, yeniden yazılmadı ve
+> bir sonraki aday yine ROTA ≥ 10 ∧ MASKE_YOK ≤ 10 ∧ FP ≤ 1 ∧ YANLIŞ = 0 ile ölçülür. Eşiği
+> geçmeyen bir adayın üretime alınması **ancak insanın açık kararıyla** olur (D-133) ve her
+> defasında buraya yazılır.

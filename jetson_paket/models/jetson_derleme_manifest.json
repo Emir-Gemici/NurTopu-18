@@ -2,8 +2,8 @@
  "_not": "T58: bu manifest ARTIK PAKETIN KENDISINI tarif eder. Onceki surum 2026-08-05 disa aktarim kosusunu tarif ediyordu (pc_modeli v17) oysa pakette v21 ONNX vardi; bayatlik kimseye gorunmedi cunku manifest paket icerigine BAKMIYORDU. `paket_icerigi` her dosyanin sha256'sini tasir - bayatlik artik mekanik olarak yakalanir (REVIEW_LOG D-83).",
  "_t76": "T76: uretim modeli v24 -> v27 (REVIEW_LOG D-115). Cozunurluk 640 -> 512 (D-112: 640'in olculebilir ustunlugu yok, Jetson maliyeti var). Agirlik epoch 200 `last.pt`'dir; `best.pt` epoch 43'te dondu (D-113). ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR. ⚠ T103 GUNCELLEMESI (D-178): burada eskiden 'paket defteri tasimaz' yaziyordu. O ifade ARTIK YANLISTIR — paket `jetson_paket/config/model_registry.json` dosyasini TASIR ve tasimak ZORUNDADIR: `load_model` fail-closed'tur, defter yoksa 'kayit_defteri_yok' ile duser. Notun asil soyledigi sey gecerliligini KORUYOR: bu manifest defterin YERINE GECMEZ, surum adinin tek kaynagi yine defterdir; manifest yalniz paketin kunyesidir.",
  "olusturma_zamani": "2026-08-19T09:29:18",
- "paket_yenilenme": "2026-08-21T10:35:05",
- "pc_modeli": "O:\\navitas\\models\\navitas_seg_v35_best.pt",
+ "paket_yenilenme": "2026-08-26T19:15:05",
+ "pc_modeli": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
  "format": "onnx",
  "fp16": true,
  "imgsz": [
@@ -13,15 +13,15 @@
  "opset": 17,
  "cihaz": "0",
  "onnxler": [
-  "O:\\navitas\\results\\onnx_export_v35_20260821\\navitas_seg_v35_best_512_fp16.onnx"
+  "O:\\navitas\\results\\onnx_export_v36_20260826\\navitas_seg_v36_best_512_fp16.onnx"
  ],
  "int8_kalibrasyon": null,
  "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
  "jetson_komutlari": [
-  "yolo export model=navitas_seg_v35_best_512_fp16.onnx format=engine imgsz=512 half=True"
+  "yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 half=True"
  ],
- "asil_model": "navitas_seg_v35_best_512_fp16.onnx",
- "asil_model_pt": "navitas_seg_v35_best.pt",
+ "asil_model": "navitas_seg_v36_best_512_fp16.onnx",
+ "asil_model_pt": "navitas_seg_v36_best.pt",
  "uretim_hakem_ekrani": "comms/yks_gui.py ALGI_MODEL_DOSYA <- config/model_registry.json (etkin profil: competition) — T76'da CIPLAK SABIT KALDIRILDI, T85'te surum degisirken TEK KAYNAK oldugu icin ekran kendiliginden cevrildi",
  "paket_icerigi": [
   {
@@ -103,12 +103,23 @@
    "dosya": "navitas_seg_v35_best_512_fp16.onnx",
    "bayt": 54569669,
    "sha256": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3"
+  },
+  {
+   "dosya": "navitas_seg_v36_best.pt",
+   "bayt": 54788636,
+   "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911"
+  },
+  {
+   "dosya": "navitas_seg_v36_best_512_fp16.onnx",
+   "bayt": 54569673,
+   "sha256": "f4c9f5fe08883d1aecc9b4ac3ce9f98cea61de2f5298edde5d2c2a7a5056deab"
   }
  ],
  "_t85": "T85: uretim modeli v27 -> v30 (REVIEW_LOG D-132 kabul kurali, D-133 kabul, kullanici karari). Cozunurluk 512 (D-112). Agirlik `best.pt`; bu kosuda best.pt ile last.pt'nin 537/537 agirlik tensoru esit, D-113 tekrarlamadi. ⚠ D-134'te mimar 'v28 kalir' onerisi yazdi; sevk karari kullanicinindir. ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR.",
  "_asil_model_pt_notu": "2026-08-19 · navitas_seg_v30_best.pt -> navitas_seg_v34_best.pt (KULLANICI KARARI, REVIEW_LOG D-181/D-182). ⚠ Bu alan `config/model_registry.json`in `path` alaniyla AYNI dosyayi gostermek ZORUNDADIR; `rpi_inference.model_kayit_dogrula` ikisini kiyaslar ve ayrisirlarsa `load_model` FAIL-CLOSED duser. Terfide IKISI BIRDEN guncellenir — bu terfide once yalnizca defter guncellendi ve kapi DOGRU sekilde dustu (T108: iki bildirim tek kaynaktan turemeli).",
- "_paket_icerigi_notu": "2026-08-19 · v34 (uretim) .pt ve 512 fp16 ONNX eklendi. Onceki uretim v30'un dosyalari TARIHSEL olarak pakette KALIYOR (silinmez); hangisinin URETIM oldugunu `asil_model` / `asil_model_pt` soyler.",
- "_paket_yenilenme": "2026-08-19 · v34 terfisi (REVIEW_LOG D-182)",
+ "_paket_icerigi_notu": "2026-08-26 · v36 (uretim) .pt ve 512 fp16 ONNX eklendi. Onceki uretim v35 ve daha eskilerin dosyalari TARIHSEL olarak pakette KALIYOR (silinmez); hangisinin URETIM oldugunu `asil_model` / `asil_model_pt` soyler.",
+ "_paket_yenilenme": "2026-08-26 · v36 terfisi (REVIEW_LOG D-293 · ON_KAYIT SS15)",
  "_t83_arac_maskesi": "2026-08-26 · T83 onarimi: `kod/arac_maskesi.py` pakete EKLENDI (olcek kahini 3. katman; `rpi_inference._arac_kisa_kenari` onu gecikmeli import eder, yoksa SESSIZCE 'arac_maskesi modulu yok' ile None donuyordu). ⚠ Bu dosya `paket_icerigi` listesine BILEREK YAZILMADI: `paket_icerigi` yalniz `jetson_paket/models/` dizininin defteridir — `tests/test_uretim_modeli_hizasi.py` her kaydi `models/<dosya>` olarak acar ve `models/` disinda dosya kalmadigini sinar; `kod/` dosyalarinin HICBIRI burada durmaz. Kod dosyalarinin kilidi manifest sha'si degil `scripts/jetson_paket_hazirla.KOPYALAR` + `tests/test_jetson_comms_paketi.py` bayt-esitligidir (kanonik `codes/arac_maskesi.py` ile birebir).",
- "_t130": "2026-08-21 · URETIM v34 -> v35 (t127_temiz). KULLANICI KARARI (D-133); dayanak REVIEW_LOG D-249/D-255. Surum adinin TEK KAYNAGI config/model_registry.json'dur; bu kunye paketin KENDI icerigini tarif eder. ⚠ v34 dosyalari SILINMEDI — T123'un YEDEK adayi ve FARKLI HATA yapiyor (arena K2 %4,65 · kararlilik 4/260 daha iyi; ama gercek 67 karenin 67'sini reddediyor). Saha gununde SS6C gecis yordami kullanilir."
+ "_t130": "2026-08-21 · URETIM v34 -> v35 (t127_temiz). KULLANICI KARARI (D-133); dayanak REVIEW_LOG D-249/D-255. Surum adinin TEK KAYNAGI config/model_registry.json'dur; bu kunye paketin KENDI icerigini tarif eder. ⚠ v34 dosyalari SILINMEDI — T123'un YEDEK adayi ve FARKLI HATA yapiyor (arena K2 %4,65 · kararlilik 4/260 daha iyi; ama gercek 67 karenin 67'sini reddediyor). Saha gununde SS6C gecis yordami kullanilir.",
+ "_t_terfi_v36": "2026-08-26 · URETIM v35 -> v36 (kosum `gece_v7a_v35taban`, taban v35). KULLANICI KARARI (D-133); dayanak REVIEW_LOG D-293 ve ON_KAYIT SS15. 🔴 KURAL DISI TERFI: on kayitli gercek-kare esikleri ROTA >= 10 (olculen 8) ve MASKE_YOK <= 10 (olculen 16) GECILMEDI; esikler DEGISTIRILMEDI ve sonraki terfileri baglar (CONTRACTS SS12 ISTISNA). Surum adinin TEK KAYNAGI config/model_registry.json'dur; bu kunye paketin KENDI icerigini tarif eder. ⚠ v35 dosyalari SILINMEDI - YEDEK adaydir ve FARKLI HATA YAPAR (arena K3/K4/K6'da daha iyi 0/1/5 ve val82'de FP uretmez; ama gercek karelerde rotayi beton kanal ustunden gecirir: engel-uzeri waypoint 79, v36'da 3). Saha gununde SS6C birincil->yedek gecis yordami kullanilir."
 }

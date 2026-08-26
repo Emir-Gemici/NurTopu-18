@@ -100,13 +100,20 @@ class G2KosulabilirTests(unittest.TestCase):
             sahte = Path(d) / "jetson_paket"
             (sahte / "models").mkdir(parents=True)
             man = json.loads(KUNYE.read_text(encoding="utf-8"))
+            # 🔴 Yedek ADLARI yordamdan TURETILIR, elle YAZILMAZ. Onceki surumde
+            # burada "navitas_seg_v34_best" CIVILIYDI; 2026-08-26'da yedek v34 ->
+            # v35 olunca mutasyon v34'u bozuyor, G2 ise v35'i ariyordu ve test
+            # FileNotFoundError ile patliyordu — elle listenin bayatlamasi
+            # (D-146/157/159/163) bu dosyanin kendi docstring'inde uyarilan sinif.
+            yedekler = re.findall(r'"(navitas_seg_v\d+_best[^"]*)"',
+                                  g2_blogu(KILAVUZLAR[0]))
+            self.assertTrue(yedekler, "yordamda yedek dosya adi YOK")
             for x in man["paket_icerigi"]:
-                if x["dosya"].startswith("navitas_seg_v34_best"):
+                if x["dosya"] in yedekler:
                     x["sha256"] = "0" * 64          # 🔴 MUTASYON
             (sahte / "models" / "jetson_derleme_manifest.json").write_text(
                 json.dumps(man, ensure_ascii=False), encoding="utf-8")
-            for ad in ("navitas_seg_v34_best.pt",
-                       "navitas_seg_v34_best_512_fp16.onnx"):
+            for ad in yedekler:
                 kaynak = PAKET / "models" / ad
                 if kaynak.exists():
                     shutil.copy2(kaynak, sahte / "models" / ad)

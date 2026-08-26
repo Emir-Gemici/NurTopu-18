@@ -4,8 +4,8 @@ from codes.model_registry import ModelRegistryError, load_registry, resolve_mode
 
 
 class ModelRegistryTests(unittest.TestCase):
-    def test_default_is_verified_v35_competition_model(self):
-        """T130: etkin profil v34 -> v35 (imgsz 512, DEGISMEDI).
+    def test_default_is_verified_v36_competition_model(self):
+        """v36 terfisi: etkin profil v35 -> v36 (imgsz 512, DEGISMEDI).
 
         Tarihce: v4 kaydi 2026-07-15'ten kalmaydi ve uretim manifestiyle
         CELISIYORDU; `load_model` fail-closed oldugu icin saha kuru kosusunda
@@ -17,8 +17,16 @@ class ModelRegistryTests(unittest.TestCase):
         (kosum `t127_temiz`: T122 secenegi (a)+(c) + T127 TEMIZ bolum; on kayit
         `results/t127_on_kayit.md` olcumlerden ONCE yazildi, sonuc D-249,
         mimar denetimi D-255, sevk karari YINE KULLANICININ — T130).
-        ⚠ v34 SILINMEDI: T123'un YEDEK adayidir ve FARKLI HATA YAPAR.
-        Boyut dayanagi D-112.
+        2026-08-26'da v36'ya gecildi (kosum `gece_v7a_v35taban`, taban v35;
+        on kayit `results/gece_20260826/ON_KAYIT.md` SS12/SS14 olcumlerden
+        ONCE yazildi, sonuc D-293, sevk karari YINE KULLANICININ).
+        🔴 v36 TERFISI KURAL DISIDIR: on kayitli gercek-kare esikleri
+        ROTA >= 10 (olculen 8) ve MASKE_YOK <= 10 (olculen 16) GECILMEDI;
+        kullanici "izin veriyorum kurala ragmen" dedi (ON_KAYIT SS15).
+        Esikler DEGISTIRILMEDI ve sonraki terfileri baglar (CONTRACTS SS12).
+        ⚠ v34 ve v35 SILINMEDI: v35 bugunun YEDEK adayidir ve FARKLI HATA
+        YAPAR (arena K3/K4/K6'da daha iyi; ama gercek karelerde rotayi beton
+        kanal ustunden gecirir). Boyut dayanagi D-112.
 
         ⚠ Bu testteki surum adi ELLE guncellenir ve bu BILEREK boyledir:
         defterden turetilseydi test totolojik olur, kazara degisen bir profili
@@ -29,10 +37,10 @@ class ModelRegistryTests(unittest.TestCase):
         `path` alani cevrilip `sha256` unutulursa kapi KIRMIZI yanar.
         """
         path, spec = resolve_model()
-        self.assertEqual(path.name, "navitas_seg_v35_best.pt")
+        self.assertEqual(path.name, "navitas_seg_v36_best.pt")
         self.assertEqual(spec["imgsz"], 512)
         self.assertEqual(spec["status"], "competition")
-        self.assertEqual(spec["model_id"], "navitas-seg-v35-512")
+        self.assertEqual(spec["model_id"], "navitas-seg-v36-512")
 
     def test_profiles_are_explicit_not_alias_directories(self):
         registry = load_registry()

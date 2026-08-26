@@ -1,8 +1,10 @@
 # JETSON ORIN NX — SAHA KILAVUZU
 
-> Hazırlanma: 2026-08-05 · **ASIL MODEL: v35** (2026-08-21, D-249/D-255 · kullanıcı kararı; T130) · eskiler: v34 → v30 → v27 → v24 → v21 → v17/v20
+> Hazırlanma: 2026-08-05 · **ASIL MODEL: v36** (2026-08-26, D-293 · kullanıcı kararı) · eskiler: v35 → v34 → v30 → v27 → v24 → v21 → v17/v20
 >
-> ⚠ **v34 SİLİNMEDİ — YEDEK adaydır** (T123). Farklı hata yapar: arena K2'de daha iyi (%4,65 vs %7,03) ve karar kararlılığında daha iyi (4/260 vs 9/260), ama gerçek karelerin 67/67'sini reddeder ve çatının %96'sını kaçırır (v35: %4,3). Saha gününde geçiş için **§6C** yordamı kullanılır.
+> 🔴 **KURAL DIŞI TERFİ (2026-08-26).** v36, ön kayıtlı gerçek-kare eşiklerini **GEÇMEDEN** üretime alındı: `ROTA ≥ 10` istendi, ölçülen **8**; `MASKE_YOK ≤ 10` istendi, ölçülen **16** (29 karelik DOĞRULAMA kümesi, CONTRACTS §12). Geçilen: `FP ≤ 1` (1) ve `YANLIŞ GÜZERGÂH = 0` (0). Kullanıcı kararıdır ("izin veriyorum kurala rağmen"); **eşikler değiştirilmedi** ve sonraki terfileri bağlar. Gerekçe: gerçek karede yanlış güzergâh payı v35'te 15/21, v36'da 7/38; engel üstünde waypoint 79 → 3. Bedeli: arena K3 0→1, K4 1→4, K6 5→7 (hepsi tavan altı), val82 FP 0→2. Dayanak: `REVIEW_LOG.md` **D-293** · ön kayıt `results/gece_20260826/ON_KAYIT.md` §15 · çürütücü `results/gece_20260826/v7a_curut/`.
+>
+> ⚠ **v35 SİLİNMEDİ — YEDEK adaydır.** Farklı hata yapar: arena K3/K4/K6'da daha iyi (0/1/5 vs 1/4/7) ve val82'de FP üretmez (0 vs 2); buna karşılık gerçek karelerde rotayı **beton kanal üstünden** geçirir (engel üstü waypoint 79 vs 3). Saha gününde geçiş için **§6C** yordamı kullanılır. v34 de diskte durur ama artık **ikinci** yedektir (gerçek karelerin 67/67'sini reddeder).
 > Paket: `O:\navitas\jetson_paket\`
 >
 > Bu kılavuz **ölçümle** hazırlandı. Her "şu olacak" cümlesinin altında ya bir sayı
@@ -15,7 +17,7 @@
 > **Kullanıcı kararı** (T85). Mimar kabulü: `REVIEW_LOG.md` **D-132** (kabul kuralı,
 > **sonuç görülmeden** yazıldı) + **D-133** (dört şartın hepsi sağlandı). Aşağıdaki
 > v27/v24/v21/v17 bölümleri **silinmedi** — ölçüm kaydıdır. Ama **bugün derlenecek
-> ve koşulacak model `navitas_seg_v35_best_512_fp16.onnx`**'tir.
+> ve koşulacak model `navitas_seg_v36_best_512_fp16.onnx`**'tir.
 >
 > **v30 nedir:** v29 ile her şeyde aynı; tek fark gerçek otopark karelerinin
 > çoğaltması **12 kat → 4 kat** (D-132). v29 tam bu dozdan reddedilmişti (D-131).
@@ -148,8 +150,8 @@ dosyasındaki `asil_model_pt` ve `asil_model` alanlarını okur:
 | argüman | varsayılanın kaynağı | bugün çözülen değer |
 |---|---|---|
 | `--girdi` | `data/raw_frames` | **YOK**; görüntüler `test_goruntuleri/` altında, yol açıkça verilmeli |
-| `--pt` | manifest `asil_model_pt` | `navitas_seg_v35_best.pt` (**VAR**) |
-| `--onnx` | manifest `asil_model` | `navitas_seg_v35_best_512_fp16.onnx` (**VAR**) |
+| `--pt` | manifest `asil_model_pt` | `navitas_seg_v36_best.pt` (**VAR**) |
+| `--onnx` | manifest `asil_model` | `navitas_seg_v36_best_512_fp16.onnx` (**VAR**) |
 | `--engine` | manifest ONNX adıyla aynı gövde | Jetson'da derlenmiş dosya varsa kullanılır; bugün **YOK**, TensorRT vakası açıkça `ATLANDI` |
 | `--conf` | `rpi_inference` üretim varsayılanı | `0.30` |
 | `--imgsz` | manifest boyutu + üretim `INFER_SIZE` | `[512]`; T76'dan beri manifest ile üretim **aynı boyutta** (D-112) — ayrışacak boyut kalmadı |
@@ -312,8 +314,10 @@ raporlarsın. Ölçümden önce yap, ölçüm boyunca `tegrastats` ile sıcaklı
 ```
 jetson_paket/
 ├── models/
-│   ├── navitas_seg_v35_best_512_fp16.onnx   ← ASIL — bunu derle (D-181/D-182, üretim modeli)
-│   ├── navitas_seg_v35_best.pt              ← v35 referans / hakem ekranının yüklediği dosya
+│   ├── navitas_seg_v36_best_512_fp16.onnx   ← ASIL — bunu derle (D-293, üretim modeli)
+│   ├── navitas_seg_v36_best.pt              ← v36 referans / hakem ekranının yüklediği dosya
+│   ├── navitas_seg_v35_best_512_fp16.onnx   ← YEDEK (§6C), eski asıl (21-26 Ağu)
+│   ├── navitas_seg_v35_best.pt              ← v35 referans / §6C birincil→yedek geçişi
 │   ├── navitas_seg_v27_best_512_fp16.onnx   ← eski asıl (14-15 Ağu), karar kıyası için
 │   ├── navitas_seg_v27_best.pt              ← v27 referans / karar kıyası
 │   ├── navitas_seg_v24_best_640_fp16.onnx   ← eski asıl (13-14 Ağu), karar kıyası için
@@ -446,11 +450,11 @@ bu bir hata değil, o backend'in kurulu olmadığının dürüst raporudur.
 
 ## 4. TensorRT engine derle (T16)
 
-**Jetson üzerinde**, ONNX'ten. **v30 ile derle** — üretim modeli o (§0-T85):
+**Jetson üzerinde**, ONNX'ten. **v36 ile derle** — üretim modeli o (§0-T85 zinciri, güncel karar D-293):
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v35_best_512_fp16.onnx format=engine imgsz=512 half=True
+yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 half=True
 ```
 
 ⚠ **Birden çok modeli TensorRT'ye derleme.** v17, v20, v21, v24, v27 ve v30 aynı
@@ -468,7 +472,7 @@ Bu 5–15 dakika sürebilir; TensorRT katman katman optimize eder. Sabret, kesme
 
 **Kapı (T16):** `.engine` dosyası oluştu **ve** tek kare çıkarım hatasız tamamlandı:
 ```bash
-yolo predict task=segment model=navitas_seg_v30_best_512_fp16.engine \
+yolo predict task=segment model=navitas_seg_v36_best_512_fp16.engine \
   source=~/navitas/data/test_goruntuleri/sentetik_arena --imgsz 512
 ```
 
@@ -483,8 +487,8 @@ derlenen engine reddedilir):
 
 ```bash
 cd ~/navitas
-python3 codes/model_registry.py --turev-kaydet models/navitas_seg_v35_best_512_fp16.engine \
-  --kaynak-pt models/navitas_seg_v35_best.pt
+python3 codes/model_registry.py --turev-kaydet models/navitas_seg_v36_best_512_fp16.engine \
+  --kaynak-pt models/navitas_seg_v36_best.pt
 ```
 
 Kayıtsız/yabancı `.engine` yine RED; `.pt` davranışı değişmedi. Defteri ELLE
@@ -494,8 +498,8 @@ taşınır (`tests/test_jetson_paket_defteri` aynayı kilitler).
 ### `yolo export` hata verirse — `trtexec` yedeği
 ```bash
 /usr/src/tensorrt/bin/trtexec \
-  --onnx=navitas_seg_v35_best_512_fp16.onnx \
-  --saveEngine=navitas_seg_v30_best_512_fp16.engine \
+  --onnx=navitas_seg_v36_best_512_fp16.onnx \
+  --saveEngine=navitas_seg_v36_best_512_fp16.engine \
   --fp16 --workspace=4096
 ```
 
@@ -507,12 +511,12 @@ taşınır (`tests/test_jetson_paket_defteri` aynayı kilitler).
 cd ~/navitas
 python3 scripts/jetson_fps.py \
   --girdi test_goruntuleri/sentetik_arena \
-  --pt models/navitas_seg_v35_best.pt \
-  --onnx models/navitas_seg_v35_best_512_fp16.onnx \
-  --engine models/navitas_seg_v30_best_512_fp16.engine \
+  --pt models/navitas_seg_v36_best.pt \
+  --onnx models/navitas_seg_v36_best_512_fp16.onnx \
+  --engine models/navitas_seg_v36_best_512_fp16.engine \
   --imgsz 512 \
   --isinma 15 --tekrar 120 --conf 0.30 --cihaz 0 \
-  --cikti results/jetson_fps_v30_$(date +%Y%m%d_%H%M%S)
+  --cikti results/jetson_fps_v36_$(date +%Y%m%d_%H%M%S)
 ```
 
 **PC referansı (RTX 5080, aynı zincir, karşılaştırman için):**
@@ -631,7 +635,7 @@ hesabından çıkan gerçek gereksinim **0,9–2,6 FPS**.
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v35_best_512_fp16.onnx format=engine imgsz=512 \
+yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 \
   int8=True data=~/navitas/codes/karisim_arena.yaml
 ```
 ⚠ `karisim_arena.yaml` içindeki yollar **Windows mutlak yolları** (`O:\navitas\...`).
@@ -762,7 +766,7 @@ gör; çıkışta `UYARI: telsiz yayin hatalari` basılırsa halka kopuktur. YKS
 > cihaz-öncesi doğrulama penceresi yok. Birincil aday sahada düşerse geçiş
 > **el yordamıyla değil bu yordamla** yapılır. Kurulum yordamı T104 ile
 > testli; bu bölüm de `tests/test_kilavuz_gecis_yordami.py` ile kilitlidir.
-> ⚠ Aday ADLARI bu yordama T121+T123 kapanınca yazılır (T130'da dolduruldu: yedek = **v34**); yordamın mekaniği ada bağımlı değildir. **Geçiş KARARI
+> ⚠ Aday ADLARI bu yordama T121+T123 kapanınca yazılır (T130'da dolduruldu: yedek = v34; **v36 terfisiyle güncellendi: yedek = v35**, v34 ikinci yedek); yordamın mekaniği ada bağımlı değildir. **Geçiş KARARI
 > İNSANINDIR (D-133)** — yordam yalnız mekaniktir.
 
 ### G1 · Tetik ve karar
@@ -780,12 +784,15 @@ SENARYO (c) teknik cokme / yuklenmiyor -> GECIS SERBEST
 
 - **(a) ve (c) — geçiş meşru.** Tetik: **§5 "Karar kıyası"** (üç modeli ayıran
   test) veya **§5 "Domain kontrolü"**. Karar veren: takım (insan). Saat +
-  gerekçe saha defterine yazılır. Yedek: **v34**; (c)'de doğrulanmış herhangi
+  gerekçe saha defterine yazılır. Yedek: **v35**; (c)'de doğrulanmış herhangi
   bir ağırlık yeter.
 - 🔴 **(b) — GEÇİŞ YASAK.** Birincil "göremiyor" ise **sahne okunamıyor**
   demektir; okunamayan sahnede model değiştirmek *aynı körlüğü başka bir
-  modelle denemektir* (D-277 §3). Yedek v34 bu eksende **daha kötüdür**:
-  gerçek karelerin **67/67'sini** reddeder (D-249).
+  modelle denemektir* (D-277 §3). Yedek v35 bu eksende **daha iyi DEĞİLDİR**:
+  aynı 29 gerçek karede maske üretemediği kare sayısı **16** — v36 ile
+  **birebir aynı** (D-293); ürettiği rota sayısı ise daha azdır (6 vs 8).
+  İkinci yedek v34 bu eksende **çok daha kötüdür**: gerçek karelerin
+  **67/67'sini** reddeder (D-249).
   **Yapılacak, aynen:**
 
   > **Rota üretilmiyorsa model değiştirilmez; İKA sürmez ve sebep kaydedilir.**
@@ -809,7 +816,7 @@ man = json.loads((kok / "models/jetson_derleme_manifest.json").read_text(encodin
 #    (2) anahtarlari CIPLAK dosya adi, "models/" oneki YOK. G2, "bozuk yedekle
 #    gecme" KAPISIDIR; coktugunde operatör ya kapiyi atlar ya da tikanir.
 kunye = {x["dosya"]: x["sha256"] for x in man["paket_icerigi"]}
-for ad in ("navitas_seg_v34_best.pt", "navitas_seg_v34_best_512_fp16.onnx"):   # T130: yedek = v34
+for ad in ("navitas_seg_v35_best.pt", "navitas_seg_v35_best_512_fp16.onnx"):   # v36 terfisi: yedek = v35
     yol = kok / "models" / ad
     beklenen = kunye.get(ad)
     ozet = hashlib.sha256(yol.read_bytes()).hexdigest()
@@ -845,7 +852,7 @@ defterle tutarlılığı `tests/test_saha_parametrik.py` sınıfı kilitler.
 ```bash
 python3 scripts/jetson_fps.py \
   --girdi test_goruntuleri/sentetik_arena \
-  --pt models/navitas_seg_v34_best.pt --onnx models/navitas_seg_v34_best_512_fp16.onnx \
+  --pt models/navitas_seg_v35_best.pt --onnx models/navitas_seg_v35_best_512_fp16.onnx \
   --imgsz 512 --isinma 1 --tekrar 3 --conf 0.30 --cihaz 0 \
   --cikti results/gecis_dogrulama_$(date +%Y%m%d_%H%M%S)
 ```

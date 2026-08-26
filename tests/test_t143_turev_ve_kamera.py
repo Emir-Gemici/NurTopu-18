@@ -36,9 +36,14 @@ from codes.karar_sozlesmesi import (  # noqa: E402
 
 DEFTER = KOK / "config" / "model_registry.json"
 PAKET_DEFTER = KOK / "jetson_paket" / "config" / "model_registry.json"
-URETIM_PT = "models/navitas_seg_v35_best.pt"
-URETIM_SHA = "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b"
-ENGINE_ADI = "navitas_seg_v35_best.engine"
+# ⚠ 2026-08-26: uretim v35 -> v36 (kural disi terfi, D-293 / ON_KAYIT SS15).
+# Bu UC sabit ELLE cevrilir — defterden turetilseydi test totolojik olurdu ve
+# kazara cevrilmis bir profili yakalayamazdi (test_model_registry ile ayni
+# gerekce). v35 turev girdileri profilden CIKARILDI (kaynak artik v36; kalsalar
+# `turev_dogrula` onlari YETIM sayip RED donerdi) — v35 DOSYALARI diskte duruyor.
+URETIM_PT = "models/navitas_seg_v36_best.pt"
+URETIM_SHA = "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911"
+ENGINE_ADI = "navitas_seg_v36_best.engine"
 PT_VEKIL_ICERIK = b"URETIM-PT-VEKIL-ICERIGI"
 
 
@@ -59,7 +64,7 @@ class _GeciciKok:
         self.engine.write_bytes(b"TRT-ENGINE-SAHTE-ICERIK-" * 64)
         # T143 kalinti (1): --kaynak-pt ZORUNLU. Uretim .pt worktree'de yok;
         # vekil dosya + yalniz BU dosya/BU icerik icin sha vekili (asagida).
-        self.pt = self.dizin / "models" / "navitas_seg_v35_best.pt"
+        self.pt = self.dizin / "models" / "navitas_seg_v36_best.pt"
         self.pt.write_bytes(PT_VEKIL_ICERIK)
 
     def sha_vekili(self):
@@ -103,9 +108,9 @@ class UretimDefteriTests(unittest.TestCase):
         diskte var; ozetleri `--turev-kaydet` ile GERCEKTEN yazildi (2026-08-26,
         --kaynak-pt ile .pt ozeti kiyaslanarak)."""
         turevler = self.profil["turevler"]
-        self.assertEqual({ENGINE_ADI, "navitas_seg_v35_best_512_fp16.engine",
-                          "navitas_seg_v35_best.onnx",
-                          "navitas_seg_v35_best_512_fp16.onnx"}, set(turevler))
+        self.assertEqual({ENGINE_ADI, "navitas_seg_v36_best_512_fp16.engine",
+                          "navitas_seg_v36_best.onnx",
+                          "navitas_seg_v36_best_512_fp16.onnx"}, set(turevler))
         for ad, kayit in turevler.items():
             with self.subTest(ad=ad):
                 if ad.endswith(".engine"):
@@ -118,9 +123,9 @@ class UretimDefteriTests(unittest.TestCase):
 
     def test_diskteki_onnx_turevi_GERCEKTEN_GECER(self):
         """Gercek dosya, gercek ozet — sadece defter metni degil."""
-        onnx = KOK / "models" / "navitas_seg_v35_best.onnx"
+        onnx = KOK / "models" / "navitas_seg_v36_best.onnx"
         if not onnx.is_file():
-            onnx = Path("O:/navitas/models/navitas_seg_v35_best.onnx")   # worktree: salt okunur kaynak
+            onnx = Path("O:/navitas/models/navitas_seg_v36_best.onnx")   # worktree: salt okunur kaynak
         if not onnx.is_file():
             self.skipTest(f"ONNX turevi bu makinede yok: {onnx}")
         u, d = R.model_kayit_dogrula(onnx, kok=KOK, calisan_imgsz=512)
@@ -296,7 +301,7 @@ class TurevKaydetCliTests(unittest.TestCase):
                          self.k.veri()["profiles"]["competition"]["turevler"][ENGINE_ADI]["sha256"])
 
     def test_turev_kaydet_YANLIS_kaynak_pt_RED(self):
-        sahte_pt = self.k.dizin / "models" / "navitas_seg_v35_best.pt"
+        sahte_pt = self.k.dizin / "models" / "navitas_seg_v36_best.pt"
         sahte_pt.write_bytes(b"bu uretim agirligi degil")
         with self.assertRaises(MR.ModelRegistryError):
             MR.turev_kaydet(self.k.engine, registry_path=self.k.defter, kaynak_pt=sahte_pt)

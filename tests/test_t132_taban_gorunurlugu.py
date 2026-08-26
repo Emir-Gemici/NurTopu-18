@@ -51,8 +51,8 @@ PAKET_DEFTERI = KOK / "jetson_paket" / "config" / "model_registry.json"
 # kayit ekler) — kilitlenen sey "gecmis SILINMEZ"dir, "gecmis DONMUSTUR" degil.
 # Kaynak: D-261 olcumu (119_t131_k0_taban_gecmisi.py), T132'de deftere gocuruldu.
 BEKLENEN_SURUMLER = frozenset({"v17", "v20", "v21", "v24", "v27", "v30",
-                               "v34", "v35"})
-DONEM_TUTARLI = frozenset({"v27", "v30", "v34", "v35"})
+                               "v34", "v35", "v36"})
+DONEM_TUTARLI = frozenset({"v27", "v30", "v34", "v35", "v36"})
 
 
 def _defter(dizin, *, model_id, figur_alani, kume=None):
@@ -145,8 +145,8 @@ class TabanKimligiTests(unittest.TestCase):
         kayit = K65.k0_taban_kaydi()
         oran, taban, notu = K65.k0_taban_orani(0.0903)
         metin = K65.k0_taban_metni(kayit, oran, taban, notu)
-        self.assertEqual(kayit["kimlik"], "v35")
-        self.assertIn("v35", metin)
+        self.assertEqual(kayit["kimlik"], "v36")
+        self.assertIn("v36", metin)
 
     def test_oran_YOKSA_satir_sebebini_yazar_sayi_UYDURMAZ(self):
         metin = K65.k0_taban_metni({"deger": None}, None, None, "taban YOK")
@@ -257,11 +257,16 @@ class SoyagaciGorunurlugunuTests(unittest.TestCase):
         self.assertIn("kayitli DEGIL", "\n".join(satirlar))
 
     def test_gercek_defterde_KARSI_OLGUSAL_v34_gunu_16x_gorunurdu(self):
-        """T131'in cekirdek iddiasi: bu satir O GUN olsaydi aykirilik gorunurdu."""
+        """T131'in cekirdek iddiasi: bu satir O GUN olsaydi aykirilik gorunurdu.
+
+        ⚠ "O GUN" = v34 terfisinin gunu; v34'ten SONRAKI her surum (v35, v36...)
+        soyagacindan CIKARILIR. Terfi geldikce buraya surum eklenir — aksi hâlde
+        karsi-olgusal kendi gelecegini de sayar ve iddia sulanir.
+        """
         veri = json.loads(GERCEK_DEFTER.read_text(encoding="utf-8"))
         gecmis = (veri["profiles"][veri["default_profile"]]
                   ["metrics"]["k0_korluk"]["figur_zemin_orani"])
-        o_gun = [k for k in gecmis if k["surum"] != "v35"]
+        o_gun = [k for k in gecmis if k["surum"] not in ("v35", "v36")]
         uzaklik, _ = K65.taban_medyan_uzakligi(0.0049, o_gun)
         self.assertGreater(uzaklik, 10.0)
 
