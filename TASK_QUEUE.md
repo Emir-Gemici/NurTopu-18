@@ -8452,7 +8452,7 @@ esults	50_uc_kapi\`):
     ölçümü yeniden koşulacak (T36b kapısı). `codes/test_rota_sentetik.py`
     **15/15** · tam paket **OK**.
 
-- [ ] **T36b — Kompozit arena kaynağı: yer gerçeği uyumu 1/7 · KAPI DÜŞTÜ** · `comms/yks_gui.py` (GUI tarafı bitti) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-59**
+- [x] **T36b — KAPANDI (2026-08-27 · D-302, mimar vekili kararı; FİLO 2'nin D-215 oyu doğrulandı): ön kayıtlı kural ORACLE ≥ 8/9 SAĞLANDI — yer gerçeği maskesiyle algoritma **8/9** doğru şerit yayınlıyor (7 train karesinde 7/7, 0 RET → D-215 birebir üretildi; tek RET val karesinde). MODEL kolu 0/9 ama kapatma ölçütü DEĞİL (D-298 §3: kümenin yer gerçeği ham karede görünmeyen sentetik koridor). Ayrıca ekrandaki 'beklenen şerit' satırı dürüstleştirildi, kapı 4/4 · Kompozit arena kaynağı: yer gerçeği uyumu 1/7 · KAPI DÜŞTÜ** · `comms/yks_gui.py` (GUI tarafı bitti) · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-59**
   - 🔴 **FİLO 2 · D-215 (2026-08-20) · KAPANMA ADAYI (oy 2/2):** "ORACLE →
     RET 7/7" kanıtı bugünkü kodla 7/7 DOĞRU · 0 RET (güven 0,60–1,00) — kanıt
     ARTIK YOK. Kapatma kararı MİMARIN (ön kayıt kuralı).

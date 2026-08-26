@@ -22446,3 +22446,34 @@ Genel kapı iki kolda GEÇTİ (kol1 15/15 · kol2 rota 15/15 · şerit 15/15); `
 #### 7. ÖLÇÜLEMEDİ (dürüstlük kaydı)
 - **Gerçek arena** hâlâ yok: fikstür **sentetik** kabul kümesindendir. Kuru koşu bir **zincir** sınamasıdır, doğruluk ölçümü değildir.
 - **Otopark karesi silinmedi**; `--kare` ile erişilebilir ve artık belgelenmiş bir **negatif kontroldür**.
+
+---
+
+### D-302 · ✅ T36b KAPANDI — D-59'un "kapı düştü" kanıtı ARTIK ÜRETİLEMİYOR; ekrandaki "beklenen şerit" satırı dürüstleştirildi (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §25 (sonuç görülmeden; karar kuralı **ORACLE ≥ 8/9**). **Kanıt:** `results/t36b/{olcum.json,olc.py}`.
+**Bağlam:** kuyruk T36b (KRİTİK, D-59) "kompozit arena kaynağı: yer gerçeği uyumu **1/7**, KAPI DÜŞTÜ" diyordu. FİLO 2 (D-215) oy 2/2 ile kapanma adayı ilan etmiş, kararı mimara bırakmıştı. Mimar vekili kanıtı **kendi koştu**.
+
+#### 1. Ölçüm — iki kol, aynı 9 kare
+| kol | maske kaynağı | doğru şerit | RET |
+|---|---|---:|---:|
+| **ORACLE** | kümenin kendi YOLO etiketi | **8/9** | 1 |
+| MODEL | v36 | **0/9** | 9 |
+
+**D-215 birebir üretiliyor:** 7 **train** karesinde ORACLE **7/7 doğru · 0 RET** (güven 0,63–1,00). Tek RET, val bölümündeki `..._frame_000006_...` karesinde (`GORUS_HATTI_KOPUK`) — D-215 yalnız train bölümünü ölçtüğü için "0 RET" demişti; 9 karenin tamamında 1 RET vardır. Fark **kayda geçirildi**, sayı yuvarlanmadı.
+**Karar:** ön kayıtlı kural (ORACLE ≥ 8/9) **sağlandı** → **T36b KAPANDI**. D-59'un "yer gerçeği uyumu 1/7" kanıtı bugünkü kodla üretilemiyor.
+
+#### 2. MODEL kolu neden kapatma ölçütü DEĞİL
+D-298 §3'te ölçüldü: bu kümenin sınıf 0 yer gerçeği, ham karede **görünmeyen** sentetik bir koridordur (otopark çekimine yapıştırılmış arena kurgusu). Model o koridoru üretemez, **üretmemelidir** de — asfaltı geçilebilir, araç sıralarını engel işaretlemesi **doğru** davranıştır; araçlar serbest alanı enine kestiği için zincir fail-closed reddeder. Bu yüzden MODEL kolu yalnız **raporlanır**.
+
+#### 3. 🔴 Kapatmadan bağımsız GERÇEK kusur: ekran hakemi yanıltıyordu
+`comms/yks_gui.py` kompozit kaynakta `beklenen şerit N → UYUMLU/ÇEKİMSER/UYUMSUZ` yazıyordu. Model 0/9 olduğu için hakem **her karede "ÇEKİMSER"** görüp sistemi arızalı sanardı — oysa reddin sebebi doğru davranıştır. Bilgi satırına şu eklendi: *"bu kümede yer gerçeği GEOMETRİK KURGUDUR (ham karede görünmez) — uyum ALGI başarısının ölçütü DEĞİLDİR (D-298/D-302)"*. Cümle yalnız **gösterim** metnine yazılır; karar değişkenlerine dokunmaz (`test_beklenen_serit_karara_sizmiyor` hâlâ geçiyor).
+
+#### 4. Kapı (`tests/test_t36b_kompozit_gosterim_notu.py`, **4/4**)
+Uyarının varlığı · uyarının **kompozit dalının içinde** ve `beklenen şerit` satırıyla **aynı dalda** olması (araya başka kaynak dalı girmiyor) · karar değişkenlerine **sızmaması** · ölçüm dosyasının durması ve ORACLE ≥ 8/9 ile MODEL = 0/9 sayılarının cümleyle tutarlı kalması (sayı değişirse kapı düşer, cümle bayatlamaz).
+
+#### 5. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1056 OK** (2 skip).
+
+#### 6. İNSAN KARARI BEKLİYOR (D-133 — tek taraflı yapılmadı)
+GUI'nin **açılış kaynağı** hâlâ `kompozit` (`comms/yks_gui.py:250`, `ALGI_KAYNAKLAR[0]`), yani hakem ekranı **0/9 rota veren** kümeyle açılıyor; kabul kümesi `arena_kadraj` **12/12** veriyor. Açılış sırası bir **sunum** kararıdır; ölçüm ve öneri burada, seçim kullanıcınındır.

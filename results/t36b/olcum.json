@@ -1,0 +1,181 @@
+{
+ "kare": 9,
+ "kollar": {
+  "ORACLE": {
+   "dogru": 8,
+   "ret": 1,
+   "n": 9,
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": 1,
+     "guven": 0.63,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": 1,
+     "guven": 1.0,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": 1,
+     "guven": 0.753,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": 3,
+     "guven": 0.981,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": 1,
+     "guven": 1.0,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": 3,
+     "guven": 1.0,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": 3,
+     "guven": 0.703,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "GORUS_HATTI_KOPUK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": 3,
+     "guven": 0.897,
+     "ret": null,
+     "dogru": true,
+     "ret_mi": false
+    }
+   ]
+  },
+  "MODEL": {
+   "dogru": 0,
+   "ret": 9,
+   "n": 9,
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "GORUS_HATTI_KOPUK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "GORUS_HATTI_KOPUK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "GORUS_HATTI_KOPUK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "UC_BANT_TEMAS_YOK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "UC_BANT_TEMAS_YOK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "UC_BANT_TEMAS_YOK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "UC_BANT_TEMAS_YOK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "beklenen_serit": 1,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "GORUS_HATTI_KOPUK",
+     "dogru": false,
+     "ret_mi": true
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "beklenen_serit": 3,
+     "yayinlanan_road": null,
+     "guven": 0.0,
+     "ret": "UC_BANT_TEMAS_YOK",
+     "dogru": false,
+     "ret_mi": true
+    }
+   ]
+  }
+ }
+}

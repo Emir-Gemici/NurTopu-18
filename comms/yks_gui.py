@@ -1718,6 +1718,19 @@ class YksArayuz:
                                        else "UYUMSUZ"))
                         bilgi += (f" · beklenen şerit {_beklenen}"
                                   f" → {_uyum}")
+                        # T36b · D-302 — GÖSTERİM DOĞRULUĞU. Bu kümenin yer
+                        # gerçeği, ham karede GÖRÜNMEYEN geometrik bir kurgudur
+                        # (otopark çekimine yapıştırılmış arena koridoru;
+                        # ölçüldü: D-298 §3, `results/gece_20260826/
+                        # kompozit_panel.png`). Model o koridoru üretemez ve
+                        # ÜRETMEMELİDİR de — asfaltı geçilebilir, araçları engel
+                        # işaretlemesi DOĞRU davranıştır. Ölçüldü (D-302,
+                        # `results/t36b/olcum.json`): yer gerçeği maskesiyle
+                        # algoritma 8/9 doğru; MODEL maskesiyle 0/9. Bu satır
+                        # olmadan hakem "ÇEKİMSER" görüp sistemi arızalı sanar.
+                        bilgi += (" · ⚠ bu kümede yer gerçeği GEOMETRİK "
+                                  "KURGUDUR (ham karede görünmez) — uyum ALGI "
+                                  "başarısının ölçütü DEĞİLDİR (D-298/D-302)")
             # T48 — ZEMİN MASKESİ ŞÜPHELİ: hakem sistemin NEDEN karar
             # vermediğini görmeli. Eşik sözleşmeden okunur, çıplak yazılmaz.
             if karar_reddi is not None                     and karar_reddi[0] == ZEMIN_MASKESI_SUPHELI_SEBEBI:

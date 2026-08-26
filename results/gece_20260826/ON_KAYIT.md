@@ -243,3 +243,14 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 2. `--kare <otopark karesi>` açıkça verildiğinde halka 7 **hâlâ DÜŞTÜ** olmalı (ayırt ediyor).
 3. **Mutasyon:** fikstür mpp'si bozulursa (ör. ×3) halka 7 **DÜŞMELİ** — yani kapı ölçeğe gerçekten duyarlı.
 ⚠ Fikstür ROTA vermezse **varsayılan değiştirilmez**; "geçen kare aranmaz". Sayı ne çıkarsa yazılır ve T38 açık kalır.
+
+## 25. EK — T36b kapanma kararı (2026-08-27, sonuç görülmeden)
+**Durum:** kuyruk T36b (KRİTİK, D-59) "kompozit arena kaynağı: yer gerçeği uyumu **1/7**, KAPI DÜŞTÜ" diyor. FİLO 2 (D-215, 2026-08-20) oy 2/2 ile **kapanma adayı** ilan etti: "ORACLE → RET 7/7" kanıtı bugünkü kodla üretilemiyor. **Kapatma kararı mimarındır** ve kanıtı mimar **kendi** koşar.
+**İki kol ayrı ayrı ölçülür** (aynı 9 kompozit kare, `data/arena_kompozit`):
+- **ORACLE kolu:** kümenin kendi YOLO etiketinden maske → `analyze_path` → yayınlanan `road`, manifestteki `acik_serit` ile karşılaştırılır. Bu **algoritma** sorusudur.
+- **MODEL kolu:** v36 maskesi → aynı karşılaştırma. Bu **model** sorusudur.
+**Karar kuralı (sonuca göre değişmez):**
+- ORACLE **≥ 8/9 doğru** ise: D-59'un "kapı düştü" kanıtı **artık üretilemiyor** demektir → T36b **KAPANIR**, gerekçe kayda geçer.
+- ORACLE **< 8/9** ise: T36b **AÇIK KALIR** ve sayı yazılır. Kural gevşetilmez.
+- MODEL kolu **kapatma ölçütü DEĞİLDİR** — D-298 §3 kompozit yer gerçeğinin ham karede görünmeyen sentetik bir koridor olduğunu ölçtü; modelden onu üretmesi beklenemez. MODEL kolu yalnız **raporlanır**.
+**Ayrıca (kapatmadan bağımsız, dürüstlük):** hakem ekranı bu kümede modelin çıktısını, modelin göremeyeceği bir "beklenen şerit" ile yan yana gösteriyor. Bu bir **gösterim doğruluğu** kusurudur; bilgi satırına kaynağın niteliği yazılır. **Açılış kaynağını değiştirmek** ise sunum kararıdır (D-133) — kullanıcıya bırakılır, tek taraflı yapılmaz.
