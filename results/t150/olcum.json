@@ -1,0 +1,182 @@
+{
+ "gorev": "T150 — hb_maskesi/hb_konumu olcumu (ON_KAYIT SS16). URETIME BAGLAMA YOK.",
+ "tarih": "2026-08-26",
+ "yorumlayici": "O:\\navitas-local-train\\venv\\Scripts\\python.exe",
+ "gpu": "KULLANILMADI (hb_maskesi klasik OpenCV; maliyet olcumu YER GERCEGI maskesiyle)",
+ "1_sentetik_kabul_kumesi": {
+  "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "yer_gercegi_kaynagi": "manifest.json -> ornekler[].arena.hedef_kutu (260/260 dolu, 25,6x25,6 px, hedef_varyanti=metin_kirmizi_H)",
+  "n": 260,
+  "bulundu": 260,
+  "bulunamadi": 0,
+  "bulunamayan_kareler": [],
+  "merkez_gt_kutusu_icinde": 260,
+  "merkez_hata_px": {
+   "medyan": 0.7071067811865476,
+   "ort": 0.7171268591389856,
+   "p90": 0.9490583018851027,
+   "maks": 1.3000000000000027
+  },
+  "iou": {
+   "medyan": 0.898984910836762,
+   "min": 0.8359183673469381,
+   "iou>=0,5 kare": 260
+  },
+  "yanlis_pozitif": {
+   "kare": 0,
+   "toplam_bilesen": 0,
+   "kareler": []
+  },
+  "T67_cakismasi": {
+   "kare": 0,
+   "toplam_px": 0,
+   "kareler": []
+  },
+  "mpp": {
+   "gt_medyan": 0.078125,
+   "tahmin_medyan": 0.07407407407407407,
+   "bagil_hata_medyan": 0.051851851851851906,
+   "bagil_hata_maks": 0.08571428571428577
+  },
+  "CEVRIMSELLIK_UYARISI": "Bu kume, dedektorun gelistirildigi ve tests/test_hb_dedektoru.py ile kilitlendigi URETECIN ciktisidir. 260/260 isabet SAHA KANITI DEGILDIR."
+ },
+ "2_gercek_kareler_HB_YOK__her_tespit_YANLIS_POZITIF": {
+  "gercek_67_otopark": {
+   "n": 67,
+   "tespit_kare": 67,
+   "yanlis_pozitif_orani": 1.0,
+   "tespitli_kareler": [
+    "frame_000000_000000000.jpg",
+    "frame_000001_000000600.jpg",
+    "frame_000002_000000672.jpg",
+    "frame_000003_000000720.jpg",
+    "frame_000004_000000768.jpg",
+    "frame_000005_000000816.jpg",
+    "frame_000006_000000864.jpg",
+    "frame_000007_000000936.jpg",
+    "frame_000008_000001008.jpg",
+    "frame_000009_000001152.jpg",
+    "frame_000010_000001200.jpg",
+    "frame_000011_000001224.jpg",
+    "frame_000012_000001248.jpg",
+    "frame_000013_000001272.jpg",
+    "frame_000014_000001320.jpg",
+    "frame_000000_000000000.jpg",
+    "frame_000001_000000336.jpg",
+    "frame_000002_000000648.jpg",
+    "frame_000003_000000912.jpg",
+    "frame_000004_000000960.jpg",
+    "frame_000005_000001008.jpg",
+    "frame_000006_000001416.jpg",
+    "frame_000007_000001440.jpg",
+    "frame_000008_000001488.jpg",
+    "frame_000009_000001776.jpg",
+    "frame_000010_000001824.jpg",
+    "frame_000011_000001848.jpg",
+    "frame_000012_000001872.jpg",
+    "frame_000013_000001944.jpg",
+    "frame_000014_000001992.jpg",
+    "frame_000015_000002040.jpg",
+    "frame_000016_000002088.jpg",
+    "frame_000017_000002112.jpg",
+    "frame_000018_000002160.jpg",
+    "frame_000000_000000000.jpg",
+    "frame_000001_000000168.jpg",
+    "frame_000002_000000192.jpg",
+    "frame_000003_000000240.jpg",
+    "frame_000004_000000264.jpg",
+    "frame_000005_000000288.jpg"
+   ],
+   "T67_cakisan_kare": 0
+  },
+  "dji_kirsal_0038_111": {
+   "n": 111,
+   "tespit_kare": 15,
+   "yanlis_pozitif_orani": 0.1351,
+   "tespitli_kareler": [
+    "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
+    "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
+    "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
+    "dji_20260822172613_0038_d__frame_000024_000001590.jpg",
+    "dji_20260822172613_0038_d__frame_000028_000001710.jpg",
+    "dji_20260822172613_0038_d__frame_000030_000001770.jpg",
+    "dji_20260822172613_0038_d__frame_000032_000001830.jpg",
+    "dji_20260822172613_0038_d__frame_000037_000001980.jpg",
+    "dji_20260822172613_0038_d__frame_000041_000002100.jpg",
+    "dji_20260822172613_0038_d__frame_000044_000002190.jpg",
+    "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+    "dji_20260822172613_0038_d__frame_000115_000004620.jpg",
+    "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
+    "dji_20260822172613_0038_d__frame_000146_000005550.jpg",
+    "dji_20260822172613_0038_d__frame_000148_000005640.jpg"
+   ],
+   "T67_cakisan_kare": 0
+  },
+  "arena_figuru_s9": {
+   "n": 1,
+   "tespit_kare": 0,
+   "yanlis_pozitif_orani": 0.0,
+   "tespitli_kareler": [],
+   "T67_cakisan_kare": 0
+  }
+ },
+ "2b_arena_figuru_tanisi": {
+  "figur_boyut": [
+   634,
+   1059
+  ],
+  "BARIYER_KROMA_ESIGI": 25,
+  "ped_penceresi": [
+   325,
+   118,
+   75,
+   60
+  ],
+  "ped_a_yildiz": {
+   "min": -6,
+   "medyan": -1.0,
+   "maks": 5,
+   "ort": -0.81
+  },
+  "ped_esigi_gecen_px": 0,
+  "ped_px_toplam": 4500,
+  "ped_BGR_ortalama": [
+   132.2,
+   135.9,
+   135.1
+  ],
+  "karede_esigi_gecen_toplam_kirmizi_px": 1889,
+  "asgari_alan_px": 196.7,
+  "bariyer_penceresi_a_yildiz_maks": 44,
+  "bariyer_penceresi_esigi_gecen_px": 1641
+ },
+ "3_T67_cakismasi": {
+  "sentetik_260": {
+   "kare": 0,
+   "px": 0
+  },
+  "gercek_67_otopark": 0,
+  "dji_kirsal_111": 0,
+  "arena_figuru": 0,
+  "toplam_kare": 439,
+  "cakisan_kare": 0,
+  "not": "Cakismama yalnizca 'arada bos bant' (HB_KARE_TOLERANSI 1,6 < BARIYER_EN_BOY_ORANI 4,0) sayesinde DEGIL: hb_maskesi bariyer maskesini 5x5 genisletip CIKARIYOR (karar_sozlesmesi.py ~:984). Cakisma tasarimla garanti; olcum bunu dogruluyor."
+ },
+ "4_uretime_baglama_maliyeti": {
+  "n": 260,
+  "not": "YER GERCEGI maskesi (mukemmel algi ust siniri), GPU yok",
+  "bugun_rota": 259,
+  "hb_bagli_rota": 259,
+  "hb_bagli_kaybedilen_kare": 0,
+  "hb_bagli_ret_sebepleri": {
+   "ZEMIN_MASKESI_SUPHELI": 1
+  },
+  "son_wp_GT_HB_kutusunda__bugun": 0,
+  "son_wp_GT_HB_kutusunda__hb_bagli": 190,
+  "kaybedilen_kareler": []
+ },
+ "kapilar": {
+  "codes/test_rota_sentetik.py": "15/15 dogru",
+  "unittest discover -s tests -q": "Ran 962 tests OK (skipped=2)"
+ }
+}

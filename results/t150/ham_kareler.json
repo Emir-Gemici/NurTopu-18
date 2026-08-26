@@ -1,0 +1,9894 @@
+{
+ "sabitler": {
+  "HB_KENAR_M": 2.0,
+  "HB_KARE_TOLERANSI": 1.6,
+  "HB_ASGARI_ALAN_ORANI": 0.00029296875,
+  "HB_KAPAMA_ORANI": 0.015625,
+  "BARIYER_KROMA_ESIGI": 25,
+  "BARIYER_EN_BOY_ORANI": 4.0
+ },
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+ "n": 260,
+ "kareler": [
+  {
+   "kare": "images/val/sa_000000.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    252.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    264.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    252,
+    14,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    264.5,
+    27.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.0440306508910582,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/val/sa_000001.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    187.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    200.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1201,
+   "tespit_kutu": [
+    186,
+    15,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    199.5,
+    28.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/val/sa_000002.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    461.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    474.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1050,
+   "tespit_kutu": [
+    461,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    474.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/val/sa_000003.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    148.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    161.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    148,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    161.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000004.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    196.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    208.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    195,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    208.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.94339811320567,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/val/sa_000005.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    226.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    239.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 714,
+   "tespit_kutu": [
+    226,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    238.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000006.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    228.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    241.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 575,
+   "tespit_kutu": [
+    228,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    241.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/val/sa_000007.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    268.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    281.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    268,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    281.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.1661903789690717,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000008.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    435.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    448.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    434,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    447.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/val/sa_000009.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    107.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    120.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 729,
+   "tespit_kutu": [
+    106,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    119.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469389,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/val/sa_000010.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/val/sa_000011.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    213.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    226.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    213,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    226.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/val/sa_000012.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    217.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 485,
+   "tespit_kutu": [
+    204,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    217.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/val/sa_000013.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    350.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    363.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1268,
+   "tespit_kutu": [
+    350,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    362.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042534,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/val/sa_000014.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    392.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    405.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    392,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    405.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/val/sa_000015.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    124.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    136.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2712,
+   "tespit_kutu": [
+    124,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    136.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.30000000000001137,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/val/sa_000016.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    226.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    239.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1824,
+   "tespit_kutu": [
+    226,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    238.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000017.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    272.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    284.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 452,
+   "tespit_kutu": [
+    272,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    284.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000018.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    144.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    157.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    144,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    157.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/val/sa_000019.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 754,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/val/sa_000020.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    203.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    216.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 653,
+   "tespit_kutu": [
+    202,
+    15,
+    28,
+    26
+   ],
+   "tespit_merkez": [
+    215.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000021.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/val/sa_000022.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    513.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    526.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    513,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    526.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.0770329614268923,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/val/sa_000023.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    465.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    478.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2770,
+   "tespit_kutu": [
+    465,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    478.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/val/sa_000024.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    486.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    499.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 747,
+   "tespit_kutu": [
+    486,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    498.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6999999999999886,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/val/sa_000025.jpg",
+   "bolum": "val",
+   "gt_kutu": [
+    202.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    215.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1540,
+   "tespit_kutu": [
+    202,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    214.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.700000000000017,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000026.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    217.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    230.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1390,
+   "tespit_kutu": [
+    217,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    230.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000027.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    97.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    110.39999999999999,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    97,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    110.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432796,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000028.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000029.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    160.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    173.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 788,
+   "tespit_kutu": [
+    160,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    173.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000030.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1190,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000031.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    155.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    168.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    154,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    167.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000032.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 520,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000033.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    238.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    251.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    238,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    251.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5385164807134567,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000034.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    396.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    408.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    396,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    408.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000035.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    183.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    196.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 3301,
+   "tespit_kutu": [
+    182,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    195.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000036.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    417.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    430.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    417,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    430.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000037.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    362.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    375.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2293,
+   "tespit_kutu": [
+    362,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    375.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5385164807134462,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000038.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 955,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000039.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    264.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    276.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 514,
+   "tespit_kutu": [
+    264,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    276.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000040.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    164.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    176.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1046,
+   "tespit_kutu": [
+    164,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    176.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000041.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    268.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    280.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1384,
+   "tespit_kutu": [
+    267,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    280.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.94339811320567,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000042.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    389.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    402.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    389,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    402.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000043.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    168.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    180.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1566,
+   "tespit_kutu": [
+    168,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    180.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000044.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    183.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    196.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1554,
+   "tespit_kutu": [
+    182,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    195.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000045.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    385.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    398.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    385,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    398.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000046.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    448.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    461.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2173,
+   "tespit_kutu": [
+    448,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    461.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000047.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    460.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    472.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    460,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    472.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000048.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    194.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    207.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1904,
+   "tespit_kutu": [
+    194,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    206.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000049.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    99.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    112.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 926,
+   "tespit_kutu": [
+    98,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    111.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.0,
+   "iou": 0.8989849108367629,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000050.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    104.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    117.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    104,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    117.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7810249675906611,
+   "iou": 0.866878306878307,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000051.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    178.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    191.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1506,
+   "tespit_kutu": [
+    178,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    190.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000052.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 717,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000053.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    135.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    148.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 3145,
+   "tespit_kutu": [
+    135,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    147.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000054.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    164.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    176.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1681,
+   "tespit_kutu": [
+    164,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    176.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.30000000000001137,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000055.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1988,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000056.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    126.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    139.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1046,
+   "tespit_kutu": [
+    126,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    138.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000057.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 584,
+   "tespit_kutu": [
+    307,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    320.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000058.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    445.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    458.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 3395,
+   "tespit_kutu": [
+    445,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    458.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000059.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    82.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    95.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2767,
+   "tespit_kutu": [
+    81,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    94.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.3000000000000027,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000060.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    211.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    224.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1258,
+   "tespit_kutu": [
+    211,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    223.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000061.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    415.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    428.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 345,
+   "tespit_kutu": [
+    414,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    427.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000062.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    433.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    446.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 683,
+   "tespit_kutu": [
+    433,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    446.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000341,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000063.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    199.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    212.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    198,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    211.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000064.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1390,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000065.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    400.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    412.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    400,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    412.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000066.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    205.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    218.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1567,
+   "tespit_kutu": [
+    205,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    218.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000067.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    128.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    141.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1647,
+   "tespit_kutu": [
+    128,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    141.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000068.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    249.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    262.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    249,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    262.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432707,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000069.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    188.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    201.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 4850,
+   "tespit_kutu": [
+    188,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    201.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000070.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    431.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    444.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    431,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    443.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000071.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    188.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    201.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 765,
+   "tespit_kutu": [
+    188,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    201.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000072.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1056,
+   "tespit_kutu": [
+    307,
+    14,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000073.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    212.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    224.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1573,
+   "tespit_kutu": [
+    212,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    224.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000074.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    184.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    196.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    183,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    196.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.94339811320567,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000075.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    416.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    429.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1736,
+   "tespit_kutu": [
+    416,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    429.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000076.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    416.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    429.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2376,
+   "tespit_kutu": [
+    416,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    429.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000077.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1798,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000078.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    217.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    230.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1262,
+   "tespit_kutu": [
+    217,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    230.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000079.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 3050,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000080.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    116.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    129.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2226,
+   "tespit_kutu": [
+    116,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    129.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7810249675906611,
+   "iou": 0.866878306878307,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000081.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    248.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    260.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    248,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    260.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000082.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    400.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    413.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    400,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    413.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.1661903789690717,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000083.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    340.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    352.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 407,
+   "tespit_kutu": [
+    340,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    352.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000084.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    493.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    506.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2530,
+   "tespit_kutu": [
+    493,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    506.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000085.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    203.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    216.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1757,
+   "tespit_kutu": [
+    202,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    215.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000086.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    393.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    406.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2086,
+   "tespit_kutu": [
+    393,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    406.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000087.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    365.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    378.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1578,
+   "tespit_kutu": [
+    365,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    378.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000088.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    259.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    272.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 784,
+   "tespit_kutu": [
+    258,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    271.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000089.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000090.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    227.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    240.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1727,
+   "tespit_kutu": [
+    226,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    239.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000091.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    92.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    104.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    92,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    104.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845285,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000092.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    248.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    260.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    247,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    260.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.94339811320567,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000093.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    307,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    320.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000094.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    380.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    393.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    380,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    393.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000095.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    128.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    140.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2134,
+   "tespit_kutu": [
+    128,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    140.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.30000000000001137,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000096.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 2732,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000097.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    469.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    482.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2406,
+   "tespit_kutu": [
+    469,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    482.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000098.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    83.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    96.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    82,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    95.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469389,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000099.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    156.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    169.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2035,
+   "tespit_kutu": [
+    156,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    169.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000100.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    206.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    219.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1690,
+   "tespit_kutu": [
+    206,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    218.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000101.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    405.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    418.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1622,
+   "tespit_kutu": [
+    405,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    418.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000102.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    162.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    175.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 2245,
+   "tespit_kutu": [
+    162,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    174.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000103.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    319.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000104.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000105.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    187.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    200.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 706,
+   "tespit_kutu": [
+    186,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    199.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000106.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    145.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    158.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 4184,
+   "tespit_kutu": [
+    145,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    158.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000107.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    163.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    176.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    163,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    176.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000108.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    140.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    153.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    140,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    153.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.1661903789690717,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000109.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1197,
+   "tespit_kutu": [
+    306,
+    15,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    28.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000110.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    124.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    137.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    124,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    137.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7810249675906611,
+   "iou": 0.866878306878307,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000111.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    395.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    408.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 3294,
+   "tespit_kutu": [
+    394,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    407.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000112.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    217.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    204,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    217.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000113.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    505.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    518.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    505,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    518.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432707,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000114.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000115.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    442.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    455.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 6594,
+   "tespit_kutu": [
+    442,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    454.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042534,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000116.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1301,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000117.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    172.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    185.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 3070,
+   "tespit_kutu": [
+    172,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    185.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000118.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 3362,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000119.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    129.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    142.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 2744,
+   "tespit_kutu": [
+    129,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    142.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000057,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000120.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 848,
+   "tespit_kutu": [
+    306,
+    15,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    28.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000121.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 734,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000122.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 4464,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000123.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    159.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    172.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2677,
+   "tespit_kutu": [
+    158,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    171.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000124.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    217.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    204,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    217.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000125.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1112,
+   "tespit_kutu": [
+    307,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    320.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000126.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    513.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    526.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    513,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    526.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432707,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000127.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    201.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    214.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2385,
+   "tespit_kutu": [
+    201,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    214.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000128.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2035,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000129.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    197.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    210.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 2798,
+   "tespit_kutu": [
+    197,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    210.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000057,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000130.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    99.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    112.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1226,
+   "tespit_kutu": [
+    98,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    111.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469389,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000131.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    86.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    99.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 2280,
+   "tespit_kutu": [
+    86,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    98.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.860232526704265,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000132.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    141.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    154.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2848,
+   "tespit_kutu": [
+    141,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    154.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000133.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    235.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    248.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1202,
+   "tespit_kutu": [
+    235,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    247.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000134.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    163.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    176.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1332,
+   "tespit_kutu": [
+    162,
+    15,
+    28,
+    26
+   ],
+   "tespit_merkez": [
+    175.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000135.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    219.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    232.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1518,
+   "tespit_kutu": [
+    218,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    231.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000136.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    179.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    192.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    178,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    191.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000137.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    181.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    194.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1753,
+   "tespit_kutu": [
+    181,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    194.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000138.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    219.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    232.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 510,
+   "tespit_kutu": [
+    218,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    231.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000139.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    353.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    366.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 1600,
+   "tespit_kutu": [
+    353,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    366.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000341,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000140.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    468.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    480.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    468,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    480.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000141.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    444.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    456.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    444,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    456.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000142.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    448.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    461.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 4744,
+   "tespit_kutu": [
+    448,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    461.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000143.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    376.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    389.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2918,
+   "tespit_kutu": [
+    376,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    389.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000144.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    397.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    410.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1112,
+   "tespit_kutu": [
+    397,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    410.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000145.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    125.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    138.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 3298,
+   "tespit_kutu": [
+    125,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    138.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000057,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000146.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    420.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    433.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    420,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    433.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000147.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    395.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    408.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2100,
+   "tespit_kutu": [
+    394,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    407.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000148.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    230.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    243.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1715,
+   "tespit_kutu": [
+    230,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    242.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000149.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    459.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    472.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2756,
+   "tespit_kutu": [
+    458,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    471.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000150.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    111.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    124.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1541,
+   "tespit_kutu": [
+    111,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    124.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.9335612535612537,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000151.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    366.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    379.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1634,
+   "tespit_kutu": [
+    366,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    379.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5385164807134462,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000152.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2086,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000153.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    392.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    405.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1686,
+   "tespit_kutu": [
+    392,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    405.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000154.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    459.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    472.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1204,
+   "tespit_kutu": [
+    458,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    471.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000155.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    216.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    228.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 653,
+   "tespit_kutu": [
+    215,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    228.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.94339811320567,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000156.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    356.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    369.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1772,
+   "tespit_kutu": [
+    356,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    369.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000157.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 895,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000158.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 5106,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000159.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    237.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    250.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2470,
+   "tespit_kutu": [
+    237,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    250.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000160.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    185.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    198.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    185,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    198.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.077032961426903,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000161.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000162.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    191.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    204.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    190,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    203.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000163.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2596,
+   "tespit_kutu": [
+    306,
+    15,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    28.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000164.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    164.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    177.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    164,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    177.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000165.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    112.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    125.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 2574,
+   "tespit_kutu": [
+    112,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    125.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.166190378969057,
+   "iou": 0.8989849108367629,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000166.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    213.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    226.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2079,
+   "tespit_kutu": [
+    213,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    226.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000167.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    442.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    455.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    442,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    455.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5385164807134462,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000168.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    484.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    496.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    484,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    496.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000169.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    178.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 5421,
+   "tespit_kutu": [
+    165,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    178.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000170.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    398.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    411.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2643,
+   "tespit_kutu": [
+    398,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    410.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6999999999999886,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000171.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    205.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    218.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1875,
+   "tespit_kutu": [
+    205,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    218.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000172.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    130.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    143.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    130,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    142.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000173.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    416.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    428.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    416,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    428.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000174.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.118033988749895,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000175.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    472.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    485.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1080,
+   "tespit_kutu": [
+    472,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    485.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000176.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    201.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    214.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1310,
+   "tespit_kutu": [
+    201,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    214.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000177.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    367.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    380.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 757,
+   "tespit_kutu": [
+    367,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    379.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000178.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2607,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000179.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    178.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 1055,
+   "tespit_kutu": [
+    165,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    178.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.077032961426903,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000180.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    376.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    389.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    376,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    389.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000181.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    229.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    242.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    229,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    242.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000057,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000182.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    216.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    229.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 1399,
+   "tespit_kutu": [
+    216,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    229.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000183.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    475.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    488.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 2205,
+   "tespit_kutu": [
+    474,
+    15,
+    28,
+    26
+   ],
+   "tespit_merkez": [
+    487.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000184.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    340.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    352.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 806,
+   "tespit_kutu": [
+    340,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    352.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000185.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 785,
+   "tespit_kutu": [
+    306,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    319.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.0,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000186.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    208.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    220.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    208,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    220.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000187.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    484.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    496.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1366,
+   "tespit_kutu": [
+    484,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    496.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000188.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    180.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    193.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 6882,
+   "tespit_kutu": [
+    180,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    193.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000189.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1144,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000190.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    307,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000191.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    437.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    450.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1716,
+   "tespit_kutu": [
+    437,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    450.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000192.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    209.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    222.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 4780,
+   "tespit_kutu": [
+    209,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    222.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000193.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    454.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    467.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 1203,
+   "tespit_kutu": [
+    454,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    466.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042534,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000194.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    452.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    464.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 3935,
+   "tespit_kutu": [
+    452,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    464.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000195.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    201.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    214.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 3564,
+   "tespit_kutu": [
+    201,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    214.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.077032961426903,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000196.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    418.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    431.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    418,
+    14,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    430.5,
+    27.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.2206555615733636,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000197.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    213.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    226.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1831,
+   "tespit_kutu": [
+    213,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    226.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000198.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    420.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    433.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 732,
+   "tespit_kutu": [
+    420,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    433.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000199.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    365.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    378.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 757,
+   "tespit_kutu": [
+    365,
+    14,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    378.0,
+    27.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.0770329614269134,
+   "iou": 0.898984910836764,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000200.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    152.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    165.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    152,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    165.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000201.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    468.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    480.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1606,
+   "tespit_kutu": [
+    467,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    480.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.94339811320567,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000202.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 3033,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000203.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    248.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    260.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 2525,
+   "tespit_kutu": [
+    248,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    260.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000204.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2811,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000205.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 704,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000206.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 975,
+   "tespit_kutu": [
+    307,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    320.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000207.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    95.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    108.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1663,
+   "tespit_kutu": [
+    94,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    107.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469389,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000208.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    152.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    165.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 591,
+   "tespit_kutu": [
+    152,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    165.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000209.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    387.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    400.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1871,
+   "tespit_kutu": [
+    386,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    399.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000210.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    211.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    224.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    210,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    223.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469381,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000211.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    232.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    244.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    232,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    244.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000212.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    461.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    474.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1892,
+   "tespit_kutu": [
+    461,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    474.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000213.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 905,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000214.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    178.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 5444,
+   "tespit_kutu": [
+    165,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    178.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000215.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    192.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    204.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 960,
+   "tespit_kutu": [
+    192,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    204.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000216.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    416.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    428.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    416,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    428.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000217.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    200.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    212.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    200,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    212.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000218.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    356.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    368.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2051,
+   "tespit_kutu": [
+    356,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    368.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.30000000000001137,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000219.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    264.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    276.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 530,
+   "tespit_kutu": [
+    264,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    276.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000220.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    243.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    256.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    242,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    255.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000221.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    96.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    109.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 2355,
+   "tespit_kutu": [
+    96,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    109.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5999999999999943,
+   "iou": 0.8989849108367629,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000222.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    145.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    158.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    145,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    158.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000223.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    251.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    264.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    250,
+    15,
+    28,
+    27
+   ],
+   "tespit_merkez": [
+    263.5,
+    28.0
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000224.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    136.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    148.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    136,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    148.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000225.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    132.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    145.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    132,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    145.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000226.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    396.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    409.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    396,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    409.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000227.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 838,
+   "tespit_kutu": [
+    307,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    319.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000228.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    237.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    250.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 3085,
+   "tespit_kutu": [
+    237,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    250.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000229.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    222.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    235.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 2109,
+   "tespit_kutu": [
+    222,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    234.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000230.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    152.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    164.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 2728,
+   "tespit_kutu": [
+    152,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    164.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197796,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000231.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 3576,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000232.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    217.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    204,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    217.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000233.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    79.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    92.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1822,
+   "tespit_kutu": [
+    78,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    91.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469389,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000234.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    440.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    453.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 3053,
+   "tespit_kutu": [
+    440,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    453.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000235.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    128.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    141.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    128,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    141.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000236.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    387.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    400.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2860,
+   "tespit_kutu": [
+    387,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    399.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000237.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    141.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    154.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 4264,
+   "tespit_kutu": [
+    141,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    154.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000238.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    397.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    410.40000000000003,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1652,
+   "tespit_kutu": [
+    397,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    410.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237433062,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000239.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    122.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    135.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2313,
+   "tespit_kutu": [
+    122,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    134.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.700000000000017,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000240.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    398.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    411.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2530,
+   "tespit_kutu": [
+    398,
+    14,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    410.5,
+    27.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.2206555615733636,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000241.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    129.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    142.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 2936,
+   "tespit_kutu": [
+    129,
+    15,
+    27,
+    26
+   ],
+   "tespit_merkez": [
+    142.0,
+    27.5
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000242.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    134.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    147.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1093,
+   "tespit_kutu": [
+    134,
+    14,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    146.5,
+    27.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.22065556157338,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000243.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    228.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    241.60000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    228,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    241.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6000000000000227,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000244.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    258.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    271.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    258,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    270.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042534,
+   "iou": 0.9694674556213033,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000245.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1931,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000246.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    438.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    451.2,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 3,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 1852,
+   "tespit_kutu": [
+    438,
+    15,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    450.5,
+    28.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6999999999999886,
+   "iou": 0.933561253561255,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000247.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000248.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    149.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    162.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 729,
+   "bariyer_px": 731,
+   "tespit_kutu": [
+    149,
+    15,
+    27,
+    27
+   ],
+   "tespit_merkez": [
+    162.0,
+    28.0
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.4000000000000057,
+   "iou": 0.898984910836762,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  },
+  {
+   "kare": "images/train/sa_000249.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    178.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1935,
+   "tespit_kutu": [
+    165,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    178.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000250.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    200.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    212.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 702,
+   "bariyer_px": 0,
+   "tespit_kutu": [
+    200,
+    14,
+    26,
+    27
+   ],
+   "tespit_merkez": [
+    212.5,
+    27.0
+   ],
+   "kenar_px": 26.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 1.0440306508910582,
+   "iou": 0.9335612535612529,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07547169811320754
+  },
+  {
+   "kare": "images/train/sa_000251.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    181.6,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    194.4,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 2045,
+   "tespit_kutu": [
+    181,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    194.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.6403124237432885,
+   "iou": 0.8668783068783062,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000252.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    158.4,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    171.20000000000002,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 1069,
+   "tespit_kutu": [
+    158,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    170.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.8602325267042765,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000253.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    80.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    93.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 1678,
+   "tespit_kutu": [
+    80,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    93.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7810249675906611,
+   "iou": 0.866878306878307,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000254.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    103.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    116.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 2915,
+   "tespit_kutu": [
+    102,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    115.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.8359183673469389,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000255.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    155.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    168.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 1,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 730,
+   "tespit_kutu": [
+    155,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    167.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000256.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    320.0,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 784,
+   "bariyer_px": 1652,
+   "tespit_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "tespit_merkez": [
+    319.5,
+    27.5
+   ],
+   "kenar_px": 28.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.7071067811865476,
+   "iou": 0.83591836734694,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07142857142857142
+  },
+  {
+   "kare": "images/train/sa_000257.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    204.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    216.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 676,
+   "bariyer_px": 2650,
+   "tespit_kutu": [
+    204,
+    15,
+    26,
+    26
+   ],
+   "tespit_merkez": [
+    216.5,
+    27.5
+   ],
+   "kenar_px": 26.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.969467455621301,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07692307692307693
+  },
+  {
+   "kare": "images/train/sa_000258.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    396.8,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    409.6,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 756,
+   "bariyer_px": 652,
+   "tespit_kutu": [
+    396,
+    14,
+    27,
+    28
+   ],
+   "tespit_merkez": [
+    409.0,
+    27.5
+   ],
+   "kenar_px": 27.5,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.781024967590683,
+   "iou": 0.8668783068783081,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07272727272727272
+  },
+  {
+   "kare": "images/train/sa_000259.jpg",
+   "bolum": "train",
+   "gt_kutu": [
+    400.0,
+    15.2,
+    25.6,
+    25.6
+   ],
+   "gt_merkez": [
+    412.8,
+    28.0
+   ],
+   "gt_mpp": 0.078125,
+   "hedef_serit": 2,
+   "bulundu": true,
+   "bilesen_sayisi": 1,
+   "fp_bilesen_sayisi": 0,
+   "bariyer_kesisim_px": 0,
+   "ped_px": 728,
+   "bariyer_px": 951,
+   "tespit_kutu": [
+    400,
+    14,
+    26,
+    28
+   ],
+   "tespit_merkez": [
+    412.5,
+    27.5
+   ],
+   "kenar_px": 27.0,
+   "aday_sayisi": 1,
+   "merkez_hata_px": 0.5830951894845359,
+   "iou": 0.9002197802197816,
+   "merkez_gt_icinde": true,
+   "mpp_tahmin": 0.07407407407407407
+  }
+ ]
+}

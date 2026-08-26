@@ -1,0 +1,30 @@
+{
+ "figur_boyut": [
+  634,
+  1059
+ ],
+ "BARIYER_KROMA_ESIGI": 25,
+ "ped_penceresi": [
+  325,
+  118,
+  75,
+  60
+ ],
+ "ped_a_yildiz": {
+  "min": -6,
+  "medyan": -1.0,
+  "maks": 5,
+  "ort": -0.81
+ },
+ "ped_esigi_gecen_px": 0,
+ "ped_px_toplam": 4500,
+ "ped_BGR_ortalama": [
+  132.2,
+  135.9,
+  135.1
+ ],
+ "karede_esigi_gecen_toplam_kirmizi_px": 1889,
+ "asgari_alan_px": 196.7,
+ "bariyer_penceresi_a_yildiz_maks": 44,
+ "bariyer_penceresi_esigi_gecen_px": 1641
+}

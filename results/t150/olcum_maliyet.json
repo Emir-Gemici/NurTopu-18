@@ -1,0 +1,8849 @@
+{
+ "ozet": {
+  "n": 260,
+  "not": "YER GERCEGI maskesi (mukemmel algi ust siniri), GPU yok",
+  "bugun_rota": 259,
+  "hb_bagli_rota": 259,
+  "hb_bagli_kaybedilen_kare": 0,
+  "hb_bagli_ret_sebepleri": {
+   "ZEMIN_MASKESI_SUPHELI": 1
+  },
+  "son_wp_GT_HB_kutusunda__bugun": 0,
+  "son_wp_GT_HB_kutusunda__hb_bagli": 190,
+  "kaybedilen_kareler": []
+ },
+ "kareler": [
+  {
+   "kare": "images/val/sa_000000.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     272.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     274.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    252,
+    14,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    252.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000001.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     185.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     186.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    186,
+    15,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    187.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000002.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     487.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     487.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    461,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    461.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000003.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     168.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     165.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    148,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    148.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000004.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     211.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    195,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    196.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000005.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     232.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     232.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    226,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    226.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000006.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     231.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     231.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    228,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    228.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000007.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     281.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     280.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    268,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    268.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000008.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     459.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     458.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    434,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    435.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000009.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     124.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     124.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    106,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    107.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000010.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     332.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     332.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000011.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     236.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    213,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    213.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000012.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     227.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    204,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000013.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     361.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     361.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    350,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    350.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000014.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     403.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     403.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    392,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    392.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000015.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     137.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     137.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    124,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    124.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000016.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     248.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     250.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    226,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    226.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000017.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     291.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     288.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    272,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    272.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000018.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     331.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     170.0,
+     14.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    144,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    144.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000019.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     353.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000020.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     253.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     229.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    202,
+    15,
+    28,
+    26
+   ],
+   "gt_hedef_kutu": [
+    203.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000021.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     338.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000022.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     508.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     513.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    513,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    513.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000023.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     483.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     483.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    465,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    465.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000024.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     487.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     488.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    486,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    486.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/val/sa_000025.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     263.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     227.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    202,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    202.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000026.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     219.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     219.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    217,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    217.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000027.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     134.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     123.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    97,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    97.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000028.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     302.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000029.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     166.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     168.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    160,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    160.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000030.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     319.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     309.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000031.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     305.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     181.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    154,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    155.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000032.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     380.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     324.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000033.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     388.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     247.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    238,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    238.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000034.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     403.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     404.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    396,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    396.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000035.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     194.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     194.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    182,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    183.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000036.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     431.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     431.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    417,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    417.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000037.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     385.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     386.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    362,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    362.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000038.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     299.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000039.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     289.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     289.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    264,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    264.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000040.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     192.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     189.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    164,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    164.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000041.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     282.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     280.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    267,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    268.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000042.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     379.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     389.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    389,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    389.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000043.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     190.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     193.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    168,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    168.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000044.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     328.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     200.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    182,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    183.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000045.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     407.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     407.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    385,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    385.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000046.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     471.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     471.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    448,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    448.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000047.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     472.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     471.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    460,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    460.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000048.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    194,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    194.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000049.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     107.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     107.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    98,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    99.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000050.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     111.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     111.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    104,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    104.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000051.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     181.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     181.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    178,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    178.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000052.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     403.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     320.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000053.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     205.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     160.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    135,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    135.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000054.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     172.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     172.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    164,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    164.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000055.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     307.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000056.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     135.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     136.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    126,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    126.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000057.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     316.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     309.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000058.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     466.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 7,
+    "sebep": null,
+    "son_wp": [
+     466.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    445,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    445.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000059.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     84.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     84.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    81,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    82.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000060.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     239.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     236.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    211,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    211.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000061.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     419.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     419.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    414,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    415.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000062.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     451.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     454.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    433,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    433.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000063.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     203.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     211.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    198,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    199.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000064.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     343.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000065.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     415.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     415.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    400,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    400.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000066.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     219.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     220.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    205,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    205.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000067.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     156.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     154.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    128,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    128.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000068.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     361.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     275.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    249,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    249.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000069.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     188.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     188.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    188,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    188.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000070.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     430.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     431.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    431,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    431.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000071.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     205.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     206.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    188,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    188.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000072.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     316.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     315.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    14,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000073.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     231.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     223.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    212,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    212.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000074.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     207.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     207.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    183,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    184.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000075.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     430.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     430.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    416,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    416.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000076.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     454.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     442.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    416,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    416.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000077.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     305.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     307.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000078.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     229.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    217,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    217.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000079.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     283.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000080.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     112.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     116.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    116,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    116.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000081.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     265.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     261.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    248,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    248.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000082.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     371.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     400.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    400,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    400.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000083.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     384.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     365.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    340,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    340.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000084.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     511.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     511.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    493,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    493.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000085.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     217.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    202,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    203.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000086.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     396.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     396.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    393,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    393.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000087.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     381.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     381.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    365,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    365.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000088.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     284.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     285.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    258,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    259.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000089.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     311.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     311.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000090.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     232.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     232.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    226,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    227.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000091.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     117.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     117.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    92,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    92.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000092.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     256.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     256.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    247,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    248.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000093.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     310.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     312.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000094.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     404.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     406.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    380,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    380.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000095.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     161.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     153.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    128,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    128.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000096.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     334.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     332.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000097.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     488.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     488.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    469,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    469.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000098.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     317.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     85.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    82,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    83.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000099.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     167.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     167.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    156,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    156.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000100.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     422.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     215.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    206,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    206.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000101.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     419.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     419.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    405,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    405.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000102.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     168.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     168.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    162,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    162.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000103.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     320.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     325.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000104.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     338.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000105.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     216.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     213.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    186,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    187.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000106.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     150.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     160.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    145,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    145.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000107.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     192.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     189.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    163,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    163.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000108.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     172.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     166.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    140,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    140.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000109.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     303.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    15,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000110.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     164.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     150.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    124,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    124.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000111.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     405.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     403.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    394,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    395.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000112.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     221.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     225.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    204,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000113.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     508.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     509.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    505,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    505.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000114.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     332.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     332.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000115.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     440.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     442.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    442,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    442.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000116.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     362.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000117.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     183.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 7,
+    "sebep": null,
+    "son_wp": [
+     173.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    172,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    172.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000118.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000119.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     123.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     129.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    129,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    129.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000120.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     319.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     322.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    15,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000121.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     316.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000122.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 7,
+    "sebep": null,
+    "son_wp": [
+     323.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     323.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000123.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     172.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     172.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    158,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    159.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000124.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    204,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000125.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     376.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000126.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     526.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     532.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    513,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    513.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000127.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     201.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     201.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    201,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    201.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000128.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000129.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     207.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     206.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    197,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    197.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000130.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     108.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     108.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    98,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    99.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000131.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     213.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     111.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    86,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    86.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000132.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     176.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     167.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    141,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    141.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000133.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     227.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     235.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    235,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    235.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000134.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     171.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     171.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    162,
+    15,
+    28,
+    26
+   ],
+   "gt_hedef_kutu": [
+    163.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000135.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     213.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     218.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    218,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    219.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000136.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     232.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     205.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    178,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    179.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000137.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     191.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     192.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    181,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    181.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000138.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     227.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    218,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    219.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000139.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     359.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     359.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    353,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    353.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000140.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     478.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     478.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    468,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    468.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000141.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     459.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     459.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    444,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    444.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000142.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     467.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     467.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    448,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    448.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000143.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     387.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     387.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    376,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    376.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000144.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     423.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     422.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    397,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    397.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000145.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     143.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     138.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    125,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    125.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000146.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     418.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     420.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    420,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    420.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000147.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     415.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     413.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    394,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    395.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000148.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     473.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     243.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    230,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    230.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000149.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     481.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     481.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    458,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    459.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000150.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     120.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     120.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    111,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    111.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000151.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     368.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     368.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    366,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    366.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000152.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     303.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000153.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     383.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     392.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    392,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    392.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000154.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     476.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     476.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    458,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    459.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000155.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    215,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    216.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000156.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     358.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     358.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    356,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    356.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000157.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     296.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000158.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     348.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000159.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     244.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     244.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    237,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    237.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000160.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     191.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     191.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    185,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    185.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000161.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     327.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     327.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000162.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     203.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     203.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    190,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    191.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000163.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     327.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     326.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    15,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000164.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     309.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     184.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    164,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    164.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000165.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     116.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     118.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    112,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    112.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000166.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     221.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     221.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    213,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    213.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000167.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     440.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     442.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    442,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    442.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000168.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     483.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     484.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    484,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    484.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000169.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     150.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     165.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    165,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000170.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     419.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     419.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    398,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    398.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000171.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     230.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     230.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    205,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    205.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000172.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     505.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     137.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    130,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    130.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000173.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     437.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     437.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    416,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    416.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000174.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     347.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000175.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     475.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     476.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    472,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    472.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000176.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     196.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     201.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    201,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    201.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000177.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     375.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     375.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    367,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    367.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000178.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     324.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     324.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000179.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     192.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     191.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    165,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000180.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     405.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     402.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    376,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    376.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000181.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     241.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     241.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    229,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    229.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000182.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     238.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     238.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    216,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    216.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000183.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     482.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     481.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    474,
+    15,
+    28,
+    26
+   ],
+   "gt_hedef_kutu": [
+    475.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000184.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     376.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     365.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    340,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    340.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000185.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     314.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000186.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     232.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     231.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    208,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    208.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000187.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     502.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     502.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    484,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    484.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000188.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     190.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     190.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    180,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    180.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000189.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     296.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     306.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000190.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     331.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000191.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     412.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     437.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    437,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    437.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000192.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     209.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     209.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    209,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    209.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000193.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     454.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     454.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    454,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    454.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000194.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     468.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     472.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    452,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    452.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000195.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     189.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     201.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    201,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    201.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000196.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     452.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     443.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    418,
+    14,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    418.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000197.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     230.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     226.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    213,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    213.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000198.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     434.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     434.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    420,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    420.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000199.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     374.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     373.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    365,
+    14,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    365.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000200.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     153.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     152.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    152,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    152.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000201.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     481.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     481.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    467,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    468.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000202.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     313.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000203.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     266.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     261.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    248,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    248.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000204.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     319.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     319.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000205.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     317.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     317.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000206.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     321.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     325.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000207.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     119.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     119.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    94,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    95.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000208.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     176.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     176.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    152,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    152.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000209.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     409.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     410.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    386,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    387.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000210.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     336.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     224.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    210,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    211.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000211.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     282.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     257.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    232,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    232.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000212.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     481.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     479.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    461,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    461.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000213.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     324.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     323.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000214.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     137.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     165.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    165,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000215.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     201.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     207.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    192,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    192.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000216.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     437.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     437.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    416,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    416.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000217.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     236.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     225.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    200,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    200.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000218.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     368.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     368.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    356,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    356.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000219.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     287.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     284.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    264,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    264.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000220.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     379.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     248.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    242,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    243.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000221.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     105.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     105.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    96,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    96.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000222.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     471.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     162.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    145,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    145.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000223.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     250.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     250.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    250,
+    15,
+    28,
+    27
+   ],
+   "gt_hedef_kutu": [
+    251.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000224.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     357.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     156.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    136,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    136.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000225.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     162.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     158.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    132,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    132.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000226.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     405.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     405.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    396,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    396.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000227.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     322.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     324.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    307,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000228.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     257.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     263.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    237,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    237.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000229.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     228.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    222,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    222.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000230.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     165.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     163.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    152,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    152.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000231.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     333.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000232.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     212.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     211.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    204,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    204.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000233.jpg",
+   "bugun": {
+    "rota": false,
+    "n_wp": 0,
+    "sebep": "ZEMIN_MASKESI_SUPHELI"
+   },
+   "hb_bagli": {
+    "rota": false,
+    "n_wp": 0,
+    "sebep": "ZEMIN_MASKESI_SUPHELI"
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    78,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    79.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000234.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     442.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     442.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    440,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    440.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000235.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     146.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     146.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    128,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    128.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000236.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     415.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     405.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    387,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    387.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000237.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     171.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     167.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    141,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    141.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000238.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     423.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     423.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    397,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    397.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000239.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     157.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     147.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    122,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    122.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000240.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     407.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     407.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    398,
+    14,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    398.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000241.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     169.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     155.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    129,
+    15,
+    27,
+    26
+   ],
+   "gt_hedef_kutu": [
+    129.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000242.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     150.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     151.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    134,
+    14,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    134.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000243.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     399.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     233.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    228,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    228.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000244.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     219.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     258.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    258,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    258.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000245.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     317.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     316.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000246.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     461.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     461.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    438,
+    15,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    438.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000247.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     312.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     312.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000248.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     176.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     175.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    149,
+    15,
+    27,
+    27
+   ],
+   "gt_hedef_kutu": [
+    149.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000249.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     198.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     191.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    165,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    165.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000250.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     191.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     200.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    200,
+    14,
+    26,
+    27
+   ],
+   "gt_hedef_kutu": [
+    200.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000251.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     186.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     187.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    181,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    181.6,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000252.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     190.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     183.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    158,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    158.4,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000253.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     97.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     98.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    80,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    80.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000254.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     108.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     108.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    102,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    103.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000255.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     177.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     177.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    155,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    155.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000256.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     309.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     309.0,
+     41.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    306,
+    14,
+    28,
+    28
+   ],
+   "gt_hedef_kutu": [
+    307.2,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000257.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     222.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     223.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    204,
+    15,
+    26,
+    26
+   ],
+   "gt_hedef_kutu": [
+    204.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000258.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     421.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     418.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    396,
+    14,
+    27,
+    28
+   ],
+   "gt_hedef_kutu": [
+    396.8,
+    15.2,
+    25.6,
+    25.6
+   ]
+  },
+  {
+   "kare": "images/train/sa_000259.jpg",
+   "bugun": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     395.0,
+     50.0
+    ]
+   },
+   "hb_bagli": {
+    "rota": true,
+    "n_wp": 8,
+    "sebep": null,
+    "son_wp": [
+     400.0,
+     40.0
+    ]
+   },
+   "hb_bulundu": true,
+   "hb_kutu": [
+    400,
+    14,
+    26,
+    28
+   ],
+   "gt_hedef_kutu": [
+    400.0,
+    15.2,
+    25.6,
+    25.6
+   ]
+  }
+ ]
+}
