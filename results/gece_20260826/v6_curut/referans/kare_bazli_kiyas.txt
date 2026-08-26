@@ -1,0 +1,33 @@
+hazirlik format farkli 'modeller'
+frame   tav1 tav2 | v6eski v6yeni v35yeni | v6 sebep / v35 sebep
+000025 0 0 | 0 0 0 | MASKE_YOK / UC_BANT_TEMAS_YOK 
+000035 0 0 | 0 0 0 | MASKE_YOK / MASKE_YOK 
+000039 0 0 | 0 0 0 | MASKE_YOK / MASKE_YOK 
+000048 0 0 | 0 0 0 | MASKE_YOK / MASKE_YOK 
+000053 1 0 | 0 0 0 | UC_BANT_TEMAS_YOK / MASKE_YOK   <-- degisti
+000062 1 1 | 1 1 0 | None / MASKE_YOK 
+000085 0 0 | 0 0 0 | UC_BANT_TEMAS_YOK / UC_BANT_TEMAS_YOK 
+000089 0 0 | 0 0 0 | UC_BANT_TEMAS_YOK / MASKE_YOK 
+000094 0 0 | 0 0 0 | MASKE_YOK / UC_BANT_TEMAS_YOK 
+000100 0 1 | 0 0 0 | MASKE_YOK / MASKE_YOK   <-- degisti
+000103 0 0 | 0 0 0 | UC_BANT_TEMAS_YOK / MASKE_YOK 
+000105 0 0 | 0 0 0 | MASKE_YOK / MASKE_YOK 
+000107 0 0 | 0 0 0 | UC_BANT_TEMAS_YOK / MASKE_YOK 
+000111 1 1 | 1 1 0 | None / MASKE_YOK 
+000116 0 1 | 0 0 0 | ZEMIN_MASKESI_SUPHELI / MASKE_YOK   <-- degisti
+000120 1 1 | 1 1 1 | None / None 
+000124 1 1 | 0 0 1 | UC_BANT_TEMAS_YOK / None 
+000126 0 0 | 0 0 0 | MASKE_YOK / MASKE_YOK 
+000135 1 1 | 1 1 1 | None / None 
+000139 1 1 | 1 1 0 | None / MASKE_YOK 
+000143 1 1 | 1 1 0 | None / MASKE_YOK 
+000152 1 1 | 1 1 1 | None / None 
+000160 1 1 | 1 1 0 | None / UC_BANT_TEMAS_YOK 
+000196 1 1 | 1 1 1 | None / None 
+000200 0 0 | 0 0 0 | UC_BANT_TEMAS_YOK / UC_BANT_TEMAS_YOK 
+000202 1 1 | 0 0 1 | UC_BANT_TEMAS_YOK / None 
+000205 0 1 | 1 1 0 | None / UC_BANT_TEMAS_YOK   <-- degisti
+000215 1 1 | 1 1 0 | None / UC_BANT_TEMAS_YOK 
+000218 0 0 | 1 1 0 | None / MASKE_YOK 
+v6 model ciktisi eski==yeni kume: True
+v6 vs tav1 TP,FP,FN (10, 2, 3)  v6 vs tav2 (11, 1, 4)  v35 vs tav1 (6, 0, 7)  v35 vs tav2 (6, 0, 9)

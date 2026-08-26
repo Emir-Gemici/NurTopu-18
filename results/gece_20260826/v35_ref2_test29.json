@@ -1,0 +1,383 @@
+{
+ "_ne": "GECE v35_ref2 · 0038 TEK-konum TEST (29 kare) — ON_KAYIT §2",
+ "_on_kayit": "results/t138/on_kayit.md",
+ "_kareler": "dataset\\dji_kirsal_0038_bolum_v2\\images\\test",
+ "_U2_bandi": [
+  0.05,
+  0.95
+ ],
+ "_mpp_bedava": 0.01,
+ "modeller": {
+  "O:\\navitas\\models\\navitas_seg_v35_best.pt": {
+   "sure_sn": 146.1,
+   "n": 29,
+   "U2_gecen": 7,
+   "U2_klip": [
+    "test"
+   ],
+   "rota_olceksiz": 6,
+   "rota_olcekli": 1,
+   "sebep_olceksiz": {
+    "UC_BANT_TEMAS_YOK": 7,
+    "MASKE_YOK": 16,
+    "null": 6
+   },
+   "sebep_olcekli": {
+    "UC_BANT_TEMAS_YOK": 7,
+    "MASKE_YOK": 16,
+    "GORUS_HATTI_KOPUK": 5,
+    "null": 1
+   },
+   "kareler": [
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+     "klip": "test",
+     "zemin_orani": 0.02799,
+     "U2": false,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000048_000002310.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000053_000002460.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+     "klip": "test",
+     "zemin_orani": 0.03354,
+     "U2": false,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000089_000003840.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000094_000003990.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0709,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+     "klip": "test",
+     "zemin_orani": 0.09168,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000124_000004890.jpg",
+     "klip": "test",
+     "zemin_orani": 0.13796,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+     "klip": "test",
+     "zemin_orani": 0.07074,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+     "klip": "test",
+     "zemin_orani": 0.04101,
+     "U2": false,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0293,
+     "U2": false,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
+     "klip": "test",
+     "zemin_orani": 0.06148,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+     "klip": "test",
+     "zemin_orani": 0.02228,
+     "U2": false,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+     "klip": "test",
+     "zemin_orani": 0.04049,
+     "U2": false,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+     "klip": "test",
+     "zemin_orani": 0.05287,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+     "klip": "test",
+     "zemin_orani": 0.11193,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+     "klip": "test",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null
+    }
+   ]
+  }
+ }
+}

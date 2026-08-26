@@ -1,0 +1,3 @@
+480fd0461ee185c5de24935aa74e926b6ac1c7e5a65f0b9da669bba6f148efdf *codes/runs/segment/gece_v6_v35taban/weights/best.pt
+f344768a811d1c78534e164d74ad9ad4f5cd200b2104e75abd71fe83c4d3c4f3 *codes/runs/segment/gece_v6_v35taban/weights/last.pt
+e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b *models/navitas_seg_v35_best.pt

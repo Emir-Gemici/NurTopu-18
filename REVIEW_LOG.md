@@ -21987,3 +21987,31 @@ Dalga 2 (40) + dalga 3 (120) + 3 denetçi (madde 12 çiğ toprak → ETİKETSİZ
 - `results/t123/saha_gunu_kontrol_listesi.md` (izlenmiyor) K5 komutuyla güncellenmedi.
 - D-268 §6 "kenar kolu çalışır" cümlesi bu kayıtla **düzeltilmiş sayılır** (T135/T142 ölçümü: kırpık maske + icerik=None'da iki kol da ölü).
 - DDR/şartname: FDR son teslim **21 Eylül**, final 30 Eylül–3 Ekim — `sartname_metin.txt`.
+
+---
+
+### D-288 · 🔴 v6 TERFİ ÇÜRÜTMESİ · üç lensten biri (güvenlik) KIRDI → **terfi YOK** · ve asıl bulgu: **test referansının kendisi hatalı** (frame_000196: asfalt = ENGEL, mera = ZEMİN) · yeni ölçüt gerek: *"rota yol üstünde mi"*
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-27. Kullanıcı kararı: *"29 test karesinin bantlarını tamamlat, v3 ve v6'yı yeniden ölç."* Ön kayıt `ON_KAYIT.md §10`. Ham çıktı: `results/gece_20260826/test29_referans/` (6 kör amele + 2 denetçi), `test29_etiket_tavani_v2.json`, `olcum_{v35,gece_v3,gece_v6}_ref2.log`, `v6_curut/{olcum,referans,guvenlik}/`.
+
+#### 1. Referans tamamlama (kör: ameleler yalnız kare + mevcut etiket gördü)
+Yol kenara uzatıldı (11 kare), denetçiler madde 8/12 gereği tarla/çiğ toprak yeşillerini geri aldı (9 kare; §10 "yalnız ekleme" diyordu — denetçi prompt'u silmeyi de içerdi: **ön kayıttan sapma**, referans lensi K2). Sınıf 1 hiçbir karede azalmadı. Tavan **13 → 15/29**.
+
+#### 2. Yeniden ölçüm (aynı kapılar; (a) önceki koşumdan — aynı ağırlık, referanstan bağımsız)
+| model | ROTA | MASKE_YOK | TP | FP | FN | (b) |
+|---|---:|---:|---:|---:|---:|---|
+| v35 | 6 | 16 | 6 | 0 | 9 | — |
+| v3 | 10 | **11** | 9 | 1 | 6 | DÜŞTÜ (MASKE_YOK) |
+| **v6** | 12 | 8 | **11** | 1 | 4 | **GEÇTİ** |
+v6 → §4(d) gereği üç çürütücü: **ölçüm** (kıramadı: 126 yeniden koşum 0 fark, sabitler ön kayıtla aynı), **referans meşruiyeti** (kıramadı: prompt/raporlarda model ipucu yok; tüm TP/FP farkı tek kareden, 205), **güvenlik** (**KIRDI**, terfi engeli):
+- **K2 (engel):** 12 rota karesinin **3'ünde** (196, 205, 218) rota çizgisi yol üstünde değil — etiketli sınıf 0 payı 0,21 / 0,32 / 0,49; 143 ve 160'da %25–38 çime taşıyor (`v6_curut/guvenlik/kontak_v6_rota.jpg`; mimar gözle doğruladı).
+- **K1:** 205'te FP→TP dönüşü v2 referansında eklenen üst banda bağlı; referans lensi "gri sıkıştırılmış yol, üst kenara ulaşıyor" dedi, güvenlik lensi "çim/mera" — **mimar gözle:** geniş gri çakıl yol, ama poligon sağ-üstte kuru ota taşmış (madde 8 küçük ihlal). İki lens çelişti; ölçüm (rota-yol payı 0,32) güvenlik lensini destekliyor.
+- **K3:** 116'da v6 karenin **%97,7**'sini zemin sayıyor (%60,6'sı etiketli engel); yalnız T142 eşiği (`ZEMIN_MASKESI_SUPHELI`) kurtardı — yeni hata kipi.
+- **K4:** T142 payı daralmış: otopark 11_44_39/f17 kenar 0,431 > 0,40, kaplama 0,526 (tavana 0,024).
+🔴 **Asıl bulgu:** `frame_000196` referansında **asfalt yol = sınıf 1 (engel), mera = sınıf 0** — hem v1 hem v2'de (`v6_curut/guvenlik/etiket_v1_v2_205_196.jpg`). F5 dönemi etiketlerinden gelen bir hata; "TP" burada **çimden geçen bir rotayı** ödüllendiriyor. Test referansı, tavan hesabı ve bütün TP/FP sayıları bu tür hatalara açık.
+
+#### 3. Hüküm
+- **v6 terfi ETMEZ.** Güvenlik lensi ölçülmüş yanlış-güzergâh örnekleriyle kırdı; §4(d) "çürütücü kıramazsa" şartı sağlanmadı. `config/model_registry.json` dokunulmadı. v3 (MASKE_YOK 11) de geçmedi.
+- **Kapı tasarımı eksik (D-288'in dersi):** "rota var" + "etiket tavanı da rota diyor" = TP, ama rotanın **nereden** geçtiği ölçülmüyor. Yeni ölçüt önerisi (ön kayıt sonra yazılır): **rota çizgisinin etiketli sınıf 0 üstündeki payı ≥ 0,90** her rota karesinde; ve sınıf 1 üstünden geçen tek waypoint = ret.
+- **Referans kalitesi:** 29 test karesi (ve 0038 val 82) **ikinci bağımsız geçişle** düzeltilmeli — özellikle 196 (asfalt), 205 (üst bant sınırı), 218 (üst bant 4 px). Bu **T152**.
+- Beş koşumun ortak dersi değişmedi: ×20 kopya + aynı saha → best epoch 1; gerçek kazanç için **farklı saha** verisi (DOĞRULAMA uçuşu) gerek.
