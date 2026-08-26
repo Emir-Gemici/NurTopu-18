@@ -22234,3 +22234,60 @@ Kör noktanın gerçekliği **ölçüldü** (eski kapıya v30 enjekte edildi →
 #### 5. ÖLÇÜLEMEDİ (dürüstlük kaydı)
 - **T96'nın n=209 kadraj kümesi yeniden ölçülemedi** — o kümenin maskeleri **model koşumu** ister, oturumda GPU yasaktı. D-167/D-168'in `darbogaz 198 · cikis 197 · baskin 196` sıralamasının yeni tanımla ne olacağı **ÖLÇÜLMEDİ**. Kapanan şey o sıralama değil, **yer gerçeği sağlam** arena geometrisinde hangi tanımın doğru olduğudur.
 - **Gerçek kare etkisi ÖLÇÜLEMEDİ** (GPU yasak). Sentetik kabul K0–K6 koşulmadı; bunun yerine **etkilenmediği kanıtlandı**: `scripts/olcum/61_rota_moloza_basma.py`'nin kapı alanları (`basma_orani`, `arena_disi_orani`, `yol_payi`, `engel_wp`, `yanlis_guzergah`) yalnız **waypoint'lerden** türer — yayınlanan şerit numarasını **hiç okumaz** (`kayit["serit"]` kaydedilir ama hiçbir kapıya girmez). Waypoint'ler bayt-eş aynı kaldığı için T152 `rota_yol_olcumu` mantığı da **etkilenmez**.
+
+---
+
+### D-297 · 🔄 SAHA ZİNCİRİ TAZELEME (ölçüm; kod DEĞİŞMEDİ) — kuru koşu 7/10 GEÇTİ, **ama düşen halka YANLIŞ SAHİBİ ölçüyor**
+
+**Koşum.** `scripts/saha_kuru_kosu.py`, PC, **GPU KAPALI** (`CUDA_VISIBLE_DEVICES=-1`;
+`torch.cuda.is_available()` → `False`, `nvidia-smi` `14 MiB, 0 %`). Ham çıktı
+`results/saha_zinciri_20260826/kuru_kosu_cpu.txt`, özet `.../kosu_cpu/ozet.json`.
+Kare `data/raw_frames/whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg`.
+**GEÇTİ 7 · DÜŞTÜ 1 · SAHİPSİZ 2 · ATLANDI 0** (önceki kayıtlı koşu: GEÇTİ 4 · DÜŞTÜ 1 ·
+SAHİPSİZ 2 · ATLANDI 3). Kapılar aynı gün: `test_rota_sentetik.py` **15/15**,
+`unittest discover -s tests -q` **Ran 1002 · OK (skipped=2)**.
+
+#### 1. 🔴 Kuru koşunun halka 7'si üretim yolunu ölçmüyor (§11.2-EK ile çelişiyor)
+`scripts/saha_kuru_kosu.py:709` → `rota_bul(maskeler, mpp=mpp, icerik=icerik)`.
+D-295/T151 ile **`analyze_path` ÜRETİM, `rota_bul` TANISAL** ilan edildi
+(CONTRACTS §11.2-EK). Yani bugünkü tek `DUSTU` satırı (`durum=BELIRSIZ_TEK_KAPI`)
+**tanısal yolun** sonucudur; **üretim karar yolu kuru koşuda hiç koşmuyor**.
+Sonuç iki yönlü ve ikisi de kötü: (a) `DUSTU` gördüğümüzde üretimin düştüğünü
+sanabiliriz, (b) `GECTI` görsek bile üretim hakkında hiçbir şey öğrenmemiş oluruz.
+Bu, **T156**'nın (genel kapı yalnız `rota_bul`u zorluyor) kuru-koşu ikizidir ve
+T156 kapanana kadar §11.2 halka 7 satırı **ölçümsüz** kalır. Gizlenmedi: tablo
+satırı bunu açıkça yazıyor.
+
+#### 2. Kuru koşunun sahip etiketleri BAYAT (ölçüldü)
+`scripts/saha_kuru_kosu.py` halka 3'ü `codes/rpi_inference.py:57`, halka 4'ü
+`:60-83` diye etiketliyor. Bugün `sed -n '55,62p'` ve `'60,64p'` ikisinin de
+**import bloğunun içine** düştüğünü gösteriyor. Gerçek sahipler: `model.predict`
+`codes/rpi_inference.py:2143` (`run_camera` içinde), `get_masks` `:727`.
+Etiket kanıt olarak okunursa yanlış dosya-satır zinciri kurulur. CONTRACTS §11.2
+doğru satırlarla tazelendi; betiğin kendi etiketi **açık kusurdur**.
+
+#### 3. Şartnamede ATLANMIŞ hüküm bulundu (§2.2.6, yazılım dışı ama tabloda yoktu)
+`venv` + `fitz` ile PDF yeniden tarandı (30 sayfa, 56 418 karakter;
+`results/saha_zinciri_20260826/sartname_metin_20260826.txt`). §2.2.6 son maddesi —
+*"İKA'nın belirlenen yükleri taşıyarak hedef bölgeye intikal etmesi esastır…
+yapısal bütünlüğünü koruyor olması ve taşıdığı yükü/yükleri eksiksiz muhafaza
+etmesi zorunludur; aksi takdirde ilgili görev başarısız sayılır."* —
+`results/sartname_bosluk/rapor.md`'nin 21 satırlık hüküm tablosunda **yoktu**.
+Yazılıma düşmez (mekanik/insan), ama "görev başarısız" yaptırımlı bir hükmün
+tabloda hiç görünmemesi denetim boşluğudur. **R22** olarak eklendi (İNSAN).
+
+#### 4. Düzeltilen ölçüm hatası (kendi hatam, kayda geçiyor)
+İlk koşuda GPU'yu gizlemek için `CUDA_VISIBLE_DEVICES=""` verdim; ultralytics'in
+cihaz doğrulayıcısı bunu `AssertionError: Invalid device id` ile reddetti ve
+`cikarim` **DUSTU**, ardından `olcek` **DUSTU** oldu (`kuru_kosu_tam.txt`).
+Bu **zincir kopukluğu değil, ölçüm aygıtının kendi hatasıydı**. Ultralytics'in
+CPU için kendi kullandığı değerle (`-1`) tekrar koşuldu; iki ham çıktı da repoda
+duruyor. Kayıt nedeni D-209 §4 ile aynı: yanlış hükmü engelleyen şey ham çıktının
+saklanmasıdır.
+
+#### 5. ÖLÇÜLEMEDİ (dürüstlük kaydı)
+- **Üretim rota yolu (`analyze_path`) kuru koşuda** — §1; kod değiştirmeden ölçülemez.
+- **SiK 433 MHz seri hattı** — donanım yok; halka 8 yalnız UDP loopback ile GEÇTİ.
+- **Gerçek Pixhawk `mpp`** — halka 5 sahte yayınla geçti; gerçek telemetri yok.
+- **Gerçek İKA motoru** — halka 10 SAHİPSİZ (T149, donanım).
+- **`.engine` derlemesi ve Jetson FPS** — cihaz 30 Eylül'de (D-211 §5).

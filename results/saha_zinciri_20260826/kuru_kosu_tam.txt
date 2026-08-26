@@ -1,0 +1,27 @@
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+==============================================================================
+SAHA KURU KOSUSU — CONTRACTS.md §11 · Gazebo YOK · donanim YOK
+==============================================================================
+  kamera         GECTI      kaynak parametrik ve VideoCapture'a BESLENIYOR (cihaz yolu str, indeks int olarak cozuluyor)  [1598 ms]
+                            -> codes/rpi_inference.py:run_camera
+  model_yukleme  GECTI      agirlik manifestten turetiliyor, --model besliyor, uyusmazlikta fail-closed ve kayit defteriyle eslesiyor  [33 ms]
+                            -> codes/rpi_inference.py:load_model
+  cikarim        DUSTU      cikarim istisna verdi: AssertionError: Invalid device id
+                            -> codes/rpi_inference.py:57
+  maske          ATLANDI    onceki halka dustu: cikarim
+  olcek          DUSTU      OLCEK_YOK: kare icerik genisligi yok; canli olcek bu kare icin turetilemedi
+                            -> codes/rpi_inference.py
+  hedef_konumu   SAHIPSIZ   HB'nin tek kaynagi Gazebo meta.txt; saha kod yolunda --hb girisi yok ve etkin model profili 2 sinifli (kirmizi H'yi goren bilesen yok)
+  rota           ATLANDI    onceki halka dustu: maske
+  aktarim        GECTI      saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
+                            -> codes/rpi_inference.py:run_camera
+  telsiz halkasi  GECTI      run_camera -> KararYayinci -> loopback IKA: {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika'], 'hata': None}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+                            -> comms/iha_inis_yayinci.py:60
+  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda
+------------------------------------------------------------------------------
+GECTI 4 · DUSTU 2 · SAHIPSIZ 2 · ATLANDI 2
+KOPUK HALKALAR (4): cikarim, olcek, hedef_konumu, motor
+Zincir saha kosumunda TAMAMLANMAZ.
+Cikti: O:\navitas\results\saha_zinciri_20260826\kosu_tam

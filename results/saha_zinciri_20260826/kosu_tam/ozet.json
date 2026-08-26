@@ -1,0 +1,255 @@
+{
+ "tarih": "20260826_225208",
+ "sozlesme": "CONTRACTS.md §11",
+ "halka_sirasi": [
+  "kamera",
+  "model_yukleme",
+  "cikarim",
+  "maske",
+  "olcek",
+  "hedef_konumu",
+  "rota",
+  "aktarim",
+  "surus_izni",
+  "motor"
+ ],
+ "satirlar": [
+  {
+   "halka": "kamera",
+   "durum": "GECTI",
+   "sebep": "kaynak parametrik ve VideoCapture'a BESLENIYOR (cihaz yolu str, indeks int olarak cozuluyor)",
+   "dosya": "codes/rpi_inference.py:run_camera",
+   "detay": {
+    "argparse_secenekleri": [
+     "--arac-modeli",
+     "--camera",
+     "--conf",
+     "--fov",
+     "--fps",
+     "--ika-hedef",
+     "--image",
+     "--kayit-dogrulamasiz",
+     "--kaynak",
+     "--mav-sysid",
+     "--mavlink",
+     "--model",
+     "--mpp",
+     "--no-save",
+     "--odak",
+     "--senaryo",
+     "--telsiz-baud",
+     "--telsiz-seri",
+     "--video",
+     "--yks-hedef"
+    ],
+    "parametrik_secenek": true,
+    "besleme_cihaz_yolu": {
+     "verilen": "/dev/video7",
+     "VideoCapture_aldi": "/dev/video7"
+    },
+    "besleme_indeks": {
+     "verilen": "3",
+     "VideoCapture_aldi": 3
+    },
+    "kare": "data/raw_frames/whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg",
+    "sekil": [
+     576,
+     1024,
+     3
+    ]
+   },
+   "sure_ms": 1598.1
+  },
+  {
+   "halka": "model_yukleme",
+   "durum": "GECTI",
+   "sebep": "agirlik manifestten turetiliyor, --model besliyor, uyusmazlikta fail-closed ve kayit defteriyle eslesiyor",
+   "dosya": "codes/rpi_inference.py:load_model",
+   "detay": {
+    "yuklenen": "navitas_seg_v36_best.pt",
+    "kayit_defteri_bekleneni": "models/navitas_seg_v36_best.pt",
+    "model_argumani_var": true,
+    "infer_size": 512,
+    "besleme": {
+     "varsayilan_manifestten": true,
+     "arguman_besliyor": true,
+     "fail_closed": true,
+     "manifest_modeli": "navitas_seg_v36_best.pt",
+     "hata": null
+    },
+    "kayit_eslesmesi": true,
+    "kosullar": {
+     "--model argumani": true,
+     "varsayilan MANIFESTTEN": true,
+     "arguman yuklemeyi BESLIYOR": true,
+     "uyusmazlikta FAIL-CLOSED": true,
+     "kayit defteriyle ESLESME": true
+    }
+   },
+   "sure_ms": 33.1
+  },
+  {
+   "halka": "cikarim",
+   "durum": "DUSTU",
+   "sebep": "cikarim istisna verdi: AssertionError: Invalid device id",
+   "dosya": "codes/rpi_inference.py:57",
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "maske",
+   "durum": "ATLANDI",
+   "sebep": "onceki halka dustu: cikarim",
+   "dosya": null,
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "olcek",
+   "durum": "DUSTU",
+   "sebep": "OLCEK_YOK: kare icerik genisligi yok; canli olcek bu kare icin turetilemedi",
+   "dosya": "codes/rpi_inference.py",
+   "detay": {
+    "besleme_cagrildi": false,
+    "icerik_genisligi_px": null,
+    "mpp": null,
+    "saglayici_sinifi": "CanliOlcekSaglayici"
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "hedef_konumu",
+   "durum": "SAHIPSIZ",
+   "sebep": "HB'nin tek kaynagi Gazebo meta.txt; saha kod yolunda --hb girisi yok ve etkin model profili 2 sinifli (kirmizi H'yi goren bilesen yok)",
+   "dosya": null,
+   "detay": {
+    "saha_cli_sahibi": null,
+    "etkin_profil": "competition",
+    "etkin_profilde_hedef_sinifi": false,
+    "gazebo_haritalayici_argparse": [
+     "--arac-conf",
+     "--arac-model",
+     "--conf",
+     "--debug",
+     "--htab",
+     "--kare-ofset",
+     "--levels",
+     "--model",
+     "--once",
+     "--rot-isaret",
+     "--watch"
+    ],
+    "meta_okuyucu": "simulation/scripts/iha_haritala.py:507",
+    "meta_yazici": "simulation/scripts/world_generator.py:590",
+    "kayit": "REVIEW_LOG.md D-23"
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "rota",
+   "durum": "ATLANDI",
+   "sebep": "onceki halka dustu: maske",
+   "dosya": null,
+   "detay": {},
+   "sure_ms": null
+  },
+  {
+   "halka": "aktarim",
+   "durum": "GECTI",
+   "sebep": "saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi",
+   "dosya": "codes/rpi_inference.py:run_camera",
+   "detay": {
+    "paket_icerigi": [
+     "arac_maskesi.py",
+     "costmap_path_finder.py",
+     "iha_inis_yayinci.py",
+     "iha_sender.py",
+     "inis_kaniti.py",
+     "jetson_fps.py",
+     "kamera_dogrula.py",
+     "karar_sozlesmesi.py",
+     "link.py",
+     "protocol.py",
+     "rpi_inference.py"
+    ],
+    "eksik_moduller": [],
+    "eksik_semboller": {},
+    "pyserial_bagimliligi": true,
+    "depo_comms_loopback": {
+     "seq": 1,
+     "ack": [
+      "ika"
+     ],
+     "alindi": true
+    },
+    "uretim_yolu_telsiz": {
+     "open_route_alindi": true,
+     "heartbeat": 1,
+     "ack": [
+      "ika"
+     ],
+     "hata": null
+    }
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "surus_izni",
+   "durum": "GECTI",
+   "sebep": "IHA_LANDED saha kod yolunda uretiliyor",
+   "dosya": "comms/iha_inis_yayinci.py:60",
+   "detay": {
+    "tum_ureticiler": [
+     "comms/iha_inis_yayinci.py:60",
+     "jetson_paket/kod/iha_inis_yayinci.py:60"
+    ],
+    "saha_ureticileri": [
+     "comms/iha_inis_yayinci.py:60",
+     "jetson_paket/kod/iha_inis_yayinci.py:60"
+    ],
+    "kapi_probu": {
+     "bos_kapali": true,
+     "yalniz_ika_go_kapali": true,
+     "ika_go_alindi": true,
+     "iki_latch_ile_acik": true,
+     "iha_landed_alindi": true,
+     "prob_gecerli": true
+    }
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "motor",
+   "durum": "SAHIPSIZ",
+   "sebep": "gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda",
+   "dosya": null,
+   "detay": {
+    "gz_subprocess": true,
+    "saha_surucu_importlari": [],
+    "taranan_dizinler": [
+     "codes",
+     "comms",
+     "drone",
+     "jetson_paket",
+     "scripts"
+    ],
+    "simulasyon_sahibi": "simulation/scripts/ika_nav.py:90-99",
+    "not": "capture_output=True oldugu icin gz yoksa hata YUTULUYOR"
+   },
+   "sure_ms": null
+  }
+ ],
+ "sayim": {
+  "GECTI": 4,
+  "DUSTU": 2,
+  "SAHIPSIZ": 2,
+  "ATLANDI": 2
+ },
+ "kopuk_halkalar": [
+  "cikarim",
+  "olcek",
+  "hedef_konumu",
+  "motor"
+ ],
+ "cikis_kodu": 1
+}

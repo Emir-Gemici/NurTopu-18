@@ -1,0 +1,25 @@
+Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+==============================================================================
+KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)
+==============================================================================
+harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc
+     1    kolay       1       1  1.000               ACIK   43  OK
+     1     orta       2       2  1.000               ACIK   43  OK
+     1      zor       3       3  0.797               ACIK   67  OK
+     2    kolay       1       1  1.000               ACIK   45  OK
+     2     orta       1       1  1.000               ACIK   64  OK
+     2      zor       3       3  0.797               ACIK   58  OK
+     3    kolay       3       3  1.000               ACIK   44  OK
+     3     orta       2       2  1.000               ACIK   43  OK
+     3      zor       1       1  0.797               ACIK   60  OK
+     4    kolay       3       3  1.000               ACIK   43  OK
+     4     orta       3       3  1.000               ACIK   51  OK
+     4      zor       1       1  0.797               ACIK   48  OK
+     5    kolay       3       3  1.000               ACIK   52  OK
+     5     orta       3       3  1.000               ACIK   49  OK
+     5      zor       2       2  0.797               ACIK   42  OK
+------------------------------------------------------------------------------
+SONUC: 15/15 dogru
+[OK] TUM DETERMINISTIK SAHNELER GECTI
+RC=0

@@ -992,18 +992,34 @@ Bir halkanın **sahibi**, o halkayı sahada gerçekten koşturan dosyadır.
 
 ### 11.2 Halka tablosu
 
-| # | Halka | Girdi | Çıktı | Sahip `dosya:satır` | Durum |
-|---|---|---|---|---|---|
-| 1 | Kamera kaynağı | cihaz/URL | BGR kare | `codes/rpi_inference.py:505` — `cv2.VideoCapture(0)` **sabit** | **KUSURLU** · D-13 |
-| 2 | Model yükleme | model yolu | YOLO nesnesi | `codes/rpi_inference.py:32-40,52-57` → `best_ncnn_model` | **KUSURLU** · D-13 |
-| 3 | Çıkarım | BGR kare | `results` | `codes/rpi_inference.py:57` (`YOLO.predict`) | **GEÇERLİ** |
-| 4 | Maske çıkarımı | `results` | `{0: zemin, 1: engel}` | `codes/rpi_inference.py:60-83` (`get_masks`) | **GEÇERLİ** |
-| 5 | Ölçek (`mpp`) | irtifa + FOV/odak | m/piksel | `codes/karar_sozlesmesi.py` — `mpp_irtifadan`, `rota_olcek_reddi` | **GEÇERLİ** · T43 |
-| 6 | Hedef konumu (HB) | kare / dış girdi | `hb_xy` | — (yalnız Gazebo `meta.txt`) | **SAHİPSİZ** · D-22, D-23 |
-| 7 | Rota üretimi | maskeler + `mpp` + `hb_xy` | `road`, `waypoints`, `durum` | `codes/costmap_path_finder.py:729` (`rota_bul`) | **KUSURLU** · D-25 |
-| 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK + HEARTBEAT | `codes/rpi_inference.py` `run_camera`/`run_video` → `comms/iha_sender.py` `KararYayinci` (§6.5 · K1, 2026-08-26) | **GEÇERLİ** · UDP loopback ölçüldü; SiK seri **ÖLÇÜLMEDİ** |
-| 9 | İKA sürüş izni | rota ∧ IKA_GO ∧ IHA_LANDED | izin `bool` | kapı: `comms/ika_receiver.py:119-121` · `IHA_LANDED` üreticisi: **yalnız `simulation/scripts/navitas_sim.py:95`** | **KUSURLU** · D-22 |
-| 10 | Motor komutu | izin + waypoint | tekerlek hızı | — (`gz` subprocess'i sahip değil) | **SAHİPSİZ** · D-22 |
+> 🔄 **TAZELENDİ 2026-08-26 (saha zinciri tazeleme koşusu).** Her satır o günün **ÖLÇÜLEN** kuru koşusundan
+> gelir; elle tahmin yazılmaz. Ölçüm: `scripts/saha_kuru_kosu.py`, ham çıktı
+> `results/saha_zinciri_20260826/kuru_kosu_cpu.txt`, makine özeti
+> `results/saha_zinciri_20260826/kosu_cpu/ozet.json`, çözümleme
+> `results/saha_zinciri_20260826/rapor.md`.
+> Koşum ortamı: PC, **GPU KAPALI** (`CUDA_VISIBLE_DEVICES=-1`; `torch.cuda.is_available()`
+> `False`, `nvidia-smi` 0 % — PC aynı gün BSOD verdiği için, `results/pc_cokme_20260826/`).
+> Kare: `data/raw_frames/whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg`
+> (576×1024). Sayım: **GEÇTİ 7 · DÜŞTÜ 1 · SAHİPSİZ 2 · ATLANDI 0.**
+
+| # | Halka | Girdi | Çıktı | Sahip `dosya:satır` | Durum | Kanıt |
+|---|---|---|---|---|---|---|
+| 1 | Kamera kaynağı | cihaz/URL | BGR kare | `codes/rpi_inference.py:2114` (`run_camera`) + `--kaynak` argümanı | **GEÇTİ** (eski **KUSURLU** · D-13 — `VideoCapture(0)` sabiti kalktı; cihaz yolu `str`, indeks `int` olarak çözülüp `VideoCapture`'a **beslendiği** ölçüldü) | `kosu_cpu/ozet.json` `kamera.detay.besleme_*` |
+| 2 | Model yükleme | model yolu | YOLO nesnesi | `codes/rpi_inference.py:684` (`load_model`) → `codes/model_registry.py` | **GEÇTİ** (eski **KUSURLU** · D-13 — `best_ncnn_model` sabiti kalktı; yüklenen `navitas_seg_v36_best.pt`, kayıt defteriyle **eşleşti**, uyuşmazlıkta fail-closed) | `ozet.json` `model_yukleme.detay`; D-294 (v36 terfisi) |
+| 3 | Çıkarım | BGR kare | `results` | `codes/rpi_inference.py:2143` (`run_camera` içindeki `model.predict`) | **GEÇTİ** (1621 ms; CPU'da, `imgsz=512`, tuval 1024×1024) | `ozet.json` `cikarim` |
+| 4 | Maske çıkarımı | `results` | `{0: zemin, 1: engel}` | `codes/rpi_inference.py:727` (`get_masks`) | **GEÇTİ** (`{0,1}`; piksel oranı 0:0,1947 · 1:0,2123) | `ozet.json` `maske` |
+| 5 | Ölçek (`mpp`) | irtifa + FOV/odak | m/piksel | `codes/rpi_inference.py:281` (`CanliOlcekSaglayici`) ← `comms/inis_kaniti.py` `BagilIrtifaOkuyucu` · sözleşme `codes/karar_sozlesmesi.py` (`mpp_irtifadan`, `rota_olcek_reddi`) | **GEÇTİ** — canlı telemetri **enjekte edilmiş sahte yayından gerçekten geçirilerek** `mpp=0,0338` üretildi. ⚠ **Gerçek Pixhawk üzerinde ÖLÇÜLMEDİ**; telemetri gelmezse her kare `OLCEK_YOK` → NO_ROUTE (fail-closed, T43) | `ozet.json` `olcek.detay` |
+| 6 | Hedef konumu (HB) | kare / dış girdi | `hb_xy` | **SAHİPSİZ** — dedektör (`codes/karar_sozlesmesi.py` `hb_maskesi`/`hb_konumu`) VAR ama **üretim çağrısı yok**: `analyze_path`'in üretim çağrılarının hiçbiri `goruntu=` geçmiyor; `--hb` CLI yok; etkin profil 2 sınıflı | **SAHİPSİZ** · D-22, D-23 · **T150** | `ozet.json` `hedef_konumu.detay`; D-295 §2: HB dedektörü gerçek pedde **%0**, kırmızı arabada %100 → bağlanması **ölçüme bağlı**, insan kararı |
+| 7 | Rota üretimi | maskeler + `mpp` + `hb_xy` | `road`, `waypoints`, `durum` | 🔴 **ÜRETİM: `codes/rpi_inference.py:1335` (`analyze_path`)** — §11.2-EK/D-295. `codes/costmap_path_finder.py:985` (`rota_bul`) **TANISALDIR** | **DÜŞTÜ** (`durum=BELIRSIZ_TEK_KAPI`) — ⚠ **ama düşen halka TANISAL yoldur:** `scripts/saha_kuru_kosu.py:709` hâlâ `rota_bul` çağırıyor. **Üretim yolu `analyze_path` kuru koşuda HİÇ ölçülmüyor** → **T156** (ölçüm boşluğu, gizlenmiyor) | `ozet.json` `rota.detay` (`rota_bul_cagrildi: true`); D-296 (`road` 6/15 → 15/15 düzeltildi) |
+| 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK + HEARTBEAT | `codes/rpi_inference.py:2114` (`run_camera`) → `comms/iha_sender.py:198` (`KararYayinci`), §6.5 · K1 | **GEÇTİ** — üretim algı yolunun telsize yazdığı **ayrıca** ölçüldü: `open_route_alindi=True, heartbeat=1, ack=['ika'], hata=None`. ⚠ **SiK seri hattı ÖLÇÜLMEDİ** (yalnız UDP loopback) | `ozet.json` `aktarim.detay.uretim_yolu_telsiz`; T146, D-287 §2 |
+| 9 | İKA sürüş izni | rota ∧ IKA_GO ∧ IHA_LANDED | izin `bool` | kapı: `comms/ika_receiver.py:127` (`_surus_izni_gecerli_unlocked`) · `IHA_LANDED` **saha üreticisi**: `comms/iha_inis_yayinci.py:35` (← `comms/inis_kaniti.py` Pixhawk kanıtı) | **GEÇTİ** (eski **KUSURLU** · D-22 — üretici artık `simulation/` altında **değil**; kapı probu: boş kapalı, yalnız IKA_GO kapalı, iki latch ile açık) | `ozet.json` `surus_izni.detay.kapi_probu`; T147/T148, §6.6 |
+| 10 | Motor komutu | izin + waypoint | tekerlek hızı | **SAHİPSİZ** — `simulation/scripts/ika_nav.py:97` (`send_vel` = `gz topic` subprocess); `codes/ comms/ drone/ jetson_paket/ scripts/` altında saha sürücü importu **0** | **SAHİPSİZ** · D-22 · **T149** (insan+mimar, donanım) | `ozet.json` `motor.detay.saha_surucu_importlari: []` |
+
+**Kuru koşunun kendi bayat etiketleri (2026-08-26'da ölçüldü, kod bugün DEĞİŞMEDİ):**
+`scripts/saha_kuru_kosu.py` halka 3'ü `codes/rpi_inference.py:57`, halka 4'ü `:60-83`
+diye etiketliyor; ikisi de bugün **import bloğunun içine** düşüyor (gerçek sahipler
+`:2143` ve `:727`). Etiket bayat, **ölçüm değil** — ama sözleşmede doğru satır yukarıdadır.
+Düzeltme **açık kusurdur** (`REVIEW_LOG.md` D-297 §2); numaralı görevi mimar açar.
 
 #### 11.2-EK · KARAR YOLU BEYANI — T151 kararı (mimar vekili, 2026-08-26 · D-295)
 

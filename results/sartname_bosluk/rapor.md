@@ -6,6 +6,140 @@ Kod DEĞİŞTİRİLMEDİ. Her satırın kanıtı grep/okuma ile alındı; ölç�
 
 Kanıt durumu sözlüğü: **KANITLI_TEST** = kod var ve `tests/` altında koşan test var · **KOD_VAR_TEST_YOK** = kod var, o davranışı sınayan test yok ya da entegrasyon sınanmıyor · **YOK** = karşılayan kod yok · **BELİRSİZ** = kod var ama sahada hangi yolun koştuğu / davranış tek başına belirlenemiyor · **ÖLÇÜLEMEDİ** = repo dışı (uçuş kontrolcüsü, donanım).
 
+---
+
+# TAZELEME - 2026-08-26 aksami (olcum; kod DEGISMEDI)
+
+> Asagidaki §0-§4 **sabah cekilmis fotograftir ve SILINMEDI** (kanit zinciri korunur).
+> Bu bolum o fotografin **hangi satirlarinin bayatladigini** bugunku olcumle soyler.
+> Nerede celisirlerse **bu bolum gecerlidir**.
+
+## T0 - Bugun gercekten kosulan kapilar
+
+```
+> <venv> -B codes/test_rota_sentetik.py
+SONUC: 15/15 dogru
+[OK] TUM DETERMINISTIK SAHNELER GECTI                       (RC=0)
+
+> <venv> -B -m unittest discover -s tests -q
+Ran 1002 tests in 82.606s
+OK (skipped=2)                                              (RC=0)
+```
+(Sabahki kosumda 855 testti; brifingde "master 988" deniyordu - bugun **1002**.
+Fark bugun kapanan T146/T147/T148/T155 testleridir, gevsetme degil.)
+
+```
+> CUDA_VISIBLE_DEVICES=-1 <venv> -B scripts/saha_kuru_kosu.py --cikti results/saha_zinciri_20260826/kosu_cpu
+  kamera         GECTI      kaynak parametrik ve VideoCapture'a BESLENIYOR
+  model_yukleme  GECTI      agirlik manifestten turetiliyor (navitas_seg_v36_best.pt)
+  cikarim        GECTI      tek kare cikarimi tamamlandi                      [1621 ms]
+  maske          GECTI      {0,1} anahtarli maskeler uretildi
+  olcek          GECTI      canli telemetri bu kare icin gecerli mpp uretti   (mpp=0,0338)
+  hedef_konumu   SAHIPSIZ   HB'nin tek kaynagi Gazebo meta.txt; --hb girisi yok
+  rota           DUSTU      rota uretilemedi: durum=BELIRSIZ_TEK_KAPI
+  aktarim        GECTI      uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE yazdi
+  telsiz halkasi GECTI      {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika']}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+  motor          SAHIPSIZ   gercek motor surucusu yok
+GECTI 7 · DUSTU 1 · SAHIPSIZ 2 · ATLANDI 0
+```
+**GPU KOSULMADI** - `torch.cuda.is_available()` -> `False`, `nvidia-smi` -> `14 MiB, 0 %`
+(PC bugun BSOD verdi: `results/pc_cokme_20260826/rapor.md`).
+Sabahki kosum `--atla-cikarim` ile yapildigi icin `olcek DUSTU` gorunuyordu; **o bir
+zincir kopuklugu degil, atlanan cikarimin yan etkisiydi.** Bugun tam zincirde GECTI.
+
+**Ama halka 7 aldaticidir:** kuru kosu `rota_bul` cagiriyor
+(`scripts/saha_kuru_kosu.py:709`), oysa D-295/T151 ile **uretim yolu `analyze_path`**
+ilan edildi. Yani tek `DUSTU` satiri **tanisal** yolun sonucudur; uretim karar yolu
+kuru kosuda **hic olculmuyor** (D-297 §1, T156).
+
+## T1 - Hukum satirlarinin BUGUNKU durumu
+
+Sabahki tablo **21 satirdir (R1-R21)**; gorev metni "18 hukum" diyordu - sayi
+tutmuyor, duzeltildi. Taramada **bir hukum daha atlanmis** cikti -> **R22**.
+
+| # | Sabahki durum | BUGUN | Ne degisti · kanit |
+|---|---|---|---|
+| R1 | BELIRSIZ (iki karar yolu) | **BEYAN EDILDI, KAPI YOK** | T151 kapandi (D-295): `analyze_path` **URETIM**, `rota_bul` **TANISAL** - CONTRACTS §11.2-EK. Davranis degismedi (Secenek C). Actigi iki bosluk **T155/T156**. T155 kapandi (D-296: yayinlanan `road` 6/15 -> **15/15**, `results/t155/`). **T156 ACIK**: genel kapi hala yalniz `rota_bul`u zorluyor. |
+| R2 | OLCULEMEDI | **OLCULEMEDI** (degismedi) | Ucus kontrolcusu repo disi. |
+| R3 | KANITLI_TEST | **KANITLI_TEST + kuru kosuda GECTI** | Olcek halkasi bugun tam zincirde `mpp=0,0338` uretti (sabah `--atla-cikarim` yuzunden DUSTU gorunuyordu). Gercek Pixhawk **hala OLCULMEDI**. |
+| R4 | **KOD_VAR_TEST_YOK · KRITIK** | **KAPANDI** | **T146** (K1 telsiz halkasi): `run_camera` -> `iha_sender.KararYayinci`; CONTRACTS §6.5. Kanit: `results/K1_telsiz_halkasi/rapor.md` + `tests/test_rpi_telsiz_yayin.py` (11 test); kuru kosuda `uretim_yolu_telsiz.open_route_alindi=True`. SiK seri **OLCULMEDI** (D-287 §2). |
+| R5 | KANITLI_TEST | degismedi | - |
+| R6 | **BELIRSIZ · ONEMLI** | **KAPANDI** | **T147** (K8): IKA ACK'i YKS'ye de gidiyor (`ika_nav --yks`); "IKA ALDI" gelmeden 2. onay acilmiyor. Kanit: `results/k4_k8_ika_go_ack/rapor.md`, `tests/test_ika_go_ackli_tekrar.py` (11 test), CONTRACTS §6.6. |
+| R7 | KANITLI_TEST | degismedi | - |
+| R8 | **KOD_VAR_TEST_YOK · KRITIK** (D-02) | **KAPANDI** | **T147** (K4): `IKA_GO` ayni-seq ACK'li tekrar, ust sinir, idempotent latch, ACK yoksa dugme yeniden acik. CONTRACTS §6.6 baglayici. Kanit: `results/k4_k8_ika_go_ack/` (5 mutasyonun 5'i yakalandi). |
+| R9 | OLCULEMEDI / BELIRSIZ | degismedi | Otonom parasut repo disi; manuel tetigin IHA'da alicisi yok. -50 ceza kaydi `yks_gui.py:2024`. |
+| R10 | KANITLI_TEST · "runbook yok" | **KAPANDI (kod) · runbook hala EKSIK** | **T148** (K6): inis sonrasi heartbeat suruyor (`--heartbeat-sure`, varsayilan §6.2 IKA suresi 600 s) -> 3 s'de `link_lost` bitti. Kanit: `tests/test_k5_k6_sure_limitleri.py` (9 test). **Ama `JETSON_KILAVUZ.md`'de `iha_inis_yayinci.py` icin hala CALISTIRMA KOMUTU YOK** - yalniz `cp` satiri (`:301`). Bu bosluk `results/saha_zinciri_20260826/saha_gunu.md` adim 6'da EKSIK isaretlendi. |
+| R11 | KANITLI_TEST | degismedi | R8 ile birlikte guclendi. |
+| R12 | **YOK · KRITIK** | **ACIK - INSAN/DONANIM** | **T149**. Kuru kosu `motor SAHIPSIZ`; saha surucu importu **0**. Donanim karari gelmeden kapanmaz. |
+| R13 | KOD_VAR_TEST_YOK · ONEMLI | **ACIK - ve artik OLCULDU: baglanmamali** | **T150**. D-295 §2: `hb_konumu` gercek inis pedinde **%0**, kirmizi arabada %100 -> bugun `goruntu=` baglanirsa her kare `HEDEF_YOK`'a dusme riski. Karar **insanda**; "olcmeden baglama" hukmu artik olcumle destekli. |
+| R14 | KANITLI_TEST · kararlilik acik | **KOTULESTI (olculdu, gizlenmiyor)** | D-295 §3: v36 karar kararliliginda **v35'ten kotu**; fazlaligin tamami "rota VAR/YOK cevrilmesi" (v36 6, v35 0-1), yon fail-closed ama saha elverisliligini dusurur. Terfi geri alinmadi (on kayit §16; geri alma **kullanici karari**). |
+| R15 | BELIRSIZ | degismedi | T14/T15 acik. |
+| R16 | KOD_VAR_TEST_YOK | **KAPANDI** | **T148** (K5): `SARTNAME_IHA_GOREV_SURESI_S=900`, `SARTNAME_IKA_GOREV_SURESI_S=600` `codes/karar_sozlesmesi.py:1539-1542`; `ika_nav` TEK deadline yerine **iki ayri bayrak** (`--bekleme-suresi` / `--surus-suresi`); cikis kodu 4 testle kilitli. CONTRACTS §7.1. |
+| R17 | OLCULEMEDI | degismedi | - |
+| R18 | **YOK · KRITIK** | **YARISI KAPANDI** | Aktarim otonom oldu (R4/T146). **Surus hala YOK** (R12/T149). |
+| R19 | KANITLI_TEST | guclendi | T148 heartbeat suresi §6.2'ye baglandi. |
+| R20 | KOD_VAR_TEST_YOK | **hala OLCULMEDI** | Gercek SiK cifti yok. Kuru kosu yalniz UDP loopback. DDR'deki ">%98, 300 m" iddiasinin kaniti **hala yok**. |
+| R21 | BELIRSIZ | degismedi | - |
+| **R22** | *(tabloda YOKTU)* | **YENI - INSAN/DONANIM** | §2.2.6: *"IKA'nin belirlenen yukleri tasiyarak hedef bolgeye intikal etmesi esastir... yapisal butunlugunu koruyor olmasi ve tasidigi yuku/yukleri eksiksiz muhafaza etmesi zorunludur; aksi takdirde ilgili gorev basarisiz sayilir."* Yazilima dusmez ama **"gorev basarisiz"** yaptirimli ve tabloda hic yoktu (D-297 §3). |
+
+### K2 ve K3 - insan/donanim karari olarak KALIR (degismedi)
+- **K2 · IKA motor surucusu (R12 / T149):** yazilim tarafinda yapilacak is
+  soyutlamadir; **hangi surucuye** baglanacagi donanim kararidir. Kuru kosu bugun de
+  `motor SAHIPSIZ` diyor. **Mimar/AI kapatamaz.**
+- **K3 · HB dedektorunun uretime baglanmasi (R13 / T150):** artik yalniz "test yok"
+  degil, **olculmus bir risk**: gercek pedde %0 isabet (D-295 §2). Baglama karari
+  insandadir; olcum iyilesmeden baglamak fail-closed'i her karede tetikler.
+
+## T2 - Sartname yeniden taramasi (§2.2 ve §6, `venv` + `fitz`)
+
+`Ileri_Otonom_Sistemler_Tasarim_ve_Operasyon_Yarismasi_Sartname_TR_Ltktw.pdf`
+**30 sayfa · 56 418 karakter** -> `results/saha_zinciri_20260826/sartname_metin_20260826.txt`.
+(Sabah 56 919 karakter yazilmisti; fark **metin birlestirme** farkidir, PDF ayni dosyadir.)
+
+| Tarama bulgusu | Durum |
+|---|---|
+| §2.2.6 yuk tasima + yapisal butunluk | **ATLANMIS** -> R22 (insan/donanim) |
+| §6.2 hazirlik 15 dk · "Takim Hazir" · mudahale **-100 ceza** + sure hazirliga eklenir | **KARSILANIYOR** - `comms/yks_gui.py:1985, :2001-2011, :1976` (`_ceza_ekle`). Sabahki tabloda R16 "yalniz gosterge + log" diyordu; **bayat**. |
+| §6.2 tekrar firlatma: "sure durdurulmaz, 15 dk'ya dahil" | **KARSILANIYOR** - `yks_gui.py:1889 firlatma()` `if self.t_iha0: return` ile kronometreyi **yeniden baslatmiyor**; dugme de kilitleniyor. Tabloda yoktu, **davranis dogru**. Dogrudan tekrar-firlatma testi **YOK**. |
+| §6.2/§6.4 IHA 15 dk · IKA 10 dk | **KARSILANIYOR** - R16 (T148) |
+| §6.4 kirim / inis ihlali / alan ihlali / manuel mudahale | R17/R21/R9 - repo disi, degismedi |
+| §6 "uc guzergah Kolay/Orta/Zor, farkli zorluk katsayisi" | Katsayi **acik olan** guzergaha aittir, bizim yayinladigimiza degil -> yeni yazilim gereksinimi **degil**. Yine de yayinlanan `road` etiketinin dogrulugu §2.2.3 hakem onayini ilgilendirir (T155/D-296 ile 15/15 oldu). |
+| §6 agirlik limitleri (IHA 25 kg / IKA 10 kg), 3 ucus hakki, muhur | Insan/idari - yazilima dusmez |
+
+**§6.2 hazirlik suresi kodda CIPLAK.** `comms/yks_gui.py` icinde `"15:00"` bes yerde
+duz metin (`:494, :519, :1893, :2090, :2094`); `SARTNAME_HAZIRLIK_SURESI_S` diye bir sabit
+**yok** (`grep` -> 0). IHA limiti sabitten geliyor ama **ekran metni** ondan turemiyor.
+Madde 16 (ciplak sayi yok) acisindan acik kusur - bugun kod degistirilmedigi icin
+duzeltilmedi, **kayda gecti** (D-297).
+
+## T3 - Bugun itibariyla KRITIK kalanlar (sabahki 8 maddenin yerine)
+
+1. **Gercek IKA motor surucusu yok** (R12 · T149) - **K2, insan/donanim.**
+2. **HB uretime bagli degil ve olcum baglanmamasi gerektigini soyluyor** (R13 · T150) - **K3, insan.**
+3. **Uretim karar yolu `analyze_path` hicbir kapida yok** (T156) - genel kapi da
+   kuru kosu da `rota_bul`u zorluyor (D-297 §1). Kod isi, mimar karari bekliyor.
+4. **v36 karar kararliligi v35'ten kotu** (R14 · D-295 §3) - geri alma **kullanici karari**.
+5. **SiK seri hatti hic olculmedi** (R20) - donanim gerekiyor; UDP loopback kanit sayilmaz.
+6. **`iha_inis_yayinci` icin Jetson calistirma yordami kilavuzda yok** (R10 kalan) -
+   belge isi; `results/saha_zinciri_20260826/saha_gunu.md` adim 6 bunu EKSIK olarak tasiyor.
+7. **T153 (ince beton serit cikarici) KAPALI kalir** - on kayit §13 benimseme kurali
+   **saglanmadi** (v35 15 -> 14 dustu, D-291). `INCE_BETON_SERIT_ETKIN = False`
+   (`codes/karar_sozlesmesi.py:870`). Kalan is **model tarafindadir**, esik oynatmak degil.
+
+## T4 - Belge tutarsizliklari - bugunku hali
+
+- `CONTRACTS.md §11.2` halka tablosu -> **bugun olcumle tazelendi** (bu gorev).
+- `CONTRACTS.md §7` "uretim zincirinde inis sinyalini ureten yok" -> **bayat**;
+  §7.1 ve §6.6 eklendi, halka 9 artik **GECTI**.
+- `REVIEW_LOG D-105` "hedef_konumu SAHIPLENDI" <-> kuru kosu `SAHIPSIZ` celiskisi ->
+  **hala acik**, ama artik D-295 §2 olcumuyle taraf tutuluyor: dedektor **var**,
+  uretime **bagli degil**, ve bugunku isabetle baglanmamali.
+- `results/t123/saha_gunu_kontrol_listesi.md` -> **BAYAT: v35/v34 diyor**, uretim **v36**
+  (D-294). Bu gorevde **duzeltilmedi** (kapsam disi); `saha_gunu.md` bunu acikca uyariyor.
+
+---
+
 ## 0. Koşulan kapılar (bu denetim için, kod değişmeden)
 
 ```
