@@ -1,0 +1,197 @@
+{
+ "agirlik": "codes\\runs\\segment\\gece_v7b_v35taban\\weights\\best.pt",
+ "ad": "gece_v7b",
+ "kapi_sabitleri": {
+  "verdikt": true,
+  "K1_min": 230,
+  "red67_maks": 5,
+  "cati_kacagi_maks": 0.1,
+  "rota_test29_min": 10,
+  "maske_yok_test29_maks": 10
+ },
+ "taban_v35": {
+  "rota": 6,
+  "maske_yok": 16,
+  "uc_bant": 7,
+  "figur_zemin": 0.1508,
+  "kaplama67": 0.5076,
+  "cati": 0.043
+ },
+ "test_dizin": "dataset\\dji_kirsal_0038_bolum_v3\\images\\test",
+ "tavan": "results\\gece_20260826\\test29_etiket_tavani_v3.json",
+ "kabul": {
+  "verdikt": false,
+  "K1": 258,
+  "gecti": {
+   "K0": false,
+   "K1": true,
+   "K2": true,
+   "K3": true,
+   "K4": true,
+   "K6": true,
+   "K5": true
+  },
+  "K0_figur_orani": 0.0,
+  "json": "O:\\navitas\\scripts\\olcum\\results\\t63\\gece_v7b_kabul_verdikt.json",
+  "exit": 0
+ },
+ "k109": {
+  "cati_kacak_ort": 0.0246,
+  "cati_kacak_medyan": 0.0134,
+  "disk_cati_engel": 0.9821,
+  "disk_cati_zemin": 0.0002,
+  "disk_zemin_zemin": 0.9425,
+  "cati_dondu": true,
+  "kaplama67_icerik_medyan": 0.4788,
+  "kaplama67_tuval_medyan": 0.2693,
+  "zemin_maskesi_reddi": 0,
+  "figur_zemin_orani": 0.0,
+  "figur_engel_orani": 0.04493
+ },
+ "test29": {
+  "n": 29,
+  "rota": 8,
+  "maske_yok": 16,
+  "uc_bant": 4,
+  "sebep": {
+   "MASKE_YOK": 16,
+   "UC_BANT_TEMAS_YOK": 4,
+   "null": 8,
+   "ZEMIN_MASKESI_SUPHELI": 1
+  },
+  "json": "O:\\navitas\\results\\gece_20260826\\gece_v7b_test29.json",
+  "exit": 0
+ },
+ "test29_tavan": {
+  "tavan_rota": 12,
+  "TP": 7,
+  "FP": 1,
+  "FN": 5,
+  "fp_kareler": [
+   "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+  ]
+ },
+ "kapi_sabitleri_b_ek2": {
+  "yol_payi_min": 0.9,
+  "engel_wp_maks": 0
+ },
+ "rota_yol": {
+  "kapi": {
+   "yol_payi_min": 0.9,
+   "engel_wp_maks": 0
+  },
+  "etiket_dizin": "dataset\\dji_kirsal_0038_bolum_v3\\labels\\test",
+  "rota_kare": 8,
+  "yanlis_guzergah": 2,
+  "yanlis_kareler": [
+   "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+   "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+  ],
+  "rota_yol": [
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 1.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 2010,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1844,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+    "yol_payi": 0.9351,
+    "etiketsiz_payi": 0.0649,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+    "yol_payi": 0.352,
+    "etiketsiz_payi": 0.648,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 2756,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   }
+  ]
+ },
+ "kapi_a": {
+  "verdikt": false,
+  "K1>=230": true,
+  "red67<=5": true,
+  "cati<=0,10": true
+ },
+ "kapi_b": {
+  "rota_test29>=10": false,
+  "maske_yok_test29<=10": false,
+  "FP_test29<=1": true,
+  "yanlis_guzergah==0": false
+ },
+ "a_gecti": false,
+ "b_gecti": false,
+ "terfi_adayi": false,
+ "saniye": 280
+}

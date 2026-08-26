@@ -1,0 +1,193 @@
+{
+ "agirlik": "codes\\runs\\segment\\gece_v7a_v35taban\\weights\\best.pt",
+ "ad": "gece_v7a",
+ "kapi_sabitleri": {
+  "verdikt": true,
+  "K1_min": 230,
+  "red67_maks": 5,
+  "cati_kacagi_maks": 0.1,
+  "rota_test29_min": 10,
+  "maske_yok_test29_maks": 10
+ },
+ "taban_v35": {
+  "rota": 6,
+  "maske_yok": 16,
+  "uc_bant": 7,
+  "figur_zemin": 0.1508,
+  "kaplama67": 0.5076,
+  "cati": 0.043
+ },
+ "test_dizin": "dataset\\dji_kirsal_0038_bolum_v3\\images\\test",
+ "tavan": "results\\gece_20260826\\test29_etiket_tavani_v3.json",
+ "kabul": {
+  "verdikt": true,
+  "K1": 255,
+  "gecti": {
+   "K0": true,
+   "K1": true,
+   "K2": true,
+   "K3": true,
+   "K4": true,
+   "K6": true,
+   "K5": true
+  },
+  "K0_figur_orani": 0.2943525052775812,
+  "json": "O:\\navitas\\scripts\\olcum\\results\\t63\\gece_v7a_kabul_verdikt.json",
+  "exit": 0
+ },
+ "k109": {
+  "cati_kacak_ort": 0.023,
+  "cati_kacak_medyan": 0.0119,
+  "disk_cati_engel": 0.9908,
+  "disk_cati_zemin": 0.0,
+  "disk_zemin_zemin": 0.9476,
+  "cati_dondu": true,
+  "kaplama67_icerik_medyan": 0.4171,
+  "kaplama67_tuval_medyan": 0.2346,
+  "zemin_maskesi_reddi": 0,
+  "figur_zemin_orani": 0.0444,
+  "figur_engel_orani": 0.1487
+ },
+ "test29": {
+  "n": 29,
+  "rota": 8,
+  "maske_yok": 16,
+  "uc_bant": 5,
+  "sebep": {
+   "MASKE_YOK": 16,
+   "UC_BANT_TEMAS_YOK": 5,
+   "null": 8
+  },
+  "json": "O:\\navitas\\results\\gece_20260826\\gece_v7a_test29.json",
+  "exit": 0
+ },
+ "test29_tavan": {
+  "tavan_rota": 12,
+  "TP": 7,
+  "FP": 1,
+  "FN": 5,
+  "fp_kareler": [
+   "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+  ]
+ },
+ "kapi_sabitleri_b_ek2": {
+  "yol_payi_min": 0.9,
+  "engel_wp_maks": 0
+ },
+ "rota_yol": {
+  "kapi": {
+   "yol_payi_min": 0.9,
+   "engel_wp_maks": 0
+  },
+  "etiket_dizin": "dataset\\dji_kirsal_0038_bolum_v3\\labels\\test",
+  "rota_kare": 8,
+  "yanlis_guzergah": 0,
+  "yanlis_kareler": [],
+  "rota_yol": [
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+    "yol_payi": 0.9862,
+    "etiketsiz_payi": 0.0138,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
+    "yol_payi": 0.9901,
+    "etiketsiz_payi": 0.0099,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+    "yol_payi": 0.9424,
+    "etiketsiz_payi": 0.0576,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 3110,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   }
+  ]
+ },
+ "kapi_a": {
+  "verdikt": true,
+  "K1>=230": true,
+  "red67<=5": true,
+  "cati<=0,10": true
+ },
+ "kapi_b": {
+  "rota_test29>=10": false,
+  "maske_yok_test29<=10": false,
+  "FP_test29<=1": true,
+  "yanlis_guzergah==0": true
+ },
+ "a_gecti": true,
+ "b_gecti": false,
+ "terfi_adayi": false,
+ "saniye": 348
+}
