@@ -1,0 +1,30 @@
+
+==================================================================
+KABUL DENETIMI · gece_v2_v35taban
+  esikler: REVIEW_LOG D-107 (sonuc gorulmeden yazildi)
+==================================================================
+  kabul kumesi: O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66
+                parmak izi n=547 · sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586
+  K0 KORLUK YOK        GECTI  figur zemin %30.88 (uretim tabani %9.03 = v35'in degeri · oran 3.42)
+                       raw bos 0/67 · cp bos 0/393
+  🔴 DIKKAT: figur kaplamasi uretim tabanindan 3.42 kat sapiyor.
+     > 2,0 ise TEHLIKELI yon (daha cok zemin) — K2/K3'e AYRICA bakin.
+     SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49 · v35 %9.03
+               (+4 kayit DONEM-TUTARLI DEGIL — 640 donemi; kiyasa ve medyana GIRMEZ, kayitta DURUR)
+     TABAN, soyagaci medyanindan (%7.90) 1.1x uzakta   <- SAYI, KURAL DEGIL
+  K1 ROTA >= 230       GECTI       257/260
+  K2 BASMA <= %15      GECTI       23/257   (taban %9,2)
+  K3 AGIR  <= %3       GECTI       1/257   (taban %0)
+  K4 ARENA DISI <= %5  GECTI       5/257
+  K5 BARIYER = 0 px    GECTI       kesen 0/172 kare · toplam 0 px  [zemin: POPULASYON, T126/D-243]
+                       bilgi (kapi DEGIL): tek figur GECTI (0 px)
+------------------------------------------------------------------
+  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu de saglandi.
+==================================================================
+
+⚠ Bu olcumlerin tamami SENTETIKTIR. Hicbiri 'sahada calisir'
+  anlamina gelmez (D-88 + D-99, kalici kisit).
+
+json -> O:\navitas\scripts\olcum\results\t63\gece_v2_v35taban_kabul_verdikt.json
+
+--stderr--

@@ -1,0 +1,14 @@
+[2] 109 {"cati_kacak_ort": 0.0158, "cati_kacak_medyan": 0.0041, "disk_cati_engel": 0.9846, "disk_cati_zemin": 0.0, "disk_zemin_zemin": 0.9081, "cati_dondu": true, "kaplama67_icerik_medyan": 0.3829, "kaplama67_tuval_medyan": 0.2154, "zemin_maskesi_reddi": 0, "figur_zemin_orani": 0.38997, "figur_engel_orani": 0.01192}
+[3] test29 {"n": 29, "rota": 6, "maske_yok": 14, "uc_bant": 9, "sebep": {"MASKE_YOK": 14, "null": 6, "UC_BANT_TEMAS_YOK": 9}, "exit": 0}
+[3-ek] tavan {"tavan_rota": 13, "TP": 6, "FP": 0, "FN": 7, "fp_kareler": []}
+
+=== HUKUM (ON_KAYIT §4) ===
+  verdikt                  OLCULMEDI
+  K1>=230                  OLCULMEDI
+  red67<=5                 GECTI
+  cati<=0,10               GECTI
+  rota_test29>=10          DUSTU
+  maske_yok_test29<=10     DUSTU
+  FP_test29<=1             GECTI
+  (a) DUSTU · (b) DUSTU · TERFI ADAYI: False
+  bilgi: figur_zemin 0.38997 (v35 0,1508) · kaplama67 0.3829 (v35 0,5076) · test29 sebep {'MASKE_YOK': 14, 'null': 6, 'UC_BANT_TEMAS_YOK': 9}

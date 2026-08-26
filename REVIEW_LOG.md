@@ -21928,3 +21928,56 @@ Etiket tavanı (`143_etiket_tavani.py`): 29 test karesinin **13**'ünde elle eti
 
 #### 5. Devam eden (bu kayıt yazılırken)
 `gece_v3_v35taban` (v2 + dalga 2/3 etiketleri, aynı reçete) eğitimde; S2 yönelim ve dalga 2 (K1, K4+K8, K5+K6, T135+T143 kalıntıları) ajanlarda. Sonuçları **D-287**'de.
+
+---
+
+### D-287 · 🔴 GECE PROGRAMI KAPANIŞI · S2 yönelim: model maskesinde kazanç **0**, etiket tavanında +7 · şartname K1/K4+K8/K5+K6 KAPANDI (çürütücü + ikinci tur) · dört eğitimde de **best epoch 1–4** — v3 kapıyı **1 kareyle** kaçırdı · terfi: **YOK** (v3 tek kareyle, v5 arena kapısıyla düştü)
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-27 sabahı. Ön kayıt `results/gece_20260826/ON_KAYIT.md` §1–§8 (her koşum sonuç görülmeden yazıldı). Ham çıktı `results/gece_20260826/`, `results/s2_yonelim/`, `results/K1_telsiz_halkasi/`, `results/k4_k8_ika_go_ack/`, `results/sartname_bosluk_k5_k6/`, `results/t135_t143_kalinti/`.
+
+#### 1. S2 — K-A bandı rota eksenine göre (`analyze_path(rota_ekseni_derece)`) — ÖLÇÜLDÜ, üretime GİRMEDİ
+Uygulama sarmalayıcı: döndür (INTER_NEAREST, köşeler ENGEL) → mevcut çekirdek (gövde değişmedi) → geri çevir; temiz maske döndürülmemiş çekirdek temizliğiyle **kesiştirilir** (serbest alan büyüyemez); dışarı düşen waypoint → `KENAR_GUVENSIZ`. `None` → bayt-eş (sentetik n=260: K1 256=256, karar/güven/wp/clean 0 fark). 7 test + mutasyon; çürütücü kıramadı (ek: ara açı probu 45/−45/30/135, wp⊆maske).
+**Ölçüm (0038, 59 kare):**
+| kaynak | 0° | 90° | tavan (0∪90) |
+|---|---:|---:|---:|
+| v35 maskesi, ölçeksiz | 11 | **0** | 11 |
+| elle etiket, ölçeksiz | 27 | 11 | **34 (+7)** |
+⇒ Yönelim **etiket tavanını** büyütüyor ama **v35 maskesinde sıfır kazanç**: 0°'de rota olan 11 kare 90°'de UC_BANT'a düşüyor, MASKE_YOK 35 sabit. Darboğaz **model körlüğü**; D-281 §4'ün "döndürünce 14/18 geçiyor" sayısı bu ölçümle **yeniden üretilemedi** (o ölçüm etiket maskesiyleydi; model maskesi için hiç geçerli olmamış — D-281'e düzeltme). Üretimde eksen kaynağı (operatör kerterizi + araç yönü) `results/s2_yonelim/contracts_onerisi.md`'de öneri; otomatik "en iyi eksen" fail-open riski nedeniyle üretime GİRMEZ.
+
+#### 2. Şartname boşlukları — dalga 2 + 2b (her teslim çürütüldü, tıkayıcılar ikinci turda kapandı)
+| görev | ne yapıldı | çürütücü |
+|---|---|---|
+| **T146 (K1)** | `run_camera/run_video` → `--yks-hedef/--ika-hedef/--telsiz-seri` ile her karede OPEN_ROUTE/NO_ROUTE + ayrı iş parçacığında HEARTBEAT (`KararYayinci`, latest-wins); ret sebepli/None → NO_ROUTE(KARAR_YOK); güven kapısı çoğaltılmadı; hedefsiz koşum bayt-eş; kuru koşu halka 8 gerçek UDP ile GEÇTİ; CONTRACTS **§6.5**; kılavuz | kıramadı; `stop()` yarışı (bekleyen karar atılıyor) → **2b'de kapandı** |
+| **T147 (K4+K8)** | IKA_GO ACK gelene dek aynı seq ile 0,25 s × ≤20 tekrar (`komut_tekrar.py`, Tk'dan bağımsız), üst sınırda KIRMIZI + düğme açık; İKA ACK'ları `ref_tip`; OPEN_ROUTE ACK kopyası YKS'ye; hakem 2. onayı **kanıtsız pasif**; CONTRACTS **§6.6** | **TIKAYICI ×2**: `ika_nav` `IkaReceiver` yks_peer'siz (UDP'de 2. onay kalıcı pasif) ve seri hatta `_rota_ack` hiç ACK üretmiyor → **2b'de kapandı** (ika_nav `--yks`, navitas_sim `--landed-yks` bağlandı; seri dal `_kontrol_mesaji_ack` ile tutarlı); gerçek CLI + UDP loopback ile ölçüldü |
+| **T148 (K5+K6)** | `ika_gorevi`: bekleme 900 s (şartname §6.2 İHA 15 dk) + sürüş 600 s (İKA 10 dk) ayrı deadline; `iha_inis_yayinci --heartbeat-sure 600`; sabitler PDF alıntısıyla; CONTRACTS **§7.1** | kıramadı; çıkış kodu 4 testle kilitli değildi (M7) → **2b'de kapandı** |
+| **T135** | `kamera_dogrula.py` icerik geçirir (kapı 16:9'da canlı); `rota_bul` icerik=None letterbox şüphesi notu; T143 kalıntıları (`--kaynak-pt` zorunlu, mock çağrı tavanı, `calisan_imgsz`) | "tıkayıcı" dediği test T142 eşiğiyle bayattı → test AND-ölü koşuluna çevrildi |
+Kapı her birleştirmede **15/15 · 896 OK**. Açık kalanlar (çürütücülerin "dokunulmadı" listesi): `ref_tip`'siz eski ACK'ın rota kanıtı sayılması (geriye uyumluluk kararı), sürüş deadline'ının izin anında başlaması, `cv2.flip` x-aynası K1 ile ilk kez İKA'ya gidiyor (**saha kararı: kamera aynalı mı?**), `yayinci.hata` tavansız, latest-wins ~1 s karar gecikmesi belgelenmeli, `--yks` verilmezse sessiz (uyarı önerisi).
+
+#### 3. EĞİTİM — dört koşum, tek kalıp
+| koşum | veri | val | epoch/best | (a) | ROTA/29 | MASKE_YOK | FP | TP | figür zemin | terfi |
+|---|---|---|---|---|---:|---:|---:|---:|---:|---|
+| v35 (üretim) | — | — | — | — | 6 | 16 | 0 | 6 | 0,151 | — |
+| v2 | karışım + dji×20 (101) | karışım+30 dji | 19/4 | GEÇTİ | 11 | 3 | **2** | 9 | 0,516 | HAYIR (FP) |
+| v3 | + dalga 2/3 (108) | +52 dji | 16/1 | GEÇTİ | 10 | **11** | 1 | 9 | 0,033 | HAYIR (MASKE_YOK 11 > 10) |
+| v4 | v3 | **yalnız dji** (82) | 16/1 | GEÇTİ | 10 | **11** | 1 | 9 | 0,033 | HAYIR (= v3: best epoch 1 → aynı ağırlık) |
+| v5 | **yalnız dji×20** | yalnız dji | 6/1 | **DÜŞTÜ** (K1 < 230, çatı 0,135) | 11 | 10 | 1 | **10** | 0,074 | HAYIR (arena bozuldu — ön kayıt §8 öngördü) |
+(etiket tavanı 13/29; kapı: ROTA ≥ 10 · MASKE_YOK ≤ 10 · FP ≤ 1 · (a) tam)
+🔴 **Kalıp:** her koşumda best epoch 1–4; v4'te DJI val mAP50-95 epoch 1'de 0,0955 ve sonra **düşüyor**. Yani "daha uzun eğit" gerçek domeni iyileştirmiyor — ×20 kopya + 200 kare ezber/çekişme. v3, v35'e göre **TP 6→9, MASKE_YOK 16→11, figür zemin 0,151→0,033 (güvenli yön)** ile en dengeli aday; kapıyı **tek kareyle** kaçırdı ve kural gereği terfi etmedi.
+
+#### 3b. Arena figürü (n=1, YZ üretimi — bilgi)
+| model | kaplama | sonuç |
+|---|---:|---|
+| v35 | 0,151 | yol=None (UC_BANT_TEMAS_YOK) |
+| v3 | 0,033 | yol=None (UC_BANT_TEMAS_YOK) |
+| v5 | 0,074 | **yol=1, 8 wp** — ama sentetik kabul K1 < 230 |
+Karışımsız ince ayar gerçek domende kazanıp sentetik arenada kaybediyor; ikisini birden tutan reçete bu gece bulunamadı. Sentetik arena kümesinin gerçek arenayı ne kadar temsil ettiği (D-88/D-99 kalıcı kısıt) bu çelişkinin ortasında duruyor — **DOĞRULAMA uçuşu** (gerçek arena benzeri saha, kırmızı H) olmadan çözülmez.
+
+#### 4. Etiketleme — 160 → 320 kare, madde 12
+Dalga 2 (40) + dalga 3 (120) + 3 denetçi (madde 12 çiğ toprak → ETİKETSİZ; A–H'de 1 düzeltme). Amelelerin açtığı yeni sorular (banket, gölge, karışık yığın, dar beton şerit genişliği, "kenara kadar" hangi kola) `etiket_dalga3/*/rapor.json` — **EK-6 adayı**, mimar kararı.
+
+#### 5. Ne YAPILMADI / açık
+- **Terfi:** yapılmadı. v3 (b)'yi MASKE_YOK 11 > 10 ile tek kareyle kaçırdı; v5 gerçek karede en iyi (TP 10/13, FP 1) ama arena kabulünü kaybetti (K1 < 230, çatı 0,135 > 0,10) ve tek gerçek arena figüründe **rota üretti** (v35/v3: `UC_BANT_TEMAS_YOK`) — bu figür n=1 ve YZ üretimi, kanıt değil bilgi. **Karar kullanıcıya/mimara:** v3'ü "tek kare" gerekçesiyle terfi ettirmek ön kayıt kuralının ihlalidir; ettirilecekse bu **açıkça** yazılarak yapılmalı (`config/model_registry.json` dokunulmadı).
+- T149 (İKA motor sürücüsü — insan), T150 (HB dedektörü üretime bağlama — gerçek kırmızı H karesi yok; DOĞRULAMA uçuşunda H yer işareti), T151 (tek karar yolu kararı) açık.
+- `results/t123/saha_gunu_kontrol_listesi.md` (izlenmiyor) K5 komutuyla güncellenmedi.
+- D-268 §6 "kenar kolu çalışır" cümlesi bu kayıtla **düzeltilmiş sayılır** (T135/T142 ölçümü: kırpık maske + icerik=None'da iki kol da ölü).
+- DDR/şartname: FDR son teslim **21 Eylül**, final 30 Eylül–3 Ekim — `sartname_metin.txt`.

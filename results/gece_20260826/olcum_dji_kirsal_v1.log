@@ -1,0 +1,13 @@
+[1] kabul {"verdikt": true, "K1": 255, "gecti": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K5": true}, "K0_figur_orani": 2.5854516337957847, "exit": 0}
+[2] 109 {"cati_kacak_ort": 0.0158, "cati_kacak_medyan": 0.0041, "disk_cati_engel": 0.9846, "disk_cati_zemin": 0.0, "disk_zemin_zemin": 0.9081, "cati_dondu": true, "kaplama67_icerik_medyan": 0.3829, "kaplama67_tuval_medyan": 0.2154, "zemin_maskesi_reddi": 0, "figur_zemin_orani": 0.38997, "figur_engel_orani": 0.01192}
+Traceback (most recent call last):
+  File "O:\navitas\scripts\olcum\142_gece_olcum.py", line 127, in <module>
+    }
+  File "O:\navitas\scripts\olcum\142_gece_olcum.py", line 96, in main
+    sonuc["test29"] = adim3_test29(a.agirlik, a.ad)
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "O:\navitas\scripts\olcum\142_gece_olcum.py", line 76, in adim3_test29
+    v = list(d["modeller"].values())[0]
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+EXIT 1

@@ -1,0 +1,11 @@
+kare: 29 · model: 1 · imgsz 512
+
+── O:\navitas\codes\runs\segment\gece_v2_v35taban\weights\best.pt  (224 sn)
+   U2 bandinda (0.05<oran<0.95): 18/29 kare · 1 ayri klip
+   ROTA URETILEN  olceksiz 11  ·  olcek BEDAVA 10
+   sebep (olceksiz)   : {'UC_BANT_TEMAS_YOK': 13, None: 11, 'MASKE_YOK': 3, 'ZEMIN_MASKESI_SUPHELI': 2}
+   sebep (olcek bedava): {'UC_BANT_TEMAS_YOK': 13, None: 10, 'MASKE_YOK': 3, 'ZEMIN_MASKESI_SUPHELI': 2, 'GORUS_HATTI_KOPUK': 1}
+
+yazildi: O:\navitas\results\gece_20260826\gece_v2_v35taban_test29.json
+
+--stderr--

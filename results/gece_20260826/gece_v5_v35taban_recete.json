@@ -1,0 +1,16 @@
+{
+ "taban": "O:\\navitas\\models\\navitas_seg_v35_best.pt",
+ "data": "O:\\navitas\\dataset\\karisim_gece_v5.yaml",
+ "epochs": 10,
+ "imgsz": 512,
+ "batch": 12,
+ "seed": 0,
+ "deterministic": true,
+ "patience": 5,
+ "lr0": 0.001,
+ "warmup_epochs": 5,
+ "workers": 8,
+ "project": "O:\\navitas\\codes\\runs\\segment",
+ "name": "gece_v5_v35taban",
+ "exist_ok": true
+}
