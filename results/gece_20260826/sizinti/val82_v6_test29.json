@@ -1,0 +1,3360 @@
+{
+ "_ne": "GECE val82_v6 · 0038 TEK-konum TEST (29 kare) — ON_KAYIT §2",
+ "_on_kayit": "results/t138/on_kayit.md",
+ "_kareler": "dataset\\dji_kirsal_0038_bolum_v3\\images\\val",
+ "_U2_bandi": [
+  0.05,
+  0.95
+ ],
+ "_mpp_bedava": 0.01,
+ "modeller": {
+  "O:\\navitas\\codes\\runs\\segment\\gece_v6_v35taban\\weights\\best.pt": {
+   "sure_sn": 485.7,
+   "n": 82,
+   "U2_gecen": 58,
+   "U2_klip": [
+    "val"
+   ],
+   "rota_olceksiz": 35,
+   "rota_olcekli": 31,
+   "sebep_olceksiz": {
+    "MASKE_YOK": 20,
+    "UC_BANT_TEMAS_YOK": 22,
+    "null": 35,
+    "GORUS_HATTI_KOPUK": 1,
+    "ZEMIN_MASKESI_SUPHELI": 4
+   },
+   "sebep_olcekli": {
+    "MASKE_YOK": 20,
+    "UC_BANT_TEMAS_YOK": 22,
+    "null": 31,
+    "GORUS_HATTI_KOPUK": 5,
+    "ZEMIN_MASKESI_SUPHELI": 4
+   },
+   "kareler": [
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000008_000000900.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000021_000001500.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000024_000001590.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000028_000001710.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000030_000001770.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000032_000001830.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000037_000001980.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000041_000002100.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000044_000002190.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000046_000002250.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000050_000002370.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000051_000002400.jpg",
+     "klip": "val",
+     "zemin_orani": 0.05554,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
+     "klip": "val",
+     "zemin_orani": 0.21961,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "klip": "val",
+     "zemin_orani": 0.11035,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1216,
+       2828
+      ],
+      [
+       1356,
+       2568
+      ],
+      [
+       1497,
+       2308
+      ],
+      [
+       1637,
+       2048
+      ],
+      [
+       1777,
+       1788
+      ],
+      [
+       1918,
+       1528
+      ],
+      [
+       2058,
+       1268
+      ],
+      [
+       2197,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1167,
+       2828
+      ],
+      [
+       1332,
+       2555
+      ],
+      [
+       1498,
+       2282
+      ],
+      [
+       1663,
+       2009
+      ],
+      [
+       1828,
+       1736
+      ],
+      [
+       1994,
+       1463
+      ],
+      [
+       2159,
+       1190
+      ],
+      [
+       2190,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "klip": "val",
+     "zemin_orani": 0.23596,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000069_000003090.jpg",
+     "klip": "val",
+     "zemin_orani": 0.26171,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 1,
+     "olceksiz_wps": [
+      [
+       640,
+       2828
+      ],
+      [
+       695,
+       2568
+      ],
+      [
+       750,
+       2308
+      ],
+      [
+       805,
+       2048
+      ],
+      [
+       860,
+       1788
+      ],
+      [
+       915,
+       1528
+      ],
+      [
+       970,
+       1268
+      ],
+      [
+       1024,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       652,
+       2828
+      ],
+      [
+       707,
+       2568
+      ],
+      [
+       762,
+       2308
+      ],
+      [
+       817,
+       2048
+      ],
+      [
+       872,
+       1788
+      ],
+      [
+       927,
+       1528
+      ],
+      [
+       982,
+       1268
+      ],
+      [
+       1036,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "klip": "val",
+     "zemin_orani": 0.07506,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [
+      [
+       2446,
+       2828
+      ],
+      [
+       2479,
+       2535
+      ],
+      [
+       2512,
+       2242
+      ],
+      [
+       2546,
+       1949
+      ],
+      [
+       2579,
+       1656
+      ],
+      [
+       2586,
+       1593
+      ],
+      [
+       2706,
+       1300
+      ],
+      [
+       2825,
+       1008
+      ]
+     ],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+     "klip": "val",
+     "zemin_orani": 0.08896,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       2737,
+       2832
+      ],
+      [
+       2735,
+       2554
+      ],
+      [
+       2732,
+       2276
+      ],
+      [
+       2730,
+       1998
+      ],
+      [
+       2728,
+       1721
+      ],
+      [
+       2810,
+       1443
+      ],
+      [
+       2892,
+       1165
+      ],
+      [
+       2937,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2737,
+       2832
+      ],
+      [
+       2729,
+       2559
+      ],
+      [
+       2722,
+       2286
+      ],
+      [
+       2714,
+       2013
+      ],
+      [
+       2709,
+       1830
+      ],
+      [
+       2783,
+       1557
+      ],
+      [
+       2858,
+       1284
+      ],
+      [
+       2932,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000076_000003360.jpg",
+     "klip": "val",
+     "zemin_orani": 0.08311,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       2672,
+       2834
+      ],
+      [
+       2642,
+       2681
+      ],
+      [
+       2636,
+       2401
+      ],
+      [
+       2629,
+       2121
+      ],
+      [
+       2623,
+       1841
+      ],
+      [
+       2617,
+       1561
+      ],
+      [
+       2610,
+       1281
+      ],
+      [
+       2604,
+       1004
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2646,
+       2828
+      ],
+      [
+       2633,
+       2636
+      ],
+      [
+       2628,
+       2365
+      ],
+      [
+       2623,
+       2094
+      ],
+      [
+       2617,
+       1823
+      ],
+      [
+       2612,
+       1552
+      ],
+      [
+       2607,
+       1281
+      ],
+      [
+       2602,
+       1010
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+     "klip": "val",
+     "zemin_orani": 0.04063,
+     "U2": false,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000084_000003690.jpg",
+     "klip": "val",
+     "zemin_orani": 0.11006,
+     "U2": true,
+     "olceksiz_sebep": "GORUS_HATTI_KOPUK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000087_000003780.jpg",
+     "klip": "val",
+     "zemin_orani": 0.06703,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000088_000003810.jpg",
+     "klip": "val",
+     "zemin_orani": 0.10311,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000102_000004230.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
+     "klip": "val",
+     "zemin_orani": 0.13778,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000106_000004350.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000108_000004410.jpg",
+     "klip": "val",
+     "zemin_orani": 0.13889,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [
+      [
+       1552,
+       2828
+      ],
+      [
+       1512,
+       2511
+      ],
+      [
+       1176,
+       2244
+      ],
+      [
+       840,
+       1978
+      ],
+      [
+       504,
+       1711
+      ],
+      [
+       285,
+       1375
+      ],
+      [
+       65,
+       1039
+      ],
+      [
+       47,
+       1011
+      ]
+     ],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000113_000004560.jpg",
+     "klip": "val",
+     "zemin_orani": 0.07379,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+     "klip": "val",
+     "zemin_orani": 0.01888,
+     "U2": false,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000115_000004620.jpg",
+     "klip": "val",
+     "zemin_orani": 0.96863,
+     "U2": false,
+     "olceksiz_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000117_000004680.jpg",
+     "klip": "val",
+     "zemin_orani": 0.07175,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000122_000004830.jpg",
+     "klip": "val",
+     "zemin_orani": 0.07413,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000123_000004860.jpg",
+     "klip": "val",
+     "zemin_orani": 0.09182,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
+     "klip": "val",
+     "zemin_orani": 0.08877,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000127_000004980.jpg",
+     "klip": "val",
+     "zemin_orani": 0.12443,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000128_000005010.jpg",
+     "klip": "val",
+     "zemin_orani": 0.13357,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "klip": "val",
+     "zemin_orani": 0.15983,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       3463,
+       2828
+      ],
+      [
+       3247,
+       2551
+      ],
+      [
+       3031,
+       2274
+      ],
+      [
+       2815,
+       1997
+      ],
+      [
+       2600,
+       1721
+      ],
+      [
+       2323,
+       1454
+      ],
+      [
+       2046,
+       1187
+      ],
+      [
+       1864,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       3471,
+       2828
+      ],
+      [
+       3264,
+       2562
+      ],
+      [
+       3057,
+       2296
+      ],
+      [
+       2850,
+       2030
+      ],
+      [
+       2645,
+       1766
+      ],
+      [
+       2386,
+       1500
+      ],
+      [
+       2126,
+       1234
+      ],
+      [
+       1909,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+     "klip": "val",
+     "zemin_orani": 0.16172,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2223,
+       2828
+      ],
+      [
+       2104,
+       2568
+      ],
+      [
+       1985,
+       2308
+      ],
+      [
+       1866,
+       2048
+      ],
+      [
+       1747,
+       1788
+      ],
+      [
+       1628,
+       1528
+      ],
+      [
+       1510,
+       1268
+      ],
+      [
+       1392,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2268,
+       2828
+      ],
+      [
+       2124,
+       2555
+      ],
+      [
+       1980,
+       2282
+      ],
+      [
+       1836,
+       2009
+      ],
+      [
+       1693,
+       1736
+      ],
+      [
+       1549,
+       1463
+      ],
+      [
+       1405,
+       1190
+      ],
+      [
+       1373,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000134_000005190.jpg",
+     "klip": "val",
+     "zemin_orani": 0.08267,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 7,
+     "olcekli_yol": 1,
+     "olceksiz_wps": [
+      [
+       256,
+       2828
+      ],
+      [
+       410,
+       2568
+      ],
+      [
+       564,
+       2308
+      ],
+      [
+       718,
+       2048
+      ],
+      [
+       872,
+       1788
+      ],
+      [
+       1026,
+       1528
+      ],
+      [
+       1180,
+       1268
+      ],
+      [
+       1333,
+       1009
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       140,
+       2855
+      ],
+      [
+       566,
+       2343
+      ],
+      [
+       620,
+       2278
+      ],
+      [
+       940,
+       1766
+      ],
+      [
+       1068,
+       1574
+      ],
+      [
+       1324,
+       1062
+      ],
+      [
+       1348,
+       974
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+     "klip": "val",
+     "zemin_orani": 0.07853,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [
+      [
+       1473,
+       2834
+      ],
+      [
+       1467,
+       2573
+      ],
+      [
+       1461,
+       2312
+      ],
+      [
+       1455,
+       2051
+      ],
+      [
+       1448,
+       1790
+      ],
+      [
+       1442,
+       1529
+      ],
+      [
+       1436,
+       1268
+      ],
+      [
+       1430,
+       1009
+      ]
+     ],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+     "klip": "val",
+     "zemin_orani": 0.09305,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 1,
+     "olceksiz_wps": [
+      [
+       1084,
+       2828
+      ],
+      [
+       1103,
+       2558
+      ],
+      [
+       1116,
+       2361
+      ],
+      [
+       1097,
+       2091
+      ],
+      [
+       1078,
+       1821
+      ],
+      [
+       1058,
+       1551
+      ],
+      [
+       1039,
+       1281
+      ],
+      [
+       1020,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1079,
+       2864
+      ],
+      [
+       1120,
+       2539
+      ],
+      [
+       1161,
+       2214
+      ],
+      [
+       1068,
+       1889
+      ],
+      [
+       1033,
+       1766
+      ],
+      [
+       1019,
+       1441
+      ],
+      [
+       1005,
+       1116
+      ],
+      [
+       1001,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+     "klip": "val",
+     "zemin_orani": 0.23678,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1658,
+       2828
+      ],
+      [
+       1704,
+       2564
+      ],
+      [
+       1749,
+       2300
+      ],
+      [
+       1795,
+       2036
+      ],
+      [
+       1841,
+       1772
+      ],
+      [
+       1886,
+       1508
+      ],
+      [
+       1932,
+       1244
+      ],
+      [
+       1977,
+       985
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1639,
+       2828
+      ],
+      [
+       1698,
+       2533
+      ],
+      [
+       1757,
+       2238
+      ],
+      [
+       1815,
+       1943
+      ],
+      [
+       1874,
+       1648
+      ],
+      [
+       1933,
+       1353
+      ],
+      [
+       1991,
+       1062
+      ],
+      [
+       1989,
+       989
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000141_000005400.jpg",
+     "klip": "val",
+     "zemin_orani": 0.10446,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 1,
+     "olceksiz_wps": [
+      [
+       840,
+       2828
+      ],
+      [
+       885,
+       2529
+      ],
+      [
+       930,
+       2230
+      ],
+      [
+       975,
+       1931
+      ],
+      [
+       1020,
+       1632
+      ],
+      [
+       1064,
+       1337
+      ],
+      [
+       1161,
+       1038
+      ],
+      [
+       1170,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       821,
+       2828
+      ],
+      [
+       871,
+       2568
+      ],
+      [
+       921,
+       2308
+      ],
+      [
+       971,
+       2048
+      ],
+      [
+       1021,
+       1788
+      ],
+      [
+       1071,
+       1528
+      ],
+      [
+       1121,
+       1268
+      ],
+      [
+       1170,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+     "klip": "val",
+     "zemin_orani": 0.09772,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 1,
+     "olceksiz_wps": [
+      [
+       1027,
+       2828
+      ],
+      [
+       1102,
+       2529
+      ],
+      [
+       1177,
+       2230
+      ],
+      [
+       1253,
+       1931
+      ],
+      [
+       1328,
+       1632
+      ],
+      [
+       1402,
+       1337
+      ],
+      [
+       1524,
+       1038
+      ],
+      [
+       1535,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1031,
+       2828
+      ],
+      [
+       1111,
+       2523
+      ],
+      [
+       1191,
+       2218
+      ],
+      [
+       1271,
+       1913
+      ],
+      [
+       1351,
+       1608
+      ],
+      [
+       1431,
+       1303
+      ],
+      [
+       1511,
+       998
+      ],
+      [
+       1535,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "klip": "val",
+     "zemin_orani": 0.38083,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2531,
+       2828
+      ],
+      [
+       2522,
+       2568
+      ],
+      [
+       2513,
+       2308
+      ],
+      [
+       2504,
+       2048
+      ],
+      [
+       2495,
+       1788
+      ],
+      [
+       2486,
+       1528
+      ],
+      [
+       2477,
+       1268
+      ],
+      [
+       2468,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2512,
+       2828
+      ],
+      [
+       2512,
+       2568
+      ],
+      [
+       2512,
+       2308
+      ],
+      [
+       2512,
+       2048
+      ],
+      [
+       2513,
+       1788
+      ],
+      [
+       2513,
+       1528
+      ],
+      [
+       2513,
+       1268
+      ],
+      [
+       2513,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
+     "klip": "val",
+     "zemin_orani": 0.42916,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       2796,
+       2828
+      ],
+      [
+       2796,
+       2568
+      ],
+      [
+       2796,
+       2308
+      ],
+      [
+       2796,
+       2048
+      ],
+      [
+       2796,
+       1788
+      ],
+      [
+       2796,
+       1528
+      ],
+      [
+       2796,
+       1268
+      ],
+      [
+       2796,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2841,
+       2828
+      ],
+      [
+       2841,
+       2568
+      ],
+      [
+       2841,
+       2308
+      ],
+      [
+       2841,
+       2048
+      ],
+      [
+       2841,
+       1788
+      ],
+      [
+       2841,
+       1528
+      ],
+      [
+       2841,
+       1268
+      ],
+      [
+       2841,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000146_000005550.jpg",
+     "klip": "val",
+     "zemin_orani": 0.3838,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2432,
+       2828
+      ],
+      [
+       2432,
+       2568
+      ],
+      [
+       2432,
+       2308
+      ],
+      [
+       2432,
+       2048
+      ],
+      [
+       2432,
+       1788
+      ],
+      [
+       2432,
+       1528
+      ],
+      [
+       2432,
+       1268
+      ],
+      [
+       2432,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2413,
+       2828
+      ],
+      [
+       2413,
+       2568
+      ],
+      [
+       2413,
+       2308
+      ],
+      [
+       2413,
+       2048
+      ],
+      [
+       2413,
+       1788
+      ],
+      [
+       2413,
+       1528
+      ],
+      [
+       2413,
+       1268
+      ],
+      [
+       2413,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000148_000005640.jpg",
+     "klip": "val",
+     "zemin_orani": 0.15487,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2492,
+       2828
+      ],
+      [
+       2452,
+       2535
+      ],
+      [
+       2412,
+       2242
+      ],
+      [
+       2372,
+       1949
+      ],
+      [
+       2332,
+       1657
+      ],
+      [
+       2201,
+       1364
+      ],
+      [
+       2071,
+       1071
+      ],
+      [
+       2044,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2464,
+       2828
+      ],
+      [
+       2428,
+       2546
+      ],
+      [
+       2392,
+       2264
+      ],
+      [
+       2356,
+       1982
+      ],
+      [
+       2320,
+       1700
+      ],
+      [
+       2304,
+       1574
+      ],
+      [
+       2192,
+       1292
+      ],
+      [
+       2080,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000150_000005700.jpg",
+     "klip": "val",
+     "zemin_orani": 0.12091,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2111,
+       2828
+      ],
+      [
+       2083,
+       2535
+      ],
+      [
+       2054,
+       2242
+      ],
+      [
+       2026,
+       1949
+      ],
+      [
+       1998,
+       1657
+      ],
+      [
+       1896,
+       1364
+      ],
+      [
+       1795,
+       1071
+      ],
+      [
+       1774,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2111,
+       2828
+      ],
+      [
+       2074,
+       2551
+      ],
+      [
+       2037,
+       2274
+      ],
+      [
+       2000,
+       1997
+      ],
+      [
+       1963,
+       1720
+      ],
+      [
+       1927,
+       1446
+      ],
+      [
+       1825,
+       1169
+      ],
+      [
+       1767,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000151_000005730.jpg",
+     "klip": "val",
+     "zemin_orani": 0.1256,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2464,
+       2828
+      ],
+      [
+       2393,
+       2544
+      ],
+      [
+       2321,
+       2260
+      ],
+      [
+       2250,
+       1977
+      ],
+      [
+       2128,
+       1693
+      ],
+      [
+       2005,
+       1409
+      ],
+      [
+       1883,
+       1125
+      ],
+      [
+       1834,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2464,
+       2828
+      ],
+      [
+       2389,
+       2538
+      ],
+      [
+       2313,
+       2248
+      ],
+      [
+       2238,
+       1958
+      ],
+      [
+       2111,
+       1668
+      ],
+      [
+       1983,
+       1378
+      ],
+      [
+       1856,
+       1088
+      ],
+      [
+       1822,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000153_000005790.jpg",
+     "klip": "val",
+     "zemin_orani": 0.20057,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1598,
+       2828
+      ],
+      [
+       1598,
+       2568
+      ],
+      [
+       1598,
+       2308
+      ],
+      [
+       1598,
+       2048
+      ],
+      [
+       1598,
+       1788
+      ],
+      [
+       1598,
+       1528
+      ],
+      [
+       1598,
+       1268
+      ],
+      [
+       1598,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1579,
+       2828
+      ],
+      [
+       1579,
+       2568
+      ],
+      [
+       1579,
+       2308
+      ],
+      [
+       1579,
+       2048
+      ],
+      [
+       1579,
+       1788
+      ],
+      [
+       1579,
+       1528
+      ],
+      [
+       1579,
+       1268
+      ],
+      [
+       1579,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000154_000005820.jpg",
+     "klip": "val",
+     "zemin_orani": 0.15056,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2112,
+       2828
+      ],
+      [
+       2121,
+       2568
+      ],
+      [
+       2130,
+       2308
+      ],
+      [
+       2139,
+       2048
+      ],
+      [
+       2149,
+       1788
+      ],
+      [
+       2158,
+       1528
+      ],
+      [
+       2167,
+       1268
+      ],
+      [
+       2176,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2112,
+       2828
+      ],
+      [
+       2118,
+       2568
+      ],
+      [
+       2125,
+       2308
+      ],
+      [
+       2131,
+       2048
+      ],
+      [
+       2138,
+       1788
+      ],
+      [
+       2144,
+       1528
+      ],
+      [
+       2151,
+       1268
+      ],
+      [
+       2157,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000155_000005850.jpg",
+     "klip": "val",
+     "zemin_orani": 0.17286,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2330,
+       2828
+      ],
+      [
+       2321,
+       2568
+      ],
+      [
+       2312,
+       2308
+      ],
+      [
+       2303,
+       2048
+      ],
+      [
+       2293,
+       1788
+      ],
+      [
+       2284,
+       1528
+      ],
+      [
+       2275,
+       1268
+      ],
+      [
+       2266,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2311,
+       2828
+      ],
+      [
+       2302,
+       2568
+      ],
+      [
+       2293,
+       2308
+      ],
+      [
+       2284,
+       2048
+      ],
+      [
+       2274,
+       1788
+      ],
+      [
+       2265,
+       1528
+      ],
+      [
+       2256,
+       1268
+      ],
+      [
+       2247,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
+     "klip": "val",
+     "zemin_orani": 0.23223,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1838,
+       2828
+      ],
+      [
+       1856,
+       2568
+      ],
+      [
+       1875,
+       2308
+      ],
+      [
+       1893,
+       2048
+      ],
+      [
+       1911,
+       1788
+      ],
+      [
+       1930,
+       1528
+      ],
+      [
+       1948,
+       1268
+      ],
+      [
+       1966,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1819,
+       2828
+      ],
+      [
+       1838,
+       2568
+      ],
+      [
+       1856,
+       2308
+      ],
+      [
+       1875,
+       2048
+      ],
+      [
+       1894,
+       1788
+      ],
+      [
+       1913,
+       1528
+      ],
+      [
+       1931,
+       1268
+      ],
+      [
+       1950,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000157_000005910.jpg",
+     "klip": "val",
+     "zemin_orani": 0.22488,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1572,
+       2828
+      ],
+      [
+       1644,
+       2551
+      ],
+      [
+       1716,
+       2274
+      ],
+      [
+       1788,
+       1997
+      ],
+      [
+       1860,
+       1721
+      ],
+      [
+       2097,
+       1444
+      ],
+      [
+       2244,
+       1273
+      ],
+      [
+       2212,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1553,
+       2828
+      ],
+      [
+       1655,
+       2521
+      ],
+      [
+       1757,
+       2214
+      ],
+      [
+       1859,
+       1907
+      ],
+      [
+       1960,
+       1600
+      ],
+      [
+       1969,
+       1574
+      ],
+      [
+       2225,
+       1318
+      ],
+      [
+       2193,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000158_000005940.jpg",
+     "klip": "val",
+     "zemin_orani": 0.25625,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1692,
+       2828
+      ],
+      [
+       1809,
+       2508
+      ],
+      [
+       1926,
+       2188
+      ],
+      [
+       1980,
+       2041
+      ],
+      [
+       2300,
+       1785
+      ],
+      [
+       2313,
+       1465
+      ],
+      [
+       2326,
+       1145
+      ],
+      [
+       2332,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1737,
+       2828
+      ],
+      [
+       1833,
+       2482
+      ],
+      [
+       1929,
+       2136
+      ],
+      [
+       1961,
+       2022
+      ],
+      [
+       2025,
+       2022
+      ],
+      [
+       2345,
+       1702
+      ],
+      [
+       2330,
+       1356
+      ],
+      [
+       2316,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
+     "klip": "val",
+     "zemin_orani": 0.20371,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1936,
+       2828
+      ],
+      [
+       2118,
+       2544
+      ],
+      [
+       2299,
+       2260
+      ],
+      [
+       2480,
+       1977
+      ],
+      [
+       2489,
+       1693
+      ],
+      [
+       2499,
+       1409
+      ],
+      [
+       2508,
+       1125
+      ],
+      [
+       2512,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1917,
+       2828
+      ],
+      [
+       2098,
+       2538
+      ],
+      [
+       2280,
+       2248
+      ],
+      [
+       2461,
+       1958
+      ],
+      [
+       2471,
+       1668
+      ],
+      [
+       2481,
+       1378
+      ],
+      [
+       2490,
+       1088
+      ],
+      [
+       2493,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000163_000006090.jpg",
+     "klip": "val",
+     "zemin_orani": 0.16777,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       2228,
+       2828
+      ],
+      [
+       2210,
+       2568
+      ],
+      [
+       2191,
+       2308
+      ],
+      [
+       2173,
+       2048
+      ],
+      [
+       2155,
+       1788
+      ],
+      [
+       2136,
+       1528
+      ],
+      [
+       2118,
+       1268
+      ],
+      [
+       2100,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       2209,
+       2828
+      ],
+      [
+       2191,
+       2568
+      ],
+      [
+       2172,
+       2308
+      ],
+      [
+       2154,
+       2048
+      ],
+      [
+       2136,
+       1788
+      ],
+      [
+       2117,
+       1528
+      ],
+      [
+       2099,
+       1268
+      ],
+      [
+       2081,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "klip": "val",
+     "zemin_orani": 0.30797,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       3028,
+       2828
+      ],
+      [
+       3019,
+       2568
+      ],
+      [
+       3010,
+       2308
+      ],
+      [
+       3001,
+       2048
+      ],
+      [
+       2991,
+       1788
+      ],
+      [
+       2982,
+       1528
+      ],
+      [
+       2973,
+       1268
+      ],
+      [
+       2964,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       3076,
+       2828
+      ],
+      [
+       3058,
+       2568
+      ],
+      [
+       3039,
+       2308
+      ],
+      [
+       3021,
+       2048
+      ],
+      [
+       3003,
+       1788
+      ],
+      [
+       2984,
+       1528
+      ],
+      [
+       2966,
+       1268
+      ],
+      [
+       2948,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
+     "klip": "val",
+     "zemin_orani": 0.55641,
+     "U2": true,
+     "olceksiz_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000177_000006630.jpg",
+     "klip": "val",
+     "zemin_orani": 0.27724,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000185_000006930.jpg",
+     "klip": "val",
+     "zemin_orani": 0.0,
+     "U2": false,
+     "olceksiz_sebep": "MASKE_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "MASKE_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000192_000007170.jpg",
+     "klip": "val",
+     "zemin_orani": 0.11549,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1714,
+       2828
+      ],
+      [
+       1706,
+       2537
+      ],
+      [
+       1699,
+       2246
+      ],
+      [
+       1691,
+       1955
+      ],
+      [
+       1684,
+       1664
+      ],
+      [
+       1682,
+       1593
+      ],
+      [
+       1675,
+       1302
+      ],
+      [
+       1669,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1699,
+       2828
+      ],
+      [
+       1695,
+       2568
+      ],
+      [
+       1690,
+       2308
+      ],
+      [
+       1686,
+       2048
+      ],
+      [
+       1682,
+       1788
+      ],
+      [
+       1678,
+       1528
+      ],
+      [
+       1673,
+       1268
+      ],
+      [
+       1669,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
+     "klip": "val",
+     "zemin_orani": 0.40145,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000201_000007440.jpg",
+     "klip": "val",
+     "zemin_orani": 0.07752,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
+     "klip": "val",
+     "zemin_orani": 0.13694,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 3,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       3427,
+       2828
+      ],
+      [
+       3299,
+       2568
+      ],
+      [
+       3171,
+       2308
+      ],
+      [
+       3043,
+       2048
+      ],
+      [
+       2915,
+       1788
+      ],
+      [
+       2787,
+       1528
+      ],
+      [
+       2659,
+       1268
+      ],
+      [
+       2532,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       3438,
+       2828
+      ],
+      [
+       3310,
+       2568
+      ],
+      [
+       3182,
+       2308
+      ],
+      [
+       3054,
+       2048
+      ],
+      [
+       2926,
+       1788
+      ],
+      [
+       2798,
+       1528
+      ],
+      [
+       2670,
+       1268
+      ],
+      [
+       2543,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000204_000007530.jpg",
+     "klip": "val",
+     "zemin_orani": 0.11446,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000206_000007590.jpg",
+     "klip": "val",
+     "zemin_orani": 0.2365,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
+     "klip": "val",
+     "zemin_orani": 0.19241,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "klip": "val",
+     "zemin_orani": 0.14814,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       782,
+       2828
+      ],
+      [
+       1064,
+       2568
+      ],
+      [
+       1346,
+       2309
+      ],
+      [
+       1628,
+       2049
+      ],
+      [
+       1910,
+       1790
+      ],
+      [
+       2192,
+       1530
+      ],
+      [
+       2474,
+       1271
+      ],
+      [
+       2756,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       635,
+       2828
+      ],
+      [
+       975,
+       2551
+      ],
+      [
+       1315,
+       2274
+      ],
+      [
+       1655,
+       1997
+      ],
+      [
+       1995,
+       1720
+      ],
+      [
+       2331,
+       1446
+      ],
+      [
+       2663,
+       1106
+      ],
+      [
+       2756,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "klip": "val",
+     "zemin_orani": 0.17598,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 1,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 3,
+     "olceksiz_wps": [
+      [
+       896,
+       2828
+      ],
+      [
+       1282,
+       2568
+      ],
+      [
+       1668,
+       2309
+      ],
+      [
+       2054,
+       2049
+      ],
+      [
+       2440,
+       1789
+      ],
+      [
+       2826,
+       1530
+      ],
+      [
+       3212,
+       1270
+      ],
+      [
+       3597,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       704,
+       2828
+      ],
+      [
+       1227,
+       2548
+      ],
+      [
+       1750,
+       2268
+      ],
+      [
+       2272,
+       1988
+      ],
+      [
+       2795,
+       1614
+      ],
+      [
+       3318,
+       1241
+      ],
+      [
+       3616,
+       1028
+      ],
+      [
+       3597,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000213_000007800.jpg",
+     "klip": "val",
+     "zemin_orani": 0.14907,
+     "U2": true,
+     "olceksiz_sebep": "UC_BANT_TEMAS_YOK",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "UC_BANT_TEMAS_YOK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000216_000007890.jpg",
+     "klip": "val",
+     "zemin_orani": 0.11872,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": null,
+     "olcekli_wp": 8,
+     "olcekli_yol": 2,
+     "olceksiz_wps": [
+      [
+       1774,
+       2828
+      ],
+      [
+       1960,
+       2529
+      ],
+      [
+       2146,
+       2230
+      ],
+      [
+       2332,
+       1931
+      ],
+      [
+       2518,
+       1632
+      ],
+      [
+       2702,
+       1337
+      ],
+      [
+       2808,
+       1038
+      ],
+      [
+       2818,
+       1011
+      ]
+     ],
+     "olcekli_wps": [
+      [
+       1755,
+       2828
+      ],
+      [
+       1921,
+       2565
+      ],
+      [
+       2087,
+       2302
+      ],
+      [
+       2252,
+       2039
+      ],
+      [
+       2418,
+       1776
+      ],
+      [
+       2584,
+       1513
+      ],
+      [
+       2747,
+       1254
+      ],
+      [
+       2818,
+       1011
+      ]
+     ]
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
+     "klip": "val",
+     "zemin_orani": 0.80238,
+     "U2": true,
+     "olceksiz_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
+     "klip": "val",
+     "zemin_orani": 0.99589,
+     "U2": false,
+     "olceksiz_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olceksiz_wp": 0,
+     "olceksiz_yol": null,
+     "olcekli_sebep": "ZEMIN_MASKESI_SUPHELI",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [],
+     "olcekli_wps": []
+    },
+    {
+     "kare": "dji_20260822172613_0038_d__frame_000230_000008520.jpg",
+     "klip": "val",
+     "zemin_orani": 0.15274,
+     "U2": true,
+     "olceksiz_sebep": null,
+     "olceksiz_wp": 8,
+     "olceksiz_yol": 2,
+     "olcekli_sebep": "GORUS_HATTI_KOPUK",
+     "olcekli_wp": 0,
+     "olcekli_yol": null,
+     "olceksiz_wps": [
+      [
+       2546,
+       2828
+      ],
+      [
+       2509,
+       2568
+      ],
+      [
+       2473,
+       2308
+      ],
+      [
+       2436,
+       2048
+      ],
+      [
+       2399,
+       1788
+      ],
+      [
+       2363,
+       1528
+      ],
+      [
+       2326,
+       1268
+      ],
+      [
+       2290,
+       1011
+      ]
+     ],
+     "olcekli_wps": []
+    }
+   ]
+  }
+ }
+}

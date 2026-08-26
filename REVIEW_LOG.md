@@ -22037,3 +22037,32 @@ v6 → §4(d) gereği üç çürütücü: **ölçüm** (kıramadı: 126 yeniden 
 - Uzlaşı referansı bilerek **muhafazakâr** (A∧B); "etiketsiz üstünden geçen rota" bir kısmı gerçekte yol olabilir (143'te geniş gri platform iki geçişte farklı). Ama 196/202/205'teki engel/çim rotaları gerçek yanlışlar. Kapının payı 0,90 ve referans ön kayıtlıdır; gevşetilmedi.
 - Beş eğitim + iki referans turunun ortak sonucu: aynı sahanın verisiyle model "daha çok görüyor" ama **rotayı doğru yere koymuyor**; sentetik arena kabulü bunu ölçmüyor. Terfi kararı artık bu kapıya da bağlı (T152 kapandı, kapı kalıcı).
 - **Sonraki kaldıraç** (öner-bekle): (1) DOĞRULAMA uçuşu — başka saha, kırmızı H (H-A); (2) sentetik arena kabul zincirine aynı "rota yol üstünde" ölçütünün eklenmesi (K6 önerisi; yer gerçeği poligonları var); (3) modelin engel/kanal ayrımı için sınıf 1 örneklerinin (kanal, bordür) eğitimde ağırlığı — ölçülmeden yeniden eğitim YOK.
+
+---
+
+### D-290 · ✅ K6 "rota yol üstünde" kabul zincirine girdi (üç model ≤ %2 ile GEÇTİ) · 🔴 engel→zemin sızıntısı ölçüldü: v35 111 karenin 65'inde yolu HİÇ görmüyor; sızıntı **beton drenaj kanalında** yoğunlaşıyor; v6 çim/çalıyı zemine çekiyor
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-26 (öğle). Ön kayıt `ON_KAYIT.md §12`. Ham çıktı: `results/k6/rapor.md` + `scripts/olcum/results/t63/k6_{v35,v3,v6}_kabul_verdikt.json`, `results/gece_20260826/sizinti/` (olcum.json, rapor.md, `kotu5_*` bindirmeleri). ⚠ Bu tur sırasında PC çöktü (BSOD 0x3B, 11:20; `results/pc_cokme_20260826/rapor.md`) — iş akışı `resumeFromRunId` ile sürdürüldü, hiçbir ölçüm yarım sayılmadı (hepsi yeniden koşuldu).
+
+#### 1. K6 (sentetik kabul zinciri, n=260) — çürütücü kıramadı
+Tanım tek yerde (`scripts/olcum/rota_yol_olcumu.py`; `142` ve `61/65` aynı gövdeyi kullanır — AST düzeyinde birebir, 142 çıktısı bayt-eş). `61` JSON'una kare başına yol_payi/engel_wp/yanlis_guzergah; `65`'e **K6 ≤ %5**, ÖLÇÜLEMEDİ bloklar (T105), VERDİKT'e dâhil; 15 test + mutasyon.
+| model | K1 | K2 | K6 yanlış güzergâh | VERDİKT |
+|---|---:|---:|---:|---|
+| v35 | 256 | 18 | **5/256 (%1,95)** | ÜRETİME ALINIR |
+| v3 | 253 | 14 | 1/253 (%0,40) | ÜRETİME ALINIR |
+| v6 | 257 | 16 | 3/257 (%1,17) | ÜRETİME ALINIR |
+K0–K5 önceki koşumlarla birebir. Açık: `sa_000176` (v35) ve `sa_000076` (v3) rotası tamamen **etiketsiz** sentetik zeminde (yol_payi 0,00/0,08) — üretecin sınıf 0 poligonu kadrajı tam kapsamıyor olabilir (sentetik etiket tavanı sorusu; K6 tanımı değiştirilmedi).
+🔴 **Sentetik K6'nın geçmesi gerçek kapıyı (b-ek2, D-289: v35 6 rotanın 5'i yanlış) İKAME ETMEZ** — sentetik arena, kanal/çim/tarla içermiyor.
+
+#### 2. Sızıntı ölçümü (uzlaşı referansı, 111 kare; kapı değil)
+| model | engel→zemin sızıntı (px) | zemin geri çağırma (px) | model zemini BOŞ kare | val82 ROTA (tavan 43) | val82 YANLIŞ | val82 FP |
+|---|---:|---:|---:|---:|---:|---:|
+| v35 | 0,023 | **0,091** | **65/111** | 15 | 10 (8'i kanal üstünde) | 0 |
+| v3 | 0,023 | 0,576 | 41 | 31 | 5 | 1 |
+| v6 | **0,046** | 0,643 | 28 | 35 | 8 | 2 |
+Gözle (en kötü 5'er kare): v35 ve v3'te sızıntı **hep beton drenaj kanalı** (yol kenarındaki beyaz şerit) = zemin; v35 üstelik toprak yolun kendisini yakalamıyor. v6'da ek olarak **çim/çalılık tümüyle zemin** (f223, f116, f115). Toplam piksel sızıntısı düşük (%2–5) ama **dar-uzun bir nesnede yoğunlaşıyor** ve rota o nesneye düşünce YANLIŞ GÜZERGÂH veriyor. Üç model de val82'de yanlış güzergâh == 0 kapısını geçmiyor (test29 hükmüyle uyumlu).
+
+#### 3. Karar girdisi (yeniden eğitim için — bu turda eğitim YOK)
+- Eğitim verisinde **"beton kanal / bordür = engel"** örneği belirgin eksik; uzlaşı maskelerinde kanal her iki geçişte de sınıf 1 — yani etiket var, **model öğrenmiyor** (512'de ~5 px genişlik; çözünürlük ve ağırlık sorusu).
+- v6 tarzı geri çağırma artışı bitki örtüsünü zemine çekiyor — "daha çok gör" ile "kanala basma" birbirine karşı; ikisini birden tutan reçete bu kümede yok.
+- Arena için kanal yok ama **ince beton yapı** (bariyer, moloz kenarı) var; aynı zayıflık orada da geçerli olabilir (D-92: model bariyeri görmüyordu → T67 Katman 2 dedektörü). **Öneri (madde 15 uyumlu):** kanal/bordür tipi ince beton şeritler için T67 benzeri bir **Katman 2 çıkarıcı** — serbest alanı yalnız küçültür; ölçümü (val82'de yanlış güzergâh kaç düşer, meşru rota kaç kaybeder) ön kayıtla ayrı tur.

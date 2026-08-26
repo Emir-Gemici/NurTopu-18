@@ -1,0 +1,12 @@
+kare: 82 · model: 1 · imgsz 512
+
+── O:\navitas\codes\runs\segment\gece_v3_v35taban\weights\best.pt  (353 sn)
+   U2 bandinda (0.05<oran<0.95): 46/82 kare · 1 ayri klip
+   ROTA URETILEN  olceksiz 31  ·  olcek BEDAVA 28
+   sebep (olceksiz)   : {None: 31, 'MASKE_YOK': 30, 'UC_BANT_TEMAS_YOK': 21}
+   sebep (olcek bedava): {'MASKE_YOK': 30, None: 28, 'UC_BANT_TEMAS_YOK': 21, 'GORUS_HATTI_KOPUK': 3}
+
+yazildi: results\gece_20260826\sizinti\val82_v3_test29.json
+
+--stderr--
+Rota 139 waypoint gerektiriyor (yumusak hedef: 32); azami aralik guvenligi icin seyreltilmedi.
