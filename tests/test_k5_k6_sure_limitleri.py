@@ -72,7 +72,8 @@ class K5BeklemeVeSurusDeadlineTests(unittest.TestCase):
         rx = SahteReceiver()
         kayit = {}
 
-        def rota_bekle(bind, timeout, keep_receiver, deadline_monotonic):
+        def rota_bekle(bind, timeout, keep_receiver, deadline_monotonic,
+                       yks_peer=None):
             kayit["bekleme_timeout"] = timeout
             kayit["bekleme_deadline"] = deadline_monotonic
             saat.ilerle(61.0)          # rota 61 s sonra geldi (eski limit 60)

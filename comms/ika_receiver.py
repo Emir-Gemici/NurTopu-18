@@ -173,10 +173,20 @@ class IkaReceiver:
             pass
 
     def _rota_ack(self, msg, addr):
-        """OPEN_ROUTE/NO_ROUTE ACK'ı gönderene (İHA) + kopyası YKS'ye (K8)."""
-        if not self.send_ack or addr is None:
+        """OPEN_ROUTE/NO_ROUTE ACK'ı gönderene (İHA) + kopyası YKS'ye (K8).
+
+        Seri (SiK) hatta ``addr`` daima None'dır: ACK tek hatta ortam yayını
+        olarak yazılır, YKS ve İHA aynı paketi duyar (``_kontrol_mesaji_ack``
+        ile aynı kural; dalga 2 çürütücüsü — eski kod burada hiç ACK üretmiyordu).
+        """
+        if not self.send_ack:
+            return
+        if addr is None and not isinstance(self.link, SerialLink):
             return
         data = encode(ack(msg["seq"], self.node, msg.get("type")))
+        if addr is None:
+            self.link.send(data)              # seri: ortam yayını, kopya gerekmez
+            return
         self.link.send(data, addr)
         if self.yks_addr is not None and tuple(self.yks_addr) != tuple(addr):
             try:

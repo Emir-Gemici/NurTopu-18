@@ -92,17 +92,20 @@ def iha_ucus_ve_inis_gorevi(speed, landed_peers, heartbeat_until=None):
         landed_peers, heartbeat_until=heartbeat_until)
 
 
-def dinamik_ika_gorevi(bind, timeout, surus_suresi=None):
+def dinamik_ika_gorevi(bind, timeout, surus_suresi=None, yks_peer=None):
     """İKA'yı yalnız İHA'nın geçerli dinamik rota mesajıyla sür.
 
     ``timeout`` = bekleme süresi (rota + IHA_LANDED + IKA_GO); ``surus_suresi``
     = izin sonrası HB'ye ulaşma süresi (K5, ayrı deadline; None → sözleşme).
+    ``yks_peer`` (K8) = YKS adresi; İKA'nın OPEN_ROUTE ACK kopyası hakem
+    ekranına buradan gider (``--landed-yks`` ile aynı adres).
     Alıcı sürüş boyunca açık kalır; bağlantı kesilirse ``ika_nav.navigate``
     hız komutunu sıfırlar. Eski senaryo→arena rotasına geri dönüş yoktur.
+    Yalnız çıkış kodu 0 BAŞARIDIR (CONTRACTS §7.1); 4 = sürüş süresi doldu.
     """
     if surus_suresi is None:
         surus_suresi = ika_nav.IKA_SURUS_SURESI_S
-    kod = ika_nav.ika_gorevi(bind, timeout, surus_suresi)
+    kod = ika_nav.ika_gorevi(bind, timeout, surus_suresi, yks_peer=yks_peer)
     if kod == 1:
         print("[sim] Geçerli dinamik rota gelmedi — İKA güvenli duruşta")
     elif kod == 2:
@@ -206,7 +209,8 @@ def main():
             try:
                 gorev_kos(
                     "ika", lambda: dinamik_ika_gorevi(
-                        args.bind, args.route_timeout, args.surus_suresi))
+                        args.bind, args.route_timeout, args.surus_suresi,
+                        yks_peer=args.landed_yks))
             finally:
                 ika_bitti.set()
         t_ika = threading.Thread(target=run_ika, name="ika-nav", daemon=True)

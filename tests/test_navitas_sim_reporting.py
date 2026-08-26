@@ -55,7 +55,7 @@ class GorevRaporuTests(unittest.TestCase):
     def test_ika_thread_istisnasi_exit_1_ve_rapor_uretir(self):
         worker_adlari = []
 
-        def ika_cokusu(*_args):
+        def ika_cokusu(*_args, **_kw):
             worker_adlari.append(threading.current_thread().name)
             raise RuntimeError("sentetik İKA çökmesi")
 

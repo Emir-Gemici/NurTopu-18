@@ -253,6 +253,10 @@ class KararYayinci:
             k, self._bekleyen = self._bekleyen, None
         return k
 
+    def _yuva_bos_mu(self):
+        with self._kilit:
+            return self._bekleyen is None
+
     def _karar_dongusu(self):
         while True:
             self._yeni.wait()
@@ -260,7 +264,10 @@ class KararYayinci:
             k = self._yuvayi_al()
             if k is not None:
                 self._karari_gonder(*k)
-            if self._dur.is_set() and self._yuvayi_al() is None:
+            # Durma kontrolu yuvayi BOSALTMADAN bakar: gonderim sirasinda
+            # yazilip stop() ile yakalanan karar bir sonraki turda gider
+            # (dalga 2 curutucusu: eski `_yuvayi_al() is None` onu pop edip atiyordu).
+            if self._dur.is_set() and self._yuva_bos_mu():
                 return
 
     def _karari_gonder(self, open_path, conf, waypoints_px, mpp, karar_reddi):

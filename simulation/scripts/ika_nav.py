@@ -444,13 +444,17 @@ def navigate_route(
 
 def ika_gorevi(bind, bekleme_suresi=IKA_BEKLEME_SURESI_S,
                surus_suresi=IKA_SURUS_SURESI_S, *, saat=time.monotonic,
-               rota_bekle=None, izin_bekle=None, sur=None):
+               rota_bekle=None, izin_bekle=None, sur=None, yks_peer=None):
     """İKA görevi: BEKLE (rota + IHA_LANDED + IKA_GO) sonra SÜR (HB'ye).
 
     K5 — iki AYRI son tarih (şartname §6.2):
       bekleme deadline = başlangıç + ``bekleme_suresi``   (İHA görev süresi)
       sürüş deadline   = izin anı  + ``surus_suresi``     (İKA görev süresi)
     Beklemede geçen süre sürüşten DÜŞÜLMEZ; sürüş saati izin geldiği an başlar.
+
+    ``yks_peer`` (K8): OPEN_ROUTE/NO_ROUTE ACK kopyasının gideceği YKS adresi
+    (host, port). OPEN_ROUTE sahada IKA_GO'dan ÖNCE geldiği için adres IKA_GO'dan
+    öğrenilemez; verilmezse hakem 2. onayı UDP akışında hiç açılmaz.
 
     Döner: 0 başarı · 1 rota gelmedi · 2 NO_ROUTE · 3 sürüş izni gelmedi ·
     4 sürüş süresi doldu / HB'ye ulaşılamadı.
@@ -467,6 +471,7 @@ def ika_gorevi(bind, bekleme_suresi=IKA_BEKLEME_SURESI_S,
         bekleme_suresi,
         keep_receiver=True,
         deadline_monotonic=bekleme_deadline,
+        yks_peer=yks_peer,
     )
     if alindi is None:
         print("[ika_nav] ✗ Geçerli dinamik rota gelmedi (bekleme süresi "
@@ -526,18 +531,23 @@ def navigate_road(
 
 def wait_open_route_from_comms(
         bind="0.0.0.0:5006", timeout=60, keep_receiver=False,
-        deadline_monotonic=None):
+        deadline_monotonic=None, yks_peer=None):
     """Şartname §2.2.5: İHA'nın dinamik rota verisi gelene kadar bekle.
 
     Geometrisi olmayan, yalnızca sayısal ``road`` içeren mesaj hareketi
     tetiklemez; sabit arena rotasına geri dönülmez. Tek bir ``NO_ROUTE`` karelik
     geçici bir algı sonucu olabilir: İKA güvenli duruşta kalır ama timeout
     dolana kadar daha yeni bir ``OPEN_ROUTE`` dinlemeyi sürdürür.
+
+    ``yks_peer``: alıcıya bağlanan YKS adresi — rota ACK kopyası hakem ekranına
+    (K8) buradan gider; OPEN_ROUTE IKA_GO'dan önce geldiğinden başka yol yok.
     """
     from link import UDPLink
     from ika_receiver import IkaReceiver
     h, p = bind.split(":")
-    rx = IkaReceiver(UDPLink(bind=(h, int(p)))).start()
+    if yks_peer is not None:
+        yks_peer = (str(yks_peer[0]), int(yks_peer[1]))
+    rx = IkaReceiver(UDPLink(bind=(h, int(p))), yks_peer=yks_peer).start()
     print(f"[ika_nav] comms dinleniyor ({bind}) — İHA açık yolu gönderecek...")
     if deadline_monotonic is None:
         deadline = time.monotonic() + max(0.0, float(timeout))
@@ -636,5 +646,13 @@ if __name__ == "__main__":
                     help="izin geldikten sonra HB'ye ulaşma süresi (sn); "
                          "şartname §6.2 İKA görev süresi (varsayılan "
                          f"{IKA_SURUS_SURESI_S:.0f})")
+    ap.add_argument("--yks", help="YKS adresi host:port — OPEN_ROUTE/NO_ROUTE "
+                    "ACK kopyası hakem ekranına (K8). UDP'de verilmezse "
+                    "'İKA'ya aktarıldı' 2. onayı YKS'de HİÇ açılmaz")
     args = ap.parse_args()
-    sys.exit(ika_gorevi(args.bind, args.bekleme_suresi, args.surus_suresi))
+    yks_peer = None
+    if args.yks:
+        yh, yp = args.yks.rsplit(":", 1)
+        yks_peer = (yh, int(yp))
+    sys.exit(ika_gorevi(args.bind, args.bekleme_suresi, args.surus_suresi,
+                        yks_peer=yks_peer))
