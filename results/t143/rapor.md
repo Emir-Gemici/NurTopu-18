@@ -33,3 +33,13 @@ CLI çıktısı: `eski_sha256: DERLENINCE_YAZILIR -> yeni_sha256: 248ef808f8be20
 
 ## ÖLÇÜLEMEDİ (cihaz yok)
 Gerçek DroidCam/USB kamera ile düşen kare davranışı ve Jetson'da derlenmiş `.engine` yüklemesi — H3/Jetson günü.
+
+## Bağımsız doğrulama geçişi (2026-08-26, ikinci ajan, HEAD fc63d48)
+- Gerçek dosya özetleri (`sha256sum`, salt okunur O:\navitas): `models/navitas_seg_v35_best.onnx` = `jetson_paket/models/navitas_seg_v35_best_512_fp16.onnx` = `248ef808…37d3` (defterle birebir); `.pt` = `e00f6b8e…438b` (DEĞİŞMEDİ).
+- `codes/test_rota_sentetik.py` → `SONUC: 15/15 dogru`.
+- `unittest discover -s tests -q`: worktree'de `.pt` yokken 8 error + 3 fail — hepsi "agirlik diskte YOK" (ortam). Gitignore'lu `models/` altına `.pt` kopyalanınca → `Ran 793 tests … FAILED (failures=1, skipped=13)`; kalan tek düşüş `test_kompozit_dizini_listeleniyor` (`data/arena_kompozit/images/` gitignore:92, worktree'de yok — ortam, kod değil).
+- İkiz (TEST_SPECS §4.7): `diff` `codes/{rpi_inference,karar_sozlesmesi}.py` ↔ `jetson_paket/kod/`, `config/model_registry.json` ↔ `jetson_paket/config/` → boş; `test_jetson_paket_defteri` 6/6 OK.
+- Mutasyon 1: `ozet["dusen_toplam"] = …` → `pass` ⇒ `test_t143*`: `FAILED (failures=6, errors=2)`; geri alındı.
+- Mutasyon 2: `if gercek != kayit["sha256"]` → `if False` (iki dosya birden) ⇒ `FAILED (failures=1)` (`test_sha_UYUSMAZSA_RED`); geri alındı → `Ran 28 … OK`.
+- `JETSON_KILAVUZ.md:309/683` `--kayit-dogrulamasiz` anışları T143 öncesi UYARI satırlarıdır (blame f42f5c4 2026-08-19, d77f75f 2026-08-20); komut satırı olarak geçmez (test kilitler).
+- ÖLÇÜLEMEDİ (cihaz yok): gerçek DroidCam düşen kare davranışı ve Jetson'da derlenmiş `.engine` yüklemesi — H3.
