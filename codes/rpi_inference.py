@@ -21,6 +21,7 @@ Dizin yapisi:
 import argparse
 import importlib
 import json
+import math
 import sys
 import time
 from pathlib import Path
@@ -1194,11 +1195,89 @@ def _rota_serit_olcumu(rota, dist, icerik):
     }
 
 
+def _rota_ekseni_donusumu(sekil, derece):
+    """Rota eksenini goruntude ALT->UST'e getiren afin donusumu kur.
+
+    ``derece`` isaret sozlesmesi (S2 · CONTRACTS SS6.3 onerisi):
+      goruntu "yukari" yonunden SAAT YONUNDE olculen rota (KB->HB) acisi.
+        0   = rota alttan uste (mevcut K-A varsayimi, donusum yok)
+       +90  = rota SOLDAN SAGA (KB solda, HB sagda)
+       -90  = rota SAGDAN SOLA
+       180  = rota ustten alta
+    Donus tuvali dondurulmus dikdortgeni tamamen icine alacak boyuttadir;
+    kadraja giren bos koseler ENGEL (0) kalir. 90'in katlarinda donusum tam
+    piksel permutasyonudur (yuvarlama kaybi yok).
+
+    Doner: (M, M_ters, (yeni_w, yeni_h)).
+    """
+    h, w = int(sekil[0]), int(sekil[1])
+    aci = math.radians(float(derece))
+    c, sn = abs(math.cos(aci)), abs(math.sin(aci))
+    yeni_w = int(math.ceil(w * c + h * sn - 1e-9))
+    yeni_h = int(math.ceil(w * sn + h * c - 1e-9))
+    merkez = ((w - 1) / 2.0, (h - 1) / 2.0)
+    M = cv2.getRotationMatrix2D(merkez, float(derece), 1.0)
+    M[0, 2] += (yeni_w - 1) / 2.0 - merkez[0]
+    M[1, 2] += (yeni_h - 1) / 2.0 - merkez[1]
+    M_ters = cv2.invertAffineTransform(M)
+    return M, M_ters, (yeni_w, yeni_h)
+
+
+def _dondur_en_yakin(dizi, M, boyut):
+    """INTER_NEAREST + sinir 0: yeni deger uretmez, koseler engel kalir."""
+    return cv2.warpAffine(np.ascontiguousarray(dizi), M, boyut,
+                          flags=cv2.INTER_NEAREST,
+                          borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+
+
+def _icerik_kutusunu_dondur(icerik, M, boyut):
+    """Icerik kutusunun dondurulmus cercevedeki EKSENE HIZALI SINIR kutusu.
+
+    90'in katlarinda kutu birebir donusur. Ara acilarda sinir kutusu
+    dondurulmus icerigin koselerinde engel (0) bolge icerir; uc bant temasi
+    o koselerde OLCULEMEZ -> kapi sikilasir (fail-closed), gevsemez.
+    """
+    x0, y0, w, h = icerik
+    koseler = np.array([[x0, y0], [x0 + w - 1, y0],
+                        [x0, y0 + h - 1], [x0 + w - 1, y0 + h - 1]],
+                       dtype=np.float64)
+    don = koseler @ M[:, :2].T + M[:, 2]
+    xmin = max(0, int(round(don[:, 0].min())))
+    ymin = max(0, int(round(don[:, 1].min())))
+    xmax = min(boyut[0] - 1, int(round(don[:, 0].max())))
+    ymax = min(boyut[1] - 1, int(round(don[:, 1].max())))
+    return (xmin, ymin, max(0, xmax - xmin + 1), max(0, ymax - ymin + 1))
+
+
+def _noktalari_geri_cevir(noktalar, M_ters):
+    """Dondurulmus cercevedeki (x, y) listesini orijinal kareye tasi."""
+    if not noktalar:
+        return []
+    pts = np.array(noktalar, dtype=np.float64)
+    geri = pts @ M_ters[:, :2].T + M_ters[:, 2]
+    return [(int(round(x)), int(round(y))) for x, y in geri]
+
+
 def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
                  min_area_ratio=0.01, *, icerik=None, engel_mask=None,
                  mpp=None, return_reason=False, return_olcum=False,
-                 goruntu=None, olcek_kaynagi=OLCEK_KAYNAK_TELEMETRI):
+                 goruntu=None, olcek_kaynagi=OLCEK_KAYNAK_TELEMETRI,
+                 rota_ekseni_derece=None):
     """
+    rota_ekseni_derece (S2 · yonelim): ``None`` ise davranis BAYT-ES aynidir
+      (cekirdek dogrudan cagrilir). Deger verilirse maske (ve engel/goruntu)
+      `_rota_ekseni_donusumu` ile dondurulur ki rota ekseni goruntude
+      ALT->UST olsun; K-A + A* dondurulmus cercevede kosar; waypoint'ler,
+      temiz maske ve sebep metni ORIJINAL kare koordinatina geri cevrilir.
+      Isaret: goruntu "yukari"sindan SAAT YONUNDE derece; +90 = rota soldan
+      saga, -90 = sagdan sola, 180 = ustten alta.
+      MADDE 15: dondurme INTER_NEAREST'tir, kadraja giren koseler ENGEL'dir,
+      geri cevrilen temiz maske dondurulmemis cekirdek temizligiyle KESISTIRILIR
+      ve her waypoint bu maskede olmak zorundadir (degilse fail-closed
+      KENAR_GUVENSIZ). Serbest alan hicbir adimda buyumez.
+      Uretimde eksen UYDURULMAZ: kaynak operatorun KB->HB kerterizi + arac
+      yonudur; otomatik "en iyi eksen" secimi uretime GIRMEZ.
+
     Algoritma:
       1. Morfolojik temizleme (gurultu, kucuk blob)
       1b. engel_mask verilmisse CIKARMA — kapama sonrasi, EN SON (madde 15)
@@ -1239,6 +1318,107 @@ def analyze_path(trav_mask, n_waypoints=8, return_clean=False,
        kanit satirini buradan basar.)
       Bayraklar birlikte verilirse sira: clean, reason, olcum.
     """
+    if rota_ekseni_derece is None:
+        return _analyze_path_cekirdek(
+            trav_mask, n_waypoints, return_clean, min_area_ratio,
+            icerik=icerik, engel_mask=engel_mask, mpp=mpp,
+            return_reason=return_reason, return_olcum=return_olcum,
+            goruntu=goruntu, olcek_kaynagi=olcek_kaynagi)
+    return _analyze_path_yonelimli(
+        trav_mask, n_waypoints, return_clean, min_area_ratio,
+        icerik=icerik, engel_mask=engel_mask, mpp=mpp,
+        return_reason=return_reason, return_olcum=return_olcum,
+        goruntu=goruntu, olcek_kaynagi=olcek_kaynagi,
+        rota_ekseni_derece=float(rota_ekseni_derece))
+
+
+def _analyze_path_yonelimli(trav_mask, n_waypoints, return_clean,
+                            min_area_ratio, *, icerik, engel_mask, mpp,
+                            return_reason, return_olcum, goruntu,
+                            olcek_kaynagi, rota_ekseni_derece):
+    """Sarmalayici: dondur -> cekirdek -> geri cevir. Belgesi `analyze_path`."""
+    h, w = trav_mask.shape
+    derece = float(rota_ekseni_derece)
+    M, M_ters, boyut = _rota_ekseni_donusumu((h, w), derece)
+    trav_d = _dondur_en_yakin(trav_mask, M, boyut)
+    engel_d = None
+    if engel_mask is not None:
+        engel_mask = np.asarray(engel_mask)
+        if engel_mask.shape != trav_mask.shape:
+            raise ValueError(
+                f"engel_mask sekli {engel_mask.shape} trav_mask "
+                f"{trav_mask.shape} ile uyusmuyor")
+        engel_d = _dondur_en_yakin((engel_mask > 0).astype(np.uint8), M, boyut)
+    goruntu_d = None
+    if goruntu is not None:
+        goruntu_d = _dondur_en_yakin(goruntu, M, boyut)
+    icerik_d = _icerik_kutusunu_dondur(
+        (0, 0, w, h) if icerik is None else icerik, M, boyut)
+
+    yol, guven, wps_d, clean_d, sebep, olcum = _analyze_path_cekirdek(
+        trav_d, n_waypoints, True, min_area_ratio,
+        icerik=icerik_d, engel_mask=engel_d, mpp=mpp,
+        return_reason=True, return_olcum=True,
+        goruntu=goruntu_d, olcek_kaynagi=olcek_kaynagi)
+
+    # GERI CEVIRME. Temiz maske dondurulmemis cekirdek temizligiyle KESISTIRILIR:
+    # ara acilarda en-yakin ornekleme siniri 1 px kaydirabilir; kesisim
+    # serbest alanin dondurme yoluyla buyumesini kesin olarak engeller.
+    clean_geri = _dondur_en_yakin(clean_d, M_ters, (w, h))
+    if np.any(clean_geri):
+        # bos maskede kesisim zaten bos: 3840^2 tuvalde ~8 sn'lik morfoloji
+        # gereksiz yere odenmesin (sonuc DEGISMEZ, yalniz sure).
+        clean_ref = _koridor_temizle(trav_mask, engel_mask)
+        clean_geri = np.where(clean_ref > 0, clean_geri, 0).astype(
+            clean_geri.dtype)
+    waypoints = _noktalari_geri_cevir(wps_d, M_ters)
+    ek = f" [rota ekseni {derece:g} derece; olcum dondurulmus cercevede]"
+    if isinstance(sebep, tuple) and len(sebep) == 2:
+        sebep = (sebep[0], str(sebep[1]) + ek)
+    if isinstance(olcum, dict):
+        olcum = dict(olcum)
+        olcum["rota_ekseni_derece"] = derece
+
+    if waypoints:
+        disari = [
+            (x, y) for x, y in waypoints
+            if not (0 <= x < w and 0 <= y < h and clean_geri[y, x] > 0)]
+        if disari:
+            yol, guven, waypoints = None, 0.0, []
+            sebep = (KENAR_GUVENSIZ_SEBEBI,
+                     f"Geri cevrilen {len(disari)} waypoint orijinal temiz "
+                     f"maskenin disinda kaldi{ek}")
+            olcum = None
+
+    sonuc = (yol, guven, waypoints)
+    if return_clean:
+        sonuc += (clean_geri,)
+    if return_reason:
+        sonuc += (sebep,)
+    if return_olcum:
+        sonuc += (olcum,)
+    return sonuc
+
+
+def _koridor_temizle(trav_mask, engel_mask):
+    """Cekirdegin morfoloji + engel cikarma adimi (ayni kernel, ayni sira)."""
+    h, w = trav_mask.shape
+    k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
+    k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
+    clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN, k_open)
+    clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
+    if engel_mask is not None:
+        clean = clean.copy()
+        clean[np.asarray(engel_mask) > 0] = 0
+    return clean
+
+
+def _analyze_path_cekirdek(trav_mask, n_waypoints=8, return_clean=False,
+                           min_area_ratio=0.01, *, icerik=None,
+                           engel_mask=None, mpp=None, return_reason=False,
+                           return_olcum=False, goruntu=None,
+                           olcek_kaynagi=OLCEK_KAYNAK_TELEMETRI):
+    """`analyze_path` cekirdegi — govde DEGISMEDI (S2: yalniz ad ve sarmalayici)."""
     h, w = trav_mask.shape
 
     def _don(open_path, confidence, waypoints, clean, ret=None, olcum=None):
