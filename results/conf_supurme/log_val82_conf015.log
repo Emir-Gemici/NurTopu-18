@@ -1,0 +1,11 @@
+kare: 82 · model: 1 · imgsz 512
+
+── O:\navitas\models\navitas_seg_v36_best.pt  (405 sn)
+   U2 bandinda (0.05<oran<0.95): 55/82 kare · 1 ayri klip
+   ROTA URETILEN  olceksiz 37  ·  olcek BEDAVA 31
+   sebep (olceksiz)   : {None: 37, 'MASKE_YOK': 23, 'UC_BANT_TEMAS_YOK': 22}
+   sebep (olcek bedava): {None: 31, 'MASKE_YOK': 23, 'UC_BANT_TEMAS_YOK': 22, 'GORUS_HATTI_KOPUK': 6}
+
+yazildi: O:\navitas\results\conf_supurme\ham\val82_conf015.json
+
+--stderr--

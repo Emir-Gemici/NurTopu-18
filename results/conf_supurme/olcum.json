@@ -1,0 +1,735 @@
+{
+ "_ne": "ON_KAYIT §18-A · guven esigi (conf) supurmesi — OLCUM, kapi degil",
+ "_on_kayit": "results/gece_20260826/ON_KAYIT.md §18-A",
+ "_agirlik": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+ "_taban_esik": 0.3,
+ "_oneri_kurali": {
+  "gercek_kayip_azalma_min": 5,
+  "fp_test29_maks": 1,
+  "fp_val82_maks": 2
+ },
+ "_esikler": [
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.4,
+  0.5
+ ],
+ "_zincir": "126_t138_gece_kumesi.py --conf E (uretim zinciri birebir)",
+ "olcumler": {
+  "0.10": {
+   "test29": {
+    "n": 29,
+    "rota": 9,
+    "maske_yok": 9,
+    "uc_bant": 11,
+    "sebep": {
+     "MASKE_YOK": 9,
+     "UC_BANT_TEMAS_YOK": 11,
+     "null": 9
+    },
+    "tavan_rota": 12,
+    "TP": 8,
+    "FP": 1,
+    "FN": 4,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 9,
+    "gercek_kayip": 4,
+    "kayip_maske_yok": 2,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 161
+   },
+   "val82": {
+    "n": 82,
+    "rota": 38,
+    "maske_yok": 20,
+    "uc_bant": 24,
+    "sebep": {
+     "MASKE_YOK": 20,
+     "UC_BANT_TEMAS_YOK": 24,
+     "null": 38
+    },
+    "tavan_rota": 43,
+    "TP": 36,
+    "FP": 2,
+    "FN": 7,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 9,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+     "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 38,
+    "gercek_kayip": 7,
+    "kayip_maske_yok": 4,
+    "kayip_uc_bant": 3,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 490
+   }
+  },
+  "0.15": {
+   "test29": {
+    "n": 29,
+    "rota": 9,
+    "maske_yok": 11,
+    "uc_bant": 9,
+    "sebep": {
+     "MASKE_YOK": 11,
+     "UC_BANT_TEMAS_YOK": 9,
+     "null": 9
+    },
+    "tavan_rota": 12,
+    "TP": 8,
+    "FP": 1,
+    "FN": 4,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 9,
+    "gercek_kayip": 4,
+    "kayip_maske_yok": 2,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 151
+   },
+   "val82": {
+    "n": 82,
+    "rota": 37,
+    "maske_yok": 23,
+    "uc_bant": 22,
+    "sebep": {
+     "MASKE_YOK": 23,
+     "UC_BANT_TEMAS_YOK": 22,
+     "null": 37
+    },
+    "tavan_rota": 43,
+    "TP": 35,
+    "FP": 2,
+    "FN": 8,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 9,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+     "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 37,
+    "gercek_kayip": 8,
+    "kayip_maske_yok": 6,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 413
+   }
+  },
+  "0.20": {
+   "test29": {
+    "n": 29,
+    "rota": 8,
+    "maske_yok": 13,
+    "uc_bant": 8,
+    "sebep": {
+     "MASKE_YOK": 13,
+     "UC_BANT_TEMAS_YOK": 8,
+     "null": 8
+    },
+    "tavan_rota": 12,
+    "TP": 7,
+    "FP": 1,
+    "FN": 5,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 8,
+    "gercek_kayip": 5,
+    "kayip_maske_yok": 3,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+     "dji_20260822172613_0038_d__frame_000143_000005460.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 110
+   },
+   "val82": {
+    "n": 82,
+    "rota": 34,
+    "maske_yok": 27,
+    "uc_bant": 21,
+    "sebep": {
+     "MASKE_YOK": 27,
+     "UC_BANT_TEMAS_YOK": 21,
+     "null": 34
+    },
+    "tavan_rota": 43,
+    "TP": 32,
+    "FP": 2,
+    "FN": 11,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 7,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 34,
+    "gercek_kayip": 11,
+    "kayip_maske_yok": 9,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+     "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+     "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 383
+   }
+  },
+  "0.25": {
+   "test29": {
+    "n": 29,
+    "rota": 8,
+    "maske_yok": 14,
+    "uc_bant": 7,
+    "sebep": {
+     "MASKE_YOK": 14,
+     "UC_BANT_TEMAS_YOK": 7,
+     "null": 8
+    },
+    "tavan_rota": 12,
+    "TP": 7,
+    "FP": 1,
+    "FN": 5,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 8,
+    "gercek_kayip": 5,
+    "kayip_maske_yok": 4,
+    "kayip_uc_bant": 1,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+     "dji_20260822172613_0038_d__frame_000143_000005460.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 103
+   },
+   "val82": {
+    "n": 82,
+    "rota": 30,
+    "maske_yok": 32,
+    "uc_bant": 20,
+    "sebep": {
+     "MASKE_YOK": 32,
+     "UC_BANT_TEMAS_YOK": 20,
+     "null": 30
+    },
+    "tavan_rota": 43,
+    "TP": 28,
+    "FP": 2,
+    "FN": 15,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 7,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 30,
+    "gercek_kayip": 15,
+    "kayip_maske_yok": 13,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+     "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+     "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+     "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+     "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "dji_20260822172613_0038_d__frame_000145_000005520.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 367
+   }
+  },
+  "0.30": {
+   "test29": {
+    "n": 29,
+    "rota": 8,
+    "maske_yok": 16,
+    "uc_bant": 5,
+    "sebep": {
+     "MASKE_YOK": 16,
+     "UC_BANT_TEMAS_YOK": 5,
+     "null": 8
+    },
+    "tavan_rota": 12,
+    "TP": 7,
+    "FP": 1,
+    "FN": 5,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 8,
+    "gercek_kayip": 5,
+    "kayip_maske_yok": 4,
+    "kayip_uc_bant": 1,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+     "dji_20260822172613_0038_d__frame_000143_000005460.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 1
+   },
+   "val82": {
+    "n": 82,
+    "rota": 30,
+    "maske_yok": 35,
+    "uc_bant": 17,
+    "sebep": {
+     "MASKE_YOK": 35,
+     "UC_BANT_TEMAS_YOK": 17,
+     "null": 30
+    },
+    "tavan_rota": 43,
+    "TP": 28,
+    "FP": 2,
+    "FN": 15,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 7,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 30,
+    "gercek_kayip": 15,
+    "kayip_maske_yok": 13,
+    "kayip_uc_bant": 2,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+     "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+     "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+     "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+     "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "dji_20260822172613_0038_d__frame_000145_000005520.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 373
+   }
+  },
+  "0.40": {
+   "test29": {
+    "n": 29,
+    "rota": 7,
+    "maske_yok": 18,
+    "uc_bant": 4,
+    "sebep": {
+     "MASKE_YOK": 18,
+     "UC_BANT_TEMAS_YOK": 4,
+     "null": 7
+    },
+    "tavan_rota": 12,
+    "TP": 6,
+    "FP": 1,
+    "FN": 6,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 7,
+    "gercek_kayip": 6,
+    "kayip_maske_yok": 5,
+    "kayip_uc_bant": 1,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+     "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+     "dji_20260822172613_0038_d__frame_000143_000005460.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 94
+   },
+   "val82": {
+    "n": 82,
+    "rota": 25,
+    "maske_yok": 43,
+    "uc_bant": 14,
+    "sebep": {
+     "MASKE_YOK": 43,
+     "UC_BANT_TEMAS_YOK": 14,
+     "null": 25
+    },
+    "tavan_rota": 43,
+    "TP": 23,
+    "FP": 2,
+    "FN": 20,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 6,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 25,
+    "gercek_kayip": 20,
+    "kayip_maske_yok": 19,
+    "kayip_uc_bant": 1,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+     "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
+     "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+     "dji_20260822172613_0038_d__frame_000084_000003690.jpg",
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+     "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+     "dji_20260822172613_0038_d__frame_000134_000005190.jpg",
+     "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+     "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+     "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
+     "dji_20260822172613_0038_d__frame_000146_000005550.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 301
+   }
+  },
+  "0.50": {
+   "test29": {
+    "n": 29,
+    "rota": 5,
+    "maske_yok": 20,
+    "uc_bant": 4,
+    "sebep": {
+     "MASKE_YOK": 20,
+     "UC_BANT_TEMAS_YOK": 4,
+     "null": 5
+    },
+    "tavan_rota": 12,
+    "TP": 4,
+    "FP": 1,
+    "FN": 8,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+    ],
+    "yanlis_guzergah": 0,
+    "yanlis_kareler": [],
+    "rota_kare_olculen": 5,
+    "gercek_kayip": 8,
+    "kayip_maske_yok": 7,
+    "kayip_uc_bant": 1,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+     "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+     "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+     "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+     "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+     "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+     "dji_20260822172613_0038_d__frame_000202_000007470.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000196_000007290.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 69
+   },
+   "val82": {
+    "n": 82,
+    "rota": 20,
+    "maske_yok": 55,
+    "uc_bant": 7,
+    "sebep": {
+     "MASKE_YOK": 55,
+     "null": 20,
+     "UC_BANT_TEMAS_YOK": 7
+    },
+    "tavan_rota": 43,
+    "TP": 19,
+    "FP": 1,
+    "FN": 24,
+    "fp_kareler": [
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "yanlis_guzergah": 6,
+    "yanlis_kareler": [
+     "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+     "dji_20260822172613_0038_d__frame_000163_000006090.jpg",
+     "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+     "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+     "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+     "dji_20260822172613_0038_d__frame_000223_000008250.jpg"
+    ],
+    "rota_kare_olculen": 20,
+    "gercek_kayip": 24,
+    "kayip_maske_yok": 23,
+    "kayip_uc_bant": 1,
+    "kayip_diger": 0,
+    "kayip_maske_yok_kareler": [
+     "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+     "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+     "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+     "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
+     "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+     "dji_20260822172613_0038_d__frame_000084_000003690.jpg",
+     "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+     "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+     "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+     "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+     "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+     "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+     "dji_20260822172613_0038_d__frame_000134_000005190.jpg",
+     "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+     "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+     "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+     "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+     "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
+     "dji_20260822172613_0038_d__frame_000146_000005550.jpg",
+     "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
+     "dji_20260822172613_0038_d__frame_000192_000007170.jpg",
+     "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
+     "dji_20260822172613_0038_d__frame_000216_000007890.jpg"
+    ],
+    "kayip_uc_bant_kareler": [
+     "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+    ],
+    "kayip_diger_kareler": [],
+    "saniye": 232
+   }
+  }
+ },
+ "hukum": {
+  "0.10": {
+   "gercek_kayip": 11,
+   "taban_kayip": 20,
+   "azalma": 9,
+   "i_kayip_azaldi": true,
+   "ii_yanlis_artmadi": false,
+   "iii_fp_icinde": true,
+   "aday": false,
+   "iv_sentetik_K0_K6": "AYRI KOSUM (yalniz aday esikte)"
+  },
+  "0.15": {
+   "gercek_kayip": 12,
+   "taban_kayip": 20,
+   "azalma": 8,
+   "i_kayip_azaldi": true,
+   "ii_yanlis_artmadi": false,
+   "iii_fp_icinde": true,
+   "aday": false,
+   "iv_sentetik_K0_K6": "AYRI KOSUM (yalniz aday esikte)"
+  },
+  "0.20": {
+   "gercek_kayip": 16,
+   "taban_kayip": 20,
+   "azalma": 4,
+   "i_kayip_azaldi": false,
+   "ii_yanlis_artmadi": true,
+   "iii_fp_icinde": true,
+   "aday": false,
+   "iv_sentetik_K0_K6": "AYRI KOSUM (yalniz aday esikte)"
+  },
+  "0.25": {
+   "gercek_kayip": 20,
+   "taban_kayip": 20,
+   "azalma": 0,
+   "i_kayip_azaldi": false,
+   "ii_yanlis_artmadi": true,
+   "iii_fp_icinde": true,
+   "aday": false,
+   "iv_sentetik_K0_K6": "AYRI KOSUM (yalniz aday esikte)"
+  },
+  "0.40": {
+   "gercek_kayip": 26,
+   "taban_kayip": 20,
+   "azalma": -6,
+   "i_kayip_azaldi": false,
+   "ii_yanlis_artmadi": true,
+   "iii_fp_icinde": true,
+   "aday": false,
+   "iv_sentetik_K0_K6": "AYRI KOSUM (yalniz aday esikte)"
+  },
+  "0.50": {
+   "gercek_kayip": 32,
+   "taban_kayip": 20,
+   "azalma": -12,
+   "i_kayip_azaldi": false,
+   "ii_yanlis_artmadi": true,
+   "iii_fp_icinde": true,
+   "aday": false,
+   "iv_sentetik_K0_K6": "AYRI KOSUM (yalniz aday esikte)"
+  }
+ },
+ "adaylar": []
+}

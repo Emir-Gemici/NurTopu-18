@@ -35,6 +35,14 @@ KOK = Path(__file__).resolve().parents[2]
 CIKTI = KOK / "results" / "t138"
 U2_ALT, U2_UST = 0.05, 0.95      # on kayit SS2 · SONUCA GORE DEGISTIRILMEZ
 
+# URETIM GUVEN ESIGI. Bu deger URETIM zincirinin degeridir; ciplak sayi olarak
+# degil, uretimdeki kardeslerine BAGLI durur: `rpi_inference` CLI varsayilani,
+# `61_rota_moloza_basma.CONF` ve `65_kabul_denetcisi.CONF` ile ayni olmak
+# ZORUNDADIR — kilit: tests/test_conf_esigi_supurmesi.py. `--conf` YALNIZ
+# OLCUM icindir (ON_KAYIT SS18-A esik supurmesi); varsayilansiz kosum
+# davranisi ve JSON ciktisi BAYT-ES ayni kalir.
+CONF = 0.30
+
 
 def main() -> int:
     try:
@@ -61,6 +69,12 @@ def main() -> int:
     ap.add_argument("--etiket", default="T138 · DJI gece kareleri, "
                                         "uretim yolu davranisi",
                     help="Ciktinin `_ne` alani")
+    # 🔴 OLCUM PARAMETRESI (2026-08-26, ON_KAYIT SS18-A): guven esigi supurmesi
+    #    icin. VARSAYILAN URETIM DEGERIDIR (CONF); argumansiz kosum ONCEKI
+    #    davranisin ve JSON ciktisinin BAYT-ESIDIR. Bu bayrak esigi DEGISTIRMEZ,
+    #    yalnizca baska bir esikte OLCMEYI mumkun kilar.
+    ap.add_argument("--conf", type=float, default=CONF,
+                    help=f"Guven esigi (varsayilan: uretim degeri {CONF})")
     args = ap.parse_args()
 
     sys.path.insert(0, str(KOK / "codes"))
@@ -92,7 +106,7 @@ def main() -> int:
                 continue
             sq, small, icerik = _preprocess(img)
             h, w = sq.shape[:2]
-            sonuc = model.predict(small, imgsz=INFER_SIZE, conf=0.30, verbose=False)
+            sonuc = model.predict(small, imgsz=INFER_SIZE, conf=args.conf, verbose=False)
             mk = _maskeleri_icerige_kirp(get_masks(sonuc, h, w), icerik)
             trav = mk[0] > 0
             oran = zemin_kaplamasi(trav, icerik)
@@ -147,12 +161,16 @@ def main() -> int:
                          "kareler": satirlar}
 
     args.cikti.mkdir(parents=True, exist_ok=True)
+    govde = {"_ne": args.etiket,
+             "_on_kayit": "results/t138/on_kayit.md",
+             "_kareler": str(args.kareler),
+             "_U2_bandi": [U2_ALT, U2_UST], "_mpp_bedava": args.mpp}
+    # Uretim disi esikle kosuldugunda esik CIKTIYA yazilir (kanit izlenebilir
+    # olsun). Uretim esiginde anahtar YOKTUR — JSON bayt-es kalir.
+    if args.conf != CONF:
+        govde["_conf"] = args.conf
     io.open(args.cikti / args.dosya, "w", encoding="utf-8").write(
-        json.dumps({"_ne": args.etiket,
-                    "_on_kayit": "results/t138/on_kayit.md",
-                    "_kareler": str(args.kareler),
-                    "_U2_bandi": [U2_ALT, U2_UST], "_mpp_bedava": args.mpp,
-                    "modeller": tum}, ensure_ascii=False, indent=1))
+        json.dumps({**govde, "modeller": tum}, ensure_ascii=False, indent=1))
     print(f"yazildi: {args.cikti / args.dosya}")
     return 0
 
