@@ -22,6 +22,7 @@ import argparse
 import importlib
 import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
@@ -59,6 +60,9 @@ if __package__:
                                   rota_koridor_genisligi_reddi,
                                   BARIYER_ENGEL_SINIFI,
                                   ince_bariyer_maskesi,
+                                  INCE_BETON_SERIT_ETKIN,
+                                  INCE_BETON_SERIT_ORTAM_DEGISKENI,
+                                  ince_beton_serit_maskesi,
                                   hb_konumu,
                                   hedef_yok_reddi,
                                    rota_guven_reddi,
@@ -102,6 +106,9 @@ else:
                                   rota_koridor_genisligi_reddi,
                                   BARIYER_ENGEL_SINIFI,
                                   ince_bariyer_maskesi,
+                                  INCE_BETON_SERIT_ETKIN,
+                                  INCE_BETON_SERIT_ORTAM_DEGISKENI,
+                                  ince_beton_serit_maskesi,
                                   hb_konumu,
                                   hedef_yok_reddi,
                                   rota_guven_reddi,
@@ -715,7 +722,8 @@ def load_model(model_yolu=None, kok=None, kayit_zorunlu=None, ayrinti=False):
     return (model, yol, detay) if ayrinti else model
 
 
-def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
+def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1),
+              ince_beton_serit=None):
     """Her sinif icin (h, w) cozunurlugunde binary mask doner.
     min_conf verilirse yalniz guveni >= min_conf tespitler dahil edilir → model DUSUK
     esikle BIR KEZ kosturulup ayni sonuctan farkli esikler suzulebilir (2. predict yok).
@@ -723,7 +731,12 @@ def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
     sinif_idler: maskesi uretilecek sinif idleri. Varsayilan (0, 1) ESKI DAVRANISIN
     BIREBIR AYNISIDIR — hicbir mevcut cagri yeri degismez. Costmap hatti ek engel
     siniflari icin genisletir (or. COCO araba/kamyon: sinif_idler=(0,1,2,5,7)).
-    Eskiden {0,1} sabit kodluydu ve id >= 2 olan her maske SESSIZCE atiliyordu."""
+    Eskiden {0,1} sabit kodluydu ve id >= 2 olan her maske SESSIZCE atiliyordu.
+
+    ince_beton_serit (T153, ON_KAYIT §13): None -> ortam degiskeni
+    `INCE_BETON_SERIT_ORTAM_DEGISKENI` ("1"/"0"), o da yoksa sozlesme sabiti
+    `INCE_BETON_SERIT_ETKIN` (varsayilan KAPALI). Kapaliyken cikti T153
+    oncesiyle BAYT-ES aynidir (tests/test_t153_ince_beton_serit.py)."""
     masks = {int(c): np.zeros((h, w), dtype=np.uint8) for c in sinif_idler}
     r = results[0]
     if r.masks is not None:
@@ -745,7 +758,55 @@ def get_masks(results, h, w, min_conf=None, sinif_idler=(0, 1)):
     # None` dalinda da CALISIR — model hicbir sey gormese bile bariyer engel
     # olarak isaretlenmelidir.
     _ince_bariyeri_ekle(masks, r, h, w)
+    # T153 (ON_KAYIT §13, D-289/D-290): KATMAN 2 ince beton serit cikaricisi.
+    # Model beton drenaj kanalini ZEMIN sayiyor ve rota kanalin ustune dusuyor.
+    # T67 ile AYNI kalip: yalniz ENGEL katmanina OR — serbest alan yalniz
+    # kuculur. Varsayilan KAPALI; acikken bir kez stderr'e yazilir ki olcum
+    # loglari hangi kipte kosuldugunu KANITLASIN.
+    if _ince_beton_serit_etkin(ince_beton_serit):
+        _ince_beton_seridi_ekle(masks, r, h, w)
     return masks
+
+
+def _ince_beton_serit_etkin(istek=None):
+    """T153 acik mi? Oncelik: parametre > ortam degiskeni > sozlesme sabiti."""
+    if istek is not None:
+        return bool(istek)
+    ortam = os.environ.get(INCE_BETON_SERIT_ORTAM_DEGISKENI)
+    if ortam is not None and ortam.strip() != "":
+        return ortam.strip() == "1"
+    return bool(INCE_BETON_SERIT_ETKIN)
+
+
+_INCE_BETON_BILDIRILDI = False
+
+
+def _ince_beton_seridi_ekle(masks, r, h, w):
+    """Ince beton seritleri ENGEL maskesine EKLE (madde 15: yalniz buyutur).
+
+    `_ince_bariyeri_ekle` ile birebir ayni fail-safe: goruntu yoksa ya da
+    dedektor None donerse HICBIR SEY eklenmez, hicbir sey cikarilmaz.
+    """
+    global _INCE_BETON_BILDIRILDI
+    engel = int(BARIYER_ENGEL_SINIFI)
+    if engel not in masks:
+        return
+    goruntu = getattr(r, "orig_img", None)
+    if goruntu is None:
+        return
+    goruntu = np.asarray(goruntu)
+    if goruntu.ndim != 3 or goruntu.shape[2] != 3 or goruntu.size == 0:
+        return
+    if not _INCE_BETON_BILDIRILDI:
+        _INCE_BETON_BILDIRILDI = True
+        print("T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)",
+              file=sys.stderr, flush=True)
+    serit = ince_beton_serit_maskesi(goruntu)
+    if serit is None or serit.size == 0 or not serit.any():
+        return
+    if serit.shape != (h, w):
+        serit = cv2.resize(serit, (w, h), interpolation=cv2.INTER_NEAREST)
+    masks[engel] = np.maximum(masks[engel], (serit > 0).astype(np.uint8))
 
 
 def _ince_bariyeri_ekle(masks, r, h, w):

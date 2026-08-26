@@ -1,0 +1,13 @@
+kare: 29 · model: 1 · imgsz 512
+
+── O:\navitas\models\navitas_seg_v35_best.pt  (96 sn)
+   U2 bandinda (0.05<oran<0.95): 7/29 kare · 1 ayri klip
+   ROTA URETILEN  olceksiz 6  ·  olcek BEDAVA 1
+   sebep (olceksiz)   : {'MASKE_YOK': 16, 'UC_BANT_TEMAS_YOK': 7, None: 6}
+   sebep (olcek bedava): {'MASKE_YOK': 16, 'UC_BANT_TEMAS_YOK': 7, 'GORUS_HATTI_KOPUK': 5, None: 1}
+
+yazildi: O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\results\t153\olcum\t153_acik_v35_test29_test29.json
+
+--stderr--
+[T153 sitecustomize] rpi_inference=O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\codes\rpi_inference.py NAVITAS_INCE_BETON_SERIT='1'
+T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)

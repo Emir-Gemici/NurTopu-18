@@ -777,6 +777,145 @@ BARIYER_ENGEL_SINIFI = 1
 
 
 # ════════════════════════════════════════════════════════════════════════════
+# T153 · INCE BETON SERIT CIKARICISI — KATMAN 2   (ON_KAYIT §13 · D-289/D-290)
+# ════════════════════════════════════════════════════════════════════════════
+# KUSUR (gercek karede olculdu, results/gece_20260826/sizinti/rapor.md):
+# v35'in engel->zemin sizintisi TEK kaynakli — yol kenarindaki BETON DRENAJ
+# KANALI (acik gri/beyaz, ~5-15 px @960, uzun) zemin sayiliyor ve rota onun
+# ustune dusuyor: val82'de 10 yanlis guzergahin 8'i bu kanal ustunde (D-290),
+# test29'da uretim v35'in 6 rotasindan 5'i yol ustunde degil (196: beton
+# kanal ustunde, D-289). Uc model de (v35/v3/v6) ayni sizintiyi veriyor;
+# egitim verisinde kanal yeterince temsil edilmedigi icin bu tur icin cozum
+# T67 kalibinda KATMAN 2 klasik dedektordur: yalniz ENGEL katmanina EKLER,
+# serbest alan (`zemin AND NOT engel`) yalniz KUCULUR (madde 15, CONTRACTS SS2).
+#
+# AYIRT EDICI UC OZELLIK (T67'nin "kroma+sekil" kalibinin beton karsiligi):
+#   1. ACIK RENK   : LAB L cok yuksek VE kroma dusuk. D-290 karelerinde
+#                    olculdu (512 tuval, f157/f196/f213): kanal L 225-255
+#                    (cogu doygunluga yakin), kroma 0-5; acik toprak yol
+#                    L 180-230, kuru ot L 120-200 ama benekli. Beton/bordur
+#                    gri-beyazdir; kirmizi bariyer ve HB kromayla T67/T72'ye
+#                    kalir, buraya GIRMEZ (iki dedektor ayni yapiyi secemez).
+#   2. DAR         : fiziksel ~0,3-1,2 m; 512 tuvalde 3-14 px (ON_KAYIT §13).
+#                    Genislik ORAN olarak tutulur (CONTRACTS SS8), tuval
+#                    genisligiyle carpilir; mutlak piksel cozunurlukte kayar.
+#                    Genislik = bilesenin uzaklik donusumu maksimumunun 2 kati
+#                    (egri seritte minAreaRect sisirir, bu sismez). ALT sinir
+#                    kablo/tel/kenar cizgisi gibi 1-2 px yapilari, UST sinir
+#                    YOLUN KENDISINI dislar — ust sinir kalkarsa genis acik
+#                    yol da engel olur (tests/test_t153 mutasyonu bunu kanitlar).
+#   3. UZUN        : uzunluk = alan/genislik; en/boy >= 4 (T67 ile ayni oran)
+#                    VE asgari uzunluk (kisa parlak lekeler — tas, arac
+#                    tavani, kuru ot demeti — uzun degildir; 40 px @512,
+#                    kanal olceginde ~3 m).
+#   4. DOLU ve KONTRASTLI: aday maske once kucuk bir ACMA'dan gecer (kuru ot
+#                    benekleri ve 1-2 px zincirleri kirilir; 3 px'lik serit
+#                    sag kalir), sonra KAPAMA ile seritteki 1-2 px kopukluklar
+#                    koprulenir. Her bilesen cevresindeki halkadan (genislik
+#                    ust siniri kadar) en az 30 L birimi parlak olmali —
+#                    parlak yol ortasindaki daha parlak lekeler elenir.
+# TOP-HAT KULLANILMADI: acma tabanli top-hat, benekli kuru otta (her 29 px
+# pencerede koyu golge var) her yeri "parlak" gosterdi (kesif olcumu: L 170
+# piksellerde top-hat 100+); ayrim mutlak parlaklik + sekil + halka
+# kontrastiyla yapilir.
+#
+# 🔴 VARSAYILAN KAPALI (ON_KAYIT §13). Benimseme kurali sonuc gorulmeden
+# yazildi: v35'te 111 karede YANLIS GUZERGAH >= %50 azalir VE mesru rota
+# kaybi <= 1 VE yeni FP 0 VE sentetik K1-K6 birebir VE 67'de red <= 5.
+# Biri tutmazsa KAPALI kalir. Acik/kapali secimi: `get_masks(...,
+# ince_beton_serit=)` parametresi, yoksa ortam degiskeni, yoksa bu sabit.
+INCE_BETON_SERIT_ETKIN = False
+INCE_BETON_SERIT_ORTAM_DEGISKENI = "NAVITAS_INCE_BETON_SERIT"   # "1" acik, "0" kapali
+INCE_BETON_L_ESIGI = 225                 # LAB L (0-255): kanal 225-255 olculdu; acik toprak yol cogunlukla altinda
+INCE_BETON_KROMA_UST = 20                # sqrt(a^2+b^2) ust siniri (T67 kirmizi esigi 25'in altinda)
+INCE_BETON_KONTRAST_ESIGI = 30           # bilesen ort. L - cevre halkasi ort. L alt siniri (L birimi)
+INCE_BETON_GENISLIK_ALT_ORANI = 3.0 / 512.0     # ~0,00586 · 3 px @512
+INCE_BETON_GENISLIK_UST_ORANI = 14.0 / 512.0    # ~0,02734 · 14 px @512 — YOLU DISLAR
+INCE_BETON_EN_BOY_ORANI = 4.0            # uzunluk / genislik; T67 ile ayni
+INCE_BETON_ASGARI_UZUNLUK_ORANI = 40.0 / 512.0  # ~0,078 · 40 px @512 (~3 m kanal olceginde)
+INCE_BETON_KAPAMA_ORANI = 5.0 / 512.0    # serit icindeki <= 4 px kopuklugu koprule (5 px cekirdek @512)
+
+
+def ince_beton_serit_maskesi(bgr):
+    """Acik renkli, DAR ve UZUN beton seritleri isaretle (KATMAN 2 engeli).
+
+    Girdi BGR goruntu; cikti ayni (h, w) boyutunda uint8 ikili maske.
+    Fail-closed: cozulemeyen girdide None doner (cagiran hicbir sey
+    EKLEMEZ); kucuk girdide bos maske. Hicbir kosulda serbest alani
+    BUYUTEMEZ (madde 15) — yalniz ENGEL katmanina OR'lanmak icin vardir.
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return None
+    im = _np.asarray(bgr)
+    if im.ndim != 3 or im.shape[2] != 3 or im.size == 0:
+        return None
+    h, w = im.shape[:2]
+    if h < 3 or w < 3:
+        return _np.zeros((max(h, 0), max(w, 0)), _np.uint8)
+
+    lab = _cv2.cvtColor(im.astype(_np.uint8), _cv2.COLOR_BGR2LAB)
+    L = lab[:, :, 0]
+    a = lab[:, :, 1].astype(_np.int32) - 128
+    b = lab[:, :, 2].astype(_np.int32) - 128
+    kroma2 = a * a + b * b
+
+    # Genislik sinirlari ORANDAN piksele (tuval genisligi uzerinden).
+    ust = max(2, int(round(w * INCE_BETON_GENISLIK_UST_ORANI)))
+    alt = max(1.0, w * INCE_BETON_GENISLIK_ALT_ORANI)
+    asgari_uzunluk = max(2.0, w * INCE_BETON_ASGARI_UZUNLUK_ORANI)
+    acma = max(1, int(round(alt)) | 1)                      # 3 px @512
+    kapama = max(1, int(round(w * INCE_BETON_KAPAMA_ORANI)) | 1)
+
+    aday = ((L >= INCE_BETON_L_ESIGI)
+            & (kroma2 <= INCE_BETON_KROMA_UST * INCE_BETON_KROMA_UST)).astype(_np.uint8)
+    if not aday.any():
+        return _np.zeros((h, w), _np.uint8)
+    aday = _cv2.morphologyEx(
+        aday, _cv2.MORPH_OPEN,
+        _cv2.getStructuringElement(_cv2.MORPH_ELLIPSE, (acma, acma)))
+    aday = _cv2.morphologyEx(
+        aday, _cv2.MORPH_CLOSE,
+        _cv2.getStructuringElement(_cv2.MORPH_ELLIPSE, (kapama, kapama)))
+    if not aday.any():
+        return _np.zeros((h, w), _np.uint8)
+
+    n, lbl, st, _ = _cv2.connectedComponentsWithStats(aday, 8)
+    uzaklik = _cv2.distanceTransform(aday, _cv2.DIST_L2, 3)
+    halka_cekirdek = _cv2.getStructuringElement(
+        _cv2.MORPH_ELLIPSE, (2 * ust + 1, 2 * ust + 1))
+    Lf = L.astype(_np.float32)
+    out = _np.zeros((h, w), _np.uint8)
+    for i in range(1, n):
+        x, y, bw, bh, alan = (int(v) for v in st[i])
+        if alan < alt * asgari_uzunluk:
+            continue
+        parca = (lbl[y:y + bh, x:x + bw] == i)
+        genislik = 2.0 * float(uzaklik[y:y + bh, x:x + bw][parca].max())
+        if genislik < alt or genislik > ust:
+            continue
+        uzunluk = alan / genislik
+        if uzunluk < asgari_uzunluk or uzunluk < INCE_BETON_EN_BOY_ORANI * genislik:
+            continue
+        # Halka kontrasti: bilesen, cevresindeki (aday olmayan) halkadan parlak mi?
+        x0, y0 = max(0, x - ust), max(0, y - ust)
+        x1, y1 = min(w, x + bw + ust), min(h, y + bh + ust)
+        pencere = _np.zeros((y1 - y0, x1 - x0), _np.uint8)
+        pencere[y - y0:y - y0 + bh, x - x0:x - x0 + bw] = parca
+        halka = (_cv2.dilate(pencere, halka_cekirdek) > 0) & (pencere == 0) \
+            & (aday[y0:y1, x0:x1] == 0)
+        if not halka.any():
+            continue
+        Lp = Lf[y0:y1, x0:x1]
+        if float(Lp[pencere > 0].mean()) - float(Lp[halka].mean()) < INCE_BETON_KONTRAST_ESIGI:
+            continue
+        out[y:y + bh, x:x + bw][parca] = 1
+    return out
+
+
+# ════════════════════════════════════════════════════════════════════════════
 # T72 · HB (HEDEF BOLGESI) DEDEKTORU — KATMAN 2   (CONTRACTS SS2 · SS5 · SS6.4)
 # ════════════════════════════════════════════════════════════════════════════
 # KUSUR (saha kuru kosusu): `hedef_konumu` halkasi SAHIPSIZ. HB'nin tek kaynagi

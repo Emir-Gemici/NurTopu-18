@@ -1,0 +1,263 @@
+{
+ "agirlik": "O:\\navitas\\models\\navitas_seg_v35_best.pt",
+ "ad": "t153_kapali_v35_val82",
+ "kapi_sabitleri": {
+  "verdikt": true,
+  "K1_min": 230,
+  "red67_maks": 5,
+  "cati_kacagi_maks": 0.1,
+  "rota_test29_min": 10,
+  "maske_yok_test29_maks": 10
+ },
+ "taban_v35": {
+  "rota": 6,
+  "maske_yok": 16,
+  "uc_bant": 7,
+  "figur_zemin": 0.1508,
+  "kaplama67": 0.5076,
+  "cati": 0.043
+ },
+ "test_dizin": "O:\\navitas\\dataset\\dji_kirsal_0038_bolum_v3\\images\\val",
+ "tavan": "O:\\navitas\\results\\gece_20260826\\sizinti\\val82_etiket_tavani.json",
+ "k109": {
+  "cati_kacak_ort": 0.0428,
+  "cati_kacak_medyan": 0.0209,
+  "disk_cati_engel": 0.9809,
+  "disk_cati_zemin": 0.0035,
+  "disk_zemin_zemin": 0.9227,
+  "cati_dondu": true,
+  "kaplama67_icerik_medyan": 0.5076,
+  "kaplama67_tuval_medyan": 0.2855,
+  "zemin_maskesi_reddi": 0,
+  "figur_zemin_orani": 0.15084,
+  "figur_engel_orani": 0.22091
+ },
+ "test29": {
+  "n": 82,
+  "rota": 15,
+  "maske_yok": 49,
+  "uc_bant": 18,
+  "sebep": {
+   "MASKE_YOK": 49,
+   "null": 15,
+   "UC_BANT_TEMAS_YOK": 18
+  },
+  "json": "O:\\navitas\\.claude\\worktrees\\wf_2d1c9d5e-54f-1\\results\\t153\\olcum\\t153_kapali_v35_val82_test29.json",
+  "exit": 0
+ },
+ "test29_tavan": {
+  "tavan_rota": 43,
+  "TP": 15,
+  "FP": 0,
+  "FN": 28,
+  "fp_kareler": []
+ },
+ "kapi_sabitleri_b_ek2": {
+  "yol_payi_min": 0.9,
+  "engel_wp_maks": 0
+ },
+ "rota_yol": {
+  "kapi": {
+   "yol_payi_min": 0.9,
+   "engel_wp_maks": 0
+  },
+  "etiket_dizin": "O:\\navitas\\dataset\\dji_kirsal_0038_bolum_v3\\labels\\val",
+  "rota_kare": 15,
+  "yanlis_guzergah": 10,
+  "yanlis_kareler": [
+   "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+   "dji_20260822172613_0038_d__frame_000153_000005790.jpg",
+   "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
+   "dji_20260822172613_0038_d__frame_000157_000005910.jpg",
+   "dji_20260822172613_0038_d__frame_000158_000005940.jpg",
+   "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
+   "dji_20260822172613_0038_d__frame_000201_000007440.jpg",
+   "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
+   "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+   "dji_20260822172613_0038_d__frame_000230_000008520.jpg"
+  ],
+  "rota_yol": [
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000076_000003360.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1843,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
+    "yol_payi": 0.995,
+    "etiketsiz_payi": 0.005,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0292,
+    "engel_payi": 0.9708,
+    "engel_wp": 7,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1821,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000153_000005790.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 1.0,
+    "engel_wp": 8,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
+    "yol_payi": 0.2794,
+    "etiketsiz_payi": 0.6524,
+    "engel_payi": 0.0682,
+    "engel_wp": 1,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000157_000005910.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 1.0,
+    "engel_wp": 8,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000158_000005940.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0204,
+    "engel_payi": 0.9796,
+    "engel_wp": 7,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 1.0,
+    "engel_wp": 8,
+    "cizgi_px": 1819,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000163_000006090.jpg",
+    "yol_payi": 1.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 0.0,
+    "engel_wp": 0,
+    "cizgi_px": 1832,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": false
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000201_000007440.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 1.0,
+    "engel_wp": 8,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.3306,
+    "engel_payi": 0.6694,
+    "engel_wp": 5,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.3952,
+    "engel_payi": 0.6048,
+    "engel_wp": 5,
+    "cizgi_px": 1870,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   },
+   {
+    "kare": "dji_20260822172613_0038_d__frame_000230_000008520.jpg",
+    "yol_payi": 0.0,
+    "etiketsiz_payi": 0.0,
+    "engel_payi": 1.0,
+    "engel_wp": 8,
+    "cizgi_px": 1818,
+    "wp": 8,
+    "etiket_var": true,
+    "yanlis_guzergah": true
+   }
+  ]
+ },
+ "kapi_a": {
+  "verdikt": null,
+  "K1>=230": null,
+  "red67<=5": true,
+  "cati<=0,10": true
+ },
+ "kapi_b": {
+  "rota_test29>=10": true,
+  "maske_yok_test29<=10": false,
+  "FP_test29<=1": true,
+  "yanlis_guzergah==0": false
+ },
+ "a_gecti": false,
+ "b_gecti": false,
+ "terfi_adayi": false,
+ "saniye": 256
+}

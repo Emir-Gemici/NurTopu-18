@@ -1,0 +1,14 @@
+kare: 82 · model: 1 · imgsz 512
+
+── O:\navitas\models\navitas_seg_v35_best.pt  (230 sn)
+   U2 bandinda (0.05<oran<0.95): 19/82 kare · 1 ayri klip
+   ROTA URETILEN  olceksiz 14  ·  olcek BEDAVA 2
+   sebep (olceksiz)   : {'MASKE_YOK': 49, 'UC_BANT_TEMAS_YOK': 19, None: 14}
+   sebep (olcek bedava): {'MASKE_YOK': 49, 'UC_BANT_TEMAS_YOK': 19, 'GORUS_HATTI_KOPUK': 12, None: 2}
+
+yazildi: O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\results\t153\olcum\t153_acik_v35_val82_test29.json
+
+--stderr--
+[T153 sitecustomize] rpi_inference=O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\codes\rpi_inference.py NAVITAS_INCE_BETON_SERIT='1'
+T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+Rota 378 waypoint gerektiriyor (yumusak hedef: 32); azami aralik guvenligi icin seyreltilmedi.

@@ -1,0 +1,106 @@
+MUTASYON YOK (kontrol)
+...........T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+...........
+----------------------------------------------------------------------
+Ran 22 tests in 0.379s
+
+OK
+DUSEN: []
+MUTASYON: INCE_BETON_GENISLIK_UST_ORANI = 1.0 (ust sinir YOK)
+F.FFF.......T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+..........F
+======================================================================
+FAIL: test_AYNI_KAREDE_yol_KALIR_kanal_ENGEL (test_t153_ince_beton_serit.DedektorTests.test_AYNI_KAREDE_yol_KALIR_kanal_ENGEL)
+Gercek sahne: genis acik yol + kenarinda dar kanal (f157 gorunumu).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 188, in test_AYNI_KAREDE_yol_KALIR_kanal_ENGEL
+    self.assertEqual(0, int(m[60:460, 200:260].sum()), "YOL engel oldu")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 23996 : YOL engel oldu
+
+======================================================================
+FAIL: test_GENIS_ACIK_YOL_engel_SAYILMAZ (test_t153_ince_beton_serit.DedektorTests.test_GENIS_ACIK_YOL_engel_SAYILMAZ) (genislik=30)
+🔴 TUZAK KILIDI: 60 px @512 acik toprak yol (uzun: 400 px) YOL kalir.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 144, in test_GENIS_ACIK_YOL_engel_SAYILMAZ
+    self.assertEqual(0, int(ince_beton_serit_maskesi(t).sum()),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     f"{bw} px genis yol engel sayildi — rota HIC uretilmez")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 11996 : 30 px genis yol engel sayildi — rota HIC uretilmez
+
+======================================================================
+FAIL: test_GENIS_ACIK_YOL_engel_SAYILMAZ (test_t153_ince_beton_serit.DedektorTests.test_GENIS_ACIK_YOL_engel_SAYILMAZ) (genislik=60)
+🔴 TUZAK KILIDI: 60 px @512 acik toprak yol (uzun: 400 px) YOL kalir.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 144, in test_GENIS_ACIK_YOL_engel_SAYILMAZ
+    self.assertEqual(0, int(ince_beton_serit_maskesi(t).sum()),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     f"{bw} px genis yol engel sayildi — rota HIC uretilmez")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 23996 : 60 px genis yol engel sayildi — rota HIC uretilmez
+
+======================================================================
+FAIL: test_GENIS_CAPRAZ_YOL_engel_SAYILMAZ (test_t153_ince_beton_serit.DedektorTests.test_GENIS_CAPRAZ_YOL_engel_SAYILMAZ)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 149, in test_GENIS_CAPRAZ_YOL_engel_SAYILMAZ
+    self.assertEqual(0, int(ince_beton_serit_maskesi(t).sum()))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 21149
+
+======================================================================
+FAIL: test_olcutler_ORAN_olarak_tanimli_ve_sirali (test_t153_ince_beton_serit.SozlesmeTests.test_olcutler_ORAN_olarak_tanimli_ve_sirali)
+CONTRACTS SS8: mutlak piksel degil oran; alt < ust; uzunluk > ust.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 100, in test_olcutler_ORAN_olarak_tanimli_ve_sirali
+    self.assertLess(oran, 1.0)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: 1.0 not less than 1.0
+
+----------------------------------------------------------------------
+Ran 22 tests in 80.054s
+
+FAILED (failures=5)
+DUSEN: ['test_AYNI_KAREDE_yol_KALIR_kanal_ENGEL', 'test_GENIS_ACIK_YOL_engel_SAYILMAZ', 'test_GENIS_ACIK_YOL_engel_SAYILMAZ', 'test_GENIS_CAPRAZ_YOL_engel_SAYILMAZ', 'test_olcutler_ORAN_olarak_tanimli_ve_sirali']
+MUTASYON: uzunluk / en-boy suzgeci YOK
+......F....T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+........F.F
+======================================================================
+FAIL: test_KISA_PARLAK_LEKE_engel_SAYILMAZ (test_t153_ince_beton_serit.DedektorTests.test_KISA_PARLAK_LEKE_engel_SAYILMAZ)
+Uzun degil: 6 x 20 px tas / arac tavani.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 165, in test_KISA_PARLAK_LEKE_engel_SAYILMAZ
+    self.assertEqual(0, int(ince_beton_serit_maskesi(t).sum()))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 116
+
+======================================================================
+FAIL: test_en_boy_T67_ile_AYNI (test_t153_ince_beton_serit.SozlesmeTests.test_en_boy_T67_ile_AYNI)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 108, in test_en_boy_T67_ile_AYNI
+    self.assertEqual(BARIYER_EN_BOY_ORANI, INCE_BETON_EN_BOY_ORANI)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4.0 != 0.0
+
+======================================================================
+FAIL: test_olcutler_ORAN_olarak_tanimli_ve_sirali (test_t153_ince_beton_serit.SozlesmeTests.test_olcutler_ORAN_olarak_tanimli_ve_sirali)
+CONTRACTS SS8: mutlak piksel degil oran; alt < ust; uzunluk > ust.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\tests\test_t153_ince_beton_serit.py", line 99, in test_olcutler_ORAN_olarak_tanimli_ve_sirali
+    self.assertGreater(oran, 0.0)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: 0.0 not greater than 0.0
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.390s
+
+FAILED (failures=3)
+DUSEN: ['test_KISA_PARLAK_LEKE_engel_SAYILMAZ', 'test_en_boy_T67_ile_AYNI', 'test_olcutler_ORAN_olarak_tanimli_ve_sirali']

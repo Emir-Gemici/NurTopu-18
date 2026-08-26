@@ -1,0 +1,21 @@
+| model | bolum | ROTA K/A | YANLIS K/A | yol ustunde K/A | TP K/A | FP K/A | FN K/A | MASKE_YOK K/A | mesru kayip (yol ust.) | yeni FP | yanlis->yol | yanlis->yok | yol->yok | red67 K/A |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| v35 | test29 | 6/6 | 5/5 | 1/1 | 5/5 | 1/1 | 7/7 | 16/16 | 0 (0) | 0 | 0 | 0 | 0 | 0/0 |
+| v35 | val82 | 15/14 | 10/9 | 5/5 | 15/14 | 0/0 | 28/29 | 49/49 | 1 (0) | 0 | 0 | 1 | 0 | 0/0 |
+| v35 | 111 | 21/20 | 15/14 | 6/6 | 20/19 | 1/1 | 35/36 | 65/65 | 1 (0) | 0 | 0 | 1 | 0 | - |
+| v3 | test29 | 10/10 | 4/4 | 6/6 | 9/9 | 1/1 | 3/3 | 11/11 | 0 (0) | 0 | 0 | 0 | 0 | 0/0 |
+| v3 | val82 | 31/31 | 5/5 | 26/26 | 30/30 | 1/1 | 13/13 | 30/30 | 0 (0) | 0 | 0 | 0 | 0 | 0/0 |
+| v3 | 111 | 41/41 | 9/9 | 32/32 | 39/39 | 2/2 | 16/16 | 41/41 | 0 (0) | 0 | 0 | 0 | 0 | - |
+| v6 | test29 | 12/12 | 5/5 | 7/7 | 10/10 | 2/2 | 2/2 | 8/8 | 0 (0) | 0 | 0 | 0 | 0 | 0/0 |
+| v6 | val82 | 35/35 | 8/8 | 27/27 | 33/33 | 2/2 | 10/10 | 20/20 | 0 (0) | 0 | 0 | 0 | 0 | 0/0 |
+| v6 | 111 | 47/47 | 13/13 | 34/34 | 43/43 | 4/4 | 12/12 | 28/28 | 0 (0) | 0 | 0 | 0 | 0 | - |
+
+v35 KURAL (ON_KAYIT §13): {"yanlis_kapali": 15, "yanlis_acik": 14, "azalma_orani": 0.067, "yanlis_>=%50_azaldi": false, "mesru_rota_kaybi": 1, "mesru_rota_kaybi_<=1": true, "mesru_rota_kaybi_yol_ustunde_bilgi": 0, "yeni_FP": 0, "yeni_FP_0": true, "K1_K6_birebir": true, "red67_acik": 0, "red67_<=5": true, "SAGLANDI": false}
+v35 K1-K6: {"birebir": true, "gecti_acik": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K6": true, "K5": true}, "gecti_ref": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K6": true, "K5": true}, "verdikt_acik": true, "verdikt_ref": true, "K0_figur": {"acik": 0.090305, "ref": 0.090305}, "K1_acik": "256/260", "K1_ref": "256/260", "K6_acik": "5/256", "K6_ref": "5/256"} fark: {}
+
+v3 KURAL (ON_KAYIT §13): {"yanlis_kapali": 9, "yanlis_acik": 9, "azalma_orani": 0.0, "yanlis_>=%50_azaldi": false, "mesru_rota_kaybi": 0, "mesru_rota_kaybi_<=1": true, "mesru_rota_kaybi_yol_ustunde_bilgi": 0, "yeni_FP": 0, "yeni_FP_0": true, "K1_K6_birebir": true, "red67_acik": 0, "red67_<=5": true, "SAGLANDI": false}
+v3 K1-K6: {"birebir": true, "gecti_acik": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K6": true, "K5": true}, "gecti_ref": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K6": true, "K5": true}, "verdikt_acik": true, "verdikt_ref": true, "K0_figur": {"acik": 0.019514, "ref": 0.019514}, "K1_acik": "253/260", "K1_ref": "253/260", "K6_acik": "1/253", "K6_ref": "1/253"} fark: {}
+
+v6 KURAL (ON_KAYIT §13): {"yanlis_kapali": 13, "yanlis_acik": 13, "azalma_orani": 0.0, "yanlis_>=%50_azaldi": false, "mesru_rota_kaybi": 0, "mesru_rota_kaybi_<=1": true, "mesru_rota_kaybi_yol_ustunde_bilgi": 0, "yeni_FP": 0, "yeni_FP_0": true, "K1_K6_birebir": true, "red67_acik": 0, "red67_<=5": true, "SAGLANDI": false}
+v6 K1-K6: {"birebir": true, "gecti_acik": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K6": true, "K5": true}, "gecti_ref": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K6": true, "K5": true}, "verdikt_acik": true, "verdikt_ref": true, "K0_figur": {"acik": 0.048786, "ref": 0.048786}, "K1_acik": "257/260", "K1_ref": "257/260", "K6_acik": "3/257", "K6_ref": "3/257"} fark: {}
+yazildi: O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\results\t153\analiz.json

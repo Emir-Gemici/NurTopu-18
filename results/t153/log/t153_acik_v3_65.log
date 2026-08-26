@@ -1,0 +1,34 @@
+CMD: O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\scripts\olcum\65_kabul_denetcisi.py --model O:\navitas\codes\runs\segment\gece_v3_v35taban\weights\best.pt --ad t153_acik_v3
+NAVITAS_INCE_BETON_SERIT=1
+
+[T153 sitecustomize] rpi_inference=O:\navitas\.claude\worktrees\wf_2d1c9d5e-54f-1\codes\rpi_inference.py NAVITAS_INCE_BETON_SERIT='1'
+T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+
+==================================================================
+KABUL DENETIMI · t153_acik_v3
+  esikler: REVIEW_LOG D-107 (sonuc gorulmeden yazildi)
+==================================================================
+  kabul kumesi: O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66
+                parmak izi n=547 · sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586
+  K0 KORLUK YOK        GECTI  figur zemin %1.95 (uretim tabani %9.03 = v35'in degeri · oran 0.22)
+                       raw bos 0/67 · cp bos 0/393
+  🔴 DIKKAT: figur kaplamasi uretim tabanindan 0.22 kat sapiyor.
+     < 0,5 ise YETENEK uyarisi (daha az zemin) — fail-closed yon.
+     SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49 · v35 %9.03
+               (+4 kayit DONEM-TUTARLI DEGIL — 640 donemi; kiyasa ve medyana GIRMEZ, kayitta DURUR)
+     TABAN, soyagaci medyanindan (%7.90) 1.1x uzakta   <- SAYI, KURAL DEGIL
+  K1 ROTA >= 230       GECTI       253/260
+  K2 BASMA <= %15      GECTI       14/253   (taban %9,2)
+  K3 AGIR  <= %3       GECTI       0/253   (taban %0)
+  K4 ARENA DISI <= %5  GECTI       1/253
+  K6 ROTA YOL USTUNDE <= %5  GECTI       yanlis guzergah 1/253   [ON_KAYIT §12: yol_payi >= 0,90 ve engel_wp == 0]
+  K5 BARIYER = 0 px    GECTI       kesen 0/169 kare · toplam 0 px  [zemin: POPULASYON, T126/D-243]
+                       bilgi (kapi DEGIL): tek figur OLCULEMEDI (None px)
+------------------------------------------------------------------
+  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 saglandi.
+==================================================================
+
+⚠ Bu olcumlerin tamami SENTETIKTIR. Hicbiri 'sahada calisir'
+  anlamina gelmez (D-88 + D-99, kalici kisit).
+
+json -> O:\navitas\scripts\olcum\results\t63\t153_acik_v3_kabul_verdikt.json

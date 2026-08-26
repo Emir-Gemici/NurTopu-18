@@ -1,0 +1,1128 @@
+{
+ "ozet": {
+  "n": 111,
+  "ateslenen_kare": 25,
+  "px_toplam": 89539,
+  "pay_gt1": 0.6652,
+  "pay_gt0": 0.0856,
+  "pay_etiketsiz": 0.2492,
+  "gt0_uzerine_yazan_kare": 4,
+  "gt0_>100px_kare": [
+   "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+   "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
+   "dji_20260822172613_0038_d__frame_000216_000007890.jpg"
+  ]
+ },
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 109523,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 87395,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 144479,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 273964,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 216840,
+   "gt0_toplam": 70948
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 297319,
+   "gt0_toplam": 56544
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 297456,
+   "gt0_toplam": 65163
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 454579,
+   "gt0_toplam": 45770
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 490001,
+   "gt0_toplam": 21578
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 457668,
+   "gt0_toplam": 38694
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 451057,
+   "gt0_toplam": 66985
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 365828,
+   "gt0_toplam": 22885
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 413142,
+   "gt0_toplam": 52653
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 336181,
+   "gt0_toplam": 43592
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 346124,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 452520,
+   "gt0_toplam": 34564
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 458111,
+   "gt0_toplam": 50171
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 483397,
+   "gt0_toplam": 30683
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 249306,
+   "gt0_toplam": 59067
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 291170,
+   "gt0_toplam": 90091
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 174565,
+   "gt0_toplam": 43339
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+   "bolum": "test29",
+   "px": 5168,
+   "gt1": 0,
+   "gt0": 2394,
+   "etiketsiz": 2774,
+   "gt1_toplam": 131461,
+   "gt0_toplam": 75138
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
+   "bolum": "test29",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 56017,
+   "gt0_toplam": 86045
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
+   "bolum": "test29",
+   "px": 1970,
+   "gt1": 1970,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 64567,
+   "gt0_toplam": 113296
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "bolum": "test29",
+   "px": 3218,
+   "gt1": 2705,
+   "gt0": 0,
+   "etiketsiz": 513,
+   "gt1_toplam": 120425,
+   "gt0_toplam": 83835
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+   "bolum": "test29",
+   "px": 1714,
+   "gt1": 608,
+   "gt0": 0,
+   "etiketsiz": 1106,
+   "gt1_toplam": 216940,
+   "gt0_toplam": 47664
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "bolum": "test29",
+   "px": 4813,
+   "gt1": 4664,
+   "gt0": 0,
+   "etiketsiz": 149,
+   "gt1_toplam": 84431,
+   "gt0_toplam": 116291
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+   "bolum": "test29",
+   "px": 2089,
+   "gt1": 2079,
+   "gt0": 10,
+   "etiketsiz": 0,
+   "gt1_toplam": 35755,
+   "gt0_toplam": 103371
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "bolum": "test29",
+   "px": 4536,
+   "gt1": 4529,
+   "gt0": 0,
+   "etiketsiz": 7,
+   "gt1_toplam": 93509,
+   "gt0_toplam": 72414
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000008_000000900.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 216300,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000021_000001500.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 207884,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000024_000001590.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 66490,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000028_000001710.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 109260,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000030_000001770.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 15111,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000032_000001830.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 44340,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000037_000001980.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 153492,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000041_000002100.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 197728,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000044_000002190.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 254779,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000046_000002250.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 186710,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000050_000002370.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 269535,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000051_000002400.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 244980,
+   "gt0_toplam": 28903
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 116692,
+   "gt0_toplam": 36003
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 168703,
+   "gt0_toplam": 65684
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 298820,
+   "gt0_toplam": 106841
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000069_000003090.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 157770,
+   "gt0_toplam": 113670
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 198760,
+   "gt0_toplam": 46555
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 292140,
+   "gt0_toplam": 98992
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000076_000003360.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 264641,
+   "gt0_toplam": 95853
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 356155,
+   "gt0_toplam": 109533
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 319125,
+   "gt0_toplam": 114797
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000084_000003690.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 328859,
+   "gt0_toplam": 109543
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000087_000003780.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 416619,
+   "gt0_toplam": 63630
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000088_000003810.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 472843,
+   "gt0_toplam": 45557
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 480566,
+   "gt0_toplam": 32649
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 489687,
+   "gt0_toplam": 28713
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 481109,
+   "gt0_toplam": 33213
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000102_000004230.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 460132,
+   "gt0_toplam": 17931
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 419293,
+   "gt0_toplam": 73761
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000106_000004350.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 403589,
+   "gt0_toplam": 25909
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000108_000004410.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 375164,
+   "gt0_toplam": 50157
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 438849,
+   "gt0_toplam": 45471
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000113_000004560.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 304612,
+   "gt0_toplam": 32346
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 281330,
+   "gt0_toplam": 6863
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000115_000004620.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 269305,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000117_000004680.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 317237,
+   "gt0_toplam": 13499
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 299003,
+   "gt0_toplam": 46156
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000122_000004830.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 406033,
+   "gt0_toplam": 49169
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000123_000004860.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 455515,
+   "gt0_toplam": 46479
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 458965,
+   "gt0_toplam": 58849
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000127_000004980.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 444922,
+   "gt0_toplam": 34045
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000128_000005010.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 401048,
+   "gt0_toplam": 101791
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 298371,
+   "gt0_toplam": 36170
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 368858,
+   "gt0_toplam": 58960
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000134_000005190.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 282276,
+   "gt0_toplam": 120247
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 223833,
+   "gt0_toplam": 83028
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 242319,
+   "gt0_toplam": 84626
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 393062,
+   "gt0_toplam": 105655
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000141_000005400.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 285847,
+   "gt0_toplam": 115062
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 195854,
+   "gt0_toplam": 50216
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 174336,
+   "gt0_toplam": 60207
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 165513,
+   "gt0_toplam": 125521
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000146_000005550.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 267094,
+   "gt0_toplam": 123199
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000148_000005640.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 210265,
+   "gt0_toplam": 64875
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000150_000005700.jpg",
+   "bolum": "val82",
+   "px": 1112,
+   "gt1": 375,
+   "gt0": 0,
+   "etiketsiz": 737,
+   "gt1_toplam": 211891,
+   "gt0_toplam": 63628
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000151_000005730.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 132327,
+   "gt0_toplam": 70794
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000153_000005790.jpg",
+   "bolum": "val82",
+   "px": 6399,
+   "gt1": 5504,
+   "gt0": 0,
+   "etiketsiz": 895,
+   "gt1_toplam": 66270,
+   "gt0_toplam": 69490
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000154_000005820.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 0,
+   "gt0_toplam": 70833
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000155_000005850.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 0,
+   "gt0_toplam": 89246
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
+   "bolum": "val82",
+   "px": 5132,
+   "gt1": 0,
+   "gt0": 3422,
+   "etiketsiz": 1710,
+   "gt1_toplam": 7560,
+   "gt0_toplam": 96357
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000157_000005910.jpg",
+   "bolum": "val82",
+   "px": 6084,
+   "gt1": 6084,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 18583,
+   "gt0_toplam": 83320
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000158_000005940.jpg",
+   "bolum": "val82",
+   "px": 4236,
+   "gt1": 2347,
+   "gt0": 0,
+   "etiketsiz": 1889,
+   "gt1_toplam": 34790,
+   "gt0_toplam": 135409
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
+   "bolum": "val82",
+   "px": 3298,
+   "gt1": 3289,
+   "gt0": 0,
+   "etiketsiz": 9,
+   "gt1_toplam": 49328,
+   "gt0_toplam": 126298
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000163_000006090.jpg",
+   "bolum": "val82",
+   "px": 3382,
+   "gt1": 3021,
+   "gt0": 0,
+   "etiketsiz": 361,
+   "gt1_toplam": 78483,
+   "gt0_toplam": 80868
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 197506,
+   "gt0_toplam": 86175
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 150728,
+   "gt0_toplam": 65980
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000177_000006630.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 232398,
+   "gt0_toplam": 82096
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000185_000006930.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 196071,
+   "gt0_toplam": 64383
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000192_000007170.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 147748,
+   "gt0_toplam": 75097
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
+   "bolum": "val82",
+   "px": 4270,
+   "gt1": 4159,
+   "gt0": 0,
+   "etiketsiz": 111,
+   "gt1_toplam": 117666,
+   "gt0_toplam": 103909
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000201_000007440.jpg",
+   "bolum": "val82",
+   "px": 1618,
+   "gt1": 1565,
+   "gt0": 0,
+   "etiketsiz": 53,
+   "gt1_toplam": 162148,
+   "gt0_toplam": 89327
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
+   "bolum": "val82",
+   "px": 1721,
+   "gt1": 1685,
+   "gt0": 0,
+   "etiketsiz": 36,
+   "gt1_toplam": 175336,
+   "gt0_toplam": 42315
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000204_000007530.jpg",
+   "bolum": "val82",
+   "px": 3539,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 3539,
+   "gt1_toplam": 89435,
+   "gt0_toplam": 93068
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000206_000007590.jpg",
+   "bolum": "val82",
+   "px": 5163,
+   "gt1": 4771,
+   "gt0": 0,
+   "etiketsiz": 392,
+   "gt1_toplam": 76526,
+   "gt0_toplam": 92411
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
+   "bolum": "val82",
+   "px": 5821,
+   "gt1": 4517,
+   "gt0": 0,
+   "etiketsiz": 1304,
+   "gt1_toplam": 103128,
+   "gt0_toplam": 70592
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+   "bolum": "val82",
+   "px": 2693,
+   "gt1": 2241,
+   "gt0": 0,
+   "etiketsiz": 452,
+   "gt1_toplam": 110373,
+   "gt0_toplam": 107860
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+   "bolum": "val82",
+   "px": 3063,
+   "gt1": 1348,
+   "gt0": 0,
+   "etiketsiz": 1715,
+   "gt1_toplam": 37627,
+   "gt0_toplam": 84432
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000213_000007800.jpg",
+   "bolum": "val82",
+   "px": 1437,
+   "gt1": 1274,
+   "gt0": 0,
+   "etiketsiz": 163,
+   "gt1_toplam": 22923,
+   "gt0_toplam": 59650
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000216_000007890.jpg",
+   "bolum": "val82",
+   "px": 2664,
+   "gt1": 824,
+   "gt0": 1840,
+   "etiketsiz": 0,
+   "gt1_toplam": 54741,
+   "gt0_toplam": 76977
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
+   "bolum": "val82",
+   "px": 4399,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 4399,
+   "gt1_toplam": 30433,
+   "gt0_toplam": 80328
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 52890,
+   "gt0_toplam": 0
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000230_000008520.jpg",
+   "bolum": "val82",
+   "px": 0,
+   "gt1": 0,
+   "gt0": 0,
+   "etiketsiz": 0,
+   "gt1_toplam": 200755,
+   "gt0_toplam": 88780
+  }
+ ]
+}
