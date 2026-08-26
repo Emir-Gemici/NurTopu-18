@@ -1,0 +1,26 @@
+[2] 109 {"cati_kacak_ort": 0.0284, "cati_kacak_medyan": 0.0107, "disk_cati_engel": 0.9851, "disk_cati_zemin": 0.0003, "disk_zemin_zemin": 0.9516, "cati_dondu": true, "kaplama67_icerik_medyan": 0.4776, "kaplama67_tuval_medyan": 0.2686, "zemin_maskesi_reddi": 0, "figur_zemin_orani": 0.0326, "figur_engel_orani": 0.21122}
+[3] test29 {"n": 29, "rota": 10, "maske_yok": 11, "uc_bant": 8, "sebep": {"MASKE_YOK": 11, "UC_BANT_TEMAS_YOK": 8, "null": 10}, "exit": 0}
+[3-ek] tavan {"tavan_rota": 12, "TP": 9, "FP": 1, "FN": 3, "fp_kareler": ["dji_20260822172613_0038_d__frame_000218_000007980.jpg"]}
+[3-ek2] rota_yol {"kapi": {"yol_payi_min": 0.9, "engel_wp_maks": 0}, "etiket_dizin": "dataset\\dji_kirsal_0038_bolum_v3\\labels\\test", "rota_kare": 10, "yanlis_guzergah": 4, "yanlis_kareler": ["dji_20260822172613_0038_d__frame_000143_000005460.jpg", "dji_20260822172613_0038_d__frame_000196_000007290.jpg", "dji_20260822172613_0038_d__frame_000202_000007470.jpg", "dji_20260822172613_0038_d__frame_000218_000007980.jpg"]}
+        dji_20260822172613_0038_d__frame_000062_000002820.jpg: yol 1.00 etiketsiz 0.00 engel_wp 0/8 -> yol ustunde
+        dji_20260822172613_0038_d__frame_000135_000005220.jpg: yol 0.95 etiketsiz 0.05 engel_wp 0/8 -> yol ustunde
+        dji_20260822172613_0038_d__frame_000139_000005340.jpg: yol 1.00 etiketsiz 0.00 engel_wp 0/8 -> yol ustunde
+        dji_20260822172613_0038_d__frame_000143_000005460.jpg: yol 0.01 etiketsiz 0.99 engel_wp 0/8 -> YANLIS GUZERGAH
+        dji_20260822172613_0038_d__frame_000152_000005760.jpg: yol 1.00 etiketsiz 0.00 engel_wp 0/8 -> yol ustunde
+        dji_20260822172613_0038_d__frame_000160_000006000.jpg: yol 1.00 etiketsiz 0.00 engel_wp 0/8 -> yol ustunde
+        dji_20260822172613_0038_d__frame_000196_000007290.jpg: yol 0.10 etiketsiz 0.90 engel_wp 0/8 -> YANLIS GUZERGAH
+        dji_20260822172613_0038_d__frame_000202_000007470.jpg: yol 0.00 etiketsiz 0.00 engel_wp 8/8 -> YANLIS GUZERGAH
+        dji_20260822172613_0038_d__frame_000215_000007860.jpg: yol 1.00 etiketsiz 0.00 engel_wp 0/8 -> yol ustunde
+        dji_20260822172613_0038_d__frame_000218_000007980.jpg: yol 0.70 etiketsiz 0.30 engel_wp 0/8 -> YANLIS GUZERGAH
+
+=== HUKUM (ON_KAYIT §4) ===
+  verdikt                  OLCULMEDI
+  K1>=230                  OLCULMEDI
+  red67<=5                 GECTI
+  cati<=0,10               GECTI
+  rota_test29>=10          GECTI
+  maske_yok_test29<=10     DUSTU
+  FP_test29<=1             GECTI
+  yanlis_guzergah==0       DUSTU
+  (a) DUSTU · (b) DUSTU · TERFI ADAYI: False
+  bilgi: figur_zemin 0.0326 (v35 0,1508) · kaplama67 0.4776 (v35 0,5076) · test29 sebep {'MASKE_YOK': 11, 'UC_BANT_TEMAS_YOK': 8, 'null': 10}

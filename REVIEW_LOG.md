@@ -22015,3 +22015,25 @@ v6 → §4(d) gereği üç çürütücü: **ölçüm** (kıramadı: 126 yeniden 
 - **Kapı tasarımı eksik (D-288'in dersi):** "rota var" + "etiket tavanı da rota diyor" = TP, ama rotanın **nereden** geçtiği ölçülmüyor. Yeni ölçüt önerisi (ön kayıt sonra yazılır): **rota çizgisinin etiketli sınıf 0 üstündeki payı ≥ 0,90** her rota karesinde; ve sınıf 1 üstünden geçen tek waypoint = ret.
 - **Referans kalitesi:** 29 test karesi (ve 0038 val 82) **ikinci bağımsız geçişle** düzeltilmeli — özellikle 196 (asfalt), 205 (üst bant sınırı), 218 (üst bant 4 px). Bu **T152**.
 - Beş koşumun ortak dersi değişmedi: ×20 kopya + aynı saha → best epoch 1; gerçek kazanç için **farklı saha** verisi (DOĞRULAMA uçuşu) gerek.
+
+---
+
+### D-289 · 🔴 T152 SONUCU · uzlaşı referansı (A∧B) + "rota yol üstünde" kapısıyla **hiçbir aday geçmedi — üretim v35 de geçmiyor** (6 rotasının 5'i yol üstünde değil, 196'da rota beton kanalın üstünde)
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-27. Ön kayıt `ON_KAYIT.md §11` (uzlaşı kuralı ve kapı sonuç görülmeden). Ham çıktı: `results/gece_20260826/t152_gecis2/` (111 kare, 23 kör amele, 1,5 M jeton), `t152_uzlasi/` (uyuşmazlık haritası, `en_uyumsuz_3.jpg`, `f196_buyut.jpg`), `test29_etiket_tavani_v3.json`, `olcum_{v35,gece_v3,gece_v6}_ref3.log` + JSON'ları, `results/t152/rapor.md` (kapı kodu, çürütücü kıramadı).
+
+#### 1. İkinci kör geçiş → uzlaşı
+İki geçiş arasında **sınıf 0 IoU medyanı 0,59, uyuşmayan piksel payı medyanı 0,17**. Kalıp (`en_uyumsuz_3.jpg`): eski geçiş (F5 dönemi val/test etiketleri) **tarla/merayı sınıf 0** yapmış; kör geçiş madde 8/12 gereği etiketsiz bırakmış. Uzlaşı (sınıf 0 = A∧B, sınıf 1 = A∨B) bu fazla-yeşilleri düşürdü; test tavanı **12/29** (v1 13, v2 15). 196'daki koyu şerit **beton kanal** (bordürlü) — iki geçiş de sınıf 1 dedi, `f196_buyut.jpg` doğruluyor; **D-288'in "asfalt=engel etiketlenmiş" iddiası yanlıştı**, referans doğruydu.
+
+#### 2. Kapı (b-ek2) — `142 --etiket-dizin`: rota çizgisi ∩ sınıf 0 payı ≥ 0,90 ∧ sınıf 1 üstünde 0 waypoint (çürütücü: koordinat sistemi bağımsız doğrulandı, 9 test + 2 mutasyon, bayt-eş varsayılan)
+| model | ROTA | MASKE_YOK | TP/FP/FN (tavan 12) | YANLIŞ GÜZERGÂH | hüküm |
+|---|---:|---:|---|---:|---|
+| **v35 (üretim)** | 6 | 16 | 5/1/7 | **5/6** (196: engel payı 1,0 — kanal üstünde, 8/8 wp; 202: 0,93; 152: yol 0,58; 124: 0,78; 135: 0,88) | (b) DÜŞTÜ |
+| v3 | 10 | 11 | 9/1/3 | 4/10 (143 yol 0,01 · 196 0,10 · 202 engel 1,0 · 218 0,70) | DÜŞTÜ |
+| v6 | 12 | 8 | 10/2/2 | 5/12 (143 0,0 · 160 0,75 · 196 0,17 · 205 0,24 + 1 engel wp · 218 0,40) | DÜŞTÜ |
+⇒ **Aday yok; terfi yok.** Ve daha önemlisi: **üretimdeki v35, aynı kapıyla 5/6 yanlış güzergâh** — rota üretebildiği az sayıda karede rotayı kanal/etiketsiz zemin üstünden geçiriyor. Bu kapı olmadan hiçbir kabul zinciri bunu görmüyordu (sentetik K1–K5 dâhil).
+
+#### 3. Okuma
+- Uzlaşı referansı bilerek **muhafazakâr** (A∧B); "etiketsiz üstünden geçen rota" bir kısmı gerçekte yol olabilir (143'te geniş gri platform iki geçişte farklı). Ama 196/202/205'teki engel/çim rotaları gerçek yanlışlar. Kapının payı 0,90 ve referans ön kayıtlıdır; gevşetilmedi.
+- Beş eğitim + iki referans turunun ortak sonucu: aynı sahanın verisiyle model "daha çok görüyor" ama **rotayı doğru yere koymuyor**; sentetik arena kabulü bunu ölçmüyor. Terfi kararı artık bu kapıya da bağlı (T152 kapandı, kapı kalıcı).
+- **Sonraki kaldıraç** (öner-bekle): (1) DOĞRULAMA uçuşu — başka saha, kırmızı H (H-A); (2) sentetik arena kabul zincirine aynı "rota yol üstünde" ölçütünün eklenmesi (K6 önerisi; yer gerçeği poligonları var); (3) modelin engel/kanal ayrımı için sınıf 1 örneklerinin (kanal, bordür) eğitimde ağırlığı — ölçülmeden yeniden eğitim YOK.
