@@ -1,0 +1,429 @@
+{
+ "model": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+ "sigma": 2.0,
+ "tekrar": 3,
+ "n": 260,
+ "kararsiz": 14,
+ "cevrilenler": [
+  {
+   "kare": "sa_000013.jpg",
+   "kararlar": [
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": null,
+     "red": "ZEMIN_MASKESI_SUPHELI",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": null,
+     "red": "ZEMIN_MASKESI_SUPHELI",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": null,
+     "red": "ZEMIN_MASKESI_SUPHELI",
+     "guven": 0.0,
+     "darbogaz_px": null
+    }
+   ],
+   "pay_px": 13.919999999999998
+  },
+  {
+   "kare": "sa_000031.jpg",
+   "kararlar": [
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 0.758,
+     "darbogaz_px": 16.9844970703125
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.768,
+     "darbogaz_px": 17.1968994140625
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.804,
+     "darbogaz_px": 18.0
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 0.66,
+     "darbogaz_px": 14.78759765625
+    }
+   ],
+   "pay_px": 2.904497070312498
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "kararlar": [
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.633,
+     "darbogaz_px": 14.181398391723633
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.633,
+     "darbogaz_px": 14.181398391723633
+    }
+   ],
+   "pay_px": null
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "kararlar": [
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 0.741,
+     "darbogaz_px": 16.5906982421875
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    }
+   ],
+   "pay_px": 2.510698242187498
+  },
+  {
+   "kare": "sa_000078.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.937,
+     "darbogaz_px": 21.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.937,
+     "darbogaz_px": 21.0
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.928,
+     "darbogaz_px": 20.78759765625
+    }
+   ],
+   "pay_px": 6.919999999999998
+  },
+  {
+   "kare": "sa_000081.jpg",
+   "kararlar": [
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 0.669,
+     "darbogaz_px": 14.984498977661133
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    }
+   ],
+   "pay_px": 0.904498977661131
+  },
+  {
+   "kare": "sa_000098.jpg",
+   "kararlar": [
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    }
+   ],
+   "pay_px": 13.919999999999998
+  },
+  {
+   "kare": "sa_000100.jpg",
+   "kararlar": [
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 23.5906982421875
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 23.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 0.67,
+     "darbogaz_px": 15.0
+    }
+   ],
+   "pay_px": 9.510698242187498
+  },
+  {
+   "kare": "sa_000129.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 27.762794494628906
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 27.762794494628906
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 28.0
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 24.0
+    }
+   ],
+   "pay_px": 13.682794494628904
+  },
+  {
+   "kare": "sa_000133.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 42.393798828125
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 145.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 144.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 145.0
+    }
+   ],
+   "pay_px": 28.313798828124998
+  },
+  {
+   "kare": "sa_000148.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.687,
+     "darbogaz_px": 15.378297805786133
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.687,
+     "darbogaz_px": 15.378297805786133
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 29.0
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 30.0
+    }
+   ],
+   "pay_px": 1.298297805786131
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "kararlar": [
+    {
+     "serit": null,
+     "red": "UC_BANT_TEMAS_YOK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.67,
+     "darbogaz_px": 15.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.714,
+     "darbogaz_px": 16.0
+    },
+    {
+     "serit": null,
+     "red": "GORUS_HATTI_KOPUK",
+     "guven": 0.0,
+     "darbogaz_px": null
+    }
+   ],
+   "pay_px": null
+  },
+  {
+   "kare": "sa_000198.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 31.78759765625
+    },
+    {
+     "serit": 3,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 33.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 32.0
+    },
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 1.0,
+     "darbogaz_px": 32.0
+    }
+   ],
+   "pay_px": 17.707597656249998
+  },
+  {
+   "kare": "sa_000215.jpg",
+   "kararlar": [
+    {
+     "serit": 2,
+     "red": null,
+     "guven": 0.705,
+     "darbogaz_px": 15.787599563598633
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 0.893,
+     "darbogaz_px": 20.0
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 0.821,
+     "darbogaz_px": 18.393798828125
+    },
+    {
+     "serit": 1,
+     "red": null,
+     "guven": 0.804,
+     "darbogaz_px": 18.0
+    }
+   ],
+   "pay_px": 1.707599563598631
+  }
+ ]
+}

@@ -219,9 +219,15 @@
     "_fitness_notu": "BAKILMADI ve karara GIRMEDI (K-3).",
     "fitness_epoch200": null,
     "karar_cevrilmesi": {
-     "olculen": null,
-     "sonuc": "OLCULMEDI",
-     "not": "🔴 v36 icin OLCULMEDI - ve v35'in sayisi BAYAT OLDUGU ICIN TASINMADI (D-256 SS3 kurali). Tarihsel: v34 4/260 · v35 9/260 (68_karar_kararliligi, sigma 2/255, tekrar 3, tohum 7; results/t130_kararlilik_*.json). Bu eksen v34 terfisinde KAPIYDI (esik <= 8/260), bugunku kabul zincirinde (65) KAPI DEGILDIR. v36'nin bu eksende nerede durdugu BILINMIYOR; olculmeden 'iyi' ya da 'kotu' denemez. ⚠ D-203: olcut tohuma duyarlidir."
+     "olculen": 14,
+     "sonuc": "OLCUM (KAPI DEGIL) · 🔴 v35'TEN KOTU",
+     "olculen_tohum11": 15,
+     "v35_esli": {
+      "tohum7": 9,
+      "tohum11": 11
+     },
+     "n": 260,
+     "not": "🔴 OLCULDU ve SONUC v35'TEN KOTUDUR: v36 14/260 (%5,38) · v35 9/260 (%3,46). ESLI olculdu - iki model AYNI KOSUM OTURUMUNDA, ayni kume ve ayni gurultu gerceklestirmeleriyle (D-256 SS3 kalibi: bayat sayi tasinmaz). Betik `scripts/olcum/68_karar_kararliligi.py`; parametreler v35 olcumuyle BIREBIR: sigma 2/255, tekrar 3, tohum 7, kume = profilin `kabul_kumesi` (n=260), CONF 0,30, imgsz 512; model KAYIT DEFTERINDEN cozuldu (ciplak yol yok). Tarih 2026-08-26. Komut + ham cikti + json: `results/karar_cevrilmesi_v36/`. ⚠ D-203 (olcut tohuma duyarlidir) SINANDI: ikinci tohum (11) ile v36 15/260 · v35 11/260 - YON iki tohumda da ayni (v36 kotu), buyukluk +5 / +4 kare. Dogrulama: v35'in tohum 7 sayisi 9/260 olarak BIREBIR yeniden uretildi (results/t130_kararlilik_tohum7.json ile ayni) - yani fark modeldendir, kosum ortamindan degil. 🔴 KUSURUN CINSI FARKLI, sadece sayisi degil: v36'nin fazlaligi SERIT DEGISIMINDE degildir - serit degisimi v36 8 / 10 (tohum 7 / 11), v35 9 / 10, yani ESIT. Fazlaligin tamami ROTA VAR/YOK cevrilmesidir: gurultu altinda rotanin tamamen kaybolmasi (ZEMIN_MASKESI_SUPHELI / GORUS_HATTI_KOPUK) v36'da 6 / 5 kare, v35'te 0 / 1 kare. Bu, v36'nin daha az zemin gormesiyle tutarlidir (gercek kare kaplamasi 0,5076 -> 0,4171): model red esiginin KENARINDA duruyor. Yon fail-closed'dir (yanlis rota degil, rota YOK) ama saha ELVERISLILIGINI dusurur. ⚠ Bu eksen bugunku kabul zincirinde (65) KAPI DEGILDIR; v34 terfisinde KAPIYDI (esik <= 8/260) ve o esik bugun uygulansaydi v36 (14) da v35 (9) de DUSERDI. Terfi bu sayiya gore GERI ALINMADI - geri alma kullanici kararidir (ON_KAYIT SS16). Tarihsel: v34 4/260 · v35 9/260."
     }
    },
    "status": "competition",

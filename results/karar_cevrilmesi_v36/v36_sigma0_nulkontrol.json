@@ -1,0 +1,8 @@
+{
+ "model": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+ "sigma": 0.0,
+ "tekrar": 3,
+ "n": 260,
+ "kararsiz": 0,
+ "cevrilenler": []
+}
