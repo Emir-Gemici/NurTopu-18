@@ -157,7 +157,8 @@ def egit(taban: str, surum: str = "v2", epochs: int | None = None, patience: int
     ref = _y.safe_load(open(KOK / "codes" / "runs" / "segment" / "t127_temiz" / "args.yaml", encoding="utf-8"))
     from ultralytics import YOLO
     ad = f"gece_{surum}_{taban}taban"
-    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml", "v5": DS / "karisim_gece_v5.yaml", "v6": DS / "karisim_gece_v6.yaml"}[surum]
+    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml", "v5": DS / "karisim_gece_v5.yaml", "v6": DS / "karisim_gece_v6.yaml",
+                 "v7a": DS / "karisim_gece_v7a.yaml", "v7b": DS / "karisim_gece_v7b.yaml"}[surum]
     if epochs is not None:
         ref["epochs"] = epochs
     if patience is not None:
@@ -182,7 +183,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("komut", choices=["hazirla", "egit"])
     ap.add_argument("--taban", choices=list(TABANLAR), default="v35")
-    ap.add_argument("--surum", choices=["v2", "v3", "v4", "v5", "v6"], default="v2")
+    ap.add_argument("--surum", choices=["v2", "v3", "v4", "v5", "v6", "v7a", "v7b"], default="v2")
     ap.add_argument("--epochs", type=int, default=None)
     ap.add_argument("--patience", type=int, default=None)
     a = ap.parse_args()
