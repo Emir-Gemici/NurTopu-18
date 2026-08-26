@@ -1,0 +1,116 @@
+{
+ "model": "codes\\runs\\segment\\gece_v5_v35taban\\weights\\best.pt",
+ "esikler": {
+  "K1_rota_min": 230,
+  "K2_basma_maks": 0.15,
+  "K3_agir_maks": 0.03,
+  "K4_arena_disi_maks": 0.05
+ },
+ "olcum": {
+  "K0": {
+   "figur": 0.04404978773603833,
+   "raw_frames": {
+    "n": 67,
+    "bos": 11,
+    "ort": 0.19931787519312616
+   },
+   "copy_paste": {
+    "n": 393,
+    "bos": 47,
+    "ort": 0.22089701451114724
+   },
+   "figur_orani": 0.48781603251426714,
+   "figur_tabani": 0.0903,
+   "figur_taban_kimligi": "v35",
+   "figur_taban_bicimi": "liste",
+   "soyagaci": [
+    {
+     "surum": "v17",
+     "deger": 0.0,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v20",
+     "deger": 0.0,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v21",
+     "deger": 0.0,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v24",
+     "deger": 0.3464,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v27",
+     "deger": 0.0784,
+     "donem_tutarli": true,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)"
+    },
+    {
+     "surum": "v30",
+     "deger": 0.0796,
+     "donem_tutarli": true,
+     "kaynak": "defterde DUZ METINDEYDI ('figur zemin %8,0'); D-261'de olculdu -> %7,96 (birebir)"
+    },
+    {
+     "surum": "v34",
+     "deger": 0.0049,
+     "donem_tutarli": true,
+     "kaynak": "defterin SKALER degeri (1b57166, 2026-08-19); D-261'de olculdu -> ayni"
+    },
+    {
+     "surum": "v35",
+     "deger": 0.0903,
+     "donem_tutarli": true,
+     "kaynak": "defterin SKALER degeri (ee7508d, T130/D-256); D-261'de olculdu -> ayni"
+    }
+   ],
+   "oran_notu": ""
+  },
+  "K1_rota": "212/260",
+  "K2_basma": "47/212",
+  "K3_agir": "12/212",
+  "K4_arena_disi": "7/212",
+  "K14_durum": {
+   "K1": "DUSTU",
+   "K2": "DUSTU",
+   "K3": "DUSTU",
+   "K4": "GECTI"
+  },
+  "K5_durum": "GECTI",
+  "K5_olculebilir_kare": 143,
+  "K5_kesen_kare": 0,
+  "K5_kesisim_px": 0,
+  "K5_bariyerli_kare": 173,
+  "K5_kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "K5_figur_bilgi_px": 0,
+  "K5_figur_bilgi_durum": "GECTI",
+  "kabul_kumesi": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "kabul_kumesi_parmak_izi": {
+   "n": 547,
+   "ozet": "sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586",
+   "yontem": "sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ"
+  }
+ },
+ "gecti": {
+  "K0": false,
+  "K1": false,
+  "K2": false,
+  "K3": false,
+  "K4": true,
+  "K5": true
+ },
+ "verdikt": false
+}

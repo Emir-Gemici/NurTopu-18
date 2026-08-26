@@ -1,0 +1,89 @@
+{
+  "esik_kat": 10.0,
+  "toplam_coco_px": 65391,
+  "toplam_obb_px": 1035623,
+  "havuz_kat": 15.837,
+  "kapi_gecti": true,
+  "kareler": [
+    {
+      "kare": "frame_000000_000000000.jpg",
+      "coco_px": 0,
+      "obb_px": 114410,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 19.397
+    },
+    {
+      "kare": "frame_000006_000000864.jpg",
+      "coco_px": 0,
+      "obb_px": 119240,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 20.216
+    },
+    {
+      "kare": "frame_000012_000001248.jpg",
+      "coco_px": 0,
+      "obb_px": 112751,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 19.116
+    },
+    {
+      "kare": "frame_000003_000000912.jpg",
+      "coco_px": 0,
+      "obb_px": 104903,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 17.785
+    },
+    {
+      "kare": "frame_000009_000001776.jpg",
+      "coco_px": 0,
+      "obb_px": 117726,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 19.96
+    },
+    {
+      "kare": "frame_000015_000002040.jpg",
+      "coco_px": 0,
+      "obb_px": 109331,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 18.536
+    },
+    {
+      "kare": "frame_000002_000000192.jpg",
+      "coco_px": 0,
+      "obb_px": 111564,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 18.915
+    },
+    {
+      "kare": "frame_000008_000000432.jpg",
+      "coco_px": 65391,
+      "obb_px": 92851,
+      "kat": 1.42,
+      "coco_oran": 11.087,
+      "obb_oran": 15.742
+    },
+    {
+      "kare": "frame_000014_000000672.jpg",
+      "coco_px": 0,
+      "obb_px": 78682,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 13.34
+    },
+    {
+      "kare": "frame_000020_000000936.jpg",
+      "coco_px": 0,
+      "obb_px": 74165,
+      "kat": null,
+      "coco_oran": 0.0,
+      "obb_oran": 12.574
+    }
+  ]
+}

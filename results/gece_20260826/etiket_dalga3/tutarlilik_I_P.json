@@ -1,0 +1,28 @@
+{
+ "dalga": 3,
+ "gruplar": "I-P",
+ "incelenen": 40,
+ "tarih": "2026-08-26",
+ "duzeltilen": [
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000079_000003000",
+   "grup": "K",
+   "neden": "yol kopru altindan sol kenara kadar cakil olarak suruyor, yesil x=240'ta bitiyordu — deger-1 poligonla sol kenara uzatildi (deger-2 kopru seridinden once)",
+   "sinif0_once": 0.4444,
+   "sinif0_sonra": 0.4948
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000194_000007680",
+   "grup": "J",
+   "neden": "yolun sagindaki kahverengi, arac iziyle cignenmis yumusak toprak (x480-700, y290-540) yesildi — madde 12 geregi etiketsiz yapildi; cakil yol yesil kaldi",
+   "sinif0_once": 0.236,
+   "sinif0_sonra": 0.2021
+  }
+ ],
+ "eklenen_sinif1": [],
+ "kucuk_notlar": [
+  "O/0038_156: sagdaki dar beton kanal/bordur (~%1) yesil icinde kaldi, kucuk oldugu icin dokunulmadi",
+  "P/0039_130: sag-alttaki cakil yan kol etiketsiz birakilmis (muhafazakar, ihlal degil)"
+ ],
+ "dogrulama": "40 *_uc.png benzersiz degerler {0,1,2} icinde (VENV numpy)"
+}

@@ -1,0 +1,123 @@
+================================================================
+ÇAPRAZ DOĞRULAMA — 2026-07-27T01:55:16
+model : O:\navitas\codes\runs\segment\v9_mixup_full\weights\best.pt
+SHA256: 24a235c769e21544a450255bc4df25c4bf4f748048619f6e1db1fdfc4842736d
+veri  : O:\navitas\dataset\rescuenet_yolo\data.yaml
+================================================================
+
+================================================================
+SPLIT: val  |  imgsz: 640
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+YOLOv8m-seg summary (fused): 106 layers, 27,223,542 parameters, 0 gradients, 104.3 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 1226.8±248.0 MB/s, size: 175.5 KB)
+                   all        294        363      0.761      0.616      0.655      0.476      0.775      0.628      0.663      0.425
+           traversable        240        282      0.886      0.775      0.834      0.649      0.915        0.8      0.866      0.566
+               blocked         60         81      0.636      0.457      0.475      0.304      0.636      0.457       0.46      0.285
+Speed: 1.8ms preprocess, 8.3ms inference, 0.0ms loss, 1.4ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v9_mixup_full_20260727\val640[0m
+
+================================================================
+SPLIT: test  |  imgsz: 640
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 1850.4±255.4 MB/s, size: 197.0 KB)
+                   all        305        393      0.622      0.682      0.643      0.497      0.705      0.665      0.679      0.434
+           traversable        249        308      0.777      0.776      0.801      0.651      0.852      0.764       0.82      0.557
+               blocked         70         85      0.466      0.588      0.485      0.343      0.558      0.565      0.537      0.311
+Speed: 1.7ms preprocess, 7.5ms inference, 0.0ms loss, 1.5ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v9_mixup_full_20260727\test640[0m
+
+================================================================
+VAL ↔ TEST KARŞILAŞTIRMASI
+  mask mAP50 : val 0.6632  ·  test 0.6787  ·  fark -0.0155
+  blocked    : val 0.4602  ·  test 0.5371  ·  fark -0.0769
+  NOT: Tek modelin split farkı, model SIRALAMASININ korunduğunu göstermez —
+       aşırı uyum ancak birkaç model aynı iki split'te kıyaslanınca görünür.
+       Sıralama kontrolü için: python 12_model_kiyas.py
+
+================================================================
+SONUÇLAR
+{
+  "olcum": {
+    "tarih": "2026-07-27T01:55:16",
+    "ad": "v9_mixup_full",
+    "imgsz": 640,
+    "veri": "O:\\navitas\\dataset\\rescuenet_yolo\\data.yaml"
+  },
+  "agirlik": {
+    "yol": "O:\\navitas\\codes\\runs\\segment\\v9_mixup_full\\weights\\best.pt",
+    "sha256": "24a235c769e21544a450255bc4df25c4bf4f748048619f6e1db1fdfc4842736d",
+    "boyut_mb": 54.9
+  },
+  "splitler": {
+    "val": {
+      "split": "val",
+      "imgsz": 640,
+      "box_mAP50": 0.6545,
+      "box_mAP50_95": 0.4762,
+      "mask_mAP50": 0.6632,
+      "mask_mAP50_95": 0.4254,
+      "mask_precision": 0.7755,
+      "mask_recall": 0.6283,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8344,
+          "mask_mAP50": 0.8662,
+          "mask_mAP50_95": 0.566
+        },
+        "blocked": {
+          "box_mAP50": 0.4747,
+          "mask_mAP50": 0.4602,
+          "mask_mAP50_95": 0.2847
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.782,
+        "inference": 8.34,
+        "loss": 0.001,
+        "postprocess": 1.398
+      }
+    },
+    "test": {
+      "split": "test",
+      "imgsz": 640,
+      "box_mAP50": 0.6431,
+      "box_mAP50_95": 0.4968,
+      "mask_mAP50": 0.6787,
+      "mask_mAP50_95": 0.4337,
+      "mask_precision": 0.7051,
+      "mask_recall": 0.6646,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8014,
+          "mask_mAP50": 0.8204,
+          "mask_mAP50_95": 0.5566
+        },
+        "blocked": {
+          "box_mAP50": 0.4847,
+          "mask_mAP50": 0.5371,
+          "mask_mAP50_95": 0.3107
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.699,
+        "inference": 7.541,
+        "loss": 0.003,
+        "postprocess": 1.452
+      }
+    }
+  },
+  "val_test_farki": {
+    "mask_mAP50": -0.0155,
+    "blocked_mask_mAP50": -0.0769
+  }
+}
+
+[val] hedef mask mAP50 ≥ 0.60  ·  ölçülen 0.6632  →  KARŞILANDI ✓
+
+[test] hedef mask mAP50 ≥ 0.60  ·  ölçülen 0.6787  →  KARŞILANDI ✓
+
+Deney defteri: O:\navitas-local-train\deney_defteri.csv
+Kanıt klasörü: O:\navitas\results\capraz_dogrulama_v9_mixup_full_20260727
+✓ ÇAPRAZ DOĞRULAMA TAMAM

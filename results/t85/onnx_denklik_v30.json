@@ -1,0 +1,28 @@
+{
+ "pt": "O:\\navitas\\models\\navitas_seg_v30_best.pt",
+ "onnx": "O:\\navitas\\jetson_paket\\models\\navitas_seg_v30_best_512_fp16.onnx",
+ "n": 260,
+ "karar_ayni": 259,
+ "rota_ikisi": 258,
+ "rota_iou_ort": 0.9816474957496193,
+ "rota_iou_min": 0.0,
+ "sapma_px_maks": 194.0,
+ "sapma_m_maks": 15.15625,
+ "maske_iou_ort": 0.997520096333994,
+ "maske_iou_min": 0.9873846689491093,
+ "uyusmazlik": [
+  {
+   "kare": "sa_000131.jpg",
+   "pt": {
+    "serit": 2,
+    "red": null,
+    "guven": 0.714
+   },
+   "onnx": {
+    "serit": 1,
+    "red": null,
+    "guven": 0.714
+   }
+  }
+ ]
+}

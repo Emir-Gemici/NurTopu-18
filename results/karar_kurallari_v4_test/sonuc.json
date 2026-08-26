@@ -1,0 +1,27 @@
+{
+  "model": "O:\\navitas\\models\\navitas_seg_v4_best.pt",
+  "ad": "v4",
+  "sahne": 500,
+  "dogru": {
+    "A_mevcut(yalniz_trav)": 359,
+    "B_fark(trav-blk)": 355,
+    "C_oran(trav/top)": 368,
+    "D_veto(blk>%35 ele)": 360
+  },
+  "karar_yok": {
+    "A_mevcut(yalniz_trav)": 77,
+    "B_fark(trav-blk)": 95,
+    "C_oran(trav/top)": 77,
+    "D_veto(blk>%35 ele)": 87
+  },
+  "ayar": {
+    "model": "models/navitas_seg_v4_best.pt",
+    "ad": "v4",
+    "split": "test",
+    "n": 500,
+    "panel": 512,
+    "imgsz": 640,
+    "conf": 0.25,
+    "tohum": 1
+  }
+}

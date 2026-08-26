@@ -1,0 +1,7 @@
+{"grup":"J","durum":"mevcut_kabul","kareler":[
+{"govde":"dji_20260822173231_0039_d__frame_000065_000003630","etiketsiz":0.4385,"sinif0":0.3787,"sinif1":0.1829,"yol_kenardan_kenara":true,"not":"mevcut; cakil yol sag (x>=600) ust-alt kenara kadar sinif 0; balya yigini+sundurma, tel cit, insan sinif 1; sol mera ve bitkili serit etiketsiz"},
+{"govde":"dji_20260822170832_0037_d__frame_000291_000010950","etiketsiz":0.7317,"sinif0":0.1885,"sinif1":0.0798,"yol_kenardan_kenara":true,"not":"mevcut; stabilize yol ust-alt kenara kadar sinif 0; is makinesi ve sag agaclik sinif 1; sol surulmus/cig toprak madde 12 geregi etiketsiz"},
+{"govde":"dji_20260822170832_0037_d__frame_000104_000004410","etiketsiz":0.527,"sinif0":0.4341,"sinif1":0.0389,"yol_kenardan_kenara":true,"not":"mevcut; ust genis cakil yol sol-sag kenara kadar, alt cakil alan sinif 0; capraz duvar/bordur sinif 1; kuru ot seridi ve sag ust toprak yigini etiketsiz"},
+{"govde":"dji_20260822172613_0038_d__frame_000192_000007170","etiketsiz":0.568,"sinif0":0.1553,"sinif1":0.2767,"yol_kenardan_kenara":true,"not":"mevcut; ana yol ust-alt kenara, sol kol sol kenara kadar sinif 0; beton duvar ve su+sazlik sag sinif 1; kuru ot etiketsiz"},
+{"govde":"dji_20260822170832_0037_d__frame_000194_000007680","etiketsiz":0.6275,"sinif0":0.236,"sinif1":0.1365,"yol_kenardan_kenara":true,"not":"mevcut; cakil yol ust kenardan alt kenara, altta genisleyen platform sinif 0; balyalar ve tel cit sinif 1; sag kuru ot/toprak etiketsiz"}
+]}

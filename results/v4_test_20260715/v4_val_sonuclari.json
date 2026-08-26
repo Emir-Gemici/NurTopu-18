@@ -1,0 +1,18 @@
+{
+  "v4@640": {
+    "genel": 0.6751,
+    "traversable": 0.8566,
+    "blocked": 0.4937,
+    "mask_mAP50_95": 0.4106,
+    "precision": 0.7753,
+    "recall": 0.6767
+  },
+  "v4@512": {
+    "genel": 0.6072,
+    "traversable": 0.8427,
+    "blocked": 0.3716,
+    "mask_mAP50_95": 0.3698,
+    "precision": 0.7239,
+    "recall": 0.6316
+  }
+}

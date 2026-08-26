@@ -1,0 +1,43 @@
+{
+  "olcum": {
+    "tarih": "2026-07-29T15:50:32",
+    "ad": "v17_arena_tam",
+    "imgsz": 640,
+    "veri": "O:\\navitas\\dataset\\rescuenet_yolo\\data.yaml"
+  },
+  "agirlik": {
+    "yol": "O:\\navitas\\codes\\runs\\segment\\v17_arena_tam\\weights\\best.pt",
+    "sha256": "8986c300585a05c94fecccc8b5270c2a5e619051b1fc99640d6ab0df59896568",
+    "boyut_mb": 54.8
+  },
+  "splitler": {
+    "test": {
+      "split": "test",
+      "imgsz": 640,
+      "box_mAP50": 0.6071,
+      "box_mAP50_95": 0.4729,
+      "mask_mAP50": 0.6355,
+      "mask_mAP50_95": 0.404,
+      "mask_precision": 0.6913,
+      "mask_recall": 0.684,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.787,
+          "mask_mAP50": 0.8011,
+          "mask_mAP50_95": 0.5397
+        },
+        "blocked": {
+          "box_mAP50": 0.4273,
+          "mask_mAP50": 0.4698,
+          "mask_mAP50_95": 0.2683
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.319,
+        "inference": 7.956,
+        "loss": 0.0,
+        "postprocess": 1.241
+      }
+    }
+  }
+}

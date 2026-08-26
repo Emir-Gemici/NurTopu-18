@@ -546,7 +546,17 @@ class OlcekHalkasiTests(unittest.TestCase):
             cagrilar.append((maskeler_girdi, mpp, icerik))
             return {"durum": "ACIK", "yol_no": 1}
 
-        with mock.patch.object(costmap_path_finder, "rota_bul", rota_bul):
+        # T160 (ON_KAYIT §21): hukum artik URETIM yolundan gelir. Test ZAYIFLAMAZ,
+        # GUCLENIR — mpp'nin aynen tasindigi artik UC cagrida birden sinanir:
+        # uretim (`analyze_path`) + ana tanisal + kirpik tanisal.
+        import rpi_inference
+        uretim_cagrilari = []
+
+        def analyze_path(trav, **kw):
+            uretim_cagrilari.append(kw)
+            return (1, 0.9, [(0.0, 0.0), (0.0, 2.0)], None)
+
+        with mock.patch.object(costmap_path_finder, "rota_bul", rota_bul),                 mock.patch.object(rpi_inference, "analyze_path", analyze_path):
             durum, _sonuc = sk.halka_rota(
                 rapor, maskeler, icerik, sk.GECTI, mpp=0.0546875)
 
@@ -554,6 +564,13 @@ class OlcekHalkasiTests(unittest.TestCase):
         self.assertEqual(2, len(cagrilar))
         self.assertEqual([0.0546875, 0.0546875], [c[1] for c in cagrilar])
         self.assertIs(icerik, cagrilar[0][2])
+        # URETIM cagrisi: mpp ve icerik AYNEN, ret sebebi istenerek.
+        self.assertEqual(1, len(uretim_cagrilari))
+        self.assertEqual(0.0546875, uretim_cagrilari[0]["mpp"])
+        self.assertIs(icerik, uretim_cagrilari[0]["icerik"])
+        self.assertTrue(uretim_cagrilari[0]["return_reason"])
+        self.assertEqual("analyze_path",
+                         rapor.satirlar[-1]["detay"]["karar_yolu"])
 
     def test_kosuyu_yap_olcek_halkasinin_mpp_sini_rota_halkasina_tasir(self):
         np = __import__("numpy")

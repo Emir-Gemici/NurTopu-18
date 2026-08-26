@@ -1,0 +1,17 @@
+{
+  "split": "train",
+  "taranan": 3449,
+  "supheli": 68,
+  "turler": {
+    "sinif_cakmasi": 137,
+    "eksik_etiket": 1,
+    "cakisan_etiket": 0
+  },
+  "ayar": {
+    "split": "train",
+    "n": 0,
+    "esik": 0.6,
+    "gorsel": 60,
+    "imgsz": 640
+  }
+}

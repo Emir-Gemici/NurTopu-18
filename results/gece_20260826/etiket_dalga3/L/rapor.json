@@ -1,0 +1,7 @@
+{"grup":"L","durum":"mevcut ciktilar denetlendi; 5/5 kabul; f176 ops'a etkisiz deger0 seridi eklendi (sayim degismedi)",
+"kareler":[
+{"govde":"dji_20260822173231_0039_d__frame_000166_000009450","etiketsiz":0.5588,"sinif0":0.2492,"sinif1":0.1919,"yol_kenardan_kenara":true,"not":"mevcut"},
+{"govde":"dji_20260822170832_0037_d__frame_000258_000009810","etiketsiz":0.853,"sinif0":0.1289,"sinif1":0.0181,"yol_kenardan_kenara":true,"not":"mevcut"},
+{"govde":"dji_20260822170832_0037_d__frame_000015_000000570","etiketsiz":0.7852,"sinif0":0.2139,"sinif1":0.0009,"yol_kenardan_kenara":true,"not":"mevcut"},
+{"govde":"dji_20260822170832_0037_d__frame_000176_000007050","etiketsiz":0.4402,"sinif0":0.5318,"sinif1":0.028,"yol_kenardan_kenara":true,"not":"mevcut, yeniden uretildi"},
+{"govde":"dji_20260822170832_0037_d__frame_000288_000010860","etiketsiz":0.7466,"sinif0":0.1784,"sinif1":0.075,"yol_kenardan_kenara":true,"not":"mevcut"}]}

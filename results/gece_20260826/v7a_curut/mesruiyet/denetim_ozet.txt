@@ -1,0 +1,8 @@
+etiket_dalga4\denetim_D4_00_D4_07.json incelenen 40 duzeltilen 4 ['a', 'a', 'a', 'b'] diger anahtarlar ['bozuk_uc', 'kontrol_edilip_birakilan', 'kareler']
+etiket_dalga4\denetim_D4_08_D4_15.json incelenen 40 duzeltilen 8 ['b', 'b', 'd', 'b', 'b', 'd', 'd', 'a+b'] diger anahtarlar ['kabul_notlari']
+etiket_dalga4\denetim_D4_16_D4_23.json incelenen 40 duzeltilen 2 ['?', '?'] diger anahtarlar ['kabul_notlari']
+etiket_dalga4\denetim_D4_24_D4_31.json incelenen 40 duzeltilen 10 ['?', '?', '?', '?', '?', '?', '?', '?', '?', '?'] diger anahtarlar ['kabul_edilen_suphe', 'd_kanal_bordur']
+etiket_dalga4\denetim_D4_32_D4_39.json incelenen 40 duzeltilen 5 ['a', 'a', 'S4', 'b', 'a'] diger anahtarlar ['kontrol_edilip_birakilan', 'd_vurgusu']
+etiket_dalga4\denetim_D4_40_D4_47.json incelenen 40 duzeltilen 4 ['d', 'd', 'b', 'b'] diger anahtarlar ['incelenip_birakilan']
+etiket_dalga4\denetim_D4_48_D4_55.json incelenen 37 duzeltilen 8 ['a', 'a', 'a', 'd', 'd', 'a', 'd', 'b'] diger anahtarlar ['dogrulama', 'kabul_edilen_sinir_durumlar', 'kareler']
+TOPLAM incelenen 277 duzeltilen 41 oran 0.148

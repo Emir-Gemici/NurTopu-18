@@ -1,0 +1,10 @@
+{
+  "kazanan": "v5a_s640",
+  "sha256": "3bff5c60aa47366b636981d170c958650132831f395cc1ac5ef94185d0bd8b80",
+  "tarih": "2026-07-15T07:53:06.677542",
+  "adaylar": {
+    "v5a_s640": "O:\\navitas\\models\\aday_v5a_s640.pt",
+    "v5b_s640_ft": "O:\\navitas\\models\\aday_v5b_s640ft.pt",
+    "v5c_m640": "O:\\navitas\\models\\aday_v5c_m640.pt"
+  }
+}

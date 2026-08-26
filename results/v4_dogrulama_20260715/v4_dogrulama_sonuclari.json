@@ -1,0 +1,43 @@
+{
+  "olcum": {
+    "tarih": "2026-07-15T10:23:51.717865",
+    "imgsz": 640,
+    "val_goruntu": 294,
+    "veri": "O:\\navitas\\dataset\\rescuenet_yolo\\data.yaml"
+  },
+  "agirlik": {
+    "yol": "models\\navitas_seg_v4_best.pt",
+    "sha256": "6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4",
+    "boyut_mb": 23.9
+  },
+  "genel": {
+    "box_mAP50": 0.6559,
+    "box_mAP50_95": 0.4669,
+    "mask_mAP50": 0.6751,
+    "mask_mAP50_95": 0.4106,
+    "mask_precision": 0.7753,
+    "mask_recall": 0.6767
+  },
+  "sinif_bazli": {
+    "traversable": {
+      "box_mAP50": 0.8289,
+      "mask_mAP50": 0.8566,
+      "mask_mAP50_95": 0.5518
+    },
+    "blocked": {
+      "box_mAP50": 0.4829,
+      "mask_mAP50": 0.4937,
+      "mask_mAP50_95": 0.2694
+    }
+  },
+  "hiz_ms": {
+    "preprocess": 1.475,
+    "inference": 4.059,
+    "loss": 0.0,
+    "postprocess": 1.48
+  },
+  "gomulu_egitim": {
+    "en_iyi_epoch": 92,
+    "mask_mAP50": 0.6773
+  }
+}

@@ -1,0 +1,6038 @@
+{
+  "model": "O:\\navitas\\models\\navitas_seg_v4_best.pt",
+  "ad": "v4",
+  "split": "test",
+  "sahne": 500,
+  "dogru": 340,
+  "dogruluk": 0.68,
+  "tespit_yok": 90,
+  "konum_bazli": {
+    "1": [
+      125,
+      172
+    ],
+    "2": [
+      112,
+      175
+    ],
+    "3": [
+      103,
+      153
+    ]
+  },
+  "ayar": {
+    "model": "O:\\navitas\\models\\navitas_seg_v4_best.pt",
+    "ad": "v4",
+    "split": "test",
+    "n": 500,
+    "panel": 512,
+    "imgsz": 640,
+    "conf": 0.25,
+    "tohum": 1,
+    "kaydet": 0,
+    "veri": null,
+    "uretim_karar": true
+  },
+  "kayitlar": [
+    {
+      "sahne": 0,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00210.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 1,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00191.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 2,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00155.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 3,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00021.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 4,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00269.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 5,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.977,
+      "dogru": true,
+      "acik_gorsel": "test_00112.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 6,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00050.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 7,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00020.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 8,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00304.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 9,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00170.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 10,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00090.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 11,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00098.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 12,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00090.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 13,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00166.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 14,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00078.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 15,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00057.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 16,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00193.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 17,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00079.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 18,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.993,
+      "dogru": true,
+      "acik_gorsel": "test_00304.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 19,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00215.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 20,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00263.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 21,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00074.jpg",
+      "tikali_gorseller": [
+        "test_00072.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 22,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.981,
+      "dogru": false,
+      "acik_gorsel": "test_00272.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 23,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00174.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 24,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 25,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00150.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 26,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00185.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 27,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00294.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 28,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00158.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 29,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00193.jpg",
+      "tikali_gorseller": [
+        "test_00026.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 30,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00203.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 31,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.564,
+      "dogru": false,
+      "acik_gorsel": "test_00196.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 32,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00181.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00252.jpg"
+      ]
+    },
+    {
+      "sahne": 33,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.998,
+      "dogru": true,
+      "acik_gorsel": "test_00221.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 34,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00274.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 35,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 36,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.997,
+      "dogru": false,
+      "acik_gorsel": "test_00030.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 37,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00206.jpg",
+      "tikali_gorseller": [
+        "test_00017.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 38,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00189.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 39,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00004.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 40,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00135.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 41,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00279.jpg",
+      "tikali_gorseller": [
+        "test_00026.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 42,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00205.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 43,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00278.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 44,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.969,
+      "dogru": true,
+      "acik_gorsel": "test_00290.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 45,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00299.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 46,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00266.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 47,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00052.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 48,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00120.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 49,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00109.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 50,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00113.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 51,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00179.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00053.jpg"
+      ]
+    },
+    {
+      "sahne": 52,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.987,
+      "dogru": true,
+      "acik_gorsel": "test_00186.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 53,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.981,
+      "dogru": true,
+      "acik_gorsel": "test_00156.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 54,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00110.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 55,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00195.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 56,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.991,
+      "dogru": true,
+      "acik_gorsel": "test_00284.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 57,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00159.jpg",
+      "tikali_gorseller": [
+        "test_00013.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 58,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00070.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 59,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00241.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 60,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00227.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 61,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00091.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 62,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00159.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 63,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00236.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 64,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 65,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00303.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 66,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00296.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 67,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00263.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 68,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.999,
+      "dogru": true,
+      "acik_gorsel": "test_00104.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 69,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.988,
+      "dogru": true,
+      "acik_gorsel": "test_00303.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 70,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00210.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 71,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.988,
+      "dogru": true,
+      "acik_gorsel": "test_00225.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 72,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00082.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 73,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00211.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 74,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00080.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 75,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.606,
+      "dogru": true,
+      "acik_gorsel": "test_00157.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 76,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00018.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 77,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00117.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 78,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00296.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 79,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00138.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 80,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00240.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00076.jpg"
+      ]
+    },
+    {
+      "sahne": 81,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00143.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 82,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.952,
+      "dogru": true,
+      "acik_gorsel": "test_00270.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 83,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00257.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 84,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00073.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 85,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00112.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 86,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00290.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 87,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.978,
+      "dogru": true,
+      "acik_gorsel": "test_00140.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 88,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00299.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 89,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00063.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 90,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00132.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 91,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00155.jpg",
+      "tikali_gorseller": [
+        "test_00013.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 92,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00054.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 93,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00040.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 94,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00209.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 95,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00121.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 96,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00181.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 97,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00286.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 98,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.995,
+      "dogru": true,
+      "acik_gorsel": "test_00239.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 99,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00054.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00017.jpg"
+      ]
+    },
+    {
+      "sahne": 100,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00275.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 101,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00054.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 102,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00101.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 103,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.992,
+      "dogru": true,
+      "acik_gorsel": "test_00154.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 104,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.999,
+      "dogru": true,
+      "acik_gorsel": "test_00104.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 105,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00049.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 106,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.923,
+      "dogru": true,
+      "acik_gorsel": "test_00024.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 107,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00257.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00053.jpg"
+      ]
+    },
+    {
+      "sahne": 108,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00158.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 109,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00033.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 110,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00052.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 111,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 112,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00237.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 113,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00203.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 114,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 0.991,
+      "dogru": false,
+      "acik_gorsel": "test_00103.jpg",
+      "tikali_gorseller": [
+        "test_00072.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 115,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00043.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 116,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00212.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 117,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00157.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 118,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00078.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 119,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.956,
+      "dogru": true,
+      "acik_gorsel": "test_00102.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 120,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00222.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 121,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00102.jpg",
+      "tikali_gorseller": [
+        "test_00026.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 122,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00160.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 123,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00299.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 124,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00019.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 125,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00265.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 126,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.997,
+      "dogru": true,
+      "acik_gorsel": "test_00297.jpg",
+      "tikali_gorseller": [
+        "test_00013.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 127,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 128,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00238.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 129,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.702,
+      "dogru": true,
+      "acik_gorsel": "test_00285.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 130,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.993,
+      "dogru": true,
+      "acik_gorsel": "test_00250.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 131,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00059.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 132,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00256.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00053.jpg"
+      ]
+    },
+    {
+      "sahne": 133,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00279.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 134,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00245.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 135,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.998,
+      "dogru": true,
+      "acik_gorsel": "test_00172.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 136,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00253.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 137,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 138,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00280.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 139,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.939,
+      "dogru": true,
+      "acik_gorsel": "test_00203.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 140,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00006.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 141,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00110.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 142,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00166.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 143,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00246.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 144,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00216.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 145,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00159.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 146,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00222.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 147,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00005.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 148,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00193.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 149,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00230.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 150,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00130.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 151,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00091.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 152,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.913,
+      "dogru": true,
+      "acik_gorsel": "test_00208.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 153,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00114.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 154,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00039.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 155,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.999,
+      "dogru": true,
+      "acik_gorsel": "test_00069.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 156,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00122.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 157,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00151.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 158,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 159,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00296.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 160,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00211.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 161,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00104.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 162,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00256.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 163,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00158.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 164,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.985,
+      "dogru": true,
+      "acik_gorsel": "test_00156.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 165,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00258.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 166,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00280.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 167,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00112.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 168,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00290.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 169,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00041.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 170,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00279.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 171,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00134.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 172,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00189.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00010.jpg"
+      ]
+    },
+    {
+      "sahne": 173,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00219.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 174,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00237.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 175,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00154.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 176,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00200.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 177,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00021.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 178,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00288.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 179,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00117.jpg",
+      "tikali_gorseller": [
+        "test_00013.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 180,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00113.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 181,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00288.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 182,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00204.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 183,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00296.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 184,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.993,
+      "dogru": true,
+      "acik_gorsel": "test_00304.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 185,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00281.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 186,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00210.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 187,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.871,
+      "dogru": true,
+      "acik_gorsel": "test_00240.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 188,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 0.997,
+      "dogru": false,
+      "acik_gorsel": "test_00040.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 189,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00280.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 190,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00241.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 191,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00004.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 192,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.984,
+      "dogru": true,
+      "acik_gorsel": "test_00178.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 193,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.989,
+      "dogru": true,
+      "acik_gorsel": "test_00160.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 194,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00211.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00010.jpg"
+      ]
+    },
+    {
+      "sahne": 195,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00154.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 196,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00004.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 197,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00256.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 198,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00183.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 199,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00263.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 200,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00073.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 201,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.986,
+      "dogru": false,
+      "acik_gorsel": "test_00200.jpg",
+      "tikali_gorseller": [
+        "test_00017.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 202,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.982,
+      "dogru": false,
+      "acik_gorsel": "test_00004.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00076.jpg"
+      ]
+    },
+    {
+      "sahne": 203,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00171.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 204,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.916,
+      "dogru": true,
+      "acik_gorsel": "test_00214.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 205,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00038.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 206,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00234.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 207,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00164.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 208,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 0.963,
+      "dogru": false,
+      "acik_gorsel": "test_00229.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 209,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00270.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 210,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00145.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 211,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00301.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 212,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00067.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 213,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00073.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 214,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00113.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 215,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00216.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 216,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00038.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 217,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00071.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 218,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00245.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 219,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00245.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 220,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00084.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 221,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00137.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 222,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00247.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00252.jpg"
+      ]
+    },
+    {
+      "sahne": 223,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.995,
+      "dogru": true,
+      "acik_gorsel": "test_00184.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 224,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.974,
+      "dogru": true,
+      "acik_gorsel": "test_00028.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 225,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 226,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.981,
+      "dogru": true,
+      "acik_gorsel": "test_00147.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 227,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.915,
+      "dogru": true,
+      "acik_gorsel": "test_00208.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 228,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.987,
+      "dogru": true,
+      "acik_gorsel": "test_00276.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 229,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.936,
+      "dogru": true,
+      "acik_gorsel": "test_00255.jpg",
+      "tikali_gorseller": [
+        "test_00026.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 230,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00249.jpg",
+      "tikali_gorseller": [
+        "test_00032.jpg",
+        "test_00252.jpg"
+      ]
+    },
+    {
+      "sahne": 231,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00295.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 232,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.987,
+      "dogru": true,
+      "acik_gorsel": "test_00172.jpg",
+      "tikali_gorseller": [
+        "test_00032.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 233,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00039.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 234,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00299.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 235,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00258.jpg",
+      "tikali_gorseller": [
+        "test_00013.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 236,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00181.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 237,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 238,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00148.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 239,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00054.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 240,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00242.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 241,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00092.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00053.jpg"
+      ]
+    },
+    {
+      "sahne": 242,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00049.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 243,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00281.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 244,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00242.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 245,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00200.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 246,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.983,
+      "dogru": true,
+      "acik_gorsel": "test_00140.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 247,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00222.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 248,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00090.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 249,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00178.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 250,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.983,
+      "dogru": true,
+      "acik_gorsel": "test_00100.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00094.jpg"
+      ]
+    },
+    {
+      "sahne": 251,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00213.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 252,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00255.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 253,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.977,
+      "dogru": true,
+      "acik_gorsel": "test_00216.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 254,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00027.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 255,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.993,
+      "dogru": true,
+      "acik_gorsel": "test_00156.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 256,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00160.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 257,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00277.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 258,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.899,
+      "dogru": true,
+      "acik_gorsel": "test_00066.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 259,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00209.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 260,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00041.jpg",
+      "tikali_gorseller": [
+        "test_00094.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 261,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.977,
+      "dogru": true,
+      "acik_gorsel": "test_00011.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 262,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00199.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 263,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00273.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 264,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00079.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 265,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00061.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 266,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00237.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00076.jpg"
+      ]
+    },
+    {
+      "sahne": 267,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00227.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 268,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00229.jpg",
+      "tikali_gorseller": [
+        "test_00032.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 269,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.998,
+      "dogru": true,
+      "acik_gorsel": "test_00275.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 270,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00171.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 271,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.993,
+      "dogru": true,
+      "acik_gorsel": "test_00230.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 272,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00205.jpg",
+      "tikali_gorseller": [
+        "test_00088.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 273,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.924,
+      "dogru": true,
+      "acik_gorsel": "test_00253.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 274,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00038.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 275,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00222.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 276,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00075.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 277,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00083.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 278,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00230.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 279,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00193.jpg",
+      "tikali_gorseller": [
+        "test_00072.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 280,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.918,
+      "dogru": true,
+      "acik_gorsel": "test_00024.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 281,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00176.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 282,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00269.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 283,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 284,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00104.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 285,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 0.997,
+      "dogru": false,
+      "acik_gorsel": "test_00022.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 286,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00110.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 287,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 0.742,
+      "dogru": false,
+      "acik_gorsel": "test_00277.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00010.jpg"
+      ]
+    },
+    {
+      "sahne": 288,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00124.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 289,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00193.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 290,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.973,
+      "dogru": true,
+      "acik_gorsel": "test_00138.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 291,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00188.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 292,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.996,
+      "dogru": true,
+      "acik_gorsel": "test_00283.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 293,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00256.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 294,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00202.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 295,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.986,
+      "dogru": false,
+      "acik_gorsel": "test_00069.jpg",
+      "tikali_gorseller": [
+        "test_00017.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 296,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00198.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 297,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.435,
+      "dogru": true,
+      "acik_gorsel": "test_00143.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 298,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00027.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 299,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00130.jpg",
+      "tikali_gorseller": [
+        "test_00088.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 300,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00146.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00053.jpg"
+      ]
+    },
+    {
+      "sahne": 301,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00264.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 302,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00199.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 303,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.42,
+      "dogru": false,
+      "acik_gorsel": "test_00258.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 304,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00178.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 305,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 0.998,
+      "dogru": false,
+      "acik_gorsel": "test_00149.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 306,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00279.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 307,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00199.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 308,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00274.jpg",
+      "tikali_gorseller": [
+        "test_00032.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 309,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.989,
+      "dogru": false,
+      "acik_gorsel": "test_00264.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 310,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00150.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 311,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00219.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 312,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00071.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 313,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00244.jpg",
+      "tikali_gorseller": [
+        "test_00026.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 314,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00052.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 315,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00224.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 316,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00242.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 317,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00083.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 318,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00211.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 319,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00295.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 320,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00289.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 321,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.997,
+      "dogru": false,
+      "acik_gorsel": "test_00019.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 322,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.998,
+      "dogru": true,
+      "acik_gorsel": "test_00250.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 323,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00219.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 324,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.998,
+      "dogru": false,
+      "acik_gorsel": "test_00178.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 325,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00079.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 326,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.997,
+      "dogru": true,
+      "acik_gorsel": "test_00283.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 327,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00006.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00076.jpg"
+      ]
+    },
+    {
+      "sahne": 328,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.995,
+      "dogru": true,
+      "acik_gorsel": "test_00303.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 329,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00223.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 330,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00170.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00060.jpg"
+      ]
+    },
+    {
+      "sahne": 331,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00005.jpg",
+      "tikali_gorseller": [
+        "test_00017.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 332,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00245.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 333,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00057.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 334,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00130.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 335,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00206.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 336,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.969,
+      "dogru": true,
+      "acik_gorsel": "test_00203.jpg",
+      "tikali_gorseller": [
+        "test_00107.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 337,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00227.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 338,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.971,
+      "dogru": true,
+      "acik_gorsel": "test_00124.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 339,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00215.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 340,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00104.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 341,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.587,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 342,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00150.jpg",
+      "tikali_gorseller": [
+        "test_00088.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 343,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00236.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 344,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.999,
+      "dogru": true,
+      "acik_gorsel": "test_00045.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00076.jpg"
+      ]
+    },
+    {
+      "sahne": 345,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.99,
+      "dogru": false,
+      "acik_gorsel": "test_00183.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 346,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00264.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 347,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00179.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 348,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.897,
+      "dogru": true,
+      "acik_gorsel": "test_00066.jpg",
+      "tikali_gorseller": [
+        "test_00088.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 349,
+      "hedef": 1,
+      "karar": 3,
+      "geometrik_guven": 0.991,
+      "dogru": false,
+      "acik_gorsel": "test_00074.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 350,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00215.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 351,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00196.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 352,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00114.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 353,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.606,
+      "dogru": false,
+      "acik_gorsel": "test_00086.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 354,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.995,
+      "dogru": true,
+      "acik_gorsel": "test_00255.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 355,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00061.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 356,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00258.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 357,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00068.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 358,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00234.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 359,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00043.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 360,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00205.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 361,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00143.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 362,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 363,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00288.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00010.jpg"
+      ]
+    },
+    {
+      "sahne": 364,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00244.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 365,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00280.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 366,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00241.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00008.jpg"
+      ]
+    },
+    {
+      "sahne": 367,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00058.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 368,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00242.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 369,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00054.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 370,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00067.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 371,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00082.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 372,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.997,
+      "dogru": true,
+      "acik_gorsel": "test_00166.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00037.jpg"
+      ]
+    },
+    {
+      "sahne": 373,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00229.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 374,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.996,
+      "dogru": true,
+      "acik_gorsel": "test_00138.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 375,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00266.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00252.jpg"
+      ]
+    },
+    {
+      "sahne": 376,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00250.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 377,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.991,
+      "dogru": true,
+      "acik_gorsel": "test_00226.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 378,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00092.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00036.jpg"
+      ]
+    },
+    {
+      "sahne": 379,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00249.jpg",
+      "tikali_gorseller": [
+        "test_00032.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 380,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00061.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00017.jpg"
+      ]
+    },
+    {
+      "sahne": 381,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.916,
+      "dogru": true,
+      "acik_gorsel": "test_00208.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 382,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00201.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 383,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00165.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 384,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00125.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 385,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 0.978,
+      "dogru": false,
+      "acik_gorsel": "test_00192.jpg",
+      "tikali_gorseller": [
+        "test_00072.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 386,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00101.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 387,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00267.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 388,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.976,
+      "dogru": true,
+      "acik_gorsel": "test_00178.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 389,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00194.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 390,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.795,
+      "dogru": true,
+      "acik_gorsel": "test_00063.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 391,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00225.jpg",
+      "tikali_gorseller": [
+        "test_00097.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 392,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00057.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 393,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00091.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 394,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00287.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 395,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00074.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00010.jpg"
+      ]
+    },
+    {
+      "sahne": 396,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00209.jpg",
+      "tikali_gorseller": [
+        "test_00017.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 397,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00236.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 398,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00005.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 399,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00090.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00026.jpg"
+      ]
+    },
+    {
+      "sahne": 400,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00242.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 401,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00219.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 402,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00019.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 403,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00064.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 404,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00242.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 405,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00040.jpg",
+      "tikali_gorseller": [
+        "test_00008.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 406,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00122.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 407,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 0.997,
+      "dogru": false,
+      "acik_gorsel": "test_00200.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 408,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00041.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 409,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.957,
+      "dogru": true,
+      "acik_gorsel": "test_00256.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 410,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00048.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 411,
+      "hedef": 2,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00006.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00053.jpg"
+      ]
+    },
+    {
+      "sahne": 412,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.998,
+      "dogru": true,
+      "acik_gorsel": "test_00146.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 413,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00221.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 414,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 0.682,
+      "dogru": false,
+      "acik_gorsel": "test_00241.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 415,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00200.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00128.jpg"
+      ]
+    },
+    {
+      "sahne": 416,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00202.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00044.jpg"
+      ]
+    },
+    {
+      "sahne": 417,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00227.jpg",
+      "tikali_gorseller": [
+        "test_00044.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 418,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00029.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 419,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00074.jpg",
+      "tikali_gorseller": [
+        "test_00032.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 420,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00114.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 421,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.964,
+      "dogru": true,
+      "acik_gorsel": "test_00202.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 422,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.989,
+      "dogru": true,
+      "acik_gorsel": "test_00186.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 423,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00050.jpg",
+      "tikali_gorseller": [
+        "test_00072.jpg",
+        "test_00007.jpg"
+      ]
+    },
+    {
+      "sahne": 424,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.95,
+      "dogru": true,
+      "acik_gorsel": "test_00204.jpg",
+      "tikali_gorseller": [
+        "test_00072.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 425,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00293.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 426,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00213.jpg",
+      "tikali_gorseller": [
+        "test_00001.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 427,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00177.jpg",
+      "tikali_gorseller": [
+        "test_00262.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 428,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00040.jpg",
+      "tikali_gorseller": [
+        "test_00133.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 429,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00304.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00095.jpg"
+      ]
+    },
+    {
+      "sahne": 430,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.992,
+      "dogru": true,
+      "acik_gorsel": "test_00149.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 431,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 0.976,
+      "dogru": false,
+      "acik_gorsel": "test_00294.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 432,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00057.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 433,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00121.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00262.jpg"
+      ]
+    },
+    {
+      "sahne": 434,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.954,
+      "dogru": true,
+      "acik_gorsel": "test_00220.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 435,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.997,
+      "dogru": true,
+      "acik_gorsel": "test_00283.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 436,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00264.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 437,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.963,
+      "dogru": true,
+      "acik_gorsel": "test_00021.jpg",
+      "tikali_gorseller": [
+        "test_00089.jpg",
+        "test_00136.jpg"
+      ]
+    },
+    {
+      "sahne": 438,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.983,
+      "dogru": false,
+      "acik_gorsel": "test_00170.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 439,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00162.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00094.jpg"
+      ]
+    },
+    {
+      "sahne": 440,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00049.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 441,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.996,
+      "dogru": true,
+      "acik_gorsel": "test_00249.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00000.jpg"
+      ]
+    },
+    {
+      "sahne": 442,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00287.jpg",
+      "tikali_gorseller": [
+        "test_00010.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 443,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00200.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00060.jpg"
+      ]
+    },
+    {
+      "sahne": 444,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00113.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00161.jpg"
+      ]
+    },
+    {
+      "sahne": 445,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00279.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00282.jpg"
+      ]
+    },
+    {
+      "sahne": 446,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00280.jpg",
+      "tikali_gorseller": [
+        "test_00141.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 447,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00208.jpg",
+      "tikali_gorseller": [
+        "test_00060.jpg",
+        "test_00014.jpg"
+      ]
+    },
+    {
+      "sahne": 448,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00272.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00291.jpg"
+      ]
+    },
+    {
+      "sahne": 449,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00170.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00060.jpg"
+      ]
+    },
+    {
+      "sahne": 450,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00236.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 451,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00173.jpg",
+      "tikali_gorseller": [
+        "test_00088.jpg",
+        "test_00076.jpg"
+      ]
+    },
+    {
+      "sahne": 452,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00121.jpg",
+      "tikali_gorseller": [
+        "test_00056.jpg",
+        "test_00093.jpg"
+      ]
+    },
+    {
+      "sahne": 453,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00100.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00141.jpg"
+      ]
+    },
+    {
+      "sahne": 454,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00065.jpg",
+      "tikali_gorseller": [
+        "test_00003.jpg",
+        "test_00056.jpg"
+      ]
+    },
+    {
+      "sahne": 455,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00054.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 456,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00232.jpg",
+      "tikali_gorseller": [
+        "test_00153.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 457,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.977,
+      "dogru": true,
+      "acik_gorsel": "test_00266.jpg",
+      "tikali_gorseller": [
+        "test_00291.jpg",
+        "test_00010.jpg"
+      ]
+    },
+    {
+      "sahne": 458,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.999,
+      "dogru": true,
+      "acik_gorsel": "test_00019.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00025.jpg"
+      ]
+    },
+    {
+      "sahne": 459,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00227.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 460,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00092.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 461,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00135.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 462,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00183.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 463,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00234.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 464,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 0.972,
+      "dogru": true,
+      "acik_gorsel": "test_00172.jpg",
+      "tikali_gorseller": [
+        "test_00093.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 465,
+      "hedef": 3,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00057.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 466,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.998,
+      "dogru": true,
+      "acik_gorsel": "test_00289.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 467,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00154.jpg",
+      "tikali_gorseller": [
+        "test_00088.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 468,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00235.jpg",
+      "tikali_gorseller": [
+        "test_00007.jpg",
+        "test_00016.jpg"
+      ]
+    },
+    {
+      "sahne": 469,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 0.785,
+      "dogru": false,
+      "acik_gorsel": "test_00270.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00252.jpg"
+      ]
+    },
+    {
+      "sahne": 470,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00278.jpg",
+      "tikali_gorseller": [
+        "test_00037.jpg",
+        "test_00013.jpg"
+      ]
+    },
+    {
+      "sahne": 471,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00199.jpg",
+      "tikali_gorseller": [
+        "test_00009.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 472,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00183.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00153.jpg"
+      ]
+    },
+    {
+      "sahne": 473,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.994,
+      "dogru": true,
+      "acik_gorsel": "test_00260.jpg",
+      "tikali_gorseller": [
+        "test_00026.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 474,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00158.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 475,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00170.jpg",
+      "tikali_gorseller": [
+        "test_00014.jpg",
+        "test_00252.jpg"
+      ]
+    },
+    {
+      "sahne": 476,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00140.jpg",
+      "tikali_gorseller": [
+        "test_00252.jpg",
+        "test_00032.jpg"
+      ]
+    },
+    {
+      "sahne": 477,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00272.jpg",
+      "tikali_gorseller": [
+        "test_00118.jpg",
+        "test_00123.jpg"
+      ]
+    },
+    {
+      "sahne": 478,
+      "hedef": 1,
+      "karar": 2,
+      "geometrik_guven": 0.981,
+      "dogru": false,
+      "acik_gorsel": "test_00074.jpg",
+      "tikali_gorseller": [
+        "test_00076.jpg",
+        "test_00133.jpg"
+      ]
+    },
+    {
+      "sahne": 479,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00196.jpg",
+      "tikali_gorseller": [
+        "test_00025.jpg",
+        "test_00089.jpg"
+      ]
+    },
+    {
+      "sahne": 480,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00277.jpg",
+      "tikali_gorseller": [
+        "test_00002.jpg",
+        "test_00107.jpg"
+      ]
+    },
+    {
+      "sahne": 481,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00079.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00106.jpg"
+      ]
+    },
+    {
+      "sahne": 482,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00222.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 483,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00103.jpg",
+      "tikali_gorseller": [
+        "test_00087.jpg",
+        "test_00094.jpg"
+      ]
+    },
+    {
+      "sahne": 484,
+      "hedef": 1,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00210.jpg",
+      "tikali_gorseller": [
+        "test_00161.jpg",
+        "test_00003.jpg"
+      ]
+    },
+    {
+      "sahne": 485,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00043.jpg",
+      "tikali_gorseller": [
+        "test_00123.jpg",
+        "test_00009.jpg"
+      ]
+    },
+    {
+      "sahne": 486,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.996,
+      "dogru": true,
+      "acik_gorsel": "test_00283.jpg",
+      "tikali_gorseller": [
+        "test_00095.jpg",
+        "test_00002.jpg"
+      ]
+    },
+    {
+      "sahne": 487,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00101.jpg",
+      "tikali_gorseller": [
+        "test_00000.jpg",
+        "test_00001.jpg"
+      ]
+    },
+    {
+      "sahne": 488,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.992,
+      "dogru": true,
+      "acik_gorsel": "test_00184.jpg",
+      "tikali_gorseller": [
+        "test_00036.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 489,
+      "hedef": 2,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00071.jpg",
+      "tikali_gorseller": [
+        "test_00136.jpg",
+        "test_00012.jpg"
+      ]
+    },
+    {
+      "sahne": 490,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00250.jpg",
+      "tikali_gorseller": [
+        "test_00053.jpg",
+        "test_00118.jpg"
+      ]
+    },
+    {
+      "sahne": 491,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00177.jpg",
+      "tikali_gorseller": [
+        "test_00106.jpg",
+        "test_00088.jpg"
+      ]
+    },
+    {
+      "sahne": 492,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00071.jpg",
+      "tikali_gorseller": [
+        "test_00282.jpg",
+        "test_00087.jpg"
+      ]
+    },
+    {
+      "sahne": 493,
+      "hedef": 3,
+      "karar": 3,
+      "geometrik_guven": 0.928,
+      "dogru": true,
+      "acik_gorsel": "test_00157.jpg",
+      "tikali_gorseller": [
+        "test_00017.jpg",
+        "test_00097.jpg"
+      ]
+    },
+    {
+      "sahne": 494,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 1.0,
+      "dogru": true,
+      "acik_gorsel": "test_00148.jpg",
+      "tikali_gorseller": [
+        "test_00013.jpg",
+        "test_00035.jpg"
+      ]
+    },
+    {
+      "sahne": 495,
+      "hedef": 3,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00115.jpg",
+      "tikali_gorseller": [
+        "test_00016.jpg",
+        "test_00292.jpg"
+      ]
+    },
+    {
+      "sahne": 496,
+      "hedef": 3,
+      "karar": 2,
+      "geometrik_guven": 0.98,
+      "dogru": false,
+      "acik_gorsel": "test_00042.jpg",
+      "tikali_gorseller": [
+        "test_00292.jpg",
+        "test_00072.jpg"
+      ]
+    },
+    {
+      "sahne": 497,
+      "hedef": 2,
+      "karar": 2,
+      "geometrik_guven": 0.951,
+      "dogru": true,
+      "acik_gorsel": "test_00065.jpg",
+      "tikali_gorseller": [
+        "test_00035.jpg",
+        "test_00060.jpg"
+      ]
+    },
+    {
+      "sahne": 498,
+      "hedef": 2,
+      "karar": 1,
+      "geometrik_guven": 1.0,
+      "dogru": false,
+      "acik_gorsel": "test_00115.jpg",
+      "tikali_gorseller": [
+        "test_00128.jpg",
+        "test_00094.jpg"
+      ]
+    },
+    {
+      "sahne": 499,
+      "hedef": 1,
+      "karar": null,
+      "geometrik_guven": 0.0,
+      "dogru": false,
+      "acik_gorsel": "test_00067.jpg",
+      "tikali_gorseller": [
+        "test_00012.jpg",
+        "test_00035.jpg"
+      ]
+    }
+  ]
+}

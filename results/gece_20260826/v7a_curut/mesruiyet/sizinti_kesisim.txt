@@ -1,0 +1,5 @@
+dji_v7 train 413 val 73 label train 413 label val 73
+img/label eslesme train True val True
+test29 29 val82 82
+train&val 0
+train&test29 0 train&val82 0 val&test29 0 val&val82 0

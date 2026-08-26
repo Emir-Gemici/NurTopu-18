@@ -1,0 +1,37 @@
+{
+  "ozet": {
+    "n_kare": 1,
+    "ihlal_sayisi_ham": 0,
+    "ihlal_sayisi_enjekte": 0,
+    "karar_sayisi_ham": 1,
+    "karar_sayisi_enjekte": 1,
+    "tohum_yok_ham": 0,
+    "tohum_yok_enjekte": 0,
+    "ihlal_orani_ham": 0.0,
+    "ihlal_orani_enjekte": 0.0,
+    "cekimserlik_ham": 0.0,
+    "cekimserlik_enjekte": 0.0
+  },
+  "kareler": [
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 402.19647216796875,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 402.19647216796875,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.03945534045235333,
+      "r_gerekli_px": 27.879622565375435,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.48.jpeg",
+      "kare": 0
+    }
+  ]
+}

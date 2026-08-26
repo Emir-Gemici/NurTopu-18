@@ -1,0 +1,69 @@
+{
+ "model": "O:\\navitas\\models\\navitas_seg_v30_best.pt",
+ "kaynaklar": {
+  "kompozit": {
+   "n": 9,
+   "rota": 0,
+   "olcekli": 9,
+   "kaplama_medyan": 0.6586439344618056,
+   "sebepler": {
+    "GORUS_HATTI_KOPUK": 5,
+    "ZEMIN_MASKESI_SUPHELI": 4
+   }
+  },
+  "arena_kadraj": {
+   "n": 12,
+   "rota": 12,
+   "olcekli": 12,
+   "kaplama_medyan": 0.314892578125,
+   "sebepler": {
+    "ROTA VAR": 12
+   }
+  },
+  "arena_gercek": {
+   "n": 1,
+   "rota": 0,
+   "olcekli": 0,
+   "kaplama_medyan": 0.13292851121378124,
+   "sebepler": {
+    "OLCEK_YOK": 1
+   }
+  },
+  "gemini": {
+   "n": 12,
+   "rota": 0,
+   "olcekli": 0,
+   "kaplama_medyan": 0.0,
+   "sebepler": {
+    "OLCEK_YOK": 12
+   }
+  },
+  "test": {
+   "n": 12,
+   "rota": 0,
+   "olcekli": 0,
+   "kaplama_medyan": 0.0,
+   "sebepler": {
+    "OLCEK_YOK": 12
+   }
+  },
+  "val": {
+   "n": 12,
+   "rota": 0,
+   "olcekli": 0,
+   "kaplama_medyan": 0.0,
+   "sebepler": {
+    "OLCEK_YOK": 12
+   }
+  },
+  "drone": {
+   "n": 12,
+   "rota": 0,
+   "olcekli": 0,
+   "kaplama_medyan": 0.5816718207465278,
+   "sebepler": {
+    "OLCEK_YOK": 12
+   }
+  }
+ }
+}

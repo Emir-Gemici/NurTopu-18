@@ -1,0 +1,29 @@
+================================================================
+ÇAPRAZ DOĞRULAMA — 2026-07-20T16:00:31
+model : O:\navitas\models\navitas_seg_v4_best.pt
+SHA256: 6b93f20024b9a9b6b774346ebba286e6088261aad014d7c64499940e2f618ec4
+veri  : O:\navitas\dataset\rescuenet_yolo\data.yaml
+================================================================
+
+================================================================
+SPLIT: val  |  imgsz: 960
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+YOLOv8s-seg summary (fused): 86 layers, 11,780,374 parameters, 0 gradients, 39.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 2303.7±832.5 MB/s, size: 186.5 KB)
+                   all        294        363      0.525      0.541      0.459      0.205      0.578      0.595       0.53      0.217
+           traversable        240        282      0.552      0.638      0.527      0.207      0.616      0.709      0.645      0.252
+               blocked         60         81      0.497      0.444      0.391      0.203      0.539      0.481      0.414      0.181
+Speed: 3.2ms preprocess, 7.4ms inference, 0.0ms loss, 1.4ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v4_i960_20260720\val960[0m
+
+================================================================
+SPLIT: test  |  imgsz: 960
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 2330.9±346.1 MB/s, size: 183.4 KB)
+                   all        305        393      0.495      0.476      0.419       0.18      0.562      0.539      0.497       0.21
+           traversable        249        308      0.586      0.575      0.566      0.236       0.68      0.666      0.683      0.281
+               blocked         70         85      0.404      0.376      0.273      0.124      0.443      0.412       0.31      0.138
+Speed: 3.2ms preprocess, 7.1ms inference, 0.0ms loss, 1.2ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v4_i960_20260720\test960[0m

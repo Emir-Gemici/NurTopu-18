@@ -1,0 +1,16 @@
+{"islemler":[
+{"tip":"poligon","deger":1,"nokta":[[195,0],[335,0],[330,540],[120,540]]},
+{"tip":"daire","deger":2,"merkez":[95,70],"yaricap":25},
+{"tip":"daire","deger":2,"merkez":[140,130],"yaricap":22},
+{"tip":"daire","deger":2,"merkez":[60,25],"yaricap":18},
+{"tip":"daire","deger":2,"merkez":[120,330],"yaricap":20},
+{"tip":"daire","deger":2,"merkez":[110,410],"yaricap":20},
+{"tip":"daire","deger":2,"merkez":[60,430],"yaricap":22},
+{"tip":"daire","deger":2,"merkez":[80,490],"yaricap":22},
+{"tip":"daire","deger":2,"merkez":[130,510],"yaricap":18},
+{"tip":"poligon","deger":2,"nokta":[[170,470],[190,440],[260,395],[370,398],[365,415],[280,430],[240,470],[200,480]]},
+{"tip":"daire","deger":2,"merkez":[935,210],"yaricap":12},
+{"tip":"daire","deger":2,"merkez":[860,520],"yaricap":15},
+{"tip":"daire","deger":2,"merkez":[880,470],"yaricap":10},
+{"tip":"daire","deger":2,"merkez":[920,380],"yaricap":10}
+]}

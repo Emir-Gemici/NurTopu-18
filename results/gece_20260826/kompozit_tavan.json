@@ -1,0 +1,398 @@
+{
+ "kume": "O:\\navitas\\data\\arena_kompozit",
+ "kare": 9,
+ "kosumlar": {
+  "TAVAN(etiket)": {
+   "dagilim": {
+    "ROTA": 8,
+    "GORUS_HATTI_KOPUK": 1
+   },
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 1,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 173869,
+     "engel_px": 157641,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 1,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 172849,
+     "engel_px": 136385,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 1,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 168160,
+     "engel_px": 114945,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 3,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 168072,
+     "engel_px": 115053,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 1,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 173339,
+     "engel_px": 110774,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 3,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 165575,
+     "engel_px": 108989,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 3,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 148307,
+     "engel_px": 121612,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=1514px, ust_tohum=142px.",
+     "zemin_px": 171167,
+     "engel_px": 140179,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 3,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 166924,
+     "engel_px": 114270,
+     "wp": 8
+    }
+   ]
+  },
+  "navitas_seg_v36_best": {
+   "dagilim": {
+    "GORUS_HATTI_KOPUK": 4,
+    "UC_BANT_TEMAS_YOK": 5
+   },
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=0px, ust_tohum=1420px.",
+     "zemin_px": 206544,
+     "engel_px": 226008,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Koridor uclari bagli, ancak dogrulanmis waypoint zinciri kurulamadi; olculen alt_tohum=1252px, ust_tohum=6532px, plan_hucre_butcesi=32768, denenen_plan_adim_hucre=[(17, 1500), (4, 28296)].",
+     "zemin_px": 277664,
+     "engel_px": 131508,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=2200px, ust_tohum=7367px.",
+     "zemin_px": 254384,
+     "engel_px": 158432,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=662/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 246120,
+     "engel_px": 151692,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=595/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 208668,
+     "engel_px": 142556,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=399/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 196300,
+     "engel_px": 151528,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=441/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 208788,
+     "engel_px": 175828,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=3345px, ust_tohum=4957px.",
+     "zemin_px": 257708,
+     "engel_px": 178080,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=584/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 202744,
+     "engel_px": 149792,
+     "wp": 0
+    }
+   ]
+  },
+  "navitas_seg_v35_best": {
+   "dagilim": {
+    "GORUS_HATTI_KOPUK": 6,
+    "ROTA": 1,
+    "UC_BANT_TEMAS_YOK": 2
+   },
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=0px, ust_tohum=1548px.",
+     "zemin_px": 246072,
+     "engel_px": 224344,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": 2,
+     "kod": "ROTA",
+     "sebep": null,
+     "zemin_px": 363588,
+     "engel_px": 133084,
+     "wp": 8
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=1661px, ust_tohum=9485px.",
+     "zemin_px": 339252,
+     "engel_px": 155532,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=6434px, ust_tohum=553px.",
+     "zemin_px": 283988,
+     "engel_px": 162476,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=9308px, ust_tohum=314px.",
+     "zemin_px": 317952,
+     "engel_px": 141696,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=485/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 218952,
+     "engel_px": 139128,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "UC_BANT_TEMAS_YOK",
+     "sebep": "UC_BANT_TEMAS_YOK | Koridor ust uc bandina yeterli temas etmiyor; olculen alt=592/1024px, ust=0/1024px; gereken >= 21px.",
+     "zemin_px": 241368,
+     "engel_px": 180556,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=2482px, ust_tohum=9333px.",
+     "zemin_px": 277356,
+     "engel_px": 178228,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "GORUS_HATTI_KOPUK",
+     "sebep": "GORUS_HATTI_KOPUK | Baslangic ve hedef tohumlari ayni koridor bileseninde degil; olculen alt_tohum=5541px, ust_tohum=628px.",
+     "zemin_px": 297184,
+     "engel_px": 145616,
+     "wp": 0
+    }
+   ]
+  },
+  "navitas_seg_v34_best": {
+   "dagilim": {
+    "ZEMIN_MASKESI_SUPHELI": 9
+   },
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %77.2'ini kapliyor (tavan %55.0) VE cevrenin %61.7'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 455120,
+     "engel_px": 153568,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %80.5'ini kapliyor (tavan %55.0) VE cevrenin %85.6'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 474952,
+     "engel_px": 132876,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %83.0'ini kapliyor (tavan %55.0) VE cevrenin %54.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 489364,
+     "engel_px": 109036,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %83.4'ini kapliyor (tavan %55.0) VE cevrenin %79.4'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 491680,
+     "engel_px": 112096,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %84.5'ini kapliyor (tavan %55.0) VE cevrenin %81.8'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 498424,
+     "engel_px": 106536,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %82.9'ini kapliyor (tavan %55.0) VE cevrenin %95.9'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 489192,
+     "engel_px": 98224,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %83.0'ini kapliyor (tavan %55.0) VE cevrenin %77.5'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 489664,
+     "engel_px": 114188,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %79.6'ini kapliyor (tavan %55.0) VE cevrenin %59.1'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 469332,
+     "engel_px": 132292,
+     "wp": 0
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "mpp": 0.048828125,
+     "yol_no": null,
+     "kod": "ZEMIN_MASKESI_SUPHELI",
+     "sebep": "ZEMIN_MASKESI_SUPHELI | Zemin maskesi icerigin %83.7'ini kapliyor (tavan %55.0) VE cevrenin %80.7'ine dayaniyor (tavan %40.0). Maske sahneyi ayirt etmiyor (cati/cim/toprak zemin sayilmis olabilir); rota uretilmez.",
+     "zemin_px": 493692,
+     "engel_px": 108996,
+     "wp": 0
+    }
+   ]
+  }
+ }
+}

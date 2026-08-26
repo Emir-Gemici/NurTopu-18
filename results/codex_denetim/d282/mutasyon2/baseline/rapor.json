@@ -1,0 +1,50 @@
+{
+ "_ne": "Kare uygunluk denetimi — esikler data/raw_frames'ten TURETILDI",
+ "_referans_n": 67,
+ "_referans_dagilim": {
+  "keskinlik": {
+   "min": 405.94,
+   "p05": 465.27,
+   "p50": 606.62,
+   "p95": 888.1,
+   "maks": 960.94
+  },
+  "kirpik_oran": {
+   "min": 3e-05,
+   "p05": 5e-05,
+   "p50": 0.00015,
+   "p95": 0.00044,
+   "maks": 0.00054
+  },
+  "gok_puani": {
+   "min": 0.0,
+   "p05": 0.0,
+   "p50": 0.0001,
+   "p95": 0.0147,
+   "maks": 0.0309
+  }
+ },
+ "_bantlar": {
+  "keskinlik_alt": 465.27,
+  "kirpik_ust": 0.2,
+  "gok_ust": 0.05,
+  "etiketsiz_ust": 0.85
+ },
+ "_uyari": "HICBIR KARE OTOMATIK SILINMEZ; bu bir IS LISTESIDIR.",
+ "sayim": {},
+ "temiz": 1,
+ "ikiz_ciftler": [],
+ "kareler": [
+  {
+   "keskinlik": 3717.83,
+   "kirpik_oran": 0.00045,
+   "gok_puani": 0.0248,
+   "parlaklik": 142.61,
+   "etiketsiz_oran": 0.3749,
+   "sinif0_oran": 0.3705,
+   "sinif1_oran": 0.2546,
+   "kare": "dji_20260822170832_0037_d__frame_000003_000000090",
+   "bayrak": []
+  }
+ ]
+}

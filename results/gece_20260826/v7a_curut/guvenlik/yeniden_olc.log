@@ -1,0 +1,31 @@
+etiket(v3 labels) vs uzlasi png farkli piksel payi: maks 0.013125 ort 0.005165703898342787 n 111
+v7a test29: ROTA 8 YANLIS 0 yanlis_kareler [] engel_wp_toplam 0
+v7a val82: ROTA 30 YANLIS 7 yanlis_kareler ['000064', '000129', '000140', '000168', '000208', '000210', '000223'] engel_wp_toplam 3
+v35 test29: ROTA 6 YANLIS 5 yanlis_kareler ['000124', '000135', '000152', '000196', '000202'] engel_wp_toplam 15
+v35 val82: ROTA 15 YANLIS 10 yanlis_kareler ['000130', '000153', '000156', '000157', '000158', '000159', '000201', '000203', '000208', '000230'] engel_wp_toplam 64
+capraz (v35 sebep -> v7a sebep): Counter({('MASKE_YOK', 'MASKE_YOK'): 39, ('MASKE_YOK', 'ROTA'): 17, ('ROTA', 'ROTA'): 14, ('UC_BANT_TEMAS_YOK', 'UC_BANT_TEMAS_YOK'): 11, ('MASKE_YOK', 'UC_BANT_TEMAS_YOK'): 9, ('UC_BANT_TEMAS_YOK', 'MASKE_YOK'): 7, ('UC_BANT_TEMAS_YOK', 'ROTA'): 7, ('ROTA', 'MASKE_YOK'): 5, ('ROTA', 'UC_BANT_TEMAS_YOK'): 2})
+bindirmeler: 22
+tavan keys ['_ne', 'n', 'rota', 'sebepler', 'kareler']
+--- test29: v35 ROTA karelerinde v7a
+  000120 v35 yol 0.97 engel_wp 0 yanlis False | v7a MASKE_YOK zemin_orani 0.000
+  000124 v35 yol 0.78 engel_wp 0 yanlis True | v7a MASKE_YOK zemin_orani 0.000
+  000135 v35 yol 0.88 engel_wp 0 yanlis True | v7a ROTA yol 0.98 engel_wp 0 yanlis False
+  000152 v35 yol 0.59 engel_wp 0 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000196 v35 yol 0.00 engel_wp 8 yanlis True | v7a UC_BANT_TEMAS_YOK zemin_orani 0.178
+  000202 v35 yol 0.00 engel_wp 7 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+--- val82: v35 ROTA karelerinde v7a
+  000076 v35 yol 1.00 engel_wp 0 yanlis False | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000079 v35 yol 1.00 engel_wp 0 yanlis False | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000090 v35 yol 1.00 engel_wp 0 yanlis False | v7a MASKE_YOK zemin_orani 0.000
+  000130 v35 yol 0.00 engel_wp 7 yanlis True | v7a MASKE_YOK zemin_orani 0.000
+  000136 v35 yol 1.00 engel_wp 0 yanlis False | v7a MASKE_YOK zemin_orani 0.000
+  000153 v35 yol 0.00 engel_wp 8 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000156 v35 yol 0.31 engel_wp 1 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000157 v35 yol 0.00 engel_wp 8 yanlis True | v7a ROTA yol 0.93 engel_wp 0 yanlis False
+  000158 v35 yol 0.00 engel_wp 7 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000159 v35 yol 0.00 engel_wp 8 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000163 v35 yol 1.00 engel_wp 0 yanlis False | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000201 v35 yol 0.00 engel_wp 8 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000203 v35 yol 0.00 engel_wp 5 yanlis True | v7a ROTA yol 1.00 engel_wp 0 yanlis False
+  000208 v35 yol 0.00 engel_wp 4 yanlis True | v7a ROTA yol 0.38 engel_wp 1 yanlis True
+  000230 v35 yol 0.00 engel_wp 8 yanlis True | v7a UC_BANT_TEMAS_YOK zemin_orani 0.156

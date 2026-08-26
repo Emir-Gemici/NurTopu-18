@@ -1,0 +1,5 @@
+{"dalga":3,"gruplar":["Q","R","S","T","U","V","W","X"],"incelenen":40,
+"duzeltilen":[{"grup":"Q","govde":"dji_20260822170832_0037_d__frame_000222_000008610","neden":"Sol yesil serit (x 245-375) yol degil: agac sirasinin golgesindeki koyu toprak/cakil serit, belirsiz -> D-210 geregi ETIKETSIZ. deger-0 poligon ilk deger-2'den once eklendi; sag yol (485-700) yesil kaldi.","sinif0_once":0.2272,"sinif0_sonra":0.156,"yedek":"Q/..._ops.json.bak_denetim"}],
+"eklenen_sinif1":[],
+"dogrulama":"40 *_uc.png benzersiz degerler {0,1,2} altkumesi (tutarlilik_Q_X_maskeler.json)",
+"not":"Q1 disinda ihlal yok. Tartismali ama dokunulmayan: T2/U1'de kaldirim yanindaki cakil serit yesil (R2'de ayni serit etiketsiz), X4'te kuru ot yamac ve dolgu yigini kirmizi (muhafazakar), W4'te sol yol kolu etiketsiz."}

@@ -48,7 +48,7 @@ GECTI 7 · DUSTU 1 · SAHIPSIZ 2 · ATLANDI 0
 Sabahki kosum `--atla-cikarim` ile yapildigi icin `olcek DUSTU` gorunuyordu; **o bir
 zincir kopuklugu degil, atlanan cikarimin yan etkisiydi.** Bugun tam zincirde GECTI.
 
-**Ama halka 7 aldaticidir:** kuru kosu `rota_bul` cagiriyor
+**Halka 7 ALDATICIYDI (T160 ile kapandi, 2026-08-27):** kuru kosu `rota_bul` cagiriyordu
 (`scripts/saha_kuru_kosu.py:709`), oysa D-295/T151 ile **uretim yolu `analyze_path`**
 ilan edildi. Yani tek `DUSTU` satiri **tanisal** yolun sonucudur; uretim karar yolu
 kuru kosuda **hic olculmuyor** (D-297 §1, T156).
@@ -118,7 +118,9 @@ duzeltilmedi, **kayda gecti** (D-297).
 1. **Gercek IKA motor surucusu yok** (R12 · T149) - **K2, insan/donanim.**
 2. **HB uretime bagli degil ve olcum baglanmamasi gerektigini soyluyor** (R13 · T150) - **K3, insan.**
 3. **Uretim karar yolu `analyze_path` hicbir kapida yok** (T156) - genel kapi da
-   kuru kosu da `rota_bul`u zorluyor (D-297 §1). Kod isi, mimar karari bekliyor.
+   kuru kosu `rota_bul`u zorluyordu (D-297 §1) — **T160 ile kapandi (D-298 §5b):** halka 7'nin
+   hukmu artik `analyze_path`ten gelir, tanisal yol hukmu ceviremez (8/8 mutasyon).
+   **T156 (genel kapi kolu) hâlâ ayri bir istir.**
 4. **v36 karar kararliligi v35'ten kotu** (R14 · D-295 §3) - geri alma **kullanici karari**.
 5. **SiK seri hatti hic olculmedi** (R20) - donanim gerekiyor; UDP loopback kanit sayilmaz.
 6. **`iha_inis_yayinci` icin Jetson calistirma yordami kilavuzda yok** (R10 kalan) -

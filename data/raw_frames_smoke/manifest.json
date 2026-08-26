@@ -1,0 +1,39 @@
+{
+  "parametreler": {
+    "aralik_sn": 20.0,
+    "en_fazla_kaynak": 2,
+    "hash_esik": 0.12,
+    "jpeg_kalite": 95,
+    "tam_kare": true,
+    "merkez_crop": false
+  },
+  "kaynaklar": [
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "fps": 23.976,
+      "taranan_kare": 961,
+      "aday_kare": 3,
+      "yakin_kopya": 1,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 2
+    }
+  ],
+  "kareler": [
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 960,
+      "zaman_sn": 40.04,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000001_000000960.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    }
+  ]
+}

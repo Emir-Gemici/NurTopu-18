@@ -1,0 +1,8 @@
+{"islemler":[
+{"tip":"poligon","deger":1,"nokta":[[0,0],[455,0],[475,540],[110,540],[60,300],[60,120]]},
+{"tip":"poligon","deger":1,"nokta":[[610,80],[710,80],[780,540],[650,540]]},
+{"tip":"poligon","deger":2,"nokta":[[528,0],[546,0],[592,540],[574,540]]},
+{"tip":"dikdortgen","deger":2,"kutu":[830,0,960,540]},
+{"tip":"dikdortgen","deger":2,"kutu":[0,190,42,262]},
+{"tip":"daire","deger":2,"merkez":[615,130],"yaricap":28}
+]}

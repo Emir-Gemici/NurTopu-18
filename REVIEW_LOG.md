@@ -22291,3 +22291,42 @@ saklanmasıdır.
 - **Gerçek Pixhawk `mpp`** — halka 5 sahte yayınla geçti; gerçek telemetri yok.
 - **Gerçek İKA motoru** — halka 10 SAHİPSİZ (T149, donanım).
 - **`.engine` derlemesi ve Jetson FPS** — cihaz 30 Eylül'de (D-211 §5).
+
+---
+
+## D-298 · T159 — "GUI arena_kadraj dışında rota üretmiyor": ölçüldü, iki hipotez çürüdü, bir HÜKÜM DÜZELTİLDİ (2026-08-27)
+
+**Kullanıcı gözlemi (verbatim):** *"arena_kadraj klasörü hariç tüm klasörleri kaynak olarak seçince guiden yol üretemiyor"*. Ön kayıt: `results/gece_20260826/ON_KAYIT.md` §19–§20 (ikisi de sonuç görülmeden).
+
+### 1. Hipotez A (ÖLÇEK) — ÇÜRÜDÜ
+`scripts/olcum/148_gui_kaynak_teshis.py`, 7 kaynak × ≤12 kare, GUI'nin **kendi** metotları + üretim zinciri (kopya algoritma yok). Kanıt `results/gece_20260826/gui_kaynak_teshis.json`:
+
+| kaynak | n | ROTA | ölçek suçu | model/yapısal suç |
+|---|---:|---:|---:|---:|
+| kompozit | 9/9 | 0 | **0** | 9 |
+| **arena_kadraj** | 12/260 | **12** | 0 | 0 |
+| arena_gercek | 1/1 | 0 | 0 | 1 |
+| drone | 12/67 | **4** | **0** | 8 |
+| gemini | 12/320 | 0 | 2 | 10 |
+| test | 12/305 | 0 | 5 | 7 |
+| val | 12/294 | 0 | **0** | 12 |
+
+Ölçek reddi 70 karenin yalnız **7**'sinde. `drone`da katman 3 (araç dedektörü) ölçeği gerçekten üretiyor (suç 0) ve 4 kare rota veriyor. **Kaynak-özel ölçek kodu suçlu değil.**
+
+### 2. Hipotez B (ÇIKARIM GEOMETRİSİ) — ÇÜRÜDÜ
+`150_cikarim_geometrisi.py`, 9 kompozit kare × 4 kip (letterbox 512 taban / 1024 / 768 / letterbox yok 512). Ön kayıtlı ölçüt: ROTA ≥ +4 **ve** IoU medyanı ≥ +0,05. Sonuç: en iyi kip +1 ROTA, IoU **düştü** (−0,02). Hüküm dosyada: `"GEOMETRI DEGIL"`. Kanıt `cikarim_geometrisi.json`.
+
+### 3. 🔴 HÜKÜM DÜZELTMESİ — "tavan 8/9 · v36 0/9" model kusuru kanıtı DEĞİLDİR
+`149_kompozit_tavan.py` ölçtü: kompozit 9 karede **tavan (kümenin kendi YOLO etiketi) 8/9 ROTA**, v36 **0/9**, v35 1/9, v34 0/9. İlk okuma "kusur modelde" idi. **Yanlıştır.** Görsel kanıt `results/gece_20260826/kompozit_panel.png` (ham / tavan / v36, 3 kare):
+- `data/arena_kompozit` bir **otopark** drone çekimidir; sınıf 0 yer gerçeği, ham karede **görünmeyen** sentetik bir koridor şerididir (kopyala-yapıştır arena kurgusu). Model o şeridi öğrenemez — **öğrenmemelidir de**.
+- Model asfaltın tamamını sınıf 0, araçları sınıf 1 işaretliyor: 196k–277k px (tavan 148k–174k). IoU 0,12–0,21 **düşük çıkıyor çünkü iki maske farklı şeyleri tarif ediyor**, biri diğerinden kötü olduğu için değil.
+- Otoparkta araç sıraları serbest alanı **enine** kesiyor → alt↔üst koridor kurulamıyor → `GORUS_HATTI_KOPUK` / `UC_BANT_TEMAS_YOK`. Bu **fail-closed doğru davranıştır**, arıza değil.
+**Sonuç:** "tavan 8/9" bir tavan değil, sentetik bir çizimin kendisidir. T159 bu kümeyi model kapasitesi ölçütü olarak **kullanmaz**; `kompozit`in ROTA sayısı bundan sonra bir kapı/gösterge sayılmaz.
+
+### 4. Gözlemin doğru cevabı
+`arena_kadraj` dışındaki kaynaklar **arena değildir** (otopark, afet fotoğrafı, kırsal yol, tek eğik arena karesi). Üretim zinciri onlarda çoğunlukla **haklı olarak** reddediyor; GUI sebebi ekrana yazıyor. Gerçek kayıp §18'de ayrı ölçüldü: 111 gerçek karede **17 kare model körlüğü** (tavan rota veriyor, model `MASKE_YOK`) — ve §18-A süpürmesi conf eşiğinin bunu kapatmadığını ölçtü (aday eşik yok, D bkz. commit `c87dea6`).
+**Sunum riski (ölçüldü, kod kararı değil):** GUI'nin açılış kaynağı `ALGI_KAYNAKLAR[0]` = `kompozit` (`comms/yks_gui.py:250`), yani hakem ekranı **0/9 rota veren** kümeyle açılıyor; kabul kümesi `arena_kadraj` 12/12 veriyor. Açılış sırası bir **insan/sunum kararıdır** (D-133) — kullanıcıya rapor edilir, tek taraflı değiştirilmez.
+
+### 5. Saha zinciri — iki düzeltme
+- **(a) D-297'nin "çıkarım DÜŞTÜ · `AssertionError: Invalid device id`" kaydı GEÇİCİDİR.** GPU boşken aynı komut yeniden koşuldu: `cikarim GECTI [1703 ms]` (`results/saha_zinciri_20260827/kosu_tam`). Kök sebep paralel iş akışının GPU çekişmesiydi; **kod kusuru yok**. Tam koşu artık CPU koluyla aynı: GEÇTİ 7 · DÜŞTÜ 1 · SAHİPSİZ 2.
+- **(b) 🔴 KUSUR — saha kuru koşusu SAHANIN KOŞMAYACAĞI yolu doğruluyor.** `scripts/saha_kuru_kosu.py:683` `rota` halkasında `costmap_path_finder.rota_bul` çağırıyor. T151 kararı (D-295, `CONTRACTS §11.2-EK`) üretim yolunu **`analyze_path`** ilan etti ve Jetson `run_camera` onu koşuyor. Yani zincirin 7. halkası tanısal yolu sınıyor; üretim yolu kuru koşuda **hiç** koşulmuyor (D-297 §5 bunu "ölçülemedi" diye kaydetmişti). **T160 açıldı.**

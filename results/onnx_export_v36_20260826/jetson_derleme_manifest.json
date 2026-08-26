@@ -1,0 +1,20 @@
+{
+  "olusturma_zamani": "2026-08-26T19:15:05",
+  "pc_modeli": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+  "format": "onnx",
+  "fp16": true,
+  "imgsz": [
+    512
+  ],
+  "dinamik": false,
+  "opset": 17,
+  "cihaz": "0",
+  "onnxler": [
+    "O:\\navitas\\results\\onnx_export_v36_20260826\\navitas_seg_v36_best_512_fp16.onnx"
+  ],
+  "int8_kalibrasyon": null,
+  "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
+  "jetson_komutlari": [
+    "yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 half=True"
+  ]
+}

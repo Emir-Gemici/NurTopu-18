@@ -1,0 +1,125 @@
+{
+ "model": "codes\\runs\\segment\\gece_v7b_v35taban\\weights\\best.pt",
+ "esikler": {
+  "K1_rota_min": 230,
+  "K2_basma_maks": 0.15,
+  "K3_agir_maks": 0.03,
+  "K4_arena_disi_maks": 0.05,
+  "K6_yanlis_guzergah_maks": 0.05
+ },
+ "olcum": {
+  "K0": {
+   "figur": 0.0,
+   "raw_frames": {
+    "n": 67,
+    "bos": 0,
+    "ort": 0.26173178829363924
+   },
+   "copy_paste": {
+    "n": 393,
+    "bos": 0,
+    "ort": 0.2656447141225101
+   },
+   "figur_orani": 0.0,
+   "figur_tabani": 0.0903,
+   "figur_taban_kimligi": "v35",
+   "figur_taban_bicimi": "liste",
+   "soyagaci": [
+    {
+     "surum": "v17",
+     "deger": 0.0,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v20",
+     "deger": 0.0,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v21",
+     "deger": 0.0,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v24",
+     "deger": 0.3464,
+     "donem_tutarli": false,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)",
+     "uyari": "DONEM-TUTARLI DEGIL: bu surum kendi uretim doneminde 640'ta kosuyordu (gecis v27 ile, JETSON_KILAVUZ SS0-T76). Sayi ALET-tutarlidir, DUZ KIYASA girmez ve medyana KATILMAZ."
+    },
+    {
+     "surum": "v27",
+     "deger": 0.0784,
+     "donem_tutarli": true,
+     "kaynak": "D-261 · scripts/olcum/119_t131_k0_taban_gecmisi.py (65'in kaplama() fonksiyonu ICE AKTARILDI; CONF 0,30 · imgsz 512 · figur data/arena_referans/sartname_s9_arena.png)"
+    },
+    {
+     "surum": "v30",
+     "deger": 0.0796,
+     "donem_tutarli": true,
+     "kaynak": "defterde DUZ METINDEYDI ('figur zemin %8,0'); D-261'de olculdu -> %7,96 (birebir)"
+    },
+    {
+     "surum": "v34",
+     "deger": 0.0049,
+     "donem_tutarli": true,
+     "kaynak": "defterin SKALER degeri (1b57166, 2026-08-19); D-261'de olculdu -> ayni"
+    },
+    {
+     "surum": "v35",
+     "deger": 0.0903,
+     "donem_tutarli": true,
+     "kaynak": "defterin SKALER degeri (ee7508d, T130/D-256); D-261'de olculdu -> ayni"
+    }
+   ],
+   "oran_notu": ""
+  },
+  "K1_rota": "258/260",
+  "K2_basma": "20/258",
+  "K3_agir": "0/258",
+  "K4_arena_disi": "0/258",
+  "K14_durum": {
+   "K1": "GECTI",
+   "K2": "GECTI",
+   "K3": "GECTI",
+   "K4": "GECTI"
+  },
+  "K6_yanlis_guzergah": "2/258",
+  "K6_oran": 0.007751937984496124,
+  "K6_durum": "GECTI",
+  "K6_yanlis_kareler": [
+   "sa_000021.jpg",
+   "sa_000114.jpg"
+  ],
+  "K5_durum": "GECTI",
+  "K5_olculebilir_kare": 173,
+  "K5_kesen_kare": 0,
+  "K5_kesisim_px": 0,
+  "K5_bariyerli_kare": 173,
+  "K5_kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "K5_figur_bilgi_px": null,
+  "K5_figur_bilgi_durum": "OLCULEMEDI",
+  "kabul_kumesi": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66",
+  "kabul_kumesi_parmak_izi": {
+   "n": 547,
+   "ozet": "sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586",
+   "yontem": "sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ"
+  }
+ },
+ "gecti": {
+  "K0": false,
+  "K1": true,
+  "K2": true,
+  "K3": true,
+  "K4": true,
+  "K6": true,
+  "K5": true
+ },
+ "verdikt": false
+}

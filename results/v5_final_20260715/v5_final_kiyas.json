@@ -1,0 +1,62 @@
+{
+  "v1 (512)": {
+    "genel": 0.619,
+    "traversable": 0.874,
+    "blocked": 0.363
+  },
+  "v2 (512)": {
+    "genel": 0.595,
+    "traversable": 0.868,
+    "blocked": 0.322
+  },
+  "v3 (512)": {
+    "genel": 0.627,
+    "traversable": 0.852,
+    "blocked": 0.403
+  },
+  "v5a_s640 @512": {
+    "genel": 0.5643,
+    "traversable": 0.8421,
+    "blocked": 0.2865
+  },
+  "v5a_s640 @640": {
+    "genel": 0.673,
+    "traversable": 0.8576,
+    "blocked": 0.4885
+  },
+  "v5a_s640 @640+TTA": {
+    "genel": 0.673,
+    "traversable": 0.8576,
+    "blocked": 0.4885
+  },
+  "v5b_s640_ft @512": {
+    "genel": 0.5768,
+    "traversable": 0.8259,
+    "blocked": 0.3277
+  },
+  "v5b_s640_ft @640": {
+    "genel": 0.66,
+    "traversable": 0.8554,
+    "blocked": 0.4646
+  },
+  "v5b_s640_ft @640+TTA": {
+    "genel": 0.66,
+    "traversable": 0.8554,
+    "blocked": 0.4646
+  },
+  "v5c_m640 @512": {
+    "genel": 0.5748,
+    "traversable": 0.821,
+    "blocked": 0.3286
+  },
+  "v5c_m640 @640": {
+    "genel": 0.6558,
+    "traversable": 0.8503,
+    "blocked": 0.4613
+  },
+  "v5c_m640 @640+TTA": {
+    "genel": 0.6558,
+    "traversable": 0.8503,
+    "blocked": 0.4613
+  }
+}

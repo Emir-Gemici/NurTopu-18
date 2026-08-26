@@ -1,0 +1,110 @@
+[
+ {
+  "arac": 69,
+  "yapi_bileseni": 1,
+  "engel_orani": 0.4115888807508681,
+  "zemin_orani": 0.5884111192491319,
+  "hedef_kaynagi": "manifest hedef_kutu [184, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1681,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 72,
+  "yapi_bileseni": 1,
+  "engel_orani": 0.4039391411675347,
+  "zemin_orani": 0.5960608588324653,
+  "hedef_kaynagi": "manifest hedef_kutu [14, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1679,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 63,
+  "yapi_bileseni": 2,
+  "engel_orani": 0.3426496717664931,
+  "zemin_orani": 0.6573503282335069,
+  "hedef_kaynagi": "manifest hedef_kutu [9, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1681,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 61,
+  "yapi_bileseni": 2,
+  "engel_orani": 0.3700646294487847,
+  "zemin_orani": 0.6299353705512153,
+  "hedef_kaynagi": "manifest hedef_kutu [788, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1681,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 65,
+  "yapi_bileseni": 2,
+  "engel_orani": 0.3568301730685764,
+  "zemin_orani": 0.6431698269314237,
+  "hedef_kaynagi": "manifest hedef_kutu [27, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1681,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 114,
+  "yapi_bileseni": 3,
+  "engel_orani": 0.3440941704644097,
+  "zemin_orani": 0.6559058295355903,
+  "hedef_kaynagi": "manifest hedef_kutu [757, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1404,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 124,
+  "yapi_bileseni": 3,
+  "engel_orani": 0.3310428195529514,
+  "zemin_orani": 0.6689571804470487,
+  "hedef_kaynagi": "manifest hedef_kutu [706, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1680,
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\train\\whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+  "bolum": "train"
+ },
+ {
+  "arac": 77,
+  "yapi_bileseni": 2,
+  "engel_orani": 0.3714752197265625,
+  "zemin_orani": 0.6285247802734375,
+  "hedef_kaynagi": "manifest hedef_kutu [12, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1681,
+  "kare": "val_whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\val\\whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+  "bolum": "val"
+ },
+ {
+  "arac": 60,
+  "yapi_bileseni": 3,
+  "engel_orani": 0.3745608859592014,
+  "zemin_orani": 0.6254391140407987,
+  "hedef_kaynagi": "manifest hedef_kutu [814, 3, 41, 41]",
+  "hedef_px": 1681,
+  "hedef_engelden_kurtarilan_px": 1681,
+  "kare": "val_whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00",
+  "kaynak": "O:\\navitas\\data\\arena_kompozit\\images\\val\\whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+  "bolum": "val"
+ }
+]

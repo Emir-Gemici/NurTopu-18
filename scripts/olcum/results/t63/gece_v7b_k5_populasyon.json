@@ -1,0 +1,15 @@
+{
+ "model": "codes\\runs\\segment\\gece_v7b_v35taban\\weights\\best.pt",
+ "tarandi": 260,
+ "bariyerli": 173,
+ "olcekli": 173,
+ "rota_var": 173,
+ "duyar_ort": 0.994941785620979,
+ "duyar_min": 0.8881381381381381,
+ "kesen": 0,
+ "kesisim_px": 0,
+ "kesenler": [],
+ "K5_durum": "GECTI",
+ "olculebilir_kare": 173,
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66"
+}

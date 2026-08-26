@@ -1,0 +1,149 @@
+{
+ "toplam": 260,
+ "cevrilen": [
+  {
+   "kare": "sa_000172.jpg",
+   "yol1": 1,
+   "yol2": 3,
+   "guven1": 1.0,
+   "guven2": 1.0,
+   "maske_iou": 0.98277,
+   "serit_min1": [
+    25.0,
+    null,
+    null
+   ],
+   "serit_min2": [
+    null,
+    null,
+    24.0
+   ],
+   "en_yakin_iki_serit_farki1": null,
+   "en_yakin_iki_serit_farki2": null,
+   "darbogaz1": 25.0,
+   "darbogaz2": 24.0,
+   "seritler1": [
+    540,
+    0,
+    0
+   ],
+   "seritler2": [
+    0,
+    0,
+    540
+   ],
+   "rota_px1": 540,
+   "rota_px2": 540,
+   "wp1": 8,
+   "wp2": 8
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "yol1": 3,
+   "yol2": 1,
+   "guven1": 1.0,
+   "guven2": 1.0,
+   "maske_iou": 0.64906,
+   "serit_min1": [
+    null,
+    null,
+    95.0
+   ],
+   "serit_min2": [
+    62.332,
+    null,
+    null
+   ],
+   "en_yakin_iki_serit_farki1": null,
+   "en_yakin_iki_serit_farki2": null,
+   "darbogaz1": 95.0,
+   "darbogaz2": 62.332,
+   "seritler1": [
+    0,
+    0,
+    540
+   ],
+   "seritler2": [
+    540,
+    0,
+    0
+   ],
+   "rota_px1": 540,
+   "rota_px2": 540,
+   "wp1": 8,
+   "wp2": 8
+  },
+  {
+   "kare": "sa_000232.jpg",
+   "yol1": 1,
+   "yol2": 2,
+   "guven1": 1.0,
+   "guven2": 0.982,
+   "maske_iou": 0.98608,
+   "serit_min1": [
+    23.0,
+    23.0,
+    null
+   ],
+   "serit_min2": [
+    null,
+    22.0,
+    null
+   ],
+   "en_yakin_iki_serit_farki1": 0.0,
+   "en_yakin_iki_serit_farki2": null,
+   "darbogaz1": 23.0,
+   "darbogaz2": 22.0,
+   "seritler1": [
+    270,
+    270,
+    0
+   ],
+   "seritler2": [
+    0,
+    540,
+    0
+   ],
+   "rota_px1": 540,
+   "rota_px2": 540,
+   "wp1": 8,
+   "wp2": 8
+  },
+  {
+   "kare": "sa_000258.jpg",
+   "yol1": 3,
+   "yol2": 2,
+   "guven1": 0.634,
+   "guven2": 0.804,
+   "maske_iou": 0.98424,
+   "serit_min1": [
+    null,
+    26.0,
+    14.197
+   ],
+   "serit_min2": [
+    null,
+    18.0,
+    18.181
+   ],
+   "en_yakin_iki_serit_farki1": 11.8031005859375,
+   "en_yakin_iki_serit_farki2": 0.1813983917236328,
+   "darbogaz1": 14.197,
+   "darbogaz2": 18.0,
+   "seritler1": [
+    0,
+    290,
+    250
+   ],
+   "seritler2": [
+    0,
+    378,
+    162
+   ],
+   "rota_px1": 540,
+   "rota_px2": 540,
+   "wp1": 8,
+   "wp2": 8
+  }
+ ]
+}

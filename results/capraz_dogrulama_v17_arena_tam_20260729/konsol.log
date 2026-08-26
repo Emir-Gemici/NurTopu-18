@@ -1,0 +1,70 @@
+================================================================
+ÇAPRAZ DOĞRULAMA — 2026-07-29T15:50:32
+model : O:\navitas\codes\runs\segment\v17_arena_tam\weights\best.pt
+SHA256: 8986c300585a05c94fecccc8b5270c2a5e619051b1fc99640d6ab0df59896568
+veri  : O:\navitas\dataset\rescuenet_yolo\data.yaml
+================================================================
+
+================================================================
+SPLIT: test  |  imgsz: 640
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+YOLOv8m-seg summary (fused): 106 layers, 27,223,542 parameters, 0 gradients, 104.3 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 349.8±170.1 MB/s, size: 177.0 KB)
+                   all        305        393      0.667      0.664      0.607      0.473      0.691      0.684      0.635      0.404
+           traversable        249        308      0.818      0.775      0.787      0.641      0.839      0.792      0.801       0.54
+               blocked         70         85      0.516      0.553      0.427      0.305      0.544      0.575       0.47      0.268
+Speed: 1.3ms preprocess, 8.0ms inference, 0.0ms loss, 1.2ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v17_arena_tam_20260729\test640[0m
+
+================================================================
+SONUÇLAR
+{
+  "olcum": {
+    "tarih": "2026-07-29T15:50:32",
+    "ad": "v17_arena_tam",
+    "imgsz": 640,
+    "veri": "O:\\navitas\\dataset\\rescuenet_yolo\\data.yaml"
+  },
+  "agirlik": {
+    "yol": "O:\\navitas\\codes\\runs\\segment\\v17_arena_tam\\weights\\best.pt",
+    "sha256": "8986c300585a05c94fecccc8b5270c2a5e619051b1fc99640d6ab0df59896568",
+    "boyut_mb": 54.8
+  },
+  "splitler": {
+    "test": {
+      "split": "test",
+      "imgsz": 640,
+      "box_mAP50": 0.6071,
+      "box_mAP50_95": 0.4729,
+      "mask_mAP50": 0.6355,
+      "mask_mAP50_95": 0.404,
+      "mask_precision": 0.6913,
+      "mask_recall": 0.684,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.787,
+          "mask_mAP50": 0.8011,
+          "mask_mAP50_95": 0.5397
+        },
+        "blocked": {
+          "box_mAP50": 0.4273,
+          "mask_mAP50": 0.4698,
+          "mask_mAP50_95": 0.2683
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.319,
+        "inference": 7.956,
+        "loss": 0.0,
+        "postprocess": 1.241
+      }
+    }
+  }
+}
+
+[test] hedef mask mAP50 ≥ 0.60  ·  ölçülen 0.6355  →  KARŞILANDI ✓
+
+Deney defteri: O:\navitas-local-train\deney_defteri.csv
+Kanıt klasörü: O:\navitas\results\capraz_dogrulama_v17_arena_tam_20260729
+✓ ÇAPRAZ DOĞRULAMA TAMAM

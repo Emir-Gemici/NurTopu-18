@@ -1,0 +1,121 @@
+================================================================
+ÇAPRAZ DOĞRULAMA — 2026-07-20T10:33:32
+model : O:\navitas\models\aday_v5c_m640.pt
+SHA256: 15cecc03f291546443a1d9c1aaa4c5de714f36f060922faa5f163d0caa33a2fd
+veri  : O:\navitas\dataset\rescuenet_yolo\data.yaml
+================================================================
+
+================================================================
+SPLIT: val  |  imgsz: 640
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+YOLOv8m-seg summary (fused): 106 layers, 27,223,542 parameters, 0 gradients, 104.3 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 1601.8±283.2 MB/s, size: 173.3 KB)
+                   all        294        363       0.72      0.679      0.662      0.483       0.73      0.691      0.656      0.428
+           traversable        240        282      0.842      0.816      0.835       0.65      0.852      0.826       0.85      0.567
+               blocked         60         81      0.598      0.543      0.489      0.316      0.609      0.557      0.461       0.29
+Speed: 1.7ms preprocess, 7.5ms inference, 0.0ms loss, 1.5ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v5c_20260720\val640[0m
+
+================================================================
+SPLIT: test  |  imgsz: 640
+================================================================
+Ultralytics 8.4.92 🚀 Python-3.13.7 torch-2.11.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080 Laptop GPU, 16303MiB)
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 1682.6±256.1 MB/s, size: 175.3 KB)
+                   all        305        393      0.675      0.671      0.643      0.484      0.701      0.694       0.67      0.425
+           traversable        249        308      0.821      0.766       0.81      0.654      0.849      0.787      0.832      0.558
+               blocked         70         85       0.53      0.576      0.477      0.314      0.553        0.6      0.509      0.293
+Speed: 1.5ms preprocess, 7.3ms inference, 0.0ms loss, 1.3ms postprocess per image
+Results saved to [1mO:\navitas\results\capraz_dogrulama_v5c_20260720\test640[0m
+
+================================================================
+VAL ↔ TEST KARŞILAŞTIRMASI
+  mask mAP50 : val 0.6558  ·  test 0.6704  ·  fark -0.0146
+  blocked    : val 0.4613  ·  test 0.5091  ·  fark -0.0478
+  YORUM: iki split tutarlı → val üzerinden yapılan model seçimi güvenilir
+
+================================================================
+SONUÇLAR
+{
+  "olcum": {
+    "tarih": "2026-07-20T10:33:32",
+    "ad": "v5c",
+    "imgsz": 640,
+    "veri": "O:\\navitas\\dataset\\rescuenet_yolo\\data.yaml"
+  },
+  "agirlik": {
+    "yol": "O:\\navitas\\models\\aday_v5c_m640.pt",
+    "sha256": "15cecc03f291546443a1d9c1aaa4c5de714f36f060922faa5f163d0caa33a2fd",
+    "boyut_mb": 54.9
+  },
+  "splitler": {
+    "val": {
+      "split": "val",
+      "imgsz": 640,
+      "box_mAP50": 0.6619,
+      "box_mAP50_95": 0.4829,
+      "mask_mAP50": 0.6558,
+      "mask_mAP50_95": 0.4283,
+      "mask_precision": 0.7304,
+      "mask_recall": 0.6914,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8352,
+          "mask_mAP50": 0.8503,
+          "mask_mAP50_95": 0.5667
+        },
+        "blocked": {
+          "box_mAP50": 0.4885,
+          "mask_mAP50": 0.4613,
+          "mask_mAP50_95": 0.2898
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.668,
+        "inference": 7.48,
+        "loss": 0.0,
+        "postprocess": 1.518
+      }
+    },
+    "test": {
+      "split": "test",
+      "imgsz": 640,
+      "box_mAP50": 0.6434,
+      "box_mAP50_95": 0.4843,
+      "mask_mAP50": 0.6704,
+      "mask_mAP50_95": 0.4253,
+      "mask_precision": 0.7011,
+      "mask_recall": 0.6937,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8099,
+          "mask_mAP50": 0.8317,
+          "mask_mAP50_95": 0.5578
+        },
+        "blocked": {
+          "box_mAP50": 0.477,
+          "mask_mAP50": 0.5091,
+          "mask_mAP50_95": 0.2928
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.493,
+        "inference": 7.322,
+        "loss": 0.0,
+        "postprocess": 1.341
+      }
+    }
+  },
+  "val_test_farki": {
+    "mask_mAP50": -0.0146,
+    "blocked_mask_mAP50": -0.0478
+  }
+}
+
+[val] hedef mask mAP50 ≥ 0.60  ·  ölçülen 0.6558  →  KARŞILANDI ✓
+
+[test] hedef mask mAP50 ≥ 0.60  ·  ölçülen 0.6704  →  KARŞILANDI ✓
+
+Deney defteri: O:\navitas-local-train\deney_defteri.csv
+Kanıt klasörü: O:\navitas\results\capraz_dogrulama_v5c_20260720
+✓ ÇAPRAZ DOĞRULAMA TAMAM

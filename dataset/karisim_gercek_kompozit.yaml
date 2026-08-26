@@ -1,0 +1,58 @@
+# KARISIM v5 — T87 · GERCEK KOMPOZIT KARELERI EKLENDI
+#
+# ⚠ `karisim_gercek_otopark.yaml`a DOKUNULMADI: v30 uretimde, v31 onunla
+# kosuyor. Bu AYRI bir dosyadir ve tek fark `gercek_kompozit`in eklenmesidir;
+# boylece v30 <-> yeni kosu kiyasi TEK degisken tasir.
+#
+# NEDEN (REVIEW_LOG D-136 · T87 olcumu):
+# Hakem ekraninin `kompozit` kaynagi 0/9 rota uretiyor. Olcek VAR (9/9
+# manifestte); dusme sebepleri 5 GORUS_HATTI_KOPUK + 4 ZEMIN_MASKESI_SUPHELI.
+# Kompozit kareler GERCEK bir otopark uzerine sentetik moloz yapistirilarak
+# uretilir; ARKA PLANIN kendisi (bina, agac, park etmis araclar) MEVCUT
+# etikette isaretsizdir. `arac_maskesi.py`nin uyardigi kusur budur ve v16'yi
+# moloza basmada %2,7 -> %31,6'ya cokerten hatanin ayni sinifidir.
+#
+# `gercek_kompozit` o bosluğu kapatir: ayni 9 kare, arka plani DA etiketlenmis
+# olarak (DOTA OBB araclari + gri-dunya kromasi + dikdortgenlik olcutlu yapi).
+#
+# 🔴 HEDEF PEDI (H) DUZELTILDI — T87'nin ILK maddesi:
+# Etiketleyici `H` pedini ENGEL isaretliyordu (olculdu: 9 karenin 7'sinde
+# pedin 1681 pikselinin 1681'i, digerlerinde 1404-1680'i). H, IKA'nin
+# ULASMASI GEREKEN hedeftir; engel ogretmek IKA'yi hedefe hic ulasamaz hale
+# getirir. Ped konumu manifestin `arena.hedef_kutu` alanindan alinir
+# (otorite), manifest yoksa `karar_sozlesmesi.hb_konumu` (T72/D-105).
+#
+# ⚠ COGALTMA: train tarafi 4 KAT (7 -> 28). D-131'de 12 kat v29'u BOZDU,
+# D-133'te 4 kat v30'u bozmadi; ayni doz. Val COGALTILMADI (2 kare) — aksi
+# halde olcum kendi kendini dogrular.
+#
+# 🔴 EGITIM BASLATILMADI. Bu dosya VERI HAZIRLIGIDIR; kosma karari mimarindir.
+#
+# ⚠ OLCULEN TAVAN — KAYITTA DURSUN: bu 9 karede etiketler KUSURSUZ ALGI
+# sayilsa bile rota YALNIZ 2/9 karede cikiyor; 7'si `GORUS_HATTI_KOPUK` ile
+# duser ("baslangic ve hedef tohumlari ayni koridor bileseninde degil").
+# Yani sahnelerin cogunda kareyi bastan sona kat eden surulebilir koridor
+# FIZIKSEL OLARAK YOKTUR. Bu kume `kompozit` kaynagini 0/9'dan en fazla
+# 2/9'a tasiyabilir; bundan fazlasini beklemek olcume aykiridir.
+#
+# ⚠ AYNI SAHNE RISKI: 9 karenin tamami AYNI otoparktan ve ayni dort videodan
+# gelir; `gercek_otopark` kumesiyle de AYNI kaynagi paylasir. Ezberleme riski
+# olculmelidir; cesitlilik ancak FARKLI yerden cekimle artar (insan gorevi).
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_gercek\images\train
+  - O:\navitas\dataset\gercek_otopark\images\train
+  - O:\navitas\dataset\gercek_kompozit\images\train
+val:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\val
+  - O:\navitas\dataset\sentetik_arena\images\val
+  - O:\navitas\dataset\copy_paste_gercek\images\val
+  - O:\navitas\dataset\gercek_otopark\images\val
+  - O:\navitas\dataset\gercek_kompozit\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

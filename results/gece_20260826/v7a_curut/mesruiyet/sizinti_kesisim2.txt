@@ -1,0 +1,11 @@
+x5 images 2065 labels 2065
+x5 ornek ['dji_20260822170832_0037_d__frame_000003_000000090__x00.jpg', 'dji_20260822170832_0037_d__frame_000003_000000090__x01.jpg', 'dji_20260822170832_0037_d__frame_000003_000000090__x02.jpg', 'dji_20260822170832_0037_d__frame_000003_000000090__x03.jpg', 'dji_20260822170832_0037_d__frame_000003_000000090__x04.jpg', 'dji_20260822170832_0037_d__frame_000004_000000120__x00.jpg']
+x5 subdirs ['train'] ['train']
+x5 base unique 2065 copy count dist Counter({1: 2065})
+x5base<=train False x5base&val 0 x5base&test29 0 x5base&val82 0 train-x5base 413
+any 0038 flight in x5 False
+md5: x5/train image == dji_v7 val image: 0 []
+md5: dji_v7(train,val,x5) image == 0038_v3 image: 0 []
+x5 label != source label count 2065
+bos etiket (0 byte) train+val 6 ['dji_20260822170832_0037_d__frame_000021_000000750.txt', 'dji_20260822170832_0037_d__frame_000023_000000810.txt', 'dji_20260822170832_0037_d__frame_000025_000000870.txt', 'dji_20260822170832_0037_d__frame_000026_000000900.txt', 'dji_20260822170832_0037_d__frame_000028_000000960.txt', 'dji_20260822170832_0037_d__frame_000046_000001530.txt']
+poligon sinif sayilari Counter({'1': 1852, '0': 1221}) sinif0 olmayan kare 7

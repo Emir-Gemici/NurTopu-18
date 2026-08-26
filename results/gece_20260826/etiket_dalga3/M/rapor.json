@@ -1,0 +1,7 @@
+{"grup":"M","durum":"mevcut ciktilar gorsel olarak dogrulandi, yeniden cizim yapilmadi",
+"kareler":[
+{"govde":"dji_20260822170832_0037_d__frame_000255_000009690","etiketsiz":0.8245,"sinif0":0.1217,"sinif1":0.0538,"yol_kenardan_kenara":true,"not":"mevcut"},
+{"govde":"dji_20260822172613_0038_d__frame_000030_000001770","etiketsiz":0.9719,"sinif0":0.0,"sinif1":0.0281,"yol_kenardan_kenara":false,"not":"mevcut; karede yol yok"},
+{"govde":"dji_20260822172613_0038_d__frame_000159_000005970","etiketsiz":0.6756,"sinif0":0.2527,"sinif1":0.0717,"yol_kenardan_kenara":true,"not":"mevcut"},
+{"govde":"dji_20260822172613_0038_d__frame_000168_000006240","etiketsiz":0.4444,"sinif0":0.1755,"sinif1":0.3801,"yol_kenardan_kenara":true,"not":"mevcut"},
+{"govde":"dji_20260822173231_0039_d__frame_000067_000003720","etiketsiz":0.4357,"sinif0":0.4534,"sinif1":0.1109,"yol_kenardan_kenara":true,"not":"mevcut"}]}

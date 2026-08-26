@@ -1,0 +1,5 @@
+{"dalga":3,"gruplar":["A","B","C","D","E","F","G","H"],"incelenen":40,
+"duzeltilen":[{"grup":"C","govde":"dji_20260822170832_0037_d__frame_000116_000005010","neden":"cakil yol sol kare kenarina kadar surerken yesil x~60-240 arasinda kesiliyordu; deger-1 poligon [[0,0],[240,0],[240,540],[0,540]] deger-2'lerden once eklendi","sinif0_once":0.3419,"sinif0_sonra":0.4823,"sinif1_once":0.2094,"sinif1_sonra":0.2094}],
+"eklenen_sinif1":[],
+"dogrulama":"40 *_uc.png tek kanal, deger kumesi {0,1,2} icinde (VENV numpy/cv2 ile sayildi)",
+"not":"Madde 12/8 ihlali (cig toprak, tarla, mera yesil) hicbir karede bulunmadi; dolgu/kazi alanlari ve kesilmis otlar tutarli bicimde etiketsiz. Kucuk tereddutler: C/0037_f110 sol yol yesili ic seritle sinirli (kenar yol yine sol kenara degiyor, dokunulmadi); E/0037_f175 ust duz platform etiketsiz birakilmis (sikistirilmis platform mi belirsiz, korunmali tercih)."}

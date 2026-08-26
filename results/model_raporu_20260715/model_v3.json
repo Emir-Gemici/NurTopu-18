@@ -1,0 +1,138 @@
+{
+  "surum": "v3",
+  "agirlik": {
+    "yol": "models\\navitas_seg_v3_best.pt",
+    "sha256": "8e8d46a6fc32b20c65c64234066c696c529ba9df7a62eba756a07fef8b9e43e5",
+    "boyut_mb": 23.9
+  },
+  "mimari": {},
+  "veri_ve_baslangic": "RescueNet ovs×3(+2 kopya) @512 · pretrained yolov8s",
+  "egitim": {
+    "run": "navitas_seg_v3",
+    "epoch_kosulan": 164,
+    "sure_sn": 6794.0,
+    "sure_saat": 1.89,
+    "en_iyi_epoch": 76,
+    "en_iyi_epoch_mask_mAP50": 0.6432,
+    "hiperparametreler": {
+      "model": "yolov8s-seg.pt",
+      "imgsz": 512,
+      "epochs": 200,
+      "batch": 16,
+      "optimizer": "AdamW",
+      "lr0": 0.001,
+      "lrf": 0.01,
+      "degrees": 15.0,
+      "copy_paste": 0.3,
+      "mosaic": 1.0,
+      "close_mosaic": 20,
+      "hsv_v": 0.5,
+      "patience": 60,
+      "seed": 0
+    }
+  },
+  "olcumler": {
+    "512": {
+      "box": {
+        "precision": 0.6462,
+        "recall": 0.6206,
+        "mAP50": 0.6461,
+        "mAP50_95": 0.4683
+      },
+      "mask": {
+        "precision": 0.6453,
+        "recall": 0.62,
+        "mAP50": 0.6273,
+        "mAP50_95": 0.4037
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8331,
+          "mask_mAP50": 0.8521,
+          "mask_mAP50_95": 0.5444
+        },
+        "blocked": {
+          "box_mAP50": 0.4592,
+          "mask_mAP50": 0.4026,
+          "mask_mAP50_95": 0.263
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 0.76,
+        "inference": 2.78,
+        "loss": 0.0,
+        "postprocess": 1.46
+      },
+      "val_goruntu": 294,
+      "tta": false
+    },
+    "640": {
+      "box": {
+        "precision": 0.6914,
+        "recall": 0.5658,
+        "mAP50": 0.6182,
+        "mAP50_95": 0.3823
+      },
+      "mask": {
+        "precision": 0.7087,
+        "recall": 0.5938,
+        "mAP50": 0.6358,
+        "mAP50_95": 0.3754
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.7779,
+          "mask_mAP50": 0.8069,
+          "mask_mAP50_95": 0.4757
+        },
+        "blocked": {
+          "box_mAP50": 0.4584,
+          "mask_mAP50": 0.4646,
+          "mask_mAP50_95": 0.275
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.02,
+        "inference": 3.6,
+        "loss": 0.0,
+        "postprocess": 0.96
+      },
+      "val_goruntu": 294,
+      "tta": false
+    },
+    "640_tta": {
+      "box": {
+        "precision": 0.6914,
+        "recall": 0.5658,
+        "mAP50": 0.6182,
+        "mAP50_95": 0.3823
+      },
+      "mask": {
+        "precision": 0.7087,
+        "recall": 0.5938,
+        "mAP50": 0.6358,
+        "mAP50_95": 0.3754
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.7779,
+          "mask_mAP50": 0.8069,
+          "mask_mAP50_95": 0.4757
+        },
+        "blocked": {
+          "box_mAP50": 0.4584,
+          "mask_mAP50": 0.4646,
+          "mask_mAP50_95": 0.275
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.1,
+        "inference": 3.55,
+        "loss": 0.0,
+        "postprocess": 1.0
+      },
+      "val_goruntu": 294,
+      "tta": true
+    }
+  }
+}

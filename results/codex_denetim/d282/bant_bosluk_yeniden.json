@@ -1,0 +1,4404 @@
+{
+ "_ne": "Eksik bant tanisi — bant tamamlamasi NEREDE ise yarar",
+ "_hukumler": {
+  "ZATEN_YETER": "bant zaten yeterli temasa sahip",
+  "KURTARILABILIR": "eksik bandin >=%10'u ETIKETSIZ ve iyimser halde yeterdi",
+  "KURTARILABILIR_ZAYIF": "iyimser halde yeterdi ama etiketsiz payi dusuk",
+  "ENGEL": "iyimser halde bile yetmiyor -> etiketleme DEGISTIRMEZ"
+ },
+ "_uyari": "KURTARILABILIR bir TAHMINDIR; amele oraya bakip SINIF1 ya da yine ETIKETSIZ diyebilir (D-210).",
+ "sayim": {
+  "ZATEN_YETER": 129,
+  "KURTARILABILIR": 26,
+  "KURTARILABILIR_ZAYIF": 1,
+  "ENGEL": 4
+ },
+ "kareler": [
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000003_000000090",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1064,
+     "yeter": true,
+     "temas_iyimser": 3588,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6121,
+     "sinif0": 0.1829,
+     "sinif1": 0.205
+    },
+    "ust": {
+     "temas": 1776,
+     "yeter": true,
+     "temas_iyimser": 3260,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3414,
+     "sinif0": 0.4079,
+     "sinif1": 0.2507
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000010_000000420",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1560,
+     "yeter": true,
+     "temas_iyimser": 3064,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.451,
+     "sinif0": 0.248,
+     "sinif1": 0.301
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0849,
+     "sinif0": 0.9055,
+     "sinif1": 0.0096
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000011_000000450",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1308,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8232,
+     "sinif0": 0.1768,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 1348,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7396,
+     "sinif0": 0.2604,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000016_000000600",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2144,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7558,
+     "sinif0": 0.2416,
+     "sinif1": 0.0026
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000018_000000660",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1306,
+     "sinif0": 0.8694,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 1.0,
+     "sinif0": 0.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000020_000000720",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3748,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1849,
+     "sinif0": 0.8151,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000022_000000780",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2112,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.654,
+     "sinif0": 0.346,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 1564,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7338,
+     "sinif0": 0.2662,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000024_000000840",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3240,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5014,
+     "sinif0": 0.4986,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3364,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2357,
+     "sinif0": 0.7643,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000027_000000930",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000029_000000990",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2776,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4206,
+     "sinif0": 0.5794,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3412,
+     "yeter": true,
+     "temas_iyimser": 3504,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0578,
+     "sinif0": 0.8478,
+     "sinif1": 0.0944
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000030_000001020",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2760,
+     "yeter": true,
+     "temas_iyimser": 3476,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3633,
+     "sinif0": 0.5419,
+     "sinif1": 0.0948
+    },
+    "ust": {
+     "temas": 3812,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1248,
+     "sinif0": 0.8752,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000034_000001140",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3576,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0861,
+     "sinif0": 0.8852,
+     "sinif1": 0.0287
+    },
+    "ust": {
+     "temas": 3352,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1327,
+     "sinif0": 0.8673,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000039_000001320",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2696,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4477,
+     "sinif0": 0.5523,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3592,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2008,
+     "sinif0": 0.7992,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000043_000001440",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3516,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0947,
+     "sinif0": 0.9053,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 2696,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2986,
+     "sinif0": 0.6874,
+     "sinif1": 0.014
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000055_000001830",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 320,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8908,
+     "sinif0": 0.0667,
+     "sinif1": 0.0424
+    },
+    "ust": {
+     "temas": 976,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7471,
+     "sinif0": 0.1505,
+     "sinif1": 0.1024
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000057_000001890",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1652,
+     "yeter": true,
+     "temas_iyimser": 3724,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5837,
+     "sinif0": 0.317,
+     "sinif1": 0.0993
+    },
+    "ust": {
+     "temas": 2020,
+     "yeter": true,
+     "temas_iyimser": 3556,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5554,
+     "sinif0": 0.2895,
+     "sinif1": 0.1551
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000074_000002820",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 952,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7605,
+     "sinif0": 0.2178,
+     "sinif1": 0.0218
+    },
+    "ust": {
+     "temas": 1824,
+     "yeter": true,
+     "temas_iyimser": 3408,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4586,
+     "sinif0": 0.384,
+     "sinif1": 0.1575
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000080_000003030",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 716,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7756,
+     "sinif0": 0.1641,
+     "sinif1": 0.0602
+    },
+    "ust": {
+     "temas": 1648,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8316,
+     "sinif0": 0.1684,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000082_000003120",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3016,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2284,
+     "sinif0": 0.7716,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 204,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0023,
+     "sinif0": 0.0,
+     "sinif1": 0.9977
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR_ZAYIF"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000084_000003180",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3336,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3076,
+     "sinif0": 0.6924,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 768,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8939,
+     "sinif0": 0.0647,
+     "sinif1": 0.0414
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000085_000003210",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1944,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5728,
+     "sinif0": 0.3991,
+     "sinif1": 0.0281
+    },
+    "ust": {
+     "temas": 220,
+     "yeter": true,
+     "temas_iyimser": 3228,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7969,
+     "sinif0": 0.0117,
+     "sinif1": 0.1913
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000091_000003600",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 988,
+     "yeter": true,
+     "temas_iyimser": 2920,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5033,
+     "sinif0": 0.2005,
+     "sinif1": 0.2962
+    },
+    "ust": {
+     "temas": 1976,
+     "yeter": true,
+     "temas_iyimser": 3036,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2629,
+     "sinif0": 0.4436,
+     "sinif1": 0.2936
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000102_000004230",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 296,
+     "yeter": true,
+     "temas_iyimser": 2204,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5094,
+     "sinif0": 0.0185,
+     "sinif1": 0.4721
+    },
+    "ust": {
+     "temas": 1728,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6998,
+     "sinif0": 0.2728,
+     "sinif1": 0.0274
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000109_000004590",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2404,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4745,
+     "sinif0": 0.5043,
+     "sinif1": 0.0212
+    },
+    "ust": {
+     "temas": 1360,
+     "yeter": true,
+     "temas_iyimser": 2824,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4321,
+     "sinif0": 0.2582,
+     "sinif1": 0.3097
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000111_000004650",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1600,
+     "yeter": true,
+     "temas_iyimser": 2856,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.341,
+     "sinif0": 0.4007,
+     "sinif1": 0.2583
+    },
+    "ust": {
+     "temas": 1712,
+     "yeter": true,
+     "temas_iyimser": 2732,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2832,
+     "sinif0": 0.4283,
+     "sinif1": 0.2885
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000114_000004890",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1560,
+     "yeter": true,
+     "temas_iyimser": 2732,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3268,
+     "sinif0": 0.3513,
+     "sinif1": 0.3219
+    },
+    "ust": {
+     "temas": 2168,
+     "yeter": true,
+     "temas_iyimser": 3148,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2812,
+     "sinif0": 0.4929,
+     "sinif1": 0.2259
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000118_000005070",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1636,
+     "yeter": true,
+     "temas_iyimser": 3412,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.598,
+     "sinif0": 0.2639,
+     "sinif1": 0.1382
+    },
+    "ust": {
+     "temas": 1724,
+     "yeter": true,
+     "temas_iyimser": 3148,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5046,
+     "sinif0": 0.2876,
+     "sinif1": 0.2078
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000120_000005130",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1076,
+     "yeter": true,
+     "temas_iyimser": 3040,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5529,
+     "sinif0": 0.2246,
+     "sinif1": 0.2225
+    },
+    "ust": {
+     "temas": 684,
+     "yeter": true,
+     "temas_iyimser": 2460,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.515,
+     "sinif0": 0.1208,
+     "sinif1": 0.3642
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000123_000005220",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1452,
+     "yeter": true,
+     "temas_iyimser": 2784,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3744,
+     "sinif0": 0.3388,
+     "sinif1": 0.2868
+    },
+    "ust": {
+     "temas": 424,
+     "yeter": true,
+     "temas_iyimser": 3820,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7632,
+     "sinif0": 0.102,
+     "sinif1": 0.1348
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000127_000005340",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2024,
+     "yeter": true,
+     "temas_iyimser": 3588,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4596,
+     "sinif0": 0.3703,
+     "sinif1": 0.1701
+    },
+    "ust": {
+     "temas": 1016,
+     "yeter": true,
+     "temas_iyimser": 3784,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.82,
+     "sinif0": 0.1293,
+     "sinif1": 0.0508
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000133_000005520",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 548,
+     "yeter": true,
+     "temas_iyimser": 3464,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7564,
+     "sinif0": 0.1169,
+     "sinif1": 0.1267
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3584,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.91,
+     "sinif0": 0.0,
+     "sinif1": 0.09
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000135_000005580",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 440,
+     "yeter": true,
+     "temas_iyimser": 3732,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8113,
+     "sinif0": 0.1015,
+     "sinif1": 0.0872
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3516,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8778,
+     "sinif0": 0.0,
+     "sinif1": 0.1222
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000138_000005670",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1488,
+     "yeter": true,
+     "temas_iyimser": 3828,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7482,
+     "sinif0": 0.2181,
+     "sinif1": 0.0337
+    },
+    "ust": {
+     "temas": 1664,
+     "yeter": true,
+     "temas_iyimser": 3796,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7594,
+     "sinif0": 0.2059,
+     "sinif1": 0.0346
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000140_000005730",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 824,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8308,
+     "sinif0": 0.1548,
+     "sinif1": 0.0143
+    },
+    "ust": {
+     "temas": 572,
+     "yeter": true,
+     "temas_iyimser": 3432,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.712,
+     "sinif0": 0.1057,
+     "sinif1": 0.1823
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000141_000005760",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1072,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8017,
+     "sinif0": 0.1413,
+     "sinif1": 0.057
+    },
+    "ust": {
+     "temas": 1536,
+     "yeter": true,
+     "temas_iyimser": 3296,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5553,
+     "sinif0": 0.1957,
+     "sinif1": 0.249
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000142_000005790",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 408,
+     "yeter": true,
+     "temas_iyimser": 3716,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7593,
+     "sinif0": 0.0835,
+     "sinif1": 0.1573
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3496,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6724,
+     "sinif0": 0.0,
+     "sinif1": 0.3276
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000143_000005820",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1148,
+     "yeter": true,
+     "temas_iyimser": 3376,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.589,
+     "sinif0": 0.0318,
+     "sinif1": 0.3792
+    },
+    "ust": {
+     "temas": 400,
+     "yeter": true,
+     "temas_iyimser": 3092,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7422,
+     "sinif0": 0.0317,
+     "sinif1": 0.2261
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000144_000005850",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3564,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7094,
+     "sinif0": 0.0,
+     "sinif1": 0.2906
+    },
+    "ust": {
+     "temas": 432,
+     "yeter": true,
+     "temas_iyimser": 3292,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6816,
+     "sinif0": 0.0863,
+     "sinif1": 0.2321
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000146_000005910",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 288,
+     "yeter": true,
+     "temas_iyimser": 3360,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7163,
+     "sinif0": 0.061,
+     "sinif1": 0.2227
+    },
+    "ust": {
+     "temas": 560,
+     "yeter": true,
+     "temas_iyimser": 3816,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8288,
+     "sinif0": 0.1167,
+     "sinif1": 0.0544
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000147_000005940",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 576,
+     "yeter": true,
+     "temas_iyimser": 3524,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7479,
+     "sinif0": 0.0912,
+     "sinif1": 0.1609
+    },
+    "ust": {
+     "temas": 660,
+     "yeter": true,
+     "temas_iyimser": 3824,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.787,
+     "sinif0": 0.1602,
+     "sinif1": 0.0528
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000148_000005970",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 464,
+     "yeter": true,
+     "temas_iyimser": 2840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5781,
+     "sinif0": 0.0792,
+     "sinif1": 0.3427
+    },
+    "ust": {
+     "temas": 772,
+     "yeter": true,
+     "temas_iyimser": 3240,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6163,
+     "sinif0": 0.1798,
+     "sinif1": 0.2038
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000152_000006090",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1152,
+     "yeter": true,
+     "temas_iyimser": 3036,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5473,
+     "sinif0": 0.2182,
+     "sinif1": 0.2344
+    },
+    "ust": {
+     "temas": 1176,
+     "yeter": true,
+     "temas_iyimser": 3680,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6926,
+     "sinif0": 0.2579,
+     "sinif1": 0.0495
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000154_000006150",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 568,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8592,
+     "sinif0": 0.0891,
+     "sinif1": 0.0517
+    },
+    "ust": {
+     "temas": 652,
+     "yeter": true,
+     "temas_iyimser": 3816,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8175,
+     "sinif0": 0.1372,
+     "sinif1": 0.0453
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000156_000006210",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 188,
+     "yeter": true,
+     "temas_iyimser": 3688,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.882,
+     "sinif0": 0.0278,
+     "sinif1": 0.0902
+    },
+    "ust": {
+     "temas": 1272,
+     "yeter": true,
+     "temas_iyimser": 3160,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5154,
+     "sinif0": 0.2794,
+     "sinif1": 0.2052
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000157_000006240",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3800,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.9315,
+     "sinif0": 0.0,
+     "sinif1": 0.0685
+    },
+    "ust": {
+     "temas": 764,
+     "yeter": true,
+     "temas_iyimser": 3736,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7718,
+     "sinif0": 0.1569,
+     "sinif1": 0.0714
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000158_000006270",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 392,
+     "yeter": true,
+     "temas_iyimser": 3548,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.839,
+     "sinif0": 0.058,
+     "sinif1": 0.103
+    },
+    "ust": {
+     "temas": 812,
+     "yeter": true,
+     "temas_iyimser": 3404,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6899,
+     "sinif0": 0.1717,
+     "sinif1": 0.1384
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000159_000006300",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1812,
+     "yeter": true,
+     "temas_iyimser": 3796,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6016,
+     "sinif0": 0.3665,
+     "sinif1": 0.032
+    },
+    "ust": {
+     "temas": 2552,
+     "yeter": true,
+     "temas_iyimser": 3604,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3875,
+     "sinif0": 0.508,
+     "sinif1": 0.1046
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000163_000006420",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1080,
+     "yeter": true,
+     "temas_iyimser": 3732,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.741,
+     "sinif0": 0.2126,
+     "sinif1": 0.0464
+    },
+    "ust": {
+     "temas": 2364,
+     "yeter": true,
+     "temas_iyimser": 2968,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3128,
+     "sinif0": 0.4435,
+     "sinif1": 0.2437
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000165_000006480",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 500,
+     "yeter": true,
+     "temas_iyimser": 3652,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7857,
+     "sinif0": 0.1171,
+     "sinif1": 0.0972
+    },
+    "ust": {
+     "temas": 648,
+     "yeter": true,
+     "temas_iyimser": 3252,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6611,
+     "sinif0": 0.1294,
+     "sinif1": 0.2095
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000168_000006570",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 432,
+     "yeter": true,
+     "temas_iyimser": 2828,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6186,
+     "sinif0": 0.0795,
+     "sinif1": 0.302
+    },
+    "ust": {
+     "temas": 768,
+     "yeter": true,
+     "temas_iyimser": 2952,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5605,
+     "sinif0": 0.1672,
+     "sinif1": 0.2723
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000170_000006630",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1428,
+     "yeter": true,
+     "temas_iyimser": 2428,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3053,
+     "sinif0": 0.289,
+     "sinif1": 0.4057
+    },
+    "ust": {
+     "temas": 1440,
+     "yeter": true,
+     "temas_iyimser": 2924,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4734,
+     "sinif0": 0.2687,
+     "sinif1": 0.2579
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000173_000006900",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1892,
+     "yeter": true,
+     "temas_iyimser": 2952,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3104,
+     "sinif0": 0.4389,
+     "sinif1": 0.2507
+    },
+    "ust": {
+     "temas": 2308,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5072,
+     "sinif0": 0.478,
+     "sinif1": 0.0148
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000174_000006990",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3244,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7041,
+     "sinif0": 0.0,
+     "sinif1": 0.2959
+    },
+    "ust": {
+     "temas": 2036,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5796,
+     "sinif0": 0.4204,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000177_000007110",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1180,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6874,
+     "sinif0": 0.2567,
+     "sinif1": 0.0559
+    },
+    "ust": {
+     "temas": 1364,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7432,
+     "sinif0": 0.2568,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000188_000007440",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2168,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5366,
+     "sinif0": 0.4302,
+     "sinif1": 0.0331
+    },
+    "ust": {
+     "temas": 1480,
+     "yeter": true,
+     "temas_iyimser": 3828,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6646,
+     "sinif0": 0.2619,
+     "sinif1": 0.0735
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000191_000007560",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1156,
+     "yeter": true,
+     "temas_iyimser": 3808,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7165,
+     "sinif0": 0.2425,
+     "sinif1": 0.041
+    },
+    "ust": {
+     "temas": 2372,
+     "yeter": true,
+     "temas_iyimser": 3624,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3853,
+     "sinif0": 0.4978,
+     "sinif1": 0.1169
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000192_000007590",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 660,
+     "yeter": true,
+     "temas_iyimser": 3404,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7228,
+     "sinif0": 0.1572,
+     "sinif1": 0.12
+    },
+    "ust": {
+     "temas": 1180,
+     "yeter": true,
+     "temas_iyimser": 3352,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6269,
+     "sinif0": 0.2347,
+     "sinif1": 0.1384
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000197_000007770",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1872,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5739,
+     "sinif0": 0.4054,
+     "sinif1": 0.0207
+    },
+    "ust": {
+     "temas": 600,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8805,
+     "sinif0": 0.1195,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000200_000007860",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1192,
+     "yeter": true,
+     "temas_iyimser": 3268,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5657,
+     "sinif0": 0.2418,
+     "sinif1": 0.1925
+    },
+    "ust": {
+     "temas": 860,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7364,
+     "sinif0": 0.1878,
+     "sinif1": 0.0758
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000202_000007950",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 412,
+     "yeter": true,
+     "temas_iyimser": 3412,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7516,
+     "sinif0": 0.0855,
+     "sinif1": 0.163
+    },
+    "ust": {
+     "temas": 328,
+     "yeter": true,
+     "temas_iyimser": 3616,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7983,
+     "sinif0": 0.071,
+     "sinif1": 0.1307
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000203_000007980",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1600,
+     "yeter": true,
+     "temas_iyimser": 3784,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5946,
+     "sinif0": 0.3006,
+     "sinif1": 0.1048
+    },
+    "ust": {
+     "temas": 1304,
+     "yeter": true,
+     "temas_iyimser": 3788,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7702,
+     "sinif0": 0.1884,
+     "sinif1": 0.0415
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000205_000008040",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1244,
+     "yeter": true,
+     "temas_iyimser": 3836,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6995,
+     "sinif0": 0.222,
+     "sinif1": 0.0785
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.9747,
+     "sinif0": 0.0,
+     "sinif1": 0.0253
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000208_000008130",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3552,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2111,
+     "sinif0": 0.7446,
+     "sinif1": 0.0443
+    },
+    "ust": {
+     "temas": 3484,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1073,
+     "sinif0": 0.8927,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000213_000008340",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2672,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4513,
+     "sinif0": 0.5356,
+     "sinif1": 0.0131
+    },
+    "ust": {
+     "temas": 1412,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7241,
+     "sinif0": 0.2636,
+     "sinif1": 0.0123
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000217_000008460",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2752,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4623,
+     "sinif0": 0.5265,
+     "sinif1": 0.0112
+    },
+    "ust": {
+     "temas": 2440,
+     "yeter": true,
+     "temas_iyimser": 3696,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3536,
+     "sinif0": 0.5222,
+     "sinif1": 0.1242
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000218_000008490",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3772,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1441,
+     "sinif0": 0.8285,
+     "sinif1": 0.0274
+    },
+    "ust": {
+     "temas": 2360,
+     "yeter": true,
+     "temas_iyimser": 3752,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3508,
+     "sinif0": 0.4865,
+     "sinif1": 0.1627
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000219_000008520",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 660,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8526,
+     "sinif0": 0.1297,
+     "sinif1": 0.0177
+    },
+    "ust": {
+     "temas": 636,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.864,
+     "sinif0": 0.1262,
+     "sinif1": 0.0098
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000221_000008580",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2276,
+     "yeter": true,
+     "temas_iyimser": 3808,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4497,
+     "sinif0": 0.519,
+     "sinif1": 0.0312
+    },
+    "ust": {
+     "temas": 2148,
+     "yeter": true,
+     "temas_iyimser": 3716,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.444,
+     "sinif0": 0.4591,
+     "sinif1": 0.0969
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000226_000008730",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3040,
+     "yeter": true,
+     "temas_iyimser": 3756,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3412,
+     "sinif0": 0.5977,
+     "sinif1": 0.061
+    },
+    "ust": {
+     "temas": 3064,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3884,
+     "sinif0": 0.5745,
+     "sinif1": 0.0371
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000227_000008760",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2068,
+     "yeter": true,
+     "temas_iyimser": 3000,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2729,
+     "sinif0": 0.4872,
+     "sinif1": 0.2399
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000228_000008790",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3400,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2137,
+     "sinif0": 0.7863,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000233_000008940",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2704,
+     "yeter": true,
+     "temas_iyimser": 3292,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2225,
+     "sinif0": 0.558,
+     "sinif1": 0.2195
+    },
+    "ust": {
+     "temas": 2040,
+     "yeter": true,
+     "temas_iyimser": 3772,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.626,
+     "sinif0": 0.3096,
+     "sinif1": 0.0644
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000237_000009060",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1588,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6316,
+     "sinif0": 0.3684,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8589,
+     "sinif0": 0.0,
+     "sinif1": 0.1411
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000269_000010260",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2964,
+     "yeter": true,
+     "temas_iyimser": 3484,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1464,
+     "sinif0": 0.7609,
+     "sinif1": 0.0927
+    },
+    "ust": {
+     "temas": 1696,
+     "yeter": true,
+     "temas_iyimser": 2832,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2978,
+     "sinif0": 0.4397,
+     "sinif1": 0.2625
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000283_000010710",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3536,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1106,
+     "sinif0": 0.8733,
+     "sinif1": 0.0161
+    },
+    "ust": {
+     "temas": 3480,
+     "yeter": true,
+     "temas_iyimser": 3800,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1281,
+     "sinif0": 0.8253,
+     "sinif1": 0.0466
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000284_000010740",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 476,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8807,
+     "sinif0": 0.1148,
+     "sinif1": 0.0045
+    },
+    "ust": {
+     "temas": 460,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.862,
+     "sinif0": 0.104,
+     "sinif1": 0.0339
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000285_000010770",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 1.0,
+     "sinif0": 0.0,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 1300,
+     "yeter": true,
+     "temas_iyimser": 3624,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6589,
+     "sinif0": 0.2256,
+     "sinif1": 0.1156
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000286_000010800",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 3840,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 1.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000289_000010890",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 440,
+     "yeter": true,
+     "temas_iyimser": 3372,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6949,
+     "sinif0": 0.1033,
+     "sinif1": 0.2018
+    },
+    "ust": {
+     "temas": 468,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8233,
+     "sinif0": 0.1135,
+     "sinif1": 0.0633
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000290_000010920",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3080,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2051,
+     "sinif0": 0.7949,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 2796,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2841,
+     "sinif0": 0.7159,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822170832_0037_d__frame_000296_000011100",
+   "kaynak": "dji_20260822170832_0037_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1948,
+     "yeter": true,
+     "temas_iyimser": 3524,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5019,
+     "sinif0": 0.3954,
+     "sinif1": 0.1027
+    },
+    "ust": {
+     "temas": 2136,
+     "yeter": true,
+     "temas_iyimser": 3092,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2337,
+     "sinif0": 0.5096,
+     "sinif1": 0.2567
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000021_000001500",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 2540,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6095,
+     "sinif0": 0.0,
+     "sinif1": 0.3905
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3384,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7972,
+     "sinif0": 0.0,
+     "sinif1": 0.2028
+    }
+   },
+   "eksik_taraf": [
+    "alt",
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 2644,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.633,
+     "sinif0": 0.0,
+     "sinif1": 0.367
+    },
+    "ust": {
+     "temas": 852,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.9029,
+     "sinif0": 0.0971,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000032_000001830",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2264,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5715,
+     "sinif0": 0.4285,
+     "sinif1": 0.0
+    },
+    "ust": {
+     "temas": 2340,
+     "yeter": true,
+     "temas_iyimser": 3532,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3769,
+     "sinif0": 0.4918,
+     "sinif1": 0.1313
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8727,
+     "sinif0": 0.0,
+     "sinif1": 0.1273
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3636,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.914,
+     "sinif0": 0.0,
+     "sinif1": 0.086
+    }
+   },
+   "eksik_taraf": [
+    "alt",
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000037_000001980",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 424,
+     "yeter": true,
+     "temas_iyimser": 3420,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8708,
+     "sinif0": 0.0153,
+     "sinif1": 0.1139
+    },
+    "ust": {
+     "temas": 940,
+     "yeter": true,
+     "temas_iyimser": 3540,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7658,
+     "sinif0": 0.1452,
+     "sinif1": 0.089
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 424,
+     "yeter": true,
+     "temas_iyimser": 3268,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7823,
+     "sinif0": 0.0593,
+     "sinif1": 0.1584
+    },
+    "ust": {
+     "temas": 868,
+     "yeter": true,
+     "temas_iyimser": 2780,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6068,
+     "sinif0": 0.0891,
+     "sinif1": 0.3042
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000044_000002190",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1228,
+     "yeter": true,
+     "temas_iyimser": 2764,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4766,
+     "sinif0": 0.1751,
+     "sinif1": 0.3483
+    },
+    "ust": {
+     "temas": 948,
+     "yeter": true,
+     "temas_iyimser": 2680,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4272,
+     "sinif0": 0.1446,
+     "sinif1": 0.4282
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1160,
+     "yeter": true,
+     "temas_iyimser": 2656,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4504,
+     "sinif0": 0.166,
+     "sinif1": 0.3836
+    },
+    "ust": {
+     "temas": 776,
+     "yeter": true,
+     "temas_iyimser": 2444,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3766,
+     "sinif0": 0.1703,
+     "sinif1": 0.4531
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000051_000002400",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2244,
+     "yeter": true,
+     "temas_iyimser": 2560,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1479,
+     "sinif0": 0.4973,
+     "sinif1": 0.3548
+    },
+    "ust": {
+     "temas": 2920,
+     "yeter": true,
+     "temas_iyimser": 3296,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1564,
+     "sinif0": 0.6754,
+     "sinif1": 0.1682
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1188,
+     "yeter": true,
+     "temas_iyimser": 2152,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2383,
+     "sinif0": 0.2007,
+     "sinif1": 0.561
+    },
+    "ust": {
+     "temas": 3388,
+     "yeter": true,
+     "temas_iyimser": 3480,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0912,
+     "sinif0": 0.8005,
+     "sinif1": 0.1083
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 2980,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6906,
+     "sinif0": 0.0,
+     "sinif1": 0.3094
+    },
+    "ust": {
+     "temas": 564,
+     "yeter": true,
+     "temas_iyimser": 3688,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8468,
+     "sinif0": 0.1046,
+     "sinif1": 0.0487
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 660,
+     "yeter": true,
+     "temas_iyimser": 3096,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.576,
+     "sinif0": 0.1266,
+     "sinif1": 0.2974
+    },
+    "ust": {
+     "temas": 1096,
+     "yeter": true,
+     "temas_iyimser": 2440,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.318,
+     "sinif0": 0.2111,
+     "sinif1": 0.4709
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000072_000003210",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 400,
+     "yeter": true,
+     "temas_iyimser": 3280,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.701,
+     "sinif0": 0.0898,
+     "sinif1": 0.2092
+    },
+    "ust": {
+     "temas": 628,
+     "yeter": true,
+     "temas_iyimser": 2264,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4402,
+     "sinif0": 0.0962,
+     "sinif1": 0.4636
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1608,
+     "yeter": true,
+     "temas_iyimser": 3544,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5296,
+     "sinif0": 0.274,
+     "sinif1": 0.1964
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 1940,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2668,
+     "sinif0": 0.0,
+     "sinif1": 0.7332
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000087_000003780",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2348,
+     "yeter": true,
+     "temas_iyimser": 2536,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1555,
+     "sinif0": 0.4067,
+     "sinif1": 0.4378
+    },
+    "ust": {
+     "temas": 488,
+     "yeter": true,
+     "temas_iyimser": 488,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0726,
+     "sinif1": 0.9274
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 756,
+     "yeter": true,
+     "temas_iyimser": 1132,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0821,
+     "sinif0": 0.1527,
+     "sinif1": 0.7652
+    },
+    "ust": {
+     "temas": 452,
+     "yeter": true,
+     "temas_iyimser": 468,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0156,
+     "sinif0": 0.068,
+     "sinif1": 0.9165
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000090_000003870",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 980,
+     "yeter": true,
+     "temas_iyimser": 1392,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0536,
+     "sinif0": 0.1398,
+     "sinif1": 0.8067
+    },
+    "ust": {
+     "temas": 412,
+     "yeter": true,
+     "temas_iyimser": 444,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0066,
+     "sinif0": 0.079,
+     "sinif1": 0.9144
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 280,
+     "yeter": true,
+     "temas_iyimser": 392,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.042,
+     "sinif0": 0.0438,
+     "sinif1": 0.9143
+    },
+    "ust": {
+     "temas": 268,
+     "yeter": true,
+     "temas_iyimser": 332,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0361,
+     "sinif0": 0.0392,
+     "sinif1": 0.9247
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000097_000004080",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 264,
+     "yeter": true,
+     "temas_iyimser": 264,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.005,
+     "sinif0": 0.0551,
+     "sinif1": 0.9399
+    },
+    "ust": {
+     "temas": 444,
+     "yeter": true,
+     "temas_iyimser": 520,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0102,
+     "sinif0": 0.11,
+     "sinif1": 0.8798
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 368,
+     "yeter": true,
+     "temas_iyimser": 1176,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1091,
+     "sinif0": 0.0696,
+     "sinif1": 0.8213
+    },
+    "ust": {
+     "temas": 548,
+     "yeter": true,
+     "temas_iyimser": 2328,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.311,
+     "sinif0": 0.1105,
+     "sinif1": 0.5785
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000102_000004230",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 264,
+     "yeter": true,
+     "temas_iyimser": 1064,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1546,
+     "sinif0": 0.0444,
+     "sinif1": 0.801
+    },
+    "ust": {
+     "temas": 224,
+     "yeter": true,
+     "temas_iyimser": 804,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0919,
+     "sinif0": 0.0518,
+     "sinif1": 0.8562
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 16,
+     "yeter": false,
+     "temas_iyimser": 16,
+     "iyimser_yeter": false,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0001,
+     "sinif1": 0.9999
+    },
+    "ust": {
+     "temas": 416,
+     "yeter": true,
+     "temas_iyimser": 416,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0794,
+     "sinif1": 0.9206
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "ENGEL"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 0,
+     "iyimser_yeter": false,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0,
+     "sinif1": 1.0
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 0,
+     "iyimser_yeter": false,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0,
+     "sinif1": 1.0
+    }
+   },
+   "eksik_taraf": [
+    "alt",
+    "ust"
+   ],
+   "hukum": "ENGEL"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 512,
+     "yeter": true,
+     "temas_iyimser": 2512,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4959,
+     "sinif0": 0.0747,
+     "sinif1": 0.4295
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 984,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2281,
+     "sinif0": 0.0,
+     "sinif1": 0.7719
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000106_000004350",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 908,
+     "yeter": true,
+     "temas_iyimser": 2580,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3483,
+     "sinif0": 0.1755,
+     "sinif1": 0.4763
+    },
+    "ust": {
+     "temas": 308,
+     "yeter": true,
+     "temas_iyimser": 1984,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3832,
+     "sinif0": 0.0319,
+     "sinif1": 0.5849
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1592,
+     "yeter": true,
+     "temas_iyimser": 1960,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2624,
+     "sinif0": 0.1311,
+     "sinif1": 0.6066
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 992,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2227,
+     "sinif0": 0.0,
+     "sinif1": 0.7773
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000109_000004440",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1620,
+     "yeter": true,
+     "temas_iyimser": 1880,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1092,
+     "sinif0": 0.3173,
+     "sinif1": 0.5735
+    },
+    "ust": {
+     "temas": 660,
+     "yeter": true,
+     "temas_iyimser": 968,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0883,
+     "sinif0": 0.109,
+     "sinif1": 0.8027
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 824,
+     "yeter": true,
+     "temas_iyimser": 1632,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.197,
+     "sinif0": 0.181,
+     "sinif1": 0.6221
+    },
+    "ust": {
+     "temas": 436,
+     "yeter": true,
+     "temas_iyimser": 3148,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6933,
+     "sinif0": 0.0974,
+     "sinif1": 0.2092
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 904,
+     "yeter": true,
+     "temas_iyimser": 2016,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3093,
+     "sinif0": 0.1579,
+     "sinif1": 0.5328
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 2664,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.505,
+     "sinif0": 0.0,
+     "sinif1": 0.495
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 184,
+     "yeter": true,
+     "temas_iyimser": 2524,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.552,
+     "sinif0": 0.0311,
+     "sinif1": 0.4169
+    },
+    "ust": {
+     "temas": 184,
+     "yeter": true,
+     "temas_iyimser": 1724,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2426,
+     "sinif0": 0.0262,
+     "sinif1": 0.7312
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000117_000004680",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 240,
+     "yeter": true,
+     "temas_iyimser": 3128,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6397,
+     "sinif0": 0.0483,
+     "sinif1": 0.312
+    },
+    "ust": {
+     "temas": 380,
+     "yeter": true,
+     "temas_iyimser": 1604,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2643,
+     "sinif0": 0.063,
+     "sinif1": 0.6727
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 600,
+     "yeter": true,
+     "temas_iyimser": 2828,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6142,
+     "sinif0": 0.1027,
+     "sinif1": 0.2831
+    },
+    "ust": {
+     "temas": 552,
+     "yeter": true,
+     "temas_iyimser": 876,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.138,
+     "sinif0": 0.049,
+     "sinif1": 0.8129
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000123_000004860",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 376,
+     "yeter": true,
+     "temas_iyimser": 440,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0207,
+     "sinif0": 0.0593,
+     "sinif1": 0.92
+    },
+    "ust": {
+     "temas": 980,
+     "yeter": true,
+     "temas_iyimser": 1084,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0428,
+     "sinif0": 0.1412,
+     "sinif1": 0.8159
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 628,
+     "yeter": true,
+     "temas_iyimser": 628,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 0.1437,
+     "sinif1": 0.8563
+    },
+    "ust": {
+     "temas": 400,
+     "yeter": true,
+     "temas_iyimser": 400,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0585,
+     "sinif1": 0.9415
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 560,
+     "yeter": true,
+     "temas_iyimser": 560,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0,
+     "sinif0": 0.1295,
+     "sinif1": 0.8705
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 0,
+     "iyimser_yeter": false,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0,
+     "sinif1": 1.0
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "ENGEL"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1192,
+     "yeter": true,
+     "temas_iyimser": 1260,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.0345,
+     "sinif0": 0.1921,
+     "sinif1": 0.7734
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 0,
+     "iyimser_yeter": false,
+     "etiketsiz": 0.0,
+     "sinif0": 0.0,
+     "sinif1": 1.0
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "ENGEL"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000130_000005070",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 620,
+     "yeter": true,
+     "temas_iyimser": 2144,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3583,
+     "sinif0": 0.1019,
+     "sinif1": 0.5398
+    },
+    "ust": {
+     "temas": 956,
+     "yeter": true,
+     "temas_iyimser": 2216,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2992,
+     "sinif0": 0.1811,
+     "sinif1": 0.5197
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 852,
+     "yeter": true,
+     "temas_iyimser": 3036,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.511,
+     "sinif0": 0.157,
+     "sinif1": 0.332
+    },
+    "ust": {
+     "temas": 332,
+     "yeter": true,
+     "temas_iyimser": 2904,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6254,
+     "sinif0": 0.0705,
+     "sinif1": 0.3041
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000137_000005280",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 952,
+     "yeter": true,
+     "temas_iyimser": 2268,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2544,
+     "sinif0": 0.2115,
+     "sinif1": 0.534
+    },
+    "ust": {
+     "temas": 1396,
+     "yeter": true,
+     "temas_iyimser": 3264,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4005,
+     "sinif0": 0.3042,
+     "sinif1": 0.2953
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 736,
+     "yeter": true,
+     "temas_iyimser": 3196,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6067,
+     "sinif0": 0.1763,
+     "sinif1": 0.217
+    },
+    "ust": {
+     "temas": 840,
+     "yeter": true,
+     "temas_iyimser": 2860,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4401,
+     "sinif0": 0.1697,
+     "sinif1": 0.3902
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000142_000005430",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 872,
+     "yeter": true,
+     "temas_iyimser": 2632,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3993,
+     "sinif0": 0.1978,
+     "sinif1": 0.403
+    },
+    "ust": {
+     "temas": 400,
+     "yeter": true,
+     "temas_iyimser": 3096,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6414,
+     "sinif0": 0.0714,
+     "sinif1": 0.2872
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1332,
+     "yeter": true,
+     "temas_iyimser": 3576,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6142,
+     "sinif0": 0.2373,
+     "sinif1": 0.1485
+    },
+    "ust": {
+     "temas": 1236,
+     "yeter": true,
+     "temas_iyimser": 3568,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5727,
+     "sinif0": 0.2972,
+     "sinif1": 0.1301
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000144_000005490",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 320,
+     "yeter": true,
+     "temas_iyimser": 3512,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6871,
+     "sinif0": 0.0683,
+     "sinif1": 0.2446
+    },
+    "ust": {
+     "temas": 624,
+     "yeter": true,
+     "temas_iyimser": 2916,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5939,
+     "sinif0": 0.1142,
+     "sinif1": 0.2918
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2300,
+     "yeter": true,
+     "temas_iyimser": 3056,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2218,
+     "sinif0": 0.4104,
+     "sinif1": 0.3679
+    },
+    "ust": {
+     "temas": 3260,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.328,
+     "sinif0": 0.6519,
+     "sinif1": 0.0201
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000158_000005940",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2064,
+     "yeter": true,
+     "temas_iyimser": 3796,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5544,
+     "sinif0": 0.3875,
+     "sinif1": 0.0581
+    },
+    "ust": {
+     "temas": 3264,
+     "yeter": true,
+     "temas_iyimser": 3796,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2674,
+     "sinif0": 0.7159,
+     "sinif1": 0.0167
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1476,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6471,
+     "sinif0": 0.3442,
+     "sinif1": 0.0088
+    },
+    "ust": {
+     "temas": 640,
+     "yeter": true,
+     "temas_iyimser": 3652,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7565,
+     "sinif0": 0.1428,
+     "sinif1": 0.1007
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 1468,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3398,
+     "sinif0": 0.0,
+     "sinif1": 0.6602
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3792,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.9633,
+     "sinif0": 0.0,
+     "sinif1": 0.0367
+    }
+   },
+   "eksik_taraf": [
+    "alt",
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2648,
+     "yeter": true,
+     "temas_iyimser": 3572,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4315,
+     "sinif0": 0.4269,
+     "sinif1": 0.1416
+    },
+    "ust": {
+     "temas": 1740,
+     "yeter": true,
+     "temas_iyimser": 3388,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4408,
+     "sinif0": 0.3954,
+     "sinif1": 0.1638
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 3516,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3605,
+     "sinif0": 0.6091,
+     "sinif1": 0.0304
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3288,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6772,
+     "sinif0": 0.0,
+     "sinif1": 0.3228
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1716,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6901,
+     "sinif0": 0.2983,
+     "sinif1": 0.0116
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 2740,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6302,
+     "sinif0": 0.0,
+     "sinif1": 0.3698
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000201_000007440",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1428,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7343,
+     "sinif0": 0.2314,
+     "sinif1": 0.0343
+    },
+    "ust": {
+     "temas": 1712,
+     "yeter": true,
+     "temas_iyimser": 2156,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.103,
+     "sinif0": 0.3664,
+     "sinif1": 0.5307
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2100,
+     "yeter": true,
+     "temas_iyimser": 3800,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6608,
+     "sinif0": 0.3152,
+     "sinif1": 0.0239
+    },
+    "ust": {
+     "temas": 2616,
+     "yeter": true,
+     "temas_iyimser": 3396,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.1664,
+     "sinif0": 0.5917,
+     "sinif1": 0.2419
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000203_000007500",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 548,
+     "yeter": true,
+     "temas_iyimser": 3060,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.529,
+     "sinif0": 0.1061,
+     "sinif1": 0.3649
+    },
+    "ust": {
+     "temas": 532,
+     "yeter": true,
+     "temas_iyimser": 3732,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8512,
+     "sinif0": 0.1026,
+     "sinif1": 0.0462
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 336,
+     "yeter": true,
+     "temas_iyimser": 2784,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.603,
+     "sinif0": 0.077,
+     "sinif1": 0.32
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 1.0,
+     "sinif0": 0.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.9538,
+     "sinif0": 0.0,
+     "sinif1": 0.0462
+    },
+    "ust": {
+     "temas": 568,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.905,
+     "sinif0": 0.0817,
+     "sinif1": 0.0133
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2544,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5027,
+     "sinif0": 0.4965,
+     "sinif1": 0.0008
+    },
+    "ust": {
+     "temas": 1292,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6977,
+     "sinif0": 0.1805,
+     "sinif1": 0.1219
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1156,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8234,
+     "sinif0": 0.0817,
+     "sinif1": 0.0949
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 1.0,
+     "sinif0": 0.0,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1092,
+     "yeter": true,
+     "temas_iyimser": 3800,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6884,
+     "sinif0": 0.1843,
+     "sinif1": 0.1273
+    },
+    "ust": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3648,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8608,
+     "sinif0": 0.0,
+     "sinif1": 0.1392
+    }
+   },
+   "eksik_taraf": [
+    "ust"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250",
+   "kaynak": "dji_20260822172613_0038_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 0,
+     "yeter": false,
+     "temas_iyimser": 3004,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5702,
+     "sinif0": 0.0,
+     "sinif1": 0.4298
+    },
+    "ust": {
+     "temas": 2608,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4488,
+     "sinif0": 0.5512,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [
+    "alt"
+   ],
+   "hukum": "KURTARILABILIR"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000036_000002580",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 812,
+     "yeter": true,
+     "temas_iyimser": 2204,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3214,
+     "sinif0": 0.1869,
+     "sinif1": 0.4917
+    },
+    "ust": {
+     "temas": 616,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6177,
+     "sinif0": 0.1109,
+     "sinif1": 0.2714
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000041_000002760",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 840,
+     "yeter": true,
+     "temas_iyimser": 3292,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5991,
+     "sinif0": 0.1837,
+     "sinif1": 0.2172
+    },
+    "ust": {
+     "temas": 1472,
+     "yeter": true,
+     "temas_iyimser": 3732,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6052,
+     "sinif0": 0.2521,
+     "sinif1": 0.1427
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000044_000002850",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 560,
+     "yeter": true,
+     "temas_iyimser": 3380,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6204,
+     "sinif0": 0.1223,
+     "sinif1": 0.2573
+    },
+    "ust": {
+     "temas": 1080,
+     "yeter": true,
+     "temas_iyimser": 2716,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2812,
+     "sinif0": 0.2054,
+     "sinif1": 0.5134
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000046_000002910",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 476,
+     "yeter": true,
+     "temas_iyimser": 3320,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7363,
+     "sinif0": 0.1044,
+     "sinif1": 0.1593
+    },
+    "ust": {
+     "temas": 844,
+     "yeter": true,
+     "temas_iyimser": 3752,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4993,
+     "sinif0": 0.1883,
+     "sinif1": 0.3124
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000049_000003030",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 504,
+     "yeter": true,
+     "temas_iyimser": 3536,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7652,
+     "sinif0": 0.1063,
+     "sinif1": 0.1285
+    },
+    "ust": {
+     "temas": 676,
+     "yeter": true,
+     "temas_iyimser": 3728,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7983,
+     "sinif0": 0.134,
+     "sinif1": 0.0677
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000053_000003180",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 664,
+     "yeter": true,
+     "temas_iyimser": 3652,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6426,
+     "sinif0": 0.1635,
+     "sinif1": 0.1939
+    },
+    "ust": {
+     "temas": 1512,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6316,
+     "sinif0": 0.3385,
+     "sinif1": 0.0299
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000056_000003330",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 584,
+     "yeter": true,
+     "temas_iyimser": 2388,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4563,
+     "sinif0": 0.1111,
+     "sinif1": 0.4325
+    },
+    "ust": {
+     "temas": 1940,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6552,
+     "sinif0": 0.3447,
+     "sinif1": 0.0
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000060_000003480",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1172,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7576,
+     "sinif0": 0.2165,
+     "sinif1": 0.0259
+    },
+    "ust": {
+     "temas": 1540,
+     "yeter": true,
+     "temas_iyimser": 3108,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4518,
+     "sinif0": 0.2045,
+     "sinif1": 0.3437
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000063_000003570",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2012,
+     "yeter": true,
+     "temas_iyimser": 3640,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5949,
+     "sinif0": 0.3083,
+     "sinif1": 0.0968
+    },
+    "ust": {
+     "temas": 772,
+     "yeter": true,
+     "temas_iyimser": 2996,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5717,
+     "sinif0": 0.1692,
+     "sinif1": 0.2592
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000069_000003870",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1456,
+     "yeter": true,
+     "temas_iyimser": 3216,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4727,
+     "sinif0": 0.2675,
+     "sinif1": 0.2598
+    },
+    "ust": {
+     "temas": 1440,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6341,
+     "sinif0": 0.307,
+     "sinif1": 0.0589
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000074_000004140",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 852,
+     "yeter": true,
+     "temas_iyimser": 2960,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5796,
+     "sinif0": 0.1789,
+     "sinif1": 0.2415
+    },
+    "ust": {
+     "temas": 1784,
+     "yeter": true,
+     "temas_iyimser": 3068,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4535,
+     "sinif0": 0.3449,
+     "sinif1": 0.2016
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000091_000005100",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 436,
+     "yeter": true,
+     "temas_iyimser": 2932,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6592,
+     "sinif0": 0.1033,
+     "sinif1": 0.2375
+    },
+    "ust": {
+     "temas": 536,
+     "yeter": true,
+     "temas_iyimser": 3724,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8314,
+     "sinif0": 0.1197,
+     "sinif1": 0.0489
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000105_000005700",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1028,
+     "yeter": true,
+     "temas_iyimser": 3484,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6901,
+     "sinif0": 0.2064,
+     "sinif1": 0.1035
+    },
+    "ust": {
+     "temas": 920,
+     "yeter": true,
+     "temas_iyimser": 3452,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.7067,
+     "sinif0": 0.1758,
+     "sinif1": 0.1175
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000112_000006030",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 396,
+     "yeter": true,
+     "temas_iyimser": 3792,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8709,
+     "sinif0": 0.0936,
+     "sinif1": 0.0355
+    },
+    "ust": {
+     "temas": 320,
+     "yeter": true,
+     "temas_iyimser": 3812,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.904,
+     "sinif0": 0.0749,
+     "sinif1": 0.0211
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000115_000006180",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 380,
+     "yeter": true,
+     "temas_iyimser": 3712,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8548,
+     "sinif0": 0.0867,
+     "sinif1": 0.0585
+    },
+    "ust": {
+     "temas": 336,
+     "yeter": true,
+     "temas_iyimser": 3724,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.8552,
+     "sinif0": 0.0727,
+     "sinif1": 0.0721
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000133_000006930",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2044,
+     "yeter": true,
+     "temas_iyimser": 3784,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4943,
+     "sinif0": 0.488,
+     "sinif1": 0.0177
+    },
+    "ust": {
+     "temas": 1852,
+     "yeter": true,
+     "temas_iyimser": 3784,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5131,
+     "sinif0": 0.4692,
+     "sinif1": 0.0177
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000187_000010890",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 2016,
+     "yeter": true,
+     "temas_iyimser": 3552,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3694,
+     "sinif0": 0.417,
+     "sinif1": 0.2136
+    },
+    "ust": {
+     "temas": 904,
+     "yeter": true,
+     "temas_iyimser": 2252,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.2582,
+     "sinif0": 0.2008,
+     "sinif1": 0.541
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000191_000011160",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 1324,
+     "yeter": true,
+     "temas_iyimser": 3180,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5114,
+     "sinif0": 0.2555,
+     "sinif1": 0.2331
+    },
+    "ust": {
+     "temas": 1896,
+     "yeter": true,
+     "temas_iyimser": 3592,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4325,
+     "sinif0": 0.3624,
+     "sinif1": 0.2051
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000195_000011280",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 572,
+     "yeter": true,
+     "temas_iyimser": 3124,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.5314,
+     "sinif0": 0.1176,
+     "sinif1": 0.351
+    },
+    "ust": {
+     "temas": 1948,
+     "yeter": true,
+     "temas_iyimser": 3260,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.4211,
+     "sinif0": 0.4095,
+     "sinif1": 0.1695
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  },
+  {
+   "kare": "dji_20260822173231_0039_d__frame_000201_000011490",
+   "kaynak": "dji_20260822173231_0039_d",
+   "gereken": 77,
+   "bantlar": {
+    "alt": {
+     "temas": 684,
+     "yeter": true,
+     "temas_iyimser": 3300,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.6537,
+     "sinif0": 0.1291,
+     "sinif1": 0.2172
+    },
+    "ust": {
+     "temas": 2932,
+     "yeter": true,
+     "temas_iyimser": 3840,
+     "iyimser_yeter": true,
+     "etiketsiz": 0.3487,
+     "sinif0": 0.6212,
+     "sinif1": 0.0302
+    }
+   },
+   "eksik_taraf": [],
+   "hukum": "ZATEN_YETER"
+  }
+ ]
+}

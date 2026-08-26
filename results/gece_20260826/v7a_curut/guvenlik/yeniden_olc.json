@@ -1,0 +1,1508 @@
+{
+ "yeniden": {
+  "v7a_test29": {
+   "rota": 8,
+   "yanlis": 0,
+   "satirlar": [
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000062_000002820"
+    },
+    {
+     "yol_payi": 0.9824,
+     "etiketsiz_payi": 0.0176,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000135_000005220"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000139_000005340"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000152_000005760"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000160_000006000"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000202_000007470"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000215_000007860"
+    },
+    {
+     "yol_payi": 0.9486,
+     "etiketsiz_payi": 0.0514,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 778,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000218_000007980"
+    }
+   ]
+  },
+  "v7a_val82": {
+   "rota": 30,
+   "yanlis": 7,
+   "satirlar": [
+    {
+     "yol_payi": 0.6703,
+     "etiketsiz_payi": 0.3297,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000064_000002910"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000069_000003090"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000076_000003360"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000079_000003510"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 457,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000084_000003690"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 1.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000129_000005040"
+    },
+    {
+     "yol_payi": 0.9736,
+     "etiketsiz_payi": 0.0264,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000134_000005190"
+    },
+    {
+     "yol_payi": 0.6269,
+     "etiketsiz_payi": 0.3731,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 461,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000140_000005370"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000141_000005400"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000142_000005430"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000146_000005550"
+    },
+    {
+     "yol_payi": 0.9231,
+     "etiketsiz_payi": 0.0769,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000148_000005640"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000150_000005700"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 462,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000151_000005730"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000153_000005790"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000154_000005820"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000155_000005850"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000156_000005880"
+    },
+    {
+     "yol_payi": 0.9341,
+     "etiketsiz_payi": 0.0659,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000157_000005910"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000158_000005940"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000159_000005970"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 462,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000163_000006090"
+    },
+    {
+     "yol_payi": 0.8923,
+     "etiketsiz_payi": 0.1077,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000168_000006240"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000192_000007170"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000201_000007440"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000203_000007500"
+    },
+    {
+     "yol_payi": 0.378,
+     "etiketsiz_payi": 0.444,
+     "engel_payi": 0.178,
+     "engel_wp": 1,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000208_000007650"
+    },
+    {
+     "yol_payi": 0.585,
+     "etiketsiz_payi": 0.2517,
+     "engel_payi": 0.1633,
+     "engel_wp": 1,
+     "cizgi_px": 588,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000210_000007710"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000216_000007890"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.9319,
+     "engel_payi": 0.0681,
+     "engel_wp": 1,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000223_000008250"
+    }
+   ]
+  },
+  "v35_test29": {
+   "rota": 6,
+   "yanlis": 5,
+   "satirlar": [
+    {
+     "yol_payi": 0.9743,
+     "etiketsiz_payi": 0.0257,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 467,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000120_000004770"
+    },
+    {
+     "yol_payi": 0.7775,
+     "etiketsiz_payi": 0.0448,
+     "engel_payi": 0.1777,
+     "engel_wp": 0,
+     "cizgi_px": 782,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000124_000004890"
+    },
+    {
+     "yol_payi": 0.8813,
+     "etiketsiz_payi": 0.1187,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000135_000005220"
+    },
+    {
+     "yol_payi": 0.589,
+     "etiketsiz_payi": 0.411,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000152_000005760"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 1.0,
+     "engel_wp": 8,
+     "cizgi_px": 511,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000196_000007290"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.1011,
+     "engel_payi": 0.8989,
+     "engel_wp": 7,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000202_000007470"
+    }
+   ]
+  },
+  "v35_val82": {
+   "rota": 15,
+   "yanlis": 10,
+   "satirlar": [
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 462,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000076_000003360"
+    },
+    {
+     "yol_payi": 0.9978,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0022,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000079_000003510"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000090_000003870"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0154,
+     "engel_payi": 0.9846,
+     "engel_wp": 7,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000130_000005070"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 456,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000136_000005250"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 1.0,
+     "engel_wp": 8,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000153_000005790"
+    },
+    {
+     "yol_payi": 0.3077,
+     "etiketsiz_payi": 0.5802,
+     "engel_payi": 0.1121,
+     "engel_wp": 1,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000156_000005880"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 1.0,
+     "engel_wp": 8,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000157_000005910"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0242,
+     "engel_payi": 0.9758,
+     "engel_wp": 7,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000158_000005940"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 1.0,
+     "engel_wp": 8,
+     "cizgi_px": 456,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000159_000005970"
+    },
+    {
+     "yol_payi": 1.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 0.0,
+     "engel_wp": 0,
+     "cizgi_px": 459,
+     "wp": 8,
+     "yanlis": false,
+     "kare": "rame_000163_000006090"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 1.0,
+     "engel_wp": 8,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000201_000007440"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.3341,
+     "engel_payi": 0.6659,
+     "engel_wp": 5,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000203_000007500"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.5235,
+     "engel_payi": 0.4765,
+     "engel_wp": 4,
+     "cizgi_px": 468,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000208_000007650"
+    },
+    {
+     "yol_payi": 0.0,
+     "etiketsiz_payi": 0.0,
+     "engel_payi": 1.0,
+     "engel_wp": 8,
+     "cizgi_px": 455,
+     "wp": 8,
+     "yanlis": true,
+     "kare": "rame_000230_000008520"
+    }
+   ]
+  }
+ },
+ "capraz": [
+  {
+   "kare": "rame_000025_000001620",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.02799,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000035_000001920",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000039_000002040",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000048_000002310",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000053_000002460",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.08673
+  },
+  {
+   "kare": "rame_000062_000002820",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.12224
+  },
+  {
+   "kare": "rame_000085_000003720",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.03354,
+   "v7a_zemin": 0.06757
+  },
+  {
+   "kare": "rame_000089_000003840",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000094_000003990",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0709,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000100_000004170",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000103_000004260",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000105_000004320",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000107_000004380",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000111_000004500",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000116_000004650",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000120_000004770",
+   "bol": "test29",
+   "v35": "ROTA",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.09168,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000124_000004890",
+   "bol": "test29",
+   "v35": "ROTA",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.13796,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000126_000004950",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000135_000005220",
+   "bol": "test29",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.07074,
+   "v7a_zemin": 0.12016
+  },
+  {
+   "kare": "rame_000139_000005340",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.30086
+  },
+  {
+   "kare": "rame_000143_000005460",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000152_000005760",
+   "bol": "test29",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.04101,
+   "v7a_zemin": 0.19974
+  },
+  {
+   "kare": "rame_000160_000006000",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0293,
+   "v7a_zemin": 0.13188
+  },
+  {
+   "kare": "rame_000196_000007290",
+   "bol": "test29",
+   "v35": "ROTA",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.06148,
+   "v7a_zemin": 0.17825
+  },
+  {
+   "kare": "rame_000200_000007410",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.02228,
+   "v7a_zemin": 0.13144
+  },
+  {
+   "kare": "rame_000202_000007470",
+   "bol": "test29",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.04049,
+   "v7a_zemin": 0.13605
+  },
+  {
+   "kare": "rame_000205_000007560",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.05287,
+   "v7a_zemin": 0.17976
+  },
+  {
+   "kare": "rame_000215_000007860",
+   "bol": "test29",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.11193,
+   "v7a_zemin": 0.16048
+  },
+  {
+   "kare": "rame_000218_000007980",
+   "bol": "test29",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.17166
+  },
+  {
+   "kare": "rame_000008_000000900",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000021_000001500",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000024_000001590",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000028_000001710",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000030_000001770",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000032_000001830",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000037_000001980",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000041_000002100",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000044_000002190",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000046_000002250",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000050_000002370",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000051_000002400",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.04401
+  },
+  {
+   "kare": "rame_000055_000002550",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.21236
+  },
+  {
+   "kare": "rame_000060_000002700",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000064_000002910",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.11928
+  },
+  {
+   "kare": "rame_000069_000003090",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.25752
+  },
+  {
+   "kare": "rame_000072_000003210",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0871
+  },
+  {
+   "kare": "rame_000075_000003300",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000076_000003360",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.06945,
+   "v7a_zemin": 0.12691
+  },
+  {
+   "kare": "rame_000079_000003510",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.07186,
+   "v7a_zemin": 0.16002
+  },
+  {
+   "kare": "rame_000081_000003570",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.01485,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000084_000003690",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.13295
+  },
+  {
+   "kare": "rame_000087_000003780",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.00606,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000088_000003810",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000090_000003870",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.08358,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000092_000003930",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000097_000004080",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000102_000004230",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000104_000004290",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.08547
+  },
+  {
+   "kare": "rame_000106_000004350",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000108_000004410",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000109_000004440",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000113_000004560",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.07572,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000114_000004590",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.01701,
+   "v7a_zemin": 0.01968
+  },
+  {
+   "kare": "rame_000115_000004620",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000117_000004680",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000118_000004710",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000122_000004830",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000123_000004860",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0951,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000125_000004920",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.09555,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000127_000004980",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.10291
+  },
+  {
+   "kare": "rame_000128_000005010",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.03004,
+   "v7a_zemin": 0.1274
+  },
+  {
+   "kare": "rame_000129_000005040",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.05728,
+   "v7a_zemin": 0.1569
+  },
+  {
+   "kare": "rame_000130_000005070",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.05531,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000134_000005190",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.14189
+  },
+  {
+   "kare": "rame_000136_000005250",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.06313,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000137_000005280",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000140_000005370",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.24823
+  },
+  {
+   "kare": "rame_000141_000005400",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.24506
+  },
+  {
+   "kare": "rame_000142_000005430",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.10702
+  },
+  {
+   "kare": "rame_000144_000005490",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000145_000005520",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "MASKE_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.0
+  },
+  {
+   "kare": "rame_000146_000005550",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.23835
+  },
+  {
+   "kare": "rame_000148_000005640",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.20224
+  },
+  {
+   "kare": "rame_000150_000005700",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.15781
+  },
+  {
+   "kare": "rame_000151_000005730",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.15384
+  },
+  {
+   "kare": "rame_000153_000005790",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.03721,
+   "v7a_zemin": 0.21089
+  },
+  {
+   "kare": "rame_000154_000005820",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.15958
+  },
+  {
+   "kare": "rame_000155_000005850",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.00365,
+   "v7a_zemin": 0.17175
+  },
+  {
+   "kare": "rame_000156_000005880",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.03642,
+   "v7a_zemin": 0.20262
+  },
+  {
+   "kare": "rame_000157_000005910",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.03493,
+   "v7a_zemin": 0.18741
+  },
+  {
+   "kare": "rame_000158_000005940",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.03501,
+   "v7a_zemin": 0.14408
+  },
+  {
+   "kare": "rame_000159_000005970",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.03377,
+   "v7a_zemin": 0.13928
+  },
+  {
+   "kare": "rame_000163_000006090",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.09058,
+   "v7a_zemin": 0.16315
+  },
+  {
+   "kare": "rame_000168_000006240",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.08252,
+   "v7a_zemin": 0.16322
+  },
+  {
+   "kare": "rame_000176_000006600",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.13589
+  },
+  {
+   "kare": "rame_000177_000006630",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.12916,
+   "v7a_zemin": 0.14038
+  },
+  {
+   "kare": "rame_000185_000006930",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.14478
+  },
+  {
+   "kare": "rame_000192_000007170",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.10805
+  },
+  {
+   "kare": "rame_000197_000007320",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.03054,
+   "v7a_zemin": 0.17108
+  },
+  {
+   "kare": "rame_000201_000007440",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.04464,
+   "v7a_zemin": 0.15104
+  },
+  {
+   "kare": "rame_000203_000007500",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.084,
+   "v7a_zemin": 0.11049
+  },
+  {
+   "kare": "rame_000204_000007530",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.07479,
+   "v7a_zemin": 0.10515
+  },
+  {
+   "kare": "rame_000206_000007590",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.04007,
+   "v7a_zemin": 0.18267
+  },
+  {
+   "kare": "rame_000207_000007620",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.04873,
+   "v7a_zemin": 0.19572
+  },
+  {
+   "kare": "rame_000208_000007650",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "ROTA",
+   "v35_zemin": 0.05433,
+   "v7a_zemin": 0.21453
+  },
+  {
+   "kare": "rame_000210_000007710",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.06474,
+   "v7a_zemin": 0.22145
+  },
+  {
+   "kare": "rame_000213_000007800",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.10348,
+   "v7a_zemin": 0.146
+  },
+  {
+   "kare": "rame_000216_000007890",
+   "bol": "val82",
+   "v35": "UC_BANT_TEMAS_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.13903,
+   "v7a_zemin": 0.15453
+  },
+  {
+   "kare": "rame_000217_000007950",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.19596
+  },
+  {
+   "kare": "rame_000223_000008250",
+   "bol": "val82",
+   "v35": "MASKE_YOK",
+   "v7a": "ROTA",
+   "v35_zemin": 0.0,
+   "v7a_zemin": 0.6667
+  },
+  {
+   "kare": "rame_000230_000008520",
+   "bol": "val82",
+   "v35": "ROTA",
+   "v7a": "UC_BANT_TEMAS_YOK",
+   "v35_zemin": 0.09518,
+   "v7a_zemin": 0.15576
+  }
+ ]
+}

@@ -1,0 +1,115 @@
+{
+  "surum": "v5",
+  "agirlik": {
+    "yol": "models\\navitas_seg_v5_best.pt",
+    "sha256": "3bff5c60aa47366b636981d170c958650132831f395cc1ac5ef94185d0bd8b80",
+    "boyut_mb": 23.9
+  },
+  "mimari": {},
+  "veri_ve_baslangic": "gece koşusu kazananı (kimlik dosyasına bakınız)",
+  "egitim": null,
+  "olcumler": {
+    "512": {
+      "box": {
+        "precision": 0.6508,
+        "recall": 0.5859,
+        "mAP50": 0.5517,
+        "mAP50_95": 0.4085
+      },
+      "mask": {
+        "precision": 0.6545,
+        "recall": 0.5894,
+        "mAP50": 0.5643,
+        "mAP50_95": 0.3435
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8204,
+          "mask_mAP50": 0.8421,
+          "mask_mAP50_95": 0.5258
+        },
+        "blocked": {
+          "box_mAP50": 0.2831,
+          "mask_mAP50": 0.2865,
+          "mask_mAP50_95": 0.1613
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 0.75,
+        "inference": 2.79,
+        "loss": 0.0,
+        "postprocess": 0.98
+      },
+      "val_goruntu": 294,
+      "tta": false
+    },
+    "640": {
+      "box": {
+        "precision": 0.6668,
+        "recall": 0.667,
+        "mAP50": 0.6463,
+        "mAP50_95": 0.4786
+      },
+      "mask": {
+        "precision": 0.6966,
+        "recall": 0.6962,
+        "mAP50": 0.673,
+        "mAP50_95": 0.4212
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8257,
+          "mask_mAP50": 0.8576,
+          "mask_mAP50_95": 0.5502
+        },
+        "blocked": {
+          "box_mAP50": 0.467,
+          "mask_mAP50": 0.4885,
+          "mask_mAP50_95": 0.2921
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.27,
+        "inference": 3.5,
+        "loss": 0.0,
+        "postprocess": 1.09
+      },
+      "val_goruntu": 294,
+      "tta": false
+    },
+    "640_tta": {
+      "box": {
+        "precision": 0.6668,
+        "recall": 0.667,
+        "mAP50": 0.6463,
+        "mAP50_95": 0.4786
+      },
+      "mask": {
+        "precision": 0.6966,
+        "recall": 0.6962,
+        "mAP50": 0.673,
+        "mAP50_95": 0.4212
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8257,
+          "mask_mAP50": 0.8576,
+          "mask_mAP50_95": 0.5502
+        },
+        "blocked": {
+          "box_mAP50": 0.467,
+          "mask_mAP50": 0.4885,
+          "mask_mAP50_95": 0.2921
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.31,
+        "inference": 3.58,
+        "loss": 0.0,
+        "postprocess": 1.21
+      },
+      "val_goruntu": 294,
+      "tta": true
+    }
+  }
+}

@@ -1,0 +1,4 @@
+x5 base unique 413 copy count dist Counter({5: 413})
+x5base==train True x5base&val 0 x5base&test29 0 x5base&val82 0
+x5 label kaynak yok 0 x5 label != kaynak 0
+x5 image != kaynak image (ilk 50) 0

@@ -674,6 +674,10 @@ def halka_hedef(rapor: Rapor, kok: Path = KOK) -> str:
 
 
 # ───────────────────────────────────────────────────────────── halka 7: rota
+# T160: halkanin kaynak satiri CIPLAK yazilmaz — uretim karar yolu TEK yerde.
+URETIM_KARAR_YOLU = "codes/rpi_inference.py:analyze_path (run_camera yolu)"
+
+
 def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
                onceki: str, mpp: float | None = None) -> tuple[str, dict | None]:
     """Olcut (§11.3): letterbox'li girdide de ICERIK kutusuna gore karar."""
@@ -682,9 +686,13 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
     try:
         from costmap_path_finder import rota_bul
         from karar_sozlesmesi import rota_olcek_reddi
+        # T160 (ON_KAYIT §21 · D-298 §5b): halkanin HUKMU URETIM yolundan gelir.
+        # T151 karari (CONTRACTS §11.2-EK) uretim yolunu `analyze_path` ilan etti
+        # ve Jetson `run_camera` onu kosuyor; kuru kosu onu hic kosmuyordu.
+        from rpi_inference import _rota_kararini_esikle, analyze_path
     except ImportError as exc:
-        return rapor.yaz("rota", DUSTU, f"costmap_path_finder ice aktarilamadi: {exc}",
-                         "codes/costmap_path_finder.py:729"), None
+        return rapor.yaz("rota", DUSTU, f"karar yolu ice aktarilamadi: {exc}",
+                         URETIM_KARAR_YOLU), None
 
     olcek_reddi = rota_olcek_reddi(mpp)
     if olcek_reddi is not None:
@@ -698,6 +706,7 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
             "durum": sonuc["durum"],
             "yol_no": None,
             "mpp": mpp,
+            "karar_yolu": "analyze_path",
             "rota_bul_cagrildi": False,
             "rota_yayinlanabilir": False,
         }
@@ -705,9 +714,24 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
                           f"rota uretilemedi: durum={olcek_reddi[0]}",
                           "codes/karar_sozlesmesi.py", detay), sonuc)
 
+    # ── URETIM YOLU (hukum) — `run_camera`nin BIREBIR sirasi ────────────────
+    # Kopya mantik YAZILMAZ (madde 16): ayni fonksiyonlar, ayni sirada.
+    # `rpi_inference.py:2158-2169` ile hizali; orasi degisirse burasi da
+    # degismelidir — kilit: tests/test_saha_kuru_kosu_uretim_yolu.py.
     t0 = time.perf_counter()
-    sonuc = rota_bul(maskeler, mpp=mpp, icerik=icerik)
+    u_yol, u_guven, u_wps, u_red = analyze_path(
+        maskeler[0], icerik=icerik, engel_mask=maskeler.get(1), mpp=mpp,
+        return_reason=True)
+    if olcek_reddi is not None and u_red is None:      # yapisal ret EZILMEZ
+        u_yol, u_guven, u_wps = None, 0.0, []
+        u_red = olcek_reddi
+    u_yol, u_guven, u_wps, u_red = _rota_kararini_esikle(
+        u_yol, u_guven, u_wps, u_red)
     sure = (time.perf_counter() - t0) * 1000
+
+    # ── TANISAL YOL — `rota_bul`. Hukmu ARTIK BELIRLEMEZ ama SILINMEZ:
+    # iki yolun ayrismasi T79'dan beri olculuyor (D-58: 67 karenin 13'u).
+    sonuc = rota_bul(maskeler, mpp=mpp, icerik=icerik)
 
     # Fiziksel kirpma yalniz TANISALDIR. Otorite, tam tuval maskesiyle birlikte
     # _preprocess'in exact icerik kutusunu alan yukaridaki rota_bul cagrisidir.
@@ -723,21 +747,33 @@ def halka_rota(rapor: Rapor, maskeler: dict | None, icerik: tuple | None,
         except (ValueError, IndexError):
             kirpik_durum = None
 
+    u_durum = "ACIK" if u_yol is not None else (u_red[0] if u_red else "BELIRSIZ")
     detay = {
-        "durum": sonuc["durum"], "yol_no": sonuc.get("yol_no"),
-        "kirpik_durum": kirpik_durum,
-        "icerik_parametresi_var": "icerik" in rota_bul.__code__.co_varnames,
-        "icerik_aktarildi": icerik is not None,
-        "kirpik_karsilastirma": "yalniz_tanisal",
+        # HUKMU BELIRLEYEN alanlar (uretim yolu)
+        "karar_yolu": "analyze_path",
+        "durum": u_durum, "yol_no": u_yol,
+        "guven": round(float(u_guven), 4),
+        "waypoint_sayisi": len(u_wps or []),
+        "uretim_ret_sebebi": (list(u_red) if isinstance(u_red, (tuple, list))
+                              else u_red),
         "mpp": mpp,
+        "rota_yayinlanabilir": u_yol is not None,
+        # TANISAL alanlar (rota_bul) — hukum DISI, T79/D-58 ayrisma kaydi
+        "tanisal_rota_bul": {
+            "durum": sonuc["durum"], "yol_no": sonuc.get("yol_no"),
+            "kirpik_durum": kirpik_durum,
+            "icerik_parametresi_var": "icerik" in rota_bul.__code__.co_varnames,
+            "icerik_aktarildi": icerik is not None,
+            "kirpik_karsilastirma": "yalniz_tanisal",
+            "iki_yol_ayristi": (sonuc["durum"] == "ACIK") != (u_yol is not None),
+        },
         "rota_bul_cagrildi": True,
-        "rota_yayinlanabilir": sonuc["durum"] == "ACIK",
     }
-    if sonuc["durum"] != "ACIK":
-        return rapor.yaz("rota", DUSTU, f"rota uretilemedi: durum={sonuc['durum']}",
-                         "codes/costmap_path_finder.py:729", detay, sure), sonuc
-    return rapor.yaz("rota", GECTI, f"rota uretildi: yol_no={sonuc.get('yol_no')}",
-                     "codes/costmap_path_finder.py:729", detay, sure), sonuc
+    if u_yol is None:
+        return rapor.yaz("rota", DUSTU, f"rota uretilemedi: durum={u_durum}",
+                         URETIM_KARAR_YOLU, detay, sure), sonuc
+    return rapor.yaz("rota", GECTI, f"rota uretildi: yol_no={u_yol}",
+                     URETIM_KARAR_YOLU, detay, sure), sonuc
 
 
 # ─────────────────────────────────────────────────────────── halka 8: aktarim

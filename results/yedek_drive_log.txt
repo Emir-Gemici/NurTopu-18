@@ -1,0 +1,721 @@
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+
+==============================================================
+[10:54:09] KADEME: dji
+==============================================================
+[10:54:45] dji · tur 1 · uzakta 8110 MB
+[10:54:49] dji · tur 2 · uzakta 8110 MB
+[10:54:49] dji · iki turda ilerleme YOK -> kademe tamam
+
+==============================================================
+[10:54:49] KADEME: models
+==============================================================
+[10:54:53] models · tur 1 · uzakta 1097 MB
+[10:54:59] models · tur 2 · uzakta 1097 MB
+[10:54:59] models · iki turda ilerleme YOK -> kademe tamam
+
+==============================================================
+[10:54:59] KADEME: results
+==============================================================
+[10:55:58] results · tur 1 · uzakta 1218 MB
+[10:58:22] results · tur 2 · uzakta 1218 MB
+[11:00:01] results · tur 3 · uzakta 1218 MB
+[11:02:08] results · tur 4 · uzakta 1218 MB
+[11:03:55] results · tur 5 · uzakta 1218 MB
+[11:05:35] results · tur 6 · uzakta 1218 MB
+[11:05:49] results · tur 7 · uzakta 0 MB
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[11:13:11] KADEME: dji
+==============================================================
+[11:13:31] dji · tur 1 · 18sn · uzakta 8110 MB
+[11:13:31] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:13:31] KADEME: models
+==============================================================
+[11:13:36] models · tur 1 · 3sn · uzakta 1097 MB
+[11:13:36] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:13:36] KADEME: results
+==============================================================
+[11:13:54] results · tur 1 · 15sn · uzakta 1218 MB
+[11:13:54] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:13:54] KADEME: data
+==============================================================
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[11:37:44] KADEME: dji
+==============================================================
+[11:37:47] dji · tur 1 · 1sn · uzakta 8110 MB
+[11:37:47] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:37:47] KADEME: models
+==============================================================
+[11:37:52] models · tur 1 · 3sn · uzakta 1097 MB
+[11:37:52] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:37:52] KADEME: results
+==============================================================
+[11:40:02] results · tur 1 · 126sn · uzakta 1218 MB
+[11:40:02] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:40:02] KADEME: data
+==============================================================
+[12:01:34] data · tur 1 · 1254sn · uzakta 827 MB
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[12:17:48] KADEME: dji
+==============================================================
+[12:17:51] dji · tur 1 · 2sn · uzakta 8110 MB
+[12:17:51] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[12:17:51] KADEME: models
+==============================================================
+[12:17:57] models · tur 1 · 3sn · uzakta 1097 MB
+[12:17:57] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[12:17:57] KADEME: results
+==============================================================
+[12:19:00] results · tur 1 · 59sn · uzakta 1218 MB
+[12:19:00] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[12:19:00] KADEME: data
+==============================================================
+[12:30:50] data · tur 1 · 705sn · uzakta 1175 MB
+[12:30:50] data · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[12:30:50] KADEME: codes
+==============================================================
+[12:50:55] codes · tur 1 · 1201sn · uzakta 22005 MB
+[13:11:48] codes · tur 2 · 1201sn · uzakta 22722 MB
+[13:31:54] codes · tur 3 · 1202sn · uzakta 22938 MB
+[13:52:00] codes · tur 4 · 1202sn · uzakta 23264 MB
+[14:12:41] codes · tur 5 · 1236sn · uzakta 23473 MB
+[14:31:52] codes · tur 6 · 1146sn · uzakta 23473 MB
+[14:31:52] codes · iki turda ilerleme YOK -> kademe tamam
+
+==============================================================
+[14:31:52] KADEME: jetson_paket
+==============================================================
+[14:45:38] jetson_paket · tur 1 · 824sn · uzakta 842 MB
+[14:45:38] jetson_paket · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[14:45:38] KADEME: test_images
+==============================================================
+[15:05:49] test_images · tur 1 · 1208sn · uzakta 103 MB
+[15:25:59] test_images · tur 2 · 1203sn · uzakta 116 MB
+[15:46:41] test_images · tur 3 · 1202sn · uzakta 311 MB
+[15:51:04] test_images · tur 4 · 254sn · uzakta 339 MB
+[15:51:04] test_images · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[15:51:04] KADEME: rapor
+==============================================================
+[15:56:48] rapor · tur 1 · 342sn · uzakta 107 MB
+[15:56:48] rapor · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[15:56:48] KADEME: navitas-local-train
+==============================================================
+[16:16:55] navitas-local-train · tur 1 · 1203sn · uzakta 90 MB
+[16:37:04] navitas-local-train · tur 2 · 1201sn · uzakta 116 MB
+[16:58:08] navitas-local-train · tur 3 · 1250sn · uzakta 131 MB
+[17:18:57] navitas-local-train · tur 4 · 1237sn · uzakta 169 MB
+[17:39:46] navitas-local-train · tur 5 · 1201sn · uzakta 180 MB
+[17:59:55] navitas-local-train · tur 6 · 1202sn · uzakta 202 MB
+[18:20:09] navitas-local-train · tur 7 · 1201sn · uzakta 220 MB
+[18:41:53] navitas-local-train · tur 8 · 1243sn · uzakta 240 MB
+[19:03:28] navitas-local-train · tur 9 · 1202sn · uzakta 355 MB
+[19:23:41] navitas-local-train · tur 10 · 1201sn · uzakta 414 MB
+[19:43:57] navitas-local-train · tur 11 · 1201sn · uzakta 561 MB
+[20:04:59] navitas-local-train · tur 12 · 1201sn · uzakta 967 MB
+[20:26:37] navitas-local-train · tur 13 · 1202sn · uzakta 1166 MB
+[20:46:49] navitas-local-train · tur 14 · 1202sn · uzakta 1258 MB
+[21:07:03] navitas-local-train · tur 15 · 1202sn · uzakta 1425 MB
+[21:27:57] navitas-local-train · tur 16 · 1208sn · uzakta 1427 MB
+
+[21:49:43] === YENIDEN BASLATILDI · venv/** HARIC (kullanici karari) ===
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[21:49:48] KADEME: dji
+==============================================================
+[21:49:51] dji · tur 1 · 2sn · uzakta 8110 MB
+[21:49:51] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[21:49:51] KADEME: models
+==============================================================
+[21:50:44] models · tur 1 · 49sn · uzakta 1149 MB
+[21:50:44] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[21:50:44] KADEME: results
+==============================================================
+[21:51:43] results · tur 1 · 53sn · uzakta 1218 MB
+[21:51:43] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[21:51:43] KADEME: data
+==============================================================
+[21:51:54] data · tur 1 · 5sn · uzakta 1175 MB
+[21:51:54] data · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[21:51:54] KADEME: codes
+==============================================================
+
+[22:04:57] === YENIDEN BASLATILDI · YENI DJI CEKIMLERI ONCE (7,38 GiB · KADEME 1 yeri doldurulamaz) ===
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[22:04:57] KADEME: dji
+==============================================================
+[22:25:00] dji · tur 1 · 1201sn · uzakta 8120 MB
+
+[22:41:41] === YENIDEN BASLATILDI · dji icin --max-duration 4h + TAM sarti (20m giyotini buyuk dosyayi ASLA bitiremiyordu) ===
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[22:41:48] KADEME: dji
+==============================================================
+[22:52:53] dji · tur 1 · 663sn · uzakta 8120 MB
+[22:52:53] dji · sure sinirina takilmadi AMA uzak 8120 MB < yerel 15664 MB -> DEVAM
+[01:01:34] dji · tur 2 · 7719sn · uzakta 15664 MB
+[01:01:34] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:01:34] KADEME: models
+==============================================================
+[01:01:39] models · tur 1 · 2sn · uzakta 1149 MB
+[01:01:39] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:01:39] KADEME: results
+==============================================================
+[01:21:57] results · tur 1 · 1214sn · uzakta 1464 MB
+[01:42:05] results · tur 2 · 1201sn · uzakta 1988 MB
+[02:02:44] results · tur 3 · 1235sn · uzakta 2284 MB
+[02:23:54] results · tur 4 · 1218sn · uzakta 2633 MB
+[02:44:01] results · tur 5 · 1202sn · uzakta 3004 MB
+[03:04:40] results · tur 6 · 1204sn · uzakta 3296 MB
+[03:26:47] results · tur 7 · 1322sn · uzakta 3573 MB
+[03:27:43] results · tur 8 · 17sn · uzakta 3573 MB
+[03:27:44] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[03:27:44] KADEME: data
+==============================================================
+[03:27:52] data · tur 1 · 4sn · uzakta 1175 MB
+[03:27:52] data · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[03:27:52] KADEME: codes
+==============================================================
+[03:47:58] codes · tur 1 · 1202sn · uzakta 23473 MB
+[04:08:54] codes · tur 2 · 1201sn · uzakta 23473 MB
+[04:08:54] codes · iki turda ilerleme YOK -> kademe tamam
+
+==============================================================
+[04:08:54] KADEME: jetson_paket
+==============================================================
+[04:09:52] jetson_paket · tur 1 · 5sn · uzakta 842 MB
+[04:09:52] jetson_paket · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[04:09:52] KADEME: test_images
+==============================================================
+[04:10:41] test_images · tur 1 · 8sn · uzakta 339 MB
+[04:10:41] test_images · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[04:10:41] KADEME: rapor
+==============================================================
+[04:10:45] rapor · tur 1 · 2sn · uzakta 107 MB
+[04:10:45] rapor · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[04:10:45] KADEME: navitas-local-train
+==============================================================
+[04:11:00] navitas-local-train · tur 1 · 1sn · uzakta 1535 MB
+[04:11:00] navitas-local-train · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[04:11:00] KADEME: dataset/copy_paste_gercek
+==============================================================
+[04:31:46] dataset/copy_paste_gercek · tur 1 · 1206sn · uzakta 426 MB
+[04:51:52] dataset/copy_paste_gercek · tur 2 · 1202sn · uzakta 829 MB
+[04:56:48] dataset/copy_paste_gercek · tur 3 · 292sn · uzakta 888 MB
+[04:56:48] dataset/copy_paste_gercek · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[04:56:48] KADEME: dataset/copy_paste_t121
+==============================================================
+[05:05:55] dataset/copy_paste_t121 · tur 1 · 544sn · uzakta 132 MB
+[05:05:55] dataset/copy_paste_t121 · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[05:05:55] KADEME: dataset/copy_paste_t122a
+==============================================================
+[05:26:32] dataset/copy_paste_t122a · tur 1 · 1233sn · uzakta 97 MB
+[05:27:04] dataset/copy_paste_t122a · tur 2 · 28sn · uzakta 132 MB
+[05:27:04] dataset/copy_paste_t122a · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[05:27:04] KADEME: dataset/copy_paste_t122ac
+==============================================================
+[05:37:53] dataset/copy_paste_t122ac · tur 1 · 596sn · uzakta 132 MB
+[05:37:53] dataset/copy_paste_t122ac · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[05:37:53] KADEME: dataset/copy_paste_t127
+==============================================================
+[05:47:59] dataset/copy_paste_t127 · tur 1 · 547sn · uzakta 132 MB
+[05:47:59] dataset/copy_paste_t127 · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[05:47:59] KADEME: dataset/copy_paste_smoke
+==============================================================
+[05:49:44] dataset/copy_paste_smoke · tur 1 · 103sn · uzakta 1 MB
+[05:49:44] dataset/copy_paste_smoke · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[05:49:44] KADEME: dataset/gercek_kompozit
+==============================================================
+[05:50:51] dataset/gercek_kompozit · tur 1 · 65sn · uzakta 9 MB
+[05:50:51] dataset/gercek_kompozit · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[05:51:47] KADEME: rescuenet-roads
+==============================================================
+[06:11:54] rescuenet-roads · tur 1 · 1202sn · uzakta 26 MB
+[06:32:05] rescuenet-roads · tur 2 · 1201sn · uzakta 311 MB
+[06:52:52] rescuenet-roads · tur 3 · 1235sn · uzakta 338 MB
+
+[07:09:33] === YENIDEN BASLATILDI · YENI KADEME: O:/navitas-local-train (venv haric, 9.850 dosya / 2,08 GiB) — HIC YEDEKLENMEMISTI ===
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[07:09:33] KADEME: dji   (kaynak: O:/navitas/dji)
+==============================================================
+[07:09:41] dji · tur 1 · 2sn · uzakta 15664 MB
+[07:09:41] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[07:09:41] KADEME: navitas-local-train   (kaynak: O:/navitas-local-train)
+==============================================================
+
+[07:16:48] === YENIDEN BASLATILDI · uzak ad CAKISMASI duzeltildi: O:/navitas-local-train -> uzak 'egitim_calisma_alani' ===
+rclone: C:\Users\yunus\AppData\Local/Microsoft/WinGet/Packages/Rclone.Rclone_Microsoft.Winget.Source_8wekyb3d8bbwe/rclone-v1.75.0-windows-amd64/rclone.exe
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[07:16:48] KADEME: dji   (kaynak: O:/navitas/dji)
+==============================================================
+[07:16:52] dji · tur 1 · 2sn · uzakta 15664 MB
+[07:16:52] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[07:16:52] KADEME: egitim_calisma_alani   (kaynak: O:/navitas-local-train)
+==============================================================
+[07:56:58] O:/navitas-local-train · tur 1 · 2402sn · uzakta 937 MB
+
+[11:03:13] === OTURUM YENIDEN BASLADI · yedek kaldigi yerden ===
+rclone: /c/Users/yunus/AppData/Local/Microsoft/WinGet/Links/rclone
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[11:03:14] KADEME: dji   (kaynak: O:/navitas/dji)
+==============================================================
+[11:03:29] dji · tur 1 · 12sn · uzakta 15664 MB
+[11:03:29] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[11:03:29] KADEME: egitim_calisma_alani   (kaynak: O:/navitas-local-train)
+==============================================================
+[11:44:58] O:/navitas-local-train · tur 1 · uzak bayt OLCULEMEDI -> tekrar
+[13:46:00] O:/navitas-local-train · tur 2 · uzak bayt OLCULEMEDI -> tekrar
+[14:26:58] O:/navitas-local-train · tur 3 · 2431sn · uzakta 1798 MB
+[15:07:48] O:/navitas-local-train · tur 4 · 2402sn · uzakta 2025 MB
+[15:16:49] O:/navitas-local-train · tur 5 · 492sn · uzakta 2126 MB
+[15:16:49] O:/navitas-local-train · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[15:16:49] KADEME: models   (kaynak: O:/navitas/models)
+==============================================================
+[15:19:08] models · tur 1 · uzak bayt OLCULEMEDI -> tekrar
+[15:19:33] models · tur 2 · 6sn · uzakta 1149 MB
+[15:19:33] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[15:19:33] KADEME: results   (kaynak: O:/navitas/results)
+==============================================================
+[15:19:59] results · tur 1 · 21sn · uzakta 3573 MB
+[15:19:59] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[15:19:59] KADEME: data   (kaynak: O:/navitas/data)
+==============================================================
+[15:20:06] data · tur 1 · 3sn · uzakta 1175 MB
+[15:20:07] data · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[15:20:07] KADEME: codes   (kaynak: O:/navitas/codes)
+==============================================================
+[15:40:37] codes · tur 1 · 1219sn · uzakta 23474 MB
+[16:10:47] codes · tur 2 · uzak bayt OLCULEMEDI -> tekrar
+[16:19:01] codes · tur 3 · uzak bayt OLCULEMEDI -> tekrar
+[16:19:40] codes · tur 4 · uzak bayt OLCULEMEDI -> tekrar
+[16:30:42] codes · tur 5 · uzak bayt OLCULEMEDI -> tekrar
+[16:37:34] codes · tur 6 · uzak bayt OLCULEMEDI -> tekrar
+[16:39:14] codes · tur 7 · uzak bayt OLCULEMEDI -> tekrar
+[16:39:47] codes · tur 8 · uzak bayt OLCULEMEDI -> tekrar
+[16:40:14] codes · tur 9 · uzak bayt OLCULEMEDI -> tekrar
+[16:40:30] codes · tur 10 · uzak bayt OLCULEMEDI -> tekrar
+[16:40:45] codes · tur 11 · uzak bayt OLCULEMEDI -> tekrar
+[16:41:12] codes · tur 12 · uzak bayt OLCULEMEDI -> tekrar
+[16:50:50] codes · tur 13 · uzak bayt OLCULEMEDI -> tekrar
+[16:55:23] codes · tur 14 · uzak bayt OLCULEMEDI -> tekrar
+[16:56:24] codes · tur 15 · uzak bayt OLCULEMEDI -> tekrar
+[16:56:50] codes · tur 16 · uzak bayt OLCULEMEDI -> tekrar
+[17:01:12] codes · tur 17 · uzak bayt OLCULEMEDI -> tekrar
+[17:01:39] codes · tur 18 · uzak bayt OLCULEMEDI -> tekrar
+[17:02:31] codes · tur 19 · uzak bayt OLCULEMEDI -> tekrar
+[17:02:57] codes · tur 20 · uzak bayt OLCULEMEDI -> tekrar
+[17:03:22] codes · tur 21 · uzak bayt OLCULEMEDI -> tekrar
+[17:03:48] codes · tur 22 · uzak bayt OLCULEMEDI -> tekrar
+[17:04:13] codes · tur 23 · uzak bayt OLCULEMEDI -> tekrar
+[17:04:38] codes · tur 24 · uzak bayt OLCULEMEDI -> tekrar
+[17:05:08] codes · tur 25 · uzak bayt OLCULEMEDI -> tekrar
+[17:05:33] codes · tur 26 · uzak bayt OLCULEMEDI -> tekrar
+[17:05:59] codes · tur 27 · uzak bayt OLCULEMEDI -> tekrar
+[17:06:24] codes · tur 28 · uzak bayt OLCULEMEDI -> tekrar
+[17:06:49] codes · tur 29 · uzak bayt OLCULEMEDI -> tekrar
+[17:07:15] codes · tur 30 · uzak bayt OLCULEMEDI -> tekrar
+[17:07:40] codes · tur 31 · uzak bayt OLCULEMEDI -> tekrar
+[17:08:06] codes · tur 32 · uzak bayt OLCULEMEDI -> tekrar
+[17:08:31] codes · tur 33 · uzak bayt OLCULEMEDI -> tekrar
+[17:08:56] codes · tur 34 · uzak bayt OLCULEMEDI -> tekrar
+[17:09:22] codes · tur 35 · uzak bayt OLCULEMEDI -> tekrar
+[17:09:47] codes · tur 36 · uzak bayt OLCULEMEDI -> tekrar
+[17:10:12] codes · tur 37 · uzak bayt OLCULEMEDI -> tekrar
+[17:10:38] codes · tur 38 · uzak bayt OLCULEMEDI -> tekrar
+[17:11:03] codes · tur 39 · uzak bayt OLCULEMEDI -> tekrar
+[17:11:29] codes · tur 40 · uzak bayt OLCULEMEDI -> tekrar
+
+==============================================================
+[17:11:44] KADEME: jetson_paket   (kaynak: O:/navitas/jetson_paket)
+==============================================================
+[17:11:54] jetson_paket · tur 1 · uzak bayt OLCULEMEDI -> tekrar
+[17:12:31] jetson_paket · tur 2 · uzak bayt OLCULEMEDI -> tekrar
+[17:12:57] jetson_paket · tur 3 · uzak bayt OLCULEMEDI -> tekrar
+[17:13:22] jetson_paket · tur 4 · uzak bayt OLCULEMEDI -> tekrar
+[17:13:48] jetson_paket · tur 5 · uzak bayt OLCULEMEDI -> tekrar
+[17:14:13] jetson_paket · tur 6 · uzak bayt OLCULEMEDI -> tekrar
+[17:14:38] jetson_paket · tur 7 · uzak bayt OLCULEMEDI -> tekrar
+[17:15:04] jetson_paket · tur 8 · uzak bayt OLCULEMEDI -> tekrar
+[17:15:29] jetson_paket · tur 9 · uzak bayt OLCULEMEDI -> tekrar
+[17:15:55] jetson_paket · tur 10 · uzak bayt OLCULEMEDI -> tekrar
+[17:16:20] jetson_paket · tur 11 · uzak bayt OLCULEMEDI -> tekrar
+[17:16:45] jetson_paket · tur 12 · uzak bayt OLCULEMEDI -> tekrar
+[17:17:11] jetson_paket · tur 13 · uzak bayt OLCULEMEDI -> tekrar
+[17:17:36] jetson_paket · tur 14 · uzak bayt OLCULEMEDI -> tekrar
+[17:18:01] jetson_paket · tur 15 · uzak bayt OLCULEMEDI -> tekrar
+[17:18:27] jetson_paket · tur 16 · uzak bayt OLCULEMEDI -> tekrar
+[17:18:52] jetson_paket · tur 17 · uzak bayt OLCULEMEDI -> tekrar
+[17:19:17] jetson_paket · tur 18 · uzak bayt OLCULEMEDI -> tekrar
+[17:19:43] jetson_paket · tur 19 · uzak bayt OLCULEMEDI -> tekrar
+[17:20:08] jetson_paket · tur 20 · uzak bayt OLCULEMEDI -> tekrar
+[17:20:34] jetson_paket · tur 21 · uzak bayt OLCULEMEDI -> tekrar
+[17:20:59] jetson_paket · tur 22 · uzak bayt OLCULEMEDI -> tekrar
+[17:21:24] jetson_paket · tur 23 · uzak bayt OLCULEMEDI -> tekrar
+[17:21:50] jetson_paket · tur 24 · uzak bayt OLCULEMEDI -> tekrar
+[17:22:15] jetson_paket · tur 25 · uzak bayt OLCULEMEDI -> tekrar
+[17:22:41] jetson_paket · tur 26 · uzak bayt OLCULEMEDI -> tekrar
+[17:23:06] jetson_paket · tur 27 · uzak bayt OLCULEMEDI -> tekrar
+[17:23:31] jetson_paket · tur 28 · uzak bayt OLCULEMEDI -> tekrar
+[17:23:57] jetson_paket · tur 29 · uzak bayt OLCULEMEDI -> tekrar
+[17:24:22] jetson_paket · tur 30 · uzak bayt OLCULEMEDI -> tekrar
+[17:24:48] jetson_paket · tur 31 · uzak bayt OLCULEMEDI -> tekrar
+[17:25:13] jetson_paket · tur 32 · uzak bayt OLCULEMEDI -> tekrar
+[17:25:38] jetson_paket · tur 33 · uzak bayt OLCULEMEDI -> tekrar
+[17:26:04] jetson_paket · tur 34 · uzak bayt OLCULEMEDI -> tekrar
+[17:26:29] jetson_paket · tur 35 · uzak bayt OLCULEMEDI -> tekrar
+[17:26:54] jetson_paket · tur 36 · uzak bayt OLCULEMEDI -> tekrar
+[17:27:20] jetson_paket · tur 37 · uzak bayt OLCULEMEDI -> tekrar
+[17:27:45] jetson_paket · tur 38 · uzak bayt OLCULEMEDI -> tekrar
+[17:28:11] jetson_paket · tur 39 · uzak bayt OLCULEMEDI -> tekrar
+[17:28:36] jetson_paket · tur 40 · uzak bayt OLCULEMEDI -> tekrar
+
+==============================================================
+[17:28:51] KADEME: test_images   (kaynak: O:/navitas/test_images)
+==============================================================
+[17:29:01] test_images · tur 1 · uzak bayt OLCULEMEDI -> tekrar
+[17:29:27] test_images · tur 2 · uzak bayt OLCULEMEDI -> tekrar
+[17:29:52] test_images · tur 3 · uzak bayt OLCULEMEDI -> tekrar
+[17:30:18] test_images · tur 4 · uzak bayt OLCULEMEDI -> tekrar
+[17:30:43] test_images · tur 5 · uzak bayt OLCULEMEDI -> tekrar
+[17:31:08] test_images · tur 6 · uzak bayt OLCULEMEDI -> tekrar
+[17:31:34] test_images · tur 7 · uzak bayt OLCULEMEDI -> tekrar
+[17:31:59] test_images · tur 8 · uzak bayt OLCULEMEDI -> tekrar
+[17:32:25] test_images · tur 9 · uzak bayt OLCULEMEDI -> tekrar
+[17:32:50] test_images · tur 10 · uzak bayt OLCULEMEDI -> tekrar
+[17:33:15] test_images · tur 11 · uzak bayt OLCULEMEDI -> tekrar
+[17:33:41] test_images · tur 12 · uzak bayt OLCULEMEDI -> tekrar
+[17:34:06] test_images · tur 13 · uzak bayt OLCULEMEDI -> tekrar
+[17:34:31] test_images · tur 14 · uzak bayt OLCULEMEDI -> tekrar
+[17:34:57] test_images · tur 15 · uzak bayt OLCULEMEDI -> tekrar
+[17:35:22] test_images · tur 16 · uzak bayt OLCULEMEDI -> tekrar
+[17:35:47] test_images · tur 17 · uzak bayt OLCULEMEDI -> tekrar
+[17:36:13] test_images · tur 18 · uzak bayt OLCULEMEDI -> tekrar
+[17:36:38] test_images · tur 19 · uzak bayt OLCULEMEDI -> tekrar
+[17:37:04] test_images · tur 20 · uzak bayt OLCULEMEDI -> tekrar
+[17:37:29] test_images · tur 21 · uzak bayt OLCULEMEDI -> tekrar
+[17:37:54] test_images · tur 22 · uzak bayt OLCULEMEDI -> tekrar
+[17:38:20] test_images · tur 23 · uzak bayt OLCULEMEDI -> tekrar
+[17:38:45] test_images · tur 24 · uzak bayt OLCULEMEDI -> tekrar
+[17:39:10] test_images · tur 25 · uzak bayt OLCULEMEDI -> tekrar
+[17:39:36] test_images · tur 26 · uzak bayt OLCULEMEDI -> tekrar
+[17:40:01] test_images · tur 27 · uzak bayt OLCULEMEDI -> tekrar
+[17:40:27] test_images · tur 28 · uzak bayt OLCULEMEDI -> tekrar
+[17:40:52] test_images · tur 29 · uzak bayt OLCULEMEDI -> tekrar
+[17:41:17] test_images · tur 30 · uzak bayt OLCULEMEDI -> tekrar
+[17:41:43] test_images · tur 31 · uzak bayt OLCULEMEDI -> tekrar
+[17:42:08] test_images · tur 32 · uzak bayt OLCULEMEDI -> tekrar
+[17:42:33] test_images · tur 33 · uzak bayt OLCULEMEDI -> tekrar
+[17:42:59] test_images · tur 34 · uzak bayt OLCULEMEDI -> tekrar
+[17:43:24] test_images · tur 35 · uzak bayt OLCULEMEDI -> tekrar
+[17:43:50] test_images · tur 36 · uzak bayt OLCULEMEDI -> tekrar
+[17:44:15] test_images · tur 37 · uzak bayt OLCULEMEDI -> tekrar
+[17:44:41] test_images · tur 38 · uzak bayt OLCULEMEDI -> tekrar
+[17:45:06] test_images · tur 39 · uzak bayt OLCULEMEDI -> tekrar
+[17:45:31] test_images · tur 40 · uzak bayt OLCULEMEDI -> tekrar
+
+==============================================================
+[17:45:46] KADEME: rapor   (kaynak: O:/navitas/rapor)
+==============================================================
+[17:45:57] rapor · tur 1 · uzak bayt OLCULEMEDI -> tekrar
+[17:46:22] rapor · tur 2 · uzak bayt OLCULEMEDI -> tekrar
+[17:46:48] rapor · tur 3 · uzak bayt OLCULEMEDI -> tekrar
+[17:47:13] rapor · tur 4 · uzak bayt OLCULEMEDI -> tekrar
+[17:47:38] rapor · tur 5 · uzak bayt OLCULEMEDI -> tekrar
+[17:48:04] rapor · tur 6 · uzak bayt OLCULEMEDI -> tekrar
+[17:48:29] rapor · tur 7 · uzak bayt OLCULEMEDI -> tekrar
+[17:48:54] rapor · tur 8 · uzak bayt OLCULEMEDI -> tekrar
+[17:49:20] rapor · tur 9 · uzak bayt OLCULEMEDI -> tekrar
+[17:53:02] rapor · tur 10 · uzak bayt OLCULEMEDI -> tekrar
+[17:53:28] rapor · tur 11 · uzak bayt OLCULEMEDI -> tekrar
+[17:53:53] rapor · tur 12 · uzak bayt OLCULEMEDI -> tekrar
+[17:54:19] rapor · tur 13 · uzak bayt OLCULEMEDI -> tekrar
+[17:54:44] rapor · tur 14 · uzak bayt OLCULEMEDI -> tekrar
+[17:55:09] rapor · tur 15 · uzak bayt OLCULEMEDI -> tekrar
+[17:55:59] rapor · tur 16 · uzak bayt OLCULEMEDI -> tekrar
+[17:56:24] rapor · tur 17 · uzak bayt OLCULEMEDI -> tekrar
+[17:56:50] rapor · tur 18 · uzak bayt OLCULEMEDI -> tekrar
+[19:58:08] rapor · tur 19 · uzak bayt OLCULEMEDI -> tekrar
+[20:05:57] rapor · tur 20 · 86sn · uzakta 107 MB
+[20:05:57] rapor · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:05:57] KADEME: navitas-local-train   (kaynak: O:/navitas/navitas-local-train)
+==============================================================
+[20:06:41] navitas-local-train · tur 1 · 3sn · uzakta 1563 MB
+[20:06:41] navitas-local-train · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:06:41] KADEME: dataset/copy_paste_gercek   (kaynak: O:/navitas/dataset/copy_paste_gercek)
+==============================================================
+[20:06:50] dataset/copy_paste_gercek · tur 1 · 5sn · uzakta 888 MB
+[20:06:50] dataset/copy_paste_gercek · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:06:50] KADEME: dataset/copy_paste_t121   (kaynak: O:/navitas/dataset/copy_paste_t121)
+==============================================================
+[20:06:56] dataset/copy_paste_t121 · tur 1 · 3sn · uzakta 132 MB
+[20:06:56] dataset/copy_paste_t121 · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:06:57] KADEME: dataset/copy_paste_t122a   (kaynak: O:/navitas/dataset/copy_paste_t122a)
+==============================================================
+[20:07:05] dataset/copy_paste_t122a · tur 1 · 3sn · uzakta 132 MB
+[20:07:05] dataset/copy_paste_t122a · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:07:05] KADEME: dataset/copy_paste_t122ac   (kaynak: O:/navitas/dataset/copy_paste_t122ac)
+==============================================================
+[20:07:45] dataset/copy_paste_t122ac · tur 1 · 37sn · uzakta 132 MB
+[20:07:45] dataset/copy_paste_t122ac · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:07:45] KADEME: dataset/copy_paste_t127   (kaynak: O:/navitas/dataset/copy_paste_t127)
+==============================================================
+[20:07:51] dataset/copy_paste_t127 · tur 1 · 3sn · uzakta 132 MB
+[20:07:51] dataset/copy_paste_t127 · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:07:51] KADEME: dataset/copy_paste_smoke   (kaynak: O:/navitas/dataset/copy_paste_smoke)
+==============================================================
+[20:07:56] dataset/copy_paste_smoke · tur 1 · 3sn · uzakta 1 MB
+[20:07:56] dataset/copy_paste_smoke · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:07:56] KADEME: dataset/gercek_kompozit   (kaynak: O:/navitas/dataset/gercek_kompozit)
+==============================================================
+[20:08:02] dataset/gercek_kompozit · tur 1 · 3sn · uzakta 9 MB
+[20:08:02] dataset/gercek_kompozit · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[20:08:57] KADEME: rescuenet-roads   (kaynak: O:/navitas/rescuenet-roads)
+==============================================================
+[20:24:54] rescuenet-roads · tur 1 · 942sn · uzakta 3854 MB
+[20:24:54] rescuenet-roads · sure sinirina TAKILMADI -> kademe tamam
+
+[20:24:54] git bundle uretiliyor...
+
+==============================================================
+[20:26:05] TUM KADEMELER BITTI
+Dogrulama: bash O:/navitas/scripts/yedek_kademe_dogrula.sh
+==============================================================
+
+[23:37:53] === YENIDEN BASLATILDI · codes: epochN.pt HARIC (23,51 GB ara kontrol noktasi atlandi, 4,36 GB kaydediliyor) ===
+rclone: /c/Users/yunus/AppData/Local/Microsoft/WinGet/Links/rclone
+gunluk: C:\Users\yunus\AppData\Local\Temp/navitas_rclone_gunluk.txt
+
+==============================================================
+[23:37:53] KADEME: dji   (kaynak: O:/navitas/dji)
+==============================================================
+[23:37:58] dji · tur 1 · 2sn · uzakta 15664 MB
+[23:37:58] dji · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[23:37:58] KADEME: egitim_calisma_alani   (kaynak: O:/navitas-local-train)
+==============================================================
+[23:55:57] O:/navitas-local-train · tur 1 · 985sn · uzakta 2126 MB
+[23:55:57] O:/navitas-local-train · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[23:55:57] KADEME: models   (kaynak: O:/navitas/models)
+==============================================================
+[23:56:03] models · tur 1 · 3sn · uzakta 1149 MB
+[23:56:03] models · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[23:56:03] KADEME: results   (kaynak: O:/navitas/results)
+==============================================================
+[23:58:59] results · tur 1 · 172sn · uzakta 3574 MB
+[23:58:59] results · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[23:58:59] KADEME: data   (kaynak: O:/navitas/data)
+==============================================================
+[23:59:05] data · tur 1 · 3sn · uzakta 1175 MB
+[23:59:05] data · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[23:59:05] KADEME: codes   (kaynak: O:/navitas/codes)
+==============================================================
+[00:39:55] codes · tur 1 · 2410sn · uzakta 25278 MB
+[01:20:00] codes · tur 2 · 2401sn · uzakta 26602 MB
+[01:42:42] codes · tur 3 · 1358sn · uzakta 27944 MB
+[01:42:42] codes · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:42:42] KADEME: jetson_paket   (kaynak: O:/navitas/jetson_paket)
+==============================================================
+[01:42:48] jetson_paket · tur 1 · 3sn · uzakta 842 MB
+[01:42:48] jetson_paket · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:42:48] KADEME: test_images   (kaynak: O:/navitas/test_images)
+==============================================================
+[01:43:04] test_images · tur 1 · 7sn · uzakta 339 MB
+[01:43:04] test_images · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:43:04] KADEME: rapor   (kaynak: O:/navitas/rapor)
+==============================================================
+[01:43:41] rapor · tur 1 · 36sn · uzakta 107 MB
+[01:43:41] rapor · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:43:41] KADEME: navitas-local-train   (kaynak: O:/navitas/navitas-local-train)
+==============================================================
+[01:43:56] navitas-local-train · tur 1 · 2sn · uzakta 1563 MB
+[01:43:56] navitas-local-train · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:43:56] KADEME: dataset/copy_paste_gercek   (kaynak: O:/navitas/dataset/copy_paste_gercek)
+==============================================================
+[01:44:04] dataset/copy_paste_gercek · tur 1 · 5sn · uzakta 888 MB
+[01:44:04] dataset/copy_paste_gercek · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:44:04] KADEME: dataset/copy_paste_t121   (kaynak: O:/navitas/dataset/copy_paste_t121)
+==============================================================
+[01:44:28] dataset/copy_paste_t121 · tur 1 · 4sn · uzakta 132 MB
+[01:44:28] dataset/copy_paste_t121 · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:44:28] KADEME: dataset/copy_paste_t122a   (kaynak: O:/navitas/dataset/copy_paste_t122a)
+==============================================================
+[01:44:36] dataset/copy_paste_t122a · tur 1 · 4sn · uzakta 132 MB
+[01:44:36] dataset/copy_paste_t122a · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:44:36] KADEME: dataset/copy_paste_t122ac   (kaynak: O:/navitas/dataset/copy_paste_t122ac)
+==============================================================
+[01:44:44] dataset/copy_paste_t122ac · tur 1 · 4sn · uzakta 132 MB
+[01:44:44] dataset/copy_paste_t122ac · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:44:44] KADEME: dataset/copy_paste_t127   (kaynak: O:/navitas/dataset/copy_paste_t127)
+==============================================================
+[01:44:51] dataset/copy_paste_t127 · tur 1 · 3sn · uzakta 132 MB
+[01:44:51] dataset/copy_paste_t127 · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:44:51] KADEME: dataset/copy_paste_smoke   (kaynak: O:/navitas/dataset/copy_paste_smoke)
+==============================================================
+[01:44:57] dataset/copy_paste_smoke · tur 1 · 3sn · uzakta 1 MB
+[01:44:57] dataset/copy_paste_smoke · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:44:57] KADEME: dataset/gercek_kompozit   (kaynak: O:/navitas/dataset/gercek_kompozit)
+==============================================================
+[01:45:03] dataset/gercek_kompozit · tur 1 · 3sn · uzakta 9 MB
+[01:45:03] dataset/gercek_kompozit · sure sinirina TAKILMADI -> kademe tamam
+
+==============================================================
+[01:46:01] KADEME: rescuenet-roads   (kaynak: O:/navitas/rescuenet-roads)
+==============================================================
+[01:48:05] rescuenet-roads · tur 1 · 110sn · uzakta 3854 MB
+[01:48:05] rescuenet-roads · sure sinirina TAKILMADI -> kademe tamam
+
+[01:48:05] git bundle uretiliyor...
+
+==============================================================
+[01:51:47] TUM KADEMELER BITTI
+Dogrulama: bash O:/navitas/scripts/yedek_kademe_dogrula.sh
+==============================================================

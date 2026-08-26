@@ -1,0 +1,586 @@
+{
+  "parametreler": {
+    "aralik_sn": 1.0,
+    "en_fazla_kaynak": 400,
+    "hash_esik": 0.12,
+    "jpeg_kalite": 95,
+    "tam_kare": true,
+    "merkez_crop": false
+  },
+  "kaynaklar": [
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "fps": 23.976,
+      "taranan_kare": 1644,
+      "aday_kare": 69,
+      "yakin_kopya": 54,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 15
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "fps": 23.976,
+      "taranan_kare": 2617,
+      "aday_kare": 110,
+      "yakin_kopya": 91,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 19
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "fps": 23.976,
+      "taranan_kare": 1523,
+      "aday_kare": 64,
+      "yakin_kopya": 33,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 31
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "fps": 23.975,
+      "taranan_kare": 742,
+      "aday_kare": 31,
+      "yakin_kopya": 29,
+      "gecersiz_kare": 0,
+      "yazilan_kare": 2
+    }
+  ],
+  "kareler": [
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 600,
+      "zaman_sn": 25.025,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000001_000000600.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 672,
+      "zaman_sn": 28.028,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000002_000000672.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 720,
+      "zaman_sn": 30.03,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000003_000000720.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 768,
+      "zaman_sn": 32.032,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 816,
+      "zaman_sn": 34.034,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 864,
+      "zaman_sn": 36.036,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000006_000000864.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 936,
+      "zaman_sn": 39.039,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000007_000000936.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1008,
+      "zaman_sn": 42.042,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000008_000001008.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1152,
+      "zaman_sn": 48.048,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000009_000001152.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1200,
+      "zaman_sn": 50.05,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000010_000001200.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1224,
+      "zaman_sn": 51.051,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000011_000001224.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1248,
+      "zaman_sn": 52.052,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000012_000001248.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1272,
+      "zaman_sn": 53.053,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000013_000001272.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare_no": 1320,
+      "zaman_sn": 55.055,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_03/frame_000014_000001320.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000000_000000000.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 336,
+      "zaman_sn": 14.014,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000001_000000336.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 648,
+      "zaman_sn": 27.027,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000002_000000648.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 912,
+      "zaman_sn": 38.038,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000003_000000912.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 960,
+      "zaman_sn": 40.04,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000004_000000960.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1008,
+      "zaman_sn": 42.042,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000005_000001008.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1416,
+      "zaman_sn": 59.059,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000006_000001416.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1440,
+      "zaman_sn": 60.06,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000007_000001440.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1488,
+      "zaman_sn": 62.062,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000008_000001488.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1776,
+      "zaman_sn": 74.074,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000009_000001776.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1824,
+      "zaman_sn": 76.076,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000010_000001824.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1848,
+      "zaman_sn": 77.076,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000011_000001848.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1872,
+      "zaman_sn": 78.077,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000012_000001872.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1944,
+      "zaman_sn": 81.08,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000013_000001944.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 1992,
+      "zaman_sn": 83.082,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000014_000001992.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 2040,
+      "zaman_sn": 85.084,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000015_000002040.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 2088,
+      "zaman_sn": 87.086,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000016_000002088.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 2112,
+      "zaman_sn": 88.087,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000017_000002112.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare_no": 2160,
+      "zaman_sn": 90.089,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_23/frame_000018_000002160.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000000_000000000.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 168,
+      "zaman_sn": 7.007,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000001_000000168.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 192,
+      "zaman_sn": 8.008,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000002_000000192.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 240,
+      "zaman_sn": 10.01,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000003_000000240.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 264,
+      "zaman_sn": 11.011,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000004_000000264.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 288,
+      "zaman_sn": 12.012,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000005_000000288.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 336,
+      "zaman_sn": 14.014,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 384,
+      "zaman_sn": 16.016,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000007_000000384.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 432,
+      "zaman_sn": 18.018,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000008_000000432.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 480,
+      "zaman_sn": 20.02,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000009_000000480.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 504,
+      "zaman_sn": 21.021,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 600,
+      "zaman_sn": 25.025,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000011_000000600.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 624,
+      "zaman_sn": 26.026,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000012_000000624.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 648,
+      "zaman_sn": 27.027,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000013_000000648.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 672,
+      "zaman_sn": 28.028,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000014_000000672.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 696,
+      "zaman_sn": 29.029,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 720,
+      "zaman_sn": 30.03,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000016_000000720.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 792,
+      "zaman_sn": 33.033,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000017_000000792.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 840,
+      "zaman_sn": 35.035,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000018_000000840.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 888,
+      "zaman_sn": 37.037,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000019_000000888.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 936,
+      "zaman_sn": 39.039,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000020_000000936.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 984,
+      "zaman_sn": 41.041,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000021_000000984.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1032,
+      "zaman_sn": 43.043,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000022_000001032.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1080,
+      "zaman_sn": 45.045,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000023_000001080.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1104,
+      "zaman_sn": 46.046,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000024_000001104.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1152,
+      "zaman_sn": 48.048,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000025_000001152.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1200,
+      "zaman_sn": 50.05,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000026_000001200.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1248,
+      "zaman_sn": 52.052,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000027_000001248.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1296,
+      "zaman_sn": 54.054,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000028_000001296.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1320,
+      "zaman_sn": 55.055,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000029_000001320.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare_no": 1344,
+      "zaman_sn": 56.056,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_39/frame_000030_000001344.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare_no": 0,
+      "zaman_sn": 0.0,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_46/frame_000000_000000000.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    },
+    {
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare_no": 456,
+      "zaman_sn": 19.019,
+      "dosya": "whatsapp_video_2026_07_30_at_11_44_46/frame_000001_000000456.jpg",
+      "genislik": 1024,
+      "yukseklik": 576
+    }
+  ]
+}

@@ -1,0 +1,538 @@
+[
+ {
+  "kare": "frame_000000_000000000.jpg",
+  "arac": 69,
+  "kisa_kenar_px": 27.774486541748047,
+  "mpp": 0.06480767870521768,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000001_000000600.jpg",
+  "arac": 72,
+  "kisa_kenar_px": 26.95684242248535,
+  "mpp": 0.06677339919079606,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000002_000000672.jpg",
+  "arac": 76,
+  "kisa_kenar_px": 27.37189483642578,
+  "mpp": 0.06576088395621806,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000003_000000720.jpg",
+  "arac": 70,
+  "kisa_kenar_px": 27.41756248474121,
+  "mpp": 0.06565135033436179,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000004_000000768.jpg",
+  "arac": 72,
+  "kisa_kenar_px": 27.524555206298828,
+  "mpp": 0.06539615214519728,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000005_000000816.jpg",
+  "arac": 73,
+  "kisa_kenar_px": 27.445308685302734,
+  "mpp": 0.06558497922684761,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000006_000000864.jpg",
+  "arac": 72,
+  "kisa_kenar_px": 27.416841506958008,
+  "mpp": 0.06565307676098231,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000007_000000936.jpg",
+  "arac": 69,
+  "kisa_kenar_px": 27.643943786621094,
+  "mpp": 0.06511371944227258,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000008_000001008.jpg",
+  "arac": 67,
+  "kisa_kenar_px": 27.963573455810547,
+  "mpp": 0.06436945560067461,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000009_000001152.jpg",
+  "arac": 67,
+  "kisa_kenar_px": 26.68828773498535,
+  "mpp": 0.06744531600805555,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000010_000001200.jpg",
+  "arac": 66,
+  "kisa_kenar_px": 27.160097122192383,
+  "mpp": 0.06627369526338066,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000011_000001224.jpg",
+  "arac": 68,
+  "kisa_kenar_px": 27.728267669677734,
+  "mpp": 0.06491570340574833,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000012_000001248.jpg",
+  "arac": 67,
+  "kisa_kenar_px": 27.029436111450195,
+  "mpp": 0.06659406406327083,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000013_000001272.jpg",
+  "arac": 64,
+  "kisa_kenar_px": 27.252384185791016,
+  "mpp": 0.06604926701930516,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000014_000001320.jpg",
+  "arac": 62,
+  "kisa_kenar_px": 27.28375244140625,
+  "mpp": 0.06597332987336052,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000000_000000000.jpg",
+  "arac": 94,
+  "kisa_kenar_px": 20.419557571411133,
+  "mpp": 0.08815078356644372,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000001_000000336.jpg",
+  "arac": 89,
+  "kisa_kenar_px": 22.162612915039062,
+  "mpp": 0.08121786031729858,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000002_000000648.jpg",
+  "arac": 85,
+  "kisa_kenar_px": 22.96700668334961,
+  "mpp": 0.07837329543274553,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000003_000000912.jpg",
+  "arac": 85,
+  "kisa_kenar_px": 23.187698364257812,
+  "mpp": 0.07762736825896321,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000004_000000960.jpg",
+  "arac": 85,
+  "kisa_kenar_px": 23.423095703125,
+  "mpp": 0.07684722902617233,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000005_000001008.jpg",
+  "arac": 93,
+  "kisa_kenar_px": 23.237451553344727,
+  "mpp": 0.07746116203267193,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000006_000001416.jpg",
+  "arac": 93,
+  "kisa_kenar_px": 23.55716323852539,
+  "mpp": 0.0764098793124751,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000007_000001440.jpg",
+  "arac": 93,
+  "kisa_kenar_px": 23.49939727783203,
+  "mpp": 0.07659770923988828,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000008_000001488.jpg",
+  "arac": 95,
+  "kisa_kenar_px": 23.33306884765625,
+  "mpp": 0.07714373157480335,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000009_000001776.jpg",
+  "arac": 98,
+  "kisa_kenar_px": 23.154144287109375,
+  "mpp": 0.07773986279432989,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000010_000001824.jpg",
+  "arac": 94,
+  "kisa_kenar_px": 23.087989807128906,
+  "mpp": 0.07796261238144743,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000011_000001848.jpg",
+  "arac": 92,
+  "kisa_kenar_px": 23.876453399658203,
+  "mpp": 0.07538808087912116,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000012_000001872.jpg",
+  "arac": 87,
+  "kisa_kenar_px": 23.677644729614258,
+  "mpp": 0.07602107475447895,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000013_000001944.jpg",
+  "arac": 87,
+  "kisa_kenar_px": 23.539936065673828,
+  "mpp": 0.07646579816437048,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000014_000001992.jpg",
+  "arac": 87,
+  "kisa_kenar_px": 23.86587905883789,
+  "mpp": 0.07542148334709814,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000015_000002040.jpg",
+  "arac": 86,
+  "kisa_kenar_px": 24.152990341186523,
+  "mpp": 0.07452493354127572,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000016_000002088.jpg",
+  "arac": 75,
+  "kisa_kenar_px": 24.16265869140625,
+  "mpp": 0.0744951134305511,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000017_000002112.jpg",
+  "arac": 74,
+  "kisa_kenar_px": 24.36158561706543,
+  "mpp": 0.07388681624808074,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000018_000002160.jpg",
+  "arac": 72,
+  "kisa_kenar_px": 24.55089569091797,
+  "mpp": 0.07331708067440766,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000000_000000000.jpg",
+  "arac": 93,
+  "kisa_kenar_px": 22.750545501708984,
+  "mpp": 0.07911898199824646,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000001_000000168.jpg",
+  "arac": 87,
+  "kisa_kenar_px": 23.984477996826172,
+  "mpp": 0.07504853765165084,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000002_000000192.jpg",
+  "arac": 85,
+  "kisa_kenar_px": 24.132614135742188,
+  "mpp": 0.07458785815226154,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000003_000000240.jpg",
+  "arac": 81,
+  "kisa_kenar_px": 24.205047607421875,
+  "mpp": 0.07436465439746026,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000004_000000264.jpg",
+  "arac": 82,
+  "kisa_kenar_px": 24.335601806640625,
+  "mpp": 0.07396570729180905,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000005_000000288.jpg",
+  "arac": 78,
+  "kisa_kenar_px": 24.78580093383789,
+  "mpp": 0.07262222450687955,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000006_000000336.jpg",
+  "arac": 77,
+  "kisa_kenar_px": 24.814010620117188,
+  "mpp": 0.07253966428710666,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000007_000000384.jpg",
+  "arac": 74,
+  "kisa_kenar_px": 24.74178695678711,
+  "mpp": 0.0727514145661265,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000008_000000432.jpg",
+  "arac": 70,
+  "kisa_kenar_px": 24.929065704345703,
+  "mpp": 0.07220487206972298,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000009_000000480.jpg",
+  "arac": 67,
+  "kisa_kenar_px": 24.824745178222656,
+  "mpp": 0.07250829714776037,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000010_000000504.jpg",
+  "arac": 63,
+  "kisa_kenar_px": 25.052631378173828,
+  "mpp": 0.07184874007159915,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000011_000000600.jpg",
+  "arac": 61,
+  "kisa_kenar_px": 24.788185119628906,
+  "mpp": 0.07261523953097487,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000012_000000624.jpg",
+  "arac": 62,
+  "kisa_kenar_px": 24.935070037841797,
+  "mpp": 0.07218748522736435,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000013_000000648.jpg",
+  "arac": 57,
+  "kisa_kenar_px": 24.675012588500977,
+  "mpp": 0.07294829105128134,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000014_000000672.jpg",
+  "arac": 57,
+  "kisa_kenar_px": 24.963207244873047,
+  "mpp": 0.07210611931163952,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000015_000000696.jpg",
+  "arac": 60,
+  "kisa_kenar_px": 24.835590362548828,
+  "mpp": 0.0724766342866701,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000016_000000720.jpg",
+  "arac": 61,
+  "kisa_kenar_px": 24.39674949645996,
+  "mpp": 0.07378032062267907,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000017_000000792.jpg",
+  "arac": 66,
+  "kisa_kenar_px": 22.795080184936523,
+  "mpp": 0.07896440746847991,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000018_000000840.jpg",
+  "arac": 80,
+  "kisa_kenar_px": 20.96884536743164,
+  "mpp": 0.08584163641149843,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000019_000000888.jpg",
+  "arac": 84,
+  "kisa_kenar_px": 20.097980499267578,
+  "mpp": 0.08956123726289797,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000020_000000936.jpg",
+  "arac": 91,
+  "kisa_kenar_px": 18.782459259033203,
+  "mpp": 0.09583409580054386,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000021_000000984.jpg",
+  "arac": 101,
+  "kisa_kenar_px": 18.310361862182617,
+  "mpp": 0.09830499329003638,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000022_000001032.jpg",
+  "arac": 105,
+  "kisa_kenar_px": 17.794897079467773,
+  "mpp": 0.10115259402522131,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000023_000001080.jpg",
+  "arac": 110,
+  "kisa_kenar_px": 17.131807327270508,
+  "mpp": 0.10506772377335519,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000024_000001104.jpg",
+  "arac": 113,
+  "kisa_kenar_px": 16.194366455078125,
+  "mpp": 0.11114976340649421,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000025_000001152.jpg",
+  "arac": 114,
+  "kisa_kenar_px": 16.1761417388916,
+  "mpp": 0.1112749893673556,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000026_000001200.jpg",
+  "arac": 116,
+  "kisa_kenar_px": 15.917402267456055,
+  "mpp": 0.11308377898321967,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000027_000001248.jpg",
+  "arac": 121,
+  "kisa_kenar_px": 15.895696640014648,
+  "mpp": 0.11323819526530303,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000028_000001296.jpg",
+  "arac": 126,
+  "kisa_kenar_px": 15.869108200073242,
+  "mpp": 0.11342792407147947,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000029_000001320.jpg",
+  "arac": 127,
+  "kisa_kenar_px": 15.777399063110352,
+  "mpp": 0.11408724548323294,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000030_000001344.jpg",
+  "arac": 128,
+  "kisa_kenar_px": 15.79583740234375,
+  "mpp": 0.11395407246550412,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000000_000000000.jpg",
+  "arac": 124,
+  "kisa_kenar_px": 16.943248748779297,
+  "mpp": 0.10623700487957977,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ },
+ {
+  "kare": "frame_000001_000000456.jpg",
+  "arac": 123,
+  "kisa_kenar_px": 18.879371643066406,
+  "mpp": 0.0953421561919972,
+  "kaynak": "arac_referansi",
+  "guven_carpani": 0.86
+ }
+]

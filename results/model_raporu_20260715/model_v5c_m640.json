@@ -1,0 +1,138 @@
+{
+  "surum": "v5c_m640",
+  "agirlik": {
+    "yol": "models\\aday_v5c_m640.pt",
+    "sha256": "15cecc03f291546443a1d9c1aaa4c5de714f36f060922faa5f163d0caa33a2fd",
+    "boyut_mb": 54.9
+  },
+  "mimari": {},
+  "veri_ve_baslangic": "ovs×4(+3 kopya) @640 · pretrained yolov8m",
+  "egitim": {
+    "run": "v5c_m640",
+    "epoch_kosulan": 169,
+    "sure_sn": 13011.0,
+    "sure_saat": 3.61,
+    "en_iyi_epoch": 83,
+    "en_iyi_epoch_mask_mAP50": 0.6646,
+    "hiperparametreler": {
+      "model": "yolov8m-seg.pt",
+      "imgsz": 640,
+      "epochs": 200,
+      "batch": 12,
+      "optimizer": "AdamW",
+      "lr0": 0.001,
+      "lrf": 0.01,
+      "degrees": 15.0,
+      "copy_paste": 0.3,
+      "mosaic": 1.0,
+      "close_mosaic": 20,
+      "hsv_v": 0.5,
+      "patience": 60,
+      "seed": 0
+    }
+  },
+  "olcumler": {
+    "512": {
+      "box": {
+        "precision": 0.6686,
+        "recall": 0.5779,
+        "mAP50": 0.5666,
+        "mAP50_95": 0.4264
+      },
+      "mask": {
+        "precision": 0.6502,
+        "recall": 0.615,
+        "mAP50": 0.5748,
+        "mAP50_95": 0.36
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8072,
+          "mask_mAP50": 0.821,
+          "mask_mAP50_95": 0.5155
+        },
+        "blocked": {
+          "box_mAP50": 0.326,
+          "mask_mAP50": 0.3286,
+          "mask_mAP50_95": 0.2045
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 0.83,
+        "inference": 4.8,
+        "loss": 0.0,
+        "postprocess": 1.31
+      },
+      "val_goruntu": 294,
+      "tta": false
+    },
+    "640": {
+      "box": {
+        "precision": 0.7203,
+        "recall": 0.6794,
+        "mAP50": 0.6619,
+        "mAP50_95": 0.4829
+      },
+      "mask": {
+        "precision": 0.7304,
+        "recall": 0.6914,
+        "mAP50": 0.6558,
+        "mAP50_95": 0.4283
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8352,
+          "mask_mAP50": 0.8503,
+          "mask_mAP50_95": 0.5667
+        },
+        "blocked": {
+          "box_mAP50": 0.4885,
+          "mask_mAP50": 0.4613,
+          "mask_mAP50_95": 0.2898
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.17,
+        "inference": 7.42,
+        "loss": 0.0,
+        "postprocess": 1.0
+      },
+      "val_goruntu": 294,
+      "tta": false
+    },
+    "640_tta": {
+      "box": {
+        "precision": 0.7203,
+        "recall": 0.6794,
+        "mAP50": 0.6619,
+        "mAP50_95": 0.4829
+      },
+      "mask": {
+        "precision": 0.7304,
+        "recall": 0.6914,
+        "mAP50": 0.6558,
+        "mAP50_95": 0.4283
+      },
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8352,
+          "mask_mAP50": 0.8503,
+          "mask_mAP50_95": 0.5667
+        },
+        "blocked": {
+          "box_mAP50": 0.4885,
+          "mask_mAP50": 0.4613,
+          "mask_mAP50_95": 0.2898
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.09,
+        "inference": 7.07,
+        "loss": 0.0,
+        "postprocess": 1.06
+      },
+      "val_goruntu": 294,
+      "tta": true
+    }
+  }
+}

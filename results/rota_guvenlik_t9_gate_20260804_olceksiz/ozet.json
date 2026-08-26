@@ -1,0 +1,46 @@
+{
+  "ozet": {
+    "n_kare": 1,
+    "olcekli_kare": 0,
+    "olceksiz_kare": 1,
+    "olcek_kapsama_orani": 0.0,
+    "olcum_durumu": "OLCUM_YOK",
+    "ihlal_sayisi_ham": 0,
+    "ihlal_sayisi_enjekte": 0,
+    "karar_sayisi_ham": 0,
+    "karar_sayisi_enjekte": 0,
+    "tohum_yok_ham": 0,
+    "tohum_yok_enjekte": 0,
+    "ihlal_orani_ham": null,
+    "ihlal_orani_enjekte": null,
+    "cekimserlik_ham": null,
+    "cekimserlik_enjekte": null
+  },
+  "kareler": [
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": null,
+        "min_aciklik_px": null,
+        "durum": "OLCEK_YOK",
+        "tohum_yok_taraflar": [],
+        "olculebilir": false,
+        "olcum_disi_neden": "MPP_YOK"
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": null,
+        "min_aciklik_px": null,
+        "durum": "OLCEK_YOK",
+        "tohum_yok_taraflar": [],
+        "olculebilir": false,
+        "olcum_disi_neden": "MPP_YOK"
+      },
+      "mpp": null,
+      "r_gerekli_px": null,
+      "arac_sayisi": 0,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.48.jpeg",
+      "kare": 0
+    }
+  ]
+}

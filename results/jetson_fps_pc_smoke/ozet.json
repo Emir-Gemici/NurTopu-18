@@ -1,0 +1,204 @@
+{
+  "ortam": {
+    "zaman": "2026-08-02T21:47:38",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.7",
+    "torch": "2.11.0+cu128",
+    "cuda_var": true,
+    "cuda_adi": "NVIDIA GeForce RTX 5080 Laptop GPU"
+  },
+  "zincir": "kare_oku -> letterbox/cikarim -> rpi_inference.get_masks -> costmap_path_finder.rota_bul(plan=False)",
+  "parametreler": {
+    "girdi": "data\\raw_frames",
+    "isinma": 1,
+    "tekrar": 3,
+    "conf": 0.25,
+    "imgsz": [
+      640,
+      512
+    ],
+    "cihaz": "0",
+    "mpp": null
+  },
+  "vakalar": [
+    {
+      "ad": "pt",
+      "tur": "PyTorch",
+      "model": "models\\navitas_seg_v20_best.pt",
+      "imgsz": 640,
+      "durum": "OK",
+      "yukleme_ms": 99.942,
+      "ornek": 3,
+      "rota_durumlari": {
+        "KAPALI_DAR": 2,
+        "BELIRSIZ_TEK_KAPI": 1
+      },
+      "metrikler_ms": {
+        "okuma_ms": {
+          "p50": 2.65,
+          "p95": 2.668,
+          "ortalama": 2.619
+        },
+        "cikarim_ms": {
+          "p50": 26.461,
+          "p95": 26.7,
+          "ortalama": 26.49
+        },
+        "maske_ms": {
+          "p50": 3.247,
+          "p95": 3.685,
+          "ortalama": 3.403
+        },
+        "katman_a_ms": {
+          "p50": 51.222,
+          "p95": 61.186,
+          "ortalama": 50.879
+        },
+        "toplam_ms": {
+          "p50": 84.535,
+          "p95": 93.574,
+          "ortalama": 83.607
+        }
+      },
+      "olcumler": [
+        {
+          "kaynak": "frame_000001_000000600.jpg",
+          "okuma_ms": 2.67,
+          "cikarim_ms": 26.727,
+          "maske_ms": 3.734,
+          "katman_a_ms": 51.222,
+          "toplam_ms": 84.535,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000672.jpg",
+          "okuma_ms": 2.537,
+          "cikarim_ms": 26.282,
+          "maske_ms": 3.229,
+          "katman_a_ms": 62.293,
+          "toplam_ms": 94.578,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000720.jpg",
+          "okuma_ms": 2.65,
+          "cikarim_ms": 26.461,
+          "maske_ms": 3.247,
+          "katman_a_ms": 39.122,
+          "toplam_ms": 71.707,
+          "rota_durumu": "BELIRSIZ_TEK_KAPI",
+          "yol_no": null
+        }
+      ],
+      "fps_p50_tabanli": 11.829,
+      "fps_ortalama_tabanli": 11.961
+    },
+    {
+      "ad": "pt",
+      "tur": "PyTorch",
+      "model": "models\\navitas_seg_v20_best.pt",
+      "imgsz": 512,
+      "durum": "OK",
+      "yukleme_ms": 47.235,
+      "ornek": 3,
+      "rota_durumlari": {
+        "BELIRSIZ_TEK_KAPI": 3
+      },
+      "metrikler_ms": {
+        "okuma_ms": {
+          "p50": 2.509,
+          "p95": 2.865,
+          "ortalama": 2.62
+        },
+        "cikarim_ms": {
+          "p50": 21.037,
+          "p95": 21.529,
+          "ortalama": 21.028
+        },
+        "maske_ms": {
+          "p50": 2.939,
+          "p95": 3.19,
+          "ortalama": 3.02
+        },
+        "katman_a_ms": {
+          "p50": 39.299,
+          "p95": 39.589,
+          "ortalama": 39.25
+        },
+        "toplam_ms": {
+          "p50": 66.24,
+          "p95": 66.726,
+          "ortalama": 66.153
+        }
+      },
+      "olcumler": [
+        {
+          "kaynak": "frame_000001_000000600.jpg",
+          "okuma_ms": 2.905,
+          "cikarim_ms": 21.584,
+          "maske_ms": 3.218,
+          "katman_a_ms": 38.829,
+          "toplam_ms": 66.78,
+          "rota_durumu": "BELIRSIZ_TEK_KAPI",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000672.jpg",
+          "okuma_ms": 2.447,
+          "cikarim_ms": 21.037,
+          "maske_ms": 2.903,
+          "katman_a_ms": 39.621,
+          "toplam_ms": 66.24,
+          "rota_durumu": "BELIRSIZ_TEK_KAPI",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000720.jpg",
+          "okuma_ms": 2.509,
+          "cikarim_ms": 20.462,
+          "maske_ms": 2.939,
+          "katman_a_ms": 39.299,
+          "toplam_ms": 65.438,
+          "rota_durumu": "BELIRSIZ_TEK_KAPI",
+          "yol_no": null
+        }
+      ],
+      "fps_p50_tabanli": 15.097,
+      "fps_ortalama_tabanli": 15.116
+    },
+    {
+      "ad": "onnx",
+      "tur": "ONNX",
+      "model": "results\\onnx_export_smoke\\navitas_seg_v20_best_640_fp16.onnx",
+      "imgsz": 640,
+      "durum": "HATA",
+      "sebep": "isinma/yukleme: No module named 'onnxruntime'"
+    },
+    {
+      "ad": "onnx",
+      "tur": "ONNX",
+      "model": "results\\onnx_export_smoke\\navitas_seg_v20_best_640_fp16.onnx",
+      "imgsz": 512,
+      "durum": "HATA",
+      "sebep": "isinma/yukleme: No module named 'onnxruntime'"
+    },
+    {
+      "ad": "tensorrt_fp16",
+      "tur": "TensorRT FP16",
+      "model": "models\\navitas_seg_v20_best.engine",
+      "imgsz": 640,
+      "durum": "ATLANDI",
+      "sebep": "model_dosyasi_yok"
+    },
+    {
+      "ad": "tensorrt_fp16",
+      "tur": "TensorRT FP16",
+      "model": "models\\navitas_seg_v20_best.engine",
+      "imgsz": 512,
+      "durum": "ATLANDI",
+      "sebep": "model_dosyasi_yok"
+    }
+  ]
+}

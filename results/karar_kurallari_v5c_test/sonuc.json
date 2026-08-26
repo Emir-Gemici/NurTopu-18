@@ -1,0 +1,27 @@
+{
+  "model": "O:\\navitas\\models\\aday_v5c_m640.pt",
+  "ad": "v5c",
+  "sahne": 500,
+  "dogru": {
+    "A_mevcut(yalniz_trav)": 373,
+    "B_fark(trav-blk)": 374,
+    "C_oran(trav/top)": 363,
+    "D_veto(blk>%35 ele)": 379
+  },
+  "karar_yok": {
+    "A_mevcut(yalniz_trav)": 87,
+    "B_fark(trav-blk)": 104,
+    "C_oran(trav/top)": 87,
+    "D_veto(blk>%35 ele)": 98
+  },
+  "ayar": {
+    "model": "models/aday_v5c_m640.pt",
+    "ad": "v5c",
+    "split": "test",
+    "n": 500,
+    "panel": 512,
+    "imgsz": 640,
+    "conf": 0.25,
+    "tohum": 1
+  }
+}

@@ -1,0 +1,539 @@
+{
+ "model": "navitas_seg_v36_best.pt",
+ "conf": 0.3,
+ "kare": 9,
+ "kipler": {
+  "A_taban_lb512": {
+   "imgsz": 512,
+   "letterbox": true,
+   "dagilim": {
+    "GORUS_HATTI_KOPUK": 4,
+    "UC_BANT_TEMAS_YOK": 5
+   },
+   "iou_medyan": 0.16099193568731657,
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.11672684573609277,
+     "zemin_px": 206544,
+     "tavan_px": 173869,
+     "bant_alt": 0,
+     "bant_ust": 146,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 178,
+     "tavan_bant_ust": 274
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.15539558013033408,
+     "zemin_px": 277664,
+     "tavan_px": 172849,
+     "bant_alt": 0,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 195,
+     "tavan_bant_ust": 262
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.21025617524403098,
+     "zemin_px": 254384,
+     "tavan_px": 168160,
+     "bant_alt": 50,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 256,
+     "tavan_bant_ust": 251
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.16099193568731657,
+     "zemin_px": 246120,
+     "tavan_px": 168072,
+     "bant_alt": 576,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 126,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.2052024671493698,
+     "zemin_px": 208668,
+     "tavan_px": 173339,
+     "bant_alt": 560,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 255,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.1376497217768556,
+     "zemin_px": 196300,
+     "tavan_px": 165575,
+     "bant_alt": 246,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 257,
+     "tavan_bant_ust": 264
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.12200524719966066,
+     "zemin_px": 208788,
+     "tavan_px": 148307,
+     "bant_alt": 356,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 190,
+     "tavan_bant_ust": 243
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.18005970806334007,
+     "zemin_px": 257708,
+     "tavan_px": 171167,
+     "bant_alt": 286,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 253,
+     "tavan_bant_ust": 260
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.17291620395342197,
+     "zemin_px": 202744,
+     "tavan_px": 166924,
+     "bant_alt": 540,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 271,
+     "tavan_bant_ust": 305
+    }
+   ]
+  },
+  "B_lb1024": {
+   "imgsz": 1024,
+   "letterbox": true,
+   "dagilim": {
+    "UC_BANT_TEMAS_YOK": 6,
+    "GORUS_HATTI_KOPUK": 2,
+    "ROTA": 1
+   },
+   "iou_medyan": 0.1376323770131377,
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.060776363350620775,
+     "zemin_px": 163617,
+     "tavan_px": 173869,
+     "bant_alt": 0,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 178,
+     "tavan_bant_ust": 274
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.1578435188789412,
+     "zemin_px": 261428,
+     "tavan_px": 172849,
+     "bant_alt": 268,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 195,
+     "tavan_bant_ust": 262
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.228217816429578,
+     "zemin_px": 172625,
+     "tavan_px": 168160,
+     "bant_alt": 147,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 256,
+     "tavan_bant_ust": 251
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.1376323770131377,
+     "zemin_px": 232940,
+     "tavan_px": 168072,
+     "bant_alt": 181,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 126,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.08134029379628506,
+     "zemin_px": 129499,
+     "tavan_px": 173339,
+     "bant_alt": 193,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 255,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.12297238540466601,
+     "zemin_px": 188259,
+     "tavan_px": 165575,
+     "bant_alt": 253,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 257,
+     "tavan_bant_ust": 264
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.08428267722307749,
+     "zemin_px": 147507,
+     "tavan_px": 148307,
+     "bant_alt": 208,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 190,
+     "tavan_bant_ust": 243
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "kod": "ROTA",
+     "yol_no": 2,
+     "iou_sinif0": 0.18407113129020053,
+     "zemin_px": 204373,
+     "tavan_px": 171167,
+     "bant_alt": 0,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 253,
+     "tavan_bant_ust": 260
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.1585121329882839,
+     "zemin_px": 234636,
+     "tavan_px": 166924,
+     "bant_alt": 296,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 271,
+     "tavan_bant_ust": 305
+    }
+   ]
+  },
+  "D_lb768": {
+   "imgsz": 768,
+   "letterbox": true,
+   "dagilim": {
+    "GORUS_HATTI_KOPUK": 5,
+    "ROTA": 1,
+    "UC_BANT_TEMAS_YOK": 3
+   },
+   "iou_medyan": 0.14171319260626822,
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.12240392501550663,
+     "zemin_px": 207947,
+     "tavan_px": 173869,
+     "bant_alt": 0,
+     "bant_ust": 141,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 178,
+     "tavan_bant_ust": 274
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.17018242890493404,
+     "zemin_px": 302334,
+     "tavan_px": 172849,
+     "bant_alt": 276,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 195,
+     "tavan_bant_ust": 262
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "kod": "ROTA",
+     "yol_no": 3,
+     "iou_sinif0": 0.21354433623782676,
+     "zemin_px": 248542,
+     "tavan_px": 168160,
+     "bant_alt": 0,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 256,
+     "tavan_bant_ust": 251
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.14171319260626822,
+     "zemin_px": 191224,
+     "tavan_px": 168072,
+     "bant_alt": 0,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 126,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.15306680612159027,
+     "zemin_px": 210314,
+     "tavan_px": 173339,
+     "bant_alt": 13,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 255,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.12860939476500924,
+     "zemin_px": 205584,
+     "tavan_px": 165575,
+     "bant_alt": 272,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 257,
+     "tavan_bant_ust": 264
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.12629861958450544,
+     "zemin_px": 205228,
+     "tavan_px": 148307,
+     "bant_alt": 250,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 190,
+     "tavan_bant_ust": 243
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.19042014828763093,
+     "zemin_px": 263778,
+     "tavan_px": 171167,
+     "bant_alt": 260,
+     "bant_ust": 150,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 253,
+     "tavan_bant_ust": 260
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.028663143799913922,
+     "zemin_px": 5159,
+     "tavan_px": 166924,
+     "bant_alt": 12,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 271,
+     "tavan_bant_ust": 305
+    }
+   ]
+  },
+  "C_lbyok_512": {
+   "imgsz": 512,
+   "letterbox": false,
+   "dagilim": {
+    "GORUS_HATTI_KOPUK": 4,
+    "UC_BANT_TEMAS_YOK": 5
+   },
+   "iou_medyan": 0.17133290676148935,
+   "kareler": [
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.11835479676404966,
+     "zemin_px": 210580,
+     "tavan_px": 173869,
+     "bant_alt": 0,
+     "bant_ust": 200,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 178,
+     "tavan_bant_ust": 274
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.17133290676148935,
+     "zemin_px": 306772,
+     "tavan_px": 172849,
+     "bant_alt": 690,
+     "bant_ust": 608,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 195,
+     "tavan_bant_ust": 262
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.21752951732585135,
+     "zemin_px": 259272,
+     "tavan_px": 168160,
+     "bant_alt": 420,
+     "bant_ust": 532,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 256,
+     "tavan_bant_ust": 251
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.16337094653812445,
+     "zemin_px": 171744,
+     "tavan_px": 168072,
+     "bant_alt": 644,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 126,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.22246150244946414,
+     "zemin_px": 192232,
+     "tavan_px": 173339,
+     "bant_alt": 694,
+     "bant_ust": 150,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 255,
+     "tavan_bant_ust": 306
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.14067583202885728,
+     "zemin_px": 169624,
+     "tavan_px": 165575,
+     "bant_alt": 434,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 257,
+     "tavan_bant_ust": 264
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.14683999883900553,
+     "zemin_px": 207304,
+     "tavan_px": 148307,
+     "bant_alt": 454,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 190,
+     "tavan_bant_ust": 243
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+     "kod": "GORUS_HATTI_KOPUK",
+     "yol_no": null,
+     "iou_sinif0": 0.1848969452315336,
+     "zemin_px": 256204,
+     "tavan_px": 171167,
+     "bant_alt": 362,
+     "bant_ust": 444,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 253,
+     "tavan_bant_ust": 260
+    },
+    {
+     "kare": "whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+     "kod": "UC_BANT_TEMAS_YOK",
+     "yol_no": null,
+     "iou_sinif0": 0.18271690571765087,
+     "zemin_px": 177508,
+     "tavan_px": 166924,
+     "bant_alt": 614,
+     "bant_ust": 0,
+     "bant_genislik": 1024,
+     "tavan_bant_alt": 271,
+     "tavan_bant_ust": 305
+    }
+   ]
+  }
+ },
+ "hukum": {
+  "B_lb1024": {
+   "d_rota": 1,
+   "d_iou": -0.0234,
+   "olcut_saglandi": false
+  },
+  "D_lb768": {
+   "d_rota": 1,
+   "d_iou": -0.0193,
+   "olcut_saglandi": false
+  },
+  "C_lbyok_512": {
+   "d_rota": 0,
+   "d_iou": 0.0103,
+   "olcut_saglandi": false
+  }
+ },
+ "hukum_metni": "GEOMETRI DEGIL — model/veri"
+}

@@ -1,0 +1,8 @@
+{"grup":"G","dalga":3,"durum":"mevcut ciktilar gorsel olarak dogrulandi, yeniden cizilmedi",
+"kareler":[
+{"govde":"dji_20260822173231_0039_d__frame_000037_000002610","etiketsiz":0.3243,"sinif0":0.4059,"sinif1":0.2699,"yol_kenardan_kenara":true,"not":"mevcut; menfez tabliyesi+cakil yol sinif0, kanal+sazlik sinif1, insan sinif1"},
+{"govde":"dji_20260822170832_0037_d__frame_000075_000002880","etiketsiz":0.3859,"sinif0":0.5042,"sinif1":0.1099,"yol_kenardan_kenara":true,"not":"mevcut; asfalt/stabilize yol sinif0, bordur-korkuluk hatti ve balyalar sinif1"},
+{"govde":"dji_20260822173231_0039_d__frame_000150_000008310","etiketsiz":0.7766,"sinif0":0.1101,"sinif1":0.1133,"yol_kenardan_kenara":true,"not":"mevcut; cakil yol sinif0, agac siras sinif1, surulmus tarla+mera etiketsiz (madde 12)"},
+{"govde":"dji_20260822173231_0039_d__frame_000182_000010530","etiketsiz":0.5784,"sinif0":0.2501,"sinif1":0.1714,"yol_kenardan_kenara":true,"not":"mevcut; kavisli stabilize yol sinif0, agaclar+beton duvar sinif1, cig toprak etiketsiz"},
+{"govde":"dji_20260822173231_0039_d__frame_000170_000009630","etiketsiz":0.7538,"sinif0":0.1509,"sinif1":0.0953,"yol_kenardan_kenara":true,"not":"mevcut; cakil yol sinif0, agaclik+direk+insan sinif1, surulmus tarla etiketsiz"}
+]}

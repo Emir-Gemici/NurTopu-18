@@ -1,0 +1,101 @@
+[
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_03_frame_000000_000000000_cp_00",
+  "bolum": "train",
+  "kaplama": 0.5801883273654513,
+  "kenar": 0.5585106382978723,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_23_frame_000018_000002160_cp_00",
+  "bolum": "train",
+  "kaplama": 0.5869700113932291,
+  "kenar": 0.4662077596996245,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00",
+  "bolum": "train",
+  "kaplama": 0.6489223904079862,
+  "kenar": 0.6235919899874843,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000016_000000720_cp_00",
+  "bolum": "train",
+  "kaplama": 0.6183047824435763,
+  "kenar": 0.655819774718398,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000017_000000792_cp_00",
+  "bolum": "train",
+  "kaplama": 0.6384226481119791,
+  "kenar": 0.6930538172715894,
+  "kapi": null,
+  "yol": 1,
+  "sebep": "ROTA VAR",
+  "darbogaz_px": 26.165895462036133,
+  "r_gerekli_px": 22.528000000000002
+ },
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_39_frame_000025_000001152_cp_00",
+  "bolum": "train",
+  "kaplama": 0.6515604654947916,
+  "kenar": 0.5506883604505632,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "train_whatsapp_video_2026_07_30_at_11_44_46_frame_000000_000000000_cp_00",
+  "bolum": "train",
+  "kaplama": 0.6670701768663194,
+  "kenar": 0.7390488110137672,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "val_whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00",
+  "bolum": "val",
+  "kaplama": 0.6165856255425347,
+  "kenar": 0.5400500625782227,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ },
+ {
+  "kare": "val_whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00",
+  "bolum": "val",
+  "kaplama": 0.6076863606770834,
+  "kenar": 0.610450563204005,
+  "kapi": null,
+  "yol": null,
+  "sebep": "GORUS_HATTI_KOPUK",
+  "darbogaz_px": null,
+  "r_gerekli_px": null
+ }
+]

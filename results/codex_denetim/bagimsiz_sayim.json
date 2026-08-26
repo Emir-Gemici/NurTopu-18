@@ -1,0 +1,389 @@
+{
+  "d279": {
+    "gruplar": {
+      "A": {
+        "kare": 8,
+        "olculen": 8,
+        "null": 0,
+        "hesaplanan_toplam_saniye": 7031.4,
+        "rapordaki_toplam_saniye": 7031.3
+      },
+      "B": {
+        "kare": 8,
+        "olculen": 2,
+        "null": 6,
+        "hesaplanan_toplam_saniye": 1357.0,
+        "rapordaki_toplam_saniye": 1357.0
+      },
+      "C": {
+        "kare": 8,
+        "olculen": 4,
+        "null": 4,
+        "hesaplanan_toplam_saniye": 1522.0,
+        "rapordaki_toplam_saniye": 1522
+      }
+    },
+    "toplam_kare": 24,
+    "olculen": 14,
+    "null": 10,
+    "toplam_saniye": 9910.4,
+    "min_saniye": 117.0,
+    "medyan_saniye": 523.5,
+    "maks_saniye": 3151.9,
+    "olculen_kare_basina_saniye": 707.8857142857142,
+    "olculen_kare_saat": 5.085566677429771,
+    "null_sifir_varsayilirsa_kare_basina_saniye": 412.93333333333334,
+    "null_sifir_varsayilirsa_kare_saat": 8.71811430416532,
+    "null_notu": "Null, sifir sure degil eksik olcumdur; sifir senaryosu yalniz karsi-olgusaldir."
+  },
+  "d280": {
+    "kabul": {
+      "verdikt": true,
+      "gecti": {
+        "K0": true,
+        "K1": true,
+        "K2": true,
+        "K3": true,
+        "K4": true,
+        "K5": true
+      },
+      "K0_figur_tuval": 0.23346628253175936,
+      "K0_uretim_tabanina_oran": 2.5854516337957847,
+      "K1": "255/260",
+      "K2": "12/255",
+      "K3": "0/255",
+      "K4": "0/255",
+      "K5_durum": "GECTI",
+      "K5_olculebilir": 171,
+      "K5_kesen": 0
+    },
+    "bakir": {
+      "aday": {
+        "n": 59,
+        "rota_olceksiz": 10,
+        "sebep_olceksiz": {
+          "MASKE_YOK": 29,
+          "UC_BANT_TEMAS_YOK": 20,
+          "null": 10
+        }
+      },
+      "v35": {
+        "n": 59,
+        "rota_olceksiz": 11,
+        "sebep_olceksiz": {
+          "MASKE_YOK": 35,
+          "UC_BANT_TEMAS_YOK": 13,
+          "null": 11
+        }
+      },
+      "v35ten_adaya_gecis": {
+        "MASKE_YOK -> MASKE_YOK": 24,
+        "MASKE_YOK -> ROTA": 2,
+        "MASKE_YOK -> UC_BANT_TEMAS_YOK": 9,
+        "ROTA -> MASKE_YOK": 2,
+        "ROTA -> ROTA": 6,
+        "ROTA -> UC_BANT_TEMAS_YOK": 3,
+        "UC_BANT_TEMAS_YOK -> MASKE_YOK": 3,
+        "UC_BANT_TEMAS_YOK -> ROTA": 2,
+        "UC_BANT_TEMAS_YOK -> UC_BANT_TEMAS_YOK": 8
+      },
+      "v35_MASKE_YOK_iken_adayda_maske_var": 11,
+      "bu_karelerden_ROTA_olan": 2,
+      "adayda_MASKE_YOKa_gerileyen": 5
+    },
+    "csv": {
+      "satir": 16,
+      "mAP50_95_M_en_iyi_epoch": 1,
+      "mAP50_95_M_en_iyi": 0.19783,
+      "mAP50_M_en_iyi_epoch": 10,
+      "mAP50_M_en_iyi": 0.32584,
+      "epoch1_mAP50_M": 0.32436,
+      "epoch10_mAP50_M": 0.32584,
+      "epoch16_mAP50_M": 0.3138,
+      "epoch1_mAP50_95_M": 0.19783
+    },
+    "kiyas_109": {
+      "v35_figur_zemin": 0.15084,
+      "dji_figur_zemin": 0.38997,
+      "dji_bolu_v35": 2.585322195704057,
+      "v35_kaplama67_icerik_medyan": 0.5076,
+      "dji_kaplama67_icerik_medyan": 0.3829
+    }
+  },
+  "d281": {
+    "m4_n": 59,
+    "kural_kalkinca_rota_kazanan": 0,
+    "kazananlar": [],
+    "parcalilik": 11,
+    "parcalilik_kural_yokken_kopuk": 11,
+    "acilar": [
+      {
+        "aci": 0,
+        "genislik": 3840,
+        "yukseklik": 2160,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 28,
+        "fark": 0
+      },
+      {
+        "aci": 10,
+        "genislik": 2969,
+        "yukseklik": 1670,
+        "donuk_gecer": 24,
+        "kontrol_gecer": 30,
+        "fark": -6
+      },
+      {
+        "aci": 20,
+        "genislik": 2481,
+        "yukseklik": 1396,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 27,
+        "fark": 1
+      },
+      {
+        "aci": 30,
+        "genislik": 2188,
+        "yukseklik": 1231,
+        "donuk_gecer": 29,
+        "kontrol_gecer": 25,
+        "fark": 4
+      },
+      {
+        "aci": 40,
+        "genislik": 2012,
+        "yukseklik": 1132,
+        "donuk_gecer": 29,
+        "kontrol_gecer": 24,
+        "fark": 5
+      },
+      {
+        "aci": 50,
+        "genislik": 1916,
+        "yukseklik": 1077,
+        "donuk_gecer": 25,
+        "kontrol_gecer": 25,
+        "fark": 0
+      },
+      {
+        "aci": 60,
+        "genislik": 1883,
+        "yukseklik": 1059,
+        "donuk_gecer": 23,
+        "kontrol_gecer": 24,
+        "fark": -1
+      },
+      {
+        "aci": 70,
+        "genislik": 1908,
+        "yukseklik": 1073,
+        "donuk_gecer": 25,
+        "kontrol_gecer": 25,
+        "fark": 0
+      },
+      {
+        "aci": 80,
+        "genislik": 1995,
+        "yukseklik": 1122,
+        "donuk_gecer": 27,
+        "kontrol_gecer": 24,
+        "fark": 3
+      },
+      {
+        "aci": 90,
+        "genislik": 2160,
+        "yukseklik": 1215,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 25,
+        "fark": 3
+      },
+      {
+        "aci": 100,
+        "genislik": 1995,
+        "yukseklik": 1122,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 24,
+        "fark": 4
+      },
+      {
+        "aci": 110,
+        "genislik": 1908,
+        "yukseklik": 1073,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 25,
+        "fark": 3
+      },
+      {
+        "aci": 120,
+        "genislik": 1883,
+        "yukseklik": 1059,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 24,
+        "fark": 4
+      },
+      {
+        "aci": 130,
+        "genislik": 1916,
+        "yukseklik": 1077,
+        "donuk_gecer": 25,
+        "kontrol_gecer": 25,
+        "fark": 0
+      },
+      {
+        "aci": 140,
+        "genislik": 2012,
+        "yukseklik": 1132,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 24,
+        "fark": 4
+      },
+      {
+        "aci": 150,
+        "genislik": 2188,
+        "yukseklik": 1231,
+        "donuk_gecer": 30,
+        "kontrol_gecer": 25,
+        "fark": 5
+      },
+      {
+        "aci": 160,
+        "genislik": 2481,
+        "yukseklik": 1396,
+        "donuk_gecer": 32,
+        "kontrol_gecer": 27,
+        "fark": 5
+      },
+      {
+        "aci": 170,
+        "genislik": 2969,
+        "yukseklik": 1670,
+        "donuk_gecer": 32,
+        "kontrol_gecer": 30,
+        "fark": 2
+      }
+    ],
+    "kayitta_secili_acilar": [
+      {
+        "aci": 10,
+        "genislik": 2969,
+        "yukseklik": 1670,
+        "donuk_gecer": 24,
+        "kontrol_gecer": 30,
+        "fark": -6
+      },
+      {
+        "aci": 30,
+        "genislik": 2188,
+        "yukseklik": 1231,
+        "donuk_gecer": 29,
+        "kontrol_gecer": 25,
+        "fark": 4
+      },
+      {
+        "aci": 40,
+        "genislik": 2012,
+        "yukseklik": 1132,
+        "donuk_gecer": 29,
+        "kontrol_gecer": 24,
+        "fark": 5
+      },
+      {
+        "aci": 90,
+        "genislik": 2160,
+        "yukseklik": 1215,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 25,
+        "fark": 3
+      },
+      {
+        "aci": 120,
+        "genislik": 1883,
+        "yukseklik": 1059,
+        "donuk_gecer": 28,
+        "kontrol_gecer": 24,
+        "fark": 4
+      },
+      {
+        "aci": 160,
+        "genislik": 2481,
+        "yukseklik": 1396,
+        "donuk_gecer": 32,
+        "kontrol_gecer": 27,
+        "fark": 5
+      }
+    ]
+  },
+  "d282": {
+    "etki": {
+      "n_once": 160,
+      "n_sonra": 160,
+      "once": {
+        "GECER": 98,
+        "PARCALILIK": 31,
+        "YAPISAL": 29,
+        "SINIF0_YOK": 2
+      },
+      "sonra": {
+        "GECER": 99,
+        "PARCALILIK": 45,
+        "YAPISAL": 15,
+        "SINIF0_YOK": 1
+      },
+      "kazanan_sayisi": 1,
+      "kazanan": [
+        "dji_20260822170832_0037_d__frame_000146_000005910"
+      ],
+      "kaybeden_sayisi": 0,
+      "kaybeden": []
+    },
+    "maske_korunumu": {
+      "yeni_maske": 31,
+      "eski_maske_eksik": [],
+      "boyut_okuma_sorunu": [],
+      "m0_nonzero_iken_degisen": 0,
+      "eklenen_toplam": 640495,
+      "eklenen_sinif0": 593683,
+      "eklenen_sinif1": 46812
+    },
+    "uygunluk_mutasyonlari": {
+      "kaynak": "O:\\navitas\\results\\dji_20260822\\kareler_1fps\\dji_20260822170832_0037_d\\frame_000003_000000090.jpg",
+      "keskinlik_alt": 465.27,
+      "kirpik_ust": 0.2,
+      "gok_ust": 0.05,
+      "sonuclar": {
+        "temel": {
+          "keskinlik": 3718.12,
+          "kirpik_oran": 0.0005,
+          "gok_puani": 0.0249,
+          "parlaklik": 142.61,
+          "bayrak": []
+        },
+        "bulanik": {
+          "keskinlik": 1.41,
+          "kirpik_oran": 0.0,
+          "gok_puani": 0.0486,
+          "parlaklik": 142.6,
+          "bayrak": [
+            "BULANIK"
+          ]
+        },
+        "gok": {
+          "keskinlik": 3468.55,
+          "kirpik_oran": 0.00042,
+          "gok_puani": 0.095,
+          "parlaklik": 149.29,
+          "bayrak": [
+            "NADIR_SUPHELI"
+          ]
+        },
+        "karanlik_gurultulu": {
+          "keskinlik": 521.3,
+          "kirpik_oran": 0.0,
+          "gok_puani": 0.0,
+          "parlaklik": 15.99,
+          "bayrak": []
+        }
+      }
+    }
+  }
+}

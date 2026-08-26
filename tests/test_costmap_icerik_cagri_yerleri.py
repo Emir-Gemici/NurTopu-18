@@ -141,16 +141,19 @@ class CostmapIcerikCagriYeriTests(unittest.TestCase):
         self.assertEqual(2, len(cagrilar))
         self.assertIs(icerik, cagrilar[0][1])
         self.assertIsNone(cagrilar[1][1])
-        self.assertTrue(rapor.satirlar[-1]["detay"]["icerik_aktarildi"])
-        self.assertEqual("ACIK", rapor.satirlar[-1]["detay"]["kirpik_durum"])
-        self.assertEqual(
-            "rota uretilemedi: durum=BELIRSIZ_COKLU",
-            rapor.satirlar[-1]["sebep"],
-        )
-        self.assertEqual(
-            "yalniz_tanisal",
-            rapor.satirlar[-1]["detay"]["kirpik_karsilastirma"],
-        )
+        # T160 (ON_KAYIT §21): tanisal `rota_bul` kayitlari artik `detay`in
+        # ALT SOZLUGUNDE durur — SILINMEDILER, yalnizca hukum disina alindilar.
+        tanisal = rapor.satirlar[-1]["detay"]["tanisal_rota_bul"]
+        self.assertTrue(tanisal["icerik_aktarildi"])
+        self.assertEqual("ACIK", tanisal["kirpik_durum"])
+        # Kilitlenen anlam DEGISMEDI: KIRPIK cagrinin "ACIK"i halkanin hukmune
+        # SIZMAZ. T160 oncesi hukum ana `rota_bul` cagrisindan (BELIRSIZ_COKLU),
+        # sonrasinda URETIM yolundan gelir; iki durumda da kirpik "ACIK" degil.
+        self.assertEqual("BELIRSIZ_COKLU", tanisal["durum"])
+        self.assertNotIn("durum=ACIK", rapor.satirlar[-1]["sebep"])
+        self.assertEqual("analyze_path",
+                         rapor.satirlar[-1]["detay"]["karar_yolu"])
+        self.assertEqual("yalniz_tanisal", tanisal["kirpik_karsilastirma"])
 
 
 if __name__ == "__main__":

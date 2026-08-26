@@ -1,0 +1,6669 @@
+{
+  "ozet": {
+    "n_kare": 280,
+    "ihlal_sayisi_ham": 0,
+    "ihlal_sayisi_enjekte": 0,
+    "karar_sayisi_ham": 83,
+    "karar_sayisi_enjekte": 83,
+    "tohum_yok_ham": 182,
+    "tohum_yok_enjekte": 182,
+    "ihlal_orani_ham": 0.0,
+    "ihlal_orani_enjekte": 0.0,
+    "cekimserlik_ham": 0.704,
+    "cekimserlik_enjekte": 0.704
+  },
+  "kareler": [
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 402.19647216796875,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 402.19647216796875,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.03945534045235333,
+      "r_gerekli_px": 27.879622565375435,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.48.jpeg",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 402.1504821777344,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 402.1504821777344,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.06206896551724138,
+      "r_gerekli_px": 17.722222222222225,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.50.jpeg",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 398.55364990234375,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 398.55364990234375,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.05806451612903226,
+      "r_gerekli_px": 18.944444444444446,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.50 (1).jpeg",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.50 (2).jpeg",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.51.jpeg",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Image 2026-07-30 at 11.44.51 (1).jpeg",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 100.04499053955078,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 100.04499053955078,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.048388648901639596,
+      "r_gerekli_px": 22.732604132758247,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 108.0,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 108.0,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.06127383063703219,
+      "r_gerekli_px": 17.95219898223877,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 24
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 48
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 95.18928527832031,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 95.18928527832031,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.058019472571040655,
+      "r_gerekli_px": 18.959152009752064,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 72
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 96
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 120
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 144
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 168
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 192
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 96.00521087646484,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 96.00521087646484,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.05024174876421124,
+      "r_gerekli_px": 21.894142362806534,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 216
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 98.0,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 98.0,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.06037567820550887,
+      "r_gerekli_px": 18.21925703684489,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 240
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 91.0,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 91.0,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.04903026704011447,
+      "r_gerekli_px": 22.435121536254883,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 264
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 288
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 312
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 336
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 360
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 384
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 408
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 432
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.059074404693159305,
+      "r_gerekli_px": 18.620585441589355,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 456
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.06306243299705369,
+      "r_gerekli_px": 17.44303141699897,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 480
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 504
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 528
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.05521472004980169,
+      "r_gerekli_px": 19.922223620944553,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 552
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 576
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 600
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.051342947992898194,
+      "r_gerekli_px": 21.42455863952637,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 624
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 648
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 672
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 696
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 720
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 744
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 768
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 792
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 816
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 840
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 864
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 888
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.04879693116359358,
+      "r_gerekli_px": 22.542401207817928,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 912
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.04783277699311094,
+      "r_gerekli_px": 22.996783150566948,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 936
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 960
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "DOGRULAMA_BASARISIZ",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "DOGRULAMA_BASARISIZ",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 984
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1008
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1032
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1056
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1080
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": 0.046690588880682615,
+      "r_gerekli_px": 23.559351603190105,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1104
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 89.4427261352539,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 89.4427261352539,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": 0.035832260449473664,
+      "r_gerekli_px": 30.69859356350369,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1128
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1152
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1176
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1200
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1224
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1248
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1272
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1296
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1320
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1344
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1368
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1392
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.036207173584325965,
+      "r_gerekli_px": 30.38071992662218,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1416
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1440
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1464
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": 0.04615385518271719,
+      "r_gerekli_px": 23.833328670925564,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1488
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": 0.03819343901557146,
+      "r_gerekli_px": 28.800758149888786,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1512
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1536
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1560
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1584
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1608
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.03.mp4",
+      "kare": 1632
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 24
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 48
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 72
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 96
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 120
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 144
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 168
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 192
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 216
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 240
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 264
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 288
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 312
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.03298829076585664,
+      "r_gerekli_px": 33.34516504075792,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 336
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 360
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 384
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 408
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 432
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 456
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 480
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 504
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 528
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 552
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 576
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 600
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 624
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 648
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 672
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 696
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 720
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 744
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 768
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 792
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 816
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 840
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 864
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 888
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 912
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 936
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.0782608695652174,
+      "r_gerekli_px": 14.055555555555555,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 960
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 984
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1008
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1032
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1056
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1080
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1104
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1128
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1152
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1176
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": 0.03566335956581717,
+      "r_gerekli_px": 30.843981424967453,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1200
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1224
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1248
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": 0.0315861514981123,
+      "r_gerekli_px": 34.82538859049479,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1272
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.06768639197252317,
+      "r_gerekli_px": 16.251420232984756,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1296
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": 0.06771524104239973,
+      "r_gerekli_px": 16.244496557447647,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1320
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1344
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1368
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1392
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1416
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1440
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1464
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1488
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1512
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1536
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1560
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1584
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1608
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1632
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1656
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1680
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1704
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1728
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1752
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1776
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1800
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1824
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1848
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1872
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1896
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1920
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1944
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1968
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 1992
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2016
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2040
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2064
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2088
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2112
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2136
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2160
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2184
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2208
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2232
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2256
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2280
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2304
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2328
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2352
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2376
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2400
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2424
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2448
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2472
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2496
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2520
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2544
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2568
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2592
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.23.mp4",
+      "kare": 2616
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 24
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 48
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 72
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 96
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 120
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 144
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 168
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 192
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 216
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 240
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 264
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.010054093526879544,
+      "r_gerekli_px": 109.40817260742188,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 288
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.01826798206478025,
+      "r_gerekli_px": 60.21464199490018,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 312
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.009496195638786372,
+      "r_gerekli_px": 115.8358612060547,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 336
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.009422343432200548,
+      "r_gerekli_px": 116.74378119574652,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 360
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.007412667643042923,
+      "r_gerekli_px": 148.39462025960287,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 384
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.009781420352702207,
+      "r_gerekli_px": 112.4581052992079,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 408
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.007196440871558701,
+      "r_gerekli_px": 152.85333675808377,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 432
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.00707719018904736,
+      "r_gerekli_px": 155.42891608344186,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 456
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.00773800430190869,
+      "r_gerekli_px": 142.1555167304145,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 480
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.0075980714205110215,
+      "r_gerekli_px": 144.7735799153646,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 504
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.0068786418115772,
+      "r_gerekli_px": 159.91528998480902,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 528
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.005230800338418479,
+      "r_gerekli_px": 210.2928670247396,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 552
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.005675070682929152,
+      "r_gerekli_px": 193.83018493652347,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 576
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.007859999620208759,
+      "r_gerekli_px": 139.94911617702908,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 600
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.008610651049973467,
+      "r_gerekli_px": 127.74876064724394,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 624
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 648
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 672
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 696
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 720
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 744
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 768
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 792
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 816
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 840
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 864
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 888
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 912
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 936
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": 0.041087689267662465,
+      "r_gerekli_px": 26.772009319729275,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 960
+    },
+    {
+      "ham": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": true,
+        "ihlal": false,
+        "min_aciklik_px": 1.8446744073709552e+19,
+        "durum": "ACIK",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 984
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "KAPALI",
+        "tohum_yok_taraflar": []
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1008
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.020837417787976244,
+      "r_gerekli_px": 52.78965038723416,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1032
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.0086609520609819,
+      "r_gerekli_px": 127.00682237413194,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1056
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "ust"
+        ]
+      },
+      "mpp": 0.0782608695652174,
+      "r_gerekli_px": 14.055555555555555,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1080
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.008035680895087747,
+      "r_gerekli_px": 136.88945770263672,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1104
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.014135610420885772,
+      "r_gerekli_px": 77.81765111287436,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1128
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.021078940152701738,
+      "r_gerekli_px": 52.18478690253364,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1152
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.08181818181818182,
+      "r_gerekli_px": 13.444444444444446,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1176
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": 0.013497161489437437,
+      "r_gerekli_px": 81.49861738416884,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1200
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1224
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1248
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1272
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1296
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1320
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1344
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1368
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1392
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1416
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1440
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1464
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1488
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.39.mp4",
+      "kare": 1512
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 0
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 24
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 48
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 72
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 96
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 120
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 144
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 168
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 192
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 216
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 240
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 264
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 288
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 312
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 336
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 360
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 384
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 408
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 432
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 456
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 480
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 504
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 528
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 552
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 576
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 600
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 624
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 648
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 672
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 696
+    },
+    {
+      "ham": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "enj": {
+        "karar_var": false,
+        "ihlal": false,
+        "min_aciklik_px": null,
+        "durum": "TOHUM_YOK",
+        "tohum_yok_taraflar": [
+          "alt",
+          "ust"
+        ]
+      },
+      "mpp": null,
+      "r_gerekli_px": 1.1,
+      "kaynak": "WhatsApp Video 2026-07-30 at 11.44.46.mp4",
+      "kare": 720
+    }
+  ]
+}

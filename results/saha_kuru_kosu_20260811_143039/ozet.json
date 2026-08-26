@@ -1,0 +1,228 @@
+{
+ "tarih": "20260811_143039",
+ "sozlesme": "CONTRACTS.md §11",
+ "halka_sirasi": [
+  "kamera",
+  "model_yukleme",
+  "cikarim",
+  "maske",
+  "olcek",
+  "hedef_konumu",
+  "rota",
+  "aktarim",
+  "surus_izni",
+  "motor"
+ ],
+ "satirlar": [
+  {
+   "halka": "kamera",
+   "durum": "DUSTU",
+   "sebep": "uretim girisi kaynagi PARAMETRIK almiyor: cv2.VideoCapture(0) sabit",
+   "dosya": "codes/rpi_inference.py:505",
+   "detay": {
+    "argparse_secenekleri": [
+     "--camera",
+     "--conf",
+     "--fps",
+     "--image",
+     "--no-save",
+     "--video"
+    ],
+    "calisan_referans": "jetson_paket/kod/kamera_dogrula.py:57 (--kaynak)",
+    "kare": "data/raw_frames/whatsapp_video_2026_07_30_at_11_44_03/frame_000000_000000000.jpg",
+    "sekil": [
+     576,
+     1024,
+     3
+    ]
+   },
+   "sure_ms": 16.0
+  },
+  {
+   "halka": "model_yukleme",
+   "durum": "DUSTU",
+   "sebep": "yuklenen agirlik kayit defterindeki profille eslesmiyor ve --model argumani yok",
+   "dosya": "codes/rpi_inference.py:32-40",
+   "detay": {
+    "yuklenen": "models\\best_ncnn_model",
+    "kayit_defteri_bekleneni": "models/navitas_seg_v4_best.pt",
+    "model_argumani_var": false,
+    "infer_size": 512
+   },
+   "sure_ms": 1724.7
+  },
+  {
+   "halka": "cikarim",
+   "durum": "GECTI",
+   "sebep": "tek kare cikarimi tamamlandi",
+   "dosya": "codes/rpi_inference.py:57",
+   "detay": {
+    "imgsz": 512,
+    "tuval": [
+     1024,
+     1024,
+     3
+    ]
+   },
+   "sure_ms": 1289.2
+  },
+  {
+   "halka": "maske",
+   "durum": "GECTI",
+   "sebep": "{0,1} anahtarli maskeler uretildi",
+   "dosya": "codes/rpi_inference.py:60-83",
+   "detay": {
+    "piksel_orani": {
+     "0": 0.4115,
+     "1": 0.0
+    }
+   },
+   "sure_ms": 11.4
+  },
+  {
+   "halka": "olcek",
+   "durum": "SAHIPSIZ",
+   "sebep": "sahada mpp ureten kod yok; iha_haritala.py:66 sabiti simulation/ altinda",
+   "dosya": null,
+   "detay": {
+    "mpp_none_r_gerekli_px": 1.1,
+    "mpp_0.0547_r_gerekli_px": 20.114,
+    "R_GEREKLI_M": 1.1,
+    "not": "mpp=None sessizce 1 m/piksel varsayiliyor, uyari basilmiyor"
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "hedef_konumu",
+   "durum": "SAHIPSIZ",
+   "sebep": "HB'nin tek kaynagi Gazebo meta.txt; saha kod yolunda --hb girisi yok ve etkin model profili 2 sinifli (kirmizi H'yi goren bilesen yok)",
+   "dosya": null,
+   "detay": {
+    "saha_cli_sahibi": null,
+    "etkin_profil": "competition",
+    "etkin_profilde_hedef_sinifi": false,
+    "gazebo_haritalayici_argparse": [
+     "--arac-conf",
+     "--arac-model",
+     "--conf",
+     "--debug",
+     "--htab",
+     "--kare-ofset",
+     "--levels",
+     "--model",
+     "--once",
+     "--rot-isaret",
+     "--watch"
+    ],
+    "meta_okuyucu": "simulation/scripts/iha_haritala.py:507",
+    "meta_yazici": "simulation/scripts/world_generator.py:590",
+    "kayit": "REVIEW_LOG.md D-23"
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "rota",
+   "durum": "DUSTU",
+   "sebep": "letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK — tohum bandi dolguya dusuyor",
+   "dosya": "codes/costmap_path_finder.py:232-242",
+   "detay": {
+    "durum": "KAPALI_DAR",
+    "yol_no": null,
+    "kirpik_durum": "ACIK",
+    "icerik_parametresi_var": true
+   },
+   "sure_ms": 70.6
+  },
+  {
+   "halka": "aktarim",
+   "durum": "GECTI",
+   "sebep": "saha paketi haberlesme kodunu ve gerekli API'yi tasiyor",
+   "dosya": "jetson_paket/kod/iha_sender.py",
+   "detay": {
+    "paket_icerigi": [
+     "costmap_path_finder.py",
+     "iha_inis_yayinci.py",
+     "iha_sender.py",
+     "inis_kaniti.py",
+     "jetson_fps.py",
+     "kamera_dogrula.py",
+     "karar_sozlesmesi.py",
+     "link.py",
+     "protocol.py",
+     "rpi_inference.py"
+    ],
+    "eksik_moduller": [],
+    "eksik_semboller": {},
+    "pyserial_bagimliligi": true,
+    "depo_comms_loopback": {
+     "seq": 1,
+     "ack": [
+      "ika"
+     ],
+     "alindi": true
+    }
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "surus_izni",
+   "durum": "GECTI",
+   "sebep": "IHA_LANDED saha kod yolunda uretiliyor",
+   "dosya": "comms/iha_inis_yayinci.py:44",
+   "detay": {
+    "tum_ureticiler": [
+     "comms/iha_inis_yayinci.py:44",
+     "jetson_paket/kod/iha_inis_yayinci.py:44"
+    ],
+    "saha_ureticileri": [
+     "comms/iha_inis_yayinci.py:44",
+     "jetson_paket/kod/iha_inis_yayinci.py:44"
+    ],
+    "kapi_probu": {
+     "bos_kapali": true,
+     "yalniz_ika_go_kapali": true,
+     "ika_go_alindi": true,
+     "iki_latch_ile_acik": true,
+     "iha_landed_alindi": true,
+     "prob_gecerli": true
+    }
+   },
+   "sure_ms": null
+  },
+  {
+   "halka": "motor",
+   "durum": "SAHIPSIZ",
+   "sebep": "gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda",
+   "dosya": null,
+   "detay": {
+    "gz_subprocess": true,
+    "saha_surucu_importlari": [],
+    "taranan_dizinler": [
+     "codes",
+     "comms",
+     "drone",
+     "jetson_paket",
+     "scripts"
+    ],
+    "simulasyon_sahibi": "simulation/scripts/ika_nav.py:90-99",
+    "not": "capture_output=True oldugu icin gz yoksa hata YUTULUYOR"
+   },
+   "sure_ms": null
+  }
+ ],
+ "sayim": {
+  "GECTI": 4,
+  "DUSTU": 3,
+  "SAHIPSIZ": 3,
+  "ATLANDI": 0
+ },
+ "kopuk_halkalar": [
+  "kamera",
+  "model_yukleme",
+  "olcek",
+  "hedef_konumu",
+  "rota",
+  "motor"
+ ],
+ "cikis_kodu": 1
+}

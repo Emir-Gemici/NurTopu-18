@@ -1,0 +1,5 @@
+egitim bilesenleri {'rescuenet': 7004, 'sentetik': 5400, 'copy_paste_t127': 344, 'dji_v7_x5': 2065}
+toplam 14813 dji pay 0.139
+val 73: komsu kare (±1) train icinde olan 71
+epoch sayisi 17 en iyi (mAP50-95 M) 2 [('1', '0.13772'), ('2', '0.15515'), ('3', '0.14479'), ('4', '0.1394'), ('5', '0.1433'), ('6', '0.1399')]
+0038 test29+val82 = 111

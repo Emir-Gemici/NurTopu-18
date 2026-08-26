@@ -1,0 +1,5 @@
+{"islemler":[
+{"tip":"poligon","deger":1,"nokta":[[0,195],[960,205],[960,320],[0,310]]},
+{"tip":"dikdortgen","deger":2,"kutu":[0,425,960,445]},
+{"tip":"daire","deger":2,"merkez":[130,430],"yaricap":30}
+]}

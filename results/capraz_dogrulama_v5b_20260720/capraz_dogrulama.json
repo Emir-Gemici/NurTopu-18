@@ -1,0 +1,75 @@
+{
+  "olcum": {
+    "tarih": "2026-07-20T10:32:50",
+    "ad": "v5b",
+    "imgsz": 640,
+    "veri": "O:\\navitas\\dataset\\rescuenet_yolo\\data.yaml"
+  },
+  "agirlik": {
+    "yol": "O:\\navitas\\models\\aday_v5b_s640ft.pt",
+    "sha256": "5ac82beeb6c4a11a22acdcd4014d57c5feb20703159845356a16e43e97f0cad8",
+    "boyut_mb": 23.9
+  },
+  "splitler": {
+    "val": {
+      "split": "val",
+      "imgsz": 640,
+      "box_mAP50": 0.6481,
+      "box_mAP50_95": 0.4534,
+      "mask_mAP50": 0.66,
+      "mask_mAP50_95": 0.411,
+      "mask_precision": 0.7325,
+      "mask_recall": 0.6493,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8279,
+          "mask_mAP50": 0.8554,
+          "mask_mAP50_95": 0.5445
+        },
+        "blocked": {
+          "box_mAP50": 0.4682,
+          "mask_mAP50": 0.4646,
+          "mask_mAP50_95": 0.2774
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.65,
+        "inference": 4.571,
+        "loss": 0.0,
+        "postprocess": 1.716
+      }
+    },
+    "test": {
+      "split": "test",
+      "imgsz": 640,
+      "box_mAP50": 0.6008,
+      "box_mAP50_95": 0.4297,
+      "mask_mAP50": 0.6181,
+      "mask_mAP50_95": 0.3763,
+      "mask_precision": 0.7182,
+      "mask_recall": 0.6492,
+      "sinif_bazli": {
+        "traversable": {
+          "box_mAP50": 0.8002,
+          "mask_mAP50": 0.8271,
+          "mask_mAP50_95": 0.5269
+        },
+        "blocked": {
+          "box_mAP50": 0.4015,
+          "mask_mAP50": 0.409,
+          "mask_mAP50_95": 0.2257
+        }
+      },
+      "hiz_ms": {
+        "preprocess": 1.341,
+        "inference": 3.633,
+        "loss": 0.0,
+        "postprocess": 1.577
+      }
+    }
+  },
+  "val_test_farki": {
+    "mask_mAP50": 0.0419,
+    "blocked_mask_mAP50": 0.0556
+  }
+}

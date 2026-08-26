@@ -1,0 +1,105 @@
+{
+  "parametreler": {
+    "siniflar": {
+      "0": "zemin",
+      "1": "engel",
+      "2": "hedef"
+    },
+    "zemin_tam_cerceve": true,
+    "zemin_alti_engeller": true,
+    "arac_ustu_yapistirma": false,
+    "yapistir_kaynagi": "O:\\navitas-local-train\\51_sentetik_arena.py",
+    "girdi": "O:\\navitas\\data\\raw_frames",
+    "tohum": 20260802
+  },
+  "ornekler": [
+    {
+      "kaynak": "frame_000000_000000000.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "yeterli_guvenli_zemin_yok"
+    },
+    {
+      "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000001_000000600.jpg",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000001_000000600_cp_00.jpg",
+      "bolum": "train",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 1,
+      "arac_px": 4916,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": null
+    },
+    {
+      "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000002_000000672.jpg",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000002_000000672_cp_00.jpg",
+      "bolum": "train",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 1,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": null
+    },
+    {
+      "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000003_000000720.jpg",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000003_000000720_cp_00.jpg",
+      "bolum": "train",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 1,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": null
+    },
+    {
+      "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000004_000000768.jpg",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000004_000000768_cp_00.jpg",
+      "bolum": "train",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 1,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": null
+    },
+    {
+      "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000005_000000816.jpg",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000005_000000816_cp_00.jpg",
+      "bolum": "train",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 1,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": null
+    },
+    {
+      "kaynak": "whatsapp_video_2026_07_30_at_11_44_03/frame_000006_000000864.jpg",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_03_frame_000006_000000864_cp_00.jpg",
+      "bolum": "train",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 1,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": null
+    },
+    {
+      "kaynak": "frame_000007_000000936.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "yeterli_guvenli_zemin_yok"
+    }
+  ]
+}
