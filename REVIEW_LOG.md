@@ -22530,3 +22530,22 @@ D-303'te `config/model_registry.json`'a `onnx_karar_denkligi` yazdım ve **yaln�
 
 #### 6. Bozulmama
 Genel kapı iki kolda GEÇTİ (kol1 15/15 · kol2 rota 15/15 · şerit 15/15); `unittest discover` **1062 OK** (2 skip).
+
+---
+
+### D-305 · Kullanıcının "gerçek fotolarda rota çizemiyor" gözleminin GÖRSEL kök sebebi: model **beton sulama kanalını yol sanıyor** (2026-08-27)
+
+**Kanıt:** `results/gece_20260826/korluk_conf_paneli.png` — 6 gerçek DJI karesi (3 `MASKE_YOK` + 3 `UC_BANT_TEMAS_YOK`), her biri **conf 0,30 (üretim)** ve **conf 0,10** ile yan yana; cyan = sınıf 0 (geçilebilir), kırmızı = sınıf 1 (engel). Kareler §18-A süpürmesinin ham çıktısından seçildi (uydurulmadı).
+
+#### 1. Görülen
+- **`UC_BANT` kareleri (4–6. satır):** modelin **sınıf 0'ı beton sulama kanalının üstünde** duruyor. Kanal yukarıdan bakıldığında düzgün, açık gri, **çizgisel** bir yapıdır — yoldan ayırt edilmesi öğrenilmemiş. Asıl **toprak yol** ise ya işaretsiz ya da sınıf 1. Yani koridor "yol"u değil **kanalı** takip ediyor; uç bantlara ulaşamayınca zincir reddediyor.
+- **`MASKE_YOK` kareleri (1–3. satır):** conf 0,30'da zemin **tam sıfır**. conf 0,10'a inince ortaya çıkan şey **yol değil, daha çok ENGEL kütlesi** (kırmızı alanlar büyüyor). Yani eşik düşürmek körlüğü "yol görerek" değil, **engel görerek** kapatıyor — §18-A'nın "eşik çare değil" hükmünün görsel karşılığı.
+
+#### 2. Bu neden ÖNEMLİ (ve neden yalnız bir doğruluk sorunu değil)
+Kanal üstüne rota yayınlamak, İKA'yı **su kanalına** sürmek demektir. Bugün bunu **kapılar tutuyor**: K6 "rota yol üstünde" ölçütü (D-290) ve gerçek-kare kapısındaki **YANLIŞ GÜZERGÂH = 0** şartı (CONTRACTS §12). D-289'da 196 numaralı karenin rotasının **beton kanal üstünde** olduğu zaten ölçülmüştü; bu panel o ölçümün **görsel** karşılığıdır. Yani sistem yanlış görüyor ama **yanlış sürmüyor** — fail-closed çalışıyor.
+
+#### 3. Kapsam — yarışma vs kırsal
+Bu kusur **kırsal DJI dağılımına** aittir. Şartname arenası (HTAB 50×50 m, işaretli üç güzergâh) sulama kanalı içermez; kabul kümesinde üretim yolu **12/12** rota veriyor (D-301 §1). Dolayısıyla bu, **yarışma puanı** riski değil, **gerçek dünya sağlamlığı** ve **demo** riskidir.
+
+#### 4. Sonuç — iş model/veri tarafında
+Çözüm eşikte değil (ölçüldü, §18-A: aday eşik yok), geometride değil (ölçüldü, D-298 §2), ölçekte değil (ölçüldü, D-298 §1). **Beton kanal ↔ toprak yol ayrımı** için etiket/veri gerekir; etiket dalgası 4 bunu zaten vurgulamıştı (ON_KAYIT §14: "beton kanal / bordür / oluk / banket → sınıf 1") ve v36 hâlâ karıştırıyor. Bir sonraki tur için doğru soru: **bu ayrımı taşıyan kare sayısı yeterli mi**, ve **kanalın kendisi sınıf 1 olarak yeterince örneklenmiş mi** — ölçülmeden yeni eğitim koşulmamalı.
