@@ -410,6 +410,19 @@ ISTISNA_KURALLARI = (
             "(D-294 SS3 ile ayni kanca)."),
     },
     {
+        "ad": "SURUM · karar kiyasi dongusu (v17/v20/v21)",
+        "baslik_icerir": ("Karar kıyası",),
+        "surumler": ("v17", "v20", "v21"),
+        "dongu_kancasi": True,
+        "gerekce": (
+            "T158 (ON_KAYIT SS27): SS5 dongusu (`for M in v21 v17 v20`) UC ESKI "
+            "modeli kendi doneminin kosullarinda kiyaslar; agirliklarin ucu de "
+            "`models/` ve `jetson_paket/models/` icinde MEVCUTTUR, yani blok "
+            "gercekten kosulabilir bir TARIHSEL kiyastir. Istisna BOS DEGILDIR: "
+            "`dongu_kancasi` sayesinde URETIM surumu bu listeye girdigi anda "
+            "coker — o zaman blok artik tarihsel degildir ve bayat sayilir."),
+    },
+    {
         "ad": "Paket agac listesi (etiketli)",
         "agac": True,
         # T157/d: bu istisna EskIDEN bolum baglamina bagli DEGILDI — diger dort
@@ -471,13 +484,68 @@ def _cikti_surumleri(satir: str):
     return CIKTI_SURUM_DESENI.findall(kuyruk)
 
 
+# T158 (ON_KAYIT SS27 · D-296 SS4): kilavuzun SS5 "Karar kiyasi" blogu model
+# adini KABUK DEGISKENIYLE kuruyor (`for M in v21 v17 v20` ... `${M}`). Dosya
+# adi deseni `${M}` bicimine HIC takilmiyordu, yani dongu listesindeki surumler
+# kapiya GORUNMEZDI. Asagidaki tarayici o listeyi gorunur kilar.
+DONGU_BASI_DESENI = re.compile(r"^\s*for\s+(\w+)\s+in\s+([^;]+?)\s*;\s*do\b")
+DONGU_SONU_DESENI = re.compile(r"^\s*done\b")
+DONGU_SURUM_DESENI = re.compile(r"\bv\d{1,3}\b")
+
+
+def _dongu_surumleri(metin: str):
+    """`for VAR in vNN ...; do ... done` bloklari.
+
+    Yalniz `${VAR}` bir MODEL ADININ icinde geciyorsa sayilir — rastgele bir
+    kabuk dongusu surum denetimine girmez. Doner:
+      [(for_satir_no, for_satiri, baslik, [surumler])]
+    """
+    satirlar = list(_bolumlu_satirlar(metin))
+    cikti = []
+    i = 0
+    while i < len(satirlar):
+        no, satir, baslik = satirlar[i]
+        m = DONGU_BASI_DESENI.match(satir)
+        if not m:
+            i += 1
+            continue
+        degisken, liste = m.group(1), m.group(2)
+        surumler = DONGU_SURUM_DESENI.findall(liste)
+        govde = []
+        j = i + 1
+        while j < len(satirlar) and not DONGU_SONU_DESENI.match(satirlar[j][1]):
+            govde.append(satirlar[j][1])
+            j += 1
+        govde_metni = " ".join(govde)
+        model_adinda = (f"navitas_seg_${{{degisken}}}" in govde_metni
+                        or f"navitas_seg_${degisken}" in govde_metni)
+        if surumler and model_adinda:
+            cikti.append((no, satir, baslik, surumler))
+        i = j + 1
+    return cikti
+
+
+def _bolumun_dongu_surumleri(metin: str, baslik: str):
+    """Verilen bolum basligindaki dongu listelerinin BIRLESIMI."""
+    kume = set()
+    for _no, _satir, blk, surumler in _dongu_surumleri(metin):
+        if blk == baslik:
+            kume.update(surumler)
+    return kume
+
+
 def _denetlenen_surumler(satir: str):
     """Bu satirda URETIM SURUMU TASIMASI GEREKEN her surum adi."""
     return MODEL_DOSYA_DESENI.findall(satir) + _cikti_surumleri(satir)
 
 
-def _istisna_bul(baslik: str, satir: str, surum: str):
-    """Eski surum tasiyan satir icin GECERLI istisna kaydi (yoksa None)."""
+def _istisna_bul(baslik: str, satir: str, surum: str,
+                 dongu_surumleri=frozenset(), uretim=None):
+    """Eski surum tasiyan satir icin GECERLI istisna kaydi (yoksa None).
+
+    T158: `dongu_kancasi` tasiyan kural, URETIM surumu dongu listesine girdigi
+    anda COKER — istisna boyle bos olmaktan cikar.
+    """
     for kural in ISTISNA_KURALLARI:
         # T157/d: bolum baglami HER kural icin ONCE denetlenir — agac kurali
         # dahil. Once `agac` dalinda erken donuluyordu ve o kural belgenin
@@ -487,6 +555,9 @@ def _istisna_bul(baslik: str, satir: str, surum: str):
         if kural.get("agac"):
             if AGAC_SATIRI_DESENI.match(satir) and "←" in satir:
                 return kural
+            continue
+        if kural.get("dongu_kancasi") and uretim in dongu_surumleri:
+            # Uretim surumu bu dongude ise blok artik "tarihsel kiyas" degildir.
             continue
         izinli = kural["surumler"]
         if izinli is None:
@@ -498,12 +569,24 @@ def _istisna_bul(baslik: str, satir: str, surum: str):
 
 def _sapmalar(yol: Path, uretim: str):
     """(satir_no, satir, surum, istisna) listesi — istisna None ise KUSUR."""
+    metin = yol.read_text(encoding="utf-8")
     cikti = []
-    for no, satir, baslik in _bolumlu_satirlar(yol.read_text(encoding="utf-8")):
+    for no, satir, baslik in _bolumlu_satirlar(metin):
+        dongu = _bolumun_dongu_surumleri(metin, baslik)
         for surum in _denetlenen_surumler(satir):
             if surum == uretim:
                 continue
-            cikti.append((no, satir, surum, _istisna_bul(baslik, satir, surum)))
+            cikti.append((no, satir, surum,
+                          _istisna_bul(baslik, satir, surum, dongu, uretim)))
+    # T158/1: kabuk dongusuyle kurulan model adlari — dosya adi deseni bunlari
+    # GORMUYORDU, yani `for M in v21 v17 v20` listesi kapiya gorunmezdi.
+    for no, satir, baslik, surumler in _dongu_surumleri(metin):
+        dongu = set(surumler)
+        for surum in surumler:
+            if surum == uretim:
+                continue
+            cikti.append((no, satir, surum,
+                          _istisna_bul(baslik, satir, surum, dongu, uretim)))
     return cikti
 
 
@@ -578,8 +661,16 @@ IMGSZ_ISTISNALARI = (
 )
 
 
-def _imgsz_istisna_bul(baslik: str, komut: str, deger: int, uretim_ad: str):
-    """`--imgsz` sapmasi icin GECERLI istisna (yoksa None)."""
+def _imgsz_istisna_bul(baslik: str, komut: str, deger: int, uretim_ad: str,
+                       dongu_surumleri=frozenset(), uretim=None):
+    """`--imgsz` sapmasi icin GECERLI istisna (yoksa None).
+
+    🔴 T158/2 (ON_KAYIT SS27): eski kanca YALNIZ `uretim_ad in komut` diye
+    bakiyordu. Ama bu blokta model adi KABUK DEGISKENIYLE kurulur
+    (`navitas_seg_${M}_best.pt`), yani uretim adi komutta HICBIR ZAMAN tam
+    dosya adi olarak GECMEZ — kanca ates alamiyordu ve istisna fiilen
+    KOSULSUZDU (bos kanca). Artik dongu listesi de denetlenir.
+    """
     for kural in IMGSZ_ISTISNALARI:
         if not all(p in baslik for p in kural["baslik_icerir"]):
             continue
@@ -587,6 +678,8 @@ def _imgsz_istisna_bul(baslik: str, komut: str, deger: int, uretim_ad: str):
             continue
         if uretim_ad in komut:
             # Uretim modeli bu bloga girdiyse istisnanin gerekcesi COKER.
+            continue
+        if uretim is not None and uretim in dongu_surumleri:
             continue
         return kural
     return None
@@ -815,7 +908,11 @@ class KilavuzImgszHizasiTests(unittest.TestCase):
                     with self.subTest(kilavuz=k.parent.name, satir=no,
                                       imgsz=deger):
                         self.assertIsNotNone(
-                            _imgsz_istisna_bul(baslik, komut, deger, uretim_ad),
+                            _imgsz_istisna_bul(
+                                baslik, komut, deger, uretim_ad,
+                                _bolumun_dongu_surumleri(
+                                    k.read_text(encoding="utf-8"), baslik),
+                                self.uretim),
                             f"{k.parent.name}:{no} komutu `imgsz {deger}` "
                             f"diyor, beklenen {beklenen} ({kaynak}); sahadaki "
                             f"kisi modeli YANLIS cozunurlukte kosar ve olcum "

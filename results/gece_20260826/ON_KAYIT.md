@@ -262,3 +262,16 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - uyuşmazlık **≤ 5/260** → "v34 seviyesinde", T79'a kanıt olarak eklenir, yeni iş açılmaz;
 - uyuşmazlık **> 5/260** → **saha riski** ilan edilir, T79'a yazılır ve ayrıca **beraberlik bandının** (`BERABERLIK_BANDI`) şerit kararına gerçekten uygulanıp uygulanmadığı ölçülür (T155'in `rota_serit_karari`'ında).
 ⚠ Bu bir **kapı değildir**; üretim modeli bu sayıya göre geri alınmaz — geri alma kullanıcı kararıdır (D-294 yordamı). Sayı ne çıkarsa yazılır.
+
+## 27. EK — T158: kılavuz kapısının kalan iki sınırı (2026-08-27, sonuç görülmeden)
+**Kusur (D-296 §4, çürütücü ölçtü):** `JETSON_KILAVUZ.md` §5 "Karar kıyası" bloğu model adını **kabuk değişkeniyle** kuruyor (`for M in v21 v17 v20` … `navitas_seg_${M}_best.pt`). Sonuç iki delik:
+1. **Sürüm taraması kör:** `MODEL_DOSYA_DESENI` `${M}` biçimine hiç takılmıyor; döngü listesindeki sürümler kapıya **görünmez**.
+2. **`--imgsz` istisnasının kancası ATEŞ ALAMIYOR:** istisna "blokta ÜRETİM sürümünün **adı** geçerse düşer" diyor, ama üretim adı bu blokta **hiçbir zaman** tam dosya adı olarak geçmez — yani istisna fiilen **koşulsuzdur** (boş kanca).
+**Ölçülen bağlam (varsayım değil):** `models/` ve `jetson_paket/models/` **v17/v20/v21 ağırlıklarını taşıyor** → blok gerçekten koşulabilir bir **tarihsel** kıyastır; kılavuz metni **değiştirilmez**, kusur yalnız **kapıdadır**.
+**Yapılacak:** kapı kabuk döngülerini tanıyacak — `for <VAR> in <vNN listesi> … done` bloğunda `${VAR}` bir model adı içinde geçiyorsa, listedeki her sürüm **denetlenen sürüm** sayılır. Bu bloğa, `--imgsz` istisnasıyla **aynı disiplinde** bir sürüm istisnası yazılır ve **iki istisnanın da kancası** şu olur: **üretim sürümü döngü listesinde geçerse istisna DÜŞER**.
+**Kapı — mutasyonlu (sonuca göre değişmez):**
+1. Bugünkü kılavuzla test **GEÇMELİ** (v17/v20/v21 tarihsel kıyas meşrudur).
+2. **MUTASYON A:** döngü listesine `v36` (üretim) enjekte edilirse test **DÜŞMELİ** — hem sürüm hem `--imgsz` kolundan.
+3. **MUTASYON B:** döngü listesine defterde **olmayan** bir sürüm (`v99`) enjekte edilirse test **DÜŞMELİ**.
+4. **MUTASYON C:** `--imgsz 640` → `512` yapılırsa (tarihsel kıyasın kendi kaydıyla çelişir) test **DÜŞMELİ**.
+⚠ Kılavuz içeriği bu turda **değişmiyor**; değişen tek şey kapının görüş alanıdır. Mutasyonların hiçbiri geçerse T158 **kapanmaz**.

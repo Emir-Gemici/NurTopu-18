@@ -22498,3 +22498,35 @@ GUI'nin **açılış kaynağı** hâlâ `kompozit` (`comms/yks_gui.py:250`, `ALG
 - **ONNX koşumu CPU EP ile yapıldı** — `CUDAExecutionProvider` bu kurulumda kayıtlı değil (log satırı dosyada durur). Sahaya giden artefakt **TensorRT `.engine`**'dir ve onun denkliği **Jetson'da ayrıca ölçülmelidir** (**T109** açık; `turevler` içinde `.engine` sha'ları hâlâ `DERLENINCE_YAZILIR` = fail-closed RED).
 - **T79'un asıl iddiası (kararsızlık) bu ölçümle kapanmaz:** 1/260 uyuşmazlık, `karar_cevrilmesi` ölçümündeki gürültü kararsızlığından (v36 **14/260**, v35 9/260 — D-295) **ayrı** bir olgudur. T79 **açık kalıyor**.
 - **Yan bulgu (T161 sınıfı, veri yolu):** `scripts/olcum/67_onnx_karar_denkligi.py:39` varsayılan kümeyi `BURASI/"calisma"/…` diye türetiyor — yalnız **canlı klasörde** doğru, depo kopyasında dosya bulunamıyor. D-300 §6'da "kapsam dışı ve duruyor" diye kaydedilen sınıfın **somut bir örneğidir**; ölçüm `--kume` ile açıkça verilerek koşuldu.
+
+---
+
+### D-304 · ✅ T158 KAPANDI — kılavuz kapısı artık KABUK DÖNGÜSÜYLE kurulan model adlarını görüyor; "boş kanca" kapatıldı (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §27 (dört mutasyon sonuç görülmeden yazıldı). **Kapı:** `tests/test_t158_kilavuz_kapisi_dongu.py` **6/6**, `tests/test_uretim_modeli_hizasi.py` **37/37**.
+
+#### 1. İki delik (D-296 §4'te çürütücü ölçmüştü)
+`JETSON_KILAVUZ.md` §5 "Karar kıyası" bloğu model adını kabuk değişkeniyle kuruyor: `for M in v21 v17 v20; do … navitas_seg_${M}_best.pt`.
+1. **Sürüm taraması kördü:** `MODEL_DOSYA_DESENI` `${M}` biçimine takılmıyor → döngü listesindeki sürümler kapıya **görünmüyordu**.
+2. **`--imgsz` istisnasının kancası ateş alamıyordu:** kanca "blokta ÜRETİM **adı** geçerse düşer" diyordu; üretim adı bu blokta **hiçbir zaman** tam dosya adı olarak geçmez → istisna fiilen **koşulsuzdu**. Bu, projenin en tehlikeli kusur sınıfı olan **boş kapının** bir örneğidir (D-15).
+
+#### 2. Ölçülen bağlam — kılavuz metni DEĞİŞMEDİ
+`models/` ve `jetson_paket/models/` **v17, v20, v21 ağırlıklarını taşıyor** → blok gerçekten koşulabilir bir **tarihsel** kıyastır ve 640 kendi döneminin çözünürlüğüdür. Kusur içerikte değil, **kapının görüş alanındaydı**; kılavuza dokunulmadı.
+
+#### 3. Yapılan
+`_dongu_surumleri()`: `for VAR in <vNN…>; do … done` bloklarını tarar ve **yalnız** `${VAR}` bir model adının içinde geçiyorsa sayar (rastgele kabuk döngüsü denetime girmez — ayrı test). Bulunan sürümler `_sapmalar()`e girer. "Karar kıyası" bloğuna, `--imgsz` istisnasıyla **aynı disiplinde** bir sürüm istisnası yazıldı ve **iki istisnanın da** kancası şu oldu: **üretim sürümü döngü listesinde geçerse istisna ÇÖKER**.
+
+#### 4. Mutasyon kanıtı (ön kayıtlı dördü de tuttu)
+| # | mutasyon | beklenen | sonuç |
+|---|---|---|---|
+| taban | bugünkü kılavuz | temiz | ✅ 0 sapma |
+| A | döngü listesine **v36** (üretim) | DÜŞER | ✅ düştü |
+| B | döngü listesine **v99** (defterde yok) | DÜŞER | ✅ düştü |
+| C | `--imgsz 640` → **512** | DÜŞER | ✅ istisna çöktü |
+
+#### 5. 🔴 KENDİ HATAMIN KAYDI (D-303'ün eksiği)
+D-303'te `config/model_registry.json`'a `onnx_karar_denkligi` yazdım ve **yalnız `test_model_registry`'yi koştum**, tam süiti değil — `jetson_paket/config/model_registry.json` **aynası bayat kaldı** ve o hâliyle commit'lendi (`065b38d`). Bir sonraki tam koşuda **dört kapı birden** yakaladı (`test_jetson_comms_paketi`, `test_jetson_paket_defteri`, `test_k0_iki_olcum_hatti`, `test_t143_turev_ve_kamera`). `scripts/jetson_paket_hazirla.py` yeniden koşuldu, ayna hizalandı, süit **1062 OK**.
+**Ders (yordam):** defter (`config/model_registry.json`) değişince **tek test yetmez** — ayna kapıları yalnız tam süitte ateş alır. Bundan sonra defter dokunuşu = **tam süit**.
+
+#### 6. Bozulmama
+Genel kapı iki kolda GEÇTİ (kol1 15/15 · kol2 rota 15/15 · şerit 15/15); `unittest discover` **1062 OK** (2 skip).
