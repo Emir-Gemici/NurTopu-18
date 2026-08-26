@@ -1,0 +1,13 @@
+# GECE v5 = YALNIZ DJI x20 egitim (rescuenet/sentetik/copy_paste YOK), val DJI 0038. ON_KAYIT §8.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\dji_kirsal_x20\images\train
+  - O:\navitas\dataset\dji_kirsal_dalga2_x20\images\train
+val:
+  - O:\navitas\dataset\dji_kirsal_0038_bolum\images\val
+  - O:\navitas\dataset\dji_kirsal_dalga2\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

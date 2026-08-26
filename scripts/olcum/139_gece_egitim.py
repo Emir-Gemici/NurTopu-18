@@ -107,6 +107,22 @@ names:
         v4 = v4[:bas] + f"val:{nl}  - {BOLUM / 'images' / 'val'}{nl}  - {DALGA2 / 'images' / 'val'}{nl}{nl}" + v4[son:]
         assert v4.count("rescuenet") == 1 and v4.count("dalga2") == 2, v4
         (DS / "karisim_gece_v4.yaml").write_text(v4, encoding="utf-8")
+        # v5: YALNIZ DJI (x20) egitim, val DJI — arena karisimi YOK. Kapi (a) arenayi korur mu, olculur.
+        v5 = f"""# GECE v5 = YALNIZ DJI x20 egitim (rescuenet/sentetik/copy_paste YOK), val DJI 0038. ON_KAYIT §8.
+path: {DS}
+train:
+  - {X20 / 'images' / 'train'}
+  - {DALGA2_X20 / 'images' / 'train'}
+val:
+  - {BOLUM / 'images' / 'val'}
+  - {DALGA2 / 'images' / 'val'}
+
+nc: 2
+names:
+  0: traversable
+  1: blocked
+"""
+        (DS / "karisim_gece_v5.yaml").write_text(v5, encoding="utf-8")
     # 4) taban sayilari: ayni 29 test karesinde v35 ve v1 (mevcut olcumden)
     def sebepler(dosya, secici):
         d = json.load(open(KOK / dosya, encoding="utf-8"))
@@ -130,12 +146,16 @@ names:
     print(json.dumps({k: v for k, v in ozet.items() if k != "bolum"}, indent=1, ensure_ascii=False))
 
 
-def egit(taban: str, surum: str = "v2"):
+def egit(taban: str, surum: str = "v2", epochs: int | None = None, patience: int | None = None):
     import yaml as _y
     ref = _y.safe_load(open(KOK / "codes" / "runs" / "segment" / "t127_temiz" / "args.yaml", encoding="utf-8"))
     from ultralytics import YOLO
     ad = f"gece_{surum}_{taban}taban"
-    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml"}[surum]
+    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml", "v5": DS / "karisim_gece_v5.yaml"}[surum]
+    if epochs is not None:
+        ref["epochs"] = epochs
+    if patience is not None:
+        ref["patience"] = patience
     model = YOLO(str(TABANLAR[taban]))
     recete = dict(data=str(yaml_yolu), epochs=ref["epochs"], imgsz=ref["imgsz"], batch=ref["batch"],
                   seed=ref["seed"], deterministic=ref["deterministic"], patience=ref["patience"],
@@ -156,13 +176,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("komut", choices=["hazirla", "egit"])
     ap.add_argument("--taban", choices=list(TABANLAR), default="v35")
-    ap.add_argument("--surum", choices=["v2", "v3", "v4"], default="v2")
+    ap.add_argument("--surum", choices=["v2", "v3", "v4", "v5"], default="v2")
+    ap.add_argument("--epochs", type=int, default=None)
+    ap.add_argument("--patience", type=int, default=None)
     a = ap.parse_args()
     if a.komut == "hazirla":
         hazirla()
     else:
         assert YAML.exists(), "once hazirla"
-        egit(a.taban, a.surum)
+        egit(a.taban, a.surum, a.epochs, a.patience)
 
 
 if __name__ == "__main__":
