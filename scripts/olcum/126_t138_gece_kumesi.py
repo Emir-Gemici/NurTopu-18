@@ -111,15 +111,21 @@ def main() -> int:
             def coz(y):
                 yol, _guven, wps, _clean, red, _olcum = y
                 sebep = red[0] if isinstance(red, tuple) else red
-                return (sebep, len(wps) if wps else 0, yol)
-            s1, n1, yol1 = coz(y1)
-            s2, n2, yol2 = coz(y2)
+                # T152 (ON_KAYIT §11(2)): waypoint LISTESI de yazilir — tuval
+                # (kare letterbox) koordinati, tam sayi. "Rota yol ustunde mi"
+                # kapisi (142, b-ek2) rotanin NEREDEN gectigini bununla olcer;
+                # D-288'de 3 rota cim/tarladan gecerken TP sayilmisti.
+                liste = [[int(x), int(y)] for x, y in wps] if wps else []
+                return (sebep, len(wps) if wps else 0, yol, liste)
+            s1, n1, yol1, w1 = coz(y1)
+            s2, n2, yol2, w2 = coz(y2)
             satirlar.append({
                 "kare": p.name, "klip": p.parent.name[:38],
                 "zemin_orani": round(float(oran), 5),
                 "U2": bool(U2_ALT < oran < U2_UST),
                 "olceksiz_sebep": s1, "olceksiz_wp": n1, "olceksiz_yol": yol1,
                 "olcekli_sebep": s2, "olcekli_wp": n2, "olcekli_yol": yol2,
+                "olceksiz_wps": w1, "olcekli_wps": w2,
             })
         sure = time.perf_counter() - t0
         u2 = sum(1 for s in satirlar if s["U2"])
