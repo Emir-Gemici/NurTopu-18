@@ -134,3 +134,10 @@ Dört koşumda da (v1, v2, v3, v4) **best epoch 1–4**; v4'te DJI-only val mAP5
 v5 gerçek domende en iyiydi (TP 10/13, FP 1) ama arena kabulünü kaybetti (K1 < 230, çatı 0,135). v3 arenayı korudu ama MASKE_YOK 11. Tek denenmemiş orta yol: **rescuenet'siz karışım**.
 - **v6** = v35 taban; eğitim DJI ×20 (209 kare) + sentetik_arena (5400) + copy_paste_t127 (344); val DJI 0038 (82); epochs 10 · patience 5; reçete aynı.
 - Kapılar §4 aynen (a: kabul K0–K5, K1 ≥ 230, 67'de red ≤ 5, çatı ≤ 0,10; b: ROTA ≥ 10, MASKE_YOK ≤ 10, FP ≤ 1). Sıralama kuralı §7. Düşerse "rescuenet'siz karışım da yetmedi" yazılır.
+
+## 10. EK — TEST29 REFERANS TAMAMLAMA (kullanıcı kararı, 2026-08-27 sabah; sonuç görülmeden)
+Kullanıcı: *"29 test karesinin bantlarını tamamlat, v3 ve v6'yı yeniden ölç."*
+- **Körlük:** ameleler yalnız kareyi ve MEVCUT elle etiketi görür (`145 hazirla` tabanı); hiçbir model çıktısı, FP listesi ya da kare adı-ipucu verilmez. 29 karenin **tamamı** işlenir (yalnız FP kareleri değil).
+- **İzin verilen değişiklik:** yol/koridor kare kenarına kadar sürüyorsa sınıf 0'ı kenara UZATMAK; açıkça yol olan etiketsiz bölgeleri sınıf 0 yapmak; açıkça engel olan etiketsiz bölgeleri sınıf 1 yapmak. **Yasak:** tabandaki sınıf 1'i silmek (`145 kur` geri koyar); çiğ toprak/mera/tarlayı sınıf 0 yapmak (madde 8/12).
+- **Ölçüm:** yeni küme `dataset/dji_kirsal_0038_bolum_v2/…/test` (eski küme dokunulmaz); `143` yeni tavan; `142 --test-dizin v2 --tavan yeni` ile **v35, v3, v6** aynı kapılarla (ROTA ≥ 10, MASKE_YOK ≤ 10, FP ≤ 1, (a) tam). ROTA/MASKE_YOK eşikleri v35 tabanından türetilmişti ve **değişmez** (referans değişimi bu iki sayıyı etkilemez; yalnız FP/TP referansı değişir).
+- **Yorum kuralı:** referans genişleyince FP'nin düşmesi beklenir; TP artar. Bir aday geçerse §4(d) uygulanır (çürütücü + terfi). Her ikisi geçerse §7 sıralaması (FP en düşük, sonra TP).

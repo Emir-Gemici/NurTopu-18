@@ -87,9 +87,14 @@ def buyut(kare: Path, kutu, cikti: Path):
     print("buyut ->", cikti, "olcek", round(olcek, 2))
 
 
-def uret(kare: Path, ops: Path, cikti: Path, bindirme: Path | None):
+def uret(kare: Path, ops: Path, cikti: Path, bindirme: Path | None, taban: Path | None = None):
     d = json.loads(Path(ops).read_text(encoding="utf-8"))
     m = np.zeros((H, W), np.uint8)
+    if taban is not None:
+        tm = cv2.imread(str(taban), cv2.IMREAD_GRAYSCALE)
+        if tm is None or tm.shape != (H, W) or not set(np.unique(tm).tolist()) <= {0, 1, 2}:
+            raise SystemExit(f"[DUR] taban maske gecersiz: {taban}")
+        m = tm.copy()
     for i, op in enumerate(d["islemler"]):
         deger = int(op["deger"])
         if deger not in (0, 1, 2):
@@ -136,7 +141,8 @@ def sayim_hesapla(m: np.ndarray) -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("komut", choices=["izgara", "buyut", "uret", "sayim"])
+    ap.add_argument("komut", choices=["izgara", "buyut", "uret", "sayim", "goster"])
+    ap.add_argument("--taban", type=Path, default=None, help="uret: islemler bu maskenin USTUNE uygulanir")
     ap.add_argument("--kare", type=Path)
     ap.add_argument("--ops", type=Path)
     ap.add_argument("--cikti", type=Path)
@@ -149,7 +155,16 @@ def main():
     elif a.komut == "buyut":
         buyut(a.kare, a.kutu, a.cikti)
     elif a.komut == "uret":
-        uret(a.kare, a.ops, a.cikti, a.bindirme)
+        uret(a.kare, a.ops, a.cikti, a.bindirme, a.taban)
+    elif a.komut == "goster":
+        m = cv2.imread(str(a.maske), cv2.IMREAD_GRAYSCALE)
+        im = _oku_960(a.kare); ov = im.copy()
+        ov[m == 1] = (0.45 * ov[m == 1] + 0.55 * np.array([0, 200, 0])).astype(np.uint8)
+        ov[m == 2] = (0.45 * ov[m == 2] + 0.55 * np.array([0, 0, 220])).astype(np.uint8)
+        ov = _izgara_ciz(ov)
+        a.cikti.parent.mkdir(parents=True, exist_ok=True)
+        cv2.imwrite(str(a.cikti), np.concatenate([im, ov], axis=1), [cv2.IMWRITE_JPEG_QUALITY, 90])
+        print("goster ->", a.cikti, json.dumps(sayim_hesapla(m)))
     else:
         m = cv2.imread(str(a.maske), cv2.IMREAD_GRAYSCALE)
         print(json.dumps(sayim_hesapla(m)))

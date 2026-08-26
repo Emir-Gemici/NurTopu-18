@@ -84,10 +84,16 @@ def main():
     ap.add_argument("--agirlik", type=Path, required=True)
     ap.add_argument("--ad", required=True)
     ap.add_argument("--atla-kabul", action="store_true")
+    ap.add_argument("--test-dizin", type=Path, default=None, help="TEST29 yerine (ON_KAYIT §10 v2 referansi)")
+    ap.add_argument("--tavan", type=Path, default=None, help="etiket tavani JSON (varsayilan test29_etiket_tavani.json)")
     a = ap.parse_args()
+    global TEST29
+    if a.test_dizin is not None:
+        TEST29 = a.test_dizin
     CIKTI.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
-    sonuc = {"agirlik": str(a.agirlik), "ad": a.ad, "kapi_sabitleri": KAPI, "taban_v35": TABAN_V35}
+    sonuc = {"agirlik": str(a.agirlik), "ad": a.ad, "kapi_sabitleri": KAPI, "taban_v35": TABAN_V35,
+             "test_dizin": str(TEST29), "tavan": str(a.tavan) if a.tavan else "varsayilan"}
     if not a.atla_kabul:
         sonuc["kabul"] = adim1_kabul(a.agirlik, a.ad)
         print("[1] kabul", json.dumps({k: v for k, v in sonuc["kabul"].items() if k != "json"}), flush=True)
@@ -97,7 +103,7 @@ def main():
     print("[3] test29", json.dumps({k: v for k, v in sonuc["test29"].items() if k != "json"}), flush=True)
 
     # (b-ek) ON_KAYIT §4(b-ek): elle etiket tavanina gore TP / FP (yalniz SIKILASTIRIR)
-    tavan_yolu = CIKTI / "test29_etiket_tavani.json"
+    tavan_yolu = a.tavan if a.tavan is not None else CIKTI / "test29_etiket_tavani.json"
     if tavan_yolu.is_file():
         tavan = {s["kare"]: s["rota"] for s in json.load(io.open(tavan_yolu, encoding="utf-8"))["kareler"]}
         d126 = json.load(io.open(sonuc["test29"]["json"], encoding="utf-8"))
