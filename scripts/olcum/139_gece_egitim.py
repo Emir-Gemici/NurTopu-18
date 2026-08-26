@@ -123,6 +123,12 @@ names:
   1: blocked
 """
         (DS / "karisim_gece_v5.yaml").write_text(v5, encoding="utf-8")
+        # v6: DJI x20 + sentetik_arena + copy_paste_t127 (rescuenet YOK), val DJI. ON_KAYIT §9.
+        v6 = v5.replace("# GECE v5 = YALNIZ DJI x20 egitim (rescuenet/sentetik/copy_paste YOK), val DJI 0038. ON_KAYIT §8.",
+                        "# GECE v6 = DJI x20 + sentetik_arena + copy_paste_t127 (rescuenet YOK), val DJI 0038. ON_KAYIT §9.")
+        v6 = v6.replace("train:" + nl, "train:" + nl + f"  - {DS / 'sentetik_arena' / 'images' / 'train'}" + nl + f"  - {DS / 'copy_paste_t127' / 'images' / 'train'}" + nl)
+        assert v6.count("sentetik_arena") == 2 and "rescuenet_2sinif" not in v6, v6
+        (DS / "karisim_gece_v6.yaml").write_text(v6, encoding="utf-8")
     # 4) taban sayilari: ayni 29 test karesinde v35 ve v1 (mevcut olcumden)
     def sebepler(dosya, secici):
         d = json.load(open(KOK / dosya, encoding="utf-8"))
@@ -151,7 +157,7 @@ def egit(taban: str, surum: str = "v2", epochs: int | None = None, patience: int
     ref = _y.safe_load(open(KOK / "codes" / "runs" / "segment" / "t127_temiz" / "args.yaml", encoding="utf-8"))
     from ultralytics import YOLO
     ad = f"gece_{surum}_{taban}taban"
-    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml", "v5": DS / "karisim_gece_v5.yaml"}[surum]
+    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml", "v5": DS / "karisim_gece_v5.yaml", "v6": DS / "karisim_gece_v6.yaml"}[surum]
     if epochs is not None:
         ref["epochs"] = epochs
     if patience is not None:
@@ -176,7 +182,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("komut", choices=["hazirla", "egit"])
     ap.add_argument("--taban", choices=list(TABANLAR), default="v35")
-    ap.add_argument("--surum", choices=["v2", "v3", "v4", "v5"], default="v2")
+    ap.add_argument("--surum", choices=["v2", "v3", "v4", "v5", "v6"], default="v2")
     ap.add_argument("--epochs", type=int, default=None)
     ap.add_argument("--patience", type=int, default=None)
     a = ap.parse_args()

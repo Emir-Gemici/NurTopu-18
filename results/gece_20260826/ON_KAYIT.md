@@ -129,3 +129,8 @@ olduğu gibi yazılır. "Az farkla kaçırdı, verelim" **YAPILMAZ**.
 Dört koşumda da (v1, v2, v3, v4) **best epoch 1–4**; v4'te DJI-only val mAP50-95 epoch 1'de 0,0955 ve sonra **düşüyor** — yani karışımla daha uzun eğitmek gerçek domeni de iyileştirmiyor (×20 kopya + karışım = ezber/çekişme). Kalan tek denenmemiş kaldıraç: **karışımsız** ince ayar.
 - **v5** = v35 taban, eğitim YALNIZ DJI ×20 (0037/0039: 101+108 kare), val DJI 0038 (82), **epochs 10 · patience 5**, diğer reçete aynı (lr0 0,001, warmup 5).
 - Beklenen risk: kapı (a) **düşer** (arena karışımı yok). Düşerse *"karışımsız ince ayar arenayı bozdu"* diye yazılır; **arena kapısı gevşetilmez**, v5 aday olamaz. (a) geçerse §4(b) ve (b-ek) aynen uygulanır; §7 sıralama kuralı geçerli.
+
+## 9. EK — v6 (05:0x, sonuç görülmeden)
+v5 gerçek domende en iyiydi (TP 10/13, FP 1) ama arena kabulünü kaybetti (K1 < 230, çatı 0,135). v3 arenayı korudu ama MASKE_YOK 11. Tek denenmemiş orta yol: **rescuenet'siz karışım**.
+- **v6** = v35 taban; eğitim DJI ×20 (209 kare) + sentetik_arena (5400) + copy_paste_t127 (344); val DJI 0038 (82); epochs 10 · patience 5; reçete aynı.
+- Kapılar §4 aynen (a: kabul K0–K5, K1 ≥ 230, 67'de red ≤ 5, çatı ≤ 0,10; b: ROTA ≥ 10, MASKE_YOK ≤ 10, FP ≤ 1). Sıralama kuralı §7. Düşerse "rescuenet'siz karışım da yetmedi" yazılır.

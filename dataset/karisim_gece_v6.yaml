@@ -1,0 +1,15 @@
+# GECE v6 = DJI x20 + sentetik_arena + copy_paste_t127 (rescuenet YOK), val DJI 0038. ON_KAYIT §9.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_t127\images\train
+  - O:\navitas\dataset\dji_kirsal_x20\images\train
+  - O:\navitas\dataset\dji_kirsal_dalga2_x20\images\train
+val:
+  - O:\navitas\dataset\dji_kirsal_0038_bolum\images\val
+  - O:\navitas\dataset\dji_kirsal_dalga2\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked
