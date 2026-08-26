@@ -22294,7 +22294,7 @@ saklanmasıdır.
 
 ---
 
-## D-298 · T159 — "GUI arena_kadraj dışında rota üretmiyor": ölçüldü, iki hipotez çürüdü, bir HÜKÜM DÜZELTİLDİ (2026-08-27)
+### D-298 · T159 — "GUI arena_kadraj dışında rota üretmiyor": ölçüldü, iki hipotez çürüdü, bir HÜKÜM DÜZELTİLDİ (2026-08-27)
 
 **Kullanıcı gözlemi (verbatim):** *"arena_kadraj klasörü hariç tüm klasörleri kaynak olarak seçince guiden yol üretemiyor"*. Ön kayıt: `results/gece_20260826/ON_KAYIT.md` §19–§20 (ikisi de sonuç görülmeden).
 
@@ -22333,7 +22333,7 @@ saklanmasıdır.
 
 ---
 
-## D-299 · ✅ T156 KAPANDI · genel kapı (madde 14) artık **ÜRETİM yolunu da** zorluyor (`analyze_path` kolu, 15/15) · 🔴 yan bulgu: worktree'de `sys.path` kirlenmesi test modüllerini **ANA depodan** yüklüyor
+### D-299 · ✅ T156 KAPANDI · genel kapı (madde 14) artık **ÜRETİM yolunu da** zorluyor (`analyze_path` kolu, 15/15) · 🔴 yan bulgu: worktree'de `sys.path` kirlenmesi test modüllerini **ANA depodan** yüklüyor
 
 **Tarih:** 2026-08-26 · **Ön kayıt:** `results/gece_20260826/ON_KAYIT.md` §18-B · **Rapor:** `results/t156/rapor.md`
 **Kapsam:** `codes/test_rota_sentetik.py`, `tests/test_t156_genel_kapi_uretim_kolu.py`, `CONTRACTS.md` §11.2-EK
