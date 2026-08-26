@@ -7,6 +7,11 @@ Adimlar (hepsi mevcut olcum betiklerini cagirir / ice aktarir; yeni olcut UYDURU
   2. 109 model_olc       -> cati_kacak_ort, kaplama67_icerik_medyan, zemin_maskesi_reddi (67'de red), figur_zemin_orani
   3. 126 gece_kumesi     -> 29 TEST karesi (dataset/dji_kirsal_0038_bolum/images/test): ROTA / MASKE_YOK / UC_BANT
   4. Kapi degerlendirmesi ON_KAYIT §4 (a)+(b) sabitleriyle — sabitler BURADA yazilidir, sonuca gore degismez.
+  5. (b-ek2, T152 · ON_KAYIT §11(2)) --etiket-dizin verilirse: her ROTA karesinde rota CIZGISI
+     (ardisik waypoint'leri birlestiren 1 px polylines, tuval koordinati) elle etiketin uc durumlu
+     maskesiyle kesistirilir: sinif 0 ustundeki pay >= 0,90 VE sinif 1 ustunde 0 waypoint; aksi
+     hâlde kare YANLIS GUZERGAH. Kapi: YANLIS GUZERGAH == 0. Etiketsiz pay yalniz raporlanir.
+     --etiket-dizin verilmezse davranis ve JSON ciktisi BAYT-ES aynidir.
 """
 from __future__ import annotations
 
@@ -31,6 +36,84 @@ KAPI = {
     "rota_test29_min": 10, "maske_yok_test29_maks": 10,                           # (b)  v35 tabani ROTA 6 · MASKE_YOK 16
 }
 TABAN_V35 = {"rota": 6, "maske_yok": 16, "uc_bant": 7, "figur_zemin": 0.1508, "kaplama67": 0.5076, "cati": 0.043}
+# ON_KAYIT §11(2) — T152 "rota yol ustunde mi" (b-ek2); sonuc gorulmeden yazildi (2026-08-27).
+# Yalniz --etiket-dizin verilince kullanilir ve JSON'a yazilir (eski ciktilar bayt-es kalir).
+KAPI_B_EK2 = {"yol_payi_min": 0.90, "engel_wp_maks": 0}
+ETIKETSIZ, SINIF0, SINIF1 = 0, 1, 2   # uc durumlu etiket maskesi degerleri
+
+
+def uc_durum_maske(lbl: Path, h: int, w: int, yan: int | None = None):
+    """YOLO etiketi -> tuval (letterbox, 143 ile ayni yerlesim) uzerinde uc durumlu maske:
+    0 ETIKETSIZ · 1 sinif 0 (yol) · 2 sinif 1 (engel). Cakismada engel kazanir (guvenli yon)."""
+    import numpy as np
+    m143 = _modul("143_etiket_tavani")
+    t, e = m143.etiket_maskeleri(lbl, h, w)
+    yan = max(h, w) if yan is None else yan
+    x0, y0 = (yan - w) // 2, (yan - h) // 2
+    uc = np.zeros((yan, yan), np.uint8)
+    uc[y0:y0 + h, x0:x0 + w][t > 0] = SINIF0
+    uc[y0:y0 + h, x0:x0 + w][e > 0] = SINIF1
+    return uc
+
+
+def rota_yol_olc(wps, uc) -> dict:
+    """Rota cizgisi (ardisik waypoint'ler, 1 px polylines) ile uc durumlu etiket kesisimi.
+    wps: [[x, y], ...] tuval koordinati. uc: (yan, yan) uint8, degerler ETIKETSIZ/SINIF0/SINIF1.
+    Doner: yol_payi (cizgi px'inin sinif 0 payi), etiketsiz_payi, engel_payi, engel_wp
+    (sinif 1 ustundeki — ya da tuval DISINDAKI, fail-closed — waypoint sayisi), cizgi_px, wp."""
+    import numpy as np
+    import cv2
+    h, w = uc.shape[:2]
+    cz = np.zeros((h, w), np.uint8)
+    pts = np.array([[int(x), int(y)] for x, y in wps], np.int32).reshape(-1, 2)
+    if len(pts) >= 2:
+        cv2.polylines(cz, [pts], False, 1, 1)
+    elif len(pts) == 1 and 0 <= pts[0, 0] < w and 0 <= pts[0, 1] < h:
+        cz[pts[0, 1], pts[0, 0]] = 1
+    n = int((cz > 0).sum())
+    payda = max(1, n)
+    engel_wp = 0
+    for x, y in pts:
+        if not (0 <= x < w and 0 <= y < h) or uc[y, x] == SINIF1:
+            engel_wp += 1
+    return {"yol_payi": round(float(((cz > 0) & (uc == SINIF0)).sum() / payda), 4),
+            "etiketsiz_payi": round(float(((cz > 0) & (uc == ETIKETSIZ)).sum() / payda), 4),
+            "engel_payi": round(float(((cz > 0) & (uc == SINIF1)).sum() / payda), 4),
+            "engel_wp": int(engel_wp), "cizgi_px": n, "wp": int(len(pts))}
+
+
+def yanlis_guzergah_mi(olcum: dict, kapi: dict = KAPI_B_EK2) -> bool:
+    """ON_KAYIT §11(2): YANLIS GUZERGAH <=> yol_payi < 0,90 VEYA engel_wp > 0."""
+    if olcum["yol_payi"] < kapi["yol_payi_min"]:
+        return True
+    if olcum["engel_wp"] > kapi["engel_wp_maks"]:
+        return True
+    return False
+
+
+def rota_yol_kapisi(kareler126: list, etiket_dizin: Path, kare_dizin: Path, kapi: dict = KAPI_B_EK2) -> dict:
+    """126 ciktisindaki her ROTA karesi (olceksiz_sebep None) icin rota_yol_olc + hukum."""
+    import cv2
+    satirlar = []
+    for s in kareler126:
+        if s.get("olceksiz_sebep") is not None:
+            continue
+        wps = s.get("olceksiz_wps")
+        if wps is None:
+            raise SystemExit(f"{s['kare']}: 126 ciktisinda 'olceksiz_wps' yok — 126'yi (T152 sonrasi) yeniden kos")
+        img = cv2.imread(str(kare_dizin / s["kare"]))
+        if img is None:
+            raise SystemExit(f"kare okunamadi: {kare_dizin / s['kare']}")
+        h, w = img.shape[:2]
+        uc = uc_durum_maske(etiket_dizin / (Path(s["kare"]).stem + ".txt"), h, w)
+        o = rota_yol_olc(wps, uc)
+        o["etiket_var"] = bool((uc > 0).any())
+        o["yanlis_guzergah"] = yanlis_guzergah_mi(o, kapi)
+        satirlar.append({"kare": s["kare"], **o})
+    n_y = sum(1 for r in satirlar if r["yanlis_guzergah"])
+    return {"kapi": dict(kapi), "etiket_dizin": str(etiket_dizin), "rota_kare": len(satirlar),
+            "yanlis_guzergah": n_y, "yanlis_kareler": [r["kare"] for r in satirlar if r["yanlis_guzergah"]],
+            "rota_yol": satirlar}
 
 
 def _modul(ad: str):
@@ -86,10 +169,15 @@ def main():
     ap.add_argument("--atla-kabul", action="store_true")
     ap.add_argument("--test-dizin", type=Path, default=None, help="TEST29 yerine (ON_KAYIT §10 v2 referansi)")
     ap.add_argument("--tavan", type=Path, default=None, help="etiket tavani JSON (varsayilan test29_etiket_tavani.json)")
+    ap.add_argument("--etiket-dizin", type=Path, default=None,
+                    help="(b-ek2, ON_KAYIT §11) YOLO etiket dizini (labels/test); verilirse 'rota yol ustunde' kapisi kosar")
+    ap.add_argument("--cikti", type=Path, default=None, help="cikti dizini (varsayilan results/gece_20260826)")
     a = ap.parse_args()
-    global TEST29
+    global TEST29, CIKTI
     if a.test_dizin is not None:
         TEST29 = a.test_dizin
+    if a.cikti is not None:
+        CIKTI = a.cikti
     CIKTI.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     sonuc = {"agirlik": str(a.agirlik), "ad": a.ad, "kapi_sabitleri": KAPI, "taban_v35": TABAN_V35,
@@ -124,6 +212,18 @@ def main():
                                  "fp_kareler": fp_kareler}
         print("[3-ek] tavan", json.dumps(sonuc["test29_tavan"]), flush=True)
 
+    # (b-ek2) ON_KAYIT §11(2): rota YOL USTUNDE mi (T152) — yalniz --etiket-dizin verilince
+    if a.etiket_dizin is not None:
+        d126 = json.load(io.open(sonuc["test29"]["json"], encoding="utf-8"))
+        v = list(d126["modeller"].values())[0]
+        sonuc["kapi_sabitleri_b_ek2"] = KAPI_B_EK2
+        sonuc["rota_yol"] = rota_yol_kapisi(v["kareler"], a.etiket_dizin, TEST29)
+        print("[3-ek2] rota_yol", json.dumps({k: vv for k, vv in sonuc["rota_yol"].items() if k != "rota_yol"},
+                                             ensure_ascii=False), flush=True)
+        for r in sonuc["rota_yol"]["rota_yol"]:
+            print(f"        {r['kare']}: yol {r['yol_payi']:.2f} etiketsiz {r['etiketsiz_payi']:.2f} "
+                  f"engel_wp {r['engel_wp']}/{r['wp']} -> {'YANLIS GUZERGAH' if r['yanlis_guzergah'] else 'yol ustunde'}")
+
     k = sonuc.get("kabul", {})
     a_kapi = {
         "verdikt": (k.get("verdikt") is True) if k else None,
@@ -137,6 +237,8 @@ def main():
     }
     if "test29_tavan" in sonuc:
         b_kapi["FP_test29<=1"] = sonuc["test29_tavan"]["FP"] <= 1
+    if "rota_yol" in sonuc:
+        b_kapi["yanlis_guzergah==0"] = sonuc["rota_yol"]["yanlis_guzergah"] == 0
     sonuc["kapi_a"] = a_kapi
     sonuc["kapi_b"] = b_kapi
     sonuc["a_gecti"] = all(v is True for v in a_kapi.values())

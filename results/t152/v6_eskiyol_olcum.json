@@ -1,0 +1,73 @@
+{
+ "agirlik": "O:\\navitas\\codes\\runs\\segment\\gece_v6_v35taban\\weights\\best.pt",
+ "ad": "v6_eskiyol",
+ "kapi_sabitleri": {
+  "verdikt": true,
+  "K1_min": 230,
+  "red67_maks": 5,
+  "cati_kacagi_maks": 0.1,
+  "rota_test29_min": 10,
+  "maske_yok_test29_maks": 10
+ },
+ "taban_v35": {
+  "rota": 6,
+  "maske_yok": 16,
+  "uc_bant": 7,
+  "figur_zemin": 0.1508,
+  "kaplama67": 0.5076,
+  "cati": 0.043
+ },
+ "test_dizin": "O:\\navitas\\dataset\\dji_kirsal_0038_bolum_v2\\images\\test",
+ "tavan": "O:\\navitas\\results\\gece_20260826\\test29_etiket_tavani_v2.json",
+ "k109": {
+  "cati_kacak_ort": 0.0391,
+  "cati_kacak_medyan": 0.0105,
+  "disk_cati_engel": 0.9878,
+  "disk_cati_zemin": 0.0,
+  "disk_zemin_zemin": 0.9416,
+  "cati_dondu": true,
+  "kaplama67_icerik_medyan": 0.4667,
+  "kaplama67_tuval_medyan": 0.2625,
+  "zemin_maskesi_reddi": 0,
+  "figur_zemin_orani": 0.08149,
+  "figur_engel_orani": 0.27688
+ },
+ "test29": {
+  "n": 29,
+  "rota": 12,
+  "maske_yok": 8,
+  "uc_bant": 8,
+  "sebep": {
+   "MASKE_YOK": 8,
+   "UC_BANT_TEMAS_YOK": 8,
+   "null": 12,
+   "ZEMIN_MASKESI_SUPHELI": 1
+  },
+  "json": "results\\t152\\v6_eskiyol_test29.json",
+  "exit": 0
+ },
+ "test29_tavan": {
+  "tavan_rota": 15,
+  "TP": 11,
+  "FP": 1,
+  "FN": 4,
+  "fp_kareler": [
+   "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+  ]
+ },
+ "kapi_a": {
+  "verdikt": null,
+  "K1>=230": null,
+  "red67<=5": true,
+  "cati<=0,10": true
+ },
+ "kapi_b": {
+  "rota_test29>=10": true,
+  "maske_yok_test29<=10": true,
+  "FP_test29<=1": true
+ },
+ "a_gecti": false,
+ "b_gecti": true,
+ "terfi_adayi": false,
+ "saniye": 271
+}
