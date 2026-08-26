@@ -22477,3 +22477,24 @@ Genel kapı iki kolda GEÇTİ; `unittest discover` **1056 OK** (2 skip).
 
 #### 6. İNSAN KARARI BEKLİYOR (D-133 — tek taraflı yapılmadı)
 GUI'nin **açılış kaynağı** hâlâ `kompozit` (`comms/yks_gui.py:250`, `ALGI_KAYNAKLAR[0]`), yani hakem ekranı **0/9 rota veren** kümeyle açılıyor; kabul kümesi `arena_kadraj` **12/12** veriyor. Açılış sırası bir **sunum** kararıdır; ölçüm ve öneri burada, seçim kullanıcınındır.
+
+---
+
+### D-303 · T79 kanıtı tazelendi: v36 `.pt` ↔ `.onnx` karar denkliği **259/260** (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §26 (kural sonuç görülmeden: ≤ 5/260 → "v34 seviyesinde"). **Kanıt:** `results/t79/{onnx_denklik_v36.json,v36.log}`.
+**Kapatılan boşluk:** T79'un (KRİTİK) ONNX denklik kaydı **v34'te kalmıştı** (D-203: 2/260, IoU 0,9959, azami sapma 18,4 m). Üretim modeli **v36**'dır ve saha TensorRT motorunu **ONNX'ten** türetecek; terfi (D-294) ONNX'i **üretti** ama kararı **karşılaştırmadı**.
+
+| ölçüt (n=260, kabul kümesi) | v34 (D-203) | **v36** |
+|---|---:|---:|
+| karar aynı | 258/260 | **259/260 (%99,6)** |
+| karar uyuşmazlığı | 2 | **1** (`sa_000215`: pt=2 · onnx=1) |
+| zemin maskesi IoU (ort) | 0,9959 | **0,9975** (en düşük 0,9797) |
+| azami rota sapması | 18,4 m | **13,4 m** (172,1 px; ort 0,41 m) |
+
+**Hüküm:** ön kayıtlı kural **sağlandı** (1 ≤ 5) → "v34 seviyesinde" (aslında bir tık iyi). T79'a **kanıt** olarak eklendi; yeni iş açılmadı, eşik gevşetilmedi. Defterdeki `metrics.onnx_karar_denkligi` alanı ölçülen sayılarla dolduruldu.
+
+#### Sınırlar (dürüstlük kaydı)
+- **ONNX koşumu CPU EP ile yapıldı** — `CUDAExecutionProvider` bu kurulumda kayıtlı değil (log satırı dosyada durur). Sahaya giden artefakt **TensorRT `.engine`**'dir ve onun denkliği **Jetson'da ayrıca ölçülmelidir** (**T109** açık; `turevler` içinde `.engine` sha'ları hâlâ `DERLENINCE_YAZILIR` = fail-closed RED).
+- **T79'un asıl iddiası (kararsızlık) bu ölçümle kapanmaz:** 1/260 uyuşmazlık, `karar_cevrilmesi` ölçümündeki gürültü kararsızlığından (v36 **14/260**, v35 9/260 — D-295) **ayrı** bir olgudur. T79 **açık kalıyor**.
+- **Yan bulgu (T161 sınıfı, veri yolu):** `scripts/olcum/67_onnx_karar_denkligi.py:39` varsayılan kümeyi `BURASI/"calisma"/…` diye türetiyor — yalnız **canlı klasörde** doğru, depo kopyasında dosya bulunamıyor. D-300 §6'da "kapsam dışı ve duruyor" diye kaydedilen sınıfın **somut bir örneğidir**; ölçüm `--kume` ile açıkça verilerek koşuldu.

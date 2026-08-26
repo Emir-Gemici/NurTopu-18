@@ -4346,6 +4346,15 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ONNX denklik (67, v34): uyuşmazlık 2/260 (sa_000098, sa_000121),
     maske IoU 0,9959, azami sapma 18,4 m. Çok-tohumlu dağılım ölçülmedi.
 
+  - 🔎 **v36 İLE ÖLÇÜLDÜ · 2026-08-27 · D-303 (ön kayıt §26, kural ≤5/260):**
+    karar aynı **259/260**, uyuşmazlık **1** (`sa_000215`: pt=2 · onnx=1),
+    zemin maskesi IoU **0,9975**, azami sapma **13,4 m**. v34 tabanı 2/260 ·
+    18,4 m. Kural sağlandı → yeni iş açılmadı; defterdeki
+    `metrics.onnx_karar_denkligi` dolduruldu. ⚠ ONNX **CPU EP** ile koşuldu;
+    sahaya giden **TensorRT** artefaktının denkliği Jetson'da AYRICA ölçülecek
+    (T109). T79'un **kararsızlık** iddiası bu ölçümle KAPANMAZ — gürültü
+    kararsızlığı ayrı olgudur (v36 14/260, D-295).
+
   - Ölçüldü (n=260, eşleştirilmiş, T66 kabul kümesi): karar aynı **258/260**,
     zemin maskesi IoU **0,9968**, ama azami rota sapması **360 px = 28,1 m**.
     ```text

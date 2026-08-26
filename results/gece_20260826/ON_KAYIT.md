@@ -254,3 +254,11 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - ORACLE **< 8/9** ise: T36b **AÇIK KALIR** ve sayı yazılır. Kural gevşetilmez.
 - MODEL kolu **kapatma ölçütü DEĞİLDİR** — D-298 §3 kompozit yer gerçeğinin ham karede görünmeyen sentetik bir koridor olduğunu ölçtü; modelden onu üretmesi beklenemez. MODEL kolu yalnız **raporlanır**.
 **Ayrıca (kapatmadan bağımsız, dürüstlük):** hakem ekranı bu kümede modelin çıktısını, modelin göremeyeceği bir "beklenen şerit" ile yan yana gösteriyor. Bu bir **gösterim doğruluğu** kusurudur; bilgi satırına kaynağın niteliği yazılır. **Açılış kaynağını değiştirmek** ise sunum kararıdır (D-133) — kullanıcıya bırakılır, tek taraflı yapılmaz.
+
+## 26. EK — T79 kanıtı: v36 `.pt` ↔ `.onnx` karar denkliği (2026-08-27, sonuç görülmeden)
+**Boşluk:** T79'un (KRİTİK) ONNX denklik kaydı **v34'te kalmış** (D-203: uyuşmazlık 2/260, maske IoU 0,9959, azami sapma 18,4 m). Üretim modeli **v36** ve saha TensorRT motorunu **ONNX'ten** türetecek — v36 için bu hiç ölçülmedi. Terfi (D-294) ONNX'i **üretti** ama kararı **karşılaştırmadı**.
+**Ölçüm:** `scripts/olcum/67_onnx_karar_denkligi.py`, `--pt models/navitas_seg_v36_best.pt --onnx models/navitas_seg_v36_best.onnx`, kabul kümesi n=260. Raporlanacak: karar uyuşmazlığı sayısı, zemin maskesi IoU, azami rota sapması (px ve m).
+**Ön kayıtlı yorum kuralı (sonuca göre değişmez):**
+- uyuşmazlık **≤ 5/260** → "v34 seviyesinde", T79'a kanıt olarak eklenir, yeni iş açılmaz;
+- uyuşmazlık **> 5/260** → **saha riski** ilan edilir, T79'a yazılır ve ayrıca **beraberlik bandının** (`BERABERLIK_BANDI`) şerit kararına gerçekten uygulanıp uygulanmadığı ölçülür (T155'in `rota_serit_karari`'ında).
+⚠ Bu bir **kapı değildir**; üretim modeli bu sayıya göre geri alınmaz — geri alma kullanıcı kararıdır (D-294 yordamı). Sayı ne çıkarsa yazılır.

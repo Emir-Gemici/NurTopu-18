@@ -1,0 +1,28 @@
+{
+ "pt": "models\\navitas_seg_v36_best.pt",
+ "onnx": "models\\navitas_seg_v36_best.onnx",
+ "n": 260,
+ "karar_ayni": 259,
+ "rota_ikisi": 255,
+ "rota_iou_ort": 0.9758361231797728,
+ "rota_iou_min": 0.0,
+ "sapma_px_maks": 172.07266235351562,
+ "sapma_m_maks": 13.443176746368408,
+ "maske_iou_ort": 0.9974696013593188,
+ "maske_iou_min": 0.9797372370908949,
+ "uyusmazlik": [
+  {
+   "kare": "sa_000215.jpg",
+   "pt": {
+    "serit": 2,
+    "red": null,
+    "guven": 0.705
+   },
+   "onnx": {
+    "serit": 1,
+    "red": null,
+    "guven": 0.883
+   }
+  }
+ ]
+}

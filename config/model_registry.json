@@ -229,6 +229,21 @@
      },
      "n": 260,
      "not": "🔴 OLCULDU ve SONUC v35'TEN KOTUDUR: v36 14/260 (%5,38) · v35 9/260 (%3,46). ESLI olculdu - iki model AYNI KOSUM OTURUMUNDA, ayni kume ve ayni gurultu gerceklestirmeleriyle (D-256 SS3 kalibi: bayat sayi tasinmaz). Betik `scripts/olcum/68_karar_kararliligi.py`; parametreler v35 olcumuyle BIREBIR: sigma 2/255, tekrar 3, tohum 7, kume = profilin `kabul_kumesi` (n=260), CONF 0,30, imgsz 512; model KAYIT DEFTERINDEN cozuldu (ciplak yol yok). Tarih 2026-08-26. Komut + ham cikti + json: `results/karar_cevrilmesi_v36/`. ⚠ D-203 (olcut tohuma duyarlidir) SINANDI: ikinci tohum (11) ile v36 15/260 · v35 11/260 - YON iki tohumda da ayni (v36 kotu), buyukluk +5 / +4 kare. Dogrulama: v35'in tohum 7 sayisi 9/260 olarak BIREBIR yeniden uretildi (results/t130_kararlilik_tohum7.json ile ayni) - yani fark modeldendir, kosum ortamindan degil. 🔴 KUSURUN CINSI FARKLI, sadece sayisi degil: v36'nin fazlaligi SERIT DEGISIMINDE degildir - serit degisimi v36 8 / 10 (tohum 7 / 11), v35 9 / 10, yani ESIT. Fazlaligin tamami ROTA VAR/YOK cevrilmesidir: gurultu altinda rotanin tamamen kaybolmasi (ZEMIN_MASKESI_SUPHELI / GORUS_HATTI_KOPUK) v36'da 6 / 5 kare, v35'te 0 / 1 kare. Bu, v36'nin daha az zemin gormesiyle tutarlidir (gercek kare kaplamasi 0,5076 -> 0,4171): model red esiginin KENARINDA duruyor. Yon fail-closed'dir (yanlis rota degil, rota YOK) ama saha ELVERISLILIGINI dusurur. ⚠ Bu eksen bugunku kabul zincirinde (65) KAPI DEGILDIR; v34 terfisinde KAPIYDI (esik <= 8/260) ve o esik bugun uygulansaydi v36 (14) da v35 (9) de DUSERDI. Terfi bu sayiya gore GERI ALINMADI - geri alma kullanici kararidir (ON_KAYIT SS16). Tarihsel: v34 4/260 · v35 9/260."
+    },
+    "onnx_karar_denkligi": {
+     "n": 260,
+     "karar_ayni": 259,
+     "uyusmazlik": 1,
+     "uyusmayan_kareler": [
+      "sa_000215.jpg (pt=2 · onnx=1)"
+     ],
+     "zemin_maskesi_iou_ort": 0.9975,
+     "azami_rota_sapmasi_px": 172.1,
+     "azami_rota_sapmasi_m": 13.443,
+     "kume": "sentetik_arena_kadraj_t66 (kabul kumesi)",
+     "olcum": "scripts/olcum/67_onnx_karar_denkligi.py · results/t79/onnx_denklik_v36.json",
+     "sonuc": "OLCUM (KAPI DEGIL) · on kayit SS26 kurali <=5/260 SAGLANDI; v34 tabani 2/260 (D-203), v36 1/260. ONNX kosumu CPU EP ile yapildi (CUDAExecutionProvider kayitli degil) — TensorRT motorunun kendi denkligi Jetson'da AYRICA olculmelidir (T109).",
+     "not": "T79 (KRITIK) kaydi v34'te kalmisti; uretim v36 ve saha TensorRT'yi ONNX'ten turetecek. Terfi (D-294) ONNX'i URETTI ama karari KARSILASTIRMADI — bu bosluk D-303'te kapatildi."
     }
    },
    "status": "competition",
