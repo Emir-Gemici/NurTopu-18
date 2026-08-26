@@ -1,0 +1,50 @@
+Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+==============================================================================
+KORIDOR SECIMI � 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)
+==============================================================================
+KOL 1 � TANISAL YOL (costmap_path_finder.rota_bul) � sart: TAM PUAN
+harita  senaryo  gercek  tahmin  guven              durum   wp  sonuc
+     1    kolay       1       1  1.000               ACIK   43  OK
+     1     orta       2       2  1.000               ACIK   43  OK
+     1      zor       3       3  0.797               ACIK   67  OK
+     2    kolay       1       1  1.000               ACIK   45  OK
+     2     orta       1       1  1.000               ACIK   64  OK
+     2      zor       3       3  0.797               ACIK   58  OK
+     3    kolay       3       3  1.000               ACIK   44  OK
+     3     orta       2       2  1.000               ACIK   43  OK
+     3      zor       1       1  0.797               ACIK   60  OK
+     4    kolay       3       3  1.000               ACIK   43  OK
+     4     orta       3       3  1.000               ACIK   51  OK
+     4      zor       1       1  0.797               ACIK   48  OK
+     5    kolay       3       3  1.000               ACIK   52  OK
+     5     orta       3       3  1.000               ACIK   49  OK
+     5      zor       2       2  0.797               ACIK   42  OK
+------------------------------------------------------------------------------
+SONUC: 15/15 dogru
+[OK] TUM DETERMINISTIK SAHNELER GECTI
+
+==============================================================================
+KOL 2 — URETIM YOLU (rpi_inference.analyze_path) · AYNI 15 SAHNE
+==============================================================================
+harita  senaryo  gercek   yayin  guven   wp              ret  darbogaz  sonuc
+     1    kolay       1       2  0.822    8             None         2  FAIL(serit)
+     1     orta       2       2  0.742    8             None         2  OK
+     1      zor       3       2  0.662   12             None         2  FAIL(serit)
+     2    kolay       1       2  0.742    8             None         2  FAIL(serit)
+     2     orta       1       2  0.674   10             None         2  FAIL(serit)
+     2      zor       3       3  0.662   10             None         3  OK
+     3    kolay       3       3  0.662    8             None         3  OK
+     3     orta       2       2  0.753   10             None         2  OK
+     3      zor       1       3  0.719   10             None         3  FAIL(serit)
+     4    kolay       3       2  0.685    8             None         2  FAIL(serit)
+     4     orta       3       3  0.742   13             None         3  OK
+     4      zor       1       2  0.742   12             None         2  FAIL(serit)
+     5    kolay       3       2  0.731    8             None         2  FAIL(serit)
+     5     orta       3       3  0.731    9             None         3  OK
+     5      zor       2       1  0.674    8             None         1  FAIL(serit)
+------------------------------------------------------------------------------
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 6/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[FAIL] URETIM YOLU KOLU DUSTU — uretimde yayinlanan karar yer gercegiyle uyusmuyor
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): DUSTU — kol1 15/15 · kol2 serit 6/15

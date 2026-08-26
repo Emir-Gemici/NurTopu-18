@@ -22330,3 +22330,46 @@ saklanmasıdır.
 ### 5. Saha zinciri — iki düzeltme
 - **(a) D-297'nin "çıkarım DÜŞTÜ · `AssertionError: Invalid device id`" kaydı GEÇİCİDİR.** GPU boşken aynı komut yeniden koşuldu: `cikarim GECTI [1703 ms]` (`results/saha_zinciri_20260827/kosu_tam`). Kök sebep paralel iş akışının GPU çekişmesiydi; **kod kusuru yok**. Tam koşu artık CPU koluyla aynı: GEÇTİ 7 · DÜŞTÜ 1 · SAHİPSİZ 2.
 - **(b) 🔴 KUSUR — saha kuru koşusu SAHANIN KOŞMAYACAĞI yolu doğruluyor.** `scripts/saha_kuru_kosu.py:683` `rota` halkasında `costmap_path_finder.rota_bul` çağırıyor. T151 kararı (D-295, `CONTRACTS §11.2-EK`) üretim yolunu **`analyze_path`** ilan etti ve Jetson `run_camera` onu koşuyor. Yani zincirin 7. halkası tanısal yolu sınıyor; üretim yolu kuru koşuda **hiç** koşulmuyor (D-297 §5 bunu "ölçülemedi" diye kaydetmişti). **T160 açıldı.**
+
+---
+
+## D-299 · ✅ T156 KAPANDI · genel kapı (madde 14) artık **ÜRETİM yolunu da** zorluyor (`analyze_path` kolu, 15/15) · 🔴 yan bulgu: worktree'de `sys.path` kirlenmesi test modüllerini **ANA depodan** yüklüyor
+
+**Tarih:** 2026-08-26 · **Ön kayıt:** `results/gece_20260826/ON_KAYIT.md` §18-B · **Rapor:** `results/t156/rapor.md`
+**Kapsam:** `codes/test_rota_sentetik.py`, `tests/test_t156_genel_kapi_uretim_kolu.py`, `CONTRACTS.md` §11.2-EK
+
+#### 1. Kusur — kapı üretimi hiç görmüyordu
+`CONTRACTS §11.2-EK` (D-295) üretim yolunun **`rpi_inference.analyze_path`** olduğunu beyan etti; anayasa madde 14'ün genel kapısı ise yalnız **`costmap_path_finder.rota_bul`**u zorluyordu. Delik varsayım değil **ölçüm**dür: T155'te (D-296) üretim yolu 15 yer gerçekli sahnenin **9'unda yanlış şerit numarası yayınlarken** genel kapı **15/15 yeşil** yanıyordu.
+
+#### 2. Yapılan — ikinci kol, aynı 15 sahne
+| kol | çağrılan | şart | taban (ölçüldü) |
+|---|---|---|---|
+| KOL 1 (tanısal) | `rota_bul` | 15/15 tam puan (**değişmedi**) | 15/15 |
+| KOL 2 (**ÜRETİM**) | `analyze_path` | (a) rota üretiliyor **ve** (b) yayınlanan `road` yer gerçeğine eşit — her ikisi ≥ 14/15 | **15/15 · 15/15** |
+
+Eşik tek yerde: `test_rota_sentetik.URETIM_KAPI_ESIGI` (madde 16). Çıkış kodu `kapi_karari()` ile tek yerden döner ve **iki kola da** bağlıdır. `SONUC: 15/15 dogru` ve `[OK] TUM DETERMINISTIK SAHNELER GECTI` satırları KOL 1'in çıktısı olarak **aynen** durur (dış okuyucu sözleşmesi bozulmadı; `test_KOL1_cikti_sozlesmesi_BOZULMADI` bunu kilitliyor).
+
+#### 3. Mutasyon kanıtı (ham çıktı raporda)
+`codes/rpi_inference.py:1725` `open_path = olcum["serit_karari"]` → `olcum["darbogaz_serit"]`:
+KOL 2 **6/15**'e düştü, kapı **çıkış kodu 1** verdi — **KOL 1 ise 15/15 yeşil kaldı**, yani T155'in girdiği delik artık kapıdadır. Satır geri alındı, dosya **bayt-eş** (sha256 `7f0afaa…3631d` önce = sonra, `git diff codes/rpi_inference.py` boş).
+
+#### 4. 🔴 YAN BULGU (kanıtlı, ayrı iş) — worktree'de sessiz yanlış ölçüm
+Yeni test ilk tam `discover` koşumunda düştü. Sebep **testin kendisi değildi**: `discover` sırasında bir test modülü `scripts/olcum/ayarlar.py` zincirinden (`REPO = Path(r"O:\navitas")`) **ANA deponun** `codes` dizinini `sys.path[0]`'a ekliyor. Ölçüldü:
+
+```
+MODUL: O:\navitas\codes\test_rota_sentetik.py
+URETIM KOLU VAR MI: False
+```
+
+Yani worktree'de koşan tam süit, worktree'nin `codes/` dosyalarını **değil ANA deponunkini** import ediyor. Bu yalnız T156'yı değil `test_t155_serit_numarasi.py`, `test_t134_rota_bul_zemin_kapisi.py` ve `test_zemin_kaplama_kapisi.py`yi de kapsar: bir worktree ajanı `codes/`de değişiklik yapıp süiti koştuğunda **değiştirdiği kodu ölçmemiş olabilir** — düşmesi gereken bir kapı sessizce geçer.
+**Bu turda yapılan:** yalnız T156 bağışık kılındı — modül `importlib.util.spec_from_file_location` ile **kesin dosya yolundan** yükleniyor, ayrıca kapı **alt süreç** olarak koşuluyor (`sys.path` kirlenmesinden tamamen bağımsız) ve `test_olculen_kapi_BU_depodan_geliyor` kaynağı doğruluyor.
+**Kapanmadı:** diğer üç dosya ve genel yordam. Kök çözüm (`ayarlar.py`'nin `REPO`'yu `__file__`den türetmesi) **bu görevin kapsamı değildi ve ölçülmedi** — ana depo betiklerinin davranışını değiştirir. **Mimarın kararını bekler.**
+
+#### 5. ÖLÇÜLEMEDİ (dürüstlük kaydı)
+- **Gerçek kare etkisi ÖLÇÜLMEDİ** (GPU yasak, `results/pc_cokme_20260826/rapor.md`). Kapı yalnız **sentetik ve kusursuz maskeli** sahneleri zorlar: bu bir MANTIK kapısıdır, ALGI kapısı değildir. Gerçek karede oran **bu değildir**.
+- **Üretim kodu değişmedi** — eklenen şey yalnız kapıdır; `analyze_path` ve `rota_bul` davranışına dokunulmadı.
+- **Süit tabanı:** worktree'de `discover` → **1017 koştu · 986 OK · 16 skip · 11 error · 4 failure**. 15 kırmızının **hepsi** T156'dan önce de vardı ve worktree'de `models/` + `data/` bulunmamasından gelir (`test_saha_parametrik`, `test_t123_gecis_provasi`, `test_imgsz_tek_kaynak`, `test_model_registry`, `test_yks_gui_uretim_hizasi`); yalıtılmış koşumla doğrulandı ve hiçbiri `test_rota_sentetik`i import etmiyor. **Ana depodaki 988 OK / 2 skip tabanı bu worktree'de ölçülemedi.**
+
+> ⚠ **Numara düzeltmesi (mimar vekili, 2026-08-27):** bu kayıt worktree dalında
+> `D-297` olarak yazılmıştı; master'da `D-297` (saha zinciri tazeleme) ve `D-298`
+> (T159/T160) zaten doluydu. İçerik **değişmedi**, yalnız numara `D-299` yapıldı.
