@@ -61,7 +61,7 @@ Telsiz şeffaf seri köprüdür; UDP yerine `--serial` ver:
 # İHA tarafı (Jetson)
 python3 comms/iha_sender.py --road 2 --conf 0.91 --serial /dev/ttyUSB0
 # İKA tarafı (RPi) — seri hatta --yks GEREKMEZ: OPEN_ROUTE/NO_ROUTE ACK'ı
-# ortam yayını olarak tek hatta yazılır, YKS aynı paketi duyar (CONTRACTS §6.5)
+# ortam yayını olarak tek hatta yazılır, YKS aynı paketi duyar (CONTRACTS §6.6)
 python3 comms/ika_receiver.py --serial /dev/ttyUSB0
 ```
 > Gereksinim: `pip install pyserial`. SiK air-rate ile 57600 baud tipiktir.

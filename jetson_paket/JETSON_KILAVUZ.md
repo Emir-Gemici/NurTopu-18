@@ -417,7 +417,7 @@ python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --yks <YKS_IP>:5
     --bekleme-suresi 900 --surus-suresi 600
 ```
 
-⚠ **`--yks` UDP'de ZORUNLUDUR (K8, CONTRACTS §6.5):** İKA'nın OPEN_ROUTE ACK
+⚠ **`--yks` UDP'de ZORUNLUDUR (K8, CONTRACTS §6.6):** İKA'nın OPEN_ROUTE ACK
 kopyası hakem ekranına bu adresten gider. OPEN_ROUTE, IKA_GO'dan **önce**
 geldiği için YKS adresi IKA_GO'dan öğrenilemez; `--yks` verilmezse YKS'de
 "İKA'ya aktarıldı" 2. onayı **hiç açılmaz**. Simülasyon zincirinde aynı adres
