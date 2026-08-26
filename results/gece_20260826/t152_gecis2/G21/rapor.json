@@ -1,0 +1,6 @@
+{"grup":"G21","kareler":[
+{"govde":"dji_20260822172613_0038_d__frame_000028_000001710","sinif0":0.0,"sinif1":0.0405,"yol_var":false,"not":"Yol yok. Kuru ot/mera ve kazilmis cig toprak/moloz yigini (merkez) -> etiketsiz (madde 8,12). Sol ust lastik yigini ve sag alt su+sik cali sinif 1."},
+{"govde":"dji_20260822172613_0038_d__frame_000216_000007890","sinif0":0.1787,"sinif1":0.0863,"yol_var":true,"not":"Asfalt yol sag ust kenardan (x600-720) alt kenara (x380-560) capraz, kenara kadar sinif 0. Sag kenarindaki beton bordur ayrica sinif 1; sol ust sik cali sinif 1. Kesilmis cali/kuru ot alanlar etiketsiz."},
+{"govde":"dji_20260822172613_0038_d__frame_000102_000004230","sinif0":0.1148,"sinif1":0.8606,"yol_var":true,"not":"Cakil/toprak yol ust kenardan (x420-500) alt kenara (x570-660) S cizerek gecer, sinif 0. Iki yandaki sik agac/cali ortusu sinif 1. Sol ustteki kuru ot seridi etiketsiz."},
+{"govde":"dji_20260822172613_0038_d__frame_000076_000003360","sinif0":0.2568,"sinif1":0.4086,"yol_var":true,"not":"Iki paralel yol ustten alta: sol cakil yol (x190-345) ve sag toprak yol (ust x605-700, alt x645-800), ikisi de kenara kadar sinif 0. Solda beton kanal/duvar seridi ve iki kenardaki sik agaclik sinif 1. Ortadaki kuru ot/cig toprak ada etiketsiz."}
+],"komutlar":"VENV scripts/olcum/140_uc_maske_araci.py izgara/uret (ops.json dosyalari G21 altinda)"}

@@ -1,0 +1,244 @@
+{
+ "_ne": "ELLE ETIKET TAVANI — uretim yolu (analyze_path, mpp=None) elle etiket maskesiyle",
+ "n": 29,
+ "rota": 12,
+ "sebepler": {
+  "MASKE_YOK": 5,
+  "UC_BANT_TEMAS_YOK": 12,
+  "ROTA": 12
+ },
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "etiket_var": false,
+   "sinif0_oran": 0.0,
+   "sebep": "MASKE_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
+   "etiket_var": false,
+   "sinif0_oran": 0.0,
+   "sebep": "MASKE_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
+   "etiket_var": false,
+   "sinif0_oran": 0.0,
+   "sebep": "MASKE_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310.jpg",
+   "etiket_var": false,
+   "sinif0_oran": 0.0,
+   "sebep": "MASKE_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1355,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1075,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1231,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0871,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0405,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0743,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1274,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0428,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1001,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0832,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
+   "etiket_var": false,
+   "sinif0_oran": 0.0,
+   "sebep": "MASKE_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0657,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0963,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0581,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1119,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1721,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.0823,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1425,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1652,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.2195,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1601,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.091,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.2241,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1996,
+   "sebep": null,
+   "wp": 8,
+   "rota": true
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "etiket_var": true,
+   "sinif0_oran": 0.1377,
+   "sebep": "UC_BANT_TEMAS_YOK",
+   "wp": 0,
+   "rota": false
+  }
+ ]
+}
