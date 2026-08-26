@@ -99,6 +99,14 @@ names:
                         f"  - {BOLUM / 'images' / 'val'}{nl}  - {DALGA2 / 'images' / 'val'}{nl}")
         assert v3.count("dalga2") == 3, v3
         YAML_V3.write_text(v3, encoding="utf-8")
+        # v4: v3 karisimi, ama VAL YALNIZ GERCEK DJI (0038 cift-konum + dalga2/3 0038 kareleri).
+        # Gerekce (D-287): v2/v3'te best epoch 4 ve 1 — rescuenet/sentetik agirlikli val, modelin
+        # gercek domene uyumunu 'gerileme' sayip erken durduruyor. Arena korumasi kapi (a)'dadir.
+        v4 = v3.replace("# GECE v3 = v2 + etiket dalga 2 (144_dalga2_kume)", "# GECE v4 = v3 karisimi, val YALNIZ DJI 0038 (erken durdurma gercek domene gore)")
+        bas = v4.index("val:"); son = v4.index("nc:")
+        v4 = v4[:bas] + f"val:{nl}  - {BOLUM / 'images' / 'val'}{nl}  - {DALGA2 / 'images' / 'val'}{nl}{nl}" + v4[son:]
+        assert v4.count("rescuenet") == 1 and v4.count("dalga2") == 2, v4
+        (DS / "karisim_gece_v4.yaml").write_text(v4, encoding="utf-8")
     # 4) taban sayilari: ayni 29 test karesinde v35 ve v1 (mevcut olcumden)
     def sebepler(dosya, secici):
         d = json.load(open(KOK / dosya, encoding="utf-8"))
@@ -127,7 +135,7 @@ def egit(taban: str, surum: str = "v2"):
     ref = _y.safe_load(open(KOK / "codes" / "runs" / "segment" / "t127_temiz" / "args.yaml", encoding="utf-8"))
     from ultralytics import YOLO
     ad = f"gece_{surum}_{taban}taban"
-    yaml_yolu = YAML if surum == "v2" else YAML_V3
+    yaml_yolu = {"v2": YAML, "v3": YAML_V3, "v4": DS / "karisim_gece_v4.yaml"}[surum]
     model = YOLO(str(TABANLAR[taban]))
     recete = dict(data=str(yaml_yolu), epochs=ref["epochs"], imgsz=ref["imgsz"], batch=ref["batch"],
                   seed=ref["seed"], deterministic=ref["deterministic"], patience=ref["patience"],
@@ -148,7 +156,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("komut", choices=["hazirla", "egit"])
     ap.add_argument("--taban", choices=list(TABANLAR), default="v35")
-    ap.add_argument("--surum", choices=["v2", "v3"], default="v2")
+    ap.add_argument("--surum", choices=["v2", "v3", "v4"], default="v2")
     a = ap.parse_args()
     if a.komut == "hazirla":
         hazirla()

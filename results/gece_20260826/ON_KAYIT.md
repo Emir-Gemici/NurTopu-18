@@ -119,3 +119,8 @@ olduğu gibi yazılır. "Az farkla kaçırdı, verelim" **YAPILMAZ**.
 ## 6. KAPI (genel) — her adımdan sonra
 `codes/test_rota_sentetik.py` → **15/15** · `discover -s tests -q` → tümü OK
 (başlangıç 819 OK, 2 skip). Düşerse adım geri alınır.
+
+## 7. EK — v3 ve v4 koşumları (03:2x, v4 sonucu görülmeden yazıldı)
+- **v3** = v2 reçetesi + etiket dalga 2/3 (train +108 kare ×20, val +52 0038 karesi). Eğitim 16 epoch'ta durdu, **best epoch 1** (v2'de 4, v1'de 1). Kapı ölçümü koşuyor; kapılar §4 ile AYNI.
+- **v4** = v3 karışımı, **val YALNIZ gerçek DJI 0038** (çift-konum 30 + dalga 52 = 82 kare). Gerekçe: rescuenet/sentetik ağırlıklı val, modelin gerçek domene uyumunu "gerileme" sayıp epoch 1–4'te durduruyor; arena koruması zaten kapı (a)'dadır (kabul zinciri K0–K5 + 67 gerçek kare + çatı). Kapılar §4 ile AYNI; ek olarak v4'te (a)'nın **düşmesi** beklenen bir risktir ve düşerse *"gerçek val arenayı bozdu"* diye yazılır, kapı gevşetilmez.
+- Terfi kuralı §4(d) her aday için aynıdır; birden fazla aday geçerse **FP en düşük, sonra TP en yüksek** olan seçilir (bu sıralama kuralı burada, sonuç görülmeden yazıldı).
