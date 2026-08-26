@@ -234,7 +234,27 @@
     "yontem": "scripts/olcum/65_kabul_denetcisi.kume_parmak_izi — sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ. TURETILIR, elle tutulmaz (D-263 SS4.3). SINIR: ayni boyutta icerik degisimi YAKALANMAZ."
    },
    "_turevler_v35_notu": "2026-08-26 (v36 terfisi): v35 turev girdileri BU PROFILDEN CIKARILDI. Sebep mekaniktir, kanaat degil: `turev_dogrula` her turevin `kaynak_sha256`sini profilin .pt ozetiyle kiyaslar; kaynak artik v36 oldugu icin v35 turevleri YETIM (RED) doner ve defterde durmalari yalniz yanilticidir. v35'in .pt/.onnx DOSYALARI DISKTE ve saha paketinde DURUYOR (yedek, SS6C gecis yordami); geri alinirsa bu profile v35 kaydi (pt sha e00f6b8e... / onnx 248ef808...) geri yazilir.",
-   "_kapsam": "DOGRULAMA = `dji/DOGRULAMA/` (DJI_..._0038_D), CONTRACTS SS12: 0038 kareleri egitime ve erken durdurmaya GIRMEDI; test29 + val82 uzlasi referansi v3 uzerinden olculdu ve sayilar `metrics.gercek_kare_kapisi` altindadir. 🔴 ARENA BENZERI SAHA KANITI YOK: 0038 kirsal bir yol cekimidir - kirmizi H, moloz yigini, bariyer ICERMEZ; sentetik K0..K6 bu boslugu doldurmaz (D-290). T111/D-198 (alan disi arena dogrulamasi) HALA ACIK ve insan gorevidir."
+   "_kapsam": "DOGRULAMA = `dji/DOGRULAMA/` (DJI_..._0038_D), CONTRACTS SS12: 0038 kareleri egitime ve erken durdurmaya GIRMEDI; test29 + val82 uzlasi referansi v3 uzerinden olculdu ve sayilar `metrics.gercek_kare_kapisi` altindadir. 🔴 ARENA BENZERI SAHA KANITI YOK: 0038 kirsal bir yol cekimidir - kirmizi H, moloz yigini, bariyer ICERMEZ; sentetik K0..K6 bu boslugu doldurmaz (D-290). T111/D-198 (alan disi arena dogrulamasi) HALA ACIK ve insan gorevidir.",
+   "_yedek_surumler": {
+    "_ne": "T-TERFI (2026-08-26 · D-294) · JETSON_KILAVUZ §6C/G4 KAPISI: geri donus yordami 'yeni degerler yedegin KENDI defter kaydindan alinir' der. v36 terfisinde v35 profilden cikinca tam sha256'si defterde HICBIR yerde kalmamisti (dogrulayici bulgusu) — geri alma yordami fiilen uygulanamiyordu. Bu alan o bosluğu kapatir: ADAY DEGILDIR, YEDEKTIR; hicbir kod bu alandan model yuklemez (fail-closed: yalniz competition.path yuklenir).",
+    "v35": {
+     "path": "models/navitas_seg_v35_best.pt",
+     "sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+     "imgsz": 512,
+     "model_id": "navitas-seg-v35-512",
+     "turevler": {
+      "navitas_seg_v35_best.onnx": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3",
+      "navitas_seg_v35_best_512_fp16.onnx": "248ef808f8be20d700d089e33c727dcb9e336832ce87304352cd859b463c37d3"
+     },
+     "not": "2026-08-21 - 2026-08-26 uretim (D-256/T130). Geri donus: bu satirdaki path+sha256 competition profiline yazilir, ayna+kunye+kilavuz §6C ile hizalanir, 65_kabul_denetcisi defter yolundan yeniden kosulur."
+    },
+    "v34": {
+     "path": "models/navitas_seg_v34_best.pt",
+     "sha256": "6730d7777ba96dfe03da85e81c896b371b62983122983f6c65bde265c753cdb8",
+     "imgsz": 512,
+     "not": "ikinci yedek (v35 oncesi uretim)."
+    }
+   }
   },
   "arac_referansi": {
    "model_id": "dota-yolov8m-obb",

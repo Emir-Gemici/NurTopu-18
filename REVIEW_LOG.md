@@ -22132,3 +22132,30 @@ Yazılım tarafında kalan kaldıraçlar tükendi: yönelim (S2: model maskesind
 - 277 kare daha (aynı saha) modeli **muhafazakâr** yaptı (madde 12 + kanal vurgulu etiketler): v7a v35 kadar kör (MASKE_YOK 16) ama ürettiği rotalar **yol üstünde** (test29 0/8, val82 7/30). v3/v6 daha çok görüyor, daha çok yanılıyor. "Daha çok gör" ↔ "yanlış güzergâh" gerilimi veriyle çözülmedi; **çeşitlilik** (başka saha) hükmü (D-287) ayakta.
 - Gerçek karede yanlış güzergâh payı: v35 **%71** (15/21) → v3 %22 → v7a **%18** (7/38). Şartname "yanlış güzergâh = 0 puan" dediğine göre sahada v35 yerine v3/v7a **daha güvenli**dir; ama hiçbiri 0 değil ve ön kayıtlı kapı bunu terfiye çevirmiyor.
 - **Karar kullanıcıya (D-133 sevk insanındır):** (i) kuralı korumak → üretim v35 kalır (gerçek karede en kötü model); (ii) kural dışı terfi → aday **v7a** (arena kapıları tam, yanlış güzergâh en düşük, FP 3/111) ya da **v3** (en çok rota 41, yanlış 9). Her iki hâlde de terfi öncesi §4(d) çürütücüsü koşar ve karar "kural dışı" diye açıkça yazılır.
+
+---
+
+### D-294 · ✅ ÜRETİM MODELİ **v35 → v36** (gece_v7a) · **kullanıcı kararı, ön kayıtlı eşikler GEÇİLMEDİ** · altı hizalama noktası tek commit'te (`c1826f1`) · bağımsız doğrulayıcı kıramadı · ve terfinin açtığı **geri alma boşluğu** aynı turda kapatıldı
+
+**Karar sahibi:** kullanıcı (D-133 — sevk insanındır), 2026-08-26: *"izin veriyorum kurala rağmen"*, ardından düzeltilmiş karşı-kalem tablosunu görüp *"tamam yap"*. **Uygulayan:** Claude 2. **Doğrulayan:** bağımsız ajan (`geri_alinmali: false`). Ham çıktı: `results/terfi_v36/rapor.md`, `results/gece_20260826/v7a_curut/` (3 lens), `scripts/olcum/results/t63/t_v36_dogrulama_kabul_verdikt.json`.
+
+#### 1. 🔴 Kararın dürüst çerçevesi — ön kayıtlı kapı GEÇİLMEDİ
+`ON_KAYIT §4(b)/§14`: **ROTA ≥ 10** (v7a **8**) · **MASKE_YOK ≤ 10** (v7a **16**). Bu iki satır **geçilmedi**; eşikler **değiştirilmedi** ve `CONTRACTS §12`'ye İSTİSNA bloğu yazıldı: *sonraki terfileri bağlar*. Cümle beş yerde (iki defter, iki kılavuz, CONTRACTS) sayılarıyla duruyor.
+**Geçilen:** kabul zinciri K0–K6 VERDİKT True (K1 255/260 · K2 15 · K3 1 · K4 4 · K6 7/255) · 67 gerçek karede red 0 · çatı kaçağı 0,023 · test29 FP 1 · **test29 YANLIŞ GÜZERGÂH 0/8**.
+**Gerekçe (şartname §6.2: yanlış güzergâh = 0 puan):** 111 gerçek karede yanlış güzergâh **v35 15/21 (%71) → v36 7/38 (%18)**; engel üstünde waypoint **79 → 3**.
+**KARŞI KALEMLER (gizlenmedi, registry `gercek_kare_kapisi.not` + `_surum_karari`):** val82 FP **0 → 2** (kare 223: yol olmayan çorak tarlada 8 waypoint — v35'te MASKE_YOK, **yeni hata sınıfı**) · sentetik K3 0→1, K4 1→4, K6 5→7 (hepsi tavan altı) · kaplama67 0,51→0,42, figür zemin (k109) 0,15→0,04 · meşru rota kaybı 3 kare · körlük **aynı** (MASKE_YOK 16 = 16) · `karar_cevrilmesi` v36 için **ÖLÇÜLMEDİ** (bayat v35 değeri taşınmadı, D-256 §3 kuralı).
+
+#### 2. Altı hizalama noktası (tek commit `c1826f1`)
+ağırlık `models/navitas_seg_v36_best.pt` (sha `1d1caca6…`, koşum best.pt ile bayt-eş) · registry ×2 (bayt-eş ayna; K0–K6 + **yeni `metrics.gercek_kare_kapisi`** + figür soyağacına v36 satırı, eskiler silinmedi) · ONNX 512 fp16 opset 17 (sha `f4c9f5fe…`, `--turev-kaydet` ile) · paket künyesi + paket ağırlıkları · kılavuz ×2 + testler. **v35 ve v34 dosyaları diskte duruyor.**
+**Doğrulama defterin gösterdiği yoldan:** `resolve_model() → v36`; `65_kabul_denetcisi` yeniden koşuldu → K0–K6 `gece_v7a` ile **birebir**; 15/15 · discover **962 OK (2 skip)**; `olcum_ayna` 77 çift 0 ayrışan; ikiz diff'ler boş.
+Doğrulayıcının ek ölçümü: ONNX çıktısı v36 .pt ile **0,99999984** korele (v35 ile 0,975) — türev gerçekten v36'nın; fail-closed kapı 7 adayın 7'sinde doğru (v36 .pt/.onnx KABUL; v35, yabancı ve yer tutucu .engine RED); kılavuz hizalama kapısına v35 enjekte edilince kapı düşüyor (boş kapı değil).
+
+#### 3. 🔴 Terfinin açtığı boşluk — aynı turda kapatıldı
+Doğrulayıcı buldu: v35 profilden çıkınca **tam sha256'sı defterde hiçbir yerde kalmadı**; oysa `JETSON_KILAVUZ §6C/G4` geri dönüşte *"yeni değerler yedeğin KENDİ defter kaydından alınır"* diyor → **geri alma yordamı fiilen uygulanamaz** hâle gelmişti (saha riski: dönüş yolu yok). Kapatıldı: `competition._yedek_surumler` (v35: path + sha `e00f6b8e…` + ONNX `248ef808…`; v34: `6730d777…`), iki defterde ayna, §6C/G4 iki kılavuzda bu alana yönlendirildi. **Hiçbir kod bu alandan model yüklemez** (fail-closed: yalnız `competition.path`).
+
+#### 4. Açık kalanlar (mimar/kullanıcı)
+- **Arena kanıtı YOK:** DOĞRULAMA kümesi 0038 kırsal yol çekimi; kırmızı H / moloz / bariyer içermez (T111/D-198 açık **insan görevi**).
+- `karar_cevrilmesi` ölçülmedi (v34 terfisinde kapıydı, bugün değil) — `68_karar_kararliligi` ile ölçülebilir.
+- **Kılavuz hizalama kapısının kör noktası (yeni, T154):** `test_uretim_modeli_hizasi` yalnız `ASIL`/`format=engine` içeren satırlara bakıyor; `trtexec --saveEngine=`, `--engine`, `--cikti` satırları **hiçbir kapı tarafından denetlenmiyordu** ve 11 gündür **v30** diyordu (v30 en son 15 Ağustos'ta üretimdi). Bu turda düzeltildi ama kapı hâlâ kör.
+- `_surum_karari`'ndaki "figür zemin 0,15→0,04" **k109** yolunun sayısı; `k0_korluk.figur_zemin_orani` alanı **0,0266** (65'in `kaplama()` yolu). Aynı ad, iki ölçüm hattı — okuyucuyu yanıltabilir.
+- K0 oranı ekranda 1,00 basılıyor, gerçek değer 0,99925 (yuvarlama artığı, D-256'da da vardı).

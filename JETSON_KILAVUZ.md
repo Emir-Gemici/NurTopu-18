@@ -732,7 +732,10 @@ cp models/jetson_derleme_manifest.json models/jetson_derleme_manifest.json.onces
 ### G4 · Defteri yedeğe çevir (yalnız PAKET kopyası)
 `config/model_registry.json` → `profiles.competition` altında **yalnız** şu
 alanlar değişir: `model_id`, `path`, `sha256`, (gerekiyorsa) `imgsz`.
-Yeni değerler yedeğin KENDİ defter kaydından alınır — elle uydurulmaz;
+Yeni değerler **`profiles.competition._yedek_surumler.<surum>`** kaydından alınır
+(v35/v34 için tam `path` + `sha256` + türev sha'ları orada; D-294 · 2026-08-26'da
+eklendi — v36 terfisinde v35 profilden çıkınca sha defterde kalmamıştı, bu adım
+fiilen uygulanamıyordu) — elle uydurulmaz;
 `imgsz` değişiyorsa `_imgsz_notu` disiplinine uyulur. Başka HİÇBİR alana
 dokunulmaz. ⚠ **Deponun kök kopyası sahada DEĞİŞTİRİLMEZ**; dönüşte mimar
 onayıyla senkronlanır — aksi iki defteri sessizce ayrıştırır (D-189 sınıfı).
