@@ -19,7 +19,8 @@ IRTIFA = KOK / "results" / "dji_20260822" / "kareler_irtifa.json"
 MASKE_KOKLERI = [KOK / "results" / "dji_20260822" / "f5_olcek", KOK / "results" / "dji_20260822" / "f4",
                  KOK / "results" / "dji_20260822" / "f5", KOK / "results" / "dji_20260822" / "referans",
                  KOK / "results" / "dji_kirsal" / "bant_tamamlama", KOK / "results" / "dji_20260822" / "su_bindirme",
-                 KOK / "results" / "gece_20260826" / "etiket_dalga2", KOK / "results" / "gece_20260826" / "etiket_dalga3"]
+                 KOK / "results" / "gece_20260826" / "etiket_dalga2", KOK / "results" / "gece_20260826" / "etiket_dalga3",
+                 KOK / "results" / "gece_20260826" / "etiket_dalga4"]
 
 
 def ozellik(p: Path) -> np.ndarray:
@@ -33,6 +34,8 @@ def main():
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--grup", type=int, default=8)
     ap.add_argument("--cikti", type=Path, required=True)
+    ap.add_argument("--kaynak-haric", default="", help="virgulle ayrilmis kaynak dizin adi parcalari (or. 0038) — havuza ALINMAZ")
+    ap.add_argument("--onek", default="G", help="grup adi oneki")
     a = ap.parse_args()
 
     etiketli = set()
@@ -56,8 +59,11 @@ def main():
         for e in irt:
             rel[e["dosya"]] = e.get("rel_alt")
 
+    haric = [h for h in a.kaynak_haric.split(",") if h]
     havuz, ref = [], []
     for kaynak in sorted(KARE_KOK.iterdir()):
+        if any(h in kaynak.name for h in haric):
+            continue
         for p in sorted(kaynak.glob("*.jpg")):
             govde = f"{kaynak.name}__{p.stem}"
             anahtar = f"{kaynak.name}/{p.name}"
@@ -83,7 +89,7 @@ def main():
         d = np.minimum(d, np.linalg.norm(F_hav - F_hav[i], axis=1))
         d[i] = -1
     kareler = [{"dosya": f"{havuz[i][0].parent.name}/{havuz[i][0].name}", "rel_alt": havuz[i][1]} for i in secilen]
-    gruplar = {chr(65 + g): kareler[g::a.grup] for g in range(a.grup)}
+    gruplar = {f"{a.onek}{g:02d}": kareler[g::a.grup] for g in range(a.grup)}
     cikti = {"_ne": f"ETIKET DALGA 2 — {len(kareler)} kare, {a.grup} amele; en-uzak-nokta (8x8 gri), mevcut {len(ref)} etiketliye gore",
              "_sartname": "results/dji_20260822/SU_ETIKETLEME_PLANI.md §4b + EK-2 + EK-3 + EK-4",
              "_arac": "scripts/olcum/140_uc_maske_araci.py", "kaynak_kareler": "results/dji_20260822/kareler_1fps",
