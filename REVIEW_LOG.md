@@ -22159,3 +22159,38 @@ Doğrulayıcı buldu: v35 profilden çıkınca **tam sha256'sı defterde hiçbir
 - **Kılavuz hizalama kapısının kör noktası (yeni, T154):** `test_uretim_modeli_hizasi` yalnız `ASIL`/`format=engine` içeren satırlara bakıyor; `trtexec --saveEngine=`, `--engine`, `--cikti` satırları **hiçbir kapı tarafından denetlenmiyordu** ve 11 gündür **v30** diyordu (v30 en son 15 Ağustos'ta üretimdi). Bu turda düzeltildi ama kapı hâlâ kör.
 - `_surum_karari`'ndaki "figür zemin 0,15→0,04" **k109** yolunun sayısı; `k0_korluk.figur_zemin_orani` alanı **0,0266** (65'in `kaplama()` yolu). Aynı ad, iki ölçüm hattı — okuyucuyu yanıltabilir.
 - K0 oranı ekranda 1,00 basılıyor, gerçek değer 0,99925 (yuvarlama artığı, D-256'da da vardı).
+
+---
+
+### D-295 · 🔴 DÖRT İŞ · **üretim yolu yayınlanan şerit numarasını 9/15 YANLIŞ veriyor** (T151) · HB dedektörü gerçek pedde %0, kırmızı arabada %100 (T150) · v36 karar kararlılığında v35'ten KÖTÜ · T154 kapısı ilk koşuda altı sürüm bayat satır yakaladı
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-26. Ön kayıt `ON_KAYIT §16`. Ham çıktı: `results/t151/`, `results/t150/`, `results/karar_cevrilmesi_v36/`, `results/t154/`. Kod yazan iki iş çürütücüden geçti (ikisi de "çürütülemedi", birleştirildi); iki ölçüm işi salt okuma.
+
+#### 1. 🔴 T151 — KARAR: `analyze_path` üretim, `rota_bul` tanısal (Seçenek C, beyan) · ve ortaya çıkan üç boşluk
+`CONTRACTS §11.2-EK` yazıldı: halka 7'nin sahibi **`analyze_path`**tir (`run_camera` → K1 telsiz); `rota_bul` sahada **hiçbir mesaj yayınlamaz** (yalnız `kamera_dogrula`, `jetson_fps`, kuru koşu). Davranış **değiştirilmedi** — beyan düzeltildi (30 Eylül maliyeti en düşük seçenek).
+**Ölçüm (yer gerçekli 15 sahne, aynı maske, GPU yok; `results/t151/iki_yol_kiyasi.json`, vekil bağımsız yeniden koştu):**
+```
+rota_bul     : 15/15 dogru road  (durum ACIK 15/15)
+analyze_path :  6/15 dogru road  -> 9 sahnede YANLIS SERIT NUMARASI
+rota geometrisi: 15/15 dogru koridorda (yanlis olan YAYINLANAN NUMARA)
+```
+⚠ `road` İKA'yı sürmez (waypoint'ler sürer, D-166) **ama şartname §2.2.3'te hakemin canlı onayladığı ve puanlanan etikettir** (`yks_gui:839` "yol=2(orta)"). D-167/D-168'in açık bıraktığı *"`darbogaz_serit` daha iyi olduğu gösterilmemiştir"* sorusu **kapandı: yanlış istatistik** → **T155**.
+**Diğer iki boşluk:** (a) genel kapı 15/15 yalnız `rota_bul`u zorluyor — **üretim yolu şartname §2.1 topolojisinde hiç kapıya sokulmamış** (**T156**); (b) `koridor_adaylari` üç-güzergâh kapısı, `rota_dogrula` K2/K3 ihlal denetimi ve T90 fail-closed'ı üretim yolunda **yok**.
+
+#### 2. 🔴 T150 — HB dedektörü ÜRETİME BAĞLANMAMALI (ölçüldü)
+| ölçüm | sonuç |
+|---|---|
+| sentetik kabul kümesi (n=260, üretecin yer gerçeği) | isabet **260/260**, merkez hatası medyan 0,71 px — ⚠ **çevrimsel** (dedektörün geliştirildiği üreteç) |
+| 67 gerçek otopark karesi (HB YOK) | **67/67 yanlış pozitif** — kırmızı **otomobil** HB sanıldı |
+| 111 DJI kırsal karesi (HB YOK) | 15 karede (%13,5) kırmızımsı toprak yaması HB sanıldı |
+| şartname figüründeki **gerçek HB pedi** (siyah ped + beyaz H) | **TESPİT EDİLEMEDİ** (a* maks +5, eşik 25 → 0/4500 piksel) |
+Yani dedektör sahada ya **%0 isabet** (fail-closed: her kare HEDEF_YOK → hiç rota yok) ya **%100 yanlış pozitif** (fail-open: rota kırmızı arabaya gider, sistem görevi tamamladığını sanır — daha tehlikeli). Sebep **renk**: şartname **metni** "kırmızı H" der, **figürü** akromatik ped gösterir (T71/D-99 metni otorite seçmişti). Bağlama maliyeti ölçüldü: bugün rota HB'ye hiçbir karede varmıyor (maks 349 px uzakta biter), bağlanınca 1,22 px — mekanizma doğru, **girdi yanlış**. Mevcut `HEDEF_YOK` = fail-closed tercihi **doğrudur ve korunur**.
+⇒ **İNSAN GÖREVİ H-E:** HB pedinin gerçek rengi/deseni şartname/SSS'den **teyit** edilsin; mümkünse 2×2 m ped basılıp gimbal 90°'de 5–10 kare çekilsin. Başka hiçbir ölçüm bunun yerine geçmez.
+
+#### 3. 🔴 karar_cevrilmesi — v36 v35'ten KÖTÜ (ölçüm borcu kapandı, kapı değil)
+Eşli koşum (aynı oturum, aynı gürültü gerçekleştirmeleri): **v36 14/260 (%5,38) · v35 9/260 (%3,46)** (tohum 7, ön kayıtlı); tohum 11: 15 vs 11 — **yön iki tohumda da aynı**, büyüklük tohuma duyarlı (D-203). Null kontrol (sigma 0): 0/260. v35'in 9'u D-256'nın 2026-08-21 koşumuyla **birebir** yeniden üretildi.
+**Kusurun cinsi sayıdan önemli:** şerit değişimi (zikzak, D-119/D-120'nin asıl kaygısı) v36 8 ~ v35 9 ile **eşit**; fazlalığın tamamı **"rota VAR/YOK" çevrilmesi** (v36 6, v35 0–1) — yani gürültü altında rotanın kaybolması. Kaplama düşüşüyle (0,508 → 0,417) tutarlı: v36 red eşiğinin kenarında duruyor. Yön **fail-closed** (yanlış rota değil, rota yok) ama saha elverişliliğini düşürür. Eski v34 eşiği (≤ 8/260) bugün uygulansa **v35 de v36 da düşerdi**. Registry'deki `OLCULMEDI` **ölçülen sayıyla** dolduruldu; ön kayıt §16 gereği **terfi geri alınmadı** — geri alma kullanıcı kararıdır (§6C yordamı D-294'te onarıldı, çalışır).
+
+#### 4. ✅ T154 KAPANDI — ve kapı ilk koşuda gerçek bayatlık yakaladı
+Kör noktanın gerçekliği **ölçüldü** (eski kapıya v30 enjekte edildi → 4/4 OK, yani kördü). Yeni `KilavuzKomutSatirlariTests` (7 test): kılavuzda model adı/türevi ya da sürümlü `--cikti` geçen **her satır** üretim sürümünü taşımalı; istisnalar (yedek §6C, domain kontrolü, aşılmış başlıklar) açık ve **defterden** türetilir. Üç satır tipi için ayrı mutasyon, bayt-eş geri alma. 🔴 Kapı ilk koşuda §6B'de **`navitas_seg_v17_best_640…`** buldu — **altı sürüm** bayat, 13 Ağustos'tan beri.
+**Çürütücünün bulduğu kalan delikler (T154 ikinci tur → T157):** `--imgsz` denetlenmiyor (640 enjekte edilince kaçıyor); **uzantısız** model yolu kapıyı atlıyor; çıplak `vNN` başlık metni denetim dışı — **ve şu an kılavuz satır 15'te "asıl model v27 → v30" başlığı duruyor, gövdesi v36 diyor**; ağaç istisnası bölüm bağlamına bağlı değil; `test_k0_iki_olcum_hatti`de `0.1508` çıplak yazılı.

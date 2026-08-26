@@ -414,6 +414,13 @@ merkezi `serit_no` sınırına medyan **4,6 px** uzaklıktadır (şerit genişli
 **karara bağlanamaz**; yayınlanan istatistik `darbogaz_serit`tir çünkü
 **öyle yazılmıştır** (D-41), daha iyi olduğu **gösterilmemiştir**.
 
+🔴 **ÖLÇÜLDÜ — 2026-08-26 (T151 · D-295): üretim yolunun yayınladığı `road` 15 yer gerçekli
+sahnenin 9'unda YANLIŞ** (`analyze_path` 6/15; aynı maske ve aynı sahnelerde `rota_bul` **15/15**).
+Rotanın geometrisi 15/15 doğru koridordadır — yanlış olan **yayınlanan numaradır**. D-167/D-168'in
+açık bıraktığı *"daha iyi olduğu gösterilmemiştir"* sorusu böylece **kapandı**: `darbogaz_serit`
+üretim yolunda yanlış istatistiktir. Ham çıktı `results/t151/iki_yol_kiyasi.json` (mimar vekili
+bağımsız yeniden koştu). Düzeltme **T155**; şartname §2.2.3'te hakem bu etiketi canlı onaylar.
+
 ⚠ `road` **İKA'nın sürüş girdisi DEĞİLDİR** (D-166). Sürüş `waypoints`+`ref_xy`
 ile olur (`simulation/scripts/ika_nav.py:178-182` sayısal `road`'u geometri
 saymayı açıkça reddeder). `road` **yayınlanan ve puanlanan etikettir**.
@@ -929,6 +936,23 @@ Bir halkanın **sahibi**, o halkayı sahada gerçekten koşturan dosyadır.
 | 8 | Aktarım | rota | OPEN_ROUTE/NO_ROUTE + ACK + HEARTBEAT | `codes/rpi_inference.py` `run_camera`/`run_video` → `comms/iha_sender.py` `KararYayinci` (§6.5 · K1, 2026-08-26) | **GEÇERLİ** · UDP loopback ölçüldü; SiK seri **ÖLÇÜLMEDİ** |
 | 9 | İKA sürüş izni | rota ∧ IKA_GO ∧ IHA_LANDED | izin `bool` | kapı: `comms/ika_receiver.py:119-121` · `IHA_LANDED` üreticisi: **yalnız `simulation/scripts/navitas_sim.py:95`** | **KUSURLU** · D-22 |
 | 10 | Motor komutu | izin + waypoint | tekerlek hızı | — (`gz` subprocess'i sahip değil) | **SAHİPSİZ** · D-22 |
+
+#### 11.2-EK · KARAR YOLU BEYANI — T151 kararı (mimar vekili, 2026-08-26 · D-295)
+
+> Halka 7'nin sahibi **`codes/rpi_inference.py::analyze_path`**tır (`run_camera` → K1 telsiz
+> halkası → `iha_sender.KararYayinci`). `costmap_path_finder::rota_bul` **üretim değildir**;
+> saha gününde yalnız **TANISAL** koşar (`kamera_dogrula`, `jetson_fps`) ve PC'de kuru koşuda.
+> Bu satır fiilî durumu **beyan eder** — davranış değiştirilmedi (Seçenek C).
+>
+> 🔴 Bu beyanın ortaya çıkardığı iki boşluk **açık görevdir**, gizlenmez:
+> 1. **Genel kapı (15/15, madde 14) yalnız `rota_bul`u zorluyor.** Üretim yolu `analyze_path`
+>    şartname §2.1 topolojisinde (üç güzergâhtan biri açık) **hiç kapıya sokulmamıştır** → **T156**.
+> 2. **`koridor_adaylari` üç-güzergâh kapısı üretim yolunda YOKTUR**; `rota_dogrula`nın K2/K3
+>    ihlal denetimi ve T90 etiket-çakışması fail-closed'ı da yalnız `rota_bul`dadır → **T155/T156**.
+>
+> `rota_bul`un ret sözlüğü (`BELIRSIZ_TEK_KAPI`, `KAPALI_DAR`, …) `ROTA_RET_SEBEPLERI`de
+> **yoktur** (§6.4, `tests/test_rota_ret_nedenleri.py` kilitli): üretimi `rota_bul`a çevirmek
+> sözlük genişletmesi ya da eşleme katmanı gerektirir — bu yüzden Seçenek B seçilmedi.
 
 ### 11.3 Halka başına başarı ölçütü ve kanıt
 
