@@ -1013,10 +1013,33 @@ Bir halkanın **sahibi**, o halkayı sahada gerçekten koşturan dosyadır.
 > Bu satır fiilî durumu **beyan eder** — davranış değiştirilmedi (Seçenek C).
 >
 > 🔴 Bu beyanın ortaya çıkardığı iki boşluk **açık görevdir**, gizlenmez:
-> 1. **Genel kapı (15/15, madde 14) yalnız `rota_bul`u zorluyor.** Üretim yolu `analyze_path`
->    şartname §2.1 topolojisinde (üç güzergâhtan biri açık) **hiç kapıya sokulmamıştır** → **T156**.
+> 1. ~~**Genel kapı (15/15, madde 14) yalnız `rota_bul`u zorluyor.**~~ → **T156 KAPANDI**
+>    (2026-08-26, aşağıdaki "Genel kapının kapsamı" bloğu).
 > 2. **`koridor_adaylari` üç-güzergâh kapısı üretim yolunda YOKTUR**; `rota_dogrula`nın K2/K3
 >    ihlal denetimi ve T90 etiket-çakışması fail-closed'ı da yalnız `rota_bul`dadır → **T155/T156**.
+>    (T156 üretim yolunun **kararını** kapıya soktu; K2/K3 ihlal denetiminin üretim yoluna
+>    taşınması **hâlâ açıktır** — bu boşluk kapanmadı.)
+>
+> ##### Genel kapının kapsamı — madde 14 (T156 · 2026-08-26)
+>
+> **Anayasa madde 14'ün genel kapısı `codes/test_rota_sentetik.py` artık İKİ KOL koşar.**
+> Aynı 15 belirlenimci arena sahnesi (`simulation/scripts/arena.py` → `sahne_uret`,
+> kusursuz maske), iki karar yolu:
+>
+> | kol | çağrılan | şart | kaynak |
+> |---|---|---|---|
+> | **KOL 1** (tanısal) | `costmap_path_finder.rota_bul` | **15/15 tam puan** (değişmedi) | madde 14 |
+> | **KOL 2** (**ÜRETİM**) | `rpi_inference.analyze_path` | (a) rota **üretiliyor** (ret yok, karar var, ≥ 2 waypoint) **ve** (b) **yayınlanan** `road` yer gerçeğiyle uyuşuyor — her ikisi de **≥ 14/15** | ÖN KAYIT §18-B |
+>
+> - Eşik tek yerde tanımlıdır: `test_rota_sentetik.URETIM_KAPI_ESIGI` (madde 16 — çıplak sayı yok).
+>   Ölçülen taban **15/15 · 15/15** (`results/t156/rapor.md`).
+> - **Çıkış kodu** `test_rota_sentetik.kapi_karari()` ile tek yerden döner ve **iki kola da**
+>   bağlıdır. `SONUC: 15/15 dogru` satırı ve `[OK] TUM DETERMINISTIK SAHNELER GECTI` cümlesi
+>   **KOL 1'in çıktısı olarak aynen durur** — dış okuyucuların sözleşmesi bozulmadı.
+> - Kilit: `tests/test_t156_genel_kapi_uretim_kolu.py` (değer + çıkış kodu sözleşmesi +
+>   mutasyon muhafızı). Mutasyon ölçüldü: yayın hattı `serit_karari` → `darbogaz_serit`
+>   çevrilince KOL 2 **6/15**'e düşer ve kapı DÜŞER, KOL 1 ise **15/15 yeşil kalır** —
+>   yani T155'in girdiği delik artık kapıdadır.
 >
 > `rota_bul`un ret sözlüğü (`BELIRSIZ_TEK_KAPI`, `KAPALI_DAR`, …) `ROTA_RET_SEBEPLERI`de
 > **yoktur** (§6.4, `tests/test_rota_ret_nedenleri.py` kilitli): üretimi `rota_bul`a çevirmek

@@ -13,6 +13,22 @@ Sonra kademeli bozulma taramasi: bariyer piksellerinin bir kismi silinir (model
 kacirdigini simule eder), kararin hangi noktada dondugu olculur — modelin GERCEK
 recall gereksinimi boylece TURETILIR, varsayilmaz.
 
+🔴 IKI KOL (T156 · 2026-08-26 · CONTRACTS SS11.2-EK / ON_KAYIT SS18-B)
+  Bu kapi 2026-08-26'ya kadar YALNIZ `costmap_path_finder.rota_bul`u zorluyordu.
+  Ama URETIM yolu `rpi_inference.analyze_path`tir (D-295): Jetson/RPi cikarim
+  hatti, `comms` yayini ve YKS etiketi oradan gelir. Yani genel kapi, sartname
+  SS2.1 topolojisinde (uc guzergahtan biri acik) URETIM yolunu HIC sinamiyordu —
+  T155 (D-296) tam bu delikten girdi: uretim yolu 15 sahnenin 9'unda YANLIS
+  serit numarasi yayinlarken kapi 15/15 yesil yaniyordu.
+  Bu yuzden ayni 15 belirlenimci sahne artik IKI kolda kosulur:
+    KOL 1 (tanisal) `rota_bul`      — 15/15 sart (degismedi, madde 14)
+    KOL 2 (URETIM)  `analyze_path`  — rota URETILIYOR mu + YAYINLANAN serit
+                                      yer gercegiyle uyusuyor mu; esik
+                                      >= 14/15 (ON_KAYIT SS18-B, taban 15/15)
+  Cikis kodu IKI kolun birlikte gecmesine baglidir; "SONUC: n/n dogru" satiri
+  ve "[OK] TUM DETERMINISTIK SAHNELER GECTI" cumlesi KOL 1'in ciktisi olarak
+  AYNEN durur (baska betikler bu metni okuyor olabilir).
+
 Kullanim:
   venv/Scripts/python.exe codes/test_rota_sentetik.py
   venv/Scripts/python.exe codes/test_rota_sentetik.py --bozulma
@@ -35,6 +51,12 @@ from world_generator import DIFF
 MPP = 0.10                 # 10 cm/piksel — HTAB 50x50 m -> 500x500 px canvas yeter
 EKSTENT_M = 25.0           # local koordinat yarisi (HTAB_HALF ile ayni)
 N = int(round(2 * EKSTENT_M / MPP))   # 500
+
+# T156 — URETIM YOLU KOLUNUN KAPI ESIGI (ON_KAYIT SS18-B, SONUCA GORE
+# DEGISTIRILMEZ). 15 sahnenin en az bu kadarinda hem rota URETILECEK hem de
+# YAYINLANAN serit yer gercegiyle uyusacak. Olculen taban 15/15'tir
+# (results/t156/rapor.md); esik T155 SS17 disipliniyle ayni: >= 14.
+URETIM_KAPI_ESIGI = 14
 
 
 def _px(local_xy):
@@ -112,6 +134,103 @@ def sahne_uret(harita_id, scenario, moloz_orani=1.0):
     return H, zemin, engel, baslangic, hedef
 
 
+def uretim_yolu_kolu():
+    """KOL 2 — URETIM yolu (`rpi_inference.analyze_path`) ayni 15 sahnede.
+
+    NEDEN AYRI FONKSIYON: `tests/test_t156_genel_kapi_uretim_kolu.py` kapinin
+    KENDISINI bu fonksiyondan sinar; sahne ve olcu KOPYALANMAZ (kopya, sahne
+    degisince testi sessizce alakasiz kilardi — D-15).
+
+    `analyze_path` import'u ICERIDE yapilir: modul `ultralytics`i cekiyor ve bu
+    dosyayi yalnizca `sahne_uret` icin import eden betikler (tests/,
+    scripts/olcum/124_...) o bedeli odememeli.
+
+    Her sahne icin doner:
+      rota_var   : ret YOK, karar URETILDI ve >= 2 waypoint yayina hazir
+      serit_ok   : rota_var VE yayinlanan `road` == yer gercegi H["open"]
+    """
+    from rpi_inference import analyze_path
+
+    satirlar = []
+    for harita_id in range(1, arena.HARITA_N + 1):
+        for scenario in arena.SCENARIOS:
+            H, zemin, engel, _b, _h = sahne_uret(harita_id, scenario)
+            # Cagri T151/T155 ile BIREBIR ayni (results/t155/serit_kapisi.py):
+            # baslangic/hedef maskeleri VERILMEZ — uretim yolu uc bantlarini
+            # maskenin kendisinden turetir, kapi da onu oyle zorlamalidir.
+            yol, guven, wps, ret, olcum = analyze_path(
+                zemin, icerik=None, engel_mask=engel, mpp=MPP,
+                return_reason=True, return_olcum=True)
+            rota_var = ret is None and yol is not None and len(wps) >= 2
+            satirlar.append({
+                "harita": harita_id,
+                "senaryo": scenario,
+                "yer_gercegi": int(H["open"]),
+                "yayinlanan_road": yol,
+                "guven": float(guven),
+                "wp": len(wps),
+                "ret": (ret[0] if isinstance(ret, tuple) else ret),
+                "rota_var": bool(rota_var),
+                "serit_ok": bool(rota_var and yol == H["open"]),
+                # TANI (kapiya girmez): T155 oncesi YAYINLANAN alan buydu.
+                "tani_darbogaz_serit": (olcum or {}).get("darbogaz_serit"),
+            })
+    return satirlar
+
+
+def uretim_kolu_sayimi(satirlar):
+    """(rota_dogru, serit_dogru, toplam) — kapi bu uc sayidan karar verir."""
+    return (sum(1 for s in satirlar if s["rota_var"]),
+            sum(1 for s in satirlar if s["serit_ok"]),
+            len(satirlar))
+
+
+def kapi_karari(kol1_dogru, kol1_toplam, uretim_rota, uretim_serit,
+                uretim_toplam):
+    """Kapinin CIKIS KODU — tek yerde tanimli (madde 16).
+
+    KOL 1 (`rota_bul`) sozlesmesi DEGISMEDI: tam puan sart.
+    KOL 2 (`analyze_path`) ON_KAYIT SS18-B: rota uretimi ve serit numarasi
+    AYRI AYRI >= URETIM_KAPI_ESIGI olmali.
+    0 = gecti, 1 = dustu.
+    """
+    kol1_ok = kol1_toplam > 0 and kol1_dogru == kol1_toplam
+    kol2_ok = (uretim_toplam > 0
+               and uretim_rota >= URETIM_KAPI_ESIGI
+               and uretim_serit >= URETIM_KAPI_ESIGI)
+    return 0 if (kol1_ok and kol2_ok) else 1
+
+
+def _uretim_kolunu_yazdir(satirlar):
+    """KOL 2 tablosunu basar ve (rota_dogru, serit_dogru, toplam) dondurur."""
+    print("\n" + "=" * 78)
+    print("KOL 2 — URETIM YOLU (rpi_inference.analyze_path) · AYNI 15 SAHNE")
+    print("=" * 78)
+    print(f"{'harita':>6} {'senaryo':>8} {'gercek':>7} {'yayin':>7} {'guven':>6} "
+          f"{'wp':>4} {'ret':>16} {'darbogaz':>9}  sonuc")
+    for s in satirlar:
+        if s["rota_var"] and s["serit_ok"]:
+            sonuc = "OK"
+        elif not s["rota_var"]:
+            sonuc = "FAIL(rota)"
+        else:
+            sonuc = "FAIL(serit)"
+        print(f"{s['harita']:>6} {s['senaryo']:>8} {s['yer_gercegi']:>7} "
+              f"{str(s['yayinlanan_road']):>7} {s['guven']:>6.3f} {s['wp']:>4} "
+              f"{str(s['ret']):>16} {str(s['tani_darbogaz_serit']):>9}  {sonuc}")
+    rota_dogru, serit_dogru, toplam = uretim_kolu_sayimi(satirlar)
+    print("-" * 78)
+    print(f"URETIM YOLU: rota uretimi {rota_dogru}/{toplam} · "
+          f"yayinlanan serit {serit_dogru}/{toplam} "
+          f"(esik >= {URETIM_KAPI_ESIGI}/{toplam}, ON_KAYIT SS18-B)")
+    if rota_dogru >= URETIM_KAPI_ESIGI and serit_dogru >= URETIM_KAPI_ESIGI:
+        print("[OK] URETIM YOLU KOLU GECTI")
+    else:
+        print("[FAIL] URETIM YOLU KOLU DUSTU — uretimde yayinlanan karar "
+              "yer gercegiyle uyusmuyor")
+    return rota_dogru, serit_dogru, toplam
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--bozulma", action="store_true",
@@ -122,6 +241,7 @@ def main():
     print("=" * 78)
     print("KORIDOR SECIMI — 15 DETERMINISTIK SENTETIK SAHNE (kusursuz maske)")
     print("=" * 78)
+    print("KOL 1 — TANISAL YOL (costmap_path_finder.rota_bul) · sart: TAM PUAN")
     print(f"{'harita':>6} {'senaryo':>8} {'gercek':>7} {'tahmin':>7} {'guven':>6} "
           f"{'durum':>18} {'wp':>4}  sonuc")
 
@@ -165,6 +285,15 @@ def main():
     else:
         print(f"[FAIL] {toplam - dogru} sahne basarisiz — bu bir MANTIK hatasidir (kusursuz maske)")
 
+    # T156 — KOL 2: URETIM yolu ayni sahnelerde zorlanir (CONTRACTS SS11.2-EK).
+    uretim_satirlari = uretim_yolu_kolu()
+    uretim_rota, uretim_serit, uretim_toplam = _uretim_kolunu_yazdir(
+        uretim_satirlari)
+    kod = kapi_karari(dogru, toplam, uretim_rota, uretim_serit, uretim_toplam)
+    print("-" * 78)
+    print(f"GENEL KAPI (madde 14): {'GECTI' if kod == 0 else 'DUSTU'} — "
+          f"kol1 {dogru}/{toplam} · kol2 serit {uretim_serit}/{uretim_toplam}")
+
     if args.gorsel and basarisizlar:
         cikti_dir = Path(__file__).parent.parent / "results" / "test_rota_sentetik"
         cikti_dir.mkdir(parents=True, exist_ok=True)
@@ -201,7 +330,7 @@ def main():
         print("\nYORUM: oran dustukce dogruluk NEREDE cokuyorsa, modelin bariyeri")
         print("gormesi gereken GERCEK recall esigi budur — varsayim degil, olcum.")
 
-    return 0 if dogru == toplam else 1
+    return kod
 
 
 if __name__ == "__main__":
