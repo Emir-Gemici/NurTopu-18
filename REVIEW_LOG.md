@@ -22103,3 +22103,32 @@ Yazılım tarafında kalan kaldıraçlar tükendi: yönelim (S2: model maskesind
 **Adaylar (ölçüldü, `results/gece_20260826/dogrulama_adaylari.jpg`):** 20 Ağustos DJI fotoğrafları (7) gece/yer seviyesi (L ≈ 28) — elendi; WhatsApp görselleri (9) = `data/raw_frames` otopark kareleri, `copy_paste_t127` ile **eğitimde** — elendi; 20 Ağustos videoları gece (T138) — elendi. Kalan tek aday **0038**: alan ayrık (GPS 0 m² / %1,5), hiç eğitilmedi, referansı iki kör geçişle uzlaştırıldı.
 **Yapılan:** `dji/DOGRULAMA/DJI_20260822172613_0038_D.{MP4,SRT}` sabit bağlantı (sha eş, `KAYNAK.md`); T136 hattının oturum kapısı bunu **DOĞRULAMA oturumu** olarak görür; CONTRACTS **§12**: küme tanımı, "0038 eğitime/erken durdurmaya girmez" kuralı (ON_KAYIT §2 istisnası kalktı — gelecek koşumlarda val erken durdurma için **0037/0039 içinden** ayrılmalı), gerçek-kare kapısı ve ölçülmüş taban.
 **Sınır (kullanıcı bilerek kabul etti):** aynı gün/kamera/saha türü; arena değil. Arena benzeri saha + kırmızı H çekimi (H-A) **hâlâ açık** insan görevidir; T150 (HB dedektörü ölçümü) buna bağlı.
+
+---
+
+### D-293 · ⚖ ETİKET DALGA 4 + v7a/v7b · 0037/0039 **tamamen etiketli** (486 kare) · ön kayıtlı kapıyı yine **hiçbir aday geçmedi** · ama gerçek karede yanlış güzergâh v35'in 15/21'inden v7a'da **7/38**'e indi · terfi kararı kullanıcıya sunuluyor
+
+**Yazan:** Claude 2 (mimar vekili 2) · 2026-08-26. Ön kayıt `ON_KAYIT.md §14`. Ham çıktı: `results/gece_20260826/etiket_dalga4/` (277 kare, 56 kör amele + 7 denetçi/41 düzeltme, 5,0 M jeton), `v7_kume.json`, `gece_v7{a,b}_*` (recete, bitti, olcum, test29/val82 JSON+log).
+
+#### 1. Veri ve eğitim
+`dji_v7`: 0037/0039'un tüm etiketli kareleri (F5 101 + dalga 2/3 108 + dalga 4 277 = 486; 6'sı tamamen etiketsiz), rastgele %15 val (73), **0038 hiçbir yerde** (CONTRACTS §12). Train ×5 = 2.065 kopya.
+| koşum | karışım | epoch/best | mAP50-95(M) val |
+|---|---|---|---|
+| v7a | rescuenet + sentetik + copy_paste + dji ×5 | 17 / **2** | 0,155 |
+| v7b | sentetik + copy_paste + dji ×5 (rescuenet yok), 10 ep | 10 / **6** | 0,153 (epoch 1→6 yükseliyor) |
+🔴 İlk kez eğri epoch 1'de tepe yapmadı (v7b 6): önceki "best epoch 1" kısmen **val artefaktıydı** (0038 val'i / karışım val'i). D-287 §3'ün "daha uzun eğit işe yaramıyor" cümlesi bu ölçüde **düzeltilir**; ama gerçek-kare kapısına yansımadı (aşağıda).
+
+#### 2. Kapılar (§14; test29 + val82, uzlaşı referansı v3, rota-yol kapısı)
+| model | test29 ROTA | MASKE_YOK | TP/FP | YANLIŞ | val82 ROTA | TP/FP | YANLIŞ | 111 kare ROTA/YANLIŞ | (a) arena |
+|---|---:|---:|---|---:|---:|---|---:|---|---|
+| v35 (üretim) | 6 | 16 | 5/1 | 5 | 15 | 15/0 | 10 | 21 / **15** | GEÇTİ |
+| v3 | 10 | 11 | 9/1 | 4 | 31 | 30/1 | 5 | **41** / 9 | GEÇTİ |
+| v6 | 12 | 8 | 10/2 | 5 | 35 | 33/2 | 8 | 47 / 13 | GEÇTİ |
+| **v7a** | 8 | 16 | 7/1 | **0** | 30 | 28/2 | 7 | 38 / **7** | **GEÇTİ** (K0–K6, çatı 0,023, red 0) |
+| v7b | 8 | 16 | 7/1 | 2 | 28 | 24/4 | 8 | 36 / 10 | DÜŞTÜ (K0: figür zemin 0,0) |
+**Hüküm:** kapı (b) ROTA ≥ 10 ∧ MASKE_YOK ≤ 10 ∧ FP ≤ 1 ∧ YANLIŞ = 0'ı **hiçbir aday** geçmedi (v7a test29'da YANLIŞ 0 ama ROTA 8, MASKE_YOK 16; v3 ROTA 10 ama MASKE_YOK 11, YANLIŞ 4). **Aday yok; kural gereği terfi yok.**
+
+#### 3. Okuma
+- 277 kare daha (aynı saha) modeli **muhafazakâr** yaptı (madde 12 + kanal vurgulu etiketler): v7a v35 kadar kör (MASKE_YOK 16) ama ürettiği rotalar **yol üstünde** (test29 0/8, val82 7/30). v3/v6 daha çok görüyor, daha çok yanılıyor. "Daha çok gör" ↔ "yanlış güzergâh" gerilimi veriyle çözülmedi; **çeşitlilik** (başka saha) hükmü (D-287) ayakta.
+- Gerçek karede yanlış güzergâh payı: v35 **%71** (15/21) → v3 %22 → v7a **%18** (7/38). Şartname "yanlış güzergâh = 0 puan" dediğine göre sahada v35 yerine v3/v7a **daha güvenli**dir; ama hiçbiri 0 değil ve ön kayıtlı kapı bunu terfiye çevirmiyor.
+- **Karar kullanıcıya (D-133 sevk insanındır):** (i) kuralı korumak → üretim v35 kalır (gerçek karede en kötü model); (ii) kural dışı terfi → aday **v7a** (arena kapıları tam, yanlış güzergâh en düşük, FP 3/111) ya da **v3** (en çok rota 41, yanlış 9). Her iki hâlde de terfi öncesi §4(d) çürütücüsü koşar ve karar "kural dışı" diye açıkça yazılır.
