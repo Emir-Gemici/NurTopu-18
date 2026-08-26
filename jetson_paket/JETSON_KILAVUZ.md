@@ -411,10 +411,23 @@ düşürüyordu — **artık `--timeout` vermeyin**, varsayılanlar sözleşmede
 
 ```bash
 cd ~/navitas
-python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006
+python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --yks <YKS_IP>:5005
 # açıkça yazmak isterseniz (aynı şey):
-python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --bekleme-suresi 900 --surus-suresi 600
+python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --yks <YKS_IP>:5005 \
+    --bekleme-suresi 900 --surus-suresi 600
 ```
+
+⚠ **`--yks` UDP'de ZORUNLUDUR (K8, CONTRACTS §6.5):** İKA'nın OPEN_ROUTE ACK
+kopyası hakem ekranına bu adresten gider. OPEN_ROUTE, IKA_GO'dan **önce**
+geldiği için YKS adresi IKA_GO'dan öğrenilemez; `--yks` verilmezse YKS'de
+"İKA'ya aktarıldı" 2. onayı **hiç açılmaz**. Simülasyon zincirinde aynı adres
+`navitas_sim.py --landed-yks <YKS_IP>:5005` ile geçirilir.
+
+⚠ **Ne zaman başlatılır:** bekleme saati (900 s) `ika_nav` **süreç başladığı
+an** kurulur, fırlatmada değil. Hazırlık süresinde (15 dk) erken başlatılırsa
+iniş gelmeden dolabilir — **fırlatmadan hemen önce / fırlatma anında** başlatın.
+Not: `ika_nav.send_vel/get_pose` Gazebo `gz topic` kullanır; gerçek İKA
+sürücüsü henüz yoktur (CONTRACTS §11) — bu komut alıcı/kapı mantığını koşturur.
 
 Çıkış kodları: `0` HB'ye ulaşıldı · `1` bekleme süresi doldu, rota gelmedi ·
 `2` NO_ROUTE · `3` IKA_GO/IHA_LANDED gelmedi · `4` sürüş süresi doldu

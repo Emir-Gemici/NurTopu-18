@@ -1058,6 +1058,8 @@ class YksArayuz:
             self.lbl_ika_go.config(text=f"İKA ALDI ✓ {damga}", fg=YESIL)
             self._logla(f"İKA ALDI ✓ IKA_GO ACK ref={ref} · {damga} · "
                         f"{self.ika_go_tekrar.deneme} gönderim", "yesil")
+            if self.t_ika0 and not self.t_ika1:
+                self.btn_hb.config(state="normal", bg=SARI)   # HB TEMAS artık anlamlı
         if (self.rota and ref == self.rota["seq"]
                 and ref_tip in (None, "OPEN_ROUTE")
                 and ref not in self.ika_rota_ack):
@@ -1926,10 +1928,12 @@ class YksArayuz:
                     f"{IKA_GO_TEKRAR_ARALIGI_S:.2f} s × ≤{IKA_GO_TEKRAR_UST_SINIRI})",
                     "mavi")
         self.t_ika0 = time.time()
+        self.t_ika1 = None
         self._logla("GÖREV · İKA İNTİKALİ BAŞLADI — kronometre limit 10:00 "
                     "(kilit koşulları sağlandı ✓)", "mavi")
         self.btn_ika_go.config(state="disabled", bg="#232e3a")
-        self.btn_hb.config(state="normal", bg=SARI)
+        # HB TEMAS düğmesi İKA'nın IKA_GO ACK'ı (İKA ALDI) gelince açılır
+        # (_ack_isle); İKA komutu almadan HB teması mantıksal olarak olamaz.
         self.lbl_ika_go.config(text="İKA_GO gönderildi · ACK bekleniyor…", fg=SARI)
         self.kok.after(int(IKA_GO_TEKRAR_ARALIGI_S * 1000), self._ika_go_tik)
 
@@ -1943,7 +1947,9 @@ class YksArayuz:
             self._logla(f"İKA ONAY VERMEDİ ✗ IKA_GO {self.ika_go_tekrar.deneme} kez "
                         "gönderildi, ACK gelmedi — düğme yeniden aktif", "kirmizi")
             self.lbl_ika_go.config(text="İKA ONAY VERMEDİ ✗", fg=KIRMIZI)
-            self.t_ika0 = None                 # kronometre başlamamış sayılır
+            # Kronometre başlamamış sayılır: HER İKİ damga sıfırlanır; t_ika1
+            # kalırsa yeniden IKA_GO sonrası hb_temas kalıcı kilitlenirdi.
+            self.t_ika0 = self.t_ika1 = None
             self.btn_ika_go.config(state="normal", bg=KIRMIZI)
             self.btn_hb.config(state="disabled", bg="#232e3a")
             return

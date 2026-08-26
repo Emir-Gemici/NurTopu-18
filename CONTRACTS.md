@@ -366,12 +366,29 @@ ekranda kanıt görmeden veriyordu.
 - **İKA idempotentliği:** mükerrer `IKA_GO` latch'i yeniden kurmaz (`ika_go_monotonic` ilk alımda
   sabitlenir) ama **her alım ACK'lanır** — YKS'nin tekrarı ancak böyle durur.
 - **Aktarım kanıtı (K8):** İKA, `OPEN_ROUTE`/`NO_ROUTE` ACK'ını gönderene (İHA) **ve** bildiği YKS
-  adresine (`--yks` ya da ilk geçerli `IKA_GO`'nun kaynağı) gönderir. Seri (SiK) hatta ortam yayın
-  olduğundan kopya gerekmez. YKS hakem düğmesi **fail-closed**: geçerli rota `seq`'i için İKA'dan
+  adresine (`--yks` ya da ilk geçerli `IKA_GO`'nun kaynağı) gönderir.
+  ⚠ **`--yks` UDP'de fiilen ZORUNLUDUR** (dalga 2 çürütücüsü, 2026-08-26, ölçüldü): şartname
+  sırasında `OPEN_ROUTE` `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`'dan öğrenilmeden
+  rota ACK'ı üretilir; `--yks` yoksa kopya **hiç** gitmez. Bu yüzden `ika_nav.py --yks` ve
+  `navitas_sim.py --landed-yks` aynı adresi `IkaReceiver(yks_peer=…)`'e bağlar.
+  **Seri (SiK) hatta** `addr` daima `None`'dır: ACK **ortam yayını** olarak tek hatta yazılır, YKS
+  ve İHA aynı paketi duyar — kopya gerekmez ama **asıl ACK üretilmek zorundadır**
+  (`_rota_ack` seri dalı `_kontrol_mesaji_ack` ile aynı kuralı izler; eski kod seri hatta rota
+  ACK'ını **hiç** üretmiyordu — dalga 2 ölçümü: yalnız `['CMD']`).
+  YKS hakem düğmesi **fail-closed**: geçerli rota `seq`'i için İKA'dan
   `ACK(ref_tip="OPEN_ROUTE")` ekranda görünmeden 2. onay ("İKA'ya aktarıldı") **verilemez**; düğme
   pasif, gerekçe metni görünür; kanıt gelince düğme açılır ve zaman damgası yazılır.
   ⚠ UDP kurulumunda İKA `--yks host:port` ile başlatılmazsa kanıt YKS'ye ulaşmaz ve 2. onay
   **hiç açılmaz** — bu bilinçli bir seçimdir (kanıtsız onay yerine görünür ret).
+- **YKS kronometresi / HB TEMAS (K4 küçük, dalga 2):** kronometre `IKA_GO` gönderildiği an başlar
+  (hakem saati de komutla başlar); `VAZGECILDI`'de **her iki** damga (`t_ika0`, `t_ika1`) sıfırlanır
+  (kronometre başlamamış sayılır, yeniden IKA_GO sonrası HB TEMAS kilitli kalmaz). `HB TEMAS`
+  düğmesi yalnız `IKA_GO` ACK'ı ("İKA ALDI") gelince açılır — İKA komutu almadan HB teması olamaz.
+- **`KararYayinci.stop()` (K1, dalga 2):** durma kontrolü yuvayı **boşaltmadan** bakar; gönderim
+  sırasında yazılıp `stop()` ile yakalanan karar **atılmaz**, bir sonraki turda gönderilir.
+- **İKA görevi çıkış kodu (K5, dalga 2):** `ika_gorevi` sürüş süresi dolunca **4** döner ve
+  `navitas_sim.dinamik_ika_gorevi` yalnız **0**'ı başarı sayar — testle kilitli
+  (`tests/test_dalga2_k1_k5_k8_kusurlari.py`).
 - Kilit: `tests/test_ika_go_ackli_tekrar.py` (paket düşürme gerçek UDP loopback, ACK yok → üst
   sınır, mükerrer IKA_GO, kanıtsız düğme pasif; 5 mutasyonun tamamı yakalandı).
 
