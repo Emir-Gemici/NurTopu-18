@@ -35,7 +35,7 @@ kullanıcı dosyası silme · sonucu görüp bant değiştirme.
 |---|---|---|
 | Codex raporu | işlendi | ✅ D-285; D-278 KAPANDI, D-279…282 düzeltildi |
 | eğitim v2 | kapı §4(a)+(b) | (a) GEÇTİ, (b) **FP 2** → terfi yok (D-286 §2) |
-| eğitim v3 / v4 / v5 | §4 + §7/§8 | v3=v4: (a) GEÇTİ, ROTA 10, TP 9, FP 1, **MASKE_YOK 11 > 10** → yok; v5: (b) GEÇTİ (TP 10) ama **(a) DÜŞTÜ** → yok (D-287 §3) |
+| eğitim v3 / v4 / v5 / v6 | §4 + §7/§8/§9 | v3=v4: (a) GEÇTİ, ROTA 10, TP 9, FP 1, **MASKE_YOK 11 > 10** → yok; v5: (b) GEÇTİ (TP 10) ama **(a) DÜŞTÜ** → yok; **v6**: (a) GEÇTİ, ROTA 12, MASKE_YOK 8, TP 10, **FP 2** → yok (D-287 §3, §3c) |
 | S2 yönelim | test + ölçüm | ✅ birleşti (None bayt-eş); v35 maskesinde kazanç **0**, etiket tavanı +7 (D-287 §1) |
 | T143 · T144 · T145 | kapı | ✅ üçü KAPANDI (çürütücü kıramadı) |
 | T142/T135 | ölçüm + karar | ✅ **eşik (0,55/0,40)** CONTRACTS T142; T135 kapandı (iki kol da ölü bulgusu) |
@@ -44,6 +44,6 @@ kullanıcı dosyası silme · sonucu görüp bant değiştirme.
 | terfi | §4(d) | **YOK** — kural gereği (D-287 §5) |
 
 ## 5. KAPANIŞ KAYDI — 2026-08-27 05:1x
-**Rol başameleye döner** (vekâlet 2 bitti). Sayılar: kapanan görev **8** (T135, T142, T143, T144, T145, T146, T147, T148), açılan **6** (T146–T151), defter kaydı D-285/286/287, CONTRACTS: T142 eşik, §6.5 (K1), §6.6 (K4+K8), §7.1 (K5+K6). Eğitim 5 koşum (v2, v3, v4, v5 + ölçümleri), etiket 160 kare, ajan ~9 M jeton. Kapı her birleştirmede 15/15; son: **896+ OK**. Push YOK.
+**Rol başameleye döner** (vekâlet 2 bitti). Sayılar: kapanan görev **8** (T135, T142, T143, T144, T145, T146, T147, T148), açılan **6** (T146–T151), defter kaydı D-285/286/287, CONTRACTS: T142 eşik, §6.5 (K1), §6.6 (K4+K8), §7.1 (K5+K6). Eğitim 5 koşum (v2, v3, v4, v5, v6 + ölçümleri), etiket 160 kare, ajan ~9 M jeton. Kapı her birleştirmede 15/15; son: **896+ OK**. Push YOK.
 **Yapılmayanlar:** terfi (kural); T149 (insan: İKA sürücüsü), T150 (HB — gerçek kırmızı H karesi gerek), T151 (tek karar yolu kararı); `saha_gunu_kontrol_listesi.md` (izlenmiyor) K5 komutu; çürütücülerin "dokunulmadı" listesi (D-287 §2); EK-6 etiket soruları.
 **İnsan görevleri (madde 9):** H-A DOĞRULAMA uçuşu — arena benzeri saha, **kırmızı H yer işareti**, gimbal 90°, KB→HB ekseni boyunca uçuş; H-B hakem ekranı canlı prova (`--yks-hedef/--ika-hedef` ile, IKA_GO ACK + 2. onay kanıtı görülmeli); H-C İKA sürücü/konum donanım kararı (T149); H-D kamera x-ayna sorusu (`cv2.flip`, D-287 §2).

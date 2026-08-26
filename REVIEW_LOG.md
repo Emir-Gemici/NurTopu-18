@@ -21972,6 +21972,12 @@ Kapı her birleştirmede **15/15 · 896 OK**. Açık kalanlar (çürütücüleri
 | v5 | 0,074 | **yol=1, 8 wp** — ama sentetik kabul K1 < 230 |
 Karışımsız ince ayar gerçek domende kazanıp sentetik arenada kaybediyor; ikisini birden tutan reçete bu gece bulunamadı. Sentetik arena kümesinin gerçek arenayı ne kadar temsil ettiği (D-88/D-99 kalıcı kısıt) bu çelişkinin ortasında duruyor — **DOĞRULAMA uçuşu** (gerçek arena benzeri saha, kırmızı H) olmadan çözülmez.
 
+#### 3c. v6 — rescuenet'siz karışım (ön kayıt §9, 05:2x)
+| koşum | veri | epoch/best | (a) | ROTA/29 | MASKE_YOK | FP | TP | figür zemin | terfi |
+|---|---|---|---|---:|---:|---:|---:|---:|---|
+| v6 | DJI×20 + sentetik_arena + copy_paste (rescuenet YOK) | 6/1 | **GEÇTİ** | 12 | **8** | **2** | **10** | 0,081 | HAYIR (FP 2 > 1) |
+v6 arenayı korudu ve gerçek domende v3'ü geçti (TP 10, MASKE_YOK 8) — düştüğü tek kapı FP: `frame_000205` ve `frame_000218`. ⚠ İkisi de etiket tavanının **bilinen zayıf kareleri** (D-281 §5: 218 "4 px farkla imkânsız", 205 bant eksiği listesinde) — yani FP'nin bir kısmı **referansın** eksiği olabilir. Bu gece referans **değiştirilmedi** (model sonucuna bakıp referans düzeltmek de sonuca göre bant oynatmaktır). **Öneri (mimar/kullanıcı):** 29 test karesinin bantları model çıktısına BAKMADAN, bağımsız amelelerle tamamlanıp tavan yeniden ölçülsün; v6 ve v3 o referansla yeniden kapıdan geçirilsin. Beş koşumun özeti: **arena kapısı ile gerçek-domen kapısı birlikte yalnız v6'da yaklaştı; her koşumda best epoch 1.**
+
 #### 4. Etiketleme — 160 → 320 kare, madde 12
 Dalga 2 (40) + dalga 3 (120) + 3 denetçi (madde 12 çiğ toprak → ETİKETSİZ; A–H'de 1 düzeltme). Amelelerin açtığı yeni sorular (banket, gölge, karışık yığın, dar beton şerit genişliği, "kenara kadar" hangi kola) `etiket_dalga3/*/rapor.json` — **EK-6 adayı**, mimar kararı.
 

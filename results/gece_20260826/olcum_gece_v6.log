@@ -1,0 +1,16 @@
+[1] kabul {"verdikt": true, "K1": 257, "gecti": {"K0": true, "K1": true, "K2": true, "K3": true, "K4": true, "K5": true}, "K0_figur_orani": 0.5402700064159248, "exit": 0}
+[2] 109 {"cati_kacak_ort": 0.0391, "cati_kacak_medyan": 0.0105, "disk_cati_engel": 0.9878, "disk_cati_zemin": 0.0, "disk_zemin_zemin": 0.9416, "cati_dondu": true, "kaplama67_icerik_medyan": 0.4667, "kaplama67_tuval_medyan": 0.2625, "zemin_maskesi_reddi": 0, "figur_zemin_orani": 0.08149, "figur_engel_orani": 0.27688}
+[3] test29 {"n": 29, "rota": 12, "maske_yok": 8, "uc_bant": 8, "sebep": {"MASKE_YOK": 8, "UC_BANT_TEMAS_YOK": 8, "null": 12, "ZEMIN_MASKESI_SUPHELI": 1}, "exit": 0}
+[3-ek] tavan {"tavan_rota": 13, "TP": 10, "FP": 2, "FN": 3, "fp_kareler": ["dji_20260822172613_0038_d__frame_000205_000007560.jpg", "dji_20260822172613_0038_d__frame_000218_000007980.jpg"]}
+
+=== HUKUM (ON_KAYIT §4) ===
+  verdikt                  GECTI
+  K1>=230                  GECTI
+  red67<=5                 GECTI
+  cati<=0,10               GECTI
+  rota_test29>=10          GECTI
+  maske_yok_test29<=10     GECTI
+  FP_test29<=1             DUSTU
+  (a) GECTI · (b) DUSTU · TERFI ADAYI: False
+  bilgi: figur_zemin 0.08149 (v35 0,1508) · kaplama67 0.4667 (v35 0,5076) · test29 sebep {'MASKE_YOK': 8, 'UC_BANT_TEMAS_YOK': 8, 'null': 12, 'ZEMIN_MASKESI_SUPHELI': 1}
+EXIT 0
