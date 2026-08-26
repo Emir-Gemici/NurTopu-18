@@ -1,0 +1,7 @@
+{"islemler":[
+{"tip":"poligon","deger":1,"nokta":[[222,0],[302,0],[302,540],[208,540]]},
+{"tip":"poligon","deger":2,"nokta":[[112,0],[142,0],[112,540],[78,540]]},
+{"tip":"dikdortgen","deger":2,"kutu":[55,260,120,350]},
+{"tip":"dikdortgen","deger":2,"kutu":[55,30,110,100]},
+{"tip":"dikdortgen","deger":2,"kutu":[300,60,340,160]}
+]}

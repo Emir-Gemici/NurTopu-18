@@ -1,0 +1,20 @@
+{"denetci":"tutarlilik_denetcisi_dalga4","gruplar":["D4_24","D4_25","D4_26","D4_27","D4_28","D4_29","D4_30","D4_31"],"incelenen":40,
+"yontem":"her *_bindirme.jpg Read ile goruldu; suphe eden bolgeler 2x yakinlastirilmis izgarali kesitle (960 olcegi) dogrulandi; duzeltmeler ops.json'a ilk deger-2 islemden ONCE eklendi ve 140_uc_maske_araci.py uret ile yeniden uretildi; 40/40 *_uc.png 540x960, degerler {0,1,2} icinde",
+"duzeltilen":[
+{"grup":"D4_24","govde":"dji_20260822173231_0039_d__frame_000081_000004560","neden":"(a)+(b) sol kenar x0-45 yesil bitki/ot seridine yesil basilmisti -> deger-0; asil cakil yol (x58-150, izli) etiketsizdi -> deger-1 eklendi (rapor 'en soldaki toprak yol' niyetiyle uyumlu)"},
+{"grup":"D4_26","govde":"dji_20260822173231_0039_d__frame_000083_000004650","neden":"(a) sag alt (x>~720-840, y>200) cali/tasli kuru mera platform yesiline dahil edilmisti; ayni sahnenin 81/82 karelerinde etiketsiz -> deger-0 poligon"},
+{"grup":"D4_26","govde":"dji_20260822170832_0037_d__frame_000273_000010410","neden":"(a) yol x~150-278; sol banket x125-148 ve sag kenar x278-290 kuru ot/toprak yesildi -> deger-0"},
+{"grup":"D4_27","govde":"dji_20260822170832_0037_d__frame_000093_000003780","neden":"(a)+(b) cakil patika gercekte x262-335 (yesil 308-352 idi): 335-352 kuru ot -> deger-0, 262-308 eksik yol -> deger-1; ana yolun sag kenari y>200'de x~820-830'da bitiyor, 840-900 tasli banket yesildi -> deger-0"},
+{"grup":"D4_29","govde":"dji_20260822170832_0037_d__frame_000005_000000180","neden":"(b) sagdaki paralel koyu serit yakinlastirmada net asfalt yol (cakil dokusu, banket) — rapor 'dogrulanamadi' demisti -> deger-1 poligon eklendi (kanal kirmizisiyla cakismaz)"},
+{"grup":"D4_29","govde":"dji_20260822173231_0039_d__frame_000110_000005910","neden":"(a)+(b) yol x~140-240: alt yarida sol banket x106-130 yesildi -> deger-0; sag serit 218-240 eksikti -> deger-1"},
+{"grup":"D4_30","govde":"dji_20260822170832_0037_d__frame_000081_000003060","neden":"(a) sol alt kuru ot/sev: yol kenari (150,240)->(232,540) cizgisinin solunda kalan 30-50 px yesil -> deger-0"},
+{"grup":"D4_30","govde":"dji_20260822170832_0037_d__frame_000149_000006000","neden":"(a) platform icinde x400-475,y330-540 kuru ot bandi ve ust yolun sol kenari x200-235,y0-150 ot/toprak yesildi -> deger-0"},
+{"grup":"D4_30","govde":"dji_20260822170832_0037_d__frame_000260_000009870","neden":"(b) yol x~210-300, yesil 228'den basliyordu; x212-245 acik gri yol yuzeyi -> deger-1"},
+{"grup":"D4_31","govde":"dji_20260822170832_0037_d__frame_000095_000003930","neden":"(a) yolun alt kenari (0,345)->(470,272); yesil (0,395)'e kadar iniyordu, 25-50 px kuru ot -> deger-0"}
+],
+"kabul_edilen_suphe":[
+{"govde":"dji_20260822173231_0039_d__frame_000082_000004620 / 094 / 0037_246 / 0039_064","not":"solda eski cakil/kul seridi etiketsiz birakilmis; 147/155/0039_093'te ayni tip serit sinif 0. Yakinlastirmada ot karisik; etiketsiz guvenli taraf, dokunulmadi (tutarsizlik notu mimara)"},
+{"govde":"dji_20260822173231_0039_d__frame_000179_000010110","not":"kanal x418-444 kirmizi mevcut (maske ile dogrulandi), bindirmede koyu gorunuyor"}
+],
+"d_kanal_bordur":"tum karelerde gorunen beton kanal/oluk/korkuluk zaten deger-2; yeni (d) ekleme gerekmedi",
+"uc_png_dogrulama":{"adet":40,"boyut":"540x960","degerler":"{0,1,2} alt kumesi","hatali":0}}

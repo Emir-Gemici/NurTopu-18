@@ -1,0 +1,7 @@
+{"grup":"D4_52","kareler":[
+{"govde":"dji_20260822173231_0039_d__frame_000004_000000420","sinif0":0.2019,"sinif1":0.2943,"yol_var":true,"not":"Stabilize yol y=100'den alta kadar tam genislik + sagdaki dal; ust kazilmis toprak etiketsiz; kanal+sazlik sinif1; cuval yiginlari ve 2 kopek sinif1; kuru cali etiketsiz."},
+{"govde":"dji_20260822170832_0037_d__frame_000238_000009090","sinif0":0.0741,"sinif1":0.0,"yol_var":true,"not":"Sol capraz stabilize yol sol kenardan alt kenara tam genislik; kalan tum alan paletle cignenmis/kazilmis cig toprak (madde 12) etiketsiz."},
+{"govde":"dji_20260822173231_0039_d__frame_000008_000000720","sinif0":0.1511,"sinif1":0.3138,"yol_var":true,"not":"Yol x430-600 ustten alta; y415-480 arasi yolu kesen kazilmis toprak seridi etiketsiz; kanal+sazlik sinif1; beyaz cuvallar sinif1; sag kuru cali etiketsiz."},
+{"govde":"dji_20260822173231_0039_d__frame_000023_000001800","sinif0":0.1379,"sinif1":0.332,"yol_var":true,"not":"Yol x465-615 ustten alta; kanal+sazlik sinif1; 2 insan ve 2 tasin (~35-45 cm) sinif1; sag sik agaclik sinif1; kuru ot iki tarafta etiketsiz."},
+{"govde":"dji_20260822173231_0039_d__frame_000009_000000750","sinif0":0.1511,"sinif1":0.3157,"yol_var":true,"not":"0008 ile ayni sahne; yol x430-600; y415-480 kazilmis serit etiketsiz; kanal+sazlik ve cuvallar sinif1."}
+],"komutlar":"VENV scripts/olcum/140_uc_maske_araci.py izgara/uret (5 kare), 2 tur"}

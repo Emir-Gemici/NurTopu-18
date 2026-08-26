@@ -1,0 +1,143 @@
+{
+ "dalga": 4,
+ "gruplar": [
+  "D4_08",
+  "D4_09",
+  "D4_10",
+  "D4_11",
+  "D4_12",
+  "D4_13",
+  "D4_14",
+  "D4_15"
+ ],
+ "incelenen": 40,
+ "duzeltilen": [
+  {
+   "grup": "D4_11",
+   "govde": "dji_20260822173231_0039_d__frame_000021_000001560",
+   "tip": "b",
+   "neden": "yol sag kenari (x500-546) yesil degildi; deger-1 poligonla tam genislige uzatildi",
+   "sonuc": {
+    "sinif0": 0.1589,
+    "sinif1": 0.5919,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_12",
+   "govde": "dji_20260822173231_0039_d__frame_000142_000007620",
+   "tip": "b",
+   "neden": "cakil yol 430-600 (ust) / 382-570 (alt) iken yesil 470-560 idi; iki yanda ~40 px yol eksikti, deger-1 poligonla uzatildi",
+   "sonuc": {
+    "sinif0": 0.1701,
+    "sinif1": 0.0922,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_13",
+   "govde": "dji_20260822173231_0039_d__frame_000196_000011310",
+   "tip": "d",
+   "neden": "kopru basindaki beton kanal duvar blogu (x383-480, y184-345) YESIL icindeydi; deger-2 poligon eklendi",
+   "sonuc": {
+    "sinif0": 0.1923,
+    "sinif1": 0.2998,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_14",
+   "govde": "dji_20260822170832_0037_d__frame_000225_000008700",
+   "tip": "b",
+   "neden": "yolun sag yarisi (x480-560, y60-540) yesil degildi; deger-1 poligonla kenara kadar uzatildi",
+   "sonuc": {
+    "sinif0": 0.1609,
+    "sinif1": 0.2031,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_14",
+   "govde": "dji_20260822170832_0037_d__frame_000295_000011070",
+   "tip": "b",
+   "neden": "yesil 600-670 (ust)/660-750 (alt) iken yol 610-790/650-830; yolun sag yarisi etiketsizdi, deger-1 poligonla tam genislik",
+   "sonuc": {
+    "sinif0": 0.1925,
+    "sinif1": 0.1293,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_14",
+   "govde": "dji_20260822173231_0039_d__frame_000131_000006870",
+   "tip": "d",
+   "neden": "direkli beton bordur/kanal cizgisi (x407-428) kirmizi seridin (..420) disinda kaliyordu; deger-2 poligon x404-430 eklendi",
+   "sonuc": {
+    "sinif0": 0.172,
+    "sinif1": 0.1947,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_15",
+   "govde": "dji_20260822170832_0037_d__frame_000139_000005700",
+   "tip": "d",
+   "neden": "capraz beton duvar/kanal alt kismi (x300-325, y300-540) kirmizi disinda kalmisti; deger-2 poligon eklendi",
+   "sonuc": {
+    "sinif0": 0.0284,
+    "sinif1": 0.133,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "grup": "D4_15",
+   "govde": "dji_20260822173231_0039_d__frame_000095_000005280",
+   "tip": "a+b",
+   "neden": "yesil 480-600 yola gore ~20 px saga kaymis: sagdaki 572-602 ot/calilik yesildi -> deger-0 ile geri alindi; soldaki 458-482 yol eksikti -> deger-1 ile uzatildi",
+   "sonuc": {
+    "sinif0": 0.2028,
+    "sinif1": 0.2727,
+    "benzersiz": [
+     0,
+     1,
+     2
+    ]
+   }
+  }
+ ],
+ "kabul_notlari": [
+  "D4_08 f077 / D4_10 f119 / D4_15 f139 ayni sahne (0037 duvar-balya arasi cakil serit x540-660): D4_10 sinif 0, digerleri etiketsiz. Serit cakil arac izi; etiketsiz birakmak sartname ihlali degil (sinif 0 iddiadir), duzeltilmedi ama tutarsizlik kaydedildi.",
+  "D4_08 f027 (0039): yol sag kenari ~15 px kisa (530 vs 545) - esik alti, dokunulmadi.",
+  "D4_13 f216: yol sol banketi ~25 px etiketsiz (293 vs 313) - cakil banket, dokunulmadi.",
+  "0039 kanal serisi (f102,f145,f151,f153,f158,f178,f136,f261,f242): beton kanal/bordur cizgisi mevcut kirmizi seritlerin icinde dogrulandi.",
+  "Tum 40 *_uc.png 960x540, benzersiz degerler {0,1,2} alt kumesi (dogrulandi)."
+ ]
+}

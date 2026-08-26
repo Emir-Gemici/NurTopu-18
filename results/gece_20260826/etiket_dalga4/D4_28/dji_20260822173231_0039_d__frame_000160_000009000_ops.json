@@ -1,0 +1,74 @@
+{
+"islemler": [
+{
+"tip": "poligon",
+"deger": 1,
+"nokta": [
+[
+355,
+0
+],
+[
+490,
+0
+],
+[
+500,
+540
+],
+[
+370,
+540
+]
+]
+},
+{
+"tip": "dikdortgen",
+"deger": 2,
+"kutu": [
+180,
+0,
+300,
+540
+]
+},
+{
+"tip": "dikdortgen",
+"deger": 2,
+"kutu": [
+0,
+0,
+50,
+130
+]
+},
+{
+"tip": "dikdortgen",
+"deger": 2,
+"kutu": [
+0,
+380,
+60,
+540
+]
+},
+{
+"tip": "daire",
+"deger": 2,
+"merkez": [
+398,
+358
+],
+"yaricap": 12
+},
+{
+"tip": "daire",
+"deger": 2,
+"merkez": [
+410,
+368
+],
+"yaricap": 12
+}
+]
+}

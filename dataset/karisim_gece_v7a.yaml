@@ -1,0 +1,14 @@
+# GECE v7a (ON_KAYIT §14): tam karisim + dji_v7_x5 (0037/0039 tum etiketler, x5); val = dji_v7 val (%15, tohum 0). 0038 YOK (CONTRACTS §12).
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_t127\images\train
+  - O:\navitas\dataset\dji_v7_x5\images\train
+val:
+  - O:\navitas\dataset\dji_v7\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

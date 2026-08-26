@@ -1,0 +1,59 @@
+{
+ "dalga": 4,
+ "gruplar": [
+  "D4_40",
+  "D4_41",
+  "D4_42",
+  "D4_43",
+  "D4_44",
+  "D4_45",
+  "D4_46",
+  "D4_47"
+ ],
+ "incelenen_kare": 40,
+ "uc_png_dogrulama": "40/40 {0,1,2} 960x540",
+ "duzeltilen": [
+  {
+   "grup": "D4_42",
+   "govde": "dji_20260822173231_0039_d__frame_000117_000006270",
+   "tur": "d",
+   "neden": "yol solundaki dikey beton kanal (x~108-128) kirmizi degildi; deger-2 poligon eklendi"
+  },
+  {
+   "grup": "D4_43",
+   "govde": "dji_20260822170832_0037_d__frame_000223_000008640",
+   "tur": "d",
+   "neden": "agac siranin solundaki beton kanal cizgisi (x~232-268, egik) kirmizi degildi; deger-2 poligon eklendi"
+  },
+  {
+   "grup": "D4_46",
+   "govde": "dji_20260822173231_0039_d__frame_000002_000000300",
+   "tur": "b",
+   "neden": "saga ayrilan beyaz toprak yol (x 705-960, y 262-312) etiketsizdi; deger-1 poligon ilk deger-2 isleminden once eklendi"
+  },
+  {
+   "grup": "D4_47",
+   "govde": "dji_20260822173231_0039_d__frame_000192_000011190",
+   "tur": "b",
+   "neden": "yol ust kenarda genisliyordu (x 560-640, y 0-120) yesil degildi; deger-1 poligon ilk deger-2 isleminden once eklendi"
+  }
+ ],
+ "incelenip_birakilan": [
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000041_000001380",
+   "not": "sag kenar 900-960 asfalt yol, yesil dogru; sol gri moloz/cakil sahasi yesil — cig toprak degil, sinir durum, dokunulmadi"
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000017_000001260",
+   "not": "su ile yol arasi (x 335-395) tasli sev, beton bordur net degil; eklenmedi"
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000150_000006030",
+   "not": "sol alt gri alan yol mu cakil yigini mi belirsiz; uzatilmadi"
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000092_000003750",
+   "not": "240-300 yesil serit izgarada cakil patika olarak dogrulandi"
+  }
+ ]
+}

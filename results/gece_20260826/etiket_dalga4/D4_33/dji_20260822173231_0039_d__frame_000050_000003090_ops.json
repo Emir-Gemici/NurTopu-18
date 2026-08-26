@@ -1,0 +1,12 @@
+{"islemler":[
+{"tip":"poligon","deger":1,"nokta":[[268,0],[470,0],[470,540],[240,540]]},
+{"tip":"poligon","deger":2,"nokta":[[292,60],[308,60],[250,500],[232,500]]},
+{"tip":"poligon","deger":2,"nokta":[[495,110],[512,110],[432,540],[415,540]]},
+{"tip":"dikdortgen","deger":2,"kutu":[240,0,325,62]},
+{"tip":"dikdortgen","deger":2,"kutu":[430,60,565,130]},
+{"tip":"poligon","deger":2,"nokta":[[0,225],[240,250],[240,335],[0,325]]},
+{"tip":"poligon","deger":2,"nokta":[[495,235],[960,270],[960,420],[700,385],[500,335]]},
+{"tip":"poligon","deger":2,"nokta":[[60,20],[180,20],[180,130],[60,130]]},
+{"tip":"daire","deger":2,"merkez":[352,345],"yaricap":15},
+{"tip":"daire","deger":2,"merkez":[385,347],"yaricap":13}
+]}

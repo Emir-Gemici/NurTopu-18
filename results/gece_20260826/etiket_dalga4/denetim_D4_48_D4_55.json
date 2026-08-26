@@ -1,0 +1,294 @@
+{
+ "dalga": 4,
+ "gruplar": [
+  "D4_48",
+  "D4_49",
+  "D4_50",
+  "D4_51",
+  "D4_52",
+  "D4_53",
+  "D4_54",
+  "D4_55"
+ ],
+ "incelenen": 37,
+ "duzeltilen": [
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000004_000000120",
+   "grup": "D4_49",
+   "tur": "a",
+   "neden": "sag cakil yolun sag kenari disindaki kuru ot/mera serit (x740-945, y0-330) yesildi; deger-0 poligonla geri alindi (madde 8/12)."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000066_000002400",
+   "grup": "D4_50",
+   "tur": "a",
+   "neden": "yolun sol ust kenari disindaki ot/moloz seridi (x500-532, y0-220) yesildi; deger-0 poligonla geri alindi."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000039_000002700",
+   "grup": "D4_51",
+   "tur": "a",
+   "neden": "kopru sonrasi yolun sagindaki kuru ot sevi (x745-960, y55-330) yesildi; deger-0 poligonla geri alindi."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000120_000006360",
+   "grup": "D4_51",
+   "tur": "d",
+   "neden": "yolun solundaki golgeli beton kanal/oluk (x185-280) kirmizi degildi; deger-2 poligon eklendi."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000175_000009870",
+   "grup": "D4_51",
+   "tur": "d",
+   "neden": "beton bordur seridinin (x55-95) yaninda kalan koyu oluk (x92-170) kirmizi degildi; deger-2 poligon eklendi."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000121_000005160",
+   "grup": "D4_54",
+   "tur": "a",
+   "neden": "sahanin ust kenarindaki kuru ot yamasi (x330-470, y0-90) yesildi; deger-0 poligonla geri alindi."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000282_000010680",
+   "grup": "D4_54",
+   "tur": "d",
+   "neden": "kare sol kenarindaki koyu/islak hendek (x0-40) etiketsizdi; deger-2 poligon eklendi."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000202_000011520",
+   "grup": "D4_55",
+   "tur": "b",
+   "neden": "asfalt yol yalniz sag ust kosede yesildi; x560-720 / y0-250 arasi asfalt etiketsiz kalmisti, deger-1 poligonla tam genislige uzatildi."
+  }
+ ],
+ "dogrulama": "37 *_uc.png: 960x540, degerler {0,1,2} icinde, bozuk 0",
+ "kabul_edilen_sinir_durumlar": [
+  "D4_50 0039 f188: yol sagindaki cignenmis toprak siniri poligonda ~30 px belirsiz, kabul",
+  "D4_55 0037 f293: yol sagindaki 480-495 px banket yesil (<15 px), kabul",
+  "D4_51 0039 f039: kopru korkuluk kosesi (x700-780,y45-90) etiketsiz birakildi"
+ ],
+ "kareler": [
+  {
+   "grup": "D4_48",
+   "govde": "dji_20260822170832_0037_d__frame_000215_000008400",
+   "sinif0": 0.0987,
+   "sinif1": 0.0841
+  },
+  {
+   "grup": "D4_48",
+   "govde": "dji_20260822170832_0037_d__frame_000279_000010590",
+   "sinif0": 0.1154,
+   "sinif1": 0.1729
+  },
+  {
+   "grup": "D4_48",
+   "govde": "dji_20260822173231_0039_d__frame_000134_000006990",
+   "sinif0": 0.1399,
+   "sinif1": 0.0456
+  },
+  {
+   "grup": "D4_48",
+   "govde": "dji_20260822173231_0039_d__frame_000146_000007950",
+   "sinif0": 0.1312,
+   "sinif1": 0.0926
+  },
+  {
+   "grup": "D4_48",
+   "govde": "dji_20260822173231_0039_d__frame_000152_000008460",
+   "sinif0": 0.1799,
+   "sinif1": 0.1498
+  },
+  {
+   "grup": "D4_49",
+   "govde": "dji_20260822170832_0037_d__frame_000004_000000120",
+   "sinif0": 0.3123,
+   "sinif1": 0.1191
+  },
+  {
+   "grup": "D4_49",
+   "govde": "dji_20260822170832_0037_d__frame_000201_000007920",
+   "sinif0": 0.1039,
+   "sinif1": 0.0445
+  },
+  {
+   "grup": "D4_49",
+   "govde": "dji_20260822170832_0037_d__frame_000224_000008670",
+   "sinif0": 0.1803,
+   "sinif1": 0.0696
+  },
+  {
+   "grup": "D4_49",
+   "govde": "dji_20260822170832_0037_d__frame_000248_000009450",
+   "sinif0": 0.0672,
+   "sinif1": 0.0312
+  },
+  {
+   "grup": "D4_49",
+   "govde": "dji_20260822173231_0039_d__frame_000006_000000660",
+   "sinif0": 0.1276,
+   "sinif1": 0.3011
+  },
+  {
+   "grup": "D4_50",
+   "govde": "dji_20260822170832_0037_d__frame_000066_000002400",
+   "sinif0": 0.34,
+   "sinif1": 0.0124
+  },
+  {
+   "grup": "D4_50",
+   "govde": "dji_20260822170832_0037_d__frame_000241_000009180",
+   "sinif0": 0.0784,
+   "sinif1": 0.0
+  },
+  {
+   "grup": "D4_50",
+   "govde": "dji_20260822170832_0037_d__frame_000252_000009570",
+   "sinif0": 0.0985,
+   "sinif1": 0.0199
+  },
+  {
+   "grup": "D4_50",
+   "govde": "dji_20260822173231_0039_d__frame_000092_000005190",
+   "sinif0": 0.2337,
+   "sinif1": 0.3095
+  },
+  {
+   "grup": "D4_50",
+   "govde": "dji_20260822173231_0039_d__frame_000188_000010980",
+   "sinif0": 0.255,
+   "sinif1": 0.2605
+  },
+  {
+   "grup": "D4_51",
+   "govde": "dji_20260822170832_0037_d__frame_000183_000007290",
+   "sinif0": 0.3884,
+   "sinif1": 0.0034
+  },
+  {
+   "grup": "D4_51",
+   "govde": "dji_20260822173231_0039_d__frame_000018_000001290",
+   "sinif0": 0.1109,
+   "sinif1": 0.348
+  },
+  {
+   "grup": "D4_51",
+   "govde": "dji_20260822173231_0039_d__frame_000039_000002700",
+   "sinif0": 0.231,
+   "sinif1": 0.3156
+  },
+  {
+   "grup": "D4_51",
+   "govde": "dji_20260822173231_0039_d__frame_000120_000006360",
+   "sinif0": 0.0886,
+   "sinif1": 0.1225
+  },
+  {
+   "grup": "D4_51",
+   "govde": "dji_20260822173231_0039_d__frame_000175_000009870",
+   "sinif0": 0.1314,
+   "sinif1": 0.1656
+  },
+  {
+   "grup": "D4_52",
+   "govde": "dji_20260822170832_0037_d__frame_000238_000009090",
+   "sinif0": 0.0741,
+   "sinif1": 0.0
+  },
+  {
+   "grup": "D4_52",
+   "govde": "dji_20260822173231_0039_d__frame_000004_000000420",
+   "sinif0": 0.2019,
+   "sinif1": 0.2943
+  },
+  {
+   "grup": "D4_52",
+   "govde": "dji_20260822173231_0039_d__frame_000008_000000720",
+   "sinif0": 0.1511,
+   "sinif1": 0.3138
+  },
+  {
+   "grup": "D4_52",
+   "govde": "dji_20260822173231_0039_d__frame_000009_000000750",
+   "sinif0": 0.1511,
+   "sinif1": 0.3157
+  },
+  {
+   "grup": "D4_52",
+   "govde": "dji_20260822173231_0039_d__frame_000023_000001800",
+   "sinif0": 0.1379,
+   "sinif1": 0.332
+  },
+  {
+   "grup": "D4_53",
+   "govde": "dji_20260822170832_0037_d__frame_000054_000001800",
+   "sinif0": 0.1151,
+   "sinif1": 0.0867
+  },
+  {
+   "grup": "D4_53",
+   "govde": "dji_20260822170832_0037_d__frame_000130_000005430",
+   "sinif0": 0.1918,
+   "sinif1": 0.141
+  },
+  {
+   "grup": "D4_53",
+   "govde": "dji_20260822173231_0039_d__frame_000107_000005790",
+   "sinif0": 0.0889,
+   "sinif1": 0.0712
+  },
+  {
+   "grup": "D4_53",
+   "govde": "dji_20260822173231_0039_d__frame_000156_000008790",
+   "sinif0": 0.1232,
+   "sinif1": 0.065
+  },
+  {
+   "grup": "D4_54",
+   "govde": "dji_20260822170832_0037_d__frame_000046_000001530",
+   "sinif0": 0.0,
+   "sinif1": 0.0
+  },
+  {
+   "grup": "D4_54",
+   "govde": "dji_20260822170832_0037_d__frame_000061_000002100",
+   "sinif0": 0.0913,
+   "sinif1": 0.0765
+  },
+  {
+   "grup": "D4_54",
+   "govde": "dji_20260822170832_0037_d__frame_000121_000005160",
+   "sinif0": 0.5582,
+   "sinif1": 0.2433
+  },
+  {
+   "grup": "D4_54",
+   "govde": "dji_20260822170832_0037_d__frame_000282_000010680",
+   "sinif0": 0.1266,
+   "sinif1": 0.0417
+  },
+  {
+   "grup": "D4_55",
+   "govde": "dji_20260822170832_0037_d__frame_000293_000011010",
+   "sinif0": 0.151,
+   "sinif1": 0.1365
+  },
+  {
+   "grup": "D4_55",
+   "govde": "dji_20260822173231_0039_d__frame_000005_000000600",
+   "sinif0": 0.1311,
+   "sinif1": 0.3775
+  },
+  {
+   "grup": "D4_55",
+   "govde": "dji_20260822173231_0039_d__frame_000080_000004500",
+   "sinif0": 0.2424,
+   "sinif1": 0.0587
+  },
+  {
+   "grup": "D4_55",
+   "govde": "dji_20260822173231_0039_d__frame_000202_000011520",
+   "sinif0": 0.1713,
+   "sinif1": 0.2092
+  }
+ ]
+}

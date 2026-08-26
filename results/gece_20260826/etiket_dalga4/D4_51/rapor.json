@@ -1,0 +1,7 @@
+{"grup":"D4_51","kareler":[
+{"govde":"dji_20260822173231_0039_d__frame_000018_000001290","sinif0":0.111,"sinif1":0.36,"yol_var":true,"not":"Cakil yol ust-alt bant (x350-515), solunda sazlik+su kanali sinif1, 2 yaya + 2 buyuk tas + sag calilik sinif1; sag kuru ot/olu calilik etiketsiz."},
+{"govde":"dji_20260822173231_0039_d__frame_000039_000002700","sinif0":0.323,"sinif1":0.316,"yol_var":true,"not":"Menfez beton tabliyesi + sag asagi kivrilan stabilize yol sinif0; tabliye kenari beton duvar, dik beton duvar, korkuluk, sol cit ve yatan metal kafes, su+sazlik, 2 yaya sinif1; sol kuru ot etiketsiz."},
+{"govde":"dji_20260822170832_0037_d__frame_000183_000007290","sinif0":0.388,"sinif1":0.003,"yol_var":true,"not":"Asfalt/stabilize yol soldan sag uste kivrilarak kare kenarina kadar sinif0; sag altta beton bordur/kanal seridi sinif1; ust olu calilik ve sag alt kuru ot etiketsiz."},
+{"govde":"dji_20260822173231_0039_d__frame_000175_000009870","sinif0":0.132,"sinif1":0.107,"yol_var":true,"not":"Cakil yol ustten alta tam bant sinif0; sol cit/bordur seridi, agaclar, 2 yaya, tas yigini ve elektrik direği sinif1; sag paletle surulmus cig toprak (madde 12) ve kuru ot etiketsiz."},
+{"govde":"dji_20260822173231_0039_d__frame_000120_000006360","sinif0":0.091,"sinif1":0.05,"yol_var":true,"not":"Cakil yol ustten alta bant sinif0; sol agac sirasi ve 2 yaya sinif1; soldaki koyu eski serit belirsiz, sag cig toprak (madde 12) etiketsiz."}
+],"komutlar":"VENV scripts/olcum/140_uc_maske_araci.py izgara/buyut/uret; cikti results/gece_20260826/etiket_dalga4/D4_51/"}

@@ -1,0 +1,7 @@
+{"grup":"D4_37","kareler":[
+{"govde":"dji_20260822170832_0037_d__frame_000072_000002700","sinif0":0.2612,"sinif1":0.0544,"yol_var":true,"not":"Cakil yol sag-ustten sag-alta bant; sol-ust duz gri platform sinif 0; sol-ust korkuluklu beton yapi + sag capraz beton kanal sinif 1; sol kuru ot etiketsiz"},
+{"govde":"dji_20260822170832_0037_d__frame_000064_000002190","sinif0":0.1677,"sinif1":0.0206,"yol_var":true,"not":"Sag cakil yol dikey bant; sag kenar beton kanal sinif 1; sol calilik/kazilmis toprak/orta toprak iz belirsiz -> etiketsiz"},
+{"govde":"dji_20260822173231_0039_d__frame_000022_000001620","sinif0":0.182,"sinif1":0.5617,"yol_var":true,"not":"Orta cakil yol dikey bant; sol su kanali + saz/kiyi ortusu tek poligon sinif 1; sag sik kuru calilik/agaclik sinif 1; 2 insan sinif 1; en sol/sag kuru ot etiketsiz"},
+{"govde":"dji_20260822170832_0037_d__frame_000006_000000240","sinif0":0.4512,"sinif1":0.0828,"yol_var":true,"not":"Iki capraz cakil yol (sol-alt ve sag) kenara kadar; arada beton kanal (gorunen kisim) + sik igne yaprakli cali siradi sinif 1; 2 insan sinif 1; sol-ust surulmus tarla ve sag yesil tarla etiketsiz"},
+{"govde":"dji_20260822173231_0039_d__frame_000086_000004800","sinif0":0.1946,"sinif1":0.2581,"yol_var":true,"not":"Orta cakil yol + solda dar cakil patika sinif 0; sol balya yigini, cali siralari, beton kanal+oluk sinif 1; insan sinif 1; sag toprak saha ve banketler etiketsiz"}
+],"komutlar":"VENV scripts/olcum/140_uc_maske_araci.py izgara/buyut/uret; cikti results/gece_20260826/etiket_dalga4/D4_37/"}

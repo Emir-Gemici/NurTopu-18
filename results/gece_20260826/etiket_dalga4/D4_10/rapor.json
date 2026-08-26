@@ -1,0 +1,41 @@
+{
+ "grup": "D4_10",
+ "kareler": [
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000235_000009000",
+   "sinif0": 0.1238,
+   "sinif1": 0.0066,
+   "yol_var": true,
+   "not": "Cakil yol sol-ustten sag-alta capraz, tam genislik kenara kadar sinif 0. Sag/ust: paletle cignenmis cig toprak (m.12) ETIKETSIZ; sol dar ot seridi ETIKETSIZ; altta ekskavator kolu + mavi nesne sinif 1. Kanal/bordur yok."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000230_000008850",
+   "sinif0": 0.1001,
+   "sinif1": 0.0062,
+   "yol_var": true,
+   "not": "Ayni cakil yol capraz, kenara kadar sinif 0. Yol ustundeki insan + golgesi ve mavi nesne sinif 1. Yolun sagindaki ot bandi ve tum cig toprak ETIKETSIZ; yol-toprak arasi acik cakilli genis alan dogrulanamadi -> ETIKETSIZ."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000119_000005100",
+   "sinif0": 0.4656,
+   "sinif1": 0.2108,
+   "yol_var": true,
+   "not": "Solda genis sikistirilmis stabilize platform/yol (dokusu okunuyor) sinif 0; sagda kuru otlar arasinda cakil yol seridi sinif 0. Beton direkli cit (capraz) sinif 1, balya yigini+mavi tank+sundurma sinif 1, yesil cali ve sol ustteki metal korkuluk sinif 1. Kuru ot alanlari ETIKETSIZ."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000264_000010080",
+   "sinif0": 0.1125,
+   "sinif1": 0.1062,
+   "yol_var": true,
+   "not": "Dikey asfalt/cakil yol x150-258 tam genislik sinif 0. Solda beton dudakli acik drenaj kanali (x38-102, oluk golgede) sinif 1; en solda agac dizisi sinif 1. Banketler, kuru ot ve sagdaki paletli cig toprak ETIKETSIZ."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000158_000008880",
+   "sinif0": 0.1557,
+   "sinif1": 0.1027,
+   "yol_var": true,
+   "not": "Dikey cakil yol x325-485 sinif 0; ustundeki iki insan + golgeleri sinif 1. Solda beton dudakli drenaj kanali (capraz, oluk golgede) sinif 1, kanal solundaki agaclar sinif 1. Kuru ot, banket ve sagdaki cig toprak ETIKETSIZ."
+  }
+ ],
+ "komutlar": "VENV scripts/olcum/140_uc_maske_araci.py izgara/buyut/uret; ciktilar results/gece_20260826/etiket_dalga4/D4_10/<govde>_{ops.json,uc.png,bindirme.jpg}"
+}

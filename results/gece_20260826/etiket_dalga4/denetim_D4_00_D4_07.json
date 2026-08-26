@@ -1,0 +1,567 @@
+{
+ "dalga": 4,
+ "gruplar": [
+  "D4_00",
+  "D4_01",
+  "D4_02",
+  "D4_03",
+  "D4_04",
+  "D4_05",
+  "D4_06",
+  "D4_07"
+ ],
+ "incelenen": 40,
+ "duzeltilen": [
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822170832_0037_d__frame_000032_000001080",
+   "tur": "a",
+   "neden": "sol 0-400 px paletle cignenmis/cig santiye toprağı yesildi; madde 12 -> etiketsiz (D4_00 f35, D4_01 f21 ayni saha etiketsiz). sinif0 0.30->0.036"
+  },
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822170832_0037_d__frame_000172_000006840",
+   "tur": "a",
+   "neden": "yol sag kenari otesi (855-960, y<240) kuru ot/banket yesildi; madde 8 -> etiketsiz (buyut 600-960 ile olculdu, yol kenari ~850-900)"
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822170832_0037_d__frame_000122_000005190",
+   "tur": "a",
+   "neden": "cakil yol (y<340 icin ~200-340 px genis) cevresindeki kuru ot/calilik iki tarafta yesildi; madde 8 -> etiketsiz (buyut 0-480). sinif0 0.42->0.28"
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822173231_0039_d__frame_000141_000007440",
+   "tur": "b",
+   "neden": "asfalt buyut ile 465-585 px; yesil 425-540 idi (sol 40 px toprak banket, sag 45 px eksik). deger-0 ile banket alindi, deger-1 tam genislik"
+  }
+ ],
+ "bozuk_uc": [],
+ "kontrol_edilip_birakilan": [
+  "D4_06 f58: beton kanal (x~780-815) mevcut deger-2 poligon icinde (buyut ile dogrulandi)",
+  "D4_01 f244: yol 200-300 px, yesil 200-305 uyumlu",
+  "D4_01 0039 f99: yol 470-595, yesil 470-600 uyumlu; kanal 300-420 dikdortgen icinde",
+  "D4_07 f262: sol koyu serit (hendek/kanal) 0-110 dikdortgen icinde",
+  "D4_02 f169: kanal 360-600 diag kirmizi; sol cakil serit yesil uygun",
+  "D4_04 f126 / D4_02 f122 ayni saha: ikisi de artik yalniz yol+cakil park alani yesil",
+  "D4_03 0039 f205, D4_06 0039 f34: sikistirilmis cakil alan / menfez tabliyesi sinif 0 sartnameye uygun"
+ ],
+ "kareler": [
+  {
+   "grup": "D4_00",
+   "govde": "dji_20260822170832_0037_d__frame_000035_000001170",
+   "degerler": [
+    0,
+    1
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_00",
+   "govde": "dji_20260822170832_0037_d__frame_000153_000006120",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_00",
+   "govde": "dji_20260822170832_0037_d__frame_000297_000011160",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_00",
+   "govde": "dji_20260822173231_0039_d__frame_000003_000000360",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_00",
+   "govde": "dji_20260822173231_0039_d__frame_000183_000010710",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_01",
+   "govde": "dji_20260822170832_0037_d__frame_000021_000000750",
+   "degerler": [
+    0
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_01",
+   "govde": "dji_20260822170832_0037_d__frame_000038_000001260",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_01",
+   "govde": "dji_20260822170832_0037_d__frame_000059_000002010",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_01",
+   "govde": "dji_20260822170832_0037_d__frame_000244_000009270",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_01",
+   "govde": "dji_20260822173231_0039_d__frame_000099_000005460",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822170832_0037_d__frame_000122_000005190",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822170832_0037_d__frame_000169_000006600",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822170832_0037_d__frame_000185_000007350",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822173231_0039_d__frame_000141_000007440",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_02",
+   "govde": "dji_20260822173231_0039_d__frame_000169_000009570",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_03",
+   "govde": "dji_20260822170832_0037_d__frame_000134_000005550",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_03",
+   "govde": "dji_20260822170832_0037_d__frame_000263_000010020",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_03",
+   "govde": "dji_20260822173231_0039_d__frame_000048_000002970",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_03",
+   "govde": "dji_20260822173231_0039_d__frame_000180_000010230",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_03",
+   "govde": "dji_20260822173231_0039_d__frame_000205_000011730",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822170832_0037_d__frame_000032_000001080",
+   "degerler": [
+    0,
+    1
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822170832_0037_d__frame_000126_000005310",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822170832_0037_d__frame_000172_000006840",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822173231_0039_d__frame_000012_000000930",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_04",
+   "govde": "dji_20260822173231_0039_d__frame_000185_000010800",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_05",
+   "govde": "dji_20260822170832_0037_d__frame_000040_000001350",
+   "degerler": [
+    0,
+    1
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_05",
+   "govde": "dji_20260822170832_0037_d__frame_000294_000011040",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_05",
+   "govde": "dji_20260822173231_0039_d__frame_000122_000006420",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_05",
+   "govde": "dji_20260822173231_0039_d__frame_000165_000009390",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_05",
+   "govde": "dji_20260822173231_0039_d__frame_000186_000010860",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_06",
+   "govde": "dji_20260822170832_0037_d__frame_000058_000001920",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_06",
+   "govde": "dji_20260822173231_0039_d__frame_000034_000002490",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_06",
+   "govde": "dji_20260822173231_0039_d__frame_000101_000005520",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_06",
+   "govde": "dji_20260822173231_0039_d__frame_000116_000006210",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_06",
+   "govde": "dji_20260822173231_0039_d__frame_000181_000010380",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_07",
+   "govde": "dji_20260822170832_0037_d__frame_000199_000007830",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_07",
+   "govde": "dji_20260822170832_0037_d__frame_000206_000008070",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_07",
+   "govde": "dji_20260822170832_0037_d__frame_000262_000009960",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_07",
+   "govde": "dji_20260822173231_0039_d__frame_000124_000006480",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  },
+  {
+   "grup": "D4_07",
+   "govde": "dji_20260822173231_0039_d__frame_000126_000006630",
+   "degerler": [
+    0,
+    1,
+    2
+   ],
+   "sekil": [
+    540,
+    960
+   ]
+  }
+ ]
+}

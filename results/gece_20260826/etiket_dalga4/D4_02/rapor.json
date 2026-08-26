@@ -1,0 +1,41 @@
+{
+ "grup": "D4_02",
+ "kareler": [
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000185_000007350",
+   "sinif0": 0.3739,
+   "sinif1": 0.04,
+   "yol_var": true,
+   "not": "Genis cakil/stabilize yol sol-ust'ten sol-alt'a kare kenarlarina kadar; sag taraf kuru ot+seyrek cali ETIKETSIZ; sag ust agaclik sinif 1. Bordur/kanal gorulmedi."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000169_000006600",
+   "sinif0": 0.4655,
+   "sinif1": 0.3015,
+   "yol_var": true,
+   "not": "Sag yarida genis cakil yol kenardan kenara; ortadan gecen beton kanal/boru hatti sinif 1; sol beyaz cuval yigini + cati + sik koyu cali sinif 1; kuru ot ETIKETSIZ; kanalin solundaki dar cakil iz sinif 0 (belirsizlik notu)."
+  },
+  {
+   "govde": "dji_20260822170832_0037_d__frame_000122_000005190",
+   "sinif0": 0.3661,
+   "sinif1": 0.3006,
+   "yol_var": true,
+   "not": "Sol/orta genis cakil platform+yol; ustten alta beton kanal sinif 1; sag cuval yigini, mavi varil, cati sinif 1; kanal yaninda yesil cali sinif 1; sag ortadaki cakil+ot karisik alan ETIKETSIZ."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000169_000009570",
+   "sinif0": 0.1881,
+   "sinif1": 0.1992,
+   "yol_var": true,
+   "not": "Cakil yol ustten alta tam genislik; sol agac siralari, elektrik diregi, 2 insan, yol kenari >25cm tas sinif 1; sag paletle cignenmis cig toprak madde 12 ETIKETSIZ; sol cakil serit icindeki koyu hendek cizgisi okunamadigi icin ETIKETSIZ."
+  },
+  {
+   "govde": "dji_20260822173231_0039_d__frame_000141_000007440",
+   "sinif0": 0.2342,
+   "sinif1": 0.0357,
+   "yol_var": true,
+   "not": "Asfalt/stabilize yol ustten alta; yolun solunda dar beton bordur/serit sinif 1, onun solunda cakil iz sinif 0; agaclar ve 2 insan sinif 1; golge altinda yol okunuyor sinif 0; sol mera ve sag cig toprak ETIKETSIZ."
+  }
+ ],
+ "komutlar": "VENV scripts/olcum/140_uc_maske_araci.py izgara/uret her kare icin; ciktilar results/gece_20260826/etiket_dalga4/D4_02/<govde>_{ops.json,uc.png,bindirme.jpg}"
+}

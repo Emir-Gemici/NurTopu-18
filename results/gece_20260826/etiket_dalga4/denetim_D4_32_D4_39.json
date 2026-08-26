@@ -1,0 +1,18 @@
+{"denetci":"tutarlilik dalga4 (D4_32..D4_39)","tarih":"2026-08-26","incelenen":40,"gruplar":["D4_32","D4_33","D4_34","D4_35","D4_36","D4_37","D4_38","D4_39"],
+"yontem":"her *_bindirme.jpg Read ile goruldu; suphelilerde 140 buyut ile yakinlasildi; duzeltmeler ops.json'a eklendi (deger-0 islemleri ilk deger-2'den once), 140 uret ile yeniden uretildi ve bindirme tekrar goruldu; 40 _uc.png degerleri {0,1,2} ve boyut 960x540 dogrulandi",
+"duzeltilen":[
+{"grup":"D4_33","govde":"dji_20260822173231_0039_d__frame_000038_000002640","tur":"a","neden":"sag ust kuru cali/ot serit (x640-960,y0-315 yol kenari disi) yesildi; deger-0 poligon ile geri alindi","sonuc":{"etiketsiz":0.3815,"sinif0":0.3317,"sinif1":0.2868}},
+{"grup":"D4_34","govde":"dji_20260822173231_0039_d__frame_000033_000002370","tur":"a","neden":"sol kenar x40-62 kuru ot/direk hatti yesildi; deger-0 seritle geri alindi","sonuc":{"etiketsiz":0.0729,"sinif0":0.3424,"sinif1":0.5847}},
+{"grup":"D4_37","govde":"dji_20260822170832_0037_d__frame_000072_000002700","tur":"S4","neden":"sol ustteki kopru/menfez tabliyesi kirmizi (sinif1) idi; sartname S4 tabliye sinif0 -> tabliye [0-72,62-118] deger-1, altindaki bosluk+korkuluk [0-110,118-185] deger-2, yanindaki ot etiketsiz","sonuc":{"etiketsiz":0.6881,"sinif0":0.2694,"sinif1":0.0424}},
+{"grup":"D4_39","govde":"dji_20260822173231_0039_d__frame_000058_000003390","tur":"b","neden":"ust kenarda yol x600-725'e kadar suruyor, yesil 600'de bitiyordu; deger-1 poligonla tam genislige uzatildi","sonuc":{"etiketsiz":0.6558,"sinif0":0.3007,"sinif1":0.0435}},
+{"grup":"D4_35","govde":"dji_20260822170832_0037_d__frame_000101_000004200","tur":"a","neden":"yolun sag kenarindaki kuru ot bandi (y60-260, 30-40 px) yesildi; deger-0 poligonla geri alindi","sonuc":{"etiketsiz":0.5875,"sinif0":0.2858,"sinif1":0.1267}}
+],
+"kontrol_edilip_birakilan":[
+{"govde":"dji_20260822170832_0037_d__frame_000006_000000240","not":"sag ikinci yesil bant buyutuldu: cakil yol, kenarlar 20-40 px pay ile kabul"},
+{"govde":"dji_20260822170832_0037_d__frame_000136_000005610","not":"orta yesil yama buyutuldu: ot arasinda toprak yol, dogru"},
+{"govde":"dji_20260822173231_0039_d__frame_000121_000006390","not":"beton bordur+agaclar kirmizi; solundaki koyu tas serit kanal oldugu okunamadi, etiketsiz birakildi (0039_135'te kirmizi; kareler arasi fark not edildi)"},
+{"govde":"dji_20260822170832_0037_d__frame_000298_000011190","not":"bordur kirmizi; sagindaki koyu tas serit kanal olarak dogrulanamadi, etiketsiz"},
+{"govde":"dji_20260822173231_0039_d__frame_000007_000000690","not":"yolu kesen kazilmis toprak yigini etiketsiz (madde 12), derinlik okunamiyor"}
+],
+"d_vurgusu":"beton kanal/bordur gorunen 22 karede (0037: 025,083,101,108,193,196,207,211,247,298 · 0039: 019,022,033,038,050,071,076,086,103,106,123,128,135) kirmizi mevcuttu; eksik bordur bulunmadi",
+"uc_png_dogrulama":"40/40 deger kumesi {0,1,2} alt kumesi, 960x540"}

@@ -1,0 +1,13 @@
+{"dalga":4,"gruplar":["D4_16","D4_17","D4_18","D4_19","D4_20","D4_21","D4_22","D4_23"],"incelenen":40,
+"duzeltilen":[
+{"govde":"D4_17/dji_20260822170832_0037_d__frame_000113_000004800","islem":"deger-1 poligon [[0,0],[185,0],[125,270],[65,540],[0,540]] eklendi (deger-2'lerden once)","neden":"(b) yol sol kare kenarina kadar suruyor (kum/cakil ayni platform), yesil x=180'de basliyordu; sinif0 0.29->0.355"},
+{"govde":"D4_19/dji_20260822170832_0037_d__frame_000276_000010500","islem":"deger-1 poligon [[130,0],[175,0],[180,540],[135,540]] eklendi (deger-2'lerden once)","neden":"(b) yolun sol ~45 px'i (x 130-175) yesil disinda kalmisti; kerb bandi (x<=115, deger-2) korundu"}],
+"kabul_notlari":[
+"D4_16 5/5 uygun; 0039_167 sag kenar ~20px dar (belirsiz toz kenari, dokunulmadi)",
+"D4_17 0037_089 kerb-yol arasi cakil banket etiketsiz birakildi (belirsiz); 0037_195 alt-sag kavsak toprak etiketsiz (madde 12)",
+"D4_18 0039_190 alt-sol cakil alan etiketsiz; yol mu depo mu belirsiz, madde 12 ile uzatilmadi",
+"D4_19 0037_062 sol yesil serit (x 260-400) sikistirilmis toprak yol olarak kabul edildi; tarla degil, lastik izli duz platform",
+"D4_20/D4_21 0039_079/084/088/097/100 kerb solundaki cakil serit yesil kabul edildi (0037_100 ile tutarli, ayni servis yolu)",
+"D4_23 0037_270 sol kenar (x<90) kuru ot banket; ham karede 4x buyutmede beton kanal/bordur GORULMEDI -> deger-2 eklenmedi (acikca gorunme sarti saglanmadi)",
+"(a) uydurma/ot uzerine yesil ve (c) uydurma yol bulunmadi"],
+"uc_png_dogrulama":{"dosya":40,"deger_kumesi_disi":0,"boyut":"960x540"}}
