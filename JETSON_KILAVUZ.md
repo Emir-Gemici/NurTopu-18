@@ -12,7 +12,7 @@
 
 ---
 
-## 0-T85. GÜNCELLEME 2026-08-15 — **asıl model v27 → v30** (çözünürlük 512, değişmedi)
+## 0-T85. GÜNCELLEME 2026-08-15 — **asıl model v27 → v30** (çözünürlük 512, değişmedi) *(zincir SÜRDÜ — bugünün asıl modeli **v36**, D-293)*
 
 > **Kullanıcı kararı** (T85). Mimar kabulü: `REVIEW_LOG.md` **D-132** (kabul kuralı,
 > **sonuç görülmeden** yazıldı) + **D-133** (dört şartın hepsi sağlandı). Aşağıdaki

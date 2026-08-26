@@ -1,0 +1,58 @@
+YEDEK sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57  (C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_yedek\b_JETSON_KILAVUZ.md)
+MUTASYON uygulandi: JETSON_KILAVUZ.md
+  - '  --engine models/navitas_seg_v36_best_512_fp16.engine \\'
+  + '  --engine models/navitas_seg_v30_best_512_fp16 \\'
+BOZUK  sha256 = 366ac0d2cd394b81e0d95bc1cdb5ff47420f957fd7c83ad8dfd2c558f3934453
+....................FFs.s.sss.....ss.
+======================================================================
+FAIL: test_kor_noktanin_UC_satir_tipi_URETIM_surumunde (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_kor_noktanin_UC_satir_tipi_URETIM_surumunde) (kilavuz='wf_a3528b62-8d1-2', isaret='--engine', satir=413)
+`--saveEngine=`, `--engine`, `--cikti` — adiyla ve ayri ayri.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 699, in test_kor_noktanin_UC_satir_tipi_URETIM_surumunde
+    self.assertIsNotNone(
+    ~~~~~~~~~~~~~~~~~~~~^
+        _istisna_bul(baslik, satir, surum),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"{k.parent.name}:{no} `{isaret.strip()}` "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"satiri {surum} diyor, uretim {self.uretim}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : wf_a3528b62-8d1-2:413 `--engine` satiri v30 diyor, uretim v36
+
+======================================================================
+FAIL: test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR) (kilavuz='wf_a3528b62-8d1-2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 665, in test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], kusurlu,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        f"hakem ekraninda gorulmeyen modeli derler/kosar — "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"D-294 SS4 kor noktasi")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(413, '--engine models/navitas_seg_v30_best_512_fp16 \\', 'v30')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(413, '--engine models/navitas_seg_v30_best_512_fp16 \\', 'v30')
+
+- []
++ [(413, '--engine models/navitas_seg_v30_best_512_fp16 \\', 'v30')] : kilavuzda uretim disi surum adi geciyor ve HICBIR istisnaya dusmuyor (uretim=v36); sahadaki kisi hakem ekraninda gorulmeyen modeli derler/kosar — D-294 SS4 kor noktasi
+
+----------------------------------------------------------------------
+Ran 37 tests in 0.050s
+
+FAILED (failures=2, skipped=7)
+  File "<string>", line 3
+    satir = '  --engine models/navitas_seg_v30_best_512_fp16 \'
+            ^
+SyntaxError: unterminated string literal (detected at line 3); perhaps you escaped the end quote?
+satir      :   --engine models/navitas_seg_v30_best_512_fp16 \
+ESKI desen : [] <- KOR (kapi bos liste gorur, satiri hic denetlemez)
+YENI desen : ['v30'] <- yakaliyor
+GERI ALINDI: JETSON_KILAVUZ.md
+BAYT-ES? True  sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57

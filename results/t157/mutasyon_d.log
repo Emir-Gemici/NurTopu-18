@@ -1,0 +1,43 @@
+YEDEK sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57  (C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_yedek\d_JETSON_KILAVUZ.md)
+MUTASYON uygulandi: JETSON_KILAVUZ.md
+Traceback (most recent call last):
+  File "C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mutasyon.py", line 69, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mutasyon.py", line 57, in main
+    print(f"  - {eski!r}\n  + {yeni!r}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1254.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 75-77: character maps to <undefined>
+.....................Fs.s.sss.....ss.
+======================================================================
+FAIL: test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR) (kilavuz='wf_a3528b62-8d1-2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 665, in test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], kusurlu,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        f"hakem ekraninda gorulmeyen modeli derler/kosar — "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"D-294 SS4 kor noktasi")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != [(815, '\u251c\u2500\u2500 navitas_seg_v17_best.pt              \u2190 yedek model', 'v17')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+(815, '\u251c\u2500\u2500 navitas_seg_v17_best.pt              \u2190 yedek model', 'v17')
+
+- []
++ [(815, '\u251c\u2500\u2500 navitas_seg_v17_best.pt              \u2190 yedek model', 'v17')] : kilavuzda uretim disi surum adi geciyor ve HICBIR istisnaya dusmuyor (uretim=v36); sahadaki kisi hakem ekraninda gorulmeyen modeli derler/kosar — D-294 SS4 kor noktasi
+
+----------------------------------------------------------------------
+Ran 37 tests in 0.053s
+
+FAILED (failures=1, skipped=7)
+GERI ALINDI: JETSON_KILAVUZ.md
+BAYT-ES? True  sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57

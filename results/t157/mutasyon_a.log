@@ -1,0 +1,28 @@
+YEDEK sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57  (C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_yedek\a_JETSON_KILAVUZ.md)
+MUTASYON uygulandi: JETSON_KILAVUZ.md
+  - '  --imgsz 512 \\\r\n  --isinma 15 --tekrar 120'
+  + '  --imgsz 640 \\\r\n  --isinma 15 --tekrar 120'
+BOZUK  sha256 = d6a666a5aa3ca67f1ccb31b3f9787567b2836aa0060cad0afa129131799614da
+..........F...........s.s.sss.....ss.
+======================================================================
+FAIL: test_KOMUTTAKI_imgsz_MODEL_dosyasinin_boyutuyla_AYNI (test_uretim_modeli_hizasi.KilavuzImgszHizasiTests.test_KOMUTTAKI_imgsz_MODEL_dosyasinin_boyutuyla_AYNI) (kilavuz='wf_a3528b62-8d1-2', satir=409, imgsz=640)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 817, in test_KOMUTTAKI_imgsz_MODEL_dosyasinin_boyutuyla_AYNI
+    self.assertIsNotNone(
+    ~~~~~~~~~~~~~~~~~~~~^
+        _imgsz_istisna_bul(baslik, komut, deger, uretim_ad),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        f"kisi modeli YANLIS cozunurlukte kosar ve olcum "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"kiyaslanamaz hale gelir (T157/a)")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : wf_a3528b62-8d1-2:409 komutu `imgsz 640` diyor, beklenen 512 (komuttaki model dosya adinin cozunurluk damgasi); sahadaki kisi modeli YANLIS cozunurlukte kosar ve olcum kiyaslanamaz hale gelir (T157/a)
+
+----------------------------------------------------------------------
+Ran 37 tests in 0.052s
+
+FAILED (failures=1, skipped=7)
+GERI ALINDI: JETSON_KILAVUZ.md
+BAYT-ES? True  sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57

@@ -332,11 +332,28 @@ class KilavuzHizasiTests(unittest.TestCase):
 # Eski surum adi ancak ASAGIDA ACIKCA ve GEREKCESIYLE tanimli bir istisnaya
 # duserse mesrudur; liste disi her eski ad kapiyi dusurur (fail-closed).
 
+# T157/b (D-295 SS4): UZANTI ARTIK ZORUNLU DEGIL. Onceki desen `.pt|.onnx|
+# .engine` sart kosuyordu; `--engine models/navitas_seg_v30_best_512_fp16`
+# (uzantisiz — `trtexec --saveEngine=` ve `yolo export` ciktilarinin sik
+# yazilan hali) kapidan KACIYORDU. Curutucu bunu enjekte etti, kapi yesil yandi.
 MODEL_DOSYA_DESENI = re.compile(
-    r"navitas_seg_(v\d+)[A-Za-z0-9_]*\.(?:pt|onnx|engine)")
+    r"navitas_seg_(v\d+)[A-Za-z0-9_]*(?:\.(?:pt|onnx|engine))?")
 CIKTI_SURUM_DESENI = re.compile(r"_(v\d+)(?=[_/\s]|$)")
 AGAC_SATIRI_DESENI = re.compile(
     r"^[\s│├└─]*[├└]──\s")
+
+# T157/a: KOMUT SATIRI COZUNURLUGU. Model dosya adi cozunurlugu KENDI tasir
+# (`navitas_seg_v36_best_512_fp16.onnx` -> 512); ayni komuttaki `--imgsz` /
+# `imgsz=` ondan SAPAMAZ. D-295 SS4'te olculdu: T154 SS6B satirini duzeltirken
+# `--imgsz`i ELLE cevirmek gerekti, cunku hicbir kapi ona bakmiyordu; 512 -> 640
+# enjekte edilince kapi yakalamadi.
+IMGSZ_DESENI = re.compile(r"(?:--imgsz[= ]|(?<![A-Za-z0-9_])imgsz=)\s*(\d{3,4})")
+MODEL_BOYUT_DESENI = re.compile(r"navitas_seg_v\d+[A-Za-z0-9_]*?_(\d{3,4})(?=[_.\s]|$)")
+
+# T157/c: BASLIK METNINDEKI CIPLAK `vNN`. Dosya adi ya da `--cikti` yolu degil,
+# duz metin ("**asil model v27 -> v30**"). Kilavuz satir 15 tam bunu tasiyordu:
+# baslik v30 diyor, ayni bolumun govdesi v36 diyordu (iki surum bayat).
+BASLIK_SURUM_DESENI = re.compile(r"(?<![A-Za-z0-9])v(\d+)(?!\d)")
 
 # Agac listesinde eski surumu MESRU kilan etiketler (kucuk harfe indirgenmis
 # olarak aranir). Etiketsiz eski surum = sessiz bayatlik = kapi duser.
@@ -395,13 +412,19 @@ ISTISNA_KURALLARI = (
     {
         "ad": "Paket agac listesi (etiketli)",
         "agac": True,
+        # T157/d: bu istisna EskIDEN bolum baglamina bagli DEGILDI — diger dort
+        # kuralin aksine `baslik_icerir` tasimiyordu, yani belgenin HERHANGI bir
+        # yerine konan `├── navitas_seg_v17_best.pt  ← yedek` satiri denetimden
+        # kaciyordu (D-295 SS4). Artik yalniz SS2 paket agacinda mesrudur.
+        "baslik_icerir": ("2.", "Paketi Jetson'a taşı"),
         "gerekce": (
             "SS2'deki `jetson_paket/` agaci KOMUT DEGILDIR, paketin icindekini "
             "listeler; eski agirliklar pakette BILEREK durur (yedek + karar "
             "kiyasi). Istisna bos degildir: eski surumlu her agac satiri "
             "`<- YEDEK / eski asil / referans / kiyas` gibi bir etiket tasimak "
-            "ZORUNDADIR ve `<- ASIL` satiri uretim surumune baglidir "
-            "(`test_ASIL_satiri_URETIM_surumunu_gosteriyor`)."),
+            "ZORUNDADIR, `<- ASIL` satiri uretim surumune baglidir "
+            "(`test_ASIL_satiri_URETIM_surumunu_gosteriyor`) ve satir SS2 "
+            "'Paketi Jetson'a tasi' bolumunun ICINDE olmak zorundadir (T157/d)."),
     },
 )
 
@@ -456,11 +479,14 @@ def _denetlenen_surumler(satir: str):
 def _istisna_bul(baslik: str, satir: str, surum: str):
     """Eski surum tasiyan satir icin GECERLI istisna kaydi (yoksa None)."""
     for kural in ISTISNA_KURALLARI:
+        # T157/d: bolum baglami HER kural icin ONCE denetlenir — agac kurali
+        # dahil. Once `agac` dalinda erken donuluyordu ve o kural belgenin
+        # tamamina uyuyordu.
+        if not all(p in baslik for p in kural["baslik_icerir"]):
+            continue
         if kural.get("agac"):
             if AGAC_SATIRI_DESENI.match(satir) and "←" in satir:
                 return kural
-            continue
-        if not all(p in baslik for p in kural["baslik_icerir"]):
             continue
         izinli = kural["surumler"]
         if izinli is None:
@@ -479,6 +505,150 @@ def _sapmalar(yol: Path, uretim: str):
                 continue
             cikti.append((no, satir, surum, _istisna_bul(baslik, satir, surum)))
     return cikti
+
+
+# ---------------------------------------------------------------------------
+# T157 · T154 KAPISININ KALAN DELIKLERI (curutucu olctu — REVIEW_LOG D-295 §4)
+# ---------------------------------------------------------------------------
+# (a) `--imgsz` denetlenmiyordu; (b) uzantisiz model yolu kaciyordu (yukarida
+# desen duzeltildi); (c) baslik metnindeki ciplak `vNN` denetim disiydi ve
+# GERCEK bir tutarsizlik tasiyordu; (d) agac istisnasi bolume bagli degildi
+# (yukarida baglandi).
+
+
+def _defterdeki_imgsz() -> int:
+    """`competition.imgsz` — kilavuzdaki cozunurlugun TEK KAYNAGI (madde 16)."""
+    defter = json.loads((KOK / "config" / "model_registry.json")
+                        .read_text(encoding="utf-8"))
+    return int(defter["profiles"]["competition"]["imgsz"])
+
+
+def _mantiksal_komutlar(metin: str):
+    """(ilk_satir_no, BIRLESIK komut, baslik yolu) uretir.
+
+    Kabuk komutlari kilavuzda `\\` ile satira boluniyor: model adi bir satirda,
+    `--imgsz` bir asagida. Satir satir bakan bir kapi ikisini ILISKILENDIREMEZ;
+    bu yuzden devam satirlari BIRLESTIRILIR.
+    """
+    birikim: list[tuple[int, str, str]] = []
+    for no, satir, baslik in _bolumlu_satirlar(metin):
+        birikim.append((no, satir, baslik))
+        if satir.rstrip().endswith("\\"):
+            continue
+        yield birikim[0][0], " ".join(s for _n, s, _b in birikim), birikim[0][2]
+        birikim = []
+    if birikim:
+        yield birikim[0][0], " ".join(s for _n, s, _b in birikim), birikim[0][2]
+
+
+def _beklenen_imgsz(komut: str, uretim_imgsz: int):
+    """(beklenen boyut, kaynak) — celiskili damga varsa (None, sebep)."""
+    damgalar = {int(b) for b in MODEL_BOYUT_DESENI.findall(komut)}
+    if len(damgalar) == 1:
+        return damgalar.pop(), "komuttaki model dosya adinin cozunurluk damgasi"
+    if not damgalar:
+        return uretim_imgsz, "config/model_registry.json :: competition.imgsz"
+    return None, f"komutta CELISKILI cozunurluk damgalari: {sorted(damgalar)}"
+
+
+def _baslik_satirlari(metin: str):
+    """Yalniz BASLIK satirlari (kod cercevesi icindeki `#` satirlari HARIC)."""
+    for no, satir, baslik in _bolumlu_satirlar(metin):
+        kirpik = satir.strip()
+        if kirpik.startswith("#") and baslik.endswith(kirpik):
+            yield no, kirpik, baslik
+
+
+# 🔴 `--imgsz` ISTISNALARI — gerekce zorunlu, bolume bagli, fail-closed.
+IMGSZ_ISTISNALARI = (
+    {
+        "ad": "IMGSZ · karar kiyasi dongusu (v17/v20/v21)",
+        "baslik_icerir": ("Karar kıyası",),
+        "boyutlar": (640,),
+        "gerekce": (
+            "SS5 sonundaki `for M in v21 v17 v20` dongusu model adini KABUK "
+            "DEGISKENIYLE kurar (`navitas_seg_${M}_best.pt`), yani dosya adinda "
+            "cozunurluk damgasi YOKTUR ve varsayilan olarak uretim boyutu "
+            "beklenirdi. Ama bu blogun AMACI uc ESKI modeli kendi doneminin "
+            "640 boyutunda kiyaslamaktir (SS0-T76'ya kadar uretim 640'ti); 512 "
+            "ile kosulursa kiyas kendi kaydiyla celisir. Istisna bos degildir: "
+            "blokta URETIM surumunun adi gecerse istisna DUSER (asagidaki "
+            "`uretim modeli o blokta ise` kancasi)."),
+    },
+)
+
+
+def _imgsz_istisna_bul(baslik: str, komut: str, deger: int, uretim_ad: str):
+    """`--imgsz` sapmasi icin GECERLI istisna (yoksa None)."""
+    for kural in IMGSZ_ISTISNALARI:
+        if not all(p in baslik for p in kural["baslik_icerir"]):
+            continue
+        if deger not in kural["boyutlar"]:
+            continue
+        if uretim_ad in komut:
+            # Uretim modeli bu bloga girdiyse istisnanin gerekcesi COKER.
+            continue
+        return kural
+    return None
+
+
+# 🔴 BASLIK METNI ISTISNALARI — ayni disiplin, ayri liste (semantigi farkli:
+# burada denetlenen sey dosya/komut degil, INSANIN OKUDUGU BASLIK CUMLESI).
+BASLIK_ISTISNALARI = (
+    {
+        "ad": "BASLIK · asilmis GUNCELLEME kaydi",
+        "baslik_icerir": ("GÜNCELLEME", "AŞILDI"),
+        "surumler": ("v21", "v24", "v27"),
+        "gerekce": (
+            "SS0-T76 ve SS0-T58 basliklari `*(SS0-T85 ile ASILDI)*` / `*(SS0-T76 "
+            "ile ASILDI)*` etiketini ACIKCA tasir: bunlar 2026-08-13 ve "
+            "2026-08-14 terfilerinin OLCUM KAYDIDIR, kosulacak yordam degil. "
+            "Kayitlar bilerek silinmez (SS0-T85 metni). Etiket kalkarsa istisna "
+            "DUSER — `baslik_icerir` iki dizgiyi de arar."),
+    },
+    {
+        "ad": "BASLIK · SS0-T85 surum zinciri",
+        "baslik_icerir": ("0-T85", "zincir SÜRDÜ"),
+        "surumler": ("v27", "v30"),
+        "uretim_de_yazili": True,
+        "gerekce": (
+            "SS0-T85 iki isi birden yapar: 2026-08-15 terfisinin (v27 -> v30) "
+            "kaydini tutar VE 'bugun derlenecek model' cumlesini tasir; SS4 "
+            "buraya 'SS0-T85 zinciri' diye atif yapar. Bu yuzden SS0-T76/T58 "
+            "gibi ASILDI etiketlenemez — bolum CANLIDIR. Istisna bos degildir: "
+            "baslik URETIM SURUMUNU DE yazmak zorundadir (`uretim_de_yazili`), "
+            "yani v37 geldiginde baslik guncellenmezse kapi DUSER. T157/c'de "
+            "olculdu: baslik 'v27 -> v30' derken govde v36 diyordu — iki surum "
+            "bayat, hicbir kapi bakmiyordu (D-295 SS4)."),
+    },
+    {
+        "ad": "BASLIK · SS0 B1/B2 v17 bulgulari",
+        "baslik_icerir": ("0. ÖNCE OKU",),
+        "surumler": ("v17",),
+        "gerekce": (
+            "SS0'daki B1 ve B2 basliklarinin KONUSU v17'nin KENDISIDIR: 'v17 "
+            "gercek drone karelerinde KOR (olculdu, 2026-08-05)' ve "
+            "'rpi_inference.py Jetson'da v17'yi YUKLEYEMEZ'. Uretim surumune "
+            "cevrilirse baslik YALAN SOYLER — olculen sey v17'ydi. Istisna bos "
+            "degildir: yalniz v17 mesru, yalniz SS0 'ONCE OKU' bolumunde; baska "
+            "bir eski surum ya da baska bir bolum kapiyi dusurur."),
+    },
+)
+
+
+def _baslik_istisna_bul(satir: str, baslik: str, surum: str, uretim: str):
+    """Baslikta gecen eski surum icin GECERLI istisna (yoksa None)."""
+    for kural in BASLIK_ISTISNALARI:
+        if not all(p in baslik for p in kural["baslik_icerir"]):
+            continue
+        if surum not in kural["surumler"]:
+            continue
+        if kural.get("uretim_de_yazili"):
+            yazili = {f"v{h}" for h in BASLIK_SURUM_DESENI.findall(satir)}
+            if uretim not in yazili:
+                continue
+        return kural
+    return None
 
 
 class KilavuzKomutSatirlariTests(unittest.TestCase):
@@ -580,11 +750,202 @@ class KilavuzKomutSatirlariTests(unittest.TestCase):
             "istisna da KALDIRILMALI (liste sessizce buyurse kapi korlesir)")
 
     def test_her_ISTISNAYA_gerekce_yazili(self):
-        for kural in ISTISNA_KURALLARI:
+        for kural in (*ISTISNA_KURALLARI, *IMGSZ_ISTISNALARI,
+                      *BASLIK_ISTISNALARI):
             with self.subTest(istisna=kural["ad"]):
                 self.assertGreaterEqual(
                     len(kural.get("gerekce", "").strip()), 80,
                     "T154 sarti: istisna ACIKCA VE GEREKCESIYLE tanimlanir")
+
+    # -- T157/d -------------------------------------------------------------
+    def test_AGAC_istisnasi_BOLUME_bagli(self):
+        """Belgenin herhangi bir yerine konan agac satiri KACMAMALI."""
+        agac_kurali = [k for k in ISTISNA_KURALLARI if k.get("agac")]
+        self.assertEqual(1, len(agac_kurali), "agac kurali tek olmali")
+        self.assertTrue(
+            agac_kurali[0].get("baslik_icerir"),
+            "agac istisnasi bolum baglamina bagli degil — belgenin HER yerinde "
+            "gecerli olur ve etiketli bir agac satiri denetimden kacar "
+            "(D-295 SS4, T157/d)")
+        sahte = "├── navitas_seg_v17_best.pt              ← yedek model"
+        self.assertIsNone(
+            _istisna_bul("# JETSON ORIN NX — SAHA KILAVUZU ⟩ ## 9. Bugün "
+                         "YAPILMAYACAKLAR", sahte, "v17"),
+            "SS2 disina konan agac satiri hala istisnaya dusuyor")
+        self.assertIsNotNone(
+            _istisna_bul("# JETSON ORIN NX — SAHA KILAVUZU ⟩ ## 2. Paketi "
+                         "Jetson'a taşı", sahte, "v17"),
+            "SS2 paket agacindaki mesru satir artik kapiya takiliyor")
+
+    # -- T157/b -------------------------------------------------------------
+    def test_UZANTISIZ_model_yolu_da_DENETLENIYOR(self):
+        """`--engine models/navitas_seg_v30_best_512_fp16` (uzantisiz)."""
+        satir = "  --engine models/navitas_seg_v30_best_512_fp16 \\"
+        self.assertIn(
+            "v30", _denetlenen_surumler(satir),
+            "uzantisiz model yolu desene TAKILMIYOR; `trtexec --saveEngine=` "
+            "ciktisi bu bicimde yazilir ve kapi kor kalir (D-295 SS4, T157/b)")
+        for uzanti in (".pt", ".onnx", ".engine", ""):
+            with self.subTest(uzanti=uzanti or "(yok)"):
+                self.assertIn(
+                    "v30",
+                    _denetlenen_surumler(f"  --engine models/"
+                                         f"navitas_seg_v30_best_512_fp16{uzanti}"))
+
+
+class KilavuzImgszHizasiTests(unittest.TestCase):
+    """T157/a · Komuttaki `--imgsz` model dosyasinin cozunurlugundan sapamaz."""
+
+    def setUp(self):
+        self.uretim = _surum(yks_gui.YksArayuz.ALGI_MODEL_DOSYA)
+        self.uretim_imgsz = _defterdeki_imgsz()
+
+    def test_KOMUTTAKI_imgsz_MODEL_dosyasinin_boyutuyla_AYNI(self):
+        uretim_ad = f"navitas_seg_{self.uretim}"
+        for k in KILAVUZLAR:
+            for no, komut, baslik in _mantiksal_komutlar(
+                    k.read_text(encoding="utf-8")):
+                yazilanlar = [int(x) for x in IMGSZ_DESENI.findall(komut)]
+                if not yazilanlar:
+                    continue
+                beklenen, kaynak = _beklenen_imgsz(komut, self.uretim_imgsz)
+                for deger in yazilanlar:
+                    if beklenen is not None and deger == beklenen:
+                        continue
+                    with self.subTest(kilavuz=k.parent.name, satir=no,
+                                      imgsz=deger):
+                        self.assertIsNotNone(
+                            _imgsz_istisna_bul(baslik, komut, deger, uretim_ad),
+                            f"{k.parent.name}:{no} komutu `imgsz {deger}` "
+                            f"diyor, beklenen {beklenen} ({kaynak}); sahadaki "
+                            f"kisi modeli YANLIS cozunurlukte kosar ve olcum "
+                            f"kiyaslanamaz hale gelir (T157/a)")
+
+    def test_URETIM_modelinin_damgasi_DEFTERDEKI_imgsz(self):
+        """`..._512_fp16` damgasi defterin `imgsz`inden sapamaz."""
+        gorulen = set()
+        for k in KILAVUZLAR:
+            for _no, komut, _b in _mantiksal_komutlar(
+                    k.read_text(encoding="utf-8")):
+                if f"navitas_seg_{self.uretim}" not in komut:
+                    continue
+                gorulen.update(int(b) for b in MODEL_BOYUT_DESENI.findall(komut))
+        self.assertTrue(gorulen, "kilavuzda uretim modelinin cozunurluk "
+                                 "damgali adi hic gecmiyor")
+        self.assertEqual(
+            {self.uretim_imgsz}, gorulen,
+            f"kilavuz uretim modelini {sorted(gorulen)} damgasiyla aniyor, "
+            f"defter `competition.imgsz` = {self.uretim_imgsz}")
+
+    def test_IMGSZ_kapisi_BOS_DEGIL(self):
+        """Kapi gercekten kiyas yapiyor mu — damgali komut sayisi sayilir."""
+        for k in KILAVUZLAR:
+            damgali = [no for no, komut, _b in _mantiksal_komutlar(
+                k.read_text(encoding="utf-8"))
+                if IMGSZ_DESENI.search(komut) and MODEL_BOYUT_DESENI.search(komut)]
+            with self.subTest(kilavuz=k.parent.name):
+                self.assertGreaterEqual(
+                    len(damgali), 5,
+                    f"yalniz {len(damgali)} komutta hem `--imgsz` hem damgali "
+                    f"model adi var; kapi bu satir tipinde KORLESIYOR")
+
+    def test_devam_satirlari_BIRLESTIRILIYOR(self):
+        """`\\` ile bolunmus komut tek parca gorulmezse kapi kor kalir."""
+        metin = ("## X\n```bash\npython3 x.py \\\n"
+                 "  --engine models/navitas_seg_v36_best_512_fp16.engine \\\n"
+                 "  --imgsz 640\n```\n")
+        komutlar = [c for _n, c, _b in _mantiksal_komutlar(metin)
+                    if IMGSZ_DESENI.search(c)]
+        self.assertEqual(1, len(komutlar))
+        self.assertEqual((512, "komuttaki model dosya adinin cozunurluk damgasi"),
+                         _beklenen_imgsz(komutlar[0], self.uretim_imgsz))
+
+    def test_ISTISNALARIN_HEPSI_CANLI(self):
+        kullanilan = set()
+        uretim_ad = f"navitas_seg_{self.uretim}"
+        for k in KILAVUZLAR:
+            for _no, komut, baslik in _mantiksal_komutlar(
+                    k.read_text(encoding="utf-8")):
+                for deger in (int(x) for x in IMGSZ_DESENI.findall(komut)):
+                    beklenen, _ = _beklenen_imgsz(komut, self.uretim_imgsz)
+                    if beklenen is not None and deger == beklenen:
+                        continue
+                    ist = _imgsz_istisna_bul(baslik, komut, deger, uretim_ad)
+                    if ist is not None:
+                        kullanilan.add(ist["ad"])
+        olu = [k["ad"] for k in IMGSZ_ISTISNALARI if k["ad"] not in kullanilan]
+        self.assertEqual([], olu, "bu imgsz istisnalari artik hicbir komuta "
+                                  "uymuyor; kilavuz degistiyse istisna da "
+                                  "KALDIRILMALI")
+
+
+class KilavuzBaslikSurumuTests(unittest.TestCase):
+    """T157/c · Baslik metnindeki CIPLAK `vNN` uretime bagli mi?"""
+
+    def setUp(self):
+        self.uretim = _surum(yks_gui.YksArayuz.ALGI_MODEL_DOSYA)
+
+    def test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli(self):
+        for k in KILAVUZLAR:
+            for no, satir, baslik in _baslik_satirlari(
+                    k.read_text(encoding="utf-8")):
+                for ham in BASLIK_SURUM_DESENI.findall(satir):
+                    surum = f"v{ham}"
+                    if surum == self.uretim:
+                        continue
+                    with self.subTest(kilavuz=k.parent.name, satir=no,
+                                      surum=surum):
+                        self.assertIsNotNone(
+                            _baslik_istisna_bul(satir, baslik, surum,
+                                                self.uretim),
+                            f"{k.parent.name}:{no} basligi {surum} diyor, "
+                            f"uretim {self.uretim}; okuyucu bolumun tamamini "
+                            f"o surume ait sanar (T157/c): {satir}")
+
+    def test_BASLIK_kapisi_BOS_DEGIL(self):
+        for k in KILAVUZLAR:
+            sayi = sum(1 for _no, satir, _b in _baslik_satirlari(
+                k.read_text(encoding="utf-8"))
+                if BASLIK_SURUM_DESENI.search(satir))
+            with self.subTest(kilavuz=k.parent.name):
+                self.assertGreaterEqual(
+                    sayi, 3, f"yalniz {sayi} baslikta surum adi var — kapi bu "
+                             f"satir tipinde KOR olur")
+
+    def test_CANLI_bolumun_basligi_URETIM_surumunu_de_YAZIYOR(self):
+        """SS0-T85 canlidir (SS4 ona atif yapar); basligi v36'yi anmalidir."""
+        for k in KILAVUZLAR:
+            bulundu = False
+            for _no, satir, _b in _baslik_satirlari(
+                    k.read_text(encoding="utf-8")):
+                if "0-T85" not in satir or "AŞILDI" in satir:
+                    continue
+                bulundu = True
+                with self.subTest(kilavuz=k.parent.name):
+                    self.assertIn(
+                        self.uretim,
+                        {f"v{h}" for h in BASLIK_SURUM_DESENI.findall(satir)},
+                        "SS0-T85 CANLI bolumdur ama basligi uretim surumunu "
+                        "anmiyor; T157/c'de tam bu bayatlik olculdu")
+            with self.subTest(kilavuz=k.parent.name, ne="bolum var mi"):
+                self.assertTrue(bulundu, "SS0-T85 basligi bulunamadi")
+
+    def test_ISTISNALARIN_HEPSI_CANLI(self):
+        kullanilan = set()
+        for k in KILAVUZLAR:
+            for _no, satir, baslik in _baslik_satirlari(
+                    k.read_text(encoding="utf-8")):
+                for ham in BASLIK_SURUM_DESENI.findall(satir):
+                    surum = f"v{ham}"
+                    if surum == self.uretim:
+                        continue
+                    ist = _baslik_istisna_bul(satir, baslik, surum, self.uretim)
+                    if ist is not None:
+                        kullanilan.add(ist["ad"])
+        olu = [k["ad"] for k in BASLIK_ISTISNALARI if k["ad"] not in kullanilan]
+        self.assertEqual([], olu, "bu baslik istisnalari artik hicbir basliga "
+                                  "uymuyor; kilavuz degistiyse istisna da "
+                                  "KALDIRILMALI")
 
 
 if __name__ == "__main__":
