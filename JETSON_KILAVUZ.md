@@ -620,13 +620,20 @@ Akış doğrulandıktan sonra gerçek zinciri de koşabilirsin:
 ```bash
 python3 ~/navitas/codes/kamera_dogrula.py \
   --kaynak "http://<TELEFON_IP>:4747/video" \
-  --zincir --model ~/navitas/models/navitas_seg_v17_best_640.engine \
-  --imgsz 640 --kare 60
+  --zincir --model ~/navitas/models/navitas_seg_v36_best_512_fp16.engine \
+  --imgsz 512 --kare 60
 ```
-⚠ **Beklenti:** telefon kamerası gerçek sahneye bakıyorsa **B1 burada da geçerli** —
-`rota_durumlari` büyük ihtimalle `MASKE_YOK` ağırlıklı çıkar. Bu modelin arızası
-değil, domain boşluğunun canlı görüntüde de sürdüğünün kanıtıdır. Sayıyı yine de
-kaydet; eğitim verisi kararı için değerli.
+🔴 **2026-08-26 · T154 düzeltmesi:** bu satır **v17/640**'ta kalmıştı — v17 en son
+13 Ağustos'ta asıldı, yani **altı sürüm bayattı** ve hiçbir kapı bakmıyordu
+(`REVIEW_LOG.md` D-294 §4). Artık `tests/test_uretim_modeli_hizasi.py`
+`KilavuzKomutSatirlariTests` bu satırı da denetliyor.
+
+⚠ **Beklenti — ÖLÇÜLMEDİ.** Komut artık üretim modelini koşuyor; eski hâli v17'yi
+koşuyordu ve B1 gereği neredeyse her karede `MASKE_YOK` verirdi. **v36'nın DroidCam
+görüntüsündeki davranışı ölçülmedi** — telefon kamerası ne drone irtifasına ne de
+eğitim dağılımına benzer, bu yüzden buradan çıkacak `rota_durumlari` dağılımı bir
+başarım iddiası değildir. Sayıyı olduğu gibi kaydet. B1'in kendisini tekrar ölçmek
+istersen §5'teki **Domain kontrolü** bloğu bilerek v17 ile durur.
 
 ### Saha görev komutu — telsiz halkasıyla (K1 · CONTRACTS §6.5)
 

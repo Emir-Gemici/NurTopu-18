@@ -316,5 +316,276 @@ class KilavuzHizasiTests(unittest.TestCase):
                 )
 
 
+# ---------------------------------------------------------------------------
+# T154 · KOMUT SATIRI HIZASI — D-294 §4'te olculen KOR NOKTA
+# ---------------------------------------------------------------------------
+# Yukaridaki `KilavuzHizasiTests` yalniz IKI satir tipine bakiyordu: icinde
+# `ASIL` gecen satirlar ve `format=engine` gecen satirlar. Sahadaki insanin
+# GERCEKTEN yapistiracagi komutlarin geri kalani -- `trtexec --saveEngine=`,
+# `jetson_fps.py --engine`, `--cikti results/..._vNN_...` -- HICBIR kapi
+# tarafindan denetlenmiyordu. Sonuc olculdu (REVIEW_LOG D-294 SS4): bu satirlar
+# 11 GUN boyunca `v30` dedi; v30 en son 2026-08-15'te uretimdi, yani IKI surum
+# bayat kaldi ve kapilarin hepsi yesil yandi.
+#
+# Bu bolum kurali TERSINE cevirir: kilavuzda model agirligi/turevi adi ya da
+# surumlu bir cikti yolu gecen HER satir uretim surumunu tasimak ZORUNDADIR.
+# Eski surum adi ancak ASAGIDA ACIKCA ve GEREKCESIYLE tanimli bir istisnaya
+# duserse mesrudur; liste disi her eski ad kapiyi dusurur (fail-closed).
+
+MODEL_DOSYA_DESENI = re.compile(
+    r"navitas_seg_(v\d+)[A-Za-z0-9_]*\.(?:pt|onnx|engine)")
+CIKTI_SURUM_DESENI = re.compile(r"_(v\d+)(?=[_/\s]|$)")
+AGAC_SATIRI_DESENI = re.compile(
+    r"^[\s│├└─]*[├└]──\s")
+
+# Agac listesinde eski surumu MESRU kilan etiketler (kucuk harfe indirgenmis
+# olarak aranir). Etiketsiz eski surum = sessiz bayatlik = kapi duser.
+MESRU_AGAC_ETIKETLERI = ("asil", "yedek", "eski as", "referans", "kıyas",
+                         "ölçülmedi")
+
+# 🔴 ISTISNA LISTESI — her kaydin GEREKCESI yazilidir (T154 sarti).
+# `baslik_icerir`: satirin bagli oldugu en yakin markdown basliginda BULUNMASI
+#   gereken alt dizgilerin TAMAMI. Baslik degisirse istisna DUSER (fail-closed).
+# `surumler`: bu bolumde mesru sayilan eski surumler. None ise izinli kume
+#   defterden turetilir (`surum_kaynagi`), yani elle tutulmaz.
+ISTISNA_KURALLARI = (
+    {
+        "ad": "SS0-T76 (ASILDI)",
+        "baslik_icerir": ("0-T76", "AŞILDI"),
+        "surumler": ("v27",),
+        "gerekce": (
+            "Baslikta ACIKCA `(SS0-T85 ile ASILDI)` yazar: bu bolum 2026-08-14 "
+            "terfisinin OLCUM KAYDIDIR, kosulacak komut degil. SS0-T85 ayni "
+            "kilavuzda 'bugun derlenecek ve kosulacak model' satirini uretim "
+            "surumuyle tasir; kayitlar bilerek SILINMEZ (SS0-T85 metni)."),
+    },
+    {
+        "ad": "SS0-T58 (ASILDI)",
+        "baslik_icerir": ("0-T58", "AŞILDI"),
+        "surumler": ("v24",),
+        "gerekce": (
+            "Baslikta ACIKCA `(SS0-T76 ile ASILDI)` yazar; 2026-08-13 "
+            "terfisinin olcum kaydidir. Gerekce SS0-T76 ile birebir aynidir."),
+    },
+    {
+        "ad": "Domain kontrolu (B1 tekrari)",
+        "baslik_icerir": ("Domain kontrolü",),
+        "surumler": ("v17",),
+        "gerekce": (
+            "Bu blogun AMACI B1 bulgusunu (v17 gercek drone karelerinde KOR, "
+            "SS0/B1) Jetson'da tekrarlamaktir. Uretim modeliyle kosulursa "
+            "olculmek istenen sey OLCULEMEZ. Blogun hemen altindaki beklenti "
+            "tablosu v17/v20/v21/v24'u ADIYLA anar; komut ile tablo ayni "
+            "surumu gostermek zorundadir."),
+    },
+    {
+        "ad": "SS6C birincil->yedek gecis yordami",
+        "baslik_icerir": ("6C.", "YEDEK"),
+        "surumler": None,
+        "surum_kaynagi": ("config/model_registry.json :: "
+                          "profiles.competition._yedek_surumler"),
+        "gerekce": (
+            "'Yedek' baglami surum adini mesru kilan TEK yerdir (T154 sarti): "
+            "SS6C saha gunu birincil modelden yedege gecis yordamidir ve "
+            "yedegin adini YAZMAK ZORUNDADIR. Istisna yine de bos degildir -- "
+            "izinli kume DEFTERDEN gelir (`_yedek_surumler`), yani kilavuzda "
+            "defterde YEDEK OLARAK KAYITLI OLMAYAN bir surum yazilamaz "
+            "(D-294 SS3 ile ayni kanca)."),
+    },
+    {
+        "ad": "Paket agac listesi (etiketli)",
+        "agac": True,
+        "gerekce": (
+            "SS2'deki `jetson_paket/` agaci KOMUT DEGILDIR, paketin icindekini "
+            "listeler; eski agirliklar pakette BILEREK durur (yedek + karar "
+            "kiyasi). Istisna bos degildir: eski surumlu her agac satiri "
+            "`<- YEDEK / eski asil / referans / kiyas` gibi bir etiket tasimak "
+            "ZORUNDADIR ve `<- ASIL` satiri uretim surumune baglidir "
+            "(`test_ASIL_satiri_URETIM_surumunu_gosteriyor`)."),
+    },
+)
+
+
+def _defterdeki_yedek_surumler():
+    """`competition._yedek_surumler` anahtarlari (ornegin ('v34', 'v35'))."""
+    defter = json.loads((KOK / "config" / "model_registry.json")
+                        .read_text(encoding="utf-8"))
+    yedekler = defter["profiles"]["competition"].get("_yedek_surumler", {})
+    return tuple(sorted(k for k in yedekler if not k.startswith("_")))
+
+
+def _bolumlu_satirlar(metin: str):
+    """(satir_no, satir, BASLIK YOLU) uretir.
+
+    Baslik yolu, satirin uzerindeki TUM seviyelerin baslikaridir (`## 6C. ...`
+    + `### G4 · ...`), cunku istisnalar ust bolume baglidir: SS6C'nin v35
+    satirlari `### G4` alt basliginin altindadir ve yalniz EN YAKIN basliga
+    bakan bir eslesme onlari kaciririr.
+
+    Kod cercevesi (``` ) icindeki `# ...` satirlari BASLIK SAYILMAZ; kilavuzda
+    `# 1a — JetPack ve L4T surumu` gibi kabuk yorumlari var ve bunlar bolum
+    sinirini kaydirirsa istisnalar yanlis satirlara uyar.
+    """
+    basliklar: dict[int, str] = {}
+    cerceve = False
+    for no, satir in enumerate(metin.splitlines(), 1):
+        kirpik = satir.strip()
+        if kirpik.startswith("```"):
+            cerceve = not cerceve
+            continue
+        if not cerceve and kirpik.startswith("#"):
+            seviye = len(kirpik) - len(kirpik.lstrip("#"))
+            basliklar = {s: b for s, b in basliklar.items() if s < seviye}
+            basliklar[seviye] = kirpik
+        yield no, satir, " ⟩ ".join(basliklar[s] for s in sorted(basliklar))
+
+
+def _cikti_surumleri(satir: str):
+    """`--cikti <yol>` icindeki `_vNN` damgalari."""
+    if "--cikti" not in satir:
+        return []
+    kuyruk = satir.split("--cikti", 1)[1]
+    return CIKTI_SURUM_DESENI.findall(kuyruk)
+
+
+def _denetlenen_surumler(satir: str):
+    """Bu satirda URETIM SURUMU TASIMASI GEREKEN her surum adi."""
+    return MODEL_DOSYA_DESENI.findall(satir) + _cikti_surumleri(satir)
+
+
+def _istisna_bul(baslik: str, satir: str, surum: str):
+    """Eski surum tasiyan satir icin GECERLI istisna kaydi (yoksa None)."""
+    for kural in ISTISNA_KURALLARI:
+        if kural.get("agac"):
+            if AGAC_SATIRI_DESENI.match(satir) and "←" in satir:
+                return kural
+            continue
+        if not all(p in baslik for p in kural["baslik_icerir"]):
+            continue
+        izinli = kural["surumler"]
+        if izinli is None:
+            izinli = _defterdeki_yedek_surumler()
+        if surum in izinli:
+            return kural
+    return None
+
+
+def _sapmalar(yol: Path, uretim: str):
+    """(satir_no, satir, surum, istisna) listesi — istisna None ise KUSUR."""
+    cikti = []
+    for no, satir, baslik in _bolumlu_satirlar(yol.read_text(encoding="utf-8")):
+        for surum in _denetlenen_surumler(satir):
+            if surum == uretim:
+                continue
+            cikti.append((no, satir, surum, _istisna_bul(baslik, satir, surum)))
+    return cikti
+
+
+class KilavuzKomutSatirlariTests(unittest.TestCase):
+    """T154 · Kilavuzdaki HER model/cikti satiri uretim surumunu tasiyor mu?"""
+
+    def setUp(self):
+        self.uretim = _surum(yks_gui.YksArayuz.ALGI_MODEL_DOSYA)
+
+    def test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR(self):
+        for k in KILAVUZLAR:
+            kusurlu = [(no, s.strip(), v) for no, s, v, ist in
+                       _sapmalar(k, self.uretim) if ist is None]
+            with self.subTest(kilavuz=k.parent.name):
+                self.assertEqual(
+                    [], kusurlu,
+                    f"kilavuzda uretim disi surum adi geciyor ve HICBIR "
+                    f"istisnaya dusmuyor (uretim={self.uretim}); sahadaki kisi "
+                    f"hakem ekraninda gorulmeyen modeli derler/kosar — "
+                    f"D-294 SS4 kor noktasi")
+
+    def test_KOR_NOKTA_satir_tipleri_GERCEKTEN_denetleniyor(self):
+        """Kapi bos olmasin: uc satir tipi de en az bir kez denetime girmeli."""
+        for k in KILAVUZLAR:
+            metin = k.read_text(encoding="utf-8")
+            for isaret in ("--saveEngine=", "--engine ", "--cikti "):
+                satirlar = [s for s in metin.splitlines()
+                            if isaret in s and _denetlenen_surumler(s)]
+                with self.subTest(kilavuz=k.parent.name, isaret=isaret.strip()):
+                    self.assertTrue(
+                        satirlar,
+                        f"`{isaret.strip()}` satiri ya yok ya da icinde surum "
+                        f"damgasi kalmadi — kapi bu satir tipinde KOR olur "
+                        f"(D-294 SS4'te 11 gun boyunca olan tam buydu)")
+
+    def test_kor_noktanin_UC_satir_tipi_URETIM_surumunde(self):
+        """`--saveEngine=`, `--engine`, `--cikti` — adiyla ve ayri ayri."""
+        for k in KILAVUZLAR:
+            metin = k.read_text(encoding="utf-8")
+            for isaret in ("--saveEngine=", "--engine ", "--cikti "):
+                for no, satir, baslik in _bolumlu_satirlar(metin):
+                    if isaret not in satir:
+                        continue
+                    for surum in _denetlenen_surumler(satir):
+                        if surum == self.uretim:
+                            continue
+                        with self.subTest(kilavuz=k.parent.name,
+                                          isaret=isaret.strip(), satir=no):
+                            self.assertIsNotNone(
+                                _istisna_bul(baslik, satir, surum),
+                                f"{k.parent.name}:{no} `{isaret.strip()}` "
+                                f"satiri {surum} diyor, uretim {self.uretim}")
+
+    def test_YEDEK_istisnasi_DEFTERDEKI_yedegi_gosteriyor(self):
+        """SS6C'de yazilan surum defterde YEDEK olarak kayitli olmali."""
+        defter_yedekleri = _defterdeki_yedek_surumler()
+        self.assertTrue(defter_yedekleri,
+                        "defterde `_yedek_surumler` yok; SS6C geri donus "
+                        "yordami dayanaksiz kalir (D-294 SS3)")
+        gorulen = set()
+        for k in KILAVUZLAR:
+            for no, _satir, surum, ist in _sapmalar(k, self.uretim):
+                if ist is not None and ist["ad"].startswith("SS6C"):
+                    gorulen.add(surum)
+                    with self.subTest(kilavuz=k.parent.name, satir=no):
+                        self.assertIn(
+                            surum, defter_yedekleri,
+                            f"SS6C {surum} diyor ama defterde yedek degil")
+        self.assertTrue(gorulen, "SS6C istisnasi hicbir satira uymadi — "
+                                 "yordam degistiyse istisna KALDIRILMALI")
+
+    def test_agac_kaydindaki_ESKI_surum_ETIKETSIZ_kalamaz(self):
+        for k in KILAVUZLAR:
+            for no, satir, surum, ist in _sapmalar(k, self.uretim):
+                if ist is None or not ist.get("agac"):
+                    continue
+                kucuk = satir.lower()
+                with self.subTest(kilavuz=k.parent.name, satir=no):
+                    self.assertTrue(
+                        any(e in kucuk for e in MESRU_AGAC_ETIKETLERI),
+                        f"agac satiri {surum} listeliyor ama neden orada "
+                        f"oldugunu SOYLEMIYOR: {satir.strip()}")
+                    self.assertNotIn(
+                        "← ASIL", satir,
+                        f"agacta `← ASIL` isaretli satir {surum} gosteriyor; "
+                        f"uretim {self.uretim}")
+
+    def test_ISTISNA_kurallarinin_HEPSI_CANLI(self):
+        """Olu istisna birikmesin — her kural en az bir satira uymali."""
+        kullanilan = set()
+        for k in KILAVUZLAR:
+            for _no, _s, _v, ist in _sapmalar(k, self.uretim):
+                if ist is not None:
+                    kullanilan.add(ist["ad"])
+        olu = [kural["ad"] for kural in ISTISNA_KURALLARI
+               if kural["ad"] not in kullanilan]
+        self.assertEqual(
+            [], olu,
+            "bu istisnalar artik hicbir satira uymuyor; kilavuz degistiyse "
+            "istisna da KALDIRILMALI (liste sessizce buyurse kapi korlesir)")
+
+    def test_her_ISTISNAYA_gerekce_yazili(self):
+        for kural in ISTISNA_KURALLARI:
+            with self.subTest(istisna=kural["ad"]):
+                self.assertGreaterEqual(
+                    len(kural.get("gerekce", "").strip()), 80,
+                    "T154 sarti: istisna ACIKCA VE GEREKCESIYLE tanimlanir")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
