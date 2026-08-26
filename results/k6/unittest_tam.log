@@ -1,0 +1,328 @@
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+[ONCE/SONRA] S1: 1/0.624 -> 2/1.000 (beklenen=2)
+[ONCE/SONRA] S2: 1/1.000 -> None/0.000 (beklenen=None)
+[ONCE/SONRA] S3: 3/0.396 -> 2/0.762 (beklenen=2)
+[ONCE/SONRA] uretim karariyla uyum: 0/3 -> 3/3
+[K1] 2 karar beklenirken stop(): send_no_route 2 kez
+[K8-seri] SerialLink rota ACK'lari: ['OPEN_ROUTE', 'NO_ROUTE']
+[K8-UDP] IKA_GO gonderilmedi; YKS'ye OPEN_ROUTE ACK gitti mi: True
+[İHA] IHA_LANDED ACK eksik: seq=4 beklenen=['ika'] gelen=[]
+[İHA] IHA_LANDED yayınlandı: seq=5 ACK=['ika', 'yks']
+[İHA] IHA_LANDED yayınlandı: seq=6 ACK=['ika']
+[T20_KAPI] IHA_LANDED_saha=1 ACK=ika exit=0
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✗ sürüş izni gelmedi (timeout) — İKA hareket etmez
+[T13_DEADLINE] timeout_sonrasi_latch=2 navigate_calls=0 sonuc=guvenli_ret
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[İHA] IHA_LANDED yayınlandı: seq=8 ACK=['ika']
+[T13_KAPI] IKA_GO=1 LANDED_oncesi_nonzero=0 LANDED_sonrasi_nonzero=1 ACK=ika exit=0
+[İHA] IHA_LANDED yayınlandı: seq=9 ACK=['ika']
+[İHA] IHA_LANDED ACK eksik: seq=12 beklenen=['ika', 'yks'] gelen=['ika']
+[T11_KAPI] exit=2 argparse=VAR traceback=YOK gonderim_mesaji=YOK
+[K4_UDP] dusurulen=3 ulasan_deneme=4 ika_go=True tekrar_durdu=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[T12_KAPI] IHA_LANDED_onceden=1 YKS_UDP_TX=1 IKA_GO_oncesi_hareket=0 IKA_GO_sonrasi_nonzero_motor=1 ACK=ika exit=0
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SAG (3) conf=0.9 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.88 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — geçici maske — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.92 wp=2
+
+[ika_nav] Dinamik rota: ORTA | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI] NO_ROUTE etkin komut=3, sıfır-olmayan=0; OPEN_ROUTE sonrası sıfır-olmayan=1
+[K5] bekleme_deadline=+900s surus_deadline=izin+600s rota=61s izin=+240s exit=0
+[K5] surus deadline=5s -> durdu adim=5 son_vel=(0, 0) sonuc=False
+[K6] gercek UDP: landed→bitis=1.59s > hb_timeout=0.4s, heartbeat_gorulen=21, link_lost=False, exit=0
+[K6] heartbeat_suresi=600s aralik=0.5s -> heartbeat=1200
+[K6] heartbeat_suresi=0s aralik=0.5s -> heartbeat=0
+[T10_KAPI_OUTPUT] GÖREV SONUCU
+[T10_KAPI_OUTPUT] İKA görevi: ✗ BAŞARISIZ
+[T10_KAPI] worker=ika-nav exception exit=1 rapor=VAR
+model: sahte_model.pt · kayit dogrulamasi: sinama
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+Kamera acilamadi (kaynak=0).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+  val 2 · kaynagi egitimde olan val: 0
+  val 1 · kaynagi egitimde olan val: 0
+  val 1 · kaynagi egitimde olan val: 1
+  oturum sayisi : 2
+    DOGRULAMA           1 dosya
+    ucus1               1 dosya
+  oturum sayisi : 1
+    _AYRILMAMIS        14 dosya
+  oturum sayisi : 2
+    DOGRULAMA           3 dosya
+    ucus1              10 dosya
+  oturum sayisi : 1
+    _AYRILMAMIS        14 dosya
+
+  [!] PROVA KIPI - DOGRULAMA oturumu YOK (beklenen klasor adi: DOGRULAMA). T136 kisit 2: dogrulama oturumu CEKIMDE ayrilir; sonradan bolmek AYNI DAGILIMDIR ve T111 duvarini YIKMAZ (D-256 §5).
+  [!] Bu kosum ADAY URETEMEZ ve modeli TERFI ETTIREMEZ.
+  yeni cekim : medyan 130.0 · maks 130.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  yeni cekim : medyan 20.0 · maks 20.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  yeni cekim : medyan 20.0 · maks 20.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  [!] cekim REFERANSTAN KARANLIK: en aydinlik yeni kare (20.0) referansin EN KARANLIK karesine (128.0) ulasmiyor. Iki dagilim ORTUSMUYOR.
+  [!] PROVA KIPI - devam ediliyor ama bu veri EGITIME UYGUN DEGIL.
+  [!] referans kume okunamadi - parlaklik kapisi OLCULEMEDI (bu 'GECTI' DEMEK DEGILDIR)
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI T141] rota kapisi KAPALI · komut=5 · sifir-olmayan=0
+Kamera acilamadi (kaynak=9).
+KAMERA: kare dusdu (1/2 ardisik, toplam 1) — yeniden deneniyor
+KAMERA: 2 ardisik dusen kare (ust sinir 2) — hat KOPTU sayildi, dongu kontrollu bitiyor. toplam dusen=2 okunan=2
+RED: turev dosyasi yok: C:\Users\yunus\AppData\Local\Temp\t143_ij9qbdj5\yok.engine
+{
+ "turev": "navitas_seg_v35_best.engine",
+ "eski_sha256": "DERLENINCE_YAZILIR",
+ "yeni_sha256": "b4bce3cd3965c449bfa1eb19ef4e8018bf46c1617968f043ac063a3cce5b92ba",
+ "profil": "competition",
+ "defter": "C:\\Users\\yunus\\AppData\\Local\\Temp\\t143_ij9qbdj5\\config\\model_registry.json"
+}
+usage: python.exe -m unittest [-h] [--turev-kaydet DOSYA] [--kaynak-pt PT]
+                              [--defter DEFTER] [--profil PROFIL] [--ayna-yok]
+
+Navitas model kayit defteri araclari (T143)
+
+options:
+  -h, --help            show this help message and exit
+  --turev-kaydet DOSYA  derlenmis .engine/.onnx turevinin sha256'sini deftere
+                        yaz
+  --kaynak-pt PT        ZORUNLU: turevin derlendigi .pt; ozeti profil sha256
+                        ile kiyaslanir
+  --defter DEFTER
+  --profil PROFIL
+  --ayna-yok            jetson_paket/config aynasini guncelleme
+t144:   0%|          | 0/1 [00:00<?, ?it/s]t144: 100%|██████████| 1/1 [00:00<00:00, 191.01it/s]
+======================================================================
+ERROR: test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR (test_imgsz_tek_kaynak.ImgszTekKaynak.test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_imgsz_tek_kaynak.py", line 65, in test_uretim_defteri_ile_INFER_SIZE_UYUSUYOR
+    uyumlu, detay = R.model_kayit_dogrula(R.varsayilan_model_yolu())
+                                          ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_default_is_verified_v35_competition_model (test_model_registry.ModelRegistryTests.test_default_is_verified_v35_competition_model)
+T130: etkin profil v34 -> v35 (imgsz 512, DEGISMEDI).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_model_registry.py", line 31, in test_default_is_verified_v35_competition_model
+    path, spec = resolve_model()
+                 ~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\model_registry.py", line 143, in resolve_model
+    raise ModelRegistryError(f"model artefaktı yok: {artifact}")
+codes.model_registry.ModelRegistryError: model artefaktı yok: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models\navitas_seg_v35_best.pt
+
+======================================================================
+ERROR: test_GEVSETME_ACIKCA_istenmeli (test_saha_parametrik.FailClosedTests.test_GEVSETME_ACIKCA_istenmeli)
+`kayit_zorunlu=False` verilmeden gevseme OLMAZ.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 158, in test_GEVSETME_ACIKCA_istenmeli
+    _m, yol, _d = R.load_model(R.varsayilan_model_yolu(),
+                               ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_UYUM_varsa_yuklenir (test_saha_parametrik.FailClosedTests.test_UYUM_varsa_yuklenir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 143, in test_UYUM_varsa_yuklenir
+    hedef = R.varsayilan_model_yolu()
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_kayit_defteri_YOKSA_uyum_SAYILMAZ (test_saha_parametrik.FailClosedTests.test_kayit_defteri_YOKSA_uyum_SAYILMAZ)
+Yokluk "sorun yok" demek DEGILDIR — fail-closed tarafinda kalir.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 172, in test_kayit_defteri_YOKSA_uyum_SAYILMAZ
+    R.varsayilan_model_yolu(), kok=KOK / "boyle_bir_dizin_yok")
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_UC_UC_ayni_agirligi_gosteriyor (test_saha_parametrik.KayitDefteriDurumuTests.test_UC_UC_ayni_agirligi_gosteriyor)
+Kayit defteri · uretim manifesti · hakem ekrani — tek ad.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 208, in test_UC_UC_ayni_agirligi_gosteriyor
+    manifest_adi = R.varsayilan_model_yolu().name
+                   ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_manifest_ile_kayit_defteri_ESLESIYOR (test_saha_parametrik.KayitDefteriDurumuTests.test_manifest_ile_kayit_defteri_ESLESIYOR)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 187, in test_manifest_ile_kayit_defteri_ESLESIYOR
+    uyumlu, detay = R.model_kayit_dogrula(R.varsayilan_model_yolu())
+                                          ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_varsayilan_MANIFESTTEN_gelir (test_saha_parametrik.ModelVarsayilaniTests.test_varsayilan_MANIFESTTEN_gelir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 92, in test_varsayilan_MANIFESTTEN_gelir
+    yol = R.varsayilan_model_yolu()
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\codes\rpi_inference.py", line 524, in varsayilan_model_yolu
+    raise RuntimeError(
+        f"Manifest `{ad}` diyor ama agirlik diskte YOK "
+        f"(bakilan: {manifest.parent}, {_here.parent / 'models'}).")
+RuntimeError: Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\jetson_paket\models, O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\models).
+
+======================================================================
+ERROR: test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der (test_t123_gecis_provasi.G2KosulabilirTests.test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der)
+POZITIF KONTROL: G2 gercekten KIYASLIYOR mu, yoksa hep OK mi diyor?
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_t123_gecis_provasi.py", line 117, in test_MUTASYON_kunyedeki_sha_bozulursa_UYUSMAZ_der
+    exec(compile(kod, "<G2>", "exec"), {"__name__": "__g2__"})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<G2>", line 13, in <module>
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\yunus\\AppData\\Local\\Temp\\tmp6gujh6u_\\jetson_paket\\models\\navitas_seg_v34_best.pt'
+
+======================================================================
+ERROR: test_g2_KOSUYOR_ve_PATLAMIYOR (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_KOSUYOR_ve_PATLAMIYOR)
+🔴 Asil kapi: onceki surum burada AttributeError ile duserdi.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_t123_gecis_provasi.py", line 79, in test_g2_KOSUYOR_ve_PATLAMIYOR
+    exec(compile(kod, "<G2>", "exec"), {"__name__": "__g2__"})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<G2>", line 13, in <module>
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'O:\\navitas\\.claude\\worktrees\\wf_951a190e-bfe-1\\jetson_paket\\models\\navitas_seg_v34_best.pt'
+
+======================================================================
+ERROR: test_g2_YEDEGI_OK_diye_dogruluyor (test_t123_gecis_provasi.G2KosulabilirTests.test_g2_YEDEGI_OK_diye_dogruluyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_t123_gecis_provasi.py", line 87, in test_g2_YEDEGI_OK_diye_dogruluyor
+    exec(compile(kod, "<G2>", "exec"), {"__name__": "__g2__"})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<G2>", line 13, in <module>
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'O:\\navitas\\.claude\\worktrees\\wf_951a190e-bfe-1\\jetson_paket\\models\\navitas_seg_v34_best.pt'
+
+======================================================================
+FAIL: test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor (test_imgsz_tek_kaynak.ImgszTekKaynak.test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_imgsz_tek_kaynak.py", line 165, in test_load_model_hata_mesaji_IMGSZ_degerlerini_yaziyor
+    self.assertIn("profilin imgsz'i  : 640", mesaj)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "profilin imgsz'i  : 640" not found in 'Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\wf_951a190e-bfe-1\\jetson_paket\\models, O:\\navitas\\.claude\\worktrees\\wf_951a190e-bfe-1\\models).'
+
+======================================================================
+FAIL: test_UYUSMAZLIKTA_yukselir (test_saha_parametrik.FailClosedTests.test_UYUSMAZLIKTA_yukselir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_saha_parametrik.py", line 139, in test_UYUSMAZLIKTA_yukselir
+    self.assertIn("fail-closed", str(ctx.exception))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'fail-closed' not found in 'Manifest `navitas_seg_v35_best.pt` diyor ama agirlik diskte YOK (bakilan: O:\\navitas\\.claude\\worktrees\\wf_951a190e-bfe-1\\jetson_paket\\models, O:\\navitas\\.claude\\worktrees\\wf_951a190e-bfe-1\\models).'
+
+======================================================================
+FAIL: test_BIRINCIL_ve_YEDEK_ikisi_de_pakette (test_t123_gecis_provasi.YedekPaketteTests.test_BIRINCIL_ve_YEDEK_ikisi_de_pakette)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_t123_gecis_provasi.py", line 138, in test_BIRINCIL_ve_YEDEK_ikisi_de_pakette
+    self.assertTrue((PAKET / "models" / birincil).exists())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_kompozit_dizini_listeleniyor (test_yks_gui_uretim_hizasi.KompozitKaynakTests.test_kompozit_dizini_listeleniyor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\tests\test_yks_gui_uretim_hizasi.py", line 267, in test_kompozit_dizini_listeleniyor
+    self.assertTrue(dosyalar, "kompozit kume bos listelendi")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : kompozit kume bos listelendi
+
+----------------------------------------------------------------------
+Ran 940 tests in 72.299s
+
+FAILED (failures=4, errors=11, skipped=16)
+[T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
