@@ -1,0 +1,85 @@
+{
+ "agirlik": "codes\\runs\\segment\\gece_v3_v35taban\\weights\\best.pt",
+ "ad": "gece_v3_v35taban",
+ "kapi_sabitleri": {
+  "verdikt": true,
+  "K1_min": 230,
+  "red67_maks": 5,
+  "cati_kacagi_maks": 0.1,
+  "rota_test29_min": 10,
+  "maske_yok_test29_maks": 10
+ },
+ "taban_v35": {
+  "rota": 6,
+  "maske_yok": 16,
+  "uc_bant": 7,
+  "figur_zemin": 0.1508,
+  "kaplama67": 0.5076,
+  "cati": 0.043
+ },
+ "kabul": {
+  "verdikt": true,
+  "K1": 253,
+  "gecti": {
+   "K0": true,
+   "K1": true,
+   "K2": true,
+   "K3": true,
+   "K4": true,
+   "K5": true
+  },
+  "K0_figur_orani": 0.21610602764265374,
+  "json": "O:\\navitas\\scripts\\olcum\\results\\t63\\gece_v3_v35taban_kabul_verdikt.json",
+  "exit": 0
+ },
+ "k109": {
+  "cati_kacak_ort": 0.0284,
+  "cati_kacak_medyan": 0.0107,
+  "disk_cati_engel": 0.9851,
+  "disk_cati_zemin": 0.0003,
+  "disk_zemin_zemin": 0.9516,
+  "cati_dondu": true,
+  "kaplama67_icerik_medyan": 0.4776,
+  "kaplama67_tuval_medyan": 0.2686,
+  "zemin_maskesi_reddi": 0,
+  "figur_zemin_orani": 0.0326,
+  "figur_engel_orani": 0.21122
+ },
+ "test29": {
+  "n": 29,
+  "rota": 10,
+  "maske_yok": 11,
+  "uc_bant": 8,
+  "sebep": {
+   "MASKE_YOK": 11,
+   "UC_BANT_TEMAS_YOK": 8,
+   "null": 10
+  },
+  "json": "O:\\navitas\\results\\gece_20260826\\gece_v3_v35taban_test29.json",
+  "exit": 0
+ },
+ "test29_tavan": {
+  "tavan_rota": 13,
+  "TP": 9,
+  "FP": 1,
+  "FN": 4,
+  "fp_kareler": [
+   "dji_20260822172613_0038_d__frame_000218_000007980.jpg"
+  ]
+ },
+ "kapi_a": {
+  "verdikt": true,
+  "K1>=230": true,
+  "red67<=5": true,
+  "cati<=0,10": true
+ },
+ "kapi_b": {
+  "rota_test29>=10": true,
+  "maske_yok_test29<=10": false,
+  "FP_test29<=1": true
+ },
+ "a_gecti": true,
+ "b_gecti": false,
+ "terfi_adayi": false,
+ "saniye": 602
+}
