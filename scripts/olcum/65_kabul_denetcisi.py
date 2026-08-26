@@ -78,6 +78,11 @@ ESIK = {
     "K2_basma_maks": 0.15,       #         (v24: %31,1 · taban: %9,2)
     "K3_agir_maks": 0.03,        #         (v24: %20,4 · taban: %0)
     "K4_arena_disi_maks": 0.05,  #         (v24: %13,3)
+    # K6 · ON_KAYIT §12 (2026-08-27, sonuc gorulmeden): rota cizgisi yer gercegi
+    # sinif 0 ustunde >= 0,90 VE sinif 1 ustunde 0 waypoint; tutmayan kare
+    # YANLIS GUZERGAH. Oran esigi K4 ile ayni olcek. v35'in olculecek degerine
+    # gore DEGISTIRILMEZ.
+    "K6_yanlis_guzergah_maks": 0.05,
 }
 
 
@@ -396,6 +401,28 @@ def k14_durumlari(d, esik=None):
                    "agir": agir, "arena_disi": disi}
 
 
+def k6_durumu(d, esik=None):
+    """K6 'ROTA YOL USTUNDE' UC DURUMU (ON_KAYIT §12) — T105/T125 kalibi.
+
+    d: `61_rota_moloza_basma.py` JSON'u ya da None. Payda = yanlis_guzergah
+    hesaplanan (rota uretilen) kare. Girdi yok / eski 61 ciktisi (alan yok) /
+    payda 0 -> OLCULEMEDI; aksi halde oran <= esik -> GECTI, degilse DUSTU.
+    OLCULEMEDI != GECTI: verdikt icin YINE bloklar.
+    -> (durum, {"yol_olculen", "yanlis_guzergah", "oran"})
+    """
+    e = ESIK if esik is None else esik
+    bos = {"yol_olculen": 0, "yanlis_guzergah": 0, "oran": None}
+    if not d or "yanlis_guzergah" not in d or "yol_olculen" not in d:
+        return "OLCULEMEDI", bos
+    r = int(d.get("yol_olculen", 0))
+    y = int(d.get("yanlis_guzergah", 0))
+    if r == 0:
+        return "OLCULEMEDI", dict(bos, yanlis_guzergah=y)
+    oran = y / r
+    durum = "GECTI" if oran <= e["K6_yanlis_guzergah_maks"] else "DUSTU"
+    return durum, {"yol_olculen": r, "yanlis_guzergah": y, "oran": oran}
+
+
 def kos(betik, ek):
     """Alt betigi kosar; (stdout, basarili_mi) dondurur.
 
@@ -477,6 +504,15 @@ def main():
     gecti["K2"] = k14["K2"] == "GECTI"      # OLCULEMEDI de bloklar (T105 kalibi)
     gecti["K3"] = k14["K3"] == "GECTI"
     gecti["K4"] = k14["K4"] == "GECTI"
+
+    # ── K6 · ROTA YOL USTUNDE (ON_KAYIT §12) — ayni 61 JSON'undan ─────────────
+    k6, k6s = k6_durumu(d)
+    sonuc["K6_yanlis_guzergah"] = (f"{k6s['yanlis_guzergah']}/{k6s['yol_olculen']}"
+                                   if k6s["yol_olculen"] else "-")
+    sonuc["K6_oran"] = k6s["oran"]
+    sonuc["K6_durum"] = k6
+    sonuc["K6_yanlis_kareler"] = list((d or {}).get("yanlis_kareler", []))
+    gecti["K6"] = k6 == "GECTI"             # OLCULEMEDI de bloklar (T105 kalibi)
 
     # ── K5 · bariyer kesisimi — ZEMIN: POPULASYON (T126 · D-243) ────────────
     # 🔴 ZEMIN TASINDI: eskiden `63_bariyer_kesisimi` TEK OOD figurunde kosardu
@@ -572,6 +608,12 @@ def main():
         print("     (girdi kumesi / alt betik sorunu: OLCULEMEDI — bu 'DUSTU'"
               " DEGILDIR ama terfi YINE bloklanir: OLCULEMEDI != GECTI."
               " T125 · D-225 §5.)")
+    print(f"  K6 ROTA YOL USTUNDE <= %{100*ESIK['K6_yanlis_guzergah_maks']:.0f}  "
+          f"{sonuc['K6_durum']:<11} yanlis guzergah {sonuc['K6_yanlis_guzergah']}"
+          f"   [ON_KAYIT §12: yol_payi >= 0,90 ve engel_wp == 0]")
+    if sonuc["K6_durum"] == "OLCULEMEDI":
+        print("     (rota yok ya da 61 ciktisinda K6 alanlari yok: OLCULEMEDI —"
+              " terfi YINE bloklanir: OLCULEMEDI != GECTI.)")
     k5d = sonuc["K5_durum"]
     olc = sonuc.get("K5_olculebilir_kare", 0)
     kesen_k = sonuc.get("K5_kesen_kare")
@@ -591,10 +633,11 @@ def main():
     if not gecti["K0"]:
         print("  VERDIKT: RED — K0 dustu. v25 ile AYNI sebep, tartisma yok.")
     elif all(gecti.values()):
-        print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu de saglandi.")
+        print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 saglandi.")
     else:
         durumlar = dict(sonuc.get("K14_durum", {}))
         durumlar["K5"] = sonuc.get("K5_durum")
+        durumlar["K6"] = sonuc.get("K6_durum")
         d_ = [(k + "(OLCULEMEDI)" if durumlar.get(k) == "OLCULEMEDI" else k)
               for k, v in gecti.items() if not v]
         print(f"  VERDIKT: URETIME ALINMAZ — dusen: {', '.join(d_)}")

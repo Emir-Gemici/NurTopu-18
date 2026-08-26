@@ -1,0 +1,29 @@
+=== k6_v6  O:/navitas/codes/runs/segment/gece_v6_v35taban/weights/best.pt  Wed Aug 26 11:35:36 TSS 2026
+
+==================================================================
+KABUL DENETIMI · k6_v6
+  esikler: REVIEW_LOG D-107 (sonuc gorulmeden yazildi)
+==================================================================
+  kabul kumesi: O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66
+                parmak izi n=547 · sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586
+  K0 KORLUK YOK        GECTI  figur zemin %4.88 (uretim tabani %9.03 = v35'in degeri · oran 0.54)
+                       raw bos 0/67 · cp bos 0/393
+     SOYAGACI: v27 %7.84 · v30 %7.96 · v34 %0.49 · v35 %9.03
+               (+4 kayit DONEM-TUTARLI DEGIL — 640 donemi; kiyasa ve medyana GIRMEZ, kayitta DURUR)
+     TABAN, soyagaci medyanindan (%7.90) 1.1x uzakta   <- SAYI, KURAL DEGIL
+  K1 ROTA >= 230       GECTI       257/260
+  K2 BASMA <= %15      GECTI       16/257   (taban %9,2)
+  K3 AGIR  <= %3       GECTI       0/257   (taban %0)
+  K4 ARENA DISI <= %5  GECTI       0/257
+  K6 ROTA YOL USTUNDE <= %5  GECTI       yanlis guzergah 3/257   [ON_KAYIT §12: yol_payi >= 0,90 ve engel_wp == 0]
+  K5 BARIYER = 0 px    GECTI       kesen 0/173 kare · toplam 0 px  [zemin: POPULASYON, T126/D-243]
+                       bilgi (kapi DEGIL): tek figur OLCULEMEDI (None px)
+------------------------------------------------------------------
+  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 saglandi.
+==================================================================
+
+⚠ Bu olcumlerin tamami SENTETIKTIR. Hicbiri 'sahada calisir'
+  anlamina gelmez (D-88 + D-99, kalici kisit).
+
+json -> O:\navitas\.claude\worktrees\wf_951a190e-bfe-1\scripts\olcum\results\t63\k6_v6_kabul_verdikt.json
+exit=0 Wed Aug 26 11:38:42 TSS 2026
