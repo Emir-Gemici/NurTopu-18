@@ -1,0 +1,44 @@
+YEDEK sha256 = b7a225a5636fc11b963895d114a865796c14715da8cb5e82e941db1ad3983328  (C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_yedek\e_v35_ref2_olcum.json)
+MUTASYON uygulandi: results/gece_20260826/v35_ref2_olcum.json
+  - '"figur_zemin_orani": 0.15084'
+  + '"figur_zemin_orani": 0.11'
+BOZUK  sha256 = c96cfa4af30530ebebc1800eaa6a9d48dbd99420bf06f0052afbf80d85a18051
+FF......
+======================================================================
+FAIL: test_TABAN_sayisi_CIPLAK_degil_HAM_JSONDAN (test_k0_iki_olcum_hatti.IkiHattinFarkiPaydaTests.test_TABAN_sayisi_CIPLAK_degil_HAM_JSONDAN)
+Kaynak baglantisinin KENDISI kapidir: iki ayri kosum, ayni sayi.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_k0_iki_olcum_hatti.py", line 221, in test_TABAN_sayisi_CIPLAK_degil_HAM_JSONDAN
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        1, len(sayilar),
+        ^^^^^^^^^^^^^^^^
+        f"k109 figur olcumu sartname figurunden turer, iki kosumda AYNI "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"cikmali; ayrisiyor: {degerler}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2 : k109 figur olcumu sartname figurunden turer, iki kosumda AYNI cikmali; ayrisiyor: {'v35_ref2_olcum.json': ('v35', 0.11), 'v35_t152_olcum.json': ('v35', 0.15084)}
+
+======================================================================
+FAIL: test_TABAN_surumde_de_ayni_PAYDA_orani (test_k0_iki_olcum_hatti.IkiHattinFarkiPaydaTests.test_TABAN_surumde_de_ayni_PAYDA_orani)
+Taban surum ayni kalibi tutuyor mu — SAYI HAM JSON'DAN (T157/e).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_k0_iki_olcum_hatti.py", line 196, in test_TABAN_surumde_de_ayni_PAYDA_orani
+    self.assertAlmostEqual(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        beklenen, taban / k109_taban, delta=0.01,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        msg=(f"{surum}: {taban} / {k109_taban} = "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             f"{taban / k109_taban:.4f} != icerik/tuval {beklenen:.6f}"))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0.5986779981114259 != 0.8209090909090909 within 0.01 delta (0.22223109279766506 difference) : v35: 0.0903 / 0.11 = 0.8209 != icerik/tuval 0.598678
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.043s
+
+FAILED (failures=2)
+GERI ALINDI: results/gece_20260826/v35_ref2_olcum.json
+BAYT-ES? True  sha256 = b7a225a5636fc11b963895d114a865796c14715da8cb5e82e941db1ad3983328

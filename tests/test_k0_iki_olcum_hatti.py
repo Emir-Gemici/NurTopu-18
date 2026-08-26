@@ -17,11 +17,18 @@ bunun yerine defterde ACIKLAYICI NOT tutulur ve bu kapi notu kilitler.
 🔴 Kapinin ASIL isi bir SAYI kilidi: iki hattin farkinin PAYDA oldugu, figurun
 kendi geometrisinden (634x1059 -> icerik/tuval = 0,598678) TEKRAR HESAPLANIR.
 Boylece not "guzel bir cumle" olmaktan cikar; yanlissa kapi duser.
+
+T157/e (D-295 §4): iki bacagin da k109 sayisi HAM OLCUM CIKTISINDAN okunur.
+Uretim bacagi zaten `gece_v7a_olcum.json`'dan okuyordu; taban bacagi ise
+`k109_v35 = 0.1508` diye CIPLAK yaziliydi ve hicbir seye bagli degildi.
+Artik `results/gece_20260826/v35_ref2_olcum.json` + `results/t152/
+v35_t152_olcum.json` okunur, surum de o dosyalarin `agirlik` alanindan cozulur.
 """
 
 from __future__ import annotations
 
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -32,6 +39,16 @@ DEFTER = KOK / "config" / "model_registry.json"
 AYNA = KOK / "jetson_paket" / "config" / "model_registry.json"
 FIGUR = KOK / "data" / "arena_referans" / "sartname_s9_arena.png"
 K109_HAM = KOK / "results" / "gece_20260826" / "gece_v7a_olcum.json"
+
+# T157/e: TABAN (v35) bacagi da HAM JSON'a baglidir. Onceden `k109_v35 = 0.1508`
+# CIPLAK yaziliydi (D-295 §4): uretim bacagi olcumun kendisinden okurken taban
+# bacagi elle kopyalanmis bir sayiyi kiyasliyordu — ham cikti degisse ya da sayi
+# yanlis kopyalanmis olsa kapi bunu GOREMEZDI. Iki AYRI v35 kosumu baglanir;
+# k109 figur olcumu SARTNAME FIGURUNDEN turer, yani kosum/kume degisse bile ayni
+# cikmak ZORUNDADIR — ikisinin uyusmasi baglantiyi ayrica dogrular.
+K109_TABAN_HAM = (KOK / "results" / "gece_20260826" / "v35_ref2_olcum.json",
+                  KOK / "results" / "t152" / "v35_t152_olcum.json")
+AGIRLIK_SURUM_DESENI = re.compile(r"navitas_seg_(v\d+)_best")
 
 NOT_ALANI = "_iki_olcum_hatti_notu"
 
@@ -70,6 +87,21 @@ def _65_hattinin_degeri(profil, surum):
         if kayit.get("surum") == surum:
             return float(kayit["deger"])
     raise AssertionError(f"soyagacinda {surum} kaydi yok")
+
+
+def _taban_hattinin_degeri():
+    """(surum, k109 figur_zemin_orani) — CIPLAK sayi degil, HAM JSON (T157/e).
+
+    Surum de sayinin kendi dosyasindan (`agirlik` alani) okunur; boylece
+    "hangi surumun sayisi" sorusu testin metnine degil OLCUM CIKTISINA baglidir.
+    """
+    ilk = json.loads(K109_TABAN_HAM[0].read_text(encoding="utf-8"))
+    m = AGIRLIK_SURUM_DESENI.search(str(ilk.get("agirlik", "")).replace("\\", "/"))
+    if m is None:
+        raise AssertionError(
+            f"{K109_TABAN_HAM[0].name} `agirlik` alani surum tasimiyor: "
+            f"{ilk.get('agirlik')!r}")
+    return m.group(1), float(ilk["k109"]["figur_zemin_orani"])
 
 
 class IkiOlcumHattiBelgeliTests(unittest.TestCase):
@@ -153,19 +185,46 @@ class IkiHattinFarkiPaydaTests(unittest.TestCase):
                  f"orani {beklenen:.6f}. Iki sayi ayni maskenin IKI PAYDAYLA "
                  f"okunusu DEGILSE defterdeki aciklama YANLISTIR"))
 
-    @unittest.skipUnless(FIGUR.is_file(), "figur diskte yok")
+    @unittest.skipUnless(FIGUR.is_file() and all(p.is_file()
+                                                 for p in K109_TABAN_HAM),
+                         "figur ya da v35 k109 ham ciktilari diskte yok")
     def test_TABAN_surumde_de_ayni_PAYDA_orani(self):
-        """v35 tabani ayni kalibi tutuyor mu (0,0903 / 0,1508)?"""
-        taban = _65_hattinin_degeri(self.profil, "v35")
-        # k109 hattinin v35 degeri defterde DUZ METINDEDIR:
-        # `gercek_kare_zemin_kaplamasi.not` ve `_surum_karari` "0,15" der;
-        # ham sayi `142_gece_olcum.py` ciktisinda 0,1508'dir.
-        k109_v35 = 0.1508
+        """Taban surum ayni kalibi tutuyor mu — SAYI HAM JSON'DAN (T157/e)."""
+        surum, k109_taban = _taban_hattinin_degeri()
+        taban = _65_hattinin_degeri(self.profil, surum)
         beklenen = self._icerik_tuval_orani()
         self.assertAlmostEqual(
-            beklenen, taban / k109_v35, delta=0.01,
-            msg=(f"v35: {taban} / {k109_v35} = {taban / k109_v35:.4f} != "
-                 f"icerik/tuval {beklenen:.6f}"))
+            beklenen, taban / k109_taban, delta=0.01,
+            msg=(f"{surum}: {taban} / {k109_taban} = "
+                 f"{taban / k109_taban:.4f} != icerik/tuval {beklenen:.6f}"))
+
+    @unittest.skipUnless(all(p.is_file() for p in K109_TABAN_HAM),
+                         "v35 k109 ham ciktilari diskte yok")
+    def test_TABAN_sayisi_CIPLAK_degil_HAM_JSONDAN(self):
+        """Kaynak baglantisinin KENDISI kapidir: iki ayri kosum, ayni sayi."""
+        degerler = {}
+        for yol in K109_TABAN_HAM:
+            ham = json.loads(yol.read_text(encoding="utf-8"))
+            agirlik = str(ham.get("agirlik", ""))
+            m = AGIRLIK_SURUM_DESENI.search(agirlik.replace("\\", "/"))
+            with self.subTest(kaynak=yol.name):
+                self.assertIsNotNone(
+                    m, f"{yol.name} `agirlik` alani surum tasimiyor "
+                       f"({agirlik!r}); hangi surumun sayisi oldugu KANITSIZ")
+                degerler[yol.name] = (m.group(1),
+                                      float(ham["k109"]["figur_zemin_orani"]))
+        surumler = {v[0] for v in degerler.values()}
+        self.assertEqual(
+            1, len(surumler),
+            f"taban kaynaklari AYNI surumden degil: {degerler}")
+        sayilar = {round(v[1], 5) for v in degerler.values()}
+        self.assertEqual(
+            1, len(sayilar),
+            f"k109 figur olcumu sartname figurunden turer, iki kosumda AYNI "
+            f"cikmali; ayrisiyor: {degerler}")
+        self.assertNotEqual(self.surum, surumler.pop(),
+                            "taban kaynagi URETIM surumunu gosteriyor; taban "
+                            "bacagi ayri bir surumu kiyaslamalidir")
 
 
 if __name__ == "__main__":

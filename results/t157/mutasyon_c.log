@@ -1,0 +1,62 @@
+YEDEK sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57  (C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_yedek\c_JETSON_KILAVUZ.md)
+MUTASYON uygulandi: JETSON_KILAVUZ.md
+  - ' *(zincir SÜRDÜ — bugünün asýl modeli **v36**, D-293)*'
+  + ''
+BOZUK  sha256 = 66aab63179071f3f4306d4847dc40a807ec9ab46f27454811c908497e46e5449
+FF.F...................s.s.sss.....ss.
+======================================================================
+FAIL: test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli) (kilavuz='wf_a3528b62-8d1-2', satir=15, surum='v27')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 898, in test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli
+    self.assertIsNotNone(
+    ~~~~~~~~~~~~~~~~~~~~^
+        _baslik_istisna_bul(satir, baslik, surum,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        f"uretim {self.uretim}; okuyucu bolumun tamamini "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"o surume ait sanar (T157/c): {satir}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : wf_a3528b62-8d1-2:15 basligi v27 diyor, uretim v36; okuyucu bolumun tamamini o surume ait sanar (T157/c): ## 0-T85. GÜNCELLEME 2026-08-15 — **asýl model v27 \u2192 v30** (çözünürlük 512, deðiþmedi)
+
+======================================================================
+FAIL: test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli) (kilavuz='wf_a3528b62-8d1-2', satir=15, surum='v30')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 898, in test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli
+    self.assertIsNotNone(
+    ~~~~~~~~~~~~~~~~~~~~^
+        _baslik_istisna_bul(satir, baslik, surum,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        f"uretim {self.uretim}; okuyucu bolumun tamamini "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"o surume ait sanar (T157/c): {satir}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : wf_a3528b62-8d1-2:15 basligi v30 diyor, uretim v36; okuyucu bolumun tamamini o surume ait sanar (T157/c): ## 0-T85. GÜNCELLEME 2026-08-15 — **asýl model v27 \u2192 v30** (çözünürlük 512, deðiþmedi)
+
+======================================================================
+FAIL: test_CANLI_bolumun_basligi_URETIM_surumunu_de_YAZIYOR (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_CANLI_bolumun_basligi_URETIM_surumunu_de_YAZIYOR) (kilavuz='wf_a3528b62-8d1-2')
+SS0-T85 canlidir (SS4 ona atif yapar); basligi v36'yi anmalidir.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_a3528b62-8d1-2\tests\test_uretim_modeli_hizasi.py", line 925, in test_CANLI_bolumun_basligi_URETIM_surumunu_de_YAZIYOR
+    self.assertIn(
+    ~~~~~~~~~~~~~^
+        self.uretim,
+        ^^^^^^^^^^^^
+        {f"v{h}" for h in BASLIK_SURUM_DESENI.findall(satir)},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "SS0-T85 CANLI bolumdur ama basligi uretim surumunu "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "anmiyor; T157/c'de tam bu bayatlik olculdu")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'v36' not found in {'v30', 'v27'} : SS0-T85 CANLI bolumdur ama basligi uretim surumunu anmiyor; T157/c'de tam bu bayatlik olculdu
+
+----------------------------------------------------------------------
+Ran 37 tests in 0.050s
+
+FAILED (failures=3, skipped=7)
+GERI ALINDI: JETSON_KILAVUZ.md
+BAYT-ES? True  sha256 = 47f1969df17a37d494aeb5a5f8a4838ac5c4a591e4648d800b7762a5d89bbe57

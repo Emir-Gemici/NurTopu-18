@@ -1,0 +1,54 @@
+test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_BASLIKTAKI_ciplak_surum_URETIME_veya_ISTISNAYA_bagli) ... ok
+test_BASLIK_kapisi_BOS_DEGIL (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_BASLIK_kapisi_BOS_DEGIL) ... ok
+test_CANLI_bolumun_basligi_URETIM_surumunu_de_YAZIYOR (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_CANLI_bolumun_basligi_URETIM_surumunu_de_YAZIYOR)
+SS0-T85 canlidir (SS4 ona atif yapar); basligi v36'yi anmalidir. ... ok
+test_ISTISNALARIN_HEPSI_CANLI (test_uretim_modeli_hizasi.KilavuzBaslikSurumuTests.test_ISTISNALARIN_HEPSI_CANLI) ... ok
+test_ASIL_satiri_URETIM_surumunu_gosteriyor (test_uretim_modeli_hizasi.KilavuzHizasiTests.test_ASIL_satiri_URETIM_surumunu_gosteriyor) ... ok
+test_FPS_komutu_URETIM_conf_esigini_kullaniyor (test_uretim_modeli_hizasi.KilavuzHizasiTests.test_FPS_komutu_URETIM_conf_esigini_kullaniyor) ... ok
+test_IKI_kilavuz_da_ASIL_satiri_TASIYOR (test_uretim_modeli_hizasi.KilavuzHizasiTests.test_IKI_kilavuz_da_ASIL_satiri_TASIYOR) ... ok
+test_derleme_komutu_URETIM_surumunu_kullaniyor (test_uretim_modeli_hizasi.KilavuzHizasiTests.test_derleme_komutu_URETIM_surumunu_kullaniyor)
+`yolo export ... format=engine` satiri asil surumu gostermeli. ... ok
+test_IMGSZ_kapisi_BOS_DEGIL (test_uretim_modeli_hizasi.KilavuzImgszHizasiTests.test_IMGSZ_kapisi_BOS_DEGIL)
+Kapi gercekten kiyas yapiyor mu — damgali komut sayisi sayilir. ... ok
+test_ISTISNALARIN_HEPSI_CANLI (test_uretim_modeli_hizasi.KilavuzImgszHizasiTests.test_ISTISNALARIN_HEPSI_CANLI) ... ok
+test_KOMUTTAKI_imgsz_MODEL_dosyasinin_boyutuyla_AYNI (test_uretim_modeli_hizasi.KilavuzImgszHizasiTests.test_KOMUTTAKI_imgsz_MODEL_dosyasinin_boyutuyla_AYNI) ... ok
+test_URETIM_modelinin_damgasi_DEFTERDEKI_imgsz (test_uretim_modeli_hizasi.KilavuzImgszHizasiTests.test_URETIM_modelinin_damgasi_DEFTERDEKI_imgsz)
+`..._512_fp16` damgasi defterin `imgsz`inden sapamaz. ... ok
+test_devam_satirlari_BIRLESTIRILIYOR (test_uretim_modeli_hizasi.KilavuzImgszHizasiTests.test_devam_satirlari_BIRLESTIRILIYOR)
+`\` ile bolunmus komut tek parca gorulmezse kapi kor kalir. ... ok
+test_AGAC_istisnasi_BOLUME_bagli (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_AGAC_istisnasi_BOLUME_bagli)
+Belgenin herhangi bir yerine konan agac satiri KACMAMALI. ... ok
+test_ISTISNA_kurallarinin_HEPSI_CANLI (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_ISTISNA_kurallarinin_HEPSI_CANLI)
+Olu istisna birikmesin — her kural en az bir satira uymali. ... ok
+test_KOR_NOKTA_satir_tipleri_GERCEKTEN_denetleniyor (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_KOR_NOKTA_satir_tipleri_GERCEKTEN_denetleniyor)
+Kapi bos olmasin: uc satir tipi de en az bir kez denetime girmeli. ... ok
+test_UZANTISIZ_model_yolu_da_DENETLENIYOR (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_UZANTISIZ_model_yolu_da_DENETLENIYOR)
+`--engine models/navitas_seg_v30_best_512_fp16` (uzantisiz). ... ok
+test_YEDEK_istisnasi_DEFTERDEKI_yedegi_gosteriyor (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_YEDEK_istisnasi_DEFTERDEKI_yedegi_gosteriyor)
+SS6C'de yazilan surum defterde YEDEK olarak kayitli olmali. ... ok
+test_agac_kaydindaki_ESKI_surum_ETIKETSIZ_kalamaz (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_agac_kaydindaki_ESKI_surum_ETIKETSIZ_kalamaz) ... ok
+test_her_ISTISNAYA_gerekce_yazili (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_her_ISTISNAYA_gerekce_yazili) ... ok
+test_kor_noktanin_UC_satir_tipi_URETIM_surumunde (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_kor_noktanin_UC_satir_tipi_URETIM_surumunde)
+`--saveEngine=`, `--engine`, `--cikti` — adiyla ve ayri ayri. ... ok
+test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR (test_uretim_modeli_hizasi.KilavuzKomutSatirlariTests.test_model_dosyasi_gecen_satirlar_URETIM_surumunu_TASIYOR) ... ok
+test_manifest_DISINDA_dosya_kalmamis (test_uretim_modeli_hizasi.ManifestBayATLIGI_Tests.test_manifest_DISINDA_dosya_kalmamis) ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_manifest_URETIM_surumunu_gosteriyor (test_uretim_modeli_hizasi.ManifestBayATLIGI_Tests.test_manifest_URETIM_surumunu_gosteriyor) ... ok
+test_manifest_ozetleri_GERCEK_dosyalarla_ESLESIYOR (test_uretim_modeli_hizasi.ManifestBayATLIGI_Tests.test_manifest_ozetleri_GERCEK_dosyalarla_ESLESIYOR) ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_manifest_paket_icerigini_TASIYOR (test_uretim_modeli_hizasi.ManifestBayATLIGI_Tests.test_manifest_paket_icerigini_TASIYOR) ... ok
+test_gui_modeli_PAKETTE_de_var_ve_BAYT_ESIT (test_uretim_modeli_hizasi.PaketHizasiTests.test_gui_modeli_PAKETTE_de_var_ve_BAYT_ESIT) ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_paketteki_ONNX_ayni_SURUMDEN (test_uretim_modeli_hizasi.PaketHizasiTests.test_paketteki_ONNX_ayni_SURUMDEN) ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_paketteki_ONNX_depodan_TURETILMIS (test_uretim_modeli_hizasi.PaketHizasiTests.test_paketteki_ONNX_depodan_TURETILMIS)
+Elle duzenlenmis/yeniden uretilmis ONNX yakalanir. ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_conf_varsayilani_URETIM_yorumlayicisiyla_AYNI (test_uretim_modeli_hizasi.SahaOlcumVarsayilanlariTests.test_conf_varsayilani_URETIM_yorumlayicisiyla_AYNI) ... ok
+test_engine_yokken_TensorRT_vakasi_ACIKCA_ATLANIYOR (test_uretim_modeli_hizasi.SahaOlcumVarsayilanlariTests.test_engine_yokken_TensorRT_vakasi_ACIKCA_ATLANIYOR) ... ok
+test_engine_yoklugu_HAYALI_yolla_gizlenmiyor (test_uretim_modeli_hizasi.SahaOlcumVarsayilanlariTests.test_engine_yoklugu_HAYALI_yolla_gizlenmiyor) ... ok
+test_imgsz_manifest_ve_URETIM_boyutlarindan_turetiliyor (test_uretim_modeli_hizasi.SahaOlcumVarsayilanlariTests.test_imgsz_manifest_ve_URETIM_boyutlarindan_turetiliyor) ... ok
+test_model_varsayilanlari_manifestin_ASIL_dosyalaridir (test_uretim_modeli_hizasi.SahaOlcumVarsayilanlariTests.test_model_varsayilanlari_manifestin_ASIL_dosyalaridir) ... ok
+test_varsayilan_model_yollari_GERCEKTEN_VAR (test_uretim_modeli_hizasi.SahaOlcumVarsayilanlariTests.test_varsayilan_model_yollari_GERCEKTEN_VAR) ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_gui_modeli_depoda_VAR (test_uretim_modeli_hizasi.UretimModeliKimligiTests.test_gui_modeli_depoda_VAR) ... skipped 'model agirliklari diskte yok (.gitignore:132) — bayt kapisi atlandi, metin kapilari yine kosuldu'
+test_gui_modelinin_surumu_OKUNABILIR (test_uretim_modeli_hizasi.UretimModeliKimligiTests.test_gui_modelinin_surumu_OKUNABILIR) ... ok
+
+----------------------------------------------------------------------
+Ran 37 tests in 0.047s
+
+OK (skipped=7)
