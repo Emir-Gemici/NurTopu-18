@@ -22634,3 +22634,42 @@ Kapı §8'in beyan ettiği sayının **defterle** eşit olmasını kilitler. §8
 
 #### 6. Bozulmama
 Genel kapı iki kolda GEÇTİ; `unittest discover` **1091 OK** (2 skip).
+
+---
+
+### D-309 · 🔴 T164 ÖLÇÜLDÜ: kabul kümesinde YAYINLANAN ŞERİT 43/50 — 5 yanlışın **beşi de tam bir şerit SOLA kayık**; kabul zinciri bu ekseni HİÇ ölçmüyor (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §30 (ayırt edici ölçüm ve üç yorum kuralı sonuç görülmeden). **Kanıt:** `results/t164/{olcum.json,olc.py}`.
+
+#### 1. Neden bakıldı
+D-308 §5'te 12 karelik bir gözlem "doğru şerit 8/12" demişti. Şartname §2.1/§5.3.2 **yanlış güzergâh = 0 puan** der ve hakem canlı olarak **numarayı** onaylar (§2.2.3). Kabul zinciri ise bu ekseni **hiç ölçmüyor**: K1 rota üretimi (255/260), K6 rota-yol-üstünde (%2,75) — **şerit NUMARASI hiçbir kapıda yok.**
+
+#### 2. Ölçüm (50 kabul karesi: val 26 + train'den 24 örnek)
+| yol | rota üretti | **doğru şerit** |
+|---|---:|---:|
+| **ÜRETİM** (`analyze_path` · `rota_serit_karari`, T155) | 48/50 | **43/50** (rota verenlerin %89,6'sı) |
+| TANISAL (`rota_bul` · `koridor_adaylari`) | **4/50** | 4/50 |
+
+Eşli 4 karede iki yol **aynı** ve **ikisi de doğru**.
+
+#### 3. ⚠ Ön kayıtlı kuralın hiçbir dalı temiz uygulanmadı — bunu gizlemiyorum
+§30 üç dal yazmıştı; ölçüm **öngörülmeyen** bir şey gösterdi: **`rota_bul` bu kümede neredeyse hiç rota üretmiyor** (4/50 `ACIK`; 26 `BELIRSIZ_COKLU`, 18 `BELIRSIZ_TEK_KAPI`, 2 `KAPALI_DAR`), yani **referans kolu kullanılamaz**. Dolayısıyla "hangisi daha doğru" sorusu bu kümede **cevaplanamaz**. Kural gevşetilmedi; **uygulanamadığı** yazıldı.
+*(Yan sonuç: bu, T151'in `analyze_path`ı üretim seçmesini ayrıca destekler — tanısal yol kabul dağılımında işlevsiz.)*
+
+#### 4. 🔴 Asıl bulgu: kayma SİSTEMATİK
+| kare | beklenen | yayınlanan |
+|---|---:|---:|
+| `sa_000013` | 2 | **1** |
+| `sa_000025` | 2 | **1** |
+| `sa_000146` | 3 | **2** |
+| `sa_000176` | 2 | **1** |
+| `sa_000216` | 3 | **2** |
+
+**Beşi de tam −1.** Hiçbiri `belirsiz` işaretli değil (manifest `belirsiz: false`, `acik_serit_adaylari` tekil).
+**Sözleşme farkı DEĞİL:** kadraj kırpması numaralandırmayı kaydırsaydı **48 karenin tamamı** kayardı; 43'ü **tam** tutuyor. Yani bu, ölçüm aracının değil **kararın** kaymasıdır — sınıra yakın darboğazlarda baskın şerit bir sola düşüyor. T155 tam bu sınıfı (şeridin tek pikselden/rota ucundan okunması) düzeltmişti ve `results/t151` sahnelerinde **15/15** ölçmüştü; **kabul kümesinde tutmuyor**.
+
+#### 5. Rota üretilmeyen 2 kare
+`sa_000041`, `sa_000121`. (`sa_000121` D-203'te ONNX uyuşmazlığı listesinde de geçiyordu — bağlantı **ölçülmedi**, iddia edilmiyor.)
+
+#### 6. Sonuç — T165 açıldı (KRİTİK), kod BU TURDA DEĞİŞMEDİ
+Şartname puanı doğrudan bu numaraya bağlı olduğu için bu bir **saha günü risk kalemidir**. Ön kayıt gereği bu turda yalnız **ölçüldü**; eşik/kapı ve düzeltme ayrı ön kayıtla ve tam kabul zinciriyle yapılacaktır. Önerilen (karar mimarın/kullanıcının): kabul zincirine **K7 · yayınlanan şerit doğruluğu** ölçütü.

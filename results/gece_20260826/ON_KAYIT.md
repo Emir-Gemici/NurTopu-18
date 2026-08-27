@@ -304,3 +304,13 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - **"Her yeri boyuyor" çöküşü** (kaplama > %90) hangi çözünürlükte görülürse **yazılır**; v17'deki 960 çöküşünün v36'da sürüp sürmediği açıkça raporlanır.
 **Kapı (kod tarafı, sonuca göre değişmez):** `CONTRACTS §8`'in beyan ettiği sayı ile `config/model_registry.json → competition.imgsz` **eşit olmalı**; ayrı bir test bunu kilitler ve **mutasyon**da (§8'e farklı bir sayı yazılınca) **düşmelidir**. Böylece sözleşme bir daha sessizce bayatlayamaz.
 ⚠ Üretim `imgsz` bu turda **DEĞİŞMEZ**. Değişen tek şey sözleşmenin **doğruyu söylemesi** ve bunu bir kapının kilitlemesidir.
+
+## 30. EK — T164: kabul kümesinde YAYINLANAN ŞERİT hiç ölçülmemiş (2026-08-27, sonuç görülmeden)
+**Gözlem (D-308 §5):** kabul kümesinden 12 karede üretim yolu **8/12** doğru şerit yayınlıyor. Kabul zinciri bu ekseni **hiç ölçmüyor**: K1 rota üretimi (255/260), K6 rota-yol-üstünde (%2,75 yanlış) — **şerit NUMARASI** hiçbir kapıda yok. Şartname §2.1/§5.3.2 "yanlış güzergâh = 0 puan" der ve hakem canlı olarak **numarayı** onaylar (§2.2.3).
+**Ama alarm vermeden önce ayrıştırılması gereken şey:** kadraj kümesinin `acik_serit` alanı, kadrajlanmış karedeki şerit indisiyle **aynı sözleşmeyi** kullanıyor olmayabilir (kırpma şerit sırasını kaydırabilir). Bu durumda 8/12 **ölçüm aracının** hatasıdır, sistemin değil.
+**Ayırt edici ölçüm:** aynı karelerde **İKİ** yol ayrı ayrı manifest'e karşı ölçülür — üretim `analyze_path` (`rota_serit_karari`, T155) ve tanısal `rota_bul` (`koridor_adaylari`, T155'te 15 yer gerçekli sahnede **15/15**). n = kabul kümesi val (26 kare) + train'den örnekleme ile toplam ≥ 60 kare.
+**Ön kayıtlı yorum kuralı (sonuca göre değişmez):**
+- **İkisi de manifest'le benzer oranda uyuşmuyorsa** (fark ≤ 2 kare) → kusur **ölçüm aracında/manifest sözleşmesinde**dir; "üretim yanlış şerit yayınlıyor" **denmez**, sözleşme farkı kayda geçer ve T164 böyle kapanır.
+- **`rota_bul` belirgin biçimde daha doğruysa** (≥ +5 kare) → bu **üretim yolunda gerçek bir kusurdur**; T155'in düzeltmesi kabul kümesinde tutmuyor demektir ve **KRİTİK** iş açılır.
+- **İkisi de yüksek doğrulukta** (≥ %90) → 12 karelik gözlem örnekleme dalgalanmasıydı; kayda geçer.
+⚠ Bu turda **kod değişmez**; yalnız ölçülür ve hüküm yazılır.

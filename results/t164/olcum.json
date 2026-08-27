@@ -1,0 +1,515 @@
+{
+ "ozet": {
+  "n": 50,
+  "uretim_rota": 48,
+  "tanisal_rota": 4,
+  "uretim_dogru": 43,
+  "tanisal_dogru": 4,
+  "esli_n": 4,
+  "esli_uretim_dogru": 4,
+  "esli_tanisal_dogru": 4,
+  "esli_iki_yol_ayni": 4
+ },
+ "kareler": [
+  {
+   "kare": "sa_000000.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": 1,
+   "tanisal_durum": "ACIK",
+   "uretim_dogru": true,
+   "tanisal_dogru": true,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": 3,
+   "tanisal_durum": "ACIK",
+   "uretim_dogru": true,
+   "tanisal_dogru": true,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "beklenen": 2,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": 1,
+   "tanisal_durum": "ACIK",
+   "uretim_dogru": true,
+   "tanisal_dogru": true,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "beklenen": 2,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000026.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000036.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "beklenen": 2,
+   "uretim": null,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000046.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000066.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000071.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000101.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000106.jpg",
+   "beklenen": 1,
+   "uretim": 1,
+   "tanisal": 1,
+   "tanisal_durum": "ACIK",
+   "uretim_dogru": true,
+   "tanisal_dogru": true,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000111.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000121.jpg",
+   "beklenen": 2,
+   "uretim": null,
+   "tanisal": null,
+   "tanisal_durum": "KAPALI_DAR",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "beklenen": 3,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000166.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000171.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "beklenen": 2,
+   "uretim": 1,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000181.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000191.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000196.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "beklenen": 3,
+   "uretim": 3,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_COKLU",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000211.jpg",
+   "beklenen": 2,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "KAPALI_DAR",
+   "uretim_dogru": true,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "beklenen": 3,
+   "uretim": 2,
+   "tanisal": null,
+   "tanisal_durum": "BELIRSIZ_TEK_KAPI",
+   "uretim_dogru": false,
+   "tanisal_dogru": false,
+   "belirsiz": false
+  }
+ ]
+}
