@@ -386,3 +386,18 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 3. **Mutasyon:** yaşlandırma kaldırılırsa test **DÜŞMELİ**; eşik çıplak sayı olarak yazılırsa sözleşme testi **DÜŞMELİ**.
 4. **Onay yolu korunur:** bayatken `onayla()` çağrılsa bile **ACK GÖNDERİLMEZ** (düğme kapalı olsa da kod yolu fail-closed olmalı — düğme tek savunma değildir).
 ⚠ Bu bir **ekran** düzeltmesidir; karar/telsiz mantığına dokunulmaz.
+
+## 37. EK — T170: §5.3.2 FDA test uçuşunun 10 DAKİKALIK limiti sistemde YOK (2026-08-27, sonuç görülmeden)
+**Şartnamenin lafzı (§5.3.2 "Drone ile Görev Test Uçuşu"):** *"…çoklu rotorlu ve dikey iniş-kalkış yapabilen bir insansız hava aracı (Drone) kullanarak, … **20x20 metre** boyutlarındaki simüle edilmiş bir test alanında … **asgari 30 metre irtifadan** … tespit etmek ve … **gerçek zamanlı** olarak YKİ'ye aktarmakla yükümlüdür. Görev test uçuşunun başarılı sayılabilmesi … için; gerçek zamanlı güzergâh tespitinin alan hakem heyeti tarafından doğrulanıp onaylanması ve **tüm operasyon sürecinin (kalkış, tespit, veri aktarımı ve iniş) maksimum 10 dakika** içerisinde tamamlanması zorunludur. Belirtilen bu kriterlerden herhangi birini sağlayamayan, **süreyi aşan** veya yanlış güzergâh tespiti yapan takımlar **0 puan** alır."*
+**Kusur 1 — limit yok:** sistemde §5.3.2'nin **10 dakikalık operasyon limiti** hiçbir yerde yok. Sözleşmede yalnız §6.2'nin süreleri var (`SARTNAME_IHA_GOREV_SURESI_S` = 15 dk, `SARTNAME_IKA_GOREV_SURESI_S` = 10 dk). FDA uçuşunda operatör ekranda **15 dakikalık** bir bütçe görür ve 10 dakikayı aşarsa **0 puan** alır — ekran onu uyarmaz. §5.3.2'nin diğer iki parametresi sistemde **var** (`SENARYO_BOYUTLARI_M["FDA"] = 20,0` · `SARTNAME_ASGARI_IRTIFA_M = 30,0`); eksik olan **yalnız süre**.
+**Kusur 2 — çıplak sabit (madde 16):** `comms/yks_gui.py:189-190` `IHA_LIMIT = 900` / `IKA_LIMIT = 600` **çıplak** yazılı; sözleşmede aynı sayılar `SARTNAME_*_GOREV_SURESI_S` olarak zaten duruyor. Bugün örtüşüyorlar ama **hiçbir şey hizada tutmuyor**.
+**Değişiklik:**
+1. `karar_sozlesmesi.SARTNAME_FDA_OPERASYON_SURESI_S = 10 * 60` (yeni, §5.3.2 atfıyla).
+2. GUI süre limitleri **sözleşmeden** okunur (değerler bugün **birebir aynı**: 900/600 → davranış bayt-eş).
+3. GUI'ye `--fda` bayrağı: İHA kronometresi §5.3.2 bütçesini (600 s) gösterir ve başlığı bunu **söyler**. Varsayılan **değişmez** (§6.2 kipi).
+**Kapılar (sonuca göre değişmez):**
+1. **Bozulmama:** `--fda` verilmeden İHA/İKA limitleri **900/600** kalır; genel kapı ve süit düşmez.
+2. `--fda` ile İHA limiti **600** olur ve ekranda §5.3.2 yazar.
+3. **Mutasyon:** sözleşmedeki süre değiştirilirse GUI'nin limiti **onunla birlikte** değişmeli (çıplak sabit geri konursa test DÜŞER).
+4. Sözleşme sabiti şartname değeriyle eşit olmalı (600 s) — test kilitler.
+⚠ Karar/telsiz mantığına dokunulmaz; bu bir **süre bütçesi ve gösterim** işidir.

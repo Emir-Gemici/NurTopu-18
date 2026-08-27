@@ -22935,3 +22935,31 @@ Taze tespitte **davranış birebir aynı** (düğmeye dokunulmaz, günlüğe yaz
 
 #### 4. Bozulmama
 Genel kapı iki kolda GEÇTİ; `unittest discover` **1128 OK** (2 skip). Beş mevcut GUI testi `__init__` koşmadan örnek kuruyordu; yeni alanlar **sınıf düzeyinde** varsayılan yapıldı — bu, `_arac_modeli_durumu` için zaten kullanılan ve dosyada gerekçesi yazılı olan kalıptır. Damga yoksa yaşlandırma **hiçbir şey yapmaz**, yani eski davranış birebir korunur. `karar_sozlesmesi.py` değiştiği için Jetson paket aynaları yeniden üretildi.
+
+---
+
+### D-318 · ✅ T170 — §5.3.2 FDA test uçuşunun **10 dakikalık** limiti sistemde HİÇ YOKTU; GUI süre limitleri de çıplaktı (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §37. **Kapı:** `tests/test_t170_fda_sure_butcesi.py` **13/13**.
+
+#### 1. Şartnamenin lafzı (§5.3.2 · "Drone ile Görev Test Uçuşu")
+> *"…**20x20 metre** boyutlarındaki simüle edilmiş bir test alanında … **asgari 30 metre irtifadan** … tespit etmek ve … **gerçek zamanlı** olarak YKİ'ye aktarmakla yükümlüdür. Görev test uçuşunun başarılı sayılabilmesi ve takımların **100 tam puan** alabilmesi için; … **tüm operasyon sürecinin (kalkış, tespit, veri aktarımı ve iniş) maksimum 10 dakika** içerisinde tamamlanması zorunludur. … **süreyi aşan** … takımlar **0 puan** alarak görevden başarısız sayılacaktır."*
+
+#### 2. İki kusur
+**(a) Limit yoktu.** §5.3.2'nin diğer iki parametresi sistemde **vardı** — `SENARYO_BOYUTLARI_M["FDA"] = 20,0` ve `SARTNAME_ASGARI_IRTIFA_M = 30,0` — eksik olan **yalnız süreydi**. Sözleşmede sadece §6.2'nin süreleri vardı (İHA 15 dk, İKA 10 dk). FDA uçuşunda operatör ekranda **15 dakikalık** bütçe görür, 10'u aşarsa **0 puan** alırdı ve **ekran onu uyarmazdı**. Bu, doğrudan puan kaybettiren bir boşluktur ve **bugün koşabildiğimiz** aşamaya aittir (drone + 20×20 m), yarışma günü kurulumuna değil.
+**(b) Çıplak sabit (madde 16).** `comms/yks_gui.py` `IHA_LIMIT = 900` / `IKA_LIMIT = 600` ve hazırlık için `900` **çıplak** yazılıydı; üstelik kronometre başlıklarındaki **`/ 15:00`** ve **`/ 10:00`** metinleri de **elle** yazılmıştı. Yani sözleşme değişse ekran **eski sayıyı göstermeye devam ederdi** — T154/T157/T158'in kılavuzda kapattığı bayatlık sınıfının ekrandaki hâli.
+
+#### 3. Yapılan
+- `karar_sozlesmesi`: **`SARTNAME_FDA_OPERASYON_SURESI_S = 10 × 60`** (§5.3.2 atfı ve "§6.2'nin süresi DEĞİLDİR" uyarısıyla) + `SARTNAME_HAZIRLIK_SURESI_S`.
+- GUI'nin üç limiti **sözleşmeden** okunur; değerler bugün **birebir aynı** (900/600/900) → davranış bayt-eş.
+- Kronometre başlıkları artık **sayıdan türer** (`_ss(limit)`), elle yazılmaz.
+- **`--fda` bayrağı:** İHA bütçesi §5.3.2'nin 600 s'sine iner, kronometrede **"§5.3.2 FDA"** yazar ve günlüğe *"süreyi aşan takım 0 PUAN alır"* düşer. Varsayılan **değişmez** (yarışma günü kipi); ezme **örnek düzeyindedir**, sınıf varsayılanı kirlenmez.
+
+#### 4. Kapı (13/13)
+Sabit şartname değerine eşit · §6.2'den **ayrı** ve ondan **sıkı** · şartname atfı sözleşmede yazılı · GUI limitleri sözleşmeden · **bozulmama** (900/600/900) · **mutasyon:** sınıf gövdesine `IHA_LIMIT = 900` geri konursa test **düşer** · başlıkta elle yazılmış `/ 15:00` **yasak** · `--fda` CLI'de tanımlı ve §5.3.2'yi anıyor · kip açılınca bütçe 600, **sınıf varsayılanı kirlenmiyor** · kip **ekranda görünüyor** · uygulama yolu operatöre **sonucu** söylüyor.
+
+#### 5. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1141 OK** (2 skip). `karar_sozlesmesi.py` değiştiği için Jetson paket aynaları yeniden üretildi.
+
+#### 6. ÖLÇÜLEMEDİ
+§5.3.2 bir **uçuş** aşamasıdır; bu iş yalnız **bütçeyi ve göstergeyi** doğru kurar. Uçuşun 10 dakikada tamamlanıp tamamlanmadığı **saha ölçümüdür** ve H-A çekimi/uçuşuna bağlıdır.

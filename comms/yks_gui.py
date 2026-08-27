@@ -43,7 +43,11 @@ if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               IKA_GO_TEKRAR_UST_SINIRI,
+                              SARTNAME_FDA_OPERASYON_SURESI_S,
+                              SARTNAME_HAZIRLIK_SURESI_S,
+                              SARTNAME_IHA_GOREV_SURESI_S,
                               SARTNAME_IHA_UB_KENAR_M,
+                              SARTNAME_IKA_GOREV_SURESI_S,
                               YKS_TESPIT_TAZELIK_S,
                               iha_ub_ihlali,
                               ZEMIN_KAPLAMA_TAVANI,
@@ -185,9 +189,23 @@ def _udp_adres(deger):
     return host, port
 
 
+def _ss(saniye):
+    """Saniye → "MM:SS" (kronometre başlıkları SAYIDAN türer, elle yazılmaz)."""
+    saniye = int(round(saniye))
+    return f"{saniye // 60:02d}:{saniye % 60:02d}"
+
+
 class YksArayuz:
-    IHA_LIMIT = 900     # şartname: fırlatma → paraşütle iniş ≤ 15 dk
-    IKA_LIMIT = 600     # şartname: teker dönüşü → HB temas ≤ 10 dk
+    # T170 (ON_KAYIT §37): bu üç limit ÇIPLAK yazılıydı (900/600/900) ve
+    # başlıklarındaki "/ 15:00" metinleri de elle yazılmıştı — yani sözleşme
+    # değişse ekran ESKİ sayıyı göstermeye devam ederdi. Artık üçü de
+    # `karar_sozlesmesi`den gelir ve başlık SAYIDAN türer (madde 16).
+    IHA_LIMIT = SARTNAME_IHA_GOREV_SURESI_S      # §6.2 fırlatma → paraşütle iniş
+    IKA_LIMIT = SARTNAME_IKA_GOREV_SURESI_S      # §6.2 teker dönüşü → HB temas
+    HAZIRLIK_LIMIT = SARTNAME_HAZIRLIK_SURESI_S  # §6.2 alan girişi → takım hazır
+    # §5.3.2 FDA test uçuşu kipinde İHA bütçesi DAHA SIKIDIR (tek 10 dk).
+    # `--fda` ile örnek düzeyinde ezilir; varsayılan yarışma günü kipidir.
+    fda_kipi = False
 
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None):
@@ -2178,11 +2196,15 @@ class YksArayuz:
                  f"HB {self.sayac['HEARTBEAT']} · "
                  f"ACK {self.sayac['ACK_TX']}")
         m1, r1 = self._kron_metin(self.t_iha0, self.t_iha1, self.IHA_LIMIT)
-        self.lbl_kron_iha.config(text=f"İHA ⏱ {m1} / 15:00", fg=r1)
+        _ek = " §5.3.2 FDA" if self.fda_kipi else ""
+        self.lbl_kron_iha.config(
+            text=f"İHA ⏱ {m1} / {_ss(self.IHA_LIMIT)}{_ek}", fg=r1)
         m2, r2 = self._kron_metin(self.t_ika0, self.t_ika1, self.IKA_LIMIT)
-        self.lbl_kron_ika.config(text=f"İKA ⏱ {m2} / 10:00", fg=r2)
-        m3, r3 = self._kron_metin(self.t_haz0, self.t_haz1, 900)
-        self.lbl_kron_haz.config(text=f"HAZIRLIK ⏱ {m3} / 15:00", fg=r3)
+        self.lbl_kron_ika.config(
+            text=f"İKA ⏱ {m2} / {_ss(self.IKA_LIMIT)}", fg=r2)
+        m3, r3 = self._kron_metin(self.t_haz0, self.t_haz1, self.HAZIRLIK_LIMIT)
+        self.lbl_kron_haz.config(
+            text=f"HAZIRLIK ⏱ {m3} / {_ss(self.HAZIRLIK_LIMIT)}", fg=r3)
         if self.gorunum_adi == "harita":
             self._inset_ciz()
 
@@ -2278,6 +2300,12 @@ def main():
                     help="canlı algı açılış kaynağı (varsayılan: "
                          f"{YksArayuz.ALGI_KAYNAKLAR[0]}); geçerli değerler "
                          "ALGI_KAYNAKLAR'dan okunur")
+    ap.add_argument(
+        "--fda", action="store_true",
+        help=("şartname §5.3.2 'Drone ile Görev Test Uçuşu' kipi: İHA "
+              "kronometresi TÜM operasyon için 10 dk gösterir (kalkış + "
+              "tespit + aktarım + iniş). Verilmezse §6.2 yarışma günü "
+              "bütçesi (15 dk) kullanılır"))
     ap.add_argument("--gorunum", choices=tuple(GORUNUM_SECENEKLERI),
                     help="açılış görünümü (varsayılan: saha)")
     args = ap.parse_args()
@@ -2319,6 +2347,15 @@ def main():
 
     # T80: kaynak GÖRÜNÜMDEN ÖNCE kurulur — `gorunum("algi")` çıkarımı hemen
     # tetikler, sonra ayarlanan kaynak o ilk kareyi kaçırırdı.
+    if args.fda:
+        # T170 · §5.3.2: FDA test ucusunun butcesi TEK ve daha SIKIDIR (10 dk).
+        # Ornek duzeyinde ezilir; sinif varsayilani (yarisma gunu) DEGISMEZ.
+        app.IHA_LIMIT = SARTNAME_FDA_OPERASYON_SURESI_S
+        app.fda_kipi = True
+        app._logla(
+            "§5.3.2 FDA KİPİ: İHA bütçesi "
+            f"{_ss(SARTNAME_FDA_OPERASYON_SURESI_S)} (kalkış+tespit+aktarım+"
+            "iniş). Süreyi aşan takım 0 PUAN alır.", "sari")
     if args.kaynak:
         app.algi_kaynak = args.kaynak
         app.algi_idx = 0

@@ -1555,6 +1555,20 @@ SARTNAME_IKA_GOREV_SURESI_S = 10 * 60.0   # §6.2 · HB'ye ulasma
 IKA_BEKLEME_SURESI_S = SARTNAME_IHA_GOREV_SURESI_S   # rota+inis+IKA_GO beklemesi
 IKA_SURUS_SURESI_S = SARTNAME_IKA_GOREV_SURESI_S     # izin -> HB
 
+# ── SS5.3.2 · DRONE ILE GOREV TEST UCUSU (FDA) — T170 · ON_KAYIT SS37 ──────
+# Sartname: "Gorev test ucusunun basarili sayilabilmesi ... icin; gercek
+# zamanli guzergah tespitinin alan hakem heyeti tarafindan dogrulanip
+# onaylanmasi ve TUM OPERASYON SURECININ (kalkis, tespit, veri aktarimi ve
+# inis) MAKSIMUM 10 DAKIKA icerisinde tamamlanmasi zorunludur. ... sureyi asan
+# ... takimlar 0 PUAN alarak gorevden basarisiz sayilacaktir."
+# 🔴 BU SS6.2'NIN SURESI DEGILDIR: SS6.2 yarisma gunune ait (IHA 15 dk, IKA
+# 10 dk); burasi FDA test ucusunun TEK ve daha SIKI butcesidir. Sistemde
+# SS5.3.2'nin diger iki parametresi zaten vardi (SENARYO_BOYUTLARI_M["FDA"]
+# = 20,0 ve SARTNAME_ASGARI_IRTIFA_M = 30,0); eksik olan YALNIZ sureydi.
+SARTNAME_FDA_OPERASYON_SURESI_S = 10 * 60.0
+# SS6.2 hazirlik suresi — GUI'de CIPLAK yaziliydi (madde 16).
+SARTNAME_HAZIRLIK_SURESI_S = 15 * 60.0
+
 # ── §6.2 / §6.4 · IHA-UB ALAN IHLALI (T162 · ON_KAYIT SS28) ────────────────
 # Sartname IHA'nin ucus bolgesini (IHA-UB) 300x300 m olarak tanimlar ve disina
 # tasmayi ALAN IHLALI sayar. Bu sayi `comms/yks_gui.py` icinde UC YERDE CIPLAK
