@@ -6451,8 +6451,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap:** (1) 5 karede rotanın gerçek konumu ile manifest şerit pencerelerini yan yana ölç (sınıra yakınlık hipotezi); (2) düzeltme ÖN KAYITLA, eşik sonuç görülmeden; (3) kabul zincirine **K7 · yayınlanan şerit doğruluğu** eklenmesi ÖNERİ — karar mimarın/kullanıcının (D-133).
   - ⚠ **Tanısal yol referans DEĞİL:** `rota_bul` bu kümede 50 karenin yalnız 4'ünde rota üretiyor (26 BELIRSIZ_COKLU, 18 BELIRSIZ_TEK_KAPI) — T151'in üretim seçimini ayrıca destekler.
 
-- [ ] **T166 — Kabul kümesinin `acik_serit` alanı KENDİ etiket maskesiyle çelişiyor (ölçülen 4/48 ≈ %8): bu alanı yer gerçeği sayan her ölçüm o payı HATA olarak sayar** · `O:
-avitas-local-train\calisma\sentetik_arena_kadraj_t66\manifest.json` (üreteç `51_sentetik_arena.py`) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-310**, `results/t165/olcum.json`
+- [ ] **T166 — Kabul kümesinin `acik_serit` alanı KENDİ etiket maskesiyle çelişiyor (ölçülen 4/48 ≈ %8): bu alanı yer gerçeği sayan her ölçüm o payı HATA olarak sayar** · kabul kümesi manifesti (`sentetik_arena_kadraj_t66/manifest.json`) (üreteç `51_sentetik_arena.py`) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-310**, `results/t165/olcum.json`
   - **Yap:** 260 karenin tamamında `acik_serit` ↔ etiket maskesinden türeyen şerit karşılaştırılsın; ayrışan kareler LİSTELENSİN. `acik_serit`'i yer gerçeği sayan ölçümler (K7 kapı önerisi dâhil) ya bu listeyi dışlamalı ya da **maskeyi** referans almalı.
   - ⚠ **K6 etkilenmez** (rota çizgisinin maskeye göre konumunu ölçer, `acik_serit`'e bakmaz).
 
