@@ -293,3 +293,14 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - (c) **Uçtan uca:** sahte `GLOBAL_POSITION_INT` + referans ile `KararYayinci` heartbeat'i `x,y` **taşır**; YKS'nin denetimi sınır dışında **ALAN İHLALİ** üretir, içinde üretmez.
 - (d) **Mutasyon (boş kapı yasağı):** referans verilmezse `x,y` **yayınlanmamalı** (test bunu doğrular) · sınır sabiti 300 → 30 yapılırsa ihlal testi **düşmeli** · `iha_ub_ihlali` her zaman None dönerse test **düşmeli**.
 ⛔ Anayasa madde 15 ile ilgisi yok (serbest alana dokunulmuyor). ⚠ Gerçek Pixhawk yok — uçtan uca sahte mesajla ölçülür ve bu **rapora yazılır**.
+
+## 29. EK — T163: CONTRACTS §8 çözünürlük sözleşmesi BAYAT ve üretimle ÇELİŞİYOR (2026-08-27, sonuç görülmeden)
+**Kusur:** `CONTRACTS.md §8` kalın harflerle **"Çıkarım `imgsz` = 640. Değiştirmek güvenli DEĞİLDİR"** diyor. Üretim ise **512**'de koşuyor (`config/model_registry.json → competition.imgsz = 512`, `rpi_inference.INFER_SIZE`, kılavuz ve `.onnx` damgaları). Yani **sözleşme kendi üretimini yasaklıyor**. Sahadaki bir kişi §8'i okuyup 640'a çevirirse kabul edilmemiş bir çözünürlükte koşar. Bu, T154/T157/T158'in kılavuzda kapattığı **bayatlık sınıfının** sözleşme tarafındaki örneğidir; oradaki kapılar `CONTRACTS §8`'e **bakmıyor**.
+**§8'in kanıtı da eskidir:** tablo **v17** ile, tek arena karesinde ölçülmüş (640 IoU 0,861; 960'ta "her yeri boyuyor" %96,1). Üretim o günden beri v27→v36 ve 512'ye geçti; ölçüm **tekrarlanmadı**.
+**Ölçüm (T163):** kabul kümesinden **12 kare**, v36, çözünürlükler **{512 (üretim) · 640 · 768 · 960 · 1280}**. Her çözünürlükte: sınıf 0 IoU (kümenin kendi etiketine karşı), içerik kaplama oranı, ve **üretim zincirinin kararı** (ROTA / ret kodu, şerit doğruluğu). Ölçek her koşumda manifestten (kare başına) gelir.
+**Ön kayıtlı yorum kuralı (sonuca göre değişmez):**
+- **512 en iyi ya da beraberse** (IoU medyanı en yüksek ± 0,02 bandında **ve** doğru şerit sayısı en yüksek grupta): §8 **512 olarak tazelenir**, eski tablo **tarihsel** etiketiyle **silinmeden** kalır.
+- **Başka bir çözünürlük 512'yi net geçerse** (IoU medyanı **≥ +0,05** *ve* doğru şerit **≥ +2/12**): bu bir **bulgudur**, sözleşme tek taraflı değişmez — ayrı ön kayıt + tam kabul zinciri (K0–K6) gerekir ve karar kullanıcınındır (D-133).
+- **"Her yeri boyuyor" çöküşü** (kaplama > %90) hangi çözünürlükte görülürse **yazılır**; v17'deki 960 çöküşünün v36'da sürüp sürmediği açıkça raporlanır.
+**Kapı (kod tarafı, sonuca göre değişmez):** `CONTRACTS §8`'in beyan ettiği sayı ile `config/model_registry.json → competition.imgsz` **eşit olmalı**; ayrı bir test bunu kilitler ve **mutasyon**da (§8'e farklı bir sayı yazılınca) **düşmelidir**. Böylece sözleşme bir daha sessizce bayatlayamaz.
+⚠ Üretim `imgsz` bu turda **DEĞİŞMEZ**. Değişen tek şey sözleşmenin **doğruyu söylemesi** ve bunu bir kapının kilitlemesidir.

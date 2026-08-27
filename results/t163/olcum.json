@@ -1,0 +1,598 @@
+{
+ "_ne": "T163 · ON_KAYIT SS29 · CONTRACTS SS8 tazelemesi",
+ "uretim_imgsz": 512,
+ "kare": 12,
+ "conf": 0.3,
+ "cozunurlukler": {
+  "512": {
+   "iou_medyan": 0.9063,
+   "kaplama_medyan": 0.3091,
+   "kaplama_azami": 0.6092,
+   "rota": 12,
+   "serit_dogru": 8,
+   "n": 12,
+   "kareler": [
+    {
+     "kare": "sa_000000.jpg",
+     "iou_sinif0": 0.9159877978122622,
+     "kaplama": 0.3333984375,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000002.jpg",
+     "iou_sinif0": 0.904897951196603,
+     "kaplama": 0.34784912109375,
+     "yol_no": 3,
+     "beklenen_serit": 3,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000004.jpg",
+     "iou_sinif0": 0.8856580301606479,
+     "kaplama": 0.25431884765625,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000006.jpg",
+     "iou_sinif0": 0.8706910304711181,
+     "kaplama": 0.1884375,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000008.jpg",
+     "iou_sinif0": 0.9012859717140829,
+     "kaplama": 0.33415771484375,
+     "yol_no": 3,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000010.jpg",
+     "iou_sinif0": 0.9439560981220118,
+     "kaplama": 0.28479736328125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000012.jpg",
+     "iou_sinif0": 0.8743654693238115,
+     "kaplama": 0.22156982421875,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000014.jpg",
+     "iou_sinif0": 0.9490496194318513,
+     "kaplama": 0.284052734375,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000016.jpg",
+     "iou_sinif0": 0.9076023787760813,
+     "kaplama": 0.205625,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000018.jpg",
+     "iou_sinif0": 0.9393242539540152,
+     "kaplama": 0.609228515625,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000020.jpg",
+     "iou_sinif0": 0.9026120701348793,
+     "kaplama": 0.386025390625,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000022.jpg",
+     "iou_sinif0": 0.9179767474746233,
+     "kaplama": 0.37739013671875,
+     "yol_no": 3,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    }
+   ]
+  },
+  "640": {
+   "iou_medyan": 0.8903,
+   "kaplama_medyan": 0.2956,
+   "kaplama_azami": 0.5729,
+   "rota": 11,
+   "serit_dogru": 7,
+   "n": 12,
+   "kareler": [
+    {
+     "kare": "sa_000000.jpg",
+     "iou_sinif0": 0.905997171145686,
+     "kaplama": 0.32128173828125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000002.jpg",
+     "iou_sinif0": 0.9098380548212962,
+     "kaplama": 0.34573486328125,
+     "yol_no": 3,
+     "beklenen_serit": 3,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000004.jpg",
+     "iou_sinif0": 0.8888787851232154,
+     "kaplama": 0.24705810546875,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000006.jpg",
+     "iou_sinif0": 0.8231767101591372,
+     "kaplama": 0.170380859375,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000008.jpg",
+     "iou_sinif0": 0.847825036749736,
+     "kaplama": 0.30779541015625,
+     "yol_no": 3,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000010.jpg",
+     "iou_sinif0": 0.9462327468214574,
+     "kaplama": 0.2833642578125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000012.jpg",
+     "iou_sinif0": 0.884125543699346,
+     "kaplama": 0.212734375,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000014.jpg",
+     "iou_sinif0": 0.8979561216324353,
+     "kaplama": 0.26791259765625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "GORUS_HATTI_KOPUK"
+    },
+    {
+     "kare": "sa_000016.jpg",
+     "iou_sinif0": 0.8625266756796014,
+     "kaplama": 0.199892578125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000018.jpg",
+     "iou_sinif0": 0.8917332457493775,
+     "kaplama": 0.572919921875,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000020.jpg",
+     "iou_sinif0": 0.826576817484936,
+     "kaplama": 0.34885498046875,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000022.jpg",
+     "iou_sinif0": 0.9234338319342191,
+     "kaplama": 0.37989990234375,
+     "yol_no": 3,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    }
+   ]
+  },
+  "768": {
+   "iou_medyan": 0.9099,
+   "kaplama_medyan": 0.2627,
+   "kaplama_azami": 0.6018,
+   "rota": 9,
+   "serit_dogru": 6,
+   "n": 12,
+   "kareler": [
+    {
+     "kare": "sa_000000.jpg",
+     "iou_sinif0": 0.9153652889304892,
+     "kaplama": 0.32775634765625,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000002.jpg",
+     "iou_sinif0": 0.9251590999954121,
+     "kaplama": 0.3519921875,
+     "yol_no": 3,
+     "beklenen_serit": 3,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000004.jpg",
+     "iou_sinif0": 0.9043890320206109,
+     "kaplama": 0.245224609375,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000006.jpg",
+     "iou_sinif0": 0.6619855138405538,
+     "kaplama": 0.1462353515625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "GORUS_HATTI_KOPUK"
+    },
+    {
+     "kare": "sa_000008.jpg",
+     "iou_sinif0": 0.45738847518476444,
+     "kaplama": 0.16154541015625,
+     "yol_no": null,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000010.jpg",
+     "iou_sinif0": 0.8107751656830097,
+     "kaplama": 0.24340576171875,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000012.jpg",
+     "iou_sinif0": 0.8909226436972006,
+     "kaplama": 0.21765380859375,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000014.jpg",
+     "iou_sinif0": 0.94519254076916,
+     "kaplama": 0.28017578125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000016.jpg",
+     "iou_sinif0": 0.9241157556270096,
+     "kaplama": 0.2019775390625,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000018.jpg",
+     "iou_sinif0": 0.9305509029448488,
+     "kaplama": 0.60175048828125,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000020.jpg",
+     "iou_sinif0": 0.7576103318917111,
+     "kaplama": 0.3167529296875,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000022.jpg",
+     "iou_sinif0": 0.940969933658164,
+     "kaplama": 0.38506103515625,
+     "yol_no": 3,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    }
+   ]
+  },
+  "960": {
+   "iou_medyan": 0.889,
+   "kaplama_medyan": 0.2804,
+   "kaplama_azami": 0.5658,
+   "rota": 9,
+   "serit_dogru": 6,
+   "n": 12,
+   "kareler": [
+    {
+     "kare": "sa_000000.jpg",
+     "iou_sinif0": 0.8994157190425331,
+     "kaplama": 0.3276025390625,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000002.jpg",
+     "iou_sinif0": 0.8975163603794432,
+     "kaplama": 0.34347412109375,
+     "yol_no": 3,
+     "beklenen_serit": 3,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000004.jpg",
+     "iou_sinif0": 0.8468548566348078,
+     "kaplama": 0.22678466796875,
+     "yol_no": 1,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000006.jpg",
+     "iou_sinif0": 0.6057797507513928,
+     "kaplama": 0.12802001953125,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000008.jpg",
+     "iou_sinif0": 0.8323199138650967,
+     "kaplama": 0.302265625,
+     "yol_no": null,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "GORUS_HATTI_KOPUK"
+    },
+    {
+     "kare": "sa_000010.jpg",
+     "iou_sinif0": 0.9219482556182312,
+     "kaplama": 0.27856201171875,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000012.jpg",
+     "iou_sinif0": 0.9051253412757508,
+     "kaplama": 0.22148681640625,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000014.jpg",
+     "iou_sinif0": 0.9378696997602396,
+     "kaplama": 0.282294921875,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000016.jpg",
+     "iou_sinif0": 0.742003410352365,
+     "kaplama": 0.164541015625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000018.jpg",
+     "iou_sinif0": 0.8806747657911923,
+     "kaplama": 0.56582763671875,
+     "yol_no": 2,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000020.jpg",
+     "iou_sinif0": 0.5633563800123529,
+     "kaplama": 0.23491455078125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000022.jpg",
+     "iou_sinif0": 0.8973535147181725,
+     "kaplama": 0.36404052734375,
+     "yol_no": 3,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    }
+   ]
+  },
+  "1280": {
+   "iou_medyan": 0.7422,
+   "kaplama_medyan": 0.2216,
+   "kaplama_azami": 0.364,
+   "rota": 3,
+   "serit_dogru": 2,
+   "n": 12,
+   "kareler": [
+    {
+     "kare": "sa_000000.jpg",
+     "iou_sinif0": 0.8607904739196903,
+     "kaplama": 0.3111181640625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000002.jpg",
+     "iou_sinif0": 0.8278395289893337,
+     "kaplama": 0.3109521484375,
+     "yol_no": 3,
+     "beklenen_serit": 3,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000004.jpg",
+     "iou_sinif0": 0.8358110799270106,
+     "kaplama": 0.22380615234375,
+     "yol_no": 1,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000006.jpg",
+     "iou_sinif0": 0.6102681458633898,
+     "kaplama": 0.13237060546875,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000008.jpg",
+     "iou_sinif0": 0.6566080710971998,
+     "kaplama": 0.23298828125,
+     "yol_no": null,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000010.jpg",
+     "iou_sinif0": 0.6079229702108797,
+     "kaplama": 0.18531494140625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000012.jpg",
+     "iou_sinif0": 0.8818686676863381,
+     "kaplama": 0.21930908203125,
+     "yol_no": 2,
+     "beklenen_serit": 2,
+     "serit_dogru": true,
+     "kod": "ROTA"
+    },
+    {
+     "kare": "sa_000014.jpg",
+     "iou_sinif0": 0.49729972622802127,
+     "kaplama": 0.1513134765625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000016.jpg",
+     "iou_sinif0": 0.829452234531701,
+     "kaplama": 0.184384765625,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000018.jpg",
+     "iou_sinif0": 0.4217968970596091,
+     "kaplama": 0.27330322265625,
+     "yol_no": null,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000020.jpg",
+     "iou_sinif0": 0.2596201626489231,
+     "kaplama": 0.10588623046875,
+     "yol_no": null,
+     "beklenen_serit": 2,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    },
+    {
+     "kare": "sa_000022.jpg",
+     "iou_sinif0": 0.8781321812666606,
+     "kaplama": 0.36402587890625,
+     "yol_no": null,
+     "beklenen_serit": null,
+     "serit_dogru": false,
+     "kod": "UC_BANT_TEMAS_YOK"
+    }
+   ]
+  }
+ }
+}

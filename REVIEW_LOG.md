@@ -22602,3 +22602,35 @@ Genel kapı iki kolda GEÇTİ; `unittest discover` **1081 OK** (2 skip). Beş ü
 - **Gerçek Pixhawk yok:** uçtan uca ölçüm sahte `GLOBAL_POSITION_INT` ile yapıldı. Gerçek telemetride `lat/lon` alan adları ve ölçek (1e7) aynıdır (`inis_kaniti` zaten `relative_alt`'ı oradan okuyor), ama **saha teyidi yok**.
 - **Geofence'in kendisi** (uçuşu fiziksel olarak sınırlayan Pixhawk parametresi) hâlâ **repo dışı**; buradaki iş **tespit ve hakem bildirimi**dir, engelleme değil.
 - **Referans noktası saha günü elle girilir** — yanlış referans, yanlış ihlal demektir. Bu bir **insan yordamı** gereksinimidir ve saha kontrol listesine yazılmalıdır.
+
+---
+
+### D-308 · ✅ T163 — `CONTRACTS §8` ÜRETİMİ YASAKLIYORDU: çözünürlük sözleşmesi bayattı, ölçümle tazelendi ve kilitlendi (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §29 (yorum kuralı sonuç görülmeden). **Kanıt:** `results/t163/{olcum.json,olc.py}`. **Kapı:** `tests/test_t163_cozunurluk_sozlesmesi.py` **10/10**.
+
+#### 1. Kusur
+`CONTRACTS §8` kalın harflerle **"Çıkarım `imgsz` = 640. Değiştirmek güvenli DEĞİLDİR"** diyordu. Üretim **v27'den beri 512**'de koşuyor (`competition.imgsz`, `INFER_SIZE`, ONNX damgaları, kılavuz). Yani **sözleşme kendi üretimini yasaklıyordu**; sahadaki biri §8'i okuyup 640'a çevirseydi **kabul edilmemiş** bir çözünürlükte koşacaktı. Kılavuz bayatlığı T154/T157/T158 ile kapatılmıştı; **`CONTRACTS.md`ye bakan kapı yoktu.**
+
+#### 2. Ölçüm (v36, kabul kümesinden 12 kare, ölçek kare başına manifestten)
+| imgsz | IoU medyan | kaplama medyan / azami | ROTA | doğru şerit |
+|---|---:|---:|---:|---:|
+| **512 (ÜRETİM)** | **0,9063** | 0,309 / 0,609 | **12/12** | **8/12** |
+| 640 | 0,8903 | 0,296 / 0,573 | 11/12 | 7/12 |
+| 768 | **0,9099** | 0,263 / 0,602 | 9/12 | 6/12 |
+| 960 | 0,8890 | 0,280 / 0,566 | 9/12 | 6/12 |
+| 1280 | 0,7422 | 0,222 / 0,364 | 3/12 | 2/12 |
+
+**Hüküm (ön kayıtlı kural harfiyen):** 512 hem ROTA hem doğru şerit ekseninde en yüksek. IoU'da en iyi 768 ama fark **+0,0036** ve ön kayıttaki **±0,02 beraberlik bandının içinde**. → §8 **512 olarak tazelendi**; üretim `imgsz` **DEĞİŞMEDİ**.
+
+#### 3. 🔴 v17'nin "her yeri boyuyor" çöküşü v36'da TEKRARLANMIYOR
+§8'in tarihsel tablosu 960'ta kaplama **%96,1** ölçmüştü. Bugün hiçbir çözünürlükte kaplama **%90'ı geçmedi** (azami %61). Yani o risk **modele özgüydü**. Bugünkü risk farklıdır ve **büyük çözünürlükte kararın çökmesidir** (1280'de ROTA 12/12 → 3/12). Tarihsel tablo **silinmedi**, "TARİHSEL" etiketiyle duruyor — gerekçe değişti, kanıt zinciri korundu.
+
+#### 4. Kapı ve dar istisna
+Kapı §8'in beyan ettiği sayının **defterle** eşit olmasını kilitler. §8 kendi bayatlık kaydını taşıdığı ve eski cümleyi **alıntıladığı** için satır bazlı **dar istisna** tanımlandı (`TARİHSEL` / `DÜZELTİLDİ` / `diyordu` / `önceki hâli`). İstisna **genişleyemez**: işaret başka satırdaysa muafiyet **taşmaz** (`test_ISTISNA_GENIS_DEGIL`), işaretsiz bir `imgsz = 640` **yakalanır** (`test_ISARETSIZ_eski_cumle_YAKALANIR`). Ayrıca ölçüm dosyasının durduğu, §8.1 hükmünün sayılarla tutarlı kaldığı ve §8.2'deki "çöküş yok" cümlesinin **her çözünürlükte kaplama < %90** ile doğrulandığı kilitli — sayılar değişirse **cümle bayatlamadan kapı düşer**.
+
+#### 5. AÇIK GÖZLEM (hüküm değil, uydurma açıklama yazılmadı)
+Üretim çözünürlüğünde bile **doğru şerit 8/12**. T155 aynı ölçütü yer gerçekli 15 sahnede **15/15** ölçmüştü. İki küme **aynı değildir** (orası `results/t151` sahneleri, burası kabul kümesi val bölümü) ve fark **ölçülmedi**. Kayda geçirildi; ayrı iş.
+
+#### 6. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1091 OK** (2 skip).

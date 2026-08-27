@@ -924,9 +924,36 @@ görünür hata ve yeniden tetiklenebilir düğme; İKA mükerrer alımı idempo
 
 ## 8. Çözünürlük sözleşmesi
 
-> **Çıkarım `imgsz` = 640. Değiştirmek güvenli DEĞİLDİR.**
+> **Çıkarım `imgsz` = `config/model_registry.json → profiles.competition.imgsz`
+> (bugün **512**). Bu dosyada ÇIPLAK SAYI YAZILMAZ — kilit:
+> `tests/test_t163_cozunurluk_sozlesmesi.py`.**
 
-Ölçüldü (v17, arena `1.jpg`):
+🔴 **BU BÖLÜM 2026-08-27'DE DÜZELTİLDİ (T163 · D-308).** Önceki hâli kalın harflerle
+**"`imgsz` = 640; değiştirmek güvenli DEĞİLDİR"** diyordu — oysa üretim **v27'den beri
+512**'de koşuyordu. Yani sözleşme **kendi üretimini yasaklıyordu**; sahadaki bir kişi bu
+satırı okuyup 640'a çevirseydi **kabul edilmemiş** bir çözünürlükte koşacaktı. Bayatlık
+JETSON kılavuzunda T154/T157/T158 kapılarıyla kapatılmıştı; **bu dosyaya bakan kapı yoktu**,
+artık var.
+
+### 8.1 Bugünkü ölçüm (v36, kabul kümesinden 12 kare, ön kayıt §29)
+
+Ölçek her koşumda manifestten (kare başına); karar üretim zincirinin kendisi.
+Kanıt: `results/t163/{olcum.json,olc.py}`.
+
+| imgsz | sınıf 0 IoU (medyan) | kaplama (medyan / azami) | ROTA | doğru şerit |
+|---|---:|---:|---:|---:|
+| **512 (ÜRETİM)** | **0,9063** | 0,309 / 0,609 | **12/12** | **8/12** |
+| 640 | 0,8903 | 0,296 / 0,573 | 11/12 | 7/12 |
+| 768 | 0,9099 | 0,263 / 0,602 | 9/12 | 6/12 |
+| 960 | 0,8890 | 0,280 / 0,566 | 9/12 | 6/12 |
+| 1280 | 0,7422 | 0,222 / 0,364 | 3/12 | 2/12 |
+
+**Hüküm (ön kayıtlı kural, sonuca göre değiştirilmedi):** 512 hem **ROTA** hem **doğru
+şerit** ekseninde en yüksek; IoU'da en iyi 768'dir ama fark **+0,0036** ve ön kayıttaki
+**±0,02 beraberlik bandının** içindedir. Dolayısıyla **512 tazelenerek yazıldı**; üretim
+`imgsz` **DEĞİŞTİRİLMEDİ**.
+
+### 8.2 v17 dönemi ölçümü — TARİHSEL, SİLİNMEDİ
 
 | imgsz | IoU | kaplama |
 |---|---|---|
@@ -935,8 +962,19 @@ görünür hata ve yeniden tetiklenebilir düğme; İKA mükerrer alımı idempo
 | 1280 | 0,041 | %79,7 |
 | 1600 | 0,018 | %65,2 |
 
-`multi_scale` eğitimi (v20) bunu **düzeltmedi** (%96,1 → %90,7). FDA irtifası ≥30 m ve
-**değişken** olduğu için bu gerçek bir saha riskidir.
+`multi_scale` eğitimi (v20) bunu **düzeltmedi** (%96,1 → %90,7).
+
+⚠ **v17'nin "her yeri boyuyor" çöküşü v36'da TEKRARLANMIYOR:** 8.1'de hiçbir
+çözünürlükte kaplama %90'ı geçmedi (azami %61). Yani o tarihsel risk **modele
+özgüydü**; bugünkü risk farklıdır ve **büyük çözünürlükte kararın çökmesidir**
+(1280'de ROTA 12/12 → 3/12). FDA irtifası ≥30 m ve **değişken** olduğu için
+çözünürlüğü keyfî büyütmek hâlâ **saha riskidir** — ama gerekçe artık ölçülmüş
+olan budur, 2026-08 öncesinin gerekçesi değil.
+
+⚠ **AÇIK GÖZLEM (hüküm değil):** üretim çözünürlüğünde bile **doğru şerit 8/12**.
+T155 aynı ölçütü yer gerçekli 15 sahnede **15/15** ölçmüştü; bu iki küme aynı
+değildir (orası `results/t151` sahneleri, burası kabul kümesi val). Fark
+**ölçülmedi**, uydurulmuş bir açıklama da yazılmadı — ayrı iş.
 
 ---
 
