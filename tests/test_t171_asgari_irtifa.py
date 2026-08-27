@@ -208,6 +208,60 @@ class HakemEkraniGOSTERIYOR(unittest.TestCase):
                       "irtifa notu OPEN_ROUTE kabul yolunda cagrilmiyor")
 
 
+class UyariEKRANDA_DURUR(unittest.TestCase):
+    """T180 (D-323): uyari YALNIZ gunluge dusuyordu. Gunluk AKAN bir seritdir;
+    bu yontemin kendi sozlesmesi ise "hakem onaylamadan ONCE bunu gormelidir"
+    der. Uyari, ONAY DUGMESININ yaninda durmalidir."""
+
+    @staticmethod
+    def _ekran(alt=None):
+        from unittest import mock
+        o = object.__new__(yks_gui.YksArayuz)
+        o.tel = {"iha": ({} if alt is None else {"alt": alt})}
+        o.gunluk = []
+        o._logla = lambda metin, renk=None: o.gunluk.append(metin)
+        o.lbl_onay = mock.MagicMock()
+        return o
+
+    @staticmethod
+    def _etiket_metni(o):
+        if not o.lbl_onay.config.call_args_list:
+            return None
+        return o.lbl_onay.config.call_args_list[-1].kwargs.get("text")
+
+    def test_asgari_altinda_ETIKETE_yazilir(self):
+        o = self._ekran(alt=12.0)
+        o._irtifa_notunu_goster()
+        metin = self._etiket_metni(o)
+        self.assertIsNotNone(metin, "onay etiketine hic dokunulmadi — uyari "
+                                    "yalnizca akan gunlukte kalir")
+        self.assertIn("12.0 m", metin)
+        self.assertIn("5.3.2", metin)
+
+    def test_MUTASYON_asgari_USTUNDE_etiket_KIRLENMEZ(self):
+        """Etiket her hâlde yazilsaydi kapi bos olurdu: saglanan irtifada
+        onay etiketi 'hakem onayi bekleniyor' metnini KORUMALIDIR."""
+        o = self._ekran(alt=35.0)
+        o._irtifa_notunu_goster()
+        self.assertIsNone(self._etiket_metni(o),
+                          "irtifa saglanirken de uyari yazildi — hakem her "
+                          "tespitte kirmizi gorurse uyari anlamini yitirir")
+
+    def test_irtifa_BILINMIYORKEN_etiket_kirlenmez(self):
+        o = self._ekran(alt=None)
+        o._irtifa_notunu_goster()
+        self.assertIsNone(self._etiket_metni(o))
+        self.assertTrue(any("BİLİNMİYOR" in g for g in o.gunluk))
+
+    def test_etiket_YOKKEN_patlamaz(self):
+        """Ekran bileseni kurulmadan cagrilirsa (testler, erken kare) yontem
+        SESSIZCE calismaya devam etmeli — gunluk satiri yine dusmeli."""
+        o = self._ekran(alt=12.0)
+        del o.lbl_onay
+        self.assertIsNotNone(o._irtifa_notunu_goster())
+        self.assertTrue(any("5.3.2" in g for g in o.gunluk))
+
+
 class UyumRaporuDURUSTLESTI(unittest.TestCase):
     """YANLIS uyum iddiasi kayitta kalamaz."""
 

@@ -109,6 +109,40 @@ class BaslikSayidanTureniyor(unittest.TestCase):
         self.assertIn("_ss(self.HAZIRLIK_LIMIT)", pencere)
 
 
+class ElleYazilmisSureMetniYOK(unittest.TestCase):
+    """🔴 Kapinin IDDIA ETTIGI seyi GERCEKTEN olcen kontrol (demo denetimi
+    bunu eksik buldu: eski test yalniz `lbl_kron_iha.config` cevresine
+    bakiyordu, oysa WIDGET VARSAYILANLARINDA (`text="... / 15:00"`) uc tane
+    daha duruyordu)."""
+
+    # Widget metnine ELLE yazilmis "MM:SS": text="..." icinde saat bicimi.
+    DESEN = re.compile(r"""text\s*=\s*["'][^"']*\d{1,2}:\d{2}""")
+
+    @staticmethod
+    def _kod_satirlari(metin):
+        """Yorumlar TARIHSEL kayittir; canli metin sayilmaz."""
+        return [s for s in metin.splitlines() if not s.strip().startswith("#")]
+
+    def test_widget_varsayilanlarinda_elle_sure_YOK(self):
+        govde = chr(10).join(self._kod_satirlari(KAYNAK))
+        bulunan = self.DESEN.findall(govde)
+        self.assertEqual([], bulunan,
+                         f"kronometre metni ELLE yazilmis: {bulunan} — sozlesme "
+                         "degisse ekran ESKI sayiyi gosterir")
+
+    def test_kontrol_DESENI_calisiyor(self):
+        """Mutasyon: elle yazilmis bir metin gercekten yakalaniyor mu?"""
+        sahte = 'self.lbl.config(text="İHA saat --:-- / 15:00")'
+        self.assertTrue(self.DESEN.findall(sahte),
+                        "desen elle yazilmis sureyi yakalamiyor — kapi bos")
+
+    def test_yorumdaki_TARIHSEL_metin_muaf(self):
+        yorum = '        # eskiden text="İHA / 15:00" yaziyordu'
+        self.assertEqual([], self.DESEN.findall(
+            chr(10).join(self._kod_satirlari(yorum))),
+            "tarihsel kayit canli beyan sayildi")
+
+
 class FdaKipi(unittest.TestCase):
 
     def test_varsayilan_KAPALI(self):

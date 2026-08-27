@@ -23077,3 +23077,113 @@ Kullanıcının asıl ihtiyacı "ekran açıldığında sistem çalışıyor gö
 
 #### 5. Bozulmama
 Genel kapı iki kolda GEÇTİ; `unittest discover` **1163 OK** (2 skip).
+
+### D-323 · ✅ T175–T182 — hakem ekranı kaptan sunumuna hazırlandı: görevin İKİNCİ YARISI demo kipinde ULAŞILAMIYORDU, tatbikat ekranda YALAN SÖYLÜYORDU, besleme 10 dakikada ÖLÜYORDU (2026-08-27)
+
+**Kullanıcı (verbatim):** *"kaptana yarın gui yi göstereceğim herşey hazır olsun"*.
+
+**Yordam notu — bu kaydın tamamı aynı yöntemle bulundu:** ekran **açıldı**.
+D-321'in dersi (*"ekrana dokunan değişiklik, ekran açılmadan bitmiş sayılmaz"*)
+bu kez baştan uygulandı; sekiz kusurun **hiçbiri** kaynak okuyarak değil,
+GUI çalıştırılarak / gerçek besleme UDP'den dinlenerek bulundu.
+
+#### 1. T175 — görevin İKİNCİ YARISI demo kipinde ULAŞILAMIYORDU (🔴 en ağırı)
+Şartname §2.2.5 kilidi doğru kurulmuştu: **üretim `IHA_LANDED` kanıtı gelmeden
+İKA hareket edemez.** Ama `demo_besle` iniş kanıtını **hiç yayınlamıyordu** →
+`iha_landed_seq` hiç kurulmuyor → `İKA BAŞLAT` ve `HB TEMAS` demo kipinde
+**hiç açılmıyordu**. Yani İKA intikali, `İKA ALDI ✓` tiki, HB teması ve
+**600 puanlık "GÖREV BAŞARILI" anı** sunumda gösterilemiyordu.
+**Düzeltme BESLEMEDE, kilitte DEĞİL:** demo İHA, rota ACK'inden 6 sn sonra
+gerçek `iha_landed()` çerçevesini (RF kaybına karşı 4 tekrar) yayınlıyor.
+
+#### 2. T176 — bayatlık ASİMETRİKTİ
+T169 bayat tespitte düğmeyi **kapatıyor** ama veri geri gelince ancak **YENİ
+BİR seq** ile açıyordu. F2 (YKS kaybı) senaryosundan sonra hat dönse bile ekran
+"ölü" kalıyordu. Artık tazelik döndüğü anda düğme kendiliğinden geri kurulur
+(`_onay_dugmesini_tazele`), kutu yeşile döner ve günlüğe yazılır.
+
+#### 3. T177 — tatbikat ekranda YALAN SÖYLÜYORDU
+F4 "Batarya KRİTİK (<%15)" ve F5 "GNSS fix KAYBI" **yalnızca günlüğe**
+yazıyordu; telemetri paneli aynı anda **"12.6 V · 14 uydu"** göstermeye devam
+ediyordu. Ekranın kendi kendisiyle çelişmesi, tatbikatı izleyenin gözünde
+senaryoyu değil **sistemi** şüpheli yapar.
+Senaryolar artık beslemeye bağlı: `demo_durum["iha_bat"]`, `["iha_gnss"]`.
+**Ölçüldü (kaynak taraması değil, UDP'den okunarak):** sağlıklı `bat > 11,0 V`
+· `uydu ≥ 12` → F4/F5 sonrası `bat < 11,0` · `uydu = 0` · konum **donuyor**
+(fix yoksa konum güncellenemez) → anahtar geri açılınca toparlıyor.
+**Görsel kanıt:** `results/demo_hazirlik/07_f4_batarya.png` — bant
+"KRİTİK BATARYA", panel **10.5 V**. Aynı karede, düzeltmeden önce 12.6 V yazardı.
+
+#### 4. T178 — senaryo zamanlayıcıları birbirini İPTAL ETMİYORDU
+Her senaryo kendi 6–7 sn'lik geri dönüşünü kuruyordu. F1'e basıp 1 sn sonra
+F2'ye basılırsa **F1'in zamanlayıcısı, F2 hâlâ yürürlükteyken** bandı yeşil
+"OTONOM GÖREV"e çeviriyordu: bağlantı kesikken ekran "her şey yolunda" diyordu.
+Jeton (`_senaryo_no`) eklendi: geciken geri dönüş, kendisinden sonra bir
+senaryo başladıysa bandı **artık değiştirmez**.
+⚠ **Anahtarı geri açmak jetondan BAĞIMSIZ bırakıldı** — aksi hâlde üstü örtülen
+senaryonun kestiği telemetri **kalıcı** kesik kalırdı. Bu, düzeltmenin kendi
+üreteceği daha sinsi hataydı; ayrı kapıyla kilitlendi.
+
+#### 5. T179 — besleme 10 DAKİKADA SESSİZCE ÖLÜYORDU
+`demo_besle`'nin iki döngüsü de `while time.time() - t0 < 600` idi. Sunum 10
+dakikayı aşarsa (kaptana anlatırken **çok olası**) heartbeat kesilir, ekran
+"bağlantı yok"a düşer ve sistem **bozulmuş gibi görünür**. İş parçacıkları
+zaten daemon; sürecin ömrüyle biterler — sınırın işlevi **yoktu**. Kaldırıldı.
+Batarya değerlerine taban kondu (3 saatlik oturumda ekran "-1.2 V" yazmasın).
+
+#### 6. T180 — §5.3.2 uyarısı hakemin GÖRMEDİĞİ yerdeydi
+T171'in kendi sözleşmesi *"hakem onaylamadan ÖNCE bunu görmelidir"* diyordu ama
+uyarı **yalnız günlüğe** düşüyordu. Günlük **akan** bir şerittir; hakem tam o
+anda haritaya bakıyorsa uyarı gözünden kaçar. Uyarı artık **onay düğmesinin
+yanında** ve onay verilene dek **durur**.
+Kapı, tersini de sınıyor: irtifa **sağlanırken** etiket kirletilmez — her
+tespitte kırmızı gören hakem için uyarı anlamını yitirirdi.
+
+#### 7. T181 — üç düğme SESSİZCE hiçbir şey yapmıyordu
+`◀ Önceki` · `Sonraki ▶` · `Kaynak değiştir` düğmeleri **sol panelde**, yani
+harita görünümünde de ekranda duruyor; ama üçü de `if gorunum_adi != "algi":
+return` ile sessizce düşüyordu (K ve ok tuşları da). İzleyen için bu
+"düğme bozuk" demektir. Artık nedeni **ve çıkış yolu** yazılıyor.
+
+#### 8. T182 — `--help` YANLIŞ SÖYLÜYORDU
+Yardım metni varsayılan algı kaynağını `ALGI_KAYNAKLAR[0]` (= `kompozit`)
+üzerinden yazdırıyordu; oysa T161'den beri gerçek varsayılan
+`ALGI_VARSAYILAN_KAYNAK` (= `arena_kadraj`). Kullanıcıya **söylenen** ile
+**yapılan** ayrışmıştı. Varsayılan artık onu belirleyen sabitten okunur.
+Kapı, iki sabitin **gerçekten farklı** olduğunu da sınıyor (aynı olsalardı kapı
+hiçbir şey ölçmüyor olurdu).
+
+#### 9. 🔴 KENDİ KUSURUM — yazdığım kapı KARARSIZDI
+T177 kapısının ilk koşusu düştü, ikinci koşusu geçti. Kusur **üründe değil ölçü
+aletindeydi**: anahtar `False` yapıldığı anda besleme zaten hesaplanmış bir
+heartbeat'i gönderme aşamasında olabiliyor; o çerçeve hâlâ sağlıklı değerler
+taşır ve pencerenin ilk karesi olarak `all(...)` iddiasını düşürüyordu.
+**Kararsız kapı, düşen kapıdan kötüdür** — bir sonraki koşuda "geçti" der ve
+kimse bakmaz. Yerleşme süresi (1,5 sn > 0,5 sn besleme aralığı) eklendi;
+**5 ardışık koşu 5/5**.
+
+#### 10. Sunum provası — kaptanın önünde İLK KEZ denenmesin
+`results/demo_hazirlik/mutlu_yol.py`: Tk penceresi açılmadan, **gerçek besleme
+ve gerçek protokol yollarıyla** 8 adım koşulur — OPEN_ROUTE → hakem 1. onay →
+İKA ACK kanıtı → hakem 2. onay → IHA_LANDED → İKA BAŞLAT → IKA_GO ACK →
+HB TEMAS → GÖREV BAŞARILI. **8/8, 3 ardışık koşuda kararlı.**
+Prova yazılırken iki kendi hatam da buradan çıktı: (a) mesajları soketten
+kendim okumaya çalışıyordum, oysa GUI dinleyicisi `gelen` **kuyruğuna** koyar —
+prova artık **üretimin kendi sevk yolunu** kullanır; (b) sahte bileşen listesi
+elle yazılıydı, GUI'ye yeni düğme eklenince prova **kusuru değil kendi eksiğini**
+bildiriyordu — liste artık kaynaktan türetilir.
+
+#### 11. Kaptan sunumu betiği
+`results/demo_hazirlik/KAPTAN_SUNUMU.md` — 12 bölüm: hangi düğme, ekranda ne
+görünecek, hangi şartname maddesi, ne söylenecek; kurtarma tuşları; basılmaması
+gereken ceza düğmeleri; ve sunum öncesi 60 saniyelik kontrol. Betikteki tüm
+düğme/günlük metinleri **kaynaktan doğrulanarak** yazıldı (üç tanesi yanlıştı,
+düzeltildi).
+⚠ Betikte `kompozit` kaynağında rota çıkmadığı **açıkça** yazılı (T174 açık) —
+sunumda kaynak değiştirilmemeli.
+
+#### 12. Bozulmama
+`unittest discover -s tests` **1192 OK** (2 skip; T173 sonrası 1163 → +29).
+Genel kapı (madde 14) iki kolda **GEÇTİ**: kol1 15/15 · kol2 şerit 15/15.
+Prova **MUTLU YOL TAM**. Jetson paket aynası (`karar_sozlesmesi.py`,
+`rpi_inference.py`) senkron — GUI aynada yok, mimarî olarak yer istasyonudur.

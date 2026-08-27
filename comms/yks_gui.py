@@ -35,7 +35,8 @@ from tkinter import font as tkfont
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
 from komut_tekrar import AckliTekrar, ONAYLANDI, VAZGECILDI
-from protocol import (encode, ack, command, heartbeat, open_route,
+from protocol import (encode, ack, command, heartbeat, iha_landed,
+                      open_route,
                       FrameReader, ROAD_LABEL)
 
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
@@ -217,7 +218,13 @@ class YksArayuz:
         self.gelen = queue.Queue()
         self.otomatik_onay = otomatik_onay
         self.demo = demo
-        self.demo_durum = {"iha_hb": True, "ika_hb": True}   # senaryo anahtarları
+        # Senaryo anahtarları — TRUE = SAĞLIKLI. F2/F3 haberleşmeyi, F4/F5 ise
+        # TELEMETRİYİ keser. 🔴 T177 (D-323): F4/F5 eskiden yalnız GÜNLÜĞE
+        # yazıyordu; panel aynı anda "12.6 V · 14 uydu" göstermeye devam
+        # ediyordu. Ekranın kendi kendisiyle çelişmesi, tatbikatı izleyenin
+        # gözünde senaryoyu değil SİSTEMİ şüpheli yapar.
+        self.demo_durum = {"iha_hb": True, "ika_hb": True,
+                           "iha_bat": True, "iha_gnss": True}
 
         self.rota = None            # son OPEN_ROUTE mesajı
         # T169 · §6.2: tespitin YAŞI. Şartname "gerçek zamanlı" der; bayat bir
@@ -306,6 +313,19 @@ class YksArayuz:
                  fg=METIN, bg=BG).pack(side="left")
         self.lbl_saat = tk.Label(ust, text="", font=self.f_orta, fg=SOLUK, bg=BG)
         self.lbl_saat.pack(side="right")
+        # 🔴 T178 (D-323): uc kronometre kalabalik ALT satirda duruyordu ve IHA
+        # olani HER DPI olceginde KIRPILIYORDU ("IA ⏱ --:-- / 15:0("). Sure
+        # butcesi sartname §6.2/§5.3.2'nin puanlanan eksenidir ve operatorun
+        # BAKTIGI yerde, kirpilmadan durmalidir. Ust serit bostu; buraya alindi.
+        self.lbl_kron_iha = tk.Label(ust, text="", font=self.f_orta,
+                                     fg=SOLUK, bg=BG)
+        self.lbl_kron_iha.pack(side="right", padx=(0, 18))
+        self.lbl_kron_ika = tk.Label(ust, text="", font=self.f_orta,
+                                     fg=SOLUK, bg=BG)
+        self.lbl_kron_ika.pack(side="right", padx=(0, 18))
+        self.lbl_kron_haz = tk.Label(ust, text="", font=self.f_orta,
+                                     fg=SOLUK, bg=BG)
+        self.lbl_kron_haz.pack(side="right", padx=(0, 18))
 
         # Yazılım zinciri şeridi (parçaların bağlantısı)
         zincir = tk.Frame(self.kok, bg=PANEL, highlightbackground=CIZGI, highlightthickness=1)
@@ -518,9 +538,6 @@ class YksArayuz:
         self.btn_hazir = gbuton(satir1, "TAKIM HAZIR", self.takim_hazir, aktif=False)
         self.btn_mudahale = gbuton(satir1, "MÜDAHALE (−100)", self.mudahale,
                                    aktif=False)
-        self.lbl_kron_haz = tk.Label(satir1, text="HAZIRLIK ⏱ --:-- / 15:00",
-                                     font=self.f_orta, fg=SOLUK, bg=PANEL)
-        self.lbl_kron_haz.pack(side="right", padx=10)
         self.lbl_ceza = tk.Label(satir1, text="CEZA Σ 0", font=self.f_orta,
                                  fg=SOLUK, bg=PANEL)
         self.lbl_ceza.pack(side="right", padx=10)
@@ -540,22 +557,24 @@ class YksArayuz:
         self.lbl_ika_go = tk.Label(satir2, text="İKA_GO: —",
                                    font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_ika_go.pack(side="left", padx=10)
-        self.lbl_kron_ika = tk.Label(satir2, text="İKA ⏱ --:-- / 10:00",
-                                     font=self.f_orta, fg=SOLUK, bg=PANEL)
-        self.lbl_kron_ika.pack(side="right", padx=10)
-        self.lbl_kron_iha = tk.Label(satir2, text="İHA ⏱ --:-- / 15:00",
-                                     font=self.f_orta, fg=SOLUK, bg=PANEL)
-        self.lbl_kron_iha.pack(side="right", padx=10)
 
         # kısayollar ("hile tuşları")
         for i, kod in enumerate(("rc", "yks", "ika", "bat", "gnss", "algi"), 1):
             self.kok.bind(f"<F{i}>", lambda e, k=kod: self.senaryo(k))
-        self.kok.bind("<KeyPress-n>", lambda e: self.yeni_tespit())
-        self.kok.bind("<KeyPress-r>", lambda e: self.onay_sifirla())
-        self.kok.bind("<KeyPress-a>", lambda e: self.arm_degistir())
-        self.kok.bind("<KeyPress-v>", lambda e: self.gorunum(
+        # 🔴 T177 (D-323): kisayollar YALNIZ kucuk harfe bagliydi. Caps Lock
+        # acikken ya da Shift basiliyken BESI BIRDEN sessizce oluyordu — sunum
+        # sirasinda tusa basip hicbir sey olmamasi "bozuk" izlenimi verir.
+        # Her kisayol IKI harf durumuna da baglanir.
+        def _kisayol(harf, islev):
+            self.kok.bind(f"<KeyPress-{harf.lower()}>", lambda e: islev())
+            self.kok.bind(f"<KeyPress-{harf.upper()}>", lambda e: islev())
+
+        _kisayol("n", self.yeni_tespit)
+        _kisayol("r", self.onay_sifirla)
+        _kisayol("a", self.arm_degistir)
+        _kisayol("v", lambda: self.gorunum(
             "algi" if self.gorunum_adi == "harita" else "harita"))
-        self.kok.bind("<KeyPress-k>", lambda e: self.algi_kaynak_degistir())
+        _kisayol("k", self.algi_kaynak_degistir)
         self.kok.bind("<Left>", lambda e: self.algi_onceki())
         self.kok.bind("<Right>", lambda e: self.algi_sonraki())
 
@@ -1074,6 +1093,29 @@ class YksArayuz:
         """Geçerli rota seq'i için İKA'dan OPEN_ROUTE ACK görüldü mü?"""
         return bool(self.rota) and self.rota["seq"] in self.ika_rota_ack
 
+    def _onay_dugmesini_tazele(self):
+        """Bayatlik kalkinca onay dugmesini DOGRU asamaya geri kur (T176).
+
+        Iki asamali akista (sartname §2.2.3) dugmenin hâli, tespitin hangi
+        asamada oldugunu yansitmali: henuz dogrulanmadiysa 1. asama, tespit
+        dogrulandiysa 2. asama (kaniti varsa aktif, yoksa gerekceyle pasif).
+        Onay TAMAMLANDIYSA dugmeye DOKUNULMAZ.
+        """
+        if self.onaylandi or not self.rota or self.rota_yok:
+            return
+        btn = getattr(self, "btn_onay", None)
+        if btn is None:
+            return
+        if self.tespit_onayli:
+            self._aktarim_onay_dugmesini_kur()
+            return
+        btn.config(state="normal", bg=SARI,
+                   text="1) TESPİTİ DOĞRULA (§2.2.3)")
+        etiket = getattr(self, "lbl_onay", None)
+        if etiket is not None:
+            etiket.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
+                               "gönderimde (ACK yok)", fg=SARI)
+
     def _aktarim_onay_dugmesini_kur(self):
         """Tespit onaylandıktan sonra 2. düğmenin hâli: kanıt varsa aktif,
         yoksa PASİF + gerekçe metni (kanıt gelince `_ack_isle` yeniden çağırır)."""
@@ -1132,54 +1174,90 @@ class YksArayuz:
     def senaryo(self, kod):
         if not self.demo:
             return
+        # 🔴 T178 (D-323): her senaryo kendi geri-dönüş zamanlayıcısını kuruyor
+        # ve hiçbiri diğerini İPTAL ETMİYORDU. F1'e basıp 1 sn sonra F2'ye
+        # basılırsa, F1'in 6 sn'lik zamanlayıcısı F2 HÂLÂ YÜRÜRLÜKTEYKEN bandı
+        # yeşil "OTONOM GÖREV"e çeviriyordu: bağlantı kesikken ekran "her şey
+        # yolunda" diyordu. Jeton ile: geciken geri-dönüş, kendisinden SONRA
+        # bir senaryo başladıysa bandı ARTIK değiştirmez.
+        # ⚠ Anahtarı geri açmak jetondan BAĞIMSIZDIR — aksi hâlde üstü örtülen
+        # senaryonun kestiği telemetri KALICI kesik kalır.
+        self._senaryo_no = getattr(self, "_senaryo_no", 0) + 1
+        no = self._senaryo_no
+
+        def band_geri():
+            """Bandı normale döndür — YALNIZ bu senaryo hâlâ güncelse."""
+            if no != self._senaryo_no:
+                return False
+            self._ucus_normal()
+            return True
+
         if kod == "rc":
             self._logla("SENARYO · Kumanda (RC) bağlantısı KESİLDİ", "sari")
             self._logla("  → Görev tam otonom (AUTO): uçuş KESİNTİSİZ sürer.", "soluk")
             self._logla("  → Kumanda yalnız emniyet pilotu yetkisidir; şartname", "soluk")
             self._logla("    gereği manuel müdahale zaten uçuşu geçersiz kılar.", "soluk")
             self._ucus("RC YOK — OTONOM GÖREVE DEVAM (AUTO)", SARI)
-            self.kok.after(6000, lambda: (
-                self._ucus_normal(),
-                self._logla("RC bağlantısı geri geldi — uçuş kipi değişmedi", "yesil")))
+
+            def rc_geri():
+                self._logla("RC bağlantısı geri geldi — uçuş kipi değişmedi", "yesil")
+                band_geri()
+            self.kok.after(6000, rc_geri)
         elif kod == "yks":
             self.demo_durum["iha_hb"] = False
             self._logla("SENARYO · İHA↔YKS telsiz bağlantısı KESİLDİ", "sari")
             self._logla("  → İHA: tekrar gönderim + >3 sn'de güvenli bölgede", "soluk")
             self._logla("    LOITER; kesinti uzarsa OTONOM paraşütle iniş.", "soluk")
             self._ucus("BAĞLANTI KAYBI — GÜVENLİ BÖLGEDE LOITER", KIRMIZI)
+
             def yks_geri():
-                self.demo_durum["iha_hb"] = True
-                self._ucus_normal()
+                self.demo_durum["iha_hb"] = True          # anahtar HER HÂLDE geri
                 self._logla("İHA bağlantısı DÖNDÜ — göreve devam", "yesil")
+                band_geri()
             self.kok.after(7000, yks_geri)
         elif kod == "ika":
             self.demo_durum["ika_hb"] = False
             self._logla("SENARYO · İKA bağlantısı KESİLDİ", "sari")
             self._logla("  → İKA failsafe (ika_receiver.py — GERÇEK davranış):", "soluk")
             self._logla("    GÜVENLİ DURMA; rota önbelleği KORUNUR.", "soluk")
+
             def ika_geri():
                 self.demo_durum["ika_hb"] = True
                 self._logla("İKA bağlantısı DÖNDÜ — kaldığı waypoint'ten devam", "yesil")
             self.kok.after(7000, ika_geri)
         elif kod == "bat":
+            self.demo_durum["iha_bat"] = False       # T177: panel de DÜŞSÜN
             self._logla("SENARYO · Batarya KRİTİK (<%15)", "sari")
             self._logla("  → RTH + İHA-İB üzerinde OTONOM paraşüt inişi", "soluk")
             self._logla("    (manuel tetik -50 ceza; bu yüzden tetik otonom).", "soluk")
             self._ucus("KRİTİK BATARYA — RTH + OTONOM PARAŞÜT (İHA-İB)", KIRMIZI)
-            self.kok.after(7000, self._ucus_normal)
+
+            def bat_geri():
+                self.demo_durum["iha_bat"] = True
+                self._logla("Batarya paketi değişti — telemetri normale döndü",
+                            "yesil")
+                band_geri()
+            self.kok.after(7000, bat_geri)
         elif kod == "gnss":
+            self.demo_durum["iha_gnss"] = False      # T177: uydu sayısı 0'a düşer
             self._logla("SENARYO · GNSS fix KAYBI", "sari")
             self._logla("  → Barometrik irtifa tutuşu + yeniden fix bekleme;", "soluk")
             self._logla("    süre kritikleşirse otonom paraşütle güvenli iniş.", "soluk")
             self._ucus("GNSS YOK — BAROMETRİK TUTUŞ, FIX BEKLENİYOR", SARI)
-            self.kok.after(7000, self._ucus_normal)
+
+            def gnss_geri():
+                self.demo_durum["iha_gnss"] = True
+                self._logla("GNSS fix GERİ GELDİ — konum yeniden güncelleniyor",
+                            "yesil")
+                band_geri()
+            self.kok.after(7000, gnss_geri)
         elif kod == "algi":
             self._logla("SENARYO · Görüntü işleme zaman aşımı (>30 sn tespit yok)", "sari")
             self._logla("  → Tarama deseni BİR KEZ yinelenir; yine yoksa YKS'ye", "soluk")
             self._logla("    'TESPİT YOK' bildirilir (yanlış yönlendirme yasak;", "soluk")
             self._logla("    rota sağlamlık süzgeci <3 waypoint'te göndermez).", "soluk")
             self._ucus("ALGI ZAMAN AŞIMI — TARAMA YİNELENİYOR", SARI)
-            self.kok.after(7000, self._ucus_normal)
+            self.kok.after(7000, band_geri)
 
     def _rota_analiz(self, m):
         """Segment bazlı eksen değişimi tablosu: Δx/Δy, uzunluk, yön, dönüş."""
@@ -1490,20 +1568,36 @@ class YksArayuz:
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
             self._algi_iste()
 
+    def _algi_gorunumu_sart(self, ne):
+        """ALGI gezinme komutlari yalniz ALGI gorunumunde anlamlidir.
+
+        🔴 T181 (D-323): uc komut da `if self.gorunum_adi != "algi": return`
+        ile SESSIZCE dusuyordu. Oysa uc dugme de (◀ Onceki · Sonraki ▶ ·
+        Kaynak degistir) SOL PANELDE, yani harita gorunumunde de EKRANDA
+        DURUYOR; basilinca hicbir sey olmuyordu — ayni sey K ve ok tuslari
+        icin de gecerliydi. Izleyen icin bu "dugme bozuk" demektir.
+        Sessiz sifir yasak: calismama NEDENI ve cikis yolu yazilir.
+        """
+        if self.gorunum_adi == "algi":
+            return True
+        self._logla(f"{ne} yalnız CANLI ALGI görünümünde çalışır — "
+                    "V tuşu (veya CANLI ALGI düğmesi) ile geçin", "sari")
+        return False
+
     def algi_sonraki(self):
-        if self.gorunum_adi != "algi":
+        if not self._algi_gorunumu_sart("Sonraki ▶ (→)"):
             return
         self.algi_idx += 1
         self._algi_iste()
 
     def algi_onceki(self):
-        if self.gorunum_adi != "algi":
+        if not self._algi_gorunumu_sart("◀ Önceki (←)"):
             return
         self.algi_idx -= 1
         self._algi_iste()
 
     def algi_kaynak_degistir(self):
-        if self.gorunum_adi != "algi":
+        if not self._algi_gorunumu_sart("Kaynak değiştir (K)"):
             return
         sira = self.ALGI_KAYNAKLAR
         self.algi_kaynak = sira[(sira.index(self.algi_kaynak) + 1) % len(sira)]
@@ -1910,6 +2004,20 @@ class YksArayuz:
         m = open_route(road=yol, conf=round(random.uniform(0.72, 0.97), 2),
                        ref_xy=[25.0, 2.0], waypoints=wps)
         self._logla(f"(demo) yeni tespit üretildi — yol {yol}", "mavi")
+        # 🔴 T179 (D-323): uretilen cerceve YALNIZ ekrana enjekte ediliyordu;
+        # IKA onu HIC gormuyordu, dolayisiyla K8'in istedigi "IKA ALDI" ACK
+        # kaniti ASLA gelmiyor ve 2. onay asamasi KALICI kilitleniyordu.
+        # Cerceve artik IKA'ya da GERCEK soketten gider — kanit yolu ayni.
+        _ika = self.son_adr.get("ika") or self.sabit_adr.get("ika")
+        if _ika is not None:
+            try:
+                self.link.send(encode(m), _ika)
+            except Exception as exc:
+                self._logla(f"(demo) İKA'ya iletilemedi: "
+                            f"{type(exc).__name__}: {exc}", "sari")
+        else:
+            self._logla("(demo) İKA adresi henüz bilinmiyor — 2. onay için "
+                        "İKA ACK kanıtı gelmeyebilir", "sari")
         self._mesaj_isle(m, ("127.0.0.1", self.link.port))
 
     def onay_sifirla(self):
@@ -1960,9 +2068,36 @@ class YksArayuz:
         self._logla(f"CMD → {hedef_dugum}: {cmd}", "mavi")
         return komut_mesaji["seq"]
 
+    # T180 (D-323): ucus surerken TEYITSIZ DISARM. Tek 'a' tusu ya da tek tik
+    # ucan araca DISARM yolluyordu ve ekran ayni anda "OTONOM GOREV (AUTO)" ile
+    # "DISARM — guvenli" diyordu. Modal pencere ACILMAZ (demo akisini kilitler);
+    # bunun yerine IKI ADIMLI teyit: ilk basis uyarir, ikincisi gonderir.
+    DISARM_TEYIT_SURESI_S = 4.0
+
+    def _iha_havada_mi(self):
+        """Heartbeat canli ve inis kaniti YOKSA arac havada sayilir."""
+        # `__init__` kosmadan kurulan orneklerde (testler) oznitelik olmayabilir;
+        # eksiklik "inis kaniti YOK" demektir, AttributeError degil.
+        if getattr(self, "iha_landed_seq", None) is not None:
+            return False
+        t = (getattr(self, "son_hb", None) or {}).get("iha")
+        return t is not None and (time.time() - t) < 3.0
+
     def arm_degistir(self):
         yeni_arm_acik = not self.arm_acik
         komut = "ARM" if yeni_arm_acik else "DISARM"
+        if komut == "DISARM" and self._iha_havada_mi():
+            simdi = time.time()
+            bekleyen = getattr(self, "_disarm_teyit_t", 0.0)
+            if simdi - bekleyen > self.DISARM_TEYIT_SURESI_S:
+                self._disarm_teyit_t = simdi
+                self.btn_arm.config(text="DISARM? TEKRAR BAS", bg=SARI)
+                self._logla(
+                    "⚠ İHA HAVADA (heartbeat canlı, iniş kanıtı yok) — DISARM "
+                    f"gönderilmedi. Onaylamak için {self.DISARM_TEYIT_SURESI_S:.0f} "
+                    "sn içinde TEKRAR bas.", "sari")
+                return
+            self._disarm_teyit_t = 0.0
         if not self._cmd_gonder(komut, "iha"):
             return
         self.arm_acik = yeni_arm_acik
@@ -2168,6 +2303,17 @@ class YksArayuz:
                         f"{SARTNAME_ASGARI_IRTIFA_M:.0f} m sağlanıyor", "soluk")
             return None
         self._logla(f"⚠ {not_[1]}", "sari")
+        # 🔴 T180 (D-323): uyarı YALNIZ günlüğe düşüyordu. Oysa bu yöntemin
+        # kendi sözleşmesi "hakem onaylamadan ÖNCE bunu görmelidir" der.
+        # Günlük AKAN bir şerittir: hakem tam o anda haritaya bakıyorsa uyarı
+        # gözünden kaçar ve §5.3.2'yi karşılamayan bir tespiti onaylar.
+        # Uyarı, ONAY DÜĞMESİNİN yanında ve onay verilene dek DURUR.
+        etiket = getattr(self, "lbl_onay", None)
+        if etiket is not None:
+            etiket.config(
+                text=(f"⚠ ASGARİ İRTİFA ALTI: {float(irtifa):.1f} m < "
+                      f"{SARTNAME_ASGARI_IRTIFA_M:.0f} m (§5.3.2) — "
+                      "hakem onayı BEKLENİYOR"), fg=KIRMIZI)
         return not_
 
     def _tespiti_yaslandir(self, simdi=None):
@@ -2209,6 +2355,16 @@ class YksArayuz:
             return False        # damga YOK -> hüküm verilmez (hükümsüz)
         yas = min(yaslar)
         bayat = yas > YKS_TESPIT_TAZELIK_S
+        # 🔴 T176 (D-323): BAYATLIK SIMETRIK OLMALI. Once yalniz KAPATIYORDU;
+        # veri geri gelince dugme ancak YENI BIR seq ile aciliyordu. F2 (YKS
+        # kaybi) senaryosundan sonra hat donse bile ekran "olu" kaliyordu.
+        # Artik tazelik dondugu anda dugme KENDILIGINDEN geri kurulur.
+        if not bayat and self.tespit_bayat:
+            self.tespit_bayat = False
+            self._kutu_yaz("protokol", renk=YESIL)
+            self._onay_dugmesini_tazele()
+            self._logla("✓ Tespit yeniden TAZE — hakem onayı yeniden açıldı "
+                        "(§6.2 gerçek zamanlı aktarım sürüyor)", "yesil")
         # Onaylanmış tespit SONRADAN bayat işaretlenmez: onay TAZEYKEN verildi,
         # sonradan sarıya boyamak hakemi yanıltır (D-321).
         if bayat and not self.tespit_bayat and not self.onaylandi:
@@ -2290,6 +2446,12 @@ class YksArayuz:
 
 
 # ── Demo beslemesi: gerçek protokolle sahte İHA + İKA ────────────────────────
+# T175 · D-323: demo IHA'si rota ACK'inden bu kadar sonra "iner" ve inis
+# kanitini yayinlar. Sunucunun aktarimi ekranda gorup anlatmasina zaman birakir;
+# saha davranisini taklit eder (once aktarim, sonra inis — sartname §2.2.4).
+INIS_GECIKME_S = 6.0
+
+
 def demo_besle(yks_port, durum):
     """Aynı comms primitifleriyle İHA/İKA davranışını üretir (tanıtım için).
     İHA: 1 Hz heartbeat + ACK gelene dek OPEN_ROUTE tekrar gönderimi.
@@ -2306,28 +2468,61 @@ def demo_besle(yks_port, durum):
             waypoints=[[0.6, 4.5], [-0.8, 9.0], [1.2, 14.0], [-0.4, 19.5],
                        [1.8, 25.0], [0.2, 31.0], [-1.0, 37.0], [0.0, 44.0]])
         onay = False
+        onay_t = 0.0
+        indi = False           # T175: inis kaniti bir kez yayinlanir
         t0 = time.time()
         sonra = t0 + 3.0                                   # 3 sn tarama süsü
         son_tx = 0.0
-        while time.time() - t0 < 600:
+        son_xy = (150.0, 150.0)        # GNSS kaybinda konum DONAR
+        # 🔴 T179 (D-323): burada `while time.time() - t0 < 600` yaziyordu —
+        # besleme 10 DAKIKADA SESSIZCE OLUYORDU. Sunum 10 dakikayi asarsa
+        # (kaptana anlatirken cok olasi) heartbeat kesilir, ekran "baglanti
+        # yok"a duser ve sistem BOZULMUS gibi gorunur. Is parcaciklari daemon;
+        # surec kapaninca zaten olurler — sure sinirinin islevi YOKTU.
+        while True:
             if durum["iha_hb"]:                            # YKS-kaybı senaryosu keser
                 sn = time.time() - t0
+                # Batarya taban degeri: uzun sunumda eksiye dusmesin (aksi
+                # halde ekran 3 saat sonra "-1.2 V" gosterirdi).
+                if durum.get("iha_bat", True):
+                    bat = round(max(11.1, 12.6 - 0.0012 * sn), 2)
+                else:                                      # F4: KRITIK (<%15)
+                    bat = round(10.4 + 0.10 * math.sin(sn / 4), 2)
+                if durum.get("iha_gnss", True):            # F5: fix yok -> 0 uydu
+                    uydu = 14 + int(sn / 7) % 3
+                    son_xy = (round(150 + 85 * math.cos(sn / 11), 1),
+                              round(150 + 62 * math.sin(sn / 11), 1))
+                else:
+                    uydu = 0                               # konum guncellenmez
                 hb = heartbeat("iha")                      # ek telemetri alanları:
                 hb.update(alt=round(30 + 1.8 * math.sin(sn / 5), 1),
                           hiz=round(16.5 + 1.2 * math.sin(sn / 3.7), 1),
-                          bat=round(12.6 - 0.0012 * sn, 2),
-                          uydu=14 + int(sn / 7) % 3,
+                          bat=bat, uydu=uydu,
                           mod="AUTO",                      # tam otonomi (§6.2)
-                          x=round(150 + 85 * math.cos(sn / 11), 1),
-                          y=round(150 + 62 * math.sin(sn / 11), 1))
+                          x=son_xy[0], y=son_xy[1])
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:
                     link.send(encode(rota), hedef)         # ACK yok → tekrar
                     link.send(encode(rota), ika_hedef)     # İKA ACK'ı YKS'ye yansır
                     son_tx = time.time()
+            # 🔴 T175 (D-323): rota aktarimi ACK'lendikten sonra IHA INER ve
+            # inis kanitini GERCEK protokol cercevesiyle yayinlar. Bu olmadan
+            # `iha_landed_seq` hic kurulmuyordu ve sartname §2.2.5 kilidi
+            # (IHA yere temas etmeden IKA hareket edemez) demo kipinde KALICI
+            # RET veriyordu: IKA BASLAT ve HB TEMAS hic acilmiyor, gorevin
+            # IKINCI YARISI ulasilamiyordu. Kilit DOGRU; eksik olan besleme
+            # idi — bu yuzden duzeltme BESLEMEDE, kilitte DEGIL.
+            if onay and not indi and time.time() - onay_t >= INIS_GECIKME_S:
+                inis = iha_landed()
+                for _ in range(4):                 # RF kaybina karsi tekrar
+                    link.send(encode(inis), hedef)
+                    time.sleep(0.15)
+                indi = True
             d, _ = link.recv()
             for m in reader.feed(d) if d else []:
                 if m.get("type") == "ACK" and m.get("ref") == rota["seq"]:
+                    if not onay:
+                        onay_t = time.time()
                     onay = True
             time.sleep(0.5)
 
@@ -2335,11 +2530,11 @@ def demo_besle(yks_port, durum):
         link = ika_link
         receiver = IkaReceiver(link, yks_peer=hedef)     # K8: rota ACK kopyası
         t0 = time.time()
-        while time.time() - t0 < 600:
+        while True:                                        # T179: sure siniri YOK
             if durum["ika_hb"]:                            # İKA-kaybı senaryosu keser
                 sn = time.time() - t0
                 hb = heartbeat("ika")
-                hb.update(hiz=0.0, bat=round(11.9 - 0.0008 * sn, 2),
+                hb.update(hiz=0.0, bat=round(max(11.0, 11.9 - 0.0008 * sn), 2),
                           uydu=12 + int(sn / 9) % 3, mod="AUTO")
                 link.send(encode(hb), hedef)
             # Demo da gerçek alıcı yolunu kullanır; IKA_GO latch + ACK yalnız
@@ -2362,6 +2557,11 @@ def main():
                     help="dahili İHA/İKA beslemesi (tanıtım + otomatik hakem onayı)")
     ap.add_argument("--otokaydet", type=float, default=0,
                     help="N sn sonra pencere görüntüsünü PNG kaydet (rapor için)")
+    ap.add_argument("--senaryo", choices=("rc", "yks", "ika", "bat", "gnss",
+                                          "algi"),
+                    help="demo kipinde SS'den 3 sn önce bu acil durum "
+                         "senaryosunu tetikle (tatbikatın ekrandaki etkisi "
+                         "kanıtlanabilsin diye)")
     ap.add_argument("--kaydet-yolu", default="yks_ekran.png")
     ap.add_argument("--kapat", action="store_true", help="otokaydet sonrası çık")
     # T80 · ⚠ VARSAYILANLAR DEĞİŞMEDİ: ikisi de `None`, yani verilmezse ekran
@@ -2370,10 +2570,14 @@ def main():
     # hakeme gösterir (D-53/D-90); orada `ZEMIN_MASKESI_SUPHELI` MEŞRUDUR
     # (D-118, görselle doğrulandı: model binanın çatısını zemin sayıyor).
     # Bu görev yalnız SEÇİLEBİLİR yapar, varsayılanı taşımaz.
+    # 🔴 T182 (D-323): yardim metni varsayilani `ALGI_KAYNAKLAR[0]`dan
+    # (= "kompozit") turetiyordu; oysa T161'den beri gercek varsayilan
+    # `ALGI_VARSAYILAN_KAYNAK` (= "arena_kadraj"). `--help` YANLIS soyluyordu.
+    # Varsayilan, ONU BELIRLEYEN sabitten okunur — baska hicbir yerden.
     ap.add_argument("--kaynak", choices=YksArayuz.ALGI_KAYNAKLAR,
                     help="canlı algı açılış kaynağı (varsayılan: "
-                         f"{YksArayuz.ALGI_KAYNAKLAR[0]}); geçerli değerler "
-                         "ALGI_KAYNAKLAR'dan okunur")
+                         f"{YksArayuz.ALGI_VARSAYILAN_KAYNAK}); geçerli "
+                         "değerler ALGI_KAYNAKLAR'dan okunur")
     ap.add_argument(
         "--fda", action="store_true",
         help=("şartname §5.3.2 'Drone ile Görev Test Uçuşu' kipi: İHA "
@@ -2437,6 +2641,16 @@ def main():
     if args.gorunum:
         app.gorunum(GORUNUM_SECENEKLERI[args.gorunum])
         app._logla(f"Açılış görünümü (--gorunum): {args.gorunum}", "mavi")
+
+    if args.senaryo:
+        # Senaryolar YALNIZ demo kipinde etkindir (`senaryo()` kendi de
+        # korur); burada da sessiz kalmamak icin sebebi yazariz.
+        if not args.demo:
+            app._logla("--senaryo YOKSAYILDI: yalnız --demo kipinde çalışır",
+                       "sari")
+        else:
+            gecikme = max(0.5, args.otokaydet - 3.0) if args.otokaydet > 0 else 3.0
+            kok.after(int(gecikme * 1000), lambda: app.senaryo(args.senaryo))
 
     if args.otokaydet > 0:
         # SS modunda pencere HEP önde olsun — yoksa arkadaki pencere yakalanır
