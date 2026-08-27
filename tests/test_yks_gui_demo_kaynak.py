@@ -20,7 +20,7 @@ import yks_gui  # noqa: E402
 
 
 class DemoAlgiKaynagiTests(unittest.TestCase):
-    def test_demo_ilk_algi_istegi_kompozit_kumesinden_gelir(self):
+    def test_kompozit_listeleme_ve_acilis_kaynagi_sozlesmesi(self):
         sahte_kok = (KOK / "temiz_klon_t29").resolve()
         sahte_modul = sahte_kok / "comms" / "yks_gui.py"
         kaynak_koku = (sahte_kok.joinpath(
@@ -46,7 +46,14 @@ class DemoAlgiKaynagiTests(unittest.TestCase):
             arayuz.lbl_algi_bilgi = mock.Mock()
 
             self.assertTrue(arayuz.demo)
-            self.assertEqual("kompozit", arayuz.algi_kaynak)
+            # T173 · D-322: ACILIS kaynagi artik KABUL KUMESIDIR (arena_kadraj);
+            # bu test kompozit LISTELEME mantigini (uzanti suzgeci + siralama)
+            # sinar, o yuzden kaynak ACIKCA kompozite alinir. Kapsam
+            # KAYBOLMADI, yalnizca hangi seyi sinadigi netlesti.
+            self.assertEqual(yks_gui.YksArayuz.ALGI_VARSAYILAN_KAYNAK,
+                             arayuz.algi_kaynak,
+                             "acilis kaynagi sinif sozlesmesinden gelmiyor")
+            arayuz.algi_kaynak = "kompozit"
             self.assertIn("drone", arayuz.ALGI_KAYNAKLAR)
             self.assertIn("gemini", arayuz.ALGI_KAYNAKLAR)
             self.assertIn("val", arayuz.ALGI_KAYNAKLAR)

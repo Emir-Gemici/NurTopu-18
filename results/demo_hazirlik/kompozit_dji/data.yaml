@@ -1,0 +1,7 @@
+path: .
+train: images/train
+val: images/val
+names:
+  0: zemin
+  1: engel
+  2: hedef

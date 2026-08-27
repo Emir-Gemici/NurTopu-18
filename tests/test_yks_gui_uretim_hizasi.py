@@ -254,8 +254,31 @@ class UretimHizasiTests(unittest.TestCase):
 class KompozitKaynakTests(unittest.TestCase):
     """Arena kompoziti hakem ekraninda gorunuyor mu, ve YER GERCEGI sizmiyor mu?"""
 
-    def test_kompozit_ilk_ve_acilis_kaynagi(self):
-        self.assertEqual("kompozit", yks_gui.YksArayuz.ALGI_KAYNAKLAR[0])
+    def test_acilis_kaynagi_KABUL_KUMESI(self):
+        """T173 · D-322: ekran, modelin KABUL EDILDIGI dagilimda acilmali.
+
+        Eskiden bu test acilis kaynaginin "kompozit" olmasini kilitliyordu.
+        Kilit GEVSETILMEDI, ILKEYE baglandi: D-116/5'in dersi, hakem ekraninin
+        modeli KABUL EDILMEDIGI bir dagilimda gostermemesidir. Olculdu:
+        kabul kumesi kaynagi `arena_kadraj` 12/12 rota veriyor (D-298 SS1),
+        `kompozit` ise 9/9 karede VERMIYOR (D-298/D-302; arka plani otopark,
+        kurgu v21'in gevsek zemin maskesiyle kurulmus). Kompozit LISTEDE KALIR.
+        """
+        self.assertEqual("arena_kadraj", yks_gui.YksArayuz.ALGI_VARSAYILAN_KAYNAK)
+        self.assertIn(yks_gui.YksArayuz.ALGI_VARSAYILAN_KAYNAK,
+                      yks_gui.YksArayuz.ALGI_KAYNAKLAR)
+        # Acilis kaynagi, kayit defterindeki KABUL KUMESINI okuyan kaynak olmali.
+        self.assertEqual("arena_kadraj",
+                         yks_gui.YksArayuz.ALGI_VARSAYILAN_KAYNAK,
+                         "acilis kaynagi kabul kumesinden BASKA bir sey")
+        self.assertIn("kompozit", yks_gui.YksArayuz.ALGI_KAYNAKLAR,
+                      "kompozit listeden DUSURULMUS — tanisal deger kaybolur")
+
+    def test_acilis_kaynagi_KODDA_da_kullaniliyor(self):
+        """Sabit tanimlanip kullanilmazsa kilit BOS olur."""
+        kaynak = (KOK / "comms" / "yks_gui.py").read_text(encoding="utf-8")
+        self.assertIn("self.algi_kaynak = self.ALGI_VARSAYILAN_KAYNAK", kaynak)
+        self.assertNotIn("self.algi_kaynak = self.ALGI_KAYNAKLAR[0]", kaynak)
 
     def test_eski_dort_kaynak_hala_secilebilir(self):
         for ad in ("drone", "gemini", "test", "val"):

@@ -75,7 +75,25 @@ class ArenaGeometrisiTestleri(unittest.TestCase):
         x0, y0, w, h = geometri.hedef_kutu
         self.assertEqual(round(cp.ARENA_HEDEF_KENAR_M / self.mpp), w)
         self.assertEqual(w, h)
-        self.assertLess(y0 + h, hedef_bant_yuksekligi(self.icerik[3]) + 1)
+        bant = hedef_bant_yuksekligi(self.icerik[3])
+        # 🔴 T173 · D-322 — KILIT ILKEYE BAGLANDI, GEVSETILMEDI.
+        # Eskiden pad'in bandin TAMAMEN ICINE sigmasi isteniyordu
+        # (`y0 + h < bant + 1`). Ama 2 m pad ~41 px, bant ~46 px: bu kosul
+        # pad'i kare kenarina YAPISTIRIYORDU (uretilen dokuz karenin
+        # dokuzunda da y = 3). Kullanici bunu "mantiksiz" diye bildirdi.
+        # Yeni sozlesme: pad HEDEF UCUNDA BASLAR (ust kenari bantta), acik
+        # seritte ve bariyersizdir; ayrica cerceveden PAYLIDIR.
+        self.assertLess(y0, bant + 1, "pad hedef ucunda BASLAMIYOR")
+        self.assertLessEqual(y0 + h, self.icerik[1] + self.icerik[3],
+                             "pad icerik kutusundan tasiyor")
+        # Cerceve payi: pad en az YARIM PAD kadar iceride durmali.
+        pay = w // 2
+        self.assertGreaterEqual(y0 - self.icerik[1], min(pay, bant),
+                                "pad kare UST kenarina yapisik")
+        self.assertGreaterEqual(x0 - self.icerik[0], pay,
+                                "pad kare SOL kenarina yapisik")
+        self.assertLessEqual(x0 + w, self.icerik[0] + self.icerik[2] - pay,
+                             "pad kare SAG kenarina yapisik")
         harita = cp.arena_serit_haritasi(self.sekil, self.icerik)
         self.assertTrue(np.all(harita[y0:y0 + h, x0:x0 + w] == 2))
         self.assertFalse(np.any(geometri.hedef & geometri.bariyer))

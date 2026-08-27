@@ -117,7 +117,19 @@ def modulu_yukle(yol: Path, ad: str):
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Kaynak betik yuklenemedi: {yol}")
     modul = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(modul)
+    # T173 (D-322): yuklenen betik KENDI klasorundeki modulleri (ornegin
+    # `ayarlar`) import edebilmeli. Yalnizca yoldan yuklemek `sys.path`i
+    # kurmuyordu ve `51_sentetik_arena.py` "No module named 'ayarlar'" ile
+    # dusuyordu — arena kipi bu yuzden hic kosulamiyordu.
+    _dizin = str(Path(yol).resolve().parent)
+    _eklendi = _dizin not in sys.path
+    if _eklendi:
+        sys.path.insert(0, _dizin)
+    try:
+        spec.loader.exec_module(modul)
+    finally:
+        if _eklendi and sys.path and sys.path[0] == _dizin:
+            sys.path.pop(0)
     return modul
 
 
@@ -491,16 +503,35 @@ def _hedef_kutusunu_kur(
     x0, y0, genislik, yukseklik = map(int, icerik)
     kenar = max(1, int(round(ARENA_HEDEF_KENAR_M / mpp)))
     pay = hedef_bant_yuksekligi(yukseklik)
-    merkez_y = y0 + pay // 2
+    # 🔴 T173 (D-322): pad ESKIDEN bandin ORTASINA konuyordu
+    # (`merkez_y = y0 + pay // 2`). 576 px karede bant ~46 px, 2 m pad ~41 px
+    # -> ust pay 3 PIKSEL. Olculdu: uretilen dokuz karenin DOKUZUNDA da
+    # `hedef_kutu` y = 3, yani kirmizi H kare kenarina yapisik ve kesik
+    # gorunuyordu (kullanici bunu fark etti). Pad artik bandin ALT sinirina
+    # oturur: hedef ucu DEGISMEZ (rota yine bantta biter) ama branda TAMAMEN
+    # gorunur ve kareden en az yarim pad kadar iceridedir.
+    merkez_y = y0 + pay
+    # Pad bandin ALTINA kendi boyu kadar sarkabilir; hedef ucunda olmasi
+    # yeterlidir, bandin ICINE SIGMASI sart degildir.
+    alt_sinir = y0 + pay + kenar
     aday_xler = [x for x, y in yol if y < y0 + pay]
     if not aday_xler:
         aday_xler = [yol[0][0]]
 
+    # T173 (D-322): YATAY PAY. Acik koridor kenar seritteyse rotanin ucu kare
+    # kenarina dayanir ve 2 m'lik branda cerceveye yapisik cikiyordu (olculdu:
+    # x = 10 ve 14 px). Pad en az YARIM PAD kadar iceride durur; bu, pad'i
+    # koridordan cikarmaz, yalnizca cerceveden ayirir.
+    yatay_pay = kenar // 2
     for merkez_x in aday_xler:
         sol = int(merkez_x - kenar // 2)
+        # Cerceveden ayir: koridor kenarda olsa bile pad iceride kalsin.
+        sol = max(x0 + yatay_pay, min(sol, x0 + genislik - kenar - yatay_pay))
         ust = int(merkez_y - kenar // 2)
         sag, alt = sol + kenar, ust + kenar
-        if sol < x0 or sag > x0 + genislik or ust < y0 or alt > y0 + pay:
+        if sol < x0 or sag > x0 + genislik or ust < y0 or alt > alt_sinir:
+            continue
+        if alt > y0 + yukseklik:
             continue
         bolge_serit = serit_haritasi[ust:alt, sol:sag]
         if bolge_serit.size == 0 or not np.all(bolge_serit == acik_serit):

@@ -23019,3 +23019,61 @@ Gerçek uçuşta irtifanın 30 m'nin üstünde olup olmadığı **saha ölçüm�
 
 **Ders (yordama ekleniyor).** *Failsafe döngülerinde, yayının kendisi ile yayına eklenen bilgi AYNI `try` içinde toplanamaz.* Bilgi toplama başarısız olabilir; **yayın olmak zorundadır**. Ayrıca: `__new__` ile kurulabilen sınıflara yeni öznitelik eklerken **sınıf düzeyi varsayılan** zorunludur.
 **Bozulmama:** genel kapı iki kolda GEÇTİ; `unittest discover` **1157 OK** (2 skip).
+
+---
+
+### D-321 · 🔴 T172 — T169'un tazelik ÖLÇÜTÜ YANLIŞTI: demo kipinde hakemin onay düğmesini KAPATIYORDU (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §39. **Görsel kanıt:** `results/demo_hazirlik/01_harita.png` (kusur) → `02_tazelik_duzeltme.png` (düzelmiş).
+
+#### 1. Nasıl bulundu — GUI bugün dört kez değişti ve HİÇ ÇALIŞTIRILMAMIŞTI
+T162/T169/T170/T171 `comms/yks_gui.py`'ye dokundu; hepsinde "syntax OK / import OK" dedim ama **ekranı bir kez bile açmadım**. Demo kipinde açıp ekran görüntüsü alınca 12. saniyede sağ panelde **"BAYAT TESPİT — ONAY KAPALI"** çıktı: onay düğmesi **disabled**. Kaptan demosunda hakem **onay veremezdi** — ve şartname §6.2 onaysız tespiti **geçersiz** sayar. Yani düzeltme, düzeltmek istediği şeyi kırmıştı.
+
+#### 2. Kök sebep
+T169 tazeliği **son OPEN_ROUTE'un yaşına** bağladı. Ama İHA rotayı **ACK alana kadar** tekrarlar, ACK gelince **susar** — protokolün normal davranışı. Demo günlüğü: `14:56:43 İKA ALDI ✓ OPEN_ROUTE ACK` → 5 sn sonra BAYAT. Ölçüt, **normal davranışı arıza sayıyordu**.
+
+#### 3. Düzeltme — ölçüt CANLILIĞA bağlandı
+Yakalanması gereken şey **hattın ölmesi**. İHA canlıysa (heartbeat akıyorsa) son kararı geçerlidir. Artık `yaş = min(rota_yaşı, İHA_heartbeat_yaşı)`; ikisinden hiçbiri yoksa **hüküm verilmez**. Ayrıca **onaylanmış** tespit sonradan **BAYAT işaretlenmez** (onay tazeyken verildi; sonradan sarıya boyamak hakemi yanıltır).
+**Asıl risk korundu:** hem rota hem heartbeat kesilirse tespit **BAYAT** olur ve `onayla()` **ACK üretmez**.
+
+#### 4. Kapı
+`tests/test_t169_tespit_tazeligi.py` **17/17** (5 yeni): rota sustu + heartbeat akıyor → **bayat değil**; yalnız rota taze → bayat değil; **ikisi de kesik → BAYAT**; damga yok → hükümsüz; onaylanmış tespit → işaretlenmez. Uçtan uca: 20 sn sonra alınan ekran görüntüsünde düğme **"1) TESPİTİ DOĞRULA"** ve **etkin**.
+
+#### 5. Ders
+**Ekrana dokunan bir değişiklik, ekran açılmadan bitmiş sayılamaz.** "syntax OK" ve birim testleri bu kusuru göremezdi: kusur, protokol zamanlaması ile ekran durumunun kesişimindeydi. Bundan sonra GUI değişikliklerinde `--demo --otokaydet` ile **görsel kanıt** alınacak.
+
+---
+
+### D-322 · T173 — kompozit kümede rota YOK (kök sebep ölçüldü, çözülemedi) + kırmızı H artık mantıklı yerde; hakem ekranı KABUL KÜMESİNDE açılıyor (2026-08-27, kullanıcı isteği)
+
+**Ön kayıt:** `ON_KAYIT.md` §40. **Kullanıcı (verbatim):** *"kompozit klasöründe neden hiç yol bulunmuyor bunu düzelt kırmızı H lerin konumunu da daha mantıklı hale getir"*.
+
+#### 1. Kırmızı H — ÇÖZÜLDÜ
+**Kök sebep:** `_hedef_kutusunu_kur` pad'i uç bandın **ortasına** koyuyordu. 576 px karede bant ≈ 46 px, 2 m pad ≈ 41 px → üst pay **3 piksel**. Ölçüldü: üretilen dokuz karenin **dokuzunda da `hedef_kutu` y = 3**; pad kare kenarına yapışık ve kesik görünüyordu. Açık şerit kenar şeritse pad **yatayda da** kenara dayanıyordu (x = 9, 10, 14).
+**Düzeltme:** pad dikeyde bandın **alt sınırına** oturur (banttan kendi boyu kadar sarkabilir; hedef ucu değişmez) ve yatayda **en az yarım pad** içeride tutulur.
+**Ölçülen sonuç:** üst kenar **3 → 26 px**, sol kenar **9 → 20 px**, dokuz karenin dokuzunda. Görsel kanıt: `results/demo_hazirlik/04_H_konumu.png` — pad artık **tam görünür**.
+
+#### 2. Kompozitte rota — KÖK SEBEP ÖLÇÜLDÜ, ÇÖZÜLEMEDİ (dürüstlük kaydı)
+Küme `--zemin-model v21` ile üretilmişti. v21 karenin **%81'ini** zemin sayıyordu; o gevşek maskede üç şerit bağlanıyor ve arena kurulabiliyordu. Üretim modeli **v36** araçları engel görür → kurgu artık geçilemez.
+**Denenenler ve ölçülen sonuçlar:**
+| deneme | sonuç |
+|---|---|
+| mevcut küme, üretim zinciri | **0/9 ROTA** |
+| kareleri **90° döndürmek** (otopark koridoru dikey olsun) | **0/9** — yönelim değil |
+| kümeyi **v36 zemin modeliyle** yeniden üretmek | 67 kareden yalnız **3** arena kurulabildi; **0/3 ROTA** |
+| aynı üreteci **gerçek kırsal yol** karelerinde koşmak (DJI 24 kare) | yalnız **1** yazıldı; **0/1 ROTA** (`UC_BANT_TEMAS_YOK`) |
+**Hüküm:** ön kayıtlı kapı (**≥ 6/9**) hiçbir denemede sağlanmadı → küme, **eski zemin modeliyle** (9 kare, davranış aynı) **artı H düzeltmesiyle** yeniden üretildi. Kök: üretecin arena kurgusu ile `analyze_path`'in kabul ölçütü (uç bant teması + bağlı bileşen + gövde açıklığı) **ayrışıyor**; bu ayrım tek başına bir iştir ve demo öncesinde riskli. **T174 açıldı.**
+⚠ Eski küme **silinmedi**: `data/arena_kompozit_v21_arsiv/`.
+
+#### 3. Hakem ekranı artık KABUL KÜMESİNDE açılıyor — ilkeli düzeltme
+Kullanıcının asıl ihtiyacı "ekran açıldığında sistem çalışıyor görünsün" idi. Bunu **sunum tercihi** olarak değil **ilke** olarak çözdüm: *ekran, üretim modelinin **kabul edildiği** dağılımda açılmalıdır.* Bu, **D-116/5'in dersidir** — hakem ekranı modeli kabul edilmediği bir dağılımda gösterirse, görülen şey sertifikaladığımız şey **değildir**.
+`ALGI_VARSAYILAN_KAYNAK = "arena_kadraj"` (kabul kümesi; ölçüldü **12/12 rota**, D-298 §1). `kompozit` **listede kalır** — tanısal değeri var (D-298/D-302).
+**Görsel kanıt:** `results/demo_hazirlik/03_algi_acilis.png` — algı görünümü artık gerçek çıkarım, **sarı rota + waypoint'ler**, karar `2 · ORTA` güven 0,937 ve onay düğmesi **etkin**.
+
+#### 4. İki kilit testi GEVŞETİLMEDİ, İLKEYE BAĞLANDI
+- `test_yks_gui_uretim_hizasi`: "açılış kaynağı **kompozit**" → "açılış kaynağı **kabul kümesi**" + sabitin kodda **gerçekten kullanıldığı** (yoksa kilit boş olurdu) + kompozitin listeden **düşürülmediği**.
+- `test_copy_paste_arena`: "pad bandın **tamamen içine** sığar" → pad **hedef ucunda başlar**, içerik kutusunu **taşmaz**, açık şerittedir, bariyersizdir **ve çerçeveden paylıdır**. Eski koşul tam da pad'i kenara yapıştıran koşuldu.
+- `test_yks_gui_demo_kaynak`: kompozit **listeleme** mantığını sınamaya devam ediyor (kaynak açıkça kompozite alınıyor); ayrıca açılış kaynağının sınıf sözleşmesinden geldiği kilitlendi.
+
+#### 5. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1163 OK** (2 skip).

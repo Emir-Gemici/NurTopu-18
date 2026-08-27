@@ -10,7 +10,7 @@
     "zemin_alti_engeller": true,
     "arac_ustu_yapistirma": false,
     "yapistir_kaynagi": "O:\\navitas-local-train\\51_sentetik_arena.py",
-    "zemin_model": "O:\\navitas\\models\\navitas_seg_v21_best.pt",
+    "zemin_model": "models\\navitas_seg_v21_best.pt",
     "arac_model": "O:\\navitas\\yolov8m-obb.pt",
     "arac_kahini": "DOTA-OBB",
     "arac_conf": 0.25,
@@ -94,7 +94,7 @@
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
           184,
-          3,
+          26,
           41,
           41
         ],
@@ -342,7 +342,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 104903,
-      "mevcut_engel_px": 136468,
+      "mevcut_engel_px": 136596,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -378,7 +378,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 118290,
-      "mevcut_engel_px": 154184,
+      "mevcut_engel_px": 154768,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -390,7 +390,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 117610,
-      "mevcut_engel_px": 149376,
+      "mevcut_engel_px": 149788,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -414,7 +414,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 117726,
-      "mevcut_engel_px": 151480,
+      "mevcut_engel_px": 151936,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -438,7 +438,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 115484,
-      "mevcut_engel_px": 148332,
+      "mevcut_engel_px": 148804,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -583,8 +583,8 @@
         "olcek_kaynagi": "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir",
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
-          14,
-          3,
+          20,
+          26,
           41,
           41
         ],
@@ -628,7 +628,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 112000,
-      "mevcut_engel_px": 148324,
+      "mevcut_engel_px": 148524,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -676,7 +676,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 105991,
-      "mevcut_engel_px": 136784,
+      "mevcut_engel_px": 137260,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -695,8 +695,8 @@
     },
     {
       "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000006_000000336.jpg",
-      "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
-      "bolum": "val",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.jpg",
+      "bolum": "train",
       "durum": "YAZILDI",
       "moloz_sayisi": 3,
       "arac_px": 102637,
@@ -761,8 +761,8 @@
         "olcek_kaynagi": "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir",
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
-          12,
-          3,
+          20,
+          26,
           41,
           41
         ],
@@ -789,14 +789,14 @@
           "yerel_sonra_bagli": false
         },
         "maskeler": {
-          "zemin": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_zemin.png",
-          "engel": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_engel.png",
-          "hedef": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_hedef.png",
-          "arac": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_arac.png",
-          "bariyer": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_bariyer.png",
-          "pozitif_bariyer": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_pozitif_bariyer.png"
+          "zemin": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_zemin.png",
+          "engel": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_engel.png",
+          "hedef": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_hedef.png",
+          "arac": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_arac.png",
+          "bariyer": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_bariyer.png",
+          "pozitif_bariyer": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00_pozitif_bariyer.png"
         },
-        "etiket": "labels/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.txt"
+        "etiket": "labels/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000006_000000336_cp_00.txt"
       }
     },
     {
@@ -837,8 +837,8 @@
     },
     {
       "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000010_000000504.jpg",
-      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
-      "bolum": "train",
+      "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.jpg",
+      "bolum": "val",
       "durum": "YAZILDI",
       "moloz_sayisi": 6,
       "arac_px": 85965,
@@ -903,8 +903,8 @@
         "olcek_kaynagi": "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir",
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
-          9,
-          3,
+          20,
+          26,
           41,
           41
         ],
@@ -931,14 +931,14 @@
           "yerel_sonra_bagli": false
         },
         "maskeler": {
-          "zemin": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_zemin.png",
-          "engel": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_engel.png",
-          "hedef": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_hedef.png",
-          "arac": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_arac.png",
-          "bariyer": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_bariyer.png",
-          "pozitif_bariyer": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_pozitif_bariyer.png"
+          "zemin": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_zemin.png",
+          "engel": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_engel.png",
+          "hedef": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_hedef.png",
+          "arac": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_arac.png",
+          "bariyer": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_bariyer.png",
+          "pozitif_bariyer": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00_pozitif_bariyer.png"
         },
-        "etiket": "labels/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.txt"
+        "etiket": "labels/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000010_000000504_cp_00.txt"
       }
     },
     {
@@ -991,8 +991,8 @@
     },
     {
       "kaynak": "whatsapp_video_2026_07_30_at_11_44_39/frame_000015_000000696.jpg",
-      "cikti": "images/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
-      "bolum": "val",
+      "cikti": "images/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.jpg",
+      "bolum": "train",
       "durum": "YAZILDI",
       "moloz_sayisi": 6,
       "arac_px": 79954,
@@ -1058,7 +1058,7 @@
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
           814,
-          3,
+          26,
           41,
           41
         ],
@@ -1085,14 +1085,14 @@
           "yerel_sonra_bagli": false
         },
         "maskeler": {
-          "zemin": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_zemin.png",
-          "engel": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_engel.png",
-          "hedef": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_hedef.png",
-          "arac": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_arac.png",
-          "bariyer": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_bariyer.png",
-          "pozitif_bariyer": "masks/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_pozitif_bariyer.png"
+          "zemin": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_zemin.png",
+          "engel": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_engel.png",
+          "hedef": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_hedef.png",
+          "arac": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_arac.png",
+          "bariyer": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_bariyer.png",
+          "pozitif_bariyer": "masks/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00_pozitif_bariyer.png"
         },
-        "etiket": "labels/val/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.txt"
+        "etiket": "labels/train/whatsapp_video_2026_07_30_at_11_44_39_frame_000015_000000696_cp_00.txt"
       }
     },
     {
@@ -1164,7 +1164,7 @@
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
           788,
-          3,
+          26,
           41,
           41
         ],
@@ -1270,7 +1270,7 @@
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
           27,
-          3,
+          26,
           41,
           41
         ],
@@ -1460,7 +1460,7 @@
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
           757,
-          3,
+          26,
           41,
           41
         ],
@@ -1552,7 +1552,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 71763,
-      "mevcut_engel_px": 95840,
+      "mevcut_engel_px": 96000,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null
@@ -1564,7 +1564,7 @@
       "durum": "YAZILDI",
       "moloz_sayisi": 4,
       "arac_px": 82407,
-      "mevcut_engel_px": 111488,
+      "mevcut_engel_px": 111728,
       "hedef_px": 1681,
       "sebep": null,
       "arena": {
@@ -1626,12 +1626,12 @@
         "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
         "hedef_kutu": [
           706,
-          3,
+          26,
           41,
           41
         ],
-        "arac_kapsanan_px": 82200,
-        "arac_kapsama": 0.997488,
+        "arac_kapsanan_px": 82180,
+        "arac_kapsama": 0.997245,
         "bariyer_kapsanan_px": 4181,
         "bariyer_kapsama": 0.996663,
         "pozitif_bariyer": {
@@ -1670,7 +1670,7 @@
       "durum": "ATLANDI",
       "moloz_sayisi": 0,
       "arac_px": 98388,
-      "mevcut_engel_px": 127836,
+      "mevcut_engel_px": 128076,
       "hedef_px": 0,
       "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
       "arena": null

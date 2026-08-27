@@ -274,7 +274,7 @@ class YksArayuz:
         # AÇILIŞ KAYNAĞI listenin ilkidir: `kompozit` — üç-kapılı arena
         # mantığının GEÇERLİ olduğu tek küme (yer gerçeği manifest'te).
         # `drone` bir otoparktır ve orada koridor seçimi sınanmaz (D-53).
-        self.algi_kaynak = self.ALGI_KAYNAKLAR[0]
+        self.algi_kaynak = self.ALGI_VARSAYILAN_KAYNAK
         self.algi_idx = 0
         self._algi_foto = None              # ImageTk referansı (GC koruması)
 
@@ -1227,6 +1227,18 @@ class YksArayuz:
     # listede kalırlar (REVIEW_LOG D-53/D-90).
     ALGI_KAYNAKLAR = ("kompozit", "arena_kadraj", "arena_gercek",
                       "drone", "gemini", "test", "val")
+    # 🔴 T173 (D-322) — ACILIS KAYNAGI ARTIK KABUL KUMESIDIR.
+    # Ekran, uretim modelinin KABUL EDILDIGI dagilimda acilmalidir. Bu, D-116/5'in
+    # dersidir: hakem ekrani modeli KABUL EDILMEDIGI bir dagilimda gosterirse,
+    # gorulen sey sertifikaladigimiz sey DEGILDIR.
+    # Olculdu: `arena_kadraj` (kabul kumesi) 12/12 rota veriyor (D-298 SS1);
+    # `kompozit` 9/9 karede rota VERMIYOR (D-298/D-302) cunku arka plani bir
+    # OTOPARKTIR ve uretim modeli araclari engel gorur — o kurgu v21'in gevsek
+    # zemin maskesiyle kurulmustu (T173 olcumu: v36 ile 67 karenin yalnizca 3'u
+    # kurulabiliyor ve onlar da rota vermiyor; 90 derece dondurme de cozmuyor).
+    # `kompozit` LISTEDE KALIR (secilebilir, tanisal deger tasir); yalnizca
+    # ACILIS kaynagi degisti.
+    ALGI_VARSAYILAN_KAYNAK = "arena_kadraj"
     # T76 (mimar karari, REVIEW_LOG D-115): uretim modeli v24 -> v27.
     # ⚠ SURUM ADI ARTIK BURAYA YAZILMIYOR. T58'de bu satir CIPLAK SABITTI ve
     # zincirin dort ucu (paket, manifest, iki kilavuz) ELLE hizalanmak
@@ -2176,28 +2188,49 @@ class YksArayuz:
         kalici degildir. Doner: bayat mi (bool).
         """
         simdi = time.time() if simdi is None else simdi
-        if not self.rota or self.rota_yok or self.rota_zaman is None:
+        if not self.rota or self.rota_yok:
             return False
-        yas = simdi - self.rota_zaman
+        # 🔴 T172 (D-321) — ÖLÇÜT DÜZELTİLDİ. T169 tazeliği yalnız son
+        # OPEN_ROUTE'un yaşına bağlamıştı; ama İHA rotayı ACK ALANA KADAR
+        # tekrarlar ve ACK gelince SUSAR. Yani ölçüt protokolün NORMAL
+        # davranışını arıza sayıyordu: demo kipinde İKA ACK'ledikten 5 sn
+        # sonra hakemin onay düğmesi KAPANIYORDU (görsel kanıt:
+        # results/demo_hazirlik/01_harita.png).
+        # Yakalanması gereken şey HATTIN ÖLMESİDİR. İHA canlıysa (heartbeat
+        # akıyorsa) son kararı geçerlidir. Bu yüzden yaş, İKİ kanalın
+        # TAZE OLANINDAN okunur.
+        yaslar = []
+        if self.rota_zaman is not None:
+            yaslar.append(simdi - self.rota_zaman)
+        _hb = (getattr(self, "son_hb", None) or {}).get("iha")
+        if _hb is not None:
+            yaslar.append(simdi - _hb)
+        if not yaslar:
+            return False        # damga YOK -> hüküm verilmez (hükümsüz)
+        yas = min(yaslar)
         bayat = yas > YKS_TESPIT_TAZELIK_S
-        if bayat and not self.tespit_bayat:
+        # Onaylanmış tespit SONRADAN bayat işaretlenmez: onay TAZEYKEN verildi,
+        # sonradan sarıya boyamak hakemi yanıltır (D-321).
+        if bayat and not self.tespit_bayat and not self.onaylandi:
             self.tespit_bayat = True
             self._kutu_yaz("protokol", renk=SARI)
             btn = getattr(self, "btn_onay", None)
-            if btn is not None and not self.onaylandi:
+            if btn is not None:
                 btn.config(state="disabled", bg="#232e3a",
                            text="BAYAT TESPİT — ONAY KAPALI")
             etiket = getattr(self, "lbl_onay", None)
             if etiket is not None:
                 etiket.config(
-                    text=(f"⚠ BAYAT TESPİT: son güzergâh bilgisi {yas:.0f} sn "
-                          f"önce geldi (tazelik {YKS_TESPIT_TAZELIK_S:.0f} sn). "
+                    text=(f"⚠ BAYAT TESPİT: İHA'dan {yas:.0f} sn veri yok "
+                          f"(ne güzergâh ne heartbeat; tazelik "
+                          f"{YKS_TESPIT_TAZELIK_S:.0f} sn). "
                           "Şartname §6.2 GERÇEK ZAMANLI aktarım ister — "
                           "onay KAPATILDI, yeni tespit bekleniyor."),
                     fg=SARI)
             self._logla(
-                f"⚠ BAYAT TESPİT: {yas:.0f} sn tazelenmedi — hakem onayı "
-                "kapatıldı (§6.2 gerçek zamanlı aktarım)", "sari")
+                f"⚠ BAYAT TESPİT: İHA'dan {yas:.0f} sn veri yok (güzergâh ve "
+                "heartbeat kesik) — hakem onayı kapatıldı (§6.2 gerçek "
+                "zamanlı aktarım)", "sari")
         return bayat
 
     def _durum_tazele(self):

@@ -414,3 +414,32 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - Dal ölü **değilse** (davranış farklıysa) → sayı yazılır, yeni iş açılmaz.
 - FDA senaryosu doğru `mpp` üretiyorsa raporlanır; üretmiyorsa **KRİTİK** iş açılır.
 ⚠ Bu turda önce **ölçüm**; düzeltme ölçümden sonra ve aynı ön kayıt altında yapılır (yön yukarıda **şimdiden** yazılıdır ki sonuca göre seçilmesin).
+
+## 39. EK — T172: T169'un tazelik ÖLÇÜTÜ YANLIŞTI — demo kipinde hakemin onay düğmesini kapatıyor (2026-08-27, sonuç görülmeden)
+**Nasıl bulundu:** GUI bugün dört kez değişti ve **bir kez bile çalıştırılmamıştı**. Demo kipinde açılıp ekran görüntüsü alındı (`results/demo_hazirlik/01_harita.png`): 12. saniyede sağ panelde **"BAYAT TESPİT — ONAY KAPALI"** ve onay düğmesi **disabled**. Kaptan demosunda hakem **onay veremezdi**.
+**Kök sebep:** T169 (D-317) tazeliği **son OPEN_ROUTE'un yaşına** bağladı. Ama İHA rotayı **ACK alana kadar** tekrarlar; ACK gelince susar. Demo günlüğünde görülüyor: `14:56:43 İKA ALDI ✓ OPEN_ROUTE ACK` → 5 sn sonra BAYAT. Yani ölçüt, **protokolün normal davranışını** arıza sayıyor.
+**Doğru ölçüt:** şartname §6.2 "gerçek zamanlı **aktarım**" ister; yakalanması gereken şey **hattın ölmesidir**, İHA'nın tekrar göndermeyi bırakması değil. İHA canlıysa (heartbeat akıyorsa) son kararı **geçerlidir**.
+**Değişiklik:** tespit ancak **hem** son rota **hem** son İHA heartbeat'i tazelik eşiğinden eskiyse BAYAT sayılır (`yaş = min(rota_yaşı, heartbeat_yaşı)`). İkisinden **hiçbiri** yoksa hüküm verilmez (fail-open değil, **hükümsüz**: damga yoksa yaşlandırma çalışmaz). Ayrıca **onaylanmış** bir tespit artık **BAYAT işaretlenmez** — onay tazeyken verildi, sonradan sarıya boyamak hakemi yanıltır.
+**Kapılar (sonuca göre değişmez):**
+1. **Demo:** heartbeat akarken rota tekrarı kesilse bile tespit **BAYAT OLMAMALI** ve düğme **açık kalmalı**.
+2. **Asıl risk korunur:** hem rota hem heartbeat kesilirse **BAYAT** olmalı ve `onayla()` **ACK üretmemeli**.
+3. Yalnız heartbeat taze / yalnız rota taze durumlarının **ikisi de** taze sayılmalı.
+4. Onaylanmış tespitte düğme ve kutu **değişmemeli**.
+5. **Uçtan uca:** GUI demo kipinde açılıp 15 sn sonra ekran görüntüsü alınır; sağ panelde **onay düğmesi ETKİN** olmalı (görsel kanıt dosyada durur).
+⚠ T169 geri alınmıyor; **ölçütü** düzeltiliyor. Bayat tespite onay verilmemesi şartı **korunur**.
+
+## 40. EK — T173: kompozit kümede rota YOK ve kırmızı H kare kenarına yapışık (2026-08-27, kullanıcı isteği; sonuç görülmeden)
+**Kullanıcı (verbatim):** *"kompozit klasöründe neden hiç yol bulunmuyor bunu düzelt kırmızı H lerin konumunu da daha mantıklı hale getir"*.
+**Ölçülen kök sebepler (ikisi de üreteçte):**
+1. **Rota yok:** küme `--zemin-model v21` ile üretilmiş (`manifest.parametreler.zemin_model`). v21 karenin **%81'ini** zemin sayıyordu (CONTRACTS §8 tarihsel tablosu); o gevşek maskede üç şerit bağlanabiliyor ve arena kurulabiliyordu. Üretim modeli **v36** araçları engel görüyor, dolayısıyla o kurgu **artık geçilemez**. Ölçüldü: 9 karenin 9'unda rota yok; **90° döndürme de çözmüyor** (0/9), yani sorun yönelim değil **zemin modeli farkı**.
+2. **H kenara yapışık:** `_hedef_kutusunu_kur` pad'i uç bandın **ortasına** koyuyor (`merkez_y = y0 + pay//2`). 576 px karede bant ≈ 46 px, 2 m pad ≈ 41 px → üst pay **3 piksel**. Ölçüldü: dokuz karenin **dokuzunda da `hedef_kutu` y = 3**.
+**Değişiklik:**
+- (a) Pad dikey merkezi **bandın alt sınırına** alınır (`merkez_y = y0 + pay`), kabul koşulu pad'in banttan **kendi boyu kadar** sarkmasına izin verecek şekilde gevşetilir. Pad hâlâ **açık koridorun hedef ucunda** ve **tamamen kare içinde** olur.
+- (b) Küme **üretim modeliyle** (`--zemin-model models/navitas_seg_v36_best.pt`) yeniden üretilir. Mevcut küme **SİLİNMEZ**, `data/arena_kompozit_v21_arsiv/` altına taşınır.
+**Kapılar (sonuca göre değişmez):**
+1. Yeni kümede üretim zinciri **≥ 6/9 karede ROTA** üretmeli. Altında kalırsa küme **geri alınır** (arşiv geri konur) ve sayı yazılır — "geçen kare aranmaz".
+2. Yeni manifestte **hiçbir** `hedef_kutu`nun üst kenarı kare üstünden **< 12 px** olmamalı ve pad **tamamen içerik kutusunda** kalmalı.
+3. `acik_serit` üretimin çıktısından **türetilmez** (üreteç kendi kurgusundan yazar) — vakum kapı olmaz; GUI'deki "beklenen şerit" karşılaştırması anlamlı kalır.
+4. Kompozite bağlı mevcut testler (`arena_kompozit_kapisi`, `test_copy_paste_arena`, `test_yks_gui_demo_kaynak`) **düşmemeli**; genel kapı ve süit bozulmamalı.
+5. **Görsel kanıt:** GUI demo kipinde `--kaynak kompozit` ile açılıp ekran görüntüsü alınır; rota ve H görünür olmalı.
+⚠ D-302'nin uyarısı (bu kümenin yer gerçeği ham karede görünmeyen bir kurgudur) **kalkmaz** — kurgu hâlâ kurgudur; değişen şey, kurgunun **bugünkü üretim modeliyle tutarlı** olması ve H'nin görünür yerde durmasıdır.

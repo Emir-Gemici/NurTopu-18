@@ -1,0 +1,27 @@
+Modeller yukleniyor: zemin=navitas_seg_v36_best.pt, arac=yolov8m-obb.pt
+  arac kahini: DOTA-OBB (task=obb)
+[1/24] frame_000000_000000000.jpg: v21_engel=1605914 px, DOTA_arac=0 px, arena_yazilan=0
+[2/24] frame_000001_000000030.jpg: v21_engel=1480428 px, DOTA_arac=0 px, arena_yazilan=0
+[3/24] frame_000002_000000060.jpg: v21_engel=1393114 px, DOTA_arac=0 px, arena_yazilan=0
+[4/24] frame_000003_000000090.jpg: v21_engel=1208230 px, DOTA_arac=0 px, arena_yazilan=0
+[5/24] frame_000004_000000120.jpg: v21_engel=1059111 px, DOTA_arac=0 px, arena_yazilan=0
+[6/24] frame_000005_000000180.jpg: v21_engel=831145 px, DOTA_arac=0 px, arena_yazilan=0
+[7/24] frame_000006_000000240.jpg: v21_engel=1956693 px, DOTA_arac=0 px, arena_yazilan=0
+[8/24] frame_000007_000000300.jpg: v21_engel=770623 px, DOTA_arac=21015 px, arena_yazilan=0
+[9/24] frame_000008_000000330.jpg: v21_engel=672025 px, DOTA_arac=0 px, arena_yazilan=0
+[10/24] frame_000009_000000360.jpg: v21_engel=649510 px, DOTA_arac=18952 px, arena_yazilan=0
+[11/24] frame_000010_000000420.jpg: v21_engel=821081 px, DOTA_arac=5957 px, arena_yazilan=0
+[12/24] frame_000011_000000450.jpg: v21_engel=690417 px, DOTA_arac=21804 px, arena_yazilan=0
+[13/24] frame_000012_000000480.jpg: v21_engel=785928 px, DOTA_arac=6754 px, arena_yazilan=1
+[14/24] frame_000013_000000510.jpg: v21_engel=937177 px, DOTA_arac=6188 px, arena_yazilan=0
+[15/24] frame_000014_000000540.jpg: v21_engel=1212009 px, DOTA_arac=0 px, arena_yazilan=0
+[16/24] frame_000015_000000570.jpg: v21_engel=30905 px, DOTA_arac=0 px, arena_yazilan=0
+[17/24] frame_000016_000000600.jpg: v21_engel=18116 px, DOTA_arac=0 px, arena_yazilan=0
+[18/24] frame_000017_000000630.jpg: v21_engel=0 px, DOTA_arac=0 px, arena_yazilan=0
+[19/24] frame_000018_000000660.jpg: v21_engel=16372 px, DOTA_arac=0 px, arena_yazilan=0
+[20/24] frame_000019_000000690.jpg: v21_engel=0 px, DOTA_arac=0 px, arena_yazilan=0
+[21/24] frame_000020_000000720.jpg: v21_engel=0 px, DOTA_arac=0 px, arena_yazilan=0
+[22/24] frame_000021_000000750.jpg: v21_engel=0 px, DOTA_arac=0 px, arena_yazilan=0
+[23/24] frame_000022_000000780.jpg: v21_engel=0 px, DOTA_arac=0 px, arena_yazilan=0
+[24/24] frame_000023_000000810.jpg: v21_engel=0 px, DOTA_arac=0 px, arena_yazilan=0
+TOPLAM: 1 YOLO-seg ornegi yazildi, 23 atlandi -> O:\navitas\results\demo_hazirlik\kompozit_dji

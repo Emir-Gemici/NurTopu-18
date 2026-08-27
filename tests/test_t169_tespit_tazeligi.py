@@ -141,6 +141,58 @@ class FailClosedOnay(unittest.TestCase):
                         "bayat onay reddi gunluge yazilmadi")
 
 
+class CanlilikOlcutu(unittest.TestCase):
+    """T172 · D-321: tazelik ROTA TEKRARINA degil HATTIN CANLILIGINA baglidir.
+
+    IHA rotayi ACK ALANA KADAR tekrarlar; ACK gelince SUSAR. Eski olcut bunu
+    ariza sayiyor ve demo kipinde hakemin onay dugmesini KAPATIYORDU.
+    """
+
+    @staticmethod
+    def _ekran(rota_yas=None, hb_yas=None, simdi=1_000_000.0):
+        o = _ekran(yas_sn=0.0, simdi=simdi)
+        o.rota_zaman = None if rota_yas is None else simdi - rota_yas
+        o.son_hb = {} if hb_yas is None else {"iha": simdi - hb_yas}
+        return o
+
+    def test_rota_SUSTU_ama_heartbeat_AKIYOR_bayat_DEGIL(self):
+        """🔴 DEMO KIRICI KUSURUN KAPISI: ACK sonrasi rota susar, hb surer."""
+        o = self._ekran(rota_yas=YKS_TESPIT_TAZELIK_S + 30.0, hb_yas=0.2)
+        self.assertFalse(o._tespiti_yaslandir(1_000_000.0),
+                         "rota tekrari kesildi diye tespit BAYAT sayildi — "
+                         "hakem onay veremez, demo kilitlenir")
+        self.assertFalse(o.tespit_bayat)
+        self.assertEqual({}, o.btn_onay.ayarlar, "onay dugmesi kapatildi")
+
+    def test_heartbeat_YOK_ama_rota_TAZE_bayat_DEGIL(self):
+        o = self._ekran(rota_yas=0.5, hb_yas=YKS_TESPIT_TAZELIK_S + 30.0)
+        self.assertFalse(o._tespiti_yaslandir(1_000_000.0))
+
+    def test_IKISI_DE_kesikse_BAYAT(self):
+        """Asil risk KORUNUR: hat olurse tespit bayattir."""
+        o = self._ekran(rota_yas=YKS_TESPIT_TAZELIK_S + 10.0,
+                        hb_yas=YKS_TESPIT_TAZELIK_S + 10.0)
+        self.assertTrue(o._tespiti_yaslandir(1_000_000.0))
+        self.assertEqual("disabled", o.btn_onay.ayarlar.get("state"))
+        self.assertTrue(any("heartbeat" in g for g in o.gunluk), o.gunluk)
+
+    def test_HIC_damga_yoksa_HUKUM_YOK(self):
+        o = self._ekran(rota_yas=None, hb_yas=None)
+        self.assertFalse(o._tespiti_yaslandir(1_000_000.0))
+        self.assertEqual({}, o.btn_onay.ayarlar)
+
+    def test_ONAYLANMIS_tespit_sonradan_BAYAT_ISARETLENMEZ(self):
+        o = self._ekran(rota_yas=YKS_TESPIT_TAZELIK_S + 10.0,
+                        hb_yas=YKS_TESPIT_TAZELIK_S + 10.0)
+        o.onaylandi = True
+        o._tespiti_yaslandir(1_000_000.0)
+        self.assertFalse(o.tespit_bayat,
+                         "onay TAZEYKEN verildi; sonradan bayat isaretlemek "
+                         "hakemi yaniltir")
+        self.assertEqual({}, o.btn_onay.ayarlar)
+        self.assertEqual([], o.gunluk)
+
+
 class SozlesmeKilidi(unittest.TestCase):
     """MUTASYON 3: esik SOZLESMEDEN gelmeli, GUI'de ciplak yazilmamali."""
 

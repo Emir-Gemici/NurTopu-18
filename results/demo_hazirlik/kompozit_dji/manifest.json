@@ -1,0 +1,411 @@
+{
+  "parametreler": {
+    "siniflar": {
+      "0": "zemin",
+      "1": "engel",
+      "2": "hedef"
+    },
+    "kip": "arena",
+    "zemin_tam_cerceve": false,
+    "zemin_alti_engeller": true,
+    "arac_ustu_yapistirma": false,
+    "yapistir_kaynagi": "O:\\navitas-local-train\\51_sentetik_arena.py",
+    "zemin_model": "models\\navitas_seg_v36_best.pt",
+    "arac_model": "O:\\navitas\\yolov8m-obb.pt",
+    "arac_kahini": "DOTA-OBB",
+    "arac_conf": 0.25,
+    "zemin_conf": 0.25,
+    "jpeg_kalite": 95,
+    "hedef_sinifi_uretildi": true,
+    "girdi": "results\\demo_hazirlik\\dji_taban",
+    "tohum": 20260802,
+    "arena_karar_mantigi_kaniti": true,
+    "arena_model_basarimi_kaniti": false,
+    "arena_domain_boslugu_kapandi": false,
+    "arena_olcek_kaynagi": "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir"
+  },
+  "ornekler": [
+    {
+      "kaynak": "frame_000000_000000000.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1605914,
+      "hedef_px": 0,
+      "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000001_000000030.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1480428,
+      "hedef_px": 0,
+      "sebep": "arena_gercek_bariyer_kesmiyor_serit_3",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000002_000000060.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1393114,
+      "hedef_px": 0,
+      "sebep": "arena_gercek_bariyer_kesmiyor_serit_3",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000003_000000090.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1208230,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000004_000000120.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1059111,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000005_000000180.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 831145,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000006_000000240.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1956693,
+      "hedef_px": 0,
+      "sebep": "arena_gercek_bariyer_kesmiyor_serit_3",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000007_000000300.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 21015,
+      "mevcut_engel_px": 770623,
+      "hedef_px": 0,
+      "sebep": "arena_gercek_bariyer_kesmiyor_serit_2",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000008_000000330.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 672025,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000009_000000360.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 18952,
+      "mevcut_engel_px": 649510,
+      "hedef_px": 0,
+      "sebep": "arena_gercek_bariyer_kesmiyor_serit_2",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000010_000000420.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 5957,
+      "mevcut_engel_px": 821081,
+      "hedef_px": 0,
+      "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000011_000000450.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 21804,
+      "mevcut_engel_px": 690417,
+      "hedef_px": 0,
+      "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000012_000000480.jpg",
+      "cikti": "images/val/frame_000012_000000480_cp_00.jpg",
+      "bolum": "val",
+      "durum": "YAZILDI",
+      "moloz_sayisi": 8,
+      "arac_px": 6754,
+      "mevcut_engel_px": 785928,
+      "hedef_px": 23716,
+      "sebep": null,
+      "arena": {
+        "beklenen_durum": "ACIK",
+        "beklenti_kaynagi": "serit_no_ve_bagimsiz_geometri",
+        "acik_serit": 3,
+        "kapali_seritler": [
+          1,
+          2
+        ],
+        "bariyerler": [
+          {
+            "serit": 1,
+            "kutu": [
+              414,
+              344,
+              460,
+              89
+            ],
+            "pencere": [
+              0,
+              172,
+              1280,
+              516
+            ],
+            "gercek_px": 34877,
+            "parca_sayisi": 3,
+            "yerel_once_bagli": true,
+            "yerel_sonra_bagli": false
+          },
+          {
+            "serit": 2,
+            "kutu": [
+              1850,
+              344,
+              483,
+              158
+            ],
+            "pencere": [
+              1280,
+              172,
+              1280,
+              516
+            ],
+            "gercek_px": 41918,
+            "parca_sayisi": 5,
+            "yerel_once_bagli": true,
+            "yerel_sonra_bagli": false
+          }
+        ],
+        "icerik": [
+          0,
+          0,
+          3840,
+          2160
+        ],
+        "mpp": 0.013020833333333334,
+        "olcek_kaynagi": "kontrollu kompozit varsayimi: simulation.scripts.arena.HTAB / kaynak karenin GENISLIGI; gercek kamera mpp olcumu degildir",
+        "hedef_kaynagi": "prosedurel_2m_kirmizi_H",
+        "hedef_kutu": [
+          2610,
+          95,
+          154,
+          154
+        ],
+        "arac_kapsanan_px": 6750,
+        "arac_kapsama": 0.999408,
+        "bariyer_kapsanan_px": 76251,
+        "bariyer_kapsama": 0.992916,
+        "pozitif_bariyer": {
+          "kutu": [
+            2802,
+            344,
+            477,
+            86
+          ],
+          "pencere": [
+            2560,
+            172,
+            1280,
+            516
+          ],
+          "gercek_px": 31748,
+          "parca_sayisi": 1,
+          "yerel_once_bagli": true,
+          "yerel_sonra_bagli": false
+        },
+        "maskeler": {
+          "zemin": "masks/val/frame_000012_000000480_cp_00_zemin.png",
+          "engel": "masks/val/frame_000012_000000480_cp_00_engel.png",
+          "hedef": "masks/val/frame_000012_000000480_cp_00_hedef.png",
+          "arac": "masks/val/frame_000012_000000480_cp_00_arac.png",
+          "bariyer": "masks/val/frame_000012_000000480_cp_00_bariyer.png",
+          "pozitif_bariyer": "masks/val/frame_000012_000000480_cp_00_pozitif_bariyer.png"
+        },
+        "etiket": "labels/val/frame_000012_000000480_cp_00.txt"
+      }
+    },
+    {
+      "kaynak": "frame_000013_000000510.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 6188,
+      "mevcut_engel_px": 937177,
+      "hedef_px": 0,
+      "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000014_000000540.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 1212009,
+      "hedef_px": 0,
+      "sebep": "arena_c_uzayi_veya_hedef_uygunsuz",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000015_000000570.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 30905,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000016_000000600.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 18116,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000017_000000630.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000018_000000660.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 16372,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000019_000000690.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000020_000000720.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000021_000000750.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000022_000000780.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    },
+    {
+      "kaynak": "frame_000023_000000810.jpg",
+      "cikti": null,
+      "bolum": null,
+      "durum": "ATLANDI",
+      "moloz_sayisi": 0,
+      "arac_px": 0,
+      "mevcut_engel_px": 0,
+      "hedef_px": 0,
+      "sebep": "dota_arac_pikselsiz_kare",
+      "arena": null
+    }
+  ]
+}
