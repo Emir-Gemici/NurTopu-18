@@ -23187,3 +23187,225 @@ sunumda kaynak değiştirilmemeli.
 Genel kapı (madde 14) iki kolda **GEÇTİ**: kol1 15/15 · kol2 şerit 15/15.
 Prova **MUTLU YOL TAM**. Jetson paket aynası (`karar_sozlesmesi.py`,
 `rpi_inference.py`) senkron — GUI aynada yok, mimarî olarak yer istasyonudur.
+
+### D-324 · 🔴 T184–T187 — "duba" araştırıldı: nesne **bariyer koludur**; dedektör DÖNME KÖRÜYDÜ ve asıl kusur modelin **degrees=0 ile eğitilmiş olması** (2026-08-28)
+
+**Kullanıcı (verbatim):** *"hala etiketleme ve yol bulma yetersiz ... gerekli
+etiketlemeleri yap sonrasında ise model eğit 15 saat boyunca"* ve *"bize
+şartnamede verilen görselde yollar nasıl kapandıysa dubaya benzeyen ince uzun
+şeyle bizde de veri setinde o lazım adını bilmiyorum araştır"*.
+
+**Ön kayıt:** `results/gece_20260828/ON_KAYIT.md` (D-107; G1 kilit, G2–G7 ön kayıtlı).
+
+---
+
+#### 1. NESNENİN ADI — görselden saptandı
+`data/arena_referans/sartname_s9_arena.png` **açılıp bakıldı**. Nesne **duba
+(trafik konisi) DEĞİL**, **bariyer koludur** — otopark/kontrol noktası
+bariyerlerinin kırmızı-beyaz çapraz şeritli ince uzun çubuğu. Dubayla
+karışmasının sebebi aynı reflektif şeritleme. Görselde **iki adet**, iki
+koridorun enine; ölçülen en/boy **7,0** ve **14,2**.
+
+Sistemde adı zaten vardı (`ince_bariyer_maskesi`, T67). Eksik olan **nesne
+değil, AÇISIYDI.**
+
+---
+
+#### 2. 🔴 T184 — KATMAN 2 dedektörü DÖNME KÖRÜYDÜ
+Bileşen ölçütü `bw > 4·bh` (eksen hizalı kutu) ve şerit aralıklarını kapatan
+çekirdek **yataydı**. Şartname karesinde ölçüldü:
+
+| dönme | 0° | 30° | 45° | 60° | 90° | 120° | 135° |
+|---|---|---|---|---|---|---|---|
+| bulunan kol | 2 | **0** | **0** | **0** | 2 | **0** | **0** |
+
+İHA arenaya farklı bir yönelimle girerse kapalı koridor **açık** görünür →
+yanlış güzergâh → §2.1 uyarınca **0 puan**.
+
+**Düzeltme üç parçalıdır** (biri eksik olsa çalışmaz — ölçüldü):
+1. `minAreaRect` ile **döndürülmüş** dikdörtgenin uzun/kısa kenarı. Eksen
+   hizalı kutu 45°'deki ince kolu **kare** gösteriyordu.
+2. Şerit aralıkları **12 açıda çizgi çekirdeğiyle** kapatılır (15° adım).
+   Eksen hizalı kapama, çapraz şeritli kola köprü kurmuyordu.
+3. Asgari genişlik eşiği `max(w, h)`e oranlanır (eksende simetrik).
+
+**MONOTONİKLİK KURGU GEREĞİDİR:** sonuç, özgün ölçütün maskesi ile açıdan
+bağımsız ölçütün maskesinin **BİRLEŞİMİDİR**. Birleşim özgünün her zaman üst
+kümesidir → engel katmanı yalnız büyür, serbest alan yalnız küçülür
+(**madde 15**) — bu ölçümle değil **inşa ile** garantidir.
+
+**Kapılar (ön kayıt G1/G2):**
+- G1 · 12 açının **12'sinde de 2 kol** (3509–3668 px). Kırmızı KARE HB pedi
+  **hiçbir açıda** engel sayılmadı — ayrım renkle değil **şekille** yapıldığı
+  ve kare döndürülünce de kare kaldığı için. *(HB engel sayılsaydı İKA hedefe
+  hiç ulaşamaz, P_görev = 0 olurdu.)*
+- G2 · 110 karede (88'i kabul kümesi) **üst küme ihlali 0**.
+- Kesinlik/duyarlılık (120 sentetik kare, etikete karşı):
+  doğru engel **38.096 → 140.827 px (+%270)**, yanlış engel 9.024 → 22.832 px;
+  **kesinlik %80,9 → %86,0**. Kare başına yanlış engel 190 px = karenin
+  **%0,046'sı**.
+- Üretim maliyeti **8,5 ms/kare** (512×512).
+- Eski ölçüm **gevşetilmedi**: `test_OZGUN_T67_yolu_3644_pikseli_AYNEN_KORUR`
+  özgün yolu ayrıca sınar ve hâlâ **tam 3644** ister.
+
+---
+
+#### 3. 🔴 KENDİ ÖNCÜLÜMÜ ÇÜRÜTTÜM — "model bariyeri hiç görmüyor" YANLIŞTI
+Ön kaydın ilk hâlinde *"model bariyer piksellerinin %0,0'ını ENGEL diyor"*
+yazdım; kaynağım `karar_sozlesmesi.py`'deki T67 yorumu ve D-92/D-93 idi.
+**Ölçtüm: v36 %99,9 diyor.** D-92 eski bir modelde ölçülmüştü, yorum
+güncellenmemişti ve **mimarı yanlış yönlendirdi**.
+
+> **Ders (kayda geçer):** *kod yorumu bir ÖLÇÜM DEĞİL, bir ölçümün TARİHİDİR.*
+> Bu projede ham çıktının repoda durması bir kez yanlış hükmü engellemişti
+> (D-209 §4); bu kez **yorumun repoda durması** yanlış hükmü ÜRETTİ. Yorum
+> düzeltildi (`karar_sozlesmesi.py`, T184 gövdesi).
+
+D-93 de bayat: T68 bunu büyük ölçüde kapatmış — kabul kümesinde (n=260)
+**122 kare** bariyer taşıyor, **163 bariyer geçilebilir şeride** konmuş. Kalan
+dar kusur: tek geçilebilir şeritli sahnelerin **%35,17'sinde** havuz yine
+kapalı şeritlere geri düşüyor (`51_sentetik_arena.py:1202`).
+
+---
+
+#### 4. 🔴 ASIL KUSUR: model bariyeri yalnız YATAYA YAKIN açılarda görüyor
+Şartname karesi döndürülüp v36'ya verildi (bariyer maskesi **aynı** dönüşümle
+taşındı):
+
+| açı | 0° | 15° | 30° | 45° | **60°** | 75° | 90° | **120°** | **135°** |
+|---|---|---|---|---|---|---|---|---|---|
+| ENGEL oranı | %99,9 | %99,8 | %99,6 | %69,2 | **%0,0** | %100 | %30,8 | **%0,0** | **%0,0** |
+
+**Kök neden** — `codes/runs/segment/gece_v7a_v35taban/args.yaml`:
+**`degrees: 0.0`** ve **`flipud: 0.0`**. v36 **hiç dönme artırımı görmeden**
+eğitildi. Nadir (dik bakan) hava görüntüsünde İHA'nın yönelimi **keyfîdir**;
+"yukarısı" diye bir şey yoktur. Bu, 2026-08-26 ön kaydındaki *"yönelim →
+YAPISAL, 18/59; döndürünce 14/18 geçiyor"* bulgusunu da açıklar.
+
+---
+
+#### 5. 🔴 KAYIT DEFTERİ YANLIŞ SÖYLÜYOR — "reçete t127 birebir" DEĞİL
+`config/model_registry.json` v36 için *"reçete t127 birebir"* diyor.
+`139_gece_egitim.py`'nin reçete sözlüğü şu alanları **hiç geçirmiyor**:
+
+| alan | t127 | v36'da fiilen |
+|---|---|---|
+| `degrees` | 15,0 | **0,0** |
+| `flipud` | 0,5 | **0,0** |
+| `copy_paste` | 0,3 | 0,0 |
+| `cos_lr` | true | false |
+| `close_mosaic` | 20 | 10 |
+| `optimizer` | AdamW | **auto** |
+
+`optimizer=auto` yüzünden ultralytics, betiğin **özellikle düzeltmek için
+yazıldığı** `lr0=0,001`'i **yok saydı** (etkin 0,001667; logda açıkça yazılı).
+Yani 139'un varlık sebebi olan düzeltme sessizce iptal olmuş.
+
+---
+
+#### 6. T185 — üreteç bariyeri artık AÇIYLA çiziyor
+`seritli_bariyer_ciz` iki uca aynı `y`yi veriyordu (açı parametresi yoktu).
+Artık `aci_derece` alıyor; uç noktalar **x = x0 ve x = x1'de kalır**, yalnız
+y'leri ayrışır → kol şeridi **yatayda hâlâ uçtan uca kapatır** (eğim koridoru
+açmaz). `--bariyer-acisi` bayrağı eklendi.
+
+⚠ **`aci = 0` özgün yolu BİREBİR korur** ve o değerde `rng` **hiç
+tüketilmez** — dondurulmuş kabul kümesi `sentetik_arena_kadraj_t66` aynen
+üretilebilir kalır.
+
+**G3 GEÇTİ (ölçüldü):** `--bariyer-acisi 45` ile 12 karede 19 kol; açı
+**-59° … +37°**, kolların **%74'ü** ±10° dışında, **5 kadrana** yayılmış.
+
+Ayrıca: üreteç bu depoda **hiç koşturulamıyordu** — doku bankası yolu çıplak
+sabitti ve banka `O:/navitas-local-train/doku_bankasi`'nda duruyor. `--banka`
+bayrağı eklendi.
+
+**Etiket denetimi (120 kare):** bariyer piksellerinin ENGEL etiketiyle
+örtüşmesi medyan **%98,9**. Düşük örtüşen 25 kare **gözle incelendi**: sebep
+etiket hatası DEĞİL, dedektörün arena dışındaki **kırmızımsı toprağa** yanlış
+pozitif vermesi. Etiketler sağlam.
+
+---
+
+#### 7. DJI verisi — ölçüldü ve GÖRÜLDÜ; eğitime GİREMEZ
+`data/dji_prova_kareler/` 8 uçuş, **569 kare**, 3840×2160, medyan parlaklık
+**19** (217 kare < 15). Sekiz uçuşun birer karesine **bakıldı**: alacakaranlıkta
+yerden tarla, beton duvar, **kumandayı tutan bir kişi**, gece otoparkta araba,
+kırmızı ışıkta gölgeler. **Nadir arena çekimi yok; arena, koridor, bariyer, H
+pedi hiçbir karede yok.**
+
+**Hüküm:** bu kareler *"etiketleme yetersiz"*i çözemez — etiketlense **yanlış
+şey** etiketlenmiş olur. Gündüz + nadir + arena benzeri çekim **insan işidir**.
+
+Gerçek gündüz verisi (`results/dji_20260822/kareler_1fps`, 768 kare) ise
+**zaten etiketli**: 0037 300→290, 0039 222→196; 0038 (246) CONTRACTS §12
+uyarınca **ayrılmış doğrulama**. Yani elle etiketlenecek yığın **yok**.
+
+**T187:** DJI kareleri RescueNet `test` kümesinin içine boşaltılmadı (o kümeyi
+kirletirdi); hakem ekranına **ayrı ve adı belli** `dji_gece` kaynağı olarak
+eklendi, açıklaması ekranda yazılı ("nadir DEĞİL, arena/bariyer YOK, ölçek yok
+→ rota BEKLENMEZ"). Sekiz kaynağın tamamı KeyError'suz dolaşılıyor.
+
+⚠ **Ayrı bulgu:** `data/dji_prova` ile `data/dji_prova_kareler` **birebir aynı
+iki kopya** (her biri 606.967.922 bayt; manifest md5'leri eşit; 25 rastgele
+dosyada md5 25/25 eşit). ~579 MB boşuna duruyor ve `data/dji_prova` yolunu
+okuyan **hiçbir kod yok**. **Silinmedi** (madde 18 — kullanıcı kararı).
+
+---
+
+#### 8. Yol bulma — aralıklı engel eşiği ÖLÇÜLDÜ
+Üretim yolunda (`analyze_path`) **şerit bazlı açık/kapalı kararı yoktur**: en
+büyük bağlı bileşen koridor sayılır, uç bant teması + C-uzayı + A* ile tek
+rota kurulur, rotanın gövdesinin düştüğü şerit yayınlanır.
+
+Aralıklı engel (duba sırası) sorusunun cevabı: **eşik tam olarak
+`2 × R_GEREKLİ_M`.** 640 px tuval, mpp 0,05'te **2,00 m** boşluk
+`GORUS_HATTI_KOPUK`, **2,20 m** boşluk yol=2 güven 0,982. Yani duba sırası,
+dubalar **ENGEL sınıfına düştüğü sürece** doğru kapatır.
+
+🔴 **Asıl kırılma noktası başka:** dubalar engel sınıfına düşmeyip zemin
+maskesinde yalnız **delik** bırakırsa, morfolojik kapama (`max(7, w//30)` —
+**metrik değil piksel**) 20 px çapa kadar dubayı **%98,7** geri dolduruyor ve
+şerit **açık** çıkıyor (güven 1.000). Ayrıca üretim yolu, tanısal yolun
+`ALGI_PAYI_M = 0,25 m` engel şişirmesini **hiç uygulamıyor** (geçiş eşiği
+üretimde 44 px, tanısalda 54 px). **T188 açıldı.**
+
+---
+
+#### 9. AÇIK KALAN — K5 kapısı bu kusuru DOĞRULAYAMAZ
+`scripts/olcum/63_bariyer_kesisimi.py:46`'daki K5 yer gerçeği hâlâ **yalnız
+yataydır**. Yani kabul zinciri bu kusuru ne yakalayabilirdi ne de düzeltmeyi
+doğrulayabilir. **T189 açıldı.** *(Bu, "kapı boş olabilir" uyarısıdır ve
+gizlenmemiştir.)*
+
+---
+
+#### 10. Eğitim — 15 saat (ön kayıt §5)
+`scripts/olcum/152_bariyer_aci_egitimi.py` yazıldı. Farkları:
+- **Reçete AÇIK ve TAM**: `_recete_tam_mi` 35 zorunlu alanı denetler; biri
+  eksikse eğitim **başlamaz**. v36'daki sessiz düşme bir daha olamaz.
+- **`degrees = 180,0`** (t127'nin 15'i bile bu iş için fazla çekingen; nadir
+  görüntüde yönelim keyfîdir), `flipud = 0,5`, `optimizer = AdamW` **açıkça**.
+- **Çökmeye dayanıklı**: `save_period = 5` + her epoch sonunda `last.pt`
+  dönüşümlü iki yedeğe **`os.replace` ile ATOMİK** kopyalanır. Gerekçe: bu
+  makinede 5 haftada 8 BSOD var ve kurulu ultralytics checkpoint'i atomik
+  olmayan `write_bytes` ile yazıyor — çökme tam o anda gelirse `last.pt` VE
+  `best.pt` birlikte bozulur.
+- `time` saat tavanı + `patience = 120` (v36 `patience=15` ile 17. epoch'ta
+  durmuştu; o ayarla 15 saatlik bütçe **anlamsız** olurdu).
+- Karışım **v8**: v7a'nın tamamı + `sentetik_arena_bariyer_acili` (2400 kare).
+  Eski küme **atılmadı** — gerileme riski olmasın.
+
+**Model yayınlama kuralı (ön kayıt §4):** yeni model üretime **yalnız**
+G4 ∧ G5 ∧ G6 birlikte geçerse alınır. Geçmezse **v36 üretimde kalır** ve bu
+dürüst bir sonuçtur.
+
+---
+
+#### 11. Bozulmama
+`unittest discover -s tests` **1196** koştu; ayna testi `51_sentetik_arena.py`
+ayrışmasını **yakaladı** (depo kopyasını ben değiştirmiştim) → `olcum_ayna.py
+--uygula --repodan` ile hizalandı. Jetson paket aynası yeniden üretildi
+(`karar_sozlesmesi.py` senkron). Genel kapı (madde 14) iki kolda **GEÇTİ**
+(15/15 · şerit 15/15). GUI kapıları **77/77**. Bariyer kapısı **22/22**
+(3 yeni açı testi + mutasyon kontrolü dâhil).

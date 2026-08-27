@@ -38,6 +38,11 @@ _sys.path.insert(0, str(REPO / "codes"))
 from karar_sozlesmesi import serit_no   # serit otoritesi TEK KAYNAK
 
 BANKA = Path(__file__).parent / "doku_bankasi"
+# T185 (D-324): banka bu depoda YOK; `50_doku_bankasi.py` ile birlikte
+# egitim agacinda duruyor (`O:/navitas-local-train/doku_bankasi`).
+# Yol CIPLAK sabitti ve betik "banka eksik" deyip cikiyordu — yani
+# uretec bu depoda HIC kosturulamiyordu. `--banka` ile verilebilir;
+# verilmezse eski varsayilan aynen kalir.
 CIKTI = Path(r"O:\navitas\dataset\sentetik_arena")
 TUVAL = 800          # üretim tuvali (dönüşüm payı için büyük)
 BOYUT = 640          # son görüntü boyutu
@@ -535,19 +540,49 @@ def arena_disi_zemini_yenile(tuval, kenar, ust, alt, zemin_dosemesi):
     tuval[dis > 0] = zemin_dosemesi[dis > 0]
 
 
-def seritli_bariyer_ciz(tuval, x0, x1, y, kalinlik, beyazla_basla):
-    """Figurdeki uzun-ince kirmizi/beyaz yol bariyerini RNG'siz ciz."""
+def seritli_bariyer_ciz(tuval, x0, x1, y, kalinlik, beyazla_basla,
+                        aci_derece=0.0):
+    """Figurdeki uzun-ince kirmizi/beyaz yol bariyerini RNG'siz ciz.
+
+    `aci_derece` kolun YATAYA gore egimidir (T185 · D-324). Uc noktalari
+    x = x0 ve x = x1'de KALIR; yalnizca y'leri ayrisir. Boylece kol seridi
+    YATAYDA hala UCTAN UCA kapatir — egim koridoru acmaz, yalnizca kolu
+    egik gosterir.
+
+    ⚠ `aci_derece = 0.0` OZGUN yolu BIREBIR korur (ayni piksel, ayni parca
+    sinirlari): mevcut kabul kumesi `sentetik_arena_kadraj_t66` bu ciktiya
+    baglidir ve DONDURULMUSTUR.
+    """
     x0, x1 = sorted((int(round(x0)), int(round(x1))))
     y = int(round(y))
     kalinlik = max(2, int(round(kalinlik)))
-    cv2.line(tuval, (x0, y), (x1, y), (35, 35, 35), kalinlik + 2,
-             cv2.LINE_AA)
     parca = max(kalinlik * 3, 1)
     sira = 1 if beyazla_basla else 0
-    for j, bas in enumerate(range(x0, x1 + 1, parca)):
-        son = min(x1, bas + parca)
+
+    if float(aci_derece) == 0.0:                 # OZGUN YOL — degistirilmedi
+        cv2.line(tuval, (x0, y), (x1, y), (35, 35, 35), kalinlik + 2,
+                 cv2.LINE_AA)
+        for j, bas in enumerate(range(x0, x1 + 1, parca)):
+            son = min(x1, bas + parca)
+            renk = BARIYER_BEYAZ if (j + sira) % 2 else BARIYER_KIRMIZI
+            cv2.line(tuval, (bas, y), (son, y), renk, kalinlik, cv2.LINE_AA)
+        return
+
+    yari = (x1 - x0) / 2.0
+    dy = yari * math.tan(math.radians(float(aci_derece)))
+    p0 = (x0, int(round(y - dy)))
+    p1 = (x1, int(round(y + dy)))
+    cv2.line(tuval, p0, p1, (35, 35, 35), kalinlik + 2, cv2.LINE_AA)
+    uzunluk = math.hypot(p1[0] - p0[0], p1[1] - p0[1])
+    n_parca = max(1, int(math.ceil(uzunluk / parca)))
+    for j in range(n_parca):
+        t0, t1 = j / n_parca, min(1.0, (j + 1) / n_parca)
+        a = (int(round(p0[0] + (p1[0] - p0[0]) * t0)),
+             int(round(p0[1] + (p1[1] - p0[1]) * t0)))
+        b = (int(round(p0[0] + (p1[0] - p0[0]) * t1)),
+             int(round(p0[1] + (p1[1] - p0[1]) * t1)))
         renk = BARIYER_BEYAZ if (j + sira) % 2 else BARIYER_KIRMIZI
-        cv2.line(tuval, (bas, y), (son, y), renk, kalinlik, cv2.LINE_AA)
+        cv2.line(tuval, a, b, renk, kalinlik, cv2.LINE_AA)
 
 
 def hb_ciz(tuval, kutu, ped_rengi):
@@ -959,7 +994,7 @@ def _serit_kaydi(i, durum, serit_poly, gecilebilir_poly):
 
 
 def sahne_uret(rng, banka, ayni_malzeme=0.45, dar_orani=0.28, kadraj=False,
-               bilgi=None):
+               bilgi=None, bariyer_acisi=0.0):
     """Bir sentetik arena üret. -> (görüntü BGR, kimlik haritası, {kimlik: sınıf})"""
     tuval = np.zeros((TUVAL, TUVAL, 3), np.uint8)
     kimlik = np.zeros((TUVAL, TUVAL), np.int32)
@@ -1202,8 +1237,13 @@ def sahne_uret(rng, banka, ayni_malzeme=0.45, dar_orani=0.28, kadraj=False,
         havuz = kapatilabilir if kapatilabilir else kapali_indisler
         if havuz:
             i = havuz[ham_i % len(havuz)]
+            # T185 (D-324): bariyer kolunun YATAYA gore egimi. `bariyer_acisi`
+            # 0 iken `rng` HIC TUKETILMEZ — RNG akisi ve dolayisiyla mevcut
+            # kabul kumesi `sentetik_arena_kadraj_t66` BIREBIR korunur.
+            aci_b = (rng.uniform(-bariyer_acisi, bariyer_acisi)
+                     if bariyer_acisi > 0.0 else 0.0)
             bariyer_tarifleri.append((sinirlar[i], sinirlar[i + 1], y,
-                                       kalinlik, faz[0] > 100))
+                                       kalinlik, faz[0] > 100, aci_b))
             if i in kapatilabilir:
                 bariyer_kapattigi.append(i)
                 if i in kapatilabilir:
@@ -1231,9 +1271,10 @@ def sahne_uret(rng, banka, ayni_malzeme=0.45, dar_orani=0.28, kadraj=False,
     # T68: bariyerin KENDI pikselleri `blocked` etiketlenir. Altindaki zemin
     # DEGISTIRILMEZ — bariyer yukseltilmis ince bir yapidir, zemin gorunur
     # kalir; ama IKA oradan GECEMEZ. Etiket bariyerin kapladigi seride yazilir.
-    for x0b, x1b, yb, kalb, fazb in bariyer_tarifleri:
+    for x0b, x1b, yb, kalb, fazb, acib in bariyer_tarifleri:
         onceki = tuval.copy()
-        seritli_bariyer_ciz(tuval, x0b, x1b, yb, kalb, fazb)
+        seritli_bariyer_ciz(tuval, x0b, x1b, yb, kalb, fazb,
+                            aci_derece=acib)
         degisen = (np.abs(tuval.astype(np.int16)
                           - onceki.astype(np.int16)).sum(axis=2) > 12)
         if int(degisen.sum()) >= 200:
@@ -1522,11 +1563,23 @@ def main():
                          "ULASIR (dikey pay 0, donus/perspektif kapali, "
                          "'kismi' serit yok). Yalniz demo/dogrulama kumesi "
                          "icin; EGITIM KIPINI DEGISTIRMEZ.")
+    ap.add_argument("--banka", default=None,
+                    help="doku bankasi dizini (varsayilan: betigin "
+                         "yanindaki doku_bankasi/)")
+    ap.add_argument("--bariyer-acisi", type=float, default=0.0,
+                    help="bariyer kolunun yataya gore AZAMI egimi (derece). "
+                         "0 = ozgun davranis (RNG akisi degismez, kabul "
+                         "kumesi birebir uretilir). Onerilen: 45 — model "
+                         "bariyeri yalniz yataya yakin acilarda goruyordu "
+                         "(D-324: 60/120/135 derecede %0,0).")
     ap.add_argument("--dar-orani", type=float, default=0.28,
                     help="şeritlerin 'dar iz' (moloz arasından ince yol) olma olasılığı")
     ap.add_argument("--temizle", action=argparse.BooleanOptionalAction, default=True,
                     help="varsayilan ACIK: onceki sa_* goruntu/etiketlerini temizle")
     args = ap.parse_args()
+    if args.banka:
+        global BANKA
+        BANKA = Path(args.banka)
 
     rng = random.Random(args.seed)
     np.random.seed(args.seed)
@@ -1550,7 +1603,8 @@ def main():
         sahne_bilgi = {} if args.kadraj else None
         im, kimlik, siniflar = sahne_uret(rng, banka, args.ayni_malzeme_orani,
                                           args.dar_orani, kadraj=args.kadraj,
-                                          bilgi=sahne_bilgi)
+                                          bilgi=sahne_bilgi,
+                                          bariyer_acisi=args.bariyer_acisi)
         im, kimlik = geometrik(rng, im, kimlik, kadraj=args.kadraj)
         im = cv2.resize(im, (BOYUT, BOYUT), interpolation=cv2.INTER_AREA)
         kimlik = cv2.resize(kimlik, (BOYUT, BOYUT), interpolation=cv2.INTER_NEAREST)
@@ -1603,6 +1657,7 @@ def main():
                 "val_orani": args.val_orani,
                 "ayni_malzeme_orani": args.ayni_malzeme_orani,
                 "dar_orani": args.dar_orani,
+                "bariyer_acisi": args.bariyer_acisi,
                 "tuval": TUVAL,
                 "boyut": BOYUT,
                 "siniflar": {"0": "traversable", "1": "blocked"},

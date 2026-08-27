@@ -118,6 +118,7 @@ doc/
 
 # Üretilen/indirilen veri setleri — betiklerle yeniden üretilebilir, GB'larca
 dataset/sentetik_arena/
+dataset/sentetik_arena_bariyer_acili/
 dataset/rescuenet_11sinif/
 dataset/rescuenet_1024/
 dataset/rescuenet_kirpik/

@@ -758,10 +758,36 @@ def zemin_maskesi_reddi(trav, icerik=None):
 # karar reddi yok, guven 0,75, darbogaz 27,8 px "genis" gorunuyor. Rotayi
 # yayindan alikoyan TEK sey `OLCEK_YOK` — bir kapi degil, bir EKSIKLIK.
 #
-# MODEL BEKLENMIYOR (D-93): uretec bariyeri YALNIZ zaten KAPALI seritlere
-# koyuyor; acik zeminde bariyer orani %0,0. Egitim verisi "acik gorunen zeminde
-# bariyer" ornegi HIC icermiyor, dolayisiyla model bunu ogrenemez. Cozum
-# KATMAN 2'de klasik dedektordur.
+# 🔴 YUKARIDAKI OLCUM BAYATTIR — 2026-08-28'de YENIDEN OLCULDU (D-324).
+# "model %0,0 goruyor" ARTIK DOGRU DEGIL. v36 ayni karede bariyer
+# piksellerinin %99,9'unu ENGEL diyor. D-92 eski bir modelde olculmustu ve bu
+# yorum guncellenmedi; bir sonraki okuyucuyu (mimarin kendisini) YANLIS
+# YONLENDIRDI. Kod yorumu bir OLCUM DEGIL, bir olcumun TARIHIDIR.
+#
+# D-93 de ayni sekilde bayat: T68 bunu buyuk olcude kapatti — kabul kumesi
+# manifestinde (n=260) 122 kare bariyer tasiyor ve 163 bariyer GECILEBILIR
+# seride konmus. Kalan kusur dar: tek gecilebilir seritli sahnelerin
+# %35,17'sinde havuz yine kapali seritlere geri dusuyor
+# (`scripts/olcum/51_sentetik_arena.py:1202`).
+#
+# GERCEK KUSUR BASKA: model bariyeri YALNIZ YATAYA YAKIN acilarda goruyor.
+# Sartname karesi dondurulup v36'ya verildi (bariyer maskesi AYNI donusumle
+# tasindi):
+#
+#     aci     model ENGEL orani        aci     model ENGEL orani
+#       0     %99,9                     60     %0,0     <- KOR
+#      15     %99,8                     75     %100,0
+#      30     %99,6                     90     %30,8
+#      45     %69,2                    120     %0,0     <- KOR
+#                                      135     %0,0     <- KOR
+#
+# Kok neden: `codes/runs/segment/gece_v7a_v35taban/args.yaml` -> degrees: 0.0
+# ve flipud: 0.0. v36 HIC DONDURME ARTIRIMI GORMEDEN egitildi. Nadir (dik
+# bakan) hava goruntusunde IHA'nin yonelimi KEYFIDIR.
+#
+# KATMAN 2 bu yuzden KALIR (ve T184'te acidan bagimsiz hale getirildi):
+# model tek basina guvenilir degildir ve klasik dedektor yalniz ENGEL
+# katmanina ekler -> serbest alan yalniz KUCULUR (madde 15).
 #
 # NEDEN KROMA CALISIR: D-87 gercek arenanin renk kunyesini olctu — sahnenin
 # TAMAMINDA |a*| < 1 (baskin paletin alti kumesinde de). Bariyer sahnedeki TEK
@@ -818,12 +844,75 @@ BARIYER_ASGARI_ALAN_ORANI = 300.0 / (1059.0 * 634.0)  # ~0,000447
 BARIYER_KAPAMA_ORANI = 61.0 / 1059.0                  # ~0,0576
 
 
+def _bariyer_kollari(kirmizi, w, h, uzun_eksen):
+    """Kroma maskesinden UZUN-INCE bilesenleri sec.
+
+    `uzun_eksen=False` T67'nin OZGUN olcutudur (yalniz YATAY: `bw > 4*bh`,
+    esik goruntu GENISLIGINE oranli). `uzun_eksen=True` ayni olcutu
+    eksenden BAGIMSIZ uygular (`max > 4*min`, esik `max(w, h)`e oranli).
+    """
+    import numpy as _np
+    import cv2 as _cv2
+    n, lbl, st, _ = _cv2.connectedComponentsWithStats(kirmizi, 8)
+    asgari_alan = max(1.0, BARIYER_ASGARI_ALAN_ORANI * w * h)
+    olcu = max(w, h) if uzun_eksen else w
+    asgari_gen = max(2.0, BARIYER_ASGARI_GENISLIK_ORANI * olcu)
+    kol = _np.zeros((h, w), _np.uint8)
+    for i in range(1, n):
+        _x, _y, bw, bh, alan = st[i]
+        if alan < asgari_alan:
+            continue
+        if uzun_eksen:
+            # 🔴 EKSEN HIZALI KUTU EGIK CUBUGU KARE GOSTERIR. 45 derecelik
+            # ince bir kolun (bw, bh) kutusu neredeyse KAREDIR ve en/boy
+            # olcutu onu HB sanip ELER. Gercek uzun/kisa kenar DONDURULMUS
+            # dikdortgenden (`minAreaRect`) okunur; boylece olcut her acida
+            # ayni seyi olcer.
+            noktalar = _cv2.findNonZero((lbl == i).astype(_np.uint8))
+            if noktalar is None:
+                continue
+            (_mx, _my), (ma, mb), _aci = _cv2.minAreaRect(noktalar)
+            uzun, kisa = max(ma, mb), min(ma, mb)
+            if kisa <= 0.0:
+                uzun, kisa = float(max(bw, bh)), float(min(bw, bh))
+        else:
+            uzun, kisa = bw, bh
+        # UZUN ve INCE olmali: HB pedi KAREDIR ve buradan GECEMEZ.
+        # Ayrim RENKLE DEGIL SEKILLE yapilir; bir KARE dondurulunce de
+        # KAREDIR (dondurulmus dikdortgeni de karedir), bu yuzden acidan
+        # bagimsiz olcut HB'yi hala eler.
+        if uzun > BARIYER_EN_BOY_ORANI * max(1.0, kisa) and uzun > asgari_gen:
+            kol[lbl == i] = 1
+    return kol
+
+
 def ince_bariyer_maskesi(bgr):
-    """Uzun/ince/yuksek-kromali YATAY yapilari isaretle (KATMAN 2 engeli).
+    """Uzun/ince/yuksek-kromali cubuk yapilari isaretle (KATMAN 2 engeli).
 
     Girdi BGR goruntu; cikti ayni (h, w) boyutunda uint8 ikili maske.
     Fail-closed: cozulemeyen girdide BOS maske doner — yani hicbir sey
     EKLEMEZ. Bu olcut hicbir kosulda serbest alani BUYUTEMEZ (madde 15).
+
+    🔴 T184 (ON_KAYIT 2026-08-28 SS1a · REVIEW_LOG D-324): bu dedektor
+    DONME KORUYDU. Bilesen olcutu `bw > 4*bh` idi ve serit araliklarini
+    kapatan cekirdek YATAYDI — yani YALNIZ yatay kolu buluyordu.
+    Sartname karesinde OLCULDU:
+
+        dondurme      bariyer pikseli    bulunan kol
+        0 derece            3644              2
+        90 derece              0              0      <-- TAMAMEN KOR
+        180 derece          3644              2
+        270 derece             0              0      <-- TAMAMEN KOR
+
+    IHA arenaya 90 derece farkli bir yonelimle girerse kapali koridorlar
+    ACIK gorunur -> yanlis guzergah -> sartname SS2.1 uyarinca 0 PUAN.
+    Model yardim edemez: bariyer piksellerinin %0,0'ini ENGEL diyor (D-92).
+
+    MONOTONIKLIK KURGU GEREGIDIR: sonuc, OZGUN olcutun maskesi ile
+    eksenden bagimsiz olcutun maskesinin BIRLESIMIDIR. Birlesim, ozgun
+    maskenin her zaman UST KUMESIDIR; dolayisiyla engel katmani yalniz
+    BUYUR, serbest alan yalniz KUCULUR (madde 15) — bu, olcumle degil
+    INSAAT ile garantidir.
     """
     import numpy as _np
     try:
@@ -842,25 +931,43 @@ def ince_bariyer_maskesi(bgr):
     kirmizi = (a > BARIYER_KROMA_ESIGI).astype(_np.uint8)
 
     # Serit araliklarini (beyaz bantlar) kapatarak kolu TEK PARCA yap.
-    # Cekirdek genislige oranlidir; sabit piksel cozunurluk degisince kayar.
-    kx = max(3, int(round(w * BARIYER_KAPAMA_ORANI)) | 1)
-    ky = max(3, int(round(kx / 12.0)) | 1)
-    kirmizi = _cv2.morphologyEx(
-        kirmizi, _cv2.MORPH_CLOSE,
-        _cv2.getStructuringElement(_cv2.MORPH_RECT, (kx, ky)))
+    # Cekirdek uzun eksene oranlidir; sabit piksel cozunurluk degisince kayar.
+    kx = max(3, int(round(max(w, h) * BARIYER_KAPAMA_ORANI)) | 1)
 
-    n, lbl, st, _ = _cv2.connectedComponentsWithStats(kirmizi, 8)
-    asgari_alan = max(1.0, BARIYER_ASGARI_ALAN_ORANI * w * h)
-    asgari_gen = max(2.0, BARIYER_ASGARI_GENISLIK_ORANI * w)
-    kol = _np.zeros((h, w), _np.uint8)
-    for i in range(1, n):
-        x, y, bw, bh, alan = st[i]
-        if alan < asgari_alan:
-            continue
-        # UZUN ve INCE olmali: HB pedi KAREDIR ve buradan GECEMEZ.
-        if bw > BARIYER_EN_BOY_ORANI * max(1, bh) and bw > asgari_gen:
-            kol[lbl == i] = 1
-    return kol
+    # (a) OZGUN yol: yatay kapama + yalniz-genislik olcutu (T67 birebir).
+    kx0 = max(3, int(round(w * BARIYER_KAPAMA_ORANI)) | 1)
+    ky0 = max(3, int(round(kx0 / 12.0)) | 1)
+    ozgun = _bariyer_kollari(
+        _cv2.morphologyEx(kirmizi, _cv2.MORPH_CLOSE,
+                          _cv2.getStructuringElement(_cv2.MORPH_RECT, (kx0, ky0))),
+        w, h, uzun_eksen=False)
+
+    # (b) ACIDAN BAGIMSIZ yol: kapama CIZGI cekirdekleriyle ALTI ACIDA yapilir.
+    # 🔴 Neden: gercek bariyer KIRMIZI-BEYAZ SERITLIDIR; kroma maskesi yalniz
+    # kirmizi parcalari birakir ve kolu TEK PARCA yapmak icin bu araliklarin
+    # KOL DOGRULTUSUNDA kapatilmasi gerekir. Eksen hizali (yatay/dikey)
+    # cekirdek, 30-60 derecedeki bir kolun capraz araliklarina KOPRU KURMAZ;
+    # olculdu: sartname karesinde 30/45/60/120/135/150 derecede 0 kol.
+    # Cizgi cekirdekleri 15 derecelik adimlarla tarandiginda her dogrultu
+    # kapsanir. Birlesim alindigi icin sonuc her tekil kapamanin UST KUMESIDIR.
+    cizgiler = []
+    for _derece in (0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165):
+        cek = _np.zeros((kx, kx), _np.uint8)
+        _t = _np.deg2rad(_derece)
+        _yc = (kx - 1) / 2.0
+        _dx, _dy = _np.cos(_t), _np.sin(_t)
+        for _adim in _np.linspace(-_yc, _yc, kx * 2):
+            _px = int(round(_yc + _adim * _dx))
+            _py = int(round(_yc + _adim * _dy))
+            if 0 <= _px < kx and 0 <= _py < kx:
+                cek[_py, _px] = 1
+        cizgiler.append(cek)
+    coklu = _np.zeros_like(kirmizi)
+    for cek in cizgiler:
+        coklu = _np.maximum(coklu, _cv2.morphologyEx(kirmizi, _cv2.MORPH_CLOSE, cek))
+    bagimsiz = _bariyer_kollari(coklu, w, h, uzun_eksen=True)
+
+    return _np.maximum(ozgun, bagimsiz)
 
 
 # T67: bariyer hangi maske katmanina EKLENIR. `sinif_semasi.ENGEL` ile ayni

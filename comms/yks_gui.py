@@ -1303,8 +1303,15 @@ class YksArayuz:
     # kümesi ve tek gerçek arena karesi ayrıca seçilebilir. `drone` bir otopark,
     # `gemini`/`val` afet/yol fotoğrafıdır; domain boşluğunu hakeme göstermek için
     # listede kalırlar (REVIEW_LOG D-53/D-90).
+    # 🔴 T187 (D-324, kullanici istegi "dji klasorundeki yeni verileri de test
+    # klasorune alabilirsin"): DJI kareleri RescueNet `test` kumesinin ICINE
+    # bosaltilmadi — o kume 305 karelik bir OLCUM kumesidir ve karistirmak onu
+    # kirletirdi. Bunun yerine AYRI ve ADI BELLI bir kaynak eklendi.
+    # ⚠ Ne oldugu ekranda YAZILI: bu kareler GECE cekimi (medyan parlaklik 19),
+    # NADIR DEGIL (yerden/egik) ve icinde arena/koridor/bariyer YOK. Rota
+    # BEKLENMEZ; olcek de yoktur (OLCEK_YOK dogru davranistir).
     ALGI_KAYNAKLAR = ("kompozit", "arena_kadraj", "arena_gercek",
-                      "drone", "gemini", "test", "val")
+                      "drone", "dji_gece", "gemini", "test", "val")
     # 🔴 T173 (D-322) — ACILIS KAYNAGI ARTIK KABUL KUMESIDIR.
     # Ekran, uretim modelinin KABUL EDILDIGI dagilimda acilmalidir. Bu, D-116/5'in
     # dersidir: hakem ekrani modeli KABUL EDILMEDIGI bir dagilimda gosterirse,
@@ -1376,6 +1383,8 @@ class YksArayuz:
             "test": kok_dizin / "test_images" / "test" / "images",
             "val": kok_dizin / "dataset" / "rescuenet_yolo" / "images" / "val",
             "drone": kok_dizin / "data" / "raw_frames",
+            # T187: gercek DJI ucus kareleri (2026-08-20 gece prova oturumu).
+            "dji_gece": kok_dizin / "data" / "dji_prova_kareler",
         }
         yol = kaynaklar[self.algi_kaynak]
         uzantilar = (".png", ".jpg", ".jpeg")
@@ -1609,7 +1618,10 @@ class YksArayuz:
                     "gemini": "arena tipi görseller",
                     "test": "takım test seti (test_images/test)",
                     "val": "RescueNet doğrulama seti",
-                    "drone": "gerçek nadir drone kareleri (OTOPARK, arena değil)"
+                    "drone": "gerçek nadir drone kareleri (OTOPARK, arena değil)",
+                    "dji_gece": ("kendi DJI uçuşumuz — 2026-08-20 GECE prova "
+                                 "oturumu; nadir DEĞİL, arena/koridor/bariyer "
+                                 "YOK, ölçek yok → rota BEKLENMEZ")
                     }[self.algi_kaynak]
         self._logla(f"ALGI kaynağı: {self.algi_kaynak} ({aciklama})", "mavi")
         self._algi_iste()

@@ -144,9 +144,40 @@ class GercekArenaTests(unittest.TestCase):
         genislikler = sorted(int(st[i][2]) for i in range(1, n))
         self.assertEqual([98, 228], genislikler, "olculen kol genislikleri bayat")
 
-    def test_olculen_piksel_sayisi_KORUNUR(self):
-        self.assertEqual(3644, int(self.kol.sum()),
-                         "D-92'de olculen bariyer piksel sayisi degisti")
+    def test_OZGUN_T67_yolu_3644_pikseli_AYNEN_KORUR(self):
+        """D-92'nin olctugu sayi GEVSETILMEZ — ozgun yolda BIREBIR durur.
+
+        T184 (D-324) dedektore ACIDAN BAGIMSIZ ikinci bir yol ekledi ve sonuc
+        ikisinin BIRLESIMIDIR. Birlesim 3644'ten 3668'e cikti (+24 px, %0,7).
+        Olculmus bir sayiyi "artik 3668" diye degistirmek, kapiyi sonuca gore
+        gevsetmek olurdu. Bunun yerine ozgun yol AYRICA sinanir: T67'nin
+        olcutu (yatay kapama + yalniz-genislik testi) hala TAM OLARAK
+        3644 vermelidir. Bu sayi degisirse eski davranis bozulmus demektir.
+        """
+        import numpy as _np
+        import karar_sozlesmesi as _ks
+        im = self.img
+        w = im.shape[1]
+        lab = cv2.cvtColor(im.astype(_np.uint8), cv2.COLOR_BGR2LAB)
+        a = lab[:, :, 1].astype(_np.int16) - 128
+        kirmizi = (a > _ks.BARIYER_KROMA_ESIGI).astype(_np.uint8)
+        kx0 = max(3, int(round(w * _ks.BARIYER_KAPAMA_ORANI)) | 1)
+        ky0 = max(3, int(round(kx0 / 12.0)) | 1)
+        ozgun = _ks._bariyer_kollari(
+            cv2.morphologyEx(kirmizi, cv2.MORPH_CLOSE,
+                             cv2.getStructuringElement(cv2.MORPH_RECT, (kx0, ky0))),
+            w, im.shape[0], uzun_eksen=False)
+        self.assertEqual(3644, int(ozgun.sum()),
+                         "D-92'de olculen bariyer piksel sayisi degisti "
+                         "(OZGUN T67 yolu)")
+
+    def test_BIRLESIM_ozgunu_KAPSAR_ve_sadece_BUYUR(self):
+        """Madde 15: yeni yol engeli yalniz BUYUTEBILIR, kucultemez."""
+        self.assertGreaterEqual(int(self.kol.sum()), 3644,
+                                "birlesim ozgun maskeden KUCUK — engel kayboldu")
+        self.assertEqual(3668, int(self.kol.sum()),
+                         "acidan bagimsiz yolun olculen katkisi degisti "
+                         "(+24 px, D-324)")
 
     def test_HB_pedi_engel_SAYILMAZ(self):
         """Gercek karede HB siyah/beyaz; kroma zaten esigin altinda."""
@@ -244,3 +275,89 @@ class GetMasksEntegrasyonTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class AciBagimsizligiTests(unittest.TestCase):
+    """🔴 T184 (D-324) ASIL KAPISI: dedektor DONME KORUYDU.
+
+    Olculdu (bu kapinin yazilmasindan ONCE, sartname karesinde):
+
+        aci     eski dedektor      model v36 (bariyer bolgesinde ENGEL)
+        0       2 kol              %99,9
+        30      0 kol              %99,6
+        60      0 kol              %0,0     <- model de KOR
+        90      2 kol              %30,8
+        120     0 kol              %0,0
+        135     0 kol              %0,0
+
+    Iki ayri korluk: (a) KATMAN 2 olcutu eksen hizali kutu kullaniyordu ve
+    serit araliklarini YALNIZ yatay kapatiyordu; (b) modelin kendisi bariyeri
+    yalniz yataya yakin acilarda goruyor (egitim verisinde bariyer HEP yatay
+    ciziliyor — bu AYRI bir istir, uretec tarafinda).
+
+    Bu kapi (a)'yi kilitler: klasik dedektor HER ACIDA iki kolu bulmalidir.
+    """
+
+    ACILAR = tuple(range(0, 180, 15))
+
+    @classmethod
+    def setUpClass(cls):
+        if not ARENA.is_file():
+            raise unittest.SkipTest(f"gercek arena karesi yok: {ARENA}")
+        cls.img = cv2.imread(str(ARENA))
+        if cls.img is None:
+            raise unittest.SkipTest("arena karesi okunamadi")
+
+    @staticmethod
+    def _dondur(g, aci):
+        h, w = g.shape[:2]
+        M = cv2.getRotationMatrix2D((w / 2.0, h / 2.0), aci, 1.0)
+        kos, sin = abs(M[0, 0]), abs(M[0, 1])
+        nw, nh = int(h * sin + w * kos), int(h * kos + w * sin)
+        M[0, 2] += nw / 2.0 - w / 2.0
+        M[1, 2] += nh / 2.0 - h / 2.0
+        return cv2.warpAffine(g, M, (nw, nh), flags=cv2.INTER_LINEAR,
+                              borderMode=cv2.BORDER_REPLICATE)
+
+    def test_HER_ACIDA_iki_kol_bulunur(self):
+        for aci in self.ACILAR:
+            with self.subTest(aci=aci):
+                m = ince_bariyer_maskesi(self._dondur(self.img, aci))
+                n, _l, _st, _c = cv2.connectedComponentsWithStats(m, 8)
+                self.assertEqual(
+                    2, n - 1,
+                    f"{aci} derecede {n-1} kol bulundu — IHA bu yonelimle "
+                    f"girerse kapali koridor ACIK gorunur (sartname SS2.1: "
+                    f"yanlis guzergah = 0 PUAN)")
+
+    def test_HER_ACIDA_piksel_sayisi_MAKUL(self):
+        """Kol bulunuyor ama piksel sayisi cokmus olmamali."""
+        for aci in self.ACILAR:
+            with self.subTest(aci=aci):
+                m = ince_bariyer_maskesi(self._dondur(self.img, aci))
+                self.assertGreater(
+                    int(m.sum()), 3000,
+                    f"{aci} derecede kol bulundu ama govdesinin cogu kayip")
+
+    def test_MUTASYON_eksen_hizali_olcut_DUSERDI(self):
+        """Kapi bos degil: ESKI (eksen hizali, yatay kapama) olcut 60
+        derecede HICBIR kol bulmuyordu. Bu kontrol o davranisi yeniden
+        uretir; uretemezse kapi hicbir seyi olcmuyor demektir."""
+        import karar_sozlesmesi as _ks
+        g = self._dondur(self.img, 60)
+        h, w = g.shape[:2]
+        lab = cv2.cvtColor(g.astype(np.uint8), cv2.COLOR_BGR2LAB)
+        a = lab[:, :, 1].astype(np.int16) - 128
+        kirmizi = (a > _ks.BARIYER_KROMA_ESIGI).astype(np.uint8)
+        kx0 = max(3, int(round(w * _ks.BARIYER_KAPAMA_ORANI)) | 1)
+        ky0 = max(3, int(round(kx0 / 12.0)) | 1)
+        eski = _ks._bariyer_kollari(
+            cv2.morphologyEx(kirmizi, cv2.MORPH_CLOSE,
+                             cv2.getStructuringElement(cv2.MORPH_RECT, (kx0, ky0))),
+            w, h, uzun_eksen=False)
+        self.assertEqual(0, int(eski.sum()),
+                         "eski olcut 60 derecede bariyer BULUYOR — o hâlde "
+                         "kusur yeniden uretilemiyor, kapi BOS")
+        yeni = ince_bariyer_maskesi(g)
+        self.assertGreater(int(yeni.sum()), 3000,
+                           "yeni olcut ayni karede bulamiyor")
