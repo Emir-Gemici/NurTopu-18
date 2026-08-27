@@ -337,3 +337,12 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - **Karelerin > %10'unda geçilebilir aday ≥ 2** ise → etiketler gerçekten birden çok güzergâh bırakıyor; bu **küme/üreteç kusurudur**, T167 açık kalır ve K7 kurulamaz.
 - Ayrıca `acik_serit` ile **tek geçilebilir adayın etiketi** karşılaştırılacak; ayrışma varsa sayısı yazılacak (bu, T166'nın %23,2'sinin doğru okunuşudur).
 ⚠ Kod DEĞİŞMEZ. Bu bir küme ölçümüdür; kapı önerisi ancak hüküm çıktıktan sonra ve ayrı ön kayıtla yazılır.
+
+## 33. EK — T165 kapanışı: üretim, referansın KESİN olduğu 88 karede ne yapıyor? (2026-08-27, sonuç görülmeden)
+**Neden şimdi:** T167 (D-312) **iyi koşullu** bir alt küme üretti — kapının tek şeride düştüğü **88 kare**, orada yer gerçeği envanteri ile manifest **%100** uyuşuyor. Yani referans **kesindir**. Şimdiye kadarki tüm şerit sayıları (D-308 §5 "8/12", D-309 "43/50") kötü koşullu ve beyansız karelerle **kirlenmişti**. Bu ölçüm o kirliliği dışlar.
+**Ölçüm:** o 88 karede üretim zinciri (v36, conf 0,30, ölçek manifestten) koşulur; yayınlanan `road` ile referans karşılaştırılır. Ayrıca rota üretilemeyen kareler ayrı sayılır (şerit hatası değildir).
+**Ön kayıtlı hüküm kuralı (sonuca göre değişmez):**
+- **≥ 84/88 (%95)** doğru → şartname §2.1 ekseninde üretim **sağlamdır**; T165 "ölçüldü, kusur yok" ile kapanır ve K7 kapısı bu alt kümede **≥ %95** eşiğiyle önerilir (kurulması ayrı iş + kullanıcı kararı).
+- **< 84/88** → gerçek ve **temiz referanslı** bir kusurdur; T165 KRİTİK kalır, yanlış kareler tek tek listelenir ve kök sebep ayrı ön kayıtla aranır.
+- Rota üretilemeyen kareler paydadan **düşülmez**, ayrı raporlanır (fail-closed davranış şerit hatası değildir ama saha başarımıdır).
+⚠ Kod DEĞİŞMEZ; bu bir ölçümdür. Eşik burada, sonuç görülmeden yazıldı.

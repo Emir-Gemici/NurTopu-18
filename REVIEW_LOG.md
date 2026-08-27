@@ -22785,3 +22785,38 @@ Yer gerçeği maskesinde bile beyanlı 211 karenin yalnız **15**'i `ACIK`; 117 
 
 #### 6. Yordam
 Bu soruşturmada **üç** alet ardı ardına geçersiz çıktı (manifest `pencere`si · tavan kolunun tekilliği · `acik_serit`'in null olduğu kareleri ayrışan sayma) ve **üçünü de kontrol ölçümü** yakaladı. D-311 §5'teki kural bir kez daha doğrulandı; buna bir madde ekliyorum: **referansın "beyan edilmiş" olup olmadığı da doğrulanmalıdır** — `None` bir yer gerçeği, yanlış bir yer gerçeğinden daha sinsidir.
+
+---
+
+### D-313 · ✅ T165 KAPANDI — üretim, referansın KESİN olduğu 88 karede **84 doğru şerit**; ön kayıtlı eşik **tam olarak** karşılandı (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §33 (eşik **≥ 84/88** sonuç görülmeden yazıldı). **Kanıt:** `results/t165/iyi_kosullu_uretim.json`.
+
+#### 1. Ölçüm — kirlilikten arındırılmış tek geçerli sayı
+T167 (D-312) referansın kesin olduğu **88 karelik** alt kümeyi çıkardı (kapı tek şeride düşüyor, orada yer gerçeği envanteri ile manifest **%100** uyuşuyor). Üretim zinciri (v36, conf 0,30, ölçek manifestten) o 88 karede:
+
+| sonuç | kare |
+|---|---:|
+| **doğru şerit** | **84** |
+| yanlış şerit | **1** (`sa_000090`: referans 2, yayınlanan 3) |
+| rota üretilemedi | 3 |
+
+Rota üreten karelerde doğruluk: **84/85 = %98,8**.
+
+#### 2. Hüküm
+Ön kayıtlı kural **≥ 84/88** idi; ölçülen **tam 84**. Kural **karşılandı** → şartname §2.1 ekseninde üretim **SAĞLAMDIR** ve T165 kapanır.
+⚠ **Marj sıfırdır.** Eşiği gevşetmedim, ama bir kare daha kaybedilseydi hüküm tersine dönerdi. Bunu gizlemiyorum: sonuç "rahat geçti" değil, "**sınırda geçti**"dir.
+
+#### 3. Bu sayı neden önceki sayılardan farklı
+| kayıt | ölçülen | payda |
+|---|---|---|
+| D-308 §5 | 8/12 | rastgele 12 kare, **kötü koşullu + beyansız dâhil** |
+| D-309 | 43/50 | 50 kare, **kötü koşullu + beyansız dâhil** |
+| **D-313** | **84/88 (%98,8 rota verenlerde)** | **yalnız iyi koşullu, beyanlı** |
+Önceki ikisi **yanlış değil**, **kirliydi**: paydaları, şerit etiketinin tanım gereği belirsiz olduğu kareleri de hata sayıyordu (D-312 §2). Doğru okuma budur.
+
+#### 4. Geriye kalan
+- `sa_000090` **tek gerçek şerit hatasıdır** (temiz referansla). Kök sebebi **ölçülmedi**.
+- `sa_000013` (D-311'in "şüpheli"si) bu alt kümede **değildir** (kapısı 2–3'e yayılıyor); hükümsüz kalır.
+- 3 kare rota üretemiyor — şerit hatası değil, **fail-closed** davranış; ayrı eksen.
+- **K7 önerisi (karar kullanıcının/mimarın, D-133):** kabul zincirine "yayınlanan şerit doğruluğu" ölçütü **yalnız bu 88 karelik iyi koşullu alt kümede** ve **≥ %95** eşiğiyle eklenebilir. Kötü koşullu 105 ve beyansız 49 kare **dışlanmalıdır** — aksi hâlde kapı, tanım gereği belirsiz olan bir şeyi ölçüyormuş gibi yapar (D-15 sınıfı vakum kapı).
