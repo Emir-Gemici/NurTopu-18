@@ -1,0 +1,505 @@
+{
+ "hukum": "HUKUM VERILEMEDI - ALET GECERSIZ: kontrol grubundaki DOGRU karelerin 0/6'i 'acik serit penceresi icinde' cikti; olcut DOGRU kareleri bile aciklamiyor. Kok ayrimi bu aletle YAPILAMAZ.",
+ "alet_gecerli": false,
+ "kontrol_ic": 0,
+ "kontrol_n": 6,
+ "yanlis_n": 5,
+ "pencere_icinde": 0,
+ "sinir_uzakligi_yanlis": [
+  0.2,
+  8.3,
+  10.7,
+  13.3,
+  133.3
+ ],
+ "sinir_uzakligi_dogru": [
+  4.7,
+  18.2,
+  18.7,
+  27.2,
+  33.8,
+  35.8,
+  60.2,
+  64.7,
+  93.3,
+  93.7
+ ],
+ "kareler": [
+  {
+   "kare": "sa_000013.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 1,
+   "dogru": false,
+   "rota_medyan_x": 80.0,
+   "serit_no_medyandan": 1,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    233.3,
+    320.0
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "1": [
+     146.5,
+     233.3
+    ],
+    "2": [
+     233.3,
+     320.0
+    ],
+    "3": [
+     406.7,
+     493.5
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 133.3
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 1,
+   "dogru": false,
+   "rota_medyan_x": 205.0,
+   "serit_no_medyandan": 1,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    267.8,
+    476.7
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "1": [
+     58.9,
+     163.4
+    ],
+    "2": [
+     267.8,
+     476.7
+    ],
+    "3": [
+     476.6,
+     581.1
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 8.3
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "beklenen_serit": 3,
+   "yayinlanan": 2,
+   "dogru": false,
+   "rota_medyan_x": 416.0,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": null,
+   "pencere_icinde": null,
+   "tum_pencereler": {
+    "1": [
+     92.6,
+     320.0
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 10.7
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 1,
+   "dogru": false,
+   "rota_medyan_x": 200.0,
+   "serit_no_medyandan": 1,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    320.0,
+    531.1
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "2": [
+     320.0,
+     531.1
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 13.3
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "beklenen_serit": 3,
+   "yayinlanan": 2,
+   "dogru": false,
+   "rota_medyan_x": 426.5,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": null,
+   "pencere_icinde": null,
+   "tum_pencereler": {
+    "1": [
+     156.5,
+     265.5
+    ],
+    "2": [
+     265.5,
+     374.5
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 0.2
+  },
+  {
+   "kare": "sa_000000.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 273.5,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    320.0,
+    429.7
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "1": [
+     100.5,
+     210.3
+    ],
+    "2": [
+     320.0,
+     429.7
+    ],
+    "3": [
+     429.7,
+     539.5
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 60.2
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "beklenen_serit": 1,
+   "yayinlanan": 1,
+   "dogru": true,
+   "rota_medyan_x": 177.5,
+   "serit_no_medyandan": 1,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": null,
+   "pencere_icinde": null,
+   "tum_pencereler": {
+    "3": [
+     320.0,
+     560.3
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 35.8
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "beklenen_serit": 3,
+   "yayinlanan": 3,
+   "dogru": true,
+   "rota_medyan_x": 460.5,
+   "serit_no_medyandan": 3,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": null,
+   "pencere_icinde": null,
+   "tum_pencereler": {
+    "1": [
+     88.0,
+     242.7
+    ],
+    "2": [
+     242.7,
+     397.3
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 33.8
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 232.0,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    279.6,
+    441.3
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "2": [
+     279.6,
+     441.3
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 18.7
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 231.5,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    280.7,
+    438.0
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "2": [
+     280.7,
+     438.0
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 18.2
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 278.0,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    320.0,
+    397.3
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "1": [
+     165.4,
+     242.7
+    ],
+    "2": [
+     320.0,
+     397.3
+    ],
+    "3": [
+     397.3,
+     474.6
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 64.7
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "beklenen_serit": 1,
+   "yayinlanan": 1,
+   "dogru": true,
+   "rota_medyan_x": 120.0,
+   "serit_no_medyandan": 1,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": null,
+   "pencere_icinde": null,
+   "tum_pencereler": {
+    "2": [
+     170.3,
+     469.7
+    ],
+    "3": [
+     469.7,
+     569.5
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 93.3
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 333.0,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": null,
+   "pencere_icinde": null,
+   "tum_pencereler": {
+    "3": [
+     377.2,
+     491.7
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 93.7
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 218.0,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    251.9,
+    456.1
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "2": [
+     251.9,
+     456.1
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 4.7
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "beklenen_serit": 2,
+   "yayinlanan": 2,
+   "dogru": true,
+   "rota_medyan_x": 399.5,
+   "serit_no_medyandan": 2,
+   "ucte_bir_sinirlari": [
+    213.3,
+    426.7
+   ],
+   "acik_serit_penceresi": [
+    148.9,
+    320.0
+   ],
+   "pencere_icinde": false,
+   "tum_pencereler": {
+    "2": [
+     148.9,
+     320.0
+    ]
+   },
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ],
+   "ucte_bir_sinirina_uzaklik": 27.2
+  }
+ ]
+}

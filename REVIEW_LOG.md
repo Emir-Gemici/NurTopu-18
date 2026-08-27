@@ -22673,3 +22673,39 @@ Eşli 4 karede iki yol **aynı** ve **ikisi de doğru**.
 
 #### 6. Sonuç — T165 açıldı (KRİTİK), kod BU TURDA DEĞİŞMEDİ
 Şartname puanı doğrudan bu numaraya bağlı olduğu için bu bir **saha günü risk kalemidir**. Ön kayıt gereği bu turda yalnız **ölçüldü**; eşik/kapı ve düzeltme ayrı ön kayıtla ve tam kabul zinciriyle yapılacaktır. Önerilen (karar mimarın/kullanıcının): kabul zincirine **K7 · yayınlanan şerit doğruluğu** ölçütü.
+
+---
+
+### D-310 · 🔴 DÜZELTME — T165'in "5 yanlış şerit"inin **4'ü üretim hatası DEĞİL**: kabul kümesinin `acik_serit` alanı kendi etiket maskesiyle çelişiyor (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §31. **Kanıt:** `results/t165/{olcum.json,olc.py}`.
+
+#### 1. ⚠ Önce kendi hatam: yanlış bir hükmü YAYINLAMANIN eşiğinden döndüm
+§31'in ayırt edici aleti "rota, açık şeridin manifest **penceresi** içinde mi" idi. İlk koşum **"HÜKÜM: ROTA SEÇİMİ (planlayıcı)"** yazdı — yani "planlayıcı yanlış koridoru seçiyor". **Yanlıştı.** Kontrol grubuna bakınca görüldü ki **doğru** karelerin de **0/6**'sı "pencere içinde" değil; yani ölçüt doğru kareleri bile açıklamıyor. `bariyerler[].pencere` şeridin geçilebilir penceresi **değil**. Betiğe **alet doğrulaması** eklendi: kontrol grubu tutmuyorsa artık **hüküm verilmiyor** (`alet_gecerli: false`). Bu kayıt, o hükmün neden geçersiz olduğunun kalıcı kanıtıdır.
+
+#### 2. Geçerli alet: TAVAN kolu (kümenin KENDİ etiket maskesi, aynı üretim zinciri)
+D-302'de işe yarayan yöntem. **Alet geçerliliği ölçüldü: kontrol grubunda 10/10** manifestle uyuşuyor — yani şerit numaralandırma sözleşmesi tutarlıdır ve alet ayırt edicidir.
+
+| kare | manifest `acik_serit` | ÜRETİM | **TAVAN (etiket)** | yorum |
+|---|---:|---:|---:|---|
+| `sa_000013` | 2 | 1 | **2** | 🔴 **gerçek üretim hatası** |
+| `sa_000025` | 2 | 1 | **1** | manifest ↔ etiket çelişkisi |
+| `sa_000146` | 3 | 2 | **2** | manifest ↔ etiket çelişkisi |
+| `sa_000176` | 2 | 1 | **1** | manifest ↔ etiket çelişkisi |
+| `sa_000216` | 3 | 2 | **2** | manifest ↔ etiket çelişkisi |
+| 10 kontrol karesi | — | doğru | **10/10** | alet geçerli |
+
+#### 3. Hüküm — D-309'un iması DÜZELTİLİYOR
+D-309 "kararın kayması… T155 kabul kümesinde tutmuyor" demişti. **Bu okuma yanlıştır.** Yer gerçeği **maskesi** referans alındığında üretim, 5 karenin **4'ünde tavanla AYNI** şeridi yayınlıyor. Yani:
+- **Gerçek üretim hatası: 1/48** (`sa_000013`) — yayınlanan şerit doğruluğu **43/48 değil, 47/48**.
+- **4/48 kare, kümenin kendi `acik_serit` alanının kendi etiket maskesiyle çeliştiği** karelerdir. Bu bir **veri kümesi bütünlüğü** kusurudur, üretim kusuru değil.
+D-309'un ölçüm sayıları doğrudur; **çıkarımı** bu kayıtla düzeltilmiştir. D-309 silinmedi.
+
+#### 4. Etkisi — `acik_serit`'i doğru sayan HER ölçüm kirlenir
+Kabul kümesinde `acik_serit` ile etiket maskesi ~**%8** karede (4/48) ayrışıyor. Bu alanı yer gerçeği sayan ölçümler (D-308 §5'in "8/12" gözlemi ve D-309'un "43/50"ü dâhil) bu payı **hata olarak** sayar. **K6 etkilenmez** (K6 rota çizgisinin **maskeye** göre konumunu ölçer, `acik_serit`'e bakmaz). **T165'in ağırlığı düştü**, ama kaybolmadı: `sa_000013` gerçek bir hatadır ve kabul zinciri şerit numarasını hâlâ **hiç ölçmüyor**.
+
+#### 5. Açılan iş
+**T166 (ÖNEMLİ):** kabul kümesinin `acik_serit` alanı ile etiket maskesinden türeyen şerit, 260 karenin tamamında karşılaştırılmalı; ayrışan kareler listelenmeli ve `acik_serit`'i yer gerçeği sayan ölçümler (kapı önerileri dâhil) **bu listeyi dışlayarak** ya da maskeyi referans alarak koşmalıdır.
+
+#### 6. ÖLÇÜLEMEDİ
+`sa_000013`'ün kök sebebi (rota gövdesi medyan x = 80, üçte bir sınırından 133 px uzak — yani sınır ill-conditioning'i **değil**) **ölçülmedi**; T165'te açık.

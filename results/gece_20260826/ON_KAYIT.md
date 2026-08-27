@@ -314,3 +314,16 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - **`rota_bul` belirgin biçimde daha doğruysa** (≥ +5 kare) → bu **üretim yolunda gerçek bir kusurdur**; T155'in düzeltmesi kabul kümesinde tutmuyor demektir ve **KRİTİK** iş açılır.
 - **İkisi de yüksek doğrulukta** (≥ %90) → 12 karelik gözlem örnekleme dalgalanmasıydı; kayda geçer.
 ⚠ Bu turda **kod değişmez**; yalnız ölçülür ve hüküm yazılır.
+
+## 31. EK — T165 teşhisi: şerit kayması ATFETME hatası mı, ROTA seçimi hatası mı? (2026-08-27, sonuç görülmeden)
+**Ölçülen (D-309):** kabul kümesinde yayınlanan şerit 43/50; 5 yanlışın **beşi de tam −1**.
+**Hipotez (ölçümden ÖNCE):** üretim şerit numarası `karar_sozlesmesi.serit_no` ile **içerik genişliğinin ÜÇTE BİRLERİNDEN** hesaplanıyor (`x < x0 + w/3` → 1, …). Üretecin arena şeritleri ise kendi geometrisinden geliyor ve **üçte birlerle hizalı olmayabilir**. Bu, kuyruktaki **T101**'in ("bir üreteç şeridi iki `serit_no` üçte birine birden yayılıyor", D-168) tam olarak aynı kusuru olabilir; öyleyse T165 **yeni bir kusur değil, T101'in puana yansıyan yüzüdür**.
+**Ayırt edici ölçüm (kod DEĞİŞMEZ):** 50 kabul karesinin manifestinden her şeridin **x penceresi** okunur (`bariyerler[].kutu`/`pencere`), üçte bir sınırlarıyla (`w/3`, `2w/3`) karşılaştırılır. Her kare için:
+1. Açık şeridin penceresinin **hangi üçte bir(ler)e** düştüğü;
+2. Yayınlanan rotanın piksel **medyan x**'i ve onun üçte biri;
+3. Rotanın, açık şeridin **kendi penceresi** içinde kalıp kalmadığı.
+**Ön kayıtlı hüküm kuralı (sonuca göre değişmez):**
+- **Yanlış 5 karenin ≥ 4'ünde** rota, açık şeridin **kendi penceresi içinde** ama üçte bir sınırının solunda kalıyorsa → kusur **ATFETMEDİR** (numara hesabı), rota doğrudur. T165, **T101 ile aynı kök** ilan edilir ve çözüm "şerit sınırlarını üreteç geometrisinden türet" olur.
+- **Yanlış 5 karenin ≥ 4'ünde** rota gerçekten **komşu şeridin** penceresindeyse → kusur **ROTA SEÇİMİDİR** (planlayıcı yanlış koridoru seçmiş); bu **daha ağır** bir bulgudur ve ayrı iş açılır.
+- Karışıksa (2-3 / 2-3) → "tek kök yok" yazılır, ikisi de açık kalır.
+⚠ Bu turda **düzeltme yapılmaz**; yalnız kök ayrıştırılır. Eşik/kapı ve kod değişikliği ayrı ön kayıtla.
