@@ -22709,3 +22709,36 @@ Kabul kümesinde `acik_serit` ile etiket maskesi ~**%8** karede (4/48) ayrışı
 
 #### 6. ÖLÇÜLEMEDİ
 `sa_000013`'ün kök sebebi (rota gövdesi medyan x = 80, üçte bir sınırından 133 px uzak — yani sınır ill-conditioning'i **değil**) **ölçülmedi**; T165'te açık.
+
+---
+
+### D-311 · 🔴 D-310 KISMEN YANLIŞTI — "manifest ↔ etiket çelişkisi" değil, **etiket maskesi BİRDEN ÇOK şeridi açık bırakıyor**; doğrulanan üretim hatası **1** (2026-08-27)
+
+**Kanıt:** `results/t166/olcum.json` + şerit bağlantı ölçümü (bu kayıt). **İlgili:** D-309, D-310 (ikisi de duruyor, silinmedi).
+
+#### 1. Ne oldu
+D-310, D-309'un "üretim yanlış şerit yayınlıyor" imasını düzeltmek için **TAVAN kolunu** (kümenin kendi etiket maskesiyle üretim zinciri) kullandı ve 5 karenin 4'ünde tavanın **üretimle** aynı şeyi söylediğini ölçtü. Oradan **"manifestin `acik_serit` alanı kendi etiket maskesiyle çelişiyor"** diye yazdı. **Bu çıkarım yanlıştır.**
+
+#### 2. Eksik olan kontrol: maskede kaç şerit gerçekten açık?
+Her karenin sınıf 0 ∧ ¬sınıf 1 maskesinde, içerik genişliğinin üçte birleri için **alt↔üst bağlantısı** ölçüldü:
+
+| kare | manifest | üretim | tavan | maskede alt↔üst bağlı şeritler |
+|---|---:|---:|---:|---|
+| `sa_000013` | 2 | **1** | 2 | **{2}** → TEK |
+| `sa_000025` | 2 | 1 | 1 | {1, 2} → İKİ |
+| `sa_000146` | 3 | 2 | 2 | {2, 3} → İKİ |
+| `sa_000176` | 2 | 1 | 1 | {1, 2} → İKİ |
+| `sa_000216` | 3 | 2 | 2 | {2, 3} → İKİ |
+
+**Sonuç:** o 4 karede manifestin şeridi maskede **açıktır** — manifest çelişmiyor. Maske **iki** koridor bırakıyor; **tavan kolu ayırt edemiyor** (ikisinden birini seçiyor) ve **üretim de diğerini seçiyor**. Yani D-310'un "çelişki" dediği şey, aslında **referansın belirsizliğidir**.
+
+#### 3. Bu gece üç kez ölçülen aynı soru — bugünkü DOĞRU hüküm
+- **Doğrulanmış üretim hatası: 1** (`sa_000013`). Bu kare, maskenin **tek** şerit bıraktığı, yani referansın **kesin** olduğu karedir; orada üretim 1 diyor, tavan ve manifest 2 diyor. Rota gövdesi medyan x = 80 (üçte bir sınırından 133 px uzak) — sınır ill-conditioning'i **değil**.
+- **Diğer 4 kare hakkında hüküm YOK.** Ne manifest ne üretim bu kanıtla yanlış ilan edilebilir.
+- **T166'nın 60/259 (%23,2) "ayrışan" sayısı, manifest hatası kanıtı DEĞİLDİR** — büyük ölçüde maske belirsizliğidir. (Örneklemde ayrışanların 22/40'ı, uyuşanların 17/40'ı ≥2 şerit açık.)
+
+#### 4. Açılan iş — T167 (ÖNEMLİ)
+Şartname §2.1 **üç güzergâhtan yalnız birinin açık** olmasını şart koşar. Kabul kümesinin etiket maskeleri örneklemde **~%45 karede ≥2 şeridi** alt↔üst bağlı bırakıyor. Bu ya (a) etiketlerin bariyerleri eksik temsil etmesidir (küme/üreteç kusuru), ya da (b) benim **üçte bir dilimi** yaklaşımımın kaba olmasıdır (bir koridor üçte birler arasında dolanabilir). **Ayrıştırılmadı.** Ayrıştırılmadan hiçbir "şerit doğruluğu" kapısı (K7 önerisi) kurulamaz — referans belirsizken kapı ölçemez.
+
+#### 5. Yordam dersi (kendime)
+İki tur üst üste, **referansın kendisini doğrulamadan** hüküm yazmaya kalktım: önce `bariyerler[].pencere`yi şerit penceresi sandım (kontrol grubu çürüttü), sonra tavan kolunu **tekil** referans sandım (şerit bağlantı sayımı çürüttü). İkisinde de kontrol ölçümü kurtardı. **Kural:** bir referans, ayırt edici olduğu **gösterilmeden** hüküm üretmez — ve "ayırt edici" demek, yalnız doğru örneklerde tutması değil, **tekil bir cevap vermesi** demektir.
