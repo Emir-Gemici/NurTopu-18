@@ -275,3 +275,21 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 3. **MUTASYON B:** döngü listesine defterde **olmayan** bir sürüm (`v99`) enjekte edilirse test **DÜŞMELİ**.
 4. **MUTASYON C:** `--imgsz 640` → `512` yapılırsa (tarihsel kıyasın kendi kaydıyla çelişir) test **DÜŞMELİ**.
 ⚠ Kılavuz içeriği bu turda **değişmiyor**; değişen tek şey kapının görüş alanıdır. Mutasyonların hiçbiri geçerse T158 **kapanmaz**.
+
+## 28. EK — T162: §6.2 "Alan İhlali" kapısı sahada ÖLÜ (2026-08-27, sonuç görülmeden)
+**Kusur (şartname boşluk raporu R17):** `comms/yks_gui.py:940-942` İHA-UB (300×300 m) taşmasını `heartbeat`teki `m["x"] / m["y"]` ile denetliyor. Ama **üretim kodunda `x`/`y` üreten hiçbir yol yok** — `iha_sender.send_heartbeat` yalnız `node/seq/t` yolluyor; `x,y` yalnız GUI'nin demo satırında (`:2013`) üretiliyor. Yani şartname §6.2/§6.4'ün istediği alan ihlali denetimi **sahada hiç ateş almaz**: ölü kapı.
+**İkinci kusur (madde 16):** `300` GUI'de **çıplak sabit** (üç yerde: `:735`, `:737`, `:941`). Şartname değişirse kimse çeviremez.
+**Telemetri zaten var:** `comms/inis_kaniti.BagilIrtifaOkuyucu` üretimde `GLOBAL_POSITION_INT` tüketiyor (iniş kanıtı + ölçek). Aynı mesaj `lat`/`lon` taşır. Kod tabanı **ikinci bir telemetri yolu türetmeyi yasaklıyor** (`karar_sozlesmesi.mpp_irtifadan` docstring'i), o yüzden konum **aynı okuyucudan** alınır.
+**Yapılacak (T162):**
+1. `karar_sozlesmesi`: `SARTNAME_IHA_UB_KENAR_M = 300.0` (TEK tanım) + `yerel_konum_m(ref, konum)` (eşdikdörtgen izdüşüm, saf Python/NumPy) + `iha_ub_ihlali(x, y)`.
+2. `inis_kaniti`: anlık görüntüye `lat/lon` **eklenir** — iniş kanıtı yolu **DEĞİŞMEZ**; `lat/lon` geçersizse irtifa yolu etkilenmez (yalnız konum None olur).
+3. `protocol.heartbeat`: isteğe bağlı telemetri alanları; argümansız çağrı **bayt-eş** kalır.
+4. `iha_sender.KararYayinci`: isteğe bağlı `konum_saglayici`; yoksa davranış bayt-eş.
+5. `rpi_inference.run_camera`: referans noktası **CLI'den** (`--ub-referans lat,lon`), fail-closed — referans yoksa `x,y` **yayınlanmaz** ve bu **görünür** olur (sessiz sıfır yok).
+6. `yks_gui`: çıplak `300` → sözleşme sabiti.
+**Kapılar (sonuca göre değişmez):**
+- (a) **Bozulmama:** genel kapı iki kolda GEÇTİ; `unittest discover` düşmez; `send_heartbeat()` argümansız çağrıda **alan kümesi aynı** kalır (bayt-eş sözleşme testi).
+- (b) **İniş kanıtı dokunulmazlığı:** `lat/lon` bozuk/eksik gelen mesajda `irtifa_m()` **eskisiyle aynı** sonucu verir (aynı fikstürlerle karşılaştırmalı test).
+- (c) **Uçtan uca:** sahte `GLOBAL_POSITION_INT` + referans ile `KararYayinci` heartbeat'i `x,y` **taşır**; YKS'nin denetimi sınır dışında **ALAN İHLALİ** üretir, içinde üretmez.
+- (d) **Mutasyon (boş kapı yasağı):** referans verilmezse `x,y` **yayınlanmamalı** (test bunu doğrular) · sınır sabiti 300 → 30 yapılırsa ihlal testi **düşmeli** · `iha_ub_ihlali` her zaman None dönerse test **düşmeli**.
+⛔ Anayasa madde 15 ile ilgisi yok (serbest alana dokunulmuyor). ⚠ Gerçek Pixhawk yok — uçtan uca sahte mesajla ölçülür ve bu **rapora yazılır**.

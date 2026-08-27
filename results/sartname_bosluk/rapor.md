@@ -76,7 +76,7 @@ tutmuyor, duzeltildi. Taramada **bir hukum daha atlanmis** cikti -> **R22**.
 | R14 | KANITLI_TEST · kararlilik acik | **KOTULESTI (olculdu, gizlenmiyor)** | D-295 §3: v36 karar kararliliginda **v35'ten kotu**; fazlaligin tamami "rota VAR/YOK cevrilmesi" (v36 6, v35 0-1), yon fail-closed ama saha elverisliligini dusurur. Terfi geri alinmadi (on kayit §16; geri alma **kullanici karari**). |
 | R15 | BELIRSIZ | degismedi | T14/T15 acik. |
 | R16 | KOD_VAR_TEST_YOK | **KAPANDI** | **T148** (K5): `SARTNAME_IHA_GOREV_SURESI_S=900`, `SARTNAME_IKA_GOREV_SURESI_S=600` `codes/karar_sozlesmesi.py:1539-1542`; `ika_nav` TEK deadline yerine **iki ayri bayrak** (`--bekleme-suresi` / `--surus-suresi`); cikis kodu 4 testle kilitli. CONTRACTS §7.1. |
-| R17 | OLCULEMEDI | degismedi | - |
+| R17 | OLCULEMEDI | **KAPANDI (yazilim tarafi) — T162 / D-307** | Sartname SS6.2/SS6.4 ALAN IHLALI denetimi GUI'de VARDI ama uretimde `x,y` ureten yol YOKTU: kapi sahada OLUYDU. Artik `--ub-referans LAT,LON` ile her HEARTBEAT yerel `x,y` tasiyor (konum ayni telemetri okuyucusundan, ikinci yol acilmadi) ve GUI denetimi sozlesme sabitiyle (`SARTNAME_IHA_UB_KENAR_M`) yapiliyor. Kapi 19/19 (uretim dongusu gercekten kosuluyor). ⚠ Gercek Pixhawk hâlâ YOK — uctan uca sahte GLOBAL_POSITION_INT ile olculdu; geofence'in KENDISI (Pixhawk parametresi) hâlâ repo disi. |
 | R18 | **YOK · KRITIK** | **YARISI KAPANDI** | Aktarim otonom oldu (R4/T146). **Surus hala YOK** (R12/T149). |
 | R19 | KANITLI_TEST | guclendi | T148 heartbeat suresi §6.2'ye baglandi. |
 | R20 | KOD_VAR_TEST_YOK | **hala OLCULMEDI** | Gercek SiK cifti yok. Kuru kosu yalniz UDP loopback. DDR'deki ">%98, 300 m" iddiasinin kaniti **hala yok**. |

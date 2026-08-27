@@ -229,6 +229,35 @@ hedef vermezsen telsiz halkası **hiç kurulmaz** (eski davranış, sessiz).
 ⚠ **`--mavlink` VERİLMEZSE her kare `OLCEK_YOK` → NO_ROUTE.** Ölçek halkası canlı
 irtifaya bağlıdır (fail-closed, T43). Bu bir arıza değil, sözleşmedir.
 
+### 🔴 ADIM 7b · İHA-UB REFERANS NOKTASI — şartname §6.2 "Alan İhlali" (T162 · D-307)
+
+Yukarıdaki komutlara **`--ub-referans <LAT>,<LON>`** eklenmezse YKS **ALAN İHLALİ
+denetimi YAPAMAZ**. Bu sessiz değildir; başlangıçta şu satır basılır:
+
+```
+UYARI: --ub-referans verilmedi ya da canli telemetri yok — HEARTBEAT'e x,y
+EKLENMEZ; YKS ALAN IHLALI denetimi YAPILAMAZ (sartname SS6.2/SS6.4).
+```
+
+**Referans, İHA-UB'nin bir KÖŞESİDİR** (yerel çerçeve 0..300 m, x doğu / y kuzey).
+Yanlış köşe girmek, **yanlış ihlal** demektir — bu yüzden:
+
+1. Hakemden/krokiden İHA-UB'nin **güneybatı** köşesinin koordinatını al.
+2. Telefonla ya da Pixhawk'tan **ondalık derece** olarak oku (`39.9251234,32.8661234`).
+3. Komuta ekle:
+   ```bash
+   --ub-referans 39.9251234,32.8661234
+   ```
+4. **BAŞARI ÖLÇÜTÜ:** başlangıçta `IHA-UB referansi: <lat>,<lon> · kenar 300 m`
+   satırını **gör**. YKS'de İHA hareket ettikçe mini genel-sahada iz belirmeli.
+5. **DOĞRULAMA (kalkıştan önce, yerde):** İHA yerdeyken YKS'de görünen `x,y`
+   kabaca **0..300 bandında** ve krokideki yerine benziyor olmalı. Değilse köşe
+   yanlıştır — düzeltmeden uçma; yanlış referans **sahte alan ihlali** üretir.
+
+⚠ Bu ölçüm **gerçek Pixhawk ile hiç sınanmadı** (D-307 §5). Sahada ilk kez
+gerçek koşacak; şüphede kalırsan bayrağı **verme** — denetim kapalı kalır ama
+yanlış ihlal de üretilmez.
+
 ---
 
 ## ADIM 8 · İKA tarafı  *(süre bayrakları — CONTRACTS §7.1 / K5 · T148)*

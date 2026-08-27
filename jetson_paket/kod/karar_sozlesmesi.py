@@ -1541,6 +1541,73 @@ SARTNAME_IKA_GOREV_SURESI_S = 10 * 60.0   # §6.2 · HB'ye ulasma
 IKA_BEKLEME_SURESI_S = SARTNAME_IHA_GOREV_SURESI_S   # rota+inis+IKA_GO beklemesi
 IKA_SURUS_SURESI_S = SARTNAME_IKA_GOREV_SURESI_S     # izin -> HB
 
+# ── §6.2 / §6.4 · IHA-UB ALAN IHLALI (T162 · ON_KAYIT SS28) ────────────────
+# Sartname IHA'nin ucus bolgesini (IHA-UB) 300x300 m olarak tanimlar ve disina
+# tasmayi ALAN IHLALI sayar. Bu sayi `comms/yks_gui.py` icinde UC YERDE CIPLAK
+# yaziliydi (:735, :737, :941) — madde 16 ihlali; sartname degisirse kimse
+# ceviremezdi. Tek tanim burasidir.
+SARTNAME_IHA_UB_KENAR_M = 300.0
+ALAN_IHLALI_SEBEBI = "ALAN_IHLALI"
+
+# Dunya yaricapi — eşdikdörtgen (equirectangular) izdusum icin. Arena olcegi
+# (yuzlerce metre) icinde bu yaklasim santimetre altinda hata verir; SciPy /
+# pyproj GEREKMEZ (anayasa madde 4).
+DUNYA_YARICAPI_M = 6_378_137.0
+
+
+def yerel_konum_m(ref_lat, ref_lon, lat, lon):
+    """(lat, lon) -> referans noktasina GORE yerel (x_dogu_m, y_kuzey_m).
+
+    FAIL-CLOSED: gecersiz/eksik/bool/NaN/sonsuz girdi ya da |enlem| > 90 ise
+    ``None`` doner. "Yaklasik konum" DONMEZ — konum bilinmiyorsa yayinlanmaz,
+    cunku yayinlanan her x,y hakemin ALAN IHLALI kararini besler.
+    """
+    def _sayi(x):
+        if isinstance(x, bool) or not isinstance(x, Real):
+            return None
+        try:
+            d = float(x)
+        except (OverflowError, TypeError, ValueError):
+            return None
+        return d if math.isfinite(d) else None
+
+    rl, rn, l, n = (_sayi(ref_lat), _sayi(ref_lon), _sayi(lat), _sayi(lon))
+    if None in (rl, rn, l, n):
+        return None
+    if abs(rl) > 90.0 or abs(l) > 90.0 or abs(rn) > 180.0 or abs(n) > 180.0:
+        return None
+    ortalama_enlem = math.radians((rl + l) / 2.0)
+    x = math.radians(n - rn) * DUNYA_YARICAPI_M * math.cos(ortalama_enlem)
+    y = math.radians(l - rl) * DUNYA_YARICAPI_M
+    if not (math.isfinite(x) and math.isfinite(y)):
+        return None
+    return (x, y)
+
+
+def iha_ub_ihlali(x, y, kenar_m=SARTNAME_IHA_UB_KENAR_M):
+    """IHA-UB disina tasma varsa ``(sebep, aciklama)``, yoksa ``None``.
+
+    Cerceve: koordinat sistemi IHA-UB'nin bir KOSESINDEN baslar (0..kenar),
+    `comms/yks_gui.py` mini genel-sahasiyla ayni (`px / kenar * b`).
+    Konum bilinmiyorsa (None) ihlal ILAN EDILMEZ — bilinmemek ihlal degildir;
+    bilinmedigi ekranda AYRICA gorunur (sessiz sifir yasak).
+    """
+    if x is None or y is None:
+        return None
+    if isinstance(x, bool) or isinstance(y, bool):
+        return None
+    if not (isinstance(x, Real) and isinstance(y, Real)):
+        return None
+    x, y = float(x), float(y)
+    if not (math.isfinite(x) and math.isfinite(y)):
+        return None
+    if 0.0 <= x <= kenar_m and 0.0 <= y <= kenar_m:
+        return None
+    return (ALAN_IHLALI_SEBEBI,
+            f"IHA-UB ({kenar_m:.0f}x{kenar_m:.0f} m) disina cikildi; "
+            f"olculen x={x:.1f} m y={y:.1f} m (sartname SS6.2/SS6.4)")
+
+
 # NEDEN (K6): iha_inis_yayinci CLI IHA_LANDED'i yayinlayip cikiyordu; alici
 # hb_timeout (3 s) sonra link_lost'a dusup IKA'yi guvenli durusta kilitliyordu.
 # Inis sonrasi heartbeat en az IKA gorev suresi kadar surdurulur; link_lost

@@ -102,6 +102,37 @@ def _bagil_irtifa_m(mesaj):
     return bagil_mm / MILIMETRE_BIR_METRE
 
 
+def _konum_derece(mesaj):
+    """GLOBAL_POSITION_INT `lat`/`lon` (1e7 derece) -> (lat_d, lon_d) ya da None.
+
+    T162 (ON_KAYIT SS28): sartname SS6.2/SS6.4 ALAN IHLALI denetimi IHA'nin
+    konumunu ister; YKS bunu heartbeat'teki x,y'den okuyor ama URETIMDE o alani
+    ureten hicbir yol yoktu — kapi sahada OLUYDU. Konum, IKINCI bir telemetri
+    yolu acilmadan AYNI mesajdan alinir.
+
+    🔴 BU FONKSIYON INIS KANITINI ETKILEMEZ: lat/lon bozuk olsa bile
+    `_bagil_irtifa_m` yolu ve surus izni latch'i DEGISMEZ (bkz. `_mesaj_isle`).
+    FAIL-CLOSED: gecersiz/bool/NaN/sonsuz ya da bant disi deger -> None.
+    """
+    try:
+        lat_e7 = getattr(mesaj, "lat", None)
+        lon_e7 = getattr(mesaj, "lon", None)
+    except Exception:
+        return None
+    cikti = []
+    for ham, sinir in ((lat_e7, 90.0), (lon_e7, 180.0)):
+        if isinstance(ham, bool) or not isinstance(ham, Real):
+            return None
+        try:
+            d = float(ham) / 1e7
+        except (OverflowError, TypeError, ValueError):
+            return None
+        if not math.isfinite(d) or abs(d) > sinir:
+            return None
+        cikti.append(d)
+    return (cikti[0], cikti[1])
+
+
 def _uzak_zaman_ms(mesaj):
     """MAVLink boot zamanını sıra denetimi için doğrula.
 
@@ -177,11 +208,13 @@ class BagilIrtifaOkuyucu:
         self._poller = None
         self._son_uzak_ms = None
         self._son_irtifa_m = None
+        self._son_konum = None            # T162: (lat, lon) — irtifadan BAGIMSIZ
         self._son_gelis_monotonic = None
 
     def _gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_irtifa_m = None
+            self._son_konum = None
             self._son_gelis_monotonic = None
 
     def _mesaj_isle(self, mesaj, gelis):
@@ -205,6 +238,9 @@ class BagilIrtifaOkuyucu:
                 return False
             self._son_uzak_ms = uzak_ms
             self._son_irtifa_m = irtifa_m
+            # T162: konum EK bilgidir. Gecersizse `None` yazilir; irtifa ve
+            # inis kaniti yolu bundan ETKILENMEZ (kapi (b) bunu kilitler).
+            self._son_konum = _konum_derece(mesaj)
             self._son_gelis_monotonic = gelis
         return True
 
@@ -329,6 +365,20 @@ class BagilIrtifaOkuyucu:
                 self._son_gelis_monotonic = None
                 return None
             return self._son_irtifa_m
+
+    def konum_derece(self):
+        """Taze ``(lat, lon)`` ya da ``None`` (T162 · ON_KAYIT SS28).
+
+        🔴 TAZELIK KURALI KOPYALANMAZ: once `irtifa_m()` cagrilir; o metot
+        bayat ornegi zaten temizler ve `None` doner. Yani konumun tazelik
+        sozlesmesi irtifanınkiyle TANIM GEREGI aynidir — ikisi ayrisamaz.
+        Konum gecersizse (lat/lon bozuk) irtifa yine gelir, yalniz burasi
+        `None` doner: inis kaniti yolu ETKILENMEZ.
+        """
+        if self.irtifa_m() is None:
+            return None
+        with self._snapshot_kilidi:
+            return self._son_konum
 
 
 def yerde_mi(mav, ardisik=3, tavan_m=1.0) -> bool:

@@ -22571,3 +22571,34 @@ Bu kusur **kırsal DJI dağılımına** aittir. Şartname arenası (HTAB 50×50 
 **Kalan kusur yoğunlaşmış:** en kötü 5 kare aynı motif — `f157` **0,83** (v35'te 0,73 → **orada kötüleşti**), `f156` 0,45, `f210` 0,44, `f217` 0,30, `f153` 0,29; hepsi **beton sulama/drenaj kanalı**. D-305 paneli aynı motifi gözle gösteriyor.
 **Yön:** artık sorun "model yolu göremiyor" **değil**, **"beton kanalı yol sanıyor"**dur. Sonraki eğitim turunun hedefi **hacim değil AYRIM**: kanalın sınıf 1 olarak kaç karede örneklendiği ölçülmeden yeni koşum başlatılmamalı (D-305 §4).
 **⚠ Ölçülemedi:** `etiketsiz payı` 0,179 → 0,254 arttı; bu, modelin insanın etiketlemediği alanlara da zemin dediği anlamına gelir — iyi mi kötü mü olduğu **referansın kapsamına** bağlıdır ve bu turda ayrıştırılmadı.
+
+---
+
+### D-307 · ✅ T162 — §6.2/§6.4 "ALAN İHLALİ" kapısı sahada ÖLÜYDÜ, canlandırıldı (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §28 (dört kapı sonuç görülmeden yazıldı). **Kapı:** `tests/test_t162_alan_ihlali.py` **19/19**.
+
+#### 1. Kusur (şartname boşluk raporu R17)
+`comms/yks_gui.py` İHA-UB taşmasını heartbeat'teki `x`,`y` ile denetliyordu; **üretimde bu alanları üreten hiçbir yol yoktu** (`iha_sender.send_heartbeat` yalnız `node/seq/t` yolluyordu; `x,y` sadece GUI'nin demo satırında üretiliyordu). Yani şartnamenin istediği alan ihlali denetimi **sahada hiç ateş almazdı** — ölü kapı. İkinci kusur: `300` GUI'de **üç yerde çıplak sabit** (madde 16 ihlali).
+
+#### 2. Yapılan — ikinci telemetri yolu AÇILMADAN
+- `karar_sozlesmesi`: `SARTNAME_IHA_UB_KENAR_M = 300.0`, `ALAN_IHLALI_SEBEBI`, `yerel_konum_m()` (eşdikdörtgen izdüşüm, saf Python — SciPy/pyproj yok, madde 4), `iha_ub_ihlali()`. **Tek tanım.**
+- `inis_kaniti`: anlık görüntüye `lat/lon` **eklendi** ve `konum_derece()` açıldı. 🔴 **Tazelik kuralı kopyalanmadı**: `konum_derece()` önce `irtifa_m()` çağırır, yani konumun tazelik sözleşmesi irtifanınkiyle **tanım gereği** aynıdır; ayrışamaz.
+- `protocol.heartbeat`: isteğe bağlı telemetri alanları; **argümansız çağrı alan alan aynı**, sözleşme dışı alan `ValueError`.
+- `iha_sender.KararYayinci`: isteğe bağlı `konum_saglayici`; konum yoksa/üretilemezse alan **yazılmaz** ("bilinmiyor" ≠ "0,0"), sağlayıcı patlarsa heartbeat **sürer** (bağlantı-failsafe) ve hata kayda geçer.
+- `rpi_inference`: `--ub-referans LAT,LON` (biçim/bant hatası `parser.error` → fail-closed). Referans yoksa ekrana **"ALAN İHLALİ denetimi YAPILAMAZ"** yazılır — sessiz düşüş yok.
+- `yks_gui`: üç çıplak `300` → sözleşme sabiti; denetim `iha_ub_ihlali()` ile.
+
+#### 3. Kapı — dört ön kayıtlı eksen (19/19)
+(a) **Bozulmama:** argümansız heartbeat alan kümesi `{v,type,node,seq,t}`; `None` alan yazılmaz; sözleşme dışı alan reddedilir.
+(b) **İniş kanıtı dokunulmazlığı:** `lat/lon` yok / `"x"` / `True` / `10¹²` / `NaN` — dördünde de `irtifa_m()` **12,0 m** dönüyor, yalnız `konum_derece()` `None`. Bayat örnekte **ikisi birden** `None`.
+(c) **Uçtan uca:** sahte `GLOBAL_POSITION_INT` + referans → sağlayıcı gerçek `(x,y)` üretti; iç nokta ihlal **değil**, 0,01° kuzey (≈1,1 km) **ihlal**. 🔴 **`KararYayinci._heartbeat_dongusu` GERÇEKTEN koşuldu** — `send_heartbeat`i elle çağırmak kanıt sayılmadı (boş kapı riski).
+(d) **Mutasyon:** `kenar_m=30` verilince iç nokta ihlal olur (sabit gerçekten kullanılıyor) · GUI'de `<= 300` deseni artık **yok** ve denetim `HEARTBEAT` dalında · `yerel_konum_m` fail-closed dizisi (None/bool/bant dışı/∞).
+
+#### 4. Bozulmama ve yordam
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1081 OK** (2 skip). Beş üretim dosyası değiştiği için **Jetson paket aynaları** yeniden üretildi (`jetson_paket_hazirla.py`) — **D-304 §5'in dersi uygulandı**: bu kez tam süit koşuldu ve ayna kapıları yeşile döndü. Etkilenen tek mevcut test (`test_main_yayinciyi_kurar_ve_kapatir`) **gevşetilmedi, güçlendirildi**: `konum_saglayici=None` beklentisi eklendi, yani referans verilmeyince denetimin **açıkça kapalı** kaldığı da kilitlendi.
+
+#### 5. ÖLÇÜLEMEDİ (dürüstlük kaydı)
+- **Gerçek Pixhawk yok:** uçtan uca ölçüm sahte `GLOBAL_POSITION_INT` ile yapıldı. Gerçek telemetride `lat/lon` alan adları ve ölçek (1e7) aynıdır (`inis_kaniti` zaten `relative_alt`'ı oradan okuyor), ama **saha teyidi yok**.
+- **Geofence'in kendisi** (uçuşu fiziksel olarak sınırlayan Pixhawk parametresi) hâlâ **repo dışı**; buradaki iş **tespit ve hakem bildirimi**dir, engelleme değil.
+- **Referans noktası saha günü elle girilir** — yanlış referans, yanlış ihlal demektir. Bu bir **insan yordamı** gereksinimidir ve saha kontrol listesine yazılmalıdır.

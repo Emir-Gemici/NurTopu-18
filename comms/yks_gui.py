@@ -43,6 +43,8 @@ if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               IKA_GO_TEKRAR_UST_SINIRI,
+                              SARTNAME_IHA_UB_KENAR_M,
+                              iha_ub_ihlali,
                               ZEMIN_KAPLAMA_TAVANI,
                               ZEMIN_MASKESI_SUPHELI_SEBEBI,
                               OLCEK_KAYNAK_ARAC,
@@ -231,7 +233,7 @@ class YksArayuz:
         self.parasut_teyit = 0.0            # iki adımlı paraşüt emniyeti
         self.mod = {}                       # node -> uçuş modu (AUTO/MANUEL)
         self._manuel_uyarildi = False
-        self.iha_iz = []                    # İHA-UB (300×300) içindeki konum izi
+        self.iha_iz = []                    # İHA-UB içindeki konum izi (T162)
         self.tel = {}                       # node -> son telemetri alanları
         self.rx_alim = {}                   # seq -> kaç kez alındı (tekrar gönderim)
         self._detay_base = ""
@@ -720,7 +722,7 @@ class YksArayuz:
                           font=self.f_kucuk, anchor="w", width=w - S(24))
 
     def _inset_ciz(self):
-        """Mini genel-saha: İHA-UB 300×300 m çerçevesi + HTAB + İHA-İB (mavi)
+        """Mini genel-saha: İHA-UB çerçevesi (kenar SÖZLEŞMEDEN) + HTAB + İHA-İB (mavi)
         + İHA canlı konum izi (heartbeat x,y alanlarından)."""
         c = self.harita
         c.delete("inset")
@@ -731,10 +733,15 @@ class YksArayuz:
         c.create_rectangle(x0, y0, x1, y1, fill="#0d1318", outline=CIZGI,
                            tags="inset")
 
-        def ub(px, py):        # İHA-UB metre (0-300, y kuzey) → inset pikseli
-            return (x0 + px / 300 * b, y1 - py / 300 * b)
+        def ub(px, py):        # İHA-UB metre (0..kenar, y kuzey) → inset pikseli
+            # T162: kenar SÖZLEŞMEDEN; çerçeve ile geofence kapısı TANIM GEREĞİ
+            # aynı sayıyı kullanır (eskiden ikisi ayrı ayrı `300` yazıyordu).
+            kenar = SARTNAME_IHA_UB_KENAR_M
+            return (x0 + px / kenar * b, y1 - py / kenar * b)
 
-        c.create_text(x0 + 4, y0 + 8, text="İHA-UB 300×300 m", fill=SOLUK,
+        c.create_text(x0 + 4, y0 + 8,
+                      text=f"İHA-UB {SARTNAME_IHA_UB_KENAR_M:.0f}×"
+                           f"{SARTNAME_IHA_UB_KENAR_M:.0f} m", fill=SOLUK,
                       font=self.f_kucuk, anchor="w", tags="inset")
         hx0, hy0 = ub(125, 125)
         hx1, hy1 = ub(175, 175)
@@ -937,10 +944,14 @@ class YksArayuz:
             if dugum == "iha" and "x" in m and "y" in m:
                 self.iha_iz.append((float(m["x"]), float(m["y"])))
                 del self.iha_iz[:-150]         # son 150 nokta
-                # geofence: İHA-UB 300×300 dışına taşma = alan ihlali (§6.4)
-                if not (0 <= m["x"] <= 300 and 0 <= m["y"] <= 300):
-                    self._logla("⚠ ALAN İHLALİ: İHA-UB (300×300 m) dışına çıkıldı "
-                                "— uçuş başarısız sayılır (§6.4)", "sari")
+                # geofence: İHA-UB dışına taşma = alan ihlali (§6.2/§6.4).
+                # T162: kural ve kenar uzunluğu SÖZLEŞMEDEN gelir — `300` burada
+                # ÇIPLAK yazılıydı (madde 16) ve üretimde `x,y` üreten yol
+                # olmadığı için bu kapı SAHADA HİÇ ateş almıyordu.
+                _ihlal = iha_ub_ihlali(m["x"], m["y"])
+                if _ihlal is not None:
+                    self._logla(f"⚠ ALAN İHLALİ: {_ihlal[1]} — uçuş başarısız "
+                                "sayılır (§6.4)", "sari")
             self.sayac["HEARTBEAT"] += 1
 
     def _open_route_guven_reddini_goster(self, m, guven_reddi):

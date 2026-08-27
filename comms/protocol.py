@@ -80,9 +80,26 @@ def rota_yok(sebep, detay=None, seq=None):
     return msg
 
 
-def heartbeat(node, seq=None):
-    return {"v": PROTOCOL_VERSION, "type": "HEARTBEAT", "node": node,
-            "seq": next(_seq) if seq is None else int(seq), "t": round(time.time(), 3)}
+# T162 (ON_KAYIT SS28): YKS heartbeat'teki `x`,`y` ile sartname SS6.2/SS6.4
+# ALAN IHLALI denetimi yapiyor (`comms/yks_gui.py`), ama URETIMDE bu alanlari
+# ureten hicbir yol yoktu — kapi sahada OLUYDU. Alanlar ISTEGE BAGLIDIR:
+# verilmezse mesaj eskisiyle ALAN ALAN AYNIDIR (kilit: test_t162...).
+HEARTBEAT_TELEMETRI_ALANLARI = ("x", "y", "alt", "hiz", "bat", "uydu")
+
+
+def heartbeat(node, seq=None, **telemetri):
+    msg = {"v": PROTOCOL_VERSION, "type": "HEARTBEAT", "node": node,
+           "seq": next(_seq) if seq is None else int(seq),
+           "t": round(time.time(), 3)}
+    for ad in HEARTBEAT_TELEMETRI_ALANLARI:
+        deger = telemetri.get(ad)
+        if deger is None:
+            continue          # FAIL-CLOSED: bilinmeyen alan YAZILMAZ (sifir degil)
+        msg[ad] = deger
+    bilinmeyen = sorted(set(telemetri) - set(HEARTBEAT_TELEMETRI_ALANLARI))
+    if bilinmeyen:
+        raise ValueError(f"heartbeat'te sozlesme disi alan: {bilinmeyen}")
+    return msg
 
 
 def ack(ref_seq, node, ref_tip=None):

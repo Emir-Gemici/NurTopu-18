@@ -64,6 +64,8 @@ if __package__:
                                   INCE_BETON_SERIT_ORTAM_DEGISKENI,
                                   ince_beton_serit_maskesi,
                                   hb_konumu,
+                                  SARTNAME_IHA_UB_KENAR_M,
+                                  yerel_konum_m,
                                   hedef_yok_reddi,
                                    rota_guven_reddi,
                                    BERABERLIK_BANDI,
@@ -111,6 +113,8 @@ else:
                                   INCE_BETON_SERIT_ORTAM_DEGISKENI,
                                   ince_beton_serit_maskesi,
                                   hb_konumu,
+                                  SARTNAME_IHA_UB_KENAR_M,
+                                  yerel_konum_m,
                                   hedef_yok_reddi,
                                   rota_guven_reddi,
                                   BERABERLIK_BANDI,
@@ -2313,7 +2317,55 @@ def _arguman_ayristirici():
         "--telsiz-seri", type=str, default=None, metavar="PORT",
         help="SiK telsiz seri portu (saha yayin; ACK beklenmez)")
     parser.add_argument("--telsiz-baud", type=int, default=57600)
+    # T162 (ON_KAYIT SS28 · sartname SS6.2/SS6.4): IHA-UB ALAN IHLALI denetimi
+    # YKS'de VARDI ama uretimde `x,y` ureten yol YOKTU — kapi sahada OLUYDU.
+    # Referans, IHA-UB'nin KOSESIDIR (yerel cerceve 0..kenar). BEYAN EDILIR,
+    # tahmin EDILMEZ: verilmezse konum yayinlanmaz (fail-closed) ve bu ekrana
+    # yazilir; "bilinmiyor" ile "0,0" ayni sey degildir.
+    parser.add_argument(
+        "--ub-referans", type=str, default=None, metavar="LAT,LON",
+        help=("IHA-UB kose referansi (ondalik derece). Verilirse her "
+              "HEARTBEAT'e yerel x,y (metre) eklenir ve YKS sartname "
+              "SS6.2 ALAN IHLALI denetimini yapabilir"))
     return parser
+
+
+def _ub_referansi_coz(parser, metin):
+    """`LAT,LON` -> (lat, lon); gecersizse parser.error (fail-closed)."""
+    if metin is None:
+        return None
+    parcalar = [p.strip() for p in metin.split(",")]
+    if len(parcalar) != 2:
+        parser.error("--ub-referans 'LAT,LON' bicimindedir")
+    try:
+        lat, lon = float(parcalar[0]), float(parcalar[1])
+    except ValueError:
+        parser.error("--ub-referans sayisal olmalidir (ondalik derece)")
+    if not (abs(lat) <= 90.0 and abs(lon) <= 180.0):
+        parser.error("--ub-referans bandi disi: |lat|<=90, |lon|<=180")
+    return (lat, lon)
+
+
+def _ub_konum_saglayici(canli_olcek, referans):
+    """HEARTBEAT icin `() -> (x, y) | None` uret (T162).
+
+    Konum, olcek ile AYNI okuyucudan gelir — ikinci bir telemetri yolu
+    ACILMAZ (`karar_sozlesmesi.mpp_irtifadan` sozlesmesi). Okuyucuda konum
+    yoksa ya da referans verilmemisse `None` doner ve alan YAZILMAZ.
+    """
+    if referans is None or canli_olcek is None:
+        return None
+    okuyucu = getattr(canli_olcek, "okuyucu", None)
+    if okuyucu is None or not callable(getattr(okuyucu, "konum_derece", None)):
+        return None
+
+    def _saglayici():
+        konum = okuyucu.konum_derece()
+        if konum is None:
+            return None
+        return yerel_konum_m(referans[0], referans[1], konum[0], konum[1])
+
+    return _saglayici
 
 
 def _argumanlari_dogrula(parser, args):
@@ -2353,6 +2405,8 @@ def main():
         return
 
     _argumanlari_dogrula(parser, args)
+    # T162: referans BEYAN EDILIR; bicim/bant hatasi fail-closed (parser.error).
+    ub_referans = _ub_referansi_coz(parser, args.ub_referans)
 
     mpp = args.mpp
     canli_olcek = None
@@ -2383,12 +2437,22 @@ def main():
     # sessiz kalan bir IHA'yi baglanti kaybi sanir.
     yayinci = None
     if args.yks_hedef or args.ika_hedef or args.telsiz_seri:
+        _konum_saglayici = _ub_konum_saglayici(canli_olcek, ub_referans)
         yayinci = _iha_sender_modulu().yayinci_kur(
             yks=args.yks_hedef, ika=args.ika_hedef, seri=args.telsiz_seri,
-            baud=args.telsiz_baud).start()
+            baud=args.telsiz_baud, konum_saglayici=_konum_saglayici).start()
         print(f"telsiz halkasi: yks={args.yks_hedef} ika={args.ika_hedef} "
               f"seri={args.telsiz_seri} · heartbeat "
               f"{yayinci.heartbeat_aralik:g} s")
+        # SESSIZ DUSUS YASAK: alan ihlali denetiminin acik mi kapali mi oldugu
+        # sahada EKRANDAN gorulmelidir (sartname SS6.2 hakem gozetimi).
+        if _konum_saglayici is None:
+            print("UYARI: --ub-referans verilmedi ya da canli telemetri yok — "
+                  "HEARTBEAT'e x,y EKLENMEZ; YKS ALAN IHLALI denetimi "
+                  "YAPILAMAZ (sartname SS6.2/SS6.4).")
+        else:
+            print(f"IHA-UB referansi: {ub_referans[0]:.7f},{ub_referans[1]:.7f} "
+                  f"· kenar {SARTNAME_IHA_UB_KENAR_M:.0f} m")
 
     try:
         # T73: agirlik ARTIK argumandan gelir; verilmezse uretim manifestinden

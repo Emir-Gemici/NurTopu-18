@@ -146,9 +146,14 @@ class IhaSender:
         return self._tekrarli_gonder(msg, repeat=repeat, interval=interval,
                                      wait_ack=wait_ack)
 
-    def send_heartbeat(self, node="iha"):
-        """Bağlantı-failsafe için tüm alıcılara tek bir canlılık çerçevesi yayınla."""
-        msg = heartbeat(node)
+    def send_heartbeat(self, node="iha", **telemetri):
+        """Bağlantı-failsafe için tüm alıcılara tek bir canlılık çerçevesi yayınla.
+
+        T162: `x`/`y` (İHA-UB yerel metre) verilirse çerçeveye eklenir; YKS
+        şartname §6.2/§6.4 ALAN İHLALİ denetimini o alanlarla yapar. Argümansız
+        çağrı ALAN ALAN eskisiyle aynıdır.
+        """
+        msg = heartbeat(node, **telemetri)
         data = encode(msg)
         gonderilen_hedefler = []
         for _name, peer in (list(self.peers.items()) or [(None, None)]):
@@ -208,12 +213,14 @@ class KararYayinci:
     """
 
     def __init__(self, sender, heartbeat_aralik=IHA_HEARTBEAT_ARALIK_S,
-                 repeat=4, interval=0.25, wait_ack=True):
+                 repeat=4, interval=0.25, wait_ack=True, konum_saglayici=None):
         if heartbeat_aralik <= 0:
             raise ValueError("heartbeat araligi pozitif olmali")
         self.sender = sender
         self.heartbeat_aralik = float(heartbeat_aralik)
         self.repeat, self.interval, self.wait_ack = repeat, interval, wait_ack
+        # T162: cagrilabilir, `(x, y)` yerel metre ya da None dondurur.
+        self.konum_saglayici = konum_saglayici
         self._kilit = threading.Lock()
         self._bekleyen = None
         self._yeni = threading.Event()
@@ -308,7 +315,21 @@ class KararYayinci:
     def _heartbeat_dongusu(self):
         while not self._dur.is_set():
             try:
-                self.sender.send_heartbeat()
+                # T162: konum saglayici YOKSA ya da konum uretemezse alan
+                # YAZILMAZ — "bilinmiyor" ile "0,0" ayni sey degildir.
+                xy = None
+                if self.konum_saglayici is not None:
+                    try:
+                        xy = self.konum_saglayici()
+                    except Exception as exc:
+                        self.hata.append(
+                            f"konum {type(exc).__name__}: {exc}")
+                        xy = None
+                if xy is None:
+                    self.sender.send_heartbeat()
+                else:
+                    self.sender.send_heartbeat(x=round(float(xy[0]), 2),
+                                               y=round(float(xy[1]), 2))
                 self.heartbeat_sayisi += 1
             except Exception as exc:
                 self.hata.append(f"heartbeat {type(exc).__name__}: {exc}")
