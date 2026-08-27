@@ -34,12 +34,19 @@ OLCUM = KOK / "results" / "t165" / "k7_olcum.json"
 # 🔴 OZET ICERIK UZERINDEN alinir (kanonik JSON), BAYT uzerinden DEGIL: satir
 # sonu cevrimi (CRLF/LF) ya da girinti degisikligi kilidi KIRMAMALI; kilit
 # LISTENIN KENDISINI korur, dosyanin bicimini degil.
-KUME_SHA256 = "f522703eccd9c1bb4d8e861c2b7cc28bb5322a0f0a620e05c188f64704a79d66"
+KUME_SHA256 = "f48f64cfad0f7759060e1f8736bdf5c94c204bca9831cb30d02daccca0bfe64a"
 
 
 def _kanonik_ozet(yol: Path) -> str:
+    """Kilit YALNIZ KARE LISTESINI korur, dosyanin geri kalanini DEGIL.
+
+    Kapinin OLCTUGU sey listedir; `_neden`/`_uyari` gibi gerekce alanlarini
+    zenginlestirmek kilidi kirmamali, yoksa belgelemek cezalandirilir ve
+    zamanla kimse gerekce yazmaz. Listeye kare eklemek/cikarmak ise kapinin
+    olctugu seyi degistirir ve kilidi KIRAR.
+    """
     veri = json.loads(yol.read_text(encoding="utf-8"))
-    kanonik = json.dumps(veri, sort_keys=True, ensure_ascii=False,
+    kanonik = json.dumps(veri["kareler"], sort_keys=True, ensure_ascii=False,
                          separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(kanonik).hexdigest()
 

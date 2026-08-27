@@ -22856,3 +22856,24 @@ K7 hesaplanır ve raporlanır; kabul zincirinin AND birleşimine **girmez**. Ba�
 
 #### 6. Bozulmama
 Genel kapı iki kolda GEÇTİ; `unittest discover` **1109 OK** (2 skip). `65_kabul_denetcisi.py` değiştiği için ölçüm aynası `olcum_ayna.py --uygula --repodan` ile hizalandı (kapı yakaladı, D-304 §5 dersi işledi).
+
+---
+
+### D-315 · K7'nin tek düşen karesi (`sa_000090`) bir MODEL hatası değil, ETİKET KAPSAMI farkı (2026-08-27)
+
+**Kanıt:** `results/t165/sa_000090_tani.png` + şerit bazlı piksel sayımı (bu kayıt).
+
+| şerit | GT serbest | MODEL serbest | GT engel | MODEL engel |
+|---|---:|---:|---:|---:|
+| 1 | 29.264 | 22.697 | 30.269 | 31.401 |
+| 2 | 70.218 | 67.272 | 65.147 | 64.977 |
+| **3** | **18.042** | **89.913** | 42.123 | **43.781** |
+
+**Okuma:** şerit 3'te model, yer gerçeğinden **5 kat** fazla serbest alan görüyor — ama **engel** pikselleri neredeyse **aynı**. Yani model bariyeri **kaçırmıyor**; yer gerçeği o şeridin **yüzeyini etiketlememiş**. Referans etiketsiz alanı geçilemez saydığı için şerit 3 referansta **kapalı**, modelde **açık** görünüyor ve üretim 3 yayınlıyor.
+**Hüküm:** `sa_000090` **temiz bir üretim hatası değildir**. Şerit 3'ün fiziksel olarak geçilebilir olup olmadığı **ölçülmedi** (manifestin bariyer geometrisi ya da gözle bariyerin şeridi kapatıp kapatmadığı gerekir) — iddia edilmiyor.
+
+#### Sonuç: K7'nin referans semantiği BELGELENDİ
+Bu, K7'yi okuyan herkesi ilgilendirir: **etiketsiz alan geçilemez sayılır**, dolayısıyla bir K7 düşüşü doğrudan "model yanlış gördü" demek **değildir**; önce **etiket kapsamı** denetlenmelidir. Cümle hem `config/k7_iyi_kosullu_kume.json` (`_referans_semantigi`) hem `CONTRACTS §12.1` içine yazıldı.
+
+#### Kilit iyileştirmesi (yordam)
+K7 alt kümesinin kilidi **dosyanın tamamı** yerine **yalnız kare listesi** üzerine alındı. Sebep: gerekçe alanlarını zenginleştirmek kilidi kırıyordu — yani **belgelemek cezalandırılıyordu** ve zamanla kimse gerekçe yazmazdı. Liste değişirse kilit **hâlâ kırılır** (kapının ölçtüğü şey odur).

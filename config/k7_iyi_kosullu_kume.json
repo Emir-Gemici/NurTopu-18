@@ -799,5 +799,6 @@
     2
    ]
   }
- ]
+ ],
+ "_referans_semantigi": "REFERANS, kumenin YOLO etiketinden rasterlenen maskeyle uretildi ve ETIKETSIZ alan GECILEMEZ sayilir. Bu bir tercih degil zorunluluktur (ucuncu bir durum yok), ama SONUCU vardir: bir seridin YUZEYI etiketlenmemisse o serit referansta KAPALI gorunur. Olculdu (D-315, sa_000090): model serit 3'te 89.913 px serbest gorurken yer gercegi 18.042 px goruyor; ENGEL pikselleri ise neredeyse AYNI (42.123 vs 43.781). Yani fark bariyeri kacirmak DEGIL, etiket KAPSAMIDIR. Bu yuzden bir K7 dususu 'model yanlis gordu' diye OKUNAMAZ; once etiket kapsami denetlenmelidir."
 }

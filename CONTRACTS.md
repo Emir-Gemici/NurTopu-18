@@ -1256,6 +1256,14 @@ beyansız 49 kare **dışlanır**; aksi hâlde kapı, tanım gereği belirsiz ol
 | üretici | `scripts/olcum/151_k7_serit_dogrulugu.py` |
 | kapı | `65_kabul_denetcisi.k7_durumu` · `tests/test_k7_serit_dogrulugu.py` (18) |
 
+🔴 **REFERANSIN SEMANTİĞİ — bir K7 düşüşü "model yanlış gördü" diye OKUNAMAZ.**
+Referans, kümenin YOLO etiketinden rasterlenen maskeyle üretilir ve **etiketsiz alan
+GEÇİLEMEZ** sayılır (üçüncü durum yok). Sonucu: bir şeridin **yüzeyi etiketlenmemişse**
+o şerit referansta **kapalı** görünür. Ölçüldü (D-315, `sa_000090`): model şerit 3'te
+**89.913 px** serbest görürken yer gerçeği **18.042 px** görüyor; **engel** pikselleri
+ise neredeyse **aynı** (42.123 ↔ 43.781). Yani fark bariyeri kaçırmak **değil**, etiket
+**kapsamı**dır. K7 düşerse **önce etiket kapsamı denetlenir**.
+
 ⚠ **K7 bu turda VERDİKT'e bağlanmadı** — ölçüt ve testleri kuruldu, zincire bağlamak terfi
 yordamını etkiler ve ayrı bir karardır (D-133). ⚠ Alt küme listesi **kanonik özetle kilitli**;
 değişirse test düşer ve değişiklik ön kayıtla gerekçelendirilmek zorundadır.
