@@ -225,5 +225,67 @@ class ZincirDuyarliligi(unittest.TestCase):
         self.assertEqual("GECTI", self.d.k7_durumu(ozet)[0])
 
 
+class VerdiktBaglantisi(unittest.TestCase):
+    """ON_KAYIT SS35 · D-316: K7 kabul zincirinin VERDIKT'ine BAGLI mi?
+
+    Kaynak duzeyinde kilitlenir ve MUTASYONLA sinanir: kilit, bagi kaldiran bir
+    degisikligi GERCEKTEN ayirt etmeli (yoksa bos kapi).
+    """
+
+    KAYNAK = (KOK / "scripts" / "olcum" / "65_kabul_denetcisi.py")
+
+    def setUp(self):
+        self.metin = self.KAYNAK.read_text(encoding="utf-8")
+
+    @staticmethod
+    def _bagli_mi(metin: str) -> bool:
+        """K7 verdikt AND birlesimine giriyor mu (kaynaktan)."""
+        return 'gecti["K7"]' in metin
+
+    @staticmethod
+    def _kosumda_uretiliyor_mu(metin: str) -> bool:
+        """Olcum ZINCIRIN KENDI kosumunda, denetlenen AGIRLIKLA uretiliyor mu."""
+        return ("151_k7_serit_dogrulugu.py" in metin
+                and '"--agirlik", str(args.model)' in metin)
+
+    def test_K7_verdikte_BAGLI(self):
+        self.assertTrue(self._bagli_mi(self.metin),
+                        "K7 `gecti` sozlugune girmiyor — VERDIKT'i etkilemez")
+
+    def test_OLCULEMEDI_BLOKLAR(self):
+        self.assertIn('gecti["K7"] = k7 == "GECTI"', self.metin,
+                      "K7 esitligi `== GECTI` degil — OLCULEMEDI sizabilir")
+
+    def test_olcum_KOSUMDA_uretiliyor(self):
+        self.assertTrue(self._kosumda_uretiliyor_mu(self.metin),
+                        "K7 olcumu disaridan besleniyor olabilir — bayat ya da "
+                        "BASKA modelin sayisi terfi gecirebilir")
+
+    def test_bayat_json_siliniyor(self):
+        self.assertIn("j7.unlink(missing_ok=True)", self.metin,
+                      "onceki kosumun K7 json'u silinmiyor (T125 kalibi)")
+
+    def test_MUTASYON_bag_kaldirilinca_kilit_DUSER(self):
+        # ⚠ Mutasyon metni deseni ICERMEMELI, yoksa mutant "hâlâ bagli"
+        # gorunur ve test kendi kendini kandirir (ilk yazimda tam bu oldu).
+        mutant = self.metin.replace('gecti["K7"] = k7 == "GECTI"',
+                                    "# K7 bagi kaldirildi", 1)
+        self.assertNotEqual(self.metin, mutant, "mutasyon uygulanamadi")
+        self.assertFalse(self._bagli_mi(mutant),
+                         "bag kaldirildigi hâlde kilit hâlâ 'bagli' diyor — "
+                         "kilit ayirt etmiyor (bos kapi)")
+
+    def test_MUTASYON_disaridan_besleme_kilidi_DUSER(self):
+        mutant = self.metin.replace('"--agirlik", str(args.model)',
+                                    '"--agirlik", "models/baska.pt"', 1)
+        self.assertFalse(self._kosumda_uretiliyor_mu(mutant),
+                         "denetlenen agirlik yerine baskasi gecirilse bile "
+                         "kilit tutmuyor")
+
+    def test_verdikt_metni_K7_yi_aniyor(self):
+        self.assertIn("K6 + K7", self.metin,
+                      "GECTI verdikt metni K7'yi anmiyor — rapor bayat")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,15 @@
+{
+ "model": "models\\navitas_seg_v36_best.pt",
+ "tarandi": 260,
+ "bariyerli": 173,
+ "olcekli": 173,
+ "rota_var": 172,
+ "duyar_ort": 0.9864548321467065,
+ "duyar_min": 0.8768406961178046,
+ "kesen": 0,
+ "kesisim_px": 0,
+ "kesenler": [],
+ "K5_durum": "GECTI",
+ "olculebilir_kare": 172,
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66"
+}

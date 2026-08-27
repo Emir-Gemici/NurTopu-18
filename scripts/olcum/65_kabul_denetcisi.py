@@ -555,6 +555,28 @@ def main():
     sonuc["K6_yanlis_kareler"] = list((d or {}).get("yanlis_kareler", []))
     gecti["K6"] = k6 == "GECTI"             # OLCULEMEDI de bloklar (T105 kalibi)
 
+    # ── K7 · YAYINLANAN SERIT DOGRULUGU (ON_KAYIT SS34/SS35 · D-314/D-316) ───
+    # Sartname SS2.1/SS5.3.2 yanlis guzergaha 0 PUAN verir; hakem NUMARAYI canli
+    # onaylar (SS2.2.3). K1 rota URETIMINI, K6 rotanin yol USTUNDE olmasini
+    # olcer — numarayi hicbiri olcmuyordu.
+    # 🔴 OLCUM ZINCIRIN KENDI KOSUMUNDA URETILIR: disaridan elle beslenen bir
+    # JSON'a guvenilmez (bayat/baska modelin sayisi terfi gecirebilirdi).
+    j7 = BURASI / "results" / "t63" / f"{ad}_k7.json"
+    j7.unlink(missing_ok=True)          # BAYAT json yeniden okunmasin (T125)
+    _c7, k7_ok = kos("151_k7_serit_dogrulugu.py",
+                     ["--agirlik", str(args.model), "--kume", str(kume),
+                      "--cikti", str(j7)])
+    d7 = (json.loads(j7.read_text(encoding="utf-8")).get("ozet")
+          if k7_ok and j7.is_file() else None)
+    k7, k7s = k7_durumu(d7)
+    sonuc["K7_serit"] = (f"{k7s['dogru']}/{k7s['rota_uretilen']}"
+                         if k7s["rota_uretilen"] else "-")
+    sonuc["K7_dogruluk"] = k7s["dogruluk"]
+    sonuc["K7_rota_uretilen"] = k7s["rota_uretilen"]
+    sonuc["K7_durum"] = k7
+    sonuc["K7_yanlis_kareler"] = list((d7 or {}).get("yanlis_kareler", []))
+    gecti["K7"] = k7 == "GECTI"             # OLCULEMEDI de bloklar (T105 kalibi)
+
     # ── K5 · bariyer kesisimi — ZEMIN: POPULASYON (T126 · D-243) ────────────
     # 🔴 ZEMIN TASINDI: eskiden `63_bariyer_kesisimi` TEK OOD figurunde kosardu
     # ve UC modelde de OLCULEMEDI donuyordu (D-231): o figurde hicbir model rota
@@ -665,6 +687,22 @@ def main():
     print(f"{'':23s}bilgi (kapi DEGIL): tek figur "
           f"{sonuc.get('K5_figur_bilgi_durum')} "
           f"({sonuc.get('K5_figur_bilgi_px')} px)")
+    _k7d = sonuc.get("K7_durum", "OLCULEMEDI")
+    _k7o = sonuc.get("K7_dogruluk")
+    print(f"  K7 SERIT DOGRULUGU   {_k7d:<6} {sonuc.get('K7_serit', '-')} "
+          f"({'-' if _k7o is None else f'%{100 * _k7o:.1f}'}"
+          f" · esik %{100 * ESIK['K7_serit_dogruluk_min']:.0f}"
+          f" · payda {sonuc.get('K7_rota_uretilen', 0)}"
+          f"/{ESIK['K7_rota_uretilen_min']} asgari)")
+    if _k7d == "OLCULEMEDI":
+        print("     (olcum uretilemedi: alt betik coktu ya da alt kume okunamadi."
+              " Bu 'dogru serit yayinladi' DEMEK DEGILDIR — kanit yoktur."
+              " Terfi YINE bloklanir: OLCULEMEDI != GECTI.)")
+    elif sonuc.get("K7_yanlis_kareler"):
+        print(f"     yanlis: {sonuc['K7_yanlis_kareler']}")
+        print("     ⚠ K7 dususu dogrudan 'model yanlis gordu' DEMEK DEGILDIR:"
+              " referans ETIKETSIZ alani gecilemez sayar (D-315). Once ETIKET"
+              " KAPSAMI denetlenir.")
     if k5d == "OLCULEMEDI":
         print("     (olculebilir kare YOK: bariyerli+olcekli karelerde rota"
               " uretilmedi ya da alt betik cokTU. Bu 'carpmadi' DEMEK"
@@ -674,11 +712,12 @@ def main():
     if not gecti["K0"]:
         print("  VERDIKT: RED — K0 dustu. v25 ile AYNI sebep, tartisma yok.")
     elif all(gecti.values()):
-        print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 saglandi.")
+        print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 + K7 saglandi.")
     else:
         durumlar = dict(sonuc.get("K14_durum", {}))
         durumlar["K5"] = sonuc.get("K5_durum")
         durumlar["K6"] = sonuc.get("K6_durum")
+        durumlar["K7"] = sonuc.get("K7_durum")
         d_ = [(k + "(OLCULEMEDI)" if durumlar.get(k) == "OLCULEMEDI" else k)
               for k, v in gecti.items() if not v]
         print(f"  VERDIKT: URETIME ALINMAZ — dusen: {', '.join(d_)}")

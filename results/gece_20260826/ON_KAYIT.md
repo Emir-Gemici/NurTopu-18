@@ -362,3 +362,13 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 2. Alt küme listesi değiştirilince (kare eklenince/çıkınca) kilit testi **DÜŞMELİ**.
 3. Yalnız 2 kare rota üretip ikisi de doğru olsa bile (oran %100) K7 **DÜŞMELİ** (payda oyunu koşulu).
 ⚠ K7 bu turda **kabul zincirinin VERDİKT'ine bağlanmaz** — önce ölçüt ve testleri kurulur, zincire bağlama ayrı adımdır (terfi yordamını etkiler, D-133).
+
+## 35. EK — K7 VERDİKT'e BAĞLANIYOR (2026-08-27, kullanıcı onayı "olur"; sonuç görülmeden)
+**Karar:** D-314'te kurulan K7 (yayınlanan şerit doğruluğu) kabul zincirinin **VERDİKT AND birleşimine** girer. Bundan sonra bir terfi, şerit doğruluğundan da geçmek zorundadır.
+**Bağlama kuralları (K6 kalıbı, birebir):**
+1. `gecti["K7"] = (k7 == "GECTI")` — **`OLCULEMEDI` de BLOKLAR** (T105 kalıbı). Ölçüm dosyası yoksa/üretilemezse terfi geçmez; "ölçemedim" ≠ "geçti".
+2. Ölçüm zincirin **kendi koşumunda** üretilir (`151_k7_serit_dogrulugu.py`, denetçinin değerlendirdiği ağırlıkla) — dışarıdan elle beslenen bir JSON'a güvenilmez.
+3. Rapor satırı K6'nınki gibi basılır; düşerse `VERDIKT: URETIME ALINMAZ` listesine `K7` (gerekirse `K7(OLCULEMEDI)`) girer.
+**Bozulmama kapısı (sonuca göre değişmez):** bağlamadan sonra **v36 ile kabul zinciri yeniden koşulur**. v36 K7'den **GEÇMELİ** (ölçülen taban 84/85 = %98,8 · payda 85/88) ve **VERDİKT değişmemelidir**. Değişirse bağlama **geri alınır** ve sebep yazılır — üretim modeli bir belge işlemiyle sessizce reddedilmiş duruma düşürülmez.
+**Test kapısı:** `gecti` sözlüğünde `K7` anahtarının **varlığı** ve `OLCULEMEDI`nin blokladığı ayrı ayrı kilitlenir; mutasyon: K7 `gecti`den çıkarılırsa test **DÜŞMELİ**.
+⚠ Bu, terfi yordamını **kalıcı olarak** sıkılaştırır (madde 19 · D-133 kapsamında kullanıcı kararıdır).

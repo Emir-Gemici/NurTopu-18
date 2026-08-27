@@ -22877,3 +22877,37 @@ Bu, K7'yi okuyan herkesi ilgilendirir: **etiketsiz alan geçilemez sayılır**, 
 
 #### Kilit iyileştirmesi (yordam)
 K7 alt kümesinin kilidi **dosyanın tamamı** yerine **yalnız kare listesi** üzerine alındı. Sebep: gerekçe alanlarını zenginleştirmek kilidi kırıyordu — yani **belgelemek cezalandırılıyordu** ve zamanla kimse gerekçe yazmazdı. Liste değişirse kilit **hâlâ kırılır** (kapının ölçtüğü şey odur).
+
+---
+
+### D-316 · ✅ K7 VERDİKT'e BAĞLANDI — kabul zinciri artık K0–K7; v36 bozulmadan geçti (2026-08-27, kullanıcı onayı "olur")
+
+**Ön kayıt:** `ON_KAYIT.md` §35 (bağlama kuralları ve bozulmama kapısı sonuç görülmeden). **Kanıt:** `results/t165/kabul_v36_k7.log`, `scripts/olcum/results/t63/v36_k7_baglama_kabul_verdikt.json`. **Kapı:** `tests/test_k7_serit_dogrulugu.py` **25/25**.
+
+#### 1. Yapılan
+`gecti["K7"] = k7 == "GECTI"` — **`OLCULEMEDI` de BLOKLAR** (T105/K6 kalıbı). Bundan sonra bir terfi, **yayınlanan şerit doğruluğundan** da geçmek zorundadır.
+**Ölçüm zincirin KENDİ koşumunda üretilir:** `151_k7_serit_dogrulugu.py`, denetçinin değerlendirdiği **ağırlıkla** (`--agirlik str(args.model)`) çağrılır ve bayat JSON önce **silinir** (T125 kalıbı). Dışarıdan elle beslenen bir dosya terfi geçiremez.
+
+#### 2. Bozulmama kapısı — v36 ile tam zincir
+```
+K0 KORLUK YOK        GECTI   figur zemin %2,66
+K1 ROTA >= 230       GECTI   255/260
+K2 BASMA <= %15      GECTI   15/255
+K3 AGIR  <= %3       GECTI   1/255
+K4 ARENA DISI <= %5  GECTI   4/255
+K5 BARIYER = 0 px    GECTI   0/172 kare · 0 px
+K6 ROTA YOL USTUNDE  GECTI   yanlis guzergah 7/255
+K7 SERIT DOGRULUGU   GECTI   84/85 (%98,8 · esik %95 · payda 85/80 asgari)
+VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 + K7 saglandi.
+```
+Ön kayıtlı şart (K7 GEÇMELİ **ve** VERDİKT değişmemeli) **sağlandı**; bağlama geri alınmadı. Üretim modeli bir belge işlemiyle sessizce reddedilmedi.
+
+#### 3. Rapor satırı hakemi yanıltmıyor
+K7 düştüğünde ya da `OLCULEMEDI` olduğunda ekran ayrı ayrı uyarır. Ayrıca yanlış kare listelendiğinde şu cümle basılır: *"K7 düşüşü doğrudan 'model yanlış gördü' DEMEK DEĞİLDİR: referans ETİKETSİZ alanı geçilemez sayar (D-315). Önce ETİKET KAPSAMI denetlenir."* — D-315'in dersi kapının **kendi çıktısına** gömüldü.
+
+#### 4. Kapı ve mutasyonlar (25/25)
+Bağlantı kaynak düzeyinde kilitli ve **mutasyonla** sınandı: (a) `gecti["K7"]` kaldırılırsa kilit **düşer**; (b) ölçüm denetlenen ağırlık yerine başka bir dosyayla üretilirse kilit **düşer**; (c) bayat JSON silme satırı kaybolursa kilit **düşer**; (d) GEÇTİ verdikt metni K7'yi anmazsa kilit **düşer**.
+⚠ **Kendi testimin ilk hâli boş kapıydı:** mutasyon metni olarak `# gecti["K7"] kaldirildi` yazmıştım — desenin **kendisini** içerdiği için mutant "hâlâ bağlı" görünüyordu. Test kendi kendini kandırıyordu; yakalandı ve düzeltildi. Bu, bu oturumdaki **dördüncü** alet/kilit kusurudur ve yine kontrol adımı yakaladı.
+
+#### 5. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1116 OK** (2 skip). `65_kabul_denetcisi.py` değiştiği için ölçüm aynası hizalandı.
