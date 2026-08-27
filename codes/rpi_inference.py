@@ -2368,6 +2368,22 @@ def _ub_konum_saglayici(canli_olcek, referans):
     return _saglayici
 
 
+def _irtifa_saglayici(canli_olcek):
+    """HEARTBEAT icin `() -> irtifa_m | None` (T171 · ON_KAYIT SS38).
+
+    Sartname SS5.3.2 tespiti ASGARI 30 m irtifadan ister. Hakem ekrani bunu
+    gorebilmeliydi ama URETIM heartbeat'e irtifa KOYMUYORDU — YKS `alt` alanini
+    okuyor olmasina ragmen o alani ureten hicbir yol yoktu. Irtifa, konumla
+    AYNI okuyucudan gelir; ikinci bir telemetri yolu ACILMAZ.
+    """
+    if canli_olcek is None:
+        return None
+    okuyucu = getattr(canli_olcek, "okuyucu", None)
+    if okuyucu is None or not callable(getattr(okuyucu, "irtifa_m", None)):
+        return None
+    return okuyucu.irtifa_m
+
+
 def _argumanlari_dogrula(parser, args):
     """Canli kamera yolunda statik olcek/irtifa bypassini kapat."""
     if (args.mav_sysid is not None
@@ -2438,9 +2454,11 @@ def main():
     yayinci = None
     if args.yks_hedef or args.ika_hedef or args.telsiz_seri:
         _konum_saglayici = _ub_konum_saglayici(canli_olcek, ub_referans)
+        _irtifa_s = _irtifa_saglayici(canli_olcek)
         yayinci = _iha_sender_modulu().yayinci_kur(
             yks=args.yks_hedef, ika=args.ika_hedef, seri=args.telsiz_seri,
-            baud=args.telsiz_baud, konum_saglayici=_konum_saglayici).start()
+            baud=args.telsiz_baud, konum_saglayici=_konum_saglayici,
+            irtifa_saglayici=_irtifa_s).start()
         print(f"telsiz halkasi: yks={args.yks_hedef} ika={args.ika_hedef} "
               f"seri={args.telsiz_seri} · heartbeat "
               f"{yayinci.heartbeat_aralik:g} s")

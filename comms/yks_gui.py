@@ -43,6 +43,7 @@ if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               IKA_GO_TEKRAR_UST_SINIRI,
+                              SARTNAME_ASGARI_IRTIFA_M,
                               SARTNAME_FDA_OPERASYON_SURESI_S,
                               SARTNAME_HAZIRLIK_SURESI_S,
                               SARTNAME_IHA_GOREV_SURESI_S,
@@ -55,6 +56,7 @@ from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               OLCEK_KAYNAK_ARAC,
                               OLCEK_KAYNAK_ETIKETI,
                               OLCEK_KAYNAK_TELEMETRI,
+                              asgari_irtifa_notu,
                               olcek_gecerli_mi, olcek_kaynak_metni,
                               rota_guven_reddi,
                               rota_olcek_reddi, zemin_kaplamasi)
@@ -891,6 +893,12 @@ class YksArayuz:
                                      text="1) TESPİTİ DOĞRULA (§2.2.3)")
                 self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
                                           "gönderimde (ACK yok)", fg=SARI)
+                # T171 · §5.3.2: tespit ASGARİ İRTİFANIN ALTINDA üretildiyse
+                # hakem bunu ONAYLAMADAN ÖNCE görmeli. Ret DEĞİL — İHA
+                # kalkış/inişte de kare üretir; ama madde "asgari 30 metre
+                # irtifadan ... tespit etmek" der. İrtifa BİLİNMİYORSA da
+                # sessiz kalınmaz: bilinmediği yazılır (D-319).
+                self._irtifa_notunu_goster()
                 self._kutu_yaz("protokol", guven=m["conf"])
                 self._harita_ciz()
                 self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
@@ -1262,6 +1270,9 @@ class YksArayuz:
     # demeli; damga yoksa yaslandirma HICBIR SEY yapmaz (eski davranis birebir).
     rota_zaman = None
     tespit_bayat = False
+    # T171: telemetri sozlugu de sinif duzeyinde. `__init__` kosmadan kurulan
+    # orneklerde (testler) irtifa notu AttributeError ile patlamak yerine
+    # "irtifa bilinmiyor" demeli — bu, notun kendi sozlesmesidir.
 
     def _algi_gorseller(self):
         kok_dizin = Path(__file__).resolve().parents[1]
@@ -2116,6 +2127,36 @@ class YksArayuz:
         for ad, e in self.zincir_etiket.items():
             e.config(fg=YESIL if ad in aktifler else SOLUK,
                      bg="#15251b" if ad in aktifler else PANEL)
+
+    def _irtifa_notunu_goster(self):
+        """§5.3.2 · T171: tespitin irtifasini hakem gunlugune yaz.
+
+        Sartname: "...Acik Guzergah'i ASGARI 30 METRE IRTIFADAN ucarak ...
+        tespit etmek..." Asgarinin altinda uretilmis bir tespit maddeyi
+        KARSILAMAZ; hakem onaylamadan once bunu gormelidir.
+
+        🔴 RET DEGIL, GOSTERIM: IHA kalkis/inis sirasinda da kare uretir;
+        orada rotayi reddetmek yanlis olurdu. Karar/telsiz mantigina
+        DOKUNULMAZ — yalnizca hakem gunlugune bir satir duser.
+
+        Irtifa BILINMIYORSA sessiz kalinmaz: "bilinmiyor" ile "asgarinin
+        altinda" ayni sey degildir, ikisi de AYRI AYRI yazilir.
+        """
+        tel = (getattr(self, "tel", None) or {}).get("iha") or {}
+        irtifa = tel.get("alt")
+        if irtifa is None:
+            self._logla(
+                f"ℹ İRTİFA BİLİNMİYOR: İHA telemetrisi `alt` yayınlamıyor — "
+                f"§5.3.2 asgari {SARTNAME_ASGARI_IRTIFA_M:.0f} m şartı "
+                "ekrandan DOĞRULANAMAZ", "soluk")
+            return None
+        not_ = asgari_irtifa_notu(irtifa)
+        if not_ is None:
+            self._logla(f"irtifa {float(irtifa):.1f} m — §5.3.2 asgari "
+                        f"{SARTNAME_ASGARI_IRTIFA_M:.0f} m sağlanıyor", "soluk")
+            return None
+        self._logla(f"⚠ {not_[1]}", "sari")
+        return not_
 
     def _tespiti_yaslandir(self, simdi=None):
         """§6.2 · T169: BAYAT tespit canliymis gibi gosterilemez.

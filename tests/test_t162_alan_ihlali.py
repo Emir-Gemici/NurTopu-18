@@ -244,8 +244,14 @@ class Mutasyon(unittest.TestCase):
     def test_URETIM_heartbeat_yolunda_konum_kancasi_VAR(self):
         kaynak = (KOK / "comms" / "iha_sender.py").read_text(encoding="utf-8")
         self.assertIn("konum_saglayici", kaynak)
-        self.assertIn("send_heartbeat(x=", kaynak,
-                      "yayinci x,y'yi heartbeat'e gecirmiyor")
+        # T171'de govde yeniden yapilandirildi (alan toplama kendi try'inde);
+        # KILITLENEN ANLAM AYNI: x ve y heartbeat alanlarina yaziliyor mu.
+        self.assertIn('alanlar["x"]', kaynak,
+                      "yayinci x'i heartbeat alanlarina yazmiyor")
+        self.assertIn('alanlar["y"]', kaynak,
+                      "yayinci y'yi heartbeat alanlarina yazmiyor")
+        self.assertIn("send_heartbeat(**alanlar)", kaynak,
+                      "toplanan alanlar heartbeat'e gecirilmiyor")
 
     def test_sozlesme_sabiti_sartnameye_uygun(self):
         self.assertEqual(300.0, SARTNAME_IHA_UB_KENAR_M)

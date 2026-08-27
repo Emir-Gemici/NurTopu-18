@@ -22963,3 +22963,59 @@ Genel kapı iki kolda GEÇTİ; `unittest discover` **1141 OK** (2 skip). `karar_
 
 #### 6. ÖLÇÜLEMEDİ
 §5.3.2 bir **uçuş** aşamasıdır; bu iş yalnız **bütçeyi ve göstergeyi** doğru kurar. Uçuşun 10 dakikada tamamlanıp tamamlanmadığı **saha ölçümüdür** ve H-A çekimi/uçuşuna bağlıdır.
+
+---
+
+### D-319 · 🔴 T171 — §5.3.2'nin "asgari 30 m irtifa" şartı HİÇ UYGULANMIYORDU; üstelik uyum raporumuz **uygulandığını iddia ediyordu** (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §38 (düzeltme yönü — *ret değil gösterim* — sonuç görülmeden yazıldı). **Kapı:** `tests/test_t171_asgari_irtifa.py` **16/16**.
+
+#### 1. Şartname
+> §5.3.2: *"…Açık Güzergâh'ı **asgari 30 metre irtifadan uçarak**, havadan görüntü işleme ve yapay zekâ algoritmaları vasıtasıyla **tespit etmek**…"*
+
+#### 2. Ölçüm — üç kat ölü
+`karar_sozlesmesi.rota_olcek_reddi` içinde `SARTNAME_ASGARI_IRTIFA_M`'i anan bir irtifa dalı vardı. Ölçüldü:
+
+| çağrı | dönen |
+|---|---|
+| `rota_olcek_reddi(0.05)` | `None` |
+| `rota_olcek_reddi(0.05, irtifa_m=5.0)` | `None` |
+| `rota_olcek_reddi(0.05, irtifa_m=30.0)` | `None` |
+| `rota_olcek_reddi(0.05, irtifa_m=100.0)` | `None` |
+
+**Dalın iki kolu da `return None` yapıyordu** — dal ölüydü. Dahası: depoda **hiçbir çağıran `irtifa_m` geçmiyordu** (10 çağrı yeri tarandı). Sabit yalnızca (a) o ölü dalda, (b) kuru koşunun sahte telemetrisinde yayınlanacak bir **değer** olarak, (c) "30.0'a eşittir" diyen bir testte geçiyordu. Yani şart **hiçbir karar yolunda uygulanmıyordu**.
+
+#### 3. 🔴 En ağır kısım: YANLIŞ UYUM İDDİASI
+`results/sartname_bosluk/rapor_uret.py` R15 satırı, kanıt olarak ölçek reddi fonksiyonunun irtifayı denetlediğini gösteriyor ve maddeyi **`KANITLI_TEST`** olarak işaretliyordu. **Bu iddia yanlıştı.** Kendi uyum raporumuz, uygulanmayan bir şartı uygulanıyor gösteriyordu — bu, projenin en tehlikeli kusur sınıfıdır (D-15 vakum kapı), çünkü denetimi **yanlış yöne** çevirir. R15 artık **`KOD_VAR_TEST_YOK` · ÖNEMLİ** ve düzeltme notu satırın içinde.
+
+#### 4. Yapılan — ön kayıttaki yön: RET DEĞİL GÖSTERİM
+İHA **kalkış ve iniş sırasında da kare üretir**; 30 m altını reddetmek görev süresini boşa akıtır ve fail-closed yön burada **koruyucu değil zararlıdır**. Ama hakem, asgari irtifanın altında üretilmiş bir tespiti onaylarken bunu **görmek zorundadır** (T169 ile aynı mantık).
+- Ölü dal ve `irtifa_m` parametresi **kaldırıldı**; `rota_olcek_reddi`'nin ölçek davranışı **birebir korundu**.
+- Yeni saf fonksiyon **`asgari_irtifa_notu(irtifa_m)`** → `(ASGARI_IRTIFA_ALTI, açıklama)` ya da `None`. İrtifa **bilinmiyorsa not üretmez**: "bilinmiyor" ile "asgarinin altında" aynı şey değildir.
+- **Üretim artık `alt` yayınlıyor.** Hakem ekranı `alt` alanını okuyordu ama **üretimde o alanı üreten hiçbir yol yoktu** (T162'deki `x,y` ile birebir aynı kusur). İrtifa, konumla **aynı okuyucudan** gelir; ikinci telemetri yolu açılmadı. Sağlayıcı patlarsa heartbeat **sürer**.
+- Hakem ekranı, `OPEN_ROUTE` kabul edilirken irtifayı günlüğe yazar: asgarinin altındaysa **uyarı**, üstündeyse "sağlanıyor", **bilinmiyorsa "İRTİFA BİLİNMİYOR — §5.3.2 ekrandan DOĞRULANAMAZ"** (sessiz sıfır yasak).
+
+#### 5. Kapı (16/16, mutasyonlu)
+Ölü dal geri konursa kilit **düşer** (imza ve gövde ayrı ayrı) · ölçek reddi davranışı korunuyor · not eşiği **parametrik** (eşik kullanılmıyorsa test düşer) · geçersiz/bilinmeyen irtifada not **üretilmez** · üretim döngüsü `alt` **geçirir**, yokken alan **yazılmaz**, sağlayıcı patlarsa **yayın sürer** · ekran üç durumu da yazar · not `OPEN_ROUTE` yolunda **çağrılıyor** · uyum raporu yanlış iddiayı **taşımıyor**.
+
+#### 6. ÖLÇÜLEMEDİ
+Gerçek uçuşta irtifanın 30 m'nin üstünde olup olmadığı **saha ölçümüdür** (H-A). Bu iş yalnız **görünürlüğü** kurar: bundan sonra ekran, maddeyi karşılamayan bir tespiti karşılıyormuş gibi göstermez.
+
+---
+
+### D-320 · 🔴 T171'i uygularken KENDİM bir HEARTBEAT SUSTURMA kusuru ürettim — süit 20 dakika kilitlendi ve kusur böyle yakalandı (2026-08-27)
+
+**Ne oldu.** `KararYayinci._heartbeat_dongusu`'ne irtifa alanını eklerken, sağlayıcı özniteliğine **`try` bloğunun içinde ama `send_heartbeat` çağrısından önce** eriştim. `__new__` ile kurulan (ve bu alanı bilmeyen) bir örnekte erişim **`AttributeError`** fırlattı; dış `except` onu yuttu, `self._dur.wait(...)` çalıştı ve döngü **hiçbir heartbeat göndermeden sonsuza kadar döndü**. Test süiti bu yüzden **20 dakika kilitlendi**; iki koşum aynı anda takıldı ve süreçleri incelemek zorunda kaldım.
+
+**Neden ciddi.** Bu bir test kazası değil, **üretim failsafe'ini susturan** bir kalıptır: heartbeat kesilirse `ika_receiver` 3 s sonra `link_lost` verir ve İKA güvenli duruşa geçer. Telemetri **ek bilgi** toplarken oluşan bir hata, **bağlantı canlılığını** öldürmemelidir.
+
+**Düzeltme (iki katman).**
+1. **Alan toplama kendi `try`'ında.** Konum ve irtifa ayrı ayrı korunur; **`send_heartbeat` her turda denenir**. Telemetri alanları yalnızca *ek*tir.
+2. **Sınıf düzeyi varsayılanlar** (`konum_saglayici = None`, `irtifa_saglayici = None`) — `__new__` ile kurulan örnekler ve yeni alanı bilmeyen eski çağıranlar için. Bu, `yks_gui._arac_modeli_durumu` ile aynı ve dosyada gerekçesi yazılı kalıptır.
+
+**Yan hata (aynı turda, ayrıca düzeltildi).** Sınıf niteliklerini **docstring'in önüne** koymuştum; bu, docstring'i sıradan bir ifadeye çevirip `__doc__`'u düşürüyordu. Nitelikler docstring'in **altına** alındı, `__doc__` geri geldi (test kilitliyor).
+
+**Etkilenen iki mevcut test gevşetilmedi, GENİŞLETİLDİ.** `test_t162`'nin `send_heartbeat(x=` dizge kilidi yeniden yapılandırma sonrası anlamsızlaştı; **kilitlenen anlam aynı** kalacak şekilde `alanlar["x"]` / `alanlar["y"]` / `send_heartbeat(**alanlar)` üçlüsüne çevrildi. `test_rpi_telsiz_yayin` artık `irtifa_saglayici=None`'ı da bekliyor — yani referans/telemetri yokken **iki denetimin de açıkça kapalı** olduğu kilitlendi.
+
+**Ders (yordama ekleniyor).** *Failsafe döngülerinde, yayının kendisi ile yayına eklenen bilgi AYNI `try` içinde toplanamaz.* Bilgi toplama başarısız olabilir; **yayın olmak zorundadır**. Ayrıca: `__new__` ile kurulabilen sınıflara yeni öznitelik eklerken **sınıf düzeyi varsayılan** zorunludur.
+**Bozulmama:** genel kapı iki kolda GEÇTİ; `unittest discover` **1157 OK** (2 skip).

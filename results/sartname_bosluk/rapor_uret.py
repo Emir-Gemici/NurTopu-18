@@ -150,11 +150,11 @@ SATIRLAR = [
  {
   "no": 15, "madde": "§5.3.2",
   "gereksinim": "FDA: 20×20 m test alanı, asgari 30 m irtifa.",
-  "kod": ["codes/karar_sozlesmesi.py:263 SARTNAME_ASGARI_IRTIFA_M=30.0; :953 SENARYO_BOYUTLARI_M FDA=20.0", "codes/karar_sozlesmesi.py:316 rota_olcek_reddi (irtifa aralık dışı → OLCEK_YOK)"],
+  "kod": ["codes/karar_sozlesmesi.py:263 SARTNAME_ASGARI_IRTIFA_M=30.0; :953 SENARYO_BOYUTLARI_M FDA=20.0", "codes/karar_sozlesmesi.py asgari_irtifa_notu (T171/D-319: RET DEĞİL GÖSTERİM; hakem günlüğüne düşer). ⚠ DÜZELTME (D-319): bu satır önce ölçek reddi fonksiyonunun irtifayı denetlediğini iddia ediyordu — YANLIŞTI. O daldaki İKİ KOL DA `return None` yapıyordu ve hiçbir çağıran irtifa geçmiyordu, yani şart HİÇ uygulanmıyordu. Tam alıntı ve kanıt: REVIEW_LOG D-319."],
   "test": ["tests/test_olcek_kahini.py", "tests/test_rpi_canli_olcek.py", "tests/test_saha_parametrik.py"],
-  "kanit": "KANITLI_TEST",
-  "risk": "KÜÇÜK",
-  "not": "Sentetik üreteç FDA profilini (20×20, ≥30 m) taşımıyor (ARCHITECT_PLAN §8 T14 / S8) — model o ölçekte ölçülmedi.",
+  "kanit": "KOD_VAR_TEST_YOK",
+  "risk": "ÖNEMLİ",
+  "not": "🔴 D-319: asgari 30 m şartı 2026-08-27'ye kadar HİÇ uygulanmıyordu ve bu rapor uygulandığını İDDİA EDİYORDU. Artık `asgari_irtifa_notu` var (ret değil gösterim) ve üretim heartbeat'e `alt` yayınlıyor; saha ölçümü H-A'ya bağlı. Sentetik üreteç FDA profilini (20×20, ≥30 m) taşımıyor (ARCHITECT_PLAN §8 T14 / S8) — model o ölçekte ölçülmedi.",
   "is": "FDA drone'u geldiğinde 30 m'den gerçek kare; sentetik FDA profili ayrı görev."
  },
  {

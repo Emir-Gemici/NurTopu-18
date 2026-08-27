@@ -431,23 +431,60 @@ def olcek_gecerli_mi(mpp):
     return math.isfinite(d) and d > 0.0
 
 
-def rota_olcek_reddi(mpp, *, irtifa_m=None):
+def rota_olcek_reddi(mpp):
     """Gorev yolunda olcek yoksa kanonik ``(sebep, detay)``; varsa ``None``.
 
     CONTRACTS SS11.3 Halka 5 olcutu: *"`mpp` turetilemiyorsa halka OLCEK_YOK
     dondurecek ve rota URETILMEYECEK."* Sessiz varsayilan YASAK.
+
+    🔴 T171 (D-319): bu fonksiyonun `irtifa_m` parametresi ve icindeki
+    "asgari irtifa" dali KALDIRILDI — cunku OLU KODDU: dalin IKI KOLU DA
+    `return None` yapiyordu, yani sabit `SARTNAME_ASGARI_IRTIFA_M` burada
+    ANILIYOR ama HICBIR SEY yapmiyordu. Ustelik hicbir cagiran `irtifa_m`
+    GECMIYORDU. Sartname uyum raporumuz ise bu satiri kanit gostererek
+    "irtifa aralik disi -> OLCEK_YOK" diye YANLIS bir uyum iddiasi tasiyordu.
+    Asgari irtifa sarti (SS5.3.2) artik `asgari_irtifa_notu()` ile ve RET
+    DEGIL GOSTERIM olarak ele alinir — gerekcesi orada yazili.
     """
     if not olcek_gecerli_mi(mpp):
         return (OLCEK_YOK_SEBEBI,
                 f"Olcek (mpp) turetilemedi ({mpp!r}); irtifa+FOV/odak "
                 "gerekli. Olceksiz kipte govde acikligi dogrulanamaz, "
                 "rota yayinlanmaz.")
-    if irtifa_m is not None:
-        h = float(irtifa_m) if olcek_gecerli_mi(irtifa_m) else None
-        if h is not None and h < SARTNAME_ASGARI_IRTIFA_M:
-            # Ret DEGIL, olculen makullük notu: IHA inis/kalkista da kare uretir.
-            return None
     return None
+
+
+ASGARI_IRTIFA_SEBEBI = "ASGARI_IRTIFA_ALTI"
+
+
+def asgari_irtifa_notu(irtifa_m, asgari_m=SARTNAME_ASGARI_IRTIFA_M):
+    """SS5.3.2 asgari gorev irtifasi NOTU — ``(sebep, aciklama)`` ya da ``None``.
+
+    Sartname SS5.3.2: *"...Acik Guzergah'i ASGARI 30 METRE IRTIFADAN ucarak,
+    havadan goruntu isleme ... vasitasiyla tespit etmek..."* Yani asgari
+    irtifanin ALTINDA yapilan bir tespit maddeyi KARSILAMAZ.
+
+    🔴 NEDEN RET DEGIL: IHA kalkis ve inis sirasinda da kare uretir; bu
+    karelerde rotayi REDDETMEK yanlis olurdu (gorev suresi bosa akar ve
+    fail-closed yon burada KORUYUCU degil ZARARLIDIR). Ama hakem, asgari
+    irtifanin ALTINDA uretilmis bir tespiti onaylarken bunu GORMEK ZORUNDADIR
+    (T169 ile ayni mantik: ekran, maddeyi karsilamayan bir seyi karsiliyormus
+    gibi gosteremez).
+
+    IRTIFA BILINMIYORSA (None/gecersiz) NOT URETILMEZ: "bilinmiyor" ile
+    "asgarinin altinda" ayni sey degildir; bilinmedigini soylemek CAGIRANIN
+    isidir (sessiz sifir yasak).
+    """
+    if not olcek_gecerli_mi(irtifa_m):
+        return None
+    h = float(irtifa_m)
+    if h >= float(asgari_m):
+        return None
+    return (ASGARI_IRTIFA_SEBEBI,
+            f"Tespit {h:.1f} m irtifada uretildi; sartname SS5.3.2 ASGARI "
+            f"{float(asgari_m):.0f} m ister. Bu bir ret DEGILDIR (kalkis/inis "
+            "karesi olabilir) ama hakem onayi bu tespite verilirse madde "
+            "KARSILANMAMIS sayilabilir.")
 
 
 def r_gerekli_piksel(mpp, r_gerekli_m):

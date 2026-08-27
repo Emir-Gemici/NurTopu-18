@@ -401,3 +401,16 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 3. **Mutasyon:** sözleşmedeki süre değiştirilirse GUI'nin limiti **onunla birlikte** değişmeli (çıplak sabit geri konursa test DÜŞER).
 4. Sözleşme sabiti şartname değeriyle eşit olmalı (600 s) — test kilitler.
 ⚠ Karar/telsiz mantığına dokunulmaz; bu bir **süre bütçesi ve gösterim** işidir.
+
+## 38. EK — T171: §5.3.2'nin "asgari 30 m irtifa" şartı ve FDA senaryosu — uygulanıyor mu? (2026-08-27, sonuç görülmeden)
+**Şartname §5.3.2:** *"…Açık Güzergâh'ı **asgari 30 metre irtifadan uçarak**, havadan görüntü işleme ve yapay zekâ algoritmaları vasıtasıyla tespit etmek…"* — yani 30 m altından yapılan bir tespit maddeyi karşılamaz.
+**Şüphe (kaynağı okuyarak, ölçümden ÖNCE):** `karar_sozlesmesi.rota_olcek_reddi` içinde bir irtifa dalı var ve `SARTNAME_ASGARI_IRTIFA_M`'i anıyor; ama **iki kolu da `return None`** görünüyor — yani dal **ÖLÜ** olabilir. Öyleyse sabit "uygulanıyor" izlenimi verir, hiçbir şey yapmaz (vakum kapı sınıfı).
+**Ölçüm (kod DEĞİŞMEZ):**
+1. `rota_olcek_reddi`'nin irtifa dalının davranışı: geçerli mpp + 5 m irtifa ile çağrıldığında dönen değer, irtifa **hiç verilmeyen** çağrıyla **aynı mı**? Aynıysa dal ölüdür.
+2. `SARTNAME_ASGARI_IRTIFA_M` deponun **başka hangi** karar yolunda kullanılıyor — hiçbirinde kullanılmıyorsa şart sistemde **hiç uygulanmıyor** demektir.
+3. `--senaryo FDA` (katman 2 ölçek): beyan edilen senaryodan üretilen `mpp` = `20,0 / genişlik` mi? Saha zincirinde/kuru koşuda bu yol **hiç** koşuluyor mu?
+**Ön kayıtlı hüküm kuralı (sonuca göre değişmez):**
+- Dal ölü **ve** sabit başka hiçbir karar yolunda kullanılmıyorsa → şart **uygulanmıyor** ilan edilir ve **T171 açılır**. Düzeltme yönü **ret değil, GÖSTERİM**: İHA iniş/kalkışta da kare üretir, o yüzden 30 m altını reddetmek yanlış olur; ama hakem, **asgari irtifa altında** üretilmiş bir tespiti onaylarken bunu **görmek zorundadır** (T169 ile aynı mantık: ekran, maddeyi karşılamayan bir şeyi karşılıyormuş gibi gösteremez).
+- Dal ölü **değilse** (davranış farklıysa) → sayı yazılır, yeni iş açılmaz.
+- FDA senaryosu doğru `mpp` üretiyorsa raporlanır; üretmiyorsa **KRİTİK** iş açılır.
+⚠ Bu turda önce **ölçüm**; düzeltme ölçümden sonra ve aynı ön kayıt altında yapılır (yön yukarıda **şimdiden** yazılıdır ki sonuca göre seçilmesin).

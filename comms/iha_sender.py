@@ -212,8 +212,18 @@ class KararYayinci:
     olarak yayinlanmaz.
     """
 
+    # 🔴 SINIF DUZEYI VARSAYILANLAR (T171 · D-320): bu sinif `__new__` ile de
+    # kuruluyor (testler) ve eski cagiranlar bu alanlari bilmiyor. Eksik
+    # oznitelik `_heartbeat_dongusu` icinde AttributeError'a, o da SESSIZ
+    # HEARTBEAT KAYBINA yol aciyordu — dongu her turda patlayip hicbir
+    # heartbeat gondermeden sonsuza kadar donuyordu (bir suit kosumu bu
+    # yuzden 20 dakika kilitlendi ve kusur boyle yakalandi).
+    konum_saglayici = None
+    irtifa_saglayici = None
+
     def __init__(self, sender, heartbeat_aralik=IHA_HEARTBEAT_ARALIK_S,
-                 repeat=4, interval=0.25, wait_ack=True, konum_saglayici=None):
+                 repeat=4, interval=0.25, wait_ack=True, konum_saglayici=None,
+                 irtifa_saglayici=None):
         if heartbeat_aralik <= 0:
             raise ValueError("heartbeat araligi pozitif olmali")
         self.sender = sender
@@ -221,6 +231,9 @@ class KararYayinci:
         self.repeat, self.interval, self.wait_ack = repeat, interval, wait_ack
         # T162: cagrilabilir, `(x, y)` yerel metre ya da None dondurur.
         self.konum_saglayici = konum_saglayici
+        # T171: cagrilabilir, irtifa (m) ya da None. Sartname SS5.3.2 tespiti
+        # ASGARI 30 m'den ister; hakem ekrani bunu ancak yayinlanirsa gorur.
+        self.irtifa_saglayici = irtifa_saglayici
         self._kilit = threading.Lock()
         self._bekleyen = None
         self._yeni = threading.Event()
@@ -315,21 +328,31 @@ class KararYayinci:
     def _heartbeat_dongusu(self):
         while not self._dur.is_set():
             try:
-                # T162: konum saglayici YOKSA ya da konum uretemezse alan
-                # YAZILMAZ — "bilinmiyor" ile "0,0" ayni sey degildir.
-                xy = None
-                if self.konum_saglayici is not None:
-                    try:
-                        xy = self.konum_saglayici()
-                    except Exception as exc:
-                        self.hata.append(
-                            f"konum {type(exc).__name__}: {exc}")
-                        xy = None
-                if xy is None:
-                    self.sender.send_heartbeat()
-                else:
-                    self.sender.send_heartbeat(x=round(float(xy[0]), 2),
-                                               y=round(float(xy[1]), 2))
+                # 🔴 ALAN TOPLAMA KENDI TRY'INDE (T171/D-320): burada olusan
+                # HERHANGI bir hata heartbeat'i DURDURMAMALI. Once boyle
+                # degildi ve eksik bir oznitelik (AttributeError) `send_heartbeat`
+                # cagrilmadan disari firliyordu; dongu sonsuza kadar donuyor,
+                # TELSIZ SESSIZCE SUSUYORDU. Baglanti-failsafe icin heartbeat
+                # HER TURDA denenir; telemetri alanlari YALNIZCA EK bilgidir.
+                # T162: alan uretilemezse YAZILMAZ — "bilinmiyor" ile "0,0"
+                # ayni sey degildir.
+                alanlar = {}
+                try:
+                    xy = (self.konum_saglayici() if self.konum_saglayici
+                          else None)
+                    if xy is not None:
+                        alanlar["x"] = round(float(xy[0]), 2)
+                        alanlar["y"] = round(float(xy[1]), 2)
+                except Exception as exc:
+                    self.hata.append(f"konum {type(exc).__name__}: {exc}")
+                try:
+                    irtifa = (self.irtifa_saglayici() if self.irtifa_saglayici
+                              else None)
+                    if irtifa is not None:
+                        alanlar["alt"] = round(float(irtifa), 1)
+                except Exception as exc:
+                    self.hata.append(f"irtifa {type(exc).__name__}: {exc}")
+                self.sender.send_heartbeat(**alanlar)
                 self.heartbeat_sayisi += 1
             except Exception as exc:
                 self.hata.append(f"heartbeat {type(exc).__name__}: {exc}")

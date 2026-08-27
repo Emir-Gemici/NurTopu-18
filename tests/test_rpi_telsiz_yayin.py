@@ -301,9 +301,12 @@ class CliTests(unittest.TestCase):
             ri.main()
         # T162: `--ub-referans` verilmedigi icin konum saglayici None GECMELIDIR
         # — yani alan ihlali denetimi ACIKCA kapali kalir (sessiz sifir yasak).
+        # T171: irtifa saglayici da GECMELIDIR. `--ub-referans` ve canli
+        # telemetri yokken IKISI DE None olur — yani hem alan ihlali hem
+        # asgari irtifa denetimi ACIKCA kapali kalir (sessiz sifir yasak).
         modul.yayinci_kur.assert_called_once_with(
             yks="127.0.0.1:5005", ika=None, seri=None, baud=57600,
-            konum_saglayici=None)
+            konum_saglayici=None, irtifa_saglayici=None)
         self.assertIs(yayinci, rv.call_args.kwargs["yayinci"])
         yayinci.stop.assert_called_once()
         yayinci.sender.link.close.assert_called_once()
