@@ -14,6 +14,9 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "codes"))
+from karar_sozlesmesi import ince_bariyer_maskesi  # noqa: E402
+
 # T161: kok `ayarlar`dan gelir — ciplak yol yazilmaz; kopya
 # agacta (worktree) KENDI deposunu gosterir (ON_KAYIT SS22).
 from ayarlar import REPO  # noqa: E402
@@ -29,23 +32,31 @@ CIKTI = REPO.parent / "navitas-local-train" / "results" / "t63"
 
 
 def bariyer_maskesi(img):
-    """Yuksek kromali KIRMIZI seritler -> bariyer kollari."""
-    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    a = lab[:, :, 1].astype(np.int16) - 128
-    kirmizi = (a > 25).astype(np.uint8)
-    # Serit araliklarini (beyaz) kapatarak kolu tek parca yap
-    kirmizi = cv2.morphologyEx(kirmizi, cv2.MORPH_CLOSE,
-                               cv2.getStructuringElement(cv2.MORPH_RECT, (61, 5)))
-    n, lbl, st, _ = cv2.connectedComponentsWithStats(kirmizi, 8)
-    kol = np.zeros_like(kirmizi)
+    """Uzun/ince/yuksek-kromali cubuk yapilar -> bariyer kollari.
+
+    🔴 T189 (D-324 SS9): burada `ince_bariyer_maskesi`nin CIPLAK SABITLI bir
+    KOPYASI duruyordu (61x5 cekirdek, alan<300, `w > 4*h`, `w > 60`) ve
+    kopya ayni DONME KORLUGUNU tasiyordu: yalniz YATAY kolu buluyordu.
+    Sonuc: K5 kapisi, T184'un duzelttigi kusuru ne YAKALAYABILIR ne de
+    duzeltmeyi DOGRULAYABILIRDI — yani kapi, olctugunu sandigi seyi
+    olcmuyordu (D-15 sinifi vakum kapi).
+
+    Artik olcut TEK KAYNAKTAN gelir (madde 16): `karar_sozlesmesi`.
+    Kopya olmadigi icin biri duzelip digeri bayat kalamaz.
+
+    ⚠ DAIRESEL DEGIL: K5 MODELI olcer; bu dedektor yer gercegini uretmek
+    icin kullanilan ALETTIR ve tamamen klasiktir (LAB kroma + morfoloji),
+    hicbir model yuklemez. D-243 SART 1 ("bariyer MODELDEN GELMEZ") aynen
+    korunur.
+    """
+    kol = ince_bariyer_maskesi(img)
+    if kol is None:
+        return np.zeros(img.shape[:2], np.uint8), []
+    n, lbl, st, _ = cv2.connectedComponentsWithStats(kol, 8)
     kutular = []
     for i in range(1, n):
         x, y, w, h, alan = st[i]
-        if alan < 300:
-            continue
-        if w > 4 * max(1, h) and w > 60:          # uzun, ince, YATAY
-            kol[lbl == i] = 1
-            kutular.append((x, y, w, h, int(alan)))
+        kutular.append((int(x), int(y), int(w), int(h), int(alan)))
     return kol, kutular
 
 
