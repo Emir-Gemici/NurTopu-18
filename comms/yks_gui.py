@@ -44,6 +44,7 @@ if str(_PROJE_KOKU / "codes") not in sys.path:
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               IKA_GO_TEKRAR_UST_SINIRI,
                               SARTNAME_IHA_UB_KENAR_M,
+                              YKS_TESPIT_TAZELIK_S,
                               iha_ub_ihlali,
                               ZEMIN_KAPLAMA_TAVANI,
                               ZEMIN_MASKESI_SUPHELI_SEBEBI,
@@ -199,6 +200,10 @@ class YksArayuz:
         self.demo_durum = {"iha_hb": True, "ika_hb": True}   # senaryo anahtarları
 
         self.rota = None            # son OPEN_ROUTE mesajı
+        # T169 · §6.2: tespitin YAŞI. Şartname "gerçek zamanlı" der; bayat bir
+        # tespit ekranda canlı görünürse hakem geçersiz bir onay verir.
+        self.rota_zaman = None      # son KABUL EDİLEN OPEN_ROUTE'un yerel saati
+        self.tespit_bayat = False   # `_durum_tazele` her saniye günceller
         self.rota_yok = None        # son NO_ROUTE; kırmızı güvenlik bandı için
         self.rota_adr = None        # ACK dönülecek adres
         self.onaylandi = False
@@ -837,6 +842,10 @@ class YksArayuz:
             self._dugum_adresini_ogren("iha", adr)
             yeni = (self.rota is None) or (m["seq"] != self.rota["seq"])
             self.rota, self.rota_adr = m, adr
+            # T169 · §6.2: her KABUL EDILEN cerceve tespiti TAZELER — tekrar
+            # gonderim de canlilik kanitidir. Bayatlik `_durum_tazele`de olculur.
+            self.rota_zaman = time.time()
+            self.tespit_bayat = False
             self.rota_yok = None
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
             if yeni:
@@ -991,6 +1000,13 @@ class YksArayuz:
         """Şartname §2.2.3 İKİ AŞAMALI hakem onayı: (1) güzergâh tespitinin
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
         if not self.rota or self.rota_yok or self.onaylandi:
+            return
+        # T169 · §6.2 FAIL-CLOSED: dugme TEK savunma degildir. Otomatik onay
+        # (`--otomatik-onay`), klavye ya da bir zamanlayici bu yolu dugme
+        # kapaliyken de cagirabilir; BAYAT tespit icin ACK URETILMEZ.
+        if self._tespiti_yaslandir():
+            self._logla("HAKEM ONAYI REDDEDILDI: tespit BAYAT (§6.2 gercek "
+                        "zamanli aktarim) — ACK gonderilmedi", "sari")
             return
         if not self.tespit_onayli:
             self.tespit_onayli = True
@@ -1220,6 +1236,14 @@ class YksArayuz:
     # (tests/test_yks_gui_uretim_hizasi.py). Eksik öznitelik, ölçek katmanını
     # sessizce değil GÖRÜNÜR biçimde kapatmalı.
     _arac_modeli_durumu = None
+    # T169 · §6.2: tespit tazeliginin SINIF DUZEYI varsayilanlari. Ornek
+    # duzeyinde `__init__` de kurar; burada da durmasinin sebebi `_arac_modeli_durumu`
+    # ile AYNI: bu sinif, `__init__` kosmadan kurulan orneklerle de sinaniyor
+    # (tests/test_ika_go_ackli_tekrar.py, test_yks_gui_aktarim_zamani.py).
+    # Eksik oznitelik AttributeError ile patlamak yerine "zaman damgasi YOK"
+    # demeli; damga yoksa yaslandirma HICBIR SEY yapmaz (eski davranis birebir).
+    rota_zaman = None
+    tespit_bayat = False
 
     def _algi_gorseller(self):
         kok_dizin = Path(__file__).resolve().parents[1]
@@ -2075,9 +2099,52 @@ class YksArayuz:
             e.config(fg=YESIL if ad in aktifler else SOLUK,
                      bg="#15251b" if ad in aktifler else PANEL)
 
+    def _tespiti_yaslandir(self, simdi=None):
+        """§6.2 · T169: BAYAT tespit canliymis gibi gosterilemez.
+
+        Sartname "acik yol guzergahi GERCEK ZAMANLI olarak ... monitor
+        uzerinden izlenmelidir" der ve "hakem onayi alinmayan tespitler
+        gecersiz sayilir". Tersi de dogrudur: hakem BAYAT bir tespiti
+        onaylarsa verdigi onay gercek zamanli bir tespite ait DEGILDIR.
+
+        Kusur (D-317): dugum canliligi izleniyordu (nokta 3 s'de kirmiziya
+        doner) ama KARAR KUTUSU yaslanmiyordu; telsiz kesilse bile 36 puntoluk
+        yesil karar ve ETKIN onay dugmesi ekranda kaliyordu.
+
+        Davranis: yas <= `YKS_TESPIT_TAZELIK_S` -> HICBIR SEY degismez
+        (bugunku davranis birebir). Yas asilirsa karar BAYAT isaretlenir ve
+        onay dugmesi KAPANIR. Yeni bir OPEN_ROUTE gelince kilit ACILIR —
+        kalici degildir. Doner: bayat mi (bool).
+        """
+        simdi = time.time() if simdi is None else simdi
+        if not self.rota or self.rota_yok or self.rota_zaman is None:
+            return False
+        yas = simdi - self.rota_zaman
+        bayat = yas > YKS_TESPIT_TAZELIK_S
+        if bayat and not self.tespit_bayat:
+            self.tespit_bayat = True
+            self._kutu_yaz("protokol", renk=SARI)
+            btn = getattr(self, "btn_onay", None)
+            if btn is not None and not self.onaylandi:
+                btn.config(state="disabled", bg="#232e3a",
+                           text="BAYAT TESPİT — ONAY KAPALI")
+            etiket = getattr(self, "lbl_onay", None)
+            if etiket is not None:
+                etiket.config(
+                    text=(f"⚠ BAYAT TESPİT: son güzergâh bilgisi {yas:.0f} sn "
+                          f"önce geldi (tazelik {YKS_TESPIT_TAZELIK_S:.0f} sn). "
+                          "Şartname §6.2 GERÇEK ZAMANLI aktarım ister — "
+                          "onay KAPATILDI, yeni tespit bekleniyor."),
+                    fg=SARI)
+            self._logla(
+                f"⚠ BAYAT TESPİT: {yas:.0f} sn tazelenmedi — hakem onayı "
+                "kapatıldı (§6.2 gerçek zamanlı aktarım)", "sari")
+        return bayat
+
     def _durum_tazele(self):
         self.lbl_saat.config(text=time.strftime("%H:%M:%S"))
         simdi = time.time()
+        self._tespiti_yaslandir(simdi)
         for ad, (nokta, metin) in self.lbl_dugum.items():
             t = self.son_hb.get(ad)
             if t is None:

@@ -22911,3 +22911,27 @@ Bağlantı kaynak düzeyinde kilitli ve **mutasyonla** sınandı: (a) `gecti["K7
 
 #### 5. Bozulmama
 Genel kapı iki kolda GEÇTİ; `unittest discover` **1116 OK** (2 skip). `65_kabul_denetcisi.py` değiştiği için ölçüm aynası hizalandı.
+
+---
+
+### D-317 · ✅ T169 — hakem ekranı BAYAT tespiti canlıymış gibi gösteriyordu; şartname §6.2 "gerçek zamanlı" şartı ekranda uygulanmıyordu (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §36 (dört eksen sonuç görülmeden). **Kapı:** `tests/test_t169_tespit_tazeligi.py` **12/12**.
+
+#### 1. Şartnamenin lafzı ve kusur
+> *"İHA tarafından tespit edilen açık yol güzergâhı, **gerçek zamanlı** olarak YKS'ye aktarılmalı ve Alan Hakemi tarafından monitör üzerinden izlenmelidir. Hakem, tespitin başarılı olduğunu sözlü olarak onaylamalıdır. **Hakem onayı alınmayan tespitler geçersiz sayılır.**"*
+
+`comms/yks_gui.py` düğüm canlılığını izliyordu (nokta 3 s'de kırmızıya döner) ama **karar kutusunun tazelik koruması yoktu**. `self.rota` son `OPEN_ROUTE`'u tutuyordu ve zaman damgası **kararda kullanılmıyordu**. Telsiz kesilse bile **36 puntoluk yeşil "AÇIK GÜZERGÂH — 2 · ORTA"** ekranda kalıyor, **onay düğmesi etkin** kalıyordu. Hakem dakikalar önce üretilmiş bir tespiti "canlı" sanıp sözlü onay verebilirdi — verilen onay gerçek zamanlı bir tespite ait **olmazdı**.
+**Tersi de doğrudur ve asıl risk budur:** şartname onaysız tespiti geçersiz sayar; biz de **bayat tespite onay** vermemeliyiz.
+
+#### 2. Yapılan
+- `karar_sozlesmesi.YKS_TESPIT_TAZELIK_S = 5.0` — **tek tanım**, GUI'de çıplak sayı yok. Değer keyfî değil: heartbeat aralığı 1 s → **5 kayıp**; bağlantı düşme eşiği (`ika_receiver.hb_timeout` = 3 s) ile aynı ailedendir ama ondan **büyüktür**, çünkü hakem saniyelik güncellenen bir ekranda 3 s'lik boşluğu fark edemez.
+- Kabul edilen **her** `OPEN_ROUTE` (tekrar gönderim dâhil — o da canlılık kanıtıdır) zaman damgasını tazeler.
+- Saniyede bir koşan `_durum_tazele` içinde `_tespiti_yaslandir()`: yaş ≤ eşik → **hiçbir şey değişmez**; yaş > eşik → karar **BAYAT** işaretlenir, düğme **kapanır**, etiket yaşı ve §6.2'yi yazar, hakem günlüğüne **bir kez** düşer. Yeni tespit gelince kilit **açılır** (kalıcı değil).
+- **FAIL-CLOSED:** `onayla()` de yaşlandırmayı çağırır. Düğme **tek savunma değildir** — `--otomatik-onay`, klavye ya da zamanlayıcı aynı yolu düğme kapalıyken çağırabilir; bayat tespitte **ACK üretilmez**.
+
+#### 3. Kapı (12/12, dört ön kayıtlı eksen)
+Taze tespitte **davranış birebir aynı** (düğmeye dokunulmaz, günlüğe yazılmaz) · **tam eşikte taze** sayılır (`>` değil `>=` mutasyonu yakalanır) · eşik aşılınca BAYAT + düğme `disabled` + metinde **yaş ve §6.2** · her saniye günlüğe yazmaz (gürültü) · **onaylanmış** tespitte düğmeye dokunulmaz · bayatken `onayla()` **`link.send` çağırmaz** · eşik GUI'de **çıplak yazılamaz** · yaşlandırma **saniyelik döngüye bağlı** olmalı (yoksa ekran kendi kendine bayatlamaz) · sabit, bağlantı düşme eşiğinin **üstünde** olmalı.
+
+#### 4. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1128 OK** (2 skip). Beş mevcut GUI testi `__init__` koşmadan örnek kuruyordu; yeni alanlar **sınıf düzeyinde** varsayılan yapıldı — bu, `_arac_modeli_durumu` için zaten kullanılan ve dosyada gerekçesi yazılı olan kalıptır. Damga yoksa yaşlandırma **hiçbir şey yapmaz**, yani eski davranış birebir korunur. `karar_sozlesmesi.py` değiştiği için Jetson paket aynaları yeniden üretildi.

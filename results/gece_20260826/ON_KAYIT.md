@@ -372,3 +372,17 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 **Bozulmama kapısı (sonuca göre değişmez):** bağlamadan sonra **v36 ile kabul zinciri yeniden koşulur**. v36 K7'den **GEÇMELİ** (ölçülen taban 84/85 = %98,8 · payda 85/88) ve **VERDİKT değişmemelidir**. Değişirse bağlama **geri alınır** ve sebep yazılır — üretim modeli bir belge işlemiyle sessizce reddedilmiş duruma düşürülmez.
 **Test kapısı:** `gecti` sözlüğünde `K7` anahtarının **varlığı** ve `OLCULEMEDI`nin blokladığı ayrı ayrı kilitlenir; mutasyon: K7 `gecti`den çıkarılırsa test **DÜŞMELİ**.
 ⚠ Bu, terfi yordamını **kalıcı olarak** sıkılaştırır (madde 19 · D-133 kapsamında kullanıcı kararıdır).
+
+## 36. EK — T169: hakem ekranı BAYAT tespiti canlıymış gibi gösteriyor (2026-08-27, sonuç görülmeden)
+**Şartnamenin lafzı (§6.2):** *"İHA tarafından tespit edilen açık yol güzergâhı, **gerçek zamanlı** olarak Yer Kontrol İstasyonuna aktarılmalı ve Alan Hakemi tarafından monitör üzerinden izlenmelidir. Hakem, tespitin başarılı olduğunu sözlü olarak onaylamalıdır. **Hakem onayı alınmayan tespitler geçersiz sayılır.**"*
+**Kusur (ölçüldü, kaynak okunarak):** `comms/yks_gui.py` düğüm canlılığını izliyor (`_durum_tazele`, 3 s'de kırmızıya döner) ama **karar kutusunun tazelik koruması YOK**. `self.rota` son `OPEN_ROUTE`'u tutar, **zaman damgası kararda kullanılmaz**. Telsiz kesilse bile 36 puntoluk yeşil "AÇIK GÜZERGÂH — 2 · ORTA" ekranda kalır ve **onay düğmesi ETKİN kalır**. Hakem, aslında dakikalar önce üretilmiş bir tespiti "canlı" sanıp sözlü onay verebilir. Bu, ekranın hakemi yanıltmasıdır ve şartnamenin "gerçek zamanlı" şartını ihlal eder.
+**Değişiklik:** kabul edilen her `OPEN_ROUTE` için zaman damgası saklanır; saniyede bir koşan `_durum_tazele` içinde tespit **yaşlandırılır**:
+- yaş ≤ tazelik → bugünkü davranış **birebir aynı**;
+- yaş > tazelik → karar kutusu **BAYAT** işaretlenir (renk değişir, metne yaş yazılır) **ve onay düğmesi KAPANIR**.
+**Eşik SÖZLEŞMEDEN, çıplak yazılmaz:** `YKS_TESPIT_TAZELIK_S` = `ika_receiver.hb_timeout` ile aynı ailedendir (3 s bağlantı düşme eşiği). Ön kayıtta seçilen değer **3,0 s**'nin katı değil, **görsel** bir eşiktir: hakem saniyelik güncellenen bir ekranda 3 s'lik boşluğu fark edemez; bu yüzden **5,0 s** yazıyorum (heartbeat aralığı 1 s → 5 kayıp). Sonuca göre değiştirilmeyecek.
+**Kapılar (sonuca göre değişmez):**
+1. **Bozulmama:** taze tespitte davranış **birebir aynı** (düğme etkin, renk yeşil); genel kapı ve süit düşmez.
+2. **Bayatlama:** yaş > eşik olduğunda düğme **disabled** ve metin BAYAT der; sonra **yeni** bir `OPEN_ROUTE` gelince düğme yeniden **etkin** olur (kalıcı kilit değil).
+3. **Mutasyon:** yaşlandırma kaldırılırsa test **DÜŞMELİ**; eşik çıplak sayı olarak yazılırsa sözleşme testi **DÜŞMELİ**.
+4. **Onay yolu korunur:** bayatken `onayla()` çağrılsa bile **ACK GÖNDERİLMEZ** (düğme kapalı olsa da kod yolu fail-closed olmalı — düğme tek savunma değildir).
+⚠ Bu bir **ekran** düzeltmesidir; karar/telsiz mantığına dokunulmaz.

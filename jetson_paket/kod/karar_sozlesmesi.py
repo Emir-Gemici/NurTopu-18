@@ -143,6 +143,20 @@ ROTA_GEOMETRI_SEBEBI = "ROTA_GEOMETRI"
 # zaman asiminin ucte biri — art arda 2 kayip HEARTBEAT baglantiyi dusurmez,
 # 3. kayip dusurur. Bu sabit degisirse hb_timeout ile birlikte degisir.
 IHA_HEARTBEAT_ARALIK_S = 1.0
+
+# ── §6.2 · HAKEM EKRANINDA TESPIT TAZELIGI (T169 · ON_KAYIT SS36) ──────────
+# Sartname: "acik yol guzergahi GERCEK ZAMANLI olarak YKS'ye aktarilmali ve
+# Alan Hakemi tarafindan monitor uzerinden izlenmelidir... Hakem onayi
+# alinmayan tespitler gecersiz sayilir."
+# KUSUR (D-317): `comms/yks_gui.py` dugum canliligini izliyordu ama KARAR
+# KUTUSUNUN tazelik korumasi YOKTU. Telsiz kesilse bile 36 puntoluk yesil
+# "ACIK GUZERGAH — 2" ekranda kaliyor ve ONAY DUGMESI ETKIN kaliyordu; hakem
+# dakikalar once uretilmis bir tespiti "canli" sanip sozlu onay verebilirdi.
+# DEGER: heartbeat araligi 1 s; bu esik 5 kayip HEARTBEAT demektir. Baglanti
+# dusme esigi (`ika_receiver.hb_timeout` = 3 s) ile AYNI AILEDENDIR ama ondan
+# BUYUKTUR: hakem saniyelik guncellenen bir ekranda 3 s'lik bosluğu fark
+# edemez, 5 s gorulebilir bir duraklamadir.
+YKS_TESPIT_TAZELIK_S = 5.0
 # Saha yayin referansi (CONTRACTS SS6.5): uretim yolunda dunya cercevesi
 # YOKTUR; ref_xy her zaman yerel ankor [0, 0]'dir ve IKA saf oteleme yapar.
 YAYIN_REF_XY = (0.0, 0.0)
