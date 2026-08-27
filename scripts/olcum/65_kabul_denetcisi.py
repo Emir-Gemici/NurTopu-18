@@ -83,6 +83,18 @@ ESIK = {
     # YANLIS GUZERGAH. Oran esigi K4 ile ayni olcek. v35'in olculecek degerine
     # gore DEGISTIRILMEZ.
     "K6_yanlis_guzergah_maks": 0.05,
+    # K7 · ON_KAYIT SS34 (2026-08-27, sonuc gorulmeden): YAYINLANAN SERIT
+    # DOGRULUGU. Sartname SS2.1/SS5.3.2 yanlis guzergaha 0 PUAN verir ve hakem
+    # NUMARAYI canli onaylar (SS2.2.3); K1 rota URETIMINI, K6 rotanin yol
+    # USTUNDE olmasini olcer — NUMARAYI hicbiri olcmuyordu.
+    # Olcum YALNIZ `config/k7_iyi_kosullu_kume.json` (88 kare) uzerinde yapilir:
+    # serit numarasi ucte birlerden hesaplandigi icin kapi bir sinira denk
+    # gelen karelerde etiket TANIM GEREGI belirsizdir (T101; D-312: kumenin
+    # %54'u boyle ve ayrismanin %100'u oradan). Referans o alt kumede KESINDIR.
+    "K7_serit_dogruluk_min": 0.95,
+    # 🔴 PAYDA OYUNU YASAGI: bir model AZ rota ureterek yuksek oran elde
+    # edemesin. Iki kosul BIRLIKTE saglanmali.
+    "K7_rota_uretilen_min": 80,      # / 88
 }
 
 
@@ -421,6 +433,35 @@ def k6_durumu(d, esik=None):
     oran = y / r
     durum = "GECTI" if oran <= e["K6_yanlis_guzergah_maks"] else "DUSTU"
     return durum, {"yol_olculen": r, "yanlis_guzergah": y, "oran": oran}
+
+
+def k7_durumu(d, esik=None):
+    """K7 'YAYINLANAN SERIT DOGRULUGU' UC DURUMU (ON_KAYIT SS34) — K6 kalibi.
+
+    d: `151_k7_serit_dogrulugu.py` JSON'unun `ozet` govdesi ya da None.
+    Payda = alt kumede ROTA URETILEN kare. Rota uretilememesi bir SERIT HATASI
+    DEGILDIR (fail-closed davranistir) ve onu zaten K1 olcer; iki kapi birlikte
+    tam ortuyor. Ama payda oyununa karsi ikinci kosul vardir: alt kumede rota
+    uretilen kare `K7_rota_uretilen_min` altina duserse K7 DUSER.
+
+    Girdi yok / alan eksik / payda 0 -> OLCULEMEDI (verdikt icin YINE bloklar).
+    -> (durum, {"rota_uretilen", "dogru", "yanlis", "dogruluk"})
+    """
+    e = ESIK if esik is None else esik
+    bos = {"rota_uretilen": 0, "dogru": 0, "yanlis": 0, "dogruluk": None}
+    if not d or "rota_uretilen" not in d or "dogru" not in d:
+        return "OLCULEMEDI", bos
+    r = int(d.get("rota_uretilen", 0))
+    dg = int(d.get("dogru", 0))
+    if r == 0:
+        return "OLCULEMEDI", dict(bos, dogru=dg)
+    oran = dg / r
+    detay = {"rota_uretilen": r, "dogru": dg, "yanlis": r - dg, "dogruluk": oran}
+    yeterli_payda = r >= e["K7_rota_uretilen_min"]
+    durum = ("GECTI" if (oran >= e["K7_serit_dogruluk_min"] and yeterli_payda)
+             else "DUSTU")
+    detay["payda_yeterli"] = bool(yeterli_payda)
+    return durum, detay
 
 
 def kos(betik, ek):

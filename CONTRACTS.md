@@ -1228,8 +1228,37 @@ düzeltmeleri yalnız **model çıktısı görülmeden** (kör) yapılır.
 üretim yolu `126`/`analyze_path`): her aday için test29 **ve** val82 ayrı raporlanır; terfi
 için ON_KAYIT §4(b), §4(b-ek) ve §11(2) ölçütleri (ROTA ≥ 10/29, MASKE_YOK ≤ 10/29, FP ≤ 1,
 **YANLIŞ GÜZERGÂH = 0**: rota çizgisinin sınıf 0 payı ≥ 0,90 ∧ sınıf 1 üstünde 0 waypoint —
-tanım `rota_yol_olcumu.py`, sentetik eşdeğeri K6 ≤ %5). Sentetik kabul zinciri (§10, K0–K6)
+tanım `rota_yol_olcumu.py`, sentetik eşdeğeri K6 ≤ %5). Sentetik kabul zinciri (§10, K0–**K7**)
 **bu kapıyı ikame etmez**: sentetik arena kanal/çim/tarla içermez (D-290).
+
+### 12.1 K7 · YAYINLANAN ŞERİT DOĞRULUĞU (2026-08-27 · D-314 · ON_KAYIT §34)
+
+Şartname §2.1/§5.3.2 **yanlış güzergâha 0 puan** verir ve hakem **numarayı** canlı
+onaylar (§2.2.3). K1 rota **üretimini**, K6 rotanın **yol üstünde** olmasını ölçer —
+**numarayı hiçbiri ölçmüyordu**. K7 bu boşluğu kapatır.
+
+**🔴 Ölçüm YALNIZ dondurulmuş bir alt kümede yapılır** (`config/k7_iyi_kosullu_kume.json`,
+**88 kare**). Sebep: şerit numarası içerik genişliğinin **üçte birlerinden** hesaplanır
+(`karar_sozlesmesi.serit_no`); koridor kapısı bir sınıra denk geldiğinde etiket **tanım
+gereği** belirsizdir (**T101**). Ölçüldü (D-312): kabul kümesinin **%54'ü (105/193)** böyle
+ve şerit ayrışmasının **%100'ü** oradan geliyor. Dondurulmuş alt kümede manifest ile koridor
+envanteri **%100** uyuşur — yani referans **kesindir**. Kötü koşullu 105 ve `acik_serit`
+beyansız 49 kare **dışlanır**; aksi hâlde kapı, tanım gereği belirsiz olan bir şeyi
+ölçüyormuş gibi yapar (D-15 sınıfı vakum kapı).
+
+| alan | değer |
+|---|---|
+| ölçüt | yayınlanan `road` == referans şerit |
+| payda | alt kümede **rota üretilen** kare (üretilememe **şerit hatası değildir**, onu K1 ölçer) |
+| eşik 1 | doğruluk **≥ %95** |
+| eşik 2 (**payda oyunu yasağı**) | rota üretilen **≥ 80/88** |
+| ölçülen taban (v36) | doğruluk **84/85 = %98,8** · rota üretilen **85/88** → **GEÇTİ** |
+| üretici | `scripts/olcum/151_k7_serit_dogrulugu.py` |
+| kapı | `65_kabul_denetcisi.k7_durumu` · `tests/test_k7_serit_dogrulugu.py` (18) |
+
+⚠ **K7 bu turda VERDİKT'e bağlanmadı** — ölçüt ve testleri kuruldu, zincire bağlamak terfi
+yordamını etkiler ve ayrı bir karardır (D-133). ⚠ Alt küme listesi **kanonik özetle kilitli**;
+değişirse test düşer ve değişiklik ön kayıtla gerekçelendirilmek zorundadır.
 
 **Ölçülmüş taban (2026-08-27, referans v3):** v35 test29 ROTA 6 · TP 5 · FP 1 · YANLIŞ 5/6;
 val82 ROTA 15 · YANLIŞ 10 (D-289/D-290). Üretim modeli bu kapıyı **geçmiyor** — kullanıcı

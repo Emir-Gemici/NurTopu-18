@@ -346,3 +346,19 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - **< 84/88** → gerçek ve **temiz referanslı** bir kusurdur; T165 KRİTİK kalır, yanlış kareler tek tek listelenir ve kök sebep ayrı ön kayıtla aranır.
 - Rota üretilemeyen kareler paydadan **düşülmez**, ayrı raporlanır (fail-closed davranış şerit hatası değildir ama saha başarımıdır).
 ⚠ Kod DEĞİŞMEZ; bu bir ölçümdür. Eşik burada, sonuç görülmeden yazıldı.
+
+## 34. EK — K7 KAPISI: yayınlanan şerit doğruluğu (2026-08-27, kullanıcı onayı "yap"; sonuç görülmeden)
+**Dayanak:** D-312 iyi koşullu **88 karelik** alt kümeyi çıkardı (kapı tek şeride düşüyor; orada yer gerçeği envanteri ile manifest **%100** uyuşuyor). D-313 üretimi orada ölçtü: **84 doğru · 1 yanlış · 3 rota yok**.
+**Ölçüt:** iyi koşullu alt kümede, **rota üretilen** karelerde yayınlanan `road` == referans şerit.
+**Payda gerekçesi (şimdi yazılıyor, sonradan değiştirilmez):** payda **rota üreten kareler**dir. Rota üretilememesi bir **şerit hatası değildir**, fail-closed davranıştır ve onu zaten **K1** (rota üretimi ≥ 230/260) ölçer. İki kapı birlikte tam örtüyor.
+**🔴 PAYDA OYUNU YASAĞI:** bir model, az rota üreterek yüksek oran elde edemesin diye K7 **iki koşullu**dur:
+1. doğruluk **≥ %95** (rota üretenlerde), **ve**
+2. alt kümede **rota üretilen kare ≥ 80/88**.
+İkisi birden sağlanmazsa K7 **DÜŞER**.
+**Taban (ölçüldü, D-313):** v36 → doğruluk **84/85 = %98,8**, rota üretilen **85/88**. İkisi de sağlanıyor; **marj dar** (rota üretilen 85, eşik 80).
+**Alt küme DONDURULUR:** 88 karenin listesi `config/k7_iyi_kosullu_kume.json` içine yazılır; türetme yordamı ve `koridor_adaylari` çıktısının özeti aynı dosyada durur. Kapı listeyi **oradan** okur — koşum anında yeniden türetmez, yoksa küme sessizce kayabilir ("kolay kare seçme" riski).
+**Kapı testleri (mutasyon, sonuca göre değişmez):**
+1. Şerit kararı bozulunca (ör. `rota_serit_karari` sabit döndürülünce) K7 **DÜŞMELİ**.
+2. Alt küme listesi değiştirilince (kare eklenince/çıkınca) kilit testi **DÜŞMELİ**.
+3. Yalnız 2 kare rota üretip ikisi de doğru olsa bile (oran %100) K7 **DÜŞMELİ** (payda oyunu koşulu).
+⚠ K7 bu turda **kabul zincirinin VERDİKT'ine bağlanmaz** — önce ölçüt ve testleri kurulur, zincire bağlama ayrı adımdır (terfi yordamını etkiler, D-133).

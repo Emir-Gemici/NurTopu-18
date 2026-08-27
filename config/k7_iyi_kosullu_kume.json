@@ -1,0 +1,803 @@
+{
+ "_ne": "K7 · YAYINLANAN SERIT DOGRULUGU kapisinin DONDURULMUS alt kumesi.",
+ "_neden": "Serit numarasi goruntunun UCTE BIRLERINDEN hesaplanir (karar_sozlesmesi.serit_no). Koridor kapisi bir sinira denk geldiginde etiket TANIM GEREGI belirsizlesir (T101). Olculdu (D-312): kabul kumesinin %54'u (105/193) boyle; ayrisan 23 karenin 23'u de oradan geliyor. Bu dosya, kapinin TEK SERIDE dustugu ve manifest ile koridor envanterinin %100 uyustugu kareleri sabitler. Kapi bu listeyi BURADAN okur; kosum aninda yeniden turetmez — yoksa kume sessizce kayar.",
+ "_turetme": "results/t167/olc.py (koridor_adaylari, yer gercegi maskesi, model KULLANILMADAN) -> results/t167/olcum.json; olcut: acik_serit beyanli & gecilebilir aday tam 1 & kapinin serit_yayilimi tek serit.",
+ "_kaynak_kume": "sentetik_arena_kadraj_t66 (kabul kumesi)",
+ "_kayit": "REVIEW_LOG D-312 / D-313 · ON_KAYIT SS32-SS34",
+ "_uyari": "Bu listeye kare EKLEMEK ya da CIKARMAK kapinin olctugu seyi degistirir. tests/test_k7_serit_dogrulugu.py sha256'yi kilitler.",
+ "n": 88,
+ "kareler": [
+  {
+   "kare": "sa_000000.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 306,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 234,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 109,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 130,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 353,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 496,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 499,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 319,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 363,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 333,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 284,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 185,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 481,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 130,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 172,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 158,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 306,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 120,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 303,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 80,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 452,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 154,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 332,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 326,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 133,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 337,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 482,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 396,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 373,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 283,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 235,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 258,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 148,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 318,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 484,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 167,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 312,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 360,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 335,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 114,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 313,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 120,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 311,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 328,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 170,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 525,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 312,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 112,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 481,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 121,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 370,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 335,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 361,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 324,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 317,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 341,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 317,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 137,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 276,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 367,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 306,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 235,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 494,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 331,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 331,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 334,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 482,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 320,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 308,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 326,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 310,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 326,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 94,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 478,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 297,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 344,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 144,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 167,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 333,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 142,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 128,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 410,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 272,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 317,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "referans_serit": 3,
+   "kapi_merkez_x": 459,
+   "serit_yayilimi": [
+    3,
+    3
+   ]
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 315,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "referans_serit": 1,
+   "kapi_merkez_x": 116,
+   "serit_yayilimi": [
+    1,
+    1
+   ]
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "referans_serit": 2,
+   "kapi_merkez_x": 319,
+   "serit_yayilimi": [
+    2,
+    2
+   ]
+  }
+ ]
+}

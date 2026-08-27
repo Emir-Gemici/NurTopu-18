@@ -22820,3 +22820,39 @@ Rota üreten karelerde doğruluk: **84/85 = %98,8**.
 - `sa_000013` (D-311'in "şüpheli"si) bu alt kümede **değildir** (kapısı 2–3'e yayılıyor); hükümsüz kalır.
 - 3 kare rota üretemiyor — şerit hatası değil, **fail-closed** davranış; ayrı eksen.
 - **K7 önerisi (karar kullanıcının/mimarın, D-133):** kabul zincirine "yayınlanan şerit doğruluğu" ölçütü **yalnız bu 88 karelik iyi koşullu alt kümede** ve **≥ %95** eşiğiyle eklenebilir. Kötü koşullu 105 ve beyansız 49 kare **dışlanmalıdır** — aksi hâlde kapı, tanım gereği belirsiz olan bir şeyi ölçüyormuş gibi yapar (D-15 sınıfı vakum kapı).
+
+---
+
+### D-314 · ✅ K7 KAPISI KURULDU — kabul zinciri artık YAYINLANAN ŞERİT NUMARASINI da ölçüyor (2026-08-27, kullanıcı onayı)
+
+**Ön kayıt:** `ON_KAYIT.md` §34 (payda gerekçesi, iki eşik ve üç mutasyon sonuç görülmeden yazıldı). **Sözleşme:** `CONTRACTS §12.1`. **Kapı:** `tests/test_k7_serit_dogrulugu.py` **18/18**.
+
+#### 1. Kapatılan boşluk
+Şartname §2.1/§5.3.2 **yanlış güzergâha 0 puan** verir; hakem **numarayı** canlı onaylar (§2.2.3). Kabul zinciri K1 ile rota **üretimini**, K6 ile rotanın **yol üstünde** olmasını ölçüyordu — **numarayı hiçbiri ölçmüyordu** (T165'in açtığı boşluk).
+
+#### 2. Neden dondurulmuş alt küme
+Şerit numarası içerik genişliğinin **üçte birlerinden** hesaplanır. Kapı bir sınıra denk geldiğinde etiket **tanım gereği** belirsizdir (**T101**). D-312: kümenin **%54'ü** böyle ve ayrışmanın **%100'ü** oradan. Bu yüzden K7 yalnız `config/k7_iyi_kosullu_kume.json` (**88 kare**) üzerinde ölçer — orada manifest ile koridor envanteri **%100** uyuşur. Kötü koşullu 105 ve beyansız 49 kare **dışlanır**.
+Liste **kanonik JSON özetiyle kilitli** (bayt değil içerik — CRLF/LF çevrimi kilidi kırmaz). Ölçüm betiği listeyi **dosyadan okur**, koşum anında **yeniden türetmez**; bir test `koridor_adaylari`nin betikte geçmediğini de doğrular (küme sessizce kayamaz).
+
+#### 3. Ölçüt ve iki eşik
+| alan | değer |
+|---|---|
+| ölçüt | yayınlanan `road` == referans şerit |
+| payda | alt kümede **rota üretilen** kare |
+| eşik 1 | doğruluk **≥ %95** |
+| eşik 2 | rota üretilen **≥ 80/88** |
+| **ölçülen taban (v36)** | **84/85 = %98,8** · rota üretilen **85/88** → **GEÇTİ** |
+
+**Payda gerekçesi (ön kayıtta yazılı):** rota üretilememesi bir şerit hatası **değildir**, fail-closed davranıştır ve onu **K1** ölçer. **Payda oyunu yasağı** ikinci eşiktir: az rota üretip yüksek oran elde etmek K7'yi geçiremez — `{rota:2, doğru:2}` (%100) **DÜŞER**, test bunu kilitler.
+
+#### 4. Üç ön kayıtlı mutasyon (üçü de tuttu)
+1. **Şerit kararı bozulunca düşer:** sabit şerit yayınlayan bir model taklidi alt kümede %27 doğruluk verir → **DÜŞTÜ**. (Zincirin `rota_serit_karari`'na duyarlılığı ayrıca genel kapının KOL 2'sinde ölçülü: T156/D-299'da bozulunca 15/15 → 6/15.)
+2. **Alt küme değişince kilit düşer** (kanonik sha256).
+3. **Payda oyunu geçemez** (§3).
+Ayrıca: payda 0 → **OLCULEMEDI** (GEÇTİ **değil**), eşik sınırında `≥` davranışı (80/76 geçer, 79/79 düşer), tutarsız küme dosyası `ValueError`.
+
+#### 5. ⚠ VERDİKT'e BAĞLANMADI
+K7 hesaplanır ve raporlanır; kabul zincirinin AND birleşimine **girmez**. Bağlamak terfi yordamını etkiler ve **ayrı bir karardır** (D-133). Bu tur ölçütü ve testlerini kurmakla sınırlıdır.
+
+#### 6. Bozulmama
+Genel kapı iki kolda GEÇTİ; `unittest discover` **1109 OK** (2 skip). `65_kabul_denetcisi.py` değiştiği için ölçüm aynası `olcum_ayna.py --uygula --repodan` ile hizalandı (kapı yakaladı, D-304 §5 dersi işledi).
