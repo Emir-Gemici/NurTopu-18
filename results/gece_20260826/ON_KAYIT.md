@@ -327,3 +327,13 @@ Her kip için: sınıf 0 IoU (tavan etiketine karşı), üst/alt uç bant temas�
 - **Yanlış 5 karenin ≥ 4'ünde** rota gerçekten **komşu şeridin** penceresindeyse → kusur **ROTA SEÇİMİDİR** (planlayıcı yanlış koridoru seçmiş); bu **daha ağır** bir bulgudur ve ayrı iş açılır.
 - Karışıksa (2-3 / 2-3) → "tek kök yok" yazılır, ikisi de açık kalır.
 ⚠ Bu turda **düzeltme yapılmaz**; yalnız kök ayrıştırılır. Eşik/kapı ve kod değişikliği ayrı ön kayıtla.
+
+## 32. EK — T167: etiket maskeleri gerçekten kaç güzergâh bırakıyor? (2026-08-27, sonuç görülmeden)
+**Bağlam (D-311 §4):** kaba "üçte bir dilimi + alt↔üst bağlantı" ölçümüm, kabul kümesi etiketlerinin örneklemde ~%45 karede **iki şeridi** açık bıraktığını söylemişti. İki olasılık ayrıştırılmamıştı: (a) etiketler bariyerleri eksik temsil ediyor, (b) **ölçüm yöntemim kaba**.
+**Kritik bilgi (kodun kendi belgesi):** `costmap_path_finder.koridor_adaylari` docstring'i aynen şunu söylüyor: *"3 güzergâh başlangıçta ayrılıp hedefte BİRLEŞİYOR — yani kapalı bir yol AYRI bir bileşen değil, aynı bileşene bağlı bir ÇIKMAZ. Düz bağlantı testi hangi güzergâhın açık olduğunu SÖYLEYEMEZ."* Yani (b) **kuvvetle muhtemeldir** ve benim yöntemim tam da bu fonksiyonun yerine geçmeye çalıştığı naif testtir.
+**Doğru alet:** kodun **kendi otoritesi** — `koridor_adaylari` (T151'de "envanter yolu" ilan edildi, T90/D-145'te etiket tek kaynağa bağlandı). Yer gerçeği maskesiyle 260 kabul karesinin tamamında koşulacak; her kare için **geçilebilir aday sayısı** ve `tani.belirsiz` okunacak.
+**Ön kayıtlı hüküm kuralı (sonuca göre değişmez):**
+- **Karelerin ≥ %90'ında geçilebilir aday sayısı = 1** ise → benim ~%45 sayım **yöntem artefaktıdır**; D-311 §4'ün (a) şıkkı **düşer**, T167 "etiketler sağlam, ölçüm kabaydı" hükmüyle **kapanır** ve şerit doğruluğu kapısı (K7) için **referans HAZIRDIR**.
+- **Karelerin > %10'unda geçilebilir aday ≥ 2** ise → etiketler gerçekten birden çok güzergâh bırakıyor; bu **küme/üreteç kusurudur**, T167 açık kalır ve K7 kurulamaz.
+- Ayrıca `acik_serit` ile **tek geçilebilir adayın etiketi** karşılaştırılacak; ayrışma varsa sayısı yazılacak (bu, T166'nın %23,2'sinin doğru okunuşudur).
+⚠ Kod DEĞİŞMEZ. Bu bir küme ölçümüdür; kapı önerisi ancak hüküm çıktıktan sonra ve ayrı ön kayıtla yazılır.

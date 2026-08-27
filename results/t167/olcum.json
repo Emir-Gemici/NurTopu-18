@@ -1,0 +1,7927 @@
+{
+ "ozet": {
+  "n": 260,
+  "gecilebilir_dagilimi": {
+   "0": 6,
+   "1": 221,
+   "2": 24,
+   "3": 9
+  },
+  "tekil_n": 221,
+  "tekil_pay": 0.85,
+  "coklu_n": 33,
+  "coklu_pay": 0.1269,
+  "tekil_acik_seritle_uyusan": 170,
+  "tekil_ayrisan": 51,
+  "hukum": "ETIKETLER GERCEKTEN BIRDEN COK GUZERGAH BIRAKIYOR",
+  "coklu_kareler": [
+   "sa_000018.jpg",
+   "sa_000020.jpg",
+   "sa_000021.jpg",
+   "sa_000027.jpg",
+   "sa_000031.jpg",
+   "sa_000033.jpg",
+   "sa_000034.jpg",
+   "sa_000040.jpg",
+   "sa_000052.jpg",
+   "sa_000077.jpg",
+   "sa_000081.jpg",
+   "sa_000098.jpg",
+   "sa_000100.jpg",
+   "sa_000107.jpg",
+   "sa_000129.jpg",
+   "sa_000131.jpg",
+   "sa_000139.jpg",
+   "sa_000148.jpg",
+   "sa_000164.jpg",
+   "sa_000166.jpg",
+   "sa_000172.jpg",
+   "sa_000181.jpg",
+   "sa_000210.jpg",
+   "sa_000211.jpg",
+   "sa_000217.jpg",
+   "sa_000220.jpg",
+   "sa_000222.jpg",
+   "sa_000224.jpg",
+   "sa_000228.jpg",
+   "sa_000235.jpg",
+   "sa_000243.jpg",
+   "sa_000252.jpg",
+   "sa_000258.jpg"
+  ]
+ },
+ "kareler": [
+  {
+   "kare": "sa_000000.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 306,
+     "kapi_genislik_px": 173,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 157,
+     "kapi_genislik_px": 128,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 406,
+     "kapi_genislik_px": 235,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 160,
+     "kapi_genislik_px": 71,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 207,
+     "kapi_genislik_px": 79,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 229,
+     "kapi_genislik_px": 30,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 234,
+     "kapi_genislik_px": 46,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 248,
+     "kapi_genislik_px": 103,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 448,
+     "kapi_genislik_px": 97,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 109,
+     "kapi_genislik_px": 54,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 301,
+     "kapi_genislik_px": 187,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 268,
+     "kapi_genislik_px": 152,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 245,
+     "kapi_genislik_px": 104,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 394,
+     "kapi_genislik_px": 142,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 425,
+     "kapi_genislik_px": 103,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 130,
+     "kapi_genislik_px": 90,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 236,
+     "kapi_genislik_px": 50,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 287,
+     "kapi_genislik_px": 35,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    1,
+    2,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 143,
+     "kapi_genislik_px": 48,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 315,
+     "kapi_genislik_px": 125,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 491,
+     "kapi_genislik_px": 116,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 353,
+     "kapi_genislik_px": 123,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 249,
+     "kapi_genislik_px": 108,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 349,
+     "kapi_genislik_px": 38,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 417,
+     "kapi_genislik_px": 45,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2,
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 305,
+     "kapi_genislik_px": 121,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 472,
+     "kapi_genislik_px": 108,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 521,
+     "kapi_genislik_px": 41,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 496,
+     "kapi_genislik_px": 97,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 499,
+     "kapi_genislik_px": 58,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 233,
+     "kapi_genislik_px": 108,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000026.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 233,
+     "kapi_genislik_px": 67,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000027.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    1,
+    2,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 107,
+     "kapi_genislik_px": 108,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 247,
+     "kapi_genislik_px": 83,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 539,
+     "kapi_genislik_px": 52,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000028.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 244,
+     "kapi_genislik_px": 201,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000029.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 173,
+     "kapi_genislik_px": 75,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 319,
+     "kapi_genislik_px": 54,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000031.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 159,
+     "kapi_genislik_px": 39,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 281,
+     "kapi_genislik_px": 113,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 363,
+     "kapi_genislik_px": 108,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000033.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 238,
+     "kapi_genislik_px": 75,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 398,
+     "kapi_genislik_px": 81,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000034.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 307,
+     "kapi_genislik_px": 102,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 415,
+     "kapi_genislik_px": 53,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000035.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 198,
+     "kapi_genislik_px": 180,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000036.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 431,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000037.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 385,
+     "kapi_genislik_px": 119,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 333,
+     "kapi_genislik_px": 101,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000039.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 264,
+     "kapi_genislik_px": 97,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000040.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2,
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 221,
+     "kapi_genislik_px": 223,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 464,
+     "kapi_genislik_px": 117,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 284,
+     "kapi_genislik_px": 36,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000042.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 368,
+     "kapi_genislik_px": 158,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 185,
+     "kapi_genislik_px": 30,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000044.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 247,
+     "kapi_genislik_px": 128,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000045.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 369,
+     "kapi_genislik_px": 207,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000046.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 466,
+     "kapi_genislik_px": 131,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 481,
+     "kapi_genislik_px": 102,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000048.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 183,
+     "kapi_genislik_px": 151,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000049.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 96,
+     "kapi_genislik_px": 57,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 130,
+     "kapi_genislik_px": 57,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 172,
+     "kapi_genislik_px": 62,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000052.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 311,
+     "kapi_genislik_px": 45,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 416,
+     "kapi_genislik_px": 66,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 158,
+     "kapi_genislik_px": 65,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000054.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 193,
+     "kapi_genislik_px": 215,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 306,
+     "kapi_genislik_px": 44,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 120,
+     "kapi_genislik_px": 70,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 303,
+     "kapi_genislik_px": 46,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000058.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 449,
+     "kapi_genislik_px": 72,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 80,
+     "kapi_genislik_px": 54,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000060.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 210,
+     "kapi_genislik_px": 77,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 0,
+   "gecilebilir_etiketler": [],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 452,
+     "kapi_genislik_px": 32,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000063.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 235,
+     "kapi_genislik_px": 131,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000064.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 245,
+     "kapi_genislik_px": 306,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000065.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 435,
+     "kapi_genislik_px": 112,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000066.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 205,
+     "kapi_genislik_px": 49,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 154,
+     "kapi_genislik_px": 88,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000068.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 410,
+     "kapi_genislik_px": 83,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000069.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 170,
+     "kapi_genislik_px": 124,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000070.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 442,
+     "kapi_genislik_px": 105,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000071.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 202,
+     "kapi_genislik_px": 81,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 332,
+     "kapi_genislik_px": 112,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000073.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 247,
+     "kapi_genislik_px": 91,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000074.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 207,
+     "kapi_genislik_px": 97,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000075.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 431,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 451,
+     "kapi_genislik_px": 121,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000077.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 312,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 414,
+     "kapi_genislik_px": 50,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000078.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 228,
+     "kapi_genislik_px": 65,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 326,
+     "kapi_genislik_px": 91,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 133,
+     "kapi_genislik_px": 90,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000081.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2,
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 269,
+     "kapi_genislik_px": 153,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 433,
+     "kapi_genislik_px": 53,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 337,
+     "kapi_genislik_px": 178,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000083.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 0,
+   "gecilebilir_etiketler": [],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 482,
+     "kapi_genislik_px": 103,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000085.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 263,
+     "kapi_genislik_px": 171,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 396,
+     "kapi_genislik_px": 40,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 373,
+     "kapi_genislik_px": 95,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 283,
+     "kapi_genislik_px": 34,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000089.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 317,
+     "kapi_genislik_px": 56,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 235,
+     "kapi_genislik_px": 45,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000091.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 114,
+     "kapi_genislik_px": 94,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 258,
+     "kapi_genislik_px": 86,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000093.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 250,
+     "kapi_genislik_px": 185,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000094.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 396,
+     "kapi_genislik_px": 117,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 148,
+     "kapi_genislik_px": 84,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 318,
+     "kapi_genislik_px": 140,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 484,
+     "kapi_genislik_px": 122,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000098.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    1,
+    2,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 118,
+     "kapi_genislik_px": 138,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 313,
+     "kapi_genislik_px": 98,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 440,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 167,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000100.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    2,
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 268,
+     "kapi_genislik_px": 166,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 433,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 523,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000101.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 416,
+     "kapi_genislik_px": 83,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000102.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 166,
+     "kapi_genislik_px": 112,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 312,
+     "kapi_genislik_px": 82,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 360,
+     "kapi_genislik_px": 111,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000105.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 223,
+     "kapi_genislik_px": 161,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000106.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 139,
+     "kapi_genislik_px": 130,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000107.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 183,
+     "kapi_genislik_px": 60,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 397,
+     "kapi_genislik_px": 223,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000108.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 168,
+     "kapi_genislik_px": 161,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 335,
+     "kapi_genislik_px": 60,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 114,
+     "kapi_genislik_px": 110,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000111.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 409,
+     "kapi_genislik_px": 146,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000112.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 209,
+     "kapi_genislik_px": 30,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000113.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 509,
+     "kapi_genislik_px": 102,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000114.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 294,
+     "kapi_genislik_px": 100,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000115.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 444,
+     "kapi_genislik_px": 174,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 313,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000117.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 211,
+     "kapi_genislik_px": 111,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000118.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 350,
+     "kapi_genislik_px": 154,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 120,
+     "kapi_genislik_px": 131,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 311,
+     "kapi_genislik_px": 75,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000121.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 0,
+   "gecilebilir_etiketler": [],
+   "durum": "KAPALI_DAR",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 328,
+     "kapi_genislik_px": 91,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 170,
+     "kapi_genislik_px": 54,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000124.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 217,
+     "kapi_genislik_px": 33,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000125.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 0,
+   "gecilebilir_etiketler": [],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 525,
+     "kapi_genislik_px": 58,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000127.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 189,
+     "kapi_genislik_px": 152,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 312,
+     "kapi_genislik_px": 34,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000129.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 209,
+     "kapi_genislik_px": 72,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 533,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 112,
+     "kapi_genislik_px": 93,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000131.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 92,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 315,
+     "kapi_genislik_px": 66,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000132.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 217,
+     "kapi_genislik_px": 270,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000133.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 245,
+     "kapi_genislik_px": 112,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000134.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 187,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000135.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 211,
+     "kapi_genislik_px": 113,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000136.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 181,
+     "kapi_genislik_px": 86,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000137.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 0,
+   "gecilebilir_etiketler": [],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000138.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 261,
+     "kapi_genislik_px": 106,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000139.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2,
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 343,
+     "kapi_genislik_px": 128,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 471,
+     "kapi_genislik_px": 44,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000140.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 489,
+     "kapi_genislik_px": 111,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000141.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 3,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 448,
+     "kapi_genislik_px": 73,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000142.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 454,
+     "kapi_genislik_px": 137,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000143.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 418,
+     "kapi_genislik_px": 167,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000144.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 416,
+     "kapi_genislik_px": 59,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000145.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 148,
+     "kapi_genislik_px": 128,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 428,
+     "kapi_genislik_px": 243,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000147.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 409,
+     "kapi_genislik_px": 58,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000148.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    3
+   ],
+   "durum": "KAPALI_DAR",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 188,
+     "kapi_genislik_px": 107,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 475,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 481,
+     "kapi_genislik_px": 104,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 121,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 370,
+     "kapi_genislik_px": 81,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 335,
+     "kapi_genislik_px": 108,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000153.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 400,
+     "kapi_genislik_px": 140,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000154.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 367,
+     "kapi_genislik_px": 319,
+     "serit_yayilimi": [
+      1,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000155.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 211,
+     "kapi_genislik_px": 36,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 361,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 324,
+     "kapi_genislik_px": 44,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 317,
+     "kapi_genislik_px": 135,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000159.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 241,
+     "kapi_genislik_px": 85,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000160.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 215,
+     "kapi_genislik_px": 194,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 341,
+     "kapi_genislik_px": 101,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000162.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 228,
+     "kapi_genislik_px": 209,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 317,
+     "kapi_genislik_px": 80,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000164.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 189,
+     "kapi_genislik_px": 89,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 318,
+     "kapi_genislik_px": 40,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 137,
+     "kapi_genislik_px": 69,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000166.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 168,
+     "kapi_genislik_px": 156,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 316,
+     "kapi_genislik_px": 80,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000167.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 453,
+     "kapi_genislik_px": 41,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000168.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 481,
+     "kapi_genislik_px": 129,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000169.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 169,
+     "kapi_genislik_px": 252,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000170.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 406,
+     "kapi_genislik_px": 88,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000171.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 211,
+     "kapi_genislik_px": 124,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000172.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    1,
+    2,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 144,
+     "kapi_genislik_px": 58,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 315,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 450,
+     "kapi_genislik_px": 147,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000173.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 418,
+     "kapi_genislik_px": 164,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 276,
+     "kapi_genislik_px": 115,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000175.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 460,
+     "kapi_genislik_px": 82,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 213,
+     "kapi_genislik_px": 180,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 367,
+     "kapi_genislik_px": 63,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 306,
+     "kapi_genislik_px": 117,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000179.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 176,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000180.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 408,
+     "kapi_genislik_px": 75,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000181.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 249,
+     "kapi_genislik_px": 35,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 326,
+     "kapi_genislik_px": 35,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 387,
+     "kapi_genislik_px": 55,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 235,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 494,
+     "kapi_genislik_px": 80,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 331,
+     "kapi_genislik_px": 52,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 331,
+     "kapi_genislik_px": 87,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000186.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 229,
+     "kapi_genislik_px": 65,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000187.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 500,
+     "kapi_genislik_px": 86,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000188.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 188,
+     "kapi_genislik_px": 222,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 334,
+     "kapi_genislik_px": 98,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000190.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 319,
+     "kapi_genislik_px": 37,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000191.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 442,
+     "kapi_genislik_px": 226,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000192.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 222,
+     "kapi_genislik_px": 106,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000193.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 460,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000194.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 394,
+     "kapi_genislik_px": 257,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000195.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 196,
+     "kapi_genislik_px": 110,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000196.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 464,
+     "kapi_genislik_px": 130,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000197.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 233,
+     "kapi_genislik_px": 97,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000198.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 401,
+     "kapi_genislik_px": 176,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000199.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 386,
+     "kapi_genislik_px": 169,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000200.jpg",
+   "acik_serit": null,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 162,
+     "kapi_genislik_px": 122,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 482,
+     "kapi_genislik_px": 49,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 320,
+     "kapi_genislik_px": 93,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 308,
+     "kapi_genislik_px": 158,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 326,
+     "kapi_genislik_px": 140,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 310,
+     "kapi_genislik_px": 46,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 326,
+     "kapi_genislik_px": 30,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 94,
+     "kapi_genislik_px": 49,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000208.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 165,
+     "kapi_genislik_px": 71,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000209.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 381,
+     "kapi_genislik_px": 191,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000210.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 221,
+     "kapi_genislik_px": 37,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 284,
+     "kapi_genislik_px": 31,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000211.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 247,
+     "kapi_genislik_px": 38,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 319,
+     "kapi_genislik_px": 45,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 478,
+     "kapi_genislik_px": 45,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 297,
+     "kapi_genislik_px": 113,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000214.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 161,
+     "kapi_genislik_px": 251,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000215.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 219,
+     "kapi_genislik_px": 64,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 423,
+     "kapi_genislik_px": 102,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000217.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 221,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 327,
+     "kapi_genislik_px": 69,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 344,
+     "kapi_genislik_px": 107,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000219.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 275,
+     "kapi_genislik_px": 57,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000220.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 217,
+     "kapi_genislik_px": 133,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 385,
+     "kapi_genislik_px": 77,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000221.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 130,
+     "kapi_genislik_px": 76,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000222.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    1,
+    2,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 3,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 166,
+     "kapi_genislik_px": 130,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 331,
+     "kapi_genislik_px": 102,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 487,
+     "kapi_genislik_px": 132,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000223.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 254,
+     "kapi_genislik_px": 77,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000224.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 3,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 141,
+     "kapi_genislik_px": 69,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 265,
+     "kapi_genislik_px": 85,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 425,
+     "kapi_genislik_px": 133,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 144,
+     "kapi_genislik_px": 91,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000226.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 408,
+     "kapi_genislik_px": 55,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000227.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 382,
+     "kapi_genislik_px": 161,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000228.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 232,
+     "kapi_genislik_px": 85,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 387,
+     "kapi_genislik_px": 120,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000229.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 232,
+     "kapi_genislik_px": 54,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 167,
+     "kapi_genislik_px": 74,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 333,
+     "kapi_genislik_px": 71,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000232.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 243,
+     "kapi_genislik_px": 106,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000233.jpg",
+   "acik_serit": null,
+   "aday_toplam": 0,
+   "gecilebilir_n": 0,
+   "gecilebilir_etiketler": [],
+   "durum": "ZEMIN_MASKESI_SUPHELI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000234.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 465,
+     "kapi_genislik_px": 80,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000235.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 122,
+     "kapi_genislik_px": 114,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 361,
+     "kapi_genislik_px": 140,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000236.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 422,
+     "kapi_genislik_px": 89,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 142,
+     "kapi_genislik_px": 114,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000238.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 427,
+     "kapi_genislik_px": 150,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 128,
+     "kapi_genislik_px": 91,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 410,
+     "kapi_genislik_px": 33,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000241.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 198,
+     "kapi_genislik_px": 181,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000242.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 187,
+     "kapi_genislik_px": 252,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000243.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 239,
+     "kapi_genislik_px": 33,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    },
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 397,
+     "kapi_genislik_px": 47,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 272,
+     "kapi_genislik_px": 83,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 317,
+     "kapi_genislik_px": 78,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "acik_serit": 3,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    3
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 459,
+     "kapi_genislik_px": 39,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 315,
+     "kapi_genislik_px": 148,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000248.jpg",
+   "acik_serit": null,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 161,
+     "kapi_genislik_px": 47,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000249.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 203,
+     "kapi_genislik_px": 183,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000250.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 199,
+     "kapi_genislik_px": 92,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000251.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 191,
+     "kapi_genislik_px": 94,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000252.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    1,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 158,
+     "kapi_genislik_px": 106,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 481,
+     "kapi_genislik_px": 38,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 116,
+     "kapi_genislik_px": 140,
+     "serit_yayilimi": [
+      1,
+      1
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000254.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "ACIK",
+   "yol_no": 1,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 181,
+     "kapi_genislik_px": 183,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000255.jpg",
+   "acik_serit": 1,
+   "aday_toplam": 2,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    1
+   ],
+   "durum": "BELIRSIZ_COKLU",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 1,
+     "kapi_merkez_x": 199,
+     "kapi_genislik_px": 154,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 319,
+     "kapi_genislik_px": 88,
+     "serit_yayilimi": [
+      2,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000257.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 3,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 214,
+     "kapi_genislik_px": 61,
+     "serit_yayilimi": [
+      1,
+      2
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000258.jpg",
+   "acik_serit": null,
+   "aday_toplam": 3,
+   "gecilebilir_n": 2,
+   "gecilebilir_etiketler": [
+    2,
+    3
+   ],
+   "durum": "ACIK",
+   "yol_no": 2,
+   "tekil_uyusuyor": false,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 417,
+     "kapi_genislik_px": 36,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    },
+    {
+     "etiket": 3,
+     "kapi_merkez_x": 492,
+     "kapi_genislik_px": 43,
+     "serit_yayilimi": [
+      3,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  },
+  {
+   "kare": "sa_000259.jpg",
+   "acik_serit": 2,
+   "aday_toplam": 1,
+   "gecilebilir_n": 1,
+   "gecilebilir_etiketler": [
+    2
+   ],
+   "durum": "BELIRSIZ_TEK_KAPI",
+   "yol_no": null,
+   "tekil_uyusuyor": true,
+   "gecilebilir_ayrinti": [
+    {
+     "etiket": 2,
+     "kapi_merkez_x": 348,
+     "kapi_genislik_px": 184,
+     "serit_yayilimi": [
+      2,
+      3
+     ]
+    }
+   ],
+   "icerik": [
+    0,
+    0,
+    640,
+    640
+   ]
+  }
+ ]
+}

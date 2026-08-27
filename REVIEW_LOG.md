@@ -22742,3 +22742,46 @@ Her karenin sınıf 0 ∧ ¬sınıf 1 maskesinde, içerik genişliğinin üçte 
 
 #### 5. Yordam dersi (kendime)
 İki tur üst üste, **referansın kendisini doğrulamadan** hüküm yazmaya kalktım: önce `bariyerler[].pencere`yi şerit penceresi sandım (kontrol grubu çürüttü), sonra tavan kolunu **tekil** referans sandım (şerit bağlantı sayımı çürüttü). İkisinde de kontrol ölçümü kurtardı. **Kural:** bir referans, ayırt edici olduğu **gösterilmeden** hüküm üretmez — ve "ayırt edici" demek, yalnız doğru örneklerde tutması değil, **tekil bir cevap vermesi** demektir.
+
+---
+
+### D-312 · ✅ T167 KAPANDI — şerit ayrışmasının KÖKÜ bulundu: **T101 kötü koşulluluğu**; iyi koşullu 88 karede uyum **%100**, ve K7 kapısı için KULLANILABİLİR REFERANS ÇIKTI (2026-08-27)
+
+**Ön kayıt:** `ON_KAYIT.md` §32. **Kanıt:** `results/t167/{olcum.json,olc.py}`. **Alet:** kodun kendi otoritesi `costmap_path_finder.koridor_adaylari` (yer gerçeği maskesiyle, model kullanılmadan) — D-311'deki kaba "üçte bir dilimi" yöntemi terk edildi, çünkü fonksiyonun kendi belgesi o naif testi zaten çürütüyor ("3 güzergâh başlangıçta ayrılıp hedefte BİRLEŞİYOR").
+
+#### 1. Kabul kümesinin gerçek yapısı (260 kare, yer gerçeği etiketleri)
+| ölçüt | sayı |
+|---|---:|
+| `acik_serit` **beyan edilmiş** | 211 |
+| `acik_serit` **null** (beyan yok) | **49 (%18,8)** — üstelik 48'inde geçilebilir koridor VAR |
+| beyanlı ∧ **tam 1** geçilebilir aday | 193 |
+| beyanlı ∧ **≥2** geçilebilir aday | **13 (%6,2)** — şartname §2.1 "yalnız biri açık" ile çelişir |
+| beyanlı ∧ **0** aday | 5 |
+
+⚠ **Ön kayıttaki eşiğin paydası belirsizdi:** "karelerin > %10'unda ≥2 aday". Tüm 260 karede **33 (%12,7)**, yalnız beyanlı 211'de **13 (%6,2)**. İkisi de yazıldı; uygun paydanın beyanlı küme olduğunu **sonradan** söylüyorum, o yüzden hüküm **her iki sayıyla** birlikte okunmalıdır.
+
+#### 2. 🔴 KÖK: ayrışmanın tamamı T101 kötü koşulluluğu
+Beyanlı ∧ tekil 193 kareyi kapının **şerit yayılımına** göre ikiye ayırdım (`koridor_adaylari` `serit_yayilimi` alanı — fonksiyonun kendi tanı çıktısı):
+
+| kapı geometrisi | kare | `acik_serit` ile uyum |
+|---|---:|---:|
+| **tek şeride düşüyor** (iyi koşullu) | 88 | **88/88 = %100** |
+| iki şeride yayılıyor (kötü koşullu) | 105 | 82/105 = %78,1 |
+
+**Ayrışan 23 karenin 23'ü de kötü koşulludur.** Kapı merkezinin üçte bir sınırına uzaklığı: ayrışanlarda medyan **8,3 px**, uyuşanlarda **51,8 px**.
+**Hüküm:** manifest **yanlış değil**, üretim de **yanlış değil** — ayrışmanın tamamı, **şerit numaralandırma şemasının sınırda kötü koşullu olmasından** geliyor. Bu, kuyruktaki **T101**'in (D-168, ÖNEMLİ, açık) tam olarak kendisidir ve artık **sayısallaştırılmıştır**: kabul kümesinin **%54'ü** (105/193) kötü koşullu.
+
+#### 3. D-309 → D-310 → D-311 zincirinin NİHAİ düzeltmesi
+- D-309: "üretim 43/50 yanlış şerit yayınlıyor" → ölçüm doğru, **çıkarım eksik**.
+- D-310: "manifest ↔ etiket çelişkisi" → **yanlış** (D-311 düzeltti).
+- D-311: "doğrulanmış üretim hatası 1 (`sa_000013`)" → **bu da fazla kesindi.** T167 ölçümü gösterdi ki `sa_000013` dâhil **beş karenin beşi de kötü koşulludur** (kapı yayılımları sırasıyla [2,3] · [1,2] · [2,3] · [1,2] · [2,3]). Temiz bir referansla **hiçbiri yargılanamaz**.
+  `sa_000013` **şüpheli kalır** (üretim `1` yayınladı, oysa yer gerçeği kapısı 2–3 aralığında) — ama üretim **model maskesiyle**, envanter **yer gerçeği maskesiyle** koştu; fark maskeden de gelebilir. **Kanıtlanmadı.**
+
+#### 4. ✅ Asıl kazanç: K7 kapısı artık KURULABİLİR
+T165 "kabul zinciri şerit numarasını hiç ölçmüyor" diyordu ama referans belirsiz olduğu için kapı kurulamıyordu. Artık **iyi koşullu 88 karelik alt küme** var ve orada referans **kesin** (uyum %100). Bir K7 kapısı **yalnız bu alt kümede** kurulmalıdır; kötü koşullu 105 kare ve beyansız 49 kare **dışlanmalıdır** — aksi hâlde kapı, ölçemediği bir şeyi ölçüyormuş gibi yapar.
+
+#### 5. Yan bulgu — `rota_bul.durum` muhafazakârdır, bozuk değil
+Yer gerçeği maskesinde bile beyanlı 211 karenin yalnız **15**'i `ACIK`; 117 `BELIRSIZ_COKLU`, 78 `BELIRSIZ_TEK_KAPI`. Oysa 193'ünde tam **1** geçilebilir aday var. Yani `durum`, geçilebilirlikten **fazlasını** istiyor. Bu, T164'te ölçülen "`rota_bul` 50 karenin yalnız 4'ünde rota üretti" sonucunun açıklamasıdır: **tasarım gereği**, arıza değil. D-309 §3'ün "referans kolu kullanılamaz" saptaması geçerli kalır, ama sebebi artık bilinmektedir.
+
+#### 6. Yordam
+Bu soruşturmada **üç** alet ardı ardına geçersiz çıktı (manifest `pencere`si · tavan kolunun tekilliği · `acik_serit`'in null olduğu kareleri ayrışan sayma) ve **üçünü de kontrol ölçümü** yakaladı. D-311 §5'teki kural bir kez daha doğrulandı; buna bir madde ekliyorum: **referansın "beyan edilmiş" olup olmadığı da doğrulanmalıdır** — `None` bir yer gerçeği, yanlış bir yer gerçeğinden daha sinsidir.
