@@ -1,0 +1,13 @@
+{
+ "yaml": "O:\\navitas\\dataset\\karisim_bariyer_v8.yaml",
+ "sayim": {
+  "O:\\navitas\\dataset\\rescuenet_2sinif_engelli\\images\\train": 3502,
+  "O:\\navitas\\dataset\\sentetik_arena\\images\\train": 2700,
+  "O:\\navitas\\dataset\\copy_paste_t127\\images\\train": 344,
+  "O:\\navitas\\dataset\\dji_v7_x5\\images\\train": 2065,
+  "O:\\navitas\\dataset\\sentetik_arena_bariyer_acili\\images\\train": 2160,
+  "O:\\navitas\\dataset\\dji_v7\\images\\val": 73
+ },
+ "train_toplam": 10771,
+ "val_toplam": 73
+}

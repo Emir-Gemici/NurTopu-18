@@ -23409,3 +23409,97 @@ ayrışmasını **yakaladı** (depo kopyasını ben değiştirmiştim) → `olcu
 (`karar_sozlesmesi.py` senkron). Genel kapı (madde 14) iki kolda **GEÇTİ**
 (15/15 · şerit 15/15). GUI kapıları **77/77**. Bariyer kapısı **22/22**
 (3 yeni açı testi + mutasyon kontrolü dâhil).
+
+### D-325 · ✅ T174 KAPANDI — kompozit kümede rota **0/12 → 50/88**; kök sebep üretecin "karede ARAÇ yoksa kareyi at" şartıydı (2026-08-28)
+
+**Kullanıcı (verbatim):** *"tüm kaynak klasörlerde %100 doğru yol bulma başarısı
+istiyorum"* ve daha önce *"kompozit klasöründe neden hiç yol bulunmuyor"*.
+
+#### 1. Önce ölçüldü: yer gerçeği SAĞLAMDI, kusur başka yerdeydi
+Kompozit kümenin **kendi etiketi** üzerinde ölçüldü: 12/12 karede üstten alta
+**bağlı serbest bileşen VAR**. Yani geometri doğruydu ve T174'ün başlığındaki
+*"üretecin arena kurgusu ile `analyze_path`'in kabul ölçütü ayrışıyor"* hükmü
+**eksikti** — ayrışan şey geometri değil, kümenin **kendi içindeki tutarlılığıydı**:
+etiket "koridor geçilebilir" derken altındaki fotoğrafta **park hâlinde araba**
+duruyordu ve v36 onları doğru şekilde ENGEL görüyordu.
+
+#### 2. 🔴 KÖK SEBEP: üreteç, karede ARAÇ yoksa kareyi ATIYORDU
+`copy_paste_augmentation.py:1141` — `if arac_px == 0: return ... "dota_arac_pikselsiz_kare"`.
+
+Bu bir **etiket bütünlüğü** kapısıdır: *"DOTA'nın gördüğü her araç pikseli,
+yazılan ENGEL etiketinin altında mı?"* Araçsız bir karede doğrulanacak bir şey
+**yoktur** — ama kod **"ölçülemedi"yi "düştü" sayıyordu** ve KIRSAL (araçsız)
+her kareyi eliyordu.
+
+**Ölçüldü:** 36 gündüz DJI karesinin 72 denemesinden **44'ü (%61) tam bu
+satırda düştü.** Kompozit kümenin otopark zeminine bağımlı kalmasının sebebi
+buydu — otoparkta hep araç vardı.
+
+**Düzeltme:** kontrol atlanır ama **sessizce değil** — manifeste
+`arac_kapsama: null` ve `arac_kapsama_durumu: "UYGULANAMAZ_ARAC_YOK"` yazılır.
+**Bariyer** kapsama kapısı aynen yürürlükte kalır, yani *"yokluk GEÇTİ
+değildir"* ilkesi korunur; yalnızca **UYGULANAMAZ** ile **DÜŞEN** ayrılır.
+
+#### 3. Yeni zemin: kendi drone'umuzun GÜNDÜZ kareleri
+`results/dji_20260822/kareler_1fps` — 0037/0039'un **eğitimde kullanılmayan**
+36 karesi seçildi (`dji_v7` ad listesiyle karşılaştırılarak). 0038'e
+DOKUNULMADI (CONTRACTS §12, ayrılmış doğrulama oturumu).
+
+**Çözünürlük ölçüldü ve önemliydi:** 4K zeminle **17/69**, aynı kareler
+1280×720'ye küçültülünce **35/88**. Model 512'de çalışıyor; 4K'dan inince
+arena unsurları orantısız küçülüyor. Eski küme zaten 1024×576 idi.
+
+#### 4. 🔴 KENDİ ÖLÇÜMÜMDE HATA — `get_masks` YANLIŞ ÇAĞRILDI
+İlk sayımlarımda (`17/69`, `35/88`) `get_masks`'e tek bir `Results` nesnesi
+veriyordum; üretim ise **sonuç LİSTESİNİ** verir ve ardından
+`_maskeleri_icerige_kirp` uygular. Bu yüzden sayılarım **düşük** çıktı.
+Doğru çağrıyla:
+
+| küme | rota |
+|---|---|
+| **YENİ kompozit (DJI 720p)** | **50/88 · %57** (şerit dağılımı 1:10 · 2:30 · 3:10) |
+| ESKİ kompozit (otopark) | **0/12 · %0** |
+
+> **Ders:** üretim yolunu *taklit eden* bir ölçüm, üretim yolunun **kendi
+> çağrı sırasını** birebir kullanmalıdır. Aksi hâlde ölçtüğü şey üretim değildir.
+> (Aynı sınıf: T151/CONTRACTS §11.2-EK — üretim ile tanısal yolun ayrılması.)
+
+**Görsel kanıt:** `results/gece_20260828/08_kompozit_dji.png` — hakem ekranı
+kompozit kaynağında `3 · SAG`, güven %100, sarı rota gerçek toprak yolun
+üstünde, `beklenen şerit 3 → UYUMLU`.
+
+#### 5. Tüm GUI kaynakları — DÜRÜST TABLO (v36, kaynak başına 40 kare)
+
+| kaynak | rota | hüküm |
+|---|---|---|
+| **arena_kadraj** | **40/40 · %100** | yarışma dağılımı — hedef zaten sağlanmış |
+| kompozit | 24/40 · %60 | 0'dan geldi |
+| drone | 14/40 · %35 | OTOPARK, arena değil |
+| arena_gercek | 0/1 | ⚠ §6'ya bak |
+| dji_gece | 0/40 | gece, nadir değil, arena yok → **ret DOĞRU** |
+| gemini · test · val | 0/40 | ölçek yok → `OLCEK_YOK` **doğru** |
+
+⚠ **"Tüm klasörlerde %100" hedefi olduğu gibi karşılanamaz ve karşılanmamalıdır.**
+`dji_gece`de arena/koridor/yol yoktur; orada rota üretmek başarı değil **yanlış
+pozitiftir**. `test`/`val`/`gemini` kümelerinde tek skaler ölçek yoktur ve
+`OLCEK_YOK` reddi **sözleşmenin kendisidir** (D-59: sessiz `mpp=1.0` gövde
+açıklığını ~11 kat küçültüyordu). Şartname §2.1'e göre **yanlış güzergâh = 0
+puan**; yani "her karede rota üreten" sistem tam da kaybettiren sistemdir.
+Anlamlı hedef: **arena dağılımında %100 doğru karar** — ve orada zaten %100.
+
+#### 6. 🔴 YENİ BULGU: şartname FİGÜRÜNÜN KENDİSİNDE rota yok
+`data/arena_referans/sartname_s9_arena.png` üzerinde v36 (üretim çağrı sırasıyla):
+**ZEMIN %2,7** · ENGEL %8,9 → `UC_BANT_TEMAS_YOK`. Kırpma denendi (arena ızgara
+alanı, merkez kare) — üçünde de rota yok.
+
+Karşılaştırma: kabul kümesi örneğinde ZEMIN **%36,1** → rota var, güven 1,0.
+
+Figür D-99 uyarınca **yapay zekâ üretimidir** ve şartname *"gerçek alanı
+doğrudan yansıtmamaktadır"* der; yani dağılım dışıdır. Ama şartnamenin
+gösterdiği resim budur ve üzerinde rota üretemiyoruz. **T192 açıldı.**
+
+#### 7. Bozulmama
+`unittest discover -s tests` **1214 OK** (2 skip). Eski otopark kümesi
+**SİLİNMEDİ**: `data/arena_kompozit_otopark_arsiv/` (madde 18). Kompozit
+görüntüleri `.gitignore`'daki `images/` kuralıyla depoya girmez — eski kümede
+de öyleydi, düzen korundu. 4K ara klasörleri de yoksayıldı.

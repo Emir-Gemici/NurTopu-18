@@ -1,0 +1,18 @@
+# BARIYER v8 (ON_KAYIT results/gece_20260828/ON_KAYIT.md).
+# v7a karisiminin TAMAMI + `sentetik_arena_bariyer_acili` (T185:
+# bariyer kolu +-45 derece egimle cizilir). Eski kume ATILMADI.
+# val = dji_v7 val (gercek GUNDUZ DJI kareleri) — degismedi.
+path: O:\navitas\dataset
+train:
+  - O:\navitas\dataset\rescuenet_2sinif_engelli\images\train
+  - O:\navitas\dataset\sentetik_arena\images\train
+  - O:\navitas\dataset\copy_paste_t127\images\train
+  - O:\navitas\dataset\dji_v7_x5\images\train
+  - O:\navitas\dataset\sentetik_arena_bariyer_acili\images\train
+val:
+  - O:\navitas\dataset\dji_v7\images\val
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

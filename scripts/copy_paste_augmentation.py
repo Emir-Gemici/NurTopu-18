@@ -1139,13 +1139,29 @@ def arena_cesidi_uret(
     arac_px = int((arac > 0).sum())
     kapsanan_px = int(((arac > 0) & (yazilan_engel > 0)).sum())
     if arac_px == 0:
-        return UretimOzeti(**temel, sebep="dota_arac_pikselsiz_kare")
-    arac_kapsama = kapsanan_px / arac_px
-    if arac_kapsama < ARENA_ARAC_KAPSAMA_ESIGI:
-        return UretimOzeti(
-            **temel,
-            sebep=f"yazilan_arac_kapsama_dusuk:{arac_kapsama:.6f}",
-        )
+        # 🔴 T174 (D-325): burada kare REDDEDILIYORDU. Oysa bu bir ETIKET
+        # BUTUNLUGU kapisidir: "DOTA'nin gordugu her arac pikseli, yazilan
+        # ENGEL etiketinin altinda mi?" ARACSIZ bir karede dogrulanacak bir
+        # sey YOKTUR; kod "olculemedi"yi "dustu" sayiyor ve KIRSAL (aracsiz)
+        # her kareyi eliyordu.
+        #
+        # OLCULDU: 36 gunduz DJI karesinin 72 denemesinden 44'u (%61) TAM BU
+        # SATIRDA dustu. Kompozit kumenin otopark zeminine bagimli kalmasinin
+        # sebebi buydu — otoparkta hep arac vardi.
+        #
+        # Kontrol ATLANIR ama SESSIZCE DEGIL: manifeste `arac_kapsama: null`
+        # ve `arac_kapsama_durumu: "UYGULANAMAZ_ARAC_YOK"` yazilir. Asil
+        # etiket butunlugu BARIYER kapsama kapisindan olculur (asagida) ve o
+        # kapi AYNEN yururlukte kalir — yani "yokluk GECTI degildir" ilkesi
+        # korunur, yalnizca UYGULANAMAZ olan ile DUSEN ayrilir.
+        arac_kapsama = None
+    else:
+        arac_kapsama = kapsanan_px / arac_px
+        if arac_kapsama < ARENA_ARAC_KAPSAMA_ESIGI:
+            return UretimOzeti(
+                **temel,
+                sebep=f"yazilan_arac_kapsama_dusuk:{arac_kapsama:.6f}",
+            )
     bariyer_px = int(gercek_bariyer.sum())
     bariyer_kapsanan_px = int(((gercek_bariyer > 0) & (yazilan_engel > 0)).sum())
     bariyer_kapsama = bariyer_kapsanan_px / bariyer_px if bariyer_px else 0.0
@@ -1191,7 +1207,10 @@ def arena_cesidi_uret(
                            else "prosedurel_2m_kirmizi_H"),
         "hedef_kutu": list(geometri.hedef_kutu),
         "arac_kapsanan_px": kapsanan_px,
-        "arac_kapsama": round(arac_kapsama, 6),
+        "arac_kapsama": (None if arac_kapsama is None
+                         else round(arac_kapsama, 6)),
+        "arac_kapsama_durumu": ("UYGULANAMAZ_ARAC_YOK" if arac_kapsama is None
+                                else "OLCULDU"),
         "bariyer_kapsanan_px": bariyer_kapsanan_px,
         "bariyer_kapsama": round(bariyer_kapsama, 6),
         "pozitif_bariyer": {

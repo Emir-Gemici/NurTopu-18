@@ -166,3 +166,8 @@ results/dji_20260822/su_bindirme/DJI_*.jpg
 # ondan TURETILIR (scripts/olcum/135_dji_kirsal_zincir.py). ETIKETLER (.txt)
 # TUTULUR — asil emek onlardadir ve kucukturler.
 dataset/dji_kirsal/images/**
+# T174 (D-325): kompozit zemin ara klasorleri — 4K kopyalar, depoya girmez
+data/dji_gunduz_kullanilmayan/
+data/dji_gunduz_1280/
+data/dji_gunduz_secili/
+data/arena_kompozit_dji/

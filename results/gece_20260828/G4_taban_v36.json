@@ -1,0 +1,70 @@
+{
+ "model": "models/navitas_seg_v36_best.pt",
+ "olcut": "bariyer bolgesinde ENGEL(1) orani",
+ "esik_G4": 60.0,
+ "acilar": {
+  "0": {
+   "oran": 99.9,
+   "bariyer_px": 3668,
+   "gecti": true
+  },
+  "15": {
+   "oran": 99.8,
+   "bariyer_px": 3668,
+   "gecti": true
+  },
+  "30": {
+   "oran": 99.6,
+   "bariyer_px": 3664,
+   "gecti": true
+  },
+  "45": {
+   "oran": 69.2,
+   "bariyer_px": 3665,
+   "gecti": true
+  },
+  "60": {
+   "oran": 0.0,
+   "bariyer_px": 3672,
+   "gecti": false
+  },
+  "75": {
+   "oran": 100.0,
+   "bariyer_px": 3668,
+   "gecti": true
+  },
+  "90": {
+   "oran": 30.8,
+   "bariyer_px": 3668,
+   "gecti": false
+  },
+  "105": {
+   "oran": 0.0,
+   "bariyer_px": 3668,
+   "gecti": false
+  },
+  "120": {
+   "oran": 0.0,
+   "bariyer_px": 3664,
+   "gecti": false
+  },
+  "135": {
+   "oran": 0.0,
+   "bariyer_px": 3665,
+   "gecti": false
+  },
+  "150": {
+   "oran": 97.0,
+   "bariyer_px": 3672,
+   "gecti": true
+  },
+  "165": {
+   "oran": 95.1,
+   "bariyer_px": 3668,
+   "gecti": true
+  }
+ },
+ "gecen_aci": 7,
+ "toplam_aci": 12,
+ "G4_taban_hukmu": "7/12 aci >= %60 (esik: 10/12)"
+}
