@@ -1,0 +1,102 @@
+{
+ "model": "models\\navitas_seg_v36_best.pt",
+ "G4": {
+  "acilar": {
+   "0": {
+    "oran": 99.9,
+    "gecti": true
+   },
+   "15": {
+    "oran": 99.8,
+    "gecti": true
+   },
+   "30": {
+    "oran": 99.6,
+    "gecti": true
+   },
+   "45": {
+    "oran": 69.2,
+    "gecti": true
+   },
+   "60": {
+    "oran": 0.0,
+    "gecti": false
+   },
+   "75": {
+    "oran": 100.0,
+    "gecti": true
+   },
+   "90": {
+    "oran": 30.8,
+    "gecti": false
+   },
+   "105": {
+    "oran": 0.0,
+    "gecti": false
+   },
+   "120": {
+    "oran": 0.0,
+    "gecti": false
+   },
+   "135": {
+    "oran": 0.0,
+    "gecti": false
+   },
+   "150": {
+    "oran": 97.0,
+    "gecti": true
+   },
+   "165": {
+    "oran": 95.1,
+    "gecti": true
+   }
+  },
+  "gecen_aci": 7,
+  "toplam": 12,
+  "esik": 10,
+  "gecti": false,
+  "taban_v36": 7
+ },
+ "G5": {
+  "kume_n": 88,
+  "olculen": 88,
+  "rota_uretilen": 85,
+  "dogru": 84,
+  "yanlis": 1,
+  "rota_uretilmeyen": 3,
+  "dogruluk": 0.9882352941176471,
+  "yanlis_kareler": [
+   [
+    "sa_000090.jpg",
+    2,
+    3
+   ]
+  ],
+  "model": "navitas_seg_v36_best.pt",
+  "conf": 0.3,
+  "esik_dogruluk": 0.95,
+  "esik_rota": 80,
+  "gecti": true,
+  "taban_v36_dogruluk": 0.9882,
+  "taban_v36_rota": 85
+ },
+ "G11": {
+  "n": 88,
+  "rota": 49,
+  "esik": 45,
+  "gecti": true,
+  "sebepler": {
+   "GORUS_HATTI_KOPUK": 5,
+   "UC_BANT_TEMAS_YOK": 11,
+   "ZEMIN_MASKESI_SUPHELI": 18,
+   "MASKE_YOK": 5
+  },
+  "seritler": {
+   "3": 9,
+   "2": 28,
+   "1": 12
+  },
+  "taban_v36": 49
+ },
+ "uc_kapi_gecti": false
+}
