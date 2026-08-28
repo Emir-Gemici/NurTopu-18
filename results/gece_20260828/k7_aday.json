@@ -2,19 +2,13 @@
  "ozet": {
   "kume_n": 88,
   "olculen": 88,
-  "rota_uretilen": 87,
+  "rota_uretilen": 86,
   "dogru": 86,
-  "yanlis": 1,
-  "rota_uretilmeyen": 1,
-  "dogruluk": 0.9885057471264368,
-  "yanlis_kareler": [
-   [
-    "sa_000038.jpg",
-    2,
-    3
-   ]
-  ],
-  "model": "aday_ep27.pt",
+  "yanlis": 0,
+  "rota_uretilmeyen": 2,
+  "dogruluk": 1.0,
+  "yanlis_kareler": [],
+  "model": "v8_best.pt",
   "conf": 0.3
  },
  "kareler": [
@@ -77,23 +71,23 @@
   {
    "kare": "sa_000032.jpg",
    "referans_serit": 2,
-   "yayinlanan": null,
-   "ret": "GORUS_HATTI_KOPUK",
-   "dogru": false
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
   },
   {
    "kare": "sa_000038.jpg",
    "referans_serit": 2,
-   "yayinlanan": 3,
+   "yayinlanan": 2,
    "ret": null,
-   "dogru": false
+   "dogru": true
   },
   {
    "kare": "sa_000041.jpg",
    "referans_serit": 2,
-   "yayinlanan": 2,
-   "ret": null,
-   "dogru": true
+   "yayinlanan": null,
+   "ret": "GORUS_HATTI_KOPUK",
+   "dogru": false
   },
   {
    "kare": "sa_000043.jpg",
@@ -462,9 +456,9 @@
   {
    "kare": "sa_000184.jpg",
    "referans_serit": 2,
-   "yayinlanan": 2,
-   "ret": null,
-   "dogru": true
+   "yayinlanan": null,
+   "ret": "GORUS_HATTI_KOPUK",
+   "dogru": false
   },
   {
    "kare": "sa_000185.jpg",

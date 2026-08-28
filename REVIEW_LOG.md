@@ -23783,3 +23783,84 @@ değerlendirilir.
 ölçüsü DEĞİLDİR (kabul kümesi `arena_kadraj` odur) — hakem ekranı zaten
 kompozit için *"yer gerçeği GEOMETRİK KURGUDUR, uyum ALGI başarısının ölçütü
 DEĞİLDİR (D-298/D-302)"* yazıyor.
+
+### D-331 · 🔴 v8 EĞİTİMİ BİTTİ — kabul zinciri **RED**; v36 üretimde KALIR (2026-08-28)
+
+**Ön kayıt:** `results/gece_20260828/ON_KAYIT.md` §4/§5/§8.
+**Eğitim:** `bariyer_v8_v36taban`, **124 epoch / 6,19 saat**, erken durdurma
+(patience 120, en iyi val epoch **4**). Kullanıcı 15 saat istemişti; val mAP
+120 epoch boyunca iyileşmediği için ultralytics durdurdu.
+
+#### 1. Ön kayıtlı kapılar
+| kapı | v36 | v8 `best.pt` (ep 4) | v8 `last.pt` (ep 124) |
+|---|---|---|---|
+| G4 bariyer açı | 7/12 | 12/12 | **12/12** |
+| G5 K7 doğruluk | %98,8 · 85/88 | %100 · 86/88 | **%100 · 87/88** |
+| G11 kompozit | 49/88 | 32/88 | 33/88 |
+
+⚠ **Model seçimi kapıyla yapıldı, val mAP ile değil** (ön kayıt §4). Ultralytics
+`best.pt`yi epoch 4'te dondurmuştu; kapılar `last.pt`yi (epoch 124) **daha iyi**
+buldu. Val kümesi 73 gerçek DJI karesidir ve bariyer açısını, şerit doğruluğunu
+ya da kompoziti **ölçmez** (D-328 §4). Kural işe yaradı.
+
+#### 2. 🔴 KABUL ZİNCİRİ: **RED**
+| kapı | v36 | v8 `last.pt` |
+|---|---|---|
+| **K0 körlük** | GEÇTİ %2,66 | **DÜŞTÜ %0,00** |
+| K1 rota ≥230 | 256/260 | **258/260** |
+| K2 moloza basma | 6/256 | **5/258** |
+| K3 ağır engel | 0/256 | 0/258 |
+| K4 arena dışı | 3/256 | **1/258** |
+| K5 bariyer kesişimi | 0/178 · 0 px | 0/179 · 0 px |
+| K6 yanlış güzergâh | 3/256 | **1/258** |
+| K7 şerit doğruluğu | 84/85 · %98,8 | **87/87 · %100,0** |
+
+> **VERDİKT: RED — K0 düştü. v25 ile AYNI sebep, tartışma yok.**
+
+Yeni model **ölçülen her eksende daha iyi, biri hariç.**
+
+#### 3. K0'ın ayrıntısı — kapı TEK GÖRÜNTÜDE düşüyor
+K0 üç şey ölçer:
+
+| bileşen | v36 | v8 |
+|---|---|---|
+| **şartname figürü** (tek kare) | %2,66 | **%0,00** |
+| `raw_frames` (67 kare) | ort. %23,4 · boş 0 | **ort. %25,5** · boş 0 |
+| `copy_paste` (393 kare) | ort. %23,8 · boş 0 | **ort. %25,7** · boş 0 |
+
+**İki popülasyon ölçümünde yeni model DAHA İYİ.** Kapı yalnızca, D-99'un
+*"tamamen yapay zekâ ile oluşturulmuştur, gerçek alanı doğrudan
+yansıtmamaktadır"* dediği **tek figürde** düşüyor — orada v8 hiç zemin
+üretmiyor (T192'nin uzantısı: v36 zaten %4,4 ile rota veremiyordu).
+
+#### 4. 🔴 KAPI DEĞİŞTİRİLMEDİ — ve bu bilinçli
+Bu tablo, K0'ı *"tek figüre dayanıyor, popülasyon iyileşti"* diye gevşetmek
+için güçlü bir gerekçe gibi görünüyor. **Değiştirmedim.** Sonucu gördükten
+sonra eşik oynatmak D-107'nin yasakladığı şeyin ta kendisidir ve bu projede
+bir kez bir GPU gecesini kurtaran şey tam da bu disiplindi.
+
+K0'ın zeminini tartışmak meşru bir iştir — ama **ayrı ve ÖN KAYITLI** bir
+karar olarak, bir modelin düşmesine tepki olarak değil. **T194 açıldı.**
+
+#### 5. Karar
+**v36 üretimde KALIR.** v8 `last.pt` aday olarak durur
+(`results/gece_20260828/v8_last.pt`). Bu gecenin **kod** düzeltmeleri
+(T184 açıdan bağımsız bariyer, T188 metrik kapama tavanı) v36 ile birlikte
+kabul zincirinden **GEÇMİŞTİ** (VERDİKT: ÜRETİME ALINIR) ve üretimde kalıyor.
+
+#### 6. Bir tahminim ÇÜRÜDÜ
+D-328 §3'te kompozit gerilemesinin *"eğitimin sonunda düzelmesi beklenen bir
+kalibrasyon düşüşü"* olduğunu yazmış ve *"bitişte yeniden ölçülecek"* demiştim.
+Eğilim izleyicisi (`egilim.jsonl`) ölçtü:
+
+| epoch | G4 | kompozit | MASKE_YOK |
+|---|---|---|---|
+| 30 | 12/12 | 29/88 | 30 |
+| 55 | 12/12 | 26/88 | 16 |
+| 80 | 12/12 | 34/88 | 26 |
+| 106 | 12/12 | 33/88 | 27 |
+| 124 (son) | 12/12 | 33/88 | — |
+
+**Düzelmedi.** `close_mosaic` devredeyken (son 20 epoch) bile 33/88'de kaldı;
+v36'nın 49'una dönmedi. Tahmin yanlıştı, ölçüm doğruydu — ve tahminin
+"ölçülecek" diye yazılmış olması onu kurtardı.

@@ -1,0 +1,96 @@
+{
+ "model": "results\\gece_20260828\\v8_best.pt",
+ "G4": {
+  "acilar": {
+   "0": {
+    "oran": 97.6,
+    "gecti": true
+   },
+   "15": {
+    "oran": 100.0,
+    "gecti": true
+   },
+   "30": {
+    "oran": 99.6,
+    "gecti": true
+   },
+   "45": {
+    "oran": 100.0,
+    "gecti": true
+   },
+   "60": {
+    "oran": 100.0,
+    "gecti": true
+   },
+   "75": {
+    "oran": 99.1,
+    "gecti": true
+   },
+   "90": {
+    "oran": 64.8,
+    "gecti": true
+   },
+   "105": {
+    "oran": 100.0,
+    "gecti": true
+   },
+   "120": {
+    "oran": 99.6,
+    "gecti": true
+   },
+   "135": {
+    "oran": 100.0,
+    "gecti": true
+   },
+   "150": {
+    "oran": 99.8,
+    "gecti": true
+   },
+   "165": {
+    "oran": 100.0,
+    "gecti": true
+   }
+  },
+  "gecen_aci": 12,
+  "toplam": 12,
+  "esik": 10,
+  "gecti": true,
+  "taban_v36": 7
+ },
+ "G5": {
+  "kume_n": 88,
+  "olculen": 88,
+  "rota_uretilen": 86,
+  "dogru": 86,
+  "yanlis": 0,
+  "rota_uretilmeyen": 2,
+  "dogruluk": 1.0,
+  "yanlis_kareler": [],
+  "model": "v8_best.pt",
+  "conf": 0.3,
+  "esik_dogruluk": 0.95,
+  "esik_rota": 80,
+  "gecti": true,
+  "taban_v36_dogruluk": 0.9882,
+  "taban_v36_rota": 85
+ },
+ "G11": {
+  "n": 88,
+  "rota": 32,
+  "esik": 45,
+  "gecti": false,
+  "sebepler": {
+   "GORUS_HATTI_KOPUK": 4,
+   "UC_BANT_TEMAS_YOK": 4,
+   "ZEMIN_MASKESI_SUPHELI": 31,
+   "MASKE_YOK": 17
+  },
+  "seritler": {
+   "3": 7,
+   "2": 16,
+   "1": 9
+  },
+  "taban_v36": 49
+ },
+ "uc_kapi_gecti": false
+}
