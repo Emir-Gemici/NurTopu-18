@@ -78,26 +78,28 @@
 
 ---
 
-## 5. 🔴 PUSH DONDURULDU — 2026-08-21, kullanıcı emri (**ikinci emre kadar**)
+## 5. ✅ PUSH DONDURMASI KALKTI — 2026-08-28, kullanıcı emri
 
-> **`git push` YAPILMAZ.** Bu, Claude 1, Claude 2 ve Codex'lerin **hepsi** için
-> geçerlidir ve kullanıcı kaldırana kadar sürer.
+> **`git push` SERBESTTİR.** Kullanıcının kendi sözleriyle: *"push artık
+> istediğin zaman yapabilirsin"* (2026-08-28). Bu, 2026-08-21 tarihli
+> dondurmayı **açıkça** kaldıran ikinci emirdir.
 
-**`git commit` SÜRER.** İkisini karıştırmak iş kaybettirir:
+| işlem | durum |
+|---|---|
+| `git add` / `git commit` | ✅ devam |
+| `git push` | ✅ **serbest** — izin sorulmaz |
+| `git pull` / `fetch` | ✅ serbest (uzak artık geride değil) |
 
-| işlem | durum | neden |
-|---|---|---|
-| `git add` / `git commit` | ✅ **devam** | yerel geçmiş korunur; commit atmayan ajan işini kaybeder |
-| `git push` | ⛔ **YASAK** | uzak depo bilerek geride tutuluyor |
-| `git pull` / `fetch` | ⛔ **yapılmaz** | dondurulmuş uzak ile yerel arasında karışıklık üretir |
+⚠ Serbestlik **dikkatsizlik değildir**: itilen şey **kapıdan geçmiş**
+olmalıdır — `codes/test_rota_sentetik.py` 15/15 **ve** tam suit. Kapı
+düşmüşken push yapılmaz.
 
-**Sonuçları — bilerek kabul edilmiştir:**
-- Uzak depo (GitHub) her commit ile biraz daha **geride kalır**. Yani depo
-  **artık makine dışı yedek değildir**; tek kopya `O:` diskindedir.
-- Bu yüzden **Drive yedeği bu dönemde daha kritiktir** — `yedek_drive.sh`
-  sonunda `git bundle` ile tüm geçmişi tek dosya olarak gönderiyor.
-- Donma kalkınca **tek seferde** itilecek; commit'ler ayrı ayrı durduğu için
-  geçmiş bozulmaz.
+⚠ Drive yedeği (`yedek_drive.sh`) yine de sürer: uzak depo tek yedek değildir.
 
-⚠ Bir ajan "push edeyim mi" diye sormaz: **cevap hayırdır.** Kullanıcı
-kaldırdığını **açıkça** söyleyene kadar bu madde yürürlüktedir.
+<details><summary>Kaldırılan madde (2026-08-21 → 2026-08-28) — geçmiş kaydı</summary>
+
+Bu dönemde `git push` yasaktı; uzak depo bilerek geride tutuldu ve tek kopya
+`O:` diskindeydi. Donma 2026-08-28'de tek seferde itilerek kapandı
+(`e249b1b..dd73e0f`); commit'ler ayrı ayrı durduğu için geçmiş bozulmadı.
+
+</details>
