@@ -24896,3 +24896,43 @@ ayrıca koşulur.
 ⚠ Kapının kendisi de bir kez yanlış ölçtü: `cp … ~/navitas/codes/ # yorum`
 satırlarını deseni **ıskalıyordu** ve "eksik" diyordu. Düzeltildi; olay
 dosyaya yazıldı ki kapıya körü körüne güvenilmesin.
+
+---
+
+### D-353 · 🔴 30 AĞUSTOS'UN AMİRAL KOMUTU ÇÖKÜYORDU: `--girdi` yolunda `data/` öneki eksik (2026-08-28)
+
+**Bulunuş.** Paralel hazırlık taraması (17 ajan, 8 bulgu geçerli). İddia
+kendim doğrulandı — ajana güvenilmedi.
+
+**Ölçüm.** Kurulum bloğu (`JETSON_KILAVUZ.md:306`):
+
+```
+cp -r test_goruntuleri ~/navitas/data/
+```
+
+yani kareler `~/navitas/data/test_goruntuleri/…` altına düşer. Ama
+**§5 "FPS ölçümü (T17) — ASIL TEST"** bloğu:
+
+```
+cd ~/navitas
+python3 scripts/jetson_fps.py \
+  --girdi test_goruntuleri/sentetik_arena \      ← `data/` ÖNEKİ YOK
+```
+
+`~/navitas/test_goruntuleri/…` çözülür ve **böyle bir dizin yoktur**.
+30 Ağustos'un **amiral komutu** ilk satırda `No such file` ile çökerdi.
+
+Kılavuz kendi içinde de **tutarsızdı**: aynı belgede satır 454 ve 477
+`--girdi data/test_goruntuleri/drone_kareleri` (önekli, **doğru**) derken
+424 ve 775 öneksizdi.
+
+**Düzeltme.** Her iki kılavuzda 2'şer satır düzeltildi (toplam 4).
+
+**NÖBETÇİ eklendi** (`test_t202…::test_GIRDI_YOLLARI_KURULUM_DUZENIYLE_UYUMLU`):
+her `--girdi` yolunun kökü, kurulum bloğunun **gerçekten oluşturduğu**
+dizinler arasında olmalı. Liste elle yazılmaz, kurulum bloğundan **türetilir**.
+
+⚠ Bu, D-352'nin aynı ailesinden: kılavuzun **anlattığı düzen** ile
+**kullandığı yollar** arasındaki ayrışma. İki kapı artık iki yönü de
+tutuyor: D-352 "kullanılan kuruluyor mu", D-353 "kullanılan yol kurulum
+düzeninde mi".

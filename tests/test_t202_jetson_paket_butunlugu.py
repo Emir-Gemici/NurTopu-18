@@ -124,6 +124,33 @@ class KurulumBlogu(unittest.TestCase):
                              "MUAF buyudu — her ekleme kapinin bir parcasini "
                              "kapatir; gerekcesi D-352'ye yazilmali")
 
+    def test_GIRDI_YOLLARI_KURULUM_DUZENIYLE_UYUMLU(self):
+        """`--girdi` yollari, kurulum blogunun OLUSTURDUGU duzende bulunmali.
+
+        🔴 D-353: kurulum blogu `cp -r test_goruntuleri ~/navitas/data/` yapar,
+        yani kareler `data/test_goruntuleri/...` altina duser. Ama SS5 "ASIL
+        TEST" komutu `cd ~/navitas` sonrasi `--girdi test_goruntuleri/...`
+        diyordu — `data/` oneki EKSIKTI ve 30 Agustos'un AMIRAL komutu
+        `No such file` ile cokerdi.
+        """
+        kurulan_dizinler = {y.rsplit("/", 1)[0] for y in _kurulan()}
+        kotu = []
+        for satir in _metin().splitlines():
+            s2 = satir.strip()
+            if not s2.startswith("--girdi"):
+                continue
+            yol = s2.split()[1].rstrip("\\").strip()
+            if yol.startswith("~") or yol.startswith("/"):
+                continue                      # mutlak yol: kurulum duzeni disi
+            kok = yol.split("/")[0]
+            if kok not in {d.split("/")[0] for d in kurulan_dizinler}:
+                kotu.append(yol)
+        self.assertEqual(
+            [], kotu,
+            "`--girdi` yolu kurulum duzeninde YOK — saha gunu komut coker "
+            "(D-353). Kurulum su dizinleri olusturuyor: "
+            f"{sorted({d.split('/')[0] for d in kurulan_dizinler})}. Kotu: {kotu}")
+
     def test_PAKET_KODU_KENDI_BASINA_ITHAL_EDILEBILIYOR(self):
         import subprocess
         import sys

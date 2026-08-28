@@ -513,7 +513,7 @@ taşınır (`tests/test_jetson_paket_defteri` aynayı kilitler).
 ```bash
 cd ~/navitas
 python3 scripts/jetson_fps.py \
-  --girdi test_goruntuleri/sentetik_arena \
+  --girdi data/test_goruntuleri/sentetik_arena \
   --pt models/navitas_seg_v36_best.pt \
   --onnx models/navitas_seg_v36_best_512_fp16.onnx \
   --engine models/navitas_seg_v36_best_512_fp16.engine \
@@ -864,7 +864,7 @@ defterle tutarlılığı `tests/test_saha_parametrik.py` sınıfı kilitler.
    sahada YASAK):
 ```bash
 python3 scripts/jetson_fps.py \
-  --girdi test_goruntuleri/sentetik_arena \
+  --girdi data/test_goruntuleri/sentetik_arena \
   --pt models/navitas_seg_v35_best.pt --onnx models/navitas_seg_v35_best_512_fp16.onnx \
   --imgsz 512 --isinma 1 --tekrar 3 --conf 0.30 --cihaz 0 \
   --cikti results/gecis_dogrulama_$(date +%Y%m%d_%H%M%S)
