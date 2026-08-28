@@ -81,10 +81,9 @@ def yaml_yaz() -> dict:
     for d in TRAIN_DIZINLERI + VAL_DIZINLERI:
         sizinti += [str(p) for p in d.rglob("*") if yasak in p.name.lower()]
     if sizinti:
-        raise SystemExit("🔴 SINAV KAGIDI EGITIM KUMESINDE (D-340 §1):
-  "
-                         + "
-  ".join(sizinti))
+        ayrac = chr(10) + "  "
+        raise SystemExit("🔴 SINAV KAGIDI EGITIM KUMESINDE (D-340 §1):"
+                         + ayrac + ayrac.join(sizinti))
 
     bos = [k for k, v in sayim.items() if v == 0]
     if bos:
