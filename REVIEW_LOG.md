@@ -23707,3 +23707,54 @@ doğru çalışma noktası ve aday bu aşamada kompozitte **gerçekten zayıf**.
 > Sonda düzelip düzelmeyeceği **ölçülecektir**; burada iddia edilmiyor.
 > `save_period=5` sayesinde ara checkpoint'ler duruyor, gerekirse model
 > **kapıyla** seçilir (val mAP ile değil — §4).
+
+### D-329 · ✅ AYIRT EDİCİ KONTROL — `arena_kadraj`'da tavan 260/260 DEĞİL 259/260; aday model **259'unda DOĞRU KARAR** veriyor (2026-08-28, epoch 27)
+
+**Kullanıcı hedefi:** *"tüm kaynak klasörlerde %100 doğru yol bulma başarısı"*.
+Bu kayıt, o hedefin **ölçülebilir hâlini** ve nerede durduğumuzu koyar.
+
+#### 1. Rota SAYISI ≠ DOĞRU KARAR
+`arena_kadraj` (260 kare, kabul dağılımı) tam kümede ölçüldü:
+
+| model | rota üreten |
+|---|---|
+| v36 (üretim) | 256/260 · %98,5 |
+| **aday ep27** | **258/260 · %99,2** |
+
+Düşen 4 kare (v36) tek tek incelendi. Hepsinin manifesti
+`beklenen_durum = ACIK`, `acik_serit_adaylari = [2]`, **`belirsiz = False`**
+diyor ve üçü **K7 iyi koşullu alt kümesinde** — yani referans kesin.
+
+#### 2. 🔴 AYIRT EDİCİ KONTROL: aynı zincir YER GERÇEĞİ maskesiyle koşuldu
+Kimin suçu olduğunu ayırmanın tek yolu: model maskesi yerine **etiket
+maskesini** aynı `analyze_path`'e vermek.
+
+| kare | yer gerçeği | v36 | aday ep27 |
+|---|---|---|---|
+| `sa_000032` | **yol=2** | GORUS_HATTI_KOPUK | GORUS_HATTI_KOPUK |
+| `sa_000041` | **yol=2** | GORUS_HATTI_KOPUK | **yol=2** ✓ |
+| `sa_000121` | **GORUS_HATTI_KOPUK** | GORUS_HATTI_KOPUK | GORUS_HATTI_KOPUK |
+| `sa_000174` | **yol=2** | UC_BANT_TEMAS_YOK | **yol=2** ✓ |
+
+**İki ayrı bulgu:**
+
+**(a) `sa_000121` bir MANİFEST KUSURUDUR, model kusuru değil.** Yer gerçeği
+maskesi de geçit vermiyor; yani üreteç o kareyi `ACIK` beyan etmiş ama kurduğu
+geometri C-uzayında **geçilemez**. Oradaki ret **DOĞRU DAVRANIŞTIR**.
+→ **Tavan 260/260 değil, 259/260.** (T193 açıldı.)
+
+**(b) Aday model üçün ikisini ZATEN düzeltti** (`sa_000041`, `sa_000174`).
+
+#### 3. Doğru karar sayısı
+Aday ep27, 260 karenin **258'inde rota üretiyor**, kalan ikiden biri
+(`sa_000121`) **doğru ret**. Yani:
+
+> **259/260 DOĞRU KARAR = %99,6.** Tek gerçek kaçırma: `sa_000032`.
+
+Ve bu **epoch 27**'dir — eğitimin %10'u. Son model bunu da kapatabilir;
+kapatmazsa kayda öyle geçecek.
+
+#### 4. Bu, "%100" hedefinin dürüst hâlidir
+Hedef *"her karede rota"* olamaz: `sa_000121`'de rota üretmek **yanlış
+pozitif** olurdu ve şartname §2.1'e göre yanlış güzergâh **0 puandır**. Ölçüt
+**rota sayısı değil DOĞRU KARAR sayısıdır** — ve o eksende tavan 259/260'tır.
