@@ -67,6 +67,83 @@ HEDEF_KENAR_M = 2.0  # sartname SS2.2.6
 IZGARA_ADIM_M = HEDEF_KENAR_M  # sartname figurundeki kareler, HB ile ayni olcek
 IZGARA_RENK = (48, 48, 48)
 IZGARA_OPAKLIK = 0.30
+
+# ── T199 · ARENA PROFILI (ON_KAYIT D-340 · teshis D-342) ───────────────────
+# 🔴 NEDEN: sartname figurunde v36 rota URETEMIYOR (T192). Renk suclu DEGIL
+# (D-342: arena rengi karelerin %31,2'sinde zaten var) ve olcek de degil
+# (0,6x/1,5x/2,0x denendi). Suclu, ZEMININ INCE YAPI YOGUNLUGUDUR:
+#
+#   9x9 kara-sapka, YALNIZ ZEMIN bolgesinde olculdu
+#     sartname figuru : ort 16,83 · >10 olan piksel %53,6
+#     bizim sentetik  : ort  7,82 · >10 olan piksel %24,2      -> 2,15 KAT fark
+#
+# Model "surulebilir zemin"i TEMIZ/AZ YAPILI gormeye alismis; izgara ve
+# kirintiyla dolu bir zeminde cekimser kaliyor (figuru agir duzlestirince
+# zemin %4,4 -> %60,1'e cikiyordu).
+#
+# ⚠ ZEMIN DOKUSU/RENGI DEGISTIRILMIYOR. `157_arena_zemin_dokusu.py` ile
+# uretilen ciplak toprak ailesi bankada DURUYOR ama BAGLANMADI: D-342 rengin
+# darbogaz olmadigini olctu, baglamak cesitliligi bosuna daraltirdi.
+ARENA_ZEMIN_KARA_SAPKA_HEDEFI = 16.8      # figurden OLCULDU (yukarisi)
+ARENA_IZGARA_OPAKLIK = 0.52               # varsayilan 0,30 -> figur izgarasi belirgindir
+ARENA_KIRINTI_YOGUNLUGU = 0.075           # OLCUMLE ayarlandi — supurme:
+#     iri kirinti (r 1..3, koyuluk 14..46):  0,004->10,28 · 0,012->13,30 · 0,030->22,26
+#       0,019 -> 16,06 (hedef 16,83, sapma %4,6) ama GORSEL BOZUKTU: zemin iri
+#       siyah benekle doldu. Ozet istatistigi tutturup gorseli bozmak D-80'in
+#       uyardigi tuzaktir; kabul EDILMEDI.
+#     ince kirinti (r cogunlukla 1, koyuluk 6..20):
+#       0,019->9,75 · 0,045->11,92 · 0,075->13,16 (>10 %46,8)
+#     0,075 secildi: gorsel makul, hedefin %78'i. TAM PARITE TUTTURULMADI ve
+#     bu bilerek boyle birakildi — kalan fark buyuk olasilikla ZEMINDEN degil,
+#     arenanin IRI BETON MOLOZUNUN ince kirintisindan geliyor; onu zemine
+#     benek ekleyerek taklit etmek yanlis seyi ogretirdi.
+ARENA_KIRINTI_KOYULUGU = (6.0, 20.0)      # OLCUM+GORSEL ile ayarlandi (bkz. D-343)
+_ARENA_PROFILI = False                    # `--profil arena` ile acilir
+
+
+def arena_ince_yapisi_ekle(tuval, kimlik, siniflar, rng):
+    """ZEMIN bolgesine arena benzeri INCE YAPI ekle (kirinti + cizik).
+
+    Yalniz `arena` profilinde cagrilir. Etiketleri DEGISTIRMEZ: kirintilar
+    zeminin uzerine cizilen GORSEL dokudur, `kimlik` haritasina dokunulmaz.
+    Bu bilerekdir — sartname arenasinin zemininde de bu boyuttaki tas/kirik
+    SURULEBILIR sayilir; onlari `blocked` etiketlemek serbest alani KUCULTUR
+    ve madde 15'in guvenli yonunde olsa da yer gercegini YANLIS yapardi.
+
+    ⚠ Madde 15 acisindan guvenli: hicbir piksel ENGEL'den ZEMIN'e gecmez;
+    yalnizca zemin pikselinin RENGI degisir.
+    """
+    zemin = np.zeros(kimlik.shape, np.uint8)
+    for kid, sinif in siniflar.items():
+        if sinif == 0:
+            zemin |= (kimlik == kid).astype(np.uint8)
+    if not zemin.any():
+        return tuval
+    ys, xs = np.nonzero(zemin)
+    n = int(len(ys) * ARENA_KIRINTI_YOGUNLUGU)
+    if n <= 0:
+        return tuval
+    # ⚠ `rng` Python'un `random.Random`i — NumPy DEGIL. Ilk yazimda
+    # `rng.choice(n, size=..., replace=False)` yazmistim; o NumPy API'sidir ve
+    # burada TypeError verir. `sample` dogru olanidir.
+    sec = rng.sample(range(len(ys)), min(n, len(ys)))
+    for i in sec:
+        y, x = int(ys[i]), int(xs[i])
+        koyu = rng.uniform(*ARENA_KIRINTI_KOYULUGU)
+        taban = tuval[y, x].astype(np.float32)
+        renk = tuple(float(v) for v in np.clip(taban - koyu, 0, 255))
+        if rng.random() < 0.22:                    # kisa cizik / catlak
+            uz = rng.randint(3, 9); ac = rng.uniform(0, math.pi)
+            dx, dy = int(uz * math.cos(ac)), int(uz * math.sin(ac))
+            cv2.line(tuval, (x, y), (x+dx, y+dy), renk, 1, cv2.LINE_AA)
+        else:                                      # kucuk tas/kirik
+            # ⚠ ILK denemede r 1..3 ve koyuluk 14..46 idi: kara-sapka hedefi
+            # TUTTU (16,06 vs 16,83) ama GORSEL BOZULDU — zemin iri siyah
+            # benekle doldu, arenaya benzemedi. Ozet istatistigi tutturup
+            # gorseli bozmak D-80'in uyardigi tuzaktir. Incetildi.
+            r = 1 if rng.random() < 0.82 else 2
+            cv2.circle(tuval, (x, y), r, renk, -1, cv2.LINE_AA)
+    return tuval
 HB_FIGUR_ZEMIN = (38, 38, 38)
 HB_BEYAZ = (242, 242, 242)
 HB_KIRMIZI = (25, 25, 210)
@@ -499,8 +576,8 @@ def zemin_izgarasi_ciz(tuval, x0, y0, x1, y1):
         cv2.line(katman, (x0, y), (x1, y), IZGARA_RENK, 1, cv2.LINE_AA)
     bolge = np.zeros(tuval.shape[:2], np.uint8)
     cv2.rectangle(bolge, (x0, y0), (x1, y1), 1, -1)
-    harman = cv2.addWeighted(tuval, 1.0 - IZGARA_OPAKLIK,
-                             katman, IZGARA_OPAKLIK, 0)
+    _op = ARENA_IZGARA_OPAKLIK if _ARENA_PROFILI else IZGARA_OPAKLIK
+    harman = cv2.addWeighted(tuval, 1.0 - _op, katman, _op, 0)
     tuval[bolge > 0] = harman[bolge > 0]
 
 
@@ -1191,7 +1268,14 @@ def sahne_uret(rng, banka, ayni_malzeme=0.45, dar_orani=0.28, kadraj=False,
 
     # T71 · SS2.1: 30x30 m MAVI IHA-IB. Izgaradan SONRA, nesnelerden ONCE —
     # yerdeki bir isarettir; moloz ve HB onun USTUNE biner.
-    iha_ib_kutusu = iha_ib_ciz(tuval, rng)
+    # T199: arena profilinde mavi ortu CIZILMEZ. Sartname figurunde boyle bir
+    # ortu YOKTUR; D-339 bu ortunun surulebilir zeminin %9,3'unu boyadigini
+    # olctu ve T75 yerlesiminin zaten yanlis oldugunu soyluyor. Kutu manifeste
+    # yine yazilir (sozlesme bozulmaz), yalniz GORUNTUYE cizilmez.
+    if _ARENA_PROFILI:
+        iha_ib_kutusu = iha_ib_ciz(tuval.copy(), rng)   # RNG cekilisleri AYNI
+    else:
+        iha_ib_kutusu = iha_ib_ciz(tuval, rng)
 
     # --- duvarlar: şerit sınırlarında (arena yapısı) ---
     for x in sinirlar:
@@ -1333,7 +1417,10 @@ def sahne_uret(rng, banka, ayni_malzeme=0.45, dar_orani=0.28, kadraj=False,
             "hedef_varyanti": hedef_varyanti,
             "hedef_onceki_gecilebilir_temas_px": int(hedef_temas_px),
             "hedef_pad_alani_px": int(hedef_pad_alani_px),
+            "profil": "arena" if _ARENA_PROFILI else "varsayilan",
         })
+    if _ARENA_PROFILI:
+        tuval = arena_ince_yapisi_ekle(tuval, kimlik, siniflar, rng)
     return tuval, kimlik, siniflar
 
 
@@ -1566,6 +1653,14 @@ def main():
     ap.add_argument("--banka", default=None,
                     help="doku bankasi dizini (varsayilan: betigin "
                          "yanindaki doku_bankasi/)")
+    ap.add_argument("--profil", choices=("varsayilan", "arena"),
+                    default="varsayilan",
+                    help="arena: sartname figurunun INCE YAPI yogunlugunu "
+                         "esitler (T199 · D-342). Zemin rengi/dokusu "
+                         "DEGISMEZ; cesitlilik daraltilmaz.")
+    ap.add_argument("--kirinti-yogunlugu", type=float, default=None,
+                    help="ARENA profili kirinti yogunlugunu gecersiz kil "
+                         "(KALIBRASYON icin; varsayilan sabitten gelir)")
     ap.add_argument("--bariyer-acisi", type=float, default=0.0,
                     help="bariyer kolunun yataya gore AZAMI egimi (derece). "
                          "0 = ozgun davranis (RNG akisi degismez, kabul "
@@ -1581,6 +1676,15 @@ def main():
         global BANKA
         BANKA = Path(args.banka)
 
+    global _ARENA_PROFILI, ARENA_KIRINTI_YOGUNLUGU
+    _ARENA_PROFILI = (args.profil == "arena")
+    if args.kirinti_yogunlugu is not None:
+        ARENA_KIRINTI_YOGUNLUGU = float(args.kirinti_yogunlugu)
+    if _ARENA_PROFILI:
+        print("  PROFIL: arena — izgara opakligi "
+              f"{ARENA_IZGARA_OPAKLIK} · kirinti yogunlugu "
+              f"{ARENA_KIRINTI_YOGUNLUGU} (hedef kara-sapka "
+              f"{ARENA_ZEMIN_KARA_SAPKA_HEDEFI})")
     rng = random.Random(args.seed)
     np.random.seed(args.seed)
     banka = banka_yukle()
@@ -1658,6 +1762,7 @@ def main():
                 "ayni_malzeme_orani": args.ayni_malzeme_orani,
                 "dar_orani": args.dar_orani,
                 "bariyer_acisi": args.bariyer_acisi,
+                "profil": args.profil,
                 "tuval": TUVAL,
                 "boyut": BOYUT,
                 "siniflar": {"0": "traversable", "1": "blocked"},

@@ -24423,3 +24423,55 @@ kusurdu ve düzeltildi — ama onu **kök neden** ilan etmek için yeterli
 kanıt yoktu. Kök neden iddiası, ayırt edici bir ölçümle sınanmadan
 yazılmamalıydı. D-339/D-341 kayıtta **bırakılıyor** ki yanılgının seyri
 görünsün.
+
+---
+
+### D-343 · T199 ARENA PROFİLİ kuruldu — hedefin %78'i, TAM PARİTE TUTTURULMADI (2026-08-28)
+
+**Hedef (D-342'de ölçüldü).** Şartname figürünün **zemin bölgesinde** 9×9
+kara-şapka ortalaması **16,83** (>10 olan piksel %53,6); bizim sentetiğimiz
+**7,82** (%24,2) — 2,15 kat fark.
+
+**Yapılanlar (arena profili, `--profil arena`).**
+1. Izgara opaklığı 0,30 → **0,52** (figürün ızgarası belirgindir).
+2. Zemine ince **kırıntı/çizik** dokusu (`arena_ince_yapisi_ekle`).
+   Etiketlere **dokunmaz**: yalnız zemin pikselinin rengi değişir, hiçbir
+   piksel ENGEL'den ZEMİN'e geçmez (madde 15 güvende).
+3. 🔴 **Mavi İHA-İB örtüsü arena profilinde ÇİZİLMİYOR.** Şartname figüründe
+   böyle bir örtü yoktur; D-339 örtünün sürülebilir zeminin %9,3'ünü
+   boyadığını ölçtü, T75 yerleşimin zaten yanlış olduğunu söylüyordu.
+   Kutu manifeste **yine yazılıyor** (sözleşme bozulmuyor), RNG çekilişleri
+   **aynı sırayla** tüketiliyor.
+
+**KALİBRASYON — süpürüldü, tahmin edilmedi.**
+
+| kırıntı biçimi | yoğunluk → kara-şapka |
+|---|---|
+| iri (r 1–3, koyuluk 14–46) | 0,004→10,28 · 0,012→13,30 · **0,019→16,06** · 0,030→22,26 |
+| ince (r ≈1, koyuluk 6–20) | 0,019→9,75 · 0,045→11,92 · **0,075→13,16** |
+
+**🔴 İRİ KIRINTI HEDEFİ TUTTURDU (16,06 vs 16,83, sapma %4,6) AMA
+REDDEDİLDİ.** Görsel denetimde zemin **iri siyah benekle** doldu ve arenaya
+hiç benzemedi. Özet istatistiği tutturup görseli bozmak D-80'in uyardığı
+tuzaktır; sayı tuttuğu için kabul etmedim.
+
+**Seçilen: ince kırıntı, yoğunluk 0,075 → 13,16 (hedefin %78'i).** Görsel
+makul: zemin toprak tonunda, ızgara görünür, moloz adaları gri beton,
+mavi örtü yok.
+
+**TAM PARİTE TUTTURULMADI ve bu bilerek böyle bırakıldı.** Kalan %22'lik
+fark büyük olasılıkla zeminden değil, arenanın **iri beton molozunun ince
+kırıntısından** geliyor. Onu zemine daha çok benek ekleyerek taklit etmek
+**yanlış şeyi öğretirdi**.
+
+**BU BİR ÇÖZÜM İDDİASI DEĞİLDİR.** Profilin T192'yi kapatıp kapatmadığı
+**bilinmiyor**; tek yol eğitip ölçmektir. Ölçüt D-340'ta **eğitimden önce**
+yazıldı: figürde **rota üretiliyor mu** (ikili) + zincirin 10 kapısı mevcut
+eşiklerle geçilmeli. Geçmezse aday **reddedilir**, v36 kalır.
+
+**Bu turda YAPILMAYAN, bilerek dışarıda bırakılan.** Koridor sınırındaki
+düz gri "duvar" çubukları (`51_sentetik_arena.py:1202`) hâlâ duruyor;
+arenada böyle bir işaret **yok** ve model şeritleri onlardan buluyor
+olabilir. Kaldırmak K7'yi (şerit doğruluğu) doğrudan etkileyebileceği için
+**bu deneye katılmadı** — değişken sayısı ikiye çıkarsa sonuç
+yorumlanamaz. İkinci tura bırakıldı.
