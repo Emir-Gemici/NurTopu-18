@@ -23683,3 +23683,27 @@ Zemin kareleri başarıya göre ölçüldü: 22 karenin 8'i %100, 6'sı %0–25.
 ⚠ **G11'in ölçüm tabanı DEĞİŞTİRİLMEDİ:** eşik (≥45/88) 88 karelik kümeye
 göre ön kayıtlıdır; kümeyi ölçüm ortasında değiştirmek kapıyı geçersiz
 kılardı. v2 ayrı durur ve ancak eğitim hükmünden **sonra** değerlendirilir.
+#### 6. Kalibrasyon iddiası ÖLÇÜLDÜ (iddia bırakılmadı)
+
+*"Az güvenlilik"* bir tahmindi; güven eşiği taranarak sınandı — 88 kompozit kare:
+
+| model | conf | rota | MASKE_YOK | zemin ort. |
+|---|---|---|---|---|
+| v36 | 0,30 | 49/88 | 5 | %42,1 |
+| v36 | 0,15 | 46/88 | 4 | %45,4 |
+| v36 | 0,05 | 42/88 | **0** | %52,9 |
+| aday ep27 | 0,30 | 31/88 | **23** | %25,3 |
+| aday ep27 | 0,15 | 29/88 | 7 | %44,9 |
+| aday ep27 | 0,05 | 26/88 | **0** | %58,3 |
+
+**Doğrulanan:** aday yeteneğini KAYBETMEMİŞ — maskeler conf 0,05'te tamamen
+geri geliyor (MASKE_YOK 23 → 0). Yani sorun **az güvenliliktir**, körlük değil.
+
+**Çürütülen (kendi beklentim):** düşük eşik rota sayısını **KURTARMIYOR**
+(31 → 29 → 26). Eşik düşünce zemin maskesi şişiyor (%25 → %58) ve bu kez
+`ZEMIN_MASKESI_SUPHELI` ateşliyor. Yani conf 0,30 **her iki model için de**
+doğru çalışma noktası ve aday bu aşamada kompozitte **gerçekten zayıf**.
+
+> Sonda düzelip düzelmeyeceği **ölçülecektir**; burada iddia edilmiyor.
+> `save_period=5` sayesinde ara checkpoint'ler duruyor, gerekirse model
+> **kapıyla** seçilir (val mAP ile değil — §4).
