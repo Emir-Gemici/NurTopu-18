@@ -1674,7 +1674,10 @@ def _analyze_path_cekirdek(trav_mask, n_waypoints=8, return_clean=False,
     # bulunamazsa UYDURULMAZ, `HEDEF_YOK` ile cekimser kalinir.
     hb_tohumu = None
     if goruntu is not None:
-        hb = hb_konumu(goruntu)
+        # T198 · D-344: olcek BILINIYORSA fiziksel denetim acilir. HB 2 m x
+        # 2 m'dir; bandin disindaki aday HB SAYILMAZ. mpp yoksa davranis
+        # AYNEN eskisi gibi (geriye donuk uyum).
+        hb = hb_konumu(goruntu, mpp=mpp)
         if hb is None:
             return _don(None, 0.0, [], clean, hedef_yok_reddi(), None)
         hx, hy, hw, hh = hb["kutu"]

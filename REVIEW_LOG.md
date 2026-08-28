@@ -24475,3 +24475,195 @@ arenada böyle bir işaret **yok** ve model şeritleri onlardan buluyor
 olabilir. Kaldırmak K7'yi (şerit doğruluğu) doğrudan etkileyebileceği için
 **bu deneye katılmadı** — değişken sayısı ikiye çıkarsa sonuç
 yorumlanamaz. İkinci tura bırakıldı.
+
+---
+
+### D-344 · 📋 ÖN KAYIT — T198 HB FİZİKSEL ÖLÇEK DENETİMİ · ölçümden ÖNCE (2026-08-28)
+
+**Kusur (D-338).** `hb_konumu`, kare-kırmızı bir çöpü HB pedi sanabiliyor:
+ölçüldü, yerdeki buruşuk kırmızı-beyaz ambalaj 38×31 px kutuyla "ped" oldu.
+Mevcut süzgeçler — T67 bariyer tümleyenliği, karelik (1,6), asgari alan
+(`120/640²`) — **hiçbiri fiziksel değildir**. Üretim 512×512'de asgari eşik
+yalnız **77 px (~9×9)**.
+
+**Üretimdeki sonucu.** HB bulunamazsa `analyze_path` `HEDEF_YOK` ile
+**çekimser kalır** (doğru). Yanlış pozitif bu çekimserliği **yanlış varış
+noktasına** çevirir → §2.1 **0 puan**. Ayrıca `mpp_hb_pedinden` ölçeği
+pedden türettiği için yanlış ped **yanlış mpp** demektir; hata `r_gerekli_px`
+üzerinden yayılır.
+
+**YAPILACAK.** HB **2 m × 2 m**'dir (§2.1). `mpp` biliniyorsa pedin kenarı
+**≈ `HB_KENAR_M / mpp`** px olmalıdır. `hb_konumu`'na **isteğe bağlı** `mpp`
+eklenecek; verilirse bu banda uymayan aday **HB sayılmayacak**.
+
+⚠ **Geriye dönük uyum şart:** `mpp` **verilmezse davranış AYNEN KALIR**.
+Mevcut tüm çağrı yerleri (ölçüm betikleri dâhil) etkilenmez.
+
+**TOLERANS NASIL BELİRLENECEK — sayı görülmeden yazılıyor.** Tolerans
+**uydurulmayacak**; şu kuralla **ölçümden türetilecek**:
+
+> Kabul kümesindeki (`sentetik_arena_kadraj_t66`, n=260) **GERÇEK** pedler
+> için `bulunan_kenar_px / (HB_KENAR_M / mpp)` oranı hesaplanacak. Tolerans,
+> bu oranların **≥ %99'unu** içeren en dar **simetrik log-bant** olacak;
+> sonra güvenlik payı için **1,15 ile genişletilecek**.
+
+Yani bant, **gerçek pedlerin ölçülen dağılımından** gelir; ambalaj örneğine
+bakarak seçilmez.
+
+**KABUL ŞARTLARI — üçü birden tutmalı.**
+1. Kabul kümesindeki gerçek pedlerin **≥ %99'u** yeni süzgeçten geçmeli
+   (yani kapı gerçek pedi **kaybetmemeli**).
+2. D-338'deki ambalaj örneği (1280×720 karede 38×31 px kutu) **REDDEDİLMELİ**.
+3. **10 kapılı zincir mevcut eşiklerle geçilmeli** — v36 hâlâ
+   `ÜRETİME ALINIR` demeli.
+
+**Biri tutmazsa değişiklik GERİ ALINIR** ve nedeni buraya yazılır. Şart 1
+tutmazsa tolerans **gevşetilmez** — kapı bağlanmaz, çünkü gerçek pedi
+kaybetmek yanlış pediden **daha kötüdür** (§2.2.6 İKA'nın HB'ye girmesi
+gerekir).
+
+---
+
+### D-345 · T198 HB ÖLÇEK DENETİMİ eklendi — şart 1 tam, ŞART 2 KISMİ, ön kaydım EKSİK YAZILMIŞTI (2026-08-28)
+
+**Yapılan.** `hb_konumu(bgr, mpp=None)` — `mpp` verilirse pedin kenarı
+`HB_KENAR_M / mpp`'ye göre denetlenir; banda uymayan aday HB sayılmaz.
+Adaylar büyükten küçüğe taranır, banda uyan **ilk** aday seçilir.
+`analyze_path` çağrısına `mpp` bağlandı (`rpi_inference.py:1677`).
+
+⚠ **Geriye dönük uyum korundu:** `mpp` verilmezse davranış **aynen** eskisi
+gibidir; mevcut bütün çağrı yerleri etkilenmez.
+⚠ **Serbest alanı büyütmez:** denetim yalnızca bir adayı **reddedebilir**;
+reddedilirse `analyze_path` `HEDEF_YOK` ile çekimser kalır (fail-closed).
+
+**BANT UYDURULMADI.** D-344'teki kuralla ölçümden türetildi. Kabul kümesinde
+(n=260) gerçek pedlerin `bulunan_kenar / beklenen_kenar` oranı:
+
+| %0,5 | medyan | %99,5 |
+|---|---|---|
+| 1,016 | 1,055 | 1,094 |
+
+260/260 karede ped bulunuyordu. En dar simetrik log-bant [1,016 · 1,094],
+güvenlik payı 1,15 ile → **`HB_OLCEK_BANDI = (0,883 · 1,258)`**.
+
+**ŞART 3 — SAĞLANDI.** 10 kapılı zincir mevcut eşiklerle koşuldu:
+`VERDIKT: ÜRETİME ALINIR — D-107'nin altı ölçütü + K6 + K7 + K5A (açılı
+nüfus) + K8 (gerçek kare) sağlandı.` Genel kapı `test_rota_sentetik`
+**15/15**. Ölçek denetimi üretim kararını **bozmuyor**.
+
+**ŞART 1 — SAĞLANDI (tam).** Ölçek denetimi açıkken kabul kümesinde
+**260/260 = %100,0** gerçek ped hâlâ bulunuyor. Kapı gerçek pedi
+**kaybetmiyor**.
+
+**🔴 ŞART 2 — KISMİ. Ve ön kaydım eksik yazılmıştı.** D-344'te *"ambalaj
+örneği reddedilmeli"* dedim ama **hangi `mpp` ile** olduğunu yazmadım — o
+DJI karesinin gerçek ölçeği **bilinmiyor**. Eksikliği örtmek yerine ölçümün
+tamamını yazıyorum:
+
+| varsayılan görüş | mpp | beklenen kenar | oran | sonuç |
+|---|---|---|---|---|
+| ~30 m | 0,0312 | 64,0 px | 0,54 | **REDDEDİLDİ** |
+| ~40 m | 0,0414 | 48,3 px | 0,71 | **REDDEDİLDİ** |
+| ~50 m | 0,0516 | 38,8 px | **0,89** | **PED SAYILDI** ← bandın alt sınırı 0,883 |
+| ~80 m | 0,0828 | 24,2 px | 1,43 | **REDDEDİLDİ** |
+| ~110 m | 0,1141 | 17,5 px | 1,97 | **REDDEDİLDİ** |
+
+Beş ölçekten **dördünde** reddediliyor; birinde bandı **kıl payı** geçiyor.
+
+**İLKESEL SINIR — açıkça yazılıyor.** Fiziksel ölçek denetimi, **doğru
+boyuttaki** bir sahtekârı ilkesel olarak ayıramaz. Bu değişiklik yanlış
+pozitif riskini **azaltır, sıfırlamaz**. Şeklin kendisini (kırmızı **H**
+harfi) doğrulayan bir ölçüt olmadan bu boşluk kapanmaz.
+
+**KARAR.** Değişiklik **korunuyor**, ama **T198 KAPATILMIYOR**. Gerekçe
+açık: şart 1 tam sağlandı (gerçek ped hiç kaybedilmiyor) ve yanlış pozitif
+riski belirgin biçimde azaldı; bunu geri almak projeyi **kötüleştirirdi**.
+Ama şart 2 tam tutmadığı için "kusur kapandı" **denmiyor**. Kalan iş —
+**H harfinin kendisini doğrulama** — T198'de açık kalıyor.
+
+⚠ Bu, ön kaydın "biri tutmazsa geri al" kuralının **gevşetilmesi değildir**:
+o kural, tutmayan şartın **sessizce geçilmesine** karşı yazılmıştı. Burada
+şart tutmadı, **yazıldı**, ve iş **açık bırakıldı**.
+
+---
+
+### D-346 · ⚠ GERÇEK KARE KÜMELERİMİZDE 189 GİZLİ KOPYA var — Roboflow yüklemesi ortaya çıkardı (2026-08-28)
+
+**Nasıl çıktı.** 8 gerçek kümeden ad bazında tekilleştirilmiş **856** çift
+Roboflow'a yüklendi; yükleyici **856 başarılı / 0 hatalı** raporladı (her
+çağrı `success: true` ve görüntü kimliği döndü). Ama partide **667** görüntü
+göründü.
+
+**Sebep ölçüldü — yükleme kusuru DEĞİL.** sha256 ile:
+
+| ölçüm | değer |
+|---|---|
+| ad bazında tekil | 856 |
+| **içerik bazında tekil** | **667** |
+| içerik kopyası | **189** |
+| birden çok ada sahip içerik | 63 (bazıları **4** ayrı adla) |
+
+Roboflow içerik özetiyle tekilleştiriyor; **doğru davranıştır**. Kusur
+bizim tarafımızda: `dji_v7`, `dji_kirsal*`, `gercek_otopark` kümeleri aynı
+kareleri **farklı adlarla** taşıyor (çoğu `gercek_otopark`'ın WhatsApp
+türevli kareleri).
+
+**Bu neden önemli.** Kopyalar yalnız yer kaplamıyor:
+- **Küme büyüklüğü olduğundan büyük görünüyor.** "862 gerçek etiketli kare"
+  diyorduk; içerik olarak **667**. %22 şişme.
+- Aynı kare eğitimde birden çok kez geçerse o kareye **ağırlık** verilmiş
+  olur — istenmeyen, ölçülmemiş bir örnekleme sapması.
+- Eğitim/doğrulama ayrımı **ad bazında** yapılıyorsa aynı içerik hem
+  eğitimde hem val'de bulunabilir → **sızıntı**. Bu HENÜZ DOĞRULANMADI.
+
+⚠ **Bu kayıt sızıntı OLDUĞUNU İDDİA ETMİYOR.** Yalnız kopyaların var
+olduğunu ölçüyor. Eğitim/val sınırını aşan kopya olup olmadığı **ayrıca
+ölçülmelidir** → **T200**.
+
+**Düzeltme (rapor).** Kullanıcıya önce "856/856" dedim; bu **yükleme
+çağrısı** sayısıydı, **tekil kare** sayısı değil. Doğrusu: Roboflow'da
+**667 tekil gerçek kare** var. Sayı düzeltildi.
+
+---
+
+### D-347 · ✅ T200 CEVAPLANDI: train/val SIZINTISI YOK — ölçüldü (2026-08-28)
+
+D-346'daki 189 kopya "doğrulama sayılarımız sızıntılı mı?" sorusunu
+doğurmuştu. Ölçüldü, cevap **hayır**.
+
+**1. Küme içi (sha256, bayt düzeyi).** Dokuz kümede `images/train` ile
+`images/val` içerik kesişimi:
+
+| küme | train | val | ortak |
+|---|---|---|---|
+| dji_v7 | 413 | 73 | **0** |
+| dji_kirsal | 101 | 59 | **0** |
+| dji_kirsal_dalga2 | 108 | 52 | **0** |
+| gercek_otopark | 56 | 11 | **0** |
+| gercek_kompozit | 7 | 2 | **0** |
+| sentetik_arena | 2700 | 300 | **0** |
+| sentetik_arena_bariyer_acili | 2160 | 240 | **0** |
+| copy_paste_t127 | 344 | 96 | **0** |
+| rescuenet_2sinif_engelli | 3502 | 440 | **0** |
+
+**Toplam: 0.**
+
+**2. Karışım düzeyi — asıl risk buydu.** Eğitim karışımı `dji_v7_x5/train`
+kullanıyor ve doğrulama `dji_v7/val`. `x5` artırılmış kopyadır, yani
+**bayt-eşit olmaz** ve sha256 onu yakalayamaz. Bu yüzden **ad kökünden**
+bakıldı (`__x00` gibi ekler soyularak):
+
+> **73 val karesinin kök adı, 2065 karelik `dji_v7_x5/train` içinde
+> `0` kez geçiyor.** Gevşek önek eşleşmesi de **0**.
+
+Yani doğrulama kareleri artırma hattına **hiç girmemiş**.
+
+**Sonuç.** K1/K7 dâhil doğrulama sayılarımız bu yönden **sağlam**. 189
+kopya bir **küme hijyeni** meselesidir (sayı %22 şişkin, örnekleme
+sapması ihtimali), **doğrulama bütünlüğü** meselesi değildir.
+
+⚠ Sınır: bu ölçüm **ad ve bayt** düzeyindedir. İçerik olarak *çok benzer
+ama aynı olmayan* kareler (aynı uçuşun komşu kareleri) hâlâ hem eğitimde
+hem doğrulamada olabilir; bu, kare-tabanlı ayrımın **bilinen** ve bu
+projede zaten kabul edilmiş sınırıdır (D-256 §5: alan ayrımı ≠ oturum
+ayrımı).

@@ -1149,6 +1149,18 @@ def ince_beton_serit_maskesi(bgr):
 HB_KENAR_M = 2.0                    # sartname SS2.1
 HB_KARE_TOLERANSI = 1.6             # en/boy bu araligin disindaysa HB DEGIL
 HB_ASGARI_ALAN_ORANI = 120.0 / (640.0 * 640.0)   # ~0,00029 · gurultu suzgeci
+
+# T198 · D-344: HB FIZIKSEL OLCEK BANDI. Yukaridaki asgari alan olcutu KAREYE
+# ORANTILIDIR, fiziksel degil — uretim 512x512'de esik yalniz 77 px (~9x9) ve
+# kare-kirmizi bir COP bu suzgecten gecebiliyor (D-338: yerdeki burusuk
+# kirmizi-beyaz ambalaj 38x31 px kutuyla "ped" oldu). HB 2 m x 2 m'dir (SS2.1),
+# yani `mpp` biliniyorsa pedin kenari ~ HB_KENAR_M / mpp olmalidir.
+#
+# BANT UYDURULMADI. ON_KAYIT D-344'teki kuralla OLCUMDEN turetildi: kabul
+# kumesindeki (n=260) GERCEK pedlerin `bulunan_kenar / beklenen_kenar` orani
+#     %0,5: 1,016 · medyan 1,055 · %99,5: 1,094      (260/260 ped BULUNDU)
+# En dar simetrik log-bant [1,016 · 1,094]; guvenlik payi 1,15 ile:
+HB_OLCEK_BANDI = (0.883, 1.258)      # bulunan_kenar / (HB_KENAR_M / mpp)
 HB_KAPAMA_ORANI = 10.0 / 640.0      # cerceve + H harfini TEK parcaya birlestir
 
 
@@ -1209,11 +1221,22 @@ def hb_maskesi(bgr):
     return ped
 
 
-def hb_konumu(bgr):
+def hb_konumu(bgr, mpp=None):
     """HB merkezi, kutusu ve piksel kenari. Bulunamazsa None.
 
     Birden fazla aday varsa EN BUYUK secilir (sahnede tek HB vardir; coklu
     aday gurultudur ve en buyugu en guvenilir olandir).
+
+    mpp verilirse (T198 · ON_KAYIT D-344) FIZIKSEL OLCEK DENETIMI uygulanir:
+    HB 2 m x 2 m oldugundan kenari ~ `HB_KENAR_M / mpp` px olmalidir;
+    `HB_OLCEK_BANDI` disinda kalan aday HB SAYILMAZ.
+
+    ⚠ GERIYE DONUK UYUM: `mpp` VERILMEZSE davranis AYNEN eskisi gibidir.
+    Mevcut butun cagri yerleri (olcum betikleri dahil) etkilenmez; denetim
+    yalniz olcegi BILEN cagiran icin acilir.
+
+    ⚠ Bu denetim serbest alani BUYUTMEZ: yalnizca bir adayi REDDEDEBILIR.
+    Reddedilirse `analyze_path` HEDEF_YOK ile cekimser kalir — fail-closed.
     """
     import numpy as _np
     try:
@@ -1226,7 +1249,24 @@ def hb_konumu(bgr):
     n, lbl, st, mrk = _cv2.connectedComponentsWithStats(ped, 8)
     if n <= 1:
         return None
-    i = 1 + int(_np.argmax(st[1:, 4]))
+    # Adaylar BUYUKTEN kucuge; olcek denetimi acikken banda uyan ILK aday
+    # secilir. Denetim kapaliyken (mpp yok) davranis eskisiyle AYNIDIR:
+    # en buyuk aday.
+    sira = sorted(range(1, n), key=lambda k: -int(st[k, 4]))
+    secilen = None
+    for i in sira:
+        x, y, bw, bh, alan = (int(v) for v in st[i][:5])
+        if mpp is not None and mpp > 0:
+            beklenen = HB_KENAR_M / float(mpp)
+            if beklenen > 0:
+                o = ((bw + bh) / 2.0) / beklenen
+                if not (HB_OLCEK_BANDI[0] <= o <= HB_OLCEK_BANDI[1]):
+                    continue          # fiziksel olcege uymuyor -> HB DEGIL
+        secilen = i
+        break
+    if secilen is None:
+        return None                   # aday var ama HICBIRI 2 m'lik ped degil
+    i = secilen
     x, y, bw, bh, alan = (int(v) for v in st[i][:5])
     return {
         "merkez": (float(mrk[i][0]), float(mrk[i][1])),
