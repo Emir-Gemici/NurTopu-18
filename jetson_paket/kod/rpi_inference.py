@@ -2159,7 +2159,18 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
 
     # T143 (D-284): eskiden `if not ret: break` — ilk dusen karede SESSIZ bitis.
     for frame in kamera_kareleri(cap, ozet):
-        frame = cv2.flip(frame, 1)
+        # 🔴 D-349: BURADA `frame = cv2.flip(frame, 1)` VARDI ve KALDIRILDI.
+        # Projenin ILK commit'inden (17258f8) geliyordu, aciklamasi yoktu —
+        # muhtemelen dizustu web kamerasinda goruntunun "dogal" gorunmesi icin
+        # konmus bir AYNA kolayligi. Ama bu SAHA YOLUDUR (jetson_paket'te de
+        # var, CONTRACTS izlenebilirlik tablosu satir 1) ve kareyi aynalamak
+        # SOL ile SAGI takas eder. OLCULDU (kabul kumesi, v36, uretim cagri
+        # sirasi): acik yol 1 ya da 3 olan 16 karenin 15'i (%93,8) TAKAS
+        # oluyordu (1->3: 9 kare, 3->1: 6 kare); orta serit aynaya simetrik
+        # oldugu icin etkilenmiyordu.
+        # Sahada acik guzergah SOL ise IKA SAGA yonlendirilirdi.
+        # Sartname SS2.1: yanlis guzergah = 0 PUAN.
+        # ⚠ GERI KOYMAYIN. Nobetci: tests/test_t201_kamera_yonu.py
         sq, small, icerik = _preprocess(frame)
         orig_h, orig_w = sq.shape[:2]
 

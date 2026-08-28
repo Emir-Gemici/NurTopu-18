@@ -1,9 +1,9 @@
 {
  "taban": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
  "degrees_gerekce": "v36 degrees=0 ile egitildi; model bariyeri 60/120/135 derecede %0,0 goruyordu (D-324)",
- "data": "O:\\navitas\\dataset\\karisim_bariyer_v8.yaml",
+ "data": "O:\\navitas\\dataset\\karisim_arena_profil_t199.yaml",
  "epochs": 600,
- "time": 14.0,
+ "time": 11.0,
  "imgsz": 512,
  "batch": 12,
  "workers": 8,

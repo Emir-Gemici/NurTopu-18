@@ -24698,3 +24698,64 @@ dizinleri, ignore kuralı yazılmadan önce commit edilebiliyor. Yeni bir
 Kümenin yeniden üretme komutu `51_sentetik_arena.py --profil arena
 --bariyer-acisi 90 --seed 21` olarak D-343'te zaten kayıtlı; veri
 kaybolmuyor.
+
+---
+
+### D-349 · 🔴🔴 SAHA KAMERA YOLU HER KAREYİ AYNALIYOR — açık yol 1 ile 3 TAKAS oluyor, §2.1 → 0 PUAN (2026-08-28)
+
+**Bulunuş.** Çok ajanlı şartname risk taramasında (53 ajan, 22 bulgu
+çürütmeden sağ çıktı) en üstteki iddia buydu. Ajana **güvenilmedi**, kendim
+okudum ve **ölçtüm**.
+
+**Kusur.** `codes/rpi_inference.py:2162`:
+
+```python
+for frame in kamera_kareleri(cap, ozet):
+    frame = cv2.flip(frame, 1)          # ← AÇIKLAMASI YOK
+    sq, small, icerik = _preprocess(frame)
+```
+
+Dosyadaki **tek** flip. Kare, tüm karar hattına girmeden **yatay aynalanıyor**.
+
+**Bu SAHA YOLUDUR — demo değil.**
+- `jetson_paket/kod/rpi_inference.py:2138` içinde **aynen var**.
+- `CONTRACTS.md` izlenebilirlik tablosu satır 1: *"Kamera kaynağı →
+  `rpi_inference.py` (`run_camera`)"*.
+- T160/D-298: *"halkanın HÜKMÜ artık ÜRETİM yolundan gelir …
+  **`run_camera` birebir sırası**"*.
+
+**ÖLÇÜLDÜ** (kabul kümesi, v36, üretim çağrı sırası; her kare hem özgün hem
+`cv2.flip(im, 1)` ile koşuldu):
+
+| özgün yol → aynalanmış yol | kare |
+|---|---|
+| 2 → 2 (orta şerit; aynaya **simetrik**) | 23 |
+| **1 → 3** | **9** |
+| **3 → 1** | **6** |
+| 1 → 1 | 1 |
+
+**Açık yol 1 veya 3 olan 16 karenin 15'i (%93,8) TAKAS oluyor.** Orta şerit
+etkilenmiyor çünkü ayna altında değişmez.
+
+**Sonuç.** Sahada açık güzergâh sol ise İKA **sağa** yönlendirilir. Şartname
+§2.1: *yanlış güzergâh = **0 PUAN***. Üç senaryonun ikisinde (yol 1 ve yol 3)
+sistem **sistematik olarak yanlış** yayın yapardı.
+
+**Neden bugüne kadar hiçbir kapı yakalamadı.** Kabul zincirinin **tamamı**
+`analyze_path`'i **doğrudan** çağırıyor; hiçbiri `run_camera` döngüsünden
+geçmiyor. Yani ölçtüğümüz karar yolu ile **sahada koşan** karar yolu
+arasında, ölçülmemiş bir satır vardı. T160 "üretim yolu birebir" derken bu
+satır **kapsam dışında** kalmış.
+
+**Kökeni.** `git log -S` ile arandı: satır **`17258f8 start project`**'ten
+geliyor — projenin ilk commit'i. Büyük olasılıkla dizüstü web kamerasında
+görüntünün "doğal" görünmesi için konmuş bir **ayna kolaylığı**; hiç
+gerekçelendirilmemiş, hiç sorgulanmamış ve saha hattına taşınmış.
+
+**Düzeltme.** Satır **kaldırıldı**. Geri dönmesini engelleyecek nöbetçi test
+eklendi: asimetrik bir kare `run_camera`'nın **birebir** çağrı sırasından
+geçirilir ve yayınlanan şerit, aynalanmamış karardan **farklı olamaz**.
+
+⚠ **Ders.** "Üretim yolu birebir kopyalandı" demek yetmiyor; **kopyanın
+kendisi de** ölçülmeli. Bir satırlık fark, on kapının hepsini geçen bir
+sistemi sahada yanlış yapabiliyor.
