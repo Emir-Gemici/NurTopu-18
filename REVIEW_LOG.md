@@ -23619,3 +23619,67 @@ sandı. Kontrol **model adı hücresine** daraltıldı — satırın geri kalan�
 bilgi taşıyabilir. *(Kapıyı gevşetmek değil, doğru şeyi ölçmek.)*
 
 **Bozulmama:** `unittest discover -s tests` **1241 OK** (2 skip; 1230 → +11).
+
+### D-328 · v8 EĞİTİMİ — ERKEN SİNYAL: `degrees=180` bariyer körlüğünü **TEK EPOCH'TA** kapattı; kompozitte geçici gerileme (2026-08-28, epoch 27)
+
+**Ön kayıt:** `results/gece_20260828/ON_KAYIT.md` §4 (G4/G5) ve §8 (G11).
+
+#### 1. G4 — kök neden teşhisi ÖLÇÜMLE doğrulandı
+Şartname karesi 15°'lik adımlarla 0–165° döndürülüp bariyer bölgesinde ENGEL
+oranı ölçüldü (eşik %60, geçmesi gereken ≥10/12):
+
+| model | G4 | kör açılar |
+|---|---|---|
+| v36 (taban) | **7/12** | 60° · 105° · 120° · 135° → **%0,0** |
+| v8 **epoch 0** | 11/12 | 90° |
+| v8 best (ep~3) | **12/12** | — |
+| v8 epoch 20 | 11/12 | 90° |
+| v8 last (ep 27) | **12/12** | en düşük %94 |
+
+**Tek epoch** yetti. Yani kusur veri ya da mimari değil, **eksik artırımdı**:
+v36 `degrees=0.0` ve `flipud=0.0` ile eğitilmişti (D-324 §4).
+
+#### 2. G5 — kabul kümesinde de İYİLEŞME
+| model | doğru/rota üreten | doğruluk |
+|---|---|---|
+| v36 | 84/85 | %98,82 |
+| v8 ep27 | **86/87** | **%98,85** |
+
+Rota üreten kare **85 → 87** (88 üzerinden). Yani şerit doğruluğu korunurken
+kapsama arttı.
+
+#### 3. 🔴 G11 — kompozitte GERİLEME (49/88 → 31/88), ama HÜKÜM İÇİN ERKEN
+Ret sebeplerinin kırılımı sebebi söylüyor:
+
+| sebep | v36 | v8 ep27 |
+|---|---|---|
+| **MASKE_YOK** | 5 | **23** |
+| ZEMIN_MASKESI_SUPHELI | 18 | 12 (iyileşti) |
+| UC_BANT_TEMAS_YOK | 11 | 18 |
+| GORUS_HATTI_KOPUK | 5 | 4 |
+
+Aday, 23 karede `conf 0,30`'da **hiç maske üretmiyor**. Bu, eğitimin
+**ortasında** beklenen bir kalibrasyon düşüşüdür: epoch 27'de öğrenme oranı
+hâlâ yüksek ve **mozaik artırımı tam açık**. Reçetede `cos_lr = true` (LR 269
+epoch boyunca iner) ve `close_mosaic = 20` (son 20 epoch mozaiksiz) var —
+yani **eğitimin sonu tam da bu kalibrasyonu düzelten kısımdır**.
+
+**Karar:** eğitim sonuna kadar koşar. Erken durdurma, düzelmesi beklenen bir
+kusuru kalıcı sanmak olurdu. ⚠ Bu bir tahmindir; **bitişte yeniden ölçülecek**
+ve düzelmezse kayda öyle geçecek.
+
+#### 4. ⚠ val mAP BU İŞİ ÖLÇMÜYOR
+`best.pt` epoch ~3'te donmuş (v36'da da epoch 2'ydi). Ama val kümesi **73
+gerçek DJI karesidir** ve bariyer açısını, kompoziti ya da şerit doğruluğunu
+**ölçmez**. Bu yüzden model seçimi val mAP'e göre değil, **ön kayıtlı
+kapılara** göre yapılacaktır (ön kayıt §4 zaten böyle diyor). `save_period=5`
+sayesinde ara checkpoint'ler duruyor ve kapıyla seçilebilir.
+
+#### 5. Kompozit v2 (ayrı küme, gate DEĞİŞTİRİLMEDİ)
+Zemin kareleri başarıya göre ölçüldü: 22 karenin 8'i %100, 6'sı %0–25.
+≥%50 olan **14 kare** seçilip 9'ar kopyayla yeniden kuruldu →
+**126 kare, 0 atlandı** (`data/arena_kompozit_v2`).
+
+⚠ **G11'in ölçüm tabanı DEĞİŞTİRİLMEDİ:** eşik (≥45/88) 88 karelik kümeye
+göre ön kayıtlıdır; kümeyi ölçüm ortasında değiştirmek kapıyı geçersiz
+kılardı. v2 ayrı durur ve ancak eğitim hükmünden **sonra** değerlendirilir.
