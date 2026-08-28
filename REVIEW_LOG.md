@@ -24798,3 +24798,46 @@ türetildiğinde **çıktı yazan her sabit** tek tek gözden geçirilmelidir:
 `YAML`, `CIKTI`, `KOSUM_ADI`, `project`, `name`. Bunlardan biri
 kaynaktakiyle aynı kalırsa yeni iş **eskisinin üstüne yazar** ve bunu
 hiçbir kapı söylemez.
+
+---
+
+### D-351 · ⚠ DÜZELTME: D-338/D-345'te tarif ettiğim ÜRETİM RİSKİ BUGÜN MEVCUT DEĞİL (2026-08-28)
+
+**Ne yazmıştım.** D-338'de: *"Yanlış pozitif bu çekimserliği yanlış varış
+noktasına çevirir. Şartname §2.1: yanlış güzergâh = 0 PUAN."* D-345'te de
+aynı çerçeveyi koruyup `hb_konumu`'na ölçek denetimi ekledim.
+
+**Yanlış olan.** `hb_konumu` bloğu `analyze_path` içinde yalnız
+`goruntu is not None` iken koşar. Üretimin **üç** çağrı yeri —
+`rpi_inference.py:1986` (`run_image`), `:2089` (`run_video`), `:2194`
+(`run_camera`) — **`goruntu=` geçmiyor**. Yani HB tespiti üretimde
+**hiç çalışmıyor**; varış noktası HB'den **alınmıyor**.
+
+**Bu bir kusur değil, ÖLÇÜLMÜŞ BİR KARAR.** T150 / D-295 §2 (2026-08-26):
+
+> Sentetik 260/260 isabet **ÇEVRİMSEL** (dedektörün kendi üreteci);
+> 67 gerçek otopark karesinin **67'sinde kırmızı OTOMOBİL HB sanıldı**;
+> şartname figüründeki gerçek ped (siyah+beyaz H) **tespit edilemedi**.
+> → **BAĞLANMAMALI.**
+
+Yani proje bu dedektöre zaten güvenmiyordu ve bunu benden önce ölçmüştü.
+D-338'i yazarken **T150'yi okumadım**.
+
+**Doğrusu.**
+- D-338'in ölçümü (kare-kırmızı çöp HB sanılıyor) **geçerli**.
+- Ama sonucu **bugün üretime ulaşmıyor**: HB bağlı değil.
+- Dolayısıyla o risk **potansiyeldir**, mevcut değil: T150 bağlantıyı
+  açtığı **gün** gerçekleşir.
+- T198'in ölçek denetimi **boşa gitmedi**: T150'nin önündeki engel tam da
+  "dedektör güvenilir değil"dir; denetim o engeli **kısmen** düşürür
+  (260/260 gerçek ped korunuyor, yanlış boyuttaki aday eleniyor). Ama
+  D-295'in asıl bulgusunu — **kırmızı otomobil** — çözmez: bir otomobil
+  doğru irtifada 2 m'ye yakın görünür ve ölçek denetiminden **geçer**.
+
+**Sonuç: T198 daha da açık kalıyor** ve kalan işi netleşti: ölçek yetmez,
+**şekil** (kırmızı H harfi) doğrulanmalıdır. Bu, T150'nin de ön koşuludur.
+
+**Ders.** Bir kusurun *puan etkisini* iddia etmeden önce, o kod yolunun
+üretimde **gerçekten koşup koşmadığı** doğrulanmalı. Ben "kod var" ile
+"üretimde koşuyor"u karıştırdım — bu projede tam olarak yasaklanan hata
+türü (`OLCULEMEDI != GECTI`'nin kardeşi: `KOD_VAR != KOSUYOR`).
