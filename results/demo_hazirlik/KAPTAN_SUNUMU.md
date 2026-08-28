@@ -175,8 +175,8 @@ durumunu **bozmaz**.
 
 | kaynak | ne gösterir | rota |
 |---|---|---|
-| `arena_kadraj` (açılış) | şartname kadraj kümesi — kabul dağılımı | **40/40 · %100** |
-| `kompozit` | **kendi drone'umuzun gündüz karesi** üzerine kurulmuş arena | **50/88 · %57** |
+| `arena_kadraj` (açılış) | şartname kadraj kümesi — kabul dağılımı | **256/260 · %98,5** |
+| `kompozit` | **kendi drone'umuzun gündüz karesi** üzerine kurulmuş arena | **49/88 · %56** |
 | `drone` | otopark (arena DEĞİL) — alan boşluğunu gösterir | 14/40 |
 | `dji_gece` | kendi gece prova uçuşumuz — nadir değil, arena yok | **0 (doğru ret)** |
 | `gemini` · `test` · `val` | dış veri kümeleri, ölçek yok | **0 (`OLCEK_YOK` doğru)** |

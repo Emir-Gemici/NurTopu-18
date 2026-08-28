@@ -277,3 +277,30 @@ durumda değişiklik yapılmaz).
   olmayacak (inşa gereği; ayrıca sınanır).
 - **G11 · Kompozit gerilemesi.** Kompozit kümede rota **≥ 45/88** kalacak
   (bugünkü 50/88'in altına 5'ten fazla düşerse geri alınır).
+
+---
+
+## 9. ÖLÇÜM DÜZELTMESİ (2026-08-28 04:35) — "arena_kadraj %100" YANLIŞTI
+
+Kaynak taramasında her klasörden **40 kare** örneklenmişti ve `arena_kadraj`
+**40/40 = %100** çıkmıştı. Bu sayı kullanıcıya ve kaptan sunumu belgesine
+**yazıldı**.
+
+**Tam kümede ölçüldü (260 kare, üretim çağrı sırasıyla):**
+
+```
+ROTA: 256/260  (%98,5) · şerit dağılımı {2: 131, 1: 79, 3: 46}
+       3  GORUS_HATTI_KOPUK
+       1  UC_BANT_TEMAS_YOK
+```
+
+**%98,5**, %100 değil. 40 karelik örnek **şanslıydı**. Bu sayı kabul
+zincirinin **K1'iyle birebir aynıdır** (256/260) — yani iki bağımsız yol aynı
+sonucu veriyor, ölçüm sağlam.
+
+Belgeler düzeltildi: `results/demo_hazirlik/KAPTAN_SUNUMU.md` ve yayımlanan
+sunum kartı. Kompozit satırı da 50/88 → **49/88** olarak güncellendi (T188
+kapama tavanının bedeli, D-326 §3).
+
+> **Ders:** örneklem sayısı iddianın yanında yazılmalıydı. *"40/40"* ile
+> *"%100"* aynı şey değildir; ikincisi kümenin tamamı hakkında bir iddiadır.
