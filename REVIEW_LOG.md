@@ -24061,3 +24061,150 @@ kapsamı* aynı olmalıdır. Biri satır/çağrı düzeyinde, diğeri dosya
 düzeyinde olursa test kendini kandırır — ve bu, testin ilk yazımında
 alınan notta (`⚠ Mutasyon metni deseni ICERMEMELI...`) uyarılan tuzağın
 **ikinci bir çeşididir**.
+
+---
+
+### D-336 · 📋 ÖN KAYIT DÜZELTMESİ (T189) — metrik YANLIŞ ADLANDIRILMIŞTI, mutant KOŞULMADAN düzeltildi (2026-08-28)
+
+**Ne oldu.** D-334'te ayırt edicilik ölçütünü *"bariyer duyarlılığı"* diye
+yazdım. `66_k5_bariyer_populasyon.py:139` okunduğunda o metriğin tanımı
+şu çıktı:
+
+```python
+duyar.append(float((blok[ust] > 0).mean()))   # ust = dedektorun buldugu kol
+```
+
+Yani **modelin**, dedektörün bulduğu bariyer piksellerini `blocked` sayma
+oranı. Dedektörün bariyeri **bulup bulmadığını** ölçmüyor: kör dedektör
+bariyeri bulamayınca kare `continue` ile **ölçüye hiç girmiyor**, dolayısıyla
+mutantın bu sayısı yüksek bile çıkabilirdi. Kör noktayı ölçemeyecek bir
+ölçütle kör nokta aranıyordu.
+
+**Düzeltmenin meşruiyeti.** Bu bir **gevşetme değildir** (D-107 ihlali yok):
+mutant **henüz koşulmadı**, hiçbir sonuç görülmedi. Düzeltilen şey eşiğin
+seviyesi değil, **hangi büyüklüğün ölçüleceği**. Yanlış adlandırılmış ölçüt
+kayıtta bırakılıyor ki hata görünür kalsın.
+
+**DÜZELTİLMİŞ ÖLÇÜT — mutant koşulmadan önce bağlayıcı.** Ölçülecek büyüklük
+`bariyerli`: **dedektörün bariyer bulduğu kare sayısı**.
+
+1. Mutantın **açılı** nüfustaki `bariyerli` oranı, sağlam sürümünkinden
+   **en az 40 puan** düşük olmalı. Sağlam sürüm ölçüldü: **185/260 = %71,2**
+   → mutant **≤ %31,2** (≤ 81 kare) olmalı.
+2. Sağlam sürümün açılı nüfustaki **model tarafı** bariyer duyarlılığı
+   **≥ %95** olmalı → ölçüldü: **%98,4** ✅ (bu şart korunuyor).
+3. Mutantın **yatay** nüfustaki `bariyerli` sayısı sağlam sürümünkinden
+   **düşmemeli** (kusurun dönmeye özgü olduğunun kontrolü).
+
+Üçünden biri tutmazsa nüfus ayırt edici sayılmaz, kapı **bağlanmaz** ve
+nedeni buraya yazılır.
+
+---
+
+### D-337 · 🔴 GÜNDÜZ DJI KARELERİ ETİKETLENEMEDİ — yarı otomatik etiketleyici KIRSAL sahnede İNSANI "sürülebilir" diyor (2026-08-28)
+
+**Nasıl çıktı.** Kullanıcı sordu: *"sen dji klasöründeki gerçek verileri
+etiketlemedin mi roboflowda göremedim"*. Ham DJI klasörleri ile etiketli
+kümeler karşılaştırıldı — **ad örtüşmesi sıfır**:
+
+| ham klasör | kare | ölçüm |
+|---|---|---|
+| `data/dji_prova` (+ `_kareler` kopyası) | 543 | **GECE UÇUŞU**: ort. parlaklık **19,2/255**, %98,4'ü < 40, **nadir gündüze uygun 0 kare** |
+| `data/dji_gunduz_kullanilmayan` (4K) | 36 | gündüz nadir, **ETİKETSİZ** |
+| `data/dji_gunduz_1280` | 36 | aynı 36 karenin 1280×720 kopyası (sha farklı, içerik aynı sahne) |
+| `data/dji_gunduz_secili` | 14 | bu 36'nın alt kümesi |
+
+`dji_prova`'nın etiketlenmemiş olması **ihmal değil**: içinde etiketlenecek
+gündüz karesi yok. Gerçek boşluk **36 gündüz karesidir**.
+
+**Denendi ve REDDEDİLDİ.** `71_gercek_kare_etiketleyici.py` bu 36 kareye
+koşuldu. Sayısal imza daha bakmadan uyardı: **zemin oranı medyan 0,964** —
+kare neredeyse tamamen "sürülebilir". Görsel denetim (D-80: *görsel kazanır*)
+kusuru doğruladı:
+
+1. 🔴 **Karede DURAN İNSAN ve gölgesi YEŞİL (traversable) boyanmış.** Bu,
+   olası en tehlikeli etiket hatasıdır: İKA bir insanın üzerine yönlendirilir.
+2. `frame_000000`'da sürülebilir **toprak şerit KIRMIZI** (blocked)
+   boyanmış. ⚠ Bu **kare düzeyinde** bir gözlemdir; "sınıflar ters dönmüş"
+   demek **değildir** — ölçüm bunu desteklemiyor. 36 karenin sınıf-0 alan
+   oranı: **medyan 0,969**, `> 0,90` olan **24/36**, `< 0,50` olan **0/36**.
+   Yani genel kusur ters dönme değil, **sistematik AŞIRI-İZİN**: neredeyse
+   her şey sürülebilir sayılıyor; buna ek olarak bazı karelerde gerçek yol
+   engel işaretleniyor.
+3. Moloz/çakıl yığını ve demir hasır **yeşil**; yalnız serpiştirilmiş
+   kırmızı lekeler var.
+4. HB pedi **10/36 karede "bulundu"**. Kutular ölçüldü: **38×31, 34×28,
+   31×26 px** — o irtifada 2 m × 2 m'lik bir ped ~64×64 px olurdu, yani
+   bulunanlar **fazlasıyla küçük**. `frame_000000`'ın kutusu ([480, 338,
+   38, 31]) büyütülüp bakıldı: içindeki şey, karede duran insanın yanında
+   **yerde duran buruşuk kırmızı-beyaz bir ambalaj parçası**. Yanlış
+   pozitif olduğu **görsel olarak kesindir**.
+   🔴 Ve bu yanlış pozitif zararsız değil: `hb_konumu` (T72/D-105) hedef
+   pedini **engel katmanından KURTARIR** — o karede **550 px**, on karede
+   toplam **40 564 px**. Yani serbest alanı **BÜYÜTÜYOR**: madde 15'in
+   (`serbest(K1 ∧ ¬K2) ⊆ serbest(K1)`) yasakladığı yön.
+
+**Kök neden.** Etiketleyicinin eşikleri **otopark sahnesi için** ayarlandı
+(kendi başlığında yazıyor: çatı/asfalt ayrımı, `YAPI_PARLAKLIK = 205`,
+`BITKI_KROMA = 12`). Kırsal şantiyede asfalt yok, her şey akromatik-toprak;
+"geriye kalan zemindir" yolu tam da başlığın **yasakladığı** hatayı üretiyor.
+
+**KARAR: bu etiketler EĞİTİME GİRMEDİ, Roboflow'a GÖNDERİLMEDİ.** Betiğin
+kendi kuralı bağlayıcıdır: *"Onaylanmayan kare eğitime GİRMEZ."* Bozuk
+etiketi kümeye koymak, hiç koymamaktan **kötüdür**.
+
+**Doğru yol.** `dataset/dji_kirsal` ailesi bu betikle değil, **üç durumlu
+maske** hattıyla etiketlendi (`results/dji_20260822/f5_olcek`, 160 maske →
+`135_dji_kirsal_zincir.py`). 36 gündüz karesi için de aynı hat gerekir.
+Bu, **insan emeği** gerektirir → **T197** (insan görevi, madde 9).
+
+⚠ Bu kayıt bir şeyi daha gösteriyor: elimizdeki 862 etiketli gerçek karenin
+tamamı **üç durumlu maske** hattından geldi. Otomatik etiketleyiciye
+sahne değiştiğinde güvenilemeyeceği artık **ölçülmüştür**.
+
+---
+
+### D-338 · ⚠ `hb_konumu` ÖLÇEK DENETİMİ YOK: kare-kırmızı bir çöp HB sanılabilir (2026-08-28)
+
+**Nereden çıktı.** D-337'de etiketleyici, yerdeki **buruşuk kırmızı-beyaz
+ambalajı** HB pedi sandı (kutu 38×31 px). Aynı dedektör (`hb_konumu`,
+`karar_sozlesmesi.py:1212`) **üretim yolunda da** kullanılıyor
+(`rpi_inference.py:1677`).
+
+**Üretimde ne YAPMIYOR (önce bu netleşsin).** Üretimde HB, engel katmanından
+piksel **KURTARMAZ**; yalnız koridor aramasına *hedef tohumu* verir
+(`_bagli_koridor_yolu(..., hedef_tohumu=hb_tohumu)`). Yani **madde 15
+ihlali üretimde YOKTUR** — piksel kurtarma yalnız etiketleyiciye özgüdür.
+
+**Üretimdeki gerçek risk.** `analyze_path`, HB bulunamazsa `HEDEF_YOK` ile
+**çekimser kalır** (doğru davranış). Yanlış pozitif bu çekimserliği
+**yanlış varış noktasına** çevirir. Şartname §2.1: yanlış güzergâh = **0
+puan**. Ayrıca `mpp_hb_pedinden(kenar_px)` ölçeği pedden türettiği için
+yanlış ped **yanlış mpp** → yanlış `r_gerekli_px` demektir; hata yayılır.
+
+**Kök neden — ölçüldü.** Mevcut süzgeçler: (a) T67 bariyer tümleyenliği,
+(b) karelik (`HB_KARE_TOLERANSI = 1,6`), (c) asgari alan
+`HB_ASGARI_ALAN_ORANI = 120/640² ≈ 0,00029`. Üçüncüsü **kareye orantılıdır,
+fiziksel değildir**:
+
+| çözünürlük | asgari alan | ~kenar |
+|---|---|---|
+| 512×512 (**üretim**) | **77 px** | **~9 px** |
+| 1280×720 | 270 px | ~16 px |
+| 3840×2160 | 2430 px | ~49 px |
+
+Üretim çözünürlüğünde eşik **9×9 px**. Kare-kırmızı hemen her nesne geçer.
+
+**Eksik olan denetim.** HB **2 m × 2 m**'dir (§2.1). İrtifa/mpp bilindiğinde
+pedin kenarı ≈ `HB_KENAR_M / mpp` px olmalıdır; bundan belirgin sapan aday
+HB **olamaz**. Depoda `mpp_hb_pedinden` zaten var; eksik olan **ters yönlü**
+tutarlılık kontrolüdür.
+
+⛔ **BU KAYITTA DÜZELTME YAPILMADI — bilerek.** HB eşiğini değiştirmek
+üretim karar yolunu değiştirir ve **kendi ön kaydını** gerektirir (D-107):
+hangi mpp kaynağı kullanılacak, tolerans kaç, ve mevcut kabul zinciri bundan
+etkileniyor mu. Sayılar görülmeden yazılmalıdır → **T198**.
+
+⚠ Ölçüm sınırı: bu bulgu **tek bir yanlış pozitife** dayanıyor (n = 1) ve
+sahada kırmızı-beyaz molozun ne sıklıkta bulunacağı **bilinmiyor**. "Kesin
+düşer" DEMEZ; "düşmesini engelleyen fiziksel bir denetim yok" der.

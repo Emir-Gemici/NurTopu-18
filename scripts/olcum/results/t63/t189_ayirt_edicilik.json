@@ -1,0 +1,32 @@
+{
+ "acili_saglam": {
+  "tarandi": 260,
+  "bariyerli": 185,
+  "okunamayan": 0,
+  "oran": 0.7115
+ },
+ "acili_mutant": {
+  "tarandi": 260,
+  "bariyerli": 48,
+  "okunamayan": 0,
+  "oran": 0.1846
+ },
+ "yatay_saglam": {
+  "tarandi": 260,
+  "bariyerli": 181,
+  "okunamayan": 0,
+  "oran": 0.6962
+ },
+ "yatay_mutant": {
+  "tarandi": 260,
+  "bariyerli": 181,
+  "okunamayan": 0,
+  "oran": 0.6962
+ },
+ "_on_kayit": {
+  "sart1_acili_dusus_puan": 52.7,
+  "sart1": true,
+  "sart3": true,
+  "ayirt_edici": true
+ }
+}

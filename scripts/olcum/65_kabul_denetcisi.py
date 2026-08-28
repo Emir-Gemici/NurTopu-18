@@ -62,6 +62,32 @@ def kabul_kumesi_yolu(kok=None):
     return yol
 
 
+def kabul_kumesi_acili_yolu(kok=None):
+    """K5'in IKINCI kolu: ACILI bariyer nufusu (T189 · D-334/D-336).
+
+    🔴 NEDEN: `kabul_kumesi` (yatay) T184'ten ONCE uretildi; manifestinde
+    `bariyer_acisi` alani bile YOK ve icindeki HER bariyer yataydir. Bu
+    yuzden K5, T184'un duzelttigi DONME KORLUGUNU ne YAKALAYABILIR ne de
+    duzelmeyi DOGRULAYABILIRDI — TEST_SPECS SS4.1 anlaminda vakum kapi.
+
+    Ayni fail-closed kalip: alan yoksa ya da dizin yoksa RuntimeError.
+    CIPLAK YEDEK YOL YOKTUR (madde 16) — yanlis/bos kume "olculemeyeni
+    GECTI satmak" demektir.
+    """
+    taban = (Path(kok) if kok is not None else REPO) / "config" / "model_registry.json"
+    try:
+        veri = json.loads(taban.read_text(encoding="utf-8"))
+        profil = veri["default_profile"]
+        deger = veri["profiles"][profil]["kabul_kumesi_acili"]
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
+        raise RuntimeError(
+            f"kabul_kumesi_acili registry'den okunamadi ({taban}): {exc}") from exc
+    yol = Path(deger)
+    if not yol.is_dir():
+        raise RuntimeError(f"acili kabul kumesi dizini yok: {yol}")
+    return yol
+
+
 try:
     # 93_t106 gibi ithalatcilar modul niteligi olarak okur; registry saglamsa
     # iki kosum baglaminda da AYNI mutlak yoldur. Bozuksa None kalir ve
@@ -634,6 +660,45 @@ def main():
         sonuc["K5_kume"] = k5d["kume"]
     gecti["K5"] = sonuc["K5_durum"] == "GECTI"  # OLCULEMEDI de bloklar
 
+    # ── K5A · ACILI BARIYER NUFUSU (T189 · ON_KAYIT D-334/D-336) ───────────
+    # 🔴 NEDEN: yukaridaki K5 nufusunda HER bariyer YATAYDIR (kume T184'ten
+    # once uretildi). Yani K5, T184'un duzelttigi DONME KORLUGUNU ne
+    # yakalayabilir ne de duzelmeyi dogrulayabilirdi. Bu kol ayni olcutu
+    # (kesisim 0 px) ACIDAN BAGIMSIZ bir nufusta kosar.
+    # ⚠ YENI ESIK YOK: gecme kosulu K5 ile BIREBIR AYNI.
+    # AYIRT EDICILIK MUTASYONLA KANITLANDI (t189_ayirt_edicilik.json):
+    # T184 oncesi dedektor acili nufusta 185->48 kare (52,7 puan) duserken
+    # yatay nufusta 181->181 HIC dusmuyor.
+    k5aj = BURASI / "results" / "t63" / f"{ad}_k5a_acili.json"
+    k5aj.unlink(missing_ok=True)                # bayat json okunmasin (T125)
+    try:
+        acili_kume = kabul_kumesi_acili_yolu()
+    except RuntimeError as exc:
+        acili_kume = None
+        print(f"  (K5A kumesi cozulemedi: {exc})")
+    if acili_kume is None:
+        k5ad = None
+        _c5a = ""
+    else:
+        _c5a, k5a_ok = kos("66_k5_bariyer_populasyon.py",
+                           ["--model", str(args.model), "--kume", str(acili_kume),
+                            "--json", str(k5aj)])
+        k5ad = (json.loads(k5aj.read_text(encoding="utf-8"))
+                if k5a_ok and k5aj.is_file() else None)
+    if k5ad is None:
+        sonuc["K5A_durum"] = "OLCULEMEDI"       # cokme "0 kesen" DEGILDIR
+        sonuc["K5A_olculebilir_kare"] = 0
+        sonuc["K5A_kesen_kare"] = None
+        sonuc["K5A_kesisim_px"] = None
+    else:
+        sonuc["K5A_durum"] = k5ad["K5_durum"]
+        sonuc["K5A_olculebilir_kare"] = k5ad["olculebilir_kare"]
+        sonuc["K5A_kesen_kare"] = k5ad["kesen"]
+        sonuc["K5A_kesisim_px"] = k5ad["kesisim_px"]
+        sonuc["K5A_bariyerli_kare"] = k5ad["bariyerli"]
+        sonuc["K5A_kume"] = k5ad["kume"]
+    gecti["K5A"] = sonuc["K5A_durum"] == "GECTI"  # OLCULEMEDI de bloklar
+
     # BILGI (kapi DEGIL, D-243): tek figurdeki eski olcum korunur.
     c, _figur_ok = kos("63_bariyer_kesisimi.py", ["--model", str(args.model)])
     kes = None
@@ -709,6 +774,12 @@ def main():
     print(f"{'':23s}bilgi (kapi DEGIL): tek figur "
           f"{sonuc.get('K5_figur_bilgi_durum')} "
           f"({sonuc.get('K5_figur_bilgi_px')} px)")
+    _k5ak = sonuc.get("K5A_kesen_kare")
+    print(f"  K5A ACILI BARIYER    {sonuc.get('K5A_durum', 'OLCULEMEDI'):<11} "
+          f"kesen {_k5ak if _k5ak is not None else '-'}/"
+          f"{sonuc.get('K5A_olculebilir_kare', 0)} kare"
+          f" · toplam {sonuc.get('K5A_kesisim_px')} px"
+          f"  [T189 · acidan bagimsiz nufus, esik K5 ile AYNI]")
     _k7d = sonuc.get("K7_durum", "OLCULEMEDI")
     _k7o = sonuc.get("K7_dogruluk")
     print(f"  K7 SERIT DOGRULUGU   {_k7d:<6} {sonuc.get('K7_serit', '-')} "
@@ -743,12 +814,15 @@ def main():
     if not gecti["K0"]:
         print("  VERDIKT: RED — K0 dustu. v25 ile AYNI sebep, tartisma yok.")
     elif all(gecti.values()):
-        print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 + K7 saglandi.")
+        print("  VERDIKT: URETIME ALINIR — D-107'nin alti olcutu + K6 + K7"
+              " + K5A (acili nufus) + K8 (gercek kare) saglandi.")
     else:
         durumlar = dict(sonuc.get("K14_durum", {}))
         durumlar["K5"] = sonuc.get("K5_durum")
         durumlar["K6"] = sonuc.get("K6_durum")
         durumlar["K7"] = sonuc.get("K7_durum")
+        durumlar["K5A"] = sonuc.get("K5A_durum")
+        durumlar["K8"] = sonuc.get("K8_durum")
         d_ = [(k + "(OLCULEMEDI)" if durumlar.get(k) == "OLCULEMEDI" else k)
               for k, v in gecti.items() if not v]
         print(f"  VERDIKT: URETIME ALINMAZ — dusen: {', '.join(d_)}")
