@@ -171,3 +171,9 @@ data/dji_gunduz_kullanilmayan/
 data/dji_gunduz_1280/
 data/dji_gunduz_secili/
 data/arena_kompozit_dji/
+
+# Depo yedegi (deponun kendi kopyasi) ve ucuncu taraf kurulum dosyasi.
+# 1323fbb commit'inde git add -A ile yanlislikla suprulmuslerdi; GitHub
+# 100 MB/dosya sinirini astiklari icin push'u REDDEDIYORDU. Diskte KALIRLAR.
+navitas_depo.bundle
+dronesolid/*.exe
