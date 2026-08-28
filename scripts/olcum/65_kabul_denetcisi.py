@@ -577,6 +577,28 @@ def main():
     sonuc["K7_yanlis_kareler"] = list((d7 or {}).get("yanlis_kareler", []))
     gecti["K7"] = k7 == "GECTI"             # OLCULEMEDI de bloklar (T105 kalibi)
 
+    # ── K8 · GERCEK KARE (T195 · D-332 §5) ─────────────────────────────────
+    # 🔴 NEDEN EKLENDI: bu zincir TAMAMEN SENTETIKTIR ve 2026-08-28'de bunun
+    # bedeli olculdu — v37 adayi K0..K7'nin HEPSINI gecip "URETIME ALINIR"
+    # verdikti aldi, ama elimizdeki tek gercekci karede zemin kaplamasi
+    # %4,4 -> %56,1 cikip uretim karar yolunu ZEMIN_MASKESI_SUPHELI ile
+    # kirdi. Bunu yakalayan tek sey `tests/test_gercek_arena_kapisi.py` idi
+    # ve o ZINCIRIN ICINDE DEGILDI: suit kosulmasaydi model sessizce terfi
+    # edebilirdi.
+    # ⚠ YENI ESIK YOK: uretimde ZATEN VAR OLAN zemin saglamlik kapisi gercek
+    # kare uzerinde kosulur. n = 1'dir ve alt betik bunu acikca yazar.
+    j8 = BURASI / "results" / "t63" / f"{ad}_k8.json"
+    j8.parent.mkdir(parents=True, exist_ok=True)
+    j8.unlink(missing_ok=True)                 # bayat json okunmasin (T125)
+    _c8, k8_ok = kos("155_gercek_kare_kapisi.py",
+                     ["--agirlik", str(args.model), "--json", str(j8)])
+    d8 = (json.loads(j8.read_text(encoding="utf-8"))
+          if k8_ok and j8.is_file() else None)
+    sonuc["K8_durum"] = (d8 or {}).get("durum", "OLCULEMEDI")
+    sonuc["K8_zemin_kaplamasi"] = (d8 or {}).get("zemin_kaplamasi")
+    sonuc["K8_karar_yolu_reddi"] = (d8 or {}).get("karar_yolu_reddi")
+    gecti["K8"] = sonuc["K8_durum"] == "GECTI"   # OLCULEMEDI de bloklar
+
     # ── K5 · bariyer kesisimi — ZEMIN: POPULASYON (T126 · D-243) ────────────
     # 🔴 ZEMIN TASINDI: eskiden `63_bariyer_kesisimi` TEK OOD figurunde kosardu
     # ve UC modelde de OLCULEMEDI donuyordu (D-231): o figurde hicbir model rota
@@ -708,6 +730,15 @@ def main():
               " uretilmedi ya da alt betik cokTU. Bu 'carpmadi' DEMEK"
               " DEGILDIR — kanit yoktur. Terfi YINE bloklanir:"
               " OLCULEMEDI != GECTI. D-243 SART 4.)")
+    _k8k = sonuc.get("K8_zemin_kaplamasi")
+    print(f"  K8 GERCEK KARE       {sonuc['K8_durum']}  "
+          + (f"zemin kaplamasi {_k8k:.4f} · karar yolu "
+             f"{sonuc.get('K8_karar_yolu_reddi')}"
+             if _k8k is not None else "olculemedi")
+          + "  [T195 · n=1 · YZ figuru, 'sahada calisir' DEMEZ]")
+    if sonuc["K8_durum"] == "DUSTU":
+        print("     🔴 Model, elimizdeki TEK gercekci karede uretim yolunu"
+              " KIRIYOR (D-332).")
     print("-" * 66)
     if not gecti["K0"]:
         print("  VERDIKT: RED — K0 dustu. v25 ile AYNI sebep, tartisma yok.")

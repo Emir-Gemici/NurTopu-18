@@ -243,10 +243,31 @@ class VerdiktBaglantisi(unittest.TestCase):
         return 'gecti["K7"]' in metin
 
     @staticmethod
-    def _kosumda_uretiliyor_mu(metin: str) -> bool:
+    def _k7_cagrisi(metin: str) -> str:
+        """`kos("151_k7_serit_dogrulugu.py", [...])` cagrisinin METNI.
+
+        🔴 T196: eskiden butun dosyada `'"--agirlik", str(args.model)'`
+        ARANIYORDU. O desen zincirde ARTIK BIRDEN COK yerde geciyor (K8 de
+        ayni agirligi geciriyor), ve mutasyon testi `replace(..., 1)` ile
+        yalniz ILK gecisi bozdugu icin mutant "hâlâ bagli" gorunup testi
+        SESSIZCE etkisizlestiriyordu: K7'nin agirligi baskasiyla
+        degistirilse bile kapi bunu YAKALAMAZDI (2026-08-28'de gercekten
+        dustu ve boyle bulundu).
+
+        Artik yalniz K7 CAGRISININ govdesine bakilir; baska kapilarin ayni
+        argumani gecirmesi bu olcumu KIRLETMEZ.
+        """
+        i = metin.find('kos("151_k7_serit_dogrulugu.py"')
+        if i < 0:
+            return ""
+        j = metin.find("])", i)
+        return metin[i:j + 2] if j > 0 else metin[i:]
+
+    @classmethod
+    def _kosumda_uretiliyor_mu(cls, metin: str) -> bool:
         """Olcum ZINCIRIN KENDI kosumunda, denetlenen AGIRLIKLA uretiliyor mu."""
-        return ("151_k7_serit_dogrulugu.py" in metin
-                and '"--agirlik", str(args.model)' in metin)
+        cagri = cls._k7_cagrisi(metin)
+        return bool(cagri) and '"--agirlik", str(args.model)' in cagri
 
     def test_K7_verdikte_BAGLI(self):
         self.assertTrue(self._bagli_mi(self.metin),
@@ -275,9 +296,33 @@ class VerdiktBaglantisi(unittest.TestCase):
                          "bag kaldirildigi hâlde kilit hâlâ 'bagli' diyor — "
                          "kilit ayirt etmiyor (bos kapi)")
 
+    def test_K7_cagrisi_BULUNUYOR(self):
+        """Capa: cagri bulunamazsa mutasyon testi BOSA doner (T196)."""
+        self.assertTrue(self._k7_cagrisi(self.metin),
+                        "K7 `kos(...)` cagrisi ayristirilamadi — mutasyon "
+                        "testi olctugunu sandigi seyi olcmez")
+
+    def test_MUTASYON_BASKA_KAPININ_agirligi_KIRLETMEZ(self):
+        """K8'in ayni argumani gecirmesi K7 kilidini AYAKTA gostermemeli."""
+        cagri = self._k7_cagrisi(self.metin)
+        mutant = self.metin.replace(
+            cagri, cagri.replace('"--agirlik", str(args.model)',
+                                 '"--agirlik", "models/baska.pt"'), 1)
+        self.assertNotEqual(self.metin, mutant, "mutasyon uygulanamadi")
+        self.assertIn('"--agirlik", str(args.model)', mutant,
+                      "on kosul: desen zincirde BASKA yerde de gecmeli — "
+                      "gecmiyorsa bu test artik dogru seyi sinamiyor")
+        self.assertFalse(self._kosumda_uretiliyor_mu(mutant),
+                         "K7'nin agirligi degistirildigi hâlde kilit "
+                         "'ayakta' diyor — BASKA kapinin argumani K7 "
+                         "olcumunu KIRLETIYOR (T196)")
+
     def test_MUTASYON_disaridan_besleme_kilidi_DUSER(self):
-        mutant = self.metin.replace('"--agirlik", str(args.model)',
-                                    '"--agirlik", "models/baska.pt"', 1)
+        cagri = self._k7_cagrisi(self.metin)
+        mutant = self.metin.replace(
+            cagri, cagri.replace('"--agirlik", str(args.model)',
+                                 '"--agirlik", "models/baska.pt)"'), 1)
+        self.assertNotEqual(self.metin, mutant, "mutasyon uygulanamadi")
         self.assertFalse(self._kosumda_uretiliyor_mu(mutant),
                          "denetlenen agirlik yerine baskasi gecirilse bile "
                          "kilit tutmuyor")

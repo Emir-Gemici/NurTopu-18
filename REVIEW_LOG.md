@@ -23936,3 +23936,128 @@ ve zincirin **içinde değil**. **T195 açıldı.**
   ama aynı zamanda modeli **dağılım dışı karelerde taşırmaya** itiyor.
   Bir sonraki denemede dönme artırımı **daha ölçülü** olmalı (ör. 90°) ya da
   karışıma gerçek arena benzeri kare eklenmeli.
+
+---
+
+### D-333 · ✅ K8 GERÇEK KARE KAPISI zincire eklendi — T195 kapandı (2026-08-28)
+
+**1. Kapatılan boşluk.** D-332'de ölçüldü: v37 adayı kabul zincirinin
+**tamamını** geçti (K0–K7; K7 %100,0, K1 258/260) ve `ÜRETİME ALINIR` verdikti
+aldı — ama elimizdeki tek gerçekçi karede zemin kaplaması %4,4 → **%56,1**
+çıkıp `ZEMIN_MASKESI_SUPHELI` tetikledi. Bunu yakalayan tek şey
+`tests/test_gercek_arena_kapisi.py` idi ve o **zincirin içinde değildi** —
+yani suit ayrıca koşulmasaydı zincirden geçen bozuk bir model sessizce
+terfi edebilirdi.
+
+**2. Ne yapıldı.** `scripts/olcum/155_gercek_kare_kapisi.py` yazıldı ve
+`65_kabul_denetcisi.py` içinde K7'den sonra **K8** olarak bağlandı.
+`OLCULEMEDI` de blokluyor (`gecti["K8"] = sonuc["K8_durum"] == "GECTI"`).
+
+**3. YENİ EŞİK UYDURULMADI.** Kapı, üretimde **zaten var olan** zemin
+sağlamlık kapısını (`karar_sozlesmesi.zemin_maskesi_reddi`) gerçek kare
+üzerinde koşuyor. Ölçüt: üretim karar yolu bu karede
+`ZEMIN_MASKESI_SUPHELI` **döndürmemelidir**. Çağrı sırası üretimin birebir
+aynısı: `_preprocess` → `predict(imgsz=INFER_SIZE, conf=0.30)` →
+`get_masks(res, …)` (**liste**) → `_maskeleri_icerige_kirp` → `analyze_path`.
+
+**4. AYIRT EDİCİLİĞİ ÖLÇÜLDÜ** (boşluk kapısı değil — TEST_SPECS §4.1):
+
+| ağırlık | zemin kaplaması | K8 |
+|---|---|---|
+| `navitas_seg_v36_best.pt` (üretim) | 0,0444 | **GEÇTİ** |
+| `navitas_seg_v37_best.pt` (aday) | 0,5611 | **DÜŞTÜ** |
+
+Zincir uçtan uca yeniden koşuldu: v37 → `ÜRETİME ALINMAZ — düşen: K8`;
+v36 → `ÜRETİME ALINIR`, `K8 GERCEK KARE GECTI · karar yolu UC_BANT_TEMAS_YOK`.
+Yani kapı hem **yakalıyor** hem de **üretimi bloklamıyor**.
+
+**5. NE İDDİA ETMEZ — açıkça yazılıdır.** n = 1'dir ve o kare şartnamenin
+kendi ifadesiyle *"tamamen yapay zeka ile oluşturulmuştur"* (D-99). Kapı
+"model sahada çalışır" **demez**; yalnızca "elimizdeki tek gerçekçi karede
+üretim yolu **kırılmıyor**" der. D-186 bu figür üzerinde **model tavanı**
+koymayı zaten reddetmişti — burada tavan yok, yalnız "kırılmasın" şartı var.
+Bu uyarı hem betiğin çıktısına hem JSON'a (`_n`, `_uyari`) gömüldü.
+
+**6. Kalıcı kısıt değişmedi.** K8 eklenmesi, "bu ölçümlerin tamamı
+sentetiktir" uyarısını **kaldırmaz**. Gerçek saha karesi hâlâ **yoktur**;
+en büyük açık iş budur (30 m nadir maket arena çekimi, insan görevi).
+
+---
+
+### D-334 · 📋 ÖN KAYIT — K5 AÇILI BARİYER NÜFUSU (T189) · ölçümden ÖNCE yazıldı (2026-08-28)
+
+**Kusur (D-324 §9).** K5'in yer gerçeği nüfusu `sentetik_arena_kadraj_t66`
+(260 kare) ve manifestinde `bariyer_acisi` alanı **yok** — küme T184'ten
+önce üretildi, yani **her bariyer yataydır**. Dolayısıyla K5, T184'ün
+düzelttiği dönme körlüğünü ne **yakalayabilirdi** ne de düzelmeyi
+**doğrulayabilir**. TEST_SPECS §4.1 anlamında **vakum kapı riski**.
+
+**Yapılacak.** Aynı üreteçle, aynı parametrelerle, yalnız
+`--bariyer-acisi 90` eklenerek ikinci bir 260 karelik nüfus üretilecek
+(açı `uniform(-90, +90)`; θ ile θ+180 aynı olduğundan bu **tüm
+yönelimleri** kapsar). K5 bu nüfusta da koşulacak.
+
+**ÖLÇÜT — YENİ EŞİK UYDURULMUYOR.** Geçme koşulu yatay kolunkiyle
+**birebir aynı**: kalınlaştırılmış rota ∩ bariyer = **0 px** ve ölçülebilir
+kare sayısı > 0 (`OLCULEMEDI != GECTI`).
+
+**AYIRT EDİCİLİK — ölçümden önce bağlayıcı (D-107).** Nüfusun boş kapı
+olmadığı **mutasyonla** kanıtlanacak: `ince_bariyer_maskesi` T184 öncesi
+**yalnız-yatay** koluna zorlanacak ve
+
+1. mutantın **açılı** nüfusta bariyer duyarlılığı, sağlam sürümünkinden
+   **en az 40 puan** düşük olmalı;
+2. sağlam sürümün açılı nüfustaki duyarlılığı **≥ %95** olmalı;
+3. mutantın **yatay** nüfustaki duyarlılığı **düşmemeli** (kusurun dönmeye
+   özgü olduğunun kontrolü).
+
+Bu üç şarttan **biri** tutmazsa nüfus ayırt edici değildir; kapı olarak
+**bağlanmaz** ve neden bağlanmadığı buraya yazılır. Sayılar görüldükten
+sonra **gevşetilmez** (D-107).
+
+⚠ Mevcut 260 karelik yatay küme **DEĞİŞTİRİLMEZ** — K1/K7 çapaları ve
+tüm ön kayıtlı sayılar ona bağlıdır. Açılı nüfus **ikinci bir kol**dur.
+
+---
+
+### D-335 · 🔴 K7 MUTASYON TESTİ SESSİZCE ETKİSİZLEŞMİŞ — K8 eklenince ortaya çıktı, T196 (2026-08-28)
+
+**Nasıl bulundu.** T195'te K8 kapısı zincire bağlandıktan sonra suit düştü:
+`test_MUTASYON_disaridan_besleme_kilidi_DUSER` FAIL. İlk bakışta "yeni kapı
+testi kırdı" görünüyordu; **öyle değildi** — kapı, testin *zaten var olan*
+bir zayıflığını görünür yaptı.
+
+**Kusur.** Test, mutasyonu `metin.replace(desen, ..., 1)` ile uyguluyor
+(yalnız **ilk** geçiş) ama denetimi **dosyanın tamamında** yapıyordu:
+
+```python
+return ("151_k7_serit_dogrulugu.py" in metin
+        and '"--agirlik", str(args.model)' in metin)     # ← TÜM DOSYA
+```
+
+Zincirde bu desen **birden çok** kapıda geçiyor (K8 de aynı ağırlığı
+geçiriyor). Sonuç: K7'nin ağırlığı başka bir modelle değiştirilse bile
+desen dosyada **başka yerde** durduğu için kilit "ayakta" görünürdü. Yani
+mutasyon testi, ölçtüğünü sandığı şeyi **ölçmüyordu** — D-15 sınıfı boş
+kapı, üstelik kendisi bir *boş kapı nöbetçisi* olarak yazılmıştı.
+
+**Düzeltme (gevşetme DEĞİL, SIKILAŞTIRMA).** `_k7_cagrisi()` eklendi:
+yalnız `kos("151_k7_serit_dogrulugu.py", [...])` çağrısının **gövdesi**
+ayrıştırılıp orada aranıyor. Mutasyon da artık yalnız o gövdeye uygulanıyor.
+
+**Yeni nöbetçiler:**
+- `test_K7_cagrisi_BULUNUYOR` — çağrı ayrıştırılamazsa mutasyon testi
+  boşa döner; çapa bunu yakalar.
+- `test_MUTASYON_BASKA_KAPININ_agirligi_KIRLETMEZ` — **tam bu gerilemeyi**
+  yakalar: K7 çağrısı bozulduğunda, desen dosyanın başka yerinde
+  durmasına rağmen kilit DÜŞMELİDİR. Testin ön koşulu da sınanıyor
+  (`assertIn`): desen zincirde başka yerde geçmiyorsa test artık doğru
+  şeyi sınamıyordur ve bunu kendisi söyler.
+
+**Sonuç:** `test_k7_serit_dogrulugu` 27/27, tam suit **1243 test OK**.
+
+**Ders (tekrar).** Mutasyon testinde *mutasyonun kapsamı* ile *denetimin
+kapsamı* aynı olmalıdır. Biri satır/çağrı düzeyinde, diğeri dosya
+düzeyinde olursa test kendini kandırır — ve bu, testin ilk yazımında
+alınan notta (`⚠ Mutasyon metni deseni ICERMEMELI...`) uyarılan tuzağın
+**ikinci bir çeşididir**.
