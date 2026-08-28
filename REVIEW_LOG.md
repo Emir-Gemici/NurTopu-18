@@ -23581,3 +23581,41 @@ olurdu. Bunun yerine iki ayrı iddia iki ayrı teste bölündü:
 `unittest discover -s tests` **1230 OK** (2 skip; 1214 → +16: T188 kapısı 13 +
 T155 ayrımı 3). Genel kapı (madde 14) iki kolda **GEÇTİ** (15/15 · şerit 15/15).
 Jetson paket aynası yeniden üretildi.
+
+### D-327 · ✅ T191 KAPANDI — kendini "tek yetkili cevap" ilan eden belge 22 GÜNDÜR BAYATTI; artık kapıya bağlı (2026-08-28)
+
+`dataset/VERI_KAYNAKLARI.md` girişinde şöyle diyor: *"'Zemin sınıfını hangi
+veriden öğrendik?' sorusunun **tek yetkili cevabı**"*. Ama **2026-08-06'da
+donmuştu** ve 2026-08-28'e kadar hâlâ *"Güncel üretim modeli **v21**"*
+diyordu — oysa üretim **v36**'ydı ve o tarihten sonra dört küme eğitime girdi
+(`dji_v7`, `dji_v7_x5`, `copy_paste_t127`, `karisim_gece_*`).
+
+**Bu gecenin ÜÇÜNCÜ aynı sınıf kusuru:**
+1. **D-324 §3** — `karar_sozlesmesi.py`'deki T67 yorumu *"model bariyeri %0,0
+   görüyor"* diyordu; ölçtüm, v36 **%99,9** görüyordu. Yorum **mimarı
+   yanılttı** ve gecenin ilk saatini yanlış öncüle harcattı.
+2. **D-325 §5** — kendi ölçüm betiğim üretimin çağrı sırasını taklit etmiyordu;
+   sayılarım düşük çıktı.
+3. **D-327 (bu)** — belgenin kendisi.
+
+> **Örüntü:** bu projede kusurlar koda değil, **koda dair iddialara** yerleşiyor.
+> Kod çalışıyor; onu anlatan şey bayatlıyor. Ve bayat anlatı, bir sonraki
+> okuyucunun ölçüm yapmadan karar vermesine sebep oluyor.
+
+**Düzeltme iki katmanlı:**
+- Belge tazelendi: v36 satırı gerçek karışımıyla, `dji_v7` klip tablosu
+  (0037 300→290, 0039 222→196, **0038 AYRILMIŞ DOĞRULAMA**), `x5`
+  çoğaltmasının **bayt-eş** olduğu (2065 dosya = **413 benzersiz** kare) ve
+  gece verisinin **hiçbir eğitime girmediği** açıkça yazıldı.
+- **Kapı:** `tests/test_t191_veri_kaynaklari_taze.py` (11/11) belgenin beyan
+  ettiği üretim sürümünü `config/model_registry.json` ile karşılaştırır;
+  ayrışırlarsa süit **DÜŞER**. Ayrıca güncel karışımdaki her kümenin belgede
+  anıldığını, 0038 uyarısının ve `413 benzersiz` gerçeğinin yazılı olduğunu
+  ve tazelik damgasını sınar.
+
+⚠ **Kapının ilk koşusu kendi aşırılığını gösterdi:** v36 satırı haklı olarak
+*"taban **v35**'ten ince ayar"* diyor ve mutasyon kontrolü bunu "bayat sürüm"
+sandı. Kontrol **model adı hücresine** daraltıldı — satırın geri kalanı doğru
+bilgi taşıyabilir. *(Kapıyı gevşetmek değil, doğru şeyi ölçmek.)*
+
+**Bozulmama:** `unittest discover -s tests` **1241 OK** (2 skip; 1230 → +11).

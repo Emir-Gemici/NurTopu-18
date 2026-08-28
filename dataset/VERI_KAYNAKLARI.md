@@ -5,7 +5,14 @@
 > dosyalarından **doğrulanarak** çıkarıldı; her satırın yanında kaynak dosya var.
 > Doğrulanamayan şeyler **açıkça öyle işaretlendi** — tahmin yazılmadı.
 >
-> Son güncelleme: 2026-08-06
+> Son güncelleme: **2026-08-28** (D-327). Önceki güncelleme 2026-08-06'daydı
+> ve bu dosya o tarihten beri **DONMUŞTU**: hâlâ *"güncel üretim modeli v21"*
+> diyordu, oysa üretim **v36**'dır ve o tarihten sonra dört yeni küme eğitime
+> girdi. Kendini *"tek yetkili cevap"* ilan eden bir belgenin bayatlaması, bu
+> projede en tehlikeli kusur sınıfıdır (aynı sınıf: D-324 §3, D-325 §5).
+> ⚠ Artık **kapıya bağlı**: `tests/test_t191_veri_kaynaklari_taze.py` bu
+> dosyanın beyan ettiği üretim modelini `config/model_registry.json` ile
+> karşılaştırır; ayrışırlarsa süit **DÜŞER**.
 
 ---
 
@@ -13,10 +20,11 @@
 
 **Zemin (`traversable`) sınıfı esas olarak RescueNet'ten gelir.** RescueNet'in
 `road-clear` sınıfı bizim `0 = traversable` sınıfımıza eşlenir. FloodNet ikinci
-kaynak olarak **yalnız v2 döneminde** kullanılmıştır. Güncel üretim modeli **v21**
-RescueNet + kendi ürettiğimiz iki sentetik/melez küme ile eğitilmiştir.
+kaynak olarak **yalnız v2 döneminde** kullanılmıştır. Güncel üretim modeli **v36**
+RescueNet + üç kendi ürettiğimiz küme + **kendi drone'umuzun gerçek gündüz
+kareleri** ile eğitilmiştir.
 
-| # | Veri seti | Rol | Güncel v21'de? |
+| # | Veri seti | Rol | Güncel v36'da? |
 |---|---|---|---|
 | 1 | **RescueNet** (roads alt kümesi) | Ana gerçek afet verisi; **zemin sınıfının kaynağı** | ✅ evet |
 | 2 | **FloodNet** (Track 1, segmentasyon) | İkinci gerçek kaynak, v2 döneminde | ❌ hayır |
@@ -115,7 +123,28 @@ görsün diye üçüncü kaynak eklendi.
 | v5c | RescueNet (yolov8m) | **Arenayı hiç görmedi** — gerçek karelerde en iyi taban |
 | v15 | RescueNet 11 sınıf ön-eğitim → 2 sınıfa fine-tune | Yardımcı görev yaklaşımı |
 | v17, v20 | `karisim_arena.yaml` (RescueNet + sentetik arena) | Gerçek karelerde körleşti |
-| **v21 (üretim)** | **`karisim_arena_gercek.yaml`** = RescueNet + sentetik arena + `copy_paste_gercek` | Güncel üretim modeli |
+| v21 | `karisim_arena_gercek.yaml` = RescueNet + sentetik arena + `copy_paste_gercek` | 2026-08-06'da üretimdi |
+| v24 · v27 · v30 · v34 · v35 | ara sürümler (imgsz 640 → **512**, T163/D-308) | — |
+| **v36 (üretim)** | **`karisim_gece_v7a.yaml`** = `rescuenet_2sinif_engelli` (3502) + `sentetik_arena` (2700) + `copy_paste_t127` (344) + **`dji_v7_x5`** (2065) · val = `dji_v7` (73 **gerçek gündüz DJI** karesi) | **Güncel üretim modeli.** yolov8m-seg, imgsz 512, taban v35'ten ince ayar. ⚠ Reçete **t127 DEĞİLDİR** (D-324 §5) |
+| v8 (2026-08-28, eğitiliyor) | `karisim_bariyer_v8.yaml` = v7a'nın tamamı + **`sentetik_arena_bariyer_acili`** (2160) | Bariyer kolu ±45° eğimle çizilir (T185); `degrees=180` (D-324 §4) |
+
+### 5.1 · Kendi drone'umuzun verisi (2026-08-22, GÜNDÜZ)
+
+`dji_v7` = 2026-08-22 uçuşlarının 1 fps kareleri, **elle etiketli**:
+
+| klip | kare | etiketli | rol |
+|---|---|---|---|
+| 0037 | 300 | 290 | eğitim |
+| 0039 | 222 | 196 | eğitim |
+| **0038** | 246 | — | **AYRILMIŞ DOĞRULAMA** (CONTRACTS §12) — eğitime **giremez** |
+
+⚠ `dji_v7_x5` bayt-eş **beşleme**dir: 2065 dosya = **413 benzersiz** kare.
+Gerçek çeşitlilik dosya sayısının **beşte biridir** ve hepsi **tek günün** iki
+uçuşundan gelir.
+
+⚠ `data/dji_prova_kareler` (2026-08-20, **569 kare**) **hiçbir eğitime girmedi**
+ve girmemelidir: tamamı gece (medyan parlaklık **19**), nadir değil, içinde
+arena/koridor/bariyer/H pedi **yok** (D-324 §7).
 
 ---
 
