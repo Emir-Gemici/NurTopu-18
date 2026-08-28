@@ -25242,3 +25242,47 @@ eden dersi: **ölçen aracın kendisi de ölçülmelidir** (D-349, D-354, D-357)
 
 Bundan sonra: suit **ayrı** koşulur, sonucu **okunur**, ancak sonra commit
 ve push zinciri başlar.
+
+---
+
+### D-361 · ✅ T116 KAPANDI — "kaplama" adı İKİ FARKLI PAYDA taşıyor; fark ölçüldü ve kilitlendi (2026-08-28)
+
+**Kusur.** Aynı kavram iki yerde, iki farklı paydayla:
+
+| yer | payda |
+|---|---|
+| `scripts/olcum/65_kabul_denetcisi.py::kaplama` | **letterbox TUVALİ** (`sq.shape`) |
+| `codes/karar_sozlesmesi.py::zemin_kaplamasi` | **İÇERİK kutusu** (`iw*ih`) |
+
+Ve `ZEMIN_KAPLAMA_TAVANI = 0,55` **içerik** paydasına göre kalibredir
+(T142/D-286).
+
+**ÖLÇÜLDÜ** (v36, `data/raw_frames`'ten 8 kare, üretim çağrı sırası):
+
+| kare | 65'in sayısı | sözleşmenin sayısı | oran |
+|---|---|---|---|
+| 8 karenin tamamı | 0,176–0,270 | 0,314–0,480 | **sabit 1,78×** |
+
+Oran **sabit**, çünkü 16:9 kare kareye letterbox'lanıyor
+(512²/(512·288) = 1,778).
+
+**Tehlike.** `65`'in sayısı sözleşmeninkinden **1,78 kat küçüktür**. O sayıyı
+0,55 tavanıyla kıyaslayan biri tavanı fiilen **0,98**'e çıkarır — gerçekte
+%98 zemin gören bir kare bile "tavan altında" görünür. Ölçülen 8 karede
+çelişki **çıkmadı** (hepsi tavanın çok altında), ama tehlike **yapısaldır**.
+
+**Yapılan — üretim kodu DEĞİŞMEDİ.**
+1. `kaplama()`'ya paydayı, oranı ve *"bu sayıyı tavanla kıyaslamayın"*
+   uyarısını yazan bir docstring eklendi.
+2. **NÖBETÇİ** `tests/test_t116_kaplama_paydasi.py` (8 test): farkın varlığı
+   ve büyüklüğü model yüklenmeden kurulmuş maskeyle kilitlendi; tavanın
+   içerik paydasına ait olduğu sabitlendi; ve `65`'in gövdesinde tavanın
+   **kullanılmadığı** sınandı.
+3. **Eşik konmadı, alan adı değiştirilmedi** — T118'in adlandırma kararı
+   mimarda kalır.
+
+⚠ **Kendi hatam, testin içinde yazılı.** İlk sürümde kullanım denetimini
+**metin araması** ile yapmıştım; docstring'e sabitin adını yazınca test
+yanlış alarm verdi. **AST**'ye çevrildi (docstring bir `Constant`tır, `Name`
+değil) ve bunu ayrıca sınayan bir test eklendi
+(`test_MUTASYON_docstring_BAHSI_kirletmiyor`).

@@ -398,6 +398,26 @@ def kume_parmak_izi(kok):
 
 
 def kaplama(model, p):
+    """K0 korluk olcumu. 🔴 PAYDA: LETTERBOX TUVALIDIR, icerik kutusu DEGIL.
+
+    T116 · D-361 — BU FARK BILEREK YAZILIYOR, cunku ayni ad iki yerde iki
+    farkli sey demek:
+
+        buradaki `kaplama`            -> payda = `sq.shape` (letterbox TUVAL)
+        `karar_sozlesmesi.zemin_kaplamasi` -> payda = ICERIK kutusu (iw*ih)
+
+    Ve `ZEMIN_KAPLAMA_TAVANI = 0.55` **ICERIK** paydasina gore kalibredir
+    (T142/D-286).
+
+    OLCULDU (v36, data/raw_frames'ten 8 kare): iki sayinin orani SABIT
+    **1,78x** (16:9 karenin kareye letterbox'lanmasi). Yani buradaki sayi
+    sozlesmeninkinden 1,78 KAT KUCUKTUR.
+
+    ⚠ BU SAYIYI `ZEMIN_KAPLAMA_TAVANI` ILE KIYASLAMAYIN. Kiyaslarsaniz
+    tavani fiilen **0,98**'e cikarmis olursunuz (0,55 x 1,78) ve gercekte
+    %98 zemin goren bir kare bile "tavan altinda" gorunur.
+    Nobetci: `tests/test_t116_kaplama_paydasi.py`.
+    """
     img = cv2.imread(str(p))
     if img is None:
         return None
