@@ -25172,3 +25172,41 @@ Yeterli olup olmadığını **bu gecenin verdikti** ölçecek — belge değil.
 ciddi kusur buldu (D-349 kamera aynası, D-354 defter kapısı, D-357 verdikt
 betiği) ama bu bulguda **büyüklüğü abarttı**. Yordam işledi: her iddia
 uygulanmadan önce **kendim ölçtüm**.
+
+---
+
+### D-359 · ✅ T115 KAPANDI — kuyruktaki 13 bozuk dosya yolu onarıldı (2026-08-28)
+
+**Kusur (D-194 §2).** `O:\navitas-local-train\51_sentetik_arena.py` gibi
+yollar yazılırken kaçış dizileri **çözülmüş**:
+- `\n` → gerçek satır sonu ⇒ satır `O:` ile bitip diğeri
+  `avitas-local-train` ile başlıyor,
+- `\51` → `chr(0o51)` = `)` ⇒ `)_sentetik_arena.py`,
+- `\56` → `chr(0o56)` = `.` ⇒ `._t53_gercek_karisim.py`.
+
+Amele bu yolları **okuyamıyordu**.
+
+**Yordam — körlemesine değiştirmedim.**
+1. **Ayrım:** satır **başında** `avitas-local-train` olanlar gerçek bozuk;
+   T115'in **kendi tarif satırları** (6603/6604/6609/6613) kusuru *anlatıyor*,
+   taşımıyor — onlara **dokunulmadı**.
+2. **Kuru koşu** ile 13 onarım önizlendi.
+3. 🔴 **Her yeniden kurulan yol DİSKTE ARANDI**; bulunamayan onarım
+   **uygulanmayacaktı** (atlanan: 0). Doğrulananlar:
+   `51_sentetik_arena.py` ✓ · `56_t53_gercek_karisim.py` ✓ ·
+   `calisma/sentetik_arena_kadraj` ✓
+4. İkisi **öksüz** kalmıştı: `\n` bölünmesi başlığı ikiye ayırmış, araya 58
+   satırlık alt maddeler girmişti. Başlıkları bulundu (T57 → 8029,
+   T56 → 8095) ve parçalar **geri bağlandı**.
+
+**KAPI.** `grep -c '^avitas-local-train'` → **0** (T115'in kendi ölçütü).
+Doğru biçimli yol sayısı **158 → 160**.
+
+**🔴 EN ÖNEMLİ DOĞRULAMA:** görev sayıları **değişmedi** — 37 açık / 134
+kapalı, onarım öncesi ve sonrası aynı. Kuyruk bu projenin iş defteridir;
+bir onarımın hiçbir iş satırını bozmadığı **sayılarak** gösterilmelidir,
+iddia edilmemelidir.
+
+⚠ Ara adımda kendi hatam: öksüz parçaları bağlarken `\n`'i **iki kez**
+eklemişim (`O:\nnavitas`). Denetimde yakalandı ve düzeltildi; kapı
+sayısı (160) bunu doğruluyor.

@@ -6570,7 +6570,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - ⚠ **v34 terfisi GERİ ALINMAZ** — arena kabul kapılarında v30'u geçti (D-181)
     ve çatı ekseni hiçbir terfi kapısında yoktu; v30 de o eksende seçilmemişti.
 
-- [ ] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+- [x] **T115 — Kuyruğun 21 satırında dosya yolları OKTAL KAÇIŞLA bozulmuş: amele yolu okuyamıyor** · `TASK_QUEUE.md` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-194 §2**
+  → **KAPANDI (D-359).** 13 bozuk satır onarıldı; kapı geçti (`^avitas-local-train` → **0**). Onarım KURU KOŞUYLA önizlendi ve her yeniden kurulan yol **diskte arandı** — bulunamayan onarım uygulanmazdı (0 atlandı). İkisi öksüz kalmıştı (başlıklarından 58 satır uzağa düşmüşlerdi), başlıklarına bağlandı. **Görev sayıları değişmedi** (37 açık / 134 kapalı) — bu, onarımın hiçbir iş satırını bozmadığının kanıtıdır. ⚠ T115'in KENDİ tarif satırlarına (6603/6604/6609/6613) dokunulmadı: onlar kusuru anlatıyor, taşımıyor.
   - ⚖ **USTABAŞI DENETİMİ · 2026-08-21 · Claude-2 (Opus 5) · D-247: DOĞRU AMA EKSİK.**
     Codex-1'in davranışı doğru (uydurma yok, korunan göreve dokunmadı, kuru-koşum
     varsayılanlı betik + gerekçeli JSON rapor). Kusur RAPORLAMADA: commit başlığı
@@ -6882,8 +6883,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
     ölçülmedi (~57 kat daha çok çıkarım) · yalnız iki model koşuldu ·
     testler **saf fonksiyonları** sınar; `main()` içindeki bağlantı yalnız iki
     gerçek koşumun çıktısıyla gösterildi.
-- [IN_PROGRESS: Codex-2] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:
-avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
+- [IN_PROGRESS: Codex-2] **T107 — Eğitim betiğinin `AD` varsayılanı BAYAT: sürüm dizisi v33'teyken `v22` adıyla koşum üretiyor** · `O:\navitas-local-train\56_t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG.md` **D-182 §1**
   - `AD = "v22_on10_gercek"` gömülü. Dün geceki iki koşum `v22_*` ve `v23_*`
     adıyla düştü, oysa `codes/runs/segment/` zaten **v33**'e gitmişti.
   - Sonucu: üretime alınan model **v30'dan küçük numaralı** görünecekti; terfide
@@ -6897,8 +6897,7 @@ avitas-local-train._t53_gercek_karisim.py:36` · KÜÇÜK · kanıt: `REVIEW_LOG
   - Pakette v30'un ONNX'i **tarihsel olarak duruyor** — hangisinin üretim
     olduğunu `asil_model` söyler; yanlışlıkla eski ONNX derlenmemeli.
   - **T16'ya bağlı.**
-- [x] **T112 — KAPANDI · Ölçüm aynası senkronu testle kilitlendi** · `scripts/olcum/` ↔ `O:
-avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**
+- [x] **T112 — KAPANDI · Ölçüm aynası senkronu testle kilitlendi** · `scripts/olcum/` ↔ `O:\navitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**
   - Testler `scripts/olcum/65_kabul_denetcisi.py`yi (**ayna**) içe aktarıyor
     (`tests/test_k0_gorunurlugu.py:29`); ölçümleri fiilen koşan dosya ise
     `O:\navitas-local-train\65_kabul_denetcisi.py`. **İkisi ayrı dosya ve
@@ -6922,8 +6921,7 @@ avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-188 §4**
   - ⚠ **KÖR SİLME YOK:** hangi kopyanın kaynak olduğu dosya başına değişebilir
     (T104'te **paket** kopyası büyüktü, yani kök eskiydi).
   - ⚖ **KARARA BAĞLANDI · 2026-08-19 · mimar · `REVIEW_LOG.md` D-189.**
-  - 🔴 **Teşhisim yanlıştı, ölçüm düzeltti:** `O:
-avitas-local-train` **git
+  - 🔴 **Teşhisim yanlıştı, ölçüm düzeltti:** `O:\navitas-local-train` **git
     deposu değil** (`git rev-parse` → *not a git repository*). Yani
     `scripts/olcum/` bir fazlalık kopya **değil**, o 37 betiğin **tek sürüm
     kontrolüdür**. **(a) "aynayı kaldır" REDDEDİLDİ** — 37 betiğin geçmişini
@@ -7025,8 +7023,7 @@ avitas-local-train` **git
   - ⚠ Amele mimarın sayımını **düzeltti**: repo aynasında **37** `.py`, canlıda
     **105**, yalnız canlıda **68**. Mimarın "46"sı **numaralı** betikleri
     sayıyordu (canlıda 82, repoda 36). İkisi de doğru, **farklı kapsam**.
-- [x] **T113 — KAPANDI · 14 betik arşivlendi, depo bütünlüğü kırığı kapandı, ve izlenen üretim kodu onlardan birine BAĞIMLI** · `O:
-avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T112 ölçümünün yan bulgusu)
+- [x] **T113 — KAPANDI · 14 betik arşivlendi, depo bütünlüğü kırığı kapandı, ve izlenen üretim kodu onlardan birine BAĞIMLI** · `O:\navitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T112 ölçümünün yan bulgusu)
   - Aynalama **#48'den sonra** başlamış; `01`–`47` arası (ve 49-53, 55, 57-59)
     **hiç aynalanmamış**. Ölçüldü: canlıda **82** numaralı betik, repoda **36**.
     ```text
@@ -7068,8 +7065,7 @@ avitas-local-train\` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-189 §1** (T
   - 🔴 **AMA (C) "önemsiz" demek DEĞİL — ihtiyaç farklı:**
     **sürüm kontrolü** = değişimi izlemek + kod bağımlılığını garanti etmek ·
     **yedek** = diski kaybetmemek. 32 betik yedek **gerektiriyor** ve
-    **PC garantiye gidiyor**. `O:
-avitas-local-train` **tümüyle** yedek
+    **PC garantiye gidiyor**. `O:\navitas-local-train` **tümüyle** yedek
     listesine girer.
   - ⚠ **YAN BULGU:** aynı betik `--aset-dizini` ile `doku_bankasi\enkaz`a da
     bağlı (**498 MB** doku bankası). Aynalanamaz (ikili varlık) ama
@@ -7092,8 +7088,7 @@ avitas-local-train` **tümüyle** yedek
     verilmişti). Kendi işini kendi onaylamamak için doğrulama **amelenin yazdığı
     teste** bırakıldı: `test_olcum_ayna_senkronu` → **6 test OK, 51/51**.
   - ⚠ **32 aynasız betik bilerek aynalanmadı** (D-190 (C)) — onlar **yedek**
-    ihtiyacıdır, sürüm kontrolü değil. `O:
-avitas-local-train` tümüyle yedek
+    ihtiyacıdır, sürüm kontrolü değil. `O:\navitas-local-train` tümüyle yedek
     listesinde.
 - [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
@@ -8032,7 +8027,7 @@ avitas-local-train` tümüyle yedek
     Jetson'da engine derlenmeden önce ölçülmeli; (4) Jetson üzerinde hiçbir şey
     koşulmadı (FPS, engine, saha kararı donanım ister).
 
-- [x] **T57 — KAPANDI (vekil) · Prosedürel zemin dokusu gerçek dışı: kanal-bağımsız gürültü** · `O:
+- [x] **T57 — KAPANDI (vekil) · Prosedürel zemin dokusu gerçek dışı: kanal-bağımsız gürültü** · `O:\navitas-local-train\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-79
   - ⚖ **MİMAR VEKİLİ KAPATTI · 2026-08-26 · Claude-2 (vekâlet, kullanıcı kararı 2026-08-25).** İki bağımsız tur aynı hükmü verdi: T133 triyaj + çürütücü (21 Ağu, D-266) ve **taze yeniden-doğrulama** (25 Ağu, `results/t133/taze_dogrulama_35.json`). Yazan ben DEĞİLİM (Codex-1 / önceki mimar) — vekâlet §1 ihlali yok.
     - **Bugün koşulan:** `(1) sed -n 281,301p O:/navitas-local-train/51_sentetik_arena.py  (2) md5sum scripts/olcum/51_sentetik_arena.py O:/navitas-local-train/51_sentetik_arena.py; git `
     - **Gerçek çıktı:** (1) Bugünkü satırlar 291-296: `ince = np.random.normal(0, rng.uniform(ia, iu), (boyut, boyut))` / `kaba = np.random.normal(0, ..., (boyut // 8, boyut // 8))` / `kaba = cv2.resize(...)` / `im += (ince 
@@ -8062,8 +8057,7 @@ avitas-local-train` tümüyle yedek
     yol  166/385 temiz (p50  9,9)            -> banka temiz yol BOL VERIYOR
     ```
     → `PROSEDUREL_PAYI = {"zemin": 0.70, "yol": 0.35}`. **Sıfırlanmadı.**
-  - **KAPI 2 — GÖZLE:** `O:
-avitas-local-train
+  - **KAPI 2 — GÖZLE:** `O:\navitas-local-train
 esults	57_gorsel\`
     (`yuzey_ornekleri.jpg`, `sahne_51/77/123.jpg`). Eski zemin **gökkuşağı
     konfeti**; yeni zemin **çim/beton** gibi okunuyor.
@@ -8091,7 +8085,6 @@ esults	57_gorsel\`
     benzerliği (yalnız LAB + göz); (2) moloz şeritleri hâlâ RescueNet **bina
     çatısı** kesitleri (D-78'den devam, bu görevde değişmedi); (3) banka
     "zemin" yamalarının bir kısmı aşırı pozlanmış.
-avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-79
   - ⚠ Satırı Claude-2 açtı (kuyrukta yoktu); kapsam kullanıcı direktifinden.
   - **Yap:** gürültü TEK KANALLI üretilip üç kanala yayılsın (parlaklık dokusu);
     parlaklık genliği gerçek bankaya ÖLÇEREK yaklaştırılsın; `yuzey_sec()`
@@ -8099,14 +8092,13 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
   - ⚠ Bu değişiklik **eğitim kipini de etkiler ve bu KASITLIDIR**; T51/T56'daki
     "eğitim kipi değişmedi" kapısı bu görevde geçerli değildir.
 
-- [STATUS: READY_FOR_REVIEW] **T56 — Kadraj kipi şartnameye sadık değil: hedef yeşil, koridorlar dalgalı, doku kaleydoskopik** · `O:
+- [STATUS: READY_FOR_REVIEW] **T56 — Kadraj kipi şartnameye sadık değil: hedef yeşil, koridorlar dalgalı, doku kaleydoskopik** · `O:\navitas-local-train\51_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-77
   - **✅ YAPILDI · 2026-08-12 · Claude-2** · kayıt `REVIEW_LOG.md` **D-78**.
     Eğitim kipinde eğrilik, aynalama ve yeşil çeldirici **aynen kaldı**;
     yalnız `--kadraj` değişti.
   - **KAPILAR (gerçek çıktı):**
     ```text
-    KAPI 1  GOZLE DOGRULAMA — O:
-avitas-local-train
+    KAPI 1  GOZLE DOGRULAMA — O:\navitas-local-train
 esults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI sahne, iki kip)
               uclu_sa_000000.jpg · _000005.jpg · _000012.jpg
             goruntu 260 · manifest kaydi 260                        GECTI
@@ -8139,7 +8131,6 @@ esults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI s
     bankası 48–64 px kesitlerden, her iki kipte de benekli; **"asfalt gibi"
     DEĞİL**; (2) moloz şeritleri hâlâ RescueNet **bina çatısı** kesitleri;
     (3) brandanın gerçek brandaya görsel benzerliği (düz kırmızı dikdörtgen).
-avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` D-77
   - ⚠ Satırı Claude-2 açtı (kuyrukta yoktu); kapsam kullanıcı direktifinden.
   - **Yap (yalnız `--kadraj`):** koridorlar düz · hedef 2×2 m KIRMIZI branda,
     açık şeridin hedef ucunda, her karede · aynalama kaldırılsın (periyodik
@@ -8185,8 +8176,7 @@ avitas-local-train)_sentetik_arena.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md
     `acik_serit_adaylari`). Tek cevaplı **139** kare kalıyor. Üreteç 2–5 şerit
     ürettiği için doğal sonuç; **geometri değiştirilmedi** (kapı 4 gereği).
     Oranı yükseltmek için kadraj kipinde şerit sayısı 3'e sabitlenmeli — **ayrı görev**.
-  - **Küme:** `O:
-avitas-local-train\calisma\sentetik_arena_kadraj` (manifest dahil);
+  - **Küme:** `O:\navitas-local-train\calisma\sentetik_arena_kadraj` (manifest dahil);
     öncekisi `..._ONCEKI_manifestsiz` olarak saklandı.
   - **DOĞRULANAMADI:** (1) manifest `acik_serit` değerlerinin **görsel** doğruluğu
     (260 karenin hiçbiri gözle denetlenmedi); (2) `mpp` kamera ölçümü değil.
@@ -8262,8 +8252,7 @@ avitas-local-train\calisma\sentetik_arena_kadraj` (manifest dahil);
     başarımını doğrulamaz.** Ölçülen şey üretecin geometrisidir.
   - `--kadraj` kipi eklendi: dikey pay `0`, dönüş/perspektif kapalı, `"kismi"`
     şerit yok. **Eğitim kipi (varsayılan) DEĞİŞMEDİ.** Yeni küme 260 kare:
-    `O:
-avitas-local-train\calisma\sentetik_arena_kadraj`.
+    `O:\navitas-local-train\calisma\sentetik_arena_kadraj`.
   - **ÖNCE/SONRA — kendi ölçümüm** (tam karede, kırpmasız, yer gerçeği maskesiyle, n=24):
     ```text
     ESKI (egitim kipi) : rota  2/24 · {UC_BANT_TEMAS_YOK: 20, DUSUK_GUVEN: 2}
@@ -8364,8 +8353,7 @@ avitas-local-train\calisma\sentetik_arena_kadraj`.
     - Üç eksenin özeti: `v21 görür ama çöker (0.890 / %81,0)` ·
       `v17 çökmez ama görmez (0.010 / %0,9)` · `v20 çökmez ama görmez (0.000 / %2,9)`.
       **"Gerçek dokuda görür VE alan dışında çökmez" çeyreğinde hiçbir model yok.**
-  - **Görsel doğrulama — sayıyı değiştirdi** (`O:
-avitas-local-train
+  - **Görsel doğrulama — sayıyı değiştirdi** (`O:\navitas-local-train
 esults	50_uc_kapi\`):
     v21 otoparkta bina **çatısını ve çimi parlak yeşil** boyuyor (kullanıcının
     bildirdiği kusur gözle doğrulandı); v17 aynı karede **tek piksel bile**
