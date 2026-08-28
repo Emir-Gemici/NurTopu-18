@@ -25081,3 +25081,50 @@ commit'ler artık deponun kendi yapılandırmasını kullanıyor. CLAUDE.md madd
    alındı); aynı riski gerekçesiz almam.
 
 Yazılı onay olmadan geçmiş **yeniden yazılmayacaktır**.
+
+---
+
+### D-357 · 🔴 T199 VERDİKT BETİĞİNİN KENDİSİNDE ÜÇ KUSUR — bu gecenin hükmünü BOZABİLİRDİ (2026-08-28)
+
+**Nasıl bulundu.** Kullanıcı *"açık olanların hepsini"* dedi; 39 ajanlık
+paralel tarama koşuldu. En üstteki bulgu benim **kendi** yazdığım
+`160_t199_verdikt.py` idi. İddia **kendim doğrulandı**.
+
+Bu betik T199 adayının kaderini belirliyor ve ÖN KAYIT D-340'ı **mekanik**
+uygulaması gerekiyor — tam da "sonucu görüp yorumlama" fırsatını kapatmak
+için yazılmıştı. Üç kusuru vardı ve **üçü de yanlış verdikt üretebilirdi**:
+
+1. **BAYAT JSON.** Önceki koşumun `*_t192.json` dosyası **silinmiyordu**.
+   `159` çökse bile eski dosya okunur ve verdikt **başka bir koşumun
+   sayısıyla** verilirdi. Bu projenin **T125 kalıbı** tam bunun için var ve
+   ben uygulamamışım.
+2. **ÇÖKME = DÜŞME sanması.** `zincir` yalnız iki dizgeye bakıyordu
+   (`"URETIME ALINIR" in c2 and "URETIME ALINMAZ" not in c2`). `65` çökerse
+   çıktı ikisini de içermez → verdikt *"gerileme kapısı DÜŞTÜ"* derdi.
+   Fail-closed olduğu için **güvenli** ama **yanlış teşhis**: beni var
+   olmayan bir kapı düşmesini kovalamaya gönderirdi. `OLCULEMEDI != DUSTU`.
+3. **cp1254 ÇÖKMESİ.** Çıktı `⚠` içeriyor; Windows varsayılan kod sayfasında
+   `UnicodeEncodeError` atar ve **verdikt KABUL olsa bile** betik exit 1 ile
+   çöker, "reddedildi" sanılırdı. (Bu hatayı bugün başka bir betikte zaten
+   yaşamıştım.)
+
+**Düzeltme.**
+- `j1.unlink(missing_ok=True)` — bayat JSON silinir.
+- `birincil_olculdu` / `zincir_olculdu` ayrımı; ölçülemediğinde **ayrı bir
+  verdikt dalı**: *"OLCULEMEDI — ADAY REDDEDILIR … Bu bir KAPI DÜŞMESİ
+  DEĞİLDİR."* `OLCULEMEDI != GECTI` gereği aday yine reddedilir, v36 kalır.
+- `sys.stdout.reconfigure(encoding="utf-8")`.
+
+**NÖBETÇİ: `tests/test_t199_verdikt_nobetcisi.py` (8 test)** — üç kusurun
+her biri ayrı sınanır, ikisi **mutasyonla**; ön kayıt izleri (D-340, "ROTA
+URETMELI", "10 kapili zincir", "GEVSETILMEZ", "OLCULEMEDI != GECTI") betikte
+**yazılı** olmalı.
+
+**ÖZ DENETİM — cevabı önceden bilinen koşu.** Betik v36 ile koşuldu: v36
+figürde rota **üretmiyor** (D-342) ama zinciri **geçiyor** (D-352 öncesi
+ölçüldü). Doğru verdikt *"REDDEDİLDİ — figürde rota üretilemedi"* olmalı.
+
+⚠ **Ders.** Hükmü mekanikleştirmek doğru bir savunmaydı, ama **mekanizmanın
+kendisi denetlenmemişti**. Bu, D-349'un (kapılar yeşilken saha yolu
+aynalıyordu) ve D-354'ün (kılavuz "doğrulandı" derken doğrulama koşmuyordu)
+üçüncü örneği: **ölçen aracın kendisi de ölçülmelidir.**

@@ -35,6 +35,14 @@ def kos(betik: str, ek: list[str]) -> tuple[str, bool]:
 
 
 def main() -> int:
+    # 🔴 Windows varsayilan kod sayfasi cp1254'tur ve asagidaki `⚠` gibi
+    # karakterlerde UnicodeEncodeError atar — verdikt KABUL olsa bile betik
+    # exit 1 ile coker ve "reddedildi" sanilir. Cikti UTF-8'e ZORLANIR.
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):        # pragma: no cover
+        pass
+
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--aday", type=Path, required=True)
     ap.add_argument("--ad", default="t199_aday")
@@ -49,19 +57,32 @@ def main() -> int:
 
     # ── BIRINCIL: figurde rota uretiliyor mu ──────────────────────────────
     j1 = BURASI / "results" / "t63" / f"{a.ad}_t192.json"
-    c1, _ = kos("159_t192_figur_rota.py",
+    j1.parent.mkdir(parents=True, exist_ok=True)
+    # 🔴 T125 kalibi: onceki kosumun JSON'u SILINIR. Silinmezse `159` cokse
+    # bile bayat dosya okunur ve verdikt BASKA bir kosumun sayisiyla verilir.
+    j1.unlink(missing_ok=True)
+    c1, ok1 = kos("159_t192_figur_rota.py",
                 ["--agirlik", str(a.aday), "--json", str(j1)])
     print(c1.strip())
-    d1 = json.loads(j1.read_text(encoding="utf-8"))[0] if j1.is_file() else None
-    birincil = bool(d1 and d1.get("rota_uretildi"))
+    d1 = (json.loads(j1.read_text(encoding="utf-8"))[0]
+          if ok1 and j1.is_file() else None)
+    birincil_olculdu = d1 is not None and d1.get("durum") != "OLCULEMEDI"
+    birincil = bool(birincil_olculdu and d1.get("rota_uretildi"))
 
     # ── GERILEME: 10 kapili zincir ────────────────────────────────────────
-    c2, _ = kos("65_kabul_denetcisi.py", ["--model", str(a.aday), "--ad", a.ad])
+    c2, ok2 = kos("65_kabul_denetcisi.py", ["--model", str(a.aday), "--ad", a.ad])
     for satir in c2.splitlines():
         if any(k in satir for k in ("K0 ", "K1 ", "K2 ", "K3 ", "K4 ", "K5 ",
                                     "K5A", "K6 ", "K7 ", "K8 ", "VERDIKT")):
             print("  " + satir.strip())
-    zincir = "URETIME ALINIR" in c2 and "URETIME ALINMAZ" not in c2
+    # 🔴 COKME ile DUSME AYRI SEYLERDIR. Once yalniz iki dizgeye bakiyordum;
+    # `65` cokerse cikti ikisini de icermez ve verdikt "gerileme kapisi DUSTU"
+    # derdi. Fail-closed ama YANLIS TESHIS — beni yanlis seyi kovalamaya
+    # gonderirdi. `65` her yolda "VERDIKT:" basar (K0 dali dahil), o yuzden
+    # OLCULDU gostergesi budur.
+    zincir_olculdu = ok2 and "VERDIKT:" in c2
+    zincir = zincir_olculdu and ("URETIME ALINIR" in c2
+                                 and "URETIME ALINMAZ" not in c2)
 
     print("\n" + "-" * 66)
     print(f"  BIRINCIL (figurde rota)   : "
@@ -73,6 +94,19 @@ def main() -> int:
               f"(taban v36 %4,4) · cekimser %{100*d1.get('cekimser', 0):.1f}")
     print(f"  GERILEME (10 kapi)        : {'GECTI' if zincir else 'DUSTU'}")
     print("-" * 66)
+
+    if not birincil_olculdu or not zincir_olculdu:
+        print("  VERDIKT: OLCULEMEDI — ADAY REDDEDILIR.")
+        eksik = []
+        if not birincil_olculdu:
+            eksik.append("birincil olcut (159 cokTU ya da OLCULEMEDI dondu)")
+        if not zincir_olculdu:
+            eksik.append("gerileme kapisi (65 cokTU; ciktida VERDIKT yok)")
+        print("           olculemeyen: " + " · ".join(eksik))
+        print("           ⚠ Bu bir KAPI DUSMESI DEGILDIR; olculemedi.")
+        print("           OLCULEMEDI != GECTI: v36 uretimde KALIR.")
+        print("=" * 66)
+        return 1
 
     if birincil and zincir:
         print("  VERDIKT: ADAY KABUL EDILEBILIR — D-340'in IKI sarti da tuttu.")
