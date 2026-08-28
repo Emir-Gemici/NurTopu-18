@@ -23758,3 +23758,28 @@ kapatmazsa kayda öyle geçecek.
 Hedef *"her karede rota"* olamaz: `sa_000121`'de rota üretmek **yanlış
 pozitif** olurdu ve şartname §2.1'e göre yanlış güzergâh **0 puandır**. Ölçüt
 **rota sayısı değil DOĞRU KARAR sayısıdır** — ve o eksende tavan 259/260'tır.
+
+### D-330 · Kompozit v2 (seçilmiş zemin) ölçüldü — AYRI küme olarak; G11'in tabanı DEĞİŞTİRİLMEDİ (2026-08-28)
+
+Kompozit zemin kareleri başarıya göre ölçülüp (22 karenin 8'i %100, 6'sı
+%0–25) ≥%50 olan **14 kare** seçilmiş ve 9'ar kopyayla yeniden kurulmuştu
+(126 kare, **0 atlandı**). Ölçüldü:
+
+| küme | v36 | aday ep27 |
+|---|---|---|
+| `arena_kompozit` (88 · ön kayıtlı G11 tabanı) | 49 · %56 | 31 · %35 |
+| `arena_kompozit_v2` (126 · seçilmiş zemin) | **88 · %70** | 52 · %41 |
+
+v36'da v2 kümesinde **hiç `MASKE_YOK` yok** — yani seçilen zemin tamamen
+modelin yetkinlik alanı içinde.
+
+⚠ **G11'in ölçüm tabanı DEĞİŞTİRİLMEDİ.** Eşik (≥45/88) 88 karelik kümeye
+göre ön kayıtlıdır; kümeyi ölçümün ortasında büyütmek kapıyı geçersiz
+kılardı — payda oyunu yasağı. v2 ayrı durur ve **eğitim hükmünden sonra**
+değerlendirilir.
+
+⚠ **Seçim gizlenmiyor:** v2 bir GÖSTERİM kümesidir ve zemin kareleri
+*"modelin başarılı olduğu"* ölçütüyle seçilmiştir. Bu, algı başarısının
+ölçüsü DEĞİLDİR (kabul kümesi `arena_kadraj` odur) — hakem ekranı zaten
+kompozit için *"yer gerçeği GEOMETRİK KURGUDUR, uyum ALGI başarısının ölçütü
+DEĞİLDİR (D-298/D-302)"* yazıyor.
