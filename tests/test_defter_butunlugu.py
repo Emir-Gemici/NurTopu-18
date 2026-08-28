@@ -41,7 +41,11 @@ BILINEN_CAKISMA_ADETLERI = {
 DEFTER_BASLIK_TABANI = 282
 DEFTER_TEKIL_TABANI = 276
 KUYRUK_ATIF_OLCUM_TABANI = 220
-BOZUK_SATIR_TABANI = 13
+# T115/D-359: 13 bozuk satirin TAMAMI onarildi (kuru kosu + her yeniden
+# kurulan yol DISKTE arandi + gorev sayilari degismedi diye dogrulandi).
+# Taban 13 -> 0. Bu bir CIRCIR kapisidir: sayi ARTARSA da duser, yani
+# bundan sonra kuyruga yeni bir bozuk yol girerse KAPI YAKALAR.
+BOZUK_SATIR_TABANI = 0
 
 
 def d_numarasi_durumu(
@@ -245,16 +249,21 @@ class SafKuralVeMutasyonTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "taban guncellenmeli"):
             kuyruk_atif_kapisi("kanit: D-1\n", defter, atif_tabani=2)
 
+    # 🔴 T115/D-359: aşağıdaki İKİ mutasyon kontrolü eskiden MODÜL SABİTİNE
+    # (`BOZUK_SATIR_TABANI`) bağlıydı. Taban 13 → 0 olunca "sayı tabanın
+    # ALTINA düştü" hâli KURULAMAZ oldu ve kontrol ETKİSİZLEŞTİ — yani
+    # kapının yarısı sınanmadan kaldı. Artık ikisi de KENDİ SENTETİK tabanını
+    # kurar; gerçek taban ne olursa olsun iki dal da sınanır.
     def test_mutasyon_3_yeni_avitas_satiri_bozuk_taban_kapisini_DUSURUR(self):
-        taban = "".join(f"avitas_{i}\n" for i in range(BOZUK_SATIR_TABANI))
-        bozuk_satir_kapisi(taban)  # Pozitif kontrol.
+        metin = "".join(f"avitas_{i}\n" for i in range(3))
+        bozuk_satir_kapisi(metin, taban=3)  # Pozitif kontrol.
         with self.assertRaisesRegex(AssertionError, "tabani asildi"):
-            bozuk_satir_kapisi(taban + "avitas_MUTASYON\n")
+            bozuk_satir_kapisi(metin + "avitas_MUTASYON\n", taban=3)
 
     def test_bozuk_satir_azalirsa_taban_BAYAT_diye_DUSER(self):
-        metin = "".join(f"avitas_{i}\n" for i in range(BOZUK_SATIR_TABANI - 1))
+        metin = "".join(f"avitas_{i}\n" for i in range(2))
         with self.assertRaisesRegex(AssertionError, "taban guncellenmeli"):
-            bozuk_satir_kapisi(metin)
+            bozuk_satir_kapisi(metin, taban=3)
 
     def test_girintili_avitas_satiri_sutun_sifir_kapisina_GIRMEZ(self):
         durum = bozuk_satir_kapisi("  avitas_girintili\n", taban=0)

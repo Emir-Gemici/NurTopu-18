@@ -25210,3 +25210,35 @@ iddia edilmemelidir.
 ⚠ Ara adımda kendi hatam: öksüz parçaları bağlarken `\n`'i **iki kez**
 eklemişim (`O:\nnavitas`). Denetimde yakalandı ve düzeltildi; kapı
 sayısı (160) bunu doğruluyor.
+
+---
+
+### D-360 · ⚠ KENDİ HATAM: KAPI KIRMIZIYKEN PUSH ETTİM (2026-08-28)
+
+`818e30e` commit'i, tam suit **DÜŞMÜŞKEN** itildi. Sebep yordamsal: suit
+komutunu `commit`/`push` ile **aynı zincirde** koştum ve sonucuna bakmadan
+devam ettim.
+
+CLAUDE.md §5 bunu açıkça yasaklıyor: *"Serbestlik dikkatsizlik değildir:
+itilen şey KAPIDAN GEÇMİŞ olmalıdır. Kapı düşmüşken push yapılmaz."*
+
+**Düşen test kusur DEĞİLDİ, doğru davranıştı.** `test_defter_butunlugu`'nun
+bozuk-satır kapısı bir **cırcırdır**: T115'te 13 satırı onarınca sayı 13 → 0
+düştü ve kapı *"taban güncellenmeli"* diyerek düştü — tam tasarlandığı gibi.
+
+**Düzeltme ve ortaya çıkan İKİNCİ kusur.** Taban 13 → 0 yapıldı. Ama bu,
+kapının **mutasyon kontrolünü öldürdü**: kontrol `BOZUK_SATIR_TABANI - 1`
+ile "sayı tabanın altına düştü" hâlini kuruyordu ve **0'ın altı kurulamaz**.
+Yani taban 0'a inince kapının bir dalı **sınanmadan kalıyordu** — sessizce
+boş kapıya dönüşüyordu.
+
+İki mutasyon kontrolü de artık **kendi sentetik tabanını** kuruyor
+(`taban=3`), modül sabitinden bağımsız. Gerçek taban ne olursa olsun iki dal
+da sınanır.
+
+**Ders.** İki ayrı hata iç içeydi: (1) kapıya bakmadan push, (2) bir tabanı
+uç değerine indirince ona bağlı kontrolün ölmesi. İkincisi bugünün tekrar
+eden dersi: **ölçen aracın kendisi de ölçülmelidir** (D-349, D-354, D-357).
+
+Bundan sonra: suit **ayrı** koşulur, sonucu **okunur**, ancak sonra commit
+ve push zinciri başlar.
