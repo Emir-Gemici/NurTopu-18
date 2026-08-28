@@ -24759,3 +24759,42 @@ geçirilir ve yayınlanan şerit, aynalanmamış karardan **farklı olamaz**.
 ⚠ **Ders.** "Üretim yolu birebir kopyalandı" demek yetmiyor; **kopyanın
 kendisi de** ölçülmeli. Bir satırlık fark, on kapının hepsini geçen bir
 sistemi sahada yanlış yapabiliyor.
+
+---
+
+### D-350 · ⚠ KENDİ HATAM: T199 koşumu T185'in dizinine yazdı, `results.csv` ve `best.pt`'nin ÜSTÜNE bindi (2026-08-28)
+
+**Ne oldu.** `158_t199_arena_profil_egitimi.py`'yi `152`'den türetirken
+`KOSUM_ADI = "bariyer_v8_v36taban"` satırını **değiştirmeyi atladım**.
+`exist_ok=True` ile birlikte T199 eğitimi, T185/v8 koşumunun **aynı
+dizinine** yazmaya başladı.
+
+**Ne kayboldu, ne kurtuldu — sayıldı.**
+
+| | durum |
+|---|---|
+| eski koşumun `results.csv` (eğitim eğrileri) | **ÜZERİNE YAZILDI** |
+| eski koşumun `weights/best.pt` | **ÜZERİNE YAZILDI** |
+| eski koşumun `weights/epoch*.pt` ara kayıtları | **DURUYOR** (02:34–07:47 damgalı) |
+| eski koşumun ÜRÜNÜ | **DURUYOR**: `models/navitas_seg_v37_best.pt` (28.08 12:22'de dışa alınmış, D-332'de zaten reddedilmişti) |
+| üretim modeli `navitas_seg_v36_best.pt` | **DOKUNULMADI** |
+
+Yani modelin kendisi kaybolmadı; kaybolan **eğitim eğrileri ve grafikleri**.
+
+**Karar: koşum DURDURULDU ve yeniden başlatıldı.** 35 dakika kaybedildi
+(11 saatlik bütçenin %5'i). Gerekçe: üzerine yazma **zaten olmuştu** ve
+devam etmek onu geri getirmiyordu; ama T199 deneyini **T185'in adını
+taşıyan** bir dizinde bırakmak kaydı **kalıcı olarak** zehirlerdi. Bu
+depoda her karar bir artefakta bağlanıyor; iki deneyi aynı dizine koymak
+o zinciri kırar.
+
+`KOSUM_ADI` → **`t199_arena_profil_v36taban`**. Hiçbir dosya **silinmedi**
+(madde 18); eski dizin olduğu gibi duruyor.
+
+**Ders — D-348'in ikizi.** Bugün ikinci kez, bir betiği türetirken
+**kaynaktan gelen bir yol/ad sabitini** değiştirmeyi atladım (önce
+`.gitignore` satırı, şimdi `KOSUM_ADI`). Bir betik kopyalanarak
+türetildiğinde **çıktı yazan her sabit** tek tek gözden geçirilmelidir:
+`YAML`, `CIKTI`, `KOSUM_ADI`, `project`, `name`. Bunlardan biri
+kaynaktakiyle aynı kalırsa yeni iş **eskisinin üstüne yazar** ve bunu
+hiçbir kapı söylemez.

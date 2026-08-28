@@ -28,7 +28,11 @@ KOK = Path(__file__).resolve().parents[2]
 DS = KOK / "dataset"
 YAML = DS / "karisim_arena_profil_t199.yaml"
 CIKTI = KOK / "results" / "gece_20260828"
-KOSUM_ADI = "bariyer_v8_v36taban"
+# 🔴 D-350: bu satir 152'den KOPYALANMISTI ve degistirilmemisti; T199
+# kosumu T185'in dizinine `exist_ok=True` ile yaziyor, onun results.csv
+# ve best.pt'sinin USTUNE biniyordu. Deneyler dizin adiyla ayrilir;
+# ikisini ayni dizine koymak kaydi kalici olarak zehirler.
+KOSUM_ADI = "t199_arena_profil_v36taban"
 KOSUM_DIZINI = KOK / "codes" / "runs" / "segment" / KOSUM_ADI
 TABAN = KOK / "models" / "navitas_seg_v36_best.pt"
 T127_ARGS = KOK / "codes" / "runs" / "segment" / "t127_temiz" / "args.yaml"
