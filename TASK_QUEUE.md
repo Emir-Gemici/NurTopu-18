@@ -2861,7 +2861,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     **(c) bu 24 karede yanlış hipotez**. Düzeltme/threshold değişikliği bu tanı
     görevinde yapılmadı.
 
-- [ ] **T53 — Koşulmamış hücre: 11-sınıf ön-eğitim + GERÇEK DOKU karışımı aynı koşuda** · `O:\navitas-local-train` · **TIKAYICI** · kanıt: T50 FAZ 2 tablosu, `karisim_arena_gercek.yaml` başlığı
+- [x] **T53 — Koşulmamış hücre: 11-sınıf ön-eğitim + GERÇEK DOKU karışımı aynı koşuda** · `O:\navitas-local-train` · **TIKAYICI** · kanıt: T50 FAZ 2 tablosu, `karisim_arena_gercek.yaml` başlığı
+  → **KAPANDI (D-363).** `cati_kacagi` defterde `sonuc: "OLCUM"` ile duruyordu: **eşiği yok**, onu okuyan **hiçbir test yok**. Defterde kötü bir değer dursa tüm kapılar yeşil geçerdi (v34 bu sayıyı **0,9606**'ya çıkarmıştı — çatılı karelerin %96'sı zemin sanılıyordu). **Eşik uydurulmadı** (sayılar zaten görülmüştü, D-107): kapı bir **cırcır** — kayıtlı değerden kötüleşme yasak. Ayrıca **tazelik** kapısı: metrik üretim sürümünü anmalı, yoksa bayat ölçüm sessizce geçer. Nöbetçi 8 test.
   - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "ZATEN_YAPILMIS" dedi, çürütücü YIKTI — hücre koşuldu (v22) ama HİPOTEZ ÇÜRÜDÜ ve yazılmadı: KAPI 2 (56_uc_kapili, otopark n=67) v15 %24,1 (fren) · v21 %81,0 · **v22 %80,5** · v34 %81,2 · v35 %51,4 — fren kayıp, hiçbiri kabul bandında (%0-20). "v34 üretimde" bayat (v35, T130). Görev "ÇÜRÜDÜ" hükmüyle kapanmalı, "yapıldı" ile değil.
   - 🔎 **FİLO 2 · D-215 (2026-08-20):** "koşulmamış hücre" öncülü ARTIK YOK —
     hücre koşuldu, soyu v34 olarak üretimde (oy 1/2); v34 otopark kaplaması
@@ -3046,7 +3047,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Denetçiye not:** kapının yeni testi yazılmadı — `tests/test_zemin_kaplama_
     kapisi.py` iki sinyalli hâli kapsamıyor. Denetim bunu da kapsamalı.
 
-- [ ] **T54 — ADIM 1-3 KABUL · ADIM 4 GEÇERLİ SAYILDI (itiraz kabul, D-200) · HEDEFİ HÂLÂ ÖLÇÜLMEDİ → T116** · `dataset/download_and_convert.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-199**, hüküm **D-200**
+- [x] **T54 — ADIM 1-3 KABUL · ADIM 4 GEÇERLİ SAYILDI (itiraz kabul, D-200) · HEDEFİ HÂLÂ ÖLÇÜLMEDİ → T116** · `dataset/download_and_convert.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-199**, hüküm **D-200**
+  → **KAPANDI (D-362).** Eşleme kümeleri çivilenmişti ama `process_split`'in onları **maskeye uyguladığı** sınanmıyordu: `np.isin(lbl_np, [1, 8])` sabit listesi (D-67'nin kök nedeni) tüm mevcut testlerden **sağ çıkıyordu**. Nöbetçi eklendi (8 test): AST ile küme adı zorunlu + davranışsal olarak her ham id tek maskeye düşüyor, araç sınıfları ENGEL tarafında, ham 0 hiçbir maskeye girmiyor. Üretim kodu değişmedi.
   - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "GECERSIZ_BAYAT" dedi, çürütücü YIKTI — MUTASYON: `download_and_convert.py:116` D-67 kök-neden satırına (`blocked_mask = (lbl_np == 8)`) geri döndürüldü → `test_donusum_esleme` **8/8 YEŞİL KALDI** (engel px 7/9 → 1/9 olduğu hâlde). Testler BLOCKED_HAM kümesini çiviliyor, maskeye uygulanmasını değil; dönüştürücü yeni eşlemeyle hiç koşulmadı (`--temizle` yok), üretim verisi 41→57 zincirinden. Koruma delik.
   - ✅ **ADIM 1-3 · 2026-08-20 · Claude-2 (Fable 5)** · kayıt `REVIEW_LOG.md`
     **D-199** · ölçüm düzeneği: **dinamik workflow, 3 paralel ajan**

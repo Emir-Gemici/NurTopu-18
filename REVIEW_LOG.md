@@ -25286,3 +25286,59 @@ Oran **sabit**, çünkü 16:9 kare kareye letterbox'lanıyor
 yanlış alarm verdi. **AST**'ye çevrildi (docstring bir `Constant`tır, `Name`
 değil) ve bunu ayrıca sınayan bir test eklendi
 (`test_MUTASYON_docstring_BAHSI_kirletmiyor`).
+
+---
+
+### D-362 · ✅ T54 KAPANDI — eşleme TANIMLI ama MASKEYE UYGULANDIĞI sınanmıyordu (2026-08-28)
+
+**Kusur (D-284 §3).** `tests/test_donusum_esleme.py` `BLOCKED_HAM` /
+`TRAVERSABLE_HAM` **kümelerini** çiviliyor ve iki zincirin ayrışmadığını
+sınıyor. Ama `process_split`'in o kümeleri **maskeye uygulayıp uygulamadığını
+hiç sınamıyordu**.
+
+**Kendim doğruladım.** `dataset/download_and_convert.py:145-146`:
+```python
+road_mask    = np.isin(lbl_np, sorted(TRAVERSABLE_HAM)).astype(np.uint8)
+blocked_mask = np.isin(lbl_np, sorted(BLOCKED_HAM)).astype(np.uint8)
+```
+Bu satırlar **sabit listeye** çevrilse (`np.isin(lbl_np, [1, 8])` — D-67'nin
+kök nedeninin birebir kendisi) kümeler doğru tanımlı kaldığı için **bütün
+mevcut testler yeşil geçerdi**. v16 bu kusurdan moloza basmada
+%2,7 → **%31,6** çökmüştü.
+
+**NÖBETÇİ** `tests/test_t54_esleme_uygulaniyor.py` (8 test), üretim kodu
+değişmeden:
+- **YAPI (AST):** maskeler **küme adlarından** kuruluyor mu; sabit liste
+  mutasyonu yakalanıyor mu.
+- **DAVRANIŞ (dosya G/Ç yok):** her ham id **tek** maskeye düşüyor mu;
+  hiçbiri kaybolmuyor mu; ham 0 (etiketsiz) hiçbir maskeye girmiyor mu;
+  **araç sınıfları ENGEL tarafında mı** (v16 dersi).
+- Sabit listenin gerçekten kayıp ürettiği **sayıyla** gösteriliyor — mutasyon
+  ayırt edici olmasaydı test bunu kendisi söylerdi.
+
+---
+
+### D-363 · ✅ T53 KAPANDI — `cati_kacagi` ölçülüyor ama HİÇBİR KAPI zorlamıyordu (2026-08-28)
+
+**Kusur.** Defterde 18 metrik var; K0–K6'nın **hepsinde** `esik` alanı var ve
+verdikt ona göre veriliyor. `cati_kacagi` ise `sonuc: "OLCUM"` ile duruyor:
+**eşiği yok** ve depoda onu okuyan **hiçbir test yok** (yalnız iki ölçüm
+betiği okuyor). Defterde kötü bir değer dursa **bütün kapılar yeşil geçerdi**.
+
+Defterdeki ölçüm: **v34 0,9606** · v30 0,3052 · v35 0,0428 · **v36 0,0230**.
+v34 çatılı karelerin **%96'sını ZEMİN** sanıyordu.
+
+**🔴 EŞİK UYDURMADIM — bilerek.** Bu kapıyı yazarken sayıları **zaten
+görmüştüm**; D-107 uyarınca sonucu görüp eşik yazmak yasaktır. Onun yerine
+kapı bir **CIRCIR**: bugünkü **kayıtlı** değerden kötüleşme yasak. İyileşme
+serbest ve taban **bilerek** indirilir.
+
+**İkinci kapı: TAZELİK.** Metrik, defterdeki **üretim sürümünü** anmalıdır
+(`model_id`'den türetilir). Başka bir modelden kalmış bayat bir ölçüm aksi
+hâlde sessizce geçerdi — bu defterde metriklerin **hiçbirinde** makinece
+denetlenen bir model bağı yoktu.
+
+**NÖBETÇİ** `tests/test_t53_cati_kacagi_kapisi.py` (8 test): taban ile defter
+uyumu, kötüleşme yasağı, v34 değerinin kapıyı düşürdüğü, **tabanın
+gevşetilmesinin kapıyı boşaltacağı** (0,5 üstü taban v34 sınıfı bir çöküşü
+bile geçirir), ve tazelik + mutasyonu.
