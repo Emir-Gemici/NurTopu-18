@@ -24208,3 +24208,218 @@ etkileniyor mu. Sayılar görülmeden yazılmalıdır → **T198**.
 ⚠ Ölçüm sınırı: bu bulgu **tek bir yanlış pozitife** dayanıyor (n = 1) ve
 sahada kırmızı-beyaz molozun ne sıklıkta bulunacağı **bilinmiyor**. "Kesin
 düşer" DEMEZ; "düşmesini engelleyen fiziksel bir denetim yok" der.
+
+---
+
+### D-339 · 🔴 T192'NİN KÖK NEDENİ BULUNDU: sentetik arenamız ARENAYA BENZEMİYOR (2026-08-28)
+
+**Soru.** Kullanıcı: *"1 Eylül olmadan görüntü işleme işini bitirmek
+istiyorum — en mantıklı ne yapmalıyız?"* Puanı belirleyen madde §2.1'dir
+(doğru açık güzergâh; yanlışı **0 puan**). Elimizdeki **tek** arena
+görüntüsünde — şartnamenin kendi figüründe — rota **üretemiyoruz** (T192).
+
+**Önce eleme: ayar değil.** T192 zaten 5 çözünürlük × 2 güven eşiği × 3
+kırpma denemiş, onunda da `UC_BANT_TEMAS_YOK`. Bugün bağımsız doğrulandı:
+figürde model yalnız **8 maske** üretiyor (ort. güven 0,45); eşik
+0,30 → 0,05'e indirilince zemin ancak %4,4 → %33,8'e çıkıyor. Yani
+model **çekimser**, yanlış sınıflandırmıyor. Karenin **%80,9'u** hiçbir
+sınıfa girmiyor.
+
+**Kök neden — görsel olarak sabitlendi.** Şartname figürü ile eğitim
+kümemizden 8 rastgele kare yan yana kondu
+(`scratchpad/kiyas.png`, `ornekler.png`):
+
+| | şartname arenası | bizim sentetiğimiz |
+|---|---|---|
+| zemin | **tek düze açık kahve sıkıştırılmış toprak** | çim yeşili, asfalt, kum, tuğla deseni, hardal — savruk rastgeleleştirme |
+| koridor sınırı | **büyük beton moloz DUVARLARI** | **boyalı beyaz şerit çubukları** |
+| moloz | iri beton plaka/blok yığınları | küçük dağınık enkaz kümeleri |
+| ızgara | ince kahve çizgiler | yok |
+| ek katman | yok | **yarı saydam mavi dikdörtgen (İHA-İB)** |
+
+**Ölçüldü (200 kare örneklem):** mavi örtü kare alanının ortalama **%4,9**'u
+(medyan %2,1, azami %29,3); karelerin **%19**'unda >%5. **Sürülebilir
+zemin piksellerinin ortalama %9,3'ü** bu örtünün altında kalıyor. Yani
+model "sürülebilir" kavramını kısmen **mavi tonlu** öğreniyor — gerçek
+arenada böyle bir şey **yok**.
+
+⚠ Ama abartılmasın: mavi örtü **baskın etken değildir** (medyan %2,1).
+Baskın etken **yapısaldır**: model "sürülebilir = boyalı şerit çubukları
+arasındaki alan", "engel = dağınık küçük enkaz" öğrenmiş. Tek düze toprak
+zemin + iri beton duvarlardan oluşan bir sahnede bu tanımların **hiçbiri
+tutmuyor** ve model susuyor.
+
+**Sonuç.** T192 bir model ayarı sorunu değil, **veri tasarımı** sorunudur.
+Eğitim dağılımı arenanın **yapısını** taşımıyor.
+
+**Yapılacak → T199.** Üretece, figürün *malzemelerini* (tek düze toprak
+zemin, koridorları oluşturan iri beton moloz duvarları, ince ızgara,
+bariyer kolu, HB pedi) taşıyan bir **arena profili** eklenecek; tek aday
+eğitilecek; kararı **10 kapılı zincir** verecek.
+
+⚠ İki tuzak açıkça yazılıyor:
+1. **Figüre ezberlemek yasak.** Figür D-99 uyarınca yapay zekâ üretimidir ve
+   şartname *"gerçek alanı doğrudan yansıtmamaktadır"* der. Eşleştirilecek
+   olan **malzeme ve yapı**dır, pikseller değil. Mevcut çeşitlilik
+   **kaldırılmaz**, arena profili **eklenir**.
+2. **v37 dersi (D-332).** Sentetik kapıların hepsini geçen bir aday gerçek
+   karede kırılabiliyordu. Bu yüzden T199'un ölçütü **eğitimden önce**
+   yazılacak ve K8 dâhil zincirin tamamı hakem olacak.
+
+---
+
+### D-340 · 📋 ÖN KAYIT — T199 ARENA PROFİLİ · üretimden ve eğitimden ÖNCE yazıldı (2026-08-28)
+
+**Amaç.** T192'yi kapatmak: şartname figüründe **rota üretebilmek**. Bugün
+ölçülen taban çizgisi (v36): zemin **%4,4**, engel %14,9, çekimser %80,9,
+karar yolu **`UC_BANT_TEMAS_YOK` = ROTA YOK**.
+
+**BAŞARI ÖLÇÜTÜ — birincil.** Aday model, şartname figüründe üretim çağrı
+sırasıyla koşulduğunda **rota ÜRETMELİDİR** (`analyze_path` `None`
+döndürmemeli, en az 2 waypoint). Bu ikili bir ölçüttür; **eşik
+uydurulmuyor**, "üretiyor / üretmiyor" diye bakılıyor.
+
+**BAŞARI ÖLÇÜTÜ — ikincil (bilgi, kapı DEĞİL).** Aynı karede zemin
+kaplaması. Taban %4,4. Bu sayı **kapı değildir**: D-186 bu figür üzerinde
+model tavanı koymayı zaten reddetti ve tek kare n = 1'dir. Yalnız
+raporlanır.
+
+**GERİLEME KAPISI — bağlayıcı.** Aday, mevcut **10 kapılı zincirin
+tamamını** (K0–K8 + K5A) **mevcut eşiklerle** geçmelidir. Tek bir kapı
+düşerse aday **REDDEDİLİR** ve v36 üretimde kalır. Eşiklerin hiçbiri bu iş
+için **gevşetilmez**.
+
+**EZBERLEME KARŞITI KONTROLLER — ölçümden önce bağlayıcı.**
+1. `data/arena_referans/sartname_s9_arena.png` **eğitime GİRMEZ**. Figür
+   sınav kâğıdıdır; eğitim kümesine sızarsa ölçüm anlamsızdır. Eğitim
+   yaml'ında ve kümelerde adı geçmemelidir — **koşumdan önce denetlenir**.
+2. Mevcut çeşitlilik **KALDIRILMAZ**. Arena profili karışıma **eklenir**;
+   çim/asfalt/kum dokuları kümede kalır. Amaç dağılımı daraltmak değil,
+   **eksik olan bölgeyi doldurmak**.
+3. K8 (gerçek kare kapısı) ve K5A (açılı bariyer) zincirde **açık kalır** —
+   v37'nin (D-332) tam da böyle bir adayken kırıldığı hatırlanarak.
+
+**BAŞARISIZLIK DA SONUÇTUR.** Aday figürde rota üretemezse bu buraya
+**aynen yazılır** ve v36 korunur. "Bir daha dene, eşiği gevşet" yolu
+kapalıdır. Üç eğitim denemesinden sonra sonuç alınamazsa T199 **başarısız**
+kapatılır ve kalan tek yol **gerçek maket arena verisidir** (T197/B kolu).
+
+**KAPSAM SINIRI.** Bu iş, arenanın **malzeme ve yapısını** eşleştirir
+(tek düze toprak zemin, koridorları oluşturan iri beton moloz duvarları,
+ince ızgara, bariyer kolu, HB pedi) — **piksellerini değil**. Figür D-99
+uyarınca yapay zekâ üretimidir ve şartname *"gerçek alanı doğrudan
+yansıtmamaktadır"* der.
+
+---
+
+### D-341 · 🔴 KÖK NEDEN KESİNLEŞTİ: "zemin" dokularımız KASIRGA ARTIĞI; arenanın ÇIPLAK TOPRAĞI bankada HİÇ YOK (2026-08-28)
+
+**Ayırt edici test.** D-339'da yapının suçlu olduğunu düşünmüştüm. Yapıyı
+bağlamdan ayırmak için figürden **saf çıplak toprak yamaları** kesilip
+(moloz ve bariyer içermeyen bölgeler) tek başlarına modele verildi:
+
+| girdi | ZEMİN | ENGEL |
+|---|---|---|
+| figürün tamamı | %4,4 | %14,9 |
+| **saf toprak yaması #1** | **%0,0** | %48,5 |
+| **saf toprak yaması #2** | **%0,0** | %0,0 |
+| **saf toprak yaması #3** | **%0,0** | %0,0 |
+| koridor kesiti #1 | %1,0 | %39,9 |
+| koridor kesiti #2 | %1,0 | %84,8 |
+
+Bağlam olmadan da, tek başına da **sıfır**. Yani birincil kusur yapı değil,
+**zemin görünümünün kendisidir**. Model arenanın sıkıştırılmış toprağını
+sürülebilir olarak **hiç tanımıyor**; bir yamada %48,5 **engel** bile diyor.
+
+**Neden — bankanın kaynağı okundu.** `50_doku_bankasi.py` başlığı:
+
+> `zemin/  ← HİÇBİR poligonun örtmediği alan (çim/toprak/beton)`
+> *"10 sınıflı **RescueNet** maskelerinden GERÇEK doku kesitleri çıkarır"*
+
+RescueNet bir **kasırga hasarı** hava veri kümesidir. `zemin/` sınıfı, o
+görüntülerde **etiketlenmemiş artık alanlardır**: asfalt yollar (sarı orta
+çizgili), çatılar, **mavi brandalar**, dağınık moloz, çalılık. Gözle
+doğrulandı (`scratchpad/zemin_kiyas.png`).
+
+**Doku istatistiği de ayrışıyor** (Laplacian std = doku sertliği):
+
+| | parlaklık | doku (lap std) |
+|---|---|---|
+| figürün toprağı | 101–137 | **34,7 – 50,9** |
+| bankanın "zemin"i | 106–152 | **66,1 – 106,8** |
+
+Bankanın dokusu figürünkinden **iki kat sert**. Arena zemini **tek düze ve
+ince tanelidir**; bankada böyle bir aile **yok**.
+
+**Sonuç — T199'un kapsamı daraldı ve netleşti.** Yapılacak dört şey:
+1. Bankaya **çıplak sıkıştırılmış toprak** ailesi ekle. Yordamsal üretilecek
+   (OpenCV + NumPy): tek düze açık kahve, ince taneli, lap std ≈ 35.
+   Yordamsal olması lisans sorunu bırakmaz ve **istatistiği biz kontrol
+   ederiz** — ölçtüğümüz hedefe göre.
+2. İnce **ızgara** (zaten var: `zemin_izgarasi_ciz`).
+3. Koridor sınırlarını **düz gri çizgi** yerine **beton moloz duvarı** yap
+   (`51_sentetik_arena.py:1202` — bugün `cv2.line(..., (180,180,180))`).
+4. Arena profilinde **mavi İHA-İB örtüsünü** koridorların üstünden kaldır
+   (T75 yerleşimi zaten yanlış diyordu; D-339 örtünün sürülebilir zeminin
+   %9,3'ünü boyadığını ölçtü).
+
+⚠ Mevcut çeşitlilik **KALDIRILMIYOR** (D-340 ön kaydı). RescueNet dokuları
+kümede kalır; eksik olan bölge **doldurulur**.
+
+---
+
+### D-342 · ⚠ D-341'İN ANA İDDİASI ÇÜRÜTÜLDÜ — kendi ölçümümle (2026-08-28)
+
+D-341'de *"arenanın çıplak toprağı bankada hiç yok, kök neden budur"*
+dedim. **Yanlıştı.** İki kusur vardı:
+
+**1. Testim geçersizdi.** "Saf toprak yaması → %0,0 zemin" ölçümünde
+figürden 220×80 px'lik bir parça kesip **640 px'e büyüttüm**. Bu, ölçeği
+bozar ve modele eğitimde hiç görmediği bir bulanıklık verir. Sonucun
+"model toprağı tanımıyor" demek olduğunu sandım; oysa test bunu
+gösteremez.
+
+**2. Renk zaten kapsanıyor.** Üreteç `PROSEDUREL_PAYI["zemin"] = 0,70`
+ile zeminin **%70'ini prosedürel temiz yüzeyden** üretiyor (banka temiz
+zemin veremediği için, ölçülmüş: 2/315). Arenanın rengi
+(L 152,8 · a 129,3 · b 138,7) `LAB_ZEMIN_BANDI`'nın **içinde** ve 260
+karelik kümede:
+
+| arena rengine yakınlık | kare | oran |
+|---|---|---|
+| dar (±15/±3/±5) | 15/260 | %5,8 |
+| orta (±25/±4/±9) | 81/260 | **%31,2** |
+| geniş (±35/±5/±14) | 168/260 | %64,6 |
+
+Yani model bu rengi **bolca görmüş**. Renk darboğaz değildir.
+
+**Geçerli kalan bulgular (bunlar ölçüldü ve ayakta):**
+- v36 figürde rota **üretmiyor**; zemin %4,4, çekimser %80,9.
+- Ölçek de suçlu değil: 0,6× → %15,5 · 1,5× → %6,8 · 2,0× → %9,9;
+  **hiçbirinde rota yok** (T192'nin 5 çözünürlük ölçümüyle tutarlı).
+- 🔴 **Figür ağır biçimde DÜZLEŞTİRİLİNCE zemin %4,4 → %60,1'e çıkıyor.**
+  Yani model bu rengi zemin sayabiliyor; onu bastıran şey **ince ölçekli
+  yapı**.
+- İnce yapı sayıldı (9×9 kara-şapka): **figür 30,92** · sentetiğimiz
+  **10,84** ortalama; eşiği aşan piksel **%61,6** vs **%30,1**. Figür
+  bizimkinden **üç kat daha yoğun** ince yapı taşıyor (her yeri kaplayan
+  ızgara + iri molozun ince kırıntısı).
+
+**Düzeltilmiş teşhis.** Kusur zemin *rengi* değil, **ince ölçekli yapı
+yoğunluğu**dur: model "sürülebilir zemin"i **temiz/az yapılı** görmeye
+alışmış; ızgara ve kırıntıyla dolu bir zeminde çekimser kalıyor.
+
+**T199'un kapsamı buna göre düzeltildi:** arena profili, zemin *rengini*
+değil **ince yapı yoğunluğunu** eşleştirecek (belirgin ızgara + zemin
+üstünde ince kırıntı, kara-şapka ortalaması ~30 hedefi).
+
+⚠ 157_arena_zemin_dokusu.py İPTAL EDİLMİYOR: ürettiği aile ölçülmüş
+istatistikle (parlaklık 144,2 · lap 27,6 · LAB 153,6/128,4/137,7) figürün
+zeminine oturuyor ve profilin tabanı olarak kullanılacak. Ama **tek
+başına yeterli olmadığı** artık biliniyor.
+
+**Ders.** Görsel bir benzerlik ("üretilen gri, figür kahve") gerçek bir
+kusurdu ve düzeltildi — ama onu **kök neden** ilan etmek için yeterli
+kanıt yoktu. Kök neden iddiası, ayırt edici bir ölçümle sınanmadan
+yazılmamalıydı. D-339/D-341 kayıtta **bırakılıyor** ki yanılgının seyri
+görünsün.
