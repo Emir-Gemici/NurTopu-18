@@ -24936,3 +24936,49 @@ dizinler arasında olmalı. Liste elle yazılmaz, kurulum bloğundan **türetili
 **kullandığı yollar** arasındaki ayrışma. İki kapı artık iki yönü de
 tutuyor: D-352 "kullanılan kuruluyor mu", D-353 "kullanılan yol kurulum
 düzeninde mi".
+
+---
+
+### D-354 · 🔴 `jetson_fps.py` KAYIT DEFTERİNİ HİÇ SORMUYORDU — kayıtsız model "OK" damgası alıyordu (2026-08-28)
+
+**Kılavuzun iddiası** (SS6C/G6-1): *"`load_model` + `model_kayit_dogrula`
+zincirinden geçer."*
+**Gerçek:** `scripts/jetson_fps.py` içinde bu adlar **0 kez** geçiyordu
+(`grep -c` = 0); model `YOLO(str(yol), task="segment")` ile **doğrudan**
+yükleniyordu.
+
+Yani saha defterine *"doğrulandı"* yazılıyor, doğrulama **koşmuyordu**. Bu
+tam olarak bu projenin `OLCULEMEDI != GECTI` kuralının ihlali — ve daha
+kötüsü, **ölçülmeyen şey "geçti" diye raporlanıyordu**.
+
+**KOŞULARAK ÖLÇÜLDÜ (düzeltmeden önce ve sonra):**
+
+| ağırlık | defterde | önce | sonra |
+|---|---|---|---|
+| `navitas_seg_v37_best.pt` | **KAYITLI DEĞİL** | **OK** | **HATA** — `kayit_defteri_uyusmazligi (fail-closed)` |
+| `navitas_seg_v36_best.pt` (üretim) | kayıtlı | OK | `uyumlu=True · durum="eslesti"` |
+| kayıtlı `.onnx` | kayıtlı | OK | **OK** |
+
+Kapı hem **reddediyor** hem **geçirmesi gerekeni geçiriyor** — ayırt edici.
+
+**Neden 30 Ağustos/30 Eylül için kritik.** 30 Eylül testi **TEK ATIŞ**.
+Doğrulanmamış bir ağırlıkla ölçüm yapıp "OK" damgası almak, sahaya yanlış
+modelle çıkma yolunun ta kendisi (T73/D-89'un beşinci ucu ile aynı sınıf).
+
+**Düzeltme.** `vaka_calistir`'a **fail-closed** defter kapısı eklendi:
+- Uyuşmazlıkta **ölçüm yapılmaz** ve ret **model yüklenmeden önce** döner
+  (GPU'ya bile gidilmez).
+- Defter okunamazsa da **HATA** — yokluk uyum sayılmaz.
+- Bilerek geçmek `--kayit-dogrulamasiz` ister; verildiğinde özete
+  `kayit.durum = DOGRULANMADI` **yazılır** (sessiz atlama yok).
+
+**NÖBETÇİ: `tests/test_t203_jetson_fps_defter_kapisi.py` (8 test)** — çağrı
+var mı, varsayılan fail-closed mu (AST ile), ret model yüklemeden **önce** mi,
+verdikt özete yazılıyor mu, paket kopyası da taşıyor mu, ve iki mutasyon.
+
+⚠ **T196'nın dersini bu kez BEN tekrarladım.** Nöbetçinin ilk sürümünde
+mutasyon `model_kayit_dogrula` metninin **ilk geçişini** değiştiriyordu ve o
+geçiş **yorumdaydı** — gerçek çağrı sağ kalıyor, test kendini kandırıyordu.
+Denetim ve mutasyon artık **yalnız koda** uygulanıyor (`_kodu()` yorumları
+sıyırıyor) ve bunu ayrıca sınayan bir test daha eklendi
+(`test_MUTASYON_YORUMDAKI_metin_KIRLETMEZ`).

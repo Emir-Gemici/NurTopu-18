@@ -39,6 +39,7 @@ from rpi_inference import (
     _maskeleri_icerige_kirp,
     _preprocess,
     get_masks,
+    model_kayit_dogrula,          # T203/D-354: defter kapisi
 )
 
 
@@ -232,7 +233,8 @@ def tek_kare_isle(model: YOLO, bgr: np.ndarray, imgsz: int, conf: float, cihaz: 
 
 
 def vaka_calistir(ad: str, yol: Path, imgsz: int, akis: KareAkisi, isinma: int,
-                  tekrar: int, conf: float, cihaz: str | None) -> dict[str, Any]:
+                  tekrar: int, conf: float, cihaz: str | None,
+                  kayit_dogrulamasiz: bool = False) -> dict[str, Any]:
     """Bir model+cozunurluk kombinasyonunu isitir ve p50/p95 olcer."""
     temel = {"ad": ad, "tur": model_turu(yol), "model": str(yol), "imgsz": imgsz}
     if not yol.is_file():
@@ -243,6 +245,28 @@ def vaka_calistir(ad: str, yol: Path, imgsz: int, akis: KareAkisi, isinma: int,
         return temel | {"durum": "ATLANDI", "sebep": "onnxruntime_yok"}
     if yol.suffix.lower() == ".engine" and importlib.util.find_spec("tensorrt") is None:
         return temel | {"durum": "ATLANDI", "sebep": "tensorrt_yok"}
+    # 🔴 T203 · D-354: KAYIT DEFTERI KAPISI. Bu betik defter zincirini HIC
+    # cagirmiyordu (grep = 0) ama kilavuz SS6C/G6-1 "load_model +
+    # model_kayit_dogrula zincirinden gecer" DIYORDU. Yani saha defterine
+    # "dogrulandi" yaziliyor, dogrulama KOSMUYORDU: kayitsiz ya da YANLIS bir
+    # agirlik "OK" damgasiyla raporlanabiliyordu. 30 Eylul testi TEK ATIS
+    # oldugu icin bu, dogrulanmamis bir modelle sahaya cikmak demektir.
+    # FAIL-CLOSED: uyusmazlikta OLCUM YAPILMAZ. Bilerek gecmek icin
+    # `--kayit-dogrulamasiz` gerekir ve verdikt ozete YAZILIR.
+    kayit_detay = None
+    if not kayit_dogrulamasiz:
+        try:
+            uyumlu, kayit_detay = model_kayit_dogrula(yol, calisan_imgsz=imgsz)
+        except Exception as exc:                 # defter okunamadi = DOGRULANMADI
+            return temel | {"durum": "HATA",
+                            "sebep": f"kayit_defteri_okunamadi: {exc}",
+                            "kayit": {"durum": "OKUNAMADI"}}
+        if not uyumlu:
+            return temel | {"durum": "HATA",
+                            "sebep": "kayit_defteri_uyusmazligi (fail-closed; "
+                                     "bilerek gecmek icin --kayit-dogrulamasiz)",
+                            "kayit": kayit_detay}
+
     try:
         akis.sifirla()
         t0 = time.perf_counter()
@@ -253,6 +277,10 @@ def vaka_calistir(ad: str, yol: Path, imgsz: int, akis: KareAkisi, isinma: int,
             tek_kare_isle(model, kare, imgsz, conf, cihaz)
     except Exception as exc:
         return temel | {"durum": "HATA", "sebep": f"isinma/yukleme: {exc}"}
+
+    temel = temel | {"kayit": (kayit_detay if kayit_detay is not None
+                               else {"durum": "DOGRULANMADI",
+                                     "sebep": "--kayit-dogrulamasiz verildi"})}
 
     olcumler: list[dict[str, Any]] = []
     rota_durumlari: Counter[str] = Counter()
@@ -318,6 +346,12 @@ def argumanlar(argv: list[str] | None = None) -> argparse.Namespace:
     tarih = datetime.now().strftime("%Y%m%d_%H%M%S")
     ayrac = argparse.ArgumentParser(description="Gercek Navitas algi + Katman-A FPS olcumu")
     ayrac.add_argument("--girdi", type=Path, default=KOK / "data" / "raw_frames")
+    ayrac.add_argument(
+        "--kayit-dogrulamasiz", action="store_true",
+        help="Kayit defteri dogrulamasini ATLA. VARSAYILAN FAIL-CLOSED'dir "
+             "(T203/D-354): uyusmazlikta olcum YAPILMAZ. Bu bayrak T73'te "
+             "BILEREK kurulan yanlis-model korumasini kapatir; verildiginde "
+             "ozete `kayit.durum=DOGRULANMADI` yazilir.")
     ayrac.add_argument("--pt", type=Path, default=varsayilan["pt"])
     ayrac.add_argument("--onnx", type=Path, default=varsayilan["onnx"])
     ayrac.add_argument(
@@ -362,7 +396,10 @@ def main() -> int:
         for ad, yol in modeller:
             for imgsz in args.imgsz:
                 print(f"Olculuyor: {ad} / imgsz={imgsz}")
-                vakalar.append(vaka_calistir(ad, yol, imgsz, akis, args.isinma, args.tekrar, args.conf, args.cihaz))
+                vakalar.append(vaka_calistir(
+                    ad, yol, imgsz, akis, args.isinma, args.tekrar,
+                    args.conf, args.cihaz,
+                    kayit_dogrulamasiz=args.kayit_dogrulamasiz))
     finally:
         akis.kapat()
 

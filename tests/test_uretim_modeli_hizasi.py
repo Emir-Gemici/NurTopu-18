@@ -228,6 +228,10 @@ class SahaOlcumVarsayilanlariTests(unittest.TestCase):
             cihaz=None,
             video_adim=1,
             cikti=KOK / "tests" / "t62_sahte_cikti",
+            # T203/D-354: `main()` bu alani okur. URETIME SADIK deger False
+            # (fail-closed). Bu testte `vaka_calistir` MOCK'LU oldugu icin
+            # defter denetimi zaten kosmaz; alan yalniz `main()` icin gerekli.
+            kayit_dogrulamasiz=False,
         )
         vaka = lambda ad, *_args, **_kwargs: {  # noqa: E731
             "tur": ad, "imgsz": JETSON_FPS.INFER_SIZE, "durum": "OK"
