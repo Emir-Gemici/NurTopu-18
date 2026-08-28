@@ -25128,3 +25128,47 @@ figürde rota **üretmiyor** (D-342) ama zinciri **geçiyor** (D-352 öncesi
 kendisi denetlenmemişti**. Bu, D-349'un (kapılar yeşilken saha yolu
 aynalıyordu) ve D-354'ün (kılavuz "doğrulandı" derken doğrulama koşmuyordu)
 üçüncü örneği: **ölçen aracın kendisi de ölçülmelidir.**
+
+---
+
+### D-358 · ✅ T199 VERDİKT MEKANİZMASI KALİBRE EDİLDİ + T75 iddiası ÖLÇÜLDÜ (ajan abartmış) (2026-08-28)
+
+**1. Verdikt betiği öz denetimi — cevabı ÖNCEDEN bilinen koşu.**
+D-357'de üç kusuru düzeltilen `160_t199_verdikt.py`, v36 ile koşuldu.
+Beklenen: v36 figürde rota **üretmiyor** (D-342) ama zinciri **geçiyor**.
+
+| ölçü | çıktı | beklenen |
+|---|---|---|
+| BİRİNCİL (figürde rota) | **ÜRETİLMEDİ** | ✓ |
+| İKİNCİL (bilgi) | zemin **%4,4** · çekimser %80,9 | ✓ tabanla **birebir** |
+| GERİLEME (10 kapı) | **GEÇTİ** | ✓ |
+| VERDİKT | **REDDEDİLDİ — figürde rota üretilemedi** (exit 1) | ✓ |
+
+Hüküm mekanizması artık **bilinen bir cevapla kalibre edilmiştir**; bu
+gecenin adayına körlemesine güvenilmeyecek.
+
+**2. T75 (mavi İHA-İB örtüsü) — ajan iddiası DOĞRULANMADI.**
+Tarama ajanı *"örtü kadrajın %24,3'ünü, sürülebilir zeminin %56,6'sını
+boyuyor; koşan eğitimin %69,2'si taşıyor"* dedi. Kendim ölçtüm:
+
+| küme | örtü/kare | zeminin | örtü taşıyan |
+|---|---|---|---|
+| `sentetik_arena` (2700) | %3,0 | %7,2 | %88 |
+| `sentetik_arena_bariyer_acili` (2160) | %4,5 | %9,3 | %88 |
+| `sentetik_arena_PROFIL_t199` (2160) | **%0,0** | **%0,0** | **%0** |
+
+**Büyüklük iddiası tutmadı** (%24,3 → ölçülen %3–4,5; %56,6 → ölçülen
+%7,2–9,3). Bu, D-339'da kendi ölçtüğüm değerleri **tekrarlıyor**.
+**Yaygınlık iddiası ise yönü itibarıyla doğru:** sentetik eğitim karelerinin
+**%60,9'u** örtü taşıyor (ajan %69,2 demişti). Tüm karışıma (12931 kare)
+göre oran **%33**.
+
+**Ve bu bir kusur DEĞİL, ön kayıtlı tasarımdır.** D-340 §2: *"Mevcut
+çeşitlilik KALDIRILMAZ. Arena profili karışıma EKLENIR."* Yeni küme örtüsüz
+ve karışımda; modelin örtüsüz arena örneği görmesi böyle sağlanıyor.
+Yeterli olup olmadığını **bu gecenin verdikti** ölçecek — belge değil.
+
+⚠ **Ajan çıktısına körü körüne güvenilmedi.** Bugün taramalar üç gerçek ve
+ciddi kusur buldu (D-349 kamera aynası, D-354 defter kapısı, D-357 verdikt
+betiği) ama bu bulguda **büyüklüğü abarttı**. Yordam işledi: her iddia
+uygulanmadan önce **kendim ölçtüm**.
