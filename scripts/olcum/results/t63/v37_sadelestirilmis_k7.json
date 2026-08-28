@@ -1,0 +1,632 @@
+{
+ "ozet": {
+  "kume_n": 88,
+  "olculen": 88,
+  "rota_uretilen": 87,
+  "dogru": 87,
+  "yanlis": 0,
+  "rota_uretilmeyen": 1,
+  "dogruluk": 1.0,
+  "yanlis_kareler": [],
+  "model": "navitas_seg_v37_best.pt",
+  "conf": 0.3
+ },
+ "kareler": [
+  {
+   "kare": "sa_000000.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "referans_serit": 2,
+   "yayinlanan": null,
+   "ret": "GORUS_HATTI_KOPUK",
+   "dogru": false
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "referans_serit": 3,
+   "yayinlanan": 3,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "referans_serit": 1,
+   "yayinlanan": 1,
+   "ret": null,
+   "dogru": true
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "referans_serit": 2,
+   "yayinlanan": 2,
+   "ret": null,
+   "dogru": true
+  }
+ ]
+}

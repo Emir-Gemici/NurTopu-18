@@ -1,0 +1,15 @@
+{
+ "model": "results\\gece_20260828\\v8_ep105.pt",
+ "tarandi": 260,
+ "bariyerli": 181,
+ "olcekli": 181,
+ "rota_var": 179,
+ "duyar_ort": 0.9926237509693313,
+ "duyar_min": 0.8768406961178046,
+ "kesen": 0,
+ "kesisim_px": 0,
+ "kesenler": [],
+ "K5_durum": "GECTI",
+ "olculebilir_kare": 179,
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_t66"
+}

@@ -23864,3 +23864,75 @@ Eğilim izleyicisi (`egilim.jsonl`) ölçtü:
 **Düzelmedi.** `close_mosaic` devredeyken (son 20 epoch) bile 33/88'de kaldı;
 v36'nın 49'una dönmedi. Tahmin yanlıştı, ölçüm doğruydu — ve tahminin
 "ölçülecek" diye yazılmış olması onu kurtardı.
+
+### D-332 · 🔴 v37'ye GEÇİŞ DENENDİ VE GERİ ALINDI — kabul zinciri GEÇTİ, gerçek arena karesi REDDETTİ (2026-08-28)
+
+**Kullanıcı:** *"yeni verileri etiketleyip yeni modele geçtin mi yapmadıysan yap"*.
+Denendi. Sonuç: **geçilemez** — ve sebebi kabul zincirinin görmediği bir yerde.
+
+#### 1. Aday nasıl bulundu
+D-331'de v8 `last.pt` K0'dan düşmüştü. Kaydedilmiş **28 checkpoint** tarandı;
+dördü hem K0'ı hem G4'ü geçiyordu (epoch 30/40/65/105). En iyisi **epoch105**
+kabul zincirinin tamamından geçti:
+
+| kapı | v36 | ep105 |
+|---|---|---|
+| K0 körlük | %2,66 | %56,11 · GEÇTİ |
+| K1 rota | 256/260 | **258/260** |
+| K2 moloza basma | 6/256 | **4/258** |
+| K4 arena dışı | 3/256 | **2/258** |
+| K6 yanlış güzergâh | 3/256 | **2/258** |
+| K7 şerit | 84/85 · %98,8 | **87/87 · %100,0** |
+
+> **VERDİKT: ÜRETİME ALINIR**
+
+#### 2. 🔴 Ama K0 geçişi KARARSIZDI — ölçüldü
+Aynı figürde küçük bozmalar (ölçek ±%5, kayma 8 px, parlaklık ±12):
+
+| model | K0 geçen bozma | ortalama | **std** |
+|---|---|---|---|
+| v36 | 7/8 | %4,39 | **%2,59** |
+| ep105 | 6/8 | %48,71 | **%28,82** |
+
+%0 ile %78 arasında salınım. Yani K0 geçişi **yetenek değil çekiliş**.
+K0'ın **üst sınırı yoktur**: kareyi "zemin" diye dolduran bir model de geçer.
+
+#### 3. 🔴 KARAR VEREN ÖLÇÜM: gerçek arena karesi
+Model üretime alınıp tam süit koşulunca `tests/test_gercek_arena_kapisi.py`
+düştü — kendi ifadesiyle *"D-84 kusuru geri geldi"*:
+
+| model | gerçek arena karesinde zemin kaplaması | zemin kapısı |
+|---|---|---|
+| v36 | **%4,4** | geçti |
+| v37 | **%56,1** | **`ZEMIN_MASKESI_SUPHELI`** |
+
+v37, gerçek arena karesinin **yarısından fazlasını geçilebilir** sayıyor —
+yani **molozu sürülebilir** görüyor. Bu, olabilecek en tehlikeli hatadır:
+İKA moloz üstüne yönlendirilir.
+
+**Taşırma şüphem doğruymuş.** Sentetik kabul kümesinde görünmedi (orada K2
+bile v36'dan iyiydi), gerçek arena karesinde görüldü.
+
+#### 4. Karar ve gerekçe
+**GERİ ALINDI. v36 üretimde kalır.** Kabul zinciri "ÜRETİME ALINIR" demişti;
+ama zincirin dışındaki bir kapı — gerçek arena karesi — reddetti ve o kapı
+**haklıydı**. Yayımlamak, İKA'yı moloza sürecek bir modeli sertifikalamak
+olurdu.
+
+#### 5. 🔴 KABUL ZİNCİRİNDE BOŞLUK (yeni bulgu)
+Kabul zinciri **tamamen sentetiktir** (denetçi bunu her koşuda yazıyor:
+*"Bu ölçümlerin tamamı SENTETİKTİR"*). Bu vaka onun somut bedelini gösterdi:
+**zincirin tamamını geçen bir model, tek gerçek arena karesinde üretim
+yolunu kırabiliyor.** `test_gercek_arena_kapisi` bu boşluğu kapatan tek şeydi
+ve zincirin **içinde değil**. **T195 açıldı.**
+
+#### 6. Ne değişti, ne değişmedi
+- **Değişmedi:** üretim modeli (v36), kayıt defteri, testler, Jetson paketi —
+  hepsi geri alındı; süit **1241 OK**, genel kapı **15/15**.
+- **Kaldı:** `models/navitas_seg_v37_best.pt` (+ ONNX) diskte, aday olarak.
+  Ölçümleri `scripts/olcum/results/t63/v37_sadelestirilmis_*.json` ve
+  `results/gece_20260828/` altında.
+- **Öğrenildi:** `degrees=180` bariyer körlüğünü kapatıyor (G4 7/12 → 12/12)
+  ama aynı zamanda modeli **dağılım dışı karelerde taşırmaya** itiyor.
+  Bir sonraki denemede dönme artırımı **daha ölçülü** olmalı (ör. 90°) ya da
+  karışıma gerçek arena benzeri kare eklenmeli.
