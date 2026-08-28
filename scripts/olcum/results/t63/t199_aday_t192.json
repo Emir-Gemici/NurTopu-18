@@ -1,0 +1,17 @@
+[
+ {
+  "durum": "DUSTU",
+  "agirlik": "t199_aday_dondurulmus.pt",
+  "rota_uretildi": false,
+  "waypoint": 0,
+  "guven": 0.0,
+  "ret_sebebi": "MASKE_YOK",
+  "zemin_kaplamasi": 0.0,
+  "engel_kaplamasi": 0.8594,
+  "cekimser": 0.1406,
+  "_taban_zemin_v36": 0.044,
+  "_olcut": "BIRINCIL: rota URETILMELI (ikili, esik yok). Zemin kaplamasi BILGIDIR, kapi DEGIL (D-186).",
+  "_n": 1,
+  "_uyari": "figur YAPAY ZEKA urunudur (D-99); bu olcum 'sahada calisir' DEMEZ."
+ }
+]

@@ -1,0 +1,11 @@
+{
+ "durum": "GECTI",
+ "kare": "data/arena_referans/sartname_s9_arena.png",
+ "zemin_kaplamasi": 0.0,
+ "zemin_kenar_dayanmasi": 0.0,
+ "zemin_kapisi": null,
+ "karar_yolu_reddi": "MASKE_YOK",
+ "_olcut": "uretim karar yolu bu karede ZEMIN_MASKESI_SUPHELI DONDURMEMELIDIR (yeni esik YOK; uretimde zaten var olan zemin saglamlik kapisi kosuluyor)",
+ "_n": 1,
+ "_uyari": "n = 1 ve bu kare sartnamenin kendi ifadesiyle YAPAY ZEKA urunudur (D-99). Bu kapi 'sahada calisir' DEMEZ; yalnizca 'elimizdeki tek gercekci karede uretim yolu KIRILMIYOR' der."
+}

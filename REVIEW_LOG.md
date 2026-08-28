@@ -25342,3 +25342,140 @@ denetlenen bir model bağı yoktu.
 uyumu, kötüleşme yasağı, v34 değerinin kapıyı düşürdüğü, **tabanın
 gevşetilmesinin kapıyı boşaltacağı** (0,5 üstü taban v34 sınıfı bir çöküşü
 bile geçirir), ve tazelik + mutasyonu.
+
+---
+
+### D-364 · ⚠ T100'ün YAZILI ÖNCÜLÜ YANLIŞ: betik `rota_bul` kullanmıyor (2026-08-29)
+
+**Kuyruğun iddiası** (T100): *"Betik `rota_bul` kullanır ve T95 `waypoints`i
+değiştirdi; yeniden koşulmadı."*
+
+**Ölçüldü — yanlış.** `scripts/olcum/76_serit_etiketi_celiskisi.py`
+içe aktarımları:
+
+```python
+from costmap_path_finder import koridor_adaylari, serbest_alan
+from karar_sozlesmesi import serit_no
+from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,
+                           _preprocess, analyze_path, get_masks)
+```
+
+`rota_bul` **hiç içe aktarılmıyor**; adı yalnız **docstring'de** geçiyor
+(satır 6, iki yaklaşımı anlatırken). `grep -c rota_bul` = 1 ve o tek geçiş
+yorumdadır.
+
+**Ama sonuç "etkilenmemiştir" DEĞİL.** Betik `analyze_path`'i **kullanıyor**
+ve o üretim yolunun kalbidir; oradaki bir değişiklik `76`'nın sayılarını
+pekâlâ kaydırabilir. Yani:
+
+- **Öncül yanlış** (suçlanan işlev kullanılmıyor),
+- **Görevin "YAP"ı yine de doğru**: *yeniden koş, kıyasla, kaydı güncelle*.
+
+T100 bu yüzden **kapatılmıyor**; öncülü düzeltiliyor ve yeniden koşum
+sırasına alınıyor. Yanlış öncülle kapatmak, "vekil kapatma" reddinin
+(D-284) tam olarak yasakladığı şey olurdu.
+
+⚠ Bu, bugün ajan çıktısını doğrularken çıkan **ikinci** doğru bulgu: ajan
+"76 `rota_bul`u hiç çağırmıyor" demişti ve haklıydı; ama ondan çıkardığı
+"dolayısıyla T95 onu etkileyemez" sonucu **fazla ileri** gidiyor —
+`analyze_path` bağı duruyor.
+
+---
+
+### D-365 · T75 — yerleşim kusuru KODDA DOĞRULANDI; arena profilinde çözüldü, varsayılan profilde AÇIK kalıyor (2026-08-29)
+
+**Kusur kodda okundu** (`51_sentetik_arena.py:597-598`):
+
+```python
+x0 = int(rng.uniform(0, max(1, TUVAL - kenar_px)))
+y0 = int(rng.uniform(0, max(1, TUVAL - kenar_px)))
+```
+
+İHA-İB kutusu **tamamen rastgele** yerleştiriliyor; koridorlardan,
+şeritlerden, moloz adalarından **haberi yok**. Şartname §2.1 ise İHA-İB'yi
+HTAB'dan **ayrı** bir bölge olarak tanımlar (*"İHA'nın görev sonrası
+paraşütle ineceği belirlenmiş güvenli alan"*). Arena içine rastgele
+serpmek şartnameye aykırıdır. D-104'ün tespiti **doğrudur**.
+
+**Etkisi ölçüldü** (D-358, 25 kare/küme):
+
+| küme | örtü/kare | **sürülebilir zeminin** altında kalanı |
+|---|---|---|
+| `sentetik_arena` | %3,0 | %7,2 |
+| `sentetik_arena_bariyer_acili` | %4,5 | %9,3 |
+| **`sentetik_arena_PROFIL_t199`** | **%0,0** | **%0,0** |
+
+**Arena profilinde ÇÖZÜLDÜ.** T199'da örtü arena profilinde **hiç
+çizilmiyor** (D-343 §3): şartname figüründe böyle bir örtü yok ve zeminin
+bir kısmını mavi boyamak modele arenada bulunmayan bir işaret öğretiyordu.
+
+**Varsayılan profilde AÇIK bırakılıyor — gerekçesiyle.**
+1. Yerleşimi düzeltmek `51_sentetik_arena.py`'nin **varsayılan** kolunu
+   değiştirir ve **bayt-eşitlik çapalarını** kırar (T155/T188 kalıbı).
+2. Daha önemlisi: **şu anda değerlendirilmekte olan aday** bu karışımla
+   eğitildi. Üreteci uçuş sırasında değiştirmek, adayın altındaki zemini
+   kaydırır ve verdikti yorumlanamaz kılar.
+3. D-340 §2 mevcut çeşitliliğin **kaldırılmamasını** şart koşuyor.
+
+**Doğru sıra:** aday hakkında karar verildikten **sonra**, ön kayıtla,
+İHA-İB HTAB **dışına** alınır ve kümeler yeniden üretilir. T75 bu yüzden
+kapatılmıyor; kapsamı daraltıldı ve **ne zaman** yapılacağı yazıldı.
+
+---
+
+### D-366 · 🔴 T199 ADAYI REDDEDİLDİ (1. deneme) — sentetik kapılar İYİLEŞTİ, figürde MODEL KÖRLEŞTİ (2026-08-29)
+
+**Eğitim.** `t199_arena_profil_v36taban`, 150 epoch / 9,09 saat, erken
+durdurma (son 120 epoch'ta iyileşme yok), **en iyi epoch 30**. Aday
+dondurulup (sha `f1eb1ac6…`) `160_t199_verdikt.py` ile ölçüldü.
+
+**SONUÇ: ADAY REDDEDİLDİ. v36 üretimde KALIR.**
+
+**Sentetik kapılar İYİLEŞTİ** — çoğu v36'dan iyi:
+
+| kapı | aday | v36 |
+|---|---|---|
+| K1 rota üretimi | **257/260** | 256/260 |
+| K2 moloza basma | 9/257 | — |
+| K3 ağır basma | 0/257 | 0 |
+| K4 arena dışı | 0/257 | — |
+| K5 bariyer | 0 px (0/179) | 0 px |
+| K5A açılı bariyer | 0 px (0/181) | 0 px |
+| K6 yanlış güzergâh | 0/257 | — |
+| K7 şerit doğruluğu | **87/87 = %100,0** | 84/85 |
+
+**Ama K0 (körlük) DÜŞTÜ ve sebep ağır:**
+
+| ölçü | v36 | **aday** |
+|---|---|---|
+| zemin kaplaması | %4,4 | **%0,00** |
+| engel kaplaması | %14,9 | **%85,9** |
+| çekimser | %80,9 | %14,1 |
+| karar yolu | `UC_BANT_TEMAS_YOK` | **`MASKE_YOK`** |
+
+Aday, şartname figürünün **%85,9'unu ENGEL** sayıyor ve zemin **hiç**
+görmüyor. T199'un **amacı** figürde rota üretmekti; aday oraya
+yaklaşmak yerine **tam ters uca** gitti.
+
+**Bu, v37'nin AYNASI.** v37 (D-332) figürü **zemine** boğuyordu
+(%4,4 → %56,1); bu aday **engele** boğuyor (%14,9 → %85,9). İkisi de
+zinciri geçip gerçek kareye çarptı — biri K8'e, biri K0'a.
+
+⚠ **Yön en azından GÜVENLİ.** Aşırı engel sayma serbest alanı
+**büyütmez** (madde 15); İKA molozun üstüne sürülmez. Ama işe de yaramaz:
+rota **yok**.
+
+**🔴 ÖN KAYIT TAM DA BUNUN İÇİN YAZILMIŞTI.** K1 257/260, K7 %100,0,
+K5/K5A 0 px sayılarına bakıp "başardık" demek çok kolaydı. Hükmü
+`160_t199_verdikt.py` mekanik verdi ve K0'ı yakaladı. Eşik
+**gevşetilmedi**, sayılar görüldükten sonra ölçüt **değiştirilmedi**.
+
+**T194 için kanıt.** T194, K0'ın zemininin zayıf olduğunu (tek bir yapay
+zekâ görüntüsü) savunuyor. Bugün **K0**, kör bir modelin terfi etmesini
+engelledi. Bu, T194'ü çürütmez — dayanağın tek kare olması hâlâ bir
+zayıflıktır — ama kapının **işe yaradığını** gösterir ve kaldırılmasına
+karşı somut bir kanıttır.
+
+**Kalan hak: 2 deneme** (D-340). ⚠ **Körlemesine ikinci denemeye
+girilmeyecek.** Elimde hipotez var ama **tanı yok**; her deneme 9 saat.
+Önce neden %85,9 engel çıktığı ölçülecek.
