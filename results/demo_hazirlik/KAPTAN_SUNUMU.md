@@ -171,10 +171,23 @@ durumunu **bozmaz**.
 **V** → `Canlı Algı` görünümü. Model gerçek karelerde çalışır (v36, gerçek
 çıkarım — canlandırma değil).
 
-⚠ **Kaynak seçimi:** açılış kaynağı `arena_kadraj`'dır ve rota üretir.
-`kompozit` kaynağında **rota çıkmaz** (bilinen ve kayıtlı durum: kompozit küme
-v21 zemin modeline göre kurulmuştu, üretim modeli v36; T174 açık). Sunumda
-kaynak değiştirme; gerekirse `arena_kadraj`'da kal.
+**Kaynak seçimi (2026-08-28 · D-325 ile GÜNCELLENDİ):**
+
+| kaynak | ne gösterir | rota |
+|---|---|---|
+| `arena_kadraj` (açılış) | şartname kadraj kümesi — kabul dağılımı | **40/40 · %100** |
+| `kompozit` | **kendi drone'umuzun gündüz karesi** üzerine kurulmuş arena | **50/88 · %57** |
+| `drone` | otopark (arena DEĞİL) — alan boşluğunu gösterir | 14/40 |
+| `dji_gece` | kendi gece prova uçuşumuz — nadir değil, arena yok | **0 (doğru ret)** |
+| `gemini` · `test` · `val` | dış veri kümeleri, ölçek yok | **0 (`OLCEK_YOK` doğru)** |
+
+⚠ Eski uyarı *"kompozitte rota çıkmaz"* **artık geçerli değildir** (T174 kapandı:
+üreteç, karede araç yoksa kareyi atıyordu; kırsal zemin bu yüzden hiç
+kurulamıyordu). Kompozit artık **K** ile gösterilebilir.
+
+⚠ Son üç satırdaki sıfırlar **kusur değildir**: o kümelerde arena/koridor yok ya
+da tek skaler ölçek yok. Orada rota üretmek başarı değil **yanlış pozitif**
+olurdu (şartname §2.1: yanlış güzergâh = **0 puan**).
 
 ---
 

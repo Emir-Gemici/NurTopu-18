@@ -242,3 +242,38 @@ silinse bile nesne pakette kalır. İkisi de uzakta **yok** (doğrulandı).
 - **Kalan 28 commit:** itilmemiş geçmişten o iki nesnenin çıkarılması gerekir.
   Güvenlik dalı kuruldu: `yedek_push_oncesi_20260828` → `0c39e5c`.
 - Dosyalar **diskten silinmez** (madde 18); yalnız git takibinden çıkar.
+
+---
+
+## 8. T188 · METRİK OLMAYAN KAPAMA — eşikler ŞİMDİ yazıldı (henüz ölçülmedi)
+
+**Ölçülmüş kusur (D-324 §8):** `codes/rpi_inference.py`'de zemin maskesine
+uygulanan morfolojik KAPAMA çekirdeği `max(7, w // 30)` — yani **görüntü
+genişliğinin oranı, METRİK DEĞİL**. 512 px'te 17 px, 3840 px'te 128 px olur.
+mpp ≈ 0,05'te 17 px = **0,85 m**: bir dubadan büyük ve araç yarıçapıyla
+karşılaştırılabilir. Yani duba, zemin maskesinde yalnız **delik** bırakırsa
+kapama onu **geri dolduruyor** ve şerit **açık** çıkıyor (ölçüldü: 20 px çapa
+kadar %98,7 doldurma, güven 1.000).
+
+⚠ **Kapama serbest alanı BÜYÜTEN tek işlemdir** (madde 15 tam olarak bunu
+yasaklar). Bugünkü hâli bir istisnadır ve metrik değildir.
+
+**Yön (sonuç görülmeden):** çekirdek, fiziksel bir tavanla **sınırlanır**.
+Sınır `min(mevcut, metrik)` biçiminde uygulanır — yani çekirdek yalnızca
+**KÜÇÜLEBİLİR**. Böylece serbest alan yalnız küçülür ve madde 15 ölçümle değil
+**inşa ile** korunur. `mpp` bilinmiyorsa davranış **DEĞİŞMEZ** (ölçülemeyen
+durumda değişiklik yapılmaz).
+
+### Kapılar
+
+- **G8 · Bozulmama (KİLİT).** K7 kabul kümesinde doğruluk **≥ %95** ve rota
+  üreten **≥ 80/88** korunacak. Düşerse değişiklik **geri alınır**.
+  *(Bugünkü taban: %98,8 · 85/88.)*
+- **G9 · Duba sırası GEÇİLMEYECEK.** Sentetik sınama: koridoru enine kesen,
+  çapı **0,40 m**, aralığı **1,00 m** olan bir duba sırası zemin maskesinde
+  DELİK olarak bırakıldığında, kapama sonrası koridor **KAPALI** kalmalı.
+  Bugünkü davranış: **AÇIK** (kusur). Değişiklikten sonra **KAPALI** olmalı.
+- **G10 · Madde 15.** Yeni çekirdek hiçbir karede eskisinden **BÜYÜK**
+  olmayacak (inşa gereği; ayrıca sınanır).
+- **G11 · Kompozit gerilemesi.** Kompozit kümede rota **≥ 45/88** kalacak
+  (bugünkü 50/88'in altına 5'ten fazla düşerse geri alınır).

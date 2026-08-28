@@ -60,6 +60,7 @@ if __package__:
                                   rota_koridor_genisligi_reddi,
                                   BARIYER_ENGEL_SINIFI,
                                   ince_bariyer_maskesi,
+                                  kapama_cekirdegi_px,
                                   INCE_BETON_SERIT_ETKIN,
                                   INCE_BETON_SERIT_ORTAM_DEGISKENI,
                                   ince_beton_serit_maskesi,
@@ -109,6 +110,7 @@ else:
                                   rota_koridor_genisligi_reddi,
                                   BARIYER_ENGEL_SINIFI,
                                   ince_bariyer_maskesi,
+                                  kapama_cekirdegi_px,
                                   INCE_BETON_SERIT_ETKIN,
                                   INCE_BETON_SERIT_ORTAM_DEGISKENI,
                                   ince_beton_serit_maskesi,
@@ -1446,7 +1448,7 @@ def _analyze_path_yonelimli(trav_mask, n_waypoints, return_clean,
     if np.any(clean_geri):
         # bos maskede kesisim zaten bos: 3840^2 tuvalde ~8 sn'lik morfoloji
         # gereksiz yere odenmesin (sonuc DEGISMEZ, yalniz sure).
-        clean_ref = _koridor_temizle(trav_mask, engel_mask)
+        clean_ref = _koridor_temizle(trav_mask, engel_mask, mpp)
         clean_geri = np.where(clean_ref > 0, clean_geri, 0).astype(
             clean_geri.dtype)
     waypoints = _noktalari_geri_cevir(wps_d, M_ters)
@@ -1478,11 +1480,19 @@ def _analyze_path_yonelimli(trav_mask, n_waypoints, return_clean,
     return sonuc
 
 
-def _koridor_temizle(trav_mask, engel_mask):
-    """Cekirdegin morfoloji + engel cikarma adimi (ayni kernel, ayni sira)."""
+def _koridor_temizle(trav_mask, engel_mask, mpp=None):
+    """Cekirdegin morfoloji + engel cikarma adimi (ayni kernel, ayni sira).
+
+    `mpp` verilirse KAPAMA cekirdegi fiziksel tavanla sinirlanir (T188,
+    `karar_sozlesmesi.kapama_cekirdegi_px`). Cekirdek yalnizca KUCULEBILIR,
+    bu yuzden serbest alan yalnizca KUCULUR (madde 15). `mpp` yoksa davranis
+    BIREBIR ESKISIDIR.
+    """
     h, w = trav_mask.shape
     k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
-    k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
+    _kx = kapama_cekirdegi_px(max(7, w // 30), mpp)
+    _ky = kapama_cekirdegi_px(max(7, h // 30), mpp)
+    k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (_kx, _ky))
     clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN, k_open)
     clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
     if engel_mask is not None:
@@ -1544,7 +1554,14 @@ def _analyze_path_cekirdek(trav_mask, n_waypoints=8, return_clean=False,
         return _don(None, 0.0, [], bos, zemin_reddi)
 
     k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(3, w // 60), max(3, h // 60)))
-    k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (max(7, w // 30), max(7, h // 30)))
+    # 🔴 T188 (D-326): kapama cekirdegi FIZIKSEL tavanla sinirlanir. Eskiden
+    # `max(7, w // 30)` idi — goruntu genisliginin orani, METRIK DEGIL; mpp
+    # 0,05'te 0,85 m'lik bir bosluğu dolduruyordu ve duba sirasi zemin
+    # maskesinde yalniz DELIK biraktiginda serit ACIK cikiyordu (guven 1.00).
+    # Cekirdek yalnizca KUCULEBILIR -> serbest alan yalnizca KUCULUR.
+    k_close = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (kapama_cekirdegi_px(max(7, w // 30), mpp),
+                            kapama_cekirdegi_px(max(7, h // 30), mpp)))
     clean = cv2.morphologyEx(trav_mask, cv2.MORPH_OPEN, k_open)
     clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, k_close)
 

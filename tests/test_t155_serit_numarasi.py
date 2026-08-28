@@ -156,40 +156,114 @@ class T155BozulmamaTests(unittest.TestCase):
         (5, "kolay"): 8, (5, "orta"): 9, (5, "zor"): 8,
     }
 
-    def test_waypoint_KOORDINATLARI_t155_oncesiyle_BAYT_ES(self):
-        """ON_KAYIT §17 BOZULMAMA sarti — SAYI degil KOORDINAT kilidi (D-296).
-
-        Cururtucu olctu: sayi kilidi, waypoint'leri sayiyi koruyarak KAYDIRAN
-        bir degisikligi yakalamaz; on kayit tam olarak bunu sart kosuyordu.
-        Referans `results/t155/once_master.json` (T155 ONCESI master kodu).
-        """
+    @staticmethod
+    def _referans():
         import json as _json
         ref_yol = KOK / "results" / "t155" / "once_master.json"
-        self.assertTrue(ref_yol.is_file(), f"referans yok: {ref_yol}")
-        ref = {(s["harita"], s["senaryo"]): s for s in
-               _json.loads(ref_yol.read_text(encoding="utf-8"))["satirlar"]}
+        assert ref_yol.is_file(), f"referans yok: {ref_yol}"
+        return {(s["harita"], s["senaryo"]): s for s in
+                _json.loads(ref_yol.read_text(encoding="utf-8"))["satirlar"]}
+
+    def test_T155_iddiasi_TAVANSIZ_yolda_HALA_BAYT_ES(self):
+        """ON_KAYIT §17 BOZULMAMA sarti — SAYI degil KOORDINAT kilidi (D-296).
+
+        🔴 2026-08-28 (T188 · D-326): bu kapi T188'i YAKALADI ve dogru yapti.
+        T188 zemin kapamasina FIZIKSEL TAVAN koydu; bu sentetik sahnelerde
+        cekirdegi 16 px'ten (= 1,60 m, arac genisliginden bile buyuk) 3 px'e
+        (0,30 m) indirdi ve rota geometrisi KACINILMAZ olarak kaydi.
+
+        Cipa GEVSETILMEDI, iki iddia AYRILDI:
+          · Bu test T155'in iddiasini sinar — "T155 yalniz YAYINLANAN sayiyi
+            degistirdi" — ve bunu T188 TAVANI DEVRE DISI birakilarak yapar.
+            Tavan kaldirildiginda koordinatlar HALA BAYT-ES olmalidir.
+          · Asagidaki test T188'in kendi iddiasini sinar: tavanla birlikte
+            KARAR (serit) ve RET SEBEPLERI degismemelidir; degisen yalniz
+            geometridir.
+        """
+        from unittest import mock
+        import rpi_inference as _ri
+        ref = self._referans()
         self.assertEqual(15, len(ref), "referans 15 sahne olmali")
+        # Tavani KIMLIK yap -> T188 oncesi cekirdek
+        with mock.patch.object(_ri, "kapama_cekirdegi_px",
+                               lambda mevcut, mpp: mevcut):
+            for anahtar, s in sorted(ref.items()):
+                with self.subTest(sahne=anahtar):
+                    _g, _yol, wps, ret, _olc = _kos(anahtar[0], anahtar[1])
+                    self.assertEqual(
+                        [[int(x), int(y)] for x, y in s["waypointler"]],
+                        [[int(x), int(y)] for x, y in wps],
+                        f"{anahtar}: TAVANSIZ yolda waypoint KOORDINATLARI "
+                        "degisti — T155'in iddiasi bozulmus demektir")
+                    self.assertEqual(
+                        s["ret"], ret[0] if isinstance(ret, tuple) else ret,
+                        f"{anahtar}: ret sebebi degisti")
+
+    def test_T188_TAVANI_KARARI_ve_RET_SEBEBINI_degistirmiyor(self):
+        """T188'in kendi bozulmama sarti: geometri kayabilir, KARAR kayamaz."""
+        ref = self._referans()
         for anahtar, s in sorted(ref.items()):
             with self.subTest(sahne=anahtar):
-                _g, _yol, wps, ret, _olc = _kos(anahtar[0], anahtar[1])
+                _g, yol, wps, ret, _olc = _kos(anahtar[0], anahtar[1])
                 self.assertEqual(
-                    [[int(x), int(y)] for x, y in s["waypointler"]],
-                    [[int(x), int(y)] for x, y in wps],
-                    f"{anahtar}: waypoint KOORDINATLARI degisti — T155 yalniz "
-                    "YAYINLANAN sayiyi degistirmeliydi (madde 15, on kayit §17)")
-                self.assertEqual(s["ret"], ret[0] if isinstance(ret, tuple) else ret,
-                                 f"{anahtar}: ret sebebi degisti")
+                    s["ret"], ret[0] if isinstance(ret, tuple) else ret,
+                    f"{anahtar}: T188 ret sebebini degistirdi")
+                if s["ret"] is None:
+                    self.assertIsNotNone(
+                        yol, f"{anahtar}: eskiden rota vardi, T188 sonrasi YOK")
+                    self.assertTrue(wps, f"{anahtar}: waypoint listesi bos")
+
+    def test_MUTASYON_tavan_GERCEKTEN_geometriyi_degistiriyor(self):
+        """Yukaridaki ayrim BOS olmasin: tavanli ve tavansiz yollar en az bir
+        sahnede FARKLI koordinat uretmeli. Ayni olsalardi T188 etkisizdi."""
+        from unittest import mock
+        import rpi_inference as _ri
+        ref = self._referans()
+        fark = 0
+        for anahtar in sorted(ref):
+            _g, _y, wps_tavanli, _r, _o = _kos(anahtar[0], anahtar[1])
+            with mock.patch.object(_ri, "kapama_cekirdegi_px",
+                                   lambda mevcut, mpp: mevcut):
+                _g2, _y2, wps_tavansiz, _r2, _o2 = _kos(anahtar[0], anahtar[1])
+            if [[int(x), int(y)] for x, y in wps_tavanli] !=                [[int(x), int(y)] for x, y in wps_tavansiz]:
+                fark += 1
+        self.assertGreater(fark, 0,
+                           "tavanli ve tavansiz yol AYNI sonucu veriyor — "
+                           "T188 etkisiz, yani bu ayrim BOS")
 
     def test_waypoint_sayilari_t155_oncesiyle_ayni(self):
-        """KAPI (ON_KAYIT SS17 ek sart): rota DEGISMEDI, yalniz ADI degisti."""
+        """KAPI (ON_KAYIT SS17 ek sart): rota DEGISMEDI, yalniz ADI degisti.
+
+        T188 TAVANI DEVRE DISI kosulur — bu test T155'in iddiasini sinar,
+        T188'inkini degil (ayrim: `test_T155_iddiasi_TAVANSIZ_yolda_...`).
+        """
+        from unittest import mock
+        import rpi_inference as _ri
+        with mock.patch.object(_ri, "kapama_cekirdegi_px",
+                               lambda mevcut, mpp: mevcut):
+            for hid in range(1, arena.HARITA_N + 1):
+                for sen in arena.SCENARIOS:
+                    with self.subTest(harita=hid, senaryo=sen):
+                        _gt, _yol, wps, _ret, _olc = _kos(hid, sen)
+                        self.assertEqual(
+                            len(wps), self.ONCEKI_WP_SAYISI[(hid, sen)],
+                            f"{hid}/{sen}: waypoint sayisi degisti — T155 "
+                            "rotayi etkilememeliydi")
+
+    def test_T188_sonrasi_waypoint_sayisi_MAKUL(self):
+        """T188 sonrasi sayi degisebilir ama rota YOK OLMAMALI ve sayi
+        eskisinden asiri sapmamali (kilit degil, SINIR)."""
         for hid in range(1, arena.HARITA_N + 1):
             for sen in arena.SCENARIOS:
                 with self.subTest(harita=hid, senaryo=sen):
-                    _gt, _yol, wps, _ret, _olc = _kos(hid, sen)
-                    self.assertEqual(
-                        len(wps), self.ONCEKI_WP_SAYISI[(hid, sen)],
-                        f"{hid}/{sen}: waypoint sayisi degisti — T155 rotayi "
-                        "etkilememeliydi")
+                    _gt, yol, wps, ret, _olc = _kos(hid, sen)
+                    self.assertIsNotNone(yol, f"{hid}/{sen}: rota kayboldu ({ret})")
+                    eski_n = self.ONCEKI_WP_SAYISI[(hid, sen)]
+                    self.assertGreaterEqual(len(wps), 3)
+                    self.assertLessEqual(
+                        abs(len(wps) - eski_n), 4,
+                        f"{hid}/{sen}: waypoint sayisi {eski_n} -> {len(wps)}; "
+                        "T188 rotayi asiri degistirdi")
 
     def test_hicbir_sahnede_ret_uretilmiyor(self):
         """T155 oncesi 15 sahnenin hicbirinde ret yoktu; sonrasinda da yok."""

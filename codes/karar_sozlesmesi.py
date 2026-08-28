@@ -1344,6 +1344,61 @@ OLCEK_KAYNAK_ETIKETI = {
     OLCEK_KAYNAK_ARAC: "ARAÇ REFERANSI",
 }
 
+# ════════════════════════════════════════════════════════════════════════════
+# T188 · ZEMIN KAPAMASININ FIZIKSEL TAVANI  (ON_KAYIT 2026-08-28 SS8 · D-326)
+# ════════════════════════════════════════════════════════════════════════════
+# 🔴 KUSUR (olculdu): `rpi_inference` zemin maskesine morfolojik KAPAMA
+# uyguluyor ve cekirdek `max(7, w // 30)` — yani goruntu GENISLIGININ ORANI,
+# METRIK DEGIL. 512 px'te 17 px, 3840 px'te 128 px olur. mpp 0,05'te 17 px =
+# 0,85 m: bir DUBADAN buyuk ve arac yaricapiyla kiyaslanabilir.
+#
+# SONUC: duba sirasi zemin maskesinde yalniz DELIK birakirsa (model onlari
+# ENGEL sinifina koymayi kacirirsa) kapama delikleri GERI DOLDURUYOR ve serit
+# ACIK cikiyor. Sentetik olcum, dort duba yapilandirmasinin DORDUNDE de:
+#
+#   duba capi/araligi     ENGEL sinifinda     yalniz ZEMIN DELIGI
+#   0,40 m / 1,00 m       KAPALI (dogru)      yol=2  guven 1.00  <- YANLIS
+#   0,60 m / 1,20 m       KAPALI (dogru)      yol=2  guven 1.00  <- YANLIS
+#   0,30 m / 0,80 m       KAPALI (dogru)      yol=2  guven 1.00  <- YANLIS
+#
+# ⚠ KAPAMA, SERBEST ALANI BUYUTEN TEK ISLEMDIR — madde 15 tam olarak bunu
+# yasaklar. Bu yuzden fiziksel bir TAVAN konur: kapama yalnizca ALGI
+# GURULTUSU olcegindeki delikleri kapatabilir, GERCEK bir engeli degil.
+#
+# TAVAN `costmap_path_finder.ALGI_PAYI_M` ile AYNI degerdir (0,25 m): o sabit
+# "engel maskesinin gercek engelden ic kalma payi"dir, yani algi belirsizligi
+# olcegidir. Kapama bundan buyuk bir bosluga DOKUNAMAZ.
+#
+# UYGULAMA KURALI — cekirdek yalnizca KUCULEBILIR:
+#     cekirdek = min(eski_cekirdek, ceil(KAPAMA_AZAMI_M / mpp))
+# Boylece serbest alan yalniz KUCULUR ve madde 15 olcumle degil INSA ile
+# korunur. `mpp` bilinmiyorsa davranis DEGISMEZ (olculemeyen durumda
+# degisiklik yapilmaz — fail-safe).
+KAPAMA_AZAMI_M = 0.25
+
+
+def kapama_cekirdegi_px(mevcut_px, mpp):
+    """Zemin kapama cekirdegini FIZIKSEL tavanla sinirla.
+
+    `mevcut_px` cagiranin cozunurluk oranindan hesapladigi cekirdek.
+    `mpp` gecerli degilse `mevcut_px` AYNEN doner (davranis degismez).
+    Donen deger hicbir kosulda `mevcut_px`ten BUYUK olamaz.
+    """
+    from numbers import Real as _Real
+    import math as _math
+    try:
+        mevcut = int(mevcut_px)
+    except (TypeError, ValueError):
+        return mevcut_px
+    if isinstance(mpp, bool) or not isinstance(mpp, _Real):
+        return mevcut
+    m = float(mpp)
+    if not (m > 0.0) or _math.isinf(m) or _math.isnan(m):
+        return mevcut
+    tavan = int(_math.ceil(KAPAMA_AZAMI_M / m))
+    return max(1, min(mevcut, tavan))
+
+
 # Binek arac govde genisligi (ayna haric), TS/EU M1 tipik bandi (D-124).
 ARAC_GENISLIGI_M = 1.80
 ARAC_GENISLIGI_BANDI = (1.70, 1.90)

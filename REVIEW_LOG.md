@@ -23503,3 +23503,81 @@ gösterdiği resim budur ve üzerinde rota üretemiyoruz. **T192 açıldı.**
 **SİLİNMEDİ**: `data/arena_kompozit_otopark_arsiv/` (madde 18). Kompozit
 görüntüleri `.gitignore`'daki `images/` kuralıyla depoya girmez — eski kümede
 de öyleydi, düzen korundu. 4K ara klasörleri de yoksayıldı.
+
+### D-326 · 🔴 T188 KAPANDI — "duba sırası" kusuru: zemin kapaması METRİK DEĞİLDİ ve dubaları GERİ DOLDURUYORDU (2026-08-28)
+
+**Ön kayıt:** `results/gece_20260828/ON_KAYIT.md` §8 (G8–G11, ölçümden ÖNCE yazıldı).
+**Kullanıcı bağlamı:** *"şartnamede verilen görselde yollar nasıl kapandıysa …
+bizde de veri setinde o lazım"* — bu kusur o sorunun **öbür yüzüdür**: nesne
+veri setinde olsa bile, model onu ENGEL sınıfına koymayı kaçırırsa sistem
+**tam güvenle** açık yol bildiriyordu.
+
+#### 1. Kusur
+`codes/rpi_inference.py`, zemin maskesine morfolojik **KAPAMA** uyguluyor ve
+çekirdek `max(7, w // 30)` idi — **görüntü genişliğinin oranı, metrik değil.**
+512 px'te 17 px, 3840 px'te 128 px. Sentetik sahnelerde (mpp 0,10) **16 px =
+1,60 m** — *aracın kendi genişliğinden (1,80 m) bile büyük* bir boşluğu
+dolduruyordu.
+
+**Ölçüldü** (640×640, mpp 0,05, 12 m koridor; dört yapılandırmanın **dördünde
+de** aynı):
+
+| duba çapı / aralığı | ENGEL sınıfında | yalnız ZEMİN DELİĞİ |
+|---|---|---|
+| 0,40 m / 1,00 m | KAPALI ✓ | **yol=2 · güven 1.00** ✗ |
+| 0,40 m / 1,50 m | KAPALI ✓ | **yol=2 · güven 1.00** ✗ |
+| 0,60 m / 1,20 m | KAPALI ✓ | **yol=2 · güven 1.00** ✗ |
+| 0,30 m / 0,80 m | KAPALI ✓ | **yol=2 · güven 1.00** ✗ |
+
+Yani: **dubalar ENGEL sınıfına düşerse sistem doğru davranıyor; düşmezse
+kapama onları siliyor ve yanlış güzergâh yayınlanıyor** (şartname §2.1: **0 puan**).
+
+⚠ Kapama, **serbest alanı BÜYÜTEN tek işlemdir** — madde 15 tam olarak bunu
+yasaklar. Bugüne kadar metriksiz bir istisna olarak duruyordu.
+
+#### 2. Düzeltme — tavan, ölçümle değil İNŞA ile güvenli
+`karar_sozlesmesi.KAPAMA_AZAMI_M = 0,25 m` eklendi ve **`costmap_path_finder.ALGI_PAYI_M`
+ile AYNI değerdedir** (uydurma sayı değil: "engel maskesinin gerçek engelden iç
+kalma payı", yani algı belirsizliği ölçeği). Kapama bundan büyük bir boşluğa
+**dokunamaz**.
+
+```
+çekirdek = min(mevcut, ceil(KAPAMA_AZAMI_M / mpp))
+```
+
+Çekirdek **yalnızca küçülebilir** → serbest alan **yalnızca küçülür** → madde 15
+**inşa gereği** korunur. `mpp` geçersizse davranış **DEĞİŞMEZ** (ölçülemeyen
+durumda değişiklik yapılmaz — fail-safe).
+
+#### 3. Kapılar (hepsi ön kayıtlı)
+- **G9 · GEÇTİ** — beş duba yapılandırmasının **beşinde de** koridor artık
+  KAPALI. **Pozitif kontrol:** engelsiz temiz koridor hâlâ rota veriyor
+  (güven 1.00) — kapı "her şeyi reddet" değil.
+- **G8 · GEÇTİ** — K7 kabul kümesi **hiç değişmedi**: 85/88 rota, 84 doğru,
+  **%98,8**. (Eşik ≥%95 ∧ ≥80/88.)
+- **G11 · GEÇTİ** — kompozit 50/88 → **49/88** (eşik ≥45). Kritik bir güvenlik
+  açığını kapatmanın bedeli **tek rota**.
+- **G10 · İNŞA GEREĞİ** + ayrıca sınandı: 5 çekirdek × 6 mpp değerinde sonuç
+  hiçbir zaman girdiden büyük değil.
+
+#### 4. 🔴 BİR ÇIPA DÜŞTÜ VE DOĞRU YAPTI — çıpa gevşetilmedi, İDDİALAR AYRILDI
+`test_t155_serit_numarasi.T155BozulmamaTests` waypoint **koordinatlarını**
+`results/t155/once_master.json`'a karşı bayt-eş kilitliyordu ve T188'i yakaladı
+(sentetik sahnelerde çekirdek 16 px → 3 px; geometri kaçınılmaz olarak kaydı).
+
+Çıpayı yeni sonuca göre **güncellemedim** — bu, kapıyı sonuca göre gevşetmek
+olurdu. Bunun yerine iki ayrı iddia iki ayrı teste bölündü:
+
+1. **T155'in iddiası** (*"yalnız yayınlanan sayı değişti"*): T188 tavanı
+   `mock` ile **devre dışı** bırakılarak sınanır → koordinatlar hâlâ **BAYT-EŞ**.
+   Yani T155 hâlâ masum ve bunu kanıtlayabiliyoruz.
+2. **T188'in iddiası**: tavanla birlikte **KARAR (şerit) ve RET SEBEPLERİ
+   değişmez**; değişen yalnız geometridir. Ayrıca waypoint sayısının eskisinden
+   ±4'ten fazla sapmadığı sınırlanır.
+3. **Mutasyon kontrolü**: tavanlı ve tavansız yollar en az bir sahnede
+   **farklı** koordinat üretmeli — aksi hâlde bu ayrım boş olurdu.
+
+#### 5. Bozulmama
+`unittest discover -s tests` **1230 OK** (2 skip; 1214 → +16: T188 kapısı 13 +
+T155 ayrımı 3). Genel kapı (madde 14) iki kolda **GEÇTİ** (15/15 · şerit 15/15).
+Jetson paket aynası yeniden üretildi.
