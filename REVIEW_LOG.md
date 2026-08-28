@@ -24841,3 +24841,58 @@ D-338'i yazarken **T150'yi okumadım**.
 üretimde **gerçekten koşup koşmadığı** doğrulanmalı. Ben "kod var" ile
 "üretimde koşuyor"u karıştırdım — bu projede tam olarak yasaklanan hata
 türü (`OLCULEMEDI != GECTI`'nin kardeşi: `KOD_VAR != KOSUYOR`).
+
+---
+
+### D-352 · 🔴 JETSON KURULUM BLOĞU, KILAVUZUN KENDİ KOMUTLARINI BESLEMİYORDU — Q8 kalibrasyon dosyası dâhil (2026-08-28)
+
+**Bağlam değişti.** Kullanıcı: 30 Ağustos'ta Jetson **Nano NX** üzerinde
+**Q8 (INT8)** model ile test; 30 Eylül'de kendi drone'ları + 2×2 m basılı H
+posteri + kurabildikleri arena ile **TEK SEFERLİK** gerçek test. Tekrar yok.
+Bu, "sahada fark ederiz" seçeneğini **ortadan kaldırıyor**.
+
+**⚠ ÖNCE KENDİ HATAM.** İlk kurduğum kapı yanlış varsayıma dayanıyordu:
+kılavuzun `codes/rpi_inference.py` demesini "paket yolu kırık" sandım.
+Değildi — kılavuz önce bir **kurulum bloğu** ile paketi
+`~/navitas/{codes,comms,scripts,…}` düzenine **açıyor** ve sonraki komutlar o
+düzene göre doğru. Kapıyı doğru değişmeze göre **yeniden yazdım**:
+
+> Kurulum bloğunun kopyaladıkları, sonraki komutların kullandıklarını
+> **kapsamalıdır**.
+
+**Bu değişmezle ölçüldü — beş gerçek boşluk:**
+
+| kılavuzun kullandığı | pakette | sonuç |
+|---|---|---|
+| `codes/kamera_dogrula.py` | vardı (`kod/`), **kurulum listesinde YOK** | kamera doğrulaması koşmaz |
+| `codes/karisim_arena.yaml` | vardı (`kod/`), **listede YOK** | 🔴 **INT8/Q8 KALİBRASYON dosyası** — `int8=True data=…` **çöker** |
+| `codes/model_registry.py` | **hiç yoktu** | derlenen `.engine` kaydedilemez → `model_kayit_dogrula` fail-closed → **model yüklenmez** (T103/D-177 ile aynı sınıf) |
+| `comms/yks_gui.py` | yok | hakem ekranı — **YKS'de** koşar, pakette olmamalı |
+| `simulation/scripts/ika_nav.py` | yok | İKA benzetimi — **İKA bilgisayarında** koşar |
+
+İlk üçü 30 Ağustos'u **doğrudan** bozardı; ikincisi tam da o gün
+kullanılacak **Q8 derlemesinin** girdisidir.
+
+**Ayrıca: üç ÖKSÜZ dosya.** `kamera_dogrula.py` **depoda hiç yoktu**, yalnız
+pakette duruyordu; `karisim_arena.yaml` de `KOPYALAR`'da olmadığı için paket
+yenilendiğinde **tazelenmiyordu**. Yani depo ile paket sessizce ayrışabilirdi
+— `jetson_paket_hazirla.py`'nin var oluş sebebi tam olarak buydu.
+
+**Düzeltme.**
+1. `codes/kamera_dogrula.py` **depoya alındı** (kanonik kaynak artık depoda).
+2. `KOPYALAR`'a üç giriş eklendi: `model_registry.py`, `karisim_arena.yaml`,
+   `kamera_dogrula.py`.
+3. Her iki kılavuzun kurulum bloğu bu üçünü taşıyacak şekilde güncellendi.
+4. `yks_gui.py` / `ika_nav.py` için kılavuza **"bu komut Jetson'da değil"**
+   notu eklendi; kapının MUAF listesine **gerekçeleriyle** alındılar.
+
+**NÖBETÇİ: `tests/test_t202_jetson_paket_butunlugu.py` (6 test).**
+Kurulum bloğu ile kullanım kümesini ayrıştırıp farkı sınar; **mutasyon
+kontrolü** var (bloktan bir satır silinirse kapı düşer); MUAF listesinin
+büyümesi testle **zorlaştırılmıştır** (her muafiyet kapının bir parçasını
+kapatır); ve paket modüllerinin depoya ihtiyaç duymadan **ithal edilebildiği**
+ayrıca koşulur.
+
+⚠ Kapının kendisi de bir kez yanlış ölçtü: `cp … ~/navitas/codes/ # yorum`
+satırlarını deseni **ıskalıyordu** ve "eksik" diyordu. Düzeltildi; olay
+dosyaya yazıldı ki kapıya körü körüne güvenilmesin.

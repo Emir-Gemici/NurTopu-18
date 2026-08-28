@@ -27,9 +27,21 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         # degisikligi YAKALADI ve dogru davrandi — gevsetilmedi, GUNCELLENDI.
         # T83 onariminda 10 -> 11: eklenen `codes/arac_maskesi.py`dir (olcek
         # kahininin 3. katmani; pakette yokken kahin SESSIZCE None donuyordu).
-        self.assertEqual(11, len(KOPYALAR),
-                         "paket kopya sozlesmesi 11 dosya olmali "
-                         "(10 .py + config/model_registry.json · T103/T83)")
+        # T202/D-352'de 11 -> 14. Ucu de kilavuzun KULLANDIGI ama kurulum
+        # blogunun TASIMADIGI dosyalardi; 30 Agustos Jetson Q8 testinde saha
+        # gunu cokerlerdi:
+        #   · codes/model_registry.py    -> derlenen .engine KAYDEDILEMEZ,
+        #     model_kayit_dogrula fail-closed doner, MODEL YUKLENMEZ
+        #     (T103/D-177 ile birebir ayni sinif kusur)
+        #   · dataset/karisim_arena.yaml -> INT8/Q8 KALIBRASYON dosyasi;
+        #     `int8=True data=...` derlemesi bunsuz kosmaz
+        #   · codes/kamera_dogrula.py    -> DEPODA HIC YOKTU, yalniz pakette
+        #     duruyordu (oksuz); kanonik kaynak artik codes/ altindadir
+        # Kapi yine GEVSETILMEDI, gerekceyle GUNCELLENDI.
+        self.assertEqual(14, len(KOPYALAR),
+                         "paket kopya sozlesmesi 14 dosya olmali "
+                         "(12 .py + karisim_arena.yaml + "
+                         "config/model_registry.json · T103/T83/T202)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")

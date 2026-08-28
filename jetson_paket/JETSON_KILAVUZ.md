@@ -352,6 +352,7 @@ Jetson'da klasör yapısını koru:
 ```bash
 mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
 cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py kod/arac_maskesi.py ~/navitas/codes/
+cp kod/model_registry.py kod/kamera_dogrula.py kod/karisim_arena.yaml ~/navitas/codes/
 cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py ~/navitas/comms/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
@@ -415,6 +416,8 @@ düşürüyordu — **artık `--timeout` vermeyin**, varsayılanlar sözleşmede
 
 ```bash
 cd ~/navitas
+# ⚠ BU KOMUT JETSON'DA DEGIL, IKA BILGISAYARINDA kosar (T202/D-352).
+# `ika_nav.py` Jetson paketinde BULUNMAZ ve bulunmamalidir.
 python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --yks <YKS_IP>:5005
 # açıkça yazmak isterseniz (aynı şey):
 python3 simulation/scripts/ika_nav.py comms --bind 0.0.0.0:5006 --yks <YKS_IP>:5005 \

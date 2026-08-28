@@ -298,6 +298,7 @@ Jetson'da klasör yapısını koru:
 ```bash
 mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
 cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py kod/arac_maskesi.py ~/navitas/codes/
+cp kod/model_registry.py kod/kamera_dogrula.py kod/karisim_arena.yaml ~/navitas/codes/
 cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py ~/navitas/comms/
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
@@ -306,6 +307,19 @@ cp -r test_goruntuleri ~/navitas/data/
 ```
 
 `jetson_fps.py` yolları `parents[1]/codes` üzerinden kurar — bu yapı şart.
+
+> 🔴 **T202 / D-352 — ikinci `cp` satırı 2026-08-28'de eklendi.** Şu üç dosya
+> daha önce **taşınmıyordu** ve saha günü ilgili adımlar `No such file` ile
+> çökerdi:
+> - `model_registry.py` — derlenen `.engine` **kaydedilemez**, `model_kayit_dogrula`
+>   fail-closed döner ve **model yüklenmez** (T103/D-177 ile aynı sınıf kusur).
+> - `kamera_dogrula.py` — kamera doğrulama adımı koşmaz. (Bu dosya **depoda hiç
+>   yoktu**, yalnız pakette duruyordu; kanonik kaynak artık `codes/` altındadır.)
+> - `karisim_arena.yaml` — **INT8/Q8 kalibrasyon** dosyası; `int8=True data=…`
+>   derlemesi bunsuz koşmaz. **30 Ağustos Q8 testinin doğrudan girdisidir.**
+>
+> Nöbetçi: `tests/test_t202_jetson_paket_butunlugu.py` — kurulum bloğunun
+> taşıdıkları, kılavuzun sonraki komutlarının kullandıklarını **kapsamalıdır**.
 
 > 🔴 **`config/model_registry.json` BİR ÖNERİ DEĞİL, ZORUNLULUKTUR** (T103 ·
 > `REVIEW_LOG.md` D-177/D-178). `load_model` **fail-closed**tur: defter yoksa

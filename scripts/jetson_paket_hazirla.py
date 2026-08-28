@@ -32,6 +32,19 @@ KOPYALAR = {
     # Cokmeden kotu: hicbir kapi dusmuyordu. Kilit: tests/test_jetson_comms_paketi.
     KOK / "codes" / "arac_maskesi.py": PAKET_KOD / "arac_maskesi.py",
     KOK / "scripts" / "jetson_fps.py": PAKET_KOD / "jetson_fps.py",
+    # 🔴 T202 · D-352: asagidaki UCU pakette VARDI ama KOPYALAR'da YOKTU
+    # (yani "oksuz"du: paket yenilendiginde tazelenmiyorlardi) ya da HIC yoktu.
+    # Kilavuzun kurulum blogu de onlari tasimiyordu; saha gunu su komutlar
+    # `No such file` ile cokerdi:
+    #   · model_registry.py  -> derlenen .engine KAYDEDILEMEZ, model_kayit_dogrula
+    #     fail-closed doner ve model YUKLENMEZ (T103/D-177 ile ayni sinif kusur)
+    #   · karisim_arena.yaml -> INT8/Q8 KALIBRASYON dosyasi; 30 Agustos Q8
+    #     derlemesi (`int8=True data=...`) bunsuz kosmaz
+    #   · kamera_dogrula.py  -> depoda HIC YOKTU, yalniz pakette duruyordu;
+    #     kanonik kaynak artik `codes/` altindadir
+    KOK / "codes" / "model_registry.py": PAKET_KOD / "model_registry.py",
+    KOK / "dataset" / "karisim_arena.yaml": PAKET_KOD / "karisim_arena.yaml",
+    KOK / "codes" / "kamera_dogrula.py": PAKET_KOD / "kamera_dogrula.py",
     KOK / "comms" / "protocol.py": PAKET_KOD / "protocol.py",
     KOK / "comms" / "link.py": PAKET_KOD / "link.py",
     KOK / "comms" / "iha_sender.py": PAKET_KOD / "iha_sender.py",
