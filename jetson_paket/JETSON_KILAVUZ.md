@@ -358,6 +358,7 @@ cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
 cp config/model_registry.json ~/navitas/config/
 cp -r test_goruntuleri ~/navitas/data/
+cp -r kalibrasyon ~/navitas/
 ```
 
 `jetson_fps.py` yolları `parents[1]/codes` üzerinden kurar — bu yapı şart.
@@ -638,12 +639,25 @@ hesabından çıkan gerçek gereksinim **0,9–2,6 FPS**.
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 \
-  int8=True data=~/navitas/codes/karisim_arena.yaml
+yolo export model=navitas_seg_v36_best.pt format=engine imgsz=512 \
+  int8=True data=~/navitas/kalibrasyon/kalibrasyon.yaml
 ```
-⚠ `karisim_arena.yaml` içindeki yollar **Windows mutlak yolları** (`O:\navitas\...`).
-Jetson'da çalışması için yolları düzenlemen gerekir — bunu birlikte yaparız,
-kalibrasyon veri setinin Jetson'a da kopyalanması lazım.
+> 🔴 **T204 / D-355 — bu blok 2026-08-28'de düzeltildi. İki kusuru vardı:**
+> 1. `model=…_fp16.onnx` veriyordu; ultralytics `_check_is_pytorch_model()`
+>    ile **TypeError** atar. Artık pakette gelen `.pt` kullanılıyor.
+> 2. `data=…/karisim_arena.yaml` gösteriyordu; o dosya **Windows mutlak
+>    yolları** (`O:\navitas\…`) taşıyor ve Jetson'da **açılmıyor**. Kılavuz
+>    bunu kendisi yazmıştı (*"bunu birlikte yaparız"*) ama bitirilmemişti.
+>
+> Yeni kalibrasyon kümesi: **120 kare** (80 sentetik arena + 40 gerçek DJI),
+> **etiketli**, uzun kenar 640. YAML'da **`path:` anahtarı yoktur** —
+> ultralytics onu YAML'in kendi dizinine göre çözer.
+>
+> ⚠ Bu 120 kare, **INT8 doğruluk kapısının** 90 karesiyle **kesişmez**
+> (ÖN KAYIT D-355 §5); ayrıklık üretimde koşumda denetlenir. Aynı kareyle
+> hem kalibre edip hem ölçmek çevrimsel olurdu.
+>
+> Yeniden üretme: `scripts/olcum/161_q8_kalibrasyon_kumesi.py`
 
 **INT8 doğruluk kapısı — atlanamaz:** segmentasyon maskeleri INT8'de FP16'dan
 farklı bozulur. INT8 engine'i ölçtükten sonra aynı 30 karede **serbest alan

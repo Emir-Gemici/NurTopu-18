@@ -24982,3 +24982,102 @@ geçiş **yorumdaydı** — gerçek çağrı sağ kalıyor, test kendini kandır
 Denetim ve mutasyon artık **yalnız koda** uygulanıyor (`_kodu()` yorumları
 sıyırıyor) ve bunu ayrıca sınayan bir test daha eklendi
 (`test_MUTASYON_YORUMDAKI_metin_KIRLETMEZ`).
+
+---
+
+### D-355 · 📋 ÖN KAYIT — Q8 (INT8) KALİBRASYON KÜMESİ ve DOĞRULUK KAPISI · ölçümden ÖNCE (2026-08-28)
+
+**Neden gerekiyor.** 30 Ağustos'ta Jetson Nano NX üzerinde Q8 ölçülecek.
+Bugün elimizde:
+- kalibrasyon kümesi **yok**; kılavuzun işaret ettiği `karisim_arena.yaml`
+  **Windows mutlak yolları** taşıyor (`O:\navitas\…`) ve Jetson'da açılmaz —
+  kılavuz bunu kendisi yazmış (*"bunu birlikte yaparız"*) ama bitirilmemiş,
+- pakette kalibrasyon karesi var ama **etiketsiz** (49 jpg, 0 txt),
+- defterde **INT8 yuvası yok**,
+- ve bir "doğruluk kapısı" var ama **yanlış şeyi ölçüyor** (aşağıda).
+
+**🔴 MEVCUT KAPI ÇÜRÜK — ölçümle.** Kılavuz diyor ki: *"serbest alan maskesini
+FP16 ile karşılaştır; IoU < 0,98 ise INT8 reddedilir."* Bu kapı **maskeyi**
+ölçüyor, oysa puanı belirleyen **yayınlanan karardır**. Kendi verimizle
+çürüdü: **IoU 0,9975 iken yayınlanan rotanın sapması 13,4 m**. Yani maske
+neredeyse aynı görünürken karar sahada metrelerce kayabiliyor. Bu kapı
+**değiştirilecek**, gevşetilmeyecek.
+
+**KALİBRASYON KÜMESİ — kural, sayı görülmeden.**
+1. Kaynak: **kabul kümesi** (sentetik arena, dağıtımın hedefi) + **gerçek DJI**
+   kareleri. İkisi birden, çünkü nicemleme etkinlik aralıklarını ayarlar ve
+   sahada iki doku da görülür.
+2. Boyut: **120 kare** (80 sentetik + 40 gerçek). Nicemleme kalibrasyonu için
+   yeterli, paketi şişirmeyecek kadar az.
+3. **Etiketli** olacak (ultralytics val yükleyicisi etiket ister).
+4. YAML'da **`path:` anahtarı YAZILMAZ** — ultralytics onu YAML'ın kendi
+   dizinine göre çözer; mutlak yol yazmak tam da bugünkü kusurdur.
+5. 🔴 **KALİBRASYON KARELERİ, DOĞRULUK KAPISININ KARELERİYLE KESİŞMEZ.**
+   Aynı kareyle hem kalibre edip hem ölçmek **çevrimseldir**. Ayrıklık
+   koşumda **denetlenir**, belgede iddia edilmez.
+
+**DOĞRULUK KAPISI — ölçüt, sonuç görülmeden yazılıyor.**
+FP16 ve INT8 **aynı** karelerde **üretim çağrı sırasından** geçirilir
+(`_rota_kararini_esikle` **sonrası**, yani **yayınlanan** karar):
+
+| # | ölçüt | eşik |
+|---|---|---|
+| Q1 | **yayınlanan şerit** farkı | ≤ **%2** kare |
+| Q2 | biri rota üretip diğeri üretmeyen kare | ≤ **%2** kare |
+| Q3 | ortak rota üretilen karelerde **azami waypoint sapması** | ≤ **2,0 m** |
+| Q4 | zemin kaplaması **artışı** (serbest alan büyümesi) | ≤ **+0,01** |
+| Q5 | ölçülebilir kare | ≥ **%90** |
+
+**Q4 neden var:** madde 15 — nicemleme serbest alanı **büyütürse** İKA
+molozun üstüne sürülebilir. Bu yön diğerlerinden **daha tehlikelidir**.
+
+**`OLCULEMEDI = RED`.** Beşinden biri tutmazsa **INT8 sahaya ÇIKMAZ**, FP16
+kalır. Eşikler bu iş için **gevşetilmez**.
+
+⚠ Kullanıcı kararı (2026-08-28): *"ölçelim, kullanma kararı sonra."* Yani
+30 Ağustos'ta hem FP16 hem Q8 ölçülecek; hangisinin sahaya gideceği ölçümden
+sonra karara bağlanacak. Kılavuzun kendi ön kayıtlı kuralı da duruyor:
+**FPS ≥ 3 ise INT8'e girilmez** (gereken hız 0,9–2,6 FPS).
+
+---
+
+### D-356 · ⚠ KENDİ HATAM: commit'lerde YANLIŞ E-POSTA kullandım — GitHub onları `navitas26`'ya bağladı (2026-08-28)
+
+**Kullanıcı bildirdi:** *"pushları navitas26 olarak atmışsın, Emir-Gemici
+olarak atman lazımdı."*
+
+**Ölçüldü.** Commit **adı** her zaman doğruydu; hata **e-postadaydı**:
+
+| kimlik | commit |
+|---|---|
+| `Emir-Gemici <yunusgemici2007@gmail.com>` | **354** ← deponun kimliği |
+| `Emir-Gemici <navitas.takimi@gmail.com>` | 50 (**bugün 15'i benim**) |
+
+Deponun yerel **ve** global git yapılandırması **zaten doğruydu**:
+`user.name=Emir-Gemici`, `user.email=yunusgemici2007@gmail.com`.
+
+**Hatanın kökü.** Her commit'te `git -c user.email="navitas.takimi@gmail.com"`
+ile yapılandırmayı **ezdim**. O adresi oturum bağlamından aldım; deponun
+**kendi** yapılandırmasına bakmadım. GitHub bir commit'i **e-postadan** hesaba
+bağladığı için, `navitas.takimi@gmail.com` adresine sahip **navitas26** hesabı
+yazar olarak göründü — ad alanında `Emir-Gemici` yazmasına rağmen.
+
+**Ders — bu projede ikinci kez aynı sınıf hata.** D-350'de bir betiği
+türetirken **kaynaktan gelen sabiti** değiştirmeyi atlamıştım; burada tersini
+yaptım: **deponun kendi ayarını** gereksiz yere ezdim. İkisinin ortak dersi:
+*bir değer zaten doğru yerde tanımlıysa, onu dışarıdan dayatma.*
+
+**Düzeltme (ileriye dönük).** `-c user.name/user.email` ezmesi **kaldırıldı**;
+commit'ler artık deponun kendi yapılandırmasını kullanıyor. CLAUDE.md madde 17
+"Yazar **Emir-Gemici**" diyor ve bu yapılandırma tam olarak onu veriyor.
+
+**Geçmiş commit'ler — İKİ seçenek, karar KULLANICININ.**
+1. **Risksiz (önerilen):** `navitas.takimi@gmail.com` adresi Emir-Gemici
+   GitHub hesabına **ikincil e-posta** olarak eklenir. GitHub bu 50 commit'i
+   **geriye dönük** olarak doğru hesaba bağlar. Geçmiş **yeniden yazılmaz**.
+2. **Riskli:** `git filter-branch`/`filter-repo` ile 50 commit'in e-postası
+   değiştirilir. Tüm hash'ler değişir, zorla push gerekir. ⚠ Bu depoda
+   `filter-branch` **bir kez iki büyük dosyayı diskten sildi** (yedekten geri
+   alındı); aynı riski gerekçesiz almam.
+
+Yazılı onay olmadan geçmiş **yeniden yazılmayacaktır**.

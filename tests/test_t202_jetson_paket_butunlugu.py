@@ -33,18 +33,25 @@ MUAF = (
     # artik ACIKCA yaziyor; pakete alinmalari YANLIS olurdu.
     "comms/yks_gui.py",                 # hakem ekrani: YER KONTROL ISTASYONU
     "simulation/scripts/ika_nav.py",    # IKA benzetimi: IKA bilgisayari
+    # T204/D-355: kalibrasyon kumesini PC'DE yeniden ureten betik. Jetson'a
+    # gitmez; kilavuzda yalniz "yeniden uretme" atifi olarak geciyor.
+    "scripts/olcum/161_q8_kalibrasyon_kumesi.py",
 )
 
 # Kurulum blogunun ~/navitas altina KOPYALADIGI hedefleri cikar.
 # ⚠ Satir sonunda ACIKLAMA YORUMU olabilir (`... ~/navitas/codes/   # neden`).
 # Ilk yazimda `\s*$` ile bitiyordu ve yorumlu satirlari ISKALIYORDU — kapi
 # "eksik" diyordu ama dosya aslinda kuruluyordu. Yorum istege bagli yapildi.
+# ⚠ Hedef KOK olabilir (`... ~/navitas/`), o zaman yakalama grubu BOSTUR.
+# Ilk yazimda `[A-Za-z0-9_/]+` bos hedefi eslemiyordu ve `cp -r kalibrasyon
+# ~/navitas/` satiri GORUNMUYORDU — kapi "kurulmuyor" diyordu.
 KURULUM = re.compile(
-    r"^cp\s+(?:-r\s+)?(.+?)\s+~/navitas/([A-Za-z0-9_/]+)/?\s*(?:#.*)?$",
+    r"^cp\s+(?:-r\s+)?(.+?)\s+~/navitas/([A-Za-z0-9_/]*)/?\s*(?:#.*)?$",
     re.MULTILINE)
 # Sonraki komutlarin KULLANDIGI ~/navitas-goreli yollar.
 KULLANIM = re.compile(
-    r"(?:~/navitas/)?((?:codes|comms|scripts|models|config|data|simulation)"
+    r"(?:~/navitas/)?((?:codes|comms|scripts|models|config|data|simulation"
+    r"|kalibrasyon)"
     r"/[A-Za-z0-9_./-]+\.(?:py|json|pt|engine|onnx|yaml))")
 
 
@@ -59,8 +66,17 @@ def _kurulan() -> set[str]:
         hedef_dizin = hedef_ham.strip("/")   # `~/navitas/codes/` -> `codes`
         for k in kaynaklar.split():
             ad = k.split("/")[-1]
-            if k.startswith("test_goruntuleri"):     # `cp -r` dizin kopyasi
-                kurulan.add(f"{hedef_dizin}/{ad}")
+            # `cp -r <dizin>` — PAKETTEKI dizinin ICINDEKI dosyalari da say.
+            # Yoksa kilavuzun `kalibrasyon/kalibrasyon.yaml` gibi bir DOSYAYI
+            # kullanmasi "kurulmuyor" gorunur.
+            kaynak_dizin = PAKET / k
+            if kaynak_dizin.is_dir():
+                onek = f"{hedef_dizin}/{ad}" if hedef_dizin else ad
+                kurulan.add(onek)
+                for f in kaynak_dizin.rglob("*"):
+                    if f.is_file():
+                        goreli = f.relative_to(kaynak_dizin).as_posix()
+                        kurulan.add(f"{onek}/{goreli}")
                 continue
             if ad == "*":                            # `cp models/*`
                 kaynak_dizin = PAKET / k.rsplit("/", 1)[0]
@@ -69,7 +85,7 @@ def _kurulan() -> set[str]:
                         if p.is_file():
                             kurulan.add(f"{hedef_dizin}/{p.name}")
                 continue
-            kurulan.add(f"{hedef_dizin}/{ad}")
+            kurulan.add(f"{hedef_dizin}/{ad}" if hedef_dizin else ad)
     return kurulan
 
 
@@ -120,7 +136,7 @@ class KurulumBlogu(unittest.TestCase):
                          "satir silindigi hâlde kapi hâlâ 'kuruluyor' diyor")
 
     def test_MUAF_LISTESI_DAR(self):
-        self.assertLessEqual(len(MUAF), 4,
+        self.assertLessEqual(len(MUAF), 5,
                              "MUAF buyudu — her ekleme kapinin bir parcasini "
                              "kapatir; gerekcesi D-352'ye yazilmali")
 

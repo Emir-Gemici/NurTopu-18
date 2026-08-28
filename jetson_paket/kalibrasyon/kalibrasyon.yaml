@@ -1,0 +1,21 @@
+# Q8 (INT8) KALIBRASYON KUMESI — ON_KAYIT REVIEW_LOG D-355
+#
+# ⚠ `path:` ANAHTARI BILEREK YOKTUR. Ultralytics onu bu YAML'in KENDI
+# dizinine gore cozer. Mutlak yol yazmak tam da duzeltilen kusurdur:
+# eski `karisim_arena.yaml` WINDOWS mutlak yollari tasiyor ve
+# Jetson'da ACILMIYORDU.
+#
+# Kalibrasyon: 80 sentetik arena + 40 gercek DJI.
+# Bu kareler DOGRULUK KAPISININ kareleriyle KESISMEZ (D-355 §5);
+# ayriklik uretimde KOSUMDA denetlendi.
+#
+# Yeniden uretme:
+#   <venv> scripts/olcum/161_q8_kalibrasyon_kumesi.py
+
+train: images
+val: images
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

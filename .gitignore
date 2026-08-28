@@ -132,6 +132,12 @@ rescuenet-roads/
 models/*.onnx
 yolov8m-obb.pt
 jetson_paket/models/*.pt
+# T204/D-355: Q8 kalibrasyon KARELERI (18 MB) yeniden uretilebilir —
+# `scripts/olcum/161_q8_kalibrasyon_kumesi.py`. YAML ve kapi-kareleri listesi
+# SOZLESMEDIR, onlar DEPODA KALIR.
+# ⚠ Bu satir kume URETILMEDEN ONCE yazildi (D-348'in dersi).
+jetson_paket/kalibrasyon/images/
+jetson_paket/kalibrasyon/labels/
 jetson_paket/models/*.onnx
 jetson_paket/test_goruntuleri/
 jetson_paket/results/
