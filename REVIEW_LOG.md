@@ -24667,3 +24667,34 @@ ama aynı olmayan* kareler (aynı uçuşun komşu kareleri) hâlâ hem eğitimde
 hem doğrulamada olabilir; bu, kare-tabanlı ayrımın **bilinen** ve bu
 projede zaten kabul edilmiş sınırıdır (D-256 §5: alan ayrımı ≠ oturum
 ayrımı).
+
+---
+
+### D-348 · ⚠ KENDİ HATAM: yeni sentetik küme depoya SIZDI — `git add -A` ile 1589 dosya (2026-08-28)
+
+**Ne oldu.** `dataset/sentetik_arena_PROFIL_t199` üretilirken commit attım ve
+`git add -A` kümenin o ana kadar üretilmiş **1589 dosyasını** (8,9 MB) depoya
+soktu; `6d808ee` ile **itildi** de.
+
+**Neden yanlış.** `.gitignore:119-120` bunu bilerek engelliyor:
+
+> `# Üretilen/indirilen veri setleri — betiklerle yeniden üretilebilir, GB'larca`
+> `dataset/sentetik_arena/`
+> `dataset/sentetik_arena_bariyer_acili/`
+
+Yeni kümeyi üretirken **ignore kuralını yazmayı atladım**. Kural, tam olarak
+"yeniden üretilebilir veriyi depoya koyma" diyordu ve ben koydum.
+
+**Düzeltme.** `dataset/sentetik_arena_PROFIL_t199/` `.gitignore`'a eklendi ve
+`git rm -r --cached` ile **takipten çıkarıldı**. Dosyalar **diskte duruyor**
+(1714 jpg sayıldı) — madde 18: kullanıcının dosyaları silinmez. Geçmiş
+**yeniden yazılmadı**: 8,9 MB için `filter-branch` koşmak, 2026-08-28'de bir
+kez zaten iki büyük dosyayı diskten silmişti (yedekten geri alınmıştı) ve o
+riski tekrar almanın gerekçesi yok.
+
+**Ders.** Bu depoda `git add -A` **güvenli değildir**: üretilen küme
+dizinleri, ignore kuralı yazılmadan önce commit edilebiliyor. Yeni bir
+`dataset/` dizini üreten her işte **önce `.gitignore` satırı**, sonra üretim.
+Kümenin yeniden üretme komutu `51_sentetik_arena.py --profil arena
+--bariyer-acisi 90 --seed 21` olarak D-343'te zaten kayıtlı; veri
+kaybolmuyor.
