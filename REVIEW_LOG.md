@@ -25533,3 +25533,74 @@ iddia değil, kayda geçirilmiş bir **şüphedir**; çözümü ölçümle deği
 
 **BUGÜNKÜ KARAR: 2. deneme BAŞLATILMIYOR.** v36 üretimde kalır. Gerekçe
 ölçümdür, yorgunluk ya da bütçe değil.
+
+---
+
+### D-368 · 🔴 ŞARTNAME KAYNAĞINDAN OKUNDU — HEDEF YENİDEN HİZALANDI (2026-08-29)
+
+**Kullanıcı direktifi:** *"en iyi şekilde şartnamede isteneni yapmalıyız."*
+Bunun üzerine şartname **PDF'inden** okundu
+(`Ileri_Otonom_Sistemler_..._Sartname_TR_Ltktw.pdf`), vekil belgelerden değil.
+
+#### 1. Görüntü işlemenin GERÇEK görevi (§2.1, §2.2.2)
+
+> *"Güzergahlar: HTAB içerisinde İKA-KB ile HB arasında, moloz yığınları
+> arasında oluşturulmuş **üç (3) adet farklı yol**. Yarışma günlerinde, bu üç
+> yoldan **yalnızca bir (1) tanesi açık** bırakılacak, diğer ikisi fiziki
+> engellerle kapatılacaktır. Hangi yolun açık olduğu bilgisi yarışmacılarla
+> **önceden paylaşılmayacak** olup, bu bilgi **gizli** tutulacaktır."*
+
+> *"İHA, üzerindeki algılayıcılar ve görüntü işleme algoritmaları vasıtasıyla
+> HTAB içerisindeki **açık olan güzergâhı tespit edecektir**."*
+
+Yani görev **rota üretmek** değil, **üç yoldan AÇIK OLANI TESPİT ETMEK**.
+Bizim K6 (yanlış güzergâh) ve K7 (şerit doğruluğu) kapılarımız **tam bunu**
+ölçüyor. K1 (rota üretimi) bunun ön koşulu.
+
+#### 2. 🔴 UÇUŞU GEÇERSİZ KILAN ŞART — hafife almışım (§6.4)
+
+> *"**Hakem Teyidi ve Veri Aktarımı:** İHA tarafından yapılan güzergâh
+> tespiti, **gerçek zamanlı** olarak Yer Kontrol İstasyonuna aktarılmalıdır.
+> Aktarılan verinin doğruluğunun **Alan Hakemi tarafından teyit edilemediği**
+> veya **veri akışının sağlanamadığı** durumlarda uçuş **GEÇERSİZ**
+> sayılacaktır."*
+
+Bu, hakem ekranını (`comms/yks_gui.py`) **bir kolaylık değil, PUAN
+BELİRLEYİCİ** bir bileşen yapıyor. Ekran yanlış geometri gösterirse hakem
+doğruluğu **teyit edemez** → **uçuş geçersiz** → o turdan **puan yok**.
+
+Ayrıca §6.4: İHA görev süresi (mancınık → tespit → aktarım → paraşütle iniş)
+**azami 15 dakika**; İKA'nın HB'ye ulaşması **azami 10 dakika**.
+
+#### 3. Puanlama ağırlıkları (§7)
+
+`Puan = 0,65 × Puan₂ + 0,20 × P + 0,15 × Puan₁`
+`P_görev` = **600 puan** (İKA H brandasına fiziksel temas ederse; ulaşamazsa 0)
+`P_uçuş` = **200 puan/senaryo** — şartı: *"İHA kırıma uğramaması, **hedefi
+tespit edebilmesi**, İKA'nın hareket etmesi"*
+`K_zorluk` = Senaryo 3 için **2,0**
+
+Yani görüntü işleme, ağırlığın **%65'ini** taşıyan `Puan₂`'nin kapısıdır:
+tespit olmazsa İKA doğru yola girmez, `P_görev` 600 puanı gider.
+
+#### 4. 🔴 FİGÜR HEDEF DEĞİLDİR — şartnamenin KENDİ ifadesiyle
+
+Şekil 1'in altyazısı:
+
+> *"Görsel **tamamen yapay zeka ile oluşturulmuştur**. **Gerçek alanı
+> doğrudan yansıtmamaktadır.**"*
+
+D-367'de kayda geçirdiğim şüphe **şartname metniyle doğrulandı**: T192/T199
+boyunca o figürde rota üretmeyi hedef aldık; oysa puanı belirleyen **gerçek
+arenadır** ve şartname figürün onu yansıtmadığını **kendisi yazıyor**.
+
+**KARAR — hedef yeniden hizalanıyor:**
+- Figür artık **hedef değildir**. K0 ve K8'de figür **gerileme nöbetçisi**
+  olarak kalır (bugün K0 kör bir modeli yakaladı, D-366) ama "figürde rota
+  üret" bir **amaç** olmaktan çıkar.
+- **T192 ve T199 bu gerekçeyle kapatılır.** Kalan iki deneme hakkı
+  **kullanılmayacak**: ölçüm (D-367) aynı eksenin çözmediğini, şartname ise
+  hedefin yanlış olduğunu söylüyor.
+- Yerine geçen öncelik: **hakem ekranının doğruluğu** (§6.4 — uçuşu geçersiz
+  kılar), **tespitin canlılığı/tazeliği** (§6.4 "gerçek zamanlı"), ve
+  **süre bütçeleri** (15 dk İHA / 10 dk İKA).

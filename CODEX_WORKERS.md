@@ -12,7 +12,14 @@
 
 ---
 
-> 🔴 **PUSH DONDURULDU (2026-08-21, ikinci emre kadar).** `git push` **YAPMA**.
+> ✅ **PUSH SERBEST (2026-08-28, kullanıcı emri — dondurma KALKTI).**
+> Kullanıcının sözleriyle: *"push artık istediğin zaman yapabilirsin"*.
+> 🔴 **AMA kapı kırmızıyken push YOK** (D-360): suit **ayrı** koşulur,
+> çıktısı **okunur**, ancak sonra commit + push. Suit'i commit/push ile
+> aynı zincirde koşmak bir kez kırmızı push'a yol açtı.
+> 🔴 **Commit yazarı deponun KENDİ yapılandırmasından gelir**
+> (`Emir-Gemici <yunusgemici2007@gmail.com>`). `git -c user.email=...`
+> ile **EZME** — ezilirse GitHub commit'i başka hesaba bağlar (D-356).
 > `git commit` **SÜRER** — commit atmazsan işini kaybedersin. `CLAUDE.md §5`.
 
 ## Yapıştırılabilir prompt
