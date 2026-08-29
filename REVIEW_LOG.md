@@ -25479,3 +25479,57 @@ karşı somut bir kanıttır.
 **Kalan hak: 2 deneme** (D-340). ⚠ **Körlemesine ikinci denemeye
 girilmeyecek.** Elimde hipotez var ama **tanı yok**; her deneme 9 saat.
 Önce neden %85,9 engel çıktığı ölçülecek.
+
+---
+
+### D-367 · 🔴 T199 TANISI: arena profili OOD boşluğunu KAPATMADI, dağılım-içini keskinleştirip dağılım-dışını MUTLAKLAŞTIRDI (2026-08-29)
+
+**Hipotezim neydi.** D-366'da adayın %85,9 engel çıkmasını "zemine eklediğim
+ince kırıntı dokusu modele *koyu benek = engel* öğretti" diye tahmin ettim.
+**Ölçtüm, çürüdü.**
+
+**Dört ayırt edici test** (v36 ↔ aday, üretim çağrı sırası):
+
+| test | v36 (zemin/engel) | aday (zemin/engel) |
+|---|---|---|
+| **A** şartname figürü | %4,4 / %14,9 | **%0,0 / %85,9** |
+| **B** figür DÜZLEŞTİRİLMİŞ | **%60,1** / %17,6 | **%0,0 / %96,7** |
+| **C** adayın KENDİ eğitim dağılımı | %21,4 / %24,8 | %22,9 / %25,4 |
+| **D** eski dağılım (bariyer_acili) | %18,9 / %22,6 | %19,6 / %22,7 |
+
+**Üç sonuç, üçü de hipotezimi bozuyor:**
+
+1. **İnce yapı suçlu değil.** Düzleştirme v36'yı **toparlıyor**
+   (%4,4 → %60,1) ama adayı **kötüleştiriyor** (%85,9 → %96,7). Kırıntı ya
+   da ızgara tetikleyici olsaydı, onları silmek adayı **iyileştirirdi**.
+2. **Aday sentetikte SAĞLAM.** Hem kendi dağılımında (C) hem eski dağılımda
+   (D) v36 ile **neredeyse birebir aynı**. Yani model bozulmadı; K1 257/260
+   ve K7 %100,0 bunu zaten söylüyordu.
+3. **Kusur DAĞILIM DIŞINA ÖZGÜ ve MUTLAK.** Aday figürde `%0,0` zemin
+   veriyor ve **hiçbir görüntü dönüşümü onu kurtarmıyor**. v36'nın figüre
+   verdiği tepki dönüşümle değişiyor (esnek); adayınki **değişmiyor**.
+
+**TEŞHİS.** Arena profili, dağılım-içi kararı **keskinleştirdi** (K1↑, K7↑)
+ve bunun bedeli dağılım-dışında **mutlak** bir çöküş oldu. Keskin sınır
+içeride kazandırır, dışarıda kaybettirir. **OOD boşluğu kapanmadı, derinleşti.**
+
+**🔴 KALAN İKİ DENEME İÇİN SONUÇ: aynı tasarımın varyasyonu ÇÖZMEZ.**
+Kırıntı yoğunluğunu, ızgara opaklığını ya da karışım oranını oynatmak
+aynı ekseni oynatmaktır; ölçüm bu eksenin tetikleyici olmadığını söylüyor.
+18 saatlik GPU'yu buna harcamak, **ölçümün söylediğinin tersine** iş yapmak
+olurdu.
+
+**⚠ DAHA RAHATSIZ EDİCİ BİR SORU — açıkça soruyorum.**
+Şartname figürü, şartnamenin **kendi ifadesiyle** *"tamamen yapay zekâ ile
+oluşturulmuştur, gerçek alanı doğrudan yansıtmamaktadır"* (D-99). T192 ve
+T199 boyunca **o figürde rota üretmeyi** hedef aldık. Ama:
+- yarışma arenası **gerçek bir yerdir**, bu figür değil;
+- ve bugünkü ölçüm, o figürde iyileşmenin sentetik başarımla **ters**
+  yönde hareket ettiğini gösteriyor.
+
+Yani figürü hedef almak, **yanlış hedefi optimize etmek** olabilir. Bu bir
+iddia değil, kayda geçirilmiş bir **şüphedir**; çözümü ölçümle değil
+**karar**la gelir ve karar mimarın/kullanıcınındır.
+
+**BUGÜNKÜ KARAR: 2. deneme BAŞLATILMIYOR.** v36 üretimde kalır. Gerekçe
+ölçümdür, yorgunluk ya da bütçe değil.
