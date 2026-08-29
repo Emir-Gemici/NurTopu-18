@@ -29,7 +29,14 @@ class _SahteWidget:
 class YksAktarimZamaniTests(unittest.TestCase):
     def _arayuz(self, t_iha1, iha_landed_seq):
         arayuz = object.__new__(yks_gui.YksArayuz)
-        arayuz.rota = {"seq": 8801}
+        # A1: aktarim zamani testi gecerli bir OPEN_ROUTE fiksturu kullanir;
+        # eksik road/ref/waypoint artik hakli olarak ANKOR YOK fail-closed olur.
+        arayuz.rota = {
+            "seq": 8801,
+            "road": 2,
+            "ref_xy": [0.0, 0.0],
+            "waypoints": [[0.0, 0.0], [0.0, 1.0]],
+        }
         arayuz.rota_yok = None
         arayuz.onaylandi = False
         arayuz.tespit_onayli = True

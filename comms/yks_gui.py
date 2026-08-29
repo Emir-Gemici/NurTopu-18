@@ -50,6 +50,7 @@ from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               SARTNAME_IHA_GOREV_SURESI_S,
                               SARTNAME_IHA_UB_KENAR_M,
                               SARTNAME_IKA_GOREV_SURESI_S,
+                              YAYIN_REF_XY,
                               YKS_TESPIT_TAZELIK_S,
                               iha_ub_ihlali,
                               ZEMIN_KAPLAMA_TAVANI,
@@ -81,10 +82,87 @@ GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi"}
 ARENA_M = 50.0        # HTAB 50×50 m (şartname)
 OLCEK = 1.0           # main() ekran DPI'sine göre ayarlar (yüksek DPI okunurluk)
 
+# Hakem haritasındaki üç şeridin TEK çizim tablosu:
+#   yol -> (merkez x, yarı genişlik, giriş y, çıkış y), metre.
+# Rota ankrajı da aynı tablonun giriş noktasından türetilir; şerit ile rota
+# ayrı sabitlerden çizilirse hakeme gösterilen ok sessizce başka yere kayar.
+SERIT_CIZIM_TABLOSU = {
+    1: (12.5, 3.0, 4.0, 46.0),
+    2: (25.0, 3.0, 4.0, 46.0),
+    3: (37.5, 3.0, 4.0, 46.0),
+}
+SEMATIK_GOSTERIM_UYARISI = (
+    "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil")
+ANKOR_YOK_UYARISI = "ANKOR YOK"
+
 
 def S(px):
     """Piksel ölçüsünü ekran DPI ölçeğiyle çarp (yazı puntoları tk'de otomatik)."""
     return int(px * OLCEK)
+
+
+def serit_giris_ankoru(road):
+    """Hakem haritasında ``road`` şeridinin güney giriş noktasını döndür.
+
+    Bu yalnızca SEMANTİK bir ekran koordinatıdır; GPS/dünya konumu değildir.
+    Bilinmeyen yol için ankraj uydurulmaz.
+    """
+    geometri = SERIT_CIZIM_TABLOSU.get(road)
+    if geometri is None:
+        return None
+    merkez_x_m, _yari_genislik_m, giris_y_m, _cikis_y_m = geometri
+    return merkez_x_m, giris_y_m
+
+
+def rota_gosterim_geometrisi(road, ref_xy, waypoints):
+    """Yayın rotasını hakem haritasına oturtan saf çizim dikişi.
+
+    Üretim sözleşmesindeki ``ref_xy`` dünya koordinatı değil, yerel
+    ofsettir. Önce yayınlanan yolun şerit girişi seçilir; ardından ref ve
+    yerel waypoint ofsetleri eklenir. Eksik/bilinmeyen ankraj fail-closed olur.
+
+    Dönüş: ``(noktalar, uyari)``. ``uyari`` varsa ``noktalar`` boştur.
+    """
+    ankraj = serit_giris_ankoru(road)
+    if ref_xy is None or ankraj is None:
+        return (), ANKOR_YOK_UYARISI
+    if not waypoints:
+        return (), None
+    try:
+        ref_x, ref_y = (float(ref_xy[0]), float(ref_xy[1]))
+        baslangic = (ankraj[0] + ref_x, ankraj[1] + ref_y)
+        noktalar = [baslangic]
+        noktalar.extend((baslangic[0] + float(dx),
+                         baslangic[1] + float(dy))
+                        for dx, dy in waypoints)
+    except (IndexError, TypeError, ValueError):
+        return (), ANKOR_YOK_UYARISI
+    return tuple(noktalar), None
+
+
+def rota_ankor_uyarisi(rota):
+    """OPEN_ROUTE hakemce onaylanabilir bir semantik ankraja sahip mi?"""
+    if not rota:
+        return ANKOR_YOK_UYARISI
+    _noktalar, uyari = rota_gosterim_geometrisi(
+        rota.get("road"), rota.get("ref_xy"), rota.get("waypoints"))
+    return uyari
+
+
+def inset_kutusu(genislik_px):
+    """Sağ üst genel-saha inset'inin saf canvas kutusunu döndür."""
+    boyut = S(132)
+    sag = genislik_px - S(8)
+    ust = S(8)
+    return sag - boyut, ust, sag, ust + boyut
+
+
+def sematik_uyari_yerlesimi(genislik_px):
+    """Semantik uyarıyı sağ üst inset'ten yatayda ayıran yerleşim."""
+    inset_sol, _ust, _sag, _alt = inset_kutusu(genislik_px)
+    sol = S(12)
+    genislik = max(0, inset_sol - S(8) - sol)
+    return sol, S(8), genislik
 
 
 def _kayit_profili():
@@ -684,6 +762,9 @@ class YksArayuz:
     def _harita_ciz(self):
         c = self.harita
         c.delete("all")
+        w = c.winfo_width()
+        if w <= 1:
+            w = S(480)
         # grid (5 m)
         for m in range(0, 51, 5):
             x0, y0 = self._mxy(m, 0)
@@ -701,7 +782,9 @@ class YksArayuz:
         # (kapalı koridorlar + moloz sahası) KIRMIZI = gidilemez
         # Yeni NO_ROUTE, eski OPEN_ROUTE önbelleğini görsel olarak geçersiz
         # kılar: hakem ekranda yeşil bir rota görüp yanlış onay vermemelidir.
-        acik = self.rota["road"] if self.rota and not self.rota_yok else None
+        acik = (self.rota["road"]
+                if self.rota and not self.rota_yok
+                and rota_ankor_uyarisi(self.rota) is None else None)
         if acik is not None:
             c.create_rectangle(x0, y0, x1, y1, fill=KIRMIZI, stipple="gray12",
                                outline="")
@@ -709,10 +792,11 @@ class YksArayuz:
             c.create_text(lx, ly, text="■ yeşil = geçilebilir açık yol   "
                                        "■ kırmızı = gidilemez (moloz / kapalı)",
                           fill=SOLUK, font=self.f_kucuk, anchor="w")
-        for yol, xm in ((1, 12.5), (2, 25.0), (3, 37.5)):
+        for yol, geometri in SERIT_CIZIM_TABLOSU.items():
+            xm, yari_genislik_m, giris_y_m, cikis_y_m = geometri
             secili = (yol == acik)
-            px0, py0 = self._mxy(xm - 3, 4)
-            px1, py1 = self._mxy(xm + 3, 46)
+            px0, py0 = self._mxy(xm - yari_genislik_m, giris_y_m)
+            px1, py1 = self._mxy(xm + yari_genislik_m, cikis_y_m)
             if secili:
                 c.create_rectangle(px0, py0, px1, py1, fill=YESIL,
                                    stipple="gray25", outline=YESIL, width=2)
@@ -741,17 +825,26 @@ class YksArayuz:
         c.create_text(hx, hy, text="H", fill=KIRMIZI, font=self.f_orta)
         c.create_text(hx, hy - 20, text="HB (hedef)", fill=KIRMIZI, font=self.f_kucuk)
 
-        # rota: ref_xy + yerel waypoint'ler
-        if self.rota and not self.rota_yok and self.rota.get("waypoints"):
-            ref = self.rota.get("ref_xy") or [25.0, 2.0]
-            noktalar = [(ref[0] + dx, ref[1] + dy) for dx, dy in self.rota["waypoints"]]
-            noktalar.insert(0, (ref[0], ref[1]))
+        # rota: şerit giriş ankrajı + yerel ref_xy + yerel waypoint'ler.
+        # Bu bir GPS/dünya konumu değil, hakem için semantik gösterimdir.
+        rota_uyarisi = None
+        if self.rota and not self.rota_yok:
+            noktalar, rota_uyarisi = rota_gosterim_geometrisi(
+                self.rota.get("road"), self.rota.get("ref_xy"),
+                self.rota.get("waypoints"))
+        else:
+            noktalar = ()
+        if noktalar:
             pks = [self._mxy(x, y) for x, y in noktalar]
             for (ax, ay), (bx, by) in zip(pks, pks[1:]):
                 c.create_line(ax, ay, bx, by, fill=YESIL, width=3, arrow="last")
-            rx, ry = self._mxy(ref[0], ref[1])
+            rx, ry = pks[0]
             c.create_oval(rx - 5, ry - 5, rx + 5, ry + 5, fill=SARI, outline="")
             c.create_text(rx - 16, ry, text="ref", fill=SARI, font=self.f_kucuk, anchor="e")
+        if rota_uyarisi:
+            ux, uy = self._mxy(25, 25)
+            c.create_text(ux, uy, text=rota_uyarisi, fill=KIRMIZI,
+                          font=self.f_orta, anchor="center", width=w - S(48))
 
         if self.rota_yok:
             sebep = self.rota_yok.get("sebep", "bilinmeyen neden")
@@ -765,15 +858,24 @@ class YksArayuz:
             c.create_text(S(12), bant_h // 2, text=metin, fill="white",
                           font=self.f_kucuk, anchor="w", width=w - S(24))
 
+        # Hakemin GPS sanmaması gereken semantik gösterim uyarısı en son
+        # çizilir; grid/rota-yok katmanları metni sonradan örtemez. Sağ üstteki
+        # inset ayrı çağrıda çizildiği için yatay kutular da çakışmaz.
+        uyari_x, uyari_y, uyari_w = sematik_uyari_yerlesimi(w)
+        c.create_text(uyari_x, uyari_y, text=SEMATIK_GOSTERIM_UYARISI,
+                      fill=SARI, font=self.f_kucuk, anchor="nw",
+                      width=uyari_w)
+
     def _inset_ciz(self):
         """Mini genel-saha: İHA-UB çerçevesi (kenar SÖZLEŞMEDEN) + HTAB + İHA-İB (mavi)
         + İHA canlı konum izi (heartbeat x,y alanlarından)."""
         c = self.harita
         c.delete("inset")
-        gw = int(c.winfo_width() or S(480))
-        b = S(132)
-        x1, y0 = gw - 8, 8
-        x0, y1 = x1 - b, y0 + b
+        gw = int(c.winfo_width())
+        if gw <= 1:
+            gw = S(480)
+        x0, y0, x1, y1 = inset_kutusu(gw)
+        b = x1 - x0
         c.create_rectangle(x0, y0, x1, y1, fill="#0d1318", outline=CIZGI,
                            tags="inset")
 
@@ -887,6 +989,7 @@ class YksArayuz:
             self.tespit_bayat = False
             self.rota_yok = None
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
+            ankor_uyarisi = rota_ankor_uyarisi(m)
             if yeni:
                 self.onaylandi = False
                 self.tespit_onayli = False
@@ -898,20 +1001,27 @@ class YksArayuz:
                     self._logla("⚠ GEÇERSİZLİK RİSKİ: aktarım İHA inişinden SONRA "
                                 "geldi — şartname §6.4: aktarım HAVADA tamamlanmalı!",
                                 "sari")
-                self._kutu_yaz("protokol",
-                               karar=f"{m['road']} · {m['label'].upper()}",
-                               renk=YESIL)
+                if ankor_uyarisi:
+                    self._kutu_yaz("protokol", karar=ANKOR_YOK_UYARISI,
+                                   renk=KIRMIZI)
+                else:
+                    self._kutu_yaz("protokol",
+                                   karar=f"{m['road']} · {m['label'].upper()}",
+                                   renk=YESIL)
                 # ref_xy protokolce None OLABILIR (protocol.py:44-45) ve
                 # iha_sender geometri dogrulamasini yalniz ika/broadcast akrani
                 # varken kosar — yani "--yks" tek hedefliyken None gelir.
                 _ref = m.get("ref_xy") or ("—", "—")
                 self._detay_base = (f"seq={m['seq']} · ref=({_ref[0]}, "
-                                    f"{_ref[1]}) m · {len(m.get('waypoints') or [])} waypoint")
+                                     f"{_ref[1]}) m · {len(m.get('waypoints') or [])} waypoint")
                 self._rota_analiz(m)
-                self.btn_onay.config(state="normal", bg=SARI,
-                                     text="1) TESPİTİ DOĞRULA (§2.2.3)")
-                self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
-                                          "gönderimde (ACK yok)", fg=SARI)
+                if ankor_uyarisi:
+                    self._ankor_yok_onayini_kapat(logla=True)
+                else:
+                    self.btn_onay.config(state="normal", bg=SARI,
+                                         text="1) TESPİTİ DOĞRULA (§2.2.3)")
+                    self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
+                                              "gönderimde (ACK yok)", fg=SARI)
                 # T171 · §5.3.2: tespit ASGARİ İRTİFANIN ALTINDA üretildiyse
                 # hakem bunu ONAYLAMADAN ÖNCE görmeli. Ret DEĞİL — İHA
                 # kalkış/inişte de kare üretir; ama madde "asgari 30 metre
@@ -922,7 +1032,7 @@ class YksArayuz:
                 self._harita_ciz()
                 self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
                               "433 MHz TX", "YKS (bu ekran)"))
-                if self.otomatik_onay:
+                if self.otomatik_onay and not ankor_uyarisi:
                     self.kok.after(2500, self.onayla)
             # tekrar-gönderim mekanizması canlı izlensin (jüri: ACK'siz teslim yok)
             self._kutu_yaz(
@@ -1041,10 +1151,31 @@ class YksArayuz:
             "protokol",
             detay=f"{self._detay_base} · alım #{self.rx_alim[seq]} · ACK YOK")
 
+    def _ankor_yok_onayini_kapat(self, logla=False):
+        """Eksik semantik ankrajı görünür kıl ve hakem onayını kapat."""
+        btn = getattr(self, "btn_onay", None)
+        if btn is not None:
+            btn.config(state="disabled", bg="#232e3a",
+                       text="ANKOR YOK — ONAY KAPALI")
+        etiket = getattr(self, "lbl_onay", None)
+        if etiket is not None:
+            etiket.config(
+                text="ANKOR YOK — rota şeride yerleştirilemedi; hakem onayı "
+                     "ve ACK fail-closed kapatıldı.",
+                fg=KIRMIZI)
+        if logla:
+            self._logla("HAKEM ONAYI REDDEDİLDİ: ANKOR YOK — rota şeride "
+                        "yerleştirilemedi, ACK gönderilmedi", "sari")
+
     def onayla(self):
         """Şartname §2.2.3 İKİ AŞAMALI hakem onayı: (1) güzergâh tespitinin
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
         if not self.rota or self.rota_yok or self.onaylandi:
+            return
+        # A1 fail-closed: dugme durumu tek savunma degildir. Otomatik onay,
+        # klavye veya dogrudan cagri eksik ankrajli rotayi onaylayamaz.
+        if rota_ankor_uyarisi(self.rota):
+            self._ankor_yok_onayini_kapat(logla=True)
             return
         # T169 · §6.2 FAIL-CLOSED: dugme TEK savunma degildir. Otomatik onay
         # (`--otomatik-onay`), klavye ya da bir zamanlayici bu yolu dugme
@@ -1106,6 +1237,9 @@ class YksArayuz:
         btn = getattr(self, "btn_onay", None)
         if btn is None:
             return
+        if rota_ankor_uyarisi(self.rota):
+            self._ankor_yok_onayini_kapat()
+            return
         if self.tespit_onayli:
             self._aktarim_onay_dugmesini_kur()
             return
@@ -1119,6 +1253,9 @@ class YksArayuz:
     def _aktarim_onay_dugmesini_kur(self):
         """Tespit onaylandıktan sonra 2. düğmenin hâli: kanıt varsa aktif,
         yoksa PASİF + gerekçe metni (kanıt gelince `_ack_isle` yeniden çağırır)."""
+        if rota_ankor_uyarisi(self.rota):
+            self._ankor_yok_onayini_kapat()
+            return
         if self.ika_aktarim_kaniti_var():
             kanit = time.strftime("%H:%M:%S", time.localtime(
                 self.ika_rota_ack[self.rota["seq"]]))
@@ -2007,14 +2144,15 @@ class YksArayuz:
             return
         import random
         yol = random.choice((1, 2, 3))
-        hedef_dx = {1: 12.5, 2: 25.0, 3: 37.5}[yol] - 25.0
-        wps, dy = [], 4.0
-        for f in (0.35, 0.55, 0.70, 0.82, 0.90, 0.96, 1.0, 1.0):
-            wps.append([round(hedef_dx * f + random.uniform(-1.2, 1.2), 1),
+        # A1: hakem haritasi `road` seridinin girisini semantik ankraj secer;
+        # demo da saha gibi sifir YEREL ref ve o ankraja gore yerel rota yollar.
+        wps, dy = [], 0.0
+        for _ in (0.35, 0.55, 0.70, 0.82, 0.90, 0.96, 1.0, 1.0):
+            wps.append([round(random.uniform(-1.2, 1.2), 1),
                         round(dy, 1)])
             dy += 5.6
         m = open_route(road=yol, conf=round(random.uniform(0.72, 0.97), 2),
-                       ref_xy=[25.0, 2.0], waypoints=wps)
+                       ref_xy=list(YAYIN_REF_XY), waypoints=wps)
         self._logla(f"(demo) yeni tespit üretildi — yol {yol}", "mavi")
         # 🔴 T179 (D-323): uretilen cerceve YALNIZ ekrana enjekte ediliyordu;
         # IKA onu HIC gormuyordu, dolayisiyla K8'in istedigi "IKA ALDI" ACK
@@ -2476,9 +2614,9 @@ def demo_besle(yks_port, durum):
         link = UDPLink()
         reader = FrameReader()
         rota = open_route(
-            road=2, conf=0.91, ref_xy=[25.0, 2.0],
-            waypoints=[[0.6, 4.5], [-0.8, 9.0], [1.2, 14.0], [-0.4, 19.5],
-                       [1.8, 25.0], [0.2, 31.0], [-1.0, 37.0], [0.0, 44.0]])
+            road=2, conf=0.91, ref_xy=list(YAYIN_REF_XY),
+            waypoints=[[0.6, 0.5], [-0.8, 5.0], [1.2, 10.0], [-0.4, 15.5],
+                       [1.8, 21.0], [0.2, 27.0], [-1.0, 33.0], [0.0, 40.0]])
         onay = False
         onay_t = 0.0
         indi = False           # T175: inis kaniti bir kez yayinlanir

@@ -26,7 +26,8 @@ from komut_tekrar import (AckliTekrar, BEKLIYOR, BOS, ONAYLANDI,  # noqa: E402
 from link import UDPLink  # noqa: E402
 from protocol import ack, command, decode, encode, open_route  # noqa: E402
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,  # noqa: E402
-                              IKA_GO_TEKRAR_UST_SINIRI)
+                              IKA_GO_TEKRAR_UST_SINIRI,
+                              YAYIN_REF_XY)
 
 
 class _SahteSaat:
@@ -281,7 +282,14 @@ class HakemAktarimOnayiKanitsizPasifTests(unittest.TestCase):
     def _rota_gui(self):
         g = _arayuz(mock.Mock(), ("127.0.0.1", 5006), _SahteSaat())
         g.onaylandi = False
-        g.rota = {"seq": 8801, "road": 2}
+        # A1: ikinci-onay akisi, ANKOR YOK senaryosu degil; bu nedenle
+        # fikstur protokoldeki gecerli yerel ref + waypoint alanlarini tasir.
+        g.rota = {
+            "seq": 8801,
+            "road": 2,
+            "ref_xy": list(YAYIN_REF_XY),
+            "waypoints": [[0.0, 0.0], [0.0, 1.0]],
+        }
         g.rota_adr = ("127.0.0.1", 6000)
         return g
 
