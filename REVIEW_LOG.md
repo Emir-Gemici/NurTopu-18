@@ -25604,3 +25604,103 @@ arenadır** ve şartname figürün onu yansıtmadığını **kendisi yazıyor**.
 - Yerine geçen öncelik: **hakem ekranının doğruluğu** (§6.4 — uçuşu geçersiz
   kılar), **tespitin canlılığı/tazeliği** (§6.4 "gerçek zamanlı"), ve
   **süre bütçeleri** (15 dk İHA / 10 dk İKA).
+
+---
+
+### D-369 · ✅ CODEX A1 ve B3 DENETLENDİ — ikisi de kabul; B3'te ÇÖZÜNÜRLÜK SINIRI bulundu (2026-08-29)
+
+Madde 19: *"Bir iş, onu yazanın onayıyla kapanmaz."* İki commit
+(`8c34884` A1, `e2fc104` B3) **kendim** denetlendi; kapılar **kendim**
+koşuldu.
+
+#### A1 — hakem ekranı rota ankoru · **KABUL**
+
+**Tasarım doğru.** `SERIT_CIZIM_TABLOSU` **tek kaynak**: şeritleri çizen
+döngü (`yks_gui.py:795`) ile ankoru üreten fonksiyon (`:110`) **aynı**
+tablodan okuyor — şerit ile rota sessizce ayrışamaz. Bu, kusurun kök
+nedenine doğrudan cevaptır.
+
+**Davranışsal olarak doğruladım** (üretimin `ref_xy=(0,0)`'ı ile):
+
+| yol | şerit x | rota x | şeridin içinde |
+|---|---|---|---|
+| 1 | 9,5–15,5 | 12,5 | **EVET** |
+| 2 | 22,0–28,0 | 25,0 | **EVET** |
+| 3 | 34,5–40,5 | 37,5 | **EVET** |
+
+Fail-closed da doğru: bilinmeyen yol → `ANKOR YOK`, `ref_xy=None` →
+`ANKOR YOK` (rota **çizilmez**).
+
+**Mevcut iki testin değiştirilmesi meşru.** `test_ika_go_ackli_tekrar` ve
+`test_yks_gui_aktarim_zamani` fikstürleri eksik `OPEN_ROUTE` taşıyordu
+(`{"seq": 8801}`); yeni fail-closed davranış onları **haklı olarak**
+`ANKOR YOK` yapıyor. **İddialar değiştirilmedi**, yalnız fikstür geçerli
+hâle getirildi. Zayıflatma **yok**.
+
+**İstemediğim ama doğru olan ek:**
+`test_demo_da_saha_gibi_sifir_yerel_ref_yayinlar` — kusurun en tehlikeli
+yüzünü ("prova doğru, saha yanlış") doğrudan kapatıyor.
+
+**Mutasyon kontrolü güçlü:** metin araması değil — fonksiyonun **AST
+gövdesi** `(0,0)` döndürecek şekilde yeniden yazılıp **derleniyor ve
+çalıştırılıyor**, davranış kapısının düştüğü sınanıyor. Yorumlara
+dokunulmadığı ayrıca not edilmiş (D-354/D-361 dersi tutmuş).
+
+**Kapılar (kendim koştum):** `test_rota_sentetik` **15/15** · tam suit
+**1326 test OK**.
+
+#### B3 — yaw/kadraj zarfı · **ÖLÇÜM KABUL, ama okunuşu DÜZELTİLİYOR**
+
+**Ön kayıt örnek niteliğinde.** Dondurulmuş örneklem (model çıktısına göre
+seçilmiyor), görüntü **ve etiket** aynı affine ile dönüşüyor, `OLCULEMEDI`
+geçişe çevrilmiyor, ve **payda oyunu açıkça kapatılmış**: *"bozulmuş karede
+rota çıkmaması bu paydada uyuşmazlık sayılır."* Ayrıca *"ölçülmeyen daha
+geniş alan güvenli ilan edilmez"* ve bir **iddia sınırı** bölümü var.
+
+**ÖLÇÜLEN (v36, merkez kadraj, n=12):**
+
+| yaw | rota üretimi | aynı şerit |
+|---|---|---|
+| **0°** | 1,000 | 1,000 ← **tek geçen hücre** (221'de 1) |
+| ±5° | 0,917–1,000 | 0,917 |
+| ±10° | 0,917–1,000 | 0,917 |
+| **±15°** | 0,750 | **0,667** |
+| ±20° | 0,417–0,500 | 0,333–0,417 |
+| ±30° | 0,083–0,250 | 0,083–0,167 |
+
+Kadraj kırılması: **%5**.
+
+**🔴 GERÇEK VE CİDDİ BULGU:** ±15°'den sonra **uçurum** var — karelerin
+dörtte biri rota **üretmiyor**, üçte biri **yanlış şerit** yayınlıyor.
+±20° kullanılamaz. Bu, 23-25 Eylül için **gerçek bir saha kısıtıdır** ve
+kimse ölçmemişti.
+
+**⚠ ÇÖZÜNÜRLÜK SINIRI — benim bulduğum, işçinin gözünden kaçan.**
+`n = 12` iken ulaşılabilir aynı-şerit oranları `k/12`'dir:
+
+| k/12 | oran | ≥0,95 |
+|---|---|---|
+| 12/12 | 1,0000 | **geçer** |
+| 11/12 | 0,9167 | düşer |
+| 10/12 | 0,8333 | düşer |
+
+Yani **n=12'de "≥%95" fiilen "12/12 = %100" demektir**: tek bir kare şerit
+değiştirirse hücre düşer. ±5° ve ±10°'deki "DÜŞTÜ" hükmü **tam olarak bu
+tek kareye** dayanıyor (0,9167 = 11/12).
+
+**Sonuç — iki ayrı okuma:**
+- ±15° ve ötesi: **gerçek çöküş**, çözünürlükle ilgisi yok. Sağlam bulgu.
+- ±5°/±10°: **ölçümün çözünürlük sınırında**. Burada "düştü" demek,
+  eşiğin n ile çözülemediğini söylemekle aynı şey.
+
+**Saha kontrol listesi önerisi düzeltiliyor.** Betiğin ürettiği
+*"yaw −0..+0 derece · kadraj %0"* önerisi **aşırı katıdır**: ±5/±10'daki
+hükmü ölçülmüş bir uçurum değil, **n=12'nin çözünürlüğü** üretiyor.
+
+🔴 **EŞİK GEVŞETİLMEZ** (D-107). Doğru düzeltme eşiği değil **n**'i
+değiştirmektir: **yeni bir ön kayıtla, n ≥ 60** ile ±5/±10 yeniden
+ölçülecek. O ölçüm gelene kadar sahaya verilecek tavsiye
+**yaw ≤ ±10°, kadraj ≤ %5** olarak yazılır ve *"±5/±10 ÖLÇÜM ÇÖZÜNÜRLÜĞÜ
+SINIRINDA, n≥60 ile yeniden ölçülecek"* notu **yanına konur**.
+
+**Kapılar (kendim koştum):** 15/15 · 1326 test OK.
