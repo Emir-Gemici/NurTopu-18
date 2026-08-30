@@ -356,6 +356,7 @@
           "kirpik_oran": 0.0005,
           "gok_puani": 0.0249,
           "parlaklik": 142.61,
+          "gurultu_orani": 0.857,
           "bayrak": []
         },
         "bulanik": {
@@ -363,6 +364,7 @@
           "kirpik_oran": 0.0,
           "gok_puani": 0.0486,
           "parlaklik": 142.6,
+          "gurultu_orani": 0.04,
           "bayrak": [
             "BULANIK"
           ]
@@ -372,6 +374,7 @@
           "kirpik_oran": 0.00042,
           "gok_puani": 0.095,
           "parlaklik": 149.29,
+          "gurultu_orani": 0.792,
           "bayrak": [
             "NADIR_SUPHELI"
           ]
@@ -381,7 +384,11 @@
           "kirpik_oran": 0.0,
           "gok_puani": 0.0,
           "parlaklik": 15.99,
-          "bayrak": []
+          "gurultu_orani": 7.785,
+          "bayrak": [
+            "KARANLIK",
+            "GURULTULU"
+          ]
         }
       }
     }

@@ -25704,3 +25704,63 @@ değiştirmektir: **yeni bir ön kayıtla, n ≥ 60** ile ±5/±10 yeniden
 SINIRINDA, n≥60 ile yeniden ölçülecek"* notu **yanına konur**.
 
 **Kapılar (kendim koştum):** 15/15 · 1326 test OK.
+
+---
+
+### D-370 · 🔴 MUTASYON ÖLÇÜM BETİĞİ CRLF'e TAKILIYORDU — M2′ hiç uygulanmadan "ölçüldü" sayılıyordu (2026-08-31)
+
+**Bulunuş.** Codex'in bağımsız denetimi (`results/codex_denetim/rapor.md`,
+D-278…D-282 yeniden koşumu) D-278'i **KISMEN** buldu:
+*"M2′ CRLF yüzünden uygulanmadı, betik yine exit 0 verdi."*
+İddia **kendim doğrulandı ve ölçüldü**.
+
+**Kusur.** `scripts/olcum/129_t141_mutasyon_olcumu.py`, M2′ için satır sonu
+içeren bir desen arıyordu:
+
+```python
+(NAV, b"        current_no_route is None\n", b"        True  # MUTASYON\n")
+```
+
+`simulation/scripts/ika_nav.py` **tamamen CRLF**'tir — ölçüldü:
+**658 CRLF, 0 çıplak LF**. Desen dosyada **0 kez**, CRLF hâli **1 kez**
+geçiyor. Yani **M2′ mutasyonu hiç uygulanmıyordu** ve betik yine
+**exit 0** dönüyordu. Çıkış kodunu okuyan bir kapı bunu **başarı** sanardı.
+
+⚠ **Betiğin KENDİ docstring'i bu tuzağı uyarıyordu:** *"T123'te `\n` arayan
+desen mutasyonu hiç uygulamamış ve 'düşmedi' görünmüştü."* **Uyarı
+yetmedi** — kod düzeyinde önlem gerekiyordu. Bu, bugünlerin tekrar eden
+dersinin bir örneği daha: **ölçen aracın kendisi de ölçülmelidir**
+(D-349, D-354, D-357, D-360).
+
+**Düzeltme — iki ayrı kusur, iki ayrı önlem:**
+1. `_satir_sonuna_uyarla()`: desen dosyanın **kendi** satır sonuna uyarlanır
+   (LF ↔ CRLF). `_es_satir_sonu()`: yerine yazılan metin de uyarlanır, yoksa
+   CRLF dosyaya LF sokulur ve dosya **karışık satır sonlu** olur.
+2. **Uygulanmayan mutasyon artık `exit 1`.** Eskiden yalnız yazdırılıp
+   `continue` ediliyordu. `OLCULEMEDI != GECTI` çıkış kodu düzeyinde de
+   geçerlidir.
+
+**🔴 DÜZELTME SONRASI ÖLÇÜM — kaydın iddiası DOĞRULANDI:**
+
+```
+M2 (ETKISIZ)   T141 icra kilidi 0/7 · mevcut kod kilidi 0/3
+M2' HER IKI    T141 icra kilidi 1/7 · mevcut kod kilidi 0/3   <- ARTIK UYGULANIYOR
+```
+
+M2′ **T141 kilidi tarafından yakalanıyor**, mevcut test yakalamıyor — yani
+D-278'in *"M2′ yakalanıyor"* iddiası **doğruymuş**, ama o güne kadar
+**hiç uygulanmamış bir mutasyona** dayanıyordu. Kusur iddiada değil,
+**ölçümdeydi**.
+
+Dosyalar **bayt-eş** geri alındı (`git diff` boş).
+
+**NÖBETÇİ:** `tests/test_d370_mutasyon_satir_sonu.py` (7 test) — uyarlama
+işlevi var mı, gerçek CRLF dosyada çalışıyor mu, yerine yazılan da
+uyarlanıyor mu, `exit 1` bağı var mı, ve mutasyonla ayırt ediliyor mu.
+
+**Kapılar (kendim koştum):** `test_rota_sentetik` **15/15** · tam suit
+**1333 test OK**.
+
+⚠ **Codex'in diğer dört hükmü henüz denetlenmedi** (D-279/D-280/D-281/D-282
+— hepsi "KISMEN"). Denetim raporu `results/codex_denetim/` altında duruyor;
+sırayla doğrulanacak. **Doğrulanmadan kayda işlenmeyecek.**

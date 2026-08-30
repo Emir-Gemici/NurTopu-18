@@ -239,13 +239,10 @@ def d282_say() -> dict:
     for ad, im in (("temel", temel), ("bulanik", bulanik),
                    ("gok", gok), ("karanlik_gurultulu", karanlik)):
         o = mod.olcutler(im)
-        bayrak = []
-        if o["keskinlik"] < kes_alt:
-            bayrak.append("BULANIK")
-        if o["kirpik_oran"] > 0.20:
-            bayrak.append("POZLAMA")
-        if o["gok_puani"] > 0.05:
-            bayrak.append("NADIR_SUPHELI")
+        # Denetlenen betiğin güncel saf karar fonksiyonunu çağır.  D-282
+        # sonrasında eklenen KARANLIK/GURULTULU kapılarını burada kopyalayıp
+        # yeniden ıraksama yaratma.
+        bayrak = mod.bayraklar(o, kes_alt)
         mutasyonlar[ad] = {**o, "bayrak": bayrak}
         cv2.imwrite(str(CIKTI / "d282" / f"mutasyon_{ad}.png"), im)
 

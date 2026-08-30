@@ -84,9 +84,44 @@ def tablo(baslik: str) -> None:
     print(f"  {baslik:48s} " + " · ".join(sonuc), flush=True)
 
 
+def _satir_sonuna_uyarla(icerik: bytes, desen: bytes) -> bytes:
+    """Deseni dosyanin KENDI satir sonuna uyarla (LF <-> CRLF).
+
+    🔴 D-370: M2' mutasyonu satir sonu ICEREN bir desen ariyordu ama
+    `ika_nav.py` TAMAMEN CRLF'tir (658 CRLF, 0 ciplak LF). Desen 0 KEZ
+    eslesiyor ve mutasyon HIC UYGULANMIYORDU.
+
+    Bu betigin KENDI docstring'i tuzagi zaten uyariyordu ("T123'te LF arayan
+    desen mutasyonu hic uygulamamis ve 'dusmedi' gorunmustu") — M2' aynen
+    ona dustu. Uyari YETMEDI; kod duzeyinde onlem gerekiyordu.
+
+    Doner: dosyada GERCEKTEN bulunan bicim; hicbiri yoksa `desen`.
+    """
+    if desen in icerik:
+        return desen
+    crlf = desen.replace(b"\n", b"\r\n")
+    if crlf != desen and crlf in icerik:
+        return crlf
+    lf = desen.replace(b"\r\n", b"\n")
+    if lf != desen and lf in icerik:
+        return lf
+    return desen
+
+
+def _es_satir_sonu(yeni: bytes, bulunan_desen: bytes) -> bytes:
+    """Yerine yazilan metni, bulunan desenin satir sonuna uydur.
+
+    Aksi halde CRLF dosyaya LF sokariz ve dosya KARISIK satir sonlu olur.
+    """
+    if bulunan_desen.endswith(b"\r\n"):
+        return yeni.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+    return yeni
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     yedek = {p: p.read_bytes() for p in (NAV, KIL, LISTE)}
+    uygulanmayan = []          # D-370: exit kodunu belirler
     try:
         print("=" * 92)
         print("POZITIF KONTROL (mutasyon YOK — hepsi gecmeli)")
@@ -95,11 +130,21 @@ def main() -> int:
         print("\nMUTASYONLAR (on kayitta, kilit yazilmadan ONCE listelendi)")
         for ad, adimlar in MUTASYONLAR:
             ham = {d: d.read_bytes() for d, _, _ in adimlar}
-            eksik = [d.name for d, e, _ in adimlar if e not in ham[d]]
+            # D-370: desenleri dosyanin KENDI satir sonuna uyarla.
+            uyarli = []
+            for dosya, eski, yeni in adimlar:
+                bulunan = _satir_sonuna_uyarla(ham[dosya], eski)
+                uyarli.append((dosya, bulunan, _es_satir_sonu(yeni, bulunan)))
+            eksik = [d.name for d, e, _ in uyarli if e not in ham[d]]
             if eksik:
+                # 🔴 D-370: UYGULANMAYAN MUTASYON "GECTI" DEGILDIR.
+                # Eskiden yalniz yazdirilip `continue` ediliyordu ve betik yine
+                # exit 0 donuyordu; cikis kodunu okuyan bir kapi bunu BASARI
+                # sanardi. OLCULEMEDI != GECTI — artik exit 1.
+                uygulanmayan.append((ad, eksik))
                 print(f"  {ad:48s} !! DESEN YOK {eksik} — UYGULANMADI")
                 continue
-            for dosya, eski, yeni in adimlar:
+            for dosya, eski, yeni in uyarli:
                 dosya.write_bytes(dosya.read_bytes().replace(eski, yeni, 1))
             try:
                 tablo(ad)
@@ -114,6 +159,13 @@ def main() -> int:
             p.write_bytes(b)
         es = all(p.read_bytes() == b for p, b in yedek.items())
         print("bayt-es geri alindi:", es)
+    if uygulanmayan:
+        print()
+        print(">> UYGULANMAYAN MUTASYON VAR — OLCUM EKSIK (D-370):")
+        for _ad, _eksik in uygulanmayan:
+            print(f"   . {_ad}  (desen bulunamayan dosya: {_eksik})")
+        print("   Uygulanmayan mutasyon 'dusmedi' DEMEK DEGILDIR; OLCULMEDI.")
+        return 1
     return 0
 
 
