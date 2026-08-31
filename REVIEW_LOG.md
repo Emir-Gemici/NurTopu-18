@@ -2276,6 +2276,8 @@ encode/decode yolunda tek `NO_ROUTE` olarak değişmeden korunur.
 ---
 
 ### D-43 · KRİTİK · Rota kararı waypoint örnekleme sayısından ayrıldı
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-44.** Sınırsız A* ve uç-ankraj kapanış kayıtları **güncellendi**. Önce D-44'ü oku.
 Bildiren: Claude 1 · düzelten: Codex-2 · 2026-08-10 · T30
 
 T30 öncesi güvenlik kararı yatay bantlardan seçilen waypoint geometrisine bağlıydı.
@@ -2628,6 +2630,8 @@ kararını** besliyor.
 
 ### D-48 · KRİTİK · Hakem ekranı kendi çıkarım hattını yazmış; üretimden 67/67 ayrışıyor
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-51 · D-60.** ⚠ D-60 ayrıca bu kaydın **sayısını geçersiz ilan etti** ("üretim yolu" referansı yanlış seçilmiş) — 67/67 rakamına dayanma. Kusurlu yolun `iha_perceive` olduğu hükmü **yanlıştı**; asıl kusur `rota_bul`ta. Bu kayda dayanmadan önce D-51'i oku.
+
 **Bulgu.** `yks_gui._algi_kos()` (`:999-1035`) çıkarım parametrelerini **çıplak
 sabit** olarak taşıyor ve üretim yolundan yapısal olarak ayrışıyor:
 
@@ -2660,6 +2664,8 @@ T8'de `analyze_path`'in ıraksak kopyası için verilen karar birebir geçerli:
 ---
 
 ### D-49 · KRİTİK · D-25'in kökü bulundu: üretim yolu letterbox içerik kutusunu geçirmiyor → %100 ret
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-51.** Kusurlu yolun `iha_perceive` olduğu hükmü **yanlıştı**; asıl kusur `rota_bul`ta. Bu kayda dayanmadan önce D-51'i oku.
 
 **Bağlam.** D-25 ve saha kuru koşusunun `rota DUSTU` halkası
 ("letterbox'li girdide durum=KAPALI_DAR, ayni maske kirpilinca durum=ACIK")
@@ -4420,6 +4426,8 @@ biri kusurlu bulunup düzeltildi — istisnanın neden ayrı denetim gerektirdi�
 ---
 
 ### D-74 · BELİRLEYİCİ · Alan içi IoU 2,2× arttı, KARAR DÜZEYİNDE hiçbir şey değişmedi
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-75.** Bu kayıttaki çıkarım **yanlıştı**: 17/60 reddin yarısı MODEL kusuru çıktı. Önce D-75'i oku.
 
 **T54 koşuldu.** `v23_t54_engelli` — 11-sınıf ön-eğitim + bina/ağaç/su denetimi
 eklenmiş 2 sınıflı karışım. 191/200 epoch (erken durma), 7,9 saat.
@@ -18177,6 +18185,8 @@ RISK   : cati disi YENI engel  +0,0166   (asfalt kaybi)
 
 ### D-237 · ✅ T122 SONUÇ · Dört seçeneğin ÜÇÜ ölçüldü (izdüşüm değil, eğitilerek). Kazanan aday **(a)+(c)**: çatı kaçağı %96→%2, ölçülebilir HER kapı GEÇTİ, gerçek karelerde 67/67 red → **0**. Seçim MİMARIN.
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-239.** §5'teki sıralama **düzeltildi**: (c) çatı-dışı zeminin yalnız %1,85'ini kaybediyor. Önce D-239'u oku.
+
 - **Yazan:** Claude 2 / Opus 5 (başamele) · **Denetleyen: mimar bekleniyor**
   (madde 19; ⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-20.
 - **Ön kayıt:** `results/t122_on_kayit.md` (D-107; iki eğitimden ÖNCE yazıldı).
@@ -18303,6 +18313,8 @@ t122ac'nin kaybettigi kisim              : 0,3968   (%39,7)
 ---
 
 ### D-239 · ⚖ KENDİ SIRALAMAMI DÜZELTİYORUM (D-237 §5) · (c) çatıyı çevirirken çatı-dışı zeminin yalnız %1,85'ini kaybediyor; (a)+(c)'nin "red 67→0" üstünlüğü YETENEKTEN DEĞİL, DAHA AZ GÖRMEKTEN geliyor
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-240.** Bu kayıttaki spekülasyon **kendi ölçümümle çürütüldü** (gerçek otopark %47–52). Önce D-240'ı oku.
 
 - **Yazan:** Claude 2 / Opus 5 (başamele) · 2026-08-20 · D-238'in ölçümü (c)
   için de koşuldu; sonuç kendi önerimi zayıflattı ve kaydı düzeltiyorum.
@@ -21285,6 +21297,8 @@ anlamlıdır; (b) için aday değil **prosedür** gerekir.
 ---
 
 ### D-278 · ✅ T141 · (b) senaryosunun cevabı yordama YAZILDI ve **koşularak** kilitlendi — ve kullanıcının verdiği iş **zaten yapılmıştı**: "t122ac'yi temiz bölümle yeniden seç" = **v35'in kendisi**
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-285 §1.** Bu kayıt bağımsız denetimden **GEÇTİ ve KAPANDI**; iki **kapsam notu** eklendi (koruma yalnız üretimde bağlı iki çağrı yolu için kanıtlı; `129_...` tek başına CI kapısı değildir — ayrıca bkz. D-370).
 > ✅ **KAPANDI — 2026-08-26.** Codex bağımsız denetimi GEÇTİ (`results/codex_denetim/rapor.md`); kapanış kullanıcı yetkisiyle, ayrıntı **D-285 §1**.
 
 - **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
@@ -21383,6 +21397,8 @@ altına **girilmedi** · terfi **yok** · **push YOK**.
 ---
 
 ### D-279 · ✅ F4 PİLOT · Kapasite **5,1 kare/saat** ölçüldü (19,9 DEĞİL — 2,7 kat ağır) · ve üç amele bağımsız olarak **şartnamemdeki İKİ MADDENİN ÇELİŞTİĞİNİ** gösterdi
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-285 §2 · D-373.** Kapasite hükmü **koşullu**: 5,1 kare/saat yalnız 14/24 zamanlı kare üzerinde. D-373 ayrıca gösterdi ki A grubunun süreleri **ölçülmüş çalışma süresi değil, dosya mtime farkıdır**.
 
 - **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
   (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-25 · **F4**.
@@ -21483,6 +21499,8 @@ terfi **yok** · **push YOK**. §3, §4, §5'in üçü de **mimar kararı** bekl
 ---
 
 ### D-280 · ✅ DJİ KIRSAL EĞİTİM TURU · **arena kapısı 4/4 GEÇTİ** · kırsalda **görme arttı ama rotaya dönüşmedi** · ve kapının DIŞINDA iki gerileme
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-285 §3.** *"Maske kazanan 6 kare rotaya dönüşmedi"* cümlesi kare düzeyinde **YANLIŞTIR**; 6 bir NET farktır. (D-372 aynı düzeltmenin **TEKRARIDIR** — yeni bulgu değildir.)
 
 - **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
   (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm) · 2026-08-25.
@@ -21600,6 +21618,8 @@ kurulmuştu ve **işini yaptı**. Senkronlandı, 811 OK.
 
 ### D-281 · 🔴 ADVERSARYAL DENETİM · Üç refuter, üç açı: **betimlemem doğru, İKİ NEDENSEL İDDİAM YANLIŞ** — ve düzeltmenin büyüklüğünü de abartmışım
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-285 §4.** Açı seçimi **in-sample**: tüm süpürme −6…+5, ön kayıtlı açı politikası yoktu. Önce D-285 §4'ü oku.
+
 - **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3) ·
   2026-08-25 · D-280 §8/1'in cevabı.
 - **Yöntem:** üç bağımsız refuter, varsayılanları *"ustabaşı yanılıyor"*;
@@ -21697,6 +21717,8 @@ kuralı bu turda **fiilen** işledi.
 ---
 
 ### D-282 · 🔴 BANT TAMAMLAMA · 640.495 piksel eklendi, **rota kazancı +1 kare** — etiket kapsamı BAĞLAYICI KISIT DEĞİLMİŞ
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-285 §5 · D-373.** *"BAKIR 0038 (60 kare): GECER 29→29"* satırı **yanlıştır** (gerçeği 59 kare, 28→28). D-373 nedenini ölçtü: **gevşek alt-dizge eşleşmesi** 0039 uçuşundan bir kare sızdırmış.
 
 - **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3) ·
   2026-08-25 · kullanıcı talimatı: *"etiket kapsamını artır, o karelerde eksik
@@ -21860,6 +21882,8 @@ D-85/D-86: tavan 0,67'ye, *"gerçek arena karesi 0,579 ile geçsin"* diye **yük
 ---
 
 ### D-285 · ✅ CODEX BAĞIMSIZ DENETİMİ İŞLENDİ · D-278 **KAPANDI** · D-279…D-282 **KISMEN → düzeltmeler burada** · ve Codex'in de görmediği bir reçete kusuru: dji_kirsal_v1 **lr0 0,01 ile koşmuş** (t127: 0,001)
+
+> ⬆ **SONRADAN DOĞRULANDI → D-373.** Bu kaydın D-279…D-282 düzeltmeleri bağımsız olarak **yeniden ölçüldü ve doğrulandı**; D-373 ayrıca D-279'a **yeni bir kusur** ekledi.
 
 **Yazan:** Claude 2 (mimar vekili 2 — kullanıcı 2026-08-26: *"bugünlük başamele de mimar da sensin"*).
 **Denetçi:** Codex (farklı model, `results/codex_denetim/rapor.md`, HEAD 020aaec) — her hükmünde koşulan komut ve ham sayı var; §3 yordamının şartı sağlandı.
@@ -22693,6 +22717,8 @@ Eşli 4 karede iki yol **aynı** ve **ikisi de doğru**.
 ---
 
 ### D-310 · 🔴 DÜZELTME — T165'in "5 yanlış şerit"inin **4'ü üretim hatası DEĞİL**: kabul kümesinin `acik_serit` alanı kendi etiket maskesiyle çelişiyor (2026-08-27)
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-311.** Bu kayıt **kısmen yanlıştı**: çelişki manifest↔etiket değil; doğrulanan üretim hatası **1**. Önce D-311'i oku.
 
 **Ön kayıt:** `ON_KAYIT.md` §31. **Kanıt:** `results/t165/{olcum.json,olc.py}`.
 
@@ -24182,6 +24208,8 @@ sahne değiştiğinde güvenilemeyeceği artık **ölçülmüştür**.
 
 ### D-338 · ⚠ `hb_konumu` ÖLÇEK DENETİMİ YOK: kare-kırmızı bir çöp HB sanılabilir (2026-08-28)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-351.** Burada tarif edilen **üretim riski bugün mevcut değildir**. Önce D-351'i oku.
+
 **Nereden çıktı.** D-337'de etiketleyici, yerdeki **buruşuk kırmızı-beyaz
 ambalajı** HB pedi sandı (kutu 38×31 px). Aynı dedektör (`hb_konumu`,
 `karar_sozlesmesi.py:1212`) **üretim yolunda da** kullanılıyor
@@ -24329,6 +24357,8 @@ yansıtmamaktadır"* der.
 ---
 
 ### D-341 · 🔴 KÖK NEDEN KESİNLEŞTİ: "zemin" dokularımız KASIRGA ARTIĞI; arenanın ÇIPLAK TOPRAĞI bankada HİÇ YOK (2026-08-28)
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-342.** Bu kaydın **ana iddiası çürütüldü** (kendi ölçümümle). Önce D-342'yi oku.
 
 **Ayırt edici test.** D-339'da yapının suçlu olduğunu düşünmüştüm. Yapıyı
 bağlamdan ayırmak için figürden **saf çıplak toprak yamaları** kesilip
@@ -24541,6 +24571,8 @@ gerekir).
 ---
 
 ### D-345 · T198 HB ÖLÇEK DENETİMİ eklendi — şart 1 tam, ŞART 2 KISMİ, ön kaydım EKSİK YAZILMIŞTI (2026-08-28)
+
+> ⬆ **SONRADAN DÜZELTİLDİ → D-351.** Burada tarif edilen **üretim riski bugün mevcut değildir**. Önce D-351'i oku.
 
 **Yapılan.** `hb_konumu(bgr, mpp=None)` — `mpp` verilirse pedin kenarı
 `HB_KENAR_M / mpp`'ye göre denetlenir; banda uymayan aday HB sayılmaz.
@@ -25823,6 +25855,8 @@ edilmez**; FDR raporunda da hedef sütununda durur.
 
 ### D-372 · 🔴 D-280'İN KARE DÜZEYİ NEDENSEL HİKÂYESİ ÇÜRÜDÜ — "6 kare" bir NET FARKTI (2026-08-31)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-373.** ⚠ Bu kayıt **D-285 §3'ün TEKRARIDIR** — beş gün önce zaten kaydedilmiş bir düzeltme yeniden yazılmıştır. Yeni bulgu değildir.
+
 **Bulunuş.** Codex'in bağımsız denetimi D-280'i **KISMEN** buldu:
 *"'net 6 kare' çıkarımı yanlış."* İddia **kendim doğrulandı**.
 
@@ -25872,3 +25906,114 @@ okunmalıdır.
 
 **Kalan denetim borcu:** D-279, D-281, D-282 (hepsi "KISMEN") **henüz
 doğrulanmadı**. Doğrulanmadan kayda işlenmeyecek.
+
+
+---
+
+### D-373 · 🔴 "DENETİM BORCU" ZATEN KAPANMIŞTI (D-285, beş gün önce) · D-372 bir TEKRAR · ve defterde YAPISAL kusur: **çürütülmüş kayıt geri işaret vermiyor** (2026-08-31)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
+(⚠ aynı model — anlaşma kanıt değil, hakem ölçüm).
+**Ham çıktı:** `results/codex_denetim/{rapor.md,bagimsiz_sayim.json}` ·
+`results/dji_20260822/f4/{A,B,C}/rapor.json` ·
+`results/dji_kirsal/bant_tamamlama_etkisi.json`.
+
+#### 1. 🔴 KENDİ HATAM: olmayan bir borcu "açık" diye raporladım
+D-372'nin sonunda şunu yazdım:
+
+> *"**Kalan denetim borcu:** D-279, D-281, D-282 (hepsi "KISMEN") **henüz
+> doğrulanmadı**."*
+
+**Yanlış.** **D-285** (2026-08-26) dördünü de doğrulamış ve düzeltmelerini
+kaydetmiş: §2 D-279, §3 D-280, §4 D-281, §5 D-282. Borç beş gün önce
+kapanmıştı.
+
+Dahası: **D-372'nin kendisi D-285 §3'ün TEKRARIDIR.** Aynı iddia, aynı geçiş
+matrisi, aynı çürütme — beş gün arayla iki kez yazılmış. D-372 artık
+tekrar olarak işaretlendi.
+
+#### 2. 🔴 KÖK NEDEN DEFTERİN KENDİSİNDE — ve ÖLÇÜLDÜ
+Düzeltmeler **ileri** kayıtta yaşıyor; **orijinal kayıt geri işaret vermiyor.**
+`### D-280`'i açan okur, çürütülmüş hükmü **ayakta** sanır — bana olan tam
+olarak budur.
+
+```text
+OLCUM: duzelten/duzeltilen cifti taranarak
+  bulunan cift            : 15
+  orijinalinde ileri isaret: 0/15     <- HICBIRI
+```
+
+⚠ **İkinci ders — elle liste yetmedi.** Önce elle 11 çift saydım; sonra
+**keşif desenini koştum** ve elle listemin kaçırdığı **5 çift daha** çıktı
+(D-43←D-44, **D-48←D-60**, D-237←D-239, D-338←D-351, D-345←D-351).
+Bunlardan **D-60, D-48'in sayısını büsbütün geçersiz ilan etmiş** — yani
+defterde, iki kez çürütülmüş ama ikisini de duyurmayan bir kayıt duruyordu.
+*Deseni listeden ÖNCE koşmak gerekiyordu.*
+
+**Yapılan:** 15 kayda `⬆ SONRADAN …` ileri işareti eklendi (hiçbir metin
+silinmedi). **Nöbetçi:** `tests/test_d373_defter_geri_isaret.py` — yeni bir
+düzelten kayıt yazılıp orijinali işaretsiz kalırsa kapı **düşer**.
+
+#### 3. 🔴 D-279'DA YENİ KUSUR — ne Codex'te ne D-285'te var: **"ölçüldü" kelimesi yanlış**
+D-279'un başlığı *"Kapasite **5,1 kare/saat ölçüldü**"* diyor. Ölçülmedi —
+**dosya zaman damgasından türetildi.**
+
+A grubunun kendi `dogrulama.sure_turetimi` alanı bunu yazıyor:
+
+> *"her PNG'nin disk mtime'ı ile bir önceki PNG'nin mtime'ı arasındaki fark"*
+
+**Diskteki mtime'larla yeniden ürettim: 8/8 kare birebir tuttu.** Yani süreler
+gerçekten mtime farkıdır. Bir mtime farkı iki kayıt arasındaki **her şeyi**
+sayar — mola, bağlam değiştirme, oturum duraklaması dâhil.
+
+Rapor **kare-arası bulaşmayı da itiraf ediyor**:
+*"k5 aralığı ayrıca k1'in bordür ölçümünün tekrarını da içerir"* — yani
+**k1'in işi k5'e yazılmış**. B ve C'de `sure_turetimi` alanı **hiç yok**:
+türetim belgesiz.
+
+Bu, A'nın ağırlığı yüzünden marjinal değil:
+```text
+A: 14 zamanli karenin 8'i (%57) · 9.910 sn'nin 7.031'i (%71)
+```
+
+**Sayı ayrıca kararsız ve dengesiz — ölçtüm:**
+```text
+n=14 hepsi              : 707,9 sn -> 5,09 kare/saat   <- BASLIKTAKI
+en yavas 1 kare atilinca: 519,9 sn -> 6,92 kare/saat   (+%36)
+medyan tabanli          : 523,5 sn -> 6,88 kare/saat
+
+havuzlanmis (kayittaki) : 707,9 sn -> 5,09    A'nin agirligi %57
+grup-dengeli (8/8/8)    : 646,0 sn -> 5,57    (+%9,6)
+```
+**Tek karenin** (3.151,9 sn) çıkarılması başlığı **%36** oynatıyor.
+
+⇒ Üç sapmanın **üçü de aynı yöne**, **kötümser** tarafa itiyor. D-279 §2'nin
+*"200 kare = 27,8 saat · 19 Eylül tarihi yeniden hesaplanmalıdır"* alarmı
+bu yüzden **abartılıdır**. Aritmetik doğru; **girdi** bir çalışma-süresi
+ölçümü değil.
+
+🔴 **Sınıf:** `MTIME_FARKI != CALISMA_SURESI` — projenin
+`OLCULEMEDI != GECTI` (K5A) ve `KOD_VAR != KOSUYOR` (D-351) kardeşidir.
+
+#### 4. D-282 — düzeltme doğru; **MEKANİZMASINI** ölçtüm (D-285 §5 yalnız *ne*yi yazmıştı)
+```text
+gevsek eslesme  '0038' in ad : 60 kare · GECER 29 -> 29   <- DEFTERDEKI YANLIS
+siki eslesme    _0038_ ucusu : 59 kare · GECER 28 -> 28   <- DOGRU
+fazladan gelen kare:
+  dji_20260822173231_0039_d__frame_000069_000003870
+  ("000003870" dizisi icinde "0038" var)
+```
+Yani **0039 uçuşundan bir kare**, salt sayı dizisi benzerliğiyle bakır kümeye
+sızmış. Aynı sınıf: **çıpasız eşleşme** — D-354 ve D-361'de yorum satırının
+koda sayılması. *Sayısal kimlik alt-dizgeyle aranmaz.*
+
+#### 5. D-281 — doğrulandı, düzeltme gerekmiyor
+Açı süpürmesini ham veriden yeniden çıkardım: tam aralık **−6…+5**,
+ortalama **+2,00**, **dört açıda 0**, 10°'de **−6**. D-285 §4'ün kaydettiği
+*"in-sample seçim"* düzeltmesi **doğrudur**.
+
+#### 6. Sonuç
+- Codex yeniden koşumunun **tek yeni** maddesi D-278'in CRLF notuydu →
+  **D-370**'te kapatıldı. Yeniden koşum artık **tümüyle kapalıdır**.
+- D-279'un başlığı `ölçüldü` → **`mtime'dan türetildi`** olarak okunur.
+- Açık kalan gerçek borç: **B4 (Jetson `.engine` + gerçek uçtan uca FPS)**.
