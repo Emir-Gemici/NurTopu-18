@@ -141,3 +141,69 @@ Bu ön kayıt kapandığında Jetson ölçümü bir **keşif** olmaktan çıkıp
 
 Ölçüm betiği yazıldığında: mutasyon kontrolü **kod üzerinde** (yorumda değil,
 D-354/D-361), ve uygulanmayan mutasyon **exit 1** (D-370).
+
+---
+
+# EK-1 — ÖLÇEK BULGUSU (2026-08-31, `p` ÖLÇÜLMEDEN ÖNCE yazıldı)
+
+§3'ü yazarken iki kümenin ölçek/zaman durumunu denetlememiştim. Denetledim;
+plan **sonuç görülmeden** düzeltiliyor.
+
+## E1.1 Neden önemli
+
+Üretimde `rota_olcek_reddi(kare_mpp)` ölçek yoksa rotayı **bloklar**
+(`rpi_inference.py:2088`, T43/D-59). `mpp` vermeden ölçseydim **her karede
+rota çıkmaz**, `p = 0` bulur ve bunu modelin kusuru sanırdım. Bu bir ölçüm
+**artefaktı** olurdu — `OLCULEMEDI != GECTI`'nin ölçek hâli.
+
+## E1.2 Kümelerin gerçek durumu
+
+| | ölçek (mpp) | zaman ekseni |
+|---|---|---|
+| **S** — `sentetik_arena_kadraj_t66` (n=260) | ✅ manifestte var | ❌ **YOK** — 260 bağımsız render, ardışık kare değil |
+| **R** — `kareler_1fps` (n=768) | ✅ **var** (aşağıda) | ✅ **var** — 1 fps, 1 kare = 1 s |
+
+🔴 **S'te koşu analizi YAPILAMAZ.** Zaman ekseni olmayan bir kümede "ardışık
+başarısız kare koşusu" tanımsızdır. §4'ün G1 ve G3 eşikleri **yalnız R'de**
+ölçülür; S yalnız `p` (oran) verir.
+
+## E1.3 R'nin ölçeği nereden geliyor
+
+- `results/dji_20260822/kareler_irtifa.json` — **768 kaydın her birinde**
+  `dosya`, `zaman_sn` ve `rel_alt`. SRT'den çıkarılmış.
+- `results/dji_20260822/gsd_olcumu.json` — GPS ötelenmesi + faz
+  korelasyonuyla **ölçülmüş** GSD: medyan **4,389 cm/px @960**, n=81.
+  Örneklerin irtifa aralığı **29,7–34,8 m** — şartnamenin ≥30 m koşuluyla
+  aynı bantta, yani göreve uygun irtifada ölçülmüş.
+
+⚠ SRT'de odak/FOV alanı **yok** (iso/shutter/fnum/GPS/rel_alt var). Bu yüzden
+FOV, ölçülmüş GSD'den türetilir:
+
+```
+mpp = 2·h·tan(FOV/2)/W   =>   FOV = 2·atan( mpp·W / (2h) )
+
+60 kullanilabilir ornekten:
+  medyan 67,3°  ·  p25 62,4°  ·  p75 69,9°  ·  tam yayilim 47,7–85,4°
+```
+
+## E1.4 Dondurulan ölçek yordamı
+
+- Üretimin kendi işlevi kullanılır: `mpp_irtifadan(rel_alt, icerik_genisligi_px,
+  yatay_fov_derece=FOV)`. ⚠ Piksel çerçevesi **içerik genişliğidir**
+  (`kare_mpp(icerik_genisligi_px)`, `rpi_inference.py:346`) — `sq` ya da ham
+  kare genişliği DEĞİL.
+- **FOV = 67,3°** (ölçülen medyan) esas alınır.
+- **Duyarlılık**: `p` ayrıca **62,4°** ve **69,9°** için hesaplanır. Üç değer
+  arasında `p` **bağıl olarak %20'den fazla** oynarsa sonuç
+  **OLCEK_DUYARLI** damgası alır ve tek bir `p` sayısı olarak raporlanmaz.
+- FOV **sonuca bakılarak seçilmez**; yukarıdaki üç değer burada donduruldu.
+
+## E1.5 §4 eşiklerinin güncel kapsamı
+
+- **G1** (en uzun koşu < 5 s) → yalnız **R**.
+- **G2** (`p ≥ 0,22`) → **R ve S ayrı ayrı**; birleştirilmez.
+- **G3** (sahne bağıntısı) → yalnız **R**; koşu kareleri `zaman_sn` ve
+  `rel_alt` ile aynı uçuş bölgesinden mi diye bakılır.
+
+⚠ R gerçek ama **arenaya göre OOD**, S göreve benzer ama **sentetik**.
+Sahadaki `p` yine **ÖLÇÜLEMEDİ**; iki sayı alt/üst çerçevedir.
