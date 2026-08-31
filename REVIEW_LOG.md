@@ -21517,9 +21517,25 @@ dji_kirsal_v1  29/59 (49,2%)   10 (16,9%)         20
 - `MASKE_YOK` **59,3 → 49,2** = **İYİLEŞTİ** (10,1 puan)
 - rota oranı **18,6 → 16,9** = **KÖTÜLEŞTİ**
 
-🔴 **Sebep ölçüldü:** maske kazanan 6 kare rotaya dönüşmedi,
-`UC_BANT_TEMAS_YOK`'a kaydı (13 → 20). **Model daha çok görüyor ama gördüğü
-zemin bantlara ulaşmıyor** — parçalı/kopuk.
+🔴 ~~**Sebep ölçüldü:** maske kazanan 6 kare rotaya dönüşmedi,
+`UC_BANT_TEMAS_YOK`'a kaydı (13 → 20).~~
+**⚠ BU CÜMLE YANLIŞTIR — D-372'de çürütüldü (2026-08-31).** "6", tek tek
+belirlenebilir 6 kare değil, yalnız **net farktır** (35 − 29). Gerçek kare
+düzeyi geçiş matrisi (aynı 59 kare, ham veriden):
+
+```
+v35 MASKE_YOK -> aday: MASKE_YOK 24 · ROTA  2 · UC_BANT  9
+v35 ROTA      -> aday: MASKE_YOK  2 · ROTA  6 · UC_BANT  3
+v35 UC_BANT   -> aday: MASKE_YOK  3 · ROTA  2 · UC_BANT  8
+```
+
+MASKE_YOK'tan **11 kare çıktı** (6 değil) ve bunların **2'si rota kazandı**;
+ayrıca **5 kare** MASKE_YOK'a **geriledi**. Yani "maske kazandı ama hiçbiri
+rotaya dönmedi" **doğru değildir**.
+
+Ayakta kalan: **Model daha çok görüyor ama gördüğü
+zemin bantlara ulaşmıyor** — parçalı/kopuk. (Bu, toplulaştırılmış yön olarak
+hâlâ geçerlidir; çürüyen şey **kare düzeyi nedensel hikâyedir**.)
 ⚠ Ön kayıt §3(b) böyle bir **bölünmeyi öngörmemişti**; ikisi de raporlanıyor,
 iyi olan seçilip kötü olan gizlenmiyor.
 
@@ -25802,3 +25818,57 @@ FAZ B'nin en önemli maddesidir.
 
 ⚠ `OLCULEMEDI != GECTI`: ölçüm yapılana kadar "FP16 yeterli" **iddia
 edilmez**; FDR raporunda da hedef sütununda durur.
+
+---
+
+### D-372 · 🔴 D-280'İN KARE DÜZEYİ NEDENSEL HİKÂYESİ ÇÜRÜDÜ — "6 kare" bir NET FARKTI (2026-08-31)
+
+**Bulunuş.** Codex'in bağımsız denetimi D-280'i **KISMEN** buldu:
+*"'net 6 kare' çıkarımı yanlış."* İddia **kendim doğrulandı**.
+
+**Çürüyen cümle** (D-280 §2):
+
+> 🔴 *"Sebep ölçüldü: maske kazanan **6 kare** rotaya dönüşmedi,
+> `UC_BANT_TEMAS_YOK`'a kaydı (13 → 20)."*
+
+**Gerçek geçiş matrisi** (aynı 59 bakır kare, ham veriden türetildi —
+`results/codex_denetim/bagimsiz_sayim.json` → `d280.bakir.v35ten_adaya_gecis`):
+
+| v35 → aday | MASKE_YOK | ROTA | UC_BANT |
+|---|---|---|---|
+| **MASKE_YOK** | 24 | **2** | 9 |
+| **ROTA** | 2 | 6 | 3 |
+| **UC_BANT** | 3 | **2** | 8 |
+
+**Aritmetik doğrulaması — kaydın KENDİ kenar toplamlarını birebir üretiyor:**
+v35 35/11/13 · aday 29/10/20 · toplam 59. Yani matris uydurma değil.
+
+**Çürütme:**
+- MASKE_YOK'tan **11 kare çıktı** — *"6"* değil.
+- Bunların **2'si rota kazandı** — *"hiçbiri rotaya dönüşmedi"* **yanlış**.
+- Ayrıca **5 kare** MASKE_YOK'a **geriledi**.
+- `35 − 29 = 6` yalnız **net farktır** (11 çıkan − 5 giren).
+
+**Hatanın sınıfı — bu projede tanıdık.** Bir **özet istatistik**, kare düzeyi
+bir **mekanizma** gibi anlatılmış. Aynı sınıf bugün üç kez daha görüldü:
+D-361 (iki farklı payda aynı adla), D-369 (n=12'de %95 eşiği fiilen %100),
+D-370 (uygulanmayan mutasyon "ölçüldü" sayılıyordu).
+
+**Ayakta kalan.** *"Model daha çok görüyor ama gördüğü zemin bantlara
+ulaşmıyor"* — **toplulaştırılmış yön** olarak hâlâ geçerli (MASKE_YOK 35→29
+iyileşti, UC_BANT 13→20 kötüleşti). Çürüyen şey **kare düzeyi nedensel
+hikâyedir**. D-280'in kategorik hükmü (**arena kapısı geçti**) da ayakta.
+
+**Yapılan.** D-280'in ilgili cümlesi **üstü çizilerek** düzeltildi ve
+geçiş matrisi kayda **eklendi**. Kayıt **silinmedi** — yanılgının seyri
+görünür kalıyor.
+
+⚠ **Codex'in ikinci uyarısı da kayda geçiyor:** D-280'in **ham sayıları**
+bugünkü HEAD'de birebir yeniden üretilmiyor (K1 255/260 → 257/260,
+K2 12/255 → 10/257, K4 0/255 → 1/257, K5 0/171 → 0/178), çünkü kabul betiği
+ve üretim tabanı o günden beri değişti. **Kategorik hüküm** (kapı geçti)
+yeniden üretiliyor; **ham sayılar** tarihî artefakta aittir ve öyle
+okunmalıdır.
+
+**Kalan denetim borcu:** D-279, D-281, D-282 (hepsi "KISMEN") **henüz
+doğrulanmadı**. Doğrulanmadan kayda işlenmeyecek.
