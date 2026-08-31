@@ -25764,3 +25764,41 @@ uyarlanıyor mu, `exit 1` bağı var mı, ve mutasyonla ayırt ediliyor mu.
 ⚠ **Codex'in diğer dört hükmü henüz denetlenmedi** (D-279/D-280/D-281/D-282
 — hepsi "KISMEN"). Denetim raporu `results/codex_denetim/` altında duruyor;
 sırayla doğrulanacak. **Doğrulanmadan kayda işlenmeyecek.**
+
+---
+
+### D-371 · ✅ KARAR: SAHADA FP16 KULLANILACAK — INT8/Q8 yolu kapandı (2026-08-31)
+
+**Kullanıcı kararı:** *"fp16 kullanacağız."*
+
+**Bu karar kendi ön kayıtlı kuralımızla UYUMLUDUR.** `JETSON_KILAVUZ.md:537`:
+
+> `FPS ≥ 3 → INT8'e GİRME. Gereken hız 0,9–2,6 FPS (kapsama hesabı).`
+> *"15 FPS şartname şartı değil, takımın iç hedefi."*
+
+29 Ağustos'ta bu çelişkiyi kullanıcıya sormuştum (INT8 ön kaydımız ile "Q8
+ile test edeceğiz" planı çakışıyordu); cevap **FP16** oldu ve kural
+**gevşetilmeden uygulanmış** oluyor.
+
+**Ne düşüyor:**
+- **B5 — Q8 karar denkliği kapısı** kritik yoldan **çıktı** (~1 gün serbest).
+- D-355'in ön kaydı ve `161_q8_kalibrasyon_kumesi.py` **silinmiyor**:
+  120 karelik kalibrasyon kümesi ve Q1–Q5 ölçütleri **hazır** duruyor.
+  INT8 bir gün gerekirse iş **yeniden yapılmaz**.
+- T204'ün kılavuz düzeltmeleri (`.pt` ile derleme, `path:` yazmayan YAML)
+  **geçerli kalır** — INT8 komutu artık **çalışır** hâlde, sadece
+  kullanılmayacak.
+
+**🔴 AÇIK BAĞIMLILIK — karar bir ölçüme BAĞLI ve o ölçüm HENÜZ YOK.**
+Depoda **FPS sonucu yok** ve derlenmiş **`.engine` yok**: 30 Ağustos Jetson
+koşumunun çıktısı kayda girmemiş. Yani bugün elimizde şu var:
+
+> "FP16 kullanacağız" **kararı** ✅ · "FP16 gereken hızı veriyor" **kanıtı** ❌
+
+Kuralın kendisi şarta bağlıdır: FP16 sahada **0,9–2,6 FPS**'i veremezse
+karar yeniden açılır ve INT8 masaya geri gelir. Bu yüzden **T16/T17
+(Jetson'da `.engine` derleme + gerçek uçtan uca FPS) kritik yolda KALIR** ve
+FAZ B'nin en önemli maddesidir.
+
+⚠ `OLCULEMEDI != GECTI`: ölçüm yapılana kadar "FP16 yeterli" **iddia
+edilmez**; FDR raporunda da hedef sütununda durur.
