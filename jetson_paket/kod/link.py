@@ -59,7 +59,11 @@ class SerialLink:
 
     def __init__(self, port="/dev/ttyUSB0", baud=57600, timeout=0.3):
         import serial  # tembel import (dev makinesinde pyserial olmayabilir)
-        self.ser = serial.Serial(port, baud, timeout=timeout)
+        # P2 (D-388): `serial_for_url` cihaz yolu icin `Serial` ile AYNI sonucu
+        # verir (ust kume) — ek olarak `loop://`, `socket://` ve `spy://` acar.
+        # Bunsuz bu sinif gercek bir bayt akisiyla HIC sinanamiyordu: saha
+        # tasiyicisi yalniz sahte nesneyle "gecmis" sayiliyordu (D-383 §1).
+        self.ser = serial.serial_for_url(port, baud, timeout=timeout)
 
     def send(self, data: bytes, peer=None):
         self.ser.write(data)

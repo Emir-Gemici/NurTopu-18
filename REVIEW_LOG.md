@@ -26998,3 +26998,83 @@ BILEREK guncellenecek (docstring'lerinde yazili).
 tam suit **1479 test OK** (P1 nobetcisiyle +14) · pymavlink/pyserial kurulumu
 mevcut hicbir kapiyi dusurmedi (G8).
 
+
+## D-388 — P2: saha tasiyicisi (SiK seri) ilk kez GERCEK bayt akisinda kostu; bir kusur bulundu ve duzeltildi
+
+**Tarih:** 2026-09-02 · **Yazan:** Claude 2 (Opus 5, amele) ·
+**Denetleyen: mimar bekleniyor (AGENTS §9.3)** · **On kayit:**
+`results/p2_seri/ON_KAYIT.md` (S1-S7 sonuc gorulmeden yazildi)
+
+### 0. Ne yapildi
+
+`pyserial 3.5` kuruldu (D-387 ile ayni turda). `tests/test_p2_seri_hat.py`
+(10 test) uretim mesaj katmanini GERCEK pyserial bayt akisina bagladi:
+`SerialLink` + `FrameReader` + `IhaSender`.
+
+Yontem (ON_KAYIT §3): `loop://` tek ucludur, iki tarafli ACK turunu sinayamaz.
+Bu yuzden **SiK koprusu** kuruldu — TCP role iki `serial_for_url("socket://...")`
+ucunu karsilikli pompalar; SiK telsizin transparan davranisinin birebir
+karsiligi. Her iki uc gercek pyserial nesnesidir.
+
+Bu, D-383 §1'in acik biraktigi borcun kapanmasidir: **"B2-G2 GECTI yalniz
+UDP-loopback icindi."** UDP datagramdir (mesaj siniri korunur), seri BAYT
+AKISIDIR (sinir yoktur) — fark sinifsaldir ve cerceveleme katmani gercek bir
+bayt akisinda hic kosmamisti.
+
+### 1. Uretim degisikligi 1 — `SerialLink` artik `serial_for_url` kullaniyor
+
+`serial.Serial('loop://')` HATA verir (olculdu: `SerialException ... OSError
+22`), `serial_for_url` calisir. Cihaz yolu icin ikisi AYNI sonucu verir; yani
+degisiklik **ust kumedir**, saha davranisi degismez (kapi: S6b — var olmayan
+port yine `SerialException`). Kazanim: sinif ilk kez gercek bir bayt akisiyla
+sinanabilir hale geldi; ayrica sahada `spy://` ile hat kaydi alinabilir.
+
+### 2. KUSUR (S5) — `FrameReader` tamponu SINIRSIZ
+
+**Olcum:** newline'siz 1 MiB cop beslendiginde ic tampon **1.048.576 bayt**
+(on kayitta yazili tavan: 65.536). Yani cerceve hic tamamlanmayan bir akista
+tampon gelen her bayti sonsuza dek tutuyordu.
+
+**Neden onemli:** SiK hattinda RF gurultusu newline uretmeden akabilir. 15
+dakikalik ucusta Jetson'da sessiz bellek buyumesi demektir; ayrica biriken
+tamponda her `feed` cagrisinin `split`/arama maliyeti artar. Sartname SS6.2
+(15 dk gorev) ve SS6.4 (kesintisiz veri akisi) ile dogrudan ilgilidir.
+
+**Duzeltme:** `comms/protocol.py`
+- `CERCEVE_TAMPON_TAVANI = 64 * 1024` sozlesmeye girdi (madde 16: test bu
+  sabiti ICE AKTARIR, yeniden yazmaz — sapma imkansiz).
+- `FrameReader` suzmeden SONRA tavani denetler: kalan artik newline icermez,
+  yani tek bir cerceve siniri tasimaz; tavani asiyorsa cerceve degil
+  gurultudur, atilir. `atilan_bayt` sayaci gozlemlenebilir kilar.
+- Sira onemli: **once suz, sonra at.** Tersi olsaydi mesru bir cercevenin
+  pesindeki dev cop o cerceveyi de yutardi (kapi: S5d bunu kilitler).
+
+**Tavan gerekcesi (on kayitta, sonuc gorulmeden yazildi):** en uzun mesru
+cercevemizin **on alti kati**. Kapi S5b bunu olcuyor: 200 waypoint'li
+OPEN_ROUTE tavanin ceyreginin altinda kaliyor.
+
+### 3. Calisan yol (kanit)
+
+S1 iki uclu gercek koprude ACK turu tamamlandi · S2 mesaj **bayt bayt**
+gonderildiginde birebir toparlandi · S3 tek okumadaki 3 cerceve sirasiyla
+ayristi · S4 bozuk bayt atildi ve **sonraki gecerli cerceve okundu** (hat
+kilitlenmedi, bozuk cerceve mesaj olarak sizmadi) · S5c atma sonrasi hat
+toparlandi.
+
+### 4. Disiplin notu
+
+S5 yazildigi esikle (64 KiB) DUSTU, dususu kaydedildi, KOD duzeltildi, **ayni
+esikle** yeniden kosuldu. Esik sonuca gore degistirilmedi (D-107).
+D-387'deki iki bulgudan farki: bu bir sozlesme SORUSU degil, duz bir
+dayaniklilik kusuruydu — mesru davranisin hicbiri degismedi, bu yuzden amele
+duzeltip kapiya bagladi. D-387'nin A/B bulgulari ise anlamsal karar
+gerektiriyor ve ACIK duruyor.
+
+### 5. Kapilar
+
+`codes/test_rota_sentetik.py` 15/15 · tam suit **1489 test OK** (+10) ·
+`scripts/jetson_paket_hazirla.py` yeniden kosuldu (comms degisti; paket aynasi
+bayt-es).
+
+**P2 KAPANDI** (yazilim tarafi). 433 MHz RF olcumu Faz B'de (5 Eylul).
+

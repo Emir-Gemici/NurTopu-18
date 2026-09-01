@@ -162,11 +162,27 @@ def decode(line: bytes) -> dict:
     return json.loads(line.decode("utf-8").strip())
 
 
-class FrameReader:
-    """Seri/UDP byte akışından newline çerçevelerini ayıklar (parçalı veri güvenli)."""
+#: Çerçevelenmemiş baytların tutulabileceği tavan (P2/D-388 · ön kayıt S5).
+#: SiK hattında gürültü newline üretmeden uzun süre akabilir; tavansız tampon
+#: 15 dakikalık uçuşta sessiz bellek büyümesi demektir (ölçüldü: 1 MiB çöp →
+#: 1 MiB tampon). En uzun meşru çerçevemizin (< 4 KiB) on altı katıdır.
+CERCEVE_TAMPON_TAVANI = 64 * 1024
 
-    def __init__(self):
+
+class FrameReader:
+    """Seri/UDP byte akışından newline çerçevelerini ayıklar (parçalı veri güvenli).
+
+    Tampon ``CERCEVE_TAMPON_TAVANI`` ile sınırlıdır: içinde tek bir newline
+    olmadan tavanı aşan birikim **çerçeve değildir**, atılır (``atilan_bayt``
+    sayacına yazılır). Meşru bir çerçeve asla bu boyuta ulaşmaz; atma yalnız
+    gürültü/senkron kaybı durumunda olur ve hat bir sonraki newline'da
+    kendiliğinden toparlanır.
+    """
+
+    def __init__(self, tampon_tavani=CERCEVE_TAMPON_TAVANI):
         self._buf = b""
+        self._tampon_tavani = int(tampon_tavani)
+        self.atilan_bayt = 0
 
     def feed(self, data: bytes):
         """Gelen byte'ları besle, tamamlanan her mesajı yield et."""
@@ -181,3 +197,8 @@ class FrameReader:
                     yield decode(line)
                 except (ValueError, UnicodeDecodeError):
                     pass  # bozuk çerçeveyi at (RF gürültüsü)
+        # Süzmeden SONRA bakılır: kalan artık newline içermez, yani tek bir
+        # çerçeve sınırı taşımaz. Tavanı aşıyorsa çerçeve değil gürültüdür.
+        if len(self._buf) > self._tampon_tavani:
+            self.atilan_bayt += len(self._buf)
+            self._buf = b""

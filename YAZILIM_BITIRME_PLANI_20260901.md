@@ -60,7 +60,12 @@ pymavlink kur (pip freeze yedeğiyle);
 **Kapı:** kuru koşu `hedef_konumu/olcek` halkaları sahte akışla GEÇTİ; saat
 atlaması + kaynak-kimlik senaryoları.
 
-**P2 · SerialLink radiosuz** — pyserial + `loop://`: framing/parçalanma/ACK
+**P2 · SerialLink radiosuz** — ✅ **KAPANDI (2026-09-02 · D-388).** Gerçek
+pyserial bayt akışında koştu (iki uçlu SiK köprüsü): S1 ACK turu, S2 bayt bayt
+parçalanma, S3 birleşme, S4 bozuk bayt kurtarma GEÇTİ. **Bir kusur bulundu ve
+düzeltildi:** `FrameReader` tamponu sınırsızdı (1 MiB çöp → 1 MiB tampon);
+tavan sözleşmeye girdi. RF ölçümü Faz B'de. Özgün tanım: pyserial + `loop://`:
+framing/parçalanma/ACK
 turu, bozuk-bayt kurtarma. D-383 §1 uyarısı kapanır (B2-G2 yalnız UDP-loopback'ti).
 **Kapı:** SerialLink üstünde mutlu_yol eşdeğeri + bozuk-bayt enjeksiyon testi.
 
