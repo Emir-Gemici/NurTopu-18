@@ -18,6 +18,13 @@ import math
 import time
 import sys
 
+# cp1254 konsollarda kutu cizim karakterleri patlamasin (ika_nav ile ayni koruma)
+for _akim in (sys.stdout, sys.stderr):
+    try:
+        _akim.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass
+
 # Uçuş waypoint'leri: (x, y, z, yaw_derece, faz_adı)
 FLIGHT_PATH = [
     (-105.0,  0.0,  1.5,   0.0, "rampa"),

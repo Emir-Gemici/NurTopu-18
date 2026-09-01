@@ -27191,3 +27191,40 @@ ustundedir. Pay 0,5 m altina indirilecekse once ped-ici waypoint dagilimi
 olculur (D-107). Kinematik kanit SahteSurucu ile; son-waypoint dar yaricap
 secimi mutasyon kilidinde. Gazebo temas kosusu bu makinede OLCULEMEZ (gz/WSL
 yok) — Faz C provasinda Gazebo'lu makinede; OLCULEMEDI != GECTI.
+
+## D-392 — P8: Gazebo/sim katmani el atmasi — hakem-onayi deligi kapatildi
+
+**Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
+**Kilit:** tests/test_p8_sim_katmani.py (8 test)
+
+### 1. yks_monitor EMEKLI (tehlikeli bulgu kapatildi)
+
+Harita taramasi bulgusu: comms/yks_monitor.py gelen OPEN_ROUTE'a "HAKEM
+ONAYI: (otomatik)" basip ACK'i KENDISI donuyordu — sahada yanlislikla
+acilirsa iki asamali hakem onayini (yks_gui) DELERDI ve hicbir test bu
+dosyayi zorlamiyordu. Madde 18 geregi silinmedi: calistirma kilidi kondu —
+--legacy-bilerek bayragi olmadan exit 2 + stderr uyarisi. Import yolu
+bozulmadi (test_comms FrameReader'i import etmeye devam eder; test kilitli).
+
+### 2. Sim betikleri ilk kez kapi altinda
+
+- 7 kapisiz betige duman kapisi: --help exit 0 (drive_ika'ya --help/-h
+  eklendi; onceden exit 1'di). CONTRACTS 11.1 geregi kapi enflasyonu yok.
+- iha_flight.fly ILK KEZ kendi davranisiyla siniyor (onceden yalniz mock):
+  faz sirasi, z<=20 tavani, x monotonlugu, iniste z=0, pose reddi inisi
+  ILAN ETMEZ (RuntimeError yayilir). cp1254 konsol korumasi eklendi
+  (ika_nav ile ayni kalip; test kosumunda UnicodeEncodeError olculdu).
+- comms/test_comms.py genel kapiya sarmalandi (2,2 s, UDP loopback).
+- drone/test_uctan_uca.py BILEREK sarmalanmadi: model yukler — genel kapi
+  GPU isi olamaz (BSOD oruntusu + sirali-GPU kurali); P4 runbook maddesi.
+
+### 3. Tam prova senaryosu sablonu
+
+simulation/PROVA_SENARYOSU.md: 8 fazli zincir + damga tablosu + GECTI
+olcutleri (kosumdan once yazildi). Bu makinede gz/WSL YOK (olculdu) —
+kosum Podman'li makinede (Gazebo temeli trs-1342'nin). OLCULEMEDI != GECTI:
+sablonun varligi kanit degil; ilk kosum Faz C acilisinda.
+
+### 4. Kapilar
+
+Genel kapi 15/15 · tam suit **1522 test OK** (+13).

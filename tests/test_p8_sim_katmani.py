@@ -1,0 +1,158 @@
+"""P8 (D-392) — GAZEBO/SIM KATMANI EL ATMASI.
+
+Harita taramasi (plan v2) bulgulari:
+  1. `comms/yks_monitor.py` OPEN_ROUTE'a "HAKEM ONAYI: (otomatik)" basip
+     ACK'i kendisi donuyordu — sahada acilirsa iki asamali onayi DELER.
+     Simdi calistirma kilidi var: `--legacy-bilerek` olmadan exit 2.
+  2. 7 sim betigini hicbir test zorlamiyordu -> duman kapisi (--help exit 0).
+     CONTRACTS 11.1 geregi sim sahada kanit sayilmaz; kapi enflasyonu yok.
+  3. `iha_flight.fly` yalniz mock'laniyordu -> davranis testleri.
+  4. `comms/test_comms.py` genel kapinin disindaydi -> sarmalandi.
+     (`drone/test_uctan_uca.py` BILEREK sarmalanmadi: model yukler; genel
+      kapiyi GPU isine cevirirdi — o, P4 runbook'unda manuel maddedir.)
+"""
+import math
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+from unittest import mock
+
+KOK = Path(__file__).resolve().parents[1]
+VENV = "O:/navitas-local-train/venv/Scripts/python.exe"
+SIM = KOK / "simulation" / "scripts"
+for _y in (SIM,):
+    if str(_y) not in sys.path:
+        sys.path.insert(0, str(_y))
+
+import iha_flight  # noqa: E402
+
+
+class YksMonitorKilidi(unittest.TestCase):
+    """D-392: emekli hakem monitörü bilerek olmadan KOSMAZ."""
+
+    def test_bayraksiz_kosum_exit2_ve_uyari(self):
+        s = subprocess.run(
+            [VENV, str(KOK / "comms" / "yks_monitor.py")],
+            capture_output=True, text=True, timeout=30,
+            encoding="utf-8", errors="replace")
+        self.assertEqual(s.returncode, 2,
+                         "emekli betik bayraksiz kostu — onay kapisi "
+                         "delinebilir (D-392)")
+        self.assertIn("EMEKL", s.stderr, "uyari metni yok")
+        self.assertIn("--legacy-bilerek", s.stderr)
+
+    def test_import_yolu_bozulmadi(self):
+        """test_comms `from yks_monitor import FrameReader` yapar — kilit
+        import'u degil KOSUMU engellemeli."""
+        s = subprocess.run(
+            [VENV, "-c",
+             "import sys; sys.path.insert(0, r'%s')\n"
+             "from yks_monitor import FrameReader\n"
+             "print('ok')" % str(KOK / "comms")],
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(s.returncode, 0, s.stderr)
+        self.assertIn("ok", s.stdout)
+
+
+class SimBetikleriDuman(unittest.TestCase):
+    """7 kapisiz betige duman kapisi: --help exit 0 (agir is yapmadan)."""
+
+    BETIKLER = ("world_generator", "drive_ika", "mission_demo",
+                "mission_time", "harita_onizleme", "iha_perceive_all",
+                "iha_detect_send")
+
+    def test_yedi_betik_help_exit0(self):
+        for ad in self.BETIKLER:
+            with self.subTest(betik=ad):
+                s = subprocess.run(
+                    [VENV, str(SIM / f"{ad}.py"), "--help"],
+                    capture_output=True, timeout=60)
+                self.assertEqual(
+                    s.returncode, 0,
+                    f"{ad} --help exit {s.returncode}: "
+                    f"{s.stderr.decode('utf-8', 'replace')[:200]}")
+
+
+class IhaFlightDavranisi(unittest.TestCase):
+    """iha_flight.fly ilk kez KENDI davranisiyla siniyor (onceden hep mock)."""
+
+    def _ucur(self, **kw):
+        pozlar = []
+
+        def sahte_set_pose(x, y, z, yaw_rad=0.0):
+            pozlar.append((x, y, z, yaw_rad))
+            return True
+
+        with mock.patch.object(iha_flight, "set_pose",
+                               side_effect=sahte_set_pose), \
+             mock.patch.object(iha_flight.time, "sleep"):
+            sonuc = iha_flight.fly(fps=5.0, speed_mult=50.0, verbose=False,
+                                   **kw)
+        return sonuc, pozlar
+
+    def test_faz_sirasi_ve_inis(self):
+        sonuc, pozlar = self._ucur()
+        self.assertTrue(sonuc)
+        self.assertGreater(len(pozlar), len(iha_flight.FLIGHT_PATH),
+                           "ara adimlar uretilmedi")
+        # Baslangic rampada, bitis inis noktasinda ve YERDE (z=0)
+        self.assertEqual(pozlar[0][:3], (-105.0, 0.0, 1.5))
+        self.assertEqual(pozlar[-1][:3], (85.0, 0.0, 0.0),
+                         "ucus inis noktasinda YERDE bitmedi")
+        # Seyir tavani asilmaz
+        self.assertLessEqual(max(p[2] for p in pozlar), 20.0 + 1e-9)
+
+    def test_x_ilerleyisi_monoton(self):
+        """Ucus geri donmez: x hep ileri (rota duz cizgi dogu yonlu)."""
+        _, pozlar = self._ucur()
+        xler = [p[0] for p in pozlar]
+        self.assertTrue(all(b >= a - 1e-9 for a, b in zip(xler, xler[1:])),
+                        "x geriledi — segment gecisleri bozuk")
+
+    def test_pose_hatasi_inisi_ILAN_ETMEZ(self):
+        """NEDEN dokstringi: IHA_LANDED ancak son pose KABUL edilirse.
+
+        set_pose RuntimeError verirse fly bunu YUTMAMALI (True donerse
+        zincir inis yapilmamisken 'indi' der)."""
+        with mock.patch.object(
+                iha_flight, "set_pose",
+                side_effect=RuntimeError("gz reddetti")), \
+             mock.patch.object(iha_flight.time, "sleep"):
+            with self.assertRaises(RuntimeError):
+                iha_flight.fly(fps=5.0, speed_mult=50.0, verbose=False)
+
+    def test_set_pose_gz_hatasinda_istisna(self):
+        tamam = mock.Mock(returncode=0, stderr=b"")
+        with mock.patch.object(iha_flight.subprocess, "run",
+                               return_value=tamam) as kosum:
+            self.assertTrue(iha_flight.set_pose(1.0, 2.0, 3.0, 0.5))
+        arg = kosum.call_args.args[0]
+        self.assertEqual(arg[:4], ["gz", "topic", "-p", "~/model/modify"])
+        self.assertIn("name: 'iha'", arg[5])
+        bozuk = mock.Mock(returncode=1, stderr=b"hata")
+        with mock.patch.object(iha_flight.subprocess, "run",
+                               return_value=bozuk):
+            with self.assertRaises(RuntimeError):
+                iha_flight.set_pose(1.0, 2.0, 3.0)
+
+
+class CommsLoopbackSarmalayici(unittest.TestCase):
+    """comms/test_comms.py artik genel kapinin ICINDE (D-392).
+
+    Not: drone/test_uctan_uca.py BILEREK disarida — model yukler (GPU);
+    genel kapi model yuklemez. O, saha gunu runbook'unda manuel adimdir.
+    """
+
+    def test_comms_loopback_gecer(self):
+        s = subprocess.run(
+            [VENV, str(KOK / "comms" / "test_comms.py")],
+            capture_output=True, text=True, timeout=120,
+            encoding="utf-8", errors="replace", cwd=str(KOK / "comms"))
+        self.assertEqual(s.returncode, 0,
+                         f"test_comms dustu:\n{s.stdout[-400:]}\n{s.stderr[-200:]}")
+        self.assertIn("TEST GEÇTİ", s.stdout)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -111,6 +111,10 @@ KOMUTLAR = {
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "demo"
+    if cmd in ("--help", "-h"):                       # P8/D-392 duman kapisi
+        print(__doc__ or "drive_ika — İKA el komutları (sim)")
+        print(f"Geçerli komutlar: {', '.join(KOMUTLAR)}")
+        sys.exit(0)
     if cmd not in KOMUTLAR:
         print(f"Bilinmeyen komut: {cmd}")
         print(f"Geçerli komutlar: {', '.join(KOMUTLAR)}")
