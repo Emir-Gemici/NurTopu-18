@@ -8968,7 +8968,7 @@ esults	50_uc_kapi\`):
     serbest alan yalnız daralabilir.
   - **Görev 3:** K-B'yi **Görev 2'den sonra** arena yer gerçeğinde yeniden ölç.
 
-- [ ] **T42 — `kamera_dogrula.py` içerik sözleşmesine bağlanamadı: talimat kilidi** · `jetson_paket/kod/kamera_dogrula.py:118` · KÜÇÜK · kanıt: T41 çağrı-yeri tablosu
+- [x] **T42 — KAPANDI (2026-09-03 gece · D-397 mimar hükmü):** talimat kilidi T202/D-352'de çözülmüş (kanonik kaynak `codes/kamera_dogrula.py`, üreteç listesinde, bayt-eş) ve `icerik` bağlaması T135/D-268 §6'da yapılmış (`zincir_durumu` → `rota_bul(..., icerik=icerik)`; kapı `test_t135_kamera_dogrula_icerik` 8 test + mutasyon kilidi). Kutucuk bayat kalmıştı. ~~ · `jetson_paket/kod/kamera_dogrula.py:118` · KÜÇÜK · kanıt: T41 çağrı-yeri tablosu
   - **Kanıt (Codex-2, AST tablosu):** `letterbox=VAR · baglandi=HAYIR · gerekce=
     _preprocess exact kutuyu dondurur; ancak ikizi yok/DOKUNMA ve paket
     dosyasina elle yazma yasagi nedeniyle baglanmadi`

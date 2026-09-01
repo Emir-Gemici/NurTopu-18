@@ -27425,3 +27425,24 @@ buyuklukte ayrik secimi) ve T91 (kapi tanimi) ACIK kalir — Faz C listesinde.
 Gece kayitlarim `## D-` duzeyinde yazilmisti; defter sozlesmesi `### D-`
 (test_defter_butunlugu yakaladi: kuyruk D-395'e atif verince). 9 baslik
 duzeltildi; kapi yesil. Ders: defter basligi kalibi da SOZLESMEDIR.
+
+### D-397 — T42 mimar hukmu: is zaten kapali, kutucuk bayatti; TEKNOFEST soru paketi hazirlandi
+
+**Tarih:** 2026-09-03 (gece) · **Karar: Claude 2 — Fable 5, mimar**
+
+### 1. T42
+
+Iddia "kamera_dogrula icerik sozlesmesine baglanamadi (talimat kilidi)" idi.
+Denetim: (a) talimat kilidi T202/D-352'de cozulmus — kanonik kaynak
+`codes/kamera_dogrula.py`, uretec listesinde (bayt-es kapili); (b) `icerik`
+baglamasi T135/D-268 §6'da yapilmis (`zincir_durumu` -> `rota_bul(...,
+icerik=icerik)`); (c) kapi testi `test_t135_kamera_dogrula_icerik` 8 test +
+`icerik=icerik` mutasyon kilidi — bu gece yeniden kosuldu, OK. T42'nin kapisi
+("letterbox'li girdide KAPALI_DAR kalkiyor") fiilen kapali. Kutucuk kapatildi.
+
+### 2. TEKNOFEST soru paketi (insan gorevi icin hazir metin)
+
+`results/sartname_bosluk/TEKNOFEST_SORULARI_20260903.md` — K3 (HB renk;
+kullanici sahada teyit etti, sorudan cikarildi degil NOT edildi), K9 (FDA ic
+yerlesim) ve plan v2 §0'in uc muglak maddesi tek pakette; kullanici sabah
+kopyalayip iletebilir.
