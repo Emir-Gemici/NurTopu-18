@@ -990,7 +990,12 @@ class YksArayuz:
             self.rota, self.rota_adr = m, adr
             # T169 · §6.2: her KABUL EDILEN cerceve tespiti TAZELER — tekrar
             # gonderim de canlilik kanitidir. Bayatlik `_durum_tazele`de olculur.
-            self.rota_zaman = time.time()
+            # D-384: damga MONOTONIK — duvar saati (NTP/elle duzeltme)
+            # geri atlarsa BAYAT tespit TAZE gorunuyordu (D-383'un
+            # karar_yas icin kapattigi fail-open sinifinin A2-oncesi
+            # ikizi; curutucu isaret etti). Tum tazelik damgalari ve
+            # okurlari ayni saate gecti.
+            self.rota_zaman = time.monotonic()
             self.tespit_bayat = False
             self.rota_yok = None
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
@@ -1099,7 +1104,7 @@ class YksArayuz:
                 self.iha_indi()
         elif tip == "HEARTBEAT":
             dugum = m.get("node", "?")
-            self.son_hb[dugum] = time.time()
+            self.son_hb[dugum] = time.monotonic()   # D-384: monotonik
             self._dugum_adresini_ogren(dugum, adr)
             # A2 (D-381): algi canliligi hat canliligindan AYRI izlenir.
             # D-383 (curutucu): (1) alim damgasi ve gecen-sure hesabi
@@ -2264,7 +2269,7 @@ class YksArayuz:
         if getattr(self, "iha_landed_seq", None) is not None:
             return False
         t = (getattr(self, "son_hb", None) or {}).get("iha")
-        return t is not None and (time.time() - t) < 3.0
+        return t is not None and (time.monotonic() - t) < 3.0  # D-384
 
     def arm_degistir(self):
         yeni_arm_acik = not self.arm_acik
@@ -2528,12 +2533,17 @@ class YksArayuz:
         # Yakalanması gereken şey HATTIN ÖLMESİDİR. İHA canlıysa (heartbeat
         # akıyorsa) son kararı geçerlidir. Bu yüzden yaş, İKİ kanalın
         # TAZE OLANINDAN okunur.
+        # D-384: yaslar MONOTONIK saatten — `simdi` (duvar saati) yas
+        # hesabina ARTIK girmez; parametre cagiran imzalari bozulmasin
+        # diye duruyor. Duvar saatiyle: geri atlama bayat tespiti taze
+        # gosterirdi (fail-open), ileri atlama taze tespiti bayatlatirdi.
+        _mono = time.monotonic()
         yaslar = []
         if self.rota_zaman is not None:
-            yaslar.append(simdi - self.rota_zaman)
+            yaslar.append(_mono - self.rota_zaman)
         _hb = (getattr(self, "son_hb", None) or {}).get("iha")
         if _hb is not None:
-            yaslar.append(simdi - _hb)
+            yaslar.append(_mono - _hb)
         if not yaslar:
             return False        # damga YOK -> hüküm verilmez (hükümsüz)
         yas = min(yaslar)
@@ -2616,13 +2626,14 @@ class YksArayuz:
         self.lbl_saat.config(text=time.strftime("%H:%M:%S"))
         simdi = time.time()
         self._tespiti_yaslandir(simdi)
+        _mono = time.monotonic()               # D-384: damgalar monotonik
         for ad, (nokta, metin) in self.lbl_dugum.items():
             t = self.son_hb.get(ad)
             if t is None:
                 nokta.config(fg=KIRMIZI)
                 metin.config(text=f"{ad.upper()}  — sinyal yok")
             else:
-                yas = simdi - t
+                yas = _mono - t
                 canli = yas < 3.0                      # ika_receiver failsafe eşiği
                 nokta.config(fg=YESIL if canli else KIRMIZI)
                 tel = self.tel.get(ad) or {}

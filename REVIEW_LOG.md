@@ -26797,3 +26797,27 @@ düşmedi (fail-closed yön sağlam) · açı taraması 0-90'da çukursuz.
 - Üretim-konfig N1 için ölçekli negatif çekim yok (veri eksiği).
 
 Kapılar: genel 15/15 · tam suit **1450 OK**. Jetson paketi tazelendi.
+
+---
+
+### D-384 · ✅ `min()` YOLUNUN DUVAR-SAATİ ZAYIFLIĞI KAPANDI — tüm tazelik damgaları MONOTONİK (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
+D-383 §5'in açık bıraktığı iş: `karar_yas` için kapatılan fail-open sınıfının
+**A2-öncesi ikizi** — `rota_zaman` ve `son_hb` damgaları `time.time` ile
+tutuluyordu; YKS dizüstünde saat geri alınırsa BAYAT tespit TAZE görünür,
+ileri atlarsa TAZE tespit yanlış alarm verirdi. Çürütücü işaret etmişti.
+
+**Değişen:** iki yazar (OPEN_ROUTE/HEARTBEAT alım damgaları) + dört okur
+(min() yaşları · İHA-canlılık kilidi §2.2.5 · düğüm noktaları) monotonik
+saate geçti. `simdi` parametresi imza uyumu için duruyor, yaş hesabına
+girmiyor (koda yazıldı). Semantik/eşik DEĞİŞMEDİ — yalnız saat kaynağı.
+
+**Nöbetçi:** `test_t169` D384 sınıfı — saat 1 saat GERİ: bayat BAYAT kalır;
+1 saat İLERİ: taze TAZE kalır. Tam-eşik testi canlı monotonik saatle
+deterministik olamadığı için saat mock'la donduruldu (gerekçe testte).
+İskeleler (t169 + a2) monotonik damgaya taşındı.
+
+Kanıt: genel 15/15 · tam suit **1452 OK** (+2) · kaptan sunumu provası
+uçtan uca *"GÖREV BAŞARILI"*. `yks_gui` Jetson paketinde değil (T202:
+başka makinede koşar) — paket etkilenmedi.

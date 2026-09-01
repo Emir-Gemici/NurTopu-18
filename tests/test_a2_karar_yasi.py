@@ -51,8 +51,9 @@ def _ekran(rota_yasi=0.5, hb_yasi=0.5, karar_yas_rx="taze"):
     o.rota = {"seq": 7, "road": 2, "label": "orta", "conf": 0.9,
               "waypoints": [(0.0, 0.0), (0.0, 2.0)]}
     o.rota_yok = None
-    o.rota_zaman = SIMDI - rota_yasi
-    o.son_hb = {"iha": SIMDI - hb_yasi}
+    # D-384: damgalar MONOTONIK sattedir (duvar saati degil)
+    o.rota_zaman = time.monotonic() - rota_yasi
+    o.son_hb = {"iha": time.monotonic() - hb_yasi}
     o.tespit_bayat = False
     o.onaylandi = False
     o.tespit_onayli = False

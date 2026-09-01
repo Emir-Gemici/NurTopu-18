@@ -55,7 +55,8 @@ def _ekran(yas_sn=0.0, simdi=1_000_000.0):
     o.rota = {"seq": 7, "road": 2, "label": "orta", "conf": 0.9,
               "waypoints": [(0.0, 0.0), (0.0, 2.0)]}
     o.rota_yok = None
-    o.rota_zaman = simdi - yas_sn
+    # D-384: damga MONOTONIK; `simdi` yalniz imza uyumu icin duruyor
+    o.rota_zaman = time.monotonic() - yas_sn
     o.tespit_bayat = False
     o.onaylandi = False
     o.tespit_onayli = False
@@ -82,9 +83,18 @@ class TazeDavranisDegismedi(unittest.TestCase):
         self.assertEqual([], o.gunluk)
 
     def test_esik_SINIRINDA_taze_sayilir(self):
-        o = _ekran(yas_sn=YKS_TESPIT_TAZELIK_S)
-        self.assertFalse(o._tespiti_yaslandir(1_000_000.0),
-                         "tam esikte bayat sayildi — `>` yerine `>=` kullanilmis")
+        # D-384: damgalar canli MONOTONIK saatte — TAM esik ancak saat
+        # dondurularak (mock) deterministik sinanabilir; canli saatle
+        # fixture ile cagri arasindaki mikrosaniyeler esigi asirtir.
+        o = _ekran(yas_sn=0.0)
+        o.rota_zaman = 1000.0
+        o.son_hb = {}
+        with mock.patch("time.monotonic",
+                        return_value=1000.0 + YKS_TESPIT_TAZELIK_S):
+            o.karar_yas_rx = (0.2, 1000.0 + YKS_TESPIT_TAZELIK_S)
+            self.assertFalse(
+                o._tespiti_yaslandir(1_000_000.0),
+                "tam esikte bayat sayildi — `>` yerine `>=` kullanilmis")
 
     def test_rota_yokken_sessiz(self):
         o = _ekran()
@@ -156,8 +166,9 @@ class CanlilikOlcutu(unittest.TestCase):
     @staticmethod
     def _ekran(rota_yas=None, hb_yas=None, simdi=1_000_000.0):
         o = _ekran(yas_sn=0.0, simdi=simdi)
-        o.rota_zaman = None if rota_yas is None else simdi - rota_yas
-        o.son_hb = {} if hb_yas is None else {"iha": simdi - hb_yas}
+        _m = time.monotonic()
+        o.rota_zaman = None if rota_yas is None else _m - rota_yas
+        o.son_hb = {} if hb_yas is None else {"iha": _m - hb_yas}
         return o
 
     def test_rota_SUSTU_ama_heartbeat_AKIYOR_bayat_DEGIL(self):
@@ -233,3 +244,22 @@ class SozlesmeKilidi(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class D384_MonotonikSaat(unittest.TestCase):
+    """D-384: tazelik damgalari MONOTONIK — duvar saati sicramasi hukmu
+    ceviremez. Eski davranis (duvar saati) iki yonde de yanlisti: geri
+    atlama BAYAT tespiti TAZE gosterirdi (fail-open, curutucu buldu),
+    ileri atlama TAZE tespiti bayatlatirdi (yanlis alarm)."""
+
+    def test_saat_GERI_atlasa_da_bayat_BAYAT_kalir(self):
+        o = _ekran(yas_sn=YKS_TESPIT_TAZELIK_S + 30.0)
+        self.assertTrue(o._tespiti_yaslandir(1_000_000.0 - 3600.0),
+                        "duvar saati 1 saat geri alininca bayat tespit "
+                        "TAZE gorundu (fail-open, D-384)")
+
+    def test_saat_ILERI_atlasa_da_taze_TAZE_kalir(self):
+        o = _ekran(yas_sn=0.2)
+        self.assertFalse(o._tespiti_yaslandir(1_000_000.0 + 3600.0),
+                         "duvar saati 1 saat ileri atlayinca taze tespit "
+                         "BAYAT sayildi (yanlis alarm, D-384)")
