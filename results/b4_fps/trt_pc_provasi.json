@@ -1,0 +1,13 @@
+{
+ "onnx": "O:\\navitas\\jetson_paket\\models\\navitas_seg_v36_best_512_fp16.onnx",
+ "ort": "1.28.0",
+ "saglayicilar_mevcut": [
+  "TensorrtExecutionProvider",
+  "CUDAExecutionProvider",
+  "CPUExecutionProvider"
+ ],
+ "saglayicilar_aktif": [
+  "CPUExecutionProvider"
+ ],
+ "sonuc": "OLCULEMEDI: TRT bas saglayici olamadi (geri dusme) — donusum kaniti YOK"
+}

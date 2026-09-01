@@ -26094,3 +26094,65 @@ alandır. Bakır arazi bir **stres alt sınırıdır**, beklenen saha koşulu de
 - R ölçeği ölçülmüş GSD'den türetilen FOV ile (EK-1); duyarlılık KARARLI.
 - Koşular bitişik ≥30 m segmentleri içinde sayıldı (EK-2); segment ucundan
   koşu taşınmadı.
+
+---
+
+### D-375 · 🔴 FP16 DENKLİĞİNİN İLK ÖLÇÜMÜ VAKUMDU — `half` SESSİZCE UYGULANMADI · yakalandı, düzeltildi, gerçek ölçümle **F1/F2 GEÇTİ** (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
+**Ön kayıt:** `results/b4_fps/ON_KAYIT_FP16.md` (eşikler sonuç görülmeden).
+**Ham çıktı:** `results/b4_fps/fp16_denklik_20260901.json` (893 kare, kare
+kare) · `results/b4_fps/trt_pc_provasi.json`.
+**Betik:** `scripts/olcum/164_fp16_karar_denkligi.py` · nöbetçi
+`tests/test_164_fp16_nobetcisi.py` (12).
+
+#### 1. 🔴 VAKUM ÖLÇÜM — nasıl oldu, nasıl yakalandı
+
+İlk koşum "F1/F2 GEÇTİ" verdi ama `bit_es_orani = 1,0/1,0`: **893 karenin
+893'ünde** maskeler bit-eşti. Fazla mükemmeldi. Ölçen araç ölçüldü:
+
+```text
+SENARYO A (164'un yaptigi): AYNI model nesnesi, once half=False sonra half=True
+  half=True sonrasi dtype : torch.float32   <- YOK SAYILDI
+SENARYO B: AYRI model ornekleri
+  m16 dtype               : torch.float16   <- gercek FP16
+```
+
+Kök neden: ultralytics predictor'ı **ilk çağrıda** kurar; sonraki çağrının
+`half`'ı sessizce yok sayılır. İki kol da FP32 koştu — *"GEÇTİ", hiçliğin
+ölçümüydü.* (Deprecation uyarısı `'half' is deprecated` ipucuydu.)
+
+**Sınıfın adı:** `FARKSIZLIK != DENKLIK` — iki kol aynı şeyi ölçüyorsa
+farksızlık kanıt değildir. D-370 kardeşi (uygulanmayan mutasyon "ölçüldü"
+sayılıyordu). ⚠ Gelecek kural: bir A/B kıyasında **%100 bit-eşlik önce
+aracın kendisinden şüphelendirir.**
+
+#### 2. Düzeltme — koruma artık KODDA
+
+İki **ayrı** model örneği + her kolun dtype'ı kod içinde doğrulanıyor
+(`_dtype_dogrula`): tutmazsa betik `OLCULEMEDI` deyip **exit 1** — "geçti"
+üretilemez. Nöbetçi: iki örnek + koruma varlığı + sayım tabanlı mutasyonlar
+(docstring tuzağına karşı yokluk değil SAYIM denetlenir, D-354).
+
+#### 3. GERÇEK ölçüm (FP32 kolu float32, FP16 kolu float16 — koddan teyitli)
+
+```text
+bit_es orani     : S 0,0 · R 0,070          <- FP16 artik gercekten piksel oynatiyor
+F1 (zarar yonu)  : 0/260  -> GECTI          (FP32 dogruyken FP16 yanlis: HIC)
+F2 (R katmani)   : uyusma 631/633 = 0,9968  -> GECTI (esik 0,98)
+```
+
+Dört uyuşmazlığın dördü sınır vakası; biri **lehimize**: `sa_000216`'da FP32
+yanlış şerit (2) verirken **FP16 doğruyu (3, GT=3) buluyor**. Zarar yönünde
+tek örnek yok; `serit->None` yönü 0.
+
+⇒ **D-371'in (FP16) Jetson'sız kapanabilen ayağı KAPANDI.** Kalan pay yalnız
+TensorRT katman birleştirmesi — Gün-1 §4'te `.engine` ↔ PT karar kıyasıyla
+kapanır (`GUN1_KONTROL_LISTESI.md`).
+
+#### 4. 165 TRT PC provası — ÖLÇÜLEMEDİ (bilgi)
+
+`tensorrt` çalışma zamanı PC'de yok (venv'e bilerek kurulmadı); ORT
+`CPUExecutionProvider`'a geri düştü ve betik geri düşmeyi **"dönüştü"
+saymadı** — fail-closed tasarım çalıştı. Dönüşüm kanıtı Gün-1 §3 (T16)
+kapısındadır.

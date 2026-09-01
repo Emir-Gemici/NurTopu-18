@@ -69,6 +69,28 @@ class OnKayitKilidi(unittest.TestCase):
                       "half=True", "half=False"):
             self.assertIn(halka, kod, f"halka eksik: {halka}")
 
+    def test_D375_IKI_AYRI_MODEL_VE_DTYPE_KORUMASI(self):
+        """VAKUM OLCUM KORUMASI (D-375): tek model nesnesine iki half degeri
+        verilirse ultralytics ikincisini SESSIZCE yok sayar — iki kol da
+        FP32 kosar, bit_es=1,0 cikar ve 'GECTI' hicligin olcumu olur.
+        Ilk kosumda tam olarak bu oldu; probe ile yakalandi."""
+        kod = _kodu(KAYNAK)
+        self.assertIn("model32 = YOLO", kod, "FP32 kolu ayri ornek degil")
+        self.assertIn("model16 = YOLO", kod, "FP16 kolu ayri ornek degil")
+        self.assertGreaterEqual(
+            kod.count("_dtype_dogrula("), 3,
+            "dtype dogrulamasi eksik — half sessizce uygulanmazsa olcum "
+            "yine vakumlasir")
+
+    def test_M3_DTYPE_KORUMASI_SILINIRSE_YAKALANIR(self):
+        kod = _kodu(KAYNAK)
+        mutant = kod.replace('_dtype_dogrula(model16, "torch.float16"',
+                             '_atlanan(model16, "torch.float16"', 1)
+        self.assertNotEqual(kod, mutant, "MUTASYON UYGULANMADI (D-370)")
+        self.assertLess(mutant.count("_dtype_dogrula("),
+                        kod.count("_dtype_dogrula("),
+                        "koruma silindigi halde sayim dusmedi — BOS KAPI")
+
 
 class HukumDavranisi(unittest.TestCase):
     def test_CUDA_YOKSA_OLCULEMEDI(self):
@@ -107,11 +129,14 @@ class HukumDavranisi(unittest.TestCase):
 class MutasyonKontrolu(unittest.TestCase):
     def test_M1_HALF_KALDIRILINCA_YAKALANIR(self):
         kod = _kodu(KAYNAK)
+        # ⚠ "half=True" docstring'de de gecer (D-375 anlatisi) — bu yuzden
+        # yokluk degil SAYIM denetlenir (D-354: metin araması yorum/docstring
+        # yuzunden yaniltir).
         mutant = kod.replace("half=True", "half=False", 1)
         self.assertNotEqual(kod, mutant, "MUTASYON UYGULANMADI (D-370)")
-        self.assertNotIn("half=True", mutant,
-                         "FP16 kolu kaldirildigi halde denetim gormuyor — "
-                         "iki kol da FP32 olur, denklik BOS KAPIYA doner")
+        self.assertLess(mutant.count("half=True"), kod.count("half=True"),
+                        "FP16 kolu kaldirildigi halde sayim dusmedi — "
+                        "iki kol da FP32 olur, denklik BOS KAPIYA doner")
 
     def test_M2_TOLERANS_GEVSETILIRSE_YAKALANIR(self):
         import inspect

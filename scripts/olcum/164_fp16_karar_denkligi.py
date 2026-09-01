@@ -53,16 +53,34 @@ def _karar(masks, icerik, mpp):
     return yol, (red[0] if isinstance(red, tuple) else red)
 
 
-def _iki_kol(model, img, mpp):
-    """Ayni kare, iki duyarlilik. -> (fp32, fp16, maskeler_bit_es)."""
+def _dtype_dogrula(model, beklenen, ad):
+    """🔴 OLCEN ARACIN KENDISI OLCULUR (D-370/D-375).
+
+    Ilk kosum ayni model nesnesine once half=False sonra half=True verdi;
+    ultralytics predictor'i ILK cagrida kurar ve ikinci cagrinin half'ini
+    SESSIZCE YOK SAYAR — iki kol da FP32 kostu, bit_es=1,0 cikti ve 'GECTI'
+    hukmu hicligin olcumuydu. Bu yuzden her kolun dtype'i KOD icinde
+    dogrulanir; tutmuyorsa sonuc OLCULEMEDI'dir, 'gecti' uretilmez.
+    """
+    d = str(next(model.predictor.model.model.parameters()).dtype)
+    if d != beklenen:
+        print(f"OLCULEMEDI: {ad} kolu {d} kosuyor (beklenen {beklenen}) — "
+              f"half uygulanmadi; olcum VAKUM olurdu (D-375)")
+        raise SystemExit(1)
+
+
+def _iki_kol(model32, model16, img, mpp):
+    """Ayni kare, iki AYRI model ornegi. -> (fp32, fp16, maskeler_bit_es)."""
     sq, small, icerik = _preprocess(img)
     h, w = sq.shape[:2]
-    s32 = model.predict(small, imgsz=INFER_SIZE, conf=CONF,
-                        verbose=False, half=False, device=0)
+    s32 = model32.predict(small, imgsz=INFER_SIZE, conf=CONF,
+                          verbose=False, half=False, device=0)
     m32 = _maskeleri_icerige_kirp(get_masks(s32, h, w), icerik)
-    s16 = model.predict(small, imgsz=INFER_SIZE, conf=CONF,
-                        verbose=False, half=True, device=0)
+    s16 = model16.predict(small, imgsz=INFER_SIZE, conf=CONF,
+                          verbose=False, half=True, device=0)
     m16 = _maskeleri_icerige_kirp(get_masks(s16, h, w), icerik)
+    _dtype_dogrula(model32, "torch.float32", "FP32")
+    _dtype_dogrula(model16, "torch.float16", "FP16")
 
     bit_es = (set(m32) == set(m16) and
               all(np.array_equal(m32[k], m16[k]) for k in m32))
@@ -81,7 +99,7 @@ def _kayit(ad, mpp, k32, k16, bit_es, ek=None):
     return r
 
 
-def olc_S(model, sinir=None):
+def olc_S(model32, model16, sinir=None):
     man = json.loads((S_KOK / "manifest.json").read_text(encoding="utf-8"))
     kayitlar = []
     for ornek in man["ornekler"]:
@@ -93,14 +111,15 @@ def olc_S(model, sinir=None):
         img = cv2.imread(str(p)) if p.is_file() else None
         if img is None:
             continue
-        k32, k16, bit_es = _iki_kol(model, img, ornek["arena"].get("mpp"))
+        k32, k16, bit_es = _iki_kol(model32, model16, img,
+                                    ornek["arena"].get("mpp"))
         kayitlar.append(_kayit(p.name, ornek["arena"].get("mpp"), k32, k16,
                                bit_es,
                                {"acik_serit": ornek["arena"].get("acik_serit")}))
     return kayitlar
 
 
-def olc_R_katman(model, sinir=None):
+def olc_R_katman(model32, model16, sinir=None):
     """YALNIZ >=30 m kareleri (ON_KAYIT_FP16 §1 — GPU sirali, israf yok)."""
     irt = json.loads((R_KOK / "kareler_irtifa.json").read_text(encoding="utf-8"))
     kayitlar = []
@@ -116,7 +135,7 @@ def olc_R_katman(model, sinir=None):
         sq_w = max(img.shape[:2])  # yalniz log icin; mpp icerik genisliginden:
         mpp = mpp_irtifadan(k["rel_alt"], img.shape[1],
                             yatay_fov_derece=FOV_ESAS)
-        k32, k16, bit_es = _iki_kol(model, img, mpp)
+        k32, k16, bit_es = _iki_kol(model32, model16, img, mpp)
         kayitlar.append(_kayit(k["dosya"], mpp, k32, k16, bit_es,
                                {"rel_alt": k["rel_alt"], "tuval": sq_w}))
     return kayitlar
@@ -178,14 +197,17 @@ def main():
     from ultralytics import YOLO
     mp = uretim_pt()
     print(f"MODEL: {mp} · CUDA: {cuda_var}")
-    model = YOLO(str(mp), task="segment")
+    # 🔴 IKI AYRI ORNEK (D-375): tek nesneye iki half degeri verilirse
+    # ikincisi SESSIZCE yok sayilir — olcum vakumlasir.
+    model32 = YOLO(str(mp), task="segment")
+    model16 = YOLO(str(mp), task="segment")
 
     s_kayit, r_kayit = [], []
     if cuda_var:
         t0 = time.time()
-        s_kayit = olc_S(model, a.sinir)
+        s_kayit = olc_S(model32, model16, a.sinir)
         t1 = time.time()
-        r_kayit = olc_R_katman(model, a.sinir)
+        r_kayit = olc_R_katman(model32, model16, a.sinir)
         t2 = time.time()
         print(f"S: n={len(s_kayit)} ({t1 - t0:.0f} sn) · "
               f"R katman: n={len(r_kayit)} ({t2 - t1:.0f} sn)")
