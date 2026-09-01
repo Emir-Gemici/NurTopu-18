@@ -26017,3 +26017,80 @@ ortalama **+2,00**, **dört açıda 0**, 10°'de **−6**. D-285 §4'ün kaydett
   **D-370**'te kapatıldı. Yeniden koşum artık **tümüyle kapalıdır**.
 - D-279'un başlığı `ölçüldü` → **`mtime'dan türetildi`** olarak okunur.
 - Açık kalan gerçek borç: **B4 (Jetson `.engine` + gerçek uçtan uca FPS)**.
+
+---
+
+### D-374 · ⚖ B4 `p` ÖLÇÜMÜ · FPS SORUSU KAPANDI (hız sorunu değil: gerekli 0,41 ≪ band 0,9) · ama G1 DÜŞTÜ — bakır alanda **51 saniyelik SAHNE BAĞINTILI kör aralık** (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
+(⚠ aynı model — anlaşma kanıt değil, hakem ölçüm).
+**Ön kayıt:** `results/b4_fps/ON_KAYIT.md` + EK-1 (ölçek) + EK-2 (irtifa
+katmanı) — eşikler G1/G2/G3, FOV değerleri ve katman kuralı **sonuç
+görülmeden** yazıldı (D-107). **Ham çıktı:**
+`results/b4_fps/p_ve_kosu_20260901.json` (768 R + 260 S karesi, kare kare).
+**Betik:** `scripts/olcum/163_b4_p_ve_kosu.py` · nöbetçi
+`tests/test_163_b4_olcum_nobetcisi.py` (13).
+
+#### 1. Sonuçlar (üretim zinciri birebir; v36; FOV 67,3 esas)
+
+```text
+S  (sentetik arena, n=260)          : p = 0,9846  -> gerekli 0,20 FPS
+R  (gercek DJI, >=30 m katman n=633): p = 0,4866  -> gerekli 0,41 FPS
+   ucus bazinda: 0037 0,634 · 0038 (BAKIR) 0,326 · 0039 0,462
+   en kotu ucus bile: 1/(5*0,326) = 0,61 FPS
+olcek duyarliligi (FOV 62,4/67,3/69,9): bagil %8,5 -> KARARLI (<%20)
+```
+
+**G2 her iki kümede GEÇTİ.** Planın alt ucu 0,9 FPS'ti; gereken en kötü
+durumda 0,61. ⇒ **B4'ün FPS sorusu kapanmıştır: bu bir hız sorunu değil.**
+Jetson Gün-1'de FPS, `hukum.gerekli_fps_*` eşiğine karşı yalnız doğrulanır
+(`GUN1_KONTROL_LISTESI.md §5`).
+
+#### 2. 🔴 G1 DÜŞTÜ → G3: kör aralıklar SAHNE BAĞINTILI
+
+En uzun başarısız koşu **51 kare = 51 s** (eşik 5 s). Yer ve karakter:
+
+```text
+0038 (bakir) t= 18- 85 s · ~32,5 m sabit : 51 kare · 46'si MASKE_YOK
+0038 (bakir) t=123-167 s               : 45 kare · 39'u MASKE_YOK
+0037         t=182-209 s               : 28 kare · UC_BANT/MASKE karisik
+0039         t= 91-109 ve 193-214 s    : 16+16 kare · 14-15'i GORUS_HATTI_KOPUK
+```
+
+Aynı bölge, sabit irtifa, kesintisiz bloklar, uçuş başına **tutarlı** ret
+sebebi ⇒ ön kayıt §4-G3 hükmü: **SAHNE_BAGINTILI.** *FPS artırmak bunu
+çözmez* — 51 s'lik blokta daha hızlı örneklemek aynı köre daha çok bakmaktır.
+
+Bu, D-280/D-372'nin bakır körlüğünün **zaman eksenindeki** hâlidir: körlük
+tek tük kare değil, tazelik kuralını (5 s) **10 kat aşan bitişik bloklar**
+hâlinde geliyor. Uçuşa göre mod da değişiyor: 0038'de model hiç maske
+üretmiyor (OOD arazi), 0039'da maske var ama görüş hattı topolojisi kopuyor.
+
+#### 3. Yorumun sınırı — iki sayı iki çerçevedir, saha değeri ÖLÇÜLMEDİ
+
+R **arenaya OOD** (kırsal dere/yol); S **göreve benzer ama sentetik**. Saha
+`p`'si ön kayıt gereği **ÖLÇÜLEMEDİ** kalır (maket çekimi yok — kullanıcı
+kararı). Görev açısından kritik tazelik penceresi İHA **HTAB üzerindeyken**
+işler; HTAB, S'in modellediği şeydir (p≈0,98) ve hazırlanmış/işaretli bir
+alandır. Bakır arazi bir **stres alt sınırıdır**, beklenen saha koşulu değil.
+İkisinin arası tahmin edilmez.
+
+#### 4. Kaldıraçlar (ön kayıt §6'da önceden yazılmıştı) — ÖNER-BEKLE
+
+1. **FPS payı büyük:** gereken 0,41, beklenen band 0,9–2,6. Bu pay
+   `INFER_SIZE` 512→640'ı karşılayabilir (§6/2: FPS'i düşürür, `p`'yi
+   artırabilir). Ölçmeden seçilmez; **mimar kararı**.
+2. Aynı bölgeden **ikinci geçiş** (uçuş planı tarafı).
+3. Hakem ekranında son geçerli tespit + tazelik damgası (**sözleşme
+   değişikliği — mimar kararı**). A2'nin (`karar_yas` HEARTBEAT'e) önemi bu
+   ölçümle artmıştır: 51 s'lik boşlukta hakemin *"algı ne zaman karar
+   üretti"* bilgisine ihtiyacı tam olarak budur.
+
+#### 5. Kayıt sınırları
+
+- `p` tanımı: **geçerli rota yayınlanan kare / toplam kare** — üretim karar
+  halkasının (`rota_olcek_reddi` + `analyze_path` + `_rota_kararini_esikle`)
+  çıktısı. Doğruluk (şerit doğru mu) S'te ayrı ölçülür; R'de yer gerçeği yok.
+- R ölçeği ölçülmüş GSD'den türetilen FOV ile (EK-1); duyarlılık KARARLI.
+- Koşular bitişik ≥30 m segmentleri içinde sayıldı (EK-2); segment ucundan
+  koşu taşınmadı.
