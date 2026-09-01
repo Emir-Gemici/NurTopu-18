@@ -27177,3 +27177,17 @@ DONANIM_YOK fail-loud · T8 genel kapi 15/15 + tam suit **1509 OK** (+14).
   gercek donanim davranisi gorulerek kararlastirilacak (simdiden esik
   uydurmak D-107'ye aykiri olurdu).
 
+
+## D-391 — P9e: varis = brandaya TEMAS sozlesmesi (SS7 Pgorev)
+
+**Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
+**Kilit:** tests/test_p9e_branda_temas.py (5 test) · CONTRACTS §7.3
+
+SS7: gorev brandaya FIZIKSEL TEMASLA biter; sinira girmek 0 puan. Zincir:
+IHA yarisi T150 ile olculuydu (son waypoint ped kutusunda, 253/256); IKA
+yarisi simdi kilitli: FINAL_WP_RADIUS (0,3) < HB_KENAR_M/2 (1,0) esitsizligi
+bagIayici — arac merkezi ped kenarindan >= 0,7 m iceride durur, govde pedin
+ustundedir. Pay 0,5 m altina indirilecekse once ped-ici waypoint dagilimi
+olculur (D-107). Kinematik kanit SahteSurucu ile; son-waypoint dar yaricap
+secimi mutasyon kilidinde. Gazebo temas kosusu bu makinede OLCULEMEZ (gz/WSL
+yok) — Faz C provasinda Gazebo'lu makinede; OLCULEMEDI != GECTI.
