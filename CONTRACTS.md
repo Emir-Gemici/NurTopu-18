@@ -945,6 +945,23 @@ Motor/konum erişimi `simulation/scripts/ika_surucu.py` arayüzünden geçer;
 4. §2.2.5 kilidi sürücü yolunun da üstündedir: izinler gelmeden sürücüye
    sıfır-dışı komut düşmez — kilit: `test_p3_ika_surucu.py::T6`.
 
+### 7.3 Varış = brandaya TEMAS (şartname SS7 Pgörev · P9e · D-391 · 2026-09-02)
+
+SS7: görev **"branda üzerine fiziksel temas"** ile biter — sınıra girmek 0
+puan. Zincir iki yarımdan oluşur ve ikisi de kilitlidir:
+
+1. **İHA yarısı (T150/D-386, ölçüldü):** rotanın son waypoint'i HB pedinin
+   kutusunda biter (253/256; ped görünmezken HEDEF_YOK).
+2. **İKA yarısı:** `navigate` son waypoint'te `FINAL_WP_RADIUS` (0,3 m)
+   kullanır ve **`FINAL_WP_RADIUS < HB_KENAR_M/2`** (1,0 m) esitsizliği
+   bağlayıcıdır: araç merkezi ped kenarından ≥ 0,7 m içeride durur → gövde
+   pedin üstündedir. Pay 0,5 m'nin altına indirilecekse önce ped-içi
+   waypoint dağılımı ölçülür (D-107).
+   Kilit: `tests/test_p9e_branda_temas.py` (geometri + kinematik + mutasyon).
+
+⚠ Gazebo fiziksel temas koşusu bu geliştirme makinesinde ÖLÇÜLEMEZ (gz yok);
+Faz C provasında Gazebo'lu makinede koşulacak — `OLCULEMEDI != GECTI`.
+
 ---
 
 ## 8. Çözünürlük sözleşmesi
