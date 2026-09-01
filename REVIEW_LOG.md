@@ -27135,3 +27135,45 @@ kaynaklari bizi kor edemiyor; hicbir fail-closed kapisi gevsetilmedi**
 (IN_AIR'de asla True denmez — K3; yabancidan deger asla okunmaz — K4).
 Itiraz halinde geri alma tek commit'liktir.
 
+
+## D-390 — P3/T149 KAPANDI: IKA surucu soyutlamasi; navigate artik donanim arizasinda COKMUYOR
+
+**Tarih:** 2026-09-02 (gece) · **Yazan/karar:** Claude 2 — Fable 5, mimar
+yetkisiyle (gece tam-yetki beyani) · **On kayit:**
+`results/p3_ika_surucu/ON_KAYIT.md` (T1-T8 uygulamadan once)
+
+### 1. Ne yapildi
+
+`simulation/scripts/ika_surucu.py`: `IkaSurucu` arayuzu (hiz_ver/konum_al/
+durdur/saglikli) + `GazeboSurucu` (bugunku gz yolu, BAYT-ES) + `SahteSurucu`
+(test: komut kaydi, poz dizisi, ariza enjeksiyonu) + `GercekSurucu` iskeleti
+(arka ucsuz kurulum `DONANIM_YOK` istisnasi — Faz B'de dolar).
+`ika_nav.send_vel/get_pose` imzalari DEGISMEDEN surucuye delege eder;
+`mock.patch.object(ika_nav, "send_vel", ...)` kullanan 10+ mevcut test
+dosyasi tek satir degismeden yesil (T8). CONTRACTS §7.2 eklendi.
+
+### 2. Kapanan gercek kusur (on kayit §0'da tespit)
+
+Eski `send_vel` icindeki `subprocess.run(..., timeout=1)` zaman asiminda
+**istisna firlatiyordu ve navigate yakalamiyordu**: Gazebo/donanim takilirsa
+IKA "guvenli durus" degil COKME yasardi. Simdi: istisna sizmaz (T5), ariza
+False'tur; ardisik 3 arizada (10 Hz'de ~0,3 s) navigate son bir durdurma
+dener ve False doner (T3) — sartname §2.2.6 yapisal butunluk tarafina da
+hizmet eder (kontrolsuz son komutla surmek yerine dur).
+
+### 3. Olcum ozeti
+
+T1 bayt-esitlik birebir · T2 ayristirma kilidi (A/B format + bozuk) ·
+T3/T3b fail-closed durus + son komut (0,0) · T4 gecici ariza tolere ·
+T5 TimeoutExpired/OSError -> False · T6 §2.2.5 kilidi SURUCU YOLUNDAN
+(gercek IkaReceiver + gercek UDP; izinsiz yalniz sifir komut) · T7
+DONANIM_YOK fail-loud · T8 genel kapi 15/15 + tam suit **1509 OK** (+14).
+
+### 4. Acik kalan
+
+- `GercekSurucu` arka ucu (seri/PWM) — bilerek Faz B (5 Eylul, donanim).
+- `navigate` icindeki `get_pose` None dongusu eski davranisiyla duruyor
+  (konum alinamazsa bekler); konum kaybina ayri bir tavan koymak Faz B'de
+  gercek donanim davranisi gorulerek kararlastirilacak (simdiden esik
+  uydurmak D-107'ye aykiri olurdu).
+

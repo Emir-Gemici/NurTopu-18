@@ -920,6 +920,31 @@ Testler: `tests/test_k5_k6_sure_limitleri.py` (sahte saat + gerçek UDP loopback
 ✅ **`IKA_GO` kısmı kapatıldı (K4, §6.6):** ACK'lı, aynı-seq tekrar gönderimi + üst sınırda
 görünür hata ve yeniden tetiklenebilir düğme; İKA mükerrer alımı idempotent işler.
 
+### 7.2 İKA sürücü arayüzü (T149 · P3 · D-390 · 2026-09-02)
+
+Motor/konum erişimi `simulation/scripts/ika_surucu.py` arayüzünden geçer;
+`ika_nav.send_vel/get_pose` bu arayüze delege eder (imzaları değişmedi).
+
+| üye | sözleşme |
+|---|---|
+| `hiz_ver(sag, sol) -> bool` | Tekerlek hızları (m/s, DiffDrive uyumu). **False = iletilemedi; istisna SIZMAZ.** |
+| `konum_al()` | `(x, y, z, yaw)` ya da `(None, None, None, None)` |
+| `durdur() -> bool` | Sıfır hız; arıza sayacına tabidir |
+| `saglikli() -> bool` | ardışık hata < `ARDISIK_HATA_TAVANI` (3) |
+
+**Bağlayıcı kurallar:**
+1. **Fail-closed:** ardışık `ARDISIK_HATA_TAVANI` arızada `navigate` son bir
+   durdurma dener ve **False** döner (eski davranış: subprocess istisnasıyla
+   çökmekti). Tavan 3'tür: tek geçici aksama görevi durdurmaz, süreğen arıza
+   10 Hz'de ~0,3 s içinde güvenli duruşa çevrilir.
+2. **Bayt-eşitlik:** `GazeboSurucu` eski `send_vel`/`get_pose` komut ve
+   ayrıştırmasının birebir taşınmasıdır (T141 zinciri değişmez) — kilit:
+   `tests/test_p3_ika_surucu.py::T1BaytEsitlik`.
+3. `GercekSurucu` arka uçsuz **kurulamaz** (`DONANIM_YOK` istisnası) — Faz
+   B'de (5 Eylül) seri/PWM arka ucuyla doldurulacak; sessiz iskelet yasak.
+4. §2.2.5 kilidi sürücü yolunun da üstündedir: izinler gelmeden sürücüye
+   sıfır-dışı komut düşmez — kilit: `test_p3_ika_surucu.py::T6`.
+
 ---
 
 ## 8. Çözünürlük sözleşmesi

@@ -14,10 +14,8 @@ Kullanım:
   sürüş    — izin geldiği andan HB'ye kadar (İKA görev süresi, 10 dk)
 """
 
-import subprocess
 import math
 import time
-import re
 import sys
 from pathlib import Path
 
@@ -45,64 +43,49 @@ MAX_LOCAL_EXTENT_M = 60.0
 SOURCE_TOLERANCE_M = 0.15
 
 
+# ── Sürücü katmanı (P3/T149 · D-390) ────────────────────────────────────────
+# Motor/konum artık `ika_surucu` soyutlamasından geçer. Modül fonksiyonlarının
+# imzaları KORUNDU: mevcut testler `mock.patch.object(ika_nav, "send_vel", …)`
+# ile yamalamaya devam eder; üretimde delege aktif sürücüdür.
+import ika_surucu  # noqa: E402
+
+_SURUCU = None
+
+
+def surucu():
+    """Aktif sürücü; hiç ayarlanmadıysa Gazebo (bugünkü davranış)."""
+    global _SURUCU
+    if _SURUCU is None:
+        _SURUCU = ika_surucu.GazeboSurucu()
+    return _SURUCU
+
+
+def surucu_ayarla(yeni):
+    """Sürücüyü değiştir (Sahte/Gercek); None eski varsayılana döndürür."""
+    global _SURUCU
+    _SURUCU = yeni
+
+
+def surucu_saglikli():
+    """Sürücü yanıt veriyor mu (hiç kullanılmadıysa sağlıklı sayılır)."""
+    return _SURUCU is None or _SURUCU.saglikli()
+
+
 def get_pose(model="ika"):
     """
-    gz model -m ika -p çıktısını parse et.
+    Konumu aktif sürücüden al (Gazebo'da: gz model -m ika -p ayrıştırması).
     Döner: (x, y, z, yaw) veya (None, None, None, None)
     """
-    try:
-        r = subprocess.run(
-            ["gz", "model", "-m", model, "-p"],
-            capture_output=True, text=True, timeout=2
-        )
-        text = r.stdout + r.stderr
-
-        # Format A: "position: (-23.0, -23.0, 0.12)"
-        m = re.search(
-            r'position[:\s(]+([+-]?\d+\.?\d*)[,\s]+([+-]?\d+\.?\d*)[,\s]+([+-]?\d+\.?\d*)',
-            text
-        )
-        if m:
-            x, y, z = float(m.group(1)), float(m.group(2)), float(m.group(3))
-            # Quaternion → yaw
-            q = re.search(
-                r'orientation[:\s(]+([+-]?\d+\.?\d*)[,\s]+([+-]?\d+\.?\d*)[,\s]+([+-]?\d+\.?\d*)[,\s]+([+-]?\d+\.?\d*)',
-                text
-            )
-            if q:
-                vals = [float(q.group(i)) for i in range(1, 5)]
-                # Gazebo çıktısı genellikle (w, x, y, z) veya (x, y, z, w)
-                # İkisini de deneriz; en büyük W olana göre:
-                if abs(vals[0]) >= abs(vals[3]):  # (w, x, y, z)
-                    qw, qx, qy, qz = vals
-                else:                              # (x, y, z, w)
-                    qx, qy, qz, qw = vals
-                yaw = math.atan2(2*(qw*qz + qx*qy), 1 - 2*(qy*qy + qz*qz))
-            else:
-                # Son sayı yaw olabilir
-                nums = re.findall(r'[+-]?\d+\.?\d*', text)
-                yaw = float(nums[5]) if len(nums) >= 6 else 0.0
-            return x, y, z, yaw
-
-        # Format B: sadece sayılar → x y z roll pitch yaw
-        nums = re.findall(r'[+-]?\d+\.?\d*', text)
-        if len(nums) >= 6:
-            return float(nums[0]), float(nums[1]), float(nums[2]), float(nums[5])
-
-    except Exception as e:
-        print(f"[ika_nav] Pose hatası: {e}")
-    return None, None, None, None
+    return surucu().konum_al()
 
 
 def send_vel(right_spd, left_spd, topic="~/ika/vel_cmd"):
     """
-    DiffDrivePlugin native mesaj: position.x = sağ tekerlek, position.y = sol tekerlek
+    Tekerlek hızlarını aktif sürücüye ilet (Gazebo'da DiffDrivePlugin,
+    bayt-eş komut). Dönüş: iletilebildi mi (D-390: istisna sızmaz).
+    `topic` geriye dönük imza içindir; kaynağı sürücü yapılandırması belirler.
     """
-    msg = f"position {{ x: {right_spd:.3f} y: {left_spd:.3f} z: 0 }}"
-    subprocess.run(
-        ["gz", "topic", "-p", topic, "-m", msg],
-        capture_output=True, timeout=1
-    )
+    return surucu().hiz_ver(right_spd, left_spd)
 
 
 def wrap(a):
@@ -350,6 +333,15 @@ def navigate(
                 send_vel(0, 0)
                 print("[ika_nav] ✗ İKA sürüş süresi doldu (şartname §6.2) — "
                       "GÜVENLİ DURMA, HB'ye ulaşılamadı")
+                return False
+            if not surucu_saglikli():
+                # D-390 (T3): donanım sustu — son bir durdurma dene ve bırak.
+                # Eski davranış subprocess istisnasıyla ÇÖKMEKTİ; şimdi görev
+                # seviyesinde fail-closed: İKA durur, navigate False döner.
+                send_vel(0, 0)
+                print(f"[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık "
+                      f"{ika_surucu.ARDISIK_HATA_TAVANI} hata) — "
+                      "GÜVENLİ DURMA")
                 return False
             if link_ok is not None and not link_ok():
                 send_vel(0, 0)

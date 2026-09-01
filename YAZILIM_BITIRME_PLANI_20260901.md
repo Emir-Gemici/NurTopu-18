@@ -49,8 +49,8 @@ manuel paraşüt yalnız emniyet için son çare kabul edilir.
 
 **P1 · MAVLink katmanı CANLI** — ✅ **KAPANDI (2026-09-02 gece · D-387 + D-389).** İki bulgu mimar kararıyla (A1+A2, B1) kapatıldı; özgün G3/G5(2) ölçütleri gevşetilmeden geçti. Gerçek Pixhawk Faz B.
 Kuruldu ve `scripts/sahte_pixhawk.py` + 14 nöbetçiyle gerçek çerçeveler
-üzerinden koştu: G1/G2/G3b/G4/G6/G7/G8 GEÇTİ. **İki bulgu mimar kararına
-açık:** (A) `yerde_mi` alçalmada 10 s son tarihe rağmen 0,002 s'de düşüyor,
+üzerinden koştu: G1/G2/G3b/G4/G6/G7/G8 GEÇTİ. **Koşumun bulduğu, D-389'la
+kapanan iki bulgu:** (A) `yerde_mi` alçalmada 10 s son tarihe rağmen 0,002 s'de düşüyordu,
 yayıncı tek kez çağırıp exit 3 veriyor → İHA_LANDED hiç yayınlanmaz;
 (B) yabancı sysid trafiği irtifayı tamamen kesiyor (0/193 okuma) → bütün uçuş
 NO_ROUTE. Ayrıntı + seçenekler D-387. Aşağıdaki özgün tanım korunur:
@@ -69,7 +69,7 @@ framing/parçalanma/ACK
 turu, bozuk-bayt kurtarma. D-383 §1 uyarısı kapanır (B2-G2 yalnız UDP-loopback'ti).
 **Kapı:** SerialLink üstünde mutlu_yol eşdeğeri + bozuk-bayt enjeksiyon testi.
 
-**P3 · T149 İKA sürücü soyutlaması (KRİTİK)** — `ika_surucu.py`:
+**P3 · T149 İKA sürücü soyutlaması (KRİTİK)** — ✅ **KAPANDI (2026-09-02 gece · D-390);** GercekSurucu arka ucu Faz B. Ayrıca gerçek kusur kapandı: navigate, subprocess zaman aşımında ÇÖKÜYORDU; artık fail-closed durur. Özgün tanım: `ika_surucu.py`:
 `hiz_ver(v,w)` / `konum_al()` / `durdur()`, fail-closed (cevap yoksa DUR);
 `GazeboSurucu` (mevcut gz yolu) + `SahteSurucu` (test) + `GercekSurucu`
 iskeleti (Faz B'de dolar; o güne dek açık `DONANIM_YOK` reddi).
