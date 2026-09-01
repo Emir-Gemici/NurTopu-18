@@ -83,7 +83,7 @@ halka_hedef ölçütü BAYAT** (T150'nin `goruntu=` bağlamasını tanımıyor �
 bugün koşulsa hedef halkası SAHİPSİZ der) → tazele.
 **Kapı:** T154-kalıbı belge kapısı + kuru koşu 10 halka bugünkü HEAD'de GEÇTİ.
 
-**P5 · T79/T91/T92 karar kararlılığı** — ön kayıt ÖNCE: N-kare histerezis
+**P5 · T79/T91/T92 karar kararlılığı** — ✅ **KAPANDI (2026-09-03 gece · D-396):** yayın histerezisi (K=3) — azınlık gürültü çevrilmesi yayına sızmıyor (0/0), NO_ROUTE asla geciktirilmiyor; T79 kökü + T91 Faz C'de. Özgün tanım:  ön kayıt ÖNCE: N-kare histerezis
 (şerit ancak K ardışık karede aynıysa değişir; NO_ROUTE anında, fail-closed).
 **Kapı:** çevrilme 14/260 ↓, p95 karar gecikmesi ≤ mevcut + K·kare-süresi;
 tazelik penceresi 5 s içinde; tüm kapılar yeşil.

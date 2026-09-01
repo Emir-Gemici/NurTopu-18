@@ -66,6 +66,7 @@ if __package__:
                                   ince_beton_serit_maskesi,
                                   hb_konumu,
                                   HB_SEKIL_ESIGI,
+                                  KararYumusatici,
                                   SARTNAME_IHA_UB_KENAR_M,
                                   yerel_konum_m,
                                   hedef_yok_reddi,
@@ -117,6 +118,7 @@ else:
                                   ince_beton_serit_maskesi,
                                   hb_konumu,
                                   HB_SEKIL_ESIGI,
+                                  KararYumusatici,
                                   SARTNAME_IHA_UB_KENAR_M,
                                   yerel_konum_m,
                                   hedef_yok_reddi,
@@ -2075,6 +2077,9 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
 
     fps_buf = []
     frame_idx = 0
+    # P5 (D-396): yayin histerezisi — yalniz AKIS yollarinda, yayindan hemen
+    # once. Analiz katmani ve zincir olcumleri (61/65) DEGISMEZ (madde 15).
+    yumusatici = KararYumusatici()
 
     while True:
         ret, frame = cap.read()
@@ -2121,9 +2126,12 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
             karar_reddi = olcek_reddi
         open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
             open_path, path_conf, waypoints, karar_reddi)
-        # K1: kare karari telsize (YKS + IKA). `yayinci` yoksa satir etkisizdir.
-        _karari_yayinla(yayinci, open_path, path_conf, waypoints, kare_mpp,
-                        karar_reddi)
+        # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
+        # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
+        # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
+        if yumusatici.suz(open_path, karar_reddi):
+            _karari_yayinla(yayinci, open_path, path_conf, waypoints,
+                            kare_mpp, karar_reddi)
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -2180,6 +2188,9 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     print("Kamera acik — cikmak icin 'q'")
     fps_buf = []
     ozet = {"bitis": None, "okunan": 0, "dusen_toplam": 0, "dusen_ardisik_maks": 0}
+    # P5 (D-396): yayin histerezisi — yalniz AKIS yollarinda, yayindan hemen
+    # once. Analiz katmani ve zincir olcumleri (61/65) DEGISMEZ (madde 15).
+    yumusatici = KararYumusatici()
 
     # T143 (D-284): eskiden `if not ret: break` — ilk dusen karede SESSIZ bitis.
     for frame in kamera_kareleri(cap, ozet):
@@ -2236,8 +2247,11 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
             open_path, path_conf, waypoints, karar_reddi)
         # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
         # `yayinci` None ise (hedef verilmedi) davranis bayt-es aynidir.
-        _karari_yayinla(yayinci, open_path, path_conf, waypoints, kare_mpp,
-                        karar_reddi)
+        # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
+        # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
+        if yumusatici.suz(open_path, karar_reddi):
+            _karari_yayinla(yayinci, open_path, path_conf, waypoints,
+                            kare_mpp, karar_reddi)
         vis = draw_masks(sq, masks)
 
         if open_path:

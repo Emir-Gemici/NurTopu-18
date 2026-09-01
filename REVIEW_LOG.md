@@ -26895,7 +26895,7 @@ artık `[ad, yayın, gt]` listesi taşıyor, blok string varsaymıştı
 üretir (sözleşme, T72/D-105). "Ped görünmeyince üst-bant hedefine geri düş"
 alternatifi bir sözleşme değişikliğidir — istenirse ön kayıtla ele alınır.
 
-## D-387 — P1: MAVLink katmani ILK KEZ gercek cercevelerle kostu; iki acik bulgu
+### D-387 — P1: MAVLink katmani ILK KEZ gercek cercevelerle kostu; iki acik bulgu
 
 **Tarih:** 2026-09-02 · **Yazan:** Claude 2 (Opus 5, amele) ·
 **Denetleyen: mimar bekleniyor (AGENTS §9.3)** · **On kayit:**
@@ -26999,7 +26999,7 @@ tam suit **1479 test OK** (P1 nobetcisiyle +14) · pymavlink/pyserial kurulumu
 mevcut hicbir kapiyi dusurmedi (G8).
 
 
-## D-388 — P2: saha tasiyicisi (SiK seri) ilk kez GERCEK bayt akisinda kostu; bir kusur bulundu ve duzeltildi
+### D-388 — P2: saha tasiyicisi (SiK seri) ilk kez GERCEK bayt akisinda kostu; bir kusur bulundu ve duzeltildi
 
 **Tarih:** 2026-09-02 · **Yazan:** Claude 2 (Opus 5, amele) ·
 **Denetleyen: mimar bekleniyor (AGENTS §9.3)** · **On kayit:**
@@ -27079,7 +27079,7 @@ bayt-es).
 **P2 KAPANDI** (yazilim tarafi). 433 MHz RF olcumu Faz B'de (5 Eylul).
 
 
-## D-389 — MIMAR KARARI: D-387'nin iki bulgusu kapatildi (A1+A2, B1); P1 KAPANDI
+### D-389 — MIMAR KARARI: D-387'nin iki bulgusu kapatildi (A1+A2, B1); P1 KAPANDI
 
 **Tarih:** 2026-09-02 (gece) · **Karar: Claude 2 — Fable 5, MIMAR yetkisiyle**
 (kullanici ayni gece: "tum yetkiyi veriyorum acikca") · **Uygulama: ayni
@@ -27136,7 +27136,7 @@ kaynaklari bizi kor edemiyor; hicbir fail-closed kapisi gevsetilmedi**
 Itiraz halinde geri alma tek commit'liktir.
 
 
-## D-390 — P3/T149 KAPANDI: IKA surucu soyutlamasi; navigate artik donanim arizasinda COKMUYOR
+### D-390 — P3/T149 KAPANDI: IKA surucu soyutlamasi; navigate artik donanim arizasinda COKMUYOR
 
 **Tarih:** 2026-09-02 (gece) · **Yazan/karar:** Claude 2 — Fable 5, mimar
 yetkisiyle (gece tam-yetki beyani) · **On kayit:**
@@ -27178,7 +27178,7 @@ DONANIM_YOK fail-loud · T8 genel kapi 15/15 + tam suit **1509 OK** (+14).
   uydurmak D-107'ye aykiri olurdu).
 
 
-## D-391 — P9e: varis = brandaya TEMAS sozlesmesi (SS7 Pgorev)
+### D-391 — P9e: varis = brandaya TEMAS sozlesmesi (SS7 Pgorev)
 
 **Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
 **Kilit:** tests/test_p9e_branda_temas.py (5 test) · CONTRACTS §7.3
@@ -27192,7 +27192,7 @@ olculur (D-107). Kinematik kanit SahteSurucu ile; son-waypoint dar yaricap
 secimi mutasyon kilidinde. Gazebo temas kosusu bu makinede OLCULEMEZ (gz/WSL
 yok) — Faz C provasinda Gazebo'lu makinede; OLCULEMEDI != GECTI.
 
-## D-392 — P8: Gazebo/sim katmani el atmasi — hakem-onayi deligi kapatildi
+### D-392 — P8: Gazebo/sim katmani el atmasi — hakem-onayi deligi kapatildi
 
 **Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
 **Kilit:** tests/test_p8_sim_katmani.py (8 test)
@@ -27229,7 +27229,7 @@ sablonun varligi kanit degil; ilk kosum Faz C acilisinda.
 
 Genel kapi 15/15 · tam suit **1522 test OK** (+13).
 
-## D-393 — P9a-b-c: YKS sartname yukumlulukleri — parasut ACK'li tekrar, arming kilidi, §2.2.3 sira denetimi
+### D-393 — P9a-b-c: YKS sartname yukumlulukleri — parasut ACK'li tekrar, arming kilidi, §2.2.3 sira denetimi
 
 **Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
 **Kilit:** tests/test_p9abc_yks.py (10 test) · CONTRACTS §6.6 PARACHUTE blogu
@@ -27280,7 +27280,7 @@ UCUNCU kez teyit edildi: Turkce/backtick icerik ASLA cift-tirnakli `-c`
 dizgisiyle yazilmaz — Write araci ya da python dosyasi). Ayni gece dogru
 metinle degistirildi; bozuk surum tek commit geride durur (646cff5).
 
-## D-394 — P4 + P9d: SAHA_RUNBOOK kanonik yordam, hedef halkasi kapandi, tek-komut acilis
+### D-394 — P4 + P9d: SAHA_RUNBOOK kanonik yordam, hedef halkasi kapandi, tek-komut acilis
 
 **Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
 **Kilit:** tests/test_p4_runbook.py (11) + test_saha_kuru_kosu guncellemesi
@@ -27330,7 +27330,7 @@ yazilir; inline -c YASAK.
 Genel kapi 15/15 · tam suit **1547 test OK** (+15) · gercek kuru kosu
 9 GECTI/1 motor.
 
-## D-395 — MIMAR DENETIMI: D-373..D-386 basamele kayitlari denetlendi; kuyruk hijyeni; FDR tazelendi
+### D-395 — MIMAR DENETIMI: D-373..D-386 basamele kayitlari denetlendi; kuyruk hijyeni; FDR tazelendi
 
 **Tarih:** 2026-09-02 (gece) · **Denetleyen: Claude 2 — Fable 5, MIMAR**
 (gece tam-yetki beyaniyla; korelasyonlu-kor-nokta kurali geregi dayanak
@@ -27373,3 +27373,55 @@ kosuldu. Iddialarin kendisi saglam. D-373..D-386 kayitlarindaki
 
 Sayaclar 395 kayit / 1547 test; haberlesme katmaninin GERCEK cerceve/bayt
 akisiyla kosuldugu kanit paragrafi eklendi (ayni URL'ye yeniden yayimlandi).
+
+### D-396 — P5: yayin histerezisi — gurultu cevrilmesi yayina sizmiyor; ozgun H1 esigi DUSTU ve oyle kayitli
+
+**Tarih:** 2026-09-03 (gece) · **Karar/yazan: Claude 2 — Fable 5, mimar** ·
+**On kayit:** `results/p5_histerezis/ON_KAYIT.md` (+EK-1, bilesim gorulmeden) ·
+**Kilit:** tests/test_p5_histerezis.py (12) · olcum: scripts/olcum/171
+
+### 1. Tasarim ve uygulama
+
+`KararYumusatici` (karar_sozlesmesi): NO_ROUTE ASLA geciktirilmez; ilk rota
+ve NO_ROUTE-sonrasi ilk rota aninda; ayni serit aninda; FARKLI serit ancak
+`KARAR_HISTEREZIS_KARE = 3` ardisik teyitle. Kablolama yalniz AKIS yollarinda
+(run_video/run_camera) yayindan hemen once; analiz katmani ve 61/65 zinciri
+DEGISMEZ (madde 15). run_image suzgecsiz (tek kare).
+
+**H5 birim testi ilk tasarimda GERCEK acik yakaladi:** yayimlanan 2 iken
+analiz 1/3 arasinda salinirsa bastirma SURESIZDI (olculdu: 18 ardisik) —
+tazelik olurdu. Tavan kurali eklendi: bastirma K-1'e dayaninca sonraki kare
+yayimlanir ve benimsenir; H5 artik yapisal garanti.
+
+### 2. Olcum (171 — 68'in gurultu recetesi, sigma=2/255, kare basina 5 ornek, tohum 7+42)
+
+**Ilk kosum olcum hatasiydi ve kayda geciyor:** 260 sahne TEK akis sayildi,
+sahne SINIRLARINDAKI mesru degisimler cevrilme sayildi (ham 174-184!) —
+kume ardisik ucus degil bagimsiz sahnelerdir; 68'in onculu "AYNI sahne".
+Kare-ici olcume duzeltildi (esikler degistirilmedi).
+
+| tohum | ham cevrilme | yayimlanan | bilesim | bastirilan NO_ROUTE |
+|---|---|---|---|---|
+| 7 | 13 (8 karede) | 7 | 6 no_route + 1 cogunluk | 0 |
+| 42 | 24 (13 karede) | 11 | 9 no_route + 2 cogunluk | 0 |
+
+- **H1 (ozgun, toplam <= %40): DUSTU** — ve dusuk kaldi: naif esik,
+  fail-closed NO_ROUTE gecislerini de sayiyordu; onlari bastirmak H2'yi
+  ihlal ederdi. Esik GEVSETILMEDI; yerine EK-1 olcutleri bilesim GORULMEDEN
+  yazildi ve olcum sonra kosuldu.
+- **H1a (azinlik rota-rota sizintisi = 0): GECTI** — mekanizmanin vaadi:
+  gurultu azinliginin cevirdigi TEK yayimlanmis serit yok.
+- **H1b (kesin azalma): GECTI** · **H2 (NO_ROUTE bastirilmadi, 0): GECTI**
+- H3/H4/H5 birim+mutasyon testlerinde; H6: genel kapi 15/15 + tam suit
+  **1559 OK** (+12), jetson paketi ve olcum aynasi senkron.
+
+### 3. T79/T91/T92 durumu
+
+Bu paket OYNAKLIGIN YAYINA SIZMASINI kapatir; T79'un koku (argmax'in surekli
+buyuklukte ayrik secimi) ve T91 (kapi tanimi) ACIK kalir — Faz C listesinde.
+
+### 4. Ayni turda yakalanan surec kusuru
+
+Gece kayitlarim `## D-` duzeyinde yazilmisti; defter sozlesmesi `### D-`
+(test_defter_butunlugu yakaladi: kuyruk D-395'e atif verince). 9 baslik
+duzeltildi; kapi yesil. Ders: defter basligi kalibi da SOZLESMEDIR.

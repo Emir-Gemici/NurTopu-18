@@ -2087,3 +2087,75 @@ IKA_GO_TEKRAR_UST_SINIRI = 20
 PARASUT_TEKRAR_ARALIGI_S = 0.20
 PARASUT_TEKRAR_UST_SINIRI = 40
 PARASUT_MANUEL_CEZA_PUANI = 50      # SS7 Cceza — ciplak sayi yazilmaz (m.16)
+
+# P5 (D-396) — YAYIN HISTEREZISI. Serit secimi surekli buyuklukler uzerinde
+# ayrik bir karardir; binde-4 algi gurultusu kararlari kareler arasinda
+# cevirebiliyor (68 olcumu: tohuma gore 4-7/260; T92 bant oynakligi 34/260).
+# Yayimlanan serit zikzak yaparsa IKA'nin hedefi zikzak yapar. Cozum yayin
+# katmanindadir: analiz katmanina DOKUNULMAZ (madde 15), NO_ROUTE ASLA
+# geciktirilmez. K=3: tek-kare cevrilmelerin tamami bastirilir; gecikme
+# tavani 3 kare (p95 uctan uca 0,113 s -> ~0,34 s ≪ YKS_TESPIT_TAZELIK_S/2).
+# Esik degisikligi YENI on kayit ister (results/p5_histerezis/ON_KAYIT.md).
+KARAR_HISTEREZIS_KARE = 3
+
+
+class KararYumusatici:
+    """Yayimlanan seridin gurultuyle zikzak yapmasini engeller (D-396).
+
+    ``suz(yol, red) -> bool``: bu karenin karari TELSIZE yazilsin mi?
+      - NO_ROUTE/ret ANINDA yayimlanir ve durum sifirlanir (fail-closed
+        asla geciktirilmez, asla bastirilmaz).
+      - Ilk rota ve NO_ROUTE-sonrasi ilk rota ANINDA yayimlanir.
+      - Yayimlanan seritle AYNI serit aninda yayimlanir (tazelik yenilenir).
+      - FARKLI serit ancak ``esik`` ARDISIK karede ayni yeni seritle
+        gorulurse yayina gecer; o ana dek bu karenin OPEN_ROUTE'u
+        gonderilmez (onceki yayin ayakta; IKA rota onbellegi korunur).
+      - **H5 tavani:** bastirma ``esik - 1`` ardisik kareye dayaninca bir
+        SONRAKI kare ne olursa olsun yayimlanir ve benimsenir — yayin bundan
+        fazla bayatlayamaz. (H5 birim testi ilk tasarimda bunu yakaladi:
+        yayimlanan 2 iken analiz 1/3 arasinda salinirsa tavansiz surum
+        SURESIZ bastiriyordu; tazelik olurdu.)
+
+    Bastirma en fazla ``esik - 1`` ardisik kare surebilir (H5).
+    """
+
+    def __init__(self, esik=KARAR_HISTEREZIS_KARE):
+        if isinstance(esik, bool) or not isinstance(esik, int) or esik < 1:
+            raise ValueError("esik pozitif tamsayi olmali")
+        self._esik = esik
+        self._yayimlanan = None
+        self._aday = None
+        self._aday_sayac = 0
+        self._bastirilan_ardisik = 0
+
+    def _sifirla_aday(self):
+        self._aday = None
+        self._aday_sayac = 0
+
+    def suz(self, yol, red) -> bool:
+        if yol is None or red is not None:
+            # Fail-closed: ret/rotasizlik ANINDA gecer; yayin durumu sifirlanir
+            # ki toparlanan ilk rota da ANINDA yayimlansin (erisilebilirlik).
+            self._yayimlanan = None
+            self._sifirla_aday()
+            self._bastirilan_ardisik = 0
+            return True
+        if self._yayimlanan is None or yol == self._yayimlanan:
+            self._yayimlanan = yol
+            self._sifirla_aday()
+            self._bastirilan_ardisik = 0
+            return True
+        if yol == self._aday:
+            self._aday_sayac += 1
+        else:
+            self._aday = yol
+            self._aday_sayac = 1
+        if (self._aday_sayac >= self._esik
+                or self._bastirilan_ardisik >= self._esik - 1):
+            # Ya K ardisik teyit ya H5 tavani: yayin daha fazla bayatlayamaz.
+            self._yayimlanan = yol
+            self._sifirla_aday()
+            self._bastirilan_ardisik = 0
+            return True
+        self._bastirilan_ardisik += 1
+        return False
