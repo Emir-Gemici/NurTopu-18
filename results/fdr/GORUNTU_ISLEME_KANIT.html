@@ -1,0 +1,403 @@
+<title>NAVITAS Görüntü İşleme Kanıtı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin,latin-ext">
+
+<style>
+:root{
+  --ground:#F7F6F2;
+  --paper:#FFFFFF;
+  --ink:#1A1E1B;
+  --neutral:#6B7168;
+  --neutral-dim:#8E9389;
+  --rule:#DBDAD1;
+  --rule-soft:#EAE9E2;
+  --accent:#C3352B;
+  --pass:#3F6B4A;
+  --pass-bg:#EAF0EA;
+  --fail:#C3352B;
+  --fail-bg:#F7EBE9;
+  --unmeasured:#8A6F2E;
+  --unmeasured-bg:#F5EFDF;
+  --code-bg:#F0EFE8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#12150F;
+    --paper:#191D16;
+    --ink:#E8E7DF;
+    --neutral:#9AA096;
+    --neutral-dim:#767C72;
+    --rule:#2E332A;
+    --rule-soft:#232720;
+    --accent:#E2695C;
+    --pass:#7FB08B;
+    --pass-bg:#1B2A1F;
+    --fail:#E2695C;
+    --fail-bg:#2E1C19;
+    --unmeasured:#CBA85C;
+    --unmeasured-bg:#2B2417;
+    --code-bg:#20241C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12150F;
+  --paper:#191D16;
+  --ink:#E8E7DF;
+  --neutral:#9AA096;
+  --neutral-dim:#767C72;
+  --rule:#2E332A;
+  --rule-soft:#232720;
+  --accent:#E2695C;
+  --pass:#7FB08B;
+  --pass-bg:#1B2A1F;
+  --fail:#E2695C;
+  --fail-bg:#2E1C19;
+  --unmeasured:#CBA85C;
+  --unmeasured-bg:#2B2417;
+  --code-bg:#20241C;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px 96px}
+
+/* ---------- kapak ---------- */
+.cover{
+  border-bottom:2px solid var(--ink);
+  padding:64px 0 26px;
+  margin-bottom:44px;
+}
+.eyebrow{
+  font-family:"JetBrains Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--neutral);margin:0 0 18px;
+}
+h1{
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+  font-weight:700;font-size:clamp(30px,4.6vw,50px);line-height:1.06;
+  letter-spacing:-.022em;margin:0 0 18px;text-wrap:balance;
+}
+.standfirst{
+  font-size:19px;color:var(--neutral);max-width:60ch;margin:0 0 30px;
+}
+.standfirst strong{color:var(--ink);font-weight:600}
+
+.scorebar{
+  display:flex;flex-wrap:wrap;gap:0;
+  border:1px solid var(--rule);background:var(--paper);
+}
+.scorebar > div{
+  flex:1 1 150px;padding:14px 18px;border-right:1px solid var(--rule);
+}
+.scorebar > div:last-child{border-right:none}
+.scorebar dt{
+  font-family:"JetBrains Mono",monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--neutral);
+  margin:0 0 6px;
+}
+.scorebar dd{
+  margin:0;font-family:Archivo,sans-serif;font-weight:600;font-size:21px;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+}
+.scorebar dd small{
+  display:block;font-family:"Source Serif 4",serif;font-weight:400;
+  font-size:13px;color:var(--neutral);letter-spacing:0;margin-top:2px;
+}
+
+/* ---------- bolum ---------- */
+section{margin:0 0 56px;scroll-margin-top:20px}
+.sechead{
+  display:flex;align-items:baseline;gap:14px;
+  border-bottom:1px solid var(--rule);padding-bottom:9px;margin-bottom:22px;
+}
+.sechead .kind{
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);white-space:nowrap;
+  padding-top:4px;
+}
+h2{
+  font-family:Archivo,sans-serif;font-weight:600;
+  font-size:clamp(19px,2.3vw,25px);letter-spacing:-.012em;
+  margin:0;text-wrap:balance;flex:1;
+}
+h3{
+  font-family:Archivo,sans-serif;font-weight:600;font-size:16px;
+  letter-spacing:-.005em;margin:30px 0 10px;
+}
+p{max-width:68ch;margin:0 0 15px}
+.lede{font-size:18px}
+
+/* ---------- durum cipi (uc durum: projenin tezi) ---------- */
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;white-space:nowrap;
+}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%}
+.chip.pass{color:var(--pass);background:var(--pass-bg)}
+.chip.pass::before{background:var(--pass)}
+.chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.fail::before{background:var(--fail)}
+.chip.unm{color:var(--unmeasured);background:var(--unmeasured-bg)}
+.chip.unm::before{background:var(--unmeasured)}
+
+/* ---------- tablo ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);background:var(--paper);margin:0 0 16px}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{
+  text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule-soft);
+  font-size:14.5px;vertical-align:top;
+}
+thead th{
+  font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:500;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--neutral);
+  border-bottom:1px solid var(--rule);background:var(--ground);
+  position:sticky;top:0;
+}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{
+  font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;
+  font-size:13.5px;white-space:nowrap;
+}
+td.gate{font-family:Archivo,sans-serif;font-weight:600;white-space:nowrap}
+
+/* ---------- kutu ---------- */
+.note{
+  border-left:3px solid var(--rule);padding:2px 0 2px 18px;
+  margin:0 0 18px;color:var(--neutral);font-size:15.5px;max-width:66ch;
+}
+.note strong{color:var(--ink)}
+.warn{border-left-color:var(--accent)}
+.warn strong{color:var(--accent)}
+
+.callout{
+  background:var(--paper);border:1px solid var(--rule);
+  border-left:3px solid var(--accent);padding:18px 20px;margin:0 0 20px;
+}
+.callout h3{margin-top:0}
+.callout p:last-child{margin-bottom:0}
+
+pre{
+  background:var(--code-bg);border:1px solid var(--rule-soft);
+  padding:13px 15px;overflow-x:auto;margin:0 0 16px;
+  font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;
+}
+code{
+  font-family:"JetBrains Mono",monospace;font-size:.88em;
+  background:var(--code-bg);padding:1px 4px;border-radius:2px;
+}
+pre code{background:none;padding:0;font-size:inherit}
+
+.src{
+  font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--neutral-dim);
+  margin:-6px 0 26px;max-width:none;
+}
+
+/* ---------- yordam kartlari ---------- */
+.method{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule);
+}
+.method article{background:var(--paper);padding:18px 19px}
+.method h3{margin:0 0 7px;font-size:15px}
+.method p{font-size:14.5px;margin:0;color:var(--neutral)}
+.method .tag{
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px;
+}
+
+footer{
+  border-top:1px solid var(--rule);margin-top:16px;padding-top:20px;
+  font-size:13.5px;color:var(--neutral-dim);max-width:68ch;
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  .wrap{padding:0 18px 64px}
+  .sechead{flex-direction:column;gap:4px}
+  .sechead .kind{padding-top:0}
+}
+</style>
+
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">NAVITAS · TEKNOFEST İnsanlık Yararına Teknoloji · FDR eki</p>
+  <h1>Görüntü işleme: ne ölçtük, neyi ölçemedik</h1>
+  <p class="standfirst">İHA'nın açık güzergâhı görüntüden bulup YKS'ye canlı aktarmasının kanıt paketi. Her sayı bir artefakttan üretilir; <strong>geçmeyen kapılar da buradadır.</strong></p>
+
+  <dl class="scorebar">
+    <div><dt>FDA ağırlığı</dt><dd>%85<small>rapor · uçuş %15</small></dd></div>
+    <div><dt>Üretim modeli</dt><dd>v36<small>512 px · PyTorch</small></dd></div>
+    <div><dt>Kanıt kaydı</dt><dd>389<small>çürütmeler dâhil</small></dd></div>
+    <div><dt>Otomatik kapı</dt><dd>1 381<small>test · tamamı geçiyor</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <div class="sechead"><span class="kind">Yöntem</span><h2>Bu paketin asıl iddiası sayılar değil, sayıların nasıl üretildiği</h2></div>
+  <p class="lede">Bir yarışma raporunda “çalışıyor” demek kolaydır. Zor olan, neyin <em>ölçülmediğini</em> aynı netlikte söylemektir. Bu paket üç durum tanır ve üçünü hiçbir yerde birbirine karıştırmaz:</p>
+
+  <p>
+    <span class="chip pass">Geçti</span>&nbsp;
+    <span class="chip fail">Geçilmedi</span>&nbsp;
+    <span class="chip unm">Ölçülemedi</span>
+  </p>
+
+  <p><strong>Ölçülemedi, geçti değildir.</strong> Paydası olmayan bir oran rapora girmez; koşulmamış bir kapı “sorun çıkmadı” diye yazılmaz.</p>
+
+  <div class="method">
+    <article>
+      <span class="tag">Ön kayıt</span>
+      <h3>Eşik, sonuçtan önce yazılır</h3>
+      <p>Her ölçümün eşiği, hiçbir sonuç görülmeden dosyaya yazılır ve sonradan gevşetilmez. Bu kural somut iş gördü: çözünürlük denemesinde umut verici bir ara sayı, önceden yazılmış bir ret kuralıyla karşılaştı ve tartışma olmadı.</p>
+    </article>
+    <article>
+      <span class="tag">Mutasyon</span>
+      <h3>Kapı, kaldırılınca düşerek kanıtlanır</h3>
+      <p>Bir kapının bir şeyi gerçekten yakaladığı, korumayı bilerek bozup kapının düştüğünü görerek gösterilir. Mutasyon koda uygulanır, yoruma değil — ve uygulanmayan mutasyon başarı sayılmaz.</p>
+    </article>
+    <article>
+      <span class="tag">Çürütme</span>
+      <h3>Yanlış çıkan iddia silinmez</h3>
+      <p>Hatalı bulunan kayıtların üstü çizilir, düzeltmesine işaret verilir ve yerinde bırakılır. Aşağıdaki iki bölüm, bu belgenin kendi sayılarını nasıl düzelttiğini gösteriyor.</p>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><span class="kind">Kapılar</span><h2>Kabul kapıları — sentetik arena kümesi</h2></div>
+  <p>Üretim modeli <code>navitas-seg-v36-512</code>, 260 karelik sentetik arena kümesinde yedi kapıdan geçirilir. Eşiklerin tamamı sonuç görülmeden yazılmıştır.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Kapı</th><th>Ne ölçer</th><th class="num">Eşik</th><th class="num">Ölçülen</th><th>Sonuç</th></tr></thead>
+    <tbody>
+      <tr><td class="gate">K0</td><td>Körlük yok — boş maske üretmiyor</td><td class="num">boş maske yok</td><td class="num">0/67 · 0/393</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td class="gate">K1</td><td>Rota üretilen kare</td><td class="num">≥ 230</td><td class="num">255/260</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td class="gate">K2</td><td>Rotanın molozdan geçmesi</td><td class="num">≤ %15</td><td class="num">%5,88</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td class="gate">K3</td><td>Ağır moloz teması</td><td class="num">≤ %3</td><td class="num">%0,39</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td class="gate">K4</td><td>Arena dışına taşma</td><td class="num">≤ %5</td><td class="num">%1,57</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td class="gate">K5</td><td>Bariyer kesişimi</td><td class="num">= 0 px</td><td class="num">0</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td class="gate">K6</td><td>Yanlış güzergâh</td><td class="num">≤ %5</td><td class="num">%2,75</td><td><span class="chip pass">Geçti</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn"><strong>Kapsam sınırı — kayıt defterinin kendi cümlesi:</strong> arena ölçümlerinin tamamı sentetiktir; gerçek arena karesi <em>yoktur</em>. Bu yedi kapı <strong>saha başarımı iddia etmez.</strong></div>
+  <p class="src">Kaynak: <code>scripts/olcum/65_kabul_denetcisi.py</code> · verdikt <code>results/t63/gece_v7a_kabul_verdikt.json</code></p>
+</section>
+
+<section>
+  <div class="sechead"><span class="kind">Geçilmedi</span><h2>Gerçek kare kapısı: kendi eşiğimizi geçemedik</h2></div>
+  <p>Bu bölüm bilerek öne alınmıştır. Üretim modeli, gerçek uçuş karelerinde <strong>kendi ön kayıtlı eşiklerinin ikisini geçmeden</strong> terfi etmiştir.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Ölçüt</th><th class="num">İstenen</th><th class="num">Ölçülen</th><th>Sonuç</th></tr></thead>
+    <tbody>
+      <tr><td>Rota üretilen kare</td><td class="num">≥ 10 / 29</td><td class="num">8</td><td><span class="chip fail">Geçilmedi</span></td></tr>
+      <tr><td>Maske üretilmeyen kare</td><td class="num">≤ 10 / 29</td><td class="num">16</td><td><span class="chip fail">Geçilmedi</span></td></tr>
+      <tr><td>Yanlış pozitif</td><td class="num">≤ 1</td><td class="num">1</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td>Yanlış güzergâh</td><td class="num">= 0</td><td class="num">0</td><td><span class="chip pass">Geçti</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <h3>Terfi neden yine de yapıldı</h3>
+    <p>Kayda geçen gerekçe: gerçek karede <strong>yanlış güzergâh 15/21 → 7/38</strong>'e, engel üstündeki waypoint <strong>79 → 3</strong>'e düştü. Yani model, güvenliği doğrudan ilgilendiren iki eksende belirgin biçimde iyileşti; bedeli daha az kare üzerinde karar üretmesi oldu.</p>
+    <p>Karar kullanıcıya aittir ve <strong>eşikler değiştirilmemiştir</strong> — sonraki terfileri aynen bağlar. Önceki üretim modeli silinmemiş, yedek aday olarak durmaktadır.</p>
+  </div>
+
+  <p class="src">Doğrulama kümesi <code>DJI_20260822172613_0038_D</code> · sözleşme gereği bu uçuşun kareleri eğitime ve erken durdurmaya <strong>girmez</strong>.</p>
+</section>
+
+<section>
+  <div class="sechead"><span class="kind">Ölçüm</span><h2>Gerçek zamanlılık: eşiği tahmin etmedik, türettik</h2></div>
+  <p>Şartname açık güzergâhın YKS'ye <em>gerçek zamanlı</em> aktarılmasını ve alan hakeminin ekrandan onaylamasını istiyor; hakem onayı alınmayan tespit geçersizdir. Hakem ekranındaki karar kutusu <strong>5 saniye</strong> tazelenmezse onay düğmesi düşer, ve karar kare başınadır. Gereken şey işlenmiş kare değil <em>başarılı tespittir</em>:</p>
+
+  <pre><code>GEREKLİ_FPS  ≥  1 / (5 · p)      p = kare başına geçerli rota olasılığı</code></pre>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Küme</th><th class="num">n</th><th class="num">p</th><th class="num">Gereken FPS</th><th>Kapsam</th></tr></thead>
+    <tbody>
+      <tr><td>Sentetik arena</td><td class="num">260</td><td class="num">0,985</td><td class="num">0,20</td><td>göreve benzer, <strong>sentetik</strong></td></tr>
+      <tr><td>Gerçek uçuş, sızıntısız</td><td class="num">243</td><td class="num">0,346</td><td class="num">0,58</td><td>gerçek, arenaya <strong>alan dışı</strong></td></tr>
+      <tr><td>Tek sahne-ayrık uçuş</td><td class="num">230</td><td class="num">0,326</td><td class="num">0,61</td><td>en kötü durum</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Planlanan donanımın beklenen bandı <strong>0,9–2,6 FPS</strong>. En kötü okumada bile gereken 0,61 — yani <strong>bu bir hız sorunu değil.</strong> Bu eşiğin daha önce hiçbir yerde gerekçesi yazılı değildi; artık şartname maddesinden ve sözleşme sabitinden türetilmiştir.</p>
+
+  <div class="callout">
+    <h3>Kendi sayımızı düzelttik: havuzun %62'si eğitim verisiymiş</h3>
+    <p>İlk ölçümde gerçek-kare havuzunu bütün uçuşlardan kurduk ve eğitim kümesiyle kesişimini denetlemedik. Sonradan ölçtük: <strong>633 karenin 390'ı modelin kendi eğitim kümesindeydi.</strong></p>
+    <pre><code>eğitimde görülen   n=390   p=0,574   maske yok %8
+görmediği          n=243   p=0,346   maske yok %44</code></pre>
+    <p>Sonuç hükmü değişmedi — gereken FPS hâlâ bandın altında. Değişen, o sonuca giden sayının kapsamı ve <strong>genelleme tablosunun beş kat kötüleşmesi</strong> oldu. Ayıklama kuralı zaten sözleşmede vardı; uygulamayan bizdik.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><span class="kind">Karar</span><h2>Denenen ve ölçümle reddedilen iki yol</h2></div>
+
+  <h3>Yarım duyarlık (FP16) — kabul edildi</h3>
+  <p>Gömülü kartta hız için yarım duyarlık kullanılacak. Ölçülen şey maske benzerliği değil, <strong>yayınlanan karardır</strong>: şerit numarası ya da ret sebebi.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Ölçüt</th><th class="num">Eşik</th><th class="num">Ölçülen</th><th>Sonuç</th></tr></thead>
+    <tbody>
+      <tr><td>Tam duyarlık doğruyken yarım duyarlığın yanlış şerit vermesi</td><td class="num">0 tolerans</td><td class="num">0 / 260</td><td><span class="chip pass">Geçti</span></td></tr>
+      <tr><td>Karar uyuşması</td><td class="num">≥ 0,98</td><td class="num">0,9968</td><td><span class="chip pass">Geçti</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note"><strong>Bu ölçüm bir kez boşa çıktı.</strong> İlk koşumda iki kol da tam duyarlıkta çalışmış, kütüphane ikinci ayarı sessizce yok saymıştı; “geçti” hiçliğin ölçümüydü. Sonuç fazla mükemmel göründüğü için aracın kendisi ölçüldü, kusur bulundu ve koruma koda yazıldı.</div>
+
+  <h3>Çözünürlüğü artırmak (512 → 640) — reddedildi</h3>
+  <p>Gerçek karelerdeki körlüğü çözünürlük kapatır mı diye ölçtük.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Ölçüt</th><th class="num">Eşik</th><th class="num">Ölçülen</th><th>Sonuç</th></tr></thead>
+    <tbody>
+      <tr><td>Arena kümesinde gerileme</td><td class="num">≥ −0,02</td><td class="num">−0,204</td><td><span class="chip fail">Geçilmedi</span></td></tr>
+      <tr><td>En uzun kör aralık</td><td class="num">&lt; 5 sn</td><td class="num">51 → 52 sn</td><td><span class="chip fail">Geçilmedi</span></td></tr>
+      <tr><td>FPS maliyeti</td><td class="num">bütçe içinde</td><td class="num">×1,30</td><td><span class="chip pass">Geçti</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Ön kayıt <em>“arena gerilerse, öteki sonuç ne olursa olsun ret”</em> diye önceden yazılmıştı. İyi ki: kirli havuzda ara sonuç <strong>%21,6</strong> kurtarma gösteriyordu — sızıntı ayıklanınca gerçek değer <strong>%5,6</strong> çıktı. Çözünürlük, modelin <em>gördüğü</em> veride kazandırıyor, görmediğinde kazandırmıyor; bir genelleme düzeltmesi değil.</p>
+</section>
+
+<section>
+  <div class="sechead"><span class="kind">Açık risk</span><h2>Bildiğimiz en büyük sınır</h2></div>
+  <p>Sahne-ayrık gerçek uçuşta model, <strong>51 saniye boyunca kesintisiz</strong> hiç zemin maskesi üretmediği bir aralığa giriyor. Hakem ekranının tazelik penceresi 5 saniye — yani bu aralık sınırı on kat aşıyor.</p>
+
+  <p>Bunun mekanizması bilinmektedir ve <em>seçilmiştir</em>. Model bir önceki sürümden, kasten <strong>“daha az gör”</strong> yönünde terfi ettirildi; çünkü çatıları zemin sayma kusuru gerçek ve tehlikeliydi. Kayıt defteri bu bedeli zaten yazmıştı: modelin gerçek karelerde gördüğü zemin oranı, bağımsız olarak tahmin edilen sürülebilir alanın <strong>altına düşüyor</strong>.</p>
+
+  <div class="note warn"><strong>Neden geri alınmıyor:</strong> mimarinin değişmez kuralı serbest alanı <em>büyüten</em> hiçbir işleme izin vermez. Az görmek güvenli yöndür; çok görmek İKA'yı geçilemez bir yere sürer. Bu risk kapatılmadı, <strong>ölçüldü ve büyüklüğü yazıldı.</strong></div>
+
+  <p>Kalan iki seçenek de kayıtlıdır ve karar aşamasındadır: aynı bölgeden ikinci geçiş yapmak, ve hakem ekranında son geçerli tespiti tazelik damgasıyla göstermek.</p>
+
+  <h3>Ölçülmemiş olan</h3>
+  <p>
+    <span class="chip unm">Ölçülemedi</span> Gerçek arenada saha başarımı. Elimizdeki iki küme bir alt ve bir üst çerçevedir: sentetik arena göreve benzer ama sentetiktir; gerçek uçuş görüntüsü gerçektir ama kırsal bir yol çekimidir — kırmızı H'si, molozu, hazırlanmış şeritleri yoktur. <strong>Arası tahmin edilmemiştir.</strong>
+  </p>
+</section>
+
+<footer>
+  Bu sayfadaki sayıların tamamı depodaki artefaktlardan üretilmiştir; kaynak değiştiğinde paket yeniden üretilir ve metin onunla birlikte değişir. Ölçüm betikleri, ham çıktılar ve kanıt defteri kaydı takım deposunda açıktır.
+</footer>
+
+</div>
