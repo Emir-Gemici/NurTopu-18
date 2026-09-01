@@ -365,6 +365,13 @@ ekranda kanıt görmeden veriyordu.
   `comms/komut_tekrar.py` (Tk'dan bağımsız).
 - **İKA idempotentliği:** mükerrer `IKA_GO` latch'i yeniden kurmaz (`ika_go_monotonic` ilk alımda
   sabitlenir) ama **her alım ACK'lanır** — YKS'nin tekrarı ancak böyle durur.
+- **`PARACHUTE` (P9a · D-393, şartname §2.2.4 + SS7 Cceza):** YKS'nin manuel paraşüt yedeği,
+  `CMD(cmd="PARACHUTE", hedef="iha")`. İki adımlı teyitle tetiklenir (T180 kalıbı, modal yok),
+  tetiklendiği anda `PARASUT_MANUEL_CEZA_PUANI` (−50) işlenir ve komut `PARASUT_TEKRAR_ARALIGI_S`
+  × `PARASUT_TEKRAR_UST_SINIRI` ile **ACK gelene dek tekrarlanır** (İHA düğümünden
+  `ACK(ref_tip="CMD")`). Üst sınırda KIRMIZI görünür hata + düğme yeniden açılır.
+  ⚠ **İHA tarafı alım/Pixhawk aktarımı AVİYONİK-BLOKLU** (Faz B, 5 Eylül): bugün İHA'da CMD
+  dinleyen uç yok — ACK gelmez ve ekran bunu DÜRÜSTÇE kırmızı gösterir; sessiz başarı yalanı yok.
 - **Aktarım kanıtı (K8):** İKA, `OPEN_ROUTE`/`NO_ROUTE` ACK'ını gönderene (İHA) **ve** bildiği YKS
   adresine (`--yks` ya da ilk geçerli `IKA_GO`'nun kaynağı) gönderir.
   ⚠ **`--yks` UDP'de fiilen ZORUNLUDUR** (dalga 2 çürütücüsü, 2026-08-26, ölçüldü): şartname

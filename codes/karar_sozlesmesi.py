@@ -2075,3 +2075,15 @@ IHA_INIS_HEARTBEAT_ARALIGI_S = 0.5        # < ika_receiver hb_timeout (3 s)
 #              yeniden acilir — gorev kaybedilmez, operator tekrar tetikler.
 IKA_GO_TEKRAR_ARALIGI_S = 0.25
 IKA_GO_TEKRAR_UST_SINIRI = 20
+
+# P9a (D-393) — sartname §2.2.4: "Parasut acma komutu, otonom sistem
+# tarafindan verilebilecegi gibi ... yer istasyonundan manuel tetikleme ile de
+# gerceklestirilebilir ... manuel olarak tetiklenmesi durumunda ... ceza puani
+# yaptirimi uygulanir." SS7 Cceza tablosu: manuel parasut = -50.
+#   aralik   : ACIL komut — IKA_GO'dan daha sik (5 pkt/s); parasut gecikmesi
+#              dogrudan yapisal butunluk riskidir (§6.4 kirim = ucus gecersiz).
+#   ust sinir: 40 x 0,20 s = 8 s israrli tekrar; ACK yoksa ekran KIRMIZI
+#              uyarir ve dugme yeniden acilir (komut kaybi sessiz kalamaz).
+PARASUT_TEKRAR_ARALIGI_S = 0.20
+PARASUT_TEKRAR_UST_SINIRI = 40
+PARASUT_MANUEL_CEZA_PUANI = 50      # SS7 Cceza — ciplak sayi yazilmaz (m.16)

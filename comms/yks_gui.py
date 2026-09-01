@@ -44,6 +44,9 @@ if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
 from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
                               IKA_GO_TEKRAR_UST_SINIRI,
+                              PARASUT_MANUEL_CEZA_PUANI,
+                              PARASUT_TEKRAR_ARALIGI_S,
+                              PARASUT_TEKRAR_UST_SINIRI,
                               SARTNAME_ASGARI_IRTIFA_M,
                               SARTNAME_FDA_OPERASYON_SURESI_S,
                               SARTNAME_HAZIRLIK_SURESI_S,
@@ -336,6 +339,12 @@ class YksArayuz:
         self.ika_go_tekrar = AckliTekrar(
             self._ham_gonder, IKA_GO_TEKRAR_ARALIGI_S, IKA_GO_TEKRAR_UST_SINIRI)
         self.ika_go_ack_zamani = None    # İKA'nın IKA_GO ACK'ı (duvar saati)
+        # P9a (D-393): PARACHUTE, ACK gelene dek tekrarlanır — en kritik acil
+        # komut tek UDP paketine emanet edilemez (IKA_GO/K4 ile aynı ilke).
+        self.parasut_tekrar = AckliTekrar(
+            self._ham_gonder, PARASUT_TEKRAR_ARALIGI_S,
+            PARASUT_TEKRAR_UST_SINIRI)
+        self.parasut_ack_zamani = None
         # K8: İKA'nın OPEN_ROUTE ACK kanıtı: seq -> duvar saati. Hakem 2. onayı
         # ancak geçerli rota seq'i bu sözlükte varsa verebilir (fail-closed).
         self.ika_rota_ack = {}
@@ -1099,6 +1108,13 @@ class YksArayuz:
                     f"IHA_LANDED · üretim uçuşu iniş kanıtı alındı → ACK ref={seq}",
                     "yesil",
                 )
+                # P9c (D-393) — §2.2.3 sıra denetimi: iniş kanıtı, İKA'nın
+                # OPEN_ROUTE ACK'ından ÖNCE geldiyse aktarım havada BİTMEMİŞTİR.
+                if not (self.rota and self.rota["seq"] in self.ika_rota_ack):
+                    self._logla(
+                        "⚠ İHLAL RİSKİ: iniş kanıtı geldi ama İKA'nın rota "
+                        "ACK kanıtı YOK — aktarım İHA havadayken "
+                        "tamamlanmadı (§2.2.3)", "kirmizi")
                 # Operatör düğmesi güvenlik sinyali üretmez; tersine gerçek
                 # protokol olayı mevcut UI/kronometre kaydını besler.
                 self.iha_indi()
@@ -1305,6 +1321,19 @@ class YksArayuz:
         ref = m.get("ref")
         if isinstance(ref, bool) or not isinstance(ref, int):
             return
+        if m.get("node") == "iha":
+            # P9a (D-393): PARACHUTE ACK'ı İHA düğümünden gelir — eski kod
+            # iha ACK'larını hiç işlemiyordu (yalnız ika'da erken dönüş).
+            # `__init__` koşmadan kurulan örneklerde (testler, D-320 kalıbı)
+            # öznitelik olmayabilir; yokluk "bekleyen paraşüt yok" demektir.
+            parasut_tekrar = getattr(self, "parasut_tekrar", None)
+            if parasut_tekrar is not None and parasut_tekrar.ack_geldi(m):
+                self.parasut_ack_zamani = time.time()
+                damga = time.strftime("%H:%M:%S",
+                                      time.localtime(self.parasut_ack_zamani))
+                self._logla(f"İHA ALDI ✓ PARACHUTE ACK ref={ref} · {damga} · "
+                            f"{parasut_tekrar.deneme} gönderim", "yesil")
+            return
         if m.get("node") != "ika":
             return
         self._dugum_adresini_ogren("ika", adr)
@@ -1322,8 +1351,15 @@ class YksArayuz:
                 and ref not in self.ika_rota_ack):
             self.ika_rota_ack[ref] = time.time()
             damga = time.strftime("%H:%M:%S", time.localtime(self.ika_rota_ack[ref]))
+            # P9c (D-393) — §2.2.3: "Bu aktarımın İHA havada iken tamamlanması
+            # gerekmektedir." Kanıt anında havada/yerde damgası basılır.
+            havada = self._iha_havada_mi()
             self._logla(f"İKA ALDI ✓ OPEN_ROUTE ACK ref={ref} · {damga} "
-                        "(aktarım kanıtı ekranda)", "yesil")
+                        "(aktarım kanıtı ekranda) · "
+                        + ("İHA HAVADA ✓ (§2.2.3)" if havada else
+                           "⚠ İHA HAVADA DEĞİL — §2.2.3 aktarım havadayken "
+                           "bitmeliydi"),
+                        "yesil" if havada else "sari")
             if self.tespit_onayli and not self.onaylandi:
                 self._aktarim_onay_dugmesini_kur()
                 if self.otomatik_onay:
@@ -2301,6 +2337,14 @@ class YksArayuz:
     def firlatma(self):
         if self.t_iha0:
             return
+        # P9b (D-393) — §6.2: fırlatma ancak arming sonrası. Düğme zaten
+        # DISARM'da kapalıdır ama otorite düğme durumu DEĞİL bu kilittir
+        # (T180 sınıfı: UI durumu tek başına emniyet sinyali sayılmaz).
+        if not self.arm_acik:
+            self._logla("KİLİT ✋ ARM verilmeden FIRLATMA damgası atılamaz "
+                        "(şartname §6.2 hakem onaylı fırlatma) — REDDEDİLDİ",
+                        "sari")
+            return
         self.t_iha0 = time.time()
         self._logla("GÖREV · FIRLATMA — İHA kronometresi başladı (limit 15:00)", "mavi")
         self.btn_firlat.config(state="disabled", bg="#232e3a")
@@ -2431,12 +2475,41 @@ class YksArayuz:
             self.kok.after(3200, lambda: self.btn_parasut.config(
                 bg="#232e3a", text="PARAŞÜT (manuel −50)"))
             return
-        if not self._cmd_gonder("PARACHUTE", "iha"):
+        # P9a (D-393): tek atış `_cmd_gonder` yerine ACK'lı tekrar — paraşüt
+        # komutu kaybolursa bunu SESSİZCE kaybetmek kabul edilemez (§6.4).
+        komut_mesaji = command("PARACHUTE", "iha")
+        if not self.parasut_tekrar.baslat(komut_mesaji):
+            # `_ham_gonder` GONDERILEMEDI'yi zaten kirmizi loglar (komut
+            # durustlugu sozlesmesi: iletilmeyen komut basari/ceza uretmez).
             return
-        self._ceza_ekle(50, "manuel paraşüt tetikleme (§2.2.4)")
-        self._ucus("PARAŞÜT — MANUEL TETİKLENDİ (−50)", KIRMIZI)
+        self._ceza_ekle(PARASUT_MANUEL_CEZA_PUANI,
+                        "manuel paraşüt tetikleme (§2.2.4)")
+        self._ucus(f"PARAŞÜT — MANUEL TETİKLENDİ "
+                   f"(−{PARASUT_MANUEL_CEZA_PUANI})", KIRMIZI)
+        self._logla(f"CMD → iha: PARACHUTE (seq={komut_mesaji['seq']}, ACK "
+                    f"bekleniyor · {PARASUT_TEKRAR_ARALIGI_S:.2f} s × "
+                    f"≤{PARASUT_TEKRAR_UST_SINIRI})", "kirmizi")
         self.btn_parasut.config(state="disabled", bg=KIRMIZI,
                                 text="PARAŞÜT AÇILDI (manuel)")
+        self._parasut_tik()
+
+    def _parasut_tik(self):
+        """PARACHUTE ACK zamanlayıcısı (K4 kalıbı): ACK yoksa tekrar; üst
+        sınırda görünür KIRMIZI hata + düğme yeniden açılır."""
+        durum = self.parasut_tekrar.tik()
+        if durum == ONAYLANDI:
+            return
+        if durum == VAZGECILDI:
+            self._logla(f"İHA ONAY VERMEDİ ✗ PARACHUTE "
+                        f"{self.parasut_tekrar.deneme} kez gönderildi, ACK "
+                        "gelmedi — düğme yeniden aktif; İHA hattını kontrol et",
+                        "kirmizi")
+            self.btn_parasut.config(state="normal", bg=KIRMIZI,
+                                    text="PARAŞÜT ACK YOK — TEKRAR")
+            return
+        if self.parasut_tekrar.bekliyor:
+            self.kok.after(int(PARASUT_TEKRAR_ARALIGI_S * 1000),
+                           self._parasut_tik)
 
     def _kron_metin(self, t0, t1, limit):
         if not t0:

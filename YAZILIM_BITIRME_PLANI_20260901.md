@@ -111,7 +111,7 @@ tazelik penceresi 5 s içinde; tüm kapılar yeşil.
   provalarının şablonu. **Kapı:** hakem_log çıktısında zincirin 8 fazı da
   damgalı.
 
-**P9 · Şartname yeni yükümlülükleri (YENİ)** —
+**P9 · Şartname yeni yükümlülükleri (YENİ)** — 🟢 **a/b/c/e KAPANDI (2026-09-02 gece · D-391+D-393);** kalan: P9d (saha_baslat + reset, P4 ile birlikte). Özgün tanım:
 - **a)** YKS **manuel paraşüt** butonu: onay diyalogu + "−50 ceza" uyarısı +
   hakem_log kaydı; İHA tarafına PARASUT komutu (protokole mesaj tipi —
   CONTRACTS'a yazılır, ACK'li).

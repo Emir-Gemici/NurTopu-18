@@ -55,6 +55,12 @@ class YksKomutDurustluguTests(unittest.TestCase):
             state="normal", bg=yks_gui.KIRMIZI,
             text="EMİN MİSİN? tekrar bas (3 sn)",
         )
+        # P9a (D-393): parasut artik ACK'li tekrarla gider; ayni durustluk
+        # sozlesmesi AckliTekrar.baslat -> _ham_gonder uzerinden korunur.
+        arayuz.parasut_tekrar = yks_gui.AckliTekrar(
+            arayuz._ham_gonder, yks_gui.PARASUT_TEKRAR_ARALIGI_S,
+            yks_gui.PARASUT_TEKRAR_UST_SINIRI)
+        arayuz.parasut_ack_zamani = None
         arayuz.kok = mock.Mock()
         arayuz._ceza_ekle = mock.Mock()
         arayuz._ucus = mock.Mock()
