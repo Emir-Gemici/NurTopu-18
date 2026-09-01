@@ -63,7 +63,7 @@ def _ekran(rota_yasi=0.5, hb_yasi=0.5, karar_yas_rx="taze"):
     o._kutu_yaz = lambda kaynak, **kw: None
     o._onay_dugmesini_tazele = lambda: None
     if karar_yas_rx == "taze":
-        o.karar_yas_rx = (0.2, SIMDI)
+        o.karar_yas_rx = (0.2, time.monotonic())
     else:
         o.karar_yas_rx = karar_yas_rx
     return o
@@ -118,17 +118,18 @@ class C_AsilKapi(unittest.TestCase):
     def test_heartbeat_AKARKEN_karar_yasi_asarsa_BAYAT(self):
         """D-374 senaryosu: hat CANLI (hb 0,5 sn), algi OLU (karar 10 sn)."""
         o = _ekran(rota_yasi=0.5, hb_yasi=0.5,
-                   karar_yas_rx=(YKS_TESPIT_TAZELIK_S + 5.0, SIMDI))
+                   karar_yas_rx=(YKS_TESPIT_TAZELIK_S + 5.0,
+                                 time.monotonic()))
         self.assertTrue(o._tespiti_yaslandir(SIMDI))
         self.assertEqual(o.btn_onay.ayarlar.get("state"), "disabled")
 
     def test_gonderim_sonrasi_GECEN_SURE_de_sayilir(self):
         """Alan 3 sn'de gonderildi, alim 4 sn once -> etkin 7 > 5."""
-        o = _ekran(karar_yas_rx=(3.0, SIMDI - 4.0))
+        o = _ekran(karar_yas_rx=(3.0, time.monotonic() - 4.0))
         self.assertTrue(o._tespiti_yaslandir(SIMDI))
 
     def test_taze_karar_yasi_BAYATLATMAZ(self):
-        o = _ekran(karar_yas_rx=(0.3, SIMDI))
+        o = _ekran(karar_yas_rx=(0.3, time.monotonic()))
         self.assertFalse(o._tespiti_yaslandir(SIMDI))
         self.assertNotEqual(o.btn_onay.ayarlar.get("state"), "disabled")
 
@@ -137,7 +138,8 @@ class D_GerilemeKorumasi_D321(unittest.TestCase):
     def test_ACK_sonrasi_OPEN_ROUTE_sussa_bile_dugme_ACIK(self):
         """IHA rotayi ACK alana kadar tekrarlar, sonra SUSAR (T172/D-321).
         rota_zaman ESKI ama heartbeat + karar_yas TAZE -> BAYAT DEGIL."""
-        o = _ekran(rota_yasi=60.0, hb_yasi=0.5, karar_yas_rx=(0.4, SIMDI))
+        o = _ekran(rota_yasi=60.0, hb_yasi=0.5,
+                   karar_yas_rx=(0.4, time.monotonic()))
         self.assertFalse(o._tespiti_yaslandir(SIMDI),
                          "D-321 GERI GELDI: protokolun normal davranisi "
                          "(ACK sonrasi susma) ariza sayildi")
@@ -224,6 +226,54 @@ class G_CapaVeUcaUc(unittest.TestCase):
         finally:
             y._dur.set()
             y._hb_thr.join(2.0)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+class H_D383_Korumalar(unittest.TestCase):
+    """Curutucu bulgularinin kilitleri (D-383)."""
+
+    def test_DUVAR_SAATI_GERI_ATLASA_da_BAYAT(self):
+        """Curutucunun birebir senaryosu: karar_yas=20 sn, simdi 30 sn GERIYE
+        alinmis. Onceden etkin yas negatiflesip TAZE gorunuyordu; artik
+        gecen sure MONOTONIK saatle hesaplanir ve simdi'den etkilenmez."""
+        o = _ekran(karar_yas_rx=(YKS_TESPIT_TAZELIK_S + 15.0,
+                                 time.monotonic()))
+        self.assertTrue(o._tespiti_yaslandir(SIMDI - 30.0),
+                        "duvar saati geri atlayinca BAYAT tespit TAZE "
+                        "gorundu — fail-open (D-383)")
+
+    def test_NaN_karar_yas_TAZE_SAYILMAZ(self):
+        """nan > esik daima False: NaN, BILINMIYOR korumasini atlatip
+        tespiti KALICI taze gosterirdi."""
+        o = _ekran(karar_yas_rx=(float("nan"), time.monotonic()))
+        self.assertTrue(o._tespiti_yaslandir(SIMDI))
+        self.assertIn("BİLİNMİYOR", o.lbl_onay.ayarlar.get("text", ""))
+
+    def test_NEGATIF_karar_yas_TAZE_SAYILMAZ(self):
+        o = _ekran(karar_yas_rx=(-3600.0, time.monotonic()))
+        self.assertTrue(o._tespiti_yaslandir(SIMDI))
+
+    def test_ALIM_SUZGECI_gecersizi_almaz(self):
+        """Alim katmani da suzer (derinlemesine savunma iki katman)."""
+        kaynak = (KOK / "comms" / "yks_gui.py").read_text(encoding="utf-8")
+        kod = chr(10).join(s for s in kaynak.splitlines()
+                        if not s.lstrip().startswith("#"))
+        self.assertIn("math.isfinite(_ky) and _ky >= 0.0", kod)
+        self.assertIn("time.monotonic()", kod)
+
+    def test_DEMO_F6_algi_anahtari_var(self):
+        """F6 tatbikati artik ekranla CELISMEZ: senaryo('algi') anahtari
+        keser, demo karar damgasi donar, yas buyur (T177 orgusu)."""
+        kaynak = (KOK / "comms" / "yks_gui.py").read_text(encoding="utf-8")
+        kod = chr(10).join(s for s in kaynak.splitlines()
+                        if not s.lstrip().startswith("#"))
+        self.assertIn('self.demo_durum["iha_algi"] = False', kod,
+                      "F6 algi anahtarini kesmiyor — bant ile tazelik "
+                      "kutusu celisir (T177/D-323 orgusu)")
+        self.assertIn('durum.get("iha_algi", True)', kod)
 
 
 if __name__ == "__main__":

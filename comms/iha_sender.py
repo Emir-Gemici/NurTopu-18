@@ -114,6 +114,17 @@ class IhaSender:
                 for m in self.reader.feed(d) if d else []:
                     if m.get("type") == "ACK" and m.get("ref") == msg["seq"]:
                         acked.add(m.get("node"))
+                # D-383 (B2 curutucusu OLCTU): tum beklenen ACK'ler geldiyse
+                # pencereyi TERK ET. Once burada cikis yoktu ve dongu, ACK
+                # coktan gelmisken bile recv'in SOKET zaman asimini (link
+                # timeout 0,3 s) bekliyordu — "telsiz_ack ~308 ms" sayisi
+                # ACK gecikmesi degil o sabitin olcumuydu (gercek loopback
+                # RTT 0,06 ms). Ayrica karar ipliginin cevrimi kare uretim
+                # hizinin altina dusuyor, latest-wins yuvasi kararlarin bir
+                # kismini hic yayinlatmiyordu. ACK'siz/eksik-ACK yollar
+                # DEGISMEDI: pencere ancak TAMAMLANINCA kisalir.
+                if self.peers and acked >= set(self.peers):
+                    break
             if self.peers and acked >= set(self.peers):
                 break
         return msg["seq"], acked

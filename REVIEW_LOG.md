@@ -26443,6 +26443,8 @@ olduğu bir kez daha ölçülmüş oldu.
 
 ### D-379 · ✅ T198 KAPANDI — HB ŞEKİL DOĞRULAMASI: otomobil yanlış pozitifi kare düzeyinde **%100 → %4,5** · ve yol boyunca İKİ ölçüm tuzağı kendi kapılarımla yakalandı (2026-09-01)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-383.** İki ağır düzeltme: (1) başlıktaki *"H harfinin kendisini doğrulayan ölçüt"* iddiası **daraltıldı** — kapı çerçeveli ped YAPISINI doğrular, harf kimliğini DEĞİL (çerçeve+A/E/N/X 0,56–0,65 alıyor, ölçüldü); (2) **nihai ret semantiği kaldırıldı** — sahnede gerçek ped varken banda giren büyük sahtekâr pedi de öldürüyordu; seçim artık EN YÜKSEK şekil puanıyla ve kapı ölçeksiz açılmaz. Kare-düzeyi %100→%4,5 cümlesi kaldırılan yapılandırmanın sayısıdır.
+
 **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
 **Ön kayıt:** `results/hb_sekil/ON_KAYIT.md` — puan tanımı, türetme kuralı
 (pozitif %0,5 dilimi × 0,85) ve kabul ölçütleri (P1/N1) **sonuç görülmeden**.
@@ -26580,6 +26582,8 @@ raporla birebir. Codex denetim dizisi **tamamen kapalıdır**.
 
 ### D-381 · ✅ A2 KAPANDI (Codex kotada → başamele devraldı) — `karar_yas` HEARTBEAT'te: HAT canlılığı ile ALGI canlılığı artık AYRI (2026-09-01)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-383.** Alım tarafı duvar saatindeydi (İHA tarafı monotonikken) — saat geri atlayınca BAYAT tespit TAZE görünüyordu; ayrıca NaN `karar_yas` BİLİNMİYOR korumasını atlatıyordu ve F6 tatbikatı ekranla çelişiyordu. Üçü de düzeltildi; asıl mekanizma AYAKTA.
+
 **Yazan:** Claude 2 (başamele; Codex kotaya girince kullanıcı emriyle
 devralındı) · **Denetleyen: mimar bekleniyor** (§9.3 — ⚠ tasarım da uygulama
 da benim; aynı-el uyarısı geçerli, denetim mimarındır).
@@ -26642,6 +26646,8 @@ K1 (bayat kutuda son tespiti yaş damgasıyla gösterme) bu altyapının
 
 ### D-382 · ✅ B2/T15 KAPANDI (Codex kotada → başamele) — FDA bütçesi uçtan uca: kare gecikmesi **p95 0,458 s**, tazelik penceresinin onda biri; "sığar/sığmaz" hükmü BİLEREK verilmedi (2026-09-01)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-383.** `telsiz+ACK ~308 ms` bir ölçüm DEĞİL, `link.recv` soket zaman aşımı sabitinin yansımasıydı (gerçek RTT 0,06 ms); erken-çıkış düzeltmesiyle 2,3 ms / toplam p95 113 ms. B2-G2 hükmü yalnız loopback yapılandırmasına aittir; seri hat ÖLÇÜLEMEDİ.
+
 **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3 —
 aynı-el uyarısı D-381'deki gibi geçerli). **Ön kayıt:**
 `results/fda_butce/ON_KAYIT.md` — çerçeve ve eşikler **sonuç görülmeden**.
@@ -26696,3 +26702,98 @@ düşer.
   alındı.
 
 Kapılar: genel 15/15 · tam suit **1443 OK** (+13).
+
+---
+
+### D-383 · 🔴 ÇÜRÜTÜCÜ HASADI (3 bağımsız ajan, dinamik workflow) — bugünün üç işinde DÖRT gerçek kusur: telsiz 308 ms bir SOKET SABİTİYMİŞ; YKS duvar-saati asimetrisi; şekil kapısı "H"yi değil "çerçeveli yapıyı" ölçüyormuş; nihai ret gerçek pedi öldürüyormuş (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetçiler:** 3 bağımsız çürütücü ajan
+(dinamik workflow, kullanıcı onayı; 357k token, 74 araç çağrısı) — her bulgu
+**koşulmuş komut + ham çıktı** ile geldi, ayakta kalanları **kendim yeniden
+ürettim**. Madde 19'un "iş, yazanın onayıyla kapanmaz" kuralının işletilmesi.
+
+#### 1. B2/telsiz — "308 ms" ACK gecikmesi değil, SOKET ZAMAN AŞIMI sabitiydi → DÜZELTİLDİ
+
+Çürütücü ölçtü, ben kodu okuyarak doğruladım: `_tekrarli_gonder`'in iç
+penceresi ACK **geldikten sonra bile** `link.recv`'in 0,3 s'lik soket zaman
+aşımını bekliyordu (erken çıkış yoktu); gerçek loopback RTT **0,06 ms**.
+Parametrik kanıt: pencere 2×0,05 s beklenirken ölçüm 0,308 s; soket sabiti
+0,05 yapılınca 313→63 ms. **Üretim etkisi de vardı:** karar ipliğinin
+çevrimi ≥0,3 s → yayın hızı ~3,3/s; kamera daha hızlı üretince latest-wins
+yuvası kararların bir kısmını **hiç yayınlatmıyordu**.
+
+**Düzeltme:** tüm beklenen ACK'ler gelince pencere terk edilir (ACK'siz yol
+değişmedi). **Yeniden ölçüldü (169):**
+
+```text
+telsiz+ACK  p50 307,6 -> 2,3 ms       toplam p95 457,8 -> 113,2 ms
+```
+
+⚠ İkinci bulgusu da doğru: D-382'nin **B2-G2 "GEÇTİ"** hükmü yalnız
+UDP-loopback yapılandırmasının hükmüydü — üretim seri varsayılanlarıyla
+(wait_ack=False, 4×0,25 s) çevrim 1,0 s ve G2 **geçmezdi**. G2 artık
+"loopback'te geçti; seri hat ÖLÇÜLEMEDİ (Gün-1/B1)" diye okunur.
+
+#### 2. A2/YKS — duvar saati asimetrisi + NaN kaçağı + F6 çelişkisi → ÜÇÜ DE DÜZELTİLDİ
+
+- Çürütücünün birebir reprosu: `karar_yas=20 sn` iken YKS saati 30 sn geri
+  alınınca etkin yaş **negatifleşiyor**, BAYAT tespit **TAZE** görünüyordu
+  (İHA tarafı bilerek monotonikti; alım tarafı `time.time`'da kalmıştı —
+  fail-open asimetri). Alım damgası ve geçen-süre hesabı **monotonik** yapıldı;
+  repro artık test (`test_DUVAR_SAATI_GERI_ATLASA_da_BAYAT`).
+- **NaN kaçağı:** `nan > eşik` daima False → NaN bir `karar_yas`,
+  BİLİNMİYOR korumasını atlatıp tespiti **kalıcı taze** gösterirdi. İki
+  katmanda süzülüyor (alım + hüküm); negatif de reddedilir.
+- **F6 çelişkisi:** "Algı aşımı" senaryosu `demo_durum`'a dokunmuyordu —
+  bant KIRMIZI "ALGI ZAMAN AŞIMI" derken tazelik kutusu 0,5 sn TAZE
+  gösteriyordu (T177/D-323'ün yasakladığı ekran-kendiyle-çelişir örüntüsü).
+  `iha_algi` anahtarı eklendi: F6'da demo karar damgası donar, yaş büyür,
+  kutu ~5 sn'de BAYAT(algı) olur — tatbikat artık A2'yi CANLI gösteriyor.
+- ⚠ Çürütücünün notu kayda geçer: aynı duvar-saati zayıflığı `min()`
+  yolundaki `rota_zaman`/`son_hb` için de geçerlidir — o **A2'den eski**dir
+  (T169 dönemi) ve ayrı iş ister; bu kayıtta düzeltilmedi.
+
+#### 3. D-379/şekil — İKİ ağır düzeltme
+
+**(a) Kapı "H"yi değil "kare kutuda derli toplu kırmızı yapıyı" ölçüyor.**
+Çürütücü 17 H-olmayan şekil sentezledi, 16'sı geçti; ben bağımsız yeniden
+ürettim: boş kırmızı çerçeve **0,494**, çerçeve+A/E/N/X **0,56–0,65** —
+gerçek sentetik pedlerden (0,19–0,47) bile yüksek. Sebep: şablon kütlesinin
+çoğu çerçeve halkası; 26 px'te harf ayrımı zaten fiziksel olarak yok.
+⇒ D-379'un başlığındaki *"H harfinin kendisini doğrulayan ölçüt"* iddiası
+**daraltıldı**: kapı, ölçek bandındaki adayın **ped yapısında** (çerçeveli,
+dolu-olmayan) olduğunu doğrular; **harf kimliğini doğrulamaz**. Ölçülen
+koruma ayakta: gerçek otomobiller (0,076–0,178) ve dolu bloklar hâlâ düşer.
+
+**(b) Nihai ret, sahnede GERÇEK ped varken onu da öldürüyordu; dolu kare
+(0,290) eşiği geçtiği için büyük-önce sıralama hedefi ÇALDIRIYORDU.**
+Seçim semantiği değişti: banda uyan adaylar puanlanır, **eşiği geçen EN
+YÜKSEK puanlı** seçilir. Çürütücünün hırsızlık senaryosu artık test:
+ped (yüksek puan) + daha büyük dolu kare → **ped kazanıyor**.
+Ayrıca: **şekil kapısı ölçeksiz açılmaz** (eşleşme kuralı — şekil tek
+başına 26×18 px lekeleri geçiriyordu, ölçülmüştü) ve NaN/negatif
+`mpp`/`sekil_esigi` artık sessizce denetimi kapatmıyor → HEDEF_YOK.
+
+**Sonuç ölçümleri (168 yeniden):** P1 **260/260** (ölçek+şekil, en-yüksek-
+puan seçimiyle) · N1 **aday düzeyi 3/67 (%4,5) GEÇTİ** · ⚠ N1'in kare
+düzeyi üretim-konfigürasyonu bu kümede **ÖLÇÜLEMEDİ** (karelerin mpp'si
+yok; D-379'daki %100→%4,5 kare-düzeyi cümlesi artık o güne ait "şekil-only
+nihai ret" yapılandırmasının sayısıdır ve o yapılandırma kaldırılmıştır).
+
+#### 4. Çürütülemeyenler (üç ajanın raporlarından, yeniden üretimlerimle)
+
+Kilitsiz damga okuması (3 iplik, 0 anomali) · T176 simetrisi karar_yas
+yolunda · rota_yok erken dönüşü kaçak değil · B2 özet p95'leri bağımsız
+yeniden hesapla sıfır fark · ısınma=3 yeterli · şekil eşiği türetimi bit-eş ·
+bozulmuş ped (örtme %10-30, bulanıklık, düşük kontrast) eşik altına HİÇ
+düşmedi (fail-closed yön sağlam) · açı taraması 0-90'da çukursuz.
+
+#### 5. Açık kalanlar
+
+- **Çerçeveli sahtekâr sınıfı** (kırmızı çerçeveli tabela/işaret, damalı
+  örtü): şekil kapısı bunları AYIRAMAZ — saha riski kullanıcıya raporlandı;
+  arena çevresinde bu sınıftan nesne olup olmayacağı H-E/saha sorusudur.
+- `min()` yolunun duvar-saati zayıflığı (A2 öncesi mimari) — ayrı iş.
+- Üretim-konfig N1 için ölçekli negatif çekim yok (veri eksiği).
+
+Kapılar: genel 15/15 · tam suit **1450 OK**. Jetson paketi tazelendi.

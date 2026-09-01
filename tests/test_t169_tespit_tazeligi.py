@@ -23,6 +23,7 @@ BOS KAPI YASAGI (TEST_SPECS SS4.1) — on kayitli dort eksen:
 from __future__ import annotations
 
 import sys
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -66,7 +67,7 @@ def _ekran(yas_sn=0.0, simdi=1_000_000.0):
     # A2 (D-381): bu dosyanin ekseni HAT bayatligidir; algi yasi TAZE tutulur
     # ki olculen sey degismesin. Alanin yoklugu artik BILINMIYOR -> bayat
     # demektir (o eksenin kendi testleri test_a2_karar_yasi.py'dedir).
-    o.karar_yas_rx = (0.2, simdi)
+    o.karar_yas_rx = (0.2, time.monotonic())   # D-383: alim damgasi monotonik
     return o
 
 

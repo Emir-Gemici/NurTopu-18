@@ -302,7 +302,8 @@ class YksArayuz:
         # ediyordu. Ekranın kendi kendisiyle çelişmesi, tatbikatı izleyenin
         # gözünde senaryoyu değil SİSTEMİ şüpheli yapar.
         self.demo_durum = {"iha_hb": True, "ika_hb": True,
-                           "iha_bat": True, "iha_gnss": True}
+                           "iha_bat": True, "iha_gnss": True,
+                           "iha_algi": True}   # F6 (D-383): algi canliligi
 
         self.rota = None            # son OPEN_ROUTE mesajı
         # T169 · §6.2: tespitin YAŞI. Şartname "gerçek zamanlı" der; bayat bir
@@ -1101,9 +1102,18 @@ class YksArayuz:
             self.son_hb[dugum] = time.time()
             self._dugum_adresini_ogren(dugum, adr)
             # A2 (D-381): algi canliligi hat canliligindan AYRI izlenir.
+            # D-383 (curutucu): (1) alim damgasi ve gecen-sure hesabi
+            # MONOTONIK — duvar saati (NTP/elle duzeltme) geri atlarsa
+            # etkin yas negatiflesip BAYAT tespiti TAZE gosteriyordu; IHA
+            # tarafi zaten monotonikti, alim tarafi asimetrik kalmisti.
+            # (2) NaN/negatif deger KABUL EDILMEZ: nan > esik daima False
+            # oldugundan NaN, "eksik alan = BILINMIYOR" korumasini atlatip
+            # tespiti KALICI taze gosterirdi. Gecersiz deger YOK sayilir.
             if dugum == "iha" and "karar_yas" in m:
                 try:
-                    self.karar_yas_rx = (float(m["karar_yas"]), time.time())
+                    _ky = float(m["karar_yas"])
+                    if math.isfinite(_ky) and _ky >= 0.0:
+                        self.karar_yas_rx = (_ky, time.monotonic())
                 except (TypeError, ValueError):
                     pass          # bozuk deger yut: eski deger/None kalir
             tel = {k: m[k] for k in ("alt", "hiz", "bat", "uydu") if k in m}
@@ -1403,8 +1413,21 @@ class YksArayuz:
             self._logla("  → Tarama deseni BİR KEZ yinelenir; yine yoksa YKS'ye", "soluk")
             self._logla("    'TESPİT YOK' bildirilir (yanlış yönlendirme yasak;", "soluk")
             self._logla("    rota sağlamlık süzgeci <3 waypoint'te göndermez).", "soluk")
+            # D-383 (çürütücü): önceden bu senaryo demo_durum'a HİÇ
+            # dokunmuyordu — bant "ALGI ZAMAN AŞIMI" derken karar_yas 0,5 sn
+            # taze akmaya devam ediyor, ekran kendisiyle ÇELİŞİYORDU
+            # (T177/D-323'ün yasakladığı örüntü). Artık algı anahtarı
+            # kesilir: demo İHA'sı karar damgasını DONDURUR, karar_yas
+            # büyür, tazelik kutusu ~5 sn'de BAYAT(algı) olur — A2'nin
+            # yakaladığı gerçek durum tatbikatta da görünür.
+            self.demo_durum["iha_algi"] = False
+
+            def algi_geri():
+                self.demo_durum["iha_algi"] = True   # anahtar HER HÂLDE geri
+                self._logla("ALGI GERİ GELDİ — karar üretimi sürüyor", "yesil")
+                band_geri()
             self._ucus("ALGI ZAMAN AŞIMI — TARAMA YİNELENİYOR", SARI)
-            self.kok.after(7000, band_geri)
+            self.kok.after(9000, algi_geri)
 
     def _rota_analiz(self, m):
         """Segment bazlı eksen değişimi tablosu: Δx/Δy, uzunluk, yön, dönüş."""
@@ -2530,8 +2553,16 @@ class YksArayuz:
         # tazelik eklemez (fail-closed yon).
         _bayat_kaynak = "hat" if bayat else None
         _kyx = getattr(self, "karar_yas_rx", None)
+        # D-383: derinlemesine savunma — alim katmani suzse de burada da
+        # gecersiz deger BILINMIYOR sayilir (nan > esik daima False tuzagi).
+        if _kyx is not None and not (math.isfinite(_kyx[0])
+                                     and _kyx[0] >= 0.0):
+            _kyx = None
         if _kyx is not None:
-            _etkin_karar_yas = _kyx[0] + (simdi - _kyx[1])
+            # Gecen sure MONOTONIK saatle (D-383): alim damgasi
+            # time.monotonic() ile atilir; duvar saatinin geri atlamasi
+            # etkin yasi kucultemez. `simdi` yalniz min() yolunundur.
+            _etkin_karar_yas = _kyx[0] + (time.monotonic() - _kyx[1])
             if _etkin_karar_yas > YKS_TESPIT_TAZELIK_S:
                 bayat = True
                 yas = _etkin_karar_yas
@@ -2665,6 +2696,7 @@ def demo_besle(yks_port, durum):
         t0 = time.time()
         sonra = t0 + 3.0                                   # 3 sn tarama süsü
         son_tx = 0.0
+        son_karar_t = time.time()      # F6 (D-383): algi kesilince DONAR
         son_xy = (150.0, 150.0)        # GNSS kaybinda konum DONAR
         # 🔴 T179 (D-323): burada `while time.time() - t0 < 600` yaziyordu —
         # besleme 10 DAKIKADA SESSIZCE OLUYORDU. Sunum 10 dakikayi asarsa
@@ -2686,15 +2718,19 @@ def demo_besle(yks_port, durum):
                               round(150 + 62 * math.sin(sn / 11), 1))
                 else:
                     uydu = 0                               # konum guncellenmez
+                # A2 (D-381) + F6 (D-383): algi anahtari ACIKKEN damga her
+                # turda tazelenir (karar_yas ~0 sn, taze); F6 kesince damga
+                # DONAR ve yas gercekten buyur — bant ile tazelik kutusu
+                # artik ayni seyi soyler (T177 celiskisi kapandi). Alan hic
+                # gonderilmese ekran (dogru olarak) BILINMIYOR der.
+                if durum.get("iha_algi", True):
+                    son_karar_t = time.time()
                 hb = heartbeat("iha")                      # ek telemetri alanları:
                 hb.update(alt=round(30 + 1.8 * math.sin(sn / 5), 1),
                           hiz=round(16.5 + 1.2 * math.sin(sn / 3.7), 1),
                           bat=bat, uydu=uydu,
                           mod="AUTO",                      # tam otonomi (§6.2)
-                          # A2 (D-381): demo algisi nominal — karar yasi hep
-                          # taze. Alan gonderilmese ekran (dogru olarak)
-                          # "TESPIT YASI BILINMIYOR" der ve sunum kilitlenir.
-                          karar_yas=round(0.2 + 0.3 * abs(math.sin(sn / 2)), 2),
+                          karar_yas=round(time.time() - son_karar_t, 2),
                           x=son_xy[0], y=son_xy[1])
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:

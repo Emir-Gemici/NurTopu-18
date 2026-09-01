@@ -66,26 +66,31 @@ def olc_pozitifler():
 
 
 def olc_negatifler(kok, esik, desen="**/*.jpg"):
-    """KARE DUZEYI, URETIM SEMANTIGI: hb_konumu kapi ACIKKEN cagrilir.
+    """ADAY DUZEYI olcum (D-383 sonrasi).
 
-    Ilk surum yalniz SECILEN adayin puanini olcuyordu; nobetci test bunun
-    uretimden ayristigini yakaladi — dusme semantigiyle buyuk otomobil
-    reddedilince kucuk lekeler uzerinden 59/67 kare YINE tespit uretiyordu.
-    Simdi (1) sekil reddi NIHAI (hb_konumu D-379) ve (2) olcum kare duzeyinde.
+    Tarihce: ilk surum secilen adayin puanini olctu (aday duzeyi); nobetci,
+    dusme semantiginin 59/67 kareyi kucuk lekelerden geciridigini yakaladi;
+    NIHAI ret denendi (D-379) ama curutucu onun da sahnedeki GERCEK pedi
+    oldurdugunu gosterdi. Simdiki uretim semantigi EN YUKSEK puanli secim +
+    OLCEK ESLESME KURALI (D-383) — ve bu kumede mpp OLMADIGI icin uretim
+    konfigurasyonu BURADA KOSULAMAZ; kare-duzeyi N1 = OLCULEMEDI, olculen
+    yalniz aday duzeyidir.
     """
     kayitlar = []
     for p in sorted(glob.glob(str(kok / desen), recursive=True)):
         img = cv2.imread(p)
         if img is None:
             continue
+        # D-383: sekil kapisi OLCEKSIZ ACILMAZ (eslesme kurali) — bu
+        # karelerin mpp'si YOK, uretim konfigurasyonu burada KOSULAMAZ.
+        # Olculen: kapisiz tespit + SECILEN adayin sekil puani (aday duzeyi).
+        # Kare-duzeyi uretim-konfig N1 = OLCULEMEDI (durustce raporlanir).
         eski = hb_konumu(img)                        # T150 ile ayni: kapisiz
-        yeni = hb_konumu(img, sekil_esigi=esik)      # uretim semantigi
-        kayit = {"kare": Path(p).name, "tespit": eski is not None,
-                 "kapiyla_tespit": yeni is not None}
+        kayit = {"kare": Path(p).name, "tespit": eski is not None}
         if eski is not None:
             kayit["puan"] = hb_sekil_puani(img, eski["kutu"])
-        if yeni is not None:
-            kayit["kapiyla_puan"] = yeni.get("sekil_puani")
+            kayit["aday_gecti"] = (kayit["puan"] is not None
+                                   and kayit["puan"] >= esik)
         kayitlar.append(kayit)
     return kayitlar
 
@@ -146,21 +151,25 @@ def main():
 
     oto = olc_negatifler(OTOPARK, esik)
     oto_tespit = [k for k in oto if k["tespit"]]
-    oto_gecen = [k for k in oto if k["kapiyla_tespit"]]
+    oto_gecen = [k for k in oto_tespit if k.get("aday_gecti")]
     n1 = (len(oto_gecen) / len(oto_tespit)) if oto_tespit else None
     if n1 is not None:
-        print(f"N1 OTOPARK (kare duzeyi): {len(oto)} kare · kapisiz tespit "
-              f"{len(oto_tespit)} · kapiyla {len(oto_gecen)} "
-              f"(%{100 * n1:.1f}) · sart <= %{100 * N1_AZAMI_GECIS:.0f} "
+        print(f"N1 OTOPARK (ADAY duzeyi — on kayit SS4 lafzi): "
+              f"{len(oto)} kare · tespit {len(oto_tespit)} · esigi gecen "
+              f"{len(oto_gecen)} (%{100 * n1:.1f}) · "
+              f"sart <= %{100 * N1_AZAMI_GECIS:.0f} "
               f"-> {'GECTI' if n1 <= N1_AZAMI_GECIS else 'DUSTU'}")
+        print("   ⚠ KARE-DUZEYI uretim-konfig (olcek+sekil) bu kumede "
+              "OLCULEMEDI: karelerin mpp'si yok ve sekil kapisi olceksiz "
+              "ACILMAZ (D-383 eslesme kurali).")
     else:
         print("N1: OLCULEMEDI (tespit yok)")
 
     kir = olc_negatifler(KIRSAL, esik)
     kir_tespit = [k for k in kir if k["tespit"]]
-    kir_gecen = [k for k in kir if k["kapiyla_tespit"]]
-    print(f"N2 KIRSAL (bilgi, kare duzeyi): {len(kir)} kare · kapisiz "
-          f"{len(kir_tespit)} · kapiyla {len(kir_gecen)}")
+    kir_gecen = [k for k in kir_tespit if k.get("aday_gecti")]
+    print(f"N2 KIRSAL (bilgi, aday duzeyi): {len(kir)} kare · tespit "
+          f"{len(kir_tespit)} · esigi gecen {len(kir_gecen)}")
 
     n1_gecti = n1 is not None and n1 <= N1_AZAMI_GECIS
     verdikt = "GECTI" if (p1_gecti and n1_gecti) else "AYIRAMIYOR"
@@ -173,10 +182,11 @@ def main():
         "esik_turetim": {"dilim": DILIM, "pay": PAY, "q": q, "esik": esik},
         "P1": {"tutulan": tutulan, "n": p1_n, "oran": p1,
                "gecti": p1_gecti, "kayip": p1_kayip,
-               "_semantik": "KARE DUZEYI: olcek+sekil birlikte, uretim gibi"},
+               "_semantik": "KARE DUZEYI: olcek+sekil birlikte; secim EN YUKSEK sekil puani (D-383)"},
         "N1": {"tespit": len(oto_tespit), "gecen": len(oto_gecen),
                "oran": n1, "gecti": n1_gecti,
-               "gecen_kareler": [k["kare"] for k in oto_gecen]},
+               "gecen_kareler": [k["kare"] for k in oto_gecen],
+               "_duzey": "ADAY (kare-duzeyi uretim-konfig OLCULEMEDI: mpp yok, D-383)"},
         "N2": {"tespit": len(kir_tespit), "gecen": len(kir_gecen),
                "gecen_kareler": [k["kare"] for k in kir_gecen]},
         "verdikt": verdikt,

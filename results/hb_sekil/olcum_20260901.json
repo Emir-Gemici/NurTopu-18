@@ -12,7 +12,7 @@
   "oran": 1.0,
   "gecti": true,
   "kayip": [],
-  "_semantik": "KARE DUZEYI: olcek+sekil birlikte, uretim gibi"
+  "_semantik": "KARE DUZEYI: olcek+sekil birlikte; secim EN YUKSEK sekil puani (D-383)"
  },
  "N1": {
   "tespit": 67,
@@ -23,7 +23,8 @@
    "frame_000001_000000600.jpg",
    "frame_000006_000001416.jpg",
    "frame_000012_000000624.jpg"
-  ]
+  ],
+  "_duzey": "ADAY (kare-duzeyi uretim-konfig OLCULEMEDI: mpp yok, D-383)"
  },
  "N2": {
   "tespit": 15,
@@ -1599,980 +1600,880 @@
   {
    "kare": "frame_000000_000000000.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14476293491977646
+   "puan": 0.14476293491977646,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000001_000000600.jpg",
    "tespit": true,
-   "kapiyla_tespit": true,
    "puan": 0.1780985656491357,
-   "kapiyla_puan": 0.1780985656491357
+   "aday_gecti": true
   },
   {
    "kare": "frame_000002_000000672.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1757592289507183
+   "puan": 0.1757592289507183,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000003_000000720.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.15149614764379143
+   "puan": 0.15149614764379143,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000004_000000768.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13169345528816268
+   "puan": 0.13169345528816268,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000005_000000816.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.15577756166563522
+   "puan": 0.15577756166563522,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000006_000000864.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1166561571029637
+   "puan": 0.1166561571029637,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000007_000000936.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12417777777777778
+   "puan": 0.12417777777777778,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000008_000001008.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1192760180995475
+   "puan": 0.1192760180995475,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000009_000001152.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.10062494339280863
+   "puan": 0.10062494339280863,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000010_000001200.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1241701058675758
+   "puan": 0.1241701058675758,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000011_000001224.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14334105901230165
+   "puan": 0.14334105901230165,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000012_000001248.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13672356149920817
+   "puan": 0.13672356149920817,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000013_000001272.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1429324894514768
+   "puan": 0.1429324894514768,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000014_000001320.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13578274760383385
+   "puan": 0.13578274760383385,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000000_000000000.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14591405424445228
+   "puan": 0.14591405424445228,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000001_000000336.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14154281670205238
+   "puan": 0.14154281670205238,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000002_000000648.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.15407537248028044
+   "puan": 0.15407537248028044,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000003_000000912.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13542390548992356
+   "puan": 0.13542390548992356,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000004_000000960.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.15136391016263662
+   "puan": 0.15136391016263662,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000005_000001008.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14580812445980984
+   "puan": 0.14580812445980984,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000006_000001416.jpg",
    "tespit": true,
-   "kapiyla_tespit": true,
    "puan": 0.17658024063718014,
-   "kapiyla_puan": 0.17658024063718014
+   "aday_gecti": true
   },
   {
    "kare": "frame_000007_000001440.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12718520395236887
+   "puan": 0.12718520395236887,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000008_000001488.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14215311411334863
+   "puan": 0.14215311411334863,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000009_000001776.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11670929241261722
+   "puan": 0.11670929241261722,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000010_000001824.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.15345224886916445
+   "puan": 0.15345224886916445,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000011_000001848.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1424622030237581
+   "puan": 0.1424622030237581,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000012_000001872.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1341225146534881
+   "puan": 0.1341225146534881,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000013_000001944.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12028249834473626
+   "puan": 0.12028249834473626,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000014_000001992.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11546252532072923
+   "puan": 0.11546252532072923,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000015_000002040.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13139741878059635
+   "puan": 0.13139741878059635,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000016_000002088.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13041500852757248
+   "puan": 0.13041500852757248,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000017_000002112.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13710383470495535
+   "puan": 0.13710383470495535,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000018_000002160.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11930434782608695
+   "puan": 0.11930434782608695,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000000_000000000.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13866595327269485
+   "puan": 0.13866595327269485,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000001_000000168.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11490227092983844
+   "puan": 0.11490227092983844,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000002_000000192.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.07863016784949871
+   "puan": 0.07863016784949871,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000003_000000240.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1457182320441989
+   "puan": 0.1457182320441989,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000004_000000264.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1431631254283756
+   "puan": 0.1431631254283756,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000005_000000288.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13823529411764707
+   "puan": 0.13823529411764707,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000006_000000336.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1274960240325146
+   "puan": 0.1274960240325146,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000007_000000384.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13018735773069515
+   "puan": 0.13018735773069515,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000008_000000432.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1341260820145143
+   "puan": 0.1341260820145143,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000009_000000480.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11541515926939028
+   "puan": 0.11541515926939028,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000010_000000504.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14339126919967662
+   "puan": 0.14339126919967662,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000011_000000600.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1628987031195233
+   "puan": 0.1628987031195233,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000012_000000624.jpg",
    "tespit": true,
-   "kapiyla_tespit": true,
    "puan": 0.17788378143972247,
-   "kapiyla_puan": 0.17788378143972247
+   "aday_gecti": true
   },
   {
    "kare": "frame_000013_000000648.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.15811752988047809
+   "puan": 0.15811752988047809,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000014_000000672.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1738241308793456
+   "puan": 0.1738241308793456,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000015_000000696.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1320442691769495
+   "puan": 0.1320442691769495,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000016_000000720.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1284722222222222
+   "puan": 0.1284722222222222,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000017_000000792.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12626169939438428
+   "puan": 0.12626169939438428,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000018_000000840.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11715668698458229
+   "puan": 0.11715668698458229,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000019_000000888.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12286158631415241
+   "puan": 0.12286158631415241,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000020_000000936.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11750250295804132
+   "puan": 0.11750250295804132,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000021_000000984.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.10319130282307558
+   "puan": 0.10319130282307558,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000022_000001032.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12934058225184145
+   "puan": 0.12934058225184145,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000023_000001080.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.1290715903152761
+   "puan": 0.1290715903152761,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000024_000001104.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.09981596704933836
+   "puan": 0.09981596704933836,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000025_000001152.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13012339287255156
+   "puan": 0.13012339287255156,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000026_000001200.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.09015942825728422
+   "puan": 0.09015942825728422,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000027_000001248.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.08552631578947369
+   "puan": 0.08552631578947369,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000028_000001296.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.07812080536912752
+   "puan": 0.07812080536912752,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000029_000001320.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.08365219685974402
+   "puan": 0.08365219685974402,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000030_000001344.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.0760180995475113
+   "puan": 0.0760180995475113,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000000_000000000.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.08495367349601983
+   "puan": 0.08495367349601983,
+   "aday_gecti": false
   },
   {
    "kare": "frame_000001_000000456.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.10764412481150679
+   "puan": 0.10764412481150679,
+   "aday_gecti": false
   }
  ],
  "kirsal": [
   {
    "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.0946871669964987
+   "puan": 0.0946871669964987,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11674641148325358
+   "puan": 0.11674641148325358,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000048_000002310.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000053_000002460.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000089_000003840.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000094_000003990.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14966666666666667
+   "puan": 0.14966666666666667,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000124_000004890.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000008_000000900.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000021_000001500.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000024_000001590.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.036754399626226446
+   "puan": 0.036754399626226446,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000028_000001710.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11158238172920065
+   "puan": 0.11158238172920065,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000030_000001770.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.12271352441307792
+   "puan": 0.12271352441307792,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000032_000001830.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.08938065814053743
+   "puan": 0.08938065814053743,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000037_000001980.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.09865603308226259
+   "puan": 0.09865603308226259,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000041_000002100.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.13241678726483358
+   "puan": 0.13241678726483358,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000044_000002190.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.10949517549993008
+   "puan": 0.10949517549993008,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000046_000002250.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000050_000002370.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000051_000002400.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000069_000003090.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000076_000003360.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000084_000003690.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000087_000003780.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000088_000003810.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000102_000004230.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000106_000004350.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000108_000004410.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000113_000004560.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.16725256895619253
+   "puan": 0.16725256895619253,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000115_000004620.jpg",
    "tespit": true,
-   "kapiyla_tespit": true,
    "puan": 0.19257274119448697,
-   "kapiyla_puan": 0.19257274119448697
+   "aday_gecti": true
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000117_000004680.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000122_000004830.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000123_000004860.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000127_000004980.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000128_000005010.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000134_000005190.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000141_000005400.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.14009020960466967
+   "puan": 0.14009020960466967,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000146_000005550.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.11615343057806592
+   "puan": 0.11615343057806592,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000148_000005640.jpg",
    "tespit": true,
-   "kapiyla_tespit": false,
-   "puan": 0.03905289052890529
+   "puan": 0.03905289052890529,
+   "aday_gecti": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000150_000005700.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000151_000005730.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000153_000005790.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000154_000005820.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000155_000005850.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000157_000005910.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000158_000005940.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000163_000006090.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000177_000006630.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000185_000006930.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000192_000007170.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000201_000007440.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000204_000007530.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000206_000007590.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000213_000007800.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000216_000007890.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   },
   {
    "kare": "dji_20260822172613_0038_d__frame_000230_000008520.jpg",
-   "tespit": false,
-   "kapiyla_tespit": false
+   "tespit": false
   }
  ]
 }

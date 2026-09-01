@@ -110,16 +110,18 @@ class GeriyeUyumVeFailClosed(unittest.TestCase):
 
     def test_SEKILSIZ_CAGRI_ESKI_DAVRANIS(self):
         """GERCEK otomobil karesi (D-295'in 67 FP'sinden, medyan puanli):
-        sekil kapisi YOKKEN tespit edilir (eski davranis, geriye uyum),
-        kapi ACIKKEN reddedilir (D-295 boslugu kapali)."""
+        sekil kapisi YOKKEN tespit edilir (eski davranis, geriye uyum);
+        sekil esigi verilirse mpp'siz cagri ESLESME KURALI geregi None
+        (D-383: sekil kapisi olceksiz ACILMAZ — sekil tek basina 26x18
+        px'lik lekeleri de geciriyordu, olculdu)."""
         im = cv2.imread(str(self.GERCEK_OTOMOBIL))
         self.assertIsNotNone(im, "gercek otomobil karesi okunamadi")
         eski = ks.hb_konumu(im)
         self.assertIsNotNone(eski, "on kosul: bu karede FP tespit vardi")
         self.assertNotIn("sekil_puani", eski)
         yeni = ks.hb_konumu(im, sekil_esigi=ks.HB_SEKIL_ESIGI)
-        self.assertIsNone(yeni, "gercek otomobil sekil kapisindan GECTI — "
-                                "D-295 boslugu geri acildi")
+        self.assertIsNone(yeni, "olceksiz sekil cagrisi kabul edildi — "
+                                "D-383 eslesme kurali delindi")
 
     def test_BILINEN_SINIR_dolu_kare_GECIYOR(self):
         """🔴 BILINEN SINIR (D-379, gizlenmez): KUSURSUZ dolu kirmizi kare
@@ -134,11 +136,47 @@ class GeriyeUyumVeFailClosed(unittest.TestCase):
         self.assertAlmostEqual(p, 0.29, delta=0.03)
 
     def test_POSTER_KAPIDAN_GECIYOR(self):
+        """Uretim yapilandirmasi: olcek + sekil BIRLIKTE (D-383)."""
         img = cv2.imread(str(POSTER))
-        hb = ks.hb_konumu(img, sekil_esigi=ks.HB_SEKIL_ESIGI)
-        self.assertIsNotNone(hb, "gercek ped sekil kapisina takildi — "
+        mpp = ks.HB_KENAR_M / float(img.shape[1])   # 1440 px = 2 m ped
+        hb = ks.hb_konumu(img, mpp=mpp, sekil_esigi=ks.HB_SEKIL_ESIGI)
+        self.assertIsNotNone(hb, "gercek ped olcek+sekil kapisina takildi — "
                                  "fail-closed BOZULDU")
         self.assertGreaterEqual(hb["sekil_puani"], ks.HB_SEKIL_ESIGI)
+
+    def test_D383_HEDEF_CALMA_pad_kazanir(self):
+        """Curutucunun senaryosu: sahnede GERCEK ped + banda giren DAHA BUYUK
+        dolu kirmizi kare. Eski buyuk-once secim, dolu kare esigi gectigi
+        (~0,29) icin hedefi CALDIRIYORDU; NIHAI ret semantigi ise pedi de
+        OLDURUYORDU. Yeni secim EN YUKSEK sekil puaniyla: ped kazanmali."""
+        im = np.full((400, 400, 3), (170, 170, 170), np.uint8)
+        # ped: sablon geometrisi 100 px'e olceklenir, (40,40)'a cizilir
+        sb = cv2.resize(ks.hb_sekil_sablonu(), (100, 100),
+                        interpolation=cv2.INTER_NEAREST)
+        bolge = im[40:140, 40:140]
+        bolge[sb > 0] = (30, 30, 200)
+        # sahtekar: 140 px dolu kirmizi kare (pedden BUYUK)
+        cv2.rectangle(im, (220, 200), (360, 340), (30, 30, 200), -1)
+        # beklenen kenar ~112 px olacak sekilde mpp: ped 100 (0,89) ve
+        # kare 140 (1,25) IKISI DE bandin icinde
+        mpp = ks.HB_KENAR_M / 112.0
+        hb = ks.hb_konumu(im, mpp=mpp, sekil_esigi=ks.HB_SEKIL_ESIGI)
+        self.assertIsNotNone(hb, "iki adayli sahnede HEDEF_YOK — nihai ret "
+                                 "semantigi geri gelmis (pedi de olduruyor)")
+        cx, cy = hb["merkez"]
+        self.assertTrue(40 <= cx <= 140 and 40 <= cy <= 140,
+                        f"HEDEF CALINDI: secilen merkez ({cx:.0f},{cy:.0f}) "
+                        "ped kutusunda degil — dolu kare kazandi")
+
+    def test_D383_gecersiz_parametre_fail_closed(self):
+        """NaN mpp olcek denetimini, NaN esik sekil kapisini SESSIZCE
+        kapatiyordu (curutucu olctu). Artik ikisi de HEDEF_YOK."""
+        img = cv2.imread(str(POSTER))
+        self.assertIsNone(ks.hb_konumu(img, mpp=float("nan")))
+        self.assertIsNone(ks.hb_konumu(img, mpp=-1.0))
+        mpp = ks.HB_KENAR_M / float(img.shape[1])
+        self.assertIsNone(ks.hb_konumu(img, mpp=mpp,
+                                       sekil_esigi=float("nan")))
 
     def test_OLCULEMEYEN_PUAN_GECTI_SAYILMAZ(self):
         kod = _kodu(SOZLESME)

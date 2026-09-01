@@ -1379,44 +1379,72 @@ def hb_konumu(bgr, mpp=None, sekil_esigi=None):
         import cv2 as _cv2
     except ImportError:                      # pragma: no cover
         return None
+    # ── Parametre korumalari (D-383, curutucu bulgusu) — FAIL-CLOSED ──────
+    # Onceden gecersiz mpp (NaN / negatif) olcek denetimini SESSIZCE
+    # atlatiyordu ("mpp > 0" False -> denetimsiz kabul), gecersiz sekil_esigi
+    # (NaN) sekil kapisini SESSIZCE kapatiyordu (puan < NaN daima False).
+    # Istenen denetim uygulanamiyorsa cevap HEDEF_YOK cekimserligidir.
+    if mpp is not None and (not isinstance(mpp, Real) or isinstance(mpp, bool)
+                            or not math.isfinite(float(mpp))
+                            or float(mpp) <= 0.0):
+        return None
+    if sekil_esigi is not None and (not isinstance(sekil_esigi, Real)
+                                    or isinstance(sekil_esigi, bool)
+                                    or not math.isfinite(float(sekil_esigi))):
+        return None
+    # 🔴 SEKIL KAPISI OLCEKSIZ ACILMAZ (D-383): sekil puani tek basina kucuk
+    # kirmizi lekeleri de gecirebilir (26x18 px blob 0,18-0,21 aldi, olculdu);
+    # uretim yapilandirmasi HER ZAMAN olcek+sekil CIFTIDIR (T150). Yarim
+    # yapilandirma fail-closed reddedilir.
+    if sekil_esigi is not None and mpp is None:
+        return None
+
     ped = hb_maskesi(bgr)
     if ped is None or not ped.any():
         return None
     n, lbl, st, mrk = _cv2.connectedComponentsWithStats(ped, 8)
     if n <= 1:
         return None
-    # Adaylar BUYUKTEN kucuge; olcek denetimi acikken banda uyan ILK aday
-    # secilir. Denetim kapaliyken (mpp yok) davranis eskisiyle AYNIDIR:
-    # en buyuk aday.
+    # Adaylar BUYUKTEN kucuge; olcek denetimi acikken banda uyan aday(lar)
+    # degerlendirilir. Denetim kapaliyken (mpp yok) davranis eskisiyle
+    # AYNIDIR: en buyuk aday.
     sira = sorted(range(1, n), key=lambda k: -int(st[k, 4]))
-    secilen = None
-    secilen_puan = None
+    banda_uyan = []
     for i in sira:
         x, y, bw, bh, alan = (int(v) for v in st[i][:5])
-        if mpp is not None and mpp > 0:
+        if mpp is not None:
             beklenen = HB_KENAR_M / float(mpp)
             if beklenen > 0:
                 o = ((bw + bh) / 2.0) / beklenen
                 if not (HB_OLCEK_BANDI[0] <= o <= HB_OLCEK_BANDI[1]):
                     continue          # fiziksel olcege uymuyor -> HB DEGIL
-        if sekil_esigi is not None:
-            puan = hb_sekil_puani(bgr, (x, y, bw, bh))
-            # ⚠ OLCULEMEDI != GECTI: puan uretilemeyen aday da REDDEDILIR
-            # (fail-closed). Sekil denetimi actiysan kanitsiz aday gecmez.
-            if puan is None or puan < float(sekil_esigi):
-                # 🔴 SEKIL REDDI NIHAIDIR — sonraki adaya DUSULMEZ (D-379).
-                # Olculdu: dusme semantigiyle 67 otopark karesinin 59'u,
-                # buyuk otomobil reddedildikten sonra 26x18 px'lik kucuk
-                # kirmizi lekeler uzerinden YINE tespit uretiyordu. Islevin
-                # kendi onculu zaten soyluyor: sahnede TEK HB vardir —
-                # olcege uyan EN BUYUK aday H degilse, daha kucugu HIC
-                # degildir; dogru cevap HEDEF_YOK cekimserligidir.
-                return None
-            secilen_puan = puan
-        secilen = i
-        break
-    if secilen is None:
+        banda_uyan.append(i)
+        if sekil_esigi is None:
+            break                     # eski davranis: ilk (en buyuk) yeter
+    if not banda_uyan:
         return None                   # aday var ama HICBIRI 2 m'lik ped degil
+    secilen = banda_uyan[0]
+    secilen_puan = None
+    if sekil_esigi is not None:
+        # 🔴 SECIM EN YUKSEK SEKIL PUANIYLA (D-383). Onceki iki semantik de
+        # curutuldu: (a) dusme, buyuk otomobil reddedilince kucuk lekelerden
+        # 59/67 kare FP uretiyordu; (b) NIHAI ret, sahnede GERCEK ped
+        # dururken banda giren daha buyuk bir sahtekar yuzunden pedi de
+        # olduruyordu — ustelik dolu kare (0,290) esigi GECTIGI icin buyuk-
+        # once siralama hedefi CALDIRIYORDU (ped 0,935'ken!). Banda uyan tum
+        # adaylar puanlanir; esigi gecen EN YUKSEK puanli secilir.
+        en_iyi = None
+        for i in banda_uyan:
+            x, y, bw, bh = (int(v) for v in st[i][:4])
+            puan = hb_sekil_puani(bgr, (x, y, bw, bh))
+            # OLCULEMEDI != GECTI: puani uretilemeyen aday yarisamaz.
+            if puan is None or puan < float(sekil_esigi):
+                continue
+            if en_iyi is None or puan > en_iyi[1]:
+                en_iyi = (i, puan)
+        if en_iyi is None:
+            return None               # banda uyanlarin HICBIRI ped gibi degil
+        secilen, secilen_puan = en_iyi
     i = secilen
     x, y, bw, bh, alan = (int(v) for v in st[i][:5])
     sonuc = {
