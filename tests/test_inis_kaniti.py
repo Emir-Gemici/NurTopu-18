@@ -208,13 +208,15 @@ class BagilIrtifaOkuyucuTests(unittest.TestCase):
         self.assertTrue(ikinci.durdur())
 
     def test_gecersiz_mesaj_ve_okuma_hatasi_cache_i_gecersiz_kilar(self):
+        # D-389: BEKLENEN kaynaktan bozuk alan cache'i siler (korundu).
+        # Kaynagi okunamayan/yabanci paket ise artik AYRI sozlesmede:
+        # asagida `test_yabanci_veya_adsiz_kaynak_cache_e_dokunmaz`.
         bozuklar = [
             _p(0, time_boot_ms=2),
             _p(True, time_boot_ms=2),
             _p(float("nan"), time_boot_ms=2),
             Mesaj(kanit.MESAJ_GLOBAL_POSITION_INT, sysid=1,
                   relative_alt=30_000),
-            _p(30_000, sysid=True, time_boot_ms=2),
             _p(30_000, time_boot_ms=True),
             Mesaj("UNKNOWN", sysid=1),
             OSError("baglanti koptu"),
@@ -229,6 +231,32 @@ class BagilIrtifaOkuyucuTests(unittest.TestCase):
                 mav.mesajlar.append(bozuk)
                 self.assertIsNone(okuyucu.oku())
                 self.assertIsNone(okuyucu.oku())
+
+    def test_yabanci_veya_adsiz_kaynak_cache_e_dokunmaz(self):
+        """D-389 (B1): yabanci/adsiz paket KANIT DEGILDIR — atlanir.
+
+        Eski davranis (gecersiz kil) ucuncu bir tarafa bizi kor etme
+        yetkisi veriyordu: D-387'de olculdu, yabanci trafik altinda
+        erisilebilirlik 0/193. Sizinti kapisi ayri testte durur:
+        yabancinin DEGERI hicbir zaman donmez.
+        """
+        yabancilar = [
+            _p(130_000, sysid=99, time_boot_ms=2),   # yabanci arac
+            _p(130_000, sysid=True, time_boot_ms=2),  # adsiz/bozuk kimlik
+            _p(130_000, sysid=0, time_boot_ms=2),     # rezerv kimlik
+        ]
+        for yabanci in yabancilar:
+            with self.subTest(yabanci=yabanci):
+                saat = SahteSaat()
+                mav = CanliAkis([_p(30_000, time_boot_ms=1)])
+                okuyucu = kanit.BagilIrtifaOkuyucu(
+                    mav, 1.0, beklenen_sysid=1, monotonic=saat)
+                self.assertEqual(30.0, okuyucu.oku())
+                mav.mesajlar.append(yabanci)
+                # Yabanci paket ne DEGER getirir ne cache SILER:
+                self.assertEqual(30.0, okuyucu.oku(),
+                                 "yabanci paket cache'i sildi (D-389 B1) "
+                                 "ya da yabanci deger sizdi")
 
     def test_gecersiz_kurucu_parametreleri_reddedilir(self):
         for tazelik in (True, 0, -1, float("nan"), float("inf"), "1"):
@@ -272,11 +300,37 @@ class InisKanitiTests(unittest.TestCase):
         self.assertFalse(kanit.yerde_mi(SahteMav([_e(), _p(1000)]), ardisik=1))
 
     def test_irtifa_beklerken_in_air_mesaji_yutulmaz(self):
+        # D-389 (A2): IN_AIR artik terminal DEGIL — ilerlemeyi sifirlar.
+        # Korunan ozellik AYNI: IN_AIR'in yarim biraktigi cift SAYILMAZ.
+        # IN_AIR'den sonra yalniz IKI temiz cift var -> 3'e ulasilamaz.
+        mav = SahteMav([
+            _e(), _e(2), _p(100),
+            _e(), _p(100), _e(), _p(100),
+        ])
+        self.assertFalse(kanit.yerde_mi(mav))
+
+    def test_in_air_sonrasi_uc_temiz_cift_kanit_uretir(self):
+        """D-389 (A2): alcalmadaki IN_AIR bekleme penceresini oldurmez.
+
+        D-387 BULGU A: eski sozlesmede ilk IN_AIR terminal'di; yayinci tek
+        cagri + exit 3 ile IHA_LANDED'i hic yayinlamiyordu (soket birikintisi
+        temas SONRASI cagriyi da dusuruyordu). Yeni sozlesme: sayac sifirlanir,
+        okuma son tarihe kadar surer; IN_AIR'den sonra UC temiz cift -> True.
+        """
         mav = SahteMav([
             _e(), _e(2), _p(100),
             _e(), _p(100), _e(), _p(100), _e(), _p(100),
         ])
-        self.assertFalse(kanit.yerde_mi(mav))
+        self.assertTrue(kanit.yerde_mi(mav))
+
+    def test_yabanci_extended_kaniti_dusuremez(self):
+        """D-389 (B1 kardesi): pine uymayan kaynak atlanir, terminal olmaz."""
+        mav = SahteMav([
+            _e(sysid=1), _e(2, sysid=99), _p(100, sysid=1),
+            _e(sysid=1), _p(100, sysid=1), _e(sysid=1), _p(100, sysid=1),
+        ])
+        self.assertTrue(kanit.yerde_mi(mav, beklenen_sysid=1),
+                        "yabanci EXTENDED inis kanitini dusurdu")
 
     def test_tek_yerde_mesaji_uc_irtifayi_kanit_saymaz(self):
         self.assertFalse(kanit.yerde_mi(

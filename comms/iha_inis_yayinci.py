@@ -102,6 +102,11 @@ def _arg_parser():
     parser.add_argument(
         "--kanit-timeout", required=True, type=float,
         help="İniş kanıtı için toplam çalışma süresi (saniye)")
+    parser.add_argument(
+        "--sysid", type=int, default=None,
+        help="Beklenen MAVLink sistem kimliği (D-389: verilirse iniş kanıtı "
+             "pini beyana dayanır; ArduPilot varsayılanı 1). Verilmezse ilk "
+             "görülen kaynak pinlenir.")
     parser.add_argument("--serial", help="SiK telsiz seri portu")
     parser.add_argument("--baud", type=int,
                         help="SiK seri baud değeri (verilmezse link varsayılanı)")
@@ -141,6 +146,8 @@ def main(argv=None):
         parser.error("--baud pozitif olmalı")
     if not math.isfinite(args.kanit_timeout) or args.kanit_timeout <= 0:
         parser.error("--kanit-timeout sonlu ve pozitif olmalı")
+    if args.sysid is not None and not 1 <= args.sysid <= 255:
+        parser.error("--sysid 1..255 aralığında olmalı")
     if not math.isfinite(args.heartbeat_sure) or args.heartbeat_sure < 0:
         parser.error("--heartbeat-sure sonlu ve negatif olmayan olmalı")
     if (not math.isfinite(args.heartbeat_aralik)
@@ -167,13 +174,21 @@ def main(argv=None):
 
     try:
         try:
-            mav.inis_kaniti_deadline_monotonic = (
-                time.monotonic() + args.kanit_timeout)
+            son_tarih = time.monotonic() + args.kanit_timeout
+            mav.inis_kaniti_deadline_monotonic = son_tarih
         except (AttributeError, TypeError, ValueError) as exc:
             print(f"[İHA] HATA: MAVLink son tarihi kurulamadı: {exc}",
                   file=sys.stderr)
             return 2
-        if not yerde_mi(mav):
+        # D-389 (A1): yerde_mi son tarihe kadar bekler (A2); yine de erken
+        # False donerse (gecici istisna / beklenen kaynaktan bozuk paket)
+        # sure kaldigi surece YENIDEN denenir — tek atis gorevi olduremez.
+        yerde = False
+        while not yerde and time.monotonic() < son_tarih:
+            yerde = yerde_mi(mav, beklenen_sysid=args.sysid)
+            if not yerde:
+                time.sleep(0.05)   # bozuk paket firtinasinda sicak dongu olmasin
+        if not yerde:
             print("[İHA] İniş kanıtı doğrulanmadı; IHA_LANDED yayınlanmadı.",
                   file=sys.stderr)
             return 3

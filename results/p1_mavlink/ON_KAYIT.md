@@ -79,3 +79,26 @@ içinde **karakterizasyon testi** olarak kilitlendi (`AcikBulgular`) — bunlar
 **P1 KAPANMADI.** İki bulgu mimar kararına bağlanmadan paket "bitti" sayılmaz
 (plan v2: kapısız iş bitti sayılmaz). Ayrıntı ve seçenekler: `REVIEW_LOG.md`
 **D-387**.
+
+---
+
+## 6. KAPANIŞ (2026-09-02 gece — D-389 kararı uygulandı)
+
+> ⬆ **SONRADAN TAMAMLANDI → D-389.**
+
+Mimar kararı (Fable 5, kullanıcının açık tam-yetki beyanıyla):
+**A1+A2** (yayıncı yeniden dener + `yerde_mi` son tarihe kadar bekler) ve
+**B1** (yabancı/adsız kaynak cache'e dokunmaz) — ön kayıt:
+`results/d389_karar/ON_KAYIT.md`.
+
+Uygulama sonrası **bu ön kaydın ÖZGÜN ölçütleri, gevşetilmeden, geçti**:
+- **G3 (özgün):** alçalan profil + son tarih → `yerde_mi` **True** (K1) ✓
+- **G5(2) (özgün):** yabancı trafik altında erişilebilirlik **%100**
+  (0/193 → tüm okumalar), sızıntı yine 0 (K4) ✓
+- Ek: soket birikintisi kanıtı düşüremiyor (K2), IN_AIR'de süre dolana dek
+  bekleyip yine False (K3 — fail-closed korundu), yabancı EXTENDED kanıtı
+  düşüremiyor (K5).
+
+`AcikBulgular` karakterizasyon sınıfı, D-387 §4'te ilan edildiği gibi
+**bilerek** `D389Kapilari`ne çevrildi. **P1 KAPANDI** (yazılım tarafı;
+gerçek Pixhawk akışı Faz B).

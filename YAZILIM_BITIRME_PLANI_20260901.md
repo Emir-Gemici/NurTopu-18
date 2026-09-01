@@ -47,7 +47,7 @@ manuel paraşüt yalnız emniyet için son çare kabul edilir.
 
 ### Faz A — aviyoniksiz yazılım (1–4 Eylül)
 
-**P1 · MAVLink katmanı CANLI** — 🟡 **KOŞTU, KAPANMADI (2026-09-02 · D-387).**
+**P1 · MAVLink katmanı CANLI** — ✅ **KAPANDI (2026-09-02 gece · D-387 + D-389).** İki bulgu mimar kararıyla (A1+A2, B1) kapatıldı; özgün G3/G5(2) ölçütleri gevşetilmeden geçti. Gerçek Pixhawk Faz B.
 Kuruldu ve `scripts/sahte_pixhawk.py` + 14 nöbetçiyle gerçek çerçeveler
 üzerinden koştu: G1/G2/G3b/G4/G6/G7/G8 GEÇTİ. **İki bulgu mimar kararına
 açık:** (A) `yerde_mi` alçalmada 10 s son tarihe rağmen 0,002 s'de düşüyor,

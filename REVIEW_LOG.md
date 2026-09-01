@@ -27078,3 +27078,60 @@ bayt-es).
 
 **P2 KAPANDI** (yazilim tarafi). 433 MHz RF olcumu Faz B'de (5 Eylul).
 
+
+## D-389 — MIMAR KARARI: D-387'nin iki bulgusu kapatildi (A1+A2, B1); P1 KAPANDI
+
+**Tarih:** 2026-09-02 (gece) · **Karar: Claude 2 — Fable 5, MIMAR yetkisiyle**
+(kullanici ayni gece: "tum yetkiyi veriyorum acikca") · **Uygulama: ayni
+oturum** · **On kayit:** `results/d389_karar/ON_KAYIT.md` (K1-K7 uygulamadan
+once yazildi)
+
+### 1. Karar
+
+- **A -> A1+A2:** `yerde_mi` icin ON_GROUND disi mesru `landed_state` artik
+  terminal degil — ilerlemeyi sifirlar, okuma son tarihe kadar surer (A2).
+  `iha_inis_yayinci` False'ta sure kaldikca yeniden dener + `--sysid` bayragi
+  acildi (A1). "Art arda 3 temiz cift" ve sure dolunca False AYNEN korundu;
+  beklenen kaynaktan BOZUK alan yine terminal.
+- **B -> B1:** yabanci/adsiz kaynakli paket KANIT DEGILDIR — cache'e dokunmaz,
+  atlanir. Beklenen kaynaktan bozuk alan cache'i silmeye DEVAM eder.
+  Ayni kural `yerde_mi` kaynak pinine de uygulandi (yabanci paket kaniti
+  dusuremez); pin istege bagli `beklenen_sysid` beyanina baglanabilir.
+- **Alt-karar (uygulamada netlesti, kayda gecti):** ON_GROUND + tavan ustu
+  irtifa CELISKISI de terminal degil, sifirlayici sayildi — inis sonu
+  salinimlarinda A1 dongusuyle sonuc esdeger, icerisi daha temiz.
+
+### 2. Olcum (on kayittaki olcutlerle, gevsetilmeden)
+
+| olcut | onceki (D-387) | simdi |
+|---|---|---|
+| K1 alcalan profil + 10 s son tarih | 0,002 s'de False | **True** |
+| K2 soket birikintisi (temas sonrasi) | 0,000 s'de False | **True** |
+| K3 bastan sona IN_AIR | False (aninda) | **False (sure dolunca)** — fail-closed korundu |
+| K4 yabanci trafik altinda erisilebilirlik | 0/193 (%0) | **%100**, sizinti yine 0 |
+| K5 yabanci EXTENDED kaniti dusurur mu | evet (terminal) | **hayir** |
+
+`AcikBulgular` karakterizasyon sinifi D-387 §4'te ilan edildigi gibi BILEREK
+`D389Kapilari`ne cevrildi; `test_inis_kaniti.py`'de eski sozlesmeyi kilitleyen
+iki test yeni sozlesmeye tasindi (her degisiklige D-389 yorumu dusuldu,
+korudugu ozellik acikca yazildi: IN_AIR'in yarim biraktigi cift SAYILMAZ).
+
+### 3. P1 on kaydinin ozgun olculeriyle kapanis
+
+P1/G3 ve P1/G5(2) **yazildigi haliyle** artik geciyor (dusus kaydi durur,
+gevsetme yok): `results/p1_mavlink/ON_KAYIT.md` §6.
+
+### 4. Kapilar
+
+`test_inis_kaniti` 26 OK (+3 yeni sozlesme testi) · `test_iha_inis_yayinci`
+12 OK · `test_p1_canli_mavlink` 17 OK (K1-K5 dahil) · genel kapi 15/15 ·
+tam suit **1495 test OK** · jetson_paket aynasi tazelendi.
+
+### 5. Kullanici onayi bekleyen kirmizi cizgi
+
+Karar gece, kullanicinin acik tam-yetki beyaniyla verildi. Sabah gorunurluk
+icin ozet: **inis kaniti artik alcalmayi bekleyebiliyor ve yabanci MAVLink
+kaynaklari bizi kor edemiyor; hicbir fail-closed kapisi gevsetilmedi**
+(IN_AIR'de asla True denmez — K3; yabancidan deger asla okunmaz — K4).
+Itiraz halinde geri alma tek commit'liktir.
+

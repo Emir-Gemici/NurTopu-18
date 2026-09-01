@@ -184,13 +184,13 @@ class CanliMavlinkAkisi(unittest.TestCase):
 
 
 @unittest.skipIf(mavutil is None, "pymavlink kurulu degil")
-class AcikBulgular(unittest.TestCase):
-    """D-387 — canli kosumun ORTAYA CIKARDIGI iki davranis.
+class D389Kapilari(unittest.TestCase):
+    """D-389 karari uygulandi: D-387'nin iki bulgusu kapandi.
 
-    🔴 BU TESTLER "DOGRU DAVRANIS" DEGIL, **OLCULEN** DAVRANISI kilitler.
-    Ikisi de mimar kararina acik (P1 kapanmadan once karara baglanacak);
-    karar davranisi degistirirse BU TESTLER BILEREK guncellenir. Amac:
-    davranisin sessizce degismesini ya da sessizce kalmasini engellemek.
+    Bu sinif onceki `AcikBulgular` karakterizasyon testlerinin BILEREK
+    guncellenmis halidir (D-387 §4'te ilan edildigi gibi). Olcutler
+    `results/d389_karar/ON_KAYIT.md` §2'de uygulamadan ONCE yazildi.
+    P1 on kaydinin ozgun G3 ve G5(2) olcutleri artik GEVSETILMEDEN gecer.
     """
 
     def setUp(self):
@@ -202,30 +202,37 @@ class AcikBulgular(unittest.TestCase):
         self.addCleanup(sp.dur)
         return sp
 
-    def test_BULGU_A_alcalma_sirasindaki_cagri_ANINDA_dusuyor(self):
-        """`--kanit-timeout` penceresi ALCALMADA kullanilmiyor.
-
-        Olculen (2026-09-02): 10 s son tarihle cagri, ilk IN_AIR orneginde
-        0,002 s icinde False. `iha_inis_yayinci` bunu TEK KEZ cagirir ve
-        False'ta exit 3 -> IHA_LANDED hic yayinlanmaz -> IKA GO alamaz.
-        """
+    def test_K1_alcalma_sirasinda_baslatilan_dogrulama_TEMASI_bekliyor(self):
+        """D-387/G3 OZGUN olcut: alcalan profil + son tarih -> True."""
         self.mav.inis_kaniti_deadline_monotonic = time.monotonic() + 10.0
         with self._sahte(senaryo="inis", irtifa_m=3.0, inis_suresi_s=1.0):
+            sonuc = kanit.yerde_mi(self.mav, ardisik=3, tavan_m=1.0)
+        self.assertTrue(sonuc, "ON_KAYIT K1: alcalma sirasinda baslatilan "
+                               "dogrulama temasi bekleyip kanit uretmeli (A2)")
+
+    def test_K2_soket_birikintisi_kaniti_dusuremez(self):
+        """Temas SONRASI cagri, birikmis eski IN_AIR'lere ragmen True."""
+        with self._sahte(senaryo="inis", irtifa_m=3.0, inis_suresi_s=1.0):
+            time.sleep(1.6)          # arac indi; sokette eski IN_AIR birikti
+            self.mav.inis_kaniti_deadline_monotonic = time.monotonic() + 5.0
+            sonuc = kanit.yerde_mi(self.mav, ardisik=3, tavan_m=1.0)
+        self.assertTrue(sonuc, "ON_KAYIT K2: soket birikintisindeki eski "
+                               "IN_AIR paketleri kaniti dusurdu")
+
+    def test_K3_havada_asla_yerde_denmez(self):
+        """Fail-closed korunmus: bastan sona IN_AIR -> sure dolar, False."""
+        self.mav.inis_kaniti_deadline_monotonic = time.monotonic() + 1.5
+        with self._sahte(senaryo="ucus", irtifa_m=30.0):
             t0 = time.monotonic()
             sonuc = kanit.yerde_mi(self.mav, ardisik=3, tavan_m=1.0)
             gecen = time.monotonic() - t0
-        self.assertFalse(sonuc, "davranis degisti: alcalmada artik bekliyor "
-                                "— D-387 karari uygulandiysa bu test guncellenmeli")
-        self.assertLess(gecen, 1.0,
-                        "son tarih penceresi artik kullaniliyor — D-387 "
-                        "karari uygulandiysa bu test guncellenmeli")
+        self.assertFalse(sonuc, "ON_KAYIT K3: IN_AIR akisinda True dondu — "
+                                "fail-closed BOZULDU")
+        self.assertGreaterEqual(gecen, 1.0,
+                                "sure dolmadan False dondu — A2 beklemiyor")
 
-    def test_BULGU_B_yabanci_trafik_irtifayi_TAMAMEN_kesiyor(self):
-        """Yabanci sysid akisi altinda erisilebilirlik 0 (olculen: 0/193).
-
-        Sizinti YOK (G5a) — ama ucuncu bir MAVLink kaynagi ayni porta
-        yayin yaparsa irtifa hic okunamaz -> mpp None -> her kare NO_ROUTE.
-        """
+    def test_K4_yabanci_trafik_altinda_erisilebilirlik(self):
+        """D-387/G5(2) OZGUN olcut: erisilebilirlik >= %90, sizinti 0."""
         okuyucu = kanit.BagilIrtifaOkuyucu(self.mav, TELEMETRI_IRTIFA_TAZELIK_S,
                                            beklenen_sysid=SYSID)
         self.assertTrue(okuyucu.baslat())
@@ -239,11 +246,27 @@ class AcikBulgular(unittest.TestCase):
                 time.sleep(0.01)
             self.assertGreater(sp.gonderilen["yabanci_konum"], 0)
         dolu = [d for d in okumalar if d is not None]
-        self.assertEqual(
-            len(dolu), 0,
-            f"davranis degisti: yabanci trafik altinda {len(dolu)}/"
-            f"{len(okumalar)} okuma deger dondu — D-387 karari uygulandiysa "
-            f"bu test guncellenmeli")
+        oran = len(dolu) / len(okumalar)
+        self.assertGreaterEqual(
+            oran, 0.90,
+            f"ON_KAYIT K4: yabanci trafik altinda erisilebilirlik "
+            f"{oran:.1%} (< %90) — B1 uygulanmamis")
+        self.assertTrue(all(d < 40.0 for d in dolu),
+                        "ON_KAYIT K4: yabanci deger SIZDI — G5a bozuldu")
+
+    def test_K5_yabanci_EXTENDED_inis_kanitini_dusuremez(self):
+        """Beklenen sysid beyanliyken yabanci EXTENDED akisi kaniti bozamaz."""
+        self.mav.inis_kaniti_deadline_monotonic = time.monotonic() + 6.0
+        yerdeki = self._sahte(senaryo="yerde", sysid=SYSID)
+        yerdeki.baslat()
+        # Ayni porta YABANCI bir arac HAVADA oldugunu soyluyor:
+        yabanci = self._sahte(senaryo="ucus", sysid=YABANCI_SYSID,
+                              irtifa_m=130.0)
+        yabanci.baslat()
+        sonuc = kanit.yerde_mi(self.mav, ardisik=3, tavan_m=1.0,
+                               beklenen_sysid=SYSID)
+        self.assertTrue(sonuc, "ON_KAYIT K5: yabanci EXTENDED_SYS_STATE "
+                               "inis kanitini dusurdu — B1 kardesi eksik")
 
 
 @unittest.skipIf(mavutil is None, "pymavlink kurulu degil")

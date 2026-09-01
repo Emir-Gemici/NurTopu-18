@@ -223,11 +223,20 @@ class BagilIrtifaOkuyucu:
             return False
 
         kaynak = _mesaj_kaynagi(mesaj)
+        if kaynak != self._beklenen_sysid:
+            # D-389 (B1): yabanci/adsiz kaynagin paketi bizim aracimiz
+            # hakkinda KANIT TASIMAZ — cache'e dokunmaz, atlanir. Eski
+            # davranis (gecersiz kil) ucuncu bir tarafa bizi kor etme yetkisi
+            # veriyordu (D-387: erisilebilirlik 0/193). Sizinti kapisi
+            # degismedi: deger ASLA yabanci kaynaktan yazilmaz.
+            return False
         uzak_ms = _uzak_zaman_ms(mesaj)
         irtifa_m = _bagil_irtifa_m(mesaj)
-        if (kaynak != self._beklenen_sysid or uzak_ms is None
-                or irtifa_m is None or not math.isfinite(irtifa_m)
+        if (uzak_ms is None or irtifa_m is None
+                or not math.isfinite(irtifa_m)
                 or irtifa_m <= 0.0 or not math.isfinite(gelis)):
+            # BEKLENEN kaynaktan bozuk alan: kendi hattimizdaki bozulma
+            # gercek kotu haberdir — cache silinir (D-389'da KORUNDU).
             self._gecersiz_kil()
             return False
 
@@ -381,18 +390,20 @@ class BagilIrtifaOkuyucu:
             return self._son_konum
 
 
-def yerde_mi(mav, ardisik=3, tavan_m=1.0) -> bool:
+def yerde_mi(mav, ardisik=3, tavan_m=1.0, beklenen_sysid=None) -> bool:
     """Bağlantıyı tek sahiplenerek iniş kanıtını doğrula."""
     sahip = object()
     if not _mav_sahiplen(mav, sahip):
         return False
     try:
-        return _yerde_mi_sahipli(mav, ardisik=ardisik, tavan_m=tavan_m)
+        return _yerde_mi_sahipli(mav, ardisik=ardisik, tavan_m=tavan_m,
+                                 beklenen_sysid=beklenen_sysid)
     finally:
         _mav_sahipligini_birak(mav, sahip)
 
 
-def _yerde_mi_sahipli(mav, ardisik=3, tavan_m=1.0) -> bool:
+def _yerde_mi_sahipli(mav, ardisik=3, tavan_m=1.0,
+                      beklenen_sysid=None) -> bool:
     """Pixhawk yerde + düşük bağıl irtifa kanıtını art arda doğrula.
 
     Her ON_GROUND mesajı ancak ardından gelen ilk taze
@@ -401,6 +412,19 @@ def _yerde_mi_sahipli(mav, ardisik=3, tavan_m=1.0) -> bool:
     IN_AIR durumu filtre tarafından sessizce tüketilemez. Çağıran,
     ``mav.inis_kaniti_deadline_monotonic`` alanına mutlak ve sonlu bir çalışma
     son tarihi koymalıdır; alan yoksa fonksiyon okumadan fail-closed döner.
+
+    D-389 (A2): ON_GROUND dışı meşru ``landed_state`` artık terminal DEĞİLDİR;
+    ilerlemeyi sıfırlar ve okuma son tarihe kadar sürer. Böylece alçalma
+    sırasında (ya da soket birikintisinde eski IN_AIR varken) başlatılan
+    doğrulama, gerçek temastan sonra kanıtı üretebilir. "Art arda ``ardisik``
+    temiz çift" şartı ve süre dolunca False (fail-closed) AYNEN korunur;
+    beklenen kaynaktan BOZUK alan yine terminaldir.
+
+    D-389 (B1 kardeşi): kaynak pinine uymayan mesaj terminal değil, ATLANIR —
+    yabancı bir araç iniş kanıtımızı düşüremez. ``beklenen_sysid`` verilirse
+    pin beyana dayanır; verilmezse ilk görülen EXTENDED_SYS_STATE kaynağı
+    pinlenir (kalıntı risk: ilk paket yabancıysa pin yanlış olur ve süre
+    dolar — sahada ``--sysid`` beyanı önerilir).
     """
     if (isinstance(ardisik, bool) or not isinstance(ardisik, int)
             or ardisik <= 0):
@@ -426,10 +450,15 @@ def _yerde_mi_sahipli(mav, ardisik=3, tavan_m=1.0) -> bool:
     if not math.isfinite(deadline):
         return False
 
+    if beklenen_sysid is not None and (
+            isinstance(beklenen_sysid, bool)
+            or not isinstance(beklenen_sysid, int)
+            or not 1 <= beklenen_sysid <= 255):
+        return False
+
     dogrulanan = 0
     irtifa_bekleniyor = False
-    kanit_kaynagi = None
-    beklenen_irtifa_kaynagi = None
+    kanit_kaynagi = beklenen_sysid
     while dogrulanan < ardisik:
         kalan = deadline - time.monotonic()
         if kalan <= 0:
@@ -451,37 +480,52 @@ def _yerde_mi_sahipli(mav, ardisik=3, tavan_m=1.0) -> bool:
         if tip == MESAJ_EXTENDED_SYS_STATE:
             kaynak = _mesaj_kaynagi(mesaj)
             if kaynak is None:
-                return False
+                # Adsiz kaynak kanit degildir; D-389: atla, dusurme.
+                continue
             if kanit_kaynagi is None:
                 kanit_kaynagi = kaynak
             elif kaynak != kanit_kaynagi:
-                return False
+                # D-389 (B1 kardesi): pine uymayan kaynak ATLANIR — yabanci
+                # arac inis kanitimizi teker paketle dusuremez.
+                continue
             try:
                 durum = getattr(mesaj, "landed_state", None)
             except Exception:
                 return False
-            if (isinstance(durum, bool) or not isinstance(durum, int)
-                    or durum != yerde_degeri):
+            if isinstance(durum, bool) or not isinstance(durum, int):
+                # Beklenen kaynaktan BOZUK alan: terminal (fail-closed).
                 return False
+            if durum != yerde_degeri:
+                # D-389 (A2): ON_GROUND disi mesru durum terminal degil —
+                # ilerleme sifirlanir, okuma son tarihe kadar surer. Boylece
+                # alcalma/birikinti sirasinda baslatilan dogrulama gercek
+                # temastan sonra kaniti uretebilir.
+                dogrulanan = 0
+                irtifa_bekleniyor = False
+                continue
             irtifa_bekleniyor = True
-            beklenen_irtifa_kaynagi = kaynak
             continue
 
         if tip == MESAJ_GLOBAL_POSITION_INT:
             if not irtifa_bekleniyor:
                 continue
             kaynak = _mesaj_kaynagi(mesaj)
-            if (kaynak is None or kaynak != beklenen_irtifa_kaynagi
-                    or kaynak != kanit_kaynagi):
-                return False
+            if kaynak is None or kaynak != kanit_kaynagi:
+                # D-389: pin disi konum kanit degil — cift bozulmaz, atlanir;
+                # bizim kaynaktan gelecek ilk konum cifti tamamlar.
+                continue
             bagil_irtifa = _bagil_irtifa_m(mesaj)
             if bagil_irtifa is None:
+                # Beklenen kaynaktan bozuk irtifa: terminal (fail-closed).
                 return False
             if bagil_irtifa >= tavan:
-                return False
+                # Yerde diyen araca yuksek irtifa: celiski — ilerleme sifirla
+                # (D-389: terminal degil; inis sonu salinimlarinda toparlanir).
+                dogrulanan = 0
+                irtifa_bekleniyor = False
+                continue
             dogrulanan += 1
             irtifa_bekleniyor = False
-            beklenen_irtifa_kaynagi = None
             continue
 
         return False
