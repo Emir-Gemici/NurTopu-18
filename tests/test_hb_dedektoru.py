@@ -75,13 +75,24 @@ class SozlesmeKaynagiTests(unittest.TestCase):
             "birden secebilir")
 
     def test_KROMA_esigi_ORTAK(self):
-        """Iki dedektor de ayni kirmizi esigini kullanir (ciplak sayi yok)."""
+        """Iki dedektor de ayni kirmizi esigini kullanir (ciplak sayi yok).
+
+        D-379 refaktoru kroma satirini `_hb_ham_kirmizi` yardimcisina tasidi
+        (sekil puani HAM katmani okuyabilsin diye); denetim dolaylamayi izler:
+        yardimci ORTAK sabiti kullanmali, `hb_maskesi` de yardimciyi cagirmali.
+        """
         kaynak = (KOK / "codes" / "karar_sozlesmesi.py").read_text(
             encoding="utf-8")
+        yardimci = kaynak[kaynak.index("def _hb_ham_kirmizi("):
+                          kaynak.index("def hb_maskesi(")]
+        self.assertIn("BARIYER_KROMA_ESIGI", yardimci,
+                      "ham kirmizi katmani kendi kroma esigini yaziyor "
+                      "(madde 16)")
         govde = kaynak[kaynak.index("def hb_maskesi("):
                        kaynak.index("def hb_konumu(")]
-        self.assertIn("BARIYER_KROMA_ESIGI", govde,
-                      "HB dedektoru kendi kroma esigini yaziyor (madde 16)")
+        self.assertIn("_hb_ham_kirmizi(", govde,
+                      "hb_maskesi ortak ham katmani kullanmiyor — iki yol "
+                      "sessizce ayrisabilir")
         self.assertGreater(BARIYER_KROMA_ESIGI, 0)
 
     def test_HB_kenari_SARTNAMEDEN(self):

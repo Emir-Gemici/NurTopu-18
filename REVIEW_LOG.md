@@ -26438,3 +26438,90 @@ olduğu bir kez daha ölçülmüş oldu.
   iddia taşımaz.
 - T100 kıyası üç farklı model sürümü içindir; `icinde` sütunu sürümler arası
   başarım kıyası **değildir** (payda da değişiyor: 252 → 248).
+
+---
+
+### D-379 · ✅ T198 KAPANDI — HB ŞEKİL DOĞRULAMASI: otomobil yanlış pozitifi kare düzeyinde **%100 → %4,5** · ve yol boyunca İKİ ölçüm tuzağı kendi kapılarımla yakalandı (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
+**Ön kayıt:** `results/hb_sekil/ON_KAYIT.md` — puan tanımı, türetme kuralı
+(pozitif %0,5 dilimi × 0,85) ve kabul ölçütleri (P1/N1) **sonuç görülmeden**.
+**Ham çıktı:** `results/hb_sekil/olcum_20260901.json` (260 pozitif + 67 + 111
+negatif, kare kare). **Kod:** `codes/karar_sozlesmesi.py`
+(`_hb_ham_kirmizi` · `hb_sekil_sablonu` · `hb_sekil_puani` ·
+`hb_konumu(sekil_esigi=…)` · `HB_SEKIL_ESIGI`). **Nöbetçi:**
+`tests/test_t198_hb_sekil.py` (12). **Betik:** `168_hb_sekil_olcumu.py`.
+
+#### 1. Kapatılan boşluk ve tasarım
+
+D-295: 67 otopark karesinin **67'sinde** kırmızı OTOMOBİL HB sanılmıştı;
+ölçek denetimi (D-344) doğru boyuttaki sahtekârı ayıramaz. Şekil puanı:
+**ham kırmızı** katman (kapama ve kutu doldurma ÖNCESİ — `hb_maskesi`
+çıktısında şekil bilgisi yoktur, ölçüldü: poster önizlemesi solidity 1,0)
+→ `minAreaRect` ile ters döndür → 128² tuval → **basılı posterimizin matbaa
+föyü SAYILARINDAN** çizilen şablonla IoU (4 yönelimin en büyüğü).
+
+```text
+poster (tam cozunurluk) 0,918 · 45 derece dondurulmus 0,887
+26 px sentetik ped      0,769 · dolu kirmizi blok        0,290
+```
+
+#### 2. Ön kayıtlı ölçüm ve türetim
+
+```text
+pozitif (t66, 260 ped, uretim aday hattindan): 0,189 - 0,467 (p50 0,339)
+otomobil (67 FP kutusu)                      : 0,076 - 0,178
+TAM AYRIKLIK — ama pay ince: +0,011
+ESIK = %0,5 dilim (0,20772) x 0,85 = 0,17656308851224103
+```
+
+⚠ Sentetik 26 px ped, puanın **en kötü ölçeğidir** (harf 1-2 px kalınlığa
+düşüyor); görev irtifasında ped ~10 kat büyük görünür ve puan poster
+rejimine yaklaşır — bu bir **beklentidir, ölçüm değil** (saha ÖLÇÜLMEDİ).
+
+#### 3. 🔴 TUZAK 1 — kendi nöbetçim ölçümümün ÜRETİMDEN AYRIŞTIĞINI yakaladı
+
+İlk ölçüm **aday düzeyindeydi** (seçilen kutunun puanı): otomobillerin
+64/67'si düşüyor göründü. Nöbetçi testin gerçek-otomobil senaryosu düştü ve
+sebebi açığa çıkardı: `hb_konumu` şekil reddinde **bir sonraki adaya
+düşüyordu** — büyük otomobil reddedilince 26×18 px'lik kırmızı lekeler
+0,18-0,21 ile geçiyor, **kare düzeyinde 59/67 (%88) hâlâ tespit** üretiyordu.
+
+**Düzeltme semantik, eşik değil:** şekil reddi artık **NİHAİDİR** — işlevin
+kendi öncülü gereği (*"sahnede TEK HB vardır; çoklu aday gürültüdür"*)
+ölçeğe uyan EN BÜYÜK aday H değilse daha küçüğü hiç değildir; cevap
+`HEDEF_YOK` çekimserliğidir. Yeniden ölçüldü (üretim semantiği, kare düzeyi):
+
+```text
+P1: 260/260 dogru ped korunuyor (olcek+sekil birlikte)   GECTI
+N1: 67 otomobil karesinden tespit ureten 3 (%4,5)        GECTI (esik <=10)
+N2: kirsal 15 yanlis pozitif -> 1                        (bilgi)
+```
+
+#### 4. 🔴 TUZAK 2 — yuvarlanmış sabit, ölçümden FARKLI davranıyordu
+
+Sözleşmeye ilk yazdığım sabit 4 haneliydi (0,1766). Eşikten **2e-5**
+uzaktaki `frame_000006` ölçümde geçiyor, sabitle düşüyordu — üretim ile
+ölçüm aynı kareyi farklı değerlendirirdi. Sabit artık türetilen değerin
+**birebir kendisi**; nöbetçi JSON'la `assertEqual` (yuvarlama yok) sınıyor.
+
+#### 5. ⚠ BİLİNEN SINIR — gizlenmedi, test kilitledi
+
+**Kusursuz dolu kırmızı kare ~0,29 alır ve GEÇER** (IoU'su şablon doluluk
+oranına eşittir; eşik 0,177). Gerçek otomobiller pürüzlü maskeleriyle
+düşüyor — ideal 2×2 m düz kırmızı levha düşmezdi. Ölçek kapısının *"doğru
+boyutlu sahtekâr"* sınırının şekil karşılığıdır;
+`test_BILINEN_SINIR_dolu_kare_GECIYOR` bu sınırı **bilerek** kilitler
+(davranış sessizce değişirse test haber verir).
+
+#### 6. Kapsam ve kalanlar
+
+- Pozitifler sentetik ve üretecin çizimi (D-295'in çevrimsellik uyarısı
+  geçerli); basılı poster üretecin ölçülmüş geometrik ikizi — 30 Eylül
+  testindeki ped bu şablonun kendisidir. **Yarışma organizasyonunun pedi
+  bilinmiyor** — renk/desen teyidi **insan görevi H-E** olarak açık.
+- Üretime bağlama **T150'dir ve mimar kararıdır**; `sekil_esigi` verilmeyen
+  her çağrı bugünkü davranıştadır. Madde 15: kapı yalnız reddeder.
+- Refaktor `test_hb_dedektoru`'nun kroma-ortaklık denetimini kırdı; denetim
+  dolaylamayı izleyecek şekilde güncellendi (niyet aynı: ortak sabit).
+  Jetson paketi paketleyiciyle tazelendi (kopya bayattı).

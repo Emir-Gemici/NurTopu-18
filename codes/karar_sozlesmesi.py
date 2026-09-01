@@ -1164,6 +1164,36 @@ HB_OLCEK_BANDI = (0.883, 1.258)      # bulunan_kenar / (HB_KENAR_M / mpp)
 HB_KAPAMA_ORANI = 10.0 / 640.0      # cerceve + H harfini TEK parcaya birlestir
 
 
+def _hb_ham_kirmizi(im):
+    """HAM kirmizi katman: kroma esigi + bariyer cikarmasi — KAPAMA ve kutu
+    doldurma UYGULANMAMIS. `hb_maskesi` bunun ustune bolgelestirme yapar;
+    SEKIL bilgisi yalniz bu katmanda yasar (T198/D-379: `hb_maskesi` ciktisi
+    bilerek kutu doldurur, poster onizlemesinde solidity 1,0 olctuk).
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return None
+    lab = _cv2.cvtColor(im.astype(_np.uint8), _cv2.COLOR_BGR2LAB)
+    a = lab[:, :, 1].astype(_np.int16) - 128
+    kirmizi = (a > BARIYER_KROMA_ESIGI).astype(_np.uint8)   # ORTAK esik
+
+    # T67 ILE TUMLEYENLIK — OLCUMLE GEREKCELENDIRILDI.
+    # Ilk surumde sekil filtresi TEK BASINA yetmedi: `sa_000170` karesinde bir
+    # BARIYER PARCASI 37x32 px (en/boy 1,16 -> KARE) olarak kalmis ve gercek
+    # HB'den (25,6 px) BUYUK oldugu icin secilmisti. Yani bariyer, kirilinca
+    # HB'nin sekil bandina girebiliyor.
+    # Cozum: T67'nin ENGEL dedigi piksel HB OLAMAZ. Iki dedektor artik gercek
+    # anlamda TUMLEYENDIR; ayni yapiyi ikisi birden secemez.
+    bar = ince_bariyer_maskesi(im)
+    if bar is not None and bar.shape == kirmizi.shape and bar.any():
+        genis = _cv2.dilate(bar, _cv2.getStructuringElement(
+            _cv2.MORPH_RECT, (5, 5)))
+        kirmizi = _cv2.bitwise_and(kirmizi, 1 - (genis > 0).astype(_np.uint8))
+    return kirmizi
+
+
 def hb_maskesi(bgr):
     """HB pedini isaretle: yuksek kromali KIRMIZI ve KARE yapi.
 
@@ -1183,22 +1213,9 @@ def hb_maskesi(bgr):
     if h < 8 or w < 8:
         return _np.zeros((h, w), _np.uint8)
 
-    lab = _cv2.cvtColor(im.astype(_np.uint8), _cv2.COLOR_BGR2LAB)
-    a = lab[:, :, 1].astype(_np.int16) - 128
-    kirmizi = (a > BARIYER_KROMA_ESIGI).astype(_np.uint8)   # ORTAK esik
-
-    # T67 ILE TUMLEYENLIK — OLCUMLE GEREKCELENDIRILDI.
-    # Ilk surumde sekil filtresi TEK BASINA yetmedi: `sa_000170` karesinde bir
-    # BARIYER PARCASI 37x32 px (en/boy 1,16 -> KARE) olarak kalmis ve gercek
-    # HB'den (25,6 px) BUYUK oldugu icin secilmisti. Yani bariyer, kirilinca
-    # HB'nin sekil bandina girebiliyor.
-    # Cozum: T67'nin ENGEL dedigi piksel HB OLAMAZ. Iki dedektor artik gercek
-    # anlamda TUMLEYENDIR; ayni yapiyi ikisi birden secemez.
-    bar = ince_bariyer_maskesi(im)
-    if bar is not None and bar.shape == kirmizi.shape and bar.any():
-        genis = _cv2.dilate(bar, _cv2.getStructuringElement(
-            _cv2.MORPH_RECT, (5, 5)))
-        kirmizi = _cv2.bitwise_and(kirmizi, 1 - (genis > 0).astype(_np.uint8))
+    kirmizi = _hb_ham_kirmizi(im)
+    if kirmizi is None:
+        return None
 
     kx = max(3, int(round(w * HB_KAPAMA_ORANI)) | 1)
     kirmizi = _cv2.morphologyEx(
@@ -1221,7 +1238,119 @@ def hb_maskesi(bgr):
     return ped
 
 
-def hb_konumu(bgr, mpp=None):
+# ── T198 kalan is (D-379): HB SEKIL DOGRULAMASI ──────────────────────────
+# Sablon geometrisi BASILI POSTERIMIZIN matbaa foyunden (results/hb_baski/
+# OKUBENI.md) — onizleme PNG'sinden DEGIL (kendi kendini sinamak cevrimsel
+# olurdu). Foydeki olculer uretecin kendi cizimimden alinmisti; yani 30 Eylul
+# testindeki gercek ped bu sablonun kendisidir.
+HB_SEKIL_CERCEVE_ORANI = 0.0458        # kirmizi cerceve kalinligi / kenar
+HB_SEKIL_H_KUTU_ORANI = (0.405, 0.482)  # H dis kutusu (en, boy) / kenar
+HB_SEKIL_KOL_ORANI = 0.0955             # H kol kalinligi / kenar
+HB_SEKIL_TUVAL = 128                    # kanonik kiyas tuvali (px)
+# ESIK — UYDURULMADI (D-379): ON_KAYIT'taki kuralla (pozitif %0,5 dilimi x
+# 0,85 payi) t66'nin 260 pedinden turetildi (q=0,20772... x 0,85). TAM
+# HASSASIYETLE yazilidir: 4 haneye yuvarlanan ilk surum, esikten 2e-5
+# uzaktaki bir kareyi olcumden FARKLI degerlendiriyordu — sabit, turetilen
+# degerin BIREBIR kendisi olmak zorundadir (nobetci JSON'la esitligi sinar).
+# Olculen ayrisma: pozitifler 0,189-0,467 · otomobiller 0,076-0,178 (TAM
+# ayrik ama pay ince, +0,011); sentetik 26 px ped puanin EN KOTU olcegi
+# (posterin kendisi 0,918 verdi). KARE DUZEYI (uretim semantigi, sekil reddi
+# NIHAI): 67 otomobil FP karesinin 64'u duser (%4,5 kalir), kirsal 15 -> 1.
+# ⚠ BILINEN SINIR: KUSURSUZ dolu kirmizi kare ~0,29 alir ve GECER (gercek
+# otomobiller puruzlu maskeyle dusuyor) — test_t198_hb_sekil kilitler.
+# Sayiyi degistirmek YENI on kayit ister (D-107).
+HB_SEKIL_ESIGI = 0.17656308851224103
+
+
+def hb_sekil_sablonu(boy=HB_SEKIL_TUVAL):
+    """Kanonik ped sablonu: cerceve halkasi + ortalanmis H. SAYILARDAN cizilir."""
+    import numpy as _np
+    s = _np.zeros((boy, boy), _np.uint8)
+    t = max(1, int(round(boy * HB_SEKIL_CERCEVE_ORANI)))
+    s[:t, :] = 1
+    s[-t:, :] = 1
+    s[:, :t] = 1
+    s[:, -t:] = 1
+    hw = int(round(boy * HB_SEKIL_H_KUTU_ORANI[0]))
+    hh = int(round(boy * HB_SEKIL_H_KUTU_ORANI[1]))
+    kol = max(1, int(round(boy * HB_SEKIL_KOL_ORANI)))
+    x0 = (boy - hw) // 2
+    y0 = (boy - hh) // 2
+    s[y0:y0 + hh, x0:x0 + kol] = 1                      # sol kol
+    s[y0:y0 + hh, x0 + hw - kol:x0 + hw] = 1            # sag kol
+    cy = y0 + (hh - kol) // 2
+    s[cy:cy + kol, x0:x0 + hw] = 1                      # capraz kol
+    return s
+
+
+def hb_sekil_puani(bgr, kutu):
+    """Aday kutusundaki HAM kirmizinin ped sablonuyla IoU'su. Olculemezse None.
+
+    ON_KAYIT (results/hb_sekil/ON_KAYIT.md §2, sonuc gorulmeden donduruldu):
+    ham kirmizi -> minAreaRect ile ters dondur -> siki kirp -> 128x128 ->
+    sablonla IoU; H'nin yonelim belirsizligi icin 0/90/180/270'in en buyugu.
+
+    ⚠ MADDE 15: puan yalniz adayi REDDETMEKTE kullanilir (HEDEF_YOK yonu);
+    serbest alana dokunmaz.
+    """
+    import numpy as _np
+    try:
+        import cv2 as _cv2
+    except ImportError:                      # pragma: no cover
+        return None
+    im = _np.asarray(bgr)
+    if im.ndim != 3 or im.shape[2] != 3 or im.size == 0:
+        return None
+    ham = _hb_ham_kirmizi(im.astype(_np.uint8))
+    if ham is None:
+        return None
+    try:
+        x, y, bw, bh = (int(v) for v in kutu)
+    except (TypeError, ValueError):
+        return None
+    if bw <= 1 or bh <= 1:
+        return None
+    h, w = ham.shape[:2]
+    x0, y0 = max(0, x), max(0, y)
+    x1, y1 = min(w, x + bw), min(h, y + bh)
+    parca = ham[y0:y1, x0:x1]
+    if parca.size == 0 or not parca.any():
+        return None
+    pts = _cv2.findNonZero(parca)
+    (mx, my), (mw, mh), aci = _cv2.minAreaRect(pts)
+    if mw < 2 or mh < 2:
+        return None
+    # Dondurme KIRPMASIN: parca, kosegen boyutlu tuvale ORTALANIR ve tuval
+    # merkezi etrafinda dondurulur — icerik hicbir acida disari tasamaz.
+    ph, pw = parca.shape[:2]
+    D = int(_np.ceil((pw * pw + ph * ph) ** 0.5)) + 4
+    tuval = _np.zeros((D, D), _np.uint8)
+    ox, oy = (D - pw) // 2, (D - ph) // 2
+    tuval[oy:oy + ph, ox:ox + pw] = parca
+    M = _cv2.getRotationMatrix2D((D / 2.0, D / 2.0), aci, 1.0)
+    don = _cv2.warpAffine(tuval, M, (D, D), flags=_cv2.INTER_NEAREST)
+    nz = _cv2.findNonZero(don)
+    if nz is None:
+        return None
+    bx, by, bbw, bbh = _cv2.boundingRect(nz)
+    if bbw < 2 or bbh < 2:
+        return None
+    kirp = don[by:by + bbh, bx:bx + bbw]
+    aday = _cv2.resize(kirp, (HB_SEKIL_TUVAL, HB_SEKIL_TUVAL),
+                       interpolation=_cv2.INTER_NEAREST)
+    sb = hb_sekil_sablonu()
+    en_iyi = 0.0
+    a = aday
+    for _ in range(4):
+        kes = int(_np.count_nonzero((a > 0) & (sb > 0)))
+        bir = int(_np.count_nonzero((a > 0) | (sb > 0)))
+        if bir:
+            en_iyi = max(en_iyi, kes / bir)
+        a = _np.rot90(a)
+    return float(en_iyi)
+
+
+def hb_konumu(bgr, mpp=None, sekil_esigi=None):
     """HB merkezi, kutusu ve piksel kenari. Bulunamazsa None.
 
     Birden fazla aday varsa EN BUYUK secilir (sahnede tek HB vardir; coklu
@@ -1231,11 +1360,18 @@ def hb_konumu(bgr, mpp=None):
     HB 2 m x 2 m oldugundan kenari ~ `HB_KENAR_M / mpp` px olmalidir;
     `HB_OLCEK_BANDI` disinda kalan aday HB SAYILMAZ.
 
-    ⚠ GERIYE DONUK UYUM: `mpp` VERILMEZSE davranis AYNEN eskisi gibidir.
-    Mevcut butun cagri yerleri (olcum betikleri dahil) etkilenmez; denetim
-    yalniz olcegi BILEN cagiran icin acilir.
+    sekil_esigi verilirse (T198 kalan is · D-379) SEKIL DENETIMI uygulanir:
+    adayin ham kirmizisi ped sablonuyla kiyaslanir (`hb_sekil_puani`);
+    esigin altindaki aday HB SAYILMAZ. D-295'in olctugu boslugu kapatir:
+    dogru BOYUTTAKI kirmizi otomobil olcek denetiminden gecer, sekilden
+    gecemez.
 
-    ⚠ Bu denetim serbest alani BUYUTMEZ: yalnizca bir adayi REDDEDEBILIR.
+    ⚠ GERIYE DONUK UYUM: `mpp`/`sekil_esigi` VERILMEZSE davranis AYNEN
+    eskisi gibidir. Mevcut butun cagri yerleri etkilenmez; her denetim
+    yalniz onu BILEN cagiran icin acilir. Uretime baglama T150'dir ve
+    MIMAR KARARIDIR.
+
+    ⚠ Bu denetimler serbest alani BUYUTMEZ: yalnizca aday REDDEDEBILIR.
     Reddedilirse `analyze_path` HEDEF_YOK ile cekimser kalir — fail-closed.
     """
     import numpy as _np
@@ -1254,6 +1390,7 @@ def hb_konumu(bgr, mpp=None):
     # en buyuk aday.
     sira = sorted(range(1, n), key=lambda k: -int(st[k, 4]))
     secilen = None
+    secilen_puan = None
     for i in sira:
         x, y, bw, bh, alan = (int(v) for v in st[i][:5])
         if mpp is not None and mpp > 0:
@@ -1262,19 +1399,36 @@ def hb_konumu(bgr, mpp=None):
                 o = ((bw + bh) / 2.0) / beklenen
                 if not (HB_OLCEK_BANDI[0] <= o <= HB_OLCEK_BANDI[1]):
                     continue          # fiziksel olcege uymuyor -> HB DEGIL
+        if sekil_esigi is not None:
+            puan = hb_sekil_puani(bgr, (x, y, bw, bh))
+            # ⚠ OLCULEMEDI != GECTI: puan uretilemeyen aday da REDDEDILIR
+            # (fail-closed). Sekil denetimi actiysan kanitsiz aday gecmez.
+            if puan is None or puan < float(sekil_esigi):
+                # 🔴 SEKIL REDDI NIHAIDIR — sonraki adaya DUSULMEZ (D-379).
+                # Olculdu: dusme semantigiyle 67 otopark karesinin 59'u,
+                # buyuk otomobil reddedildikten sonra 26x18 px'lik kucuk
+                # kirmizi lekeler uzerinden YINE tespit uretiyordu. Islevin
+                # kendi onculu zaten soyluyor: sahnede TEK HB vardir —
+                # olcege uyan EN BUYUK aday H degilse, daha kucugu HIC
+                # degildir; dogru cevap HEDEF_YOK cekimserligidir.
+                return None
+            secilen_puan = puan
         secilen = i
         break
     if secilen is None:
         return None                   # aday var ama HICBIRI 2 m'lik ped degil
     i = secilen
     x, y, bw, bh, alan = (int(v) for v in st[i][:5])
-    return {
+    sonuc = {
         "merkez": (float(mrk[i][0]), float(mrk[i][1])),
         "kutu": (x, y, bw, bh),
         "kenar_px": float((bw + bh) / 2.0),
         "alan_px": int(alan),
         "aday_sayisi": int(n - 1),
     }
+    if secilen_puan is not None:
+        sonuc["sekil_puani"] = float(secilen_puan)
+    return sonuc
 
 
 def mpp_hb_pedinden(kenar_px, kenar_m=HB_KENAR_M):

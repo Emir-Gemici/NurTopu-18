@@ -1,0 +1,2578 @@
+{
+ "_on_kayit": "results/hb_sekil/ON_KAYIT.md",
+ "esik_turetim": {
+  "dilim": 0.005,
+  "pay": 0.85,
+  "q": 0.20772128060263653,
+  "esik": 0.17656308851224103
+ },
+ "P1": {
+  "tutulan": 260,
+  "n": 260,
+  "oran": 1.0,
+  "gecti": true,
+  "kayip": [],
+  "_semantik": "KARE DUZEYI: olcek+sekil birlikte, uretim gibi"
+ },
+ "N1": {
+  "tespit": 67,
+  "gecen": 3,
+  "oran": 0.04477611940298507,
+  "gecti": true,
+  "gecen_kareler": [
+   "frame_000001_000000600.jpg",
+   "frame_000006_000001416.jpg",
+   "frame_000012_000000624.jpg"
+  ]
+ },
+ "N2": {
+  "tespit": 15,
+  "gecen": 1,
+  "gecen_kareler": [
+   "dji_20260822172613_0038_d__frame_000115_000004620.jpg"
+  ]
+ },
+ "verdikt": "GECTI",
+ "pozitif": [
+  {
+   "kare": "sa_000000.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37950335843680033
+  },
+  {
+   "kare": "sa_000001.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.23789742770410607
+  },
+  {
+   "kare": "sa_000002.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.41308303802317786
+  },
+  {
+   "kare": "sa_000003.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3761745983631403
+  },
+  {
+   "kare": "sa_000004.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3077444336882865
+  },
+  {
+   "kare": "sa_000005.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.38264738598442716
+  },
+  {
+   "kare": "sa_000006.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3556219648860665
+  },
+  {
+   "kare": "sa_000007.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36045142296368987
+  },
+  {
+   "kare": "sa_000008.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.23605730245968104
+  },
+  {
+   "kare": "sa_000009.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24436295544979325
+  },
+  {
+   "kare": "sa_000010.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2763703362505758
+  },
+  {
+   "kare": "sa_000011.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3916571210385643
+  },
+  {
+   "kare": "sa_000012.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4367487684729064
+  },
+  {
+   "kare": "sa_000013.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3705757625183494
+  },
+  {
+   "kare": "sa_000014.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.31741366642174873
+  },
+  {
+   "kare": "sa_000015.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3676330345222201
+  },
+  {
+   "kare": "sa_000016.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.29179936305732485
+  },
+  {
+   "kare": "sa_000017.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3710254372019078
+  },
+  {
+   "kare": "sa_000018.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.31926244852115315
+  },
+  {
+   "kare": "sa_000019.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.21879033745159507
+  },
+  {
+   "kare": "sa_000020.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2752205292702486
+  },
+  {
+   "kare": "sa_000021.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.26965976192707847
+  },
+  {
+   "kare": "sa_000022.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3246607393542349
+  },
+  {
+   "kare": "sa_000023.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3800019009599848
+  },
+  {
+   "kare": "sa_000024.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37657065532572975
+  },
+  {
+   "kare": "sa_000025.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3970755988800166
+  },
+  {
+   "kare": "sa_000026.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3118997530412513
+  },
+  {
+   "kare": "sa_000027.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.34386828160484484
+  },
+  {
+   "kare": "sa_000028.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.22063991122618828
+  },
+  {
+   "kare": "sa_000029.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3641135303265941
+  },
+  {
+   "kare": "sa_000030.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2179838646510535
+  },
+  {
+   "kare": "sa_000031.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27347130761994354
+  },
+  {
+   "kare": "sa_000032.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.26881467544684856
+  },
+  {
+   "kare": "sa_000033.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.30574047274481425
+  },
+  {
+   "kare": "sa_000034.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4179032568895741
+  },
+  {
+   "kare": "sa_000035.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.28027009527333274
+  },
+  {
+   "kare": "sa_000036.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32889314805941544
+  },
+  {
+   "kare": "sa_000037.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3140541536194511
+  },
+  {
+   "kare": "sa_000038.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3450209045990118
+  },
+  {
+   "kare": "sa_000039.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3413584767484438
+  },
+  {
+   "kare": "sa_000040.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.31950018241517697
+  },
+  {
+   "kare": "sa_000041.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2731512325116589
+  },
+  {
+   "kare": "sa_000042.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.29621401462556696
+  },
+  {
+   "kare": "sa_000043.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3164398107925475
+  },
+  {
+   "kare": "sa_000044.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.38015776699029125
+  },
+  {
+   "kare": "sa_000045.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3527213054973106
+  },
+  {
+   "kare": "sa_000046.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.41263862732789286
+  },
+  {
+   "kare": "sa_000047.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3697568141015179
+  },
+  {
+   "kare": "sa_000048.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4623200677392041
+  },
+  {
+   "kare": "sa_000049.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32719435736677116
+  },
+  {
+   "kare": "sa_000050.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.341993020550601
+  },
+  {
+   "kare": "sa_000051.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2935343117810393
+  },
+  {
+   "kare": "sa_000052.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2547716266261514
+  },
+  {
+   "kare": "sa_000053.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4518691093932013
+  },
+  {
+   "kare": "sa_000054.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3634319970026227
+  },
+  {
+   "kare": "sa_000055.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2533051709301416
+  },
+  {
+   "kare": "sa_000056.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3041043283462677
+  },
+  {
+   "kare": "sa_000057.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.366369710467706
+  },
+  {
+   "kare": "sa_000058.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3825261158594492
+  },
+  {
+   "kare": "sa_000059.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2860540711963847
+  },
+  {
+   "kare": "sa_000060.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.46210560555133906
+  },
+  {
+   "kare": "sa_000061.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.20772128060263653
+  },
+  {
+   "kare": "sa_000062.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36800076052856734
+  },
+  {
+   "kare": "sa_000063.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3844356395407904
+  },
+  {
+   "kare": "sa_000064.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.25135986258230747
+  },
+  {
+   "kare": "sa_000065.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4186310707185459
+  },
+  {
+   "kare": "sa_000066.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3301308445420441
+  },
+  {
+   "kare": "sa_000067.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3743756243756244
+  },
+  {
+   "kare": "sa_000068.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.30267116418998996
+  },
+  {
+   "kare": "sa_000069.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.30211060209424084
+  },
+  {
+   "kare": "sa_000070.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.44975629990666804
+  },
+  {
+   "kare": "sa_000071.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4347916450171464
+  },
+  {
+   "kare": "sa_000072.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37162299410928296
+  },
+  {
+   "kare": "sa_000073.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36641159231520676
+  },
+  {
+   "kare": "sa_000074.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2746472462448794
+  },
+  {
+   "kare": "sa_000075.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3528694673668417
+  },
+  {
+   "kare": "sa_000076.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37067059690493737
+  },
+  {
+   "kare": "sa_000077.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.45319171092366967
+  },
+  {
+   "kare": "sa_000078.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27843043235035564
+  },
+  {
+   "kare": "sa_000079.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3059154929577465
+  },
+  {
+   "kare": "sa_000080.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.335077519379845
+  },
+  {
+   "kare": "sa_000081.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3042920029347029
+  },
+  {
+   "kare": "sa_000082.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3659655831739962
+  },
+  {
+   "kare": "sa_000083.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3269504218409328
+  },
+  {
+   "kare": "sa_000084.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.29792696842906047
+  },
+  {
+   "kare": "sa_000085.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.22533206831119545
+  },
+  {
+   "kare": "sa_000086.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.43111470766740845
+  },
+  {
+   "kare": "sa_000087.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4064601589565926
+  },
+  {
+   "kare": "sa_000088.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3062730627306273
+  },
+  {
+   "kare": "sa_000089.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.22407099278979478
+  },
+  {
+   "kare": "sa_000090.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.20999074930619796
+  },
+  {
+   "kare": "sa_000091.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27777334078747706
+  },
+  {
+   "kare": "sa_000092.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2650887573964497
+  },
+  {
+   "kare": "sa_000093.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.23664904945965134
+  },
+  {
+   "kare": "sa_000094.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3964713039951328
+  },
+  {
+   "kare": "sa_000095.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37863690713431647
+  },
+  {
+   "kare": "sa_000096.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3692332950254474
+  },
+  {
+   "kare": "sa_000097.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3049177190968236
+  },
+  {
+   "kare": "sa_000098.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3205362028086814
+  },
+  {
+   "kare": "sa_000099.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3456813104988831
+  },
+  {
+   "kare": "sa_000100.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3751651254953765
+  },
+  {
+   "kare": "sa_000101.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4009045226130653
+  },
+  {
+   "kare": "sa_000102.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4647491349480969
+  },
+  {
+   "kare": "sa_000103.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24449057809006708
+  },
+  {
+   "kare": "sa_000104.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.22433387451055295
+  },
+  {
+   "kare": "sa_000105.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27836812144212525
+  },
+  {
+   "kare": "sa_000106.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.34185794324959334
+  },
+  {
+   "kare": "sa_000107.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2613328167376986
+  },
+  {
+   "kare": "sa_000108.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3621084037792143
+  },
+  {
+   "kare": "sa_000109.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2863018940118615
+  },
+  {
+   "kare": "sa_000110.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3253851196329072
+  },
+  {
+   "kare": "sa_000111.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2388045540796964
+  },
+  {
+   "kare": "sa_000112.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.419138854552946
+  },
+  {
+   "kare": "sa_000113.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.424890962572269
+  },
+  {
+   "kare": "sa_000114.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37271830291070546
+  },
+  {
+   "kare": "sa_000115.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.31955374041239165
+  },
+  {
+   "kare": "sa_000116.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2659141376757957
+  },
+  {
+   "kare": "sa_000117.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36828210446916837
+  },
+  {
+   "kare": "sa_000118.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3665254237288136
+  },
+  {
+   "kare": "sa_000119.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.35364515807320235
+  },
+  {
+   "kare": "sa_000120.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27390419826151285
+  },
+  {
+   "kare": "sa_000121.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4638104511522233
+  },
+  {
+   "kare": "sa_000122.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4586007702182285
+  },
+  {
+   "kare": "sa_000123.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2119607537766703
+  },
+  {
+   "kare": "sa_000124.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2497738300847109
+  },
+  {
+   "kare": "sa_000125.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32255712202236264
+  },
+  {
+   "kare": "sa_000126.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4166496841247198
+  },
+  {
+   "kare": "sa_000127.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3718791064388962
+  },
+  {
+   "kare": "sa_000128.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24850624660510592
+  },
+  {
+   "kare": "sa_000129.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37388038139266105
+  },
+  {
+   "kare": "sa_000130.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24527272727272728
+  },
+  {
+   "kare": "sa_000131.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4674524221453287
+  },
+  {
+   "kare": "sa_000132.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3811016144349478
+  },
+  {
+   "kare": "sa_000133.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4505697566984909
+  },
+  {
+   "kare": "sa_000134.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3088658606793322
+  },
+  {
+   "kare": "sa_000135.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.33142050799623707
+  },
+  {
+   "kare": "sa_000136.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2761018786127168
+  },
+  {
+   "kare": "sa_000137.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.42893954410307233
+  },
+  {
+   "kare": "sa_000138.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2618195517046525
+  },
+  {
+   "kare": "sa_000139.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.35813304078986735
+  },
+  {
+   "kare": "sa_000140.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4324484358038093
+  },
+  {
+   "kare": "sa_000141.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.42579831117150346
+  },
+  {
+   "kare": "sa_000142.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3303137840866642
+  },
+  {
+   "kare": "sa_000143.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.30373218304576144
+  },
+  {
+   "kare": "sa_000144.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.42065270336093524
+  },
+  {
+   "kare": "sa_000145.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36403094923570484
+  },
+  {
+   "kare": "sa_000146.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.316854582249205
+  },
+  {
+   "kare": "sa_000147.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.30465483601226423
+  },
+  {
+   "kare": "sa_000148.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.38020062489722084
+  },
+  {
+   "kare": "sa_000149.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.28584695393759285
+  },
+  {
+   "kare": "sa_000150.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36510384536294466
+  },
+  {
+   "kare": "sa_000151.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24186593492747943
+  },
+  {
+   "kare": "sa_000152.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.30172652571323055
+  },
+  {
+   "kare": "sa_000153.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.319617927994122
+  },
+  {
+   "kare": "sa_000154.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.23970213969271373
+  },
+  {
+   "kare": "sa_000155.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2764625850340136
+  },
+  {
+   "kare": "sa_000156.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.35888196338137907
+  },
+  {
+   "kare": "sa_000157.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3404255319148936
+  },
+  {
+   "kare": "sa_000158.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.21230407523510972
+  },
+  {
+   "kare": "sa_000159.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4044222539229672
+  },
+  {
+   "kare": "sa_000160.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3509252265861027
+  },
+  {
+   "kare": "sa_000161.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.44682176983797256
+  },
+  {
+   "kare": "sa_000162.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.38802056015944614
+  },
+  {
+   "kare": "sa_000163.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2625948259093562
+  },
+  {
+   "kare": "sa_000164.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37216765535349605
+  },
+  {
+   "kare": "sa_000165.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3344978875528112
+  },
+  {
+   "kare": "sa_000166.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.332805956258725
+  },
+  {
+   "kare": "sa_000167.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.28321576963957873
+  },
+  {
+   "kare": "sa_000168.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.41618221671590583
+  },
+  {
+   "kare": "sa_000169.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3401328273244782
+  },
+  {
+   "kare": "sa_000170.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.40049240869922037
+  },
+  {
+   "kare": "sa_000171.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32021972695694323
+  },
+  {
+   "kare": "sa_000172.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3165641885597168
+  },
+  {
+   "kare": "sa_000173.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3740707701457032
+  },
+  {
+   "kare": "sa_000174.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2896465134247634
+  },
+  {
+   "kare": "sa_000175.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3729359313077939
+  },
+  {
+   "kare": "sa_000176.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2690554266975926
+  },
+  {
+   "kare": "sa_000177.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4485932974762102
+  },
+  {
+   "kare": "sa_000178.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2385478906391454
+  },
+  {
+   "kare": "sa_000179.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3307835637932725
+  },
+  {
+   "kare": "sa_000180.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3714964370546318
+  },
+  {
+   "kare": "sa_000181.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37505820992828537
+  },
+  {
+   "kare": "sa_000182.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3737746287489081
+  },
+  {
+   "kare": "sa_000183.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.33011448481831757
+  },
+  {
+   "kare": "sa_000184.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3437326933727155
+  },
+  {
+   "kare": "sa_000185.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.28342764753435734
+  },
+  {
+   "kare": "sa_000186.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3731501921347396
+  },
+  {
+   "kare": "sa_000187.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.328399447404776
+  },
+  {
+   "kare": "sa_000188.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3687888198757764
+  },
+  {
+   "kare": "sa_000189.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32280835638653055
+  },
+  {
+   "kare": "sa_000190.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.274234693877551
+  },
+  {
+   "kare": "sa_000191.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3081368254264144
+  },
+  {
+   "kare": "sa_000192.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3512869007482937
+  },
+  {
+   "kare": "sa_000193.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3497988586397231
+  },
+  {
+   "kare": "sa_000194.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4373789870579843
+  },
+  {
+   "kare": "sa_000195.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3499353169469599
+  },
+  {
+   "kare": "sa_000196.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3767321303957731
+  },
+  {
+   "kare": "sa_000197.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4086898776207191
+  },
+  {
+   "kare": "sa_000198.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3722365896387753
+  },
+  {
+   "kare": "sa_000199.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3420074349442379
+  },
+  {
+   "kare": "sa_000200.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3488372093023256
+  },
+  {
+   "kare": "sa_000201.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2817544688558154
+  },
+  {
+   "kare": "sa_000202.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4535559547712142
+  },
+  {
+   "kare": "sa_000203.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4247676219984508
+  },
+  {
+   "kare": "sa_000204.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.23387020815672976
+  },
+  {
+   "kare": "sa_000205.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3734860344401417
+  },
+  {
+   "kare": "sa_000206.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37200992555831264
+  },
+  {
+   "kare": "sa_000207.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.18859957776213934
+  },
+  {
+   "kare": "sa_000208.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4269997026464466
+  },
+  {
+   "kare": "sa_000209.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.25077399380804954
+  },
+  {
+   "kare": "sa_000210.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3242009132420091
+  },
+  {
+   "kare": "sa_000211.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3385561285204284
+  },
+  {
+   "kare": "sa_000212.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.41671525753158406
+  },
+  {
+   "kare": "sa_000213.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2612295393985535
+  },
+  {
+   "kare": "sa_000214.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32492412746585736
+  },
+  {
+   "kare": "sa_000215.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4428013965906757
+  },
+  {
+   "kare": "sa_000216.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.38791732909379967
+  },
+  {
+   "kare": "sa_000217.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2787315212207916
+  },
+  {
+   "kare": "sa_000218.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.36583066188949653
+  },
+  {
+   "kare": "sa_000219.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27780414491377947
+  },
+  {
+   "kare": "sa_000220.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.22048896186827222
+  },
+  {
+   "kare": "sa_000221.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3725091893983362
+  },
+  {
+   "kare": "sa_000222.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.35756676557863504
+  },
+  {
+   "kare": "sa_000223.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.25559181724110486
+  },
+  {
+   "kare": "sa_000224.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.44485711338079026
+  },
+  {
+   "kare": "sa_000225.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3543484379397692
+  },
+  {
+   "kare": "sa_000226.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3250367376928729
+  },
+  {
+   "kare": "sa_000227.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3283777160594674
+  },
+  {
+   "kare": "sa_000228.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3002268308489955
+  },
+  {
+   "kare": "sa_000229.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2713644380311047
+  },
+  {
+   "kare": "sa_000230.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.31080463969312266
+  },
+  {
+   "kare": "sa_000231.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24468997047337843
+  },
+  {
+   "kare": "sa_000232.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.33670627552914967
+  },
+  {
+   "kare": "sa_000233.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.27735368956743
+  },
+  {
+   "kare": "sa_000234.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4274461028192372
+  },
+  {
+   "kare": "sa_000235.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3225181598062954
+  },
+  {
+   "kare": "sa_000236.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.39678340916305155
+  },
+  {
+   "kare": "sa_000237.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3114455084359325
+  },
+  {
+   "kare": "sa_000238.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3010152748559407
+  },
+  {
+   "kare": "sa_000239.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.40624668012323384
+  },
+  {
+   "kare": "sa_000240.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.31743606240952227
+  },
+  {
+   "kare": "sa_000241.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4064601589565926
+  },
+  {
+   "kare": "sa_000242.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3716897559136745
+  },
+  {
+   "kare": "sa_000243.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37686266612968183
+  },
+  {
+   "kare": "sa_000244.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.37978950830455516
+  },
+  {
+   "kare": "sa_000245.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.24231547947726853
+  },
+  {
+   "kare": "sa_000246.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.41483317839066214
+  },
+  {
+   "kare": "sa_000247.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.22605801236329054
+  },
+  {
+   "kare": "sa_000248.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3811037272464606
+  },
+  {
+   "kare": "sa_000249.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.32736642256577164
+  },
+  {
+   "kare": "sa_000250.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.35333457180011146
+  },
+  {
+   "kare": "sa_000251.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2837863705972435
+  },
+  {
+   "kare": "sa_000252.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4674524221453287
+  },
+  {
+   "kare": "sa_000253.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.34986896293523023
+  },
+  {
+   "kare": "sa_000254.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.21483613406368954
+  },
+  {
+   "kare": "sa_000255.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.4548022598870056
+  },
+  {
+   "kare": "sa_000256.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.3142830763549072
+  },
+  {
+   "kare": "sa_000257.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.45906526136484616
+  },
+  {
+   "kare": "sa_000258.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.29817344084252095
+  },
+  {
+   "kare": "sa_000259.jpg",
+   "tespit": true,
+   "dogru_ped": true,
+   "puan": 0.2997131931166348
+  }
+ ],
+ "otopark": [
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14476293491977646
+  },
+  {
+   "kare": "frame_000001_000000600.jpg",
+   "tespit": true,
+   "kapiyla_tespit": true,
+   "puan": 0.1780985656491357,
+   "kapiyla_puan": 0.1780985656491357
+  },
+  {
+   "kare": "frame_000002_000000672.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1757592289507183
+  },
+  {
+   "kare": "frame_000003_000000720.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.15149614764379143
+  },
+  {
+   "kare": "frame_000004_000000768.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13169345528816268
+  },
+  {
+   "kare": "frame_000005_000000816.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.15577756166563522
+  },
+  {
+   "kare": "frame_000006_000000864.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1166561571029637
+  },
+  {
+   "kare": "frame_000007_000000936.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12417777777777778
+  },
+  {
+   "kare": "frame_000008_000001008.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1192760180995475
+  },
+  {
+   "kare": "frame_000009_000001152.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.10062494339280863
+  },
+  {
+   "kare": "frame_000010_000001200.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1241701058675758
+  },
+  {
+   "kare": "frame_000011_000001224.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14334105901230165
+  },
+  {
+   "kare": "frame_000012_000001248.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13672356149920817
+  },
+  {
+   "kare": "frame_000013_000001272.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1429324894514768
+  },
+  {
+   "kare": "frame_000014_000001320.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13578274760383385
+  },
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14591405424445228
+  },
+  {
+   "kare": "frame_000001_000000336.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14154281670205238
+  },
+  {
+   "kare": "frame_000002_000000648.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.15407537248028044
+  },
+  {
+   "kare": "frame_000003_000000912.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13542390548992356
+  },
+  {
+   "kare": "frame_000004_000000960.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.15136391016263662
+  },
+  {
+   "kare": "frame_000005_000001008.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14580812445980984
+  },
+  {
+   "kare": "frame_000006_000001416.jpg",
+   "tespit": true,
+   "kapiyla_tespit": true,
+   "puan": 0.17658024063718014,
+   "kapiyla_puan": 0.17658024063718014
+  },
+  {
+   "kare": "frame_000007_000001440.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12718520395236887
+  },
+  {
+   "kare": "frame_000008_000001488.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14215311411334863
+  },
+  {
+   "kare": "frame_000009_000001776.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11670929241261722
+  },
+  {
+   "kare": "frame_000010_000001824.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.15345224886916445
+  },
+  {
+   "kare": "frame_000011_000001848.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1424622030237581
+  },
+  {
+   "kare": "frame_000012_000001872.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1341225146534881
+  },
+  {
+   "kare": "frame_000013_000001944.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12028249834473626
+  },
+  {
+   "kare": "frame_000014_000001992.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11546252532072923
+  },
+  {
+   "kare": "frame_000015_000002040.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13139741878059635
+  },
+  {
+   "kare": "frame_000016_000002088.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13041500852757248
+  },
+  {
+   "kare": "frame_000017_000002112.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13710383470495535
+  },
+  {
+   "kare": "frame_000018_000002160.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11930434782608695
+  },
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13866595327269485
+  },
+  {
+   "kare": "frame_000001_000000168.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11490227092983844
+  },
+  {
+   "kare": "frame_000002_000000192.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.07863016784949871
+  },
+  {
+   "kare": "frame_000003_000000240.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1457182320441989
+  },
+  {
+   "kare": "frame_000004_000000264.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1431631254283756
+  },
+  {
+   "kare": "frame_000005_000000288.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13823529411764707
+  },
+  {
+   "kare": "frame_000006_000000336.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1274960240325146
+  },
+  {
+   "kare": "frame_000007_000000384.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13018735773069515
+  },
+  {
+   "kare": "frame_000008_000000432.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1341260820145143
+  },
+  {
+   "kare": "frame_000009_000000480.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11541515926939028
+  },
+  {
+   "kare": "frame_000010_000000504.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14339126919967662
+  },
+  {
+   "kare": "frame_000011_000000600.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1628987031195233
+  },
+  {
+   "kare": "frame_000012_000000624.jpg",
+   "tespit": true,
+   "kapiyla_tespit": true,
+   "puan": 0.17788378143972247,
+   "kapiyla_puan": 0.17788378143972247
+  },
+  {
+   "kare": "frame_000013_000000648.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.15811752988047809
+  },
+  {
+   "kare": "frame_000014_000000672.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1738241308793456
+  },
+  {
+   "kare": "frame_000015_000000696.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1320442691769495
+  },
+  {
+   "kare": "frame_000016_000000720.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1284722222222222
+  },
+  {
+   "kare": "frame_000017_000000792.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12626169939438428
+  },
+  {
+   "kare": "frame_000018_000000840.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11715668698458229
+  },
+  {
+   "kare": "frame_000019_000000888.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12286158631415241
+  },
+  {
+   "kare": "frame_000020_000000936.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11750250295804132
+  },
+  {
+   "kare": "frame_000021_000000984.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.10319130282307558
+  },
+  {
+   "kare": "frame_000022_000001032.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12934058225184145
+  },
+  {
+   "kare": "frame_000023_000001080.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.1290715903152761
+  },
+  {
+   "kare": "frame_000024_000001104.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.09981596704933836
+  },
+  {
+   "kare": "frame_000025_000001152.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13012339287255156
+  },
+  {
+   "kare": "frame_000026_000001200.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.09015942825728422
+  },
+  {
+   "kare": "frame_000027_000001248.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.08552631578947369
+  },
+  {
+   "kare": "frame_000028_000001296.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.07812080536912752
+  },
+  {
+   "kare": "frame_000029_000001320.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.08365219685974402
+  },
+  {
+   "kare": "frame_000030_000001344.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.0760180995475113
+  },
+  {
+   "kare": "frame_000000_000000000.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.08495367349601983
+  },
+  {
+   "kare": "frame_000001_000000456.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.10764412481150679
+  }
+ ],
+ "kirsal": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.0946871669964987
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11674641148325358
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14966666666666667
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000008_000000900.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000021_000001500.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000024_000001590.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.036754399626226446
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000028_000001710.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11158238172920065
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000030_000001770.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.12271352441307792
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000032_000001830.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.08938065814053743
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000037_000001980.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.09865603308226259
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000041_000002100.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.13241678726483358
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000044_000002190.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.10949517549993008
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000046_000002250.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000050_000002370.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000051_000002400.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000055_000002550.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000060_000002700.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000064_000002910.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000069_000003090.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000072_000003210.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000075_000003300.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000076_000003360.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000079_000003510.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000081_000003570.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000084_000003690.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000087_000003780.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000088_000003810.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000090_000003870.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000092_000003930.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000097_000004080.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000102_000004230.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000104_000004290.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000106_000004350.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000108_000004410.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000109_000004440.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000113_000004560.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000114_000004590.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.16725256895619253
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000115_000004620.jpg",
+   "tespit": true,
+   "kapiyla_tespit": true,
+   "puan": 0.19257274119448697,
+   "kapiyla_puan": 0.19257274119448697
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000117_000004680.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000118_000004710.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000122_000004830.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000123_000004860.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000125_000004920.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000127_000004980.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000128_000005010.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000129_000005040.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000130_000005070.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000134_000005190.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000136_000005250.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000137_000005280.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000140_000005370.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000141_000005400.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000142_000005430.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000144_000005490.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000145_000005520.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.14009020960466967
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000146_000005550.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.11615343057806592
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000148_000005640.jpg",
+   "tespit": true,
+   "kapiyla_tespit": false,
+   "puan": 0.03905289052890529
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000150_000005700.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000151_000005730.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000153_000005790.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000154_000005820.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000155_000005850.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000156_000005880.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000157_000005910.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000158_000005940.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000159_000005970.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000163_000006090.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000168_000006240.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000176_000006600.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000177_000006630.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000185_000006930.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000192_000007170.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000197_000007320.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000201_000007440.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000203_000007500.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000204_000007530.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000206_000007590.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000207_000007620.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000208_000007650.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000210_000007710.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000213_000007800.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000216_000007890.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000217_000007950.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000223_000008250.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000230_000008520.jpg",
+   "tespit": false,
+   "kapiyla_tespit": false
+  }
+ ]
+}
