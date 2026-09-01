@@ -26362,3 +26362,79 @@ R_TEMIZ'in %95'i tek uçuştan (0038); uçuşlar arası değişkenlik
 **ÖLÇÜLEMEDİ**. S sentetiktir. Saha `p`'si yine ölçülmemiştir.
 `c = 1,300` maliyet oranı **PC ölçümüdür**; Jetson'da aynı olacağı
 varsayılmaz.
+
+---
+
+### D-378 · ✅ ÜÇ KÜÇÜK KAPANIŞ (T168 · T193 · T100) — K7'nin tek düşen karesi GERÇEK POZİTİFMİŞ; kümenin tavanı artık zincirin kendisinde; 76'nın değişmezi v36'da da korunuyor (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
+**Ham çıktı:** t66 manifesti (`sa_000090` girdisi) ·
+`results/t165/sa_000090_tani.png` · `results/t100/76_v36_20260901.json` ·
+`scripts/olcum/kabul_kumesi_bilinen_kareler.json`.
+
+#### 1. T168 — `sa_000090`: şerit 3 İNŞA GEREĞİ geçilemez → K7 düşüşü GERÇEK POZİTİF
+
+D-315 ikilemi açık bırakmıştı: *"bariyer şeridi kapatıyorsa model hatası,
+kapatmıyorsa manifest/etiket hatası."* Manifest geometrisinden ölçüldü:
+
+```text
+karar seridi 3 = 'dar+bariyer' · kalinti koridor 14,01 px x 0,078125 m/px = 1,095 m
+
+uretim koridoru  2 x R_GEREKLI_M   = 2,20 m   -> GECILEMEZ
+gercek arac      ARAC_GENISLIGI_M  = 1,80 m   -> GECILEMEZ
+sim govdesi      IKA_GENISLIK_M    = 0,70 m   -> paysiz sigardi
+```
+
+⚠ Üçüncü satır dürüstlük için yazıldı: çıplak sim gövdesi 1,095 m'lik boşluğa
+geometrik olarak sığar. Ama rota kararını veren şey sözleşme koridorudur
+(maske+takip payları dâhil) ve gerçek araç 1,80 m'dir. Görsel teyit yapıldı
+(`sa_000090_tani.png`).
+
+⇒ **Kapatıyor → model hatası.** Manifest beyanı (`gecilebilir=False`) doğru;
+model, inşa gereği kapalı şeritte fazladan zemin görüyor (89.913 px ↔ YG
+18.042; engel pikselleri eşit — D-315). **K7 doğru çalışıyor; eşik oynamaz.**
+K7'nin genel ihtiyat notu (*"düşüş model hatası demek değildir"*) bu kare
+için **çözülmüştür** — denetçi artık bunu kendisi söylüyor (aşağıda).
+
+#### 2. T193 — kümenin fiili tavanı (259/260) artık ZİNCİRDE yazılı
+
+Küme donduğu için (K1/K7 çapaları) manifest **değiştirilmedi**; ölçülmüş
+istisna notları sidecar'a kondu: `kabul_kumesi_bilinen_kareler.json`.
+`65_kabul_denetcisi` her koşumda:
+- K7 yanlış kareleri arasında bilinen kare varsa **ölçülmüş hükmünü** basıyor;
+- rapor sonunda `ℹ KUME TAVANI (sa_000121.jpg): …` satırını basıyor.
+
+**Hüküm değişmedi** — bilgi bloğu fail-open (sidecar yoksa boş), hüküm
+fail-closed. Nöbetçi (`test_t168_t193_bilinen_kareler.py`, 8): içerik +
+bağlantı + mutasyon + **en önemlisi**: sa_000090 hükmü prozdan değil,
+manifest + sözleşme sabitlerinden **her koşumda yeniden türetiliyor** —
+sabitler değişir de hüküm çürürse test düşer, not kaynağından sapamaz.
+
+#### 3. T100 — 76 v36 ile yeniden koşuldu: DEĞİŞMEZ KORUNUYOR
+
+```text
+                      v30 (D-146)   v34 (filo 08-20)   v36 (bugun)
+etiket != serit_no        0/470          0/465            0/479
+H1a                         0              0                0
+aciklanamayan (H2)          1              0                0
+icinde                  230/247        238/252          227/248
+yayin != govde              -              2                1
+```
+
+Nitel tablo üç sürümde de **aynı**; görevin korktuğu bozulma yok. Ham
+sayılar sürümle kayıyor ve kayıt altında: `icinde` düşüşü v36'nın "daha az
+gör" yönüyle (D-376 §5) tutarlı. İş, güncel üretim sürümüyle kapandı.
+
+#### 4. Ayna kapısı işini yaptı
+
+`65`'i repoda düzenleyince `test_olcum_ayna_senkronu` **düştü** — canlı
+kopya geride kalmıştı. `olcum_ayna.py --uygula --repodan` ile hizalandı,
+sidecar canlı dizine de kopyalandı. Kapının tam da bu senaryo için var
+olduğu bir kez daha ölçülmüş oldu.
+
+#### 5. Kapsam
+
+- T168 hükmü t66 kümesinin **kendi beyan çerçevesi** içindedir; sahaya dair
+  iddia taşımaz.
+- T100 kıyası üç farklı model sürümü içindir; `icinde` sütunu sürümler arası
+  başarım kıyası **değildir** (payda da değişiyor: 252 → 248).

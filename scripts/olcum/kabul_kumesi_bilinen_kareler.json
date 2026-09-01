@@ -1,0 +1,14 @@
+{
+ "_ne": "Kabul kumesi (sentetik_arena_kadraj_t66) beyanina dair OLCULMUS istisna notlari. HUKUM DEGISTIRMEZ - denetciyi okuyanlari bilgilendirir (T168/T193, D-378).",
+ "_kural": "Kume DONDURULMUSTUR (K1/K7 capalari bagli, registry notu) - manifest DEGISTIRILMEZ; notlar bu yuzden sidecar dosyasindadir. Yeni not eklemek OLCUM ister, kanaat yetmez.",
+ "sa_000121.jpg": {
+  "tur": "TAVAN",
+  "ozet": "beyan ACIK ama kurulan geometri C-uzayinda GECILEMEZ; ayni analyze_path zinciri YER GERCEGI maskesiyle de GORUS_HATTI_KOPUK veriyor -> buradaki ret DOGRU davranistir ve kumenin fiili tavani 259/260'tir",
+  "kanit": "D-329 SS2"
+ },
+ "sa_000090.jpg": {
+  "tur": "MODEL_HATASI_DOGRULANDI",
+  "ozet": "karar seridi 3 'dar+bariyer' inSA edilmis: kalinti koridor 14,01 px x 0,078125 m/px = 1,095 m. Gecilebilirlik uc olcutun UCUNDE de yok denecek kadar: uretim koridoru 2xR_GEREKLI_M = 2,20 m (GECILEMEZ), gercek arac ARAC_GENISLIGI_M = 1,80 m (GECILEMEZ), ciplak sim govdesi 0,70 m (paysiz sigardi - rota karari sozlesme koridoruyla verilir). Manifest beyani (gecilebilir=False) DOGRU; K7'nin buradaki dususu GERCEK POZITIFTIR: model, insa geregi kapali seritte fazladan zemin goruyor (89.913 px vs YG 18.042; engel pikselleri esit - D-315)",
+  "kanit": "D-315 + T168 olcumu (D-378)"
+ }
+}

@@ -28,6 +28,20 @@ from rpi_inference import (INFER_SIZE, _maskeleri_icerige_kirp,  # noqa: E402
                            _preprocess, get_masks)
 
 BURASI = Path(__file__).parent
+
+# T168/T193 (D-378): kume beyanina dair OLCULMUS istisna notlari.
+# HUKUM DEGISTIRMEZ — okuyani bilgilendirir. Kume donduruldugu icin manifest
+# DEGISTIRILEMEZ; notlar sidecar dosyasinda yasar.
+BILINEN_KARELER_YOLU = BURASI / "kabul_kumesi_bilinen_kareler.json"
+
+
+def kume_bilinen_kareler():
+    """Sidecar'i oku; yoksa/bozuksa BOS dondur (bilgi blogu hukum tasimaz)."""
+    try:
+        d = json.loads(BILINEN_KARELER_YOLU.read_text(encoding="utf-8"))
+        return {k: v for k, v in d.items() if not k.startswith("_")}
+    except Exception:
+        return {}
 FIGUR = REPO / "data" / "arena_referans" / "sartname_s9_arena.png"
 
 
@@ -816,6 +830,14 @@ def main():
         print("     ⚠ K7 dususu dogrudan 'model yanlis gordu' DEMEK DEGILDIR:"
               " referans ETIKETSIZ alani gecilemez sayar (D-315). Once ETIKET"
               " KAPSAMI denetlenir.")
+        # T168/D-378: bazi kareler icin o denetim YAPILDI — olculmus hukmu
+        # yazdir ki ayni soru her kosumda yeniden acilmasin.
+        _bk = kume_bilinen_kareler()
+        for _kare in sonuc["K7_yanlis_kareler"]:
+            _n = _bk.get(_kare) or _bk.get(str(_kare) + ".jpg")
+            if _n:
+                print(f"     · {_kare}: [{_n['tur']}] {_n['ozet'][:150]}..."
+                      f" ({_n['kanit']})")
     if k5d == "OLCULEMEDI":
         print("     (olculebilir kare YOK: bariyerli+olcekli karelerde rota"
               " uretilmedi ya da alt betik cokTU. Bu 'carpmadi' DEMEK"
@@ -848,6 +870,10 @@ def main():
         print(f"  VERDIKT: URETIME ALINMAZ — dusen: {', '.join(d_)}")
         print("           kok nedene baglanip TEK duzeltme turu kosulur.")
     print("=" * 66)
+    _tavan = [(k, v) for k, v in kume_bilinen_kareler().items()
+              if isinstance(v, dict) and v.get("tur") == "TAVAN"]
+    for _k, _v in _tavan:
+        print(f"  ℹ KUME TAVANI ({_k}): {_v['ozet'][:150]}... ({_v['kanit']})")
     print("\n⚠ Bu olcumlerin tamami SENTETIKTIR. Hicbiri 'sahada calisir'")
     print("  anlamina gelmez (D-88 + D-99, kalici kisit).")
 
