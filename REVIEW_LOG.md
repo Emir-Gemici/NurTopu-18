@@ -26894,3 +26894,107 @@ artık `[ad, yayın, gt]` listesi taşıyor, blok string varsaymıştı
 **ÖNERİ (karar değil):** uçuşta HB kadraj dışındayken her kare HEDEF_YOK
 üretir (sözleşme, T72/D-105). "Ped görünmeyince üst-bant hedefine geri düş"
 alternatifi bir sözleşme değişikliğidir — istenirse ön kayıtla ele alınır.
+
+## D-387 — P1: MAVLink katmani ILK KEZ gercek cercevelerle kostu; iki acik bulgu
+
+**Tarih:** 2026-09-02 · **Yazan:** Claude 2 (Opus 5, amele) ·
+**Denetleyen: mimar bekleniyor (AGENTS §9.3)** · **On kayit:**
+`results/p1_mavlink/ON_KAYIT.md` (G1-G8 sonuc gorulmeden yazildi)
+
+### 0. Ne yapildi
+
+`pymavlink 2.4.49` + `pyserial 3.5` kuruldu (plan v2 mimar karari #1; yedek
+`results/ortam/pip_freeze_20260902_oncesi.txt`, mevcut hicbir surum degismedi).
+`scripts/sahte_pixhawk.py` yazildi: GERCEK MAVLink cerceveleri (HEARTBEAT +
+GLOBAL_POSITION_INT + EXTENDED_SYS_STATE) UDP'ye basar. `tests/
+test_p1_canli_mavlink.py` (14 test) uretim siniflarini bu akisa bagladi:
+`BagilIrtifaOkuyucu`, `yerde_mi`, `CanliOlcekSaglayici`.
+
+Bu, `KOD_VAR != KOSUYOR` sinifinin kapanmasidir: bu katman bugune dek YALNIZ
+sahte nesnelerle sinandi — venv'de pymavlink kurulu bile degildi.
+
+### 1. Calisan yol (kanit)
+
+G1 irtifa 30,0 m (±0,05) ve konum 1e-6 derece icinde · G2 canli akistan mpp ·
+G3b ON_GROUND akisinda `yerde_mi` **True** · G4 IN_AIR'de False · G6 donuk
+`time_boot_ms` yasi yenilemiyor · G7 yayin durunca bayatliyor. Cerceve cozme,
+CRC, `recv_match` ve tazelik sozlesmesi gercek akista dogrulandi.
+
+### 2. BULGU A — `--kanit-timeout` penceresi ALCALMADA kullanilmiyor
+
+**Olcum:** 10 s son tarihle, alcalan akista `yerde_mi(ardisik=3, tavan_m=1.0)`
+**0,002 s icinde False** dondu. Sebep `_yerde_mi_sahipli` icinde: ilk
+EXTENDED_SYS_STATE ornegi IN_AIR ise fonksiyon ANINDA `return False` yapar;
+son tarih yalnizca ZAMAN ASIMI icin kullanilir, BEKLEMEK icin degil.
+
+**Neden onemli:** `comms/iha_inis_yayinci.py:176` bunu **TEK KEZ** cagirir ve
+False'ta `exit 3` verip cikar — IHA_LANDED **hic yayinlanmaz**. Sartname
+SS2.2.5 zinciri buradan kirilir: IKA surus iznini asla alamaz.
+Ikinci olcum daha da kritik: arac TEMAS ETTIKTEN SONRA yapilan cagri da
+**0,000 s'de False** dondu — sokette biriken ESKI IN_AIR paketleri
+(backlog) yeni cagriyi da aninda dusuruyor. Yani "once inmesini bekle,
+sonra yayinciyi baslat" yordami da tek basina yetmiyor.
+
+**Secenekler (mimar karari):**
+- **A1 — yayinci yeniden dener:** `iha_inis_yayinci` `yerde_mi`yi son tarihe
+  kadar dongude cagirir. Kucuk degisiklik, `yerde_mi` sozlesmesi ayni kalir.
+  Backlog sorununu cozer (bir sonraki cagri taze paketlere ulasir).
+- **A2 — `yerde_mi` bekler:** IN_AIR ornegi sayaci sifirlar ama fonksiyon son
+  tarihe kadar OKUMAYA DEVAM eder. "Art arda 3" garantisi korunur, pencere
+  anlamli hale gelir. Sozlesme degisikligi; `test_inis_kaniti.py` etkilenir.
+- **A3 — yordam:** kod degismez; runbook'a "yalniz temastan sonra baslat"
+  yazilir. 🔴 Ikinci olcum bunun TEK BASINA yetmedigini gosteriyor (backlog).
+
+**Amele onerisi: A1 + A2 birlikte** (yayinci donguye alinir, `yerde_mi` IN_AIR'i
+sayaci sifirlayarak tolere eder) — ikisi de fail-closed kalir, ikisi de
+"art arda 3 temiz ornek" sartini korur.
+
+### 3. BULGU B — yabanci MAVLink kaynagi irtifayi TAMAMEN kesiyor
+
+**Olcum:** ayni UDP portuna sysid=99'dan GLOBAL_POSITION_INT akarken,
+sysid=1 beklenen okuyucu **0/193 okumada** deger dondu. Yabanci trafik
+yokken **193/193**. Sizinti YOK (yabancinin 130 m'si hic donmedi) — sorun
+gizlilik degil **ERISILEBILIRLIK**.
+
+Sebep `BagilIrtifaOkuyucu._mesaj_isle`: kaynak beklenen sysid degilse
+`_gecersiz_kil()` cagrilir, yani yabanci paket ONCEKI GECERLI ornegi de siler.
+Yabanci akis bizim akisimizla ayni hizdaysa cache surekli silinir.
+
+**Neden onemli:** irtifa yoksa mpp yok, mpp yoksa `rota_olcek_reddi` her kareyi
+reddeder -> **butun ucus NO_ROUTE**. Sahada ayni aga bagli bir GCS, ikinci bir
+arac ya da yanlis port ayari bu duruma yeter. Sartname SS6.4 "veri akisi
+kesintisiz olmali" ile dogrudan celisir.
+
+**Secenekler (mimar karari):**
+- **B1 — yabanci paketi YOK SAY:** kaynagi beklenen sysid olmayan mesaj
+  cache'i silmez, sadece atlanir. Bozuk/eksik alanli mesaj (BEKLENEN kaynaktan)
+  yine gecersiz kilar. Gerekce: yabanci paket bizim aracimiz hakkinda HICBIR
+  bilgi tasimaz; onu "kotu haber" saymak ucuncu bir tarafa bizi kor etme
+  yetkisi verir.
+- **B2 — bugunku davranis kalir:** her yabanci paket gecersiz kilar. Gerekce:
+  akista yabanci kaynak varsa kurulum bozuktur, ucusa devam edilmemelidir.
+  Bedeli olculdu: erisilebilirlik %0.
+- **B3 — esikli:** yabanci paket sayilir; orani/suresi esigi asarsa gecersiz
+  kilar (uyari + fail-closed). Karmasik; yeni esik ve on kayit gerektirir.
+
+**Amele onerisi: B1** — fail-closed anlami "yanlis veri kullanma"dir,
+"ucuncu taraf bizi kor edebilsin" degil. Sizinti kapisi (G5a) zaten ayri
+duruyor ve B1'de bozulmaz.
+
+### 4. Bu kayittaki disiplin notu
+
+On kayittaki G3 ve G5(2) **yazildigi haliyle dustu ve oyle kaydedildi**
+(D-107: esik sonuca gore gevsetilmez). Yerlerine yeni gate KOYULMADI; pozitif
+yol icin ayri olcut (G3b) eklendi ve iki dusus `AcikBulgular` sinifinda
+**karakterizasyon testi** olarak kilitlendi — "dogru davranis" iddiasi degil,
+davranisin sessizce degismesini engelleyen kilit. Karar uygulanirsa o testler
+BILEREK guncellenecek (docstring'lerinde yazili).
+
+**P1 ACIK:** iki karar verilmeden paket kapanmaz.
+
+### 5. Kapilar
+
+`codes/test_rota_sentetik.py` 15/15 (kol1 15/15 · kol2 serit 15/15) ·
+tam suit **1479 test OK** (P1 nobetcisiyle +14) · pymavlink/pyserial kurulumu
+mevcut hicbir kapiyi dusurmedi (G8).
+

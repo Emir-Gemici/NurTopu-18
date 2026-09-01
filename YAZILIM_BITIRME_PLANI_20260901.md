@@ -47,7 +47,14 @@ manuel paraşüt yalnız emniyet için son çare kabul edilir.
 
 ### Faz A — aviyoniksiz yazılım (1–4 Eylül)
 
-**P1 · MAVLink katmanı CANLI** — pymavlink kur (pip freeze yedeğiyle);
+**P1 · MAVLink katmanı CANLI** — 🟡 **KOŞTU, KAPANMADI (2026-09-02 · D-387).**
+Kuruldu ve `scripts/sahte_pixhawk.py` + 14 nöbetçiyle gerçek çerçeveler
+üzerinden koştu: G1/G2/G3b/G4/G6/G7/G8 GEÇTİ. **İki bulgu mimar kararına
+açık:** (A) `yerde_mi` alçalmada 10 s son tarihe rağmen 0,002 s'de düşüyor,
+yayıncı tek kez çağırıp exit 3 veriyor → İHA_LANDED hiç yayınlanmaz;
+(B) yabancı sysid trafiği irtifayı tamamen kesiyor (0/193 okuma) → bütün uçuş
+NO_ROUTE. Ayrıntı + seçenekler D-387. Aşağıdaki özgün tanım korunur:
+pymavlink kur (pip freeze yedeğiyle);
 `sahte_pixhawk.py` gerçek MAVLink çerçeveleri (HEARTBEAT + GLOBAL_POSITION_INT
 + EXTENDED_SYS_STATE) bassın; irtifa→mpp→rota ölçeği + iniş latch'i uçtan uca.
 **Kapı:** kuru koşu `hedef_konumu/olcek` halkaları sahte akışla GEÇTİ; saat
