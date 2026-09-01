@@ -207,3 +207,32 @@ mpp = 2·h·tan(FOV/2)/W   =>   FOV = 2·atan( mpp·W / (2h) )
 
 ⚠ R gerçek ama **arenaya göre OOD**, S göreve benzer ama **sentetik**.
 Sahadaki `p` yine **ÖLÇÜLEMEDİ**; iki sayı alt/üst çerçevedir.
+
+---
+
+# EK-2 — İRTİFA KATMANI (2026-09-01, `p` ÖLÇÜLMEDEN ÖNCE yazıldı)
+
+R kümesinde kalkış/iniş kareleri var (0037 başı 16,1 m; 0038/0039'da 0 m'ye
+inen kuyruklar). Şartname tespiti **≥30 m**'de ister ve sözleşmede sabiti
+zaten var: `SARTNAME_ASGARI_IRTIFA_M = 30.0` (§5.3.2). Alçak kareler görev
+temsilcisi değildir; `p`'ye katılmaları sayıyı **göreve ait olmayan** yönde
+oynatır.
+
+İrtifa dağılımı (girdi metaverisi — model koşulmadan bakıldı):
+
+```text
+0037: 300 kare · >=30m 273 (%91) · 3 bitisik segment
+0038: 246 kare · >=30m 230 (%93) · 1 segment
+0039: 222 kare · >=30m 130 (%59) · 1 segment
+TOPLAM 768 · >=30m 633 · rel_alt eksigi 0
+```
+
+Dondurulan kurallar:
+
+1. **G1 ve G2_R hükümleri ≥30 m katmanında verilir** (sözleşme sabitinden;
+   sonuç görülerek seçilmedi). Tam küme sayıları **bağlam** olarak ayrıca
+   raporlanır, hükme katılmaz.
+2. **Koşu analizi bitişik ≥30 m segmentleri İÇİNDE yapılır** — segment
+   sınırından koşu taşınmaz; iki segmentin ucu birleştirilerek olmayan bir
+   koşu üretilmez (D-373'teki çıpasız eşleşme dersinin zaman ekseni hâli).
+3. Segment sayısı ve uzunlukları çıktı JSON'una yazılır.
