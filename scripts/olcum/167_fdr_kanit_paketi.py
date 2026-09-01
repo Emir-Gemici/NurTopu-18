@@ -148,6 +148,19 @@ def bolum_gercek_zamanlilik():
               f"(bütçe kısıt değildi)",
               "- Ön kayıt *\"I2 düşerse RED, I1 ne olursa olsun\"* diye "
               "**sonuç görülmeden** yazılmıştı.\n"]
+    b = _oku("results/fda_butce/olcum_20260901.json")
+    if b:
+        hb = b.get("hukum", {})
+        s += ["### 4.1b Uçtan uca kare gecikmesi — ölçüldü (D-382/D-383)\n",
+              f"- 36 gerçek karede, üretim zinciri + gerçek telsiz halkası "
+              f"(UDP loopback ACK): **p95 {_y(hb.get('p95_s'), 3)} s** — "
+              f"tazelik penceresinin çok altında.",
+              "- ⚠ İlk ölçümdeki ~0,46 s'nin ~0,3 s'si bir **soket zaman "
+              "aşımı sabiti** çıktı (bağımsız çürütücü buldu, D-383); "
+              "düzeltme sonrası telsiz payı ~2 ms. Seri telsiz hattı "
+              "**ÖLÇÜLEMEDİ** (saha/Gün-1).",
+              f"- Model yükleme {_y(b.get('model_yukleme_s_butce_disi'), 2)} "
+              f"s — uçuş öncesi, bütçe dışı.\n"]
     if f:
         h = f.get("hukum", {})
         s += ["### 4.2 FP16 karar denkliği (D-375)\n",

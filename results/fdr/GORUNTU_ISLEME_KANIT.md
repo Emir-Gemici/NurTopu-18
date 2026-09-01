@@ -66,6 +66,12 @@ GEREKLI_FPS  >=  1 / (5 · p)
 - FPS maliyeti oranı: `1,302` (bütçe kısıt değildi)
 - Ön kayıt *"I2 düşerse RED, I1 ne olursa olsun"* diye **sonuç görülmeden** yazılmıştı.
 
+### 4.1b Uçtan uca kare gecikmesi — ölçüldü (D-382/D-383)
+
+- 36 gerçek karede, üretim zinciri + gerçek telsiz halkası (UDP loopback ACK): **p95 0,113 s** — tazelik penceresinin çok altında.
+- ⚠ İlk ölçümdeki ~0,46 s'nin ~0,3 s'si bir **soket zaman aşımı sabiti** çıktı (bağımsız çürütücü buldu, D-383); düzeltme sonrası telsiz payı ~2 ms. Seri telsiz hattı **ÖLÇÜLEMEDİ** (saha/Gün-1).
+- Model yükleme 2,64 s — uçuş öncesi, bütçe dışı.
+
 ### 4.2 FP16 karar denkliği (D-375)
 
 - Zarar yönü (FP32 doğruyken FP16 yanlış şerit): `0` → **GECTI**

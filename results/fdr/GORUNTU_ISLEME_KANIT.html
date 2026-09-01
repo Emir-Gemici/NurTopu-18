@@ -237,8 +237,8 @@ footer{
   <dl class="scorebar">
     <div><dt>FDA ağırlığı</dt><dd>%85<small>rapor · uçuş %15</small></dd></div>
     <div><dt>Üretim modeli</dt><dd>v36<small>512 px · PyTorch</small></dd></div>
-    <div><dt>Kanıt kaydı</dt><dd>389<small>çürütmeler dâhil</small></dd></div>
-    <div><dt>Otomatik kapı</dt><dd>1 381<small>test · tamamı geçiyor</small></dd></div>
+    <div><dt>Kanıt kaydı</dt><dd>390<small>çürütmeler dâhil</small></dd></div>
+    <div><dt>Otomatik kapı</dt><dd>1 452<small>test · tamamı geçiyor</small></dd></div>
   </dl>
 </header>
 
@@ -338,6 +338,8 @@ footer{
   </table>
   </div>
 
+  <p>Uçtan uca kare gecikmesi ayrıca ölçüldü: 36 gerçek karede, gerçek telsiz halkasıyla <strong>p95 0,113 s</strong> — pencerenin kırkta biri. (İlk ölçümdeki 0,46 s'nin 0,3 s'si bağımsız çürütücünün bulduğu bir soket sabiti çıktı ve düzeltildi.)</p>
+
   <p>Planlanan donanımın beklenen bandı <strong>0,9–2,6 FPS</strong>. En kötü okumada bile gereken 0,61 — yani <strong>bu bir hız sorunu değil.</strong> Bu eşiğin daha önce hiçbir yerde gerekçesi yazılı değildi; artık şartname maddesinden ve sözleşme sabitinden türetilmiştir.</p>
 
   <div class="callout">
@@ -377,6 +379,8 @@ görmediği          n=243   p=0,346   maske yok %44</code></pre>
     </tbody>
   </table>
   </div>
+  <p>Bu belge yayımlandıktan sonra üç teslim, üç bağımsız çürütücü ajanla denetlendi; dört gerçek kusur bulundu, doğrulandı ve düzeltildi — düzeltmelerin izi kayıtların üstünde duruyor.</p>
+
   <p>Ön kayıt <em>“arena gerilerse, öteki sonuç ne olursa olsun ret”</em> diye önceden yazılmıştı. İyi ki: kirli havuzda ara sonuç <strong>%21,6</strong> kurtarma gösteriyordu — sızıntı ayıklanınca gerçek değer <strong>%5,6</strong> çıktı. Çözünürlük, modelin <em>gördüğü</em> veride kazandırıyor, görmediğinde kazandırmıyor; bir genelleme düzeltmesi değil.</p>
 </section>
 
