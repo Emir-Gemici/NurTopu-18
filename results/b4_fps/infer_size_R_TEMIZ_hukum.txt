@@ -1,0 +1,21 @@
+==================================================================
+I1 — AYIRT EDICI TANI (kor kareler)
+  kirli havuz  n_kor=250  p_512=0,000  p_640=0.216
+  R_TEMIZ      n_kor=124  p_512=0,000  p_640=0.056
+
+I3 — ASIL KAPI (kosu)
+  kirli havuz    n=633 p512=0.487 p640=0.596 | kosu_maks 512= 51 640= 52 | p50 512=3.0 640=2.0
+  R_TEMIZ        n=243 p512=0.346 p640=0.424 | kosu_maks 512= 51 640= 52 | p50 512=3 640=3
+  kirli(egitim)  n=390 p512=0.574 p640=0.703 | kosu_maks 512= 28 640= 24 | p50 512=2.0 640=2
+
+I2 — S kumesi (sizinti sorusu YOK), kayip yonu ayristirildi
+  p_S 512=0.9846 -> 640=0.7808  fark=-0.2038 (tavan -0,02)
+  DOGRU -> None (rota kayboldu) : 46
+  DOGRU -> YANLIS serit          : 1 ['sa_000129.jpg']
+  kazanc (yanlis/None -> DOGRU)  : 10
+  640'ta rota vermeyen karelerin ret sebepleri: {'GORUS_HATTI_KOPUK': 33, 'UC_BANT_TEMAS_YOK': 24}
+
+I4 — FPS (R_TEMIZ uzerinde)
+  p50 ms 512=45.4 640=59.0 · maliyet orani=1.300
+  band alt ucu 0,9 -> 640 etkin 0.692 FPS
+  R_TEMIZ p_640=0.424 -> gerekli FPS=0.472

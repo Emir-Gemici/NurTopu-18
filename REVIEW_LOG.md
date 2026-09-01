@@ -26266,3 +26266,99 @@ T124'ün özü **karşılanmıştır**. ⚠ Kapatma kararını **yazan kapatmaz*
   üzerinde verilecek; kirli havuz yalnız bağlam. **166 sonucu görülmeden**
   yazıldı.
 - 166 yeniden koşulmaz: JSON kare kare kayıt tutuyor, hüküm yeniden hesaplanır.
+
+---
+
+### D-377 · ⚖ `INFER_SIZE` 640 **REDDEDİLDİ** (ön kayıtlı karar sırası) · ve sızıntı, faydayı **4 KAT** şişirmiş: kör kurtarma %21,6 değil **%5,6** (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
+**Ön kayıt:** `results/b4_fps/ON_KAYIT_INFER_SIZE.md` + EK-1 — I1/I2/I3/I4
+eşikleri ve **karar sırası** sonuç görülmeden yazıldı (D-107).
+**Ham çıktı:** `results/b4_fps/infer_size_20260901.json` (633 R + 260 S karesi,
+iki kol, kare kare). **Betik:** `scripts/olcum/166_infer_size_640.py` ·
+nöbetçi `tests/test_166_infer_size_nobetcisi.py` (17).
+
+#### 1. HÜKÜM: RED
+
+Ön kayıt §5 şunu **önceden** yazmıştı: *"I2 düşerse → RED. I1 ne olursa
+olsun."*
+
+```text
+I2 (S, gerileme yasagi)  : p_S 0,9846 -> 0,7808   fark -0,2038  (tavan -0,02)
+                           => DUSTU, 10 KAT asarak
+I3 (R_TEMIZ, asil kapi)  : en uzun kosu 51 -> 52 s (esik 5 s)  => DUSTU
+I4 (FPS butcesi)         : maliyet orani 1,300 · etkin 0,692 FPS
+                           gerekli 0,472                        => GECTI
+```
+
+**FPS hiç kısıt değilmiş** — ama fayda yok. 640 **reddedilir**; kaldıraç 1
+kapanır.
+
+#### 2. 🔴 ÖN KAYIT TAM DA BUNU ÖNLEDİ
+
+Kirli havuzda I1 **%21,6** çıktı — "640 kör karelerin beşte birini
+kurtarıyor" diye okunacak, umut verici bir sayı. R_TEMIZ'de gerçek değer:
+
+```text
+I1 (kor kare kurtarma)   kirli havuz n=250 : 0,216
+                         R_TEMIZ     n=124 : 0,056     <- 4 KAT dusuk
+```
+
+Sızıntı yalnız D-374'ün başlığını değil, **bu deneyin faydasını da**
+şişirmiş. D-376'nın düzeltmesi bağımsız ikinci kez doğrulandı.
+
+⚠ Karar sırası önceden yazılmasaydı, I1'in %21,6'sı ile I2'nin −0,204'ü
+aynı masaya konur ve "kırsalda kazandırıyor, arenada biraz kaybettiriyor"
+diye **tartılabilirdi**. Eşik önce yazıldığı için tartışma olmadı.
+
+#### 3. ASIL ÖRÜNTÜ — 640 bir GENELLEME düzeltmesi değil, EZBER yükselticisi
+
+```text
+                       n     p512 -> p640    kosu_maks 512 -> 640
+egitimde gorulen     390    0,574   0,703         28  ->  24   (iyilesme)
+R_TEMIZ (gormedigi)  243    0,346   0,424         51  ->  52   (KOTULESME)
+```
+
+Çözünürlük, modelin **gördüğü** veride hem oranı yükseltiyor hem koşuyu
+kısaltıyor; **görmediği** veride oranı biraz yükseltip **en uzun körlüğü
+kısaltmıyor**. Kapıyı belirleyen şey en uzun koşudur — o yüzden hüküm
+değişmiyor.
+
+#### 4. MEKANİZMA — v36 `imgsz=512`'ye ayarlıdır; 640 ölçeği kaydırıyor
+
+S kümesi 640×640'tır: 512'de küçültülür, 640'ta **birebir** işlenir. Bilgi
+kaybı 640'ta **daha az** olmasına rağmen sonuç **kötü** — yani sorun
+çözünürlük değil, **görünür nesne ölçeğinin ~1,25× kayması**. Model
+öğrendiği ölçekten uzaklaşıyor.
+
+Kayıp yönü bunu doğruluyor: 640'ta rota vermeyen karelerin ret sebepleri
+**MASKE_YOK değil topolojiktir** — `GORUS_HATTI_KOPUK 33` ·
+`UC_BANT_TEMAS_YOK 24`. Maske üretiliyor ama **parçalanıyor**.
+
+✅ **Kayıp yönü güvenli taraftadır:** 46 kare DOĞRU→`None` (rota kayboldu),
+yalnız **1** kare DOĞRU→YANLIŞ ŞERİT (`sa_000129`), 10 kare kazanç. Şartname
+§2.1'de yanlış güzergâh 0 puandır; rota vermemek fail-closed'dur. Yine de
+I2 düşer: arenada 46 rotayı kaybetmek hakemin **hiçbir şey görmemesi**
+demektir.
+
+#### 5. SONUÇ ve kalan kaldıraçlar
+
+- Kaldıraç 1 (`INFER_SIZE` 640) **kapandı** — ölçüldü, reddedildi.
+- D-376 §5 ile birlikte okununca tablo şu: 51 s'lik körlük ne **hız** ne
+  **çözünürlük** sorunudur. Seçilmiş çalışma noktasındaki (v36, "daha az
+  gör") **model yeteneği sınırıdır**.
+- Kalan kaldıraçlar **mimar kararıdır** (ÖNER-BEKLE):
+  **2** aynı bölgeden ikinci geçiş (uçuş planı) ·
+  **3** hakem ekranında son geçerli tespit + tazelik damgası (sözleşme
+  değişikliği; A2'nin `karar_yas` alanı bunun altyapısıdır).
+- ⚠ Bir dördüncüsü artık ölçümle **görünür** hâle geldi ama önerilmiyor:
+  v36'nın "daha az gör" ayarını geri gevşetmek çatı kaçağını geri getirir
+  (D-232/D-218) ve madde 15'in yasakladığı yöndür. Kayda geçiyor ki
+  ileride "denenmedi" sanılmasın.
+
+#### 6. Kapsam
+
+R_TEMIZ'in %95'i tek uçuştan (0038); uçuşlar arası değişkenlik
+**ÖLÇÜLEMEDİ**. S sentetiktir. Saha `p`'si yine ölçülmemiştir.
+`c = 1,300` maliyet oranı **PC ölçümüdür**; Jetson'da aynı olacağı
+varsayılmaz.
