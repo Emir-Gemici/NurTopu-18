@@ -11,10 +11,15 @@
 
 ## SIFIRINCI kapı — karta dokunmadan önce (PC'de, 5 Eylül'den ÖNCE bitmiş olacak)
 
-- [ ] `p` ölçümü kapandı, hüküm defterde (D-374 bekleniyor).
-- [ ] FP16 ↔ FP32 **rota kararı** denkliği PC'de ölçüldü (164 betiği).
-- [ ] ONNX → TensorRT dönüşümü PC'de provalandı (graf dönüşüyor).
-- [ ] Bu üçünden biri eksikse Gün-1 **başlamaz** — kart beklesin, keşif olmaz.
+- [x] `p` ölçümü kapandı, hüküm defterde (**D-374**: FPS sorusu kapandı —
+      gereken 0,41, band 0,9; G1 sahne bağıntılı 51 s körlük ÖNER-BEKLE).
+- [x] FP16 ↔ FP32 **rota kararı** denkliği PC'de ölçüldü (**D-375**: F1/F2
+      GEÇTİ; ilk ölçümün vakum çıkışı yakalandı, koruma artık kodda).
+- [x] ONNX → TRT dönüşüm provası: **ÖLÇÜLEMEDİ** (PC'de TRT çalışma zamanı
+      yok; ORT CPU'ya düştü ve betik bunu "döndü" saymadı). Bu ön koşul
+      PC'de ÜRETİLEMEZ — dönüşüm kanıtı bütünüyle §3'ün (T16) işidir ve
+      Gün-1'i bloklamaz.
+- [ ] Yukarıdaki ilk iki madde işaretli değilse Gün-1 **başlamaz**.
 
 ## 1 · İlk 10 dakika — sürümler ve güç (KILAVUZ §1)
 
