@@ -161,11 +161,12 @@ final, prova zinciri en az 3 temiz koşu. (30 Eylül tek atışa 9 gün tampon.)
 
 | gün | işler |
 |---|---|
-| **Salı akşam** (bugün) | ✅ T150/D-386 kapandı · plan v2 (bu dosya) · pymavlink/pyserial kurulum + duman |
-| **Çarşamba** | P1 · P2 · P9a-b-c (YKS/protokol) |
-| **Perşembe** | P3 (İKA sürücüsü) · P9e (temas) · P8 (Gazebo el atma) |
-| **Cuma** | P5 (kararlılık) · P6 (DroidCam, kullanıcıyla) · P4+P9d (runbook/açılış) · TAM PROVA (kuru koşu + Gazebo senaryo + bütün kapılar + Gün-1 son kontrol) |
-| **Cumartesi** | Faz B: DONANIM (Gün-1 + aviyonik) |
+| **Salı akşam** | ✅ T150/D-386 kapandı · plan v2 · pymavlink/pyserial kurulum |
+| **Salı→Çarşamba GECESİ** | ✅ **VARDİYA (D-387→D-398):** P1+P2+P3+P4+P5+P8+P9a-e KAPANDI · mimar denetimi (10/10) · T42/T52/T190/T198 kapandı · SAHA_RUNBOOK + saha_baslat · kuru koşu 9/10 (tek kopuk: motor) · 1559 test |
+| **Çarşamba** | T99 (üretim imzalı ölçüm hizası) · T61/T101 tasarım · TEKNOFEST sorularını İLET (paket hazır: `results/sartname_bosluk/TEKNOFEST_SORULARI_20260903.md`) · DJI çekim planla |
+| **Perşembe** | Model döngüsü hazırlığı (T197 etiket aracı) · T75 kalan yarım · tampon |
+| **Cuma** | P6 (DroidCam, kullanıcıyla) · TAM PROVA (kuru koşu + bütün kapılar + Gün-1 son kontrol) |
+| **Cumartesi** | Faz B: DONANIM — Gün-1 (.engine T16/T109 · gerçek FPS T17 · denklik) + aviyonik (gerçek Pixhawk'la D-389 canlı doğrulama, SiK RF, GercekSurucu doldurma, İHA-CMD alıcısı/paraşüt aktarımı, sabit kanat görev planı + geofence + arming zinciri) |
 
 ## 4. İnsan görevleri (kullanıcıdan)
 
