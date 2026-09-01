@@ -712,26 +712,47 @@ def halka_hedef(rapor: Rapor, kok: Path = KOK) -> str:
         except (json.JSONDecodeError, OSError, TypeError):
             pass
 
+    # (c) T150/D-386 baglamasi (P4/D-394): HB'yi goren bilesen artik model
+    #     sinifi DEGIL goruntu katmanidir — uretim cagrilari `analyze_path`e
+    #     `goruntu=` gecirir ve ic HB cagrisi OLCEK+SEKIL ciftiyle kosar
+    #     (`hb_konumu`, CONTRACTS §2.1 kirmizi H). Uc cagri yeri birden
+    #     aranir; biri koparsa bu halka da duser (test_t150 ile ayni olcut).
+    goruntu_baglamasi = None
+    rpi = kok / "codes" / "rpi_inference.py"
+    if rpi.exists():
+        try:
+            kaynak = rpi.read_text(encoding="utf-8")
+        except OSError:
+            kaynak = ""
+        govde = "\n".join(s for s in kaynak.splitlines()
+                          if not s.lstrip().startswith("#"))
+        if (govde.count("goruntu=sq)") >= 3
+                and "sekil_esigi=HB_SEKIL_ESIGI" in govde):
+            goruntu_baglamasi = ("codes/rpi_inference.py "
+                                 "(T150/D-386: goruntu= + sekil kapisi)")
+
     # Gazebo tarafi yalniz TANI amaciyla raporlanir, karara GIRMEZ.
     haritala = kok / "simulation" / "scripts" / "iha_haritala.py"
     gazebo_secenekleri = _argparse_secenekleri(haritala) if haritala.exists() else set()
 
     detay = {"saha_cli_sahibi": cli_sahibi, "etkin_profil": etkin_profil,
              "etkin_profilde_hedef_sinifi": hedef_sinifi,
+             "uretim_goruntu_baglamasi": goruntu_baglamasi,
              "gazebo_haritalayici_argparse": sorted(gazebo_secenekleri),
              "meta_okuyucu": "simulation/scripts/iha_haritala.py:507",
              "meta_yazici": "simulation/scripts/world_generator.py:590",
-             "kayit": "REVIEW_LOG.md D-23"}
+             "kayit": "REVIEW_LOG.md D-23 + D-386/D-394"}
 
-    if cli_sahibi or hedef_sinifi:
+    if goruntu_baglamasi or cli_sahibi or hedef_sinifi:
         return rapor.yaz("hedef_konumu", GECTI,
                          "HB saha kaynagindan alinabiliyor",
-                         cli_sahibi or f"config/model_registry.json:{etkin_profil}",
+                         goruntu_baglamasi or cli_sahibi
+                         or f"config/model_registry.json:{etkin_profil}",
                          detay)
     return rapor.yaz(
         "hedef_konumu", SAHIPSIZ,
-        "HB'nin tek kaynagi Gazebo meta.txt; saha kod yolunda --hb girisi yok ve "
-        "etkin model profili 2 sinifli (kirmizi H'yi goren bilesen yok)",
+        "HB'nin tek kaynagi Gazebo meta.txt; uretimde goruntu= baglamasi yok, "
+        "saha kod yolunda --hb girisi yok ve etkin model profili 2 sinifli",
         None, detay)
 
 

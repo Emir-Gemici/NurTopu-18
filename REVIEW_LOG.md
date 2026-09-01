@@ -27279,3 +27279,53 @@ Bu kaydin ilk yazimi shell backtick yutmasiyla bozuldu (D-376 sinifi; ders
 UCUNCU kez teyit edildi: Turkce/backtick icerik ASLA cift-tirnakli `-c`
 dizgisiyle yazilmaz — Write araci ya da python dosyasi). Ayni gece dogru
 metinle degistirildi; bozuk surum tek commit geride durur (646cff5).
+
+## D-394 — P4 + P9d: SAHA_RUNBOOK kanonik yordam, hedef halkasi kapandi, tek-komut acilis
+
+**Tarih:** 2026-09-02 (gece) · **Yazan:** Claude 2 (Fable 5, mimar) ·
+**Kilit:** tests/test_p4_runbook.py (11) + test_saha_kuru_kosu guncellemesi
+
+### 1. saha_kuru_kosu hedef halkasi TAZELENDI (bayatlik olculmustu)
+
+`halka_hedef` yalniz `--hb` CLI'si ya da 3-sinifli etkin profil ariyordu —
+T150/D-386'nin URETIM baglamasini (uc `goruntu=sq)` cagrisi + `sekil_esigi=
+HB_SEKIL_ESIGI` cifti) TANIMIYORDU: HEAD'de kosulsa hedef halkasi SAHIPSIZ
+diyordu. Yeni (c) kaynagi eklendi; olcut test_t150 ile AYNI kaliptir (uc
+cagridan biri koparsa halka da duser). Sandbox testleri: baglama gecirir,
+sekil-kapisiz baglama GECIRMEZ (D-351 sinifi), iki-cagrili baglama GECIRMEZ.
+`GERCEK_DEPODA_KALAN_KOPUKLUKLAR`dan hedef_konumu BILEREK cikti; pozitif
+kontrol testi gercek depoda GECTI + kanit=rpi_inference/T150 kilitler.
+**Gercek kosum: 9 GECTI · 1 SAHIPSIZ (yalniz motor — Faz B'de dolar).**
+
+### 2. SAHA_RUNBOOK.md — tek guncel yordam
+
+Iki bayat belge (t123 listesi eski model surumleri; 26 Agustos saha_gunu
+"Jetson 30 Eylul'de" varsayimi) TARIHSEL KAYIT ilan edildi, baslarina
+SAHA_RUNBOOK isareti kondu (kayit silinmedi/degistirilmedi — D-373 ruhu).
+Runbook belge kapisiyla kilitli (D-308 dersi: dosyaya bakan kapi yoksa dosya
+yalan soyler): model adi kayit defterinden dogrulanir, bayat surum sozleri
+yasak, saha bilesen satirlari (saha_baslat, iha_inis_yayinci --sysid,
+--kanit-timeout, --yks/K8, test_uctan_uca manuel adimi, PROVA_SENARYOSU)
+aranir, kuru kosu beklentisi 'yalniz motor'.
+
+### 3. P9d — scripts/saha_baslat.py (thazirlik §6.2)
+
+Istasyon basina TEK komut: dogru bayraklarla bileseni kaldirir, ILK cikti
+isaretine kadar gecen acilis suresini olcup yazar; `--komutlar` karti,
+`--reset` tekrar-firlatma yordami (YKS'de R + ARM; IKA/Jetson surecleri
+OLDURULMEZ; hands-off ihlali yok). Komutlar `komut_uret`ten TEK yerden
+uretilir ve testte gercek dosyalara isaret ettigi dogrulanir.
+⚠ Gercek thazirlik OLCUMU saha gunundedir — buradaki olcum yazilim
+katkisidir; OLCULEMEDI != GECTI.
+
+### 4. Ders (4. kez): backtick + cift-tirnakli shell
+
+Bu gece iki kayit (D-393 metni, bayat-belge afisi) inline `python -c`
+icindeki backtick yutmasiyla bozuldu ve ayni gece onarildi. Kural artik
+mutlak: Turkce/backtick icerik YALNIZ Write araci ya da betik dosyasiyla
+yazilir; inline -c YASAK.
+
+### 5. Kapilar
+
+Genel kapi 15/15 · tam suit **1547 test OK** (+15) · gercek kuru kosu
+9 GECTI/1 motor.

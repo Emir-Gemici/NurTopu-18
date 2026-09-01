@@ -76,7 +76,7 @@ iskeleti (Faz B'de dolar; o güne dek açık `DONANIM_YOK` reddi).
 **Kapı:** T141 zinciri Gazebo sürücüsüyle bayt-eş; §2.2.5 kilidi SahteSurucu
 ile uçtan uca; "donanım sustu → İKA durdu" testi.
 
-**P4 · Runbook + kapı koşucusu tazeleme** — `saha_gunu_kontrol_listesi.md`
+**P4 · Runbook + kapı koşucusu tazeleme** — ✅ **KAPANDI (2026-09-02 gece · D-394):** SAHA_RUNBOOK.md kanonik + belge kapılı; hedef halkası T150 bağlamasıyla GEÇTİ (kuru koşu 9/10, tek kopuk: motor); saha_baslat.py (P9d) eklendi. Özgün tanım:  `saha_gunu_kontrol_listesi.md`
 (v35/v34→v36); `iha_inis_yayinci` Jetson başlatma yordamı; `yks_gui` saha
 başlatma satırı (bugün yalnız `--demo` yazılı); **`saha_kuru_kosu.py`
 halka_hedef ölçütü BAYAT** (T150'nin `goruntu=` bağlamasını tanımıyor —

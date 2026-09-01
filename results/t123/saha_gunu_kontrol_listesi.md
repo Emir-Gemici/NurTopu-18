@@ -1,3 +1,7 @@
+> 🔴 **BU BELGE TARIHSEL KAYITTIR (D-394).** Guncel saha yordami:
+> **`SAHA_RUNBOOK.md`** (repo koku). Buradaki surum/komut satirlari
+> KOPYALANMAZ.
+
 # SAHA GÜNÜ KONTROL LİSTESİ — 30 Eylül sabahı
 
 > **Tek sayfa, elle okunur.** Jetson o gün geliyor; cihaz-öncesi deneme

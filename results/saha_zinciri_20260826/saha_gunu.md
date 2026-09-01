@@ -1,3 +1,7 @@
+> 🔴 **BU BELGE TARIHSEL KAYITTIR (D-394).** Guncel saha yordami:
+> **`SAHA_RUNBOOK.md`** (repo koku). Buradaki surum/komut satirlari
+> KOPYALANMAZ.
+
 # 30 EYLÜL SAHA GÜNÜ — KOMUT SIRASI, BAŞARI ÖLÇÜTÜ, DÜŞERSE NE YAPILACAK
 
 > Üretildiği tarih: **2026-08-26** · kaynak: `JETSON_KILAVUZ.md` (bugünkü hâli),

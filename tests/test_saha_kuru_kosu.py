@@ -41,8 +41,9 @@ DORT_KOPUKLUK = {
 # T20 aktarim ve saha IHA_LANDED uclarini kapatir. Mutasyon agaci yukaridaki
 # tarihsel dort kusuru bilerek korur; gercek depo pozitif kontrolu ise kalan
 # sahiplik bosluklarini ayri olcer.
+# D-394: hedef_konumu listeden CIKTI — T150/D-386 uretim baglamasi (goruntu=
+# + sekil kapisi) halkayi mesru kapatti; pozitif kontrolu asagida ayri test.
 GERCEK_DEPODA_KALAN_KOPUKLUKLAR = {
-    "hedef_konumu": DORT_KOPUKLUK["hedef_konumu"],
     "motor": DORT_KOPUKLUK["motor"],
 }
 
@@ -146,6 +147,14 @@ class PozitifKontrolTests(unittest.TestCase):
                 self.assertEqual(
                     beklenen, self.durumlar[halka]["durum"],
                     f"{halka} ({aciklama}) beklenen {beklenen} degil")
+
+    def test_hedef_konumu_t150_baglamasiyla_kapandi(self):
+        """D-394 pozitif kontrol: gercek depoda hedef halkasi artik GECTI
+        ve kaniti uretim baglamasidir (Gazebo/atil profil degil)."""
+        satir = self.durumlar["hedef_konumu"]
+        self.assertEqual(sk.GECTI, satir["durum"])
+        self.assertIn("rpi_inference", str(satir["dosya"]))
+        self.assertIn("T150", str(satir["dosya"]))
 
     def test_iha_landed_ureticisi_saha_modulunde(self):
         detay = self.durumlar["surus_izni"]["detay"]
@@ -355,6 +364,32 @@ class DenetimRegresyonTests(unittest.TestCase):
             "0": "traversable", "1": "blocked", "2": "hedef"}
         kayit.write_text(json.dumps(veri), encoding="utf-8")
         self.assertEqual(sk.GECTI, self._durum("hedef_konumu", sk.halka_hedef))
+
+    # D-394: T150 uretim baglamasi halkayi acar; eksik baglama ACMAZ.
+    def test_hedef_uretim_goruntu_baglamasi_gecirir(self):
+        (self.kok / "codes" / "rpi_inference.py").write_text(
+            "yol = analyze_path(m, mpp=mpp, goruntu=sq)\n"
+            "yol = analyze_path(m, mpp=mpp, goruntu=sq)\n"
+            "yol = analyze_path(m, mpp=mpp, goruntu=sq)\n"
+            "hb = hb_konumu(goruntu, mpp=mpp, "
+            "sekil_esigi=HB_SEKIL_ESIGI if mpp is not None else None)\n",
+            encoding="utf-8")
+        self.assertEqual(sk.GECTI, self._durum("hedef_konumu", sk.halka_hedef))
+
+    def test_hedef_sekil_kapisiz_baglama_gecirmez(self):
+        """goruntu= var ama sekil kapisi yok -> D-351 sinifi, halka ACILMAZ."""
+        (self.kok / "codes" / "rpi_inference.py").write_text(
+            "yol = analyze_path(m, mpp=mpp, goruntu=sq)\n" * 3,
+            encoding="utf-8")
+        self.assertEqual(sk.SAHIPSIZ, self._durum("hedef_konumu", sk.halka_hedef))
+
+    def test_hedef_iki_cagrili_baglama_gecirmez(self):
+        """Uc uretim cagrisindan biri kopmus -> halka da duser (T150 olcutu)."""
+        (self.kok / "codes" / "rpi_inference.py").write_text(
+            "yol = analyze_path(m, mpp=mpp, goruntu=sq)\n" * 2
+            + "hb = hb_konumu(g, mpp=mpp, sekil_esigi=HB_SEKIL_ESIGI)\n",
+            encoding="utf-8")
+        self.assertEqual(sk.SAHIPSIZ, self._durum("hedef_konumu", sk.halka_hedef))
 
     # ── kamera ───────────────────────────────────────────────────────────
     def test_depo_disi_kare_yolu_kosuyu_cokertmez(self):
