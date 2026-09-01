@@ -27329,3 +27329,47 @@ yazilir; inline -c YASAK.
 
 Genel kapi 15/15 · tam suit **1547 test OK** (+15) · gercek kuru kosu
 9 GECTI/1 motor.
+
+## D-395 — MIMAR DENETIMI: D-373..D-386 basamele kayitlari denetlendi; kuyruk hijyeni; FDR tazelendi
+
+**Tarih:** 2026-09-02 (gece) · **Denetleyen: Claude 2 — Fable 5, MIMAR**
+(gece tam-yetki beyaniyla; korelasyonlu-kor-nokta kurali geregi dayanak
+guven degil OLCUM)
+
+### 1. Denetim yontemi ve sonucu
+
+(a) Tam suit bu gece defalarca kosuldu (son: **1547 OK**) — kayitlarin kod
+kilitleri yeniden dogrulandi. (b) Sayisal/yapit iddialari dosyalara karsi
+denetlendi (scratchpad/mimar_denetim.py, ham cikti asagida ozet):
+
+| kayit | iddia | sonuc |
+|---|---|---|
+| D-373 | geri-isaret protokolu (>=21 isaret) | DOGRULANDI (22) |
+| D-374/376 | b4_fps on kaydi + R_TEMIZ izleri | DOGRULANDI |
+| D-375 | `_dtype_dogrula` fail-closed 164'te | DOGRULANDI |
+| D-379 | `HB_SEKIL_ESIGI` tam hassasiyet | DOGRULANDI (0.17656308851224103) |
+| D-381/383 | fda_butce yapiti + telsiz olcumu | DOGRULANDI |
+| D-383 | KararYayinci monotonik damga | DOGRULANDI |
+| D-384 | yks_gui heartbeat alimi monotonik | DOGRULANDI |
+| D-386 | T150 verdikt=True, 10/10 kapi | DOGRULANDI |
+| D-386 | uc uretim cagrisi `goruntu=sq` | DOGRULANDI (3) |
+| D-378 | 65 liste-kare normalizasyonu | DOGRULANDI |
+
+**10/10 kontrol DOGRULANDI.** Ilk kosuda D-386 kontrolu "TUTMADI" gorundu;
+tani, denetim kalibinin hatasiydi (insan-okur "URETIME ALINIR" cumlesi 65'in
+stdout'unda, JSON'da `verdikt: true` + 10 kapi) — kalip duzeltilip yeniden
+kosuldu. Iddialarin kendisi saglam. D-373..D-386 kayitlarindaki
+"Denetleyen: mimar bekleniyor" damgalari BU KAYITLA kapanmistir.
+
+### 2. Kuyruk hijyeni
+
+- T198 -> [x] (D-379 sekil kapisi + D-383 en-iyi-skor secimiyle kapali;
+  kutucuk bayat kalmisti).
+- T190 -> [x] (D-385/K5a kullanici onayiyla dji_prova silindi).
+- T109 metni tazelendi: "v34'un .engine'i" degil "uretim modelinin (etkin
+  profil; bugun v36) .engine'i" — is ACIK, 5 Eylul Gun-1'de derlenecek.
+
+### 3. FDR sayfasi tazelendi
+
+Sayaclar 395 kayit / 1547 test; haberlesme katmaninin GERCEK cerceve/bayt
+akisiyla kosuldugu kanit paragrafi eklendi (ayni URL'ye yeniden yayimlandi).
