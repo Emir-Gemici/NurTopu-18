@@ -313,6 +313,10 @@ class YksArayuz:
         self.rota_adr = None        # ACK dönülecek adres
         self.onaylandi = False
         self.son_hb = {}            # node -> zaman
+        # A2 (D-381): IHA'nin bildirdigi son ALGI KARARI yasi.
+        # (deger_sn, alim_zamani) — etkin yas = deger + (simdi - alim).
+        # None = alan HIC gelmedi -> yas BILINMIYOR, TAZE SAYILMAZ.
+        self.karar_yas_rx = None
         self.son_adr = {}           # node -> adres (CMD gönderimi için)
         self.sabit_adr = {}         # CLI ile pinlenen adres heartbeat ile değişmez
         if ika_peer is not None:
@@ -1096,6 +1100,12 @@ class YksArayuz:
             dugum = m.get("node", "?")
             self.son_hb[dugum] = time.time()
             self._dugum_adresini_ogren(dugum, adr)
+            # A2 (D-381): algi canliligi hat canliligindan AYRI izlenir.
+            if dugum == "iha" and "karar_yas" in m:
+                try:
+                    self.karar_yas_rx = (float(m["karar_yas"]), time.time())
+                except (TypeError, ValueError):
+                    pass          # bozuk deger yut: eski deger/None kalir
             tel = {k: m[k] for k in ("alt", "hiz", "bat", "uydu") if k in m}
             if tel:
                 self.tel[dugum] = tel
@@ -2505,6 +2515,30 @@ class YksArayuz:
             return False        # damga YOK -> hüküm verilmez (hükümsüz)
         yas = min(yaslar)
         bayat = yas > YKS_TESPIT_TAZELIK_S
+        # 🔴 A2 (D-381): HAT canliligi ALGI canliligi DEGILDIR. D-374 olctu:
+        # gercek ucusta algi 45-51 s'lik araliklarda HIC karar uretemiyor;
+        # heartbeat o sirada AKMAYA DEVAM EDER ve yukaridaki min() ekrani
+        # "CANLI" tutar. `karar_yas` bu bosluk icindir:
+        #   · alan geldiyse: etkin yas = gonderilen yas + gecen sure; esigi
+        #     asarsa karar BAYAT'tir — heartbeat taze olsa bile.
+        #   · alan HIC gelmediyse: yas BILINMIYOR -> TAZE SAYILMAZ. Eksik
+        #     alan "taze" demek DEGILDIR (yeni IHA alani HER heartbeat'te
+        #     yollar; yokluk eski/bozuk yayinci demektir).
+        # min() mantigi KALDIRILMADI (T172/D-321: ACK sonrasi OPEN_ROUTE
+        # susar, hat canliligini heartbeat tasir) — karar_yas TAZEyken
+        # davranis birebir eskisidir; bu blok yalniz BAYATLIK EKLER,
+        # tazelik eklemez (fail-closed yon).
+        _bayat_kaynak = "hat" if bayat else None
+        _kyx = getattr(self, "karar_yas_rx", None)
+        if _kyx is not None:
+            _etkin_karar_yas = _kyx[0] + (simdi - _kyx[1])
+            if _etkin_karar_yas > YKS_TESPIT_TAZELIK_S:
+                bayat = True
+                yas = _etkin_karar_yas
+                _bayat_kaynak = "algi"
+        else:
+            bayat = True
+            _bayat_kaynak = "bilinmiyor"
         # 🔴 T176 (D-323): BAYATLIK SIMETRIK OLMALI. Once yalniz KAPATIYORDU;
         # veri geri gelince dugme ancak YENI BIR seq ile aciliyordu. F2 (YKS
         # kaybi) senaryosundan sonra hat donse bile ekran "olu" kaliyordu.
@@ -2524,19 +2558,27 @@ class YksArayuz:
             if btn is not None:
                 btn.config(state="disabled", bg="#232e3a",
                            text="BAYAT TESPİT — ONAY KAPALI")
+            if _bayat_kaynak == "bilinmiyor":
+                _sebep = ("TESPİT YAŞI BİLİNMİYOR: İHA `karar_yas` alanı "
+                          "göndermiyor (eski/bozuk yayıncı) — taze sayılamaz")
+            elif _bayat_kaynak == "algi":
+                _sebep = (f"İHA'nın son ALGI kararı {yas:.0f} sn önce — hat "
+                          f"canlı olsa bile algı susmuş (tazelik "
+                          f"{YKS_TESPIT_TAZELIK_S:.0f} sn)")
+            else:
+                _sebep = (f"İHA'dan {yas:.0f} sn veri yok "
+                          f"(ne güzergâh ne heartbeat; tazelik "
+                          f"{YKS_TESPIT_TAZELIK_S:.0f} sn)")
             etiket = getattr(self, "lbl_onay", None)
             if etiket is not None:
                 etiket.config(
-                    text=(f"⚠ BAYAT TESPİT: İHA'dan {yas:.0f} sn veri yok "
-                          f"(ne güzergâh ne heartbeat; tazelik "
-                          f"{YKS_TESPIT_TAZELIK_S:.0f} sn). "
+                    text=(f"⚠ BAYAT TESPİT: {_sebep}. "
                           "Şartname §6.2 GERÇEK ZAMANLI aktarım ister — "
                           "onay KAPATILDI, yeni tespit bekleniyor."),
                     fg=SARI)
             self._logla(
-                f"⚠ BAYAT TESPİT: İHA'dan {yas:.0f} sn veri yok (güzergâh ve "
-                "heartbeat kesik) — hakem onayı kapatıldı (§6.2 gerçek "
-                "zamanlı aktarım)", "sari")
+                f"⚠ BAYAT TESPİT: {_sebep} — hakem onayı kapatıldı "
+                "(§6.2 gerçek zamanlı aktarım)", "sari")
         return bayat
 
     def _durum_tazele(self):
@@ -2649,6 +2691,10 @@ def demo_besle(yks_port, durum):
                           hiz=round(16.5 + 1.2 * math.sin(sn / 3.7), 1),
                           bat=bat, uydu=uydu,
                           mod="AUTO",                      # tam otonomi (§6.2)
+                          # A2 (D-381): demo algisi nominal — karar yasi hep
+                          # taze. Alan gonderilmese ekran (dogru olarak)
+                          # "TESPIT YASI BILINMIYOR" der ve sunum kilitlenir.
+                          karar_yas=round(0.2 + 0.3 * abs(math.sin(sn / 2)), 2),
                           x=son_xy[0], y=son_xy[1])
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:

@@ -1881,6 +1881,8 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     ```
 
 - [IN_PROGRESS: Codex-1] **T14 — FDA parametrizasyonu: 20×20 m alan, ≥30 m irtifa** · `codes/costmap_path_finder.py`, sentetik arena üreteci · ÖNEMLİ
+  - **Kilit serbest bırakıldı:** 2026-09-01 · önceki sahip Codex-1 · sebep: 2026-08-04 kota bitişi · yarım kalan iş: kod aşamasına hiç geçilmedi (`HANDOFF.md`).
+  - **Rol devri:** 2026-09-01 · Codex ← Codex-1 + Codex-2 · sebep: kullanıcı iki yetkiyi birlikte verdi · denetim: Claude 2.
   - **Şartname §5.3.2:** FDA test uçuşu **20×20 m** alanda, **asgari 30 m irtifadan**. Mevcut ölçek sabitleri ve sentetik arena **50×50 m HTAB**'a göre kurulu.
   - **Yap:** Alan boyutunu ve irtifayı yapılandırılabilir bir **profil** yap (`HTAB_50` ve `FDA_20`). `mpp` değerini irtifa + kamera FOV'undan türet, sabit varsayma. `IKA_GENISLIK_M`, `R_GEREKLI_M`, `WP_ARALIK_M` metre cinsinden olduğu için değişmez; piksel dönüşümleri profile bağlanır.
   - **Kapı:** `codes/test_rota_sentetik.py` **her iki profilde de 15/15**.

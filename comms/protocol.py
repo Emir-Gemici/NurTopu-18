@@ -84,7 +84,14 @@ def rota_yok(sebep, detay=None, seq=None):
 # ALAN IHLALI denetimi yapiyor (`comms/yks_gui.py`), ama URETIMDE bu alanlari
 # ureten hicbir yol yoktu — kapi sahada OLUYDU. Alanlar ISTEGE BAGLIDIR:
 # verilmezse mesaj eskisiyle ALAN ALAN AYNIDIR (kilit: test_t162...).
-HEARTBEAT_TELEMETRI_ALANLARI = ("x", "y", "alt", "hiz", "bat", "uydu")
+# A2 (D-381): "karar_yas" — IHA'nin son ALGI KARARININ yasi (sn, monotonik).
+# NEDEN HEARTBEAT'TE: IHA rotayi ACK alana kadar tekrarlar, ACK gelince SUSAR
+# (T172/D-321); ACK'ten sonra da akmaya devam eden TEK kanal heartbeat'tir.
+# D-374 olctu: gercek ucusta algi 45-51 s'lik sahne bagintili araliklarda HIC
+# karar uretemiyor — o aralikta hat CANLI gorunur, algi OLUDUR. Bu alan ikisini
+# ayirir. Alan YOKSA yas BILINMIYOR demektir; alici TAZE SAYMAZ (fail-closed).
+HEARTBEAT_TELEMETRI_ALANLARI = ("x", "y", "alt", "hiz", "bat", "uydu",
+                                "karar_yas")
 
 
 def heartbeat(node, seq=None, **telemetri):

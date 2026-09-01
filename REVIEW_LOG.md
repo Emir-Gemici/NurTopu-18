@@ -26575,3 +26575,65 @@ Codex'in kendi kapanışı: düzeltmeler D-285/D-373'te zaten işli; *"bu yenide
 denetim yeni bir açık borç üretmez."* Katılıyorum — nokta kontrollerim
 (kenar toplamları 11/2/5 · epoch eşleşmesi · gölge verdikt True/True)
 raporla birebir. Codex denetim dizisi **tamamen kapalıdır**.
+
+---
+
+### D-381 · ✅ A2 KAPANDI (Codex kotada → başamele devraldı) — `karar_yas` HEARTBEAT'te: HAT canlılığı ile ALGI canlılığı artık AYRI (2026-09-01)
+
+**Yazan:** Claude 2 (başamele; Codex kotaya girince kullanıcı emriyle
+devralındı) · **Denetleyen: mimar bekleniyor** (§9.3 — ⚠ tasarım da uygulama
+da benim; aynı-el uyarısı geçerli, denetim mimarındır).
+**Tasarım:** `CODEX_PROMPTLARI_20260901.md` A2 (ustabaşı tasarımı birebir).
+**Nöbetçi:** `tests/test_a2_karar_yasi.py` (17 test, a–g eksenleri).
+
+#### 1. Ne kapandı
+
+D-374'ün ölçtüğü boşluk: gerçek uçuşta algı 45–51 s'lik aralıklarda hiç
+karar üretmiyor; heartbeat o sırada akmaya devam ediyor ve hakem ekranı
+"CANLI" diyordu. Artık:
+
+- `protocol.HEARTBEAT_TELEMETRI_ALANLARI` += `karar_yas` (fail-closed:
+  None yazılmaz, sözleşme dışı alan ValueError — kalıp aynen).
+- `KararYayinci.karar()` her çağrıda **monotonik** damga tazeler (NO_ROUTE
+  de karardır); heartbeat kolu `karar_yas = monotonic() − damga` ekler.
+  Hiç karar yoksa alan **gönderilmez**.
+- YKS tazelik hükmü: `karar_yas` geldiyse **etkin yaş = değer + geçen
+  süre**; eşiği aşarsa karar BAYAT — heartbeat taze olsa bile. Alan hiç
+  gelmediyse **TESPİT YAŞI BİLİNMİYOR → taze sayılmaz** (eksik alan "taze"
+  değildir). `min()` mantığı KALDIRILMADI (T172/D-321 korundu); blok yalnız
+  bayatlık **ekler**, tazelik eklemez — fail-closed yön.
+- Bayatlığın **kaynağı** artık ayrı raporlanıyor (hat öldü / algı sustu /
+  yaş bilinmiyor) — ilk taslağım tek kalıba indirmişti ve hat-bayatlığında
+  yanlış cümle kurabilirdi; kaynak izlenerek düzeltildi.
+- Demo beslemesi alanı gönderiyor (göndermese ekran doğru olarak
+  BİLİNMİYOR der ve sunum kilitlenirdi). CONTRACTS §6 satırı yazıldı.
+
+#### 2. Suit iki gerçek tuzak yakaladı — ikisi de bilinen sınıflardan
+
+1. **D-320 sınıfı, üçüncü kez:** t162 `KararYayinci`'yi `__new__` ile
+   kuruyor; heartbeat bloğum `self._kilit`'e dokununca AttributeError.
+   Düzeltme: damga okuması **bilerek kilitsiz** (CPython'da referans
+   okuması atomik; sınıf düzeyi varsayılan mevcut) — gerekçesi koda yazıldı.
+2. **D-370 koruması kendi testimi yakaladı:** mesaj-kaynağı refaktorunda
+   değişken adı değişti, mutasyon deseni bulunamaz oldu ve test boş geçmek
+   yerine **düştü**. Desen güncellendi. Koruma tam amaçlandığı gibi işledi.
+
+#### 3. Eski iskeleler
+
+T169'un `_ekran`'ına taze `karar_yas_rx` eklendi — o dosyanın ekseni HAT
+bayatlığıdır; ölçtüğü şey değişmesin diye algı yaşı taze tutulur (gerekçe
+iskelenin içine yazıldı). Eksik-alan ekseninin testleri A2 dosyasındadır.
+
+#### 4. Kanıt
+
+- c (asıl kapı): heartbeat 0,5 sn tazeyken `karar_yas` 10 sn → **BAYAT,
+  düğme kapalı** ✓ · gönderim sonrası geçen süre de sayılıyor ✓
+- d (D-321 gerileme koruması): rota 60 sn suskun + hb ve karar_yas taze →
+  **taze, düğme açık** ✓
+- Kaptan sunumu provası uçtan uca: `mutlu_yol.py` → *"GÖREV BAŞARILI
+  (P_görev = 600 puan)"* (utf-8 konsolla; cp1254 ✓-çökmesi eski ve koddan
+  bağımsız, D-357 sınıfı).
+- Kapılar: genel 15/15 · tam suit **1430 OK** (+17).
+
+K1 (bayat kutuda son tespiti yaş damgasıyla gösterme) bu altyapının
+üstüne ayrı onay bekliyor — karar paketinde.

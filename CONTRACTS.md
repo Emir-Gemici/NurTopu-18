@@ -334,7 +334,7 @@ kendi fail-closed reddidir.
 |---|---|---|---|
 | `OPEN_ROUTE` | İHA | `road` (1=sol, 2=orta, 3=sağ), `conf`, `ref_xy`, `waypoints` | Doğrulanmış açık güzergâh |
 | `NO_ROUTE` | İHA | `sebep`, `detay` | Rota üretilemedi — **sessizlikten farklıdır** |
-| `HEARTBEAT` | herkes | `node` | Bağlantı canlılığı |
+| `HEARTBEAT` | herkes | `node`; İHA ayrıca `karar_yas` | Bağlantı canlılığı. `karar_yas` (A2/D-381): İHA'nın son **ALGI KARARININ** yaşı (sn, monotonik saat). Alan **YOKSA** yaş BİLİNMİYOR demektir; alıcı **TAZE SAYMAZ** — hat canlılığı algı canlılığı değildir (D-374: 45–51 s körlükte heartbeat akmaya devam eder) |
 | `ACK` | YKS / İKA | `ref` (seq) | Alındı onayı |
 | `CMD` | YKS | `cmd`, `hedef` | Operatör komutu (`IKA_GO`, `ARM`, …) |
 

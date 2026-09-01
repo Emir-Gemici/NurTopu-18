@@ -220,6 +220,10 @@ class KararYayinci:
     # yuzden 20 dakika kilitlendi ve kusur boyle yakalandi).
     konum_saglayici = None
     irtifa_saglayici = None
+    # A2 (D-381): son ALGI KARARININ monotonik damgasi. SINIF DUZEYINDE —
+    # T171/D-320 dersi: bu sinif `__new__` ile de kuruluyor; eksik oznitelik
+    # heartbeat dongusunde AttributeError -> SESSIZ heartbeat kaybi demekti.
+    _son_karar_monotonik = None
 
     def __init__(self, sender, heartbeat_aralik=IHA_HEARTBEAT_ARALIK_S,
                  repeat=4, interval=0.25, wait_ack=True, konum_saglayici=None,
@@ -261,10 +265,17 @@ class KararYayinci:
         return not (self._karar_thr.is_alive() or self._hb_thr.is_alive())
 
     def karar(self, open_path, conf, waypoints_px, mpp, karar_reddi=None):
-        """Kare karari -> yuva. Ret sebebi varsa OPEN_ROUTE ASLA olusmaz."""
+        """Kare karari -> yuva. Ret sebebi varsa OPEN_ROUTE ASLA olusmaz.
+
+        A2 (D-381): HER cagri algi kararinin damgasini tazeler — rota CIKSA DA
+        CIKMASA DA (NO_ROUTE de bir karardir). `time.monotonic()`: duvar saati
+        (time.time) NTP/elle esitlemeyle GERI atlayabilir ve yas negatif ya da
+        sahte-taze cikar; monotonik saat atlamaz.
+        """
         with self._kilit:
             self._bekleyen = (open_path, conf, list(waypoints_px or []),
                               mpp, karar_reddi)
+            self._son_karar_monotonik = time.monotonic()
         self._yeni.set()
 
     # ── ic dongu ──────────────────────────────────────────────────────────
@@ -352,6 +363,21 @@ class KararYayinci:
                         alanlar["alt"] = round(float(irtifa), 1)
                 except Exception as exc:
                     self.hata.append(f"irtifa {type(exc).__name__}: {exc}")
+                try:
+                    # A2 (D-381): son algi kararinin yasi. HIC karar
+                    # uretilmediyse alan GONDERILMEZ — "bilmiyorum" ile
+                    # "0 sn" ayni sey degildir (fail-closed kalip).
+                    # ⚠ KILITSIZ okuma — BILEREK (T171/D-320 sinifi): bu
+                    # sinif `__new__` ile de kuruluyor ve `_kilit` orada
+                    # olmayabilir; float referans okumasi CPython'da
+                    # atomiktir. Kilide dokunmak t162'de tam bu yuzden
+                    # AttributeError verdi (suit yakaladi).
+                    _damga = self._son_karar_monotonik
+                    if _damga is not None:
+                        alanlar["karar_yas"] = round(
+                            time.monotonic() - _damga, 2)
+                except Exception as exc:
+                    self.hata.append(f"karar_yas {type(exc).__name__}: {exc}")
                 self.sender.send_heartbeat(**alanlar)
                 self.heartbeat_sayisi += 1
             except Exception as exc:

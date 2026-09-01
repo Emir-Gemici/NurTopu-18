@@ -63,6 +63,10 @@ def _ekran(yas_sn=0.0, simdi=1_000_000.0):
     o.gunluk = []
     o._logla = lambda metin, renk=None: o.gunluk.append(metin)
     o._kutu_yaz = lambda kaynak, **kw: None
+    # A2 (D-381): bu dosyanin ekseni HAT bayatligidir; algi yasi TAZE tutulur
+    # ki olculen sey degismesin. Alanin yoklugu artik BILINMIYOR -> bayat
+    # demektir (o eksenin kendi testleri test_a2_karar_yasi.py'dedir).
+    o.karar_yas_rx = (0.2, simdi)
     return o
 
 
