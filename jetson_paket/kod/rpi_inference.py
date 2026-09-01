@@ -65,6 +65,7 @@ if __package__:
                                   INCE_BETON_SERIT_ORTAM_DEGISKENI,
                                   ince_beton_serit_maskesi,
                                   hb_konumu,
+                                  HB_SEKIL_ESIGI,
                                   SARTNAME_IHA_UB_KENAR_M,
                                   yerel_konum_m,
                                   hedef_yok_reddi,
@@ -115,6 +116,7 @@ else:
                                   INCE_BETON_SERIT_ORTAM_DEGISKENI,
                                   ince_beton_serit_maskesi,
                                   hb_konumu,
+                                  HB_SEKIL_ESIGI,
                                   SARTNAME_IHA_UB_KENAR_M,
                                   yerel_konum_m,
                                   hedef_yok_reddi,
@@ -1677,7 +1679,13 @@ def _analyze_path_cekirdek(trav_mask, n_waypoints=8, return_clean=False,
         # T198 · D-344: olcek BILINIYORSA fiziksel denetim acilir. HB 2 m x
         # 2 m'dir; bandin disindaki aday HB SAYILMAZ. mpp yoksa davranis
         # AYNEN eskisi gibi (geriye donuk uyum).
-        hb = hb_konumu(goruntu, mpp=mpp)
+        # T150/D-386: uretim yapilandirmasi OLCEK + SEKIL CIFTIDIR — kirmizi
+        # otomobil olcek bandini gecebiliyor (D-351), sekil kapisi (D-379/
+        # D-383) onu duşuruyor. `mpp` varsa sekil esigi de acilir; mpp yoksa
+        # hb_konumu zaten eslesme kurali geregi fail-closed None doner —
+        # yarim yapilandirma buradan da ACILMAZ.
+        hb = hb_konumu(goruntu, mpp=mpp,
+                       sekil_esigi=HB_SEKIL_ESIGI if mpp is not None else None)
         if hb is None:
             return _don(None, 0.0, [], clean, hedef_yok_reddi(), None)
         hx, hy, hw, hh = hb["kutu"]
@@ -1985,7 +1993,15 @@ def run_image(model, path_str, conf, mpp=None, canli_olcek=None,
         olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True, olcek_kaynagi=olcek["kaynak"])
+            return_reason=True, olcek_kaynagi=olcek["kaynak"],
+            # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
+            # varis noktasi HB'den alinir; olcek+sekil kapilari
+            # analyze_path icindeki tek noktadan. HB gorunmeyen
+            # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
+            # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
+            # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
+            # 253/256 dogru pedde (results/t150/baglama_olcumu).
+            goruntu=sq)
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
         # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
@@ -2088,7 +2104,15 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
         olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True, olcek_kaynagi=olcek["kaynak"])
+            return_reason=True, olcek_kaynagi=olcek["kaynak"],
+            # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
+            # varis noktasi HB'den alinir; olcek+sekil kapilari
+            # analyze_path icindeki tek noktadan. HB gorunmeyen
+            # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
+            # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
+            # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
+            # 253/256 dogru pedde (results/t150/baglama_olcumu).
+            goruntu=sq)
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
         # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
@@ -2193,7 +2217,15 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
         olcek_reddi = rota_olcek_reddi(kare_mpp)
         open_path, path_conf, waypoints, karar_reddi = analyze_path(
             masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True, olcek_kaynagi=olcek["kaynak"])
+            return_reason=True, olcek_kaynagi=olcek["kaynak"],
+            # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
+            # varis noktasi HB'den alinir; olcek+sekil kapilari
+            # analyze_path icindeki tek noktadan. HB gorunmeyen
+            # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
+            # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
+            # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
+            # 253/256 dogru pedde (results/t150/baglama_olcumu).
+            goruntu=sq)
         # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
         # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
         # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.

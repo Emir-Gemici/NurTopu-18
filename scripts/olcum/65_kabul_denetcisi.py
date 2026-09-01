@@ -588,9 +588,13 @@ def main():
     jj = BURASI / "results" / "t63" / f"{ad}_kabul.json"
     jj.parent.mkdir(parents=True, exist_ok=True)
     jj.unlink(missing_ok=True)          # T125: BAYAT json yeniden okunmasin
+    # T150/D-386: zincir URETIM yapilandirmasiyla kosar (varis HB'den,
+    # olcek+sekil kapili) — uretim baglandiktan sonra HB'siz olcum
+    # uretimi yansitmazdi (D-351 sinifi).
     _, alt_ok = kos("61_rota_moloza_basma.py",
                     ["--model", str(args.model),
-                     "--kume", str(kume), "--json", str(jj)])
+                     "--kume", str(kume), "--json", str(jj),
+                     "--hb-hedefli"])
     d = (json.loads(jj.read_text(encoding="utf-8"))
          if alt_ok and jj.is_file() else None)
     k14, sayilar = k14_durumlari(d)
@@ -834,6 +838,11 @@ def main():
         # yazdir ki ayni soru her kosumda yeniden acilmasin.
         _bk = kume_bilinen_kareler()
         for _kare in sonuc["K7_yanlis_kareler"]:
+            # D-386: K7 yanlis kaydi [ad, yayin, gt] LISTESI olabilir —
+            # ilk kosum tam burada 'unhashable type: list' ile coktu ve
+            # verdikt JSON'u yazilamadi (fail-closed kaldi, dogru yon).
+            if isinstance(_kare, (list, tuple)) and _kare:
+                _kare = _kare[0]
             _n = _bk.get(_kare) or _bk.get(str(_kare) + ".jpg")
             if _n:
                 print(f"     · {_kare}: [{_n['tur']}] {_n['ozet'][:150]}..."

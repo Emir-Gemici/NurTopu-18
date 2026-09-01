@@ -68,6 +68,10 @@ def main():
     ap.add_argument("--model", type=Path, required=True)
     ap.add_argument("--kume", type=Path, required=True)
     ap.add_argument("--json", type=Path, default=None)
+    # T150/D-386: uretim artik analyze_path'e goruntu=sq gecirir
+    # (varis HB'den). Kabul zinciri uretimi YANSITMALI (D-351);
+    # bayrak 65'ten gecilir. Bayraksiz davranis BAYT-ES eskisidir.
+    ap.add_argument("--hb-hedefli", action="store_true")
     args = ap.parse_args()
 
     kok, model_yolu = args.kume, args.model
@@ -98,7 +102,8 @@ def main():
         mpp = arena.get("mpp")
         yol, guven, wps, _k, red, olcum = analyze_path(
             trav, icerik=icerik, engel_mask=blok, mpp=mpp,
-            return_clean=True, return_reason=True, return_olcum=True)
+            return_clean=True, return_reason=True, return_olcum=True,
+            goruntu=sq if args.hb_hedefli else None)
 
         kayit = {"kare": p.name, "serit": yol, "guven": guven,
                  "red": (red[0] if isinstance(red, tuple) else red),

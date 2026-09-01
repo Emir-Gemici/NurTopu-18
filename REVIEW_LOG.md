@@ -26858,3 +26858,39 @@ başka makinede koşar) — paket etkilenmedi.
 Kapılar: genel 15/15 · tam suit **1459 OK** (bu kaydın kendisi, defter
 bütünlük kapısının "kuyruk D-385'i anıyor ama defterde yok" düşüşünü
 kapatır — kapı tam amaçlandığı gibi çalıştı).
+
+---
+
+### D-386 · ✅ T150 KAPANDI — HB hedeflemesi ÜRETİME BAĞLANDI ve tam kabul zinciri üretim kipinde GEÇTİ (2026-09-01)
+
+**Yazan:** Claude 2 (başamele; K2a kullanıcı onayı + kullanıcı renk teyidi:
+*"bizim H harfindeki doğruymuş bastığım"*). **Ön kayıt:**
+`results/t150/ON_KAYIT_BAGLAMA.md`. **Ham çıktı:**
+`results/t150/baglama_olcumu_20260901.json` ·
+`scripts/olcum/results/t63/t150_baglama_v36_*`.
+
+**Bağlamadan ÖNCE çatal ölçüldü (170):** KİP A/B p **eşit** (0,9846),
+şerit yayını doğruluğu **bire bir aynı** (195/256 — ilk bakışta B'ye
+yorduğum düşüş A'nın da sayısıydı; 61 yanlışın 61'i A'da da yanlış, 49'unun
+GT'si tanımsız), hedef **253/256 doğru pedde**, sonda (ped örtülü)
+**259/260 HEDEF_YOK** — fail-closed kusursuz. Maliyet SIFIR, kazanç net.
+
+**Bağlandı:** üç üretim çağrısı `goruntu=sq`; iç HB çağrısı **ölçek+şekil
+çifti** (`HB_SEKIL_ESIGI`, mpp yoksa açılmaz). Kabul zinciri de üretim
+kipine geçti (61 `--hb-hedefli`, 65 varsayılan) — zincir/üretim ayrışması
+(D-351 sınıfı) 6 testlik nöbetçiyle kilitli (`test_t150_baglama.py`).
+
+**Kabul (65, üretim kipinde, 3. koşum):** K0–K8 + K5A **hepsi GEÇTİ**;
+K7 84/85 (%98,8; tek yanlış bilinen gerçek-pozitif `sa_000090` — D-378
+bilgi bloğu hükmü çıktının içinde bastı). **VERDIKT: ÜRETİME ALINIR.**
+
+**Koşum dersleri:** (1) göreli `--model` yolu 151'de yanlış çözüldü →
+K7 ÖLÇÜLEMEDİ → verdikt doğru şekilde fail-closed kaldı; mutlak yolla
+çözüldü. (2) 2. koşumda 65, D-378 bilgi bloğumda çöktü — `K7_yanlis_kareler`
+artık `[ad, yayın, gt]` listesi taşıyor, blok string varsaymıştı
+(`unhashable type: list`); düzeltildi. (3) 2. koşumun K5=0 karesi bu
+çökmenin yan etkisiydi; 3. koşumda K5 0/178 · K5A 0/176.
+
+**ÖNERİ (karar değil):** uçuşta HB kadraj dışındayken her kare HEDEF_YOK
+üretir (sözleşme, T72/D-105). "Ped görünmeyince üst-bant hedefine geri düş"
+alternatifi bir sözleşme değişikliğidir — istenirse ön kayıtla ele alınır.
