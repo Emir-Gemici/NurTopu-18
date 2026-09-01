@@ -1,0 +1,94 @@
+{
+ "_on_kayit": "results/t52_ayirt_edicilik/ON_KAYIT.md",
+ "_model": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
+ "verdikt": "DOGRULANAMADI",
+ "secilen": null,
+ "analiz": {
+  "A1_zemin_orani": {
+   "mesru": {
+    "min": 0.3668010209448723,
+    "maks": 0.9192256264170687,
+    "p50": 0.5125809570471194
+   },
+   "cokus": {
+    "min": 0.4792216451761347,
+    "maks": 0.6937043150200425,
+    "p50": 0.588055189147033
+   },
+   "bosluk": -0.44000398124093404,
+   "gorece_bosluk": -0.7964959867506833,
+   "ayiriyor": false,
+   "esik_onerisi": null
+  },
+  "A2_bilesen_sayisi": {
+   "mesru": {
+    "min": 1.0,
+    "maks": 13.0,
+    "p50": 4.0
+   },
+   "cokus": {
+    "min": 5.0,
+    "maks": 36.0,
+    "p50": 16.0
+   },
+   "bosluk": -35.0,
+   "gorece_bosluk": -1.0,
+   "ayiriyor": false,
+   "esik_onerisi": null
+  },
+  "A3_en_buyuk_pay": {
+   "mesru": {
+    "min": 0.37631765081682944,
+    "maks": 1.0,
+    "p50": 0.8909521302509699
+   },
+   "cokus": {
+    "min": 0.7984368494757957,
+    "maks": 0.9992058892966754,
+    "p50": 0.9870112977553144
+   },
+   "bosluk": -0.20156315052420426,
+   "gorece_bosluk": -0.3231823872972983,
+   "ayiriyor": false,
+   "esik_onerisi": null
+  },
+  "A4_kenar_dayanma": {
+   "mesru": {
+    "min": 0.0,
+    "maks": 0.44522691705790296,
+    "p50": 0.1535602503912363
+   },
+   "cokus": {
+    "min": 0.018147684605757195,
+    "maks": 0.3854818523153942,
+    "p50": 0.1214017521902378
+   },
+   "bosluk": -0.42707923245214574,
+   "gorece_bosluk": -0.959239471131533,
+   "ayiriyor": false,
+   "esik_onerisi": null
+  },
+  "A5_engel_orani": {
+   "mesru": {
+    "min": 0.0339208984375,
+    "maks": 0.55843017578125,
+    "p50": 0.302225341796875
+   },
+   "cokus": {
+    "min": 0.20332166883680555,
+    "maks": 0.3779500325520833,
+    "p50": 0.2943657769097222
+   },
+   "bosluk": -0.3440291341145833,
+   "gorece_bosluk": -0.655906671197191,
+   "ayiriyor": false,
+   "esik_onerisi": null
+  }
+ },
+ "n": {
+  "mesru": 260,
+  "cokus": 67,
+  "bos_zemin_mesru": 0,
+  "bos_zemin_cokus": 0
+ }
+}

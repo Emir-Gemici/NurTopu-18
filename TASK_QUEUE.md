@@ -8212,7 +8212,7 @@ esults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI s
     türetme sorununa maruz olabilir** — nasıl türetildiği görevde yazılı değil.
     Denetimde sorulacak; doğrulanmadan kullanılmayacak.
 
-- [ ] **T52 — özgün kayıt (mimar denetimi bekliyor)** · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
+- [x] **T52 — KAPANDI (2026-09-03 gece · D-398): DOĞRULANAMADI verdiktiyle.** Beş aday büyüklük üretim imzasıyla iki kümede ölçüldü (260 meşru + 67 çöküş); hiçbiri çakışmasız ayırmıyor → görev tanımının kapısı gereği tavan 0,55 olduğu gibi kaldı. Yan bulgu: v36 otoparkta araçları ENGEL görüyor (çöküş tablosu evrilmiş). ~~ · `codes/karar_sozlesmesi.py` · ÖNEMLİ · kanıt: `REVIEW_LOG.md` D-65
   - 🔴 **VEKİL KAPATMA REDDİ · 2026-08-26 · D-284:** triyaj "ZATEN_YAPILMIS" dedi, çürütücü YIKTI — D-215 T52 için YALNIZ kaplama eksenini ölçmüş (`filo2_g15_t52_v34.json`'da `kenar` anahtarı YOK) — görevin seçtiği ölçüt sınanmamış. v35 (üretim): meşru kadraj n=260'ta kenar maks **0,5004 (sa_000176) tavan 0,50 ÜSTÜNDE**; otopark 0/67 ret → çöküş sınıfı v35'te yok; tavanlar (0,67 v24 · 0,50 v21 türevi) v35'e hiç kalibre edilmemiş. Kapalı kopyanın "kenar TEK AYIRAN +0,240" iddiası v24'te D-86 ile çürümüştü; istenen "DOĞRULANAMADI" kaydı hiç yazılmadı → **D-283 §4 / T142**.
   - 🔎 **FİLO 2 · D-215 (2026-08-20):** v34'te çakışma yeniden üretilemedi —
     meşru-maks 0,638 / çöküş-min 0,766 (+0,128 boşluk; 67+260 kare, oy 1/2);

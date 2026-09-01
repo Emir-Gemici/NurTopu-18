@@ -27446,3 +27446,44 @@ icerik=icerik)`); (c) kapi testi `test_t135_kamera_dogrula_icerik` 8 test +
 kullanici sahada teyit etti, sorudan cikarildi degil NOT edildi), K9 (FDA ic
 yerlesim) ve plan v2 §0'in uc muglak maddesi tek pakette; kullanici sabah
 kopyalayip iletebilir.
+
+### D-398 — T52 KAPANDI: ayirt edici olcut DOGRULANAMADI; kopru tavan 0,55 oldugu gibi kaliyor
+
+**Tarih:** 2026-09-03 (gece) · **Yazan/karar: Claude 2 — Fable 5, mimar** ·
+**On kayit:** `results/t52_ayirt_edicilik/ON_KAYIT.md` (adaylar + karar
+kurali sonuc gorulmeden) · **Olcum:** scripts/olcum/172 ·
+`results/t52_ayirt_edicilik/olcum_20260903.json`
+
+### 1. Olcum (v36, URETIM imzasiyla — T99 dersi)
+
+mesru = kabul kumesi n=260 · cokus = data/raw_frames otopark n=67; bes aday
+buyukluk ICERIK kutusunda hesaplandi. **Hicbiri cakismasiz ayirmiyor:**
+
+| aday | mesru [min,maks] | cokus [min,maks] | bosluk |
+|---|---|---|---|
+| A1 zemin/(zemin+engel) | [0,367 · 0,919] | [0,479 · 0,694] | -0,440 |
+| A2 bilesen sayisi | [1 · 13] | [5 · 36] | -35 |
+| A3 en buyuk pay | [0,376 · 1,000] | [0,798 · 0,999] | -0,202 |
+| A4 kenara dayanma | [0,000 · 0,445] | [0,018 · 0,385] | -0,427 |
+| A5 engel orani | [0,034 · 0,558] | [0,203 · 0,378] | -0,344 |
+
+Gorev tanimindaki kapi aynen uygulandi: **"ayiramiyorsa DOGRULANAMADI yaz ve
+tavani oldugu gibi birak — zorlama."** Kopru tavan 0,55 (D-65) yururlukte
+kalir; degistirme girisimi yok.
+
+### 2. Yan bulgular (kayda deger)
+
+- **A2 yon hipotezi TERSINE cikti:** cokus kumesi tek yekpare leke degil,
+  5-36 bilesene PARCALANIYOR (araclar maskeyi boluyor). Ters yonle bile
+  cakisik (mesru 1-13 ile ortusuyor).
+- **v36 otoparkta araclari ENGEL olarak goruyor** (A5 cokus %20-38): D-65
+  doneminin "her sey boyanmis, engel yok" cokus tablosu v36 icin arti k
+  gecerli degil — cokusun kendisi evrim gecirmis. Bu, tavanin neden hala
+  kopru olarak yeterli oldugunu da aciklar: cokus kumesi artik baska
+  kapilara (engel katmani, UC_BANT) takiliyor.
+
+### 3. Sinir
+
+Otopark tek mekan/67 karedir (ON_KAYIT §4); "DOGRULANAMADI" bu ornekleme
+gore verilmis durustluk verdiktir, "ayirt edilemez" evrensel iddiasi degil.
+Yeni cokus verisi gelirse (saha provalari) olcum ayni on kayitla tekrarlanir.
