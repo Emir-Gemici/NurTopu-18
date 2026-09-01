@@ -26022,6 +26022,8 @@ ortalama **+2,00**, **dört açıda 0**, 10°'de **−6**. D-285 §4'ün kaydett
 
 ### D-374 · ⚖ B4 `p` ÖLÇÜMÜ · FPS SORUSU KAPANDI (hız sorunu değil: gerekli 0,41 ≪ band 0,9) · ama G1 DÜŞTÜ — bakır alanda **51 saniyelik SAHNE BAĞINTILI kör aralık** (2026-09-01)
 
+> ⬆ **SONRADAN DÜZELTİLDİ → D-376.** Başlıktaki `p_R = 0,4866` **kirli**: ölçülen R katmanının **%62'si v36'nın eğitim kümesidir**. Yansız okuma `p = 0,346` (temiz alt küme) / `0,326` (yalnız 0038) → gerekli FPS `0,58`–`0,61`. ⚠ *"B4 bir hız sorunu değildir"* hükmü **ayakta** (band alt ucu 0,9) — değişen, o sonuca giden sayının **kapsamıdır**.
+
 **Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3)
 (⚠ aynı model — anlaşma kanıt değil, hakem ölçüm).
 **Ön kayıt:** `results/b4_fps/ON_KAYIT.md` + EK-1 (ölçek) + EK-2 (irtifa
@@ -26156,3 +26158,111 @@ kapanır (`GUN1_KONTROL_LISTESI.md`).
 `CPUExecutionProvider`'a geri düştü ve betik geri düşmeyi **"dönüştü"
 saymadı** — fail-closed tasarım çalıştı. Dönüşüm kanıtı Gün-1 §3 (T16)
 kapısındadır.
+
+---
+
+### D-376 · 🔴 D-374'ÜN `p_R` BAŞLIĞI KİRLİ: ölçtüğüm R katmanının **%62'si v36'nın EĞİTİM KÜMESİ** · hüküm ayakta ama genelleme tablosu çok daha kötü — ve körlüğün MEKANİZMASI kayıt defterinde zaten yazılıymış (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3).
+**Ham çıktı:** `results/b4_fps/p_ve_kosu_20260901.json` (kare kare) ·
+`dataset/dji_v7/images/{train,val}` · `config/model_registry.json`.
+
+#### 1. 🔴 KENDİ KUSURUM — ayrıklık denetimini yapmadım
+
+D-374'te R katmanını `kareler_irtifa.json`'ın **tamamından** kurdum ve eğitim
+kümesiyle kesişimini **hiç denetlemedim**. Ölçtüm:
+
+```text
+dji_v7 (v36'nin gercek-kare egitim kumesi) : 486 benzersiz kare
+katmandaki 633 karenin 390'i (%62) BU KUMEDE
+
+              n     p      MASKE_YOK
+egitimde    390   0,574      %8
+disinda     243   0,346     %44
+```
+
+Bu *"aynı sahne, benzer görüntü"* değil — **birebir eğitim karesi**. Yani
+D-374'ün başlığındaki `p_R = 0,4866`, ağırlıklı olarak modelin **ezberlediği**
+karelerin sayısıdır.
+
+⚠ **Disiplin zaten vardı, ben uygulamadım.** CONTRACTS §12 0038'i eğitimden ve
+erken durdurmadan ayırıyor; D-280 *"ortak kaynak 0 (fail-closed geçti)"* diye
+raporluyor. Kuralı bilen bir defterde, kuralı **kullanmayan** bir ölçüm
+yaptım. Sınıf: `KURAL_VAR != UYGULANDI` — `KOD_VAR != KOSUYOR` (D-351) ve
+`OLCULEMEDI != GECTI` ailesinden.
+
+#### 2. Düzeltilmiş sayılar
+
+```text
+                     p       gerekli FPS = 1/(5p)
+kirli havuz (633)  0,4866        0,411     <- D-374 BASLIGI, KULLANILMAZ
+R_TEMIZ    (243)   0,3457        0,579
+0038 tek   (230)   0,3261        0,613
+```
+
+⚠ R_TEMIZ'in %95'i (230/243) **tek uçuştan** gelir. Yani bu "temiz" sayı bir
+dağılım değil, **tek sahne-ayrık gözlemdir**; uçuşlar arası değişkenlik
+**ÖLÇÜLEMEDİ**.
+
+#### 3. AYAKTA KALAN — B4'ün hükmü değişmiyor
+
+Gereken FPS **0,613** (en kötü, temiz okuma); planın band alt ucu **0,9**.
+⇒ **"B4 bir hız sorunu değildir"** hükmü **ayakta**. D-374 §1'in sonucu
+korunur; değişen, o sonuca giden sayının kapsamıdır. Ayrıca D-374 zaten
+*"en kötü uçuş 0,61"* satırını taşıyordu — düzeltme başlığı o satıra
+indiriyor, hükmü çevirmiyor.
+
+#### 4. 🔴 KÖTÜLEŞEN — genelleme tablosu
+
+```text
+MASKE_YOK (model HIC zemin maskesi uretmiyor)
+  gordugu karelerde   : %8
+  gormedigi karelerde : %44
+```
+
+Beş kat fark. Ve D-374'ün **51 saniyelik kör aralığı 0038'de** — yani tek
+temiz uçuşta. Kör aralık ile tek yansız örneklem **aynı yerde**.
+
+#### 5. MEKANİZMA — defterde zaten yazılıymış, kimse bağlamamış (T124 bağı)
+
+`config/model_registry.json`, üretim profilinde:
+
+> *"TUVAL: v34 0,4551 → v35 0,2855 → **v36 0,2346**. ICERIK: v34 0,8002 →
+> v35 0,5076 → **v36 0,4171**. Bagimsiz (modelsiz) tahmine gore gercek
+> surulebilir oran **%47-52**'dir (D-240): v35 o araligin ALT ucundaydi,
+> **v36 ALTINA DUSTU**. Yani bu terfi 'daha az goruyor' yonundedir"*
+
+v35→v36 terfisi **bilerek** "daha az gör" yönündeydi; bedeli çatı kaçağını
+kapatmaktı (`cati_kacagi` v35 0,0428 → v36 0,0230). Kayıt defteri bunu
+**yazmış** ve v36'nın bağımsız sürülebilirlik tahmininin **altına düştüğünü**
+açıkça söylemiş.
+
+⇒ D-374'ün 51 s'lik körlüğü bir muamma değil: **terfinin bilinen ve seçilmiş
+bedelidir.** Yeni olan şey, bu iki kaydın birbirine **hiç bağlanmamış**
+olmasıdır — biri kayıt defterinde metrik notu, diğeri zaman ekseninde koşu.
+
+⚠ Bu **terfiyi geri aldırmaz**: madde 15 serbest alanı büyüten işlemi yasaklar
+ve "az görmek" güvenli yöndür. Çatı kaçağı gerçek bir kusurdu. Kayda geçen
+şey **bedelin ölçülmüş büyüklüğüdür**.
+
+#### 6. T124 — tarandı, kalıp GİTMİŞ (kapatma kararı mimarın)
+
+D-284 T124'ün kapatılmasını yıkmıştı: *"en çok gören / gerçeğe en yakın"*
+kalıbı v35'in registry girdisinde yeniden doğmuştu. Bugün taradım:
+
+- `config/model_registry.json` **ve** `jetson_paket/config/model_registry.json`:
+  kalıp **YOK**. Yerine ters disiplin yazılı — *"bu sayı 'daha doğru' demez,
+  yalnızca 'daha az zemin' der"* ve §5'teki bağımsız-tahmin kıyası.
+- Defterdeki geçişler (D-222/224/232/240/241/284) kalıbı **eleştiren**
+  kayıtlar; düzeltme gerekmiyor, defter işini yapmış.
+
+T124'ün özü **karşılanmıştır**. ⚠ Kapatma kararını **yazan kapatmaz**
+(madde 19 · D-284'ün dersi) — mimara bırakılıyor.
+
+#### 7. Yapılanlar
+
+- D-374'e ileri işaret düşüldü (D-373 yordamı).
+- `ON_KAYIT_INFER_SIZE.md` EK-1: 166'nın I1/I3/I4 hükümleri **R_TEMIZ**
+  üzerinde verilecek; kirli havuz yalnız bağlam. **166 sonucu görülmeden**
+  yazıldı.
+- 166 yeniden koşulmaz: JSON kare kare kayıt tutuyor, hüküm yeniden hesaplanır.
