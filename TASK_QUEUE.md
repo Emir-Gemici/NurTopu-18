@@ -1887,7 +1887,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
   - **Yap:** Alan boyutunu ve irtifayı yapılandırılabilir bir **profil** yap (`HTAB_50` ve `FDA_20`). `mpp` değerini irtifa + kamera FOV'undan türet, sabit varsayma. `IKA_GENISLIK_M`, `R_GEREKLI_M`, `WP_ARALIK_M` metre cinsinden olduğu için değişmez; piksel dönüşümleri profile bağlanır.
   - **Kapı:** `codes/test_rota_sentetik.py` **her iki profilde de 15/15**.
 
-- [ ] **T15 — 10 dakikalık FDA bütçesinin uçtan uca ölçümü** · yeni: `scripts/fda_butce_olc.py` · ÖNEMLİ
+- [x] **T15 — KAPANDI (2026-09-01 · D-382): FDA bütçesi uçtan uca ölçüldü** · `scripts/olcum/169_fda_butce_olcumu.py` (Codex kotada → başamele) · Uçtan uca kare gecikmesi **p95 0,458 s** — tazelik penceresinin (5 s) ve heartbeat döneminin (1 s) altında → **B2-G1/G2 GEÇTİ**. Baskın kalem telsiz+ACK ~308 ms (UDP loopback, ACK %100); model yükleme 2,0 s **bütçe dışı** (uçuş öncesi). Uçuş/hakem/seri-hat kalemleri **ÖLÇÜLEMEDİ** olarak ayrı — toplama 0 girmedi; "sığar/sığmaz" hükmü verilmedi. Ön kayıt sonuç görülmeden (`results/fda_butce/ON_KAYIT.md`); nöbetçi 13 test · kanıt: **D-382**
   - **Şartname §5.3.2:** kalkış + tespit + veri aktarımı + iniş **≤ 10 dakika**, yoksa 0 puan.
   - **Kanıt:** Bugüne kadarki tüm FPS ve süre sayıları **tahmindir** (JISEM kalibrasyonu 18–22 FPS). Ölçülmüş tek bir uçtan uca sayı yok.
   - **Yap:** Kare okuma → çıkarım → `get_masks` → `rota_bul` → `protocol.open_route` → ACK zincirini gerçek saatle ölç. `simulation/score.py`'yi **yeniden kullan** (yeniden yazma) ve ölçülen `t_İHA` / `t_İKA` ile puan tahmini üret.

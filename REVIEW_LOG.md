@@ -26637,3 +26637,62 @@ iskelenin içine yazıldı). Eksik-alan ekseninin testleri A2 dosyasındadır.
 
 K1 (bayat kutuda son tespiti yaş damgasıyla gösterme) bu altyapının
 üstüne ayrı onay bekliyor — karar paketinde.
+
+---
+
+### D-382 · ✅ B2/T15 KAPANDI (Codex kotada → başamele) — FDA bütçesi uçtan uca: kare gecikmesi **p95 0,458 s**, tazelik penceresinin onda biri; "sığar/sığmaz" hükmü BİLEREK verilmedi (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Denetleyen: mimar bekleniyor** (§9.3 —
+aynı-el uyarısı D-381'deki gibi geçerli). **Ön kayıt:**
+`results/fda_butce/ON_KAYIT.md` — çerçeve ve eşikler **sonuç görülmeden**.
+**Ham çıktı:** `results/fda_butce/olcum_20260901.json` (36 kare, adım adım).
+**Betik:** `scripts/olcum/169_fda_butce_olcumu.py` · nöbetçi
+`tests/test_b2_fda_butcesi.py` (13).
+
+#### 1. Çerçevenin kendisi bulgudur
+
+600 s'lik bütçe (sözleşme: `SARTNAME_FDA_OPERASYON_SURESI_S`) çoğunlukla
+**uçuş ve insan** kalemlerinden oluşur — PC'de ölçülemez. Yazılımın bütçeye
+giren payı **birikmez**: kare gecikmesi akış hâlindedir ve gerçek sınırı
+zaten sözleşmede vardır — `YKS_TESPIT_TAZELIK_S = 5 s` (gecikme bundan
+uzunsa tespit ekranda hiç "taze" olamaz). Eşik buradan türedi, uydurulmadı.
+
+#### 2. Ölçüm (36 gerçek 1280'lik kare · üretim zinciri birebir · gerçek `KararYayinci` + UDP loopback ACK)
+
+```text
+adim         p50 ms   p95 ms
+onisleme        4,9      6,2
+cikarim        14,8     45,4
+maske          18,4     25,6
+karar          51,2     80,1
+telsiz+ACK    307,6    314,3    <- baskin kalem; ACK orani 1,000
+TOPLAM        395,7    457,8
+
+model yukleme + soguk baslangic: 2,00 s  [BUTCE DISI — ucus oncesi]
+B2-G1: p95 0,458 s <= 5 s   GECTI
+B2-G2: p95 <= 1 s (heartbeat donemi)  GECTI
+```
+
+Baskın kalemin telsiz halkası olması Jetson için iyi haber: cihazda büyüyen
+kalemler çıkarım/karar; telsiz payı donanımdan bağımsızdır. ⚠ Yine de PC
+sayısı Jetson sayısı DEĞİLDİR — Gün-1 §5 gerçeğini ölçer (D-374'ün türetilmiş
+FPS eşiği zaten orada bekliyor).
+
+#### 3. Verilmeyen hüküm — kaydın asıl disiplini
+
+*"600 saniyeye sığar"* hükmü **verilmedi**: kalkış/intikal/iniş uçuşu, İKA
+intikali, seri telsiz hattı ve gerçek kamera yakalama **ÖLÇÜLEMEDİ** ve
+toplama **0 olarak girmedi**. Hakem sözlü onayı için 30 s **VARSAYIM-ÖNERİ**
+olarak duruyor (kaynağı yok; mimar/kullanıcı seçer). Nöbetçi bunu kilitler:
+hüküm yalnız ölçülen toplamdan türetilebilir, ÖLÇÜLEMEDİ listesi boşsa test
+düşer.
+
+#### 4. Yolda yakalananlar
+
+- "Çıplak 600 yok" denetimim betiğin **kendi docstring'indeki** "çıplak 600
+  yazılmaz" cümlesine takıldı → docstring'ler AST ile soyuldu (D-354 sınıfı).
+- Mutasyon deseni `ast.unparse`'ın tırnak normalizasyonuna takıldı ve D-370
+  koruması boş geçirtmedi (bu oturumda üçüncü kez) → desen unparse biçimine
+  alındı.
+
+Kapılar: genel 15/15 · tam suit **1443 OK** (+13).
