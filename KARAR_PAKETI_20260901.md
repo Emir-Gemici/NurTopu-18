@@ -96,6 +96,24 @@ rota üretilemiyor") ve S8 ("FDA profili üretece girmemiş") bu hizaya göre
 **amaçsız kalmıştır**. **Önerim:** ikisini D-368'e bağlayarak kapat;
 figür nöbetçi rolünü zaten K0/K8 taşıyor.
 
+## K9 · T14 — FDA 20×20 arenasının İÇ YERLEŞİMİ (yeni, 2026-09-01 akşam)
+
+**Bağlam.** T14'ün üretim yarısı bitmiş (`--senaryo FDA` CLI'ı, sözleşme
+boyutları, irtifa+FOV ölçeği); kalan iş kapının iki profilde koşması. Engel:
+mevcut şerit genişlikleri (6/5/4 m) 20 m'lik alana kenar paylarıyla
+**sığmıyor** ve şartname FDA arenasının iç yerleşimini **tanımlamıyor**.
+Oranla küçültmek fiziği bozar (zor şerit 1,6 m < gereken koridor 2,2 m).
+
+**Seçenekler.**
+(a) **Şerit genişlikleri FDA'da daraltılır** (ör. 4/3,5/3 m — hepsi > 2,2 m
+koridor): 3 şerit + paylar 20 m'ye sığar; kapı iki profilde koşar.
+(b) **FDA'da 3 değil 2 şerit varsayılır** (yerleşim bilinmiyor; en az
+varsayım). (c) **TEKNOFEST'e sorulur** (K3'teki soruya bir cümle eklenir:
+*"FDA uçuş testi alanındaki güzergâh düzeni ve şerit genişlikleri
+nedir?"*) ve cevaba kadar kapı yalnız HTAB'da koşar.
+**Önerim: (c) + (a)** — soruyu K3 ile birlikte ilet; cevap gecikirse (a)
+varsayımıyla ön kayıtlı uygularım (varsayım kapı çıktısına damgalanır).
+
 ---
 
 ### Onay biçimi

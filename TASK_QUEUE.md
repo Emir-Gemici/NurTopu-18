@@ -1880,9 +1880,10 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     EXIT_CODE=0
     ```
 
-- [IN_PROGRESS: Codex-1] **T14 — FDA parametrizasyonu: 20×20 m alan, ≥30 m irtifa** · `codes/costmap_path_finder.py`, sentetik arena üreteci · ÖNEMLİ
+- [ ] **T14 — FDA parametrizasyonu: 20×20 m alan, ≥30 m irtifa** · `codes/costmap_path_finder.py`, sentetik arena üreteci · ÖNEMLİ · **⛔ MİMAR KARARINA BAĞLANDI (K9)**
   - **Kilit serbest bırakıldı:** 2026-09-01 · önceki sahip Codex-1 · sebep: 2026-08-04 kota bitişi · yarım kalan iş: kod aşamasına hiç geçilmedi (`HANDOFF.md`).
   - **Rol devri:** 2026-09-01 · Codex ← Codex-1 + Codex-2 · sebep: kullanıcı iki yetkiyi birlikte verdi · denetim: Claude 2.
+  - 🔎 **KAPSAM İNCELENDİ (2026-09-01 · başamele):** görevin ÜRETİM yarısı **zaten yapılmış** — `--senaryo {FDA,HTAB,IHA_IB}` CLI'ı üretimde var (`rpi_inference.py:2335`), boyutlar sözleşmede (`SENARYO_BOYUTLARI_M`, FDA=20,0), ölçek irtifa+FOV'dan türetiliyor (T43 `kare_olcek_kahini`) ve arena-sınırı yedeği senaryo boyutunu okuyor. **Kalan: kapının iki profilde koşması** — ve orada gerçek bir TASARIM ENGELİ çıktı: `arena.py` HTAB=50'yi modül sabiti tutuyor VE mevcut şerit genişlikleri (kolay 6 · orta 5 · zor 4 m) 20 m alana **sığmıyor** (3×6=18 m + ayrımlar + ±3 m kenar payı > 20). FDA arenasının iç yerleşimini şartname TANIMLAMIYOR; oranla küçültmek fiziği bozar (zor: 1,6 m < gereken koridor 2,20 m). **Yerleşim kararı uydurulmaz** → seçenekler K9'da (`KARAR_PAKETI_20260901.md`), karar gelince mekanizma (arena `extent` parametresi + kapıda `--profil`, sözleşmeden) bir oturuşta bağlanır.
   - **Şartname §5.3.2:** FDA test uçuşu **20×20 m** alanda, **asgari 30 m irtifadan**. Mevcut ölçek sabitleri ve sentetik arena **50×50 m HTAB**'a göre kurulu.
   - **Yap:** Alan boyutunu ve irtifayı yapılandırılabilir bir **profil** yap (`HTAB_50` ve `FDA_20`). `mpp` değerini irtifa + kamera FOV'undan türet, sabit varsayma. `IKA_GENISLIK_M`, `R_GEREKLI_M`, `WP_ARALIK_M` metre cinsinden olduğu için değişmez; piksel dönüşümleri profile bağlanır.
   - **Kapı:** `codes/test_rota_sentetik.py` **her iki profilde de 15/15**.
