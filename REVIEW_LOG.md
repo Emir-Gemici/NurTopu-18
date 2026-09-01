@@ -27237,21 +27237,21 @@ Genel kapi 15/15 · tam suit **1522 test OK** (+13).
 ### 1. P9a — parasut yedegi ACK'li tekrara alindi
 
 Mevcut dugme iki adimli teyit + ceza isliyordu ama komut TEK ATIS
- ile gidiyordu — IKA_GO bile ACK'li tekrarliyken (K4) EN kritik
-acil komut tek UDP paketine emanetti. Ustune  iha dugumunden gelen
+`_cmd_gonder` ile gidiyordu — IKA_GO bile ACK'li tekrarliyken (K4) EN kritik
+acil komut tek UDP paketine emanetti. Ustune `_ack_isle` iha dugumunden gelen
 ACK'i HIC islemiyordu (yalniz node==ika'ya bakan erken donus): ACK gelse de
-gorulmezdi. Simdi:  (0,20 s x <=40, sabitler karar_sozlesmesi'nde
+gorulmezdi. Simdi: `AckliTekrar` (0,20 s x <=40, sabitler karar_sozlesmesi'nde
 sartname alintili), ACK'ta yesil damga, ust sinirda KIRMIZI 'ACK YOK — TEKRAR'
-ve dugme yeniden acilir. Ceza ciplak 50 degil 
+ve dugme yeniden acilir. Ceza ciplak 50 degil `PARASUT_MANUEL_CEZA_PUANI`
 (madde 16). Yanlis-dugum sahtekarligi kilitli: ika ACK'i parasutu kapatamaz.
 IHA tarafinda CMD dinleyen uc bugun YOK — AVIYONIK-BLOKLU (Faz B'de Jetson
 alim + Pixhawk MAV_CMD aktarimi); ekran ACK'sizligi DURUSTCE kirmizi gosterir.
 
 ### 2. P9b — firlatma yazilim kilidi
 
- ARM kilidini dugme durumuna emanet ediyordu (dugme DISARM'da
+`firlatma()` ARM kilidini dugme durumuna emanet ediyordu (dugme DISARM'da
 kapali). T180 sinifi: UI durumu emniyet sinyali DEGILDIR — kisayol/dogrudan
-cagri kilidi asabilirdi. Simdi  yoksa damga atilmaz, KILIT loglanir.
+cagri kilidi asabilirdi. Simdi `arm_acik` yoksa damga atilmaz, KILIT loglanir.
 
 ### 3. P9c — aktarim-havada sira denetimi (§2.2.3)
 
@@ -27263,12 +27263,19 @@ cagri kilidi asabilirdi. Simdi  yoksa damga atilmaz, KILIT loglanir.
 
 ### 4. Bilerek guncellenen test
 
-test_yks_gui_komut_durustlugu harness'ine  alani eklendi —
+test_yks_gui_komut_durustlugu harness'ine `parasut_tekrar` alani eklendi —
 sozlesmenin OZU degismedi (iletilmeyen komut basari/ceza uretmez; kirmizi
-GONDERILEMEDI tek kaynaktan, ).  D-320 kalibiyla
-getattr korumali (testlerin  ornekleri).
+GONDERILEMEDI tek kaynaktan, `_ham_gonder`). `_ack_isle` D-320 kalibiyla
+getattr korumali (testlerin `__new__` ornekleri).
 
 ### 5. Kapilar
 
 Genel kapi 15/15 · tam suit **1532 test OK** (+10) · jetson paket aynasi
 tazelendi (yks_gui pakete girmez; comms sabitleri karar_sozlesmesi uzerinden).
+
+### 6. Kayit onarimi
+
+Bu kaydin ilk yazimi shell backtick yutmasiyla bozuldu (D-376 sinifi; ders
+UCUNCU kez teyit edildi: Turkce/backtick icerik ASLA cift-tirnakli `-c`
+dizgisiyle yazilmaz — Write araci ya da python dosyasi). Ayni gece dogru
+metinle degistirildi; bozuk surum tek commit geride durur (646cff5).
