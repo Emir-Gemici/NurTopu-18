@@ -1,0 +1,15 @@
+{
+ "model": "O:\\navitas\\codes\\runs\\segment\\dji_kirsal_v1\\weights\\best.pt",
+ "tarandi": 260,
+ "bariyerli": 185,
+ "olcekli": 185,
+ "rota_var": 180,
+ "duyar_ort": 0.9835333683279199,
+ "duyar_min": 0.9261970112839281,
+ "kesen": 0,
+ "kesisim_px": 0,
+ "kesenler": [],
+ "K5_durum": "GECTI",
+ "olculebilir_kare": 180,
+ "kume": "O:\\navitas-local-train\\calisma\\sentetik_arena_kadraj_ACILI_t189"
+}

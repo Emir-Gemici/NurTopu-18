@@ -26525,3 +26525,53 @@ boyutlu sahtekâr"* sınırının şekil karşılığıdır;
 - Refaktor `test_hb_dedektoru`'nun kroma-ortaklık denetimini kırdı; denetim
   dolaylamayı izleyecek şekilde güncellendi (niyet aynı: ortak sabit).
   Jetson paketi paketleyiciyle tazelendi (kopya bayattı).
+
+---
+
+### D-380 · ✅ CODEX YENİDEN DENETİMİ (aa892a1) İŞLENDİ — D-278 farklı modelce GEÇTİ; D-373'ün mtime bulgusu **çapraz-model doğrulandı**; D-285'in "best=epoch 1" şüphesi KESİNLEŞTİ (2026-09-01)
+
+**Yazan:** Claude 2 (başamele, denetleyen sıfatıyla) · **Denetçi: Codex**
+(farklı model — §19'un bağıntılı kör nokta uyarısı BURADA GEÇERLİ DEĞİL;
+anlaşma bu kez gerçek kanıttır çünkü model farklı, yordam aynı).
+**Ham çıktı:** `results/codex_denetim/rapor.md` (2026-09-01 bölümü) ·
+`d280/d280_*_20260901_aa892a1*` · `d282/kare_uygunluk_yeniden_20260901.json`.
+Nokta kontrolleri kendim koştum (geçiş matrisi kenarları, epoch eşleşmesi,
+gölge verdikt).
+
+#### 1. D-278 → GEÇTİ (farklı modelin hükmü)
+
+Codex, D-370 onarımını dört testle yeniden koştu: M2′ artık uygulanıyor,
+tablo artefaktla eş, uygulanmayan mutasyon fail-closed, CRLF nöbetçisi
+geçiyor. Hüküm KISMEN → **GEÇTİ**. (Kapanış zaten D-285 §1'deydi; bu,
+onarım SONRASININ farklı modelce teyididir.)
+
+#### 2. 🔴 D-373'ün mtime bulgusu ÇAPRAZ-MODEL doğrulandı
+
+Codex, benden bağımsız olarak aynı sonuca vardı: *"A grubundaki sekiz alan
+çalışma zamanlayıcısı değil, ardışık PNG mtime farkıdır; B/C'de türetim
+yöntemi kayıtlı değildir."* — D-373 §3'ün birebir kendisi. İki FARKLI model,
+aynı ham artefakttan aynı kusuru çıkardı. §19'un tezi bir kez daha ölçüldü:
+denetimi işleten şey model değil **YORDAM** (ham artefaktın repoda durması).
+
+#### 3. D-285'in şüphesi KESİNLEŞTİ: dji_kirsal_v1'in best.pt'si EPOCH 1
+
+D-285 lr0 kusurunu bulmuş, *"best = epoch 1 bunun da izi olabilir"* demişti.
+Codex ölçtü, ben doğruladım: checkpoint'in `train_metrics`i 16 epoch'luk
+CSV'nin **yalnız epoch 1 satırıyla** 13 ortak metrikte sıfır farkla
+eşleşiyor; mAP50-95(M) maksimumu epoch 1'de (0,19783); sha256 kayıtlı.
+"Olabilir" → **ölçüldü**.
+
+#### 4. Gölge repo yöntemi — kayda değer iyi pratik
+
+Codex, benim eşzamanlı T198/HB değişikliklerimi denetim zeminine
+karıştırmamak için `aa892a1` kopyasını **gölge repoda** koşturdu; çalışma
+ağacıma dokunmadı, commit/push yapmadı, genel kapıyı bilerek koşmadı
+(kirli ağaçta güncel kanıt sayılamazdı). Eşzamanlı çalışmada doğru davranış
+budur; ileride ajan prompt'larına örnek olarak geçmeli.
+
+#### 5. Kapanış
+
+Codex'in kendi kapanışı: düzeltmeler D-285/D-373'te zaten işli; *"bu yeniden
+denetim yeni bir açık borç üretmez."* Katılıyorum — nokta kontrollerim
+(kenar toplamları 11/2/5 · epoch eşleşmesi · gölge verdikt True/True)
+raporla birebir. Codex denetim dizisi **tamamen kapalıdır**.

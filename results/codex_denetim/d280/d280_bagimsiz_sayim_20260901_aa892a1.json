@@ -1,0 +1,119 @@
+{
+  "head": "aa892a1f6964450228b34d5904bccf9da506dd3e",
+  "historical_artifact": "O:\\navitas\\scripts\\olcum\\results\\t63\\dji_kirsal_v1_kabul_verdikt.json",
+  "current_artifact": "O:\\navitas\\results\\codex_denetim\\d280\\d280_reaudit_20260901_aa892a1_kabul_verdikt.json",
+  "historical_verdikt": true,
+  "current_verdikt": true,
+  "historical_vs_current_K0_K5": {
+    "K0": {
+      "historical_gate": true,
+      "current_gate": true,
+      "historical_figur": 0.23346628253175936,
+      "current_figur": 0.23346628253175936,
+      "historical_raw_bos_n": [
+        0,
+        67
+      ],
+      "current_raw_bos_n": [
+        0,
+        67
+      ],
+      "historical_cp_bos_n": [
+        0,
+        393
+      ],
+      "current_cp_bos_n": [
+        0,
+        393
+      ],
+      "historical_taban_orani": 2.5854516337957847,
+      "current_taban_orani": 8.776927914727796
+    },
+    "K1": [
+      "255/260",
+      "257/260"
+    ],
+    "K2": [
+      "12/255",
+      "10/257"
+    ],
+    "K3": [
+      "0/255",
+      "0/257"
+    ],
+    "K4": [
+      "0/255",
+      "1/257"
+    ],
+    "K5": {
+      "historical": [
+        0,
+        171,
+        0
+      ],
+      "current": [
+        0,
+        178,
+        0
+      ],
+      "historical_gate": true,
+      "current_gate": true
+    }
+  },
+  "current_extra_gates": {
+    "K6": true,
+    "K7": true,
+    "K8": true,
+    "K5A": true
+  },
+  "bakir_59": {
+    "keysets_equal_unique": true,
+    "matrix": {
+      "MASKE_YOK -> MASKE_YOK": 24,
+      "MASKE_YOK -> ROTA": 2,
+      "MASKE_YOK -> UC_BANT_TEMAS_YOK": 9,
+      "ROTA -> MASKE_YOK": 2,
+      "ROTA -> ROTA": 6,
+      "ROTA -> UC_BANT_TEMAS_YOK": 3,
+      "UC_BANT_TEMAS_YOK -> MASKE_YOK": 3,
+      "UC_BANT_TEMAS_YOK -> ROTA": 2,
+      "UC_BANT_TEMAS_YOK -> UC_BANT_TEMAS_YOK": 8
+    },
+    "row_totals_v35": {
+      "MASKE_YOK": 35,
+      "ROTA": 11,
+      "UC_BANT_TEMAS_YOK": 13
+    },
+    "column_totals_aday": {
+      "MASKE_YOK": 29,
+      "ROTA": 10,
+      "UC_BANT_TEMAS_YOK": 20
+    },
+    "maske_yoktan_cikan": 11,
+    "bunlardan_rota": 2,
+    "maske_yoka_gerileyen": 5
+  },
+  "epoch": {
+    "csv_rows": 16,
+    "mask_mAP50_95_max_epoch": 1,
+    "mask_mAP50_95_max": 0.19783,
+    "checkpoint_epoch_field": -1,
+    "checkpoint_train_metrics_matching_csv_epochs": [
+      1
+    ],
+    "matching_common_metric_count": 13,
+    "checkpoint_date": "2026-08-25T16:00:22.182803",
+    "best_pt_sha256": "f3a96a825828845aed0e04cedb6e6cf755f1cbdd7d2eac4c728a211ce2a5feea"
+  },
+  "kiyas_109": {
+    "v35_figur_zemin": 0.15084,
+    "dji_figur_zemin": 0.38997,
+    "dji_bolu_v35": 2.585322195704057,
+    "rounded_ratio_1_decimal": 2.6,
+    "v35_kaplama67_icerik_medyan": 0.5076,
+    "dji_kaplama67_icerik_medyan": 0.3829,
+    "t127_temiz_equals_v35_bytes": true,
+    "t127_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b",
+    "v35_sha256": "e00f6b8e25dd65604755c3cead7840aeb0f9a0ff74fee45e8f5fe9dbf1dd438b"
+  }
+}
