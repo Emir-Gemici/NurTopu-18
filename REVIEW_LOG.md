@@ -26821,3 +26821,40 @@ deterministik olamadığı için saat mock'la donduruldu (gerekçe testte).
 Kanıt: genel 15/15 · tam suit **1452 OK** (+2) · kaptan sunumu provası
 uçtan uca *"GÖREV BAŞARILI"*. `yks_gui` Jetson paketinde değil (T202:
 başka makinede koşar) — paket etkilenmedi.
+
+---
+
+### D-385 · ✅ KULLANICI ONAY TURU — dokuz karar tek seferde ("tüm onayları veriyorum") ve uygulanan beş iş (2026-09-01)
+
+**Yazan:** Claude 2 (başamele) · **Onay:** kullanıcı, karar paketi üzerinden
+(K1–K9, `KARAR_PAKETI_20260901.md`). Uygulama dökümü:
+
+- **K1 UYGULANDI — bayat kutuda canlı yaş damgası.** ⚠ Uygulamadan önce
+  karttaki bir ifade DÜZELTİLDİ: kutu "boşalmıyor"muş — bayatlıkta sarıya
+  dönüyor, rota metni kalıyordu; gerçek eksik YAŞ DAMGASIYDI. Ön kayıt koda
+  başlamadan donduruldu (`results/k1_tazelik_damgasi/ON_KAYIT.md`): damga
+  her tikte güncellenir (üç kaynak metniyle: hat kesik / algı sustu / yaş
+  bilinmiyor), karar metni ve güven silinmez, onay kilidi değişmez, günlük
+  bir kez. Nöbetçi 7 test; onaylanmış tespite damga BASILMAZ (D-321).
+  Kaptan sunumu provası yeşil.
+- **K2a — T150 bağlama ön kaydı HAZIR** (`results/t150/ON_KAYIT_BAGLAMA.md`):
+  K3 teyidi gelince bağlama tek adım; kabulü tam zincir yeniden koşumuna
+  bağlı, bilinen sınırlar (çerçeveli sahtekâr) saha kontrol maddesi olarak
+  içinde.
+- **K5a UYGULANDI — `data/dji_prova` SİLİNDİ** (570 dosya, 581 MB; kopyası
+  `data/dji_prova_kareler` duruyor). Silmeden önce yeniden doğrulandı:
+  dosya listeleri birebir, 7/7 rastgele md5 eş. Git geçmişinde durur.
+- **K7 — T124 KAPANDI** (kullanıcı imzası; D-284'ün yıktığı vekil kapatmanın
+  aksine bu kez karar sahibinden). **K8 — T192 + S8 KAPANDI** (D-368 hizası;
+  S8'in FDA-profil kısmı K9'a devredildi).
+- **K4c / K6 / K9c KARAR OLARAK KAYDEDİLDİ:** K0 zemini bir sonraki aday
+  süreci başlarken ön kayıtla ele alınacak; ikinci geçiş uçuş planına
+  zorunlu adım olarak GİRMEYECEK (ölçüm aleyhineydi — D-374/D-367),
+  operatör inisiyatifinde; FDA yerleşim sorusu K3 sorusuna eklendi, cevap
+  gecikirse K9a (daraltılmış şeritler) ön kayıtla uygulanacak.
+- **K3 — insan görevi:** birleştirilmiş soru metni kullanıcıya teslim
+  edildi (HB renk/desen + temin + FDA güzergâh düzeni).
+
+Kapılar: genel 15/15 · tam suit **1459 OK** (bu kaydın kendisi, defter
+bütünlük kapısının "kuyruk D-385'i anıyor ama defterde yok" düşüşünü
+kapatır — kapı tam amaçlandığı gibi çalıştı).

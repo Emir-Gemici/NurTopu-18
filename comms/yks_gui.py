@@ -2590,6 +2590,20 @@ class YksArayuz:
             self._onay_dugmesini_tazele()
             self._logla("✓ Tespit yeniden TAZE — hakem onayı yeniden açıldı "
                         "(§6.2 gerçek zamanlı aktarım sürüyor)", "yesil")
+        # K1 (D-385, kullanıcı onayı · ön kayıt results/k1_tazelik_damgasi):
+        # BAYATKEN kutunun detay satırı CANLI yaş damgası taşır ve her tikte
+        # güncellenir — karar metni ve güven SİLİNMEZ, onay kilidi DEĞİŞMEZ,
+        # günlük yine BİR KEZ yazılır (aşağıdaki blok). Hakem böylece hem
+        # tespitin ne kadar eski olduğunu hem bayatlığın SEBEBİNİ görür.
+        if bayat and not self.onaylandi:
+            if _bayat_kaynak == "bilinmiyor":
+                _damga = "⏱ tespit yaşı BİLİNMİYOR (İHA karar_yas göndermiyor)"
+            elif _bayat_kaynak == "algi":
+                _damga = (f"⏱ son ALGI kararı {yas:.0f} sn önce — "
+                          f"algı sustu (hat canlı)")
+            else:
+                _damga = f"⏱ son veri {yas:.0f} sn önce — hat kesik"
+            self._kutu_yaz("protokol", detay=_damga)
         # Onaylanmış tespit SONRADAN bayat işaretlenmez: onay TAZEYKEN verildi,
         # sonradan sarıya boyamak hakemi yanıltır (D-321).
         if bayat and not self.tespit_bayat and not self.onaylandi:
