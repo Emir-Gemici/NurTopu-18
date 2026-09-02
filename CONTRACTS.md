@@ -358,6 +358,10 @@ ekranda kanıt görmeden veriyordu.
   `"CMD"`, `"IHA_LANDED"`). NEDEN: `seq` sayaçları **düğüm başınadır**; YKS'nin `IKA_GO` seq'i ile
   İHA'nın `OPEN_ROUTE` seq'i çakışabilir. Alıcı, `ref_tip` varsa `ref` **ve** tiple eşler; yoksa
   yalnız `ref` ile (geriye uyumlu — eski ACK'lar reddedilmez). Üretici: `protocol.ack(ref, node, ref_tip)`.
+  **Kural her alıcı için geçerlidir (D-405 Q4 / T206):** YKS tarafı (`AckliTekrar.ack_geldi`)
+  **ve** İHA tarafı (`IhaSender._tekrarli_gonder`) — hub fan-out'unda her tüketici herkesin
+  ACK'ini gördüğü için tipsiz eşleme çapraz kabul üretebiliyordu (ölçüldü). YKS'nin ürettiği
+  `OPEN_ROUTE`/`NO_ROUTE`/`IHA_LANDED` ACK'leri `ref_tip` **taşır**.
 - **`IKA_GO` tekrar gönderimi (YKS):** aynı `seq` ile, `IKA_GO_TEKRAR_ARALIGI_S` aralıkla, en çok
   `IKA_GO_TEKRAR_UST_SINIRI` kez (`codes/karar_sozlesmesi.py`, gerekçeli). İKA'dan `ACK(ref=seq,
   ref_tip="CMD")` gelince durur. Üst sınır aşılırsa ekranda **KIRMIZI "İKA ONAY VERMEDİ"**, düğme

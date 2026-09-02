@@ -22,6 +22,10 @@
 | ☐ | Jetson açılış kuru koşu (D-404) | `KIP=udp YKS_IP=… IKA_IP=… FOV=… bash jetson_paket/jetson_baslat.sh --kuru` → exit 0, `[EKSIK]` yok; `KIP=sik` ile de |
 | ☐ | Mühür mekanizması ayakta | `scripts/surum_dondur.py --dogrula` → exit **3** "DONDURULMADI" (beklenen; mühür ~18 Eylül) |
 | ☐ | Donanım-öncesi prova çıktıları | `results/faz_b_oncesi/` (D-404) |
+| ☐ | **Jetson Nano 4GB** (Orin değil — kullanıcı beyanı 3 Eylül): `jetson_paket/JETSON_NANO_KURULUM.md` okundu; `scripts/nano_tekerlek_indir.py` ile aarch64/py3.8 tekerlekler `wheels/` altında ve bellekte; microSD'ye JetPack 4.6.x imajı yazıldı | tekerlek raporu; kart hazır |
+| ☐ | Kamera köprüsü (RPi HQ CSI → MJPEG): `tests/test_faz_b_kamera_koprusu.py` yeşil; `jetson_baslat.sh --kuru` çıktısında `navitas-kamera-koprusu` satırı | test OK |
+| ☐ | Pixhawk şablonları bellekte: `config/pixhawk/arducopter_fda.param` + `fda_gorev.waypoints` (`tests/test_faz_b_pixhawk_sablon.py` yeşil); README'deki **TEYİT** listesi basılı | test OK |
+| ☐ | Yedek kamera (USB webcam) çantada — CSI yolu açılmazsa `--kaynak 0` | var |
 
 ## 1. 🔴 İLK KARAR — MAVLink çoğullayıcı (Jetson'da, her şeyden önce)
 
@@ -54,7 +58,7 @@ Kapı: üç uç aynı anda açıkken `scripts/mavlink_dogrula.py --mavlink udp:1
 | 10:45 | **Gerçek FPS** (T17) | `jetson_fps.py` GUN1 §5 | uçtan uca ≥ **0,61 FPS** (türetilmiş eşik, D-374/376) p50 ve p95 ayrı | eşiğin altındaysa **kapı düşer, eşik gevşetilmez**; sebep deftere |
 | 11:15 | `.engine`–PT karar denkliği | GUN1 §4 | uyuşmazlık ≤ 5/260 (D-303 kuralı) | engine ÜRETİME ALINMAZ, PT'yle uçulur |
 | 12:00 | 🔴 çoğullayıcı kur | §1 | 3 uçta `mavlink_dogrula` GEÇTİ | bkz. §1 |
-| 12:30 | **Pixhawk ön-uçuş doğrulama** | `mavlink_dogrula.py --sysid 1 --sure 10` | HEARTBEAT sysid=1 · GLOBAL_POSITION_INT ≥ 4 Hz · EXTENDED_SYS_STATE ≥ 1 Hz | EXTENDED gelmiyorsa ArduPilot `SR*_EXTRA3` / `SET_MESSAGE_INTERVAL` — araç zaten ister; hâlâ yoksa **iniş kanıtı sahada ÖLÜ** → uçuş yok |
+| 12:30 | **Pixhawk ön-uçuş doğrulama** | `mavlink_dogrula.py --sysid 1 --sure 10` | HEARTBEAT sysid=1 · GLOBAL_POSITION_INT ≥ 4 Hz · EXTENDED_SYS_STATE ≥ 1 Hz | EXTENDED gelmiyorsa: ArduCopter bunu **hiçbir `SR*` akışında vermez** (D-406 A, kaynaktan doğrulandı) — yalnız `SET_MESSAGE_INTERVAL` ile akar; bugün isteyen **yalnız** `mavlink_dogrula` (`--kapi`), istek Pixhawk reboot'unda (pil değişimi) silinir → **her reboot sonrası `--kapi` tekrar**; T207 ile `iha_inis_yayinci` isteği kendisi yeniler. Hâlâ yoksa **iniş kanıtı sahada ÖLÜ** → uçuş yok |
 | 13:00 | İniş kanıtı canlı prova (araç yerde) | `iha_inis_yayinci --mavlink udp:…:14551 --sysid 1 --kanit-timeout 60 --yks …` | IHA_LANDED ACK'li yayınlandı (D-389: alçalmayı bekler, yabancı sysid kör edemez) | ACK yoksa `--yks` adresi/port; kanıt yoksa EXTENDED akışı (bir üst satır) |
 | 13:30 | **Paraşüt/ARM aktarım provası** (PARAŞÜT SERVOSU BAĞLI DEĞİLKEN) — önce Pixhawk'ta **`CHUTE_ENABLED=1`, `CHUTE_ALT_MIN` prova için 0**, `SYSID_THISMAV` = alıcının `--sysid`'i; YKS `--iha <JETSON_IP>:5007` ile açılmış | YKS PARAŞÜT düğmesi → `iha_komut_alici` → Pixhawk COMMAND_LONG → **COMMAND_ACK ACCEPTED** → YKS ACK | YKS düğmesi "PARAŞÜT AÇILDI ✓ (İHA ACK)"; alıcı logunda `COMMAND_ACK ACCEPTED`; Pixhawk konsolunda `DO_PARACHUTE` | "GÖNDERİLDİ — ACK bekleniyor"da kalıyorsa: alıcı logu `REDDETTI` ise Pixhawk parametresi (CHUTE_ENABLED/ALT_MIN/armed), `GELMEDI` ise çoğullayıcı/USB, `yabanci sysid` ise SYSID_THISMAV; hiç CMD görünmüyorsa YKS `--iha` eksik (D-403 KRİTİK-1) |
 | 14:00 | **SiK RF ölçümü** | `sik_rf_olc.py --rol yanki` (İKA tarafı) + `--rol olc --n 50` (YKS) | RTT p95 < 0,20 s (paraşüt tekrar aralığı) · kayıp raporlandı | p95 aşarsa tekrar aralıkları **yeniden ön kayıtla** (D-393 sabitleri) |

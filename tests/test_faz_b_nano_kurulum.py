@@ -177,7 +177,10 @@ class K4BelgeBetikHizasiTests(unittest.TestCase):
 
     def test_python3_yolu_servis_kullanicisinin_evinde(self):
         sh = BASLAT_SH.read_text(encoding="utf-8", errors="replace")
-        m = re.search(r'SERVIS_KULLANICI="\$\{SERVIS_KULLANICI:-([a-z0-9_]+)\}"', sh)
+        # D-405 J kolu: varsayilan ic ice (${SUDO_USER:-${USER:-navitas}}) — en icteki
+        # literal yedek servis kullanicisidir; ic ice olmayan eski bicim de kabul.
+        m = re.search(r'SERVIS_KULLANICI="\$\{SERVIS_KULLANICI:-'
+                      r'(?:\$\{SUDO_USER:-)?(?:\$\{USER:-)?([a-z0-9_]+)\}+"', sh)
         self.assertIsNotNone(m, "jetson_baslat.sh SERVIS_KULLANICI varsayilani okunamadi")
         kullanici = m.group(1)
         beklenen = f"PYTHON3=/home/{kullanici}/venv38/bin/python"

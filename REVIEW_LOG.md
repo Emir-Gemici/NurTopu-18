@@ -28114,3 +28114,48 @@ Windows mutlak yorumlayici yolu (Jetson'da `--dogrula` testleri kosmaz, bilgi) �
 K8 hizalamasini yazdi; mimarin yazdigi K8 degisikligi kucuk ama **mimar-disi teyit
 bekler** (madde 19). D-404 §7 borcu: madde 2 (hub curutucusu) **KAPANDI**, madde 3 (muhur
 kapsami) **KAPANDI** (§2 karar 2), madde 4 (Jetson'da ilk kosum) cumartesiye.
+
+### D-406 — SAHA HAZIRLIGI PERSEMBE KALEMLERI: Jetson NANO 4GB yigini (14/14 aarch64 wheel), kamera koprusu, ArduCopter param/gorev sablonlari (Copter-4.5 kaynagindan), T206 kapandi — P kolu bulgusu: EXTENDED_SYS_STATE'i uretim HIC istemiyor (T207, KRITIK)
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Fable 5.1, mimar) · **Baglam:** kullanicinin gercek
+donanim beyani (3 Eylul; `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 — Jetson **Nano 4GB**, RPi HQ
+IMX477, Pixhawk 6C+PM02, FS-i6, tek pil) ve 21 Eylul Adiyaman gorev test ucusu (§5.3.2).
+**Denetleyen: mimar bekleniyor** (ajan yazdi, mimar diff/test/mutasyon ciktilarini okudu).
+
+### 1. Kollar (dort worktree ajani + iki devam ajani)
+
+| kol | commit | test | ne |
+|---|---|---|---|
+| N · Nano kurulum | `688e8a6` | `test_faz_b_nano_kurulum.py` **19** | `jetson_paket/JETSON_NANO_KURULUM.md` (JetPack 4.6.x SD imaji, `navitas` kullanicisi, swap, `jetson-io` IMX477, Python 3.8 venv, tek komut `pip install --no-index --find-links .`, MAVProxy symlink, kapilar), `scripts/nano_tekerlek_indir.py` (aarch64/cp38, glibc <= 2.27 platform kumesi, sikistirilmis etiketleri tanir, fail-closed), `jetson_paket/kod/requirements_nano.txt`, `.gitignore` `wheels/`. **PC'de gercek indirme:** 14/14 paket WHEEL (torch 2.4.1 CPU aarch64, torchvision 0.19.1, ultralytics 8.4.118, onnxruntime 1.19.2, MAVProxy 1.8.70, opencv-python 4.8.1.78, numpy 1.24.4, pymavlink 2.4.49 — cp38/aarch64 wheel tasiyor, "kaynaktan derlenir" varsayimi YANLISTI), 51 dosya / 246 MB, kaynak paketi 0 |
+| K · kamera koprusu | `47a7a44` (eski taban 096a672 → **K2** ile master'a tasindi, bkz. §3) | `test_faz_b_kamera_koprusu.py` **7** | `scripts/kamera_koprusu.py` (Python 3.6 uyumlu, sistem cv2 + stdlib; `nvarguscamerasrc` GStreamer / sayi / dosya kaynagi; `/video` MJPEG, `/kare.jpg`, `/durum` JSON; kaynak dusunce fail-visible + yeniden acma), `navitas-kamera-koprusu.service` (`${KAMERA_PYTHON}`), `jetson_baslat.sh` KAMERA=http ile rpi_inference `--kaynak`; KOPYALAR 17 -> 18 |
+| P · Pixhawk sablonlari | `23ebf80` | `test_faz_b_pixhawk_sablon.py` **12** | `config/pixhawk/arducopter_fda.param` (31 parametre; adlar/degerler **Copter-4.5 kaynak dosyalarindan** okundu — Parameters.cpp, AC_Fence, AP_BattMonitor, RC_Channels, AP_SerialManager, Pixhawk6C hwdef; 4 TEYIT: `BRD_SER2_RTSCTS=0`, `RC_PROTOCOLS=4`, `BATT_FS_LOW_ACT=2`/`CRT_ACT=1`; LOG_BITMASK 176126 = Copter-4.5 varsayilani, testte ayni hesap; SR1 4/1 Hz, SR2 8/2 Hz = asgari x ISTEK_HIZ_CARPANI), `fda_gorev.waypoints` (QGC WPL 110: TAKEOFF **32 m** — 2 m baro payi; tek pas 20x20 kare, LOITER 60 s, LAND; kotu-durum sure 221,5 s ≤ 600), `README.md` (yukleme, sahada degisecekler, TEYIT listesi = param dosyasi, metin kilidi) |
+| T · T206 ACK ref_tip | `01253b8` | `test_faz_b_ack_ref_tip.py` **14** (2 mutant yakalandi) | `IhaSender._tekrarli_gonder`: `ref_tip` varsa `msg["type"]` ile eslesmeli, yoksa yalniz `ref` (geriye uyum); `yks_gui` NO_ROUTE/IHA_LANDED/hakem OPEN_ROUTE ACK'leri `ref_tip` tasir (UDP + seri). CONTRACTS §6.6 kural satiri mimarca yazildi. Karar noktasi (amele): `onayla` icinde `self.rota.get("type") or "OPEN_ROUTE"` — `self.rota` yalniz OPEN_ROUTE dalinda atanir, fail-closed yon; mimar kabul. Oneri: `protocol.py`'de MESAJ_TIPI_* sabitleri (madde 16) — kuyruga |
+
+Dort dalin tabani **096a672** cikti (Workflow worktree'leri guncel master'dan degil eski
+tabandan acildi — olculdu: `git merge-base`). N/P/T dosyalari sonraki degisikliklerle
+cakismadigi icin temiz birlesti; K `jetson_baslat.sh`/testler/KOPYALAR/kilavuzlarda
+D-405 J koluyla cakisiyor -> **K2** ajani master'dan acilan worktree'de cherry-pick + cozum.
+Ders: worktree ajanlarina "taban commit'ini `git merge-base master HEAD` ile dondur" sarti.
+
+### 2. P kolunun MIMARA bulgulari (kaynaktan; README §5'te kanit)
+
+- 🔴 **A (KRITIK sinif, sahada sessiz olum):** `EXTENDED_SYS_STATE` Copter-4.5
+  `GCS_Mavlink.cpp` STREAM_*_msgs dizilerinin **hicbirinde yok** — `SR*_EXTRA3` onu akitmaz;
+  yalniz `MAV_CMD_SET_MESSAGE_INTERVAL` ile akar, istek baglantiya ozel ve Pixhawk
+  reboot'unda silinir. Bugun bu istegi **yalniz** `scripts/mavlink_dogrula.py` gonderiyor
+  (`grep SET_MESSAGE_INTERVAL comms/ codes/` = 0). `jetson_baslat --kapi` tuketicilerden
+  once kostugu icin ilk acilista calisir; **pil degisimi = reboot** sonrasi `--kapi`
+  kosulmazsa inis kaniti HIC olusmaz. FAZ_B §2 12:30 satirindaki "arac zaten ister" ifadesi
+  **yanlisti**, duzeltildi. -> **T207** (yayinci istegi kendisi periyodik yeniler; amele
+  worktree-t207'de) + saha kurali: her reboot sonrasi `--kapi` tekrar (SAHA_HAZIRLIK §6).
+- **B:** MAVProxy `--streamrate` varsayilani 4: cogullayici baglaninca
+  `REQUEST_DATA_STREAM(ALL,4)` ile TELEM2 `SR2_POSITION=8`'i 4 Hz'e ceker (= asgari, jitter
+  payi sifir). -> birim `--streamrate 8` (K2 ile).
+- **C:** `FS_GCS_ENABLE=1` — Jetson'daki MAVProxy sysid 255 heartbeat bastigi icin SiK kopsa
+  da GCS failsafe tetiklenmez. **Mimar karari:** 1 KALIR ve anlami "Jetson-baglanti
+  failsafe'i"dir: Jetson olurse (guzergah tespiti yok) RTL/Land dogru davranis; SiK kopmasi
+  gorevi durdurmamali (hakem ekrani icin ayri risk, §6.4). README'ye bu okuma yazilir.
+- **D:** Mission Planner baglaninca kendi Telemetry Rates degerleriyle `SR1_*`'i ezer —
+  sahada MP Position >= 4 secilir (README).
+
+### 3. Kapanis — (K2 ve T207 sonuclariyla doldurulacak)

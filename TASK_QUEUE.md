@@ -1913,7 +1913,7 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     kipin "hiç çizmez" vaadi bu durumda tutmaz, hata da yok.
   - **Yap:** `writer.isOpened()` kontrolü → KIRMIZI uyarı + `writer=None` (kayıt yok,
     karar sürer). Test: `isOpened()=False` sahte yazıcıyla draw 0, uyarı basıldı.
-- [ ] **T206 — ACK eşlemesi yalnız `ref` ile: `IhaSender` `ref_tip`/tip denetimi yapmıyor; hub fan-out'unda her tüketici herkesin ACK'ini görür (mekanik çapraz eşleşme mümkün, pratik çakışma bulunamadı)** · `comms/iha_sender.py`, `comms/yks_gui.py` · **KÜÇÜK** (tesadüfen güvenli) · kanıt: `results/faz_b_oncesi/curutucu_d405/r_q4_q6.py` (Q4), `REVIEW_LOG.md` **D-405**
+- [x] **T206 — KAPANDI (D-406, 3 Eylül): `IhaSender` ref_tip eşlemesi + YKS ACK'lerinde ref_tip; `tests/test_faz_b_ack_ref_tip.py` 14 test, 2 mutant yakalandı · eski başlık: ACK eşlemesi yalnız `ref` ile: `IhaSender` `ref_tip`/tip denetimi yapmıyor; hub fan-out'unda her tüketici herkesin ACK'ini görür (mekanik çapraz eşleşme mümkün, pratik çakışma bulunamadı)** · `comms/iha_sender.py`, `comms/yks_gui.py` · **KÜÇÜK** (tesadüfen güvenli) · kanıt: `results/faz_b_oncesi/curutucu_d405/r_q4_q6.py` (Q4), `REVIEW_LOG.md` **D-405**
   - Ölçüldü: OPEN_ROUTE seq=7 bekleyen `IhaSender`, IHA_LANDED tipli İKA ACK'ini (ref=7) de
     kabul etti (`acked={'ika','yks'}`); seq uzayları süreç başına 1'den başladığı için
     üretimde çakışma yolu bulunamadı (rpi_inference'ın ACK bekleyen mesajı seq=1 olamaz).
@@ -1922,6 +1922,9 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     and ref_tip != msg['type']: continue` (`AckliTekrar.ack_geldi` ile aynı kural, CONTRACTS
     §6.6); YKS ACK'lerine `ack(seq, 'yks', m['type'])` ile `ref_tip` ekle. Test: Q4 senaryosu →
     `acked=={'yks'}`. Eski ACK üreticileri (ref_tip'siz) geriye uyumlu kalır.
+- [IN_PROGRESS: Claude 2 amele (worktree-t207)] **T207 — `iha_inis_yayinci` `EXTENDED_SYS_STATE` akışını kendisi İSTEMİYOR: ArduCopter bu mesajı hiçbir `SR*` akışında vermez, yalnız `SET_MESSAGE_INTERVAL` ile akar; bugün isteyen tek şey `mavlink_dogrula` (`--kapi`), istek Pixhawk reboot'unda (pil değişimi) silinir → iniş kanıtı sahada sessizce ÖLÜR** · `comms/iha_inis_yayinci.py`, `codes/karar_sozlesmesi.py` · **KRİTİK** · kanıt: `REVIEW_LOG.md` **D-406 A** (P kolu, Copter-4.5 `GCS_Mavlink.cpp` STREAM_* dizileri kaynaktan okundu; `grep SET_MESSAGE_INTERVAL comms/` = 0)
+  - **Yap:** yayıncı başlarken ve periyodik (`MAVLINK_AKIS_ISTEK_ARALIGI_S`) `EXTENDED_SYS_STATE` + `GLOBAL_POSITION_INT` için `SET_MESSAGE_INTERVAL` gönderir; son EXTENDED'den bu yana `MAVLINK_AKIS_SESSIZLIK_TAVANI_S` geçtiyse KIRMIZI log. Kanıt penceresi/D-389 döngüsü değişmez. Test: sahte pixhawk ile komut gönderimi, periyodik yenileme (saat enjekte), mutasyon.
+  - Sahada o güne dek: **her Pixhawk reboot'undan sonra `jetson_baslat.sh --kapi` tekrar** (FAZ_B §2 12:30, SAHA_HAZIRLIK §6).
 - [ ] **T16 — Jetson üzerinde TensorRT `.engine` derlemesi** · `scripts/export_tensorrt.py` · bağımlı: **H2**
   - **Uyarı:** PC'de üretilen `.engine` Jetson'da **çalışmaz** — TensorRT sürümü donanıma bağlıdır. PC'de yalnız ONNX üretilir, `.engine` **Jetson üzerinde** derlenir.
   - **Kapı:** Jetson'da `.engine` yükleniyor ve tek kare çıkarım hatasız tamamlanıyor.
