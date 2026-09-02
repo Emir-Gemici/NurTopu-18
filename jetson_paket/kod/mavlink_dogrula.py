@@ -43,7 +43,8 @@ if str(KOK / "codes") not in sys.path:
 
 from pymavlink import mavutil  # noqa: E402
 
-from karar_sozlesmesi import (MAVLINK_DOGRULAMA_SURESI_S,  # noqa: E402
+from karar_sozlesmesi import (MAVLINK_AKIS_ISTEK_HIZ_CARPANI,  # noqa: E402
+                              MAVLINK_DOGRULAMA_SURESI_S,
                               MAVLINK_DURUM_ASGARI_HZ,
                               MAVLINK_HEARTBEAT_ASGARI_HZ,
                               MAVLINK_KONUM_ASGARI_HZ)
@@ -57,9 +58,12 @@ HEARTBEAT_TAVAN_S = 15.0     # ilk HEARTBEAT icin bekleme tavani
 ACK_TAVAN_S = 1.0            # COMMAND_ACK icin bekleme (en iyi caba)
 DINLEME_ADIMI_S = 0.2        # tek recv_match blok suresi (kalan sureyi asmaz)
 BIRIKINTI_BOSALTMA_S = 0.2   # olcum penceresi oncesi soket birikintisi tavani
-# Istenen hiz = asgari x 2 -> aralik = 1e6 / asgari_hz * 0,5 us. Asgarinin
-# tam kendisini istemek jitter'da esigin hemen altina dusurur.
-ISTEK_HIZ_CARPANI = 2.0
+# Istenen hiz = asgari x carpan -> aralik = 1e6 / (asgari_hz x carpan) us.
+# Asgarinin tam kendisini istemek jitter'da esigin hemen altina dusurur.
+# T208(b)/D-407: deger IKI YERDE ayri durmasin — uretim yayincisi
+# (comms/iha_inis_yayinci.AkisIstekcisi) ayni carpani sozlesmeden okur;
+# dogrulayici baska bir hiz isteseydi kapi sahadakinden BASKA seyi olcerdi.
+ISTEK_HIZ_CARPANI = float(MAVLINK_AKIS_ISTEK_HIZ_CARPANI)
 MIKROSANIYE = 1e6
 
 MESAJ_HEARTBEAT = "HEARTBEAT"
