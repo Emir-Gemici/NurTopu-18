@@ -58,6 +58,11 @@ KOPYALAR = {
     # (jetson_baslat.sh --kapi, ~/navitas/scripts/ altinda arar) pakete alindi.
     KOK / "comms" / "seri_hub.py": PAKET_KOD / "seri_hub.py",
     KOK / "scripts" / "mavlink_dogrula.py": PAKET_KOD / "mavlink_dogrula.py",
+    # Gorev K (SAHA_HAZIRLIK_PLANI_20260903 §1.4): kamera koprusu — Nano'da CSI
+    # IMX477 yalniz sistem Python 3.6 + GStreamer'li sistem OpenCV ile okunur;
+    # navitas-kamera-koprusu.service bunu KAMERA_PYTHON ile kosar ve
+    # ~/navitas/scripts/kamera_koprusu.py arar. Kanonik scripts/, kod/ AYNADIR.
+    KOK / "scripts" / "kamera_koprusu.py": PAKET_KOD / "kamera_koprusu.py",
 }
 
 

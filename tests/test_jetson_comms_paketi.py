@@ -46,11 +46,17 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         #     navitas-seri-hub.service ExecStart'i bu dosyayi bekler
         #   · scripts/mavlink_dogrula.py -> jetson_baslat.sh --kapi on-ucus
         #     kapisi; paket tasimayinca --kapi HATA ile durur (FAZ_B §1)
+        # Gorev K'da 17 -> 18 (SAHA_HAZIRLIK_PLANI_20260903 §1.4):
+        #   · scripts/kamera_koprusu.py -> Jetson Nano'da RPi HQ (IMX477, CSI)
+        #     yalniz GStreamer nvarguscamerasrc ile okunur, o da yalniz SISTEM
+        #     Python 3.6 + sistem OpenCV'de var; rpi_inference (Py>=3.8 venv)
+        #     kamerayi dogrudan acamaz. navitas-kamera-koprusu.service bu
+        #     dosyayi bekler; paket tasimayinca CSI kameradan kare GELMEZ.
         # Kapi yine GEVSETILMEDI, gerekceyle GUNCELLENDI.
-        self.assertEqual(17, len(KOPYALAR),
-                         "paket kopya sozlesmesi 17 dosya olmali "
-                         "(15 .py + karisim_arena.yaml + "
-                         "config/model_registry.json · T103/T83/T202/D-403/D-404)")
+        self.assertEqual(18, len(KOPYALAR),
+                         "paket kopya sozlesmesi 18 dosya olmali "
+                         "(16 .py + karisim_arena.yaml + "
+                         "config/model_registry.json · T103/T83/T202/D-403/D-404/Gorev K)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")
