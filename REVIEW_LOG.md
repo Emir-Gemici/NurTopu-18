@@ -27736,3 +27736,99 @@ satir-sonundan bagimsiz (startswith + satir ekleme) onarildi; git farki
 autocrlf uyarisi); "defter CRLF, `\r\n` ile ekle" calisma notu BAYATTI —
 dogru yordam: satir-sonundan bagimsiz metin islemi (splitlines/startswith),
 `find("\r\n")` ASLA.
+
+### D-403 — FAZ B HAZIRLIGI: dort arac + curutucu turu — parasut aktarim zinciri iki KRITIK kusurla dogdu, olculdu, kapatildi
+
+**Tarih:** 2026-09-03 · **Karar/denetim: Claude 2 — Fable 5.1, MIMAR** ·
+**Uygulama:** 4 paralel ajan (worktree, kendi dallarinda; birlestirildi) +
+mimar duzeltmeleri · **Curutme:** 3 mercekli dusmanca workflow (repro'lu)
+
+### 1. Dort arac (sahte uclarla testli; gercek donanim 5 Eylul)
+
+| arac | ne | test |
+|---|---|---|
+| `comms/iha_komut_alici.py` | YKS PARACHUTE/ARM/DISARM -> Pixhawk COMMAND_LONG; D-393'un IHA yarisi | 22 |
+| `scripts/mavlink_dogrula.py` | Pixhawk on-ucus dogrulayici: sysid, SET_MESSAGE_INTERVAL, akis Hz esikleri (`MAVLINK_*_ASGARI_HZ`, sozlesmede) | 7 |
+| `scripts/sik_rf_olc.py` | SiK RTT p50/p95 + kayip; esik `PARASUT/IKA_GO_TEKRAR_ARALIGI_S` | 7 |
+| `scripts/ika_surucu_kabul.py` | GercekSurucu icin K1-K6 kabul turu (fail-closed dahil) | 18 |
+
+`iha_komut_alici` Jetson paketine + iki kilavuzun kurulum satirina girdi
+(kopya sozlesmesi 14 -> 15). CONTRACTS §7.4: **MAVLink cogullayici ZORUNLU**
+— seri Pixhawk tek sahipli, bugun iki uretim sureci ayri ayri aciyordu
+(rpi_inference:314, iha_inis_yayinci:170), ucuncusu geldi; kilavuzlarda
+cogullayici hic yoktu (grep 0). SAHA_RUNBOOK §3 UDP uclari; FAZ_B_GUN_PLANI.md
+saat sirali gun plani.
+
+### 2. Curutucu bulgulari (uc mercek BAGIMSIZ olarak ayni ikisinde birlesti)
+
+**KRITIK-1 — komut aliciya HIC ulasmiyordu.** `yks_gui._ham_gonder` hedefi
+`son_adr["iha"]`; o adres yalniz OPEN_ROUTE/NO_ROUTE/HEARTBEAT kaynagindan
+ogreniliyor = `rpi_inference`in EFEMER portu (IhaSender `UDPLink()` bind 0),
+komut alicisinin `--bind 5007`si degil. `--iha` bayragi yoktu; runbook olmayan
+bayragi anlatiyordu. Repro (gercek UDP loopback): PARACHUTE cercevesi
+rpi_inference soketine dustu, alici 0 komut gordu. **Duzeltme:** `yks_gui
+--iha HOST:PORT` -> `sabit_adr["iha"]` (ika ile ayni mekanizma; heartbeat
+ezemez). Kilit: test_p9abc_yks (+3).
+
+**KRITIK-2 — yeniden acilan YKS'nin parasutu MAVLink'e gitmeden ACK'laniyordu.**
+Alici (cmd, seq) hafizasi zaman/oturum bilmiyor; `protocol._seq` surec basina
+1'den baslar -> ikinci oturumun (PARACHUTE, 2)'si "mukerrer" sayilip yalniz
+ACK dondu. Repro'lu. **Karar (mimar):** hafiza tamamen kaldirildi — her gecerli
+komut yeniden aktarilir (DO_PARACHUTE ve ARM/DISARM Pixhawk'ta idempotent;
+IKA_GO'daki hafiza IKA latch semantigi icindir, burada karsiligi yok).
+
+**ONEMLI — "gonderildi" kanit degil.** pymavlink'in her tasiyicisi write()
+hatasini YUTAR (mavserial -1 doner, mavudp socket.error'u yutar, udp: sunucu
+olu akrana yazar); COMMAND_ACK hic okunmuyordu. Ustelik ArduPlane
+PARACHUTE_RELEASE'i REDDEDEBILIR (CHUTE_ENABLED=0, zaten acik, CHUTE_ALT_MIN
+alti -> MAV_RESULT_FAILED). **Duzeltme:** YKS'ye ACK yalniz Pixhawk
+COMMAND_ACK(command eslesir, kaynak sysid == --sysid, MAV_RESULT_ACCEPTED)
+sonrasi; tavan `MAVLINK_KOMUT_ACK_TAVANI_S = 0,5 s` (sozlesmede gerekceli).
+Ret/zaman asimi/yabanci sysid -> ACK YOK, kirmizi log. `sahte_pixhawk` artik
+COMMAND_LONG'a COMMAND_ACK doner (kabul|ret|sessiz) — gercek uc testi (21)
+DENIED yolunu da kosar.
+
+**KUCUK:** UDP'de kalici FrameReader tamponu: newline'siz artik datagrami
+sonraki gecerli PARACHUTE'u yiyordu -> datagram basina taze okuyucu (seri
+hatta kalici). `--mavlink /dev/tty*` kodla engellenmiyordu -> parser hatasi;
+`--seri-pixhawk-bilerek` ile asilir. YKS dugmesi GONDERIMDE "ACILDI" diyordu
+-> "GONDERILDI — IHA ACK bekleniyor"; "ACILDI ✓" yalniz ACK'ta.
+
+### 3. Uretim kusuru — SiK'te ACK gecikmesi (C ajaninin iddiasi, mimar olctu)
+
+`SerialLink.recv` = `ser.read(256)`: 256 bayt YA DA 0,3 s zaman asimi.
+~70 baytlik ACK icin her bekleme zaman asimina yuvarlaniyordu. Olcum (gercek
+iki uclu seri kopru, URETIM IhaSender): ACK turu **p50 622,6 ms** (iki ucta
+iki zaman asimi) — parasut tekrar araliginin (0,20 s) UC KATI; hizli okumayla
+**0,8 ms**. D-383'un UDP'de kaldirdigi artefaktin seri ikizi. **Duzeltildi:**
+ilk bayta kadar bekle (zaman asimi korunur) + `in_waiting` bosalt. Kilit:
+test_p2 S8 (esik p50 < 50 ms, sonuc gorulmeden yazildi; olculen 0,8 ms).
+Dondurma yakin olmasina ragmen degistirildi: SiK yolu bu haliyle tekrar
+tasarimini (40 x 0,20 s) kullanilamaz kiliyordu — tasima katmani, karar
+mantigi degil (madde 15 dokunulmadi).
+
+### 4. Acik tasarim sorulari (cumartesi, kullaniciyla)
+
+- **SiK yolu tek sahipli:** UDP cogullayiciyla cozuldu; SiK kipinde uc surec
+  ayni /dev/ttyUSB0'i ister. NAVITAS-cerceve hub sureci ya da tek surece
+  toplama — radyo sayisi/topoloji cumartesi netlesir (FAZ_B §4b).
+- Jetson'da uc surec `systemd Restart=always` (alici seri hatada bilincli
+  cokuyor; YKS ACK yoklugundan gorur).
+- Pixhawk parametreleri artik kabul kapisi: CHUTE_ENABLED=1, CHUTE_ALT_MIN,
+  SYSID_THISMAV == --sysid.
+
+### 5. Yordam notu
+
+Dort ajan izole worktree'lerde yalniz izin verilen dosyalara dokundu (diff
+ile dogrulandi), dallar cakismasiz birlesti, worktree/dallar 0-commit-ileride
+dogrulanip silindi. Curutucunun uc kolu ayni dosyayi uc mercekle inceledi ve
+bulgulari REPRO'yla geldi — "ajan yazdi, ajan onayladi" degil: bulgular
+mimarca kodda dogrulandi, duzeltmeler mimarca yazildi, kilitler eklendi.
+
+### 6. Kapilar
+
+Genel kapi 15/15 · tam suit **1617 test OK** (+58 bugun) · jetson paketi 15
+dosya senkron · uretim degisiklikleri: `comms/link.py` (hizli okuma),
+`comms/yks_gui.py` (--iha, dugme metni), `comms/iha_komut_alici.py`,
+`codes/karar_sozlesmesi.py` (+5 sabit), `scripts/sahte_pixhawk.py` (test
+altyapisi).

@@ -50,13 +50,52 @@ class _SahteSaat:
         return self.t
 
 
-def _sahte_mav(side_effect=None):
-    """Donanim ucu mock'u: yalniz command_long_send + bos gelen kutusu."""
-    m = mock.Mock(name="mav")
-    m.mav.command_long_send = mock.Mock(name="command_long_send",
-                                        side_effect=side_effect)
-    m.recv_match = mock.Mock(name="recv_match", return_value=None)
-    return m
+class _SahteMav:
+    """Donanim ucu mock'u (D-403): command_long_send kaydeder, ardindan
+    Pixhawk gibi COMMAND_ACK doner.
+
+    cevap: "kabul" -> MAV_RESULT_ACCEPTED · "ret" -> MAV_RESULT_DENIED ·
+           "sessiz" -> hic COMMAND_ACK yok (olu router/Pixhawk vekili).
+    kaynak_sysid: ACK'i hangi sysid'in gonderdigi (alici hedefle esler).
+    """
+
+    def __init__(self, side_effect=None, cevap="kabul",
+                 kaynak_sysid=HEDEF_SYSID):
+        self.cevap = cevap
+        self.kaynak_sysid = kaynak_sysid
+        self._bekleyen = []
+        self._hata = side_effect
+
+        def kaydet(sys_id, comp, mav_cmd, *_):
+            hata = self._hata
+            if isinstance(hata, list):
+                hata = hata.pop(0) if hata else None
+            if isinstance(hata, BaseException):
+                raise hata
+            self._bekleyen.append(int(mav_cmd))
+
+        self.mav = mock.Mock(name="mav")
+        self.mav.command_long_send = mock.Mock(name="command_long_send",
+                                               side_effect=kaydet)
+
+    def recv_match(self, type=None, blocking=False, timeout=None, **_):
+        if type == "COMMAND_ACK" and self._bekleyen and self.cevap != "sessiz":
+            cmd = self._bekleyen.pop(0)
+            m = mavutil.mavlink
+            sonuc = (m.MAV_RESULT_ACCEPTED if self.cevap == "kabul"
+                     else m.MAV_RESULT_DENIED)
+            return SimpleNamespace(command=cmd, result=sonuc,
+                                   get_srcSystem=lambda: self.kaynak_sysid)
+        if blocking and timeout:
+            # Gercek pymavlink `recv_match(blocking=True, timeout=t)` mesaj
+            # gelmezse t kadar BLOKLAR; mock da oyle davransin ki "tavan kadar
+            # bekledi" olcumu anlamli olsun.
+            time.sleep(min(float(timeout), 0.6))
+        return None
+
+
+def _sahte_mav(side_effect=None, **kw):
+    return _SahteMav(side_effect=side_effect, **kw)
 
 
 class _UdpKurulum:
@@ -155,8 +194,12 @@ class TestKomutAktarimiVeAck(unittest.TestCase):
         self.assertIn("ACK YOK", k.log.getvalue())
         self.assertEqual(0, k.alici.sayac["aktarilan"])
 
-    def test_4_ayni_seq_ikinci_kez_mavlink_tek_ack_iki(self):
-        """Mukerrer (cmd, seq): command_long_send TEK, ACK IKI (IKA_GO kalibi)."""
+    def test_4_ayni_seq_ikinci_kez_de_YENIDEN_aktarilir_ve_acklanir(self):
+        """D-403 (curutucu KRITIK-2): (cmd, seq) hafizasi YOK. Ilk tasarim
+        tekrari baskiliyordu; YKS her acilista seq'i 1'den baslattigi icin
+        yeniden acilan YKS'nin PARACHUTE'u 'mukerrer' sayilip MAVLink'e HIC
+        gitmeden ACK'laniyordu. Simdi: ayni seq iki kez -> command_long_send
+        IKI, COMMAND_ACK iki, YKS ACK iki (DO_PARACHUTE Pixhawk'ta idempotent)."""
         mav = _sahte_mav()
         k = self.kurulum = _UdpKurulum(mav)
         msg = command("PARACHUTE", "iha", seq=5)
@@ -164,12 +207,13 @@ class TestKomutAktarimiVeAck(unittest.TestCase):
         self.assertEqual([True], k.tur())
         k.gonder(msg)
         self.assertEqual([True], k.tur())
-        self.assertEqual(1, mav.mav.command_long_send.call_count)
+        self.assertEqual(2, mav.mav.command_long_send.call_count)
         acks = k.acklar(sure=0.6, adet=2)
         self.assertEqual(2, len(acks), acks)
         for a in acks:
             _ack_dogrula(self, a, 5)
-        self.assertEqual(1, k.alici.sayac["mukerrer"])
+        self.assertNotIn("mukerrer", k.alici.sayac,
+                         "hafiza sayaci kalmis — baskilama geri mi geldi?")
 
     def test_5_hedefi_ika_olan_cmd_ve_cmd_disi_mesaj_yok_sayilir(self):
         """hedef=ika olan CMD ve CMD olmayan mesaj: aktarim yok, ACK yok."""
@@ -222,9 +266,9 @@ class TestKomutAktarimiVeAck(unittest.TestCase):
         self.assertIn("ACK YOK", log)
         self.assertEqual(1, k.alici.sayac["bilinmeyen"])
 
-    def test_8_basarisiz_aktarim_hafizaya_yazilmaz_tekrarda_yeniden_denenir(self):
-        """Idempotentlik hafizasi yalniz BASARILI aktarimi tutar: ilk deneme
-        patlarsa ayni seq'in tekrari yeniden aktarilir; ACK ancak o zaman."""
+    def test_8_basarisiz_aktarim_sonrasi_tekrar_yeniden_denenir(self):
+        """Ilk deneme patlarsa ACK yok; ayni seq'in tekrari yeniden aktarilir
+        ve ACK ancak o zaman (hafiza yok, D-403 — her tekrar taze deneme)."""
         mav = _sahte_mav(side_effect=[RuntimeError("gecici"), None])
         k = self.kurulum = _UdpKurulum(mav)
         msg = command("PARACHUTE", "iha", seq=6)
@@ -241,8 +285,9 @@ class TestKomutAktarimiVeAck(unittest.TestCase):
         """pymavlink `udp:` sunucusu akran gormeden write()'i sessizce dusurur;
         alici bunu 'aktarilmadi, ACK YOK' sayar; akran gorulunce aktarir."""
         istemciler = set()
-        mav = SimpleNamespace(udp_server=True, clients=istemciler,
-                              mav=mock.Mock(), recv_match=lambda **k: None)
+        mav = _sahte_mav()                       # COMMAND_ACK'i kabul doner
+        mav.udp_server = True
+        mav.clients = istemciler
         k = self.kurulum = _UdpKurulum(mav)
         msg = command("PARACHUTE", "iha", seq=48)
         k.gonder(msg)
@@ -333,7 +378,10 @@ class TestSeriHatVeDongu(unittest.TestCase):
             self.assertTrue(port > 0)
             k = _UdpKurulum(mav, target_system=HEDEF_SYSID,
                             target_component=HEDEF_COMPONENT)
-            with SahtePixhawk(f"udpout:{YEREL}:{port}", senaryo="ucus") as sp:
+            # D-403: sahte Pixhawk HEDEF sysid ile yayinlar — alici COMMAND_ACK'i
+            # yalniz hedef sysid'den kabul eder (yabanci ACK yok sayilir).
+            with SahtePixhawk(f"udpout:{YEREL}:{port}", senaryo="ucus",
+                              sysid=HEDEF_SYSID) as sp:
                 # Akran adresi ancak gelen kutusu bosaltilinca ogrenilir.
                 for _ in range(25):
                     k.tur()
@@ -346,17 +394,106 @@ class TestSeriHatVeDongu(unittest.TestCase):
                 acks = k.acklar()
                 self.assertEqual(1, len(acks), acks)
                 _ack_dogrula(self, acks[0], 91)
-                gelen = sp._mav.recv_match(type="COMMAND_LONG", blocking=True,
-                                           timeout=3.0)
-                self.assertIsNotNone(gelen, "Pixhawk COMMAND_LONG almadi")
-                self.assertEqual(mavutil.mavlink.MAV_CMD_DO_PARACHUTE,
-                                 gelen.command)
-                self.assertEqual(mavutil.mavlink.PARACHUTE_RELEASE,
-                                 gelen.param1)
-                self.assertEqual(HEDEF_SYSID, gelen.target_system)
-                self.assertEqual(HEDEF_COMPONENT, gelen.target_component)
-                self.assertEqual(modul.MAVLINK_ONAY_ILK_GONDERIM,
-                                 gelen.confirmation)
+                # Sahte Pixhawk COMMAND_LONG'u kendi dongusunde tuketip
+                # COMMAND_ACK dondu; kanit `alinan_komutlar` listesindedir.
+                bitis = time.monotonic() + 3.0
+                while not sp.alinan_komutlar and time.monotonic() < bitis:
+                    time.sleep(0.02)
+                self.assertTrue(sp.alinan_komutlar, "Pixhawk COMMAND_LONG almadi")
+                cmd, param1 = sp.alinan_komutlar[0]
+                self.assertEqual(mavutil.mavlink.MAV_CMD_DO_PARACHUTE, cmd)
+                self.assertEqual(mavutil.mavlink.PARACHUTE_RELEASE, param1)
+                self.assertGreaterEqual(sp.gonderilen["command_ack"], 1,
+                                        "sahte Pixhawk COMMAND_ACK dondurmedi")
+        finally:
+            if k is not None:
+                k.kapat()
+            mav.close()
+
+
+class TestCommandAckKapisi(unittest.TestCase):
+    """D-403 (curutucu, uc mercek birlesti): ACK yalniz Pixhawk COMMAND_ACK
+    ACCEPTED sonrasi. pymavlink write() hatayi yutar; ArduPlane DO_PARACHUTE'u
+    reddedebilir (CHUTE_ENABLED=0, zaten acik, CHUTE_ALT_MIN alti)."""
+
+    def setUp(self):
+        self.kurulum = None
+
+    def tearDown(self):
+        if self.kurulum is not None:
+            self.kurulum.kapat()
+
+    def test_17_command_ack_REDDEDERSE_yks_ack_yok(self):
+        mav = _sahte_mav(cevap="ret")
+        k = self.kurulum = _UdpKurulum(mav)
+        k.gonder(command("PARACHUTE", "iha", seq=201))
+        self.assertEqual([False], k.tur())
+        mav.mav.command_long_send.assert_called_once()   # gonderildi ama
+        self.assertEqual([], k.acklar())                   # kabul edilmedi
+        log = k.log.getvalue()
+        self.assertIn("REDDETTI", log)
+        self.assertIn("ACK YOK", log)
+        self.assertEqual(0, k.alici.sayac["aktarilan"])
+
+    def test_18_command_ack_GELMEZSE_zaman_asimi_yks_ack_yok(self):
+        """Olu router/Pixhawk vekili: gonderim 'basarili' ama cevap yok."""
+        mav = _sahte_mav(cevap="sessiz")
+        k = self.kurulum = _UdpKurulum(mav)
+        k.gonder(command("PARACHUTE", "iha", seq=202))
+        t0 = time.monotonic()
+        self.assertEqual([False], k.tur())
+        gecen = time.monotonic() - t0
+        self.assertGreaterEqual(gecen, modul.MAVLINK_KOMUT_ACK_TAVANI_S * 0.9,
+                                "tavan kadar beklemedi")
+        self.assertEqual([], k.acklar())
+        self.assertIn("GELMEDI", k.log.getvalue())
+
+    def test_19_yabanci_sysid_command_ack_kabul_sayilmaz(self):
+        """SYSID_THISMAV != --sysid: baska kaynagin ACK'i yok sayilir."""
+        mav = _sahte_mav(kaynak_sysid=HEDEF_SYSID + 1)
+        k = self.kurulum = _UdpKurulum(mav)
+        k.gonder(command("PARACHUTE", "iha", seq=203))
+        self.assertEqual([False], k.tur())
+        self.assertEqual([], k.acklar())
+        self.assertIn("yabanci sysid", k.log.getvalue())
+
+    def test_20_udp_datagram_basina_taze_cerceveleyici(self):
+        """KUCUK-4: newline'siz artik datagrami, SONRAKI gecerli PARACHUTE'u
+        bozmamali (UDP'de datagram = cerceve siniri)."""
+        mav = _sahte_mav()
+        k = self.kurulum = _UdpKurulum(mav)
+        k.yks.send(b'{"cop":1', k.alici_adr)            # newline'siz artik
+        self.assertEqual([], k.tur())
+        k.gonder(command("PARACHUTE", "iha", seq=204))
+        self.assertEqual([True], k.tur(), "artik sonraki cerceveyi yedi")
+        acks = k.acklar()
+        self.assertEqual(1, len(acks), acks)
+        _ack_dogrula(self, acks[0], 204)
+
+    def test_21_gercek_sahte_pixhawk_REDDEDINCE_ack_yok(self):
+        """Gercek pymavlink + sahte_pixhawk(komut_cevabi='ret'): COMMAND_LONG
+        alinir, COMMAND_ACK DENIED doner, YKS'ye ACK GITMEZ."""
+        from sahte_pixhawk import SahtePixhawk
+        mav = mavutil.mavlink_connection(f"udp:{YEREL}:0")
+        k = None
+        try:
+            port = mav.port.getsockname()[1]
+            k = _UdpKurulum(mav, target_system=HEDEF_SYSID,
+                            target_component=HEDEF_COMPONENT)
+            with SahtePixhawk(f"udpout:{YEREL}:{port}", senaryo="ucus",
+                              sysid=HEDEF_SYSID, komut_cevabi="ret") as sp:
+                for _ in range(25):
+                    k.tur()
+                    if modul.mav_hedefi_biliniyor_mu(mav):
+                        break
+                k.gonder(command("PARACHUTE", "iha", seq=205))
+                self.assertEqual([False], k.tur())
+                self.assertEqual([], k.acklar())
+                self.assertIn("REDDETTI", k.log.getvalue())
+                bitis = time.monotonic() + 2.0
+                while not sp.alinan_komutlar and time.monotonic() < bitis:
+                    time.sleep(0.02)
+                self.assertTrue(sp.alinan_komutlar, "komut Pixhawk'a ulasmadi")
         finally:
             if k is not None:
                 k.kapat()
@@ -391,6 +528,25 @@ class TestCli(unittest.TestCase):
                     modul.main(["--mavlink", "udp:127.0.0.1:14560",
                                 "--sysid", kotu])
             self.assertEqual(2, cm.exception.code)
+
+
+    def test_22_cli_seri_cihaz_mavlink_kilidi(self):
+        """D-403: CONTRACTS §7.4 artik KODLA — --mavlink'e seri cihaz verilirse
+        parser hatasi (exit 2); --seri-pixhawk-bilerek olmadan acilmaz."""
+        for seri in ("/dev/ttyACM0", "COM7", "serial:/dev/ttyUSB0"):
+            with contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as cm:
+                    modul.main(["--mavlink", seri, "--bind", f"{YEREL}:0"])
+            self.assertEqual(2, cm.exception.code, seri)
+        # bilerek bayragiyla kilit acilir; baglanti acilamayinca 2 ile CIKAR ama
+        # parser hatasi degil (mavlink_baglantisi_ac yoluna gecmis olmali)
+        with mock.patch.object(modul, "mavlink_baglantisi_ac",
+                               side_effect=ConnectionError("yok")) as ac, \
+                contextlib.redirect_stderr(io.StringIO()):
+            kod = modul.main(["--mavlink", "/dev/ttyACM0",
+                              "--seri-pixhawk-bilerek", "--bind", f"{YEREL}:0"])
+        self.assertEqual(2, kod)
+        ac.assert_called_once_with("/dev/ttyACM0")
 
 
 if __name__ == "__main__":

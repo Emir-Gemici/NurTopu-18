@@ -60,9 +60,13 @@ class SahtePixhawk:
                  senaryo="ucus", irtifa_m=30.0, inis_suresi_s=20.0,
                  inis_tavani_m=0.4, lat=VARSAYILAN_LAT, lon=VARSAYILAN_LON,
                  konum_hz=KONUM_HZ, durum_hz=DURUM_HZ,
-                 heartbeat_hz=HEARTBEAT_HZ):
+                 heartbeat_hz=HEARTBEAT_HZ, komut_cevabi="kabul"):
         if senaryo not in SENARYOLAR:
             raise ValueError(f"senaryo {SENARYOLAR} icinden olmali")
+        if komut_cevabi not in ("kabul", "ret", "sessiz"):
+            raise ValueError("komut_cevabi kabul|ret|sessiz olmali")
+        self.komut_cevabi = komut_cevabi
+        self.alinan_komutlar = []        # (MAV_CMD, param1) — test kaniti
         if not (isinstance(sysid, int) and not isinstance(sysid, bool)
                 and 1 <= sysid <= 255):
             raise ValueError("sysid 1..255 tamsayi olmali")
@@ -89,7 +93,7 @@ class SahtePixhawk:
         self._baslangic = None
         self._donuk_ms = 1000
         self.gonderilen = {"heartbeat": 0, "konum": 0, "durum": 0,
-                           "yabanci_konum": 0}
+                           "yabanci_konum": 0, "command_ack": 0}
 
     # --- profil ---
 
@@ -179,7 +183,30 @@ class SahtePixhawk:
                 self._durum_bas()
                 self.gonderilen["durum"] += 1
                 sonraki_durum = simdi + self.durum_periyodu
+            self._komutlari_cevapla()
             self._dur_olayi.wait(DONGU_ADIMI_S)
+
+    def _komutlari_cevapla(self):
+        """Gelen COMMAND_LONG'a COMMAND_ACK don (D-403: gercek Pixhawk gibi).
+
+        `komut_cevabi`: "kabul" -> MAV_RESULT_ACCEPTED · "ret" ->
+        MAV_RESULT_DENIED · "sessiz" -> hic cevap yok (olu router vekili).
+        """
+        mav = mavutil.mavlink
+        for _ in range(8):
+            try:
+                m = self._mav.recv_match(type="COMMAND_LONG", blocking=False)
+            except Exception:
+                return
+            if m is None:
+                return
+            self.alinan_komutlar.append((int(m.command), float(m.param1)))
+            if self.komut_cevabi == "sessiz":
+                continue
+            sonuc = (mav.MAV_RESULT_ACCEPTED if self.komut_cevabi == "kabul"
+                     else mav.MAV_RESULT_DENIED)
+            self._mav.mav.command_ack_send(int(m.command), sonuc)
+            self.gonderilen["command_ack"] += 1
 
     # --- yasam dongusu ---
 

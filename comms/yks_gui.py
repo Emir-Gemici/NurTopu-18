@@ -292,7 +292,8 @@ class YksArayuz:
     fda_kipi = False
 
     def __init__(
-            self, kok, link, otomatik_onay=False, demo=False, ika_peer=None):
+            self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
+            iha_peer=None):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -326,6 +327,13 @@ class YksArayuz:
         if ika_peer is not None:
             self.son_adr["ika"] = ika_peer
             self.sabit_adr["ika"] = ika_peer
+        # D-403 (çürütücü KRİTİK-1): iha adresi yalnız heartbeat/OPEN_ROUTE
+        # kaynağından öğreniliyordu — o adres rpi_inference'ın EFEMER portudur,
+        # komut alıcısının (iha_komut_alici --bind) değil. PARACHUTE komutu
+        # sahada alıcıya HİÇ ulaşmazdı. `--iha` ile pinlenir; heartbeat ezemez.
+        if iha_peer is not None:
+            self.son_adr["iha"] = iha_peer
+            self.sabit_adr["iha"] = iha_peer
         self.sayac = {
             "OPEN_ROUTE": 0,
             "OPEN_ROUTE_RED": 0,
@@ -1333,6 +1341,10 @@ class YksArayuz:
                                       time.localtime(self.parasut_ack_zamani))
                 self._logla(f"İHA ALDI ✓ PARACHUTE ACK ref={ref} · {damga} · "
                             f"{parasut_tekrar.deneme} gönderim", "yesil")
+                # D-403: "ACILDI" yalniz ACK'ta (Pixhawk COMMAND_ACK ACCEPTED)
+                dugme = getattr(self, "btn_parasut", None)
+                if dugme is not None:
+                    dugme.config(text="PARAŞÜT AÇILDI ✓ (İHA ACK)")
             return
         if m.get("node") != "ika":
             return
@@ -2489,8 +2501,11 @@ class YksArayuz:
         self._logla(f"CMD → iha: PARACHUTE (seq={komut_mesaji['seq']}, ACK "
                     f"bekleniyor · {PARASUT_TEKRAR_ARALIGI_S:.2f} s × "
                     f"≤{PARASUT_TEKRAR_UST_SINIRI})", "kirmizi")
+        # D-403 (curutucu): dugme GONDERIMDE "ACILDI" diyordu — ACK'siz.
+        # Simdi: gonderildi/ACK bekleniyor; "ACILDI ✓" yalniz IHA ACK'inde
+        # (_ack_isle), o da Pixhawk COMMAND_ACK ACCEPTED'e bagli.
         self.btn_parasut.config(state="disabled", bg=KIRMIZI,
-                                text="PARAŞÜT AÇILDI (manuel)")
+                                text="PARAŞÜT GÖNDERİLDİ — İHA ACK bekleniyor")
         self._parasut_tik()
 
     def _parasut_tik(self):
@@ -2881,6 +2896,11 @@ def main():
     ap.add_argument("--bind", default="0.0.0.0:5005")
     ap.add_argument("--ika", type=_udp_adres,
                     help="İKA komut hedefi host:port (UDP için zorunlu)")
+    ap.add_argument("--iha", type=_udp_adres,
+                    help="İHA komut alıcısı host:port (iha_komut_alici --bind; "
+                         "PARAŞÜT/ARM komutları buraya gider — verilmezse "
+                         "heartbeat kaynağı kullanılır ve komut alıcıya "
+                         "ULAŞMAZ, D-403)")
     ap.add_argument("--serial", help="SiK telsiz seri portu (örn. COM5)")
     ap.add_argument("--baud", type=int, default=57600)
     ap.add_argument("--demo", action="store_true",
@@ -2936,15 +2956,18 @@ def main():
     if args.serial:
         link = SerialLink(args.serial, args.baud)
         ika_peer = None
+        iha_peer = None
     else:
         h, p = args.bind.split(":")
         link = UDPLink(bind=(h, int(p)))
         ika_peer = args.ika
+        iha_peer = args.iha
 
     kok = tk.Tk()
     # otomatik onay YOK: hakem onay akışı elle incelenebilsin (buton/R kısayolu)
     app = YksArayuz(
-        kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer)
+        kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
+        iha_peer=iha_peer)
     app._logla(f"YKS hazır — dinleniyor: "
                f"{args.serial or args.bind}", "mavi")
 

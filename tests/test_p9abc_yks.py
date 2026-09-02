@@ -160,5 +160,42 @@ class AktarimHavadaSirasi(unittest.TestCase):
                       "damgasi basilmadi (§2.2.3)")
 
 
+class IhaAdresPinleme(unittest.TestCase):
+    """D-403 (curutucu KRITIK-1): `son_adr["iha"]` yalniz heartbeat/OPEN_ROUTE
+    kaynagindan ogreniliyordu — o adres rpi_inference'in EFEMER portudur,
+    komut alicisinin --bind'i degil; PARACHUTE alicaya HIC ulasmazdi.
+    `--iha` pinler; heartbeat ezemez (ika ile ayni mekanizma)."""
+
+    def _kur(self, iha_peer):
+        g = object.__new__(yks_gui.YksArayuz)
+        g.son_adr, g.sabit_adr = {}, {}
+        if iha_peer is not None:
+            g.son_adr["iha"] = iha_peer
+            g.sabit_adr["iha"] = iha_peer
+        return g
+
+    def test_pinli_iha_adresini_heartbeat_ezemez(self):
+        g = self._kur(("10.0.0.5", 5007))
+        g._dugum_adresini_ogren("iha", ("10.0.0.5", 61234))   # efemer heartbeat
+        self.assertEqual(("10.0.0.5", 5007), g.son_adr["iha"],
+                         "heartbeat pinli komut-alici adresini ezdi")
+
+    def test_pinsiz_iha_adresi_efemer_porta_kayar(self):
+        """Pin YOKKEN eski kusur aynen yasar — belgelenmis davranis."""
+        g = self._kur(None)
+        g._dugum_adresini_ogren("iha", ("10.0.0.5", 61234))
+        self.assertEqual(("10.0.0.5", 61234), g.son_adr["iha"])
+
+    def test_ctor_iha_peer_parametresi_pinler(self):
+        with mock.patch.object(yks_gui.YksArayuz, "_arayuz_kur"), \
+             mock.patch.object(yks_gui.YksArayuz, "_tik"), \
+             mock.patch.object(yks_gui.threading.Thread, "start"):
+            g = yks_gui.YksArayuz(mock.Mock(), mock.Mock(),
+                                  ika_peer=("1.1.1.1", 5006),
+                                  iha_peer=("2.2.2.2", 5007))
+        self.assertEqual(("2.2.2.2", 5007), g.sabit_adr["iha"])
+        self.assertEqual(("1.1.1.1", 5006), g.sabit_adr["ika"])
+
+
 if __name__ == "__main__":
     unittest.main()

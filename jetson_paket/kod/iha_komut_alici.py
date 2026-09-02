@@ -6,17 +6,24 @@ uc YOKTU ("AVIYONIK-BLOKLU"). Bu surec o boslugun YAZILIM yarisini kapatir:
 Jetson'da kosar, YKS'nin CMD mesajlarini (UDP ya da SiK seri) alir, Pixhawk'a
 MAVLink COMMAND_LONG ile aktarir ve YALNIZ aktarim basariliysa ACK doner.
 
-ACK "aldim VE yaptim" demektir (D-393 durustluk sozlesmesi):
+ACK "aldim VE Pixhawk KABUL ETTI" demektir (D-393 durustluk sozlesmesi;
+D-403 curutucu ONEMLI-3 ile sikilastirildi):
+  * COMMAND_LONG gonderilir, ardindan Pixhawk'in MAVLink COMMAND_ACK cevabi
+    MAVLINK_KOMUT_ACK_TAVANI_S icinde beklenir; yalniz MAV_RESULT_ACCEPTED
+    gelirse YKS'ye ACK doner. Ret/zaman asimi -> ACK YOK, KIRMIZI log.
   * command_long_send istisna firlatirsa ACK YOK, KIRMIZI log;
   * MAVLink baglantisi yoksa aktarim yok, ACK YOK, log;
   * bilinmeyen komut aktarilmaz ve ACK'lanmaz.
 Boylece YKS tekrarlamaya devam eder ve hakem ekraninda "ACK YOK" gorunur —
 sessiz basari yalani yoktur.
 
-Idempotentlik (IKA_GO kalibi, CONTRACTS §6.6): ayni (cmd, seq) ikinci kez
-gelirse ACK yeniden gonderilir ama MAVLink komutu YENIDEN GONDERILMEZ. Hafiza
-yalniz BASARILI aktarimlari tutar: basarisiz denemeden sonra gelen tekrar
-yeniden aktarilir (YKS zaten ACK gelmedigi icin tekrarliyordur).
+Idempotentlik BILEREK YOK (D-403 curutucu KRITIK-2): ilk tasarim (cmd, seq)
+hafizasiyla tekrari baskiliyordu; YKS her acilista seq'i 1'den baslattigi
+icin yeniden acilan YKS'nin PARACHUTE'u "mukerrer" sayilip MAVLink'e HIC
+gitmeden ACK'laniyordu — yesil "IHA ALDI", parasut kapali. DO_PARACHUTE ve
+ARM/DISARM Pixhawk tarafinda idempotenttir; her gecerli komut YENIDEN
+aktarilir ve yeniden COMMAND_ACK beklenir. (IKA_GO'daki hafiza IKA latch
+semantigi icindir; burada karsiligi yoktur.)
 
 ⚠ JETSON'DA SERI PIXHAWK TEK SAHIPLIDIR. Bu surec, `rpi_inference` (bagil
 irtifa okuyucu) ve `iha_inis_yayinci` (inis kaniti) ile AYNI ANDA seri portu
@@ -37,7 +44,6 @@ Saha (SiK telsiz + cogullayici):
   python3 iha_komut_alici.py --mavlink udp:127.0.0.1:14560 --serial /dev/ttyUSB0
 """
 import argparse
-import collections
 import importlib
 import sys
 import threading
@@ -48,7 +54,12 @@ _BU_DIZIN = Path(__file__).resolve().parent
 if str(_BU_DIZIN) not in sys.path:
     sys.path.insert(0, str(_BU_DIZIN))
 
+_KODLAR = _BU_DIZIN.parent / "codes"
+if str(_KODLAR) not in sys.path:
+    sys.path.insert(0, str(_KODLAR))
+
 from inis_kaniti import mavlink_baglantisi_ac  # noqa: E402
+from karar_sozlesmesi import MAVLINK_KOMUT_ACK_TAVANI_S  # noqa: E402
 from link import SerialLink, UDPLink  # noqa: E402
 from protocol import FrameReader, ack, encode  # noqa: E402
 
@@ -66,7 +77,9 @@ CMD_ARM = "ARM"                   # CONTRACTS §6 tablo: "IKA_GO, ARM, ..."
 CMD_DISARM = "DISARM"
 KOMUT_ADLARI = (CMD_PARACHUTE, CMD_ARM, CMD_DISARM)
 VARSAYILAN_DUGUM = "iha"          # protocol.iha_landed ile ayni dugum adi
-VARSAYILAN_BIND = "0.0.0.0:5007"  # yks_gui son_adr["iha"] varsayilani (5007)
+VARSAYILAN_BIND = "0.0.0.0:5007"  # YKS bunu `yks_gui --iha HOST:5007` ile PINLER
+                                  # (D-403: heartbeat'ten ogrenilen adres
+                                  # rpi_inference'in efemer portudur, bu degil)
 VARSAYILAN_BAUD = 57600           # ika_receiver ile ayni SiK varsayilani
 
 # ── MAVLink alan anlamlari (common.xml; pymavlink'te adli sabiti yok) ─────────
@@ -81,9 +94,6 @@ MAVLINK_PARAM_KULLANILMIYOR = 0
 VARSAYILAN_HEDEF_SYSID = 1
 VARSAYILAN_HEDEF_COMPONENT = 1
 
-# Idempotentlik hafizasi tavani: 15 dakikalik ucusta ayrik (cmd, seq) sayisi
-# onlarla olculur; tavan yalniz sinirsiz buyumeyi keser (en eski dusurulur).
-BASARILI_KOMUT_HAFIZASI = 256
 # Bir poll turunda MAVLink gelen kutusundan bosaltilacak en cok mesaj sayisi:
 # Pixhawk ~10-50 mesaj/s, tur <= link zaman asimi (0,3 s) -> 64 yeterli.
 MAVLINK_BOSALTMA_TAVANI = 64
@@ -159,10 +169,9 @@ class IhaKomutAlici:
         self.target_component = _kimlik_dogrula(
             target_component, "target_component", 0)
         self.saat = saat
-        self.reader = FrameReader()
-        self._basarili = collections.OrderedDict()   # (cmd, seq) -> t
+        self.reader = FrameReader()          # yalniz SERI (bayt akisi) icin
         self._dur = threading.Event()
-        self.sayac = {"cmd": 0, "aktarilan": 0, "ack": 0, "mukerrer": 0,
+        self.sayac = {"cmd": 0, "aktarilan": 0, "ack": 0,
                       "bilinmeyen": 0, "hata": 0}
 
     # ── log ──────────────────────────────────────────────────────────────
@@ -187,12 +196,53 @@ class IhaKomutAlici:
             MAVLINK_PARAM_KULLANILMIYOR, MAVLINK_PARAM_KULLANILMIYOR,
             MAVLINK_PARAM_KULLANILMIYOR, MAVLINK_PARAM_KULLANILMIYOR)
         return (f"COMMAND_LONG(cmd={mav_cmd}, param1={param1}, "
-                f"sys={self.target_system}, comp={self.target_component})")
+                f"sys={self.target_system}, comp={self.target_component})",
+                mav_cmd)
 
-    def _basariyi_kaydet(self, anahtar):
-        self._basarili[anahtar] = self.saat()
-        while len(self._basarili) > BASARILI_KOMUT_HAFIZASI:
-            self._basarili.popitem(last=False)
+    def _komut_ack_bekle(self, mav_cmd):
+        """Pixhawk'in COMMAND_ACK'ini bekle -> (kabul_edildi, aciklama).
+
+        D-403: pymavlink'in her tasiyicisi write() hatasini YUTAR (seri -1
+        doner, udp socket.error'u yutar); "istisnasiz gonderildi" kanit
+        degildir. ArduPlane DO_PARACHUTE'u reddedebilir (CHUTE_ENABLED=0,
+        zaten acik, CHUTE_ALT_MIN alti -> MAV_RESULT_FAILED). Tek durust
+        olcut COMMAND_ACK(command == mav_cmd, result == ACCEPTED).
+        """
+        m = _mavutil_al().mavlink
+        son = self.saat() + MAVLINK_KOMUT_ACK_TAVANI_S
+        while True:
+            kalan = son - self.saat()
+            if kalan <= 0:
+                return False, (f"COMMAND_ACK {MAVLINK_KOMUT_ACK_TAVANI_S:.1f} s "
+                               f"icinde GELMEDI (Pixhawk/cogullayici olu?)")
+            try:
+                cevap = self.mav.recv_match(type="COMMAND_ACK", blocking=True,
+                                            timeout=kalan)
+            except Exception as exc:
+                return False, f"COMMAND_ACK okunamadi ({type(exc).__name__}: {exc})"
+            if cevap is None:
+                # blocking recv_match None dondu = tasiyici zaman asimi doldu.
+                # `continue` DEGIL: donuk saatli testte sonsuz donguye girerdi.
+                return False, (f"COMMAND_ACK {MAVLINK_KOMUT_ACK_TAVANI_S:.1f} s "
+                               f"icinde GELMEDI (Pixhawk/cogullayici olu?)")
+            if int(getattr(cevap, "command", -1)) != int(mav_cmd):
+                continue                                  # baska komutun ACK'i
+            # D-403 (curutucu ONEMLI): ACK HEDEF aracin sysid'inden gelmeli —
+            # SYSID_THISMAV != --sysid ise ArduPilot komutu yerel islemez;
+            # baska bir kaynagin ACK'i "kabul" sayilamaz.
+            try:
+                kaynak = int(cevap.get_srcSystem())
+            except Exception:
+                kaynak = None
+            if kaynak != self.target_system:
+                self._logla(f"COMMAND_ACK yabanci sysid={kaynak} "
+                            f"(beklenen {self.target_system}) — yok sayildi",
+                            kirmizi=True)
+                continue
+            sonuc = int(getattr(cevap, "result", -1))
+            if sonuc == m.MAV_RESULT_ACCEPTED:
+                return True, "COMMAND_ACK ACCEPTED"
+            return False, f"COMMAND_ACK REDDETTI (MAV_RESULT={sonuc})"
 
     def _ack_gonder(self, seq, adr, cmd):
         data = encode(ack(seq, self.node, MESAJ_TIPI_CMD))
@@ -227,12 +277,8 @@ class IhaKomutAlici:
             self._logla(f"bozuk CMD (cmd={cmd!r} seq={seq!r}); aktarim yok, "
                         f"ACK YOK", kirmizi=True)
             return False
-        anahtar = (cmd, seq)
-        if anahtar in self._basarili:
-            self.sayac["mukerrer"] += 1
-            self._logla(f"CMD {cmd} seq={seq} MUKERRER: MAVLink yeniden "
-                        f"GONDERILMEDI, ACK yineleniyor")
-            return self._ack_gonder(seq, adr, cmd)
+        # D-403 (KRITIK-2): (cmd, seq) hafizasi YOK — her gecerli komut yeniden
+        # aktarilir ve yeniden COMMAND_ACK beklenir (dokstring).
         if cmd not in KOMUT_ADLARI:
             self.sayac["bilinmeyen"] += 1
             self._logla(f"bilinmeyen CMD {cmd!r} seq={seq}; aktarim yok, "
@@ -250,16 +296,24 @@ class IhaKomutAlici:
                         f"aktarim yapilmadi, ACK YOK", kirmizi=True)
             return False
         try:
-            aciklama = self._aktar(cmd)
+            aciklama, mav_cmd = self._aktar(cmd)
         except Exception as exc:                      # fail-closed: ACK yok
             self.sayac["hata"] += 1
             self._logla(f"CMD {cmd} seq={seq} aktarim HATASI "
                         f"({type(exc).__name__}: {exc}); ACK YOK — YKS "
                         f"tekrarlayacak", kirmizi=True)
             return False
-        self._basariyi_kaydet(anahtar)
+        # D-403: gonderim kanit degil — Pixhawk'in COMMAND_ACK'i beklenir.
+        kabul, ack_aciklama = self._komut_ack_bekle(mav_cmd)
+        if not kabul:
+            self.sayac["hata"] += 1
+            self._logla(f"CMD {cmd} seq={seq} -> {aciklama} gonderildi ama "
+                        f"{ack_aciklama}; ACK YOK — YKS tekrarlayacak",
+                        kirmizi=True)
+            return False
         self.sayac["aktarilan"] += 1
-        self._logla(f"CMD {cmd} seq={seq} -> Pixhawk {aciklama} aktarildi")
+        self._logla(f"CMD {cmd} seq={seq} -> Pixhawk {aciklama} "
+                    f"{ack_aciklama}")
         return self._ack_gonder(seq, adr, cmd)
 
     # ── dongu ────────────────────────────────────────────────────────────
@@ -286,7 +340,12 @@ class IhaKomutAlici:
         sonuc = []
         d, adr = self.link.recv()
         if d:
-            for m in self.reader.feed(d):
+            # D-403 (KUCUK-4): UDP'de datagram = cerceve siniri. Kalici
+            # tamponda newline'siz bir artik, SONRAKI gecerli PARACHUTE
+            # cercevesini bozuyordu. UDP'de her datagram taze okuyucuyla;
+            # seri (adr None) bayt akisidir, kalici okuyucu kalir.
+            okuyucu = FrameReader() if adr is not None else self.reader
+            for m in okuyucu.feed(d):
                 sonuc.append(self.isle(m, adr))
         self._mavlink_gelen_kutusunu_bosalt()
         return sonuc
@@ -324,9 +383,14 @@ def _arg_parser():
                     help="Pixhawk MAVLink baglantisi — COGULLAYICI UCU "
                          "(or. udp:127.0.0.1:14560); seri Pixhawk tek "
                          "sahiplidir, dogrudan /dev/ttyACM0 VERME")
+    ap.add_argument("--seri-pixhawk-bilerek", action="store_true",
+                    help="CONTRACTS §7.4 kilidini BILEREK as: --mavlink'e "
+                         "dogrudan seri cihaz ver (tek sahipli port; baska "
+                         "MAVLink sureci acikken ikisi de sessizce kor olur)")
     ap.add_argument("--sysid", type=int, default=VARSAYILAN_HEDEF_SYSID,
-                    help="hedef MAVLink sistem kimligi (ArduPilot varsayilani "
-                         "%(default)s)")
+                    help="hedef MAVLink sistem kimligi — Pixhawk SYSID_THISMAV "
+                         "ile AYNI olmali; COMMAND_ACK yalniz bu sysid'den "
+                         "kabul edilir (ArduPilot varsayilani %(default)s)")
     ap.add_argument("--target-component", type=int,
                     default=VARSAYILAN_HEDEF_COMPONENT,
                     help="hedef MAVLink bilesen kimligi (MAV_COMP_ID_AUTOPILOT1"
@@ -355,6 +419,16 @@ def main(argv=None):
         parser.error("--target-component 0..255 araliginda olmali")
     if args.baud <= 0:
         parser.error("--baud pozitif olmali")
+    # D-403 (curutucu KUCUK): CONTRACTS §7.4 yalniz belgeydi, kod engellemiyordu.
+    # Seri Pixhawk tek sahiplidir; dogrudan cihaz verilirse rpi_inference /
+    # iha_inis_yayinci ile cakisir ve iki taraf da SESSIZCE kor olur.
+    seri_gibi = (args.mavlink.startswith("/dev/tty")
+                 or args.mavlink.upper().startswith("COM")
+                 or args.mavlink.startswith("serial:"))
+    if seri_gibi and not args.seri_pixhawk_bilerek:
+        parser.error(f"--mavlink {args.mavlink!r} dogrudan seri cihaz: seri "
+                     "Pixhawk TEK SAHIPLIDIR (CONTRACTS §7.4). Cogullayici ucu "
+                     "ver (udp:127.0.0.1:1455N) ya da --seri-pixhawk-bilerek.")
 
     try:
         mav = mavlink_baglantisi_ac(args.mavlink)

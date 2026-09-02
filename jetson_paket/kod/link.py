@@ -69,8 +69,20 @@ class SerialLink:
         self.ser.write(data)
 
     def recv(self, bufsize=256):
-        data = self.ser.read(bufsize)
-        return (data or None), None
+        # D-403 (olculdu, gercek iki uclu seri kopru): `ser.read(256)` 256 bayt
+        # gelene YA DA zaman asimi (0,3 s) dolana dek bloklar; ~70 baytlik ACK
+        # icin her bekleme zaman asimina yuvarlaniyordu -> uretim IhaSender
+        # ACK turu p50 622,6 ms (iki ucta iki zaman asimi), parasut tekrar
+        # araligi 0,20 s'nin UC KATI. D-383'un UDP'de kaldirdigi artefaktin
+        # seri ikizi. Simdi: ilk bayta kadar bekle (zaman asimi korunur),
+        # sonra birikeni tek seferde bosalt -> ayni koprude 0,8 ms.
+        ilk = self.ser.read(1)
+        if not ilk:
+            return None, None
+        bekleyen = getattr(self.ser, "in_waiting", 0) or 0
+        if bekleyen:
+            ilk += self.ser.read(min(int(bekleyen), max(0, bufsize - 1)))
+        return ilk, None
 
     def close(self):
         self.ser.close()

@@ -2088,6 +2088,14 @@ PARASUT_TEKRAR_ARALIGI_S = 0.20
 PARASUT_TEKRAR_UST_SINIRI = 40
 PARASUT_MANUEL_CEZA_PUANI = 50      # SS7 Cceza — ciplak sayi yazilmaz (m.16)
 
+# Faz B (D-403, curutucu ONEMLI-3): IHA komut alicisi YKS'ye ACK'i yalniz
+# Pixhawk'in MAVLink COMMAND_ACK(MAV_RESULT_ACCEPTED) cevabindan SONRA doner.
+# "command_long_send istisnasiz" tek basina kanit degildir: pymavlink udp:
+# sunucusu olu akrana yazip hatayi yutar; router/Pixhawk olmusken de
+# "aktarildi" gorunurdu. Tavan: ArduPilot COMMAND_ACK tipik < 100 ms;
+# 0,5 s pay. YKS tekrar penceresi (0,20 s x 40 = 8 s) bunu rahat tasir.
+MAVLINK_KOMUT_ACK_TAVANI_S = 0.5
+
 # P5 (D-396) — YAYIN HISTEREZISI. Serit secimi surekli buyuklukler uzerinde
 # ayrik bir karardir; binde-4 algi gurultusu kararlari kareler arasinda
 # cevirebiliyor (68 olcumu: tohuma gore 4-7/260; T92 bant oynakligi 34/260).

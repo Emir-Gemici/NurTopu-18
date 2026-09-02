@@ -230,8 +230,17 @@ class GercekSeriAkis(unittest.TestCase):
         self.assertIsNone(bos, "ON_KAYIT S6: veri yokken recv None donmeli")
         self.assertIsNone(adres)
         yazan.send(b"selam\n")
-        veri, _ = _bekle_veri(okuyan)
-        self.assertEqual(veri, b"selam\n")
+        # D-403: recv artik "gelen kadar" doner (ilk bayt + birikinti); bayt
+        # akisinda cerceve butunlugu FrameReader'in isidir. Bu yuzden
+        # newline gelene dek toplanir — eski `read(256)` 0,3 s zaman asimina
+        # yuvarlaniyordu (olculdu: ACK turu 622 ms -> 0,8 ms).
+        toplanan = b""
+        bitis = time.monotonic() + 3.0
+        while b"\n" not in toplanan and time.monotonic() < bitis:
+            veri, _ = okuyan.recv()
+            if veri:
+                toplanan += veri
+        self.assertEqual(toplanan, b"selam\n")
 
     def test_S6b_cihaz_yolu_davranisi_degismedi(self):
         """`serial_for_url` degisikligi cihaz yolu sozlesmesini bozmamali."""
@@ -246,6 +255,53 @@ def _bekle_veri(link, tavan_s=3.0):
         if veri:
             return veri, adres
     return None, None
+
+
+@unittest.skipIf(serial is None, "pyserial kurulu degil")
+class SeriAckGecikmesi(unittest.TestCase):
+    """S8 (D-403): URETIM IhaSender'in seri hatta ACK turu.
+
+    Olculdu (2026-09-03, ayni kopru): `SerialLink.recv` = `read(256)` iken
+    p50 **622,6 ms** (iki ucta iki 0,3 s zaman asimi) — parasut tekrar
+    araligi 0,20 s'nin UC KATI; D-383'un UDP'de kaldirdigi artefaktin seri
+    ikizi. Ilk-bayt + `in_waiting` okumasiyla **0,8 ms**. Esik sonuc
+    gorulmeden yazildi: p50 < 50 ms (yerel kopru; gercek RF Faz B'de).
+    """
+
+    ESIK_MS = 50.0
+
+    def test_S8_uretim_ack_turu_zaman_asimina_yuvarlanmaz(self):
+        kopru = SikKoprusu()
+        self.addCleanup(kopru.kapat)
+        iha = kopru.uc_ac()
+        ika = kopru.uc_ac()
+        self.addCleanup(iha.close)
+        self.addCleanup(ika.close)
+        dur = threading.Event()
+
+        def yanki():
+            r = FrameReader()
+            while not dur.is_set():
+                veri, _ = ika.recv()
+                for m in (r.feed(veri) if veri else []):
+                    if m.get("type") == "OPEN_ROUTE":
+                        ika.send(encode(ack(m["seq"], node="ika")))
+
+        t = threading.Thread(target=yanki, daemon=True)
+        t.start()
+        self.addCleanup(lambda: (dur.set(), t.join(timeout=1.0)))
+        g = IhaSender(iha, peers={"ika": None})
+        sureler = []
+        for i in range(8):
+            m = {"type": "OPEN_ROUTE", "seq": 300 + i, "road": 2, "conf": 0.9}
+            t0 = time.perf_counter()
+            self.assertTrue(g._tekrarli_gonder(m, repeat=8, interval=0.25))
+            sureler.append((time.perf_counter() - t0) * 1000.0)
+        sureler.sort()
+        p50 = sureler[len(sureler) // 2]
+        self.assertLess(p50, self.ESIK_MS,
+                        f"seri ACK turu p50={p50:.1f} ms — read(256) zaman "
+                        f"asimina yuvarlaniyor (D-403 olcumu: 622 ms)")
 
 
 class TamponDisiplini(unittest.TestCase):

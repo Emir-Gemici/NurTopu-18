@@ -121,14 +121,18 @@ class OnUcusDogrulayici(unittest.TestCase):
             self.assertGreaterEqual(akislar[ad]["hz"], esik)
             self.assertGreater(akislar[ad]["sayi"], 0)
 
-        # Istekler: iki akis SET_MESSAGE_INTERVAL ile istendi; sahte ACK
-        # vermez -> ack None, "en iyi caba" notu, ama DUSURMEDI.
+        # Istekler: iki akis SET_MESSAGE_INTERVAL ile istendi. D-403'ten beri
+        # sahte Pixhawk her COMMAND_LONG'a gercek Pixhawk gibi COMMAND_ACK
+        # ACCEPTED doner (parasut kapisi icin gerekti); arac bunu kaydeder.
+        # Ilk surumde sahte cevap vermiyordu ve "ack None + en iyi caba"
+        # kilitlenmisti — o kilit sahtenin eksigini olcuyordu, aracin degil.
+        from pymavlink import mavutil as _mu
         istekler = {k["mesaj"]: k for k in rapor["istekler"]}
         self.assertEqual(set(istekler), {md.MESAJ_KONUM, md.MESAJ_DURUM})
         for k in istekler.values():
             self.assertTrue(k["gonderildi"])
-            self.assertIsNone(k["ack"])
-            self.assertIn("en iyi caba", k["not"])
+            self.assertEqual(k["ack"], _mu.mavlink.MAV_RESULT_ACCEPTED,
+                             "sahte Pixhawk COMMAND_ACK ACCEPTED dondurmeli")
         self.assertEqual(istekler[md.MESAJ_KONUM]["mesaj_id"],
                          mavutil.mavlink.MAVLINK_MSG_ID_GLOBAL_POSITION_INT)
         self.assertEqual(istekler[md.MESAJ_DURUM]["mesaj_id"],

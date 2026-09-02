@@ -53,7 +53,7 @@ Kapı: üç uç aynı anda açıkken `scripts/mavlink_dogrula.py --mavlink udp:1
 | 12:00 | 🔴 çoğullayıcı kur | §1 | 3 uçta `mavlink_dogrula` GEÇTİ | bkz. §1 |
 | 12:30 | **Pixhawk ön-uçuş doğrulama** | `mavlink_dogrula.py --sysid 1 --sure 10` | HEARTBEAT sysid=1 · GLOBAL_POSITION_INT ≥ 4 Hz · EXTENDED_SYS_STATE ≥ 1 Hz | EXTENDED gelmiyorsa ArduPilot `SR*_EXTRA3` / `SET_MESSAGE_INTERVAL` — araç zaten ister; hâlâ yoksa **iniş kanıtı sahada ÖLÜ** → uçuş yok |
 | 13:00 | İniş kanıtı canlı prova (araç yerde) | `iha_inis_yayinci --mavlink udp:…:14551 --sysid 1 --kanit-timeout 60 --yks …` | IHA_LANDED ACK'li yayınlandı (D-389: alçalmayı bekler, yabancı sysid kör edemez) | ACK yoksa `--yks` adresi/port; kanıt yoksa EXTENDED akışı (bir üst satır) |
-| 13:30 | **Paraşüt/ARM aktarım provası** (PARAŞÜT SERVOSU BAĞLI DEĞİLKEN) | YKS PARAŞÜT düğmesi → `iha_komut_alici` → Pixhawk | YKS'de "İHA ALDI ✓ PARACHUTE ACK"; Pixhawk MAVLink konsolunda `DO_PARACHUTE` görüldü | ACK yoksa alıcı hattı/`--bind`; ACK var komut yoksa **alıcı yalan söylüyor** → D-393 sözleşme ihlali, kırmızı |
+| 13:30 | **Paraşüt/ARM aktarım provası** (PARAŞÜT SERVOSU BAĞLI DEĞİLKEN) — önce Pixhawk'ta **`CHUTE_ENABLED=1`, `CHUTE_ALT_MIN` prova için 0**, `SYSID_THISMAV` = alıcının `--sysid`'i; YKS `--iha <JETSON_IP>:5007` ile açılmış | YKS PARAŞÜT düğmesi → `iha_komut_alici` → Pixhawk COMMAND_LONG → **COMMAND_ACK ACCEPTED** → YKS ACK | YKS düğmesi "PARAŞÜT AÇILDI ✓ (İHA ACK)"; alıcı logunda `COMMAND_ACK ACCEPTED`; Pixhawk konsolunda `DO_PARACHUTE` | "GÖNDERİLDİ — ACK bekleniyor"da kalıyorsa: alıcı logu `REDDETTI` ise Pixhawk parametresi (CHUTE_ENABLED/ALT_MIN/armed), `GELMEDI` ise çoğullayıcı/USB, `yabanci sysid` ise SYSID_THISMAV; hiç CMD görünmüyorsa YKS `--iha` eksik (D-403 KRİTİK-1) |
 | 14:00 | **SiK RF ölçümü** | `sik_rf_olc.py --rol yanki` (İKA tarafı) + `--rol olc --n 50` (YKS) | RTT p95 < 0,20 s (paraşüt tekrar aralığı) · kayıp raporlandı | p95 aşarsa tekrar aralıkları **yeniden ön kayıtla** (D-393 sabitleri) |
 | 15:00 | **İKA sürücü arka ucu** | `GercekSurucu(arka_uc=…)` doldur → `ika_surucu_kabul.py --surucu gercek --arka-uc …` | K1–K6 GEÇTİ, K3 "GÖZLE TEYİT" | K3 hareket yoksa arka uç protokolü; fail-closed (K5) sahtede zaten kilitli |
 | 16:00 | İKA tam zincir (gerçek sürücü) | `saha_baslat.py ika --yks …` + YKS'den IKA_GO | §2.2.5 kilidi: IHA_LANDED+IKA_GO gelmeden 0 hareket; sonra rota izleme | kuru koşu `motor` halkası bu adımda GEÇTİ'ye döner |
@@ -74,6 +74,25 @@ Gün sonunda üç istasyonun her biri **tek komutla** kalkmalı; süre ölçül�
 Jetson + güç · Pixhawk + telem kablosu (USB/ttyACM) · **iki** SiK 433 MHz + anten ·
 İKA motor sürücüsü + kablolama şeması (arka uç protokolü için) · GCS'li dizüstü ·
 paraşüt servosunu **bağlamadan** tetik provası için servo test ucu.
+
+## 4b. Çürütücünün açtığı tasarım soruları (D-403 — cumartesi BİRLİKTE karar)
+
+- **SiK yolu tek sahipli:** UDP kurulumu çoğullayıcıyla çözüldü, ama SiK
+  (433 MHz) kipinde Jetson'da **üç süreç** (`rpi_inference --telsiz-seri`,
+  `iha_inis_yayinci --serial`, `iha_komut_alici --serial`) aynı `/dev/ttyUSB0`'ı
+  açmak ister — seri port tek sahiplidir. Seçenekler: (a) NAVITAS-çerçeve
+  "hub" süreci (portu tek başına açar, üç sürece UDP loopback verir — MAVLink
+  router'ın protokol ikizi); (b) üçünü tek sürece toplamak. Kaç SiK radyo var,
+  hangi hat SiK, hangisi UDP/WiFi — **cumartesi topolojiyle netleşir**;
+  o güne dek SiK ölçümü (`sik_rf_olc`) tek süreçtir, sorun yok.
+- **Süreç gözcüsü:** `iha_komut_alici` seri hatta `SerialException`'da bilinçli
+  olarak ÇÖKER (sessiz döngü yerine görünür ölüm). Jetson'da üç süreç
+  `systemd` `Restart=always` ile koşmalı; YKS çökmeyi ACK yokluğundan görür.
+  `jetson_baslat.sh` (cumartesi) bunu kurar.
+- **Pixhawk parametreleri kabul kapısıdır:** `CHUTE_ENABLED=1`, `CHUTE_ALT_MIN`
+  (uçuşta ≥10 m varsayılanı — paraşütü alçakta REDDEDER, bilinçli), `SYSID_THISMAV`
+  = `--sysid`. Alıcı artık yalnız `COMMAND_ACK ACCEPTED` ile ACK verir; yanlış
+  parametre sahada "GÖNDERİLDİ — ACK bekleniyor" olarak GÖRÜNÜR, gizlenmez.
 
 ## 5. Bu belgenin sınırı
 

@@ -155,8 +155,11 @@ class YksKomutDurustluguTests(unittest.TestCase):
         arayuz._ucus.assert_called_once_with(
             "PARAŞÜT — MANUEL TETİKLENDİ (−50)", yks_gui.KIRMIZI)
         self.assertEqual("disabled", arayuz.btn_parasut.cget("state"))
-        self.assertEqual("PARAŞÜT AÇILDI (manuel)",
+        # D-403 (curutucu): dugme GONDERIMDE "ACILDI" diyemez — ACK yok daha.
+        # "ACILDI ✓" yalniz IHA ACK'inde (o da Pixhawk COMMAND_ACK ACCEPTED).
+        self.assertEqual("PARAŞÜT GÖNDERİLDİ — İHA ACK bekleniyor",
                          arayuz.btn_parasut.cget("text"))
+        self.assertNotIn("AÇILDI", arayuz.btn_parasut.cget("text"))
 
 
 if __name__ == "__main__":
