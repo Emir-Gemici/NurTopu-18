@@ -184,3 +184,6 @@ data/arena_kompozit_dji/
 # 100 MB/dosya sinirini astiklari icin push'u REDDEDIYORDU. Diskte KALIRLAR.
 navitas_depo.bundle
 dronesolid/*.exe
+
+# Jetson Nano 4GB tekerlek deposu — scripts/nano_tekerlek_indir.py uretir (GB, tasinabilir bellege gider)
+wheels/
