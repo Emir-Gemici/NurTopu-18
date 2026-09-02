@@ -1,0 +1,58 @@
+F  [sure] test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir 3.68s
+.  [sure] test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider 0.86s
+.  [sure] test_3_yks_bayt_bayt_yazar_tuketiciye_BUTUN_cerceve_gelir 9.47s
+.  [sure] test_6_bozuk_cerceve_yayinlanmaz_sonraki_gecerli_gecer 0.91s
+.  [sure] test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir 1.83s
+F  [sure] test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar 4.75s
+.  [sure] test_4b_seri_yazma_arizasi_da_kapatir_ve_dusurur 0.91s
+.  [sure] test_10_cli_loop_portu_ile_hub_kurulur_ve_durur 0.24s
+.  [sure] test_8_adres_cozumleme_ve_tekillik 0.00s
+.  [sure] test_9_cli_seri_acilamazsa_cikis_4_kirmizi_hub_kurulmaz 0.00s
+F  [sure] test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner 3.78s
+
+======================================================================
+FAIL: test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir (test_faz_b_seri_hub.TestSeriHubAktarim.test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir)
+UDP -> hub -> seri: YKS ucu datagramdaki baytlari BIREBIR okur.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_faz_b_seri_hub.py", line 208, in test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir
+    self.assertEqual(ham, gelen, "seri hatta cikan bayt dizisi birebir degil")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'{"v[77 chars]],"waypoints":[[0,0],[0.5,1.0]],"seq":17,"t":1788356265.606}\n' != b'{"v[77 chars]],"waypoints":[[0,0],[0.5,1.0]],"seq":17,"t":1788356265.606}' : seri hatta cikan bayt dizisi birebir degil
+
+======================================================================
+FAIL: test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar (test_faz_b_seri_hub.TestSeriHubAriza.test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar)
+recv OSError -> seri kapatilir (KIRMIZI), UDP cerceveleri
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_faz_b_seri_hub.py", line 379, in test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar
+    self.assertEqual(cmd, m, "yeniden acma sonrasi UDP -> seri yok")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'v': 1, 'type': 'CMD', 'cmd': 'PARACHUTE[44 chars].125} != None : yeniden acma sonrasi UDP -> seri yok
+
+======================================================================
+FAIL: test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner (test_faz_b_seri_hub.TestSeriHubUctanUca.test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner)
+YKS (seri) CMD PARACHUTE -> hub -> GERCEK IhaKomutAlici (UDP, statik
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_faz_b_seri_hub.py", line 472, in test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner
+    self.assertIsNotNone(gelen, f"YKS ACK okumadi; gelenler={hepsi} "
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                f"log={k.log.getvalue()[-1500:]}")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None : YKS ACK okumadi; gelenler=[] log=[SERI_HUB] t=35235.362 basladi: seri=acik udp=63258 statik=127.0.0.1:63257
+[IHA_KOMUT] t=35235.362 dinleniyor: node=iha hedef sys=1 comp=1 mav=acik
+[IHA_KOMUT] t=35235.378 CMD PARACHUTE seq=41 -> Pixhawk COMMAND_LONG(cmd=208, param1=2, sys=1, comp=1) COMMAND_ACK ACCEPTED
+[IHA_KOMUT] t=35235.378 ACK(ref=41, node=iha, ref_tip=CMD) -> ('127.0.0.1', 63258)
+[SERI_HUB] t=35235.409 tuketici ogrenildi: 127.0.0.1:63257
+[SERI_HUB] t=35238.384 sayac udp_alinan=1 seri_yazilan=1 seri_cerceve=1 fanout_gonderim=1 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 yeniden_acma_hatasi=0 atilan_bayt=0 seri=acik statik=1 ogrenilen=1
+
+
+----------------------------------------------------------------------
+Ran 11 tests in 26.433s
+
+FAILED (failures=3)
+MUTANT m_g2_newline_kirpilir.py: YAKALANDI ran=11 fail=3 err=0 sure=26.4s
+  -> test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir: AssertionError: b'{"v[77 chars]],"waypoints":[[0,0],[0.5,1.0]],"seq":17,"t":1788356265.606}\n' != b'{"v[77 chars]],"waypoints":[[0,0],[0.5,1.0]],"seq":17,"t":1788356265.606}' : seri hatta cikan bayt dizisi birebir degil
+  -> test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar: AssertionError: {'v': 1, 'type': 'CMD', 'cmd': 'PARACHUTE[44 chars].125} != None : yeniden acma sonrasi UDP -> seri yok
+  -> test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner: [SERI_HUB] t=35238.384 sayac udp_alinan=1 seri_yazilan=1 seri_cerceve=1 fanout_gonderim=1 fanout_hata=0 hedefsiz=0 bozuk=0 dusurulen=0 seri_ariza=0 yeniden_acma=0 yeniden_acma_hatasi=0 atilan_bayt=0 seri=acik statik=1 og

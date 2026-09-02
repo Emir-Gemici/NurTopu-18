@@ -72,7 +72,13 @@ Gün sonunda üç istasyonun her biri **tek komutla** kalkmalı; süre ölçül�
   (SiK'te `seri_hub`) + `rpi_inference` + `iha_inis_yayinci` + `iha_komut_alici`
   systemd birimleriyle, `Restart=always`; cumartesi önce `--kuru` ile komutlara
   bakılır (D-404). Sürüm dondurma mekanizması `scripts/surum_dondur.py` hazır;
-  dondurma ANI kullanıcı kararı.
+  dondurma ANI kullanıcı kararı. **Mühür SIRASI (D-405, çürütücü buldu):**
+  (1) Jetson'da `.engine` derle + `--turev-kaydet` ile deftere yaz → (2) defteri
+  ve paket aynasını PC'ye geri taşı, commit et → (3) **ANCAK SONRA** `--dondur`.
+  Tersi yapılırsa künye Jetson'daki derlemeden hemen sonra "MÜHÜR İHLALİ" der;
+  `--dondur` engine kayıtsızken bunu **reddeder** (`--engine-kayitsiz-bilerek`
+  ile aşılır ve künyeye yazılır). Künye özeti içerik-kanonik (CRLF/LF bağımsız)
+  olduğu için Jetson'da da `--dogrula` koşulabilir.
 
 ## 4. Getirilecekler (insan)
 

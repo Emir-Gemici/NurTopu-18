@@ -1913,6 +1913,15 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
     kipin "hiç çizmez" vaadi bu durumda tutmaz, hata da yok.
   - **Yap:** `writer.isOpened()` kontrolü → KIRMIZI uyarı + `writer=None` (kayıt yok,
     karar sürer). Test: `isOpened()=False` sahte yazıcıyla draw 0, uyarı basıldı.
+- [ ] **T206 — ACK eşlemesi yalnız `ref` ile: `IhaSender` `ref_tip`/tip denetimi yapmıyor; hub fan-out'unda her tüketici herkesin ACK'ini görür (mekanik çapraz eşleşme mümkün, pratik çakışma bulunamadı)** · `comms/iha_sender.py`, `comms/yks_gui.py` · **KÜÇÜK** (tesadüfen güvenli) · kanıt: `results/faz_b_oncesi/curutucu_d405/r_q4_q6.py` (Q4), `REVIEW_LOG.md` **D-405**
+  - Ölçüldü: OPEN_ROUTE seq=7 bekleyen `IhaSender`, IHA_LANDED tipli İKA ACK'ini (ref=7) de
+    kabul etti (`acked={'ika','yks'}`); seq uzayları süreç başına 1'den başladığı için
+    üretimde çakışma yolu bulunamadı (rpi_inference'ın ACK bekleyen mesajı seq=1 olamaz).
+    YKS'nin OPEN_ROUTE/NO_ROUTE/IHA_LANDED ACK'lerinde `ref_tip` YOK (`yks_gui.py` ~1077/1108).
+  - **Yap:** `IhaSender._tekrarli_gonder`: `ref_tip = m.get('ref_tip'); if ref_tip is not None
+    and ref_tip != msg['type']: continue` (`AckliTekrar.ack_geldi` ile aynı kural, CONTRACTS
+    §6.6); YKS ACK'lerine `ack(seq, 'yks', m['type'])` ile `ref_tip` ekle. Test: Q4 senaryosu →
+    `acked=={'yks'}`. Eski ACK üreticileri (ref_tip'siz) geriye uyumlu kalır.
 - [ ] **T16 — Jetson üzerinde TensorRT `.engine` derlemesi** · `scripts/export_tensorrt.py` · bağımlı: **H2**
   - **Uyarı:** PC'de üretilen `.engine` Jetson'da **çalışmaz** — TensorRT sürümü donanıma bağlıdır. PC'de yalnız ONNX üretilir, `.engine` **Jetson üzerinde** derlenir.
   - **Kapı:** Jetson'da `.engine` yükleniyor ve tek kare çıkarım hatasız tamamlanıyor.

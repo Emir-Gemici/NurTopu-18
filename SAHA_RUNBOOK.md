@@ -73,12 +73,15 @@ python3 jetson_paket/kod/iha_komut_alici.py \
   üç süreç `--serial /dev/ttyUSB0` ile AÇILMAZ. `seri_hub` portu tek başına
   açar, süreçler UDP loopback üzerinden konuşur (kodları değişmez):
   ```bash
+  # ONCE: systemctl stop navitas-seri-hub   (birim kuruluysa — iki hub ayni porta yazmasin)
   python3 jetson_paket/kod/seri_hub.py --port /dev/ttyUSB0 --bind 127.0.0.1:5100 \
       --tuketici 127.0.0.1:5007
-  # rpi_inference  --yks-hedef 127.0.0.1:5100 --ika-hedef 127.0.0.1:5100
-  # iha_inis_yayinci --yks 127.0.0.1:5100 --ika 127.0.0.1:5100
-  # iha_komut_alici  --bind 0.0.0.0:5007
+  # rpi_inference    --yks-hedef 127.0.0.1:5100        (tek hatta bir kez: --ika-hedef hub'a VERILMEZ)
+  # iha_inis_yayinci --yks 127.0.0.1:5100
+  # iha_komut_alici  --bind 127.0.0.1:5007
   ```
+  İKA'nın hattı (SiK çok-noktalı mı, WiFi `--ika-hedef <IKA_IP>:5006` mi)
+  cumartesi topolojiyle karara bağlanır (CONTRACTS §7.5, D-405).
   Tek komut: `jetson_baslat.sh` (KIP=udp|sik) — `jetson_paket/JETSON_BASLAT.md`.
 
 - `--sysid 1` = ArduPilot varsayılan sistem kimliği (D-389: pin beyana dayanır;

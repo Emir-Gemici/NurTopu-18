@@ -1,0 +1,34 @@
+test_b_iki_ogrenilen_ikisi_de_alir (ek_testler.TestEksik.test_b_iki_ogrenilen_ikisi_de_alir)
+rpi_inference + iha_inis_yayinci ikisi de ogrenilir; YKS'den gelen ... ok
+test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok (ek_testler.TestEksik.test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok)
+Arizada dusurulen PARACHUTE(seq=3), yeniden acmadan sonra seri hatta ... FAIL
+test_h_yeniden_acmada_yarim_cerceve_atilir (ek_testler.TestEksik.test_h_yeniden_acmada_yarim_cerceve_atilir)
+Ariza aninda okuyucuda YARIM cerceve var; yeniden acilan hatta gelen ... ok
+test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir (ek_testler.TestEksik.test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir)
+Uzun omurlu tuketici L (arada tazelenir) tavan asilinca DUSMEZ; en ... ok
+test_k_seri_kapaliyken_bos_tur_bekler (ek_testler.TestEksik.test_k_seri_kapaliyken_bos_tur_bekler)
+seri_link None: her poll BOS_TUR_BEKLEME_S bekler (sicak dongu yok). ... ok
+test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir (ek_testler.TestEksik.test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir) ... ok
+test_n_fanout_oserror_hub_yasar_sayilir (ek_testler.TestEksik.test_n_fanout_oserror_hub_yasar_sayilir) ... ok
+test_p_tek_turda_datagram_patlamasi_hepsi_seriye (ek_testler.TestEksik.test_p_tek_turda_datagram_patlamasi_hepsi_seriye)
+10 datagram tek poll'da bosaltilir ve HEPSI seriye yazilir. ... ok
+test_u_seri_ac_None_donerse_baglanmaz (ek_testler.TestEksik.test_u_seri_ac_None_donerse_baglanmaz) ... ok
+
+======================================================================
+FAIL: test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok (ek_testler.TestEksik.test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok)
+Arizada dusurulen PARACHUTE(seq=3), yeniden acmadan sonra seri hatta
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_seri_hub\ek_testler.py", line 66, in test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok
+    self.assertNotIn(3, [x.get("seq") for x in hepsi],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     f"bayat (dusurulen) cerceve telde gorundu: {hepsi}")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 3 unexpectedly found in [3, 4] : bayat (dusurulen) cerceve telde gorundu: [{'v': 1, 'type': 'CMD', 'cmd': 'PARACHUTE', 'hedef': 'iha', 'seq': 3, 't': 1788356880.458}, {'v': 1, 'type': 'CMD', 'cmd': 'PARACHUTE', 'hedef': 'iha', 'seq': 4, 't': 1788356880.598}]
+
+----------------------------------------------------------------------
+Ran 9 tests in 12.363s
+
+FAILED (failures=1)
+EK-MUTANT m_c1_kuyruk_yeniden_acinca_yazilir_sayacli.py: YAKALANDI ran=9 fail=1 err=0 sure=12.4s
+  -> test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok: AssertionError: 3 unexpectedly found in [3, 4] : bayat (dusurulen) cerceve telde gorundu: [{'v': 1, 'type': 'CMD', 'cmd': 'PARACHUTE', 'hedef': 'iha', 'seq': 3, 't': 1788356880.458}, {'v': 1, 'type': 'CMD', 'cmd': 'PARAC

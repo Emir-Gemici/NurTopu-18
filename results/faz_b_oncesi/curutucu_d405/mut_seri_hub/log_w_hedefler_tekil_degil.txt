@@ -1,0 +1,53 @@
+.  [sure] test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir 0.71s
+.  [sure] test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider 0.85s
+.  [sure] test_3_yks_bayt_bayt_yazar_tuketiciye_BUTUN_cerceve_gelir 9.47s
+.  [sure] test_6_bozuk_cerceve_yayinlanmaz_sonraki_gecerli_gecer 0.92s
+F  [sure] test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir 0.74s
+.  [sure] test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar 1.75s
+.  [sure] test_4b_seri_yazma_arizasi_da_kapatir_ve_dusurur 0.92s
+.  [sure] test_10_cli_loop_portu_ile_hub_kurulur_ve_durur 0.23s
+.  [sure] test_8_adres_cozumleme_ve_tekillik 0.00s
+.  [sure] test_9_cli_seri_acilamazsa_cikis_4_kirmizi_hub_kurulmaz 0.00s
+F  [sure] test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner 0.79s
+
+======================================================================
+FAIL: test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir (test_faz_b_seri_hub.TestSeriHubAktarim.test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir)
+iha_komut_alici hem statik (5007) hem ACK gonderdigi icin ogrenilen
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_faz_b_seri_hub.py", line 295, in test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir
+    self.assertEqual([(YEREL, statik.port)], k.hub.hedefler())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('127.0.0.1', 51816)] != [('127.0.0.1', 51816), ('127.0.0.1', 51816)]
+
+Second list contains 1 additional elements.
+First extra element 1:
+('127.0.0.1', 51816)
+
+- [('127.0.0.1', 51816)]
++ [('127.0.0.1', 51816), ('127.0.0.1', 51816)]
+
+======================================================================
+FAIL: test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner (test_faz_b_seri_hub.TestSeriHubUctanUca.test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner)
+YKS (seri) CMD PARACHUTE -> hub -> GERCEK IhaKomutAlici (UDP, statik
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_faz_b_seri_hub.py", line 489, in test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner
+    self.assertEqual([(YEREL, alici_link.port)], k.hub.hedefler())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('127.0.0.1', 51830)] != [('127.0.0.1', 51830), ('127.0.0.1', 51830)]
+
+Second list contains 1 additional elements.
+First extra element 1:
+('127.0.0.1', 51830)
+
+- [('127.0.0.1', 51830)]
++ [('127.0.0.1', 51830), ('127.0.0.1', 51830)]
+
+----------------------------------------------------------------------
+Ran 11 tests in 16.394s
+
+FAILED (failures=2)
+MUTANT m_w_hedefler_tekil_degil.py: YAKALANDI ran=11 fail=2 err=0 sure=16.4s
+  -> test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir: + [('127.0.0.1', 51816), ('127.0.0.1', 51816)]
+  -> test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner: + [('127.0.0.1', 51830), ('127.0.0.1', 51830)]

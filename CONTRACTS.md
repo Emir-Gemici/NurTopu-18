@@ -1010,17 +1010,25 @@ portu **yalnız hub** açar, tüketiciler kendi UDP kiplerinde kalır
 | tüketici → seri | Tüketici çerçeveyi hub'ın UDP soketine (`--bind`, varsayılan `127.0.0.1:5100`) yollar; hub datagramı olduğu gibi seriye yazar ve göndereni "öğrenilen" kümesine ekler |
 | seri → tüketiciler | Hub gelen baytları kalıcı `FrameReader` ile **tam çerçeveye** toparlar; her çerçeveyi `encode(decode(...))` ile tek satır yapıp (statik `--tuketici` listesi ∪ öğrenilenler) adreslerinin **hepsine** yayınlar — datagram = çerçeve (D-403 KÜÇÜK-4 ile uyumlu) |
 | yalnız-dinleyen tüketici | `--tuketici HOST:PORT` statik listede olmalı (ör. `iha_komut_alici` 5007) — hiç göndermeden de alsın |
+| uzun ömürlü tüketici | **KURAL (D-405):** öğrenilen küme sayı tavanlıdır (`OGRENILEN_TAVANI`, en az tazelenen düşer, KIRMIZI log); uzun ömürlü her tüketici (`rpi_inference`, `iha_inis_yayinci`) **statik `--tuketici` ile de verilir** — öğrenme yalnız emniyettir |
+| tek sahiplik | Hub UDP ucunu `SO_REUSEADDR`'sız açar (ikinci hub exit 3); seri port `exclusive=True` (Linux flock; ikinci süreç `SerialException`) — çift başlatma **sessiz olamaz** |
+| dayanıklılık | Hiçbir çerçeve hub'ı öldürmez: derin iç içe JSON (`RecursionError`), 4096 B üstü datagram, fan-out `OSError` → sayaç + KIRMIZI log, süreç yaşar; `SIGTERM` → `durdur()` (son sayaç satırı journal'a düşer) |
+| zamanlama | `SERI_OKUMA_ZAMAN_ASIMI_S ≤ 0,05`, `UDP_OKUMA_ZAMAN_ASIMI_S ≤ 0,01` testle kilitli; UDP→seri p95 < `PARASUT_TEKRAR_ARALIGI_S` (ölçüldü: boşta p50 10,6 / p95 31 ms; 20 Hz seri girişiyle p50 45 ms — Windows) |
 | seri arızası | Seri kapatılır, KIRMIZI log, 1 s'de bir yeniden açma; UDP tarafı YAŞAR; arızada UDP'den gelen çerçeveler **düşürülür ve sayılır** (kuyruklanmaz — bayat rota yayınlanmasın) |
 
-**Topoloji (SiK kipi, Jetson):** `seri_hub --port /dev/ttyUSB0 --bind
-127.0.0.1:5100 --tuketici 127.0.0.1:5007` · `rpi_inference --yks-hedef
-127.0.0.1:5100 --ika-hedef 127.0.0.1:5100` · `iha_inis_yayinci --yks
-127.0.0.1:5100 --ika 127.0.0.1:5100` · `iha_komut_alici --bind 0.0.0.0:5007`.
+**Topoloji (SiK kipi, Jetson — `jetson_baslat.sh KIP=sik` ile AYNI, test K2
+kilitler):** `seri_hub --port /dev/ttyUSB0 --bind 127.0.0.1:5100 --tuketici
+127.0.0.1:5007` · `rpi_inference --yks-hedef 127.0.0.1:5100` · `iha_inis_yayinci
+--yks 127.0.0.1:5100` · `iha_komut_alici --bind 127.0.0.1:5007`. **Tek hatta
+bir kez:** SiK hattında hedef YKS'dir; `--ika-hedef`/`--ika` hub'a VERİLMEZ
+(ölçüldü, D-405: İKA ACK'i SiK'ten hiç gelmediği için `IhaSender` 8 tekrar /
+2,11 s boşa tekrar ediyordu). İKA'nın hattı (SiK çok-noktalı mı, WiFi
+`--ika-hedef <IKA_IP>:5006` mi) **topolojiyle karara bağlanır** (cumartesi).
 ACK'ler §6.6'daki "ortam yayını" semantiğini korur: YKS'nin ACK'i seriden
-gelir, hub üç tüketiciye de yayınlar; her tüketici yalnız kendi `ref`'ini eşler.
-UDP kipinde (WiFi) hub **kullanılmaz**; süreçler doğrudan YKS/İKA adresine
-konuşur. Kilit: `tests/test_faz_b_seri_hub.py` (uçtan uca: YKS-seri →
-hub → gerçek `IhaKomutAlici` → ACK → seri).
+gelir, hub öğrenilen/statik tüketicilere yayınlar; her tüketici yalnız kendi
+`ref`'ini eşler. UDP kipinde (WiFi) hub **kullanılmaz**; süreçler doğrudan
+YKS/İKA adresine konuşur. Kilit: `tests/test_faz_b_seri_hub.py` (uçtan uca:
+YKS-seri → hub → gerçek `IhaKomutAlici` → ACK → seri).
 
 ---
 

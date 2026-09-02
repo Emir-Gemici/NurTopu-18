@@ -1,0 +1,17 @@
+.  [sure] test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir 0.71s
+.  [sure] test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider 0.86s
+.  [sure] test_3_yks_bayt_bayt_yazar_tuketiciye_BUTUN_cerceve_gelir 9.48s
+.  [sure] test_6_bozuk_cerceve_yayinlanmaz_sonraki_gecerli_gecer 0.93s
+.  [sure] test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir 1.82s
+.  [sure] test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar 1.75s
+.  [sure] test_4b_seri_yazma_arizasi_da_kapatir_ve_dusurur 0.91s
+.  [sure] test_10_cli_loop_portu_ile_hub_kurulur_ve_durur 0.24s
+.  [sure] test_8_adres_cozumleme_ve_tekillik 0.00s
+.  [sure] test_9_cli_seri_acilamazsa_cikis_4_kirmizi_hub_kurulmaz 0.00s
+.  [sure] test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner 0.88s
+
+----------------------------------------------------------------------
+Ran 11 tests in 17.594s
+
+OK
+MUTANT m_c2_kuyruk_yeniden_acinca_yazilir_sessiz.py: KACTI ran=11 fail=0 err=0 sure=17.6s

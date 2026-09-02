@@ -27978,3 +27978,113 @@ Denetcinin mevcut-durum bulgulari (D-404 borcu DEGIL, kuyruga):
 Kalan borc (§7): madde 2 (hub curutucusu — bu kayit yazilirken kosuyor),
 madde 3 (muhur kapsami — curutucunun dondurma mercegi bekleniyor), madde 4
 (Jetson'da ilk kosum).
+
+### D-405 — D-404 CURUTUCU TURU (5 mercek, kota donunce): 1 KRITIK + 14 ONEMLI — muhur ozeti CRLF'ye bagli (Jetson'da dogrulanamaz), hub RecursionError ile oluyor, tek sahiplik zorlanmiyor, jetson_baslat --kur restart etmiyor; hepsi repro'lu
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Fable 5.1, mimar) · **Kapsam:** D-404 §7
+madde 2-4 (denetim borcu) · **Kanit:** `results/faz_b_oncesi/curutucu_d405/`
+(BULGULAR_TAM.md + repro betikleri + mutant loglari; salt okunur kosuldu, repo
+dokunulmadi) · **Denetleyen: kapanis bolumu (§3) yazilinca mimar-disi denetim**.
+
+### 1. Bulgular (ciddiyet · repro)
+
+**Muhur (surum_dondur) — mercek "MUHUR ATLATMA":**
+- 🔴 **KRITIK S6:** ozet CALISMA AGACI baytina bagli — ayni commit'in (07a9b8d)
+  Linux/LF checkout'unda 18/19 dosya, baska Windows klonunda 2/19 dosya "FARKLI"
+  (`klon_crlf` vs `klon_lf`, CRLF'den). Kunye yarisan cihazda (Jetson) hic
+  dogrulanamaz, git_head'den yeniden uretilemez; saha gunu yanlis "MUHUR IHLALI"
+  alarmi olasi. Olculdu: CRLF->LF normalize sha256 ile iki klon 17/17 + defter esit.
+- ONEMLI S4: Jetson'a giden `jetson_paket/models/*.pt|*.onnx` (gitignore'lu,
+  kilavuz `cp models/*`) kunye DISI — sahte model ile --dondur 0, --dogrula BIREBIR.
+- ONEMLI (sira): Jetson'da `.engine` derlenip `--turev-kaydet` ile deftere yazilinca
+  defter+ayna degisir -> muhur ihlali 2/19; defter bugun engine kayitsiz, muhur
+  ondan once basilirsa engine fail-closed yuklenmez. Sira tanimsizdi.
+- ONEMLI S3: kunye git'e bagli degil — ayna degisip kunyedeki sha elle
+  guncellenince --dogrula 0; kunye HEAD ile kiyaslanmiyor, --dondur sonrasi untracked.
+- ONEMLI S2: --dogrula yalniz AYNAYI (jetson_paket/kod) kiyaslar; kaynak codes/
+  comms/ muhur sonrasi degisince BIREBIR 0.
+- ONEMLI S1: kunye disi ama Jetson davranisini belirleyen dosyalar (jetson_baslat.sh
+  SYSID pini, systemd ExecStart uclari, requirements_rpi.txt, kalibrasyon.yaml)
+  degistirilmisken --dogrula 0; YKS/IKA belgeli kapsam disi.
+- KUCUK vakum: 3/3 mutasyon 21 testi dusurmuyor (kirli sayilmaz / zorunlu alan
+  kalkar / son paket dosyasi kiyaslanmaz).
+
+**Hub — mercekler "PROTOKOL/ACK", "ARIZA/YENIDEN ACMA", "TEST VAKUMU":**
+- ONEMLI: derin ic ice JSON satiri (`b"["*3000+b"\n"`, 3000 B < 64 KiB tavani)
+  `RecursionError` ile hub SURECINI oldurur (FrameReader yalniz ValueError/
+  UnicodeDecodeError yutar; calistir() yalniz KeyboardInterrupt) — gercek CLI
+  surecinde exit 1 olculdu (`r_q3_proc.py`); IhaKomutAlici.poll ayni sinif.
+  systemd 2 s icinde kaldirir ama UDP->seri datagramlar ICMP ile kaybolur,
+  ogrenilen kume sifirlanir.
+- ONEMLI: "portu TEK BASINA acar" kodda zorlanmiyor — UDP `SO_REUSEADDR` (ikinci
+  hub ayni 127.0.0.1:5100'e sessizce baglanir, hicbir sey almaz, exit 3 tetiklenmez;
+  `r_cift_bind.py`), SerialLink `exclusive` gecmiyor (pyserial 3.5 posix: flock yalniz
+  exclusive=True ile). Runbook'taki manuel hub komutu + systemd birimi = iki hub.
+- ONEMLI: hub ZAMANLAMA sozlesmesi testsiz — D-403'un 622 ms uretecek 0,3 s degeri
+  geri gelse 11/11 yesil. Olculdu (`r2_gecikme.py`, 50 ornek): UDP->seri bosta p50
+  10,6 / p95 31 ms; 20 Hz seri girisiyle p50 45 ms — 0,20 s parasut araliginin altinda.
+- ONEMLI vakum: iki OGRENILEN tuketici hic sinanmiyor (mutant "yalniz en son gonderene
+  fan-out" 11/11 gecti — uretim topolojisinde tam iki ogrenilen var); "kuyruklanmaz"
+  yalniz SAYACLA kilitli, telde degil; OGRENILEN_TAVANI tahliyesi testsiz (3 mutant);
+  yeniden acmada FrameReader sifirlamasi testsiz. Repo suiti 25 mutanttan 13'unu yakaladi.
+- KUCUK: newline'siz datagram sonraki cerceveye yapisir (ikisi kayip, sessiz basari);
+  ACK eslemesi yalniz `ref` (ref_tip yok; tesadufen guvenli — **T206**); 4096 B ustu
+  datagram Windows'ta OSError sizdirir; SIGTERM isleyicisi yok (son sayac logu kaybolur);
+  Windows select granulerligi (1 ms -> 15,6 ms; poll ~47 ms) repoda not degil.
+- CURUTULEMEDI: tek datagramda coklu cerceve; encode(decode()) sadakati (float, ü,
+  alan sirasi); YKS `_ack_isle` capraz seq karisikligi (gercek YksArayuz); alici ACK'i
+  hub'a doner; seri_ac surekli hata -> CPU %0,5; yarim cerceve yeniden acmada sifirlanir
+  (kod dogru, test yok); 1 MiB newline'siz akis tavan 65435 B; durdur/kapat soket
+  kaynaklari; Ctrl-C temiz cikis.
+
+**jetson_baslat — mercek "KURU vs GERCEK" (shim'li systemctl/sudo ile PROVA edildi):**
+- ONEMLI: yeniden `--kur` degisen beyani canli surece uygulamaz (`enable --now`
+  restart etmez; betikte restart yok) — kuru "aynen bunu kosar" derken eski
+  argumanlarla surer.
+- ONEMLI: K8 CRLF testi Windows'ta BOS (MSYS grep CR gormez, bash CRLF'i tolere eder)
+  — koruma dali hicbir testte kosmadi; Jetson'da ilk kez kosacak.
+- ONEMLI: `--kapi` uc ucu SIRALI kosuyor — CONTRACTS 7.4 "AYNI ANDA" der; +22..+52 s
+  thazirlik (30 s = 1 puan).
+- ONEMLI: `User=navitas` ve PATH birimlerde SABIT; kullanici farkliysa systemd 217/USER
+  sonsuz restart; --kuru bunu gormez.
+- ONEMLI belge<->kod: CONTRACTS 7.5 / RUNBOOK 3 `--ika-hedef 5100` + `--bind 0.0.0.0:5007`
+  yaziyordu, betik yalniz `--yks-hedef 5100` + `--bind 127.0.0.1:5007` (K2). OLCULDU:
+  belgedeki topolojide IKA ACK'i SiK'ten hic gelmedigi icin IhaSender 8 tekrar / 2,11 s
+  bosa (433 MHz yuku). -> belgeler betige hizalandi (bu kayitla).
+- KUCUK: K3 birim BOLUMUNU izlemiyor (StartLimitIntervalSec [Service]'e tasinsa 24 test
+  OK); --kur/--kapi/--dogrudan/--durdur yollari testsiz (kapi esigi 3->2 mutasyonu gecer);
+  `nohup $k` tirnaksiz glob; ENV_DOSYA ezilince birim sabit /etc/navitas.env okur; CR
+  kopyasinda hata mesaji gecici dosyayi gosterir; `[YOK] mavproxy` iken "KURU SONUC: tamam".
+- CURUTULEMEDI: uc yer esitligi (kuru/ExecStart/dogrudan); env tirnaklama (bosluk korunur);
+  CRLF mekanigi (CR=0 yazilir); cikis kodu mantigi (2/3 -> HATA, tuketici enable yok);
+  StartLimitIntervalSec [Unit] altinda; --durdur nohup pid'leri; bash -n OK.
+
+### 2. Mimar kararlari
+
+1. **Muhur ozeti icerik-kanonik olur** (metin: CRLF->LF normalize sha256; ikili: ham);
+   kunyeye `ozet_yontemi`. Jetson'da `--dogrula` kosulabilir hale gelir.
+2. **Kunye kapsami uc istasyondur** (sartname §6.1 "yarisan yazilim" yalniz Jetson
+   degil): `saha_yapilandirma` (jetson_baslat.sh, systemd/*.service, requirements_rpi,
+   kalibrasyon), `yks_ika` (yks_gui, komut_tekrar, protocol, link, iha_sender,
+   ika_receiver, ika_nav, ika_surucu, saha_baslat), `paket_modelleri` (Jetson'a giden
+   .pt/.onnx kopyalari; kanonik models/ ile bayt-es), `paket_kaynak` (ayna + kaynak).
+3. **Kunye git'e baglanir:** --dogrula kunyenin HEAD'deki haliyle bayt-es olmasini ve
+   kapsam yollarinin `git status --porcelain` bos olmasini ister (fail-closed).
+4. **Muhur sirasi:** engine derle + turev kaydet -> defter/ayna commit -> ANCAK SONRA
+   --dondur; engine kayitsizken --dondur RED (`--engine-kayitsiz-bilerek` asar, kunyeye
+   yazilir). FAZ_B §3'e yazildi.
+5. **Hub:** hicbir cerceve hub'i oldurmez (FrameReader RecursionError yutar + hub
+   `except Exception` -> bozuk); UDP `reuse=False`, seri `exclusive=True`; zamanlama
+   sabitleri ve on kayitli gecikme kapisi testle kilitli; newline eklenir (sayacli);
+   SIGTERM -> durdur(); vakum testleri (iki ogrenilen, telde kuyruklanmaz, tavan tahliyesi,
+   okuyucu sifirlama, sayac/koruma) suite. **Uzun omurlu tuketici statik verilir** —
+   CONTRACTS §7.5 kural satiri (bu kayitla). ACK ref_tip sertlestirmesi **T206** (ayri).
+6. **jetson_baslat:** `--kur` enable+restart; K8 CR algisi bash-ici (Git Bash'te de
+   tetiklenir, dal kostugunu ciktiya basar, kosmuyorsa skipTest); `--kapi` paralel;
+   SERVIS_KULLANICI sed + `id -u` denetimi; K3 bolum kilidi; shim tabanli K10 (--kur/--kapi);
+   --kuru [YOK] varsa "eksik" + exit 3.
+7. **Belge<->kod topolojisi:** CONTRACTS §7.5 ve SAHA_RUNBOOK §3 betige hizalandi (tek
+   hatta bir kez; IKA hatti cumartesi karari). Kural: topoloji satirlari K2 testinin
+   kilitledigi betikten kopyalanir, elle yazilmaz.
+
+### 3. Kapanis — (ajanlar kosuyor; bu bolum sonuclarla doldurulacak)

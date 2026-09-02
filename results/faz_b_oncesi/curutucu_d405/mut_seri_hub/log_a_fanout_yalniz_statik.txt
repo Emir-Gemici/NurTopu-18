@@ -1,0 +1,28 @@
+.  [sure] test_1_tuketici_udp_hub_seri_yks_cerceveyi_birebir_alir 0.72s
+F  [sure] test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider 3.81s
+.  [sure] test_3_yks_bayt_bayt_yazar_tuketiciye_BUTUN_cerceve_gelir 9.50s
+.  [sure] test_6_bozuk_cerceve_yayinlanmaz_sonraki_gecerli_gecer 0.89s
+.  [sure] test_7_statik_ve_ogrenilen_ayni_adres_TEK_datagram_alir 1.83s
+.  [sure] test_4_seri_okuma_arizasi_hub_cokmez_dusurur_yeniden_acar 1.75s
+.  [sure] test_4b_seri_yazma_arizasi_da_kapatir_ve_dusurur 0.92s
+.  [sure] test_10_cli_loop_portu_ile_hub_kurulur_ve_durur 0.24s
+.  [sure] test_8_adres_cozumleme_ve_tekillik 0.00s
+.  [sure] test_9_cli_seri_acilamazsa_cikis_4_kirmizi_hub_kurulmaz 0.00s
+.  [sure] test_5_yks_seri_parachute_gercek_komut_alici_ack_seriye_doner 0.82s
+
+======================================================================
+FAIL: test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider (test_faz_b_seri_hub.TestSeriHubAktarim.test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider)
+YKS seri -> hub -> hem statik (5007 benzeri) hem gondererek
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_faz_b_seri_hub.py", line 235, in test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider
+    self.assertEqual(1, len(o_gelen), "ogrenilen tuketici cerceve almadi")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : ogrenilen tuketici cerceve almadi
+
+----------------------------------------------------------------------
+Ran 11 tests in 20.487s
+
+FAILED (failures=1)
+MUTANT m_a_fanout_yalniz_statik.py: YAKALANDI ran=11 fail=1 err=0 sure=20.5s
+  -> test_2_seri_cerceve_statik_ve_ogrenilen_tuketicilere_TAM_gider: AssertionError: 1 != 0 : ogrenilen tuketici cerceve almadi

@@ -1,0 +1,32 @@
+test_b_iki_ogrenilen_ikisi_de_alir (ek_testler.TestEksik.test_b_iki_ogrenilen_ikisi_de_alir)
+rpi_inference + iha_inis_yayinci ikisi de ogrenilir; YKS'den gelen ... ok
+test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok (ek_testler.TestEksik.test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok)
+Arizada dusurulen PARACHUTE(seq=3), yeniden acmadan sonra seri hatta ... ok
+test_h_yeniden_acmada_yarim_cerceve_atilir (ek_testler.TestEksik.test_h_yeniden_acmada_yarim_cerceve_atilir)
+Ariza aninda okuyucuda YARIM cerceve var; yeniden acilan hatta gelen ... ok
+test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir (ek_testler.TestEksik.test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir)
+Uzun omurlu tuketici L (arada tazelenir) tavan asilinca DUSMEZ; en ... FAIL
+test_k_seri_kapaliyken_bos_tur_bekler (ek_testler.TestEksik.test_k_seri_kapaliyken_bos_tur_bekler)
+seri_link None: her poll BOS_TUR_BEKLEME_S bekler (sicak dongu yok). ... ok
+test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir (ek_testler.TestEksik.test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir) ... ok
+test_n_fanout_oserror_hub_yasar_sayilir (ek_testler.TestEksik.test_n_fanout_oserror_hub_yasar_sayilir) ... ok
+test_p_tek_turda_datagram_patlamasi_hepsi_seriye (ek_testler.TestEksik.test_p_tek_turda_datagram_patlamasi_hepsi_seriye)
+10 datagram tek poll'da bosaltilir ve HEPSI seriye yazilir. ... ok
+test_u_seri_ac_None_donerse_baglanmaz (ek_testler.TestEksik.test_u_seri_ac_None_donerse_baglanmaz) ... ok
+
+======================================================================
+FAIL: test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir (ek_testler.TestEksik.test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir)
+Uzun omurlu tuketici L (arada tazelenir) tavan asilinca DUSMEZ; en
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_seri_hub\ek_testler.py", line 112, in test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir
+    self.assertNotIn((YEREL, kisa[0].port), k.hub.ogrenilen, "EN ESKI dusmedi")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('127.0.0.1', 61730) unexpectedly found in {('127.0.0.1', 61730): 35870.6589193, ('127.0.0.1', 61731): 35870.7532794, ('127.0.0.1', 61732): 35870.8459315, ('127.0.0.1', 61733): 35870.9393939, ('127.0.0.1', 61734): 35871.0325734, ('127.0.0.1', 61735): 35871.1261959, ('127.0.0.1', 61736): 35871.2196308, ('127.0.0.1', 61737): 35871.313303, ('127.0.0.1', 61738): 35871.501379, ('127.0.0.1', 61739): 35871.5942066, ('127.0.0.1', 61740): 35871.6868615, ('127.0.0.1', 61741): 35871.7807617, ('127.0.0.1', 61742): 35871.8742794, ('127.0.0.1', 61743): 35871.9676536, ('127.0.0.1', 61744): 35872.0604569, ('127.0.0.1', 61745): 35872.1544089, ('127.0.0.1', 61746): 35872.3422412, ('127.0.0.1', 49837): 35872.435336, ('127.0.0.1', 49838): 35872.5297355, ('127.0.0.1', 49839): 35872.6242634, ('127.0.0.1', 49840): 35872.7182787, ('127.0.0.1', 49841): 35872.8113809, ('127.0.0.1', 49842): 35872.903948, ('127.0.0.1', 49843): 35872.9979814, ('127.0.0.1', 49844): 35873.1858853, ('127.0.0.1', 49845): 35873.2784173, ('127.0.0.1', 49846): 35873.3715566, ('127.0.0.1', 49847): 35873.4658569, ('127.0.0.1', 49848): 35873.5586708, ('127.0.0.1', 64271): 35873.6512758, ('127.0.0.1', 64272): 35873.7439435, ('127.0.0.1', 61728): 35874.4027918} : EN ESKI dusmedi
+
+----------------------------------------------------------------------
+Ran 9 tests in 12.276s
+
+FAILED (failures=1)
+EK-MUTANT m_i1_tavan_en_yeni_dusurulur.py: YAKALANDI ran=9 fail=1 err=0 sure=12.3s
+  -> test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir: AssertionError: ('127.0.0.1', 61730) unexpectedly found in {('127.0.0.1', 61730): 35870.6589193, ('127.0.0.1', 61731): 35870.7532794, ('127.0.0.1', 61732): 35870.8459315, ('127.0.0.1', 61733): 35870.9393939, ('127.0.0.1'

@@ -1,0 +1,31 @@
+test_b_iki_ogrenilen_ikisi_de_alir (ek_testler.TestEksik.test_b_iki_ogrenilen_ikisi_de_alir)
+rpi_inference + iha_inis_yayinci ikisi de ogrenilir; YKS'den gelen ... ok
+test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok (ek_testler.TestEksik.test_c_arizada_dusen_datagram_yeniden_acinca_TELDE_yok)
+Arizada dusurulen PARACHUTE(seq=3), yeniden acmadan sonra seri hatta ... ok
+test_h_yeniden_acmada_yarim_cerceve_atilir (ek_testler.TestEksik.test_h_yeniden_acmada_yarim_cerceve_atilir)
+Ariza aninda okuyucuda YARIM cerceve var; yeniden acilan hatta gelen ... ok
+test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir (ek_testler.TestEksik.test_i_ogrenilen_tavani_en_eski_dusurulur_uzun_omurlu_kalir)
+Uzun omurlu tuketici L (arada tazelenir) tavan asilinca DUSMEZ; en ... ok
+test_k_seri_kapaliyken_bos_tur_bekler (ek_testler.TestEksik.test_k_seri_kapaliyken_bos_tur_bekler)
+seri_link None: her poll BOS_TUR_BEKLEME_S bekler (sicak dongu yok). ... ok
+test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir (ek_testler.TestEksik.test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir) ... FAIL
+test_n_fanout_oserror_hub_yasar_sayilir (ek_testler.TestEksik.test_n_fanout_oserror_hub_yasar_sayilir) ... ok
+test_p_tek_turda_datagram_patlamasi_hepsi_seriye (ek_testler.TestEksik.test_p_tek_turda_datagram_patlamasi_hepsi_seriye)
+10 datagram tek poll'da bosaltilir ve HEPSI seriye yazilir. ... ok
+test_u_seri_ac_None_donerse_baglanmaz (ek_testler.TestEksik.test_u_seri_ac_None_donerse_baglanmaz) ... ok
+
+======================================================================
+FAIL: test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir (ek_testler.TestEksik.test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\mut_seri_hub\ek_testler.py", line 136, in test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir
+    self.assertEqual(1, k.hub.sayac["hedefsiz"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 9 tests in 12.397s
+
+FAILED (failures=1)
+EK-MUTANT m_m_hedefsiz_sessiz.py: YAKALANDI ran=9 fail=1 err=0 sure=12.4s
+  -> test_m_hedefsiz_fanout_sayilir_ve_kirmizi_loglanir: AssertionError: 1 != 0
