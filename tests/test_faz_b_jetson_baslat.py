@@ -71,7 +71,7 @@ for _y in (KOK / "comms", KOK / "codes", KOK / "scripts"):
 
 import iha_komut_alici  # noqa: E402
 import kamera_koprusu  # noqa: E402
-from karar_sozlesmesi import SARTNAME_IHA_GOREV_SURESI_S  # noqa: E402
+from karar_sozlesmesi import MAVLINK_KONUM_ASGARI_HZ, SARTNAME_IHA_GOREV_SURESI_S  # noqa: E402
 
 PAKET = KOK / "jetson_paket"
 BETIK = PAKET / "jetson_baslat.sh"
@@ -504,6 +504,13 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
             self.assertIn(f"--out udp:127.0.0.1:{port}", k)
         self.assertIn("--daemon", k)
         self.assertIn("--non-interactive", k)
+        # D-406 B: MAVProxy varsayilan --streamrate 4, baglaninca REQUEST_DATA_STREAM(ALL,4)
+        # ile SR2_POSITION=8'i 4 Hz'e cekerdi (= asgari, jitter payi sifir). 8 = 2x asgari;
+        # deger CONTRACTS sabitinden turetilir (madde 16), ciplak 8 degil.
+        self.assertEqual(_arg_degeri(k, "--streamrate"), str(int(2 * MAVLINK_KONUM_ASGARI_HZ)),
+                         "cogullayici --streamrate 8 (D-406 B) yok/yanlis: " + k)
+        self.assertEqual(_arg_degeri(_exec_start(COGULLAYICI), "--streamrate"),
+                         str(int(2 * MAVLINK_KONUM_ASGARI_HZ)), "birim dosyasinda --streamrate 8 yok")
 
     def test_K1_tuketiciler_cogullayici_ucundan_sysid_pinli(self):
         rpi = self.b["birimler"][RPI]

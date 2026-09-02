@@ -385,7 +385,7 @@ kuru() {
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do
     if [ -f "$y" ]; then echo "[VAR] kurulu $y"
-    else echo "[YOK] kurulu $y <- $b: JETSON_KILAVUZ §2 (cp kod/... $NAVITAS_KOK/{codes,comms})"; yok=$((yok + 1)); fi
+    else echo "[YOK] kurulu $y <- $b: JETSON_KILAVUZ §2 (cp kod/... $NAVITAS_KOK/{codes,comms,scripts})"; yok=$((yok + 1)); fi
   done <<< "$liste"
   echo "## beyan denetimi"
   u="$(deger_uyarilari)"
