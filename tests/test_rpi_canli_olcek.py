@@ -467,9 +467,11 @@ class CanliOlcekCliTesti(unittest.TestCase):
         # oncesiyle BIREBIR aynidir; bu beklenti tam da onu kilitler.
         # K1: telsiz hedefi VERILMEDIGINDE yayinci None'dur — gonderici hic
         # kurulmaz, davranis bayt-es aynidir (tests/test_rpi_telsiz_yayin.py).
+        # D-404: `--ekransiz` verilmediginde False tasinir (masaustu davranisi
+        # DEGISMEDI; systemd birimi bayragi acikca verir).
         run_camera.assert_called_once_with(
             model, 0.30, canli_olcek=saglayici, kaynak=None,
-            arac_modeli=None, senaryo=None, yayinci=None)
+            arac_modeli=None, senaryo=None, yayinci=None, ekransiz=False)
         saglayici.kapat.assert_called_once_with()
 
     def test_model_yukleme_hatasinda_poller_kapatilir(self):

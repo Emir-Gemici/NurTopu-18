@@ -1,0 +1,7 @@
+SAHA AÇILIŞ KARTI (thazırlık — istasyon başına TEK komut):
+  YKS : O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\comms\yks_gui.py --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007
+        (--iha = Jetson'daki iha_komut_alici --bind ucu; verilmezse PARAŞÜT alıcıya ULAŞMAZ — D-403)
+  İKA : O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\simulation\scripts\ika_nav.py comms --yks <YKS_IP>:5005
+  SiK : O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\comms\yks_gui.py --serial COM5 --baud 57600
+  Jetson: bkz. SAHA_RUNBOOK.md §3 (cihazda jetson_paket/)
+exit=0

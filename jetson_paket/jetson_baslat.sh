@@ -193,7 +193,7 @@ sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle boz
   tuketici_denetle navitas-iha-komut-alici "$MAV_UC_KOMUT" "--sysid $SYSID"
   if [ "$KIP" = sik ]; then
     k="$(exec_start navitas-seri-hub)"
-    case " $k " in *" --serial $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--serial $SIK_SERI' yok" ;; esac
+    case " $k " in *" --port $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--port $SIK_SERI' yok" ;; esac
     case " $k " in *" --bind $SERI_HUB_DINLE "*) ;; *) hata "navitas-seri-hub: '--bind $SERI_HUB_DINLE' yok" ;; esac
     case " $k " in *" --tuketici $SERI_HUB_TUKETICI "*) ;; *) hata "navitas-seri-hub: '--tuketici $SERI_HUB_TUKETICI' yok" ;; esac
   fi

@@ -1,0 +1,30 @@
+# jetson_baslat.sh --kuru · KIP=udp · HICBIR SEY BASLATILMADI
+## /etc/navitas.env (yazilacak icerik)
+NAVITAS_KOK=/home/navitas/navitas
+PYTHON3=/usr/bin/python3
+LOG_DIZIN=/home/navitas/navitas/results/jetson_log
+KIP=udp
+PIXHAWK_SERI=/dev/ttyACM0
+PIXHAWK_BAUD=57600
+SYSID=1
+SIK_SERI=/dev/ttyUSB0
+SIK_BAUD=57600
+KANIT_TIMEOUT=900
+RPI_EK_ARGS=--fov 78
+RPI_TELSIZ_ARGS=--yks-hedef 192.168.1.10:5005 --ika-hedef 192.168.1.20:5006
+INIS_TELSIZ_ARGS=--yks 192.168.1.10:5005 --ika 192.168.1.20:5006
+KOMUT_TELSIZ_ARGS=--bind 0.0.0.0:5007
+## birimler (ExecStart, degiskenler yerine konmus — systemd ve --dogrudan AYNEN bunu kosar)
+navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+navitas-rpi-inference.service: /usr/bin/python3 /home/navitas/navitas/codes/rpi_inference.py --camera --ekransiz --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 78 --yks-hedef 192.168.1.10:5005 --ika-hedef 192.168.1.20:5006
+navitas-iha-inis-yayinci.service: /usr/bin/python3 /home/navitas/navitas/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 192.168.1.10:5005 --ika 192.168.1.20:5006
+navitas-iha-komut-alici.service: /usr/bin/python3 /home/navitas/navitas/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007
+## paket denetimi (/o/navitas/jetson_paket/kod)
+[YOK] mavproxy.py (PATH) <- Jetson'da: pip3 install MAVProxy
+[VAR] rpi_inference.py
+[VAR] iha_inis_yayinci.py
+[VAR] iha_komut_alici.py
+## beyan denetimi
+[TAM] beyanlar tam
+KURU SONUC: tamam — kurmak icin: sudo -E bash /o/navitas/jetson_paket/jetson_baslat.sh
+exit=0

@@ -40,11 +40,17 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         #   · comms/iha_komut_alici.py  -> Faz B (D-403): YKS'nin PARACHUTE/ARM
         #     komutlarini Pixhawk'a aktaran Jetson sureci (D-393'un IHA yarisi);
         #     pakette yoksa sahada parasut yedegi ACK'siz kalir
+        # D-404'te 15 -> 17 (Faz B, donanim-oncesi kapanis):
+        #   · comms/seri_hub.py         -> SiK 433 MHz kipinde /dev/ttyUSB0 tek
+        #     sahipli; hub olmadan uc surec ayni portu acamaz (CONTRACTS 7.5),
+        #     navitas-seri-hub.service ExecStart'i bu dosyayi bekler
+        #   · scripts/mavlink_dogrula.py -> jetson_baslat.sh --kapi on-ucus
+        #     kapisi; paket tasimayinca --kapi HATA ile durur (FAZ_B §1)
         # Kapi yine GEVSETILMEDI, gerekceyle GUNCELLENDI.
-        self.assertEqual(15, len(KOPYALAR),
-                         "paket kopya sozlesmesi 15 dosya olmali "
-                         "(13 .py + karisim_arena.yaml + "
-                         "config/model_registry.json · T103/T83/T202/D-403)")
+        self.assertEqual(17, len(KOPYALAR),
+                         "paket kopya sozlesmesi 17 dosya olmali "
+                         "(15 .py + karisim_arena.yaml + "
+                         "config/model_registry.json · T103/T83/T202/D-403/D-404)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")

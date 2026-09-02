@@ -2045,7 +2045,10 @@ def run_image(model, path_str, conf, mpp=None, canli_olcek=None,
 
 
 def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
-              arac_modeli=None, senaryo=None, yayinci=None):
+              arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False):
+    # D-404: `ekransiz=True` -> pencere/waitKey YOK (systemd, DISPLAY'siz Jetson).
+    # Karar yolu (analyze_path, esikleme, histerezis, yayin) BAYT-ES aynidir;
+    # yalniz gorsellestirme ve 'q' ile durdurma atlanir (SIGINT/SIGTERM calisir).
     path = Path(path_str)
     if not path.is_file():
         print(f"Dosya bulunamadi: {path}")
@@ -2132,6 +2135,10 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
         if yumusatici.suz(open_path, karar_reddi):
             _karari_yayinla(yayinci, open_path, path_conf, waypoints,
                             kare_mpp, karar_reddi)
+        # D-404: gorsel yalniz kayit ya da ekran icin uretilir; ekransiz ve
+        # kayitsiz kosumda hic cizilmez (karar yukarida zaten yayinlandi).
+        if ekransiz and not writer:
+            continue
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -2151,6 +2158,8 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
         if writer:
             writer.write(vis)
 
+        if ekransiz:
+            continue
         cv2.imshow("Navitas", vis)
         if cv2.waitKey(1) & 0xFF == ord("q"):
             print("Kullanici durdurdu.")
@@ -2159,7 +2168,8 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
     cap.release()
     if writer:
         writer.release()
-    cv2.destroyAllWindows()
+    if not ekransiz:
+        cv2.destroyAllWindows()
 
     elapsed = sum(fps_buf) / len(fps_buf) * frame_idx if fps_buf else 0
     print(f"\n{frame_idx} kare islendi  —  ortalama {1/( sum(fps_buf)/len(fps_buf)):.1f} FPS")
@@ -2168,7 +2178,12 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
 
 
 def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
-               arac_modeli=None, senaryo=None, yayinci=None):
+               arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False):
+    # D-404 (Faz B, Gorev C olcumu): systemd altinda DISPLAY yokken kosulsuz
+    # cv2.imshow ILK KAREDE cokup Restart dongusune giriyordu (hands-off
+    # ihlali). `ekransiz=True` pencere/waitKey'i atlar; karar yolu ve yayin
+    # BAYT-ES aynidir (tests/test_faz_b_rpi_ekransiz.py). 'q' ile durdurma
+    # yoktur; SIGINT/SIGTERM (systemctl stop) ile durur.
     # Imza geriye uyumludur; ancak canli kamera kararinda statik mpp artik
     # otorite degildir. Eski bir cagirici mpp verse bile telemetri yoksa
     # `_kare_olcegi` None doner ve rota OLCEK_YOK ile fail-closed kalir.
@@ -2185,7 +2200,10 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
         return {"bitis": KAMERA_BITIS_ACILAMADI, "okunan": 0,
                 "dusen_toplam": 0, "dusen_ardisik_maks": 0}
 
-    print("Kamera acik — cikmak icin 'q'")
+    if ekransiz:
+        print("EKRANSIZ kip: pencere yok, karar yayini surer (durdurma: SIGINT/SIGTERM)")
+    else:
+        print("Kamera acik — cikmak icin 'q'")
     fps_buf = []
     ozet = {"bitis": None, "okunan": 0, "dusen_toplam": 0, "dusen_ardisik_maks": 0}
     # P5 (D-396): yayin histerezisi — yalniz AKIS yollarinda, yayindan hemen
@@ -2252,6 +2270,9 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
         if yumusatici.suz(open_path, karar_reddi):
             _karari_yayinla(yayinci, open_path, path_conf, waypoints,
                             kare_mpp, karar_reddi)
+        # D-404: ekransiz kipte gorsel HIC uretilmez (karar yukarida yayinlandi).
+        if ekransiz:
+            continue
         vis = draw_masks(sq, masks)
 
         if open_path:
@@ -2272,7 +2293,8 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
             break
 
     cap.release()
-    cv2.destroyAllWindows()
+    if not ekransiz:
+        cv2.destroyAllWindows()
     print(kamera_bitis_raporu(ozet))
     return ozet
 
@@ -2350,6 +2372,10 @@ def _arguman_ayristirici():
               "DURMA. Varsayilan FAIL-CLOSED'dir; bu bayrak guvenligi acikca "
               "gevsetir ve gerekcesi kayda gecmelidir."))
     parser.add_argument("--no-save", action="store_true", help="Video modunda ciktiyi kaydetme")
+    # D-404: systemd/ekransiz Jetson icin — pencere ve waitKey yok; karar yayini
+    # ve (video kipinde) kayit aynen surer. --image/--fps'te etkisizdir.
+    parser.add_argument("--ekransiz", action="store_true",
+                        help="Pencere acma (systemd/ekransiz Jetson); karar yayini ve kayit aynen surer")
     parser.add_argument("--conf", type=float, default=0.30, help="Guven esigi (varsayilan: 0.30)")
     # T43 · HALKA 5 (CONTRACTS SS5): olcek SAHA YOLUNDA uretilebilir olmali.
     # Kaynak (a) irtifa + FOV/odak — MAVLink GLOBAL_POSITION_INT.relative_alt
@@ -2577,11 +2603,12 @@ def main():
             run_video(model, args.video, args.conf, save=not args.no_save,
                       mpp=mpp, canli_olcek=canli_olcek,
                       arac_modeli=arac_modeli, senaryo=args.senaryo,
-                      yayinci=yayinci)
+                      yayinci=yayinci, ekransiz=args.ekransiz)
         elif args.camera:
             run_camera(model, args.conf, canli_olcek=canli_olcek,
                        kaynak=args.kaynak, arac_modeli=arac_modeli,
-                       senaryo=args.senaryo, yayinci=yayinci)
+                       senaryo=args.senaryo, yayinci=yayinci,
+                       ekransiz=args.ekransiz)
     finally:
         if yayinci is not None:
             if yayinci.stop() is not True:

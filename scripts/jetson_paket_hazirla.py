@@ -54,6 +54,10 @@ KOPYALAR = {
     # aktaran Jetson sureci — D-393'un "AVIYONIK-BLOKLU" IHA yarisi. Pakette
     # yoksa sahada parasut yedegi ACK'siz kalir (YKS kirmizi "ACK YOK").
     KOK / "comms" / "iha_komut_alici.py": PAKET_KOD / "iha_komut_alici.py",
+    # D-404: SiK hub (CONTRACTS 7.5; navitas-seri-hub.service) ve on-ucus kapisi
+    # (jetson_baslat.sh --kapi, ~/navitas/scripts/ altinda arar) pakete alindi.
+    KOK / "comms" / "seri_hub.py": PAKET_KOD / "seri_hub.py",
+    KOK / "scripts" / "mavlink_dogrula.py": PAKET_KOD / "mavlink_dogrula.py",
 }
 
 

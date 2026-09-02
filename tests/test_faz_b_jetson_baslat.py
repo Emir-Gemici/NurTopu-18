@@ -300,7 +300,9 @@ class JetsonBaslatKuruSik(unittest.TestCase):
         self.assertEqual(set(self.b["birimler"]), set(TUM_BIRIMLER))
         hub = self.b["birimler"][SERI_HUB]
         self.assertIn("seri_hub.py", hub)
-        self.assertEqual(_arg_degeri(hub, "--serial"), "/dev/ttyUSB0")
+        # CONTRACTS §7.5: hub CLI'si --port (comms/seri_hub.py); --serial DEGIL.
+        self.assertEqual(_arg_degeri(hub, "--port"), "/dev/ttyUSB0")
+        self.assertNotIn("--serial", hub)
         self.assertEqual(_arg_degeri(hub, "--baud"), "57600")
         self.assertEqual(_arg_degeri(hub, "--bind"), "127.0.0.1:5100")
         self.assertEqual(_arg_degeri(hub, "--tuketici"), "127.0.0.1:5007")

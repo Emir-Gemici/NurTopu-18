@@ -19,6 +19,9 @@
 | ☐ | Paket aynası | `scripts/jetson_paket_hazirla.py` → "hepsi senkron" |
 | ☐ | Dört Faz B aracı sahte uçlarla yeşil | `tests/test_faz_b_*.py` OK |
 | ☐ | Model dosyaları pakette | `.pt` + `_512_fp16.onnx` |
+| ☐ | Jetson açılış kuru koşu (D-404) | `KIP=udp YKS_IP=… IKA_IP=… FOV=… bash jetson_paket/jetson_baslat.sh --kuru` → exit 0, `[EKSIK]` yok; `KIP=sik` ile de |
+| ☐ | Mühür mekanizması ayakta | `scripts/surum_dondur.py --dogrula` → exit **3** "DONDURULMADI" (beklenen; mühür ~18 Eylül) |
+| ☐ | Donanım-öncesi prova çıktıları | `results/faz_b_oncesi/` (D-404) |
 
 ## 1. 🔴 İLK KARAR — MAVLink çoğullayıcı (Jetson'da, her şeyden önce)
 
@@ -65,9 +68,11 @@ Kapı: üç uç aynı anda açıkken `scripts/mavlink_dogrula.py --mavlink udp:1
 Gün sonunda üç istasyonun her biri **tek komutla** kalkmalı; süre ölçülüp yazılır:
 - YKS PC: `saha_baslat.py yks --ika <IKA_IP>:5006`
 - İKA: `saha_baslat.py ika --yks <YKS_IP>:5005`
-- Jetson: çoğullayıcı + `rpi_inference` + `iha_inis_yayinci` + `iha_komut_alici`
-  (bir `jetson_baslat.sh` bu üçünü + çoğullayıcıyı kaldırır — **cumartesi yazılır**,
-  komutlar netleşince).
+- Jetson: `jetson_paket/jetson_baslat.sh` (KIP=udp|sik) — çoğullayıcı +
+  (SiK'te `seri_hub`) + `rpi_inference` + `iha_inis_yayinci` + `iha_komut_alici`
+  systemd birimleriyle, `Restart=always`; cumartesi önce `--kuru` ile komutlara
+  bakılır (D-404). Sürüm dondurma mekanizması `scripts/surum_dondur.py` hazır;
+  dondurma ANI kullanıcı kararı.
 
 ## 4. Getirilecekler (insan)
 
@@ -75,20 +80,19 @@ Jetson + güç · Pixhawk + telem kablosu (USB/ttyACM) · **iki** SiK 433 MHz + 
 İKA motor sürücüsü + kablolama şeması (arka uç protokolü için) · GCS'li dizüstü ·
 paraşüt servosunu **bağlamadan** tetik provası için servo test ucu.
 
-## 4b. Çürütücünün açtığı tasarım soruları (D-403 — cumartesi BİRLİKTE karar)
+## 4b. Çürütücünün açtığı tasarım soruları (D-403) — durum (D-404)
 
-- **SiK yolu tek sahipli:** UDP kurulumu çoğullayıcıyla çözüldü, ama SiK
-  (433 MHz) kipinde Jetson'da **üç süreç** (`rpi_inference --telsiz-seri`,
-  `iha_inis_yayinci --serial`, `iha_komut_alici --serial`) aynı `/dev/ttyUSB0`'ı
-  açmak ister — seri port tek sahiplidir. Seçenekler: (a) NAVITAS-çerçeve
-  "hub" süreci (portu tek başına açar, üç sürece UDP loopback verir — MAVLink
-  router'ın protokol ikizi); (b) üçünü tek sürece toplamak. Kaç SiK radyo var,
-  hangi hat SiK, hangisi UDP/WiFi — **cumartesi topolojiyle netleşir**;
-  o güne dek SiK ölçümü (`sik_rf_olc`) tek süreçtir, sorun yok.
-- **Süreç gözcüsü:** `iha_komut_alici` seri hatta `SerialException`'da bilinçli
-  olarak ÇÖKER (sessiz döngü yerine görünür ölüm). Jetson'da üç süreç
-  `systemd` `Restart=always` ile koşmalı; YKS çökmeyi ACK yokluğundan görür.
-  `jetson_baslat.sh` (cumartesi) bunu kurar.
+- **SiK yolu tek sahipli — KAPANDI (D-404, seçenek a):** `comms/seri_hub.py`
+  portu tek başına açar, üç süreç UDP loopback `127.0.0.1:5100` üzerinden
+  konuşur (CONTRACTS §7.5; `jetson_baslat.sh KIP=sik`). **Cumartesi kalan
+  karar:** hangi hat SiK, İKA hangi hatta. `KIP=sik`'te betik bilerek yalnız
+  YKS hedefini verir (tek hatta bir kez); İKA'ya OPEN_ROUTE/IHA_LANDED'ın
+  nasıl ulaşacağı (SiK çok-noktalı mı, WiFi `--ika-hedef <IKA_IP>:5006` mi)
+  topolojiyle karara bağlanır — bugün varsayım yazılmadı (`JETSON_BASLAT.md`).
+- **Süreç gözcüsü — KAPANDI (D-404):** beş systemd birimi `Restart=always`,
+  `RestartSec=2`, `StartLimitIntervalSec=0`; `jetson_baslat.sh --durum`
+  yeniden-başlatma sayısını basar (artıyorsa çökme döngüsü, gizlenmez).
+  `rpi_inference` ekransız Jetson'da artık çökmez (`--ekransiz`).
 - **Pixhawk parametreleri kabul kapısıdır:** `CHUTE_ENABLED=1`, `CHUTE_ALT_MIN`
   (uçuşta ≥10 m varsayılanı — paraşütü alçakta REDDEDER, bilinçli), `SYSID_THISMAV`
   = `--sysid`. Alıcı artık yalnız `COMMAND_ACK ACCEPTED` ile ACK verir; yanlış

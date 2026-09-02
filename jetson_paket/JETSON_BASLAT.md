@@ -26,8 +26,23 @@
 
 Tüketiciler `After=`/`Wants=navitas-cogullayici.service` ile çoğullayıcıya bağlıdır; hiçbiri `/dev/tty*` açmaz (test kilidi).
 
-## Bilinen blokerler (2026-09-02, bu paket dokunmadı — ayrı görev)
+## Kapatılan blokerler (2026-09-03, D-404) ve kalan uyarılar
 
-- **`rpi_inference --camera` ekransız çöker:** `run_camera` her karede `cv2.imshow` çağırır (`codes/rpi_inference.py:2269`). Birim `DISPLAY=:0` + `XAUTHORITY` ile masaüstü oturumunu dener; oturum yoksa ilk karede çöker ve 2 s'de bir yeniden başlar — `--durum` bunu **gösterir**, gizlemez. Kalıcı çözüm: `rpi_inference`'a ekransız kip.
-- **`comms/seri_hub.py` yok:** `navitas-seri-hub.service` CLI'yi (`--serial --baud --bind --tuketici`) **varsayar**; betik gelmeden `KIP=sik` kurulumu `dosya_denetle`'de durur, `--kuru` `[YOK] seri_hub.py` basar. Hub kipinde İHA→YKS ACK'lerinin yayıncıya nasıl döneceği hub tasarımına bağlıdır (D-403 §4b).
+- **Ekransız kip (kapatıldı):** `rpi_inference --camera` eskiden her karede koşulsuz
+  `cv2.imshow` çağırır, ekransız Jetson'da ilk karede çöküp `Restart` döngüsüne
+  girerdi. Birim artık `--ekransiz` ile koşar (pencere/`waitKey` yok; karar yolu
+  bayt-eş aynı — `tests/test_faz_b_rpi_ekransiz.py`). `DISPLAY`/`XAUTHORITY`
+  birimden kaldırıldı.
+- **`comms/seri_hub.py` (kapatıldı):** CONTRACTS §7.5; CLI `--port --baud --bind
+  --tuketici`; pakette `kod/seri_hub.py` (KOPYALAR). Hub gönderen tüketicileri
+  **öğrenir**: `rpi_inference` ve `iha_inis_yayinci` hub'a yazdıkları için
+  YKS ACK'leri onlara döner; yalnız dinleyen `iha_komut_alici` `--tuketici`
+  ile statik verilir. `mavlink_dogrula.py` de pakettedir (`kod/` →
+  `~/navitas/scripts/`, `--kapi` için).
+- **SiK kipinde İKA hattı (AÇIK — cumartesi):** SiK genelde iki radyoyla
+  **noktadan noktaya** (Jetson↔YKS) çalışır. `KIP=sik`'te betik bilerek yalnız
+  `--yks-hedef 127.0.0.1:5100` / `--yks 127.0.0.1:5100` verir (tek hatta bir
+  kez; test K2). İKA'ya OPEN_ROUTE/IHA_LANDED'ın **nasıl ulaşacağı** (İKA da SiK
+  çok-noktalı mı, WiFi'da mı — o zaman `--ika-hedef <IKA_IP>:5006` ayrıca
+  verilir) **topolojiyle karara bağlanır**; bugün varsayım yazılmadı.
 - **Windows kopyası CRLF taşır** (`core.autocrlf=true`): betik ilk satırında CR görürse CR'siz kopyasıyla yeniden koşar; birim dosyaları kurulurken `tr -d '\r'` ile yazılır. `bash jetson_baslat.sh …` ile çağırın (`./jetson_baslat.sh` shebang'i CR yüzünden bozulabilir).

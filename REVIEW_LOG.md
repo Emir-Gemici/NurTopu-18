@@ -27832,3 +27832,116 @@ dosya senkron · uretim degisiklikleri: `comms/link.py` (hizli okuma),
 `comms/yks_gui.py` (--iha, dugme metni), `comms/iha_komut_alici.py`,
 `codes/karar_sozlesmesi.py` (+5 sabit), `scripts/sahte_pixhawk.py` (test
 altyapisi).
+
+### D-404 — DONANIM-ONCESI KAPANIS: SiK hub, saha_baslat --iha, Jetson tek-komut acilis (systemd), surum dondurma muhru, rpi_inference --ekransiz — curutucu turu KOTAYA TAKILDI (denetim borcu)
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Fable 5.1, mimar) · **Emir:** kullanici —
+*"aviyonik geldigi an yazilim icin ek bir sey yapmamiz gerekmesin, onceden
+yapilabilecek her sey hazir olsun."* · **Denetleyen: mimar-disi denetim BEKLENIYOR**
+(bkz. §7 — bu kayit kendi kendini onaylamaz).
+
+### 1. Ne yapildi (dort worktree ajani, paralel; sonra mimar hizalamasi)
+
+| parca | dosya | test | not |
+|---|---|---|---|
+| A · SiK hub | `comms/seri_hub.py` | `tests/test_faz_b_seri_hub.py` **11** (uctan uca: YKS-seri -> hub -> gercek `IhaKomutAlici` -> ACK -> seri) | CONTRACTS **§7.5** yeni; mutasyon (cerceveleme atlanip ham bayt fan-out) 2 testle yakalandi |
+| B · tek komut YKS | `scripts/saha_baslat.py --iha` | `tests/test_p4_runbook.py` **16** (+5) | D-403 KRITIK-1'in tek-komut yolu: `--iha` verilmezse PARASUT aliciya ulasmazdi |
+| C · Jetson acilis | `jetson_paket/jetson_baslat.sh` + `systemd/navitas-{cogullayici,seri-hub,rpi-inference,iha-inis-yayinci,iha-komut-alici}.service` + `JETSON_BASLAT.md` | `tests/test_faz_b_jetson_baslat.py` **24** (Git Bash ile `--kuru` gercekten kosulur; K5 kuru cikti == birim ExecStart) | `Restart=always`, `RestartSec=2`, `StartLimitIntervalSec=0`; CRLF onlemi K8; beyan eksigi fail-closed exit 3 |
+| D · muhur mekanizmasi | `scripts/surum_dondur.py` | `tests/test_faz_b_surum_dondurma.py` **21** | sartname §6.1; `--dondur` kirli agaci REDDEDER, `--dogrula` kunye yoksa exit **3** (ayirt edilebilir); kunye URETILMEDI — muhur ani kullanici karari (~18 Eylul) |
+
+**Mimar hizalamasi (birlesme sonrasi bulunan uyumsuzluklar):**
+- C, hub CLI'sini `--serial` VARSAYMISTI; A `--port` yazdi. Birim dosyasi,
+  `jetson_baslat.sh` satir 196 denetimi ve test K2 `--port`'a cekildi
+  (`--serial` tuketici yasagi satir 181 aynen kaldi).
+- `seri_hub.py` ve `mavlink_dogrula.py` pakette yoktu: `KOPYALAR` **15 -> 17**
+  (`tests/test_jetson_comms_paketi.py` gerekceyle guncellendi, gevsetilmedi);
+  kilavuz cp satirlari iki kilavuzda; `mavlink_dogrula` `~/navitas/scripts/`
+  altina (kok cozumu `parents[1]`, dogrulandi). Ilk denemede `mkdir -p … &&
+  cp` satiri kilavuz ayristiricisini (`test_kilavuz_kurulum_yordami`) bozdu
+  — 4 test dustu, satir kaliba cekildi, yesil.
+
+### 2. BLOKER (C olctu) ve kapanisi: `rpi_inference` ekransiz cokuyordu
+
+`run_camera` ve `run_video` her karede **kosulsuz** `cv2.imshow`+`waitKey`
+cagiriyordu (`codes/rpi_inference.py` 2154/2269). DISPLAY'siz Jetson'da
+systemd altinda ilk karede `cv2.error` -> `Restart=always` dongusu (hands-off
+ihlali, §6.2). C'nin gecici cozumu (`DISPLAY=:0` + `XAUTHORITY`) masaustu
+oturumu varsayardi.
+
+**Kapanis (madde 7 istisnasi — asagida §7):** `--ekransiz` bayragi; iki
+donguye keyword-only `ekransiz=False`. Ekransizda gorsel HIC uretilmez
+(`draw_masks`/putText/imshow/waitKey yok; video kipinde kayit isteniyorsa
+gorsel yalniz yazici icin uretilir), `destroyAllWindows` atlanir. **Karar
+yolu bayt-es aynidir** (madde 15): `tests/test_faz_b_rpi_ekransiz.py` **7**
+test — (1) imshow `cv2.error` firlatirken ekransiz kosum 3/3 kare TAMAMLANIR,
+`draw_masks` 0 cagri; (2) varsayilan kipte ayni hata YUKSELIR (davranis
+degismedi); (3) iki kipte `_karari_yayinla` argumanlari birebir (vakum
+kontrolu: >= 2 cagri); (4) ekransizda `waitKey` 0 cagri; (5) run_video
+kayitsiz+ekransiz: imshow/draw 0; (6) CLI `--help` bayragi tasir; (7) birim
+`--ekransiz` ile kosar, DISPLAY/XAUTHORITY tasimaz.
+**Mutasyon:** `if ekransiz:` korumalari `if False:` yapilinca 3 test ERROR
+(`cv2.error` yukseldi) — mutant yakalandi; dosya bayt-es geri yuklendi (`cmp`).
+`tests/test_rpi_canli_olcek.py` main->run_camera kwargs beklentisine
+`ekransiz=False` eklendi (gercek davranis: bayrak yoksa False).
+
+### 3. Belgeler
+
+CONTRACTS **§7.5** (hub sozlesmesi: yon tablosu, ogrenme, ariza davranisi,
+topoloji) · SAHA_RUNBOOK §1 (`--iha`) ve §3 (SiK kipi hub topolojisi) ·
+FAZ_B_GUN_PLANI §0 (+3 satir), §3 (`jetson_baslat.sh`), §4b (iki soru
+KAPANDI, biri acik kaldi) · `jetson_paket/JETSON_BASLAT.md` · iki
+JETSON_KILAVUZ · plan v2 gun tablosu.
+
+**Acik kalan (cumartesi, kullaniciyla):** SiK kipinde IKA hangi hatta — betik
+bilerek yalniz YKS hedefini verir (tek hatta bir kez, test K2); IKA'ya
+OPEN_ROUTE/IHA_LANDED'in yolu topolojiyle belirlenir; varsayim yazilmadi.
+Pixhawk parametreleri (CHUTE_ENABLED/ALT_MIN/SYSID_THISMAV) kabul kapisi (D-403).
+
+### 4. Donanim-oncesi prova (`results/faz_b_oncesi/`, README'li)
+
+`jetson_baslat.sh --kuru` udp **exit 0** · sik **exit 0** (hub satiri `--port
+/dev/ttyUSB0 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007`, `[VAR]
+seri_hub.py`) · beyan eksik **exit 3** (`[EKSIK] YKS_IP/IKA_IP`, fail-closed) ·
+`saha_baslat --komutlar` exit 0 (`--iha <JETSON_IP>:5007` kartta) ·
+`surum_dondur --dogrula` **exit 3** DONDURULMADI (beklenen) · `seri_hub --help`
+exit 0. `[YOK] mavproxy.py (PATH)` PC'de beklenir, Jetson'da kurulur.
+
+### 5. Kapilar
+
+Genel kapi **15/15** · tam suit **1685 test OK** (D-403: 1617; +68:
+hub 11, saha_baslat 5, jetson_baslat 24, dondurma 21, ekransiz 7) · Jetson
+paketi **17 dosya senkron** (`jetson_paket_hazirla`) · uretim degisiklikleri:
+`codes/rpi_inference.py` (yalniz gorsellestirme dallari + CLI), `comms/seri_hub.py`
+(yeni), `scripts/saha_baslat.py`, `jetson_paket/*` (yeni betik/birimler).
+
+### 6. Yordam notu — kota
+
+Dort uygulama ajani bitti; ardindan baslatilan **iki amele (ekransiz kip,
+paket)** ve **bes mercekli curutucu** (hub protokol/ariza/vakum, muhur
+atlatma, jetson_baslat kuru-vs-gercek) hepsi HTTP 429 (oturum limiti) ile
+dustu; hicbiri agaca iz birakmadi (git status ile dogrulandi). Ana dongu
+calisir durumdaydi.
+
+### 7. 🔴 Madde 7 istisnasi ve DENETIM BORCU
+
+Ameleler kotada, is tikayici (cumartesi Jetson'da `rpi_inference` cokerdi),
+kullanicinin acik tam-yetki emri var (2026-09-02). Bu kosullarda **mimar
+uretim koduna dokundu**: `codes/rpi_inference.py --ekransiz` (§2), hub birimi
+`--port` hizasi, paket listesi, `jetson_baslat.sh` satir 196, kilavuz
+satirlari, `test_rpi_canli_olcek` beklentisi. Madde 19: **bir is onu yazanin
+onayiyla kapanmaz.** Acik borc:
+1. `codes/rpi_inference.py` degisikliginin **mimar-disi** denetimi (Opus 5
+   amele ya da kota donunce ayri ajan): karar yolunun bayt-es kaldigi
+   (test 3) ve `continue`'nun `frame_idx`/`fps_buf` sayaclarini bozmadigi
+   (artis dongu basinda, satir 2092 — mimar dogruladi, bagimsiz teyit yok).
+2. Hub curutucu turu (3 mercek) **kosulmadi** — `seri_hub.py` bugun yalniz
+   kendi 11 testi + tek mutasyonla duruyor. Ozellikle: ogrenilen kume 32
+   tavaninda uzun omurlu tuketicinin dusme riski, `encode(decode())`
+   yeniden kodlamanin cerceve butunlugu, tek iplikli dongude UDP->seri
+   gecikmesi (0,20 s parasut tekrar araligina karsi) OLCULMEDI.
+3. `surum_dondur` kapsam sorusu: kunye Jetson paketi + model + defteri
+   kapsar; YKS/IKA/systemd birimleri/`jetson_baslat.sh` kunye DISINDA —
+   "beyanla birebir" iddiasi icin kapsam karari mimarindir, verilmedi.
+4. `jetson_baslat.sh` systemd/`--kapi`/`--dogrudan` kipleri Windows'ta
+   kosulamadi; Jetson'daki ilk kosum ilk kanit.
+Bu dort madde kapanmadan D-404 **tamamlanmis sayilmaz**; kota donunce ilk is.

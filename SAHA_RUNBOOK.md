@@ -27,7 +27,7 @@
 İstasyon başına **TEK komut** (`scripts/saha_baslat.py` süreyi ölçüp yazar):
 
 ```bash
-<venv> scripts/saha_baslat.py yks --ika <IKA_IP>:5006     # YKS istasyonu
+<venv> scripts/saha_baslat.py yks --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007   # YKS (--iha: paraşüt/ARM alıcısı, D-403)
 <venv> scripts/saha_baslat.py ika --yks <YKS_IP>:5005     # İKA istasyonu
 <venv> scripts/saha_baslat.py --komutlar                  # kartı yazdır
 ```
@@ -69,6 +69,17 @@ python3 jetson_paket/kod/iha_komut_alici.py \
 - `iha_komut_alici` = YKS'nin PARAŞÜT/ARM/DISARM komutlarını Pixhawk'a aktarır
   ve **yalnız aktarım başarılıysa** ACK döner (D-393 dürüstlük sözleşmesi);
   YKS bu sürecin `--bind` adresini `--iha` olarak bilmeli.
+- **SiK (433 MHz) kipi — CONTRACTS §7.5:** seri SiK portu da tek sahiplidir;
+  üç süreç `--serial /dev/ttyUSB0` ile AÇILMAZ. `seri_hub` portu tek başına
+  açar, süreçler UDP loopback üzerinden konuşur (kodları değişmez):
+  ```bash
+  python3 jetson_paket/kod/seri_hub.py --port /dev/ttyUSB0 --bind 127.0.0.1:5100 \
+      --tuketici 127.0.0.1:5007
+  # rpi_inference  --yks-hedef 127.0.0.1:5100 --ika-hedef 127.0.0.1:5100
+  # iha_inis_yayinci --yks 127.0.0.1:5100 --ika 127.0.0.1:5100
+  # iha_komut_alici  --bind 0.0.0.0:5007
+  ```
+  Tek komut: `jetson_baslat.sh` (KIP=udp|sik) — `jetson_paket/JETSON_BASLAT.md`.
 
 - `--sysid 1` = ArduPilot varsayılan sistem kimliği (D-389: pin beyana dayanır;
   araç farklı sysid'e ayarlandıysa buradaki değeri ona eşitle).

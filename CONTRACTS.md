@@ -989,10 +989,38 @@ UDP ucundan bağlanır:
 | `iha_inis_yayinci --mavlink` | `udp:127.0.0.1:14551` | okur |
 | `iha_komut_alici --mavlink` | `udp:127.0.0.1:14552` | **yazar** (`command_long`) |
 
-Hiçbir üretim süreci `--mavlink /dev/tty*` ile DOĞRUDAN açılmaz. Kapı:
-`scripts/mavlink_dogrula.py` üç uçta da aynı anda GEÇTİ (HEARTBEAT sysid,
-`GLOBAL_POSITION_INT ≥ MAVLINK_KONUM_ASGARI_HZ`, `EXTENDED_SYS_STATE ≥
-MAVLINK_DURUM_ASGARI_HZ` — sabitler `karar_sozlesmesi`). Plan: `FAZ_B_GUN_PLANI.md` §1.
+Hiçbir üretim süreci `--mavlink /dev/tty*` ile DOĞRUDAN açılmaz (kod kilidi:
+`iha_komut_alici --mavlink` seri cihazı reddeder; `--seri-pixhawk-bilerek`
+ile aşılır). Kapı: `scripts/mavlink_dogrula.py` üç uçta da aynı anda GEÇTİ
+(HEARTBEAT sysid, `GLOBAL_POSITION_INT ≥ MAVLINK_KONUM_ASGARI_HZ`,
+`EXTENDED_SYS_STATE ≥ MAVLINK_DURUM_ASGARI_HZ` — sabitler `karar_sozlesmesi`).
+Plan: `FAZ_B_GUN_PLANI.md` §1.
+
+### 7.5 SiK hub — NAVITAS-çerçeve seri çoğullayıcı (Faz B · D-404 · 2026-09-03)
+
+**Olgu:** SiK (433 MHz) kipinde Jetson'daki üç NAVITAS süreci
+(`rpi_inference --telsiz-seri`, `iha_inis_yayinci --serial`,
+`iha_komut_alici --serial`) aynı `/dev/ttyUSB0`'ı ister — seri port tek
+sahiplidir (§7.4'ün NAVITAS-protokol ikizi). Çözüm `comms/seri_hub.py`:
+portu **yalnız hub** açar, tüketiciler kendi UDP kiplerinde kalır
+(**tüketici kodu değişmez**).
+
+| yön | davranış |
+|---|---|
+| tüketici → seri | Tüketici çerçeveyi hub'ın UDP soketine (`--bind`, varsayılan `127.0.0.1:5100`) yollar; hub datagramı olduğu gibi seriye yazar ve göndereni "öğrenilen" kümesine ekler |
+| seri → tüketiciler | Hub gelen baytları kalıcı `FrameReader` ile **tam çerçeveye** toparlar; her çerçeveyi `encode(decode(...))` ile tek satır yapıp (statik `--tuketici` listesi ∪ öğrenilenler) adreslerinin **hepsine** yayınlar — datagram = çerçeve (D-403 KÜÇÜK-4 ile uyumlu) |
+| yalnız-dinleyen tüketici | `--tuketici HOST:PORT` statik listede olmalı (ör. `iha_komut_alici` 5007) — hiç göndermeden de alsın |
+| seri arızası | Seri kapatılır, KIRMIZI log, 1 s'de bir yeniden açma; UDP tarafı YAŞAR; arızada UDP'den gelen çerçeveler **düşürülür ve sayılır** (kuyruklanmaz — bayat rota yayınlanmasın) |
+
+**Topoloji (SiK kipi, Jetson):** `seri_hub --port /dev/ttyUSB0 --bind
+127.0.0.1:5100 --tuketici 127.0.0.1:5007` · `rpi_inference --yks-hedef
+127.0.0.1:5100 --ika-hedef 127.0.0.1:5100` · `iha_inis_yayinci --yks
+127.0.0.1:5100 --ika 127.0.0.1:5100` · `iha_komut_alici --bind 0.0.0.0:5007`.
+ACK'ler §6.6'daki "ortam yayını" semantiğini korur: YKS'nin ACK'i seriden
+gelir, hub üç tüketiciye de yayınlar; her tüketici yalnız kendi `ref`'ini eşler.
+UDP kipinde (WiFi) hub **kullanılmaz**; süreçler doğrudan YKS/İKA adresine
+konuşur. Kilit: `tests/test_faz_b_seri_hub.py` (uçtan uca: YKS-seri →
+hub → gerçek `IhaKomutAlici` → ACK → seri).
 
 ---
 

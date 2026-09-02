@@ -342,6 +342,8 @@ jetson_paket/
 │   ├── inis_kaniti.py           ← Pixhawk yerde + irtifa kaniti
 │   ├── iha_inis_yayinci.py      ← saha IHA_LANDED yayincisi
 │   ├── iha_komut_alici.py       ← YKS PARACHUTE/ARM -> Pixhawk aktarimi (Faz B, D-403)
+│   ├── seri_hub.py              ← SiK kipinde /dev/ttyUSB0'in TEK sahibi, UDP loopback dagitici (CONTRACTS 7.5, D-404)
+│   ├── mavlink_dogrula.py       ← on-ucus MAVLink akis kapisi; ~/navitas/scripts/ altina kopyalanir (jetson_baslat.sh --kapi)
 │   ├── karisim_arena.yaml       ← INT8 kalibrasyonu icin
 │   └── requirements_rpi.txt
 └── test_goruntuleri/
@@ -354,7 +356,8 @@ Jetson'da klasör yapısını koru:
 mkdir -p ~/navitas/{codes,comms,scripts,models,data,config}
 cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py kod/arac_maskesi.py ~/navitas/codes/
 cp kod/model_registry.py kod/kamera_dogrula.py kod/karisim_arena.yaml ~/navitas/codes/
-cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py kod/iha_komut_alici.py ~/navitas/comms/
+cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py kod/iha_komut_alici.py kod/seri_hub.py ~/navitas/comms/
+cp kod/mavlink_dogrula.py ~/navitas/scripts/   # Faz B on-ucus kapisi (jetson_baslat.sh --kapi, D-404)
 cp kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
 cp config/model_registry.json ~/navitas/config/

@@ -1,0 +1,19 @@
+usage: seri_hub.py [-h] --port PORT [--baud BAUD] [--bind BIND]
+                   [--tuketici HOST:PORT] [--log-aralik LOG_ARALIK]
+
+SiK seri hub: portu tek basina acar, NAVITAS cercevelerini UDP loopback
+uzerinden cogullar (CONTRACTS §7.4 ikizi)
+
+options:
+  -h, --help            show this help message and exit
+  --port PORT           SiK seri portu (serial_for_url uyumlu: /dev/ttyUSB0,
+                        COM7, socket://host:port, loop://)
+  --baud BAUD           SiK seri baud (varsayilan 57600)
+  --bind BIND           hub UDP ucu HOST:PORT; tuketiciler buraya yollar
+                        (varsayilan 127.0.0.1:5100)
+  --tuketici HOST:PORT  statik dinleyici (tekrarlanabilir; orn.
+                        iha_komut_alici 127.0.0.1:5007) — gondermeden de
+                        cerceve alir
+  --log-aralik LOG_ARALIK
+                        periyodik sayac logu (sn; 0 = kapali; varsayilan 10.0)
+exit=0
