@@ -14,10 +14,30 @@ import socket
 class UDPLink:
     """Dev/sim taşıyıcı: UDP datagram. peer = (host, port)."""
 
-    def __init__(self, bind=("0.0.0.0", 0), peer=None, timeout=0.3):
+    def __init__(self, bind=("0.0.0.0", 0), peer=None, timeout=0.3, reuse=True):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.sock.bind(bind)
+        # NEDEN `reuse` (D-405 · "Hub'in 'portu TEK BASINA acar' garantisi
+        # kodda zorlanmiyor"): SO_REUSEADDR ile ikinci bir surec AYNI porta
+        # sessizce baglanir ve datagramlarin hepsini ilk soket alir (olculdu:
+        # r_cift_bind.py — ikinci soket [] aldi, hata gormedi). Tek sahipli
+        # uclar (seri hub) `reuse=False` ile acilir: ikinci bind OSError
+        # (EADDRINUSE / WinError 10048) -> gorunur cikis. Windows'ta ayrica
+        # SO_EXCLUSIVEADDRUSE kurulur; yoksa SO_REUSEADDR'li bir ikinci soket
+        # portu yine calabilir (Windows'a ozgu yari-acik semantik).
+        # Varsayilan True: dev/test uclarinin eski davranisi (hizli yeniden
+        # acilis, ayni porta cok dinleyici) degismez.
+        if reuse:
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        elif hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        try:
+            self.sock.bind(bind)
+        except OSError:
+            # bind basarisiz (port dolu: tek sahiplik reddi) -> hata AYNEN
+            # yukselir ama olusturulan soket kapatilir; aksi halde cagiran
+            # (hub main -> cikis 3) acik bir fd birakir (ResourceWarning).
+            self.sock.close()
+            raise
         self.sock.settimeout(timeout)
         self.peer = peer
 
@@ -57,13 +77,28 @@ class SerialLink:
     diğer uçtan çıkar. Varsayılan SiK air-rate ile 57600 baud yaygındır.
     """
 
-    def __init__(self, port="/dev/ttyUSB0", baud=57600, timeout=0.3):
+    def __init__(self, port="/dev/ttyUSB0", baud=57600, timeout=0.3,
+                 exclusive=True):
         import serial  # tembel import (dev makinesinde pyserial olmayabilir)
         # P2 (D-388): `serial_for_url` cihaz yolu icin `Serial` ile AYNI sonucu
         # verir (ust kume) — ek olarak `loop://`, `socket://` ve `spy://` acar.
         # Bunsuz bu sinif gercek bir bayt akisiyla HIC sinanamiyordu: saha
         # tasiyicisi yalniz sahte nesneyle "gecmis" sayiliyordu (D-383 §1).
-        self.ser = serial.serial_for_url(port, baud, timeout=timeout)
+        #
+        # NEDEN `exclusive=True` varsayilan (D-405 · "Hub'in 'portu TEK BASINA
+        # acar' garantisi kodda zorlanmiyor"): pyserial >= 3.3 POSIX'te
+        # flock(LOCK_EX|LOCK_NB) kurar -> ayni /dev/ttyUSB0'i acan IKINCI
+        # surec SerialException "Could not exclusively lock port" alir (sessiz
+        # bayt calmak yerine gorunur hata; hub main -> cikis 4). Windows zaten
+        # tekil acar (win32 yalniz True kabul eder, False ValueError).
+        # `loop://` ve `socket://` kwarg'i kabul eder, kilit kurmaz (olculdu,
+        # pyserial 3.5 / Py 3.13: her iki URL exclusive=True ile acilip
+        # okudu-yazdi; test suitlerinin tum socket:// uclari boyle acilir).
+        # Kilit: tests/test_faz_b_seri_hub.py test_14c (kwarg pyserial'e
+        # GERCEKTEN gecer). Seri acan HER surec bu siniftan gecer; hepsi tek
+        # sahipli olur.
+        self.ser = serial.serial_for_url(port, baud, timeout=timeout,
+                                         exclusive=exclusive)
 
     def send(self, data: bytes, peer=None):
         self.ser.write(data)
