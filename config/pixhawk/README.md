@@ -100,6 +100,9 @@ denmez.
 - **`FS_GCS_ENABLE` etkisi**: Jetson'daki MAVProxy `--source-system` varsayılanı 255 ile GCS
   heartbeat basar; SiK kopsa bile Jetson yaşarken GCS failsafe **tetiklenmez**. "YKS ekranı gitti"
   durumunun cevabı bu failsafe değil, pilot + `RTL` anahtarıdır (§2.4 mod anahtarı).
+  **Mimar kararı (D-406 C): `FS_GCS_ENABLE=1` KALIR** ve anlamı "Jetson-bağlantı failsafe'i"dir:
+  Jetson/MAVProxy ölürse (güzergâh tespiti yok) `RTL`/`Land` doğru davranıştır; SiK kopması
+  görevi durdurmamalıdır.
 
 ---
 
@@ -113,12 +116,15 @@ denmez.
    sonrası `mavlink_dogrula` tekrar koşulmazsa iniş kanıtı **hiç oluşmaz**. Öneri: tüketici
    süreçler açılışta kendi `SET_MESSAGE_INTERVAL` isteğini göndersin (üretim kodu; bu görevin
    kapsamı dışında, D-kaydı ister). Bu dosya `SR2_EXTRA3` ile bunu **çözmez**, çözüyormuş gibi de
-   yazmaz.
+   yazmaz. **→ D-406 A / T207:** `iha_inis_yayinci` isteği kendisi periyodik yeniler (amele);
+   o güne dek **saha kuralı**: her Pixhawk reboot'undan (pil değişimi) sonra
+   `jetson_baslat.sh --kapi` tekrar (3/3 GEÇTİ) — `SAHA_HAZIRLIK_PLANI` §6, `FAZ_B_GUN_PLANI` §2.
 2. **MAVProxy `--streamrate` varsayılanı 4**: `navitas-cogullayici` bağlanınca
    `REQUEST_DATA_STREAM(ALL, 4 Hz)` gönderir → TELEM2'de `SR2_POSITION=8` yerine **4 Hz** ister
    (= `MAVLINK_KONUM_ASGARI_HZ`, jitter payı sıfır). `mavlink_dogrula`'nın `SET_MESSAGE_INTERVAL`
    isteği (8 Hz) bunu o oturum için düzeltir. Kalıcı çözüm `jetson_baslat.sh`/birim dosyasında
-   `--streamrate 8` (mimar kararı; bu görevin dosyası değil).
+   `--streamrate 8` (mimar kararı; bu görevin dosyası değil). **→ D-406 B:**
+   `navitas-cogullayici.service` ExecStart'ına `--streamrate 8` eklendi (K2 kolu, test kilidi).
 3. **`FS_OPTIONS` varsayılanda** (bit 4: pilot kontrolündeyken GCS kaybında devam). `Auto`'da SiK
    kopar ve Jetson de susarsa RTL — görev iptal. "Auto'da devam" (bit 1) **bilerek açılmadı**:
    YKS'ye canlı aktarım şartname gereği; bağlantı yoksa görevin devamı puan getirmez.

@@ -53,6 +53,7 @@ MIMAR_SAHA = (
     "jetson_paket/systemd/navitas-cogullayici.service",
     "jetson_paket/systemd/navitas-iha-inis-yayinci.service",
     "jetson_paket/systemd/navitas-iha-komut-alici.service",
+    "jetson_paket/systemd/navitas-kamera-koprusu.service",
     "jetson_paket/systemd/navitas-rpi-inference.service",
     "jetson_paket/systemd/navitas-seri-hub.service",
     "jetson_paket/kod/requirements_rpi.txt",

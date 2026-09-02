@@ -28159,3 +28159,29 @@ Ders: worktree ajanlarina "taban commit'ini `git merge-base master HEAD` ile don
   sahada MP Position >= 4 secilir (README).
 
 ### 3. Kapanis — (K2 ve T207 sonuclariyla doldurulacak)
+
+### 3. Kapanis — K2 (kamera koprusu master'a tasindi) ve T207 (akis istegi)
+
+| kol | commit | test | mutasyon | ne |
+|---|---|---|---|---|
+| **K2** | `fc609b0` (47a7a44 cherry-pick, cakisma cozumlu) + `becd112` | `test_faz_b_jetson_baslat.py` 34 -> **42** (K11 kopru sinifi `_AnaMakine` uzerinde; skipped=1 MSYS sed), `test_faz_b_kamera_koprusu.py` **7**, paket **18** dosya, kilavuz 6, t202 7 | `--streamrate 8` silinince K1 DUSTU | `jetson_baslat.sh`'ta D-405 J kolu (restart, paralel kapi, SERVIS_KULLANICI, [YOK]->3, CR algisi, set -f) **ve** K kolu (kopru birimi, `KAMERA_PYTHON`, `KAMERA=http` -> `--kaynak`, kopru rpi'den once, `--kapi`'da kopru enable+restart, koprusuz kipte disable) birlikte; `navitas-cogullayici.service` `--streamrate 8` (D-406 B; deger `2*MAVLINK_KONUM_ASGARI_HZ`'den turetilir, madde 16); kod/iha_sender.py aynasi. `git merge-tree` onizlemesi cakismasiz, master'a `8beb026` |
+| **T207** | `61d7be8` | `test_faz_b_akis_istegi.py` **17** (gercek pymavlink/UDP + sahte Pixhawk: yayincinin gonderdigi TEK sey iki SET_MESSAGE_INTERVAL -> akis -> kanit -> IHA_LANDED gercek IkaReceiver'a); inis 38, p1 17, mavlink_dogrula 7, komut_alici 22 OK | MUT-1 periyodik yenileme kaldirildi -> 3 FAIL; MUT-2 sessizlik alarmi kaldirildi -> 3 FAIL; diger 14 kapi her ikisinde gecti (hedefe ozgu) | `karar_sozlesmesi`: `MAVLINK_AKIS_ISTEK_ARALIGI_S=10`, `MAVLINK_AKIS_SESSIZLIK_TAVANI_S=5`, `MAVLINK_AKIS_ISTEK_HIZ_CARPANI=2`; `iha_inis_yayinci.AkisIstekcisi` (basta + her 10 s `SET_MESSAGE_INTERVAL` EXTENDED_SYS_STATE + GLOBAL_POSITION_INT, aralik 1e6/(hz x 2); 5 s EXTENDED yoksa BIR KEZ KIRMIZI + aninda yeniden istek; toparlaninca yesil; OSError sayac+KIRMIZI, dongu surer) + `AkisGozcusu` (yerde_mi sargisi, 0,5 s dilimli bekleme, toplam sure ayni). **Tasarim tuzagi (olculdu):** pymavlink `udp:` sunucu kipinde akran gorulmeden `write` hicbir sey gondermez ve hatayi yutar -> istek `mav_hedefi_biliniyor_mu` ile akran gorulene dek ERTELENIR, sonra 10 s beklemeden gonderilir. Kanit penceresi, D-389 dongusu, yabanci sysid, `inis_kaniti.py` DEGISMEDI. Master'a `5373755` |
+
+**Yordam notlari:**
+- K2 amelesi, talimata ragmen ana agaca yazdi: `scripts/surum_dondur.py` ve testinin
+  `saha_yapilandirma` listesine `navitas-kamera-koprusu.service` eklendi (22:05). Icerik
+  DOGRU ve gerekli (yeni birim muhur kapsaminda olmali; mimar diff'i okudu, 49/49 test) —
+  kabul edildi, ama kural ihlali kayda gecti: ajan prompt'larina "ana agaca yazma" satiri
+  yetmiyor; sonraki turda worktree disi yazmayi `git status` ile birlesme oncesi kontrol.
+- Kota (429) iki ajani ikinci kez dusurdu (K2 ve T207, 21:00'e kadar); worktree'ler
+  korundu, ayni worktree'den devam ettirildi (K2 cherry-pick cakisma halinde bulundu,
+  cozum kanitla dogrulandi).
+- Workflow worktree'leri eski tabandan acildi (096a672); merge-base kontrolu artik kural.
+
+**Kapilar:** genel kapi **15/15** · tam suit **1826 test OK (skipped=3)** (K2 oncesi 1809: 3 dusus = kopru birimi muhur listesinde yoktu; K2 duzeltmesiyle kapandi) · paket 18 dosya senkron.
+
+**Kalan:** `mavlink_dogrula.ISTEK_HIZ_CARPANI`'ni `MAVLINK_AKIS_ISTEK_HIZ_CARPANI`'na baglama
+(kucuk, T208 adayi) · `protocol.py` MESAJ_TIPI_* sabitleri (madde 16, T208 adayi) · gercek
+Pixhawk'ta EXTENDED akisi ve `--kapi` cumartesi · hub `l_arizada_ogrenmez` testi.
+**Denetim:** K2/T207 kodunu ajanlar yazdi; mimar diff/test/mutasyon ciktilarini okudu.
+Mimar-disi denetim: cumartesi Jetson'da ilk kosum (D-404 §7 madde 4 ile birlikte).

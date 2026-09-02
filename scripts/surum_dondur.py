@@ -120,7 +120,7 @@ PAKET_ESLEMESI = tuple(
 # NEDEN (D-405 S1): bu dosyalar KOPYALAR'da degildir ama Jetson'in fiili
 # davranisini belirler — jetson_baslat.sh (SYSID/KIP/portlar -> /etc/navitas.env),
 # systemd ExecStart uclari (CONTRACTS 7.4), requirements (kurulan surum),
-# kalibrasyon (INT8/Q8). Adlar 2026-09-02'de `ls` ile dogrulandi (5 birim);
+# kalibrasyon (INT8/Q8). Adlar 2026-09-02'de `ls` ile dogrulandi (6 birim);
 # olmayan dosya kunyeye "YOK" yazilir, RED edilmez. Mimar listesi
 # "systemd/*.service" bir GLOB'dur: listede olmayan bir birim diskte belirirse
 # --dondur onu da kunyeye alir, --dogrula "BELIRDI" ile duser (servis_dosyalari).
@@ -133,6 +133,7 @@ SAHA_YAPILANDIRMA = (
     "jetson_paket/systemd/navitas-cogullayici.service",
     "jetson_paket/systemd/navitas-iha-inis-yayinci.service",
     "jetson_paket/systemd/navitas-iha-komut-alici.service",
+    "jetson_paket/systemd/navitas-kamera-koprusu.service",
     "jetson_paket/systemd/navitas-rpi-inference.service",
     "jetson_paket/systemd/navitas-seri-hub.service",
     "jetson_paket/kod/requirements_rpi.txt",
