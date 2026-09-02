@@ -27561,3 +27561,53 @@ ornekle "vakum" hukmu verilseydi YANLIS olurdu (D-375 dersi tersinden).
 
 Genel kapi 15/15 · tam suit (asagida) · uretim/olcum kodu DEGISMEDI, yalniz
 yeni olcum betigi eklendi.
+
+### D-400 — T101 OLCULDU: serit sinir asimi SENTETIK ARTEFAKT DEGIL, gercekte de var (%43-48)
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Opus 5, amele) ·
+**Denetleyen: mimar bekleniyor (AGENTS §9.3)** ·
+**On kayit:** `results/t101_gercek_kadraj/ON_KAYIT.md` ·
+**Olcum:** `scripts/olcum/174_t101_gercek_kadraj.py` · n=543 · v36
+
+### 1. Gorevin acik sorusu cevaplandi
+
+T101 kaydi soyle diyordu: **"SENTETIK KADRAJIN MI, GERCEGIN MI SORUNU:
+BILINMIYOR. Gercek kamera cercevesi de iki seritli gorus uretiyorsa sorun
+GERCEKTIR."** Uc gercek kaynakli kumede olculdu:
+
+| kume | acik kapilarda yayilan |
+|---|---|
+| arena_kompozit (88) | %48,3 |
+| arena_kompozit_v2 (126) | %44,7 |
+| arena_kompozit_dji (69) | %42,9 |
+| sentetik t66 (260) | %49,0 |
+
+**Sorun GERCEKTIR.** Yayilma orani gercek karelerde sentetikle ayni
+mertebede; "ill-conditioned etiket cercevesi" bir uretec artefakti degildir.
+
+### 2. Ama pay gercekte ~1,8x buyuk
+
+Kapi merkezinin ucte-bir sinirina uzakligi gercekte **7,08-7,21 m** (uc
+kumede de tutarli), sentetikte **3,96 m**; p05 ucu gercek 11-66 px'e karsi
+sentetik **4,6 px**. Yani sentetik kadraj bu soruda DAHA ZORLU — sentetikte
+gecen bir cozum gercekte de gecer yonunde bir pay var (tersi degil).
+
+### 3. Yontem ve sinirlar (durustluk kaydi)
+
+- **Vekil:** gercek karelerde serit kutusu etiketi yok (T111 duvari);
+  koridorlar URETIMIN `koridor_adaylari` ciktisindan, yayilma URETIMIN
+  `serit_yayilimi` alanindan okundu. Yer gercegi DEGIL.
+- **W2 kapisi DUSTU ve sebebi yazildi:** on kayit bugunku sentetik sayiyi
+  D-205'in %29,6'siyla kiyaslanabilir sanmisti; olcum iki sayinin FARKLI
+  POPULASYON saydigini gosterdi (D-205 uretecin serit kutulari 897/260;
+  bu olcum uretimin kapi adaylari 479/260). "%49,0 vs %29,6" surum kaymasi
+  kaniti DEGILDIR. Esik gevsetilmedi.
+- Gercek kumelerde mpp **kume duzeyinde varsayim** (manifestin kendi
+  uyarisi). Oran sayilari mpp'den bagimsiz; metrik sayilar bu varsayima
+  dayali.
+
+### 4. KAPI korundu
+
+`serit_no` DEGISTIRILMEDI (CONTRACTS §8). Bu tur yalniz olctu; "kapi bir
+aciklikti" tanim degisikligi ayri on kayit + mimar karari ister. Genel kapi
+15/15, tam suit OK, uretim kodu DEGISMEDI.
