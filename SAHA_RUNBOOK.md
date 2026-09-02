@@ -55,6 +55,12 @@ komutları çalışmayı sürdürür; ekran eski kareyi canlıymış gibi tutmaz
 - **FIRLATMA** yalnız ARM'dayken damga atar (yazılım kilidi, D-393).
 - **PARAŞÜT (manuel −50)**: iki adımlı teyit; komut ACK gelene dek tekrarlar,
   ACK yoksa ekran KIRMIZI uyarır (D-393). Yalnız son çare — §6.4 sınırı.
+- 🔴 **21 Eylül görev test uçuşu `--fda` ile açılır** (CONTRACTS §6.7): çoklu
+  rotorda paraşüt ve İKA **yoktur**. FDA kipinde ekran şunları değiştirir:
+  bütçe tek **10 dk**, `FIRLATMA` düğmesi **KALKIŞ**, `PARAŞÜT` ve `İKA BAŞLAT`
+  **kapalı** (basılsa bile komut gitmez), hakem 2/2 onayı **İKA kanıtı aramaz**
+  — dayanak YKS'ye canlı aktarımdır. Yarışma günü kipi varsayılandır ve
+  `--fda` verilmedikçe davranış değişmez.
 - **R** = onay sıfırlama (tekrar fırlatma yordamının 1. adımı).
 - İKA BAŞLAT: yalnız IHA_LANDED + hakem onayı sonrası açılır (§2.2.5 kilidi).
 

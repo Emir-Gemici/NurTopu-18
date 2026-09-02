@@ -1341,7 +1341,11 @@ class YksArayuz:
             return
         # K8 fail-closed: İKA'nın bu rota için OPEN_ROUTE ACK kanıtı ekranda
         # görünmeden "İKA'ya aktarıldı" onayı VERİLMEZ (şartname §2.2.3).
-        if not self.ika_aktarim_kaniti_var():
+        # ⚠ CONTRACTS §6.7 (D-407): FDA görev test uçuşunda (§5.3.2) İKA YOKTUR —
+        # aktarım hedefi YKS'dir. Bu kanıt hiç gelmeyeceği için kilit orada
+        # onayı SONSUZA DEK kapatırdı; şartname hakem onayını zorunlu kıldığından
+        # uçuş geçersiz olurdu. FDA'da 2/2 = "YKS'de canlı görüldü + hakem onayı".
+        if not self.fda_kipi and not self.ika_aktarim_kaniti_var():
             self._aktarim_onay_dugmesini_kur()
             self._logla("HAKEM 2/2 REDDEDİLDİ: İKA'dan OPEN_ROUTE ACK kanıtı yok "
                         f"(seq={self.rota['seq']}) — kanıtsız onay verilmez", "sari")
@@ -1364,16 +1368,24 @@ class YksArayuz:
             havada = " · AKTARIM ZAMANI BİLİNMİYOR (IHA_LANDED kanıtı var)"
         else:
             havada = " · İHA henüz inmedi"
-        kanit = time.strftime("%H:%M:%S", time.localtime(
-            self.ika_rota_ack[self.rota["seq"]]))
+        # CONTRACTS §6.7: FDA'da İKA kanıtı YOK — dayanak YKS'ye canlı aktarımdır.
+        if self.fda_kipi:
+            dayanak = "FDA §5.3.2: İKA yok — onay YKS aktarımına dayanır"
+        else:
+            dayanak = "İKA ACK kanıtı " + time.strftime(
+                "%H:%M:%S", time.localtime(self.ika_rota_ack[self.rota["seq"]]))
         self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓✓")
         self.lbl_onay.config(text=f"Hakem onayı tam — ACK(seq={self.rota['seq']}) "
-                                  f"İHA'ya iletildi · İKA ACK kanıtı {kanit}"
+                                  f"İHA'ya iletildi · {dayanak}"
                                   f"{havada}", fg=YESIL)
-        self._logla(f"HAKEM 2/2: İKA'ya aktarım doğrulandı → ACK ref={self.rota['seq']}",
-                    "sari")
+        self._logla(
+            ("HAKEM 2/2: YKS'ye canlı aktarım doğrulandı (FDA §5.3.2) → ACK ref="
+             if self.fda_kipi else
+             "HAKEM 2/2: İKA'ya aktarım doğrulandı → ACK ref=")
+            + str(self.rota["seq"]), "sari")
         self._zincir(("Kamera (İHA)", "YOLOv8-seg", "Rota Üretimi",
-                      "433 MHz TX", "YKS (bu ekran)", "İKA"))
+                      "433 MHz TX", "YKS (bu ekran)")
+                     + (() if self.fda_kipi else ("İKA",)))
 
     # ── K8: İKA aktarım kanıtı (fail-closed hakem kapısı) ────────────────────
     def ika_aktarim_kaniti_var(self):
@@ -2657,6 +2669,12 @@ class YksArayuz:
         self._ucus("İNİŞ TAMAM — PARAŞÜT (İHA-İB)", MAVI)
 
     def ika_baslat(self):
+        # CONTRACTS §6.7: FDA görev test uçuşunda İKA YOKTUR (§5.3.2 yalnız
+        # İHA + YKS). Düğme kapalıdır; eylem burada da reddedilir.
+        if self.fda_kipi:
+            self._logla("KİLİT ✋ FDA kipinde İKA yok (§5.3.2) — IKA_GO "
+                        "GÖNDERİLMEDİ", "sari")
+            return
         # YAZILIM KİLİDİ — şartname §2.2.5: "İHA yere temas etmeden İKA
         # hareket edemez"; §6.2: intikal ancak onaylı veri sonrası. t_iha1
         # yalnız UI kronometresidir; sürüş izninin otoritesi protokol latch'idir.
@@ -2757,7 +2775,39 @@ class YksArayuz:
         self.btn_hazir.config(state="normal", bg=SARI)
         self.btn_mudahale.config(state="disabled", bg="#232e3a")
 
+    def fda_kipini_uygula(self):
+        """CONTRACTS §6.7: `--fda` açılışta çağrılır; kip koşarken DEĞİŞMEZ.
+
+        Yalnız ETİKET ve düğme durumudur — asıl kilitler `parasut()`,
+        `ika_baslat()` ve `onayla()` içindedir (düğme durumu tek başına
+        emniyet sinyali değildir, T180 sınıfı). Tk'siz fikstürlerde düğme
+        yoktur; hepsi `getattr` ile korumalıdır.
+        """
+        self.fda_kipi = True
+        self.IHA_LIMIT = SARTNAME_FDA_OPERASYON_SURESI_S
+        for ad, metin, kapat in (
+                ("btn_firlat", "KALKIŞ", False),        # mancınık yok: damga = kalkış
+                ("btn_parasut", "PARAŞÜT (FDA dışı)", True),
+                ("btn_ika_go", "İKA (FDA dışı)", True)):
+            dugme = getattr(self, ad, None)
+            if dugme is None:
+                continue
+            try:
+                dugme.config(text=metin)
+                if kapat:
+                    dugme.config(state="disabled", bg="#232e3a", fg=SOLUK)
+            except Exception:                    # Tk yok / fikstür
+                pass
+
     def parasut(self):
+        # CONTRACTS §6.7 (D-407): FDA görev test uçuşu ÇOKLU ROTORLA yapılır —
+        # araçta paraşüt yoktur, §2.2.4'ün manuel yedeği (−50) o göreve aittir.
+        # Düğme durumu tek savunma değildir (T180 sınıfı): eylem burada da
+        # reddedilir, link'e HİÇBİR ŞEY yazılmaz.
+        if self.fda_kipi:
+            self._logla("KİLİT ✋ FDA kipinde paraşüt yok (çoklu rotor) — "
+                        "komut GÖNDERİLMEDİ (§5.3.2)", "kirmizi")
+            return
         # İki adımlı emniyet: yanlışlıkla tek tık paraşüt açamaz
         simdi = time.time()
         if simdi - self.parasut_teyit > 3.0:
@@ -3297,12 +3347,15 @@ def main():
     if args.fda:
         # T170 · §5.3.2: FDA test ucusunun butcesi TEK ve daha SIKIDIR (10 dk).
         # Ornek duzeyinde ezilir; sinif varsayilani (yarisma gunu) DEGISMEZ.
-        app.IHA_LIMIT = SARTNAME_FDA_OPERASYON_SURESI_S
-        app.fda_kipi = True
+        app.fda_kipini_uygula()          # CONTRACTS §6.7 (bütçe + etiket + kilitler)
         app._logla(
             "§5.3.2 FDA KİPİ: İHA bütçesi "
             f"{_ss(SARTNAME_FDA_OPERASYON_SURESI_S)} (kalkış+tespit+aktarım+"
             "iniş). Süreyi aşan takım 0 PUAN alır.", "sari")
+        app._logla(
+            "FDA: paraşüt ve İKA düğmeleri KAPALI (çoklu rotor, İKA yok); "
+            "hakem 2/2 onayı İKA kanıtı ARAMAZ — dayanak YKS'ye canlı aktarım.",
+            "sari")
     if args.kaynak:
         app.algi_kaynak = args.kaynak
         app.algi_idx = 0

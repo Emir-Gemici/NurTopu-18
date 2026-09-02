@@ -172,12 +172,21 @@ class FdaKipi(unittest.TestCase):
         self.assertIn("5.3.2", pencere)
 
     def test_uygulama_yolu_bayragi_KULLANIYOR(self):
+        # D-407 / CONTRACTS §6.7: kip artik YALNIZ sure butcesi degildir
+        # (parasut/IKA kilitleri + etiketler + hakem onayi dayanagi). Bu yuzden
+        # `fda_kipi = True` satiri `fda_kipini_uygula()`ya tasindi. Kilit
+        # GEVSEMEDI, GUCLENDI: bayragin uygulayiciyi cagirdigi VE uygulayicinin
+        # iki alani da (kip + butce) kurdugu ayri ayri aranir.
         bas = KAYNAK.index("if args.fda:")
         pencere = KAYNAK[bas: bas + 600]
         self.assertIn("SARTNAME_FDA_OPERASYON_SURESI_S", pencere)
-        self.assertIn("fda_kipi = True", pencere)
+        self.assertIn("fda_kipini_uygula()", pencere,
+                      "bayrak kipi UYGULAMIYOR (yalniz log/butce yetmez)")
         self.assertIn("0 PUAN", pencere,
                       "operatore sonucu soylemiyor (sureyi asan 0 puan alir)")
+        uygula = KAYNAK[KAYNAK.index("def fda_kipini_uygula"):][:900]
+        self.assertIn("self.fda_kipi = True", uygula)
+        self.assertIn("self.IHA_LIMIT = SARTNAME_FDA_OPERASYON_SURESI_S", uygula)
 
 
 if __name__ == "__main__":

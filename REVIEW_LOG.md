@@ -28330,3 +28330,72 @@ irtifa aynen, kip acilista sabit). Uygulama **Codex'e** verildi:
 
 **Kapilar:** genel kapi 15/15 · tam suit 1827 test (11 ayna artefakti senkronla kapandi,
 1 dusus Codex'in yarim isi) · paket 18 dosya senkron.
+
+### D-408 — YKS FDA GOREV KIPI (CONTRACTS §6.7) UYGULANDI: 21 Eylul'de hakem onayini IMKANSIZ kilan kilit kaldirildi; Codex'in kamera/GNSS teslimi devralindi
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 — **Opus 5** · **Sebep:** kullanici
+*"codex kotaya girdi sen devral"* (Codex FDA kipi kartini alamadan kotaya girdi).
+⚠ **DENETIM BORCU (madde 19):** sozlesmeyi (§6.7) da uygulamayi da ben yazdim;
+mimar-disi denetim **Fable 5 donunce** ya da **21 Eylul oncesi ilk gercek provada**
+(hakem rolu oynanarak) kapatilacak.
+
+### 1. Devralinan is — Codex teslimi (kotaya girdiginde YESILDI, commit edildi)
+
+`160d795`: YKS hakem ekranina **LAN kamera istemcisi** (`comms/kamera_istemci.py`;
+Jetson koprusunun `/kare.jpg` + `/durum` uclarini ayri agdan okur — goruntu SiK
+hattina yuklenmez, bayat kare canliymis gibi gosterilmez), **ham GNSS telemetrisi**
+(enlem/boylam/fix/uydu/bagil irtifa; bayat alan silinir), `jetson_baslat.sh`
+`KAMERA_KOPRU_BIND` (varsayilan loopback; LAN'a acilmak ACIKCA beyan edilir),
+SAHA_RUNBOOK §1-3 guncellemeleri. Kapilar devralmadan once kosuldu:
+yks_gui **84** · kamera istemci **7** · kamera LAN **7** · GNSS **17** · inis **38**
+· paket 7 · genel kapi 15/15 — hepsi OK. Yarim is yoktu; oldugu gibi commit edildi.
+
+### 2. Uygulanan: `--fda` kipi (CONTRACTS §6.7)
+
+| konu | once | simdi (`--fda`) |
+|---|---|---|
+| hakem onayi 2/2 | `ika_aktarim_kaniti_var()` **sart** | FDA'da **aranmaz**; ACK `ref_tip` ile IHA'ya gider, ekranda dayanak: *"FDA §5.3.2: IKA yok — onay YKS aktarimina dayanir"* |
+| parasut | iki adimli teyit + ACK'li tekrar | **KAPALI**: dugme `PARAŞÜT (FDA dışı)` + `parasut()` link'e HICBIR SEY yazmaz, KIRMIZI log |
+| IKA baslat | §2.2.5 zinciri | **KAPALI**: dugme `İKA (FDA dışı)` + `ika_baslat()` IKA_GO yazmaz |
+| firlatma | `FIRLATMA` (mancinik damgasi) | etiket **`KALKIŞ`**; **ARM kilidi AYNEN** (D-393) |
+| butce | 900 s | `SARTNAME_FDA_OPERASYON_SURESI_S` (600 s) — T170'ten beri vardi |
+| zincir gostergesi | ... → YKS → IKA | FDA'da **IKA halkasi yok** |
+
+Kip **acilista** kurulur (`app.fda_kipini_uygula()`), kosarken degismez; sinif
+varsayilani **yarisma gunu kipidir** ve `--fda` verilmedikce davranis DEGISMEZ.
+Fail-closed ilkesi: her kapali dugme icin eylem de reddedilir (dugme durumu tek
+basina emniyet sinyali degildir — T180 sinifi).
+
+### 3. Kanit
+
+`tests/test_faz_b_yks_fda_kipi.py` **9 test** (Tk'siz `__new__` fiksturu, gercek
+`protocol.encode/ack` cerceveleri, link cagrilari cozulerek denetlenir):
+1 FDA'da 2/2 onay IKA kanitsiz tamamlanir ve ACK `ref=41`, `node=yks`,
+`ref_tip=OPEN_ROUTE` ile gider · 2 yarisma kipinde ayni senaryo REDDEDILIR ·
+2b pozitif kontrol (kanit varken yarisma kipinde de tamamlanir — 2'nin reddi
+kanit yoklugundandir) · 3 FDA'da parasut link'e hicbir sey yazmaz, tekrar durumu
+`BOS` · 3b pozitif kontrol (yarisma kipinde iki tikla PARACHUTE gider) ·
+4 FDA'da IKA_GO yazilmaz · 5 etiket `KALKIŞ` + ARM kilidi damgayi reddeder ·
+6/6b butce kipe gore, sinif varsayilani degismez, CLI bayragi uygulayiciyi cagirir.
+
+**Mutasyon (4/4 YAKALANDI, dosya `cmp` ile bayt-es geri yuklendi):**
+M1 onay kilidini eski haline dondur → test 1 DUSTU · M2 parasut FDA kilidi kalk →
+test 3 DUSTU · M3 IKA kilidi kalk → test 4 DUSTU · M4 etiketler uygulanmaz →
+test 5 DUSTU.
+
+**Regresyon:** yks_gui 84 · p9abc 13 · ika_go 20 · ack_ref_tip 14 · t170 16 ·
+runbook 17 — hepsi OK; genel kapi 15/15; tam suit **1875 test OK (skipped=3)**.
+
+### 4. Gevsetilmeyen kapi
+
+`test_t170_fda_sure_butcesi::test_uygulama_yolu_bayragi_KULLANIYOR` `fda_kipi = True`
+duz metnini `if args.fda:` penceresinde ariyordu; satir uygulayiciya tasindigi icin
+dustu. Kapi **gevsetilmedi, GUCLENDIRILDI**: artik hem bayragin `fda_kipini_uygula()`
+cagirdigi, hem uygulayicinin **iki alani da** (`fda_kipi`, `IHA_LIMIT`) kurdugu ayri
+ayri aranir. Gerekce testin icine yazildi.
+
+### 5. Belge
+
+CONTRACTS §6.7 (bu turdan once yazilmisti) · SAHA_RUNBOOK §2'ye operator satiri
+(FDA'da neyin degistigi) · SAHA_HAZIRLIK_PLANI 1.8a · `CODEX_GOREV_YKS_FDA.md`
+kartinin uygulamasi tamamlandigi icin kart artik **denetim listesi** olarak durur.
