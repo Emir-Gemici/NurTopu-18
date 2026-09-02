@@ -28185,3 +28185,148 @@ Ders: worktree ajanlarina "taban commit'ini `git merge-base master HEAD` ile don
 Pixhawk'ta EXTENDED akisi ve `--kapi` cumartesi · hub `l_arizada_ogrenmez` testi.
 **Denetim:** K2/T207 kodunu ajanlar yazdi; mimar diff/test/mutasyon ciktilarini okudu.
 Mimar-disi denetim: cumartesi Jetson'da ilk kosum (D-404 §7 madde 4 ile birlikte).
+
+### D-407 — CURUTUCU IKINCI TUR (D-405/D-406 kapanislari): iki gercek kusur (Nano belgesi yanlis dizin, muhur kapsami eksik), T207 gercek topolojide DOGRULANDI, kopru saglam
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 — **Opus 5** (kullanici karari: *"fable 5 gelmesine
+daha 5 gun var, o yuzden fable 5'in gorevlerini de sen yapacaksin"* → bu turda hem amele hem
+mimar rolu bende) · **Kanit:** `results/faz_b_oncesi/curutucu_d407/`
+· ⚠ **DENETIM BORCU (madde 19):** bu kayittaki duzeltmeleri yazan da onaylayan da benim;
+mimar-disi denetim **Fable 5 donunce** ya da cumartesi Jetson'daki ilk gercek kosumda.
+
+**Yordam notu:** 5 mercekli curutucu is akisi **kredi bitince** dustu (Fable 5.1 kotasi);
+ajanlarin scratchpad'e biraktigi repro betikleri **ana dongude (Opus 5) kosuldu**, eksik
+kalan iki mercek (akis istegi topolojisi, Nano belgesi iddialari) icin yeni olcum yazildi.
+Ajan sayisi degil **kosulan olcum** kanittir.
+
+### 1. GERCEK KUSURLAR (ikisi de kapatildi)
+
+🔴 **S4 · Nano kurulum belgesi kamera koprusunu YANLIS dizine kopyalatiyor.**
+`JETSON_NANO_KURULUM.md` (Gorev N, Gorev K'dan once yazildi) `cp kod/kamera_koprusu.py
+~/navitas/codes/` diyor; `jetson_baslat.sh` ve iki `JETSON_KILAVUZ.md` ise `scripts/`
+altinda ariyor (yetkili kaynak: `navitas-kamera-koprusu.service` ExecStart
+`/home/navitas/navitas/scripts/kamera_koprusu.py`). Belgeyi izleyen kisi cumartesi
+`--kur`'da **HATA ile durur** (fail-closed, ama zaman kaybi ve tanisi zor).
+Repro (ajan senaryosu S4): `--kuru exit 3 · [YOK] kurulu .../scripts/kamera_koprusu.py`,
+`--kur exit 1 · HATA: navitas-kamera-koprusu: .../scripts/kamera_koprusu.py yok`.
+**Kapandi:** belgede iki satir `scripts/`e cekildi + **kapi**
+`tests/test_faz_b_nano_kurulum.py::test_D407_kurulum_hedefleri_jetson_baslat_ile_AYNI`
+(birim ExecStart'larindan dizin haritasi cikarir, belgedeki her `cp kod/X.py ~/navitas/D/`
+satiriyla kiyaslar). **Mutasyon:** belge `codes/` yapilinca test DUSTU
+(`kamera_koprusu.py: belge ~/navitas/codes/ diyor, jetson_baslat.sh scripts/ ariyor`),
+dosya `cmp` ile bayt-es geri yuklendi.
+
+🔴 **S1 · Muhur kapsami: SAHADA UCULAN yapilandirma kunye DISINDAYDI.**
+Uretilen kunyede `pixhawk` gecen satir sayisi **0** (grep). Yani
+`config/pixhawk/arducopter_fda.param` (SYSID, SR akis hizlari, FENCE, failsafe),
+`config/pixhawk/fda_gorev.waypoints` (irtifa/gorev sirasi) ve
+`jetson_paket/kod/requirements_nano.txt` (Nano'da fiilen kurulan surumler) muhurlu
+degildi — sartname §6.1 "yarisan yazilim beyanla birebir" iddiasi bunlarsiz tasinamaz.
+(Ayni sinif: D-405 S1'de `jetson_baslat.sh`/systemd icin bulunmustu; bu dort dosya o
+turdan **sonra** dogdu.) **Kapandi (mimar karari):** dordu `SAHA_YAPILANDIRMA` kapsamina
+alindi (`scripts/surum_dondur.py` + `tests/test_faz_b_surum_dondurma.py::MIMAR_SAHA`);
+49/49 test yesil. Sahada yalniz **koordinatlar** degisir (README §2) — o da mühürden
+sonra tek izinli degisiklik olarak tutanaga yazilir.
+
+### 2. CURUTULEMEDI (olculdu, saglam cikti)
+
+**T207 akis istegi — GERCEK JETSON TOPOLOJISINDE dogrulandi.** Kurgu: `iha_inis_yayinci`
+`udp:127.0.0.1:PORT` **sunucu** (bind), MAVProxy taklidi **istemci** akisi iter.
+`results/faz_b_oncesi/curutucu_d407/akis_istegi/r_topoloji2.py`:
+
+| senaryo | proxy gonderdi | yayinci aldi | geri gelen komut | ilk gecikme | id/aralik | alarm |
+|---|---|---|---|---|---|---|
+| A · EXTENDED **akmiyor** (ArduCopter varsayilani) | 25 | 25 | **4** | **0,30 s** | 511/33 @125000 us (8 Hz) · 511/245 @500000 us (2 Hz) | `sessizlik_uyarisi 1`, `sessiz=True` ✔ |
+| B · EXTENDED akiyor | 50 | 50 | 4 | 0,30 s | ayni | alarm YOK, `sessiz=False` ✔ |
+
+`ertelenen: 0` — akran ilk datagramda ogreniliyor; `mav_hedefi_biliniyor_mu` ayrica
+dogrudan olculdu: 8 mesaj sonrasi `clients={('127.0.0.1',54196)}` → True.
+⚠ **Windows artefakti (uretim kusuru DEGIL):** tuketici portu acmadan once gonderim
+yapilirsa Windows ICMP 10054 gondericinin soketini oldurur. Linux'ta baglantisiz UDP
+soketine ICMP hatasi teslim edilmez. `jetson_baslat.sh` cogullayiciyi tuketicilerden
+**once** kaldirdigi icin gercekte 1-2 s'lik "kapali porta gonderim" penceresi olusur;
+Linux'ta zararsizdir, `--kapi` yolu zaten cogullayiciyi ve tuketicileri sirayla
+`restart` eder. Sahada `--durum` restart sayaci bunu gorunur kilar.
+
+**Kamera koprusu — sizinti/istemci/kaynak mercekleri temiz.**
+`mjpeg_repro.py`: 50/150/300 karede izlenen bellek **0,48 MB sabit** (tepe 0,74 MB),
+iplik 4, RSS ~72 MB sabit; 40 ardisik istemci sonrasi iplik 4→3, `istemci_sayisi=0`,
+`dusen_kare=0`, `kodlama_hatasi=0`, KIRMIZI log **0**.
+`istemci_repro.py`: RST kopusu, FIN kopusu, okumayan istemci (uretici ilerledi, baska
+istemci 5/5 kare), 3 istemciden 2'si koparken 3. okumaya devam etti, cv2 ikinci istemci
+5/5 — hepsi **basarili**, uretici yasiyor, KIRMIZI log yok.
+**Python 3.6 uyumu — cürütme BASARISIZ (kod dogru):** tarayici `ThreadingHTTPServer`
+(3.7) ve `str.removeprefix` (3.9) "buldu" ama ikisi de **dokstringdeki yasak listesi
+metni**; gercek kod `ThreadingMixIn + HTTPServer` (3.6) kullaniyor ve tek 3.7 API'si
+(`TextIOWrapper.reconfigure`) `except (AttributeError, OSError)` ile sarili.
+⚠ **Test vakumu (KUCUK, acik):** K5 kapisi yalniz **soz dizimi** (walrus/posonly/
+`__future__ annotations`/match/subscript) bakiyor; API adi (orn. birisi
+`ThreadingHTTPServer`i gercekten kullansa) yakalanmaz. Oneri: K5'e API kara listesi.
+
+**jetson_baslat v2 birlesmesi (D-405 J + D-406 K) — 7 senaryo temiz.**
+`birlesme_kopru/curut_senaryo.py`: S1 `KIP=sik + KAMERA=http --kur` (tek `restart` alti
+birimi dogru sirada), S2 `--kapi` (cogullayici → kopru → 3/3 sonra tuketiciler),
+S3 koprusuz kipte `disable --now`, S4 (yukaridaki kusur), S5 `SERVIS_KULLANICI`
+turetimi (`sudo -E` SUDO_USER=yunus → `/home/yunus/navitas`; ek yokken `[YOK] kullanici
+navitas`), S6 hub+kopru sirasi, S7 `--durdur` (tuketiciler → kopru → hub → cogullayici).
+`--streamrate 8` her senaryoda ExecStart'ta.
+
+**Muhur git bagi ve engine kurali.** Gecici klonda: `--dondur` (engine yer tutucu) →
+**exit 2** "engine kayitsiz - muhur erken"; `--engine-kayitsiz-bilerek` → kunye yazildi
+(kapsam paket 18 + paket_kaynak 18 + paket_modelleri 3 + saha_yapilandirma 10 + yks_ika 9);
+kunye commit edilmeden `--dogrula` → **exit 1** "KUNYE COMMIT EDILMEMIS". `yks_ika`
+kapsaminin import grafi kontrolu: YKS/IKA giris noktalarindan ulasilan **13 depo modulunun
+13'u kapsam ici, 0'i disarida**.
+
+### 3. ACIK KALANLAR (kredi bitti, olculmedi)
+
+- **Nano kurulum belgesinin dis iddialari** (bionic'te `python3.8` paketi, JetPack 4.6.x
+  `jetson-io` IMX477 secenegi, PyPI aarch64 cp38 torch 2.4.1 / torchvision 0.19.1 /
+  onnxruntime 1.19.2 wheel varligi, Qengineering CUDA wheel, YOLOv8m-seg Nano CPU FPS
+  beklentisi) **kaynakla dogrulanmadi** — betigin **gercek indirmesi** 14/14 wheel ile
+  bunlarin cogunu dolayli teyit ediyor (D-406), ama surum/menu adlari cumartesi kartta
+  dogrulanacak. Belge zaten "kapi ciktisini deftere yapistir" diyor.
+- K5 API kara listesi (yukarida), `mavlink_dogrula.ISTEK_HIZ_CARPANI` sabit baglama,
+  `protocol.py` MESAJ_TIPI_* sabitleri — kuyrukta kucuk kalemler.
+- Kunye `test_komutu` alani PC yorumlayicisinin **mutlak yolunu** tasiyor: muhrun hangi
+  ortamda basildiginin kaniti olarak dogru, ama Jetson'da o dizge kosulamaz. Karar:
+  degistirilmedi (kanit degeri > kolaylik); Jetson'da `--dogrula` venv38 python'uyla
+  kosulur (`JETSON_NANO_KURULUM.md`).
+
+### 4. Yordam bulgusu — CRLF/ayna kapilari kirilgan (olculdu, bu turda KIRMIZI suit uretti)
+
+Tam suit **1827 test · 12 dusus** ile kapandi; **11'i** `jetson_paket/kod` aynasi ile
+kaynagin bayt esitligini isteyen kapilardi (`test_jetson_comms_paketi`, `test_t135`,
+kamera koprusu K5 ayna kolu). Sebep: depo `core.autocrlf=true`; git dosyalari CRLF'e
+cevirirken araclarin yazdigi dosyalar LF kaliyor, bir `merge`/`checkout` sonrasi iki
+taraf bayt-es olmaktan cikiyor. **Indeks her iki tarafta da LF** — yani commit'lenen
+icerik dogruydu, dusen sey CALISMA KOPYASIYDI. `scripts/jetson_paket_hazirla.py`
+yeniden kosuldu, 11 kapinin hepsi yesile dondu (7+7+8 OK).
+`core.autocrlf=false` + agac yeniden normallestirme **YAPILMADI**: `git diff
+--ignore-cr-at-eol` ile olculdu ki **Codex ayni anda depoda calisiyor**
+(`tests/test_faz_b_kamera_lan.py` 147 satir, `test_yki_gnss_telemetri.py` +9) — depo
+capinda satir sonu degisimi onun isini ezerdi. Karar: ayar **degistirilmedi**, mühür
+zaten icerik-kanonik ozet kullaniyor (D-405 S6). Kalici cozum (`.gitattributes` ile
+`* text=auto eol=lf` + tek seferlik normallestirme) **21 Eylul sonrasina** birakildi.
+
+**12. dusus benim isim degil:** `test_yks_gui_uretim_hizasi::
+test_gorunum_eslemesi_URETIMIN_IC_ADLARIYLA_AYNI` — Codex `GORUNUM_SECENEKLERI`'ne
+`"kamera"` ekledi, `self.gorunum("kamera")` cagrisi henuz yok (yarim is). `yks_gui.py`
+bu turda MIMAR TARAFINDAN DEGISTIRILMEDI; Codex'in gorev kartina (§5) "once bunu kapat"
+diye yazildi.
+
+### 5. FDA gorev kipi — CONTRACTS §6.7 ve Codex gorevi (kullanici istegi)
+
+Kullanici: *"yks_gui'yi de Codex'le beraber drone'a tamamen uygun hale getir."* Olcum:
+`--fda` bugun YALNIZ sure butcesini degistiriyor (T170); akisin kalani §2.2 gorevini
+(mancinik + parasut + IKA) varsayiyor. 🔴 **Tikanma:** hakem onayi 2/2 adimi
+`ika_aktarim_kaniti_var()` istiyor (K8, §2.2.3) — 21 Eylul ucusunda IKA YOK, kanit
+hic gelmez, onay tamamlanamaz, IHA'ya ACK gitmez. Sartname §5.3.2 hakem onayini
+zorunlu kildigi icin bu **ucusu gecersiz kilacak** bir GUI kilidi.
+**CONTRACTS §6.7** kip tablosunu baglayici yazdi (onay 2/2 IKA kanitsiz + gerekce metni,
+parasut ve IKA dugmeleri fail-closed kapali, FIRLATMA -> KALKIS, inis kaniti ve asgari
+irtifa aynen, kip acilista sabit). Uygulama **Codex'e** verildi:
+`CODEX_GOREV_YKS_FDA.md` (6 test kilidi + mutasyon + kapi listesi). Denetimi mimar yapar.
+
+**Kapilar:** genel kapi 15/15 · tam suit 1827 test (11 ayna artefakti senkronla kapandi,
+1 dusus Codex'in yarim isi) · paket 18 dosya senkron.
