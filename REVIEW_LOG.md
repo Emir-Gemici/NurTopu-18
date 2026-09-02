@@ -27611,3 +27611,57 @@ gecen bir cozum gercekte de gecer yonunde bir pay var (tersi degil).
 `serit_no` DEGISTIRILMEDI (CONTRACTS §8). Bu tur yalniz olctu; "kapi bir
 aciklikti" tanim degisikligi ayri on kayit + mimar karari ister. Genel kapi
 15/15, tam suit OK, uretim kodu DEGISMEDI.
+
+### D-401 — T61 KESIF TURU: dort aday DOGRULANAMADI, biri (V varyansi) zayif ama anlamli; kucuk ornek YANILTTI
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Opus 5, amele) ·
+**Denetleyen: mimar bekleniyor (AGENTS §9.3)** ·
+**On kayit:** `results/t61_ic_tutarlilik/ON_KAYIT.md` (esik YAZILMAZ turu) ·
+**Olcum:** `scripts/olcum/175_t61_ic_tutarlilik.py` · n=67 GT + 260 referans
+
+### 1. Yontem (esiksiz)
+
+Cokus vekili: `gercek_kare_etiket_v1` (67 kare, YOLO-seg poligon) ile
+IoU(model zemin, GT zemin). **Kesme noktasi SECILMEDI**; bunun yerine her
+adayin IoU ile SIRA KORELASYONU (Spearman, saf NumPy — madde 4) olculdu.
+Adaylar mimar direktifinden: B1 HSV varyansi, B2 bilesen-bazli LAB sapmasi,
+B3 Laplacian enerjisi (maske ERODE edilerek — kenar sizintisi korumasi).
+
+### 2. Sonuc
+
+IoU medyani 0,412 (min 0,228 · maks 0,588).
+
+| aday | r | p | hukum |
+|---|---|---|---|
+| B1 S std | +0,097 | 0,435 | DOGRULANAMADI |
+| **B1 V std** | **-0,345** | **0,0042** | zayif ama anlamli (Bonferroni α=0,01 gecer) |
+| B2 LAB yayilim | -0,007 | 0,957 | DOGRULANAMADI |
+| B3 Laplacian ort | +0,106 | 0,393 | DOGRULANAMADI |
+| B3 Laplacian std | +0,003 | 0,981 | DOGRULANAMADI |
+
+B1 V std'nin yonu beklenen yonde: IoU dustukce maske-ici PARLAKLIK varyansi
+artiyor — model birbirine benzemeyen parlakliktaki bolgeleri tek zemin
+sayiyor. Ama etki kucuk (r² ≈ %12); **kapi yapilamaz** ve bu tur zaten esik
+uretmez (direktif).
+
+### 3. 🔴 Metodolojik bulgu: kucuk ornek TERSINE isaret verdi
+
+Ayni betik 6 karelik duman kosumunda B1 S **-0,829**, B2 **+0,943**,
+B3 std **-0,943** vermisti. Tam kumede bu sayilar **+0,097 · -0,007 ·
++0,003** oldu — ISARET DEGISTIRDILER. D-86'nin dersi ("alt kumede tam ayrik
+gorunen esik tumde ayirmaz") bu turda birebir tekrarlandi. Duman kosumuna
+bakip hukum verilseydi UC adaya birden "guclu ayirici" denecekti.
+Bu, dun gece T99'da yasananin AYNASIDIR (orada 8 karede V1 "vakum" demisti,
+260'ta gecti) — **kucuk ornek her iki yone de yaniltir.**
+
+### 4. Sinirlar
+
+Cokus vekili tek mekan/67 karedir (X5). GT IoU'sunun kendisi "cokme"nin
+mukemmel olcusu degildir (kadraj/etiket gurultusu icerir). Bulgu
+"bu uc eksen bu vekille cokmeyi izlemiyor" demektir; "ic tutarlilik fikri
+olu" demek DEGILDIR.
+
+### 5. Madde 15 ve kapi
+
+Hicbir olcut uretime baglanmadi; bagli olsaydi yalniz REDDEDEBILIRDI.
+Genel kapi 15/15 · tam suit OK · uretim kodu DEGISMEDI.
