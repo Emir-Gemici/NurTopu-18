@@ -1,0 +1,63 @@
+=== 1) GENEL KAPI
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+
+=== 2) PAKET AYNASI
+[JETSON_PAKET] comms\seri_hub.py -> jetson_paket\kod\seri_hub.py
+[JETSON_PAKET] scripts\mavlink_dogrula.py -> jetson_paket\kod\mavlink_dogrula.py
+[JETSON_PAKET] scripts\kamera_koprusu.py -> jetson_paket\kod\kamera_koprusu.py
+
+=== 3) MODEL DOSYALARI
+54837724 navitas_seg_v30_best.pt
+54569679 navitas_seg_v30_best_512_fp16.onnx
+54837660 navitas_seg_v34_best.pt
+54569676 navitas_seg_v34_best_512_fp16.onnx
+54803804 navitas_seg_v35_best.pt
+54569669 navitas_seg_v35_best_512_fp16.onnx
+54788636 navitas_seg_v36_best.pt
+54569673 navitas_seg_v36_best_512_fp16.onnx
+
+=== 4) MUHUR DURUMU
+[DONDURMA] DONDURULMADI: kunye yok (O:\navitas\config\DONDURMA_KUNYESI.json) - henuz muhur basilmadi
+exit=0
+=== 5) KURU KOSU (CPU)
+                            -> codes/rpi_inference.py
+  hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor
+                            -> codes/rpi_inference.py (T150/D-386: goruntu= + sekil kapisi)
+  rota           GECTI      rota uretildi: yol_no=2  [31 ms]
+                            -> codes/rpi_inference.py:analyze_path (run_camera yolu)
+  aktarim        GECTI      saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
+                            -> codes/rpi_inference.py:run_camera
+  telsiz halkasi  GECTI      run_camera -> KararYayinci -> loopback IKA: {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika'], 'hata': None}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+                            -> comms/iha_inis_yayinci.py:375
+  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda
+------------------------------------------------------------------------------
+GECTI 9 · DUSTU 0 · SAHIPSIZ 1 · ATLANDI 0
+KOPUK HALKALAR (1): motor
+Zincir saha kosumunda TAMAMLANMAZ.
+Cikti: results\faz_b_oncesi\cuma_kontrol\kuru_kosu
+
+=== 6) JETSON ACILIS --kuru (udp)
+navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --da
+navitas-kamera-koprusu.service: /usr/bin/env /usr/bin/python3 /home/navitas/navitas/scripts/kamera_koprusu.py --port 8080 
+navitas-rpi-inference.service: /usr/bin/python3 /home/navitas/navitas/codes/rpi_inference.py --camera --ekransiz --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 78 --kaynak http://127.0.0.
+navitas-iha-inis-yayinci.service: /usr/bin/python3 /home/navitas/navitas/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 192.168.1.10:5005 --ika 1
+navitas-iha-komut-alici.service: /usr/bin/python3 /home/navitas/navitas/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007
+[YOK] mavproxy.py (PATH) <- Jetson'da: pip3 install MAVProxy
+[YOK] kullanici navitas <- SERVIS_KULLANICI ile ez (JETSON_KILAVUZ §2 ~/navitas sahibi)
+[YOK] yorumlayici /usr/bin/python3 <- PYTHON3 ile ez
+[YOK] kopru yorumlayicisi /usr/bin/python3 <- KAMERA_PYTHON ile ez (GStreamer'li sistem Python)
+[YOK] Pixhawk seri /dev/ttyACM0 <- kablo takili mi? PIXHAWK_SERI ile ez
+[YOK] kurulu /home/navitas/navitas/scripts/kamera_koprusu.py <- navitas-kamera-koprusu: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+[YOK] kurulu /home/navitas/navitas/codes/rpi_inference.py <- navitas-rpi-inference: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+[YOK] kurulu /home/navitas/navitas/comms/iha_inis_yayinci.py <- navitas-iha-inis-yayinci: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+[YOK] kurulu /home/navitas/navitas/comms/iha_komut_alici.py <- navitas-iha-komut-alici: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+KURU SONUC: eksik (beyan: tam · [YOK]: 9) — gercek kosum DURUR (cikis 3)
+exit=3
+
+=== 7) JETSON ACILIS --kuru (sik)
+navitas-seri-hub.service: /usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py --port /dev/ttyUSB0 --baud 57600 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+[YOK] kurulu /home/navitas/navitas/comms/seri_hub.py <- navitas-seri-hub: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+KURU SONUC: eksik (beyan: tam · [YOK]: 11) — gercek kosum DURUR (cikis 3)
