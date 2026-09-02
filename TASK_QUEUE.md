@@ -7101,7 +7101,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - ⚠ **32 aynasız betik bilerek aynalanmadı** (D-190 (C)) — onlar **yedek**
     ihtiyacıdır, sürüm kontrolü değil. `O:\navitas-local-train` tümüyle yedek
     listesinde.
-- [ ] **T99 — T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
+- [ ] **T99 — 🔎 ÖLÇÜLDÜ 2026-09-03 · D-399 (karar mimarda; kod DEĞİŞMEDİ).** Üretim imzası 5 kolla ölçüldü (n=260, v36): **ankor bir FİLTRE** — yanlış şeritli rotaların %91,7'sini, doğruların %35,3'ünü eliyor (Fisher tek yönlü p=0,0030); şerit doğruluğu %58,6→%91,7. Araç katmanı ölçüldü (7/260 kare dolu) ama kararı hiç değiştirmedi. 🔴 Görevin LAFZI koşulamaz: 89'un taban kolu ölü (üretim artık `dt_px` geçiriyor, T95/D-164) ve bu kuyruk metni bayat (KATMAN_ARAC=**10**, 2 değil). Kalan: mimar kararı — ankorun filtre etkisi ölçülmemiş bir güvenlik payıdır. Özgün kayıt: T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
     rota_bul(costmap_maskeleri, mpp=MPP, baslangic=..., hedef=..., plan=True,
@@ -7275,6 +7275,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
     üç koridor kabaca birer üçte bir kaplar; t66 kadrajı **iki şeritli** görüşler
     üretiyor (uzunluk dağılımı 2→39, 3→116, 4→54, 5→51). Gerçek kamera çerçevesi
     de iki şeritli görüş üretiyorsa sorun **gerçektir**.
+  - 🔎 **ÖLÇÜLDÜ 2026-09-03 · D-400:** gerçek kaynaklı üç kümede (n=283) açık kapıların **%42,9–48,3'ü** iki şeride yayılıyor — sentetik t66'daki %49,0 ile aynı mertebede. **Sorun sentetik artefakt DEĞİL, gerçekte de var.** Metrik pay gerçekte ~1,8× büyük (merkez–sınır medyanı 7,1 m vs 4,0 m). `serit_no` DEĞİŞMEDİ; tanım değişikliği ayrı ön kayıt + mimar kararı ister.
   - **ÖNCE ÖLÇ:** gerçek karelerde (`kompozit`, `drone`) kadrajda kaç koridor
     görünüyor ve bir koridor `serit_no` sınırını ne sıklıkta aşıyor?
   - **KAPI:** ölçüm koşulmadan `serit_no` DEĞİŞMEZ — o sözleşme alanıdır
@@ -8221,6 +8222,7 @@ esults	56_gorsel              ayni_sahne_51.jpg · _77.jpg · _123.jpg   (AYNI s
     değeri %73,7–82,5. Ham kaplama üst uçta *"her şey boyanmış"* ile *"gerçekten
     açık arena"* hâllerini **ayırt edemiyor**. Görev kadrajında arena görüntüyü
     dolduracağı için sistem tam da ölçütün en zayıf olduğu bölgede çalışacak.
+  - 🔎 **KEŞİF TURU KOŞULDU 2026-09-03 · D-401** (iç-tutarlılık ekseni): B1 HSV-S · B2 LAB bileşen sapması · B3 Laplacian (ort+std) **DOĞRULANAMADI** (|r|<0,11, GT IoU ile sıra korelasyonu, n=67). **B1 HSV-V varyansı zayıf ama anlamlı** (r=−0,345 · p=0,0042 · Bonferroni geçer) — etki küçük (r²≈%12), kapı yapılamaz; eşik yazılmadı (direktif). Metodolojik uyarı: 6 karelik ön koşum İŞARET DEĞİŞTİREN korelasyonlar verdi.
   - **Yap — ÖNCE ÖLÇ.** Ayırt-edicilik ölçen aday büyüklükleri iki kümede birden
     sına (kadraj arenası = meşru, otopark = çöküş) ve **ayrışma gücünü sayıyla**
     raporla. Aday örnekleri (bunlarla sınırlı değil): zemin/(zemin+engel) oranı ·
