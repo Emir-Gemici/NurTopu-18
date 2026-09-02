@@ -195,8 +195,17 @@ class FrameReader:
             if line:
                 try:
                     yield decode(line)
-                except (ValueError, UnicodeDecodeError):
-                    pass  # bozuk çerçeveyi at (RF gürültüsü)
+                except (ValueError, UnicodeDecodeError, RecursionError):
+                    # bozuk çerçeveyi at (RF gürültüsü).
+                    # NEDEN RecursionError (D-405 · "Hub sureci derin ic ice
+                    # JSON satirinda RecursionError ile OLUR"): json.loads
+                    # `[[[[...` gibi derin iç içe TEK satırda ValueError değil
+                    # RecursionError üretir (ölçüldü: b"["*3000+b"\n"). Bu bir
+                    # çerçeve değildir; yutulmazsa seri hattın tek erişim
+                    # noktası olan hub ve her tüketici (`IhaKomutAlici.poll`)
+                    # tek satırla ölür. Tampon satırdan zaten arındırıldı;
+                    # sonraki geçerli çerçeve geçer.
+                    pass
         # Süzmeden SONRA bakılır: kalan artık newline içermez, yani tek bir
         # çerçeve sınırı taşımaz. Tavanı aşıyorsa çerçeve değil gürültüdür.
         if len(self._buf) > self._tampon_tavani:

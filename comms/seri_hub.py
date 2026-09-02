@@ -37,15 +37,42 @@ Fail-closed / fail-visible:
     gelen cerceveler DUSURULUR ve sayilir — KUYRUKLANMAZ (bayat rota, hat
     donunce yayinlanmasin). Yeniden acilinca log + sayac.
   * Bozuk cerceve (JSON degil, dict degil, yeniden kodlanamiyor) yayinlanmaz,
-    `bozuk` sayaci artar; sonraki gecerli cerceve gecer.
+    `bozuk` sayaci artar; sonraki gecerli cerceve gecer. HICBIR cerceve hub'i
+    oldurmez (D-405): derin ic ice `[[[[...` satiri json'da RecursionError
+    uretir — FrameReader onu yutar, hub ayrica feed/encode'u `except
+    Exception` ile sarar (savunma derinligi; KIRMIZI log + `bozuk`).
+  * UDP okuma hatasi (orn. Windows'ta tavan ustu datagram WinError 10040)
+    hub'i oldurmez: `udp_hata` sayilir, ilkinde KIRMIZI log. Datagram tavani
+    UDP_DATAGRAM_TAVANI_B (tam datagram alinir, budanmaz).
+  * Newline'siz datagram (sozlesme disi uretici) seride SONRAKI cerceveye
+    yapisip ikisini de oldururdu (D-405 Q1); hub eksik newline'i EKLER,
+    `newline_eklenen` sayar, ilkinde KIRMIZI log. Uyumlu uretici (encode())
+    icin bayt-es aktarim degismez.
   * Sessiz basari yalani yok: hedefsiz fan-out, yazilamayan fan-out, dusurulen
     datagram — hepsi sayilir ve periyodik logda gorunur.
+
+Tek sahiplik (D-405): hub UDP ucunu SO_REUSEADDR'siz acar (`UDPLink(...,
+reuse=False)`) — ayni --bind ile ikinci hub OSError -> cikis 3 (sessiz sagir
+kopya yok). Seri portu `SerialLink(exclusive=True)` ile acar — Linux'ta
+ikinci surec flock'a takilir -> cikis 4. Runbook'taki manuel komut systemd
+birimi calisirken KOSULMAZ (`systemctl stop navitas-seri-hub` once).
+
+Ogrenilen kume kurali (D-405 · CONTRACTS §7.5'e mimar yazar): tavan SAYI
+tabanlidir (OGRENILEN_TAVANI); asilinca EN AZ TAZELENEN (son gonderimi en
+eski) adres dusurulur ve KIRMIZI loglanir. Uzun omurlu ama seyrek gonderen
+bir tuketici bu tahliyeye yakalanabilir; UZUN OMURLU TUKETICI STATIK
+`--tuketici` ILE VERILIR — statik liste tahliyeye tabi degildir.
+
+SIGTERM (systemd stop): isleyici `durdur()` bayragini kurar; dongu temiz
+cikar, son sayac logu ve kapat() kosar (D-405; Python varsayilani surec
+aninda olur, finally kosmazdi).
 
 Kullanim:
   python3 seri_hub.py --port /dev/ttyUSB0 --bind 127.0.0.1:5100 \\
                       --tuketici 127.0.0.1:5007
 """
 import argparse
+import signal
 import socket
 import sys
 import threading
@@ -81,7 +108,11 @@ SERI_YENIDEN_ACMA_ARALIGI_S = 1.0
 #: Seri okuma zaman asimi (ilk bayt). D-403 dersi: 0,3 s'lik zaman asimi tek
 #: iplikli hub'da UDP->seri yonunu her turda 300 ms bekletirdi (parasut tekrar
 #: araligi 0,20 s'nin USTU). 20 ms: 57600 baud'da ~115 bayt, tur gecikmesi
-#: tavani yine 20 ms.
+#: tavani yine 20 ms — LINUX'ta (hub yalniz Jetson'da kosar). Windows'ta
+#: zamanlayici tanecigi 15,6 ms: 20 ms bekleme ~31 ms, bos poll ~47 ms
+#: (D-405 olcumu, olc_granul.py); testler bunu tavanlarinda hesaba katar.
+#: Kilit: tests/test_faz_b_seri_hub.py (sabit <= parasut araliginin
+#: bir bolumu, kurulan hub'da ser.timeout bu degere cekilir).
 SERI_OKUMA_ZAMAN_ASIMI_S = 0.02
 #: UDP okuma zaman asimi. `UDPLink.recv` yalniz socket.timeout'u yutar; 0
 #: (gercek non-blocking) BlockingIOError sizdirir. 1 ms: tur basina tek kacirma
@@ -95,9 +126,22 @@ SERI_TUR_TAVANI = 128
 #: dongu sicak doner). Seri acikken tur hizini seri zaman asimi belirler.
 BOS_TUR_BEKLEME_S = SERI_OKUMA_ZAMAN_ASIMI_S
 #: Ogrenilen tuketici adresi tavani: her surec yeniden acilisinda yeni efemer
-#: port ogrenilir; tavan asilinca EN ESKISI dusurulur (olu porta fan-out
-#: zararsizdir ama sinirsiz kume 8-9 saatlik provada sessiz sismedir).
+#: port ogrenilir; tavan asilinca EN AZ TAZELENEN (son gonderimi en eski)
+#: dusurulur ve KIRMIZI loglanir (olu porta fan-out zararsizdir ama sinirsiz
+#: kume 8-9 saatlik provada sessiz sismedir). D-405: tavan SAYI tabanli
+#: kalir; sessiz-ama-canli tuketici korunmak istiyorsa STATIK --tuketici
+#: ile verilir (dokstring kurali). Kilit: test_faz_b_seri_hub (tahliye
+#: sirasi + log + uzun omurlu tuketicinin kaldigi).
 OGRENILEN_TAVANI = 32
+#: Bir UDP datagraminin en cok boyu: IPv4 UDP yuku 65507 B, 65535 tavan onu
+#: kapsar. D-405 ("4096 B'den buyuk UDP datagram"): recv tavani 4096 iken
+#: Windows'ta buyuk datagram OSError (WinError 10040) SIZDIRIP hub'i
+#: olduruyor, Linux'ta ise sessizce budanip newline'siz parca seriye
+#: gidiyordu. Tam datagram alinir; hata ayrica yakalanir (`udp_hata`).
+UDP_DATAGRAM_TAVANI_B = 65535
+#: Cerceve sonlandirici (protocol.encode her cerceveye ekler). Newline'siz
+#: datagram gelirse hub bunu ekler (D-405 Q1).
+CERCEVE_SONU = b"\n"
 
 
 def _adres(metin, efemer_serbest=False):
@@ -164,11 +208,15 @@ class SeriHub:
         self.sayac = {"udp_alinan": 0, "seri_yazilan": 0, "seri_cerceve": 0,
                       "fanout_gonderim": 0, "fanout_hata": 0, "hedefsiz": 0,
                       "bozuk": 0, "dusurulen": 0, "seri_ariza": 0,
-                      "yeniden_acma": 0, "yeniden_acma_hatasi": 0}
+                      "yeniden_acma": 0, "yeniden_acma_hatasi": 0,
+                      # D-405: UDP okuma hatasi (hub olmez) / eksik newline
+                      "udp_hata": 0, "newline_eklenen": 0}
         self._dur = threading.Event()
         self._ariza_t = None             # seri kapaliyken: son ariza/deneme ani
         self._seri_yok_loglandi = False
         self._hedefsiz_loglandi = False
+        self._udp_hata_loglandi = False   # ilkinde KIRMIZI, sonrasi sayacta
+        self._newline_loglandi = False
         self._son_log_t = None
         self.seri_link = None
         sock = getattr(udp_link, "sock", None)
@@ -275,12 +323,26 @@ class SeriHub:
         while len(self.ogrenilen) > OGRENILEN_TAVANI:
             eski = next(iter(self.ogrenilen))
             del self.ogrenilen[eski]
-            self._logla(f"ogrenilen tavani ({OGRENILEN_TAVANI}) asildi; en "
-                        f"eski dusuruldu: {eski[0]}:{eski[1]}", kirmizi=True)
+            self._logla(f"ogrenilen tavani ({OGRENILEN_TAVANI}) asildi; en az "
+                        f"tazelenen dusuruldu: {eski[0]}:{eski[1]} (uzun omurlu "
+                        f"tuketici STATIK --tuketici ile verilir)", kirmizi=True)
 
     def _udp_turu(self):
         for _ in range(UDP_TUR_TAVANI):
-            veri, adr = self.udp_link.recv()
+            try:
+                veri, adr = self.udp_link.recv(UDP_DATAGRAM_TAVANI_B)
+            except OSError as exc:
+                # D-405 ("4096 B'den buyuk UDP datagram"): recv hatasi (WinError
+                # 10040 vb.) hub'i OLDURMEZ — calistir() yalniz KeyboardInterrupt
+                # yakalar, sizan OSError surecin cikisi ve ~2 s kor pencereydi.
+                # Sayilir; ilkinde KIRMIZI, sonrasi periyodik sayacta (sel yok).
+                self.sayac["udp_hata"] += 1
+                if not self._udp_hata_loglandi:
+                    self._udp_hata_loglandi = True
+                    self._logla(f"UDP okuma HATASI ({type(exc).__name__}: {exc});"
+                                f" datagram dusuruldu, hub yasiyor (sonrakiler "
+                                f"yalniz udp_hata sayacinda)", kirmizi=True)
+                return
             if not veri:
                 return
             self.sayac["udp_alinan"] += 1
@@ -288,6 +350,20 @@ class SeriHub:
             if self.seri_link is None:
                 self.sayac["dusurulen"] += 1        # kuyruk YOK: bayat rota olmasin
                 continue
+            if not veri.endswith(CERCEVE_SONU):
+                # D-405 Q1 ("newline'siz datagram seride SONRAKI cerceveye
+                # yapisir"): seri bayt akisinda sinir yalniz newline'dir;
+                # eksikse bu datagram VE komsusu YKS'de birlikte kaybolurdu
+                # (olculdu: seri_yazilan=2, YKS 0 cerceve). Uyumlu uretici
+                # (protocol.encode) icin bu dal hic kosmaz -> bayt-es aktarim.
+                veri += CERCEVE_SONU
+                self.sayac["newline_eklenen"] += 1
+                if not self._newline_loglandi:
+                    self._newline_loglandi = True
+                    self._logla(f"newline'siz datagram ({adr[0]}:{adr[1]}, "
+                                f"{len(veri) - 1} B): sozlesme disi uretici; "
+                                f"newline EKLENDI (sonrakiler yalniz sayacta)",
+                                kirmizi=True)
             try:
                 self.seri_link.send(veri)
             except OSError as exc:                  # SerialException dahil
@@ -325,7 +401,20 @@ class SeriHub:
         # `bozuk` = newline ile kapanip cerceve uretmeyen her parca (JSON degil,
         # bos satir) + dict olmayan ya da yeniden kodlanamayan (NaN) JSON.
         # FrameReader bozugu SESSIZCE atar; hub GORUNUR sayar (fail-visible).
-        cerceveler = list(self.okuyucu.feed(veri))
+        cerceveler = []
+        try:
+            for mesaj in self.okuyucu.feed(veri):
+                cerceveler.append(mesaj)
+        except Exception as exc:
+            # D-405 ("Hub sureci derin ic ice JSON satirinda RecursionError ile
+            # OLUR"): FrameReader artik RecursionError'i da yutar; bu sarmal
+            # SAVUNMA DERINLIGIDIR — hub SiK hattinin tek erisim noktasidir,
+            # cozucuden sizan HICBIR istisna onu oldurmez. Istisnali satir
+            # cerceve uretmedi; asagidaki newline farki onu `bozuk` sayar.
+            # Uretecin kalan tamponu korunur (satir zaten ayrilmisti).
+            self._logla(f"cerceve cozme ISTISNASI ({type(exc).__name__}: "
+                        f"{str(exc)[:120]}); parca bozuk sayildi, hub yasiyor",
+                        kirmizi=True)
         self.sayac["bozuk"] += veri.count(b"\n") - len(cerceveler)
         for mesaj in cerceveler:
             if not isinstance(mesaj, dict):
@@ -333,8 +422,10 @@ class SeriHub:
                 continue
             try:
                 ham = encode(mesaj)                # tek satir + newline garanti
-            except (TypeError, ValueError):
+            except Exception as exc:               # TypeError/ValueError (NaN) + D-405 beklenmeyen
                 self.sayac["bozuk"] += 1
+                self._logla(f"cerceve yeniden kodlanamadi ({type(exc).__name__}: "
+                            f"{str(exc)[:120]}); dusuruldu", kirmizi=True)
                 continue
             self.sayac["seri_cerceve"] += 1
             self._fanout(ham)
@@ -397,6 +488,43 @@ class SeriHub:
 
 # ── CLI ──────────────────────────────────────────────────────────────────────
 
+#: `_sigterm_kur` isleyiciyi kuramadiysa (ana iplik disi) dondurdugu nobetci.
+_SIGTERM_KURULAMADI = object()
+
+
+def _sigterm_kur(hub):
+    """SIGTERM -> hub.durdur(); onceki isleyiciyi dondurur (geri alma icin).
+
+    D-405 ("SIGTERM isleyicisi yok"): systemd `stop` SIGTERM yollar; Python
+    varsayilani surecin ANINDA olmesidir -> calistir() finally'si, son sayac
+    logu (dusurulen/bozuk/fanout_hata) ve kapat() kosmaz, TimeoutStopSec=5
+    anlamsizdi. Isleyici yalniz bayragi kurar; dongu bir tur icinde (<= seri
+    zaman asimi) temiz cikar, cikis 0. `signal.signal` yalniz ana iplikte
+    calisir; iplikten cagrilan main (test) icin KIRMIZI not, isleyici yok.
+    """
+    def isleyici(signum, frame):        # noqa: ARG001 — imza signal'in
+        hub.durdur()
+
+    try:
+        eski = signal.signal(signal.SIGTERM, isleyici)
+    except (ValueError, OSError, AttributeError) as exc:
+        print(f"{LOG_ONEKI} KIRMIZI SIGTERM isleyicisi kurulamadi "
+              f"({type(exc).__name__}: {exc}); systemd stop'ta son sayac logu "
+              f"kaybolur", file=sys.stderr, flush=True)
+        return _SIGTERM_KURULAMADI
+    return signal.SIG_DFL if eski is None else eski
+
+
+def _sigterm_geri_al(eski):
+    """main() cikarken onceki SIGTERM isleyicisini geri koy (test hijyeni)."""
+    if eski is _SIGTERM_KURULAMADI:
+        return
+    try:
+        signal.signal(signal.SIGTERM, eski)
+    except (ValueError, OSError, TypeError):
+        pass
+
+
 def _arg_parser():
     ap = argparse.ArgumentParser(
         description="SiK seri hub: portu tek basina acar, NAVITAS cercevelerini "
@@ -436,12 +564,18 @@ def main(argv=None):
 
     udp = None
     hub = None
+    sigterm_eski = _SIGTERM_KURULAMADI
     try:
         try:
-            udp = UDPLink(bind=bind, timeout=UDP_OKUMA_ZAMAN_ASIMI_S)
+            # D-405 tek sahiplik: SO_REUSEADDR YOK — ayni --bind ile ikinci hub
+            # (runbook'taki manuel komut + systemd birimi) sessizce sagir bir
+            # kopya olmak yerine burada OSError alir -> cikis 3.
+            udp = UDPLink(bind=bind, timeout=UDP_OKUMA_ZAMAN_ASIMI_S,
+                          reuse=False)
         except OSError as exc:
             print(f"{LOG_ONEKI} KIRMIZI HATA: UDP ucu acilamadi {args.bind}: "
-                  f"{exc}", file=sys.stderr, flush=True)
+                  f"{exc} (baska bir hub mu calisiyor? once `systemctl stop "
+                  f"navitas-seri-hub`)", file=sys.stderr, flush=True)
             return 3
         try:
             seri = seri_ac()
@@ -454,11 +588,13 @@ def main(argv=None):
             return 4
         hub = SeriHub(seri, udp, tuketiciler, seri_ac=seri_ac,
                       log_aralik_s=args.log_aralik)
+        sigterm_eski = _sigterm_kur(hub)           # D-405: systemd stop temiz
         print(f"{LOG_ONEKI} seri {args.port} @ {args.baud} <-> udp "
               f"{bind[0]}:{bind[1]} statik={len(tuketiciler)}", flush=True)
         hub.calistir()
         return 0
     finally:
+        _sigterm_geri_al(sigterm_eski)
         if hub is not None:
             hub.kapat()
         elif udp is not None:
