@@ -170,10 +170,14 @@ final, prova zinciri en az 3 temiz koşu. (30 Eylül tek atışa 9 gün tampon.)
 
 ## 4. İnsan görevleri (kullanıcıdan)
 
-- K3+K9 sorusu TEKNOFEST'e (metin hazır) + **bu planın muğlak-3'ü eklenir** (§0).
-- Cuma: telefon + DroidCam (P6, ~30 dk, birlikte).
-- DJI Neo nadir çekim (Faz C model döngüsünün kilidi — ne kadar erken o kadar iyi).
-- Cumartesi: donanım günü. Faz C'de saha provası günleri (tarihler birlikte).
+- ~~K3+K9/muğlak sorular TEKNOFEST'e~~ — **İPTAL (kullanıcı, 3 Eylül):**
+  iletilmeyecek; §0 fail-safe yorumları KALICI bağlayıcı.
+- ~~Cuma DroidCam + DJI çekimi~~ — **İPTAL (kullanıcı, 3 Eylül):** P6 düştü;
+  kamera doğrulaması cumartesi GERÇEK kamerayla. Model döngüsü (T153/T47/T197)
+  VERİ-BLOKLU: yeni veri gelmedikçe **v36 son modeldir**; dondurma kararı öne
+  çekilebilir.
+- Cumartesi donanım günü — **birlikte** (Gün-1 + aviyonik; SAHA_RUNBOOK §3).
+  Faz C'de saha provası günleri (tarihler birlikte).
 
 ## 5. Mimar kararları (bu planla; gerekçeli)
 
