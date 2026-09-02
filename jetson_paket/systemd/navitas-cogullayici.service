@@ -20,7 +20,8 @@ SupplementaryGroups=dialout
 WorkingDirectory=/home/navitas/navitas
 Environment=PYTHONUNBUFFERED=1
 Environment=PATH=/home/navitas/.local/bin:/usr/local/bin:/usr/bin:/bin
-ExecStart=/usr/bin/env mavproxy.py --master=${PIXHAWK_SERI} --baudrate ${PIXHAWK_BAUD} --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir ${LOG_DIZIN}/mavproxy
+# D-406: MAVProxy REQUEST_DATA_STREAM(ALL,streamrate) SR*'i ezer; 8 = 2x MAVLINK_KONUM_ASGARI_HZ
+ExecStart=/usr/bin/env mavproxy.py --master=${PIXHAWK_SERI} --baudrate ${PIXHAWK_BAUD} --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir ${LOG_DIZIN}/mavproxy
 Restart=always
 RestartSec=2
 TimeoutStopSec=5

@@ -47,6 +47,10 @@ Kapilar (adlari ne kilitledigini soyler):
      --kapi: uc uc AYNI ANDA (baslangiclar en erken bitisten once), 3/3 -> tuketiciler
        enable+restart; 2/3 -> HATA exit 1, tuketiciler BASLATILMAZ, eski .rc dosyasi sayilmaz
      --dogrudan: KAMERA='*' glob GENISLEMEZ (set -f); --durdur nohup pid'lerini oldurur
+  K11 Gorev K (SAHA_HAZIRLIK_PLANI_20260903 §1.4): KAMERA=http://127.0.0.1:<port>/video ->
+     navitas-kamera-koprusu SISTEM Python'la (${KAMERA_PYTHON}, PYTHON3 venv'e ezilse de) kalkar,
+     rpi_inference --kaynak ayni URL; port URL'den; yanlis yol -> cikis 1; loopback disi
+     KAMERA kopru kaldirmaz; 8080 ve /video kamera_koprusu sabitleriyle AYNI (madde 16)
 """
 import getpass
 import os
@@ -61,12 +65,13 @@ import unittest
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
-for _y in (KOK / "comms", KOK / "codes"):
+for _y in (KOK / "comms", KOK / "codes", KOK / "scripts"):
     if str(_y) not in sys.path:
         sys.path.insert(0, str(_y))
 
 import iha_komut_alici  # noqa: E402
-from karar_sozlesmesi import SARTNAME_IHA_GOREV_SURESI_S  # noqa: E402
+import kamera_koprusu  # noqa: E402
+from karar_sozlesmesi import MAVLINK_KONUM_ASGARI_HZ, SARTNAME_IHA_GOREV_SURESI_S  # noqa: E402
 
 PAKET = KOK / "jetson_paket"
 BETIK = PAKET / "jetson_baslat.sh"
@@ -81,7 +86,10 @@ RPI = "navitas-rpi-inference"
 INIS = "navitas-iha-inis-yayinci"
 KOMUT = "navitas-iha-komut-alici"
 TUKETICILER = (RPI, INIS, KOMUT)
-TUM_BIRIMLER = (COGULLAYICI, SERI_HUB) + TUKETICILER
+TUM_BIRIMLER = (COGULLAYICI, SERI_HUB) + TUKETICILER          # MAVLink/seri birimleri (KIP'e gore)
+KAMERA_KOPRUSU = "navitas-kamera-koprusu"   # Gorev K: yalniz KAMERA=http://127.0.0.1:<port>/video ile
+BIRIM_DOSYALARI = TUM_BIRIMLER + (KAMERA_KOPRUSU,)            # paketteki TUM birim dosyalari
+KOPRU_URL = kamera_koprusu.video_url()      # http://127.0.0.1:8080/video (kamera_koprusu sabitleri)
 MAV_UCLAR = ("udp:127.0.0.1:14550", "udp:127.0.0.1:14551", "udp:127.0.0.1:14552")
 
 # Betigin ExecStart dosya adi -> CONTRACTS §7.4 tablo satiri (`rpi_inference --mavlink`)
@@ -89,7 +97,7 @@ PY_ADI = {RPI: "rpi_inference", INIS: "iha_inis_yayinci", KOMUT: "iha_komut_alic
 # Kurulu kopyada (JETSON_KILAVUZ §2) dosyalarin yeri: kod/<ad>.py -> <NAVITAS_KOK>/<alt>/<ad>.py
 KURULU_YERI = {"rpi_inference.py": "codes", "iha_inis_yayinci.py": "comms",
                "iha_komut_alici.py": "comms", "seri_hub.py": "comms",
-               "mavlink_dogrula.py": "scripts"}
+               "mavlink_dogrula.py": "scripts", "kamera_koprusu.py": "scripts"}
 
 # Birim dosyalarindaki sabitler; betik ezilmis degerle bunlari sed'ler (yerine_koy + birimleri_kur)
 KOK_VARSAYILAN = "/home/navitas/navitas"
@@ -105,7 +113,8 @@ BEYAN_ANAHTARLARI = ("KIP", "YKS_IP", "IKA_IP", "FOV", "ODAK", "SENARYO", "KAMER
                      "ENV_DOSYA", "SYSTEMD_DIZIN", "SERVIS_KULLANICI", "SUDO_USER", "USER",
                      "NAVITAS_PAKET_DIZIN", "NAVITAS_CR_KOPYA",
                      "SHIM_LOG", "SHIM_UID", "SHIM_KULLANICI", "FAKE_DUSEN", "FAKE_SURE",
-                     "FAKE_SLEEP", "NAVITAS_TEST_PATH_ON")
+                     "FAKE_SLEEP", "NAVITAS_TEST_PATH_ON", "KAMERA_PYTHON",
+                     "KAMERA_KOPRU_ARGS")
 SERI_CIHAZ_KALIBI = re.compile(r"/dev/tty")
 
 
@@ -402,6 +411,7 @@ class _AnaMakine:
             "SHIM_KULLANICI": self.kullanici,
             "SERVIS_KULLANICI": self.kullanici,
             "PYTHON3": _msys(self.bin / "python3"),
+            "KAMERA_PYTHON": _msys(self.bin / "python3"),
             "PIXHAWK_SERI": _msys(self.d / "dev" / "ttyACM0"),
             "SIK_SERI": _msys(self.d / "dev" / "ttyUSB0"),
             "NAVITAS_KOK": _msys(self.kok),
@@ -494,6 +504,13 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
             self.assertIn(f"--out udp:127.0.0.1:{port}", k)
         self.assertIn("--daemon", k)
         self.assertIn("--non-interactive", k)
+        # D-406 B: MAVProxy varsayilan --streamrate 4, baglaninca REQUEST_DATA_STREAM(ALL,4)
+        # ile SR2_POSITION=8'i 4 Hz'e cekerdi (= asgari, jitter payi sifir). 8 = 2x asgari;
+        # deger CONTRACTS sabitinden turetilir (madde 16), ciplak 8 degil.
+        self.assertEqual(_arg_degeri(k, "--streamrate"), str(int(2 * MAVLINK_KONUM_ASGARI_HZ)),
+                         "cogullayici --streamrate 8 (D-406 B) yok/yanlis: " + k)
+        self.assertEqual(_arg_degeri(_exec_start(COGULLAYICI), "--streamrate"),
+                         str(int(2 * MAVLINK_KONUM_ASGARI_HZ)), "birim dosyasinda --streamrate 8 yok")
 
     def test_K1_tuketiciler_cogullayici_ucundan_sysid_pinli(self):
         rpi = self.b["birimler"][RPI]
@@ -773,6 +790,8 @@ class JetsonBaslatFailClosed(unittest.TestCase):
         self.assertNotIn("--fov", rpi)
         self.assertEqual(_arg_degeri(rpi, "--senaryo"), "kirsal")
         self.assertEqual(_arg_degeri(rpi, "--kaynak"), "/dev/video1")
+        self.assertNotIn(KAMERA_KOPRUSU, _bolumler(out)["birimler"],
+                         "/dev/videoN kaynagi kamera koprusu KALDIRMAZ (Gorev K)")
 
 
 class JetsonBaslatCrlf(unittest.TestCase):
@@ -845,11 +864,12 @@ class JetsonBaslatCrlf(unittest.TestCase):
 class SystemdBirimleri(unittest.TestCase):
     """K3/K4 — birim dosyalari: gozcu alanlari BOLUMUYLE, siralama, ExecStart dosyalari, CONTRACTS uclari."""
 
-    def test_K3_bes_birim_dosyasi_var(self):
-        self.assertEqual({p.stem for p in BIRIM_DIZIN.glob("*.service")}, set(TUM_BIRIMLER))
+    def test_K3_alti_birim_dosyasi_var(self):
+        """5 MAVLink/seri birimi + kamera koprusu (Gorev K) — fazlasi/eksigi sessiz gecmez."""
+        self.assertEqual({p.stem for p in BIRIM_DIZIN.glob("*.service")}, set(BIRIM_DOSYALARI))
 
     def test_K3_gozcu_alanlari_her_birimde_DOGRU_BOLUMDE(self):
-        for ad in TUM_BIRIMLER:
+        for ad in BIRIM_DOSYALARI:
             with self.subTest(birim=ad):
                 _gozcu_kilidi(self, _birim_oku(ad), ad)
 
@@ -861,13 +881,13 @@ class SystemdBirimleri(unittest.TestCase):
                 self.assertIn(f"{COGULLAYICI}.service", " ".join(u.get("Wants", [])), ad)
                 self.assertIn(f"{SERI_HUB}.service", " ".join(u.get("After", [])),
                               f"{ad}: KIP=sik'te hub'dan sonra kalkmali")
-        for ad in (COGULLAYICI, SERI_HUB):
+        for ad in (COGULLAYICI, SERI_HUB, KAMERA_KOPRUSU):
             self.assertNotIn("Wants", _birim_oku(ad)["Unit"], f"{ad}: kimseyi cekmemeli")
 
     def test_K3_ExecStart_py_dosyasi_pakette_MEVCUT(self):
         """ExecStart'taki NAVITAS .py dosyasi jetson_paket/kod/ altinda olmali.
         Depoda HIC olmayan betik icin GORUNUR skip: paket bir seyi aynalayamaz."""
-        for ad in TUM_BIRIMLER:
+        for ad in BIRIM_DOSYALARI:
             with self.subTest(birim=ad):
                 yol = _navitas_py(_exec_start(ad))
                 if ad == COGULLAYICI:
@@ -970,10 +990,10 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
             _, out_k, _ = _kos(m.betik, e)
             self.assertEqual(dict(s.split("=", 1) for s in env_metin.decode("utf-8").splitlines()),
                              _bolumler(out_k)["env"])
-            # yazilan 5 birim: CR'siz, sed'lenmis, bolum kilidi korunmus
+            # yazilan 6 birim: CR'siz, sed'lenmis, bolum kilidi korunmus
             yazilan = {p.stem for p in m.systemd.glob("*.service")}
-            self.assertEqual(yazilan, set(TUM_BIRIMLER))
-            for ad in TUM_BIRIMLER:
+            self.assertEqual(yazilan, set(BIRIM_DOSYALARI))
+            for ad in BIRIM_DOSYALARI:
                 with self.subTest(birim=ad):
                     ham = (m.systemd / f"{ad}.service").read_bytes()
                     self.assertNotIn(b"\r", ham, f"{ad}: kurulu birimde CR (tr -d yok?)")
@@ -987,6 +1007,9 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
                     if ad == COGULLAYICI:
                         self.assertIn(f"PATH=/home/{self.KULLANICI}/.local/bin:/usr/local/bin:/usr/bin:/bin",
                                       s.get("Environment", []), ad)
+                    elif ad == KAMERA_KOPRUSU:
+                        self.assertTrue(ex.startswith("/usr/bin/env ${KAMERA_PYTHON} "
+                                                      + e["NAVITAS_KOK"] + "/"), ex)
                     else:
                         self.assertTrue(ex.startswith(e["PYTHON3"] + " " + e["NAVITAS_KOK"] + "/"), ex)
             # D-405 repro: beyan degisti, ikinci --kur -> env yenilenir VE yine restart
@@ -1035,7 +1058,7 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
         try:
             kod, out, err = _kos(m.betik, m.env(KIP="sik", FOV="78"), "--kur")
             self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
-            for ad in TUM_BIRIMLER:
+            for ad in BIRIM_DOSYALARI:
                 ham = (m.systemd / f"{ad}.service").read_bytes()
                 self.assertNotIn(b"\r", ham, f"{ad}: kurulu birimde CR")
                 a = _birim_oku_metin(ham.decode("utf-8"))
@@ -1151,6 +1174,165 @@ class JetsonBaslatKurKapiShim(unittest.TestCase):
         finally:
             time.sleep(0.5)
             m.temizle()
+
+
+class KameraKoprusuBirimi(unittest.TestCase):
+    """K11 — Gorev K (SAHA_HAZIRLIK_PLANI_20260903 §1.4): Jetson Nano'da CSI IMX477
+    yalniz sistem Python 3.6 + GStreamer'li sistem OpenCV ile okunur; rpi_inference
+    (Py>=3.8 venv) kopruden okur. KAMERA=http://127.0.0.1:<port>/video verilince
+    navitas-kamera-koprusu KAMERA_PYTHON ile kalkar, rpi_inference ayni URL'yi alir."""
+
+    def setUp(self):
+        # D-405: --kuru artik ana makinedeki her eksigi gorur ve [YOK] varsa 3 verir.
+        # Kamera kapilarini gelistirici PC'sinin tesadufi kurulumuna baglamamak icin
+        # gercek betigi, tum dosya/yorumlayici/cihazlari bulunan sahte Jetson'da kos.
+        self.m = _AnaMakine(sbin=True, kullanici="saha")
+
+    def tearDown(self):
+        self.m.temizle()
+
+    def _kuru_hazir(self, **ek):
+        beyan = {"KIP": "udp", **BEYAN_TAM, "KAMERA": KOPRU_URL}
+        beyan.update(ek)
+        env = self.m.env(**beyan)
+        kod, out, err = _kos(self.m.betik, env)
+        return env, kod, out, err, _bolumler(out)
+
+    def test_K11_kopru_birimi_kalkar_ve_rpi_ayni_urlyi_okur(self):
+        env, kod, out, err, b = self._kuru_hazir()
+        self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
+        self.assertEqual(_yok_sayisi(b), 0, out)
+        self.assertEqual(set(b["birimler"]), {COGULLAYICI, KAMERA_KOPRUSU, *TUKETICILER})
+        sira = list(b["birimler"])
+        self.assertLess(sira.index(KAMERA_KOPRUSU), sira.index(RPI),
+                         "kopru rpi_inference'tan ONCE kalkmali")
+        kopru = b["birimler"][KAMERA_KOPRUSU]
+        self.assertTrue(kopru.startswith(f"/usr/bin/env {env['KAMERA_PYTHON']} "), kopru)
+        self.assertIn(env["NAVITAS_KOK"] + "/scripts/kamera_koprusu.py", kopru)
+        self.assertEqual(_arg_degeri(kopru, "--port"), str(kamera_koprusu.VARSAYILAN_PORT))
+        self.assertEqual(_arg_degeri(b["birimler"][RPI], "--kaynak"), KOPRU_URL)
+        self.assertEqual(b["env"]["KAMERA_PYTHON"], env["KAMERA_PYTHON"])
+        self.assertEqual(int(b["env"]["KAMERA_KOPRU_PORT"]), kamera_koprusu.VARSAYILAN_PORT)
+        self.assertEqual(b["env"].get("KAMERA_KOPRU_ARGS", ""), "")
+        # K5 kalibi: kuru satiri == birim ExecStart'i (bagimsiz Python yerine-koyma)
+        beklenen = _exec_start(KAMERA_KOPRUSU)
+        beklenen = beklenen.replace(KOK_VARSAYILAN, b["env"]["NAVITAS_KOK"])
+        beklenen = beklenen.replace(PYTHON3_VARSAYILAN, b["env"]["PYTHON3"])
+        beklenen = re.sub(r"\$\{(\w+)\}|\$(\w+)",
+                          lambda m: b["env"][m.group(1) or m.group(2)], beklenen)
+        self.assertEqual(" ".join(kopru.split()), " ".join(beklenen.split()))
+        self.assertIn("[VAR] kamera_koprusu.py", b["paket"])
+        self.assertIn("[TAM] beyanlar tam", out)
+
+    def test_K11_kopru_sistem_pythonda_kalir_PYTHON3_venve_ezilse_de(self):
+        """Nano'da PYTHON3 = venv (ultralytics); kopru GStreamer icin SISTEM Python ister."""
+        venv_yolu = self.m.bin / "venv38-python"
+        self.m._shim(venv_yolu, _SHIM_PYTHON3)
+        venv = _msys(venv_yolu)
+        env, kod, out, err, b = self._kuru_hazir(PYTHON3=venv)
+        self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
+        self.assertTrue(b["birimler"][RPI].startswith(venv + " "), b["birimler"][RPI])
+        self.assertTrue(b["birimler"][KAMERA_KOPRUSU].startswith(
+            f"/usr/bin/env {env['KAMERA_PYTHON']} "),
+                         b["birimler"][KAMERA_KOPRUSU])
+        self.assertNotIn(venv, b["birimler"][KAMERA_KOPRUSU])
+        self.assertEqual(b["env"]["PYTHON3"], venv)
+        self.assertEqual(b["env"]["KAMERA_PYTHON"], env["KAMERA_PYTHON"])
+        # KAMERA_PYTHON da ezilebilir (baska sistem python yolu) — o zaman kopru onu kosar
+        kamera_python_yolu = self.m.bin / "python3.6"
+        self.m._shim(kamera_python_yolu, _SHIM_PYTHON3)
+        kamera_python = _msys(kamera_python_yolu)
+        _, kod, out, _, b = self._kuru_hazir(KAMERA_PYTHON=kamera_python)
+        self.assertEqual(kod, 0, out)
+        self.assertTrue(b["birimler"][KAMERA_KOPRUSU].startswith(
+            f"/usr/bin/env {kamera_python} "))
+
+    def test_K11_port_urlden_gelir_ve_yanlis_url_fail_closed(self):
+        _, kod, out, _, b = self._kuru_hazir(KAMERA="http://127.0.0.1:9090/video")
+        self.assertEqual(kod, 0, out)
+        self.assertEqual(_arg_degeri(b["birimler"][KAMERA_KOPRUSU], "--port"), "9090")
+        self.assertEqual(b["env"]["KAMERA_KOPRU_PORT"], "9090")
+        self.assertEqual(_arg_degeri(b["birimler"][RPI], "--kaynak"), "http://127.0.0.1:9090/video")
+        for kotu in ("http://127.0.0.1:9090/kare.jpg", "http://127.0.0.1:9090",
+                      "http://127.0.0.1:abc/video", "http://localhost:8080/durum"):
+            with self.subTest(KAMERA=kotu):
+                _, kod, out, err, _ = self._kuru_hazir(KAMERA=kotu)
+                self.assertEqual(kod, 1, f"stdout:\n{out}\nstderr:\n{err}")
+                self.assertIn("HATA", err)
+                self.assertNotIn("navitas-rpi-inference.service:", out,
+                                  "fail-closed: hatali KAMERA ile komut basilmaz")
+
+    def test_K11_loopback_disi_kaynaklar_kopru_kaldirmaz(self):
+        """USB (UVC) yedek `--kaynak 0` ve DroidCam WiFi kopru istemez (plan §1.4 yedek)."""
+        for kaynak in ("0", "/dev/video1", "http://192.168.1.42:4747/video"):
+            with self.subTest(KAMERA=kaynak):
+                _, kod, out, _, b = self._kuru_hazir(KAMERA=kaynak)
+                self.assertEqual(kod, 0, out)
+                self.assertNotIn(KAMERA_KOPRUSU, b["birimler"])
+                self.assertEqual(_arg_degeri(b["birimler"][RPI], "--kaynak"), kaynak)
+                self.assertEqual(int(b["env"]["KAMERA_KOPRU_PORT"]), kamera_koprusu.VARSAYILAN_PORT)
+
+    def test_K11_sik_kipinde_hub_ve_kopru_birlikte(self):
+        _, kod, out, _, b = self._kuru_hazir(KIP="sik")
+        self.assertEqual(kod, 0, out)
+        self.assertEqual(set(b["birimler"]), set(BIRIM_DOSYALARI))
+        self.assertEqual(_arg_degeri(b["birimler"][RPI], "--kaynak"), KOPRU_URL)
+        self.assertEqual(_arg_degeri(b["birimler"][RPI], "--yks-hedef"), "127.0.0.1:5100")
+        self.assertNotIn("/dev/tty", b["birimler"][KAMERA_KOPRUSU])
+
+    def test_K11_birim_dosyasi_KAMERA_PYTHON_ile_ve_gozcu(self):
+        a = _birim_oku(KAMERA_KOPRUSU)
+        _gozcu_kilidi(self, a, KAMERA_KOPRUSU)
+        u, s = a["Unit"], a["Service"]
+        k = s["ExecStart"][0]
+        # systemd: ExecStart'in ilk sozcugu degisken OLAMAZ -> /usr/bin/env ${KAMERA_PYTHON}
+        self.assertTrue(k.startswith("/usr/bin/env ${KAMERA_PYTHON} "), k)
+        self.assertIn("/home/navitas/navitas/scripts/kamera_koprusu.py", k)
+        self.assertIn("--port ${KAMERA_KOPRU_PORT}", k)
+        self.assertIn("$KAMERA_KOPRU_ARGS", k)
+        self.assertNotIn("/usr/bin/python3", k,
+                         "yorumlayici sabit yazilmaz: birimleri_kur sed'i onu PYTHON3'e cevirirdi")
+        self.assertIn("video", " ".join(s.get("SupplementaryGroups", [])), "nvargus: video grubu")
+        self.assertNotIn("DISPLAY", " ".join(s.get("Environment", [])))
+        self.assertNotIn("Wants", u)
+        metin = (BIRIM_DIZIN / f"{KAMERA_KOPRUSU}.service").read_text(encoding="utf-8")
+        self.assertIn("nvarguscamerasrc", metin)
+        self.assertIn("3.6", metin)
+        self.assertTrue((KOK / "scripts" / "kamera_koprusu.py").is_file())
+        self.assertTrue((KOD / "kamera_koprusu.py").is_file(), "paket kopruyu tasimali")
+
+    def test_K11_aktif_kopru_kurulumda_enable_ve_RESTART_alir(self):
+        beyan = {"KIP": "udp", **BEYAN_TAM, "KAMERA": KOPRU_URL}
+        env = self.m.env(**beyan)
+        kod, out, err = _kos(self.m.betik, env, "--kur")
+        self.assertEqual(kod, 0, f"stdout:\n{out}\nstderr:\n{err}")
+        systemctl = [s.split()[1:] for s in self.m.shim_satirlari()
+                     if s.startswith("systemctl ")]
+        etkin = [f"{ad}.service" for ad in (COGULLAYICI, KAMERA_KOPRUSU, *TUKETICILER)]
+        self.assertIn(["enable", *etkin], systemctl)
+        self.assertIn(["restart", *etkin], systemctl,
+                      "kamera koprusu yeni beyanla canli surece RESTART edilmelidir (D-405)")
+        kurulu = _birim_oku_metin(
+            (self.m.systemd / f"{KAMERA_KOPRUSU}.service").read_text(encoding="utf-8"))
+        _gozcu_kilidi(self, kurulu, KAMERA_KOPRUSU,
+                      env_dosya=env["ENV_DOSYA"], kullanici=self.m.kullanici)
+        ex = kurulu["Service"]["ExecStart"][0]
+        self.assertTrue(ex.startswith("/usr/bin/env ${KAMERA_PYTHON} "
+                                      + env["NAVITAS_KOK"] + "/scripts/kamera_koprusu.py"), ex)
+        env_metin = self.m.env_dosya.read_text(encoding="utf-8")
+        self.assertIn(f"KAMERA_PYTHON={env['KAMERA_PYTHON']}\n", env_metin)
+        self.assertIn(f"KAMERA_KOPRU_PORT={kamera_koprusu.VARSAYILAN_PORT}\n", env_metin)
+
+    def test_K11_kopru_sabitleri_koddan(self):
+        """8080 ve /video betikte CIPLAK degil: kamera_koprusu ile AYNI (madde 16)."""
+        metin = BETIK.read_text(encoding="utf-8")
+        m = re.search(r"^KAMERA_KOPRU_PORT_VARSAYILAN=(\d+)", metin, re.M)
+        self.assertIsNotNone(m, "betikte KAMERA_KOPRU_PORT_VARSAYILAN yok")
+        self.assertEqual(int(m.group(1)), kamera_koprusu.VARSAYILAN_PORT)
+        m = re.search(r'^KAMERA_KOPRU_YOL="([^"]+)"', metin, re.M)
+        self.assertIsNotNone(m, "betikte KAMERA_KOPRU_YOL yok")
+        self.assertEqual(m.group(1), kamera_koprusu.VIDEO_YOLU)
+        self.assertEqual(KOPRU_URL, f"http://127.0.0.1:{kamera_koprusu.VARSAYILAN_PORT}/video")
 
 
 if __name__ == "__main__":

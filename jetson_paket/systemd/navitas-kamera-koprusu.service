@@ -1,0 +1,34 @@
+# NEDEN: SAHA_HAZIRLIK_PLANI_20260903 §1.4 (Gorev K) — Jetson Nano'da RPi HQ
+# (IMX477, CSI) YALNIZ GStreamer nvarguscamerasrc ile okunur; GStreamer'li OpenCV
+# yalniz SISTEM Python 3.6'da var. rpi_inference (ultralytics, Python >= 3.8 venv,
+# GStreamer'siz opencv) kamerayi DOGRUDAN acamaz. Bu birim kopruyu sistem
+# Python'uyla (${KAMERA_PYTHON}, /etc/navitas.env — jetson_baslat.sh yazar; PYTHON3
+# venv'i DEGIL) kosar: kare -> JPEG -> http://127.0.0.1:${KAMERA_KOPRU_PORT}/video
+# (multipart MJPEG, DroidCam kalibi). rpi_inference --kaynak o URL ile okur.
+# jetson_baslat.sh bu birimi YALNIZ KAMERA=http://127.0.0.1:<port>/video verilince
+# kaldirir (USB kamera / DroidCam WiFi'de kurulmaz, disable edilir).
+# ExecStart ilk sozcugu systemd'de degisken OLAMAZ (mutlak yol sart); bu yuzden
+# /usr/bin/env ${KAMERA_PYTHON} ... — cogullayici birimiyle ayni kalip.
+# $KAMERA_KOPRU_ARGS: --fps/--kalite/--kaynak ezmeleri (bos = nvargus 1280x720).
+# Kaynak koparsa surec COKMEZ: KIRMIZI log + 1 s'de yeniden acma, /durum
+# kaynak_acik:false (fail-visible); HTTP ucu dolu/ariza -> cikis 3 -> Restart=always.
+# Sozlesme kilidi: tests/test_faz_b_kamera_koprusu.py · tests/test_faz_b_jetson_baslat.py.
+[Unit]
+Description=NAVITAS kamera koprusu - CSI nvarguscamerasrc (sistem Python) -> MJPEG HTTP 127.0.0.1 (Gorev K)
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+SupplementaryGroups=video
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/env ${KAMERA_PYTHON} /home/navitas/navitas/scripts/kamera_koprusu.py --port ${KAMERA_KOPRU_PORT} $KAMERA_KOPRU_ARGS
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

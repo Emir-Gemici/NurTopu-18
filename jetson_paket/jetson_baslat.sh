@@ -23,6 +23,14 @@
 #     enable + RESTART (degisen beyan canli surece uygulanir); --kapi uc ucu AYNI
 #     ANDA kosar (CONTRACTS §7.4 "uc uc ayni anda acikken"); SERVIS_KULLANICI birim
 #     dosyasina islenir (User=, ~/.local/bin); --kuru herhangi [YOK]'ta 3 ile durur.
+#   * KAMERA=http://127.0.0.1:8080/video (SAHA_HAZIRLIK_PLANI_20260903 §1.4, Gorev K):
+#     Jetson Nano'da RPi HQ (IMX477, CSI) yalniz GStreamer nvarguscamerasrc ile
+#     okunur; o da yalniz SISTEM Python 3.6 + sistem OpenCV'de var. rpi_inference
+#     (ultralytics, Python >= 3.8 venv = PYTHON3) kamerayi DOGRUDAN acamaz.
+#     navitas-kamera-koprusu (scripts/kamera_koprusu.py, KAMERA_PYTHON=/usr/bin/python3)
+#     kareyi MJPEG HTTP olarak sunar; rpi_inference --kaynak http://127.0.0.1:8080/video
+#     ile okur (DroidCam kalibi). Loopback http disinda KAMERA (indeks, /dev/videoN,
+#     DroidCam WiFi URL'si) kopruyu KALDIRMAZ.
 #
 # KULLANIM
 #   bash jetson_baslat.sh --kuru        HICBIR SEY baslatmaz; kosacagi komutlari basar
@@ -33,6 +41,7 @@
 #   sudo bash jetson_baslat.sh --durdur birimleri durdurur (disable --now), nohup pid'lerini oldurur
 #   bash jetson_baslat.sh --durum       birim durumu + yeniden-baslatma sayisi (cokme dongusu GORUNUR)
 #   Degiskenler ortamdan ezilir:   KIP=sik FOV=78 bash jetson_baslat.sh --kuru
+#   CSI kamera (kopru):            KAMERA=http://127.0.0.1:8080/video FOV=78 ... --kuru
 #
 # CIKIS KODLARI: 0 tamam · 1 hata (fail-closed, hicbir sey baslatilmadi) ·
 #                3 --kuru'da beyan/paket/ana makine eksik (gercek kosum DURURDU)
@@ -77,6 +86,11 @@ FOV="${FOV:-}"               # kamera YATAY gorus acisi (derece) — BEYAN edili
 ODAK="${ODAK:-}"             # odak uzakligi (piksel); FOV ile birlikte verilmez (rpi_inference)
 SENARYO="${SENARYO:-}"       # rpi_inference --senaryo (olcek kahini katman 2; bos = verilmez)
 KAMERA="${KAMERA:-}"         # rpi_inference --kaynak (indeks, /dev/videoN, URL; bos = indeks 0)
+                             # http://127.0.0.1:<port>/video -> navitas-kamera-koprusu KALKAR (asagida)
+KAMERA_PYTHON="${KAMERA_PYTHON:-/usr/bin/python3}"   # kopru yorumlayicisi: SISTEM Python (GStreamer'li
+                             # sistem OpenCV); PYTHON3 (venv) DEGIL — PYTHON3 ezilse de bu DEGISMEZ
+KAMERA_KOPRU_ARGS="${KAMERA_KOPRU_ARGS:-}"   # kopru ek argumanlari (--fps 5, --kalite 70, --kaynak 0 ...);
+                             # bos = nvarguscamerasrc 1280x720 (kamera_koprusu.py varsayilani)
 UB_REFERANS="${UB_REFERANS:-}"   # LAT,LON — IHA-UB kose referansi (T162); bos = alan ihlali denetimi YOK
 # iha_inis_yayinci --kanit-timeout: sartname §6.2 IHA gorev suresi
 # (karar_sozlesmesi.SARTNAME_IHA_GOREV_SURESI_S = 15*60; SAHA_RUNBOOK §3). Test kilitler.
@@ -115,6 +129,25 @@ hata() { echo "HATA: $*" >&2; exit 1; }
 MAVPROXY_PATH="$MAVPROXY_BIN:/usr/local/bin:/usr/bin:/bin"
 mavproxy_var() { PATH="$MAVPROXY_PATH:$PATH" command -v mavproxy.py >/dev/null 2>&1; }
 
+# ── Kamera koprusu (Gorev K): KAMERA loopback http ise birim kalkar ─────────────
+# Port URL'den alinir; yol kamera_koprusu.VIDEO_YOLU olmali (yanlis yol = fail-closed).
+KAMERA_KOPRU_PORT_VARSAYILAN=8080     # scripts/kamera_koprusu.py VARSAYILAN_PORT (test kilitler)
+KAMERA_KOPRU_YOL="/video"             # kamera_koprusu.VIDEO_YOLU (test kilitler)
+KAMERA_KOPRU=0
+KAMERA_KOPRU_PORT="$KAMERA_KOPRU_PORT_VARSAYILAN"
+case "$KAMERA" in
+  http://127.0.0.1:*|http://localhost:*)
+    _k="${KAMERA#http://}"; _k="${_k#*:}"          # "<port>/<yol>"
+    _port="${_k%%/*}"
+    case "$_k" in */*) _yol="/${_k#*/}" ;; *) _yol="" ;; esac
+    case "$_port" in ''|*[!0-9]*) hata "KAMERA='$KAMERA': port sayi degil" ;; esac
+    [ "$_yol" = "$KAMERA_KOPRU_YOL" ] \
+      || hata "KAMERA='$KAMERA': kopru akisi $KAMERA_KOPRU_YOL ile biter (ornek: http://127.0.0.1:${KAMERA_KOPRU_PORT_VARSAYILAN}${KAMERA_KOPRU_YOL})"
+    KAMERA_KOPRU=1
+    KAMERA_KOPRU_PORT="$_port"
+    ;;
+esac
+
 # ── KIP'e gore tuketici argumanlari — birimler bunlari $..._ARGS olarak okur ───
 RPI_EK_ARGS=""
 if [ -n "$FOV" ]; then RPI_EK_ARGS="$RPI_EK_ARGS --fov $FOV"; fi
@@ -143,12 +176,13 @@ esac
 # /etc/navitas.env'e yazilan ve ExecStart'ta yerine konan anahtarlar
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
-                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS)
+                INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS
+                KAMERA_PYTHON KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS)
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
 # ikisi de BOLER/GENISLETIR — --kuru [UYARI] basar (D-405, curutucu --dogrudan glob bulgusu).
 TEK_DEGER_ANAHTARLAR=(FOV ODAK SENARYO KAMERA UB_REFERANS YKS_IP IKA_IP SYSID KANIT_TIMEOUT
                       PIXHAWK_SERI PIXHAWK_BAUD SIK_SERI SIK_BAUD NAVITAS_KOK PYTHON3 LOG_DIZIN
-                      SERVIS_KULLANICI)
+                      SERVIS_KULLANICI KAMERA_PYTHON KAMERA_KOPRU_PORT)
 
 env_icerik() {
   local k
@@ -157,27 +191,32 @@ env_icerik() {
 
 yerine_koy() {  # $1: metin -> ${ANAHTAR} ve $ANAHTAR yerine deger (systemd ile ayni anlam)
   local m="$1" k v
+  # ONCE birim dosyasindaki sabit yollar (ezilmis kok/python), SONRA degiskenler:
+  # ${KAMERA_PYTHON} sistem Python'udur; PYTHON3 venv'e ezildiginde onun degerine
+  # DONUSMEMELI (kopru GStreamer icin sistem OpenCV ister). birimleri_kur'daki sed
+  # de yalniz birim METNINE dokunur, env dosyasindaki degere degil — ayni anlam.
+  m="${m//"$KOK_VARSAYILAN"/"$NAVITAS_KOK"}"
+  m="${m//"$PYTHON3_VARSAYILAN"/"$PYTHON3"}"
   for k in "${ENV_ANAHTARLAR[@]}"; do
     v="${!k}"
     m="${m//"\${$k}"/"$v"}"
     m="${m//"\$$k"/"$v"}"
   done
-  m="${m//"$KOK_VARSAYILAN"/"$NAVITAS_KOK"}"
-  m="${m//"$PYTHON3_VARSAYILAN"/"$PYTHON3"}"
   printf '%s\n' "$m"
 }
 
 # ── Birimler ──────────────────────────────────────────────────────────────────
-birimler() {  # KIP'e gore, BASLATMA sirasinda
+birimler() {  # KIP/KAMERA'ya gore, BASLATMA sirasinda
   echo navitas-cogullayici
   if [ "$KIP" = sik ]; then echo navitas-seri-hub; fi
+  if [ "$KAMERA_KOPRU" = 1 ]; then echo navitas-kamera-koprusu; fi   # rpi_inference'tan ONCE
   echo navitas-rpi-inference
   echo navitas-iha-inis-yayinci
   echo navitas-iha-komut-alici
 }
 TUKETICILER="navitas-rpi-inference navitas-iha-inis-yayinci navitas-iha-komut-alici"
-# DURDURMA sirasi: once tuketiciler, sonra hub, en son cogullayici
-TUM_BIRIMLER="$TUKETICILER navitas-seri-hub navitas-cogullayici"
+# DURDURMA sirasi: once tuketiciler, sonra kopru ve hub, en son cogullayici
+TUM_BIRIMLER="$TUKETICILER navitas-kamera-koprusu navitas-seri-hub navitas-cogullayici"
 
 birim_dosyasi() { echo "$BIRIM_DIZIN/$1.service"; }
 
@@ -225,6 +264,14 @@ sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle boz
     case " $k " in *" --port $SIK_SERI "*) ;; *) hata "navitas-seri-hub: '--port $SIK_SERI' yok" ;; esac
     case " $k " in *" --bind $SERI_HUB_DINLE "*) ;; *) hata "navitas-seri-hub: '--bind $SERI_HUB_DINLE' yok" ;; esac
     case " $k " in *" --tuketici $SERI_HUB_TUKETICI "*) ;; *) hata "navitas-seri-hub: '--tuketici $SERI_HUB_TUKETICI' yok" ;; esac
+  fi
+  if [ "$KAMERA_KOPRU" = 1 ]; then   # Gorev K: kopru sistem Python'la, dogru portta; tuketici ayni URL'yi okur
+    k="$(exec_start navitas-kamera-koprusu)"
+    case " $k " in *" $KAMERA_PYTHON "*) ;; *) hata "navitas-kamera-koprusu: yorumlayici $KAMERA_PYTHON degil (SISTEM Python + GStreamer sart): $k" ;; esac
+    case "$k" in *kamera_koprusu.py*) ;; *) hata "navitas-kamera-koprusu: ExecStart kamera_koprusu.py kosmuyor" ;; esac
+    case " $k " in *" --port $KAMERA_KOPRU_PORT "*) ;; *) hata "navitas-kamera-koprusu: '--port $KAMERA_KOPRU_PORT' yok (KAMERA=$KAMERA)" ;; esac
+    k="$(exec_start navitas-rpi-inference)"
+    case " $k " in *" --kaynak $KAMERA "*) ;; *) hata "navitas-rpi-inference: '--kaynak $KAMERA' yok — kopru kalkar ama tuketici okumaz" ;; esac
   fi
 }
 
@@ -282,12 +329,16 @@ dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kur
   [ -x "$PYTHON3" ] || hata "yorumlayici yok: $PYTHON3"
   [ -e "$PIXHAWK_SERI" ] || hata "Pixhawk seri cihazi yok: $PIXHAWK_SERI (PIXHAWK_SERI ile ez)"
   if [ "$KIP" = sik ]; then [ -e "$SIK_SERI" ] || hata "SiK seri cihazi yok: $SIK_SERI (SIK_SERI ile ez)"; fi
+  if [ "$KAMERA_KOPRU" = 1 ]; then
+    [ -x "$KAMERA_PYTHON" ] \
+      || hata "kopru yorumlayicisi yok: $KAMERA_PYTHON (SISTEM Python; KAMERA_PYTHON ile ez)"
+  fi
   mavproxy_var \
     || hata "mavproxy.py yok ($MAVPROXY_PATH; pip3 install MAVProxy) — cogullayicisiz MAVLink isi BASLAMAZ (CONTRACTS §7.4)"
   # once degiskene: fonksiyon icindeki hata() ana kabugu durdursun (proses ikamesinde durdurmazdi)
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do
-    [ -f "$y" ] || hata "$b: $y yok (JETSON_KILAVUZ §2: cp kod/... $NAVITAS_KOK/{codes,comms}; seri_hub icin comms/seri_hub.py)"
+    [ -f "$y" ] || hata "$b: $y yok (JETSON_KILAVUZ §2: cp kod/... $NAVITAS_KOK/{codes,comms,scripts}; seri_hub icin comms/seri_hub.py; kamera_koprusu icin scripts/kamera_koprusu.py)"
   done <<< "$liste"
 }
 
@@ -321,6 +372,10 @@ kuru() {
   else echo "[YOK] kullanici $SERVIS_KULLANICI <- SERVIS_KULLANICI ile ez (JETSON_KILAVUZ §2 ~/navitas sahibi)"; yok=$((yok + 1)); fi
   if [ -x "$PYTHON3" ]; then echo "[VAR] yorumlayici $PYTHON3"
   else echo "[YOK] yorumlayici $PYTHON3 <- PYTHON3 ile ez"; yok=$((yok + 1)); fi
+  if [ "$KAMERA_KOPRU" = 1 ]; then
+    if [ -x "$KAMERA_PYTHON" ]; then echo "[VAR] kopru yorumlayicisi $KAMERA_PYTHON"
+    else echo "[YOK] kopru yorumlayicisi $KAMERA_PYTHON <- KAMERA_PYTHON ile ez (GStreamer'li sistem Python)"; yok=$((yok + 1)); fi
+  fi
   if [ -e "$PIXHAWK_SERI" ]; then echo "[VAR] Pixhawk seri $PIXHAWK_SERI"
   else echo "[YOK] Pixhawk seri $PIXHAWK_SERI <- kablo takili mi? PIXHAWK_SERI ile ez"; yok=$((yok + 1)); fi
   if [ "$KIP" = sik ]; then
@@ -330,7 +385,7 @@ kuru() {
   liste="$(kurulu_py_dosyalari)"
   while read -r b y; do
     if [ -f "$y" ]; then echo "[VAR] kurulu $y"
-    else echo "[YOK] kurulu $y <- $b: JETSON_KILAVUZ §2 (cp kod/... $NAVITAS_KOK/{codes,comms})"; yok=$((yok + 1)); fi
+    else echo "[YOK] kurulu $y <- $b: JETSON_KILAVUZ §2 (cp kod/... $NAVITAS_KOK/{codes,comms,scripts})"; yok=$((yok + 1)); fi
   done <<< "$liste"
   echo "## beyan denetimi"
   u="$(deger_uyarilari)"
@@ -378,6 +433,7 @@ birimleri_kur() {  # env dosyasi + birim dosyalari + daemon-reload (baslatmaz)
   done
   systemctl daemon-reload
   if [ "$KIP" != sik ]; then systemctl disable --now navitas-seri-hub.service >/dev/null 2>&1 || true; fi
+  if [ "$KAMERA_KOPRU" != 1 ]; then systemctl disable --now navitas-kamera-koprusu.service >/dev/null 2>&1 || true; fi
 }
 
 birim_listesi() { birimler | sed 's/$/.service/' | tr '\n' ' '; }
@@ -410,6 +466,9 @@ kapi() {  # FAZ_B_GUN_PLANI §1: cogullayici tek basina + 3 ucta AYNI ANDA mavli
   # restart: PIXHAWK_SERI/BAUD degismis olabilir (D-405)
   etkinlestir_ve_yeniden_baslat navitas-cogullayici.service
   if [ "$KIP" = sik ]; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
+  if [ "$KAMERA_KOPRU" = 1 ]; then
+    etkinlestir_ve_yeniden_baslat navitas-kamera-koprusu.service
+  fi
   sleep 3
   # NEDEN paralel (D-405, curutucu kapi bulgusu): CONTRACTS §7.4 / FAZ_B_GUN_PLANI §1
   # "uc uc AYNI ANDA acikken GECTI" der; sirali kosum bunu sinamaz ve thazirlik'e
@@ -466,7 +525,7 @@ dogrudan() {
       nohup $k > "$LOG_DIZIN/$b.log" 2>&1 &
       echo $! > "$LOG_DIZIN/$b.pid"     # nohup exec'ler: pid = surecin kendisi
     )
-    case "$b" in navitas-cogullayici|navitas-seri-hub) sleep 3 ;; esac   # seri portu acsin
+    case "$b" in navitas-cogullayici|navitas-seri-hub) sleep 3 ;; navitas-kamera-koprusu) sleep 1 ;; esac   # seri portu / HTTP ucunu acsin
   done
   echo "UYARI: --dogrudan kipinde GOZCU YOK — olen surec kendi kalkmaz (Restart=always yalniz systemd). Loglar: $LOG_DIZIN"
 }
