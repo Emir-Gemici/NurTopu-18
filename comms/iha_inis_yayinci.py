@@ -7,8 +7,9 @@ T207 (D-406 A): ArduCopter EXTENDED_SYS_STATE'i hiçbir `SR*` akışında vermez
 yalnız MAV_CMD_SET_MESSAGE_INTERVAL ile akar, istek bağlantıya özeldir ve
 Pixhawk yeniden başlayınca (pil değişimi) silinir. Bu süreç iniş kanıtının
 TEK üreticisidir; isteği kendisi yapmazsa reboot sonrası kanıt SESSİZCE ölür.
-Bu yüzden başta ve her MAVLINK_AKIS_ISTEK_ARALIGI_S'de EXTENDED_SYS_STATE ve
-GLOBAL_POSITION_INT için istek gönderir; EXTENDED
+Bu yüzden başta ve her MAVLINK_AKIS_ISTEK_ARALIGI_S'de EXTENDED_SYS_STATE,
+GLOBAL_POSITION_INT ve YKİ GNSS göstergesi için GPS_RAW_INT isteği gönderir;
+EXTENDED
 MAVLINK_AKIS_SESSIZLIK_TAVANI_S boyunca gelmezse KIRMIZI loglar ve anında
 yeniden ister (fail-visible). Kanıt kararı (`inis_kaniti.yerde_mi`) DEĞİŞMEZ.
 
@@ -35,8 +36,8 @@ from iha_komut_alici import (  # noqa: E402
     mav_hedefi_biliniyor_mu)
 from iha_sender import IhaSender, _addr as udp_adres  # noqa: E402
 from inis_kaniti import (  # noqa: E402
-    MESAJ_EXTENDED_SYS_STATE, MESAJ_GLOBAL_POSITION_INT, _mavutil_al,
-    _mesaj_kaynagi, _mesaj_tipi, mavlink_baglantisi_ac, yerde_mi)
+    MESAJ_EXTENDED_SYS_STATE, MESAJ_GLOBAL_POSITION_INT, MESAJ_GPS_RAW_INT,
+    _mavutil_al, _mesaj_kaynagi, _mesaj_tipi, mavlink_baglantisi_ac, yerde_mi)
 from link import SerialLink, UDPLink  # noqa: E402
 
 _KOK = _BU_DIZIN.parent
@@ -67,7 +68,9 @@ def istek_araligi_us(asgari_hz, carpan=MAVLINK_AKIS_ISTEK_HIZ_CARPANI):
 def akis_istek_tanimlari(carpan=MAVLINK_AKIS_ISTEK_HIZ_CARPANI):
     """İstenecek akışlar: ad, MAVLink mesaj id'si (pymavlink'ten), aralık.
 
-    İniş kanıtının okuduğu iki akış (`inis_kaniti.MAVLINK_INIS_MESAJLARI`).
+    İniş kanıtının iki akışı ile YKİ'nin GNSS durum akışı. GPS_RAW_INT,
+    GLOBAL_POSITION_INT ile aynı sözleşme hızını kullanır; ikinci bir çıplak
+    frekans tanımlanmaz.
     pymavlink yoksa ImportError, sabit adı yoksa AttributeError yükselir;
     çağıran (`AkisIstekcisi`) bunu görünür kılar, yutmaz.
     """
@@ -79,6 +82,10 @@ def akis_istek_tanimlari(carpan=MAVLINK_AKIS_ISTEK_HIZ_CARPANI):
          "aralik_us": istek_araligi_us(MAVLINK_DURUM_ASGARI_HZ, carpan)},
         {"ad": MESAJ_GLOBAL_POSITION_INT,
          "id": int(m.MAVLINK_MSG_ID_GLOBAL_POSITION_INT),
+         "asgari_hz": MAVLINK_KONUM_ASGARI_HZ,
+         "aralik_us": istek_araligi_us(MAVLINK_KONUM_ASGARI_HZ, carpan)},
+        {"ad": MESAJ_GPS_RAW_INT,
+         "id": int(m.MAVLINK_MSG_ID_GPS_RAW_INT),
          "asgari_hz": MAVLINK_KONUM_ASGARI_HZ,
          "aralik_us": istek_araligi_us(MAVLINK_KONUM_ASGARI_HZ, carpan)},
     ]
@@ -101,7 +108,7 @@ def _kimlik_1_255(deger):
 class AkisIstekcisi:
     """MAVLink akış isteğini başta ve periyodik yeniler; sessizliği görünür kılar.
 
-    * ``iste()``: iki akış için MAV_CMD_SET_MESSAGE_INTERVAL gönderir
+    * ``iste()``: üç akış için MAV_CMD_SET_MESSAGE_INTERVAL gönderir
       (``mav.mav.command_long_send``). Gönderim hatası (OSError) YUTULMAZ:
       sayaç + KIRMIZI log, çağıranın döngüsü sürer. pymavlink ``udp:``
       sunucusu akranı görmeden yazamaz (sessizce düşürür); o durumda istek
@@ -180,7 +187,7 @@ class AkisIstekcisi:
 
     # ── istek ───────────────────────────────────────────────────────────
     def iste(self):
-        """Her iki akış için SET_MESSAGE_INTERVAL gönder; True = hepsi gitti."""
+        """Üç akış için SET_MESSAGE_INTERVAL gönder; True = hepsi gitti."""
         simdi = float(self._saat())
         if self._baslangic is None:
             self._baslangic = simdi

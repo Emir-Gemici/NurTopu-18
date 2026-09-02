@@ -1,0 +1,171 @@
+
+==============================================================================
+S1  KIP=sik + KAMERA=http --kur  (soru 3)
+==============================================================================
+exit: 0 | stderr: 
+   systemctl daemon-reload
+   systemctl enable navitas-cogullayici.service navitas-seri-hub.service navitas-kamera-koprusu.service navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service
+   systemctl restart navitas-cogullayici.service navitas-seri-hub.service navitas-kamera-koprusu.service navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service
+   systemctl is-active navitas-cogullayici.service
+   systemctl show -p NRestarts --value navitas-cogullayici.service
+   systemctl is-active navitas-seri-hub.service
+   systemctl show -p NRestarts --value navitas-seri-hub.service
+   systemctl is-active navitas-kamera-koprusu.service
+   systemctl show -p NRestarts --value navitas-kamera-koprusu.service
+   systemctl is-active navitas-rpi-inference.service
+   systemctl show -p NRestarts --value navitas-rpi-inference.service
+   systemctl is-active navitas-iha-inis-yayinci.service
+   systemctl show -p NRestarts --value navitas-iha-inis-yayinci.service
+   systemctl is-active navitas-iha-komut-alici.service
+   systemctl show -p NRestarts --value navitas-iha-komut-alici.service
+--- env dosyasi:
+NAVITAS_KOK=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/kok
+PYTHON3=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3
+LOG_DIZIN=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/log
+KIP=sik
+PIXHAWK_SERI=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/dev/ttyACM0
+PIXHAWK_BAUD=57600
+SYSID=1
+SIK_SERI=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/dev/ttyUSB0
+SIK_BAUD=57600
+KANIT_TIMEOUT=900
+RPI_EK_ARGS=--fov 78 --kaynak http://127.0.0.1:8080/video
+RPI_TELSIZ_ARGS=--yks-hedef 127.0.0.1:5100
+INIS_TELSIZ_ARGS=--yks 127.0.0.1:5100
+KOMUT_TELSIZ_ARGS=--bind 127.0.0.1:5007
+KAMERA_PYTHON=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3
+KAMERA_KOPRU_PORT=8080
+KAMERA_KOPRU_ARGS=
+
+--- --kuru exit 0 birimler sirasi: ['navitas-cogullayici', 'navitas-seri-hub', 'navitas-kamera-koprusu', 'navitas-rpi-inference', 'navitas-iha-inis-yayinci', 'navitas-iha-komut-alici']
+   navitas-cogullayici :: /usr/bin/env mavproxy.py --master=/c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/log/mavproxy
+   navitas-seri-hub :: /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/kok/comms/seri_hub.py --port /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/dev/ttyUSB0 --baud 57600 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+   navitas-kamera-koprusu :: /usr/bin/env /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/kok/scripts/kamera_koprusu.py --port 8080 
+   navitas-rpi-inference :: /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/kok/codes/rpi_inference.py --camera --ekransiz --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 78 --kaynak http://127.0.0.1:8080/video --yks-hedef 127.0.0.1:5100
+   navitas-iha-inis-yayinci :: /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/kok/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 127.0.0.1:5100
+   navitas-iha-komut-alici :: /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_o1krt7c1/kok/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 127.0.0.1:5007
+--- kurulu rpi [Unit] After/Wants:
+   After=network.target navitas-cogullayici.service navitas-seri-hub.service
+   Wants=navitas-cogullayici.service
+
+==============================================================================
+S2  KIP=udp + KAMERA=http --kapi  (soru 1: --kapi'da kopru enable+restart; sira)
+==============================================================================
+exit: 0 | stderr: 
+   1788379146.983112 systemctl daemon-reload
+   1788379147.012391 systemctl disable --now navitas-seri-hub.service
+   1788379147.066082 systemctl stop navitas-rpi-inference.service
+   1788379147.097133 systemctl stop navitas-iha-inis-yayinci.service
+   1788379147.128457 systemctl stop navitas-iha-komut-alici.service
+   1788379147.164242 systemctl enable navitas-cogullayici.service
+   1788379147.200391 systemctl restart navitas-cogullayici.service
+   1788379147.236963 systemctl enable navitas-kamera-koprusu.service
+   1788379147.270285 systemctl restart navitas-kamera-koprusu.service
+   1788379150.401883 sudo -u saha /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/kok/scripts/mavlink_dogrula.py --mavlink udp:127.0.0.1:14550 --sysid 1
+   1788379150.405978 sudo -u saha /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/kok/scripts/mavlink_dogrula.py --mavlink udp:127.0.0.1:14551 --sysid 1
+   1788379150.421783 sudo -u saha /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/kok/scripts/mavlink_dogrula.py --mavlink udp:127.0.0.1:14552 --sysid 1
+   1788379151.757614 systemctl enable navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service
+   1788379151.793437 systemctl restart navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service
+   1788379153.891085 systemctl is-active navitas-cogullayici.service
+   1788379153.950744 systemctl show -p NRestarts --value navitas-cogullayici.service
+   1788379154.016237 systemctl is-active navitas-kamera-koprusu.service
+   1788379154.088581 systemctl show -p NRestarts --value navitas-kamera-koprusu.service
+   1788379154.160476 systemctl is-active navitas-rpi-inference.service
+   1788379154.219831 systemctl show -p NRestarts --value navitas-rpi-inference.service
+   1788379154.285590 systemctl is-active navitas-iha-inis-yayinci.service
+   1788379154.340343 systemctl show -p NRestarts --value navitas-iha-inis-yayinci.service
+   1788379154.393576 systemctl is-active navitas-iha-komut-alici.service
+   1788379154.442429 systemctl show -p NRestarts --value navitas-iha-komut-alici.service
+--- kapi ciktisi (ozet):
+   [YAZILDI] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/navitas.env
+   [KURULDU] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/systemd/navitas-rpi-inference.service
+   [KURULDU] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/systemd/navitas-iha-inis-yayinci.service
+   [KURULDU] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/systemd/navitas-iha-komut-alici.service
+   [KURULDU] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/systemd/navitas-kamera-koprusu.service
+   [KURULDU] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/systemd/navitas-seri-hub.service
+   [KURULDU] /c/Users/yunus/AppData/Local/Temp/navitas_jb_bofwpxg9/etc/systemd/navitas-cogullayici.service
+   [GECTI] udp:127.0.0.1:14550
+   [GECTI] udp:127.0.0.1:14551
+   [GECTI] udp:127.0.0.1:14552
+   thazirlik (bu betik, kapi dahil): 9 s
+
+==============================================================================
+S3  koprusuz kipte kopru disable --now  (soru 1)
+==============================================================================
+KAMERA='0': exit 0 | disable: ['systemctl disable --now navitas-seri-hub.service', 'systemctl disable --now navitas-kamera-koprusu.service'] | enable: ['systemctl enable navitas-cogullayici.service navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service']
+KAMERA=None: exit 0 | disable: ['systemctl disable --now navitas-seri-hub.service', 'systemctl disable --now navitas-kamera-koprusu.service'] | enable: ['systemctl enable navitas-cogullayici.service navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service']
+KAMERA='/dev/video1': exit 0 | disable: ['systemctl disable --now navitas-seri-hub.service', 'systemctl disable --now navitas-kamera-koprusu.service'] | enable: ['systemctl enable navitas-cogullayici.service navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service']
+KAMERA='http://192.168.1.42:4747/video': exit 0 | disable: ['systemctl disable --now navitas-seri-hub.service', 'systemctl disable --now navitas-kamera-koprusu.service'] | enable: ['systemctl enable navitas-cogullayici.service navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service']
+
+==============================================================================
+S4  JETSON_NANO_KURULUM §5.1 yerlesimi: kamera_koprusu.py codes/ altinda (scripts/ degil)
+==============================================================================
+kok/scripts: ['mavlink_dogrula.py']
+kok/codes  : ['kamera_koprusu.py', 'rpi_inference.py']
+--kuru exit: 3 | KURU SONUC: eksik (beyan: tam · [YOK]: 1) — gercek kosum DURUR (cikis 3)
+   [YOK] kurulu /c/Users/yunus/AppData/Local/Temp/navitas_jb_vp84us9s/kok/scripts/kamera_koprusu.py <- navitas-kamera-koprusu: JETSON_KILAVUZ §2 (cp kod/... /c/Users/yunus/AppData/Local/Temp/navitas_jb_vp84us9s/kok/{codes,comms,scripts})
+--kur exit: 1 | stderr: HATA: navitas-kamera-koprusu: /c/Users/yunus/AppData/Local/Temp/navitas_jb_vp84us9s/kok/scripts/kamera_koprusu.py yok (JETSON_KILAVUZ §2: cp kod/... /c/Users/yunus/AppData/Local/Temp/navitas_jb_vp84us9s/kok/{codes,comms,scripts}; seri_hub icin comms/seri_hub.py; kamera_koprusu icin scripts/kamera_koprusu.py)
+systemctl cagrilari: []
+env dosyasi var mi: False
+
+==============================================================================
+S5  SERVIS_KULLANICI turetimi (soru 5): sudo -E altinda SUDO_USER=yunus, USER=root
+==============================================================================
+ek={'SUDO_USER': 'yunus', 'USER': 'root', 'SHIM_KULLANICI': 'yunus'}: exit 3 | NAVITAS_KOK=/home/yunus/navitas | ['[VAR] kullanici yunus (birimlerde User=)'] | KURU SONUC: eksik (beyan: tam · [YOK]: 3) — gercek kosum DURUR (cikis 3)
+   cogullayici: /usr/bin/env mavproxy.py --master=/c/Users/yunus/AppData/Local/Temp/navitas_jb_102cfb9k/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /c/Users/yunus/AppData/Local/Temp/navitas_jb_102cfb9k/log/mavproxy
+ek={'USER': 'yunus', 'SHIM_KULLANICI': 'yunus'}: exit 3 | NAVITAS_KOK=/home/yunus/navitas | ['[VAR] kullanici yunus (birimlerde User=)'] | KURU SONUC: eksik (beyan: tam · [YOK]: 3) — gercek kosum DURUR (cikis 3)
+   cogullayici: /usr/bin/env mavproxy.py --master=/c/Users/yunus/AppData/Local/Temp/navitas_jb_dsje772h/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /c/Users/yunus/AppData/Local/Temp/navitas_jb_dsje772h/log/mavproxy
+ek={'USER': 'root', 'SHIM_KULLANICI': 'root'}: exit 3 | NAVITAS_KOK=/home/root/navitas | ['[VAR] kullanici root (birimlerde User=)'] | KURU SONUC: eksik (beyan: tam · [YOK]: 3) — gercek kosum DURUR (cikis 3)
+   cogullayici: /usr/bin/env mavproxy.py --master=/c/Users/yunus/AppData/Local/Temp/navitas_jb_jl5bcryy/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /c/Users/yunus/AppData/Local/Temp/navitas_jb_jl5bcryy/log/mavproxy
+ek={}: exit 3 | NAVITAS_KOK=/home/navitas/navitas | ['[YOK] kullanici navitas <- SERVIS_KULLANICI ile ez (JETSON_KILAVUZ §2 ~/navitas sahibi)'] | KURU SONUC: eksik (beyan: tam · [YOK]: 4) — gercek kosum DURUR (cikis 3)
+   cogullayici: /usr/bin/env mavproxy.py --master=/c/Users/yunus/AppData/Local/Temp/navitas_jb_5qdxnvhs/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /c/Users/yunus/AppData/Local/Temp/navitas_jb_5qdxnvhs/log/mavproxy
+
+==============================================================================
+S6  KIP=sik + KAMERA=http --kapi: hub + kopru sirasi
+==============================================================================
+exit: 0 | stderr: 
+   1788379182.748180 systemctl daemon-reload
+   1788379182.786514 systemctl stop navitas-rpi-inference.service
+   1788379182.817084 systemctl stop navitas-iha-inis-yayinci.service
+   1788379182.848090 systemctl stop navitas-iha-komut-alici.service
+   1788379182.878966 systemctl enable navitas-cogullayici.service
+   1788379182.909815 systemctl restart navitas-cogullayici.service
+   1788379182.941113 systemctl enable navitas-seri-hub.service
+   1788379182.973212 systemctl restart navitas-seri-hub.service
+   1788379183.004614 systemctl enable navitas-kamera-koprusu.service
+   1788379183.035957 systemctl restart navitas-kamera-koprusu.service
+   1788379186.146503 sudo -u saha /c/Users/yunus/AppData/Local/Temp/navitas_jb_9auuh_x0/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_9auuh_x0/kok/scripts/mavlink_dogrula.py --mavlink udp:127.0.0.1:14550 --sysid 1
+   1788379186.146807 sudo -u saha /c/Users/yunus/AppData/Local/Temp/navitas_jb_9auuh_x0/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_9auuh_x0/kok/scripts/mavlink_dogrula.py --mavlink udp:127.0.0.1:14552 --sysid 1
+   1788379186.146676 sudo -u saha /c/Users/yunus/AppData/Local/Temp/navitas_jb_9auuh_x0/bin/python3 /c/Users/yunus/AppData/Local/Temp/navitas_jb_9auuh_x0/kok/scripts/mavlink_dogrula.py --mavlink udp:127.0.0.1:14551 --sysid 1
+   1788379187.432392 systemctl enable navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service
+   1788379187.469975 systemctl restart navitas-rpi-inference.service navitas-iha-inis-yayinci.service navitas-iha-komut-alici.service
+   1788379189.558074 systemctl is-active navitas-cogullayici.service
+   1788379189.604126 systemctl show -p NRestarts --value navitas-cogullayici.service
+   1788379189.656226 systemctl is-active navitas-seri-hub.service
+   1788379189.706641 systemctl show -p NRestarts --value navitas-seri-hub.service
+   1788379189.754801 systemctl is-active navitas-kamera-koprusu.service
+   1788379189.806658 systemctl show -p NRestarts --value navitas-kamera-koprusu.service
+   1788379189.865732 systemctl is-active navitas-rpi-inference.service
+   1788379189.926321 systemctl show -p NRestarts --value navitas-rpi-inference.service
+   1788379189.977902 systemctl is-active navitas-iha-inis-yayinci.service
+   1788379190.043876 systemctl show -p NRestarts --value navitas-iha-inis-yayinci.service
+   1788379190.107583 systemctl is-active navitas-iha-komut-alici.service
+   1788379190.170421 systemctl show -p NRestarts --value navitas-iha-komut-alici.service
+
+==============================================================================
+S7  --durdur (root shim): disable sirasi
+==============================================================================
+exit: 0 | stderr: 
+   systemctl disable --now navitas-rpi-inference.service
+   systemctl disable --now navitas-iha-inis-yayinci.service
+   systemctl disable --now navitas-iha-komut-alici.service
+   systemctl disable --now navitas-kamera-koprusu.service
+   systemctl disable --now navitas-seri-hub.service
+   systemctl disable --now navitas-cogullayici.service
+[DURDU] navitas-rpi-inference.service
+[DURDU] navitas-iha-inis-yayinci.service
+[DURDU] navitas-iha-komut-alici.service
+[DURDU] navitas-kamera-koprusu.service
+[DURDU] navitas-seri-hub.service
+[DURDU] navitas-cogullayici.service
+

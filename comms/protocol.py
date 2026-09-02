@@ -22,6 +22,7 @@ import time
 PROTOCOL_VERSION = 1
 ROAD_LABEL = {1: "sol", 2: "orta", 3: "sag"}     # şartname yön kuralı
 LABEL_ROAD = {v: k for k, v in ROAD_LABEL.items()}
+ACK_SONUC_KABUL = "ACCEPTED"
 
 _seq = itertools.count(1)
 
@@ -90,8 +91,13 @@ def rota_yok(sebep, detay=None, seq=None):
 # D-374 olctu: gercek ucusta algi 45-51 s'lik sahne bagintili araliklarda HIC
 # karar uretemiyor — o aralikta hat CANLI gorunur, algi OLUDUR. Bu alan ikisini
 # ayirir. Alan YOKSA yas BILINMIYOR demektir; alici TAZE SAYMAZ (fail-closed).
-HEARTBEAT_TELEMETRI_ALANLARI = ("x", "y", "alt", "hiz", "bat", "uydu",
-                                "karar_yas")
+HEARTBEAT_TELEMETRI_ALANLARI = (
+    "x", "y", "alt", "hiz", "bat", "uydu", "karar_yas",
+    # Ham GNSS yalnız sayısal YKİ gösterimi içindir; semantik saha haritasının
+    # koordinat sistemi değildir. ``armed`` ise YKİ'nin komut gönderiminden
+    # durum UYDURMASINI engelleyen, Pixhawk HEARTBEAT'inden gelen gerçektir.
+    "lat", "lon", "gps_fix", "armed",
+)
 
 
 def heartbeat(node, seq=None, **telemetri):
@@ -109,17 +115,50 @@ def heartbeat(node, seq=None, **telemetri):
     return msg
 
 
-def ack(ref_seq, node, ref_tip=None):
+def ack(ref_seq, node, ref_tip=None, *, ref_cmd=None, sonuc=None):
     """Alındı onayı. ``ref_tip`` (isteğe bağlı): onaylanan mesajın tipi
     (``"OPEN_ROUTE"``, ``"CMD"`` …). NEDEN: `seq` sayaçları düğüm başınadır;
     YKS'nin IKA_GO seq'i ile İHA'nın OPEN_ROUTE seq'i çakışabilir. YKS, İKA'dan
     gelen ACK'ı hangi bekleyene bağlayacağını `ref_tip` ile ayırt eder.
-    Alan yoksa alıcı yalnız `ref` ile eşler (geriye uyumlu, CONTRACTS §6.6)."""
+    ``ref_cmd`` onaylanan CMD'nin adını, ``sonuc`` ise uç birimin sonucunu
+    taşır. Bu iki alan isteğe bağlıdır: eski üreticilerin ACK biçimi alan alan
+    aynı kalır. Ancak ARM/DISARM gibi eyleyici durumları yalnız
+    :func:`kritik_komut_ack_gecerli_mi` ile doğrulanan güçlü ACK'e dayanır.
+    Alan yoksa genel alıcı yalnız `ref` ile eşler (geriye uyumlu,
+    CONTRACTS §6.6)."""
     msg = {"v": PROTOCOL_VERSION, "type": "ACK", "ref": int(ref_seq),
            "node": node, "t": round(time.time(), 3)}
     if ref_tip is not None:
         msg["ref_tip"] = str(ref_tip)
+    if ref_cmd is not None:
+        msg["ref_cmd"] = str(ref_cmd)
+    if sonuc is not None:
+        msg["sonuc"] = str(sonuc)
     return msg
+
+
+def kritik_komut_ack_gecerli_mi(mesaj, ref_seq, ref_cmd, node="iha"):
+    """ARM/DISARM gibi eyleyici durumunu değiştirecek ACK'i sıkı doğrula.
+
+    Genel ACK geriye uyumluluk için `ref_cmd`/`sonuc` taşımayabilir; bu eski
+    biçim yalnız teslim tekrarını durdurabilir, aracın fiziksel durumuna kanıt
+    olamaz. Kritik komutta düğüm, mesaj tipi, komut adı ve Pixhawk kabul
+    sonucu birlikte eşleşmezse fail-closed ``False`` döner.
+    """
+    if not isinstance(mesaj, dict) or mesaj.get("type") != "ACK":
+        return False
+    if isinstance(ref_seq, bool) or not isinstance(ref_seq, int):
+        return False
+    mesaj_ref = mesaj.get("ref")
+    if isinstance(mesaj_ref, bool) or not isinstance(mesaj_ref, int):
+        return False
+    return (
+        mesaj_ref == ref_seq
+        and mesaj.get("node") == node
+        and mesaj.get("ref_tip") == "CMD"
+        and mesaj.get("ref_cmd") == ref_cmd
+        and mesaj.get("sonuc") == ACK_SONUC_KABUL
+    )
 
 
 def command(cmd, hedef, seq=None):

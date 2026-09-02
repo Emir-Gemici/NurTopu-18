@@ -7,8 +7,8 @@ basina TEK komuttur: dogru bayraklarla bileseni kaldirir, acilis suresini
 olcup yazar.
 
 Kullanim (saha):
-  <venv> scripts/saha_baslat.py yks --ika 10.0.0.2:5006 --iha 10.0.0.3:5007
-  <venv> scripts/saha_baslat.py yks --serial COM5          # SiK ile (--iha YOK)
+  <venv> scripts/saha_baslat.py yks --ika 10.0.0.2:5006 --iha 10.0.0.3:5007 --kamera-url http://10.0.0.3:8080
+  <venv> scripts/saha_baslat.py yks --serial COM5 --kamera-url http://192.168.4.2:8080
   <venv> scripts/saha_baslat.py ika --yks 10.0.0.1:5005
   <venv> scripts/saha_baslat.py --komutlar                 # karti yazdir
   <venv> scripts/saha_baslat.py --reset                    # tekrar-firlatma yordami
@@ -48,6 +48,7 @@ ACILIS_ISARET_TAVANI_S = 30.0
 KART_IKA_HEDEF = "<IKA_IP>:5006"
 KART_YKS_HEDEF = "<YKS_IP>:5005"
 KART_IHA_HEDEF = "<JETSON_IP>:5007"
+KART_KAMERA_URL = "http://<JETSON_IP>:8080"
 
 #: UDP kipinde --iha verilmezse basilan uyari (D-403 KRITIK-1; fail-visible).
 IHA_EKSIK_UYARISI = (
@@ -67,7 +68,8 @@ TEKRAR FIRLATMA / RESET YORDAMI (sartname §6.2 — sure 15 dk'dan yer)
   ⚠ Hicbir adimda arac donanimina fiziksel mudahale yoktur (-100 ceza)."""
 
 
-def komut_uret(kip, ika=None, yks=None, serial=None, baud=None, iha=None):
+def komut_uret(kip, ika=None, yks=None, serial=None, baud=None, iha=None,
+               kamera_url=None):
     """Istasyon komutunu TEK yerden uret (runbook bu ciktiyi kopyalar).
 
     `iha` yalniz yks kipinde ve yalniz UDP'de anlamlidir: yks_gui serial
@@ -88,6 +90,8 @@ def komut_uret(kip, ika=None, yks=None, serial=None, baud=None, iha=None):
             komut += ["--ika", ika]
         if iha:
             komut += ["--iha", iha]
+        if kamera_url:
+            komut += ["--kamera-url", kamera_url]
         return komut
     if kip == "ika":
         komut = [VENV, str(KOK / "simulation" / "scripts" / "ika_nav.py"),
@@ -146,6 +150,8 @@ def main(argv=None):
     ap.add_argument("--yks", help="YKS adresi host:port (ika kipinde)")
     ap.add_argument("--serial", help="SiK seri portu (orn. COM5, /dev/ttyUSB0)")
     ap.add_argument("--baud", type=int, default=None)
+    ap.add_argument("--kamera-url",
+                    help="Jetson RAW kamera kökü (ayrı Wi-Fi/LAN; SiK değil)")
     ap.add_argument("--komutlar", action="store_true",
                     help="thazirlik kartini yazdir ve cik")
     ap.add_argument("--reset", action="store_true",
@@ -158,11 +164,14 @@ def main(argv=None):
     if args.komutlar or not args.kip:
         print("SAHA AÇILIŞ KARTI (thazırlık — istasyon başına TEK komut):")
         print("  YKS :", " ".join(komut_uret("yks", ika=KART_IKA_HEDEF,
-                                             iha=KART_IHA_HEDEF)))
+                                              iha=KART_IHA_HEDEF,
+                                              kamera_url=KART_KAMERA_URL)))
         print("        (--iha = Jetson'daki iha_komut_alici --bind ucu; "
               "verilmezse PARAŞÜT alıcıya ULAŞMAZ — D-403)")
         print("  İKA :", " ".join(komut_uret("ika", yks=KART_YKS_HEDEF)))
-        print("  SiK :", " ".join(komut_uret("yks", serial="COM5", baud=57600)))
+        print("  SiK :", " ".join(komut_uret(
+            "yks", serial="COM5", baud=57600,
+            kamera_url=KART_KAMERA_URL)))
         print("  Jetson: bkz. SAHA_RUNBOOK.md §3 (cihazda jetson_paket/)")
         return 0
 
@@ -174,7 +183,8 @@ def main(argv=None):
         print(f"[saha_baslat] {uyari}", file=sys.stderr, flush=True)
 
     komut = komut_uret(args.kip, ika=args.ika, yks=args.yks,
-                       serial=args.serial, baud=args.baud, iha=args.iha)
+                       serial=args.serial, baud=args.baud, iha=args.iha,
+                       kamera_url=args.kamera_url)
     cocuk = acilis_olc(komut)
     return cocuk.wait()
 

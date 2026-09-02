@@ -61,7 +61,7 @@ if str(_KODLAR) not in sys.path:
 from inis_kaniti import mavlink_baglantisi_ac  # noqa: E402
 from karar_sozlesmesi import MAVLINK_KOMUT_ACK_TAVANI_S  # noqa: E402
 from link import SerialLink, UDPLink  # noqa: E402
-from protocol import FrameReader, ack, encode  # noqa: E402
+from protocol import ACK_SONUC_KABUL, FrameReader, ack, encode  # noqa: E402
 
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -245,7 +245,8 @@ class IhaKomutAlici:
             return False, f"COMMAND_ACK REDDETTI (MAV_RESULT={sonuc})"
 
     def _ack_gonder(self, seq, adr, cmd):
-        data = encode(ack(seq, self.node, MESAJ_TIPI_CMD))
+        data = encode(ack(seq, self.node, MESAJ_TIPI_CMD,
+                          ref_cmd=cmd, sonuc=ACK_SONUC_KABUL))
         try:
             if adr is None:
                 self.link.send(data)              # seri (SiK): ortam yayini
@@ -254,11 +255,12 @@ class IhaKomutAlici:
         except (OSError, TypeError, ValueError) as exc:
             self.sayac["hata"] += 1
             self._logla(f"CMD {cmd} seq={seq}: ACK gonderilemedi "
-                        f"({type(exc).__name__}: {exc}); YKS tekrarinda ACK "
-                        f"yinelenir, komut yeniden aktarilmaz", kirmizi=True)
+                        f"({type(exc).__name__}: {exc}); YKS tekrarinda komut "
+                        f"yeniden aktarilir ve ACK yeniden denenir", kirmizi=True)
             return False
         self.sayac["ack"] += 1
-        self._logla(f"ACK(ref={seq}, node={self.node}, ref_tip={MESAJ_TIPI_CMD})"
+        self._logla(f"ACK(ref={seq}, node={self.node}, ref_tip={MESAJ_TIPI_CMD}, "
+                    f"ref_cmd={cmd}, sonuc={ACK_SONUC_KABUL})"
                     f" -> {adr if adr is not None else 'seri yayin'}")
         return True
 

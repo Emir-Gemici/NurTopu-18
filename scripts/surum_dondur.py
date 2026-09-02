@@ -137,6 +137,18 @@ SAHA_YAPILANDIRMA = (
     "jetson_paket/systemd/navitas-rpi-inference.service",
     "jetson_paket/systemd/navitas-seri-hub.service",
     "jetson_paket/kod/requirements_rpi.txt",
+    # D-407 (curutucu, muhur mercegi): asagidaki dordu kunye DISINDAYDI ama
+    # SAHADA UCULAN yapilandirmayi belirler — muhur "beyanla birebir" (§6.1)
+    # iddiasini bunlarsiz tasiyamaz:
+    #   · arducopter_fda.param -> SYSID/SR akis hizlari/FENCE/failsafe; degisirse
+    #     iniS kaniti ve alan ihlali davranisi degisir (D-406 A/B ile ayni sinif)
+    #   · fda_gorev.waypoints  -> irtifa (>= SARTNAME_ASGARI_IRTIFA_M) ve gorev
+    #     sirasi; sahada YALNIZ koordinatlari degisir (README §2), gerisi muhurlu
+    #   · requirements_nano.txt -> Jetson NANO'da fiilen KURULAN surumler (D-406)
+    "jetson_paket/kod/requirements_nano.txt",
+    "config/pixhawk/arducopter_fda.param",
+    "config/pixhawk/fda_gorev.waypoints",
+    "config/pixhawk/README.md",
     "jetson_paket/kalibrasyon/kalibrasyon.yaml",
     "jetson_paket/kalibrasyon/dogruluk_kapisi_kareleri.json",
 )

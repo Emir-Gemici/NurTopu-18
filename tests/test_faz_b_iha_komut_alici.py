@@ -29,7 +29,8 @@ from pymavlink import mavutil  # noqa: E402
 import iha_komut_alici as modul  # noqa: E402
 from iha_komut_alici import IhaKomutAlici  # noqa: E402
 from link import SerialLink, UDPLink  # noqa: E402
-from protocol import FrameReader, command, encode, heartbeat  # noqa: E402
+from protocol import (ACK_SONUC_KABUL, FrameReader, command, encode,
+                      heartbeat)  # noqa: E402
 
 HEDEF_SYSID = 7          # varsayilan (1) DEGIL: degerin gectigi gorulsun
 HEDEF_COMPONENT = 3
@@ -134,11 +135,13 @@ class _UdpKurulum:
         self.yks.close()
 
 
-def _ack_dogrula(test, a, seq):
+def _ack_dogrula(test, a, seq, cmd="PARACHUTE"):
     test.assertEqual("ACK", a.get("type"))
     test.assertEqual(seq, a.get("ref"))
     test.assertEqual("iha", a.get("node"))
     test.assertEqual("CMD", a.get("ref_tip"))
+    test.assertEqual(cmd, a.get("ref_cmd"))
+    test.assertEqual(ACK_SONUC_KABUL, a.get("sonuc"))
 
 
 class TestKomutAktarimiVeAck(unittest.TestCase):
@@ -252,6 +255,9 @@ class TestKomutAktarimiVeAck(unittest.TestCase):
         ], mav.mav.command_long_send.call_args_list)
         acks = k.acklar(sure=0.6, adet=2)
         self.assertEqual([10, 11], sorted(a["ref"] for a in acks))
+        acks = {a["ref"]: a for a in acks}
+        _ack_dogrula(self, acks[10], 10, "ARM")
+        _ack_dogrula(self, acks[11], 11, "DISARM")
 
     def test_7_bilinmeyen_cmd_aktarilmaz_ve_ack_uretmez(self):
         """Bilinmeyen komut loglanir; ACK 'aldim ve yaptim' demek, gonderilmez."""

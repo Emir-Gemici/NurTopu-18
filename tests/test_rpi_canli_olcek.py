@@ -160,10 +160,12 @@ class CanliOlcekSaglayiciTesti(unittest.TestCase):
         okuyucu.baslat = baslat
         okuyucu.durdur = durdur
 
-        def okuyucu_uret(mav, tazelik_s, beklenen_sysid=None):
+        def okuyucu_uret(mav, tazelik_s, beklenen_sysid=None,
+                         durum_tazelik_s=None):
             olusturulan.update(
                 mav=mav, tazelik_s=tazelik_s,
-                beklenen_sysid=beklenen_sysid)
+                beklenen_sysid=beklenen_sysid,
+                durum_tazelik_s=durum_tazelik_s)
             return okuyucu
 
         modul = SimpleNamespace(
@@ -179,6 +181,8 @@ class CanliOlcekSaglayiciTesti(unittest.TestCase):
         self.assertEqual(
             ri.TELEMETRI_IRTIFA_TAZELIK_S, olusturulan["tazelik_s"])
         self.assertEqual(7, olusturulan["beklenen_sysid"])
+        self.assertEqual(
+            ri.ARAC_DURUM_TAZELIK_S, olusturulan["durum_tazelik_s"])
         self.assertEqual(["baslat"], olaylar)
         self.assertEqual(1, okuyucu.baslatildi)
         self.assertIsNotNone(saglayici.kare_mpp(640))

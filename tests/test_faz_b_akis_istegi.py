@@ -7,12 +7,12 @@ reboot'unda (pil degisimi) silinir. Bugune dek isteyen YALNIZ on-ucus araci
 istemiyordu -> reboot sonrasi inis kaniti SESSIZCE olurdu.
 
 Kapilar (her biri neyi kilitledigini adiyla soyler):
-  A1 baslangicta iki akis icin SET_MESSAGE_INTERVAL (id'ler pymavlink'ten,
+  A1 baslangicta uc akis icin SET_MESSAGE_INTERVAL (id'ler pymavlink'ten,
      aralik_us = 1e6 / (asgari_hz x carpan), hedef/onay alanlari dogru)
   A2 main() istegi ILK okumadan once gonderir
   A3 GERCEK UDP: sahte Pixhawk `udpin` (sunucu) kipinde istek gelmeden akis
      BASLATAMAZ; yayinci `udpout` ile ister -> sahtenin alinan_komutlar'inda
-     iki istek, akis akar, kanit olusur, IHA_LANDED gercek IkaReceiver'a gider
+     uc istek, akis akar, kanit olusur, IHA_LANDED gercek IkaReceiver'a gider
   A4 A3'un on kosulu: sunucu kipindeki sahte, hic paket gormedigi akrana
      hicbir sey gondermez (istek olmadan kanit YOK)
   B1 EXTENDED gelmezken saat ilerleyince: KIRMIZI log (bir kez) + aninda
@@ -164,20 +164,22 @@ class A_BaslangicIstegi(unittest.TestCase):
                 "onay": args[3], "p1": args[4], "p2": args[5],
                 "kalan": args[6:]}
 
-    def test_A1_baslangicta_iki_akis_icin_SET_MESSAGE_INTERVAL(self):
+    def test_A1_baslangicta_uc_akis_icin_SET_MESSAGE_INTERVAL(self):
         mav = KayitMav()
         saat = SahteSaat()
         istekci = yayinci.AkisIstekcisi(mav, beklenen_sysid=SYSID, saat=saat)
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertTrue(istekci.iste())
-        self.assertEqual(2, len(mav.komutlar))
+        self.assertEqual(3, len(mav.komutlar))
         m = mavutil.mavlink
         gelen = {int(k[4]): self._komut_sozlugu(k) for k in mav.komutlar}
         self.assertEqual({m.MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-                          m.MAVLINK_MSG_ID_GLOBAL_POSITION_INT}, set(gelen))
+                          m.MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+                          m.MAVLINK_MSG_ID_GPS_RAW_INT}, set(gelen))
         ext = gelen[m.MAVLINK_MSG_ID_EXTENDED_SYS_STATE]
         kon = gelen[m.MAVLINK_MSG_ID_GLOBAL_POSITION_INT]
-        for k in (ext, kon):
+        gps = gelen[m.MAVLINK_MSG_ID_GPS_RAW_INT]
+        for k in (ext, kon, gps):
             self.assertEqual(m.MAV_CMD_SET_MESSAGE_INTERVAL, k["cmd"])
             self.assertEqual(SYSID, k["sys"])
             self.assertEqual(1, k["comp"])
@@ -191,10 +193,12 @@ class A_BaslangicIstegi(unittest.TestCase):
         self.assertEqual(
             1e6 / (MAVLINK_KONUM_ASGARI_HZ * MAVLINK_AKIS_ISTEK_HIZ_CARPANI),
             kon["p2"])
+        self.assertEqual(kon["p2"], gps["p2"],
+                         "GPS_RAW_INT konumla ayni sozlesme hizini kullanir")
         self.assertEqual(500000.0, ext["p2"], "1 Hz x 2 -> 500 ms")
         self.assertEqual(125000.0, kon["p2"], "4 Hz x 2 -> 125 ms")
         s = istekci.sayac
-        self.assertEqual((1, 2, 0, 0, 0),
+        self.assertEqual((1, 3, 0, 0, 0),
                          (s["tur"], s["gonderilen"], s["gonderim_hatasi"],
                           s["ertelenen"], s["sessizlik_uyarisi"]))
 
@@ -225,11 +229,11 @@ class A_BaslangicIstegi(unittest.TestCase):
                 "--ika", "127.0.0.1:5006"])
         self.assertEqual(0, kod, err.getvalue())
         yayin.assert_called_once()
-        self.assertEqual(["komut", "komut"], mav.olaylar[:2],
+        self.assertEqual(["komut", "komut", "komut"], mav.olaylar[:3],
                          "istek ilk okumadan ONCE gitmeli")
         self.assertIn("okuma", mav.olaylar)
-        self.assertEqual(2, len(mav.komutlar), "kisa kosuda tek tur")
-        self.assertIn("akış isteği özeti: tur=1 gönderilen=2", out.getvalue())
+        self.assertEqual(3, len(mav.komutlar), "kisa kosuda tek tur")
+        self.assertIn("akış isteği özeti: tur=1 gönderilen=3", out.getvalue())
         self.assertNotIn("KIRMIZI", err.getvalue())
         self.assertTrue(mav.kapandi)
 
@@ -267,6 +271,8 @@ class A_BaslangicIstegi(unittest.TestCase):
                        float(m.MAVLINK_MSG_ID_EXTENDED_SYS_STATE)), komutlar)
         self.assertIn((m.MAV_CMD_SET_MESSAGE_INTERVAL,
                        float(m.MAVLINK_MSG_ID_GLOBAL_POSITION_INT)), komutlar)
+        self.assertIn((m.MAV_CMD_SET_MESSAGE_INTERVAL,
+                       float(m.MAVLINK_MSG_ID_GPS_RAW_INT)), komutlar)
         self.assertEqual({m.MAV_CMD_SET_MESSAGE_INTERVAL},
                          {c for c, _p in sp.alinan_komutlar},
                          "yayinci baska komut gondermez")
@@ -274,7 +280,7 @@ class A_BaslangicIstegi(unittest.TestCase):
         self.assertLess(gecen, MAVLINK_AKIS_SESSIZLIK_TAVANI_S,
                         "kanit sessizlik tavanindan once olusmali")
         self.assertNotIn("KIRMIZI", err.getvalue())
-        self.assertIn("gönderilen=2", out.getvalue())
+        self.assertIn("gönderilen=3", out.getvalue())
         print(f"[T207_A3] exit={kod} alinan_komutlar={sp.alinan_komutlar} "
               f"sure={gecen:.2f}s")
 
@@ -315,18 +321,18 @@ class B_SessizlikBekcisi(unittest.TestCase):
         aralik = MAVLINK_AKIS_ISTEK_ARALIGI_S
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             istekci.iste()
-            self.assertEqual(2, len(mav.komutlar))
+            self.assertEqual(3, len(mav.komutlar))
             # Yalniz konum akiyor; EXTENDED yok.
             for _ in range(int(tavan)):
                 saat.ilerle(1.0)
                 istekci.gozle(_konum())
                 istekci.bakim()
-            self.assertEqual(2, len(mav.komutlar),
+            self.assertEqual(3, len(mav.komutlar),
                              "tavan ASILMADAN yeniden istek yok (strict >)")
             self.assertEqual("", err.getvalue())
             saat.ilerle(0.1)                       # tavan + 0,1
             self.assertTrue(istekci.bakim())
-            self.assertEqual(4, len(mav.komutlar), "aninda yeniden istek")
+            self.assertEqual(6, len(mav.komutlar), "aninda yeniden istek")
             self.assertTrue(istekci.sessiz)
             self.assertEqual(1, istekci.sayac["sessizlik_uyarisi"])
             self.assertEqual(1, err.getvalue().count("KIRMIZI"))
@@ -335,12 +341,12 @@ class B_SessizlikBekcisi(unittest.TestCase):
             for _ in range(5):
                 saat.ilerle(0.5)
                 self.assertFalse(istekci.bakim())
-            self.assertEqual(4, len(mav.komutlar))
+            self.assertEqual(6, len(mav.komutlar))
             self.assertEqual(1, err.getvalue().count("KIRMIZI"))
             # Periyodik yenileme sessizlikte de surer (son istekten aralik).
             saat.t = tavan + 0.1 + aralik
             self.assertTrue(istekci.bakim())
-            self.assertEqual(6, len(mav.komutlar))
+            self.assertEqual(9, len(mav.komutlar))
             self.assertEqual(1, err.getvalue().count("KIRMIZI"),
                              "periyodik yenileme KIRMIZI basmaz")
             # Akis donuyor: toparlanma logu, alarm kapanir.
@@ -352,7 +358,7 @@ class B_SessizlikBekcisi(unittest.TestCase):
             # Ikinci sessizlik: ikinci KIRMIZI (durum degisti).
             saat.ilerle(tavan + 0.1)
             self.assertTrue(istekci.bakim())
-            self.assertEqual(8, len(mav.komutlar))
+            self.assertEqual(12, len(mav.komutlar))
             self.assertEqual(2, err.getvalue().count("KIRMIZI"))
             self.assertEqual(2, istekci.sayac["sessizlik_uyarisi"])
         print(f"[T207_B1] komut={len(mav.komutlar)} kirmizi="
@@ -379,7 +385,7 @@ class B_SessizlikBekcisi(unittest.TestCase):
                 "--ika", "127.0.0.1:5006"], saat=saat)
         self.assertEqual(3, kod, "kanit yok -> 3")
         yayin.assert_not_called()
-        turlar = len(mav.komutlar) // 2
+        turlar = len(mav.komutlar) // 3
         self.assertGreaterEqual(turlar, 3,
                                 f"baslangic + sessizlik + periyodik >= 3 tur; "
                                 f"gelen {turlar} (sahte t={saat.t:.0f} s)")
@@ -405,8 +411,8 @@ class B_SessizlikBekcisi(unittest.TestCase):
                 istekci.gozle(_konum())
                 istekci.bakim()
                 son = saat.t
-        self.assertEqual(3 * 2, len(mav.komutlar),
-                         "t=0, 10, 20 -> 3 tur x 2 mesaj")
+        self.assertEqual(3 * 3, len(mav.komutlar),
+                         "t=0, 10, 20 -> 3 tur x 3 mesaj")
         self.assertEqual(3, istekci.sayac["tur"])
         self.assertEqual("", err.getvalue(), "akis akarken KIRMIZI yok")
         self.assertFalse(istekci.sessiz)
@@ -442,15 +448,15 @@ class D_GonderimHatasi(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()), \
              contextlib.redirect_stderr(io.StringIO()) as err:
             self.assertFalse(istekci.iste())
-            self.assertEqual(2, istekci.sayac["gonderim_hatasi"])
+            self.assertEqual(3, istekci.sayac["gonderim_hatasi"])
             self.assertEqual(0, istekci.sayac["gonderilen"])
-            self.assertEqual(2, err.getvalue().count("KIRMIZI"))
+            self.assertEqual(3, err.getvalue().count("KIRMIZI"))
             self.assertIn("kablo koptu", err.getvalue())
             self.assertIn("döngü sürüyor", err.getvalue())
-            # Sonraki periyodik tur yine denenir (sayac 4), istisna cikmaz.
+            # Sonraki periyodik tur yine denenir (sayac 6), istisna cikmaz.
             saat.ilerle(MAVLINK_AKIS_ISTEK_ARALIGI_S)
             self.assertFalse(istekci.bakim())
-            self.assertEqual(4, istekci.sayac["gonderim_hatasi"])
+            self.assertEqual(6, istekci.sayac["gonderim_hatasi"])
             self.assertEqual(2, istekci.sayac["tur"])
         # OSError disindaki istisna gizlenmez (fail-visible).
         mav2 = KayitMav(hata=RuntimeError("beklenmeyen"))
@@ -473,7 +479,7 @@ class D_GonderimHatasi(unittest.TestCase):
                 "--sysid", str(SYSID), "--heartbeat-sure", "0",
                 "--ika", "127.0.0.1:5006"])
         self.assertEqual(0, kod)
-        self.assertIn("gonderim_hatasi=2", out.getvalue())
+        self.assertIn("gonderim_hatasi=3", out.getvalue())
         self.assertIn("port kapali", err.getvalue())
         self.assertGreaterEqual(err.getvalue().count("KIRMIZI"), 2)
 
@@ -497,7 +503,7 @@ class E_AkranErtelemesi(unittest.TestCase):
             mav.clients.add(("127.0.0.1", 14550))     # ilk paket geldi
             saat.ilerle(0.5)
             self.assertTrue(istekci.bakim(), "10 s beklemeden gonderilmeli")
-            self.assertEqual(2, len(mav.komutlar))
+            self.assertEqual(3, len(mav.komutlar))
             self.assertEqual(0, istekci.sayac["gonderim_hatasi"])
         self.assertEqual("", err.getvalue())
 
@@ -525,11 +531,14 @@ class F_Sozlesme(unittest.TestCase):
     def test_F2_tanimlar_pymavlink_sabitlerinden_ve_inis_kaniti_mesajlari(self):
         m = mavutil.mavlink
         t = {x["ad"]: x for x in yayinci.akis_istek_tanimlari()}
-        self.assertEqual(set(kanit.MAVLINK_INIS_MESAJLARI), set(t))
+        self.assertEqual(set(kanit.MAVLINK_INIS_MESAJLARI)
+                         | {kanit.MESAJ_GPS_RAW_INT}, set(t))
         self.assertEqual(m.MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
                          t[kanit.MESAJ_EXTENDED_SYS_STATE]["id"])
         self.assertEqual(m.MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
                          t[kanit.MESAJ_GLOBAL_POSITION_INT]["id"])
+        self.assertEqual(m.MAVLINK_MSG_ID_GPS_RAW_INT,
+                         t[kanit.MESAJ_GPS_RAW_INT]["id"])
 
     def test_F3_gecersiz_parametreler_reddedilir(self):
         mav = KayitMav()

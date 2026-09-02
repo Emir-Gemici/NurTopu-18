@@ -57,6 +57,12 @@ MIMAR_SAHA = (
     "jetson_paket/systemd/navitas-rpi-inference.service",
     "jetson_paket/systemd/navitas-seri-hub.service",
     "jetson_paket/kod/requirements_rpi.txt",
+    # D-407: sahada uculan yapilandirma da muhurlu (Pixhawk param/gorev, Nano
+    # gereksinimleri) — curutucu bunlarin kunye disinda kaldigini olctu.
+    "jetson_paket/kod/requirements_nano.txt",
+    "config/pixhawk/arducopter_fda.param",
+    "config/pixhawk/fda_gorev.waypoints",
+    "config/pixhawk/README.md",
     "jetson_paket/kalibrasyon/kalibrasyon.yaml",
     "jetson_paket/kalibrasyon/dogruluk_kapisi_kareleri.json",
 )

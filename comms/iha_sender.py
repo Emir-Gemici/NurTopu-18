@@ -18,6 +18,7 @@ import math
 import sys
 import threading
 import time
+from collections.abc import Mapping
 from pathlib import Path
 
 from link import UDPLink, SerialLink
@@ -243,6 +244,7 @@ class KararYayinci:
     # yuzden 20 dakika kilitlendi ve kusur boyle yakalandi).
     konum_saglayici = None
     irtifa_saglayici = None
+    telemetri_saglayici = None
     # A2 (D-381): son ALGI KARARININ monotonik damgasi. SINIF DUZEYINDE —
     # T171/D-320 dersi: bu sinif `__new__` ile de kuruluyor; eksik oznitelik
     # heartbeat dongusunde AttributeError -> SESSIZ heartbeat kaybi demekti.
@@ -250,7 +252,7 @@ class KararYayinci:
 
     def __init__(self, sender, heartbeat_aralik=IHA_HEARTBEAT_ARALIK_S,
                  repeat=4, interval=0.25, wait_ack=True, konum_saglayici=None,
-                 irtifa_saglayici=None):
+                 irtifa_saglayici=None, telemetri_saglayici=None):
         if heartbeat_aralik <= 0:
             raise ValueError("heartbeat araligi pozitif olmali")
         self.sender = sender
@@ -261,6 +263,11 @@ class KararYayinci:
         # T171: cagrilabilir, irtifa (m) ya da None. Sartname SS5.3.2 tespiti
         # ASGARI 30 m'den ister; hakem ekrani bunu ancak yayinlanirsa gorur.
         self.irtifa_saglayici = irtifa_saglayici
+        # Tek MAVLink okuyucusunun atomik snapshot'i. Verildiginde eski ayri
+        # konum/irtifa kancalari cagrilmaz; ayni turda iki farkli telemetri
+        # aninin sessizce birlestirilmesi engellenir. Eski cagrilar geriye
+        # uyumlu olarak ayri kancalarla devam eder.
+        self.telemetri_saglayici = telemetri_saglayici
         self._kilit = threading.Lock()
         self._bekleyen = None
         self._yeni = threading.Event()
@@ -371,21 +378,35 @@ class KararYayinci:
                 # T162: alan uretilemezse YAZILMAZ — "bilinmiyor" ile "0,0"
                 # ayni sey degildir.
                 alanlar = {}
-                try:
-                    xy = (self.konum_saglayici() if self.konum_saglayici
-                          else None)
-                    if xy is not None:
-                        alanlar["x"] = round(float(xy[0]), 2)
-                        alanlar["y"] = round(float(xy[1]), 2)
-                except Exception as exc:
-                    self.hata.append(f"konum {type(exc).__name__}: {exc}")
-                try:
-                    irtifa = (self.irtifa_saglayici() if self.irtifa_saglayici
+                if self.telemetri_saglayici is not None:
+                    try:
+                        snapshot = self.telemetri_saglayici()
+                        if snapshot is not None:
+                            if not isinstance(snapshot, Mapping):
+                                raise TypeError(
+                                    "telemetri snapshot sozluk olmalidir")
+                            # Alan adı ve değer sözleşmesinin son otoritesi
+                            # protocol.heartbeat'tir. Burada kopya eşik yoktur.
+                            alanlar.update(snapshot)
+                    except Exception as exc:
+                        self.hata.append(
+                            f"telemetri {type(exc).__name__}: {exc}")
+                else:
+                    try:
+                        xy = (self.konum_saglayici() if self.konum_saglayici
                               else None)
-                    if irtifa is not None:
-                        alanlar["alt"] = round(float(irtifa), 1)
-                except Exception as exc:
-                    self.hata.append(f"irtifa {type(exc).__name__}: {exc}")
+                        if xy is not None:
+                            alanlar["x"] = round(float(xy[0]), 2)
+                            alanlar["y"] = round(float(xy[1]), 2)
+                    except Exception as exc:
+                        self.hata.append(f"konum {type(exc).__name__}: {exc}")
+                    try:
+                        irtifa = (self.irtifa_saglayici()
+                                  if self.irtifa_saglayici else None)
+                        if irtifa is not None:
+                            alanlar["alt"] = round(float(irtifa), 1)
+                    except Exception as exc:
+                        self.hata.append(f"irtifa {type(exc).__name__}: {exc}")
                 try:
                     # A2 (D-381): son algi kararinin yasi. HIC karar
                     # uretilmediyse alan GONDERILMEZ — "bilmiyorum" ile

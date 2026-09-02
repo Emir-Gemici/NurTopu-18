@@ -42,6 +42,9 @@
 #   bash jetson_baslat.sh --durum       birim durumu + yeniden-baslatma sayisi (cokme dongusu GORUNUR)
 #   Degiskenler ortamdan ezilir:   KIP=sik FOV=78 bash jetson_baslat.sh --kuru
 #   CSI kamera (kopru):            KAMERA=http://127.0.0.1:8080/video FOV=78 ... --kuru
+#   YKI canli kamera (ayri LAN):   KAMERA_KOPRU_BIND=0.0.0.0 ... --kuru
+#     Video SiK'e GIRMEZ. 0.0.0.0 yalniz acik beyanla; TCP 8080 YKI IP'sine
+#     guvenlik duvarinda sinirlanir. Varsayilan 127.0.0.1 (disariya KAPALI).
 #
 # CIKIS KODLARI: 0 tamam · 1 hata (fail-closed, hicbir sey baslatilmadi) ·
 #                3 --kuru'da beyan/paket/ana makine eksik (gercek kosum DURURDU)
@@ -89,8 +92,9 @@ KAMERA="${KAMERA:-}"         # rpi_inference --kaynak (indeks, /dev/videoN, URL;
                              # http://127.0.0.1:<port>/video -> navitas-kamera-koprusu KALKAR (asagida)
 KAMERA_PYTHON="${KAMERA_PYTHON:-/usr/bin/python3}"   # kopru yorumlayicisi: SISTEM Python (GStreamer'li
                              # sistem OpenCV); PYTHON3 (venv) DEGIL — PYTHON3 ezilse de bu DEGISMEZ
+KAMERA_KOPRU_BIND="${KAMERA_KOPRU_BIND:-127.0.0.1}" # YKI video LAN dinleme adresi; varsayilan KAPALI
 KAMERA_KOPRU_ARGS="${KAMERA_KOPRU_ARGS:-}"   # kopru ek argumanlari (--fps 5, --kalite 70, --kaynak 0 ...);
-                             # bos = nvarguscamerasrc 1280x720 (kamera_koprusu.py varsayilani)
+                             # --host BURAYA YAZILMAZ; KAMERA_KOPRU_BIND tek sahibidir
 UB_REFERANS="${UB_REFERANS:-}"   # LAT,LON — IHA-UB kose referansi (T162); bos = alan ihlali denetimi YOK
 # iha_inis_yayinci --kanit-timeout: sartname §6.2 IHA gorev suresi
 # (karar_sozlesmesi.SARTNAME_IHA_GOREV_SURESI_S = 15*60; SAHA_RUNBOOK §3). Test kilitler.
@@ -129,6 +133,24 @@ hata() { echo "HATA: $*" >&2; exit 1; }
 MAVPROXY_PATH="$MAVPROXY_BIN:/usr/local/bin:/usr/bin:/bin"
 mavproxy_var() { PATH="$MAVPROXY_PATH:$PATH" command -v mavproxy.py >/dev/null 2>&1; }
 
+# Ayrı kamera LAN'ı yalnız IPv4 yerel/dinleme adresi kabul eder. Host adi DNS'e
+# ve yanlis arayuze sessizce kayabilir; genel Internet adresi acik HTTP kamerayi
+# disariya tasir. 0.0.0.0 acik bir opt-in'dir ve asagida KIRMIZI uyari uretir.
+yerel_ipv4_var() {
+  local ip="$1" a b c d fazla o
+  IFS=. read -r a b c d fazla <<< "$ip"
+  [ -z "${fazla:-}" ] && [ -n "$a" ] && [ -n "$b" ] && [ -n "$c" ] && [ -n "$d" ] || return 1
+  for o in "$a" "$b" "$c" "$d"; do
+    case "$o" in ''|*[!0-9]*) return 1 ;; esac
+    [ "$((10#$o))" -le 255 ] || return 1
+  done
+  case "$ip" in
+    127.0.0.1|0.0.0.0|10.*|192.168.*|169.254.*) return 0 ;;
+    172.*) [ "$((10#$b))" -ge 16 ] && [ "$((10#$b))" -le 31 ] ; return $? ;;
+    *) return 1 ;;
+  esac
+}
+
 # ── Kamera koprusu (Gorev K): KAMERA loopback http ise birim kalkar ─────────────
 # Port URL'den alinir; yol kamera_koprusu.VIDEO_YOLU olmali (yanlis yol = fail-closed).
 KAMERA_KOPRU_PORT_VARSAYILAN=8080     # scripts/kamera_koprusu.py VARSAYILAN_PORT (test kilitler)
@@ -147,6 +169,21 @@ case "$KAMERA" in
     KAMERA_KOPRU_PORT="$_port"
     ;;
 esac
+
+# --host'un iki sahibi olamaz. Serbest bicimli ek argumandan almak, --kuru ile
+# canli birimin hangi arayuze acildigini belirsizlestirirdi.
+case " $KAMERA_KOPRU_ARGS " in
+  *" --host "*|*" --host="*) hata "KAMERA_KOPRU_ARGS --host tasiyamaz; KAMERA_KOPRU_BIND kullan" ;;
+esac
+yerel_ipv4_var "$KAMERA_KOPRU_BIND" \
+  || hata "KAMERA_KOPRU_BIND='$KAMERA_KOPRU_BIND': yalniz yerel IPv4, 127.0.0.1 veya acik opt-in 0.0.0.0"
+if [ "$KAMERA_KOPRU" = 1 ]; then
+  if [ "$KAMERA_KOPRU_BIND" != 127.0.0.1 ]; then
+    KAMERA_KOPRU_ARGS="--host $KAMERA_KOPRU_BIND${KAMERA_KOPRU_ARGS:+ $KAMERA_KOPRU_ARGS}"
+  fi
+elif [ "$KAMERA_KOPRU_BIND" != 127.0.0.1 ]; then
+  hata "KAMERA_KOPRU_BIND yalniz KAMERA=http://127.0.0.1:<port>/video koprusu etkinken kullanilir"
+fi
 
 # ── KIP'e gore tuketici argumanlari — birimler bunlari $..._ARGS olarak okur ───
 RPI_EK_ARGS=""
@@ -177,12 +214,12 @@ esac
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
                 INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS
-                KAMERA_PYTHON KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS)
+                KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT KAMERA_KOPRU_ARGS)
 # Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
 # ikisi de BOLER/GENISLETIR — --kuru [UYARI] basar (D-405, curutucu --dogrudan glob bulgusu).
 TEK_DEGER_ANAHTARLAR=(FOV ODAK SENARYO KAMERA UB_REFERANS YKS_IP IKA_IP SYSID KANIT_TIMEOUT
                       PIXHAWK_SERI PIXHAWK_BAUD SIK_SERI SIK_BAUD NAVITAS_KOK PYTHON3 LOG_DIZIN
-                      SERVIS_KULLANICI KAMERA_PYTHON KAMERA_KOPRU_PORT)
+                      SERVIS_KULLANICI KAMERA_PYTHON KAMERA_KOPRU_BIND KAMERA_KOPRU_PORT)
 
 env_icerik() {
   local k
@@ -270,6 +307,11 @@ sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle boz
     case " $k " in *" $KAMERA_PYTHON "*) ;; *) hata "navitas-kamera-koprusu: yorumlayici $KAMERA_PYTHON degil (SISTEM Python + GStreamer sart): $k" ;; esac
     case "$k" in *kamera_koprusu.py*) ;; *) hata "navitas-kamera-koprusu: ExecStart kamera_koprusu.py kosmuyor" ;; esac
     case " $k " in *" --port $KAMERA_KOPRU_PORT "*) ;; *) hata "navitas-kamera-koprusu: '--port $KAMERA_KOPRU_PORT' yok (KAMERA=$KAMERA)" ;; esac
+    if [ "$KAMERA_KOPRU_BIND" = 127.0.0.1 ]; then
+      case " $k " in *" --host "*) hata "navitas-kamera-koprusu: varsayilan loopback kipinde beklenmeyen --host: $k" ;; esac
+    else
+      case " $k " in *" --host $KAMERA_KOPRU_BIND "*) ;; *) hata "navitas-kamera-koprusu: '--host $KAMERA_KOPRU_BIND' yok" ;; esac
+    fi
     k="$(exec_start navitas-rpi-inference)"
     case " $k " in *" --kaynak $KAMERA "*) ;; *) hata "navitas-rpi-inference: '--kaynak $KAMERA' yok — kopru kalkar ama tuketici okumaz" ;; esac
   fi
@@ -297,6 +339,9 @@ deger_uyarilari() {  # stdout: bosluk/glob/kacis iceren tek-deger beyanlar (bolu
       echo "[UYARI] $k='$v' bosluk/glob/kacis iceriyor — systemd (\$VAR) ve bash (nohup) bunu BOLER/GENISLETIR" ;;
     esac
   done
+  if [ "$KAMERA_KOPRU" = 1 ] && [ "$KAMERA_KOPRU_BIND" != 127.0.0.1 ]; then
+    echo "[UYARI] KAMERA LAN'A ACIK: bind=$KAMERA_KOPRU_BIND port=$KAMERA_KOPRU_PORT — video SiK'e GIRMEZ; TCP portunu yalniz YKI IP'sine ac"
+  fi
 }
 
 beyan_denetle_veya_dur() {

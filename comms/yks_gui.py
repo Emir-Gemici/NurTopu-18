@@ -17,13 +17,16 @@ Kullanım:
   python yks_gui.py --ika 127.0.0.1:5006    # 0.0.0.0:5005 dinler (UDP)
   python yks_gui.py --bind 0.0.0.0:5005 --ika 127.0.0.1:5006
   python yks_gui.py --serial COM5            # SiK telsiz (saha)
+  python yks_gui.py --serial COM5 --kamera-url http://192.168.4.2:8080
   python yks_gui.py --demo                   # dahili İHA/İKA beslemesiyle tanıtım
   python yks_gui.py --demo --otokaydet 6     # 6 sn sonra pencere SS'i kaydet (rapor)
 
 Sadece stdlib + (SS için) Pillow kullanır; tkinter Python ile gelir.
 """
 import argparse
+import io
 import math
+import os
 import queue
 import sys
 import threading
@@ -35,14 +38,19 @@ from tkinter import font as tkfont
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
 from komut_tekrar import AckliTekrar, ONAYLANDI, VAZGECILDI
-from protocol import (encode, ack, command, heartbeat, iha_landed,
+from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
+                      kritik_komut_ack_gecerli_mi,
                       open_route,
                       FrameReader, ROAD_LABEL)
 
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
 if str(_PROJE_KOKU / "codes") not in sys.path:
     sys.path.insert(0, str(_PROJE_KOKU / "codes"))
-from karar_sozlesmesi import (IKA_GO_TEKRAR_ARALIGI_S,
+from karar_sozlesmesi import (ARM_DURUM_TAZELIK_S,
+                              ARM_TEKRAR_ARALIGI_S,
+                              ARM_TEKRAR_UST_SINIRI,
+                              DISARM_TEYIT_SURESI_S,
+                              IKA_GO_TEKRAR_ARALIGI_S,
                               IKA_GO_TEKRAR_UST_SINIRI,
                               PARASUT_MANUEL_CEZA_PUANI,
                               PARASUT_TEKRAR_ARALIGI_S,
@@ -80,7 +88,7 @@ MAVI    = "#4aa3df"
 # T80: CLI görünüm adları ↔ iç görünüm adları. İç adlar ("harita"/"algi")
 # butonlara ve V kısayoluna bağlıdır; CLI hakeme/tanıtıma bakar. Eşleme TEK
 # YERDE durur ki iki taraf ayrışmasın (madde 16).
-GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi"}
+GORUNUM_SECENEKLERI = {"saha": "harita", "canli": "algi", "kamera": "kamera"}
 
 ARENA_M = 50.0        # HTAB 50×50 m (şartname)
 OLCEK = 1.0           # main() ekran DPI'sine göre ayarlar (yüksek DPI okunurluk)
@@ -279,6 +287,36 @@ def _ss(saniye):
     return f"{saniye // 60:02d}:{saniye % 60:02d}"
 
 
+def arm_telemetri_degeri(mesaj):
+    """HEARTBEAT'teki fiziksel ARM durumunu sıkı doğrula.
+
+    JSON'da ``0``/``1`` ile ``false``/``true`` birbirine benzese de operatör
+    eyleyicisi için yalnız gerçek bool kabul edilir. Eksik/bozuk alan durum
+    uydurmaz; ``None`` ile fail-closed kalır.
+    """
+    deger = mesaj.get("armed") if isinstance(mesaj, dict) else None
+    return deger if type(deger) is bool else None
+
+
+def gps_gosterim_metni(telemetri):
+    """Ham GNSS alanlarını insan-okunur yap; harita koordinatı üretme."""
+    if not isinstance(telemetri, dict):
+        telemetri = {}
+    lat, lon = telemetri.get("lat"), telemetri.get("lon")
+    fix, uydu = telemetri.get("gps_fix"), telemetri.get("uydu")
+    if lat is None or lon is None:
+        konum = "konum YOK"
+    else:
+        try:
+            konum = f"{float(lat):.7f}, {float(lon):.7f}"
+        except (TypeError, ValueError, OverflowError):
+            konum = "konum BOZUK"
+    fix_metin = f"fix {fix}" if fix is not None else "fix YOK"
+    uydu_metin = f"{uydu} uydu" if uydu is not None else "uydu YOK"
+    return (f"HAM GNSS: {konum} · {fix_metin} · {uydu_metin} · "
+            "SEMANTİK HARİTADA KULLANILMAZ")
+
+
 class YksArayuz:
     # T170 (ON_KAYIT §37): bu üç limit ÇIPLAK yazılıydı (900/600/900) ve
     # başlıklarındaki "/ 15:00" metinleri de elle yazılmıştı — yani sözleşme
@@ -293,7 +331,7 @@ class YksArayuz:
 
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
-            iha_peer=None):
+            iha_peer=None, kamera_url=None):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -353,10 +391,19 @@ class YksArayuz:
             self._ham_gonder, PARASUT_TEKRAR_ARALIGI_S,
             PARASUT_TEKRAR_UST_SINIRI)
         self.parasut_ack_zamani = None
+        # ARM/DISARM da tek paket değildir. Daha önemlisi, komut gönderimi
+        # fiziksel durum kanıtı değildir: güçlü İHA ACK'i + taze Pixhawk
+        # HEARTBEAT ``armed`` alanı birlikte gelmeden fırlatma açılmaz.
+        self.arm_tekrar = AckliTekrar(
+            self._ham_gonder, ARM_TEKRAR_ARALIGI_S,
+            ARM_TEKRAR_UST_SINIRI)
+        self.arm_bekleyen_komut = None
+        self.arm_ack_zamani = None
+        self.arm_durum_zamani = None
         # K8: İKA'nın OPEN_ROUTE ACK kanıtı: seq -> duvar saati. Hakem 2. onayı
         # ancak geçerli rota seq'i bu sözlükte varsa verebilir (fail-closed).
         self.ika_rota_ack = {}
-        self.arm_acik = False
+        self.arm_acik = None
         self.tespit_onayli = False          # §2.2.3 iki aşamalı onayın 1. adımı
         self.t_iha0 = self.t_iha1 = None    # İHA görev kronometresi
         self.t_ika0 = self.t_ika1 = None    # İKA görev kronometresi
@@ -384,8 +431,18 @@ class YksArayuz:
         self.algi_kaynak = self.ALGI_VARSAYILAN_KAYNAK
         self.algi_idx = 0
         self._algi_foto = None              # ImageTk referansı (GC koruması)
+        # Canlı RAW kamera, karar/telemetri SiK hattından AYRI bir LAN veri
+        # düzlemidir. İstemci arızası ana Tk döngüsünü ve komutları bloklamaz.
+        self.kamera_url = kamera_url
+        self.kamera_istemci = None
+        self._kamera_surum = -1
+        self._kamera_foto = None
 
         self._arayuz_kur()
+        if kamera_url:
+            from kamera_istemci import KameraIstemci
+            self.kamera_istemci = KameraIstemci(kamera_url)
+            self.kamera_istemci.baslat()
         threading.Thread(target=self._dinle, daemon=True).start()
         self._tik()
 
@@ -462,6 +519,11 @@ class YksArayuz:
                                       relief="flat", padx=8, pady=3,
                                       command=lambda: self.gorunum("algi"))
         self.btn_gor_algi.pack(side="left")
+        self.btn_gor_kamera = tk.Button(
+            anahtar, text="▣ RAW Kamera (C)", font=self.f_kucuk,
+            fg=METIN, bg="#232e3a", relief="flat", padx=8, pady=3,
+            command=lambda: self.gorunum("kamera"))
+        self.btn_gor_kamera.pack(side="left", padx=(6, 0))
 
         self.harita = tk.Canvas(sol, width=S(480), height=S(420), bg="#121920",
                                 highlightthickness=0)
@@ -486,6 +548,23 @@ class YksArayuz:
                                        anchor="w", wraplength=S(640),
                                        justify="left")
         self.lbl_algi_bilgi.pack(fill="x", padx=10, pady=(2, 4))
+
+        # Canlı kamera, yerel model çıkarımı değildir. Jetson'ın /kare.jpg
+        # ucundan ayrı Wi-Fi/LAN üstünde gelir; bu görünüm karar üretmez.
+        self.kamera_cerceve = tk.Frame(sol, bg=PANEL)
+        self.lbl_kamera_img = tk.Label(
+            self.kamera_cerceve, bg="#121920", fg=SOLUK,
+            text=("KAMERA URL YOK — --kamera-url http://<JETSON_IP>:8080"
+                  if not self.kamera_url else "RAW kamera bağlanıyor…"),
+            font=self.f_kucuk)
+        self.lbl_kamera_img.pack(padx=10, pady=(4, 4), fill="both", expand=True)
+        self.lbl_kamera_bilgi = tk.Label(
+            self.kamera_cerceve,
+            text=(f"Kaynak: {self.kamera_url}" if self.kamera_url else
+                  "Video SiK 433 MHz üzerinden TAŞINMAZ; ayrı LAN gerekir."),
+            font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
+            wraplength=S(640), justify="left")
+        self.lbl_kamera_bilgi.pack(fill="x", padx=10, pady=(2, 4))
         self.gorunum_adi = "harita"
 
         # Acil durum senaryo tatbikatı (yalnız --demo modunda etkin)
@@ -508,7 +587,8 @@ class YksArayuz:
         # Demo / SS kontrolleri ("hile tuşları") — onay akışını yeniden izlemek
         # ve ekran görüntüsü sahnelemek için
         tk.Label(sol, text="DEMO / SS KONTROLLERİ — kısayollar: F1–F6 senaryo · "
-                           "N yeni tespit · R onayı sıfırla · A arm · V görünüm · "
+                           "N yeni tespit · R onayı sıfırla · A arm · V harita/algı · "
+                           "C RAW kamera · "
                            "←/→ algı görüntüsü · K kaynak",
                  font=self.f_kucuk, fg=SOLUK, bg=PANEL, anchor="w",
                  wraplength=S(660), justify="left").pack(fill="x", padx=10)
@@ -584,6 +664,10 @@ class YksArayuz:
                                  font=self.f_orta, fg=YESIL, bg=PANEL,
                                  wraplength=S(410), justify="left")
         self.lbl_ucus.pack(padx=10, pady=(4, 0), anchor="w")
+        self.lbl_gps = tk.Label(
+            p3, text=gps_gosterim_metni({}), font=self.f_mono, fg=KIRMIZI,
+            bg=PANEL, wraplength=S(410), justify="left")
+        self.lbl_gps.pack(padx=10, pady=(4, 0), anchor="w")
         self.lbl_sayac = tk.Label(p3, text="", font=self.f_mono, fg=SOLUK, bg=PANEL)
         self.lbl_sayac.pack(padx=10, pady=(2, 8), anchor="w")
 
@@ -643,7 +727,8 @@ class YksArayuz:
         self.lbl_ceza.pack(side="right", padx=10)
 
         # satır 2 — uçuş/intikal
-        self.btn_arm = gbuton(satir2, "ARM (A)", self.arm_degistir)
+        self.btn_arm = gbuton(satir2, "ARM DURUMU BEKLENİYOR", self.arm_degistir,
+                              aktif=False)
         self.btn_firlat = gbuton(satir2, "FIRLATMA", self.firlatma, aktif=False)
         self.btn_iha_indi = gbuton(satir2, "İHA İNDİ", self.iha_indi, aktif=False)
         self.btn_parasut = gbuton(satir2, "PARAŞÜT (manuel −50)", self.parasut)
@@ -651,8 +736,8 @@ class YksArayuz:
         self.btn_ika_go = gbuton(satir2, "İKA BAŞLAT", self.ika_baslat)
         self.btn_hb = gbuton(satir2, "HB TEMAS", self.hb_temas, aktif=False)
 
-        self.lbl_arm = tk.Label(satir2, text="SİSTEM: DISARM — güvenli",
-                                font=self.f_orta, fg=SOLUK, bg=PANEL)
+        self.lbl_arm = tk.Label(satir2, text="SİSTEM: ARM DURUMU BİLİNMİYOR",
+                                font=self.f_orta, fg=KIRMIZI, bg=PANEL)
         self.lbl_arm.pack(side="left", padx=10)
         self.lbl_ika_go = tk.Label(satir2, text="İKA_GO: —",
                                    font=self.f_orta, fg=SOLUK, bg=PANEL)
@@ -672,6 +757,7 @@ class YksArayuz:
         _kisayol("n", self.yeni_tespit)
         _kisayol("r", self.onay_sifirla)
         _kisayol("a", self.arm_degistir)
+        _kisayol("c", lambda: self.gorunum("kamera"))
         _kisayol("v", lambda: self.gorunum(
             "algi" if self.gorunum_adi == "harita" else "harita"))
         _kisayol("k", self.algi_kaynak_degistir)
@@ -992,6 +1078,7 @@ class YksArayuz:
                 self._logla(paket[1], "sari")
             else:
                 self._logla(paket[1], "mavi")
+        self._kamera_tazele()
         self._durum_tazele()
         self.kok.after(120, self._tik)
 
@@ -1149,9 +1236,19 @@ class YksArayuz:
                         self.karar_yas_rx = (_ky, time.monotonic())
                 except (TypeError, ValueError):
                     pass          # bozuk deger yut: eski deger/None kalir
-            tel = {k: m[k] for k in ("alt", "hiz", "bat", "uydu") if k in m}
-            if tel:
-                self.tel[dugum] = tel
+            # Her heartbeat snapshot'tır: alan gelmediyse eski değer SAKLANMAZ.
+            # Aksi hâlde GNSS kesildiğinde son koordinat sonsuza dek canlı görünür.
+            tel = {k: m[k] for k in (
+                "alt", "hiz", "bat", "uydu", "lat", "lon", "gps_fix")
+                   if k in m}
+            self.tel[dugum] = tel
+            if dugum == "iha":
+                armed = arm_telemetri_degeri(m)
+                if armed is not None:
+                    self.arm_acik = armed
+                    self.arm_durum_zamani = time.monotonic()
+                    self._arm_bekleyeni_tamamla()
+                self._arm_ui_uygula()
             if "mod" in m:
                 self.mod[dugum] = m["mod"]
                 if m["mod"] != "AUTO" and not self._manuel_uyarildi:
@@ -1340,12 +1437,28 @@ class YksArayuz:
         if isinstance(ref, bool) or not isinstance(ref, int):
             return
         if m.get("node") == "iha":
+            arm_tekrar = getattr(self, "arm_tekrar", None)
+            arm_komut = getattr(self, "arm_bekleyen_komut", None)
+            arm_mesaji = getattr(arm_tekrar, "mesaj", None)
+            if (arm_tekrar is not None and arm_komut and arm_mesaji
+                    and kritik_komut_ack_gecerli_mi(
+                        m, arm_mesaji.get("seq"), arm_komut, node="iha")
+                    and arm_tekrar.ack_geldi(m)):
+                self.arm_ack_zamani = time.monotonic()
+                self._logla(f"İHA ALDI ✓ {arm_komut} güçlü ACK ref={ref}; "
+                            "taze Pixhawk HEARTBEAT durumu bekleniyor", "yesil")
+                self._arm_bekleyeni_tamamla()
+                self._arm_ui_uygula()
             # P9a (D-393): PARACHUTE ACK'ı İHA düğümünden gelir — eski kod
             # iha ACK'larını hiç işlemiyordu (yalnız ika'da erken dönüş).
             # `__init__` koşmadan kurulan örneklerde (testler, D-320 kalıbı)
             # öznitelik olmayabilir; yokluk "bekleyen paraşüt yok" demektir.
             parasut_tekrar = getattr(self, "parasut_tekrar", None)
-            if parasut_tekrar is not None and parasut_tekrar.ack_geldi(m):
+            parasut_mesaji = getattr(parasut_tekrar, "mesaj", None)
+            if (parasut_tekrar is not None and parasut_mesaji
+                    and kritik_komut_ack_gecerli_mi(
+                        m, parasut_mesaji.get("seq"), "PARACHUTE", node="iha")
+                    and parasut_tekrar.ack_geldi(m)):
                 self.parasut_ack_zamani = time.time()
                 damga = time.strftime("%H:%M:%S",
                                       time.localtime(self.parasut_ack_zamani))
@@ -1792,6 +1905,8 @@ class YksArayuz:
         return model
 
     def gorunum(self, ad):
+        if ad not in ("harita", "algi", "kamera"):
+            raise ValueError(f"bilinmeyen görünüm: {ad!r}")
         self.gorunum_adi = ad
         # T81: kutu GÖRÜNÜMÜN kaynağından beslenir — geçişte yeniden çizilir.
         # Harita görünümüne dönüldüğünde protokol durumu OLDUĞU GİBİ görünür;
@@ -1799,16 +1914,74 @@ class YksArayuz:
         self._kutu_ciz()
         if ad == "harita":
             self.algi_cerceve.pack_forget()
+            self.kamera_cerceve.pack_forget()
             self.harita.pack(padx=10, pady=(4, 6), fill="both", expand=True)
             self.btn_gor_harita.config(fg=BG, bg=YESIL)
             self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
             self._harita_ciz()
-        else:
+        elif ad == "algi":
             self.harita.pack_forget()
+            self.kamera_cerceve.pack_forget()
             self.algi_cerceve.pack(fill="both", expand=True)
             self.btn_gor_algi.config(fg=BG, bg=YESIL)
             self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_kamera.config(fg=METIN, bg="#232e3a")
             self._algi_iste()
+        else:
+            self.harita.pack_forget()
+            self.algi_cerceve.pack_forget()
+            self.kamera_cerceve.pack(fill="both", expand=True)
+            self.btn_gor_kamera.config(fg=BG, bg=YESIL)
+            self.btn_gor_harita.config(fg=METIN, bg="#232e3a")
+            self.btn_gor_algi.config(fg=METIN, bg="#232e3a")
+            self._kamera_tazele()
+
+    def _kamera_tazele(self):
+        """LAN kamera snapshot'ını Tk ana döngüsünde sun; ağ I/O'su yapma."""
+        istemci = getattr(self, "kamera_istemci", None)
+        etiket = getattr(self, "lbl_kamera_img", None)
+        bilgi = getattr(self, "lbl_kamera_bilgi", None)
+        if etiket is None or bilgi is None:
+            return
+        if istemci is None:
+            etiket.config(image="", text="KAMERA URL YOK — RAW görüntü kapalı",
+                          fg=KIRMIZI)
+            bilgi.config(text="--kamera-url http://<JETSON_IP>:8080 verin · "
+                               "video SiK üzerinden taşınmaz", fg=KIRMIZI)
+            return
+        try:
+            snap = istemci.snapshot()
+        except Exception as exc:
+            snap = {"surum": None, "jpeg": None, "durum": "HATA",
+                    "hata": f"istemci snapshot hatası: {type(exc).__name__}: {exc}",
+                    "kare_yasi_s": None, "kaynak": self.kamera_url}
+        jpeg = snap.get("jpeg")
+        surum = snap.get("surum")
+        if jpeg is not None and surum != self._kamera_surum:
+            try:
+                from PIL import Image, ImageOps, ImageTk
+                resim = ImageOps.exif_transpose(Image.open(io.BytesIO(jpeg)))
+                resim.thumbnail((S(660), S(430)), Image.Resampling.LANCZOS)
+                self._kamera_foto = ImageTk.PhotoImage(resim.convert("RGB"))
+                etiket.config(image=self._kamera_foto, text="", fg=METIN)
+                self._kamera_surum = surum
+            except Exception as exc:
+                jpeg = None
+                snap["hata"] = f"JPEG çözülemedi: {type(exc).__name__}: {exc}"
+                snap["durum"] = "HATA"
+        if jpeg is None:
+            self._kamera_foto = None
+            etiket.config(image="", text="KAMERA YOK — son kare kullanılmıyor",
+                          fg=KIRMIZI)
+        yas = snap.get("kare_yasi_s")
+        yas_metin = "yaş YOK" if yas is None else f"kare yaşı {float(yas):.2f} sn"
+        durum = str(snap.get("durum") or "BİLİNMİYOR")
+        hata = snap.get("hata")
+        metin = f"{durum} · {yas_metin} · {snap.get('kaynak') or self.kamera_url}"
+        if hata:
+            metin += f" · {hata}"
+        bilgi.config(text=metin, fg=YESIL if jpeg is not None else KIRMIZI)
 
     def _algi_gorunumu_sart(self, ne):
         """ALGI gezinme komutlari yalniz ALGI gorunumunde anlamlidir.
@@ -2318,8 +2491,6 @@ class YksArayuz:
     # ucan araca DISARM yolluyordu ve ekran ayni anda "OTONOM GOREV (AUTO)" ile
     # "DISARM — guvenli" diyordu. Modal pencere ACILMAZ (demo akisini kilitler);
     # bunun yerine IKI ADIMLI teyit: ilk basis uyarir, ikincisi gonderir.
-    DISARM_TEYIT_SURESI_S = 4.0
-
     def _iha_havada_mi(self):
         """Heartbeat canli ve inis kaniti YOKSA arac havada sayilir."""
         # `__init__` kosmadan kurulan orneklerde (testler) oznitelik olmayabilir;
@@ -2327,34 +2498,128 @@ class YksArayuz:
         if getattr(self, "iha_landed_seq", None) is not None:
             return False
         t = (getattr(self, "son_hb", None) or {}).get("iha")
-        return t is not None and (time.monotonic() - t) < 3.0  # D-384
+        return t is not None and (time.monotonic() - t) < ARM_DURUM_TAZELIK_S
+
+    def _arm_durumu_taze_mi(self, simdi=None):
+        """Pixhawk HEARTBEAT ARM durumu hâlâ güvenilir mi?"""
+        simdi = time.monotonic() if simdi is None else float(simdi)
+        damga = getattr(self, "arm_durum_zamani", None)
+        return (damga is not None and type(getattr(self, "arm_acik", None)) is bool
+                and 0.0 <= simdi - damga <= ARM_DURUM_TAZELIK_S)
+
+    def _arm_ui_uygula(self):
+        """ARM gerçeğini tek yerden çiz; bilinmeyen/bekleyen fail-closed."""
+        btn = getattr(self, "btn_arm", None)
+        etiket = getattr(self, "lbl_arm", None)
+        firlat = getattr(self, "btn_firlat", None)
+        if btn is None or etiket is None or firlat is None:
+            return
+        bekleyen = getattr(self, "arm_bekleyen_komut", None)
+        if bekleyen:
+            btn.config(state="disabled", bg=SARI,
+                       text=f"{bekleyen} — ACK + ARAÇ DURUMU BEKLENİYOR")
+            etiket.config(
+                text=f"SİSTEM: {bekleyen} İSTEĞİ GÖNDERİLDİ — doğrulanmadı",
+                fg=SARI)
+            firlat.config(state="disabled", bg="#232e3a")
+            return
+        if not self._arm_durumu_taze_mi():
+            btn.config(state="disabled", bg="#232e3a",
+                       text="ARM DURUMU BEKLENİYOR")
+            etiket.config(text="SİSTEM: ARM DURUMU BİLİNMİYOR/BAYAT", fg=KIRMIZI)
+            firlat.config(state="disabled", bg="#232e3a")
+            return
+        if self.arm_acik:
+            btn.config(state="normal", text="DISARM (A)", bg=KIRMIZI)
+            etiket.config(text="SİSTEM: ARM ✓ — PIXHAWK HEARTBEAT", fg=SARI)
+            firlat.config(state="normal", bg=SARI)
+        else:
+            btn.config(state="normal", text="ARM (A)", bg="#232e3a")
+            etiket.config(text="SİSTEM: DISARM ✓ — PIXHAWK HEARTBEAT", fg=SOLUK)
+            firlat.config(state="disabled", bg="#232e3a")
+
+    def _arm_bekleyeni_tamamla(self):
+        """Güçlü ACK ve eşleşen taze araç durumu birlikteyse işlemi bitir."""
+        komut = getattr(self, "arm_bekleyen_komut", None)
+        if not komut or getattr(self, "arm_ack_zamani", None) is None:
+            return False
+        beklenen = komut == "ARM"
+        if not self._arm_durumu_taze_mi() or self.arm_acik is not beklenen:
+            return False
+        deneme = getattr(getattr(self, "arm_tekrar", None), "deneme", 0)
+        self.arm_bekleyen_komut = None
+        self.arm_ack_zamani = None
+        self._logla(f"İHA {komut} DOĞRULANDI ✓ Pixhawk ACK + taze HEARTBEAT "
+                    f"(armed={beklenen}, {deneme} gönderim)", "yesil")
+        self._arm_ui_uygula()
+        return True
 
     def arm_degistir(self):
+        if getattr(self, "arm_bekleyen_komut", None):
+            self._logla("ARM/DISARM isteği zaten bekliyor — ikinci komut "
+                        "gönderilmedi", "sari")
+            return
+        if not self._arm_durumu_taze_mi():
+            self._arm_ui_uygula()
+            self._logla(f"ARM/DISARM REDDEDİLDİ: Pixhawk `armed` telemetrisi "
+                        f"yok veya {ARM_DURUM_TAZELIK_S:.1f} sn'den bayat; "
+                        "mevcut durum bilinmeden ters komut seçilmez", "kirmizi")
+            return
         yeni_arm_acik = not self.arm_acik
         komut = "ARM" if yeni_arm_acik else "DISARM"
         if komut == "DISARM" and self._iha_havada_mi():
-            simdi = time.time()
+            simdi = time.monotonic()
             bekleyen = getattr(self, "_disarm_teyit_t", 0.0)
-            if simdi - bekleyen > self.DISARM_TEYIT_SURESI_S:
+            if simdi - bekleyen > DISARM_TEYIT_SURESI_S:
                 self._disarm_teyit_t = simdi
                 self.btn_arm.config(text="DISARM? TEKRAR BAS", bg=SARI)
                 self._logla(
                     "⚠ İHA HAVADA (heartbeat canlı, iniş kanıtı yok) — DISARM "
-                    f"gönderilmedi. Onaylamak için {self.DISARM_TEYIT_SURESI_S:.0f} "
+                    f"gönderilmedi. Onaylamak için {DISARM_TEYIT_SURESI_S:.0f} "
                     "sn içinde TEKRAR bas.", "sari")
                 return
             self._disarm_teyit_t = 0.0
-        if not self._cmd_gonder(komut, "iha"):
+        komut_mesaji = command(komut, "iha")
+        if not self.arm_tekrar.baslat(komut_mesaji):
             return
-        self.arm_acik = yeni_arm_acik
-        if yeni_arm_acik:
-            self.btn_arm.config(text="DISARM (A)", bg=KIRMIZI)
-            self.lbl_arm.config(text="SİSTEM: ARM — uçuşa hazır", fg=SARI)
-            self.btn_firlat.config(state="normal", bg=SARI)
-        else:
-            self.btn_arm.config(text="ARM (A)", bg="#232e3a")
-            self.lbl_arm.config(text="SİSTEM: DISARM — güvenli", fg=SOLUK)
-            self.btn_firlat.config(state="disabled", bg="#232e3a")
+        self.arm_bekleyen_komut = komut
+        self.arm_ack_zamani = None
+        self._arm_ui_uygula()
+        self._logla(f"CMD → iha: {komut} (seq={komut_mesaji['seq']}, fiziksel "
+                    f"durum DEĞİŞMEDİ; ACK + HEARTBEAT bekleniyor · "
+                    f"{ARM_TEKRAR_ARALIGI_S:.2f} s × ≤{ARM_TEKRAR_UST_SINIRI})",
+                    "mavi")
+        self._arm_tik()
+
+    def _arm_tik(self):
+        """ARM/DISARM tekrarını ve ACK-sonrası araç durumu penceresini izle."""
+        tekrar = getattr(self, "arm_tekrar", None)
+        if tekrar is None or not getattr(self, "arm_bekleyen_komut", None):
+            return
+        durum = tekrar.tik()
+        if durum == VAZGECILDI:
+            komut = self.arm_bekleyen_komut
+            self.arm_bekleyen_komut = None
+            self.arm_ack_zamani = None
+            self._logla(f"İHA ONAY VERMEDİ ✗ {komut} {tekrar.deneme} kez "
+                        "gönderildi; güçlü ACK gelmedi — durum değiştirilmedi",
+                        "kirmizi")
+            self._arm_ui_uygula()
+            return
+        if durum == ONAYLANDI:
+            if self._arm_bekleyeni_tamamla():
+                return
+            if (self.arm_ack_zamani is not None
+                    and time.monotonic() - self.arm_ack_zamani
+                    > ARM_DURUM_TAZELIK_S):
+                komut = self.arm_bekleyen_komut
+                self.arm_bekleyen_komut = None
+                self.arm_ack_zamani = None
+                self._logla(f"İHA {komut} ACK verdi ama eşleşen taze `armed` "
+                            "HEARTBEAT gelmedi — fırlatma KAPALI", "kirmizi")
+                self._arm_ui_uygula()
+                return
+        self.kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._arm_tik)
 
     def firlatma(self):
         if self.t_iha0:
@@ -2362,8 +2627,12 @@ class YksArayuz:
         # P9b (D-393) — §6.2: fırlatma ancak arming sonrası. Düğme zaten
         # DISARM'da kapalıdır ama otorite düğme durumu DEĞİL bu kilittir
         # (T180 sınıfı: UI durumu tek başına emniyet sinyali sayılmaz).
-        if not self.arm_acik:
-            self._logla("KİLİT ✋ ARM verilmeden FIRLATMA damgası atılamaz "
+        if (not self._arm_durumu_taze_mi()
+                or getattr(self, "arm_bekleyen_komut", None)
+                or self.arm_acik is not True):
+            self._arm_ui_uygula()
+            self._logla("KİLİT ✋ taze Pixhawk HEARTBEAT ile ARM doğrulanmadan "
+                        "FIRLATMA damgası atılamaz "
                         "(şartname §6.2 hakem onaylı fırlatma) — REDDEDİLDİ",
                         "sari")
             return
@@ -2764,6 +3033,19 @@ class YksArayuz:
                     ek += f" · mod {mod}" + ("" if mod == "AUTO" else " ⚠GEÇERSİZ")
                 metin.config(text=f"{ad.upper()} — hb {yas:.1f} sn{ek}"
                                   + ("" if canli else "  (BAĞLANTI KAYBI!)"))
+        gps_etiket = getattr(self, "lbl_gps", None)
+        if gps_etiket is not None:
+            iha_hb = self.son_hb.get("iha")
+            if iha_hb is None or _mono - iha_hb >= ARM_DURUM_TAZELIK_S:
+                gps_etiket.config(
+                    text="HAM GNSS: TELEMETRİ YOK/BAYAT · SEMANTİK HARİTADA "
+                         "KULLANILMAZ", fg=KIRMIZI)
+            else:
+                gps_tel = self.tel.get("iha") or {}
+                gps_var = all(k in gps_tel for k in ("lat", "lon", "gps_fix"))
+                gps_etiket.config(text=gps_gosterim_metni(gps_tel),
+                                  fg=YESIL if gps_var else SARI)
+        self._arm_ui_uygula()
         self.lbl_sayac.config(
             text=f"OPEN_ROUTE {self.sayac['OPEN_ROUTE']} · "
                  f"RED {self.sayac['OPEN_ROUTE_RED']} · "
@@ -2821,6 +3103,7 @@ def demo_besle(yks_port, durum):
         son_tx = 0.0
         son_karar_t = time.time()      # F6 (D-383): algi kesilince DONAR
         son_xy = (150.0, 150.0)        # GNSS kaybinda konum DONAR
+        armed = False                  # demo da komut gonderiminden durum uydurmaz
         # 🔴 T179 (D-323): burada `while time.time() - t0 < 600` yaziyordu —
         # besleme 10 DAKIKADA SESSIZCE OLUYORDU. Sunum 10 dakikayi asarsa
         # (kaptana anlatirken cok olasi) heartbeat kesilir, ekran "baglanti
@@ -2854,7 +3137,11 @@ def demo_besle(yks_port, durum):
                           bat=bat, uydu=uydu,
                           mod="AUTO",                      # tam otonomi (§6.2)
                           karar_yas=round(time.time() - son_karar_t, 2),
-                          x=son_xy[0], y=son_xy[1])
+                          x=son_xy[0], y=son_xy[1],
+                          lat=37.7648000 + son_xy[1] / 111_320.0,
+                          lon=38.2786000 + son_xy[0] / 88_600.0,
+                          gps_fix=3 if durum.get("iha_gnss", True) else 1,
+                          armed=armed)
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:
                     link.send(encode(rota), hedef)         # ACK yok → tekrar
@@ -2879,6 +3166,15 @@ def demo_besle(yks_port, durum):
                     if not onay:
                         onay_t = time.time()
                     onay = True
+                elif (m.get("type") == "CMD" and m.get("hedef") == "iha"
+                      and m.get("cmd") in ("ARM", "DISARM", "PARACHUTE")):
+                    if m["cmd"] == "ARM":
+                        armed = True
+                    elif m["cmd"] == "DISARM":
+                        armed = False
+                    link.send(encode(ack(
+                        m["seq"], "iha", "CMD", ref_cmd=m["cmd"],
+                        sonuc=ACK_SONUC_KABUL)), hedef)
             time.sleep(0.5)
 
     def ika():
@@ -2913,6 +3209,11 @@ def main():
                          "ULAŞMAZ, D-403)")
     ap.add_argument("--serial", help="SiK telsiz seri portu (örn. COM5)")
     ap.add_argument("--baud", type=int, default=57600)
+    ap.add_argument(
+        "--kamera-url", default=os.environ.get("NAVITAS_KAMERA_URL"),
+        help=("Jetson RAW kamera kökü (örn. http://192.168.4.2:8080). "
+              "Yalnız ayrı Wi-Fi/LAN; SiK üzerinden video taşınmaz. "
+              "Varsayılan: NAVITAS_KAMERA_URL, yoksa kamera kapalı"))
     ap.add_argument("--demo", action="store_true",
                     help="dahili İHA/İKA beslemesi (tanıtım + otomatik hakem onayı)")
     ap.add_argument("--otokaydet", type=float, default=0,
@@ -2977,9 +3278,14 @@ def main():
     # otomatik onay YOK: hakem onay akışı elle incelenebilsin (buton/R kısayolu)
     app = YksArayuz(
         kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
-        iha_peer=iha_peer)
+        iha_peer=iha_peer, kamera_url=args.kamera_url)
     app._logla(f"YKS hazır — dinleniyor: "
                f"{args.serial or args.bind}", "mavi")
+    app._logla(
+        (f"RAW kamera LAN kaynağı: {args.kamera_url}" if args.kamera_url else
+         "RAW kamera KAPALI: --kamera-url/NAVITAS_KAMERA_URL verilmedi; "
+         "telemetri ve komut hattı çalışmaya devam eder"),
+        "mavi" if args.kamera_url else "sari")
 
     if args.demo:
         demo_besle(link.port, app.demo_durum)
@@ -3036,8 +3342,13 @@ def main():
                 kok.destroy()
         kok.after(int(args.otokaydet * 1000), kaydet)
 
-    kok.mainloop()
-    link.close()
+    try:
+        kok.mainloop()
+    finally:
+        kamera = getattr(app, "kamera_istemci", None)
+        if kamera is not None:
+            kamera.durdur()
+        link.close()
 
 
 if __name__ == "__main__":

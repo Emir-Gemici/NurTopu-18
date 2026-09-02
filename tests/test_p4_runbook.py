@@ -79,6 +79,17 @@ class SahaBaslatKomutlari(unittest.TestCase):
         komut = saha_baslat.komut_uret("yks", serial="COM5", baud=57600)
         self.assertEqual(["--serial", "COM5", "--baud", "57600"], komut[2:])
 
+    def test_yks_kamera_url_ayri_lan_olarak_aynen_gecer(self):
+        url = "http://192.168.4.2:8080"
+        for kwargs in ({"ika": "10.0.0.2:5006"},
+                       {"serial": "COM5", "baud": 57600}):
+            komut = saha_baslat.komut_uret(
+                "yks", kamera_url=url, **kwargs)
+            self.assertEqual(url, komut[komut.index("--kamera-url") + 1])
+        self.assertNotIn(
+            "--kamera-url", saha_baslat.komut_uret("yks", serial="COM5"),
+            "kamera adresi uydurulmamali")
+
     # ── D-403 KRITIK-1: YKS, IHA komut alicisini --iha ile PINLER ──────────
     def test_yks_komutu_iha_pinler(self):
         """UDP yks kipinde --iha HOST:PORT yks_gui'ye AYNEN gecer; --ika'nin
@@ -125,10 +136,13 @@ class SahaBaslatKomutlari(unittest.TestCase):
         self.assertIn("--ika", yks_satiri, s.stdout)
         self.assertIn("--iha", yks_satiri, s.stdout)
         self.assertIn("<JETSON_IP>:5007", yks_satiri, s.stdout)
+        self.assertIn("--kamera-url", yks_satiri, s.stdout)
+        self.assertIn("http://<JETSON_IP>:8080", yks_satiri, s.stdout)
         sik_satiri = next((sat for sat in s.stdout.splitlines()
                            if sat.lstrip().startswith("SiK")), "")
         self.assertIn("--serial", sik_satiri, s.stdout)
         self.assertNotIn("--iha", sik_satiri, s.stdout)
+        self.assertIn("--kamera-url", sik_satiri, s.stdout)
 
     def test_cli_serial_ve_iha_birlikte_reddi(self):
         """CLI'da --serial + --iha argparse hatasiyla (exit 2) durur; GUI hic

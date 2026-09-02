@@ -261,7 +261,7 @@ mkdir -p ~/navitas/{codes,comms,scripts,models,data,config,results}
 cd /media/navitas/*/jetson_paket
 cp kod/rpi_inference.py kod/costmap_path_finder.py kod/karar_sozlesmesi.py kod/arac_maskesi.py ~/navitas/codes/
 cp kod/model_registry.py kod/kamera_dogrula.py kod/karisim_arena.yaml ~/navitas/codes/
-cp kod/kamera_koprusu.py ~/navitas/codes/            # Görev K (§6) — dosya pakette YOKSA §6 kapısı düşer
+cp kod/kamera_koprusu.py ~/navitas/scripts/          # Görev K (§6) — jetson_baslat.sh SCRIPTS/ altında arar (D-407: codes/ yazılıydı, --kur HATA ile dururdu)
 cp kod/protocol.py kod/link.py kod/iha_sender.py kod/inis_kaniti.py kod/iha_inis_yayinci.py kod/iha_komut_alici.py kod/seri_hub.py ~/navitas/comms/
 cp kod/mavlink_dogrula.py kod/jetson_fps.py ~/navitas/scripts/
 cp models/* ~/navitas/models/
@@ -312,7 +312,7 @@ python3 (3.6) + sistem cv2 (GStreamer'lı) açar ama `ultralytics` koşamaz. İk
 yolundan (T73 `--kaynak`, `JETSON_KILAVUZ` §6B) okur.
 ```bash
 # terminal 1 — SİSTEM python3 (venv38 DEĞİL)
-/usr/bin/python3 ~/navitas/codes/kamera_koprusu.py            # bayraklar: Görev K belgesi
+/usr/bin/python3 ~/navitas/scripts/kamera_koprusu.py          # bayraklar: Görev K belgesi
 # terminal 2 — venv38
 cd ~/navitas && /home/navitas/venv38/bin/python codes/kamera_dogrula.py \
   --kaynak "http://127.0.0.1:8080/video" --kare 120 --isinma 15 \

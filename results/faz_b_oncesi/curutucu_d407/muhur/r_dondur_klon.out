@@ -1,0 +1,43 @@
+=== 1) --dondur --kirli-bilerek (engine yer tutucu):
+[DONDURMA] RED: engine kayitsiz - muhur erken: etkin profilin tensorrt turevi defterde dogrulanmis sha256 tasimiyor ['navitas_seg_v36_best.engine', 'navitas_seg_v36_best_512_fp16.engine']. Sira: Jetson'da derle + `codes/model_registry.py --turev-kaydet`, defteri PC'ye tasi + commit, SONRA --dondur. Bilerek erken muhurlemek icin `--engine-kayitsiz-bilerek` (kunyeye YAZILIR).
+exit=2
+ls: cannot access 'config/DONDURMA_KUNYESI.json': No such file or directory
+
+=== 2) + --engine-kayitsiz-bilerek:
+[DONDURMA] UYARI: engine KAYITSIZKEN donduruldu (--engine-kayitsiz-bilerek): ['navitas_seg_v36_best.engine', 'navitas_seg_v36_best_512_fp16.engine'] (kunyede kayitli)
+[DONDURMA] DONDURULDU: etiket=deneme tarih=2026-09-18 git_head=8103e72a41e5 model=models/navitas_seg_v36_best.pt (1d1caca6f6da...) kapsam: paket 18 + paket_kaynak 18 + paket_modelleri 3 + saha_yapilandirma 10 + yks_ika 9
+[DONDURMA] kunye: C:\Users\yunus\AppData\Local\Temp\claude\O--navitas\3e104177-9b44-4ec7-a18f-1f32ed2c3f72\scratchpad\curut2\muhur\klon_crlf\config\DONDURMA_KUNYESI.json  ozet_yontemi: sha256 v2: metin lf-normalize | ikili ham
+[DONDURMA] SIMDI: git add config/DONDURMA_KUNYESI.json && git commit  (kunye commit edilmeden --dogrula 'KUNYE COMMIT EDILMEMIS' ile DUSER)
+exit=0
+
+=== 3) --dogrula commit'siz:
+[DONDURMA] kunye: etiket=deneme tarih=2026-09-18 git_head=8103e72a41e5 kirli=False sema=2 ozet_yontemi=sha256 v2: metin lf-normalize | ikili ham
+[DONDURMA] git HEAD simdi=8103e72a41e5 -> AYNI; agac KIRLI
+[DONDURMA] GIT BAGI: KUNYE COMMIT EDILMEMIS: config/DONDURMA_KUNYESI.json HEAD'de yok - `git add config/DONDURMA_KUNYESI.json && git commit` (git show HEAD:config/DONDURMA_KUNYESI.json basarisiz (kod 128): fatal: path 'config/DONDURMA_KUNYESI.json' exists on disk, but not in 'HEAD')
+[DONDURMA] MUHUR IHLALI: 0/60 dosya kunyeden sapiyor, 1 git bagi sorunu:
+exit=1
+
+=== 4) kunye icerigi: pixhawk / backslash / surucu harfi / requirements_nano / manifest:
+0
+91: "test_komutu": "O:\\navitas-local-train\\venv\\Scripts\\python.exe scripts/surum_dondur.py --dogrula  &&  O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_faz_b_surum_dondurma.py  &&  O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_jetson_comms_paketi.py  &&  O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_uretim_modeli_hizasi.py",
+91: "test_komutu": "O:\\navitas-local-train\\venv\\Scripts\\python.exe scripts/surum_dondur.py --dogrula  &&  O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_faz_b_surum_dondurma.py  &&  O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_jetson_comms_paketi.py  &&  O:\\navitas-local-train\\venv\\Scripts\\python.exe -m unittest discover -s tests -p test_uretim_modeli_hizasi.py",
+0
+--- paket_modelleri:
+{
+ "jetson_paket/models/navitas_seg_v36_best.pt": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+ "jetson_paket/models/navitas_seg_v36_best.onnx": "YOK",
+ "jetson_paket/models/navitas_seg_v36_best_512_fp16.onnx": "f4c9f5fe08883d1aecc9b4ac3ce9f98cea61de2f5298edde5d2c2a7a5056deab"
+}
+engine_kayitsiz: ['navitas_seg_v36_best.engine', 'navitas_seg_v36_best_512_fp16.engine']
+git_head: 8103e72a41e50fef53a79511fee9234d88b9afd6
+git_kirli: False []
+{'paket': 18, 'paket_kaynak': 18, 'paket_modelleri': 3, 'saha_yapilandirma': 10, 'yks_ika': 9}
+YOK olanlar: [('paket_modelleri', 'jetson_paket/models/navitas_seg_v36_best.onnx')]
+
+=== 5) commit + --dogrula:
+warning: in the working copy of 'config/DONDURMA_KUNYESI.json', LF will be replaced by CRLF the next time Git touches it
+bad0e31 kunye deneme
+[DONDURMA] kunye: etiket=deneme tarih=2026-09-18 git_head=8103e72a41e5 kirli=False sema=2 ozet_yontemi=sha256 v2: metin lf-normalize | ikili ham
+[DONDURMA] git HEAD simdi=bad0e31cc4c8 -> FARKLI (bilgi; olcut dosya ozetleri + git bagidir); agac temiz
+[DONDURMA] BIREBIR: 60 dosya kunyeyle ayni (model + defter + paket 18 + paket_kaynak 18 + paket_modelleri 3 + saha_yapilandirma 10 + yks_ika 9); kunye HEAD'de, izlenen yollar temiz
+exit=0

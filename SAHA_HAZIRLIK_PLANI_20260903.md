@@ -126,6 +126,7 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 | ☐ | SD kart tak, ilk açılış (klavye/ekran), kullanıcı `navitas`, WiFi/ethernet | açıldı |
 | ☐ | `jetson-io` → **IMX477** kamera; `nvarguscamerasrc` ile görüntü | görüntü var |
 | ☐ | Python 3.8 venv + bellekten tekerlekler (§1.3); `import torch, ultralytics, cv2` | import OK; `torch.cuda.is_available()` sonucu tutanağa (True/False ikisi de kabul; FPS ölçülür) |
+| ☐ | **Kopyalama dizinleri belgeye birebir** (D-407): `kamera_koprusu.py` → `~/navitas/**scripts**/` (codes/ değil — `jetson_baslat.sh` orada arar, yanlışı `--kur` HATA ile durdurur); `mavlink_dogrula.py` → `~/navitas/scripts/` | `jetson_baslat.sh --kuru` → `[VAR]` satırları |
 | ☐ | Paket kopyalama (`JETSON_KILAVUZ` §2 + `seri_hub`, `mavlink_dogrula`, `kamera_koprusu`), kayıt defteri, model | `model_kayit_dogrula` True |
 | ☐ | **Kamera köprüsü** çalışıyor: `http://127.0.0.1:8080/video` → `kamera_dogrula --kaynak http://...` | kare doğru yön, `--fov` beyanı (lens) |
 | ☐ | **FPS** (`jetson_fps.py`, PT/ONNX) ≥ **0,61** p50/p95 | GUN1 §5 |

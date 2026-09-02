@@ -1,0 +1,58 @@
+ayna bayt-es: True
+ast.parse feature_version=(3, 7): OK
+ast.parse feature_version=(3, 8): OK
+
+API/sozdizimi bulgulari (1):
+   ('attr', 'reconfigure', 55, 'io.TextIOWrapper.reconfigure 3.7')
+  METIN satir 31: 'removeprefix' -> 3.9
+  METIN satir 31: 'ThreadingHTTPServer' -> 3.7
+  METIN satir 514: 'ThreadingHTTPServer' -> 3.7
+  METIN satir 55: 'reconfigure' -> 3.7 reconfigure
+
+http.server / socketserver kullanimlari:
+   satir 542 .shutdown
+   satir 543 .server_close
+   satir 593 .server_address
+   satir 55 .reconfigure
+   satir 416 .send_response
+   satir 417 .send_header
+   satir 418 .send_header
+   satir 419 .send_header
+   satir 420 .end_headers
+   satir 461 .send_response
+   satir 462 .send_header
+   satir 463 .send_header
+   satir 464 .send_header
+   satir 465 .send_header
+   satir 466 .end_headers
+   satir 480 .send_response
+   satir 481 .send_header
+   satir 483 .send_header
+   satir 484 .send_header
+   satir 485 .send_header
+   satir 486 .end_headers
+   satir 604 .serve_forever
+   satir 203 .is_set
+   satir 264 .notify_all
+   satir 332 .notify_all
+   satir 421 .wfile
+   satir 426 .server_address
+   satir 427 .server_address
+   satir 467 .wfile
+   satir 215 .is_set
+   satir 350 .is_set
+   satir 401 .notify_all
+   satir 496 .flush
+   satir 215 .wait_for
+   satir 412 .address_string
+   satir 493 .wfile
+   satir 494 .wfile
+   satir 495 .wfile
+   satir 496 .wfile
+   satir 500 .is_set
+   satir 441 .send_response
+   satir 442 .send_header
+   satir 443 .send_header
+   satir 444 .end_headers
+   satir 445 .wfile
+   satir 503 .address_string

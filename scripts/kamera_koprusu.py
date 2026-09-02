@@ -46,6 +46,7 @@ import time
 from collections import deque
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
+from urllib.parse import urlsplit
 
 import cv2
 import numpy as np
@@ -151,6 +152,34 @@ def kaynagi_coz(metin, **nvargus_ayar):
 def video_url(port=VARSAYILAN_PORT, host=YEREL_HOST):
     """rpi_inference --kaynak icin verilecek URL (jetson_baslat.sh ile ayni)."""
     return "http://{}:{}{}".format(host, int(port), VIDEO_YOLU)
+
+
+def _http_yetkisi_dogrula(metin):
+    """HTTP ``Host`` basligini guvenli ``host[:port]`` olarak dogrula.
+
+    Kopru dis LAN'a ``0.0.0.0`` ile baglandiginda o adres istemci hedefi DEGILDIR.
+    /durum, istegi yapan YKI'nin kullandigi Host basligini ilan eder. Kontrol
+    karakteri/yol/kullanici bilgisi iceren basliklar yansitilmaz.
+    """
+    if not isinstance(metin, str):
+        return None
+    yetki = metin.strip()
+    if not yetki or any(ord(c) < 33 or ord(c) == 127 for c in yetki):
+        return None
+    if any(c in yetki for c in "/\\?#@"):
+        return None
+    try:
+        parca = urlsplit("//" + yetki)
+        _port = parca.port
+    except ValueError:
+        return None
+    if not parca.hostname or parca.path or parca.query or parca.fragment:
+        return None
+    return yetki
+
+
+def _uc_url(yetki, yol):
+    return None if yetki is None else "http://{}{}".format(yetki, yol)
 
 
 class KareUretici(threading.Thread):
@@ -423,8 +452,20 @@ class KopruIstekleyici(BaseHTTPRequestHandler):
     def _durum_sozlugu(self):
         u = self.server.uretici
         d = u.durum()
-        d["port"] = int(self.server.server_address[1])
-        d["video_url"] = video_url(self.server.server_address[1])
+        bind_host = str(self.server.server_address[0])
+        port = int(self.server.server_address[1])
+        # ``0.0.0.0`` bir DINLEME beyanidir, YKI'nin baglanabilecegi URL degil.
+        # HTTP istemcisinin Host basligi gercek arayuz/IP'yi tasir. Gecersiz ya
+        # da eksikse yalniz belirli bir bind adresi guvenli geri donus olabilir.
+        yetki = _http_yetkisi_dogrula(self.headers.get("Host"))
+        if yetki is None and bind_host not in ("0.0.0.0", "::", ""):
+            yetki = "{}:{}".format(bind_host, port)
+        d["port"] = port
+        d["bind_host"] = bind_host
+        d["istek_host"] = yetki
+        d["video_url"] = _uc_url(yetki, VIDEO_YOLU)
+        d["kare_url"] = _uc_url(yetki, KARE_YOLU)
+        d["durum_url"] = _uc_url(yetki, DURUM_YOLU)
         return d
 
     def do_GET(self):

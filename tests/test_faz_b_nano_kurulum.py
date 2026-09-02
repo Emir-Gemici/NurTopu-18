@@ -189,6 +189,39 @@ class K4BelgeBetikHizasiTests(unittest.TestCase):
         self.assertIn(f"/home/{kullanici}/venv38/bin/mavproxy.py", self.metin,
                       "MAVProxy venv38'de; birim PATH'i icin symlink adimi belgede olmali")
 
+    def test_D407_kurulum_hedefleri_jetson_baslat_ile_AYNI(self):
+        """D-407 (curutucu S4): belge `cp kod/X.py ~/navitas/<dizin>/` derken
+        jetson_baslat.sh ayni dosyayi BASKA dizinde ararsa `--kur` HATA ile durur.
+        Olculdu: belge `kamera_koprusu.py`yi codes/ diyordu, betik scripts/ ariyor —
+        cumartesi kurulumu tam o noktada dururdu (fail-closed ama zaman kaybi)."""
+        # Yetkili kaynak: systemd birimlerinin ExecStart yollari (jetson_baslat.sh
+        # `kurulu_py_dosyalari` ile tam onlari arar; dosya yoksa `--kur` HATA).
+        aranan = {}
+        for birim in sorted((PAKET / "systemd").glob("*.service")):
+            for satir in birim.read_text(encoding="utf-8").splitlines():
+                if not satir.startswith("ExecStart="):
+                    continue
+                for dizin, dosya in re.findall(
+                        r"/(codes|comms|scripts)/([a-z0-9_]+\.py)", satir):
+                    aranan[dosya] = dizin
+        self.assertIn("kamera_koprusu.py", aranan,
+                      "birim ExecStart'larinda kamera_koprusu.py yok")
+        self.assertGreaterEqual(len(aranan), 4, aranan)
+        # Belgedeki cp satirlari: `cp kod/<dosya> ... ~/navitas/<dizin>/`
+        for satir in self.metin.splitlines():
+            s = satir.strip()
+            if not s.startswith("cp kod/"):
+                continue
+            hedef = re.search(r"~/navitas/([a-z]+)/", s)
+            if hedef is None:
+                continue
+            for dosya in re.findall(r"kod/([a-z0-9_]+\.py)", s):
+                if dosya in aranan:
+                    self.assertEqual(
+                        aranan[dosya], hedef.group(1),
+                        f"{dosya}: belge ~/navitas/{hedef.group(1)}/ diyor, "
+                        f"jetson_baslat.sh {aranan[dosya]}/ ariyor (D-407)")
+
 
 class K5GitignoreTests(unittest.TestCase):
     def test_wheels_repoya_girmez(self):

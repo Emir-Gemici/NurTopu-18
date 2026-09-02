@@ -3,6 +3,7 @@ komutları için başarı durumu göstermeli; iletim yokluğu operatör onayı d
 """
 
 import sys
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -33,6 +34,9 @@ class YksKomutDurustluguTests(unittest.TestCase):
     def _arayuz(self, arm_acik=False, adres_var=False):
         arayuz = object.__new__(yks_gui.YksArayuz)
         arayuz.arm_acik = arm_acik
+        arayuz.arm_durum_zamani = time.monotonic()
+        arayuz.arm_bekleyen_komut = None
+        arayuz.arm_ack_zamani = None
         arayuz.link = mock.Mock()
         arayuz.son_adr = {"iha": IHA_ADRESI} if adres_var else {}
         arayuz._logla = mock.Mock()
@@ -62,6 +66,9 @@ class YksKomutDurustluguTests(unittest.TestCase):
             yks_gui.PARASUT_TEKRAR_UST_SINIRI)
         arayuz.parasut_ack_zamani = None
         arayuz.kok = mock.Mock()
+        arayuz.arm_tekrar = yks_gui.AckliTekrar(
+            arayuz._ham_gonder, yks_gui.ARM_TEKRAR_ARALIGI_S,
+            yks_gui.ARM_TEKRAR_UST_SINIRI)
         arayuz._ceza_ekle = mock.Mock()
         arayuz._ucus = mock.Mock()
         return arayuz
@@ -95,16 +102,17 @@ class YksKomutDurustluguTests(unittest.TestCase):
         self.assertEqual("disabled", arayuz.btn_firlat.cget("state"))
         self.assertNotIn("uçuşa hazır", arayuz.lbl_arm.cget("text"))
 
-    def test_arm_adres_varken_eskisi_gibi_baslar(self):
+    def test_arm_adres_varken_ack_ve_heartbeat_gelmeden_baslamis_sayilmaz(self):
         arayuz = self._arayuz(adres_var=True)
 
         arayuz.arm_degistir()
 
         self._komut_dogrula(arayuz, "ARM")
-        self.assertTrue(arayuz.arm_acik)
-        self.assertEqual("DISARM (A)", arayuz.btn_arm.cget("text"))
-        self.assertEqual("SİSTEM: ARM — uçuşa hazır", arayuz.lbl_arm.cget("text"))
-        self.assertEqual("normal", arayuz.btn_firlat.cget("state"))
+        self.assertFalse(arayuz.arm_acik)
+        self.assertEqual("ARM", arayuz.arm_bekleyen_komut)
+        self.assertIn("BEKLENİYOR", arayuz.btn_arm.cget("text"))
+        self.assertNotIn("uçuşa hazır", arayuz.lbl_arm.cget("text"))
+        self.assertEqual("disabled", arayuz.btn_firlat.cget("state"))
 
     def test_disarm_adres_yokken_durum_ve_ekran_degismez(self):
         arayuz = self._arayuz(arm_acik=True)
@@ -119,15 +127,16 @@ class YksKomutDurustluguTests(unittest.TestCase):
         self.assertNotIn("DISARM", arayuz.lbl_arm.cget("text"))
         self.assertNotIn("güvenli", arayuz.lbl_arm.cget("text"))
 
-    def test_disarm_adres_varken_eskisi_gibi_guvenli_gosterir(self):
+    def test_disarm_adres_varken_ack_ve_heartbeat_gelmeden_guvenli_sayilmaz(self):
         arayuz = self._arayuz(arm_acik=True, adres_var=True)
 
         arayuz.arm_degistir()
 
         self._komut_dogrula(arayuz, "DISARM")
-        self.assertFalse(arayuz.arm_acik)
-        self.assertEqual("ARM (A)", arayuz.btn_arm.cget("text"))
-        self.assertEqual("SİSTEM: DISARM — güvenli", arayuz.lbl_arm.cget("text"))
+        self.assertTrue(arayuz.arm_acik)
+        self.assertEqual("DISARM", arayuz.arm_bekleyen_komut)
+        self.assertIn("BEKLENİYOR", arayuz.btn_arm.cget("text"))
+        self.assertNotIn("güvenli", arayuz.lbl_arm.cget("text"))
         self.assertEqual("disabled", arayuz.btn_firlat.cget("state"))
 
     def test_parasut_adres_yokken_ceza_ve_basari_uydurmaz(self):

@@ -306,7 +306,8 @@ class CliTests(unittest.TestCase):
         # asgari irtifa denetimi ACIKCA kapali kalir (sessiz sifir yasak).
         modul.yayinci_kur.assert_called_once_with(
             yks="127.0.0.1:5005", ika=None, seri=None, baud=57600,
-            konum_saglayici=None, irtifa_saglayici=None)
+            konum_saglayici=None, irtifa_saglayici=None,
+            telemetri_saglayici=None)
         self.assertIs(yayinci, rv.call_args.kwargs["yayinci"])
         yayinci.stop.assert_called_once()
         yayinci.sender.link.close.assert_called_once()

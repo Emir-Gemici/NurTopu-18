@@ -16,6 +16,7 @@ Kapanan kusurlar (olculdu):
      gelirse kimse uyarmiyordu.
 """
 import sys
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -27,7 +28,7 @@ for _y in (KOK / "comms", KOK / "codes", KOK / "tests"):
 
 import yks_gui  # noqa: E402
 from komut_tekrar import VAZGECILDI, AckliTekrar  # noqa: E402
-from protocol import ack  # noqa: E402
+from protocol import ACK_SONUC_KABUL, ack  # noqa: E402
 from karar_sozlesmesi import (PARASUT_MANUEL_CEZA_PUANI,  # noqa: E402
                               PARASUT_TEKRAR_ARALIGI_S,
                               PARASUT_TEKRAR_UST_SINIRI)
@@ -49,6 +50,8 @@ def _p9_arayuz(saat=None):
     g._ceza_ekle = mock.Mock()
     g._ucus = mock.Mock()
     g.arm_acik = False
+    g.arm_durum_zamani = time.monotonic()
+    g.arm_bekleyen_komut = None
     g.t_iha0 = None
     g.btn_firlat = _SahteWidget(state="normal")
     g.btn_iha_indi = _SahteWidget(state="disabled")
@@ -79,7 +82,8 @@ class ParasutAckliTekrar(unittest.TestCase):
         g, _ = _p9_arayuz()
         g.parasut(); g.parasut()
         seq = g.parasut_tekrar.mesaj["seq"]
-        g._ack_isle(ack(seq, "iha", "CMD"), ("127.0.0.1", 5007))
+        g._ack_isle(ack(seq, "iha", "CMD", ref_cmd="PARACHUTE",
+                         sonuc=ACK_SONUC_KABUL), ("127.0.0.1", 5007))
         self.assertIsNotNone(g.parasut_ack_zamani,
                              "iha ACK'i islenmedi — eski kusur geri geldi")
         self.assertFalse(g.parasut_tekrar.bekliyor)

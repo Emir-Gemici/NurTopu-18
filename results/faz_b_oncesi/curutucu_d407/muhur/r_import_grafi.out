@@ -1,0 +1,16 @@
+baslangic (YKS_IKA): 9  ulasilan depo modulu: 13
+KAPSAM ICI (13):
+    codes/arac_maskesi.py
+    codes/costmap_path_finder.py
+    codes/karar_sozlesmesi.py
+    codes/rpi_inference.py
+    comms/iha_sender.py
+    comms/ika_receiver.py
+    comms/komut_tekrar.py
+    comms/link.py
+    comms/protocol.py
+    comms/yks_gui.py
+    scripts/saha_baslat.py
+    simulation/scripts/ika_nav.py
+    simulation/scripts/ika_surucu.py
+KAPSAM DISI (0):
