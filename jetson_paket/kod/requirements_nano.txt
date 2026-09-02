@@ -1,0 +1,36 @@
+# requirements_nano.txt — Jetson Nano 4GB · Python 3.8 venv (~/venv38) · aarch64
+#
+# NEDEN (SAHA_HAZIRLIK_PLANI_20260903.md §1.3): Nano'nun sistem Python'u 3.6,
+# repo `ultralytics` ister (>= 3.8). Bu liste requirements_rpi.txt'nin USTKUMESIDIR
+# (test: tests/test_faz_b_nano_kurulum.py).
+# opencv-python (headless DEGIL): PC'de gercek indirmede olculdu — ultralytics
+# `opencv-python>=4.6` ister ve cozumleyici headless'i bu sarta SAYMAZ; headless
+# listelenirse Nano'da IKISI birden kurulur ve ayni `cv2` paketini ust uste yazar.
+# Nano masaustu imaji (JetPack SD) libGL tasir, opencv-python acilir.
+# GStreamer/nvarguscamerasrc BU cv2'de YOKTUR (pip wheel FFmpeg'li, GStreamer'siz) —
+# kamera goruntusu sistem python3 (3.6) + sistem cv2 ile kamera_koprusu.py uzerinden
+# HTTP/MJPEG olarak gelir; pip cv2 HTTP akisini FFmpeg ile okur.
+#
+# Tekerlekler PC'de `scripts/nano_tekerlek_indir.py` ile indirilir (glibc 2.27 uyumlu
+# aarch64 wheel; wheel'i olmayanlar kaynak_paketler.txt'ye duser, Nano'da derlenir).
+# Kurulum (Nano, venv38 aktif):  pip install --no-index --find-links ~/wheels -r requirements_nano.txt
+
+# ── requirements_rpi.txt kumesi ──────────────────────────────────────────────
+ultralytics
+opencv-python            # ultralytics bagimliligi olarak zaten gelir; acikca listelenir (requirements_rpi ile ayni)
+numpy<2                  # cp38 icin numpy 2.x YOK; ultralytics/torch 1.x ile uyumlu
+pyserial
+pymavlink                # 2.4.49 cp38 aarch64 wheel'i VAR (gercek indirme, 3 Eylul); wheel yoksa betik sdist'e duser -> kaynak_paketler.txt
+
+# ── Nano'ya ozel ekler ───────────────────────────────────────────────────────
+torch                    # PyPI aarch64 CPU wheel (cp38 icin son surum); GPU wheel'i JETSON_NANO_KURULUM.md §4
+torchvision              # torch ile ayni cozumleme
+onnxruntime              # PT yerine ONNX ile ucus secenegi (model_registry turevler: v36 fp16 onnx sha kayitli)
+MAVProxy                 # navitas-cogullayici (jetson_baslat.sh): /dev/ttyACM0'in tek sahibi
+lxml                     # pymavlink/MAVProxy bagimliligi; pymavlink sdist'e duserse bagimliliklari yine burada olsun
+future                   # pymavlink bagimliligi (ayni sebep)
+
+# ── Kurulum araclari (cevrimdisi pip guncellemesi + sdist derleme) ───────────
+pip                      # venv38'in pip'i eski; `pip install --no-index --find-links . pip` ile guncellenir
+setuptools               # pymavlink/MAVProxy sdist derlemesi
+wheel
