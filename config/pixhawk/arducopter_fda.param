@@ -1,0 +1,180 @@
+# NAVITAS - ArduCopter 4.x PARAMETRE SABLONU - FDA gorev test ucusu (sartname SS5.3.2)
+#
+# NEDEN (SAHA_HAZIRLIK_PLANI_20260903.md SS1.6, SS2.4): 5 Eylul'de Pixhawk 6C ILK KEZ
+# yapilandirilacak. Degerler Mission Planner'da elle tiklanarak girilirse ne tutanak
+# kalir ne de test; bu dosya repoda durur, testi vardir
+# (tests/test_faz_b_pixhawk_sablon.py) ve sahada TEK komutla yuklenir.
+#
+# BICIM: Mission Planner "Config > Full Parameter List > Load from file".
+#   * Her parametre satiri:  AD,DEGER   (baska hicbir sey yok)
+#   * '#' ile baslayan satirlar yorumdur - MP ParamFile.loadParamFile '#' satirini atlar
+#     (kaynak: MissionPlanner/ExtLibs/Utilities/ParamFile.cs, 2026-09-03 okundu).
+#   * Her parametrenin USTUNDE bir NEDEN yorumu vardir (sartname maddesi / D-kaydi /
+#     hangi aracimizin bekledigi). Test bunu zorlar: NEDEN'siz parametre satiri YOK.
+#   * "# TEYIT:" ile isaretli parametre Pixhawk'ta DOGRULANMADAN "yuklendi" sayilmaz;
+#     README.md'deki TEYIT listesi bu isaretlerle AYNI olmak zorundadir (metin kilidi).
+#
+# KAYNAK: parametre adlari ve deger tablolari ArduPilot Copter-4.5 kaynagindan okundu
+# (ArduCopter/Parameters.cpp, ArduCopter/config.h, ArduCopter/defines.h,
+#  libraries/AC_Fence/AC_Fence.cpp, AP_BattMonitor/AP_BattMonitor_Params.cpp,
+#  RC_Channel/RC_Channels_VarInfo.h, AP_SerialManager/AP_SerialManager.cpp,
+#  AP_BoardConfig/AP_BoardConfig.cpp, AP_Motors/AP_MotorsMulticopter.cpp,
+#  AC_WPNav/AC_WPNav.cpp, AP_Arming/AP_Arming.cpp, hwdef/Pixhawk6C/hwdef.dat).
+# Bu dosyada OLMAYAN her parametre firmware varsayilaninda kalir.
+#
+# !! SR*/SERIAL*/BRD_* degisiklikleri YENIDEN BASLATMA ister ("Write Params" sonrasi
+#   Pixhawk'a guc kes-ver; sonra "Refresh Params" ile dosyayla karsilastir).
+
+# -- GOVDE / MOTOR (SAHA_HAZIRLIK_PLANI SS0.2: quadcopter, 5008 340KV x4, 12x10, 80 A ESC) --
+
+# NEDEN: 4 kollu govde (dronesolid/). ArduCopter/Parameters.cpp @Values 1:Quad.
+FRAME_CLASS,1
+# NEDEN: X yerlesimi (kollar 45 derece; ileri yon iki kolun arasinda). @Values 1:X.
+# Motor sirasi/yonu SS2.4 "motor testi pervanesiz" adiminda videoyla dogrulanir.
+FRAME_TYPE,1
+# NEDEN: SS0.2 "ilk ucuslarda PWM 400 Hz (MAIN 1-4); DShot sonra, istege bagli".
+# AP_MotorsMulticopter.cpp @Values 0:Normal. DShot (4..7) ancak PWM ile ucus
+# dogrulandiktan SONRA ve ayri D-kaydiyla denenir.
+MOT_PWM_TYPE,0
+
+# -- MAVLINK KIMLIGI / SERI HATLAR (CONTRACTS SS7.4 / D-403) --
+
+# NEDEN: Jetson'daki alicilar bu sysid'e pinlidir: comms/iha_komut_alici.py
+# VARSAYILAN_HEDEF_SYSID = 1 (COMMAND_ACK yalniz bu sysid'den sayilir, D-403),
+# scripts/mavlink_dogrula.py VARSAYILAN_BEKLENEN_SYSID = 1, jetson_baslat.sh SYSID=1.
+# Test: SYSID_THISMAV == iha_komut_alici.VARSAYILAN_HEDEF_SYSID.
+SYSID_THISMAV,1
+# NEDEN: TELEM1 = SiK 433 MHz -> YKS (Mission Planner / yks_gui). AP_SerialManager.cpp
+# @Values 2:MAVLink2. Pixhawk 6C hwdef SERIAL_ORDER: SERIAL1 = UART7 = TELEM1.
+SERIAL1_PROTOCOL,2
+# NEDEN: SiK telsiz fabrika hizi 57600 (karar_sozlesmesi K4 notu: "SiK 433 MHz
+# 57600 baud"); AP_SerialManager.cpp @Values 57:57600.
+SERIAL1_BAUD,57
+# NEDEN: TELEM2 = Jetson Nano 40-pin UART (/dev/ttyTHS1, SS0.2) -> navitas-cogullayici
+# (MAVProxy). Pixhawk 6C hwdef: SERIAL2 = UART5 = TELEM2. MAVLink2 (inis_kaniti
+# EXTENDED_SYS_STATE, iha_komut_alici COMMAND_LONG).
+SERIAL2_PROTOCOL,2
+# NEDEN: jetson_paket/jetson_baslat.sh PIXHAWK_BAUD varsayilani 57600 ve
+# navitas-cogullayici.service "--baudrate ${PIXHAWK_BAUD}" - iki uc AYNI hizda.
+SERIAL2_BAUD,57
+# NEDEN: Jetson UART 3 telli (TX/RX/GND, SS0.2) - RTS/CTS BAGLI DEGIL. Varsayilan 2 (Auto)
+# acilista tampon dolumuna bakarak karar verir; bagli olmayan hatta yanlis "Enabled"
+# kalirsa TELEM2 hic konusmaz. AP_BoardConfig.cpp @Values 0:Disabled,1:Enabled,2:Auto.
+# TEYIT: Pixhawk'ta BRD_SER2_RTSCTS adi/degeri gorulsun; TELEM2'den HEARTBEAT gelmiyorsa
+# ILK bakilacak yer burasi (mavlink_dogrula DUSTU -> once bu).
+BRD_SER2_RTSCTS,0
+
+# -- AKIS HIZLARI (scripts/mavlink_dogrula.py / karar_sozlesmesi MAVLINK_*_ASGARI_HZ) --
+# SRx_POSITION = GLOBAL_POSITION_INT + LOCAL_POSITION_NED (ArduCopter/GCS_Mavlink.cpp
+# STREAM_POSITION_msgs). Uretim tuketicisi: inis_kaniti.BagilIrtifaOkuyucu, irtifa
+# ornegi TELEMETRI_IRTIFA_TAZELIK_S = 0,5 s'den yasliysa OLCEK_YOK (fail-closed).
+# Asgari: MAVLINK_KONUM_ASGARI_HZ = 4 Hz. Test: SR1/SR2_POSITION >= MAVLINK_KONUM_ASGARI_HZ.
+#
+# !! EXTENDED_SYS_STATE HICBIR SR AKISINDA YOKTUR (Copter-4.5 GCS_Mavlink.cpp STREAM_*_msgs
+#   dizilerinin tamami okundu; MSG_EXTENDED_SYS_STATE yok). SRx_EXTRA3 = AHRS, SYSTEM_TIME,
+#   BATTERY_STATUS, EKF_STATUS_REPORT, VIBRATION... EXTENDED_SYS_STATE yalniz
+#   MAV_CMD_SET_MESSAGE_INTERVAL ile ISTENINCE akar (mavlink_dogrula bunu yapar; istek
+#   baglantiya ozeldir ve YENIDEN BASLATMADA SILINIR - README "Bilinen riskler").
+#   SRx_EXTRA3 burada EKF/pil durumu icin ve gorev tanimindaki asgari icin tutulur;
+#   inis kanitinin hizini TEK BASINA garanti etmez.
+
+# NEDEN: SiK hatti (YKS haritasi). MAVLINK_KONUM_ASGARI_HZ (4 Hz) = asgari; SiK hava
+# hizi dar oldugu icin pay verilmedi. Mission Planner baglaninca kendi "Telemetry Rates"
+# degerlerini ister - README "Sahada ayrica kontrol".
+SR1_POSITION,4
+# NEDEN: MAVLINK_DURUM_ASGARI_HZ (1 Hz) = asgari; SiK hattinda EXTRA3 (EKF/pil) 1 Hz yeter.
+SR1_EXTRA3,1
+# NEDEN: Jetson hatti (uretim). MAVLINK_KONUM_ASGARI_HZ x mavlink_dogrula.ISTEK_HIZ_CARPANI
+# (4 x 2 = 8): "asgarinin tam kendisini istemek jitter'da esigin hemen altina dusurur".
+# Kablolu 57600 tam dupleks; 8 Hz x 2 mesaj x ~45 B = ~720 B/s, hattin ~%13'u.
+SR2_POSITION,8
+# NEDEN: MAVLINK_DURUM_ASGARI_HZ x ISTEK_HIZ_CARPANI (1 x 2 = 2). EXTENDED_SYS_STATE icin
+# yukaridaki uyariya bak; bu deger EKF_STATUS_REPORT / BATTERY_STATUS icindir.
+SR2_EXTRA3,2
+
+# -- RC (SS0.2: FlySky FS-i6 + FS-iA6B, iBUS; pilot = kullanici) --
+
+# NEDEN: RC_Channels_VarInfo.h @Bitmask 0:All,1:PPM,2:IBUS,... -> iBUS biti 2 -> 1<<2 = 4.
+# Yalniz iBUS'a daraltmak yanlis protokol algisini onler. Varsayilan 1 (All).
+# TEYIT: alici bind edilip Radio Calibration'da kanallar oynamiyorsa 1 (All) yapip
+# tekrar dene; protokol adi Messages sekmesinde "RCInput: decoding IBUS" olarak gorunmeli.
+RC_PROTOCOLS,4
+
+# -- PIL (SS0.2: 1x 4S 10 Ah, PM02 -> POWER1; PM02 olcegi Pixhawk 6C hwdef varsayilani) --
+
+# NEDEN: PM02 analog gerilim + akim. AP_BattMonitor_Params.cpp @Values 4:Analog Voltage
+# and Current. BATT_VOLT_MULT / BATT_AMP_PERVLT bu dosyada YOK: Pixhawk 6C hwdef.dat
+# HAL_BATT_VOLT_SCALE 18.18 / HAL_BATT_CURR_SCALE 36.36 (PM02) varsayilandir; "fabrika
+# kalibreli" (SS0.2) degeri ezmemek icin yazilmaz. Sahada multimetreyle karsilastirilir.
+BATT_MONITOR,4
+# NEDEN: 4S x 3,60 V = 14,4 V "dusuk" esigi (SS1.6). Yuk altinda gerilim coker; 10 Ah 25C
+# pilde 40 A'da cokme ~0,3-0,5 V - BATT_FS_VOLTSRC varsayilan (ham gerilim) ile 14,4 V
+# RTL'ye yeter payi birakir. BATT_LOW_TIMER varsayilan 10 s (anlik cokme tetiklemez).
+BATT_LOW_VOLT,14.4
+# NEDEN: 4S x 3,50 V = 14,0 V "kritik" esigi (SS1.6). LOW > CRT sirasi test ile kilitli.
+BATT_CRT_VOLT,14.0
+# NEDEN: dusuk pilde eve don (irtifa RTL_ALT). AP_BattMonitor_Params.cpp
+# @Values{Copter}: 0:None,1:Land,2:RTL,3:SmartRTL or RTL,4:SmartRTL or Land,5:Terminate.
+# TEYIT: Pixhawk'taki firmware surumu 4.5 degilse deger tablosu Mission Planner
+# aciklamasindan tekrar okunsun (2 = RTL olmali).
+BATT_FS_LOW_ACT,2
+# NEDEN: kritik pilde HEMEN in (eve donecek enerji kalmamis sayilir). @Values{Copter} 1:Land.
+# TEYIT: BATT_FS_LOW_ACT ile ayni tablo; 1 = Land oldugu MP aciklamasinda gorulsun.
+BATT_FS_CRT_ACT,1
+
+# -- FAILSAFE (SS2.4: "RC failsafe (kumanda kapatinca RTL)", GCS failsafe) --
+
+# NEDEN: kumanda kapaninca/kaybolunca RTL. ArduCopter/Parameters.cpp @Values
+# 1:Enabled always RTL. iBUS alicisi sinyal kaybinda cerceve basmayi keser -> RC kaybi.
+FS_THR_ENABLE,1
+# NEDEN: YKS heartbeat'i kesilince RTL. @Values 1:RTL. FS_GCS_TIMEOUT varsayilan 5 s.
+# !! Jetson'daki MAVProxy de sysid 255 (GCS) heartbeat basar (--source-system varsayilani
+#   255): SiK kopsa bile Jetson yasadigi surece bu failsafe TETIKLENMEZ; ancak Jetson VE
+#   SiK birlikte susarsa devreye girer. Bilinerek kabul edildi (README "Karar noktalari").
+FS_GCS_ENABLE,1
+
+# -- GEOFENCE (SS2.4: "geofence (irtifa 50 m + prova alani poligonu)") --
+
+# NEDEN: cit acik. AC_Fence.cpp @Values 1:Enabled. Arm oncesi GPS kilidi ister
+# (ARMING_CHECK ile birlikte fail-closed).
+FENCE_ENABLE,1
+# NEDEN: AC_Fence.cpp @Bitmask{Copter} 0:Max altitude,1:Circle Centered on Home,
+# 2:Inclusion/Exclusion Circles+Polygons,3:Min altitude -> irtifa (1) + daire (2) = 3.
+# Poligon (bit 2) sahada Mission Planner'dan cizilince 7 yapilir (README).
+FENCE_TYPE,3
+# NEDEN: gorev irtifasi SARTNAME_ASGARI_IRTIFA_M = 30 m (SS5.3.2) + RTL_ALT 35 m'nin
+# ustunde, IRTIFA_MAKUL_UST_M (200 m) cok altinda. Test: FENCE_ALT_MAX > 30 ve > RTL_ALT.
+# AC_Fence.cpp @Units m, @Range 10 1000.
+FENCE_ALT_MAX,50
+# NEDEN: 20x20 m alan (SENARYO_BOYUTLARI_M["FDA"] = 20) + kalkis noktasi uzakligi;
+# kosegen 28 m + pay. @Range 30 10000 (30'un altina inemez). Adiyaman'da alan
+# yerlesimi bilinince yeniden olculur.
+FENCE_RADIUS,60
+# NEDEN: ihlalde eve don ya da in. AC_Fence.cpp @Values{Copter} 1:RTL or Land.
+FENCE_ACTION,1
+
+# -- RTL / INIS / HIZ (SS5.3.2: kalkis+tespit+aktarim+inis <= 10 dk) --
+
+# NEDEN: cm. 35 m: gorev irtifasinin (30 m) hemen ustu -> RTL'de once alcalip sonra
+# tirmanma yok; FENCE_ALT_MAX (50 m) altinda -> RTL cit ihlali uretmez. Varsayilan 1500
+# (config.h) gorev irtifasinin ALTINDA kalirdi. @Range 200 300000.
+RTL_ALT,3500
+# NEDEN: son alcalma hizi cm/s (config.h varsayilani 50). Sure butcesi: 30 m'nin tamami
+# bu hizla inilse 60 s - tests/test_faz_b_pixhawk_sablon.py butce kapisi bunu sayar.
+LAND_SPEED,50
+# NEDEN: cm/s. 20x20 m alan ustunde tek pas 3 m/s: 30 m irtifada ~0,06 m/px olcekte
+# kare basi kayma kucuk (bulanikli kare yok), pas ~30 s. Varsayilan 1000 (10 m/s)
+# alani 2 s'de gecer, kamera/algi bosa doner. AC_WPNav.cpp @Range 20 2000.
+WPNAV_SPEED,300
+
+# -- ARM / LOG --
+
+# NEDEN: tum arm oncesi kontroller (GPS, pusula, EKF, pil, RC, cit...). AP_Arming.cpp
+# @Bitmask 0:All. Kapatmak yasak: SS2.4 "arm mesajlari temiz" kapisi bu kontrollerin
+# ciktisidir.
+ARMING_CHECK,1
+# NEDEN: Copter-4.5 DEFAULT_LOG_BITMASK (config.h) = ATTITUDE_MED|GPS|PM|CTUN|NTUN|RCIN|IMU|
+# CMD|CURRENT|RCOUT|OPTFLOW|COMPASS|CAMERA|MOTBATT (defines.h bitleri 1..11,13,15,17)
+# = 176126. Acikca yazilir ki onceki bir oturumda degistirilmis deger sessizce kalmasin.
+# Ucus sonrasi .bin log = FDR kanit dosyasi (SS0.3 madde 4 "sifir mudahale" ispati).
+LOG_BITMASK,176126
