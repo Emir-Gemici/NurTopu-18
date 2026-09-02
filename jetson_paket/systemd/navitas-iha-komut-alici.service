@@ -1,0 +1,26 @@
+# NEDEN: D-393 / D-403 — YKS PARACHUTE/ARM/DISARM komutlarini Pixhawk'a COMMAND_LONG ile
+# aktarir, YALNIZ COMMAND_ACK ACCEPTED'de YKS'ye ACK doner. MAVLink'i cogullayici
+# ucundan konusur (udp:127.0.0.1:14552, CONTRACTS §7.4 — bu uc YAZAR); --sysid ${SYSID}
+# = Pixhawk SYSID_THISMAV. Seri hatta SerialException'da BILEREK coker (gorunur olum);
+# Restart=always onu 2 s'de kaldirir, YKS cokmeyi ACK yoklugundan gorur (FAZ_B_GUN_PLANI §4b).
+#   $KOMUT_TELSIZ_ARGS KIP=udp: --bind 0.0.0.0:5007  (YKS: yks_gui --iha <JETSON_IP>:5007)
+#                      KIP=sik: --bind 127.0.0.1:5007 (seri hub --tuketici ucu)
+[Unit]
+Description=NAVITAS iha_komut_alici - YKS PARACHUTE/ARM -> Pixhawk COMMAND_LONG (cogullayici ucu udp:14552)
+After=network.target navitas-cogullayici.service navitas-seri-hub.service
+Wants=navitas-cogullayici.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid ${SYSID} $KOMUT_TELSIZ_ARGS
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

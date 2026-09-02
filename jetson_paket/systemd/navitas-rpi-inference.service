@@ -1,0 +1,34 @@
+# NEDEN: uretim algi yolu (K1, CONTRACTS §6.5): kamera -> v36 -> costmap ->
+# OPEN_ROUTE/NO_ROUTE + HEARTBEAT. Irtifa (mpp) icin MAVLink'i DOGRUDAN degil
+# cogullayici ucundan okur (udp:127.0.0.1:14550, CONTRACTS §7.4); --mav-sysid ${SYSID}
+# zorunlu pin (D-389). /etc/navitas.env'den:
+#   $RPI_EK_ARGS     --fov|--odak (BEYAN), --senaryo, --kaynak, --ub-referans
+#   $RPI_TELSIZ_ARGS KIP=udp: --yks-hedef YKS:5005 --ika-hedef IKA:5006
+#                    KIP=sik: --yks-hedef 127.0.0.1:5100 (seri hub; tek hatta bir kez)
+# ⚠ BILINEN BLOKER (2026-09-02, olculdu): codes/rpi_inference.py run_camera her karede
+#   cv2.imshow cagirir (satir 2269) — ekransiz Jetson'da (DISPLAY yok) ILK KAREDE cokup
+#   Restart dongusune girer. DISPLAY/XAUTHORITY masaustu oturumu icin verilir; kalici
+#   cozum rpi_inference'a ekransiz kip (AYRI GOREV, bu paket dokunmadi).
+#   `jetson_baslat.sh --durum` yeniden-baslatma sayisini gosterir: artiyorsa bu dongudur.
+[Unit]
+Description=NAVITAS uretim algi yolu (rpi_inference --camera) - cogullayici ucu udp:14550
+After=network.target navitas-cogullayici.service navitas-seri-hub.service
+Wants=navitas-cogullayici.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+SupplementaryGroups=video
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/navitas/.Xauthority
+ExecStart=/usr/bin/python3 /home/navitas/navitas/codes/rpi_inference.py --camera --mavlink udp:127.0.0.1:14550 --mav-sysid ${SYSID} $RPI_EK_ARGS $RPI_TELSIZ_ARGS
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target
