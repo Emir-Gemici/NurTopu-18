@@ -1,0 +1,29 @@
+# NEDEN: D-403 §4b (FAZ_B_GUN_PLANI) — KIP=sik'te SiK 433 MHz seri portu da TEK
+# SAHIPLIDIR; rpi_inference, iha_inis_yayinci ve iha_komut_alici ayni /dev/ttyUSB0'i
+# acamaz. Bu birim portu tek basina acar: 127.0.0.1:5100'e gelen NAVITAS cercevelerini
+# seri hatta yazar, seri hattan gelenleri --tuketici ucuna (iha_komut_alici
+# --bind 127.0.0.1:5007) verir. KIP=udp'de KURULMAZ (jetson_baslat.sh disable eder).
+# ⚠ comms/seri_hub.py bu paketle BIRLIKTE GELMEDI (2026-09-02, depoda yok): CLI
+#   (--serial --baud --bind --tuketici) kardes CLI'larin (iha_komut_alici) adlandirma
+#   kalibina gore VARSAYIMDIR. Betik depoya girince tests/test_faz_b_jetson_baslat.py
+#   kod/ aynasini zorunlu kilar; betik yokken jetson_baslat.sh KIP=sik'te DURUR
+#   (dosya_denetle), --kuru "[YOK] seri_hub.py" der.
+[Unit]
+Description=NAVITAS seri hub - SiK seri portun tek sahibi, UDP loopback dagitici (D-403 4b, KIP=sik)
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+SupplementaryGroups=dialout
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py --serial ${SIK_SERI} --baud ${SIK_BAUD} --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

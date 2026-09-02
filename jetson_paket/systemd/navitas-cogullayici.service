@@ -1,0 +1,29 @@
+# NEDEN: CONTRACTS §7.4 (D-403) — seri Pixhawk TEK SAHIPLIDIR. Bu birim /dev/ttyACM0'i
+# tek basina acar ve uc tuketiciye UDP loopback ucu verir: 14550 rpi_inference (okur),
+# 14551 iha_inis_yayinci (okur), 14552 iha_komut_alici (yazar). Uclar BURADA sabittir;
+# tests/test_faz_b_jetson_baslat.py bunlari CONTRACTS.md §7.4 tablosuyla kilitler.
+# Degiskenler /etc/navitas.env'den gelir (jetson_baslat.sh yazar).
+# Cokerse 2 s'de kalkar; StartLimitIntervalSec=0 olmasa systemd 10 s'de 5 cokusten
+# sonra pes ederdi (hands-off ihlali).
+# mavlink-router alternatifi (ayni uclar), MAVProxy yerine:
+#   ExecStart=/usr/bin/mavlink-routerd -e 127.0.0.1:14550 -e 127.0.0.1:14551 -e 127.0.0.1:14552 ${PIXHAWK_SERI}:${PIXHAWK_BAUD}
+[Unit]
+Description=NAVITAS MAVLink cogullayici (MAVProxy) - seri Pixhawk'in tek sahibi (CONTRACTS 7.4)
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+SupplementaryGroups=dialout
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+Environment=PATH=/home/navitas/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/env mavproxy.py --master=${PIXHAWK_SERI} --baudrate ${PIXHAWK_BAUD} --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir ${LOG_DIZIN}/mavproxy
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

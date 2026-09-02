@@ -1,0 +1,27 @@
+# NEDEN: SAHA_RUNBOOK §3 — Pixhawk kanitli IHA_LANDED yayincisi. MAVLink'i cogullayici
+# ucundan okur (udp:127.0.0.1:14551, CONTRACTS §7.4); --sysid ${SYSID} (D-389 pin);
+# --kanit-timeout ${KANIT_TIMEOUT} (sartname §6.2 IHA gorev suresi, 900 s).
+# Restart=always: kanit penceresi dolup cikis 3 verirse 2 s sonra YENIDEN bekler —
+# acilista kalkan surec inisi kacirmaz; inisten sonra heartbeat'i IKA gorev suresi
+# boyunca surdurur (K6), sonra cikar ve yeniden bekler (yerde_mi alcalmayi bekler, D-389).
+#   $INIS_TELSIZ_ARGS KIP=udp: --yks YKS:5005 --ika IKA:5006 (ACK'li)
+#                     KIP=sik: --yks 127.0.0.1:5100 (seri hub; ACK yolu hub tasarimina bagli)
+[Unit]
+Description=NAVITAS iha_inis_yayinci - Pixhawk kanitli IHA_LANDED (cogullayici ucu udp:14551)
+After=network.target navitas-cogullayici.service navitas-seri-hub.service
+Wants=navitas-cogullayici.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/navitas.env
+User=navitas
+WorkingDirectory=/home/navitas/navitas
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/navitas/navitas/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid ${SYSID} --kanit-timeout ${KANIT_TIMEOUT} $INIS_TELSIZ_ARGS
+Restart=always
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target
