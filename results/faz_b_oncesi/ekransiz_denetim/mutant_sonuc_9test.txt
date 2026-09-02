@@ -1,0 +1,17 @@
+mutant                             sonuc                                    yakalandi?
+a_video_ilk_continue_False         Ran 9 tests in 6.069s | FAILED (failures=1) EVET
+    FAIL: test_5_kayitsiz_ekransiz_videoda_imshow_ve_cizim_yok (__main__.EkransizVideo.test_5_kayitsiz_ekransiz_videoda_imshow_ve_cizim_yok)
+b_video_ikinci_continue_False      Ran 9 tests in 6.666s | FAILED (failures=1) EVET
+    FAIL: test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok (__main__.EkransizKayitliVideo.test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok)
+c_camera_destroy_kosulsuz          Ran 9 tests in 6.727s | FAILED (failures=1) EVET
+    FAIL: test_9_destroyAllWindows_yalniz_ekranli_kipte (__main__.EkransizKayitliVideo.test_9_destroyAllWindows_yalniz_ekranli_kipte)
+d_camera_continue_False_MIMAR      Ran 9 tests in 4.948s | FAILED (errors=3) EVET
+    ERROR: test_1_ekransiz_display_yokken_TAMAMLANIR_ve_gorsel_uretilmez (__main__.EkransizKamera.test_1_ekransiz_display_yokken_TAMAMLANIR_ve_gorsel_uretilmez)
+    ERROR: test_3_karar_yolu_iki_kipte_BIREBIR_ayni (__main__.EkransizKamera.test_3_karar_yolu_iki_kipte_BIREBIR_ayni)
+    ERROR: test_4_ekranli_kipte_q_durdurur_ekransizda_waitKey_hic_cagrilmaz (__main__.EkransizKamera.test_4_ekranli_kipte_q_durdurur_ekransizda_waitKey_hic_cagrilmaz)
+e_video_destroy_kosulsuz           Ran 9 tests in 6.771s | FAILED (failures=1) EVET
+    FAIL: test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok (__main__.EkransizKayitliVideo.test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok)
+g_video_kayit_da_atlanir           Ran 9 tests in 7.184s | FAILED (failures=1) EVET
+    FAIL: test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok (__main__.EkransizKayitliVideo.test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok)
+h_camera_ekransiz_print_yok        Ran 9 tests in 7.454s | FAILED (failures=1) EVET
+    FAIL: test_1_ekransiz_display_yokken_TAMAMLANIR_ve_gorsel_uretilmez (__main__.EkransizKamera.test_1_ekransiz_display_yokken_TAMAMLANIR_ve_gorsel_uretilmez)

@@ -178,6 +178,72 @@ class EkransizVideo(unittest.TestCase):
             self.assertEqual(0, draw.call_count)
 
 
+class EkransizKayitliVideo(unittest.TestCase):
+    """D-404 §2 bagimsiz denetim ONEMLI-1: ekransiz+KAYITLI video yolu (satir
+    ~2141-2161) hicbir testte yurumuyordu; 4/7 mutant suitten geciyordu."""
+
+    def _kos(self, *, ekransiz, save, kare=3):
+        with tempfile.TemporaryDirectory() as d:
+            yol = Path(d) / "sahte.mp4"
+            yol.write_bytes(b"\x00")
+            draw = mock.MagicMock(side_effect=lambda sq, _m: sq)
+            imshow = mock.MagicMock()
+            waitkey = mock.MagicMock(return_value=0)
+            destroy = mock.MagicMock()
+            yazici = mock.MagicMock()
+            with mock.patch.object(cv2, "VideoCapture", return_value=_Kamera(kare)), \
+                    mock.patch.object(cv2, "VideoWriter", return_value=yazici), \
+                    mock.patch.object(cv2, "VideoWriter_fourcc", return_value=0), \
+                    mock.patch.object(ri, "RESULTS_DIR", Path(d) / "sonuc"), \
+                    mock.patch.object(cv2, "imshow", imshow), \
+                    mock.patch.object(cv2, "waitKey", waitkey), \
+                    mock.patch.object(cv2, "destroyAllWindows", destroy), \
+                    mock.patch.object(ri, "get_masks", return_value=_maskeler()), \
+                    mock.patch.object(ri, "analyze_path", _analiz_dizisi()), \
+                    mock.patch.object(ri, "draw_masks", draw), \
+                    mock.patch.object(ri, "_karari_yayinla", _Yayinla()), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                ri.run_video(SimpleNamespace(predict=lambda *a, **k: [object()]),
+                             str(yol), 0.30, save=save, mpp=0.05,
+                             ekransiz=ekransiz)
+        return SimpleNamespace(draw=draw, imshow=imshow, waitkey=waitkey,
+                               destroy=destroy, yazici=yazici)
+
+    def test_8_ekransiz_KAYITLI_video_her_kare_yazilir_pencere_yok(self):
+        s = self._kos(ekransiz=True, save=True)
+        self.assertEqual(3, s.yazici.write.call_count, "kayit ekransizda da SURER")
+        self.assertEqual(3, s.draw.call_count, "gorsel yalniz yazici icin uretilir")
+        self.assertEqual(0, s.imshow.call_count)
+        self.assertEqual(0, s.waitkey.call_count)
+        self.assertEqual(0, s.destroy.call_count)
+        self.assertEqual(1, s.yazici.release.call_count)
+
+    def test_9_destroyAllWindows_yalniz_ekranli_kipte(self):
+        ekranli = self._kos(ekransiz=False, save=False)
+        self.assertEqual(1, ekranli.destroy.call_count)
+        self.assertEqual(3, ekranli.imshow.call_count)
+        ekransiz = self._kos(ekransiz=False, save=True)
+        self.assertEqual(3, ekransiz.yazici.write.call_count, "ekranli+kayitli: ikisi de")
+        # Kamera dongusu: ekranlida 1, ekransizda 0.
+        with mock.patch.object(cv2, "destroyAllWindows") as destroy:
+            with mock.patch.object(cv2, "VideoCapture", return_value=_Kamera(2)), \
+                    mock.patch.object(cv2, "imshow"), \
+                    mock.patch.object(cv2, "waitKey", return_value=0), \
+                    mock.patch.object(ri, "get_masks", return_value=_maskeler()), \
+                    mock.patch.object(ri, "analyze_path", _analiz_dizisi()), \
+                    mock.patch.object(ri, "draw_masks", side_effect=lambda sq, _m: sq), \
+                    mock.patch.object(ri, "_karari_yayinla", _Yayinla()), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                ri.run_camera(SimpleNamespace(predict=lambda *a, **k: [object()]),
+                              0.30, canli_olcek=(lambda _w: 0.05),
+                              yayinci=object(), ekransiz=False)
+                self.assertEqual(1, destroy.call_count)
+                ri.run_camera(SimpleNamespace(predict=lambda *a, **k: [object()]),
+                              0.30, canli_olcek=(lambda _w: 0.05),
+                              yayinci=object(), ekransiz=True)
+                self.assertEqual(1, destroy.call_count, "ekransizda cagrilmadi")
+
+
 class CliVeBirim(unittest.TestCase):
     def test_6_cli_ekransiz_bayragi_var(self):
         sonuc = subprocess.run(

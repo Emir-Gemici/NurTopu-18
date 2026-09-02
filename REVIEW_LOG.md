@@ -27945,3 +27945,36 @@ onayiyla kapanmaz.** Acik borc:
 4. `jetson_baslat.sh` systemd/`--kapi`/`--dogrudan` kipleri Windows'ta
    kosulamadi; Jetson'daki ilk kosum ilk kanit.
 Bu dort madde kapanmadan D-404 **tamamlanmis sayilmaz**; kota donunce ilk is.
+
+### 8. Bagimsiz denetim sonucu — ekransiz kip (§7 madde 1 KAPANDI)
+
+Kota donunce ayri denetci ajani (salt okunur; repro betikleri
+`results/faz_b_oncesi/ekransiz_denetim/`) 07a9b8d'deki `codes/rpi_inference.py`
+degisikligini denetledi. **Hukum: KOSULLU GECTI.** Bagimsiz teyitler: karar
+yolu 6 kipte (4 video + 2 kamera) 23 kayitlik izle **birebir** (`analyze_path`,
+`_rota_kararini_esikle`, `suz`, `_karari_yayinla`); `frame_idx`/`fps_buf`
+artislari `continue`'lardan ONCE (2092/2098 vs 2140/2161); `VideoWriter` asla
+None donmez (cv2 5.0.0 olculdu); cagricilar kwargs'siz -> varsayilan False;
+ayna `cmp` esit; T17 FPS kapisi `jetson_fps.py` zincirinde imshow/draw yok ->
+bayrak kapiya dik; genel kapi 15/15.
+
+**Sart (ONEMLI-1):** ekransiz+KAYITLI video yolu (satir ~2141-2161) hicbir
+testte yurumuyordu — denetcinin 7 mutantindan **4'u (b, c, e, g) suitten
+geciyordu**; mimarin tek mutanti yalniz kamera dalini sinamisti.
+**Kapanis:** `tests/test_faz_b_rpi_ekransiz.py` test 8 (ekransiz+save=True:
+`writer.write` 3/3, draw 3, imshow 0, waitKey 0, destroy 0, release 1) ve
+test 9 (`destroyAllWindows` yalniz ekranli kipte; kamera+video). Denetcinin
+mutant kosucusu 9 testle yeniden kosuldu: **7/7 mutant YAKALANDI**
+(`mutant_sonuc_9test.txt`: a,b,c,d,e,g,h hepsi FAILED/ERROR).
+
+Denetcinin mevcut-durum bulgulari (D-404 borcu DEGIL, kuyruga):
+- KUCUK-2: ekransizda kontrollu durdurma yolu yok — `signal` islenmiyor,
+  `systemctl stop` (SIGTERM) sureci aninda oldurur, `main()` `finally`'si
+  (`yayinci.stop`, `link.close`, `canli_olcek.kapat`) ve `cap.release`
+  calismaz. Eski kodda da try/finally yoktu (regresyon degil). -> **T204**.
+- KUCUK-3: `save=True` iken codec yoksa `VideoWriter` truthy kalir, her kare
+  olu yaziciya sessizce yazilir (eski davranis). -> **T205**.
+
+Kalan borc (§7): madde 2 (hub curutucusu — bu kayit yazilirken kosuyor),
+madde 3 (muhur kapsami — curutucunun dondurma mercegi bekleniyor), madde 4
+(Jetson'da ilk kosum).

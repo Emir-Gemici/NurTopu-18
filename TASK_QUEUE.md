@@ -1900,6 +1900,19 @@ düğümü · SiK Radio 433 MHz menzil testi · 20×20 m test arenasının fizik
 
 > H2 / H3 tamamlanmadan başlanamaz.
 
+- [ ] **T204 — `rpi_inference` ekransız kipte kontrollü durdurma yolu yok (SIGTERM → anında ölüm; `finally` ve `cap.release` çalışmaz)** · `codes/rpi_inference.py` · **KÜÇÜK** (mevcut durum, regresyon değil) · kanıt: `REVIEW_LOG.md` **D-404 §8** (bağımsız denetçi KÜÇÜK-2)
+  - `signal` işlenmiyor; `systemctl stop navitas-rpi-inference` SIGTERM yollar, süreç
+    anında ölür — `main()` `finally`'si (`yayinci.stop`, `link.close`, `canli_olcek.kapat`)
+    ve `cap.release()` çalışmaz. Ekranlı kipte 'q' bu yolu sağlıyordu; ekransızda tek
+    doğal bitiş 30 ardışık düşen kare. UDP hub'a gidildiği için işlevsel risk düşük.
+  - **Yap:** SIGTERM → `KeyboardInterrupt` işleyicisi + kamera/video döngüsü etrafında
+    try/finally; test: sahte SIGTERM/KeyboardInterrupt sonrası `cap.release` 1,
+    `yayinci.stop` 1. Karar yolu DEĞİŞMEZ (madde 15).
+- [ ] **T205 — `run_video --save`: açılamayan `VideoWriter` sessiz (codec yoksa truthy kalır, her kare ölü yazıcıya yazılır)** · `codes/rpi_inference.py` · **KÜÇÜK** (eski davranış) · kanıt: `REVIEW_LOG.md` **D-404 §8** (KÜÇÜK-3)
+  - `cv2.VideoWriter` asla None dönmez (cv2 5.0.0 ölçüldü); `bool()` True → ekransız
+    kipin "hiç çizmez" vaadi bu durumda tutmaz, hata da yok.
+  - **Yap:** `writer.isOpened()` kontrolü → KIRMIZI uyarı + `writer=None` (kayıt yok,
+    karar sürer). Test: `isOpened()=False` sahte yazıcıyla draw 0, uyarı basıldı.
 - [ ] **T16 — Jetson üzerinde TensorRT `.engine` derlemesi** · `scripts/export_tensorrt.py` · bağımlı: **H2**
   - **Uyarı:** PC'de üretilen `.engine` Jetson'da **çalışmaz** — TensorRT sürümü donanıma bağlıdır. PC'de yalnız ONNX üretilir, `.engine` **Jetson üzerinde** derlenir.
   - **Kapı:** Jetson'da `.engine` yükleniyor ve tek kare çıkarım hatasız tamamlanıyor.
