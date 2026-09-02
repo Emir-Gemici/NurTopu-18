@@ -1,5 +1,11 @@
 """T95 · `rota_bul` (KATMAN B) ACIKLIK KORUMASI — KAYIP OLCUMU (FAZ 1).
 
+⛔ D-402 (2026-09-03) — BU BETIK BUGUN GECERSIZ OLCUM URETIR: uretim artik
+`yol_duzelt`e `dt_px` geciriyor (T95/D-164; costmap_path_finder.py:1259),
+asagidaki taban kolu sizinti sayacini tetikler ve rapor "OLCUM GECERSIZ"
+basar. Ustelik cagri imzasi ankorsuz ve sayilar v30 (D-399). TARIHSEL
+KAYITTIR; guncel olcum: scripts/olcum/173_t99_uretim_imzasi.py
+
 NEDEN (REVIEW_LOG D-158, bagimsiz denetim bulgusu 2). T94 `yol_duzelt`e
 ACIKLIK KORUMA kurali ekledi:
 

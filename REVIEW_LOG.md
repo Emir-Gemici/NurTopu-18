@@ -27489,6 +27489,7 @@ gore verilmis durustluk verdiktir, "ayirt edilemez" evrensel iddiasi degil.
 Yeni cokus verisi gelirse (saha provalari) olcum ayni on kayitla tekrarlanir.
 
 ### D-399 — T99: uretim imzasi olculdu — ANKOR BIR FILTRE (yanlis rotalari p=0,003 ile tercihen eliyor); T99'un lafzi bugun KOSULAMAZ
+> ⬆ **SONRADAN KARARA BAĞLANDI → D-402.**
 
 **Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Opus 5, amele) ·
 **Denetleyen: mimar bekleniyor (AGENTS §9.3)** ·
@@ -27563,6 +27564,7 @@ Genel kapi 15/15 · tam suit (asagida) · uretim/olcum kodu DEGISMEDI, yalniz
 yeni olcum betigi eklendi.
 
 ### D-400 — T101 OLCULDU: serit sinir asimi SENTETIK ARTEFAKT DEGIL, gercekte de var (%43-48)
+> ⬆ **SONRADAN KARARA BAĞLANDI → D-402.**
 
 **Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Opus 5, amele) ·
 **Denetleyen: mimar bekleniyor (AGENTS §9.3)** ·
@@ -27613,6 +27615,7 @@ aciklikti" tanim degisikligi ayri on kayit + mimar karari ister. Genel kapi
 15/15, tam suit OK, uretim kodu DEGISMEDI.
 
 ### D-401 — T61 KESIF TURU: dort aday DOGRULANAMADI, biri (V varyansi) zayif ama anlamli; kucuk ornek YANILTTI
+> ⬆ **SONRADAN KARARA BAĞLANDI → D-402.**
 
 **Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Opus 5, amele) ·
 **Denetleyen: mimar bekleniyor (AGENTS §9.3)** ·
@@ -27665,3 +27668,71 @@ olu" demek DEGILDIR.
 
 Hicbir olcut uretime baglanmadi; bagli olsaydi yalniz REDDEDEBILIRDI.
 Genel kapi 15/15 · tam suit OK · uretim kodu DEGISMEDI.
+
+### D-402 — MIMAR KARARLARI: T99/T101/T61 olcumlerinin hukmu (T99 ve T101 KAPANDI, T61 veri-bloklu)
+
+**Tarih:** 2026-09-03 · **Karar: Claude 2 — Fable 5.1, MIMAR** ·
+**Dayanak:** D-399 (T99), D-400 (T101), D-401 (T61) olcumleri + bu kayitta
+mimarin kendi dogruladigi iki olgu
+
+### K1 — T99: ankor filtresi SAHAYA SIMDI BAGLANMAZ; T99 KAPANDI
+
+D-399 ankorun yanlis seritli rotalarin %91,7'sini eledigini gosterdi
+(p=0,003). Ama ayni olcum kor ankorun (KB'yi bilmeden) **0/260** verdigini
+de gosterdi. Saha yolu (`rpi_inference.analyze_path`) IKA'nin KB konumunu
+KARE ICINDE bilmiyor; hedef tarafi T150 ile zaten ankorlu (`goruntu=` ->
+`hb_konumu`). Baslangic ankoru icin on kosul: IKA KB GNSS'i + IHA konum/
+baslik + mpp ile kareye projeksiyon — T162'nin `iha_ub_ihlali` makinesiyle
+ayni sinif is. Faz C+ adayi olarak plana yazildi; simdi baglamak kor ankor
+riskini tasir. T99'un sorusu ("olculen sayilar uretim girdisine ait mi")
+CEVAPLANDI: degil — uretim imzasi daha az ama cok daha dogru rota uretir.
+**T99 KAPANDI.** Kuyruk metnindeki (1,2) bayatligi durum satirinda
+duzeltildi (KATMAN_ARAC=10).
+
+### K2 — T101: `serit_no` ve K7 DEGISMEZ; T101 KAPANDI
+
+D-400 yayilmanin gercekte de var oldugunu gosterdi (%43-48). Uc olgu
+degisiklik gerektirmedigini soyluyor — ikisini mimar kendi dogruladi:
+1. **IKA `road`u suruste kullanmiyor** (`ika_nav.py:154`: "Sayisal road
+   yalnizca yol etiketi/kararidir; geometrik rota degildir"; :529 geometrisiz
+   mesaj hareket uretmez). Yayilma surusu ETKILEMEZ.
+2. **K7 zaten iyi-kosullu 88-kare alt kumesine kisitli** (65:126-133,
+   D-312/D-314: "kapi bir sinira denk gelen karelerde etiket TANIM GEREGI
+   belirsizdir"). D-400 o kisitin gerekcesini gercek karelerle TEYIT ediyor.
+3. Surum dondurma yaklasıyor (§6.1, plan ~18 Eylul); kabul zinciri
+   tanimlari bu asamada oynatilmaz.
+"Kapi bir acikliktir" tanim isi (T91) yarisma SONRASI icin acik kalir.
+**T101 KAPANDI.**
+
+### K3 — T61: esik turu ACILMAZ; VERI-BLOKLU
+
+D-401: dort aday dogrulanamadi, B1-V zayif (r²≈%12). Bu etkiyle kapi
+yapilamaz; ikinci on kayit turu mevcut vekille (tek mekan, 67 kare) yeni
+bilgi uretmez. Ic-tutarlilik ekseni bu veriyle TUKENDI. Gercek saha provasi
+kareleri (Faz C) gelirse ayni betik yeniden kosulur. T61 acik kalir,
+oncelik dusuk, **veri-bloklu**.
+
+### K4 — 89/90/91'e uyari banner'i (D-308 dersi)
+
+89 ve 90 bugun GECERSIZ olcum uretir (taban kolu olu — uretim `dt_px`
+geciriyor); 91'in tabani calisir (satir 100 pop) ama imzasi ankorsuz/v30.
+Ucune de docstring basina uyari kondu: dosyaya bakan kapi yoksa dosya yalan
+soyler. Betiklerin govdesi DEGISMEDI (tarihsel kayit).
+
+### K5 — Kullanici onayi bekleyen madde
+
+Yok. Hicbir uretim kodu, esik ya da sozlesme degismedi; iki gorev "olculdu ve
+degisiklik gerekmiyor" hukmuyle kapandi, biri veri-bloklu isaretlendi.
+
+### 6. Surec kusuru — ayni turda yakalandi ve onarildi
+
+Geri-isaretleri koyan betik `read_text` ile okudu (CRLF -> LF cevrilir) ve
+`find("\r\n")` ile satir sonu aradi: -1 dondu, uc isaret de dosyanin
+1. karakterine eklendi, ilk satir bolundu (`#` + ` NAVITAS — DENETIM
+KAYDI`). D-373 mutasyon nobetcisi yakaladi ("ilk isaret silinince kapi
+dusmedi" — cunku ilk isaret hicbir kaydin degildi). Bayt duzeyinde,
+satir-sonundan bagimsiz (startswith + satir ekleme) onarildi; git farki
+58 ekleme / 0 silme. Olculen olgu: defter DISKTE LF'dir (27.667 LF, git
+autocrlf uyarisi); "defter CRLF, `\r\n` ile ekle" calisma notu BAYATTI —
+dogru yordam: satir-sonundan bagimsiz metin islemi (splitlines/startswith),
+`find("\r\n")` ASLA.

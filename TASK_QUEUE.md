@@ -7101,7 +7101,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - ⚠ **32 aynasız betik bilerek aynalanmadı** (D-190 (C)) — onlar **yedek**
     ihtiyacıdır, sürüm kontrolü değil. `O:\navitas-local-train` tümüyle yedek
     listesinde.
-- [ ] **T99 — 🔎 ÖLÇÜLDÜ 2026-09-03 · D-399 (karar mimarda; kod DEĞİŞMEDİ).** Üretim imzası 5 kolla ölçüldü (n=260, v36): **ankor bir FİLTRE** — yanlış şeritli rotaların %91,7'sini, doğruların %35,3'ünü eliyor (Fisher tek yönlü p=0,0030); şerit doğruluğu %58,6→%91,7. Araç katmanı ölçüldü (7/260 kare dolu) ama kararı hiç değiştirmedi. 🔴 Görevin LAFZI koşulamaz: 89'un taban kolu ölü (üretim artık `dt_px` geçiriyor, T95/D-164) ve bu kuyruk metni bayat (KATMAN_ARAC=**10**, 2 değil). Kalan: mimar kararı — ankorun filtre etkisi ölçülmemiş bir güvenlik payıdır. Özgün kayıt: T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
+- [x] **T99 — KAPANDI (2026-09-03 · D-399 ölçüm + D-402 mimar kararı: ankor filtresi sahaya şimdi bağlanmaz, KB projeksiyonu Faz C+ adayı).** 🔎 Ölçüm özeti: Üretim imzası 5 kolla ölçüldü (n=260, v36): **ankor bir FİLTRE** — yanlış şeritli rotaların %91,7'sini, doğruların %35,3'ünü eliyor (Fisher tek yönlü p=0,0030); şerit doğruluğu %58,6→%91,7. Araç katmanı ölçüldü (7/260 kare dolu) ama kararı hiç değiştirmedi. 🔴 Görevin LAFZI koşulamaz: 89'un taban kolu ölü (üretim artık `dt_px` geçiriyor, T95/D-164) ve bu kuyruk metni bayat (KATMAN_ARAC=**10**, 2 değil). Kalan: mimar kararı — ankorun filtre etkisi ölçülmemiş bir güvenlik payıdır. Özgün kayıt: T95 üretimin ÇAĞRI İMZASIYLA hiç ölçülmedi (ankorlu · araçlar engel)** · `simulation/scripts/iha_haritala.py:323` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-165 §2**
   - Üç ölçüm turu da `rota_bul(mk, mpp=mpp, icerik=icerik)` kullandı. Üretim:
     ```python
     rota_bul(costmap_maskeleri, mpp=MPP, baslangic=..., hedef=..., plan=True,
@@ -7257,7 +7257,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
     çıkaracağı ilk yanlış sonuç bu olurdu.
   - ✅ **CONTRACTS §6.2 GÜNCELLENDİ:** `road`ın hangi istatistik olduğu artık
     yazılı — **olgu beyanı olarak**, "en iyisidir" iddiası olmadan.
-- [ ] **T101 — 🔴 SAYISALLAŞTIRILDI (2026-08-27 · D-312): kabul kümesinin **%54'ü (105/193)** kötü koşullu (kapı iki şeride yayılıyor); şerit etiketi ayrışmasının **%100'ü** buradan geliyor. İyi koşullu 88 karede uyum %100. Yani bu artık soyut bir risk değil, ölçülmüş bir orandır ve şerit doğruluğu kapısını (K7) doğrudan engelliyor · Etiketleme çerçevesi ill-conditioned: bir üreteç şeridi iki `serit_no` üçte birine birden yayılıyor** · `codes/karar_sozlesmesi.py` (`serit_no`) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-168 §4**
+- [x] **T101 — KAPANDI (2026-09-03 · D-400 ölçüm + D-402 karar: `serit_no` ve K7 değişmez — İKA `road`u sürüşte kullanmıyor, K7 zaten iyi-koşullu alt kümede; tanım işi T91 yarışma sonrası).** Önceki: 🔴 SAYISALLAŞTIRILDI (2026-08-27 · D-312): kabul kümesinin **%54'ü (105/193)** kötü koşullu (kapı iki şeride yayılıyor); şerit etiketi ayrışmasının **%100'ü** buradan geliyor. İyi koşullu 88 karede uyum %100. Yani bu artık soyut bir risk değil, ölçülmüş bir orandır ve şerit doğruluğu kapısını (K7) doğrudan engelliyor · Etiketleme çerçevesi ill-conditioned: bir üreteç şeridi iki `serit_no` üçte birine birden yayılıyor** · `codes/karar_sozlesmesi.py` (`serit_no`) · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-168 §4**
   - 🔎 **POPÜLASYON SAYISIYLA ÖLÇÜLDÜ · 2026-08-20 · D-205.** t66'da AÇIK
     şeridin kutusu 260 karenin **77'sinde (%29,6)** iki `serit_no` üçte-birine
     yayılıyor (897 şeritten 186'sı); açık+yayılan şeritlerde merkez-sınır
@@ -7290,7 +7290,7 @@ ters bölü + n → satır sonu · ters bölü + 51 → `)` (0o51=41) · ters b�
   - **YAP:** ya arena dışına/kenarına yerleştir, ya da kaplama oranını belirgin
     biçimde düşür. **KAPI:** renk çeşitliliği düşmesin, kadraj kapıları geçsin.
 
-- [ ] **T61 — Orta şiddetli çökme için ölçüt yok: kaplama+kenar bu sınıfı kaçırıyor** · `codes/karar_sozlesmesi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-86**
+- [ ] **T61 — VERİ-BLOKLU (2026-09-03 · D-401 + D-402): iç-tutarlılık ekseni mevcut vekille tükendi (4 aday düştü, B1-V r²≈%12); gerçek saha provası kareleri gelince yeniden. Özgün: Orta şiddetli çökme için ölçüt yok: kaplama+kenar bu sınıfı kaçırıyor** · `codes/karar_sozlesmesi.py` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-86**
   - 🔎 **FİLO 2 · D-215 (2026-08-20) · SAYI KAYMIŞ:** kanıt karesi `sa_000150`
     v34'te çökme imzası göstermiyor (kaplama 0,617→0,2914, kenar 0,658→0,0751);
     YAPISAL ölçüt boşluğu kodda duruyor — gerekçe ayakta, örnek kare bayat.

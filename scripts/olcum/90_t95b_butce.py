@@ -1,5 +1,11 @@
 """T95-B · `rota_bul` ACIKLIK KORUMASI — MALIYET BUTCE BICIMINDE (FAZ 1).
 
+⛔ D-402 (2026-09-03) — BU BETIK BUGUN GECERSIZ OLCUM URETIR: uretim artik
+`yol_duzelt`e `dt_px` geciriyor (T95/D-164; costmap_path_finder.py:1259),
+taban kolu (satir ~190) sizinti sayacini tetikler ve rapor "OLCUM GECERSIZ"
+basar. Cagri imzasi ankorsuz, sayilar v30 (D-399). TARIHSEL KAYITTIR;
+guncel olcum: scripts/olcum/173_t99_uretim_imzasi.py
+
 IKINCI TUR NEDEN (D-159 · D-160 · D-161). Birinci turda koruma BUYUK kazanc
 verdi (kayip medyani 3,00 -> 0,693 px · pay<3px kare 3 -> 0 · ACIK 31 -> 31 ·
 `yol_no` 31/31 karede AYNI) ama (4) "duzelt suresi <= 2 kat" olcutunden dustu.

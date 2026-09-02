@@ -150,7 +150,8 @@ fiziksel zinciri.
 | Model döngüsü | DJI Neo nadir çekim (İNSAN, kuyruk R-görevi) → T197 etiket → T153 ince beton şerit + T47 çim/toprak eğitim turu → kabul zinciri v37 adayı (K4c ön kayıtlı korluk kararıyla) |
 | Arena üreteci | T199 kalan 2 deneme (K8 kararı) — model döngüsünü beslerse |
 | Ölçek 2. katman | T88 arena sınırı dedektörü (mpp çapraz kontrol) — model turundan sonra |
-| Karar iyileştirme | T101 serit_no çerçevesi, T61 orta çökme ölçütü, T52 özgün kayıt denetimi, T99 üretim imzalı ölçüm, S6 hedef tohumu — P5 sonuçlarına göre önceliklenir |
+| Karar iyileştirme | ~~T101 · T52 · T99~~ (kapandı: D-398/400/402) · T61 orta çökme ölçütü **veri-bloklu** (D-401) · S6 hedef tohumu — P5 sonuçlarına göre önceliklenir |
+| **KB ankoru sahada** (Faz C+ adayı · D-402/K1) | D-399: ankor yanlış şeritli rotaların %91,7'sini eliyor ama kör ankor 0/260. Ön koşul: İKA KB GNSS + İHA konum/başlık + mpp → kareye projeksiyon (T162 `iha_ub_ihlali` makinesi sınıfı). Ancak projeksiyon doğrulanınca, ön kayıtla |
 | Sürüm dondurma | §6.1: yarışan sürüm = beyan; künye kaydı + değişiklik yasağı başlangıcı (mimar kararıyla ~18 Eylül) |
 | FDR/UHDR | Kanıt sayfaları final; algoritma raporu nihai model künyesiyle |
 

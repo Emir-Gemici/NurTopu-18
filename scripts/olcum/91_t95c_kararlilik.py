@@ -1,5 +1,10 @@
 """T95-C · `rota_bul` ACIKLIK KORUMASI — GURULTU ALTINDA KARARLILIK (FAZ 1).
 
+⚠ D-402 (2026-09-03) — taban kolu hala calisir (satir 100 `dt_px` pop) ama
+cagri imzasi ANKORSUZ ve sayilar v30 donemi (D-399: ankor yanlis seritlerin
+%91,7'sini eler). Buradaki kararlilik sayilari URETIM IMZASINA AIT DEGILDIR;
+guncel imza: scripts/olcum/173_t99_uretim_imzasi.py
+
 NEDEN UCUNCU TUR (on kayit: `scripts/olcum/t95c_on_kayit.md`; dayanak D-156 ·
 D-159 · D-162 · D-163). T95-B'de olculebilir her sey tuttu, ama bu kuralin
 SABIT ESIKLI bicimi (V1) daha once TAM BU EKSENDE olduruldu:
