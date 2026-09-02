@@ -339,7 +339,7 @@ class _AnaMakine:
     --kur/--kapi icin; `id -u` root der). kok/: kod/ dosyalarinin JETSON_KILAVUZ §2
     yerlesimiyle kopyasi; dev/: seri cihaz dosyalari; etc/, log/."""
 
-    def __init__(self, sbin=False, kullanici=None, crlf_paket=False):
+    def __init__(self, sbin=False, kullanici=None, crlf_paket=False, lf_paket=False):
         self.d = Path(tempfile.mkdtemp(prefix="navitas_jb_"))
         self.kullanici = kullanici or getpass.getuser()
         self.bin = self.d / "bin"
@@ -368,13 +368,18 @@ class _AnaMakine:
         self.bos.write_bytes(b"")
         self.env_dosya = self.etc / "navitas.env"
         self.paket = PAKET
-        if crlf_paket:   # USB/Windows kopyasi: betik + birimler CRLF
+        if crlf_paket or lf_paket:
+            # crlf_paket: USB/Windows kopyasi (betik + birimler CRLF).
+            # lf_paket: Jetson/Linux checkout'u (LF). Calisma kopyasi autocrlf ile
+            # CRLF olabilir (ana agacta oyle; D-405 birlesmesinde olculdu) — "LF
+            # kopya" hicbir zaman calisma kopyasinin kendisi degildir, ACIKCA uretilir.
+            eol = b"\r\n" if crlf_paket else b"\n"
             self.paket = self.d / "jetson_paket"
             (self.paket / "systemd").mkdir(parents=True)
             (self.paket / "kod").mkdir()
             for kaynak, hedef in [(BETIK, self.paket / BETIK.name)] + [
                     (p, self.paket / "systemd" / p.name) for p in BIRIM_DIZIN.glob("*.service")]:
-                hedef.write_bytes(kaynak.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+                hedef.write_bytes(kaynak.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", eol))
             for p in KOD.iterdir():
                 if p.is_file():
                     shutil.copyfile(p, self.paket / "kod" / p.name)
@@ -786,10 +791,14 @@ class JetsonBaslatCrlf(unittest.TestCase):
 
     def test_K8_crlf_kopya_ayni_cikti_ve_koruma_dali_KOSAR(self):
         m = _AnaMakine(crlf_paket=True)
+        ml = _AnaMakine(lf_paket=True)   # LF kopya ACIKCA uretilir (calisma kopyasi autocrlf ile CRLF olabilir)
         try:
             self.assertIn(b"\r\n", m.betik.read_bytes())
+            self.assertNotIn(b"\r\n", ml.betik.read_bytes())
             kod_c, out_c, err_c = _kos(m.betik, m.env(KIP="sik", FOV="78"))
-            kod_l, out_l, _ = _kos(BETIK, m.env(KIP="sik", FOV="78"))
+            # Ayni ana makine ortami (m.env): yalniz betigin satir sonu farkli olsun,
+            # env/birim bolumleri birebir kiyaslanabilsin.
+            kod_l, out_l, _ = _kos(ml.betik, m.env(KIP="sik", FOV="78"))
             self.assertEqual(kod_l, 0, out_l)
             self.assertEqual(kod_c, 0, f"CRLF kopya dustu:\nstdout:\n{out_c}\nstderr:\n{err_c}")
             self.assertNotIn("\\r", err_c)
@@ -813,6 +822,7 @@ class JetsonBaslatCrlf(unittest.TestCase):
             self.assertNotIn("(CR'siz kopya", out_l, "LF kopyada dal kosmamali")
         finally:
             m.temizle()
+            ml.temizle()
 
     def test_K8_cr_korumasi_set_e_den_ONCE_ve_ilk_komut(self):
         """Calisma kopyasi checkout'a gore LF ya da CRLF olabilir (autocrlf) — kilit

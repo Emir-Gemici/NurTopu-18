@@ -77,8 +77,12 @@ Gün sonunda üç istasyonun her biri **tek komutla** kalkmalı; süre ölçül�
   ve paket aynasını PC'ye geri taşı, commit et → (3) **ANCAK SONRA** `--dondur`.
   Tersi yapılırsa künye Jetson'daki derlemeden hemen sonra "MÜHÜR İHLALİ" der;
   `--dondur` engine kayıtsızken bunu **reddeder** (`--engine-kayitsiz-bilerek`
-  ile aşılır ve künyeye yazılır). Künye özeti içerik-kanonik (CRLF/LF bağımsız)
-  olduğu için Jetson'da da `--dogrula` koşulabilir.
+  ile aşılır ve künyeye yazılır). Kural **katıdır**: etkin profildeki **her**
+  tensorrt türev girdisi kayıtlı olmalı; bugün defterde iki yer tutucu `.engine`
+  var — mühürden önce ikisi de derlenip kaydedilir **ya da** kullanılmayan girdi
+  defterden çıkarılır (mühür sonrası `--turev-kaydet` çalıştırılamaz). Künye
+  özeti içerik-kanonik (CRLF/LF bağımsız) olduğu için Jetson'da da `--dogrula`
+  koşulabilir; `--dogrula` künyenin commit'lenmiş olmasını ister (D-405 S3).
 
 ## 4. Getirilecekler (insan)
 
