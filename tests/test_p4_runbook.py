@@ -79,6 +79,67 @@ class SahaBaslatKomutlari(unittest.TestCase):
         komut = saha_baslat.komut_uret("yks", serial="COM5", baud=57600)
         self.assertEqual(["--serial", "COM5", "--baud", "57600"], komut[2:])
 
+    # ── D-403 KRITIK-1: YKS, IHA komut alicisini --iha ile PINLER ──────────
+    def test_yks_komutu_iha_pinler(self):
+        """UDP yks kipinde --iha HOST:PORT yks_gui'ye AYNEN gecer; --ika'nin
+        yeri degismez (mevcut runbook satirlari bozulmaz)."""
+        komut = saha_baslat.komut_uret("yks", ika="10.0.0.2:5006",
+                                       iha="10.0.0.3:5007")
+        self.assertEqual(["--ika", "10.0.0.2:5006", "--iha", "10.0.0.3:5007"],
+                         komut[2:])
+        # --iha tek basina da gecerli (yks_gui UDP'de --ika'yi zorunlu kilar;
+        # o hata yks_gui'de GORUNUR, burada bastirilmaz)
+        komut = saha_baslat.komut_uret("yks", iha="10.0.0.3:5007")
+        self.assertEqual(["--iha", "10.0.0.3:5007"], komut[2:])
+
+    def test_serial_kipinde_iha_gecmez(self):
+        """SiK kipinde komutlar seri hattan gider; yks_gui serialde --iha'yi
+        SESSIZCE yutar (iha_peer=None). Sessiz yutma burada gorunur RED olur."""
+        komut = saha_baslat.komut_uret("yks", serial="COM5", baud=57600)
+        self.assertNotIn("--iha", komut)
+        with self.assertRaises(ValueError) as cm:
+            saha_baslat.komut_uret("yks", serial="COM5", iha="10.0.0.3:5007")
+        self.assertIn("--iha", str(cm.exception))
+
+    def test_iha_eksik_uyarisi_yalniz_udp_yks(self):
+        """UDP yks'de --iha yoksa uyari VAR (fail-visible); serial, ika kipi
+        ya da --iha verilmisse uyari YOK."""
+        uyari = saha_baslat.iha_eksik_uyarisi("yks")
+        self.assertIsNotNone(uyari)
+        self.assertIn("--iha", uyari)
+        self.assertIn("D-403", uyari)
+        self.assertIsNone(saha_baslat.iha_eksik_uyarisi("yks",
+                                                        iha="10.0.0.3:5007"))
+        self.assertIsNone(saha_baslat.iha_eksik_uyarisi("yks", serial="COM5"))
+        self.assertIsNone(saha_baslat.iha_eksik_uyarisi("ika"))
+
+    def test_komut_karti_iha_ornegi(self):
+        """--komutlar kartindaki YKS satiri hem --ika hem --iha ornegi tasir;
+        --iha ornegi iha_komut_alici'nin varsayilan ucunu (5007) gosterir."""
+        s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+                            "--komutlar"], capture_output=True, text=True,
+                           timeout=60, encoding="utf-8", errors="replace")
+        self.assertEqual(0, s.returncode, s.stderr[:200])
+        yks_satiri = next((sat for sat in s.stdout.splitlines()
+                           if sat.lstrip().startswith("YKS")), "")
+        self.assertIn("--ika", yks_satiri, s.stdout)
+        self.assertIn("--iha", yks_satiri, s.stdout)
+        self.assertIn("<JETSON_IP>:5007", yks_satiri, s.stdout)
+        sik_satiri = next((sat for sat in s.stdout.splitlines()
+                           if sat.lstrip().startswith("SiK")), "")
+        self.assertIn("--serial", sik_satiri, s.stdout)
+        self.assertNotIn("--iha", sik_satiri, s.stdout)
+
+    def test_cli_serial_ve_iha_birlikte_reddi(self):
+        """CLI'da --serial + --iha argparse hatasiyla (exit 2) durur; GUI hic
+        acilmaz, sessiz yutma yok."""
+        s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+                            "yks", "--serial", "COM5", "--iha", "10.0.0.3:5007"],
+                           capture_output=True, text=True, timeout=60,
+                           encoding="utf-8", errors="replace")
+        self.assertEqual(2, s.returncode, s.stdout[:200] + s.stderr[:200])
+        self.assertIn("--iha", s.stderr)
+
     def test_bilinmeyen_kip_reddi(self):
         with self.assertRaises(ValueError):
             saha_baslat.komut_uret("jetson")
