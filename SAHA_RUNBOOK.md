@@ -51,11 +51,24 @@ Cihaz kurulum ve `.engine` derleme: `jetson_paket/JETSON_KILAVUZ.md` +
 `jetson_paket/GUN1_KONTROL_LISTESI.md` (Gün-1 kapıları: T16/T17 FPS ve
 karar denkliği). İniş kanıtı yayıncısı (Jetson'da, uçuş öncesi hazır):
 
+🔴 **Önce çoğullayıcı (CONTRACTS §7.4):** seri Pixhawk tek sahiplidir; üç
+süreç aynı anda `/dev/ttyACM0` açamaz. Jetson'da mavlink-router (ya da
+MAVProxy `--master /dev/ttyACM0 --out udp:127.0.0.1:14550 --out
+udp:127.0.0.1:14551 --out udp:127.0.0.1:14552`) portu tek başına açar;
+tüketiciler UDP uçlarından bağlanır. Doğrulama: `scripts/mavlink_dogrula.py
+--mavlink udp:127.0.0.1:1455N --sysid 1` üç uçta da GEÇTİ.
+
 ```bash
 python3 jetson_paket/kod/iha_inis_yayinci.py \
-    --mavlink /dev/ttyACM0 --sysid 1 --kanit-timeout 900 \
+    --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 \
     --ika <IKA_IP>:5006 --yks <YKS_IP>:5005
+python3 jetson_paket/kod/iha_komut_alici.py \
+    --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007
 ```
+
+- `iha_komut_alici` = YKS'nin PARAŞÜT/ARM/DISARM komutlarını Pixhawk'a aktarır
+  ve **yalnız aktarım başarılıysa** ACK döner (D-393 dürüstlük sözleşmesi);
+  YKS bu sürecin `--bind` adresini `--iha` olarak bilmeli.
 
 - `--sysid 1` = ArduPilot varsayılan sistem kimliği (D-389: pin beyana dayanır;
   araç farklı sysid'e ayarlandıysa buradaki değeri ona eşitle).

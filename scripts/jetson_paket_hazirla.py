@@ -50,6 +50,10 @@ KOPYALAR = {
     KOK / "comms" / "iha_sender.py": PAKET_KOD / "iha_sender.py",
     KOK / "comms" / "inis_kaniti.py": PAKET_KOD / "inis_kaniti.py",
     KOK / "comms" / "iha_inis_yayinci.py": PAKET_KOD / "iha_inis_yayinci.py",
+    # Faz B (D-403): YKS'nin PARACHUTE/ARM/DISARM komutlarini Pixhawk'a
+    # aktaran Jetson sureci — D-393'un "AVIYONIK-BLOKLU" IHA yarisi. Pakette
+    # yoksa sahada parasut yedegi ACK'siz kalir (YKS kirmizi "ACK YOK").
+    KOK / "comms" / "iha_komut_alici.py": PAKET_KOD / "iha_komut_alici.py",
 }
 
 

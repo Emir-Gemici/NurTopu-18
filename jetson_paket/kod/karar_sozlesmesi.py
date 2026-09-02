@@ -2159,3 +2159,29 @@ class KararYumusatici:
             return True
         self._bastirilan_ardisik += 1
         return False
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# FAZ B · PIXHAWK ON-UCUS AKIS HIZI ESIKLERI   (scripts/mavlink_dogrula.py)
+# ════════════════════════════════════════════════════════════════════════════
+# NEDEN: uretim (comms/inis_kaniti.BagilIrtifaOkuyucu ve yerde_mi) iki MAVLink
+# akisina bagli: GLOBAL_POSITION_INT (irtifa/konum) ve EXTENDED_SYS_STATE
+# (landed_state). ArduPilot EXTENDED_SYS_STATE'i VARSAYILAN akitmaz; istenmesi
+# gerekir. Gercek Pixhawk ilk kez baglandiginda "akislar yeterli hizda mi"
+# sorusu goz karariyla degil, bu esiklere karsi OLCUMLE cevaplanir. Esikler
+# akisin tuketicisinin sozlesmesinden TURETILIR; bagimsiz varsayim degildir.
+#
+# GLOBAL_POSITION_INT: TELEMETRI_IRTIFA_TAZELIK_S = 0,50 s -> irtifa ornegi
+# 0,5 s'den yasliysa OLCEK_YOK (rota fail-closed durur). Pencereyi surekli
+# dolu tutmak icin Nyquist 2 Hz; paket kaybi/jitter icin 2x pay -> 4 Hz.
+# Altinda irtifa penceresi araliklarla bosa duser, rota kesik kesik OLCEK_YOK.
+MAVLINK_KONUM_ASGARI_HZ = 4.0
+# EXTENDED_SYS_STATE: yerde_mi 3 ARDISIK (ON_GROUND + dusuk irtifa) cifti
+# ister; 1 Hz'de kanit <= 3 s'de olusur. Daha yavasi inis kanitini sartname
+# suresi icinde uretemez.
+MAVLINK_DURUM_ASGARI_HZ = 1.0
+# HEARTBEAT: MAVLink standardi 1 Hz; yari toleransi (baglanti canli mi kapisi).
+MAVLINK_HEARTBEAT_ASGARI_HZ = 0.5
+# Olcum penceresi: 10 s'de 1 Hz akis icin sayim hatasi ±1 (%10) — esiklerin
+# 2x payinin icinde kalir; daha kisa pencere faz kaynakli yanlis DUSTU uretir.
+MAVLINK_DOGRULAMA_SURESI_S = 10.0

@@ -37,11 +37,14 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         #     `int8=True data=...` derlemesi bunsuz kosmaz
         #   · codes/kamera_dogrula.py    -> DEPODA HIC YOKTU, yalniz pakette
         #     duruyordu (oksuz); kanonik kaynak artik codes/ altindadir
+        #   · comms/iha_komut_alici.py  -> Faz B (D-403): YKS'nin PARACHUTE/ARM
+        #     komutlarini Pixhawk'a aktaran Jetson sureci (D-393'un IHA yarisi);
+        #     pakette yoksa sahada parasut yedegi ACK'siz kalir
         # Kapi yine GEVSETILMEDI, gerekceyle GUNCELLENDI.
-        self.assertEqual(14, len(KOPYALAR),
-                         "paket kopya sozlesmesi 14 dosya olmali "
-                         "(12 .py + karisim_arena.yaml + "
-                         "config/model_registry.json · T103/T83/T202)")
+        self.assertEqual(15, len(KOPYALAR),
+                         "paket kopya sozlesmesi 15 dosya olmali "
+                         "(13 .py + karisim_arena.yaml + "
+                         "config/model_registry.json · T103/T83/T202/D-403)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")

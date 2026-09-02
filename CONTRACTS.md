@@ -969,6 +969,31 @@ puan. Zincir iki yarımdan oluşur ve ikisi de kilitlidir:
 ⚠ Gazebo fiziksel temas koşusu bu geliştirme makinesinde ÖLÇÜLEMEZ (gz yok);
 Faz C provasında Gazebo'lu makinede koşulacak — `OLCULEMEDI != GECTI`.
 
+### 7.4 MAVLink çoğullayıcı — Jetson'da ZORUNLU (Faz B · D-403 · 2026-09-03)
+
+**Ölçülen olgu:** Pixhawk'ı **iki** üretim süreci ayrı ayrı açıyor
+(`codes/rpi_inference.py:314` irtifa okuyucu · `comms/iha_inis_yayinci.py:170`
+iniş kanıtı); üçüncüsü `comms/iha_komut_alici.py` (paraşüt/ARM aktarımı, D-393'ün
+İHA yarısı). Seri port (`/dev/ttyACM0`) **tek sahiplidir**: ikinci süreç ya
+açılamaz ya ilkinin akışını çalar — `inis_kaniti._mav_sahiplen` süreç İÇİ
+sahipliği korur, süreçler ARASI koruma yoktur. Kılavuzlarda çoğullayıcı hiç
+yoktu (grep: 0).
+
+**Bağlayıcı kural:** Jetson'da seri portu **yalnız çoğullayıcı** açar
+(mavlink-router ya da MAVProxy `--out udp:127.0.0.1:1455N`); her tüketici kendi
+UDP ucundan bağlanır:
+
+| tüketici | uç | yön |
+|---|---|---|
+| `rpi_inference --mavlink` | `udp:127.0.0.1:14550` | okur |
+| `iha_inis_yayinci --mavlink` | `udp:127.0.0.1:14551` | okur |
+| `iha_komut_alici --mavlink` | `udp:127.0.0.1:14552` | **yazar** (`command_long`) |
+
+Hiçbir üretim süreci `--mavlink /dev/tty*` ile DOĞRUDAN açılmaz. Kapı:
+`scripts/mavlink_dogrula.py` üç uçta da aynı anda GEÇTİ (HEARTBEAT sysid,
+`GLOBAL_POSITION_INT ≥ MAVLINK_KONUM_ASGARI_HZ`, `EXTENDED_SYS_STATE ≥
+MAVLINK_DURUM_ASGARI_HZ` — sabitler `karar_sozlesmesi`). Plan: `FAZ_B_GUN_PLANI.md` §1.
+
 ---
 
 ## 8. Çözünürlük sözleşmesi
