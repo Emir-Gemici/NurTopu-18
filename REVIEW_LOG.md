@@ -28088,3 +28088,29 @@ dokunulmadi) · **Denetleyen: kapanis bolumu (§3) yazilinca mimar-disi denetim*
    kilitledigi betikten kopyalanir, elle yazilmaz.
 
 ### 3. Kapanis — (ajanlar kosuyor; bu bolum sonuclarla doldurulacak)
+
+### 3. Kapanis — uc kol (worktree ajanlari; internet kesintisinde yarim kalan isler ayni worktree'lerden tamamlandi)
+
+| kol | commit | test | mutasyon | ne degisti |
+|---|---|---|---|---|
+| **Hub sertlestirme** | `c112381` | `test_faz_b_seri_hub.py` 11 -> **31**, `test_faz_b_protocol_dayaniklilik.py` **4** (yeni); p2/iha_komut_alici/telsiz_yayin/p9 hepsi OK, `-X dev` uyarisiz | curutucunun 25 mutanti **24/25** (once 13/25; kacan `l_arizada_ogrenmez` — bilerek testsiz, marjinal), **14/14 ek mutant** (recv 4096, OSError yukselir, newline yok, cozucu sarmali yok, zaman asimi cekilmez, 0,3 s gerilemesi, reuse=True, SIGTERM yok, kapat UDP birakmaz, sayac sessiz, tahliye KIRMIZI degil), protokol mutanti 3 testle | `protocol.FrameReader.feed` RecursionError yutar; hub `_cerceveleri_isle` `except Exception` -> bozuk; `UDPLink(reuse=)` + hub `reuse=False` (ikinci hub exit 3, bind hatasinda soket kapanir); `SerialLink(exclusive=True)` varsayilan (pyserial 3.5 loop://, socket:// kabul etti — OLCULDU); `UDP_DATAGRAM_TAVANI_B=65535` + `udp_hata`; newline eklenir + `newline_eklenen`; SIGTERM -> `durdur()`; tahliye "en az tazelenen" + KIRMIZI + statik kural; zamanlama sabitleri `PARASUT_TEKRAR_ARALIGI_S/4` ve `/20`'den turetildi ve testle kilitli; **on kayitli gecikme kapisi** test_16 (30 ornek, p95 < 0,20 s; Windows notu) |
+| **Muhur v2** | `670ccaa` | `test_faz_b_surum_dondurma.py` 21 -> **49** (gercek git + hashlib; CRLF/LF klon testi) | curutucunun 3 mutasyonu **3/3 DUSUYOR** (M-B kirli sayilmaz 1 FAIL, M-C zorunlu alan 5 FAIL, M-D son dosya 2 FAIL) | `sha256_kanonik` (metin LF-normalize, ikili ham; `ozet_yontemi` v2) — klon_crlf/klon_lf **18/18** esit (once 0/18); kunye sema 2: `paket`, `paket_kaynak`, `paket_modelleri`, `saha_yapilandirma` (9 dosya, systemd glob), `yks_ika` (9 dosya); `--dogrula` fail-closed git bagi (HEAD'deki kunye ile bayt-es, untracked/degistirilmis/kirli -> exit 1); muhur sirasi: tensorrt turevi kayitsiz -> RED exit 2 (`--engine-kayitsiz-bilerek`), **kural kati** (profildeki her tensorrt girdisi); `test_komutu` 3 suit |
+| **jetson_baslat** | `c4b8e4a` | `test_faz_b_jetson_baslat.py` 24 -> **34** (K10 shim'li `--kur/--kapi/--dogrudan/--durdur` gercek kosum) | **10/10** (kapi 3->2, tr -d kaldirma, restart kaldirma/start, enable kaldirma, paralel->sirali, StartLimit [Service], set -f, [YOK] sayaci, CR dali kapali) | `--kur` enable + **restart**; `--kapi` uc uc **ayni anda** (rc/log dosyalari); `SERVIS_KULLANICI=${SUDO_USER:-${USER:-navitas}}` birime islenir + `id -u`; `EnvironmentFile` ezilen yola; `--kuru` herhangi `[YOK]/[EKSIK]` -> "eksik" exit 3 (PC'de 3/9 [YOK] — dogru); CR algisi bash-ici, dal kostugunda basliga isaret; `set -f`; K3 bolum kilidi |
+
+**Mimar hizalamasi (birlesme sonrasi):** K8 CRLF testi ana agacta dustu — "LF kopya" olarak
+calisma kopyasini kullaniyordu, ana agac autocrlf ile CRLF (worktree LF oldugu icin ajanda
+gecmisti). `_AnaMakine(lf_paket=True)` ile LF kopya ACIKCA uretiliyor, ayni ana makine
+ortamiyla kiyaslaniyor -> 34 OK (skipped=1: MSYS sed CR yutar, Linux'ta kosar).
+Jetson aynasi (`link.py`, `protocol.py`, `seri_hub.py`) `jetson_paket_hazirla` ile senkron.
+
+**Kapilar:** genel kapi **15/15** · tam suit **1749 test OK (skipped=3)** · paket 17 dosya senkron.
+
+**Kalan / kuyruk:** T206 (ACK ref_tip) · hub `l_arizada_ogrenmez` testi (kucuk) · Linux
+`flock` ve gercek SIGTERM Jetson'da olculur (D-404 §7 madde 4 ile birlikte) · `test_komutu`
+Windows mutlak yorumlayici yolu (Jetson'da `--dogrula` testleri kosmaz, bilgi) ·
+`.gitattributes`/`*.engine` gitignore onerileri karar bekliyor.
+
+**Denetim:** uc kolun kodunu ajanlar yazdi, mimar diff/test/mutasyon ciktilarini okudu ve
+K8 hizalamasini yazdi; mimarin yazdigi K8 degisikligi kucuk ama **mimar-disi teyit
+bekler** (madde 19). D-404 §7 borcu: madde 2 (hub curutucusu) **KAPANDI**, madde 3 (muhur
+kapsami) **KAPANDI** (§2 karar 2), madde 4 (Jetson'da ilk kosum) cumartesiye.
