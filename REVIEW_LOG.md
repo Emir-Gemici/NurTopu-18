@@ -27487,3 +27487,77 @@ kalir; degistirme girisimi yok.
 Otopark tek mekan/67 karedir (ON_KAYIT §4); "DOGRULANAMADI" bu ornekleme
 gore verilmis durustluk verdiktir, "ayirt edilemez" evrensel iddiasi degil.
 Yeni cokus verisi gelirse (saha provalari) olcum ayni on kayitla tekrarlanir.
+
+### D-399 — T99: uretim imzasi olculdu — ANKOR BIR FILTRE (yanlis rotalari p=0,003 ile tercihen eliyor); T99'un lafzi bugun KOSULAMAZ
+
+**Tarih:** 2026-09-03 · **Yazan:** Claude 2 (Opus 5, amele) ·
+**Denetleyen: mimar bekleniyor (AGENTS §9.3)** ·
+**On kayit:** `results/t99_uretim_imzasi/ON_KAYIT.md` (+EK-1/2/3) ·
+**Olcum:** `scripts/olcum/173_t99_uretim_imzasi.py` ·
+`results/t99_uretim_imzasi/olcum_20260903.json`
+
+### 1. T99'un LAFZI bugun kosulamaz (kodda dogrulandi)
+
+Gorev "89/90/91'i uretim imzasiyla yeniden kos" diyor. Ama:
+- `costmap_path_finder.py:1259-1260` **artik** `dt_px=sonuc["dt_px"]`
+  geciriyor (T95/D-164 uygulandi) — yani 89/90/91'in olctugu KORUMA zaten
+  URETIMDE.
+- 89'un maymun-yamasi (satir 110-112) `elif "dt_px" in kw:
+  DURUM["taban_sizintisi"] += 1` yalniz SAYAR, cikarmaz; satir 343
+  `taban_sizintisi != 0` -> **gecerli=False**. Yani 89 bugun kosulsa
+  "OLCUM GECERSIZ" basar ve taban ile koruma AYNI SEY olur.
+- Ustelik eski sayilar **v30** ile olculmustu; bugunku uretim **v36**.
+
+Bu yuzden T99 lafzen degil **ozunde** yerine getirildi: sorulan soru
+"olculen sayilar uretim girdisine ait mi" idi; yeni betik (173) tam bunu
+bes kolla olcer.
+
+### 2. Kuyruk metni de bayatti
+
+T99 kaydi `engel_sinif_idler … # (1, 2) MOLOZ + ARAC` diyor. Bugun
+`sinif_semasi.KATMAN_ARAC = 10` (2 DEGIL — egitimdeki `2 = hedef` ile
+cakismasin diye ayri ad alanina tasinmis, S2). Dogrusu **(1, 10)**.
+
+### 3. Ana bulgu — ankor bir FILTREDIR
+
+n=260, v36. A (eski olcum imzasi) 29 rota uretiyor, seridi **17/29 (%58,6)**
+dogru. Uretim imzasinin ankoru bunlarin:
+- seridi **DOGRU** olanlarin **%35,3'unu** (6/17) eliyor,
+- seridi **YANLIS** olanlarin **%91,7'sini** (11/12) eliyor.
+
+**Fisher kesin testi tek yonlu p = 0,0030** — tercihli eleme rastlantI
+degildir. Sonuc: uretim imzasi **daha az ama cok daha dogru** rota uretir
+(serit dogrulugu %58,6 -> **%91,7**). Yani T99'un endisesi HAKLI cikti ama
+YONU TERS: eski olcum uretimden daha IYIMSER degil, daha GEVSEK; uretim
+girdisi karari SIKILASTIRIYOR.
+
+⚠ Bu bir **kusur degil**, olculmemis bir GUVENLIK PAYIDIR. Kod
+DEGISTIRILMEDI (gorev kapisi: "olcum kosulmadan hicbir kod degismez").
+
+### 4. Kadraj siniri (EK-3) — kor ankor imzayi degil KIRPMAYI olcuyor
+
+`baslangic=None` iken tohum TUM ALT BANT; verilince TEK PIKSEL. t66 kadraji
+seritler AYRILDIKTAN sonrasini gosterir, alt-orta piksel keyfi bir seride
+duser. Olculdu (`sa_000001`): acik serit 1, tohum serit 2'de, hedefle AYRI
+C-bileseninde -> dogru sekilde KAPALI_DAR. Bu yuzden gercek davranis iki
+kolla kusatildi: **B (kor) = alt sinir 0/260**, **B2 (acik seridin girisi,
+GERCEK ETIKETLE) = ust sinir 12/260**. Uretimde KB serit ayrimindan ONCEDIR;
+t66 o ortak alani icermiyor.
+
+**Sonuc:** bu kumede uretim imzasinin MUTLAK rota sayisi olculemez (kadraj
+sinirlı); olculebilen sey ORANLARDIR (serit dogrulugu, tercihli eleme) ve
+onlar guclu cikti.
+
+### 5. Arac katmani: OLCULDU, etkisi SIFIR
+
+V1 kapisi (vakum korumasi) tam kumede **GECTI**: 7/260 karede arac maskesi
+dolu (252-1787 px). Ama C kolu B ile **birebir ayni** — hicbir karede karar
+degismedi. "Araclar engel sayilinca reddetme artar" endisesi bu kumede
+DOGRULANMADI (curutulmedi de; 7 kare zayif ornekem).
+🔴 Ilk duman kosumunda (8 kare) V1 DUSMUSTU; tam kumede gecti — kucuk
+ornekle "vakum" hukmu verilseydi YANLIS olurdu (D-375 dersi tersinden).
+
+### 6. Kapilar
+
+Genel kapi 15/15 · tam suit (asagida) · uretim/olcum kodu DEGISMEDI, yalniz
+yeni olcum betigi eklendi.
