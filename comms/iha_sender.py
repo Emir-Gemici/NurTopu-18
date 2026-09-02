@@ -112,8 +112,20 @@ class IhaSender:
             while time.time() - t0 < interval:
                 d, _addr = self.link.recv()
                 for m in self.reader.feed(d) if d else []:
-                    if m.get("type") == "ACK" and m.get("ref") == msg["seq"]:
-                        acked.add(m.get("node"))
+                    if m.get("type") != "ACK" or m.get("ref") != msg["seq"]:
+                        continue
+                    # T206 (D-405 Q4, olculdu): eslesme yalniz `ref` ileydi.
+                    # Hub fan-out'unda her tuketici HERKESIN ACK'ini gorur ve
+                    # seq sayaclari surec basinadir: OPEN_ROUTE seq=7 bekleyen
+                    # gonderici, IHA_LANDED seq=7 icin uretilmis IKA ACK'ini
+                    # de "aktarildi" sayiyordu. CONTRACTS §6.6 kurali
+                    # (AckliTekrar.ack_geldi ile AYNI): `ref_tip` varsa
+                    # bekleyen mesajin tipiyle de eslesmeli; yoksa yalniz
+                    # `ref` (eski ACK ureticileri geriye uyumlu).
+                    ref_tip = m.get("ref_tip")
+                    if ref_tip is not None and ref_tip != msg["type"]:
+                        continue
+                    acked.add(m.get("node"))
                 # D-383 (B2 curutucusu OLCTU): tum beklenen ACK'ler geldiyse
                 # pencereyi TERK ET. Once burada cikis yoktu ve dongu, ACK
                 # coktan gelmisken bile recv'in SOKET zaman asimini (link

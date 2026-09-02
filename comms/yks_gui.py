@@ -1073,10 +1073,12 @@ class YksArayuz:
             self.rx_alim[m["seq"]] = self.rx_alim.get(m["seq"], 0) + 1
             # NO_ROUTE da aktarımın teslim edildiğini kanıtlamalıdır. Bu bir
             # rota onayı değil, İKA'nın hareket etmeyeceği güvenlik bildirimidir.
+            # T206 (D-405 Q4): ACK `ref_tip` taşır — hub fan-out'unda seq
+            # çakışan başka tipteki bekleyen bu ACK'i sahiplenemez (§6.6).
             if adr is not None:
-                self.link.send(encode(ack(m["seq"], "yks")), adr)
+                self.link.send(encode(ack(m["seq"], "yks", tip)), adr)
             elif isinstance(self.link, SerialLink):
-                self.link.send(encode(ack(m["seq"], "yks")))
+                self.link.send(encode(ack(m["seq"], "yks", tip)))
             self.sayac["ACK_TX"] += 1
             if yeni:
                 sebep = m.get("sebep", "bilinmeyen neden")
@@ -1104,10 +1106,12 @@ class YksArayuz:
             if (m.get("node") != "iha" or isinstance(seq, bool)
                     or not isinstance(seq, int)):
                 return
+            # T206 (D-405 Q4): `ref_tip` — IHA_LANDED seq'i İHA'nın OPEN_ROUTE
+            # seq'iyle çakışırsa bu ACK yanlış bekleyene bağlanamaz (§6.6).
             if adr is not None:
-                self.link.send(encode(ack(seq, "yks")), adr)
+                self.link.send(encode(ack(seq, "yks", tip)), adr)
             elif isinstance(self.link, SerialLink):
-                self.link.send(encode(ack(seq, "yks")))
+                self.link.send(encode(ack(seq, "yks", tip)))
             self.sayac["ACK_TX"] += 1
             if seq != self.iha_landed_seq:
                 self.iha_landed_seq = seq
@@ -1245,10 +1249,16 @@ class YksArayuz:
             self._logla("HAKEM 2/2 REDDEDİLDİ: İKA'dan OPEN_ROUTE ACK kanıtı yok "
                         f"(seq={self.rota['seq']}) — kanıtsız onay verilmez", "sari")
             return
+        # T206 (D-405 Q4): hakem ACK'i `ref_tip` taşır (§6.6). `self.rota`
+        # yalnız `_mesaj_isle`'nin OPEN_ROUTE dalında atanır, yani bu yol
+        # tanım gereği OPEN_ROUTE onayıdır; alan eksikse (Tk'siz fikstürler)
+        # tip yine OPEN_ROUTE'tur — ref_tip'siz (zayıf) ACK üretilmez.
+        rota_ack = ack(self.rota["seq"], "yks",
+                       self.rota.get("type") or "OPEN_ROUTE")
         if self.rota_adr is not None:
-            self.link.send(encode(ack(self.rota["seq"], "yks")), self.rota_adr)
+            self.link.send(encode(rota_ack), self.rota_adr)
         else:                                   # seri hat: adres kavramı yok
-            self.link.send(encode(ack(self.rota["seq"], "yks")))
+            self.link.send(encode(rota_ack))
         self.onaylandi = True
         self.sayac["ACK_TX"] += 1
         if self.t_iha1 is not None:
