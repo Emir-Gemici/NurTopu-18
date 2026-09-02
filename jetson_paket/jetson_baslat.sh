@@ -19,11 +19,15 @@
 #     /dev/ttyUSB0'i DOGRUDAN acmaz; navitas-seri-hub portu tek basina acar,
 #     surecler UDP loopback 127.0.0.1:5100'e yazar, hub seri hattan geleni
 #     --tuketici ucuna (iha_komut_alici --bind 127.0.0.1:5007) verir.
+#   * D-405 (curutucu, 2026-09-02 "KURU vs GERCEK AYRISMASI"): --kur artik
+#     enable + RESTART (degisen beyan canli surece uygulanir); --kapi uc ucu AYNI
+#     ANDA kosar (CONTRACTS §7.4 "uc uc ayni anda acikken"); SERVIS_KULLANICI birim
+#     dosyasina islenir (User=, ~/.local/bin); --kuru herhangi [YOK]'ta 3 ile durur.
 #
 # KULLANIM
 #   bash jetson_baslat.sh --kuru        HICBIR SEY baslatmaz; kosacagi komutlari basar
-#   sudo -E bash jetson_baslat.sh       systemd birimlerini kurar (enable --now; acilista da kalkar)
-#   sudo -E bash jetson_baslat.sh --kapi  kurar, YALNIZ cogullayiciyi kaldirir, 3 ucta
+#   sudo -E bash jetson_baslat.sh       systemd birimlerini kurar (enable + restart; acilista da kalkar)
+#   sudo -E bash jetson_baslat.sh --kapi  kurar, YALNIZ cogullayiciyi kaldirir, 3 ucta AYNI ANDA
 #                                       mavlink_dogrula kosar; 3/3 GECTI ise tuketicileri kaldirir
 #   bash jetson_baslat.sh --dogrudan    systemd'siz: nohup + log (prova/ayiklama — GOZCU YOK)
 #   sudo bash jetson_baslat.sh --durdur birimleri durdurur (disable --now), nohup pid'lerini oldurur
@@ -31,20 +35,34 @@
 #   Degiskenler ortamdan ezilir:   KIP=sik FOV=78 bash jetson_baslat.sh --kuru
 #
 # CIKIS KODLARI: 0 tamam · 1 hata (fail-closed, hicbir sey baslatilmadi) ·
-#                3 --kuru'da beyan eksik (gercek kosum DURURDU)
+#                3 --kuru'da beyan/paket/ana makine eksik (gercek kosum DURURDU)
 # =============================================================================
 # CRLF KORUMASI — ILK KOMUT OLMALI. Windows calisma agaci core.autocrlf=true ile
 # CRLF'tir (olculdu: `git ls-files --eol` -> w/crlf); USB'ye kopyalanan betik CR
 # tasir ve bash "$'\r': command not found" der. CR gorulurse betik CR'siz
 # kopyasiyla yeniden calisir (bu satirin kendi CR'i satir sonu yorumunda kalir).
-if grep -q $'\r' "$0" 2>/dev/null; then _cr="$(mktemp)"; tr -d '\r' < "$0" > "$_cr"; NAVITAS_PAKET_DIZIN="${NAVITAS_PAKET_DIZIN:-$(cd "$(dirname "$0")" && pwd)}" NAVITAS_CR_KOPYA=1 exec bash "$_cr" "$@"; fi # CRLF
+# NEDEN bash-ici algi (D-405, curutucu K8 bulgusu): MSYS grep CR'i GORMUYOR, bu
+# yuzden `grep -q $'\r'` dali Windows'ta hic kosmadi (test bos gecti); `head -c`
+# + bash kalibi Git Bash'te de tetiklenir, K8 dali gercekten kosturur.
+# NAVITAS_CR_KOPYA gecici dosyanin YOLUNU tasir (1 degil): trap yalniz $0 o yolsa
+# siler — ortamdan sizan NAVITAS_CR_KOPYA=1 asil betigi silemez.
+case "$(head -c 4096 "$0" 2>/dev/null)" in *$'\r'*) _cr="$(mktemp)" && tr -d '\r' < "$0" > "$_cr" || { echo "HATA: CR'siz kopya olusturulamadi" >&2; exit 1; }; NAVITAS_PAKET_DIZIN="${NAVITAS_PAKET_DIZIN:-$(cd "$(dirname "$0")" && pwd)}" NAVITAS_CR_KOPYA="$_cr" exec bash "$_cr" "$@";; esac # CRLF
 set -euo pipefail
-if [ "${NAVITAS_CR_KOPYA:-}" = 1 ]; then trap 'rm -f "$0"' EXIT; fi
+CR_KOPYA=""
+if [ -n "${NAVITAS_CR_KOPYA:-}" ] && [ "$NAVITAS_CR_KOPYA" = "$0" ]; then CR_KOPYA="$0"; trap 'rm -f "$0"' EXIT; fi
 
 PAKET_DIZIN="${NAVITAS_PAKET_DIZIN:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
 BIRIM_DIZIN="$PAKET_DIZIN/systemd"
+BETIK_YOLU="$PAKET_DIZIN/jetson_baslat.sh"   # hata iletilerinde $0 DEGIL (CR kopyasinda $0 silinen gecici dosyadir)
 
 # ── Beyan degiskenleri (ortamdan ezilir) ─────────────────────────────────────
+# Servis kullanicisi: birimlerdeki User=, MAVProxy'nin ~/.local/bin yolu, chown ve
+# NAVITAS_KOK varsayilani buradan turer. NEDEN ${SUDO_USER:-${USER:-navitas}}
+# (D-405, curutucu SERVIS_KULLANICI bulgusu): kilavuz kullanici adini zorlamaz;
+# `sudo -E` altinda SUDO_USER, sudosuz (--kuru/--dogrudan) USER ayni kisiyi verir —
+# --kuru ile --kur AYNI kullaniciyi hesaplar. Yanlis kullanici birimleri
+# 217/USER ile sonsuz restart dongusune sokar; dosya_denetle `id -u` ile durur.
+SERVIS_KULLANICI="${SERVIS_KULLANICI:-${SUDO_USER:-${USER:-navitas}}}"
 PIXHAWK_SERI="${PIXHAWK_SERI:-/dev/ttyACM0}"   # Pixhawk USB/telem — YALNIZ cogullayici acar
 PIXHAWK_BAUD="${PIXHAWK_BAUD:-57600}"
 # Pixhawk SYSID_THISMAV. comms/iha_komut_alici.VARSAYILAN_HEDEF_SYSID ile AYNI (test
@@ -63,21 +81,26 @@ UB_REFERANS="${UB_REFERANS:-}"   # LAT,LON — IHA-UB kose referansi (T162); bos
 # iha_inis_yayinci --kanit-timeout: sartname §6.2 IHA gorev suresi
 # (karar_sozlesmesi.SARTNAME_IHA_GOREV_SURESI_S = 15*60; SAHA_RUNBOOK §3). Test kilitler.
 KANIT_TIMEOUT="${KANIT_TIMEOUT:-900}"
-NAVITAS_KOK="${NAVITAS_KOK:-/home/navitas/navitas}"   # JETSON_KILAVUZ §2 kurulum koku
+NAVITAS_KOK="${NAVITAS_KOK:-/home/$SERVIS_KULLANICI/navitas}"   # JETSON_KILAVUZ §2 kurulum koku (~/navitas)
 PYTHON3="${PYTHON3:-/usr/bin/python3}"
 ENV_DOSYA="${ENV_DOSYA:-/etc/navitas.env}"
 SYSTEMD_DIZIN="${SYSTEMD_DIZIN:-/etc/systemd/system}"
 LOG_DIZIN="${LOG_DIZIN:-$NAVITAS_KOK/results/jetson_log}"
-SERVIS_KULLANICI="${SERVIS_KULLANICI:-navitas}"
 
-# Birim dosyalarindaki sabit yollar; NAVITAS_KOK/PYTHON3 ezildiyse kurulumda degistirilir.
+# Birim dosyalarindaki sabit yollar/alanlar; ezildiyse kurulumda sed ile degistirilir
+# (yerine_koy ve birimleri_kur AYNI ciftleri kullanir — --kuru ile kurulu birim ayrismaz).
 KOK_VARSAYILAN="/home/navitas/navitas"
 PYTHON3_VARSAYILAN="/usr/bin/python3"
+ENV_DOSYA_VARSAYILAN="/etc/navitas.env"
+KULLANICI_VARSAYILAN="navitas"
+MAVPROXY_BIN_VARSAYILAN="/home/$KULLANICI_VARSAYILAN/.local/bin"
+MAVPROXY_BIN="/home/$SERVIS_KULLANICI/.local/bin"
 
 # ── CONTRACTS §7.4 uclari — TEK KAYNAK (burada + systemd/*.service) ───────────
 MAV_UC_RPI="udp:127.0.0.1:14550"      # rpi_inference    --mavlink (okur)
 MAV_UC_INIS="udp:127.0.0.1:14551"     # iha_inis_yayinci --mavlink (okur)
 MAV_UC_KOMUT="udp:127.0.0.1:14552"    # iha_komut_alici  --mavlink (yazar)
+MAV_UCLAR=("$MAV_UC_RPI" "$MAV_UC_INIS" "$MAV_UC_KOMUT")   # kapi bu ucun HEPSINI ister
 # NAVITAS protokol uclari (SAHA_RUNBOOK §1/§3 · iha_komut_alici.VARSAYILAN_BIND)
 YKS_PORT=5005
 IKA_PORT=5006
@@ -89,7 +112,7 @@ hata() { echo "HATA: $*" >&2; exit 1; }
 
 # MAVProxy pip ile kullanici dizinine kurulur (~/.local/bin); sudo altinda secure_path
 # onu gormez. Birim dosyasi (Environment=PATH=...) ile AYNI arama yolu kullanilir.
-MAVPROXY_PATH="/home/$SERVIS_KULLANICI/.local/bin:/usr/local/bin:/usr/bin:/bin"
+MAVPROXY_PATH="$MAVPROXY_BIN:/usr/local/bin:/usr/bin:/bin"
 mavproxy_var() { PATH="$MAVPROXY_PATH:$PATH" command -v mavproxy.py >/dev/null 2>&1; }
 
 # ── KIP'e gore tuketici argumanlari — birimler bunlari $..._ARGS olarak okur ───
@@ -121,6 +144,11 @@ esac
 ENV_ANAHTARLAR=(NAVITAS_KOK PYTHON3 LOG_DIZIN KIP PIXHAWK_SERI PIXHAWK_BAUD SYSID
                 SIK_SERI SIK_BAUD KANIT_TIMEOUT RPI_EK_ARGS RPI_TELSIZ_ARGS
                 INIS_TELSIZ_ARGS KOMUT_TELSIZ_ARGS)
+# Tek deger tasiyan beyanlar: bosluk/glob/kacis icerirse systemd ($VAR) ve bash (nohup $k)
+# ikisi de BOLER/GENISLETIR — --kuru [UYARI] basar (D-405, curutucu --dogrudan glob bulgusu).
+TEK_DEGER_ANAHTARLAR=(FOV ODAK SENARYO KAMERA UB_REFERANS YKS_IP IKA_IP SYSID KANIT_TIMEOUT
+                      PIXHAWK_SERI PIXHAWK_BAUD SIK_SERI SIK_BAUD NAVITAS_KOK PYTHON3 LOG_DIZIN
+                      SERVIS_KULLANICI)
 
 env_icerik() {
   local k
@@ -165,6 +193,7 @@ exec_start() { yerine_koy "$(exec_start_ham "$1")"; }
 
 py_yolu() {  # $1 komut satiri -> ilk NAVITAS .py dosyasinin tam yolu (yoksa bos)
   local t
+  set -f   # tirnaksiz $1 bosluktan bolunsun ama GLOB acilmasin (KAMERA='*'); hep $(...) icinde cagrilir
   for t in $1; do
     case "$t" in "$NAVITAS_KOK"/*.py) printf '%s\n' "$t"; return 0 ;; esac
   done
@@ -184,7 +213,7 @@ tuketici_denetle() {  # $1 birim  $2 beklenen --mavlink ucu  $3 beklenen sysid p
 sozlesme_denetle() {  # birim dosyalari CONTRACTS §7.4'ten sapmis mi? (elle bozulmus birimle kalkilmaz)
   local k uc
   k="$(exec_start navitas-cogullayici)"
-  for uc in "$MAV_UC_RPI" "$MAV_UC_INIS" "$MAV_UC_KOMUT"; do
+  for uc in "${MAV_UCLAR[@]}"; do
     case " $k " in *" --out $uc "*) ;; *) hata "navitas-cogullayici: '--out $uc' yok (CONTRACTS §7.4)" ;; esac
   done
   case " $k " in *" --master=$PIXHAWK_SERI "*) ;; *) hata "navitas-cogullayici: --master=$PIXHAWK_SERI yok" ;; esac
@@ -212,6 +241,17 @@ beyan_eksikleri() {  # stdout: her satir bir eksik
   fi
 }
 
+deger_uyarilari() {  # stdout: bosluk/glob/kacis iceren tek-deger beyanlar (bolunur/genisler)
+  local k v
+  for k in "${TEK_DEGER_ANAHTARLAR[@]}"; do
+    v="${!k}"
+    [ -n "$v" ] || continue
+    case "$v" in *[[:space:]]*|*[\*\?\[]*|*[\\\"\']*)
+      echo "[UYARI] $k='$v' bosluk/glob/kacis iceriyor — systemd (\$VAR) ve bash (nohup) bunu BOLER/GENISLETIR" ;;
+    esac
+  done
+}
+
 beyan_denetle_veya_dur() {
   local e
   e="$(beyan_eksikleri)"
@@ -221,28 +261,42 @@ beyan_denetle_veya_dur() {
   fi
 }
 
-dosya_denetle() {  # kurulu kopyada dosyalar ve cihazlar var mi? (kuru kipte CAGRILMAZ)
+# Kurulu kopyadaki NAVITAS .py dosyalari (ExecStart'tan turetilir; cogullayici haric)
+kurulu_py_dosyalari() {
   local b k y
+  for b in $(birimler); do
+    [ "$b" != navitas-cogullayici ] || continue
+    k="$(exec_start "$b")"
+    y="$(py_yolu "$k")"
+    [ -n "$y" ] || hata "$b: ExecStart'ta NAVITAS .py yok"
+    printf '%s %s\n' "$b" "$y"
+  done
+}
+
+dosya_denetle() {  # kurulu kopyada kullanici, dosyalar ve cihazlar var mi? (kuru kipte CAGRILMAZ)
+  local b y liste
+  # NEDEN once kullanici (D-405): yanlis User= ile kurulan birimler 217/USER ile sonsuz
+  # restart dongusune girer; burada durmak o donguden ucuzdur.
+  id -u "$SERVIS_KULLANICI" >/dev/null 2>&1 \
+    || hata "servis kullanicisi yok: $SERVIS_KULLANICI (SERVIS_KULLANICI ile ez; birimler User=$SERVIS_KULLANICI ile kosar)"
   [ -x "$PYTHON3" ] || hata "yorumlayici yok: $PYTHON3"
   [ -e "$PIXHAWK_SERI" ] || hata "Pixhawk seri cihazi yok: $PIXHAWK_SERI (PIXHAWK_SERI ile ez)"
   if [ "$KIP" = sik ]; then [ -e "$SIK_SERI" ] || hata "SiK seri cihazi yok: $SIK_SERI (SIK_SERI ile ez)"; fi
-  for b in $(birimler); do
-    k="$(exec_start "$b")"
-    if [ "$b" = navitas-cogullayici ]; then
-      mavproxy_var \
-        || hata "mavproxy.py yok ($MAVPROXY_PATH; pip3 install MAVProxy) — cogullayicisiz MAVLink isi BASLAMAZ (CONTRACTS §7.4)"
-      continue
-    fi
-    y="$(py_yolu "$k")"
-    [ -n "$y" ] || hata "$b: ExecStart'ta NAVITAS .py yok"
+  mavproxy_var \
+    || hata "mavproxy.py yok ($MAVPROXY_PATH; pip3 install MAVProxy) — cogullayicisiz MAVLink isi BASLAMAZ (CONTRACTS §7.4)"
+  # once degiskene: fonksiyon icindeki hata() ana kabugu durdursun (proses ikamesinde durdurmazdi)
+  liste="$(kurulu_py_dosyalari)"
+  while read -r b y; do
     [ -f "$y" ] || hata "$b: $y yok (JETSON_KILAVUZ §2: cp kod/... $NAVITAS_KOK/{codes,comms}; seri_hub icin comms/seri_hub.py)"
-  done
+  done <<< "$liste"
 }
 
 # ── --kuru ────────────────────────────────────────────────────────────────────
 kuru() {
-  local b k y e kod=0
-  echo "# jetson_baslat.sh --kuru · KIP=$KIP · HICBIR SEY BASLATILMADI"
+  local b y e u liste cr_isaret="" yok=0 kod=0
+  # K8 kilidi: CR korumasi dali kostuysa basligi isaretle (test bunu assert eder)
+  if [ -n "$CR_KOPYA" ]; then cr_isaret=" · (CR'siz kopya: $CR_KOPYA)"; fi
+  echo "# jetson_baslat.sh --kuru · KIP=$KIP · HICBIR SEY BASLATILMADI$cr_isaret"
   echo "## $ENV_DOSYA (yazilacak icerik)"
   env_icerik
   echo "## birimler (ExecStart, degiskenler yerine konmus — systemd ve --dogrudan AYNEN bunu kosar)"
@@ -252,23 +306,46 @@ kuru() {
   for b in $(birimler); do
     if [ "$b" = navitas-cogullayici ]; then
       if mavproxy_var; then echo "[VAR] mavproxy.py (PATH)"
-      else echo "[YOK] mavproxy.py (PATH) <- Jetson'da: pip3 install MAVProxy"; fi
+      else echo "[YOK] mavproxy.py (PATH) <- Jetson'da: pip3 install MAVProxy"; yok=$((yok + 1)); fi
       continue
     fi
     y="$(py_yolu "$(exec_start "$b")")"
     y="${y##*/}"
     if [ -f "$PAKET_DIZIN/kod/$y" ]; then echo "[VAR] $y"
-    else echo "[YOK] $y <- UYARI: paket tasimiyor (scripts/jetson_paket_hazirla.py KOPYALAR)"; fi
+    else echo "[YOK] $y <- UYARI: paket tasimiyor (scripts/jetson_paket_hazirla.py KOPYALAR)"; yok=$((yok + 1)); fi
   done
+  # NEDEN (D-405, curutucu "--kuru [YOK] iken tamam" bulgusu): --kur dosya_denetle'de
+  # duracaksa --kuru bunu SIMDI soyler — salt okunur, ucuz; kuru rapor yalan soylemez.
+  echo "## ana makine denetimi (gercek kosumun dosya_denetle'de duracagi yerler; salt okunur)"
+  if id -u "$SERVIS_KULLANICI" >/dev/null 2>&1; then echo "[VAR] kullanici $SERVIS_KULLANICI (birimlerde User=)"
+  else echo "[YOK] kullanici $SERVIS_KULLANICI <- SERVIS_KULLANICI ile ez (JETSON_KILAVUZ §2 ~/navitas sahibi)"; yok=$((yok + 1)); fi
+  if [ -x "$PYTHON3" ]; then echo "[VAR] yorumlayici $PYTHON3"
+  else echo "[YOK] yorumlayici $PYTHON3 <- PYTHON3 ile ez"; yok=$((yok + 1)); fi
+  if [ -e "$PIXHAWK_SERI" ]; then echo "[VAR] Pixhawk seri $PIXHAWK_SERI"
+  else echo "[YOK] Pixhawk seri $PIXHAWK_SERI <- kablo takili mi? PIXHAWK_SERI ile ez"; yok=$((yok + 1)); fi
+  if [ "$KIP" = sik ]; then
+    if [ -e "$SIK_SERI" ]; then echo "[VAR] SiK seri $SIK_SERI"
+    else echo "[YOK] SiK seri $SIK_SERI <- SIK_SERI ile ez"; yok=$((yok + 1)); fi
+  fi
+  liste="$(kurulu_py_dosyalari)"
+  while read -r b y; do
+    if [ -f "$y" ]; then echo "[VAR] kurulu $y"
+    else echo "[YOK] kurulu $y <- $b: JETSON_KILAVUZ §2 (cp kod/... $NAVITAS_KOK/{codes,comms})"; yok=$((yok + 1)); fi
+  done <<< "$liste"
   echo "## beyan denetimi"
+  u="$(deger_uyarilari)"
+  if [ -n "$u" ]; then printf '%s\n' "$u"; fi
   e="$(beyan_eksikleri)"
   if [ -n "$e" ]; then
     printf '%s\n' "$e" | sed 's/^/[EKSIK] /'
-    echo "KURU SONUC: beyan eksik — gercek kosum DURUR (cikis 3)"
-    kod=3
   else
     echo "[TAM] beyanlar tam"
-    echo "KURU SONUC: tamam — kurmak icin: sudo -E bash $PAKET_DIZIN/jetson_baslat.sh"
+  fi
+  if [ -n "$e" ] || [ "$yok" -gt 0 ]; then
+    echo "KURU SONUC: eksik (beyan: $( [ -n "$e" ] && echo eksik || echo tam ) · [YOK]: $yok) — gercek kosum DURUR (cikis 3)"
+    kod=3
+  else
+    echo "KURU SONUC: tamam — kurmak icin: sudo -E bash $BETIK_YOLU"
   fi
   return $kod
 }
@@ -276,7 +353,7 @@ kuru() {
 # ── systemd kurulumu ──────────────────────────────────────────────────────────
 birimleri_kur() {  # env dosyasi + birim dosyalari + daemon-reload (baslatmaz)
   local b
-  [ "$(id -u)" -eq 0 ] || hata "root gerekli: sudo -E bash $0 ${1:-}"
+  [ "$(id -u)" -eq 0 ] || hata "root gerekli: sudo -E bash $BETIK_YOLU ${1:-}"
   command -v systemctl >/dev/null 2>&1 || hata "systemctl yok — --dogrudan kullan"
   beyan_denetle_veya_dur
   sozlesme_denetle
@@ -287,9 +364,15 @@ birimleri_kur() {  # env dosyasi + birim dosyalari + daemon-reload (baslatmaz)
   chmod 644 "$ENV_DOSYA"
   echo "[YAZILDI] $ENV_DOSYA"
   for b in $TUM_BIRIMLER; do
-    # CR'siz kopyala (USB/Windows kopyasi CR tasiyabilir); ezilmis kok/python yolunu isle
+    # CR'siz kopyala (USB/Windows kopyasi CR tasiyabilir); ezilmis kok/python/env/kullanici
+    # yollarini isle. NEDEN User= ve ~/.local/bin (D-405): birimde SABIT kalinca
+    # SERVIS_KULLANICI ezilse de birim navitas kullanicisini arar (217/USER dongusu).
     tr -d '\r' < "$(birim_dosyasi "$b")" \
-      | sed -e "s#$KOK_VARSAYILAN#$NAVITAS_KOK#g" -e "s#$PYTHON3_VARSAYILAN#$PYTHON3#g" \
+      | sed -e "s#$KOK_VARSAYILAN#$NAVITAS_KOK#g" \
+            -e "s#$PYTHON3_VARSAYILAN#$PYTHON3#g" \
+            -e "s#^EnvironmentFile=$ENV_DOSYA_VARSAYILAN\$#EnvironmentFile=$ENV_DOSYA#" \
+            -e "s#^User=$KULLANICI_VARSAYILAN\$#User=$SERVIS_KULLANICI#" \
+            -e "s#$MAVPROXY_BIN_VARSAYILAN#$MAVPROXY_BIN#g" \
       > "$SYSTEMD_DIZIN/$b.service"
     echo "[KURULDU] $SYSTEMD_DIZIN/$b.service"
   done
@@ -299,36 +382,65 @@ birimleri_kur() {  # env dosyasi + birim dosyalari + daemon-reload (baslatmaz)
 
 birim_listesi() { birimler | sed 's/$/.service/' | tr '\n' ' '; }
 
+# NEDEN enable + restart, `enable --now` DEGIL (D-405, curutucu restart bulgusu):
+# `start` aktif birimde no-op'tur — beyan (YKS_IP, FOV...) degisip --kur yeniden
+# kosuldugunda env dosyasi yenilenir ama surec ESKI argumanlarla surerdi.
+# restart daemon-reload'dan SONRA: yeni birim metni ve env dosyasi okunur.
+etkinlestir_ve_yeniden_baslat() {  # $@: birim.service ...
+  systemctl enable "$@"
+  systemctl restart "$@"
+}
+
 kur_systemd() {
   birimleri_kur ""
   # shellcheck disable=SC2046
-  systemctl enable --now $(birim_listesi)
+  etkinlestir_ve_yeniden_baslat $(birim_listesi)
   sleep 2
   durum
   echo "thazirlik (bu betik): ${SECONDS} s · loglar: journalctl -u navitas-<birim> -f"
 }
 
-kapi() {  # FAZ_B_GUN_PLANI §1: cogullayici tek basina + 3 ucta mavlink_dogrula; 3/3 GECTI -> tuketiciler
-  local b d uc gecen=0
+kapi() {  # FAZ_B_GUN_PLANI §1: cogullayici tek basina + 3 ucta AYNI ANDA mavlink_dogrula; 3/3 GECTI -> tuketiciler
+  local b d uc port rc kapi_dizin gecen=0 beklenen="${#MAV_UCLAR[@]}"
   birimleri_kur "--kapi"
   d="$NAVITAS_KOK/scripts/mavlink_dogrula.py"
   [ -f "$d" ] || hata "$d yok — kapi araci kurulu degil; paket TASIMIYOR, depodan kopyala: scripts/mavlink_dogrula.py -> $NAVITAS_KOK/scripts/"
   # Onceki kurulumdan kalkmis tuketiciler 1455N uclarini tutar; kapi araci ayni ucu dinler.
   for b in $TUKETICILER; do systemctl stop "$b.service" >/dev/null 2>&1 || true; done
-  systemctl enable --now navitas-cogullayici.service
-  if [ "$KIP" = sik ]; then systemctl enable --now navitas-seri-hub.service; fi
+  # restart: PIXHAWK_SERI/BAUD degismis olabilir (D-405)
+  etkinlestir_ve_yeniden_baslat navitas-cogullayici.service
+  if [ "$KIP" = sik ]; then etkinlestir_ve_yeniden_baslat navitas-seri-hub.service; fi
   sleep 3
-  for uc in "$MAV_UC_RPI" "$MAV_UC_INIS" "$MAV_UC_KOMUT"; do
-    echo "## kapi: $uc"
-    if sudo -u "$SERVIS_KULLANICI" "$PYTHON3" "$d" --mavlink "$uc" --sysid "$SYSID"; then
+  # NEDEN paralel (D-405, curutucu kapi bulgusu): CONTRACTS §7.4 / FAZ_B_GUN_PLANI §1
+  # "uc uc AYNI ANDA acikken GECTI" der; sirali kosum bunu sinamaz ve thazirlik'e
+  # +22..+52 s ekler (§6.2: 30 s = 1 puan). rc dosyalari: eski kosumdan kalan
+  # dosya "gecti" sayilmasin diye ONCE silinir; rc yoksa DUSTU (fail-closed).
+  kapi_dizin="$LOG_DIZIN/kapi"
+  mkdir -p "$kapi_dizin"
+  rm -f "$kapi_dizin"/*.rc "$kapi_dizin"/*.log
+  for uc in "${MAV_UCLAR[@]}"; do
+    port="${uc##*:}"
+    (
+      rc=0
+      sudo -u "$SERVIS_KULLANICI" "$PYTHON3" "$d" --mavlink "$uc" --sysid "$SYSID" > "$kapi_dizin/$port.log" 2>&1 || rc=$?
+      echo "$rc" > "$kapi_dizin/$port.rc"
+    ) &
+  done
+  wait
+  for uc in "${MAV_UCLAR[@]}"; do
+    port="${uc##*:}"
+    echo "## kapi: $uc (log: $kapi_dizin/$port.log)"
+    cat "$kapi_dizin/$port.log" 2>/dev/null || true
+    rc="$(cat "$kapi_dizin/$port.rc" 2>/dev/null || echo "rc-yok")"
+    if [ "$rc" = 0 ]; then
       echo "[GECTI] $uc"; gecen=$((gecen + 1))
     else
-      echo "[DUSTU] $uc"
+      echo "[DUSTU] $uc (rc=$rc)"
     fi
   done
-  [ "$gecen" -eq 3 ] || hata "kapi $gecen/3 — tuketiciler BASLATILMADI (CONTRACTS §7.4: cogullayici dogrulanmadan MAVLink isi baslamaz)"
-  # shellcheck disable=SC2086
-  systemctl enable --now $(for b in $TUKETICILER; do printf '%s.service ' "$b"; done)
+  [ "$gecen" -eq "$beklenen" ] || hata "kapi $gecen/$beklenen — tuketiciler BASLATILMADI (CONTRACTS §7.4: cogullayici dogrulanmadan MAVLink isi baslamaz)"
+  # shellcheck disable=SC2046
+  etkinlestir_ve_yeniden_baslat $(for b in $TUKETICILER; do printf '%s.service ' "$b"; done)
   sleep 2
   durum
   echo "thazirlik (bu betik, kapi dahil): ${SECONDS} s"
@@ -347,6 +459,9 @@ dogrudan() {
     (
       cd "$NAVITAS_KOK" || exit 1
       export PYTHONUNBUFFERED=1 PATH="$MAVPROXY_PATH:$PATH"
+      # set -f (D-405): tirnaksiz $k bosluktan bolunmeli ama GLOB genislememeli —
+      # KAMERA='*' cwd=NAVITAS_KOK'ta codes comms ... olarak aciliyordu (--kuru ile ayrisma)
+      set -f
       # shellcheck disable=SC2086
       nohup $k > "$LOG_DIZIN/$b.log" 2>&1 &
       echo $! > "$LOG_DIZIN/$b.pid"     # nohup exec'ler: pid = surecin kendisi
