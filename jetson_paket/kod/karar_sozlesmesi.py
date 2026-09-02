@@ -2076,6 +2076,16 @@ IHA_INIS_HEARTBEAT_ARALIGI_S = 0.5        # < ika_receiver hb_timeout (3 s)
 IKA_GO_TEKRAR_ARALIGI_S = 0.25
 IKA_GO_TEKRAR_UST_SINIRI = 20
 
+# YKI ARM/DISARM — fiziksel eyleyici durumu gonderimde degil, yalniz IHA'nin
+# Pixhawk COMMAND_ACK(ACCEPTED) kanitinda degisir. SiK tur suresi IKA_GO ile
+# aynidir; 20 x 0,25 s = 5 s pencere tek paket kaybini tolere eder ama ACK yoksa
+# dugmeyi sonsuza dek kilitlemez. Her tekrar AYNI seq ile gider.
+ARM_TEKRAR_ARALIGI_S = 0.25
+ARM_TEKRAR_UST_SINIRI = 20
+# Ucus sirasinda yanlislikla DISARM tek tusa bagli olamaz. Deger degismedi;
+# yalnizca GUI icindeki ciplak sabit karar sozlesmesinin tek kaynagina tasindi.
+DISARM_TEYIT_SURESI_S = 4.0
+
 # P9a (D-393) — sartname §2.2.4: "Parasut acma komutu, otonom sistem
 # tarafindan verilebilecegi gibi ... yer istasyonundan manuel tetikleme ile de
 # gerceklestirilebilir ... manuel olarak tetiklenmesi durumunda ... ceza puani
@@ -2190,6 +2200,14 @@ MAVLINK_KONUM_ASGARI_HZ = 4.0
 MAVLINK_DURUM_ASGARI_HZ = 1.0
 # HEARTBEAT: MAVLink standardi 1 Hz; yari toleransi (baglanti canli mi kapisi).
 MAVLINK_HEARTBEAT_ASGARI_HZ = 0.5
+# Aracin surekli ARM gercegi COMMAND_ACK'ten degil MAVLink HEARTBEAT'ten gelir.
+# En yavas kabul edilen heartbeat periyodu (1 / 0,5 Hz = 2 s) ustune canli
+# telemetri jitter payi (0,50 s) eklenir. Daha yasli durum BILINMIYOR sayilir;
+# son bilinen ARM degeriyle arayuzu acik tutmak fail-open olur.
+ARAC_DURUM_TAZELIK_S = (1.0 / MAVLINK_HEARTBEAT_ASGARI_HZ
+                         + TELEMETRI_IRTIFA_TAZELIK_S)
+# GUI'nin alan-ozel adi; tek otorite ARAC_DURUM_TAZELIK_S'tir.
+ARM_DURUM_TAZELIK_S = ARAC_DURUM_TAZELIK_S
 # Olcum penceresi: 10 s'de 1 Hz akis icin sayim hatasi ±1 (%10) — esiklerin
 # 2x payinin icinde kalir; daha kisa pencere faz kaynakli yanlis DUSTU uretir.
 MAVLINK_DOGRULAMA_SURESI_S = 10.0

@@ -403,6 +403,43 @@ ekranda kanıt görmeden veriyordu.
 - Kilit: `tests/test_ika_go_ackli_tekrar.py` (paket düşürme gerçek UDP loopback, ACK yok → üst
   sınır, mükerrer IKA_GO, kanıtsız düğme pasif; 5 mutasyonun tamamı yakalandı).
 
+### 6.7 FDA görev kipi (`--fda`) — bağlayıcı (şartname §5.3.2 · 21 Eylül Adıyaman · D-407)
+
+**Olgu:** `yks_gui` yarışma günü görevine (§2.2, sabit kanat + mancınık + paraşüt + İKA)
+göre yazıldı. 21 Eylül'deki **görev test uçuşu** başka bir görevdir: **çoklu rotorlu drone**,
+20×20 m alan, ≥30 m irtifa, **YKS'ye canlı aktarım + hakem onayı**, kalkış→iniş **≤ 10 dk**,
+**İKA yok**, **paraşüt yok**, **mancınık yok**. Bugün `--fda` yalnız süre bütçesini
+(`SARTNAME_FDA_OPERASYON_SURESI_S`) değiştirir (T170); geri kalan akış hâlâ §2.2'yi varsayar.
+
+🔴 **Ölçülen tıkanma (D-407):** hakem onayı 2/2 adımı `ika_aktarim_kaniti_var()` ister
+(K8, §2.2.3). FDA'da İKA olmadığı için bu kanıt **hiç gelmez** → onay tamamlanamaz,
+İHA'ya ACK gitmez. Şartname §5.3.2 "gerçek zamanlı tespitin hakem heyetince doğrulanıp
+onaylanması" zorunlu olduğundan bu, **uçuşu geçersiz kılacak** bir GUI kilididir.
+
+**Sözleşme — `--fda` verildiğinde (varsayılan yarışma kipi BAYT-EŞ değişmez):**
+
+| konu | yarışma kipi (§2.2) | FDA kipi (§5.3.2) |
+|---|---|---|
+| İHA süre bütçesi | `SARTNAME_IHA_GOREV_SURESI_S` (900 s) | `SARTNAME_FDA_OPERASYON_SURESI_S` (600 s) — **var** |
+| hakem onayı 2/2 | İKA'nın `OPEN_ROUTE` ACK kanıtı **şart** | **İKA kanıtı ARANMAZ**; 2/2 = "YKS'de canlı görüldü + hakem sözlü onayı" → ACK İHA'ya gider (`ref_tip` ile, §6.6). Ekranda gerekçe: `FDA §5.3.2: İKA yok — onay YKS aktarımına dayanır` |
+| PARAŞÜT düğmesi | manuel yedek (−50, §2.2.4) | **KAPALI**. Basılırsa komut **gönderilmez**, KIRMIZI: `FDA kipinde paraşüt yok (çoklu rotor)`. Etiket: `PARAŞÜT (FDA dışı)` |
+| FIRLATMA düğmesi | mancınıktan ayrılma damgası | etiket **`KALKIŞ`**; damga = kalkış anı, kronometre burada başlar. **ARM kilidi aynen** (taze HEARTBEAT + ARM, D-393) |
+| İKA BAŞLAT / İKA kronometresi | §2.2.5 zinciri | **KAPALI**, etiket `İKA (FDA dışı)`; `IKA_GO` **gönderilmez** |
+| iniş kanıtı (`IHA_LANDED`) | zorunlu | **aynen zorunlu** (görev süresi inişte biter) |
+| asgari irtifa notu | bilgi | **aynen** (`SARTNAME_ASGARI_IRTIFA_M` = 30 m, §5.3.2) |
+| hazırlık kronometresi | `SARTNAME_HAZIRLIK_SURESI_S` | aynen |
+
+**Fail-closed ilkesi korunur:** FDA kipinde kapatılan her düğme yalnız **UI durumu** ile
+değil, eylemin kendisinde de reddedilir (T180 sınıfı: düğme durumu tek başına emniyet
+sinyali değildir). Kip **açılışta** belirlenir (`--fda`), koşarken değişmez ve ekranda
+sürekli görünür.
+
+**Kilit:** `tests/test_faz_b_yks_fda_kipi.py` — (1) FDA'da 2/2 onay İKA kanıtı olmadan
+tamamlanır ve gerçek link'e `ref_tip`'li ACK yazılır; (2) yarışma kipinde aynı senaryo
+hâlâ REDDEDİLİR (regresyon yok); (3) FDA'da `parasut()` çağrılsa bile link'e `PARACHUTE`
+gitmez; (4) FDA'da `ika_baslat()` `IKA_GO` yazmaz; (5) FIRLATMA etiketi `KALKIŞ` ve ARM
+kilidi hâlâ damgayı reddeder; (6) mutasyon: FDA kontrolü kaldırılınca ilgili test düşer.
+
 ### 6.2 `road` sözleşmesi
 
 `{1: "sol", 2: "orta", 3: "sag"}` — `open_route()` bu aralık dışında `ValueError` fırlatır.

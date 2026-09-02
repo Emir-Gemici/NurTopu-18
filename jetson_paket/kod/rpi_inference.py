@@ -50,6 +50,7 @@ if __package__:
                                    OLCEK_YOK_SEBEBI,
                                    ROTA_PLAN_MAKS_HUCRE,
                                    TELEMETRI_IRTIFA_TAZELIK_S,
+                                   ARAC_DURUM_TAZELIK_S,
                                    UC_BANT_TEMAS_YOK_SEBEBI,
                                    bant_temasi_gereken_px,
                                    bant_temasi_yeterli_mi,
@@ -102,6 +103,7 @@ else:
                                   OLCEK_YOK_SEBEBI,
                                   ROTA_PLAN_MAKS_HUCRE,
                                   TELEMETRI_IRTIFA_TAZELIK_S,
+                                  ARAC_DURUM_TAZELIK_S,
                                   UC_BANT_TEMAS_YOK_SEBEBI,
                                   bant_temasi_gereken_px,
                                   bant_temasi_yeterli_mi,
@@ -318,6 +320,7 @@ class CanliOlcekSaglayici:
                 baglanti,
                 TELEMETRI_IRTIFA_TAZELIK_S,
                 beklenen_sysid=beklenen_sysid,
+                durum_tazelik_s=ARAC_DURUM_TAZELIK_S,
             )
             if okuyucu.baslat() is not True:
                 raise RuntimeError(
@@ -2487,6 +2490,39 @@ def _irtifa_saglayici(canli_olcek):
     return okuyucu.irtifa_m
 
 
+def _telemetri_saglayici(canli_olcek, referans=None):
+    """Tek atomik okuyucu snapshot'ını HEARTBEAT alanlarına dönüştür.
+
+    Ham ``lat``/``lon`` YKİ'de sayısal GNSS kanıtıdır; semantik haritanın
+    koordinatı değildir. ``referans`` beyan edilmişse aynı snapshot'tan ayrıca
+    IHA-UB yerel ``x``/``y`` üretilir. Okuyucu yoksa ikinci bir MAVLink
+    tüketicisi açılmaz; ``None`` dönülür.
+    """
+    if canli_olcek is None:
+        return None
+    okuyucu = getattr(canli_olcek, "okuyucu", None)
+    snapshot_al = getattr(okuyucu, "telemetri_snapshot", None)
+    if not callable(snapshot_al):
+        return None
+
+    def _saglayici():
+        ham = snapshot_al()
+        if not isinstance(ham, dict):
+            return {}
+        cikti = {
+            ad: ham[ad]
+            for ad in ("lat", "lon", "alt", "gps_fix", "uydu", "armed")
+            if ad in ham
+        }
+        if (referans is not None and "lat" in cikti and "lon" in cikti):
+            x, y = yerel_konum_m(
+                referans[0], referans[1], cikti["lat"], cikti["lon"])
+            cikti["x"], cikti["y"] = x, y
+        return cikti
+
+    return _saglayici
+
+
 def _argumanlari_dogrula(parser, args):
     """Canli kamera yolunda statik olcek/irtifa bypassini kapat."""
     if (args.mav_sysid is not None
@@ -2558,10 +2594,17 @@ def main():
     if args.yks_hedef or args.ika_hedef or args.telsiz_seri:
         _konum_saglayici = _ub_konum_saglayici(canli_olcek, ub_referans)
         _irtifa_s = _irtifa_saglayici(canli_olcek)
-        yayinci = _iha_sender_modulu().yayinci_kur(
-            yks=args.yks_hedef, ika=args.ika_hedef, seri=args.telsiz_seri,
-            baud=args.telsiz_baud, konum_saglayici=_konum_saglayici,
-            irtifa_saglayici=_irtifa_s).start()
+        _telemetri_s = _telemetri_saglayici(canli_olcek, ub_referans)
+        _yayinci_kw = {
+            "yks": args.yks_hedef,
+            "ika": args.ika_hedef,
+            "seri": args.telsiz_seri,
+            "baud": args.telsiz_baud,
+            "konum_saglayici": _konum_saglayici,
+            "irtifa_saglayici": _irtifa_s,
+            "telemetri_saglayici": _telemetri_s,
+        }
+        yayinci = _iha_sender_modulu().yayinci_kur(**_yayinci_kw).start()
         print(f"telsiz halkasi: yks={args.yks_hedef} ika={args.ika_hedef} "
               f"seri={args.telsiz_seri} · heartbeat "
               f"{yayinci.heartbeat_aralik:g} s")
