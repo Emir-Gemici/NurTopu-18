@@ -63,7 +63,7 @@ class KameraURLHatasi(ValueError):
     """Kamera ucu açık ve güvenli biçimde çözülemedi."""
 
 
-def _url_dogrula(url, beklenen_yol):
+def _url_dogrula(url, beklenen_yol, kok_izinli=False):
     if not isinstance(url, str) or not url.strip():
         raise KameraURLHatasi("kamera URL'si boş olamaz")
     metin = url.strip()
@@ -80,16 +80,20 @@ def _url_dogrula(url, beklenen_yol):
         raise KameraURLHatasi("kamera URL kullanıcı/parola taşıyamaz")
     if parca.hostname in ("0.0.0.0", "::"):
         raise KameraURLHatasi("0.0.0.0/:: dinleme adresidir, istemci hedefi olamaz")
-    if parca.path != beklenen_yol:
+    yol = parca.path
+    if kok_izinli and yol in ("", "/"):
+        yol = beklenen_yol
+    elif yol != beklenen_yol:
         raise KameraURLHatasi(
-            "kamera URL yolu {} olmalı: {!r}".format(beklenen_yol, parca.path))
+            "kamera URL yolu {}{} olmalı: {!r}".format(
+                "kök veya " if kok_izinli else "", beklenen_yol, parca.path))
     if parca.query or parca.fragment:
         raise KameraURLHatasi("kamera URL sorgu veya parça taşıyamaz")
     if port is not None and not (1 <= port <= 65535):
         raise KameraURLHatasi("kamera URL portu 1..65535 olmalı")
     # urlsplit şemayı ayırdıktan sonra netloc güvenlidir; yol/sorgu açıkça
     # yeniden kurulur. Böylece çağıran metindeki gizli fragment taşınmaz.
-    return urlunsplit(("http", parca.netloc, beklenen_yol, "", ""))
+    return urlunsplit(("http", parca.netloc, yol, "", ""))
 
 
 def kamera_uclari(kare_url, durum_url=None):
@@ -98,7 +102,9 @@ def kamera_uclari(kare_url, durum_url=None):
     Durum ucu verilmezse aynı şema/host/porttan türetilir. Verilirse başka bir
     makineye yönelmesine izin verilmez; görüntü ile sağlık aynı köprüye aittir.
     """
-    kare = _url_dogrula(kare_url, KARE_YOLU)
+    # YKS CLI'si operatöre köprü KÖKÜNÜ beyan ettirir; eski/doğrudan çağıranlar
+    # tam /kare.jpg ucunu verebilir. İkisi de tek kanonik kare URL'sine çevrilir.
+    kare = _url_dogrula(kare_url, KARE_YOLU, kok_izinli=True)
     k = urlsplit(kare)
     if durum_url is None:
         durum = urlunsplit((k.scheme, k.netloc, DURUM_YOLU, "", ""))

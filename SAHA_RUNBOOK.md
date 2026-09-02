@@ -27,7 +27,7 @@
 İstasyon başına **TEK komut** (`scripts/saha_baslat.py` süreyi ölçüp yazar):
 
 ```bash
-<venv> scripts/saha_baslat.py yks --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007   # YKS (--iha: paraşüt/ARM alıcısı, D-403)
+<venv> scripts/saha_baslat.py yks --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007 --kamera-url http://<JETSON_IP>:8080   # YKS
 <venv> scripts/saha_baslat.py ika --yks <YKS_IP>:5005     # İKA istasyonu
 <venv> scripts/saha_baslat.py --komutlar                  # kartı yazdır
 ```
@@ -36,9 +36,22 @@ SiK (433 MHz) ile: `saha_baslat.py yks --serial COM5 --baud 57600`.
 ⚠ `--yks` İKA'da UDP'de fiilen **zorunludur** (CONTRACTS §6.6/K8: OPEN_ROUTE
 IKA_GO'dan önce gelir; adres verilmezse hakem aktarım kanıtı hiç gitmez).
 
+Kamera görüntüsü **SiK üzerinden taşınmaz**. `--kamera-url` Jetson ile YKS
+arasındaki ayrı Wi-Fi/LAN köprüsüdür. Kamera ağı yoksa telemetri ve emniyet
+komutları çalışmayı sürdürür; ekran eski kareyi canlıymış gibi tutmaz.
+
 ## 2. YKS operatör kartı
 
-- **A** = ARM/DISARM (uçuşta DISARM iki adımlı teyit ister — T180).
+- Üst satırdaki **HAM GNSS** enlem/boylam, fix, uydu ve bağıl irtifayı canlı
+  Pixhawk telemetrisinden gösterir. Bayat alan silinir. Ham koordinat, kalibre
+  edilmiş arena dönüşümü olmadığı için semantik harita konumu **değildir**.
+- **KAMERA** görünümü = Jetson RAW hakem görüntüsü. `CANLI` ve kare yaşı
+  görünmeden görüntüyü güncel kabul etme; `KARE_BAYAT`, `KAYNAK_KAPALI` veya
+  `BAĞLANAMADI` halinde fiziksel kamera/ağ giderilir.
+- **A** = ARM/DISARM. Düğme yalnız taze Pixhawk `armed` heartbeat'i varken
+  açılır. Komutun gönderilmiş olması durum kanıtı değildir: ekran ancak
+  Pixhawk'ın kabul ACK'i **ve** yeni heartbeat aynı durumu gösterince ARM veya
+  DISARM yazar. Uçuşta DISARM ayrıca iki adımlı teyit ister (T180).
 - **FIRLATMA** yalnız ARM'dayken damga atar (yazılım kilidi, D-393).
 - **PARAŞÜT (manuel −50)**: iki adımlı teyit; komut ACK gelene dek tekrarlar,
   ACK yoksa ekran KIRMIZI uyarır (D-393). Yalnız son çare — §6.4 sınırı.
@@ -65,6 +78,13 @@ python3 jetson_paket/kod/iha_inis_yayinci.py \
 python3 jetson_paket/kod/iha_komut_alici.py \
     --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007
 ```
+
+RAW kamera köprüsünü aynı kapalı saha LAN'ında açmak için Jetson başlangıç
+ortamında `KAMERA=http://127.0.0.1:8080/video` ve
+`KAMERA_KOPRU_BIND=0.0.0.0` açıkça beyan edilir. Varsayılan bind yalnız
+loopback'tir; LAN'a kendiliğinden açılmaz. Güvenlik duvarında TCP/8080 yalnız
+YKS IP'sinden kabul edilir. YKS `http://<JETSON_IP>:8080` kökünü kullanır;
+istemci `/kare.jpg` ve `/durum` uçlarını kendi çözer.
 
 - `iha_komut_alici` = YKS'nin PARAŞÜT/ARM/DISARM komutlarını Pixhawk'a aktarır
   ve **yalnız aktarım başarılıysa** ACK döner (D-393 dürüstlük sözleşmesi);
@@ -107,3 +127,21 @@ Her saha provası `simulation/PROVA_SENARYOSU.md` faz damgalarına göre koşulu
 video + hakem_log çıktısı `results/prova/<tarih>/` altına taşınır (UHDR §5.5
 kanıtı). Sim koşusu saha kanıtı değildir (CONTRACTS 11.1) — gerçek prova
 kayıtları esastır.
+
+## 6. 21 Eylül kesin-hazır kapısı (gerçek donanım, masada + açık alanda)
+
+Bu maddeler simülasyonla kapatılamaz; her biri tarihli ekran videosu ve
+`hakem_log.jsonl`/servis günlüğüyle kanıtlanır. Bir madde düşerse uçuşa çıkılmaz.
+
+| ✓ | fiziksel kapı | geçiş ölçütü |
+|---|---|---|
+| ☐ | Pixhawk bağlantısı | Üç MAVLink tüketicisi çoğullayıcı üzerinden aynı `sysid` aracını görür; seri portu yalnız router açar |
+| ☐ | GNSS canlılığı | Açık alanda gerçek lat/lon, fix ve uydu görünür; anten kapatılınca/besleme kesilince alanlar tazelik süresi sonunda kaybolur |
+| ☐ | Ölçek/irtifa | `relative_alt` uçuş boyunca kare kare değişir; telemetri kesilince `OLCEK_YOK` olur, son değer kullanılmaz |
+| ☐ | ARM | YKS ARM komutu Pixhawk'ta gerçekten ARM eder; ACK tek başına ekran durumunu değiştirmez, ardından gelen armed heartbeat değiştirir |
+| ☐ | DISARM | Yerde gerçekten DISARM olur; havada tek basış komut göndermez, ikinci teyit penceresi ölçülür |
+| ☐ | Kamera canlılığı | RAW görüntü, kare sıra/yaşıyla en az 10 dk akar; lens önünde hareket ekrana gelir, donmuş kare canlı sayılmaz |
+| ☐ | Kamera kopma/yakalama | Wi-Fi kapatılınca görünüm fail-closed uyarır; telemetri/ACK sürer; ağ dönünce süreç yeniden başlatılmadan görüntü gelir |
+| ☐ | Ağ ayrımı | Video trafiği yalnız saha Wi-Fi/LAN TCP/8080'dedir; SiK hattında görüntü paketi yoktur |
+| ☐ | E-stop/paraşüt | Yetkili, emniyetli masa düzeninde güçlü ACK ve red/timeout yolları ayrı ayrı gözlenir; kabul edilmeyen komut başarı yazmaz |
+| ☐ | Kayıt | YKS ekranı, araç, GNSS, kamera kopma deneyi ve saat eşleşmesi tek prova klasöründe geri oynatılabilir |

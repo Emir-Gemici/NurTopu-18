@@ -170,11 +170,84 @@ class TekOkuyucuSnapshotTests(unittest.TestCase):
         saat.simdi = 0.5
         self.assertEqual({}, okuyucu.telemetri_snapshot())
 
+    def test_MUTASYON_pixhawk_reboot_iki_ilerleyen_ornekle_yeni_cag_acar(self):
+        """Eski kod iki reboot paketini de eski uptime aşılana dek reddederdi."""
+        saat = SahteSaat()
+        okuyucu, akis = self._okuyucu(
+            [_konum(zaman=120_000, alt=31.0),
+             _gps(zaman=120_000_000, fix=3, uydu=12)], saat)
+        self.assertEqual(31.0, okuyucu.telemetri_oku()["alt"])
+
+        # Büyük geri adımın ilk paketi yalnız aday: eski veri de fail-closed
+        # temizlenir; tek gecikmiş paket reboot diye kabul edilmez.
+        saat.simdi = 0.6
+        akis.mesajlar.extend([
+            _konum(zaman=100, alt=32.0),
+            _gps(zaman=100_000, fix=4, uydu=18),
+        ])
+        self.assertEqual({}, okuyucu.telemetri_oku())
+
+        # Aynı düşük çağda zaman ilerledi: reboot açıkça doğrulandı.
+        saat.simdi = 0.7
+        akis.mesajlar.extend([
+            _konum(zaman=200, alt=32.5),
+            _gps(zaman=200_000, fix=4, uydu=19),
+        ])
+        self.assertEqual({
+            "lat": 39.925533, "lon": 32.866287, "alt": 32.5,
+            "gps_fix": 4, "uydu": 19,
+        }, okuyucu.telemetri_oku())
+
+    def test_kucuk_out_of_order_reboot_sayilmaz_ve_yasi_yenilemez(self):
+        saat = SahteSaat()
+        okuyucu, akis = self._okuyucu(
+            [_konum(zaman=10_000, alt=31.0),
+             _gps(zaman=10_000_000, fix=3, uydu=12)], saat)
+        okuyucu.telemetri_oku()
+        saat.simdi = 0.4
+        akis.mesajlar.extend([
+            _konum(zaman=9_900, alt=99.0),
+            _gps(zaman=9_900_000, fix=1, uydu=1),
+        ])
+        sonuc = okuyucu.telemetri_oku()
+        self.assertEqual(31.0, sonuc["alt"])
+        self.assertEqual(3, sonuc["gps_fix"])
+        saat.simdi = 0.5
+        self.assertEqual({}, okuyucu.telemetri_snapshot(),
+                         "küçük sıra dışı paket eski örneğin yaşını yeniledi")
+
+    def test_baglanti_yasam_dongusu_sira_damgalarini_da_sifirlar(self):
+        saat = SahteSaat()
+        okuyucu, akis = self._okuyucu(
+            [_konum(zaman=120_000, alt=31.0),
+             _gps(zaman=120_000_000, fix=3, uydu=12)], saat)
+        okuyucu.telemetri_oku()
+        akis.mesajlar.append(OSError("Pixhawk yeniden baglaniyor"))
+        self.assertEqual({}, okuyucu.telemetri_oku())
+
+        # Yeni bağlantı çağında ilk düşük damga bekletilmeden kabul edilir;
+        # eski uptime'a erişmesi saatlerce beklenmez.
+        saat.simdi = 0.1
+        akis.mesajlar.extend([
+            _konum(zaman=100, alt=32.0),
+            _gps(zaman=100_000, fix=4, uydu=18),
+        ])
+        self.assertEqual(32.0, okuyucu.telemetri_oku()["alt"])
+
     def test_uydu_255_bilinmiyor_alanini_yazmaz(self):
         saat = SahteSaat()
         okuyucu, _akis = self._okuyucu(
             [_gps(uydu=kanit.GPS_UYDU_BILINMIYOR)], saat)
         self.assertEqual({"gps_fix": 3}, okuyucu.telemetri_oku())
+
+    def test_yerde_alt_sifir_ve_gps_gorunur_ama_olcek_irtifasi_olmaz(self):
+        saat = SahteSaat()
+        okuyucu, _akis = self._okuyucu(
+            [_konum(alt=0.0)], saat)
+        self.assertEqual({"lat": 39.925533, "lon": 32.866287, "alt": 0.0},
+                         okuyucu.telemetri_oku())
+        self.assertIsNone(okuyucu.irtifa_m(),
+                          "yerdeki 0 m olcek irtifasi olarak kullanildi")
 
 
 class UretimSaglayiciTests(unittest.TestCase):

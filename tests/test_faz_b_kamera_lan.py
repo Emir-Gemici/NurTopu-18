@@ -133,11 +133,16 @@ class JetsonBaslatKameraLanTesti(unittest.TestCase):
         self.assertEqual(ham.returncode, 1)
         self.assertIn("KAMERA_KOPRU_BIND kullan", ham.stderr)
 
-        for kotu in ("8.8.8.8", "kamera.local", "192.168.1.999", "::"):
+        for kotu in ("8.8.8.8", "kamera.local", "192.168.1.999", "::",
+                     "10.42.0.2."):
             with self.subTest(bind=kotu):
                 sonuc = _kuru(KAMERA_KOPRU_BIND=kotu)
                 self.assertEqual(sonuc.returncode, 1)
                 self.assertIn("yalniz yerel IPv4", sonuc.stderr)
+
+        sekme = _kuru(KAMERA_KOPRU_ARGS="--host\t0.0.0.0")
+        self.assertEqual(sekme.returncode, 1)
+        self.assertIn("KAMERA_KOPRU_BIND kullan", sekme.stderr)
 
     def test_bind_kopru_yokken_sessizce_yutulmaz(self):
         sonuc = _kuru(KAMERA="/dev/video0", KAMERA_KOPRU_BIND="0.0.0.0")
@@ -147,4 +152,3 @@ class JetsonBaslatKameraLanTesti(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

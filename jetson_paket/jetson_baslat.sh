@@ -140,6 +140,7 @@ yerel_ipv4_var() {
   local ip="$1" a b c d fazla o
   IFS=. read -r a b c d fazla <<< "$ip"
   [ -z "${fazla:-}" ] && [ -n "$a" ] && [ -n "$b" ] && [ -n "$c" ] && [ -n "$d" ] || return 1
+  [ "$ip" = "$a.$b.$c.$d" ] || return 1
   for o in "$a" "$b" "$c" "$d"; do
     case "$o" in ''|*[!0-9]*) return 1 ;; esac
     [ "$((10#$o))" -le 255 ] || return 1
@@ -172,8 +173,8 @@ esac
 
 # --host'un iki sahibi olamaz. Serbest bicimli ek argumandan almak, --kuru ile
 # canli birimin hangi arayuze acildigini belirsizlestirirdi.
-case " $KAMERA_KOPRU_ARGS " in
-  *" --host "*|*" --host="*) hata "KAMERA_KOPRU_ARGS --host tasiyamaz; KAMERA_KOPRU_BIND kullan" ;;
+case "$KAMERA_KOPRU_ARGS" in
+  *--host*) hata "KAMERA_KOPRU_ARGS --host tasiyamaz; KAMERA_KOPRU_BIND kullan" ;;
 esac
 yerel_ipv4_var "$KAMERA_KOPRU_BIND" \
   || hata "KAMERA_KOPRU_BIND='$KAMERA_KOPRU_BIND': yalniz yerel IPv4, 127.0.0.1 veya acik opt-in 0.0.0.0"

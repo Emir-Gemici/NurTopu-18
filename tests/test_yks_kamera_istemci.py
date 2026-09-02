@@ -37,6 +37,7 @@ class _Kaynak:
         self.durum_http = 200
         self.kaynak_acik = True
         self.dondur = False
+        self.kare_gecikme_s = 0.0
         self.sira = 0
         self.jpeg = self._jpeg(0)
 
@@ -50,6 +51,10 @@ class _Kaynak:
         return tampon.tobytes()
 
     def kare(self):
+        with self.kilit:
+            gecikme = self.kare_gecikme_s
+        if gecikme:
+            time.sleep(gecikme)
         with self.kilit:
             if not self.dondur:
                 self.sira += 1
@@ -78,7 +83,10 @@ class _Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(govde)))
             self.send_header("X-Kare-Sira", str(sira))
             self.end_headers()
-            self.wfile.write(govde)
+            try:
+                self.wfile.write(govde)
+            except OSError:
+                pass
             return
         if self.path == ki.DURUM_YOLU:
             kod, veri = self.server.kaynak.durum()
@@ -104,6 +112,10 @@ class _Kopru:
     def url(self):
         return "http://127.0.0.1:{}{}".format(
             self.sunucu.server_address[1], ki.KARE_YOLU)
+
+    @property
+    def kok_url(self):
+        return "http://127.0.0.1:{}".format(self.sunucu.server_address[1])
 
     def kapat(self):
         self.sunucu.shutdown()
@@ -167,6 +179,23 @@ class YksKameraIstemciTesti(unittest.TestCase):
                        self.istemci.snapshot()["surum"] > onceki_surum else None)
         self.assertIsNotNone(dondu, "baglanti geri gelince istemci toparlanmadi")
 
+    def test_timeout_eski_jpegi_gizler_ve_yeniden_baglanir(self):
+        self.istemci.baslat()
+        self.assertIsNotNone(_bekle(lambda: self.istemci.snapshot()["jpeg"]))
+        with self.kopru.kaynak.kilit:
+            self.kopru.kaynak.kare_gecikme_s = 0.35
+        dustu = _bekle(lambda: self.istemci.snapshot()
+                       if self.istemci.snapshot()["jpeg"] is None and
+                       self.istemci.snapshot()["hata"] else None)
+        self.assertIsNotNone(dustu, "timeout'ta eski JPEG gorunur kaldi")
+
+        with self.kopru.kaynak.kilit:
+            self.kopru.kaynak.kare_gecikme_s = 0.0
+        self.assertIsNotNone(
+            _bekle(lambda: self.istemci.snapshot()
+                   if self.istemci.snapshot()["jpeg"] is not None else None),
+            "timeout kalkınca istemci toparlanmadı")
+
     def test_ayni_kare_tekrari_tazeligi_yenilemez(self):
         self.istemci.baslat()
         self.assertIsNotNone(_bekle(lambda: self.istemci.snapshot()["jpeg"]))
@@ -195,6 +224,15 @@ class YksKameraIstemciTesti(unittest.TestCase):
         kare, durum = ki.kamera_uclari("http://10.42.0.2:8080/kare.jpg")
         self.assertEqual(kare, "http://10.42.0.2:8080/kare.jpg")
         self.assertEqual(durum, "http://10.42.0.2:8080/durum")
+        for kok in ("http://10.42.0.2:8080", "http://10.42.0.2:8080/"):
+            with self.subTest(kok=kok):
+                istemci = ki.KameraIstemci(kok)
+                self.assertEqual(istemci.kare_url,
+                                 "http://10.42.0.2:8080/kare.jpg")
+                self.assertEqual(istemci.durum_url,
+                                 "http://10.42.0.2:8080/durum")
+                self.assertEqual(istemci.snapshot()["kaynak"],
+                                 "http://10.42.0.2:8080/kare.jpg")
         for kotu in (
                 "http://0.0.0.0:8080/kare.jpg",
                 "file:///tmp/kare.jpg",
@@ -208,7 +246,23 @@ class YksKameraIstemciTesti(unittest.TestCase):
                 "http://10.42.0.2:8080/kare.jpg",
                 "http://10.42.0.3:8080/durum")
 
+    def test_yks_kok_urlsi_gercekten_kare_ve_durum_okur(self):
+        istemci = ki.KameraIstemci(
+            self.kopru.kok_url,
+            kare_araligi_s=0.03,
+            durum_araligi_s=0.04,
+            istek_zaman_asimi_s=0.2,
+            kare_tazelik_s=0.14,
+            durum_tazelik_s=0.14)
+        try:
+            istemci.baslat()
+            canli = _bekle(lambda: istemci.snapshot()
+                           if istemci.snapshot()["durum"] == ki.DURUM_CANLI else None)
+            self.assertIsNotNone(canli)
+            self.assertEqual(canli["kaynak"], self.kopru.kok_url + "/kare.jpg")
+        finally:
+            istemci.durdur()
+
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -24,6 +24,8 @@ MAVLINK_TELEMETRI_MESAJLARI = [MESAJ_GLOBAL_POSITION_INT,
                                MESAJ_GPS_RAW_INT,
                                MESAJ_HEARTBEAT]
 MILIMETRE_BIR_METRE = 1000.0
+MILISANIYE_BIR_SANIYE = 1000.0
+MIKROSANIYE_BIR_SANIYE = 1_000_000.0
 MAVLINK_TIME_BOOT_MS_AZAMI = (1 << 32) - 1
 MAVLINK_TIME_USEC_AZAMI = (1 << 64) - 1
 MAVLINK_UINT8_AZAMI = (1 << 8) - 1
@@ -206,6 +208,38 @@ def _armed_durumu(mesaj):
     return bool(base_mode & bayrak)
 
 
+def _uzak_sira_karari(son, aday, yeni, azami_geri_adim,
+                      reboot_adayi_olabilir=True):
+    """Uzak araç saatini tekrar/sıra dışı paket ve reboot arasında ayır.
+
+    Dönüş ``(kabul, yeni_son, yeni_aday, reboot)`` biçimindedir. Tazelik
+    penceresi içindeki küçük geri adım ağ sıralamasıdır ve reddedilir. Daha
+    büyük geri adım tek başına reboot kanıtı sayılmaz: önce eski akışın yerel
+    tazelik penceresi dolmuş olmalıdır, ilk paket yalnız aday olur; eski çağın
+    altında kalan ve adaydan ileri giden ikinci paket yeni çağın açık kanıtıdır.
+    Böylece bir gecikmiş paket veya taze akıştaki yeniden sıralama bayat değeri
+    tazeleyemez.
+    """
+    if son is None or yeni > son:
+        return True, yeni, None, False
+    if yeni == son:
+        return False, son, aday, False
+    if son - yeni <= azami_geri_adim:
+        return False, son, None, False
+    if aday is None:
+        if not reboot_adayi_olabilir:
+            return False, son, None, False
+        return False, son, yeni, False
+    if aday < yeni < son:
+        return True, yeni, None, True
+    # Adaydan da eski bir paket geldiyse yeni çağ henüz ilerlemedi. En düşük
+    # damgayı aday yap; ondan ileri giden sonraki paket yine iki örnek şartını
+    # sağlar. Tek/azalan paket hiçbir zaman kabul edilmez.
+    if yeni < aday:
+        return False, son, yeni, False
+    return False, son, aday, False
+
+
 class BagilIrtifaOkuyucu:
     """Kare ölçeği için taze ``relative_alt`` örneğini fail-closed sun.
 
@@ -283,10 +317,13 @@ class BagilIrtifaOkuyucu:
         self._dur_olayi = threading.Event()
         self._poller = None
         self._son_uzak_ms = None
+        self._uzak_ms_reboot_adayi = None
         self._son_irtifa_m = None
+        self._son_telemetri_alt_m = None
         self._son_konum = None            # T162: (lat, lon) — irtifadan BAGIMSIZ
         self._son_gelis_monotonic = None
         self._son_gps_uzak_us = None
+        self._gps_us_reboot_adayi = None
         self._son_gps_fix = None
         self._son_uydu = None
         self._son_gps_gelis_monotonic = None
@@ -296,6 +333,7 @@ class BagilIrtifaOkuyucu:
     def _gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_irtifa_m = None
+            self._son_telemetri_alt_m = None
             self._son_konum = None
             self._son_gelis_monotonic = None
             self._son_gps_fix = None
@@ -303,18 +341,28 @@ class BagilIrtifaOkuyucu:
             self._son_gps_gelis_monotonic = None
             self._son_armed = None
             self._son_heartbeat_gelis_monotonic = None
+            # Bağlantı/okuyucu yaşam döngüsü bittiğinde uzak araç saati de yeni
+            # bir çağdadır. Eski uptime'ı korumak yeniden bağlantıdan sonra
+            # Pixhawk'ın o değere erişmesini saatlerce bekletirdi.
+            self._son_uzak_ms = None
+            self._uzak_ms_reboot_adayi = None
+            self._son_gps_uzak_us = None
+            self._gps_us_reboot_adayi = None
 
     def _konumu_gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_irtifa_m = None
+            self._son_telemetri_alt_m = None
             self._son_konum = None
             self._son_gelis_monotonic = None
+            self._uzak_ms_reboot_adayi = None
 
     def _gps_gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_gps_fix = None
             self._son_uydu = None
             self._son_gps_gelis_monotonic = None
+            self._gps_us_reboot_adayi = None
 
     def _heartbeat_gecersiz_kil(self):
         with self._snapshot_kilidi:
@@ -342,23 +390,40 @@ class BagilIrtifaOkuyucu:
         if tip == MESAJ_GLOBAL_POSITION_INT:
             uzak_ms = _uzak_zaman_ms(mesaj)
             irtifa_m = _bagil_irtifa_m(mesaj)
-            if (uzak_ms is None or irtifa_m is None
-                    or not math.isfinite(irtifa_m) or irtifa_m <= 0.0):
+            konum = _konum_derece(mesaj)
+            if uzak_ms is None or (irtifa_m is None and konum is None):
                 # BEKLENEN kaynaktan bozuk alan: kendi hattimizdaki bozulma
                 # gercek kotu haberdir — yalniz bu akış temizlenir.
                 self._konumu_gecersiz_kil()
                 return False
 
             with self._snapshot_kilidi:
-                # Tekrarlanan veya sıra dışı paket eski örneğin yaşını yenilemez.
-                if (self._son_uzak_ms is not None
-                        and uzak_ms <= self._son_uzak_ms):
+                kabul, yeni_son, yeni_aday, _reboot = _uzak_sira_karari(
+                    self._son_uzak_ms, self._uzak_ms_reboot_adayi, uzak_ms,
+                    self._tazelik_s * MILISANIYE_BIR_SANIYE,
+                    self._son_gelis_monotonic is None
+                    or gelis - self._son_gelis_monotonic >= self._tazelik_s)
+                self._uzak_ms_reboot_adayi = yeni_aday
+                if not kabul:
+                    # Büyük geri adımda ilk örnek reboot adayıdır. Eski çağın
+                    # cache'i yeni çağ doğrulanana dek kullanılamaz.
+                    if yeni_aday is not None:
+                        self._son_irtifa_m = None
+                        self._son_telemetri_alt_m = None
+                        self._son_konum = None
+                        self._son_gelis_monotonic = None
                     return False
-                self._son_uzak_ms = uzak_ms
-                self._son_irtifa_m = irtifa_m
+                self._son_uzak_ms = yeni_son
+                # relative_alt=0 yerde geçerli bir YKİ telemetrisidir, fakat
+                # pozitif irtifa gerektiren ölçek kaynağı değildir. İki anlamı
+                # tek alanda birleştirip GPS'i yerde kör bırakma.
+                self._son_telemetri_alt_m = irtifa_m
+                self._son_irtifa_m = (
+                    irtifa_m if irtifa_m is not None and irtifa_m > 0.0
+                    else None)
                 # Konum EK bilgidir. Gecersizse `None`; irtifa ve inis kaniti
                 # bundan ETKILENMEZ.
-                self._son_konum = _konum_derece(mesaj)
+                self._son_konum = konum
                 self._son_gelis_monotonic = gelis
             return True
 
@@ -369,10 +434,19 @@ class BagilIrtifaOkuyucu:
                 self._gps_gecersiz_kil()
                 return False
             with self._snapshot_kilidi:
-                if (self._son_gps_uzak_us is not None
-                        and uzak_us <= self._son_gps_uzak_us):
+                kabul, yeni_son, yeni_aday, _reboot = _uzak_sira_karari(
+                    self._son_gps_uzak_us, self._gps_us_reboot_adayi, uzak_us,
+                    self._tazelik_s * MIKROSANIYE_BIR_SANIYE,
+                    self._son_gps_gelis_monotonic is None
+                    or gelis - self._son_gps_gelis_monotonic >= self._tazelik_s)
+                self._gps_us_reboot_adayi = yeni_aday
+                if not kabul:
+                    if yeni_aday is not None:
+                        self._son_gps_fix = None
+                        self._son_uydu = None
+                        self._son_gps_gelis_monotonic = None
                     return False
-                self._son_gps_uzak_us = uzak_us
+                self._son_gps_uzak_us = yeni_son
                 self._son_gps_fix, self._son_uydu = alanlar
                 self._son_gps_gelis_monotonic = gelis
             return True
@@ -538,6 +612,7 @@ class BagilIrtifaOkuyucu:
         with self._snapshot_kilidi:
             if self._dur_olayi.is_set():
                 self._son_irtifa_m = None
+                self._son_telemetri_alt_m = None
                 self._son_konum = None
                 self._son_gelis_monotonic = None
                 self._son_gps_fix = None
@@ -550,12 +625,13 @@ class BagilIrtifaOkuyucu:
             cikti = {}
             if self._taze_mi(
                     simdi, self._son_gelis_monotonic, self._tazelik_s):
-                if self._son_irtifa_m is not None:
-                    cikti["alt"] = self._son_irtifa_m
+                if self._son_telemetri_alt_m is not None:
+                    cikti["alt"] = self._son_telemetri_alt_m
                 if self._son_konum is not None:
                     cikti["lat"], cikti["lon"] = self._son_konum
             else:
                 self._son_irtifa_m = None
+                self._son_telemetri_alt_m = None
                 self._son_konum = None
                 self._son_gelis_monotonic = None
 
@@ -581,7 +657,9 @@ class BagilIrtifaOkuyucu:
 
     def irtifa_m(self):
         """Bağlantıya dokunmadan taze snapshot'ı döndür; bayatta cache'i sil."""
-        return self.telemetri_snapshot().get("alt")
+        self.telemetri_snapshot()
+        with self._snapshot_kilidi:
+            return self._son_irtifa_m
 
     def konum_derece(self):
         """Taze ``(lat, lon)`` ya da ``None`` (T162 · ON_KAYIT SS28).

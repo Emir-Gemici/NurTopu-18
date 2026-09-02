@@ -733,7 +733,10 @@ class AcilisArgumanlariTests(unittest.TestCase):
         self.assertEqual(
             ic_adlar, set(yks_gui.GORUNUM_SECENEKLERI.values()),
             "CLI gorunum eslemesi butonlarin kullandigi ic adlardan AYRISTI")
-        self.assertEqual({"saha", "canli"}, set(yks_gui.GORUNUM_SECENEKLERI))
+        self.assertEqual(
+            {"saha", "canli", "kamera"},
+            set(yks_gui.GORUNUM_SECENEKLERI),
+        )
 
     def test_VARSAYILANLAR_DEGISMEDI(self):
         """T80 yalniz SECILEBILIR yapar; acilis davranisini TASIMAZ."""
