@@ -2193,3 +2193,31 @@ MAVLINK_HEARTBEAT_ASGARI_HZ = 0.5
 # Olcum penceresi: 10 s'de 1 Hz akis icin sayim hatasi ±1 (%10) — esiklerin
 # 2x payinin icinde kalir; daha kisa pencere faz kaynakli yanlis DUSTU uretir.
 MAVLINK_DOGRULAMA_SURESI_S = 10.0
+
+# ── T207 (D-406 A, KRITIK) · URETIM AKIS ISTEGI VE SESSIZLIK BEKCISI ────────
+# OLGU: ArduCopter EXTENDED_SYS_STATE'i HICBIR `SR*` akisinda vermez
+# (Copter-4.5 GCS_Mavlink.cpp STREAM_* dizileri); yalniz
+# MAV_CMD_SET_MESSAGE_INTERVAL ile akar. Istek BAGLANTIYA OZELDIR ve Pixhawk
+# yeniden basladiginda (pil degisimi) SILINIR. 2026-09-02'ye dek isteyen
+# YALNIZ scripts/mavlink_dogrula.py (on-ucus araci) idi; uretim sureci
+# comms/iha_inis_yayinci.py istemiyordu -> reboot sonrasi inis kaniti SESSIZCE
+# olurdu (EXTENDED gelmez, yerde_mi sure dolunca False, IHA_LANDED asla yok).
+#
+# Istek yenileme araligi. NEDEN: istek reboot/link kaybinda silinir; periyodik
+# yenileme kayip istegi en gec bu sure icinde geri getirir. 10 s: pymavlink
+# udp sunucusu akrani HEARTBEAT (1 Hz) ile <= 1 s'de ogrenir, EXTENDED asgari
+# 1 Hz -> yenileme sonrasi ilk mesaj <= 1 s; toplam kor sure (sessizlik tavani
+# + yenileme) inis kaniti penceresinin (--kanit-timeout) cok altinda kalir.
+# Daha sik istek Pixhawk komut kuyrugunu bosuna doldurur.
+MAVLINK_AKIS_ISTEK_ARALIGI_S = 10.0
+# Sessizlik tavani. NEDEN: EXTENDED_SYS_STATE asgari 1 Hz
+# (MAVLINK_DURUM_ASGARI_HZ); 5 s sessizlik = 5 ardisik kayip mesaj = akis YOK
+# (jitter ya da tek paket kaybi degil). Asilirsa KIRMIZI log + aninda yeniden
+# istek (fail-visible); durum degisince loglanir, her turda degil.
+MAVLINK_AKIS_SESSIZLIK_TAVANI_S = 5.0
+# Istenen hiz = asgari x carpan; aralik_us = 1e6 / (asgari_hz x carpan).
+# NEDEN: asgarinin tam kendisini istemek jitter'da esigin hemen altina
+# dusurur; 2x pay. scripts/mavlink_dogrula.ISTEK_HIZ_CARPANI (2.0) ile AYNI
+# DEGER — T207'de o araca dokunulmadi; oradaki sabitin buraya BAGLANMASI
+# onerilir (tests/test_faz_b_akis_istegi.py esitligi kilitler).
+MAVLINK_AKIS_ISTEK_HIZ_CARPANI = 2
