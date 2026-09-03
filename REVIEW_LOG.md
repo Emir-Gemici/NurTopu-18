@@ -29176,3 +29176,111 @@ Iki kez ayni ders cikti (bir kez acik kalem cikaricisinda yazim korlugu, bir kez
 burada kalitim korlugu). Bundan sonra yeni bir DEDEKTOR yazildiginda, once
 "bildigim bir ornegi buluyor mu" ve "bulmamasi gerekeni bulmuyor mu" ikilisi
 yazilacak.
+
+### D-420 — FDR YONERGE ISKELETINE TASINDI (4009 -> 6461 satir), KANIT KAYBI SIFIR; yeniden numaralandirma sarkan atif birakti ve kapatildi
+
+D-417'de acik birakilan is bitti: yedi bolum resmi yonergenin
+(`FDR_2_qNiVF.pdf`) dayattigi baslik semasina tasindi.
+
+#### 1. Ilk deneme REDDEDILMISTI — ve neden
+
+D-417 §6'da yazildi: iki ajan dosyayi bastan yazip **kanit dizini tablolarini
+dusurdu** (BOLUM_7'den 13, BOLUM_1'den 3 kanit satiri; D-140/D-252/D-253/D-331
+defter atiflari, tekerlek/bellek olcumleri, sartname alintilari). Cikti
+reddedildi, geri alindi.
+
+Betige **zorunlu kanit koruma yordami** eklendi: yazmadan ONCE kanit satirlarinin
+KUMESI cikarilir, yazdiktan SONRA yeniden cikarilip karsilastirilir, kaybolan
+0 degilse **basarili sayilmaz** ve ajan bunu acikca yazmak zorundadir.
+
+#### 2. Ikinci tur — yordam isledi
+
+Yedi bolumun **hepsinde** ajan `kaybolan=0` raporladi ve **her biri kendi
+denetcisi tarafindan, ajanin betigine GUVENILMEDEN** dogrulandi (denetciler
+kendi betiklerini yazdi, birkaci uc ayri yontemle olctu).
+
+| bolum | satir | kanit satiri | kaybolan |
+|---|---|---|---|
+| 1 Ozet | 195 -> 499 | 17 -> 46 | 0 |
+| 2 Organizasyon | 340 -> 604 | 57 -> 85 | 0 |
+| 3 Sistem Spesifikasyonlari | 1414 -> 2060 | 179 -> 198 | 0 |
+| 4 Test Faaliyetleri | 820 -> 1167 | 157 -> 175 | 0 |
+| 5 Uretim Faaliyetleri | 561 -> 747 | 38 -> 40 | 0 |
+| 6 Gereksinim Izlenebilirligi | 308 -> 587 | 85 -> 110 | 0 |
+| 7 Butce Gerceklemesi | 371 -> 654 | 16 -> 21 | 0 |
+
+**Mimarin bagimsiz olcumu.** Ajanlar da ajandir; kendim olctum. Ilk olcumum
+62 "kayip" gosterdi — ama o **satir bazliydi** ve yaniltiyordu: Bolum 6'nin
+izlenebilirlik tablosuna yonergenin istedigi (`Y-6-M02`) **dogrulama yontemi**
+sutunu eklenince HER satir degisir, ve satir kumesi farki bunu kayip sanar.
+
+Dogru soru "hangi satir degisti" degil **"hangi ATIF kayboldu"**dur. Atif
+duzeyinde olcum (`D-NNN`, dosya yollari, `§` atiflari):
+**hicbir `D-NNN` ve hicbir dosya yolu kaybolmadi** — yedi bolumun hicbirinde.
+Kaybolanlarin tamami **eski ic bolum numaralariydi**.
+
+#### 3. Ama o da bir kusur dogurdu: SARKAN IC ATIF
+
+Basliklar yeniden numaralandi (eski `§3.5.x` -> yeni `§3.3.4.2.x`) ama metin
+icindeki capraz atiflar **eski numaralari gostermeye devam etti**. Bir okur —
+ya da **hakem** — "§3.5.2'deki uc sutunlu tabloda" cumlesini takip edip
+**hicbir sey bulamazdi**. Olcum: 32 sarkan atif, 23'u Bolum 3'te.
+
+⚠ **Icerik kaybi degil, YONLENDIRME kaybi.** Bu ayrim onemli: kanit yerinde
+duruyordu, ona giden yol kirilmisti.
+
+**Kapatildi.** Bolum 3'te 5, Bolum 2'de 1 atif duzeltildi; her hedef baslik
+`grep` ile **gorulerek** yazildi (numara uydurulmadi) ve dogrulayici her yeni
+numaranin dosyada gercekten baslik oldugunu kendi kontrol etti.
+
+Amele betigin **goremedigi** bir kusur da buldu: `Bolum 4 §3 de ayni dosyayi
+kullanir` — Bolum 4'un semasi 4.x, `§3` diye basligi YOK. Hedefi
+(`t150_baglama_v36_kabul_verdikt.json`) Bolum 4'te grep'leyip `§4.8.1`e
+baglandi.
+
+#### 4. Kalan 20 "sarkan" YANLIS ALARMDI — ve gurultu kaynagi kaldirildi
+
+Kalanlarin tamami **tasima haritalarinin** (Bolum 2 ve 3'un basindaki
+"eski numara -> bu surumdeki karsiligi" tablolari) **sol sutunundaydi**.
+Orada `3.5.1` bir isaretci degil **tarihsel kayittir**; o basliklar artik yok.
+Ama `§` isareti onlari isaretci gibi gosteriyordu ve kapi sonsuza dek yanlis
+alarm uretecekti.
+
+**Mimarin karari:** numara KORUNUR (harita degerini kaybetmez), `§` isareti
+sol sutundan DUSER. Sag sutun (yeni numaralar) canli isaretcidir, dokunulmadi.
+Bolum 2'de 7, Bolum 3'te 21 satirda uygulandi.
+
+Bu bulgu bir ameleye aitti ve **kendi sinirini dogru cizdi**: "Bu bir ICERIK
+kararidir ve harita mimarin kendi artefakti oldugu icin ben YAPMADIM."
+Karar mimarin, uygulama mimarin.
+
+#### 5. Kapi — tekrari engellenir
+
+`tests/test_fdr_sarkan_atif_kapisi.py` (7 test). Kapinin tamami **uc seyi
+ayirt etmesindedir**:
+  1. **Kendi bolumune atif** -> hedef baslik VAR OLMALI, yoksa sarkan.
+  2. **Baska belgeye atif** (`sartname §5.3.2`, `REVIEW_LOG.md D-408 §3`,
+     `CONTRACTS.md §7.4`) -> bu kapinin konusu degil.
+  3. **Tarihsel etiket** (harita sutunu) -> `§` YOK, kapi gormez.
+
+Ayrim bilerek **BICIMLE** yapildi, ad listesiyle degil: liste bakimsiz kalir,
+bicim kalmaz. Kural saf bir fonksiyondur (`sarkan_atiflar`) ve hem sentetik
+birim testlerde hem gercek belgelerde **ayni kural** kosar — iki kopya kural
+yazilmaz. T2 ayrica haritalarin isaretsiz kalmasini kilitler; aksi halde T1
+sonsuza dek yanlis alarm verirdi.
+
+Mutasyon: Bolum 6'ya `§6.99.7` atifi eklendi -> T1 DUSTU; dosya `cmp` ile
+bayt-es geri yuklendi (ilk geri yukleme dosya kilidine takildi, yeniden
+denendi ve dogrulandi).
+
+#### 6. Acik kalem 200 -> 460
+
+Bu **artis iyi haberdir**. Yonergenin dayattigi alt basliklar acildikca
+(3.1.1-3.1.7 ucus bilimleri, 3.2.1-3.2.3 yapisal tasarim + IKA + Mancinik,
+3.3.3 gorev icra simulasyonu) her biri acikca `BEYAN GEREKLİ` ya da
+`ÖLÇÜLEMEDİ` diye isaretlendi — bos birakilmadi, uydurulmadi.
+
+`FDR/` klasoru artik ortak surucude paylasilabilir: `BOLUM_0` (kapak, versiyon,
+29 kisaltma), yedi bolum, `YONERGE_HARITASI.md` (zorunlu iskelet + bosluk
+analizi), `TAKIM_PROMPT.md` (uyelerin kendi AI'larina yapistiracagi prompt),
+`README.md` ("TAKIM ARKADASLARI — BURADAN BASLA").

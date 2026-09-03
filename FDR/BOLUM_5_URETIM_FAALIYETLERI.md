@@ -1,15 +1,18 @@
-# BÖLÜM 5 — Üretim Faaliyetleri (15 puan)
+# Bölüm 5. Üretim Faaliyetleri (15 PUAN)
 
 > **Bu bölümün yazım kuralı.** Aşağıdaki her sayı bir artefakttan gelir: dilimleyici proje
 > dosyası, STL ikili başlığı, üretilmiş G-code, betik çıktısı ya da depo dosyası. Hangi
-> dosyadan ve hangi komutla çıkarıldığı §13 Kanıt dizini'nde yazılıdır.
+> dosyadan ve hangi komutla çıkarıldığı **§5.7 Kanıt dizini**'nde yazılıdır.
 > **Ölçülmemiş hiçbir üretim değeri tahmin edilmemiştir**; ölçülmemiş olan "ÖLÇÜLEMEDİ" ya da
-> **BEYAN GEREKLİ (insan)** diye yazılmıştır. Beyan ile artefaktın çeliştiği iki yer vardır
-> (§4.3 ve §5.3); ikisi de gizlenmeden, çelişkinin kendisi rapora yazılarak bırakılmıştır.
+> **BEYAN GEREKLİ (insan)** diye yazılmıştır. Beyan ile artefaktın çeliştiği ya da kayıtla
+> örtüşmediği üç yer vardır (§5.1.5 filament cinsi, §5.5.1 kol reçetesi, §5.2.8 bellek dosya
+> sayısı); üçü de gizlenmeden, çelişkinin kendisi rapora yazılarak bırakılmıştır.
 
 ---
 
-## 1. Kapsam — hangi aracın üretimi anlatılıyor
+## Bu bölümün okunması — kapsam ve yönerge eşlemesi
+
+### Hangi aracın üretimi anlatılıyor
 
 Şartname §5.3.2 (FDA görev test uçuşu) **çoklu rotorlu** bir araç ister; şartname §6 (yarışma)
 **sabit kanatlı** İHA + mancınık + paraşüt + İKA ister. Bunlar **iki ayrı fiziksel sistemdir**
@@ -17,43 +20,67 @@ ve üretim durumları farklıdır.
 
 | | **FDA aracı — çoklu rotor** | **Yarışma aracı — sabit kanat + mancınık + paraşüt + İKA** |
 |---|---|---|
-| Üretim durumu (03.09.2026) | Gövde **basıldı ve monte edildi**; aviyonik kutuda, montaj **5 Eylül** | **Üretilmedi.** CAD parçaları var (§11), imalat başlamadı |
-| Bu bölümdeki yeri | §3 – §10 (asıl anlatı) | §11 (üretim planı) |
+| Üretim durumu (03.09.2026) | Gövde **basıldı ve monte edildi**; aviyonik kutuda, montaj **5 Eylül** | **Üretilmedi.** CAD parçaları var (§5.2.10), imalat başlamadı |
+| Bu bölümdeki yeri | §5.1 – §5.5 (asıl anlatı) | §5.1.6 ve §5.2.10 (üretim planı) |
 
-Bu bölüm ağırlıklı olarak FDA aracının **gerçekleşmiş** üretimini anlatır; §11 final aracının
-üretim planını ve bugünkü olgunluk seviyesini verir.
+Bu bölüm ağırlıklı olarak FDA aracının **gerçekleşmiş** üretimini anlatır; §5.1.6 ve §5.2.10
+final aracının üretim planını ve bugünkü olgunluk seviyesini verir.
+
+### Yönergenin beş maddesi ve bu bölümdeki karşılıkları
+
+Yönerge Bölüm 5 için **numaralı alt başlık vermez**; tek paragrafta beş husus ister. Aşağıdaki
+beş alt başlık o beş cümleden **birebir** türetilmiştir (cümleler alt başlıkların altında
+alıntıyla verilmiştir), yeni bir başlık şeması icat edilmemiştir.
+
+| kimlik | yönergenin istediği | bu bölümde |
+|---|---|---|
+| `Y-5-M01` | tüm yapısal parçalar için olası **üretim yöntemleri** | §5.1 |
+| `Y-5-M02` | seçilen yönteme göre **toplam imalat süresi** + **montaj planı** | §5.2 |
+| `Y-5-M03` | her bir parça için **tahmini üretim süresi ve iş gücü ihtiyacı** | §5.3 |
+| `Y-5-M04` | üretimde oluşabilecek **hatalar ve düzeltici işlem prosedürleri** | §5.4 |
+| `Y-5-M05` | SGGS **tutarlılık kontrolü**; gerekliliği ispatlanmamış değişiklik = diskalifiye | §5.5 |
 
 ---
 
-## 2. Üretim mimarisi — üretilen / tedarik edilen ayrımı
+## Bölüm 5.1 — Tüm Yapısal Parçalar İçin Üretim Yöntemleri
+
+> Yönerge (`Y-5-M01`): *"Final raporunda, tüm yapısal parçalar için olası üretim yöntemleri
+> (kompozit yatırma, CNC işleme, sac şekillendirme, eklemeli imalat vb.) raporda belirtilmelidir."*
+
+**Seçilen yöntem: eklemeli imalat (FDM / malzeme ekstrüzyonu).** FDA aracının **bütün yapısal
+parçaları** — kol, üst çerçeve, alt çerçeve, kubbe, ayak, GNSS tutucu, TPU taban pedi — masaüstü
+FDM yazıcılarda (Bambu Lab X1 Carbon ve Bambu Lab P2S, 0,4 mm nozul) basılmıştır. Kompozit
+yatırma, CNC işleme ve sac şekillendirme FDA aracında **kullanılmamıştır**; final aracı için
+yöntem seçimi henüz yapılmamıştır (§5.1.6).
+
+### 5.1.1 Üretim mimarisi — üretilen / tedarik edilen ayrımı
 
 Şartname §6: *"Yarışmaya dahil edilecek sistemlerin; tasarım, boyutlandırma ve imalat
 süreçlerinin tamamının yarışmacı takımlar tarafından gerçekleştirilmesi esastır."*
 
 | katman | üretim türü | kanıt |
 |---|---|---|
-| **Yapısal (gövde, kol, alt/üst çerçeve, kubbe, ayak, GPS tutucu, TPU ped)** | **Takım üretimi** — SolidWorks'te modellendi, dilimlendi, 3B basıldı | Yerel `.SLDPRT` + `.SLDASM` parça dosyaları, türetilmiş `.STEP` ve `.STL` ihraçları, Bambu Studio `.3mf` plaka projeleri (§3, §4) |
+| **Yapısal (gövde, kol, alt/üst çerçeve, kubbe, ayak, GPS tutucu, TPU ped)** | **Takım üretimi** — SolidWorks'te modellendi, dilimlendi, 3B basıldı | Yerel `.SLDPRT` + `.SLDASM` parça dosyaları, türetilmiş `.STEP` ve `.STL` ihraçları, Bambu Studio `.3mf` plaka projeleri (§5.1.3, §5.1.4) |
 | **Aviyonik (uçuş kontrolcüsü, GNSS, ESC, motor, güç, telsiz, kamera, görev bilgisayarı)** | **Hazır satın alınan alt sistem** — entegrasyonu takım yapar | Künye `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2; BOM Bölüm 7 |
-| **Kablolama demeti** | **Takım üretimi** (kesim, lehim, makaron, etiket) | Yordam §6; kabul ölçütleri tabloda |
-| **Uçuş kontrolcüsü yapılandırması** | **Takım üretimi** — parametre ve görev planı dosyası olarak üretildi ve testle kilitlendi | `config/pixhawk/` (§7) |
-| **Görev yazılımı ve model** | **Takım üretimi** | `config/model_registry.json`, `tests/` (§9) |
-| **Görev bilgisayarı sistem imajı** | **Takım kurulumu** — tedarikçi imajı üzerine çevrimdışı yığın | `jetson_paket/JETSON_NANO_KURULUM.md` (§8) |
+| **Kablolama demeti** | **Takım üretimi** (kesim, lehim, makaron, etiket) | Yordam §5.2.4; kabul ölçütleri tabloda |
+| **Uçuş kontrolcüsü yapılandırması** | **Takım üretimi** — parametre ve görev planı dosyası olarak üretildi ve testle kilitlendi | `config/pixhawk/` (§5.2.6) |
+| **Görev yazılımı ve model** | **Takım üretimi** | `config/model_registry.json`, `tests/` (§5.2.8) |
+| **Görev bilgisayarı sistem imajı** | **Takım kurulumu** — tedarikçi imajı üzerine çevrimdışı yığın | `jetson_paket/JETSON_NANO_KURULUM.md` (§5.2.7) |
 
-**Özgünlük kanıtı (§6 intihal hükmü karşısında).** Depoda parçaların **yerel SolidWorks
-kaynak dosyaları** durmaktadır — `Drone_Arm.SLDPRT` (134 593 B), `Drone_Frame.SLDPRT`
-(161 748 B), `Lower_Drone_Frame.SLDPRT` (87 210 B), `Drone_Dome.SLDPRT` (2 310 497 B),
-`Drone_Legs.SLDPRT` (204 294 B), `GPS_Holder.SLDPRT` (153 510 B) ve bunları birleştiren
-`Drone_Assembly.SLDASM` (484 241 B) — ayrıca üç parçanın nötr `.STEP` ihracı ve gövde için
-**çözülmüş bir sonlu elemanlar çalışması** (§10.4). Rapora giren STL'ler bu parçaların
-ihraçlarıdır; adları birebir eşleşir. Kaynak parametrik model + montaj + analiz zincirinin
-bir arada bulunması, geometrinin hazır bir ticari platformdan alınmadığının **belge düzeyinde**
-kanıtıdır.
+### 5.1.2 Özgünlük kanıtı (§6 intihal hükmü karşısında)
+
+Depoda parçaların **yerel SolidWorks kaynak dosyaları** durmaktadır — `Drone_Arm.SLDPRT`
+(134 593 B), `Drone_Frame.SLDPRT` (161 748 B), `Lower_Drone_Frame.SLDPRT` (87 210 B),
+`Drone_Dome.SLDPRT` (2 310 497 B), `Drone_Legs.SLDPRT` (204 294 B), `GPS_Holder.SLDPRT`
+(153 510 B) ve bunları birleştiren `Drone_Assembly.SLDASM` (484 241 B) — ayrıca üç parçanın
+nötr `.STEP` ihracı ve gövde için **çözülmüş bir sonlu elemanlar çalışması** (§5.6/E1). Rapora
+giren STL'ler bu parçaların ihraçlarıdır; adları birebir eşleşir. Kaynak parametrik model +
+montaj + analiz zincirinin bir arada bulunması, geometrinin hazır bir ticari platformdan
+alınmadığının **belge düzeyinde** kanıtıdır.
 **BEYAN GEREKLİ (insan): tasarımın takım üyelerince özgün olarak modellendiğine dair imzalı
 beyan** — dosyaların varlığı yazarlığı kanıtlar ama beyan yerine geçmez.
 
----
-
-## 3. CAD künyesi — ölçülen geometri
+### 5.1.3 CAD künyesi — üretime giren ölçülen geometri
 
 Aşağıdaki değerler **STL ikili dosyalarının kendisinden** hesaplanmıştır: üçgen sayısı ikili
 başlığın 80–84. baytından, gabari (bounding box) tüm köşe noktalarının taranmasıyla, sha256
@@ -84,15 +111,11 @@ destekler, ancak nihai teyit CAD'den yapılmalıdır → **BEYAN GEREKLİ (insan
 **BEYAN GEREKLİ (insan): CAD model kütlesi** (parça başına, g) — SGGS §5.4 bunu açıkça ister ve
 depoda hesaplanmış bir CAD kütlesi yoktur.
 
----
-
-## 4. 3B baskı üretimi — dilimleme reçeteleri (ölçüldü)
+### 5.1.4 Eklemeli imalat reçeteleri — plaka plaka ölçüldü
 
 Üretim, **Bambu Studio** ile plaka plaka dilimlenmiş ve `.3mf` proje dosyaları saklanmıştır.
 Aşağıdaki tablo bu proje dosyalarındaki `Metadata/project_settings.config` alanlarından
 **okunmuştur** — hiçbiri elle yazılmamıştır.
-
-### 4.1 Plaka reçeteleri
 
 | plaka dosyası | içerik | yazıcı | malzeme | katman | dolgu | duvar | üst/alt kabuk | destek | brim |
 |---|---|---|---|---|---|---|---|---|---|
@@ -110,24 +133,13 @@ Dilimleyici sürümü, proje dosyalarının başlığında yazılıdır: **Bambu
 `Bambu_Studio_win-v02.08.02.61.exe` bulunur; **projeler 02.07.01.62 ile dilimlenmiştir**, kurulum
 dosyasının sürümüyle karıştırılmamalıdır.
 
-### 4.2 🔴 Ölçülmüş üretim bulgusu — dört kol aynı reçeteyle basılmadı
+⚠ İki kol plakasının reçeteleri birbirinden farklıdır ve bu farkın kayıtta gerekçesi yoktur.
+Yönerge bu bölüm için **gerekliliği ispatlanmamış değişikliği diskalifiye sebebi** saydığından
+bulgu **§5.5.1**'de ayrı ve öne çıkarılmış olarak işlenmiştir.
 
-`Plaka1` (kol 1–2) ile `Plaka2` (kol 3–4) reçeteleri **birbirinden farklıdır** ve fark
-mukavemet yönündedir: katman 0,20 → **0,16 mm**, dolgu %15 grid → **%40 gyroid**, duvar 2 → **6**,
-üst/alt kabuk 5/3 → **7/7**. Yani **kol 3 ve kol 4, kol 1 ve kol 2'den belirgin biçimde daha
-sağlam bir reçeteyle basılmıştır.**
+### 5.1.5 🔴 Malzeme — beyan ile artefaktın çeliştiği yer (ABS / ABS-CF)
 
-- Bu, dört kolun **yapısal olarak eşdeğer olmadığı** anlamına gelir; quadcopter kollarının
-  simetrik yük taşıması beklendiğinden bu bir **açık maddedir**.
-- **Kayıtta bunun gerekçesi yoktur.** İki olasılık (reçete iyileştirmesi sonrası ilk iki kolun
-  yeniden basılmamış olması, ya da kasıtlı bir asimetri) artefaktlardan ayırt edilemez.
-- **BEYAN GEREKLİ (insan): dört kolun hangi reçeteyle basıldığı** — üretilmiş fiziksel kolların
-  hangi plakadan geldiği (kol 1–2 mi, 3–4 mü) ve gerekirse kol 1–2'nin `Plaka2` reçetesiyle
-  **yeniden basılıp basılmayacağı** kararı. Bu satır 5 Eylül envanterinde kapatılmalıdır.
-
-### 4.3 🔴 Beyan ile artefaktın çeliştiği yer — ABS-CF
-
-Kullanıcı beyanı (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2, 3 Eylül): *"GPS çubuğu + ayaklar
+Takım beyanı (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2, 3 Eylül): *"GPS çubuğu + ayaklar
 **ABS beyaz**, kalanı **ABS-CF siyah**."* Ancak **hiçbir dilimleyici projesinde ABS-CF
 profili yoktur**: sekiz plakanın yedisinde `filament_type` = `ABS` (profiller
 `Bambu ABS @BBL X1C`, `Bambu ABS @BBL P2S`, `Generic ABS @BBL P2S`), sekizincisi `TPU`.
@@ -139,81 +151,51 @@ Bu rapor çelişkiyi **çözmez, kaydeder**: dilimleyici artefaktları ABS, beya
 fatura ile). Yapısal hesaplar hangi malzemeyle yapılacaksa (Bölüm 3), o malzemenin adı
 buradan gelmelidir; iki farklı malzemeyle iki farklı mukavemet çıkar.
 
-### 4.4 Ölçülmüş baskı süresi ve malzeme tüketimi — yalnız bir plaka için var
+### 5.1.6 Final (yarışma) aracı için üretim yöntemi — henüz seçilmedi
 
-Depoda **tek bir plakanın dilimlenmiş G-code'u** saklanmıştır:
-`Plaka4_Ust_Cerceve_plate_1.gcode.3mf`. Bu dosyadaki değerler doğrudan üretim çıktısıdır:
-
-| büyüklük | değer | kaynak satır |
-|---|---|---|
-| Model baskı süresi | **1 sa 23 dk 00 sn** | `; model printing time: 1h 23m 0s` |
-| Toplam tahmini süre (ısınma vb. dâhil) | **1 sa 30 dk 16 sn** | `; total estimated time: 1h 30m 16s` |
-| Filament uzunluğu | **22 332,62 mm** (22,33 m) | `; total filament length [mm]` |
-| Filament kütlesi | **55,86 g** | `; total filament weight [g]`; plaka üstverisi `weight="55.86"` |
-| Dilimleyici tahmini süre (saniye) | **5 416 s** | `<metadata key="prediction" value="5416"/>` |
-| İlk katman süresi | **700,95 s** | `<metadata key="first_layer_time" .../>` |
-
-⚠ Aynı dosyada dilimleyicinin **3. seviye uyarısı** kayıtlıdır:
-`bed_temperature_too_high_than_filament` (hata kodu `1000C001`) — tabla sıcaklığı seçilen
-filamentin profiline göre yüksek bulunmuştur. Uyarı, baskının yapılmadığı anlamına gelmez;
-**yapıştırma/çarpılma riski** açısından üretim tutanağına geçirilmelidir.
-**BEYAN GEREKLİ (insan): bu uyarının basımda nasıl ele alındığı** (tabla sıcaklığı düşürüldü mü,
-uyarı yok sayıldı mı) ve çıkan parçada çarpılma gözlenip gözlenmediği.
-
-**Diğer yedi plakanın baskı süresi ve filament tüketimi ÖLÇÜLEMEDİ** — bu plakaların
-dilimlenmiş G-code'u depoda yoktur, yalnız proje dosyaları vardır. Toplam baskı süresi ve
-toplam filament kütlesi bu yüzden **hesaplanamaz**; tahmin yazılmamıştır.
-**BEYAN GEREKLİ (insan): plaka başına baskı süresi ve filament kütlesi** — Bambu Studio'da her
-`.3mf` yeniden dilimlenerek (aynı reçeteyle) tabloya işlenebilir; SGGS §5.4 "üretim süresi"
-sütunu bunu ister.
-
-### 4.5 Üretim revizyonu — PLA'dan ABS'ye geçiş
-
-Depoda plakaların **iki kuşağı** durmaktadır. Eski kuşakta ayak ve GPS tutucu tek plakada ve
-adı `Plaka6_**PLA**_Ayak_GPS.3mf`'tir (`dronesolid/Yeni klasör/files (1)/`, 23.08.2026 07:40).
-Güncel kuşakta bu plaka ikiye ayrılmış ve **ABS** profilleriyle yeniden dilimlenmiştir
-(`Plaka_Ayak.3mf`, `Plaka_GPS_Holder.3mf`, 23.08.2026 11:19–12:56). Ayrıca güncel kuşakta
-**TPU taban pedi** (×4) yeni bir kalem olarak eklenmiştir.
-
-Yani üretim sürecinde ölçülebilir iki revizyon vardır: **PLA → ABS** (ayak/GPS tutucu) ve
-**TPU taban pedi eklenmesi** (iniş darbe sönümü). Bu revizyonlar Bölüm 2 §4'teki revizyon
-listesini tamamlar.
-**BEYAN GEREKLİ (insan): PLA→ABS geçişinin gerekçesi** (ısı dayanımı, kırılganlık, saha
-sıcaklığı vb.) — dosya adları geçişi kanıtlar, gerekçeyi kanıtlamaz.
+Sabit kanat gövde/kanat/kuyruk için depoda **CAD vardır**
+(`Fuselage+Wing+Tail_CFD_Part.SLDPRT` ve `-2-`, `-3-` sürümleri; `Left/Right_Aileron`,
+`Left/Right_Elevator`, `Rudder`; `NAVITIAS_XFLR5_Analysis.xfl` 905 868 B) ama **üretim yöntemi
+seçilmemiştir**: kompozit yatırma mı, sıcak tel köpük kesim mi, eklemeli imalat mı olacağı
+kayıtta yoktur. Mancınık için depoda **CAD/analiz dosyası yoktur**.
+**BEYAN GEREKLİ (insan): final aracı yapısal parçaları için seçilecek üretim yöntemi**
+(gövde/kanat/kuyruk ve mancınık ayrı ayrı) ve seçimin dayanağı. Olgunluk tablosu ve üretim
+adımları §5.2.10'dadır.
 
 ---
 
-## 5. Üretim sonrası ölçülmemişler — açıkça listelenir
+## Bölüm 5.2 — Toplam İmalat Süresi ve Montaj Planı
 
-SGGS §5.4'ün istediği sütunların bir kısmı bugün **doldurulamaz**. Uydurulmamıştır:
+> Yönerge (`Y-5-M02`): *"Seçilen üretim yöntemine göre toplam imalat süresi tahmin edilmeli ve
+> buna bağlı bir montaj planı hazırlanmalıdır."*
 
-| istenen | durum |
-|---|---|
-| CAD model kütlesi (parça başına) | **BEYAN GEREKLİ (insan)** — depoda hesaplanmış değer yok |
-| Üretim/teslim sonrası **ölçülen gerçek kütle** | **BEYAN GEREKLİ (insan)** — 5 Eylül envanterinde her parça tartılacak (`SAHA_HAZIRLIK_PLANI` §2.1) |
-| Boyutsal tolerans / uyum ölçümü | **BEYAN GEREKLİ (insan)** — motor delik aralığı, kol geçmesi, dome oturması |
-| İlave fikstür / tool ihtiyacı | **BEYAN GEREKLİ (insan)** — destek kullanılan üç plaka (kubbe, ayak, GPS tutucu) dışında kayıt yok |
-| Karşılaşılan üretim zorlukları | Kısmen ölçüldü: tabla sıcaklığı uyarısı (§4.4); gerisi **BEYAN GEREKLİ (insan)** |
-| Toplam basılan parça sayısı ve fire | **BEYAN GEREKLİ (insan)** — yeniden basım / atık kaydı yok |
-| Montaj bağlantı elemanları (vida, somun, pul) dökümü | **BEYAN GEREKLİ (insan)** — BOM'da sarf kalemi olarak yer almalı (Bölüm 7) |
+### 5.2.1 Toplam imalat süresi — bugün hesaplanamıyor
 
----
+Sekiz plakadan **yalnız birinin** dilimlenmiş G-code'u depodadır; kalan yedisinin baskı süresi
+**ÖLÇÜLEMEDİ** (ayrıntı ve tek ölçülen plakanın değerleri §5.3.1–§5.3.2). Bu yüzden
+**toplam imalat süresi tahmin edilmemiştir** — yönergenin istediği toplam, yedi eksik ölçüm
+kapatıldığında §5.3.2'deki tablodan toplanarak yazılacaktır. Tahmin yazmak yerine boşluk
+bırakılmıştır.
+**ÖLÇÜLEMEDİ: FDA aracının toplam 3B baskı süresi** — sekiz plakadan yedisinin G-code'u
+üretilmedi; her `.3mf` Bambu Studio'da aynı reçeteyle yeniden dilimlendiğinde kapanır.
 
-## 6. Montaj ve kablolama yordamı — üretim adımı olarak
+Montaj tarafının süresi ise planlanmıştır: aviyonik entegrasyonu **5 Eylül 2026** günü
+**09:00–12:30** aralığına bölünmüştür (§5.2.2–§5.2.4). Saha kurulumunun süre bütçesi ayrıdır ve
+§5.2.9'da verilmiştir.
+
+### 5.2.2 Montaj planı A — envanter ve doğrulama (5 Eylül, 09:00)
 
 Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden yazılmış, her adıma
 **kabul ölçütü** bağlanmıştır; "yapıldı" demek için ölçüt karşılanmalıdır. Kaynak:
 `SAHA_HAZIRLIK_PLANI_20260903.md` §2.1–2.3.
 
-### 6.1 Envanter ve doğrulama (09:00)
-
 | adım | kabul ölçütü / üretilecek kanıt |
 |---|---|
 | Kutu açılır; künye tablosu (§0.2) ile karşılaştırılır | eksik/fark listesi (tutanak) |
 | **Her parça tartılır**, fotoğraflanır | tartı listesi — UHDR "gerçek kütle" sütununun kaynağı |
-| Gövde kontrolü: kollar sıkı, ayaklar, kubbe, GPS çubuğu; motor delikleri 5008 ile uyumlu | fotoğraf; uyumsuzluk varsa **§4.2 kol reçetesi sorusu burada kapanır** |
+| Gövde kontrolü: kollar sıkı, ayaklar, kubbe, GPS çubuğu; motor delikleri 5008 ile uyumlu | fotoğraf; uyumsuzluk varsa **§5.5.1 kol reçetesi sorusu burada kapanır** |
 
-### 6.2 Mekanik yerleşim (09:30–11:00) — pervanesiz
+### 5.2.3 Montaj planı B — mekanik yerleşim (09:30–11:00), pervanesiz
 
 | adım | ölçüt |
 |---|---|
@@ -226,7 +208,7 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 | SiK anteni dikey, gövde dışında, ESC'den **≥ 5 cm**; FS alıcısı anteni ayrı | RSSI |
 | Pil yuvası kayışlı, CG ortada (iki parmak testi) | **CG ± 1 cm** |
 
-### 6.3 Kablolama demeti üretimi (11:00–12:30) — pervanesiz, pil takılı DEĞİL
+### 5.2.4 Montaj planı C — kablolama demeti üretimi (11:00–12:30), pervanesiz, pil takılı DEĞİL
 
 | hat | bağlantı | kabul ölçütü |
 |---|---|---|
@@ -242,23 +224,22 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 | **İlk güç** | pil takılır; LED / boot tonu; 60 s koku-ısı gözlemi | Pixhawk + Nano açıldı |
 
 **Emniyet kuralı (üretim yordamının parçasıdır):** *pervaneler en son, pil en son*. Aracın tek
-güç kesicisi **pil fişidir** (XT60/XT90); ayrı acil kesme anahtarı **yoktur**. Bu, şartname
-Takımın kendi DDR gereksinimi REQ-25…31'e göre (şartname maddesi değil) final aracında kapatılması gereken bir **tasarım borcudur** (Bölüm 2 §4.1).
+güç kesicisi **pil fişidir** (XT60/XT90); ayrı acil kesme anahtarı **yoktur**. Bu bir şartname
+maddesi değil, takımın kendi DDR gereksinimi REQ-25…31'e göre final aracında kapatılması gereken
+bir **tasarım borcudur** (Bölüm 2 §2.2.5.1).
 
-### 6.4 Kablaj hesabı — DDR taslağı, doğrulanmadı
+### 5.2.5 Kablaj hesabı — DDR taslağı, doğrulanmadı
 
 DDR döneminde bir AWG/konnektör taslağı yazılmıştır (`navitas-teknofest/references/avionics_software.md`):
 ana güç 40–50 A → 12 AWG / XT90; ESC→motor 30–40 A → 14 AWG; BEC çıkışı 5–8 A → 20 AWG;
 Jetson 5 A @ 12 V → 20 AWG; Pixhawk 2 A @ 5 V → 24 AWG; veri hatları < 0,5 A → 26–28 AWG (JST-GH).
 ⚠ Bu tablo **sabit kanat konfigürasyonu için** ve **tahmini akımlarla** yazılmıştır (belgenin
 kendi notu: *"Tüm değerler tahmini"*). Çoklu rotorda motor başına havada asılı akım 10–12 A,
-tepe 30+ A beklenmektedir (kullanıcı beyanı) — **ölçülmedi**.
+tepe 30+ A beklenmektedir (takım beyanı) — **ölçülmedi**.
 **BEYAN GEREKLİ (insan): gerçek kablo kesitleri ve konnektör tipleri** (5 Eylül'de kullanılan
 kablo demeti üzerinden) ve **ölçülmüş akım değerleri** (ilk hover logunda `BATT_AMP`).
 
----
-
-## 7. Uçuş kontrolcüsü yapılandırmasının üretimi
+### 5.2.6 Montaj planı D — uçuş kontrolcüsü yapılandırmasının üretimi ve yüklenmesi
 
 Mission Planner'da elle tıklanan bir değerin ne tutanağı ne testi olur. Bu yüzden Pixhawk
 yapılandırması **dosya olarak üretilmiş** ve testle kilitlenmiştir.
@@ -291,22 +272,18 @@ Görev koordinatları **Adıyaman'da** girilecektir; şablon şu an Null Island'
 20 m'lik bir kare çizer ve **her koordinat yer tutucudur**.
 **BEYAN GEREKLİ (insan): uçuş alanı gerçek koordinatları ve geofence poligonu.**
 
----
-
-## 8. Görev bilgisayarı ve kamera entegrasyonu — üretim zinciri
+### 5.2.7 Montaj planı E — görev bilgisayarı ve kamera entegrasyonu
 
 Bu, projenin en kırılgan üretim adımıdır ve bu yüzden **tamamı önceden kurulmuş, çevrimdışı
 çalışacak biçimde paketlenmiştir**.
 
-### 8.1 Kısıt: kartın kendisi yığını dayatıyor
+**Kısıt: kartın kendisi yığını dayatıyor.** Görev bilgisayarı **Jetson Nano 4GB**'tır (DDR'de
+Orin NX'ti — Bölüm 2 §2.2.5.1). JetPack 4.6.x'in sistem Python'u **3.6**'dır; depo `ultralytics`
+ister (Python ≥ 3.8). Bu yüzden üretim kararı: Nano'da **ayrı bir Python 3.8 sanal ortamı**
+(`~/venv38`) kurulur ve paketler oraya konur.
 
-Görev bilgisayarı **Jetson Nano 4GB**'tır (DDR'de Orin NX'ti — Bölüm 2 §4.1). JetPack 4.6.x'in
-sistem Python'u **3.6**'dır; depo `ultralytics` ister (Python ≥ 3.8). Bu yüzden üretim kararı:
-Nano'da **ayrı bir Python 3.8 sanal ortamı** (`~/venv38`) kurulur ve paketler oraya konur.
-
-### 8.2 Çevrimdışı paket üretimi (ölçüldü)
-
-`scripts/nano_tekerlek_indir.py` ile PC'de gerçek indirme yapılmıştır:
+**Çevrimdışı paket üretimi (ölçüldü).** `scripts/nano_tekerlek_indir.py` ile PC'de gerçek
+indirme yapılmıştır:
 
 | büyüklük | ölçülen |
 |---|---|
@@ -319,11 +296,9 @@ Nano'da **ayrı bir Python 3.8 sanal ortamı** (`~/venv38`) kurulur ve paketler 
 Nano'da kurulum **tek komuttur**: `pip install --no-index --find-links . -r requirements_nano.txt`.
 Belge ve tekerlek listesi testle kilitlidir: `tests/test_faz_b_nano_kurulum.py`.
 
-### 8.3 🔴 Kapanmamış üretim riski — FPS kapısı
-
-Üretim modeli **v36 = YOLOv8m-seg**'dir (nano değil). Nano **CPU**'da 512 girdi boyutunda
-türetilmiş FPS kapısı **0,61 FPS** (p50 **ve** p95) tutturulamayabilir. Bu **ölçülmemiştir** ve
-tahmin edilmemiştir.
+**🔴 Kapanmamış üretim riski — FPS kapısı.** Üretim modeli **v36 = YOLOv8m-seg**'dir (nano
+değil). Nano **CPU**'da 512 girdi boyutunda türetilmiş FPS kapısı **0,61 FPS** (p50 **ve** p95)
+tutturulamayabilir. Bu **ölçülmemiştir** ve tahmin edilmemiştir.
 
 - Denenecek sıra: (1) JetPack 4.6 / Py3.8 için **CUDA torch** topluluk tekerleği, (2)
   `onnxruntime` ile `.onnx` (CPU'da torch'tan hızlı olabilir), (3) CPU torch.
@@ -333,10 +308,9 @@ tahmin edilmemiştir.
   Kayıt defterinde `.engine` türevlerinin sha256 alanları `DERLENINCE_YAZILIR` yer tutucusundadır
   ve yer tutucu **fail-closed reddedilir** — yani derlenmemiş bir motor sessizce üretime giremez.
 
-### 8.4 Kamera yolu — iki Python'lu köprü
-
-Nano'da CSI kamerası yalnız GStreamer `nvarguscamerasrc` ile açılır; ancak `venv38` içindeki
-pip `opencv-python` tekerleği **GStreamer'sızdır**. Bu yüzden üretim çözümü **kamera köprüsüdür**:
+**Kamera yolu — iki Python'lu köprü.** Nano'da CSI kamerası yalnız GStreamer
+`nvarguscamerasrc` ile açılır; ancak `venv38` içindeki pip `opencv-python` tekerleği
+**GStreamer'sızdır**. Bu yüzden üretim çözümü **kamera köprüsüdür**:
 
 ```
 RPi HQ (IMX477, CSI) → sistem python3.6 + sistem cv2 (GStreamer)
@@ -352,8 +326,9 @@ paket **18 dosya**. Yedek yol: **USB webcam (UVC)** → `--kaynak 0`.
 **yapılandırma varsayılanıdır, ölçüm değildir**. Gerçek değer 5 Eylül'de `kamera_dogrula`
 ile ölçülecektir. Ölçek (`mpp`) zinciri bu değere bağlı olduğu için ölçüm yapılmadan
 üretim beyanı verilmez.
+**ÖLÇÜLEMEDİ: kamera gerçek FOV'u** — 5 Eylül'de `kamera_dogrula` ile kapanır.
 
-### 8.5 Güç ve veri hattı üretim kararları
+**Güç ve veri hattı üretim kararları:**
 
 | karar | gerekçe (ölçülmüş / belgelenmiş) |
 |---|---|
@@ -361,9 +336,7 @@ ile ölçülecektir. Ölçek (`mpp`) zinciri bu değere bağlı olduğu için ö
 | Pixhawk ↔ Jetson **TELEM2 → 40-pin UART** (`/dev/ttyTHS1`), MAVLink2 57600 | Tek kablo, USB hub yok; yedek yol micro-USB → `/dev/ttyACM0` |
 | 3,3 V mantık; **5 V hattı bağlanmaz** | Nano GPIO 3,3 V'tur |
 
----
-
-## 9. Yazılım üretim hattı ve sürüm mühürleme
+### 5.2.8 Montaj planı F — yazılım üretim hattı ve sürüm mühürleme
 
 Yazılım da bir üretim kalemidir ve konfigürasyon yönetimi altındadır.
 
@@ -392,16 +365,14 @@ exit=3
 ```
 
 Mühür **17 Eylül**'de basılacaktır; ondan sonra üretim kodu değişmez (zorunlu değişiklik =
-defter kaydı + kapı + ayrı denetim).
+defter kaydı + kapı + ayrı denetim). Bu mühür aynı zamanda §5.5.3'teki değişiklik-gerekçe
+disiplininin **teknik dayanağıdır**.
 
----
+### 5.2.9 Saha kurulumu ve montaj sonrası doğrulama kapıları
 
-## 10. Saha kurulum süreci ve üretim doğrulama kapıları
-
-### 10.1 Tek komutla açılış — thazırlık bütçesi
-
-Şartname §6.2 hazırlık süresini **15 dakika (900 s)** ile sınırlar. Bu yüzden her istasyon
-**tek komutla** açılacak biçimde üretilmiştir; komut süreyi kendisi ölçüp yazar.
+**Tek komutla açılış — t_hazırlık bütçesi.** Şartname §6.2 hazırlık süresini **15 dakika (900 s)**
+ile sınırlar. Bu yüzden her istasyon **tek komutla** açılacak biçimde üretilmiştir; komut süreyi
+kendisi ölçüp yazar.
 
 | istasyon | komut |
 |---|---|
@@ -411,13 +382,12 @@ defter kaydı + kapı + ayrı denetim).
 | İHA / Jetson | `jetson_baslat.sh` (systemd birimleri; `--kuru`, `--kapi`, `--durum`) |
 | 21 Eylül görev kipi | YKS `--fda` ile açılır (paraşüt ve İKA kapalı, bütçe 10 dk) |
 
-⚠ **thazırlık kronometresi henüz ölçülmedi.** "Kutudan Takım Hazır'a" süresi 5 Eylül'de
+⚠ **t_hazırlık kronometresi henüz ölçülmedi.** "Kutudan Takım Hazır'a" süresi 5 Eylül'de
 provada tutulacaktır (`SAHA_HAZIRLIK_PLANI` §2.6). Bugün için **ÖLÇÜLEMEDİ**.
 
-### 10.2 Jetson açılışının kuru koşusu (PC'de, 2026-09-03)
-
-`jetson_baslat.sh --kuru` PC'de koşturulduğunda birim komut satırlarını **doğru** üretmekte,
-Jetson'a özgü yolların eksikliğini ise **fail-closed** bildirmektedir:
+**Jetson açılışının kuru koşusu (PC'de, 2026-09-03).** `jetson_baslat.sh --kuru` PC'de
+koşturulduğunda birim komut satırlarını **doğru** üretmekte, Jetson'a özgü yolların eksikliğini
+ise **fail-closed** bildirmektedir:
 
 ```text
 navitas-cogullayici.service: mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8
@@ -434,9 +404,7 @@ Dokuz `[YOK]` satırının tamamı **Jetson'da bulunacak** yollardır (MAVProxy,
 `/dev/ttyACM0`, kopyalanacak dosyalar). PC'de çıkış **3** beklenen sonuçtur; asıl anlamı,
 **eksik kurulumla gerçek koşumun başlamayacağıdır**.
 
-### 10.3 Zincir kuru koşusu — 9 GEÇTİ / 1 SAHİPSİZ
-
-`scripts/saha_kuru_kosu.py` (2026-09-03, CPU):
+**Zincir kuru koşusu — 9 GEÇTİ / 1 SAHİPSİZ.** `scripts/saha_kuru_kosu.py` (2026-09-03, CPU):
 
 ```text
 GECTI 9 · DUSTU 0 · SAHIPSIZ 1 · ATLANDI 0
@@ -449,7 +417,248 @@ Geçen halkalar arasında üretim yolunun kendisi vardır: `rota GECTI (yol_no=2
 `aktarim GECTI` (`run_camera` kararı loopback İKA'ya `OPEN_ROUTE` yazdı), `telsiz halkasi GECTI`
 (`{'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika']}`).
 
-### 10.4 Yapısal doğrulama — çalışma tanımlı, sonuç paket dışında
+**Üretim kapıları özeti:**
+
+| kapı | ne ölçer | durum (03.09.2026) |
+|---|---|---|
+| Genel kapı `codes/test_rota_sentetik.py` | karar zinciri | **15/15 · 15/15 GEÇTİ** |
+| Tam test paketi | tüm sözleşmeler | **1896 OK** (skipped 3) |
+| Kuru koşu | saha zinciri bütünlüğü | **9 GEÇTİ / 1 SAHİPSİZ** (`motor`) |
+| Paket aynası | saha paketi ile depo eşitliği | **18 dosya senkron** |
+| Çevrimdışı tekerlekler | Nano yığını | **14/14 · 51 dosya · 246 MB** |
+| Pixhawk şablonu | parametre + görev planı | **12 test GEÇTİ** |
+| Kamera köprüsü | CSI → MJPEG | **7 test GEÇTİ** |
+| Nano kurulum belgesi | belge–betik tutarlılığı | test dosyası mevcut |
+| Mühür | sürüm dondurma | **DONDURULMADI** (exit 3, beklenen; 17 Eylül) |
+| **FPS kapısı ≥ 0,61** | Nano'da gerçek çıkarım hızı | **ÖLÇÜLEMEDİ** — 5 Eylül |
+| **Kamera FOV** | ölçek zincirinin girdisi | **ÖLÇÜLEMEDİ** — 5 Eylül |
+| **t_hazırlık ≤ 900 s** | saha kurulum süresi | **ÖLÇÜLEMEDİ** — 5 Eylül |
+| **Gerçek kütle / CG** | UHDR ve ağırlık limiti | **ÖLÇÜLEMEDİ** — 5 Eylül |
+| **FEM sonucu** | yapısal emniyet | **ÖLÇÜLEMEDİ** (§5.6/E1) |
+| **`.engine` (TensorRT)** | hızlandırma | **ÖLÇÜLEMEDİ** — Nano'da derlenemiyor (§5.2.7) |
+
+### 5.2.10 Final (yarışma) aracının üretim ve montaj planı
+
+Sabit kanat + mancınık + paraşüt + İKA hattı **üretilmemiştir**. Bugünkü olgunluk:
+
+| kalem | olgunluk (ölçülen) | üretim adımı |
+|---|---|---|
+| Gövde/kanat/kuyruk | **CAD var**: `Fuselage+Wing+Tail_CFD_Part.SLDPRT` (+ `-2-`, `-3-` sürümleri), `Left/Right_Aileron`, `Left/Right_Elevator`, `Rudder`; XFLR5 analiz dosyası | Kalıp/kesim yöntemi seçimi → prototip → yapısal test |
+| Mancınık | Depoda CAD/analiz **yok** | Ray geometrisi, enerji hesabı, çift kademeli emniyet (REQ-58/59) |
+| Paraşüt | Donanım DDR BOM'unda tanımlı, **temin/üretim kaydı yok**; yazılım tarafı hazır (`CHUTE_*`, `iha_komut_alici` zinciri) | Pod + servo mekanizması üretimi + atış testi |
+| İKA | Yazılım soyutlaması hazır, **gerçek motor sürücüsü YOK** (kuru koşuda `motor SAHIPSIZ`) | Sürücü seçimi (donanım kararı) → `scripts/ika_surucu_kabul.py` kabul turu → şasi üretimi |
+| Çift acil güç kesme | **Yok** (FDA aracında pil fişi) | DDR gereksinimi REQ-25…31 için anahtar + röle tasarımı ve üretimi |
+
+**BEYAN GEREKLİ (insan): final aracı üretim takvimi ve atölye/tezgâh kaynakları** — 21 Eylül
+sonrası açılacak dalga için tarih, sorumlu rol ve tedarik kalemleri.
+**BEYAN GEREKLİ (insan): final aracı için toplam imalat süresi tahmini ve montaj planı** —
+yöntem seçilmeden (§5.1.6) süre tahmini yazılamaz; tahmin yazılmamıştır.
+
+---
+
+## Bölüm 5.3 — Her Bir Parça İçin Tahmini Üretim Süresi ve İş Gücü İhtiyacı
+
+> Yönerge (`Y-5-M03`): *"Her bir parça için tahmini üretim süresi ve iş gücü ihtiyacı
+> hesaplanmalıdır."*
+
+### 5.3.1 Ölçülen tek veri — üst çerçeve plakası
+
+Depoda **tek bir plakanın dilimlenmiş G-code'u** saklanmıştır:
+`Plaka4_Ust_Cerceve_plate_1.gcode.3mf`. Bu dosyadaki değerler doğrudan üretim çıktısıdır:
+
+| büyüklük | değer | kaynak satır |
+|---|---|---|
+| Model baskı süresi | **1 sa 23 dk 00 sn** | `; model printing time: 1h 23m 0s` |
+| Toplam tahmini süre (ısınma vb. dâhil) | **1 sa 30 dk 16 sn** | `; total estimated time: 1h 30m 16s` |
+| Filament uzunluğu | **22 332,62 mm** (22,33 m) | `; total filament length [mm]` |
+| Filament kütlesi | **55,86 g** | `; total filament weight [g]`; plaka üstverisi `weight="55.86"` |
+| Dilimleyici tahmini süre (saniye) | **5 416 s** | `<metadata key="prediction" value="5416"/>` |
+| İlk katman süresi | **700,95 s** | `<metadata key="first_layer_time" .../>` |
+
+### 5.3.2 Diğer yedi plaka — ölçülmedi, tahmin de yazılmadı
+
+**Diğer yedi plakanın baskı süresi ve filament tüketimi ÖLÇÜLEMEDİ** — bu plakaların
+dilimlenmiş G-code'u depoda yoktur, yalnız proje dosyaları vardır. Toplam baskı süresi ve
+toplam filament kütlesi bu yüzden **hesaplanamaz**; tahmin yazılmamıştır.
+**BEYAN GEREKLİ (insan): plaka başına baskı süresi ve filament kütlesi** — Bambu Studio'da her
+`.3mf` yeniden dilimlenerek (aynı reçeteyle) tabloya işlenebilir; SGGS §5.4 "üretim süresi"
+sütunu bunu ister.
+
+Doldurulacak tablonun iskeleti (bugün yalnız ilk satırı doludur):
+
+| plaka | baskı süresi | filament kütlesi | durum |
+|---|---|---|---|
+| `Plaka4_Ust_Cerceve.3mf` | 1 sa 23 dk 00 sn (model) / 1 sa 30 dk 16 sn (toplam) | 55,86 g | **ölçüldü** (§5.3.1) |
+| `Plaka1_Kol_1-2.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+| `Plaka2_Kol_3-4.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+| `Plaka3_Alt_Cerceve.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+| `Plaka5_Kubbe.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+| `Plaka_Ayak.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+| `Plaka_GPS_Holder.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+| `tpu_taban_pedi_x4.3mf` | — | — | **ÖLÇÜLEMEDİ** |
+
+### 5.3.3 İş gücü ihtiyacı — hiç kaydedilmemiş
+
+Yönerge parça başına **iş gücü ihtiyacı** da ister. Depoda ne adam-saat kaydı, ne operatör
+görev dağılımı, ne de destek temizleme / son işlem süresi vardır. Baskı süresi makine süresidir;
+iş gücü süresi değildir ve makine süresinden türetilmemiştir.
+**BEYAN GEREKLİ (insan): parça başına iş gücü ihtiyacı (rol ve adam-saat)** — plaka yükleme,
+destek temizleme, çapak alma, delik açma/rayba, montaj öncesi kontrol adımları ayrı ayrı.
+Destek kullanılan üç plaka (kubbe, ayak, GPS tutucu — §5.1.4) için son işlem süresi ayrıca
+istenmelidir.
+
+### 5.3.4 Üretim sonrası ölçülmemiş kalemler — açıkça listelenir
+
+SGGS §5.4'ün istediği sütunların bir kısmı bugün **doldurulamaz**. Uydurulmamıştır:
+
+| istenen | durum |
+|---|---|
+| CAD model kütlesi (parça başına) | **BEYAN GEREKLİ (insan)** — depoda hesaplanmış değer yok |
+| Üretim/teslim sonrası **ölçülen gerçek kütle** | **BEYAN GEREKLİ (insan)** — 5 Eylül envanterinde her parça tartılacak (`SAHA_HAZIRLIK_PLANI` §2.1) |
+| Boyutsal tolerans / uyum ölçümü | **BEYAN GEREKLİ (insan)** — motor delik aralığı, kol geçmesi, dome oturması |
+| İlave fikstür / tool ihtiyacı | **BEYAN GEREKLİ (insan)** — destek kullanılan üç plaka (kubbe, ayak, GPS tutucu) dışında kayıt yok |
+| Karşılaşılan üretim zorlukları | Kısmen ölçüldü: tabla sıcaklığı uyarısı (§5.4.2); gerisi **BEYAN GEREKLİ (insan)** |
+| Toplam basılan parça sayısı ve fire | **BEYAN GEREKLİ (insan)** — yeniden basım / atık kaydı yok |
+| Montaj bağlantı elemanları (vida, somun, pul) dökümü | **BEYAN GEREKLİ (insan)** — BOM'da sarf kalemi olarak yer almalı (Bölüm 7) |
+
+---
+
+## Bölüm 5.4 — Üretimde Oluşabilecek Hatalar ve Düzeltici İşlem Prosedürleri
+
+> Yönerge (`Y-5-M04`): *"Üretim sırasında oluşabilecek hatalar ve bunlara yönelik düzeltici
+> işlem prosedürleri tanımlanmalıdır."*
+
+### 5.4.1 Bugünkü durum — prosedür YAZILMAMIŞTIR
+
+Bu madde için depoda **hiçbir belge yoktur**: ne hata modu listesi, ne kabul/ret ölçütü, ne de
+düzeltici işlem yordamı. Yönerge haritasındaki durumu `Y-5-M04` = **YOK**'tur ve bu rapor onu
+"var" göstermez. Aşağıda yalnız **artefakta bağlı hata sinyalleri** listelenmiştir; bunlara
+karşılık gelen düzeltici işlem yordamları **yazılacaktır**.
+
+**BEYAN GEREKLİ (insan): üretim hata modu listesi ve düzeltici işlem prosedürleri** — her hata
+modu için (a) tespit yöntemi, (b) kabul/ret ölçütü, (c) düzeltici işlem, (d) yeniden basım
+kararını verecek rol, (e) kaydın tutulacağı yer. Bu, §5.5'teki SGGS tutarlılık kontrolünün
+girdisidir: düzeltici işlemle yapılan her değişikliğin gerekçesi de kayda geçmelidir.
+
+### 5.4.2 Artefakta bağlı hata sinyalleri (bugün elde olan)
+
+| # | sinyal | kanıt (artefakt) | işaret ettiği hata | düzeltici işlem |
+|---|---|---|---|---|
+| H1 | Dilimleyici **3. seviye uyarısı** `bed_temperature_too_high_than_filament` (hata kodu `1000C001`) | `Plaka4_Ust_Cerceve_plate_1.gcode.3mf` → `slice_info.config` | tabla sıcaklığı seçilen filament profiline göre yüksek → **yapıştırma/çarpılma riski** | **BEYAN GEREKLİ (insan)** |
+| H2 | Üç plakada `support` = **var** (kubbe, ayak, GPS tutucu) | §5.1.4 reçete tablosu | destek izi, yüzey bozulması, destek temizleme hasarı | **BEYAN GEREKLİ (insan)** |
+| H3 | Kol 1–2 ile kol 3–4 **farklı reçete** | §5.1.4 ve §5.5.1 | dört kolun yapısal olarak eşdeğer olmaması | **BEYAN GEREKLİ (insan)** — §5.5.1 |
+| H4 | Montaj kabul ölçütü: "motor delikleri 5008 ile uyumlu" | `SAHA_HAZIRLIK_PLANI_20260903.md` §2.1 | boyutsal sapma / delik uyumsuzluğu | **BEYAN GEREKLİ (insan)** — uyumsuzlukta rayba mı, yeniden basım mı |
+| H5 | Fire / yeniden basım kaydı **yok** | §5.3.4 | başarısız baskıların izlenmemesi | **BEYAN GEREKLİ (insan)** |
+
+H1 için ek not: uyarı, baskının yapılmadığı anlamına gelmez; **yapıştırma/çarpılma riski**
+açısından üretim tutanağına geçirilmelidir.
+**BEYAN GEREKLİ (insan): bu uyarının basımda nasıl ele alındığı** (tabla sıcaklığı düşürüldü mü,
+uyarı yok sayıldı mı) ve çıkan parçada çarpılma gözlenip gözlenmediği.
+
+### 5.4.3 Kapanma yolu
+
+H1–H5 satırlarının düzeltici işlem sütunu **5 Eylül envanterinde** (§5.2.2) fiziksel parçalar
+elde tutularak doldurulabilir: çarpılma gözlemi, destek izi, delik uyumu ve kol kimliği o gün
+görülecektir. O tarihe kadar bu alt bölüm **açık** kalır ve "geçti" sayılmaz.
+
+---
+
+## Bölüm 5.5 — Değişikliklerin Gerekçelendirilmesi (SGGS Tutarlılık Kontrolü)
+
+> Yönerge (`Y-5-M05`): *"Bu bölümde belirtilen hususlar için Şubat 2027'de gerçekleşecek
+> Sistem Gözden Geçirme Sunumu'nda tutarlılık kontrolü yapılacaktır. **Gerekliliği
+> ispatlanmamış değişiklikler diskalife sebebi sayılabilecektir.**"*
+
+Bu madde bir belgeleme isteği değil, bir **diskalifiye şartıdır**. Aşağıda depodaki her
+üretim değişikliği, **gerekçesinin kayıtta olup olmadığıyla birlikte** verilmiştir. Gerekçesi
+olmayan değişiklik gizlenmemiş, ilk sıraya konmuştur.
+
+### 5.5.1 🔴 AÇIK DİSKALİFİYE RİSKİ — dört kol iki farklı reçeteyle basıldı, gerekçe kayıtta YOK
+
+**Bulgu.** `Plaka1_Kol_1-2.3mf` (kol 1–2) ile `Plaka2_Kol_3-4.3mf` (kol 3–4) reçeteleri
+**birbirinden farklıdır** ve fark mukavemet yönündedir:
+
+| parametre | `Plaka1_Kol_1-2` (kol 1–2) | `Plaka2_Kol_3-4` (kol 3–4) |
+|---|---|---|
+| katman yüksekliği | 0,20 mm | **0,16 mm** |
+| dolgu | %15 **grid** | **%40 gyroid** |
+| duvar sayısı | 2 | **6** |
+| üst / alt kabuk | 5 / 3 | **7 / 7** |
+| brim | auto | outer_only |
+| yazıcı alanı | Bambu Lab X1 Carbon 0,4 | *(kayıtta yazıcı alanı yok)* |
+
+Yani **kol 3 ve kol 4, kol 1 ve kol 2'den belirgin biçimde daha sağlam bir reçeteyle
+basılmıştır.**
+
+**Neden risk.**
+- Bu, dört kolun **yapısal olarak eşdeğer olmadığı** anlamına gelir; quadcopter kollarının
+  simetrik yük taşıması beklendiğinden bu bir **açık maddedir**.
+- Bir yapısal parçanın reçetesinin değiştirilmesi, yönergenin diliyle bir **değişikliktir**;
+  değişikliğin **gerekliliği ispatlanmamışsa** SGGS'de diskalifiye sebebi sayılabilir.
+- **Kayıtta bunun gerekçesi yoktur.** İki olasılık (reçete iyileştirmesi sonrası ilk iki kolun
+  yeniden basılmamış olması, ya da kasıtlı bir asimetri) artefaktlardan ayırt edilemez.
+- Yapısal analiz bu soruyu bugün çözemez: gövde FEM çalışmasının sonuç veri tabanı okunamaz
+  durumdadır (§5.6/E1), dolayısıyla "iki reçete de yeter" denecek sayısal dayanak yoktur.
+
+**Kapanmazsa ne olur.** Şubat 2027 SGGS'de reçete farkı görülür ve gerekçe sunulamazsa
+madde `Y-5-M05` kapsamında **diskalifiye gerekçesi** olarak değerlendirilebilir. Ayrıca dört kol
+eşdeğer değilse Bölüm 3'ün yapısal iddiaları ve Bölüm 6'nın uygunluk beyanı da dayanaksız kalır.
+
+**BEYAN GEREKLİ (insan): dört kolun hangi reçeteyle basıldığı** — üretilmiş fiziksel kolların
+hangi plakadan geldiği (kol 1–2 mi, 3–4 mü), reçete değişikliğinin **teknik gerekçesi**, ve
+gerekirse kol 1–2'nin `Plaka2` reçetesiyle **yeniden basılıp basılmayacağı** kararı. Bu satır
+5 Eylül envanterinde (§5.2.2) kapatılmalıdır; kapanma iki yoldan biriyle olur:
+(a) dört kolun da `Plaka2` reçetesiyle basıldığı belgelenir, ya da (b) fark kabul edilip
+**gerekçesi yazılır** ve gerekiyorsa kol 1–2 yeniden basılır.
+
+### 5.5.2 Ölçülmüş diğer üretim revizyonları ve gerekçe durumu
+
+Depoda plakaların **iki kuşağı** durmaktadır. Eski kuşakta ayak ve GPS tutucu tek plakada ve
+adı `Plaka6_**PLA**_Ayak_GPS.3mf`'tir (`dronesolid/Yeni klasör/files (1)/`, 23.08.2026 07:40).
+Güncel kuşakta bu plaka ikiye ayrılmış ve **ABS** profilleriyle yeniden dilimlenmiştir
+(`Plaka_Ayak.3mf`, `Plaka_GPS_Holder.3mf`, 23.08.2026 11:19–12:56). Ayrıca güncel kuşakta
+**TPU taban pedi** (×4) yeni bir kalem olarak eklenmiştir.
+
+Yani üretim sürecinde ölçülebilir iki revizyon vardır: **PLA → ABS** (ayak/GPS tutucu) ve
+**TPU taban pedi eklenmesi** (iniş darbe sönümü). Bu revizyonlar Bölüm 2 §2.2.5'teki revizyon
+listesini tamamlar.
+
+| # | değişiklik | kanıt (artefakt) | gerekçe kayıtta var mı |
+|---|---|---|---|
+| R1 | Kol reçetesi 0,20/%15/2 duvar → 0,16/%40/6 duvar (kol 3–4) | `Plaka1_Kol_1-2.3mf` ↔ `Plaka2_Kol_3-4.3mf` | 🔴 **YOK** — §5.5.1 |
+| R2 | Ayak + GPS tutucu **PLA → ABS** | `Plaka6_PLA_Ayak_GPS.3mf` (23.08 07:40) ↔ `Plaka_Ayak.3mf` + `Plaka_GPS_Holder.3mf` (23.08 11:19–12:56) | **YOK** — dosya adları geçişi kanıtlar, gerekçeyi kanıtlamaz |
+| R3 | **TPU taban pedi ×4** eklenmesi | `tpu_taban_pedi_x4.3mf` | **YOK** — amaç (iniş darbe sönümü) metinde yazılı, karar kaydı yok |
+| R4 | Ayak+GPS tek plakadan **iki ayrı plakaya** bölünmesi | eski/yeni kuşak plaka dosyaları | **YOK** |
+| R5 | Görev bilgisayarı Orin NX → **Jetson Nano 4GB** | Bölüm 2 §2.2.5.1; `jetson_paket/JETSON_NANO_KURULUM.md` | **VAR** (Bölüm 2'de kayıtlı; üretim etkisi §5.2.7) |
+
+**BEYAN GEREKLİ (insan): PLA→ABS geçişinin gerekçesi** (ısı dayanımı, kırılganlık, saha
+sıcaklığı vb.) — dosya adları geçişi kanıtlar, gerekçeyi kanıtlamaz.
+**BEYAN GEREKLİ (insan): R3 ve R4 değişikliklerinin gerekçe kaydı** — TPU ped eklenmesi ve
+plaka bölünmesi için karar tarihi, sebep ve karar veren rol.
+
+### 5.5.3 Değişiklik kaydı disiplini — bundan sonrası
+
+R1–R4'ün gerekçesiz olmasının sebebi, üretim döneminde bir **değişiklik kaydı yordamının
+bulunmamasıdır**. Bugünden itibaren geçerli olan mekanizma:
+
+- **Sürüm mühürü** (§5.2.8): `scripts/surum_dondur.py` 17 Eylül'de basılır; sonrasında üretim
+  kodu ve model dosyaları değişmez, zorunlu değişiklik = defter kaydı + kapı + ayrı denetim.
+- **Yapısal parça değişiklikleri** için aynı disiplin geçerli olmalıdır: her yeni `.3mf`
+  reçetesi bir **karar kaydıyla** birlikte depoya girmelidir (ne değişti, neden, karar veren rol).
+- SGGS'ye götürülecek kanıt paketi: `.3mf` proje dosyaları + G-code + karar kayıtları.
+
+**BEYAN GEREKLİ (insan): yapısal parça değişikliği için karar kaydı yordamının kabulü** —
+mühürün yazılım tarafındaki karşılığının donanım/üretim tarafında da işletileceğinin teyidi.
+
+---
+
+## 5.6 Yönerge dışı ek kanıt
+
+> Bu başlık altındaki içerik Bölüm 5'in beş maddesinden birine girmez ama **ölçülmüştür ve
+> artefakta bağlıdır**; kaybolmaması için burada tutulur. İlgili yönerge başlığı her satırda
+> yazılıdır.
+
+### E1 — Yapısal doğrulama: FEM çalışmaları (ilgili yönerge başlığı: `Y-3.2.1-A01…A12`)
 
 Gövde için bir **SolidWorks Simulation statik çalışması** yapılmıştır
 (`Drone_Frame-Static 1`): **48 990 düğüm · 27 391 eleman · 146 970 serbestlik derecesi**,
@@ -470,65 +679,41 @@ bir uyarıdır.
 gerilme/deplasman/emniyet katsayısı değerleri ekran görüntüsü ve rapor çıktısıyla eklenmelidir.
 **BEYAN GEREKLİ (insan): FEM yük durumu, mesnet tanımı, malzeme kartı ve sonuç değerleri.**
 
-### 10.5 Üretim kapıları özeti
-
-| kapı | ne ölçer | durum (03.09.2026) |
-|---|---|---|
-| Genel kapı `codes/test_rota_sentetik.py` | karar zinciri | **15/15 · 15/15 GEÇTİ** |
-| Tam test paketi | tüm sözleşmeler | **1896 OK** (skipped 3) |
-| Kuru koşu | saha zinciri bütünlüğü | **9 GEÇTİ / 1 SAHİPSİZ** (`motor`) |
-| Paket aynası | saha paketi ile depo eşitliği | **18 dosya senkron** |
-| Çevrimdışı tekerlekler | Nano yığını | **14/14 · 51 dosya · 246 MB** |
-| Pixhawk şablonu | parametre + görev planı | **12 test GEÇTİ** |
-| Kamera köprüsü | CSI → MJPEG | **7 test GEÇTİ** |
-| Nano kurulum belgesi | belge–betik tutarlılığı | test dosyası mevcut |
-| Mühür | sürüm dondurma | **DONDURULMADI** (exit 3, beklenen; 17 Eylül) |
-| **FPS kapısı ≥ 0,61** | Nano'da gerçek çıkarım hızı | **ÖLÇÜLEMEDİ** — 5 Eylül |
-| **Kamera FOV** | ölçek zincirinin girdisi | **ÖLÇÜLEMEDİ** — 5 Eylül |
-| **thazırlık ≤ 900 s** | saha kurulum süresi | **ÖLÇÜLEMEDİ** — 5 Eylül |
-| **Gerçek kütle / CG** | UHDR ve ağırlık limiti | **ÖLÇÜLEMEDİ** — 5 Eylül |
-| **FEM sonucu** | yapısal emniyet | **ÖLÇÜLEMEDİ** (§10.4) |
-| **`.engine` (TensorRT)** | hızlandırma | **ÖLÇÜLEMEDİ** — Nano'da derlenemiyor (§8.3) |
+Bu kalemin Bölüm 5'e bakan yüzü şudur: FEM sonucu okunamadığı için §5.5.1'deki kol reçete farkı
+**analizle savunulamaz**; savunma ancak beyan ve/veya yeni analizle gelir.
 
 ---
 
-## 11. Final (yarışma) aracının üretim planı
+## Bu bölümdeki BEYAN GEREKLİ (insan) satırlarının toplu listesi
 
-Sabit kanat + mancınık + paraşüt + İKA hattı **üretilmemiştir**. Bugünkü olgunluk:
+1. **BEYAN GEREKLİ (insan): tasarımın özgünlüğüne dair imzalı beyan** (§5.1.2).
+2. **BEYAN GEREKLİ (insan): CAD birim/ölçek teyidi ve kolun gerçek boyu** (§5.1.3).
+3. **BEYAN GEREKLİ (insan): parça başına CAD model kütlesi** (§5.1.3, §5.3.4).
+4. **BEYAN GEREKLİ (insan): basılan parçaların gerçek filament cinsi (ABS mi ABS-CF mi)** (§5.1.5).
+5. **BEYAN GEREKLİ (insan): final aracı yapısal parçaları için üretim yöntemi seçimi** (§5.1.6).
+6. **BEYAN GEREKLİ (insan): gerçek kablo kesitleri, konnektörler ve ölçülmüş akımlar** (§5.2.5).
+7. **BEYAN GEREKLİ (insan): uçuş alanı koordinatları ve geofence poligonu** (§5.2.6).
+8. **BEYAN GEREKLİ (insan): final aracı üretim takvimi ve kaynakları** (§5.2.10).
+9. **BEYAN GEREKLİ (insan): final aracı toplam imalat süresi tahmini ve montaj planı** (§5.2.10).
+10. **BEYAN GEREKLİ (insan): plaka başına baskı süresi ve filament kütlesi** (§5.3.2) — yalnız üst çerçevenin verisi var.
+11. **BEYAN GEREKLİ (insan): parça başına iş gücü ihtiyacı (rol ve adam-saat)** (§5.3.3).
+12. **BEYAN GEREKLİ (insan): ölçülen gerçek kütleler, tolerans/uyum ölçümleri, fikstür ihtiyacı, fire kaydı** (§5.3.4).
+13. **BEYAN GEREKLİ (insan): bağlantı elemanı (vida/somun/pul) dökümü** (§5.3.4).
+14. **BEYAN GEREKLİ (insan): üretim hata modu listesi ve düzeltici işlem prosedürleri** (§5.4.1).
+15. **BEYAN GEREKLİ (insan): tabla sıcaklığı uyarısının nasıl ele alındığı ve çarpılma gözlemi** (§5.4.2).
+16. **BEYAN GEREKLİ (insan): dört kolun hangi reçeteyle basıldığı, reçete farkının gerekçesi; kol 1–2 yeniden basılacak mı** (§5.5.1).
+17. **BEYAN GEREKLİ (insan): PLA→ABS geçişinin gerekçesi** (§5.5.2).
+18. **BEYAN GEREKLİ (insan): TPU ped eklenmesi ve plaka bölünmesi için karar kaydı** (§5.5.2).
+19. **BEYAN GEREKLİ (insan): yapısal parça değişikliği için karar kaydı yordamının kabulü** (§5.5.3).
+20. **BEYAN GEREKLİ (insan): FEM yük/mesnet/malzeme tanımı ve sonuç değerleri** (§5.6/E1).
 
-| kalem | olgunluk (ölçülen) | üretim adımı |
-|---|---|---|
-| Gövde/kanat/kuyruk | **CAD var**: `Fuselage+Wing+Tail_CFD_Part.SLDPRT` (+ `-2-`, `-3-` sürümleri), `Left/Right_Aileron`, `Left/Right_Elevator`, `Rudder`; XFLR5 analiz dosyası | Kalıp/kesim yöntemi seçimi → prototip → yapısal test |
-| Mancınık | Depoda CAD/analiz **yok** | Ray geometrisi, enerji hesabı, çift kademeli emniyet (REQ-58/59) |
-| Paraşüt | Donanım DDR BOM'unda tanımlı, **temin/üretim kaydı yok**; yazılım tarafı hazır (`CHUTE_*`, `iha_komut_alici` zinciri) | Pod + servo mekanizması üretimi + atış testi |
-| İKA | Yazılım soyutlaması hazır, **gerçek motor sürücüsü YOK** (kuru koşuda `motor SAHIPSIZ`) | Sürücü seçimi (donanım kararı) → `scripts/ika_surucu_kabul.py` kabul turu → şasi üretimi |
-| Çift acil güç kesme | **Yok** (FDA aracında pil fişi) | DDR gereksinimi REQ-25…31 için anahtar + röle tasarımı ve üretimi |
-
-**BEYAN GEREKLİ (insan): final aracı üretim takvimi ve atölye/tezgâh kaynakları** — 21 Eylül
-sonrası açılacak dalga için tarih, sorumlu rol ve tedarik kalemleri.
-
----
-
-## 12. Bu bölümdeki BEYAN GEREKLİ (insan) satırlarının toplu listesi
-
-1. **BEYAN GEREKLİ (insan): tasarımın özgünlüğüne dair imzalı beyan** (§2).
-2. **BEYAN GEREKLİ (insan): CAD birim/ölçek teyidi ve kolun gerçek boyu** (§3).
-3. **BEYAN GEREKLİ (insan): parça başına CAD model kütlesi** (§3, §5).
-4. **BEYAN GEREKLİ (insan): dört kolun hangi reçeteyle basıldığı; kol 1–2 yeniden basılacak mı** (§4.2).
-5. **BEYAN GEREKLİ (insan): basılan parçaların gerçek filament cinsi (ABS mi ABS-CF mi)** (§4.3).
-6. **BEYAN GEREKLİ (insan): tabla sıcaklığı uyarısının nasıl ele alındığı ve çarpılma gözlemi** (§4.4).
-7. **BEYAN GEREKLİ (insan): plaka başına baskı süresi ve filament kütlesi** (§4.4) — yalnız üst çerçevenin verisi var.
-8. **BEYAN GEREKLİ (insan): PLA→ABS geçişinin gerekçesi** (§4.5).
-9. **BEYAN GEREKLİ (insan): ölçülen gerçek kütleler, tolerans/uyum ölçümleri, fikstür ihtiyacı, fire kaydı** (§5).
-10. **BEYAN GEREKLİ (insan): bağlantı elemanı (vida/somun/pul) dökümü** (§5).
-11. **BEYAN GEREKLİ (insan): gerçek kablo kesitleri, konnektörler ve ölçülmüş akımlar** (§6.4).
-12. **BEYAN GEREKLİ (insan): uçuş alanı koordinatları ve geofence poligonu** (§7).
-13. **BEYAN GEREKLİ (insan): FEM yük/mesnet/malzeme tanımı ve sonuç değerleri** (§10.4).
-14. **BEYAN GEREKLİ (insan): final aracı üretim takvimi ve kaynakları** (§11).
+Ölçüm bekleyen (beyanla kapanmayan) kalemler: **ÖLÇÜLEMEDİ** etiketiyle §5.2.1 (toplam baskı
+süresi), §5.2.7 (kamera FOV, FPS kapısı, `.engine`), §5.2.9 (t_hazırlık, gerçek kütle/CG),
+§5.3.2 (yedi plaka) ve §5.6/E1 (FEM sonucu).
 
 ---
 
-## 13. Kanıt dizini
+## 5.7 Kanıt dizini
 
 | # | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|---|
@@ -559,3 +744,4 @@ sonrası açılacak dalga için tarih, sorumlu rol ve tedarik kalemleri.
 | 25 | Saha açılış kartı komutları (thazırlık ≤ 900 s) | `results/faz_b_oncesi/saha_baslat_komutlar.txt`; `SAHA_RUNBOOK.md` §1 | `scripts/saha_baslat.py --komutlar` | 2026-09-03 |
 | 26 | Kablaj/AWG taslağı (tahmini olduğu notuyla) | `navitas-teknofest/references/avionics_software.md` | — (DDR dönemi taslağı) | 2026-07 |
 | 27 | Şartname §6 özgünlük ve ağırlık hükümleri; §6.2 hazırlık 15 dk | `results/sartname_bosluk/sartname_metin.txt` | PyMuPDF çıkarımı | 2026-08-26 |
+| 28 | Yönerge Bölüm 5'in beş maddesinin birebir metni (bu bölümün başlık şeması) | `results/fdr_sablon/fdr_yonerge_metin.txt`; `FDR/YONERGE_HARITASI.md` §5 | pypdf çıkarımı | 2026-09-03 |

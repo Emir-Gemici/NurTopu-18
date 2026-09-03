@@ -1,4 +1,4 @@
-# BÖLÜM 4 — TEST FAALİYETLERİ (15 puan)
+# Bölüm 4. Test Faaliyetleri (15 PUAN)
 
 > **Bu bölümün iddiası.** NAVITAS'ın en olgun tarafı bir model ya da bir kart
 > değil, **ölçüm yordamıdır**. Aşağıda önce yordam (bir sayının bu projede nasıl
@@ -22,187 +22,47 @@
 
 ---
 
-## 1. TEST YORDAMI — bir sayı bu projede nasıl kanıt olur
+## 4.0 Bu bölümün yönergeye göre kapsaması
 
-Dört mekanizma birlikte çalışır. Hiçbiri sonradan icat edilmiş bir rapor süsü
-değildir; her biri **bu projede bir kez gerçek zarar önlediği için** kuraldır ve
-zararın kaydı `REVIEW_LOG.md`'de durur (414 başlık · 408 benzersiz kayıt,
-`grep -cE "^### D-[0-9]+"`, 3 Eylül 2026).
+Yönerge Bölüm 4 tek paragraf hâlinde **on iki** gereksinim sayar. Aşağıdaki
+tablo her birini bu bölümdeki karşılığına bağlar; alt başlık numaraları
+gereksinim kimlikleriyle (`Y-4-M01` … `Y-4-M12`) aynı sırayı izler.
 
-### 1.1 Ön kayıt — eşik, sonuç görülmeden yazılır (D-107)
-
-**Kural.** Bir kapının eşiği ve **karar sırası**, ölçüm koşulmadan önce bir
-`ON_KAYIT` dosyasına yazılır ve sonuç görüldükten sonra **değiştirilmez**.
-
-**Kuralın doğuşu (D-107, 2026-08-14).** Kayıt kendi gerekçesini şöyle yazar:
-
-```
-NEDEN ONCEDEN. Bu projede tekrarlanan hata olcutu SAYIYI GORDUKTEN SONRA
-yorumlamak oldu: D-85'te alt kumenin azamisine esik oturttum (D-86 curuttu),
-D-90'da tanima bagli bir olcutle %92,7 rapor etmek uzereydim, D-104'te kapiyi
-yanlis modelle olcturdum. Olcut sonuctan SONRA secilirse rasyonalize edilir.
-Bu yuzden esikler BURAYA, sonuc gelmeden yaziliyor ve sabah DEGISTIRILMEYECEK.
-```
-
-**Depodaki hacim:** `results/` altında **36 ön kayıt artefaktı** (35 Markdown +
-1 JSON), `find results -iname "*on_kayit*"` (3 Eylül 2026).
-
-**Ön kaydın somut olarak iş gördüğü dört olay:**
-
-| olay | ön kayıtta ne yazılıydı | ölçüm ne çıktı | sonuç |
+| kimlik | yönergenin istediği | bu bölümde | durum |
 |---|---|---|---|
-| **Çözünürlük 640** (D-377, `results/b4_fps/ON_KAYIT_INFER_SIZE.md` §5) | *"I2 düşerse → RED. I1 ne olursa olsun."* | I1 = **%21,6** (umut verici), I2 = **−0,204** (tavan −0,02) | **RED.** Karar sırası önceden yazılı olduğu için "kırsalda kazandırıyor, arenada biraz kaybettiriyor" tartışması hiç açılmadı |
-| **P2 tampon tavanı** (D-388, `results/p2_seri/ON_KAYIT.md` S5) | tampon **≤ 64 KiB** kalmalı; gerekçe: en uzun meşru çerçevenin 16 katı | ölçülen **1.048.576 bayt** (sınırsız) | **DÜŞTÜ** → kod düzeltildi, **aynı eşikle** yeniden koşuldu; eşik gevşetilmedi |
-| **P5 yayın histerezisi** (D-396, `results/p5_histerezis/ON_KAYIT.md`) | H1: toplam çevrilme ≤ %40 | H1 **düştü ve düşük kaldı** | Eşik **gevşetilmedi**; yerine EK-1 ölçütleri (H1a/H1b) *bileşim görülmeden* yazıldı, ölçüm sonra koşuldu |
-| **T61 iç tutarlılık** (D-401, `results/t61_ic_tutarlilik/ON_KAYIT.md`) | tur **eşiksizdir**; eşik ancak ikinci bir ön kayıtla, tüm kümede süpürülerek yazılır | dört aday **DOĞRULANAMADI** | Keşif turu eşik **üretmedi**; "alt kümede ayrık görünen eşik tümde ayırmaz" dersi (D-86) korundu |
+| `Y-4-M01` | planlanan yer testleri, fonksiyonel testler, entegrasyon testleri ile tasarımın gereksinimlere uygunluğunun doğrulanması | §4.1 | KISMEN |
+| `Y-4-M02` | testlerin uygulama yöntemleri ve test altyapısı gereksinimlerinin nihai hâli | §4.2 | VAR |
+| `Y-4-M03` | sensör gereksinimleri, sensör yerleşimleri, test takvimi, detaylı test zaman bütçe planlaması | §4.3 | KISMEN |
+| `Y-4-M04` | ekipman kabul testleri — İHA ve İKA'daki **tüm** ekipmanlar | §4.4 | YOK |
+| `Y-4-M05` | kumanda ve telemetri **menzil** testleri (sahada) | §4.5 | YOK |
+| `Y-4-M06` | IMU, pusula ve pitot tüpü kalibrasyon kanıtları | §4.6 | YOK |
+| `Y-4-M07` | görev icra simülasyonu + başarı oranları + grafikler + video linki | §4.7 (sahibi **Bölüm 3.3.3**) | YOK |
+| `Y-4-M08` | görüntü işleme performansı, benzer koşullarda test sonuçları, doğruluk matrisleri | §4.8 | KISMEN |
+| `Y-4-M09` | haberleşme: paket yapısı, veri hızı, iletişim gecikmesi | §4.9 | KISMEN |
+| `Y-4-M10` | sistem üzerinde gerçekleştirilen **tüm** yer testleri | §4.10 | KISMEN |
+| `Y-4-M11` | entegrasyon öncesi alt sistemlerin bir arada ve yerde bütünleşik çalıştığı kanıtlar | §4.11 | KISMEN |
+| `Y-4-M12` | arıza emniyet doğrulaması (eve dönüş, motor kesme) — **sahada test edilmiş veri** | §4.12 | YOK |
 
-⚠ Ön kayıt **her zaman** kurtarmadı: `results/gece_20260826/ON_KAYIT.md` §15'te
-kullanıcı *"izin veriyorum kurala rağmen"* diye yazdı ve v36 kendi eşiklerini
-geçmeden terfi etti. Bu olay §4.1'de tam olarak yazılıdır — ön kaydın rolü
-burada da **olayı görünür kılmak** oldu; sessiz bir gevşetme mümkün olmadı.
-
-### 1.2 Mutasyon kontrolü — kapı kaldırılınca DÜŞMELİ
-
-**Kural.** Bir test "geçti" demek yetmez; korumak iddia ettiği davranış **koda
-uygulanmış** bir bozma (mutant) ile kaldırıldığında testin **düşmesi** gerekir.
-Uygulanmayan mutasyon başarı sayılmaz (D-370).
-
-**Depodan gerçek örnekler:**
-
-| mutant | nereye uygulandı | suit tepkisi | kayıt |
-|---|---|---|---|
-| `if ekransiz:` korumaları → `if False:` | `codes/rpi_inference.py` | **3 test ERROR** (`cv2.error` yükseldi); dosya sonra `cmp` ile bayt-eş geri yüklendi | D-404 §2 |
-| bağımsız denetçinin 7 mutantı (ekransız + kayıtlı video yolu) | `codes/rpi_inference.py` | ilk turda **4'ü kaçtı** (b, c, e, g) → test 8 ve 9 eklendi → **7/7 YAKALANDI** | D-404 §8 · `results/faz_b_oncesi/ekransiz_denetim/mutant_sonuc_9test.txt` |
-| MUT-1 periyodik akış isteği kaldırıldı · MUT-2 sessizlik alarmı kaldırıldı | `comms/iha_inis_yayinci.py` (T207) | her biri **3 FAIL**; diğer 14 kapı ikisinde de geçti (hedefe özgü) | D-406 §3 |
-| `--streamrate 8` silindi | `jetson_paket/systemd/navitas-cogullayici.service` | **K1 DÜŞTÜ** | D-406 §3 (K2) |
-| Nano kurulum belgesinde `scripts/` → `codes/` | `jetson_paket/JETSON_NANO_KURULUM.md` | test **DÜŞTÜ** (`belge ~/navitas/codes/ diyor, jetson_baslat.sh scripts/ ariyor`) | D-407 §1 |
-| çerçeveleme atlanıp ham bayt fan-out | `comms/seri_hub.py` | **2 test** yakaladı | D-404 §1 |
-
-**🟡 Dürüst mutasyon skoru — bir kapı takımı zayıf çıktı, yazıldı ve sonra kapatıldı.**
-`comms/seri_hub.py` için bağımsız çürütücü **25 mutant** üretti. **İlk ölçümde**
-repo suiti **13'ünü yakaladı** (`results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md`,
-ham loglar `mut_seri_hub/log_*.txt`); kaçanların adları ve neyi açıkta bıraktıkları
-aynı belgede tek tek yazılıdır — iki öğrenilen tüketiciden yalnız sonuncusuna
-fan-out, `OGRENILEN_TAVANI` (32) tahliye mantığı, yeniden açmada `FrameReader`
-sıfırlaması, beş fail-visible sayaç yolu.
-
-**Sertleştirmeden sonra aynı 25 mutant yeniden koşuldu: 24/25.** Kapı takımı
-`test_faz_b_seri_hub.py` 11 → **31 test**, `test_faz_b_protocol_dayaniklilik.py`
-**4 test** (yeni) ile büyüdü; commit `c112381`, kayıt `REVIEW_LOG.md` D-405.
-
-**Tek kaçan hâlâ vardır ve bilerek testsizdir:** `l_arizada_ogrenmez` — seri arıza
-anında yeni tüketici öğrenilmemesi. Marjinal görüldüğü için test yazılmadı; bu
-raporun kuralınca **açık** sayılır ve §6'da öyle listelenir. Skorun "13" değil
-"24" olması, ilk sayının silinmesiyle değil, **ikinci ölçümün koşulmasıyla**
-elde edildi; ikisi de artefaktta durur.
-
-**🔴 Ölçen aracın kendisi de ölçülür (D-370).** Mutasyon betiği
-`scripts/olcum/129_t141_mutasyon_olcumu.py`, `\n` ile biten bir desen arıyordu;
-hedef dosya `simulation/scripts/ika_nav.py` **tamamen CRLF**'ti (ölçüldü: 658
-CRLF, 0 çıplak LF). Yani **M2′ mutasyonu hiç uygulanmıyordu** ve betik yine
-`exit 0` dönüyordu — çıkış kodunu okuyan bir kapı bunu **başarı** sanardı.
-İki önlem geldi: desen dosyanın kendi satır sonuna uyarlanır, ve **uygulanmayan
-mutasyon artık `exit 1`**'dir. `OLCULEMEDI != GECTI` kuralı çıkış kodu düzeyine
-indirildi.
-
-### 1.3 Çürütücü turları — bağımsız ajan kusur arar
-
-**Kural (Anayasa madde 19).** *"Bir iş, onu yazanın onayıyla kapanmaz."* Kodu
-yazan, kendi kodunu denetlemez; ayrı bir ajan **kusur bulmakla görevlendirilir**
-ve her bulgu **koşulmuş komut + ham çıktı (repro)** ile gelmek zorundadır.
-Bulgular kabul edilmeden önce mimar tarafından **yeniden üretilir**.
-
-| tur | kapsam | kadro | hasat | kanıt |
-|---|---|---|---|---|
-| **D-383** (1 Eyl) | telsiz gecikmesi, YKS tazelik, şekil kapısı, nihai ret | 3 bağımsız ajan (357k token, 74 araç çağrısı) | **4 gerçek kusur**: "308 ms ACK gecikmesi" aslında bir **soket zaman aşımı sabiti**; YKS duvar-saati asimetrisi (saat 30 s geri alınınca BAYAT → TAZE); şekil kapısı "H"yi değil "çerçeveli yapıyı" ölçüyormuş; nihai ret sahnedeki **gerçek pedi** öldürüyormuş | REVIEW_LOG D-383 |
-| **D-405** (3 Eyl) | mühür atlatma, hub protokol/ACK, arıza/kaynak, kuru-vs-gerçek, test vakumu | 5 mercek | **1 KRİTİK + 16 ÖNEMLİ + 18 KÜÇÜK**, ayrıca **5 çürütülemedi** kalemi | `results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md` (30 KB) + `BULGULAR_TAM.md` (81 KB) + repro betikleri |
-| **D-407** (3 Eyl) | D-405/D-406 kapanışlarının denetimi | 5 mercek (kota nedeniyle kısmen ana döngüde koşuldu) | **2 gerçek kusur** (Nano belgesi yanlış dizin; mühür kapsamı eksik) + T207 gerçek topolojide **doğrulandı** + köprü sağlam çıktı | `results/faz_b_oncesi/curutucu_d407/` |
-
-**D-405'in KRİTİK bulgusu, örnek olarak:** sürüm dondurma mührünün özeti
-**çalışma ağacı baytına** bağlıydı (CRLF). Aynı commit'in başka bir checkout'unda
-künye tutmuyordu — Jetson/Linux'ta 18/19, başka bir Windows klonunda 2/19 dosya
-"ihlal" diyordu. Yani şartname §6.1'in *"yarışan yazılım beyanla birebir"*
-iddiasının tek kanıtı **tek makineye bağlıydı** ve saha günü yanlış "MÜHÜR
-İHLALİ" alarmı olasıydı. Öneri ölçüldü de: CRLF→LF normalize sha256 iki klon
-arasında **17/17 paket + defter eşit**.
-
-⚠ **Yordam dürüstlüğü:** D-407 turunda kredi bitince beş mercekli iş akışı
-düştü; ajanların bıraktığı repro betikleri **ana döngüde koşuldu**. Kayıt bunu
-şöyle yazar: *"Ajan sayısı değil koşulan ölçüm kanıttır."* Aynı kayıt kendi
-denetim borcunu da yazar: bu turdaki düzeltmeleri **yazan da onaylayan da aynı
-taraftır**; mimar-dışı denetim açıktır (§6).
-
-### 1.4 Vakum denetimi — test bir şeyi gerçekten kilitliyor mu
-
-**Kural.** Bir testin yeşil olması, bir şey **koruduğu** anlamına gelmez. Test
-hiçbir şeyi bağlamıyorsa (payda boş, mutasyon uygulanmıyor, iki kol aynı şeyi
-koşuyor) o test bir **vakumdur** ve varlığı zararlıdır: güven üretir, koruma
-üretmez.
-
-**Bu projedeki dört vakum, hepsi ölçüldü ve kapatıldı:**
-
-1. **D-15 · Anayasa madde 4 kapısı hiç çalışmamıştı.** Yasak bağımlılık kapısı
-   olarak dolaşan komut `grep -rnE "^\s*(import\|from)\s+(scipy\|skimage\|sklearn)"`
-   idi. `-E` kipinde `\|` alternasyon **değil**, düz bir karakterdir; komut
-   `import\|from` dizisini arar ve **her zaman 0 döner**. Kanıt **pozitif
-   kontrolle** verildi: aynı komut kalıbı kodda kesinlikle var olan `numpy|cv2`
-   için de **0** döndü — yani kapı kördü. Doğru kapı
-   (`git ls-files "*.py" | xargs grep -nE ...`) pozitif kontrolde **46** eşleşme
-   verdi. Madde 4 **fiilen sağlanıyordu**, ama bunu o güne kadar hiçbir koşum
-   kanıtlamamıştı.
-
-2. **D-375 · FP16 denkliğinin ilk ölçümü vakumdu.** İlk koşum "F1/F2 GEÇTİ"
-   verdi ama `bit_es_orani = 1,0`: **893 karenin 893'ünde** maskeler bit-eşti.
-   *Fazla mükemmeldi.* Ölçen araç ölçüldü: ultralytics predictor'ı ilk çağrıda
-   kurulur, sonraki çağrının `half=True`'su **sessizce yok sayılır** — iki kol
-   da FP32 koşmuştu. *"GEÇTİ", hiçliğin ölçümüydü."* Sınıfın adı kayda geçti:
-   **FARKSIZLIK ≠ DENKLİK**. Düzeltme koda kondu (iki ayrı model örneği +
-   `_dtype_dogrula`; tutmazsa betik `OLCULEMEDI` deyip `exit 1`). Gerçek ölçüm
-   sonra geçti (§5.8).
-
-3. **Kabul zincirinin kendi vakumu → K8 doğdu.** 2026-08-28'de v37 adayı
-   K0'dan K7'ye **zincirin tamamını** geçti (K1 258/260, K7 87/87 = %100,0) ve
-   "ÜRETİME ALINIR" verdikti aldı. Ama elimizdeki tek gerçekçi karede zemin
-   kaplaması %4,4 → %56,1 çıkıp üretim karar yolunu `ZEMIN_MASKESI_SUPHELI` ile
-   kırdı: model o karede **hiç rota üretemiyordu**. Bunu yakalayan tek şey
-   `tests/test_gercek_arena_kapisi.py` idi ve **zincirin içinde değildi**. K8
-   (`scripts/olcum/155_gercek_kare_kapisi.py`) tam olarak bunu zincire taşır ve
-   **yeni bir eşik uydurmaz**: üretimde zaten var olan zemin sağlamlık kapısını
-   gerçek kare üzerinde koşar. `n = 1`'dir ve betik bunu kendisi yazar.
-
-4. **K7'nin ölçüm kümesi vakuma karşı daraltıldı.** Şerit numarası içerik
-   genişliğinin üçte birlerinden hesaplanır; koridor kapısı bir sınıra denk
-   geldiğinde etiket **tanım gereği** belirsizdir. Ölçüldü (D-312): kabul
-   kümesinin **%54'ü (105/193)** böyledir ve şerit ayrışmasının **%100'ü**
-   oradan gelir. K7 bu yüzden dondurulmuş **88 karelik** bir alt kümede ölçülür
-   (`config/k7_iyi_kosullu_kume.json`); aksi hâlde kapı, tanım gereği belirsiz
-   olan bir şeyi ölçüyormuş gibi yapardı — CONTRACTS bunu açıkça *"D-15 sınıfı
-   vakum kapı"* diye adlandırır.
-
-Ek olarak, **her ölçüm betiğinde vakum kapıları** vardır. Örnek (T99,
-`results/t99_uretim_imzasi/olcum_20260903.json`): `V1_vakum_yok = true`
-(araç maskesi gerçekten dolu — 7/260 karede 252–1787 px), `V3_tek_cikarim = true`
-(kare başına 1 segmentasyon çağrısı, sayaçla), `V4_determinizm = true`.
-🔴 Aynı ölçümün dürüstlük notu: ilk duman koşumunda (8 kare) V1 **düşmüştü**,
-tam kümede geçti — *"küçük örnekle 'vakum' hükmü verilseydi yanlış olurdu."*
-
-### 1.5 Bu dördünün ürettiği rapor kuralı
-
-| # | kural | bu bölümde nerede işliyor |
-|---|---|---|
-| 1 | Her sayı bir artefakttan gelir (dosya yolu + üreten betik) | §7 Kanıt dizini |
-| 2 | `ÖLÇÜLEMEDİ ≠ GEÇTİ` | §6 Kalan test borcu |
-| 3 | Geçilmeyen kapı geçilmedi diye yazılır | §4 |
-| 4 | Sentetik ölçüm saha başarımı diye sunulmaz | §3 kapsam uyarısı |
+**Karşılanamayan ve kısmen karşılanan gereksinimlerin nedenleri** §4.13'te kalem
+kalem yazılıdır; yönergenin Bölüm 6 beklentisi (`Y-6-M05`) oradan beslenir.
+Kanıt yolları §4.14'tedir.
 
 ---
 
-## 2. OTOMATİK KAPI ENVANTERİ — koşularak ölçüldü
+## 4.1 Planlanan yer testleri, fonksiyonel testler ve entegrasyon testleri · `Y-4-M01`
+
+> *Yönerge: "planlanan yer testleri, fonksiyonel testler ve entegrasyon testleri
+> aracılığıyla tasarımın belirlenen gereksinimlere uygunluğu doğrulanmalıdır."*
+
+Bu gereksinimin bugün karşılanan kısmı **algı–karar–haberleşme katmanının
+otomatik kapı envanteri**dir; koşulmuş ve ham çıktısı buradadır. Araç yerde
+bütünleşik çalıştırılmadığı için gereksinim KISMEN karşılanmıştır — eksik kalan
+kısım §4.11 ve §4.13'tedir.
 
 Aşağıdaki iki kapı **bu bölüm yazılırken koşuldu** (3 Eylül 2026); çıktılar ham
 olarak konmuştur.
 
-### 2.1 Genel kapı — `codes/test_rota_sentetik.py`
+### 4.1.1 Genel kapı — `codes/test_rota_sentetik.py`
 
 Anayasa madde 14: her görevden sonra bu kapı koşulur; düşerse görev geri alınır.
 Kapı **iki kollu**dur: tanısal yol (`costmap_path_finder.rota_bul`) ve **üretim
@@ -240,7 +100,7 @@ GENEL KAPI (madde 14): GECTI - kol1 15/15 - kol2 serit 15/15
 karar geometrisinin (koridor seçimi, C-uzayı, darboğaz) doğruluğunu kilitler;
 **algının** doğruluğunu ölçmez. Algı K0–K8'de ve gerçek-kare kapısındadır.
 
-### 2.2 Tam test paketi — `python -m unittest discover -s tests`
+### 4.1.2 Tam test paketi — `python -m unittest discover -s tests`
 
 **Koşum çıktısı (ham, 3 Eylül 2026, yorumlayıcı
 `O:\navitas-local-train\venv\Scripts\python.exe`):**
@@ -261,7 +121,7 @@ OK (skipped=3)
 | 3 Eyl (D-404) | 1685 | D-404 §5 |
 | 3 Eyl (D-406) | 1826 | D-406 |
 | 3 Eyl (D-407) | 1827 | D-407 §4 |
-| **3 Eyl (bu bölüm)** | **1896** | bu koşum. Ölçülen ara adımlar: 1875 (D-408 anı) → 1882 (saha belleği kapıları) → 1890 (takvim kapısı ve çürütücü turu kapıları) → **1896** (hakem kanıt yolu, +6 · D-412). 1890'lık koşum **6 hata** verdi; bkz. §6.3.1 |
+| **3 Eyl (bu bölüm)** | **1896** | bu koşum. Ölçülen ara adımlar: 1875 (D-408 anı) → 1882 (saha belleği kapıları) → 1890 (takvim kapısı ve çürütücü turu kapıları) → **1896** (hakem kanıt yolu, +6 · D-412). 1890'lık koşum **6 hata** verdi; bkz. §4.13.3.1 |
 
 `tests/` altında **153** adet `test_*.py` dosyası vardır (`ls tests/ | grep -c "^test_"`).
 
@@ -281,31 +141,7 @@ OK (skipped=3)
 | `tests/test_k7_serit_dogrulugu.py` | 27 | K7 yayınlanan şerit doğruluğu + alt küme kanonik özeti |
 | `tests/test_inis_kaniti.py` | 26 | `yerde_mi` sözleşmesi (ON_GROUND + irtifa + aynı sysid + ardışık 3) |
 
-### 2.3 Kuru koşu — `scripts/saha_kuru_kosu.py`
-
-Saha zincirinin **halka halka** sahiplik denetimi. Çıktı (ham, 3 Eylül,
-`results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §5):
-
-```text
-  hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor
-  rota           GECTI      rota uretildi: yol_no=2  [31 ms]
-  aktarim        GECTI      uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
-  telsiz halkasi GECTI      run_camera -> KararYayinci -> loopback IKA:
-                            {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika'], 'hata': None}
-  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
-  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i
-------------------------------------------------------------------------------
-GECTI 9 · DUSTU 0 · SAHIPSIZ 1 · ATLANDI 0
-KOPUK HALKALAR (1): motor
-Zincir saha kosumunda TAMAMLANMAZ.
-```
-
-🔴 **"SAHİPSİZ" gizlenmiyor.** Gerçek İKA motor sürücüsü yoktur (R12/T149);
-donanım kararı gelmeden kapanmaz. FDA görev test uçuşunda (21 Eylül) İKA
-kullanılmaz, dolayısıyla bu kopuk halka **o uçuşu engellemez** — ama yarışma
-görevi (§2.2.5) için **açık kalemdir**.
-
-### 2.4 Bu envanterin kapsamadığı şey
+### 4.1.3 Bu envanterin kapsamadığı şey
 
 | kapı kipi | neden koşulamadı |
 |---|---|
@@ -315,7 +151,387 @@ görevi (§2.2.5) için **açık kalemdir**.
 
 ---
 
-## 3. KABUL KAPILARI K0–K8 — sonuç tablosu
+## 4.2 Testlerin uygulama yöntemleri ve test altyapısı gereksinimlerinin nihai hâli · `Y-4-M02`
+
+> *Yönerge: "…ön tasarım ve detay değerlendirme raporlarında tanımlanan
+> testlerin uygulama yöntemleri ile test altyapısı gereksinimlerinin nihai
+> hâlinin ayrıntılı biçimde açıklanması beklenmektedir."*
+
+**Uygulama yöntemi bu projede dört mekanizmadır**; nihai hâli aşağıdadır. Dört
+mekanizma birlikte tek bir soruyu yanıtlar: **bir sayı bu projede nasıl kanıt
+olur.** Test altyapısının nihai hâli (koşum ortamı ve fikstürler) §4.2.6'dadır.
+
+Dört mekanizma birlikte çalışır. Hiçbiri sonradan icat edilmiş bir rapor süsü
+değildir; her biri **bu projede bir kez gerçek zarar önlediği için** kuraldır ve
+zararın kaydı `REVIEW_LOG.md`'de durur (414 başlık · 408 benzersiz kayıt,
+`grep -cE "^### D-[0-9]+"`, 3 Eylül 2026).
+
+### 4.2.1 Ön kayıt — eşik, sonuç görülmeden yazılır (D-107)
+
+**Kural.** Bir kapının eşiği ve **karar sırası**, ölçüm koşulmadan önce bir
+`ON_KAYIT` dosyasına yazılır ve sonuç görüldükten sonra **değiştirilmez**.
+
+**Kuralın doğuşu (D-107, 2026-08-14).** Kayıt kendi gerekçesini şöyle yazar:
+
+```
+NEDEN ONCEDEN. Bu projede tekrarlanan hata olcutu SAYIYI GORDUKTEN SONRA
+yorumlamak oldu: D-85'te alt kumenin azamisine esik oturttum (D-86 curuttu),
+D-90'da tanima bagli bir olcutle %92,7 rapor etmek uzereydim, D-104'te kapiyi
+yanlis modelle olcturdum. Olcut sonuctan SONRA secilirse rasyonalize edilir.
+Bu yuzden esikler BURAYA, sonuc gelmeden yaziliyor ve sabah DEGISTIRILMEYECEK.
+```
+
+**Depodaki hacim:** `results/` altında **36 ön kayıt artefaktı** (35 Markdown +
+1 JSON), `find results -iname "*on_kayit*"` (3 Eylül 2026).
+
+**Ön kaydın somut olarak iş gördüğü dört olay:**
+
+| olay | ön kayıtta ne yazılıydı | ölçüm ne çıktı | sonuç |
+|---|---|---|---|
+| **Çözünürlük 640** (D-377, `results/b4_fps/ON_KAYIT_INFER_SIZE.md` §5) | *"I2 düşerse → RED. I1 ne olursa olsun."* | I1 = **%21,6** (umut verici), I2 = **−0,204** (tavan −0,02) | **RED.** Karar sırası önceden yazılı olduğu için "kırsalda kazandırıyor, arenada biraz kaybettiriyor" tartışması hiç açılmadı |
+| **P2 tampon tavanı** (D-388, `results/p2_seri/ON_KAYIT.md` S5) | tampon **≤ 64 KiB** kalmalı; gerekçe: en uzun meşru çerçevenin 16 katı | ölçülen **1.048.576 bayt** (sınırsız) | **DÜŞTÜ** → kod düzeltildi, **aynı eşikle** yeniden koşuldu; eşik gevşetilmedi |
+| **P5 yayın histerezisi** (D-396, `results/p5_histerezis/ON_KAYIT.md`) | H1: toplam çevrilme ≤ %40 | H1 **düştü ve düşük kaldı** | Eşik **gevşetilmedi**; yerine EK-1 ölçütleri (H1a/H1b) *bileşim görülmeden* yazıldı, ölçüm sonra koşuldu |
+| **T61 iç tutarlılık** (D-401, `results/t61_ic_tutarlilik/ON_KAYIT.md`) | tur **eşiksizdir**; eşik ancak ikinci bir ön kayıtla, tüm kümede süpürülerek yazılır | dört aday **DOĞRULANAMADI** | Keşif turu eşik **üretmedi**; "alt kümede ayrık görünen eşik tümde ayırmaz" dersi (D-86) korundu |
+
+⚠ Ön kayıt **her zaman** kurtarmadı: `results/gece_20260826/ON_KAYIT.md` §15'te
+kullanıcı *"izin veriyorum kurala rağmen"* diye yazdı ve v36 kendi eşiklerini
+geçmeden terfi etti. Bu olay §4.8.2.1'de tam olarak yazılıdır — ön kaydın rolü
+burada da **olayı görünür kılmak** oldu; sessiz bir gevşetme mümkün olmadı.
+
+### 4.2.2 Mutasyon kontrolü — kapı kaldırılınca DÜŞMELİ
+
+**Kural.** Bir test "geçti" demek yetmez; korumak iddia ettiği davranış **koda
+uygulanmış** bir bozma (mutant) ile kaldırıldığında testin **düşmesi** gerekir.
+Uygulanmayan mutasyon başarı sayılmaz (D-370).
+
+**Depodan gerçek örnekler:**
+
+| mutant | nereye uygulandı | suit tepkisi | kayıt |
+|---|---|---|---|
+| `if ekransiz:` korumaları → `if False:` | `codes/rpi_inference.py` | **3 test ERROR** (`cv2.error` yükseldi); dosya sonra `cmp` ile bayt-eş geri yüklendi | D-404 §2 |
+| bağımsız denetçinin 7 mutantı (ekransız + kayıtlı video yolu) | `codes/rpi_inference.py` | ilk turda **4'ü kaçtı** (b, c, e, g) → test 8 ve 9 eklendi → **7/7 YAKALANDI** | D-404 §8 · `results/faz_b_oncesi/ekransiz_denetim/mutant_sonuc_9test.txt` |
+| MUT-1 periyodik akış isteği kaldırıldı · MUT-2 sessizlik alarmı kaldırıldı | `comms/iha_inis_yayinci.py` (T207) | her biri **3 FAIL**; diğer 14 kapı ikisinde de geçti (hedefe özgü) | D-406 §3 |
+| `--streamrate 8` silindi | `jetson_paket/systemd/navitas-cogullayici.service` | **K1 DÜŞTÜ** | D-406 §3 (K2) |
+| Nano kurulum belgesinde `scripts/` → `codes/` | `jetson_paket/JETSON_NANO_KURULUM.md` | test **DÜŞTÜ** (`belge ~/navitas/codes/ diyor, jetson_baslat.sh scripts/ ariyor`) | D-407 §1 |
+| çerçeveleme atlanıp ham bayt fan-out | `comms/seri_hub.py` | **2 test** yakaladı | D-404 §1 |
+
+**🟡 Dürüst mutasyon skoru — bir kapı takımı zayıf çıktı, yazıldı ve sonra kapatıldı.**
+`comms/seri_hub.py` için bağımsız çürütücü **25 mutant** üretti. **İlk ölçümde**
+repo suiti **13'ünü yakaladı** (`results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md`,
+ham loglar `mut_seri_hub/log_*.txt`); kaçanların adları ve neyi açıkta bıraktıkları
+aynı belgede tek tek yazılıdır — iki öğrenilen tüketiciden yalnız sonuncusuna
+fan-out, `OGRENILEN_TAVANI` (32) tahliye mantığı, yeniden açmada `FrameReader`
+sıfırlaması, beş fail-visible sayaç yolu.
+
+**Sertleştirmeden sonra aynı 25 mutant yeniden koşuldu: 24/25.** Kapı takımı
+`test_faz_b_seri_hub.py` 11 → **31 test**, `test_faz_b_protocol_dayaniklilik.py`
+**4 test** (yeni) ile büyüdü; commit `c112381`, kayıt `REVIEW_LOG.md` D-405.
+
+**Tek kaçan hâlâ vardır ve bilerek testsizdir:** `l_arizada_ogrenmez` — seri arıza
+anında yeni tüketici öğrenilmemesi. Marjinal görüldüğü için test yazılmadı; bu
+raporun kuralınca **açık** sayılır ve §4.13'te öyle listelenir. Skorun "13" değil
+"24" olması, ilk sayının silinmesiyle değil, **ikinci ölçümün koşulmasıyla**
+elde edildi; ikisi de artefaktta durur.
+
+**🔴 Ölçen aracın kendisi de ölçülür (D-370).** Mutasyon betiği
+`scripts/olcum/129_t141_mutasyon_olcumu.py`, `\n` ile biten bir desen arıyordu;
+hedef dosya `simulation/scripts/ika_nav.py` **tamamen CRLF**'ti (ölçüldü: 658
+CRLF, 0 çıplak LF). Yani **M2′ mutasyonu hiç uygulanmıyordu** ve betik yine
+`exit 0` dönüyordu — çıkış kodunu okuyan bir kapı bunu **başarı** sanardı.
+İki önlem geldi: desen dosyanın kendi satır sonuna uyarlanır, ve **uygulanmayan
+mutasyon artık `exit 1`**'dir. `OLCULEMEDI != GECTI` kuralı çıkış kodu düzeyine
+indirildi.
+
+### 4.2.3 Çürütücü turları — bağımsız ajan kusur arar
+
+**Kural (Anayasa madde 19).** *"Bir iş, onu yazanın onayıyla kapanmaz."* Kodu
+yazan, kendi kodunu denetlemez; ayrı bir ajan **kusur bulmakla görevlendirilir**
+ve her bulgu **koşulmuş komut + ham çıktı (repro)** ile gelmek zorundadır.
+Bulgular kabul edilmeden önce mimar tarafından **yeniden üretilir**.
+
+| tur | kapsam | kadro | hasat | kanıt |
+|---|---|---|---|---|
+| **D-383** (1 Eyl) | telsiz gecikmesi, YKS tazelik, şekil kapısı, nihai ret | 3 bağımsız ajan (357k token, 74 araç çağrısı) | **4 gerçek kusur**: "308 ms ACK gecikmesi" aslında bir **soket zaman aşımı sabiti**; YKS duvar-saati asimetrisi (saat 30 s geri alınınca BAYAT → TAZE); şekil kapısı "H"yi değil "çerçeveli yapıyı" ölçüyormuş; nihai ret sahnedeki **gerçek pedi** öldürüyormuş | REVIEW_LOG D-383 |
+| **D-405** (3 Eyl) | mühür atlatma, hub protokol/ACK, arıza/kaynak, kuru-vs-gerçek, test vakumu | 5 mercek | **1 KRİTİK + 16 ÖNEMLİ + 18 KÜÇÜK**, ayrıca **5 çürütülemedi** kalemi | `results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md` (30 KB) + `BULGULAR_TAM.md` (81 KB) + repro betikleri |
+| **D-407** (3 Eyl) | D-405/D-406 kapanışlarının denetimi | 5 mercek (kota nedeniyle kısmen ana döngüde koşuldu) | **2 gerçek kusur** (Nano belgesi yanlış dizin; mühür kapsamı eksik) + T207 gerçek topolojide **doğrulandı** + köprü sağlam çıktı | `results/faz_b_oncesi/curutucu_d407/` |
+
+**D-405'in KRİTİK bulgusu, örnek olarak:** sürüm dondurma mührünün özeti
+**çalışma ağacı baytına** bağlıydı (CRLF). Aynı commit'in başka bir checkout'unda
+künye tutmuyordu — Jetson/Linux'ta 18/19, başka bir Windows klonunda 2/19 dosya
+"ihlal" diyordu. Yani şartname §6.1'in *"yarışan yazılım beyanla birebir"*
+iddiasının tek kanıtı **tek makineye bağlıydı** ve saha günü yanlış "MÜHÜR
+İHLALİ" alarmı olasıydı. Öneri ölçüldü de: CRLF→LF normalize sha256 iki klon
+arasında **17/17 paket + defter eşit**.
+
+⚠ **Yordam dürüstlüğü:** D-407 turunda kredi bitince beş mercekli iş akışı
+düştü; ajanların bıraktığı repro betikleri **ana döngüde koşuldu**. Kayıt bunu
+şöyle yazar: *"Ajan sayısı değil koşulan ölçüm kanıttır."* Aynı kayıt kendi
+denetim borcunu da yazar: bu turdaki düzeltmeleri **yazan da onaylayan da aynı
+taraftır**; mimar-dışı denetim açıktır (§4.13.3).
+
+### 4.2.4 Vakum denetimi — test bir şeyi gerçekten kilitliyor mu
+
+**Kural.** Bir testin yeşil olması, bir şey **koruduğu** anlamına gelmez. Test
+hiçbir şeyi bağlamıyorsa (payda boş, mutasyon uygulanmıyor, iki kol aynı şeyi
+koşuyor) o test bir **vakumdur** ve varlığı zararlıdır: güven üretir, koruma
+üretmez.
+
+**Bu projedeki dört vakum, hepsi ölçüldü ve kapatıldı:**
+
+1. **D-15 · Anayasa madde 4 kapısı hiç çalışmamıştı.** Yasak bağımlılık kapısı
+   olarak dolaşan komut `grep -rnE "^\s*(import\|from)\s+(scipy\|skimage\|sklearn)"`
+   idi. `-E` kipinde `\|` alternasyon **değil**, düz bir karakterdir; komut
+   `import\|from` dizisini arar ve **her zaman 0 döner**. Kanıt **pozitif
+   kontrolle** verildi: aynı komut kalıbı kodda kesinlikle var olan `numpy|cv2`
+   için de **0** döndü — yani kapı kördü. Doğru kapı
+   (`git ls-files "*.py" | xargs grep -nE ...`) pozitif kontrolde **46** eşleşme
+   verdi. Madde 4 **fiilen sağlanıyordu**, ama bunu o güne kadar hiçbir koşum
+   kanıtlamamıştı.
+
+2. **D-375 · FP16 denkliğinin ilk ölçümü vakumdu.** İlk koşum "F1/F2 GEÇTİ"
+   verdi ama `bit_es_orani = 1,0`: **893 karenin 893'ünde** maskeler bit-eşti.
+   *Fazla mükemmeldi.* Ölçen araç ölçüldü: ultralytics predictor'ı ilk çağrıda
+   kurulur, sonraki çağrının `half=True`'su **sessizce yok sayılır** — iki kol
+   da FP32 koşmuştu. *"GEÇTİ", hiçliğin ölçümüydü."* Sınıfın adı kayda geçti:
+   **FARKSIZLIK ≠ DENKLİK**. Düzeltme koda kondu (iki ayrı model örneği +
+   `_dtype_dogrula`; tutmazsa betik `OLCULEMEDI` deyip `exit 1`). Gerçek ölçüm
+   sonra geçti (§4.8.3).
+
+3. **Kabul zincirinin kendi vakumu → K8 doğdu.** 2026-08-28'de v37 adayı
+   K0'dan K7'ye **zincirin tamamını** geçti (K1 258/260, K7 87/87 = %100,0) ve
+   "ÜRETİME ALINIR" verdikti aldı. Ama elimizdeki tek gerçekçi karede zemin
+   kaplaması %4,4 → %56,1 çıkıp üretim karar yolunu `ZEMIN_MASKESI_SUPHELI` ile
+   kırdı: model o karede **hiç rota üretemiyordu**. Bunu yakalayan tek şey
+   `tests/test_gercek_arena_kapisi.py` idi ve **zincirin içinde değildi**. K8
+   (`scripts/olcum/155_gercek_kare_kapisi.py`) tam olarak bunu zincire taşır ve
+   **yeni bir eşik uydurmaz**: üretimde zaten var olan zemin sağlamlık kapısını
+   gerçek kare üzerinde koşar. `n = 1`'dir ve betik bunu kendisi yazar.
+
+4. **K7'nin ölçüm kümesi vakuma karşı daraltıldı.** Şerit numarası içerik
+   genişliğinin üçte birlerinden hesaplanır; koridor kapısı bir sınıra denk
+   geldiğinde etiket **tanım gereği** belirsizdir. Ölçüldü (D-312): kabul
+   kümesinin **%54'ü (105/193)** böyledir ve şerit ayrışmasının **%100'ü**
+   oradan gelir. K7 bu yüzden dondurulmuş **88 karelik** bir alt kümede ölçülür
+   (`config/k7_iyi_kosullu_kume.json`); aksi hâlde kapı, tanım gereği belirsiz
+   olan bir şeyi ölçüyormuş gibi yapardı — CONTRACTS bunu açıkça *"D-15 sınıfı
+   vakum kapı"* diye adlandırır.
+
+Ek olarak, **her ölçüm betiğinde vakum kapıları** vardır. Örnek (T99,
+`results/t99_uretim_imzasi/olcum_20260903.json`): `V1_vakum_yok = true`
+(araç maskesi gerçekten dolu — 7/260 karede 252–1787 px), `V3_tek_cikarim = true`
+(kare başına 1 segmentasyon çağrısı, sayaçla), `V4_determinizm = true`.
+🔴 Aynı ölçümün dürüstlük notu: ilk duman koşumunda (8 kare) V1 **düşmüştü**,
+tam kümede geçti — *"küçük örnekle 'vakum' hükmü verilseydi yanlış olurdu."*
+
+### 4.2.5 Bu dördünün ürettiği rapor kuralı
+
+| # | kural | bu bölümde nerede işliyor |
+|---|---|---|
+| 1 | Her sayı bir artefakttan gelir (dosya yolu + üreten betik) | §4.14 Kanıt dizini |
+| 2 | `ÖLÇÜLEMEDİ ≠ GEÇTİ` | §4.13 Kalan test borcu |
+| 3 | Geçilmeyen kapı geçilmedi diye yazılır | §4.8.2 |
+| 4 | Sentetik ölçüm saha başarımı diye sunulmaz | §4.8.1 kapsam uyarısı |
+
+### 4.2.6 Test altyapısının nihai hâli — koşum ortamı ve fikstürler
+
+Yönergenin istediği "test altyapısı gereksinimlerinin nihai hâli" bu projede
+donanım öykünücüsü değil, **gerçek kütüphaneler üzerine kurulan fikstürler**
+demektir. Her biri depoda durur ve koşulabilir.
+
+| altyapı | ne sağlar | nerede |
+|---|---|---|
+| Tek yorumlayıcı | tüm kapılar aynı ortamda koşar; çıplak `python` Windows Store saplaması olduğu için kullanılmaz | `O:\navitas-local-train\venv\Scripts\python.exe` |
+| Sahte Pixhawk | gerçek MAVLink çerçevelerini (HEARTBEAT + GLOBAL_POSITION_INT + EXTENDED_SYS_STATE) UDP'ye basar | `scripts/sahte_pixhawk.py` |
+| SiK köprüsü | iki `serial_for_url("socket://…")` ucunu karşılıklı pompalayan TCP röle; çift yönlü ACK turunu mümkün kılar — tek uçlu `loop://` kılmaz | `tests/test_p2_seri_hat.py` |
+| Kuru koşu fikstürü | kamera ve model halkalarının donanımsız koşulması | `data/kuru_kosu_fikstur/` · `results/saha_kuru_kosu_20260903_120254/ozet.json` |
+| Mutant koşucusu | kapı takımına uygulanan bozmaların otomatik koşumu ve ham log'u | `results/faz_b_oncesi/ekransiz_denetim/mutant_kos.py` |
+| Loopback İKA | gerçek telsiz yokken telsiz halkasının uçtan uca kapatılması | `scripts/saha_kuru_kosu.py` |
+
+⚠ **Bu altyapının kapsamadığı dört şey:** gerçek RF, gerçek Pixhawk, gerçek
+Jetson, gerçek arena. Dördü de §4.13.1'de kalem olarak durur ve hiçbiri
+"fikstürde geçti" diye kapatılmamıştır.
+
+---
+
+## 4.3 Sensör gereksinimleri, sensör yerleşimleri, test takvimi ve detaylı test zaman bütçe planlaması · `Y-4-M03`
+
+> *Yönerge: "…testlerde kullanılacak sensör gereksinimleri, sensör yerleşimleri,
+> test takvimi ve detaylı test zaman bütçe planlaması raporda sunulmalıdır."*
+
+### 4.3.1 Sensör gereksinimleri
+
+FDA görev test aracının (çoklu rotor) karar zincirini besleyen sensörler ve her
+birinin bugün **hangi kapıya** bağlı olduğu:
+
+| sensör | ne besler | bugün bağlı olduğu kapı |
+|---|---|---|
+| Raspberry Pi HQ (IMX477) kamera | görüntü işleme, rota tespiti | §4.8.1 kabul kapıları (**sentetik** küme) · köprü dayanıklılığı §4.10.1 |
+| Pixhawk 6C iç IMU | uçuş kontrolü, `VIBE` kaydı | kapı yok — kalibrasyon ve kabul §4.6 / §4.4 |
+| Holybro M9N GNSS | konum, `GLOBAL_POSITION_INT` | §4.9.1 kapı G1 (irtifa 30,0 ± 0,05 m; konum 1e-6 derece) — **sahte Pixhawk akışında** |
+| Uçuş kontrolcüsü `EXTENDED_SYS_STATE` türevi | iniş kanıtı (`yerde_mi`) | §4.9.1 G3b/G4 · §4.9.4 T207 akış isteği |
+| Pitot tüpü | **FDA görev test aracında YOKTUR** — çoklu rotor hava hızı sensörü taşımaz; pitot yarışma final aracının (sabit kanat) kalemidir | kapsam dışı (bu araçta) |
+
+### 4.3.2 Sensör yerleşimleri
+
+**BEYAN GEREKLİ (insan):** her sensörün araç üzerindeki fiziksel yerleşimi —
+GNSS direği yüksekliği, pusula ile güç kablosu arasındaki ayrım, kamera bakış
+açısı ve titreşim yalıtımı, telsiz anten yönelimi. Montaj 5–19 Eylül'de
+yapılacak; yerleşim ölçüsü ve fotoğrafı bu alt bölüme girecektir.
+
+### 4.3.3 Test takvimi — planlanan uçuş test kapıları (6–19 Eylül)
+
+| adım | ne | kapı |
+|---|---|---|
+| 3.1 | İlk hover (Stabilize/AltHold, 2–3 m, 2 dk) — pervaneler ilk kez takılır | log `VIBE`, EKF yeşil, kırım yok |
+| 3.2 | Loiter + kısa Auto (30 m) + geofence; **iniş kanıtı canlı** | YKS'de "İNİŞ" (IHA_LANDED ACK'li) |
+| 3.3 | Algı canlı: 30 m'de OPEN_ROUTE YKS'de | yanlış güzergâh **0** |
+| 3.4 | Tam prova ×3 (kalkış → tarama → tespit → hakem onayı → iniş) | **≤ 10 dk**, 3 temiz prova |
+| 3.5 | Sıkı prova: kapalı kutudan, kronometre, hands-off | **0 müdahale** |
+| 3.6 | Sürüm dondurma (türev kaydı → commit → `--dondur` → künye commit) | künye repoda, `--dogrula` **0** |
+
+⚠ **Tek pil (4S 10 Ah) + iMAX B6 ⇒ günde en fazla 2 uçuş.** Bu, prova sayısının
+en sert kısıtıdır ve planın kendisinde yazılıdır.
+
+### 4.3.4 Detaylı test zaman bütçe planlaması
+
+🔴 **ÖLÇÜLEMEDİ: uçuş başına gerçek görev süresi (kalkış → tarama → tespit →
+hakem onayı → iniş) ölçülmedi; ilk gerçek sayı 6–19 Eylül prova uçuşlarından
+gelecektir.** Bugün elde olan tek uçuş bütçesi kısıtı yukarıdaki pil kısıtıdır
+(günde en fazla 2 uçuş) ve prova kapısı **≤ 10 dk**'dır (§4.3.3, adım 3.4).
+
+Yer tarafında **ölçülmüş** zaman bütçeleri şunlardır; karar zincirinin tazelik
+penceresini (`YKS_TESPIT_TAZELIK_S = 5,0` s) bağlarlar:
+
+| bütçe kalemi | ölçülen | nerede |
+|---|---|---|
+| tam test paketi koşum süresi | **390,534 s** (1896 test) | §4.1.2 |
+| uçtan uca kare gecikmesi (üretim zinciri + telsiz halkası) | **p95 0,113 s** | §4.9.5 |
+| model yükleme (uçuş öncesi, bütçe dışı) | **2,64 s** | §4.9.5 |
+| rota üretimi, kuru koşu halkası | **31 ms** | §4.11.1 |
+| hub UDP→seri gecikmesi (en kötü koşul B) | p95 **70,8 / 76,8 ms**, maks **79,7 ms** | §4.9.3 |
+
+---
+
+## 4.4 Ekipman kabul testleri — İHA ve İKA'da kullanılacak tüm ekipmanlar · `Y-4-M04`
+
+> *Yönerge: "Ekipman kabul testleri kapsamında, İHA ve İKA'da kullanılacak tüm
+> ekipmanların kabul testlerinin gerçekleştirilmiş olması ve elde edilen
+> sonuçların raporda sunulması gerekmektedir."*
+
+🔴 **ÖLÇÜLEMEDİ: hiçbir ekipmanın fiziksel kabul testi yapılmadı. Donanım kutusu
+5 Eylül 2026'da açılacak; kabul testleri 5–19 Eylül arasında koşulacak ve
+sonuçları bu alt bölüme sayıyla girecektir.**
+
+Kabul testi bekleyen ekipmanlar ve her biri için **önceden yazılmış** kabul
+kapısı aşağıdadır. Sağ sütunda bugün **hiçbir sayı yoktur**; boşluk bilerek
+boştur.
+
+| ekipman | koşulacak kabul kapısı | bugünkü sonuç |
+|---|---|---|
+| Jetson Nano 4GB | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | kutu açılmadı |
+| Pixhawk 6C + PM02 | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | kutu açılmadı |
+| Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | kutu açılmadı |
+| Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | kutu açılmadı |
+| 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | kutu açılmadı |
+| FCHUB-12S V2 · 5008 340KV × 4 · 12×10 pervane | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | kutu açılmadı |
+| 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | kutu açılmadı |
+| FS-i6 kumanda | menzil ve failsafe davranışı (§4.5, §4.12) | kutu açılmadı |
+| İKA ekipmanları | 🔴 **gerçek İKA motor sürücüsü YOKTUR** (R12/T149); İKA ekipman listesi henüz kapalı değildir (§4.11) | ekipman seçilmedi |
+
+Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur.
+
+---
+
+## 4.5 Kumanda ve telemetri menzil testleri · `Y-4-M05`
+
+> *Yönerge: "…kumanda ve telemetri sistemlerine yönelik sahada gerçekleştirilen
+> menzil testlerinin sonuçları paylaşılmalıdır."*
+
+🔴 **ÖLÇÜLEMEDİ: gerçek SiK 433 MHz çifti ve FS-i6 kumanda sahada denenmedi;
+menzil (metre), paket kaybı ve RTT ölçülmedi. Ölçüm 5–19 Eylül'de
+`scripts/sik_rf_olc.py` ile koşulacak; kapı RTT p95 < 0,2 s'dir.**
+
+**Menzilin YERİNE GEÇMEYEN, bugün elde olan şey:** taşıyıcı katmanın gerçek
+`pyserial` bayt akışında koştuğu ölçüm (§4.9.2) ve hub gecikmesi (§4.9.3).
+İkisi de kablo ya da `socket://` üzerindedir; RF yoktur.
+
+🔴 DDR'de yazılan *">%98 paket başarımı, 300 m"* iddiasının bugün **hiçbir
+kanıtı yoktur** (R20, `results/sartname_bosluk/rapor.md`). Bu iddia menzil
+ölçümü koşulana kadar bu raporda **tekrarlanmamıştır**.
+
+---
+
+## 4.6 IMU, pusula ve pitot tüpü kalibrasyonu kanıtları · `Y-4-M06`
+
+> *Yönerge: "Sensör kalibrasyonunu doğrulamak için ise IMU, pusula ve pitot tüpü
+> kalibrasyonlarının gerçekleştirildiğini gösteren kanıtların raporda yer alması
+> beklenmektedir."*
+
+🔴 **ÖLÇÜLEMEDİ: Pixhawk 6C eline alınmadığı için IMU ve pusula kalibrasyonu hiç
+koşulmadı; kalibrasyon kanıtı (ekran çıktısı, parametre dökümü) yoktur.
+Kalibrasyon 5 Eylül kutu açılışında yapılacak ve kanıtı buraya girecektir.**
+
+| kalibrasyon | hangi araçta | bugünkü kanıt |
+|---|---|---|
+| IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | yok |
+| Pusula (manyetometre) | FDA görev test aracı (çoklu rotor) | yok |
+| Pitot tüpü | 🔴 FDA görev test aracında **pitot tüpü yoktur** — çoklu rotor hava hızı sensörü taşımaz. Pitot, yarışma final aracının (sabit kanat + mancınık) kalemidir ve o araç **henüz üretilmemiştir**. | kapsam dışı (bu araçta) |
+
+⚠ Pixhawk parametrelerinin kendisi **repo dışıdır** (R17). Kalibrasyon sonrası
+parametre dökümü `config/pixhawk/` altına kanıt olarak alınacaktır
+(§4.13.1 kalem 9).
+
+**BEYAN GEREKLİ (insan):** kalibrasyonun yapıldığı tarih, kullanılan yer
+istasyonu yazılımının adı ve sürümü, kalibrasyon sonrası `COMPASS_*` ve `INS_*`
+parametre dökümü.
+
+---
+
+## 4.7 Görev icra simülasyonu · `Y-4-M07`
+
+> *Yönerge Bölüm 4, Bölüm 3.3.3'teki simülasyonun **aynısını** ister: İHA ve
+> İKA'nın üç boyutlu CAD modelleriyle sanal görev icrası (kalkış → görüntü
+> işleme ile rota tespiti → verinin İKA'ya aktarılması → İKA'nın otonom
+> sürüşü), otonom karar verme **başarı oranları**, **sanal görev süresi**,
+> sistem tepkileri **grafiklerle** ve ekran kaydı videosunun **linki**.*
+
+**Çapraz atıf — burada tekrarlanmaz.** Bu gereksinimin sahibi **Bölüm 3.3.3**
+(`Y-3.3.3-M01`, `Y-3.3.3-M02`, `Y-3.3.3-M03`) olup Bölüm 4 aynı çalışmayı ikinci
+kez yazmaz.
+
+🔴 **Bugünkü durum, Bölüm 3.3.3 ile birebir aynıdır: yönergenin istediği CAD
+modelli görev icra simülasyonu çıktıları — başarı oranı, sanal görev süresi,
+grafikler ve ekran kaydı videosu linki — bu raporda YOKTUR.**
+
+Dürüstlük notu: depoda bir Gazebo simülasyon ağacı **vardır**
+(`simulation/scripts/` altında `mission_demo.py`, `ika_nav.py`,
+`iha_flight.py`, `drive_ika.py`, `score.py`). Bu bölümün ölçüm defterinde o
+ağaçtan gelen tek kayıt **D-370**'tir ve o da bir simülasyon başarımı değil,
+**ölçen aracın kendi kusurudur**: `simulation/scripts/ika_nav.py` tamamen
+CRLF olduğu için mutasyon betiğinin deseni hiç uygulanmıyordu (§4.2.2).
+Yani simülasyon ağacından bu rapora giren **hiçbir başarı sayısı yoktur**.
+
+⚠ Bu bölümdeki sentetik arena ölçümleri (§4.8.1) **görev icra simülasyonu
+değildir**: CAD modeli, kalkış-iniş ve İKA otonom sürüşü içermez; yalnız
+algı–karar zincirini dondurulmuş bir kare kümesi üzerinde ölçer. Sentetik kare
+kümesi görev icra simülasyonu diye sunulmamıştır.
+
+---
+
+## 4.8 Görüntü işleme performansı — test sonuçları ve doğruluk matrisleri · `Y-4-M08`
+
+> *Yönerge: "Görüntü işleme performansı, rota tespiti için kullanılan yapay zekâ
+> veya görüntü işleme modelinin yarışma sahasına benzer koşullarda (farklı ışık
+> açıları, gölgeler vb.) gerçekleştirilen test sonuçları ve doğruluk matrisleri
+> raporda sunulmalıdır."*
+
+🔴 **Yönergenin "yarışma sahasına benzer koşullar" şartı BUGÜN
+KARŞILANMAMIŞTIR.** Aşağıdaki kabul kümesi sentetiktir ve farklı ışık açısı /
+gölge çeşitliliği içermez; gerçek koşul ölçümü §4.13.1 kalem 1'dedir. Elde olan
+gerçek görüntü, arenaya **dağılım dışı** olan DJİ uçuş kareleridir ve onlarla
+alınan sonuç §4.8.2.1 ile §4.8.2.3'te **geçilmemiş eşik** olarak yazılıdır.
+
+### 4.8.1 Kabul kapıları K0–K8 — sonuç tablosu
 
 **Ölçüm:** `scripts/olcum/65_kabul_denetcisi.py` · verdikt JSON
 `scripts/olcum/results/t63/t150_baglama_v36_kabul_verdikt.json` (1 Eylül 2026,
@@ -357,15 +573,13 @@ değil, **etiket kapsamı**dır. K7 düşerse önce etiket kapsamı denetlenir.
 `K5_figur_bilgi_durum = "OLCULEMEDI"`. Bu satır verdikt JSON'ında böyle durur ve
 "geçti" sayılmaz.
 
----
-
-## 4. GEÇİLMEYEN KAPILAR — gizlenmiyor
+### 4.8.2 Geçilmeyen ve düşen kapılar — gizlenmiyor
 
 Bu alt bölüm bilerek öne alınmıştır. Üretim modeli, kendi ön kayıtlı
 eşiklerinden **ikisini geçmeden** terfi etmiştir; bunun gerekçesi, bedeli ve
 eşiklerin **değiştirilmediği** aşağıda yazılıdır.
 
-### 4.1 🔴 v36 · gerçek-kare eşikleri GEÇİLMEDİ
+#### 4.8.2.1 🔴 v36 · gerçek-kare eşikleri GEÇİLMEDİ
 
 **Kapı:** `scripts/olcum/142_gece_olcum.py`, DOĞRULAMA kümesi `dji/DOGRULAMA/`
 = `DJI_20260822172613_0038_D`. CONTRACTS §12 gereği 0038 kareleri **eğitime ve
@@ -414,7 +628,7 @@ Geri dönüş yolu açık tutulmuştur.
 **Bağımsız çürütücü:** `results/gece_20260826/v7a_curut/` — üç lensli tur terfi
 engeli bulmadı; bulmadığı da kayıtlıdır.
 
-### 4.2 🔴 Çözünürlük 640 denemesi REDDEDİLDİ (D-377)
+#### 4.8.2.2 🔴 Çözünürlük 640 denemesi REDDEDİLDİ (D-377)
 
 `INFER_SIZE` 512 → 640 denendi. Karar sırası **sonuç görülmeden** yazılıydı.
 
@@ -433,7 +647,7 @@ körlük 51 → 52** (kötüleşme). Kapıyı belirleyen en uzun koşudur.
 ⚠ Ön kayıt olmasaydı I1'in %21,6'sı ile I2'nin −0,204'ü aynı masaya konur ve
 "kırsalda kazandırıyor, arenada biraz kaybettiriyor" diye **tartılabilirdi**.
 
-### 4.3 🔴 Ölçüm havuzunda sızıntı bulundu ve hüküm düzeltildi (D-376)
+#### 4.8.2.3 🔴 Ölçüm havuzunda sızıntı bulundu ve hüküm düzeltildi (D-376)
 
 İlk gerçek-kare genelleme ölçümünde kullanılan havuzun **%62'si modelin eğitim
 kümesindeydi**. Temizlenince:
@@ -452,7 +666,7 @@ ve karar kare başınadır ⇒ `GEREKLI_FPS ≥ 1 / (5 · p)`. En kötü uçuşt
 `1 / (5 × 0,326) = 0,61 FPS`. **Saha `p`'si ÖLÇÜLEMEDİ** — gerçek arena
 görüntüsü yoktur; iki sayı alt/üst çerçevedir ve **arası tahmin edilmemiştir**.
 
-### 4.4 Düşen ve doğrulanamayan diğer ölçütler (tam liste)
+#### 4.8.2.4 Düşen ve doğrulanamayan diğer ölçütler (tam liste)
 
 | # | ölçüt | ne oldu | kayıt |
 |---|---|---|---|
@@ -463,9 +677,44 @@ görüntüsü yoktur; iki sayı alt/üst çerçevedir ve **arası tahmin edilmem
 | 5 | D-379 · şekil kapısının "H harfini doğrulama" iddiası | **DARALTILDI**: çürütücü 17 H-olmayan şekil sentezledi, 16'sı geçti. Kapı artık *"ped yapısında"* olduğunu doğrular, **harf kimliğini doğrulamaz** | D-383 §3 |
 | 6 | CONTRACTS §12.1 gerçek-kare şerit tabanı (2026-08-27, referans v3) | Kayıt *"Üretim modeli bu kapıyı geçmiyor — kullanıcı kararıyla üretimde kalır; kapı gelecek terfileri bağlar"* der. ⚠ **DOĞRULANACAK:** o satır yazıldığında üretim modeli v35'ti; v36 sonrası yeniden koşulmuş bir ölçüm bu bölümde bulunamadı | CONTRACTS §12.1 |
 
+### 4.8.3 FP16 karar denkliği (D-375) — vakum kapatıldıktan sonra
+
+| ölçüt | eşik | ölçülen | sonuç |
+|---|---|---|---|
+| F1 · zarar yönü (FP32 doğruyken FP16 yanlış şerit) | 0 | **0/260** | GEÇTİ |
+| F2 · karar uyuşması | ≥ 0,98 | **631/633 = 0,9968** | GEÇTİ |
+
+Dört uyuşmazlığın dördü sınır vakasıdır; biri **lehimize** (`sa_000216`: FP32
+yanlış şerit, FP16 doğru). Kalan pay yalnız TensorRT katman birleştirmesidir ve
+**Jetson'da `.engine` ile ölçülecektir** (§4.13.1).
+
+### 4.8.4 Doğruluk matrisleri
+
+🔴 **ÖLÇÜLEMEDİ: yönergenin istediği anlamda bir doğruluk (karışıklık) matrisi
+üretilmedi.** Nedeni uydurma değil, ölçülmüş bir olgudur: kabul kümesinin
+referansı YOLO etiketinden rasterlenen maskedir ve **etiketsiz alan geçilemez
+sayılır** (§4.8.1, D-315). Böyle bir referans üzerine kurulacak sınıf-karşı-sınıf
+matrisi, etiket kapsamı eksikliğini model hatası gibi gösterirdi — `sa_000090`
+karesinde model şerit 3'te 89.913 px serbest görürken yer gerçeği 18.042 px
+görür, engel pikselleri ise neredeyse aynıdır (42.123 ↔ 43.781).
+
+Bu yüzden başarım **karar düzeyinde** ölçülmüştür: K7 doğrudan *"yayınlanan
+şerit referansla aynı mı"* sorusunu sorar ve **84/85 = %98,8** yanıtını verir
+(§4.8.1). Gerçek arena karesi geldiğinde (§4.13.1 kalem 1) matris, K7'nin
+ölçtüğü şerit kimliği üzerinden üretilecektir.
+
 ---
 
-## 5. DONANIM-ÖNCESİ ENTEGRASYON TESTLERİ (Faz A / Faz B)
+## 4.9 Haberleşme testi — paket yapısı, veri hızı ve iletişim gecikmesi · `Y-4-M09`
+
+> *Yönerge: "Haberleşme sistemi açısından ise İHA ile İKA arasında ve ayrıca yer
+> istasyonu ile araçlar arasında aktarılan veri paketlerinin nihai yapısı,
+> kullanılan veri hızı ve iletişim gecikmesi test sonuçları raporda
+> belirtilmelidir."*
+
+**Paket yapısının nihai hâli Bölüm 3.3.4'tedir (`Y-3.3.4-M03`); bu alt bölümde o
+yapının ÖLÇÜLMÜŞ davranışı — gecikme, çerçeveleme dayanıklılığı, kayıp —
+yazılıdır.** Ölçümlerin tamamı donanım gelmeden koşuldu (Faz A / Faz B).
 
 Kullanıcının emri açıktı: *"aviyonik geldiği an yazılım için ek bir şey yapmamız
 gerekmesin."* Aşağıdaki testlerin ortak sınıfı **`KOD_VAR ≠ KOŞUYOR`**: bu
@@ -473,7 +722,7 @@ katmanlar bugüne dek yalnız sahte nesnelerle sınanmıştı; `pymavlink` ve
 `pyserial` venv'de **kurulu bile değildi** (2 Eylül 2026 öncesi
 `find_spec` = `None`).
 
-### 5.1 P1 — MAVLink katmanı ilk kez GERÇEK çerçevelerle koştu (D-387 / D-389)
+### 4.9.1 P1 — MAVLink katmanı ilk kez GERÇEK çerçevelerle koştu (D-387 / D-389)
 
 `pymavlink 2.4.49` kuruldu; `scripts/sahte_pixhawk.py` gerçek MAVLink
 çerçeveleri (HEARTBEAT + GLOBAL_POSITION_INT + EXTENDED_SYS_STATE) UDP'ye basar.
@@ -500,7 +749,7 @@ yayıncıyı başlat"* yordamı da tek başına yetmiyordu. **Kapanış (D-389):
 birlikte — yayıncı son tarihe kadar döngüde çağırır, `yerde_mi` IN_AIR örneğini
 sayacı sıfırlayarak tolere eder. "Ardışık 3 temiz örnek" garantisi korundu.
 
-### 5.2 P2 — saha taşıyıcısı (SiK seri) ilk kez GERÇEK bayt akışında koştu (D-388)
+### 4.9.2 P2 — saha taşıyıcısı (SiK seri) ilk kez GERÇEK bayt akışında koştu (D-388)
 
 **Neden sınıfsal:** UDP datagramdır, mesaj sınırlarını korur; seri hat **bayt
 akışıdır**, sınır yoktur. Çerçeveleme (`protocol.FrameReader`, newline) bu farkı
@@ -531,9 +780,9 @@ düzeltildi, **aynı eşikle** yeniden koşuldu.
 
 ⚠ **Bu ölçümün KANITLAMADIĞI:** gerçek RF yoktur — menzil, paket kaybı, SiK'in
 kendi çerçeveleme/ECC katmanı, baud uyuşmazlığı burada yoktur. **433 MHz RF
-ölçümü 5 Eylül'e ertelendi ve hâlâ ölçülmemiştir** (§6).
+ölçümü 5 Eylül'e ertelendi ve hâlâ ölçülmemiştir** (§4.13.1).
 
-### 5.3 SiK hub — uçtan uca çoğullama ve gecikme (D-404 / D-405)
+### 4.9.3 SiK hub — uçtan uca çoğullama ve gecikme (D-404 / D-405)
 
 **Sorun:** Jetson'da Pixhawk seri hattı **tek sahiplidir**; üretimde üç ayrı
 süreç aynı `/dev/ttyUSB0`'ı istiyordu. Çözüm: `comms/seri_hub.py` —
@@ -559,12 +808,12 @@ artefaktı ağırlıklıdır ve Windows zamanlayıcı granülerliği ölçüldü
 zaman aşımı fiilen **15,6 ms**; boş `hub.poll` **46,8 ms**, Linux'ta ~21 ms).
 **Gerçek Jetson/Linux ölçümü yapılmadı.**
 
-**Aynı turda bulunan ve kapatılmayan hub kusurları (§6'ya taşındı):**
+**Aynı turda bulunan ve kapatılmayan hub kusurları (§4.13'e taşındı):**
 derin iç içe JSON satırında `RecursionError` ile hub sürecinin ölmesi; "portu
 tek başına açar" garantisinin kodda zorlanmaması (`SO_REUSEADDR` + `exclusive`
 yok → çift başlatma sessiz).
 
-### 5.4 T207 — akış isteği (D-406 / D-407) · KRİTİK sınıf bulgu
+### 4.9.4 T207 — akış isteği (D-406 / D-407) · KRİTİK sınıf bulgu
 
 **Bulgu (P kolu, ArduCopter kaynağından okundu):** `EXTENDED_SYS_STATE`,
 Copter-4.5 `GCS_Mavlink.cpp` STREAM_*_msgs dizilerinin **hiçbirinde yoktur** —
@@ -592,7 +841,53 @@ istek. Sabitler sözleşmeye girdi (`MAVLINK_AKIS_ISTEK_ARALIGI_S = 10`,
 akran görülmeden `write` hiçbir şey göndermez **ve hatayı yutar** — istek bu
 yüzden akran görülene dek ertelenir.
 
-### 5.5 Kamera köprüsü — dayanıklılık (D-407 §2)
+### 4.9.5 Uçtan uca kare gecikmesi (D-382 / D-383)
+
+33 ölçülen gerçek karede (+3 ısınma karesi), üretim zinciri + gerçek telsiz halkası (UDP loopback ACK):
+**p95 0,113 s** — tazelik penceresinin (5,0 s) çok altında. Model yükleme 2,64 s
+(uçuş öncesi, bütçe dışı).
+
+🔴 **İlk ölçüm yanlıştı ve düzeltmesi kayıtlı:** ilk ölçümdeki ~0,46 s'nin
+~0,3 s'si bir **soket zaman aşımı sabiti** çıktı (bağımsız çürütücü buldu,
+D-383); düzeltme sonrası telsiz payı ~2 ms (`p50 307,6 → 2,3 ms`).
+⚠ Bu hüküm **yalnız UDP loopback yapılandırmasınındır**: üretim seri
+varsayılanlarıyla çevrim 1,0 s ölçülmüştü. **Seri telsiz hattı üzerinden uçtan
+uca gecikme ÖLÇÜLMEDİ.**
+
+### 4.9.6 Veri hızı ve ölçülemeyen haberleşme kalemleri
+
+**Ölçülmüş veri hızı — yalnız MAVLink akış isteği düzeyinde.** Üretim, akışı
+`MAV_CMD_SET_MESSAGE_INTERVAL` ile **kendisi ister**; gerçek topolojide geri
+gelen komutlar **511/33 @125000 µs (8 Hz)** ve **511/245 @500000 µs (2 Hz)**
+olarak ölçüldü (§4.9.4). Jetson tarafında `--streamrate 8` systemd biriminde
+kilitlidir; silindiğinde kapı K1 düşer (mutant tablosu, §4.2.2).
+
+🔴 **ÖLÇÜLEMEDİ: SiK telsiz hattının gerçek etkin veri hızı, paket kaybı ve
+menzili ölçülmedi; ölçüm 5–19 Eylül'dedir (§4.5).**
+
+🔴 **ÖLÇÜLEMEDİ: seri telsiz hattı üzerinden uçtan uca gecikme ölçülmedi.
+Bugünkü p95 0,113 s hükmü yalnız UDP loopback yapılandırmasınındır; üretim seri
+varsayılanlarıyla çevrim 1,0 s ölçülmüştü (§4.9.5).**
+
+🔴 **ÖLÇÜLEMEDİ: İHA↔İKA hattı iki gerçek araç arasında hiç koşulmadı. Bugünkü
+kanıt loopback İKA'dır (§4.11.1) ve gerçek İKA motor sürücüsü yoktur
+(R12/T149).**
+
+---
+
+## 4.10 Sistem üzerinde gerçekleştirilen tüm yer testleri · `Y-4-M10`
+
+> *Yönerge: "Bunlara ek olarak, sistem üzerinde gerçekleştirilen tüm yer testleri
+> raporda sunulmalıdır."*
+
+⚠ **Kapsam dürüstlüğü:** bu alt bölümdeki yer testlerinin tamamı **yazılım yer
+testidir**. Araç yerde, motorlar bağlı ve pervaneler takılı hâlde yapılan bir
+yer testi (motor çalıştırma, titreşim kaydı, ARM denemesi) **hiç yapılmamıştır**;
+araç monte edilmemiştir (§4.13.1 kalem 4). Donanım-öncesi ölçümlerin ortak
+sınıfı (`KOD_VAR ≠ KOŞUYOR`) §4.9'da yazılıdır ve bu alt bölüm için de
+geçerlidir.
+
+### 4.10.1 Kamera köprüsü — dayanıklılık (D-407 §2)
 
 Jetson Nano'nun CSI kamerası (IMX477) `nvarguscamerasrc` ister; üretim çıkarım
 süreci ise sistem Python'undan ayrıdır. Köprü (`scripts/kamera_koprusu.py`,
@@ -608,7 +903,7 @@ Python 3.6 uyumlu) MJPEG olarak servis eder.
 ⚠ **Test vakumu (KÜÇÜK, AÇIK):** K5 kapısı yalnız **söz dizimi** bakıyor
 (walrus/posonly/match); **API adı** yakalanmıyor. Öneri: K5'e API kara listesi.
 
-### 5.6 Ekransız kip (D-404 §2 / §8)
+### 4.10.2 Ekransız kip (D-404 §2 / §8)
 
 **Bloker:** `run_camera` ve `run_video` her karede **koşulsuz** `cv2.imshow`
 çağırıyordu. DISPLAY'siz Jetson'da systemd altında ilk karede `cv2.error` →
@@ -618,9 +913,9 @@ Python 3.6 uyumlu) MJPEG olarak servis eder.
 🔴 Kritik şart: **karar yolu bayt-eş aynıdır** (Anayasa madde 15).
 Bağımsız denetçi bunu doğruladı: karar yolu **6 kipte (4 video + 2 kamera) 23
 kayıtlık izle birebir**; `frame_idx`/`fps_buf` artışları `continue`'lardan
-öncedir. Hüküm **KOŞULLU GEÇTİ** oldu; şartı §1.2'deki mutant tablosunda.
+öncedir. Hüküm **KOŞULLU GEÇTİ** oldu; şartı §4.2.2'deki mutant tablosunda.
 
-### 5.7 Kuru koşular — `results/faz_b_oncesi/` (D-404 §4)
+### 4.10.3 Kuru koşular — `results/faz_b_oncesi/` (D-404 §4)
 
 Her dosyanın son satırı **gerçek çıkış kodudur**.
 
@@ -636,40 +931,106 @@ Her dosyanın son satırı **gerçek çıkış kodudur**.
 🔴 Bu koşumların **hiçbiri saha kanıtı değildir**; yalnız *"ilk koşum kör
 olmayacak"* kanıtıdır.
 
-### 5.8 FP16 karar denkliği (D-375) — vakum kapatıldıktan sonra
+---
 
-| ölçüt | eşik | ölçülen | sonuç |
-|---|---|---|---|
-| F1 · zarar yönü (FP32 doğruyken FP16 yanlış şerit) | 0 | **0/260** | GEÇTİ |
-| F2 · karar uyuşması | ≥ 0,98 | **631/633 = 0,9968** | GEÇTİ |
+## 4.11 Alt sistemlerin bir arada ve yerde bütünleşik çalıştığını gösteren kanıtlar · `Y-4-M11`
 
-Dört uyuşmazlığın dördü sınır vakasıdır; biri **lehimize** (`sa_000216`: FP32
-yanlış şerit, FP16 doğru). Kalan pay yalnız TensorRT katman birleştirmesidir ve
-**Jetson'da `.engine` ile ölçülecektir** (§6).
+> *Yönerge: "Entegrasyon öncesinde tüm alt sistemlerin bir arada çalışabildiğini
+> ve yerde bütünleşik olarak çalıştırıldığını gösteren kanıtların raporda yer
+> alması beklenmektedir."*
 
-### 5.9 Uçtan uca kare gecikmesi (D-382 / D-383)
+Bu gereksinimin bugünkü tek kanıtı **saha zincirinin halka halka kuru
+koşumu**dur; kopuk halka gizlenmemiştir.
 
-33 ölçülen gerçek karede (+3 ısınma karesi), üretim zinciri + gerçek telsiz halkası (UDP loopback ACK):
-**p95 0,113 s** — tazelik penceresinin (5,0 s) çok altında. Model yükleme 2,64 s
-(uçuş öncesi, bütçe dışı).
+### 4.11.1 Kuru koşu — `scripts/saha_kuru_kosu.py`
 
-🔴 **İlk ölçüm yanlıştı ve düzeltmesi kayıtlı:** ilk ölçümdeki ~0,46 s'nin
-~0,3 s'si bir **soket zaman aşımı sabiti** çıktı (bağımsız çürütücü buldu,
-D-383); düzeltme sonrası telsiz payı ~2 ms (`p50 307,6 → 2,3 ms`).
-⚠ Bu hüküm **yalnız UDP loopback yapılandırmasınındır**: üretim seri
-varsayılanlarıyla çevrim 1,0 s ölçülmüştü. **Seri telsiz hattı üzerinden uçtan
-uca gecikme ÖLÇÜLMEDİ.**
+Saha zincirinin **halka halka** sahiplik denetimi. Çıktı (ham, 3 Eylül,
+`results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §5):
+
+```text
+  hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor
+  rota           GECTI      rota uretildi: yol_no=2  [31 ms]
+  aktarim        GECTI      uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
+  telsiz halkasi GECTI      run_camera -> KararYayinci -> loopback IKA:
+                            {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika'], 'hata': None}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i
+------------------------------------------------------------------------------
+GECTI 9 · DUSTU 0 · SAHIPSIZ 1 · ATLANDI 0
+KOPUK HALKALAR (1): motor
+Zincir saha kosumunda TAMAMLANMAZ.
+```
+
+🔴 **"SAHİPSİZ" gizlenmiyor.** Gerçek İKA motor sürücüsü yoktur (R12/T149);
+donanım kararı gelmeden kapanmaz. FDA görev test uçuşunda (21 Eylül) İKA
+kullanılmaz, dolayısıyla bu kopuk halka **o uçuşu engellemez** — ama yarışma
+görevi (§2.2.5) için **açık kalemdir**.
+
+### 4.11.2 Aynı koşumun makine okunur çıktısı
+
+`results/saha_kuru_kosu_20260903_120254/ozet.json` aynı zinciri JSON olarak
+tutar: `halka_sirasi` alanı on halkayı sırayla sayar (kamera → model_yukleme →
+cikarim → maske → olcek → hedef_konumu → rota → aktarim → surus_izni → motor);
+her halka için `durum`, `sebep` ve `dosya` alanları vardır ve sözleşme bağı
+`CONTRACTS.md §11` olarak dosyanın içinde yazılıdır.
+
+🔴 **Bu bir DONANIM entegrasyon kanıtı değildir.** Halkaların tamamı yazılım
+tarafındadır; kamera halkası fikstür karesiyle
+(`data/kuru_kosu_fikstur/images/sa_000000.jpg`) koşulmuştur. Gerçek kamera,
+gerçek Pixhawk ve gerçek telsizle **aynı anda** koşulan bir yer entegrasyonu
+5–19 Eylül'dedir ve bugün yoktur.
 
 ---
 
-## 6. KALAN TEST BORCU — ölçülmeyen, "sorun çıkmadı" diye yazılmaz
+## 4.12 Arıza emniyet doğrulaması — eve dönüş, motor kesme · `Y-4-M12`
 
-### 6.1 Ölçülmemiş olanlar
+> *Yönerge: "…arıza emniyet doğrulaması kapsamında, gerekli arıza durumlarının
+> oluşması halinde sistemin verdiği tepkilerin (eve dönüş, motor kesme vb.)
+> **sahada test edildiğini** gösteren verilerin raporda sunulması
+> gerekmektedir."*
+
+🔴 **ÖLÇÜLEMEDİ: hiçbir arıza emniyet tepkisi sahada test edilmedi. Eve dönüş
+(RTL), motor kesme (DISARM), geofence ihlali ve telemetri kaybı davranışları
+gerçek araçta hiç tetiklenmedi; ölçüm 6–19 Eylül uçuş testlerindedir
+(§4.3.3).**
+
+**Saha testinin YERİNE GEÇMEYEN, bugün elde olan şey**, arıza emniyet
+komutlarının **yazılım yolunun** kapı altında olmasıdır:
+
+| tepki | yazılım yolu | koşulan kapı |
+|---|---|---|
+| Eve dönüş (RTL) ve iniş (LAND) | `comms/iha_komut_alici.py` — `CMD_RTL` / `CMD_LAND`, ARM ile **aynı** fail-closed kaynak/zaman/oturum kapısından ve güçlü Pixhawk ACK şartından geçer | `tests/test_iha_rtl_land.py` — **6 test** (`grep -c "def test_"`); üçü mutasyon testidir: yanlış `MAV_CMD` güçlü ACK sayılmaz · reddedilen LAND ACK'i YKS'ye ACK üretmez · bayat RTL/LAND eyleyiciye ulaşmaz |
+| Motor kesme (DISARM) | `comms/iha_komut_alici.py` — `CMD_DISARM` → `MAV_CMD_COMPONENT_ARM_DISARM`, `param1 = 0` (`ARM_DISARM_PARAM1_DISARM`) | `tests/test_iha_komut_guvenligi.py` — **10 test** (`grep -c "def test_"`); oturumsuz ve bozuk oturum reddi, bayat/bool/NaN/ileri-zaman reddi, tekrar ACK'inin eyleyiciyi yinelememesi, yabancı component ACK'inin kabul edilmemesi |
+| Kaynak pini olmayan komut | kaynak pinsiz ARM/DISARM/PARACHUTE/RTL/LAND **kabul edilmez** (`comms/iha_komut_alici.py`) | aynı iki kapı dosyası |
+| Geofence ihlali | 🔴 parametreler **repo dışıdır** (R17); yazılım tarafında kapı **yoktur** | yok — §4.13.1 kalem 9 |
+| Arıza sonrası yerde olduğunun doğrulanması | `yerde_mi` sözleşmesi: ON_GROUND + irtifa + aynı sysid + ardışık 3 örnek | `tests/test_inis_kaniti.py` (26 test, §4.1.2) · P1 kapıları G3b/G4 (§4.9.1) |
+
+⚠ **Bu tablo bir arıza emniyet kanıtı DEĞİLDİR.** Gösterdiği şey, komutun doğru
+`MAV_CMD`'ye çevrildiği ve reddedilmesi gerekenin reddedildiğidir; **gerçek
+Pixhawk'ın gerçek arızada ne yaptığını göstermez**. Yönergenin istediği "sahada
+test edilmiş veri" 6–19 Eylül'de üretilecektir; ilgili kapılar §4.3.3'te adım
+3.2 (geofence + iniş kanıtı canlı) ve adım 3.5 (hands-off, 0 müdahale) olarak
+önceden yazılıdır.
+
+**BEYAN GEREKLİ (insan):** her arıza emniyet senaryosu için tetikleme yöntemi
+(telemetri kablosunu çekme, geofence sınırını aşma, kumandayı kapatma), tarih,
+pilot rol kodu ve uçuş log dosyasının adı.
+
+---
+
+## 4.13 Karşılanamayan ve kısmen karşılanan gereksinimlerin nedenleri — kalan test borcu
+
+> Bu alt bölüm yönergenin Bölüm 6 beklentisini (`Y-6-M05`: *"karşılanamayan veya
+> yalnızca kısmi olarak karşılanan gereksinimler bulunması durumunda, bu durumun
+> nedenleri açıkça belirtilmeli"*) besler. Kuralı tektir: **ölçülmeyen, "sorun
+> çıkmadı" diye yazılmaz.**
+
+### 4.13.1 Ölçülmemiş olanlar
 
 | # | ne | neden ölçülmedi | ne zaman | eşik |
 |---|---|---|---|---|
 | 1 | **Gerçek arena / HTAB karesi** | Arena benzeri saha + kırmızı H çekimi yok; **maket çekimi yapılmayacaktır** (kullanıcı kararı) | 21 Eylül'e kadar **açık kalır** | — |
-| 2 | **Jetson Nano gerçek FPS** | Donanım 5 Eylül'de geliyor | 5 Eylül | **≥ 0,61 FPS** p50 **ve** p95; türetimi §4.3. **Eşik gevşetilmez** |
+| 2 | **Jetson Nano gerçek FPS** | Donanım 5 Eylül'de geliyor | 5 Eylül | **≥ 0,61 FPS** p50 **ve** p95; türetimi §4.8.2.3. **Eşik gevşetilmez** |
 | 3 | **SiK 433 MHz RF menzili / kayıp oranı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz | 5 Eylül+ | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
 | 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
 | 5 | **TensorRT `.engine` ↔ PT karar kıyası** | `tensorrt` PC'de yok | Jetson Gün-1 | FP16 payı kapanır |
@@ -680,7 +1041,7 @@ uca gecikme ÖLÇÜLMEDİ.**
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
 | 11 | **Nano kurulum belgesinin dış iddiaları** (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) | Kaynakla doğrulanmadı; betiğin **gerçek indirmesi** 14/14 aarch64 wheel ile çoğunu dolaylı teyit ediyor | 5 Eylül kart | belge zaten "kapı çıktısını deftere yapıştır" der |
 
-### 6.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
+### 4.13.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
 
 > Bu tablo silinmez, **üstü çizilir**: kapanan boşluk da kayıttır. 1–3 D-405
 > turunda kapatıldı (kanıt satırlarda); 4–6 **hâlâ açıktır**.
@@ -694,7 +1055,7 @@ uca gecikme ÖLÇÜLMEDİ.**
 | 5 | `rpi_inference` ekransız kipte **SIGTERM işlenmiyor** (T204); `save=True` iken codec yoksa ölü yazıcıya sessiz yazma (T205) | Tanı kaybı; kayıt kaybı | D-404 §8 |
 | 6 | Depo `core.autocrlf=true`: ayna/kaynak bayt eşitliği kapıları **kırılgan** — bir turda 11 test bu yüzden düştü (içerik doğruydu, düşen çalışma kopyasıydı) | Yanlış kırmızı | D-407 §4 |
 
-### 6.3 🔴 DENETİM BORCU (Anayasa madde 19)
+### 4.13.3 🔴 DENETİM BORCU (Anayasa madde 19)
 
 *"Bir iş, onu yazanın onayıyla kapanmaz."* Aşağıdaki kalemlerde **yazan ile
 onaylayan aynı taraftır** ve bağımsız denetim beklemektedir:
@@ -708,7 +1069,7 @@ onaylayan aynı taraftır** ve bağımsız denetim beklemektedir:
 4. **D-412 `_kanit_yaz`** — eksik metot bu turda yazıldı ve 6 testle + mutasyonla
    kapatıldı, ama **yazan ile onaylayan aynı taraftır**; bağımsız denetim bekler.
 
-#### 6.3.1 🔴 Bu turda ölçülen kendi hatamız — yeşil rapor kırmızı depoyla
+#### 4.13.3.1 🔴 Bu turda ölçülen kendi hatamız — yeşil rapor kırmızı depoyla
 
 `ef02e19` commit'i **belge commit'i olarak duyuruldu** ama `comms/yks_gui.py`'ye
 ait 16 satırı da beraberinde götürdü (Codex'in yarım kalan hakem-kanıt işi).
@@ -728,7 +1089,7 @@ Kayıt: `REVIEW_LOG.md` D-412.
 Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda da
 öyle sayılmamıştır.
 
-### 6.4 BEYAN GEREKLİ (insan)
+### 4.13.4 BEYAN GEREKLİ (insan)
 
 1. **BEYAN GEREKLİ (insan):** 5 Eylül kutu açılışında donanım künyesinin fiziksel
    teyidi — Jetson Nano 4GB, Pixhawk 6C + PM02, Holybro M9N, RPi HQ (IMX477),
@@ -744,23 +1105,9 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 6. **BEYAN GEREKLİ (insan):** sürüm mührünün basıldığı tarih ve künye commit'i
    (planlı: 17 Eylül; `--dogrula` çıkışı 0 olmalıdır).
 
-### 6.5 Planlanan uçuş test kapıları (6–19 Eylül)
-
-| adım | ne | kapı |
-|---|---|---|
-| 3.1 | İlk hover (Stabilize/AltHold, 2–3 m, 2 dk) — pervaneler ilk kez takılır | log `VIBE`, EKF yeşil, kırım yok |
-| 3.2 | Loiter + kısa Auto (30 m) + geofence; **iniş kanıtı canlı** | YKS'de "İNİŞ" (IHA_LANDED ACK'li) |
-| 3.3 | Algı canlı: 30 m'de OPEN_ROUTE YKS'de | yanlış güzergâh **0** |
-| 3.4 | Tam prova ×3 (kalkış → tarama → tespit → hakem onayı → iniş) | **≤ 10 dk**, 3 temiz prova |
-| 3.5 | Sıkı prova: kapalı kutudan, kronometre, hands-off | **0 müdahale** |
-| 3.6 | Sürüm dondurma (türev kaydı → commit → `--dondur` → künye commit) | künye repoda, `--dogrula` **0** |
-
-⚠ **Tek pil (4S 10 Ah) + iMAX B6 ⇒ günde en fazla 2 uçuş.** Bu, prova sayısının
-en sert kısıtıdır ve planın kendisinde yazılıdır.
-
 ---
 
-## 7. Kanıt dizini
+## 4.14 Kanıt dizini
 
 | # | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|---|
@@ -804,7 +1151,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 
 ---
 
-### Bu bölümün kendi sınırı
+## 4.15 Bu bölümün kendi sınırı
 
 Yukarıdaki hiçbir tablo, sistemin **görev test uçuşunda çalışacağını**
 kanıtlamaz. Kanıtladıkları şunlardır: (a) karar geometrisi 15 deterministik

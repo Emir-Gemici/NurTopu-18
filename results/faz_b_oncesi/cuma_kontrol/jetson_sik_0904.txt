@@ -1,0 +1,44 @@
+# jetson_baslat.sh --kuru · KIP=sik · HICBIR SEY BASLATILMADI · (CR'siz kopya: /tmp/tmp.4IYR3v0hcv)
+## /etc/navitas.env (yazilacak icerik)
+NAVITAS_KOK=/home/navitas/navitas
+PYTHON3=/usr/bin/python3
+LOG_DIZIN=/home/navitas/navitas/results/jetson_log
+KIP=sik
+PIXHAWK_SERI=/dev/ttyACM0
+PIXHAWK_BAUD=57600
+SYSID=1
+SIK_SERI=/dev/ttyUSB0
+SIK_BAUD=57600
+KANIT_TIMEOUT=900
+RPI_EK_ARGS=--fov 78
+RPI_TELSIZ_ARGS=--yks-hedef 127.0.0.1:5100
+INIS_TELSIZ_ARGS=--yks 127.0.0.1:5100
+KOMUT_TELSIZ_ARGS=--bind 127.0.0.1:5007 --izinli-kaynak 127.0.0.1:5100
+KAMERA_PYTHON=/usr/bin/python3
+KAMERA_KOPRU_BIND=127.0.0.1
+KAMERA_KOPRU_PORT=8080
+KAMERA_KOPRU_ARGS=
+## birimler (ExecStart, degiskenler yerine konmus — systemd ve --dogrudan AYNEN bunu kosar)
+navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/navitas/navitas/results/jetson_log/mavproxy
+navitas-seri-hub.service: /usr/bin/python3 /home/navitas/navitas/comms/seri_hub.py --port /dev/ttyUSB0 --baud 57600 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007
+navitas-rpi-inference.service: /usr/bin/python3 /home/navitas/navitas/codes/rpi_inference.py --camera --ekransiz --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 78 --yks-hedef 127.0.0.1:5100
+navitas-iha-inis-yayinci.service: /usr/bin/python3 /home/navitas/navitas/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 127.0.0.1:5100
+navitas-iha-komut-alici.service: /usr/bin/python3 /home/navitas/navitas/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 127.0.0.1:5007 --izinli-kaynak 127.0.0.1:5100
+## paket denetimi (/o/navitas/jetson_paket/kod)
+[YOK] mavproxy.py (PATH) <- Jetson'da: pip3 install MAVProxy
+[VAR] seri_hub.py
+[VAR] rpi_inference.py
+[VAR] iha_inis_yayinci.py
+[VAR] iha_komut_alici.py
+## ana makine denetimi (gercek kosumun dosya_denetle'de duracagi yerler; salt okunur)
+[YOK] kullanici navitas <- SERVIS_KULLANICI ile ez (JETSON_KILAVUZ §2 ~/navitas sahibi)
+[YOK] yorumlayici /usr/bin/python3 <- PYTHON3 ile ez
+[YOK] Pixhawk seri /dev/ttyACM0 <- kablo takili mi? PIXHAWK_SERI ile ez
+[YOK] SiK seri /dev/ttyUSB0 <- SIK_SERI ile ez
+[YOK] kurulu /home/navitas/navitas/comms/seri_hub.py <- navitas-seri-hub: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+[YOK] kurulu /home/navitas/navitas/codes/rpi_inference.py <- navitas-rpi-inference: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+[YOK] kurulu /home/navitas/navitas/comms/iha_inis_yayinci.py <- navitas-iha-inis-yayinci: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+[YOK] kurulu /home/navitas/navitas/comms/iha_komut_alici.py <- navitas-iha-komut-alici: JETSON_KILAVUZ §2 (cp kod/... /home/navitas/navitas/{codes,comms,scripts})
+## beyan denetimi
+[TAM] beyanlar tam
+KURU SONUC: eksik (beyan: tam · [YOK]: 9) — gercek kosum DURUR (cikis 3)

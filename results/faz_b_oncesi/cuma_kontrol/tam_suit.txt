@@ -7,12 +7,12 @@ rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunum
 [K1] 2 karar beklenirken stop(): send_no_route 2 kez
 [K8-seri] SerialLink rota ACK'lari: ['OPEN_ROUTE', 'NO_ROUTE']
 [K8-UDP] IKA_GO gonderilmedi; YKS'ye OPEN_ROUTE ACK gitti mi: True
-[T207_A3] exit=0 alinan_komutlar=[(511, 245.0), (511, 33.0), (511, 24.0)] sure=1.75s
+[T207_A3] exit=0 alinan_komutlar=[(511, 245.0), (511, 33.0), (511, 24.0)] sure=1.54s
 [T207_B1] komut=12 kirmizi=2 sayac={'tur': 4, 'gonderilen': 12, 'gonderim_hatasi': 0, 'ertelenen': 0, 'sessizlik_uyarisi': 2}
-[T207_B2] exit=3 tur=42 sahte_t=413s kirmizi=1
+[T207_B2] exit=3 tur=42 sahte_t=415s kirmizi=1
 [T207_C1] komut=9 kirmizi=0 sahte_t=25.0s
-KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_magi7r5r\depo  (git BILINMIYOR)
-HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_magi7r5r\bellek_eksik
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_62_2v3nt\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_62_2v3nt\bellek_eksik
   [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
   [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
   [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
@@ -34,8 +34,8 @@ HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_magi7r5r\bellek_eksik
   ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme
 
 RED: zorunlu parça eksik — bellek EKSİK hazırlandı. `--eksige-ragmen` ile bilerek geçilir (MANIFEST'e yazılır).
-KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_iugdfswb\depo  (git BILINMIYOR)
-HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_iugdfswb\bellek_bilerek
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2rwynitx\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2rwynitx\bellek_bilerek
   [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
   [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
   [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
@@ -56,9 +56,9 @@ HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_iugdfswb\bellek_bilerek
   ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
   ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme
 
-MANIFEST: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_iugdfswb\bellek_bilerek\MANIFEST.txt  (13 dosya)
-KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_j3ur4jr0\depo  (git BILINMIYOR)
-HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_j3ur4jr0\bellek
+MANIFEST: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2rwynitx\bellek_bilerek\MANIFEST.txt  (13 dosya)
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_9g6bxrok\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_9g6bxrok\bellek
   [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
   [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
   [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
@@ -77,9 +77,9 @@ HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_j3ur4jr0\bellek
   ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
   ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme
 
-MANIFEST: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_j3ur4jr0\bellek\MANIFEST.txt  (14 dosya)
-KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\depo  (git BILINMIYOR)
-HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\bellek_kuru   [KURU — kopyalanmadı]
+MANIFEST: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_9g6bxrok\bellek\MANIFEST.txt  (14 dosya)
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_ygw_hbpj\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_ygw_hbpj\bellek_kuru   [KURU — kopyalanmadı]
   [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
   [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
   [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
@@ -97,8 +97,8 @@ HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\bellek_kuru   
   ☐ JetPack 4.6.x SD imajı — microSD'ye balenaEtcher ile yazılır; belleğe imaj dosyası KONMAZ, kart hazır gelir (JETSON_NANO_KURULUM §1)
   ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
   ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme
-KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\depo  (git BILINMIYOR)
-HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\bellek_kuru   [KURU — kopyalanmadı]
+KAYNAK: C:\Users\yunus\AppData\Local\Temp\navitas_bellek_ygw_hbpj\depo  (git BILINMIYOR)
+HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_ygw_hbpj\bellek_kuru   [KURU — kopyalanmadı]
   [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
   [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
   [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
@@ -118,7 +118,7 @@ HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\bellek_kuru   
   ☐ JetPack 4.6.x SD imajı — microSD'ye balenaEtcher ile yazılır; belleğe imaj dosyası KONMAZ, kart hazır gelir (JETSON_NANO_KURULUM §1)
   ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
   ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme
-[SERI_HUB] t=66696.070 seri hat YENIDEN ACILDI
+[SERI_HUB] t=69752.860 seri hat YENIDEN ACILDI
 [SURUM_DONDURMA] DONDURULMADI (henuz): config\DONDURMA_KUNYESI.json yok - muhur basilinca bu kapi kapsam ozetlerini + git bagini kunyeyle kiyaslar
 [SURUM_DONDURMA] DONDURULMADI (henuz): config\DONDURMA_KUNYESI.json yok - muhur basilinca bu kapi kapsam ozetlerini + git bagini kunyeyle kiyaslar
 [İHA] IHA_LANDED ACK eksik: seq=9 beklenen=['ika'] gelen=[]
@@ -133,10 +133,10 @@ HEDEF : C:\Users\yunus\AppData\Local\Temp\navitas_bellek_2l6_11iv\bellek_kuru   
 [İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
 [İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
 [İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
-C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed <socket.socket fd=3764, family=2, type=2, proto=0, laddr=('127.0.0.1', 60235)>
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed <socket.socket fd=3704, family=2, type=2, proto=0, laddr=('127.0.0.1', 62983)>
   if method() is not None:
 ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:655: ResourceWarning: unclosed <socket.socket fd=3776, family=2, type=2, proto=0, laddr=('127.0.0.1', 60234)>
+C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:655: ResourceWarning: unclosed <socket.socket fd=2128, family=2, type=2, proto=0, laddr=('127.0.0.1', 62982)>
   self.doCleanups()
 ResourceWarning: Enable tracemalloc to get the object allocation traceback
 C:\Users\yunus\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py:606: ResourceWarning: unclosed file <_io.TextIOWrapper name=3 encoding='utf-8'>
@@ -189,7 +189,7 @@ rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunum
 [KAPI] NO_ROUTE etkin komut=3, sıfır-olmayan=0; OPEN_ROUTE sonrası sıfır-olmayan=1
 [K5] bekleme_deadline=+900s surus_deadline=izin+600s rota=61s izin=+240s exit=0
 [K5] surus deadline=5s -> durdu adim=5 son_vel=(0, 0) sonuc=False
-[K6] gercek UDP: landed→bitis=1.32s > hb_timeout=0.4s, heartbeat_gorulen=21, link_lost=False, exit=0
+[K6] gercek UDP: landed→bitis=1.33s > hb_timeout=0.4s, heartbeat_gorulen=21, link_lost=False, exit=0
 [K6] heartbeat_suresi=600s aralik=0.5s -> heartbeat=1200
 [K6] heartbeat_suresi=0s aralik=0.5s -> heartbeat=0
 [T10_KAPI_OUTPUT] GÖREV SONUCU
@@ -317,13 +317,13 @@ Kamera acilamadi (kaynak=3).
 Kamera acilamadi (kaynak=9).
 KAMERA: kare dusdu (1/2 ardisik, toplam 1) — yeniden deneniyor
 KAMERA: 2 ardisik dusen kare (ust sinir 2) — hat KOPTU sayildi, dongu kontrollu bitiyor. toplam dusen=2 okunan=2
-RED: turev dosyasi yok: C:\Users\yunus\AppData\Local\Temp\t143_xjv8ctob\yok.engine
+RED: turev dosyasi yok: C:\Users\yunus\AppData\Local\Temp\t143_c53eki50\yok.engine
 {
  "turev": "navitas_seg_v36_best.engine",
  "eski_sha256": "DERLENINCE_YAZILIR",
  "yeni_sha256": "b4bce3cd3965c449bfa1eb19ef4e8018bf46c1617968f043ac063a3cce5b92ba",
  "profil": "competition",
- "defter": "C:\\Users\\yunus\\AppData\\Local\\Temp\\t143_xjv8ctob\\config\\model_registry.json"
+ "defter": "C:\\Users\\yunus\\AppData\\Local\\Temp\\t143_c53eki50\\config\\model_registry.json"
 }
 usage: python.exe -m unittest [-h] [--turev-kaydet DOSYA] [--kaynak-pt PT]
                               [--defter DEFTER] [--profil PROFIL] [--ayna-yok]
@@ -339,7 +339,7 @@ options:
   --defter DEFTER
   --profil PROFIL
   --ayna-yok            jetson_paket/config aynasini guncelleme
-t144:   0%|          | 0/1 [00:00<?, ?it/s]t144: 100%|██████████| 1/1 [00:00<00:00, 209.95it/s]
+t144:   0%|          | 0/1 [00:00<?, ?it/s]t144: 100%|██████████| 1/1 [00:00<00:00, 177.85it/s]
 T153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
 Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
 Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
@@ -347,14 +347,26 @@ rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunum
 rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
 KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: YKS_ARAYUZ_HAZIR: OSError: disk dolu
 KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: OLAY_A: OSError: ilk
+======================================================================
+FAIL: test_paket_aynalari_ikiz (test_t135_kamera_dogrula_icerik.PaketAynasiTests.test_paket_aynalari_ikiz) (ad='rpi_inference.py')
 ----------------------------------------------------------------------
-Ran 2052 tests in 374.754s
+Traceback (most recent call last):
+  File "O:\navitas\tests\test_t135_kamera_dogrula_icerik.py", line 152, in test_paket_aynalari_ikiz
+    self.assertEqual(a, b, ad)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: '8bf29b64312e02797e19fb7d3fcd808fca230182b8bb023e5eb8dc69d59b5b2b' != '7060d605d1afc03751ebfb90217b66c0dad7656a112e76bd5ec2f4b4ba299436'
+- 8bf29b64312e02797e19fb7d3fcd808fca230182b8bb023e5eb8dc69d59b5b2b
++ 7060d605d1afc03751ebfb90217b66c0dad7656a112e76bd5ec2f4b4ba299436
+ : rpi_inference.py
 
-OK (skipped=3)
+----------------------------------------------------------------------
+Ran 2059 tests in 404.772s
+
+FAILED (failures=1, skipped=3)
 Kamera acilamadi (kaynak='/dev/video7').
 Kamera acilamadi (kaynak=3).
 Kamera acilamadi (kaynak='/dev/video7').
 Kamera acilamadi (kaynak=3).
 [T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
-<sys>:0: ResourceWarning: unclosed <socket.socket fd=2404, family=2, type=2, proto=0, laddr=('127.0.0.1', 54025)>
-exit=0
+<sys>:0: ResourceWarning: unclosed <socket.socket fd=1976, family=2, type=2, proto=0, laddr=('127.0.0.1', 56179)>
+exit=1

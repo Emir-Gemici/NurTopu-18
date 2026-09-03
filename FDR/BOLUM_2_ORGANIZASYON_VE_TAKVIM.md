@@ -1,28 +1,52 @@
-# BÖLÜM 2 — Organizasyonel Yapı ve Proje Takvimi (5 puan)
+# Bölüm 2. Organizasyonel Yapı ve Proje Takvimi (5 PUAN)
+
+> **Yönerge (birebir):** *"Programın kurumsal işleyişini ve uygulama evrelerini
+> netleştirmek adına bu bölümde; rollerin tanımlandığı organizasyonel hiyerarşi ile
+> tasarım döngüsünün aşamalarını kapsayan proje takvimi incelenmektedir. Mühendislik
+> döngüsünün sistematik bir düzende ilerlemesini sağlayan bu iki temel unsur, aşağıda
+> iki müstakil başlık altında ayrıntılı olarak sunulmaktadır."*
+> (Kaynak: `results/fdr_sablon/fdr_yonerge_metin.txt`, Bölüm 2 girişi.)
 
 > **Takım:** Navitas Autonomous Systems · **Takım ID:** 997827 · **Başvuru no:** 5329027
 > *(Kaynak: `navitas-teknofest/references/ddr_requirements.md` — DDR döneminde yazıldı.
 > **DOĞRULANACAK:** KYS kaydıyla teyit edilmeden bu üç alan rapora nihai sayılmaz.)*
 >
 > **Bu bölümün yazım kuralı.** Aşağıdaki her tarih ve her sayı bir artefakttan gelir;
-> satırın sonunda hangi dosyadan ve hangi komutla çıkarıldığı yazılıdır (§7 Kanıt dizini).
-> Ölçülmemiş bir şey "ölçülemedi" diye yazılır, tahmin edilmez. Geçmeyen bir kapı
-> "geçmedi" diye yazılır (§4.4). Henüz atanmamış insan görevleri **BEYAN GEREKLİ (insan)**
-> etiketiyle boş bırakılmıştır; doldurulmadan bu bölüm tamamlanmış sayılmaz.
+> satırın sonunda hangi dosyadan ve hangi komutla çıkarıldığı yazılıdır (bölüm sonundaki
+> Kanıt dizini). Ölçülmemiş bir şey "ölçülemedi" diye yazılır, tahmin edilmez. Geçmeyen
+> bir kapı "geçmedi" diye yazılır (§2.2.5.4). Henüz kapanmamış insan girdileri
+> **BEYAN GEREKLİ (insan)** etiketiyle boş bırakılmıştır; doldurulmadan bu bölüm
+> tamamlanmış sayılmaz.
+
+> **Numara eşlemesi (eski taslak → bu sürüm).** Bu bölüm, resmî yönergenin iskeletine
+> taşınırken yeniden numaralandı. Tablo satırlarının içindeki eski çapraz atıflar
+> **kaynağındaki hâliyle bırakılmıştır** (kanıt satırı değiştirilmez, §2.1.6 kural 4);
+> karşılıkları şunlardır:
+>
+> | eski numara | bu sürümdeki karşılığı |
+> |---|---|
+> | 1 (İki ayrı sistem) | **Bölüm 2 — kapsam notu** |
+> | 2.1 / 2.2 / 2.3 | §2.1.3 / §2.1.4 / §2.1.6 |
+> | 3.1 / 3.2 / 3.3 | §2.2.2.a / §2.2.3 / §2.2.4 |
+> | 4 · 4.1 · 4.2 · 4.3 · 4.4 | §2.2.5 · §2.2.5.1 · §2.2.5.2 · §2.2.5.3 · §2.2.5.4 |
+> | 5 (Planlanan takvim) | §2.2.6 |
+> | 6 (Takvim riskleri) | §2.2.7 |
+> | 7 (Kanıt dizini) | **Kanıt dizini (Bölüm 2)** — bölüm sonu |
 
 ---
 
-## 1. İki ayrı sistem — organizasyon ve takvim bu ayrım üzerine kurulur
+## Bölüm 2 — kapsam notu: iki ayrı sistem
 
 Şartname bu yarışmada takımdan **iki farklı fiziksel araçla** iş ister ve bunlar aynı araç değildir.
-Rapordaki her takvim satırı hangi araca ait olduğu belirtilerek yazılmıştır.
+Hem organizasyon (kim neyi icra eder) hem takvim (ne ne zaman yapılır) bu ayrım üzerine kurulur;
+rapordaki her takvim satırı hangi araca ait olduğu belirtilerek yazılmıştır.
 
 | | **FDA görev test uçuşu aracı** | **Yarışma (final) aracı** |
 |---|---|---|
 | Şartname dayanağı | §5.3.2 — *"çoklu rotorlu ve dikey iniş-kalkış yapabilen bir insansız hava aracı (Drone)"* | §6 — *"sabit kanatlı insansız hava aracı (İHA) konfigürasyonunda olması zorunludur"* |
 | Konfigürasyon | Quadcopter, 3B baskı gövde | Sabit kanat + mancınık fırlatma + paraşütle iniş + İKA |
 | Görev | 20×20 m simüle alanda ≥ 30 m irtifadan açık güzergâh tespiti, YKS'ye canlı aktarım, ≤ 10 dk | Tam görev zinciri (fırlatma → tespit → aktarım → paraşüt → İKA → hedef bölge) |
-| Bu raporda durumu | Gövde basıldı ve monte edildi; aviyonik montajı **5 Eylül 2026**'da yapılacak | **Üretilmedi.** Tasarım DDR'de sunuldu; üretim dalgası 21 Eylül sonrası (bkz. Bölüm 5 §11) |
+| Bu raporda durumu | Gövde basıldı ve monte edildi; aviyonik montajı **5 Eylül 2026**'da yapılacak | **Üretilmedi.** Tasarım DDR'de sunuldu; üretim dalgası 21 Eylül sonrası (bkz. Bölüm 5 §5.2.10) |
 | Ağırlık limiti | — (§5.3.2 limit koymuyor) | İHA ≤ 25 kg (yükler dâhil), İKA ≤ 10 kg (yük hariç) — §6 |
 
 ⚠ **Bu ayrım raporun her yerinde korunur.** FDA uçuşunda paraşüt ve İKA **yoktur**; yer kontrol
@@ -32,13 +56,92 @@ D-408, 2026-09-02).
 
 ---
 
-## 2. Organizasyonel yapı
+## Bölüm 2.1. Organizasyonel Yapı
 
-### 2.1 Rol tanımları ve sorumluluk sınırları
+> **Yönerge (birebir):** *"Takımın güncel organizasyonel yapılanması ve üyelerin/birimlerin
+> icra yetkileri bu bölümde şematize edilmelidir. Raporun objektif değerlendirme kriterleri
+> uyarınca, üyelerin kişisel verilerinden (isim, görsel vb.) arındırılmış, tamamen rol bazlı
+> ve profesyonel bir anlatım tercih edilmelidir."*
+
+### 2.1.1 Kişisel veriden arındırma — `Y-2.1-M02` (karşılanmıştır)
+
+Bu bölümde **ad-soyad, fotoğraf ve kişiye bağlanabilir hiçbir veri yoktur ve olmayacaktır.**
+Yapı tamamen **rol kodları (R1…R8)** üzerinden tanımlıdır.
+
+Bu, doldurulmayı bekleyen bir boşluk **değildir**: yönerge isim istemediği gibi açıkça
+*"üyelerin kişisel verilerinden (isim, görsel vb.) arındırılmış, tamamen rol bazlı"* bir anlatım
+şart koşar. Dolayısıyla **rol bazlı anlatım, gereksinimin karşılanmış hâlidir**; isim eklemek
+gereksinimi kapatmaz, **ihlal eder**.
+
+⚠ Raporun önceki sürümünde "rol → isim ataması" bir insan beyanı borcu olarak işaretliydi.
+Bu **yanlış okumaydı** ve yönerge okunduktan sonra kaldırılmıştır (dayanak: `REVIEW_LOG.md`
+D-417 — *"resmî FDR yönergesi okundu: rapor yanlış iskeletteydi ve isim yasağını bilmiyorduk"*).
+Rol → kişi eşlemesi takım içi bir kayıttır ve **rapora girmez**; bu yüzden §2.1.7'deki açık
+kalem listesinde de yer almaz.
+
+Kapsam sınırı: takımın **üye sayısı** ve **öğrenim düzeyi oranı** şartname §4 kontenjan
+kuralıyla ilgilidir, kişisel veri değildir; o iki sayı §2.1.7'de açık kalem olarak durur.
+
+### 2.1.2 Organizasyon şeması — icra yetkileri (`Y-2.1-M01`)
+
+Şema iki hattı ayırır: **icra hattı** (görev emri yukarıdan aşağı akar) ve **denetim hattı**
+(kanıt aşağıdan yukarı akar, hüküm kaptana döner). R8 bilerek icra hattının **dışındadır**.
+
+```text
+                      ┌───────────────────────────────────────────────┐
+                      │             R1 · TAKIM KAPTANI                │
+                      │  İCRA YETKİSİ: "Takım Hazır" ilanı · uçuş/    │
+                      │  uçmama kararı · rol ataması · tedarik onayı  │
+                      │  · koordinat girişi onayı                     │
+                      └──────────────────────┬────────────────────────┘
+                                             │  görev emri  ──►  (icra hattı: tek yön)
+       ┌──────────────┬──────────────┬───────┴──────┬──────────────┬──────────────┐
+       ▼              ▼              ▼              ▼              ▼              ▼
+ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐
+ │ R2  PİLOT  │ │ R3 AVİYONİK│ │ R4 GÖREV   │ │ R5   YKS   │ │ R6   İKA   │ │ R7 YAZILIM │
+ │            │ │            │ │ BİLGİSAYARI│ │ OPERATÖRÜ  │ │ (final     │ │ /GÖRÜNTÜ   │
+ │ İCRA:      │ │ İCRA:      │ │ İCRA:      │ │ İCRA:      │ │  dalgası)  │ │ İCRA:      │
+ │ uçuşu      │ │ parametre  │ │ sürüm ve   │ │ ACK'siz    │ │ İCRA:      │ │ kod değ.   │
+ │ KESME      │ │ yükleme ·  │ │ paket      │ │ onayı      │ │ İKA sürücü │ │ (mühre     │
+ │ mod anaht. │ │ kablo hattı│ │ kurulumu · │ │ REDDETME · │ │ seçimi     │ │  kadar)    │
+ │            │ │ kabulü     │ │ kamera     │ │ ekran      │ │            │ │ EŞİK DEĞ.  │
+ │            │ │            │ │ kaynağı    │ │ düzeni     │ │            │ │ YETKİSİ YOK│
+ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘
+       │              │              │              │              │              │
+       └──────────────┴──────────────┴───────┬──────┴──────────────┴──────────────┘
+                                             │  ürettiği kanıt (log · ölçüm · suit çıktısı)
+                      ╔══════════════════════╦════════════════════════╗
+                      ║          R8 · KANIT-KALİTE (DENETİM)          ║
+                      ║  İCRA YETKİSİ: kapıyı GEÇERSİZ sayma ·        ║
+                      ║  bulguyu deftere yazma · ön kayıt tutma       ║
+                      ║                                               ║
+                      ║  ! İCRA HATTININ DIŞINDADIR: kanıt üreten     ║
+                      ║    rolün onayına bağlı DEĞİLDİR (§2.1.6 / 3)  ║
+                      ╚══════════════════════╩════════════════════════╝
+                                             │
+                                             └──►  bulgu / kapı hükmü R1'e döner
+                                                   (icra birimlerine DEĞİL) — döngü kapanır
+```
+
+**Şemanın okunuşu — üç bağlayıcı kural:**
+
+1. **Tek karar mercii.** Uçuş/uçmama, "Takım Hazır" ilanı ve tedarik onayı yalnız R1'dedir.
+   Hiçbir icra birimi kendi başına uçuş kararı veremez. R2'nin yetkisi **uçuşu kesmedir**
+   (tek yönlü emniyet yetkisi), başlatma değil.
+2. **Yetki devri karar devri değildir.** R7 kod değiştirebilir; **eşik değiştiremez** —
+   eşikler ön kayıtta donmuştur (§2.1.6 / 1) ve `CONTRACTS.md` §12 sonraki terfileri bağlar.
+3. **Denetim ayrı hattadır.** R8 icra emri almaz; kanıtı çürütür ve hükmü R1'e verir.
+   Bu ayrım uygulanmıştır: `REVIEW_LOG.md` D-405 ve D-407 çürütme turları, kanıtı üreten
+   rolün onayına bakılmadan kapatılmıştır.
+
+⚠ Şema **rolleri** gösterir, kişileri değil. Bir kişi birden çok kutuyu üstlenebilir; bunun
+uçuş anındaki tek ölçülmüş sonucu §2.1.5'te açık kalem olarak durur.
+
+### 2.1.3 Rol tanımları, icra yetkileri ve üretilen kanıt
 
 Şartname §4, takımın **kaptan dâhil en az 6, en fazla 10 kişiden** oluşmasını zorunlu kılar.
 Aşağıdaki yapı **rol** üzerinden tanımlıdır; bir kişi birden çok rolü üstlenebilir, ancak
-**kanıt üreten rol ile o kanıtı onaylayan rol aynı kişi olamaz** (bağımsızlık kuralı, §2.3).
+**kanıt üreten rol ile o kanıtı onaylayan rol aynı kişi olamaz** (bağımsızlık kuralı, §2.1.6).
 
 | # | Rol | Sorumluluk | Yetkisi olan kararlar | Ürettiği kanıt |
 |---|---|---|---|---|
@@ -51,25 +154,12 @@ Aşağıdaki yapı **rol** üzerinden tanımlıdır; bir kişi birden çok rolü
 | R7 | **Yazılım / görüntü işleme** | Algı zinciri, rota kararı, sözleşmeler, testler | Kod değişikliği (mühre kadar); eşik **değiştirme yetkisi YOKTUR** | `tests/` suit çıktısı, `REVIEW_LOG.md` D-kayıtları |
 | R8 | **Kanıt-kalite (denetim)** | Bağımsız çürütme turu; ön kayıt tutma; kapı denetimi | Bulguyu deftere yazma; kapıyı geçersiz sayma | `REVIEW_LOG.md` çürütücü kayıtları |
 
-**BEYAN GEREKLİ (insan): rol → isim ataması.** Bu tablo bilerek isimsizdir. Kaptan, sekiz rolü
-takım üyelerine atayacak; atama tablosu (ad-soyad, öğrenim düzeyi, rol, yedek rol) rapora
-buradan eklenecektir.
-**BEYAN GEREKLİ (insan): şartname §4 kontenjan ve oran kontrolü** — toplam üye sayısının 6–10
-aralığında olduğu ve lisansüstü üye oranının şartname sınırını aşmadığı beyan edilecektir.
-**BEYAN GEREKLİ (insan): danışman öğretim üyesi bilgisi.**
-
 Bugün itibarıyla kullanıcı beyanıyla atanmış roller: **R2 Pilot** ve **R5 YKS
 operatörü** (`SAHA_HAZIRLIK_PLANI_20260903.md` §3 ve §1.8; beyan 3 Eylül 2026).
+R5 rolünün üstlenilmesi ve PC'de uçtan uca koşturulması `REVIEW_LOG.md` D-414'te
+ölçümüyle kayıtlıdır (ekran görüntüsü: `results/yks_kurulum/yks_acilis_20260903.png`).
 
-⚠ **Bu iki rol uçuş anında ÇAKIŞIR ve çakışma bilerek kayda geçirilmiştir.**
-§2.2 tablosunun "Uçuş" satırında R2 kumandayı tutar (gözü araçta), R5 hakem
-ekranını sürer (gözü ekranda, hakemle birlikte onay basar). Görev ≤ 10 dk
-boyunca ikisi **eşzamanlıdır**; tek kişi ikisini birden yapamaz. Montaj günü
-(5 Eylül) ve yer provalarında çakışma yoktur — orada aynı kişi ikisini de
-yürütebilir. **BEYAN GEREKLİ (insan): uçuş günü için bu iki rolden birine
-ikinci bir kişi atanacaktır.**
-
-### 2.2 Saha günü rol dağılımı (5 Eylül montaj günü ve 21 Eylül uçuş günü)
+### 2.1.4 Saha günü rol dağılımı (5 Eylül montaj günü ve 21 Eylül prova günü)
 
 | an | R1 Kaptan | R2 Pilot | R3 Aviyonik | R4 Jetson/kamera | R5 YKS |
 |---|---|---|---|---|---|
@@ -82,7 +172,20 @@ ikinci bir kişi atanacaktır.**
 
 Kaynak: `SAHA_HAZIRLIK_PLANI_20260903.md` §2 (montaj günü tablosu) ve §6 (21 Eylül akışı).
 
-### 2.3 Karar ve kanıt yordamı (organizasyonun asıl omurgası)
+### 2.1.5 🔴 Ölçülmüş rol çakışması — R2 Pilot + R5 YKS operatörü
+
+**Bu iki rol uçuş anında ÇAKIŞIR ve çakışma bilerek kayda geçirilmiştir.**
+§2.1.4 tablosunun "Uçuş" satırında R2 kumandayı tutar (gözü araçta), R5 hakem
+ekranını sürer (gözü ekranda, hakemle birlikte onay basar). Görev ≤ 10 dk
+boyunca ikisi **eşzamanlıdır**; tek kişi ikisini birden yapamaz. Montaj günü
+(5 Eylül) ve yer provalarında çakışma yoktur — orada aynı kişi ikisini de
+yürütebilir. **BEYAN GEREKLİ (insan): uçuş günü için bu iki rolden birine
+ikinci bir kişi atanacaktır.**
+
+Dayanak: `SAHA_HAZIRLIK_PLANI_20260903.md` §3 uyarı kutusu (3 Eylül beyanı) ve
+`REVIEW_LOG.md` D-414 ("çakışma kayda geçirildi … uçuş günü için ikinci kişi **açık kalemdir**").
+
+### 2.1.6 Karar ve kanıt yordamı — icra yetkisinin sınırı
 
 Bu projenin organizasyonu, kim ne yapar tablosundan ibaret değildir; **bir işin bittiğine kimin,
 neye bakarak karar verdiğini** de tanımlar. Dört kural bağlayıcıdır:
@@ -95,19 +198,82 @@ neye bakarak karar verdiğini** de tanımlar. Dört kural bağlayıcıdır:
    onaylayamaz; ayrı bir çürütme turu koşulur (`AGENTS.md` §8; uygulanmış örnekler: D-405, D-407).
 4. **Kanıt silinmez.** Yanlış çıkan iddia defterden çıkarılmaz; üstü çizilip düzeltmesine işaret
    verilir (D-373). Bu bölümdeki §4.4 bu kuralın uygulanmasıdır.
+   *(Numara eşlemesi: bölüm yönerge iskeletine taşınırken eski **§4.4** başlığı **§2.2.5.4**
+   olmuştur; aynı kuralın ikinci uygulaması **§2.2.2.b**'dir. Eski numaralar, çapraz atıfları
+   bozmamak için satırlarda olduğu gibi bırakılmıştır.)*
 
 Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **420 kayıt başlığı / 414 benzersiz kayıt no**
 (ölçüm: `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 420; `... | sort -u | wc -l` → 414; 2026-09-03).
 
+🔴 **Aynı defterin üç okuması birbirini tutmuyor — üçü de silinmedi (kural 4).**
+
+| okuma | başlık | benzersiz | tarih / saat | nerede yazılı |
+|---|---|---|---|---|
+| A | 414 | 408 | 2026-09-03 (saat kayıtlı değil) | Kanıt dizini satır 11 |
+| B | 420 | 414 | 2026-09-03 (saat kayıtlı değil) | hemen yukarıdaki paragraf |
+| C | **424** | **418** | **2026-09-04 00:06** | bu satır — yeniden ölçüm |
+
+Ölçüm komutları (C okuması): `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 424;
+`grep -oE "^### D-[0-9]+" REVIEW_LOG.md | sort -u | wc -l` → 418.
+Defter gün içinde büyüdüğü için A ve B aynı günün farklı anları olabilir, ama
+**ÖLÇÜLEMEDİ: A ve B okumalarının hangi saatte alındığı kayıtlı değil**, bu yüzden hangisinin
+o an doğru olduğu belirlenemiyor. Kapanışı: ölçüm satırlarına saat damgası eklenmesi.
+
+### 2.1.7 Bölüm 2.1'in açık kalemleri
+
+1. **BEYAN GEREKLİ (insan): takım üye sayısı ve şartname §4 oran kontrolü** (kaptan dâhil 6–10 kişi;
+   lisansüstü üye oranının şartname sınırını aşmadığı). Bu bir sayı beyanıdır, kişisel veri değildir.
+2. **BEYAN GEREKLİ (insan): danışman öğretim üyesi** bilgisi (unvan/kurum düzeyinde, isimsiz).
+3. **BEYAN GEREKLİ (insan): takım künyesinin KYS teyidi** (ID 997827 / başvuru 5329027).
+4. **BEYAN GEREKLİ (insan): uçuş günü için R2/R5 çakışmasının çözümü** — bu iki rolden birine
+   ikinci bir kişi (§2.1.5).
+5. **BEYAN GEREKLİ (insan): R6 İKA rolünün final dalgasında kime/hangi birime verileceği** —
+   FDA aracında İKA yoktur, rol bugün boştadır.
+
 ---
 
-## 3. Gerçekleşen proje takvimi (depo geçmişinden ölçüldü)
+## Bölüm 2.2. Proje Takvimi
+
+> **Yönerge (birebir):** *"Bu bölüm kapsamında daha önce Detay Değerlendirme Raporu'nda
+> hazırlanmış olan proje takviminde yer alan termin planına uygunluk teyit edilmeli, iş
+> takvimine eklenen yeni iş akışları mevcut ise planlama analitik bir yaklaşımla yeniden
+> değerlendirilerek güncellenmelidir."*
+
+Bu başlık üç soruya sırayla cevap verir:
+**(1)** DDR termin planı tutuyor mu (§2.2.1) · **(2)** gerçekte ne oldu (§2.2.2–2.2.4) ·
+**(3)** takvime hangi yeni iş akışları girdi ve plan buna göre nasıl güncellendi (§2.2.5–2.2.9).
+
+### 2.2.1 DDR termin planına uygunluk teyidi (`Y-2.2-M01`)
+
+DDR döneminin termin planı depoda `navitas-teknofest/references/ddr_requirements.md` içindedir
+ve **"Kritik Takvim" başlığı altında üç tarihten ibarettir** (satır 3–6). Aynı dosyanın
+"DDR Gap Analizi" bölümü, DDR'ye taşınacak kalemler arasında *"Organizasyon şeması"* (satır 90),
+*"Proje takvimi (güncelleme gerekli)"* (satır 91) ve *"Planlanan test takvimi"* (satır 124)
+satırlarını taşır. Aşağıdaki tablo bu beş kalemin bugünkü durumudur.
+
+| # | DDR termin planı kalemi (kaynak satır) | DDR'de yazılı | Bugünkü gerçekleşme | Durum |
+|---|---|---|---|---|
+| 1 | **DDR Son Teslim** (`ddr_requirements.md:4`) | 15 Temmuz 2026 | Depoda ölçülen: DDR belgesinin son iz bırakan sürümü **v4.3**, 2026-07-12 (`f4d1583`); belge 2026-07-12'de depo dışına alındı (`38798f2` — *"DDR dokümanları repoda taşınmıyor"*). 15.07.2026'da iki teknik commit var (`cb10e0e`, `bcfab0f`) | **ÖLÇÜLEMEDİ: teslimin 15.07'de yapıldığı depodan görülemez** (belge repoda tutulmuyor); kapanışı KYS teslim kaydıdır → **BEYAN GEREKLİ (insan): DDR teslim tarihi/saati teyidi** |
+| 2 | **DDR Sonuçları** (`ddr_requirements.md:5`) | 29 Temmuz 2026 | Şartname resmî tarihi ile birebir aynı (`results/sartname_bosluk/sartname_metin.txt` s.11). Depoda sonuç/puan artefaktı yok | **BEYAN GEREKLİ (insan): DDR sonuç bildirimi ve alınan puan** |
+| 3 | **FDR** (`ddr_requirements.md:6`) | 21 Eylül 2026 | Şartname s.11 ile birebir aynı (**21.09.2026 – 17.00**). Takım planı bu tarihe kilitli (§2.2.8) ve tarih artık **kapı testiyle** korunuyor: `tests/test_fdr_takvim_kapisi.py` **4 test, 4/4 OK** (koşum 2026-09-04) | **UYGUN — termin planı tutuyor** |
+| 4 | *"Proje takvimi (güncelleme gerekli)"* (`:91`) | DDR'de güncelleme borcu olarak işaretlenmiş | Güncellendi: §2.2.2 (ölçülmüş gerçekleşme), §2.2.5 (yeni iş akışları), §2.2.8 (3 → 30 Eylül planı) | **KAPANDI** |
+| 5 | *"Organizasyon şeması"* (`:90`) | DDR'de ÖDR'den taşınacak kalem | §2.1.2'de **isimsiz, rol bazlı** olarak yeniden üretildi (`Y-2.1-M02`) | **KAPANDI** |
+| 6 | *"Planlanan test takvimi"* (`:124`) | DDR'de "yeni gerekli" kalem | §2.2.8 satır satır kapılıdır; test içeriği Bölüm 4'tedir | **KISMEN** — saha testleri 5–19 Eylül'de koşulacak |
+
+⚠ **Kapsam uyarısı — abartılmıyor.** Depodaki DDR referans dosyasının termin planı **üç tarihtir**;
+iş paketi kırılımı, Gantt çizelgesi veya kaynak atama tablosu **depoda yoktur**.
+**ÖLÇÜLEMEDİ: DDR'nin rapora giren tam termin çizelgesi** — kapanışı, DDR belgesinin (depo dışı
+yerel yedek) ilgili sayfasının rapora alınmasıdır; **BEYAN GEREKLİ (insan): DDR proje takvimi
+sayfası**. Bu belge gelene kadar yukarıdaki tablo, termin uygunluğunun **depodan görülebilen**
+kısmıdır.
+
+### 2.2.2 Gerçekleşen proje takvimi — depo geçmişinden ölçüldü
 
 Aşağıdaki tablo tahmin değildir: `O:\navitas` git deposunun tamamı taranarak
 `git log --date=short --pretty=format:"%ad|%h|%s"` ile çıkarılmıştır. Depoda **551 commit** (3 Eylül 2026 gecesi)
 vardır; ilk commit **2026-05-06** (`17258f8`, "start project").
 
-### 3.1 Faaliyet yoğunluğu — gün başına commit (ölçüm, 2026-09-03)
+#### 2.2.2.a Faaliyet yoğunluğu — gün başına commit (ölçüm, 2026-09-03)
 
 | ay | commit'li gün | toplam commit | en yoğun gün |
 |---|---|---|---|
@@ -119,9 +285,32 @@ vardır; ilk commit **2026-05-06** (`17258f8`, "start project").
 
 Ölçüm komutu: `git log --date=short --pretty=format:"%ad|%s" | awk -F'|' '{print $1}' | sort | uniq -c`.
 Yorum: proje ağırlığı Ağustos'ta yoğunlaşmıştır; bu, DDR sonrası (29.07) açılan doğrulama
-borçlarının kapatıldığı dönemdir ve §4'teki revizyonların çoğu bu pencerede alınmıştır.
+borçlarının kapatıldığı dönemdir ve §2.2.5'teki revizyonların çoğu bu pencerede alınmıştır.
 
-### 3.2 Kilometre taşları
+#### 2.2.2.b 🔴 Yeniden ölçüm (2026-09-04 00:05) — bir satır yeniden üretilemedi
+
+Yukarıdaki tablo **silinmemiştir** (§2.1.6 kural 4). Aynı komut bugün yeniden koşuldu:
+
+| ay | commit'li gün | toplam commit | en yoğun gün | 2026-09-03 okumasıyla farkı |
+|---|---|---|---|---|
+| Mayıs 2026 | 3 | 4 | 07.05 (2) | aynı |
+| Haziran 2026 | 2 | 4 | 24.06 (3) | aynı |
+| Temmuz 2026 | 5 | 27 | 11.07 (16) | aynı |
+| Ağustos 2026 | **26** | **418** | 26.08 (**89**) | 🔴 **tutmuyor** (27 gün / 425 idi) |
+| Eylül 2026 (1–3) | 3 | 107 | 02.09 (**72**) | büyüme (yeni gün eklendi) |
+| **Toplam (HEAD)** | 39 | **560** | — | 551 → 560 (büyüme) |
+
+Ek ölçüm: `git log --all --oneline | wc -l` → **607** (tüm dallar dâhil; Ağustos 465).
+
+**İç tutarsızlık, gizlenmeden yazılır.** 2026-09-03 tablosunun ay toplamları
+4 + 4 + 27 + 425 + 93 = **553** eder, ama aynı paragrafta toplam **551** yazılıdır; iki sayı
+kendi içinde de uyuşmuyor. Bugünkü ölçümde toplam ile ayların toplamı birebir tutuyor
+(4 + 4 + 27 + 418 + 107 = 560 = `git log --oneline | wc -l`).
+**ÖLÇÜLEMEDİ: 2026-09-03'teki 425 / 551 sayılarının nasıl üretildiği** — ne HEAD (418) ne de
+`--all` (465) okumasıyla yeniden üretilebiliyor. Doğru sayılması gereken, yeniden üretilebilen
+okumadır (**560 / Ağustos 418**); eski okuma kayıt olarak yerinde bırakılmıştır.
+
+### 2.2.3 Kilometre taşları
 
 | tarih | kilometre taşı | kanıt |
 |---|---|---|
@@ -153,8 +342,15 @@ borçlarının kapatıldığı dönemdir ve §4'teki revizyonların çoğu bu pe
 | 2026-09-03 | Saha belleği üretildi: **405 dosya · 1,27 GB** (`MANIFEST.txt` sha256 + git HEAD) | `scripts/bellek_hazirla.py`, `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A |
 | 2026-09-02 | **YKS FDA görev kipi** (`--fda`) — 21 Eylül'de hakem onayını imkânsız kılan kilit kaldırıldı | D-408, `CONTRACTS.md` §6.7 |
 | 2026-09-03 | Jetson **Nano 4GB** yığını (14/14 aarch64 çevrimdışı tekerlek), kamera köprüsü, ArduCopter parametre + görev şablonu | D-406, D-407 |
+| 2026-09-03 | 🔴 **Takvim kusuru bulundu ve kapıyla kilitlendi:** 21 Eylül FDR **teslim** günüdür, uçuş günü değildir; hata plan/runbook/CONTRACTS/FDR bölümlerine yayılmıştı | D-410, `tests/test_fdr_takvim_kapisi.py` (4 test) |
+| 2026-09-03 | **Donanım beyanı değişti:** Nano taşıyıcı kartta microSD yuvası **yok**, M.2 **var** → planın bir adımı geçersiz oldu | D-413, `SAHA_HAZIRLIK_PLANI_20260903.md` §4 |
+| 2026-09-03 | **YKS PC kurulumu R5 tarafından üstlenildi ve uçtan uca koşturuldu** (`yks_gui --demo --fda --otokaydet 14 --kapat` → exit 0) | D-414, `results/yks_kurulum/yks_acilis_20260903.png` |
 
-### 3.3 Model sürüm soyağacı (üretim hattı)
+⚠ Tablodaki *(§4.4)* çapraz atfı, bölümün yönerge iskeletine taşınmasından önceki
+numaralandırmadandır; bu raporda karşılığı **§2.2.5.4 "Geçmeyen kapı"** başlığıdır. Satır,
+kaynağındaki hâliyle korunmuştur.
+
+### 2.2.4 Model sürüm soyağacı (üretim hattı)
 
 | sürüm | paket dosyası damgası | durum | not |
 |---|---|---|---|
@@ -174,14 +370,15 @@ borçlarının kapatıldığı dönemdir ve §4'teki revizyonların çoğu bu pe
 değiştirme zamanlarıdır; bunlar **saha paketine kopyalanma** anıdır, eğitimin bittiği an değildir.
 Eğitim bitiş zamanları eğitim koşum klasörlerinden ayrıca çıkarılmalıdır.
 
----
-
-## 4. Revizyonlar — ÖDR → DDR → FDR
+### 2.2.5 Revizyonlar ve takvime eklenen yeni iş akışları (`Y-2.2-M02`)
 
 Şartname §5.3.1: *"Süreç boyunca meydana gelen bütün revizyonlar FDR kapsamında sunulmalıdır."*
-Bu bölüm o hükmün karşılığıdır. Revizyonlar gizlenmemiş, gerekçeleriyle listelenmiştir.
+Bu alt başlık o hükmün karşılığıdır **ve aynı zamanda yönergenin 2.2 maddesinin ikinci
+yarısıdır**: aşağıdaki revizyonların her biri takvime **yeni bir iş akışı** eklemiştir; §2.2.5.5
+bu iş akışlarını planın hangi gününe oturduğuyla birlikte analitik olarak yeniden değerlendirir.
+Revizyonlar gizlenmemiş, gerekçeleriyle listelenmiştir.
 
-### 4.1 Donanım revizyonları — DDR BOM'u ile bugünkü gerçek künye
+#### 2.2.5.1 Donanım revizyonları — DDR BOM'u ile bugünkü gerçek künye
 
 DDR aviyonik BOM'u `navitas-teknofest/references/ddr_requirements.md` içindedir (**26 satır**; numaralandırma 1…24, 26, 27 diye gider, **25 atlanmıştır** — DDR metnindeki "27" en büyük numaradır, satır sayısı değil;
 beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdır
@@ -190,7 +387,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | kalem | DDR BOM (15.07.2026) | **FDR — gerçek (03.09.2026)** | revizyon gerekçesi |
 |---|---|---|---|
 | Uçuş kontrolcüsü | Pixhawk 6C (BOM) / **Pixhawk 6X** (DDR mimari şeması) | **Pixhawk 6C** + PM02 güç modülü | DDR'nin iki belgesi çelişiyordu (BOM 6C, `avionics_software.md` şeması 6X); gerçek donanım **6C**'dir, çelişki bu raporla kapanır |
-| Görev bilgisayarı | Jetson **Orin NX** + carrier + soğutucu (180 g) | **Jetson Nano 4GB** (JetPack 4.6.x, sistem Python 3.6) | Tedarik. Sonucu ağırdır: `ultralytics` Py ≥ 3.8 ister → Nano'da ayrı Python 3.8 venv + çevrimdışı tekerlek zinciri kuruldu (Bölüm 5 §7) |
+| Görev bilgisayarı | Jetson **Orin NX** + carrier + soğutucu (180 g) | **Jetson Nano 4GB** (JetPack 4.6.x, sistem Python 3.6) | Tedarik. Sonucu ağırdır: `ultralytics` Py ≥ 3.8 ister → Nano'da ayrı Python 3.8 venv + çevrimdışı tekerlek zinciri kuruldu (Bölüm 5 §5.2.7) |
 | GNSS | Holybro **M10** GPS + pusula (32 g) | **Holybro M9N** | Tedarik |
 | Kamera | **Arducam** IMX477 12MP (50 g) | **Raspberry Pi HQ** (IMX477, CSI) + standart lens | Aynı sensör (IMX477), farklı kart. Lens FOV'u **ÖLÇÜLMEDİ** — 5 Eylül'de `kamera_dogrula` ile ölçülecek |
 | Güç dağıtımı / sensör | **Mauch PL-100** + Mauch PL 4-6S BEC + ayrı PDB | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) + **PM02** | Tedarik + sadeleştirme; akım ölçümü PM02'ye taşındı (`BATT_MONITOR=4`) |
@@ -205,7 +402,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | Acil güç kesme | Anahtarlı stop + röle | **Anahtar yok — pil fişi çekilir (XT60/XT90)** | 🔴 **DDR gereksinimi** REQ-25…31 — *takımın kendi* gereksinim kimliğidir (`references/ddr_requirements.md:76`); şartname metninde "REQ-" **hiç geçmez** (çift acil güç kesme) FDA aracında **karşılanmıyor**; final aracı için **açık madde** (Bölüm 6'ya taşınır) |
 | Gövde | (DDR: sabit kanat yapısal malzeme dağılımı) | **3B baskı quadcopter** (ABS + ABS-CF) | Araç sınıfı farkı; ayrıntı Bölüm 5 |
 
-### 4.2 Yazılım ve mimari revizyonları
+#### 2.2.5.2 Yazılım ve mimari revizyonları
 
 | konu | DDR'de beyan / plan | **FDR — bugünkü gerçek** | kanıt |
 |---|---|---|---|
@@ -218,7 +415,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | YKS görev kipi | tek kip | **`--fda` kipi eklendi** — paraşüt/İKA kapalı, bütçe tek 10 dk | D-408, `CONTRACTS.md` §6.7 |
 | Süre limitleri | belgede | **Sözleşme sabiti**: İHA 900 s, İKA 600 s, FDA operasyon 600 s | `codes/karar_sozlesmesi.py`, D-318 |
 
-### 4.3 Takvim revizyonu — şartname takvimi ile takım takvimi
+#### 2.2.5.3 Şartname resmî takvimi ile takım takvimi
 
 | olay | şartname resmî tarihi | takım planı |
 |---|---|---|
@@ -238,7 +435,24 @@ başlık satırı bu doğru okumayı zaten taşır (*"kesin hazır 21 Eylül, te
 Plan belgesindeki etiket kaynağında düzeltilmemiştir (belge kaydı bozulmasın diye); rapor için
 geçerli olan bu paragraftır.
 
-### 4.4 🔴 Geçmeyen kapı — gizlenmez
+**Kusurun ağırlığı ve kapatılışı (D-410).** Bu yalnızca bir etiket hatası değildi: hata
+plan, runbook, `CONTRACTS.md` ve FDR bölümlerine **yayılmıştı**; yanlış kalsaydı takım 21 Eylül'e
+uçuş hazırlığı yapıp **rapor teslimini kaçırabilirdi** — FDA puanının %85'i rapordur
+(`FDA = FDR × 0,85 + test uçuşu × 0,15`). Tekrarı artık bir kapıyla engellenir:
+
+```text
+$ python -B -m unittest discover -s tests -p "test_fdr_takvim_kapisi.py" -v
+test_T2_hicbir_belge_ucusu_21_eylule_baglamiyor ... ok
+test_T3_resmi_takvim_tablosu_belgelerde ... ok
+test_T4_ucus_penceresi_kaybolmadi ... ok
+test_T1_sartname_iki_tarihi_soyluyor ... ok
+----------------------------------------------------------------------
+Ran 4 tests in 0.012s
+OK
+```
+(Koşum: 2026-09-04, yorumlayıcı `O:\navitas-local-train\venv\Scripts\python.exe`.)
+
+#### 2.2.5.4 🔴 Geçmeyen kapı — gizlenmez
 
 Üretim modeli **v36**, kendi **ön kayıtlı iki eşiğini geçmeden** terfi etmiştir. Ham kayıt:
 
@@ -260,9 +474,40 @@ ESIKLER DEGISMEDI ve sonraki terfileri baglar.
 Bu satır, projenin kanıt yordamının kendi aleyhine de işlediğinin göstergesidir ve raporda
 bilerek öne alınmıştır.
 
----
+#### 2.2.5.5 Yeni iş akışlarının analitik yeniden değerlendirilmesi
 
-## 5. Planlanan takvim — 3 → 30 Eylül 2026
+Yukarıdaki revizyonların her biri takvime **yeni bir iş kalemi** doğurmuştur. Aşağıdaki tablo,
+"hangi revizyon → hangi yeni iş akışı → planın hangi gününe oturdu → kanıtı ne" zincirini kurar.
+
+| # | tetikleyen revizyon | doğan yeni iş akışı | plandaki yeri | kanıt |
+|---|---|---|---|---|
+| 1 | Jetson Orin NX → **Nano 4GB** | JetPack 4.6.x + ayrı Python 3.8 venv + **çevrimdışı aarch64 tekerlek zinciri** (14/14) | Per 3 Eyl (hazırlık) → Cmt 5 Eyl (kurulum) | D-406, D-407; `jetson_paket/JETSON_NANO_KURULUM.md` |
+| 2 | Arducam → **RPi HQ (CSI)** | **Kamera köprüsü** (sistem Py3.6 + GStreamer `nvarguscamerasrc` → MJPEG/HTTP) | Per 3 Eyl | D-406, `scripts/kamera_koprusu.py` |
+| 3 | Seri porta tek erişim → **üç tüketici** | **MAVLink çoğullayıcı** + doğrulama aracı | Çar 2 – Per 3 Eyl | D-403, `CONTRACTS.md` §7.4, `scripts/mavlink_dogrula.py` |
+| 4 | Tek görev kipi → **FDA kipi** | YKS `--fda` kipi; paraşüt/İKA düğmeleri kapalı; tek 10 dk bütçe | Çar 2 Eyl | D-408, `CONTRACTS.md` §6.7, `tests/test_faz_b_yks_fda_kipi.py` |
+| 5 | microSD varsayımı → **M.2 / eMMC** (donanım beyanı düzeldi) | "microSD flash" adımı **geçersiz** oldu; yerine Ubuntu'lu host ile yazım | **Cum 4 Eyl satırı yeniden yazıldı** | D-413, `SAHA_HAZIRLIK_PLANI_20260903.md` §4 |
+| 6 | 21 Eylül "uçuş günü" sanılıyordu → **FDR teslim günü** | Takvim iddiaları belge belge düzeltildi + **kapı testi** eklendi | 21 Eyl satırı + tüm belgeler | D-410, `tests/test_fdr_takvim_kapisi.py` (4/4, 2026-09-04) |
+| 7 | R5 YKS rolü üstlenildi | YKS PC kurulumu + uçtan uca koşum | §1.8 (Cum 4 Eyl) → **3 Eylül'e çekildi** | D-414, `results/yks_kurulum/yks_acilis_20260903.png` |
+
+**Analitik sonuç — 1: plan kaydırılmadı, bir satır yeniden yazıldı.** Yedi yeni iş akışından
+altısı 2–3 Eylül penceresine sığdırılmış, ileri tarihli hiçbir satır ertelenmemiştir; yalnız
+**5 numaralı kalem** planın bir gününü (Cum 4 Eylül) içerik olarak değiştirmiştir. Kaydırma
+gerekmediğinin ölçülmüş göstergesi 3 Eylül kapı koşumudur: genel kapı **15/15 · 15/15**,
+tam suit **1875 test OK** (skipped 3), kuru koşu **9 GEÇTİ / 1 SAHİPSİZ**
+(`results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt`).
+
+**Analitik sonuç — 2: uçuş bütçesi, takvimin bağlayıcı kısıtıdır.** Plan §3'ün gerektirdiği
+en az uçuş sayısı, kontrol listesinden sayılabilir: 3.1 ilk hover (1) + 3.2 Loiter/Auto + iniş
+kanıtı (1) + 3.3 algı canlı (1) + 3.4 tam prova ×3 (3) + 3.5 sıkı provada tekrar kalkış (≥1)
+= **≥ 7 uçuş**. Tek pil ve iMAX B6 (~3 saat dolum) uçuş gününü **≤ 2 uçuşa** kilitlediğine göre
+gereken en az uçuş günü **≥ 4**'tür. Plan 6–19 Eylül aralığında **≥ 6 uçuş günü** ayırır
+(Paz 6 · 7–11 arasından kaptanın seçeceği ≥ 2 gün · Cmt 12 · Paz 13 · 14–16 sıkı prova).
+Pay: **2 gün**. İkinci pil + ≥ 150 W şarj cihazı bu payı büyütür; karar kaptandadır
+(`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
+⚠ Bu bir hesaptır, tahmin değildir; ama **kaybedilen uçuş günü sayısı öngörülmemiştir** —
+hava, arıza ve onarım payı §2.2.7'deki risk tablosunda ayrı durur.
+
+### 2.2.6 Planlanan takvim — 3 → 30 Eylül 2026
 
 Kaynak: `SAHA_HAZIRLIK_PLANI_20260903.md` §4. Her satırın bir **kapısı** vardır; kapı geçilmeden
 sonraki güne geçilmiş sayılmaz.
@@ -284,13 +529,18 @@ sonraki güne geçilmiş sayılmaz.
 | 22–29 Eyl | Tutanak, düzeltmeler (mühür kapsamı dışında değişiklik yok) | — | — |
 | **30.09–03.10** | **FDA — FDS + Drone ile Görev Test Uçuşu (şartname §5.3.2)** | herkes | **tek atış** |
 
+⚠ **"Cum 4 Eyl" satırının güncellenmiş hâli (D-413).** Yukarıdaki satır microSD'ye yazımdan söz
+eder; donanım beyanı 3 Eylül'de değişmiştir (taşıyıcı kartta microSD yuvası **yok**, M.2 **var**).
+Plan belgesindeki karşılığı üstü çizilerek düzeltilmiştir: *"~~microSD flash~~ → Ubuntu'lu host
+ayarla (eMMC boş çıkarsa gerekecek, D-413)"* (`SAHA_HAZIRLIK_PLANI_20260903.md` §4).
+Satır kaynağında silinmemiş, düzeltilmiştir (§2.1.6 kural 4).
+
 **Takvimin ölçülmüş kısıtı:** tek pil ve iMAX B6 (~50 W → ~3 A → ~3 saat dolum) uçuş gününü
 **en fazla 2 uçuşa** kilitler. İkinci pil + ≥150 W şarj cihazı prova sayısını ikiye katlar;
-karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
+karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı"). Bu kısıtın takvime
+etkisinin hesabı §2.2.5.5'tedir.
 
----
-
-## 6. Takvim riskleri ve karşı önlemler (ölçülmüş olanlar)
+### 2.2.7 Takvim riskleri ve karşı önlemler (ölçülmüş olanlar)
 
 | risk | neden gerçek | önlem | durumu |
 |---|---|---|---|
@@ -301,9 +551,24 @@ karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
 | **Gerçek arena görüntüsü yok** | Ölçüm: arena benzeri saha kanıtı **yoktur** (T111/D-198) | Sentetik + gerçek kırsal iki ayrı çerçeve olarak raporlanır; arası tahmin edilmez | **kapanmadı** |
 | **Acil güç kesme anahtarı yok** | Kullanıcı beyanı §0.2 | FDA aracında pil fişi; final aracı için tasarım borcu | **açık madde** |
 
+### 2.2.8 Bölüm 2.2'nin açık kalemleri
+
+1. **BEYAN GEREKLİ (insan): DDR teslim tarihi/saati teyidi** — KYS teslim kaydı (§2.2.1 satır 1).
+2. **BEYAN GEREKLİ (insan): DDR sonuç bildirimi ve alınan puan** (§2.2.1 satır 2).
+3. **BEYAN GEREKLİ (insan): DDR proje takvimi sayfası** — depo dışı yerel yedekten; termin
+   çizelgesinin tam hâli olmadan §2.2.1 yalnız üç tarih üzerinden teyit edilebiliyor.
+4. **BEYAN GEREKLİ (insan): 5 Eylül kutu açılış teyidi** — §2.2.5.1'deki gerçek künye satırlarının
+   her biri fiziksel parça ile karşılaştırılıp imzalanacaktır.
+5. **BEYAN GEREKLİ (insan): 21 Eylül Adıyaman uçuş alanı izni** ve alan koordinatları.
+6. **ÖLÇÜLEMEDİ: 2026-09-03 tarihli 551 commit / Ağustos 425 okumalarının kaynağı** — bugünkü
+   depodan yeniden üretilemiyor (§2.2.2.b); kapanışı, ölçüm satırlarına saat damgası ve komut
+   çıktısının dosyaya yazılmasıdır.
+7. **ÖLÇÜLEMEDİ: kanıt defteri okumalarının saati** (§2.1.6, A/B okumaları); aynı kapanış.
+8. **ÖLÇÜLEMEDİ: Nano'da FPS** (kapı 0,61) — 5 Eylül montaj gününde ölçülecek (§2.2.7).
+
 ---
 
-## 7. Kanıt dizini
+## Kanıt dizini (Bölüm 2)
 
 | # | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|---|
@@ -328,13 +593,12 @@ karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
 | 18 | FDA görev kipi sözleşmesi (`--fda`) | `CONTRACTS.md` §6.7 · `REVIEW_LOG.md` D-408 | `tests/test_faz_b_yks_fda_kipi.py` (9 test, 4/4 mutant) | 2026-09-02 |
 | 19 | MAVLink çoğullayıcı zorunluluğu | `CONTRACTS.md` §7.4 · `FAZ_B_GUN_PLANI.md` §1 | `scripts/mavlink_dogrula.py` | 2026-09-02 |
 | 20 | Süre sözleşme sabitleri (900 / 600 / 600 s) | `codes/karar_sozlesmesi.py` · `CONTRACTS.md` §7.1 | `REVIEW_LOG.md` D-318 | 2026-08-27 |
-
-### BEYAN GEREKLİ (insan) — bu bölümde kapatılacak boşluklar
-
-1. **BEYAN GEREKLİ (insan): rol → isim ataması** (8 rol; ad-soyad, öğrenim düzeyi, yedek rol).
-2. **BEYAN GEREKLİ (insan): takım üye sayısı ve şartname §4 oran kontrolü** (6–10 kişi; lisansüstü oranı).
-3. **BEYAN GEREKLİ (insan): danışman öğretim üyesi** bilgisi.
-4. **BEYAN GEREKLİ (insan): takım künyesinin KYS teyidi** (ID 997827 / başvuru 5329027).
-5. **BEYAN GEREKLİ (insan): 5 Eylül kutu açılış teyidi** — §4.1'deki gerçek künye satırlarının
-   her biri fiziksel parça ile karşılaştırılıp imzalanacaktır.
-6. **BEYAN GEREKLİ (insan): 21 Eylül Adıyaman uçuş alanı izni** ve alan koordinatları.
+| 21 | DDR termin planı: DDR teslim 15.07.2026 · DDR sonuç 29.07.2026 · FDR 21.09.2026 | `navitas-teknofest/references/ddr_requirements.md:3–6` | doğrudan okuma (`grep -n "Kritik Takvim" -A 6`) | 2026-09-04 |
+| 22 | DDR'nin depoya bakan izi: son sürüm v4.3 (`f4d1583`, 12.07) ve belgenin depo dışına alınışı (`38798f2`, 12.07) | `O:\navitas\.git` | `git log --date=short --since=2026-07-10 --until=2026-07-31` | 2026-09-04 |
+| 23 | Takvim kapısı **4 test / 4 OK** (21 Eylül = FDR teslim, uçuş değil) | `tests/test_fdr_takvim_kapisi.py` · `REVIEW_LOG.md` D-410 | `python -B -m unittest discover -s tests -p "test_fdr_takvim_kapisi.py" -v` | 2026-09-04 |
+| 24 | Depo yeniden ölçümü: **560 commit** (HEAD) · 607 (`--all`) · Ağustos 26 gün / 418 commit | `O:\navitas\.git` | `git log --oneline \| wc -l`; `git log --date=short --pretty=format:"%ad" \| sort \| uniq -c` | 2026-09-04 00:05 |
+| 25 | Kanıt defteri yeniden ölçümü: **424 başlık / 418 benzersiz** | `REVIEW_LOG.md` | `grep -cE "^### D-[0-9]+"`; `grep -oE "^### D-[0-9]+" \| sort -u \| wc -l` | 2026-09-04 00:06 |
+| 26 | YKS PC kurulumu uçtan uca koştu (exit 0); R5 rolü üstlenildi; R2/R5 çakışması açık kalem | `REVIEW_LOG.md` D-414 · `results/yks_kurulum/yks_acilis_20260903.png` | `yks_gui --demo --fda --otokaydet 14 --kapat` | 2026-09-03 |
+| 27 | Donanım beyanı düzeltmesi: Nano taşıyıcıda microSD **yok**, M.2 **var** → plan adımı geçersiz | `REVIEW_LOG.md` D-413 · `SAHA_HAZIRLIK_PLANI_20260903.md` §4 | kullanıcı beyanı + plan düzeltmesi | 2026-09-03 |
+| 28 | İsim yasağının bulunuşu ve raporun yönerge iskeletine alınışı | `REVIEW_LOG.md` D-417 · `FDR/YONERGE_HARITASI.md` | resmî yönerge metni `results/fdr_sablon/fdr_yonerge_metin.txt` | 2026-09-03 |
+| 29 | Yönergenin Bölüm 2 / 2.1 / 2.2 metni (birebir alıntılar) | `results/fdr_sablon/fdr_yonerge_metin.txt` | pypdf metin çıkarımı | 2026-09-03 |

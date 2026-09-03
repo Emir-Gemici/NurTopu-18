@@ -1,0 +1,32 @@
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu � zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+==============================================================================
+SAHA KURU KOSUSU — CONTRACTS.md §11 · Gazebo YOK · donanim YOK
+==============================================================================
+  kamera         GECTI      kaynak parametrik ve VideoCapture'a BESLENIYOR (cihaz yolu str, indeks int olarak cozuluyor)  [2382 ms]
+                            -> codes/rpi_inference.py:run_camera
+  model_yukleme  GECTI      agirlik manifestten turetiliyor, --model besliyor, uyusmazlikta fail-closed ve kayit defteriyle eslesiyor  [40 ms]
+                            -> codes/rpi_inference.py:load_model
+  cikarim        GECTI      tek kare cikarimi tamamlandi  [2357 ms]
+                            -> codes/rpi_inference.py:57
+  maske          GECTI      {0,1} anahtarli maskeler uretildi  [39 ms]
+                            -> codes/rpi_inference.py:60-83
+  olcek          GECTI      canli telemetri bu kare icin gecerli mpp uretti
+                            -> codes/rpi_inference.py
+  hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor
+                            -> codes/rpi_inference.py (T150/D-386: goruntu= + sekil kapisi)
+  rota           GECTI      rota uretildi: yol_no=2  [28 ms]
+                            -> codes/rpi_inference.py:analyze_path (run_camera yolu)
+  aktarim        GECTI      saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
+                            -> codes/rpi_inference.py:run_camera
+  telsiz halkasi  GECTI      run_camera -> KararYayinci -> loopback IKA: {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika'], 'hata': None}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+                            -> comms/iha_inis_yayinci.py:386
+  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda
+------------------------------------------------------------------------------
+GECTI 9 · DUSTU 0 · SAHIPSIZ 1 · ATLANDI 0
+KOPUK HALKALAR (1): motor
+Zincir saha kosumunda TAMAMLANMAZ.
+Cikti: O:\navitas\results\saha_kuru_kosu_20260904_010058
+exit=1
