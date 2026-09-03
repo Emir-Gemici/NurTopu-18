@@ -141,7 +141,7 @@ içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisini
 | 23 | Kablolama | XT60/XT90, JST-GH vb. | lot | 150 | **Değişmedi** (A23) | — |
 | 24 | Acil kesme şalterleri | Anahtarlı stop + röle | 1 | 30 | 🔴 **FDA aracında YOK** — pil fişi kullanılıyor | **açık borç** (final için satın alma gerekir) |
 | 26 | Telemetri (YKS) | Holybro SiK 433 | 1 | 35 | **Değişmedi** (A16) | — |
-| 27 | Jetson SSD | NVMe M.2 250 GB | 1 | 10 | Nano'da **NVMe yok** → microSD (A18) | azaltıcı |
+| 27 | Jetson SSD | NVMe M.2 250 GB | 1 | 10 | ~~Nano'da NVMe yok → microSD~~ **DÜZELTME (3 Eylül, D-413):** taşıyıcı kartta **M.2 VAR**, microSD **YOK**. DDR'deki bu kalem doğruydu; azaltıcı sayılması hataydı | **gerçekleşecek** |
 | | **DDR beyan toplamı** | | | **2293** | FDA aracının kütlesi **ÖLÇÜLEMEDİ** | |
 
 ⚠ DDR belgesinin kendi içinde bir tutarsızlığı vardır: BOM "Pixhawk 6C" derken aynı dönemin

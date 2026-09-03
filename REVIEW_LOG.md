@@ -28579,3 +28579,82 @@ olarak durur.
 **Ders — yordama gecirildi.** Commit oncesi `git status` kapsami okunacak;
 `comms/`, `codes/` altinda **beklenmeyen** bir dosya varsa commit
 genisletilmeyecek. Belge commit'i belge commit'i olarak kalir.
+
+### D-413 — DONANIM BEYANI DEGISTI: Nano'da microSD yuvasi YOK (uretim modulu + tasiyici, M.2 SSD) — planin bir adimi gecersiz oldu
+
+**Beyan.** Kullanici 3 Eylul'de bildirdi: elimizdeki Jetson'da **microSD girisi
+yok**, depolama **M.2 SSD**. Sorulan dort secenekten **"Nano modul + tasiyici
+kart"** isaretlendi: Jetson Nano uretim modulu (eMMC 16 GB) ucuncu parti
+tasiyici uzerinde.
+
+**Neyin gecersiz oldugu.** `JETSON_NANO_KURULUM.md` §1 ve plan §1.5 "JetPack SD
+imajini microSD'ye balenaEtcher ile yaz" diyordu. Bu donanimda **SD imaji yolu
+yoktur**. Kusur cumartesiyi yakabilirdi: 14:30 Jetson blogu (2,5 saat) bos gecer,
+kart bir sonraki gune kayardi. Iddia bir soru ile olculdu, tahminle kapatilmadi.
+
+**Neyin DEGISMEDIGI — ve bu neden onemli.** Uretim modulu de **JetPack 4.6.x /
+Ubuntu 18.04 / sistem Python 3.6** tasir. Yani D-406'da kurulan yigin **aynen
+gecerlidir**: Python 3.8 venv plani, `wheels/` altindaki 14 paketlik **aarch64
+cp38** cevrimdisi tekerlek seti (51 dosya, 246 MB), kamera koprusunun Python 3.6
+soz dizimi kapisi, `jetson_baslat.sh` birimleri. **Yeniden indirilecek hicbir sey
+yok.** Kart Orin cikmis olsaydi JetPack 5/6 gelir ve tekerleklerin tamami
+yanlis surum olurdu — bu yuzden soruldu.
+
+**Yeni ON KOSUL (insan).** eMMC bos cikarsa flash **NVIDIA SDK Manager** ile
+yapilir; SDK Manager **yalniz x86_64 Ubuntu 18.04/20.04** uzerinde kosar.
+**Windows'ta yapilamaz**; WSL2 ve sanal makine kurtarma kipindeki USB yeniden
+numaralandirmasi yuzunden guvenilir degildir. Takimda Ubuntu'lu bir makine
+gerekir — cuma kontrol kartina eklendi.
+
+**Yordam degisikligi — once OLC, sonra flash'la.** Ucuncu parti Nano tasiyici
+kitlerin cogu eMMC'de JetPack **kurulu** gelir. Bu yuzden cumartesinin ilk isi
+flash degil, **ac ve bak** oldu (§1.1, 5 dakika): Ubuntu aciliyorsa §1 atlanir.
+Acilirsa surum **dogrulanir, guvenilmez**: `cat /etc/nv_tegra_release` -> R32
+REVISION 7.x, `lsb_release -a` -> 18.04, `python3 --version` -> 3.6.9.
+Uymuyorsa DUR: `wheels/` surumu o zaman uymaz.
+
+**M.2 karari.** eMMC 16 GB'dir, JetPack sonrasi ~5-6 GB bos kalir; bizim yukumuz
+(~360 MB) **sigar**. Yani M.2, 21 Eylul icin **zorunlu degildir**. Cumartesi
+M.2 yalniz **veri/log diski** olarak baglanir (ucus kayitlari ve `--save`
+videolari eMMC'yi doldurup sistemi kilitlemesin diye). **Rootfs migration
+YAPILMAZ** — kazanci yok, yanlis giderse sistem acilmaz.
+
+**Yan duzeltme — DDR butce kalemi haksiz yere azaltici sayilmisti.** Bolum 7
+satir 27 "Jetson SSD NVMe M.2 250 GB" icin "Nano'da NVMe yok -> microSD" yazmistim.
+Tasiyici kartta M.2 **vardir**; DDR'deki kalem dogruydu, benim azaltici saymam
+hataliydi. Satir ustu cizilerek duzeltildi (kanit silinmez).
+
+**Degisen belgeler.** `jetson_paket/JETSON_NANO_KURULUM.md` §1 bastan yazildi
+(§1.1 ac-ve-bak, §1.2 SDK Manager B yolu, §1.3 M.2 kullanimi, §1.4 bellek) ·
+`SAHA_HAZIRLIK_PLANI` §1.5 ve cuma satiri · `CUMA_KONTROL_KARTI` §B (microSD
+alisveristen cikti, Ubuntu host ve kurtarma pini eklendi) · FDR Bolum 7 satir 27.
+Eski metinler `git log` icinde durur.
+
+### D-414 — YKS PC KURULUMU (§1.8) KULLANICI USTLENDI ve PC'de UCTAN UCA KOSTURULDU
+
+**Rol.** Kullanici 3 Eylul'de **R5 YKS operatoru** rolunu de ustlendi (R2 Pilot'a
+ek). Cakisma kayda gecirildi: §2.2 "Ucus" satirinda R2 kumandayi tutar, R5 hakem
+ekranini surer; gorev boyunca **eszamanlidirlar**, tek kisi yapamaz. Montaj gunu
+ve yer provalarinda cakisma yoktur — kullanici provada ikisini de yurutecegini
+beyan etti; ucus gunu icin ikinci kisi **acik kalemdir**.
+
+**Kurulum — olculdu, beyan edilmedi.**
+  1. Bagimlilik: venv'de tkinter 8.6 · pyserial 3.5 · Pillow 12.2 · numpy 2.3.5 ·
+     OpenCV 5.0 — hepsi mevcut, kurulum gerekmedi.
+  2. SiK COM portu: donanim gelmedi, **ACIK** (cumartesi).
+  3. Guvenlik duvari: demo kosumu UDP :5005'i acti, engellenmedi. Gercek uclarda
+     (14550/14551/14552) ilk acilista bir kez daha sorulacak.
+  4. Uctan uca: `yks_gui --demo --fda --otokaydet 14 --kapat` **exit 0**;
+     ekran goruntusu `results/yks_kurulum/yks_acilis_20260903.png`.
+     Goruntude dogrulanan: FDA rozeti (§5.3.2) ve IHA kronometresi 10:00 ·
+     PARASUT ve IKA dugmeleri **"FDA disi"** olarak kapali (D-408) ·
+     OPEN_ROUTE -> "IKA ALDI ACK ref=1" -> IHA_LANDED zinciri tam ·
+     hakem onayi ACK bekliyor · HTAB **50x50 m** (D-411 duzeltmesi ekranda).
+
+**Yan kazanc — D-412 gercek yolda dogrulandi.** Bu kosum `YksArayuz.__init__`'i
+**gercekten** calistirdi; yani bugun yazilan `_kanit_yaz` uretim yolunda da
+calisiyor. Birim testi (6 test) disinda bagimsiz bir kanit.
+
+**Bulunan kusur (acik).** Ekran basligindaki "HAZIRLIK" kronometresinin etiketi
+pencere basligiyla cakisiyor: "...HAKEM EKRANI**ZIRLIK** ... / 15". Hakemin
+gordugu ekranda kozmetik hata. Kayit acik; duzeltilmedi.

@@ -58,8 +58,16 @@ buradan eklenecektir.
 aralığında olduğu ve lisansüstü üye oranının şartname sınırını aşmadığı beyan edilecektir.
 **BEYAN GEREKLİ (insan): danışman öğretim üyesi bilgisi.**
 
-Bugün itibarıyla atanmış tek rol kullanıcı beyanıyla **R2 Pilot**'tur
-(`SAHA_HAZIRLIK_PLANI_20260903.md` §3: *"pilot: kullanıcı"*).
+Bugün itibarıyla kullanıcı beyanıyla atanmış roller: **R2 Pilot** ve **R5 YKS
+operatörü** (`SAHA_HAZIRLIK_PLANI_20260903.md` §3 ve §1.8; beyan 3 Eylül 2026).
+
+⚠ **Bu iki rol uçuş anında ÇAKIŞIR ve çakışma bilerek kayda geçirilmiştir.**
+§2.2 tablosunun "Uçuş" satırında R2 kumandayı tutar (gözü araçta), R5 hakem
+ekranını sürer (gözü ekranda, hakemle birlikte onay basar). Görev ≤ 10 dk
+boyunca ikisi **eşzamanlıdır**; tek kişi ikisini birden yapamaz. Montaj günü
+(5 Eylül) ve yer provalarında çakışma yoktur — orada aynı kişi ikisini de
+yürütebilir. **BEYAN GEREKLİ (insan): uçuş günü için bu iki rolden birine
+ikinci bir kişi atanacaktır.**
 
 ### 2.2 Saha günü rol dağılımı (5 Eylül montaj günü ve 21 Eylül uçuş günü)
 

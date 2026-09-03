@@ -1,7 +1,9 @@
 # JETSON NANO 4GB — SIFIRDAN KURULUM (Faz B · Görev N · 2026-09-03)
 
 > **NEDEN:** `SAHA_HAZIRLIK_PLANI_20260903.md` **§1.3** (Nano yığını — EN KRİTİK) ve **§1.5**
-> (JetPack SD imajı). Kullanıcı beyanı (§0.2): kart **Jetson Nano 4GB**, JetPack **4.6.x**
+> (sistem imajı). Kullanıcı beyanı (§0.2 · 3 Eylül güncellemesi): **Jetson Nano 4GB
+> üretim modülü (eMMC) + üçüncü parti taşıyıcı kart, depolama M.2 SSD — microSD yuvası
+> YOK** (§1). JetPack **4.6.x**
 > (Ubuntu 18.04, sistem Python **3.6**, sistem OpenCV 4.1 GStreamer'li), **cumartesi
 > geliyor, kurulu DEĞİL**. Repo `codes/rpi_inference.py` → `from ultralytics import YOLO`
 > (Python ≥ 3.8). Kamera **Raspberry Pi HQ (IMX477, CSI)**; görüntü yalnız GStreamer
@@ -42,16 +44,93 @@ karar mimara ve D-kaydına gider. Bu belge sonucu **tahmin etmez**.
 
 ---
 
-## 1. PC'de (cuma, Nano gerekmez): JetPack SD imajı — plan §1.5
+## 1. SİSTEM İMAJI — ⚠ DONANIM DEĞİŞTİ (3 Eylül, kullanıcı beyanı)
 
-1. NVIDIA developer sayfası → **Jetson Nano Developer Kit** → *"Jetson Nano Developer Kit SD
-   Card Image"*, JetPack **4.6.x (son 4.6)**. ⚠ **"Jetson Nano 2GB"** imajını **indirme** —
-   kart 4 GB'lık Developer Kit. Sürüm numarası burada uydurulmaz; sayfada ne yazıyorsa o.
-2. microSD **≥ 64 GB, UHS-I** (plan §1.11 alışverişte). **balenaEtcher** ile `.zip`'i
-   doğrudan seç → *Flash* (Etcher zip'i kendisi açar).
-3. **Kapı:** Etcher *"Flash Complete!"* + doğrulama (*Validating*) hatasız. Kart PC'de
-   birden çok bölüm gösterir (Windows "biçimlendir?" diye sorar — **HAYIR**).
-4. Belleğe ayrıca: `jetson_paket/` (tümü), **`wheels/`** (§3), `config/pixhawk/*` (plan §1.6–1.7).
+> 🔴 **Bu bölüm 3 Eylül'de baştan yazıldı.** Önceki hâli "microSD'ye JetPack SD
+> imajı yaz, balenaEtcher kullan" diyordu. Kullanıcı beyanı: elimizdeki kartta
+> **microSD yuvası YOK**; bu bir **Jetson Nano üretim modülü (eMMC) + üçüncü parti
+> taşıyıcı kart** ve depolama **M.2 SSD**. SD imajı yolu bu donanımda **kullanılamaz**.
+> Eski metin `git log` içinde durur (kanıt silinmez, D-413).
+
+**İyi haber:** yazılım yığını değişmiyor. Üretim modülü de **JetPack 4.6.x /
+Ubuntu 18.04 / sistem Python 3.6** taşır — yani §3'teki Python 3.8 venv planı,
+`wheels/` altındaki **aarch64 cp38** çevrimdışı tekerlekler ve kamera köprüsünün
+Python 3.6 uyumu **aynen geçerlidir**. Yeniden indirilecek bir şey yok.
+
+**Kötü haber:** eMMC'ye imaj yazmak, microSD yazmaktan farklıdır ve **Windows'ta
+yapılamaz** (aşağıda B yolu).
+
+### 1.1 CUMARTESİ İLK İŞ: flash'lamadan önce **AÇ VE BAK** (5 dakika)
+
+Üçüncü parti Nano taşıyıcı kitlerin çoğu **eMMC'de JetPack kurulu** gelir. Kutuyu
+açar açmaz varsayma — **ölç**:
+
+1. Besleme + HDMI + klavye tak, güç ver.
+2. Ekranda ne oluyor?
+   - **Ubuntu açılış / kurulum sihirbazı geliyorsa → SİSTEM KURULU.** §1'in geri
+     kalanını atla, doğrudan **§2**'ye geç. Cumartesi kurtuldu.
+   - **Siyah ekran / hiçbir görüntü yok / sonsuz döngü → sistem yok**, B yoluna geç.
+3. Açıldıysa sürümü **doğrula, güven me**:
+```bash
+cat /etc/nv_tegra_release          # R32 (release), REVISION: 7.x  -> JetPack 4.6.x
+lsb_release -a                     # Ubuntu 18.04
+python3 --version                  # 3.6.9 beklenir
+lsblk                              # eMMC (mmcblk0) ve M.2 (nvme0n1) görünüyor mu
+df -h /                            # eMMC 16 GB'de kalan yer (JetPack sonrası ~5-6 GB)
+```
+   `R32 REVISION: 7` değilse ya da Ubuntu 18.04 değilse **DUR** ve mimara söyle:
+   `wheels/` sürümü o zaman uymaz.
+
+### 1.2 B YOLU — eMMC boşsa: SDK Manager ile flash
+
+⚠ **Bu yol Windows'ta ÇALIŞMAZ.** NVIDIA SDK Manager yalnız **x86_64 Ubuntu**
+(18.04 ya da 20.04) üzerinde koşar. WSL2 ve sanal makine, kurtarma kipindeki USB
+yeniden numaralandırması yüzünden **güvenilir değildir** — resmî olarak da
+desteklenmez. Gerçek bir Ubuntu makine gerekir.
+
+**İnsan ön koşulu (YENİ):** Ubuntu 18.04/20.04 kurulu x86_64 bir bilgisayar.
+Seçenekler, tercih sırasıyla:
+  1. Takımdan birinde Ubuntu / çift önyükleme varsa — **en hızlısı**
+  2. Yedek bir dizüstüye Ubuntu 20.04 kurmak (~1 saat + indirme)
+  3. Ubuntu canlı USB (kalıcı depolamalı) — SDK Manager ~20 GB indirir, USB'nin
+     hızlı ve ≥ 64 GB olması gerekir
+
+Adımlar (Ubuntu host'ta):
+1. NVIDIA developer hesabıyla **SDK Manager** `.deb` indir, kur.
+2. Taşıyıcı kartı **kurtarma kipine** al: `FC REC` (recovery) pinini `GND`'ye
+   köprüle **ve öyleyken** güç ver. Pin adı taşıyıcı kartın kılavuzundadır —
+   **kart üreticisinin belgesine bak, tahmin etme**.
+3. Host'a **micro-USB** (ya da taşıyıcıda hangisi kurtarma portuysa) ile bağla.
+   Host'ta doğrula: `lsusb | grep -i nvidia` → `NVIDIA Corp. APX` görünmeli.
+   Görünmüyorsa kart kurtarma kipinde değildir; flash'a başlama.
+4. SDK Manager → **Jetson Nano (Developer Kit değil, module)** → **JetPack 4.6.x**
+   → hedef depolama **eMMC**.
+5. Flash bitince kart kendi başına açılır; §1.1 adım 3'teki doğrulamayı koş.
+
+### 1.3 M.2 SSD — ne için, ne zaman
+
+eMMC **16 GB**'dir ve JetPack sonrası ~5–6 GB boş kalır. Bizim yükümüz küçük
+(`jetson_paket/` + model ~110 MB + `wheels/` 246 MB) ve **eMMC'ye sığar** —
+yani **21 Eylül için M.2 zorunlu değildir**.
+
+M.2'yi cumartesi şu iş için kullan: **veri ve log diski**. Uçuş kayıtları, RAW
+kamera kareleri ve `--save` videoları eMMC'yi doldurup sistemi kilitleyebilir.
+```bash
+lsblk                                    # nvme0n1 görünüyor mu
+sudo mkfs.ext4 /dev/nvme0n1              # ⚠ DİSKİ SİLER — üzerinde veri yoksa
+sudo mkdir -p /mnt/veri && sudo mount /dev/nvme0n1 /mnt/veri
+sudo chown navitas:navitas /mnt/veri
+echo '/dev/nvme0n1 /mnt/veri ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
+```
+**Kök dosya sistemini M.2'ye taşıma (rootfs migration) 21 Eylül için YAPILMAZ.**
+Kazancı yok, riski var: yanlış giderse sistem açılmaz ve cumartesi biter.
+Yarışma sonrası işi.
+
+### 1.4 Belleğe konulacaklar (değişmedi)
+
+`jetson_paket/` (tümü), **`wheels/`** (§3), `config/pixhawk/*` (plan §1.6–1.7).
+Hepsi `O:
+avitas_bellek` içinde hazır (405 dosya, 1,27 GB).
 
 ---
 

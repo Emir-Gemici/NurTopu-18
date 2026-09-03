@@ -25,14 +25,16 @@ değiştiyse). Değişmediyse yukarıdaki sonuçlar geçerlidir.
 
 | ✓ | ne | neden / not |
 |---|---|---|
-| ☐ | **microSD ≥ 64 GB (UHS-I)** + kart okuyucu al | JetPack imajı yazılacak |
-| ☐ | **JetPack 4.6.x** "Jetson Nano Developer Kit SD Card Image" indir, balenaEtcher ile yaz | Nano gerekmez, PC'de yapılır |
+| ~~☐~~ | ~~microSD ≥ 64 GB + kart okuyucu~~ **GEREKMİYOR** (3 Eylül: kartta microSD yuvası yok — eMMC modül) | **satın alma listesinden ÇIKTI** |
+| ☐ | **CUMARTESİ İLK İŞ: Nano'yu aç ve bak** — eMMC'de JetPack kurulu geliyor mu? (üçüncü parti kitlerin çoğu kurulu gelir) | `JETSON_NANO_KURULUM.md` §1.1 · 5 dakika · flash'lamadan ÖNCE |
 | ☐ | **5 V / 5 A UBEC** al | Jetson beslemesi; FCHUB'ın küçük BEC'i yetmez |
 | ☐ | **JST-GH 6-pin kablo** + dişi-dişi jumper | TELEM1 (SiK) ve TELEM2 → Nano UART |
 | ☐ | **USB webcam** (yedek kamera) | CSI yolu ilk gün açılmazsa `--kaynak 0` |
 | ☐ | XT60/XT90 fiş, kablo bağı, ısı makaronu, damper bant | kablolama |
 | ☐ | **Yedek pervane seti (12×10, CW+CCW)** | ilk uçuşlarda en sık kırılan parça |
 | ☐ | (öneri) **2. pil 4S 10 Ah + ≥150 W şarj** | tek pil → günde 2 uçuş |
+| ☐ | **YEDEK PLAN: Ubuntu'lu x86_64 bilgisayar ayarla** (takımda kimde var?) | eMMC BOŞ çıkarsa SDK Manager ile flash gerekir; **Windows'ta yapılamaz** · `JETSON_NANO_KURULUM.md` §1.2 |
+| ☐ | Taşıyıcı kartın **kurtarma (FC REC) pini** hangisi — üretici kılavuzunu indir | flash gerekirse pin adı tahmin edilemez |
 | ☐ | (öneri) GPU torch wheel'i (JetPack 4.6 / Py3.8) indir, belleğe koy | v36 YOLOv8m; CPU'da FPS kapısı düşebilir |
 | ☐ | Küçük ekran + klavye, ethernet kablosu | Nano ilk açılış |
 | ☐ | Multimetre, tartı, baret/yelek | kablolama kontrolü, UHDR kütle, saha |

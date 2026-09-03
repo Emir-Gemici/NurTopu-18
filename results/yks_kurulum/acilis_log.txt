@@ -1,0 +1,2 @@
+SS kaydedildi: results/yks_kurulum/yks_acilis_20260903.png
+exit=0
