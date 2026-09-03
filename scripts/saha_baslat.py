@@ -7,8 +7,8 @@ basina TEK komuttur: dogru bayraklarla bileseni kaldirir, acilis suresini
 olcup yazar.
 
 Kullanim (saha):
-  <venv> scripts/saha_baslat.py yks --ika 10.0.0.2:5006 --iha 10.0.0.3:5007 --kamera-url http://10.0.0.3:8080
-  <venv> scripts/saha_baslat.py yks --serial COM5 --kamera-url http://192.168.4.2:8080
+  <venv> scripts/saha_baslat.py yks --fda --ika 10.0.0.2:5006 --iha 10.0.0.3:5007 --kamera-url http://10.0.0.3:8080
+  <venv> scripts/saha_baslat.py yks --fda --serial COM5 --kamera-url http://192.168.4.2:8080
   <venv> scripts/saha_baslat.py ika --yks 10.0.0.1:5005
   <venv> scripts/saha_baslat.py --komutlar                 # karti yazdir
   <venv> scripts/saha_baslat.py --reset                    # tekrar-firlatma yordami
@@ -24,8 +24,10 @@ Jetson tarafi bu betikle ACILMAZ — cihazda `jetson_paket/` kilavuzu gecerli
 (SAHA_RUNBOOK.md §3'te tek satiri var).
 """
 import argparse
+import queue
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -69,15 +71,19 @@ TEKRAR FIRLATMA / RESET YORDAMI (sartname §6.2 — sure 15 dk'dan yer)
 
 
 def komut_uret(kip, ika=None, yks=None, serial=None, baud=None, iha=None,
-               kamera_url=None):
+               kamera_url=None, fda=False):
     """Istasyon komutunu TEK yerden uret (runbook bu ciktiyi kopyalar).
 
     `iha` yalniz yks kipinde ve yalniz UDP'de anlamlidir: yks_gui serial
     dalinda `--iha`yi sessizce yutar (iha_peer=None); sessiz yutmayi burada
     ValueError'a ceviririz ki operator pinledigini SANMASIN (D-403).
     """
+    if fda and kip != "yks":
+        raise ValueError("--fda yalnız YKS kipinde kullanılabilir")
     if kip == "yks":
         komut = [VENV, str(KOK / "comms" / "yks_gui.py")]
+        if fda:
+            komut.append("--fda")
         if serial:
             if iha:
                 raise ValueError(
@@ -117,26 +123,64 @@ def iha_eksik_uyarisi(kip, iha=None, serial=None):
 
 
 def acilis_olc(komut, cikti=sys.stdout, tavan_s=ACILIS_ISARET_TAVANI_S):
-    """Komutu baslat, ilk cikti satirina kadar gecen sureyi olc, akisi aktar."""
+    """Komutu başlat; sessiz GUI yüzünden süre ölçümünü sonsuza dek kilitleme.
+
+    Çocuk çıktısını tek bir arka-plan okuyucusu aktarır. Ana iş parçacığı ilk
+    satırı en fazla ``tavan_s`` bekler; süreç sağ ve sessizse uyarıyı basıp
+    çağırana geri döner. Böylece GUI'nin stdout yazmaması açılış kartını
+    dondurmaz, sonradan gelen çıktı da aynı okuyucu üzerinden kaybolmadan akar.
+    """
+    try:
+        tavan = float(tavan_s)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError("açılış işaret tavanı pozitif olmalı") from exc
+    if not (0.0 < tavan < float("inf")):
+        raise ValueError("açılış işaret tavanı pozitif olmalı")
     t0 = time.monotonic()
     print(f"[saha_baslat] {' '.join(komut)}", file=cikti, flush=True)
     cocuk = subprocess.Popen(komut, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT, text=True,
                              encoding="utf-8", errors="replace")
-    ilk = cocuk.stdout.readline()
+    ilk_kuyruk = queue.Queue(maxsize=1)
+    yazma_kilidi = threading.Lock()
+
+    def _aktar():
+        ilk_goruldu = False
+        try:
+            for satir in cocuk.stdout:
+                if not ilk_goruldu:
+                    ilk_goruldu = True
+                    try:
+                        ilk_kuyruk.put_nowait(satir)
+                    except queue.Full:
+                        pass
+                with yazma_kilidi:
+                    print(satir, end="", file=cikti, flush=True)
+        finally:
+            if not ilk_goruldu:
+                try:
+                    ilk_kuyruk.put_nowait(None)
+                except queue.Full:
+                    pass
+
+    threading.Thread(target=_aktar, name="saha-cikti-aktar",
+                     daemon=True).start()
+    try:
+        ilk = ilk_kuyruk.get(timeout=tavan)
+    except queue.Empty:
+        ilk = None
     gecen = time.monotonic() - t0
     if ilk:
-        print(f"[saha_baslat] AÇILIŞ {gecen:.1f} s (ilk işaret: {ilk.strip()!r})",
-              file=cikti, flush=True)
+        with yazma_kilidi:
+            print(f"[saha_baslat] AÇILIŞ {gecen:.1f} s "
+                  f"(ilk işaret: {ilk.strip()!r})", file=cikti, flush=True)
     else:
-        print(f"[saha_baslat] ⚠ {gecen:.1f} s içinde çıktı işareti yok — "
-              "süreç çalışıyor olabilir (GUI sessiz); kronometreyle doğrula",
-              file=cikti, flush=True)
-    try:
-        for satir in cocuk.stdout:
-            print(satir, end="", file=cikti, flush=True)
-    except KeyboardInterrupt:
-        pass
+        durum = ("süreç çıktı vermeden kapandı" if cocuk.poll() is not None
+                 else "süreç çalışıyor (GUI sessiz)")
+        with yazma_kilidi:
+            print(f"[saha_baslat] ⚠ {gecen:.1f} s içinde çıktı işareti yok — "
+                  f"{durum}; pencere/servis sağlığını doğrula",
+                  file=cikti, flush=True)
     return cocuk
 
 
@@ -152,6 +196,8 @@ def main(argv=None):
     ap.add_argument("--baud", type=int, default=None)
     ap.add_argument("--kamera-url",
                     help="Jetson RAW kamera kökü (ayrı Wi-Fi/LAN; SiK değil)")
+    ap.add_argument("--fda", action="store_true",
+                    help="21 Eylül çoklu-rotor görev kipi (YKS için)")
     ap.add_argument("--komutlar", action="store_true",
                     help="thazirlik kartini yazdir ve cik")
     ap.add_argument("--reset", action="store_true",
@@ -162,29 +208,34 @@ def main(argv=None):
         print(RESET_YORDAMI)
         return 0
     if args.komutlar or not args.kip:
-        print("SAHA AÇILIŞ KARTI (thazırlık — istasyon başına TEK komut):")
-        print("  YKS :", " ".join(komut_uret("yks", ika=KART_IKA_HEDEF,
-                                              iha=KART_IHA_HEDEF,
-                                              kamera_url=KART_KAMERA_URL)))
+        print("SAHA AÇILIŞ KARTI (hazırlık — istasyon başına TEK komut):")
+        print("  YKS FDA :", " ".join(komut_uret(
+            "yks", ika=KART_IKA_HEDEF, iha=KART_IHA_HEDEF,
+            kamera_url=KART_KAMERA_URL, fda=True)))
+        print("  YKS YARIŞMA :", " ".join(komut_uret(
+            "yks", ika=KART_IKA_HEDEF, iha=KART_IHA_HEDEF,
+            kamera_url=KART_KAMERA_URL)))
         print("        (--iha = Jetson'daki iha_komut_alici --bind ucu; "
               "verilmezse PARAŞÜT alıcıya ULAŞMAZ — D-403)")
         print("  İKA :", " ".join(komut_uret("ika", yks=KART_YKS_HEDEF)))
         print("  SiK :", " ".join(komut_uret(
             "yks", serial="COM5", baud=57600,
-            kamera_url=KART_KAMERA_URL)))
+            kamera_url=KART_KAMERA_URL, fda=True)))
         print("  Jetson: bkz. SAHA_RUNBOOK.md §3 (cihazda jetson_paket/)")
         return 0
 
     if args.serial and args.iha:
         ap.error("--serial (SiK) kipinde --iha kullanılamaz: yks_gui serialde "
                  "UDP adresi kabul etmez (komutlar seri hattan gider)")
+    if args.fda and args.kip != "yks":
+        ap.error("--fda yalnız YKS kipinde kullanılabilir")
     uyari = iha_eksik_uyarisi(args.kip, iha=args.iha, serial=args.serial)
     if uyari:
         print(f"[saha_baslat] {uyari}", file=sys.stderr, flush=True)
 
     komut = komut_uret(args.kip, ika=args.ika, yks=args.yks,
                        serial=args.serial, baud=args.baud, iha=args.iha,
-                       kamera_url=args.kamera_url)
+                       kamera_url=args.kamera_url, fda=args.fda)
     cocuk = acilis_olc(komut)
     return cocuk.wait()
 

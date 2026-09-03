@@ -14,7 +14,15 @@
 
 ## 0. Çerçeve
 
-### 0.1 Hedef: 21 Eylül Pazartesi, Adıyaman drone test alanı — şartname §5.3.2
+### 0.1 Hedef: iki tarih — 21 Eylül **FDR teslimi + Adıyaman provası**, 30 Eylül–3 Ekim **resmî görev test uçuşu**
+
+**İki tarih, karıştırılmaz (şartname Tablo 1):**
+
+| tarih | ne | bizim işimiz |
+|---|---|---|
+| **21.09.2026 · 17.00** | **FDR son teslim** | rapor bitmiş ve gönderilmiş olmalı |
+| **21.09.2026 (aynı gün)** | takımın **Adıyaman provası** | uçuş provası, hakem yok |
+| **30.09 – 03.10.2026** | **resmî Drone ile Görev Test Uçuşu** (§5.3.2) | tek atış, hakem önünde |
 
 **Çoklu rotorlu drone** ile görev test uçuşu (FDA'nın %15'i): 20×20 m simüle alanda, **≥ 30 m**
 irtifadan açık güzergâhın havadan tespiti, **YKS'ye canlı aktarım + alan hakemi onayı**,
@@ -161,7 +169,7 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 
 ---
 
-## 4. TAKVİM (ekibe) — 3 → 21 Eylül
+## 4. TAKVİM (ekibe) — 3 → 21 Eylül (provaya ve FDR teslimine kadar)
 
 | gün | ne | kim (rol) | kapı |
 |---|---|---|---|
@@ -215,7 +223,7 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 
 ---
 
-## 7. FİNAL için ek dalga (21 Eylül sonrası) — sabit kanat + mancınık + paraşüt + İKA
+## 7. FİNAL için ek dalga (görev test uçuşundan sonra) — sabit kanat + mancınık + paraşüt + İKA
 
 ArduPlane (`TKOFF_*` mancınık, airspeed, servo/CG) · paraşüt (`CHUTE_*`, otonom tetik + YKS manuel yedek −50; `iha_komut_alici` zinciri hazır) · mancınık testleri · İKA (gerçek sürücü, IHA_LANDED+IKA_GO kilidi, temas, yük) · SiK/İKA hattı kararı (D-405) · mühürlü kutu tatbikatı · ağırlık tutanakları (25 kg / 10 kg) · SGGS BOM.
 

@@ -403,10 +403,11 @@ ekranda kanıt görmeden veriyordu.
 - Kilit: `tests/test_ika_go_ackli_tekrar.py` (paket düşürme gerçek UDP loopback, ACK yok → üst
   sınır, mükerrer IKA_GO, kanıtsız düğme pasif; 5 mutasyonun tamamı yakalandı).
 
-### 6.7 FDA görev kipi (`--fda`) — bağlayıcı (şartname §5.3.2 · 21 Eylül Adıyaman · D-407)
+### 6.7 FDA görev kipi (`--fda`) — bağlayıcı (şartname §5.3.2 · 30 Eylül–3 Ekim (prova: 21 Eylül Adıyaman) · D-407)
 
 **Olgu:** `yks_gui` yarışma günü görevine (§2.2, sabit kanat + mancınık + paraşüt + İKA)
-göre yazıldı. 21 Eylül'deki **görev test uçuşu** başka bir görevdir: **çoklu rotorlu drone**,
+göre yazıldı. §5.3.2'nin **görev test uçuşu** (30 Eylül–3 Ekim; provası 21 Eylül
+Adıyaman) başka bir görevdir: **çoklu rotorlu drone**,
 20×20 m alan, ≥30 m irtifa, **YKS'ye canlı aktarım + hakem onayı**, kalkış→iniş **≤ 10 dk**,
 **İKA yok**, **paraşüt yok**, **mancınık yok**. Bugün `--fda` yalnız süre bütçesini
 (`SARTNAME_FDA_OPERASYON_SURESI_S`) değiştirir (T170); geri kalan akış hâlâ §2.2'yi varsayar.

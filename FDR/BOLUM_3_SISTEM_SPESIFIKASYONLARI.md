@@ -24,7 +24,7 @@ listeler. Projede uygulanan dört yazım kuralı bu bölümde de geçerlidir:
 
 Bu raporda **iki farklı sistem** anlatılır ve karıştırılmaları yorumu bozar:
 
-| | **Yarışma günü aracı** (§2.2) | **Görev test uçuşu aracı** (§5.3.2 · 21 Eylül) |
+| | **Yarışma günü aracı** (§2.2) | **Görev test uçuşu aracı** (§5.3.2 · 30 Eylül–3 Ekim; prova 21 Eylül) |
 |---|---|---|
 | platform | sabit kanat İHA + **mancınık** fırlatma | **çoklu rotor (quadcopter)**, dikey iniş-kalkış |
 | iniş | **paraşüt** | motorlu iniş (`NAV_LAND`) |
@@ -136,7 +136,7 @@ rota `seq`'i için `ACK(ref_tip="OPEN_ROUTE")` ekranda görünmeden 2. onay veri
 sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`'dan
 öğrenilemez.
 
-### 3.1.5 Mesaj akışı — FDA görev test uçuşu kipi (§5.3.2 · 21 Eylül)
+### 3.1.5 Mesaj akışı — FDA görev test uçuşu kipi (§5.3.2 · 30 Eylül–3 Ekim)
 
 ```
    İHA (çoklu rotor)                              YKS (hakem ekranı, --fda)
@@ -166,7 +166,7 @@ sırasında `OPEN_ROUTE`, `IKA_GO`'dan **önce** gelir, yani YKS adresi `IKA_GO`
 
 ## 3.2 Nihai mekanik yapılandırma
 
-### 3.2.1 Görev test uçuşu aracı — 3B baskı quadcopter (21 Eylül, §5.3.2)
+### 3.2.1 Görev test uçuşu aracı — 3B baskı quadcopter (§5.3.2; prova 21 Eylül, resmî uçuş 30 Eylül–3 Ekim)
 
 Kaynak: kullanıcı beyanı 3 Eylül 2026, `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2.
 **Aviyonik kutusu 3 Eylül itibarıyla açılmamıştır**; künye 5 Eylül montajında kutudan
@@ -907,7 +907,7 @@ izin geldiği **anda** başlar; beklemede geçen süre sürüşten **düşülmez
 Kilit: `tests/test_k5_k6_sure_limitleri.py` (sahte saat + gerçek UDP loopback; **4 mutasyonla
 düştüğü gösterildi**).
 
-### 3.6.6 FDA görev kipi (`--fda`) — 21 Eylül'de onayı İMKÂNSIZ kılan kilidin kaldırılması
+### 3.6.6 FDA görev kipi (`--fda`) — görev test uçuşunda onayı İMKÂNSIZ kılan kilidin kaldırılması
 
 **Ölçülen tıkanma (D-407/D-408):** `yks_gui` yarışma günü görevine göre yazıldı. Hakem onayı
 2/2 adımı `ika_aktarim_kaniti_var()` istiyordu (K8, §2.2.3). FDA'da **İKA olmadığı için** bu
@@ -939,7 +939,7 @@ test 3 düştü; M3 İKA kilidi kalk → test 4 düştü; M4 etiketler uygulanma
 dosya `cmp` ile **bayt-eş** geri yüklendi.
 
 > ⚠ **DENETİM BORCU (kayıtlı):** §6.7 sözleşmesini de uygulamasını da aynı el yazdı.
-> Bağımsız denetim, 21 Eylül öncesi ilk gerçek provada **hakem rolü oynanarak**
+> Bağımsız denetim, 21 Eylül Adıyaman provasında **hakem rolü oynanarak**
 > kapatılacaktır.
 
 ### 3.6.7 Tazelik ve körlük — "heartbeat akıyor" ≠ "sistem görüyor"

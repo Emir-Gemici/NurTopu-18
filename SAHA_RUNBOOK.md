@@ -22,17 +22,18 @@
 | ☐ | Model pakette | `ls jetson_paket/models/` | Üretim modeli `navitas_seg_v36_best.pt` **ve** `navitas_seg_v36_best_512_fp16.onnx` |
 | ☐ | H3 video (manuel, model yükler) | `<venv> drone/test_uctan_uca.py --hizli` | exit 0 — **genel kapıda DEĞİL** (bilerek: GPU işi, D-392) |
 
-## 1. Açılış kartı (thazırlık ≤ 900 s — §6.2, her 30 s +1 puan)
+## 1. Açılış kartı (hazırlık ≤ 900 s — §6.2, her 30 s +1 puan)
 
 İstasyon başına **TEK komut** (`scripts/saha_baslat.py` süreyi ölçüp yazar):
 
 ```bash
-<venv> scripts/saha_baslat.py yks --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007 --kamera-url http://<JETSON_IP>:8080   # YKS
+<venv> scripts/saha_baslat.py yks --fda --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007 --kamera-url http://<JETSON_IP>:8080   # 21 Eylül YKS
 <venv> scripts/saha_baslat.py ika --yks <YKS_IP>:5005     # İKA istasyonu
 <venv> scripts/saha_baslat.py --komutlar                  # kartı yazdır
 ```
 
-SiK (433 MHz) ile: `saha_baslat.py yks --serial COM5 --baud 57600`.
+SiK (433 MHz) ile: `saha_baslat.py yks --fda --serial COM5 --baud 57600
+--kamera-url http://<JETSON_IP>:8080`. Yarışma gününde yalnız `--fda` çıkarılır.
 ⚠ `--yks` İKA'da UDP'de fiilen **zorunludur** (CONTRACTS §6.6/K8: OPEN_ROUTE
 IKA_GO'dan önce gelir; adres verilmezse hakem aktarım kanıtı hiç gitmez).
 
@@ -55,7 +56,7 @@ komutları çalışmayı sürdürür; ekran eski kareyi canlıymış gibi tutmaz
 - **FIRLATMA** yalnız ARM'dayken damga atar (yazılım kilidi, D-393).
 - **PARAŞÜT (manuel −50)**: iki adımlı teyit; komut ACK gelene dek tekrarlar,
   ACK yoksa ekran KIRMIZI uyarır (D-393). Yalnız son çare — §6.4 sınırı.
-- 🔴 **21 Eylül görev test uçuşu `--fda` ile açılır** (CONTRACTS §6.7): çoklu
+- 🔴 **21 Eylül Adıyaman prova uçuşu `--fda` ile açılır** (CONTRACTS §6.7): çoklu
   rotorda paraşüt ve İKA **yoktur**. FDA kipinde ekran şunları değiştirir:
   bütçe tek **10 dk**, `FIRLATMA` düğmesi **KALKIŞ**, `PARAŞÜT` ve `İKA BAŞLAT`
   **kapalı** (basılsa bile komut gitmez), hakem 2/2 onayı **İKA kanıtı aramaz**

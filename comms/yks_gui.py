@@ -37,6 +37,7 @@ from tkinter import font as tkfont
 
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
+from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
 from komut_tekrar import AckliTekrar, ONAYLANDI, VAZGECILDI
 from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
                       kritik_komut_ack_gecerli_mi,
@@ -331,7 +332,7 @@ class YksArayuz:
 
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
-            iha_peer=None, kamera_url=None):
+            iha_peer=None, kamera_url=None, hakem_log_yolu=None):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -437,12 +438,26 @@ class YksArayuz:
         self.kamera_istemci = None
         self._kamera_surum = -1
         self._kamera_foto = None
+        self._kamera_kanit_durumu = None
+        self._son_kamera_kanit_monotonic = None
+        self._son_telemetri_kanit_monotonic = None
+        self.kanit_kaydi_hatasi = None
+        # Doğrudan sınıf kullanan test/demo fikstürleri None ile yazmasız
+        # kalabilir; saha main() yolu her zaman varsayılan veya açık bir dosya
+        # geçirir. Dosya açılamazsa kurucu yükseltir ve saha sessizce kanıtsız
+        # başlamaz.
+        self.hakem_kaydi = (
+            HakemKaydi(hakem_log_yolu) if hakem_log_yolu is not None else None)
 
         self._arayuz_kur()
         if kamera_url:
             from kamera_istemci import KameraIstemci
             self.kamera_istemci = KameraIstemci(kamera_url)
             self.kamera_istemci.baslat()
+        self._kanit_yaz(
+            "YKS_ARAYUZ_HAZIR", demo=bool(demo),
+            kamera_yapilandirildi=bool(kamera_url),
+            tasiyici="serial" if isinstance(link, SerialLink) else "udp")
         threading.Thread(target=self._dinle, daemon=True).start()
         self._tik()
 

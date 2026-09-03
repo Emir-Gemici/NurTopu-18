@@ -12,7 +12,7 @@
 > rapor yazılırken **hiçbiri koşulmamıştır**. Jetson Nano üzerinde gerçek FPS
 > **ölçülmemiştir**; SiK 433 MHz RF menzili **ölçülmemiştir**.
 >
-> **İki araç ayrımı.** Şartname §5.3.2 görev test uçuşu (21 Eylül, Adıyaman)
+> **İki araç ayrımı.** Şartname §5.3.2 görev test uçuşu (prova: 21 Eylül Adıyaman · resmî uçuş: 30 Eylül–3 Ekim)
 > **çoklu rotorlu** bir araçla yapılır: 3B baskı quadcopter, Pixhawk 6C + PM02,
 > Jetson Nano 4GB, Raspberry Pi HQ (IMX477). Yarışma görevinin (§2.2) aracı
 > **sabit kanat + mancınık + paraşüt + İKA**'dır ve ayrı sistemdir. Aşağıdaki

@@ -6,6 +6,21 @@
 >
 > Bu klasör **rapor kaynağıdır**; teslim dosyası bu bölümlerden derlenir.
 
+## 🔴 Resmî yarışma takvimi (şartname Tablo 1 — tek doğru kaynak)
+
+| tarih | ne |
+|---|---|
+| **21.09.2026 · 17.00** | **FDR SON TESLİM** — bu raporun teslim anı |
+| **30.09 – 03.10.2026** | **Final Değerlendirme Aşaması**: FDS sunumları + **Drone ile Görev Test Uçuşu** (§5.3.2, tek atış) |
+| 04.10.2026 | FDR sonuçları ve maddi destek açıklaması |
+| 05.02.2027 · 17.00 | SGGS son teslim |
+| 16.04.2027 · 17.00 | UHDR son teslim |
+
+⚠ **Sık yapılan hata (bu raporda bir kez yapıldı ve düzeltildi):** 21 Eylül
+**uçuş günü değildir**; FDR'ın teslim günüdür. Takım o gün Adıyaman'da **kendi
+provasını** yapar. Şartnamenin zorunlu görev test uçuşu 30 Eylül–3 Ekim
+penceresindedir. Kaynak: `results/sartname_bosluk/sartname_metin.txt` satır 353–362.
+
 ## Bölümler ve puanlar
 
 | bölüm | konu | puan | dosya | durum |
@@ -40,7 +55,7 @@ dört kurala uyar; kurallar rapor için icat edilmedi, projenin ölçüm defteri
 
 | | görev test uçuşu (§5.3.2) | yarışma görevi (§2.2) |
 |---|---|---|
-| tarih | **21 Eylül 2026**, Adıyaman | final haftası |
+| tarih | **30 Eylül – 3 Ekim 2026** (şartname Tablo 1) · takım provası **21 Eylül**, Adıyaman | final haftası |
 | araç | **çoklu rotorlu drone** (3B baskı quadcopter) | **sabit kanat** + mancınık + paraşüt |
 | yer aracı | yok | İKA |
 | süre | kalkış→iniş **≤ 10 dk** | İHA 15 dk · İKA 10 dk |

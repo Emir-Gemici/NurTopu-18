@@ -38,14 +38,14 @@ Bugün itibarıyla defterde `^### D-` başlıklı **414 kanıt kaydı** (408 ayr
 
 | | §5.3.2 Görev Test Uçuşu | §2.2 Yarışma görevi |
 |---|---|---|
-| tarih | **21 Eylül 2026** (Adıyaman) | final haftası |
+| tarih | **30 Eylül – 3 Ekim 2026** (şartname Tablo 1) · prova **21 Eylül** Adıyaman | final haftası |
 | araç | **çoklu rotorlu drone** — 3B baskı quadcopter, Pixhawk 6C, Jetson Nano 4GB, RPi HQ kamera | **sabit kanat** + mancınık + paraşüt + İKA |
 | kapsam | kalkış → tespit → YKS'ye aktarım + hakem onayı → iniş, **≤ 10 dk** | tam görev akışı, İKA dâhil |
 
 Algı, karar, haberleşme, yer istasyonu katmanı **iki araçta da aynı kod**tur;
 değişen uçuş kontrolcüsü yapılandırması ve gövdedir. Yer istasyonu ayrımı
 `--fda` bayrağıyla tanır (`CONTRACTS.md §6.7`). Tablolarda "FDA" işaretli
-satırlar 21 Eylül'de doğrulanacak olanlardır; "final" işaretliler final
+satırlar görev test uçuşunda (30 Eylül–3 Ekim; provası 21 Eylül) doğrulanacak olanlardır; "final" işaretliler final
 dalgasına aittir.
 
 ---
@@ -76,7 +76,7 @@ dalgasına aittir.
 
 ---
 
-## 6.3 İzlenebilirlik matrisi — §5.3.2 (Drone ile Görev Test Uçuşu · 21 Eylül)
+## 6.3 İzlenebilirlik matrisi — §5.3.2 (Drone ile Görev Test Uçuşu · 30 Eylül–3 Ekim)
 
 | şartname maddesi | gereksinim | karşılayan bileşen | kanıt (dosya / test) | durum |
 |---|---|---|---|---|

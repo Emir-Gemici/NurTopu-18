@@ -1,4 +1,4 @@
-# CODEX GÖREVİ — `yks_gui` FDA görev kipi (21 Eylül Adıyaman uçuşu)
+# CODEX GÖREVİ — `yks_gui` FDA görev kipi (21 Eylül Adıyaman prova uçuşu)
 
 > **Yapıştırılabilir prompt.** Zincir: mimar (Claude 2) → amele (Codex).
 > Sözleşme: `CONTRACTS.md` **§6.7** (bağlayıcı, tablo dahil oku).

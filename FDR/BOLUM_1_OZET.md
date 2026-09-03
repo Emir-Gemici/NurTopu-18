@@ -110,14 +110,14 @@ tespitin **kaç saniye önce** üretildiğini görür.
 kabul harnessı ve fail-closed davranış hazırdır; `GercekSurucu` arka uçsuz
 kurulmayı **reddeder** (sessiz iskelet yasaktır). Kuru koşu bu halkayı `SAHİPSİZ`
 olarak raporlar ve çıkış kodu 1 verir. Bu bir donanım kararıdır, final dalgasının
-işidir ve 21 Eylül uçuşunu etkilemez (o uçuşta İKA yoktur).
+işidir ve görev test uçuşunu etkilemez (o uçuşta İKA yoktur).
 
 Üçüncüsü: **gerçek SiK 433 MHz hattı hiç ölçülmemiştir.** Bugüne kadarki tüm
 aktarım kanıtı UDP loopback üzerindedir. Detay tasarım raporundaki ">%98 teslim,
 300 m" iddiasının bugün kanıtı yoktur; ölçüm aracı yazılmış ve gerçek bayt
 akışında sınanmıştır, ama iki telsiz henüz kutudan çıkmamıştır.
 
-## 1.5 21 Eylül görev test uçuşu hazırlığı
+## 1.5 Görev test uçuşu hazırlığı (prova 21 Eylül · resmî uçuş 30 Eylül – 3 Ekim)
 
 Uçuş **Adıyaman drone test alanında**, 3B baskı gövdeli bir quadcopter ile
 yapılacaktır: Pixhawk 6C + PM02, Holybro M9N, 5008 340KV ×4 motor / 12×10 pervane,
@@ -129,7 +129,7 @@ Yazılım tarafında uçuşa hazırlık **tamamlanmıştır**: ArduCopter parame
 (31 parametre, her satırda gerekçe) ve QGC görev planı (TAKEOFF 32 m → 20×20 m
 üzerinde tek pas → LOITER 60 s → LAND) repoda ve testle kilitlidir; kötü-durum
 süre bütçesi **221,5 s ≤ 600 s** hesaplanmıştır. Yer istasyonunun `--fda` kipi,
-21 Eylül'de hakem onayını **imkânsız kılacak** bir kilidi (İKA aktarım kanıtı
+görev test uçuşunda hakem onayını **imkânsız kılacak** bir kilidi (İKA aktarım kanıtı
 şartı) kaldırır ve İKA'ya ait düğmeleri fail-closed kapatır. Jetson Nano yığını
 çevrimdışı kurulabilecek biçimde hazırlanmıştır (14/14 paket aarch64/cp38 tekerlek,
 246 MB). Seri port çakışması — Pixhawk'ı üç ayrı sürecin açmaya çalışması — hem
@@ -179,7 +179,7 @@ güçlü iddiası bir yüzde değil, o tablonun **var olmasıdır**.
 | Görev planı: TAKEOFF **32 m**, LOITER **60 s**, kötü-durum bütçe **221,5 s ≤ 600 s**; **31** parametre | `config/pixhawk/fda_gorev.waypoints` · `config/pixhawk/arducopter_fda.param` · `config/pixhawk/README.md` | `tests/test_faz_b_pixhawk_sablon.py` (12 test) | 2026-09-03 |
 | Jetson Nano yığını **14/14** aarch64/cp38 tekerlek, 51 dosya, **246 MB** | `wheels/INDIRME_RAPORU.txt` | `scripts/nano_tekerlek_indir.py`; `tests/test_faz_b_nano_kurulum.py` (20 test) | 2026-09-03 |
 | Donanım künyesi (quadcopter, Pixhawk 6C, Jetson Nano 4GB, RPi HQ, 4S 10 Ah, 2× SiK) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | kullanıcı beyanı; **5 Eylül'de kutu açılarak teyit edilecek** | 2026-09-03 (beyan) |
-| Takvim (5 Eylül montaj → 17 Eylül sürüm dondurma → 21 Eylül uçuş) | `SAHA_HAZIRLIK_PLANI_20260903.md` §4 | — | 2026-09-03 |
+| Takvim (5 Eylül montaj → 17 Eylül sürüm dondurma → **21 Eylül FDR teslimi + Adıyaman provası** → 30 Eylül–3 Ekim görev test uçuşu) | `SAHA_HAZIRLIK_PLANI_20260903.md` §4 | — | 2026-09-03 |
 | Şartname alıntıları (§2.2, §5.3.1 Tablo 4, §5.3.2, §6.2, §6.4, §7) | `results/sartname_bosluk/sartname_metin.txt` (PDF 30 sayfa) | PyMuPDF metin çıkarımı | 2026-08-26 |
 | **45** izlenen gereksinim satırı, **12** açık gereksinim | `FDR/BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md` §6.6, §6.9 | bu raporun Bölüm 6'sı | 2026-09-03 |
 

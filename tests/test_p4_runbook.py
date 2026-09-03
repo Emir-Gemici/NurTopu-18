@@ -90,6 +90,14 @@ class SahaBaslatKomutlari(unittest.TestCase):
             "--kamera-url", saha_baslat.komut_uret("yks", serial="COM5"),
             "kamera adresi uydurulmamali")
 
+    def test_fda_bayragi_yalniz_yksye_aynen_gecer(self):
+        komut = saha_baslat.komut_uret(
+            "yks", ika="10.0.0.2:5006", fda=True)
+        self.assertIn("--fda", komut)
+        self.assertNotIn("--fda", saha_baslat.komut_uret("yks"))
+        with self.assertRaises(ValueError):
+            saha_baslat.komut_uret("ika", yks="10.0.0.1:5005", fda=True)
+
     # ── D-403 KRITIK-1: YKS, IHA komut alicisini --iha ile PINLER ──────────
     def test_yks_komutu_iha_pinler(self):
         """UDP yks kipinde --iha HOST:PORT yks_gui'ye AYNEN gecer; --ika'nin
@@ -132,17 +140,29 @@ class SahaBaslatKomutlari(unittest.TestCase):
                            timeout=60, encoding="utf-8", errors="replace")
         self.assertEqual(0, s.returncode, s.stderr[:200])
         yks_satiri = next((sat for sat in s.stdout.splitlines()
-                           if sat.lstrip().startswith("YKS")), "")
+                           if sat.lstrip().startswith("YKS FDA")), "")
         self.assertIn("--ika", yks_satiri, s.stdout)
         self.assertIn("--iha", yks_satiri, s.stdout)
         self.assertIn("<JETSON_IP>:5007", yks_satiri, s.stdout)
         self.assertIn("--kamera-url", yks_satiri, s.stdout)
         self.assertIn("http://<JETSON_IP>:8080", yks_satiri, s.stdout)
+        self.assertIn("--fda", yks_satiri, s.stdout)
+        yarisma_satiri = next((sat for sat in s.stdout.splitlines()
+                               if sat.lstrip().startswith("YKS YARIŞMA")), "")
+        self.assertNotIn("--fda", yarisma_satiri, s.stdout)
         sik_satiri = next((sat for sat in s.stdout.splitlines()
                            if sat.lstrip().startswith("SiK")), "")
         self.assertIn("--serial", sik_satiri, s.stdout)
         self.assertNotIn("--iha", sik_satiri, s.stdout)
         self.assertIn("--kamera-url", sik_satiri, s.stdout)
+        self.assertIn("--fda", sik_satiri, s.stdout)
+
+    def test_cli_fda_ika_kipinde_reddedilir(self):
+        s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+                            "ika", "--fda"], capture_output=True, text=True,
+                           timeout=60, encoding="utf-8", errors="replace")
+        self.assertEqual(2, s.returncode, s.stdout[:200] + s.stderr[:200])
+        self.assertIn("--fda", s.stderr)
 
     def test_cli_serial_ve_iha_birlikte_reddi(self):
         """CLI'da --serial + --iha argparse hatasiyla (exit 2) durur; GUI hic
@@ -169,6 +189,25 @@ class SahaBaslatKomutlari(unittest.TestCase):
         metin = cikti.getvalue()
         self.assertIn("AÇILIŞ", metin)
         self.assertIn("HAZIR", metin)
+
+    def test_sessiz_gui_acilis_olcumunu_sonsuza_dek_kilitlemez(self):
+        """Mutasyon: çocuk stdout yazmazsa readline ana iş parçacığını yutamaz."""
+        import io
+        cikti = io.StringIO()
+        t0 = time.monotonic()
+        cocuk = saha_baslat.acilis_olc(
+            [VENV, "-c", "import time; time.sleep(0.25)"],
+            cikti=cikti, tavan_s=0.05)
+        gecen = time.monotonic() - t0
+        self.assertLess(gecen, 0.20, "sessiz GUI açılış ölçümünü kilitledi")
+        self.assertIsNone(cocuk.poll(), "sessiz ama çalışan GUI ölü sayıldı")
+        cocuk.wait(timeout=2)
+        self.assertIn("çıktı işareti yok", cikti.getvalue())
+
+    def test_acilis_tavani_gecersizse_reddedilir(self):
+        for tavan in (0, -1, float("nan"), float("inf"), "bozuk"):
+            with self.subTest(tavan=tavan), self.assertRaises(ValueError):
+                saha_baslat.acilis_olc([VENV, "-c", "pass"], tavan_s=tavan)
 
     def test_komut_karti_ve_reset_exit0(self):
         for bayrak in ("--komutlar", "--reset"):
