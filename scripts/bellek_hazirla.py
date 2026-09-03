@@ -63,8 +63,11 @@ KOPYA_KURALLARI = (
 
 # Betiğin ÜRETEMEYECEĞİ, insanın koyması gereken parçalar (MANIFEST'e yazılır).
 INSAN_PARCALARI = (
-    ("JetPack 4.6.x SD imajı", "microSD'ye balenaEtcher ile yazılır; belleğe imaj "
-     "dosyası KONMAZ, kart hazır gelir (JETSON_NANO_KURULUM §1)"),
+    ("Jetson eMMC sistem imajı", "⚠ D-413: kartta microSD yuvası YOK "
+     "(Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi "
+     "İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş "
+     "olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; "
+     "Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1"),
     ("GPU torch wheel'i (JetPack 4.6 / Python 3.8)", "Qengineering deposundan elle "
      "indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar"),
     ("Mission Planner kurulu dizüstü", "parametre + görev planı yükleme"),

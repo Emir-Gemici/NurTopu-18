@@ -89,8 +89,44 @@ python3 jetson_paket/kod/iha_inis_yayinci.py \
     --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 \
     --ika <IKA_IP>:5006 --yks <YKS_IP>:5005
 python3 jetson_paket/kod/iha_komut_alici.py \
-    --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007
+    --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007 \
+    --izinli-kaynak <YKS_IP>:5005
 ```
+
+🔴 **`--izinli-kaynak` ZORUNLUDUR** (4 Eylül). Verilmezse süreç **hiç
+kalkmaz** (argparse çıkış 2) ve blok **asimetrik** ölür: birinci satır
+(`iha_inis_yayinci`) sorunsuz başlar, ikinci satır ölür. Sahada zincir
+*yarı canlı* görünür — iniş kanıtı akar ama YKS'nin **ARM/DISARM/RTL/LAND/
+PARAŞÜT** düğmeleri hiçbir zaman ACK almaz.
+
+Değer, YKS'nin komutu gönderdiği sokettir: `<YKS_IP>:5005`. Kritik eyleyici
+yalnız o kaynaktan komut kabul eder; başka bir adresten geleni **loglar ve
+reddeder** (`CMD kaynagi RED: gelen=…, izinli=…`). `jetson_baslat.sh` bu
+bayrağı kendisi verir — elle başlatan yazmalıdır.
+
+🔴 **PİNİ AÇILIŞTA DOĞRULA — yanlışlığı YKS'de GÖRÜNMEZ.** `YKS_IP`
+`navitas.env`'de **elle beyan edilir**. Dizüstünün o arayüzdeki gerçek adresi
+farklıysa (DHCP değişimi, ikinci arayüz, VPN) alıcı **tüm** ARM/DISARM/RTL/
+LAND/PARAŞÜT komutlarını reddeder — ve bunu **yalnız Jetson tarafında** loglar.
+YKS ekranında hiçbir uyarı çıkmaz; operatör "ARM çalışmıyor" der, nedenini
+bulamaz.
+
+**Kapı — yer zinciri başlamadan önce, iki komut:**
+```bash
+# 1) YKS dizüstünde, Jetson ile aynı ağdaki arayüzün GERÇEK adresi:
+ipconfig            # Windows  (ya da: ip -4 addr show  — Linux)
+# 2) Jetson'da, pinin ne olduğu:
+grep YKS_IP /etc/navitas.env
+```
+İkisi **eşit olmalı**. Değilse `navitas.env`'i düzelt ve
+`sudo systemctl restart navitas-komut` koş.
+
+**Saha teşhisi — "ARM'a basıyorum, hiçbir şey olmuyor":**
+```bash
+journalctl -u navitas-komut -n 30 --no-pager | grep -i "kaynagi RED"
+```
+Bu satır çıkıyorsa sorun pindir, araç değil. `gelen=` alanı YKS'nin
+**gerçek** adresini gösterir; `navitas.env`'e onu yaz.
 
 RAW kamera köprüsünü aynı kapalı saha LAN'ında açmak için Jetson başlangıç
 ortamında `KAMERA=http://127.0.0.1:8080/video` ve
@@ -121,7 +157,10 @@ istemci `/kare.jpg` ve `/durum` uçlarını kendi çözer.
   araç farklı sysid'e ayarlandıysa buradaki değeri ona eşitle).
 - `--kanit-timeout 900` = İHA görev süresi (§6.2); yayıncı iniş kanıtını bu
   pencere boyunca bekler ve tek geçici hata görevde vazgeçmez (D-389 A1+A2).
-- SiK üzerinden: `--serial /dev/ttyUSB0` (UDP adresleri yerine).
+- 🔴 SiK üzerinden **`--serial` KULLANILMAZ** (4 Eylül düzeltmesi; bu satır önceki
+  sürümde yukarıdaki SiK maddesiyle çelişiyordu). Seri portu `seri_hub` **tek
+  başına** açar; süreçler UDP loopback'ten konuşur. `iha_komut_alici` artık
+  `--serial`i **sert reddeder** (çıkış 2). Doğrusu yukarıdaki SiK bloğudur.
 
 ## 4. Tekrar fırlatma / reset (§6.2 — süre 15 dk'dan yer)
 

@@ -29284,3 +29284,145 @@ Bu **artis iyi haberdir**. Yonergenin dayattigi alt basliklar acildikca
 29 kisaltma), yedi bolum, `YONERGE_HARITASI.md` (zorunlu iskelet + bosluk
 analizi), `TAKIM_PROMPT.md` (uyelerin kendi AI'larina yapistiracagi prompt),
 `README.md` ("TAKIM ARKADASLARI — BURADAN BASLA").
+
+### D-421 — "CUMARTESIYE HAZIR MIYIZ" CURUTME TURU: 13 tikayici bulgu, en agiri ONAYLAYAN degil CURUTEN turdan cikti
+
+**Neden.** Kullanici "cumartesiye her sey hazir mi, emin ol" dedi. Ezberden
+cevap vermek yerine iki sey yapildi: (a) cuma kartindaki liste **bugunku kodla
+bastan kosuldu** — kartin kanitlari bayatti, cunku `jetson_baslat.sh`,
+`saha_baslat.py`, `kamera_koprusu.py` 4 Eylul'de degisti; (b) **"hazir"
+iddiasini CURUTEN** bir tur baslatildi (dort eksen, her biri ayri
+dogrulayiciyla).
+
+Onaylayan tur hicbir sey bulmazdi. Curuten tur **13 tikayici** buldu.
+
+#### 1. 🔴 RUNBOOK'UN KOPYALA-YAPISTIR BLOGU OLUYDU — ve ASIMETRIK oluyordu
+
+`SAHA_RUNBOOK.md` §3 — kendi basliginda "saha gunu yordaminin TEK guncel
+kaynagi" diyen belge — `iha_komut_alici` icin **kosmayan** bir komut veriyordu:
+
+    $ python3 jetson_paket/kod/iha_komut_alici.py \
+          --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007
+    error: --izinli-kaynak HOST:PORT saha komutlari icin zorunlu
+    EXIT=2
+
+Codex bu bayragi ZORUNLU yapmisti (dogru bir sertlestirme); belge
+guncellenmemisti.
+
+**Neden sinsi — asimetri.** Blogun BIRINCI satiri (`iha_inis_yayinci`)
+sorunsuz kalkiyor, IKINCI satiri oluyor. Sahada zincir **yari canli** gorunur:
+inis kaniti akar, YKS'nin **ARM/DISARM/RTL/LAND/PARASUT** dugmeleri hicbir
+zaman ACK almaz. Operator bir seyler calistigi icin sorunu aramaz.
+
+**Ve kusur ZATEN SAHA USB'SINDEYDI:** `scripts/bellek_hazirla.py` runbook'u
+`belgeler/` altina kopyalar; bellek bu gece iki kez uretilmisti. Halka
+`saha_baslat.py --komutlar` kartinin "Jetson: bkz. SAHA_RUNBOOK.md §3"
+satiriyla kapaniyordu — operator dogrudan olu bloga yonlendiriliyordu.
+
+Duzeltildi: bayrak eklendi, **ne oldugu** ve **asimetri riski** runbook'a
+acikca yazildi, ve §3'un kendi icinde celisen `--serial` maddesi
+("SiK uzerinden `--serial /dev/ttyUSB0`" — oysa uc satir yukarida "uc surec
+`--serial` ile ACILMAZ" yaziyor) duzeltildi.
+
+#### 2. 🔴 BUNU YAKALAMASI GEREKEN KAPI 22/22 YESILDI
+
+`tests/test_p4_runbook.py` runbook'un komut satirlarini "kilitledigini" ilan
+ediyordu. Yaptigi sey sabit bir jeton listesiyle `assertIn` substring
+aramasiydi; listede `--izinli-kaynak` **yoktu**. Komut OLUYKEN kapi yesil.
+
+**Yeni kapi: `tests/test_runbook_komutlari_kosuyor.py` (3 test).** Substring
+aramaz — runbook'un bash bloklarindaki her depo betigi cagrisini **gercekten
+kosar** ve argparse reddediyor mu diye bakar (cikis 2 + "error:"). Bir bayrak
+zorunlu hale gelir ve belge guncellenmezse kapi duser.
+  T1 hicbir runbook komutu reddedilmiyor · T2 vakumluluk (>= 3 komut, ve
+  kusurun ciktigi komut kapsamda) · T3 yer tutucu sozlugu kapsamli
+Mutasyon: bayrak runbook'tan cikarildi -> T1 dustu; dosya `cmp` ile bayt-es.
+
+⚠ **Bu, ayni kusur sinifinin DORDUNCU tekrari:** D-415 (yazim korlugu),
+D-419 §5 (kalitim korlugu), sahte-kapi dedektoru, simdi runbook kapisi.
+Dordunde de **olcum aletinin kendisi olculmemisti**. Kural artik yazili:
+yeni bir dedektor/kapi yazildiginda once "bildigim bir ornegi buluyor mu" ve
+"bulmamasi gerekeni bulmuyor mu" ikilisi yazilir.
+
+#### 3. 🔴 D-413 BAYATLIKLARI SAHA USB'SINE GIDIYORDU
+
+`scripts/bellek_hazirla.py`'nin `INSAN_PARCALARI` listesi hala
+"JetPack 4.6.x SD imaji — microSD'ye balenaEtcher ile yazilir" diyordu ve bu
+satir uretilen MANIFEST'e girip **USB'ye gidiyordu**. D-413'te olculmustu:
+kartta **microSD yuvasi YOK** (Nano uretim modulu + M.2). Insan olmayan bir
+yuvaya kart takmaya calisirdi.
+
+`FAZ_B_GUN_PLANI.md` — **basilacak uc belgeden biri** — ayni bayatligi
+tasiyordu. Ikisi de duzeltildi ve bellek yeniden uretildi; MANIFEST'te
+"microSD'ye balenaEtcher" artik **0 kez** geciyor.
+
+#### 4. 🔴 CUMA KARTINDA IKI YANLIS SAYI (kart sahaya BASILIP goturulecek)
+
+Kart 3 Eylul sayilarini tasiyordu. Bastan kosuldu:
+  - model dosyalari **"54,8 / 54,6 MB"** yaziyordu -> olculen **52,3 / 52,0 MB**
+  - cevrimdisi tekerlekler **"51 dosya"** -> olculen **48**
+Ayrica §B'deki "SIPARIS EDILDI / AYARLANDI / TEMIN EDILDI" satirlarina
+**"kullanici beyanidir, depoda artefakti yoktur"** notu dusuldu — planin kendi
+kurali "her iddia bir artefakta baglanir" der; beyan olcum degildir.
+
+#### 5. 🔴 YAZDIRMA LISTESI RUNBOOK'U ATLIYORDU
+
+Basilacaklar "kart + FAZ_B_GUN_PLANI + JETSON_NANO_KURULUM" idi. Oysa **tum
+baslatma komutlari, YKS operator karti ve SiK hub yordami** `SAHA_RUNBOOK.md`
+§2-3'tedir ve gerekce tam olarak "sahada ekran olmayabilir". Eklendi.
+
+#### 6. 🔴 NANO'YA INTERNET — hicbir listede YOKTU, en derin tek nokta arizasi
+
+Zincir kisa ve kopmaz: sistem Python **3.6** -> `ultralytics` kurulmaz ->
+`venv38` sart -> `python3.8` sart -> `apt` sart -> **internet sart**.
+`JETSON_NANO_KURULUM.md` §3.1 "bionic deposunda VAR — tek apt adimi" diyordu;
+internet olmazsa kurulumun burada duracagi hicbir yerde yazmiyordu.
+
+Yazildi: zorunluluk acikca, **uc yol** (ethernet+yonlendirici / dizustunden
+paylasim / telefon USB tethering), ve `ping archive.ubuntu.com && apt update`
+kapisi. Ayrica `.deb` ile cevrimdisi kurmanin neden **hazir olmadigi**
+durustce yazildi: onceden indirmek **arm64 Ubuntu 18.04** makine ister,
+bizim PC x86_64 Windows'tur.
+Karta 🔴 kalem olarak eklendi.
+
+#### 7. 🔴 USB, Jetson'a dosya goturmenin BELGELENMIS TEK yoluydu
+
+`JETSON_NANO_KURULUM` §3.4 ve §5 dogrudan `/media/navitas/<BELLEK>/...`
+diyordu; `scp`/`ssh`/`http` alternatifi hicbir kilavuzda yoktu. USB
+bulunamaz/bozuk cikarsa kurulum durur. §3.4'e ethernet uzerinden **scp** ve
+**PC'de `http.server` + Nano'da `wget`** yollari yazildi, ve hangi yolla
+gelirse gelsin `ls ~/wheels | wc -l` = **48** kapisi kondu.
+
+#### 8. 🔴 KAYNAK PININ YANLISLIGI YKS'DE GORUNMUYOR
+
+`--izinli-kaynak ${YKS_IP}:5005` pinindeki `YKS_IP` `navitas.env`'de **elle
+beyan edilir**. Dizustunun o arayuzdeki gercek adresi farkliysa (DHCP, ikinci
+arayuz, VPN) alici **tum** kritik komutlari reddeder ve bunu **yalniz Jetson
+tarafinda** loglar. YKS ekraninda hicbir uyari cikmaz.
+
+Runbook'a **acilis dogrulama kapisi** (`ipconfig` ↔ `grep YKS_IP
+/etc/navitas.env` esit olmali) ve **saha teshisi** (`journalctl -u
+navitas-komut | grep "kaynagi RED"`) yazildi. Kod tarafinda YKS'ye gorunur
+kilmak acik kalemdir.
+
+#### 9. ACIK KALEM LISTESI KOSULSUZ "KAPANIR" DIYORDU
+
+`FDR/ACIK_KALEMLER.md` §1 sekiz kalemi kosulsuz "cumartesi kapanir" diye
+isaretliyordu; ucu (**gercek Pixhawk MAVLink akis kapisi**, **Jetson gercek
+FPS**, **cikarim arka ucu karari**) **acilmis bir Jetson** gerektiriyor ve
+kartin kendi §B'si eMMC'nin bos cikabilecegini yaziyor. Kosul yazildi:
+"Jetson acilirsa kapanir; acilmazsa **OLCULEMEDI** olarak tasinir."
+Olculemeyen sey gecmis sayilmaz.
+
+#### 10. Ayrica karta eklenen iki on kosul
+
+- **Tasiyici kartin MODELI** depoda hicbir yerde yazmiyor; eMMC bos cikarsa
+  FC REC pini ve flash yordami modele baglidir -> **BEYAN GEREKLI (insan)**.
+- SDK Manager yolunun gercek uzun kalemleri ("Ubuntu'lu makine ayarlandi"
+  bunlari kapsamiyor): **NVIDIA developer hesabi**, **~20 GB indirme**,
+  **micro-USB kablo**.
+
+#### 11. Devam eden: saat kilidi (ayri kayit)
+
+En agir kod bulgusu — `_ornekle` sapma tavani ogrenmeyi kilitliyor — ayri bir
+tura verildi ve ayri kayitla yazilacaktir.

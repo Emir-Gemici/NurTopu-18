@@ -204,6 +204,35 @@ nesne görüntüde **solda** olmalı — §6'da köprü üzerinden **tekrar** ya
 ## 3. Python 3.8 venv + çevrimdışı tekerlekler — plan §1.3
 
 ### 3.1 Nano'da `python3.8` (bionic deposunda VAR — tek `apt` adımı)
+
+🔴 **BU ADIM İNTERNET İSTER ve çevrimdışı yedeği YOKTUR.** Zincir kısa ama
+kopmaz: sistem Python **3.6** → `ultralytics` kurulmaz → `venv38` şart →
+`venv38` için `python3.8` şart → `python3.8` için `apt` şart → `apt` için
+internet şart. Nano'da internet yoksa **kurulum burada durur** ve algı
+zinciri hiç çalışmaz.
+
+**Nano'ya internet vermenin üç yolu (sırayla dene):**
+
+| # | yol | nasıl |
+|---|---|---|
+| 1 | **Ethernet + yönlendirici** | Nano'yu sahadaki yönlendiriciye tak; `ping -c1 archive.ubuntu.com` |
+| 2 | **Dizüstünden paylaşım** | Windows: Ayarlar → Ağ → *Mobil erişim noktası* ya da ethernet üzerinden İnternet Bağlantısı Paylaşımı; Nano'yu o ethernete tak |
+| 3 | **Telefon USB tethering** | Telefonu Nano'nun USB'sine tak, `USB internet` aç; `ip a` ile `usb0` gelmeli |
+
+**Kapı (hangi yolu seçersen seç, önce bunu koş):**
+```bash
+ping -c 2 archive.ubuntu.com && sudo apt update
+```
+Bu geçmeden `apt install` denemeyin — yarım bir `apt` durumu daha sonra
+başka paketleri de kırar.
+
+⚠ **`.deb` ile çevrimdışı kurmak neden hazır değil:** paketleri önceden
+indirmek **arm64 Ubuntu 18.04** bir makine ister (bizim PC'miz x86_64
+Windows). Bağımlılık ağacı da (`libpython3.8-minimal`, `libpython3.8-stdlib`,
+`python3.8-distutils` …) elle toplanamaz. Bu yüzden **cumartesi Nano'ya
+internet vermek ZORUNLUDUR** ve yukarıdaki üç yoldan en az biri sahada
+hazır olmalıdır.
+
 ```bash
 sudo apt update
 sudo apt install -y python3.8 python3.8-venv python3.8-dev
@@ -286,6 +315,29 @@ typing_extensions, mpmath, packaging, certifi, charset_normalizer, idna, urllib3
   eki yok — PyPI aarch64 yapısı). GPU için §4.
 
 ### 3.4 Nano'da kurulum (venv38 aktif, bellek `/media/navitas/<BELLEK>/wheels` → `~/wheels`)
+
+⚠ **USB tek yol DEĞİLDİR — takılmazsa/bozuksa bunu kullan.** Aşağıdaki
+komutlar `/media/navitas/<BELLEK>/…` yolunu varsayar; USB yoksa dosyaları
+**ethernet üzerinden** geçir (PC ile Nano aynı ağda olmalı):
+
+```bash
+# PC'de (Git Bash / PowerShell), Nano'nun IP'si `ip a` ile öğrenilir:
+scp -r O:/navitas_bellek/wheels        navitas@<NANO_IP>:/home/navitas/wheels
+scp -r O:/navitas_bellek/jetson_paket  navitas@<NANO_IP>:/home/navitas/jetson_paket
+scp -r O:/navitas_bellek/models        navitas@<NANO_IP>:/home/navitas/models
+```
+Nano'da `ssh` sunucusu yoksa: `sudo apt install -y openssh-server`
+(bu da internet ister — §3.1'deki yolları kullan) ya da PC'de basit bir
+HTTP sunucu açıp Nano'dan çek:
+```bash
+# PC'de:   cd O:/navitas_bellek && python -m http.server 8000
+# Nano'da: wget -r -np -nH --cut-dirs=1 http://<PC_IP>:8000/wheels/
+```
+
+**Kapı:** aktarım hangi yolla yapılırsa yapılsın, Nano'da
+`ls ~/wheels | wc -l` **48** ve `MANIFEST.txt` içindeki dosya sayısı **405**
+ile karşılaştırılır. Eksikse kurulum başlatılmaz.
+
 ```bash
 cp -r /media/navitas/*/wheels /home/navitas/wheels
 cd /home/navitas/wheels                                          # betik requirements_nano.txt'yi buraya da kopyalar

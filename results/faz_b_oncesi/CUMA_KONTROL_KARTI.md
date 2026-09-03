@@ -36,16 +36,24 @@ Gün içinde kod değişmediyse geri kalanı geçerlidir.
 | 🛒 | ~~5 V / 5 A UBEC al~~ **SİPARİŞ EDİLDİ (4 Eylül)** — kargo cumartesi sabahına yetişmeli; yetişmezse 11:00 kablolama bloğu yarım kalır | Jetson beslemesi; FCHUB'ın küçük BEC'i yetmez |
 | 🛒 | ~~JST-GH 6-pin kablo + dişi-dişi jumper~~ **SİPARİŞ EDİLDİ (4 Eylül)** | TELEM1 (SiK) ve TELEM2 → Nano UART |
 | ☐ | **USB webcam** (yedek kamera) | CSI yolu ilk gün açılmazsa `--kaynak 0` |
-| ☐ | XT60/XT90 fiş, kablo bağı, ısı makaronu, damper bant | kablolama |
+| ✅ | ~~XT60/XT90 fiş, kablo bağı, ısı makaronu, damper bant~~ **HAZIR (4 Eylül)** | kablolama |
 | ☐ | **Yedek pervane seti (12×10, CW+CCW)** | ilk uçuşlarda en sık kırılan parça |
 | ☐ | (öneri) **2. pil 4S 10 Ah + ≥150 W şarj** | tek pil → günde 2 uçuş |
 | 🛒 | ~~YEDEK PLAN: Ubuntu'lu x86_64 bilgisayar~~ **AYARLANDI (4 Eylül)** — yalnız eMMC boş çıkarsa kullanılır | eMMC BOŞ çıkarsa SDK Manager ile flash gerekir; **Windows'ta yapılamaz** · `JETSON_NANO_KURULUM.md` §1.2 |
 | 🛒 | ~~Taşıyıcı kartın kurtarma (FC REC) pini — üretici kılavuzu~~ **TEMİN EDİLDİ (4 Eylül)** | flash gerekirse pin adı tahmin edilemez |
+| 🔴 | **NANO'YA İNTERNET** — ethernet+yönlendirici / dizüstünden paylaşım / telefon USB tethering (en az biri sahada hazır olmalı) | `python3.8` **apt ile** kurulur ve çevrimdışı yedeği YOKTUR. İnternet yoksa venv38 kurulamaz → `ultralytics` yok → **algı zinciri hiç çalışmaz**. Yordam: `JETSON_NANO_KURULUM.md` §3.1 |
+| ☐ | **Taşıyıcı kartın MODELİ** (üretici + model adı) — depoda hiçbir yerde yazmıyor | eMMC boş çıkarsa FC REC pini ve flash yordamı modele bağlıdır · **BEYAN GEREKLİ (insan)** |
+| ☐ | *(yalnız eMMC boş çıkarsa)* NVIDIA developer hesabı · ~20 GB SDK Manager indirmesi · **micro-USB kablo** | "Ubuntu'lu makine ayarlandı" bunları kapsamıyor; üçü de ayrı kalem · `JETSON_NANO_KURULUM.md` §1.2 |
 | ☐ | (öneri) GPU torch wheel'i (JetPack 4.6 / Py3.8) indir, belleğe koy | v36 YOLOv8m; CPU'da FPS kapısı düşebilir |
-| ☐ | Küçük ekran + klavye, ethernet kablosu | Nano ilk açılış |
-| ☐ | Multimetre, tartı, baret/yelek | kablolama kontrolü, UHDR kütle, saha |
-| ☐ | `O:\navitas_bellek` klasörünü **USB'ye kopyala** | 1,27 GB; `MANIFEST.txt` içindedir |
-| ☐ | Bu kartı + `FAZ_B_GUN_PLANI.md` + `JETSON_NANO_KURULUM.md` **yazdır** | sahada ekran olmayabilir |
+| ✅ | ~~Küçük ekran + klavye, ethernet kablosu~~ **HAZIR (4 Eylül)** | Nano ilk açılış |
+| ✅ | ~~Multimetre, tartı, baret/yelek~~ **HAZIR (4 Eylül)** | kablolama kontrolü, UHDR kütle, saha |
+| ⏳ | `O:\navitas_bellek` → **USB'ye kopyala** — klasör **HAZIR** (4 Eylül 01:13, HEAD `8117c24`, 405 dosya, 1268,5 MB, eksik zorunlu 0, düzeltilmiş cuma kartı içinde). **Tek eksik: USB takmak.** | kopyalayınca `MANIFEST.txt` ile doğrula |
+| ☐ | Bu kartı + **`SAHA_RUNBOOK.md`** + `FAZ_B_GUN_PLANI.md` + `JETSON_NANO_KURULUM.md` **yazdır** | sahada ekran olmayabilir. 🔴 RUNBOOK ATLANMAZ: tüm başlatma komutları, YKS operatör kartı ve SiK hub yordamı §2–3'tedir |
+
+> ℹ️ **🛒 ve ✅ işaretli satırlar KULLANICI BEYANIDIR** (4 Eylül), depoda
+> artefaktı yoktur. Planın kuralı "her iddia bir artefakta bağlanır" der;
+> bu satırlar ölçüm değil beyandır ve öyle okunmalıdır. Kutu açılınca
+> envanterle **teyit edilecektir** (§C adım 1).
 
 ## C. Cumartesi sabahı ilk üç iş (kutu açılınca)
 

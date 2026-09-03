@@ -9,6 +9,16 @@
 
 ## 1. Cumartesi 5 Eylül — donanım geldiği gün kapanır (ÖLÇÜM)
 
+⚠ **KOŞULSUZ DEĞİL.** Aşağıdaki kalemlerden **3, 4 ve 5 açılmış bir Jetson
+gerektirir**. D-413'e göre kartta microSD yuvası yoktur (eMMC modül + M.2) ve
+eMMC'nin **boş çıkma ihtimali vardır**; o durumda Ubuntu x86_64 host + SDK
+Manager yolu (~20 GB indirme + NVIDIA hesabı + micro-USB) gerekir ve Jetson
+cumartesi açılmayabilir. Ayrıca `python3.8` kurulumu **internet ister**
+(`JETSON_NANO_KURULUM.md` §3.1).
+
+Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; açılmazsa
+`ÖLÇÜLEMEDİ` olarak taşınır."** Ölçülemeyen şey geçmiş sayılmaz.
+
 | # | kalem | nasıl kapanır | bölüm |
 |---|---|---|---|
 | 1 | Kalkış kütlesi, ağırlık merkezi, **her parçanın gerçek tartısı** | tartı + tutanak; UHDR ve Bölüm 5/7 bunu ister | 3, 5, 7 |

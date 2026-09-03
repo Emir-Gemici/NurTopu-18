@@ -22,7 +22,7 @@
 | ☐ | Jetson açılış kuru koşu (D-404) | `KIP=udp YKS_IP=… IKA_IP=… FOV=… bash jetson_paket/jetson_baslat.sh --kuru` → exit 0, `[EKSIK]` yok; `KIP=sik` ile de |
 | ☐ | Mühür mekanizması ayakta | `scripts/surum_dondur.py --dogrula` → exit **3** "DONDURULMADI" (beklenen; mühür ~18 Eylül) |
 | ☐ | Donanım-öncesi prova çıktıları | `results/faz_b_oncesi/` (D-404) |
-| ☐ | **Jetson Nano 4GB** (Orin değil — kullanıcı beyanı 3 Eylül): `jetson_paket/JETSON_NANO_KURULUM.md` okundu; `scripts/nano_tekerlek_indir.py` ile aarch64/py3.8 tekerlekler `wheels/` altında ve bellekte; microSD'ye JetPack 4.6.x imajı yazıldı | tekerlek raporu; kart hazır |
+| ☐ | **Jetson Nano 4GB** (Orin değil — kullanıcı beyanı 3 Eylül): `jetson_paket/JETSON_NANO_KURULUM.md` okundu; `scripts/nano_tekerlek_indir.py` ile aarch64/py3.8 tekerlekler `wheels/` altında ve bellekte; ⚠ D-413: microSD YUVASI YOK (eMMC modül + M.2) — **cumartesi ilk iş: Nano'yu aç ve bak** | tekerlek raporu; kart hazır |
 | ☐ | Kamera köprüsü (RPi HQ CSI → MJPEG): `tests/test_faz_b_kamera_koprusu.py` yeşil; `jetson_baslat.sh --kuru` çıktısında `navitas-kamera-koprusu` satırı | test OK |
 | ☐ | Pixhawk şablonları bellekte: `config/pixhawk/arducopter_fda.param` + `fda_gorev.waypoints` (`tests/test_faz_b_pixhawk_sablon.py` yeşil); README'deki **TEYİT** listesi basılı | test OK |
 | ☐ | Yedek kamera (USB webcam) çantada — CSI yolu açılmazsa `--kaynak 0` | var |
