@@ -1,0 +1,8 @@
+=== GENEL KAPI (madde 14) — 3 Eylul 12:03, HEAD baeca14 ===
+     5      zor       2       2  0.685    9             None         1  OK
+------------------------------------------------------------------------------
+URETIM YOLU: rota uretimi 15/15 · yayinlanan serit 15/15 (esik >= 14/15, ON_KAYIT SS18-B)
+[OK] URETIM YOLU KOLU GECTI
+------------------------------------------------------------------------------
+GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
+exit=0

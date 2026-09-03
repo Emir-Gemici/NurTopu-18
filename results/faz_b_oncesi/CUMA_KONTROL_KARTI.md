@@ -8,15 +8,15 @@
 
 | ✓ | kapı | sonuç (3 Eylül) |
 |---|---|---|
-| ✅ | Genel kapı `codes/test_rota_sentetik.py` | **15/15 · 15/15** |
+| ✅ | Genel kapı `codes/test_rota_sentetik.py` | **15/15 · 15/15** — 3 Eylül 12:03, HEAD `baeca14` · artefakt `cuma_kontrol/genel_kapi.txt`. ⚠ Bu kapı `tests/` altında **değildir**, tam süit onu **kapsamaz**; ayrı koşulur (D-415) |
 | ✅ | Tam test paketi | **1896 test OK** (skipped 3, 390,5 s) · artefakt `cuma_kontrol/tam_suit.txt` |
-| ✅ | Kuru koşu `scripts/saha_kuru_kosu.py` | **9 GEÇTİ · 1 SAHİPSİZ** (yalnız `motor` — İKA gerçek sürücüsü; FDA uçuşunda gerekmez) |
+| ✅ | Kuru koşu `scripts/saha_kuru_kosu.py` | **9 GEÇTİ · 0 DÜŞTÜ · 1 SAHİPSİZ** — 3 Eylül 12:02 tazelendi (önceki artefakt 2 Eylül 23:59'dandı, D-415). Sahipsiz halka `motor`: gerçek İKA motor sürücüsü yok — **FDA uçuşunda gerekmez**, final aracında gerekir (TASK_QUEUE T149). Artefakt `kuru_kosu_20260903.txt`, çıkış 1 (kopuk halka nedeniyle, beklenen) |
 | ✅ | Paket aynası `scripts/jetson_paket_hazirla.py` | 18 dosya senkron |
 | ✅ | Model dosyaları pakette | `navitas_seg_v36_best.pt` + `_512_fp16.onnx` (54,8 / 54,6 MB) |
 | ✅ | Jetson açılış `jetson_baslat.sh --kuru` (udp + sik) | exit 3 — PC'de beklenen (`[YOK]` satırları Jetson yolları); uçlar 14550/14551/14552, `--streamrate 8`, köprü satırı doğru |
 | ✅ | Mühür `scripts/surum_dondur.py --dogrula` | exit 3 "DONDURULMADI" (mühür 17 Eylül) |
 | ✅ | Çevrimdışı tekerlekler `wheels/` | **14/14 paket · 51 dosya · 246 MB** |
-| ✅ | Saha belleği `scripts/bellek_hazirla.py` | **405 dosya · 1,27 GB** → `O:\navitas_bellek` |
+| 🔴 | Saha belleği `scripts/bellek_hazirla.py` | **BAYAT — cuma YENİDEN koşulacak.** Bellekteki MANIFEST eski HEAD'i gösteriyor; içindeki üç belge (bu kart, `SAHA_RUNBOOK`, `SAHA_HAZIRLIK_PLANI`) 3 Eylül'de değişti. **Yeniden koşulmadan USB'ye kopyalanmayacak** (D-415). Önceki koşum: 405 dosya · 1,27 GB → `O:\navitas_bellek` |
 
 **Cuma akşamı tekrar koşulacak tek şey:** genel kapı + tam suit (gün içinde kod
 değiştiyse). Değişmediyse yukarıdaki sonuçlar geçerlidir.

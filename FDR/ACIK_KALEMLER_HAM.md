@@ -5,6 +5,11 @@
 > çıkarılır ve bölümler değiştikçe yeniden üretilir.
 > Derlenmiş hâli: `FDR/ACIK_KALEMLER.md`.
 
+## BOLUM_0_KAPAK_VERSIYON_TANIMLAR.md  (3 satır)
+- `:34` BEYAN GEREKLİ (insan):** Kapakta kullanılacak takım logosu / görseli (varsa).
+- `:44` BEYAN GEREKLİ (insan):** Teslim edilecek sürümün numarası ve tarihi
+- `:141` ÖLÇÜLEMEDİ:** Dizgi henüz yapılmadı. Dizgi 17 Eylül sürüm dondurmasından
+
 ## BOLUM_1_OZET.md  (8 satır)
 - `:97` sunulmaz; saha `p` değeri **ÖLÇÜLEMEDİ** olarak durur ve iki çerçevenin (sentetik
 - `:152` 2. **ÖLÇÜLEMEDİ ≠ GEÇTİ.** Koşulmamış kapı "sorun çıkmadı" diye yazılmaz; paydası olmayan oran rapora girmez.
@@ -218,4 +223,4 @@
 
 ---
 
-**TOPLAM: 197 açık kalem satırı** (2 etiket: BEYAN GEREKLI, OLCULEMEDI).
+**TOPLAM: 200 açık kalem satırı** (2 etiket: BEYAN GEREKLI, OLCULEMEDI).

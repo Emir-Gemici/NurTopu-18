@@ -36,13 +36,13 @@
 |---|---|---|
 | 14 | **Gerçek arena karesi yok** | Kırmızı H brandası + moloz + bariyer içeren, ≥30 m irtifadan çekilmiş görüntümüz hiç olmadı. Kabul kapılarının tamamı sentetik kümede koşuldu; rapor bunu her bölümde tekrar eder ve saha başarımı **iddia etmez**. |
 | 15 | TensorRT `.engine` denkliği | Nano 4GB'de 21 Eylül için derlenmesi planlanmıyor; PT/ONNX ile uçulacak, `.engine` **ÖLÇÜLEMEDİ** kalır |
-| 16 | Gazebo fiziksel temas koşusu | Gazebo'lu makine yok; simülasyon zaten saha kanıtı sayılmıyor |
+| ~~16~~ | ~~Gazebo fiziksel temas koşusu — kapanmayacak sınır~~ → 🔴 **YENİDEN AÇILDI (3 Eylül, D-417).** Yönerge `Y-3.3.3` ve `Y-4-M07` **3B görev icra simülasyonunu PUANLANAN bir gereksinim** yapıyor: İHA ve İKA'nın CAD modelleriyle sanal görev icrası + başarı oranları + grafikler + **video linki**. "Simülasyon saha kanıtı değildir" doğru ama **yönerge saha kanıtı olarak istemiyor**, ayrı bir çıktı olarak istiyor. Kapanmaz sayılamaz |
 
 ## 4. İnsan beyanı — rapor teslimine kadar (ÖLÇÜM DEĞİL, BİLGİ)
 
 | # | kalem | kim | bölüm |
 |---|---|---|---|
-| 17 | **Ekip isimleri ve rol ataması** (rapor rolle yazıldı, isim yok) | kaptan | 2 |
+| ~~17~~ | ~~Ekip isimleri ve rol ataması~~ → **KALEM DÜŞTÜ (3 Eylül, D-417).** Yönerge Bölüm 2.1 kişisel veriyi (isim, görsel) **yasaklıyor**: *"tamamen rol bazlı"*. Rapor zaten rol bazlı yazılmıştı — **gereksinim karşılanmış durumda** (`Y-2.1-M02`). Bu satır bir eksik değil, bir **yanlış anlamaydı** | — | 2 |
 | 18 | **Birim fiyatlar, tedarik durumu, fatura/teklif kayıtları** | kaptan | 7 |
 | 19 | 3B baskı süreleri, filament tüketimi, ölçülen parça kütleleri | üretim | 5 |
 | 20 | Üretim zorlukları, revizyon gerekçeleri (SGGS de ister) | üretim | 5 |
@@ -71,3 +71,39 @@
 - **Denetim borcu:** FDA kipi sözleşmesini (§6.7) yazan ile uygulayan aynı el; bağımsız
   denetim ya Fable 5 döndüğünde ya da 21 Eylül öncesi provada hakem rolü oynanarak
   kapanır (D-408).
+
+---
+
+## 6. YÖNERGEDEN GELEN YENİ AÇIK KALEMLER (3 Eylül 2026, D-417)
+
+> Resmî yönerge (`FDR_2_qNiVF.pdf`) 3 Eylül'de okundu. Rapor yapısı ona
+> taşındı; aşağıdakiler o taşımada **açığa çıkan** kalemlerdir. Tam liste ve
+> kimlikler: `YONERGE_HARITASI.md`.
+
+| # | kalem | yönerge kimliği | kim üretir | bölüm |
+|---|---|---|---|---|
+| 26 | **Uçuş bilimleri hiç yazılmadı** — ağırlık & denge, boyut, kontrol yüzeyi, aerodinamik, kararlılık, performans, yük hesapları (DDR sonrası güncellemeler) | `Y-3.1.1…3.1.7` | tasarım / CAD | 3 |
+| 27 | **İHA yapısal analiz yok** — malzeme dayanım tablosu (fiyat/performans dâhil), topoloji optimizasyonu, modal frekans + kütle katılım, burkulma özdeğerleri, tork/menteşe analizleri | `Y-3.2.1-A01…A12` | yapısal analiz | 3 |
+| 28 | **İKA yapısal bölümü yok** — master geometri, parça numaralandırma + BOM, kütle dağılımı, malzeme gerekçesi, yük bırakma sistemi optimizasyonu | `Y-3.2.2-T01…T11`, `A01…A03` | tasarım | 3 |
+| 29 | **Mancınık yapısal bölümü yok** — aynı liste + **yay sabiti** ve **fırlatma menzilinin enerji denklemleriyle** açıklanması + şematik | `Y-3.2.3-T01…T11`, `A01…A02` | tasarım | 3 |
+| 30 | **Üç boyutlu görev icra simülasyonu** — 3B ortam + başarı oranları/grafikler + **video linki** | `Y-3.3.3-M01…M03`, `Y-4-M07` | yazılım / simülasyon | 3, 4 |
+| 31 | **Renk kodlu bağlantı şemaları** — İHA ve İKA için ayrı ayrı, sinyal (PWM/UART/I2C) ve güç hatları ayrı renkte | `Y-3.3.1-M01` | aviyonik | 3 |
+| 32 | **Nihai kablaj hesapları** — AWG kesitleri, uzunluklar, akım taşıma, gerilim düşümü; **ölçülen** maks. akıma göre güncelleme; ekranlama/konnektör kilitleme görselleri | `Y-3.3.2-M01` | aviyonik | 3 |
+| 33 | **Güç tüketimi doğrulaması** — tam yükte ölçülen akım ↔ batarya kapasitesi; teorik ↔ pratik karşılaştırma | `Y-3.3.2-M02` | aviyonik (5 Eylül) | 3 |
+| 34 | **Ekipman kabul testleri** — İHA ve İKA'daki **tüm** ekipmanlar | `Y-4-M04` | aviyonik (5 Eylül) | 4 |
+| 35 | **Kumanda ve telemetri menzil testleri** — sahada | `Y-4-M05` | pilot + aviyonik | 4 |
+| 36 | **IMU / pusula / pitot kalibrasyon kanıtları** | `Y-4-M06` | aviyonik (5 Eylül) | 4 |
+| 37 | 🔴 **Arıza emniyet doğrulaması sahada** — eve dönüş, motor kesme tepkilerinin gerçek test verisi | `Y-4-M12` | pilot (6–19 Eylül) | 4 |
+| 38 | **Sensör gereksinimleri, yerleşimleri, test takvimi, test zaman bütçesi** | `Y-4-M03` | yazılım + aviyonik | 4 |
+| 39 | **Üretim hataları ve düzeltici işlem prosedürleri** | `Y-5-M04` | üretim | 5 |
+| 40 | 🔴 **Kol 1–2 / kol 3–4 reçete farkının gerekçesi** — yönerge: *"gerekliliği ispatlanmamış değişiklikler **diskalifiye sebebi** sayılabilecektir"* (SGGS tutarlılık kontrolü, Şubat 2027) | `Y-5-M05` | üretim | 5 |
+| 41 | **Gereksinim uygunluk pasta grafiği / özet görsel** | `Y-6-M06` | mimar (dizgide) | 6 |
+| 42 | **Planlanan ↔ gerçekleşen maliyet karşılaştırması**, bütçe dağılımı (%+sayısal), harcanmamış bütçe planı, fark gerekçesi | `Y-7-M02…M05` | kaptan | 7 |
+| 43 | **Kapak alanlarının KYS teyidi** — takım adı / takım ID / **başvuru ID** | `Y-0-M01` | kaptan | 0 |
+| 44 | **Organizasyon şeması** — icra yetkilerini gösteren şema (isimsiz, rol bazlı) | `Y-2.1-M01` | kaptan | 2 |
+
+⚠ **26–29 ve 31 bir beyanla kapanmaz.** Bunlar **üretilecek mühendislik
+çıktısıdır** (CAD, FEA, şema). Takvim açısından en riskli grup budur: 21 Eylül'e
+kadar üretilemezse ilgili satırlar `ÖLÇÜLEMEDİ` olarak teslim edilir ve
+40 puanlık bölümde puan kaybı olur.
+

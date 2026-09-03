@@ -6,6 +6,47 @@
 >
 > Bu klasör **rapor kaynağıdır**; teslim dosyası bu bölümlerden derlenir.
 
+---
+
+## 📌 TAKIM ARKADAŞLARI — BURADAN BAŞLA
+
+Bu klasör ortak sürücüde paylaşıldı. Sırayla üç şey yap:
+
+1. **`TAKIM_PROMPT.md`** dosyasını aç, içindeki prompt'u kopyala, kendi yapay
+   zekâna (**Claude Sonnet 5**) yapıştır.
+2. Yanına **üç dosya** ekle: sorumlu olduğun `BOLUM_N_*.md`,
+   **`YONERGE_HARITASI.md`** ve **`BOLUM_0_KAPAK_VERSIYON_TANIMLAR.md`**.
+3. AI sana soru soracak — cevapla. Sonra bölümünün **yamasını** üretecek.
+   O çıktıyı olduğu gibi bana ilet; birleştirmeyi ben yapacağım.
+
+**Üç kural, bunlar tartışmaya kapalı:**
+
+- 🔴 **Rapora İSİM YAZILMAZ.** Yönerge Bölüm 2.1 kişisel veriyi (isim, görsel)
+  yasaklıyor; anlatım **rol bazlı** olacak (R1 Kaptan, R2 Pilot, … R8).
+- 🔴 **Bilmediğin sayıyı yazma.** `BEYAN GEREKLİ (insan): …` diye bırak.
+  Açık kalması kusur değil; **uydurulmuş olması** kusur.
+- 🔴 **Başlık icat etme.** Başlık adları ve numaraları **yönergeden birebir**
+  gelir; hepsi `YONERGE_HARITASI.md` içinde `Y-…` kimlikleriyle listeli.
+
+**Dosyayı doğrudan düzenleme** — yamayı bana gönder. Yedi kişi aynı dosyaya
+yazarsa çakışır ve ölçüm bağlantıları kopar.
+
+---
+
+## Bu klasörde ne var
+
+| dosya | ne işe yarar | rapora girer mi |
+|---|---|---|
+| `BOLUM_0_KAPAK_VERSIYON_TANIMLAR.md` | kapak, versiyon tablosu, tanımlar ve kısaltmalar | ✅ evet |
+| `BOLUM_1…7_*.md` | yönergenin yedi puanlanan bölümü | ✅ evet |
+| **`YONERGE_HARITASI.md`** | **zorunlu iskelet + boşluk analizi** — hangi gereksinim var, hangisi yok | ❌ çalışma belgesi |
+| `TAKIM_PROMPT.md` | üyelerin kendi AI'larına yapıştıracağı prompt | ❌ çalışma belgesi |
+| `ACIK_KALEMLER.md` | elle ayıklanmış açık kalemler | ❌ çalışma belgesi |
+| `ACIK_KALEMLER_HAM.md` | betikle üretilen ham liste (elle yazılmaz) | ❌ çalışma belgesi |
+
+Yönergenin kendisi: `FDR_2_qNiVF.pdf` (depo kökünde) ·
+metni: `results/fdr_sablon/fdr_yonerge_metin.txt`
+
 ## 🔴 Resmî yarışma takvimi (şartname Tablo 1 — tek doğru kaynak)
 
 | tarih | ne |
