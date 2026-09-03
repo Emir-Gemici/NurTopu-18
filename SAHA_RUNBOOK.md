@@ -41,6 +41,12 @@ Kamera görüntüsü **SiK üzerinden taşınmaz**. `--kamera-url` Jetson ile YK
 arasındaki ayrı Wi-Fi/LAN köprüsüdür. Kamera ağı yoksa telemetri ve emniyet
 komutları çalışmayı sürdürür; ekran eski kareyi canlıymış gibi tutmaz.
 
+YKS her açılışta `results/prova/<tarih_saat_pid>/hakem_log.jsonl` altında
+kalıcı, `flush+fsync` edilen bir kanıt oturumu açar. Başka yol istenirse
+doğrudan GUI'ye `--hakem-log <yol>` verilir. Dosya açılamazsa YKS kanıtsız
+başlamaz; koşarken yazma bozulursa kalkış/hakem onayı kapanır, ARM ve acil
+komutlar erişilebilir kalır.
+
 ## 2. YKS operatör kartı
 
 - Üst satırdaki **HAM GNSS** enlem/boylam, fix, uydu ve bağıl irtifayı canlı

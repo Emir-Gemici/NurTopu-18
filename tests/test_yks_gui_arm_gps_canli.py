@@ -36,6 +36,7 @@ def _arayuz(armed=False):
     g.arm_durum_zamani = time.monotonic()
     g.arm_bekleyen_komut = None
     g.arm_ack_zamani = None
+    g._kritik_teyit = {}
     g.arm_tekrar = yks_gui.AckliTekrar(
         g._ham_gonder, yks_gui.ARM_TEKRAR_ARALIGI_S,
         yks_gui.ARM_TEKRAR_UST_SINIRI)
@@ -60,6 +61,8 @@ def _arayuz(armed=False):
 
 class ArmGercegiTests(unittest.TestCase):
     def _arm_baslat(self, g):
+        g.arm_degistir()
+        g.link.send.assert_not_called()
         g.arm_degistir()
         veri, hedef = g.link.send.call_args.args
         self.assertEqual(("127.0.0.1", 5007), hedef)

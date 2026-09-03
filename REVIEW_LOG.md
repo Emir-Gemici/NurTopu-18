@@ -28721,3 +28721,458 @@ avitas_bellek` MANIFEST'i HEAD `6c70dd7`
    yansimamisti): `Plaka1_Kol_1-2` 0,20 mm / %15 grid / 2 duvar · `Plaka2_Kol_3-4`
    0,16 mm / %40 gyroid / 6 duvar. Fark mukavemet yonunde ve gerekcesi kayitli
    degil. Montajda hangi kolun hangi plakadan geldigi **isaretlenecek**.
+
+### D-417 — RESMI FDR YONERGESI OKUNDU: rapor yanlis iskeletteydi ve ISIM YASAGI'ni bilmiyorduk
+
+**Nasil bulundu.** Kullanici resmi yonergeyi sagladi (`FDR_2_qNiVF.pdf`,
+19 sayfa, "ILERI OTONOM SISTEMLER TASARIM VE OPERASYON YARISMASI — FINAL
+DEGERLENDIRME RAPORU HAZIRLAMA YONERGESI"). Rapor bugune kadar **sartname
+Tablo 4'ten turetilen** bir yapiyla yazilmisti. Yedi bolum ve puanlar TUTUYOR;
+ama yonerge cok daha ayrintili bir yapi dayatiyor ve uc yerde bizimkiyle
+CELISIYOR.
+
+**Ayrica kullanici bir olgu hatasi yakaladi:** yazdigim takim prompt'u
+<!-- ad-kapisi-muaf --> yarismanin adini "Ulasimda Uretken Yapay Zeka" diye yaziyordu. Dogrusu
+yonerge ve sartname kapaginda yazili: **Ileri Otonom Sistemler Tasarim ve
+Operasyon Yarismasi**. Hicbir kapi yarismanin adina bakmiyordu; bu yuzden
+olcum degil KULLANICI yakaladi.
+
+#### 1. 🔴 RAPORDA ISIM YAZILMAZ — en agir bulgu
+
+Yonerge Bolum 2.1, kelimesi kelimesine:
+> "Raporun objektif degerlendirme kriterleri uyarinca, uyelerin **kisisel
+> verilerinden (isim, gorsel vb.) arindirilmis, tamamen rol bazli** ve
+> profesyonel bir anlatim tercih edilmelidir."
+
+Bizim `FDR/ACIK_KALEMLER.md` kalem **17**'si "Ekip isimleri ve rol atamasi"
+diyordu ve `FDR/TAKIM_PROMPT.md`'nin **1 NUMARALI oncelikli sorusu** buydu.
+Yani butun takima, yonergenin **yasakladigi** veriyi toplattiracaktim.
+
+Rapor zaten rol bazli yazilmisti (R1..R8) — yani **gereksinim KARSILANMIS
+durumdaydi** ve ben dogru olani "eksik" sanip kapatmaya calisiyordum.
+Kalem 17 DUSTU; yerine `Y-2.1-M02` kimligiyle "karsilandi" kaydi kondu.
+
+#### 2. 🔴 Bolum 3'un alt yapisi zorunlu ve bizimki tutmuyor (40 puan)
+
+Yonerge uc ana + on dort alt baslik dayatiyor:
+  3.1 Ucus Bilimleri — IHA Kavramsal Tasarim Esaslari (3.1.1 Agirlik & Denge,
+      3.1.2 Boyut Guncellemeleri, 3.1.3 Kontrol Yuzeyi, 3.1.4 Aerodinamik,
+      3.1.5 Kararlilik, 3.1.6 Performans, 3.1.7 Yuk Hesaplamalari)
+  3.2 Yapisal Tasarim ve Yapisal Analiz (3.2.1 IHA / 3.2.2 IKA / 3.2.3 Mancinik;
+      her birinde ayri "Yapisal Tasarim surecleri" ve "Yapisal Analiz surecleri"
+      madde listeleri — IHA icin 18 + 12 madde)
+  3.3 Aviyonik & Yazilim (3.3.1 Nihai Donanim ve Sistem Mimarisi, 3.3.2
+      Elektriksel Tasarim ve Kablolama, 3.3.3 Gorev Icra Simulasyonu,
+      3.3.4 Gorev Algoritmasi ve Yazilim Detaylari)
+
+Bizim 1400+ satirlik Bolum 3'umuz kendi baslik semasiyla yazilmisti. Icerik
+degerli ama **yanlis iskelette** ve 40 puan orada. Olculmus icerigin buyuk
+kismi **3.3**'e aittir.
+
+#### 3. 🔴 Uc boyutlu GOREV ICRA SIMULASYONU puanlanan bir gereksinim
+
+Yonerge hem `3.3.3` hem Bolum 4'te istiyor: IHA ve IKA'nin **CAD modelleriyle**
+sanal gorev icrasi (kalkis -> goruntu isleme ile rota tespiti -> IKA'ya aktarim
+-> IKA otonom surus), otonom karar **basari oranlari + grafikler**, ve ekran
+kaydi videosunun **linki**.
+
+Bizim acik kalem listemiz bunu kalem 16'da "Gazebo'lu makine yok -> **kapanmayacak
+sinir**" diye kapatmisti. "Simulasyon saha kaniti degildir" dogru bir cumledir
+ama yonerge simulasyonu **saha kaniti olarak istemiyor**, ayri bir cikti olarak
+istiyor. Kalem 16 **YENIDEN ACILDI**.
+
+#### 4. Yonergede zorunlu olup bizde HIC olmayan on kisim
+
+Kapak (TAKIM ADI / TAKIM ID / **BASVURU ID**) · **VERSIYONLAR** tablosu ·
+**TANIMLAR ve KISALTMALAR** (29 kalemlik hazir liste) · Icindekiler ·
+her sayfada **TASNIF DISI** baslik/altlik.
+
+#### 5. Ne yapildi
+
+- `results/fdr_sablon/fdr_yonerge_metin.txt` — yonergenin tam metni (pypdf).
+  ⚠ Cikarimda bag-imi (ligature) kusuru var: bazi `i` harfleri `g` cikmis
+  ("Degerlendgrme", "glgskgn"). Kisaltma listesi **PDF sayfalarindan** okundu,
+  cikarimdan degil; bu uyari `BOLUM_0`'a yazildi.
+- `FDR/YONERGE_HARITASI.md` — zorunlu iskelet; HER gereksinim bir kimlikle
+  (`Y-<bolum>-<tip><no>`), DURUM sutunlu (VAR/KISMEN/YOK), bolum bazli bosluk
+  ozetiyle. **Raporun sozlesmesi artik bu dosyadir.**
+- `FDR/BOLUM_0_KAPAK_VERSIYON_TANIMLAR.md` — kapak, versiyon tablosu, yonergenin
+  29 kisaltmasi + bu raporun 11 ek teknik kisaltmasi. FDA'nin iki anlami
+  ayrildi: yonergede "Final Degerlendirme Asamasi", bizde `--fda` bir yazilim
+  bayragi (sartname §5.3.2 gorev kipi).
+- `FDR/TAKIM_PROMPT.md` **bastan yazildi**: isim yasagi uc ayri yerde (kural,
+  oz denetim sayaci "rapora yazdigim ad-soyad sayisi: 0", kontrol listesi);
+  soru butcesi artik haritadaki YOK+KISMEN sayisindan turetiliyor; ve yeni ana
+  mekanizma **BEYAN ↔ MUHENDISLIK ISI ayrimi** — modal frekans, burkulma
+  ozdegeri, topoloji optimizasyonu, uretim resmi bir soruyla kapanmaz,
+  URETILECEK CIKTIDIR; prompt bunlari sorulardan ayirip "bu bir uretim isi,
+  ne zaman yetisir?" diye sordurtuyor.
+- `FDR/ACIK_KALEMLER.md`: kalem 17 dustu, kalem 16 yeniden acildi, yonergeden
+  gelen **19 yeni kalem** (26-44) kimlikleriyle eklendi. 26-29 ve 31 bir
+  beyanla KAPANMAZ (CAD/FEA/sema uretimi).
+- `tests/test_yarisma_adi_kapisi.py` (3 test) — yarisma adi kapisi. Kapi adi
+  **ezberlemez**, sartname kapagindan okur. Muafiyet acik bir isarete bagli
+  (`<!-- ad-kapisi-muaf -->`) ki tesadufi muafiyet olmasin. Kapi yazildiktan
+  sonra **kendi metnimi iki kez yakaladi**, ikisi de duzeltildi.
+
+#### 6. Kapanmayan
+
+Bolum 1-7 dosyalarinin yonerge iskeletine tasinmasi. Ilk deneme **REDDEDILDI**:
+iki ajan dosyayi bastan yazip **kanit dizini tablolarini dusurdu** (BOLUM_7'den
+13, BOLUM_1'den 3 kanit satiri; D-140/D-252/D-253/D-331 defter atiflari,
+tekerlek/bellek olcumleri, sartname alintilari). Olculdu, geri alindi, ve
+tasima betigine **zorunlu kanit koruma yordami** eklendi: yazmadan once kanit
+satirlarinin KUMESI cikarilir, yazdiktan sonra karsilastirilir, kaybolan 0
+degilse basarili sayilmaz.
+
+### D-418 — CODEX ANA AGACA 2200 SATIR YAZDI, AGACI KIRMIZI BIRAKTI; denetim 21 KRITIK bulgu cikardi
+
+**Durum.** Mimarin son commit'i `95a5710` (16:18). Ondan sonra **Codex**
+(baska bir amele) 16:50-17:17 arasinda ana agaca yazdi: 21 dosyada ~2200 ekleme
++ 6 yeni test dosyasi (43 test). Commit'lenmedi. Konular: RTL/LAND fail-closed
+kapisi, komut guvenligi, ACK sahteciligi savunmasi, ucus telemetrisi, hakem
+kaydi, kaynak sira guvenligi, ve kritik eyleyiciye `--izinli-kaynak` kisiti.
+
+**Is substantif olarak IYIDIR ve korunmustur.** Ama tam suit **1947 testte
+15 dusuk + 1 hata** verdi. Anayasa madde 3 ve 14: kapi dusmusken is kapanmaz.
+
+#### 1. Mimarin kapattigi 12
+
+**8'i ayna bayatligi.** Codex kanonik kaynaklari degistirmis,
+`scripts/jetson_paket_hazirla.py` aynalamasini kosmamis. Betik kosuldu.
+
+**4'u canli MAVLink — ve kok neden ogreticiydi.** Dusen sey bir **on kayit
+olcutuydu**: "yabanci trafik altinda erisilebilirlik %0 (< %90) — B1
+uygulanmamis" (D-389). Codex `comms/inis_kaniti.py`'ye bir `beklenen_component`
+suzgeci eklemisti (varsayilan MAV_COMP_ID_AUTOPILOT1 = 1).
+`scripts/sahte_pixhawk.py` ise baglantiyi **yalniz `source_system`** ile
+aciyordu; `source_component` verilmeyince pymavlink varsayilani **0**, ve
+`_mesaj_bileseni` 1..255 disini 0'a katladigi icin `0 != 1` -> **her mesaj
+reddediliyordu**.
+
+Kusur **suzgecte degil test sahtesindeydi**: gercek ArduPilot otopilotu
+component 1 ile yayin yapar ve deponun kendi sozlesmesi bunu yaziyor
+(`comms/iha_komut_alici.py:105` `VARSAYILAN_HEDEF_COMPONENT = 1`, yorumu
+"ArduPilot varsayilan arac kimligi ve MAV_COMP_ID_AUTOPILOT1"). Sahtemiz
+gercegi taklit etmiyordu; **Codex'in suzgeci bunu acige cikardi.**
+Suzgec GEVSETILMEDI; sahte gercege uyduruldu (`source_component`, kurucuda
+dogrulanan `component` alani). Canli kapilar 5 dusukten **17/17 OK**'e gecti,
+kosum suresi 50 s -> 19,6 s.
+
+⚠ **Bu duzeltmenin ikinci bir sonucu oldu ve durustce yazilir:** sahte artik
+component 1 yayinladigi icin `comms/iha_komut_alici.py`'nin ACK bilesen kapisi
+takildi ve `tests/test_faz_b_iha_komut_alici.py`'de **2 uctan uca test dustu**.
+Bu testler mimarin degisikliginden ONCE dusmuyordu. Yani sadakat artisi, daha
+derin bir kusuru gorunur kildi (asagida KRITIK-3).
+
+#### 2. Amelelere dagitilan ve KAPANAN 3
+
+Mimar uretim kodu yazmaz (madde 7); teshis konup amelelere verildi, her biri
+ayri bir curutucuyle sinandi.
+
+**ARM/DISARM teyit durumu ekranda takili kaliyordu.** Codex iki-tik teyit kapisi
+eklemis (`_kritik_teyit`); ikinci tikta anahtar `pop` ediliyor ama **dugme metni
+sifirlanmiyordu**. Komut adres yoklugundan basarisiz olunca ekran kalici olarak
+"ARM? TEKRAR BAS" gosteriyordu — bekleyen teyit YOKKEN. O dosyanin kendi
+gerekcesi bunu yasakliyor: "iletim yoklugu operator onayi degildir."
+Cozum: dugme cizimi `_kritik_teyit_al`'dan cikarilip **gercek-cizim**
+yordamlarina tasindi (tek yazar -> asili metin yapisal olarak imkansiz).
+
+Amele **ayni siniftan ikinci bir kusur** buldu: `parasut()` icindeki kosulsuz
+`after(3200, ...)` zamanlayicisi, teyit penceresi icinde gonderilen PARACHUTE'un
+"GONDERILDI — ACK bekleniyor" metnini (ve ACK gelmeyince yazilan kirmizi hatayi)
+**EZIYORDU**: hakem, ucusta PARACHUTE varken dugmeyi **bosta** goruyordu.
+Isimli/test edilebilir `_parasut_teyit_sondur(damga)` yordamina cikarildi.
+
+Kanit: test dosyasinda **+139 / -0** (tek assert degismedi; dusen iki test
+davranis duzelince kendiliginden gecti) · 6 yeni test · 4 mutasyon, hepsi
+yakalandi, dosya `cmp` ile bayt-es geri yuklendi · iki-tik kurali korundu
+(3. tik yeni teyit turu baslatir, dogrudan ARM ETMEZ — curutucu gercek nesneyi
+surerek dogruladi).
+
+**K6 kapisi `KeyError: 'YKS_IP'`.** Codex `--izinli-kaynak` sertlestirmesini
+eklemis (DOGRU ve korundu), testi de guncellemis ama fiksturun `env` sozlugu
+betigin **YAZDIGI** `/etc/navitas.env` blogunu ayristirir; `YKS_IP` bir **GIRDI**
+ortam degiskenidir ve o blokta yer almaz. Cozum: uretim kodu **hic
+degistirilmedi** (`jetson_baslat.sh` sha1 ayni); test kosulabilir hale getirildi
+ve iddia sayisi **artti** (UDP kolunda net +3, SiK kolunda +1). Ayrica SiK
+kolundaki ciplak `"127.0.0.1:5100"` dizesi betikten turetilir hale geldi —
+**madde 16 duzeltmesi**. 6 mutasyon, hepsi yakalandi.
+
+Birlestirme: worktree'ler bayat tabandan (`baeca14`) geldigi icin **butun
+worktree alinmadi**; ana agacla `cmp` edilerek gercekten farkli olan dosyalar
+belirlendi (wt-1'de 2, wt-2'de 1) ve yalniz o **3 dosya** tasindi. Ardindan ayna
+tazelendi. Tam suit: **1954 test, 2 dusuk** (16'dan 2'ye).
+
+#### 3. ACIK KALAN 3 KRITIK — hepsi ucus komut hattinda
+
+Iki bagimsiz denetci ayri ayri dogruladi, mimar kendi olcumuyle teyit etti.
+
+**KRITIK-1 — CAPRAZ-MAKINE DUVAR SAATI EMNIYET HATTINA BAGLANMIS.**
+`comms/iha_komut_alici.py:393` komut yasini `simdi - damga` ile hesapliyor;
+`damga`yi **YKS dizustu** basiyor (`protocol.command`: `round(time.time(), 3)`),
+`simdi`yi **Jetson** okuyor. Negatif tolerans yalnizca **1 ms**
+(`KOMUT_ZAMAN_YUVARLAMA_TOLERANSI_S`, satir 124). Sabitin kendi yorumu ele
+veriyor: "**Ayni surecte dahi** ... cok kucuk negatif yas uretebilir" — yazar
+tek saat varsaymis. Jetson'da RTC pili yoktur; NTP'siz sapma saniyeler
+mertebesindedir. **Bugunku haliyle sahada ARM, DISARM, RTL, LAND ve PARACHUTE
+hepsi reddedilir.**
+
+**KRITIK-2 — TEKRAR MERDIVENI ZEHIRLENIYOR.**
+`comms/iha_komut_alici.py:426` `self._komut_sonuclari[anahtar] = False`
+satirini **aktarimdan ONCE** yaziyor. Hemen ardindan gelen iki fail-closed cikis
+(`self.mav is None`, `mav_hedefi_biliniyor_mu(...)` False — saha acilisinda
+SIK) anahtari kalici zehirliyor: ayni `(oturum, seq, cmd)` bir daha
+"gecikmis eylem RED" ile reddediliyor. Bu, D-02/K4'un **ACK'li ayni-seq tekrar
+merdivenini** (`comms/komut_tekrar.py`, 8 tekrar x 0,25 s) OLDURUR.
+
+**KRITIK-3 — ACK BILESEN KAPISI YANLIS ALANI KIYASLIYOR.**
+`comms/iha_komut_alici.py:303` `COMMAND_ACK`'in `get_srcComponent()`'ini
+`self.target_component` ile kiyasliyor. Bunlar ayri alanlardir
+(`COMMAND_LONG.target_component` = kime gonderdim; `COMMAND_ACK.srcComponent`
+= kim cevapladi). ArduPilot'ta ikisi de 1 oldugu icin cogu zaman ortusur, ama
+kural bu varsayimi yazili hale getirmeden uyguluyor.
+
+**MIMARIN KARARI (amelelere verildi).** Yeniden-oynatma savunmasi
+`(oturum, seq, cmd)` ANAHTARIDIR — `comms/protocol.py:28` bunu zaten yaziyor:
+"Kritik komut oturumu bir kimlik/yeniden-oynatma alanidir." Duvar saati
+**ikinci ve bozuk** bir savunmadir. Yas kapisi kaldirilmaz ama **dogru
+buyuklugu olcecek**: iki makinenin saati >= 5 dakika sapmisken kritik komut
+GECMELI, acikca bozuk/cok eski damga hala REDDEDILMELI. Sonuc onbellegi
+**TAMAMLANMIS** denemeye kilitlenir (Pixhawk'tan kesin cevap: ACCEPTED/REJECTED),
+**TESEBBUSE** degil; MAVLink'e hic ulasmamis bir tesebbus anahtari zehirlemez.
+⚠ Bu bir esik GEVSETMESI DEGILDIR: kapi bugun **yanlis buyuklugu** (iki saatin
+farkini) olcuyor; duzeltme onu dogru buyuklugu olcer hale getirir.
+`KOMUT_ZAMAN_YUVARLAMA_TOLERANSI_S` on kayitli bir esik degildir, bugun eklendi.
+
+#### 4. Ayrica acik birakilan, dagitilan bulgular
+
+- **YKS kanit kaydi kilidi FAIL-OPEN.** `_kanit_hatasini_goster` (satir 3537)
+  `btn_firlat` ve `btn_onay`u `disabled` yapiyor, ama `kanit_kaydi_hatasi`
+  bayragi kodda yalniz iki yerde okunuyor; `_arm_ui_uygula` govdesinde **0
+  eslesme** (olculdu). Periyodik tazeleme dugmeleri geri aciyor: **kirmizi afis
+  ekranda kaliyor, dugmeler calisiyor.** Niyet korunacak: afis "ARM ve acil
+  komutlar kullanilabilir" diyor ve bu BILEREK boyledir (kanit kaydi bozuksa
+  bile araci indirebilmelisin) — kilit yalniz firlatma/onay icindir.
+- **Hakem kanit olay kumesi MUKERRER yazildi.** Codex ile mimarin bir ajani
+  (worktree `wf_b0f33806-4ba-2`) ayni olculen kusuru ayri tasarimlarla
+  duzeltti. Denetimin hukmu: **wt-2 tasarimi alinmali** — olay adlarini
+  `CONTRACTS §6.8` tablosu ↔ `KANIT_OLAYLARI` sabiti ↔ AST ile koddan toplanan
+  adlar arasinda **uc yonlu kume esitligine** kilitliyor (madde 16); Codex'te
+  ne CONTRACTS girdisi ne olay sabiti var, adlar koda gomulu serbest metin.
+  Denetim ayrica uyardi: naif birlestirme dosyada **uc ayri `_kanit_yaz`
+  tanimi** birakabilir.
+- **CONTRACTS ↔ kod AYRISMASI.** `comms/protocol.py` tele yeni alanlar koydu:
+  `CMD`'ye `oturum` (yeniden-oynatma savunmasinin kendisi), `HEARTBEAT`e `yon`,
+  `mod`, `pixhawk_canli`. `CONTRACTS.md` hic dokunulmamis. Madde 16: sozlesme
+  kodun uzerinde bir otoritedir. Kapatilirken **sozlesme ile kodu kilitleyen
+  bir test** de yazilacak ki ayni ayrisma tekrarlamasin.
+
+#### 5. Mimarin kendi hatalari (bu turda olculdu)
+
+1. **"Worktree'lerde hicbir ajan yazmadi" dedim — YANLISTI.** `git worktree list`
+   **HEAD isaretcisini** gosterir, calisma agacinin kirli olup olmadigini
+   gostermez. Dogru olcum `git -C <wt> status --porcelain`: dort ajan da isini
+   bitirmisti, 24 dosya kirliydi. Devir notu duzeltildi.
+2. **"Codex durgun" dedim — o an yanlisti.** Bir denetci ayni pencerede agacin
+   HAREKET ETTIGINI olctu (21 -> 27 modifiye dosya). Ajan brifingine yanlis bir
+   olgu yazmis oldum.
+3. **Kendi degisikligim iki test dusurdu** (yukarida, §1). Duzeltme dogruydu ama
+   sonucu once olcmedim; agac o yuzden bir sure kirmizi kaldi.
+
+### D-419 — UCUS KOMUT HATTINDAKI UC KRITIK KAPATILDI; alti worktree ana agaca birlestirildi
+
+D-418'de acik birakilan kritikler kapatildi. Mimar uretim kodu yazmadi (madde 7):
+teshis konup amelelere verildi, her tur ayri curutucuyle sinandi, birlestirmeyi
+mimar yapti.
+
+#### 1. Ucus komut hatti — uc kritik (`wf_b62ddbf3-986`)
+
+**Once TESHIS, sonra onarim.** Dusen iki uctan uca testin koku **ikili aramayla**
+olculdu; tahmin edilmedi:
+
+| deney | ne kapatildi | sonuc |
+|---|---|---|
+| A | K-3 ACK bilesen kapisi | `Ran 23 tests ... OK` — **iki dusuk de kalkti** |
+| B | K-2 sonuc onbellegi | hala 2 dusuk |
+| C | K-1 yas kapisi | hala 2 dusuk |
+
+Kok neden alicinin kendi logunda duruyordu:
+`COMMAND_ACK yabanci component=1 (beklenen 3) — yok sayildi`.
+Test alicisi `HEDEF_COMPONENT = 3` ile aciliyor (deger gecsin diye bilerek
+varsayilandan farkli); `scripts/sahte_pixhawk.py` ise gercek ArduPilot gibi
+component **1** ile ACK basiyor. Eski kod `COMMAND_ACK.srcComponent`i
+(**kim cevapladi**) `COMMAND_LONG.target_component` ile (**kime gonderdim**)
+esitliyordu; bunlar ayri alanlardir.
+
+**K-3 — kapi kaldirilmadi, olctugu KUME duzeltildi.**
+Yeni `_ack_basabilen_bilesenler(m)` ACK basmaya YETKILI kumeyi acikca yazar:
+`MAVLINK_BELIRTILMEMIS_COMPONENT (0)` (kaynak belirtilmemis, geriye uyum) ·
+`m.MAV_COMP_ID_AUTOPILOT1` (komutu gercekten isleyen otopilot) ·
+`self.target_component` (adreslenen uc kendi adina cevaplarsa). Varsayim koda
+yorum olarak dusuldu. Gimbal/kamera/companion (or. 154) **hala REDDEDILIR**.
+
+**K-2 — terminal olan sey TESEBBUS degil, MAVLink'e ULASMIS denemedir.**
+`self._komut_sonuclari[anahtar] = False` satiri aktarimdan onceki yerinden
+alindi, `_komut_ack_bekle` **donduken sonraya** tasindi (`= bool(kabul)`).
+MAVLink'e hic ulasmamis tesebbus (`mav is None` / hedef bilinmiyor / aktarim
+istisnasi — saha acilisinda SIK) anahtari artik zehirlemiyor; D-02/K4'un
+ACK'li ayni-seq tekrar merdiveni yasiyor.
+⚠ ACK penceresi kapanmasi (timeout) **bilerek terminal birakildi**:
+COMMAND_LONG tele cikmistir, arac islemis olabilir. Bunu kilitleyen mevcut
+test (`test_iha_komut_guvenligi.py::test_timeout_ve_ret_duplicate_gecikmis_eylem_uretmez`)
+**DEGISTIRILMEDI**.
+
+**K-1 — kapi kaldirilmadi, DOGRU BUYUKLUGU olcer hale getirildi.**
+`ham = simdi - damga` iki saatin farki **arti** gecikmedir. `gecikme >= 0`
+oldugundan kayan penceredeki **en kucuk ham fark** ofsetin en iyi kestirimidir
+(NTP minimum filtresi); yas artik `yas = ham - ofset`. Yeni adlandirilmis
+sabitler (ciplak sayi yok): `KOMUT_SAAT_OFSETI_EN_AZ_ORNEK = 2`,
+`KOMUT_SAAT_OFSETI_PENCERESI_S = 60.0`, `KOMUT_SAAT_SAPMA_TAVANI_S = 30*60`.
+Uc guvenlik sarti koda yazildi:
+  1. Degerlendirilen cerceve **kendi ornegini** kestirime katamaz.
+  2. Ornek yalniz cerceve kapidan GECTIYSE ya da ofset henuz BILINMIYORSA
+     alinir — ofset bilinirken **reddedilen** cerceve kestirimi kaydiramaz.
+  3. Sapma bandi disindaki cilgin damga ornek olarak alinmaz (DoS yuzeyi kapali).
+Kestirim yokken kapi bugunku SIKI davranisini aynen korur (ofset = 0); bu
+yuzden mevcut bayat/ileri/NaN/bool RED assert'lerinin **hicbiri degismedi**.
+
+🔴 **Amele KENDI ilk uygulamasinda kusur buldu ve olctu.** Ilk surumde cerceve
+kendi ornegini kestirime katiyordu; israrli **ileri damgali** bir kaynak ikinci
+gonderimde ofseti kendi uzerine cekip kapidan GECIYORDU. Kendi testi bunu
+yakaladi, tespit `scratchpad/teshis_ileri.py` ile olculdu, 1. ve 2. sartlar
+eklendi. Bu, "amele kendi isini curutebilir" ornegidir.
+
+**AYNA GUNCELLENDI** — `jetson_paket/kod/iha_komut_alici.py`. Kritik: Jetson'da
+kosan dosya **paket kopyasidir**; yalniz `comms/` duzeltilseydi duzeltme sahaya
+**HIC ULASMAZDI**.
+
+Kanit: `test_faz_b_iha_komut_alici` **23 OK** (once 2 dusuk) · `test_iha_rtl_land`
+6 · `test_iha_komut_guvenligi` 10 · `test_p1_canli_mavlink` 17 ·
+`test_faz_b_seri_hub` 31 · `test_jetson_comms_paketi` 7 ·
+`test_faz_b_jetson_baslat` 42 · genel kapi 15/15 · yeni
+`tests/test_iha_komut_saat_ve_tekrar.py` **18 test** (K-1/K-2/K-3 alti+alti+alti) ·
+3 mutant, hepsi yakalandi, `cmp` bayt-es geri yukleme.
+
+#### 2. YKS kanit kilidi + olay kumesi + CONTRACTS §6.8 (`wf_dce95c66-485`)
+
+**Kanit kaydi kilidi FAIL-OPEN'di.** `_kanit_hatasini_goster` `btn_firlat` ve
+`btn_onay`u `disabled` yapiyordu ama `_arm_ui_uygula` ve
+`_onay_dugmesini_tazele` `kanit_kaydi_hatasi` bayragini **hic okumuyordu**
+(olculdu: `_arm_ui_uygula` govdesinde 0 eslesme). Periyodik tazeleme dugmeleri
+geri aciyordu: **kirmizi afis ekranda, dugmeler calisir** — ekran ile gercek
+ayrisiyordu.
+
+Cozum "gercegi tek yerden ciz": `_kanit_kilidi_var()` tek gercek;
+`_firlat_dugmesini_ciz` / `_onay_dugmesini_ciz` bu iki dugmenin state'inin
+**TEK YAZARLARI** (AST kapisiyla baglandi). Eylem duzeyinde de reddediliyor:
+`firlatma()` kronometre baslatmaz, `onayla()` link'e ACK yazmaz (dugme tek
+savunma degildir — T180 sinifi).
+**NIYET KORUNDU:** kilit yalniz firlatma/onay icindir; ARM/RTL/LAND kanit kaydi
+bozukken de kullanilabilir kalir (kanit kaydi bozuksa bile arac indirilebilmeli).
+M3 mutasyonu bunu **ters yonde** olctu: kilit her seyi kapatirsa test duser.
+
+**Mukerrer is birlestirildi.** Codex ile wt-2 ayni olculen kusuru ayri
+tasarimlarla duzeltmisti. Denetimin hukmu uygulandi (wt-2 tasarimi alindi):
+`KANIT_OLAYLARI` sabiti (16 olay), `KANIT_TEKRAR_ARALIGI_S = 30.0`, kenar +
+aralik sinirlamasi. **Codex'in calisan yollari SILINMEDI**
+(`KAMERA_DURUMU`/`TELEMETRI_ORNEGI` alanlari wt-2 mekanizmasina tasindi).
+Denetimin uyardigi "uc ayri `_kanit_yaz` tanimi" kontrol edildi: **1 tanim**.
+
+**CONTRACTS §6.8 yazildi** — 16 satirlik olay tablosu (olay / ne zaman yazilir /
+zorunlu alanlar) ve **uc yonlu kume esitligi**: CONTRACTS tablosu ↔
+`KANIT_OLAYLARI` sabiti ↔ AST ile koddan toplanan adlar. Bir olay eklenip
+sozlesme guncellenmezse kapi duser.
+
+**Yan kazanc — fsync sorunu kapandi.** Denetim `HakemKaydi.yaz`in her satirda
+flush+fsync yaptigini ve bunun Tk geri cagrisi icinden kostugunu olcmustu:
+**185 fsync/dk**, 20 dakikalik kosumda ~3700 satir. Kenar + 30 s araligi bunu
+kapatti; M6 mutasyonu sinirlamayi kaldirinca 8 Hz fsync geri geliyor ve test
+duser.
+
+Kanit: yeni kapi **22 test OK** · regresyon 8 modul OK · 6 mutasyon, hepsi
+yakalandi, `cmp` bayt-es · uctan uca `--demo --fda` **exit 0** ve uretilen
+`hakem_log.jsonl` **18 satir, 9 FARKLI olay adi** (once yalniz
+`YKS_ARAYUZ_HAZIR` vardi).
+
+⚠ Amele genis taramada 9 dusuk gordu ve **kendisine ait olmadigini KANITLADI**:
+dosyalari ana agac tabanina geri koyup ayni uc modulu kosup ayni 9 dusugu aldi,
+sonra `cmp` ile bayt-es geri yukledi. Sebep worktree bayatligi
+(`data/arena_kompozit/images` worktree'de yok).
+
+#### 3. Birlestirme — alti worktree, hicbiri butun olarak alinmadi
+
+Worktree'ler bayat tabandan aciliyor ve Codex'in isi commit'lenmemis. Bu yuzden
+her worktree icin ana agacla `cmp` edilerek **gercek delta** belirlendi.
+
+| worktree | is | nasil alindi |
+|---|---|---|
+| `wf_b0f33806-4ba-4` | H1c damgasi | **catismasiz** — 5 dosya dogrudan |
+| `wf_b0f33806-4ba-3` | Py3.6 beyaz listesi | uc yollu birlestirme, **0 catisma** |
+| `wf_72daa27e-998-1` | ARM/DISARM + parasut | 2 dosya |
+| `wf_72daa27e-998-2` | K6 env fiksturu | 1 dosya |
+| `wf_b62ddbf3-986-1` | komut hatti | 3 dosya |
+| `wf_dce95c66-485-1` | YKS kanit + CONTRACTS | 3 dosya |
+| `wf_b0f33806-4ba-1` | tek-yazar kilidi + T204/T205 | uc yollu: **7 catismasiz + 1 catisma** |
+
+**Tek catisma** `comms/iha_komut_alici.py` import blogundaydi ve denetim bunu
+onceden bildirmisti: Codex `karar_sozlesmesi`den bes sabit ekledi, wt-1
+`inis_kaniti`den uc ad. **BIRLESIM** olarak cozuldu — ikisi de gerekli, hicbiri
+otekini kapsamiyor.
+
+⚠ **Aynalar 3 yollu BIRLESTIRILMEDI.** Turetilmis dosyadir; iki ayna surumunu
+birlestirmek kanoniklerden **ayrismis** bir ayna uretirdi. Her birlestirmeden
+sonra `scripts/jetson_paket_hazirla.py` kosuldu.
+
+⚠ **Iki dosya bilerek ALINMADI**: `tests/test_faz_b_kamera_koprusu.py` ve
+`DEVAM.md` iki worktree'de de "farkli" gorundu, ama ana agac surumu **daha
+yeniydi** (wt-3 beyaz listesi ve devir notu worktree'ler kopyaladiktan sonra
+birlestirilmisti). Kor kopyalama bunlari geri alirdi.
+
+#### 4. Birlestirmede cikan tek dusuk ve kok nedeni
+
+`test_seri_pixhawk_kilidi::test_2_uc_surec_de_AYNI_hata_metnini_basar` dustu.
+Kok neden **iki bagimsiz sertlestirmenin etkilesimi**, ikisi de dogru:
+Codex kritik eyleyiciye `--izinli-kaynak` pinini **ZORUNLU** kildi; wt-1'in
+testi onu vermiyordu, argparse **seri kilide ULASMADAN** hata veriyordu.
+Test fiksturune `--izinli-kaynak` eklendi — bu bir kapi gevsetmesi degil,
+testin **amaclanan yolu** kosmasini saglamaktir; iki koruma da yerinde durur.
+Mutasyon: seri kilit cagrisi `pass` yapildi -> test dustu; dosya `cmp` ile
+bayt-es geri yuklendi.
+
+#### 5. Birlestirmeden sonra cikan ikinci dusuk — KUSUR KAPININ KENDISINDEYDI
+
+Tam suit (2050 test) tek dusuk verdi:
+`test_t120_sahte_kapi_yasagi::test_tests_altinda_sahte_kapi_YOK` —
+"`test_t204_t205_kontrollu_durdurma.py` SIFIR test topluyor ve muafiyet
+isareti YOK (sahte kapi)".
+
+Ama o dosya **18 test kosuyor** (ayri kosumda dogrulandi). Celiskiyi olctum:
+
+    DurdurmaBayragiTemiz(unittest.TestCase)   test* = 0   <- ortak fikstur tabani
+    SinyalIsleyicisi(DurdurmaBayragiTemiz)    test* = 4   <- GORULMUYORDU
+    KameraKontrolluDurdurma(...)              test* = 5
+    DusenKareDongusuSinyal(...)               test* = 2
+    MainKontrolluDurdurma(...)                test* = 1
+    OluVideoYazici(...)                       test* = 6
+
+Dedektorun `toplanabilir_test_sayisi` fonksiyonu yalniz tabaninda **DOGRUDAN**
+"TestCase" gecen siniflari sayiyordu. Dosya ortak bir fikstur tabani kullaninca
+turevlerdeki 18 test gorunmez oldu ve dosya "sahte kapi" diye bildirildi.
+
+**Kusur dosyada degil KAPIDA.** Dedektorun kendi docstring'i "TestCase
+TUREVLERI" diyor; bir turev bir adim uzakta da turevdir. Sayac artik **yerel
+taban zincirini** izliyor (dongusel tanimda fail-closed: saymaz).
+
+Kapi genisletilmedi — iki yonlu birim test eklendi:
+  * `test_YEREL_taban_sinifi_uzerinden_gelen_testler_SAYILIR` (pozitif)
+  * `test_ILGISIZ_yerel_taban_test_saydirmaz` (negatif — zincir TestCase'e
+    varmiyorsa hala sayilmaz)
+Mutasyon: `_testcase_turevi` her sinif icin `True` dondurulunce negatif test
+DUSTU; dosya `cmp` ile bayt-es geri yuklendi. Kapi 13 -> **15 test**.
+
+⚠ **Bu, D-370 ve D-415'in ucuncu tekrari:** olcum aletinin kendisi olculmemisti.
+Iki kez ayni ders cikti (bir kez acik kalem cikaricisinda yazim korlugu, bir kez
+burada kalitim korlugu). Bundan sonra yeni bir DEDEKTOR yazildiginda, once
+"bildigim bir ornegi buluyor mu" ve "bulmamasi gerekeni bulmuyor mu" ikilisi
+yazilacak.

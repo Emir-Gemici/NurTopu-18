@@ -32,17 +32,18 @@ import sys
 import threading
 import time
 import tkinter as tk
+import uuid
 from pathlib import Path
 from tkinter import font as tkfont
 
 from link import UDPLink, SerialLink
 from ika_receiver import IkaReceiver
 from hakem_kaydi import HakemKaydi, varsayilan_hakem_log_yolu
-from komut_tekrar import AckliTekrar, ONAYLANDI, VAZGECILDI
+from komut_tekrar import AckliTekrar, BOS, ONAYLANDI, VAZGECILDI
 from protocol import (ACK_SONUC_KABUL, encode, ack, command, heartbeat, iha_landed,
                       kritik_komut_ack_gecerli_mi,
                       open_route,
-                      FrameReader, ROAD_LABEL)
+                      FrameReader, PROTOCOL_VERSION, ROAD_LABEL)
 
 _PROJE_KOKU = Path(__file__).resolve().parents[1]
 if str(_PROJE_KOKU / "codes") not in sys.path:
@@ -106,6 +107,54 @@ SERIT_CIZIM_TABLOSU = {
 SEMATIK_GOSTERIM_UYARISI = (
     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil")
 ANKOR_YOK_UYARISI = "ANKOR YOK"
+
+# ── Hakem kanıt kaydı — olay kümesi (CONTRACTS §6.8) ─────────────────────────
+# NEDEN: kayıt 21 Eylül'de şartname §2.2.3 onayının DAYANAĞIDIR; ekrandaki
+# kayan metin uçuş sonrası kanıt değildir. Olay ADLARI serbest metin olarak
+# üretilmez (madde 16): tek küme burada durur, `CONTRACTS §6.8` tablosu ve
+# koddaki çağrılar `tests/test_yks_hakem_kanit_olaylari.py` ile ÜÇ YÖNLÜ
+# karşılaştırılır — biri değişip diğeri kalırsa kapı DÜŞER.
+KANIT_OLAYLARI = (
+    "YKS_ARAYUZ_HAZIR",
+    "ROTA_ALINDI",
+    "ROTA_REDDEDILDI",
+    "ROTA_YOK",
+    "ACK_ALINDI",
+    "IKA_AKTARIM_KANITI",
+    "HAKEM_ONAYI_1",
+    "HAKEM_ONAYI_2",
+    "HAKEM_ONAYI_REDDI",
+    "IHA_INIS_KANITI",
+    "KAMERA_KANIT",
+    "TELEMETRI_KANIT",
+    "ACIL_SENARYO",
+    "KRONOMETRE_BASLADI",
+    "KRONOMETRE_BITTI",
+    "UI_OLAYI",
+)
+# `KAMERA_KANIT` / `TELEMETRI_KANIT` `_tik` döngüsünden (~8 Hz) üretilir ve
+# `HakemKaydi.yaz` HER SATIRDA `fsync` yapar. Her tikte yazmak Tk geri
+# çağrısını diske bağlar (ekran donar) ve kaydı okunamaz hâle getirir. Bu
+# yüzden ikisi KENAR olayıdır; durum değişmezse bu aralıkta bir kez daha
+# yazılır — "hâlâ aynı" satırı SÜREKLİLİK kanıtıdır (yalnız geçişler
+# yazılırsa kaydın "kamera 10 dk canlı kaldı" demeye dayanağı olmaz).
+KANIT_TEKRAR_ARALIGI_S = 30.0
+
+# ── Kanıt kaydı kilidi (fail-closed + fail-visible) ──────────────────────────
+# 🔴 ÖLÇÜLEN KUSUR (2026-09-03): `_kanit_hatasini_goster` `btn_firlat` ve
+# `btn_onay`u BİR KEZ `disabled` yapıyordu, ama düğmeleri çizen periyodik
+# yollar (`_arm_ui_uygula`, `_onay_dugmesini_tazele`,
+# `_aktarim_onay_dugmesini_kur`) `kanit_kaydi_hatasi` bayrağına HİÇ
+# bakmıyordu. Bir tik sonra düğmeler geri açılıyor, KIRMIZI afiş ekranda
+# kalıyordu: ekranda görünen ile gerçek AYRIŞIYORDU. Kilit artık düğmeleri
+# çizen TEK yazardan (`_firlat_dugmesini_ciz` / `_onay_dugmesini_ciz`)
+# okunur; metinler de sabit, çünkü hakem düğmenin NEDEN kapalı olduğunu
+# okumadan kilidi doğrulayamaz.
+# ⚠ NİYET: kilit YALNIZ uçuş/onay BAŞLATMA içindir. ARM/DISARM ve acil
+# komutlar (RTL/LAND) kanıt kaydı bozukken de KULLANILABİLİR kalır —
+# aracı indirebilmek emniyetin kendisidir.
+KANIT_KILIDI_FIRLAT_METNI = "KANIT KAYDI HATASI — FIRLATMA KAPALI"
+KANIT_KILIDI_ONAY_METNI = "KANIT KAYDI HATASI — ONAY KAPALI"
 
 
 def S(px):
@@ -303,19 +352,85 @@ def gps_gosterim_metni(telemetri):
     """Ham GNSS alanlarını insan-okunur yap; harita koordinatı üretme."""
     if not isinstance(telemetri, dict):
         telemetri = {}
+    gecerli, sebep = gps_telemetrisi_dogrula(telemetri)
     lat, lon = telemetri.get("lat"), telemetri.get("lon")
     fix, uydu = telemetri.get("gps_fix"), telemetri.get("uydu")
     if lat is None or lon is None:
         konum = "konum YOK"
     else:
         try:
-            konum = f"{float(lat):.7f}, {float(lon):.7f}"
+            lat_f, lon_f = float(lat), float(lon)
+            konum = (f"{lat_f:.7f}, {lon_f:.7f}"
+                     if math.isfinite(lat_f) and math.isfinite(lon_f)
+                     else "konum BOZUK")
         except (TypeError, ValueError, OverflowError):
             konum = "konum BOZUK"
     fix_metin = f"fix {fix}" if fix is not None else "fix YOK"
     uydu_metin = f"{uydu} uydu" if uydu is not None else "uydu YOK"
-    return (f"HAM GNSS: {konum} · {fix_metin} · {uydu_metin} · "
+    durum = "3B FIX ✓" if gecerli else f"FIX YETERSİZ: {sebep}"
+    return (f"HAM GNSS: {konum} · {fix_metin} · {uydu_metin} · {durum} · "
             "SEMANTİK HARİTADA KULLANILMAZ")
+
+
+def gps_telemetrisi_dogrula(telemetri):
+    """Hakem ekranı için en az 3B fix + sonlu, bant içi koordinat iste."""
+    if not isinstance(telemetri, dict):
+        return False, "telemetri yok"
+    fix = telemetri.get("gps_fix")
+    if isinstance(fix, bool) or not isinstance(fix, int) or fix < 3:
+        return False, "3B fix yok"
+    try:
+        lat = float(telemetri.get("lat"))
+        lon = float(telemetri.get("lon"))
+    except (TypeError, ValueError, OverflowError):
+        return False, "konum yok/bozuk"
+    if not math.isfinite(lat) or not math.isfinite(lon):
+        return False, "konum sonlu değil"
+    if not -90.0 <= lat <= 90.0 or not -180.0 <= lon <= 180.0:
+        return False, "konum dünya bandı dışında"
+    return True, "3B fix"
+
+
+def _udp_adresi_gecerli(adr):
+    return bool(
+        isinstance(adr, tuple) and len(adr) == 2
+        and isinstance(adr[0], str) and adr[0]
+        and not isinstance(adr[1], bool) and isinstance(adr[1], int)
+        and 1 <= adr[1] <= 65535)
+
+
+def mesaj_kaynagi_dogrula(mesaj, adr, iha_peer, ika_peer):
+    """UDP çerçevesini beklenen fiziksel uçla eşleştir.
+
+    İHA algı/telemetri yayıncısı efemer UDP portu kullanır; bu nedenle
+    OPEN_ROUTE/NO_ROUTE/IHA_LANDED/HEARTBEAT için Jetson IP'si pinlenir.
+    Eyleyici ACK'i ise ``iha_komut_alici`` sabit portundan gelmelidir. İKA
+    süreci sabit 5006 ucuyla eşlenir. ``adr=None`` seri taşıyıcıdır ve adres
+    katmanında doğrulanamaz; protokol/sıra kilitleri yine uygulanır.
+    """
+    if adr is None:
+        return True, "seri taşıyıcı"
+    if not isinstance(mesaj, dict) or not _udp_adresi_gecerli(adr):
+        return False, "bozuk mesaj veya UDP kaynak adresi"
+    tip = mesaj.get("type")
+    node = mesaj.get("node")
+    iha_verisi = tip in ("OPEN_ROUTE", "NO_ROUTE", "IHA_LANDED")
+    if iha_verisi or (tip == "HEARTBEAT" and node == "iha"):
+        if not _udp_adresi_gecerli(iha_peer):
+            return False, "İHA kaynağı pinlenmemiş"
+        return ((adr[0] == iha_peer[0]),
+                "İHA verisi Jetson IP'sinden gelmeli")
+    if tip == "ACK" and node == "iha":
+        if not _udp_adresi_gecerli(iha_peer):
+            return False, "İHA ACK kaynağı pinlenmemiş"
+        return (adr == iha_peer,
+                "İHA eyleyici ACK'i komut alıcısının tam ucundan gelmeli")
+    if ((tip == "HEARTBEAT" and node == "ika")
+            or (tip == "ACK" and node == "ika")):
+        if not _udp_adresi_gecerli(ika_peer):
+            return False, "İKA kaynağı pinlenmemiş"
+        return (adr == ika_peer, "İKA verisi sabit ucundan gelmeli")
+    return False, f"kaynak kuralı olmayan tip/node: {tip!r}/{node!r}"
 
 
 class YksArayuz:
@@ -329,6 +444,10 @@ class YksArayuz:
     # §5.3.2 FDA test uçuşu kipinde İHA bütçesi DAHA SIKIDIR (tek 10 dk).
     # `--fda` ile örnek düzeyinde ezilir; varsayılan yarışma günü kipidir.
     fda_kipi = False
+    # ``__new__`` ile kurulan eski test fikstürleri için geriye uyumlu kapalı
+    # varsayılan; gerçek kurucu bunları açıkça saha kipine göre ayarlar.
+    kaynak_kilidi = False
+    protokol_kilidi = False
 
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
@@ -339,6 +458,18 @@ class YksArayuz:
         self.gelen = queue.Queue()
         self.otomatik_onay = otomatik_onay
         self.demo = demo
+        self.protokol_kilidi = not demo
+        self.kaynak_kilidi = bool(
+            not demo and not isinstance(link, SerialLink)
+            and iha_peer is not None and ika_peer is not None)
+        self._son_heartbeat_seq = {}
+        self.kaynak_ret_sayaci = 0
+        self.protokol_ret_sayaci = 0
+        # Kritik IHA komutlari bir YKS surec/oturum kimligi tasir. Alici ayni
+        # oturum+seq+cmd tekrarini yeniden eyleme donusturmez; yalniz guclu
+        # ACK'i yineler. Boylece gecikmis UDP/SiK kuyrugu motoru ikinci kez
+        # ARM/DISARM/PARACHUTE etmez.
+        self.komut_oturumu = uuid.uuid4().hex
         # Senaryo anahtarları — TRUE = SAĞLIKLI. F2/F3 haberleşmeyi, F4/F5 ise
         # TELEMETRİYİ keser. 🔴 T177 (D-323): F4/F5 eskiden yalnız GÜNLÜĞE
         # yazıyordu; panel aynı anda "12.6 V · 14 uydu" göstermeye devam
@@ -401,6 +532,15 @@ class YksArayuz:
         self.arm_bekleyen_komut = None
         self.arm_ack_zamani = None
         self.arm_durum_zamani = None
+        # Yanlis tek tik; pervaneyi calistiramaz, havadaki araci indiremez ve
+        # acil ucus modunu degistiremez. Tum kritik dugmeler ayni sozlesme
+        # penceresini kullanir; yeni ciplak zaman esigi yoktur.
+        self._kritik_teyit = {}
+        self.acil_tekrar = AckliTekrar(
+            self._ham_gonder, ARM_TEKRAR_ARALIGI_S,
+            ARM_TEKRAR_UST_SINIRI)
+        self.acil_bekleyen_komut = None
+        self.acil_ack_zamani = None
         # K8: İKA'nın OPEN_ROUTE ACK kanıtı: seq -> duvar saati. Hakem 2. onayı
         # ancak geçerli rota seq'i bu sözlükte varsa verebilir (fail-closed).
         self.ika_rota_ack = {}
@@ -438,10 +578,15 @@ class YksArayuz:
         self.kamera_istemci = None
         self._kamera_surum = -1
         self._kamera_foto = None
+        # CONTRACTS §6.8 — döngüsel kanıt olaylarının KENAR durumu ve son
+        # yazma damgası. Dördü de `_kanit_durumu_yaz` tarafından OKUNUR:
+        # kenar tespiti için DURUM, tekrar sınırlaması için DAMGA gerekir.
         self._kamera_kanit_durumu = None
         self._son_kamera_kanit_monotonic = None
+        self._telemetri_kanit_durumu = None
         self._son_telemetri_kanit_monotonic = None
         self.kanit_kaydi_hatasi = None
+        self._kanit_kilidi_metni = None
         # Doğrudan sınıf kullanan test/demo fikstürleri None ile yazmasız
         # kalabilir; saha main() yolu her zaman varsayılan veya açık bir dosya
         # geçirir. Dosya açılamazsa kurucu yükseltir ve saha sessizce kanıtsız
@@ -457,39 +602,10 @@ class YksArayuz:
         self._kanit_yaz(
             "YKS_ARAYUZ_HAZIR", demo=bool(demo),
             kamera_yapilandirildi=bool(kamera_url),
-            tasiyici="serial" if isinstance(link, SerialLink) else "udp")
+            tasiyici="serial" if isinstance(link, SerialLink) else "udp",
+            komut_oturumu=self.komut_oturumu)
         threading.Thread(target=self._dinle, daemon=True).start()
         self._tik()
-
-    # ── Hakem kanıt kaydı ────────────────────────────────────────────────────
-    def _kanit_yaz(self, olay, **alanlar):
-        """Hakem kanıt satırını yaz; YAZAMAZSA GÖRÜNÜR ŞEKİLDE BAŞARISIZ OL.
-
-        NEDEN (D-412): bu metodun ÇAĞRISI depoda vardı, TANIMI yoktu —
-        `YksArayuz.__init__` her gerçek kurulumda `AttributeError` ile
-        ölüyordu (6 test). Kanıt yolunun sözleşmesi üç maddedir:
-
-        1. `hakem_kaydi is None` (test/demo fikstürü) → sessizce atla.
-           Dosya açma kararı kurucuda verilir; burada verilmez.
-        2. Yazma hatası arayüzü ÖLDÜRMEZ ama SAKLANMAZ: `kanit_kaydi_hatasi`
-           alanına yazılır ve günlüğe kırmızı basılır. Uçuş sırasında tk
-           geri çağrısının ortasında istisna yükseltmek ekranı dondurur;
-           kanıtsız uçmak ise şartname §2.2.3 onayını dayanaksız bırakır —
-           bu yüzden **fail-visible**, fail-silent değil.
-        3. İlk hata saklanır (sonrakiler üzerine yazmaz): kök neden kaybolmasın.
-        """
-        kayit = getattr(self, "hakem_kaydi", None)
-        if kayit is None:
-            return None
-        try:
-            return kayit.yaz(olay, **alanlar)
-        except Exception as exc:                  # yazma/serileştirme/disk
-            if self.kanit_kaydi_hatasi is None:
-                self.kanit_kaydi_hatasi = f"{olay}: {exc!r}"
-            gunluk = getattr(self, "gunluk", None)
-            if gunluk is not None:
-                self._logla(f"🔴 HAKEM KAYDI YAZILAMADI ({olay}): {exc}", "kirmizi")
-            return None
 
     # ── Arayüz kurulumu ──────────────────────────────────────────────────────
     def _arayuz_kur(self):
@@ -705,8 +821,8 @@ class YksArayuz:
                              fg=SOLUK, bg=PANEL, wraplength=S(390), justify="left")
             metin.pack(side="left", padx=6)
             self.lbl_dugum[ad] = (nokta, metin)
-        self.lbl_ucus = tk.Label(p3, text="İHA UÇUŞ DURUMU: OTONOM GÖREV (AUTO)",
-                                 font=self.f_orta, fg=YESIL, bg=PANEL,
+        self.lbl_ucus = tk.Label(p3, text="İHA UÇUŞ DURUMU: PIXHAWK MODU BEKLENİYOR",
+                                 font=self.f_orta, fg=KIRMIZI, bg=PANEL,
                                  wraplength=S(410), justify="left")
         self.lbl_ucus.pack(padx=10, pady=(4, 0), anchor="w")
         self.lbl_gps = tk.Label(
@@ -753,6 +869,8 @@ class YksArayuz:
         satir1.pack(fill="x")
         satir2 = tk.Frame(gorev, bg=PANEL)
         satir2.pack(fill="x")
+        satir3 = tk.Frame(gorev, bg=PANEL)
+        satir3.pack(fill="x")
 
         def gbuton(ana, metin, komut, aktif=True):
             b = tk.Button(ana, text=metin, font=self.f_kucuk, fg=METIN,
@@ -787,6 +905,15 @@ class YksArayuz:
         self.lbl_ika_go = tk.Label(satir2, text="İKA_GO: —",
                                    font=self.f_orta, fg=SOLUK, bg=PANEL)
         self.lbl_ika_go.pack(side="left", padx=10)
+
+        # Acil komutlar paraşütten ayrıdır: FDA çoklu rotorda da kullanılabilir.
+        # ACK yalnız Pixhawk'ın komutu KABUL ettiğini söyler; tamamlandığını değil.
+        self.btn_rtl = gbuton(satir3, "ACİL RTL", lambda: self.acil_komut("RTL"))
+        self.btn_land = gbuton(satir3, "ACİL LAND", lambda: self.acil_komut("LAND"))
+        self.lbl_acil = tk.Label(
+            satir3, text="ACİL UÇUŞ KOMUTU: — · RC pilotu fiziksel yedektir",
+            font=self.f_orta, fg=SOLUK, bg=PANEL)
+        self.lbl_acil.pack(side="left", padx=10)
 
         # kısayollar ("hile tuşları")
         for i, kod in enumerate(("rc", "yks", "ika", "bat", "gnss", "algi"), 1):
@@ -1081,7 +1208,12 @@ class YksArayuz:
                 continue
             if not d:
                 continue
-            for m in self.reader.feed(d):
+            # UDP datagramı zaten bir çerçeve sınırıdır. Kalıcı seri tamponunu
+            # datagramlar arasında kullanmak, newline'sız tek bozuk paketin
+            # sonraki geçerli ACK/HEARTBEAT'i de kendine yapıştırıp yutmasına
+            # izin veriyordu. Seri hatta parçalı çerçeve desteği korunur.
+            okuyucu = FrameReader() if adr is not None else self.reader
+            for m in okuyucu.feed(d):
                 self.gelen.put((m, adr))
 
     # ── Ana döngü tiki ───────────────────────────────────────────────────────
@@ -1127,7 +1259,43 @@ class YksArayuz:
         self._durum_tazele()
         self.kok.after(120, self._tik)
 
+    def _heartbeat_sirasi_gecerli(self, dugum, seq, simdi=None):
+        """Aynı canlı oturumda geri/tekrar heartbeat'in durumu ezmesini önle."""
+        if (dugum not in ("iha", "ika") or isinstance(seq, bool)
+                or not isinstance(seq, int) or seq < 0):
+            return False
+        simdi = time.monotonic() if simdi is None else float(simdi)
+        onceki = getattr(self, "_son_heartbeat_seq", {}).get(dugum)
+        if onceki is not None:
+            onceki_seq, onceki_zaman = onceki
+            if seq <= onceki_seq and simdi - onceki_zaman <= ARM_DURUM_TAZELIK_S:
+                return False
+        if not hasattr(self, "_son_heartbeat_seq"):
+            self._son_heartbeat_seq = {}
+        self._son_heartbeat_seq[dugum] = (seq, simdi)
+        return True
+
     def _mesaj_isle(self, m, adr):
+        if getattr(self, "protokol_kilidi", False):
+            if (not isinstance(m, dict) or m.get("v") != PROTOCOL_VERSION
+                    or not isinstance(m.get("type"), str)):
+                self.protokol_ret_sayaci = getattr(
+                    self, "protokol_ret_sayaci", 0) + 1
+                if self.protokol_ret_sayaci in (1, 10, 100):
+                    self._logla("⚠ PROTOKOL ZARFI REDDEDİLDİ: sürüm/tip bozuk "
+                                f"(sayı={self.protokol_ret_sayaci})", "sari")
+                return
+        if getattr(self, "kaynak_kilidi", False):
+            uygun, sebep = mesaj_kaynagi_dogrula(
+                m, adr, getattr(self, "sabit_adr", {}).get("iha"),
+                getattr(self, "sabit_adr", {}).get("ika"))
+            if not uygun:
+                self.kaynak_ret_sayaci = getattr(
+                    self, "kaynak_ret_sayaci", 0) + 1
+                if self.kaynak_ret_sayaci in (1, 10, 100):
+                    self._logla(f"⚠ KAYNAK REDDEDİLDİ: {sebep}; adr={adr!r} "
+                                f"(sayı={self.kaynak_ret_sayaci})", "sari")
+                return
         tip = m.get("type")
         if tip == "OPEN_ROUTE":
             guven_reddi = rota_guven_reddi(m.get("conf"))
@@ -1153,6 +1321,13 @@ class YksArayuz:
                 self.onaylandi = False
                 self.tespit_onayli = False
                 self.sayac["OPEN_ROUTE"] += 1
+                # CONTRACTS §6.8 — hakem onayının dayanağı olan tespit:
+                # hangi şerit, hangi güvenle, kaç waypoint ile geldi.
+                self._kanit_yaz("ROTA_ALINDI", seq=m.get("seq"),
+                                road=m.get("road"), label=m.get("label"),
+                                conf=m.get("conf"),
+                                waypoint=len(m.get("waypoints") or []),
+                                ankor=not bool(ankor_uyarisi))
                 self._logla(f"OPEN_ROUTE  yol={m['road']}({m['label']}) "
                             f"güven={m['conf']} seq={m['seq']} wp={len(m['waypoints'])}",
                             "yesil")
@@ -1177,10 +1352,12 @@ class YksArayuz:
                 if ankor_uyarisi:
                     self._ankor_yok_onayini_kapat(logla=True)
                 else:
-                    self.btn_onay.config(state="normal", bg=SARI,
-                                         text="1) TESPİTİ DOĞRULA (§2.2.3)")
-                    self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
-                                              "gönderimde (ACK yok)", fg=SARI)
+                    self._onay_dugmesini_ciz(
+                        True, "1) TESPİTİ DOĞRULA (§2.2.3)")
+                    if not self._kanit_kilidi_var():
+                        self.lbl_onay.config(
+                            text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
+                                 "gönderimde (ACK yok)", fg=SARI)
                 # T171 · §5.3.2: tespit ASGARİ İRTİFANIN ALTINDA üretildiyse
                 # hakem bunu ONAYLAMADAN ÖNCE görmeli. Ret DEĞİL — İHA
                 # kalkış/inişte de kare üretir; ama madde "asgari 30 metre
@@ -1218,14 +1395,20 @@ class YksArayuz:
                 self.onaylandi = False
                 self.tespit_onayli = False
                 self.sayac["NO_ROUTE"] += 1
+                # CONTRACTS §6.8: "rota yok" SESSİZLİKTEN farklıdır (§6.1) —
+                # kayıtta da farklı görünmek zorundadır.
+                self._kanit_yaz("ROTA_YOK", seq=m.get("seq"), sebep=sebep,
+                                detay=detay)
                 self._detay_base = f"seq={m['seq']} · {sebep}"
                 self._kutu_yaz("protokol", karar="ROTA YOK", renk=KIRMIZI,
                                detay=self._detay_base
                                + (f" · {detay}" if detay else ""))
-                self.btn_onay.config(state="disabled", bg="#232e3a",
-                                     text="ROTA YOK — ACK OTOMATİK GÖNDERİLDİ")
-                self.lbl_onay.config(text="Costmap güvenli rota üretmedi; İKA hareket etmez.",
-                                      fg=KIRMIZI)
+                self._onay_dugmesini_ciz(
+                    False, "ROTA YOK — ACK OTOMATİK GÖNDERİLDİ")
+                if not self._kanit_kilidi_var():
+                    self.lbl_onay.config(
+                        text="Costmap güvenli rota üretmedi; İKA hareket etmez.",
+                        fg=KIRMIZI)
                 self._kutu_yaz("protokol", guven=0.0)
                 self._harita_ciz()
                 self._logla(f"NO_ROUTE · {sebep}"
@@ -1248,6 +1431,12 @@ class YksArayuz:
             if seq != self.iha_landed_seq:
                 self.iha_landed_seq = seq
                 self.sayac["IHA_LANDED"] += 1
+                # CONTRACTS §6.8 — §2.2.3 SIRA denetimi kayda da düşer:
+                # iniş kanıtı geldiğinde İKA'nın rota ACK'i var mıydı?
+                self._kanit_yaz(
+                    "IHA_INIS_KANITI", seq=seq,
+                    ika_rota_ack_var=bool(
+                        self.rota and self.rota.get("seq") in self.ika_rota_ack))
                 self._logla(
                     f"IHA_LANDED · üretim uçuşu iniş kanıtı alındı → ACK ref={seq}",
                     "yesil",
@@ -1264,7 +1453,17 @@ class YksArayuz:
                 self.iha_indi()
         elif tip == "HEARTBEAT":
             dugum = m.get("node", "?")
-            self.son_hb[dugum] = time.monotonic()   # D-384: monotonik
+            _hb_simdi = time.monotonic()
+            if (getattr(self, "protokol_kilidi", False)
+                    and not self._heartbeat_sirasi_gecerli(
+                        dugum, m.get("seq"), _hb_simdi)):
+                self.protokol_ret_sayaci = getattr(
+                    self, "protokol_ret_sayaci", 0) + 1
+                if self.protokol_ret_sayaci in (1, 10, 100):
+                    self._logla(f"⚠ HEARTBEAT SIRA REDDİ: node={dugum!r} "
+                                f"seq={m.get('seq')!r}", "sari")
+                return
+            self.son_hb[dugum] = _hb_simdi   # D-384: monotonik
             self._dugum_adresini_ogren(dugum, adr)
             # A2 (D-381): algi canliligi hat canliligindan AYRI izlenir.
             # D-383 (curutucu): (1) alim damgasi ve gecen-sure hesabi
@@ -1284,7 +1483,8 @@ class YksArayuz:
             # Her heartbeat snapshot'tır: alan gelmediyse eski değer SAKLANMAZ.
             # Aksi hâlde GNSS kesildiğinde son koordinat sonsuza dek canlı görünür.
             tel = {k: m[k] for k in (
-                "alt", "hiz", "bat", "uydu", "lat", "lon", "gps_fix")
+                "alt", "hiz", "yon", "bat", "uydu", "lat", "lon",
+                "gps_fix", "pixhawk_canli")
                    if k in m}
             self.tel[dugum] = tel
             if dugum == "iha":
@@ -1293,13 +1493,29 @@ class YksArayuz:
                     self.arm_acik = armed
                     self.arm_durum_zamani = time.monotonic()
                     self._arm_bekleyeni_tamamla()
+                else:
+                    # HEARTBEAT bir snapshot'tir. Navitas link'i canli olsa da
+                    # Pixhawk armed alani yoksa son bilinen durumu tasimak,
+                    # kopuk otopilotla firlatma dugmesini acik birakirdi.
+                    self.arm_acik = None
+                    self.arm_durum_zamani = None
                 self._arm_ui_uygula()
-            if "mod" in m:
-                self.mod[dugum] = m["mod"]
-                if m["mod"] != "AUTO" and not self._manuel_uyarildi:
+            mod = m.get("mod")
+            if isinstance(mod, str) and mod.strip():
+                mod = mod.strip().upper()
+                self.mod[dugum] = mod
+                if dugum == "iha":
+                    self._ucus("OTONOM GÖREV (AUTO)" if mod == "AUTO"
+                               else f"PIXHAWK MODU: {mod} — AUTO DEĞİL",
+                               YESIL if mod == "AUTO" else SARI)
+                if mod != "AUTO" and not self._manuel_uyarildi:
                     self._manuel_uyarildi = True
                     self._logla(f"⚠ {dugum.upper()} MANUEL MODA GEÇTİ — tam otonomi "
                                 "ihlali: UÇUŞ GEÇERSİZ sayılır (§6.4)", "sari")
+            else:
+                self.mod.pop(dugum, None)
+                if dugum == "iha":
+                    self._ucus("PIXHAWK MODU YOK", KIRMIZI)
             if dugum == "iha" and "x" in m and "y" in m:
                 self.iha_iz.append((float(m["x"]), float(m["y"])))
                 del self.iha_iz[:-150]         # son 150 nokta
@@ -1328,15 +1544,19 @@ class YksArayuz:
         self.tespit_onayli = False
         if yeni:
             self.sayac["OPEN_ROUTE_RED"] += 1
+            # CONTRACTS §6.8: eşik altı tespit için ACK ÜRETİLMEZ; reddin
+            # kendisi kanıttır — "hakem neden onaylamadı" 21 Eylül'de sorulur.
+            self._kanit_yaz("ROTA_REDDEDILDI", seq=seq, sebep=sebep,
+                            detay=detay)
             self._detay_base = f"seq={seq} · {sebep}"
             self._kutu_yaz("protokol", karar="ROTA YOK", renk=KIRMIZI,
                            detay=f"{self._detay_base} · {detay}")
-            self.btn_onay.config(
-                state="disabled", bg="#232e3a",
-                text="DÜŞÜK GÜVEN — OPEN_ROUTE REDDEDİLDİ")
-            self.lbl_onay.config(
-                text="Rota güven eşiğinin altında; ACK gönderilmedi, İKA hareket etmez.",
-                fg=KIRMIZI)
+            self._onay_dugmesini_ciz(
+                False, "DÜŞÜK GÜVEN — OPEN_ROUTE REDDEDİLDİ")
+            if not self._kanit_kilidi_var():
+                self.lbl_onay.config(
+                    text="Rota güven eşiğinin altında; ACK gönderilmedi, "
+                         "İKA hareket etmez.", fg=KIRMIZI)
             self._kutu_yaz("protokol", guven=0.0)
             self._harita_ciz()
             self._logla(
@@ -1348,10 +1568,12 @@ class YksArayuz:
 
     def _ankor_yok_onayini_kapat(self, logla=False):
         """Eksik semantik ankrajı görünür kıl ve hakem onayını kapat."""
-        btn = getattr(self, "btn_onay", None)
-        if btn is not None:
-            btn.config(state="disabled", bg="#232e3a",
-                       text="ANKOR YOK — ONAY KAPALI")
+        self._onay_dugmesini_ciz(False, "ANKOR YOK — ONAY KAPALI")
+        if self._kanit_kilidi_var():
+            if logla:
+                self._logla("HAKEM ONAYI REDDEDİLDİ: ANKOR YOK — rota şeride "
+                            "yerleştirilemedi, ACK gönderilmedi", "sari")
+            return
         etiket = getattr(self, "lbl_onay", None)
         if etiket is not None:
             etiket.config(
@@ -1367,10 +1589,23 @@ class YksArayuz:
         doğrulanması, (2) İKA'ya aktarımın doğrulanması → ACK ancak 2. adımda."""
         if not self.rota or self.rota_yok or self.onaylandi:
             return
+        # KANIT KİLİDİ — düğme durumu TEK savunma değildir (T180 sınıfı):
+        # `--otomatik-onay`, klavye kısayolu ve zamanlayıcı bu yolu düğme
+        # kapalıyken de çağırır. Kanıt kaydı yazamıyorsa §2.2.3 hakem onayı
+        # VERİLMEZ ve ACK üretilmez: kaydı olmayan onay, 21 Eylül'de
+        # dayanaksızdır. ARM/DISARM ve acil komutlar bundan etkilenmez.
+        if self._kanit_kilidi_var():
+            self._onay_dugmesini_ciz(False, KANIT_KILIDI_ONAY_METNI)
+            self._logla("KİLİT ✋ KANIT KAYDI YAZILAMIYOR — hakem onayı "
+                        "VERİLMEDİ, ACK gönderilmedi (§2.2.3): "
+                        f"{self.kanit_kaydi_hatasi}", "kirmizi")
+            return
         # A1 fail-closed: dugme durumu tek savunma degildir. Otomatik onay,
         # klavye veya dogrudan cagri eksik ankrajli rotayi onaylayamaz.
         if rota_ankor_uyarisi(self.rota):
             self._ankor_yok_onayini_kapat(logla=True)
+            self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+                            sebep="ANKOR_YOK")
             return
         # T169 · §6.2 FAIL-CLOSED: dugme TEK savunma degildir. Otomatik onay
         # (`--otomatik-onay`), klavye ya da bir zamanlayici bu yolu dugme
@@ -1378,10 +1613,16 @@ class YksArayuz:
         if self._tespiti_yaslandir():
             self._logla("HAKEM ONAYI REDDEDILDI: tespit BAYAT (§6.2 gercek "
                         "zamanli aktarim) — ACK gonderilmedi", "sari")
+            self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+                            sebep="BAYAT_TESPIT")
             return
         if not self.tespit_onayli:
             self.tespit_onayli = True
             self._logla("HAKEM 1/2: güzergâh TESPİTİ doğrulandı (§2.2.3)", "sari")
+            # CONTRACTS §6.8 — §2.2.3 iki aşamalı onayın 1. aşaması.
+            self._kanit_yaz("HAKEM_ONAYI_1", seq=self.rota.get("seq"),
+                            road=self.rota.get("road"),
+                            conf=self.rota.get("conf"))
             self._aktarim_onay_dugmesini_kur()
             return
         # K8 fail-closed: İKA'nın bu rota için OPEN_ROUTE ACK kanıtı ekranda
@@ -1394,6 +1635,8 @@ class YksArayuz:
             self._aktarim_onay_dugmesini_kur()
             self._logla("HAKEM 2/2 REDDEDİLDİ: İKA'dan OPEN_ROUTE ACK kanıtı yok "
                         f"(seq={self.rota['seq']}) — kanıtsız onay verilmez", "sari")
+            self._kanit_yaz("HAKEM_ONAYI_REDDI", seq=self.rota.get("seq"),
+                            sebep="IKA_ACK_KANITI_YOK")
             return
         # T206 (D-405 Q4): hakem ACK'i `ref_tip` taşır (§6.6). `self.rota`
         # yalnız `_mesaj_isle`'nin OPEN_ROUTE dalında atanır, yani bu yol
@@ -1419,10 +1662,18 @@ class YksArayuz:
         else:
             dayanak = "İKA ACK kanıtı " + time.strftime(
                 "%H:%M:%S", time.localtime(self.ika_rota_ack[self.rota["seq"]]))
-        self.btn_onay.config(state="disabled", bg=YESIL, text="ONAYLANDI ✓✓")
-        self.lbl_onay.config(text=f"Hakem onayı tam — ACK(seq={self.rota['seq']}) "
-                                  f"İHA'ya iletildi · {dayanak}"
-                                  f"{havada}", fg=YESIL)
+        # CONTRACTS §6.8 — §2.2.3'ün ONAY satırı: ACK link'e YAZILDIKTAN sonra
+        # yazılır; "onaylandı ama ACK gitmedi" diyen bir kanıt satırı olamaz.
+        self._kanit_yaz("HAKEM_ONAYI_2", seq=self.rota.get("seq"),
+                        ref_tip=rota_ack.get("ref_tip"),
+                        fda_kipi=bool(self.fda_kipi), dayanak=dayanak,
+                        iha_indi=bool(self.t_iha1 is not None
+                                      or self.iha_landed_seq is not None))
+        self._onay_dugmesini_ciz(False, "ONAYLANDI ✓✓", bg=YESIL)
+        if not self._kanit_kilidi_var():
+            self.lbl_onay.config(
+                text=f"Hakem onayı tam — ACK(seq={self.rota['seq']}) "
+                     f"İHA'ya iletildi · {dayanak}{havada}", fg=YESIL)
         self._logla(
             ("HAKEM 2/2: YKS'ye canlı aktarım doğrulandı (FDA §5.3.2) → ACK ref="
              if self.fda_kipi else
@@ -1456,8 +1707,11 @@ class YksArayuz:
         if self.tespit_onayli:
             self._aktarim_onay_dugmesini_kur()
             return
-        btn.config(state="normal", bg=SARI,
-                   text="1) TESPİTİ DOĞRULA (§2.2.3)")
+        # Kanıt kilidi `_onay_dugmesini_ciz` içinde; bu periyodik yol tam da
+        # kilidi ESKİDEN geri açan yollardan biriydi.
+        self._onay_dugmesini_ciz(True, "1) TESPİTİ DOĞRULA (§2.2.3)")
+        if self._kanit_kilidi_var():
+            return
         etiket = getattr(self, "lbl_onay", None)
         if etiket is not None:
             etiket.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
@@ -1472,15 +1726,18 @@ class YksArayuz:
         if self.ika_aktarim_kaniti_var():
             kanit = time.strftime("%H:%M:%S", time.localtime(
                 self.ika_rota_ack[self.rota["seq"]]))
-            self.btn_onay.config(state="normal", bg=SARI,
-                                 text="2) İKA'YA AKTARIMI ONAYLA → ACK")
+            self._onay_dugmesini_ciz(
+                True, "2) İKA'YA AKTARIMI ONAYLA → ACK")
+            if self._kanit_kilidi_var():
+                return
             self.lbl_onay.config(
                 text=f"Tespit doğrulandı ✓ · İKA ALDI ✓ {kanit} "
                      f"(OPEN_ROUTE ACK seq={self.rota['seq']}) — aktarımı "
                      "onaylayabilirsiniz (§2.2.3 ikinci onay)", fg=SARI)
         else:
-            self.btn_onay.config(state="disabled", bg="#232e3a",
-                                 text="2) İKA ACK KANITI BEKLENİYOR")
+            self._onay_dugmesini_ciz(False, "2) İKA ACK KANITI BEKLENİYOR")
+            if self._kanit_kilidi_var():
+                return
             self.lbl_onay.config(
                 text="Tespit doğrulandı ✓ — ama İKA'dan OPEN_ROUTE ACK kanıtı "
                      f"GÖRÜNMEDİ (seq={self.rota['seq']}). Kanıt gelmeden "
@@ -1493,6 +1750,12 @@ class YksArayuz:
         ref = m.get("ref")
         if isinstance(ref, bool) or not isinstance(ref, int):
             return
+        # CONTRACTS §6.8: ACK bağlama sözleşmesinin (§6.6) denetlenebilmesi
+        # için ham olay `ref` VE `ref_tip` ile yazılır — bağlama SONUCU ayrı
+        # olaylarda görünür (IKA_AKTARIM_KANITI, HAKEM_ONAYI_2). Bozuk `ref`
+        # taşıyan çerçeve yukarıda düşer: kayıt da onu ACK saymaz.
+        self._kanit_yaz("ACK_ALINDI", node=m.get("node"), ref=ref,
+                        ref_tip=m.get("ref_tip"))
         if m.get("node") == "iha":
             arm_tekrar = getattr(self, "arm_tekrar", None)
             arm_komut = getattr(self, "arm_bekleyen_komut", None)
@@ -1521,10 +1784,30 @@ class YksArayuz:
                                       time.localtime(self.parasut_ack_zamani))
                 self._logla(f"İHA ALDI ✓ PARACHUTE ACK ref={ref} · {damga} · "
                             f"{parasut_tekrar.deneme} gönderim", "yesil")
-                # D-403: "ACILDI" yalniz ACK'ta (Pixhawk COMMAND_ACK ACCEPTED)
+                # COMMAND_ACK ACCEPTED komutun kabul kanitidir; mekanik
+                # paraşütün gerçekten açıldığına dair ayrı bir sensör değildir.
                 dugme = getattr(self, "btn_parasut", None)
                 if dugme is not None:
-                    dugme.config(text="PARAŞÜT AÇILDI ✓ (İHA ACK)")
+                    dugme.config(text="PARAŞÜT KOMUTU KABUL ✓ (PIXHAWK ACK)")
+            acil_tekrar = getattr(self, "acil_tekrar", None)
+            acil_komut = getattr(self, "acil_bekleyen_komut", None)
+            acil_mesaji = getattr(acil_tekrar, "mesaj", None)
+            if (acil_tekrar is not None and acil_komut and acil_mesaji
+                    and kritik_komut_ack_gecerli_mi(
+                        m, acil_mesaji.get("seq"), acil_komut, node="iha")
+                    and acil_tekrar.ack_geldi(m)):
+                self.acil_ack_zamani = time.monotonic()
+                self.acil_bekleyen_komut = None
+                self._logla(
+                    f"İHA ALDI ✓ {acil_komut} Pixhawk COMMAND_ACK ACCEPTED; "
+                    "gerçek uçuş modu HEARTBEAT'ten ayrıca izleniyor", "yesil")
+                etiket = getattr(self, "lbl_acil", None)
+                if etiket is not None:
+                    etiket.config(
+                        text=f"ACİL UÇUŞ KOMUTU: {acil_komut} KABUL ✓ · "
+                             "MOD TELEMETRİSİNİ DOĞRULA",
+                        fg=SARI)
+                self._acil_ui_uygula()
             return
         if m.get("node") != "ika":
             return
@@ -1546,6 +1829,9 @@ class YksArayuz:
             # P9c (D-393) — §2.2.3: "Bu aktarımın İHA havada iken tamamlanması
             # gerekmektedir." Kanıt anında havada/yerde damgası basılır.
             havada = self._iha_havada_mi()
+            # CONTRACTS §6.8 — K8 kanıtı: 2. onay aşamasının fail-closed
+            # dayanağı budur; ekranda görünmesi yetmez, kayda da düşer.
+            self._kanit_yaz("IKA_AKTARIM_KANITI", seq=ref, iha_havada=havada)
             self._logla(f"İKA ALDI ✓ OPEN_ROUTE ACK ref={ref} · {damga} "
                         "(aktarım kanıtı ekranda) · "
                         + ("İHA HAVADA ✓ (§2.2.3)" if havada else
@@ -1574,6 +1860,10 @@ class YksArayuz:
         # senaryonun kestiği telemetri KALICI kesik kalır.
         self._senaryo_no = getattr(self, "_senaryo_no", 0) + 1
         no = self._senaryo_no
+        # CONTRACTS §6.8 — tatbikatın KENDİSİ de kanıttır (DDR B.3.3.1):
+        # ekranda kırmızı bant gören hakem, kaydında hangi senaryonun ne
+        # zaman tetiklendiğini görmeden tatbikatı doğrulayamaz.
+        self._kanit_yaz("ACIL_SENARYO", kod=kod, senaryo_no=no)
 
         def band_geri():
             """Bandı normale döndür — YALNIZ bu senaryo hâlâ güncelse."""
@@ -1694,10 +1984,12 @@ class YksArayuz:
         self.rota_metin.config(state="disabled")
 
     def _ucus(self, metin, renk):
-        self.lbl_ucus.config(text=f"İHA UÇUŞ DURUMU: {metin}", fg=renk)
+        etiket = getattr(self, "lbl_ucus", None)
+        if etiket is not None:
+            etiket.config(text=f"İHA UÇUŞ DURUMU: {metin}", fg=renk)
 
     def _ucus_normal(self):
-        self.lbl_ucus.config(text="İHA UÇUŞ DURUMU: OTONOM GÖREV (AUTO)", fg=YESIL)
+        self._ucus("OTONOM GÖREV (AUTO)", YESIL)
 
     # ── Canlı algı: v3 modeliyle GERÇEK çıkarım ──────────────────────────────
     # Karar zinciri sahadakiyle AYNI: codes/rpi_inference.py'nin get_masks +
@@ -2006,6 +2298,12 @@ class YksArayuz:
                           fg=KIRMIZI)
             bilgi.config(text="--kamera-url http://<JETSON_IP>:8080 verin · "
                                "video SiK üzerinden taşınmaz", fg=KIRMIZI)
+            # CONTRACTS §6.8: "kamera yoktu" da KANITTIR — kayıtta boşluk
+            # bırakmak, sonradan "kamera vardı ama yazılmadı" savunmasına
+            # kapı açar. Kenar olayı: bir kez yazılır, sonra tekrar aralığında.
+            self._kamera_kanitini_yaz(
+                "YAPILANDIRILMADI", kare_yasi_s=None, kare_sira=None,
+                kaynak=None, hata="kamera URL verilmedi", calisiyor=False)
             return
         try:
             snap = istemci.snapshot()
@@ -2039,6 +2337,23 @@ class YksArayuz:
         if hata:
             metin += f" · {hata}"
         bilgi.config(text=metin, fg=YESIL if jpeg is not None else KIRMIZI)
+        # CONTRACTS §6.8: kanıt durumu SAĞLIK + KARE ikilisidir. İkisi bugün
+        # `kamera_istemci`de birlikte hareket ediyor ama kayıt bu eşleşmeye
+        # GÜVENMEZ: kare kaybolup sağlık "CANLI" kalırsa hakem kaydı bunu
+        # yine de görmek zorundadır.
+        self._kamera_kanitini_yaz(
+            f"{durum}·{'KARE' if jpeg is not None else 'KARE_YOK'}",
+            kare_sira=snap.get("kare_sira"),
+            kare_yasi_s=(None if yas is None else round(float(yas), 3)),
+            kaynak=snap.get("kaynak") or getattr(self, "kamera_url", None),
+            hata=(str(hata) if hata else None),
+            calisiyor=bool(snap.get("calisiyor")))
+
+    def _kamera_kanitini_yaz(self, durum, **alanlar):
+        """Kamera kanıt durumunu hakem kaydına KENAR olayı olarak yaz (§6.8)."""
+        return self._kanit_durumu_yaz(
+            "KAMERA_KANIT", durum,
+            "_kamera_kanit_durumu", "_son_kamera_kanit_monotonic", **alanlar)
 
     def _algi_gorunumu_sart(self, ne):
         """ALGI gezinme komutlari yalniz ALGI gorunumunde anlamlidir.
@@ -2502,10 +2817,10 @@ class YksArayuz:
             return
         self.onaylandi = False
         self.tespit_onayli = False
-        self.btn_onay.config(state="normal", bg=SARI,
-                             text="1) TESPİTİ DOĞRULA (§2.2.3)")
-        self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
-                                  "gönderimde (ACK yok)", fg=SARI)
+        self._onay_dugmesini_ciz(True, "1) TESPİTİ DOĞRULA (§2.2.3)")
+        if not self._kanit_kilidi_var():
+            self.lbl_onay.config(text="⚠ Hakem onayı BEKLENİYOR — İHA tekrar "
+                                      "gönderimde (ACK yok)", fg=SARI)
         self._logla("(demo) hakem onayı sıfırlandı — akış baştan izlenebilir", "mavi")
 
     # ── Görev kontrol & kronometre (şartname süreleri + §2.2.5 kilidi) ───────
@@ -2538,11 +2853,23 @@ class YksArayuz:
         return True
 
     def _cmd_gonder(self, cmd, hedef_dugum):
-        komut_mesaji = command(cmd, hedef_dugum)
+        komut_mesaji = self._komut_mesaji(cmd, hedef_dugum)
         if not self._ham_gonder(komut_mesaji):
             return False
         self._logla(f"CMD → {hedef_dugum}: {cmd}", "mavi")
         return komut_mesaji["seq"]
+
+    def _komut_mesaji(self, cmd, hedef_dugum):
+        """İHA eyleyici komutunu bu YKS sürecinin tekrar oturumuna bağla."""
+        if hedef_dugum != "iha":
+            return command(cmd, hedef_dugum)
+        oturum = getattr(self, "komut_oturumu", None)
+        if not isinstance(oturum, str):
+            # ``__new__`` kullanan test/entegrasyon fikstürleri dahil hiçbir
+            # İHA eyleyici komutu saha protokolüne oturumsuz çıkmaz.
+            oturum = uuid.uuid4().hex
+            self.komut_oturumu = oturum
+        return command(cmd, hedef_dugum, oturum=oturum)
 
     # T180 (D-323): ucus surerken TEYITSIZ DISARM. Tek 'a' tusu ya da tek tik
     # ucan araca DISARM yolluyordu ve ekran ayni anda "OTONOM GOREV (AUTO)" ile
@@ -2564,6 +2891,45 @@ class YksArayuz:
         return (damga is not None and type(getattr(self, "arm_acik", None)) is bool
                 and 0.0 <= simdi - damga <= ARM_DURUM_TAZELIK_S)
 
+    def _kritik_teyit_bekliyor(self, anahtar, simdi=None):
+        """Teyit penceresi saat geri sıçramasına da fail-closed dayanır."""
+        simdi = time.monotonic() if simdi is None else float(simdi)
+        kayitlar = getattr(self, "_kritik_teyit", {})
+        onceki = kayitlar.get(anahtar)
+        if onceki is None:
+            return False
+        yas = simdi - onceki
+        return 0.0 <= yas <= DISARM_TEYIT_SURESI_S
+
+    def _kritik_teyit_al(self, anahtar, aciklama):
+        """İki ayrı tık ister; ilk tık hiçbir ağ/eyleyici çıktısı üretmez.
+
+        Buradan EKRANA YAZILMAZ. Teyit niyeti yalnız `_kritik_teyit`
+        sözlüğünde tutulur; düğme metnini çağıranın gerçek-çizim yordamı
+        (`_arm_ui_uygula` / `_acil_ui_uygula`) o sözlükten TÜRETİR.
+        NEDEN (T180 sınıfı): düğmenin iki yazarı olduğunda ikinci tık
+        anahtarı `pop` edip komut başarısız olunca (UDP adresi yok, ACK yok,
+        gönderim hatası) ekranda BEKLEYEN TEYİT YOKKEN "TEKRAR BAS" asılı
+        kalıyordu. Bu dosyanın sözleşmesi: "iletim yokluğu operatör onayı
+        değildir" — bekleyen onay yokken "TEKRAR BAS" göstermek tam olarak o
+        sınıf yanıltmadır ve hakem ekranındadır. Tek yazar = asılı metin YOK.
+        """
+        simdi = time.monotonic()
+        if self._kritik_teyit_bekliyor(anahtar, simdi):
+            self._kritik_teyit.pop(anahtar, None)
+            return True
+        kayitlar = getattr(self, "_kritik_teyit", None)
+        if not isinstance(kayitlar, dict):
+            kayitlar = {}
+            self._kritik_teyit = kayitlar
+        kayitlar.clear()                  # ayni anda yalnız tek kritik niyet
+        kayitlar[anahtar] = simdi
+        self._logla(
+            f"⚠ {aciklama} GÖNDERİLMEDİ. Onaylamak için "
+            f"{DISARM_TEYIT_SURESI_S:.0f} sn içinde aynı düğmeye TEKRAR bas.",
+            "sari")
+        return False
+
     def _arm_ui_uygula(self):
         """ARM gerçeğini tek yerden çiz; bilinmeyen/bekleyen fail-closed."""
         btn = getattr(self, "btn_arm", None)
@@ -2571,6 +2937,9 @@ class YksArayuz:
         firlat = getattr(self, "btn_firlat", None)
         if btn is None or etiket is None or firlat is None:
             return
+        # ⚠ ARM düğmesi kanıt kilidinden ETKİLENMEZ (niyet korunur): kanıt
+        # kaydı bozukken de aracı ARM/DISARM edebilmek emniyettir. Kilit
+        # yalnız FIRLATMA'ya iner ve onu `_firlat_dugmesini_ciz` uygular.
         bekleyen = getattr(self, "arm_bekleyen_komut", None)
         if bekleyen:
             btn.config(state="disabled", bg=SARI,
@@ -2578,22 +2947,25 @@ class YksArayuz:
             etiket.config(
                 text=f"SİSTEM: {bekleyen} İSTEĞİ GÖNDERİLDİ — doğrulanmadı",
                 fg=SARI)
-            firlat.config(state="disabled", bg="#232e3a")
+            self._firlat_dugmesini_ciz(False)
             return
         if not self._arm_durumu_taze_mi():
             btn.config(state="disabled", bg="#232e3a",
                        text="ARM DURUMU BEKLENİYOR")
             etiket.config(text="SİSTEM: ARM DURUMU BİLİNMİYOR/BAYAT", fg=KIRMIZI)
-            firlat.config(state="disabled", bg="#232e3a")
+            self._firlat_dugmesini_ciz(False)
             return
         if self.arm_acik:
             btn.config(state="normal", text="DISARM (A)", bg=KIRMIZI)
             etiket.config(text="SİSTEM: ARM ✓ — PIXHAWK HEARTBEAT", fg=SARI)
-            firlat.config(state="normal", bg=SARI)
+            self._firlat_dugmesini_ciz(True)
         else:
             btn.config(state="normal", text="ARM (A)", bg="#232e3a")
             etiket.config(text="SİSTEM: DISARM ✓ — PIXHAWK HEARTBEAT", fg=SOLUK)
-            firlat.config(state="disabled", bg="#232e3a")
+            self._firlat_dugmesini_ciz(False)
+        komut = "DISARM" if self.arm_acik else "ARM"
+        if self._kritik_teyit_bekliyor(komut):
+            btn.config(text=f"{komut}? TEKRAR BAS", bg=SARI)
 
     def _arm_bekleyeni_tamamla(self):
         """Güçlü ACK ve eşleşen taze araç durumu birlikteyse işlemi bitir."""
@@ -2609,6 +2981,7 @@ class YksArayuz:
         self._logla(f"İHA {komut} DOĞRULANDI ✓ Pixhawk ACK + taze HEARTBEAT "
                     f"(armed={beklenen}, {deneme} gönderim)", "yesil")
         self._arm_ui_uygula()
+        self._acil_ui_uygula()
         return True
 
     def arm_degistir(self):
@@ -2624,20 +2997,21 @@ class YksArayuz:
             return
         yeni_arm_acik = not self.arm_acik
         komut = "ARM" if yeni_arm_acik else "DISARM"
-        if komut == "DISARM" and self._iha_havada_mi():
-            simdi = time.monotonic()
-            bekleyen = getattr(self, "_disarm_teyit_t", 0.0)
-            if simdi - bekleyen > DISARM_TEYIT_SURESI_S:
-                self._disarm_teyit_t = simdi
-                self.btn_arm.config(text="DISARM? TEKRAR BAS", bg=SARI)
-                self._logla(
-                    "⚠ İHA HAVADA (heartbeat canlı, iniş kanıtı yok) — DISARM "
-                    f"gönderilmedi. Onaylamak için {DISARM_TEYIT_SURESI_S:.0f} "
-                    "sn içinde TEKRAR bas.", "sari")
-                return
-            self._disarm_teyit_t = 0.0
-        komut_mesaji = command(komut, "iha")
+        durum = ("İHA HAVADA — DISARM" if komut == "DISARM" and self._iha_havada_mi()
+                 else komut)
+        if not self._kritik_teyit_al(komut, durum):
+            # Teyit BEKLİYOR: metni `_arm_ui_uygula` sözlükten türetir.
+            self._arm_ui_uygula()
+            return
+        komut_mesaji = self._komut_mesaji(komut, "iha")
         if not self.arm_tekrar.baslat(komut_mesaji):
+            # Teyit anahtarı yukarıda TÜKETİLDİ ama komut çıkmadı → BEKLEYEN
+            # TEYİT YOK. Ekranı gerçeğe döndür: "ARM? TEKRAR BAS" asılı
+            # kalırsa hakem bekleyen bir onay olduğunu sanır (iletim yokluğu
+            # operatör onayı değildir). Kırmızı "CMD GÖNDERİLEMEDİ" kaydını
+            # `_ham_gonder` zaten yazdı — hata görünürdür. Sonraki tık, anahtar
+            # tüketildiği için YENİ bir teyit turu başlatır; doğrudan ARM ETMEZ.
+            self._arm_ui_uygula()
             return
         self.arm_bekleyen_komut = komut
         self.arm_ack_zamani = None
@@ -2678,8 +3052,91 @@ class YksArayuz:
                 return
         self.kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._arm_tik)
 
+    def _acil_ui_uygula(self):
+        """RTL/LAND düğmelerini tek bekleyen işlem durumundan çiz."""
+        bekleyen = getattr(self, "acil_bekleyen_komut", None)
+        for komut, ad in (("RTL", "btn_rtl"), ("LAND", "btn_land")):
+            dugme = getattr(self, ad, None)
+            if dugme is None:
+                continue
+            if bekleyen:
+                dugme.config(state="disabled", bg=SARI,
+                             text=f"{bekleyen} ACK BEKLENİYOR")
+            elif self._kritik_teyit_bekliyor(komut):
+                dugme.config(state="normal", bg=SARI,
+                             text=f"{komut}? TEKRAR BAS")
+            else:
+                dugme.config(state="normal", bg=KIRMIZI,
+                             text=f"ACİL {komut}")
+
+    def acil_komut(self, komut):
+        """İki tık + aynı-seq tekrar + güçlü Pixhawk ACK ile RTL/LAND iste."""
+        if komut not in ("RTL", "LAND"):
+            raise ValueError(f"bilinmeyen acil komut: {komut!r}")
+        if getattr(self, "acil_bekleyen_komut", None):
+            self._logla("Acil uçuş komutu zaten ACK bekliyor — ikinci komut "
+                        "gönderilmedi", "sari")
+            return
+        if not self._kritik_teyit_al(
+                komut,
+                f"ACİL {komut} (ACK yalnız kabulü kanıtlar; RC pilotu hazır olmalı)"):
+            # Metni `_acil_ui_uygula` `_kritik_teyit`ten türetir (tek yazar).
+            self._acil_ui_uygula()
+            return
+        mesaj = self._komut_mesaji(komut, "iha")
+        tekrar = getattr(self, "acil_tekrar", None)
+        if tekrar is None or not tekrar.baslat(mesaj):
+            # arm_degistir ile AYNI kural: teyit tüketildi, komut çıkmadı →
+            # düğme "ACİL {komut}"a döner, bekleyen teyit gösterilmez.
+            self._acil_ui_uygula()
+            return
+        self.acil_bekleyen_komut = komut
+        self.acil_ack_zamani = None
+        etiket = getattr(self, "lbl_acil", None)
+        if etiket is not None:
+            etiket.config(text=f"ACİL UÇUŞ KOMUTU: {komut} GÖNDERİLDİ · "
+                                "PIXHAWK ACK BEKLENİYOR", fg=KIRMIZI)
+        self._logla(f"CMD → iha: {komut} (seq={mesaj['seq']}, ACK bekleniyor · "
+                    f"{ARM_TEKRAR_ARALIGI_S:.2f} s × "
+                    f"≤{ARM_TEKRAR_UST_SINIRI})", "kirmizi")
+        self._acil_ui_uygula()
+        self._acil_tik()
+
+    def _acil_tik(self):
+        tekrar = getattr(self, "acil_tekrar", None)
+        if tekrar is None or not getattr(self, "acil_bekleyen_komut", None):
+            return
+        durum = tekrar.tik()
+        if durum == VAZGECILDI:
+            komut = self.acil_bekleyen_komut
+            self.acil_bekleyen_komut = None
+            self._logla(f"İHA ONAY VERMEDİ ✗ {komut} {tekrar.deneme} kez "
+                        "gönderildi; Pixhawk COMMAND_ACK gelmedi — RC pilotu "
+                        "fiziksel yedeği kullansın", "kirmizi")
+            etiket = getattr(self, "lbl_acil", None)
+            if etiket is not None:
+                etiket.config(text=f"ACİL UÇUŞ KOMUTU: {komut} ACK YOK · RC YEDEK",
+                              fg=KIRMIZI)
+            self._acil_ui_uygula()
+            return
+        if durum == ONAYLANDI:
+            return
+        kok = getattr(self, "kok", None)
+        if kok is not None:
+            kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._acil_tik)
+
     def firlatma(self):
         if self.t_iha0:
+            return
+        # KANIT KİLİDİ — düğme durumu TEK savunma değildir (T180 sınıfı):
+        # klavye, otomasyon ya da doğrudan çağrı bu yolu düğme kapalıyken de
+        # tetikleyebilir. Kanıt kaydı yazamıyorsa uçuş kronometresi
+        # BAŞLATILMAZ: kayıtsız uçuşun 21 Eylül'de dayanağı olmaz.
+        if self._kanit_kilidi_var():
+            self._firlat_dugmesini_ciz(False)
+            self._logla("KİLİT ✋ KANIT KAYDI YAZILAMIYOR — FIRLATMA damgası "
+                        "atılmadı (ARM/DISARM ve acil komutlar açık): "
+                        f"{self.kanit_kaydi_hatasi}", "kirmizi")
             return
         # P9b (D-393) — §6.2: fırlatma ancak arming sonrası. Düğme zaten
         # DISARM'da kapalıdır ama otorite düğme durumu DEĞİL bu kilittir
@@ -2694,8 +3151,12 @@ class YksArayuz:
                         "sari")
             return
         self.t_iha0 = time.time()
+        # CONTRACTS §6.8 — süre bütçesi §6.2/§5.3.2'nin PUANLANAN eksenidir;
+        # başlangıç/bitiş damgaları ekrandan değil kayıttan doğrulanır.
+        self._kanit_yaz("KRONOMETRE_BASLADI", kron="iha",
+                        limit_s=self.IHA_LIMIT, devam=False)
         self._logla("GÖREV · FIRLATMA — İHA kronometresi başladı (limit 15:00)", "mavi")
-        self.btn_firlat.config(state="disabled", bg="#232e3a")
+        self._firlat_dugmesini_ciz(False)
         self.btn_iha_indi.config(state="normal", bg=SARI)
 
     def iha_indi(self):
@@ -2704,6 +3165,8 @@ class YksArayuz:
         self.t_iha1 = time.time()
         sure = self.t_iha1 - self.t_iha0
         asim = sure > self.IHA_LIMIT
+        self._kanit_yaz("KRONOMETRE_BITTI", kron="iha", sure_s=round(sure, 3),
+                        limit_s=self.IHA_LIMIT, asim=bool(asim))
         self._logla(f"GÖREV · İHA İNDİ — uçuş süresi {sure/60:.1f} dk"
                     + (" → SÜRE AŞIMI: UÇUŞ GEÇERSİZ (şartname §6.4)" if asim else ""),
                     "sari" if asim else "yesil")
@@ -2743,6 +3206,8 @@ class YksArayuz:
                     "mavi")
         self.t_ika0 = time.time()
         self.t_ika1 = None
+        self._kanit_yaz("KRONOMETRE_BASLADI", kron="ika",
+                        limit_s=self.IKA_LIMIT, devam=False)
         self._logla("GÖREV · İKA İNTİKALİ BAŞLADI — kronometre limit 10:00 "
                     "(kilit koşulları sağlandı ✓)", "mavi")
         self.btn_ika_go.config(state="disabled", bg="#232e3a")
@@ -2776,6 +3241,8 @@ class YksArayuz:
         self.t_ika1 = time.time()
         s = self.t_ika1 - self.t_ika0
         ok = s <= self.IKA_LIMIT
+        self._kanit_yaz("KRONOMETRE_BITTI", kron="ika", sure_s=round(s, 3),
+                        limit_s=self.IKA_LIMIT, asim=not ok)
         self._logla(f"GÖREV · HB TEMAS — İKA süresi {s/60:.1f} dk → "
                     + ("GÖREV BAŞARILI (P_görev = 600 puan)" if ok
                        else "SÜRE AŞIMI — İKA görevi BAŞARISIZ"),
@@ -2792,6 +3259,8 @@ class YksArayuz:
         if self.t_haz0:
             return
         self.t_haz0 = time.time()
+        self._kanit_yaz("KRONOMETRE_BASLADI", kron="hazirlik",
+                        limit_s=self.HAZIRLIK_LIMIT, devam=False)
         self._logla("HAZIRLIK · Alan girişi — 15:00 hazırlık süresi başladı (§6.2)",
                     "mavi")
         self.btn_alan.config(state="disabled", bg="#232e3a")
@@ -2803,6 +3272,9 @@ class YksArayuz:
         self.t_haz1 = time.time()
         s = self.t_haz1 - self.t_haz0
         puan = max(0, int((900 - s) / 30))
+        self._kanit_yaz("KRONOMETRE_BITTI", kron="hazirlik", sure_s=round(s, 3),
+                        limit_s=self.HAZIRLIK_LIMIT,
+                        asim=bool(s > self.HAZIRLIK_LIMIT))
         self._logla(f"HAZIRLIK · 'TAKIM HAZIR' — süre {s/60:.1f} dk (hands-off); "
                     f"tasarruf puanı ≈ +{puan} (§7 t_hazırlık)", "yesil")
         self.btn_hazir.config(state="disabled", bg="#232e3a")
@@ -2814,6 +3286,10 @@ class YksArayuz:
             return
         self.t_haz0 += time.time() - self.t_haz1   # kronometre kaldığı yerden sürer
         self.t_haz1 = None
+        # CONTRACTS §6.8: müdahale kronometreyi YENİDEN başlatmaz, KALDIĞI
+        # yerden sürdürür — `devam=True` bu ayrımı kayıtta korur.
+        self._kanit_yaz("KRONOMETRE_BASLADI", kron="hazirlik",
+                        limit_s=self.HAZIRLIK_LIMIT, devam=True)
         self._ceza_ekle(100, "hands-off sonrası sisteme müdahale (§6.2)")
         self._logla("HAZIRLIK · kronometre DEVAM EDİYOR — müdahale süresi "
                     "hazırlığa ekleniyor; bitince tekrar TAKIM HAZIR verin", "sari")
@@ -2831,7 +3307,7 @@ class YksArayuz:
         self.fda_kipi = True
         self.IHA_LIMIT = SARTNAME_FDA_OPERASYON_SURESI_S
         for ad, metin, kapat in (
-                ("btn_firlat", "KALKIŞ", False),        # mancınık yok: damga = kalkış
+                ("btn_firlat", "KALKIŞ ZAMANI / KRONOMETRE", False),
                 ("btn_parasut", "PARAŞÜT (FDA dışı)", True),
                 ("btn_ika_go", "İKA (FDA dışı)", True)):
             dugme = getattr(self, ad, None)
@@ -2858,19 +3334,23 @@ class YksArayuz:
         if simdi - self.parasut_teyit > 3.0:
             self.parasut_teyit = simdi
             self.btn_parasut.config(bg=KIRMIZI, text="EMİN MİSİN? tekrar bas (3 sn)")
-            self.kok.after(3200, lambda: self.btn_parasut.config(
-                bg="#232e3a", text="PARAŞÜT (manuel −50)"))
+            # Geri alma KOŞULLU olmalı: eski koşulsuz lambda, teyit penceresi
+            # içinde gönderilen PARACHUTE komutunun "GÖNDERİLDİ — İHA ACK
+            # bekleniyor" metnini de, ACK gelmeyince yazılan kırmızı "ACK YOK
+            # — TEKRAR" hatasını da 3,2 sn sonra eziyordu; hakem, uçuşta komut
+            # varken düğmeyi boşta görüyordu. Aynı sınıf kusur (ekran gerçeği).
+            self.kok.after(3200, lambda d=simdi: self._parasut_teyit_sondur(d))
             return
         # P9a (D-393): tek atış `_cmd_gonder` yerine ACK'lı tekrar — paraşüt
         # komutu kaybolursa bunu SESSİZCE kaybetmek kabul edilemez (§6.4).
-        komut_mesaji = command("PARACHUTE", "iha")
+        komut_mesaji = self._komut_mesaji("PARACHUTE", "iha")
         if not self.parasut_tekrar.baslat(komut_mesaji):
             # `_ham_gonder` GONDERILEMEDI'yi zaten kirmizi loglar (komut
             # durustlugu sozlesmesi: iletilmeyen komut basari/ceza uretmez).
             return
         self._ceza_ekle(PARASUT_MANUEL_CEZA_PUANI,
                         "manuel paraşüt tetikleme (§2.2.4)")
-        self._ucus(f"PARAŞÜT — MANUEL TETİKLENDİ "
+        self._ucus(f"PARAŞÜT İSTEĞİ GÖNDERİLDİ — ACK BEKLENİYOR "
                    f"(−{PARASUT_MANUEL_CEZA_PUANI})", KIRMIZI)
         self._logla(f"CMD → iha: PARACHUTE (seq={komut_mesaji['seq']}, ACK "
                     f"bekleniyor · {PARASUT_TEKRAR_ARALIGI_S:.2f} s × "
@@ -2881,6 +3361,27 @@ class YksArayuz:
         self.btn_parasut.config(state="disabled", bg=KIRMIZI,
                                 text="PARAŞÜT GÖNDERİLDİ — İHA ACK bekleniyor")
         self._parasut_tik()
+
+    def _parasut_teyit_sondur(self, damga):
+        """Süresi dolan paraşüt teyidini ekrandan sil — komut yolu devraldıysa
+        DOKUNMA.
+
+        Zamanlayıcı, `damga` anındaki tıkın açtığı teyit penceresi kapandıktan
+        sonra ateşler. Yazma hakkı yalnız o pencerenindir:
+          * `parasut_teyit != damga` → yeni bir teyit turu başlamış, metin onun;
+          * `parasut_tekrar.durum != BOS` → PARACHUTE gönderilmiş; gönderim /
+            ACK / "ACK YOK — TEKRAR" metni komut yolunundur, ezilmez.
+        Teyit sahibi ise pencere gerçekten kapanmıştır: damga da SIFIRLANIR ki
+        durum ile ekran ayrışmasın (bekleyen teyit yokken "tekrar bas" YOK).
+        """
+        dugme = getattr(self, "btn_parasut", None)
+        if dugme is None or self.parasut_teyit != damga:
+            return
+        tekrar = getattr(self, "parasut_tekrar", None)
+        if tekrar is not None and getattr(tekrar, "durum", BOS) != BOS:
+            return
+        self.parasut_teyit = 0.0
+        dugme.config(bg="#232e3a", text="PARAŞÜT (manuel −50)")
 
     def _parasut_tik(self):
         """PARACHUTE ACK zamanlayıcısı (K4 kalıbı): ACK yoksa tekrar; üst
@@ -3071,10 +3572,7 @@ class YksArayuz:
         if bayat and not self.tespit_bayat and not self.onaylandi:
             self.tespit_bayat = True
             self._kutu_yaz("protokol", renk=SARI)
-            btn = getattr(self, "btn_onay", None)
-            if btn is not None:
-                btn.config(state="disabled", bg="#232e3a",
-                           text="BAYAT TESPİT — ONAY KAPALI")
+            self._onay_dugmesini_ciz(False, "BAYAT TESPİT — ONAY KAPALI")
             if _bayat_kaynak == "bilinmiyor":
                 _sebep = ("TESPİT YAŞI BİLİNMİYOR: İHA `karar_yas` alanı "
                           "göndermiyor (eski/bozuk yayıncı) — taze sayılamaz")
@@ -3103,14 +3601,20 @@ class YksArayuz:
         simdi = time.time()
         self._tespiti_yaslandir(simdi)
         _mono = time.monotonic()               # D-384: damgalar monotonik
+        tel_durum = {}                         # CONTRACTS §6.8 kanıt özeti
+        tel_yas = {}
         for ad, (nokta, metin) in self.lbl_dugum.items():
             t = self.son_hb.get(ad)
             if t is None:
                 nokta.config(fg=KIRMIZI)
                 metin.config(text=f"{ad.upper()}  — sinyal yok")
+                tel_durum[ad] = "YOK"
+                tel_yas[ad] = None
             else:
                 yas = _mono - t
                 canli = yas < 3.0                      # ika_receiver failsafe eşiği
+                tel_durum[ad] = "TAZE" if canli else "BAYAT"
+                tel_yas[ad] = round(yas, 1)
                 nokta.config(fg=YESIL if canli else KIRMIZI)
                 tel = self.tel.get(ad) or {}
                 parcalar = []
@@ -3118,16 +3622,43 @@ class YksArayuz:
                     parcalar.append(f"{tel['alt']:.0f} m")
                 if "hiz" in tel:
                     parcalar.append(f"{tel['hiz']:.1f} m/s")
+                if "yon" in tel:
+                    parcalar.append(f"{tel['yon']:.0f}°")
                 if "bat" in tel:
                     parcalar.append(f"{tel['bat']:.1f} V")
                 if "uydu" in tel:
                     parcalar.append(f"{tel['uydu']} uydu")
+                if ad == "iha":
+                    parcalar.append(
+                        "Pixhawk ✓" if tel.get("pixhawk_canli") is True
+                        else "PIXHAWK YOK/BAYAT")
                 ek = (" · " + " · ".join(parcalar)) if parcalar else ""
                 mod = self.mod.get(ad)
                 if mod:
                     ek += f" · mod {mod}" + ("" if mod == "AUTO" else " ⚠GEÇERSİZ")
                 metin.config(text=f"{ad.upper()} — hb {yas:.1f} sn{ek}"
                                   + ("" if canli else "  (BAĞLANTI KAYBI!)"))
+        # CONTRACTS §6.8 — telemetri tazelik ÖZETİ hakem kaydına KENAR olayı
+        # olarak düşer. Her heartbeat'e satır yazmak (1 Hz × düğüm) kaydı
+        # gürültüye boğardı; hiç yazmamak ise "hat NE ZAMAN kesildi, ne kadar
+        # kesik kaldı" sorusunu 21 Eylül'de cevapsız bırakırdı.
+        # `dugumler` Codex'in ayrıntılı örneğidir: durum satırı ÖZET, bu alan
+        # o anın ham telemetrisidir (ikisi birbirinin yerine geçmez).
+        if tel_durum:
+            dugumler = {}
+            for ad in ("iha", "ika"):
+                hb = self.son_hb.get(ad)
+                dugumler[ad] = {
+                    "hb_yasi_s": (None if hb is None else round(_mono - hb, 3)),
+                    "telemetri": dict(self.tel.get(ad) or {}),
+                    "mod": self.mod.get(ad),
+                }
+            self._kanit_durumu_yaz(
+                "TELEMETRI_KANIT",
+                "·".join(f"{a}={tel_durum[a]}" for a in sorted(tel_durum)),
+                "_telemetri_kanit_durumu", "_son_telemetri_kanit_monotonic",
+                bayat=sorted(a for a, d in tel_durum.items() if d != "TAZE"),
+                yas_s=tel_yas, dugumler=dugumler)
         gps_etiket = getattr(self, "lbl_gps", None)
         if gps_etiket is not None:
             iha_hb = self.son_hb.get("iha")
@@ -3137,10 +3668,22 @@ class YksArayuz:
                          "KULLANILMAZ", fg=KIRMIZI)
             else:
                 gps_tel = self.tel.get("iha") or {}
-                gps_var = all(k in gps_tel for k in ("lat", "lon", "gps_fix"))
+                gps_var, _ = gps_telemetrisi_dogrula(gps_tel)
                 gps_etiket.config(text=gps_gosterim_metni(gps_tel),
-                                  fg=YESIL if gps_var else SARI)
+                                  fg=YESIL if gps_var else KIRMIZI)
+        iha_hb = self.son_hb.get("iha")
+        if iha_hb is None or _mono - iha_hb >= ARM_DURUM_TAZELIK_S:
+            self._ucus("PIXHAWK MODU YOK/BAYAT", KIRMIZI)
+        else:
+            mod = self.mod.get("iha")
+            if mod:
+                self._ucus("OTONOM GÖREV (AUTO)" if mod == "AUTO"
+                           else f"PIXHAWK MODU: {mod} — AUTO DEĞİL",
+                           YESIL if mod == "AUTO" else SARI)
+            else:
+                self._ucus("PIXHAWK MODU YOK", KIRMIZI)
         self._arm_ui_uygula()
+        self._acil_ui_uygula()
         self.lbl_sayac.config(
             text=f"OPEN_ROUTE {self.sayac['OPEN_ROUTE']} · "
                  f"RED {self.sayac['OPEN_ROUTE_RED']} · "
@@ -3161,11 +3704,142 @@ class YksArayuz:
         if self.gorunum_adi == "harita":
             self._inset_ciz()
 
+    def _kanit_kilidi_var(self):
+        """Kanıt kaydı bozuk mu? — düğmeleri çizen HER yolun okuduğu TEK gerçek.
+
+        🔴 Bu yordam olmadan kilit fail-OPEN'dı: `_kanit_hatasini_goster`
+        düğmeleri bir kez kapatıyordu, periyodik tazeleme (`_arm_ui_uygula`,
+        `_onay_dugmesini_tazele`, `_aktarim_onay_dugmesini_kur`) bayrağa
+        bakmadan geri açıyordu. KIRMIZI afiş ekranda kalıyor, düğmeler
+        çalışıyordu — bu deponun yasakladığı "ekran ile gerçek ayrışması"
+        sınıfının ta kendisi.
+
+        Bayrak KENDİLİĞİNDEN temizlenmez: hata giderilmeden düğmeler
+        açılmaz, oturum kanıtsız devam ETMEZ.
+        """
+        return getattr(self, "kanit_kaydi_hatasi", None) is not None
+
+    def _firlat_dugmesini_ciz(self, aktif):
+        """`btn_firlat`ın TEK yazarı — kanıt kilidi burada uygulanır.
+
+        Kilit varken düğme yalnız `disabled` yapılmaz, METNİ de kilidi
+        söyler: kapalı bir düğmeye bakan hakem nedenini okuyamazsa
+        "bozuk arayüz" ile "fail-closed kilit"i ayıramaz.
+        """
+        dugme = getattr(self, "btn_firlat", None)
+        if dugme is None:
+            return
+        try:
+            if self._kanit_kilidi_var():
+                dugme.config(state="disabled", bg=KIRMIZI,
+                             text=KANIT_KILIDI_FIRLAT_METNI)
+            elif aktif:
+                dugme.config(state="normal", bg=SARI)
+            else:
+                dugme.config(state="disabled", bg="#232e3a")
+        except Exception:                      # Tk yok / fikstür
+            pass
+
+    def _onay_dugmesini_ciz(self, aktif, metin, bg=None):
+        """`btn_onay`ın TEK yazarı — kanıt kilidi burada uygulanır.
+
+        Kilitliyken `lbl_onay` da yeniden yazılır: afişi bir kez basıp
+        sonra başka metinle ezmek, kilidi ekrandan SİLERDİ.
+        """
+        dugme = getattr(self, "btn_onay", None)
+        kilit = self._kanit_kilidi_var()
+        if dugme is not None:
+            try:
+                if kilit:
+                    dugme.config(state="disabled", bg=KIRMIZI,
+                                 text=KANIT_KILIDI_ONAY_METNI)
+                else:
+                    dugme.config(state="normal" if aktif else "disabled",
+                                 bg=bg or (SARI if aktif else "#232e3a"),
+                                 text=metin)
+            except Exception:                  # Tk yok / fikstür
+                pass
+        if not kilit:
+            return
+        etiket = getattr(self, "lbl_onay", None)
+        afis = getattr(self, "_kanit_kilidi_metni", None)
+        if etiket is not None and afis:
+            try:
+                etiket.config(text=afis, fg=KIRMIZI)
+            except Exception:
+                pass
+
+    def _kanit_hatasini_goster(self, exc):
+        """Disk hatasını görünür ve uçuş başlangıcı için fail-closed yap."""
+        if self._kanit_kilidi_var():
+            return
+        self.kanit_kaydi_hatasi = f"{type(exc).__name__}: {exc}"
+        metin = ("KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve "
+                 f"acil komutlar kullanılabilir: {self.kanit_kaydi_hatasi}")
+        self._kanit_kilidi_metni = metin
+        print(metin, file=sys.stderr, flush=True)
+        gunluk = getattr(self, "gunluk", None)
+        if gunluk is not None:
+            try:
+                gunluk.config(state="normal")
+                gunluk.insert("end", time.strftime("[%H:%M:%S] ") + metin + "\n",
+                              "kirmizi")
+                gunluk.see("end")
+                gunluk.config(state="disabled")
+            except Exception:
+                pass
+        # Kilit artık bu iki yazardan okunur; buradaki çağrı yalnız afişi
+        # ANINDA basar (bir sonraki tiki beklemeden).
+        self._firlat_dugmesini_ciz(False)
+        self._onay_dugmesini_ciz(False, KANIT_KILIDI_ONAY_METNI)
+
+    def _kanit_yaz(self, olay, **alanlar):
+        kayit = getattr(self, "hakem_kaydi", None)
+        if kayit is None or self._kanit_kilidi_var():
+            return None
+        try:
+            return kayit.yaz(olay, **alanlar)
+        except Exception as exc:
+            self._kanit_hatasini_goster(
+                RuntimeError(f"{olay}: {type(exc).__name__}: {exc}"))
+            return None
+
+    def _kanit_durumu_yaz(self, olay, durum, durum_alani, damga_alani, **alanlar):
+        """DÖNGÜSEL kanıt olayını KENAR + tekrar aralığıyla yaz (CONTRACTS §6.8).
+
+        NEDEN: `_kamera_tazele` ve `_durum_tazele` `_tik`ten ~8 Hz çağrılır;
+        `HakemKaydi.yaz` her satırda `flush`+`fsync` yapar. Her tikte yazmak
+        Tk geri çağrısını diske bağlar (ekran donar, komut gecikir) ve kaydı
+        okunamaz hâle getirir. Bu yüzden:
+
+          · durum DEĞİŞTİYSE hemen yazılır (`degisim=True`),
+          · değişmediyse en çok `KANIT_TEKRAR_ARALIGI_S`'de bir
+            (`degisim=False`) — "hâlâ aynı" satırı SÜREKLİLİK kanıtıdır;
+            yalnız geçişler yazılsaydı kayıt "kamera görev boyunca canlıydı"
+            diyemezdi.
+
+        Damga MONOTONİK saattendir (D-384 sınıfı): duvar saati geri atlarsa
+        tekrar aralığı sessizce uzardı.
+        """
+        onceki = getattr(self, durum_alani, None)
+        son = getattr(self, damga_alani, None)
+        simdi = time.monotonic()
+        degisim = durum != onceki
+        if (not degisim and son is not None
+                and simdi - son < KANIT_TEKRAR_ARALIGI_S):
+            return None
+        # Damga yazma BAŞARISIZ olsa da ilerler: disk hatasında 8 Hz yeniden
+        # denemek `kanit_kaydi_hatasi`yı korur ama ekranı kilitlerdi.
+        setattr(self, durum_alani, durum)
+        setattr(self, damga_alani, simdi)
+        return self._kanit_yaz(olay, durum=durum, degisim=degisim, **alanlar)
+
     def _logla(self, satir, renk="soluk"):
         self.gunluk.config(state="normal")
         self.gunluk.insert("end", time.strftime("[%H:%M:%S] ") + satir + "\n", renk)
         self.gunluk.see("end")
         self.gunluk.config(state="disabled")
+        self._kanit_yaz("UI_OLAYI", mesaj=str(satir), seviye=str(renk))
 
 
 # ── Demo beslemesi: gerçek protokolle sahte İHA + İKA ────────────────────────
@@ -3320,6 +3994,10 @@ def main():
                          "kanıtlanabilsin diye)")
     ap.add_argument("--kaydet-yolu", default="yks_ekran.png")
     ap.add_argument("--kapat", action="store_true", help="otokaydet sonrası çık")
+    ap.add_argument(
+        "--hakem-log", type=Path,
+        help=("kalıcı UTF-8 JSONL kanıt yolu. Verilmezse "
+              "results/prova/<tarih_saat_pid>/hakem_log.jsonl otomatik açılır"))
     # T80 · ⚠ VARSAYILANLAR DEĞİŞMEDİ: ikisi de `None`, yani verilmezse ekran
     # bugünkü gibi `kompozit` kaynağı ve "Saha Haritası" görünümüyle açılır.
     # `kompozit` bilerek korunur — bir OTOPARK karesidir ve domain boşluğunu
@@ -3350,6 +4028,9 @@ def main():
         ap.error("--serial ile --ika birlikte kullanılamaz")
     if not args.serial and not args.demo and not args.ika:
         ap.error("UDP kipinde --ika HOST:PORT zorunlu")
+    if not args.serial and not args.demo and not args.iha:
+        ap.error("UDP kipinde --iha HOST:PORT zorunlu: ARM/DISARM/RTL/LAND "
+                 "efemer heartbeat portuna gönderilemez")
 
     global OLCEK
     try:  # yüksek DPI: netlik + piksel ölçülerini ekrana göre büyüt (Windows)
@@ -3369,13 +4050,22 @@ def main():
         ika_peer = args.ika
         iha_peer = args.iha
 
+    hakem_log_yolu = (args.hakem_log if args.hakem_log is not None
+                       else varsayilan_hakem_log_yolu(_PROJE_KOKU))
     kok = tk.Tk()
     # otomatik onay YOK: hakem onay akışı elle incelenebilsin (buton/R kısayolu)
-    app = YksArayuz(
-        kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
-        iha_peer=iha_peer, kamera_url=args.kamera_url)
+    try:
+        app = YksArayuz(
+            kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
+            iha_peer=iha_peer, kamera_url=args.kamera_url,
+            hakem_log_yolu=hakem_log_yolu)
+    except Exception:
+        link.close()
+        kok.destroy()
+        raise
     app._logla(f"YKS hazır — dinleniyor: "
                f"{args.serial or args.bind}", "mavi")
+    app._logla(f"KALICI HAKEM KAYDI: {hakem_log_yolu}", "mavi")
     app._logla(
         (f"RAW kamera LAN kaynağı: {args.kamera_url}" if args.kamera_url else
          "RAW kamera KAPALI: --kamera-url/NAVITAS_KAMERA_URL verilmedi; "
@@ -3446,6 +4136,13 @@ def main():
         kamera = getattr(app, "kamera_istemci", None)
         if kamera is not None:
             kamera.durdur()
+        kayit = getattr(app, "hakem_kaydi", None)
+        if kayit is not None:
+            try:
+                kayit.kapat()
+            except Exception as exc:
+                print(f"KANIT KAYDI KAPATMA HATASI: {exc}",
+                      file=sys.stderr, flush=True)
         link.close()
 
 

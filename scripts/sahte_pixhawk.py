@@ -35,6 +35,10 @@ DONGU_ADIMI_S = 0.02
 
 # --- varsayilan arac kunyesi ---
 VARSAYILAN_SYSID = 1
+# Gercek ArduPilot otopilotu MAV_COMP_ID_AUTOPILOT1 (=1) ile
+# yayin yapar. Sahte bunu taklit etmezse `inis_kaniti`'nin
+# component suzgeci mesaji reddeder (3 Eylul olcumu).
+VARSAYILAN_COMPONENT = 1
 YABANCI_SYSID = 99
 VARSAYILAN_LAT = 39.925533
 VARSAYILAN_LON = 32.866287
@@ -57,6 +61,7 @@ class SahtePixhawk:
     """
 
     def __init__(self, adres=VARSAYILAN_ADRES, *, sysid=VARSAYILAN_SYSID,
+                 component=VARSAYILAN_COMPONENT,
                  senaryo="ucus", irtifa_m=30.0, inis_suresi_s=20.0,
                  inis_tavani_m=0.4, lat=VARSAYILAN_LAT, lon=VARSAYILAN_LON,
                  konum_hz=KONUM_HZ, durum_hz=DURUM_HZ,
@@ -70,6 +75,10 @@ class SahtePixhawk:
         if not (isinstance(sysid, int) and not isinstance(sysid, bool)
                 and 1 <= sysid <= 255):
             raise ValueError("sysid 1..255 tamsayi olmali")
+        if not (isinstance(component, int) and not isinstance(component, bool)
+                and 1 <= component <= 255):
+            raise ValueError("component 1..255 tamsayi olmali")
+        self.component = component
         for ad, deger in (("irtifa_m", irtifa_m), ("inis_suresi_s", inis_suresi_s),
                           ("inis_tavani_m", inis_tavani_m)):
             if not math.isfinite(float(deger)) or float(deger) <= 0.0:
@@ -213,8 +222,15 @@ class SahtePixhawk:
     def baslat(self):
         if self._thread is not None and self._thread.is_alive():
             return self
-        self._mav = mavutil.mavlink_connection(self.adres,
-                                               source_system=self.sysid)
+        # NEDEN `source_component` (3 Eylul): pymavlink varsayilani 0'dir ve
+        # gercek ArduPilot otopilotu component **1** (MAV_COMP_ID_AUTOPILOT1)
+        # ile yayin yapar. 0 ile yayin yapan bir sahte, gercegi taklit
+        # etmiyordu; `inis_kaniti`'nin component suzgeci bunu acige cikardi
+        # (canli akis testlerinde erisilebilirlik %0, ON_KAYIT K4/B1 dustu).
+        # Depo sozlesmesi: comms/iha_komut_alici.py VARSAYILAN_HEDEF_COMPONENT.
+        self._mav = mavutil.mavlink_connection(
+            self.adres, source_system=self.sysid,
+            source_component=self.component)
         self._baslangic = time.monotonic()
         self._dur_olayi.clear()
         self._thread = threading.Thread(target=self._dongu,

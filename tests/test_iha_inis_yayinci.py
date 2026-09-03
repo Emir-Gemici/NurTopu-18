@@ -200,7 +200,14 @@ class SahaCliTests(unittest.TestCase):
              mock.patch.object(
                  yayinci, "iha_inisini_yayinla", return_value=True) as yayin:
             sonuc = yayinci.main([
-                "--mavlink", "/dev/ttyACM0", "--serial", "/dev/ttyUSB0",
+                # 🔴 BURADA "/dev/ttyACM0" VARDI ve ARTIK YASAK (CONTRACTS §7.4,
+                # D-403; kilit FDR/ACIK_KALEMLER §4b #23 ile koda tasindi).
+                # Bu testin olctugu sey SiK SERI TASIYICISIDIR (--serial);
+                # `--mavlink` degeri zaten mock'lanmis, ilgisiz bir yoldur.
+                # Cogullayici ucu yazilir — test, sozlesmeyi ihlal eden bir
+                # cagriyi ORNEK GOSTEREMEZ. Nobetci: test_seri_pixhawk_kilidi.
+                "--mavlink", "udp:127.0.0.1:14551",
+                "--serial", "/dev/ttyUSB0",
                 "--kanit-timeout", "5",
                 "--heartbeat-sure", "0",
                 "--baud", "57600",

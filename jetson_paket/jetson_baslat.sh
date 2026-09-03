@@ -198,7 +198,9 @@ case "$KIP" in
   udp)
     RPI_TELSIZ_ARGS="--yks-hedef ${YKS_IP}:${YKS_PORT} --ika-hedef ${IKA_IP}:${IKA_PORT}"
     INIS_TELSIZ_ARGS="--yks ${YKS_IP}:${YKS_PORT} --ika ${IKA_IP}:${IKA_PORT}"
-    KOMUT_TELSIZ_ARGS="--bind 0.0.0.0:${KOMUT_PORT}"
+    # Kritik eyleyici yalnız yapılandırılmış YKS soketinden komut kabul eder.
+    # Kaynak port, YKS'nin dinleme/gönderme soketiyle aynıdır (5005).
+    KOMUT_TELSIZ_ARGS="--bind 0.0.0.0:${KOMUT_PORT} --izinli-kaynak ${YKS_IP}:${YKS_PORT}"
     ;;
   sik)
     # Tek hat: her cerceve hub'a BIR kez yazilir (--telsiz-seri gibi); YKS ve IKA
@@ -206,7 +208,8 @@ case "$KIP" in
     # ucuna duser (hub tasarimi, D-403 §4b).
     RPI_TELSIZ_ARGS="--yks-hedef ${SERI_HUB_DINLE}"
     INIS_TELSIZ_ARGS="--yks ${SERI_HUB_DINLE}"
-    KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI}"
+    # Seri-hub, SiK'ten çözdüğü çerçeveyi kendi sabit 5100 UDP ucundan yollar.
+    KOMUT_TELSIZ_ARGS="--bind ${SERI_HUB_TUKETICI} --izinli-kaynak ${SERI_HUB_DINLE}"
     ;;
   *) hata "KIP='$KIP' taninmiyor (udp | sik)" ;;
 esac

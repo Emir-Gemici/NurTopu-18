@@ -24,6 +24,7 @@ import rpi_inference as ri  # noqa: E402
 
 
 SYSID = 1
+COMPONENT = 1
 ARM_BAYRAGI = 128
 
 
@@ -36,9 +37,10 @@ class SahteSaat:
 
 
 class Mesaj:
-    def __init__(self, tip, sysid=SYSID, **alanlar):
+    def __init__(self, tip, sysid=SYSID, component=COMPONENT, **alanlar):
         self._tip = tip
         self._sysid = sysid
+        self._component = component
         for ad, deger in alanlar.items():
             setattr(self, ad, deger)
 
@@ -48,12 +50,16 @@ class Mesaj:
     def get_srcSystem(self):
         return self._sysid
 
+    def get_srcComponent(self):
+        return self._component
+
 
 class Akis:
     def __init__(self, mesajlar=()):
         self.mesajlar = list(mesajlar)
         self.cagrilar = []
         self.target_system = SYSID
+        self.target_component = COMPONENT
 
     def recv_match(self, **kwargs):
         self.cagrilar.append(kwargs)
@@ -80,9 +86,14 @@ def _hb(sysid=SYSID, *, armed=True):
 
 class TekOkuyucuSnapshotTests(unittest.TestCase):
     def setUp(self):
-        mavlink = SimpleNamespace(MAV_MODE_FLAG_SAFETY_ARMED=ARM_BAYRAGI)
+        mavlink = SimpleNamespace(
+            MAV_MODE_FLAG_SAFETY_ARMED=ARM_BAYRAGI,
+            MAV_COMP_ID_AUTOPILOT1=COMPONENT)
         self.yama = mock.patch.object(
-            kanit, "_mavutil_al", return_value=SimpleNamespace(mavlink=mavlink))
+            kanit, "_mavutil_al", return_value=SimpleNamespace(
+                mavlink=mavlink,
+                mode_string_v10=lambda mesaj: getattr(
+                    mesaj, "mode_string", "UNKNOWN")))
         self.yama.start()
 
     def tearDown(self):
@@ -107,6 +118,7 @@ class TekOkuyucuSnapshotTests(unittest.TestCase):
             "gps_fix": 3,
             "uydu": 12,
             "armed": True,
+            "pixhawk_canli": True,
         }, okuyucu.telemetri_oku())
         self.assertTrue(all(
             c == {"type": kanit.MAVLINK_TELEMETRI_MESAJLARI,
@@ -120,7 +132,8 @@ class TekOkuyucuSnapshotTests(unittest.TestCase):
         okuyucu.telemetri_oku()
 
         saat.simdi = 0.5
-        self.assertEqual({"armed": True}, okuyucu.telemetri_snapshot(),
+        self.assertEqual({"armed": True, "pixhawk_canli": True},
+                         okuyucu.telemetri_snapshot(),
                          "0,50 s esigindeki konum/GPS son degeri sizdi")
         saat.simdi = 1.5
         self.assertEqual({}, okuyucu.telemetri_snapshot(),
@@ -253,7 +266,9 @@ class TekOkuyucuSnapshotTests(unittest.TestCase):
 class UretimSaglayiciTests(unittest.TestCase):
     def test_tek_snapshot_ham_gnss_ve_ayni_ornekten_yerel_xy_uretir(self):
         ham = {"lat": 39.925633, "lon": 32.866387, "alt": 30.0,
-               "gps_fix": 3, "uydu": 14, "armed": False}
+               "hiz": 12.4, "yon": 178.2, "gps_fix": 3, "uydu": 14,
+               "bat": 15.7, "armed": False, "mod": "AUTO",
+               "pixhawk_canli": True}
 
         class Okuyucu:
             adet = 0
@@ -319,7 +334,9 @@ class KararYayinciSnapshotTests(unittest.TestCase):
         def yeni():
             adet["yeni"] += 1
             return {"lat": 39.9, "lon": 32.8, "alt": 31.2,
-                    "gps_fix": 3, "uydu": 16, "armed": True}
+                    "hiz": 13.1, "yon": 92.0, "gps_fix": 3, "uydu": 16,
+                    "bat": 15.4, "armed": True, "mod": "AUTO",
+                    "pixhawk_canli": True}
 
         def eski():
             adet["eski"] += 1
@@ -329,7 +346,9 @@ class KararYayinciSnapshotTests(unittest.TestCase):
         self.assertEqual(1, adet["yeni"])
         self.assertEqual(0, adet["eski"])
         self.assertEqual({"lat": 39.9, "lon": 32.8, "alt": 31.2,
-                          "gps_fix": 3, "uydu": 16, "armed": True},
+                          "hiz": 13.1, "yon": 92.0, "gps_fix": 3,
+                          "uydu": 16, "bat": 15.4, "armed": True,
+                          "mod": "AUTO", "pixhawk_canli": True},
                          cagrilar[0])
         self.assertEqual(1, y.heartbeat_sayisi)
         self.assertEqual([], y.hata)
@@ -362,7 +381,9 @@ class KararYayinciSnapshotTests(unittest.TestCase):
         y.heartbeat_aralik = 0.001
         y.telemetri_saglayici = lambda: {
             "lat": 39.925533, "lon": 32.866287, "alt": 31.2,
-            "gps_fix": 3, "uydu": 15, "armed": True,
+            "hiz": 11.0, "yon": 270.0, "gps_fix": 3, "uydu": 15,
+            "bat": 15.8, "armed": True, "mod": "AUTO",
+            "pixhawk_canli": True,
         }
         y.konum_saglayici = None
         y.irtifa_saglayici = None

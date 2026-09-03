@@ -18,17 +18,22 @@ MESAJ_EXTENDED_SYS_STATE = "EXTENDED_SYS_STATE"
 MESAJ_GLOBAL_POSITION_INT = "GLOBAL_POSITION_INT"
 MESAJ_GPS_RAW_INT = "GPS_RAW_INT"
 MESAJ_HEARTBEAT = "HEARTBEAT"
+MESAJ_SYS_STATUS = "SYS_STATUS"
 MAVLINK_INIS_MESAJLARI = [MESAJ_EXTENDED_SYS_STATE,
                           MESAJ_GLOBAL_POSITION_INT]
 MAVLINK_TELEMETRI_MESAJLARI = [MESAJ_GLOBAL_POSITION_INT,
                                MESAJ_GPS_RAW_INT,
-                               MESAJ_HEARTBEAT]
+                               MESAJ_HEARTBEAT,
+                               MESAJ_SYS_STATUS]
 MILIMETRE_BIR_METRE = 1000.0
+SANTIMETRE_BIR_METRE = 100.0
 MILISANIYE_BIR_SANIYE = 1000.0
 MIKROSANIYE_BIR_SANIYE = 1_000_000.0
 MAVLINK_TIME_BOOT_MS_AZAMI = (1 << 32) - 1
 MAVLINK_TIME_USEC_AZAMI = (1 << 64) - 1
 MAVLINK_UINT8_AZAMI = (1 << 8) - 1
+MAVLINK_UINT16_AZAMI = (1 << 16) - 1
+POLLER_HATA_GERI_CEKILME_S = 0.05
 # MAVLink GPS_RAW_INT: 255, uydu sayisinin bilinmedigini belirtir.
 GPS_UYDU_BILINMIYOR = MAVLINK_UINT8_AZAMI
 
@@ -76,6 +81,68 @@ def mavlink_baglantisi_ac(adres):
         ) from exc
 
 
+# ── CONTRACTS §7.4 KOD KILIDI — SERI PIXHAWK TEK SAHIPLIDIR ─────────────────
+# NEDEN (D-403 · FDR/ACIK_KALEMLER §4b #23): Jetson'da `/dev/ttyACM0`'i UC
+# uretim sureci istiyor — `rpi_inference` (bagil irtifa), `iha_inis_yayinci`
+# (inis kaniti) ve `iha_komut_alici` (PARACHUTE/ARM aktarimi). Seri port TEK
+# SAHIPLIDIR: ikinci surec ya acamaz ya ilkinin cerceve akisini calar ve iki
+# taraf da SESSIZCE KOR olur (`_mav_sahiplen` yalniz surec ICI sahipligi
+# korur, surecler ARASI koruma yoktur).
+#
+# Kural CONTRACTS §7.4'te yaziliydi ama YALNIZ `iha_komut_alici`da KODLUYDU;
+# diger iki surec "yordamla" korunuyordu — yani korunmuyordu. Kilit ucunde de
+# AYNI olmali (ayni bayrak adi, ayni hata metni, ayni cikis kodu 2), yoksa
+# saha gunlugunde tek bir kalip grep'lenemez ve runbook uc ayri metin ogretir.
+#
+# Kalip kopyalanmaz, BURADAN okunur: `mavlink_baglantisi_ac` zaten uc surecin
+# de tek ortak MAVLink kapisidir ve bu dosya Jetson paketine (KOPYALAR)
+# hepsiyle birlikte gider. Baglanti bozulmaz: helper pymavlink'e DOKUNMAZ,
+# saf metin denetimidir — `rpi_inference` onu pymavlink kurulmadan da okur.
+SERI_PIXHAWK_BILEREK_BAYRAGI = "--seri-pixhawk-bilerek"
+SERI_PIXHAWK_BILEREK_YARDIM = (
+    "CONTRACTS §7.4 kilidini BILEREK as: --mavlink'e dogrudan seri cihaz ver "
+    "(tek sahipli port; baska MAVLink sureci acikken ikisi de sessizce kor olur)")
+
+
+def seri_pixhawk_yolu_mu(adres):
+    """`--mavlink` degeri DOGRUDAN seri cihaz mi (cogullayici ucu degil)?
+
+    Kabul edilen cogullayici uclari `udp:`/`udpin:`/`udpout:`/`tcp:` ile
+    baslar; reddedilen kalip Linux (`/dev/tty*`), Windows (`COM*`) ve
+    pyserial URL (`serial:`) yollaridir. Metin disi deger (None) kilidi
+    tetiklemez — onu cagiranin kendi dogrulamasi yakalar.
+    """
+    if not isinstance(adres, str):
+        return False
+    return (adres.startswith("/dev/tty")
+            or adres.upper().startswith("COM")
+            or adres.startswith("serial:"))
+
+
+def seri_pixhawk_kilit_metni(adres):
+    """Uc surecin de AYNEN bastigi red metni (saha gunlugunde tek kalip)."""
+    return (f"--mavlink {adres!r} dogrudan seri cihaz: seri "
+            "Pixhawk TEK SAHIPLIDIR (CONTRACTS §7.4). Cogullayici ucu "
+            f"ver (udp:127.0.0.1:1455N) ya da {SERI_PIXHAWK_BILEREK_BAYRAGI}.")
+
+
+def seri_pixhawk_bayragini_ekle(parser):
+    """Kilidi bilerek asma bayragini ekle; dest -> `seri_pixhawk_bilerek`."""
+    parser.add_argument(SERI_PIXHAWK_BILEREK_BAYRAGI, action="store_true",
+                        help=SERI_PIXHAWK_BILEREK_YARDIM)
+    return parser
+
+
+def seri_pixhawk_kilidini_uygula(parser, adres, bilerek):
+    """Seri cihaz + bayrak yok -> `parser.error` (argparse cikis kodu 2).
+
+    Fail-closed: kilit YALNIZ acik bayrakla asilir. Donus degeri yoktur;
+    gecerse cagiran akisina devam eder.
+    """
+    if seri_pixhawk_yolu_mu(adres) and not bilerek:
+        parser.error(seri_pixhawk_kilit_metni(adres))
+
+
 def _mesaj_tipi(mesaj):
     try:
         tip_al = getattr(mesaj, "get_type")
@@ -94,6 +161,19 @@ def _mesaj_kaynagi(mesaj):
     if isinstance(kaynak, bool) or not isinstance(kaynak, int) or kaynak <= 0:
         return None
     return kaynak
+
+
+def _mesaj_bileseni(mesaj):
+    try:
+        bilesen = mesaj.get_srcComponent()
+    except AttributeError:
+        return None
+    except Exception:
+        return 0
+    if (isinstance(bilesen, bool) or not isinstance(bilesen, int)
+            or not 1 <= bilesen <= MAVLINK_UINT8_AZAMI):
+        return 0
+    return bilesen
 
 
 def _bagil_irtifa_m(mesaj):
@@ -208,6 +288,53 @@ def _armed_durumu(mesaj):
     return bool(base_mode & bayrak)
 
 
+def _hiz_ve_yon(mesaj):
+    """GLOBAL_POSITION_INT hızını m/s, yönünü derece olarak doğrula."""
+    try:
+        vx = getattr(mesaj, "vx", None)
+        vy = getattr(mesaj, "vy", None)
+        hdg = getattr(mesaj, "hdg", None)
+    except Exception:
+        return None, None
+    hiz = None
+    if all(not isinstance(v, bool) and isinstance(v, Real) for v in (vx, vy)):
+        try:
+            aday = math.hypot(float(vx), float(vy)) / SANTIMETRE_BIR_METRE
+        except (OverflowError, TypeError, ValueError):
+            aday = math.nan
+        if math.isfinite(aday):
+            hiz = aday
+    yon = None
+    if (not isinstance(hdg, bool) and isinstance(hdg, int)
+            and 0 <= hdg < MAVLINK_UINT16_AZAMI):
+        aday = hdg / SANTIMETRE_BIR_METRE
+        if aday < 360.0:
+            yon = aday
+    return hiz, yon
+
+
+def _batarya_voltu(mesaj):
+    try:
+        mv = getattr(mesaj, "voltage_battery", None)
+    except Exception:
+        return None
+    if (isinstance(mv, bool) or not isinstance(mv, int)
+            or not 0 < mv < MAVLINK_UINT16_AZAMI):
+        return None
+    return mv / MILIMETRE_BIR_METRE
+
+
+def _ucus_modu(mesaj):
+    try:
+        mod = _mavutil_al().mode_string_v10(mesaj)
+    except Exception:
+        return None
+    if not isinstance(mod, str):
+        return None
+    mod = mod.strip()
+    return None if not mod or mod.upper().startswith("UNKNOWN") else mod
+
+
 def _uzak_sira_karari(son, aday, yeni, azami_geri_adim,
                       reboot_adayi_olabilir=True):
     """Uzak araç saatini tekrar/sıra dışı paket ve reboot arasında ayır.
@@ -260,7 +387,8 @@ class BagilIrtifaOkuyucu:
     """
 
     def __init__(self, mav, tazelik_s, beklenen_sysid=None, *,
-                 durum_tazelik_s=None, monotonic=time.monotonic):
+                 beklenen_component=None, durum_tazelik_s=None,
+                 monotonic=time.monotonic):
         if isinstance(tazelik_s, bool) or not isinstance(tazelik_s, Real):
             raise ValueError("tazelik_s pozitif ve sonlu olmalıdır")
         try:
@@ -304,6 +432,28 @@ class BagilIrtifaOkuyucu:
               or not 1 <= beklenen_sysid <= 255):
             raise ValueError("beklenen_sysid 1..255 tamsayı olmalıdır")
 
+        if beklenen_component is None:
+            try:
+                baglanti_component = getattr(mav, "target_component", None)
+            except Exception:
+                baglanti_component = None
+            if (not isinstance(baglanti_component, bool)
+                    and isinstance(baglanti_component, int)
+                    and 1 <= baglanti_component <= MAVLINK_UINT8_AZAMI):
+                beklenen_component = baglanti_component
+            else:
+                try:
+                    beklenen_component = int(
+                        _mavutil_al().mavlink.MAV_COMP_ID_AUTOPILOT1)
+                except Exception as exc:
+                    raise ValueError(
+                        "beklenen_component veya MAV_COMP_ID_AUTOPILOT1 gerekli"
+                    ) from exc
+        if (isinstance(beklenen_component, bool)
+                or not isinstance(beklenen_component, int)
+                or not 1 <= beklenen_component <= MAVLINK_UINT8_AZAMI):
+            raise ValueError("beklenen_component 1..255 tamsayı olmalıdır")
+
         self._mav = mav
         self._tazelik_s = tazelik
         # HEARTBEAT standartta 1 Hz'dir; 0,50 s irtifa eşiği ona uygulanmaz.
@@ -311,6 +461,7 @@ class BagilIrtifaOkuyucu:
         # biçimde hiç sunulmayacağını ifade eder.
         self._durum_tazelik_s = durum_tazelik
         self._beklenen_sysid = beklenen_sysid
+        self._beklenen_component = beklenen_component
         self._monotonic = monotonic
         self._snapshot_kilidi = threading.Lock()
         self._yasam_kilidi = threading.Lock()
@@ -321,6 +472,8 @@ class BagilIrtifaOkuyucu:
         self._son_irtifa_m = None
         self._son_telemetri_alt_m = None
         self._son_konum = None            # T162: (lat, lon) — irtifadan BAGIMSIZ
+        self._son_hiz = None
+        self._son_yon = None
         self._son_gelis_monotonic = None
         self._son_gps_uzak_us = None
         self._gps_us_reboot_adayi = None
@@ -328,19 +481,29 @@ class BagilIrtifaOkuyucu:
         self._son_uydu = None
         self._son_gps_gelis_monotonic = None
         self._son_armed = None
+        self._son_mod = None
+        self._son_pixhawk_canli = None
         self._son_heartbeat_gelis_monotonic = None
+        self._son_batarya = None
+        self._son_sys_status_gelis_monotonic = None
 
     def _gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_irtifa_m = None
             self._son_telemetri_alt_m = None
             self._son_konum = None
+            self._son_hiz = None
+            self._son_yon = None
             self._son_gelis_monotonic = None
             self._son_gps_fix = None
             self._son_uydu = None
             self._son_gps_gelis_monotonic = None
             self._son_armed = None
+            self._son_mod = None
+            self._son_pixhawk_canli = None
             self._son_heartbeat_gelis_monotonic = None
+            self._son_batarya = None
+            self._son_sys_status_gelis_monotonic = None
             # Bağlantı/okuyucu yaşam döngüsü bittiğinde uzak araç saati de yeni
             # bir çağdadır. Eski uptime'ı korumak yeniden bağlantıdan sonra
             # Pixhawk'ın o değere erişmesini saatlerce bekletirdi.
@@ -354,6 +517,8 @@ class BagilIrtifaOkuyucu:
             self._son_irtifa_m = None
             self._son_telemetri_alt_m = None
             self._son_konum = None
+            self._son_hiz = None
+            self._son_yon = None
             self._son_gelis_monotonic = None
             self._uzak_ms_reboot_adayi = None
 
@@ -367,7 +532,14 @@ class BagilIrtifaOkuyucu:
     def _heartbeat_gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_armed = None
+            self._son_mod = None
+            self._son_pixhawk_canli = None
             self._son_heartbeat_gelis_monotonic = None
+
+    def _sys_status_gecersiz_kil(self):
+        with self._snapshot_kilidi:
+            self._son_batarya = None
+            self._son_sys_status_gelis_monotonic = None
 
     def _mesaj_isle(self, mesaj, gelis):
         tip = _mesaj_tipi(mesaj)
@@ -386,11 +558,17 @@ class BagilIrtifaOkuyucu:
         if not math.isfinite(gelis):
             self._gecersiz_kil()
             return False
+        bilesen = _mesaj_bileseni(mesaj)
+        # Gerçek pymavlink paketleri component taşır. None yalnız component
+        # arayüzü olmayan eski test doubles ile geriye uyumluluk içindir.
+        if bilesen is not None and bilesen != self._beklenen_component:
+            return False
 
         if tip == MESAJ_GLOBAL_POSITION_INT:
             uzak_ms = _uzak_zaman_ms(mesaj)
             irtifa_m = _bagil_irtifa_m(mesaj)
             konum = _konum_derece(mesaj)
+            hiz, yon = _hiz_ve_yon(mesaj)
             if uzak_ms is None or (irtifa_m is None and konum is None):
                 # BEKLENEN kaynaktan bozuk alan: kendi hattimizdaki bozulma
                 # gercek kotu haberdir — yalniz bu akış temizlenir.
@@ -411,6 +589,8 @@ class BagilIrtifaOkuyucu:
                         self._son_irtifa_m = None
                         self._son_telemetri_alt_m = None
                         self._son_konum = None
+                        self._son_hiz = None
+                        self._son_yon = None
                         self._son_gelis_monotonic = None
                     return False
                 self._son_uzak_ms = yeni_son
@@ -424,6 +604,8 @@ class BagilIrtifaOkuyucu:
                 # Konum EK bilgidir. Gecersizse `None`; irtifa ve inis kaniti
                 # bundan ETKILENMEZ.
                 self._son_konum = konum
+                self._son_hiz = hiz
+                self._son_yon = yon
                 self._son_gelis_monotonic = gelis
             return True
 
@@ -451,12 +633,24 @@ class BagilIrtifaOkuyucu:
                 self._son_gps_gelis_monotonic = gelis
             return True
 
+        if tip == MESAJ_SYS_STATUS:
+            batarya = _batarya_voltu(mesaj)
+            if batarya is None:
+                self._sys_status_gecersiz_kil()
+                return False
+            with self._snapshot_kilidi:
+                self._son_batarya = batarya
+                self._son_sys_status_gelis_monotonic = gelis
+            return True
+
         armed = _armed_durumu(mesaj)
         if armed is None:
             self._heartbeat_gecersiz_kil()
             return False
         with self._snapshot_kilidi:
             self._son_armed = armed
+            self._son_mod = _ucus_modu(mesaj)
+            self._son_pixhawk_canli = True
             self._son_heartbeat_gelis_monotonic = gelis
         return True
 
@@ -478,7 +672,8 @@ class BagilIrtifaOkuyucu:
                     )
                 except Exception:
                     self._gecersiz_kil()
-                    return
+                    self._dur_olayi.wait(POLLER_HATA_GERI_CEKILME_S)
+                    continue
                 if mesaj is None:
                     continue
                 # Damga recv_match tesliminin hemen ardından, doğrulamadan önce.
@@ -596,8 +791,9 @@ class BagilIrtifaOkuyucu:
     def telemetri_snapshot(self):
         """Taze telemetriyi tek kilit altında kopyala; bayat alanı dışarı verme.
 
-        Dönüş alanları: ``lat``, ``lon``, ``alt`` (GLOBAL_POSITION_INT),
-        ``gps_fix``/``uydu`` (GPS_RAW_INT) ve ``armed`` (HEARTBEAT). Her akışın
+        Dönüş alanları: ``lat``, ``lon``, ``alt``, ``hiz``, ``yon``
+        (GLOBAL_POSITION_INT), ``gps_fix``/``uydu`` (GPS_RAW_INT), ``bat``
+        (SYS_STATUS) ve ``armed``/``mod``/``pixhawk_canli`` (HEARTBEAT). Her akışın
         yaşı kendi son geliş damgasından ölçülür. Eksik, bozuk veya bayat alan
         sözlükte hiç yer almaz; son bilinen değer tekrar kullanılmaz.
         """
@@ -614,12 +810,18 @@ class BagilIrtifaOkuyucu:
                 self._son_irtifa_m = None
                 self._son_telemetri_alt_m = None
                 self._son_konum = None
+                self._son_hiz = None
+                self._son_yon = None
                 self._son_gelis_monotonic = None
                 self._son_gps_fix = None
                 self._son_uydu = None
                 self._son_gps_gelis_monotonic = None
                 self._son_armed = None
+                self._son_mod = None
+                self._son_pixhawk_canli = None
                 self._son_heartbeat_gelis_monotonic = None
+                self._son_batarya = None
+                self._son_sys_status_gelis_monotonic = None
                 return {}
 
             cikti = {}
@@ -629,10 +831,16 @@ class BagilIrtifaOkuyucu:
                     cikti["alt"] = self._son_telemetri_alt_m
                 if self._son_konum is not None:
                     cikti["lat"], cikti["lon"] = self._son_konum
+                if self._son_hiz is not None:
+                    cikti["hiz"] = self._son_hiz
+                if self._son_yon is not None:
+                    cikti["yon"] = self._son_yon
             else:
                 self._son_irtifa_m = None
                 self._son_telemetri_alt_m = None
                 self._son_konum = None
+                self._son_hiz = None
+                self._son_yon = None
                 self._son_gelis_monotonic = None
 
             if self._taze_mi(
@@ -650,9 +858,22 @@ class BagilIrtifaOkuyucu:
                              self._durum_tazelik_s):
                 if self._son_armed is not None:
                     cikti["armed"] = self._son_armed
+                if self._son_mod is not None:
+                    cikti["mod"] = self._son_mod
+                if self._son_pixhawk_canli is not None:
+                    cikti["pixhawk_canli"] = self._son_pixhawk_canli
             else:
                 self._son_armed = None
+                self._son_mod = None
+                self._son_pixhawk_canli = None
                 self._son_heartbeat_gelis_monotonic = None
+            if self._taze_mi(simdi, self._son_sys_status_gelis_monotonic,
+                             self._durum_tazelik_s):
+                if self._son_batarya is not None:
+                    cikti["bat"] = self._son_batarya
+            else:
+                self._son_batarya = None
+                self._son_sys_status_gelis_monotonic = None
             return cikti
 
     def irtifa_m(self):

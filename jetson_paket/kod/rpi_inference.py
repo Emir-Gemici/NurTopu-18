@@ -23,7 +23,9 @@ import importlib
 import json
 import math
 import os
+import signal
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -88,6 +90,7 @@ if __package__:
                                    KAMERA_BITIS_KULLANICI,
                                    KAMERA_BITIS_DUSEN_KARE,
                                    KAMERA_BITIS_ACILAMADI,
+                                   KAMERA_BITIS_SINYAL,
                                    MODEL_TUREV_SHA_YER_TUTUCU)
 else:
     from costmap_path_finder import (R_GEREKLI_M, _bagli_mi,
@@ -141,6 +144,7 @@ else:
                                   KAMERA_BITIS_KULLANICI,
                                   KAMERA_BITIS_DUSEN_KARE,
                                   KAMERA_BITIS_ACILAMADI,
+                                  KAMERA_BITIS_SINYAL,
                                   MODEL_TUREV_SHA_YER_TUTUCU)
 
 _here = Path(__file__).parent
@@ -2047,6 +2051,77 @@ def run_image(model, path_str, conf, mpp=None, canli_olcek=None,
             print(f"{'':30s}  payload: {json.dumps(ika_data)}")
 
 
+# ── T204 · EKRANSIZ KIPTE KONTROLLU DURDURMA (D-404 §8 KUCUK-2) ─────────────
+# KUSUR (TASK_QUEUE T204): `signal` HIC islenmiyordu. `systemctl stop
+# navitas-rpi-inference` SIGTERM yollar; Python varsayilani surecin ANINDA
+# olmesidir — `run_camera`/`run_video` icindeki `cap.release()` ve `main()`
+# finally'si (`yayinci.stop`, `link.close`, `canli_olcek.kapat`) HIC kosmaz.
+# Ekranli kipte 'q' bu yolu sagliyordu; EKRANSIZ kipte 'q' YOKTUR, tek dogal
+# bitis 30 ardisik dusen karedir — yani pratikte hicbir temiz cikis yolu yok.
+#
+# Cozum `comms/seri_hub.py` (D-405) kalibinin AYNISI: isleyici YALNIZ bayrak
+# kurar; dongu bir tur icinde cikar, `finally` kosar, cikis kodu 0.
+# 🔴 Isleyiciden `KeyboardInterrupt` FIRLATMAK bilerek SECILMEDI: istisna
+# rasgele bir bytecode sinirinda — temizligin ORTASINDA da — dogabilir ve
+# `cap.release()`i bolebilir. Bayrak deterministiktir.
+# systemd sozlesmesi DEGISMEZ: temiz cikis zaten kod 0'dir ve `systemctl stop`
+# `Restart=always` birimini yeniden baslatmaz; `TimeoutStopSec=5` icin bir tur
+# (bir kare suresi ya da dusen-kare beklemesi) fazlasiyla yeter.
+_DURDURMA = threading.Event()
+_DURDURMA_SINYALLERI = ("SIGTERM", "SIGINT")
+
+
+def durdurma_istendi():
+    """Kontrollu durdurma sinyali geldi mi? (dongu kapisi)"""
+    return _DURDURMA.is_set()
+
+
+def durdurmayi_iste():
+    """Bayragi kur — sinyal isleyicisi ve testler icin tek giris."""
+    _DURDURMA.set()
+
+
+def durdurma_bayragini_sifirla():
+    """Bayragi temizle (surec ici yeniden kosum ve test hijyeni)."""
+    _DURDURMA.clear()
+
+
+def _durdurma_sinyallerini_kur():
+    """SIGTERM/SIGINT -> bayrak. Onceki isleyicileri dondurur (geri alma icin).
+
+    `signal.signal` yalniz ANA IPLIKTE ve sinyali olan platformda calisir;
+    kurulamazsa KIRMIZI not basilir ve isleyici kurulmaz — SESSIZ gecis YOK
+    (kontrollu durdurmanin olmadigini sahada gormek gerekir).
+    """
+    durdurma_bayragini_sifirla()
+
+    def isleyici(signum, frame):        # noqa: ARG001 — imza signal'indir
+        durdurmayi_iste()
+
+    eskiler = {}
+    for ad in _DURDURMA_SINYALLERI:
+        sig = getattr(signal, ad, None)
+        if sig is None:
+            continue
+        try:
+            eskiler[sig] = signal.signal(sig, isleyici)
+        except (ValueError, OSError, RuntimeError) as exc:
+            print(f"KIRMIZI: {ad} isleyicisi kurulamadi "
+                  f"({type(exc).__name__}: {exc}) — kontrollu durdurma YOK; "
+                  f"kamera serbest birakilmayabilir",
+                  file=sys.stderr, flush=True)
+    return eskiler
+
+
+def _durdurma_sinyallerini_geri_al(eskiler):
+    """main() cikarken onceki isleyicileri geri koy (test/kutuphane hijyeni)."""
+    for sig, eski in (eskiler or {}).items():
+        try:
+            signal.signal(sig, eski)
+        except (ValueError, OSError, TypeError, RuntimeError):
+            pass
+
+
 def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
               arac_modeli=None, senaryo=None, yayinci=None, *, ekransiz=False):
     # D-404: `ekransiz=True` -> pencere/waitKey YOK (systemd, DISPLAY'siz Jetson).
@@ -2072,14 +2147,39 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
     side = max(src_w, src_h)   # letterbox KARE tuval — crop degil, pad (bkz. _preprocess)
 
     writer = None
+    out_path = None
     if save:
         RESULTS_DIR.mkdir(exist_ok=True)
         out_path = RESULTS_DIR / f"{path.stem}_result.mp4"
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         writer = cv2.VideoWriter(str(out_path), fourcc, src_fps, (side, side))
+        # T205 (D-404 §8 KUCUK-3): `cv2.VideoWriter` ASLA None DONMEZ — codec
+        # ya da yazma izni yoksa nesne yine uretilir ve `bool(writer)` TRUE
+        # kalir. Eski kod her kareyi bu OLU yaziciya yaziyor, sonda
+        # "Kaydedildi:" basiyordu: KAYIT SESSIZCE KAYBOLUYORDU. Ustelik
+        # ekransiz kipin "gorsel HIC uretilmez" vaadi de bozuluyordu
+        # (`if ekransiz and not writer` yanlis dalda kaliyordu).
+        #
+        # SECIM (TASK_QUEUE T205 on-kaydi, gerekce): sureci OLDURMEK yerine
+        # KAYIT KIPINI KAPAT. --video cevrimdisi analiz/gosterim yoludur;
+        # kaydin yapilamamasi karar uretimini durdurmaz ve --video ile
+        # telsiz halkasi da kurulabilir (yayin kesilmemeli). Ama SESSIZ
+        # OLAMAZ: stderr'e KIRMIZI uyari, `writer=None`, ve sonda
+        # "Kaydedildi:" satiri BASILMAZ — "kayit yok" gorunur.
+        if not writer.isOpened():
+            print(f"KIRMIZI: VideoWriter ACILAMADI ({out_path}; fourcc=mp4v "
+                  f"{src_fps:.1f} fps {side}x{side}) — codec yok ya da yol "
+                  f"yazilamiyor. KAYIT KAPATILDI, karar yolu surer.",
+                  file=sys.stderr, flush=True)
+            try:
+                writer.release()
+            except cv2.error:
+                pass
+            writer = None
+            save = False
 
     print(f"Video: {path.name}  {src_w}x{src_h}  {src_fps:.1f}fps  {total_frames} kare")
-    print(f"Cikti: {out_path if save else 'kayit yok'}  — izlemek icin 'q'")
+    print(f"Cikti: {out_path if writer else 'kayit yok'}  — izlemek icin 'q'")
 
     fps_buf = []
     frame_idx = 0
@@ -2087,96 +2187,111 @@ def run_video(model, path_str, conf, save=True, mpp=None, canli_olcek=None,
     # once. Analiz katmani ve zincir olcumleri (61/65) DEGISMEZ (madde 15).
     yumusatici = KararYumusatici()
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+    # T204: dongu ARTIK try/finally icinde. SIGTERM/SIGINT bayragi
+    # kurulunca bir tur icinde cikilir; `cap.release()`/`writer.release()`
+    # her yolda (istisna, KeyboardInterrupt, sinyal) KOSAR.
+    try:
+        while True:
+            # T204: kontrollu durdurma — sinyal geldiyse bu tur ISLENMEZ,
+            # dongu biter ve `finally` temizligi kosar.
+            if durdurma_istendi():
+                print("KONTROLLU DURDURMA: sinyal alindi, video dongusu "
+                      "kapaniyor.", flush=True)
+                break
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-        frame_idx += 1
-        sq, small, icerik = _preprocess(frame)
-        orig_h, orig_w = sq.shape[:2]
+            frame_idx += 1
+            sq, small, icerik = _preprocess(frame)
+            orig_h, orig_w = sq.shape[:2]
 
-        t0 = time.perf_counter()
-        results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
-        fps_buf.append(time.perf_counter() - t0)
-        if len(fps_buf) > 30:
-            fps_buf.pop(0)
+            t0 = time.perf_counter()
+            results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
+            fps_buf.append(time.perf_counter() - t0)
+            if len(fps_buf) > 30:
+                fps_buf.pop(0)
 
-        masks = get_masks(results, orig_h, orig_w)
-        masks = _maskeleri_icerige_kirp(masks, icerik)
-        # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
-        # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
-        olcek = kare_olcek_kahini(mpp, canli_olcek, icerik, bgr=frame,
-                                  arac_modeli=arac_modeli, senaryo=senaryo)
-        kare_mpp = olcek["mpp"]
-        # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
-        # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
-        # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
-        olcek_reddi = rota_olcek_reddi(kare_mpp)
-        open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True, olcek_kaynagi=olcek["kaynak"],
-            # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
-            # varis noktasi HB'den alinir; olcek+sekil kapilari
-            # analyze_path icindeki tek noktadan. HB gorunmeyen
-            # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
-            # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
-            # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
-            # 253/256 dogru pedde (results/t150/baglama_olcumu).
-            goruntu=sq)
-        # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
-        # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
-        # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
-        if olcek_reddi is not None and karar_reddi is None:
-            open_path, path_conf, waypoints = None, 0.0, []
-            karar_reddi = olcek_reddi
-        open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
-            open_path, path_conf, waypoints, karar_reddi)
-        # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
-        # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
-        # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
-        if yumusatici.suz(open_path, karar_reddi):
-            _karari_yayinla(yayinci, open_path, path_conf, waypoints,
-                            kare_mpp, karar_reddi)
-        # D-404: gorsel yalniz kayit ya da ekran icin uretilir; ekransiz ve
-        # kayitsiz kosumda hic cizilmez (karar yukarida zaten yayinlandi).
-        if ekransiz and not writer:
-            continue
-        vis = draw_masks(sq, masks)
+            masks = get_masks(results, orig_h, orig_w)
+            masks = _maskeleri_icerige_kirp(masks, icerik)
+            # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
+            # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
+            olcek = kare_olcek_kahini(mpp, canli_olcek, icerik, bgr=frame,
+                                      arac_modeli=arac_modeli, senaryo=senaryo)
+            kare_mpp = olcek["mpp"]
+            # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
+            # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+            # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
+            olcek_reddi = rota_olcek_reddi(kare_mpp)
+            open_path, path_conf, waypoints, karar_reddi = analyze_path(
+                masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
+                return_reason=True, olcek_kaynagi=olcek["kaynak"],
+                # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
+                # varis noktasi HB'den alinir; olcek+sekil kapilari
+                # analyze_path icindeki tek noktadan. HB gorunmeyen
+                # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
+                # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
+                # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
+                # 253/256 dogru pedde (results/t150/baglama_olcumu).
+                goruntu=sq)
+            # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
+            # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
+            # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
+            if olcek_reddi is not None and karar_reddi is None:
+                open_path, path_conf, waypoints = None, 0.0, []
+                karar_reddi = olcek_reddi
+            open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
+                open_path, path_conf, waypoints, karar_reddi)
+            # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
+            # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
+            # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
+            if yumusatici.suz(open_path, karar_reddi):
+                _karari_yayinla(yayinci, open_path, path_conf, waypoints,
+                                kare_mpp, karar_reddi)
+            # D-404: gorsel yalniz kayit ya da ekran icin uretilir; ekransiz ve
+            # kayitsiz kosumda hic cizilmez (karar yukarida zaten yayinlandi).
+            if ekransiz and not writer:
+                continue
+            vis = draw_masks(sq, masks)
 
-        if open_path:
-            vis = _draw_waypoints(vis, waypoints)
-            label = f"Yol: {open_path}  guven: {path_conf:.2f}"
-        elif karar_reddi is not None:
-            label = f"NO_ROUTE: {karar_reddi[0]} ({path_conf:.3f})"
-        else:
-            label = "Tespit yok"
+            if open_path:
+                vis = _draw_waypoints(vis, waypoints)
+                label = f"Yol: {open_path}  guven: {path_conf:.2f}"
+            elif karar_reddi is not None:
+                label = f"NO_ROUTE: {karar_reddi[0]} ({path_conf:.3f})"
+            else:
+                label = "Tespit yok"
 
-        live_fps = 1.0 / (sum(fps_buf) / len(fps_buf))
-        progress = f"{frame_idx}/{total_frames}" if total_frames > 0 else str(frame_idx)
-        cv2.putText(vis, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-        cv2.putText(vis, f"FPS: {live_fps:.1f}  Kare: {progress}",
-                    (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+            live_fps = 1.0 / (sum(fps_buf) / len(fps_buf))
+            progress = f"{frame_idx}/{total_frames}" if total_frames > 0 else str(frame_idx)
+            cv2.putText(vis, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+            cv2.putText(vis, f"FPS: {live_fps:.1f}  Kare: {progress}",
+                        (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
 
+            if writer:
+                writer.write(vis)
+
+            if ekransiz:
+                continue
+            cv2.imshow("Navitas", vis)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                print("Kullanici durdurdu.")
+                break
+
+    finally:
+        cap.release()
         if writer:
-            writer.write(vis)
+            writer.release()
+        if not ekransiz:
+            cv2.destroyAllWindows()
 
-        if ekransiz:
-            continue
-        cv2.imshow("Navitas", vis)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            print("Kullanici durdurdu.")
-            break
-
-    cap.release()
+    # T204: kontrollu durdurma ILK KAREDEN ONCE gelirse `fps_buf` BOSTUR;
+    # eski satir orada ZeroDivisionError ile cokuyordu — kontrollu cikis
+    # yolu cokerek bitemez (cikis kodu 0 kalmali: systemd sozlesmesi).
+    ort_fps = (1.0 / (sum(fps_buf) / len(fps_buf))) if fps_buf else 0.0
+    print(f"\n{frame_idx} kare islendi  —  ortalama {ort_fps:.1f} FPS")
+    # T205: olu yazicida `writer` None'dir -> "Kaydedildi:" YALANI yok.
     if writer:
-        writer.release()
-    if not ekransiz:
-        cv2.destroyAllWindows()
-
-    elapsed = sum(fps_buf) / len(fps_buf) * frame_idx if fps_buf else 0
-    print(f"\n{frame_idx} kare islendi  —  ortalama {1/( sum(fps_buf)/len(fps_buf)):.1f} FPS")
-    if save and writer:
         print(f"Kaydedildi: {out_path}")
 
 
@@ -2214,90 +2329,102 @@ def run_camera(model, conf, mpp=None, canli_olcek=None, kaynak=None,
     yumusatici = KararYumusatici()
 
     # T143 (D-284): eskiden `if not ret: break` — ilk dusen karede SESSIZ bitis.
-    for frame in kamera_kareleri(cap, ozet):
-        # 🔴 D-349: BURADA `frame = cv2.flip(frame, 1)` VARDI ve KALDIRILDI.
-        # Projenin ILK commit'inden (17258f8) geliyordu, aciklamasi yoktu —
-        # muhtemelen dizustu web kamerasinda goruntunun "dogal" gorunmesi icin
-        # konmus bir AYNA kolayligi. Ama bu SAHA YOLUDUR (jetson_paket'te de
-        # var, CONTRACTS izlenebilirlik tablosu satir 1) ve kareyi aynalamak
-        # SOL ile SAGI takas eder. OLCULDU (kabul kumesi, v36, uretim cagri
-        # sirasi): acik yol 1 ya da 3 olan 16 karenin 15'i (%93,8) TAKAS
-        # oluyordu (1->3: 9 kare, 3->1: 6 kare); orta serit aynaya simetrik
-        # oldugu icin etkilenmiyordu.
-        # Sahada acik guzergah SOL ise IKA SAGA yonlendirilirdi.
-        # Sartname SS2.1: yanlis guzergah = 0 PUAN.
-        # ⚠ GERI KOYMAYIN. Nobetci: tests/test_t201_kamera_yonu.py
-        sq, small, icerik = _preprocess(frame)
-        orig_h, orig_w = sq.shape[:2]
+    # T204: dongu try/finally icinde — sinyal, istisna ve KeyboardInterrupt
+    # dahil HER yolda kamera serbest birakilir (D-404 §8 KUCUK-2).
+    try:
+        for frame in kamera_kareleri(cap, ozet):
+            # T204: kontrollu durdurma — SIGTERM/SIGINT bayragi kuruluysa
+            # bu kare ISLENMEZ; `finally` cap.release()'i GARANTI eder.
+            # Ekransiz kipte 'q' yoktur; bu, tek gercek temiz cikistir.
+            if durdurma_istendi():
+                ozet["bitis"] = KAMERA_BITIS_SINYAL
+                print("KONTROLLU DURDURMA: sinyal alindi, kamera dongusu "
+                      "kapaniyor.", flush=True)
+                break
+            # 🔴 D-349: BURADA `frame = cv2.flip(frame, 1)` VARDI ve KALDIRILDI.
+            # Projenin ILK commit'inden (17258f8) geliyordu, aciklamasi yoktu —
+            # muhtemelen dizustu web kamerasinda goruntunun "dogal" gorunmesi icin
+            # konmus bir AYNA kolayligi. Ama bu SAHA YOLUDUR (jetson_paket'te de
+            # var, CONTRACTS izlenebilirlik tablosu satir 1) ve kareyi aynalamak
+            # SOL ile SAGI takas eder. OLCULDU (kabul kumesi, v36, uretim cagri
+            # sirasi): acik yol 1 ya da 3 olan 16 karenin 15'i (%93,8) TAKAS
+            # oluyordu (1->3: 9 kare, 3->1: 6 kare); orta serit aynaya simetrik
+            # oldugu icin etkilenmiyordu.
+            # Sahada acik guzergah SOL ise IKA SAGA yonlendirilirdi.
+            # Sartname SS2.1: yanlis guzergah = 0 PUAN.
+            # ⚠ GERI KOYMAYIN. Nobetci: tests/test_t201_kamera_yonu.py
+            sq, small, icerik = _preprocess(frame)
+            orig_h, orig_w = sq.shape[:2]
 
-        t0 = time.perf_counter()
-        results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
-        fps_buf.append(time.perf_counter() - t0)
-        if len(fps_buf) > 30:
-            fps_buf.pop(0)
+            t0 = time.perf_counter()
+            results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)
+            fps_buf.append(time.perf_counter() - t0)
+            if len(fps_buf) > 30:
+                fps_buf.pop(0)
 
-        masks = get_masks(results, orig_h, orig_w)
-        masks = _maskeleri_icerige_kirp(masks, icerik)
-        # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
-        # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
-        olcek = kare_olcek_kahini(None, canli_olcek, icerik, bgr=frame,
-                                  arac_modeli=arac_modeli, senaryo=senaryo)
-        kare_mpp = olcek["mpp"]
-        # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
-        # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
-        # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
-        olcek_reddi = rota_olcek_reddi(kare_mpp)
-        open_path, path_conf, waypoints, karar_reddi = analyze_path(
-            masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
-            return_reason=True, olcek_kaynagi=olcek["kaynak"],
-            # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
-            # varis noktasi HB'den alinir; olcek+sekil kapilari
-            # analyze_path icindeki tek noktadan. HB gorunmeyen
-            # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
-            # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
-            # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
-            # 253/256 dogru pedde (results/t150/baglama_olcumu).
-            goruntu=sq)
-        # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
-        # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
-        # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
-        if olcek_reddi is not None and karar_reddi is None:
-            open_path, path_conf, waypoints = None, 0.0, []
-            karar_reddi = olcek_reddi
-        open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
-            open_path, path_conf, waypoints, karar_reddi)
-        # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
-        # `yayinci` None ise (hedef verilmedi) davranis bayt-es aynidir.
-        # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
-        # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
-        if yumusatici.suz(open_path, karar_reddi):
-            _karari_yayinla(yayinci, open_path, path_conf, waypoints,
-                            kare_mpp, karar_reddi)
-        # D-404: ekransiz kipte gorsel HIC uretilmez (karar yukarida yayinlandi).
-        if ekransiz:
-            continue
-        vis = draw_masks(sq, masks)
+            masks = get_masks(results, orig_h, orig_w)
+            masks = _maskeleri_icerige_kirp(masks, icerik)
+            # T86: olcek artik TEK katmandan gelmiyor — kahin katman 1/2/3'u
+            # sirayla dener ve KAYNAGINI beyan eder (D-126/D-136).
+            olcek = kare_olcek_kahini(None, canli_olcek, icerik, bgr=frame,
+                                      arac_modeli=arac_modeli, senaryo=senaryo)
+            kare_mpp = olcek["mpp"]
+            # T43 · HALKA 5: olcek yoksa GOREV yolunda rota URETILMEZ. Sessiz
+            # `mpp=1.0` varsayimi govde acikligini ~11 kat kuculuyordu (D-59).
+            # 🔴 KAPI GEVSEMEDI: kahin uretemezse `kare_mpp` yine None'dur.
+            olcek_reddi = rota_olcek_reddi(kare_mpp)
+            open_path, path_conf, waypoints, karar_reddi = analyze_path(
+                masks[0], icerik=icerik, engel_mask=masks.get(1), mpp=kare_mpp,
+                return_reason=True, olcek_kaynagi=olcek["kaynak"],
+                # T150 BAGLANDI (D-386, kullanici onayi K2a + renk teyidi):
+                # varis noktasi HB'den alinir; olcek+sekil kapilari
+                # analyze_path icindeki tek noktadan. HB gorunmeyen
+                # karede HEDEF_YOK cekimserligi (sozlesme, T72/D-105;
+                # sonda 259/260 dogruladi). Olculen maliyet SIFIR:
+                # p 0,9846=0,9846, serit yayini ayni 195/256, hedef
+                # 253/256 dogru pedde (results/t150/baglama_olcumu).
+                goruntu=sq)
+            # ONCELIK (CONTRACTS SS6.4/3): YAPISAL ret ezilmez. analyze_path zaten
+            # reddettiyse sebebi KORUNUR; olcek eksikligi yapilandirma boslugudur,
+            # ZEMIN_MASKESI_SUPHELI ise ALGI ARIZASIDIR.
+            if olcek_reddi is not None and karar_reddi is None:
+                open_path, path_conf, waypoints = None, 0.0, []
+                karar_reddi = olcek_reddi
+            open_path, path_conf, waypoints, karar_reddi = _rota_kararini_esikle(
+                open_path, path_conf, waypoints, karar_reddi)
+            # K1 (sartname SS2.2.3): kare karari YKS'ye ve IKA'ya telsizle gider.
+            # `yayinci` None ise (hedef verilmedi) davranis bayt-es aynidir.
+            # D-396: farkli serit ancak K ardisik karede teyitlenirse yayina
+            # gecer; NO_ROUTE ve ayni-serit ANINDA gecer (`KararYumusatici`).
+            if yumusatici.suz(open_path, karar_reddi):
+                _karari_yayinla(yayinci, open_path, path_conf, waypoints,
+                                kare_mpp, karar_reddi)
+            # D-404: ekransiz kipte gorsel HIC uretilmez (karar yukarida yayinlandi).
+            if ekransiz:
+                continue
+            vis = draw_masks(sq, masks)
 
-        if open_path:
-            vis = _draw_waypoints(vis, waypoints)
-            label = f"Yol: {open_path}  guven: {path_conf:.2f}"
-        elif karar_reddi is not None:
-            label = f"NO_ROUTE: {karar_reddi[0]} ({path_conf:.3f})"
-        else:
-            label = "Tespit yok"
+            if open_path:
+                vis = _draw_waypoints(vis, waypoints)
+                label = f"Yol: {open_path}  guven: {path_conf:.2f}"
+            elif karar_reddi is not None:
+                label = f"NO_ROUTE: {karar_reddi[0]} ({path_conf:.3f})"
+            else:
+                label = "Tespit yok"
 
-        live_fps = 1.0 / (sum(fps_buf) / len(fps_buf))
-        cv2.putText(vis, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-        cv2.putText(vis, f"FPS: {live_fps:.1f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+            live_fps = 1.0 / (sum(fps_buf) / len(fps_buf))
+            cv2.putText(vis, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+            cv2.putText(vis, f"FPS: {live_fps:.1f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
 
-        cv2.imshow("Navitas", vis)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            ozet["bitis"] = KAMERA_BITIS_KULLANICI
-            break
+            cv2.imshow("Navitas", vis)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                ozet["bitis"] = KAMERA_BITIS_KULLANICI
+                break
 
-    cap.release()
-    if not ekransiz:
-        cv2.destroyAllWindows()
+    finally:
+        cap.release()
+        if not ekransiz:
+            cv2.destroyAllWindows()
     print(kamera_bitis_raporu(ozet))
     return ozet
 
@@ -2325,6 +2452,16 @@ def kamera_kareleri(cap, ozet, *, ust_sinir=None, bekleme_s=None,
         bekle = time.sleep
     ardisik = 0
     while True:
+        # T204: yeniden deneme dongusu SIGTERM'i BEKLEYEMEZ — kamera koptuysa
+        # burada 30 x bekleme kadar oyalanilir ve `systemctl stop` o sure
+        # boyunca cevapsiz kalirdi. Bayrak kuruluysa uretici KONTROLLU biter;
+        # bitis nedeni ayri (`KAMERA_BITIS_SINYAL`), cagiranin `finally`si kosar.
+        if durdurma_istendi():
+            ozet["bitis"] = KAMERA_BITIS_SINYAL
+            log("KAMERA: kontrollu durdurma sinyali — kare uretimi bitiyor. "
+                f"toplam dusen={ozet.get('dusen_toplam', 0)} "
+                f"okunan={ozet.get('okunan', 0)}")
+            return
         ret, frame = cap.read()
         if not ret or frame is None:
             ardisik += 1
@@ -2389,10 +2526,17 @@ def _arguman_ayristirici():
                         help="Yalniz cevrimdisi gorsel/video icin metre/piksel")
     parser.add_argument(
         "--mavlink", type=str, default=None,
-        help="Canli irtifa MAVLink adresi (orn. udpin:0.0.0.0:14550)")
+        help=("Canli irtifa MAVLink adresi — COGULLAYICI UCU "
+              "(orn. udp:127.0.0.1:14550); seri Pixhawk tek sahiplidir, "
+              "dogrudan /dev/ttyACM0 VERILMEZ"))
     parser.add_argument(
         "--mav-sysid", type=int, default=None,
         help="Zorunlu beklenen Pixhawk sistem kimligi (1..255)")
+    # FDR/ACIK_KALEMLER §4b #23 · CONTRACTS §7.4 (D-403): seri Pixhawk TEK
+    # SAHIPLIDIR. Kilit `iha_komut_alici`da vardi, burada YOKTU — ayni
+    # mekanizma (bayrak adi, yardim ve red metni) `inis_kaniti`den okunur,
+    # kopyalanmaz. Modul pymavlink'e dokunmaz; --fps/--image yolu bozulmaz.
+    _inis_kaniti_modulu().seri_pixhawk_bayragini_ekle(parser)
     geometri = parser.add_mutually_exclusive_group()
     geometri.add_argument("--fov", type=float, default=None,
                           help="Kameranin YATAY gorus acisi (derece)")
@@ -2511,7 +2655,8 @@ def _telemetri_saglayici(canli_olcek, referans=None):
             return {}
         cikti = {
             ad: ham[ad]
-            for ad in ("lat", "lon", "alt", "gps_fix", "uydu", "armed")
+            for ad in ("lat", "lon", "alt", "hiz", "yon", "gps_fix",
+                       "uydu", "bat", "armed", "mod", "pixhawk_canli")
             if ad in ham
         }
         if (referans is not None and "lat" in cikti and "lon" in cikti):
@@ -2533,6 +2678,11 @@ def _argumanlari_dogrula(parser, args):
     if args.camera and args.mavlink is None:
         parser.error("--camera icin --mavlink zorunludur")
     if args.mavlink is not None:
+        # CONTRACTS §7.4: seri cihaz yolu REDDEDILIR (cikis 2). Fail-closed —
+        # bayrak yoksa (elle kurulmus namespace) kilit ACIK sayilmaz.
+        _inis_kaniti_modulu().seri_pixhawk_kilidini_uygula(
+            parser, args.mavlink,
+            getattr(args, "seri_pixhawk_bilerek", False))
         if args.mpp is not None:
             parser.error("--mavlink ile statik --mpp birlikte kullanilamaz")
         if args.mav_sysid is None:
@@ -2618,6 +2768,11 @@ def main():
             print(f"IHA-UB referansi: {ub_referans[0]:.7f},{ub_referans[1]:.7f} "
                   f"· kenar {SARTNAME_IHA_UB_KENAR_M:.0f} m")
 
+    # T204 (D-404 §8 KUCUK-2): SIGTERM/SIGINT -> kontrollu durdurma bayragi.
+    # Isleyici dongu BASLAMADAN kurulur ve asagidaki `finally`de GERI ALINIR;
+    # boylece `systemctl stop` artik `cap.release()` / `yayinci.stop()` /
+    # `canli_olcek.kapat()` yollarini atlamaz (eski davranis: aninda olum).
+    _eski_sinyaller = _durdurma_sinyallerini_kur()
     try:
         # T73: agirlik ARTIK argumandan gelir; verilmezse uretim manifestinden
         # turetilir. Kayit defteri uyusmazliginda `load_model` FAIL-CLOSED
@@ -2652,7 +2807,14 @@ def main():
                        kaynak=args.kaynak, arac_modeli=arac_modeli,
                        senaryo=args.senaryo, yayinci=yayinci,
                        ekransiz=args.ekransiz)
+    except KeyboardInterrupt:
+        # Isleyici kurulamadiginda (ana iplik degil) ya da SIGINT isleyiciden
+        # ONCE geldiginde hala buraya duseriz. run_* finally'leri kamerayi
+        # zaten birakti; asagidaki finally telsiz halkasini kapatir. Cikis
+        # kodu 0 kalir — kontrollu durdurma bir HATA degildir.
+        print("KONTROLLU DURDURMA: KeyboardInterrupt.", flush=True)
     finally:
+        _durdurma_sinyallerini_geri_al(_eski_sinyaller)
         if yayinci is not None:
             if yayinci.stop() is not True:
                 print("UYARI: telsiz yayinci is parcacigi durmadi.")

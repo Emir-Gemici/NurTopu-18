@@ -73,10 +73,36 @@ def toplanabilir_test_sayisi(agac: ast.AST) -> int:
     `load_tests` / `suite` / `additional_tests` kancalari da test toplatabilir;
     bunlar varsa dosya "test toplayan" sayilir (sayisi bilinemez -> 1 kabul).
     """
+    # YEREL TABAN SINIFLARI IZLENIR (4 Eylul duzeltmesi). Bir dosya ortak bir
+    # fikstur tabani kullanabilir:
+    #     class Temiz(unittest.TestCase):        # test* metodu YOK
+    #     class Asil(Temiz):                     # testler BURADA
+    # Yalniz DOGRUDAN tabanina bakan bir sayac Asil'i gormez ve dosyayi
+    # "sahte kapi" diye bildirir. Kuralin kendisi "TestCase TUREVLERI" diyor;
+    # turev bir adim uzakta da turevdir.
+    siniflar = {d.name: d for d in ast.walk(agac)
+                if isinstance(d, ast.ClassDef)}
+
+    def _testcase_turevi(d, gorulen=None):
+        """Sinif, YEREL zincir izlenerek TestCase'e dayaniyor mu."""
+        gorulen = gorulen or set()
+        if d.name in gorulen:          # dongusel tanim: fail-closed, sayma
+            return False
+        gorulen = gorulen | {d.name}
+        for b in d.bases:
+            metin = ast.unparse(b)
+            if "TestCase" in metin:
+                return True
+            # `Temiz` ya da `modul.Temiz` -> son parca yerel sinif olabilir
+            yerel = siniflar.get(metin.rsplit(".", 1)[-1])
+            if yerel is not None and _testcase_turevi(yerel, gorulen):
+                return True
+        return False
+
     sayi = 0
     for d in ast.walk(agac):
         if isinstance(d, ast.ClassDef):
-            if any("TestCase" in ast.unparse(b) for b in d.bases):
+            if _testcase_turevi(d):
                 sayi += sum(
                     1 for g in d.body
                     if isinstance(g, (ast.FunctionDef, ast.AsyncFunctionDef))
@@ -223,6 +249,36 @@ class KuralTests(unittest.TestCase):
         d = dosya_durumu(TESTLI, "kapi.py")
         self.assertFalse(d["gecerli"])
         self.assertIn("kesif onu HIC toplamaz", d["sebep"])
+
+    def test_YEREL_taban_sinifi_uzerinden_gelen_testler_SAYILIR(self):
+        """Ortak fikstur tabani kullanan dosya sahte kapi DEGILDIR.
+
+        Olculen kusur (4 Eylul): dedektor yalniz DOGRUDAN tabanina bakiyordu ve
+        `test_t204_t205_kontrollu_durdurma.py`nin 18 testini GORMEDI.
+        """
+        kaynak = (
+            '"""Aciklama."""\n'
+            "import unittest\n"
+            "class Temiz(unittest.TestCase):\n"
+            "    def setUp(self): pass\n"
+            "class Asil(Temiz):\n"
+            "    def test_bir(self): pass\n"
+            "    def test_iki(self): pass\n")
+        d = dosya_durumu(kaynak, "test_x.py")
+        self.assertTrue(d["gecerli"], d["sebep"])
+        self.assertEqual(2, d["test"])
+
+    def test_ILGISIZ_yerel_taban_test_saydirmaz(self):
+        """Zincir TestCase'e VARMIYORSA sayilmaz — kapi genisletilmedi."""
+        kaynak = (
+            '"""Aciklama."""\n'
+            "class Yardimci:\n"
+            "    pass\n"
+            "class Sahte(Yardimci):\n"
+            "    def test_bir(self): pass\n")
+        d = dosya_durumu(kaynak, "test_x.py")
+        self.assertFalse(d["gecerli"])
+        self.assertEqual(0, d.get("test", 0))
 
     def test_hem_test_hem_muafiyet_BAYAT_sayilir(self):
         kaynak = TESTLI.replace('"""Aciklama."""',

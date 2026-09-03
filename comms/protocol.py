@@ -17,12 +17,21 @@ Mesaj tipleri:
 import itertools
 import json
 import math
+import re
 import time
 
 PROTOCOL_VERSION = 1
 ROAD_LABEL = {1: "sol", 2: "orta", 3: "sag"}     # şartname yön kuralı
 LABEL_ROAD = {v: k for k, v in ROAD_LABEL.items()}
 ACK_SONUC_KABUL = "ACCEPTED"
+
+# Kritik komut oturumu bir kimlik/yeniden-oynatma alanidir. Rastgeleligi bu
+# modul URETMEZ (sahip YKS'dir), fakat tel uzerindeki bicimi burada tek yerde
+# kilitler: UUID/hex/token-safe ASCII, bosluk ve ayirici JSON karakterleri yok.
+OTURUM_EN_AZ_KARAKTER = 16
+OTURUM_EN_COK_KARAKTER = 64
+_OTURUM_DESENI = re.compile(
+    rf"^[A-Za-z0-9_-]{{{OTURUM_EN_AZ_KARAKTER},{OTURUM_EN_COK_KARAKTER}}}$")
 
 _seq = itertools.count(1)
 
@@ -92,11 +101,11 @@ def rota_yok(sebep, detay=None, seq=None):
 # karar uretemiyor — o aralikta hat CANLI gorunur, algi OLUDUR. Bu alan ikisini
 # ayirir. Alan YOKSA yas BILINMIYOR demektir; alici TAZE SAYMAZ (fail-closed).
 HEARTBEAT_TELEMETRI_ALANLARI = (
-    "x", "y", "alt", "hiz", "bat", "uydu", "karar_yas",
+    "x", "y", "alt", "hiz", "yon", "bat", "uydu", "karar_yas",
     # Ham GNSS yalnız sayısal YKİ gösterimi içindir; semantik saha haritasının
     # koordinat sistemi değildir. ``armed`` ise YKİ'nin komut gönderiminden
     # durum UYDURMASINI engelleyen, Pixhawk HEARTBEAT'inden gelen gerçektir.
-    "lat", "lon", "gps_fix", "armed",
+    "lat", "lon", "gps_fix", "armed", "mod", "pixhawk_canli",
 )
 
 
@@ -161,15 +170,28 @@ def kritik_komut_ack_gecerli_mi(mesaj, ref_seq, ref_cmd, node="iha"):
     )
 
 
-def command(cmd, hedef, seq=None):
+def oturum_dogrula(oturum):
+    """Kritik CMD yeniden-oynatma kimligini dogrula ve degistirmeden dondur."""
+    if not isinstance(oturum, str) or _OTURUM_DESENI.fullmatch(oturum) is None:
+        raise ValueError(
+            "oturum yalniz ASCII harf/rakam/_/- iceren "
+            f"{OTURUM_EN_AZ_KARAKTER}..{OTURUM_EN_COK_KARAKTER} karakter "
+            "olmalidir")
+    return oturum
+
+
+def command(cmd, hedef, seq=None, *, oturum=None):
     """YKS → İHA/İKA operatör komutu (ör. ARM / DISARM / IKA_GO).
 
     Şartname §2.2.5: İKA intikali YKS'deki takım üyesince manuel tetiklenir —
     IKA_GO bu tetik içindir. Alıcılar bilmedikleri tipi yok sayar (geriye uyumlu).
     """
-    return {"v": PROTOCOL_VERSION, "type": "CMD", "cmd": str(cmd),
-            "hedef": hedef, "seq": next(_seq) if seq is None else int(seq),
-            "t": round(time.time(), 3)}
+    mesaj = {"v": PROTOCOL_VERSION, "type": "CMD", "cmd": str(cmd),
+             "hedef": hedef, "seq": next(_seq) if seq is None else int(seq),
+             "t": round(time.time(), 3)}
+    if oturum is not None:
+        mesaj["oturum"] = oturum_dogrula(oturum)
+    return mesaj
 
 
 def iha_landed(seq=None):

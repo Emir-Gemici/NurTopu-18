@@ -96,6 +96,11 @@ DUSEN_KARE_BEKLEME_S = 0.02
 #: /video: bu kadar sure YENI kare gelmezse akis kapatilir; /kare.jpg: bundan
 #: yasli kare sunulmaz. Kaynak kopunca tuketici bunu GORUR (bayat kare yok).
 AKIS_KARE_BEKLEME_S = 5.0
+#: Kamera surucusu bazen basarili ``read`` donerken ayni donmus tamponu tekrarlar.
+#: Bayt-es JPEG, sensor gurultusu olan canli kamerada yeni kare kaniti DEGILDIR.
+#: Icerik bu sure boyunca degismezse kaynak kopmus sayilir; ayni sure HTTP'nin
+#: taze kare tavanidir, dolayisiyla iki ayri tazelik tanimi iraksamaz.
+DONUK_KARE_AZAMI_S = AKIS_KARE_BEKLEME_S
 #: Basarisiz acma denemelerinde her N. denemede bir KIRMIZI log (ilk deneme hep).
 ACMA_LOG_SEYREKLIGI = 10
 SINIR = "navitas-kare"              # multipart boundary
@@ -207,6 +212,10 @@ class KareUretici(threading.Thread):
         self._dur = threading.Event()
         # kilit altindaki durum
         self.jpeg = None            # son karenin JPEG bytes'i (degismez)
+        # HTTP onbellegi kopusta temizlenir; bu imza ise kaynak nesilleri
+        # arasinda korunur. Ayni donmus tampon yeniden acilista "taze" olamaz.
+        self._son_icerik = None
+        self._son_icerik_t = None
         self.sira = 0               # her yeni karede +1 (istemci "yeni mi" buradan bilir)
         self.sekil = None           # (h, w)
         self.son_kare_t = None
@@ -217,6 +226,8 @@ class KareUretici(threading.Thread):
         self.kare_sayaci = 0
         self.dusen_kare = 0
         self.kodlama_hatasi = 0
+        self.donuk_kare = 0
+        self.donuk_kare_ardisik = 0
         self.istemci_sayisi = 0
         self.baslangic_t = saat()
         self._zamanlar = deque(maxlen=FPS_PENCERESI)
@@ -273,6 +284,8 @@ class KareUretici(threading.Thread):
                 "kare_sayaci": self.kare_sayaci,
                 "dusen_kare": self.dusen_kare,
                 "kodlama_hatasi": self.kodlama_hatasi,
+                "donuk_kare": self.donuk_kare,
+                "donuk_kare_ardisik": self.donuk_kare_ardisik,
                 "fps": self.olculen_fps(),
                 "fps_tavani": self.fps_tavani,
                 "kalite": self.kalite,
@@ -292,12 +305,44 @@ class KareUretici(threading.Thread):
         with self.kosul:
             self.kosul.notify_all()
 
+    def _onbellegi_temizle_kilitli(self):
+        """Eski kaynaktan kare sizmasini engelle; cagirirken ``kosul`` kilitli olmali."""
+        self.jpeg = None
+        self.sekil = None
+        self.son_kare_t = None
+        self.donuk_kare_ardisik = 0
+        self._zamanlar.clear()
+
+    def _guvenli_birak(self, cap):
+        if cap is None:
+            return
+        try:
+            cap.release()
+        except Exception as exc:  # Surucu kapanista da Python istisnasi uretebilir.
+            self.log("kaynak birakilirken hata: {!r}".format(exc), kirmizi=True)
+
+    @staticmethod
+    def _oku(cap):
+        """Surucu istisnasini uretici ipliginden kacirmadan olculebilir sonuca cevir."""
+        try:
+            ok, kare = cap.read()
+            return bool(ok), kare, None
+        except Exception as exc:  # cv2.error/OSError yaninda uretici eklentisi hatalari da gelir.
+            return False, None, "kamera read istisnasi {}: {}".format(
+                type(exc).__name__, exc)
+
     def _ac(self):
         """Kaynagi ac; basarisizsa None (KIRMIZI log seyrekligiyle).
 
         Sayac ve sonuc (son_hata / kaynak_acik) AYNI kilit bloğunda yazilir:
         /durum hicbir anda "deneme sayildi ama sonucu yok" gostermez.
         """
+        # Her acma girisimi yeni bir kaynak neslidir. Onceki neslin JPEG'i,
+        # boyutu ve tazelik zamani acma surerken dahi HTTP'den sunulamaz.
+        with self.kosul:
+            self.kaynak_acik = False
+            self._onbellegi_temizle_kilitli()
+            self.kosul.notify_all()
         with self.kilit:
             deneme = self.acma_denemesi + 1
         cap = None
@@ -312,7 +357,7 @@ class KareUretici(threading.Thread):
                 deneme, self.kaynak_arg, exc)
         if hata is not None:
             if cap is not None:
-                cap.release()
+                self._guvenli_birak(cap)
             with self.kilit:
                 self.acma_denemesi = deneme
                 self.kaynak_acik = False
@@ -331,16 +376,18 @@ class KareUretici(threading.Thread):
         return cap
 
     def _koptu(self, cap, neden):
-        with self.kilit:
+        with self.kosul:
             self.kaynak_acik = False
             self.son_hata = neden
+            self._onbellegi_temizle_kilitli()
+            self.kosul.notify_all()
         self.log(neden + " — kaynak KAPATILDI, {} s sonra yeniden acilacak".format(
             YENIDEN_ACMA_ARALIGI_S), kirmizi=True)
-        cap.release()
+        self._guvenli_birak(cap)
 
     def _kare_yayinla(self, kare):
         if not isinstance(kare, np.ndarray) or kare.ndim != 3 or kare.shape[2] != 3:
-            return False
+            return False, False
         try:
             ok, tampon = cv2.imencode(".jpg", kare, [int(cv2.IMWRITE_JPEG_QUALITY), self.kalite])
         except cv2.error:
@@ -348,18 +395,29 @@ class KareUretici(threading.Thread):
         if not ok or tampon is None:
             with self.kilit:
                 self.kodlama_hatasi += 1
-            return False
+            return False, False
         veri = tampon.tobytes()             # degismez kopya: istemciler bunu alir
         simdi = self.saat()
         with self.kosul:
+            if self._son_icerik == veri:
+                # Basarili read tek basina canlilik kaniti degildir. Sirayi ve
+                # son_kare_t'yi ilerletmeyerek HTTP tazeligini fail-closed tut.
+                self.donuk_kare += 1
+                self.donuk_kare_ardisik += 1
+                dondu = (self._son_icerik_t is not None and
+                         simdi - self._son_icerik_t >= DONUK_KARE_AZAMI_S)
+                return False, dondu
+            self._son_icerik = veri
+            self._son_icerik_t = simdi
             self.jpeg = veri
             self.sira += 1
             self.sekil = (int(kare.shape[0]), int(kare.shape[1]))
             self.son_kare_t = simdi
             self.kare_sayaci += 1
+            self.donuk_kare_ardisik = 0
             self._zamanlar.append(simdi)
             self.kosul.notify_all()
-        return True
+        return True, False
 
     def _sayac_logla(self):
         d = self.durum()
@@ -384,16 +442,38 @@ class KareUretici(threading.Thread):
                     if cap is None:
                         self._dur.wait(YENIDEN_ACMA_ARALIGI_S)
                         continue
-                ok, kare = cap.read()
+                ok, kare, okuma_hatasi = self._oku(cap)
+                if okuma_hatasi is not None:
+                    self._koptu(cap, okuma_hatasi)
+                    cap = None
+                    self._dur.wait(YENIDEN_ACMA_ARALIGI_S)
+                    continue
                 if (not ok or kare is None) and self.kaynak_turu == KAYNAK_TURU_DOSYA \
                         and okunan_bu_acilis > 0:
                     # Test/prova dosyasi bitti: basa sar (sessiz — ariza degil)
                     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
-                    ok, kare = cap.read()
+                    ok, kare, okuma_hatasi = self._oku(cap)
+                    if okuma_hatasi is not None:
+                        self._koptu(cap, okuma_hatasi)
+                        cap = None
+                        self._dur.wait(YENIDEN_ACMA_ARALIGI_S)
+                        continue
                     if not ok or kare is None:
-                        cap.release()
-                        cap = cv2.VideoCapture(self.kaynak_arg, self.kaynak_api)
-                        ok, kare = cap.read() if cap.isOpened() else (False, None)
+                        self._guvenli_birak(cap)
+                        try:
+                            cap = cv2.VideoCapture(self.kaynak_arg, self.kaynak_api)
+                            ok, kare, okuma_hatasi = (self._oku(cap) if cap.isOpened()
+                                                     else (False, None, None))
+                        except Exception as exc:
+                            cap = None
+                            ok, kare = False, None
+                            okuma_hatasi = "dosya yeniden acma istisnasi {}: {}".format(
+                                type(exc).__name__, exc)
+                        if okuma_hatasi is not None:
+                            self._koptu(cap, okuma_hatasi)
+                            cap = None
+                            self._dur.wait(YENIDEN_ACMA_ARALIGI_S)
+                            continue
                     okunan_bu_acilis = 0
                 if not ok or kare is None:
                     ardisik += 1
@@ -409,7 +489,13 @@ class KareUretici(threading.Thread):
                     continue
                 ardisik = 0
                 okunan_bu_acilis += 1
-                self._kare_yayinla(kare)
+                _yayinlandi, dondu = self._kare_yayinla(kare)
+                if dondu:
+                    self._koptu(cap, "kamera goruntusu {:.1f} s degismedi (donuk kare)".format(
+                        DONUK_KARE_AZAMI_S))
+                    cap = None
+                    self._dur.wait(YENIDEN_ACMA_ARALIGI_S)
+                    continue
                 if self.log_aralik_s > 0 and self.saat() - son_log_t >= self.log_aralik_s:
                     son_log_t = self.saat()
                     self._sayac_logla()
@@ -424,9 +510,10 @@ class KareUretici(threading.Thread):
                         self._dur.wait(bekle)
         finally:
             if cap is not None:
-                cap.release()
+                self._guvenli_birak(cap)
             with self.kosul:
                 self.kaynak_acik = False
+                self._onbellegi_temizle_kilitli()
                 self.kosul.notify_all()
 
 

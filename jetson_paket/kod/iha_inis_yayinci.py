@@ -13,9 +13,19 @@ EXTENDED
 MAVLINK_AKIS_SESSIZLIK_TAVANI_S boyunca gelmezse KIRMIZI loglar ve anında
 yeniden ister (fail-visible). Kanıt kararı (`inis_kaniti.yerde_mi`) DEĞİŞMEZ.
 
+⚠ JETSON'DA SERI PIXHAWK TEK SAHIPLIDIR (CONTRACTS §7.4 · D-403). Bu surec
+`rpi_inference` (bagil irtifa) ve `iha_komut_alici` (PARACHUTE/ARM) ile AYNI
+`/dev/ttyACM0`'i acamaz — acarsa cerceveler bolunur ve her iki taraf da
+SESSIZCE kor olur. Seri portu yalniz cogullayici acar (mavlink-router ya da
+`MAVProxy --out udp:127.0.0.1:1455N`); bu surecin ucu **14551**'dir.
+Kilit artik BELGE DEGIL KOD: `--mavlink` seri cihaz yolu alirsa cikis 2
+(FDR/ACIK_KALEMLER §4b #23); bilerek asmak icin `--seri-pixhawk-bilerek`.
+🔴 Buradaki ornek eskiden `/dev/ttyACM0` gosteriyordu — kilavuzun kendisi
+sozlesmeyi ihlal ediyordu; DEGISTIRILDI, geri konmaz.
+
 Örnekler:
-  python3 iha_inis_yayinci.py --mavlink udp:127.0.0.1:14550 --kanit-timeout 5 --ika 10.0.0.2:5006
-  python3 iha_inis_yayinci.py --mavlink /dev/ttyACM0 --kanit-timeout 5 --serial /dev/ttyUSB0
+  python3 iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --kanit-timeout 5 --ika 10.0.0.2:5006
+  python3 iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --kanit-timeout 5 --serial /dev/ttyUSB0
 """
 
 import argparse
@@ -37,7 +47,8 @@ from iha_komut_alici import (  # noqa: E402
 from iha_sender import IhaSender, _addr as udp_adres  # noqa: E402
 from inis_kaniti import (  # noqa: E402
     MESAJ_EXTENDED_SYS_STATE, MESAJ_GLOBAL_POSITION_INT, MESAJ_GPS_RAW_INT,
-    _mavutil_al, _mesaj_kaynagi, _mesaj_tipi, mavlink_baglantisi_ac, yerde_mi)
+    _mavutil_al, _mesaj_kaynagi, _mesaj_tipi, mavlink_baglantisi_ac,
+    seri_pixhawk_bayragini_ekle, seri_pixhawk_kilidini_uygula, yerde_mi)
 from link import SerialLink, UDPLink  # noqa: E402
 
 _KOK = _BU_DIZIN.parent
@@ -413,7 +424,12 @@ def _arg_parser():
         description="Pixhawk kanıtlı saha IHA_LANDED yayıncısı")
     parser.add_argument(
         "--mavlink", required=True,
-        help="Pixhawk MAVLink bağlantısı (ör. udp:127.0.0.1:14550)")
+        help="Pixhawk MAVLink bağlantısı — ÇOĞULLAYICI UCU "
+             "(ör. udp:127.0.0.1:14551); seri Pixhawk tek sahiplidir, "
+             "doğrudan /dev/ttyACM0 VERİLMEZ")
+    # FDR/ACIK_KALEMLER §4b #23: kilit `iha_komut_alici` ile AYNI mekanizma —
+    # bayrak adı, yardım ve red metni `inis_kaniti`den okunur (CONTRACTS §7.4).
+    seri_pixhawk_bayragini_ekle(parser)
     parser.add_argument(
         "--kanit-timeout", required=True, type=float,
         help="İniş kanıtı için toplam çalışma süresi (saniye)")
@@ -453,6 +469,11 @@ def main(argv=None, *, saat=time.monotonic):
     kanıt son tarihi `inis_kaniti` ile aynı gerçek monotonic saati kullanır."""
     parser = _arg_parser()
     args = parser.parse_args(argv)
+    # CONTRACTS §7.4 (D-403): seri Pixhawk TEK SAHİPLİDİR. Denetim bağlantı
+    # açılmadan ÖNCE koşar; yoksa süreç portu bir an için kapıp öbür iki
+    # tüketicinin akışını çalabilir (fail-closed, argparse çıkış kodu 2).
+    seri_pixhawk_kilidini_uygula(parser, args.mavlink,
+                                 args.seri_pixhawk_bilerek)
     if args.serial and (args.ika or args.yks):
         parser.error("--serial ile --ika/--yks birlikte kullanılamaz")
     if not args.serial and not (args.ika or args.yks):

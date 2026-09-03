@@ -441,6 +441,86 @@ hâlâ REDDEDİLİR (regresyon yok); (3) FDA'da `parasut()` çağrılsa bile lin
 gitmez; (4) FDA'da `ika_baslat()` `IKA_GO` yazmaz; (5) FIRLATMA etiketi `KALKIŞ` ve ARM
 kilidi hâlâ damgayı reddeder; (6) mutasyon: FDA kontrolü kaldırılınca ilgili test düşer.
 
+### 6.8 Hakem kanıt kaydının OLAY KÜMESİ — bağlayıcı (şartname §2.2.3 / §6.2 · FDR açık kalem #25)
+
+**Olgu (ölçüldü, 2026-09-03):** `comms/yks_gui.py` hakem kaydına yalnız
+`YKS_ARAYUZ_HAZIR`, `UI_OLAYI` ve iki döngüsel satır yazıyordu; onay zincirinin
+(§2.2.3) ve süre bütçesinin (§6.2/§5.3.2) hiçbir olayı diske düşmüyordu. Kayıt,
+21 Eylül'de §2.2.3 hakem onayının **DAYANAĞIDIR**; ekrandaki kayan metin uçuş
+sonrası kanıt değildir.
+
+**Dosya ve ömür:** `comms/hakem_kaydi.py` · UTF-8 JSONL, satır başına `flush`+`fsync`.
+Yol `--hakem-log` ile verilir; verilmezse `varsayilan_hakem_log_yolu()` =
+`results/prova/<YYYYMMDD_HHMMSS>_<pid>/hakem_log.jsonl`. Dosya **açılamazsa kurucu
+yükseltir** (fail-closed: saha sessizce kanıtsız başlamaz). Açıldıktan sonraki yazma
+hatası arayüzü **öldürmez** ama saklanmaz: `kanit_kaydi_hatasi` + günlükte KIRMIZI
+satır (fail-visible). Oturum `OTURUM_BASLADI` ile açılır, `mainloop` bitince
+`kapat()` `OTURUM_BITTI` yazar.
+
+**Ortak alanlar (her satırda, `HakemKaydi.yaz` üretir):** `v`, `ts` (yerel ISO-8601,
+ms), `monotonic_s`, `oturum`, `olay`. Aşağıdaki alanlar bunlara **eklenir**.
+
+| olay | NE ZAMAN yazılır (kod yolu) | zorunlu alanlar |
+|---|---|---|
+| `YKS_ARAYUZ_HAZIR` | kurucunun sonunda, dinleyici thread'inden ÖNCE | `demo`, `kamera_yapilandirildi`, `tasiyici`, `komut_oturumu` |
+| `ROTA_ALINDI` | kabul edilen `OPEN_ROUTE`un **YENİ** `seq`'i işlendiğinde (`_mesaj_isle`) | `seq`, `road`, `label`, `conf`, `waypoint`, `ankor` |
+| `ROTA_REDDEDILDI` | güven eşiği altındaki `OPEN_ROUTE` — **ACK üretilmez** (`_open_route_guven_reddini_goster`) | `seq`, `sebep`, `detay` |
+| `ROTA_YOK` | yeni `NO_ROUTE`, güvenli duruş ACK'i gönderildikten SONRA | `seq`, `sebep`, `detay` |
+| `ACK_ALINDI` | yapısal olarak geçerli her `ACK` (`ref` int), düğüm ayrımından ÖNCE (`_ack_isle`) | `node`, `ref`, `ref_tip` |
+| `IKA_AKTARIM_KANITI` | K8 kanıtı (§6.6) geçerli rota `seq`'i için **İLK** bağlandığında | `seq`, `iha_havada` |
+| `HAKEM_ONAYI_1` | 1/2 "tespit doğrulandı" (`onayla`) | `seq`, `road`, `conf` |
+| `HAKEM_ONAYI_2` | 2/2 onay ve ACK link'e yazıldıktan SONRA | `seq`, `ref_tip`, `fda_kipi`, `dayanak`, `iha_indi` |
+| `HAKEM_ONAYI_REDDI` | fail-closed ret: `ANKOR_YOK` · `BAYAT_TESPIT` · `IKA_ACK_KANITI_YOK` | `seq`, `sebep` |
+| `IHA_INIS_KANITI` | yeni `IHA_LANDED` `seq`'i, ACK gönderildikten SONRA | `seq`, `ika_rota_ack_var` |
+| `KAMERA_KANIT` | kamera kanıt durumu **DEĞİŞTİĞİNDE**; değişmezse tekrar aralığında bir (`_kamera_tazele`) | `durum`, `degisim`, `kare_yasi_s`, `kare_sira`, `kaynak`, `hata`, `calisiyor` |
+| `TELEMETRI_KANIT` | düğüm tazelik özeti **DEĞİŞTİĞİNDE**; değişmezse tekrar aralığında bir (`_durum_tazele`) | `durum`, `degisim`, `bayat`, `yas_s`, `dugumler` |
+| `ACIL_SENARYO` | demo arıza tatbikatı tetiklendiğinde (`senaryo`) | `kod`, `senaryo_no` |
+| `KRONOMETRE_BASLADI` | fırlatma/kalkış · `IKA_GO` · alan girişi · müdahale sonrası devam. `kron` ∈ {iha, ika, hazirlik}; `devam=true` yalnız müdahale sonrası (kronometre sıfırlanmaz, kaldığı yerden sürer) | `kron`, `limit_s`, `devam` |
+| `KRONOMETRE_BITTI` | İHA indi · HB temas · takım hazır | `kron`, `sure_s`, `limit_s`, `asim` |
+| `UI_OLAYI` | `_logla` ile günlüğe yazılan HER satır (ekranda görünen ile kayıt ayrışmasın) | `mesaj`, `seviye` |
+
+**Tekrar (throttle) kuralı — `KAMERA_KANIT` ve `TELEMETRI_KANIT` için, gerekçeli:**
+bu iki olay `_tik` döngüsünden (~8 Hz) üretilir ve `HakemKaydi.yaz` **her satırda
+`fsync`** yapar. Her tikte yazmak Tk geri çağrısını diske bağlar (ekran donar, komut
+gecikir) ve kaydı okunamaz hâle getirir. Bu yüzden ikisi **KENAR** olayıdır:
+durum değişirse hemen, değişmezse en çok `KANIT_TEKRAR_ARALIGI_S` (= 30 s, `yks_gui`)
+aralıkla bir kez daha yazılır — "hâlâ aynı" satırı **süreklilik kanıtıdır** (yalnız
+geçişler yazılırsa kaydın "kamera 10 dakika canlı kaldı" demeye dayanağı olmaz),
+maliyeti 2 satır/dk'dır. `degisim` (bool) alanı geçişi tekrardan ayırır.
+Durum ve damga alanları: kamera `_kamera_kanit_durumu` / `_son_kamera_kanit_monotonic`,
+telemetri `_telemetri_kanit_durumu` / `_son_telemetri_kanit_monotonic`.
+`HEARTBEAT` başına satır **YAZILMAZ** (1 Hz × düğüm = gürültü); tazelik özeti onu taşır.
+
+**Bağlayıcı ilkeler:**
+- Kanıt yazımı **hiçbir karar yolunu değiştirmez**: `_kanit_yaz` istisna yükseltmez,
+  dönüş değeri hiçbir dalda koşul olarak kullanılmaz.
+- Kayıt **kapalıyken** (`hakem_kaydi is None` — test/demo fikstürü) bütün olaylar
+  sessizce atlanır; kod yolları birebir aynıdır.
+- Olay adı ve zorunlu alan kümesi **bu tablodan** okunur; `yks_gui` içinde
+  serbest metin olay adı üretilmez (madde 16). Tek küme: `yks_gui.KANIT_OLAYLARI`.
+
+**Kanıt kaydı KİLİDİ — fail-closed + fail-visible (bağlayıcı):**
+yazma hatası oluştuğunda `kanit_kaydi_hatasi` kurulur ve **kalıcıdır** (kendiliğinden
+temizlenmez). Kilit **YALNIZ** `btn_firlat` (uçuş kronometresi) ve `btn_onay` (§2.2.3
+hakem onayı) üzerindedir; **ARM/DISARM ve acil komutlar (RTL/LAND) AÇIK kalır** —
+kanıt kaydı bozukken bile aracı indirebilmek emniyetin kendisidir. Kilit iki
+yerden birden uygulanır ve ikisi de zorunludur:
+1. **Çizim:** `btn_firlat`/`btn_onay`ın TEK yazarları `_firlat_dugmesini_ciz` ve
+   `_onay_dugmesini_ciz`'dir; ikisi de `_kanit_kilidi_var()` okur. Periyodik
+   tazeleme (`_arm_ui_uygula`, `_onay_dugmesini_tazele`,
+   `_aktarim_onay_dugmesini_kur`) düğmeyi **geri açamaz** — ölçülen fail-open
+   buydu: kırmızı afiş ekranda kalırken düğmeler bir tik sonra çalışıyordu.
+2. **Eylem:** `firlatma()` ve `onayla()` kilidi kendileri de reddeder — düğme
+   durumu tek savunma değildir (T180 sınıfı: klavye/otomasyon/doğrudan çağrı).
+
+**Kilit:** `tests/test_yks_hakem_kanit_olaylari.py` — GERÇEK `HakemKaydi` + GERÇEK
+geçici dosya ile uçtan uca: her olay diske düşer, zorunlu alanlar tam, kamera/telemetri
+olayları kenarda yazılıp tekrar aralığı dolmadan **yazılmaz**, yazma hatası arayüzü
+öldürmez, kilit periyodik tazelemeye rağmen **açılmaz**, ARM/acil düğmeleri
+**kullanılabilir kalır**, tablo ile kod birebir (üç yönlü ad kümesi karşılaştırması).
+`tests/test_yks_hakem_kaydi.py` `HakemKaydi`nin kendi dayanıklılık kapısıdır
+(fsync sayımı, NaN reddi, kapalı dosyaya yazma).
+
 ### 6.2 `road` sözleşmesi
 
 `{1: "sol", 2: "orta", 3: "sag"}` — `open_route()` bu aralık dışında `ValueError` fırlatır.

@@ -364,6 +364,11 @@ KAMERA_DUSEN_KARE_BEKLEME_S = 0.02     # her basarisiz okumadan sonra bekleme (s
 KAMERA_BITIS_KULLANICI = "KULLANICI_DURDURDU"
 KAMERA_BITIS_DUSEN_KARE = "DUSEN_KARE_UST_SINIRI"
 KAMERA_BITIS_ACILAMADI = "KAMERA_ACILAMADI"
+# T204 (D-404 §8, KUCUK-2): ekransiz kipte 'q' yolu yoktur; tek kontrollu
+# bitis SIGTERM/SIGINT'tir (`systemctl stop`). Bitis nedeni AYRI bir ad
+# almalidir: "kullanici q'ya basti" ile "systemd durdurdu" saha gunlugunde
+# ayni satira dusemez (KULLANICI_DURDURDU ekransiz kipte IMKANSIZDIR).
+KAMERA_BITIS_SINYAL = "SINYAL_DURDURDU"
 
 # ── T143 · KAYIT DEFTERI TUREV YER TUTUCUSU ──────────────────────────────────
 # `.engine`/`.onnx` turevleri kayit defterinde `turevler` altinda ayni SOYDAN

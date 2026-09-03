@@ -229,6 +229,9 @@ def main(argv=None):
                  "UDP adresi kabul etmez (komutlar seri hattan gider)")
     if args.fda and args.kip != "yks":
         ap.error("--fda yalnız YKS kipinde kullanılabilir")
+    if args.kip == "yks" and not args.serial and not args.iha:
+        ap.error("UDP YKS kipinde --iha HOST:PORT zorunlu; eyleyici komutlar "
+                 "efemer heartbeat portuna gönderilemez")
     uyari = iha_eksik_uyarisi(args.kip, iha=args.iha, serial=args.serial)
     if uyari:
         print(f"[saha_baslat] {uyari}", file=sys.stderr, flush=True)

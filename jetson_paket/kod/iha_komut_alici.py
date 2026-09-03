@@ -21,7 +21,7 @@ Idempotentlik BILEREK YOK (D-403 curutucu KRITIK-2): ilk tasarim (cmd, seq)
 hafizasiyla tekrari baskiliyordu; YKS her acilista seq'i 1'den baslattigi
 icin yeniden acilan YKS'nin PARACHUTE'u "mukerrer" sayilip MAVLink'e HIC
 gitmeden ACK'laniyordu — yesil "IHA ALDI", parasut kapali. DO_PARACHUTE ve
-ARM/DISARM Pixhawk tarafinda idempotenttir; her gecerli komut YENIDEN
+ARM/DISARM/RTL/LAND Pixhawk tarafinda idempotenttir; her gecerli komut YENIDEN
 aktarilir ve yeniden COMMAND_ACK beklenir. (IKA_GO'daki hafiza IKA latch
 semantigi icindir; burada karsiligi yoktur.)
 
@@ -45,9 +45,12 @@ Saha (SiK telsiz + cogullayici):
 """
 import argparse
 import importlib
+import math
+import socket
 import sys
 import threading
 import time
+from numbers import Real
 from pathlib import Path
 
 _BU_DIZIN = Path(__file__).resolve().parent
@@ -58,10 +61,17 @@ _KODLAR = _BU_DIZIN.parent / "codes"
 if str(_KODLAR) not in sys.path:
     sys.path.insert(0, str(_KODLAR))
 
-from inis_kaniti import mavlink_baglantisi_ac  # noqa: E402
-from karar_sozlesmesi import MAVLINK_KOMUT_ACK_TAVANI_S  # noqa: E402
+from inis_kaniti import (  # noqa: E402
+    mavlink_baglantisi_ac, seri_pixhawk_bayragini_ekle,
+    seri_pixhawk_kilidini_uygula)
+from karar_sozlesmesi import (ARM_TEKRAR_ARALIGI_S,  # noqa: E402
+                              ARM_TEKRAR_UST_SINIRI,
+                              MAVLINK_KOMUT_ACK_TAVANI_S,
+                              PARASUT_TEKRAR_ARALIGI_S,
+                              PARASUT_TEKRAR_UST_SINIRI)
 from link import SerialLink, UDPLink  # noqa: E402
-from protocol import ACK_SONUC_KABUL, FrameReader, ack, encode  # noqa: E402
+from protocol import (ACK_SONUC_KABUL, FrameReader, ack, encode,  # noqa: E402
+                      oturum_dogrula)
 
 for _akim in (sys.stdout, sys.stderr):
     try:
@@ -75,7 +85,9 @@ MESAJ_TIPI_CMD = "CMD"
 CMD_PARACHUTE = "PARACHUTE"       # CONTRACTS §6.6 · D-393 · sartname §2.2.4
 CMD_ARM = "ARM"                   # CONTRACTS §6 tablo: "IKA_GO, ARM, ..."
 CMD_DISARM = "DISARM"
-KOMUT_ADLARI = (CMD_PARACHUTE, CMD_ARM, CMD_DISARM)
+CMD_RTL = "RTL"                   # güvenli uçuş sonlandırma: eve dönüş
+CMD_LAND = "LAND"                 # güvenli uçuş sonlandırma: bulunduğu yere iniş
+KOMUT_ADLARI = (CMD_PARACHUTE, CMD_ARM, CMD_DISARM, CMD_RTL, CMD_LAND)
 VARSAYILAN_DUGUM = "iha"          # protocol.iha_landed ile ayni dugum adi
 VARSAYILAN_BIND = "0.0.0.0:5007"  # YKS bunu `yks_gui --iha HOST:5007` ile PINLER
                                   # (D-403: heartbeat'ten ogrenilen adres
@@ -93,11 +105,63 @@ MAVLINK_PARAM_KULLANILMIYOR = 0
 # ArduPilot varsayilan arac kimligi ve MAV_COMP_ID_AUTOPILOT1.
 VARSAYILAN_HEDEF_SYSID = 1
 VARSAYILAN_HEDEF_COMPONENT = 1
+# MAV_COMP_ID_ALL (0): COMMAND_ACK'te kaynak bilesenin BELIRTILMEDIGI geriye
+# uyumlu bicim (eski pymavlink, sahte uc). Adli sabiti common.xml'de vardir
+# ama eski pymavlink surumlerinde her zaman disari verilmez.
+MAVLINK_BELIRTILMEMIS_COMPONENT = 0
 
 # Bir poll turunda MAVLink gelen kutusundan bosaltilacak en cok mesaj sayisi:
 # Pixhawk ~10-50 mesaj/s, tur <= link zaman asimi (0,3 s) -> 64 yeterli.
 MAVLINK_BOSALTMA_TAVANI = 64
 LOG_ONEKI = "[IHA_KOMUT]"
+
+# Bir CMD'nin meşru ömrü onu üreten YKS tekrar penceresidir; ikinci, bağımsız
+# bir sayı yazılmaz. DISARM/RTL/LAND ve ARM aynı tekrar sözleşmesini paylaşır.
+KOMUT_YAS_TAVANI_S = {
+    CMD_ARM: ARM_TEKRAR_ARALIGI_S * ARM_TEKRAR_UST_SINIRI,
+    CMD_DISARM: ARM_TEKRAR_ARALIGI_S * ARM_TEKRAR_UST_SINIRI,
+    CMD_RTL: ARM_TEKRAR_ARALIGI_S * ARM_TEKRAR_UST_SINIRI,
+    CMD_LAND: ARM_TEKRAR_ARALIGI_S * ARM_TEKRAR_UST_SINIRI,
+    CMD_PARACHUTE: PARASUT_TEKRAR_ARALIGI_S * PARASUT_TEKRAR_UST_SINIRI,
+}
+# protocol.command zaman damgasını milisaniyeye yuvarlar. En yakın milisaniyeye
+# yukarı yuvarlama çok küçük negatif yaş üretebilir; OFSETE GÖRE düzeltilmiş
+# yaş bundan daha ileriyse damga bozuktur ve reddedilir.
+KOMUT_ZAMAN_YUVARLAMA_TOLERANSI_S = 1.0 / 1000.0
+
+# ── K-1 · ÇAPRAZ-MAKİNE SAAT SAPMASI ────────────────────────────────────────
+# `t` damgasını YKS DİZÜSTÜ basar (`protocol.command`: `round(time.time(), 3)`),
+# `simdi`yi İHA (Jetson) okur — İKİ AYRI MAKİNE. Dolayısıyla ham fark
+#     ham = simdi - damga = ofset_gercek + gecikme      (gecikme >= 0)
+# iki SAATİN farkı artı taşıma gecikmesidir; komutun YAŞI DEĞİLDİR. Jetson
+# NANO'da RTC pili YOKTUR: açılışta saat bayat bir değere düşer ve NTP kurulana
+# kadar sapma saniyeler–dakikalar mertebesindedir. Ham farkı doğrudan yaş sayan
+# kapı sahada ARM/DISARM/RTL/LAND/PARACHUTE'un TAMAMINI reddeder.
+#
+# KAPI KALDIRILMAZ — DOĞRU BÜYÜKLÜĞÜ ÖLÇER HALE GETİRİLİR: aynı (pinlenmiş)
+# kaynaktan gelen ham farkların kayan penceredeki EN KÜÇÜĞÜ saat ofsetinin
+# kestirimidir (gecikme negatif olamayacağı için en küçük ham fark, gecikmesi
+# en düşük çerçevedir — NTP'nin "minimum filtresi" ile aynı akıl). Yaş bu
+# ofsete göre hesaplanır:
+#     yas = ham - ofset = gecikme - min(gecikme)
+# yani sapma sadeleşir ve GERÇEKTEN yaş ölçülür. Eşik gevşemez: bayat/ileri
+# damga ofsete göre de bayat/ileridir.
+KOMUT_SAAT_OFSETI_EN_AZ_ORNEK = 2
+# Değerlendirilen çerçevenin KENDİ örneği kestirime GİRMEZ; en az bu kadar
+# ÖNCEKİ örnek gerekir. Aksi hâlde her çerçeve kendi damgasıyla kendini aklar
+# ve kapı anlamsızlaşırdı. Kestirim yokken kapı bugünkü SIKI davranışını aynen
+# korur (ofset = 0). Sahada bedeli: sapma varken tekrar merdiveninin ilk iki
+# basamağı reddedilir, komut 3. basamakta (2 × 0,25 s sonra) geçer.
+KOMUT_SAAT_OFSETI_PENCERESI_S = 60.0
+# Örnekler ALIŞ TARAFININ monotonik saatiyle kayan pencerede tutulur; eskiyen
+# bir örnek ofseti kilitlemesin (saatler NTP ile yerine oturduğunda kestirim
+# de kendini düzeltebilsin). Pencere en uzun tekrar merdiveninden (PARAŞÜT:
+# 0,20 s × 40 = 8 s) belirgin biçimde uzundur, birkaç operatör basışını kapsar.
+KOMUT_SAAT_SAPMA_TAVANI_S = 30.0 * 60.0
+# Kestirime ALINACAK en büyük |ham| fark. NTP'siz bir Jetson'ın makul sapma
+# bandıdır; bunun ötesindeki bir damga (gün/saat mertebesi, ya da uydurma bir
+# ileri damga) kestirimi KAYDIRAMAZ. Amaç fail-closed: tek bir çılgın çerçeve
+# ofseti bozup sonraki meşru komutları reddettiremesin.
 
 
 def _mavutil_al():
@@ -116,6 +180,9 @@ def mavlink_komut_tablosu():
         CMD_PARACHUTE: (m.MAV_CMD_DO_PARACHUTE, m.PARACHUTE_RELEASE),
         CMD_ARM: (m.MAV_CMD_COMPONENT_ARM_DISARM, ARM_DISARM_PARAM1_ARM),
         CMD_DISARM: (m.MAV_CMD_COMPONENT_ARM_DISARM, ARM_DISARM_PARAM1_DISARM),
+        CMD_RTL: (m.MAV_CMD_NAV_RETURN_TO_LAUNCH,
+                  MAVLINK_PARAM_KULLANILMIYOR),
+        CMD_LAND: (m.MAV_CMD_NAV_LAND, MAVLINK_PARAM_KULLANILMIYOR),
     }
 
 
@@ -147,6 +214,30 @@ def _kimlik_dogrula(deger, ad, alt):
     return deger
 
 
+def _kaynak_adresi_dogrula(adres):
+    """Opsiyonel tam UDP kaynak pinini doğrula; ``None`` sınıf geriye uyumudur."""
+    if adres is None:
+        return None
+    if (not isinstance(adres, (tuple, list)) or len(adres) != 2
+            or not isinstance(adres[0], str) or not adres[0].strip()
+            or isinstance(adres[1], bool) or not isinstance(adres[1], int)
+            or not 1 <= adres[1] <= 65535):
+        raise ValueError("izinli_kaynak (host, 1..65535 port) olmalidir")
+    return adres[0].strip(), adres[1]
+
+
+def _cli_kaynak_adresi(metin):
+    """CLI ``HOST:PORT`` kaynağını alıcının göreceği IPv4 adresine çöz."""
+    try:
+        host, port_metin = metin.rsplit(":", 1)
+        port = int(port_metin)
+        host = socket.gethostbyname(host)
+        return _kaynak_adresi_dogrula((host, port))
+    except (OSError, TypeError, ValueError) as exc:
+        raise argparse.ArgumentTypeError(
+            f"izinli kaynak HOST:PORT olmalidir: {metin!r} ({exc})") from exc
+
+
 class IhaKomutAlici:
     """YKS CMD -> Pixhawk COMMAND_LONG; ACK yalniz aktarim basariliysa.
 
@@ -157,11 +248,14 @@ class IhaKomutAlici:
     """
 
     def __init__(self, link, mav, *, node=VARSAYILAN_DUGUM,
-                 target_system=VARSAYILAN_HEDEF_SYSID,
-                 target_component=VARSAYILAN_HEDEF_COMPONENT,
-                 saat=time.monotonic):
+                  target_system=VARSAYILAN_HEDEF_SYSID,
+                  target_component=VARSAYILAN_HEDEF_COMPONENT,
+                  saat=time.monotonic, duvar_saati=time.time,
+                  izinli_kaynak=None):
         if not callable(saat):
             raise TypeError("saat cagrilabilir olmali")
+        if not callable(duvar_saati):
+            raise TypeError("duvar_saati cagrilabilir olmali")
         self.link = link
         self.mav = mav                       # None: aktarim yok, ACK yok
         self.node = str(node)
@@ -169,10 +263,22 @@ class IhaKomutAlici:
         self.target_component = _kimlik_dogrula(
             target_component, "target_component", 0)
         self.saat = saat
+        self.duvar_saati = duvar_saati
+        self.izinli_kaynak = _kaynak_adresi_dogrula(izinli_kaynak)
         self.reader = FrameReader()          # yalniz SERI (bayt akisi) icin
         self._dur = threading.Event()
         self.sayac = {"cmd": 0, "aktarilan": 0, "ack": 0,
-                      "bilinmeyen": 0, "hata": 0}
+                      "bilinmeyen": 0, "hata": 0, "kaynak_red": 0,
+                      "zaman_red": 0, "tekrar": 0}
+        # Yalnız oturumlu komutlarda kullanılır. Eski oturumsuz sınıf API'si
+        # alan alan aynı kalır; saha YKS'si oturumla gecikmiş kuyruğu kapatır.
+        # Değer True: Pixhawk ACCEPTED, False: Pixhawk'a ULAŞMIŞ ama kabul
+        # ettirilememiş deneme (ret ya da ACK penceresi kapandı). MAVLink'e
+        # hiç ulaşmamış teşebbüs buraya YAZILMAZ (K-2, `isle` gerekçesi).
+        self._komut_sonuclari = {}
+        # K-1: (monotonik_alis_ani, ham_fark) örnekleri; saat ofseti kestirimi.
+        self._ofset_ornekleri = []
+        self._son_ofset = None               # yalnız log/teşhis için
 
     # ── log ──────────────────────────────────────────────────────────────
     def _logla(self, metin, kirmizi=False):
@@ -184,6 +290,47 @@ class IhaKomutAlici:
         seviye = "KIRMIZI " if kirmizi else ""
         print(f"{LOG_ONEKI} {damga} {seviye}{metin}",
               file=sys.stderr if kirmizi else sys.stdout, flush=True)
+
+    # ── K-1: capraz-makine saat ofseti ───────────────────────────────────
+    def _saat_ofseti(self):
+        """Pencere içindeki örneklerden güncel ofset kestirimi (modül başlığı).
+
+        `ham = ofset_gercek + gecikme`, `gecikme >= 0` — bir çerçeve
+        gönderilmeden ÖNCE alınamaz. Bu yüzden kayan penceredeki EN KÜÇÜK ham
+        fark, gecikmesi en düşük çerçevedir ve ofsetin en iyi kestirimidir.
+        Yaş bu kestirime göre ölçülünce iki makinenin saat farkı sadeleşir.
+
+        Dönen: ``(monotonik_an, ofset)``. En az ``KOMUT_SAAT_OFSETI_EN_AZ_ORNEK``
+        örnek yoksa ofset ``None``'dır ve kapı bugünkü SIKI davranışını aynen
+        korur (fail-closed). Değerlendirilen çerçevenin KENDİ örneği burada
+        YOKTUR — örnekleme `_saat_ofseti_ornekle` ile SONRA yapılır.
+        """
+        try:
+            simdi_mono = float(self.saat())
+        except (TypeError, ValueError, OverflowError):
+            simdi_mono = None
+        if simdi_mono is None or not math.isfinite(simdi_mono):
+            self._son_ofset = None
+            return None, None
+        self._ofset_ornekleri = [
+            (t, h) for (t, h) in self._ofset_ornekleri
+            if 0.0 <= simdi_mono - t <= KOMUT_SAAT_OFSETI_PENCERESI_S]
+        if len(self._ofset_ornekleri) >= KOMUT_SAAT_OFSETI_EN_AZ_ORNEK:
+            self._son_ofset = min(h for (_t, h) in self._ofset_ornekleri)
+        else:
+            self._son_ofset = None
+        return simdi_mono, self._son_ofset
+
+    def _saat_ofseti_ornekle(self, simdi_mono, ham):
+        """Ham farkı kestirim örneklerine ekle (çağıran koşulu denetler).
+
+        Sapma bandının dışındaki çılgın damga örnek OLARAK ALINMAZ: tek bir
+        uydurma çerçeve kestirimi kaydırıp sonraki meşru komutları
+        reddettiremesin (fail-closed, DoS yüzeyi kapalı).
+        """
+        if simdi_mono is None or abs(ham) > KOMUT_SAAT_SAPMA_TAVANI_S:
+            return
+        self._ofset_ornekleri.append((simdi_mono, float(ham)))
 
     # ── aktarim ──────────────────────────────────────────────────────────
     def _aktar(self, cmd):
@@ -198,6 +345,27 @@ class IhaKomutAlici:
         return (f"COMMAND_LONG(cmd={mav_cmd}, param1={param1}, "
                 f"sys={self.target_system}, comp={self.target_component})",
                 mav_cmd)
+
+    def _ack_basabilen_bilesenler(self, m):
+        """Bu komutun COMMAND_ACK'ini basmaya YETKİLİ bileşen kimlikleri (K-3).
+
+        VARSAYIM AÇIKÇA YAZILIR: ArduPilot bir COMMAND_LONG'u OTOPİLOT bileşeni
+        (``MAV_COMP_ID_AUTOPILOT1``) olarak işler ve COMMAND_ACK'i o bileşen
+        kimliğinden basar — komut başka bir ``target_component``a adreslenmiş
+        olsa bile. ArduPilot varsayılanında ikisi de 1 olduğu için örtüşür;
+        `--target-component` varsayılandan farklı verildiğinde AYRIŞIRLAR.
+        Bu yüzden geçerli küme:
+          * ``MAVLINK_BELIRTILMEMIS_COMPONENT`` — kaynak bileşen belirtilmemiş
+            (eski pymavlink / sahte uç); geriye uyum.
+          * ``MAV_COMP_ID_AUTOPILOT1`` — komutu gerçekten işleyen otopilot.
+          * ``self.target_component`` — komutun adreslendiği bileşen, kendi
+            adına cevaplarsa.
+        Bunların DIŞINDA hiçbir bileşen (kamera, gimbal, companion) bu komutun
+        ACK'ini veremez: kapı KAPALI kalır, yalnız doğru kümeyi ölçer.
+        """
+        return (MAVLINK_BELIRTILMEMIS_COMPONENT,
+                int(m.MAV_COMP_ID_AUTOPILOT1),
+                int(self.target_component))
 
     def _komut_ack_bekle(self, mav_cmd):
         """Pixhawk'in COMMAND_ACK'ini bekle -> (kabul_edildi, aciklama).
@@ -239,6 +407,27 @@ class IhaKomutAlici:
                             f"(beklenen {self.target_system}) — yok sayildi",
                             kirmizi=True)
                 continue
+            # K-3: ACK'i GÖNDEREN bileşen ile komutun ADRESLENDİĞİ bileşen
+            # AYRI alanlardır — `COMMAND_LONG.target_component` "kime
+            # gönderdim", `COMMAND_ACK.srcComponent` "kim cevapladı" demektir.
+            # Aynı MAVLink sisteminde kamera/gimbal/companion gibi başka
+            # bileşenler de bulunduğu için kapı KALIR, ama ikisini EŞİTLEMEK
+            # yazılı olmayan bir varsayımdı ve ölçüldü (3 Eylül): sahte Pixhawk
+            # gerçek ArduPilot gibi component=1'den ACK basar, alıcı
+            # `--target-component 3` ile açılınca HER ACK "yabancı" sayıldı ve
+            # PARACHUTE/ARM/DISARM/RTL/LAND uçtan uca DÜŞTÜ.
+            # Doğru ölçüt: ACK'i basmaya YETKİLİ bileşen kümesi.
+            bilesen_al = getattr(cevap, "get_srcComponent", None)
+            if callable(bilesen_al):
+                try:
+                    bilesen = int(bilesen_al())
+                except Exception:
+                    bilesen = None      # okunamayan bileşen = fail-closed
+                if bilesen not in self._ack_basabilen_bilesenler(m):
+                    self._logla(f"COMMAND_ACK yabanci component={bilesen} "
+                                f"(gecerli {self._ack_basabilen_bilesenler(m)})"
+                                f" — yok sayildi", kirmizi=True)
+                    continue
             sonuc = int(getattr(cevap, "result", -1))
             if sonuc == m.MAV_RESULT_ACCEPTED:
                 return True, "COMMAND_ACK ACCEPTED"
@@ -270,6 +459,17 @@ class IhaKomutAlici:
             return False
         if mesaj.get("hedef") != self.node:
             return False                              # baska dugumun komutu
+        if self.izinli_kaynak is not None:
+            try:
+                gelen = None if adr is None else (str(adr[0]), int(adr[1]))
+            except (IndexError, TypeError, ValueError):
+                gelen = None
+            if gelen != self.izinli_kaynak:
+                self.sayac["kaynak_red"] += 1
+                self._logla(f"CMD kaynagi RED: gelen={gelen!r}, izinli="
+                            f"{self.izinli_kaynak!r}; MAVLink yok, ACK YOK",
+                            kirmizi=True)
+                return False
         self.sayac["cmd"] += 1
         seq = mesaj.get("seq")
         cmd = mesaj.get("cmd")
@@ -286,6 +486,84 @@ class IhaKomutAlici:
             self._logla(f"bilinmeyen CMD {cmd!r} seq={seq}; aktarim yok, "
                         f"ACK YOK", kirmizi=True)
             return False
+
+        # Kritik uçuş komutları yalnız YKS'nin tekrar penceresi içinde yaşar.
+        # bool, NaN/sonsuz, eksik ve anlamlı toleranstan ileri damga fail-closed.
+        # K-1: ham fark İKİ MAKİNENİN saat farkını içerir; yaş, trafikten
+        # kestirilen ofsete GÖRE hesaplanır (modül başlığındaki gerekçe).
+        damga = mesaj.get("t")
+        try:
+            simdi = self.duvar_saati()
+        except Exception:
+            simdi = None
+        simdi_mono, ofset = self._saat_ofseti()
+        if (isinstance(damga, bool) or not isinstance(damga, Real)
+                or isinstance(simdi, bool) or not isinstance(simdi, Real)
+                or not math.isfinite(float(damga))
+                or not math.isfinite(float(simdi))):
+            ham = yas = None
+        else:
+            ham = float(simdi) - float(damga)
+            yas = ham - (0.0 if ofset is None else ofset)
+        tavan = KOMUT_YAS_TAVANI_S[cmd]
+        zaman_kabul = (yas is not None
+                       and -KOMUT_ZAMAN_YUVARLAMA_TOLERANSI_S <= yas <= tavan)
+        if ham is not None and (zaman_kabul or ofset is None):
+            # Örnek yalnız iki durumda alınır: (a) çerçeve kapıdan GEÇTİ, ya da
+            # (b) ofset henüz BİLİNMİYOR — sapmayı öğrenmenin tek yolu budur.
+            # Ofset BİLİNİRKEN reddedilen çerçeve kestirimi KAYDIRAMAZ; yoksa
+            # ısrarlı ileri damgalı bir kaynak, kendi reddedilen örnekleriyle
+            # ofseti kendi üzerine çeker ve bir sonraki adımda kapıdan geçerdi
+            # (3 Eylül'de ÖLÇÜLDÜ: ikinci gönderimde geçiyordu).
+            # Saat NTP ile yerine oturup sapma DEĞİŞİRSE kestirim geçici olarak
+            # yanlış kalır ve komutlar reddedilir (fail-closed); pencere
+            # (KOMUT_SAAT_OFSETI_PENCERESI_S) örnekleri düşürünce ofset yeniden
+            # BİLİNMİYOR olur ve öğrenme kendiliğinden baştan işler.
+            self._saat_ofseti_ornekle(simdi_mono, ham)
+        if not zaman_kabul:
+            self.sayac["zaman_red"] += 1
+            self._logla(f"CMD {cmd} seq={seq}: zaman RED (yas={yas!r}, "
+                        f"ham={ham!r}, saat_ofseti={ofset!r}, "
+                        f"tavan={tavan:.2f} s); MAVLink yok, ACK YOK",
+                        kirmizi=True)
+            return False
+
+        oturum = mesaj.get("oturum")
+        anahtar = None
+        if oturum is not None:
+            try:
+                oturum = oturum_dogrula(oturum)
+            except ValueError as exc:
+                self.sayac["hata"] += 1
+                self._logla(f"CMD {cmd} seq={seq}: bozuk oturum ({exc}); "
+                            "MAVLink yok, ACK YOK", kirmizi=True)
+                return False
+            anahtar = (oturum, seq, cmd)
+            if anahtar in self._komut_sonuclari:
+                self.sayac["tekrar"] += 1
+                if self._komut_sonuclari[anahtar]:
+                    self._logla(f"CMD {cmd} seq={seq}: oturum tekrari; eyleyici "
+                                "yeniden calistirilmadi, ACCEPTED ACK yineleniyor")
+                    return self._ack_gonder(seq, adr, cmd)
+                self._logla(f"CMD {cmd} seq={seq}: oturum tekrari; ilk sonuc "
+                            "basarisizdi, gecikmis eylem RED, ACK YOK",
+                            kirmizi=True)
+                return False
+        # ── K-2: anahtar BURADA zehirlenmez ──────────────────────────────
+        # "İlk giriş terminaldir" niyeti KORUNUR, ama TERMİNAL olan şey
+        # MAVLink'e ULAŞMIŞ bir denemedir. Anahtarı aktarımdan ÖNCE `False`
+        # yazmak, hemen ardındaki iki fail-closed çıkışın (`mav is None`,
+        # hedef bilinmiyor) anahtarı KALICI olarak zehirlemesine yol açıyordu:
+        # aynı (oturum, seq, cmd) ile gelen sonraki her istek "ilk sonuç
+        # başarısızdı, gecikmiş eylem RED" ile eleniyordu. Bu, D-02/K4'ün
+        # ACK'li aynı-seq tekrar merdivenini (`comms/komut_tekrar.py`,
+        # 8 tekrar × 0,25 s) ÖLDÜRÜR — saha açılışında ilk deneme Pixhawk'tan
+        # daha paket gelmeden yapılır (SIK durum) ve o andan sonra ARM/DISARM/
+        # RTL/LAND/PARACHUTE bir daha asla geçemezdi.
+        # MAVLink'e HİÇ ULAŞMAMIŞ teşebbüs (bağlantı yok / hedef bilinmiyor /
+        # aktarım istisnası) terminal DEĞİLDİR: araç ÇALIŞMAMIŞTIR, dolayısıyla
+        # gecikmiş eylem tehlikesi de yoktur. Böyle bir teşebbüs yalnızca
+        # başarısız döner ve YKS tekrarında yeniden denenebilir.
         if self.mav is None:
             self.sayac["hata"] += 1
             self._logla(f"CMD {cmd} seq={seq}: MAVLink baglantisi YOK; "
@@ -307,6 +585,14 @@ class IhaKomutAlici:
             return False
         # D-403: gonderim kanit degil — Pixhawk'in COMMAND_ACK'i beklenir.
         kabul, ack_aciklama = self._komut_ack_bekle(mav_cmd)
+        # K-2: BURASI TERMİNAL SINIRIDIR. COMMAND_LONG tele çıktı; Pixhawk
+        # komutu işlemiş OLABİLİR. Sonuç ACCEPTED, REJECTED ya da "ACK gelmedi"
+        # olsun — aynı (oturum, seq, cmd) bir daha ÇALIŞTIRILMAZ; aksi hâlde
+        # aynı eyleyici dakikalar sonra gecikmeli olarak tetiklenebilirdi.
+        # `True`: ACK taşıması başarısız olsa da Pixhawk kabul etti; sonraki
+        # tekrar yalnız güçlü ACK'i yineler, eyleyiciye dokunmaz.
+        if anahtar is not None:
+            self._komut_sonuclari[anahtar] = bool(kabul)
         if not kabul:
             self.sayac["hata"] += 1
             self._logla(f"CMD {cmd} seq={seq} -> {aciklama} gonderildi ama "
@@ -376,6 +662,11 @@ def _arg_parser():
                     "aktarim basariliysa (D-393)")
     ap.add_argument("--bind", default=VARSAYILAN_BIND,
                     help="UDP dinleme host:port (varsayilan %(default)s)")
+    ap.add_argument(
+        "--izinli-kaynak", type=_cli_kaynak_adresi,
+        help=("yalniz bu YKS UDP HOST:PORT kaynaginin kritik CMD'lerini kabul "
+              "et (saha icin zorunlu; SiK'te seri_hub kaynagi "
+              "127.0.0.1:5100)"))
     ap.add_argument("--serial",
                     help="SiK telsiz seri portu (saha); verilirse --bind "
                          "kullanilmaz")
@@ -385,10 +676,9 @@ def _arg_parser():
                     help="Pixhawk MAVLink baglantisi — COGULLAYICI UCU "
                          "(or. udp:127.0.0.1:14560); seri Pixhawk tek "
                          "sahiplidir, dogrudan /dev/ttyACM0 VERME")
-    ap.add_argument("--seri-pixhawk-bilerek", action="store_true",
-                    help="CONTRACTS §7.4 kilidini BILEREK as: --mavlink'e "
-                         "dogrudan seri cihaz ver (tek sahipli port; baska "
-                         "MAVLink sureci acikken ikisi de sessizce kor olur)")
+    # D-403 kilidi UC surecte de ayni: bayrak adi, yardim metni ve red
+    # metni `inis_kaniti`den okunur (FDR/ACIK_KALEMLER §4b #23).
+    seri_pixhawk_bayragini_ekle(ap)
     ap.add_argument("--sysid", type=int, default=VARSAYILAN_HEDEF_SYSID,
                     help="hedef MAVLink sistem kimligi — Pixhawk SYSID_THISMAV "
                          "ile AYNI olmali; COMMAND_ACK yalniz bu sysid'den "
@@ -421,16 +711,19 @@ def main(argv=None):
         parser.error("--target-component 0..255 araliginda olmali")
     if args.baud <= 0:
         parser.error("--baud pozitif olmali")
+    if args.izinli_kaynak is None:
+        parser.error("--izinli-kaynak HOST:PORT saha komutlari icin zorunlu; "
+                     "kaynak pinsiz ARM/DISARM/PARACHUTE/RTL/LAND kabul edilmez")
+    if args.serial:
+        parser.error("--serial kaynagi adresle pinlenemez; seri portu tek sahipli "
+                     "seri_hub acsin, bu sureci --bind 127.0.0.1:5007 "
+                     "--izinli-kaynak 127.0.0.1:5100 ile calistirin")
     # D-403 (curutucu KUCUK): CONTRACTS §7.4 yalniz belgeydi, kod engellemiyordu.
     # Seri Pixhawk tek sahiplidir; dogrudan cihaz verilirse rpi_inference /
     # iha_inis_yayinci ile cakisir ve iki taraf da SESSIZCE kor olur.
-    seri_gibi = (args.mavlink.startswith("/dev/tty")
-                 or args.mavlink.upper().startswith("COM")
-                 or args.mavlink.startswith("serial:"))
-    if seri_gibi and not args.seri_pixhawk_bilerek:
-        parser.error(f"--mavlink {args.mavlink!r} dogrudan seri cihaz: seri "
-                     "Pixhawk TEK SAHIPLIDIR (CONTRACTS §7.4). Cogullayici ucu "
-                     "ver (udp:127.0.0.1:1455N) ya da --seri-pixhawk-bilerek.")
+    # Kalip artik `inis_kaniti`de: ayni kilit o iki surecte de KODLU.
+    seri_pixhawk_kilidini_uygula(parser, args.mavlink,
+                                 args.seri_pixhawk_bilerek)
 
     try:
         mav = mavlink_baglantisi_ac(args.mavlink)
@@ -454,7 +747,8 @@ def main(argv=None):
             return 4
         alici = IhaKomutAlici(link, mav, node=args.node,
                               target_system=args.sysid,
-                              target_component=args.target_component)
+                              target_component=args.target_component,
+                              izinli_kaynak=args.izinli_kaynak)
         alici.calistir()
         return 0
     finally:

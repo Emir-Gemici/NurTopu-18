@@ -16,7 +16,12 @@
    "yayin_cevrilme_siniflari": {
     "no_route": 6,
     "cogunluk": 1
-   }
+   },
+   "h1c_yayin_cevrilme_siniflari": {
+    "no_route": 6,
+    "cogunluk": 1
+   },
+   "h1c_siniflandirilamayan": 0
   },
   "42": {
    "n_kare": 260,
@@ -30,11 +35,20 @@
    "yayin_cevrilme_siniflari": {
     "no_route": 9,
     "cogunluk": 2
-   }
+   },
+   "h1c_yayin_cevrilme_siniflari": {
+    "no_route": 9,
+    "cogunluk": 2
+   },
+   "h1c_siniflandirilamayan": 0
   }
  },
  "H1_ozgun": false,
  "H1a": true,
  "H1b": true,
- "H2": true
+ "H1c": true,
+ "H2": true,
+ "_h1c_kosum": "H1c (ON_KAYIT EK-1) 2026-09-03'te AYNI model/kume/tohumlarla yeniden kosuldu; paylasilan alanlar birebir tekrarlandi (ham 13/24, yayimlanan 7/11). Ham ikinci kosum ciktisi: olcum_h1c_tekrar_20260903.json",
+ "_h1c_betik_sha256": "213108565A22E55323378F0DA7150C380338687C63C3C3144B717FAEB6847892",
+ "_h1c_model_sha256": "1D1CACA6F6DA19EA35E69186A048DA960CA5188BE6EE6D49D6106457CAC46911"
 }

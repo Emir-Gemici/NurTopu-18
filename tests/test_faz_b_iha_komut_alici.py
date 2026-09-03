@@ -522,7 +522,8 @@ class TestCli(unittest.TestCase):
                 mock.patch.object(modul, "UDPLink") as udp, \
                 contextlib.redirect_stderr(io.StringIO()):
             kod = modul.main(["--mavlink", "udp:127.0.0.1:14560",
-                              "--bind", f"{YEREL}:0"])
+                              "--bind", f"{YEREL}:0",
+                              "--izinli-kaynak", f"{YEREL}:5005"])
         self.assertEqual(2, kod)
         udp.assert_not_called()
 
@@ -550,9 +551,20 @@ class TestCli(unittest.TestCase):
                                side_effect=ConnectionError("yok")) as ac, \
                 contextlib.redirect_stderr(io.StringIO()):
             kod = modul.main(["--mavlink", "/dev/ttyACM0",
-                              "--seri-pixhawk-bilerek", "--bind", f"{YEREL}:0"])
+                              "--seri-pixhawk-bilerek", "--bind", f"{YEREL}:0",
+                              "--izinli-kaynak", f"{YEREL}:5005"])
         self.assertEqual(2, kod)
         ac.assert_called_once_with("/dev/ttyACM0")
+
+    def test_23_cli_kaynak_pini_eksikse_fail_closed(self):
+        """Saha CLI kaynak pinsiz eyleyici dinleyicisi açmamalı."""
+        with mock.patch.object(modul, "mavlink_baglantisi_ac") as ac, \
+                contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit) as cm:
+                modul.main(["--mavlink", "udp:127.0.0.1:14560",
+                            "--bind", f"{YEREL}:0"])
+        self.assertEqual(2, cm.exception.code)
+        ac.assert_not_called()
 
 
 if __name__ == "__main__":

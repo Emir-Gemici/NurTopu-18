@@ -71,6 +71,7 @@ for _y in (KOK / "comms", KOK / "codes", KOK / "scripts"):
 
 import iha_komut_alici  # noqa: E402
 import kamera_koprusu  # noqa: E402
+import seri_hub  # noqa: E402
 from karar_sozlesmesi import MAVLINK_KONUM_ASGARI_HZ, SARTNAME_IHA_GOREV_SURESI_S  # noqa: E402
 
 PAKET = KOK / "jetson_paket"
@@ -79,6 +80,7 @@ BIRIM_DIZIN = PAKET / "systemd"
 KOD = PAKET / "kod"
 CONTRACTS = KOK / "CONTRACTS.md"
 KILAVUZ = PAKET / "JETSON_BASLAT.md"
+RUNBOOK = KOK / "SAHA_RUNBOOK.md"   # betigin YKS/IKA uclari icin gosterdigi otorite
 
 COGULLAYICI = "navitas-cogullayici"
 SERI_HUB = "navitas-seri-hub"
@@ -271,6 +273,21 @@ def _arg_degeri(komut, bayrak):
         return None
     i = parcalar.index(bayrak)
     return parcalar[i + 1] if i + 1 < len(parcalar) else None
+
+
+def _runbook_yks_portu():
+    """SAHA_RUNBOOK'un ilan ettigi YKS UDP ucu (`--yks <YKS_IP>:<port>`) — metin kilidi.
+
+    NEDEN (K6 "pinler KODDAN" yordami): betikteki `YKS_PORT` yalniz bir bash
+    sabiti; betigin kendi yorumu otorite olarak SAHA_RUNBOOK §1/§3'u gosterir.
+    Bu portu teste ciplak yazmak, kapiyi "betik ne yaziyorsa o" haline getirirdi.
+    Port kritiktir: yks_gui TEK soket kullanir (`--bind` ile acar, komutu ve
+    ACK'i AYNI soketten yollar), yani IHA'ya varan komutun KAYNAK ucu budur;
+    --izinli-kaynak ile ayrisirsa saha ARM/RTL komutlari eyleyicide reddedilir.
+    K4'un CONTRACTS.md metin kilidiyle ayni yordam."""
+    portlar = {int(p) for p in re.findall(r"--yks\s+<YKS_IP>:(\d+)",
+                                          RUNBOOK.read_text(encoding="utf-8"))}
+    return portlar
 
 
 def _sozlesme_uclari():
@@ -573,6 +590,27 @@ class JetsonBaslatKuruUdp(unittest.TestCase):
                          "betigin SYSID varsayilani alicinin sozlesmesinden sapti")
         self.assertEqual(_arg_degeri(self.b["birimler"][KOMUT], "--bind"),
                          iha_komut_alici.VARSAYILAN_BIND)
+        # Kritik eyleyicinin KAYNAK PINI: --izinli-kaynak, BEYAN EDILEN YKS
+        # soketi olmali. Beklenen deger betigin ciktisindan OKUNMAZ; iki
+        # bagimsiz capadan kurulur:
+        #   (1) host = teste girdi olarak verilen YKS_IP (BEYAN_TAM). `env`
+        #       bolumunde YKS_IP yoktur ve OLMAMALIDIR: deger uretim aninda
+        #       *_TELSIZ_ARGS icine pisirilir; /etc/navitas.env'e ayrica
+        #       yazilsaydi operator "orayi duzeltirsem kaynak degisir" diye
+        #       yanilirdi — oysa ARGS zaten sabitlenmistir (fail-visible).
+        #   (2) port = SAHA_RUNBOOK'un ilan ettigi YKS ucu (_runbook_yks_portu).
+        # Ciplak dize yazmak, betik ne uretirse onu onaylayan bos kapi olurdu.
+        runbook_portlari = _runbook_yks_portu()
+        self.assertEqual(len(runbook_portlari), 1,
+                         f"SAHA_RUNBOOK tek YKS portu ilan etmeli: {runbook_portlari}")
+        yks_ucu = f"{BEYAN_TAM['YKS_IP']}:{runbook_portlari.pop()}"
+        self.assertEqual(_arg_degeri(self.b["birimler"][KOMUT], "--izinli-kaynak"),
+                         yks_ucu,
+                         "UDP eyleyici yalniz BEYAN EDILEN YKS soketini kabul etmeli")
+        # Ayni kosumda telemetrinin gittigi uc ile AYNI olmali: izinli kaynak
+        # telemetri hedefinden ayrisirsa komut yolu sahada tek yonlu kalir.
+        self.assertEqual(_arg_degeri(self.b["birimler"][INIS], "--yks"), yks_ucu)
+        self.assertEqual(_arg_degeri(self.b["birimler"][RPI], "--yks-hedef"), yks_ucu)
         self.assertEqual(float(env["KANIT_TIMEOUT"]), SARTNAME_IHA_GOREV_SURESI_S)
         self.assertEqual(env["KIP"], "udp")
         self.assertEqual(env["PIXHAWK_SERI"], "/dev/ttyACM0")
@@ -721,6 +759,20 @@ class JetsonBaslatKuruSik(unittest.TestCase):
         self.assertNotIn("--ika", inis.split())
         self.assertEqual(_arg_degeri(komut, "--bind"), "127.0.0.1:5007",
                          "komut alici hub'in --tuketici ucunda dinlemeli")
+        # SiK'te izinli kaynak = seri-hub'in KENDI UDP ucu: hub, seri hattan
+        # cozdugu cerceveyi --bind ile actigi soketten tuketicilere yollar
+        # (seri_hub.SeriHub docstring'i: "hub'in KENDI UDP soketi"), yani
+        # eyleyiciye varan komutun kaynak ucu hub'in bind adresidir.
+        # Ciplak "127.0.0.1:5100" yerine iki capa (madde 16):
+        #   (1) kod otoritesi seri_hub.VARSAYILAN_BIND,
+        #   (2) AYNI kosumda hub biriminin gercekten aldigi --bind.
+        # Biri kaysa oteki tutmaz; kapi ciplak dizeyle gecmez.
+        self.assertEqual(_arg_degeri(komut, "--izinli-kaynak"),
+                         seri_hub.VARSAYILAN_BIND,
+                         "SiK komutu yalniz seri-hub'in kod sozlesmesindeki ucundan gelmeli")
+        self.assertEqual(_arg_degeri(komut, "--izinli-kaynak"),
+                         _arg_degeri(self.b["birimler"][SERI_HUB], "--bind"),
+                         "izinli kaynak, hub'in GERCEKTEN dinledigi/yolladigi uc olmali")
         for ad in TUKETICILER:
             k = self.b["birimler"][ad]
             self.assertNotIn("/dev/ttyUSB0", k, ad)

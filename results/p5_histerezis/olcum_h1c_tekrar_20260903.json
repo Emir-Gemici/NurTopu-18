@@ -1,0 +1,52 @@
+{
+ "_not": "H1c damgasi (FDR/ACIK_KALEMLER 4b #24) icin YAPILAN IKINCI KOSUM'un ham ciktisi. Ilk kosumla (olcum_20260903.json) paylasilan alanlar BIREBIR ayni cikti; bu dosya o tekrarlanabilirlik iddiasinin kanitidir. `_model` yolu worktree'deki sabit-baglantidir (SHA256 ana depodakiyle ayni).",
+ "_on_kayit": "results/p5_histerezis/ON_KAYIT.md",
+ "_model": "O:\\navitas\\.claude\\worktrees\\wf_b0f33806-4ba-4\\models\\navitas_seg_v36_best.pt",
+ "sigma": 2.0,
+ "esik_K": 3,
+ "tohumlar": {
+  "7": {
+   "n_kare": 260,
+   "ornek_per_kare": 5,
+   "ham_cevrilme": 13,
+   "yayimlanan_cevrilme": 7,
+   "ham_kararsiz_kare": 8,
+   "yayin_kararsiz_kare": 5,
+   "bastirilan": 6,
+   "bastirilan_no_route": 0,
+   "yayin_cevrilme_siniflari": {
+    "no_route": 6,
+    "cogunluk": 1
+   },
+   "h1c_yayin_cevrilme_siniflari": {
+    "no_route": 6,
+    "cogunluk": 1
+   },
+   "h1c_siniflandirilamayan": 0
+  },
+  "42": {
+   "n_kare": 260,
+   "ornek_per_kare": 5,
+   "ham_cevrilme": 24,
+   "yayimlanan_cevrilme": 11,
+   "ham_kararsiz_kare": 13,
+   "yayin_kararsiz_kare": 8,
+   "bastirilan": 14,
+   "bastirilan_no_route": 0,
+   "yayin_cevrilme_siniflari": {
+    "no_route": 9,
+    "cogunluk": 2
+   },
+   "h1c_yayin_cevrilme_siniflari": {
+    "no_route": 9,
+    "cogunluk": 2
+   },
+   "h1c_siniflandirilamayan": 0
+  }
+ },
+ "H1_ozgun": false,
+ "H1a": true,
+ "H1b": true,
+ "H1c": true,
+ "H2": true
+}

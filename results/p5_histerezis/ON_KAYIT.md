@@ -92,3 +92,31 @@ rota↔rota sızıntısı 0/0), **H1b GEÇTİ** (7<13, 11<24), **H2 GEÇTİ**
 tasarımdaki süresiz-bastırma açığını yakalayıp tavan kuralını doğurdu).
 H6: 1559 test OK. Ölçüm: `olcum_20260903.json`. **P5 KAPANDI** (T79 kökü
 ve T91 Faz C'de açık).
+
+### H1c — KOŞULDU (2026-09-03; FDR/ACIK_KALEMLER §4b #24)
+
+> Bu blok **yalnız kayıttır**. Ölçüt metni, K, eşikler ve sınıf tanımları
+> DEĞİŞMEDİ; H1'in özgün %40 hükmü hâlâ **DÜŞTÜ**.
+
+Ölçüt yukarıda yazıldığı gibi koşuldu: aynı model
+(`models/navitas_seg_v36_best.pt`), aynı kabul kümesi, aynı tohumlar (7, 42),
+aynı σ=2 ve kare başına 4 kopya. Yeni veri **üretilmedi**.
+
+**Sonuç: H1c GEÇTİ** — sınıflandırılamayan yayımlanmış çevrilme **0/0**.
+Sınıflar yayımlanan çevrilmeleri tam örtüyor: tohum 7 → (i) 6 + (ii) 1 = 7;
+tohum 42 → (i) 9 + (ii) 2 = 11. (iii) H5-tavanı sınıfı bu veride **hiç**
+gerçekleşmedi. Ham sayılar birinci koşumla birebir tekrarlandı (13/24 ham,
+7/11 yayımlanan) — ikinci koşumun ham çıktısı:
+`olcum_h1c_tekrar_20260903.json`.
+
+⚠ **Ölçümün gücü hakkında dürüst not.** İlk koşumdaki sınıflandırıcı (iii)'ü
+`kare içinde 2 kez görülen kimlik` **vekiliyle** etiketliyordu; o vekil ön
+kayıtta yazmaz ve dört kovayı inşa gereği tükettiği için "sınıflandırılamayan
+= 0" ölçütü H1a'nın kopyasına dönüşüyordu (asla düşemeyen ölçüt). H1c bu
+yüzden yayının **gerekçesini** durum makinesinin çağrı öncesi durumundan
+türetir (fail-closed / NO_ROUTE-sonrası ilk rota / K teyidi / H5 tavanı) ve
+her çağrıda `suz()`un gerçek dönüşüyle çapraz denetler. Bu okumayla bile
+`KararYumusatici` bugünkü hâliyle üç sınıfın dışına **yapısal olarak** çıkamaz;
+yani H1c geçmiş bir **regresyon damgasıdır** — durum makinesine yeni bir yayın
+yolu eklenirse ya da (ii) mekanizması ile ön kaydın kompozisyon şartı
+("5 örneğin ≥3'ü") ayrışırsa ölçüt düşer. Kilit: `tests/test_p5_h1c_damgasi.py`.

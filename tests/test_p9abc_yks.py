@@ -73,6 +73,7 @@ class ParasutAckliTekrar(unittest.TestCase):
         self.assertIsNotNone(m, "ACK'li tekrar baslamadi")
         self.assertEqual(("CMD", "PARACHUTE", "iha"),
                          (m["type"], m["cmd"], m["hedef"]))
+        self.assertRegex(m.get("oturum", ""), r"^[A-Za-z0-9_-]{16,64}$")
         g._ceza_ekle.assert_called_once()
         self.assertEqual(PARASUT_MANUEL_CEZA_PUANI,
                          g._ceza_ekle.call_args.args[0],
@@ -87,6 +88,9 @@ class ParasutAckliTekrar(unittest.TestCase):
         self.assertIsNotNone(g.parasut_ack_zamani,
                              "iha ACK'i islenmedi — eski kusur geri geldi")
         self.assertFalse(g.parasut_tekrar.bekliyor)
+        self.assertIn("KOMUTU KABUL", g.btn_parasut.cget("text"))
+        self.assertNotIn("AÇILDI", g.btn_parasut.cget("text"),
+                         "COMMAND_ACK mekanik açılma sensörü değildir")
 
     def test_ack_yoksa_ust_sinirda_dugme_yeniden_acilir(self):
         g, saat = _p9_arayuz()

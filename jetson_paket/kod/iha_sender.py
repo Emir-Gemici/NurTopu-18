@@ -15,6 +15,7 @@ Saha (SiK telsiz):
 import argparse
 import json
 import math
+import socket
 import sys
 import threading
 import time
@@ -22,8 +23,8 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from link import UDPLink, SerialLink
-from protocol import (open_route, rota_yok, heartbeat, iha_landed, encode,
-                      FrameReader)
+from protocol import (PROTOCOL_VERSION, open_route, rota_yok, heartbeat,
+                      iha_landed, encode, FrameReader)
 
 _KOK = Path(__file__).resolve().parents[1]
 if str(_KOK / "codes") not in sys.path:
@@ -89,13 +90,89 @@ def rota_json_oku(path):
 
 
 class IhaSender:
-    def __init__(self, link, peers=None):
+    def __init__(self, link, peers=None, *, monotonic=None):
         self.link = link
         self.peers = peers or {}          # {"ika": (host,port), "yks": (...)}
         self.reader = FrameReader()
+        # ACK zaman aşımı duvar saatinden bağımsız olmalıdır. NTP/operatör
+        # düzeltmesi ``time.time`` değerini geriye atarsa bir ACK penceresi
+        # sonsuza uzamamalı; ileri atarsa da henüz cevap gelmeden bitmemeli.
+        # Kanca yalnız deterministik test içindir, eski kurucu API'si korunur.
+        self._monotonic = monotonic or time.monotonic
+
+    @staticmethod
+    def _adres_ayni_mi(beklenen, gelen):
+        """UDP ACK kaynağını yapılandırılmış akran adresine sıkı bağla.
+
+        ``recvfrom`` çözümlenmiş IP döndürürken kullanıcı hedefi bir hostname
+        olabilir. Yalnız aynı port + aynı/çözümlenmiş IPv4 adresi kabul edilir;
+        çözümleme başarısızsa fail-closed olarak metinsel eşitlik aranır.
+        """
+        if not (isinstance(beklenen, (tuple, list)) and len(beklenen) == 2
+                and isinstance(gelen, (tuple, list)) and len(gelen) >= 2):
+            return False
+        try:
+            if int(beklenen[1]) != int(gelen[1]):
+                return False
+        except (TypeError, ValueError):
+            return False
+        beklenen_host, gelen_host = str(beklenen[0]), str(gelen[0])
+        if beklenen_host == gelen_host:
+            return True
+        try:
+            return socket.gethostbyname(beklenen_host) == gelen_host
+        except OSError:
+            return False
+
+    def _ack_dugumu(self, mesaj, beklenen, adres):
+        """Geçerli ACK ise onaylayan akran adını, değilse ``None`` döndür.
+
+        JSON kökü liste/sayı olabilir; ``bool`` da Python'da ``int`` alt
+        sınıfıdır. İkisi de önceki gevşek ``.get``/``==`` denetiminden
+        geçerek ya iş parçacığını düşürüyor ya yanlış seq'i onaylıyordu.
+        ``ref_tip`` sözleşme gereği geriye uyum için isteğe bağlı kalır, fakat
+        varsa gerçek bir string ve beklenen mesaj tipiyle birebir olmalıdır.
+        """
+        if not isinstance(mesaj, dict):
+            return None
+        if (type(mesaj.get("v")) is not int
+                or mesaj.get("v") != PROTOCOL_VERSION):
+            return None
+        if type(mesaj.get("type")) is not str or mesaj["type"] != "ACK":
+            return None
+        if type(mesaj.get("ref")) is not int or mesaj["ref"] != beklenen["seq"]:
+            return None
+        node = mesaj.get("node")
+        if type(node) is not str or node not in self.peers:
+            return None
+        if "ref_tip" in mesaj:
+            if (type(mesaj["ref_tip"]) is not str
+                    or mesaj["ref_tip"] != beklenen["type"]):
+                return None
+
+        akran = self.peers[node]
+        # Seri hatta kaynak adresi yoktur; UDP'de ise ACK tam olarak o node
+        # için yapılandırılan peer'den dönmelidir. Başka bir porttan gönderilen
+        # sahte/doğrulanamayan ACK bekleyeni kapatamaz.
+        if akran is None:
+            return node if adres is None else None
+        return node if self._adres_ayni_mi(akran, adres) else None
+
+    def _cerceveler(self, data, adres):
+        """UDP datagramlarını birbirinden yalıt, seri parçaları biriktir."""
+        if not data:
+            return []
+        # UDP'de datagram = çerçeve sözleşmesi vardır. Newline'sız bozuk bir
+        # datagram kalıcı okuyucuda tutulursa sonraki sağlam JSON'a eklenip onu
+        # da zehirler. Seri hatta ise parçalanma olağandır ve kalıcı tampon şart.
+        okuyucu = FrameReader() if adres is not None else self.reader
+        return list(okuyucu.feed(data))
 
     def _tekrarli_gonder(self, msg, repeat=8, interval=0.25, wait_ack=True):
         """Bir protokol mesajını tüm akranlardan ACK alana dek tekrarla."""
+        if (not isinstance(msg, dict) or type(msg.get("seq")) is not int
+                or type(msg.get("type")) is not str):
+            raise ValueError("gonderilecek mesaj type ve tamsayi seq icermeli")
         data = encode(msg)
         acked = set()
         targets = list(self.peers.items()) or [(None, None)]
@@ -109,12 +186,10 @@ class IhaSender:
             if not wait_ack:
                 time.sleep(interval)
                 continue
-            t0 = time.time()
-            while time.time() - t0 < interval:
+            bitis = self._monotonic() + interval
+            while self._monotonic() < bitis:
                 d, _addr = self.link.recv()
-                for m in self.reader.feed(d) if d else []:
-                    if m.get("type") != "ACK" or m.get("ref") != msg["seq"]:
-                        continue
+                for m in self._cerceveler(d, _addr):
                     # T206 (D-405 Q4, olculdu): eslesme yalniz `ref` ileydi.
                     # Hub fan-out'unda her tuketici HERKESIN ACK'ini gorur ve
                     # seq sayaclari surec basinadir: OPEN_ROUTE seq=7 bekleyen
@@ -123,10 +198,9 @@ class IhaSender:
                     # (AckliTekrar.ack_geldi ile AYNI): `ref_tip` varsa
                     # bekleyen mesajin tipiyle de eslesmeli; yoksa yalniz
                     # `ref` (eski ACK ureticileri geriye uyumlu).
-                    ref_tip = m.get("ref_tip")
-                    if ref_tip is not None and ref_tip != msg["type"]:
-                        continue
-                    acked.add(m.get("node"))
+                    node = self._ack_dugumu(m, msg, _addr)
+                    if node is not None:
+                        acked.add(node)
                 # D-383 (B2 curutucusu OLCTU): tum beklenen ACK'ler geldiyse
                 # pencereyi TERK ET. Once burada cikis yoktu ve dongu, ACK
                 # coktan gelmisken bile recv'in SOKET zaman asimini (link
@@ -320,16 +394,24 @@ class KararYayinci:
 
     def _karar_dongusu(self):
         while True:
-            self._yeni.wait()
-            self._yeni.clear()
-            k = self._yuvayi_al()
-            if k is not None:
-                self._karari_gonder(*k)
-            # Durma kontrolu yuvayi BOSALTMADAN bakar: gonderim sirasinda
-            # yazilip stop() ile yakalanan karar bir sonraki turda gider
-            # (dalga 2 curutucusu: eski `_yuvayi_al() is None` onu pop edip atiyordu).
-            if self._dur.is_set() and self._yuva_bos_mu():
-                return
+            try:
+                self._yeni.wait()
+                self._yeni.clear()
+                k = self._yuvayi_al()
+                if k is not None:
+                    self._karari_gonder(*k)
+                # Durma kontrolu yuvayi BOSALTMADAN bakar: gonderim sirasinda
+                # yazilip stop() ile yakalanan karar bir sonraki turda gider
+                # (dalga 2 curutucusu: eski `_yuvayi_al() is None` onu pop edip atiyordu).
+                if self._dur.is_set() and self._yuva_bos_mu():
+                    return
+            except Exception as exc:
+                # Karar thread'i tek beklenmedik hata ile sessizce ölmez.
+                # Hatalı karar yayınlanmaz (fail-closed), kanıt tanı listesine
+                # düşer ve sonraki yeni karar için döngü yaşamaya devam eder.
+                self.hata.append(f"karar_dongusu {type(exc).__name__}: {exc}")
+                if self._dur.is_set():
+                    return
 
     def _karari_gonder(self, open_path, conf, waypoints_px, mpp, karar_reddi):
         try:

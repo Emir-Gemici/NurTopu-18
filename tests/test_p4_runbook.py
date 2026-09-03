@@ -41,7 +41,8 @@ class RunbookBelgeKapisi(unittest.TestCase):
     def test_saha_bilesenlerinin_satirlari_var(self):
         for gerekli in ("saha_baslat.py", "iha_inis_yayinci.py", "--sysid",
                         "--kanit-timeout", "--yks", "test_uctan_uca.py",
-                        "PROVA_SENARYOSU.md", "GUN1_KONTROL_LISTESI.md"):
+                        "PROVA_SENARYOSU.md", "GUN1_KONTROL_LISTESI.md",
+                        "hakem_log.jsonl", "flush+fsync"):
             self.assertIn(gerekli, RUNBOOK, f"runbook eksik: {gerekli}")
 
     def test_kuru_kosu_beklentisi_guncel(self):
@@ -169,6 +170,14 @@ class SahaBaslatKomutlari(unittest.TestCase):
         acilmaz, sessiz yutma yok."""
         s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
                             "yks", "--serial", "COM5", "--iha", "10.0.0.3:5007"],
+                           capture_output=True, text=True, timeout=60,
+                           encoding="utf-8", errors="replace")
+        self.assertEqual(2, s.returncode, s.stdout[:200] + s.stderr[:200])
+        self.assertIn("--iha", s.stderr)
+
+    def test_cli_udp_yks_iha_pini_olmadan_baslamaz(self):
+        s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+                            "yks", "--ika", "10.0.0.2:5006", "--fda"],
                            capture_output=True, text=True, timeout=60,
                            encoding="utf-8", errors="replace")
         self.assertEqual(2, s.returncode, s.stdout[:200] + s.stderr[:200])

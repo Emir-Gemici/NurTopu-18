@@ -13,7 +13,8 @@ Kilitler (kart: `CODEX_GOREV_YKS_FDA.md`):
   2  Yarışma kipinde (varsayılan) aynı senaryo REDDEDİLİR — regresyon yok
   3  FDA'da `parasut()` link'e HİÇBİR ŞEY yazmaz (düğme durumu tek savunma değil)
   4  FDA'da `ika_baslat()` IKA_GO yazmaz
-  5  FDA'da FIRLATMA etiketi KALKIŞ; ARM kilidi damgayı hâlâ reddeder
+  5  FDA'da FIRLATMA etiketi bunun komut değil zaman damgası olduğunu söyler;
+     ARM kilidi damgayı hâlâ reddeder
   6  Bütçe: FDA'da `SARTNAME_FDA_OPERASYON_SURESI_S`, aksi hâlde İHA görev süresi
 """
 
@@ -149,10 +150,11 @@ class FdaKapaliDugmeler(unittest.TestCase):
         self.assertEqual("İKA (FDA dışı)", g.btn_ika_go.ayarlar.get("text"))
         self.assertEqual("disabled", g.btn_ika_go.ayarlar.get("state"))
 
-    def test_5_FDA_firlatma_etiketi_KALKIS_ve_ARM_kilidi_SURUYOR(self):
+    def test_5_FDA_firlatma_etiketi_KRONOMETRE_ve_ARM_kilidi_SURUYOR(self):
         g, saat = _p9_arayuz()
         g.fda_kipini_uygula()
-        self.assertEqual("KALKIŞ", g.btn_firlat.ayarlar.get("text"))
+        self.assertEqual("KALKIŞ ZAMANI / KRONOMETRE",
+                         g.btn_firlat.ayarlar.get("text"))
         g.arm_acik = False               # ARM doğrulanmadı
         g._arm_durumu_taze_mi = mock.Mock(return_value=True)
         g._arm_ui_uygula = mock.Mock()
