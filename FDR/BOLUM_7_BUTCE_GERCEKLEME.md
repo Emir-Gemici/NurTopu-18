@@ -226,7 +226,7 @@ reddedilen aday da bir sonuçtur — ama bütçeye giren maliyeti aynıdır ve s
 
 | kalem | ölçülen | kayıt |
 |---|---|---|
-| `seed`/belirlenircilik sorusu — **v31 + T128 + T128-B**, cevap alınamadı (v31 v30'un bit-bit kopyasını üretti) | **8,6 saat GPU** toplam = 6,4 (v31) + 1,18 (T128) + 1,04 (T128-B) | D-138 / D-252 / **D-253** |
+| `seed`/belirlenircilik sorusu — **v31 + T128 + T128-B**, cevap alınamadı (v31 v30'un bit-bit kopyasını üretti) | **8,6 saat GPU** toplam = 6,4 (v31) + 1,18 (T128) + 1,04 (T128-B) | **D-140** / D-252 / **D-253** |
 | v8 aday eğitimi — 124 epoch, kabul zinciri **RED** | **6,19 saat GPU** | D-331 |
 
 **BEYAN GEREKLİ (insan): toplam GPU/elektrik gideri ve varsa bulut hesaplama faturası.**
@@ -363,7 +363,7 @@ tarafından ve hangi kayıtla doldurulacağının satır satır belli olmasıdı
 | 12 | Tedarik listesi D1–D12 ve gerekçeleri | `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §B | — (plan çıktısı) | 2026-09-03 |
 | 13 | Çevrimdışı tekerlek: 14 paket · 51 dosya · 246 MB | `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A | `scripts/nano_tekerlek_indir.py` | 2026-09-03 |
 | 14 | Saha belleği 1,27 GB (D12 kapasite gerekçesi) | `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A | `scripts/bellek_hazirla.py` | 2026-09-03 |
-| 15 | v31 = v30 bit-bit kopyası, **6,4 saat GPU** | `REVIEW_LOG.md` D-138 (alıntı D-252) | eğitim koşumu kıyası | 2026-08-16 |
+| 15 | v31 = v30 bit-bit kopyası, **6,4 saat GPU** | `REVIEW_LOG.md` D-140 (alıntı D-252) | eğitim koşumu kıyası | 2026-08-16 |
 | 16 | T128/T128-B toplam **8,6 saat GPU**, cevap alınamadı | `REVIEW_LOG.md` D-252 / D-253 | — | 2026-08-21 |
 | 17 | v8 adayı 124 epoch / **6,19 saat**, kabul zinciri RED | `REVIEW_LOG.md` D-331 | `scripts/olcum/65_kabul_denetcisi.py` | 2026-08-28 |
 | 18 | `.engine` Nano'da derlenemiyor (bütçe sapmasının teknik bedeli) | `jetson_paket/JETSON_NANO_KURULUM.md` §0 | — (belge, testle kilitli) | 2026-09-03 |

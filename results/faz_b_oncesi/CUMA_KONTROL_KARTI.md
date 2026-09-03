@@ -9,14 +9,14 @@
 | ✓ | kapı | sonuç (3 Eylül) |
 |---|---|---|
 | ✅ | Genel kapı `codes/test_rota_sentetik.py` | **15/15 · 15/15** |
-| ✅ | Tam test paketi | **1875 test OK** (skipped 3) |
+| ✅ | Tam test paketi | **1882 test OK** (skipped 3) |
 | ✅ | Kuru koşu `scripts/saha_kuru_kosu.py` | **9 GEÇTİ · 1 SAHİPSİZ** (yalnız `motor` — İKA gerçek sürücüsü; FDA uçuşunda gerekmez) |
 | ✅ | Paket aynası `scripts/jetson_paket_hazirla.py` | 18 dosya senkron |
 | ✅ | Model dosyaları pakette | `navitas_seg_v36_best.pt` + `_512_fp16.onnx` (54,8 / 54,6 MB) |
 | ✅ | Jetson açılış `jetson_baslat.sh --kuru` (udp + sik) | exit 3 — PC'de beklenen (`[YOK]` satırları Jetson yolları); uçlar 14550/14551/14552, `--streamrate 8`, köprü satırı doğru |
 | ✅ | Mühür `scripts/surum_dondur.py --dogrula` | exit 3 "DONDURULMADI" (mühür 17 Eylül) |
 | ✅ | Çevrimdışı tekerlekler `wheels/` | **14/14 paket · 51 dosya · 246 MB** |
-| ✅ | Saha belleği `scripts/bellek_hazirla.py` | **404 dosya · 1,27 GB** → `O:\navitas_bellek` |
+| ✅ | Saha belleği `scripts/bellek_hazirla.py` | **405 dosya · 1,27 GB** → `O:\navitas_bellek` |
 
 **Cuma akşamı tekrar koşulacak tek şey:** genel kapı + tam suit (gün içinde kod
 değiştiyse). Değişmediyse yukarıdaki sonuçlar geçerlidir.

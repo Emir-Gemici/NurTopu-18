@@ -373,12 +373,12 @@ Yazılım da bir üretim kalemidir ve konfigürasyon yönetimi altındadır.
 | Saha paketindeki model dosyaları | `navitas_seg_v36_best.pt` **54 788 636 B**, `navitas_seg_v36_best_512_fp16.onnx` **54 569 673 B** |
 | Saha paketi aynası | **18 dosya senkron** (`scripts/jetson_paket_hazirla.py`) |
 | Systemd birimleri | **6 adet**: çoğullayıcı, kamera köprüsü, `rpi_inference`, iniş yayıncısı, komut alıcısı, seri hub |
-| Taşınabilir saha belleği | **404 dosya · 1,27 GB**, `MANIFEST.txt` her dosyanın sha256'sı + git HEAD ile (`scripts/bellek_hazirla.py`; fail-closed: zorunlu parça eksikse çıkış 3) |
+| Taşınabilir saha belleği | **405 dosya · 1,27 GB**, `MANIFEST.txt` her dosyanın sha256'sı + git HEAD ile (`scripts/bellek_hazirla.py`; fail-closed: zorunlu parça eksikse çıkış 3) |
 | Genel kapı | **15/15 · 15/15** |
-| Tam test paketi | **1875 test OK** (skipped 3) |
+| Tam test paketi | **1882 test OK** (skipped 3) |
 
 ⚠ Depo içinde küçük bir tutarsızlık vardır: plan belgesi belleği **405 dosya**, kontrol kartı
-**404 dosya** diye yazar (ikisi de 1,27 GB). Fark **DOĞRULANACAK** — `MANIFEST.txt` satır sayısı
+**405 dosya** diye yazar (ikisi de 1,27 GB). Fark **DOĞRULANACAK** — `MANIFEST.txt` satır sayısı
 hakemdir.
 
 **Sürüm mühürü (üretim dondurma).** `scripts/surum_dondur.py` üretim kodunun ve model
@@ -475,7 +475,7 @@ gerilme/deplasman/emniyet katsayısı değerleri ekran görüntüsü ve rapor ç
 | kapı | ne ölçer | durum (03.09.2026) |
 |---|---|---|
 | Genel kapı `codes/test_rota_sentetik.py` | karar zinciri | **15/15 · 15/15 GEÇTİ** |
-| Tam test paketi | tüm sözleşmeler | **1875 OK** (skipped 3) |
+| Tam test paketi | tüm sözleşmeler | **1882 OK** (skipped 3) |
 | Kuru koşu | saha zinciri bütünlüğü | **9 GEÇTİ / 1 SAHİPSİZ** (`motor`) |
 | Paket aynası | saha paketi ile depo eşitliği | **18 dosya senkron** |
 | Çevrimdışı tekerlekler | Nano yığını | **14/14 · 51 dosya · 246 MB** |
@@ -554,7 +554,7 @@ sonrası açılacak dalga için tarih, sorumlu rol ve tedarik kalemleri.
 | 20 | Mühür durumu `DONDURULMADI`, exit 3 | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §4 | `scripts/surum_dondur.py --dogrula` | 2026-09-03 |
 | 21 | Model dosya boyutları (54 788 636 B / 54 569 673 B) ve paket aynası 18 dosya | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §2–3 | `scripts/jetson_paket_hazirla.py` | 2026-09-03 |
 | 22 | Genel kapı 15/15 · 15/15; tam suit 1875 OK (skipped 3) | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §1; `CUMA_KONTROL_KARTI.md` §A | `codes/test_rota_sentetik.py`; `unittest discover -s tests -q` | 2026-09-03 |
-| 23 | Saha belleği 404 dosya · 1,27 GB (plan belgesinde 405 — tutarsızlık) | `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A; `SAHA_HAZIRLIK_PLANI_20260903.md` §1.10 | `scripts/bellek_hazirla.py` | 2026-09-03 |
+| 23 | Saha belleği 405 dosya · 1,27 GB (plan belgesinde 405 — tutarsızlık) | `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A; `SAHA_HAZIRLIK_PLANI_20260903.md` §1.10 | `scripts/bellek_hazirla.py` | 2026-09-03 |
 | 24 | Üretim modeli künyesi ve `.engine` yer tutucu reddi | `config/model_registry.json` | `codes/model_registry.py` | 2026-08-26 / 2026-09-01 |
 | 25 | Saha açılış kartı komutları (thazırlık ≤ 900 s) | `results/faz_b_oncesi/saha_baslat_komutlar.txt`; `SAHA_RUNBOOK.md` §1 | `scripts/saha_baslat.py --komutlar` | 2026-09-03 |
 | 26 | Kablaj/AWG taslağı (tahmini olduğu notuyla) | `navitas-teknofest/references/avionics_software.md` | — (DDR dönemi taslağı) | 2026-07 |

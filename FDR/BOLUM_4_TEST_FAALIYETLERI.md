@@ -238,7 +238,7 @@ karar geometrisinin (koridor seçimi, C-uzayı, darboğaz) doğruluğunu kilitle
 
 ```text
 ----------------------------------------------------------------------
-Ran 1875 tests in 377.827s
+Ran 1882 tests in 375.499s
 
 OK (skipped=3)
 ```
@@ -252,7 +252,7 @@ OK (skipped=3)
 | 3 Eyl (D-404) | 1685 | D-404 §5 |
 | 3 Eyl (D-406) | 1826 | D-406 |
 | 3 Eyl (D-407) | 1827 | D-407 §4 |
-| **3 Eyl (bu bölüm)** | **1875** | bu koşum |
+| **3 Eyl (bu bölüm)** | **1882** | bu koşum (bölüm yazıldıktan sonra saha belleği kapıları eklendi: 1875 + 7) |
 
 `tests/` altında **153** adet `test_*.py` dosyası vardır (`ls tests/ | grep -c "^test_"`).
 
@@ -412,7 +412,7 @@ engeli bulmadı; bulmadığı da kayıtlıdır.
 | ölçüt | eşik | ölçülen | sonuç |
 |---|---|---|---|
 | I2 · sentetik gerileme yasağı | fark ≤ 0,02 | p_S **0,9846 → 0,7808** (fark **−0,2038**) | 🔴 **DÜŞTÜ**, 10 kat aşarak |
-| I3 · en uzun körlük koşusu | ≤ 5 s artış | **51 s → 52 s** | 🔴 **DÜŞTÜ** |
+| I3 · en uzun körlük koşusu | **en uzun koşu < 5 s** (mutlak eşik, ön kayıt §3) | **51 kare (~51 s) → 52 kare (~52 s)** | 🔴 **DÜŞTÜ** |
 | I4 · FPS bütçesi | maliyet oranı bütçe içinde | oran **1,300**; etkin 0,692 FPS (gerekli 0,472) | geçti |
 | I1 · kör kare kurtarma | (karar bağlayıcı değil) | kirli havuz **%21,6** → temiz alt küme **%5,6** | — |
 
@@ -640,7 +640,7 @@ yanlış şerit, FP16 doğru). Kalan pay yalnız TensorRT katman birleştirmesid
 
 ### 5.9 Uçtan uca kare gecikmesi (D-382 / D-383)
 
-36 gerçek karede, üretim zinciri + gerçek telsiz halkası (UDP loopback ACK):
+33 ölçülen gerçek karede (+3 ısınma karesi), üretim zinciri + gerçek telsiz halkası (UDP loopback ACK):
 **p95 0,113 s** — tazelik penceresinin (5,0 s) çok altında. Model yükleme 2,64 s
 (uçuş öncesi, bütçe dışı).
 
@@ -734,7 +734,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 | # | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|---|
 | 1 | Genel kapı **15/15 · 15/15** (iki kol) | `codes/test_rota_sentetik.py` (stdout) | `…\venv\Scripts\python.exe codes/test_rota_sentetik.py` | 2026-09-03 |
-| 2 | Tam suit **1875 test · OK (skipped=3) · 377,827 s** | konsol çıktısı (bu bölümde ham) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-03 |
+| 2 | Tam suit **1882 test · OK (skipped=3) · 375,499 s** | konsol çıktısı (bu bölümde ham) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-03 |
 | 3 | `tests/` altında **153** `test_*.py` | `O:\navitas\tests\` | `ls tests/ \| grep -c "^test_"` | 2026-09-03 |
 | 4 | Kayıt defteri **414 başlık / 408 benzersiz** | `REVIEW_LOG.md` | `grep -cE "^### D-[0-9]+"` · `\| sort -u \| wc -l` | 2026-09-03 |
 | 5 | **36 ön kayıt artefaktı** | `results/**/ON_KAYIT*` | `find results -iname "*on_kayit*"` | 2026-09-03 |
@@ -750,7 +750,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 | 15 | Sızıntı düzeltmesi: p **0,3457** (temiz, n=243) · **0,326** (yalnız 0038) · sentetik **0,9846** | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4 · `REVIEW_LOG.md` D-376 | `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-09-01 |
 | 16 | Türetilmiş FPS eşiği **0,61** = 1/(5×0,326) | `REVIEW_LOG.md`:26042 · `FAZ_B_GUN_PLANI.md` §1 | türetme, `YKS_TESPIT_TAZELIK_S = 5,0` (CONTRACTS) | 2026-09-01 |
 | 17 | FP16: F1 **0/260**, F2 **631/633 = 0,9968**; ilk ölçümün vakumu (bit-eş 1,0) | `results/b4_fps/fp16_denklik_20260901.json` (893 kare) | `scripts/olcum/164_fp16_karar_denkligi.py` · nöbetçi `tests/test_164_fp16_nobetcisi.py` (12) | 2026-09-01 |
-| 18 | Uçtan uca kare gecikmesi **p95 0,113 s**; telsiz payı `p50 307,6 → 2,3 ms` | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.1b · `REVIEW_LOG.md` D-382/D-383 | 36 gerçek kare, üretim zinciri + UDP loopback ACK | 2026-09-01 |
+| 18 | Uçtan uca kare gecikmesi **p95 0,113 s**; telsiz payı `p50 307,6 → 2,3 ms` | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.1b · `REVIEW_LOG.md` D-382/D-383 | 33 ölçülen gerçek kare (+3 ısınma), üretim zinciri + UDP loopback ACK | 2026-09-01 |
 | 19 | Mutasyon betiğinin CRLF kusuru; `ika_nav.py` **658 CRLF / 0 LF** | `REVIEW_LOG.md` D-370 | `scripts/olcum/129_t141_mutasyon_olcumu.py` (düzeltilmiş) | 2026-08-31 |
 | 20 | Ekransız kip: 7/7 mutant yakalandı (ilk turda 4'ü kaçmıştı) | `results/faz_b_oncesi/ekransiz_denetim/mutant_sonuc_9test.txt` · `mutant_kos.py` | bağımsız denetçi ajanı | 2026-09-02 |
 | 21 | `seri_hub` mutasyon skoru **13/25**; vakum bulguları | `results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md` (+ `BULGULAR_TAM.md`, `mut_seri_hub/log_*.txt`) | 5 mercekli çürütücü turu | 2026-09-02 |
@@ -765,7 +765,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 | 30 | K7 alt küme gerekçesi: kabul kümesinin **%54'ü (105/193)** kötü koşullu | `CONTRACTS.md` §12.1 · `config/k7_iyi_kosullu_kume.json` (88 kare) | D-312 ölçümü | 2026-08-27 |
 | 31 | K7 referans semantiği: `sa_000090` model 89.913 px ↔ GT 18.042 px serbest; engel 42.123 ↔ 43.781 | `CONTRACTS.md` §12.1 · `REVIEW_LOG.md` D-315 | etiket kapsamı ölçümü | 2026-08-27 |
 | 32 | T99 vakum kapıları `V1/V3/V4 = true`; araç maskesi 7/260 karede dolu | `results/t99_uretim_imzasi/olcum_20260903.json` · `ON_KAYIT.md` | `scripts/olcum/` T99 ölçüm betiği | 2026-09-03 |
-| 33 | Suit büyüme dizisi 1489 → 1617 → 1685 → 1826 → 1827 → 1875 | `REVIEW_LOG.md` D-388 §5, D-403 §6, D-404 §5, D-406, D-407 §4 + bu koşum | `unittest discover` | 2026-09-02…03 |
+| 33 | Suit büyüme dizisi 1489 → 1617 → 1685 → 1826 → 1827 → 1875 → **1882** | `REVIEW_LOG.md` D-388 §5, D-403 §6, D-404 §5, D-406, D-407 §4 + bu koşum | `unittest discover` | 2026-09-02…03 |
 | 34 | Uçuş testi planı ve kapıları (3.1–3.7), takvim | `SAHA_HAZIRLIK_PLANI_20260903.md` §3, §4, §5 | — (plan) | 2026-09-03 |
 | 35 | Gerçek donanım künyesi (Nano 4GB, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek | 2026-09-03 |
 | 36 | Şartname §5.3.1 Tablo 4 (Bölüm 4 = 15 puan) ve §5.3.2 görev kuralları | `results/sartname_bosluk/sartname_metin.txt` s.17–18 | PyMuPDF metin çıkarımı | 2026-08-26 |

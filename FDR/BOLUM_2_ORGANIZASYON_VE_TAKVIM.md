@@ -96,7 +96,7 @@ Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **414 kayıt başlığı 
 ## 3. Gerçekleşen proje takvimi (depo geçmişinden ölçüldü)
 
 Aşağıdaki tablo tahmin değildir: `O:\navitas` git deposunun tamamı taranarak
-`git log --date=short --pretty=format:"%ad|%h|%s"` ile çıkarılmıştır. Depoda **545 commit**
+`git log --date=short --pretty=format:"%ad|%h|%s"` ile çıkarılmıştır. Depoda **551 commit** (3 Eylül 2026 gecesi)
 vardır; ilk commit **2026-05-06** (`17258f8`, "start project").
 
 ### 3.1 Faaliyet yoğunluğu — gün başına commit (ölçüm, 2026-09-03)
@@ -106,7 +106,7 @@ vardır; ilk commit **2026-05-06** (`17258f8`, "start project").
 | Mayıs 2026 | 3 | 4 | 07.05 (2) |
 | Haziran 2026 | 2 | 4 | 24.06 (3) |
 | Temmuz 2026 | 5 | 27 | 11.07 (16) |
-| Ağustos 2026 | 22 | 396 | 26.08 (**89**) |
+| Ağustos 2026 | 27 | 425 | 26.08 (**89**) |
 | Eylül 2026 (1–2) | 2 | 93 | 02.09 (**72**) |
 
 Ölçüm komutu: `git log --date=short --pretty=format:"%ad|%s" | awk -F'|' '{print $1}' | sort | uniq -c`.
@@ -127,7 +127,7 @@ borçlarının kapatıldığı dönemdir ve §4'teki revizyonların çoğu bu pe
 | **2026-07-29** | **DDR sonuçlarının açıklanması (şartname)** | şartname s.11 |
 | 2026-08-05 | Jetson saha paketi ilk hâli; v17 / v20 paket modelleri | `jetson_paket/models/` dosya damgaları |
 | 2026-08-13 → 08-19 | v24 → v27 → v30 → v34 model dizisi; kabul kapıları K0–K6 kuruldu | `jetson_paket/models/`, `REVIEW_LOG.md` |
-| 2026-08-16 | 🔴 **Kusur ölçüldü:** `seed` eğitimi hiç etkilemiyor — v31, v30'un bit-bit aynısı (D-138); **6,4 saat GPU** karşılıksız harcandı | `REVIEW_LOG.md` D-138, D-252 |
+| 2026-08-16 | 🔴 **Kusur ölçüldü:** `seed` eğitimi hiç etkilemiyor — v31, v30'un bit-bit aynısı (D-140); **6,4 saat GPU** karşılıksız harcandı | `REVIEW_LOG.md` D-140, D-252 |
 | 2026-08-19 | Saha paketi kayıt defterini taşıyor — kılavuza göre kurulan Jetson model yükleyebiliyor (D-178/D-179) | `results/`, T103 |
 | 2026-08-21 | **Model v35** üretime alındı | `jetson_paket/models/navitas_seg_v35_best.pt` |
 | **2026-08-26** | **Model v36 üretime alındı — ön kayıtlı iki eşik GEÇİLMEDEN** (§4.4) | D-293, D-294, `results/fdr/GORUNTU_ISLEME_KANIT.md` §3 |
@@ -142,7 +142,7 @@ borçlarının kapatıldığı dönemdir ve §4'teki revizyonların çoğu bu pe
 | 2026-09-02 | Jetson tek komutla kalkar (`jetson_baslat.sh` + 6 systemd birimi); sürüm dondurma mührü | D-404, D-405 |
 | 2026-09-02 | Tam test suiti **1827 test** ile kapandı | D-407 §3, `REVIEW_LOG.md`:28298 |
 | 2026-09-03 | Cuma öncesi kapı koşumu: genel kapı **15/15 · 15/15**, tam suit **1875 test OK** (skipped 3), kuru koşu **9 GEÇTİ / 1 SAHİPSİZ** (yalnız `motor`) | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` |
-| 2026-09-03 | Saha belleği üretildi: **404 dosya · 1,27 GB** (`MANIFEST.txt` sha256 + git HEAD) | `scripts/bellek_hazirla.py`, `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A |
+| 2026-09-03 | Saha belleği üretildi: **405 dosya · 1,27 GB** (`MANIFEST.txt` sha256 + git HEAD) | `scripts/bellek_hazirla.py`, `results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A |
 | 2026-09-02 | **YKS FDA görev kipi** (`--fda`) — 21 Eylül'de hakem onayını imkânsız kılan kilit kaldırıldı | D-408, `CONTRACTS.md` §6.7 |
 | 2026-09-03 | Jetson **Nano 4GB** yığını (14/14 aarch64 çevrimdışı tekerlek), kamera köprüsü, ArduCopter parametre + görev şablonu | D-406, D-407 |
 
@@ -155,7 +155,7 @@ borçlarının kapatıldığı dönemdir ve §4'teki revizyonların çoğu bu pe
 | v17, v20 | 2026-08-05 | tarihsel | saha paketinin ilk modelleri |
 | v21 | 2026-08-05 | tarihsel | — |
 | v24 | 2026-08-13 | tarihsel | zemin kapısı eşiklerinin kalibre edildiği sürüm (D-283) |
-| v27, v30 | 2026-08-14 / 08-15 | tarihsel | v31, v30'un bit-bit kopyası çıktı (D-138) |
+| v27, v30 | 2026-08-14 / 08-15 | tarihsel | v31, v30'un bit-bit kopyası çıktı (D-140) |
 | v34 | 2026-08-19 | **yedek aday** | tam sha `config/model_registry.json` `_yedek_surumler` |
 | v35 | 2026-08-21 | **yedek aday** | v36'dan farklı hata yapar: arena K3/K4/K6'da daha iyi |
 | **v36** | **2026-08-26** | **ÜRETİM** | `navitas-seg-v36-512`, sha256 `1d1caca6…c46911` |
@@ -299,15 +299,15 @@ karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
 
 | # | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|---|
-| 1 | 545 commit, ilk commit 2026-05-06 `17258f8` | `O:\navitas\.git` | `git log --date=short --pretty=format:"%ad\|%h\|%s"` | 2026-09-03 |
+| 1 | 551 commit (3 Eylül gecesi), ilk commit 2026-05-06 `17258f8` | `O:\navitas\.git` | `git log --date=short --pretty=format:"%ad\|%h\|%s"` | 2026-09-03 |
 | 2 | Gün başına commit dağılımı (26.08 → 89, 02.09 → 72) | `O:\navitas\.git` | `git log … \| awk -F'\|' '{print $1}' \| sort \| uniq -c` | 2026-09-03 |
 | 3 | Model dosyası damgaları v17…v36 | `jetson_paket/models/` | `ls -la jetson_paket/models/` | 2026-09-03 |
 | 4 | Üretim modeli künyesi (`navitas-seg-v36-512`, imgsz 512, sha256 `1d1caca6…`) | `config/model_registry.json` → `profiles.competition` | `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-09-01 |
 | 5 | v36 ön kayıtlı eşiklerin geçilmediği ham metin (ROTA 8 < 10; MASKE_YOK 16 > 10) | `results/fdr/GORUNTU_ISLEME_KANIT.md` §3 | `scripts/olcum/167_fdr_kanit_paketi.py`; dayanak D-293/D-294 | 2026-08-26 (karar) / 2026-09-01 (paket) |
 | 6 | `karar_cevrilmesi` v36 14/260 vs v35 9/260 | `REVIEW_LOG.md` D-295 §3 | eşli koşum, ON_KAYIT §16 | 2026-08-26 |
 | 7 | v37 geri alındı; v8 adayı RED (124 epoch / 6,19 saat) | `REVIEW_LOG.md` D-332, D-331 | kabul zinciri `scripts/olcum/65_kabul_denetcisi.py` | 2026-08-28 |
-| 8 | v31 = v30 bit-bit aynısı; 6,4 saat GPU karşılıksız | `REVIEW_LOG.md` D-138 (alıntı D-252:19148) | eğitim koşumu kıyası | 2026-08-16 |
-| 9 | Uçtan uca kare gecikmesi p95 0,113 s | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.1b | D-382/D-383 ölçümü, 36 gerçek kare | 2026-09-01 |
+| 8 | v31 = v30 bit-bit aynısı; 6,4 saat GPU karşılıksız | `REVIEW_LOG.md` D-140 (alıntı D-252:19148) | eğitim koşumu kıyası | 2026-08-16 |
+| 9 | Uçtan uca kare gecikmesi p95 0,113 s | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.1b | D-382/D-383 ölçümü, 33 ölçülen gerçek kare (+3 ısınma) | 2026-09-01 |
 | 10 | Tam suit 1827 test | `REVIEW_LOG.md`:28298 (D-407 §3) | `python -B -m unittest discover -s tests -q` | 2026-09-02 |
 | 10b | Genel kapı 15/15 · 15/15; tam suit 1875 OK (skipped 3); kuru koşu 9 GEÇTİ / 1 SAHİPSİZ | `results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` | `codes/test_rota_sentetik.py`, `unittest discover`, `scripts/saha_kuru_kosu.py` | 2026-09-03 |
 | 11 | Kanıt defteri 414 başlık / 408 benzersiz kayıt | `REVIEW_LOG.md` | `grep -cE "^### D-[0-9]+"` ve `\| sort -u \| wc -l` | 2026-09-03 |

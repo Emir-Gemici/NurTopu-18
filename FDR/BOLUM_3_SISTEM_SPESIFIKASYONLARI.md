@@ -700,7 +700,7 @@ Kapıların tamamı tek betikten koşulur: `scripts/olcum/65_kabul_denetcisi.py`
 | **K4** | arena dışına taşma | **≤ %5** | **2/256 = %0,78** | **GEÇTİ** |
 | **K5** | **bariyer kesişimi** (popülasyon) | **= 0 px**, her ölçülebilir karede | **0/178** ölçülebilir kare · toplam **0 px** | **GEÇTİ** |
 | **K5A** | bariyer kesişimi — **açılı** bariyer kümesi | K5 ile **birebir aynı** | **0/176** ölçülebilir kare · **0 px** | **GEÇTİ** |
-| **K6** | yanlış güzergâh (rota çizgisinin yer gerçeği sınıf 0 üstündeki payı ≥ 0,90 **ve** sınıf 1 üstünde 0 waypoint) | **≤ %5** | **2/256 = %1,17** | **GEÇTİ** |
+| **K6** | yanlış güzergâh (rota çizgisinin yer gerçeği sınıf 0 üstündeki payı ≥ 0,90 **ve** sınıf 1 üstünde 0 waypoint) | **≤ %5** | **2/256 = %0,78** | **GEÇTİ** |
 | **K7** | **YAYINLANAN ŞERİT DOĞRULUĞU** | doğruluk **≥ %95** **ve** payda **≥ 80/88** | **84/85 = %98,82** (payda 85) | **GEÇTİ** |
 | **K8** | **gerçek kare kapısı** — üretim karar yolu tek gerçekçi karede kırılıyor mu | `ZEMIN_MASKESI_SUPHELI` **dönmemeli** | zemin kaplaması **0,0444** · karar yolu reddi `UC_BANT_TEMAS_YOK` | **GEÇTİ** |
 
@@ -1202,7 +1202,7 @@ arka uçsuz **kurulamaz** — boş bir iskeletin "çalışıyor" görünmesi eng
 | kapı | sonuç |
 |---|---|
 | Genel kapı `codes/test_rota_sentetik.py` | **15/15** |
-| Tam birim test suiti | **1875 OK** (skipped = 3) |
+| Tam birim test suiti | **1882 OK** (skipped = 3) |
 | Kabul zinciri K0–K8 + K5A (v36) | **10/10 GEÇTİ** |
 | Saha kuru koşusu | 9 GEÇTİ · 1 SAHİPSİZ |
 | Kanıt defteri kayıt sayısı | **414** (`grep -c "^### D-" REVIEW_LOG.md`) |

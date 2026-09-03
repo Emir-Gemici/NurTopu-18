@@ -20,7 +20,9 @@ GENEL KAPI (madde 14): GECTI — kol1 15/15 · kol2 serit 15/15
 
 === 4) MUHUR DURUMU
 [DONDURMA] DONDURULMADI: kunye yok (O:\navitas\config\DONDURMA_KUNYESI.json) - henuz muhur basilmadi
-exit=0
+exit=3   # DUZELTILDI: ilk kosumda `... | tail -2; echo exit=$?` yazildi ve
+         # BORUNUN SON KOMUTUNUN (tail) cikis kodu yakalandi (0). Gercek deger 3'tur
+         # ve muhrun HENUZ BASILMADIGINI soyler. Ayri, dogru kosum: muhur_dogrula.txt
 === 5) KURU KOSU (CPU)
                             -> codes/rpi_inference.py
   hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor

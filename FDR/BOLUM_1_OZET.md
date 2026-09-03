@@ -65,7 +65,7 @@ bayrağıyla tanır.
 | Tam test süiti | **1882 test OK** (3 atlandı, 358,7 s) · 155 test dosyası | 3 Eylül 2026 |
 | Kabul kapıları K0–K6 (sentetik arena, n=260) | **6/6 GEÇTİ** — rota üretilen kare 255/260, bariyer kesişimi 0, yanlış güzergâh 2,75 | sentetik |
 | K7 yayınlanan şerit doğruluğu | **84/85 (%98,8)** | üretim kipinde kabul koşusu |
-| Uçtan uca kare gecikmesi | **p95 0,113 s** (36 gerçek kare, üretim zinciri + gerçek yayıncı + ACK) | UDP loopback |
+| Uçtan uca kare gecikmesi | **p95 0,113 s** (33 ölçülen gerçek kare (+3 ısınma), üretim zinciri + gerçek yayıncı + ACK) | UDP loopback |
 | Gereken kare hızı (türetildi, tahmin edilmedi) | `1/(5·p)` → sentetik **0,20 FPS** · gerçek sızıntısız **0,58 FPS** · en kötü uçuş **0,61 FPS** | iki ayrı çerçeve |
 | Saha zinciri kuru koşusu (10 halka) | GEÇTİ 9 · DÜŞTÜ 0 · **SAHİPSİZ 1** (motor) · çıkış kodu 1 | 2 Eylül 2026 |
 | Kanıt defteri | **414 kayıt** (`REVIEW_LOG.md`), çürütülmüş kendi iddialarımız dâhil | — |
