@@ -461,6 +461,36 @@ class YksArayuz:
         threading.Thread(target=self._dinle, daemon=True).start()
         self._tik()
 
+    # ── Hakem kanıt kaydı ────────────────────────────────────────────────────
+    def _kanit_yaz(self, olay, **alanlar):
+        """Hakem kanıt satırını yaz; YAZAMAZSA GÖRÜNÜR ŞEKİLDE BAŞARISIZ OL.
+
+        NEDEN (D-412): bu metodun ÇAĞRISI depoda vardı, TANIMI yoktu —
+        `YksArayuz.__init__` her gerçek kurulumda `AttributeError` ile
+        ölüyordu (6 test). Kanıt yolunun sözleşmesi üç maddedir:
+
+        1. `hakem_kaydi is None` (test/demo fikstürü) → sessizce atla.
+           Dosya açma kararı kurucuda verilir; burada verilmez.
+        2. Yazma hatası arayüzü ÖLDÜRMEZ ama SAKLANMAZ: `kanit_kaydi_hatasi`
+           alanına yazılır ve günlüğe kırmızı basılır. Uçuş sırasında tk
+           geri çağrısının ortasında istisna yükseltmek ekranı dondurur;
+           kanıtsız uçmak ise şartname §2.2.3 onayını dayanaksız bırakır —
+           bu yüzden **fail-visible**, fail-silent değil.
+        3. İlk hata saklanır (sonrakiler üzerine yazmaz): kök neden kaybolmasın.
+        """
+        kayit = getattr(self, "hakem_kaydi", None)
+        if kayit is None:
+            return None
+        try:
+            return kayit.yaz(olay, **alanlar)
+        except Exception as exc:                  # yazma/serileştirme/disk
+            if self.kanit_kaydi_hatasi is None:
+                self.kanit_kaydi_hatasi = f"{olay}: {exc!r}"
+            gunluk = getattr(self, "gunluk", None)
+            if gunluk is not None:
+                self._logla(f"🔴 HAKEM KAYDI YAZILAMADI ({olay}): {exc}", "kirmizi")
+            return None
+
     # ── Arayüz kurulumu ──────────────────────────────────────────────────────
     def _arayuz_kur(self):
         self.kok.title("NAVITAS — Yer Kontrol İstasyonu (YKS) · Hakem Ekranı")

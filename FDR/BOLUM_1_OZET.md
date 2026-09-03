@@ -62,13 +62,14 @@ bayrağıyla tanır.
 | ne | ölçülen | çerçeve |
 |---|---|---|
 | Genel kapı (`test_rota_sentetik.py`) — iki kol | **15/15** tanısal · **15/15** üretim rotası · **15/15** yayınlanan şerit | 15 belirlenimci arena sahnesi, 3 Eylül 2026 |
-| Tam test süiti | **1882 test OK** (3 atlandı, 358,7 s) · 155 test dosyası | 3 Eylül 2026 |
-| Kabul kapıları K0–K6 (sentetik arena, n=260) | **6/6 GEÇTİ** — rota üretilen kare 255/260, bariyer kesişimi 0, yanlış güzergâh 2,75 | sentetik |
+| Tam test süiti | **1896 test OK** (3 atlandı, 390,5 s) | 3 Eylül 2026 |
+| Kabul kapıları K0–K6 (sentetik arena, n=260, **terfi anı 26 Ağustos**) | **7/7 GEÇTİ** — rota üretilen kare 255/260, bariyer kesişimi 0, yanlış güzergâh 2,75 | sentetik |
+| Kabul kapıları **K0–K8 + K5A**, üretim kipinde (n=260, **1 Eylül**) | **10/10 GEÇTİ** — K1 256/260, K2 6/256, K3 0/256, K4 2/256, K5/K5A 0 px, K6 2/256, K7 84/85 | sentetik |
 | K7 yayınlanan şerit doğruluğu | **84/85 (%98,8)** | üretim kipinde kabul koşusu |
 | Uçtan uca kare gecikmesi | **p95 0,113 s** (33 ölçülen gerçek kare (+3 ısınma), üretim zinciri + gerçek yayıncı + ACK) | UDP loopback |
 | Gereken kare hızı (türetildi, tahmin edilmedi) | `1/(5·p)` → sentetik **0,20 FPS** · gerçek sızıntısız **0,58 FPS** · en kötü uçuş **0,61 FPS** | iki ayrı çerçeve |
 | Saha zinciri kuru koşusu (10 halka) | GEÇTİ 9 · DÜŞTÜ 0 · **SAHİPSİZ 1** (motor) · çıkış kodu 1 | 2 Eylül 2026 |
-| Kanıt defteri | **414 kayıt** (`REVIEW_LOG.md`), çürütülmüş kendi iddialarımız dâhil | — |
+| Kanıt defteri | **418 kayıt** (`REVIEW_LOG.md`), çürütülmüş kendi iddialarımız dâhil | — |
 
 Gecikme sayısının hikâyesi, sayının kendisinden önemlidir: ilk ölçümde toplam p95
 **0,458 s** çıkmıştı ve baskın kalem "telsiz + ACK ≈ 308 ms" görünüyordu. Bağımsız
@@ -145,7 +146,7 @@ bu rapor onları bugün ölçülmüş gibi göstermez.
 ## 1.6 Bu raporun okuma sözleşmesi
 
 Bu rapor dört kurala uyar ve bu kurallar rapor için icat edilmemiştir; projenin
-414 kayıtlık ölçüm defterinden gelir:
+418 kayıtlık ölçüm defterinden gelir:
 
 1. **Her sayı bir artefakttan gelir.** Her bölümün sonundaki *Kanıt dizini*, geçen her sayının dosya yolunu, onu üreten betiği ve ölçüm tarihini verir.
 2. **ÖLÇÜLEMEDİ ≠ GEÇTİ.** Koşulmamış kapı "sorun çıkmadı" diye yazılmaz; paydası olmayan oran rapora girmez.
@@ -163,10 +164,10 @@ güçlü iddiası bir yüzde değil, o tablonun **var olmasıdır**.
 | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|
 | Genel kapı **15/15 · 15/15 · 15/15**, RC=0 | konsol çıktısı (bu bölümün yazımı sırasında koşuldu) | `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py` | **2026-09-03** |
-| Tam süit **1882 test OK (skipped=3)**, 358,731 s | konsol çıktısı | `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q` | **2026-09-03** |
+| Tam süit **1896 test OK (skipped=3)**, 390,534 s | `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt` | `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q` | **2026-09-03** |
 | **155** test dosyası (`tests/*.py`) | `tests/` | `ls tests/*.py \| wc -l` | 2026-09-03 |
-| Kanıt defteri **414 kayıt** (`### D-` başlığı; 408 ayrık numara) | `REVIEW_LOG.md` | `grep -o "^### D-[0-9]*" REVIEW_LOG.md \| wc -l` | 2026-09-03 |
-| K0–K6 kabul kapıları 6/6; K1 **255/260**, K5 **0**, K6 **2,75** (n=260) | `scripts/olcum/results/t63/gece_v7a_kabul_verdikt.json` → `results/fdr/GORUNTU_ISLEME_KANIT.md` §2 | `scripts/olcum/65_kabul_denetcisi.py`; belge üreteci `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-08-26 (belge 2026-09-01) |
+| Kanıt defteri **418 kayıt** (`### D-` başlığı; 412 ayrık numara) | `REVIEW_LOG.md` | `grep -o "^### D-[0-9]*" REVIEW_LOG.md \| wc -l` | 2026-09-03 |
+| K0–K6 kabul kapıları **7/7** (K0…K6 yedi kapıdır; artefaktta `gecti` yedi anahtar taşır); K1 **255/260**, K5 **0**, K6 **2,75** (n=260) | `scripts/olcum/results/t63/gece_v7a_kabul_verdikt.json` → `results/fdr/GORUNTU_ISLEME_KANIT.md` §2 | `scripts/olcum/65_kabul_denetcisi.py`; belge üreteci `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-08-26 (belge 2026-09-01) |
 | K7 yayınlanan şerit doğruluğu **84/85 (%98,8)** | `REVIEW_LOG.md` D-386 (kabul koşusu 65, üretim kipi) | `scripts/olcum/65_kabul_denetcisi.py` | 2026-09-01 |
 | Uçtan uca kare gecikmesi **p95 0,113 s**; düzeltme öncesi 0,458 s ve "308 ms" soket sabiti | `results/fda_butce/olcum_20260901.json` · ön kayıt `results/fda_butce/ON_KAYIT.md` | `scripts/olcum/169_fda_butce_olcumu.py`; düzeltme kaydı D-383 | 2026-09-01 |
 | Gereken FPS `1/(5·p)`: sentetik **0,203** · gerçek sızıntısız **0,579** · en kötü uçuş **0,61** | `results/b4_fps/p_ve_kosu_20260901.json` · ön kayıt `results/b4_fps/ON_KAYIT.md` | `scripts/olcum/163_b4_p_ve_kosu.py`; sızıntı düzeltmesi D-376 | 2026-09-01 |

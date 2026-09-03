@@ -1,6 +1,6 @@
 # FDR — AÇIK KALEMLER (kim · ne zaman · nasıl kapanır)
 
-> Taslakta **188 satır** "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
+> Taslakta **177 satır** "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
 > (ham liste: `ACIK_KALEMLER_HAM.md`). Bunlar eksiklik değil, **dürüstlük
 > işaretidir**: rapor ölçülmemiş bir şeyi ölçülmüş gibi yazmaz. Aşağıda
 > sahibine ve kapanma tarihine göre gruplanmış hâli var.
@@ -48,6 +48,18 @@
 | 20 | Üretim zorlukları, revizyon gerekçeleri (SGGS de ister) | üretim | 5 |
 | 21 | Yarışma günü aracının (sabit kanat + mancınık + paraşüt) ve İKA'nın nihai mekanik künyesi | kaptan | 3, 5, 7 |
 | 22 | Montaj/entegrasyon fotoğrafları ve otonom harekât videoları | herkes | 4, 5 |
+
+
+## 4b. Yazılım — kod kilidi/damga eksikleri (ÖLÇÜM, insan girdisi değil)
+
+> Bunlar saha ölçümü beklemez; bugün yazılabilir ama **yazılmadı** ve
+> yazılmış gibi de gösterilmedi. Her biri bir kaydın tam kapanmasını engeller.
+
+| # | kalem | neden açık | bölüm |
+|---|---|---|---|
+| 23 | **Tek-yazar kilidinin koda genişletilmesi** — `rpi_inference` ve `iha_inis_yayinci` bugün `--mavlink /dev/tty*` kabul eder; kural yalnız `iha_komut_alici`'da kodludur, diğer ikisinde yordamla uygulanır | yazılım | 3 |
+| 24 | **H1c damgası** — ön kayıttaki "sınıflandırılamayan yayımlanmış çevrilme = 0" ölçütü koşulmadı; H1 ön kaydı bu yüzden tam kapanmış sayılmaz (H1 kendisi DÜŞTÜ, eşik gevşetilmedi) | yazılım | 3 |
+| 25 | **Hakem kanıt kaydının olay kümesi** — `YksArayuz` bugün yalnız `YKS_ARAYUZ_HAZIR` satırını yazar. `_kamera_kanit_durumu`, `_son_kamera_kanit_monotonic`, `_son_telemetri_kanit_monotonic` alanları kuruluyor ama **hiçbir yerde okunmuyor**; kamera ve telemetri kanıt olayları yazılmıyor. Olay kümesi sözleşmesi (`CONTRACTS`) yazılmadan uydurulmadı | yazılım | 3, 4 |
 
 ## 5. Rapor içi iş — bölümler kesinleşince
 

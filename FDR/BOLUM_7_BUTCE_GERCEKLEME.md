@@ -110,7 +110,7 @@ gabarileri **ölçülmüştür** ve Bölüm 5 §3'tedir.
 
 ## 4. Tablo B — DDR aviyonik BOM'u ve bugünkü durumu
 
-DDR'de beyan edilen 27 kalemlik aviyonik BOM (toplam **2293 g**) sabit kanat konfigürasyonu
+DDR'de beyan edilen aviyonik BOM (**26 satır**; numaralandırma 25'i atladığı için DDR metni 27 der) (toplam **2293 g**) sabit kanat konfigürasyonu
 içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisinin **yönü** verilmiştir
 (tutarlar BEYAN GEREKLİ).
 
@@ -244,7 +244,7 @@ Bir bütçe raporunun en yanıltıcı olabileceği yer burasıdır, o yüzden ay
 | E2 | **Mancınık (fırlatma platformu)** | §6, REQ-8, REQ-58 (ray geometrisi), REQ-59 (çift kademeli emniyet) | Depoda **CAD ve analiz yok** | üretim (profil, yay/lastik, tetik mekanizması) + test |
 | E3 | **Paraşüt zinciri** (paraşüt, pod, servo, mekanizma, tether) | §6, REQ-9, REQ-186 (iniş dikey hız < 7 m/s) | DDR BOM'da tanımlı (kalem 12–16, 280 g); **temin/üretim kaydı yok**. Yazılım tarafı hazır (`CHUTE_*`, `iha_komut_alici` zinciri, YKS manuel yedek) | satın alma + mekanizma üretimi + atış testi |
 | E4 | **İKA (insansız kara aracı)** | §2.2.6, §6 (≤ 10 kg, yük hariç), REQ-19 (tam otonom), R22 (yükü eksiksiz muhafaza) | Yazılım soyutlaması hazır ve testli; **gerçek motor sürücüsü YOK** — kuru koşuda `motor SAHIPSIZ` | satın alma (sürücü, motor, enkoder, IMU, GNSS) + şasi üretimi |
-| E5 | **Çift acil güç kesme anahtarı (İHA)** | REQ-25…31 | 🔴 **Yok.** FDA aracında pil fişi kullanılıyor | satın alma (anahtar + röle) + kablolama |
+| E5 | **Çift acil güç kesme anahtarı (İHA)** | REQ-25…31 (DDR, takım kimliği) | 🔴 **Yok.** FDA aracında pil fişi kullanılıyor | satın alma (anahtar + röle) + kablolama |
 | E6 | **Acil güç kesme (İKA)** | REQ-32…34 | Yok | satın alma |
 | E7 | Pitot + airspeed sensörü | sabit kanat performansı, REQ-188 (V ≥ 1,15 × V_stall) | DDR BOM'da var; alınmadı | satın alma |
 | E8 | Kanat/kuyruk servoları (×4) + servo BEC | sabit kanat kontrol yüzeyleri | DDR BOM'da var; alınmadı | satın alma |
@@ -313,7 +313,7 @@ kurulmuştur: fiyatlar rastgele hatırlanarak değil, tek bir kayıttan gelecekt
 | Alınan maddi destek dilimi (%25) | **BEYAN GEREKLİ (insan)** |
 | Bugüne kadarki gerçekleşen harcama | **BEYAN GEREKLİ (insan)** |
 | Gerçekleme oranı (%) | **HESAPLANAMAZ** — payı da paydası da yok |
-| Kalemleri belirlenmiş, fiyatı belirlenmemiş BOM | **Tablo A: 27 satır · Tablo D: 12 satır** — hazır |
+| Kalemleri belirlenmiş, fiyatı belirlenmemiş BOM | **Tablo A: 26 satır · Tablo D: 12 satır** — hazır |
 | Ölçülmüş üretim kaynağı | 8 plaka, 2 yazıcı, 2 malzeme; **1 plakanın** süresi ve gramajı |
 | Ölçülmüş ayni kaynak | **≈ 14,8 saat** GPU — sonuçsuz kalan ya da reddedilen eğitim kalemleri (8,6 = 6,4 + 1,18 + 1,04 · ve 6,19); ikisi karşılıksız, biri (v8) *"RED"* hükmüyle sonuçlandı |
 | Ölçülmüş kütle | **yok** — 5 Eylül tartısıyla gelecek |
@@ -327,7 +327,7 @@ tarafından ve hangi kayıtla doldurulacağının satır satır belli olmasıdı
 ## 10. BEYAN GEREKLİ (insan) — toplu liste
 
 1. **Maddi destek başvurusu yapıldı mı; onaylanan toplam bütçe; alınan dilim(ler).**
-2. **Tablo A'daki 27 satırın birim fiyatı, adedi, satın alma tarihi ve fatura numarası.**
+2. **Tablo A'daki 26 satırın birim fiyatı, adedi, satın alma tarihi ve fatura numarası.**
 3. **Tablo A'daki satın alınan kalemlerin ağırlık ve boyut bilgileri** (üretici veri sayfası).
 4. **5 Eylül tartı tutanağı** — üretilen ve satın alınan her parçanın ölçülen kütlesi; toplam kütle.
 5. **CAD model kütleleri** (parça başına) — SGGS §5.4 zorunlu sütunu.
@@ -354,7 +354,7 @@ tarafından ve hangi kayıtla doldurulacağının satır satır belli olmasıdı
 | 3 | FDR Tablo 4 — Bölüm 7 "Bütçe Gerçekleme Analizi" 10 puan | aynı dosya §5.3.1 | aynı | 2026-08-26 |
 | 4 | **Depoda fiyat/fatura/sipariş kaydı yok** (FDR/ dışında 0 eşleşme) | `O:\navitas` (tüm `.md`/`.json`/`.csv`) | `grep -rInE "₺\|fatura\|birim fiyat\|sipariş no" --include=…` | 2026-09-03 |
 | 5 | FDA aracı kalem listesi (Tablo A) ve tedarik durumları | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | kullanıcı beyanı, 3 Eylül 2026 | 2026-09-03 |
-| 6 | DDR aviyonik BOM'u — 27 kalem, toplam 2293 g, kalem ağırlıkları | `navitas-teknofest/references/ddr_requirements.md` | DDR dönemi Excel aktarımı — **DOĞRULANACAK** | 2026-07 |
+| 6 | DDR aviyonik BOM'u — **26 satır** (numara 25 atlanmış), toplam 2293 g, kalem ağırlıkları | `navitas-teknofest/references/ddr_requirements.md` | DDR dönemi Excel aktarımı — **DOĞRULANACAK** | 2026-07 |
 | 7 | DDR mimari şemasında Pixhawk 6X / Orin NX / M10 (BOM ile çelişki) | `navitas-teknofest/references/avionics_software.md` | — | 2026-07 |
 | 8 | 8 plaka, 2 yazıcı (X1 Carbon, P2S), ABS + TPU 95A, dilimleyici 02.07.01.62 | `dronesolid/files (3)/*.3mf` → `project_settings.config`, `slice_info.config` | zip + JSON okuma (bu raporun kanıt betiği) | 2026-09-03 |
 | 9 | Üst çerçeve: 1 sa 30 dk 16 sn · 55,86 g · 22 332,62 mm | `dronesolid/files (3)/Plaka4_Ust_Cerceve_plate_1.gcode.3mf` | zip okuma → `Metadata/plate_1.gcode` | 2026-09-03 |

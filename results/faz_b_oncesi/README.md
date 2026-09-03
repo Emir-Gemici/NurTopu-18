@@ -11,8 +11,9 @@
 | `jetson_baslat_kuru_sik.txt` | `KIP=sik FOV=78 bash jetson_paket/jetson_baslat.sh --kuru` | exit 0; `navitas-seri-hub` satırı `--port /dev/ttyUSB0 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007`; tüketiciler `127.0.0.1:5100`'e; `[VAR] seri_hub.py` | **exit 0** |
 | `jetson_baslat_kuru_udp_EKSIK_beyan.txt` | `KIP=udp FOV=78 … --kuru` (YKS_IP/IKA_IP verilmedi) | **fail-closed**: `[EKSIK] YKS_IP`, `[EKSIK] IKA_IP`, exit 3 | **exit 3** |
 | `saha_baslat_komutlar.txt` | `scripts/saha_baslat.py --komutlar` | YKS satırında `--iha <JETSON_IP>:5007` (D-403 KRİTİK-1) | **exit 0** |
-| `surum_dondur_dogrula.txt` | `scripts/surum_dondur.py --dogrula` | künye yok → "DONDURULMADI", exit **3** (mühür ~18 Eylül, kullanıcı kararı) | **exit 3** |
+| `surum_dondur_dogrula.txt` (ilk koşum) · `cuma_kontrol/muhur_dogrula.txt` (3 Eylül, çıkış kodu düzeltilmiş) | `scripts/surum_dondur.py --dogrula` | künye yok → "DONDURULMADI", exit **3** (mühür ~18 Eylül, kullanıcı kararı) | **exit 3** |
 | `seri_hub_help.txt` | `comms/seri_hub.py --help` | CLI `--port --baud --bind --tuketici --log-aralik` | **exit 0** |
+| `cuma_kontrol/tam_suit.txt` | `python -B -m unittest discover -s tests -q` | tam süit tek artefakt (rapordaki her "N test OK" bu dosyadan alıntılanır) | son satırda `exit=N` |
 
 Notlar:
 - `[YOK] mavproxy.py (PATH)` PC'de beklenir; Jetson'da `pip3 install MAVProxy`

@@ -29,7 +29,7 @@ Bu raporda **iki farklı sistem** anlatılır ve karıştırılmaları yorumu bo
 | platform | sabit kanat İHA + **mancınık** fırlatma | **çoklu rotor (quadcopter)**, dikey iniş-kalkış |
 | iniş | **paraşüt** | motorlu iniş (`NAV_LAND`) |
 | ikinci araç | **İKA** (diferansiyel sürüş) zorunlu | **İKA yok** |
-| alan | HTAB / İHA-UB (300 m) | **20 × 20 m** simüle test alanı |
+| alan | HTAB **50 × 50 m** (şartname s. 239); İHA-UB rota uzunluğu 300 m | **20 × 20 m** simüle test alanı (şartname s. 731 — HTAB ile aynı şey değildir; sentetik arenamız bu 20 × 20 m alanı modeller) |
 | irtifa | görev planına göre | **asgari 30 m** |
 | süre | İHA 900 s · İKA 600 s | **tüm operasyon 600 s** |
 | aktarım hedefi | YKS **ve** İKA | **yalnız YKS** (hakem canlı onaylar) |
@@ -111,8 +111,10 @@ JSON, taşıyıcıdan bağımsız (UDP simülasyon / SiK 433 MHz saha). Sözleş
         │                                             ├─► iniş kanıtı           │
         │                                             └─◄─ komut aktarımı       │
         └───────────┬──────────────────────────────────────────┬────────────────┘
-                    │ OPEN_ROUTE / NO_ROUTE / HEARTBEAT        │ IHA_LANDED
-                    │ (ACK'li, 8 tekrar × 0,25 s)              │ (ACK'li)
+                    │ OPEN_ROUTE / NO_ROUTE  (ACK'li,          │ IHA_LANDED
+                    │        8 tekrar × 0,25 s)                │ (ACK'li)
+                    │ HEARTBEAT  (ACK'SİZ — sürekli yayın,     │
+                    │        1,0 s; tekrar kuyruğuna girmez)   │
                     ▼                                          ▼
    ┌────────────────────────────┐                 ┌──────────────────────────────┐
    │   YKS  (hakem ekranı)      │                 │            İKA               │
@@ -272,8 +274,13 @@ MAVProxy `--out udp:127.0.0.1:1455N`); her tüketici kendi UDP ucundan bağlanı
 | `iha_inis_yayinci --mavlink` | `udp:127.0.0.1:14551` | okur (`landed_state`) |
 | `iha_komut_alici --mavlink` | `udp:127.0.0.1:14552` | **yazar** (`COMMAND_LONG`) |
 
-Hiçbir üretim süreci `--mavlink /dev/tty*` ile doğrudan açılmaz; kural **kodla** kilitlidir
-(`iha_komut_alici --mavlink` seri cihazı reddeder, ancak `--seri-pixhawk-bilerek` ile aşılır).
+Kural bugün **yalnız `iha_komut_alici`'da kodla kilitlidir**: seri cihaz reddedilir,
+`--seri-pixhawk-bilerek` ile bilerek aşılabilir. `rpi_inference --mavlink` ve
+`iha_inis_yayinci --mavlink` seri cihaz yolunu **hâlâ kabul eder** — üstelik
+`iha_inis_yayinci`'nin modül kılavuzu `/dev/ttyACM0`'ı örnek olarak gösterir. Bu iki
+süreçte tek-yazar kuralı bugün **yordamla** uygulanır (systemd birim dosyaları +
+`jetson_baslat.sh` denetimi), kodla değil. Kod kilidinin bu iki sürece genişletilmesi
+**açık kalemdir** (`FDR/ACIK_KALEMLER.md`).
 
 **Kapı:** `scripts/mavlink_dogrula.py` üç uçta **aynı anda** koşar ve şunları arar:
 `HEARTBEAT` sysid eşleşmesi, `GLOBAL_POSITION_INT ≥ MAVLINK_KONUM_ASGARI_HZ` (**4,0 Hz**),
@@ -608,6 +615,17 @@ Gecikme tavanı 3 karedir: uçtan uca p95 0,113 s ile ≈ **0,34 s**, `YKS_TESPI
 
 > Eşik değişikliği **yeni ön kayıt** ister (`results/p5_histerezis/ON_KAYIT.md`).
 
+🔴 **Ön kayıtlı H1 GEÇİLMEDİ — ve eşik gevşetilmedi.** Ön kayıt "yayımlanan çevrilme
+≤ ham çevrilmenin **%40'ı**" diyordu. Ölçülen: **7/13 = %53,8** (tohum 7) ve
+**11/24 = %45,8** (tohum 42) — ikisi de eşiğin üstünde; artefaktta
+`H1_ozgun: false` olarak durur. Eşik **değiştirilmedi**; bunun yerine mekanizmanın
+asıl vaadi, bileşim görülmeden yazılan iki yeni ölçütle sınandı ve **geçti**:
+H1a (azınlık şerit→şerit sızıntısı **0/0**) ve H1b (kesin azalma). H1c
+(sınıflandırılamayan yayımlanmış çevrilme = 0) **damgalanmadı** ve bu raporun
+kendi kuralınca **açık** sayılır. Kayıt: `ON_KAYIT.md` EK-1,
+`olcum_20260903.json`. Bu, raporda **geçilmeyen ikinci ön kayıttır** (birincisi
+§3.5.3'teki gerçek-kare eşikleridir).
+
 ### 3.4.7 Yayın sözleşmesi (K1) — `CONTRACTS.md` §6.5
 
 **Neden var:** denetimde ölçüldü ki `codes/rpi_inference.py` `run_camera`/`run_video`
@@ -686,8 +704,11 @@ zorundadır; nöbetçi `tests/test_t202_jetson_paket_butunlugu.py`.
 
 ## 3.5 Karar zinciri kabul kapıları — K0…K8 + K5A
 
-Kapıların tamamı tek betikten koşulur: `scripts/olcum/65_kabul_denetcisi.py`. Eşikler
-`REVIEW_LOG.md` D-107'de **sonuç görülmeden** yazılmıştır ve **değiştirilmemiştir**.
+Kapıların tamamı tek betikten koşulur: `scripts/olcum/65_kabul_denetcisi.py`. Eşiklerin
+tamamı **sonuç görülmeden** yazıldı ve hiçbiri değiştirilmedi; ancak hepsi tek kayıtta
+değildir: **K0–K5** `REVIEW_LOG.md` D-107 (14 Ağustos), **K6 ve K7**
+`results/gece_20260826/ON_KAYIT.md` (26–27 Ağustos), **K8 ve K5A** D-332 / D-334
+(29–30 Ağustos). Bir eşiği doğrularken bu üç kaynağa ayrı ayrı bakılır.
 
 ### 3.5.1 Kapı tablosu
 
@@ -701,8 +722,8 @@ Kapıların tamamı tek betikten koşulur: `scripts/olcum/65_kabul_denetcisi.py`
 | **K5** | **bariyer kesişimi** (popülasyon) | **= 0 px**, her ölçülebilir karede | **0/178** ölçülebilir kare · toplam **0 px** | **GEÇTİ** |
 | **K5A** | bariyer kesişimi — **açılı** bariyer kümesi | K5 ile **birebir aynı** | **0/176** ölçülebilir kare · **0 px** | **GEÇTİ** |
 | **K6** | yanlış güzergâh (rota çizgisinin yer gerçeği sınıf 0 üstündeki payı ≥ 0,90 **ve** sınıf 1 üstünde 0 waypoint) | **≤ %5** | **2/256 = %0,78** | **GEÇTİ** |
-| **K7** | **YAYINLANAN ŞERİT DOĞRULUĞU** | doğruluk **≥ %95** **ve** payda **≥ 80/88** | **84/85 = %98,82** (payda 85) | **GEÇTİ** |
-| **K8** | **gerçek kare kapısı** — üretim karar yolu tek gerçekçi karede kırılıyor mu | `ZEMIN_MASKESI_SUPHELI` **dönmemeli** | zemin kaplaması **0,0444** · karar yolu reddi `UC_BANT_TEMAS_YOK` | **GEÇTİ** |
+| **K7** | **YAYINLANAN ŞERİT DOĞRULUĞU** — 260'ın tamamı değil, **şerit etiketi bilinen 88 karelik alt küme** üzerinde | doğruluk **≥ %95** **ve** payda **≥ 80/88** | **84/85 = %98,82** (85 karede rota üretildi, 84'ü doğru şeritte; yanlış: `sa_000090.jpg` 2→3) | **GEÇTİ** |
+| **K8** | **TEK FİGÜR KAPISI** (şartname Şekil 1, yapay zekâ üretimi görsel — K0 ile **aynı görüntü**, **n = 1**) — üretim karar yolu bu karede kırılıyor mu | `ZEMIN_MASKESI_SUPHELI` **dönmemeli** | zemin kaplaması **0,0444** · karar yolu reddi `UC_BANT_TEMAS_YOK` | **GEÇTİ** |
 
 Kaynak: `scripts/olcum/results/t63/t150_baglama_v36_kabul_verdikt.json` (**1 Eylül
 2026**, üretim kipi — hedef bağlaması T150 ile açık), model
@@ -1086,7 +1107,7 @@ kurala çarptı. Bu, ön kayıt disiplininin somut iş gördüğü bir vakadır.
 test**). ⚠ Mühürün ilk sürümünde **KRİTİK** bir kusur ölçülmüştü: özet **CRLF'ye bağlıydı**
 ve Jetson'da (LF) doğrulanamıyordu (D-405). Düzeltildi ve testle kilitlendi.
 
-**Kural:** 5 Eylül montajından itibaren üretim kodu **değişmez**; zorunlu değişiklik =
+**Kural:** **17 Eylül sürüm dondurmasından** itibaren üretim kodu **değişmez**; 5–16 Eylül arasındaki değişiklikler kapı + defter kaydı ister (5 Eylül montaj ve ilk gerçek kapı koşumları günüdür, dondurma günü değil); zorunlu değişiklik =
 D-kaydı + kapı + **ayrı denetim**.
 
 ---
@@ -1202,7 +1223,7 @@ arka uçsuz **kurulamaz** — boş bir iskeletin "çalışıyor" görünmesi eng
 | kapı | sonuç |
 |---|---|
 | Genel kapı `codes/test_rota_sentetik.py` | **15/15** |
-| Tam birim test suiti | **1882 OK** (skipped = 3) |
+| Tam birim test suiti | **1896 OK** (skipped = 3) |
 | Kabul zinciri K0–K8 + K5A (v36) | **10/10 GEÇTİ** |
 | Saha kuru koşusu | 9 GEÇTİ · 1 SAHİPSİZ |
 | Kanıt defteri kayıt sayısı | **414** (`grep -c "^### D-" REVIEW_LOG.md`) |

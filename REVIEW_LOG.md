@@ -28399,3 +28399,183 @@ ayri aranir. Gerekce testin icine yazildi.
 CONTRACTS §6.7 (bu turdan once yazilmisti) · SAHA_RUNBOOK §2'ye operator satiri
 (FDA'da neyin degistigi) · SAHA_HAZIRLIK_PLANI 1.8a · `CODEX_GOREV_YKS_FDA.md`
 kartinin uygulamasi tamamlandigi icin kart artik **denetim listesi** olarak durur.
+
+### D-409 — FDR TASLAGI v1: sartname Tablo 4'un yedi bolumu yazildi (4000+ satir), her sayi artefakta baglandi
+
+**Ne yapildi.** Sartname Tablo 4'teki yedi puanlanan bolum `FDR/` altinda ayri
+dosyalar olarak yazildi: 1 Ozet (193 satir) · 2 Organizasyon ve Takvim (332) ·
+3 Sistem Spesifikasyonlari (1378) · 4 Test Faaliyetleri (789) · 5 Uretim
+Faaliyetleri (561) · 6 Gereksinim Izlenebilirligi (307) · 7 Butce Gerceklemesi
+(372). `FDR/README.md` kapak, puan tablosu, yazim kurallari ve **resmi takvim
+blogunu** tasir.
+
+**Yordam — iddia/kanit ayrimi.** Her sayisal iddianin yanina uretildigi artefakt
+yazildi. Olculmemis olan **"OLCULEMEDI"** ya da **"BEYAN GEREKLI"** diye
+isaretlendi; bos birakilmadi, tahmin yazilmadi. Bu iki etiketin tam listesi
+`FDR/ACIK_KALEMLER_HAM.md` (**177 satir**, `scripts/fdr_acik_kalem_cikar.py` ile
+**yeniden uretilebilir**) ve elle ayiklanmis hali `FDR/ACIK_KALEMLER.md`
+(**25 kalem**: 8 saha · 5 ucus · 3 kapanmaz sinir · 6 insan beyani · 3 yazilim damga/kilit eksigi) icindedir. Son uc kalem bu turda eklendi (D-411 ve D-412).
+
+**Neden ayri dosyalar.** Tek dosya baglama sigmiyor; bolum bolum denetlenebilsin
+ve PDF dizgisi bolum sirasiyla yapilabilsin diye Tablo 4 ile **birebir** ayni
+bolumleme secildi.
+
+### D-410 — RESMI TAKVIM KUSURU: 21 Eylul FDR TESLIM gunudur, ucus gunu DEGILDIR (kapiyla kilitlendi)
+
+**Kusur.** FDR taslagi ve saha plani 21 Eylul'u sartname §5.3.2'nin "Drone ile
+Gorev Test Ucusu" gunu sanip oyle etiketledi. Sartname Tablo 1 baska soyluyor:
+
+    21.09.2026 - 17.00   ->  Final Degerlendirme Raporu Son Teslim Tarihi
+    30.09-03.10.2026     ->  Final Degerlendirme Asamasi (FDS + Drone ile Gorev Test Ucusu)
+
+**Nasil bulundu.** Curutucu turunda, takvim iddialarinin kaynagi `results/
+sartname_bosluk/sartname_metin.txt` ile tek tek karsilastirilirken. Hata
+**yayilmisti**: plan, runbook, CONTRACTS ve FDR bolumleri ayni yanlisi
+tekrarliyordu.
+
+**Neden onemli.** Yanlis olsaydi takim 21 Eylul'e ucus hazirligi yapip **rapor
+teslimini kacirirdi** — FDA puaninin %85'i rapordur (`FDA = FDR x 0,85 +
+test ucusu x 0,15`). Kusur puan kaybi degil, **diskalifiye** riskiydi.
+
+**Duzeltme.** Once regex ile denendi, **yalniz 5 eslesme** buldu; cumle duzeyinde
+acik degistirme sozlugune gecildi ve tum belgeler duzeltildi.
+
+**Kapi — tekrari engellenir.** `tests/test_fdr_takvim_kapisi.py` (4 test):
+  T1  sartname metni gercekten bu iki tarihi soyluyor (kapinin kendi dayanagi)
+  T2  hicbir belge "§5.3.2 ... 21 Eylul" yakinligini kurmuyor (80 karakter penceresi)
+  T3  FDR/README ve saha plani resmi takvim tablosunu TASIYOR
+  T4  30.09-03.10 penceresi belgelerden sessizce dusmedi (>= 3 belgede geciyor)
+"prova" gecen satirlar muaftir: takim provasi 21'inde yapilacaktir.
+
+### D-411 — FDR CURUTUCU TURU: 71 bulgu (6 KRITIK), tamami kapatildi ya da ACIKCA acik birakildi
+
+**Neden.** Rapor kendi kurallarini ("her sayi artefakta baglanir", "olculemeyen
+gecmis sayilmaz") ihlal ediyor mu diye taslak, **yazani olmayan** bir gozle
+tarandi. Anayasa madde 19: bir is onu yazanin onayiyla kapanmaz.
+
+**Ne tarandi.** 302 dosya yolu iddiasi (294 gecerli), 30 satir-numarasi atfi
+(hepsi araliktaydi; **3'u anlamca yanlis satiri** gosteriyordu -> sembol atfina
+cevrildi), tum sayisal iddialar kaynak artefaktla karsilastirildi.
+
+#### 1. Kapatilan KRITIK 6
+
+| # | bulgu | duzeltme |
+|---|---|---|
+| 1 | 21 Eylul ucus gunu sanildi | D-410 (ayri kayit) + kapi |
+| 2 | Kabul kapisi satiri terfi anini (26 Agustos) uretim kipiyle karistiriyordu | 1 Eylul `t150_baglama_v36_kabul_verdikt.json` 10/10'a hizalandi |
+| 3 | Suit sayisi uc farkli deger tasiyordu | olculdu, **1882** (tarihli eski sayilar korundu) |
+| 4 | `seed` kusuru **D-138** diye atif aliyordu (D-138 kompozit etiketleme) | grep ile dogrulandi -> **D-140**, 4 yerde |
+| 5 | K6 yuzdesi `2/256 = %1,17` | aritmetik yanlis -> **%0,78** |
+| 6 | Hub mutasyon skoru "13/25, kapanmamistir" | `REVIEW_LOG:28096`: sertlestirmeden sonra **24/25** (`c112381`); §6.2'nin 1-3. satirlari kapandi diye isaretlendi |
+
+#### 2. Sayi/atif kolu (commit `20ab586`)
+
+"36 gercek kare" -> **33 olculen (+3 isinma)** (artefakt: `n=33, isinma=3`), 5 yerde ·
+saha bellegi 404 -> **405 dosya** (MANIFEST basligi) · commit sayisi 545 -> **551**,
+Agustos "22 gun / 396" -> **27 gun / 425** (`git log` ile olculdu) · I3 esigi orandan
+**mutlaga** cevrildi ("en uzun kosu < 5 s") · `cuma_kontrol.txt` icindeki yanlis cikis
+kodu (`tail`in kodu yakalanmisti) not dusuldu, `muhur_dogrula.txt` dogru uretildi.
+
+#### 3. Icerik kolu — **iki dusuk on kayit ACIKCA yazildi**
+
+En agir bulgu **gizlenmis bir dusustu**: P5 histerezis on kaydinin H1 olcutu
+(yayimlanan cevrilme <= ham cevrilmenin %40'i) **gecilmemisti** — olculen
+7/13 = %53,8 ve 11/24 = %45,8, artefaktta `H1_ozgun: false` — ama rapor bunu
+soylemiyordu. Bolum 3'e kirmizi kutu eklendi: **esik gevsetilmedi**, bunun yerine
+bilesim gorulmeden yazilan H1a (azinlik serit->serit sizintisi 0/0) ve H1b
+(kesin azalma) kosuldu ve **gecti**; H1c damgalanmadi ve **acik** sayildi
+(`ACIK_KALEMLER` 24). Boylece raporda dusen on kayit sayisi **iki**dir
+(digeri §3.5.3 gercek-kare esikleri) ve ikisi de yazilidir.
+
+Diger icerik duzeltmeleri, hepsi artefakta bakilarak:
+
+| bulgu | olculen gercek |
+|---|---|
+| "Hicbir uretim sureci `--mavlink /dev/tty*` acmaz, **kodla** kilitli" | kod kilidi **yalniz `iha_komut_alici`'da**; `rpi_inference` ve `iha_inis_yayinci` hala kabul eder -> yordamla uygulaniyor, **acik kalem 23** |
+| "Esikler D-107'de yazildi" | D-107 **yalniz K0-K5**; K6/K7 `gece_20260826/ON_KAYIT.md`, K8/K5A D-332/D-334 |
+| K7 "84/85" tam kume sanilabilirdi | **88 karelik alt kume**; kapsam satira yazildi |
+| K8 "gercek kare kapisi" | **tek figur** (sartname Sekil 1, **n=1**, K0 ile ayni goruntu) |
+| "K0-K6 altisi gecti" | K0...K6 **yedi** kapidir; artefaktin `gecti` alaninda **7 anahtar** var -> 7/7 |
+| Diyagramda `HEARTBEAT` ACK'li kutuda | `iha_sender.py:231` HEARTBEAT **ACK'siz surekli yayin**; diyagram ayrildi |
+| "Sartname REQ-25...31" | sartname metninde "REQ-" **0 kez** gecer; takimin kendi DDR kimligi (`ddr_requirements.md:76`) |
+| DDR BOM "27 kalem" | numaralandirma 1..24, 26, 27 -> **26 satir**; 25 atlanmis |
+| "HTAB 20 x 20 m" | HTAB **50 x 50 m** (sartname s. 239); 20 x 20 m **ayri** simule test alani (s. 731) |
+| HB dedektoru "BAGLANMADI" | D-386'da **baglandi** (253/256 dogru ped, ortulu ped 259/260 `HEDEF_YOK`) |
+| Kod dondurma "5 Eylul'den itibaren" | dondurma **17 Eylul**; 5 Eylul montaj gunudur |
+| `surum_dondur_dogrula.txt` tek artefakt sanildi | iki artefakt var; ikisi de listelendi |
+
+#### 4. Neyin duzeltilmedigi
+
+30 KUCUK bulgu (bicim, tekrar eden cumle, tablo hizasi) **kapatilmadi** ve
+kapatilmis gibi yazilmadi; PDF dizgisi turunda ele alinacaktir. Raporun **177**
+"BEYAN GEREKLI / OLCULEMEDI" satiri da **acik durmaktadir** — bunlar kusur degil,
+insan girdisi bekleyen alanlardir.
+
+#### 5. Kapi
+
+Genel kapi `codes/test_rota_sentetik.py` 15/15 · `tests/test_fdr_takvim_kapisi.py`
+4/4 · tam suit artefakti artik **tek dosyadir**:
+`results/faz_b_oncesi/cuma_kontrol/tam_suit.txt` (onceki turda rapor iki farkli
+sure tasiyordu: 358,7 s ve 375,5 s; ikisi de "1882 test" diyordu -- tek olculen
+kosuma hizalandi).
+
+### D-412 — KENDI COMMIT'IM YARIM BIR ISI SUPURDU: `_kanit_yaz` cagrisi commit'lendi, TANIMI commit'lenmedi (YKS her gercek kurulumda oluyordu)
+
+**Kusur.** `comms/yks_gui.py:457` `self._kanit_yaz(...)` cagiriyor; sinifta
+`def _kanit_yaz` **yok**. `YksArayuz.__init__` her gercek kurulumda
+`AttributeError: 'YksArayuz' object has no attribute '_kanit_yaz'` ile oluyordu.
+Sahada bunun anlami **YKS'nin hic acilmamasi**dir — hakem ekrani yok, onay yok,
+ucus yok.
+
+**Nasil girdi — ve bu benim hatamdir.** `git log -S"_kanit_yaz"` tek commit
+gosteriyor: **`ef02e19`**, yani *benim* "D-410 takvim duzeltmesi" commit'im.
+O commit belge commit'i olarak duyuruldu ama `comms/yks_gui.py`'ye ait **16
+satiri** da beraberinde goturdu: Codex'in yarim kalan hakem-kanit entegrasyonu
+(`hakem_kaydi` alani, `hakem_log_yolu` parametresi, `kanit_kaydi_hatasi`,
+uc kamera/telemetri alani ve `_kanit_yaz` **cagrisi**). Tanim henuz
+yazilmamisti. `git commit -a` benzeri genis kapsam kullanildi ve **kapsam
+denetlenmedi**.
+
+Bu, D-407 §4'te *olculup yaziya dokulen* tehlikenin ta kendisidir: "Codex'in
+calisma kopyasinda canli isi var; genis kapsamli islem yapma." Kayit vardi,
+uygulanmadi.
+
+**Ikinci hata — yesil rapor.** Ayni turda "tam suit 1882 test OK" diye
+raporlandi. O kosum **supurmeden onceydi**; commit'ten sonra suit yeniden
+kosulmadi. Bugunku ilk kosum **6 hata** verdi: `test_iha_landed_gate` (3),
+`test_ika_go_gate` (1), `test_p9abc_yks` (1), `test_yks_gui_demo_kaynak` (1).
+Kirmizi kapi, "kapi gecti" cumlesinin yazildigi anda depoda duruyordu.
+
+**Duzeltme — geri alma degil, tamamlama.** Codex'in getirdigi 16 satir tutarli
+bir tasarimdi; eksik olan tek parca yazildi (`comms/yks_gui.py`, "Hakem kanit
+kaydi" bolumu). Sozlesmesi uc maddedir:
+  1. `hakem_kaydi is None` (test/demo fiksturu) -> sessizce atlanir; dosya acma
+     karari kurucuda verilir, burada verilmez.
+  2. Yazma hatasi arayuzu **oldurmez** ama **saklanmaz**: `kanit_kaydi_hatasi`
+     alanina duser ve gunluge kirmizi basilir. Tk geri cagrisinin ortasinda
+     istisna yukseltmek ekrani dondurur; kanitsiz ucmak ise sartname §2.2.3
+     onayini dayanaksiz birakir — bu yuzden **fail-visible**, fail-silent degil.
+  3. Ilk hata saklanir, sonrakiler uzerine yazmaz (kok neden kaybolmasin).
+
+**Kapi.** `tests/test_yks_hakem_kanit_yolu.py` — 6 test. T1 metot tanimli ·
+T2 kayitsiz yol sessiz · T3 gercek dosyaya JSONL (`HakemKaydi`'nin kendi
+`OTURUM_BASLADI`/`OTURUM_BITTI` satirlari arasinda) · T4 yazma hatasi
+oldurmez ama gorunur · T5 ilk hata saklanir · **T6 kusur SINIFININ nuksunu
+engeller**: `comms/*.py` icinde `self._X(...)` cagrilip `def _X` yazilmamis
+baska bir yer var mi diye sozdizim agacindan taranir (`self._fsync = os.fsync`
+gibi enjekte edilen cagrilabilirler tanimli sayilir, yoksa kapi yanlis alarm
+verirdi — ilk kosumda tam olarak bunu yapti ve duzeltildi).
+
+**Mutasyon.** `_kanit_yaz` tanimi gecici kaldirildi -> **6/6 test dustu**
+(2 failure + 4 error); dosya `cmp` ile **bayt-es** geri yuklendi. Kapi bos degil.
+
+**Kalan.** Codex'in getirdigi `_kamera_kanit_durumu`,
+`_son_kamera_kanit_monotonic`, `_son_telemetri_kanit_monotonic` alanlari
+kuruluyor ama **hicbir yerde okunmuyor**: kamera ve telemetri kanit olaylari
+henuz yazilmiyor, hakem kaydinda bugun yalniz `YKS_ARAYUZ_HAZIR` var. Bu
+**uydurulmadi** — olay kumesi sozlesmesi yazilmadan tamamlanamaz; acik kalem
+olarak durur.
+
+**Ders — yordama gecirildi.** Commit oncesi `git status` kapsami okunacak;
+`comms/`, `codes/` altinda **beklenmeyen** bir dosya varsa commit
+genisletilmeyecek. Belge commit'i belge commit'i olarak kalir.

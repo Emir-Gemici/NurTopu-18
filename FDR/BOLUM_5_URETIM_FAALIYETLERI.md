@@ -243,7 +243,7 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 
 **Emniyet kuralı (üretim yordamının parçasıdır):** *pervaneler en son, pil en son*. Aracın tek
 güç kesicisi **pil fişidir** (XT60/XT90); ayrı acil kesme anahtarı **yoktur**. Bu, şartname
-REQ-25…31'e göre final aracında kapatılması gereken bir **tasarım borcudur** (Bölüm 2 §4.1).
+Takımın kendi DDR gereksinimi REQ-25…31'e göre (şartname maddesi değil) final aracında kapatılması gereken bir **tasarım borcudur** (Bölüm 2 §4.1).
 
 ### 6.4 Kablaj hesabı — DDR taslağı, doğrulanmadı
 
@@ -375,7 +375,7 @@ Yazılım da bir üretim kalemidir ve konfigürasyon yönetimi altındadır.
 | Systemd birimleri | **6 adet**: çoğullayıcı, kamera köprüsü, `rpi_inference`, iniş yayıncısı, komut alıcısı, seri hub |
 | Taşınabilir saha belleği | **405 dosya · 1,27 GB**, `MANIFEST.txt` her dosyanın sha256'sı + git HEAD ile (`scripts/bellek_hazirla.py`; fail-closed: zorunlu parça eksikse çıkış 3) |
 | Genel kapı | **15/15 · 15/15** |
-| Tam test paketi | **1882 test OK** (skipped 3) |
+| Tam test paketi | **1896 test OK** (skipped 3) |
 
 ⚠ Depo içinde küçük bir tutarsızlık vardır: plan belgesi belleği **405 dosya**, kontrol kartı
 **405 dosya** diye yazar (ikisi de 1,27 GB). Fark **DOĞRULANACAK** — `MANIFEST.txt` satır sayısı
@@ -475,7 +475,7 @@ gerilme/deplasman/emniyet katsayısı değerleri ekran görüntüsü ve rapor ç
 | kapı | ne ölçer | durum (03.09.2026) |
 |---|---|---|
 | Genel kapı `codes/test_rota_sentetik.py` | karar zinciri | **15/15 · 15/15 GEÇTİ** |
-| Tam test paketi | tüm sözleşmeler | **1882 OK** (skipped 3) |
+| Tam test paketi | tüm sözleşmeler | **1896 OK** (skipped 3) |
 | Kuru koşu | saha zinciri bütünlüğü | **9 GEÇTİ / 1 SAHİPSİZ** (`motor`) |
 | Paket aynası | saha paketi ile depo eşitliği | **18 dosya senkron** |
 | Çevrimdışı tekerlekler | Nano yığını | **14/14 · 51 dosya · 246 MB** |
@@ -502,7 +502,7 @@ Sabit kanat + mancınık + paraşüt + İKA hattı **üretilmemiştir**. Bugünk
 | Mancınık | Depoda CAD/analiz **yok** | Ray geometrisi, enerji hesabı, çift kademeli emniyet (REQ-58/59) |
 | Paraşüt | Donanım DDR BOM'unda tanımlı, **temin/üretim kaydı yok**; yazılım tarafı hazır (`CHUTE_*`, `iha_komut_alici` zinciri) | Pod + servo mekanizması üretimi + atış testi |
 | İKA | Yazılım soyutlaması hazır, **gerçek motor sürücüsü YOK** (kuru koşuda `motor SAHIPSIZ`) | Sürücü seçimi (donanım kararı) → `scripts/ika_surucu_kabul.py` kabul turu → şasi üretimi |
-| Çift acil güç kesme | **Yok** (FDA aracında pil fişi) | REQ-25…31 için anahtar + röle tasarımı ve üretimi |
+| Çift acil güç kesme | **Yok** (FDA aracında pil fişi) | DDR gereksinimi REQ-25…31 için anahtar + röle tasarımı ve üretimi |
 
 **BEYAN GEREKLİ (insan): final aracı üretim takvimi ve atölye/tezgâh kaynakları** — 21 Eylül
 sonrası açılacak dalga için tarih, sorumlu rol ve tedarik kalemleri.

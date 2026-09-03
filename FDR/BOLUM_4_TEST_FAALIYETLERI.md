@@ -78,14 +78,23 @@ Uygulanmayan mutasyon başarı sayılmaz (D-370).
 | Nano kurulum belgesinde `scripts/` → `codes/` | `jetson_paket/JETSON_NANO_KURULUM.md` | test **DÜŞTÜ** (`belge ~/navitas/codes/ diyor, jetson_baslat.sh scripts/ ariyor`) | D-407 §1 |
 | çerçeveleme atlanıp ham bayt fan-out | `comms/seri_hub.py` | **2 test** yakaladı | D-404 §1 |
 
-**🔴 Dürüst mutasyon skoru — bir kapı takımı zayıf çıktı ve öyle yazıldı.**
-`comms/seri_hub.py` için bağımsız çürütücü **25 mutant** üretti; repo suiti
-**13'ünü yakaladı** (`results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md`,
-ham loglar `mut_seri_hub/log_*.txt`). Kaçanların adları ve neyi açıkta
-bıraktıkları aynı belgede tek tek yazılıdır: iki öğrenilen tüketiciden yalnız
-sonuncusuna fan-out, `OGRENILEN_TAVANI` (32) tahliye mantığı, yeniden açmada
-`FrameReader` sıfırlaması, beş fail-visible sayaç yolu. **Bu bir eksiktir ve
-kapanmamıştır** (§6).
+**🟡 Dürüst mutasyon skoru — bir kapı takımı zayıf çıktı, yazıldı ve sonra kapatıldı.**
+`comms/seri_hub.py` için bağımsız çürütücü **25 mutant** üretti. **İlk ölçümde**
+repo suiti **13'ünü yakaladı** (`results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md`,
+ham loglar `mut_seri_hub/log_*.txt`); kaçanların adları ve neyi açıkta bıraktıkları
+aynı belgede tek tek yazılıdır — iki öğrenilen tüketiciden yalnız sonuncusuna
+fan-out, `OGRENILEN_TAVANI` (32) tahliye mantığı, yeniden açmada `FrameReader`
+sıfırlaması, beş fail-visible sayaç yolu.
+
+**Sertleştirmeden sonra aynı 25 mutant yeniden koşuldu: 24/25.** Kapı takımı
+`test_faz_b_seri_hub.py` 11 → **31 test**, `test_faz_b_protocol_dayaniklilik.py`
+**4 test** (yeni) ile büyüdü; commit `c112381`, kayıt `REVIEW_LOG.md` D-405.
+
+**Tek kaçan hâlâ vardır ve bilerek testsizdir:** `l_arizada_ogrenmez` — seri arıza
+anında yeni tüketici öğrenilmemesi. Marjinal görüldüğü için test yazılmadı; bu
+raporun kuralınca **açık** sayılır ve §6'da öyle listelenir. Skorun "13" değil
+"24" olması, ilk sayının silinmesiyle değil, **ikinci ölçümün koşulmasıyla**
+elde edildi; ikisi de artefaktta durur.
 
 **🔴 Ölçen aracın kendisi de ölçülür (D-370).** Mutasyon betiği
 `scripts/olcum/129_t141_mutasyon_olcumu.py`, `\n` ile biten bir desen arıyordu;
@@ -238,7 +247,7 @@ karar geometrisinin (koridor seçimi, C-uzayı, darboğaz) doğruluğunu kilitle
 
 ```text
 ----------------------------------------------------------------------
-Ran 1882 tests in 375.499s
+Ran 1896 tests in 390.534s
 
 OK (skipped=3)
 ```
@@ -252,7 +261,7 @@ OK (skipped=3)
 | 3 Eyl (D-404) | 1685 | D-404 §5 |
 | 3 Eyl (D-406) | 1826 | D-406 |
 | 3 Eyl (D-407) | 1827 | D-407 §4 |
-| **3 Eyl (bu bölüm)** | **1882** | bu koşum (bölüm yazıldıktan sonra saha belleği kapıları eklendi: 1875 + 7) |
+| **3 Eyl (bu bölüm)** | **1896** | bu koşum. Ölçülen ara adımlar: 1875 (D-408 anı) → 1882 (saha belleği kapıları) → 1890 (takvim kapısı ve çürütücü turu kapıları) → **1896** (hakem kanıt yolu, +6 · D-412). 1890'lık koşum **6 hata** verdi; bkz. §6.3.1 |
 
 `tests/` altında **153** adet `test_*.py` dosyası vardır (`ls tests/ | grep -c "^test_"`).
 
@@ -621,7 +630,7 @@ Her dosyanın son satırı **gerçek çıkış kodudur**.
 | `jetson_baslat_kuru_sik.txt` | exit 0; hub satırı `--port /dev/ttyUSB0 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007` | **exit 0** |
 | `jetson_baslat_kuru_udp_EKSIK_beyan.txt` | **fail-closed**: `[EKSIK] YKS_IP`, `[EKSIK] IKA_IP` | **exit 3** |
 | `saha_baslat_komutlar.txt` | YKS satırında `--iha <JETSON_IP>:5007` (D-403 KRİTİK-1) | **exit 0** |
-| `surum_dondur_dogrula.txt` | künye yok → "DONDURULMADI" | **exit 3** |
+| `cuma_kontrol/muhur_dogrula.txt` | künye yok → "DONDURULMADI" | **exit 3** |
 | `seri_hub_help.txt` | CLI `--port --baud --bind --tuketici --log-aralik` | **exit 0** |
 
 🔴 Bu koşumların **hiçbiri saha kanıtı değildir**; yalnız *"ilk koşum kör
@@ -671,13 +680,16 @@ uca gecikme ÖLÇÜLMEDİ.**
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
 | 11 | **Nano kurulum belgesinin dış iddiaları** (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) | Kaynakla doğrulanmadı; betiğin **gerçek indirmesi** 14/14 aarch64 wheel ile çoğunu dolaylı teyit ediyor | 5 Eylül kart | belge zaten "kapı çıktısını deftere yapıştır" der |
 
-### 6.2 Kapanmamış kapı/test boşlukları (kod doğru, **kilit yok**)
+### 6.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
+
+> Bu tablo silinmez, **üstü çizilir**: kapanan boşluk da kayıttır. 1–3 D-405
+> turunda kapatıldı (kanıt satırlarda); 4–6 **hâlâ açıktır**.
 
 | # | boşluk | risk | kayıt |
 |---|---|---|---|
-| 1 | `seri_hub` 25 mutantın **12'si kaçtı**: iki öğrenilen tüketiciye fan-out, `OGRENILEN_TAVANI` (32) tahliyesi, yeniden açmada `FrameReader` sıfırlaması, 5 fail-visible sayaç yolu | Sahada YKS ACK'i `rpi_inference`'a ulaşmazsa OPEN_ROUTE tekrarı tükenir | D-405 |
-| 2 | Hub derin iç içe JSON'da **RecursionError ile ölüyor**; SiK hattının tek erişim noktası | Tek bozuk çerçeve hattı düşürür | D-405 |
-| 3 | Hub "tek sahiplik" garantisi kodda **zorlanmıyor** (`SO_REUSEADDR`, `exclusive` yok) | Çift başlatma sessiz | D-405 |
+| 1 | ~~`seri_hub` 25 mutantın 12'si kaçtı~~ → **KAPANDI (D-405, `c112381`)**: sertleştirme sonrası aynı 25 mutant **24/25** yakalandı; kapı takımı 11 → **31 test** + 4 yeni dayanıklılık testi. **Tek kaçan kaldı:** `l_arizada_ogrenmez` (seri arıza anında yeni tüketici öğrenilmemesi) — bilerek testsiz, marjinal | Kalan kaçanın riski: arıza anında yanlış tüketici öğrenilirse çerçeve yanlış uca gider (tek uçlu sahada gözlenemez) | D-405, `REVIEW_LOG.md:28096` |
+| 2 | ~~Hub derin iç içe JSON'da RecursionError ile ölüyor~~ → **KAPANDI**: çerçeve işleme `except Exception` ile sarıldı (`comms/seri_hub.py:408`), bozuk satır yutulur ve **aynı okuyucudan sonraki geçerli çerçeve geçer** | — | D-405; kapı `tests/test_faz_b_protocol_dayaniklilik.py` (4 test) |
+| 3 | ~~Hub "tek sahiplik" garantisi kodda zorlanmıyor~~ → **KAPANDI**: UDP ucu `UDPLink(..., reuse=False)` (`seri_hub.py:574`, `link.py:29`) — ikinci hub `OSError` ile **çıkış 3**, sessiz sağır kopya yok; seri port `SerialLink(exclusive=True)` (`link.py:81`) | Linux'ta `exclusive` çekirdek düzeyinde, Windows'ta değil — saha Jetson'dur | D-405 |
 | 4 | Kamera köprüsü K5 kapısı **API adı** denetlemiyor (yalnız söz dizimi) | Py3.6 uyumu sessizce bozulabilir | D-407 |
 | 5 | `rpi_inference` ekransız kipte **SIGTERM işlenmiyor** (T204); `save=True` iken codec yoksa ölü yazıcıya sessiz yazma (T205) | Tanı kaybı; kayıt kaybı | D-404 §8 |
 | 6 | Depo `core.autocrlf=true`: ayna/kaynak bayt eşitliği kapıları **kırılgan** — bir turda 11 test bu yüzden düştü (içerik doğruydu, düşen çalışma kopyasıydı) | Yanlış kırmızı | D-407 §4 |
@@ -693,6 +705,25 @@ onaylayan aynı taraftır** ve bağımsız denetim beklemektedir:
    koşulamadı; Jetson'daki ilk koşum ilk kanıttır.
 3. **D-406 K2/T207 kodu** ajanlar tarafından yazıldı; mimar diff/test/mutasyon
    çıktılarını okudu — **bağımsız üçüncü göz yok**.
+4. **D-412 `_kanit_yaz`** — eksik metot bu turda yazıldı ve 6 testle + mutasyonla
+   kapatıldı, ama **yazan ile onaylayan aynı taraftır**; bağımsız denetim bekler.
+
+#### 6.3.1 🔴 Bu turda ölçülen kendi hatamız — yeşil rapor kırmızı depoyla
+
+`ef02e19` commit'i **belge commit'i olarak duyuruldu** ama `comms/yks_gui.py`'ye
+ait 16 satırı da beraberinde götürdü (Codex'in yarım kalan hakem-kanıt işi).
+Götürülen satırlar arasında `self._kanit_yaz(...)` **çağrısı** vardı; **tanımı**
+yoktu. Sonuç: `YksArayuz.__init__` her gerçek kurulumda `AttributeError` ile
+ölüyordu — sahada **YKS hiç açılmazdı**.
+
+Daha ağırı: aynı turda "tam süit 1882 test OK" diye **yazıldı**. O koşum
+süpürmeden **önceydi** ve commit'ten sonra süit yeniden koşulmadı. Kırmızı kapı,
+"kapı geçti" cümlesinin yazıldığı anda depoda duruyordu. Kusur bu turun ilk
+süit koşumunda **6 hata** olarak çıktı ve orada yakalandı.
+
+Ders yordama geçirildi: **commit öncesi `git status` kapsamı okunur**;
+`comms/` veya `codes/` altında beklenmeyen dosya varsa commit genişletilmez.
+Kayıt: `REVIEW_LOG.md` D-412.
 
 Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda da
 öyle sayılmamıştır.
@@ -734,7 +765,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 | # | sayı / iddia | dosya yolu | üreten betik / komut | ölçüm tarihi |
 |---|---|---|---|---|
 | 1 | Genel kapı **15/15 · 15/15** (iki kol) | `codes/test_rota_sentetik.py` (stdout) | `…\venv\Scripts\python.exe codes/test_rota_sentetik.py` | 2026-09-03 |
-| 2 | Tam suit **1882 test · OK (skipped=3) · 375,499 s** | konsol çıktısı (bu bölümde ham) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-03 |
+| 2 | Tam suit **1896 test · OK (skipped=3) · 390,534 s** | `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt` (bu bölümde ham) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-03 |
 | 3 | `tests/` altında **153** `test_*.py` | `O:\navitas\tests\` | `ls tests/ \| grep -c "^test_"` | 2026-09-03 |
 | 4 | Kayıt defteri **414 başlık / 408 benzersiz** | `REVIEW_LOG.md` | `grep -cE "^### D-[0-9]+"` · `\| sort -u \| wc -l` | 2026-09-03 |
 | 5 | **36 ön kayıt artefaktı** | `results/**/ON_KAYIT*` | `find results -iname "*on_kayit*"` | 2026-09-03 |
@@ -753,7 +784,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 | 18 | Uçtan uca kare gecikmesi **p95 0,113 s**; telsiz payı `p50 307,6 → 2,3 ms` | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.1b · `REVIEW_LOG.md` D-382/D-383 | 33 ölçülen gerçek kare (+3 ısınma), üretim zinciri + UDP loopback ACK | 2026-09-01 |
 | 19 | Mutasyon betiğinin CRLF kusuru; `ika_nav.py` **658 CRLF / 0 LF** | `REVIEW_LOG.md` D-370 | `scripts/olcum/129_t141_mutasyon_olcumu.py` (düzeltilmiş) | 2026-08-31 |
 | 20 | Ekransız kip: 7/7 mutant yakalandı (ilk turda 4'ü kaçmıştı) | `results/faz_b_oncesi/ekransiz_denetim/mutant_sonuc_9test.txt` · `mutant_kos.py` | bağımsız denetçi ajanı | 2026-09-02 |
-| 21 | `seri_hub` mutasyon skoru **13/25**; vakum bulguları | `results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md` (+ `BULGULAR_TAM.md`, `mut_seri_hub/log_*.txt`) | 5 mercekli çürütücü turu | 2026-09-02 |
+| 21 | `seri_hub` mutasyon skoru: **ilk 13/25**, sertleştirmeden sonra **24/25** (kaçan: `l_arizada_ogrenmez`); vakum bulguları | `results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md` (+ `BULGULAR_TAM.md`, `mut_seri_hub/log_*.txt`) | 5 mercekli çürütücü turu | 2026-09-02 |
 | 22 | Hub UDP→seri gecikmesi: A p95 **31,0/31,2 ms**, B p95 **70,8/76,8 ms** (maks 79,7), C p95 **16,2/15,2 ms**; kayıp **0/50** | `results/faz_b_oncesi/curutucu_d405/` (`r2_gecikme.py`, `olc_granul.py`) | gerçek `SerialLink` `socket://` + hub ipliği, 2 koşum × 50 örnek | 2026-09-02 |
 | 23 | T207 gerçek topoloji: A/B senaryoları, ilk gecikme **0,30 s**, 511/33 @125000 µs · 511/245 @500000 µs | `results/faz_b_oncesi/curutucu_d407/akis_istegi/r_topoloji2.py` | çürütücü ikinci tur | 2026-09-03 |
 | 24 | Kamera köprüsü: bellek **0,48 MB sabit**, 40 istemci sonrası `dusen_kare=0` | `results/faz_b_oncesi/curutucu_d407/kopru/` (`mjpeg_repro.py`, `istemci_repro.py`) | çürütücü ikinci tur | 2026-09-03 |
@@ -765,7 +796,7 @@ en sert kısıtıdır ve planın kendisinde yazılıdır.
 | 30 | K7 alt küme gerekçesi: kabul kümesinin **%54'ü (105/193)** kötü koşullu | `CONTRACTS.md` §12.1 · `config/k7_iyi_kosullu_kume.json` (88 kare) | D-312 ölçümü | 2026-08-27 |
 | 31 | K7 referans semantiği: `sa_000090` model 89.913 px ↔ GT 18.042 px serbest; engel 42.123 ↔ 43.781 | `CONTRACTS.md` §12.1 · `REVIEW_LOG.md` D-315 | etiket kapsamı ölçümü | 2026-08-27 |
 | 32 | T99 vakum kapıları `V1/V3/V4 = true`; araç maskesi 7/260 karede dolu | `results/t99_uretim_imzasi/olcum_20260903.json` · `ON_KAYIT.md` | `scripts/olcum/` T99 ölçüm betiği | 2026-09-03 |
-| 33 | Suit büyüme dizisi 1489 → 1617 → 1685 → 1826 → 1827 → 1875 → **1882** | `REVIEW_LOG.md` D-388 §5, D-403 §6, D-404 §5, D-406, D-407 §4 + bu koşum | `unittest discover` | 2026-09-02…03 |
+| 33 | Suit büyüme dizisi 1489 → 1617 → 1685 → 1826 → 1827 → 1875 → 1882 → **1896** | `REVIEW_LOG.md` D-388 §5, D-403 §6, D-404 §5, D-406, D-407 §4 + bu koşum | `unittest discover` | 2026-09-02…03 |
 | 34 | Uçuş testi planı ve kapıları (3.1–3.7), takvim | `SAHA_HAZIRLIK_PLANI_20260903.md` §3, §4, §5 | — (plan) | 2026-09-03 |
 | 35 | Gerçek donanım künyesi (Nano 4GB, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek | 2026-09-03 |
 | 36 | Şartname §5.3.1 Tablo 4 (Bölüm 4 = 15 puan) ve §5.3.2 görev kuralları | `results/sartname_bosluk/sartname_metin.txt` s.17–18 | PyMuPDF metin çıkarımı | 2026-08-26 |

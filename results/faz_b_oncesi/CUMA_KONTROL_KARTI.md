@@ -9,7 +9,7 @@
 | ✓ | kapı | sonuç (3 Eylül) |
 |---|---|---|
 | ✅ | Genel kapı `codes/test_rota_sentetik.py` | **15/15 · 15/15** |
-| ✅ | Tam test paketi | **1882 test OK** (skipped 3) |
+| ✅ | Tam test paketi | **1896 test OK** (skipped 3, 390,5 s) · artefakt `cuma_kontrol/tam_suit.txt` |
 | ✅ | Kuru koşu `scripts/saha_kuru_kosu.py` | **9 GEÇTİ · 1 SAHİPSİZ** (yalnız `motor` — İKA gerçek sürücüsü; FDA uçuşunda gerekmez) |
 | ✅ | Paket aynası `scripts/jetson_paket_hazirla.py` | 18 dosya senkron |
 | ✅ | Model dosyaları pakette | `navitas_seg_v36_best.pt` + `_512_fp16.onnx` (54,8 / 54,6 MB) |

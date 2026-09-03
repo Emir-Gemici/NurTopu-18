@@ -88,8 +88,8 @@ neye bakarak karar verdiğini** de tanımlar. Dört kural bağlayıcıdır:
 4. **Kanıt silinmez.** Yanlış çıkan iddia defterden çıkarılmaz; üstü çizilip düzeltmesine işaret
    verilir (D-373). Bu bölümdeki §4.4 bu kuralın uygulanmasıdır.
 
-Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **414 kayıt başlığı / 408 benzersiz kayıt no**
-(ölçüm: `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 414; `... | sort -u | wc -l` → 408; 2026-09-03).
+Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **418 kayıt başlığı / 412 benzersiz kayıt no**
+(ölçüm: `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 418; `... | sort -u | wc -l` → 412; 2026-09-03).
 
 ---
 
@@ -175,7 +175,7 @@ Bu bölüm o hükmün karşılığıdır. Revizyonlar gizlenmemiş, gerekçeleri
 
 ### 4.1 Donanım revizyonları — DDR BOM'u ile bugünkü gerçek künye
 
-DDR aviyonik BOM'u `navitas-teknofest/references/ddr_requirements.md` içindedir (27 kalem,
+DDR aviyonik BOM'u `navitas-teknofest/references/ddr_requirements.md` içindedir (**26 satır**; numaralandırma 1…24, 26, 27 diye gider, **25 atlanmıştır** — DDR metnindeki "27" en büyük numaradır, satır sayısı değil;
 beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdır
 (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2, 3 Eylül 2026).
 
@@ -194,7 +194,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | Servolar (kanat/kuyruk) | EMAX ES08MA II ×4 | **FDA aracında YOK** | Araç sınıfı farkı |
 | Pitot + airspeed | Pitot + Holybro MS5525DSO | **FDA aracında YOK** | Çoklu rotorda hava hızı sensörü kullanılmaz |
 | Telemetri | Holybro SiK 433 MHz ×2 (uçak + YKS) | **2× SiK 433 MHz** — değişmedi | — |
-| Acil güç kesme | Anahtarlı stop + röle | **Anahtar yok — pil fişi çekilir (XT60/XT90)** | 🔴 Şartname REQ-25…31 (çift acil güç kesme) FDA aracında **karşılanmıyor**; final aracı için **açık madde** (Bölüm 6'ya taşınır) |
+| Acil güç kesme | Anahtarlı stop + röle | **Anahtar yok — pil fişi çekilir (XT60/XT90)** | 🔴 **DDR gereksinimi** REQ-25…31 — *takımın kendi* gereksinim kimliğidir (`references/ddr_requirements.md:76`); şartname metninde "REQ-" **hiç geçmez** (çift acil güç kesme) FDA aracında **karşılanmıyor**; final aracı için **açık madde** (Bölüm 6'ya taşınır) |
 | Gövde | (DDR: sabit kanat yapısal malzeme dağılımı) | **3B baskı quadcopter** (ABS + ABS-CF) | Araç sınıfı farkı; ayrıntı Bölüm 5 |
 
 ### 4.2 Yazılım ve mimari revizyonları
@@ -206,7 +206,7 @@ beyan edilen toplam **2293 g**). Bugünkü gerçek künye kullanıcı beyanıdı
 | Rota karar yolu | tek yol varsayımı | **İki yol ayrıldı:** `analyze_path` üretim, `rota_bul` tanısal | D-295, `CONTRACTS.md` §11.2-EK |
 | Pixhawk erişimi | doğrudan seri | 🔴 **Çoğullayıcı zorunlu** — seri port tek sahipli, üç tüketici ayrı UDP ucundan okur | D-403, `CONTRACTS.md` §7.4 |
 | Kamera yolu | doğrudan `VideoCapture` | **Kamera köprüsü** (sistem Python 3.6 + GStreamer `nvarguscamerasrc` → MJPEG/HTTP) | D-406, `scripts/kamera_koprusu.py` |
-| Hedef Bölge (HB) dedektörü | üretime bağlanacak | **BAĞLANMADI** — gerçek iniş pedinde isabet %0, kırmızı arabada %100 yanlış pozitif | D-295 §2, K3 |
+| Hedef Bölge (HB) dedektörü | DDR: üretime bağlanacak | **BAĞLANDI (1 Eylül 2026, D-386)** — kullanıcı renk teyidi + ölçek/şekil çifti kapısıyla; hedef **253/256** doğru pedde, ped örtülüyken **259/260 `HEDEF_YOK`** (fail-closed), karar maliyeti **sıfır**. Ara dönemdeki bağlanmama gerekçesi (gerçek pedde %0 isabet, kırmızı arabada yanlış pozitif) D-295 §2'de durur | D-295 §2 → **D-386** |
 | YKS görev kipi | tek kip | **`--fda` kipi eklendi** — paraşüt/İKA kapalı, bütçe tek 10 dk | D-408, `CONTRACTS.md` §6.7 |
 | Süre limitleri | belgede | **Sözleşme sabiti**: İHA 900 s, İKA 600 s, FDA operasyon 600 s | `codes/karar_sozlesmesi.py`, D-318 |
 
@@ -313,7 +313,7 @@ karar kaptandadır (`SAHA_HAZIRLIK_PLANI_20260903.md` §4 "Pil kuralı").
 | 11 | Kanıt defteri 414 başlık / 408 benzersiz kayıt | `REVIEW_LOG.md` | `grep -cE "^### D-[0-9]+"` ve `\| sort -u \| wc -l` | 2026-09-03 |
 | 12 | Şartname resmî takvimi (ÖDR/DDR/FDR/FDA/SGGS/UHDR tarihleri) | `results/sartname_bosluk/sartname_metin.txt` s.11 | PyMuPDF metin çıkarımı (`rapor_uret.py`) | 2026-08-26 |
 | 13 | FDR puan tablosu (Tablo 4) ve FDA formülü (FDR×0,85 + uçuş×0,15) | `results/sartname_bosluk/sartname_metin.txt` §5.3.1–5.3.2 | aynı çıkarım | 2026-08-26 |
-| 14 | DDR aviyonik BOM'u (27 kalem, 2293 g) | `navitas-teknofest/references/ddr_requirements.md` | DDR dönemi Excel aktarımı — **DOĞRULANACAK** | 2026-07 (tarih damgası yok) |
+| 14 | DDR aviyonik BOM'u (**26 satır**, en büyük numara 27, toplam 2293 g) | `navitas-teknofest/references/ddr_requirements.md` | DDR dönemi Excel aktarımı — **DOĞRULANACAK** | 2026-07 (tarih damgası yok) |
 | 15 | DDR mimari şemasında "Pixhawk 6X" / "Jetson Orin NX" / "M10" | `navitas-teknofest/references/avionics_software.md` | — | 2026-07 |
 | 16 | Gerçek donanım künyesi (Pixhawk 6C, M9N, Nano 4GB, FCHUB-12S, 5008 340KV, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek | 2026-09-03 |
 | 17 | Planlanan 3–21 Eylül takvimi | `SAHA_HAZIRLIK_PLANI_20260903.md` §4 | — | 2026-09-03 |

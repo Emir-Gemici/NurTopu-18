@@ -37,7 +37,7 @@ penceresindedir. Kaynak: `results/sartname_bosluk/sartname_metin.txt` satır 353
 
 Şartname §5.3.1 raporun **kanıt sunmasını** ister. Bu klasördeki her bölüm aynı
 dört kurala uyar; kurallar rapor için icat edilmedi, projenin ölçüm defterinden
-(`REVIEW_LOG.md`, 413 kayıt) gelir:
+(`REVIEW_LOG.md`, **418 kayıt**) gelir:
 
 1. **Her sayı bir artefakttan gelir.** Bölüm sonundaki *Kanıt dizini* her sayının
    dosya yolunu ve onu üreten betiği verir. Elle kopyalanan sayı bayatlar; bu
@@ -70,8 +70,8 @@ değişen uçuş kontrolcüsü yapılandırması ve gövdedir. Yer istasyonu bu 
 | ölçüt | değer | ölçüm |
 |---|---|---|
 | genel kapı `codes/test_rota_sentetik.py` | **15/15 · 15/15** | 3 Eylül 2026 |
-| tam test süiti | **1882 test OK** (3 atlandı, 375,5 s) | 3 Eylül 2026 |
-| kanıt defteri kaydı | **414** (`REVIEW_LOG.md`, `### D-` sayımı) | 3 Eylül 2026 |
+| tam test süiti | **1896 test OK** (3 atlandı, 390,5 s) | 3 Eylül 2026 |
+| kanıt defteri kaydı | **418** (`REVIEW_LOG.md`, `### D-` sayımı) | 3 Eylül 2026 |
 | üretim modeli | `navitas-seg-v36-512` (PyTorch, 512 px) | `config/model_registry.json` |
 | Jetson paketi | 18 dosya, kanonik kaynakla bayt-eş | `scripts/jetson_paket_hazirla.py` |
 
