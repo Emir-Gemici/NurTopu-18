@@ -697,16 +697,18 @@ Kapıların tamamı tek betikten koşulur: `scripts/olcum/65_kabul_denetcisi.py`
 | **K1** | rota üretilen kare sayısı | **≥ 230** / 260 | **256/260** | **GEÇTİ** |
 | **K2** | rotanın molozdan geçmesi | **≤ %15** | **6/256 = %2,34** | **GEÇTİ** |
 | **K3** | **ağır** moloz teması | **≤ %3** | **0/256 = %0,00** | **GEÇTİ** |
-| **K4** | arena dışına taşma | **≤ %5** | **3/256 = %1,17** | **GEÇTİ** |
+| **K4** | arena dışına taşma | **≤ %5** | **2/256 = %0,78** | **GEÇTİ** |
 | **K5** | **bariyer kesişimi** (popülasyon) | **= 0 px**, her ölçülebilir karede | **0/178** ölçülebilir kare · toplam **0 px** | **GEÇTİ** |
 | **K5A** | bariyer kesişimi — **açılı** bariyer kümesi | K5 ile **birebir aynı** | **0/176** ölçülebilir kare · **0 px** | **GEÇTİ** |
-| **K6** | yanlış güzergâh (rota çizgisinin yer gerçeği sınıf 0 üstündeki payı ≥ 0,90 **ve** sınıf 1 üstünde 0 waypoint) | **≤ %5** | **3/256 = %1,17** | **GEÇTİ** |
+| **K6** | yanlış güzergâh (rota çizgisinin yer gerçeği sınıf 0 üstündeki payı ≥ 0,90 **ve** sınıf 1 üstünde 0 waypoint) | **≤ %5** | **2/256 = %1,17** | **GEÇTİ** |
 | **K7** | **YAYINLANAN ŞERİT DOĞRULUĞU** | doğruluk **≥ %95** **ve** payda **≥ 80/88** | **84/85 = %98,82** (payda 85) | **GEÇTİ** |
 | **K8** | **gerçek kare kapısı** — üretim karar yolu tek gerçekçi karede kırılıyor mu | `ZEMIN_MASKESI_SUPHELI` **dönmemeli** | zemin kaplaması **0,0444** · karar yolu reddi `UC_BANT_TEMAS_YOK` | **GEÇTİ** |
 
-Kaynak: `scripts/olcum/results/t63/t199_ozdenetim_kabul_verdikt.json` (koşum tarihi
-2026-08-28 21:25), model `models/navitas_seg_v36_best.pt`. Toplu verdikt: **10/10 kapı
-GEÇTİ**.
+Kaynak: `scripts/olcum/results/t63/t150_baglama_v36_kabul_verdikt.json` (**1 Eylül
+2026**, üretim kipi — hedef bağlaması T150 ile açık), model
+`models/navitas_seg_v36_best.pt`. Toplu verdikt: **10/10 kapı GEÇTİ**. Bu koşum,
+raporda "bugünkü zincir" diye anılan **tek** koşumdur; Bölüm 4 §3 de aynı dosyayı
+kullanır (iki bölüm arasında sayı farkı yoktur).
 
 **Kapıların kendi ayırt ediciliği ölçülmüştür.** Örnek: K5A kümesi (`sentetik_arena_kadraj_ACILI_t189`)
 yatay kümenin aynı üreteç/tohum/parametreleriyle, yalnız `--bariyer-acisi 90` eklenerek
@@ -721,13 +723,17 @@ gerçekten ölçüyor.
 (26 Ağustos, `gece_v7a_kabul_verdikt.json`). §3.5.1'deki tablo ise **bugünkü karar zinciriyle**
 yeniden koşulmuş sayılardır. İkisi farklıdır ve **fark modelden değil zincirden gelir**:
 
-| kapı | terfi anı (26 Ağu · registry) | bugünkü zincir (28 Ağu) |
-|---|---|---|
-| K1 | 255/260 | 256/260 |
-| K2 | 15/255 = %5,88 | 6/256 = %2,34 |
-| K3 | 1/255 = %0,39 | 0/256 = %0,00 |
-| K4 | 4/255 = %1,57 | 3/256 = %1,17 |
-| K6 | 7/255 = %2,75 | 3/256 = %1,17 |
+| kapı | terfi anı (26 Ağu · registry) | özdenetim (28 Ağu) | **üretim kipi (1 Eyl · bugünkü zincir)** |
+|---|---|---|---|
+| K1 | 255/260 | 256/260 | **256/260** |
+| K2 | 15/255 = %5,88 | 6/256 = %2,34 | **6/256 = %2,34** |
+| K3 | 1/255 = %0,39 | 0/256 = %0,00 | **0/256 = %0,00** |
+| K4 | 4/255 = %1,57 | 3/256 = %1,17 | **2/256 = %0,78** |
+| K6 | 7/255 = %2,75 | 3/256 = %1,17 | **2/256 = %0,78** |
+
+28 Ağustos ile 1 Eylül arasındaki fark **T150 hedef bağlamasıdır**: varış noktası
+artık HB'den alınır, rota iki karede daha arena dışına taşmaz. Üç sütun da
+saklanır; rapor "bugünkü zincir" derken **en yenisini** (1 Eylül) kullanır.
 
 Aradaki iyileşme T184 (dönme körlüğü) ve T198 (şekil kapısı) düzeltmelerinin karar
 katmanındaki etkisidir. **Bu sayı model başarımı değil ZİNCİR başarımıdır** ve öyle
@@ -1116,17 +1122,26 @@ pymavlink `udp:` sunucusu ölü akrana yazıp hatayı **yutar**; router/Pixhawk 
 
 ### 3.8.3 Ölçülen gecikmeler
 
-**Uçtan uca kare gecikmesi** (36 gerçek 1280'lik kare, üretim zinciri birebir, gerçek
-`KararYayinci` + **UDP loopback** ACK; `scripts/olcum/169_fda_butce_olcumu.py`):
+**Uçtan uca kare gecikmesi** — **33 ölçülen** gerçek 1280'lik kare (+3 ısınma karesi
+ölçüm dışı), üretim zinciri birebir, gerçek `KararYayinci` + **UDP loopback** ACK.
+Tablonun tamamı **tek koşumdan** gelir: `results/fda_butce/olcum_20260901.json`
+(üreteç `scripts/olcum/169_fda_butce_olcumu.py`).
 
 | adım | p50 (ms) | p95 (ms) |
 |---|---:|---:|
-| önişleme | 4,9 | 6,2 |
-| çıkarım | 14,8 | 45,4 |
-| maske | 18,4 | 25,6 |
-| karar | 51,2 | 80,1 |
-| telsiz + ACK | **2,3** (düzeltme sonrası) | — |
-| **TOPLAM** | — | **113,2** |
+| önişleme | 5,0 | 7,1 |
+| çıkarım | 12,3 | 14,9 |
+| maske | 17,5 | 24,1 |
+| karar | 49,7 | 68,6 |
+| telsiz + ACK | 2,3 | 2,6 |
+| **TOPLAM** | **84,8** | **113,2** |
+
+> ⚠ **Bu tablo bir düzeltmenin ürünüdür.** İlk koşumda (D-382) `telsiz+ACK`
+> p50 **307,6 ms** ölçülmüştü ve toplam 395,7/457,8 ms görünüyordu. Bağımsız
+> çürütücü bunun bir ölçüm değil, `link.recv`'in **soket zaman aşımı sabiti**
+> olduğunu gösterdi (D-383); sabit düzeltilince kalem 2,3 ms'ye indi. Yukarıdaki
+> tablo düzeltme **sonrası** koşumdur; çürütülen tablo `REVIEW_LOG.md` D-382'de
+> üstü çizili olarak durur ve bu iki koşum **birbirine karıştırılmaz**.
 
 Model yükleme + soğuk başlangıç **2,64 s** — uçuş öncesidir, **bütçe dışı**.
 
@@ -1309,7 +1324,7 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 
 | değer | dosya | üreten | tarih |
 |---|---|---|---|
-| Uçtan uca p95 **113,2 ms** (36 gerçek kare, UDP loopback ACK) | `results/fda_butce/olcum_20260901.json` · `REVIEW_LOG.md` D-383 §1 | `scripts/olcum/169_fda_butce_olcumu.py` | 2026-09-01 |
+| Uçtan uca p50 **84,8** / p95 **113,2 ms** (33 ölçülen kare + 3 ısınma, UDP loopback ACK) | `results/fda_butce/olcum_20260901.json` · `REVIEW_LOG.md` D-383 §1 | `scripts/olcum/169_fda_butce_olcumu.py` | 2026-09-01 |
 | Adım kırılımı: önişleme 4,9/6,2 · çıkarım 14,8/45,4 · maske 18,4/25,6 · karar 51,2/80,1 (p50/p95 ms) | aynı dosya · `REVIEW_LOG.md` D-382 §2 | `169_fda_butce_olcumu.py` | 2026-09-01 |
 | Düzeltilen artefakt: telsiz+ACK 307,6 → **2,3 ms**; toplam 457,8 → 113,2 ms; gerçek loopback RTT 0,06 ms | `REVIEW_LOG.md` D-383 §1 | çürütücü reprosu + mimar doğrulaması | 2026-09-01 |
 | Model yükleme 2,64 s (bütçe dışı) | `results/fdr/GORUNTU_ISLEME_KANIT.md` §4.1b | `167_fdr_kanit_paketi.py` | 2026-09 |

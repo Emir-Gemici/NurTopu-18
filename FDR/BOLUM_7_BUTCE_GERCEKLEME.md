@@ -226,8 +226,7 @@ reddedilen aday da bir sonuçtur — ama bütçeye giren maliyeti aynıdır ve s
 
 | kalem | ölçülen | kayıt |
 |---|---|---|
-| v31 eğitimi — **v30'un bit-bit kopyasını** üretti (`seed` etkisiz kusuru) | **6,4 saat GPU** | D-138 / D-252 |
-| T128 + T128-B tekrar eğitimleri — cevap yine alınamadı; biri **defterde zaten yazılıydı** | **8,6 saat GPU** (1,18 + 1,04 + öncekiler) | D-252, D-253 |
+| `seed`/belirlenircilik sorusu — **v31 + T128 + T128-B**, cevap alınamadı (v31 v30'un bit-bit kopyasını üretti) | **8,6 saat GPU** toplam = 6,4 (v31) + 1,18 (T128) + 1,04 (T128-B) | D-138 / D-252 / **D-253** |
 | v8 aday eğitimi — 124 epoch, kabul zinciri **RED** | **6,19 saat GPU** | D-331 |
 
 **BEYAN GEREKLİ (insan): toplam GPU/elektrik gideri ve varsa bulut hesaplama faturası.**
@@ -316,7 +315,7 @@ kurulmuştur: fiyatlar rastgele hatırlanarak değil, tek bir kayıttan gelecekt
 | Gerçekleme oranı (%) | **HESAPLANAMAZ** — payı da paydası da yok |
 | Kalemleri belirlenmiş, fiyatı belirlenmemiş BOM | **Tablo A: 27 satır · Tablo D: 12 satır** — hazır |
 | Ölçülmüş üretim kaynağı | 8 plaka, 2 yazıcı, 2 malzeme; **1 plakanın** süresi ve gramajı |
-| Ölçülmüş ayni kaynak | **≈ 21,2 saat** GPU — sonuçsuz kalan ya da reddedilen üç eğitim kalemi (6,4 + 8,6 + 6,19); ikisi karşılıksız, biri (v8) *"RED"* hükmüyle sonuçlandı |
+| Ölçülmüş ayni kaynak | **≈ 14,8 saat** GPU — sonuçsuz kalan ya da reddedilen eğitim kalemleri (8,6 = 6,4 + 1,18 + 1,04 · ve 6,19); ikisi karşılıksız, biri (v8) *"RED"* hükmüyle sonuçlandı |
 | Ölçülmüş kütle | **yok** — 5 Eylül tartısıyla gelecek |
 
 Bu tablo bilerek çoğunlukla boştur. **Bir bütçe gerçekleme analizi, gerçekleşmemiş bir bütçeyi
