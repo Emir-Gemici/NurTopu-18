@@ -22,21 +22,46 @@ yarım kaldı.
 
 ## ⏳ YARIM KALAN — ilk iş bu
 
-**İki workflow arka planda koşuyordu; bittiyse sonuçları YERE İNMEMİŞ olabilir.**
+🔴 **İki workflow da oturum kapanınca DURDU** (12:30 sonrası, tamamlama kaydı yok).
+Aşağıdaki durum **ölçüldü**, tahmin değil.
 
-1. **`wf_5016c26d-8b5` — FDR bölümlerinin yönerge iskeletine taşınması**
-   (`FDR/BOLUM_1…7_*.md`, 7 ajan + 7 denetçi).
-   `git status` ile bak: `BOLUM_*.md` değişmişse **ajanlar yazmış demektir** —
-   diff'i oku, denetçi raporlarını `journal.jsonl`'dan çıkar, **içerik kaybı**
-   (artefakta bağlı satır silinmiş mi) kontrol et, sonra commit'le.
-   Sonuç dosyası: `subagents/workflows/wf_5016c26d-8b5/journal.jsonl`
+### 1. `wf_5016c26d-8b5` — FDR bölümlerinin yönerge iskeletine taşınması
 
-2. **`wf_b0f33806-4ba` — yazılım borcu kapatma** (worktree'lerde):
-   tek-yazar kilidi (`rpi_inference`, `iha_inis_yayinci`), T204 SIGTERM,
-   T205 ölü VideoWriter, hakem kanıt olay kümesi + YKS başlık çakışması,
-   kamera köprüsü beyaz liste, H1c damgası.
-   Worktree'ler: `.claude/worktrees/wf_b0f33806-4ba-*`. Değişiklikler orada
-   **commit'lenmemiş** bırakıldı; mimar birleştirecek.
+**7 bölümün 2'si yazıldı, 5'i hiç başlamadı. Yazılan 2'si DENETLENMEDİ.**
+
+Çalışma ağacında **commit'lenmemiş** duruyor:
+
+| dosya | değişim | durum |
+|---|---|---|
+| `FDR/BOLUM_1_OZET.md` | +581 satır | ⚠ ajan yazdı, **denetçi koşmadı** |
+| `FDR/BOLUM_7_BUTCE_GERCEKLEME.md` | +625 satır | ⚠ ajan yazdı, **denetçi koşmadı** |
+| `BOLUM_2, 3, 4, 5, 6` | — | hiç yazılmadı |
+
+⚠ **Bu iki dosyayı denetlemeden commit'leme.** Denetçi aşaması tam da şunu
+arayacaktı: (a) **içerik kaybı** — artefakta bağlı satır (dosya yolu, JSON,
+`D-NNN`, komut çıktısı) silindi mi, (b) başlıklar yönergeyle **birebir** mi,
+(c) **uydurma sayı** girdi mi, (d) **isim sızıntısı** var mı.
+`git diff -- FDR/BOLUM_1_OZET.md` ile başla.
+
+**Sürdürme:** `Workflow({scriptPath: ".../navitas-fdr-yonergeye-tasima-wf_5016c26d-8b5.js",
+resumeFromRunId: "wf_5016c26d-8b5"})` — biten ajanlar önbellekten döner, kalan
+5 bölüm canlı koşar. Ama önce yazılan 2 dosyaya karar ver: denetleyip tutmak mı,
+`git checkout -- FDR/BOLUM_1_OZET.md FDR/BOLUM_7_BUTCE_GERCEKLEME.md` ile geri
+alıp temiz koşmak mı. **Temiz koşmak daha güvenli** — yarım tur bırakılmış iş.
+
+### 2. `wf_b0f33806-4ba` — yazılım borcu kapatma
+
+**Worktree'lerin dördü de `baeca14`'te, yani hiçbir ajan yazmadı.**
+(`git worktree list` ile ölçüldü; 1 ve 2 numaralı worktree `locked`.)
+Kapatılacaklardı: tek-yazar kilidi (`rpi_inference`, `iha_inis_yayinci`),
+T204 SIGTERM, T205 ölü VideoWriter, hakem kanıt olay kümesi + YKS başlık
+çakışması, kamera köprüsü beyaz liste, H1c damgası.
+
+**Sürdürme:** `resumeFromRunId: "wf_b0f33806-4ba"` — ya da temiz yeniden başlat;
+kayıp iş yok. Kilitli worktree'ler önce çözülmeli (`git worktree unlock`).
+
+⚠ Bu borçların **hiçbiri cumartesiyi tıkamıyor** — hepsi 17 Eylül mühründen
+önce kapanması gereken kalemler.
 
 ## Sonraki adımlar (sırayla)
 
