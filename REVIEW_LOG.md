@@ -28412,7 +28412,7 @@ blogunu** tasir.
 **Yordam — iddia/kanit ayrimi.** Her sayisal iddianin yanina uretildigi artefakt
 yazildi. Olculmemis olan **"OLCULEMEDI"** ya da **"BEYAN GEREKLI"** diye
 isaretlendi; bos birakilmadi, tahmin yazilmadi. Bu iki etiketin tam listesi
-`FDR/ACIK_KALEMLER_HAM.md` (**177 satir**, `scripts/fdr_acik_kalem_cikar.py` ile
+`FDR/ACIK_KALEMLER_HAM.md` (~~177~~ -> **197 satir**, D-415 duzeltmesi; `scripts/fdr_acik_kalem_cikar.py` ile
 **yeniden uretilebilir**) ve elle ayiklanmis hali `FDR/ACIK_KALEMLER.md`
 (**25 kalem**: 8 saha · 5 ucus · 3 kapanmaz sinir · 6 insan beyani · 3 yazilim damga/kilit eksigi) icindedir. Son uc kalem bu turda eklendi (D-411 ve D-412).
 
@@ -28507,8 +28507,8 @@ Diger icerik duzeltmeleri, hepsi artefakta bakilarak:
 #### 4. Neyin duzeltilmedigi
 
 30 KUCUK bulgu (bicim, tekrar eden cumle, tablo hizasi) **kapatilmadi** ve
-kapatilmis gibi yazilmadi; PDF dizgisi turunda ele alinacaktir. Raporun **177**
-"BEYAN GEREKLI / OLCULEMEDI" satiri da **acik durmaktadir** — bunlar kusur degil,
+kapatilmis gibi yazilmadi; PDF dizgisi turunda ele alinacaktir. Raporun ~~177~~ **197**
+"BEYAN GEREKLI / OLCULEMEDI" satiri (D-415) da **acik durmaktadir** — bunlar kusur degil,
 insan girdisi bekleyen alanlardir.
 
 #### 5. Kapi
@@ -28658,3 +28658,66 @@ calisiyor. Birim testi (6 test) disinda bagimsiz bir kanit.
 **Bulunan kusur (acik).** Ekran basligindaki "HAZIRLIK" kronometresinin etiketi
 pencere basligiyla cakisiyor: "...HAKEM EKRANI**ZIRLIK** ... / 15". Hakemin
 gordugu ekranda kozmetik hata. Kayit acik; duzeltilmedi.
+
+### D-415 — CURUTUCU TURU BENI VURDU: bugun yazdigim cikarici YAZIM KORU cikti, 188'i 177'ye "duzeltmistim" — yanlis yone
+
+**Kusur.** D-411'de `scripts/fdr_acik_kalem_cikar.py` yazildi ve acik kalem sayisi
+elle sayilan **188**'den olculen **177**'ye "duzeltildi". Duzeltme **yanlis yondeydi**:
+betigin `ETIKETLER` demeti TAM ESLESME yapiyordu —
+
+    ETIKETLER = ("BEYAN GEREKLİ", "ÖLÇÜLEMEDİ")     # yalniz Turkce yazim
+
+`FDR/BOLUM_3_SISTEM_SPESIFIKASYONLARI.md` icinde etiket **ASCII** yazilmis
+11 satir var ("BEYAN GEREKLI (insan)"). Betik onlari **gormedi**. Yani rapor
+kendi "her sayi bir artefakttan gelir" kuralini uygularken, dogru olan elle
+sayimi yanlis olan bir olcumle degistirdi.
+
+**Nasil bulundu.** Kullanicinin sorusu uzerine kosulan cok ajanli olcum turunda,
+FDR boyutunun **curutucusu** buldu. Kanit zinciri kendi ciktisindaydi:
+`git log -S "188 satır"` ACIK_KALEMLER.md'nin eskiden 188 dedigini gosteriyor,
+betigin **kendi docstring'i de hala 188 yaziyordu** — betik kendi kaynagiyla
+celisiyordu ve bunu kimse okumamisti.
+
+**Duzeltme.** Arama artik yazim farkina bakmiyor: satir once ASCII'ye katlanip
+buyutuluyor (`KATLAMA` tablosu: İIıĞğÜüŞşÖöÇç -> IIiGgUuSsOoCc), sonra
+ASCII etiketler araniyor. Gerekce **koda yazildi** ki bir daha daraltilmasin.
+
+**Yeni olcum: 197.** (188 degil — 197, cunku bu turda raporun kendisine yeni
+BEYAN GEREKLI satirlari eklendi: rol cakismasi, Ubuntu host, tasiyici kurtarma
+pini.) `--dogrula` artik cikis 0 veriyor.
+
+**Ders.** Elle sayimin yerine olcum koymak dogru; ama **olcum aletinin kendisi de
+olculur** (D-370). Bu turda alet olculmedi — mutasyon kontrolu yapilmadi, betigin
+docstring'i ile ciktisi arasindaki celiski okunmadi. Bir siradaki uretecte once
+"bu betik bildigim bir satiri buluyor mu" kapisi yazilacak.
+
+#### Ayni turda kapatilan diger curutucu bulgulari
+
+| bulgu | gercek | durum |
+|---|---|---|
+| B6 §6.9 hala "K0-K6 6/6" diyor (B1 7/7'ye cekilmisti) | artefaktin `gecti` alani **7 anahtar** | **duzeltildi** |
+| Saha plani §1.9 "tam suit 1875 OK" | gercek **1896** (D-412 sonrasi) | **duzeltildi** |
+| Saha plani §1.11 "zorunlu 7 + oneri 4" | kartta **12 zorunlu + 2 oneri** (D-413 sonrasi) | **duzeltildi** |
+| Saha plani §1.12 "413 kayit · 1827 test" | **420 kayit · 1896 test** | **duzeltildi** |
+| Defter sayaci FDR'de 418/412 | **420 / 414** | **duzeltildi** |
+| `--dogrula` BAYAT donuyordu (177 vs 178) | belgeler duzenlendikce uretec bayatliyor | **tazelendi** |
+
+#### Kapatilmayan, ama KAYDA GECEN curutucu bulgulari
+
+1. **Genel kapinin artefakti bayat.** `codes/test_rota_sentetik.py` `tests/`
+   altinda **degildir**; `grep -c test_rota_sentetik tam_suit.txt` = **0**. Yani
+   1896'lik suit genel kapiyi **kapsamaz**. Kapi bu turda elle kosuldu ve gecti
+   (15/15 · 15/15) ama `cuma_kontrol.txt` artefakti eski koşumdur. Cuma aksami
+   tekrar kosumunda ikisi birlikte tazelenecek.
+2. **Kuru kosu artefakti 2 Eylul 23:59'dan.** Sonrasinda `saha_baslat.py`,
+   `hakem_kaydi.py`, `yks_gui.py` degisti. Kart yine de ✅ isaretliyor —
+   **OLCULEMEDI, GECTI degil**. Cuma yeniden kosulacak.
+3. **Saha bellegi bayat.** `O:
+avitas_bellek` MANIFEST'i HEAD `6c70dd7`
+   gosteriyor; HEAD artik ilerledi. Bellekteki uc belge (cuma karti, runbook,
+   saha plani) repo surumunden **farkli** — ve bugun uclu de degisti.
+   **Cuma `bellek_hazirla.py` YENIDEN kosulmadan USB'ye kopyalanmayacak.**
+4. **Dort kol yapisal olarak esdeger degil** (Bolum 5 §4.2'de yazili, yuzdeye
+   yansimamisti): `Plaka1_Kol_1-2` 0,20 mm / %15 grid / 2 duvar · `Plaka2_Kol_3-4`
+   0,16 mm / %40 gyroid / 6 duvar. Fark mukavemet yonunde ve gerekcesi kayitli
+   degil. Montajda hangi kolun hangi plakadan geldigi **isaretlenecek**.

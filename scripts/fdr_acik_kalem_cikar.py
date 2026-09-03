@@ -5,7 +5,8 @@ bir sayıdır ("188 satır"). Elle tutulan bir liste bölümler değiştikçe **
 bayatlar** ve rapor kendi kuralını ihlal eder. Bu betik listeyi `FDR/BOLUM_*.md`
 dosyalarından **yeniden üretir**, böylece sayı ölçüm olur.
 
-Ne aranır: `BEYAN GEREKLİ` ya da `ÖLÇÜLEMEDİ` geçen her satır. Bu iki etiketin
+Ne aranır: `BEYAN GEREKLİ` ya da `ÖLÇÜLEMEDİ` geçen her satır —
+**yazım farkına bakmadan** (ASCII `BEYAN GEREKLI` / `OLCULEMEDI` dâhil). Bu iki etiketin
 sözleşmesi Bölüm 1 §-kurallarındadır:
   BEYAN GEREKLİ  → insan girdisi bekler (isim, fiyat, tartı)
   ÖLÇÜLEMEDİ     → ölçüm bekler; "geçti" sayılmaz
@@ -25,7 +26,18 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 KOK = Path(__file__).resolve().parents[1]
 FDR = KOK / "FDR"
 HEDEF = FDR / "ACIK_KALEMLER_HAM.md"
-ETIKETLER = ("BEYAN GEREKLİ", "ÖLÇÜLEMEDİ")
+# ⚠ TAM ESLESME YETMEZ (D-415). Bolumlerde etiketin hem Turkce hem ASCII
+# yazimi var: "BEYAN GEREKLİ" ve "BEYAN GEREKLI", "ÖLÇÜLEMEDİ" ve "OLCULEMEDI".
+# Ilk surum yalniz Turkce yazimi ariyordu ve BOLUM_3'teki 11 ASCII satiri
+# GORMUYORDU; sayim 177 cikip elle sayilan 188'i "duzeltti" — yanlis yonde.
+# Cozum: satir once ASCII'ye katlanip aranir.
+ETIKETLER = ("BEYAN GEREKLI", "OLCULEMEDI")
+KATLAMA = str.maketrans("İIıĞğÜüŞşÖöÇç", "IIiGgUuSsOoCc")
+
+
+def _katla(metin):
+    """Turkce aksanli harfleri ASCII'ye katlar ve buyutur (arama icin)."""
+    return metin.translate(KATLAMA).upper()
 
 BASLIK = """# FDR — AÇIK KALEMLER (ham çıkarım)
 
@@ -43,7 +55,8 @@ def uret():
         vurgular = []
         for i, satir in enumerate(
                 bolum.read_text(encoding="utf-8").splitlines(), 1):
-            if any(e in satir for e in ETIKETLER):
+            katli = _katla(satir)
+            if any(e in katli for e in ETIKETLER):
                 # satır başındaki markdown süsü atılır, içerik korunur
                 temiz = satir.strip().lstrip("|*-># ").strip()
                 vurgular.append(f"- `:{i}` {temiz}")

@@ -69,7 +69,7 @@ bayrağıyla tanır.
 | Uçtan uca kare gecikmesi | **p95 0,113 s** (33 ölçülen gerçek kare (+3 ısınma), üretim zinciri + gerçek yayıncı + ACK) | UDP loopback |
 | Gereken kare hızı (türetildi, tahmin edilmedi) | `1/(5·p)` → sentetik **0,20 FPS** · gerçek sızıntısız **0,58 FPS** · en kötü uçuş **0,61 FPS** | iki ayrı çerçeve |
 | Saha zinciri kuru koşusu (10 halka) | GEÇTİ 9 · DÜŞTÜ 0 · **SAHİPSİZ 1** (motor) · çıkış kodu 1 | 2 Eylül 2026 |
-| Kanıt defteri | **418 kayıt** (`REVIEW_LOG.md`), çürütülmüş kendi iddialarımız dâhil | — |
+| Kanıt defteri | **420 kayıt** (`REVIEW_LOG.md`), çürütülmüş kendi iddialarımız dâhil | — |
 
 Gecikme sayısının hikâyesi, sayının kendisinden önemlidir: ilk ölçümde toplam p95
 **0,458 s** çıkmıştı ve baskın kalem "telsiz + ACK ≈ 308 ms" görünüyordu. Bağımsız
@@ -146,7 +146,7 @@ bu rapor onları bugün ölçülmüş gibi göstermez.
 ## 1.6 Bu raporun okuma sözleşmesi
 
 Bu rapor dört kurala uyar ve bu kurallar rapor için icat edilmemiştir; projenin
-418 kayıtlık ölçüm defterinden gelir:
+420 kayıtlık ölçüm defterinden gelir:
 
 1. **Her sayı bir artefakttan gelir.** Her bölümün sonundaki *Kanıt dizini*, geçen her sayının dosya yolunu, onu üreten betiği ve ölçüm tarihini verir.
 2. **ÖLÇÜLEMEDİ ≠ GEÇTİ.** Koşulmamış kapı "sorun çıkmadı" diye yazılmaz; paydası olmayan oran rapora girmez.
@@ -166,7 +166,7 @@ güçlü iddiası bir yüzde değil, o tablonun **var olmasıdır**.
 | Genel kapı **15/15 · 15/15 · 15/15**, RC=0 | konsol çıktısı (bu bölümün yazımı sırasında koşuldu) | `O:\navitas-local-train\venv\Scripts\python.exe -B codes/test_rota_sentetik.py` | **2026-09-03** |
 | Tam süit **1896 test OK (skipped=3)**, 390,534 s | `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt` | `O:\navitas-local-train\venv\Scripts\python.exe -B -m unittest discover -s tests -q` | **2026-09-03** |
 | **155** test dosyası (`tests/*.py`) | `tests/` | `ls tests/*.py \| wc -l` | 2026-09-03 |
-| Kanıt defteri **418 kayıt** (`### D-` başlığı; 412 ayrık numara) | `REVIEW_LOG.md` | `grep -o "^### D-[0-9]*" REVIEW_LOG.md \| wc -l` | 2026-09-03 |
+| Kanıt defteri **420 kayıt** (`### D-` başlığı; 414 ayrık numara) | `REVIEW_LOG.md` | `grep -o "^### D-[0-9]*" REVIEW_LOG.md \| wc -l` | 2026-09-03 |
 | K0–K6 kabul kapıları **7/7** (K0…K6 yedi kapıdır; artefaktta `gecti` yedi anahtar taşır); K1 **255/260**, K5 **0**, K6 **2,75** (n=260) | `scripts/olcum/results/t63/gece_v7a_kabul_verdikt.json` → `results/fdr/GORUNTU_ISLEME_KANIT.md` §2 | `scripts/olcum/65_kabul_denetcisi.py`; belge üreteci `scripts/olcum/167_fdr_kanit_paketi.py` | 2026-08-26 (belge 2026-09-01) |
 | K7 yayınlanan şerit doğruluğu **84/85 (%98,8)** | `REVIEW_LOG.md` D-386 (kabul koşusu 65, üretim kipi) | `scripts/olcum/65_kabul_denetcisi.py` | 2026-09-01 |
 | Uçtan uca kare gecikmesi **p95 0,113 s**; düzeltme öncesi 0,458 s ve "308 ms" soket sabiti | `results/fda_butce/olcum_20260901.json` · ön kayıt `results/fda_butce/ON_KAYIT.md` | `scripts/olcum/169_fda_butce_olcumu.py`; düzeltme kaydı D-383 | 2026-09-01 |

@@ -1,6 +1,6 @@
 # FDR — AÇIK KALEMLER (kim · ne zaman · nasıl kapanır)
 
-> Taslakta **177 satır** "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
+> Taslakta **197 satır** "BEYAN GEREKLİ" ya da "ÖLÇÜLEMEDİ" ile işaretli
 > (ham liste: `ACIK_KALEMLER_HAM.md`). Bunlar eksiklik değil, **dürüstlük
 > işaretidir**: rapor ölçülmemiş bir şeyi ölçülmüş gibi yazmaz. Aşağıda
 > sahibine ve kapanma tarihine göre gruplanmış hâli var.

@@ -96,8 +96,8 @@ neye bakarak karar verdiğini** de tanımlar. Dört kural bağlayıcıdır:
 4. **Kanıt silinmez.** Yanlış çıkan iddia defterden çıkarılmaz; üstü çizilip düzeltmesine işaret
    verilir (D-373). Bu bölümdeki §4.4 bu kuralın uygulanmasıdır.
 
-Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **418 kayıt başlığı / 412 benzersiz kayıt no**
-(ölçüm: `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 418; `... | sort -u | wc -l` → 412; 2026-09-03).
+Kanıt defteri: `REVIEW_LOG.md` — bugün itibarıyla **420 kayıt başlığı / 414 benzersiz kayıt no**
+(ölçüm: `grep -cE "^### D-[0-9]+" REVIEW_LOG.md` → 420; `... | sort -u | wc -l` → 414; 2026-09-03).
 
 ---
 

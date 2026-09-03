@@ -15,22 +15,24 @@
 - `:192` BEYAN GEREKLİ (insan):** RPi HQ kamera gerçek yatay görüş açısı (`kamera_dogrula` ölçümü); rapordaki 55–63° aralığı lens beyanından türetilmiş **tahmindir**.
 - `:193` BEYAN GEREKLİ (insan):** Gerçek SiK 433 MHz hattında gidiş-dönüş süresi ve paket kayıp oranı.
 
-## BOLUM_2_ORGANIZASYON_VE_TAKVIM.md  (13 satır)
+## BOLUM_2_ORGANIZASYON_VE_TAKVIM.md  (15 satır)
+- `:9` Ölçülmemiş bir şey "ölçülemedi" diye yazılır, tahmin edilmez. Geçmeyen bir kapı
 - `:10` "geçmedi" diye yazılır (§4.4). Henüz atanmamış insan görevleri **BEYAN GEREKLİ (insan)**
 - `:54` BEYAN GEREKLİ (insan): rol → isim ataması.** Bu tablo bilerek isimsizdir. Kaptan, sekiz rolü
 - `:57` BEYAN GEREKLİ (insan): şartname §4 kontenjan ve oran kontrolü** — toplam üye sayısının 6–10
 - `:59` BEYAN GEREKLİ (insan): danışman öğretim üyesi bilgisi.**
-- `:85` 2. **ÖLÇÜLEMEDİ ≠ GEÇTİ.** Ölçülemeyen şey geçmiş sayılmaz; paydası olmayan oran rapora girmez.
-- `:205` Hızlandırma | TensorRT `.engine` (Jetson'da derlenir) | **Nano'da ÖLÇÜLEMEDİ** — venv38'de `tensorrt` modülü yok (JetPack 4.6 bağı Py3.6). PT/ONNX ile uçulur | `jetson_paket/JETSON_NANO_KURULUM.md` §0 |
-- `:324` BEYAN GEREKLİ (insan) — bu bölümde kapatılacak boşluklar
-- `:326` 1. **BEYAN GEREKLİ (insan): rol → isim ataması** (8 rol; ad-soyad, öğrenim düzeyi, yedek rol).
-- `:327` 2. **BEYAN GEREKLİ (insan): takım üye sayısı ve şartname §4 oran kontrolü** (6–10 kişi; lisansüstü oranı).
-- `:328` 3. **BEYAN GEREKLİ (insan): danışman öğretim üyesi** bilgisi.
-- `:329` 4. **BEYAN GEREKLİ (insan): takım künyesinin KYS teyidi** (ID 997827 / başvuru 5329027).
-- `:330` 5. **BEYAN GEREKLİ (insan): 5 Eylül kutu açılış teyidi** — §4.1'deki gerçek künye satırlarının
-- `:332` 6. **BEYAN GEREKLİ (insan): 21 Eylül Adıyaman uçuş alanı izni** ve alan koordinatları.
+- `:69` yürütebilir. **BEYAN GEREKLİ (insan): uçuş günü için bu iki rolden birine
+- `:93` 2. **ÖLÇÜLEMEDİ ≠ GEÇTİ.** Ölçülemeyen şey geçmiş sayılmaz; paydası olmayan oran rapora girmez.
+- `:213` Hızlandırma | TensorRT `.engine` (Jetson'da derlenir) | **Nano'da ÖLÇÜLEMEDİ** — venv38'de `tensorrt` modülü yok (JetPack 4.6 bağı Py3.6). PT/ONNX ile uçulur | `jetson_paket/JETSON_NANO_KURULUM.md` §0 |
+- `:332` BEYAN GEREKLİ (insan) — bu bölümde kapatılacak boşluklar
+- `:334` 1. **BEYAN GEREKLİ (insan): rol → isim ataması** (8 rol; ad-soyad, öğrenim düzeyi, yedek rol).
+- `:335` 2. **BEYAN GEREKLİ (insan): takım üye sayısı ve şartname §4 oran kontrolü** (6–10 kişi; lisansüstü oranı).
+- `:336` 3. **BEYAN GEREKLİ (insan): danışman öğretim üyesi** bilgisi.
+- `:337` 4. **BEYAN GEREKLİ (insan): takım künyesinin KYS teyidi** (ID 997827 / başvuru 5329027).
+- `:338` 5. **BEYAN GEREKLİ (insan): 5 Eylül kutu açılış teyidi** — §4.1'deki gerçek künye satırlarının
+- `:340` 6. **BEYAN GEREKLİ (insan): 21 Eylül Adıyaman uçuş alanı izni** ve alan koordinatları.
 
-## BOLUM_3_SISTEM_SPESIFIKASYONLARI.md  (25 satır)
+## BOLUM_3_SISTEM_SPESIFIKASYONLARI.md  (37 satır)
 - `:18` Ölçülmeyen "ölçülemedi"dir** | Ölçülmemiş hiçbir büyüklük "sorun çıkmadı" diye yazılmaz. `ÖLÇÜLEMEDİ ≠ GEÇTİ` bu projede bir slogan değil, kabul denetçisinin kod satırıdır: alt betik çökerse kapı `OLCULEMEDI` döner ve terfiyi **bloklar** (`scripts/olcum/65_kabul_denetcisi.py:456, 608, 636, 664`). |
 - `:21` Emin olunmayan "DOĞRULANACAK"tır** | Kutudan çıkmamış donanımın hiçbir değeri ölçüm gibi sunulmaz; **BEYAN GEREKLİ (insan)** satırı bırakılır (§3.10). |
 - `:213` BEYAN GEREKLİ (insan):** Sabit kanat İHA gövdesi, mancınık, paraşüt podu ve İKA şasisinin
@@ -43,6 +45,7 @@
 - `:298` koşulacaktır (`FAZ_B_GUN_PLANI.md` §1). `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
 - `:319` ÖLÇÜLEMEDİ** — bu sayılar seri köprü ölçümüdür, RF ölçümü değildir.
 - `:815` BEYAN GEREKLİ (insan):** Arena benzeri gerçek saha görüntüsü (kırmızı H brandası + moloz +
+- `:845` ölçüm alt betiği çöktü | kapı `OLCULEMEDI` → terfi **bloklanır** | `65_kabul_denetcisi.py` |
 - `:917` ⚠ Gazebo **fiziksel temas** koşusu geliştirme makinesinde **ÖLÇÜLEMEDİ** (gz yok);
 - `:918` Gazebo'lu makinede koşulacaktır. `ÖLÇÜLEMEDİ ≠ GEÇTİ`.
 - `:1022` `.engine` bu kart için **ÖLÇÜLEMEDİ** sayılır; **PT/ONNX ile uçulur.**
@@ -55,12 +58,27 @@
 - `:1240` A2 | **Gazebo fiziksel temas koşusu** (§7.3 İKA yarısı) | Geliştirme makinesinde `gz` yok — **ÖLÇÜLEMEDİ** |
 - `:1241` A3 | **TensorRT `.engine` denkliği** | Nano venv38'de `tensorrt` modülü yok; `.engine` bu kart için **ÖLÇÜLEMEDİ** |
 - `:1246` 3.10.2 BEYAN GEREKLİ (insan) — bu bölüme eklenecek ölçümler
+- `:1249` BEYAN GEREKLI (insan): Kalkis kutlesi, agirlik merkezi ve her parcanin gercek
+- `:1252` BEYAN GEREKLI (insan): PM02 telemetrisinden okunan asili kalma akimi, tepe akim
+- `:1255` BEYAN GEREKLI (insan): Kamera yatay FOV'unun `kamera_dogrula` ile OLCULEN degeri
+- `:1259` BEYAN GEREKLI (insan): Gercek Pixhawk 6C uzerinde `scripts/mavlink_dogrula.py`
+- `:1263` BEYAN GEREKLI (insan): Gercek SiK 433 MHz cifti uzerinde `scripts/sik_rf_olc.py`
+- `:1266` BEYAN GEREKLI (insan): Jetson Nano 4GB uzerinde `scripts/jetson_fps.py` p50/p95
+- `:1269` BEYAN GEREKLI (insan): `torch.cuda.is_available()` sonucu ve secilen cikarim
+- `:1272` BEYAN GEREKLI (insan): ArduCopter surum numarasi, kalibrasyon ciktilari (accel,
+- `:1276` BEYAN GEREKLI (insan): Adiyaman test alaninin gercek kose koordinatlari
+- `:1279` BEYAN GEREKLI (insan): Arena benzeri gercek saha goruntusu (kirmizi H brandasi +
+- `:1283` BEYAN GEREKLI (insan): Yarisma gunu araci (sabit kanat + mancinik + parasut) ve
 - `:1294` 2. **`ÖLÇÜLEMEDİ ≠ GEÇTİ`.** Ölçülemeyen şey geçmiş sayılmaz; paydası olmayan oran rapora
 
-## BOLUM_4_TEST_FAALIYETLERI.md  (10 satır)
+## BOLUM_4_TEST_FAALIYETLERI.md  (14 satır)
+- `:105` mutasyon artık `exit 1`**'dir. `OLCULEMEDI != GECTI` kuralı çıkış kodu düzeyine
+- `:160` `_dtype_dogrula`; tutmazsa betik `OLCULEMEDI` deyip `exit 1`). Gerçek ölçüm
 - `:194` 2 | `ÖLÇÜLEMEDİ ≠ GEÇTİ` | §6 Kalan test borcu |
 - `:356` ⚠ **K5 alt ölçümü ÖLÇÜLEMEDİ:** `K5_figur_bilgi_px = null`,
+- `:357` `K5_figur_bilgi_durum = "OLCULEMEDI"`. Bu satır verdikt JSON'ında böyle durur ve
 - `:452` `1 / (5 × 0,326) = 0,61 FPS`. **Saha `p`'si ÖLÇÜLEMEDİ** — gerçek arena
+- `:680` 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
 - `:731` 6.4 BEYAN GEREKLİ (insan)
 - `:733` 1. **BEYAN GEREKLİ (insan):** 5 Eylül kutu açılışında donanım künyesinin fiziksel
 - `:736` 2. **BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri
@@ -117,7 +135,7 @@
 - `:526` 13. **BEYAN GEREKLİ (insan): FEM yük/mesnet/malzeme tanımı ve sonuç değerleri** (§10.4).
 - `:527` 14. **BEYAN GEREKLİ (insan): final aracı üretim takvimi ve kaynakları** (§11).
 
-## BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md  (24 satır)
+## BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md  (25 satır)
 - `:22` ÖLÇÜLEMEDİ** | Hüküm repo dışındadır (uçuş kontrolcüsü, gerçek telsiz, gerçek arena) ya da ölçüm için gereken donanım/veri henüz yoktur. **ÖLÇÜLEMEDİ, GEÇTİ demek değildir.** | ölçüm tarihi + neyin eksik olduğu |
 - `:60` §2.2.2** (R2) | "Fırlatma sonrası İHA, tam otonom uçuş moduna geçerek… uçuşunu gerçekleştirecektir" | Uçuş kontrolcüsü: ArduCopter/ArduPlane. Repoda **parametre ve görev şablonu** olarak izlenir: `config/pixhawk/arducopter_fda.param` (31 parametre, her satırda gerekçe), `config/pixhawk/fda_gorev.waypoints` (QGC WPL 110: TAKEOFF 32 m → tek pas → LOITER 60 s → LAND) | `tests/test_faz_b_pixhawk_sablon.py` (12 test — dosya biçimi, kare geometrisi, süre bütçesi kilitli). **Gerçek uçuşta AUTO kipi hiç koşmadı** | **ÖLÇÜLEMEDİ** (şablon KANITLI_TEST) |
 - `:68` §2.2.4** (R9) | "Paraşüt açma komutu otonom… manuel tetikleme ile de… manuel ise ceza" | Yazılım yarısı: YKS iki adımlı teyit → ACK'li tekrar → İHA'da `comms/iha_komut_alici.py` komutu Pixhawk'a `COMMAND_LONG` ile aktarır ve **yalnız aktarım başarılıysa** ACK döner. Ceza −50 kaydı YKS'de | `tests/test_faz_b_iha_komut_alici.py` (22 test), `tests/test_p9abc_yks.py` (13), `tests/test_yks_gui_komut_durustlugu.py` (6). **Otonom tetik** (`CHUTE_*` parametreleri, mekanik açma) repo dışıdır ve **hiç ölçülmedi** | **KANITLI_TEST** (manuel zincir) · **ÖLÇÜLEMEDİ** (otonom) |
@@ -131,6 +149,7 @@
 - `:145` A9** | §2.2.6 / §7 | **Gazebo fiziksel temas koşusu ÖLÇÜLEMEDİ** (bu geliştirme makinesinde `gz` yok) | 2026-09-02 (D-391) | Ortam eksik | Gazebo'lu makinede prova koşusu |
 - `:207` R17 (alan ihlali ölçülemedi) | ÖLÇÜLEMEDİ | **yazılım tarafı KAPANDI** 2026-08-27 | D-307, `tests/test_t162_alan_ihlali.py` |
 - `:222` Ve tersinden: **ÖLÇÜLEMEDİ ≠ GEÇTİ.** FDA süre bütçesi ölçümünde *"600 saniyeye
+- `:224` kamera yakalama ölçülemedi ve toplama sıfır olarak girmedi. Bunu bir nöbetçi
 - `:225` test kilitler: ÖLÇÜLEMEDİ listesi boşsa test düşer.
 - `:237` ÖLÇÜLEMEDİ** | 2 | %4,4 |
 - `:242` 1. **Sayımda satırın *baskın* durumu alınmıştır.** Birçok satır iki yön taşır — §2.2.4'ün manuel paraşüt zinciri KANITLI_TEST, otonom tetiği ÖLÇÜLEMEDİ; §6.2 alan ihlalinin yazılım yarısı KANITLI_TEST, Pixhawk geofence'i ÖLÇÜLEMEDİ. İkinci yön her satırın kendi hücresinde yazılıdır ve bu sayım onu gizlemez.
@@ -143,7 +162,7 @@
 - `:305` BEYAN GEREKLİ (insan):** Pixhawk üzerinde geofence (`FENCE_*`) ve failsafe parametrelerinin **gerçek donanımda** doğrulanmış hâli; 5 Eylül sonrası `config/pixhawk/arducopter_fda_20260905.param` olarak repoya alınacak.
 - `:306` BEYAN GEREKLİ (insan):** İlk hover, Loiter/Auto ve tam prova uçuş logları (`VIBE`, EKF, pusula ofseti, IHA_LANDED damgası) — 6 Eylül ve sonrası.
 
-## BOLUM_7_BUTCE_GERCEKLEME.md  (51 satır)
+## BOLUM_7_BUTCE_GERCEKLEME.md  (52 satır)
 - `:6` tedarik durumu) artefaktından çıkarılmış; **parasal sütunların tamamı BEYAN GEREKLİ (insan)**
 - `:41` BEYAN GEREKLİ (insan): takımın maddi destek başvurusu yapıp yapmadığı, onaylanan toplam bütçe
 - `:72` A1 | Kol | `Drone_Arm` (ABS) | 4 | Ü | FDM 3B baskı — bkz. Bölüm 5 §4.1 (kol 1–2 ve 3–4 **farklı reçete**) | **ÖLÇÜLEMEDİ** (G-code yok) | BEYAN GEREKLİ | BEYAN GEREKLİ (5 Eyl tartı) | Üretildi | BEYAN GEREKLİ |
@@ -189,6 +208,7 @@
 - `:232` BEYAN GEREKLİ (insan): toplam GPU/elektrik gideri ve varsa bulut hesaplama faturası.**
 - `:233` BEYAN GEREKLİ (insan): insan işgücü (kişi-saat) dökümü** — takım üyeleri rol bazında.
 - `:254` BEYAN GEREKLİ (insan): E1–E10 için ayrılan bütçe ve tedarik takvimi.** Bu on satırın toplamı,
+- `:259` Bölüm 5 §8.3 ve §10.5'te ölçülemedi olarak işaretlenmiş üç kapı, düşerse **para gerektirir**.
 - `:261` BEYAN GEREKLİ, ama **kalemler bugünden bellidir** — sahada karar verilecek bir şey kalmasın diye.
 - `:303` BEYAN GEREKLİ (insan): bu kaydın tutulacağı dosya/konum ve sorumlu rol** (öneri: kaptan,
 - `:312` Onaylanan toplam bütçe | **BEYAN GEREKLİ (insan)** |
@@ -198,4 +218,4 @@
 
 ---
 
-**TOPLAM: 177 açık kalem satırı** (2 etiket: BEYAN GEREKLİ, ÖLÇÜLEMEDİ).
+**TOPLAM: 197 açık kalem satırı** (2 etiket: BEYAN GEREKLI, OLCULEMEDI).
