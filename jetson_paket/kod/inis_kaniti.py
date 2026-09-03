@@ -324,6 +324,18 @@ def _batarya_voltu(mesaj):
     return mv / MILIMETRE_BIR_METRE
 
 
+def _batarya_yuzdesi(mesaj):
+    """SYS_STATUS kalan pil yüzdesini doğrula; -1/bilinmeyeni yayımlama."""
+    try:
+        yuzde = getattr(mesaj, "battery_remaining", None)
+    except Exception:
+        return None
+    if (isinstance(yuzde, bool) or not isinstance(yuzde, int)
+            or not 0 <= yuzde <= 100):
+        return None
+    return yuzde
+
+
 def _ucus_modu(mesaj):
     try:
         mod = _mavutil_al().mode_string_v10(mesaj)
@@ -485,6 +497,7 @@ class BagilIrtifaOkuyucu:
         self._son_pixhawk_canli = None
         self._son_heartbeat_gelis_monotonic = None
         self._son_batarya = None
+        self._son_batarya_yuzde = None
         self._son_sys_status_gelis_monotonic = None
 
     def _gecersiz_kil(self):
@@ -503,6 +516,7 @@ class BagilIrtifaOkuyucu:
             self._son_pixhawk_canli = None
             self._son_heartbeat_gelis_monotonic = None
             self._son_batarya = None
+            self._son_batarya_yuzde = None
             self._son_sys_status_gelis_monotonic = None
             # Bağlantı/okuyucu yaşam döngüsü bittiğinde uzak araç saati de yeni
             # bir çağdadır. Eski uptime'ı korumak yeniden bağlantıdan sonra
@@ -539,6 +553,7 @@ class BagilIrtifaOkuyucu:
     def _sys_status_gecersiz_kil(self):
         with self._snapshot_kilidi:
             self._son_batarya = None
+            self._son_batarya_yuzde = None
             self._son_sys_status_gelis_monotonic = None
 
     def _mesaj_isle(self, mesaj, gelis):
@@ -635,11 +650,16 @@ class BagilIrtifaOkuyucu:
 
         if tip == MESAJ_SYS_STATUS:
             batarya = _batarya_voltu(mesaj)
-            if batarya is None:
+            batarya_yuzde = _batarya_yuzdesi(mesaj)
+            if batarya is None and batarya_yuzde is None:
                 self._sys_status_gecersiz_kil()
                 return False
             with self._snapshot_kilidi:
+                # SYS_STATUS bir snapshot'tır: bu pakette geçerli olmayan
+                # alanın eski değeri taşınmaz. Voltaj ve yüzde birbirinden
+                # bağımsızdır; Pixhawk yalnız birini sağlasa diğeri uydurulmaz.
                 self._son_batarya = batarya
+                self._son_batarya_yuzde = batarya_yuzde
                 self._son_sys_status_gelis_monotonic = gelis
             return True
 
@@ -793,9 +813,10 @@ class BagilIrtifaOkuyucu:
 
         Dönüş alanları: ``lat``, ``lon``, ``alt``, ``hiz``, ``yon``
         (GLOBAL_POSITION_INT), ``gps_fix``/``uydu`` (GPS_RAW_INT), ``bat``
-        (SYS_STATUS) ve ``armed``/``mod``/``pixhawk_canli`` (HEARTBEAT). Her akışın
-        yaşı kendi son geliş damgasından ölçülür. Eksik, bozuk veya bayat alan
-        sözlükte hiç yer almaz; son bilinen değer tekrar kullanılmaz.
+        /``bat_yuzde`` (SYS_STATUS) ve ``armed``/``mod``/``pixhawk_canli``
+        (HEARTBEAT). Her akışın yaşı kendi son geliş damgasından ölçülür.
+        Eksik, bozuk veya bayat alan sözlükte hiç yer almaz; son bilinen değer
+        tekrar kullanılmaz.
         """
         try:
             simdi = float(self._monotonic())
@@ -821,6 +842,7 @@ class BagilIrtifaOkuyucu:
                 self._son_pixhawk_canli = None
                 self._son_heartbeat_gelis_monotonic = None
                 self._son_batarya = None
+                self._son_batarya_yuzde = None
                 self._son_sys_status_gelis_monotonic = None
                 return {}
 
@@ -871,8 +893,11 @@ class BagilIrtifaOkuyucu:
                              self._durum_tazelik_s):
                 if self._son_batarya is not None:
                     cikti["bat"] = self._son_batarya
+                if self._son_batarya_yuzde is not None:
+                    cikti["bat_yuzde"] = self._son_batarya_yuzde
             else:
                 self._son_batarya = None
+                self._son_batarya_yuzde = None
                 self._son_sys_status_gelis_monotonic = None
             return cikti
 

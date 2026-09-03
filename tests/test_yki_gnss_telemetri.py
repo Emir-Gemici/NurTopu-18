@@ -267,7 +267,7 @@ class UretimSaglayiciTests(unittest.TestCase):
     def test_tek_snapshot_ham_gnss_ve_ayni_ornekten_yerel_xy_uretir(self):
         ham = {"lat": 39.925633, "lon": 32.866387, "alt": 30.0,
                "hiz": 12.4, "yon": 178.2, "gps_fix": 3, "uydu": 14,
-               "bat": 15.7, "armed": False, "mod": "AUTO",
+               "bat": 15.7, "bat_yuzde": 68, "armed": False, "mod": "AUTO",
                "pixhawk_canli": True}
 
         class Okuyucu:
@@ -335,7 +335,7 @@ class KararYayinciSnapshotTests(unittest.TestCase):
             adet["yeni"] += 1
             return {"lat": 39.9, "lon": 32.8, "alt": 31.2,
                     "hiz": 13.1, "yon": 92.0, "gps_fix": 3, "uydu": 16,
-                    "bat": 15.4, "armed": True, "mod": "AUTO",
+                    "bat": 15.4, "bat_yuzde": 64, "armed": True, "mod": "AUTO",
                     "pixhawk_canli": True}
 
         def eski():
@@ -347,7 +347,8 @@ class KararYayinciSnapshotTests(unittest.TestCase):
         self.assertEqual(0, adet["eski"])
         self.assertEqual({"lat": 39.9, "lon": 32.8, "alt": 31.2,
                           "hiz": 13.1, "yon": 92.0, "gps_fix": 3,
-                          "uydu": 16, "bat": 15.4, "armed": True,
+                          "uydu": 16, "bat": 15.4, "bat_yuzde": 64,
+                          "armed": True,
                           "mod": "AUTO", "pixhawk_canli": True},
                          cagrilar[0])
         self.assertEqual(1, y.heartbeat_sayisi)
@@ -382,7 +383,7 @@ class KararYayinciSnapshotTests(unittest.TestCase):
         y.telemetri_saglayici = lambda: {
             "lat": 39.925533, "lon": 32.866287, "alt": 31.2,
             "hiz": 11.0, "yon": 270.0, "gps_fix": 3, "uydu": 15,
-            "bat": 15.8, "armed": True, "mod": "AUTO",
+            "bat": 15.8, "bat_yuzde": 66, "armed": True, "mod": "AUTO",
             "pixhawk_canli": True,
         }
         y.konum_saglayici = None

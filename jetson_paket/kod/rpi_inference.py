@@ -2656,7 +2656,8 @@ def _telemetri_saglayici(canli_olcek, referans=None):
         cikti = {
             ad: ham[ad]
             for ad in ("lat", "lon", "alt", "hiz", "yon", "gps_fix",
-                       "uydu", "bat", "armed", "mod", "pixhawk_canli")
+                       "uydu", "bat", "bat_yuzde", "armed", "mod",
+                       "pixhawk_canli")
             if ad in ham
         }
         if (referans is not None and "lat" in cikti and "lon" in cikti):

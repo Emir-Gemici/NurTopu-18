@@ -74,7 +74,7 @@ def hb(**alanlar):
 
 
 def bat(**alanlar):
-    taban = dict(voltage_battery=16800)
+    taban = dict(voltage_battery=16800, battery_remaining=73)
     taban.update(alanlar)
     return Mesaj(kanit.MESAJ_SYS_STATUS, **taban)
 
@@ -103,6 +103,7 @@ class UcusTelemetrisiTests(unittest.TestCase):
         self.assertEqual(5.0, sonuc["hiz"])
         self.assertEqual(123.45, sonuc["yon"])
         self.assertEqual(16.8, sonuc["bat"])
+        self.assertEqual(73, sonuc["bat_yuzde"])
         self.assertEqual("AUTO", sonuc["mod"])
         self.assertTrue(sonuc["armed"])
         self.assertTrue(sonuc["pixhawk_canli"])
@@ -115,6 +116,7 @@ class UcusTelemetrisiTests(unittest.TestCase):
         sonuc = okuyucu.telemetri_snapshot()
         self.assertNotIn("hiz", sonuc)
         self.assertEqual(16.8, sonuc["bat"])
+        self.assertEqual(73, sonuc["bat_yuzde"])
         self.assertEqual("AUTO", sonuc["mod"])
         saat.deger = 1.5
         self.assertEqual({}, okuyucu.telemetri_snapshot())
@@ -131,6 +133,23 @@ class UcusTelemetrisiTests(unittest.TestCase):
         self.assertNotIn("hiz", sonuc)
         self.assertNotIn("yon", sonuc)
         self.assertTrue(sonuc["pixhawk_canli"])
+
+    def test_batarya_yuzdesi_volttan_bagimsiz_ve_fail_closed(self):
+        saat = Saat()
+        okuyucu = self.okuyucu([
+            bat(voltage_battery=kanit.MAVLINK_UINT16_AZAMI,
+                battery_remaining=42),
+        ], saat)
+        self.assertEqual({"bat_yuzde": 42}, okuyucu.telemetri_oku())
+
+        for bozuk in (-1, 101, 255, True, 42.0, "42"):
+            with self.subTest(bozuk=bozuk):
+                saat.deger += 0.1
+                okuyucu._mav.mesajlar.append(
+                    bat(voltage_battery=15000, battery_remaining=bozuk))
+                sonuc = okuyucu.telemetri_oku()
+                self.assertEqual(15.0, sonuc["bat"])
+                self.assertNotIn("bat_yuzde", sonuc)
 
     def test_yabanci_sysid_ve_component_hicbir_alani_ezmez(self):
         saat = Saat()

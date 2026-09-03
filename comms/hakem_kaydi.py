@@ -67,7 +67,8 @@ class HakemKaydi:
         return datetime.fromtimestamp(deger, timezone.utc).astimezone().isoformat(
             timespec="milliseconds")
 
-    def yaz(self, olay, **alanlar):
+    def _kayit_uret(self, olay, alanlar):
+        """Bir JSONL kaydını üret; dosya/kilit durumuna dokunma."""
         olay = str(olay).strip()
         if not olay:
             raise ValueError("olay adı boş olamaz")
@@ -84,24 +85,38 @@ class HakemKaydi:
         kayit.update(alanlar)
         satir = json.dumps(kayit, ensure_ascii=False, separators=(",", ":"),
                            allow_nan=False)
+        return kayit, satir
+
+    def _satiri_yaz_locked(self, satir):
+        """Çağıran ``_kilit`` sahibiyken tek satırı dayanıklı yaz."""
+        self._dosya.write(satir + "\n")
+        self._dosya.flush()
+        self._fsync(self._dosya.fileno())
+
+    def yaz(self, olay, **alanlar):
+        kayit, satir = self._kayit_uret(olay, alanlar)
         with self._kilit:
             if self._kapali:
                 raise RuntimeError("hakem kaydı kapalı")
-            self._dosya.write(satir + "\n")
-            self._dosya.flush()
-            self._fsync(self._dosya.fileno())
+            self._satiri_yaz_locked(satir)
         return kayit
 
     def kapat(self):
+        # Kapanış TEK kritik bölgedir. Eski üç-aşamalı akışta açık mı kontrolü,
+        # OTURUM_BITTI yazımı ve ``_kapali`` geçişi arasında kilit bırakılıyordu;
+        # eşzamanlı bir yazıcı kapanış satırının arkasına olay sızdırabiliyor,
+        # iki kapatıcı da iki bitiş satırı üretebiliyordu.
         with self._kilit:
             if self._kapali:
                 return False
-        # ``yaz`` kilidi kendi alır; kapatma olayı gerçekten diske gittikten
-        # sonra tutamaç kapanır.
-        self.yaz("OTURUM_BITTI")
-        with self._kilit:
-            self._kapali = True
-            self._dosya.close()
+            _kayit, satir = self._kayit_uret("OTURUM_BITTI", {})
+            try:
+                self._satiri_yaz_locked(satir)
+            finally:
+                # Bitiş yazımı/flush/fsync başarısız olsa bile yarı kapanmış
+                # tutamaç yeniden olay kabul etmez. Hata çağırana aynen taşar.
+                self._kapali = True
+                self._dosya.close()
         return True
 
     def __enter__(self):

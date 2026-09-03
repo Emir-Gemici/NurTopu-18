@@ -1,4 +1,4 @@
-KAYNAK: O:\navitas  (git 8117c24)
+KAYNAK: O:\navitas  (git 7a0bdac)
 HEDEF : O:\navitas_bellek
   [ 343 dosya ·   1011.1 MB] jetson_paket -> jetson_paket/
   [   3 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/

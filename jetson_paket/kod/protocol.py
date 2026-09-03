@@ -101,7 +101,8 @@ def rota_yok(sebep, detay=None, seq=None):
 # karar uretemiyor — o aralikta hat CANLI gorunur, algi OLUDUR. Bu alan ikisini
 # ayirir. Alan YOKSA yas BILINMIYOR demektir; alici TAZE SAYMAZ (fail-closed).
 HEARTBEAT_TELEMETRI_ALANLARI = (
-    "x", "y", "alt", "hiz", "yon", "bat", "uydu", "karar_yas",
+    "x", "y", "alt", "hiz", "yon", "bat", "bat_yuzde", "uydu",
+    "karar_yas",
     # Ham GNSS yalnız sayısal YKİ gösterimi içindir; semantik saha haritasının
     # koordinat sistemi değildir. ``armed`` ise YKİ'nin komut gönderiminden
     # durum UYDURMASINI engelleyen, Pixhawk HEARTBEAT'inden gelen gerçektir.

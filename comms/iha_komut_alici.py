@@ -158,10 +158,72 @@ KOMUT_SAAT_OFSETI_PENCERESI_S = 60.0
 # de kendini düzeltebilsin). Pencere en uzun tekrar merdiveninden (PARAŞÜT:
 # 0,20 s × 40 = 8 s) belirgin biçimde uzundur, birkaç operatör basışını kapsar.
 KOMUT_SAAT_SAPMA_TAVANI_S = 30.0 * 60.0
-# Kestirime ALINACAK en büyük |ham| fark. NTP'siz bir Jetson'ın makul sapma
-# bandıdır; bunun ötesindeki bir damga (gün/saat mertebesi, ya da uydurma bir
-# ileri damga) kestirimi KAYDIRAMAZ. Amaç fail-closed: tek bir çılgın çerçeve
-# ofseti bozup sonraki meşru komutları reddettiremesin.
+# ⚠ 2026-09-04 · K-A: bu sabit ARTIK "şu kadar sapmış damgayı HİÇ görme"
+# filtresi DEĞİLDİR. Öyleyken ÖLÜMCÜLDÜ: ofset bilinmezken `ham` iki saatin
+# FARKI'dır; sapma bu tavanı aşınca öğrenmek için gereken örneğin TA KENDİSİ
+# eleniyordu -> ofset ASLA öğrenilemiyor -> ARM/DISARM/RTL/LAND/PARACHUTE
+# KALICI olarak reddediliyordu. ÖLÇÜLDÜ (2 saat sapma, ARM merdiveni 20/20):
+# MAVLink'e giden 0, zaman_red 20, örnek sayısı 0, ofset None.
+# "NTP'siz Jetson'ın makul bandı 30 dk" varsayımı da YANLIŞTI: RTC pili olmayan
+# bir Jetson sabit bir epoch'a açılır (1970 ya da son kapanma anı) — sapma
+# saatler, günler, YILLAR olabilir.
+#
+# YENİ ANLAMI (KARAR-1): tavan ÖĞRENMEYİ değil KAYMAYI engeller. Bandın
+# İÇİNDEKİ bir kestirim UCUZDUR (iki örnek yeter, bugünkü davranış aynen);
+# bandın DIŞINDAKİ bir kestirim PAHALIDIR — aşağıdaki geniş kanıt eşiğini
+# ister. Yani büyük sapma öğrenilebilir hâle gelir ama TEK bir çılgın çerçeve
+# (ya da bir avuç tekrarı) kestirimi kuramaz.
+KOMUT_SAAT_OFSETI_GENIS_EN_AZ_ORNEK = 6
+# Bant DIŞI (|ofset| > KOMUT_SAAT_SAPMA_TAVANI_S) bir kestirim için gereken
+# BİRBİRİNİ DESTEKLEYEN örnek sayısı. Bant içi eşiğin (2) üç katıdır: saldırgan
+# tek/az sayıda uydurma damgayla ofseti kendi üzerine çekemesin, ama RTC'siz
+# Jetson'ın gerçek sapması saha tekrar merdiveninin İLK SANİYESİNDE öğrenilsin
+# (ARM merdiveni 20 basamak × 0,25 s = 5 s; 6. basamak = 1,5 s).
+# ⚠ Bu bir GEVŞETME değildir: saat kapısı kimlik doğrulaması DEĞİL tazelik
+# kapısıdır. Yeniden-oynatma savunması `(oturum, seq, cmd)` anahtarıdır
+# (CONTRACTS/`protocol.py`) ve `izinli_kaynak` adres pinidir; ikisi de yerinde
+# durur. Saldırganın eski bir komutu oynatabilmesi için hâlâ geçerli bir
+# `oturum` + GÖRÜLMEMİŞ bir `seq` üretmesi gerekir.
+KOMUT_SAAT_DESTEK_BANDI_S = max(KOMUT_YAS_TAVANI_S.values())
+# "Birbirini destekleyen" örnek: aday ofsete GÖRE yaşı meşru olan örnek. Üst
+# sınır en uzun komut ömrüdür (PARAŞÜT: 0,20 s × 40 = 8 s) — aynı çerçeve
+# merdiven boyunca yeniden gönderilirken `ham` gerçekten bu kadar büyür.
+# Bandın dışındaki bir örnek aday ofseti DESTEKLEMEZ; sayılmaz.
+
+# ── K-B · YEREL SAAT ADIMI (basamaklı düzeltme) ─────────────────────────────
+# Ofset öğrenildikten SONRA İHA'nın DUVAR saati BASAMAKLI düzeltilirse
+# (systemd-timesyncd / chrony step, ya da operatörün `timedatectl set-time`i)
+# penceredeki ESKİ örnekler kestirimi eski değerde tutar ve kritik komutlar o
+# süre boyunca reddedilir. ÖLÇÜLDÜ (ofset -600 s öğrenildi, saat +600 s ileri
+# adımlandı): ARM yeniden geçene kadar 60,00 s ÖLÜ pencere, 241 komut reddi.
+# 5 Eylül'de Jetson ilk kez ağa bağlanıp NTP saati düzelttiğinde tam olarak bu
+# olur — kabul edilemez.
+#
+# KARAR-2 · ADIM YEREL OLARAK ÖLÇÜLÜR, TRAFİKTEN ÇIKARILMAZ.
+# `time.monotonic` saat adımından ETKİLENMEZ, `time.time` ADIMLA ZIPLAR. İki
+# ardışık ölçüm arasında
+#     adim = (duvar_farki) - (monotonik_farki)
+# sıfırdan belirgin biçimde farklıysa YEREL duvar saati basamaklanmıştır. Bu
+# ölçüm YKS'den gelen hiçbir alana bakmaz; saldırgan giremez.
+# Adım bulununca pencere atılmaz, DÜZELTİLİR: her örneğin `ham` değeri eski
+# duvar saatiyle hesaplanmıştı ve ofset tam olarak `adim` kadar değişmiştir
+# (`ofset = C_iha - C_yks`). Örnekler `adim` kadar kaydırılınca gecikme bilgisi
+# KORUNUR ve ölü pencere SIFIRLANIR.
+#
+# ⛔ REDDEDİLEN ALTERNATİF (ölçümle çürütüldü, 2026-09-04): adımı TRAFİKTEN
+# çıkarmak — reddedilen çerçevelerin ham farklarını bir halkada toplayıp "ofset
+# ani değişti" demek. Uygulandı ve DELİK ÖLÇÜLDÜ: ısrarlı BAYAT bir gönderici
+# kendi reddedilen çerçeveleriyle kestirimi kendi üzerine YÜRÜTÜYOR —
+# 2 saat sapmalı kurulumda bayat damgalı yeni bir `seq` 10. ısrarda kapıdan
+# GEÇTİ ve MAVLink'e ULAŞTI (ofset -7200,000 -> -7191,750). Bu, D-02'nin
+# "gecikmiş komut" savunmasını öldürürdü. Adım kanıtı bu yüzden YALNIZ yereldir.
+KOMUT_SAAT_ADIMI_ESIGI_S = max(KOMUT_YAS_TAVANI_S.values())
+# Bundan KÜÇÜK bir duvar/monotonik ayrışması adım SAYILMAZ. Alt sınır iki
+# gerçek etkiden gelir: (a) NTP'nin ADIM yerine YAVAŞLATMA (slew) düzeltmesi en
+# çok 500 ppm'dir — iki komut arasında saatler geçse bile birkaç saniyeyi
+# aşmaz; (b) en uzun meşru komut ömründen (PARAŞÜT: 8 s) küçük bir kayma zaten
+# kapıyı kilitlemez. Gerçek saat adımı (NTP step / operatör) mertebe olarak
+# bunun çok üstündedir.
 
 
 def _mavutil_al():
@@ -278,7 +340,11 @@ class IhaKomutAlici:
         self._komut_sonuclari = {}
         # K-1: (monotonik_alis_ani, ham_fark) örnekleri; saat ofseti kestirimi.
         self._ofset_ornekleri = []
-        self._son_ofset = None               # yalnız log/teşhis için
+        self._son_ofset = None               # yürürlükteki kestirim
+        # K-B: yerel saat adımı çapası — (monotonik, duvar) son ölçüm çifti.
+        # İkisinin farkının farkı, YEREL duvar saatinin basamaklandığını
+        # YKS'den gelen hiçbir alana bakmadan söyler (KARAR-2).
+        self._saat_capasi = None
 
     # ── log ──────────────────────────────────────────────────────────────
     def _logla(self, metin, kirmizi=False):
@@ -292,18 +358,103 @@ class IhaKomutAlici:
               file=sys.stderr if kirmizi else sys.stdout, flush=True)
 
     # ── K-1: capraz-makine saat ofseti ───────────────────────────────────
+    @staticmethod
+    def _kestir(ornekler, en_az):
+        """Örnek kümesinden dayanıklı ofset kestirimi; yetersizse ``None``.
+
+        `ham = ofset_gercek + gecikme`, `gecikme >= 0` — bir çerçeve
+        gönderilmeden ÖNCE alınamaz. Bu yüzden EN KÜÇÜK ham fark, gecikmesi en
+        düşük çerçevedir ve ofsetin en iyi kestirimidir (NTP'nin "minimum
+        filtresi" ile aynı akıl). Yaş bu kestirime göre ölçülünce iki makinenin
+        saat farkı sadeleşir.
+
+        KARAR-1 · KANIT EŞİĞİ İKİ KADEMELİDİR:
+          * aday ofset ``KOMUT_SAAT_SAPMA_TAVANI_S`` bandının İÇİNDE ise
+            ``en_az`` örnek yeter — bugünkü davranış aynen korunur;
+          * bandın DIŞINDA ise ``KOMUT_SAAT_OFSETI_GENIS_EN_AZ_ORNEK`` adet
+            BİRBİRİNİ DESTEKLEYEN örnek gerekir. "Destekleyen" = aday ofsete
+            göre yaşı meşru (``KOMUT_SAAT_DESTEK_BANDI_S`` içinde) olan örnek.
+            Böylece RTC'siz Jetson'ın saatler/yıllar mertebesindeki gerçek
+            sapması ÖĞRENİLEBİLİR olur (K-A ölümcül kilidi kalkar), ama tek
+            bir çılgın çerçeve — ya da onun bir avuç tekrarı — kestirimi
+            KURAMAZ.
+
+        ⚠ ADAY, KÜRESEL ``min`` DEĞİL; KÜÇÜKTEN BÜYÜĞE TARANIR (K-C).
+        Küresel `min`'e tek adayla bağlanmak bu kapıyı TEK PAKETLE
+        kilitliyordu: kırılma noktası SIFIRDI. ÖLÇÜLDÜ (2026-09-04, saha
+        mercekli çürütme; meşru sapma -600 s, tek çerçeve 10 gün İLERİ
+        damgalı): aday o çerçeve olur, bant dışıdır, 6 destekçi bulamaz ve
+        `None` döner — meşru -600 s KÜMESİ hiç denenmeden elenir. Sonuç:
+        20 basamaklık RTL merdiveninden MAVLink'e giden 0, zaman_red 243,
+        ARM/DISARM/RTL/LAND/PARACHUTE **60,75 s ÖLÜ** (aykırı örnek
+        ``KOMUT_SAAT_OFSETI_PENCERESI_S`` boyunca durur; kaynak ısrar ederse
+        KALICI). ESKİ kodda aynı senaryoda 18/20 basamak geçiyordu — yani
+        K-A/K-B onarımı, K-B'nin kapattığı 60 s ölü pencereyi BAŞKA BİR
+        KAPIDAN geri getiriyordu.
+        Nedeni: `min` kırılma noktası 0 olan bir özettir; gerçek ofsetin
+        ALTINDA tek bir örnek onu yok eder. KARAR-1 "dayanıklı bir özet"
+        istiyor — dayanıklılık burada adayı TEK BAŞINA veto edilemez kılmakla
+        sağlanır: adaylar artan sırada denenir ve KENDİ kanıt eşiğini
+        karşılayan İLK (yani en küçük) aday kazanır. İki kademeli eşik
+        AYNEN durur; gevşeyen hiçbir şey yoktur — yalnız bir aykırı örnek
+        artık geri kalan kümeyi susturamaz.
+        """
+        if len(ornekler) < en_az:
+            return None
+        for aday in sorted(h for (_t, h) in ornekler):
+            if abs(aday) <= KOMUT_SAAT_SAPMA_TAVANI_S:
+                # Artan sırada ilk BANT İÇİ aday = bant içi örneklerin en
+                # küçüğü; bant içi kanıt eşiği (ucuz kademe) bugünkü davranışın
+                # ta kendisidir ve DEĞİŞMEZ. Daha büyük adaya bakmanın anlamı
+                # yok: minimum filtresi en küçüğü ister.
+                gerekli = max(en_az, KOMUT_SAAT_OFSETI_EN_AZ_ORNEK)
+                return aday if len(ornekler) >= gerekli else None
+            gerekli = max(en_az, KOMUT_SAAT_OFSETI_GENIS_EN_AZ_ORNEK)
+            destek = sum(1 for (_t, h) in ornekler
+                         if -KOMUT_ZAMAN_YUVARLAMA_TOLERANSI_S
+                         <= h - aday <= KOMUT_SAAT_DESTEK_BANDI_S)
+            if destek >= gerekli:
+                return aday
+        return None
+
+    def _yerel_saat_adimi(self, simdi_mono):
+        """YEREL duvar saati basamaklandıysa sıçrama miktarını döndür (K-B).
+
+        `time.monotonic` saat adımından etkilenmez, `time.time` adımla zıplar.
+        İki ardışık ölçüm arasında ``duvar_farki - monotonik_farki`` sıfırdan
+        belirgin biçimde sapıyorsa duvar saati basamaklanmıştır. Ölçüm YKS'den
+        gelen HİÇBİR alana bakmaz — saldırgan bu yola giremez (modül başlığında
+        çürütülen trafik-tabanlı alternatifin gerekçesi).
+
+        Çapa HER çağrıda tazelenir; böylece NTP'nin yavaşlatma (slew)
+        düzeltmesi birikip yanlışlıkla adım gibi görünmez.
+        """
+        try:
+            duvar = float(self.duvar_saati())
+        except Exception:
+            duvar = None
+        if duvar is None or not math.isfinite(duvar):
+            self._saat_capasi = None
+            return None
+        capa, self._saat_capasi = self._saat_capasi, (simdi_mono, duvar)
+        if capa is None:
+            return None
+        adim = (duvar - capa[1]) - (simdi_mono - capa[0])
+        if not math.isfinite(adim) or abs(adim) <= KOMUT_SAAT_ADIMI_ESIGI_S:
+            return None
+        return adim
+
     def _saat_ofseti(self):
         """Pencere içindeki örneklerden güncel ofset kestirimi (modül başlığı).
 
-        `ham = ofset_gercek + gecikme`, `gecikme >= 0` — bir çerçeve
-        gönderilmeden ÖNCE alınamaz. Bu yüzden kayan penceredeki EN KÜÇÜK ham
-        fark, gecikmesi en düşük çerçevedir ve ofsetin en iyi kestirimidir.
-        Yaş bu kestirime göre ölçülünce iki makinenin saat farkı sadeleşir.
+        Dönen: ``(monotonik_an, ofset)``. Kanıt yetersizse ofset ``None``'dır
+        ve kapı SIKI davranır (fail-closed). Değerlendirilen çerçevenin KENDİ
+        örneği burada YOKTUR — örnekleme `_saat_ofseti_ornekle` ile SONRA
+        yapılır; yoksa her çerçeve kendi damgasıyla kendini aklardı.
 
-        Dönen: ``(monotonik_an, ofset)``. En az ``KOMUT_SAAT_OFSETI_EN_AZ_ORNEK``
-        örnek yoksa ofset ``None``'dır ve kapı bugünkü SIKI davranışını aynen
-        korur (fail-closed). Değerlendirilen çerçevenin KENDİ örneği burada
-        YOKTUR — örnekleme `_saat_ofseti_ornekle` ile SONRA yapılır.
+        KARAR-2 burada işler: YEREL duvar saati basamaklandıysa pencere ATILMAZ,
+        adım kadar DÜZELTİLİR — 60 s'lik ölü pencere sıfırlanır.
+        KARAR-3: ofset ilk kez öğrenildiğinde ve her adımda GÖRÜNÜR kayıt.
         """
         try:
             simdi_mono = float(self.saat())
@@ -312,23 +463,46 @@ class IhaKomutAlici:
         if simdi_mono is None or not math.isfinite(simdi_mono):
             self._son_ofset = None
             return None, None
+        adim = self._yerel_saat_adimi(simdi_mono)
         self._ofset_ornekleri = [
             (t, h) for (t, h) in self._ofset_ornekleri
             if 0.0 <= simdi_mono - t <= KOMUT_SAAT_OFSETI_PENCERESI_S]
-        if len(self._ofset_ornekleri) >= KOMUT_SAAT_OFSETI_EN_AZ_ORNEK:
-            self._son_ofset = min(h for (_t, h) in self._ofset_ornekleri)
-        else:
-            self._son_ofset = None
-        return simdi_mono, self._son_ofset
+        if adim is not None:
+            # Duvar saati `adim` kadar ziplarken ofset de tam o kadar değişti.
+            # Örneklerin `ham` değerleri eski duvar saatiyle hesaplanmıştı;
+            # kaydırılınca gecikme bilgisi korunur, ölü pencere kalmaz.
+            self._ofset_ornekleri = [(t, h + adim)
+                                     for (t, h) in self._ofset_ornekleri]
+        onceki = self._son_ofset
+        ofset = self._kestir(self._ofset_ornekleri,
+                             KOMUT_SAAT_OFSETI_EN_AZ_ORNEK)
+        self._son_ofset = ofset
+        if adim is not None:
+            self._logla(f"YEREL saat ADIMI algilandi: duvar saati {adim:+.3f} s "
+                        f"zipladi (monotonik saate gore); ofset kestirimi "
+                        f"{onceki!r} -> {ofset!r} olarak duzeltildi")
+        elif ofset is not None and onceki is None:
+            self._logla(f"saat ofseti OGRENILDI: {ofset:+.3f} s "
+                        f"({len(self._ofset_ornekleri)} ornek); komut yasi "
+                        f"bundan sonra bu ofsete GORE olculur")
+        elif ofset is None and onceki is not None:
+            self._logla(f"saat ofseti kestirimi DUSTU (onceki {onceki:+.3f} s); "
+                        f"kapi yeniden SIKI — ofset yeniden ogrenilecek")
+        return simdi_mono, ofset
 
     def _saat_ofseti_ornekle(self, simdi_mono, ham):
-        """Ham farkı kestirim örneklerine ekle (çağıran koşulu denetler).
+        """Ham farkı ANA kestirim örneklerine ekle (çağıran koşulu denetler).
 
-        Sapma bandının dışındaki çılgın damga örnek OLARAK ALINMAZ: tek bir
-        uydurma çerçeve kestirimi kaydırıp sonraki meşru komutları
-        reddettiremesin (fail-closed, DoS yüzeyi kapalı).
+        K-A DÜZELTMESİ: burada ARTIK mutlak bir sapma tavanı YOKTUR. Eskiden
+        ``abs(ham) > KOMUT_SAAT_SAPMA_TAVANI_S`` olan örnek atılıyordu; ofset
+        bilinmezken `ham` iki saatin FARKI olduğu için bu, öğrenmek için
+        gereken örneğin ta kendisini eliyor ve kritik komutları KALICI olarak
+        öldürüyordu. Çılgın damgaya karşı savunma artık ATMAK değil, `_kestir`
+        içindeki İKİ KADEMELİ KANIT EŞİĞİdir: bant dışı bir kestirim ancak
+        birbirini destekleyen ``KOMUT_SAAT_OFSETI_GENIS_EN_AZ_ORNEK`` örnekle
+        kurulabilir.
         """
-        if simdi_mono is None or abs(ham) > KOMUT_SAAT_SAPMA_TAVANI_S:
+        if simdi_mono is None or not math.isfinite(ham):
             return
         self._ofset_ornekleri.append((simdi_mono, float(ham)))
 
@@ -512,13 +686,13 @@ class IhaKomutAlici:
             # Örnek yalnız iki durumda alınır: (a) çerçeve kapıdan GEÇTİ, ya da
             # (b) ofset henüz BİLİNMİYOR — sapmayı öğrenmenin tek yolu budur.
             # Ofset BİLİNİRKEN reddedilen çerçeve kestirimi KAYDIRAMAZ; yoksa
-            # ısrarlı ileri damgalı bir kaynak, kendi reddedilen örnekleriyle
-            # ofseti kendi üzerine çeker ve bir sonraki adımda kapıdan geçerdi
-            # (3 Eylül'de ÖLÇÜLDÜ: ikinci gönderimde geçiyordu).
-            # Saat NTP ile yerine oturup sapma DEĞİŞİRSE kestirim geçici olarak
-            # yanlış kalır ve komutlar reddedilir (fail-closed); pencere
-            # (KOMUT_SAAT_OFSETI_PENCERESI_S) örnekleri düşürünce ofset yeniden
-            # BİLİNMİYOR olur ve öğrenme kendiliğinden baştan işler.
+            # ısrarlı ileri/bayat damgalı bir kaynak, kendi reddedilen
+            # örnekleriyle ofseti kendi üzerine çeker ve bir sonraki adımda
+            # kapıdan geçerdi (3 Eylül'de ÖLÇÜLDÜ: ikinci gönderimde geçiyordu;
+            # 4 Eylül'de trafik-tabanlı adım kanıtı denendiğinde 10. ısrarda
+            # yeniden ÖLÇÜLDÜ — bkz. modül başlığındaki reddedilen alternatif).
+            # Saat basamaklı düzeltilirse kestirimi düzelten şey bu örnekler
+            # DEĞİL, `_yerel_saat_adimi`nin yerel ölçümüdür (KARAR-2).
             self._saat_ofseti_ornekle(simdi_mono, ham)
         if not zaman_kabul:
             self.sayac["zaman_red"] += 1

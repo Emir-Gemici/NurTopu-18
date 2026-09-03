@@ -4,7 +4,7 @@
 > Kaynak: `SAHA_HAZIRLIK_PLANI_20260903.md` §1 · ölçüm çıktıları:
 > `results/faz_b_oncesi/cuma_kontrol/`
 
-## A. Yazılım kapıları — **4 Eylül 01:00'de baştan koşuldu**
+## A. Yazılım kapıları — **4 Eylül 02:30, TAMAMI YEŞİL**
 
 > ⚠ 4 Eylül'de ~2200 satır kod değişti (Codex + altı worktree birleştirmesi);
 > 3 Eylül ölçümleri **geçersizdi** ve bu tablo baştan üretildi. Artefaktlar:
@@ -13,7 +13,7 @@
 | ✓ | kapı | sonuç (4 Eylül) |
 |---|---|---|
 | ✅ | Genel kapı `codes/test_rota_sentetik.py` | **15/15 · 15/15**. ⚠ Bu kapı `tests/` altında **değildir**, tam süit onu **kapsamaz**; ayrı koşulur (D-415) |
-| ⏳ | Tam test paketi | **2059 test · 1 düşük** — düşen tek şey ayna ikizi (`rpi_inference.py`), çünkü **başka bir ajan ağaca canlı yazıyordu**. Kod kusuru değil; ajan durunca ayna senkronlanıp süit yeniden koşulacak. **Cuma akşamı tekrar koşulacak tek kalem budur.** |
+| ✅ | Tam test paketi | **2104 test OK** (skipped 3, 393,1 s, çıkış 0) · artefakt `cuma_kontrol/tam_suit.txt`. Sabah 1896'ydı; gece boyunca 208 test eklendi (uçuş komut hattı, hakem kanıt olay kümesi, saat kilidi, runbook kapısı) |
 | ✅ | Kuru koşu `scripts/saha_kuru_kosu.py` | **9 GEÇTİ · 0 DÜŞTÜ · 1 SAHİPSİZ** · `kuru_kosu_0904.txt`. Sahipsiz halka `motor`: gerçek İKA motor sürücüsü yok — **FDA uçuşunda gerekmez**, final aracında gerekir (T149). Çıkış 1 (kopuk halka nedeniyle, beklenen) |
 | ✅ | `saha_baslat.py --komutlar` | `--iha <JETSON_IP>:5007` yerinde (D-403) · `saha_baslat_0904.txt` |
 | ✅ | Jetson açılış `jetson_baslat.sh --kuru` **udp** | exit 3 (PC'de beklenen) · `--izinli-kaynak 192.168.1.10:5005` · `--streamrate 8` · uçlar 14550/14551/14552 · `jetson_udp_0904.txt` |
@@ -82,9 +82,14 @@ Gün içinde kod değişmediyse geri kalanı geçerlidir.
   göndermez, düğme "…? TEKRAR BAS" olur ve sarı uyarı düşer; ikinci tık gerçek
   komutu yollar. Komut iletilemezse düğme **gerçeğe döner** ve kırmızı hata
   görünür — "TEKRAR BAS" ekranda asılı kalmaz.
-- ⚠ **Komut yaşı artık saat sapmasına dayanıklı.** İHA ile YKS'nin duvar saatleri
-  farklıysa (Jetson'da RTC pili yok) komut **artık reddedilmiyor**: ofset
-  kayan pencerede kestiriliyor. Yine de ilk kritik komutta kestirim henüz
-  oluşmamış olabilir — **ARM ilk denemede geçmezse ikinci kez dene**, bu
-  beklenen davranıştır.
+- ⚠ **Komut yaşı artık saat sapmasına dayanıklı — ama ilk komut GECİKMELİ geçer.**
+  İHA ile YKS'nin duvar saatleri farklıysa (Jetson'da RTC pili yok, 1970'e
+  açılabilir) komut **artık kalıcı reddedilmiyor**: ofset kayan pencerede
+  kestiriliyor. **Ölçülen davranış (4 Eylül):** soğuk açılışta kestirim
+  **7. basamakta** oluşuyor. ACK'li tekrar merdiveni 8 basamak × 0,25 s
+  olduğu için **operatörün tek basışı yeter** — komut ~1,75 s sonra geçer.
+  Ekranda "TEKRAR BAS" değil, kısa bir gecikme görürsün.
+  🔴 **Tek basış geçmezse ikinci kez bas** — merdiven 8 basamakta bitiyor ve
+  kestirim tam sınırda oluşuyor; ikinci basış kesin geçer (ofset artık öğrenildi).
+  Logda görünür: `saat ofseti OGRENILDI: -7200.000 s`.
 

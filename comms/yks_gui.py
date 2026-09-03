@@ -28,6 +28,7 @@ import io
 import math
 import os
 import queue
+import subprocess
 import sys
 import threading
 import time
@@ -155,6 +156,13 @@ KANIT_TEKRAR_ARALIGI_S = 30.0
 # aracı indirebilmek emniyetin kendisidir.
 KANIT_KILIDI_FIRLAT_METNI = "KANIT KAYDI HATASI — FIRLATMA KAPALI"
 KANIT_KILIDI_ONAY_METNI = "KANIT KAYDI HATASI — ONAY KAPALI"
+
+# Pixhawk'ın bildirdiği uçuş modu serbest ağ metni değildir. ArduPilot mod
+# adları kısa ASCII belirteçlerdir; sınırsız/yeni satırlı bir değer hakem
+# ekranını ve günlüğü zehirleyemez. Bu bir karar eşiği değil, taşıma biçimi
+# sınırıdır.
+UCUS_MODU_AZAMI_KARAKTER = 32
+ACIL_UCUS_MODLARI = frozenset(("RTL", "LAND"))
 
 
 def S(px):
@@ -331,6 +339,51 @@ def _udp_adres(deger):
     return host, port
 
 
+def _repo_commit_oku(kok=_PROJE_KOKU):
+    """Koşan çalışma ağacının commit kimliğini oku; paket kopyasında uydurma."""
+    try:
+        sonuc = subprocess.run(
+            ("git", "rev-parse", "HEAD"), cwd=str(kok),
+            capture_output=True, text=True, timeout=2.0, check=True)
+        commit = sonuc.stdout.strip().lower()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return (commit if len(commit) == 40
+            and all(c in "0123456789abcdef" for c in commit) else None)
+
+
+def yki_oturum_kunyesi(*, fda_kipi, dinleme, iha_hedef=None,
+                       ika_hedef=None, seri_port=None, baud=None,
+                       kamera_url=None, algi_kaynagi=None, gorunum=None,
+                       baslatma_argumanlari=()):
+    """YKS başlangıcını uçuş sonrasında yeniden kurmaya yeterli künye üret."""
+    profil, _defter = _kayit_profili()
+    model_yolu = profil.get("path") if isinstance(profil, dict) else None
+    model_dosya = (str(model_yolu).replace("\\", "/").rsplit("/", 1)[-1]
+                   if isinstance(model_yolu, str) else None)
+    return {
+        "gorev_kipi": "fda" if fda_kipi else "yarisma",
+        "fda_kipi": bool(fda_kipi),
+        "protokol_surum": PROTOCOL_VERSION,
+        "dinleme": dinleme,
+        "iha_hedef": list(iha_hedef) if iha_hedef is not None else None,
+        "ika_hedef": list(ika_hedef) if ika_hedef is not None else None,
+        "seri_port": seri_port,
+        "baud": baud if seri_port is not None else None,
+        "kamera_url": kamera_url,
+        "algi_kaynagi": algi_kaynagi,
+        "gorunum": gorunum,
+        "model": {
+            "model_id": profil.get("model_id"),
+            "dosya": model_dosya,
+            "imgsz": profil.get("imgsz"),
+            "sha256": profil.get("sha256"),
+        },
+        "repo_commit": _repo_commit_oku(),
+        "baslatma_argumanlari": list(baslatma_argumanlari),
+    }
+
+
 def _ss(saniye):
     """Saniye → "MM:SS" (kronometre başlıkları SAYIDAN türer, elle yazılmaz)."""
     saniye = int(round(saniye))
@@ -346,6 +399,93 @@ def arm_telemetri_degeri(mesaj):
     """
     deger = mesaj.get("armed") if isinstance(mesaj, dict) else None
     return deger if type(deger) is bool else None
+
+
+def heartbeat_telemetrisi_dogrula(mesaj):
+    """Ağdan gelen HEARTBEAT telemetrisini alan alan doğrula.
+
+    Bir bozuk alan bütün heartbeat'i veya komşu geçerli alanları düşürmez;
+    yalnız kendisi dışarıda bırakılır. JSON sayıları için bool özellikle
+    reddedilir (Python'da ``bool``, ``int`` alt sınıfıdır). Böylece biçimleme
+    hatası Tk ana döngüsünü kalıcı durduramaz ve NaN/Inf ekrana sızamaz.
+    """
+    if not isinstance(mesaj, dict):
+        return {}, ("mesaj",)
+    temiz = {}
+    reddedilen = []
+
+    def sayi(ad, *, alt=None, ust=None, ust_dahil=True):
+        deger = mesaj.get(ad)
+        if deger is None:
+            return
+        if isinstance(deger, bool) or not isinstance(deger, (int, float)):
+            reddedilen.append(ad)
+            return
+        deger = float(deger)
+        if (not math.isfinite(deger)
+                or (alt is not None and deger < alt)
+                or (ust is not None and
+                    (deger > ust if ust_dahil else deger >= ust))):
+            reddedilen.append(ad)
+            return
+        temiz[ad] = deger
+
+    sayi("alt")
+    sayi("hiz", alt=0.0)
+    sayi("yon", alt=0.0, ust=360.0, ust_dahil=False)
+    sayi("bat", alt=0.0)
+    sayi("lat", alt=-90.0, ust=90.0)
+    sayi("lon", alt=-180.0, ust=180.0)
+    sayi("x")
+    sayi("y")
+
+    for ad, alt, ust in (("gps_fix", 0, 255), ("uydu", 0, 254),
+                         ("bat_yuzde", 0, 100)):
+        deger = mesaj.get(ad)
+        if deger is None:
+            continue
+        if (isinstance(deger, bool) or not isinstance(deger, int)
+                or not alt <= deger <= ust):
+            reddedilen.append(ad)
+        else:
+            temiz[ad] = deger
+
+    pixhawk = mesaj.get("pixhawk_canli")
+    if pixhawk is not None:
+        if type(pixhawk) is bool:
+            temiz["pixhawk_canli"] = pixhawk
+        else:
+            reddedilen.append("pixhawk_canli")
+
+    mod = mesaj.get("mod")
+    if mod is not None:
+        aday = mod.strip().upper() if isinstance(mod, str) else ""
+        if (aday and len(aday) <= UCUS_MODU_AZAMI_KARAKTER
+                and all(c.isascii() and (c.isalnum() or c in "_-")
+                        for c in aday)):
+            temiz["mod"] = aday
+        else:
+            reddedilen.append("mod")
+
+    # Koordinatlar bir çifttir. Tek ekseni göstermek/kaydetmek geçerli konum
+    # izlenimi verir; eşinden biri bozuksa ikisi de fail-closed çıkarılır.
+    for a, b in (("lat", "lon"), ("x", "y")):
+        if (a in temiz) != (b in temiz):
+            temiz.pop(a, None)
+            temiz.pop(b, None)
+            for ad in (a, b):
+                if ad not in reddedilen:
+                    reddedilen.append(ad)
+    return temiz, tuple(sorted(set(reddedilen)))
+
+
+def ucus_modu_sunumu(mod):
+    """Uçuş modunu operatöre yanlış 'manuel' hükmü kurmadan sun."""
+    if mod == "AUTO":
+        return "OTONOM GÖREV (AUTO)", YESIL
+    if mod in ACIL_UCUS_MODLARI:
+        return f"ACİL EMNİYET MODU ({mod}) — GÖREV SONLANDIRILIYOR", KIRMIZI
+    return f"PIXHAWK MODU: {mod} — AUTO DEĞİL", SARI
 
 
 def gps_gosterim_metni(telemetri):
@@ -451,7 +591,8 @@ class YksArayuz:
 
     def __init__(
             self, kok, link, otomatik_onay=False, demo=False, ika_peer=None,
-            iha_peer=None, kamera_url=None, hakem_log_yolu=None):
+            iha_peer=None, kamera_url=None, hakem_log_yolu=None,
+            oturum_kunyesi=None):
         self.kok = kok
         self.link = link
         self.reader = FrameReader()
@@ -552,7 +693,9 @@ class YksArayuz:
         self.ceza_toplam = 0                # birikmiş ceza puanı
         self.parasut_teyit = 0.0            # iki adımlı paraşüt emniyeti
         self.mod = {}                       # node -> uçuş modu (AUTO/MANUEL)
+        self.mod_durum_zamani = {}          # node -> son doğrulanmış mod heartbeat'i
         self._manuel_uyarildi = False
+        self.telemetri_ret_sayaci = 0
         self.iha_iz = []                    # İHA-UB içindeki konum izi (T162)
         self.tel = {}                       # node -> son telemetri alanları
         self.rx_alim = {}                   # seq -> kaç kez alındı (tekrar gönderim)
@@ -599,11 +742,21 @@ class YksArayuz:
             from kamera_istemci import KameraIstemci
             self.kamera_istemci = KameraIstemci(kamera_url)
             self.kamera_istemci.baslat()
-        self._kanit_yaz(
-            "YKS_ARAYUZ_HAZIR", demo=bool(demo),
-            kamera_yapilandirildi=bool(kamera_url),
-            tasiyici="serial" if isinstance(link, SerialLink) else "udp",
-            komut_oturumu=self.komut_oturumu)
+        if oturum_kunyesi is not None and not isinstance(oturum_kunyesi, dict):
+            raise TypeError("oturum_kunyesi dict veya None olmalı")
+        hazir_kaydi = {
+            "demo": bool(demo),
+            "kamera_yapilandirildi": bool(kamera_url),
+            "tasiyici": "serial" if isinstance(link, SerialLink) else "udp",
+            "komut_oturumu": self.komut_oturumu,
+        }
+        if oturum_kunyesi:
+            cakisan = sorted(set(hazir_kaydi) & set(oturum_kunyesi))
+            if cakisan:
+                raise ValueError(
+                    f"oturum_kunyesi zorunlu alanı ezemez: {cakisan}")
+            hazir_kaydi.update(oturum_kunyesi)
+        self._kanit_yaz("YKS_ARAYUZ_HAZIR", **hazir_kaydi)
         threading.Thread(target=self._dinle, daemon=True).start()
         self._tik()
 
@@ -1482,10 +1635,19 @@ class YksArayuz:
                     pass          # bozuk deger yut: eski deger/None kalir
             # Her heartbeat snapshot'tır: alan gelmediyse eski değer SAKLANMAZ.
             # Aksi hâlde GNSS kesildiğinde son koordinat sonsuza dek canlı görünür.
-            tel = {k: m[k] for k in (
-                "alt", "hiz", "yon", "bat", "uydu", "lat", "lon",
-                "gps_fix", "pixhawk_canli")
-                   if k in m}
+            # Ağ girdisi ayrıca alan alan doğrulanır; ör. `bat="x"` doğrudan
+            # ``:.1f`` biçimleyicisine ulaşırsa bütün Tk tazeleme zinciri ölür.
+            temiz, bozuk = heartbeat_telemetrisi_dogrula(m)
+            if bozuk:
+                self.telemetri_ret_sayaci = getattr(
+                    self, "telemetri_ret_sayaci", 0) + 1
+                if self.telemetri_ret_sayaci in (1, 10, 100):
+                    self._logla(
+                        "⚠ BOZUK HEARTBEAT TELEMETRİSİ alan bazında elendi: "
+                        + ", ".join(bozuk), "sari")
+            tel = {k: temiz[k] for k in (
+                "alt", "hiz", "yon", "bat", "bat_yuzde", "uydu", "lat",
+                "lon", "gps_fix", "pixhawk_canli") if k in temiz}
             self.tel[dugum] = tel
             if dugum == "iha":
                 armed = arm_telemetri_degeri(m)
@@ -1500,30 +1662,33 @@ class YksArayuz:
                     self.arm_acik = None
                     self.arm_durum_zamani = None
                 self._arm_ui_uygula()
-            mod = m.get("mod")
-            if isinstance(mod, str) and mod.strip():
-                mod = mod.strip().upper()
+            mod = temiz.get("mod")
+            if mod is not None:
                 self.mod[dugum] = mod
+                if not hasattr(self, "mod_durum_zamani"):
+                    self.mod_durum_zamani = {}
+                self.mod_durum_zamani[dugum] = _hb_simdi
                 if dugum == "iha":
-                    self._ucus("OTONOM GÖREV (AUTO)" if mod == "AUTO"
-                               else f"PIXHAWK MODU: {mod} — AUTO DEĞİL",
-                               YESIL if mod == "AUTO" else SARI)
-                if mod != "AUTO" and not self._manuel_uyarildi:
+                    self._ucus(*ucus_modu_sunumu(mod))
+                    self._acil_bekleyeni_tamamla()
+                if (mod not in ({"AUTO"} | ACIL_UCUS_MODLARI)
+                        and not self._manuel_uyarildi):
                     self._manuel_uyarildi = True
                     self._logla(f"⚠ {dugum.upper()} MANUEL MODA GEÇTİ — tam otonomi "
                                 "ihlali: UÇUŞ GEÇERSİZ sayılır (§6.4)", "sari")
             else:
                 self.mod.pop(dugum, None)
+                (getattr(self, "mod_durum_zamani", {}) or {}).pop(dugum, None)
                 if dugum == "iha":
                     self._ucus("PIXHAWK MODU YOK", KIRMIZI)
-            if dugum == "iha" and "x" in m and "y" in m:
-                self.iha_iz.append((float(m["x"]), float(m["y"])))
+            if dugum == "iha" and "x" in temiz and "y" in temiz:
+                self.iha_iz.append((temiz["x"], temiz["y"]))
                 del self.iha_iz[:-150]         # son 150 nokta
                 # geofence: İHA-UB dışına taşma = alan ihlali (§6.2/§6.4).
                 # T162: kural ve kenar uzunluğu SÖZLEŞMEDEN gelir — `300` burada
                 # ÇIPLAK yazılıydı (madde 16) ve üretimde `x,y` üreten yol
                 # olmadığı için bu kapı SAHADA HİÇ ateş almıyordu.
-                _ihlal = iha_ub_ihlali(m["x"], m["y"])
+                _ihlal = iha_ub_ihlali(temiz["x"], temiz["y"])
                 if _ihlal is not None:
                     self._logla(f"⚠ ALAN İHLALİ: {_ihlal[1]} — uçuş başarısız "
                                 "sayılır (§6.4)", "sari")
@@ -1797,16 +1962,17 @@ class YksArayuz:
                         m, acil_mesaji.get("seq"), acil_komut, node="iha")
                     and acil_tekrar.ack_geldi(m)):
                 self.acil_ack_zamani = time.monotonic()
-                self.acil_bekleyen_komut = None
                 self._logla(
                     f"İHA ALDI ✓ {acil_komut} Pixhawk COMMAND_ACK ACCEPTED; "
-                    "gerçek uçuş modu HEARTBEAT'ten ayrıca izleniyor", "yesil")
+                    f"{acil_komut} uçuş modu henüz DOĞRULANMADI — "
+                    "HEARTBEAT bekleniyor", "yesil")
                 etiket = getattr(self, "lbl_acil", None)
                 if etiket is not None:
                     etiket.config(
                         text=f"ACİL UÇUŞ KOMUTU: {acil_komut} KABUL ✓ · "
-                             "MOD TELEMETRİSİNİ DOĞRULA",
+                             f"{acil_komut} MODU BEKLENİYOR",
                         fg=SARI)
+                self._acil_bekleyeni_tamamla()
                 self._acil_ui_uygula()
             return
         if m.get("node") != "ika":
@@ -3053,21 +3219,53 @@ class YksArayuz:
         self.kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._arm_tik)
 
     def _acil_ui_uygula(self):
-        """RTL/LAND düğmelerini tek bekleyen işlem durumundan çiz."""
+        """RTL/LAND düğmelerini ACK + hedef-mod durumundan tek yerde çiz."""
         bekleyen = getattr(self, "acil_bekleyen_komut", None)
+        asama = ("MOD BEKLENİYOR" if bekleyen
+                 and getattr(self, "acil_ack_zamani", None) is not None
+                 else "ACK BEKLENİYOR")
         for komut, ad in (("RTL", "btn_rtl"), ("LAND", "btn_land")):
             dugme = getattr(self, ad, None)
             if dugme is None:
                 continue
             if bekleyen:
                 dugme.config(state="disabled", bg=SARI,
-                             text=f"{bekleyen} ACK BEKLENİYOR")
+                             text=f"{bekleyen} {asama}")
             elif self._kritik_teyit_bekliyor(komut):
                 dugme.config(state="normal", bg=SARI,
                              text=f"{komut}? TEKRAR BAS")
             else:
                 dugme.config(state="normal", bg=KIRMIZI,
                              text=f"ACİL {komut}")
+
+    def _acil_bekleyeni_tamamla(self, simdi=None):
+        """Acil komutu ancak ACK'ten SONRA gelen eşleşen modla tamamla."""
+        komut = getattr(self, "acil_bekleyen_komut", None)
+        ack_zamani = getattr(self, "acil_ack_zamani", None)
+        if komut not in ACIL_UCUS_MODLARI or ack_zamani is None:
+            return False
+        simdi = time.monotonic() if simdi is None else float(simdi)
+        mod_zamani = (getattr(self, "mod_durum_zamani", {}) or {}).get("iha")
+        iha_hb = (getattr(self, "son_hb", {}) or {}).get("iha")
+        if (mod_zamani is None or iha_hb is None
+                or mod_zamani < ack_zamani
+                or not 0.0 <= simdi - iha_hb <= ARM_DURUM_TAZELIK_S
+                or (getattr(self, "mod", {}) or {}).get("iha") != komut):
+            return False
+        deneme = getattr(getattr(self, "acil_tekrar", None), "deneme", 0)
+        self.acil_bekleyen_komut = None
+        self.acil_ack_zamani = None
+        etiket = getattr(self, "lbl_acil", None)
+        if etiket is not None:
+            etiket.config(
+                text=f"ACİL UÇUŞ KOMUTU: {komut} MOD DOĞRULANDI ✓ · "
+                     "ARAÇ DURUMUNU İZLE",
+                fg=KIRMIZI)
+        self._logla(
+            f"İHA {komut} MOD DOĞRULANDI ✓ Pixhawk COMMAND_ACK + "
+            f"ACK sonrası taze HEARTBEAT ({deneme} gönderim)", "yesil")
+        self._acil_ui_uygula()
+        return True
 
     def acil_komut(self, komut):
         """İki tık + aynı-seq tekrar + güçlü Pixhawk ACK ile RTL/LAND iste."""
@@ -3120,7 +3318,27 @@ class YksArayuz:
             self._acil_ui_uygula()
             return
         if durum == ONAYLANDI:
-            return
+            if self._acil_bekleyeni_tamamla():
+                return
+            ack_zamani = getattr(self, "acil_ack_zamani", None)
+            if (ack_zamani is not None
+                    and time.monotonic() - ack_zamani
+                    > ARM_DURUM_TAZELIK_S):
+                komut = self.acil_bekleyen_komut
+                self.acil_bekleyen_komut = None
+                self.acil_ack_zamani = None
+                self._logla(
+                    f"İHA {komut} ACK verdi ama ACK sonrası eşleşen taze "
+                    f"{komut} mod HEARTBEAT'i gelmedi — TAMAMLANMADI; "
+                    "RC pilotu fiziksel yedeği kullansın", "kirmizi")
+                etiket = getattr(self, "lbl_acil", None)
+                if etiket is not None:
+                    etiket.config(
+                        text=f"ACİL UÇUŞ KOMUTU: {komut} ACK VAR · MOD YOK · "
+                             "RC YEDEK",
+                        fg=KIRMIZI)
+                self._acil_ui_uygula()
+                return
         kok = getattr(self, "kok", None)
         if kok is not None:
             kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._acil_tik)
@@ -3612,11 +3830,19 @@ class YksArayuz:
                 tel_yas[ad] = None
             else:
                 yas = _mono - t
-                canli = yas < 3.0                      # ika_receiver failsafe eşiği
+                canli = 0.0 <= yas < 3.0               # ika_receiver failsafe eşiği
                 tel_durum[ad] = "TAZE" if canli else "BAYAT"
                 tel_yas[ad] = round(yas, 1)
-                nokta.config(fg=YESIL if canli else KIRMIZI)
                 tel = self.tel.get(ad) or {}
+                pixhawk_ok = (ad != "iha"
+                              or tel.get("pixhawk_canli") is True)
+                # Jetson/Navitas heartbeat'i ile Pixhawk canlılığı AYRI
+                # sinyallerdir. Jetson canlı ama otopilot kopukken yeşil nokta
+                # göstermek operatöre aracın kontrol edilebilir olduğu yalanını
+                # söyler; sarı = taşıyıcı canlı, Pixhawk kanıtı yok.
+                nokta.config(
+                    fg=(YESIL if canli and pixhawk_ok
+                        else SARI if canli else KIRMIZI))
                 parcalar = []
                 if "alt" in tel:
                     parcalar.append(f"{tel['alt']:.0f} m")
@@ -3626,6 +3852,8 @@ class YksArayuz:
                     parcalar.append(f"{tel['yon']:.0f}°")
                 if "bat" in tel:
                     parcalar.append(f"{tel['bat']:.1f} V")
+                if "bat_yuzde" in tel:
+                    parcalar.append(f"%{tel['bat_yuzde']} pil")
                 if "uydu" in tel:
                     parcalar.append(f"{tel['uydu']} uydu")
                 if ad == "iha":
@@ -3635,7 +3863,13 @@ class YksArayuz:
                 ek = (" · " + " · ".join(parcalar)) if parcalar else ""
                 mod = self.mod.get(ad)
                 if mod:
-                    ek += f" · mod {mod}" + ("" if mod == "AUTO" else " ⚠GEÇERSİZ")
+                    if mod in ACIL_UCUS_MODLARI:
+                        mod_notu = " ⚠ACİL EMNİYET"
+                    elif mod == "AUTO":
+                        mod_notu = ""
+                    else:
+                        mod_notu = " ⚠AUTO DIŞI"
+                    ek += f" · mod {mod}{mod_notu}"
                 metin.config(text=f"{ad.upper()} — hb {yas:.1f} sn{ek}"
                                   + ("" if canli else "  (BAĞLANTI KAYBI!)"))
         # CONTRACTS §6.8 — telemetri tazelik ÖZETİ hakem kaydına KENAR olayı
@@ -3677,9 +3911,7 @@ class YksArayuz:
         else:
             mod = self.mod.get("iha")
             if mod:
-                self._ucus("OTONOM GÖREV (AUTO)" if mod == "AUTO"
-                           else f"PIXHAWK MODU: {mod} — AUTO DEĞİL",
-                           YESIL if mod == "AUTO" else SARI)
+                self._ucus(*ucus_modu_sunumu(mod))
             else:
                 self._ucus("PIXHAWK MODU YOK", KIRMIZI)
         self._arm_ui_uygula()
@@ -3847,6 +4079,28 @@ class YksArayuz:
 # kanitini yayinlar. Sunucunun aktarimi ekranda gorup anlatmasina zaman birakir;
 # saha davranisini taklit eder (once aktarim, sonra inis — sartname §2.2.4).
 INIS_GECIKME_S = 6.0
+DEMO_IHA_KOMUTLARI = frozenset(("ARM", "DISARM", "PARACHUTE", "RTL", "LAND"))
+
+
+def demo_iha_komutunu_uygula(mesaj, armed, ucus_modu):
+    """Demo İHA durumunu üretimdeki kabul edilen komut kümesine göre ilerlet.
+
+    Dönüş ``(armed, ucus_modu, kabul)`` biçimindedir. Paraşüt bu basit demo
+    durumunda ayrı mekanik sensöre sahip olmadığı için yalnız ACK alır; ARM ve
+    acil mod durumları ise sonraki HEARTBEAT ile ayrıca doğrulanabilir.
+    """
+    if (not isinstance(mesaj, dict) or mesaj.get("type") != "CMD"
+            or mesaj.get("hedef") != "iha"
+            or mesaj.get("cmd") not in DEMO_IHA_KOMUTLARI):
+        return armed, ucus_modu, False
+    komut = mesaj["cmd"]
+    if komut == "ARM":
+        armed = True
+    elif komut == "DISARM":
+        armed = False
+    elif komut in ACIL_UCUS_MODLARI:
+        ucus_modu = komut
+    return armed, ucus_modu, True
 
 
 def demo_besle(yks_port, durum):
@@ -3873,6 +4127,7 @@ def demo_besle(yks_port, durum):
         son_karar_t = time.time()      # F6 (D-383): algi kesilince DONAR
         son_xy = (150.0, 150.0)        # GNSS kaybinda konum DONAR
         armed = False                  # demo da komut gonderiminden durum uydurmaz
+        ucus_modu = "AUTO"             # RTL/LAND sonraki heartbeat'te doğrulanır
         # 🔴 T179 (D-323): burada `while time.time() - t0 < 600` yaziyordu —
         # besleme 10 DAKIKADA SESSIZCE OLUYORDU. Sunum 10 dakikayi asarsa
         # (kaptana anlatirken cok olasi) heartbeat kesilir, ekran "baglanti
@@ -3885,8 +4140,10 @@ def demo_besle(yks_port, durum):
                 # halde ekran 3 saat sonra "-1.2 V" gosterirdi).
                 if durum.get("iha_bat", True):
                     bat = round(max(11.1, 12.6 - 0.0012 * sn), 2)
+                    bat_yuzde = max(20, int(round(92 - 0.02 * sn)))
                 else:                                      # F4: KRITIK (<%15)
                     bat = round(10.4 + 0.10 * math.sin(sn / 4), 2)
+                    bat_yuzde = 10
                 if durum.get("iha_gnss", True):            # F5: fix yok -> 0 uydu
                     uydu = 14 + int(sn / 7) % 3
                     son_xy = (round(150 + 85 * math.cos(sn / 11), 1),
@@ -3902,15 +4159,15 @@ def demo_besle(yks_port, durum):
                     son_karar_t = time.time()
                 hb = heartbeat("iha")                      # ek telemetri alanları:
                 hb.update(alt=round(30 + 1.8 * math.sin(sn / 5), 1),
-                          hiz=round(16.5 + 1.2 * math.sin(sn / 3.7), 1),
-                          bat=bat, uydu=uydu,
-                          mod="AUTO",                      # tam otonomi (§6.2)
-                          karar_yas=round(time.time() - son_karar_t, 2),
-                          x=son_xy[0], y=son_xy[1],
-                          lat=37.7648000 + son_xy[1] / 111_320.0,
-                          lon=38.2786000 + son_xy[0] / 88_600.0,
-                          gps_fix=3 if durum.get("iha_gnss", True) else 1,
-                          armed=armed)
+                           hiz=round(16.5 + 1.2 * math.sin(sn / 3.7), 1),
+                           bat=bat, bat_yuzde=bat_yuzde, uydu=uydu,
+                           mod=ucus_modu,
+                           karar_yas=round(time.time() - son_karar_t, 2),
+                           x=son_xy[0], y=son_xy[1],
+                           lat=37.7648000 + son_xy[1] / 111_320.0,
+                           lon=38.2786000 + son_xy[0] / 88_600.0,
+                           gps_fix=3 if durum.get("iha_gnss", True) else 1,
+                           armed=armed, pixhawk_canli=True)
                 link.send(encode(hb), hedef)
                 if time.time() >= sonra and not onay and time.time() - son_tx > 1.2:
                     link.send(encode(rota), hedef)         # ACK yok → tekrar
@@ -3935,12 +4192,11 @@ def demo_besle(yks_port, durum):
                     if not onay:
                         onay_t = time.time()
                     onay = True
-                elif (m.get("type") == "CMD" and m.get("hedef") == "iha"
-                      and m.get("cmd") in ("ARM", "DISARM", "PARACHUTE")):
-                    if m["cmd"] == "ARM":
-                        armed = True
-                    elif m["cmd"] == "DISARM":
-                        armed = False
+                else:
+                    armed, ucus_modu, kabul = demo_iha_komutunu_uygula(
+                        m, armed, ucus_modu)
+                    if not kabul:
+                        continue
                     link.send(encode(ack(
                         m["seq"], "iha", "CMD", ref_cmd=m["cmd"],
                         sonuc=ACK_SONUC_KABUL)), hedef)
@@ -3964,6 +4220,32 @@ def demo_besle(yks_port, durum):
 
     threading.Thread(target=iha, daemon=True).start()
     threading.Thread(target=ika, daemon=True).start()
+
+
+def kapanis_kaynaklarini_temizle(app, link):
+    """YKİ kaynaklarını birbirinden bağımsız ve en iyi gayretle kapat.
+
+    Kamera iş parçacığındaki ya da kanıt günlüğündeki bir kapanış hatası, kalan
+    kaynağın açık bırakılmasına neden olmamalıdır.  Hatalar stderr'e ayrı ayrı
+    yazılır; çağıran, kapanışın hangi parçalarının aksadığını dönüş değerinden
+    de görebilir.
+    """
+    kaynaklar = (
+        ("KAMERA", getattr(app, "kamera_istemci", None), "durdur"),
+        ("KANIT KAYDI", getattr(app, "hakem_kaydi", None), "kapat"),
+        ("HABERLEŞME", link, "close"),
+    )
+    hatalar = []
+    for ad, kaynak, metot_adi in kaynaklar:
+        if kaynak is None:
+            continue
+        try:
+            getattr(kaynak, metot_adi)()
+        except Exception as exc:
+            hata = f"{ad} KAPATMA HATASI: {exc}"
+            hatalar.append(hata)
+            print(hata, file=sys.stderr, flush=True)
+    return tuple(hatalar)
 
 
 def main():
@@ -4050,6 +4332,19 @@ def main():
         ika_peer = args.ika
         iha_peer = args.iha
 
+    oturum_kunyesi = yki_oturum_kunyesi(
+        fda_kipi=args.fda,
+        dinleme=args.serial or args.bind,
+        iha_hedef=iha_peer,
+        ika_hedef=ika_peer,
+        seri_port=args.serial,
+        baud=args.baud,
+        kamera_url=args.kamera_url,
+        algi_kaynagi=args.kaynak or YksArayuz.ALGI_VARSAYILAN_KAYNAK,
+        gorunum=args.gorunum or "saha",
+        baslatma_argumanlari=sys.argv[1:],
+    )
+
     hakem_log_yolu = (args.hakem_log if args.hakem_log is not None
                        else varsayilan_hakem_log_yolu(_PROJE_KOKU))
     kok = tk.Tk()
@@ -4058,7 +4353,8 @@ def main():
         app = YksArayuz(
             kok, link, otomatik_onay=False, demo=args.demo, ika_peer=ika_peer,
             iha_peer=iha_peer, kamera_url=args.kamera_url,
-            hakem_log_yolu=hakem_log_yolu)
+            hakem_log_yolu=hakem_log_yolu,
+            oturum_kunyesi=oturum_kunyesi)
     except Exception:
         link.close()
         kok.destroy()
@@ -4133,17 +4429,7 @@ def main():
     try:
         kok.mainloop()
     finally:
-        kamera = getattr(app, "kamera_istemci", None)
-        if kamera is not None:
-            kamera.durdur()
-        kayit = getattr(app, "hakem_kaydi", None)
-        if kayit is not None:
-            try:
-                kayit.kapat()
-            except Exception as exc:
-                print(f"KANIT KAYDI KAPATMA HATASI: {exc}",
-                      file=sys.stderr, flush=True)
-        link.close()
+        kapanis_kaynaklarini_temizle(app, link)
 
 
 if __name__ == "__main__":

@@ -29426,3 +29426,142 @@ Olculemeyen sey gecmis sayilmaz.
 
 En agir kod bulgusu — `_ornekle` sapma tavani ogrenmeyi kilitliyor — ayri bir
 tura verildi ve ayri kayitla yazilacaktir.
+
+### D-422 — SAAT KILIDI: sapma 30 dk'yi asinca kritik komutlar KALICI oluyordu; kapatildi ve MIMARIN KENDI TALIMATINDAKI acik amele tarafindan bulundu
+
+**Kusur (D-421 §11'de acik birakilmisti).** `comms/iha_komut_alici.py`
+`_saat_ofseti_ornekle`:
+
+    if simdi_mono is None or abs(ham) > KOMUT_SAAT_SAPMA_TAVANI_S:   # 1800 s
+        return
+
+Ofset bilinmiyorken `ham` **iki saatin farkidir**. Sapma 30 dakikayi asiyorsa
+ogrenmek icin gereken **orneginin ta kendisi eleniyor** -> ofset ASLA
+ogrenilmiyor -> `yas = ham - 0` hep tavani asiyor -> ARM/DISARM/RTL/LAND/
+PARACHUTE **kalici olarak reddediliyor**. Sabitin yorumu "NTP'siz bir Jetson'in
+makul sapma bandidir" diyordu; bu varsayim YANLIS: RTC pili olmayan Jetson
+sabit bir epoch'a acilir (1970 ya da son kapanma ani).
+
+#### 1. Teshis gercek nesneyle YENIDEN URETILDI (tahmin degil)
+
+| senaryo | ARM gecti mi | MAVLink'e giden | ofset |
+|---|---|---|---|
+| 2 saat sapma, 20 basamak merdiven | **HAYIR** | **0** | `None` (0 ornek) |
+| 1970'e acilmis Jetson (~53 yil) | **HAYIR** | **0** | `None` |
+| ofset -600 s ogrenildi, sonra +600 s ILERI adim | 60,00 s **OLU** | — | 241 komut reddedildi |
+
+Log: `CMD ARM seq=101: zaman RED (yas=-7195.25, ham=-7195.25, saat_ofseti=None,
+tavan=5.00 s)`.
+
+⚠ Amele bir ayrinti da olctu ve raporladi: **"her adim 60 s oldurur" DEGIL**;
+ilk denemesinde +5 s'lik adim olu pencere URETMEDI (yas tam tavana denk geldi).
+Olu pencereyi ureten sey **tavani asan ILERI adimdir**.
+
+#### 2. Onarim
+
+**KARAR-1 — tavan artik OGRENMEYI degil KAYMAYI engelliyor.** Mutlak filtre
+kaldirildi; yerine **iki kademeli kanit esigi**: aday ofset bandin ICINDEyse
+2 ornek yeter (bugunku davranis aynen korunur), DISINDAysa **6 adet
+birbirini destekleyen** ornek gerekir ("destekleyen" = aday ofsete gore yasi
+mesru, en uzun komut omru olan 8 s icinde). Ozet hala `min` (gecikme >= 0
+oldugundan en kucuk ham fark, gecikmesi en dusuk cercevedir — NTP minimum
+filtresi).
+
+**KARAR-2 — adim TRAFIKTEN degil YEREL olarak olculuyor.** Yeni
+`_yerel_saat_adimi`, `duvar_farki - monotonik_farki` ile duvar saatinin
+ziplayip ziplamadigini **YKS'den gelen hicbir alana bakmadan** soyler
+(`time.monotonic` adimdan etkilenmez, `time.time` ziplar). Esik
+`max(KOMUT_YAS_TAVANI_S.values())` = 8 s'ten turetildi. Adim bulununca pencere
+ATILMIYOR, `adim` kadar **duzeltiliyor** — gecikme bilgisi korunur, olu
+pencere sifirlanir.
+
+**KARAR-3 — gorunurluk.** Uc gorunur kayit: ofset ilk kez ogrenilince, yerel
+adim algilaninca, kestirim dusunce.
+
+Yeni sabitlerin hicbiri ciplak degil; ikisi mevcut `KOMUT_YAS_TAVANI_S`'ten
+TURETILDI (madde 16).
+
+#### 3. 🔴 MIMARIN TALIMATI HATALIYDI VE AMELE BUNU OLCEREK BULDU
+
+Mimar KARAR-2'yi "ardisik ornekler arasinda ofset ani ve kalici degistiyse"
+diye — yani **trafikten** — tarif etmisti. Amele once **oyle yazdi**, sonra
+kendi uygulamasini sinadi ve deligi **olctu**:
+
+> israrli **BAYAT** bir gonderici kendi **reddedilen** cerceveleriyle kestirimi
+> kendi uzerine yurutuyor — 2 saat sapmali kurulumda bayat damgali, gorulmemis
+> bir `seq` **10. israrda kapidan GECTI ve MAVLink'e ULASTI**
+> (ofset -7200.000 -> -7191.750).
+
+Bu, D-02'nin "gecikmis komut" savunmasini oldururdu. Amele o tasarimi **atti**,
+yerel olcume gecti, ve hem gerekceyi hem OLCUMU modul basligina
+**"REDDEDILEN ALTERNATIF"** olarak yazip
+`test_adim_kaniti_TRAFIKTEN_cikarilmaz_israrli_BAYAT_gonderici_yuruyemez`
+testiyle kilitledi.
+
+**Kayit icin:** mimarin verdigi mimari karar bu noktada yanlisti; amele onu
+uygulayip olcerek curuttu ve daha iyisini onerdi. Anayasa madde 19 iki yonlu
+calisti.
+
+#### 4. Curutme — replay durusu OLCULDU, iddia edilmedi
+
+Amele saldirgan rolunu oynadi (olculen sey **Pixhawk'a giden COMMAND_LONG**):
+
+| senaryo | COMMAND_LONG |
+|---|---|
+| ayni (oturum,seq,cmd) 40 kez | **1** |
+| 10 dk saklanip 500 kez | **1** |
+| yeni `seq`, damga eski (200 israr) | **1** |
+| yeni `oturum` + yeni `seq`, damga eski (200 israr) | **1** |
+| NTP adimi sonrasi eski cerceve | **0** |
+| bayat damgali PARACHUTE (200 israr) | **1** |
+
+Ayrica `git show HEAD:comms/iha_komut_alici.py` ile **eski modul yan yana
+yuklenip** onces/sonrasi kiyasi kosuldu: bes senaryonun besinde de sonuc
+BIREBIR AYNI.
+
+**Iki bagimsiz curutucunun ortak hukmu — ve durustce yaziliyor:**
+replay-ANAHTARI zayiflamadi, ama **tazelik TAVANI genisledi**. Tek ve dar bir
+durumda: **soguk alicida** (ofset henuz ogrenilmemis VE saldirgan tek konusan)
+yakalama yasi tavani 1800 s'den sinirsiza cikti; saldirgana maliyeti 3 paket
+yerine **7 paket**.
+
+Bunu kabul etmenin gerekcesi olculdu:
+  1. **Mesru YKS bir kez konusunca delik TAMAMEN kapaniyor** — 2 saat ve
+     1 gun bayat cerceveler icin 40/40 red, hem eski hem yeni kodda.
+  2. Delik **zaten vardi**: <= 10 dk bayat bir cerceve ESKI kodda da 3.
+     tekrarda geciyordu. Kaldirilan tavan bir tekrar savunmasi degil, o
+     deligin uzerine konmus keyfi bir yas siniriydi.
+  3. 🔴 **Saat kapisi zaten sahtecilik savunmasi DEGILDI** — bu da olculdu:
+     TAZE damgali, UYDURMA `oturum` iceren yepyeni bir cerceve **TEK PAKETTE**
+     MAVLink'e ulasiyor, **hem eski hem yeni kodda**. Gercek cevre
+     `izinli_kaynak` adres pinidir ve o DEGISMEDI.
+
+Yani takas: **garantili saha olumu** (RTC'siz Jetson'da tum kritik komutlar
+kalici red) ile **zaten var olan bir acigin bir varyantinin ucuzlamasi**
+arasinda. Ikincisi kabul edildi ve buraya yazildi.
+
+#### 5. Olcum — onarim sonrasi
+
+| senaryo | once | sonra |
+|---|---|---|
+| 2 saat sapma | hic gecmiyor | **7. basamakta** geciyor (ofset -7200,0) |
+| 1970 Jetson | hic gecmiyor | **7. basamakta** geciyor (ofset -1699999900,0) |
+| tavani asan ILERI adim | **60,00 s olu** | **0,25 s** (adimdan sonraki ILK komut geciyor) |
+
+ACK'li tekrar merdiveni 8 basamak x 0,25 s oldugu icin **operatorun tek basisi
+yeter** (~1,75 s). Ama kestirim **tam sinirda** olusuyor (7/8) — cuma kartina
+"tek basis gecmezse ikinci kez bas, ikincisi kesin gecer" notu dusuldu.
+
+#### 6. Kapi ve mutasyon
+
+`tests/test_iha_komut_saat_ve_tekrar.py` **18 -> 42 test**; `git diff -U0` ile
+**silinen assert = 0**, assert 71 -> 140 (yalniz ekleme).
+Mutasyon: (1) eski mutlak tavan geri konuldu -> **17 test dustu**;
+(2) `_yerel_saat_adimi` oldurulda -> **5 test dustu**. Her ikisinde de dosya
+`cmp` ile bayt-es geri yuklendi ve ayna bayt-es dogrulandi.
+
+Ayna guncellendi (`jetson_paket/kod/iha_komut_alici.py`) — Jetson'da kosan
+dosya paket kopyasidir.
+
+Regresyon: dokunulan modulun **12 test dosyasi / 212 test** ayri ayri kosuldu,
+hepsi OK; genel kapi 15/15 · 15/15.
