@@ -505,7 +505,7 @@ bölünür**, yeni geometri eklenmez; sonuç `rota_geometrisini_dogrula`'dan ge�
 
 | # | kaynak | formül | bugün üretilebilir mi |
 |---|---|---|---|
-| **(a)** | **irtifa + kamera FOV/odak** | `mpp = 2·h·tan(FOV/2)/W_px` · `mpp = h/f_px` | ✅ **birincil** — MAVLink `GLOBAL_POSITION_INT.relative_alt`, tek okuyucu `comms/inis_kaniti.py:143` |
+| **(a)** | **irtifa + kamera FOV/odak** | `mpp = 2·h·tan(FOV/2)/W_px` · `mpp = h/f_px` | ✅ **birincil** — MAVLink `GLOBAL_POSITION_INT.relative_alt`, tek okuyucu `comms/inis_kaniti.BagilIrtifaOkuyucu` (`comms/inis_kaniti.py:244-300`) |
 | (b) | **HB pedinin bilinen 2,0 m kenarı** | `mpp = HB_KENAR_M / pedin piksel kenarı` | ✅ **ikincil, yalnız DOĞRULAR** |
 
 **(b)'nin ölçülen başarımı** (n = 260 sentetik kadraj): tespit **260/260**, merkez hatası
@@ -810,7 +810,7 @@ Sistemin emniyet duruşu tek cümleyle özetlenir: **kanıt yoksa çıktı yoktu
 |---|---|---|
 | ölçek üretilemiyor | **rota ÜRETİLMEZ** → `NO_ROUTE(OLCEK_YOK)` | `karar_sozlesmesi.rota_olcek_reddi` |
 | ölçek kaynakları çelişiyor | ortalama alınmaz → ölçek **yok** sayılır | `olcek_capraz_kontrolu` |
-| güven < `ROTA_GUVEN_ESIGI` (0,20) | yol `None`, waypoint boş; ayrıca yayın katmanında **ikinci savunma** | `_rota_kararini_esikle` + `iha_sender.py:111-114` |
+| güven < `ROTA_GUVEN_ESIGI` (0,20) | yol `None`, waypoint boş; ayrıca yayın katmanında **ikinci savunma** | `_rota_kararini_esikle` + `iha_sender.send_open_route` güven kapısı (`rota_guven_reddi(conf)`, `comms/iha_sender.py:152-155`) |
 | zemin maskesi şüpheli | `ZEMIN_MASKESI_SUPHELI` (kaplama tavanı 0,55 · kenar dayanma tavanı 0,40) | `zemin_maskesi_reddi` |
 | model kaydı uyuşmuyor | model **yüklenmez** | `rpi_inference.load_model` |
 | kamera ardışık 30 kare düşürdü | **kontrollü bitiş** (`KAMERA_BITIS_DUSEN_KARE`) | `KAMERA_DUSEN_KARE_UST_SINIRI = 30` |
@@ -1363,7 +1363,7 @@ Bölümde geçen her sayının kaynağı. Biçim: **değer** · *dosya yolu* · 
 | Süre limitleri: 900 / 600 / 600 / 900 s · 4 mutasyonla düştüğü gösterildi | `codes/karar_sozlesmesi.py:1974-1991` · `tests/test_k5_k6_sure_limitleri.py` | — | — |
 | Algı körlüğünde heartbeat akmaya devam ediyordu (45–51 s) | `REVIEW_LOG.md` D-374 | ölçüm | 2026-09 |
 | Duvar saati / NaN / ekran çelişkisi kaçakları | `REVIEW_LOG.md` D-383 §2 | 3 bağımsız çürütücü ajan (357k token, 74 araç çağrısı) | 2026-09-01 |
-| İniş kanıtı zinciri: `ON_GROUND` + `relative_alt < 1 m`, aynı sysid, 3 ardışık çift; manuel düğme latch'i açmaz | `comms/inis_kaniti.py:329` · `tests/test_iha_landed_gate.py:313` | — | — |
+| İniş kanıtı zinciri: `ON_GROUND` + `relative_alt < 1 m`, aynı sysid, 3 ardışık çift; manuel düğme latch'i açmaz | `comms/inis_kaniti.yerde_mi` (`comms/inis_kaniti.py:695-735`) · `tests/test_iha_landed_gate.py:313` | — | — |
 | Sürücü arayüzü: `ARDISIK_HATA_TAVANI = 3` (10 Hz'de ~0,3 s), `DONANIM_YOK` | `CONTRACTS.md` §7.2 · `simulation/scripts/ika_surucu.py` · `tests/test_p3_ika_surucu.py` | — | 2026-09-02 |
 
 ### Zincir ve kapı özetleri
