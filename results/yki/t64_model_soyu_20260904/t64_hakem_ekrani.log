@@ -1,0 +1,7 @@
+KAYNAK=O:\navitas-local-train\calisma\sentetik_arena_kadraj_t66\images\train\sa_000026.jpg
+ALGI(navitas_seg_v36_best) arena_kadraj/sa_000026.jpg → 2·ORTA güven=0.982 · 2079 ms
+arena_kadraj/sa_000026.jpg → karar: 2·ORTA · güven 0.982 · 2079 ms · çıkarım: üretim (rpi_inference) · predict conf 0.30 · traversable %21 · blocked %20 · gösterim: sürüş koridoru · model: navitas_seg_v36_best.pt · ölçek 0.0781 m/px (TELEMETRİ/BEYAN · güven ×1.00 · kabul kümesi manifesti (kontrollü sentetik kadraj varsayımı)) · gövde açıklığı 14.1 px · C-uzayı UYGULANDI · darboğaz 22.0 px @ şerit 2 (tanı) · yayınlanan şerit 2 · rota şerit dağılımı 0/542/0 px
+
+KAYNAK=O:\navitas\data\arena_referans\sartname_s9_arena.png
+ALGI(navitas_seg_v36_best) arena_gercek/sartname_s9_arena.png → ROTA YOK · UC_BANT_TEMAS_YOK güven=0.000 · 52 ms
+arena_gercek/sartname_s9_arena.png → karar: ROTA YOK · UC_BANT_TEMAS_YOK · güven 0.000 · 52 ms · çıkarım: üretim (rpi_inference) · predict conf 0.30 · traversable %3 · blocked %9 · gösterim: segmentasyon maskesi (rota değil) · model: navitas_seg_v36_best.pt · ölçek YOK (D-90: eğik arena bakışında 2,0 m HB yatayda yaklaşık 72 px, dikeyde yaklaşık 38 px; tek skaler mpp geçersiz — yerel rota kararı üretilmez · hiçbir katman ölçek üretemedi — TELEMETRİ/BEYAN: irtifa/FOV yok ya da gecersiz · ARENA SINIRI: senaryo BEYAN EDILMEDI · ARAÇ REFERANSI: bu kaynakta tek skaler ölçek GEÇERSİZ (D-90) — katman ÇALIŞTIRILMADI) · C-uzayı UYGULANAMADI · Koridor alt uc bandina yeterli temas etmiyor; olculen alt=0/1059px, ust=111/1059px; gereken >= 22px.

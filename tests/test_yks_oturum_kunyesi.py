@@ -27,7 +27,13 @@ class OturumKunyesiTests(unittest.TestCase):
         with (mock.patch.object(yks_gui, "_kayit_profili",
                                 return_value=(profil, Path("registry.json"))),
               mock.patch.object(yks_gui, "_repo_commit_oku",
-                                return_value=commit)):
+                                return_value=commit),
+              mock.patch.object(yks_gui, "_repo_calisma_agaci_oku",
+                                return_value={"durum": "KIRLI",
+                                              "degisiklikler": [" M comms/yks_gui.py"],
+                                              "hata": None}),
+              mock.patch.object(yks_gui, "_dosya_sha256_oku",
+                                return_value="cd" * 32)):
             kunye = yks_gui.yki_oturum_kunyesi(
                 fda_kipi=True,
                 dinleme="0.0.0.0:5005",
@@ -51,6 +57,10 @@ class OturumKunyesiTests(unittest.TestCase):
         self.assertEqual("navitas_seg_v35_best.pt", kunye["model"]["dosya"])
         self.assertEqual(profil["sha256"], kunye["model"]["sha256"])
         self.assertEqual(commit, kunye["repo_commit"])
+        self.assertEqual("KIRLI", kunye["repo_calisma_agaci"]["durum"])
+        self.assertEqual([" M comms/yks_gui.py"],
+                         kunye["repo_calisma_agaci"]["degisiklikler"])
+        self.assertEqual("cd" * 32, kunye["yki_kaynak_sha256"])
         self.assertEqual("arena_kadraj", kunye["algi_kaynagi"])
         self.assertEqual("kamera", kunye["gorunum"])
         self.assertEqual(
@@ -60,11 +70,18 @@ class OturumKunyesiTests(unittest.TestCase):
     def test_git_kimligi_yoksa_kunye_uydurmaz(self):
         with (mock.patch.object(yks_gui, "_kayit_profili",
                                 return_value=({}, Path("registry.json"))),
-              mock.patch.object(yks_gui, "_repo_commit_oku", return_value=None)):
+              mock.patch.object(yks_gui, "_repo_commit_oku", return_value=None),
+              mock.patch.object(yks_gui, "_repo_calisma_agaci_oku",
+                                return_value={"durum": "BILINMIYOR",
+                                              "degisiklikler": [],
+                                              "hata": "OSError"}),
+              mock.patch.object(yks_gui, "_dosya_sha256_oku", return_value=None)):
             kunye = yks_gui.yki_oturum_kunyesi(
                 fda_kipi=False, dinleme="COM5", seri_port="COM5", baud=57600)
 
         self.assertIsNone(kunye["repo_commit"])
+        self.assertEqual("BILINMIYOR", kunye["repo_calisma_agaci"]["durum"])
+        self.assertIsNone(kunye["yki_kaynak_sha256"])
         self.assertEqual(57600, kunye["baud"])
         self.assertEqual("COM5", kunye["seri_port"])
 
@@ -123,6 +140,23 @@ class MainBaglantisiTests(unittest.TestCase):
         self.assertIn("oturum_kunyesi", anahtar)
         self.assertIsInstance(anahtar["oturum_kunyesi"], ast.Name)
         self.assertEqual("oturum_kunyesi", anahtar["oturum_kunyesi"].id)
+
+
+class RepoDurumuTests(unittest.TestCase):
+    def test_kirli_agac_degisen_satirlari_kunyeleyip_temiz_UYDURMAZ(self):
+        sonuc = mock.Mock(stdout=" M comms/yks_gui.py\n?? yerel.py\n")
+        with mock.patch.object(yks_gui.subprocess, "run", return_value=sonuc):
+            durum = yks_gui._repo_calisma_agaci_oku(KOK)
+        self.assertEqual("KIRLI", durum["durum"])
+        self.assertEqual([" M comms/yks_gui.py", "?? yerel.py"],
+                         durum["degisiklikler"])
+
+    def test_git_durumu_okunamazsa_BILINMIYOR(self):
+        with mock.patch.object(
+                yks_gui.subprocess, "run", side_effect=OSError("git yok")):
+            durum = yks_gui._repo_calisma_agaci_oku(KOK)
+        self.assertEqual("BILINMIYOR", durum["durum"])
+        self.assertEqual("OSError", durum["hata"])
 
 
 if __name__ == "__main__":

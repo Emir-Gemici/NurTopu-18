@@ -1,4 +1,4 @@
-"""NEDEN: T64 arena kaynaklarını gerçek v24 ile ekran ve log kanıtına bağlar.
+"""NEDEN: T64 arena kaynaklarını kayıtlı üretim modeliyle ekran/log kanıtına bağlar.
 
 KESIF MUAFIYETI: GUI/görsel kanıt üreten ELLE araç; çıktısı PNG ve log
   dosyasıdır, assert'i yoktur — otomatik kapıya çevrilemez, GÖZLE okunur.
@@ -24,7 +24,6 @@ for _alt in ("codes", "comms"):
     if str(KOK / _alt) not in sys.path:
         sys.path.insert(0, str(KOK / _alt))
 
-from karar_sozlesmesi import OLCEK_YOK_SEBEBI  # noqa: E402
 from yks_gui import YksArayuz  # noqa: E402
 
 
@@ -93,7 +92,13 @@ def main() -> int:
     gercek_yolu = gercek_yollari[0]
     gercek_sari = int(np.count_nonzero(np.all(
         gercek[1] == ROTA_RENGI_BGR, axis=2)))
-    if (f"ROTA YOK · {OLCEK_YOK_SEBEBI}" not in gercek[2]
+    # Yapısal ret, ölçek reddinden daha derinse karar başlığında korunur
+    # (CONTRACTS §6.4/3; YksArayuz._algi_kos). v36 bu tek gerçek/eğik karede
+    # UC_BANT_TEMAS_YOK diyebilir. T64'ün güvenlik iddiası sıralama değil:
+    # rota yayınlanmaması + D-90 ölçek reddinin hakeme açıkça gösterilmesidir.
+    if ("ROTA YOK" not in gercek[2]
+            or "ölçek YOK" not in gercek[2]
+            or "D-90" not in gercek[2]
             or gercek_sari != 0
             or "segmentasyon maskesi (rota değil)" not in gercek[2]):
         raise RuntimeError(

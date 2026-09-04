@@ -296,6 +296,38 @@ def _uretim_modeli_adi():
     return ad
 
 
+def _dogrulanmis_algi_modeli_yukle(*, calisan_imgsz, beklenen_dosya):
+    """Etkin algı modelini kayıtlı soyuyla doğruladıktan sonra yükle.
+
+    Yalnız dosya adını göstermek kanıt değildir: yanlış/bozulmuş bir ağırlık aynı
+    adla diskte durabilir. ``model_registry.resolve_model(verify=True)`` SHA-256,
+    dosya varlığı ve profil biçimini YOLO nesnesi kurulmadan önce doğrular. YKİ
+    ayrıca çalışan çıkarım boyunu profilin ``imgsz`` alanıyla karşılaştırır;
+    uyuşmazlıkta model hiç yüklenmez (fail-closed).
+    """
+    from model_registry import resolve_model
+
+    model_yolu, profil = resolve_model(
+        registry_path=_PROJE_KOKU / "config" / "model_registry.json",
+        verify=True)
+    if model_yolu.name != beklenen_dosya:
+        raise RuntimeError(
+            "YKİ algı modeli kayıt defterinden ayrıştı: "
+            f"beklenen={beklenen_dosya!r}, çözülen={model_yolu.name!r}")
+    try:
+        imgsz_uyumlu = int(profil.get("imgsz")) == int(calisan_imgsz)
+    except (TypeError, ValueError) as exc:
+        raise RuntimeError(
+            "YKİ algı modeli profilinde geçerli `imgsz` yok") from exc
+    if not imgsz_uyumlu:
+        raise RuntimeError(
+            "YKİ algı modeli çıkarım boyuyla ayrıştı: "
+            f"profil={profil.get('imgsz')!r}, çalışan={calisan_imgsz!r}")
+
+    from ultralytics import YOLO
+    return YOLO(str(model_yolu), task="segment"), model_yolu, profil
+
+
 def _arac_dedektoru_yolu():
     """Ölçek katman 3'ün DOTA OBB ağırlığı — `(yol|None, sebep)` (T86).
 
@@ -376,6 +408,35 @@ def _repo_commit_oku(kok=_PROJE_KOKU):
             and all(c in "0123456789abcdef" for c in commit) else None)
 
 
+def _repo_calisma_agaci_oku(kok=_PROJE_KOKU):
+    """Başlangıçtaki çalışma ağacı beyanını oku; okunamıyorsa temiz UYDURMA."""
+    try:
+        sonuc = subprocess.run(
+            ("git", "status", "--porcelain=v1", "--untracked-files=all"),
+            cwd=str(kok), capture_output=True, text=True, timeout=3.0,
+            check=True)
+    except (OSError, subprocess.SubprocessError) as exc:
+        return {"durum": "BILINMIYOR", "degisiklikler": [],
+                "hata": type(exc).__name__}
+    satirlar = [satir for satir in sonuc.stdout.splitlines() if satir]
+    return {"durum": "KIRLI" if satirlar else "TEMIZ",
+            "degisiklikler": satirlar, "hata": None}
+
+
+def _dosya_sha256_oku(yol):
+    """Koşan kaynak dosyanın tam özetini oku; hata varsa kanıt uydurma."""
+    import hashlib
+
+    try:
+        ozet = hashlib.sha256()
+        with Path(yol).open("rb") as akis:
+            for parca in iter(lambda: akis.read(1024 * 1024), b""):
+                ozet.update(parca)
+        return ozet.hexdigest()
+    except OSError:
+        return None
+
+
 def yki_oturum_kunyesi(*, fda_kipi, dinleme, iha_hedef=None,
                        ika_hedef=None, seri_port=None, baud=None,
                        kamera_url=None, algi_kaynagi=None, gorunum=None,
@@ -404,6 +465,11 @@ def yki_oturum_kunyesi(*, fda_kipi, dinleme, iha_hedef=None,
             "sha256": profil.get("sha256"),
         },
         "repo_commit": _repo_commit_oku(),
+        # Commit tek başına yeterli değildir: çalışma ağacı kirliyse koşan kod
+        # HEAD ile aynı olmayabilir. Durum + gerçek YKİ kaynak özeti birlikte
+        # uçuş sonrası "hangi ekran koştu?" sorusunu sessizce geçiştirmez.
+        "repo_calisma_agaci": _repo_calisma_agaci_oku(),
+        "yki_kaynak_sha256": _dosya_sha256_oku(Path(__file__)),
         "baslatma_argumanlari": list(baslatma_argumanlari),
     }
 
@@ -1508,7 +1574,7 @@ class YksArayuz:
                 self._logla(f"OPEN_ROUTE  yol={m['road']}({m['label']}) "
                             f"güven={m['conf']} seq={m['seq']} wp={len(m['waypoints'])}",
                             "yesil")
-                if self.t_iha1:
+                if self.t_iha1 is not None:
                     self._logla("⚠ GEÇERSİZLİK RİSKİ: aktarım İHA inişinden SONRA "
                                 "geldi — şartname §6.4: aktarım HAVADA tamamlanmalı!",
                                 "sari")
@@ -2009,7 +2075,7 @@ class YksArayuz:
             self.lbl_ika_go.config(text=f"İKA ALDI ✓ {damga}", fg=YESIL)
             self._logla(f"İKA ALDI ✓ IKA_GO ACK ref={ref} · {damga} · "
                         f"{self.ika_go_tekrar.deneme} gönderim", "yesil")
-            if self.t_ika0 and not self.t_ika1:
+            if self.t_ika0 is not None and self.t_ika1 is None:
                 self.btn_hb.config(state="normal", bg=SARI)   # HB TEMAS artık anlamlı
         if (self.rota and ref == self.rota["seq"]
                 and ref_tip in (None, "OPEN_ROUTE")
@@ -2626,17 +2692,14 @@ class YksArayuz:
                                        kare_olcek_kahini)
 
             if self.algi_model is None:
-                from ultralytics import YOLO
-                model_yolu = kok_dizin / "models" / self.ALGI_MODEL_DOSYA
-                self.algi_model = YOLO(str(model_yolu))
-                import hashlib
-                _h = hashlib.sha256()
-                with open(model_yolu, "rb") as _fh:
-                    for _blok in iter(lambda: _fh.read(1 << 20), b""):
-                        _h.update(_blok)
+                self.algi_model, model_yolu, model_profili = (
+                    _dogrulanmis_algi_modeli_yukle(
+                        calisan_imgsz=INFER_SIZE,
+                        beklenen_dosya=self.ALGI_MODEL_DOSYA))
                 self.algi_kuyruk.put(("log",
-                    f"{model_yolu.stem} modeli yüklendi: {model_yolu.name} "
-                    f"(SHA {_h.hexdigest()[:8]})"))
+                    f"{model_yolu.stem} modeli KAYITLI SOYLA doğrulandı: "
+                    f"{model_yolu.name} (SHA {model_profili['sha256'][:8]} · "
+                    f"imgsz {model_profili['imgsz']})"))
 
             img = cv2.imread(str(yol))
             t0 = time.perf_counter()
@@ -3368,7 +3431,7 @@ class YksArayuz:
             kok.after(int(ARM_TEKRAR_ARALIGI_S * 1000), self._acil_tik)
 
     def firlatma(self):
-        if self.t_iha0:
+        if self.t_iha0 is not None:
             return
         # KANIT KİLİDİ — düğme durumu TEK savunma değildir (T180 sınıfı):
         # klavye, otomasyon ya da doğrudan çağrı bu yolu düğme kapalıyken de
@@ -3392,7 +3455,10 @@ class YksArayuz:
                         "(şartname §6.2 hakem onaylı fırlatma) — REDDEDİLDİ",
                         "sari")
             return
-        self.t_iha0 = time.time()
+        # Görev süresi duvar saatinden ölçülmez. NTP/operatör saat düzeltmesi
+        # puanlanan süreyi geri veya ileri sıçratamaz; insan-okur tarih damgası
+        # HakemKaydi tarafından ayrıca gerçek saatle yazılır.
+        self.t_iha0 = time.monotonic()
         # CONTRACTS §6.8 — süre bütçesi §6.2/§5.3.2'nin PUANLANAN eksenidir;
         # başlangıç/bitiş damgaları ekrandan değil kayıttan doğrulanır.
         self._kanit_yaz("KRONOMETRE_BASLADI", kron="iha",
@@ -3402,9 +3468,9 @@ class YksArayuz:
         self.btn_iha_indi.config(state="normal", bg=SARI)
 
     def iha_indi(self):
-        if not self.t_iha0 or self.t_iha1:
+        if self.t_iha0 is None or self.t_iha1 is not None:
             return
-        self.t_iha1 = time.time()
+        self.t_iha1 = time.monotonic()
         sure = self.t_iha1 - self.t_iha0
         asim = sure > self.IHA_LIMIT
         self._kanit_yaz("KRONOMETRE_BITTI", kron="iha", sure_s=round(sure, 3),
@@ -3437,7 +3503,7 @@ class YksArayuz:
             self._logla("KİLİT ✋ Hakem onayı (ACK) olmadan İKA intikali "
                         "başlatılamaz (şartname §6.2) — komut REDDEDİLDİ", "sari")
             return
-        if self.t_ika0:
+        if self.t_ika0 is not None:
             return
         # K4: IKA_GO ACK gelene dek AYNI seq ile tekrar gönderilir (D-02).
         komut_mesaji = command("IKA_GO", "ika")
@@ -3446,7 +3512,7 @@ class YksArayuz:
         self._logla(f"CMD → ika: IKA_GO (seq={komut_mesaji['seq']}, ACK bekleniyor · "
                     f"{IKA_GO_TEKRAR_ARALIGI_S:.2f} s × ≤{IKA_GO_TEKRAR_UST_SINIRI})",
                     "mavi")
-        self.t_ika0 = time.time()
+        self.t_ika0 = time.monotonic()
         self.t_ika1 = None
         self._kanit_yaz("KRONOMETRE_BASLADI", kron="ika",
                         limit_s=self.IKA_LIMIT, devam=False)
@@ -3478,9 +3544,9 @@ class YksArayuz:
             self.kok.after(int(IKA_GO_TEKRAR_ARALIGI_S * 1000), self._ika_go_tik)
 
     def hb_temas(self):
-        if not self.t_ika0 or self.t_ika1:
+        if self.t_ika0 is None or self.t_ika1 is not None:
             return
-        self.t_ika1 = time.time()
+        self.t_ika1 = time.monotonic()
         s = self.t_ika1 - self.t_ika0
         ok = s <= self.IKA_LIMIT
         self._kanit_yaz("KRONOMETRE_BITTI", kron="ika", sure_s=round(s, 3),
@@ -3498,9 +3564,9 @@ class YksArayuz:
         self._logla(f"CEZA −{puan}: {sebep} (toplam −{self.ceza_toplam})", "sari")
 
     def alan_girisi(self):
-        if self.t_haz0:
+        if self.t_haz0 is not None:
             return
-        self.t_haz0 = time.time()
+        self.t_haz0 = time.monotonic()
         self._kanit_yaz("KRONOMETRE_BASLADI", kron="hazirlik",
                         limit_s=self.HAZIRLIK_LIMIT, devam=False)
         self._logla("HAZIRLIK · Alan girişi — 15:00 hazırlık süresi başladı (§6.2)",
@@ -3509,9 +3575,9 @@ class YksArayuz:
         self.btn_hazir.config(state="normal", bg=SARI)
 
     def takim_hazir(self):
-        if not self.t_haz0 or self.t_haz1:
+        if self.t_haz0 is None or self.t_haz1 is not None:
             return
-        self.t_haz1 = time.time()
+        self.t_haz1 = time.monotonic()
         s = self.t_haz1 - self.t_haz0
         puan = max(0, int((900 - s) / 30))
         self._kanit_yaz("KRONOMETRE_BITTI", kron="hazirlik", sure_s=round(s, 3),
@@ -3524,9 +3590,9 @@ class YksArayuz:
 
     def mudahale(self):
         # §6.2: hands-off sonrası müdahale = −100 ceza + süre hazırlığa eklenir
-        if not self.t_haz1:
+        if self.t_haz1 is None:
             return
-        self.t_haz0 += time.time() - self.t_haz1   # kronometre kaldığı yerden sürer
+        self.t_haz0 += time.monotonic() - self.t_haz1  # kaldığı yerden sürer
         self.t_haz1 = None
         # CONTRACTS §6.8: müdahale kronometreyi YENİDEN başlatmaz, KALDIĞI
         # yerden sürdürür — `devam=True` bu ayrımı kayıtta korur.
@@ -3572,7 +3638,7 @@ class YksArayuz:
                         "komut GÖNDERİLMEDİ (§5.3.2)", "kirmizi")
             return
         # İki adımlı emniyet: yanlışlıkla tek tık paraşüt açamaz
-        simdi = time.time()
+        simdi = time.monotonic()
         if simdi - self.parasut_teyit > 3.0:
             self.parasut_teyit = simdi
             self.btn_parasut.config(bg=KIRMIZI, text="EMİN MİSİN? tekrar bas (3 sn)")
@@ -3644,9 +3710,9 @@ class YksArayuz:
                            self._parasut_tik)
 
     def _kron_metin(self, t0, t1, limit):
-        if not t0:
+        if t0 is None:
             return "--:--", SOLUK
-        kalan = limit - ((t1 or time.time()) - t0)
+        kalan = limit - (((time.monotonic() if t1 is None else t1) - t0))
         dk, sn = divmod(int(abs(kalan)), 60)
         if kalan < 0:
             return f"-{dk:02d}:{sn:02d} AŞIM", KIRMIZI
@@ -4332,6 +4398,9 @@ def main():
         ap.error("--demo yalnız UDP kipinde kullanılabilir")
     if args.serial and args.ika:
         ap.error("--serial ile --ika birlikte kullanılamaz")
+    if args.serial and args.iha:
+        ap.error("--serial ile --iha birlikte kullanılamaz; seri kipte İHA "
+                 "aynı SiK hattındadır ve UDP hedefi uygulanmaz")
     if not args.serial and not args.demo and not args.ika:
         ap.error("UDP kipinde --ika HOST:PORT zorunlu")
     if not args.serial and not args.demo and not args.iha:

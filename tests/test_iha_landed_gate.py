@@ -340,7 +340,7 @@ class IhaLandedGateTests(unittest.TestCase):
         self.assertEqual(9501, yks.iha_landed_seq)
         yks._logla.reset_mock()
         link.send.reset_mock()
-        with mock.patch.object(yks_gui.time, "time", return_value=123.0):
+        with mock.patch.object(yks_gui.time, "monotonic", return_value=123.0):
             yks.ika_baslat()
 
         link.send.assert_called_once()

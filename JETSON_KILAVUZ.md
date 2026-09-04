@@ -678,19 +678,26 @@ python3 ~/navitas/codes/rpi_inference.py --camera \
   --yks-hedef <YKS_IP>:5005 --ika-hedef <IKA_IP>:5006
 ```
 
-SiK 433 MHz telsiz (saha, ACK beklenmez — tek hatta yayın):
+SiK 433 MHz telsiz (saha, çift yönlü ACK korunur; seri portun tek sahibi
+`seri_hub`dır):
 
 ```bash
-python3 ~/navitas/codes/rpi_inference.py --camera \
-  --kaynak "http://<TELEFON_IP>:4747/video" \
-  --mavlink udpin:0.0.0.0:14550 --mav-sysid 1 --fov 78 \
-  --telsiz-seri /dev/ttyUSB0 --telsiz-baud 57600
+KIP=sik SIK_SERI=/dev/ttyUSB0 FOV=<OLCULEN_FOV> \
+  bash jetson_paket/jetson_baslat.sh --kuru
+sudo -E KIP=sik SIK_SERI=/dev/ttyUSB0 FOV=<OLCULEN_FOV> \
+  bash jetson_paket/jetson_baslat.sh --kapi
+sudo -E KIP=sik SIK_SERI=/dev/ttyUSB0 FOV=<OLCULEN_FOV> \
+  bash jetson_paket/jetson_baslat.sh
 ```
 
-Başlangıçta `telsiz halkasi: yks=... ika=... seri=... · heartbeat 1 s` satırını
-gör; çıkışta `UYARI: telsiz yayin hatalari` basılırsa halka kopuktur. YKS tarafında
-`comms/yks_gui.py`, İKA tarafında `IkaReceiver` dinler. ⚠ SiK üzerinde ölçüm
-**henüz yapılmadı**; UDP loopback ölçüldü (`tests/test_rpi_telsiz_yayin.py`).
+`rpi_inference.py --telsiz-seri ...` komutunu **çalıştırma**: algı, iniş yayıncısı
+ve komut alıcısı aynı seri porta ayrı ayrı sahip olamaz. Başlatıcı bu bayrağı sert
+reddeder; `/dev/ttyUSB0`ı yalnız `seri_hub` açar ve üç süreci UDP loopback ile
+çoğullar. Böylece rota/telemetri ile YKS komut ACK'ları aynı çift yönlü hatta kalır.
+Durumu `bash jetson_paket/jetson_baslat.sh --durum` ile gör. ⚠ SiK üzerinde gerçek
+RTT/kayıp/menzil ölçümü **henüz yapılmadı**; UDP loopback ölçüldü
+(`tests/test_rpi_telsiz_yayin.py`). Ayrıntılı tek-sahip yordamı:
+`jetson_paket/JETSON_BASLAT.md`.
 
 ---
 

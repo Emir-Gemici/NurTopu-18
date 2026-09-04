@@ -257,7 +257,7 @@ class YksKomutDurustluguTests(unittest.TestCase):
         arayuz = self._arayuz(adres_var=True)
         arayuz.parasut_teyit = 0.0        # bekleyen teyit YOK
 
-        with mock.patch.object(yks_gui.time, "time", return_value=100.0):
+        with mock.patch.object(yks_gui.time, "monotonic", return_value=100.0):
             arayuz.parasut()              # 1. tık: teyit (damga = 100.0)
             arayuz.parasut()              # 2. tık: PARACHUTE gider
 
@@ -275,7 +275,7 @@ class YksKomutDurustluguTests(unittest.TestCase):
         arayuz = self._arayuz(adres_var=True)
         arayuz.parasut_teyit = 0.0        # bekleyen teyit YOK
 
-        with mock.patch.object(yks_gui.time, "time", return_value=100.0):
+        with mock.patch.object(yks_gui.time, "monotonic", return_value=100.0):
             arayuz.parasut()              # yalnız 1. tık
 
         self.assertEqual("EMİN MİSİN? tekrar bas (3 sn)",
@@ -290,7 +290,7 @@ class YksKomutDurustluguTests(unittest.TestCase):
     def test_parasut_adres_yokken_ceza_ve_basari_uydurmaz(self):
         arayuz = self._arayuz()
 
-        with mock.patch.object(yks_gui.time, "time", return_value=100.0):
+        with mock.patch.object(yks_gui.time, "monotonic", return_value=100.0):
             arayuz.parasut()
 
         self._kirmizi_hata_dogrula(arayuz, "PARACHUTE")
@@ -303,7 +303,7 @@ class YksKomutDurustluguTests(unittest.TestCase):
     def test_parasut_adres_varken_eskisi_gibi_tetiklenir(self):
         arayuz = self._arayuz(adres_var=True)
 
-        with mock.patch.object(yks_gui.time, "time", return_value=100.0):
+        with mock.patch.object(yks_gui.time, "monotonic", return_value=100.0):
             arayuz.parasut()
 
         self._komut_dogrula(arayuz, "PARACHUTE")
