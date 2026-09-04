@@ -335,7 +335,13 @@ HTTP sunucu açıp Nano'dan çek:
 ```
 
 **Kapı:** aktarım hangi yolla yapılırsa yapılsın, Nano'da
-`ls ~/wheels | wc -l` **48** ve `MANIFEST.txt` içindeki dosya sayısı **405**
+`ls ~/wheels/*.whl | wc -l` **48** ve `MANIFEST.txt` içindeki dosya sayısı **405**
+
+⚠ **`*.whl` süzgeci şart.** `wheels/` içinde paketlerin yanında 3 tane metin dosyası
+da bulunur (`INDIRME_RAPORU.txt`, `kaynak_paketler.txt`, `requirements_nano.txt`).
+Süzgeci düşürürsen `ls` onları da sayar ve çıktı 51'e çıkar — kopya kusursuz olsa
+bile kapı düşer, sen de USB'yi suçlarsın. 4 Eylül'de kapı tam bu yüzden yanlış
+yazılmıştı (D-423)
 ile karşılaştırılır. Eksikse kurulum başlatılmaz.
 
 ```bash

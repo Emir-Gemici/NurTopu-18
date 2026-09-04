@@ -21,7 +21,7 @@
 | ✅ | Paket aynası `scripts/jetson_paket_hazirla.py` | 18 dosya · `paket_0904.txt` |
 | ✅ | Model dosyaları pakette | `navitas_seg_v36_best.pt` **52,3 MB** + `_512_fp16.onnx` **52,0 MB** *(kartın önceki hâli 54,8 / 54,6 diyordu — yanlıştı, ölçüldü ve düzeltildi)* |
 | ✅ | Mühür `scripts/surum_dondur.py --dogrula` | exit 3 "DONDURULMADI" — mühür **17 Eylül**, bugün beklenen değer · `muhur_0904.txt` |
-| ✅ | Çevrimdışı tekerlekler `wheels/` | **48 dosya · 246 MB** *(kart 51 diyordu — ölçüldü ve düzeltildi)* |
+| ✅ | Çevrimdışı tekerlekler `wheels/` | **51 dosya · 246 MiB** = **48 `.whl`** + 3 metin (`INDIRME_RAPORU.txt`, `kaynak_paketler.txt`, `requirements_nano.txt`). ⚠ Saha kapısı **`.whl` sayar**: `ls ~/wheels/*.whl | wc -l` = **48**. Süzgeçsiz `ls` **51** basar — 4 Eylül'de kapı yanlış sayıyla yazılmıştı, doğru kopyada düşerdi (D-423) |
 | ✅ | Saha belleği `scripts/bellek_hazirla.py` | **YENİDEN ÜRETİLDİ** — 405 dosya → `O:\navitas_bellek` · `bellek_0904.txt`, çıkış 0. Bayat işareti kalktı; **USB'ye artık kopyalanabilir** |
 
 **Cuma akşamı tekrar koşulacak:** tam süit (yukarıdaki ⏳ satırı) + genel kapı.
@@ -33,21 +33,22 @@ Gün içinde kod değişmediyse geri kalanı geçerlidir.
 |---|---|---|
 | ~~☐~~ | ~~microSD ≥ 64 GB + kart okuyucu~~ **GEREKMİYOR** (3 Eylül: kartta microSD yuvası yok — eMMC modül) | **satın alma listesinden ÇIKTI** |
 | ☐ | **CUMARTESİ İLK İŞ: Nano'yu aç ve bak** — eMMC'de JetPack kurulu geliyor mu? (üçüncü parti kitlerin çoğu kurulu gelir) | `JETSON_NANO_KURULUM.md` §1.1 · 5 dakika · flash'lamadan ÖNCE |
-| 🛒 | ~~5 V / 5 A UBEC al~~ **SİPARİŞ EDİLDİ (4 Eylül)** — kargo cumartesi sabahına yetişmeli; yetişmezse 11:00 kablolama bloğu yarım kalır | Jetson beslemesi; FCHUB'ın küçük BEC'i yetmez |
-| 🛒 | ~~JST-GH 6-pin kablo + dişi-dişi jumper~~ **SİPARİŞ EDİLDİ (4 Eylül)** | TELEM1 (SiK) ve TELEM2 → Nano UART |
+| ✅ | ~~5 V / 5 A UBEC~~ **ALINDI (4 Eylül akşamı, kullanıcı beyanı)** — kargo riski KALKTI. ⚠ Kutu açılınca **etiketi oku**: çıkış **5 V**, akım **≥ 5 A**, giriş **4S'i (16,8 V) kaldırmalı**. 3 A'lik bir BEC Nano'nun MAXN kipini besleyemez | Jetson beslemesi; FCHUB'ın 2 A BEC'i yetmez. **J48 jumper takılı olmalı** (`JETSON_NANO_KURULUM.md` §2.1) |
+| 🛒 | JST-GH 6-pin kablo + dişi-dişi jumper — **SİPARİŞ EDİLDİ (4 Eylül); elde olduğu BEYAN EDİLMEDİ** | TELEM1 (SiK) ve TELEM2 → Nano UART. ⚠ UBEC geldi ama bu kablo gelmezse Pixhawk↔Nano hattı yine kurulamaz — **ayrı kalemdir, ayrı sorulur** |
 | ☐ | **USB webcam** (yedek kamera) | CSI yolu ilk gün açılmazsa `--kaynak 0` |
 | ✅ | ~~XT60/XT90 fiş, kablo bağı, ısı makaronu, damper bant~~ **HAZIR (4 Eylül)** | kablolama |
 | ☐ | **Yedek pervane seti (12×10, CW+CCW)** | ilk uçuşlarda en sık kırılan parça |
 | ☐ | (öneri) **2. pil 4S 10 Ah + ≥150 W şarj** | tek pil → günde 2 uçuş |
 | 🛒 | ~~YEDEK PLAN: Ubuntu'lu x86_64 bilgisayar~~ **AYARLANDI (4 Eylül)** — yalnız eMMC boş çıkarsa kullanılır | eMMC BOŞ çıkarsa SDK Manager ile flash gerekir; **Windows'ta yapılamaz** · `JETSON_NANO_KURULUM.md` §1.2 |
 | 🛒 | ~~Taşıyıcı kartın kurtarma (FC REC) pini — üretici kılavuzu~~ **TEMİN EDİLDİ (4 Eylül)** | flash gerekirse pin adı tahmin edilemez |
-| 🔴 | **NANO'YA İNTERNET** — ethernet+yönlendirici / dizüstünden paylaşım / telefon USB tethering (en az biri sahada hazır olmalı) | `python3.8` **apt ile** kurulur ve çevrimdışı yedeği YOKTUR. İnternet yoksa venv38 kurulamaz → `ultralytics` yok → **algı zinciri hiç çalışmaz**. Yordam: `JETSON_NANO_KURULUM.md` §3.1 |
+| ✅ | **NANO'YA İNTERNET — ETHERNET seçildi (4 Eylül, kullanıcı beyanı).** Doğru seçim: Nano'da yerleşik Wi-Fi **yoktur** (`JETSON_NANO_KURULUM.md` §2.1). 🔴 **Kapı — apt'ye dokunmadan önce:** `ping -c 2 archive.ubuntu.com && sudo apt update`. Kablo takılı olması internet demek değildir (WAN'sız modem / switch / ICS kapalı) | `python3.8` **apt ile** kurulur ve çevrimdışı yedeği YOKTUR. İnternet yoksa venv38 kurulamaz → `ultralytics` yok → **algı zinciri hiç çalışmaz**. Yordam: `JETSON_NANO_KURULUM.md` §3.1 |
 | ☐ | **Taşıyıcı kartın MODELİ** (üretici + model adı) — depoda hiçbir yerde yazmıyor | eMMC boş çıkarsa FC REC pini ve flash yordamı modele bağlıdır · **BEYAN GEREKLİ (insan)** |
 | ☐ | *(yalnız eMMC boş çıkarsa)* NVIDIA developer hesabı · ~20 GB SDK Manager indirmesi · **micro-USB kablo** | "Ubuntu'lu makine ayarlandı" bunları kapsamıyor; üçü de ayrı kalem · `JETSON_NANO_KURULUM.md` §1.2 |
 | ☐ | (öneri) GPU torch wheel'i (JetPack 4.6 / Py3.8) indir, belleğe koy | v36 YOLOv8m; CPU'da FPS kapısı düşebilir |
 | ✅ | ~~Küçük ekran + klavye, ethernet kablosu~~ **HAZIR (4 Eylül)** | Nano ilk açılış |
 | ✅ | ~~Multimetre, tartı, baret/yelek~~ **HAZIR (4 Eylül)** | kablolama kontrolü, UHDR kütle, saha |
-| ⏳ | `O:\navitas_bellek` → **USB'ye kopyala** — klasör **HAZIR** (4 Eylül 01:13, HEAD `8117c24`, 405 dosya, 1268,5 MB, eksik zorunlu 0, düzeltilmiş cuma kartı içinde). **Tek eksik: USB takmak.** | kopyalayınca `MANIFEST.txt` ile doğrula |
+| ⏳ | `O:\navitas_bellek` → **USB'ye kopyala** — klasör **HAZIR** ve depoyla **bayt-eş doğrulandı**. **USB bir takım arkadaşında (4 Eylül beyanı)** — kopyalama bu PC'de yapılır, yani USB **kaynağın yanına gelmeli**. ⚠ Ethernet geldiği için USB artık **TEK YOL DEĞİL**: dosyalar `scp`/`http` ile de geçirilebilir (`JETSON_NANO_KURULUM.md` §3.4) — bu kalem **tıkayıcı olmaktan çıktı, yedeği var** | kopyalayınca `MANIFEST.txt` ile doğrula; hangi yolla gelirse gelsin Nano'da `ls ~/wheels \| wc -l` = **48** |
+| 🔴 | **YKS dizüstüne SABİT IP ver** (yönlendiricide DHCP rezervasyonu ya da adaptöre statik adres) — *ethernet kararının açtığı yeni kalem* | `YKS_IP` `/etc/navitas.env`'e **elle** yazılır. DHCP adresi değiştirirse alıcı **tüm** ARM/DISARM/RTL/LAND/PARAŞÜT komutlarını reddeder ve bunu **yalnız Jetson tarafında** loglar — YKS ekranında hiçbir uyarı çıkmaz (D-421 §8). Yordam: `SAHA_RUNBOOK.md` §3 |
 | ☐ | Bu kartı + **`SAHA_RUNBOOK.md`** + `FAZ_B_GUN_PLANI.md` + `JETSON_NANO_KURULUM.md` **yazdır** | sahada ekran olmayabilir. 🔴 RUNBOOK ATLANMAZ: tüm başlatma komutları, YKS operatör kartı ve SiK hub yordamı §2–3'tedir |
 
 > ℹ️ **🛒 ve ✅ işaretli satırlar KULLANICI BEYANIDIR** (4 Eylül), depoda

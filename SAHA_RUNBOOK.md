@@ -121,6 +121,15 @@ grep YKS_IP /etc/navitas.env
 İkisi **eşit olmalı**. Değilse `navitas.env`'i düzelt ve
 `sudo systemctl restart navitas-komut` koş.
 
+🔴 **ÖNLEYİCİ ADIM — ethernet + yönlendirici kullanıyorsan bunu SAHA GÜNÜNDEN ÖNCE yap.** DHCP, YKS dizüstüne her açılışta farklı adres verebilir; o zaman pin sessizce yanlışlanır ve yukarıdaki kapı her seferinde düşer. İki yoldan biri:
+
+1. **Yönlendiricide DHCP rezervasyonu** — dizüstünün MAC adresine sabit IP bağla.
+2. **Adaptöre statik adres** — Windows: Ağ Bağlantıları → Ethernet → IPv4 →
+   *Şu IP adresini kullan*. Jetson ile aynı alt ağda olsun.
+
+⚠ Beyan değiştiğinde `--kur` **yeniden koşulur**; `restart` yeni argümanları canlı
+sürece uygular (`enable --now` uygulamazdı, D-405).
+
 **Saha teşhisi — "ARM'a basıyorum, hiçbir şey olmuyor":**
 ```bash
 journalctl -u navitas-komut -n 30 --no-pager | grep -i "kaynagi RED"

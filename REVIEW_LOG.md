@@ -29565,3 +29565,56 @@ dosya paket kopyasidir.
 
 Regresyon: dokunulan modulun **12 test dosyasi / 212 test** ayri ayri kosuldu,
 hepsi OK; genel kapi 15/15 · 15/15.
+
+### D-423 — SAHA KAPISI YANLIS SAYIYLA YAZILDI: `ls ~/wheels | wc -l` **51** basar, kapi **48** bekliyordu — DOGRU bir kopyada duserdi
+
+**Kusuru mimar kendi "duzeltmesi" ile uretti.** D-421 §4'te cuma karti
+"51 dosya" diyordu; mimar olctu, **48** buldu, karti "duzeltti" ve ayni turda
+`JETSON_NANO_KURULUM.md` §3.4'e su kapiyi yazdi:
+
+    ls ~/wheels | wc -l   ->  **48** beklenir
+
+Iki sayi da gercek, ama **ayni seyi olcmuyorlar**:
+
+| olculen | deger |
+|---|---|
+| `wheels/` icindeki **tum** dosyalar | **51** |
+| yalniz `.whl` paketleri | **48** |
+| metin dosyalari (INDIRME_RAPORU.txt, kaynak_paketler.txt, requirements_nano.txt) | **3** |
+
+`ls` suzgecsizdir; metin dosyalarini da sayar. Yani kapinin **komutu** 51
+basiyor, **beklentisi** 48. Kopya kusursuz olsa bile kapi duser.
+
+#### Neden tehlikeli
+
+Kapinin kendi metni "Eksikse kurulum baslatilmaz" diyor. Sahadaki insan dogru
+kopyalanmis bir bellekte **51 != 48** gorup kurulumu durdurur, USB'yi
+sucLar ve yeniden kopyalamaya calisir. Kaybedilen sey zaman degil **guven**:
+bir kapi bir kez yanlis yere bagirdiginda sonraki dogru bagirisi da dinlenmez.
+
+#### Onarim
+
+Kapi anlamli sayiyi olcsun: `ls ~/wheels/*.whl | wc -l` = **48**.
+Karta ikisi de yazildi ki sayi bir daha karistirilmasin.
+
+#### Kapi — sayilar artik belgeye ELLE yazilmiyor, DOGRULANIYOR
+
+`tests/test_wheels_sayisi_belgelerle_tutarli.py` (4 test): dosya sistemini
+sayar ve hem kurulum kilavuzundaki kapiyi hem karttaki iki sayiyi onunla
+karsilastirir. Bir `.whl` eklenir/cikarilirsa **kapi duser**, belge sessizce
+bayatlayamaz. Vakumluluk testi de var: `.whl` sayisi ile toplam dosya sayisi
+**esit olmamali** — esitlerse test kendi kendini anlamsizlastirmis demektir
+ve bunu soyler.
+
+#### 🔴 ORUNTU — bu, olcum aletinin kendisinin olculmedigi BESINCI vaka
+
+D-415 (yazim korlugu), D-419 §5 (kalitim korlugu), D-421 §2 (runbook substring
+kapisi), sahte-kapi dedektoru, ve simdi bu. Oncekilerden farki: bu sefer kusuru
+**duzeltme turu uretti**. D-421'de yazilan kural — "yeni bir kapi yazildiginda
+'bildigim ornegi buluyor mu' + 'bulmamasi gerekeni bulmuyor mu' ikilisi yazilir"
+— o turda yazilan kapinin **kendisine uygulanmamisti**.
+
+Kural genisletildi: **bir belgeye sayi yazan her duzeltme, o sayiyi ureten
+komutun gercekten o sayiyi bastigini gostermek zorundadir.** "Olctum, 48"
+yeterli degil; kapinin komutu `ls ~/wheels | wc -l` ise kanit o komutun
+ciktisidir, baska bir sayma yonteminin degil.
