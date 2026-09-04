@@ -108,6 +108,15 @@ SERIT_CIZIM_TABLOSU = {
 SEMATIK_GOSTERIM_UYARISI = (
     "SEMATIK GOSTERIM — serit tablosundan turetildi, GPS degil")
 ANKOR_YOK_UYARISI = "ANKOR YOK"
+# Harita üstünde üç ayrı metin katmanı vardır: semantik uyarı, renk açıklaması
+# ve HB etiketi. Aynı y koordinatına bırakıldıklarında geniş ekranda bile üst
+# üste binerler. Üst bant bu üçüne ayrılmış çizim alanıdır; arena bunun altında
+# başlar. Değerler görev/geometri eşiği değil, DPI ölçekli UI yerleşimidir.
+HARITA_YAN_KENAR_PX = 34
+HARITA_ALT_KENAR_PX = 34
+HARITA_UST_BANT_PX = 96
+HARITA_UYARI_Y_PX = 8
+HARITA_RENK_ACIKLAMA_Y_PX = 52
 
 # ── Hakem kanıt kaydı — olay kümesi (CONTRACTS §6.8) ─────────────────────────
 # NEDEN: kayıt 21 Eylül'de şartname §2.2.3 onayının DAYANAĞIDIR; ekrandaki
@@ -231,7 +240,17 @@ def sematik_uyari_yerlesimi(genislik_px):
     inset_sol, _ust, _sag, _alt = inset_kutusu(genislik_px)
     sol = S(12)
     genislik = max(0, inset_sol - S(8) - sol)
-    return sol, S(8), genislik
+    return sol, S(HARITA_UYARI_Y_PX), genislik
+
+
+def harita_cizim_alani(genislik_px, yukseklik_px):
+    """Üst yazı bandının altında kalan kare arena çizim alanını döndür."""
+    sol = S(HARITA_YAN_KENAR_PX)
+    ust = S(HARITA_UST_BANT_PX)
+    kullanilabilir_w = max(0, genislik_px - sol - S(HARITA_YAN_KENAR_PX))
+    kullanilabilir_h = max(0, yukseklik_px - ust - S(HARITA_ALT_KENAR_PX))
+    olcek = min(kullanilabilir_w, kullanilabilir_h)
+    return sol, ust, olcek
 
 
 def _kayit_profili():
@@ -337,6 +356,11 @@ def _udp_adres(deger):
     if not host or not 1 <= port <= 65535:
         raise argparse.ArgumentTypeError("HOST dolu, PORT 1..65535 olmalı")
     return host, port
+
+
+def yks_udp_linki_ac(bind):
+    """YKİ dinleme portunu tek sahipli aç; ikinci süreç sessizce bayt çalamaz."""
+    return UDPLink(bind=bind, reuse=False)
 
 
 def _repo_commit_oku(kok=_PROJE_KOKU):
@@ -1186,10 +1210,9 @@ class YksArayuz:
         """Metre (0..50, y kuzey) → canvas pikseli."""
         w = self.harita.winfo_width() or 480
         h = self.harita.winfo_height() or 480
-        kenar = S(34)
-        olcek = min(w, h) - 2 * kenar
-        px = kenar + (x_m / ARENA_M) * olcek
-        py = h - kenar - (y_m / ARENA_M) * olcek   # y yukarı = kuzey
+        sol, ust, olcek = harita_cizim_alani(w, h)
+        px = sol + (x_m / ARENA_M) * olcek
+        py = ust + (1.0 - y_m / ARENA_M) * olcek   # y yukarı = kuzey
         return px, py
 
     def _harita_ciz(self):
@@ -1221,10 +1244,11 @@ class YksArayuz:
         if acik is not None:
             c.create_rectangle(x0, y0, x1, y1, fill=KIRMIZI, stipple="gray12",
                                outline="")
-            lx, ly = self._mxy(0.8, 51.8)
-            c.create_text(lx, ly, text="■ yeşil = geçilebilir açık yol   "
-                                       "■ kırmızı = gidilemez (moloz / kapalı)",
-                          fill=SOLUK, font=self.f_kucuk, anchor="w")
+            lx, _uyari_y, aciklama_w = sematik_uyari_yerlesimi(w)
+            c.create_text(
+                lx, S(HARITA_RENK_ACIKLAMA_Y_PX),
+                text="■ YEŞİL: açık/geçilebilir   ■ KIRMIZI: kapalı/moloz",
+                fill=SOLUK, font=self.f_kucuk, anchor="nw", width=aciklama_w)
         for yol, geometri in SERIT_CIZIM_TABLOSU.items():
             xm, yari_genislik_m, giris_y_m, cikis_y_m = geometri
             secili = (yol == acik)
@@ -4328,7 +4352,13 @@ def main():
         iha_peer = None
     else:
         h, p = args.bind.split(":")
-        link = UDPLink(bind=(h, int(p)))
+        try:
+            link = yks_udp_linki_ac((h, int(p)))
+        except OSError as exc:
+            ap.error(
+                f"YKİ UDP dinleme ucu açılamadı ({args.bind}): {exc}. "
+                "Başka bir YKİ/izleyici aynı portu kullanıyor olabilir; çalışan "
+                "oturumu kapatın veya açıkça farklı --bind portu seçin.")
         ika_peer = args.ika
         iha_peer = args.iha
 
