@@ -52,7 +52,27 @@ for _akim in (sys.stdout, sys.stderr):
 # Pixhawk 6C = ArduPilot kart adi "Pixhawk6C", board_id 56 (hwdef.dat).
 KART = "Pixhawk6C"
 BOARD_ID = 56
-TABAN = f"https://firmware.ardupilot.org/Copter/stable/{KART}/"
+
+# 🔴 SURUM SABITLENMISTIR — "stable" (= en son) DEGIL (D-425).
+#
+# `config/pixhawk/arducopter_fda.param` ArduPilot **Copter-4.5** kaynagindan
+# satir satir okunarak yazildi (dosya basligindaki KAYNAK listesi) ve
+# `tests/test_faz_b_pixhawk_sablon.py` onu 4.5 anlambilimine gore kilitler.
+#
+# Copter-4.7 buyuk bir **SI birim reformu** yapti; 31 parametrenin 9'u ya
+# yeniden adlandirildi ya da OLCEGI DEGISTI (5 Eylul'de gercek kartta olculdu,
+# Mission Planner "Missing 9 params" dedi). En tehlikelisi:
+#   ARMING_CHECK  ->  ARMING_SKIPCHK  — bit anlami TERS (calisacaklar -> ATLANACAKLAR)
+#   WPNAV_SPEED,300 (cm/s) -> WP_SPD (m/s): deger 3 olmali; 300 kalirsa 300 m/s
+# ArduPilot'un kendi belgesi donusum icin "cevrilen deger varsayilmamali,
+# CIFT KONTROL edilmeli" diyor. Tek atislik bir ucusta bu kabul edilemez.
+#
+# KARAR: ucus firmware'i **4.5.7** (4.5 hattinin son yamasi) olarak sabitlendi.
+# Parametre dosyasi, kapisi, README deger tablolari ve TEYIT listesi bu surumle
+# BIREBIR uyumludur. 4.7'ye gecis ayri bir istir: parametre dosyasi yeniden
+# yazilir, kapisi yeniden kurulur, ve ancak ondan sonra flash edilir.
+SURUM = "stable-4.5.7"
+TABAN = f"https://firmware.ardupilot.org/Copter/{SURUM}/{KART}/"
 
 # arducopter.apj  -> Mission Planner "Load custom firmware" bunu ister (bootloader VAR sayar)
 # arducopter_with_bl.hex -> bootloader'i da iceren tam imaj; kart bootloader'i
@@ -124,7 +144,15 @@ def main(argv=None) -> int:
 
     surum = (hedef / "firmware-version.txt")
     if surum.is_file():
-        print(f"SURUM: {surum.read_text(encoding='utf-8', errors='replace').strip()}")
+        metin = surum.read_text(encoding="utf-8", errors="replace").strip()
+        print(f"SURUM: {metin}")
+        # Parametre dosyasi 4.5 anlambilimine baglidir (D-425). Sunucu
+        # beklenmedik bir sey verirse SESSIZCE kabul etmeyiz.
+        if not metin.startswith("4.5."):
+            print("")
+            print(f"HATA: beklenen 4.5.x, gelen {metin} — parametre dosyasi "
+                  f"bu surumle UYUMLU DEGIL olabilir (D-425).")
+            return 2
 
     print("\nSahada yukleme: Mission Planner > Setup > Install Firmware >")
     print("  'Load custom firmware' > arducopter.apj   (Disconnect DURUMDA)")

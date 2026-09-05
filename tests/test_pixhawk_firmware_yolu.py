@@ -99,5 +99,53 @@ class FirmwareCevrimdisiTests(unittest.TestCase):
         self.assertEqual(d.get("summary"), "Pixhawk6C")
 
 
+class SurumKilidiTests(unittest.TestCase):
+    """D-425: parametre dosyası Copter-4.5'e bağlıdır; firmware sürümü SABİT olmalı.
+
+    5 Eylül'de gerçek kartta ölçüldü: MP'nin önerdiği "en son kararlı" 4.7.1
+    yüklendi, `.param` yüklendi, MP "Missing 9 params" dedi. Copter-4.7 SI
+    birim reformu: `WPNAV_SPEED`(cm/s)→`WP_SPD`(m/s), `RTL_ALT`(cm)→`RTL_ALT_M`,
+    `ARMING_CHECK`→`ARMING_SKIPCHK` (bit anlamı TERS), `SRx_*`→`MAVx_*`.
+    """
+
+    PARAM = KOK / "config" / "pixhawk" / "arducopter_fda.param"
+
+    def test_indirici_stable_DEGIL_sabit_4_5_surumu_ceker(self):
+        metin = _oku(BETIK)
+        self.assertRegex(
+            metin, r'SURUM\s*=\s*"stable-4\.5\.\d+"',
+            "İndirici sürümü 4.5.x'e sabitlemiyor — 'stable' (= en son) çekerse "
+            "4.7'nin SI reformu parametre dosyasını kırar (D-425)")
+        self.assertNotRegex(
+            metin, r'/Copter/stable/\{KART\}',
+            "İndirici hâlâ /Copter/stable/ (= en son) yolunu kullanıyor")
+
+    def test_param_dosyasi_kaynak_surumunu_beyan_ediyor(self):
+        """Dosya hangi kaynaktan yazıldığını söylemeli; sabitleme ona dayanır."""
+        metin = _oku(self.PARAM)
+        self.assertIn("Copter-4.5", metin,
+                      ".param başlığı kaynak sürümünü (Copter-4.5) beyan etmiyor")
+
+    def test_iki_belge_de_4_5_7_diyor_ve_en_sona_karsi_uyariyor(self):
+        for yol in (PARAM_README, PLAN):
+            metin = _oku(yol)
+            self.assertIn("4.5.7", metin,
+                          f"{yol.name} uçuş sürümünü (4.5.7) yazmıyor")
+            self.assertRegex(
+                metin, r"4\.7",
+                f"{yol.name} 4.7'nin NEDEN kullanılmayacağını söylemiyor — "
+                "sahadaki insan MP'nin ikonuna tıklar ve 4.7 yükler")
+
+    def test_indirilen_firmware_4_5_hattinda(self):
+        sv = FIRMWARE / "firmware-version.txt"
+        if not sv.is_file():
+            self.skipTest("firmware/ indirilmemiş — ÖLÇÜLEMEDİ, geçti değil")
+        metin = sv.read_text(encoding="utf-8", errors="replace").strip()
+        self.assertTrue(
+            metin.startswith("4.5."),
+            f"Saha belleğine gidecek firmware {metin} — 4.5.x değil. "
+            "Bu dosya sahada YÜKLENMEZ (D-425).")
+
+
 if __name__ == "__main__":
     unittest.main()

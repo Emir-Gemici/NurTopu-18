@@ -29707,3 +29707,101 @@ sorusu ON KAYITLA sorulur ve cevabi **uretici belgesinden** dogrulanir; cevabi
 Kalan iki aday bu kurala gore hemen kontrol edildi: **Jetson eMMC** (D-413'te
 zaten acik, "bos cikabilir" yazili) ve **SiK telsizler** (fabrika firmware'i
 57600 baud, parametre dosyasi bunu bekliyor — ayni sinif risk, ACIK KALEM).
+
+### D-425 — PARAMETRE DOSYASI 4.5'E BAGLIYDI, FIRMWARE SURUMUNU HICBIR SEY SABITLEMIYORDU: 4.7.1'de 31 parametrenin 9'u YOK
+
+**Sahada, canli olarak, D-424'un hemen ardindan bulundu (5 Eylul 14:52).**
+Kullanici D-424 yordamiyla ArduCopter'i flash etti — Mission Planner'in
+quadcopter ikonu "en son kararli"yi, yani **4.7.1**'i yukledi. Ardindan
+`arducopter_fda.param` yuklendi. `Compare Params` sonucu:
+
+    Missing 9 params
+    SYSID_THISMAV  SR1_POSITION  SR1_EXTRA3  SR2_POSITION  SR2_EXTRA3
+    RTL_ALT  LAND_SPEED  WPNAV_SPEED  ARMING_CHECK
+
+#### 1. Neden — Copter-4.7 SI birim reformu
+
+ArduPilot'un resmi "Parameter Name Changes" belgesinden (ardupilot.org):
+
+| 4.5 (bizim dosya) | 4.7 | ne degisti |
+|---|---|---|
+| `SR1_POSITION` / `SR1_EXTRA3` | `MAV1_POSITION` / `MAV1_EXTRA3` | ad, 1:1 |
+| `SR2_POSITION` / `SR2_EXTRA3` | `MAV2_POSITION` / `MAV2_EXTRA3` | ad, 1:1 |
+| `RTL_ALT` = 3500 (cm) | `RTL_ALT_M` | **birim**: 35 olmali |
+| `LAND_SPEED` = 50 (cm/s) | `LAND_SPD_MS` | **birim**: 0,5 olmali |
+| `WPNAV_SPEED` = 300 (cm/s) | `WP_SPD` (m/s) | **birim**: 3 olmali — 300 kalirsa **300 m/s** |
+| `ARMING_CHECK` = 1 (hepsini KOS) | `ARMING_SKIPCHK` | **anlam TERS**: kosulacaklar -> ATLANACAKLAR |
+
+ArduPilot'un kendi belgesi `ARMING_CHECK` icin: *"This is not a pure rename
+... the bit meanings are inverted ... a converted value should be double
+checked rather than assumed correct."*
+
+`SYSID_THISMAV` belgede "yeniden adlandirilmadi" diyor ama MP eksik dedi —
+celiski cozulmedi; 4.5.7'de sorun olmadigi icin ACIK KALEM olarak birakildi.
+
+#### 2. Kusur — dosya bagimliligini BEYAN EDIYORDU, hicbir sey ZORLAMIYORDU
+
+`.param` basligi: *"parametre adlari ve deger tablolari ArduPilot Copter-4.5
+kaynagindan okundu"*. README: ayni cumle. Yani bagimlilik **yazili** idi.
+Ama:
+  - D-424'te yazilan indirici `/Copter/stable/` cekiyordu = **en son** = 4.7.1
+  - README adim 0 "quadcopter ikonu yeter" diyordu = **en son**
+  - `test_faz_b_pixhawk_sablon.py` dosyanin **ic tutarliligini** kilitler;
+    firmware ile uyumunu olcmez (olcemez — kart yok)
+  - Plan §2.4 "ArduCopter kararli surum" der; hangisi, yazmaz
+
+**D-424'un kendisi bu kusuru URETTI:** firmware boslugunu kapatirken "stable"
+indirdim ve "4.7.1 indi, TEYIT listesi bunun icin var" diye README'ye yazdim.
+TEYIT listesi dort parametrenin ANLAMINI kontrol eder — **var olmayan** dokuz
+parametreyi yakalayamaz. Yani D-424, kendi onarimini olcmeden kapatti.
+(D-423'teki "olcum aletinin kendisi olculur" kurali burada da ihlal edildi:
+onarim turu, kendi urettigi sayiyi/surumu dogrulamadi.)
+
+#### 3. Karar — 4.5.7'ye SABITLE, 4.7'ye PORT ETME
+
+Iki secenek vardi:
+
+**(A) 4.7.1'de kal, 9 parametreyi port et.** Yeni adlar + 3 birim donusumu +
+1 ters anlam. Ustune: 22 "eslesen" parametrenin de birim degistirmedigi
+**tek tek** dogrulanmali (SI reformu genis). Kapi (`test_faz_b_pixhawk_sablon`,
+12 test) 4.5 anlambilimine yazili — bastan kurulur. README deger tablolari
+bastan okunur. Ucusa **16 gun**, ucus **tek atis**.
+
+**(B) 4.5.7 flash et.** Parametre dosyasi, kapisi, README tablolari, TEYIT
+listesi — hepsi bu surumle birebir. 4.5.7 = 4.5 hattinin son yamasi, olgun.
+Gorevimiz temel Auto + cit + failsafe; 4.7'nin yeniligine ihtiyac yok.
+
+**(B) secildi.** Gerekce: mevcut yapilandirma **olculmus ve kapili**; port
+edilmis bir 4.7 yapilandirmasi **olculmemis** olurdu ve olcecek kapi da
+bastan yazilmak zorunda kalirdi — tek atislik ucustan 16 gun once. "OLCULEMEDI
+!= GECTI". 4.7'ye gecis mumkun ama **ayri istir**: dosya yeniden yazilir, kapi
+yeniden kurulur, sonra flash — sirasi bu, tersi degil.
+
+Kullanici 4.7.1'i **yeniden flash edecek** (5 dk); 4.5.7 saha belleginde.
+
+#### 4. Onarim
+
+- `scripts/pixhawk_firmware_indir.py`: `SURUM = "stable-4.5.7"` **sabit**;
+  `/Copter/stable/` yolu kaldirildi. Indirilen `firmware-version.txt`
+  `4.5.` ile baslamiyorsa **cikis 2** (surum kapisi). Gercek indirme:
+  4.5.7 `arducopter.apj` 1.585.371 B, board_id 56, git 2a3dc4b7.
+- `firmware/` yalniz 4.5.7 icerir — iki surum yan yana durmaz, sahada yanlis
+  dosya secme riski yok.
+- README adim 0 ve plan §2.4: **"4.5.7 SABIT, MP'nin ikonu DEGIL"**, neden
+  4.7'nin kirdigi yazili; "acilista V4.5.7 gorulmeli, 4.7.x gorursen yanlis".
+- README adim 1'deki "indirilen 4.7.1" cumlesi (D-424'te yazilmisti, YANLIS
+  yonlendiriyordu) duzeltildi.
+
+#### 5. Kapi
+
+`tests/test_pixhawk_firmware_yolu.py` +4 test (`SurumKilidiTests`): indirici
+`stable-4.5.\d+` sabitliyor ve `/Copter/stable/` kullanmiyor · `.param`
+kaynak surumunu beyan ediyor · README ve plan 4.5.7 diyor **ve** 4.7'ye karsi
+uyariyor · indirilen firmware 4.5.x (yoksa atlanir ve soyler).
+
+#### 6. 🔴 KURAL — "beyan edilen bagimlilik ZORLANIR"
+
+Bir dosya "X surumune gore yazildi" diyorsa, X'i **secen** her mekanizma
+(indirici, belge, kilavuz) o surumu **sabitler** ve bir kapi bunu tutar.
+"Kararli surum" bir surum degildir; **bugunku** karardir ve yarin degisir.
+D-424 bunu ihlal etti; D-425 kapatti.

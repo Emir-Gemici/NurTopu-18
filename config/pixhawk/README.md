@@ -28,17 +28,27 @@ kodundan** okundu (dosya adları `.param` başlığında). Sözleşme sabitleri
    (D-424, 5 Eylül'de sahada ölçüldü: yeni kartta `Messages` sekmesi boştu).
    Teşhis: `Config` → `Full Parameter List` → `Refresh Params`.
    `FRAME_CLASS`/`WPNAV_SPEED`/`ATC_*` → ArduCopter var, devam.
-   `MC_*`/`MPC_*`/`COM_*` → **PX4**; flash gerek:
-   **Disconnect** → `Setup` → `Install Firmware` → `Load custom firmware` →
-   `firmware/arducopter.apj` (`scripts/pixhawk_firmware_indir.py` ile indirilir ve
-   saha belleğine kopyalanır — **sahada internet gerekmez**).
+   `MC_*`/`MPC_*`/`COM_*` → **PX4**; flash gerek.
+
+   🔴 **SÜRÜM SABİTTİR: ArduCopter 4.5.7 — Mission Planner'ın önerdiği "en son
+   kararlı" DEĞİL** (D-425). MP'nin quadcopter ikonu bugün **4.7.1** yükler ve
+   bu dosyadaki **31 parametrenin 9'u 4.7'de yoktur** (Copter-4.7 SI birim
+   reformu). 5 Eylül'de gerçek kartta ölçüldü: MP *"Missing 9 params"* dedi.
+
+   **Doğru yol:** **Disconnect** → `Setup` → `Install Firmware` →
+   **`Load custom firmware`** → `firmware/arducopter.apj` (4.5.7;
+   `scripts/pixhawk_firmware_indir.py` indirir, saha belleğine kopyalanır —
+   **sahada internet gerekmez**). İkona tıklama, dosyayı seç.
+
+   Açılışta `ArduCopter V4.5.7` görülmelidir. **4.7.x görüyorsan yanlış sürüm.**
    ⚠ **Flash TÜM parametreleri sıfırlar.** Sıra: **firmware → param**, tersi değil.
 1. Pixhawk'a USB ile bağlan, **Connect**. Firmware ArduCopter **kararlı** sürüm (sürüm numarası
    tutanağa; Messages sekmesinde ilk satır — **kart açıldıktan sonra bağlanırsan bu satırları
    kaçırırsın**, sürümü MP'nin üst durum çubuğundan da okuyabilirsin).
-   ⚠ **Bu dosya Copter-4.5 kaynağından yazıldı; indirilen kararlı sürüm 4.7.1'dir.**
-   §3 TEYİT listesi tam bu yüzden vardır: dört parametrenin **anlamı** MP açıklamasında
-   görülmeden yüklendi sayılmaz (değer tabloları sürümler arasında değişebilir).
+   ⚠ **Sürüm `4.5.7` olmalı.** Bu dosya Copter-4.5 kaynağından yazıldı ve
+   `tests/test_faz_b_pixhawk_sablon.py` onu 4.5 anlambilimine göre kilitler.
+   §3 TEYİT listesi yine de tek tek işaretlenir: yama sürümleri arasında bile
+   değer tablosu değişebilir, ve **görülmeden yüklendi sayılmaz**.
 2. `Config` → `Full Parameter List` → sağ sütunda **`Load from file`** → `arducopter_fda.param`.
    Liste yalnız dosyadaki satırları değiştirir; dosyada olmayan parametreler firmware
    varsayılanında kalır.

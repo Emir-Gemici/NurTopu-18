@@ -124,7 +124,7 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 ### 2.4 Pixhawk yapılandırması (13:00–14:30, Mission Planner)
 | ✓ | adım | kanıt |
 |---|---|---|
-| ☐ | 🔴 **ÖNCE FİRMWARE:** kart **PX4 ile gelir** (D-424). `Config → Full Parameter List → Refresh` → `MC_*`/`MPC_*` görüyorsan PX4'tür. **Disconnect** → `Setup → Install Firmware` → `Load custom firmware` → `firmware/arducopter.apj` (saha belleğinde, internet gerekmez) | `FRAME_CLASS` görünür oldu |
+| ☐ | 🔴 **ÖNCE FİRMWARE:** kart **PX4 ile gelir** (D-424). `Config → Full Parameter List → Refresh` → `MC_*`/`MPC_*` görüyorsan PX4'tür. **Disconnect** → `Setup → Install Firmware` → **`Load custom firmware`** → `firmware/arducopter.apj` — 🔴 **sürüm 4.5.7 SABİT, MP'nin önerdiği "en son kararlı" (4.7.x) DEĞİL**: 4.7 SI birim reformu parametre dosyamızın 9 satırını kırar (D-425). Saha belleğinde, internet gerekmez | açılışta `ArduCopter V4.5.7` görüldü; `FRAME_CLASS` var |
 | ☐ | ArduCopter kararlı sürüm; `FRAME_CLASS/TYPE`; §1.6 parametre dosyasını yükle ⚠ **flash TÜM parametreleri sıfırlar — sıra: firmware → param** | sürüm tutanağa |
 | ☐ | **Accel** (6 yön) + **level**; **pusula** (dışarıda, metalden uzak) | ofset < 300 |
 | ☐ | **Radyo** kalibrasyonu; mod anahtarı (Stabilize · AltHold · Loiter · Auto · RTL · Land); RC failsafe (kumanda kapatınca `RTL`) | uçlar 1000–2000 |
