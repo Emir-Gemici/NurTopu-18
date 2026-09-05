@@ -24,8 +24,21 @@ kodundan** okundu (dosya adları `.param` başlığında). Sözleşme sabitleri
 
 **Parametreler**
 
+0. 🔴 **ÖN KOŞUL — KARTTA ArduCopter VAR MI?** Pixhawk 6C fabrikadan **PX4 yüklü** çıkar
+   (D-424, 5 Eylül'de sahada ölçüldü: yeni kartta `Messages` sekmesi boştu).
+   Teşhis: `Config` → `Full Parameter List` → `Refresh Params`.
+   `FRAME_CLASS`/`WPNAV_SPEED`/`ATC_*` → ArduCopter var, devam.
+   `MC_*`/`MPC_*`/`COM_*` → **PX4**; flash gerek:
+   **Disconnect** → `Setup` → `Install Firmware` → `Load custom firmware` →
+   `firmware/arducopter.apj` (`scripts/pixhawk_firmware_indir.py` ile indirilir ve
+   saha belleğine kopyalanır — **sahada internet gerekmez**).
+   ⚠ **Flash TÜM parametreleri sıfırlar.** Sıra: **firmware → param**, tersi değil.
 1. Pixhawk'a USB ile bağlan, **Connect**. Firmware ArduCopter **kararlı** sürüm (sürüm numarası
-   tutanağa; Messages sekmesinde ilk satır).
+   tutanağa; Messages sekmesinde ilk satır — **kart açıldıktan sonra bağlanırsan bu satırları
+   kaçırırsın**, sürümü MP'nin üst durum çubuğundan da okuyabilirsin).
+   ⚠ **Bu dosya Copter-4.5 kaynağından yazıldı; indirilen kararlı sürüm 4.7.1'dir.**
+   §3 TEYİT listesi tam bu yüzden vardır: dört parametrenin **anlamı** MP açıklamasında
+   görülmeden yüklendi sayılmaz (değer tabloları sürümler arasında değişebilir).
 2. `Config` → `Full Parameter List` → sağ sütunda **`Load from file`** → `arducopter_fda.param`.
    Liste yalnız dosyadaki satırları değiştirir; dosyada olmayan parametreler firmware
    varsayılanında kalır.

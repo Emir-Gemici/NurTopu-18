@@ -29618,3 +29618,92 @@ Kural genisletildi: **bir belgeye sayi yazan her duzeltme, o sayiyi ureten
 komutun gercekten o sayiyi bastigini gostermek zorundadir.** "Olctum, 48"
 yeterli degil; kapinin komutu `ls ~/wheels | wc -l` ise kanit o komutun
 ciktisidir, baska bir sayma yonteminin degil.
+
+### D-424 — PIXHAWK 6C PX4 ILE GELIR: ArduCopter FLASH'i HICBIR BELGEDE YOKTU, firmware dosyasi HICBIR YERDE YOKTU
+
+**Sahada, canli olarak bulundu (5 Eylul).** Kullanici yeni Pixhawk 6C'yi USB'ye
+takti ve sunu yazdi: *"mesajlar sekmesi bos pixhawk 6c yi yeni aldik"*.
+
+Teshis: **Pixhawk 6C fabrikadan PX4 yuklu cikar** (Holybro belgeleri; kart PX4
+ve ArduPilot ile uyumludur ama kutudan PX4 ile gelir). Bizim yiginimizin
+TAMAMI ArduCopter'dir: `arducopter_fda.param`, `SYSID_THISMAV`, `SRx_*`,
+`FENCE_*`, `BATT_FS_*` — hicbiri PX4'te yoktur, PX4 baska bir parametre
+uzayidir (`MC_*`, `MPC_*`, `COM_*`).
+
+#### 1. Uc kati birden acik olan bir bosluk
+
+| ne | durum (5 Eylul, olculdu) |
+|---|---|
+| depoda ArduCopter firmware dosyasi | **YOK** (`find . -iname "*.apj" -o -iname "*.px4"` -> 0) |
+| saha belleginde (`O:\navitas_bellek`) | **YOK** (ayni arama -> 0) |
+| flash yordami herhangi bir belgede | **YOK** (`grep -rniE "firmware\|PX4\|flash"` -> yalniz alakasiz eslesmeler) |
+
+`SAHA_HAZIRLIK_PLANI` §2.4'un ilk satiri yalnizca **"ArduCopter kararli surum"**
+diyordu — kartta zaten varmis gibi. `config/pixhawk/README.md` §1 adim 1
+dogrudan **"Pixhawk'a USB ile baglan, Connect"** ile basliyordu.
+
+#### 2. Neden BUGUN kurtardik, 21 EYLUL kurtarmazdi
+
+Atolyede internet vardi (`ping firmware.ardupilot.org` -> 124 ms) ve Mission
+Planner firmware'i **kendisi indirir**. Yani bugun bu bir 10 dakikalik istir.
+
+Adiyaman'da internet **varsayilmaz** ve ucus **tek atistir**. Kart orada bir
+sebeple yeniden flash gerektirirse — bozulan parametre, yanlis surum, yedek
+karta gecis — internetsiz **cakilirdik**. Bu, tam olarak D-421 §6'daki
+"Nano'ya internet" boslugunun **ikinci ornegidir** ve o tur bunu kacirmisti:
+curutme turu Jetson'in internet bagimliligini buldu, Pixhawk'inkini aramadi.
+
+#### 3. Onarim
+
+**`scripts/pixhawk_firmware_indir.py`** (yeni) — `nano_tekerlek_indir.py` ile
+AYNI kalipta: PC'de indirir, `firmware/` altina koyar, `bellek_hazirla.py`
+saha bellegine kopyalar, ikili dosya depoya girmez (`.gitignore`).
+Indirilen: **ArduCopter 4.7.1 stable**, `arducopter.apj` (1.443.351 B) +
+`arducopter_with_bl.hex` (4.734.352 B, bootloader kurtarmasi icin).
+
+**`board_id` KAPISI.** `.apj` icindeki `board_id` okunur ve **56**
+(= Pixhawk6C) degilse betik **cikis 2** ile duser. Yanlis kartin firmware'i
+sahada kesfedilmez, PC'de yakalanir.
+
+**Belgeler.** `SAHA_HAZIRLIK_PLANI` §2.4'e flash satiri **parametre satirindan
+ONCE** kondu; `config/pixhawk/README.md` §1'e **adim 0 (ON KOSUL)** eklendi:
+teshis (`FRAME_CLASS` var mi, yoksa `MC_*` mi), flash yolu, ve
+
+> ⚠ **Flash TUM PARAMETRELERI SIFIRLAR. Sira: firmware -> param, tersi degil.**
+
+Ters sira, yuklenen butun `.param` dosyasini silerdi ve bunu **hicbir belge
+soylemiyordu**.
+
+**Ayrica duzeltilen iki kucuk yanlis anlama:**
+1. "Messages sekmesinde ilk satir" — kart aciliktan SONRA baglanilirsa acilis
+   banner'i **kacirilir**; surumun MP durum cubugundan da okunabilecegi yazildi.
+2. `.param` dosyasi **Copter-4.5** kaynagindan yazilmisti; indirilen kararli
+   surum **4.7.1**. README'ye yazildi ve §3 TEYIT listesinin **tam bu yuzden**
+   var oldugu vurgulandi: dort parametrenin ANLAMI MP aciklamasinda gorulmeden
+   yuklendi sayilmaz (deger tablolari surumler arasi degisebilir).
+
+#### 4. Kapi ve vakumluluk
+
+`tests/test_pixhawk_firmware_yolu.py` (6 test): indirici betik var ve
+board_id 56 dogruluyor mu · `bellek_hazirla` firmware kopya kurali tasiyor mu ·
+plan ve README flash yordamini + "firmware -> param" sirasini + PX4/ArduCopter
+teshis ayracini yaziyor mu · indirilen `.apj` gercekten Pixhawk6C mi.
+
+**Vakumluluk:** `firmware/` indirilmemisse son test **atlanir ve bunu SOYLER**
+(`skipTest` mesaji indirme komutunu verir). Sessizce yesile donmez —
+"OLCULEMEDI != GECTI".
+
+#### 5. 🔴 ORUNTU — "ELIMIZDE OLDUGUNU VARSAYDIGIMIZ SEY" ucuncu kez
+
+D-413: microSD yuvasi oldugunu varsaydik, **yoktu**.
+D-421 §6: Nano'nun `python3.8`'i cevrimdisi kurulur sandik, **internet sarti**.
+D-424: Pixhawk'ta ArduCopter oldugunu varsaydik, **PX4 geliyor**.
+
+Ucunde de ayni sey: **kutusu acilmamis bir donanimin YAZILIM durumu hakkinda
+varsayim**. Yazili kural: kutudan cikacak her donanim icin "uzerinde ne var?"
+sorusu ON KAYITLA sorulur ve cevabi **uretici belgesinden** dogrulanir; cevabi
+"bizim istedigimiz sey" degilse **cevrimdisi gecis yolu** hazirlanir.
+
+Kalan iki aday bu kurala gore hemen kontrol edildi: **Jetson eMMC** (D-413'te
+zaten acik, "bos cikabilir" yazili) ve **SiK telsizler** (fabrika firmware'i
+57600 baud, parametre dosyasi bunu bekliyor — ayni sinif risk, ACIK KALEM).

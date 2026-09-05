@@ -59,6 +59,9 @@ KOPYA_KURALLARI = (
      "cuma akşamı kontrol kartı: koşulmuş kapılar, alışveriş, cumartesi ilk üç iş"),
     ("wheels", "wheels", False,
      "Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)"),
+    ("firmware", "firmware", False,
+     "Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); "
+     "scripts/pixhawk_firmware_indir.py ile indirilir"),
 )
 
 # Betiğin ÜRETEMEYECEĞİ, insanın koyması gereken parçalar (MANIFEST'e yazılır).
@@ -70,7 +73,9 @@ INSAN_PARCALARI = (
      "Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1"),
     ("GPU torch wheel'i (JetPack 4.6 / Python 3.8)", "Qengineering deposundan elle "
      "indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar"),
-    ("Mission Planner kurulu dizüstü", "parametre + görev planı yükleme"),
+    ("Mission Planner kurulu dizüstü", "parametre + görev planı yükleme; "
+     "⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — "
+     "firmware/arducopter.apj bu bellekte, internet gerekmez"),
 )
 
 
