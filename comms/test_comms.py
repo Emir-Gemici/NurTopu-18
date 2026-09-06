@@ -31,9 +31,17 @@ def _make_acker(link, node):
 
 
 def main():
-    # İKA ve YKS alıcıları (sabit portlar, loopback)
-    ika_link = UDPLink(bind=("127.0.0.1", 5006), timeout=0.1)
-    yks_link = UDPLink(bind=("127.0.0.1", 5005), timeout=0.1)
+    # İKA ve YKS alıcıları — EPHEMERAL port (T209 / D-427). NEDEN: sabit
+    # 5005/5006 ÜRETİM YKS/İKA portlarıdır (yalnız CONTRACTS.md'ye ait);
+    # loopback burada bunlara bind edince saha PC'sinde YKS açıkken test
+    # `WinError 10013` ile KESİN düşüyordu (5 Eylül, üç koşu). Gerçek port
+    # aşağıda `getsockname()` ile alınır ve gönderici akran sözlüğüne verilir
+    # (iha_link zaten böyle). Kilit: tests/test_p8_sim_katmani.py
+    # (5005+5006 tutuluyorken geçer; kaynakta sabit port yok).
+    ika_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
+    yks_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
+    ika_port = ika_link.sock.getsockname()[1]
+    yks_port = yks_link.sock.getsockname()[1]
 
     ika = IkaReceiver(ika_link)
     ika.on_route = lambda m: print(f"  [İKA] aldı: {m['label']} ({m['road']})")
@@ -52,8 +60,8 @@ def main():
     # İHA gönderici
     iha_link = UDPLink(bind=("127.0.0.1", 0), timeout=0.1)
     sender = IhaSender(iha_link, peers={
-        "ika": ("127.0.0.1", 5006),
-        "yks": ("127.0.0.1", 5005),
+        "ika": ("127.0.0.1", ika_port),
+        "yks": ("127.0.0.1", yks_port),
     })
 
     ref = [-20.0, -24.5]
