@@ -1,7 +1,9 @@
 """SAHA BELLEĞİ HAZIRLAYICI — cumartesi götürülecek her şeyi TEK klasöre toplar.
 
 NEDEN (SAHA_HAZIRLIK_PLANI_20260903 §1.10): 5 Eylül'de Jetson Nano kutudan
-çıkacak ve **internet olmayabilir**. Kurulumun gerektirdiği her parça (paket,
+çıkacak ve **internet olmayabilir**. (⚠ D-431, 6 Eylül ölçümü: kart Jetson Orin Nano
+Developer Kit 4 GB / JetPack 7.2.1 / Python 3.12 çıktı; wheels/ ve Nano imaj kalemleri
+GEÇERSİZ, aşağıda etiketli. Tutanak: jetson_paket/JETSON_ORIN_NANO_KURULUM.md.) Kurulumun gerektirdiği her parça (paket,
 tekerlekler, uçuş kontrolcüsü şablonları, basılacak kontrol listeleri) elle
 toplanırsa biri unutulur ve sahada telafisi yoktur. Bu betik toplamayı
 mekanikleştirir ve **eksik olanı sayar** — "hazır" demek için eksik sıfır olmalı.
@@ -48,7 +50,10 @@ KOPYA_KURALLARI = (
     ("SAHA_RUNBOOK.md", "belgeler", True,
      "saha yordamı: açılış kartı, operatör kartı, İHA/Jetson blokları"),
     ("jetson_paket/JETSON_NANO_KURULUM.md", "belgeler", True,
-     "Nano 4GB kurulumu (JetPack, Python 3.8, tekerlekler, kamera)"),
+     "Nano 4GB kurulumu (JetPack, Python 3.8, tekerlekler, kamera) — GEÇERSİZ (D-431), "
+     "arşiv; bandı var"),
+    ("jetson_paket/JETSON_ORIN_NANO_KURULUM.md", "belgeler", True,
+     "Orin Nano 4GB kurulum tutanağı: JetPack 7.2.1, venv312, kapılar (6 Eylül ölçümü, D-431)"),
     ("jetson_paket/JETSON_BASLAT.md", "belgeler", True,
      "tek komut açılış ve systemd birimleri"),
     ("jetson_paket/GUN1_KONTROL_LISTESI.md", "belgeler", True,
@@ -58,7 +63,8 @@ KOPYA_KURALLARI = (
     ("results/faz_b_oncesi/CUMA_KONTROL_KARTI.md", "belgeler", True,
      "cuma akşamı kontrol kartı: koşulmuş kapılar, alışveriş, cumartesi ilk üç iş"),
     ("wheels", "wheels", False,
-     "Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)"),
+     "Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py) — "
+     "Orin Nano'da GEREKMEZ (D-431), arşiv"),
     ("firmware", "firmware", False,
      "Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); "
      "scripts/pixhawk_firmware_indir.py ile indirilir"),
@@ -66,13 +72,18 @@ KOPYA_KURALLARI = (
 
 # Betiğin ÜRETEMEYECEĞİ, insanın koyması gereken parçalar (MANIFEST'e yazılır).
 INSAN_PARCALARI = (
-    ("Jetson eMMC sistem imajı", "⚠ D-413: kartta microSD yuvası YOK "
-     "(Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi "
+    ("Jetson sistem imajı — KAPANDI (D-431)", "6 Eylül ölçümü: kart Jetson Orin "
+     "Nano Developer Kit 4 GB, JetPack 7.2.1 KURULU geldi, kök NVMe; flash/SDK "
+     "Manager gerekmedi. [GEÇERSİZ tarihçe — D-413: kartta microSD yuvası YOK "
+     "(Nano üretim modülü + M.2, eMMC). SD imajı yolu GEÇERSİZ. Cumartesi "
      "İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş "
      "olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; "
-     "Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1"),
-    ("GPU torch wheel'i (JetPack 4.6 / Python 3.8)", "Qengineering deposundan elle "
-     "indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar"),
+     "Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1]"),
+    ("GPU torch wheel'i (JetPack 4.6 / Python 3.8) — GEÇERSİZ (D-431)",
+     "Orin Nano'da torch 2.11.0+cu130 jetson-ai-lab'den çevrimiçi kuruldu, CUDA "
+     "çalışıyor (jetson_paket/orin_nano_venv_kurulum.sh); elle wheel GEREKMEZ. "
+     "[tarihçe: Qengineering deposundan elle indirilir; CPU torch zaten wheels/ "
+     "içinde, GPU olursa FPS kapısı rahatlar]"),
     ("Mission Planner kurulu dizüstü", "parametre + görev planı yükleme; "
      "⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — "
      "firmware/arducopter.apj bu bellekte, internet gerekmez"),

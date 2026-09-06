@@ -1,5 +1,16 @@
 # JETSON NANO 4GB — SIFIRDAN KURULUM (Faz B · Görev N · 2026-09-03)
 
+> 🔴 **GEÇERSİZ — 6 Eylül'de kart Orin Nano çıktı, bkz. `JETSON_ORIN_NANO_KURULUM.md` (D-431).**
+> Bu belge 3 Eylül kullanıcı beyanına ("Jetson Nano 4GB eMMC + üçüncü parti taşıyıcı, JetPack 4.6,
+> Python 3.6") göre yazıldı. 6 Eylül'de kart **ölçüldü** (paket `kanit/ORTAM_KUNYESI.txt`, depoda
+> `results/jetson_20260906/`; D-431): **Jetson Orin Nano Developer Kit 4 GB (modül p3767-0004),
+> JetPack 7.2.1 (L4T R39.2.1), Ubuntu 24.04, Python 3.12.3, kök NVMe**. Aşağıdaki venv38 / cp38
+> `wheels/` / eMMC flash / `python3.8` apt / "internet şart" zinciri bu kartta **GEÇERSİZDİR**;
+> kurulum 6 Eylül'de `~/venv312` + çevrimiçi pip ile yapıldı (`orin_nano_root_kurulum.sh`,
+> `orin_nano_venv_kurulum.sh`). Metin **silinmedi** (madde 18; kural 8: ölçülmüş satır silinmez,
+> etiketlenir); sahada **kullanılmaz**. `tests/test_faz_b_nano_kurulum.py` bu bandı görünce
+> Nano'ya özgü belge kilitlerini atlar, arşiv bütünlüğünü ve Orin belgesini kilitler (K8).
+
 > **NEDEN:** `SAHA_HAZIRLIK_PLANI_20260903.md` **§1.3** (Nano yığını — EN KRİTİK) ve **§1.5**
 > (sistem imajı). Kullanıcı beyanı (§0.2 · 3 Eylül güncellemesi): **Jetson Nano 4GB
 > üretim modülü (eMMC) + üçüncü parti taşıyıcı kart, depolama M.2 SSD — microSD yuvası

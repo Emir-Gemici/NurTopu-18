@@ -4,6 +4,8 @@
 
 ## Kullanım (Jetson; `~/navitas` kurulumu `JETSON_KILAVUZ.md` §2'ye göre yapılmış, `pip3 install MAVProxy` kurulu)
 
+> ⚠ **Orin Nano (6 Eylül ölçümü, D-431):** kurulum `JETSON_ORIN_NANO_KURULUM.md` §1–2 ile yapıldı (JetPack 7.2.1, Python 3.12). `--kuru` ölçüldü: tüm dosya ve yorumlayıcılar `[VAR]`, `[YOK]` yalnız `/dev/ttyACM0` (Pixhawk bağlı değildi) → çıkış 3, beklenen; `--kapi` **ÖLÇÜLEMEDİ**. Birimler için `PYTHON3=/home/n4vitas/venv312/bin/python` (kullanıcı `n4vitas`; `SUDO_USER`'dan türer), MAVProxy venv312'de ve `~/.local/bin/mavproxy.py` symlink; köprü `/usr/bin/python3` (sistem cv2 4.6, GStreamer'lı); paket kökü `~/navitas` symlink.
+
 1. **ÖNCE `--kuru` İLE BAK — hiçbir şey başlatmaz:** `KIP=udp YKS_IP=<YKS_IP> IKA_IP=<IKA_IP> FOV=<derece> bash jetson_paket/jetson_baslat.sh --kuru`
    Çıktı: yazılacak `/etc/navitas.env`, birim başına **koşulacak komut**, paket denetimi (`[VAR]/[YOK]`), **ana makine denetimi** (kullanıcı, yorumlayıcı, seri cihaz, kurulu `.py` — salt okunur), beyan denetimi. **Herhangi bir `[YOK]` ya da `[EKSIK]` varsa `KURU SONUC: eksik` + çıkış 3** — gerçek koşum tam o yerde dururdu (D-405: kuru rapor yalan söylemez). Bir değer boşluk/glob/kaçış içeriyorsa `[UYARI]` basar (systemd ve bash onu böler).
 2. **Kur ve kaldır (kalıcı; açılışta da kalkar):** `sudo -E KIP=udp YKS_IP=… IKA_IP=… FOV=… bash jetson_paket/jetson_baslat.sh` → `/etc/navitas.env` + `/etc/systemd/system/navitas-*.service`, `daemon-reload`, `enable` + **`restart`**; thazırlık süresini basar. **Beyan değişince aynı komutu yeniden koş** — `restart` yeni argümanları canlı sürece uygular (`enable --now` uygulamazdı, D-405).

@@ -1,5 +1,16 @@
 # 5 EYLÜL — JETSON GÜN-1 KONTROL LİSTESİ (B4)
 
+> 🟢 **6 Eylül 2026 sonucu — Jetson Orin Nano Developer Kit 4 GB (D-431).** Kart Nano değil Orin
+> Nano çıktı (JetPack 7.2.1 / Python 3.12); liste bu kartta koşuldu, ham çıktılar paket `kanit/`
+> (depoda `results/jetson_20260906/`): §1 sürümler kaydedildi (`ORTAM_KUNYESI.txt`) · §3 engine
+> **`.pt`'den** derlendi (⚠ ONNX'ten `yolo export … format=engine` **çalışmaz**), 57 283 989 B,
+> sha256 `bb9bd868…0300`, deftere `--turev-kaydet` ile yazıldı · §4 denklik: F1 **0** · F2 **0,9953**
+> GEÇTİ, D-303 oransal **3/126 DÜŞTÜ** (küme `arena_kompozit_v2`, T66 değil) → **uçuş `.pt`**, engine
+> üretime alınmadı · §5 FPS (120 örnek): pt p50/p95 **1,35/1,06** · engine **1,58/1,33** ≥ 0,61 GEÇTİ
+> · §6 10 dk sürekli koşum tamamlandı (900 örnek; toplam p50/p95 pt 770/922 ms · engine 649/765 ms,
+> `rapor.md`; termal hüküm tutanak §5) · §7 kamera **ÖLÇÜLEMEDİ** (CSI kamera takılı değildi) ·
+> Pixhawk **ÖLÇÜLEMEDİ**. Tutanak: `JETSON_ORIN_NANO_KURULUM.md`.
+
 > Amaç: kartın geldiği gün **keşif yapılmaz**. Her adım önceden yazılmış bir
 > eşiğe karşı **doğrulamadır**. Ayrıntı `JETSON_KILAVUZ.md`'de; bu liste sıra
 > ve kapıdır. Bir kapı düşerse **durulur ve düşüş raporlanır** — sonraki adıma
@@ -43,6 +54,9 @@
 - [ ] Kapı T16: `.engine` oluştu **ve** tek kare çıkarım hatasız (§4 sonu).
 - [ ] 🔴 Registry'ye yaz: `turevler["navitas_seg_v36_best.engine"].sha256`
       alanındaki `DERLENINCE_YAZILIR` gerçek sha256 ile değiştirildi.
+      ⚠ 6 Eylül (D-431): yazılan girdi **`navitas_seg_v36_best_512_fp16.engine`** (derlenen
+      FP16); FP32 `navitas_seg_v36_best.engine` girdisi yer tutucu kaldı — mühürden önce
+      defterden çıkarılır ya da derlenir (D-431 K4, mimar kararı).
 - [ ] `jetson_fps.py` fail-closed denetimi yeniden koşuldu → `eslesti`.
 
 ## 4 · Doğruluk — hız ölçmeden ÖNCE (sıra bilinçli: yanlış cevabı hızlı vermek başarı değil)
