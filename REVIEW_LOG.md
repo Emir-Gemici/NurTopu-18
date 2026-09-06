@@ -29805,3 +29805,81 @@ Bir dosya "X surumune gore yazildi" diyorsa, X'i **secen** her mekanizma
 (indirici, belge, kilavuz) o surumu **sabitler** ve bir kapi bunu tutar.
 "Kararli surum" bir surum degildir; **bugunku** karardir ve yarin degisir.
 D-424 bunu ihlal etti; D-425 kapatti.
+
+### D-426 — 5 EYLUL SAHA GUNU TUTANAGI: Pixhawk blogu KAPANDI, motor testi 4/4, ucus PLANA GORE PAZAR — ve kunye uc yerde yanlis cikti
+
+Operator: takim uyesi (Halil), pilot/lead sahada degil. Mimar uzaktan, bu
+oturumdan yonlendirdi. Asagida **OLCUM** = Mission Planner `Messages`
+satirlari (bu oturuma birebir yapistirildi), **BEYAN** = sozlu bildirim.
+
+#### 1. Kapanan kapilar (kronolojik)
+
+| saat | kapi | kanit |
+|---|---|---|
+| 14:52 | ArduCopter flash (D-424) — **ama 4.7.1**, 9 parametre eksik (D-425) | OLCUM `ArduCopter V4.7.1 (dbe79216)` · MP "Missing 9 params" |
+| 15:08 | **4.5.7'ye yeniden flash**, parametreler yuklendi | OLCUM `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `PreArm: Check frame class` KAYBOLDU |
+| 15:38 | GPS tanindi | OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` |
+| 16:18 | RC bind (FS-i6 <-> FS-iA6B) | BEYAN "led sabit yaniyor" |
+| 18:03 | **iBUS cozuluyor** | OLCUM `RCInput: decoding IBUS(1)` |
+| 18:03 | Pil takildi, PM06 -> POWER1 calisiyor | OLCUM: `PreArm: Battery 1 low voltage failsafe` listeden KAYBOLDU |
+| 18:05 | Emniyet dugmesi fiziksel olarak cozuldu | OLCUM: `PreArm: Hardware safety switch` KAYBOLDU; oncesinde 12x `Motor Test: Safety switch` |
+| 18:06 | **Motor testi kostu** | OLCUM `starting motor test` -> `finished motor test` |
+| ~18:30 | Motor sirasi ve yonleri **4/4 dogru** (kablo tasima + faz degisimi sonrasi) | BEYAN "yonleri de ayarladim" · **video: BEYAN GEREKLI** |
+| ~18:45 | SiK telemetri baglandi | BEYAN "tamam oldu" |
+| — | Ucus modlari SwC: Stabilize / Loiter / RTL | BEYAN |
+
+#### 2. Sahada bulunan ve kapatilan tuzaklar (yordam disi)
+
+- **RC alicisi `CH6`'ya takilmisti** — tek kanal PWM, Pixhawk hic gormez.
+  `i-BUS SERVO` portuna alinca cozuldu. Belgede alicinin **hangi portu** yazili
+  degildi; simdi SAHA_HAZIRLIK_PLANI §2.3 RC satirina yazildi (asagida).
+- **`RC_PROTOCOLS` sahada 4 -> 1 (All) yapildi** — teshis sirasinda, README'nin
+  kendi yedek yolu. iBUS dogrulandiktan sonra **4'e geri alinmadi**. Karar
+  Emir'in: 4 (yalniz iBUS, yanlis protokol algisini onler) tercih edilir.
+  Parametre dokumu alindiginda hangi degerde oldugu gorulecek.
+- **Emniyet dugmesi** (M9N ustunde) her guc kesmede yeniden kilitlenir;
+  `BRD_SAFETY_DEFOFF` **degistirilmedi**, fiziksel dugme kullanildi (dogru).
+- **Motor testi %5'te donmedi** ("ses geldi") — ArduPilot belgesinin dedigi
+  gibi %10-15'e cikinca dondu. ESC kalibrasyonu YAPILMADI (bkz. §4).
+- **PM06'nin 8 pinli kablosu** `POWER1`'e (6 pin) uymadi. 6 pinli kablo
+  bulunup takildi (18:03'te pil uyarisinin kaybolmasi kaniti). **Uydurma
+  adaptor yapilmadi** — dogru karar; yanlis pin 16,8 V'u 5 V hattina bindirir.
+
+#### 3. 🔴 KUNYE UC YERDE YANLIS (BEYAN — kutu acilinca gorulen)
+
+| kalem | plan / FDR | sahada gorulen | sonuc |
+|---|---|---|---|
+| ESC | **80 A** DShot x4 | **"60 A V2"** x4 | 5008 340KV 4S'te ~15-20 A ceker; 60 A yeter. FDR BOLUM_3/5/7 ve plan §0.2 **duzeltilecek** — BEYAN GEREKLI: tam marka/model |
+| Guc modulu | **PM02** | **PM06** (V2?) | Analog, 6C uyumlu, 5,2 V / 3 A. FDR ve plan **duzeltilecek** — BEYAN GEREKLI: etiket |
+| RC alici | FS-iA6B "beklenir" | **FS-iA6B teyit** (B harfi goruldu) | ✅ kapandi |
+
+Bu, D-413 / D-421 §6 / D-424 oruntusunun **kunye** boyutu: kutusu acilmamis
+donanim hakkinda yazilan her sey **tahmindir** ve kutu acilinca olculur.
+
+#### 4. ACIK — ucustan once (Pazar sabahi, plan 3.1)
+
+| ne | durum | kim |
+|---|---|---|
+| **RC failsafe testi** (kumanda kapat -> CH3 < 975? `Radio Failsafe`?) | **OLCULEMEDI** — iki kez istendi, sonuc gelmedi. `.param` yorumu "iBUS alicisi cerceve basmayi keser" **varsayimdir**, upstream iki kayit tersini soyluyor | Halil/Emir |
+| **ESC kalibrasyonu** | YAPILMADI. "Hepsi birden" yordami verildi (ArduPilot esc-calibration). ESC markasi sabit araliklıysa gerekmeyebilir — marka bilinmiyor | Emir |
+| **Parametre dokumu** `arducopter_fda_20260905.param` | **dosya YOK** (kontrol edildi) — README §1 adim 6 | Halil/Emir |
+| Pil gerilimi: MP vs multimetre (±0,1 V) | OLCULEMEDI | — |
+| Pusula kalibrasyonu | disarida, her sey takiliyken — **Jetson takili DEGIL** ("sonranin isi"); Jetson takilinca **yeniden** | Emir |
+| Accel + level | BEYAN "yapildi" — Pixhawk sabitlenmis miydi belirsiz ("bantlanmadi" demisti) | teyit |
+| ESC sinyal kablosu kirmizi tel (BEC) | sorulmus, cevap **gelmedi** | teyit |
+
+#### 5. Ucus karari
+
+Operator 18:5x'te "ucalim" dedi. **Reddedildi**, gerekce yazili: plan §2.6 /
+takvim satiri **"Paz 6 sabah: pusula disarida + ilk hover 3.1"**; ESC
+kalibrasyonu yok; failsafe sonucu yok; alacakaranlik; pilot planda Emir.
+Ilk hover kapisi (3.1): Stabilize/AltHold, 2-3 m, 2 dk; VIBE logu, EKF yesil,
+kirim yok; **pervaneler ilk kez o zaman takilir**.
+
+#### 6. Yordam notu (mimar)
+
+Sahadaki kisi projeye yabanci ve tek basinaydi; her adimda "ne gorecegin"
+yazili, kanit olarak `Messages` satiri istendi. Bu **ise yaradi**: dokuz kez
+"oldu galiba" yerine log satiri geldi ve uc yanlis teshis (GPS sanildi,
+kablo sanildi, filtre sanildi) log'la duzeldi. Kural: sahadan gelen "oldu"
+kanit degildir; **yapistirilan satir** kanittir.

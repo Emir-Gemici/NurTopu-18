@@ -104,6 +104,7 @@ denmez.
 
 - `BRD_SER2_RTSCTS` — 0 (Disabled) görülsün. Jetson UART 3 telli; TELEM2'den HEARTBEAT gelmiyorsa **ilk** bakılacak parametre.
 - `RC_PROTOCOLS` — 4 (bit 2 = IBUS). Radio Calibration'da kanallar oynamıyorsa 1 (All) yapıp tekrar dene; Messages'ta `RCInput: decoding IBUS`.
+  ⚠ **5 Eylül sahada 1'e alındı** (teşhis sırasında; asıl sorun alıcının `CH6`'ya takılı olmasıydı, D-426). iBUS doğrulandı; **4'e geri alınıp alınmadığı** parametre dökümünde görülecek — geri almak tercih edilir (Emir kararı).
 - `BATT_FS_LOW_ACT` — 2 = **RTL** olduğu MP açıklamasında görülsün (firmware 4.5 tablosu; farklı sürümde tablo tekrar okunur).
 - `BATT_FS_CRT_ACT` — 1 = **Land** olduğu görülsün (aynı tablo).
 

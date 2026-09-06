@@ -114,7 +114,7 @@ Pervaneler **en son**, pil **en son**; pil fişi = tek güç kesici.
 | ☐ | Pixhawk güç | PM02 6-pin → `POWER1` | 5,1–5,3 V; `BATT_MONITOR=4` |
 | ☐ | Jetson güç | FCHUB pad → **5 V/5 A UBEC** → Nano barrel (J25), **J48 jumper takılı**; ortak GND | 5,0–5,2 V yük altında |
 | ☐ | ESC sinyal | ESC PWM → `MAIN OUT 1–4` (motor sırasına göre) | motor testi (pervanesiz) |
-| ☐ | RC | FS-iA6B **iBUS** çıkışı → Pixhawk `RCIN`/`PPM` (ArduPilot iBUS'ı otomatik tanır); kumanda **bind** | kanallar ekranda |
+| ✅ | RC | FS-iA6B'nin **`i-BUS SERVO`** portu (🔴 `CH1`–`CH6` DEĞİL — tek kanal PWM, Pixhawk görmez; 5 Eylül'de `CH6`'ya takılıydı, D-426) → Pixhawk **`PPM/SBUS RC`** (5-pin JST-GH, Holybro kablosu; `DSM/SBUS RC` değil). Bind: alıcı `B/VCC` fişi + kumanda **BIND KEY** (ön yüz, sol alt) basılıyken aç. Kapı: `RCInput: decoding IBUS` | 5 Eylül 18:03 ✅ |
 | ☐ | Telemetri | SiK → `TELEM1` (JST-GH 6 pin, TX↔RX çapraz), 57600; YKS SiK → USB | YKS'de HEARTBEAT |
 | ☐ | Jetson ↔ Pixhawk | `TELEM2` (TX/RX/GND) → Nano 40-pin **pin 10 RX / pin 8 TX / pin 6 GND** (3,3 V; **5 V hattı bağlanmaz**) | `mavlink_dogrula` HEARTBEAT sysid=1 |
 | ☐ | Kamera | HQ kamera CSI → Nano CSI (mavi taraf dışa), kilit kapalı | `jetson-io` sonrası `nvarguscamerasrc` görüntü |
