@@ -9597,6 +9597,12 @@ esults	50_uc_kapi\`):
     ve sarı uyarı basılıyor. `comms/test_comms.py` exit 0.
   - ⚠ **Denetim bekliyor.**
 
+- [ ] **T209 — `comms/test_comms.py` loopback'i üretim portlarına (5005/5006) bind ediyor; YKS canlıyken tam süit hiç koşamıyor** · `comms/test_comms.py:35-36`, `tests/test_p8_sim_katmani.py:147` · **ÖNEMLİ** · kanıt: `REVIEW_LOG.md` **D-427** (5 Eylül, üç koşu: YKS açıkken FAIL, kapalıyken OK, yeniden açılınca FAIL — `WinError 10013`, `link.py:34`)
+  - **Neden:** saha PC'si = geliştirme PC'si = YKS PC'si. YKS açıkken push kuralı (§5 "tam süit yeşil") sağlanamıyor; D-426 commit'i bu yüzden yerelde bekledi.
+  - **Yap:** (1) loopback **ephemeral port** kullansın — `bind=("127.0.0.1", 0)` + `getsockname()` (`iha_link` satır 53 zaten böyle); 5005/5006 yalnız `CONTRACTS.md`'deki sözleşme değeridir, loopback'in ona ihtiyacı yok. (2) Bu mümkün değilse bind `10013/10048` verince test **atlanır ve sebebini söyler** (`skipTest("5005'i PID … tutuyor")`) — sessiz yeşil değil. **ÖLÇÜLEMEDİ ≠ GEÇTİ, ama ≠ DÜŞTÜ de.**
+  - **Kapı:** testin kendisine mutasyon — 5005'i tutan sahte bir soket açıkken test ya geçer (1) ya açık sebeple atlanır (2); `assert` silinmez; tam süit YKS açıkken **yeşil**.
+  - ⚠ Bunu yazan mimardır; kapatan **Fable 5 (başamele)**, denetleyen mimar (madde 19 bağımsızlık).
+
 ---
 
 ## TAMAMLANANLAR

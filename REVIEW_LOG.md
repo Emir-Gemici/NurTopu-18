@@ -29883,3 +29883,50 @@ yazili, kanit olarak `Messages` satiri istendi. Bu **ise yaradi**: dokuz kez
 "oldu galiba" yerine log satiri geldi ve uc yanlis teshis (GPS sanildi,
 kablo sanildi, filtre sanildi) log'la duzeldi. Kural: sahadan gelen "oldu"
 kanit degildir; **yapistirilan satir** kanittir.
+
+### D-427 — `test_comms` URETIM PORTLARINA (5005/5006) BIND EDIYOR: YKS canliyken tam suit HIC KOSAMAZ — 5 Eylul'de UC kez dustu, ucu de ortam
+
+**Olcum (uc ayri kosu, ayni PC, 5 Eylul):**
+
+| saat | suit | dusen | portu tutan (netstat + Win32_Process) |
+|---|---|---|---|
+| ~14:5x | 2138, **1 FAIL** | `test_p8_sim_katmani.test_comms_loopback_gecer` | `yks_gui.py --fda --ika 10.0.0.2:5006 …` (PID 15092, 14:29) · `ika_nav.py comms --yks 10.0.0.1:5005` (PID 23952, 15:07) |
+| ~19:1x | 2138, **OK** | — | 5005/5006 **bos** (ikisi de kapanmisti) |
+| ~19:5x | 2138, **1 FAIL** | ayni test | `yks_gui.py …` (PID 11440) · `ika_nav.py …` (PID 31688) — **yeniden acilmis** |
+
+Hata her seferinde ayni: `comms/link.py:34 self.sock.bind(bind)` ->
+`PermissionError: [WinError 10013]`. `comms/test_comms.py:35-36`:
+
+    ika_link = UDPLink(bind=("127.0.0.1", 5006), timeout=0.1)
+    yks_link = UDPLink(bind=("127.0.0.1", 5005), timeout=0.1)
+
+Yani test, **uretim YKS (5005) ve IKA (5006) portlarinin ta kendisine** bind
+ediyor. `link.py` tek-sahipli uclarda `SO_EXCLUSIVEADDRUSE` kurar (D-4xx,
+"ikinci bind gorunur cikis" karari) — dogru bir karar, ve tam bu yuzden
+canli `yks_gui` varken test **kesin** duser. Kod bir kez bile degismedi;
+dusen/gecen tek degisken **YKS'nin acik olup olmadigi**.
+
+**Neden onemli:** saha PC'si = gelistirme PC'si = YKS PC'si. Sahada YKS
+acikken (yani tam da kapinin lazim oldugu anda) "tam suit yesil" kosulu
+**saglanamaz**; push kurali (anayasa §5) YKS kapanana kadar kilitlenir.
+Bugun D-426 commit'i bu yuzden yerelde bekledi.
+
+**Yanlis teshis de kaydedilsin:** ilk seferde Mission Planner'in 5100'u
+tutmasi sebep sanildi (MP 5000/5100/5600/5601/14550/14551 tutuyor) — 5100
+`seri_hub` portu, bu teste ilgisiz. Kok neden `test_comms.py`'nin kendi
+satirlari okununca cikti (D-425'teki "olcum aleti olculur" kurali: dosyayi
+oku, tahmin etme).
+
+**Karar (mimar) — T209 olarak kuyruga yazildi, amele yapar (madde 7):**
+1. `comms/test_comms.py` loopback'i **ephemeral port** kullansin
+   (`bind=("127.0.0.1", 0)`, sonra `getsockname()` ile gercek portu al —
+   `iha_link` zaten boyle yapiyor, satir 53). Loopback'in 5005/5006'ya
+   ihtiyaci yok; sabit port yalniz sozlesme dokumanina aittir.
+2. Bu mumkun degilse: bind `WinError 10013/10048` verirse test **atlanir ve
+   sebebini soyler** ("5005'i PID … tutuyor") — sessiz yesil DEGIL,
+   `skipTest`. "OLCULEMEDI != GECTI" ama "OLCULEMEDI != DUSTU" de.
+3. Kapi: testin kendisi icin **mutasyon** — 5005'i tutan sahte bir soket
+   acilir, test yine gecmeli (1) ya da acik sebeple atlanmali (2).
+
+Sahada YKS'yi kapatmadan **push kilidi acilmaz**; bu, iş bitene kadar
+bilinerek kabul edilen bir kisittir.
