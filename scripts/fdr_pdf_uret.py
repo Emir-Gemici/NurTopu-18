@@ -163,6 +163,10 @@ def uret(kip: str) -> int:
         parcalar.append(f'<section class="bolum" id="{html.escape(ad)}">' + _md(metin) + "</section>")
 
     govde = "\n".join(parcalar)
+    # Şekiller `FDR/sekiller/` altındadır; markdown'da `![](sekiller/x.svg)` FDR
+    # köküne görelidir ama HTML `FDR/pdf/` içine yazılır → göreli yol PDF'te kırık
+    # kalır (7 Eylül gecesi ölçüldü). Mutlak file:// URI'ye çevrilir.
+    govde = govde.replace('src="sekiller/', f'src="{FDR.as_uri()}/sekiller/')
     sayfa = (
         "<!doctype html><html lang='tr'><head><meta charset='utf-8'>"
         f"<title>NAVITAS FDR taslak {tarih_tr}</title><style>{CSS}</style></head><body>"
