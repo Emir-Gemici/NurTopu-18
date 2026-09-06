@@ -71,9 +71,13 @@ def main(argv=None) -> int:
     g = subprocess.run([PY, "codes/test_rota_sentetik.py"], cwd=KOK,
                        capture_output=True, text=True, encoding="utf-8", errors="replace")
     (kayit / "genel_kapi.txt").write_text(g.stdout + g.stderr, encoding="utf-8")
-    son = (g.stdout + g.stderr).strip().splitlines()[-1] if (g.stdout + g.stderr).strip() else ""
+    # Hukum satiri "GENEL KAPI (madde 14): GECTI ..." — SON satir DEGIL: stderr'e basilan
+    # uyari notlari ("Rota 67 waypoint gerektiriyor ...") stdout'tan sonra gelir. 7 Eyl
+    # 01:46'da bu yuzden yesil kapi KIRMIZI okundu; hukum satiri her yerde aranir.
+    hukum = [l for l in (g.stdout + g.stderr).splitlines() if "GENEL KAPI" in l]
+    son = hukum[-1] if hukum else "(GENEL KAPI satiri YOK)"
     print("   ", son)
-    kapi_ok = g.returncode == 0 and "GECTI" in son
+    kapi_ok = g.returncode == 0 and "GECTI" in son and "DUSTU" not in son
 
     if not (suit_ok and kapi_ok):
         print(f"PUSH YOK — süit {'OK' if suit_ok else 'KIRMIZI'} · kapı {'OK' if kapi_ok else 'KIRMIZI'} "
