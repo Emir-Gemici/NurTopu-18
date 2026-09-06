@@ -1,0 +1,10 @@
+29312  basladi=2026-09-07 01:50:59  parent=7096(YOK)  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\comms\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --kamera-url http://10.0.0.4:8080
+34632  basladi=2026-09-07 01:50:59  parent=29312(python.exe)  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\comms\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --kamera-url http://10.0.0.4:8080
+3448  basladi=2026-09-07 01:51:05  parent=30100(YOK)  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\simulation\scripts\ika_nav.py comms --yks 10.0.0.1:5005
+11292  basladi=2026-09-07 01:51:05  parent=3448(python.exe)  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\simulation\scripts\ika_nav.py comms --yks 10.0.0.1:5005
+
+# 02:1x — push_kapisi suiti (results/push_kapisi/20260907_015733) bittikten HEMEN sonra yeni sizintilar:
+23796  basladi=2026-09-07 02:02:27  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\comms\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --kamera-url http://10.0.0.4:8080
+21080  basladi=2026-09-07 02:02:27  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\comms\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --kamera-url http://10.0.0.4:8080
+18176  basladi=2026-09-07 02:02:33  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\simulation\scripts\ika_nav.py comms --yks 10.0.0.1:5005
+23416  basladi=2026-09-07 02:02:33  cmd=O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\simulation\scripts\ika_nav.py comms --yks 10.0.0.1:5005

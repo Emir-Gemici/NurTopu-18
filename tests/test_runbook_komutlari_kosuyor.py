@@ -30,17 +30,47 @@ güncellenmezse kapı düşer.
       REDDEDİLMİYOR (çıkış 2 + "error:" yok)
   T2  en az bir komut gerçekten sınanıyor (kapı boşa düşmesin — vakumluluk)
   T3  yer tutucu sözlüğü runbook'ta geçen tüm `<...>` biçimlerini kapsıyor
+  T4  T1'in açtığı süreç AĞACI kapanıyor: koşumdan sonra nöbet portlarında
+      (YKS/İKA/İHA uçları) YENİ UDP dinleyici yok (T210)
+
+🔴 T210 (7 Eylül gecesi) — BU KAPI SÜREÇ SIZDIRIYORDU. T1, `saha_baslat.py yks …`
+ve `saha_baslat.py ika …` satırlarını GERÇEKTEN koşar; bunlar `yks_gui` /
+`ika_nav`'ı torun süreç olarak açar ve 6 s zaman aşımına kadar yaşar
+("süreç KALKTI" = istenen sonuç). `subprocess.run(timeout=6)` zaman aşımında
+YALNIZ doğrudan çocuğu öldürüyordu; Windows'ta venv `python.exe` bir
+başlatıcı olduğu için torunlar (başlatıcı + gerçek `yks_gui`/`ika_nav`)
+yetim kalıyor, UDP 5005/5006'yı tutuyor ve bir SONRAKİ süitte
+`test_p8_sim_katmani.test_comms_loopback_gecer` `WinError 10013` ile
+düşüyordu (D-427 ve D-430'da "ortam kusuru" sanılan şeyin kökü; kanıt:
+`results/gece_20260907/sizinti_surecleri_0207.txt` — başlama saatleri süit
+koşumlarıyla 6 s arayla çakışıyor). Artık her koşum `surec_nobetcisi.
+kos_agac_kapat` ile yapılır: zaman aşımında ağaç `taskkill /T /F` ile
+bütün olarak kapatılır; T4 bunu portla ÖLÇER. `--help` ile koşmak
+yeterli DEĞİLDİR: argparse `-h`'yi zorunlu-bayrak denetiminden ÖNCE
+işler ve 0 ile çıkar — "bayrak zorunlu oldu, belge güncellenmedi" kusuru
+(D-421 §1) görünmez olurdu; kapının amacı korunmuştur.
 """
 
 import re
-import subprocess
 import sys
+import time
 import unittest
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
 RUNBOOK = KOK / "SAHA_RUNBOOK.md"
 PY = Path(sys.executable)
+
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+import surec_nobetcisi  # noqa: E402
+
+#: Süreç "kalktı ve dinliyor" sayılmadan önce beklenen süre (s). Tk GUI'nin
+#: açılışı birkaç saniye alır; argparse reddi ise anında gelir.
+KALKIS_ZAMAN_ASIMI_S = 6
+#: Ağaç kapatıldıktan sonra portun serbest kalması için tanınan azami süre (s).
+#: Sızıntı KALICIDIR; bu süre yalnız kapanış gecikmesini sızıntıdan ayırır.
+PORT_SERBEST_BEKLEME_S = 5.0
 
 # Runbook yer tutucuları → sınama değerleri. Gerçek adres değil, argparse'ın
 # kabul edeceği BİÇİMDE değerler; kapı bağlantı değil SÖZ DİZİMİ ölçer.
@@ -96,24 +126,20 @@ class RunbookKomutlari(unittest.TestCase):
     def setUpClass(cls):
         cls.metin = RUNBOOK.read_text(encoding="utf-8")
         cls.komutlar = _komutlar(cls.metin)
+        # T4 için taban: koşumdan ÖNCE nöbet portlarını kim dinliyor?
+        # (Kullanıcının canlı YKS'si buradaysa taban ona sahiptir; nöbetçi
+        # yalnız YENİ dinleyiciyi sızıntı sayar.)
+        cls.dinleyenler_once = surec_nobetcisi.udp_dinleyenler()
 
     def test_T1_hicbir_runbook_komutu_argparse_tarafindan_REDDEDILMIYOR(self):
         olu = []
         for betik, satir in self.komutlar:
             args = _argumanlar(satir, betik)
-            try:
-                r = subprocess.run(
-                    [str(PY), "-B", str(KOK / betik), *args],
-                    capture_output=True, text=True, encoding="utf-8",
-                    errors="replace", timeout=6, cwd=str(KOK))
-                cikis, hata = r.returncode, (r.stderr or "")
-            except subprocess.TimeoutExpired as exc:
-                # Süreç KALKTI ve dinlemeye başladı — istediğimiz budur.
-                # `text=True` olduğu için stderr zaten str'dir (ya da None).
-                ham_hata = exc.stderr
-                if isinstance(ham_hata, bytes):
-                    ham_hata = ham_hata.decode("utf-8", "replace")
-                cikis, hata = 124, (ham_hata or "")
+            # Zaman aşımı = süreç KALKTI ve dinlemeye başladı (çıkış 124) —
+            # istediğimiz budur; ağaç `kos_agac_kapat` içinde KESİN kapanır.
+            cikis, _out, hata = surec_nobetcisi.kos_agac_kapat(
+                [str(PY), "-B", str(KOK / betik), *args],
+                timeout=KALKIS_ZAMAN_ASIMI_S, cwd=str(KOK))
             if cikis == 2 and "error:" in hata:
                 ilk = next((x for x in hata.splitlines()
                             if "error:" in x), hata[:160])
@@ -148,6 +174,29 @@ class RunbookKomutlari(unittest.TestCase):
             "runbook'ta sözlükte olmayan yer tutucu var; kapı onu argparse'a "
             "ham gönderir ve yanlış alarm/yanlış geçiş üretir:\n  "
             + "\n  ".join(sorted(eksik)))
+
+    def test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK(self):
+        """T210: T1'in açtığı `yks_gui`/`ika_nav` torunları ölmüş olmalı.
+
+        Yöntem sayım değil KÜME farkıdır (`netstat -ano -p udp`): koşumdan
+        önce olmayan (adres, PID) çifti varsa sızıntıdır. Sızıntı kalıcı
+        olduğu için kısa bir kapanış beklemesi onu gizleyemez.
+        """
+        if self.dinleyenler_once is None:
+            self.skipTest("netstat -ano yalnız Windows'ta ölçülür — ÖLÇÜLEMEDİ")
+        son = time.monotonic() + PORT_SERBEST_BEKLEME_S
+        while True:
+            yeni = surec_nobetcisi.udp_dinleyenler() - self.dinleyenler_once
+            if not yeni or time.monotonic() >= son:
+                break
+            time.sleep(0.25)
+        rapor = [f"{adr} PID {pid}: {surec_nobetcisi.surec_komutu(pid)[:160]}"
+                 for adr, pid in sorted(yeni)]
+        self.assertEqual(
+            [], rapor,
+            "runbook kapısı süreç SIZDIRDI — koşumdan sonra nöbet portlarında "
+            "yeni UDP dinleyici var (bir sonraki süit WinError 10013 ile "
+            "düşer; D-427/D-430 kökü):\n  " + "\n  ".join(rapor))
 
 
 if __name__ == "__main__":

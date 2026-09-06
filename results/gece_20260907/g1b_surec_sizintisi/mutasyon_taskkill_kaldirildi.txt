@@ -1,0 +1,87 @@
+$ O:\navitas-local-train\venv\Scripts\python.exe -m unittest discover -s tests -p "test_[rz][uz]*.py" -v   # cwd=O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5
+test_T1_hicbir_runbook_komutu_argparse_tarafindan_REDDEDILMIYOR (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T1_hicbir_runbook_komutu_argparse_tarafindan_REDDEDILMIYOR) ... ok
+test_T2_kapi_bos_degil_en_az_uc_komut_sinaniyor (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T2_kapi_bos_degil_en_az_uc_komut_sinaniyor)
+Vakumluluk: blok ayrıştırıcı bozulursa kapı sessizce boşalmasın. ... ok
+test_T3_yer_tutucular_kapsamli (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T3_yer_tutucular_kapsamli)
+Runbook'ta çözülemeyen `<...>` yer tutucusu kalmamalı. ... ok
+test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK)
+T210: T1'in açtığı `yks_gui`/`ika_nav` torunları ölmüş olmalı. ... FAIL
+test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK) ... FAIL
+test_N2_nobet_portlari_istasyon_kartindan_turetildi (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N2_nobet_portlari_istasyon_kartindan_turetildi) ... ok
+test_N3_bu_dosya_kesif_sirasinda_SON (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N3_bu_dosya_kesif_sirasinda_SON)
+"Süit sonu" iddiası ada dayanır; ad kilitlenmezse iddia yalan olur. ... ok
+test_N4_olcum_aleti_acik_soketi_GORUYOR (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N4_olcum_aleti_acik_soketi_GORUYOR)
+Pozitif kontrol: kendi açtığımız UDP soketi netstat'ta görünmeli. ... ok
+
+======================================================================
+FAIL: test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK (test_runbook_komutlari_kosuyor.RunbookKomutlari.test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK)
+T210: T1'in açtığı `yks_gui`/`ika_nav` torunları ölmüş olmalı.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5\tests\test_runbook_komutlari_kosuyor.py", line 195, in test_T4_kosum_sonrasi_nobet_portlarinda_YENI_dinleyici_YOK
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], rapor,
+        ^^^^^^^^^^
+        "runbook kapısı süreç SIZDIRDI — koşumdan sonra nöbet portlarında "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "yeni UDP dinleyici var (bir sonraki süit WinError 10013 ile "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "düşer; D-427/D-430 kökü):\n  " + "\n  ".join(rapor))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['0.0.0.0:5005 PID 19536: O:\\navitas-loca[339 chars]005']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'0.0.0.0:5005 PID 19536: O:\\navitas-local-train\\venv\\Scripts\\python.exe O:\\navitas\\.claude\\worktrees\\wf_604a2e17-bf9-5\\comms\\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --k'
+
+- []
++ ['0.0.0.0:5005 PID 19536: O:\\navitas-local-train\\venv\\Scripts\\python.exe '
++  'O:\\navitas\\.claude\\worktrees\\wf_604a2e17-bf9-5\\comms\\yks_gui.py --fda '
++  '--ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --k',
++  '0.0.0.0:5006 PID 23416: O:\\navitas-local-train\\venv\\Scripts\\python.exe '
++  'O:\\navitas\\.claude\\worktrees\\wf_604a2e17-bf9-5\\simulation\\scripts\\ika_nav.py '
++  'comms --yks 10.0.0.1:5005'] : runbook kapısı süreç SIZDIRDI — koşumdan sonra nöbet portlarında yeni UDP dinleyici var (bir sonraki süit WinError 10013 ile düşer; D-427/D-430 kökü):
+  0.0.0.0:5005 PID 19536: O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5\comms\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --k
+  0.0.0.0:5006 PID 23416: O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5\simulation\scripts\ika_nav.py comms --yks 10.0.0.1:5005
+
+======================================================================
+FAIL: test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK (test_zz_nobetci_surec_sizintisi.SuitSonuNobetcisi.test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5\tests\test_zz_nobetci_surec_sizintisi.py", line 58, in test_N1_suit_sonunda_nobet_portlarinda_YENI_dinleyici_YOK
+    self.assertEqual(
+    ~~~~~~~~~~~~~~~~^
+        [], rapor,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        "UDP dinleyici var — bir sonraki süit WinError 10013 ile düşer "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "(D-427/D-430 kökü):\n  " + "\n  ".join(rapor))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['0.0.0.0:5005 PID 19536: O:\\navitas-loca[339 chars]005']
+
+Second list contains 2 additional elements.
+First extra element 0:
+'0.0.0.0:5005 PID 19536: O:\\navitas-local-train\\venv\\Scripts\\python.exe O:\\navitas\\.claude\\worktrees\\wf_604a2e17-bf9-5\\comms\\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --k'
+
+- []
++ ['0.0.0.0:5005 PID 19536: O:\\navitas-local-train\\venv\\Scripts\\python.exe '
++  'O:\\navitas\\.claude\\worktrees\\wf_604a2e17-bf9-5\\comms\\yks_gui.py --fda '
++  '--ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --k',
++  '0.0.0.0:5006 PID 23416: O:\\navitas-local-train\\venv\\Scripts\\python.exe '
++  'O:\\navitas\\.claude\\worktrees\\wf_604a2e17-bf9-5\\simulation\\scripts\\ika_nav.py '
++  'comms --yks 10.0.0.1:5005'] : SÜİT SÜREÇ SIZDIRDI (başı 2026-09-07 02:18:22, taban 0 dinleyici): süit sonunda nöbet portlarında yeni UDP dinleyici var — bir sonraki süit WinError 10013 ile düşer (D-427/D-430 kökü):
+  0.0.0.0:5005 PID 19536: O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5\comms\yks_gui.py --fda --ika 10.0.0.2:5006 --iha 10.0.0.4:5007 --k
+  0.0.0.0:5006 PID 23416: O:\navitas-local-train\venv\Scripts\python.exe O:\navitas\.claude\worktrees\wf_604a2e17-bf9-5\simulation\scripts\ika_nav.py comms --yks 10.0.0.1:5005
+
+----------------------------------------------------------------------
+Ran 8 tests in 35.764s
+
+FAILED (failures=2)
+
+EXIT=1
+
+$ netstat -ano -p udp | findstr ":5005 :5006 :5007"   (kosumdan SONRA)
+  UDP    0.0.0.0:5005           *:*                                    19536
+  UDP    0.0.0.0:5006           *:*                                    23416
