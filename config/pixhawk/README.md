@@ -52,6 +52,12 @@ kodundan** okundu (dosya adları `.param` başlığında). Sözleşme sabitleri
 2. `Config` → `Full Parameter List` → sağ sütunda **`Load from file`** → `arducopter_fda.param`.
    Liste yalnız dosyadaki satırları değiştirir; dosyada olmayan parametreler firmware
    varsayılanında kalır.
+   **`RC_SPEED` 400** dosyayla gelir (7 Eylül, D-429 §4): kart 6 Eylül dökümünde **490**'daydı
+   (`arducopter_fda_20260906.param` satır 659 — Copter-4.5 varsayılanı); ESC Hobbywing
+   Skywalker 60A V2 gaz sinyali **50–432 Hz**, 490 spec dışı. Yükleme sonrası 400 görülsün.
+   Aynı dosya **`SERVO1–8` / `SERVO13–16` = 0** yazar (dökümde boş çıkışlara motor fonksiyonu
+   atanmıştı, D-428 §5d) ve ESC'lerin **AUX 1–4** eşlemesini (`SERVO9–12`, §3) korur →
+   yüklemeden sonra **motor testi (pervanesiz) tekrar**, video (D-429 §6 madde 2).
 3. **`Write Params`**. Ekranda çıkan "reboot required" uyarısı beklenir: `SERIAL*`, `SR*`,
    `BRD_*` yeniden başlatmada etkin olur → Pixhawk'a **güç kes-ver**.
 4. Yeniden bağlan → **`Refresh Params`** → **`Compare Params`** ile dosyayla karşılaştır:
@@ -107,6 +113,10 @@ denmez.
   ⚠ **5 Eylül sahada 1'e alındı** (teşhis sırasında; asıl sorun alıcının `CH6`'ya takılı olmasıydı, D-426). iBUS doğrulandı; **4'e geri alınıp alınmadığı** parametre dökümünde görülecek — geri almak tercih edilir (Emir kararı).
 - `BATT_FS_LOW_ACT` — 2 = **RTL** olduğu MP açıklamasında görülsün (firmware 4.5 tablosu; farklı sürümde tablo tekrar okunur).
 - `BATT_FS_CRT_ACT` — 1 = **Land** olduğu görülsün (aynı tablo).
+- `SERVO9_FUNCTION` — **36 (Motor4, sağ arka) = AUX1.** ESC'ler AUX 1–4'te (D-428 §5d; 6 Eylül dökümü ile ÖLÇÜLDÜ). Motor testi bu eşlemeyle geçti; eşlemeyi değiştirmek = motor testini baştan almak. Dördü yüklendikten sonra motor testi (pervanesiz) **tekrar**, A-B-C-D sırası **videoyla** (D-429 §6 madde 2).
+- `SERVO10_FUNCTION` — **34 (Motor2, sol arka) = AUX2.**
+- `SERVO11_FUNCTION` — **33 (Motor1, sağ ön) = AUX3.** M1 6 Eylül devrilmesinde hasarlı (D-429 §2 madde 4); motor/ESC değişse de eşleme aynı kalır, yeni kablo aynı porta.
+- `SERVO12_FUNCTION` — **35 (Motor3, sol ön) = AUX4.** Ayrıca `SERVO1–8` ve `SERVO13–16` = **0** görülsün (§1 adım 2; test `P10`).
 
 ---
 

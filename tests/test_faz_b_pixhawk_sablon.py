@@ -25,7 +25,14 @@ Kapilar (adlari ne kilitledigini soyler):
      LOITER_TIME var, param1 = 60 s ve <= butce/5; LAND var ve SON satir
   P7 sure butcesi (.param hizlariyla hesaplanir) <= SARTNAME_FDA_OPERASYON_SURESI_S
   P8 denetleyici gercekten duser: bozulmus kopyalar (SR2_POSITION dusuk, TAKEOFF 20 m,
-     TEYIT listesi eksik) ilgili kapida DUSER — kapinin kendisi sinanir
+     TEYIT listesi eksik, RC_SPEED silinmis, SERVO10 Motor1'e cekilmis) ilgili kapida
+     DUSER — kapinin kendisi sinanir
+  P9 RC_SPEED == plan degeri (400 Hz, §0.2) ve <= ESC spec ust siniri (Skywalker 60A V2
+     432 Hz) ve ArduPilot @Range 50..490 icinde — 6 Eylul dokumunde 490 (varsayilan) idi,
+     D-429 §4
+  P10 motor cikislari: OLCULEN AUX eslemesi SERVO9..12 = 36,34,33,35 birebir (D-428 §5d;
+     dort satir TEYIT isaretli), bos cikislar SERVO1-8/13-16 == 0, her motor fonksiyonu
+     33..36 tum SERVOn_FUNCTION'lar arasinda TAM BIR KEZ
 """
 import math
 import re
@@ -84,6 +91,27 @@ RC_PROTOCOLS_BIT_IBUS = 1 << 2
 LOG_BITMASK_VARSAYILAN = sum(1 << b for b in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17))
 # AC_WPNav/AC_WPNav.cpp WPNAV_SPEED_UP varsayilani (dosyada yok; butce hesabi icin)
 WPNAV_SPEED_UP_VARSAYILAN_CMS = 250.0
+# ArduCopter/Parameters.cpp RC_SPEED: "@Units: Hz @Range: 50 490" (Copter-4.5 dali,
+# 2026-09-07 okundu); ArduCopter/config.h RC_FAST_SPEED 490 = varsayilan (6 Eylul dokumu)
+RC_SPEED_ARALIK_HZ = (50, 490)
+# SAHA_HAZIRLIK_PLANI_20260903.md §0.2 "ilk ucuslarda PWM 400 Hz"
+RC_SPEED_PLAN_HZ = 400
+# Hobbywing Skywalker 60A V2 gaz sinyali 50-432 Hz (D-429 §4; ESC etiketi D-428 §1, beyan)
+ESC_PWM_UST_HZ = 432
+# libraries/SRV_Channel/SRV_Channel.cpp SERVOn_FUNCTION @Values (Copter-4.5)
+SERVO_FUNCTION_DISABLED = 0             # 0:Disabled
+SERVO_FUNCTION_MOTOR = (33, 34, 35, 36)  # 33:Motor1,34:Motor2,35:Motor3,36:Motor4
+# OLCULEN AUX eslemesi (D-428 §5d; config/pixhawk/arducopter_fda_20260906.param satir
+# 918/848/853/858): AUX1..4 = SERVO9..12 = Motor4, Motor2, Motor1, Motor3. Motor testi bu
+# eslemeyle gecti; degistirmek = motor testini bastan almak.
+ESC_CIKIS_ESLEMESI = {
+    "SERVO9_FUNCTION": 36, "SERVO10_FUNCTION": 34,
+    "SERVO11_FUNCTION": 33, "SERVO12_FUNCTION": 35,
+}
+# Bos cikislar: MAIN 1-8 (SERVO1-8) ve AUX 5-8 (SERVO13-16). Dokumde motor fonksiyonu
+# tasiyordu (basibos); D-429 §4 karari: 0.
+BOS_CIKISLAR = tuple(f"SERVO{n}_FUNCTION" for n in (*range(1, 9), *range(13, 17)))
+SERVO_FUNCTION_DESENI = re.compile(r"^SERVO\d{1,2}_FUNCTION$")
 # ArduPilot parametre adi: buyuk harf/rakam/alt cizgi, en fazla 16 karakter
 PARAM_AD_DESENI = re.compile(r"^[A-Z][A-Z0-9_]{0,15}$")
 CM_PER_M = 100.0
@@ -211,6 +239,51 @@ def readme_teyit_adlari(metin):
     return set(re.findall(r"^- `([A-Z][A-Z0-9_]{0,15})`", bolum, flags=re.M))
 
 
+def rc_speed_hatalari(parametreler):
+    """P9 kapisi (D-429 §4): RC_SPEED dosyada VAR, plan degeri, ESC spec'i ve ArduPilot
+    araligi icinde. Dosyada yoksa firmware varsayilani (490) kalir = ESC spec disi."""
+    if "RC_SPEED" not in parametreler:
+        return [f"RC_SPEED yok: firmware varsayilani {RC_SPEED_ARALIK_HZ[1]} Hz kalir "
+                f"(ESC ust siniri {ESC_PWM_UST_HZ} Hz)"]
+    hatalar = []
+    hz = parametreler["RC_SPEED"]
+    if int(hz) != RC_SPEED_PLAN_HZ:
+        hatalar.append(f"RC_SPEED {hz:g} != plan {RC_SPEED_PLAN_HZ} Hz")
+    if hz > ESC_PWM_UST_HZ:
+        hatalar.append(f"RC_SPEED {hz:g} > ESC spec ust siniri {ESC_PWM_UST_HZ} Hz")
+    if not RC_SPEED_ARALIK_HZ[0] <= hz <= RC_SPEED_ARALIK_HZ[1]:
+        hatalar.append(f"RC_SPEED {hz:g} ArduPilot @Range {RC_SPEED_ARALIK_HZ} disinda")
+    return hatalar
+
+
+def motor_cikis_hatalari(parametreler):
+    """P10 kapisi: olculen AUX eslemesi birebir, bos cikislar Disabled, her motor
+    fonksiyonu (33..36) tum SERVOn_FUNCTION'lar arasinda TAM BIR KEZ.
+
+    Doner: hata metinleri (bos liste = gecti). Mutasyon testleri (P8f/P8g) ayni
+    fonksiyonu bozuk kopyada kosar; kapi 'her zaman gecen' degildir.
+    """
+    hatalar = []
+    for ad, beklenen in ESC_CIKIS_ESLEMESI.items():
+        if ad not in parametreler:
+            hatalar.append(f"{ad} yok (olculen esleme {beklenen})")
+        elif int(parametreler[ad]) != beklenen:
+            hatalar.append(f"{ad} = {parametreler[ad]:g} != olculen {beklenen}")
+    for ad in BOS_CIKISLAR:
+        if ad not in parametreler:
+            hatalar.append(f"{ad} yok (bos cikis, {SERVO_FUNCTION_DISABLED} olmali)")
+        elif int(parametreler[ad]) != SERVO_FUNCTION_DISABLED:
+            hatalar.append(f"{ad} = {parametreler[ad]:g} != {SERVO_FUNCTION_DISABLED} (bos cikis)")
+    sayim = {m: [] for m in SERVO_FUNCTION_MOTOR}
+    for ad, deger in parametreler.items():
+        if SERVO_FUNCTION_DESENI.match(ad) and int(deger) in sayim:
+            sayim[int(deger)].append(ad)
+    for m, adlar in sayim.items():
+        if len(adlar) != 1:
+            hatalar.append(f"motor fonksiyonu {m}: {len(adlar)} kez {adlar} (tam 1 olmali)")
+    return hatalar
+
+
 def sure_butcesi_s(parametreler, satirlar):
     """Kotu-durum gorev suresi: hazirlik + tirmanis + yol (WPNAV_SPEED) + loiter +
     inis (tamami LAND_SPEED ile). Yol uzunlugu satirlarin yerel konumlarindan olculur
@@ -322,6 +395,34 @@ class ParamDosyasi(unittest.TestCase):
         for ad in (PARAM_DOSYASI.name, WP_DOSYASI.name, "Load from file", "Load WP File"):
             self.assertIn(ad, metin)
 
+    def test_p9_rc_speed_plan_degeri_ve_esc_spec_icinde(self):
+        # D-429 §4: dokumde 490 (firmware varsayilani) = Skywalker 60A V2 spec disi
+        self.assertIn("RC_SPEED", self.p, "RC_SPEED dosyada yok -> kart 490'da kalir")
+        self.assertEqual(int(self.p["RC_SPEED"]), RC_SPEED_PLAN_HZ)
+        self.assertLessEqual(self.p["RC_SPEED"], ESC_PWM_UST_HZ)
+        self.assertGreaterEqual(self.p["RC_SPEED"], RC_SPEED_ARALIK_HZ[0])
+        self.assertLessEqual(self.p["RC_SPEED"], RC_SPEED_ARALIK_HZ[1])
+        self.assertEqual(rc_speed_hatalari(self.p), [])
+
+    def test_p10_motor_cikislari_olculen_aux_eslemesi_bos_cikislar_sifir(self):
+        p = self.p
+        # olculen esleme birebir (D-428 §5d): AUX1..4 = M4, M2, M1, M3
+        for ad, beklenen in ESC_CIKIS_ESLEMESI.items():
+            self.assertIn(ad, p)
+            self.assertEqual(int(p[ad]), beklenen, ad)
+        # bos cikislar Disabled (D-429 §4)
+        for ad in BOS_CIKISLAR:
+            self.assertIn(ad, p)
+            self.assertEqual(int(p[ad]), SERVO_FUNCTION_DISABLED, ad)
+        # her motor fonksiyonu tam bir kez
+        atanan = sorted(int(v) for ad, v in p.items()
+                        if SERVO_FUNCTION_DESENI.match(ad) and int(v) in SERVO_FUNCTION_MOTOR)
+        self.assertEqual(atanan, sorted(SERVO_FUNCTION_MOTOR))
+        self.assertEqual(motor_cikis_hatalari(p), [])
+        # dort ESC cikisi TEYIT isaretli (README metin kilidi P5 ile birlikte)
+        self.assertTrue(set(ESC_CIKIS_ESLEMESI) <= self.teyit,
+                        f"TEYIT'siz ESC cikisi: {sorted(set(ESC_CIKIS_ESLEMESI) - self.teyit)}")
+
 
 class GorevSablonu(unittest.TestCase):
 
@@ -432,6 +533,23 @@ class DenetleyiciGercektenDuser(unittest.TestCase):
         _, s, hatalar = waypoint_oku(yol)
         self.assertEqual(len(hatalar), 1, hatalar)
         self.assertEqual(len(s), WP_SATIR_SAYISI - 1)
+
+    def test_p8f_rc_speed_silinince_yakalanir(self):
+        yol = self._kopya(PARAM_DOSYASI, lambda t: t.replace("\nRC_SPEED,400\n", "\n"))
+        p, _, hatalar, _ = param_oku(yol)
+        self.assertEqual(hatalar, [])
+        self.assertNotIn("RC_SPEED", p)
+        self.assertNotEqual(rc_speed_hatalari(p), [])
+
+    def test_p8g_servo10_motor1_yapilinca_yakalanir(self):
+        # SERVO10 34 -> 33: Motor1 iki cikista, Motor2 hicbir cikista
+        yol = self._kopya(PARAM_DOSYASI, lambda t: t.replace("\nSERVO10_FUNCTION,34\n", "\nSERVO10_FUNCTION,33\n"))
+        p, _, hatalar, _ = param_oku(yol)
+        self.assertEqual(hatalar, [])
+        h = motor_cikis_hatalari(p)
+        self.assertTrue(any(x.startswith("SERVO10_FUNCTION = 33") for x in h), h)
+        self.assertTrue(any(x.startswith("motor fonksiyonu 33: 2 kez") for x in h), h)
+        self.assertTrue(any(x.startswith("motor fonksiyonu 34: 0 kez") for x in h), h)
 
 
 if __name__ == "__main__":

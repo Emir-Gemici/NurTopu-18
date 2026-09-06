@@ -25,7 +25,8 @@
 # !! SR*/SERIAL*/BRD_* degisiklikleri YENIDEN BASLATMA ister ("Write Params" sonrasi
 #   Pixhawk'a guc kes-ver; sonra "Refresh Params" ile dosyayla karsilastir).
 
-# -- GOVDE / MOTOR (SAHA_HAZIRLIK_PLANI SS0.2: quadcopter, 5008 340KV x4, 12x10, 80 A ESC) --
+# -- GOVDE / MOTOR (SAHA_HAZIRLIK_PLANI SS0.2: quadcopter, 5008 340KV x4, 12x10; ESC plan
+#    80 A dedi, kutudan Hobbywing Skywalker 60A V2 cikti - D-428 SS1 etiket, beyan) --
 
 # NEDEN: 4 kollu govde (dronesolid/). ArduCopter/Parameters.cpp @Values 1:Quad.
 FRAME_CLASS,1
@@ -36,6 +37,67 @@ FRAME_TYPE,1
 # AP_MotorsMulticopter.cpp @Values 0:Normal. DShot (4..7) ancak PWM ile ucus
 # dogrulandiktan SONRA ve ayri D-kaydiyla denenir.
 MOT_PWM_TYPE,0
+# NEDEN: SS0.2 "ilk ucuslarda PWM 400 Hz". ESC Hobbywing Skywalker 60A V2 gaz sinyali
+# 50-432 Hz (D-429 SS4). Kart 6 Eylul dokumunde 490'daydi (arducopter_fda_20260906.param
+# satir 659 "RC_SPEED,490" = Copter-4.5 ArduCopter/config.h RC_FAST_SPEED varsayilani)
+# -> ESC spec DISI. Kaynak: ArduCopter/Parameters.cpp "@Param: RC_SPEED ... @Units: Hz
+# @Range: 50 490" (Copter-4.5 dali, 2026-09-07 okundu). Test P9: == 400 ve <= 432.
+RC_SPEED,400
+
+# -- MOTOR CIKISLARI (D-428 SS5d, D-429 SS4: ESC'ler AUX 1-4'te; bos cikislar 0) --
+# libraries/SRV_Channel/SRV_Channel.cpp SERVOn_FUNCTION @Values 0:Disabled, 33:Motor1,
+# 34:Motor2, 35:Motor3, 36:Motor4 (Copter-4.5, 2026-09-07 okundu). Pixhawk 6C: SERVO1-8 =
+# MAIN 1-8 (IOMCU), SERVO9-16 = AUX 1-8 (FMU). Plan SS0.2 "MAIN 1-4" dedi; fiziksel
+# kablolama AUX 1-4 olarak yapildi (Pixhawk ile gelen PWM IN/OUT adaptoru, D-428 SS1) ve
+# 6 Eylul dokumunde OLCULDU (arducopter_fda_20260906.param satir 918/848/853/858).
+# Motor testi bu eslemeyle gecti (D-428 SS5d, beyan; 5 Eylul 4/4 D-426, 6 Eylul A/B/C/D
+# listesi gelmedi D-428 SS1): eslemeyi degistirmek = motor testini bastan almak. QUAD/X konumlari (D-429 SS1 tablosu): M1 sag on, M2 sol arka,
+# M3 sol on, M4 sag arka.
+
+# NEDEN: AUX1 = Motor4 (sag arka). Dokum: SERVO9_FUNCTION,36.
+# TEYIT: Pixhawk'ta SERVO9_FUNCTION = 36 gorulsun; motor testi (pervanesiz) A-B-C-D
+# sirasi VIDEOYLA (D-429 SS6 madde 2: videosuz "dogru" sayilmaz).
+SERVO9_FUNCTION,36
+# NEDEN: AUX2 = Motor2 (sol arka). Dokum: SERVO10_FUNCTION,34.
+# TEYIT: Pixhawk'ta SERVO10_FUNCTION = 34 gorulsun.
+SERVO10_FUNCTION,34
+# NEDEN: AUX3 = Motor1 (sag on). Dokum: SERVO11_FUNCTION,33. M1 devrilmede hasar gordu
+# (D-429 SS2 madde 4); motor/ESC degisse de ESLEME AYNI kalir - yeni kablo ayni porta.
+# TEYIT: Pixhawk'ta SERVO11_FUNCTION = 33 gorulsun.
+SERVO11_FUNCTION,33
+# NEDEN: AUX4 = Motor3 (sol on). Dokum: SERVO12_FUNCTION,35.
+# TEYIT: Pixhawk'ta SERVO12_FUNCTION = 35 gorulsun.
+SERVO12_FUNCTION,35
+
+# Basibos motor fonksiyonlari: 6 Eylul dokumunde SERVO1-8 = 34,34,33,34,34,36,33,34 ve
+# SERVO13-16 = 36,34,33,35 - BOS cikislara motor PWM'i (ayni motor 4-5 cikista birden).
+# Bos cikisa takilan her sey motor komutu alir (D-428 SS5d "sabah 0'lanir" - yapilmadi;
+# D-429 SS4 karari). 0 = Disabled. Bu 12 satir yuklendikten sonra motor testi TEKRAR
+# (README SS1). Test P10: SERVO1-8/13-16 == 0 ve her motor fonksiyonu 33..36 TAM BIR KEZ.
+# NEDEN: MAIN1 bos; dokumde 34 (Motor2, SERVO10 ile mukerrer) -> 0.
+SERVO1_FUNCTION,0
+# NEDEN: MAIN2 bos; dokumde 34 (Motor2, mukerrer) -> 0.
+SERVO2_FUNCTION,0
+# NEDEN: MAIN3 bos; dokumde 33 (Motor1, SERVO11 ile mukerrer) -> 0.
+SERVO3_FUNCTION,0
+# NEDEN: MAIN4 bos; dokumde 34 (Motor2, mukerrer) -> 0.
+SERVO4_FUNCTION,0
+# NEDEN: MAIN5 bos; dokumde 34 (Motor2, mukerrer) -> 0.
+SERVO5_FUNCTION,0
+# NEDEN: MAIN6 bos; dokumde 36 (Motor4, SERVO9 ile mukerrer) -> 0.
+SERVO6_FUNCTION,0
+# NEDEN: MAIN7 bos; dokumde 33 (Motor1, mukerrer) -> 0.
+SERVO7_FUNCTION,0
+# NEDEN: MAIN8 bos; dokumde 34 (Motor2, mukerrer) -> 0.
+SERVO8_FUNCTION,0
+# NEDEN: AUX5 bos; dokumde 36 (Motor4, mukerrer) -> 0.
+SERVO13_FUNCTION,0
+# NEDEN: AUX6 bos; dokumde 34 (Motor2, mukerrer) -> 0.
+SERVO14_FUNCTION,0
+# NEDEN: AUX7 bos; dokumde 33 (Motor1, mukerrer) -> 0.
+SERVO15_FUNCTION,0
+# NEDEN: AUX8 bos; dokumde 35 (Motor3, SERVO12 ile mukerrer) -> 0.
+SERVO16_FUNCTION,0
 
 # -- MAVLINK KIMLIGI / SERI HATLAR (CONTRACTS SS7.4 / D-403) --
 
