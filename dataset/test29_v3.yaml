@@ -1,0 +1,14 @@
+# TEST29 — DOGRULAMA kumesi (CONTRACTS §12 · dji_kirsal_0038_bolum_v3, kor etiket uzlasisi v3, 29 kare).
+# YALNIZ OLCUM ICINDIR (scripts/olcum/176_piksel_karisiklik_matrisi.py, ultralytics model.val).
+# 0038 kareleri EGITIME VE ERKEN DURDURMAYA GIRMEZ (CONTRACTS §12 baglayici kural); `train`
+# anahtari ultralytics'in bicimsel zorunlulugudur ve BILEREK test dizinini gosterir — bu dosya
+# hicbir egitim komutuna VERILMEZ. Sinif adlari CONTRACTS §1.1 / codes/sinif_semasi.IKI_SINIF_ADLARI
+# ile birebir; kilit: tests/test_gece_karisiklik_matrisi.py.
+path: O:\navitas\dataset\dji_kirsal_0038_bolum_v3
+train: images/test
+val: images/test
+
+nc: 2
+names:
+  0: traversable
+  1: blocked

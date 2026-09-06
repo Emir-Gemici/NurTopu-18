@@ -1,0 +1,40 @@
+[ 1/29] dji_20260822172613_0038_d__frame_000025_000001620.jpg tespit=1 IoU z=OLCULEMEDI e=0.023 etiketsiz=0.791 t67+=0
+[ 2/29] dji_20260822172613_0038_d__frame_000035_000001920.jpg tespit=3 IoU z=OLCULEMEDI e=0.524 etiketsiz=0.833 t67+=8707
+[ 3/29] dji_20260822172613_0038_d__frame_000039_000002040.jpg tespit=2 IoU z=OLCULEMEDI e=0.690 etiketsiz=0.724 t67+=0
+[ 4/29] dji_20260822172613_0038_d__frame_000048_000002310.jpg tespit=1 IoU z=OLCULEMEDI e=0.384 etiketsiz=0.476 t67+=0
+[ 5/29] dji_20260822172613_0038_d__frame_000053_000002460.jpg tespit=3 IoU z=0.638 e=0.921 etiketsiz=0.449 t67+=0
+[ 6/29] dji_20260822172613_0038_d__frame_000062_000002820.jpg tespit=1 IoU z=0.546 e=0.000 etiketsiz=0.321 t67+=0
+[ 7/29] dji_20260822172613_0038_d__frame_000085_000003720.jpg tespit=5 IoU z=0.437 e=0.940 etiketsiz=0.305 t67+=0
+[ 8/29] dji_20260822172613_0038_d__frame_000089_000003840.jpg tespit=2 IoU z=0.000 e=0.955 etiketsiz=0.040 t67+=0
+[ 9/29] dji_20260822172613_0038_d__frame_000094_000003990.jpg tespit=1 IoU z=0.000 e=0.745 etiketsiz=0.018 t67+=0
+[10/29] dji_20260822172613_0038_d__frame_000100_000004170.jpg tespit=1 IoU z=0.000 e=0.873 etiketsiz=0.047 t67+=0
+[11/29] dji_20260822172613_0038_d__frame_000103_000004260.jpg tespit=2 IoU z=0.000 e=0.942 etiketsiz=0.005 t67+=0
+[12/29] dji_20260822172613_0038_d__frame_000105_000004320.jpg tespit=3 IoU z=0.000 e=0.926 etiketsiz=0.254 t67+=0
+[13/29] dji_20260822172613_0038_d__frame_000107_000004380.jpg tespit=3 IoU z=0.000 e=0.965 etiketsiz=0.105 t67+=0
+[14/29] dji_20260822172613_0038_d__frame_000111_000004500.jpg tespit=2 IoU z=0.000 e=0.942 etiketsiz=0.270 t67+=0
+[15/29] dji_20260822172613_0038_d__frame_000116_000004650.jpg tespit=1 IoU z=OLCULEMEDI e=0.038 etiketsiz=0.336 t67+=0
+[16/29] dji_20260822172613_0038_d__frame_000120_000004770.jpg tespit=3 IoU z=0.000 e=0.945 etiketsiz=0.066 t67+=0
+[17/29] dji_20260822172613_0038_d__frame_000124_000004890.jpg tespit=3 IoU z=0.000 e=0.925 etiketsiz=0.025 t67+=0
+[18/29] dji_20260822172613_0038_d__frame_000126_000004950.jpg tespit=1 IoU z=0.000 e=0.933 etiketsiz=0.012 t67+=0
+[19/29] dji_20260822172613_0038_d__frame_000135_000005220.jpg tespit=3 IoU z=0.506 e=0.914 etiketsiz=0.409 t67+=0
+[20/29] dji_20260822172613_0038_d__frame_000139_000005340.jpg tespit=4 IoU z=0.990 e=0.985 etiketsiz=0.269 t67+=0
+[21/29] dji_20260822172613_0038_d__frame_000143_000005460.jpg tespit=2 IoU z=0.000 e=0.774 etiketsiz=0.584 t67+=0
+[22/29] dji_20260822172613_0038_d__frame_000152_000005760.jpg tespit=3 IoU z=0.935 e=0.308 etiketsiz=0.607 t67+=0
+[23/29] dji_20260822172613_0038_d__frame_000160_000006000.jpg tespit=3 IoU z=0.656 e=0.264 etiketsiz=0.729 t67+=0
+[24/29] dji_20260822172613_0038_d__frame_000196_000007290.jpg tespit=1 IoU z=0.575 e=0.000 etiketsiz=0.659 t67+=0
+[25/29] dji_20260822172613_0038_d__frame_000200_000007410.jpg tespit=2 IoU z=0.786 e=0.067 etiketsiz=0.609 t67+=0
+[26/29] dji_20260822172613_0038_d__frame_000202_000007470.jpg tespit=2 IoU z=0.810 e=0.822 etiketsiz=0.492 t67+=0
+[27/29] dji_20260822172613_0038_d__frame_000205_000007560.jpg tespit=2 IoU z=0.592 e=0.104 etiketsiz=0.616 t67+=0
+[28/29] dji_20260822172613_0038_d__frame_000215_000007860.jpg tespit=1 IoU z=0.687 e=0.000 etiketsiz=0.737 t67+=0
+[29/29] dji_20260822172613_0038_d__frame_000218_000007980.jpg tespit=1 IoU z=0.894 e=0.000 etiketsiz=0.684 t67+=0
+Ultralytics 8.4.92  Python-3.13.7 torch-2.11.0+cu128 CPU (Intel Core Ultra 9 275HX)
+YOLOv8m-seg summary (fused): 106 layers, 27,223,542 parameters, 0 gradients, 104.3 GFLOPs
+[34m[1mval: [0mFast image access  (ping: 0.00.0 ms, read: 2370.5190.1 MB/s, size: 3307.6 KB)
+[K[34m[1mval: [0mScanning O:\navitas\dataset\dji_kirsal_0038_bolum_v3\labels\test... 29 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 29/29 1.4Kit/s 0.0s
+[34m[1mval: [0mNew cache created: O:\navitas\dataset\dji_kirsal_0038_bolum_v3\labels\test.cache
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 25% ━━━───────── 1/4 6.8s/it 2.0s<20.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 50% ━━━━━━────── 2/4 4.0s/it 4.1s<8.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 75% ━━━━━━━━━─── 3/4 3.2s/it 6.2s<3.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 4/4 1.8s/it 7.3s
+                   all         29        227      0.808      0.241      0.215      0.141       0.72      0.211      0.186     0.0672
+Speed: 0.5ms preprocess, 181.5ms inference, 0.0ms loss, 1.8ms postprocess per image
+Results saved to [1mO:\navitas\results\gece_20260907\karisiklik\ultralytics_val\test29_v36_cpu[0m
+{"n_kare": 29, "toplam_px": 240537600, "matris": [[12004796, 790630, 3445818], [3080875, 92405877, 11819510], [8515024, 28602498, 79872572]], "iou_zemin_etiketli": 0.49217482035108795, "iou_engel_etiketli": 0.7399580861224402, "iou_zemin_tum": 0.4312510087691111, "iou_engel_tum": 0.6759787077323461, "json": "results/gece_20260907/karisiklik/piksel_karisiklik_test29.json"}
+EXIT=0

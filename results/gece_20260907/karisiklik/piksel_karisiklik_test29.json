@@ -1,0 +1,5981 @@
+{
+ "_ne": "Y-3.3.4-M02 / Y-4-M08 sinif bazli karisiklik matrisi — DOGRULAMA kumesi test29 (CONTRACTS §12), piksel duzeyi (uretim yolu) + ornek duzeyi (ultralytics val). ON_KAYIT: results/gece_20260907/ON_KAYIT.md G3.",
+ "tarih": "2026-09-07T02:13:44",
+ "komut": "O:/navitas-local-train/venv/Scripts/python.exe scripts/olcum/176_piksel_karisiklik_matrisi.py",
+ "git_commit": "f3441b43920c18ee291cb66fd7bc917d15e6489c",
+ "makine": {
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.7",
+  "torch": "2.11.0+cu128",
+  "ultralytics": "8.4.92",
+  "opencv": "5.0.0",
+  "numpy": "2.3.5",
+  "cuda_visible_devices": "",
+  "torch_cuda_kullanildi": false
+ },
+ "model": {
+  "model_id": "navitas-seg-v36-512",
+  "profile": "competition",
+  "path": "models/navitas_seg_v36_best.pt",
+  "sha256_defter": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "sha256_disk": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+  "imgsz_defter": 512,
+  "kaynak": "config/model_registry.json -> profiles[default_profile] (model_registry.resolve_model, verify=True)"
+ },
+ "conf": 0.3,
+ "conf_kaynak": "scripts/olcum/65_kabul_denetcisi.py:CONF (importlib ile okundu)",
+ "imgsz": 512,
+ "imgsz_kaynak": "codes/rpi_inference.INFER_SIZE (kayit defterinden turetilir)",
+ "device": "cpu",
+ "kume": {
+  "kare_dizin": "dataset/dji_kirsal_0038_bolum_v3/images/test",
+  "etiket_dizin": "dataset/dji_kirsal_0038_bolum_v3/labels/test",
+  "n_kare": 29,
+  "cozunurluk": "3840x2160",
+  "parmak_izi_kare": {
+   "n": 29,
+   "ozet": "sha256:3c00134f07123c2d4aaab20614c97e8a123d41aa21405cecaf07981f159c4394",
+   "yontem": "sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ"
+  },
+  "parmak_izi_etiket": {
+   "n": 29,
+   "ozet": "sha256:a915e15e156a1a2b5b3f7962d98a7e8a12b448cee6d6ba5c5110f47447742650",
+   "yontem": "sorted(rglob) uzerinden ad+boyut; icerik OKUNMAZ"
+  },
+  "sozlesme": "CONTRACTS §12 — DOGRULAMA kumesi, kor etiket uzlasisi v3 (sinif 0 = A∧B, sinif 1 = A∨B)"
+ },
+ "sinif_sozlesmesi": {
+  "zemin_id": 0,
+  "engel_id": 1,
+  "adlar": {
+   "0": "traversable",
+   "1": "blocked"
+  },
+  "kaynak": "codes/sinif_semasi.py (CONTRACTS §1.1)"
+ },
+ "yontem": {
+  "tahmin": "rpi_inference._preprocess -> model.predict(conf, imgsz, cpu) -> get_masks (model + T67 ince bariyer; T153 varsayilan KAPALI) -> _maskeleri_icerige_kirp -> icerik dikdortgeni (orijinal cozunurluk)",
+  "yer_gercegi": "YOLO poligon -> cv2.fillPoly, orijinal cozunurluk; etiketsiz piksel UCUNCU sutun (engele KATILMAZ)",
+  "oncelik": "hem etiket hem tahmin icin ENGEL > ZEMIN (serbest = zemin AND NOT engel; madde 15)",
+  "iou_tum": "TP / (TP + FP_tum + FN); FP_tum = satirin diger iki sutunu (etiketsiz dahil)",
+  "iou_etiketli": "TP / (TP + FP_etiketli + FN); FP_etiketli = satirin yalniz diger ETIKETLI sutunu"
+ },
+ "toplam": {
+  "n_kare": 29,
+  "toplam_px": 240537600,
+  "uretim": {
+   "satir_ekseni_tahmin": [
+    "zemin",
+    "engel",
+    "yok"
+   ],
+   "sutun_ekseni_gercek": [
+    "zemin",
+    "engel",
+    "etiketsiz"
+   ],
+   "matris": [
+    [
+     12004796,
+     790630,
+     3445818
+    ],
+    [
+     3080875,
+     92405877,
+     11819510
+    ],
+    [
+     8515024,
+     28602498,
+     79872572
+    ]
+   ],
+   "toplam_px": 240537600,
+   "satir_toplam": [
+    16241244,
+    107306262,
+    116990094
+   ],
+   "sutun_toplam": [
+    23600695,
+    121799005,
+    95137900
+   ],
+   "sutun_normalize": [
+    [
+     0.5086628169212813,
+     0.006491268134743794,
+     0.03621919340241901
+    ],
+    [
+     0.13054170650482963,
+     0.7586751386023227,
+     0.12423555701776054
+    ],
+    [
+     0.36079547657388905,
+     0.23483359326293346,
+     0.8395452495798205
+    ]
+   ],
+   "satir_normalize": [
+    [
+     0.7391549563567914,
+     0.04868038433509157,
+     0.21216465930811704
+    ],
+    [
+     0.028711045772892546,
+     0.8611415147421685,
+     0.11014743948493891
+    ],
+    [
+     0.07278414529695137,
+     0.24448649472834855,
+     0.6827293599747001
+    ]
+   ],
+   "zemin": {
+    "tp": 12004796,
+    "fn": 11595899,
+    "fp_tum": 4236448,
+    "fp_etiketli": 790630,
+    "iou_tum": 0.4312510087691111,
+    "iou_etiketli": 0.49217482035108795
+   },
+   "engel": {
+    "tp": 92405877,
+    "fn": 29393128,
+    "fp_tum": 14900385,
+    "fp_etiketli": 3080875,
+    "iou_tum": 0.6759787077323461,
+    "iou_etiketli": 0.7399580861224402
+   },
+   "piksel_dogrulugu_etiketli": 0.7180941432478885
+  },
+  "yalniz_model": {
+   "satir_ekseni_tahmin": [
+    "zemin",
+    "engel",
+    "yok"
+   ],
+   "sutun_ekseni_gercek": [
+    "zemin",
+    "engel",
+    "etiketsiz"
+   ],
+   "matris": [
+    [
+     12004796,
+     790630,
+     3445818
+    ],
+    [
+     3080875,
+     92405877,
+     11810803
+    ],
+    [
+     8515024,
+     28602498,
+     79881279
+    ]
+   ],
+   "toplam_px": 240537600,
+   "satir_toplam": [
+    16241244,
+    107297555,
+    116998801
+   ],
+   "sutun_toplam": [
+    23600695,
+    121799005,
+    95137900
+   ],
+   "sutun_normalize": [
+    [
+     0.5086628169212813,
+     0.006491268134743794,
+     0.03621919340241901
+    ],
+    [
+     0.13054170650482963,
+     0.7586751386023227,
+     0.12414403723437242
+    ],
+    [
+     0.36079547657388905,
+     0.23483359326293346,
+     0.8396367693632085
+    ]
+   ],
+   "satir_normalize": [
+    [
+     0.7391549563567914,
+     0.04868038433509157,
+     0.21216465930811704
+    ],
+    [
+     0.028713375621653263,
+     0.8612113947983251,
+     0.11007522958002165
+    ],
+    [
+     0.07277872873244232,
+     0.24446830014950324,
+     0.6827529711180544
+    ]
+   ],
+   "zemin": {
+    "tp": 12004796,
+    "fn": 11595899,
+    "fp_tum": 4236448,
+    "fp_etiketli": 790630,
+    "iou_tum": 0.4312510087691111,
+    "iou_etiketli": 0.49217482035108795
+   },
+   "engel": {
+    "tp": 92405877,
+    "fn": 29393128,
+    "fp_tum": 14891678,
+    "fp_etiketli": 3080875,
+    "iou_tum": 0.6760217666042388,
+    "iou_etiketli": 0.7399580861224402
+   },
+   "piksel_dogrulugu_etiketli": 0.7180941432478885
+  },
+  "etiketsiz_orani": 0.3955219475042571,
+  "cakisan_etiket_px": 28341,
+  "poligon_zemin": 51,
+  "poligon_engel": 176,
+  "t67_ek_engel_px": 8707,
+  "t67_etkilenen_kare": 1,
+  "sure_s": 26.8
+ },
+ "kareler": [
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000025_000001620.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 0,
+   "poligon_engel": 7,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.7913337914737655,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      39612,
+      541737
+     ],
+     [
+      0,
+      1691149,
+      6021902
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     581349,
+     7713051
+    ],
+    "sutun_toplam": [
+     0,
+     1730761,
+     6563639
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.022887042173933895,
+      0.08253607488163198
+     ],
+     [
+      null,
+      0.9771129578260661,
+      0.917463925118368
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.06813807196709722,
+      0.9318619280329028
+     ],
+     [
+      0.0,
+      0.21925811199744433,
+      0.7807418880025556
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 39612,
+     "fn": 1691149,
+     "fp_tum": 541737,
+     "fp_etiketli": 0,
+     "iou_tum": 0.017431038443158145,
+     "iou_etiketli": 0.022887042173933895
+    },
+    "piksel_dogrulugu_etiketli": 0.022887042173933895
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      39612,
+      541737
+     ],
+     [
+      0,
+      1691149,
+      6021902
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     581349,
+     7713051
+    ],
+    "sutun_toplam": [
+     0,
+     1730761,
+     6563639
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.022887042173933895,
+      0.08253607488163198
+     ],
+     [
+      null,
+      0.9771129578260661,
+      0.917463925118368
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.06813807196709722,
+      0.9318619280329028
+     ],
+     [
+      0.0,
+      0.21925811199744433,
+      0.7807418880025556
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 39612,
+     "fn": 1691149,
+     "fp_tum": 541737,
+     "fp_etiketli": 0,
+     "iou_tum": 0.017431038443158145,
+     "iou_etiketli": 0.022887042173933895
+    },
+    "piksel_dogrulugu_etiketli": 0.022887042173933895
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000035_000001920.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 0,
+   "poligon_engel": 4,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.833168643904321,
+   "t67_ek_engel_px": 8707,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      725426,
+      80178
+     ],
+     [
+      0,
+      658340,
+      6830456
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     805604,
+     7488796
+    ],
+    "sutun_toplam": [
+     0,
+     1383766,
+     6910634
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.5242403701203816,
+      0.01160211928456926
+     ],
+     [
+      null,
+      0.4757596298796184,
+      0.9883978807154308
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.9004746749023094,
+      0.09952532509769067
+     ],
+     [
+      0.0,
+      0.08790999247409063,
+      0.9120900075259094
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 725426,
+     "fn": 658340,
+     "fp_tum": 80178,
+     "fp_etiketli": 0,
+     "iou_tum": 0.49552851748427534,
+     "iou_etiketli": 0.5242403701203816
+    },
+    "piksel_dogrulugu_etiketli": 0.5242403701203816
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      725426,
+      71471
+     ],
+     [
+      0,
+      658340,
+      6839163
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     796897,
+     7497503
+    ],
+    "sutun_toplam": [
+     0,
+     1383766,
+     6910634
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.5242403701203816,
+      0.01034217699852141
+     ],
+     [
+      null,
+      0.4757596298796184,
+      0.9896578230014786
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.9103133780149756,
+      0.08968662198502442
+     ],
+     [
+      0.0,
+      0.08780790084378759,
+      0.9121920991562124
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 725426,
+     "fn": 658340,
+     "fp_tum": 71471,
+     "fp_etiketli": 0,
+     "iou_tum": 0.49849337255718484,
+     "iou_etiketli": 0.5242403701203816
+    },
+    "piksel_dogrulugu_etiketli": 0.5242403701203816
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000039_000002040.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 0,
+   "poligon_engel": 7,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.7241233844521605,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1577989,
+      189012
+     ],
+     [
+      0,
+      710242,
+      5817157
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     1767001,
+     6527399
+    ],
+    "sutun_toplam": [
+     0,
+     2288231,
+     6006169
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.689610882817338,
+      0.03146964396106736
+     ],
+     [
+      null,
+      0.31038911718266204,
+      0.9685303560389327
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.8930323186008383,
+      0.10696768139916163
+     ],
+     [
+      0.0,
+      0.10880934350726837,
+      0.8911906564927317
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 1577989,
+     "fn": 710242,
+     "fp_tum": 189012,
+     "fp_etiketli": 0,
+     "iou_tum": 0.6369940292494519,
+     "iou_etiketli": 0.689610882817338
+    },
+    "piksel_dogrulugu_etiketli": 0.689610882817338
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1577989,
+      189012
+     ],
+     [
+      0,
+      710242,
+      5817157
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     1767001,
+     6527399
+    ],
+    "sutun_toplam": [
+     0,
+     2288231,
+     6006169
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.689610882817338,
+      0.03146964396106736
+     ],
+     [
+      null,
+      0.31038911718266204,
+      0.9685303560389327
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.8930323186008383,
+      0.10696768139916163
+     ],
+     [
+      0.0,
+      0.10880934350726837,
+      0.8911906564927317
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 1577989,
+     "fn": 710242,
+     "fp_tum": 189012,
+     "fp_etiketli": 0,
+     "iou_tum": 0.6369940292494519,
+     "iou_etiketli": 0.689610882817338
+    },
+    "piksel_dogrulugu_etiketli": 0.689610882817338
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000048_000002310.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 0,
+   "poligon_engel": 10,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.4755544704861111,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1671583,
+      422376
+     ],
+     [
+      0,
+      2678378,
+      3522063
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     2093959,
+     6200441
+    ],
+    "sutun_toplam": [
+     0,
+     4349961,
+     3944439
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.3842753992507059,
+      0.10708138723909788
+     ],
+     [
+      null,
+      0.615724600749294,
+      0.8929186127609021
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.798288314145597,
+      0.20171168585440308
+     ],
+     [
+      0.0,
+      0.43196572630882224,
+      0.5680342736911778
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 1671583,
+     "fn": 2678378,
+     "fp_tum": 422376,
+     "fp_etiketli": 0,
+     "iou_tum": 0.35026507977118965,
+     "iou_etiketli": 0.3842753992507059
+    },
+    "piksel_dogrulugu_etiketli": 0.3842753992507059
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1671583,
+      422376
+     ],
+     [
+      0,
+      2678378,
+      3522063
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     2093959,
+     6200441
+    ],
+    "sutun_toplam": [
+     0,
+     4349961,
+     3944439
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.3842753992507059,
+      0.10708138723909788
+     ],
+     [
+      null,
+      0.615724600749294,
+      0.8929186127609021
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.798288314145597,
+      0.20171168585440308
+     ],
+     [
+      0.0,
+      0.43196572630882224,
+      0.5680342736911778
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 1671583,
+     "fn": 2678378,
+     "fp_tum": 422376,
+     "fp_etiketli": 0,
+     "iou_tum": 0.35026507977118965,
+     "iou_etiketli": 0.3842753992507059
+    },
+    "piksel_dogrulugu_etiketli": 0.3842753992507059
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000053_000002460.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 1,
+   "poligon_engel": 9,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.4489871479552469,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      718171,
+      0,
+      1547
+     ],
+     [
+      0,
+      3173619,
+      1726224
+     ],
+     [
+      406848,
+      271683,
+      1996308
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     719718,
+     4899843,
+     2674839
+    ],
+    "sutun_toplam": [
+     1125019,
+     3445302,
+     3724079
+    ],
+    "sutun_normalize": [
+     [
+      0.6383634409729969,
+      0.0,
+      0.0004154047215432326
+     ],
+     [
+      0.0,
+      0.9211439229420236,
+      0.463530446051225
+     ],
+     [
+      0.3616365590270031,
+      0.07885607705797634,
+      0.5360541492272317
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.997850547019805,
+      0.0,
+      0.0021494529801950207
+     ],
+     [
+      0.0,
+      0.6476980997146236,
+      0.3523019002853765
+     ],
+     [
+      0.15210186482251828,
+      0.10156985149386562,
+      0.7463282836836161
+     ]
+    ],
+    "zemin": {
+     "tp": 718171,
+     "fn": 406848,
+     "fp_tum": 1547,
+     "fp_etiketli": 0,
+     "iou_tum": 0.6374868405401902,
+     "iou_etiketli": 0.6383634409729969
+    },
+    "engel": {
+     "tp": 3173619,
+     "fn": 271683,
+     "fp_tum": 1726224,
+     "fp_etiketli": 0,
+     "iou_tum": 0.6136716706055427,
+     "iou_etiketli": 0.9211439229420236
+    },
+    "piksel_dogrulugu_etiketli": 0.8515353735547241
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      718171,
+      0,
+      1547
+     ],
+     [
+      0,
+      3173619,
+      1726224
+     ],
+     [
+      406848,
+      271683,
+      1996308
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     719718,
+     4899843,
+     2674839
+    ],
+    "sutun_toplam": [
+     1125019,
+     3445302,
+     3724079
+    ],
+    "sutun_normalize": [
+     [
+      0.6383634409729969,
+      0.0,
+      0.0004154047215432326
+     ],
+     [
+      0.0,
+      0.9211439229420236,
+      0.463530446051225
+     ],
+     [
+      0.3616365590270031,
+      0.07885607705797634,
+      0.5360541492272317
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.997850547019805,
+      0.0,
+      0.0021494529801950207
+     ],
+     [
+      0.0,
+      0.6476980997146236,
+      0.3523019002853765
+     ],
+     [
+      0.15210186482251828,
+      0.10156985149386562,
+      0.7463282836836161
+     ]
+    ],
+    "zemin": {
+     "tp": 718171,
+     "fn": 406848,
+     "fp_tum": 1547,
+     "fp_etiketli": 0,
+     "iou_tum": 0.6374868405401902,
+     "iou_etiketli": 0.6383634409729969
+    },
+    "engel": {
+     "tp": 3173619,
+     "fn": 271683,
+     "fp_tum": 1726224,
+     "fp_etiketli": 0,
+     "iou_tum": 0.6136716706055427,
+     "iou_etiketli": 0.9211439229420236
+    },
+    "piksel_dogrulugu_etiketli": 0.8515353735547241
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000062_000002820.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 2,
+   "poligon_engel": 3,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 21,
+   "etiketsiz_orani": 0.3210206886574074,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      548851,
+      112566,
+      352564
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      343844,
+      4626465,
+      2310110
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1013981,
+     0,
+     7280419
+    ],
+    "sutun_toplam": [
+     892695,
+     4739031,
+     2662674
+    ],
+    "sutun_normalize": [
+     [
+      0.6148247721786276,
+      0.023752957091861183,
+      0.13240975049893453
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.38517522782137237,
+      0.9762470429081388,
+      0.8675902495010654
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.5412833179319928,
+      0.11101391446190806,
+      0.34770276760609914
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.04722860044181523,
+      0.6354668598057337,
+      0.31730453975245104
+     ]
+    ],
+    "zemin": {
+     "tp": 548851,
+     "fn": 343844,
+     "fp_tum": 465130,
+     "fp_etiketli": 112566,
+     "iou_tum": 0.40421335591847257,
+     "iou_etiketli": 0.5459786065509356
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 4739031,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.097456978553289
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      548851,
+      112566,
+      352564
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      343844,
+      4626465,
+      2310110
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1013981,
+     0,
+     7280419
+    ],
+    "sutun_toplam": [
+     892695,
+     4739031,
+     2662674
+    ],
+    "sutun_normalize": [
+     [
+      0.6148247721786276,
+      0.023752957091861183,
+      0.13240975049893453
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.38517522782137237,
+      0.9762470429081388,
+      0.8675902495010654
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.5412833179319928,
+      0.11101391446190806,
+      0.34770276760609914
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.04722860044181523,
+      0.6354668598057337,
+      0.31730453975245104
+     ]
+    ],
+    "zemin": {
+     "tp": 548851,
+     "fn": 343844,
+     "fp_tum": 465130,
+     "fp_etiketli": 112566,
+     "iou_tum": 0.40421335591847257,
+     "iou_etiketli": 0.5459786065509356
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 4739031,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.097456978553289
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000085_000003720.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 5,
+   "poligon_zemin": 4,
+   "poligon_engel": 4,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.30511296778549385,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      446832,
+      0,
+      112695
+     ],
+     [
+      62854,
+      4516138,
+      1021009
+     ],
+     [
+      512340,
+      225507,
+      1397025
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     559527,
+     5600001,
+     2134872
+    ],
+    "sutun_toplam": [
+     1022026,
+     4741645,
+     2530729
+    ],
+    "sutun_normalize": [
+     [
+      0.4372021846802332,
+      0.0,
+      0.044530647098128644
+     ],
+     [
+      0.06149941390923518,
+      0.95244118865921,
+      0.40344462010748683
+     ],
+     [
+      0.5012984014105316,
+      0.04755881134078996,
+      0.5520247327943846
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.7985888080467967,
+      0.0,
+      0.20141119195320334
+     ],
+     [
+      0.01122392656715597,
+      0.8064530702762375,
+      0.18232300315660657
+     ],
+     [
+      0.23998628489202162,
+      0.10563022045349792,
+      0.6543834946544804
+     ]
+    ],
+    "zemin": {
+     "tp": 446832,
+     "fn": 575194,
+     "fp_tum": 112695,
+     "fp_etiketli": 0,
+     "iou_tum": 0.3937813788587679,
+     "iou_etiketli": 0.4372021846802332
+    },
+    "engel": {
+     "tp": 4516138,
+     "fn": 225507,
+     "fp_tum": 1083863,
+     "fp_etiketli": 62854,
+     "iou_tum": 0.7752350524623776,
+     "iou_etiketli": 0.9399810469312201
+    },
+    "piksel_dogrulugu_etiketli": 0.861077948411698
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      446832,
+      0,
+      112695
+     ],
+     [
+      62854,
+      4516138,
+      1021009
+     ],
+     [
+      512340,
+      225507,
+      1397025
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     559527,
+     5600001,
+     2134872
+    ],
+    "sutun_toplam": [
+     1022026,
+     4741645,
+     2530729
+    ],
+    "sutun_normalize": [
+     [
+      0.4372021846802332,
+      0.0,
+      0.044530647098128644
+     ],
+     [
+      0.06149941390923518,
+      0.95244118865921,
+      0.40344462010748683
+     ],
+     [
+      0.5012984014105316,
+      0.04755881134078996,
+      0.5520247327943846
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.7985888080467967,
+      0.0,
+      0.20141119195320334
+     ],
+     [
+      0.01122392656715597,
+      0.8064530702762375,
+      0.18232300315660657
+     ],
+     [
+      0.23998628489202162,
+      0.10563022045349792,
+      0.6543834946544804
+     ]
+    ],
+    "zemin": {
+     "tp": 446832,
+     "fn": 575194,
+     "fp_tum": 112695,
+     "fp_etiketli": 0,
+     "iou_tum": 0.3937813788587679,
+     "iou_etiketli": 0.4372021846802332
+    },
+    "engel": {
+     "tp": 4516138,
+     "fn": 225507,
+     "fp_tum": 1083863,
+     "fp_etiketli": 62854,
+     "iou_tum": 0.7752350524623776,
+     "iou_etiketli": 0.9399810469312201
+    },
+    "piksel_dogrulugu_etiketli": 0.861077948411698
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000089_000003840.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 3,
+   "poligon_engel": 1,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 249,
+   "etiketsiz_orani": 0.03977804301697531,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      255324,
+      7157571,
+      237251
+     ],
+     [
+      467370,
+      84200,
+      92684
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7650146,
+     644254
+    ],
+    "sutun_toplam": [
+     722694,
+     7241771,
+     329935
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.35329475545666633,
+      0.9883730098618142,
+      0.7190840620122145
+     ],
+     [
+      0.6467052445433337,
+      0.011626990138185812,
+      0.28091593798778547
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.03337504931278436,
+      0.935612339947499,
+      0.0310126107397166
+     ],
+     [
+      0.7254436914633049,
+      0.13069379468346334,
+      0.1438625138532318
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 722694,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 7157571,
+     "fn": 84200,
+     "fp_tum": 492575,
+     "fp_etiketli": 255324,
+     "iou_tum": 0.9254267910952005,
+     "iou_etiketli": 0.9547125920106387
+    },
+    "piksel_dogrulugu_etiketli": 0.8986882358074271
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      255324,
+      7157571,
+      237251
+     ],
+     [
+      467370,
+      84200,
+      92684
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7650146,
+     644254
+    ],
+    "sutun_toplam": [
+     722694,
+     7241771,
+     329935
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.35329475545666633,
+      0.9883730098618142,
+      0.7190840620122145
+     ],
+     [
+      0.6467052445433337,
+      0.011626990138185812,
+      0.28091593798778547
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.03337504931278436,
+      0.935612339947499,
+      0.0310126107397166
+     ],
+     [
+      0.7254436914633049,
+      0.13069379468346334,
+      0.1438625138532318
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 722694,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 7157571,
+     "fn": 84200,
+     "fp_tum": 492575,
+     "fp_etiketli": 255324,
+     "iou_tum": 0.9254267910952005,
+     "iou_etiketli": 0.9547125920106387
+    },
+    "piksel_dogrulugu_etiketli": 0.8986882358074271
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000094_000003990.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 4,
+   "poligon_engel": 2,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 84,
+   "etiketsiz_orani": 0.017796826774691358,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      335972,
+      6066667,
+      138705
+     ],
+     [
+      0,
+      1744147,
+      8909
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6541344,
+     1753056
+    ],
+    "sutun_toplam": [
+     335972,
+     7810814,
+     147614
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      0.7767009942881753,
+      0.9396466459820885
+     ],
+     [
+      0.0,
+      0.22329900571182465,
+      0.06035335401791158
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.05136131045852351,
+      0.9274343315379836,
+      0.021204358003492862
+     ],
+     [
+      0.0,
+      0.994918017450669,
+      0.005081982549330997
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 335972,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6066667,
+     "fn": 1744147,
+     "fp_tum": 474677,
+     "fp_etiketli": 335972,
+     "iou_tum": 0.7322036799026153,
+     "iou_etiketli": 0.7446699839666833
+    },
+    "piksel_dogrulugu_etiketli": 0.7446699839666833
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      335972,
+      6066667,
+      138705
+     ],
+     [
+      0,
+      1744147,
+      8909
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6541344,
+     1753056
+    ],
+    "sutun_toplam": [
+     335972,
+     7810814,
+     147614
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      0.7767009942881753,
+      0.9396466459820885
+     ],
+     [
+      0.0,
+      0.22329900571182465,
+      0.06035335401791158
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.05136131045852351,
+      0.9274343315379836,
+      0.021204358003492862
+     ],
+     [
+      0.0,
+      0.994918017450669,
+      0.005081982549330997
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 335972,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6066667,
+     "fn": 1744147,
+     "fp_tum": 474677,
+     "fp_etiketli": 335972,
+     "iou_tum": 0.7322036799026153,
+     "iou_etiketli": 0.7446699839666833
+    },
+    "piksel_dogrulugu_etiketli": 0.7446699839666833
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000100_000004170.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 1,
+   "poligon_engel": 2,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.046741295331790125,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      616493,
+      6902543,
+      318308
+     ],
+     [
+      0,
+      387673,
+      69383
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7837344,
+     457056
+    ],
+    "sutun_toplam": [
+     616493,
+     7290216,
+     387691
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      0.9468228376223695,
+      0.8210353090476694
+     ],
+     [
+      0.0,
+      0.05317716237763051,
+      0.17896469095233059
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.07866095963122201,
+      0.8807247710448846,
+      0.0406142693238934
+     ],
+     [
+      0.0,
+      0.848195844710495,
+      0.151804155289505
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 616493,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6902543,
+     "fn": 387673,
+     "fp_tum": 934801,
+     "fp_etiketli": 616493,
+     "iou_tum": 0.8392132198632538,
+     "iou_etiketli": 0.8729982347902269
+    },
+    "piksel_dogrulugu_etiketli": 0.8729982347902269
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      616493,
+      6902543,
+      318308
+     ],
+     [
+      0,
+      387673,
+      69383
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7837344,
+     457056
+    ],
+    "sutun_toplam": [
+     616493,
+     7290216,
+     387691
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      1.0,
+      0.9468228376223695,
+      0.8210353090476694
+     ],
+     [
+      0.0,
+      0.05317716237763051,
+      0.17896469095233059
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.07866095963122201,
+      0.8807247710448846,
+      0.0406142693238934
+     ],
+     [
+      0.0,
+      0.848195844710495,
+      0.151804155289505
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 616493,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6902543,
+     "fn": 387673,
+     "fp_tum": 934801,
+     "fp_etiketli": 616493,
+     "iou_tum": 0.8392132198632538,
+     "iou_etiketli": 0.8729982347902269
+    },
+    "piksel_dogrulugu_etiketli": 0.8729982347902269
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000103_000004260.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 1,
+   "poligon_engel": 2,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 5110,
+   "etiketsiz_orani": 0.005148172260802469,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      120136,
+      6894144,
+      33215
+     ],
+     [
+      932751,
+      304668,
+      9486
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7047495,
+     1246905
+    ],
+    "sutun_toplam": [
+     1052887,
+     7198812,
+     42701
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.11410151326780557,
+      0.957678016872784,
+      0.7778506358164914
+     ],
+     [
+      0.8858984867321944,
+      0.04232198312721599,
+      0.22214936418350859
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.017046624367949178,
+      0.978240353487303,
+      0.004713022144747885
+     ],
+     [
+      0.7480529791764409,
+      0.24433938431556534,
+      0.007607636507993793
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 1052887,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6894144,
+     "fn": 304668,
+     "fp_tum": 153351,
+     "fp_etiketli": 120136,
+     "iou_tum": 0.93770282296516,
+     "iou_etiketli": 0.9419583251582058
+    },
+    "piksel_dogrulugu_etiketli": 0.835481759574604
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      120136,
+      6894144,
+      33215
+     ],
+     [
+      932751,
+      304668,
+      9486
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7047495,
+     1246905
+    ],
+    "sutun_toplam": [
+     1052887,
+     7198812,
+     42701
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.11410151326780557,
+      0.957678016872784,
+      0.7778506358164914
+     ],
+     [
+      0.8858984867321944,
+      0.04232198312721599,
+      0.22214936418350859
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.017046624367949178,
+      0.978240353487303,
+      0.004713022144747885
+     ],
+     [
+      0.7480529791764409,
+      0.24433938431556534,
+      0.007607636507993793
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 1052887,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6894144,
+     "fn": 304668,
+     "fp_tum": 153351,
+     "fp_etiketli": 120136,
+     "iou_tum": 0.93770282296516,
+     "iou_etiketli": 0.9419583251582058
+    },
+    "piksel_dogrulugu_etiketli": 0.835481759574604
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000105_000004320.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 5,
+   "poligon_engel": 3,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 638,
+   "etiketsiz_orani": 0.25396894290123456,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      216532,
+      5603916,
+      891176
+     ],
+     [
+      138501,
+      228931,
+      1215344
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6711624,
+     1582776
+    ],
+    "sutun_toplam": [
+     355033,
+     5832847,
+     2106520
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.6098926015328152,
+      0.9607514135035601,
+      0.42305603554677856
+     ],
+     [
+      0.39010739846718473,
+      0.039248586496439905,
+      0.5769439644532214
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.032262236382729424,
+      0.8349567854218294,
+      0.1327809781954412
+     ],
+     [
+      0.08750511759086567,
+      0.14463891289733988,
+      0.7678559695117945
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 355033,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 5603916,
+     "fn": 228931,
+     "fp_tum": 1107708,
+     "fp_etiketli": 216532,
+     "iou_tum": 0.8074161216213978,
+     "iou_etiketli": 0.9263621935408577
+    },
+    "piksel_dogrulugu_etiketli": 0.9056277755871155
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      216532,
+      5603916,
+      891176
+     ],
+     [
+      138501,
+      228931,
+      1215344
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6711624,
+     1582776
+    ],
+    "sutun_toplam": [
+     355033,
+     5832847,
+     2106520
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.6098926015328152,
+      0.9607514135035601,
+      0.42305603554677856
+     ],
+     [
+      0.39010739846718473,
+      0.039248586496439905,
+      0.5769439644532214
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.032262236382729424,
+      0.8349567854218294,
+      0.1327809781954412
+     ],
+     [
+      0.08750511759086567,
+      0.14463891289733988,
+      0.7678559695117945
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 355033,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 5603916,
+     "fn": 228931,
+     "fp_tum": 1107708,
+     "fp_etiketli": 216532,
+     "iou_tum": 0.8074161216213978,
+     "iou_etiketli": 0.9263621935408577
+    },
+    "piksel_dogrulugu_etiketli": 0.9056277755871155
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000107_000004380.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 2,
+   "poligon_engel": 6,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 1360,
+   "etiketsiz_orani": 0.10496756847993827,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      57141,
+      6421533,
+      364163
+     ],
+     [
+      770498,
+      174585,
+      506480
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6842837,
+     1451563
+    ],
+    "sutun_toplam": [
+     827639,
+     6596118,
+     870643
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.06904097076140685,
+      0.9735321593701022,
+      0.4182690264551602
+     ],
+     [
+      0.9309590292385932,
+      0.02646784062989777,
+      0.5817309735448398
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.008350483870944172,
+      0.9384313845266226,
+      0.05321813160243332
+     ],
+     [
+      0.5308057590335383,
+      0.12027380141268412,
+      0.34892043955377755
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 827639,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6421533,
+     "fn": 174585,
+     "fp_tum": 421304,
+     "fp_etiketli": 57141,
+     "iou_tum": 0.9150843429396152,
+     "iou_etiketli": 0.9651710537647791
+    },
+    "piksel_dogrulugu_etiketli": 0.8649977363213801
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      57141,
+      6421533,
+      364163
+     ],
+     [
+      770498,
+      174585,
+      506480
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6842837,
+     1451563
+    ],
+    "sutun_toplam": [
+     827639,
+     6596118,
+     870643
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.06904097076140685,
+      0.9735321593701022,
+      0.4182690264551602
+     ],
+     [
+      0.9309590292385932,
+      0.02646784062989777,
+      0.5817309735448398
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.008350483870944172,
+      0.9384313845266226,
+      0.05321813160243332
+     ],
+     [
+      0.5308057590335383,
+      0.12027380141268412,
+      0.34892043955377755
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 827639,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6421533,
+     "fn": 174585,
+     "fp_tum": 421304,
+     "fp_etiketli": 57141,
+     "iou_tum": 0.9150843429396152,
+     "iou_etiketli": 0.9651710537647791
+    },
+    "piksel_dogrulugu_etiketli": 0.8649977363213801
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000111_000004500.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 1,
+   "poligon_engel": 3,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.26980516975308644,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      251644,
+      5293450,
+      1566046
+     ],
+     [
+      439055,
+      72379,
+      671826
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7111140,
+     1183260
+    ],
+    "sutun_toplam": [
+     690699,
+     5365829,
+     2237872
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.36433236474933367,
+      0.9865111243761215,
+      0.6997924814287859
+     ],
+     [
+      0.6356676352506664,
+      0.013488875623878436,
+      0.3002075185712141
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.03538729373911918,
+      0.7443883821721974,
+      0.2202243240886834
+     ],
+     [
+      0.37105538934807225,
+      0.06116914287645995,
+      0.5677754677754677
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 690699,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 5293450,
+     "fn": 72379,
+     "fp_tum": 1817690,
+     "fp_etiketli": 251644,
+     "iou_tum": 0.7368881463249418,
+     "iou_etiketli": 0.9423187258754959
+    },
+    "piksel_dogrulugu_etiketli": 0.8740073520670589
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      251644,
+      5293450,
+      1566046
+     ],
+     [
+      439055,
+      72379,
+      671826
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7111140,
+     1183260
+    ],
+    "sutun_toplam": [
+     690699,
+     5365829,
+     2237872
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.36433236474933367,
+      0.9865111243761215,
+      0.6997924814287859
+     ],
+     [
+      0.6356676352506664,
+      0.013488875623878436,
+      0.3002075185712141
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.03538729373911918,
+      0.7443883821721974,
+      0.2202243240886834
+     ],
+     [
+      0.37105538934807225,
+      0.06116914287645995,
+      0.5677754677754677
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 690699,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 5293450,
+     "fn": 72379,
+     "fp_tum": 1817690,
+     "fp_etiketli": 251644,
+     "iou_tum": 0.7368881463249418,
+     "iou_etiketli": 0.9423187258754959
+    },
+    "piksel_dogrulugu_etiketli": 0.8740073520670589
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000116_000004650.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 0,
+   "poligon_engel": 8,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.3361031539351852,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      207779,
+      5238
+     ],
+     [
+      0,
+      5298847,
+      2782536
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     213017,
+     8081383
+    ],
+    "sutun_toplam": [
+     0,
+     5506626,
+     2787774
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.03773254257688828,
+      0.0018789184489130038
+     ],
+     [
+      null,
+      0.9622674574231117,
+      0.998121081551087
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.9754104132534023,
+      0.02458958674659769
+     ],
+     [
+      0.0,
+      0.6556856666736374,
+      0.3443143333263626
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 207779,
+     "fn": 5298847,
+     "fp_tum": 5238,
+     "fp_etiketli": 0,
+     "iou_tum": 0.037696684823863576,
+     "iou_etiketli": 0.03773254257688828
+    },
+    "piksel_dogrulugu_etiketli": 0.03773254257688828
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      207779,
+      5238
+     ],
+     [
+      0,
+      5298847,
+      2782536
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     213017,
+     8081383
+    ],
+    "sutun_toplam": [
+     0,
+     5506626,
+     2787774
+    ],
+    "sutun_normalize": [
+     [
+      null,
+      0.0,
+      0.0
+     ],
+     [
+      null,
+      0.03773254257688828,
+      0.0018789184489130038
+     ],
+     [
+      null,
+      0.9622674574231117,
+      0.998121081551087
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0,
+      0.9754104132534023,
+      0.02458958674659769
+     ],
+     [
+      0.0,
+      0.6556856666736374,
+      0.3443143333263626
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 0,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": null,
+     "iou_etiketli": null
+    },
+    "engel": {
+     "tp": 207779,
+     "fn": 5298847,
+     "fp_tum": 5238,
+     "fp_etiketli": 0,
+     "iou_tum": 0.037696684823863576,
+     "iou_etiketli": 0.03773254257688828
+    },
+    "piksel_dogrulugu_etiketli": 0.03773254257688828
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000120_000004770.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 1,
+   "poligon_engel": 4,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 313,
+   "etiketsiz_orani": 0.06552903163580247,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      317511,
+      7110188,
+      354040
+     ],
+     [
+      226995,
+      96182,
+      189484
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7781739,
+     512661
+    ],
+    "sutun_toplam": [
+     544506,
+     7206370,
+     543524
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.5831175414045024,
+      0.9866531971020084,
+      0.6513787799618784
+     ],
+     [
+      0.41688245859549755,
+      0.013346802897991637,
+      0.34862122003812157
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.040802062366779454,
+      0.9137016803056489,
+      0.04549625732757164
+     ],
+     [
+      0.4427779760894626,
+      0.1876132571036221,
+      0.3696087668069153
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 544506,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 7110188,
+     "fn": 96182,
+     "fp_tum": 671551,
+     "fp_etiketli": 317511,
+     "iou_tum": 0.9025462428475736,
+     "iou_etiketli": 0.9450160096896801
+    },
+    "piksel_dogrulugu_etiketli": 0.9173399239002147
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      317511,
+      7110188,
+      354040
+     ],
+     [
+      226995,
+      96182,
+      189484
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     7781739,
+     512661
+    ],
+    "sutun_toplam": [
+     544506,
+     7206370,
+     543524
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.5831175414045024,
+      0.9866531971020084,
+      0.6513787799618784
+     ],
+     [
+      0.41688245859549755,
+      0.013346802897991637,
+      0.34862122003812157
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.040802062366779454,
+      0.9137016803056489,
+      0.04549625732757164
+     ],
+     [
+      0.4427779760894626,
+      0.1876132571036221,
+      0.3696087668069153
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 544506,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 7110188,
+     "fn": 96182,
+     "fp_tum": 671551,
+     "fp_etiketli": 317511,
+     "iou_tum": 0.9025462428475736,
+     "iou_etiketli": 0.9450160096896801
+    },
+    "piksel_dogrulugu_etiketli": 0.9173399239002147
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000124_000004890.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 1,
+   "poligon_engel": 2,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.02493188175154321,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      99693,
+      6834990,
+      27070
+     ],
+     [
+      698982,
+      453940,
+      179725
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6961753,
+     1332647
+    ],
+    "sutun_toplam": [
+     798675,
+     7288930,
+     206795
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.12482298807399755,
+      0.9377219976045866,
+      0.13090258468531638
+     ],
+     [
+      0.8751770119260024,
+      0.06227800239541332,
+      0.8690974153146837
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.014320100124207221,
+      0.9817915114196094,
+      0.003888388456183378
+     ],
+     [
+      0.5245064897155811,
+      0.34063033946724075,
+      0.13486317081717814
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 798675,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6834990,
+     "fn": 453940,
+     "fp_tum": 126763,
+     "fp_etiketli": 99693,
+     "iou_tum": 0.9216926860375693,
+     "iou_etiketli": 0.9250695291937348
+    },
+    "piksel_dogrulugu_etiketli": 0.8451191669227169
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      99693,
+      6834990,
+      27070
+     ],
+     [
+      698982,
+      453940,
+      179725
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     6961753,
+     1332647
+    ],
+    "sutun_toplam": [
+     798675,
+     7288930,
+     206795
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.12482298807399755,
+      0.9377219976045866,
+      0.13090258468531638
+     ],
+     [
+      0.8751770119260024,
+      0.06227800239541332,
+      0.8690974153146837
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.014320100124207221,
+      0.9817915114196094,
+      0.003888388456183378
+     ],
+     [
+      0.5245064897155811,
+      0.34063033946724075,
+      0.13486317081717814
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 798675,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 6834990,
+     "fn": 453940,
+     "fp_tum": 126763,
+     "fp_etiketli": 99693,
+     "iou_tum": 0.9216926860375693,
+     "iou_etiketli": 0.9250695291937348
+    },
+    "piksel_dogrulugu_etiketli": 0.8451191669227169
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000126_000004950.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 2,
+   "poligon_engel": 1,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 2029,
+   "etiketsiz_orani": 0.01169970100308642,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      453625,
+      7623149,
+      95359
+     ],
+     [
+      26760,
+      93824,
+      1683
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     8172133,
+     122267
+    ],
+    "sutun_toplam": [
+     480385,
+     7716973,
+     97042
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.9442946803085026,
+      0.9878418649384934,
+      0.982656993878939
+     ],
+     [
+      0.055705319691497446,
+      0.01215813506150663,
+      0.017343006121060985
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.05550876374625817,
+      0.9328224344855865,
+      0.011668801768155266
+     ],
+     [
+      0.21886527026916502,
+      0.7673697727105433,
+      0.013764957020291657
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 480385,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 7623149,
+     "fn": 93824,
+     "fp_tum": 548984,
+     "fp_etiketli": 453625,
+     "iou_tum": 0.9222342918067442,
+     "iou_etiketli": 0.9329976826665564
+    },
+    "piksel_dogrulugu_etiketli": 0.9299519430528714
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      453625,
+      7623149,
+      95359
+     ],
+     [
+      26760,
+      93824,
+      1683
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     8172133,
+     122267
+    ],
+    "sutun_toplam": [
+     480385,
+     7716973,
+     97042
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.9442946803085026,
+      0.9878418649384934,
+      0.982656993878939
+     ],
+     [
+      0.055705319691497446,
+      0.01215813506150663,
+      0.017343006121060985
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.05550876374625817,
+      0.9328224344855865,
+      0.011668801768155266
+     ],
+     [
+      0.21886527026916502,
+      0.7673697727105433,
+      0.013764957020291657
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 480385,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 7623149,
+     "fn": 93824,
+     "fp_tum": 548984,
+     "fp_etiketli": 453625,
+     "iou_tum": 0.9222342918067442,
+     "iou_etiketli": 0.9329976826665564
+    },
+    "piksel_dogrulugu_etiketli": 0.9299519430528714
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000135_000005220.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 2,
+   "poligon_engel": 3,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.4092203173225309,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      476214,
+      11539,
+      492548
+     ],
+     [
+      263624,
+      3870097,
+      610175
+     ],
+     [
+      188942,
+      89747,
+      2291514
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     980301,
+     4743896,
+     2570203
+    ],
+    "sutun_toplam": [
+     928780,
+     3971383,
+     3394237
+    ],
+    "sutun_normalize": [
+     [
+      0.5127306789551885,
+      0.002905536937636083,
+      0.1451130254015851
+     ],
+     [
+      0.2838390146213312,
+      0.9744960382818781,
+      0.17976794195573262
+     ],
+     [
+      0.20343030642348026,
+      0.02259842478048579,
+      0.6751190326426822
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.4857834481450085,
+      0.01177087445590691,
+      0.5024456773990845
+     ],
+     [
+      0.05557120139227335,
+      0.8158056163119933,
+      0.1286231822957333
+     ],
+     [
+      0.07351248130984206,
+      0.03491825353872827,
+      0.8915692651514296
+     ]
+    ],
+    "zemin": {
+     "tp": 476214,
+     "fn": 452566,
+     "fp_tum": 504087,
+     "fp_etiketli": 11539,
+     "iou_tum": 0.3323504554156108,
+     "iou_etiketli": 0.506438772374056
+    },
+    "engel": {
+     "tp": 3870097,
+     "fn": 101286,
+     "fp_tum": 873799,
+     "fp_etiketli": 263624,
+     "iou_tum": 0.7987516258419188,
+     "iou_etiketli": 0.9138348531655319
+    },
+    "piksel_dogrulugu_etiketli": 0.8869727394782582
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      476214,
+      11539,
+      492548
+     ],
+     [
+      263624,
+      3870097,
+      610175
+     ],
+     [
+      188942,
+      89747,
+      2291514
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     980301,
+     4743896,
+     2570203
+    ],
+    "sutun_toplam": [
+     928780,
+     3971383,
+     3394237
+    ],
+    "sutun_normalize": [
+     [
+      0.5127306789551885,
+      0.002905536937636083,
+      0.1451130254015851
+     ],
+     [
+      0.2838390146213312,
+      0.9744960382818781,
+      0.17976794195573262
+     ],
+     [
+      0.20343030642348026,
+      0.02259842478048579,
+      0.6751190326426822
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.4857834481450085,
+      0.01177087445590691,
+      0.5024456773990845
+     ],
+     [
+      0.05557120139227335,
+      0.8158056163119933,
+      0.1286231822957333
+     ],
+     [
+      0.07351248130984206,
+      0.03491825353872827,
+      0.8915692651514296
+     ]
+    ],
+    "zemin": {
+     "tp": 476214,
+     "fn": 452566,
+     "fp_tum": 504087,
+     "fp_etiketli": 11539,
+     "iou_tum": 0.3323504554156108,
+     "iou_etiketli": 0.506438772374056
+    },
+    "engel": {
+     "tp": 3870097,
+     "fn": 101286,
+     "fp_tum": 873799,
+     "fp_etiketli": 263624,
+     "iou_tum": 0.7987516258419188,
+     "iou_etiketli": 0.9138348531655319
+    },
+    "piksel_dogrulugu_etiketli": 0.8869727394782582
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000139_000005340.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 4,
+   "poligon_zemin": 2,
+   "poligon_engel": 2,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.26866632908950616,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1419343,
+      4950,
+      866107
+     ],
+     [
+      3994,
+      4574300,
+      458899
+     ],
+     [
+      4935,
+      58452,
+      903420
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     2290400,
+     5037193,
+     966807
+    ],
+    "sutun_toplam": [
+     1428272,
+     4637702,
+     2228426
+    ],
+    "sutun_normalize": [
+     [
+      0.9937483896624733,
+      0.0010673389536455771,
+      0.3886631191702125
+     ],
+     [
+      0.0027963861225312825,
+      0.986329005184033,
+      0.2059296561788455
+     ],
+     [
+      0.003455224214995463,
+      0.01260365586232147,
+      0.405407224650942
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.6196921935033182,
+      0.0021611945511701013,
+      0.3781466119455117
+     ],
+     [
+      0.000792901919779528,
+      0.9081049703674249,
+      0.0911021277127956
+     ],
+     [
+      0.005104431391167006,
+      0.06045880925562186,
+      0.9344367593532111
+     ]
+    ],
+    "zemin": {
+     "tp": 1419343,
+     "fn": 8929,
+     "fp_tum": 871057,
+     "fp_etiketli": 4950,
+     "iou_tum": 0.6172857385785158,
+     "iou_etiketli": 0.9903162245625591
+    },
+    "engel": {
+     "tp": 4574300,
+     "fn": 63402,
+     "fp_tum": 462893,
+     "fp_etiketli": 3994,
+     "iou_tum": 0.8968169399844528,
+     "iou_etiketli": 0.9854803071980587
+    },
+    "piksel_dogrulugu_etiketli": 0.9880759462536437
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1419343,
+      4950,
+      866107
+     ],
+     [
+      3994,
+      4574300,
+      458899
+     ],
+     [
+      4935,
+      58452,
+      903420
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     2290400,
+     5037193,
+     966807
+    ],
+    "sutun_toplam": [
+     1428272,
+     4637702,
+     2228426
+    ],
+    "sutun_normalize": [
+     [
+      0.9937483896624733,
+      0.0010673389536455771,
+      0.3886631191702125
+     ],
+     [
+      0.0027963861225312825,
+      0.986329005184033,
+      0.2059296561788455
+     ],
+     [
+      0.003455224214995463,
+      0.01260365586232147,
+      0.405407224650942
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.6196921935033182,
+      0.0021611945511701013,
+      0.3781466119455117
+     ],
+     [
+      0.000792901919779528,
+      0.9081049703674249,
+      0.0911021277127956
+     ],
+     [
+      0.005104431391167006,
+      0.06045880925562186,
+      0.9344367593532111
+     ]
+    ],
+    "zemin": {
+     "tp": 1419343,
+     "fn": 8929,
+     "fp_tum": 871057,
+     "fp_etiketli": 4950,
+     "iou_tum": 0.6172857385785158,
+     "iou_etiketli": 0.9903162245625591
+    },
+    "engel": {
+     "tp": 4574300,
+     "fn": 63402,
+     "fp_tum": 462893,
+     "fp_etiketli": 3994,
+     "iou_tum": 0.8968169399844528,
+     "iou_etiketli": 0.9854803071980587
+    },
+    "piksel_dogrulugu_etiketli": 0.9880759462536437
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000143_000005460.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 2,
+   "poligon_engel": 4,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 17,
+   "etiketsiz_orani": 0.5835105613425926,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      11598,
+      2154143,
+      389633
+     ],
+     [
+      672332,
+      616457,
+      4450237
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     2555374,
+     5739026
+    ],
+    "sutun_toplam": [
+     683930,
+     2770600,
+     4839870
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.01695787580600354,
+      0.777500541398975,
+      0.08050484827071802
+     ],
+     [
+      0.9830421241939965,
+      0.22249945860102505,
+      0.919495151729282
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.004538670269009546,
+      0.8429854103548052,
+      0.15247591937618524
+     ],
+     [
+      0.11715088936694136,
+      0.10741491674719718,
+      0.7754341938858614
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 683930,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 2154143,
+     "fn": 616457,
+     "fp_tum": 401231,
+     "fp_etiketli": 11598,
+     "iou_tum": 0.6791481008918824,
+     "iou_etiketli": 0.7742594164757505
+    },
+    "piksel_dogrulugu_etiketli": 0.6235705001838167
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      11598,
+      2154143,
+      389633
+     ],
+     [
+      672332,
+      616457,
+      4450237
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     0,
+     2555374,
+     5739026
+    ],
+    "sutun_toplam": [
+     683930,
+     2770600,
+     4839870
+    ],
+    "sutun_normalize": [
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.01695787580600354,
+      0.777500541398975,
+      0.08050484827071802
+     ],
+     [
+      0.9830421241939965,
+      0.22249945860102505,
+      0.919495151729282
+     ]
+    ],
+    "satir_normalize": [
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.004538670269009546,
+      0.8429854103548052,
+      0.15247591937618524
+     ],
+     [
+      0.11715088936694136,
+      0.10741491674719718,
+      0.7754341938858614
+     ]
+    ],
+    "zemin": {
+     "tp": 0,
+     "fn": 683930,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "engel": {
+     "tp": 2154143,
+     "fn": 616457,
+     "fp_tum": 401231,
+     "fp_etiketli": 11598,
+     "iou_tum": 0.6791481008918824,
+     "iou_etiketli": 0.7742594164757505
+    },
+    "piksel_dogrulugu_etiketli": 0.6235705001838167
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000152_000005760.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 4,
+   "poligon_engel": 10,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 226,
+   "etiketsiz_orani": 0.6073297646604938,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1114599,
+      12306,
+      514157
+     ],
+     [
+      0,
+      640624,
+      579197
+     ],
+     [
+      65067,
+      1424368,
+      3944082
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1641062,
+     1219821,
+     5433517
+    ],
+    "sutun_toplam": [
+     1179666,
+     2077298,
+     5037436
+    ],
+    "sutun_normalize": [
+     [
+      0.9448428623017023,
+      0.005924041711877641,
+      0.10206720244187718
+     ],
+     [
+      0.0,
+      0.30839292195919893,
+      0.11497853272974584
+     ],
+     [
+      0.05515713769829765,
+      0.6856830363289235,
+      0.7829542648283769
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.6791937172392024,
+      0.00749880260465479,
+      0.3133074801561428
+     ],
+     [
+      0.0,
+      0.5251786942510418,
+      0.47482130574895826
+     ],
+     [
+      0.01197511666936903,
+      0.2621447581741255,
+      0.7258801251565055
+     ]
+    ],
+    "zemin": {
+     "tp": 1114599,
+     "fn": 65067,
+     "fp_tum": 526463,
+     "fp_etiketli": 12306,
+     "iou_tum": 0.6532911637982826,
+     "iou_etiketli": 0.9350882403277929
+    },
+    "engel": {
+     "tp": 640624,
+     "fn": 1436674,
+     "fp_tum": 579197,
+     "fp_etiketli": 0,
+     "iou_tum": 0.24115385122125207,
+     "iou_etiketli": 0.30839292195919893
+    },
+    "piksel_dogrulugu_etiketli": 0.538913847374426
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1114599,
+      12306,
+      514157
+     ],
+     [
+      0,
+      640624,
+      579197
+     ],
+     [
+      65067,
+      1424368,
+      3944082
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1641062,
+     1219821,
+     5433517
+    ],
+    "sutun_toplam": [
+     1179666,
+     2077298,
+     5037436
+    ],
+    "sutun_normalize": [
+     [
+      0.9448428623017023,
+      0.005924041711877641,
+      0.10206720244187718
+     ],
+     [
+      0.0,
+      0.30839292195919893,
+      0.11497853272974584
+     ],
+     [
+      0.05515713769829765,
+      0.6856830363289235,
+      0.7829542648283769
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.6791937172392024,
+      0.00749880260465479,
+      0.3133074801561428
+     ],
+     [
+      0.0,
+      0.5251786942510418,
+      0.47482130574895826
+     ],
+     [
+      0.01197511666936903,
+      0.2621447581741255,
+      0.7258801251565055
+     ]
+    ],
+    "zemin": {
+     "tp": 1114599,
+     "fn": 65067,
+     "fp_tum": 526463,
+     "fp_etiketli": 12306,
+     "iou_tum": 0.6532911637982826,
+     "iou_etiketli": 0.9350882403277929
+    },
+    "engel": {
+     "tp": 640624,
+     "fn": 1436674,
+     "fp_tum": 579197,
+     "fp_etiketli": 0,
+     "iou_tum": 0.24115385122125207,
+     "iou_etiketli": 0.30839292195919893
+    },
+    "piksel_dogrulugu_etiketli": 0.538913847374426
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000160_000006000.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 3,
+   "poligon_zemin": 1,
+   "poligon_engel": 13,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.7287166039737655,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      899753,
+      0,
+      194106
+     ],
+     [
+      14734,
+      236291,
+      109993
+     ],
+     [
+      456062,
+      643293,
+      5740168
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1093859,
+     361018,
+     6839523
+    ],
+    "sutun_toplam": [
+     1370549,
+     879584,
+     6044267
+    ],
+    "sutun_normalize": [
+     [
+      0.6564909390324607,
+      0.0,
+      0.03211406776040834
+     ],
+     [
+      0.010750436503911937,
+      0.2686394932149744,
+      0.018197905552484694
+     ],
+     [
+      0.33275862446362736,
+      0.7313605067850256,
+      0.949688026687107
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.8225493413684944,
+      0.0,
+      0.17745065863150553
+     ],
+     [
+      0.040812369466342396,
+      0.6545130713704026,
+      0.30467455916325503
+     ],
+     [
+      0.06668038107335848,
+      0.09405524332617933,
+      0.8392643756004622
+     ]
+    ],
+    "zemin": {
+     "tp": 899753,
+     "fn": 470796,
+     "fp_tum": 194106,
+     "fp_etiketli": 0,
+     "iou_tum": 0.5750488126775551,
+     "iou_etiketli": 0.6564909390324607
+    },
+    "engel": {
+     "tp": 236291,
+     "fn": 643293,
+     "fp_tum": 124727,
+     "fp_etiketli": 14734,
+     "iou_tum": 0.23527672205123712,
+     "iou_etiketli": 0.2642136242365691
+    },
+    "piksel_dogrulugu_etiketli": 0.5048786005093922
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      899753,
+      0,
+      194106
+     ],
+     [
+      14734,
+      236291,
+      109993
+     ],
+     [
+      456062,
+      643293,
+      5740168
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1093859,
+     361018,
+     6839523
+    ],
+    "sutun_toplam": [
+     1370549,
+     879584,
+     6044267
+    ],
+    "sutun_normalize": [
+     [
+      0.6564909390324607,
+      0.0,
+      0.03211406776040834
+     ],
+     [
+      0.010750436503911937,
+      0.2686394932149744,
+      0.018197905552484694
+     ],
+     [
+      0.33275862446362736,
+      0.7313605067850256,
+      0.949688026687107
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.8225493413684944,
+      0.0,
+      0.17745065863150553
+     ],
+     [
+      0.040812369466342396,
+      0.6545130713704026,
+      0.30467455916325503
+     ],
+     [
+      0.06668038107335848,
+      0.09405524332617933,
+      0.8392643756004622
+     ]
+    ],
+    "zemin": {
+     "tp": 899753,
+     "fn": 470796,
+     "fp_tum": 194106,
+     "fp_etiketli": 0,
+     "iou_tum": 0.5750488126775551,
+     "iou_etiketli": 0.6564909390324607
+    },
+    "engel": {
+     "tp": 236291,
+     "fn": 643293,
+     "fp_tum": 124727,
+     "fp_etiketli": 14734,
+     "iou_tum": 0.23527672205123712,
+     "iou_etiketli": 0.2642136242365691
+    },
+    "piksel_dogrulugu_etiketli": 0.5048786005093922
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000196_000007290.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 1,
+   "poligon_engel": 16,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 3408,
+   "etiketsiz_orani": 0.6593765673225309,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1162764,
+      202883,
+      112959
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      656482,
+      803138,
+      5356174
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1478606,
+     0,
+     6815794
+    ],
+    "sutun_toplam": [
+     1819246,
+     1006021,
+     5469133
+    ],
+    "sutun_normalize": [
+     [
+      0.6391461077831145,
+      0.20166875244154944,
+      0.020653913517919568
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.36085389221688546,
+      0.7983312475584505,
+      0.9793460864820804
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.7863920476448764,
+      0.1372123473055026,
+      0.07639560504962106
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0963177584299056,
+      0.11783484066566566,
+      0.7858474009044287
+     ]
+    ],
+    "zemin": {
+     "tp": 1162764,
+     "fn": 656482,
+     "fp_tum": 315842,
+     "fp_etiketli": 202883,
+     "iou_tum": 0.5445976933971808,
+     "iou_etiketli": 0.5750196945892176
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 1006021,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.4115589783195712
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1162764,
+      202883,
+      112959
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      656482,
+      803138,
+      5356174
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1478606,
+     0,
+     6815794
+    ],
+    "sutun_toplam": [
+     1819246,
+     1006021,
+     5469133
+    ],
+    "sutun_normalize": [
+     [
+      0.6391461077831145,
+      0.20166875244154944,
+      0.020653913517919568
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.36085389221688546,
+      0.7983312475584505,
+      0.9793460864820804
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.7863920476448764,
+      0.1372123473055026,
+      0.07639560504962106
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.0963177584299056,
+      0.11783484066566566,
+      0.7858474009044287
+     ]
+    ],
+    "zemin": {
+     "tp": 1162764,
+     "fn": 656482,
+     "fp_tum": 315842,
+     "fp_etiketli": 202883,
+     "iou_tum": 0.5445976933971808,
+     "iou_etiketli": 0.5750196945892176
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 1006021,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.4115589783195712
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000200_000007410.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 1,
+   "poligon_engel": 4,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 12,
+   "etiketsiz_orani": 0.609497974537037,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1046720,
+      3752,
+      39571
+     ],
+     [
+      0,
+      127760,
+      24040
+     ],
+     [
+      281447,
+      1779301,
+      4991809
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1090043,
+     151800,
+     7052557
+    ],
+    "sutun_toplam": [
+     1328167,
+     1910813,
+     5055420
+    ],
+    "sutun_normalize": [
+     [
+      0.7880936659320703,
+      0.0019635621068100333,
+      0.007827440647859129
+     ],
+     [
+      0.0,
+      0.06686159242165507,
+      0.004755292339706691
+     ],
+     [
+      0.21190633406792972,
+      0.9311748454715348,
+      0.9874172670124342
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.9602556963349153,
+      0.003442066046935763,
+      0.03630223761814901
+     ],
+     [
+      0.0,
+      0.8416337285902503,
+      0.15836627140974968
+     ],
+     [
+      0.03990708618165015,
+      0.25229161565089087,
+      0.707801298167459
+     ]
+    ],
+    "zemin": {
+     "tp": 1046720,
+     "fn": 281447,
+     "fp_tum": 43323,
+     "fp_etiketli": 3752,
+     "iou_tum": 0.7631991483714792,
+     "iou_etiketli": 0.7858736154375754
+    },
+    "engel": {
+     "tp": 127760,
+     "fn": 1783053,
+     "fp_tum": 24040,
+     "fp_etiketli": 0,
+     "iou_tum": 0.06603085609087615,
+     "iou_etiketli": 0.06686159242165507
+    },
+    "piksel_dogrulugu_etiketli": 0.36260798152504803
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1046720,
+      3752,
+      39571
+     ],
+     [
+      0,
+      127760,
+      24040
+     ],
+     [
+      281447,
+      1779301,
+      4991809
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1090043,
+     151800,
+     7052557
+    ],
+    "sutun_toplam": [
+     1328167,
+     1910813,
+     5055420
+    ],
+    "sutun_normalize": [
+     [
+      0.7880936659320703,
+      0.0019635621068100333,
+      0.007827440647859129
+     ],
+     [
+      0.0,
+      0.06686159242165507,
+      0.004755292339706691
+     ],
+     [
+      0.21190633406792972,
+      0.9311748454715348,
+      0.9874172670124342
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.9602556963349153,
+      0.003442066046935763,
+      0.03630223761814901
+     ],
+     [
+      0.0,
+      0.8416337285902503,
+      0.15836627140974968
+     ],
+     [
+      0.03990708618165015,
+      0.25229161565089087,
+      0.707801298167459
+     ]
+    ],
+    "zemin": {
+     "tp": 1046720,
+     "fn": 281447,
+     "fp_tum": 43323,
+     "fp_etiketli": 3752,
+     "iou_tum": 0.7631991483714792,
+     "iou_etiketli": 0.7858736154375754
+    },
+    "engel": {
+     "tp": 127760,
+     "fn": 1783053,
+     "fp_tum": 24040,
+     "fp_etiketli": 0,
+     "iou_tum": 0.06603085609087615,
+     "iou_etiketli": 0.06686159242165507
+    },
+    "piksel_dogrulugu_etiketli": 0.36260798152504803
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000202_000007470.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 1,
+   "poligon_engel": 8,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.4917358699845679,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      751518,
+      171794,
+      204956
+     ],
+     [
+      0,
+      2844224,
+      1625785
+     ],
+     [
+      4389,
+      443821,
+      2247913
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1128268,
+     4470009,
+     2696123
+    ],
+    "sutun_toplam": [
+     755907,
+     3459839,
+     4078654
+    ],
+    "sutun_normalize": [
+     [
+      0.9941937301810937,
+      0.04965375556492658,
+      0.05025089159315794
+     ],
+     [
+      0.0,
+      0.8220683101150082,
+      0.39860821731875273
+     ],
+     [
+      0.005806269818906294,
+      0.12827793432006518,
+      0.5511408910880894
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.6660811083891416,
+      0.15226346931757348,
+      0.18165542229328493
+     ],
+     [
+      0.0,
+      0.6362904414733841,
+      0.36370955852661596
+     ],
+     [
+      0.0016278930894473287,
+      0.16461452240865865,
+      0.833757584501894
+     ]
+    ],
+    "zemin": {
+     "tp": 751518,
+     "fn": 4389,
+     "fp_tum": 376750,
+     "fp_etiketli": 171794,
+     "iou_tum": 0.663500071071825,
+     "iou_etiketli": 0.8100864394885853
+    },
+    "engel": {
+     "tp": 2844224,
+     "fn": 615615,
+     "fp_tum": 1625785,
+     "fp_etiketli": 0,
+     "iou_tum": 0.5592674566582193,
+     "iou_etiketli": 0.8220683101150082
+    },
+    "piksel_dogrulugu_etiketli": 0.8529313673072334
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      751518,
+      171794,
+      204956
+     ],
+     [
+      0,
+      2844224,
+      1625785
+     ],
+     [
+      4389,
+      443821,
+      2247913
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1128268,
+     4470009,
+     2696123
+    ],
+    "sutun_toplam": [
+     755907,
+     3459839,
+     4078654
+    ],
+    "sutun_normalize": [
+     [
+      0.9941937301810937,
+      0.04965375556492658,
+      0.05025089159315794
+     ],
+     [
+      0.0,
+      0.8220683101150082,
+      0.39860821731875273
+     ],
+     [
+      0.005806269818906294,
+      0.12827793432006518,
+      0.5511408910880894
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.6660811083891416,
+      0.15226346931757348,
+      0.18165542229328493
+     ],
+     [
+      0.0,
+      0.6362904414733841,
+      0.36370955852661596
+     ],
+     [
+      0.0016278930894473287,
+      0.16461452240865865,
+      0.833757584501894
+     ]
+    ],
+    "zemin": {
+     "tp": 751518,
+     "fn": 4389,
+     "fp_tum": 376750,
+     "fp_etiketli": 171794,
+     "iou_tum": 0.663500071071825,
+     "iou_etiketli": 0.8100864394885853
+    },
+    "engel": {
+     "tp": 2844224,
+     "fn": 615615,
+     "fp_tum": 1625785,
+     "fp_etiketli": 0,
+     "iou_tum": 0.5592674566582193,
+     "iou_etiketli": 0.8220683101150082
+    },
+    "piksel_dogrulugu_etiketli": 0.8529313673072334
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000205_000007560.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 2,
+   "poligon_zemin": 4,
+   "poligon_engel": 7,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.6155749662422839,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1235820,
+      227976,
+      27102
+     ],
+     [
+      0,
+      138141,
+      10681
+     ],
+     [
+      622438,
+      964200,
+      5068042
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1490898,
+     148822,
+     6654680
+    ],
+    "sutun_toplam": [
+     1858258,
+     1330317,
+     5105825
+    ],
+    "sutun_normalize": [
+     [
+      0.6650422061952646,
+      0.1713696810609802,
+      0.005308055015594933
+     ],
+     [
+      0.0,
+      0.10384066354109585,
+      0.0020919244196579397
+     ],
+     [
+      0.3349577938047354,
+      0.724789655397924,
+      0.9926000205647472
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.8289098248169895,
+      0.15291186922244177,
+      0.01817830596056873
+     ],
+     [
+      0.0,
+      0.9282296972221848,
+      0.07177030277781511
+     ],
+     [
+      0.0935338739052817,
+      0.14489051314263046,
+      0.7615756129520879
+     ]
+    ],
+    "zemin": {
+     "tp": 1235820,
+     "fn": 622438,
+     "fp_tum": 255078,
+     "fp_etiketli": 227976,
+     "iou_tum": 0.5847721327796431,
+     "iou_etiketli": 0.5923688330264006
+    },
+    "engel": {
+     "tp": 138141,
+     "fn": 1192176,
+     "fp_tum": 10681,
+     "fp_etiketli": 0,
+     "iou_tum": 0.10301357645574416,
+     "iou_etiketli": 0.10384066354109585
+    },
+    "piksel_dogrulugu_etiketli": 0.43090126467152257
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1235820,
+      227976,
+      27102
+     ],
+     [
+      0,
+      138141,
+      10681
+     ],
+     [
+      622438,
+      964200,
+      5068042
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1490898,
+     148822,
+     6654680
+    ],
+    "sutun_toplam": [
+     1858258,
+     1330317,
+     5105825
+    ],
+    "sutun_normalize": [
+     [
+      0.6650422061952646,
+      0.1713696810609802,
+      0.005308055015594933
+     ],
+     [
+      0.0,
+      0.10384066354109585,
+      0.0020919244196579397
+     ],
+     [
+      0.3349577938047354,
+      0.724789655397924,
+      0.9926000205647472
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.8289098248169895,
+      0.15291186922244177,
+      0.01817830596056873
+     ],
+     [
+      0.0,
+      0.9282296972221848,
+      0.07177030277781511
+     ],
+     [
+      0.0935338739052817,
+      0.14489051314263046,
+      0.7615756129520879
+     ]
+    ],
+    "zemin": {
+     "tp": 1235820,
+     "fn": 622438,
+     "fp_tum": 255078,
+     "fp_etiketli": 227976,
+     "iou_tum": 0.5847721327796431,
+     "iou_etiketli": 0.5923688330264006
+    },
+    "engel": {
+     "tp": 138141,
+     "fn": 1192176,
+     "fp_tum": 10681,
+     "fp_etiketli": 0,
+     "iou_tum": 0.10301357645574416,
+     "iou_etiketli": 0.10384066354109585
+    },
+    "piksel_dogrulugu_etiketli": 0.43090126467152257
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000215_000007860.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 4,
+   "poligon_engel": 27,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 14874,
+   "etiketsiz_orani": 0.7366178385416666,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1133823,
+      10820,
+      185806
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      506661,
+      533293,
+      5923997
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1330449,
+     0,
+     6963951
+    ],
+    "sutun_toplam": [
+     1640484,
+     544113,
+     6109803
+    ],
+    "sutun_normalize": [
+     [
+      0.6911515138215307,
+      0.019885575238966904,
+      0.03041112782196087
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.3088484861784693,
+      0.980114424761033,
+      0.9695888721780391
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.8522107950022887,
+      0.008132592831442619,
+      0.13965661216626868
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.07275481978549246,
+      0.07657908563687481,
+      0.8506660945776328
+     ]
+    ],
+    "zemin": {
+     "tp": 1133823,
+     "fn": 506661,
+     "fp_tum": 196626,
+     "fp_etiketli": 10820,
+     "iou_tum": 0.6171775233927201,
+     "iou_etiketli": 0.6866228144545159
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 544113,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.5190078536224302
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1133823,
+      10820,
+      185806
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      506661,
+      533293,
+      5923997
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1330449,
+     0,
+     6963951
+    ],
+    "sutun_toplam": [
+     1640484,
+     544113,
+     6109803
+    ],
+    "sutun_normalize": [
+     [
+      0.6911515138215307,
+      0.019885575238966904,
+      0.03041112782196087
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.3088484861784693,
+      0.980114424761033,
+      0.9695888721780391
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.8522107950022887,
+      0.008132592831442619,
+      0.13965661216626868
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.07275481978549246,
+      0.07657908563687481,
+      0.8506660945776328
+     ]
+    ],
+    "zemin": {
+     "tp": 1133823,
+     "fn": 506661,
+     "fp_tum": 196626,
+     "fp_etiketli": 10820,
+     "iou_tum": 0.6171775233927201,
+     "iou_etiketli": 0.6866228144545159
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 544113,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.5190078536224302
+   }
+  },
+  {
+   "kare": "dji_20260822172613_0038_d__frame_000218_000007980.jpg",
+   "h": 2160,
+   "w": 3840,
+   "px": 8294400,
+   "tespit_sayisi": 1,
+   "poligon_zemin": 1,
+   "poligon_engel": 4,
+   "poligon_bilinmeyen_sinif": 0,
+   "cakisan_etiket_px": 0,
+   "etiketsiz_orani": 0.6841188030478395,
+   "t67_ek_engel_px": 0,
+   "uretim": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1050388,
+      32044,
+      341700
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      92325,
+      1445288,
+      5332655
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1424132,
+     0,
+     6870268
+    ],
+    "sutun_toplam": [
+     1142713,
+     1477332,
+     5674355
+    ],
+    "sutun_normalize": [
+     [
+      0.9192054347854623,
+      0.02169045278921732,
+      0.060218297938708455
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.08079456521453768,
+      0.9783095472107827,
+      0.9397817020612915
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.7375636528074645,
+      0.02250072324756413,
+      0.2399356239449714
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.013438340396619172,
+      0.21036850381964722,
+      0.7761931557837336
+     ]
+    ],
+    "zemin": {
+     "tp": 1050388,
+     "fn": 92325,
+     "fp_tum": 373744,
+     "fp_etiketli": 32044,
+     "iou_tum": 0.6926592709189908,
+     "iou_etiketli": 0.8941321481804322
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 1477332,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.40090456461625656
+   },
+   "yalniz_model": {
+    "satir_ekseni_tahmin": [
+     "zemin",
+     "engel",
+     "yok"
+    ],
+    "sutun_ekseni_gercek": [
+     "zemin",
+     "engel",
+     "etiketsiz"
+    ],
+    "matris": [
+     [
+      1050388,
+      32044,
+      341700
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      92325,
+      1445288,
+      5332655
+     ]
+    ],
+    "toplam_px": 8294400,
+    "satir_toplam": [
+     1424132,
+     0,
+     6870268
+    ],
+    "sutun_toplam": [
+     1142713,
+     1477332,
+     5674355
+    ],
+    "sutun_normalize": [
+     [
+      0.9192054347854623,
+      0.02169045278921732,
+      0.060218297938708455
+     ],
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.08079456521453768,
+      0.9783095472107827,
+      0.9397817020612915
+     ]
+    ],
+    "satir_normalize": [
+     [
+      0.7375636528074645,
+      0.02250072324756413,
+      0.2399356239449714
+     ],
+     [
+      null,
+      null,
+      null
+     ],
+     [
+      0.013438340396619172,
+      0.21036850381964722,
+      0.7761931557837336
+     ]
+    ],
+    "zemin": {
+     "tp": 1050388,
+     "fn": 92325,
+     "fp_tum": 373744,
+     "fp_etiketli": 32044,
+     "iou_tum": 0.6926592709189908,
+     "iou_etiketli": 0.8941321481804322
+    },
+    "engel": {
+     "tp": 0,
+     "fn": 1477332,
+     "fp_tum": 0,
+     "fp_etiketli": 0,
+     "iou_tum": 0.0,
+     "iou_etiketli": 0.0
+    },
+    "piksel_dogrulugu_etiketli": 0.40090456461625656
+   }
+  }
+ ],
+ "ornek_duzeyi": {
+  "_ne": "ultralytics model.val yan urunu — ORNEK (nesne) duzeyi; satir = tahmin, sutun = yer gercegi; son satir/sutun = arka plan (FN satiri / FP sutunu). Ultralytics ON ISLEMESIYLE kosar (rect letterbox, isik normalizasyonu YOK) — uretim yolu DEGILDIR, ek kanittir.",
+  "conf": 0.3,
+  "iou_thres_kutu_eslesme": 0.45,
+  "iou_thres_kaynak": "ultralytics.utils.metrics.ConfusionMatrix.process_batch varsayilani (inspect ile okundu)",
+  "imgsz": 512,
+  "device": "cpu",
+  "sinif_adlari": [
+   "traversable",
+   "blocked",
+   "arka_plan"
+  ],
+  "matris": [
+   [
+    15,
+    1,
+    1
+   ],
+   [
+    1,
+    33,
+    11
+   ],
+   [
+    35,
+    142,
+    0
+   ]
+  ],
+  "satir_toplam": [
+   17,
+   45,
+   177
+  ],
+  "sutun_toplam": [
+   51,
+   176,
+   12
+  ],
+  "results_dict": {
+   "metrics/precision(B)": 0.807843137254902,
+   "metrics/recall(B)": 0.24080882352941177,
+   "metrics/mAP50(B)": 0.21527621241050976,
+   "metrics/mAP50-95(B)": 0.14051565565793436,
+   "metrics/precision(M)": 0.7196078431372549,
+   "metrics/recall(M)": 0.2113970588235294,
+   "metrics/mAP50(M)": 0.18600159902017488,
+   "metrics/mAP50-95(M)": 0.067193868929243,
+   "fitness": 0.20770952458717737
+  },
+  "kayit_dizini": "results/gece_20260907/karisiklik/ultralytics_val/test29_v36_cpu",
+  "silinen_gorsel_yiginlari": [
+   "val_batch0_labels.jpg",
+   "val_batch0_pred.jpg",
+   "val_batch1_labels.jpg",
+   "val_batch1_pred.jpg",
+   "val_batch2_labels.jpg",
+   "val_batch2_pred.jpg"
+  ],
+  "yaml": "dataset/test29_v3.yaml",
+  "sure_s": 9.3
+ },
+ "sinirlar": [
+  "Bu kume DOGRULAMA kumesidir (0038 kirsal yol; CONTRACTS §12) — ARENA DEGILDIR; kirmizi H, moloz yigini, fiziki bariyer icermez. Arena basarimi IDDIA EDILMEZ.",
+  "Farkli isik acisi / golge kesiti bu kumede YOKTUR — o satir OLCULEMEDI kalir.",
+  "Etiketsiz sutun 'model hatasi' DEGILDIR: etiket kapsami eksikligi (D-315) ayri sutunda gorunur; yorumda IoU'nun etiketli paydali sekli esas alinir, tum paydali sekil yaninda verilir.",
+  "Ornek duzeyi matris ultralytics on islemesiyle kosar (isik normalizasyonu yok, rect letterbox) — uretim yolu degildir."
+ ]
+}
