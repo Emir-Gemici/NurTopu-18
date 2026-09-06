@@ -63,6 +63,16 @@ KOPYALAR = {
     # navitas-kamera-koprusu.service bunu KAMERA_PYTHON ile kosar ve
     # ~/navitas/scripts/kamera_koprusu.py arar. Kanonik scripts/, kod/ AYNADIR.
     KOK / "scripts" / "kamera_koprusu.py": PAKET_KOD / "kamera_koprusu.py",
+    # D-431 (7 Eylul 2026): kart Jetson NANO degil ORIN NANO 4GB (JetPack 7.2.1,
+    # Ubuntu 24.04, Py 3.12, NVMe) cikti — `JETSON_NANO_KURULUM.md`, cp38 `wheels/`
+    # ve venv38 plani bu kartta gecersiz. 6 Eylul'de kartta OLCULEREK yazilan
+    # kurulum tutanagi + iki kurulum betigi pakete alindi. Kanonik kaynaklar
+    # `JETSON_KILAVUZ.md` kalibinda depo kokunde (belge) ve `scripts/` altinda
+    # (betikler); paket kopyalari `kod/` DEGIL paket KOKUNDE durur — kurulum
+    # betigi `jetson_baslat.sh` gibi kokten kosar, Nano belgesi de orada.
+    KOK / "JETSON_ORIN_NANO_KURULUM.md": PAKET / "JETSON_ORIN_NANO_KURULUM.md",
+    KOK / "scripts" / "orin_nano_root_kurulum.sh": PAKET / "orin_nano_root_kurulum.sh",
+    KOK / "scripts" / "orin_nano_venv_kurulum.sh": PAKET / "orin_nano_venv_kurulum.sh",
 }
 
 

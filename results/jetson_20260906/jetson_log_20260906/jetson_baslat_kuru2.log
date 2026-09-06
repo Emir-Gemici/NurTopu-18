@@ -1,0 +1,44 @@
+# jetson_baslat.sh --kuru · KIP=udp · HICBIR SEY BASLATILMADI · (CR'siz kopya: /tmp/tmp.3FGNs0kcAr)
+## /etc/navitas.env (yazilacak icerik)
+NAVITAS_KOK=/home/n4vitas/navitas
+PYTHON3=/home/n4vitas/venv312/bin/python
+LOG_DIZIN=/home/n4vitas/navitas/results/jetson_log
+KIP=udp
+PIXHAWK_SERI=/dev/ttyACM0
+PIXHAWK_BAUD=57600
+SYSID=1
+SIK_SERI=/dev/ttyUSB0
+SIK_BAUD=57600
+KANIT_TIMEOUT=900
+RPI_EK_ARGS=--fov 78 --kaynak http://127.0.0.1:8080/video
+RPI_TELSIZ_ARGS=--yks-hedef 10.21.8.10:5005 --ika-hedef 10.21.8.11:5006
+INIS_TELSIZ_ARGS=--yks 10.21.8.10:5005 --ika 10.21.8.11:5006
+KOMUT_TELSIZ_ARGS=--bind 0.0.0.0:5007 --izinli-kaynak 10.21.8.10:5005
+KAMERA_PYTHON=/usr/bin/python3
+KAMERA_KOPRU_BIND=127.0.0.1
+KAMERA_KOPRU_PORT=8080
+KAMERA_KOPRU_ARGS=
+## birimler (ExecStart, degiskenler yerine konmus — systemd ve --dogrudan AYNEN bunu kosar)
+navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /home/n4vitas/navitas/results/jetson_log/mavproxy
+navitas-kamera-koprusu.service: /usr/bin/env /usr/bin/python3 /home/n4vitas/navitas/scripts/kamera_koprusu.py --port 8080 
+navitas-rpi-inference.service: /home/n4vitas/venv312/bin/python /home/n4vitas/navitas/codes/rpi_inference.py --camera --ekransiz --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 78 --kaynak http://127.0.0.1:8080/video --yks-hedef 10.21.8.10:5005 --ika-hedef 10.21.8.11:5006
+navitas-iha-inis-yayinci.service: /home/n4vitas/venv312/bin/python /home/n4vitas/navitas/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 10.21.8.10:5005 --ika 10.21.8.11:5006
+navitas-iha-komut-alici.service: /home/n4vitas/venv312/bin/python /home/n4vitas/navitas/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007 --izinli-kaynak 10.21.8.10:5005
+## paket denetimi (/home/n4vitas/navitas/jetson_paket/kod)
+[VAR] mavproxy.py (PATH)
+[VAR] kamera_koprusu.py
+[VAR] rpi_inference.py
+[VAR] iha_inis_yayinci.py
+[VAR] iha_komut_alici.py
+## ana makine denetimi (gercek kosumun dosya_denetle'de duracagi yerler; salt okunur)
+[VAR] kullanici n4vitas (birimlerde User=)
+[VAR] yorumlayici /home/n4vitas/venv312/bin/python
+[VAR] kopru yorumlayicisi /usr/bin/python3
+[YOK] Pixhawk seri /dev/ttyACM0 <- kablo takili mi? PIXHAWK_SERI ile ez
+[VAR] kurulu /home/n4vitas/navitas/scripts/kamera_koprusu.py
+[VAR] kurulu /home/n4vitas/navitas/codes/rpi_inference.py
+[VAR] kurulu /home/n4vitas/navitas/comms/iha_inis_yayinci.py
+[VAR] kurulu /home/n4vitas/navitas/comms/iha_komut_alici.py
+## beyan denetimi
+[TAM] beyanlar tam
+KURU SONUC: eksik (beyan: tam · [YOK]: 1) — gercek kosum DURUR (cikis 3)

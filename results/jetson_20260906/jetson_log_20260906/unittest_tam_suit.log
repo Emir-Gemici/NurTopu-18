@@ -1,0 +1,942 @@
+BASLANGIC 2026-09-06T17:57:56+03:00
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+[ONCE/SONRA] S1: 1/0.624 -> 2/1.000 (beklenen=2)
+[ONCE/SONRA] S2: 1/1.000 -> None/0.000 (beklenen=None)
+[ONCE/SONRA] S3: 3/0.396 -> 2/0.762 (beklenen=2)
+[ONCE/SONRA] uretim karariyla uyum: 0/3 -> 3/3
+[K1] 2 karar beklenirken stop(): send_no_route 2 kez
+[K8-seri] SerialLink rota ACK'lari: ['OPEN_ROUTE', 'NO_ROUTE']
+[K8-UDP] IKA_GO gonderilmedi; YKS'ye OPEN_ROUTE ACK gitti mi: True
+[T207_A3] exit=0 alinan_komutlar=[(511, 245.0), (511, 33.0), (511, 24.0)] sure=1.62s
+[T207_B1] komut=12 kirmizi=2 sayac={'tur': 4, 'gonderilen': 12, 'gonderim_hatasi': 0, 'ertelenen': 0, 'sessizlik_uyarisi': 2}
+[T207_B2] exit=3 tur=49 sahte_t=484s kirmizi=1
+[T207_C1] komut=9 kirmizi=0 sahte_t=25.0s
+KAYNAK: /tmp/navitas_bellek_xjxh4syr/depo  (git BILINMIYOR)
+HEDEF : /tmp/navitas_bellek_xjxh4syr/bellek_eksik
+  [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+🔴 EKSİK ZORUNLU PARÇALAR:
+  EKSIK (ZORUNLU): SAHA_RUNBOOK.md — saha yordamı: açılış kartı, operatör kartı, İHA/Jetson blokları
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson eMMC sistem imajı — ⚠ D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+
+RED: zorunlu parça eksik — bellek EKSİK hazırlandı. `--eksige-ragmen` ile bilerek geçilir (MANIFEST'e yazılır).
+KAYNAK: /tmp/navitas_bellek_zum4azo5/depo  (git BILINMIYOR)
+HEDEF : /tmp/navitas_bellek_zum4azo5/bellek_bilerek
+  [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] SAHA_RUNBOOK.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+🔴 EKSİK ZORUNLU PARÇALAR:
+  EKSIK (ZORUNLU): FAZ_B_GUN_PLANI.md — cumartesi saat planı ve kapıları (basılacak)
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson eMMC sistem imajı — ⚠ D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+
+MANIFEST: /tmp/navitas_bellek_zum4azo5/bellek_bilerek/MANIFEST.txt  (13 dosya)
+KAYNAK: /tmp/navitas_bellek_obgqdoqf/depo  (git BILINMIYOR)
+HEDEF : /tmp/navitas_bellek_obgqdoqf/bellek
+  [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] SAHA_RUNBOOK.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson eMMC sistem imajı — ⚠ D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+
+MANIFEST: /tmp/navitas_bellek_obgqdoqf/bellek/MANIFEST.txt  (14 dosya)
+KAYNAK: /tmp/navitas_bellek_h9k0_0ft/depo  (git BILINMIYOR)
+HEDEF : /tmp/navitas_bellek_h9k0_0ft/bellek_kuru   [KURU — kopyalanmadı]
+  [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] SAHA_RUNBOOK.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson eMMC sistem imajı — ⚠ D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+KAYNAK: /tmp/navitas_bellek_h9k0_0ft/depo  (git BILINMIYOR)
+HEDEF : /tmp/navitas_bellek_h9k0_0ft/bellek_kuru   [KURU — kopyalanmadı]
+  [   4 dosya ·      0.0 MB] jetson_paket -> jetson_paket/
+  [   2 dosya ·      0.0 MB] config/pixhawk -> config_pixhawk/
+  [   1 dosya ·      0.0 MB] SAHA_HAZIRLIK_PLANI_20260903.md -> belgeler/
+  [   1 dosya ·      0.0 MB] FAZ_B_GUN_PLANI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_NANO_KURULUM.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/JETSON_BASLAT.md -> belgeler/
+  [   1 dosya ·      0.0 MB] jetson_paket/GUN1_KONTROL_LISTESI.md -> belgeler/
+  [   1 dosya ·      0.0 MB] config/pixhawk/README.md -> belgeler/
+  [   1 dosya ·      0.0 MB] results/faz_b_oncesi/CUMA_KONTROL_KARTI.md -> belgeler/
+  yok (istege bagli): wheels — Nano için çevrimdışı aarch64/cp38 tekerlekler (scripts/nano_tekerlek_indir.py)
+  yok (istege bagli): firmware — Pixhawk 6C ArduCopter firmware'i — kart PX4 ile gelir, flash ŞART (D-424); scripts/pixhawk_firmware_indir.py ile indirilir
+  TOPLAM ~0.0 MB
+
+🔴 EKSİK ZORUNLU PARÇALAR:
+  EKSIK (ZORUNLU): SAHA_RUNBOOK.md — saha yordamı: açılış kartı, operatör kartı, İHA/Jetson blokları
+
+İNSANIN KOYACAĞI (bu betik üretemez):
+  ☐ Jetson eMMC sistem imajı — ⚠ D-413: kartta microSD yuvası YOK (Nano üretim modülü + M.2). SD imajı yolu GEÇERSİZ. Cumartesi İLK İŞ: Nano'yu aç ve bak — eMMC'de JetPack kurulu gelmiş olabilir. Boşsa Ubuntu x86_64 host + SDK Manager gerekir; Windows'ta YAPILAMAZ. Yordam: jetson_paket/JETSON_NANO_KURULUM.md §1
+  ☐ GPU torch wheel'i (JetPack 4.6 / Python 3.8) — Qengineering deposundan elle indirilir; CPU torch zaten wheels/ içinde, GPU olursa FPS kapısı rahatlar
+  ☐ Mission Planner kurulu dizüstü — parametre + görev planı yükleme; ⚠ D-424: Pixhawk 6C PX4 ile gelir, ÖNCE ArduCopter flash edilir — firmware/arducopter.apj bu bellekte, internet gerekmez
+[SERI_HUB] t=5095.146 seri hat YENIDEN ACILDI
+[SURUM_DONDURMA] DONDURULMADI (henuz): config/DONDURMA_KUNYESI.json yok - muhur basilinca bu kapi kapsam ozetlerini + git bagini kunyeyle kiyaslar
+[SURUM_DONDURMA] DONDURULMADI (henuz): config/DONDURMA_KUNYESI.json yok - muhur basilinca bu kapi kapsam ozetlerini + git bagini kunyeyle kiyaslar
+[İHA] IHA_LANDED ACK eksik: seq=9 beklenen=['ika'] gelen=[]
+[İHA] IHA_LANDED yayınlandı: seq=10 ACK=['ika', 'yks']
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=0.0 s önce
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] IHA_LANDED yayınlandı: seq=11 ACK=['ika']
+[T20_KAPI] IHA_LANDED_saha=1 ACK=ika exit=0
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+[İHA] akış isteği özeti: tur=1 gönderilen=0 gonderim_hatasi=1 ertelenen=0 sessizlik_uyarisi=0 son_EXTENDED=hiç gelmedi
+[İHA] KIRMIZI akış isteği gönderilemiyor: MAVLink gönderim arayüzü yok (mav.mav.command_long_send)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+/usr/lib/python3.12/unittest/case.py:589: ResourceWarning: unclosed <socket.socket fd=53, family=2, type=2, proto=0, laddr=('127.0.0.1', 37256)>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.12/unittest/case.py:638: ResourceWarning: unclosed <socket.socket fd=52, family=2, type=2, proto=0, laddr=('127.0.0.1', 35445)>
+  self.doCleanups()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✗ sürüş izni gelmedi (timeout) — İKA hareket etmez
+[T13_DEADLINE] timeout_sonrasi_latch=2 navigate_calls=0 sonuc=guvenli_ret
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[İHA] IHA_LANDED yayınlandı: seq=19 ACK=['ika']
+[T13_KAPI] IKA_GO=1 LANDED_oncesi_nonzero=0 LANDED_sonrasi_nonzero=1 ACK=ika exit=0
+[İHA] IHA_LANDED yayınlandı: seq=20 ACK=['ika']
+[İHA] IHA_LANDED ACK eksik: seq=23 beklenen=['ika', 'yks'] gelen=['ika']
+[T11_KAPI] exit=2 argparse=VAR traceback=YOK gonderim_mesaji=YOK
+[K4_UDP] dusurulen=3 ulasan_deneme=4 ika_go=True tekrar_durdu=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.95 wp=1
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+[ika_nav] sürüş süresi başladı: 600 s (şartname §6.2 İKA görev süresi)
+[T12_KAPI] IHA_LANDED_onceden=1 YKS_UDP_TX=1 IKA_GO_oncesi_hareket=0 IKA_GO_sonrasi_nonzero_motor=1 ACK=ika exit=0
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: SAG (3) conf=0.9 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.88 wp=1
+[ika_nav] comms dinleniyor (127.0.0.1:0) — İHA açık yolu gönderecek...
+[ika_nav] ✗ İHA NO_ROUTE bildirdi: KAPALI_DAR — geçici maske — İKA güvenli duruşta; geçerli rota bekleniyor
+[ika_nav] ✓ İHA'dan dinamik rota ALINDI: ORTA (2) conf=0.92 wp=2
+
+[ika_nav] Dinamik rota: ORTA | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devam
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI] NO_ROUTE etkin komut=3, sıfır-olmayan=0; OPEN_ROUTE sonrası sıfır-olmayan=1
+[K5] bekleme_deadline=+900s surus_deadline=izin+600s rota=61s izin=+240s exit=0
+[K5] surus deadline=5s -> durdu adim=5 son_vel=(0, 0) sonuc=False
+[K6] gercek UDP: landed→bitis=1.30s > hb_timeout=0.4s, heartbeat_gorulen=25, link_lost=False, exit=0
+[K6] heartbeat_suresi=600s aralik=0.5s -> heartbeat=1200
+[K6] heartbeat_suresi=0s aralik=0.5s -> heartbeat=0
+[T10_KAPI_OUTPUT] GÖREV SONUCU
+[T10_KAPI_OUTPUT] İKA görevi: ✗ BAŞARISIZ
+[T10_KAPI] worker=ika-nav exception exit=1 rapor=VAR
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (5.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (5.0, 0.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (5.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (5.0, 0.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✗ IKA_GO + IHA_LANDED gelmedi (timeout) — İKA hareket etmez
+[ika_nav] YKS IKA_GO + İHA iniş kanıtı bekleniyor — İKA güvenli duruşta
+[ika_nav] ✓ IKA_GO ve IHA_LANDED alındı — İKA sürüş izni açık
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (2.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (2.0, 0.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.25m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+
+[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══
+[iha_flight] Rota: rampa → iniş
+[iha_flight] Segment 1: rampa → kalkış (15m, 0.8s, 3 adım)
+[iha_flight] Segment 2: kalkış → tırmanış (32m, 0.1s, 1 adım)
+[iha_flight] Segment 3: tırmanış → seyir-başı (40m, 0.0s, 1 adım)
+[iha_flight] Segment 4: seyir-başı → seyir-sonu (50m, 0.0s, 1 adım)
+[iha_flight] Segment 5: seyir-sonu → alçalış (36m, 0.0s, 1 adım)
+[iha_flight] Segment 6: alçalış → yaklaşma (17m, 0.0s, 1 adım)
+[iha_flight] Segment 7: yaklaşma → iniş (6m, 0.0s, 1 adım)
+
+[iha_flight] ══ İHA İNİŞ YAPTI: (85.0, 0.0) ══
+
+[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══
+[iha_flight] Rota: rampa → iniş
+
+[iha_flight] ══ İHA UÇUŞU BAŞLIYOR ══
+[iha_flight] Rota: rampa → iniş
+[iha_flight] Segment 1: rampa → kalkış (15m, 0.8s, 3 adım)
+[iha_flight] Segment 2: kalkış → tırmanış (32m, 0.1s, 1 adım)
+[iha_flight] Segment 3: tırmanış → seyir-başı (40m, 0.0s, 1 adım)
+[iha_flight] Segment 4: seyir-başı → seyir-sonu (50m, 0.0s, 1 adım)
+[iha_flight] Segment 5: seyir-sonu → alçalış (36m, 0.0s, 1 adım)
+[iha_flight] Segment 6: alçalış → yaklaşma (17m, 0.0s, 1 adım)
+[iha_flight] Segment 7: yaklaşma → iniş (6m, 0.0s, 1 adım)
+
+[iha_flight] ══ İHA İNİŞ YAPTI: (85.0, 0.0) ══
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (7.0, 5.0) → Hedef: (10.0, 5.0)
+
+[ika_nav] ── Waypoint 1/1: (10.0, 5.0)
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (9.0, 5.0) → Hedef: (10.0, 5.0)
+
+[ika_nav] ── Waypoint 1/1: (10.0, 5.0)
+[ika_nav] ✗ SÜRÜCÜ YANITSIZ (ardışık 3 hata) — GÜVENLİ DURMA
+model: sahte_model.pt · kayit dogrulamasi: sinama
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+UYARI: MODEL KAYIT DOGRULAMASI BASARISIZ — fail-closed.
+  yuklenmek istenen : /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best.pt
+  kayit defteri     : None
+  etkin profil      : None
+  profilin bekledigi: None
+  profilin imgsz'i  : None
+  calisan imgsz     : None
+  durum             : SINAMA
+Iki bildirim CELISIYOR. Sahada hangi agirligin uctugunu bilmeden
+devam etmek yasaktir; ya kayit defterini ya --model'i duzeltin.
+Kamera acilamadi (kaynak=0).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+  val 2 · kaynagi egitimde olan val: 0
+  val 1 · kaynagi egitimde olan val: 0
+  val 1 · kaynagi egitimde olan val: 1
+  oturum sayisi : 2
+    DOGRULAMA           1 dosya
+    ucus1               1 dosya
+  oturum sayisi : 1
+    _AYRILMAMIS        14 dosya
+  oturum sayisi : 2
+    DOGRULAMA           3 dosya
+    ucus1              10 dosya
+  oturum sayisi : 1
+    _AYRILMAMIS        14 dosya
+
+  [!] PROVA KIPI - DOGRULAMA oturumu YOK (beklenen klasor adi: DOGRULAMA). T136 kisit 2: dogrulama oturumu CEKIMDE ayrilir; sonradan bolmek AYNI DAGILIMDIR ve T111 duvarini YIKMAZ (D-256 §5).
+  [!] Bu kosum ADAY URETEMEZ ve modeli TERFI ETTIREMEZ.
+  yeni cekim : medyan 130.0 · maks 130.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  yeni cekim : medyan 20.0 · maks 20.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  yeni cekim : medyan 20.0 · maks 20.0
+  referans   : medyan 128.0 · min  128.0   (ref)
+  [!] cekim REFERANSTAN KARANLIK: en aydinlik yeni kare (20.0) referansin EN KARANLIK karesine (128.0) ulasmiyor. Iki dagilim ORTUSMUYOR.
+  [!] PROVA KIPI - devam ediliyor ama bu veri EGITIME UYGUN DEGIL.
+  [!] referans kume okunamadi - parlaklik kapisi OLCULEMEDI (bu 'GECTI' DEMEK DEGILDIR)
+
+[ika_nav] rota | 1 segment
+[ika_nav] Başlangıç: (0.0, 0.0) → Hedef: (1.0, 0.0)
+
+[ika_nav] ── Waypoint 1/1: (1.0, 0.0)
+[ika_nav] ⚠ Rota geçersiz/NO_ROUTE — GÜVENLİ DURMA
+[ika_nav] ✓ Geçerli OPEN_ROUTE geldi — aynı waypoint'ten devamT153: ince beton serit cikaricisi ACIK (get_masks -> engel OR)
+Rota 65 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+Rota 67 waypoint gerektiriyor (yumusak hedef: 64); azami aralik guvenligi icin seyreltilmedi.
+UYARI: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: YKS_ARAYUZ_HAZIR: OSError: disk dolu
+KANIT KAYDI HATASI — uçuş/onay başlatma kapatıldı; ARM ve acil komutlar kullanılabilir: RuntimeError: OLAY_A: OSError: ilk
+KAMERA KAPATMA HATASI: kamera worker kapanmadi
+KANIT KAYDI KAPATMA HATASI: fsync/kapatma hatasi
+======================================================================
+ERROR: test_iki_kopya_ayni (test_depo_koku_turetilir.BulucuAynasi.test_iki_kopya_ayni)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_depo_koku_turetilir.py", line 72, in test_iki_kopya_ayni
+    self.assertEqual(self._govde(OLCUM_AYARLAR), self._govde(EGITIM_AYARLAR),
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_depo_koku_turetilir.py", line 65, in _govde
+    agac = ast.parse(yol.read_text(encoding="utf-8"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/navitas-local-train/ayarlar.py'
+
+======================================================================
+ERROR: test_egitim_ayarlarinda_ciplak_kok_yok (test_depo_koku_turetilir.CiplakYolYasagi.test_egitim_ayarlarinda_ciplak_kok_yok)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_depo_koku_turetilir.py", line 44, in test_egitim_ayarlarinda_ciplak_kok_yok
+    s = EGITIM_AYARLAR.read_text(encoding="utf-8")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/navitas-local-train/ayarlar.py'
+
+======================================================================
+ERROR: test_depo_disinda_kardes_taramasiyla_bulunur (test_depo_koku_turetilir.DepoDisindaCanliKlasor.test_depo_disinda_kardes_taramasiyla_bulunur)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_depo_koku_turetilir.py", line 147, in test_depo_disinda_kardes_taramasiyla_bulunur
+    with tempfile.TemporaryDirectory(dir=str(surucu)) as td:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/tempfile.py", line 1021, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+PermissionError: [Errno 13] Permission denied: '/tmpsyqhnuqa'
+
+======================================================================
+ERROR: test_donusum_esleme (unittest.loader._FailedTest.test_donusum_esleme)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_donusum_esleme
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 394, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/loader.py", line 337, in _get_module_from_name
+    __import__(name)
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_donusum_esleme.py", line 21, in <module>
+    from dataset import download_and_convert as D
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/dataset/download_and_convert.py", line 25, in <module>
+    from tqdm import tqdm
+ModuleNotFoundError: No module named 'tqdm'
+
+
+======================================================================
+ERROR: test_wheels_repoya_girmez (test_faz_b_nano_kurulum.K5GitignoreTests.test_wheels_repoya_girmez)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_faz_b_nano_kurulum.py", line 228, in test_wheels_repoya_girmez
+    satirlar = [s.strip() for s in GITIGNORE.read_text(encoding="utf-8").splitlines()]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/.gitignore'
+
+======================================================================
+ERROR: test_0_on_kosul_json_loads_derin_satirda_recursion_error (test_faz_b_protocol_dayaniklilik.TestFrameReaderRecursion.test_0_on_kosul_json_loads_derin_satirda_recursion_error)
+Vakum korumasi: duzeltmenin hedefi olan istisna bu Python'da
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_faz_b_protocol_dayaniklilik.py", line 53, in test_0_on_kosul_json_loads_derin_satirda_recursion_error
+    json.loads(_derin_satir().decode("ascii"))
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 3001)
+
+======================================================================
+ERROR: test_acilis_olcumu_ilk_isarete_kadar (test_p4_runbook.SahaBaslatKomutlari.test_acilis_olcumu_ilk_isarete_kadar)
+Gercek alt surecte ilk cikti satirina kadar sure olculur.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 194, in test_acilis_olcumu_ilk_isarete_kadar
+    cocuk = saha_baslat.acilis_olc(
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/saha_baslat.py", line 141, in acilis_olc
+    cocuk = subprocess.Popen(komut, stdout=subprocess.PIPE,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_cli_fda_ika_kipinde_reddedilir (test_p4_runbook.SahaBaslatKomutlari.test_cli_fda_ika_kipinde_reddedilir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 162, in test_cli_fda_ika_kipinde_reddedilir
+    s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_cli_serial_ve_iha_birlikte_reddi (test_p4_runbook.SahaBaslatKomutlari.test_cli_serial_ve_iha_birlikte_reddi)
+CLI'da --serial + --iha argparse hatasiyla (exit 2) durur; GUI hic
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 171, in test_cli_serial_ve_iha_birlikte_reddi
+    s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_cli_udp_yks_iha_pini_olmadan_baslamaz (test_p4_runbook.SahaBaslatKomutlari.test_cli_udp_yks_iha_pini_olmadan_baslamaz)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 179, in test_cli_udp_yks_iha_pini_olmadan_baslamaz
+    s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_komut_karti_iha_ornegi (test_p4_runbook.SahaBaslatKomutlari.test_komut_karti_iha_ornegi)
+--komutlar kartindaki YKS satiri hem --ika hem --iha ornegi tasir;
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 139, in test_komut_karti_iha_ornegi
+    s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_komut_karti_ve_reset_exit0 (test_p4_runbook.SahaBaslatKomutlari.test_komut_karti_ve_reset_exit0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 223, in test_komut_karti_ve_reset_exit0
+    s = subprocess.run([VENV, str(KOK / "scripts" / "saha_baslat.py"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_sessiz_gui_acilis_olcumunu_sonsuza_dek_kilitlemez (test_p4_runbook.SahaBaslatKomutlari.test_sessiz_gui_acilis_olcumunu_sonsuza_dek_kilitlemez)
+Mutasyon: çocuk stdout yazmazsa readline ana iş parçacığını yutamaz.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p4_runbook.py", line 207, in test_sessiz_gui_acilis_olcumunu_sonsuza_dek_kilitlemez
+    cocuk = saha_baslat.acilis_olc(
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/saha_baslat.py", line 141, in acilis_olc
+    cocuk = subprocess.Popen(komut, stdout=subprocess.PIPE,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_comms_loopback_gecer (test_p8_sim_katmani.CommsLoopbackSarmalayici.test_comms_loopback_gecer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 148, in test_comms_loopback_gecer
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='world_generator')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='drive_ika')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='mission_demo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='mission_time')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='harita_onizleme')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='iha_perceive_all')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_yedi_betik_help_exit0 (test_p8_sim_katmani.SimBetikleriDuman.test_yedi_betik_help_exit0) (betik='iha_detect_send')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 68, in test_yedi_betik_help_exit0
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_bayraksiz_kosum_exit2_ve_uyari (test_p8_sim_katmani.YksMonitorKilidi.test_bayraksiz_kosum_exit2_ve_uyari)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 35, in test_bayraksiz_kosum_exit2_ve_uyari
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_import_yolu_bozulmadi (test_p8_sim_katmani.YksMonitorKilidi.test_import_yolu_bozulmadi)
+test_comms `from yks_monitor import FrameReader` yapar — kilit
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_p8_sim_katmani.py", line 48, in test_import_yolu_bozulmadi
+    s = subprocess.run(
+        ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'O:/navitas-local-train/venv/Scripts/python.exe'
+
+======================================================================
+ERROR: test_uretim_registrysi_gercek_kumeye_isaret_ediyor (test_t125_denetci_olculemedi.KabulKumesiTekKaynakTests.test_uretim_registrysi_gercek_kumeye_isaret_ediyor)
+Tek kaynak SAHICI: bugunku registry'nin alani gercek bir dizindir.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t125_denetci_olculemedi.py", line 126, in test_uretim_registrysi_gercek_kumeye_isaret_ediyor
+    yol = K65.kabul_kumesi_yolu()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/65_kabul_denetcisi.py", line 73, in kabul_kumesi_yolu
+    raise RuntimeError(
+RuntimeError: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+
+======================================================================
+ERROR: test_t144_kirpma (unittest.loader._FailedTest.test_t144_kirpma)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_t144_kirpma
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 394, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/loader.py", line 337, in _get_module_from_name
+    __import__(name)
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t144_kirpma.py", line 18, in <module>
+    from dataset import download_and_convert as D
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/dataset/download_and_convert.py", line 25, in <module>
+    from tqdm import tqdm
+ModuleNotFoundError: No module named 'tqdm'
+
+
+======================================================================
+ERROR: test_YATAY_kume_hâlâ_ACISIZ (test_t189_k5a_acili_kol.AciliKumeGercektenAcili.test_YATAY_kume_hâlâ_ACISIZ)
+Capa: yatay kume DEGISTIRILMEMELI (K1/K7 capalari ona bagli).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t189_k5a_acili_kol.py", line 117, in test_YATAY_kume_hâlâ_ACISIZ
+    m = json.loads((self.mod.kabul_kumesi_yolu() / "manifest.json")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/65_kabul_denetcisi.py", line 73, in kabul_kumesi_yolu
+    raise RuntimeError(
+RuntimeError: kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_t66 (kaynak: /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json -> profiles.competition.kabul_kumesi)
+
+======================================================================
+ERROR: test_YATAY_kumeyle_AYNI_DEGIL (test_t189_k5a_acili_kol.AciliKumeGercektenAcili.test_YATAY_kumeyle_AYNI_DEGIL)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t189_k5a_acili_kol.py", line 100, in test_YATAY_kumeyle_AYNI_DEGIL
+    self.mod.kabul_kumesi_acili_yolu().resolve(),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/65_kabul_denetcisi.py", line 101, in kabul_kumesi_acili_yolu
+    raise RuntimeError(f"acili kabul kumesi dizini yok: {yol}")
+RuntimeError: acili kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_ACILI_t189
+
+======================================================================
+ERROR: test_manifest_bariyer_acisi_SIFIR_DEGIL (test_t189_k5a_acili_kol.AciliKumeGercektenAcili.test_manifest_bariyer_acisi_SIFIR_DEGIL)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t189_k5a_acili_kol.py", line 106, in test_manifest_bariyer_acisi_SIFIR_DEGIL
+    m = json.loads((self.mod.kabul_kumesi_acili_yolu() / "manifest.json")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/65_kabul_denetcisi.py", line 101, in kabul_kumesi_acili_yolu
+    raise RuntimeError(f"acili kabul kumesi dizini yok: {yol}")
+RuntimeError: acili kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_ACILI_t189
+
+======================================================================
+ERROR: test_registry_ALANI_VAR_ve_dizin_MEVCUT (test_t189_k5a_acili_kol.AciliKumeGercektenAcili.test_registry_ALANI_VAR_ve_dizin_MEVCUT)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t189_k5a_acili_kol.py", line 95, in test_registry_ALANI_VAR_ve_dizin_MEVCUT
+    yol = self.mod.kabul_kumesi_acili_yolu()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/65_kabul_denetcisi.py", line 101, in kabul_kumesi_acili_yolu
+    raise RuntimeError(f"acili kabul kumesi dizini yok: {yol}")
+RuntimeError: acili kabul kumesi dizini yok: O:/navitas-local-train/calisma/sentetik_arena_kadraj_ACILI_t189
+
+======================================================================
+ERROR: test_t54_esleme_uygulaniyor (unittest.loader._FailedTest.test_t54_esleme_uygulaniyor)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_t54_esleme_uygulaniyor
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 394, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/loader.py", line 337, in _get_module_from_name
+    __import__(name)
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t54_esleme_uygulaniyor.py", line 34, in <module>
+    import download_and_convert as D  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/dataset/download_and_convert.py", line 25, in <module>
+    from tqdm import tqdm
+ModuleNotFoundError: No module named 'tqdm'
+
+
+======================================================================
+FAIL: test_K9_herhangi_YOK_eksik_ve_exit_3_beyan_tamken (test_faz_b_jetson_baslat.JetsonBaslatKuruUdp.test_K9_herhangi_YOK_eksik_ve_exit_3_beyan_tamken)
+D-405: `[YOK] mavproxy` iken "KURU SONUC: tamam" yalani. Hazir makinede tek tek
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_faz_b_jetson_baslat.py", line 682, in test_K9_herhangi_YOK_eksik_ve_exit_3_beyan_tamken
+    self.assertEqual(kod, 3, out)
+AssertionError: 0 != 3 : # jetson_baslat.sh --kuru · KIP=udp · HICBIR SEY BASLATILMADI · (CR'siz kopya: /tmp/tmp.uVPmqaN0QH)
+## /tmp/navitas_jb_eq78pbrv/etc/navitas.env (yazilacak icerik)
+NAVITAS_KOK=/tmp/navitas_jb_eq78pbrv/kok
+PYTHON3=/tmp/navitas_jb_eq78pbrv/bin/python3
+LOG_DIZIN=/tmp/navitas_jb_eq78pbrv/log
+KIP=udp
+PIXHAWK_SERI=/tmp/navitas_jb_eq78pbrv/dev/ttyACM0
+PIXHAWK_BAUD=57600
+SYSID=1
+SIK_SERI=/tmp/navitas_jb_eq78pbrv/dev/ttyUSB0
+SIK_BAUD=57600
+KANIT_TIMEOUT=900
+RPI_EK_ARGS=--fov 78
+RPI_TELSIZ_ARGS=--yks-hedef 10.0.0.1:5005 --ika-hedef 10.0.0.2:5006
+INIS_TELSIZ_ARGS=--yks 10.0.0.1:5005 --ika 10.0.0.2:5006
+KOMUT_TELSIZ_ARGS=--bind 0.0.0.0:5007 --izinli-kaynak 10.0.0.1:5005
+KAMERA_PYTHON=/tmp/navitas_jb_eq78pbrv/bin/python3
+KAMERA_KOPRU_BIND=127.0.0.1
+KAMERA_KOPRU_PORT=8080
+KAMERA_KOPRU_ARGS=
+## birimler (ExecStart, degiskenler yerine konmus — systemd ve --dogrudan AYNEN bunu kosar)
+navitas-cogullayici.service: /usr/bin/env mavproxy.py --master=/tmp/navitas_jb_eq78pbrv/dev/ttyACM0 --baudrate 57600 --streamrate 8 --out udp:127.0.0.1:14550 --out udp:127.0.0.1:14551 --out udp:127.0.0.1:14552 --daemon --non-interactive --state-basedir /tmp/navitas_jb_eq78pbrv/log/mavproxy
+navitas-rpi-inference.service: /tmp/navitas_jb_eq78pbrv/bin/python3 /tmp/navitas_jb_eq78pbrv/kok/codes/rpi_inference.py --camera --ekransiz --mavlink udp:127.0.0.1:14550 --mav-sysid 1 --fov 78 --yks-hedef 10.0.0.1:5005 --ika-hedef 10.0.0.2:5006
+navitas-iha-inis-yayinci.service: /tmp/navitas_jb_eq78pbrv/bin/python3 /tmp/navitas_jb_eq78pbrv/kok/comms/iha_inis_yayinci.py --mavlink udp:127.0.0.1:14551 --sysid 1 --kanit-timeout 900 --yks 10.0.0.1:5005 --ika 10.0.0.2:5006
+navitas-iha-komut-alici.service: /tmp/navitas_jb_eq78pbrv/bin/python3 /tmp/navitas_jb_eq78pbrv/kok/comms/iha_komut_alici.py --mavlink udp:127.0.0.1:14552 --sysid 1 --bind 0.0.0.0:5007 --izinli-kaynak 10.0.0.1:5005
+## paket denetimi (/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/kod)
+[VAR] mavproxy.py (PATH)
+[VAR] rpi_inference.py
+[VAR] iha_inis_yayinci.py
+[VAR] iha_komut_alici.py
+## ana makine denetimi (gercek kosumun dosya_denetle'de duracagi yerler; salt okunur)
+[VAR] kullanici n4vitas (birimlerde User=)
+[VAR] yorumlayici /tmp/navitas_jb_eq78pbrv/bin/python3
+[VAR] Pixhawk seri /tmp/navitas_jb_eq78pbrv/dev/ttyACM0
+[VAR] kurulu /tmp/navitas_jb_eq78pbrv/kok/codes/rpi_inference.py
+[VAR] kurulu /tmp/navitas_jb_eq78pbrv/kok/comms/iha_inis_yayinci.py
+[VAR] kurulu /tmp/navitas_jb_eq78pbrv/kok/comms/iha_komut_alici.py
+## beyan denetimi
+[TAM] beyanlar tam
+KURU SONUC: tamam — kurmak icin: sudo -E bash /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/jetson_baslat.sh
+
+
+======================================================================
+FAIL: test_142_ayni_modulu_kullanir (test_k6_rota_yol_ustunde.TekTanim.test_142_ayni_modulu_kullanir)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_k6_rota_yol_ustunde.py", line 68, in test_142_ayni_modulu_kullanir
+    self.assertIs(M142.rota_yol_olc.__code__.co_filename,
+AssertionError: '/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/rota_yol_olcumu.py' is not '/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/scripts/olcum/rota_yol_olcumu.py'
+
+======================================================================
+FAIL: test_turevler_engine_YER_TUTUCU_onnx_DOGRULANMIS_hepsi_kaynaga_BAGLI (test_t143_turev_ve_kamera.UretimDefteriTests.test_turevler_engine_YER_TUTUCU_onnx_DOGRULANMIS_hepsi_kaynaga_BAGLI) (ad='navitas_seg_v36_best_512_fp16.engine')
+Jetson'da .engine henuz derlenmedi -> yer tutucu (RED). ONNX'ler
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_t143_turev_ve_kamera.py", line 117, in test_turevler_engine_YER_TUTUCU_onnx_DOGRULANMIS_hepsi_kaynaga_BAGLI
+    self.assertEqual(MODEL_TUREV_SHA_YER_TUTUCU, kayit["sha256"])
+AssertionError: 'DERLENINCE_YAZILIR' != 'bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300'
+- DERLENINCE_YAZILIR
++ bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300
+
+
+======================================================================
+FAIL: test_manifest_DISINDA_dosya_kalmamis (test_uretim_modeli_hizasi.ManifestBayATLIGI_Tests.test_manifest_DISINDA_dosya_kalmamis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_uretim_modeli_hizasi.py", line 179, in test_manifest_DISINDA_dosya_kalmamis
+    self.assertEqual([], artik,
+AssertionError: Lists differ: [] != ['navitas_seg_v36_best_512_fp16.engine']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'navitas_seg_v36_best_512_fp16.engine'
+
+- []
++ ['navitas_seg_v36_best_512_fp16.engine'] : manifest bu dosyalari tarif etmiyor: ['navitas_seg_v36_best_512_fp16.engine']
+
+======================================================================
+FAIL: test_ayni_kare_tekrari_tazeligi_yenilemez (test_yks_kamera_istemci.YksKameraIstemciTesti.test_ayni_kare_tekrari_tazeligi_yenilemez)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/tests/test_yks_kamera_istemci.py", line 209, in test_ayni_kare_tekrari_tazeligi_yenilemez
+    self.assertGreater(bayat["kare_istek"], 2, "bayatlik ag kesilmesiyle karismis olabilir")
+AssertionError: 2 not greater than 2 : bayatlik ag kesilmesiyle karismis olabilir
+
+----------------------------------------------------------------------
+Ran 2121 tests in 451.672s
+
+FAILED (failures=5, errors=30, skipped=8)
+
+[ika_nav]   ✓ Ulaşıldı (kalan: 0.20m)
+
+[ika_nav] ══ HEDEF BÖLGEYE (HB) ULAŞILDI! ══
+[KAPI T141] rota kapisi KAPALI · komut=5 · sifir-olmayan=0
+Kamera acilamadi (kaynak=9).
+KAMERA: kare dusdu (1/2 ardisik, toplam 1) — yeniden deneniyor
+KAMERA: 2 ardisik dusen kare (ust sinir 2) — hat KOPTU sayildi, dongu kontrollu bitiyor. toplam dusen=2 okunan=2
+RED: turev dosyasi yok: /tmp/t143_noxqd9k4/yok.engine
+{
+ "turev": "navitas_seg_v36_best.engine",
+ "eski_sha256": "DERLENINCE_YAZILIR",
+ "yeni_sha256": "b4bce3cd3965c449bfa1eb19ef4e8018bf46c1617968f043ac063a3cce5b92ba",
+ "profil": "competition",
+ "defter": "/tmp/t143_noxqd9k4/config/model_registry.json"
+}
+usage: python -m unittest [-h] [--turev-kaydet DOSYA] [--kaynak-pt PT]
+                          [--defter DEFTER] [--profil PROFIL] [--ayna-yok]
+
+Navitas model kayit defteri araclari (T143)
+
+options:
+  -h, --help            show this help message and exit
+  --turev-kaydet DOSYA  derlenmis .engine/.onnx turevinin sha256'sini deftere
+                        yaz
+  --kaynak-pt PT        ZORUNLU: turevin derlendigi .pt; ozeti profil sha256
+                        ile kiyaslanir
+  --defter DEFTER
+  --profil PROFIL
+  --ayna-yok            jetson_paket/config aynasini guncelleme
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+[T36_KAPI] demo=1 kaynak=kompozit ilk_kare=data/arena_kompozit/images/a.jpg exit=0
+sys:1: ResourceWarning: unclosed <socket.socket fd=6, family=2, type=2, proto=0, laddr=('127.0.0.1', 45329)>
+EXIT=1
+BITIS 2026-09-06T18:05:40+03:00

@@ -1,0 +1,2546 @@
+{
+  "ortam": {
+    "zaman": "2026-09-06T17:56:51",
+    "platform": "Linux-6.8.12-1021-tegra-aarch64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.11.0+cu130",
+    "cuda_var": true,
+    "cuda_adi": "Orin"
+  },
+  "zincir": "kare_oku -> letterbox/cikarim -> rpi_inference.get_masks -> costmap_path_finder.rota_bul(plan=False)",
+  "parametreler": {
+    "girdi": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/data/raw_frames",
+    "isinma": 15,
+    "tekrar": 120,
+    "conf": 0.3,
+    "imgsz": [
+      512
+    ],
+    "cihaz": "0",
+    "mpp": null
+  },
+  "atlanan_vakalar": [],
+  "vakalar": [
+    {
+      "ad": "pt",
+      "tur": "PyTorch",
+      "model": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best.pt",
+      "imgsz": 512,
+      "kayit": {
+        "kayit_defteri": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json",
+        "yuklenen": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best.pt",
+        "profil": "competition",
+        "beklenen": "models/navitas_seg_v36_best.pt",
+        "beklenen_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
+        "beklenen_imgsz": 512,
+        "calisan_imgsz": 512,
+        "durum": "eslesti"
+      },
+      "durum": "OK",
+      "yukleme_ms": 389.378,
+      "ornek": 120,
+      "rota_durumlari": {
+        "BELIRSIZ_COKLU": 101,
+        "ACIK": 2,
+        "KAPALI_DAR": 17
+      },
+      "metrikler_ms": {
+        "okuma_ms": {
+          "p50": 14.085,
+          "p95": 15.669,
+          "ortalama": 11.844
+        },
+        "cikarim_ms": {
+          "p50": 188.154,
+          "p95": 302.556,
+          "ortalama": 202.898
+        },
+        "maske_ms": {
+          "p50": 312.38,
+          "p95": 420.957,
+          "ortalama": 313.115
+        },
+        "katman_a_ms": {
+          "p50": 209.734,
+          "p95": 329.122,
+          "ortalama": 206.77
+        },
+        "toplam_ms": {
+          "p50": 739.076,
+          "p95": 942.15,
+          "ortalama": 735.002
+        }
+      },
+      "olcumler": [
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 15.504,
+          "cikarim_ms": 297.398,
+          "maske_ms": 352.133,
+          "katman_a_ms": 273.812,
+          "toplam_ms": 938.906,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000336.jpg",
+          "okuma_ms": 15.182,
+          "cikarim_ms": 191.878,
+          "maske_ms": 326.033,
+          "katman_a_ms": 266.878,
+          "toplam_ms": 802.08,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000648.jpg",
+          "okuma_ms": 8.923,
+          "cikarim_ms": 190.139,
+          "maske_ms": 306.526,
+          "katman_a_ms": 227.305,
+          "toplam_ms": 734.822,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000912.jpg",
+          "okuma_ms": 15.778,
+          "cikarim_ms": 189.426,
+          "maske_ms": 313.728,
+          "katman_a_ms": 242.071,
+          "toplam_ms": 761.045,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000960.jpg",
+          "okuma_ms": 8.317,
+          "cikarim_ms": 192.561,
+          "maske_ms": 329.305,
+          "katman_a_ms": 250.556,
+          "toplam_ms": 780.799,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000001008.jpg",
+          "okuma_ms": 14.411,
+          "cikarim_ms": 195.886,
+          "maske_ms": 331.52,
+          "katman_a_ms": 212.251,
+          "toplam_ms": 754.125,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000001416.jpg",
+          "okuma_ms": 7.514,
+          "cikarim_ms": 193.714,
+          "maske_ms": 345.287,
+          "katman_a_ms": 173.651,
+          "toplam_ms": 720.215,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000001440.jpg",
+          "okuma_ms": 7.842,
+          "cikarim_ms": 193.625,
+          "maske_ms": 326.897,
+          "katman_a_ms": 329.031,
+          "toplam_ms": 857.452,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000001488.jpg",
+          "okuma_ms": 14.515,
+          "cikarim_ms": 191.238,
+          "maske_ms": 335.573,
+          "katman_a_ms": 255.885,
+          "toplam_ms": 797.259,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000001776.jpg",
+          "okuma_ms": 15.131,
+          "cikarim_ms": 439.727,
+          "maske_ms": 366.765,
+          "katman_a_ms": 313.393,
+          "toplam_ms": 1135.064,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000001824.jpg",
+          "okuma_ms": 8.81,
+          "cikarim_ms": 199.107,
+          "maske_ms": 337.903,
+          "katman_a_ms": 293.373,
+          "toplam_ms": 839.243,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000001848.jpg",
+          "okuma_ms": 7.921,
+          "cikarim_ms": 192.615,
+          "maske_ms": 346.391,
+          "katman_a_ms": 212.127,
+          "toplam_ms": 759.105,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000001872.jpg",
+          "okuma_ms": 7.627,
+          "cikarim_ms": 188.537,
+          "maske_ms": 324.847,
+          "katman_a_ms": 219.071,
+          "toplam_ms": 740.13,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000001944.jpg",
+          "okuma_ms": 14.556,
+          "cikarim_ms": 188.013,
+          "maske_ms": 307.982,
+          "katman_a_ms": 248.183,
+          "toplam_ms": 758.828,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000014_000001992.jpg",
+          "okuma_ms": 14.901,
+          "cikarim_ms": 188.981,
+          "maske_ms": 317.245,
+          "katman_a_ms": 253.447,
+          "toplam_ms": 774.62,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000002040.jpg",
+          "okuma_ms": 14.836,
+          "cikarim_ms": 187.061,
+          "maske_ms": 305.586,
+          "katman_a_ms": 243.081,
+          "toplam_ms": 752.205,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000002088.jpg",
+          "okuma_ms": 14.564,
+          "cikarim_ms": 185.823,
+          "maske_ms": 298.382,
+          "katman_a_ms": 178.66,
+          "toplam_ms": 679.403,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000002112.jpg",
+          "okuma_ms": 9.532,
+          "cikarim_ms": 182.815,
+          "maske_ms": 276.466,
+          "katman_a_ms": 262.165,
+          "toplam_ms": 732.604,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000002160.jpg",
+          "okuma_ms": 14.519,
+          "cikarim_ms": 180.898,
+          "maske_ms": 266.246,
+          "katman_a_ms": 178.15,
+          "toplam_ms": 641.495,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 16.182,
+          "cikarim_ms": 192.975,
+          "maske_ms": 346.979,
+          "katman_a_ms": 295.59,
+          "toplam_ms": 851.772,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000168.jpg",
+          "okuma_ms": 7.798,
+          "cikarim_ms": 189.433,
+          "maske_ms": 317.151,
+          "katman_a_ms": 262.5,
+          "toplam_ms": 776.933,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000192.jpg",
+          "okuma_ms": 15.086,
+          "cikarim_ms": 198.428,
+          "maske_ms": 322.111,
+          "katman_a_ms": 250.487,
+          "toplam_ms": 786.159,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000240.jpg",
+          "okuma_ms": 14.932,
+          "cikarim_ms": 187.627,
+          "maske_ms": 310.307,
+          "katman_a_ms": 147.954,
+          "toplam_ms": 660.868,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000264.jpg",
+          "okuma_ms": 15.005,
+          "cikarim_ms": 187.248,
+          "maske_ms": 305.519,
+          "katman_a_ms": 219.749,
+          "toplam_ms": 727.57,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000000288.jpg",
+          "okuma_ms": 7.791,
+          "cikarim_ms": 184.767,
+          "maske_ms": 288.19,
+          "katman_a_ms": 186.649,
+          "toplam_ms": 667.443,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000000336.jpg",
+          "okuma_ms": 15.655,
+          "cikarim_ms": 182.868,
+          "maske_ms": 274.759,
+          "katman_a_ms": 134.456,
+          "toplam_ms": 607.786,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000000384.jpg",
+          "okuma_ms": 15.127,
+          "cikarim_ms": 183.682,
+          "maske_ms": 279.201,
+          "katman_a_ms": 141.258,
+          "toplam_ms": 619.317,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000000432.jpg",
+          "okuma_ms": 15.315,
+          "cikarim_ms": 179.682,
+          "maske_ms": 265.678,
+          "katman_a_ms": 190.642,
+          "toplam_ms": 651.365,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000000480.jpg",
+          "okuma_ms": 8.394,
+          "cikarim_ms": 178.713,
+          "maske_ms": 265.702,
+          "katman_a_ms": 146.26,
+          "toplam_ms": 599.122,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000000504.jpg",
+          "okuma_ms": 8.164,
+          "cikarim_ms": 180.661,
+          "maske_ms": 257.985,
+          "katman_a_ms": 186.908,
+          "toplam_ms": 633.765,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000000600.jpg",
+          "okuma_ms": 7.877,
+          "cikarim_ms": 174.611,
+          "maske_ms": 233.299,
+          "katman_a_ms": 217.847,
+          "toplam_ms": 633.68,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000000624.jpg",
+          "okuma_ms": 8.098,
+          "cikarim_ms": 176.689,
+          "maske_ms": 239.538,
+          "katman_a_ms": 179.51,
+          "toplam_ms": 603.886,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000000648.jpg",
+          "okuma_ms": 14.695,
+          "cikarim_ms": 174.934,
+          "maske_ms": 224.085,
+          "katman_a_ms": 124.084,
+          "toplam_ms": 537.845,
+          "rota_durumu": "ACIK",
+          "yol_no": 3
+        },
+        {
+          "kaynak": "frame_000014_000000672.jpg",
+          "okuma_ms": 7.861,
+          "cikarim_ms": 176.583,
+          "maske_ms": 228.369,
+          "katman_a_ms": 91.146,
+          "toplam_ms": 504.979,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000000696.jpg",
+          "okuma_ms": 14.775,
+          "cikarim_ms": 174.559,
+          "maske_ms": 230.491,
+          "katman_a_ms": 128.592,
+          "toplam_ms": 548.47,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000000720.jpg",
+          "okuma_ms": 8.214,
+          "cikarim_ms": 176.655,
+          "maske_ms": 238.05,
+          "katman_a_ms": 125.976,
+          "toplam_ms": 548.945,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000000792.jpg",
+          "okuma_ms": 14.787,
+          "cikarim_ms": 178.283,
+          "maske_ms": 246.412,
+          "katman_a_ms": 126.495,
+          "toplam_ms": 566.026,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000000840.jpg",
+          "okuma_ms": 14.927,
+          "cikarim_ms": 184.372,
+          "maske_ms": 287.823,
+          "katman_a_ms": 144.854,
+          "toplam_ms": 632.025,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000019_000000888.jpg",
+          "okuma_ms": 8.114,
+          "cikarim_ms": 187.626,
+          "maske_ms": 305.797,
+          "katman_a_ms": 103.197,
+          "toplam_ms": 604.784,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000020_000000936.jpg",
+          "okuma_ms": 15.615,
+          "cikarim_ms": 189.544,
+          "maske_ms": 328.821,
+          "katman_a_ms": 160.663,
+          "toplam_ms": 694.695,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000021_000000984.jpg",
+          "okuma_ms": 8.283,
+          "cikarim_ms": 195.067,
+          "maske_ms": 351.819,
+          "katman_a_ms": 106.995,
+          "toplam_ms": 662.213,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000022_000001032.jpg",
+          "okuma_ms": 15.749,
+          "cikarim_ms": 195.72,
+          "maske_ms": 358.731,
+          "katman_a_ms": 181.275,
+          "toplam_ms": 751.525,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000023_000001080.jpg",
+          "okuma_ms": 15.407,
+          "cikarim_ms": 479.092,
+          "maske_ms": 382.561,
+          "katman_a_ms": 227.254,
+          "toplam_ms": 1104.369,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000024_000001104.jpg",
+          "okuma_ms": 9.137,
+          "cikarim_ms": 412.203,
+          "maske_ms": 388.006,
+          "katman_a_ms": 231.674,
+          "toplam_ms": 1041.072,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000025_000001152.jpg",
+          "okuma_ms": 9.293,
+          "cikarim_ms": 400.558,
+          "maske_ms": 408.571,
+          "katman_a_ms": 185.325,
+          "toplam_ms": 1003.796,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000026_000001200.jpg",
+          "okuma_ms": 15.373,
+          "cikarim_ms": 206.878,
+          "maske_ms": 394.259,
+          "katman_a_ms": 209.159,
+          "toplam_ms": 825.722,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000027_000001248.jpg",
+          "okuma_ms": 14.439,
+          "cikarim_ms": 202.394,
+          "maske_ms": 387.225,
+          "katman_a_ms": 107.925,
+          "toplam_ms": 712.029,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000028_000001296.jpg",
+          "okuma_ms": 13.986,
+          "cikarim_ms": 261.327,
+          "maske_ms": 406.52,
+          "katman_a_ms": 100.806,
+          "toplam_ms": 782.688,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000029_000001320.jpg",
+          "okuma_ms": 8.087,
+          "cikarim_ms": 545.193,
+          "maske_ms": 423.021,
+          "katman_a_ms": 96.325,
+          "toplam_ms": 1072.678,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000030_000001344.jpg",
+          "okuma_ms": 9.345,
+          "cikarim_ms": 454.469,
+          "maske_ms": 445.908,
+          "katman_a_ms": 100.423,
+          "toplam_ms": 1012.058,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 9.305,
+          "cikarim_ms": 208.72,
+          "maske_ms": 445.514,
+          "katman_a_ms": 113.144,
+          "toplam_ms": 776.74,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000456.jpg",
+          "okuma_ms": 8.23,
+          "cikarim_ms": 207.045,
+          "maske_ms": 413.679,
+          "katman_a_ms": 257.11,
+          "toplam_ms": 886.111,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 8.439,
+          "cikarim_ms": 180.516,
+          "maske_ms": 269.698,
+          "katman_a_ms": 212.98,
+          "toplam_ms": 671.679,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000600.jpg",
+          "okuma_ms": 8.076,
+          "cikarim_ms": 183.742,
+          "maske_ms": 280.783,
+          "katman_a_ms": 260.958,
+          "toplam_ms": 733.609,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000672.jpg",
+          "okuma_ms": 7.719,
+          "cikarim_ms": 185.083,
+          "maske_ms": 279.438,
+          "katman_a_ms": 209.283,
+          "toplam_ms": 681.572,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000720.jpg",
+          "okuma_ms": 7.774,
+          "cikarim_ms": 181.739,
+          "maske_ms": 262.812,
+          "katman_a_ms": 238.754,
+          "toplam_ms": 691.128,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000768.jpg",
+          "okuma_ms": 7.662,
+          "cikarim_ms": 182.554,
+          "maske_ms": 272.193,
+          "katman_a_ms": 252.069,
+          "toplam_ms": 714.527,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000000816.jpg",
+          "okuma_ms": 13.678,
+          "cikarim_ms": 180.326,
+          "maske_ms": 267.728,
+          "katman_a_ms": 277.844,
+          "toplam_ms": 739.63,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000000864.jpg",
+          "okuma_ms": 7.755,
+          "cikarim_ms": 180.596,
+          "maske_ms": 268.776,
+          "katman_a_ms": 115.102,
+          "toplam_ms": 572.278,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000000936.jpg",
+          "okuma_ms": 7.637,
+          "cikarim_ms": 180.733,
+          "maske_ms": 253.652,
+          "katman_a_ms": 395.413,
+          "toplam_ms": 837.489,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000001008.jpg",
+          "okuma_ms": 13.866,
+          "cikarim_ms": 179.538,
+          "maske_ms": 248.312,
+          "katman_a_ms": 295.96,
+          "toplam_ms": 739.333,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000001152.jpg",
+          "okuma_ms": 8.63,
+          "cikarim_ms": 177.737,
+          "maske_ms": 260.666,
+          "katman_a_ms": 410.141,
+          "toplam_ms": 858.653,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000001200.jpg",
+          "okuma_ms": 7.721,
+          "cikarim_ms": 179.153,
+          "maske_ms": 253.723,
+          "katman_a_ms": 275.022,
+          "toplam_ms": 717.543,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000001224.jpg",
+          "okuma_ms": 8.908,
+          "cikarim_ms": 185.524,
+          "maske_ms": 257.378,
+          "katman_a_ms": 369.346,
+          "toplam_ms": 822.493,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000001248.jpg",
+          "okuma_ms": 8.091,
+          "cikarim_ms": 179.989,
+          "maske_ms": 256.222,
+          "katman_a_ms": 330.854,
+          "toplam_ms": 776.711,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000001272.jpg",
+          "okuma_ms": 8.555,
+          "cikarim_ms": 179.179,
+          "maske_ms": 246.438,
+          "katman_a_ms": 406.117,
+          "toplam_ms": 841.555,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000014_000001320.jpg",
+          "okuma_ms": 13.258,
+          "cikarim_ms": 176.243,
+          "maske_ms": 234.97,
+          "katman_a_ms": 378.21,
+          "toplam_ms": 804.236,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 9.253,
+          "cikarim_ms": 192.408,
+          "maske_ms": 343.72,
+          "katman_a_ms": 259.315,
+          "toplam_ms": 805.888,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000336.jpg",
+          "okuma_ms": 7.775,
+          "cikarim_ms": 190.726,
+          "maske_ms": 329.453,
+          "katman_a_ms": 252.458,
+          "toplam_ms": 782.001,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000648.jpg",
+          "okuma_ms": 8.561,
+          "cikarim_ms": 187.869,
+          "maske_ms": 304.577,
+          "katman_a_ms": 221.174,
+          "toplam_ms": 723.3,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000912.jpg",
+          "okuma_ms": 7.81,
+          "cikarim_ms": 187.817,
+          "maske_ms": 314.111,
+          "katman_a_ms": 243.172,
+          "toplam_ms": 752.959,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000960.jpg",
+          "okuma_ms": 7.86,
+          "cikarim_ms": 189.004,
+          "maske_ms": 312.637,
+          "katman_a_ms": 245.333,
+          "toplam_ms": 754.885,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000001008.jpg",
+          "okuma_ms": 7.571,
+          "cikarim_ms": 191.814,
+          "maske_ms": 333.094,
+          "katman_a_ms": 208.347,
+          "toplam_ms": 740.872,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000001416.jpg",
+          "okuma_ms": 14.185,
+          "cikarim_ms": 199.073,
+          "maske_ms": 345.221,
+          "katman_a_ms": 171.694,
+          "toplam_ms": 730.227,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000001440.jpg",
+          "okuma_ms": 7.483,
+          "cikarim_ms": 189.66,
+          "maske_ms": 325.053,
+          "katman_a_ms": 327.178,
+          "toplam_ms": 849.427,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000001488.jpg",
+          "okuma_ms": 7.958,
+          "cikarim_ms": 191.916,
+          "maske_ms": 339.747,
+          "katman_a_ms": 259.401,
+          "toplam_ms": 799.078,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000001776.jpg",
+          "okuma_ms": 7.756,
+          "cikarim_ms": 196.441,
+          "maske_ms": 372.458,
+          "katman_a_ms": 297.193,
+          "toplam_ms": 873.899,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000001824.jpg",
+          "okuma_ms": 15.288,
+          "cikarim_ms": 193.705,
+          "maske_ms": 341.439,
+          "katman_a_ms": 298.511,
+          "toplam_ms": 848.999,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000001848.jpg",
+          "okuma_ms": 14.7,
+          "cikarim_ms": 192.696,
+          "maske_ms": 340.531,
+          "katman_a_ms": 217.289,
+          "toplam_ms": 765.276,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000001872.jpg",
+          "okuma_ms": 15.009,
+          "cikarim_ms": 189.355,
+          "maske_ms": 320.387,
+          "katman_a_ms": 214.015,
+          "toplam_ms": 738.819,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000001944.jpg",
+          "okuma_ms": 14.85,
+          "cikarim_ms": 187.667,
+          "maske_ms": 314.025,
+          "katman_a_ms": 252.311,
+          "toplam_ms": 768.904,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000014_000001992.jpg",
+          "okuma_ms": 14.872,
+          "cikarim_ms": 189.916,
+          "maske_ms": 319.557,
+          "katman_a_ms": 250.94,
+          "toplam_ms": 775.338,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000002040.jpg",
+          "okuma_ms": 15.258,
+          "cikarim_ms": 190.41,
+          "maske_ms": 319.65,
+          "katman_a_ms": 243.125,
+          "toplam_ms": 770.099,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000002088.jpg",
+          "okuma_ms": 15.503,
+          "cikarim_ms": 187.603,
+          "maske_ms": 294.674,
+          "katman_a_ms": 177.178,
+          "toplam_ms": 676.498,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000002112.jpg",
+          "okuma_ms": 14.715,
+          "cikarim_ms": 182.784,
+          "maske_ms": 272.246,
+          "katman_a_ms": 275.78,
+          "toplam_ms": 747.17,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000002160.jpg",
+          "okuma_ms": 8.039,
+          "cikarim_ms": 186.17,
+          "maske_ms": 264.253,
+          "katman_a_ms": 185.247,
+          "toplam_ms": 645.199,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 8.12,
+          "cikarim_ms": 195.097,
+          "maske_ms": 347.563,
+          "katman_a_ms": 289.545,
+          "toplam_ms": 840.373,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000168.jpg",
+          "okuma_ms": 8.234,
+          "cikarim_ms": 195.42,
+          "maske_ms": 330.119,
+          "katman_a_ms": 286.604,
+          "toplam_ms": 820.428,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000192.jpg",
+          "okuma_ms": 7.816,
+          "cikarim_ms": 188.342,
+          "maske_ms": 312.124,
+          "katman_a_ms": 252.409,
+          "toplam_ms": 760.744,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000240.jpg",
+          "okuma_ms": 8.642,
+          "cikarim_ms": 187.045,
+          "maske_ms": 311.063,
+          "katman_a_ms": 147.043,
+          "toplam_ms": 653.844,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000264.jpg",
+          "okuma_ms": 14.813,
+          "cikarim_ms": 186.153,
+          "maske_ms": 303.77,
+          "katman_a_ms": 220.743,
+          "toplam_ms": 725.529,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000000288.jpg",
+          "okuma_ms": 15.133,
+          "cikarim_ms": 184.102,
+          "maske_ms": 286.362,
+          "katman_a_ms": 196.192,
+          "toplam_ms": 681.837,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000000336.jpg",
+          "okuma_ms": 7.956,
+          "cikarim_ms": 182.564,
+          "maske_ms": 275.55,
+          "katman_a_ms": 137.666,
+          "toplam_ms": 603.783,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000000384.jpg",
+          "okuma_ms": 15.086,
+          "cikarim_ms": 182.77,
+          "maske_ms": 281.108,
+          "katman_a_ms": 142.114,
+          "toplam_ms": 621.127,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000000432.jpg",
+          "okuma_ms": 14.996,
+          "cikarim_ms": 179.007,
+          "maske_ms": 263.181,
+          "katman_a_ms": 194.153,
+          "toplam_ms": 651.386,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000000480.jpg",
+          "okuma_ms": 15.418,
+          "cikarim_ms": 178.878,
+          "maske_ms": 259.079,
+          "katman_a_ms": 143.086,
+          "toplam_ms": 596.508,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000000504.jpg",
+          "okuma_ms": 15.08,
+          "cikarim_ms": 179.194,
+          "maske_ms": 256.889,
+          "katman_a_ms": 183.978,
+          "toplam_ms": 635.197,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000000600.jpg",
+          "okuma_ms": 15.336,
+          "cikarim_ms": 174.439,
+          "maske_ms": 227.671,
+          "katman_a_ms": 210.186,
+          "toplam_ms": 627.678,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000000624.jpg",
+          "okuma_ms": 7.728,
+          "cikarim_ms": 176.075,
+          "maske_ms": 240.61,
+          "katman_a_ms": 181.061,
+          "toplam_ms": 605.521,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000000648.jpg",
+          "okuma_ms": 15.886,
+          "cikarim_ms": 177.934,
+          "maske_ms": 228.457,
+          "katman_a_ms": 122.881,
+          "toplam_ms": 545.212,
+          "rota_durumu": "ACIK",
+          "yol_no": 3
+        },
+        {
+          "kaynak": "frame_000014_000000672.jpg",
+          "okuma_ms": 14.616,
+          "cikarim_ms": 174.068,
+          "maske_ms": 229.993,
+          "katman_a_ms": 94.942,
+          "toplam_ms": 515.583,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000000696.jpg",
+          "okuma_ms": 15.665,
+          "cikarim_ms": 174.492,
+          "maske_ms": 232.568,
+          "katman_a_ms": 127.598,
+          "toplam_ms": 550.373,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000000720.jpg",
+          "okuma_ms": 14.84,
+          "cikarim_ms": 176.331,
+          "maske_ms": 238.479,
+          "katman_a_ms": 129.839,
+          "toplam_ms": 559.54,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000000792.jpg",
+          "okuma_ms": 14.926,
+          "cikarim_ms": 184.365,
+          "maske_ms": 250.488,
+          "katman_a_ms": 130.71,
+          "toplam_ms": 580.54,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000000840.jpg",
+          "okuma_ms": 15.004,
+          "cikarim_ms": 183.967,
+          "maske_ms": 287.884,
+          "katman_a_ms": 145.759,
+          "toplam_ms": 632.668,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000019_000000888.jpg",
+          "okuma_ms": 15.149,
+          "cikarim_ms": 188.721,
+          "maske_ms": 316.053,
+          "katman_a_ms": 101.761,
+          "toplam_ms": 623.429,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000020_000000936.jpg",
+          "okuma_ms": 8.146,
+          "cikarim_ms": 188.296,
+          "maske_ms": 313.69,
+          "katman_a_ms": 166.273,
+          "toplam_ms": 676.456,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000021_000000984.jpg",
+          "okuma_ms": 15.647,
+          "cikarim_ms": 195.341,
+          "maske_ms": 357.524,
+          "katman_a_ms": 105.71,
+          "toplam_ms": 674.273,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000022_000001032.jpg",
+          "okuma_ms": 15.589,
+          "cikarim_ms": 196.368,
+          "maske_ms": 363.872,
+          "katman_a_ms": 190.955,
+          "toplam_ms": 766.835,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000023_000001080.jpg",
+          "okuma_ms": 15.484,
+          "cikarim_ms": 198.058,
+          "maske_ms": 378.19,
+          "katman_a_ms": 221.208,
+          "toplam_ms": 812.992,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000024_000001104.jpg",
+          "okuma_ms": 15.617,
+          "cikarim_ms": 199.404,
+          "maske_ms": 387.649,
+          "katman_a_ms": 220.908,
+          "toplam_ms": 823.629,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000025_000001152.jpg",
+          "okuma_ms": 15.855,
+          "cikarim_ms": 200.709,
+          "maske_ms": 391.227,
+          "katman_a_ms": 176.239,
+          "toplam_ms": 784.08,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000026_000001200.jpg",
+          "okuma_ms": 8.456,
+          "cikarim_ms": 200.94,
+          "maske_ms": 388.588,
+          "katman_a_ms": 209.206,
+          "toplam_ms": 807.243,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000027_000001248.jpg",
+          "okuma_ms": 15.375,
+          "cikarim_ms": 199.95,
+          "maske_ms": 389.736,
+          "katman_a_ms": 107.267,
+          "toplam_ms": 712.382,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000028_000001296.jpg",
+          "okuma_ms": 8.165,
+          "cikarim_ms": 203.695,
+          "maske_ms": 401.588,
+          "katman_a_ms": 90.918,
+          "toplam_ms": 704.42,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000029_000001320.jpg",
+          "okuma_ms": 14.947,
+          "cikarim_ms": 207.476,
+          "maske_ms": 425.081,
+          "katman_a_ms": 84.462,
+          "toplam_ms": 732.012,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000030_000001344.jpg",
+          "okuma_ms": 15.006,
+          "cikarim_ms": 207.116,
+          "maske_ms": 443.221,
+          "katman_a_ms": 91.206,
+          "toplam_ms": 756.6,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 15.831,
+          "cikarim_ms": 207.154,
+          "maske_ms": 430.072,
+          "katman_a_ms": 100.132,
+          "toplam_ms": 754.798,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000456.jpg",
+          "okuma_ms": 7.954,
+          "cikarim_ms": 204.948,
+          "maske_ms": 420.848,
+          "katman_a_ms": 261.7,
+          "toplam_ms": 895.496,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 15.088,
+          "cikarim_ms": 181.572,
+          "maske_ms": 267.024,
+          "katman_a_ms": 204.92,
+          "toplam_ms": 668.65,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        }
+      ],
+      "fps_p50_tabanli": 1.353,
+      "fps_ortalama_tabanli": 1.361
+    },
+    {
+      "ad": "onnx",
+      "tur": "ONNX",
+      "model": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best_512_fp16.onnx",
+      "imgsz": 512,
+      "durum": "HATA",
+      "sebep": "isinma/yukleme: Error in execution: Non-zero status code returned while running QuickGelu node. Name:'/model.0/act/Mul/QuickGeluFusion/' Status Message: CUDA error cudaErrorNoKernelImageForDevice:no kernel image is available for execution on the device"
+    },
+    {
+      "ad": "tensorrt_fp16",
+      "tur": "TensorRT FP16",
+      "model": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best_512_fp16.engine",
+      "imgsz": 512,
+      "kayit": {
+        "kayit_defteri": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json",
+        "yuklenen": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best_512_fp16.engine",
+        "profil": "competition",
+        "beklenen": "models/navitas_seg_v36_best.pt",
+        "beklenen_sha256": "bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300",
+        "beklenen_imgsz": 512,
+        "calisan_imgsz": 512,
+        "turev": "navitas_seg_v36_best_512_fp16.engine",
+        "kaynak": "models/navitas_seg_v36_best.pt",
+        "gercek_sha256": "bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300",
+        "durum": "turev_eslesti"
+      },
+      "durum": "OK",
+      "yukleme_ms": 2.174,
+      "ornek": 120,
+      "rota_durumlari": {
+        "BELIRSIZ_COKLU": 101,
+        "ACIK": 2,
+        "KAPALI_DAR": 17
+      },
+      "metrikler_ms": {
+        "okuma_ms": {
+          "p50": 8.261,
+          "p95": 15.516,
+          "ortalama": 10.434
+        },
+        "cikarim_ms": {
+          "p50": 87.427,
+          "p95": 105.715,
+          "ortalama": 88.093
+        },
+        "maske_ms": {
+          "p50": 311.237,
+          "p95": 418.116,
+          "ortalama": 312.367
+        },
+        "katman_a_ms": {
+          "p50": 207.9,
+          "p95": 328.72,
+          "ortalama": 205.524
+        },
+        "toplam_ms": {
+          "p50": 634.722,
+          "p95": 751.405,
+          "ortalama": 616.839
+        }
+      },
+      "olcumler": [
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 8.215,
+          "cikarim_ms": 91.573,
+          "maske_ms": 343.784,
+          "katman_a_ms": 270.645,
+          "toplam_ms": 714.268,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000336.jpg",
+          "okuma_ms": 7.991,
+          "cikarim_ms": 89.896,
+          "maske_ms": 321.474,
+          "katman_a_ms": 248.607,
+          "toplam_ms": 669.338,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000648.jpg",
+          "okuma_ms": 7.872,
+          "cikarim_ms": 87.208,
+          "maske_ms": 306.709,
+          "katman_a_ms": 210.52,
+          "toplam_ms": 614.0,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000912.jpg",
+          "okuma_ms": 8.659,
+          "cikarim_ms": 87.862,
+          "maske_ms": 312.382,
+          "katman_a_ms": 238.818,
+          "toplam_ms": 647.765,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000960.jpg",
+          "okuma_ms": 7.628,
+          "cikarim_ms": 88.001,
+          "maske_ms": 313.029,
+          "katman_a_ms": 244.477,
+          "toplam_ms": 653.181,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000001008.jpg",
+          "okuma_ms": 7.942,
+          "cikarim_ms": 91.203,
+          "maske_ms": 331.767,
+          "katman_a_ms": 206.636,
+          "toplam_ms": 637.6,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000001416.jpg",
+          "okuma_ms": 7.694,
+          "cikarim_ms": 96.444,
+          "maske_ms": 362.454,
+          "katman_a_ms": 189.995,
+          "toplam_ms": 656.647,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000001440.jpg",
+          "okuma_ms": 7.85,
+          "cikarim_ms": 90.677,
+          "maske_ms": 326.799,
+          "katman_a_ms": 325.768,
+          "toplam_ms": 751.15,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000001488.jpg",
+          "okuma_ms": 7.529,
+          "cikarim_ms": 91.683,
+          "maske_ms": 336.136,
+          "katman_a_ms": 262.337,
+          "toplam_ms": 697.74,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000001776.jpg",
+          "okuma_ms": 7.923,
+          "cikarim_ms": 95.93,
+          "maske_ms": 369.168,
+          "katman_a_ms": 294.864,
+          "toplam_ms": 767.939,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000001824.jpg",
+          "okuma_ms": 7.802,
+          "cikarim_ms": 91.132,
+          "maske_ms": 340.643,
+          "katman_a_ms": 295.56,
+          "toplam_ms": 735.195,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000001848.jpg",
+          "okuma_ms": 7.926,
+          "cikarim_ms": 92.072,
+          "maske_ms": 341.191,
+          "katman_a_ms": 216.562,
+          "toplam_ms": 657.8,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000001872.jpg",
+          "okuma_ms": 7.597,
+          "cikarim_ms": 88.748,
+          "maske_ms": 320.131,
+          "katman_a_ms": 221.646,
+          "toplam_ms": 638.17,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000001944.jpg",
+          "okuma_ms": 8.086,
+          "cikarim_ms": 87.374,
+          "maske_ms": 312.218,
+          "katman_a_ms": 251.633,
+          "toplam_ms": 659.367,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000014_000001992.jpg",
+          "okuma_ms": 13.613,
+          "cikarim_ms": 89.073,
+          "maske_ms": 320.728,
+          "katman_a_ms": 255.324,
+          "toplam_ms": 678.787,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000002040.jpg",
+          "okuma_ms": 7.801,
+          "cikarim_ms": 86.391,
+          "maske_ms": 311.871,
+          "katman_a_ms": 252.595,
+          "toplam_ms": 660.29,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000002088.jpg",
+          "okuma_ms": 7.554,
+          "cikarim_ms": 85.398,
+          "maske_ms": 295.203,
+          "katman_a_ms": 180.801,
+          "toplam_ms": 571.152,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000002112.jpg",
+          "okuma_ms": 8.705,
+          "cikarim_ms": 82.143,
+          "maske_ms": 271.543,
+          "katman_a_ms": 265.568,
+          "toplam_ms": 629.785,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000002160.jpg",
+          "okuma_ms": 7.587,
+          "cikarim_ms": 80.259,
+          "maske_ms": 261.3,
+          "katman_a_ms": 178.781,
+          "toplam_ms": 529.966,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 9.184,
+          "cikarim_ms": 92.212,
+          "maske_ms": 340.785,
+          "katman_a_ms": 285.946,
+          "toplam_ms": 728.174,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000168.jpg",
+          "okuma_ms": 7.967,
+          "cikarim_ms": 90.987,
+          "maske_ms": 312.236,
+          "katman_a_ms": 262.597,
+          "toplam_ms": 673.842,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000192.jpg",
+          "okuma_ms": 15.157,
+          "cikarim_ms": 91.362,
+          "maske_ms": 324.019,
+          "katman_a_ms": 252.036,
+          "toplam_ms": 682.628,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000240.jpg",
+          "okuma_ms": 14.898,
+          "cikarim_ms": 86.292,
+          "maske_ms": 309.455,
+          "katman_a_ms": 141.507,
+          "toplam_ms": 552.203,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000264.jpg",
+          "okuma_ms": 15.592,
+          "cikarim_ms": 86.691,
+          "maske_ms": 307.171,
+          "katman_a_ms": 224.679,
+          "toplam_ms": 634.184,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000000288.jpg",
+          "okuma_ms": 14.845,
+          "cikarim_ms": 84.259,
+          "maske_ms": 286.065,
+          "katman_a_ms": 189.541,
+          "toplam_ms": 574.762,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000000336.jpg",
+          "okuma_ms": 15.199,
+          "cikarim_ms": 84.652,
+          "maske_ms": 302.723,
+          "katman_a_ms": 141.757,
+          "toplam_ms": 544.38,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000000384.jpg",
+          "okuma_ms": 8.103,
+          "cikarim_ms": 83.247,
+          "maske_ms": 280.331,
+          "katman_a_ms": 141.278,
+          "toplam_ms": 513.006,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000000432.jpg",
+          "okuma_ms": 8.211,
+          "cikarim_ms": 79.948,
+          "maske_ms": 258.667,
+          "katman_a_ms": 189.066,
+          "toplam_ms": 535.938,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000000480.jpg",
+          "okuma_ms": 7.942,
+          "cikarim_ms": 78.658,
+          "maske_ms": 254.967,
+          "katman_a_ms": 144.694,
+          "toplam_ms": 486.31,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000000504.jpg",
+          "okuma_ms": 15.36,
+          "cikarim_ms": 79.417,
+          "maske_ms": 253.86,
+          "katman_a_ms": 184.218,
+          "toplam_ms": 532.904,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000000600.jpg",
+          "okuma_ms": 7.789,
+          "cikarim_ms": 73.863,
+          "maske_ms": 229.166,
+          "katman_a_ms": 223.51,
+          "toplam_ms": 534.375,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000000624.jpg",
+          "okuma_ms": 8.066,
+          "cikarim_ms": 76.242,
+          "maske_ms": 236.223,
+          "katman_a_ms": 175.594,
+          "toplam_ms": 496.176,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000000648.jpg",
+          "okuma_ms": 7.708,
+          "cikarim_ms": 83.958,
+          "maske_ms": 220.751,
+          "katman_a_ms": 125.104,
+          "toplam_ms": 437.568,
+          "rota_durumu": "ACIK",
+          "yol_no": 3
+        },
+        {
+          "kaynak": "frame_000014_000000672.jpg",
+          "okuma_ms": 7.762,
+          "cikarim_ms": 74.209,
+          "maske_ms": 230.578,
+          "katman_a_ms": 96.647,
+          "toplam_ms": 410.956,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000000696.jpg",
+          "okuma_ms": 14.864,
+          "cikarim_ms": 75.03,
+          "maske_ms": 233.886,
+          "katman_a_ms": 137.795,
+          "toplam_ms": 461.631,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000000720.jpg",
+          "okuma_ms": 8.102,
+          "cikarim_ms": 76.977,
+          "maske_ms": 241.979,
+          "katman_a_ms": 129.228,
+          "toplam_ms": 456.342,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000000792.jpg",
+          "okuma_ms": 14.793,
+          "cikarim_ms": 78.112,
+          "maske_ms": 249.605,
+          "katman_a_ms": 135.604,
+          "toplam_ms": 478.16,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000000840.jpg",
+          "okuma_ms": 8.52,
+          "cikarim_ms": 85.175,
+          "maske_ms": 291.503,
+          "katman_a_ms": 150.524,
+          "toplam_ms": 535.789,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000019_000000888.jpg",
+          "okuma_ms": 8.06,
+          "cikarim_ms": 86.612,
+          "maske_ms": 304.512,
+          "katman_a_ms": 108.149,
+          "toplam_ms": 507.381,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000020_000000936.jpg",
+          "okuma_ms": 15.538,
+          "cikarim_ms": 88.684,
+          "maske_ms": 314.556,
+          "katman_a_ms": 161.575,
+          "toplam_ms": 580.413,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000021_000000984.jpg",
+          "okuma_ms": 8.202,
+          "cikarim_ms": 93.072,
+          "maske_ms": 356.947,
+          "katman_a_ms": 113.513,
+          "toplam_ms": 571.782,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000022_000001032.jpg",
+          "okuma_ms": 8.7,
+          "cikarim_ms": 95.268,
+          "maske_ms": 360.672,
+          "katman_a_ms": 182.232,
+          "toplam_ms": 646.921,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000023_000001080.jpg",
+          "okuma_ms": 8.36,
+          "cikarim_ms": 96.791,
+          "maske_ms": 375.496,
+          "katman_a_ms": 217.18,
+          "toplam_ms": 697.876,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000024_000001104.jpg",
+          "okuma_ms": 9.918,
+          "cikarim_ms": 100.358,
+          "maske_ms": 388.529,
+          "katman_a_ms": 226.662,
+          "toplam_ms": 725.519,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000025_000001152.jpg",
+          "okuma_ms": 8.527,
+          "cikarim_ms": 100.149,
+          "maske_ms": 391.857,
+          "katman_a_ms": 183.151,
+          "toplam_ms": 683.738,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000026_000001200.jpg",
+          "okuma_ms": 8.67,
+          "cikarim_ms": 101.393,
+          "maske_ms": 390.76,
+          "katman_a_ms": 202.482,
+          "toplam_ms": 703.354,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000027_000001248.jpg",
+          "okuma_ms": 8.223,
+          "cikarim_ms": 100.201,
+          "maske_ms": 389.113,
+          "katman_a_ms": 124.64,
+          "toplam_ms": 622.23,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000028_000001296.jpg",
+          "okuma_ms": 9.839,
+          "cikarim_ms": 105.921,
+          "maske_ms": 417.706,
+          "katman_a_ms": 90.029,
+          "toplam_ms": 623.542,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000029_000001320.jpg",
+          "okuma_ms": 15.014,
+          "cikarim_ms": 106.02,
+          "maske_ms": 425.902,
+          "katman_a_ms": 86.432,
+          "toplam_ms": 635.261,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000030_000001344.jpg",
+          "okuma_ms": 8.877,
+          "cikarim_ms": 108.036,
+          "maske_ms": 442.125,
+          "katman_a_ms": 88.887,
+          "toplam_ms": 649.58,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 8.458,
+          "cikarim_ms": 108.063,
+          "maske_ms": 433.661,
+          "katman_a_ms": 101.811,
+          "toplam_ms": 652.045,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000456.jpg",
+          "okuma_ms": 15.294,
+          "cikarim_ms": 103.058,
+          "maske_ms": 414.179,
+          "katman_a_ms": 260.814,
+          "toplam_ms": 793.402,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 15.515,
+          "cikarim_ms": 79.874,
+          "maske_ms": 263.803,
+          "katman_a_ms": 218.851,
+          "toplam_ms": 578.107,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000600.jpg",
+          "okuma_ms": 9.068,
+          "cikarim_ms": 86.423,
+          "maske_ms": 281.755,
+          "katman_a_ms": 244.443,
+          "toplam_ms": 621.737,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000672.jpg",
+          "okuma_ms": 7.751,
+          "cikarim_ms": 82.478,
+          "maske_ms": 278.258,
+          "katman_a_ms": 205.88,
+          "toplam_ms": 574.414,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000720.jpg",
+          "okuma_ms": 14.709,
+          "cikarim_ms": 79.841,
+          "maske_ms": 262.68,
+          "katman_a_ms": 235.814,
+          "toplam_ms": 593.09,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000768.jpg",
+          "okuma_ms": 14.801,
+          "cikarim_ms": 83.801,
+          "maske_ms": 271.131,
+          "katman_a_ms": 248.503,
+          "toplam_ms": 618.283,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000000816.jpg",
+          "okuma_ms": 15.121,
+          "cikarim_ms": 79.346,
+          "maske_ms": 273.383,
+          "katman_a_ms": 273.855,
+          "toplam_ms": 641.761,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000000864.jpg",
+          "okuma_ms": 7.608,
+          "cikarim_ms": 80.31,
+          "maske_ms": 261.278,
+          "katman_a_ms": 112.751,
+          "toplam_ms": 461.994,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000000936.jpg",
+          "okuma_ms": 7.771,
+          "cikarim_ms": 80.221,
+          "maske_ms": 253.891,
+          "katman_a_ms": 384.61,
+          "toplam_ms": 726.543,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000001008.jpg",
+          "okuma_ms": 14.453,
+          "cikarim_ms": 77.991,
+          "maske_ms": 247.96,
+          "katman_a_ms": 290.124,
+          "toplam_ms": 632.047,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000001152.jpg",
+          "okuma_ms": 15.463,
+          "cikarim_ms": 78.008,
+          "maske_ms": 245.474,
+          "katman_a_ms": 408.896,
+          "toplam_ms": 749.193,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000001200.jpg",
+          "okuma_ms": 14.995,
+          "cikarim_ms": 81.059,
+          "maske_ms": 256.513,
+          "katman_a_ms": 278.483,
+          "toplam_ms": 632.59,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000001224.jpg",
+          "okuma_ms": 15.824,
+          "cikarim_ms": 79.889,
+          "maske_ms": 259.014,
+          "katman_a_ms": 367.129,
+          "toplam_ms": 723.245,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000001248.jpg",
+          "okuma_ms": 15.055,
+          "cikarim_ms": 79.603,
+          "maske_ms": 256.562,
+          "katman_a_ms": 331.986,
+          "toplam_ms": 684.68,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000001272.jpg",
+          "okuma_ms": 8.46,
+          "cikarim_ms": 78.303,
+          "maske_ms": 250.192,
+          "katman_a_ms": 373.933,
+          "toplam_ms": 712.171,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000014_000001320.jpg",
+          "okuma_ms": 8.001,
+          "cikarim_ms": 76.762,
+          "maske_ms": 236.932,
+          "katman_a_ms": 386.062,
+          "toplam_ms": 709.205,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 9.088,
+          "cikarim_ms": 92.681,
+          "maske_ms": 344.085,
+          "katman_a_ms": 263.877,
+          "toplam_ms": 711.224,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000336.jpg",
+          "okuma_ms": 7.678,
+          "cikarim_ms": 90.412,
+          "maske_ms": 321.688,
+          "katman_a_ms": 251.671,
+          "toplam_ms": 672.992,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000648.jpg",
+          "okuma_ms": 8.479,
+          "cikarim_ms": 87.481,
+          "maske_ms": 310.604,
+          "katman_a_ms": 216.799,
+          "toplam_ms": 624.699,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000912.jpg",
+          "okuma_ms": 7.726,
+          "cikarim_ms": 88.472,
+          "maske_ms": 310.461,
+          "katman_a_ms": 238.728,
+          "toplam_ms": 645.431,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000960.jpg",
+          "okuma_ms": 7.912,
+          "cikarim_ms": 88.401,
+          "maske_ms": 312.016,
+          "katman_a_ms": 241.099,
+          "toplam_ms": 649.481,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000001008.jpg",
+          "okuma_ms": 14.676,
+          "cikarim_ms": 90.647,
+          "maske_ms": 332.015,
+          "katman_a_ms": 207.155,
+          "toplam_ms": 644.541,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000001416.jpg",
+          "okuma_ms": 14.814,
+          "cikarim_ms": 92.8,
+          "maske_ms": 346.738,
+          "katman_a_ms": 172.79,
+          "toplam_ms": 627.195,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000001440.jpg",
+          "okuma_ms": 14.417,
+          "cikarim_ms": 90.886,
+          "maske_ms": 327.183,
+          "katman_a_ms": 328.548,
+          "toplam_ms": 761.087,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000001488.jpg",
+          "okuma_ms": 14.689,
+          "cikarim_ms": 91.27,
+          "maske_ms": 342.028,
+          "katman_a_ms": 258.085,
+          "toplam_ms": 706.125,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000001776.jpg",
+          "okuma_ms": 14.553,
+          "cikarim_ms": 96.123,
+          "maske_ms": 367.007,
+          "katman_a_ms": 302.063,
+          "toplam_ms": 779.796,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000001824.jpg",
+          "okuma_ms": 15.642,
+          "cikarim_ms": 92.216,
+          "maske_ms": 356.695,
+          "katman_a_ms": 291.645,
+          "toplam_ms": 756.254,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000001848.jpg",
+          "okuma_ms": 7.501,
+          "cikarim_ms": 92.306,
+          "maske_ms": 340.955,
+          "katman_a_ms": 216.026,
+          "toplam_ms": 656.838,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000001872.jpg",
+          "okuma_ms": 15.686,
+          "cikarim_ms": 89.074,
+          "maske_ms": 325.27,
+          "katman_a_ms": 220.504,
+          "toplam_ms": 650.591,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000001944.jpg",
+          "okuma_ms": 15.284,
+          "cikarim_ms": 86.822,
+          "maske_ms": 307.52,
+          "katman_a_ms": 250.797,
+          "toplam_ms": 660.476,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000014_000001992.jpg",
+          "okuma_ms": 14.678,
+          "cikarim_ms": 91.158,
+          "maske_ms": 319.389,
+          "katman_a_ms": 249.992,
+          "toplam_ms": 675.266,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000002040.jpg",
+          "okuma_ms": 14.771,
+          "cikarim_ms": 87.012,
+          "maske_ms": 303.386,
+          "katman_a_ms": 237.038,
+          "toplam_ms": 644.049,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000002088.jpg",
+          "okuma_ms": 15.589,
+          "cikarim_ms": 84.93,
+          "maske_ms": 296.81,
+          "katman_a_ms": 177.784,
+          "toplam_ms": 576.85,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000002112.jpg",
+          "okuma_ms": 14.692,
+          "cikarim_ms": 82.158,
+          "maske_ms": 272.664,
+          "katman_a_ms": 261.751,
+          "toplam_ms": 633.019,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000002160.jpg",
+          "okuma_ms": 14.916,
+          "cikarim_ms": 80.086,
+          "maske_ms": 261.735,
+          "katman_a_ms": 178.309,
+          "toplam_ms": 536.552,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 15.263,
+          "cikarim_ms": 92.379,
+          "maske_ms": 340.772,
+          "katman_a_ms": 290.558,
+          "toplam_ms": 739.025,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000168.jpg",
+          "okuma_ms": 15.006,
+          "cikarim_ms": 88.25,
+          "maske_ms": 316.396,
+          "katman_a_ms": 261.909,
+          "toplam_ms": 681.61,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000002_000000192.jpg",
+          "okuma_ms": 8.462,
+          "cikarim_ms": 89.153,
+          "maske_ms": 312.582,
+          "katman_a_ms": 254.659,
+          "toplam_ms": 664.906,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000003_000000240.jpg",
+          "okuma_ms": 7.684,
+          "cikarim_ms": 86.629,
+          "maske_ms": 309.87,
+          "katman_a_ms": 143.895,
+          "toplam_ms": 548.128,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000004_000000264.jpg",
+          "okuma_ms": 14.687,
+          "cikarim_ms": 85.736,
+          "maske_ms": 305.664,
+          "katman_a_ms": 226.179,
+          "toplam_ms": 632.313,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000005_000000288.jpg",
+          "okuma_ms": 8.037,
+          "cikarim_ms": 83.826,
+          "maske_ms": 288.56,
+          "katman_a_ms": 188.689,
+          "toplam_ms": 569.161,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000006_000000336.jpg",
+          "okuma_ms": 14.982,
+          "cikarim_ms": 81.268,
+          "maske_ms": 279.079,
+          "katman_a_ms": 137.252,
+          "toplam_ms": 512.628,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000007_000000384.jpg",
+          "okuma_ms": 14.87,
+          "cikarim_ms": 82.141,
+          "maske_ms": 278.216,
+          "katman_a_ms": 140.406,
+          "toplam_ms": 517.134,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000008_000000432.jpg",
+          "okuma_ms": 7.866,
+          "cikarim_ms": 78.942,
+          "maske_ms": 256.258,
+          "katman_a_ms": 188.292,
+          "toplam_ms": 531.404,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000009_000000480.jpg",
+          "okuma_ms": 15.293,
+          "cikarim_ms": 78.805,
+          "maske_ms": 255.506,
+          "katman_a_ms": 144.08,
+          "toplam_ms": 493.732,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000010_000000504.jpg",
+          "okuma_ms": 7.924,
+          "cikarim_ms": 78.612,
+          "maske_ms": 252.491,
+          "katman_a_ms": 179.231,
+          "toplam_ms": 518.302,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000011_000000600.jpg",
+          "okuma_ms": 15.147,
+          "cikarim_ms": 74.875,
+          "maske_ms": 227.52,
+          "katman_a_ms": 210.375,
+          "toplam_ms": 527.966,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000012_000000624.jpg",
+          "okuma_ms": 7.34,
+          "cikarim_ms": 76.787,
+          "maske_ms": 239.346,
+          "katman_a_ms": 174.399,
+          "toplam_ms": 497.916,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000013_000000648.jpg",
+          "okuma_ms": 8.01,
+          "cikarim_ms": 72.977,
+          "maske_ms": 224.18,
+          "katman_a_ms": 125.36,
+          "toplam_ms": 430.574,
+          "rota_durumu": "ACIK",
+          "yol_no": 3
+        },
+        {
+          "kaynak": "frame_000014_000000672.jpg",
+          "okuma_ms": 7.399,
+          "cikarim_ms": 74.261,
+          "maske_ms": 229.105,
+          "katman_a_ms": 96.586,
+          "toplam_ms": 409.241,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000015_000000696.jpg",
+          "okuma_ms": 8.156,
+          "cikarim_ms": 74.923,
+          "maske_ms": 233.256,
+          "katman_a_ms": 130.276,
+          "toplam_ms": 446.656,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000016_000000720.jpg",
+          "okuma_ms": 7.291,
+          "cikarim_ms": 84.632,
+          "maske_ms": 251.985,
+          "katman_a_ms": 131.282,
+          "toplam_ms": 475.236,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000017_000000792.jpg",
+          "okuma_ms": 7.4,
+          "cikarim_ms": 77.97,
+          "maske_ms": 249.385,
+          "katman_a_ms": 127.057,
+          "toplam_ms": 461.86,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000018_000000840.jpg",
+          "okuma_ms": 7.428,
+          "cikarim_ms": 83.951,
+          "maske_ms": 291.164,
+          "katman_a_ms": 145.118,
+          "toplam_ms": 527.707,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000019_000000888.jpg",
+          "okuma_ms": 7.838,
+          "cikarim_ms": 90.015,
+          "maske_ms": 319.537,
+          "katman_a_ms": 107.689,
+          "toplam_ms": 526.688,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000020_000000936.jpg",
+          "okuma_ms": 7.769,
+          "cikarim_ms": 88.567,
+          "maske_ms": 316.567,
+          "katman_a_ms": 166.873,
+          "toplam_ms": 579.828,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000021_000000984.jpg",
+          "okuma_ms": 8.209,
+          "cikarim_ms": 94.768,
+          "maske_ms": 356.245,
+          "katman_a_ms": 113.017,
+          "toplam_ms": 572.294,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000022_000001032.jpg",
+          "okuma_ms": 7.951,
+          "cikarim_ms": 95.184,
+          "maske_ms": 363.433,
+          "katman_a_ms": 194.262,
+          "toplam_ms": 660.878,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000023_000001080.jpg",
+          "okuma_ms": 7.965,
+          "cikarim_ms": 97.565,
+          "maske_ms": 378.874,
+          "katman_a_ms": 220.116,
+          "toplam_ms": 704.569,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000024_000001104.jpg",
+          "okuma_ms": 8.258,
+          "cikarim_ms": 98.939,
+          "maske_ms": 381.185,
+          "katman_a_ms": 222.124,
+          "toplam_ms": 710.554,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000025_000001152.jpg",
+          "okuma_ms": 8.345,
+          "cikarim_ms": 101.939,
+          "maske_ms": 395.501,
+          "katman_a_ms": 178.513,
+          "toplam_ms": 684.344,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000026_000001200.jpg",
+          "okuma_ms": 7.908,
+          "cikarim_ms": 100.482,
+          "maske_ms": 390.138,
+          "katman_a_ms": 201.871,
+          "toplam_ms": 700.449,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000027_000001248.jpg",
+          "okuma_ms": 7.83,
+          "cikarim_ms": 99.959,
+          "maske_ms": 388.654,
+          "katman_a_ms": 109.693,
+          "toplam_ms": 606.184,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000028_000001296.jpg",
+          "okuma_ms": 7.684,
+          "cikarim_ms": 105.704,
+          "maske_ms": 413.195,
+          "katman_a_ms": 89.828,
+          "toplam_ms": 616.459,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000029_000001320.jpg",
+          "okuma_ms": 7.976,
+          "cikarim_ms": 105.69,
+          "maske_ms": 432.253,
+          "katman_a_ms": 88.278,
+          "toplam_ms": 636.038,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000030_000001344.jpg",
+          "okuma_ms": 7.534,
+          "cikarim_ms": 108.642,
+          "maske_ms": 435.012,
+          "katman_a_ms": 88.818,
+          "toplam_ms": 640.066,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 8.264,
+          "cikarim_ms": 107.125,
+          "maske_ms": 428.739,
+          "katman_a_ms": 100.398,
+          "toplam_ms": 646.289,
+          "rota_durumu": "KAPALI_DAR",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000001_000000456.jpg",
+          "okuma_ms": 7.477,
+          "cikarim_ms": 102.841,
+          "maske_ms": 409.394,
+          "katman_a_ms": 261.139,
+          "toplam_ms": 780.898,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        },
+        {
+          "kaynak": "frame_000000_000000000.jpg",
+          "okuma_ms": 7.771,
+          "cikarim_ms": 80.762,
+          "maske_ms": 268.366,
+          "katman_a_ms": 208.645,
+          "toplam_ms": 565.594,
+          "rota_durumu": "BELIRSIZ_COKLU",
+          "yol_no": null
+        }
+      ],
+      "fps_p50_tabanli": 1.575,
+      "fps_ortalama_tabanli": 1.621
+    }
+  ]
+}

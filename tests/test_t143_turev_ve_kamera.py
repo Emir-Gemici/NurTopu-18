@@ -43,12 +43,28 @@ PAKET_DEFTER = KOK / "jetson_paket" / "config" / "model_registry.json"
 # `turev_dogrula` onlari YETIM sayip RED donerdi) — v35 DOSYALARI diskte duruyor.
 URETIM_PT = "models/navitas_seg_v36_best.pt"
 URETIM_SHA = "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911"
-ENGINE_ADI = "navitas_seg_v36_best.engine"
+# 2026-09-07 (REVIEW_LOG D-431, K3/K4): FP16 engine 6 Eylul'de Jetson Orin Nano'da
+# DERLENDI ve urun defterindeki sha256'si artik GERCEK (bb9bd868...0300); FP32
+# `navitas_seg_v36_best.engine` yer tutucu girdisi profilden CIKARILDI (derlenmedi,
+# gerekmiyor; `surum_dondur --dondur` her tensorrt turevinin kayitli olmasini
+# ister). Asagidaki sema testleri "derlenmemis = RED" halinden basladigi icin
+# `_GeciciKok` urun defterini kopyalayip engine kaydini YER TUTUCUYA GERI CEKER;
+# hicbir assert silinmedi.
+ENGINE_ADI = "navitas_seg_v36_best_512_fp16.engine"
 PT_VEKIL_ICERIK = b"URETIM-PT-VEKIL-ICERIGI"
 
 
 def _sha(yol: Path) -> str:
     return hashlib.sha256(yol.read_bytes()).hexdigest()
+
+
+def _diskteki_turev(ad: str):
+    """Turev dosyasi bu makinede varsa yolu (worktree'de ana depo salt okunur kaynak)."""
+    for dizin in (KOK / "models", KOK / "jetson_paket" / "models",
+                  Path("O:/navitas/models"), Path("O:/navitas/jetson_paket/models")):
+        if (dizin / ad).is_file():
+            return dizin / ad
+    return None
 
 
 class _GeciciKok:
@@ -60,6 +76,10 @@ class _GeciciKok:
         (self.dizin / "models").mkdir()
         self.defter = self.dizin / "config" / "model_registry.json"
         shutil.copy(DEFTER, self.defter)
+        # D-431: urun defterinde engine sha'si GERCEK; sahte engine icerigiyle
+        # eslesmez. Sema testleri 'derlenmemis' halden basladigi icin gecici
+        # kayit yer tutucuya cekilir (baslangic durumu, mutasyon degil).
+        self.turev_sha_yaz(MODEL_TUREV_SHA_YER_TUTUCU)
         self.engine = self.dizin / "models" / ENGINE_ADI
         self.engine.write_bytes(b"TRT-ENGINE-SAHTE-ICERIK-" * 64)
         # T143 kalinti (1): --kaynak-pt ZORUNLU. Uretim .pt worktree'de yok;
@@ -103,18 +123,37 @@ class UretimDefteriTests(unittest.TestCase):
         self.assertEqual(URETIM_PT, self.profil["path"])
         self.assertEqual(URETIM_SHA, self.profil["sha256"])
 
+    def _engine_kaydi_dogrula(self, ad: str, kayit: dict) -> None:
+        """K3 (D-431): .engine kaydi YA yer tutucu (derlenmedi = RED, mesru) YA DA
+        gercek bir ozet olmali. Gercek ozet: 64 hex ZORUNLU (dosya diskte yoksa
+        test ATLANMAZ; kaynak_sha256 == .pt ozeti kosulu cagiran dongude sinanir),
+        dosya bu makinede varsa ozet dosyanin sha256'si ile BIREBIR."""
+        ozet = kayit["sha256"]
+        if ozet == MODEL_TUREV_SHA_YER_TUTUCU:
+            return
+        self.assertTrue(MR.sha256_dogrulanmis_mi(ozet),
+                        f"{ad}: ne yer tutucu ne 64 hex ozet: {ozet!r}")
+        dosya = _diskteki_turev(ad)
+        if dosya is None:
+            return          # atlanmadi: bicim + (dongude) soy kosulu dogrulandi
+        self.assertEqual(_sha(dosya), ozet,
+                         f"{ad}: defterdeki ozet diskteki dosyayla BIREBIR degil ({dosya})")
+
     def test_turevler_engine_YER_TUTUCU_onnx_DOGRULANMIS_hepsi_kaynaga_BAGLI(self):
-        """Jetson'da .engine henuz derlenmedi -> yer tutucu (RED). ONNX'ler
-        diskte var; ozetleri `--turev-kaydet` ile GERCEKTEN yazildi (2026-08-26,
-        --kaynak-pt ile .pt ozeti kiyaslanarak)."""
+        """ONNX'ler diskte var; ozetleri `--turev-kaydet` ile GERCEKTEN yazildi
+        (2026-08-26, --kaynak-pt ile .pt ozeti kiyaslanarak). FP16 .engine 6 Eylul
+        2026'da Jetson Orin Nano'da derlendi ve ayni CLI ile yazildi (D-431); kayit
+        yer tutucu YA DA diskteki dosyanin ozetiyle birebir olmali (K3). FP32
+        `navitas_seg_v36_best.engine` girdisi CIKARILDI (K4) — kume esitligi
+        geri gelmesini de yakalar."""
         turevler = self.profil["turevler"]
-        self.assertEqual({ENGINE_ADI, "navitas_seg_v36_best_512_fp16.engine",
+        self.assertEqual({ENGINE_ADI,
                           "navitas_seg_v36_best.onnx",
                           "navitas_seg_v36_best_512_fp16.onnx"}, set(turevler))
         for ad, kayit in turevler.items():
             with self.subTest(ad=ad):
                 if ad.endswith(".engine"):
-                    self.assertEqual(MODEL_TUREV_SHA_YER_TUTUCU, kayit["sha256"])
+                    self._engine_kaydi_dogrula(ad, kayit)
                 else:
                     self.assertTrue(MR.sha256_dogrulanmis_mi(kayit["sha256"]), ad)
                 self.assertEqual(URETIM_PT, kayit["kaynak"])
@@ -129,6 +168,18 @@ class UretimDefteriTests(unittest.TestCase):
         if not onnx.is_file():
             self.skipTest(f"ONNX turevi bu makinede yok: {onnx}")
         u, d = R.model_kayit_dogrula(onnx, kok=KOK, calisan_imgsz=512)
+        self.assertTrue(u, d)
+        self.assertEqual("turev_eslesti", d["durum"])
+
+    def test_diskteki_engine_turevi_GERCEKTEN_GECER(self):
+        """D-431: Jetson'da derlenen FP16 engine bu makinede varsa defterle
+        `turev_eslesti` vermeli (kayit CLI ciktisi: results/jetson_20260906/
+        jetson_log_20260906/turev_kaydet.log). Dosya yoksa atlanir ve SOYLER;
+        defter kaydinin bicimi yukaridaki testte atlanmadan sinanir."""
+        engine = _diskteki_turev(ENGINE_ADI)
+        if engine is None:
+            self.skipTest(f"engine turevi bu makinede yok: {ENGINE_ADI} (Jetson'da derlenir)")
+        u, d = R.model_kayit_dogrula(engine, kok=KOK, calisan_imgsz=512)
         self.assertTrue(u, d)
         self.assertEqual("turev_eslesti", d["durum"])
 
@@ -160,7 +211,8 @@ class TurevDogrulamaTests(unittest.TestCase):
         return (u1, d1["durum"]), (u2, d2["durum"])
 
     def test_YER_TUTUCU_turev_RED(self):
-        """Derlenmemis = dogrulanmamis = RED; urun defteri bu haldedir."""
+        """Derlenmemis = dogrulanmamis = RED. Urun defteri 6 Eylul 2026'ya kadar bu
+        haldeydi; artik gecici kok bu hali yeniden kurar (D-431, _GeciciKok)."""
         (u1, s1), (u2, s2) = self._iki_hukum(self.k.engine)
         self.assertFalse(u1); self.assertFalse(u2)
         self.assertIn("YER TUTUCU", s1); self.assertEqual(s1, s2)

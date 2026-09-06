@@ -1,0 +1,303 @@
+== [1/5] venv: /home/n4vitas/venv312 (sistem paketleri gorunur)
+Python 3.12.3
+pip 26.2.1 from /home/n4vitas/venv312/lib/python3.12/site-packages/pip (python 3.12)
+== [2/5] torch (jetson-ai-lab https://pypi.jetson-ai-lab.io/sbsa/cu130), olmazsa PyPI
+Looking in indexes: https://pypi.org/simple, https://pypi.jetson-ai-lab.io/sbsa/cu130
+Collecting torch==2.11.*
+  Downloading torch-2.11.0-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (29 kB)
+Collecting torchvision
+  Downloading torchvision-0.29.0-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (5.7 kB)
+Collecting filelock (from torch==2.11.*)
+  Downloading filelock-3.32.5-py3-none-any.whl.metadata (2.0 kB)
+Requirement already satisfied: typing-extensions>=4.10.0 in /usr/lib/python3/dist-packages (from torch==2.11.*) (4.10.0)
+Collecting setuptools<82 (from torch==2.11.*)
+  Downloading setuptools-81.0.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting sympy>=1.13.3 (from torch==2.11.*)
+  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting networkx>=2.5.1 (from torch==2.11.*)
+  Downloading networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)
+Requirement already satisfied: jinja2 in /usr/lib/python3/dist-packages (from torch==2.11.*) (3.1.2)
+Collecting fsspec>=0.8.5 (from torch==2.11.*)
+  Downloading fsspec-2026.7.0-py3-none-any.whl.metadata (10 kB)
+Collecting cuda-toolkit==13.0.2 (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading cuda_toolkit-13.0.2-py2.py3-none-any.whl.metadata (9.4 kB)
+Collecting cuda-bindings<14,>=13.0.3 (from torch==2.11.*)
+  Downloading cuda_bindings-13.3.1-cp312-cp312-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl.metadata (2.5 kB)
+Collecting nvidia-cudnn-cu13==9.19.0.56 (from torch==2.11.*)
+  Downloading nvidia_cudnn_cu13-9.19.0.56-py3-none-manylinux_2_27_aarch64.whl.metadata (1.9 kB)
+Collecting nvidia-cusparselt-cu13==0.8.0 (from torch==2.11.*)
+  Downloading nvidia_cusparselt_cu13-0.8.0-py3-none-manylinux2014_aarch64.whl.metadata (12 kB)
+Collecting nvidia-nccl-cu13==2.28.9 (from torch==2.11.*)
+  Downloading nvidia_nccl_cu13-2.28.9-py3-none-manylinux_2_18_aarch64.whl.metadata (2.0 kB)
+Collecting nvidia-nvshmem-cu13==3.4.5 (from torch==2.11.*)
+  Downloading nvidia_nvshmem_cu13-3.4.5-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.1 kB)
+Collecting triton==3.6.0 (from torch==2.11.*)
+  Downloading triton-3.6.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-cublas==13.1.0.3.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cublas-13.1.0.3-py3-none-manylinux_2_27_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-cuda-runtime==13.0.96.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cuda_runtime-13.0.96-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-cufft==12.0.0.61.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cufft-12.0.0.61-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.8 kB)
+Collecting nvidia-cufile==1.15.1.6.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cufile-1.15.1.6-py3-none-manylinux_2_27_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-cuda-cupti==13.0.85.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cuda_cupti-13.0.85-py3-none-manylinux_2_25_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-curand==10.4.0.35.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_curand-10.4.0.35-py3-none-manylinux_2_27_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-cusolver==12.0.4.66.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cusolver-12.0.4.66-py3-none-manylinux_2_27_aarch64.whl.metadata (1.8 kB)
+Collecting nvidia-cusparse==12.6.3.3.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cusparse-12.6.3.3-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.8 kB)
+Collecting nvidia-nvjitlink==13.0.88.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_nvjitlink-13.0.88-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-cuda-nvrtc==13.0.88.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_cuda_nvrtc-13.0.88-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.7 kB)
+Collecting nvidia-nvtx==13.0.85.* (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.11.*)
+  Downloading nvidia_nvtx-13.0.85-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (1.8 kB)
+Collecting cuda-pathfinder>=1.4.2 (from cuda-bindings<14,>=13.0.3->torch==2.11.*)
+  Downloading cuda_pathfinder-1.8.1-py3-none-any.whl.metadata (1.9 kB)
+Requirement already satisfied: numpy in /usr/lib/python3/dist-packages (from torchvision) (1.26.4)
+INFO: pip is looking at multiple versions of torchvision to determine which version is compatible with other requirements. This could take a while.
+Collecting torchvision
+  Downloading torchvision-0.28.0-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (5.6 kB)
+  Downloading torchvision-0.27.1-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (5.5 kB)
+  Downloading torchvision-0.27.0-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (5.5 kB)
+  Downloading torchvision-0.26.0-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (5.5 kB)
+Requirement already satisfied: pillow!=8.3.*,>=5.3.0 in /usr/lib/python3/dist-packages (from torchvision) (10.2.0)
+Collecting mpmath<1.4,>=1.1.0 (from sympy>=1.13.3->torch==2.11.*)
+  Downloading mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Downloading torch-2.11.0-cp312-cp312-manylinux_2_28_aarch64.whl (419.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 419.7/419.7 MB 60.9 MB/s  0:00:05
+Downloading cuda_toolkit-13.0.2-py2.py3-none-any.whl (2.4 kB)
+Downloading nvidia_cudnn_cu13-9.19.0.56-py3-none-manylinux_2_27_aarch64.whl (433.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 433.8/433.8 MB 48.5 MB/s  0:00:07
+Downloading nvidia_cusparselt_cu13-0.8.0-py3-none-manylinux2014_aarch64.whl (220.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 220.8/220.8 MB 63.0 MB/s  0:00:03
+Downloading nvidia_nccl_cu13-2.28.9-py3-none-manylinux_2_18_aarch64.whl (196.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 196.6/196.6 MB 63.6 MB/s  0:00:03
+Downloading nvidia_nvshmem_cu13-3.4.5-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (60.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.2/60.2 MB 55.8 MB/s  0:00:01
+Downloading triton-3.6.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (176.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 176.1/176.1 MB 63.3 MB/s  0:00:02
+Downloading cuda_bindings-13.3.1-cp312-cp312-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl (6.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.0/6.0 MB 53.3 MB/s  0:00:00
+Downloading nvidia_cublas-13.1.0.3-py3-none-manylinux_2_27_aarch64.whl (542.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 542.9/542.9 MB 41.1 MB/s  0:00:08
+Downloading nvidia_cuda_cupti-13.0.85-py3-none-manylinux_2_25_aarch64.whl (10.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.3/10.3 MB 60.4 MB/s  0:00:00
+Downloading nvidia_cuda_nvrtc-13.0.88-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (43.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.0/43.0 MB 51.4 MB/s  0:00:00
+Downloading nvidia_cuda_runtime-13.0.96-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (2.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 41.3 MB/s  0:00:00
+Downloading nvidia_cufft-12.0.0.61-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (214.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 214.1/214.1 MB 53.3 MB/s  0:00:04
+Downloading nvidia_cufile-1.15.1.6-py3-none-manylinux_2_27_aarch64.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 29.4 MB/s  0:00:00
+Downloading nvidia_curand-10.4.0.35-py3-none-manylinux_2_27_aarch64.whl (62.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.0/62.0 MB 33.3 MB/s  0:00:01
+Downloading nvidia_cusolver-12.0.4.66-py3-none-manylinux_2_27_aarch64.whl (223.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 223.5/223.5 MB 44.0 MB/s  0:00:05
+Downloading nvidia_cusparse-12.6.3.3-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (162.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.2/162.2 MB 36.5 MB/s  0:00:04
+Downloading nvidia_nvjitlink-13.0.88-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (38.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 38.8/38.8 MB 46.4 MB/s  0:00:00
+Downloading nvidia_nvtx-13.0.85-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (148 kB)
+Downloading setuptools-81.0.0-py3-none-any.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 21.2 MB/s  0:00:00
+Downloading torchvision-0.26.0-cp312-cp312-manylinux_2_28_aarch64.whl (7.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.8/7.8 MB 41.2 MB/s  0:00:00
+Downloading cuda_pathfinder-1.8.1-py3-none-any.whl (62 kB)
+Downloading fsspec-2026.7.0-py3-none-any.whl (206 kB)
+Downloading networkx-3.6.1-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 36.7 MB/s  0:00:00
+Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 43.7 MB/s  0:00:00
+Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 536.2/536.2 kB 3.0 MB/s  0:00:00
+Downloading filelock-3.32.5-py3-none-any.whl (100 kB)
+Installing collected packages: nvidia-cusparselt-cu13, mpmath, cuda-toolkit, triton, sympy, setuptools, nvidia-nvtx, nvidia-nvshmem-cu13, nvidia-nvjitlink, nvidia-nccl-cu13, nvidia-curand, nvidia-cufile, nvidia-cuda-runtime, nvidia-cuda-nvrtc, nvidia-cuda-cupti, nvidia-cublas, networkx, fsspec, filelock, cuda-pathfinder, nvidia-cusparse, nvidia-cufft, nvidia-cudnn-cu13, cuda-bindings, nvidia-cusolver, torch, torchvision
+  Attempting uninstall: mpmath
+    Found existing installation: mpmath 0.0.0
+    Not uninstalling mpmath at /usr/lib/python3/dist-packages, outside environment /home/n4vitas/venv312
+    Can't uninstall 'mpmath'. No files were found to uninstall.
+  Attempting uninstall: sympy
+    Found existing installation: sympy 1.12
+    Not uninstalling sympy at /usr/lib/python3/dist-packages, outside environment /home/n4vitas/venv312
+    Can't uninstall 'sympy'. No files were found to uninstall.
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 84.0.0
+    Uninstalling setuptools-84.0.0:
+      Successfully uninstalled setuptools-84.0.0
+
+Successfully installed cuda-bindings-13.3.1 cuda-pathfinder-1.8.1 cuda-toolkit-13.0.2 filelock-3.32.5 fsspec-2026.7.0 mpmath-1.3.0 networkx-3.6.1 nvidia-cublas-13.1.0.3 nvidia-cuda-cupti-13.0.85 nvidia-cuda-nvrtc-13.0.88 nvidia-cuda-runtime-13.0.96 nvidia-cudnn-cu13-9.19.0.56 nvidia-cufft-12.0.0.61 nvidia-cufile-1.15.1.6 nvidia-curand-10.4.0.35 nvidia-cusolver-12.0.4.66 nvidia-cusparse-12.6.3.3 nvidia-cusparselt-cu13-0.8.0 nvidia-nccl-cu13-2.28.9 nvidia-nvjitlink-13.0.88 nvidia-nvshmem-cu13-3.4.5 nvidia-nvtx-13.0.85 setuptools-81.0.0 sympy-1.14.0 torch-2.11.0 torchvision-0.26.0 triton-3.6.0
+== [3/5] ultralytics + haberlesme paketleri (requirements_nano.txt kumesi, cp38 tekerleksiz)
+Collecting ultralytics
+  Downloading ultralytics-8.4.142-py3-none-any.whl.metadata (46 kB)
+Requirement already satisfied: numpy<2 in /usr/lib/python3/dist-packages (1.26.4)
+Requirement already satisfied: pyserial in /usr/lib/python3/dist-packages (3.5)
+Collecting pymavlink
+  Downloading pymavlink-2.4.49-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.0 kB)
+Collecting MAVProxy
+  Downloading mavproxy-1.8.74-py3-none-any.whl.metadata (2.3 kB)
+Requirement already satisfied: lxml in /usr/lib/python3/dist-packages (5.2.1)
+Collecting future
+  Downloading future-1.0.0-py3-none-any.whl.metadata (4.0 kB)
+Collecting onnx
+  Downloading onnx-1.22.0-cp312-abi3-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl.metadata (8.5 kB)
+Collecting onnxslim
+  Downloading onnxslim-0.1.96-py3-none-any.whl.metadata (11 kB)
+Collecting cloudpickle>=3.1.1 (from ultralytics)
+  Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: filelock>=3.16.1 in ./venv312/lib/python3.12/site-packages (from ultralytics) (3.32.5)
+Requirement already satisfied: matplotlib>=3.3.0 in /usr/lib/python3/dist-packages (from ultralytics) (3.6.3)
+Collecting opencv-python!=4.13.0.90,>=4.7.0 (from ultralytics)
+  Downloading opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_aarch64.whl.metadata (19 kB)
+Requirement already satisfied: pillow>=7.1.2 in /usr/lib/python3/dist-packages (from ultralytics) (10.2.0)
+Requirement already satisfied: pyyaml>=5.3.1 in /usr/lib/python3/dist-packages (from ultralytics) (6.0.1)
+Requirement already satisfied: requests>=2.23.0 in /usr/lib/python3/dist-packages (from ultralytics) (2.31.0)
+Requirement already satisfied: torch>=1.8.0 in ./venv312/lib/python3.12/site-packages (from ultralytics) (2.11.0)
+Requirement already satisfied: torchvision>=0.9.0 in ./venv312/lib/python3.12/site-packages (from ultralytics) (0.26.0)
+Collecting psutil>=5.8.0 (from ultralytics)
+  Downloading psutil-7.2.2-cp36-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (22 kB)
+Collecting polars>=0.20.0 (from ultralytics)
+  Downloading polars-1.44.1-py3-none-any.whl.metadata (11 kB)
+Collecting nvidia-ml-py>=12.0.0 (from ultralytics)
+  Downloading nvidia_ml_py-13.610.43-py3-none-any.whl.metadata (9.7 kB)
+Collecting ultralytics-thop>=2.1.6 (from ultralytics)
+  Downloading ultralytics_thop-2.1.6-py3-none-any.whl.metadata (13 kB)
+Collecting ultralytics-platform>=0.1.3 (from ultralytics)
+  Downloading ultralytics_platform-0.1.21-py3-none-any.whl.metadata (8.4 kB)
+Collecting fastcrc (from pymavlink)
+  Downloading fastcrc-0.3.6-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (2.5 kB)
+Collecting pynmeagps (from MAVProxy)
+  Downloading pynmeagps-1.1.7-py3-none-any.whl.metadata (21 kB)
+Collecting protobuf>=4.25.1 (from onnx)
+  Downloading protobuf-7.36.1-cp310-abi3-manylinux2014_aarch64.whl.metadata (595 bytes)
+Collecting typing_extensions>=4.15.0 (from onnx)
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting ml_dtypes>=0.5.4 (from onnx)
+  Downloading ml_dtypes-0.6.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (8.8 kB)
+Requirement already satisfied: colorama in /usr/lib/python3/dist-packages (from onnxslim) (0.4.6)
+Requirement already satisfied: packaging in /usr/lib/python3/dist-packages (from onnxslim) (24.0)
+Requirement already satisfied: sympy>=1.13.1 in ./venv312/lib/python3.12/site-packages (from onnxslim) (1.14.0)
+INFO: pip is looking at multiple versions of ml-dtypes to determine which version is compatible with other requirements. This could take a while.
+  Downloading ml_dtypes-0.5.4-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (8.9 kB)
+INFO: pip is looking at multiple versions of opencv-python to determine which version is compatible with other requirements. This could take a while.
+Collecting opencv-python!=4.13.0.90,>=4.7.0 (from ultralytics)
+  Downloading opencv_python-4.14.0.94-cp37-abi3-manylinux_2_28_aarch64.whl.metadata (19 kB)
+  Downloading opencv_python-4.13.0.92-cp37-abi3-manylinux_2_28_aarch64.whl.metadata (19 kB)
+  Downloading opencv_python-4.12.0.88-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (19 kB)
+  Downloading opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (20 kB)
+Collecting polars-runtime-32==1.44.1 (from polars>=0.20.0->ultralytics)
+  Downloading polars_runtime_32-1.44.1-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (1.5 kB)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in ./venv312/lib/python3.12/site-packages (from sympy>=1.13.1->onnxslim) (1.3.0)
+Requirement already satisfied: setuptools<82 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (81.0.0)
+Requirement already satisfied: networkx>=2.5.1 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (3.6.1)
+Requirement already satisfied: jinja2 in /usr/lib/python3/dist-packages (from torch>=1.8.0->ultralytics) (3.1.2)
+Requirement already satisfied: fsspec>=0.8.5 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (2026.7.0)
+Requirement already satisfied: cuda-toolkit==13.0.2 in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.0.2)
+Requirement already satisfied: cuda-bindings<14,>=13.0.3 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (13.3.1)
+Requirement already satisfied: nvidia-cudnn-cu13==9.19.0.56 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (9.19.0.56)
+Requirement already satisfied: nvidia-cusparselt-cu13==0.8.0 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (0.8.0)
+Requirement already satisfied: nvidia-nccl-cu13==2.28.9 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (2.28.9)
+Requirement already satisfied: nvidia-nvshmem-cu13==3.4.5 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (3.4.5)
+Requirement already satisfied: triton==3.6.0 in ./venv312/lib/python3.12/site-packages (from torch>=1.8.0->ultralytics) (3.6.0)
+Requirement already satisfied: nvidia-cublas==13.1.0.3.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.1.0.3)
+Requirement already satisfied: nvidia-cuda-runtime==13.0.96.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.0.96)
+Requirement already satisfied: nvidia-cufft==12.0.0.61.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (12.0.0.61)
+Requirement already satisfied: nvidia-cufile==1.15.1.6.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (1.15.1.6)
+Requirement already satisfied: nvidia-cuda-cupti==13.0.85.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.0.85)
+Requirement already satisfied: nvidia-curand==10.4.0.35.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (10.4.0.35)
+Requirement already satisfied: nvidia-cusolver==12.0.4.66.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (12.0.4.66)
+Requirement already satisfied: nvidia-cusparse==12.6.3.3.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (12.6.3.3)
+Requirement already satisfied: nvidia-nvjitlink==13.0.88.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.0.88)
+Requirement already satisfied: nvidia-cuda-nvrtc==13.0.88.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.0.88)
+Requirement already satisfied: nvidia-nvtx==13.0.85.* in ./venv312/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch>=1.8.0->ultralytics) (13.0.85)
+Requirement already satisfied: cuda-pathfinder>=1.4.2 in ./venv312/lib/python3.12/site-packages (from cuda-bindings<14,>=13.0.3->torch>=1.8.0->ultralytics) (1.8.1)
+Collecting httpx<1,>=0.28 (from ultralytics-platform>=0.1.3->ultralytics)
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting anyio (from httpx<1,>=0.28->ultralytics-platform>=0.1.3->ultralytics)
+  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Requirement already satisfied: certifi in /usr/lib/python3/dist-packages (from httpx<1,>=0.28->ultralytics-platform>=0.1.3->ultralytics) (2023.11.17)
+Collecting httpcore==1.* (from httpx<1,>=0.28->ultralytics-platform>=0.1.3->ultralytics)
+  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Requirement already satisfied: idna in /usr/lib/python3/dist-packages (from httpx<1,>=0.28->ultralytics-platform>=0.1.3->ultralytics) (3.6)
+Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.28->ultralytics-platform>=0.1.3->ultralytics)
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Downloading ultralytics-8.4.142-py3-none-any.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 11.7 MB/s  0:00:00
+Downloading pymavlink-2.4.49-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (6.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.4/6.4 MB 10.5 MB/s  0:00:00
+Downloading mavproxy-1.8.74-py3-none-any.whl (28.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 28.8/28.8 MB 25.1 MB/s  0:00:01
+Downloading future-1.0.0-py3-none-any.whl (491 kB)
+Downloading onnx-1.22.0-cp312-abi3-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl (18.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.9/18.9 MB 67.5 MB/s  0:00:00
+Downloading onnxslim-0.1.96-py3-none-any.whl (239 kB)
+Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Downloading ml_dtypes-0.5.4-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (5.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 56.2 MB/s  0:00:00
+Downloading nvidia_ml_py-13.610.43-py3-none-any.whl (53 kB)
+Downloading opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (42.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.2/42.2 MB 13.5 MB/s  0:00:03
+Downloading polars-1.44.1-py3-none-any.whl (865 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 865.2/865.2 kB 25.2 MB/s  0:00:00
+Downloading polars_runtime_32-1.44.1-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (52.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.5/52.5 MB 51.6 MB/s  0:00:01
+Downloading protobuf-7.36.1-cp310-abi3-manylinux2014_aarch64.whl (344 kB)
+Downloading psutil-7.2.2-cp36-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (156 kB)
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading ultralytics_platform-0.1.21-py3-none-any.whl (66 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading ultralytics_thop-2.1.6-py3-none-any.whl (30 kB)
+Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+Downloading fastcrc-0.3.6-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (281 kB)
+Downloading pynmeagps-1.1.7-py3-none-any.whl (64 kB)
+Installing collected packages: nvidia-ml-py, typing_extensions, pynmeagps, psutil, protobuf, polars-runtime-32, opencv-python, ml_dtypes, h11, future, fastcrc, cloudpickle, pymavlink, polars, onnx, httpcore, anyio, onnxslim, MAVProxy, httpx, ultralytics-platform, ultralytics-thop, ultralytics
+  Attempting uninstall: typing_extensions
+    Found existing installation: typing_extensions 4.10.0
+    Not uninstalling typing-extensions at /usr/lib/python3/dist-packages, outside environment /home/n4vitas/venv312
+    Can't uninstall 'typing_extensions'. No files were found to uninstall.
+
+Successfully installed MAVProxy-1.8.74 anyio-4.15.1 cloudpickle-3.1.2 fastcrc-0.3.6 future-1.0.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 ml_dtypes-0.5.4 nvidia-ml-py-13.610.43 onnx-1.22.0 onnxslim-0.1.96 opencv-python-4.11.0.86 polars-1.44.1 polars-runtime-32-1.44.1 protobuf-7.36.1 psutil-7.2.2 pymavlink-2.4.49 pynmeagps-1.1.7 typing_extensions-4.16.0 ultralytics-8.4.142 ultralytics-platform-0.1.21 ultralytics-thop-2.1.6
+== [4/5] onnxruntime (ONNX ile ucus secenegi)
+Looking in indexes: https://pypi.org/simple, https://pypi.jetson-ai-lab.io/sbsa/cu130
+Collecting onnxruntime-gpu
+  Downloading onnxruntime_gpu-1.29.0-cp312-cp312-manylinux_2_34_aarch64.whl.metadata (5.9 kB)
+Collecting flatbuffers (from onnxruntime-gpu)
+  Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+Requirement already satisfied: numpy>=1.21.6 in /usr/lib/python3/dist-packages (from onnxruntime-gpu) (1.26.4)
+Requirement already satisfied: packaging in /usr/lib/python3/dist-packages (from onnxruntime-gpu) (24.0)
+Requirement already satisfied: protobuf>=4.25.8 in ./venv312/lib/python3.12/site-packages (from onnxruntime-gpu) (7.36.1)
+Downloading onnxruntime_gpu-1.29.0-cp312-cp312-manylinux_2_34_aarch64.whl (162.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.1/162.1 MB 20.2 MB/s  0:00:08
+Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+Installing collected packages: flatbuffers, onnxruntime-gpu
+
+Successfully installed flatbuffers-25.12.19 onnxruntime-gpu-1.29.0
+== [5/5] KAPI
+/home/n4vitas/venv312/lib/python3.12/site-packages/torch/cuda/__init__.py:371: UserWarning: Found GPU0 Orin which is of compute capability (CC) 8.7.
+The following list shows the CCs this version of PyTorch was built for and the hardware CCs it supports:
+- 8.0 which supports hardware CC >=8.0,<9.0 except {8.7}
+- 9.0 which supports hardware CC >=9.0,<10.0
+- 10.0 which supports hardware CC >=10.0,<11.0 except {10.1}
+- 11.0 which supports hardware CC >=11.0,<12.0
+- 12.0 which supports hardware CC >=12.0,<13.0
+  _warn_unsupported_code(d, device_cc, code_ccs)
+python 3.12.3
+numpy 1.26.4 | cv2 4.11.0 | GStreamer True
+torch 2.11.0+cu130 | cuda True | Orin
+gpu matmul True
+tensorrt 10.16.2.10
+Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/home/n4vitas/.config/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart#ultralytics-settings.
+ultralytics 8.4.142
+pymavlink 2.4.49
+onnxruntime 1.29.0 ['CUDAExecutionProvider', 'CPUExecutionProvider']
+/home/n4vitas/venv312/bin/mavproxy.py
+
+TAMAM. Etkinlestir: source /home/n4vitas/venv312/bin/activate   (paket koku: /home/n4vitas/navitas)

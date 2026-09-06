@@ -2,7 +2,7 @@
  "_not": "T58: bu manifest ARTIK PAKETIN KENDISINI tarif eder. Onceki surum 2026-08-05 disa aktarim kosusunu tarif ediyordu (pc_modeli v17) oysa pakette v21 ONNX vardi; bayatlik kimseye gorunmedi cunku manifest paket icerigine BAKMIYORDU. `paket_icerigi` her dosyanin sha256'sini tasir - bayatlik artik mekanik olarak yakalanir (REVIEW_LOG D-83).",
  "_t76": "T76: uretim modeli v24 -> v27 (REVIEW_LOG D-115). Cozunurluk 640 -> 512 (D-112: 640'in olculebilir ustunlugu yok, Jetson maliyeti var). Agirlik epoch 200 `last.pt`'dir; `best.pt` epoch 43'te dondu (D-113). ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR. ⚠ T103 GUNCELLEMESI (D-178): burada eskiden 'paket defteri tasimaz' yaziyordu. O ifade ARTIK YANLISTIR — paket `jetson_paket/config/model_registry.json` dosyasini TASIR ve tasimak ZORUNDADIR: `load_model` fail-closed'tur, defter yoksa 'kayit_defteri_yok' ile duser. Notun asil soyledigi sey gecerliligini KORUYOR: bu manifest defterin YERINE GECMEZ, surum adinin tek kaynagi yine defterdir; manifest yalniz paketin kunyesidir.",
  "olusturma_zamani": "2026-08-19T09:29:18",
- "paket_yenilenme": "2026-08-26T19:15:05",
+ "paket_yenilenme": "2026-09-06T18:10:53",
  "pc_modeli": "O:\\navitas\\models\\navitas_seg_v36_best.pt",
  "format": "onnx",
  "fp16": true,
@@ -18,7 +18,7 @@
  "int8_kalibrasyon": null,
  "jetson_uyari": "PC'de uretilen TensorRT .engine Jetson Orin NX'te calismaz; engine Jetson'da derlenmelidir.",
  "jetson_komutlari": [
-  "yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 half=True"
+  "yolo export model=navitas_seg_v36_best.pt format=engine imgsz=512 half=True device=0 batch=1 workspace=2"
  ],
  "asil_model": "navitas_seg_v36_best_512_fp16.onnx",
  "asil_model_pt": "navitas_seg_v36_best.pt",
@@ -113,6 +113,11 @@
    "dosya": "navitas_seg_v36_best_512_fp16.onnx",
    "bayt": 54569673,
    "sha256": "f4c9f5fe08883d1aecc9b4ac3ce9f98cea61de2f5298edde5d2c2a7a5056deab"
+  },
+  {
+   "dosya": "navitas_seg_v36_best_512_fp16.engine",
+   "bayt": 57283989,
+   "sha256": "bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300"
   }
  ],
  "_t85": "T85: uretim modeli v27 -> v30 (REVIEW_LOG D-132 kabul kurali, D-133 kabul, kullanici karari). Cozunurluk 512 (D-112). Agirlik `best.pt`; bu kosuda best.pt ile last.pt'nin 537/537 agirlik tensoru esit, D-113 tekrarlamadi. ⚠ D-134'te mimar 'v28 kalir' onerisi yazdi; sevk karari kullanicinindir. ⚠ SURUM ADININ TEK KAYNAGI `config/model_registry.json`'dur; bu manifest saha paketinin KENDI KUNYESIDIR ve ikisinin esitligi `tests/test_saha_parametrik.py` ile KILITLIDIR.",
@@ -121,5 +126,6 @@
  "_paket_yenilenme": "2026-08-26 · v36 terfisi (REVIEW_LOG D-293 · ON_KAYIT SS15)",
  "_t83_arac_maskesi": "2026-08-26 · T83 onarimi: `kod/arac_maskesi.py` pakete EKLENDI (olcek kahini 3. katman; `rpi_inference._arac_kisa_kenari` onu gecikmeli import eder, yoksa SESSIZCE 'arac_maskesi modulu yok' ile None donuyordu). ⚠ Bu dosya `paket_icerigi` listesine BILEREK YAZILMADI: `paket_icerigi` yalniz `jetson_paket/models/` dizininin defteridir — `tests/test_uretim_modeli_hizasi.py` her kaydi `models/<dosya>` olarak acar ve `models/` disinda dosya kalmadigini sinar; `kod/` dosyalarinin HICBIRI burada durmaz. Kod dosyalarinin kilidi manifest sha'si degil `scripts/jetson_paket_hazirla.KOPYALAR` + `tests/test_jetson_comms_paketi.py` bayt-esitligidir (kanonik `codes/arac_maskesi.py` ile birebir).",
  "_t130": "2026-08-21 · URETIM v34 -> v35 (t127_temiz). KULLANICI KARARI (D-133); dayanak REVIEW_LOG D-249/D-255. Surum adinin TEK KAYNAGI config/model_registry.json'dur; bu kunye paketin KENDI icerigini tarif eder. ⚠ v34 dosyalari SILINMEDI — T123'un YEDEK adayi ve FARKLI HATA yapiyor (arena K2 %4,65 · kararlilik 4/260 daha iyi; ama gercek 67 karenin 67'sini reddediyor). Saha gununde SS6C gecis yordami kullanilir.",
- "_t_terfi_v36": "2026-08-26 · URETIM v35 -> v36 (kosum `gece_v7a_v35taban`, taban v35). KULLANICI KARARI (D-133); dayanak REVIEW_LOG D-293 ve ON_KAYIT SS15. 🔴 KURAL DISI TERFI: on kayitli gercek-kare esikleri ROTA >= 10 (olculen 8) ve MASKE_YOK <= 10 (olculen 16) GECILMEDI; esikler DEGISTIRILMEDI ve sonraki terfileri baglar (CONTRACTS SS12 ISTISNA). Surum adinin TEK KAYNAGI config/model_registry.json'dur; bu kunye paketin KENDI icerigini tarif eder. ⚠ v35 dosyalari SILINMEDI - YEDEK adaydir ve FARKLI HATA YAPAR (arena K3/K4/K6'da daha iyi 0/1/5 ve val82'de FP uretmez; ama gercek karelerde rotayi beton kanal ustunden gecirir: engel-uzeri waypoint 79, v36'da 3). Saha gununde SS6C birincil->yedek gecis yordami kullanilir."
+ "_t_terfi_v36": "2026-08-26 · URETIM v35 -> v36 (kosum `gece_v7a_v35taban`, taban v35). KULLANICI KARARI (D-133); dayanak REVIEW_LOG D-293 ve ON_KAYIT SS15. 🔴 KURAL DISI TERFI: on kayitli gercek-kare esikleri ROTA >= 10 (olculen 8) ve MASKE_YOK <= 10 (olculen 16) GECILMEDI; esikler DEGISTIRILMEDI ve sonraki terfileri baglar (CONTRACTS SS12 ISTISNA). Surum adinin TEK KAYNAGI config/model_registry.json'dur; bu kunye paketin KENDI icerigini tarif eder. ⚠ v35 dosyalari SILINMEDI - YEDEK adaydir ve FARKLI HATA YAPAR (arena K3/K4/K6'da daha iyi 0/1/5 ve val82'de FP uretmez; ama gercek karelerde rotayi beton kanal ustunden gecirir: engel-uzeri waypoint 79, v36'da 3). Saha gununde SS6C birincil->yedek gecis yordami kullanilir.",
+ "_jetson_orin_nano_20260906": "Engine 6 Eylul 2026'da Jetson Orin Nano 4GB (JetPack 7.2.1, TensorRT 10.16.2) uzerinde .pt'den derlendi (`jetson_komutlari`ndaki komut; 530 s, 57.283.989 B, sha256 bb9bd868...0300). ⚠ K5 (REVIEW_LOG D-431): `jetson_komutlari` ESKIDEN `model=navitas_seg_v36_best_512_fp16.onnx format=engine` diyordu — ultralytics ONNX'ten engine URETMEZ (`Model.export` PyTorch modeli ister, `_check_is_pytorch_model` TypeError atar; D-355 ile ayni sinif); 7 Eylul 2026'da .pt'den derleyen komutla degistirildi, JETSON_KILAVUZ SS4 de ayni gun duzeltildi. Engine BU KARTA OZELDIR (Orin sm_87, TRT 10.16); baska Jetson'da yeniden derlenir. Defter kaydi: `codes/model_registry.py --turev-kaydet <engine> --kaynak-pt models/navitas_seg_v36_best.pt`. Tutanak: jetson_paket/JETSON_ORIN_NANO_KURULUM.md. ⚠ Uretim karari: engine<->pt karar denkligi D-303 oransal esigini GECEMEDI (3/126) -> ucus `.pt` ile; engine yalnizca acik `--model`/`--engine` ile yuklenir (D-431 SS4)."
 }

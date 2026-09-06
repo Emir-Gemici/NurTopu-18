@@ -364,12 +364,23 @@ bu bir hata değil, o backend'in kurulu olmadığının dürüst raporudur.
 
 ## 4. TensorRT engine derle (T16)
 
-**Jetson üzerinde**, ONNX'ten. **v36 ile derle** — üretim modeli o (§0-T85 zinciri, güncel karar D-293):
+**Jetson üzerinde**, **`.pt`'den**. **v36 ile derle** — üretim modeli o (§0-T85 zinciri, güncel karar D-293):
 
 ```bash
 cd ~/navitas/models
-yolo export model=navitas_seg_v36_best_512_fp16.onnx format=engine imgsz=512 half=True
+yolo export model=navitas_seg_v36_best.pt format=engine imgsz=512 half=True device=0 batch=1 workspace=2
 ```
+
+> 🔴 **K5 / D-431 — bu blok 2026-09-07'de düzeltildi.** Eskiden `model=navitas_seg_v36_best_512_fp16.onnx`
+> veriyordu; ultralytics **ONNX'ten engine üretmez** (`Model.export` PyTorch modeli ister,
+> `_check_is_pytorch_model()` → `TypeError`; INT8 bloğundaki D-355 kusurunun aynısı). 6 Eylül 2026'da
+> Jetson Orin Nano 4GB'de (JetPack 7.2.1, TensorRT 10.16.2) engine **bu komutla `.pt`'den** derlendi:
+> 530 s, 57 283 989 bayt, sha256 `bb9bd868…0300`. Çıktı `navitas_seg_v36_best.engine` adıyla oluşur;
+> pakette `navitas_seg_v36_best_512_fp16.engine` adıyla durur ve deftere
+> `python codes/model_registry.py --turev-kaydet <engine> --kaynak-pt models/navitas_seg_v36_best.pt`
+> ile yazıldı (`jetson_paket/JETSON_ORIN_NANO_KURULUM.md` §4). Engine **o karta özeldir** (sm_87, TRT 10.16).
+> ⚠ Engine ↔ pt karar denkliği D-303 oransal eşiğini geçemedi (3/126) → **uçuş `.pt` ile**; engine yalnız
+> açık `--engine`/`--model` ile yüklenir (D-431 §4).
 
 ⚠ **Birden çok modeli TensorRT'ye derleme.** v17, v20, v21, v24, v27 ve v30 aynı
 mimaridir (YOLOv8m-seg, 27,2M parametre); ağırlık değerleri hızı değiştirmez.

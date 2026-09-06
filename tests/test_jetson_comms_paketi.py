@@ -52,11 +52,18 @@ class JetsonCommsPaketiTests(unittest.TestCase):
         #     Python 3.6 + sistem OpenCV'de var; rpi_inference (Py>=3.8 venv)
         #     kamerayi dogrudan acamaz. navitas-kamera-koprusu.service bu
         #     dosyayi bekler; paket tasimayinca CSI kameradan kare GELMEZ.
+        # D-431'de 18 -> 21 (7 Eylul 2026, Jetson paketi birlestirme): kart Jetson
+        # NANO degil ORIN NANO 4GB (JetPack 7.2.1, Py 3.12) cikti; Nano kurulum
+        # belgesi/betikleri bu kartta gecersiz. Pakete alinanlar (jetson_paket/ KOKU):
+        #   · JETSON_ORIN_NANO_KURULUM.md  -> kapi kapi kurulum tutanagi (olculdu)
+        #   · orin_nano_root_kurulum.sh    -> apt nvidia-jetpack, swap, gruplar, nvpmodel
+        #   · orin_nano_venv_kurulum.sh    -> ~/venv312 + torch cu130 + ultralytics
         # Kapi yine GEVSETILMEDI, gerekceyle GUNCELLENDI.
-        self.assertEqual(18, len(KOPYALAR),
-                         "paket kopya sozlesmesi 18 dosya olmali "
-                         "(16 .py + karisim_arena.yaml + "
-                         "config/model_registry.json · T103/T83/T202/D-403/D-404/Gorev K)")
+        self.assertEqual(21, len(KOPYALAR),
+                         "paket kopya sozlesmesi 21 dosya olmali "
+                         "(16 .py + karisim_arena.yaml + config/model_registry.json + "
+                         "Orin Nano belgesi + 2 kurulum betigi · "
+                         "T103/T83/T202/D-403/D-404/Gorev K/D-431)")
         for kaynak, hedef in KOPYALAR.items():
             with self.subTest(hedef=hedef.name):
                 self.assertTrue(hedef.is_file(), f"paket dosyasi yok: {hedef}")

@@ -13,18 +13,10 @@
    "_kabul_kumesi_acili_notu": "T189 · D-334/D-336: K5'in IKINCI kolu. Yatay kume (yukarisi) T184'ten ONCE uretildi ve icindeki HER bariyer yataydir; bu yuzden K5, T184'un duzelttigi DONME KORLUGUNU ne yakalayabilir ne de duzelmeyi dogrulayabilirdi (vakum kapi, TEST_SPECS SS4.1). Bu kume ayni uretec/tohum/parametrelerle, yalniz --bariyer-acisi 90 eklenerek uretildi. AYIRT EDICILIGI MUTASYONLA OLCULDU (results/t63/t189_ayirt_edicilik.json): T184 oncesi dedektor burada 185/260 -> 48/260 dusuyor (52,7 puan), YATAY kumede ise 181/260 -> 181/260 HIC dusmuyor. Yatay kume DEGISTIRILMEZ: K1/K7 capalari ona baglidir.",
    "sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
    "turevler": {
-    "navitas_seg_v36_best.engine": {
-     "backend": "tensorrt",
-     "imgsz": 512,
-     "sha256": "DERLENINCE_YAZILIR",
-     "kaynak": "models/navitas_seg_v36_best.pt",
-     "kaynak_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
-     "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya> --kaynak-pt models/navitas_seg_v36_best.pt` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED."
-    },
     "navitas_seg_v36_best_512_fp16.engine": {
      "backend": "tensorrt",
      "imgsz": 512,
-     "sha256": "DERLENINCE_YAZILIR",
+     "sha256": "bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300",
      "kaynak": "models/navitas_seg_v36_best.pt",
      "kaynak_sha256": "1d1caca6f6da19ea35e69186a048da960ca5188be6ee6d49d6106457cac46911",
      "_not": "T143/D-284: ayni SOYUN turevidir; sha256 bu dosyanin KENDI ozetidir (.pt ozeti DEGIL). Yer tutucu = derlenmedi/dogrulanmadi = RED (fail-closed). Jetson'da derlendikten sonra `codes/model_registry.py --turev-kaydet <dosya> --kaynak-pt models/navitas_seg_v36_best.pt` ile yazilir; `kaynak_sha256` uretim .pt ozetiyle eslesmezse turev YETIM sayilir ve RED. FP16 derlemesi ayri dosya, ayri ozet."
@@ -47,6 +39,7 @@
     }
    },
    "_turevler_notu": "T143: eskiden `model_kayit_dogrula` yalniz DOSYA ADI kiyasliyordu; her .engine 'ESLESMIYOR' ile reddediliyor ve Jetson'da TensorRT ancak `--kayit-dogrulamasiz` ile (fail-closed KAPATILARAK) yukleniyordu (D-284, T18 curutucusu). Artik `turevler` anahtari dosya ADIYLA eslesir; turevin sha256'si yer tutucu degilse ve diskteki dosyanin ozetiyle BIREBIR ayniysa GECER. Kayitsiz/yabanci .engine yine RED; .pt davranisi DEGISMEDI (ad + imgsz kiyasi).",
+   "_fp32_engine_notu": "2026-09-07 (REVIEW_LOG D-431 K4, mimar karari): `navitas_seg_v36_best.engine` (FP32 TensorRT) yer tutucu girdisi profilden CIKARILDI. Sebep mekaniktir: FP32 engine hic derlenmedi ve gerekmiyor (FP16 turevi 6 Eylul 2026'da Jetson Orin Nano'da derlendi, sha256 yukarida GERCEK); `scripts/surum_dondur.py --dondur` etkin profilin HER tensorrt turevinin kayitli olmasini ister ve yer tutucu girdi muhru RED ederdi (D-405 sira kurali). Girdi silinmis degil, gerektiginde ayni sema ile (kaynak + kaynak_sha256 + yer tutucu) geri yazilir ve `--turev-kaydet` ile doldurulur.",
    "classes": {
     "0": "traversable",
     "1": "blocked"

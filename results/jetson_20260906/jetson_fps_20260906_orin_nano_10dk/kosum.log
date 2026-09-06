@@ -1,0 +1,18 @@
+BASLANGIC 2026-09-06T19:04:57+03:00
+/home/n4vitas/venv312/lib/python3.12/site-packages/torch/cuda/__init__.py:371: UserWarning: Found GPU0 Orin which is of compute capability (CC) 8.7.
+The following list shows the CCs this version of PyTorch was built for and the hardware CCs it supports:
+- 8.0 which supports hardware CC >=8.0,<9.0 except {8.7}
+- 9.0 which supports hardware CC >=9.0,<10.0
+- 10.0 which supports hardware CC >=10.0,<11.0 except {10.1}
+- 11.0 which supports hardware CC >=11.0,<12.0
+- 12.0 which supports hardware CC >=12.0,<13.0
+  _warn_unsupported_code(d, device_cc, code_ccs)
+Olculuyor: pt / imgsz=512
+Olculuyor: onnx / imgsz=512
+Olculuyor: tensorrt_fp16 / imgsz=512
+Loading /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/jetson_paket/models/navitas_seg_v36_best_512_fp16.engine for TensorRT inference...
+[09/06/2026-19:16:43] [TRT] [I] Loaded engine size: 54 MiB
+[09/06/2026-19:16:43] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +18, now: CPU 0, GPU 70 (MiB)
+SONUC: 2/3 vaka olculdu; 0 vaka acikca atlandi -> /home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/results/jetson_fps_20260906_orin_nano_10dk
+EXIT=0
+BITIS 2026-09-06T19:26:33+03:00

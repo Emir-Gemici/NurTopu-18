@@ -1,0 +1,7 @@
+{
+ "turev": "navitas_seg_v36_best_512_fp16.engine",
+ "eski_sha256": "DERLENINCE_YAZILIR",
+ "yeni_sha256": "bb9bd8685a98a91947332c5b19b43f6c5631fb9c8ebcf611a9f75f6c05950300",
+ "profil": "competition",
+ "defter": "/home/n4vitas/proje/NAVITAS_JETSON_20260906/navitas/config/model_registry.json"
+}
