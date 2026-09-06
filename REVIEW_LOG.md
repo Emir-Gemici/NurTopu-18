@@ -30147,3 +30147,28 @@ asimetri buradadir); (10) ESC sinyal sirasi + kirmizi teller; (12) TX pili + fai
    "saha oturumu: <oturum adi>, <saat>" satiri yazilir, digeri okur.
 4. **Olay = once log.** Guc verilmeden once tlog/.bin alinir; bu kayit 5 saat sonra
    yazildi cunku olay bildirilirken "log" hic anilmadi.
+
+### D-430 — MIMAR SUIT KIRMIZIYKEN PUSH ETTI (7 Eyl ~02:00, e27941d): zincir yalniz genel kapiya bakiyordu — kural betige baglandi
+
+**Ne oldu.** e27941d icin push zinciri: arka planda suit → bittiginde genel kapi →
+push. Suit ciktisi `FAILED (failures=1, skipped=3)` idi; zincirin kosulu **yalniz**
+genel kapinin "GECTI" satirina bakiyordu, suitin "OK" satirina bakmiyordu. Genel kapi
+15/15 · 15/15 gecti, push gitti. Anayasa §5: *"kapi dusmusken push yapilmaz"* — ihlal.
+
+**Dusen test:** yine `test_p8_sim_katmani.test_comms_loopback_gecer`, `WinError 10013`
+(bind 5005/5006) — D-427'de olculen ortam kusuru, T209 acik. Portlari bu kez de iki
+canli sahne sureci tutuyordu (asagida). Yani itilen kodda regresyon **yok**; ama bunu
+push'tan ONCE degil SONRA olctum, bu da kuralin ihlalidir: "kirmizi ama ortam" yorumu
+push oncesi yapilmaz, portlar bosalana kadar beklenir.
+
+**Onarim — kural insana degil betige:** `scripts/push_kapisi.py`:
+  1. UDP 5005/5006 doluysa hic baslamaz (cikis 3, tutan satirlari basar).
+  2. Tam suit → "OK" satiri + cikis 0 sart.
+  3. Genel kapi → "GECTI" sart.
+  4. Ikisi de yesilse push; ciktilar `results/push_kapisi/<zaman>/` (kanit).
+  `--kuru`: push etmez, olcer. Suit ve kapi **ard arda** kosar (paralel kosum
+  mutasyon testleriyle sahte IndentationError uretir — 4 Eylul'de olculdu).
+Bundan sonra mimarin elle `git push` yazmasi yordam disidir; push bu betikten gecer.
+
+**T209 ile bagi:** `test_comms` uretim portlarina bind ettigi surece YKS acikken hic
+kimse push edemez. Bu, T209'un onceligini "ONEMLI"den yukari tasiyan ikinci olaydir.
