@@ -123,7 +123,7 @@ OK (skipped=3)
 | 3 Eyl (D-407) | 1827 | D-407 §4 |
 | **3 Eyl (bu bölüm)** | **1896** | bu koşum. Ölçülen ara adımlar: 1875 (D-408 anı) → 1882 (saha belleği kapıları) → 1890 (takvim kapısı ve çürütücü turu kapıları) → **1896** (hakem kanıt yolu, +6 · D-412). 1890'lık koşum **6 hata** verdi; bkz. §4.13.3.1 |
 
-`tests/` altında **153** adet `test_*.py` dosyası vardır (`ls tests/ | grep -c "^test_"`).
+`tests/` altında **153** adet `test_*.py` dosyası vardır (`ls tests/ | grep -c "^test_"`, 3 Eylül 2026). Aynı komut 5 Eylül 2026'da **180** verir.
 
 **Faz B'de eklenen kapı dosyaları (test metodu sayısı, `grep -c "def test_"`):**
 
@@ -145,9 +145,10 @@ OK (skipped=3)
 
 | kapı kipi | neden koşulamadı |
 |---|---|
-| `jetson_baslat.sh --kur` / `--kapi` / `--dogrudan` (systemd) | Windows'ta koşulamaz; **Jetson'daki ilk koşum ilk kanıt olacak** (5 Eylül) |
+| `jetson_baslat.sh --kur` / `--kapi` / `--dogrudan` (systemd) | Windows'ta koşulamaz; **Jetson'daki ilk koşum ilk kanıt olacak** (5 Eylül). **5 Eylül güncellemesi:** Jetson o gün araca takılmadı (D-426 §4: *"Jetson takili DEGIL"*); ilk koşum hâlâ **ÖLÇÜLEMEDİ** |
 | TensorRT `.engine` derleme ve karar kıyası | `tensorrt` çalışma zamanı PC'de yok (venv'e bilerek kurulmadı); ORT CPU'ya geri düştü ve betik geri düşmeyi **"dönüştü" saymadı** (fail-closed çalıştı) |
 | Gerçek MAVProxy | PC'de `[YOK] mavproxy.py (PATH)`; kuru koşu bunu **gizlemez, raporlar** |
+| Tam suit, **YKS canlıyken** | D-427 (5 Eylül): `comms/test_comms.py:35-36` loopback'i üretim YKS/İKA portları **5005/5006**'ya bind eder; `comms/link.py` tek-sahipli uçta `SO_EXCLUSIVEADDRUSE` kurduğu için `yks_gui.py` açıkken `test_p8_sim_katmani.test_comms_loopback_gecer` **kesin düşer** (`WinError 10013`). 5 Eylül'de 3 koşumdan 2'si böyle düştü; kod değişmedi. Kuyruk: **T209** (geçici port ya da sebep söyleyen `skipTest`), henüz yapılmadı |
 
 ---
 
@@ -163,8 +164,8 @@ olur.** Test altyapısının nihai hâli (koşum ortamı ve fikstürler) §4.2.6
 
 Dört mekanizma birlikte çalışır. Hiçbiri sonradan icat edilmiş bir rapor süsü
 değildir; her biri **bu projede bir kez gerçek zarar önlediği için** kuraldır ve
-zararın kaydı `REVIEW_LOG.md`'de durur (414 başlık · 408 benzersiz kayıt,
-`grep -cE "^### D-[0-9]+"`, 3 Eylül 2026).
+zararın kaydı `REVIEW_LOG.md`'de durur (**432 başlık · 426 benzersiz kayıt**, son kayıt D-427;
+`grep -cE "^### D-[0-9]+"` · `grep -oE "^### D-[0-9]+" | sort -u | wc -l`, 5 Eylül 2026; 3 Eylül'de 414 · 408).
 
 ### 4.2.1 Ön kayıt — eşik, sonuç görülmeden yazılır (D-107)
 
@@ -182,7 +183,7 @@ Bu yuzden esikler BURAYA, sonuc gelmeden yaziliyor ve sabah DEGISTIRILMEYECEK.
 ```
 
 **Depodaki hacim:** `results/` altında **36 ön kayıt artefaktı** (35 Markdown +
-1 JSON), `find results -iname "*on_kayit*"` (3 Eylül 2026).
+1 JSON), `find results -iname "*on_kayit*"` (3 Eylül 2026; 5 Eylül 2026'da yeniden sayıldı: 36, değişmedi).
 
 **Ön kaydın somut olarak iş gördüğü dört olay:**
 
@@ -214,6 +215,10 @@ Uygulanmayan mutasyon başarı sayılmaz (D-370).
 | `--streamrate 8` silindi | `jetson_paket/systemd/navitas-cogullayici.service` | **K1 DÜŞTÜ** | D-406 §3 (K2) |
 | Nano kurulum belgesinde `scripts/` → `codes/` | `jetson_paket/JETSON_NANO_KURULUM.md` | test **DÜŞTÜ** (`belge ~/navitas/codes/ diyor, jetson_baslat.sh scripts/ ariyor`) | D-407 §1 |
 | çerçeveleme atlanıp ham bayt fan-out | `comms/seri_hub.py` | **2 test** yakaladı | D-404 §1 |
+| `_kanit_yaz` tanımı geçici kaldırıldı (3 Eyl) | `comms/yks_gui.py` | **6/6 test düştü** (2 failure + 4 error); dosya `cmp` ile bayt-eş geri yüklendi | D-412 |
+| var olmayan başlığa `§6.99.7` atfı eklendi (4 Eyl) | `FDR/BOLUM_6_GEREKSINIM_IZLENEBILIRLIGI.md` | **T1 DÜŞTÜ**; `cmp` bayt-eş (ilk geri yükleme dosya kilidine takıldı, yeniden denendi) | D-420 §5 |
+| `--izinli-kaynak` bayrağı runbook'tan çıkarıldı (4 Eyl) | `SAHA_RUNBOOK.md` §3 | **T1 düştü** (`test_runbook_komutlari_kosuyor`); `cmp` bayt-eş | D-421 §2 |
+| (1) eski mutlak sapma tavanı geri konuldu · (2) `_yerel_saat_adimi` öldürüldü (4 Eyl) | `comms/iha_komut_alici.py` | (1) **17 test düştü** · (2) **5 test düştü**; `git diff -U0` ile silinen assert **0** (71 → 140); ayna `jetson_paket/kod/` bayt-eş doğrulandı | D-422 §6 |
 
 **🟡 Dürüst mutasyon skoru — bir kapı takımı zayıf çıktı, yazıldı ve sonra kapatıldı.**
 `comms/seri_hub.py` için bağımsız çürütücü **25 mutant** üretti. **İlk ölçümde**
@@ -254,6 +259,8 @@ Bulgular kabul edilmeden önce mimar tarafından **yeniden üretilir**.
 | **D-383** (1 Eyl) | telsiz gecikmesi, YKS tazelik, şekil kapısı, nihai ret | 3 bağımsız ajan (357k token, 74 araç çağrısı) | **4 gerçek kusur**: "308 ms ACK gecikmesi" aslında bir **soket zaman aşımı sabiti**; YKS duvar-saati asimetrisi (saat 30 s geri alınınca BAYAT → TAZE); şekil kapısı "H"yi değil "çerçeveli yapıyı" ölçüyormuş; nihai ret sahnedeki **gerçek pedi** öldürüyormuş | REVIEW_LOG D-383 |
 | **D-405** (3 Eyl) | mühür atlatma, hub protokol/ACK, arıza/kaynak, kuru-vs-gerçek, test vakumu | 5 mercek | **1 KRİTİK + 16 ÖNEMLİ + 18 KÜÇÜK**, ayrıca **5 çürütülemedi** kalemi | `results/faz_b_oncesi/curutucu_d405/BULGULAR_OZET.md` (30 KB) + `BULGULAR_TAM.md` (81 KB) + repro betikleri |
 | **D-407** (3 Eyl) | D-405/D-406 kapanışlarının denetimi | 5 mercek (kota nedeniyle kısmen ana döngüde koşuldu) | **2 gerçek kusur** (Nano belgesi yanlış dizin; mühür kapsamı eksik) + T207 gerçek topolojide **doğrulandı** + köprü sağlam çıktı | `results/faz_b_oncesi/curutucu_d407/` |
+| **D-411** (3 Eyl) | bu raporun taslağı: 302 dosya yolu iddiası (294 geçerli), 30 satır-numarası atfı (3'ü anlamca yanlış satır), tüm sayısal iddialar | "yazanı olmayan" göz (kayıtta kadro sayısı yazılı değil) | **71 bulgu, 6 KRİTİK**: 21 Eylül uçuş günü sanılıyordu; suit sayısı üç farklı değer taşıyordu; `seed` kusuru D-138 diye atıf alıyordu (doğrusu D-140); K6 `2/256 = %1,17` (doğrusu %0,78); hub skoru "13/25" kalmış (ölçülen 24/25). **30 KÜÇÜK bulgu kapatılmadı ve kapatılmış gibi yazılmadı** | REVIEW_LOG D-411 |
+| **D-421** (4 Eyl) | "cumartesiye hazır mıyız" iddiası — dört eksen | her eksen ayrı doğrulayıcıyla | **13 tıkayıcı bulgu**; en ağırı: runbook komutu `EXIT=2` ile ölüyken kapısı 22/22 yeşil (§4.2.4 madde 5); Nano'ya internet zorunluluğu hiçbir listede yoktu; cuma kartında iki yanlış sayı; saat kilidi ayrı tura verildi (→ D-422). Kayıt: *"Onaylayan tur hicbir sey bulmazdi. Curuten tur 13 tikayici buldu."* | REVIEW_LOG D-421 |
 
 **D-405'in KRİTİK bulgusu, örnek olarak:** sürüm dondurma mührünün özeti
 **çalışma ağacı baytına** bağlıydı (CRLF). Aynı commit'in başka bir checkout'unda
@@ -276,7 +283,7 @@ hiçbir şeyi bağlamıyorsa (payda boş, mutasyon uygulanmıyor, iki kol aynı 
 koşuyor) o test bir **vakumdur** ve varlığı zararlıdır: güven üretir, koruma
 üretmez.
 
-**Bu projedeki dört vakum, hepsi ölçüldü ve kapatıldı:**
+**Bu projedeki dört vakum, hepsi ölçüldü ve kapatıldı** (4–5 Eylül'de ölçülen üç vakum daha 5–7'dedir):
 
 1. **D-15 · Anayasa madde 4 kapısı hiç çalışmamıştı.** Yasak bağımlılık kapısı
    olarak dolaşan komut `grep -rnE "^\s*(import\|from)\s+(scipy\|skimage\|sklearn)"`
@@ -316,6 +323,49 @@ koşuyor) o test bir **vakumdur** ve varlığı zararlıdır: güven üretir, ko
    olan bir şeyi ölçüyormuş gibi yapardı — CONTRACTS bunu açıkça *"D-15 sınıfı
    vakum kapı"* diye adlandırır.
 
+5. **D-421 §2 · Runbook kapısı 22/22 yeşilken komut ölüydü (4 Eyl).** `SAHA_RUNBOOK.md`
+   §3'teki `iha_komut_alici` komutu `error: --izinli-kaynak HOST:PORT saha
+   komutlari icin zorunlu` / `EXIT=2` ile düşüyordu; kapısı `tests/test_p4_runbook.py`
+   **22/22 geçiyordu**. Kayıt: *"Yaptigi sey sabit bir jeton listesiyle `assertIn`
+   substring aramasiydi; listede `--izinli-kaynak` yoktu. Komut OLUYKEN kapi yesil."*
+   Asimetri: bloğun ilk satırı (`iha_inis_yayinci`) kalkıyor, ikincisi ölüyor — sahada
+   zincir yarı canlı görünür, ARM/DISARM/RTL/LAND/PARAŞÜT hiç ACK almaz. Yeni kapı
+   `tests/test_runbook_komutlari_kosuyor.py` (3 test) komutu **gerçekten koşar**; T2
+   vakumluluk (≥ 3 komut ve kusurun çıktığı komut kapsamda). Kayıt bunu aynı sınıfın
+   **dördüncü** tekrarı diye yazar (D-415, D-419 §5, sahte-kapı dedektörü, runbook):
+   *"Dordunde de olcum aletinin kendisi olculmemisti."*
+
+6. **D-423 · Kapı doğru kopyada düşerdi (4 Eyl).** `JETSON_NANO_KURULUM.md` §3.4'e
+   yazılan kapı `ls ~/wheels | wc -l` → **48** bekliyordu; komut **51** basar
+   (48 `.whl` + 3 metin dosyası). *"Iki sayi da gercek, ama ayni seyi olcmuyorlar."*
+   Kusuru düzeltme turu üretti: D-421 §4'te karttaki "51" ölçülüp "48" yapılmış, aynı
+   turda yazılan kapı kendine uygulanmamıştı. Sahadaki insan doğru kopyada 51 ≠ 48
+   görüp kurulumu durdururdu. Onarım: `ls ~/wheels/*.whl | wc -l` = 48; kapı
+   `tests/test_wheels_sayisi_belgelerle_tutarli.py` (4 test) dosya sistemini sayıp
+   kılavuz ve kart sayılarıyla karşılaştırır ve kendi vakumluluğunu ölçer (`.whl`
+   sayısı ≠ toplam dosya sayısı; eşitlerse *"test kendi kendini anlamsizlastirmis
+   demektir"*). Kural genişletildi: *"bir belgeye sayi yazan her duzeltme, o sayiyi
+   ureten komutun gercekten o sayiyi bastigini gostermek zorundadir."*
+
+7. **D-425 §2 · TEYİT listesi var olmayan parametreyi yakalayamaz (5 Eyl, sahada).**
+   D-424 firmware boşluğunu kapatırken `/Copter/stable/` = **4.7.1** indirdi ve
+   README'ye "TEYİT listesi bunun için var" yazdı. Sahada `Compare Params`:
+   **`Missing 9 params`** (`SYSID_THISMAV SR1_POSITION SR1_EXTRA3 SR2_POSITION
+   SR2_EXTRA3 RTL_ALT LAND_SPEED WPNAV_SPEED ARMING_CHECK`) — Copter-4.7 SI
+   reformu: `SR1_*` → `MAV1_*` (ad), `RTL_ALT` 3500 cm → `RTL_ALT_M` 35, `WPNAV_SPEED`
+   300 cm/s → `WP_SPD` 3 m/s (300 kalırsa **300 m/s**), `ARMING_CHECK` → `ARMING_SKIPCHK`
+   (**anlam ters**). Kayıt: *"TEYIT listesi dort parametrenin ANLAMINI kontrol eder —
+   var olmayan dokuz parametreyi yakalayamaz. Yani D-424, kendi onarimini olcmeden
+   kapatti."* `test_faz_b_pixhawk_sablon.py` (12) dosyanın **iç** tutarlılığını
+   kilitler, firmware uyumunu ölçmez (ölçemez — kart yoktu). Kapanış: 4.7'ye port
+   **edilmedi**, sürüm **4.5.7'ye sabitlendi** (`scripts/pixhawk_firmware_indir.py`
+   `SURUM = "stable-4.5.7"`, `firmware-version.txt` `4.5.` ile başlamazsa çıkış 2;
+   indirilen `arducopter.apj` 1.585.371 B, board_id 56, git 2a3dc4b7);
+   `tests/test_pixhawk_firmware_yolu.py` +4 (`SurumKilidiTests`). Saha ölçümü 15:08:
+   `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `PreArm: Check frame class`
+   kayboldu (D-426 §1). Kural: *"beyan edilen bagimlilik ZORLANIR"* — "kararlı
+   sürüm" bir sürüm değil, bugünkü karardır.
+
 Ek olarak, **her ölçüm betiğinde vakum kapıları** vardır. Örnek (T99,
 `results/t99_uretim_imzasi/olcum_20260903.json`): `V1_vakum_yok = true`
 (araç maskesi gerçekten dolu — 7/260 karede 252–1787 px), `V3_tek_cikarim = true`
@@ -350,6 +400,10 @@ demektir. Her biri depoda durur ve koşulabilir.
 ⚠ **Bu altyapının kapsamadığı dört şey:** gerçek RF, gerçek Pixhawk, gerçek
 Jetson, gerçek arena. Dördü de §4.13.1'de kalem olarak durur ve hiçbiri
 "fikstürde geçti" diye kapatılmamıştır.
+
+⚠ **Beşinci sınır (D-427, 5 Eylül):** bu altyapı **YKS ile aynı makinede** koşar;
+`comms/test_comms.py` üretim portlarına (5005/5006) bind ettiği için YKS açıkken tam
+suit koşamaz (§4.1.3, T209). Sahada tam suit ancak YKS kapatılarak koşulur.
 
 ---
 
@@ -428,17 +482,19 @@ boştur.
 
 | ekipman | koşulacak kabul kapısı | bugünkü sonuç |
 |---|---|---|
-| Jetson Nano 4GB | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | kutu açılmadı |
-| Pixhawk 6C + PM02 | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | kutu açılmadı |
-| Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | kutu açılmadı |
-| Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | kutu açılmadı |
-| 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | kutu açılmadı |
-| FCHUB-12S V2 · 5008 340KV × 4 · 12×10 pervane | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | kutu açılmadı |
-| 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | kutu açılmadı |
-| FS-i6 kumanda | menzil ve failsafe davranışı (§4.5, §4.12) | kutu açılmadı |
+| Jetson Nano 4GB | PT ve ONNX için p50 **ve** p95 FPS ≥ 0,61 (türetimi §4.8.2.3) | **ÖLÇÜLEMEDİ** — 5 Eylül'de Jetson araca takılmadı (D-426 §4) |
+| Pixhawk 6C + güç modülü (plan PM02; sahada **PM06** — BEYAN, §4.13.4) | `scripts/mavlink_dogrula.py` 3/3 · `EXTENDED_SYS_STATE` akışı (§4.9.4) | **KISMEN**: firmware 4.5.7 + parametre yükleme OLCUM (tutanak 15:08); PM06 → `POWER1` OLCUM (18:03). `mavlink_dogrula.py` kapısı **koşulmadı** → ÖLÇÜLEMEDİ (§4.13.1 #6); parametre dökümü yok (#9) |
+| Holybro M9N GNSS | 3B fix ve `GLOBAL_POSITION_INT` canlı akışı (§4.9.1 G1 ölçütleri) | **KISMEN**: alıcı tanındı — OLCUM `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` (15:38). 3B fix ve akış kaydı yok → ÖLÇÜLEMEDİ |
+| Raspberry Pi HQ (IMX477) | `nvarguscamerasrc` üzerinden köprü kare akışı (§4.10.1 ölçütleri) | **ÖLÇÜLEMEDİ** — Jetson takılmadı, köprü koşulmadı |
+| 2 × SiK 433 MHz telsiz | RTT p95 < 0,2 s ve menzil (§4.5) | **KISMEN**: bağlantı BEYAN (~18:45, "tamam oldu"); RTT, kayıp ve menzil ÖLÇÜLEMEDİ (§4.5) |
+| FCHUB-12S V2 · 5008 340KV × 4 · 12×10 pervane | tam yükte akım ve `VIBE` titreşim kaydı (§4.3.3 adım 3.1) | **KISMEN**: pervanesiz motor testi OLCUM (18:06); sıra/yön 4/4 BEYAN, video yok; ESC kalibrasyonu YAPILMADI; tam yükte akım ve `VIBE` ÖLÇÜLEMEDİ (pervane takılmadı). ESC künyesi sahada **"60 A V2"** ×4 (plan 80 A) — BEYAN, §4.13.4 |
+| 4S 10 Ah 25C pil + iMAX B6 şarj | kapasite ve şarj çevrimi; günde 2 uçuş kısıtının doğrulanması | **KISMEN**: pil takıldı, `PreArm: Battery 1 low voltage failsafe` kayboldu — OLCUM (18:03). MP gerilimi ↔ multimetre (±0,1 V), kapasite ve şarj çevrimi ÖLÇÜLEMEDİ |
+| FS-i6 kumanda + FS-iA6B alıcı | menzil ve failsafe davranışı (§4.5, §4.12) | **KISMEN**: bind BEYAN (16:18); `RCInput: decoding IBUS(1)` OLCUM (18:03); alıcı FS-iA6B teyit (B harfi, BEYAN). Menzil ve RC failsafe ÖLÇÜLEMEDİ (§4.5, §4.12) |
 | İKA ekipmanları | 🔴 **gerçek İKA motor sürücüsü YOKTUR** (R12/T149); İKA ekipman listesi henüz kapalı değildir (§4.11) | ekipman seçilmedi |
 
-Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur.
+Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur; 5
+Eylül'de ESC ve güç modülü plandan **farklı** çıktı (D-426 §3), etiket
+fotoğrafı gelmedi.
 
 ---
 
@@ -447,9 +503,19 @@ Fiziksel künye teyidi §4.13.4 madde 1'de **BEYAN GEREKLİ** olarak durur.
 > *Yönerge: "…kumanda ve telemetri sistemlerine yönelik sahada gerçekleştirilen
 > menzil testlerinin sonuçları paylaşılmalıdır."*
 
-🔴 **ÖLÇÜLEMEDİ: gerçek SiK 433 MHz çifti ve FS-i6 kumanda sahada denenmedi;
-menzil (metre), paket kaybı ve RTT ölçülmedi. Ölçüm 5–19 Eylül'de
-`scripts/sik_rf_olc.py` ile koşulacak; kapı RTT p95 < 0,2 s'dir.**
+🔴 **ÖLÇÜLEMEDİ: menzil (metre), paket kaybı ve RTT ölçülmedi. Kapı RTT
+p95 < 0,2 s; ölçüm aracı `scripts/sik_rf_olc.py`, 5 Eylül'de koşulmadı.**
+
+**5 Eylül 2026'da olan** (`REVIEW_LOG.md` D-426 §1) — menzil ölçümü **değildir**:
+
+| ne | tür | kanıt |
+|---|---|---|
+| SiK çifti bağlandı (~18:45) | BEYAN | "tamam oldu" — RTT, kayıp ve mesafe kaydı yok |
+| FS-i6 ↔ FS-iA6B bind (16:18) | BEYAN | "led sabit yanıyor" |
+| Kumanda çerçevesi Pixhawk'ta çözülüyor (18:03) | OLCUM | `RCInput: decoding IBUS(1)` — mesafe kaydı yok |
+
+"Bağlandı" bir menzil sayısı üretmez; iki bağlantı da mesafe kaydı olmadan
+geldi. Menzil ölçümü uçuş testleriyle birlikte yapılacaktır (§4.3.3).
 
 **Menzilin YERİNE GEÇMEYEN, bugün elde olan şey:** taşıyıcı katmanın gerçek
 `pyserial` bayt akışında koştuğu ölçüm (§4.9.2) ve hub gecikmesi (§4.9.3).
@@ -467,23 +533,36 @@ kanıtı yoktur** (R20, `results/sartname_bosluk/rapor.md`). Bu iddia menzil
 > kalibrasyonlarının gerçekleştirildiğini gösteren kanıtların raporda yer alması
 > beklenmektedir."*
 
-🔴 **ÖLÇÜLEMEDİ: Pixhawk 6C eline alınmadığı için IMU ve pusula kalibrasyonu hiç
-koşulmadı; kalibrasyon kanıtı (ekran çıktısı, parametre dökümü) yoktur.
-Kalibrasyon 5 Eylül kutu açılışında yapılacak ve kanıtı buraya girecektir.**
+🔴 **ÖLÇÜLEMEDİ: 5 Eylül 2026'da Pixhawk 6C ele alındı (§4.4) ama kalibrasyon
+kanıtı (ekran çıktısı, `INS_*` / `COMPASS_*` parametre dökümü) yoktur.**
+Yönergenin üç kalemine cevap (`REVIEW_LOG.md` D-426 §4):
+
+- **IMU (accel + level):** BEYAN "yapıldı" — kartın gövdeye sabitlenip
+  sabitlenmediği belirsiz ("bantlanmadı"); parametre dökümü alınmadı.
+  **Teyit yok → ÖLÇÜLEMEDİ.** Kart sabitlendikten sonra yeniden yapılır.
+- **Pusula:** **YAPILMADI.** Jetson araca takılı değildi; kalibrasyon her şey
+  takılıyken, dışarıda yapılır ve Jetson takılınca **yeniden** gerekir.
+- **Pitot tüpü:** **KAPSAM DIŞI** — FDA görev test aracı çoklu rotordur, hava
+  hızı sensörü taşımaz (aşağıdaki tablo).
 
 | kalibrasyon | hangi araçta | bugünkü kanıt |
 |---|---|---|
-| IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | yok |
-| Pusula (manyetometre) | FDA görev test aracı (çoklu rotor) | yok |
+| IMU (ivmeölçer + jiroskop) | FDA görev test aracı (çoklu rotor) | 5 Eylül: BEYAN "yapıldı", kart sabit değildi, döküm yok → **ÖLÇÜLEMEDİ** (D-426 §4) |
+| Pusula (manyetometre) | FDA görev test aracı (çoklu rotor) | 5 Eylül: **YAPILMADI** (Jetson takılı değil; D-426 §4). Kapı: ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
 | Pitot tüpü | 🔴 FDA görev test aracında **pitot tüpü yoktur** — çoklu rotor hava hızı sensörü taşımaz. Pitot, yarışma final aracının (sabit kanat + mancınık) kalemidir ve o araç **henüz üretilmemiştir**. | kapsam dışı (bu araçta) |
 
 ⚠ Pixhawk parametrelerinin kendisi **repo dışıdır** (R17). Kalibrasyon sonrası
 parametre dökümü `config/pixhawk/` altına kanıt olarak alınacaktır
-(§4.13.1 kalem 9).
+(§4.13.1 kalem 9). 5 Eylül'de döküm **alınmadı**: beklenen dosya
+`config/pixhawk/arducopter_fda_20260905.param` yoktur (D-426 §4;
+`config/pixhawk/README.md` §1 adım 6). Şablon dosyası
+`config/pixhawk/arducopter_fda.param` kalibrasyon değeri **içermez**
+(README §2: kalibrasyonlar parametre dosyasında yoktur, dosya bunları ezmez).
 
 **BEYAN GEREKLİ (insan):** kalibrasyonun yapıldığı tarih, kullanılan yer
 istasyonu yazılımının adı ve sürümü, kalibrasyon sonrası `COMPASS_*` ve `INS_*`
-parametre dökümü.
+parametre dökümü. 5 Eylül accel kalibrasyonu için: kartın o anda sabit olup
+olmadığı (D-426 §4 "bantlanmadı") — sabit değildiyse kalibrasyon yeniden.
 
 ---
 
@@ -552,6 +631,12 @@ bağlı, D-386).
 | **K8** | gerçek kare üzerinde üretim karar yolu kırılmıyor | `ZEMIN_MASKESI_SUPHELI` **dönmemeli** | zemin kaplaması **%4,44** · ret sebebi `UC_BANT_TEMAS_YOK` | **GEÇTİ** |
 
 **Verdikt:** `true` (on kapının onu).
+
+**Tazelik (5 Eylül):** `scripts/olcum/results/t63/` altında bu verdiktten (1 Eylül 23:30)
+sonra yazılmış denetçi çıktısı yoktur (`ls -lt`, en yeni dosya
+`t150_baglama_v36_kabul_verdikt.json`); tablo en güncel koşumdur, 5 Eylül'de yeni koşum
+yapılmadı. Tablodaki on değer JSON'un `olcum.K1_rota … K8_zemin_kaplamasi` alanlarıyla
+5 Eylül'de yeniden karşılaştırıldı: fark yok.
 
 **Kabul kümesi ve parmak izi:** `sentetik_arena_kadraj_t66`, n = 547 dosya,
 `sha256:604c037f780b7c6e8305472bb9cd11cec2212dcffbec1763f0c8b7e27e250586`
@@ -863,7 +948,11 @@ olarak ölçüldü (§4.9.4). Jetson tarafında `--streamrate 8` systemd birimin
 kilitlidir; silindiğinde kapı K1 düşer (mutant tablosu, §4.2.2).
 
 🔴 **ÖLÇÜLEMEDİ: SiK telsiz hattının gerçek etkin veri hızı, paket kaybı ve
-menzili ölçülmedi; ölçüm 5–19 Eylül'dedir (§4.5).**
+menzili ölçülmedi; ölçüm 6–19 Eylül'dedir (§4.5).** 5 Eylül durumu: SiK çifti
+Mission Planner'a **bağlandı** — BEYAN, sözlü "tamam oldu" (`REVIEW_LOG.md:29828`,
+D-426 §1). RTT, kayıp ve menzil için `scripts/sik_rf_olc.py` **koşulmadı**;
+"bağlandı" bir ölçüm değildir. Aynı gün kumanda hattı için bir ÖLÇÜM satırı
+vardır (`RCInput: decoding IBUS(1)`, §4.10.4) — o RC hattıdır, telemetri değil.
 
 🔴 **ÖLÇÜLEMEDİ: seri telsiz hattı üzerinden uçtan uca gecikme ölçülmedi.
 Bugünkü p95 0,113 s hükmü yalnız UDP loopback yapılandırmasınındır; üretim seri
@@ -873,6 +962,103 @@ varsayılanlarıyla çevrim 1,0 s ölçülmüştü (§4.9.5).**
 kanıt loopback İKA'dır (§4.11.1) ve gerçek İKA motor sürücüsü yoktur
 (R12/T149).**
 
+### 4.9.7 Uçuş komut hattı YKS → İHA — ACK kaynağı, terminal durum, saat ofseti, tekrar savunması (D-419 §1 / D-422)
+
+Bileşen `comms/iha_komut_alici.py`; Jetson'da koşan dosya paket kopyasıdır
+(`jetson_paket/kod/iha_komut_alici.py`, `cmp` bayt-eş, 5 Eylül). Karşı uç
+`scripts/sahte_pixhawk.py` (gerçek ArduPilot gibi component **1** ile ACK basar).
+
+**Teşhis ikili aramayla ölçüldü, tahmin edilmedi (D-419 §1, `REVIEW_LOG.md:28989-29008`):**
+
+| deney | ne kapatıldı | sonuç |
+|---|---|---|
+| A | K-3 ACK bileşen kapısı | `Ran 23 tests ... OK` — iki düşük de kalktı |
+| B | K-2 sonuç önbelleği | hâlâ 2 düşük |
+| C | K-1 yaş kapısı | hâlâ 2 düşük |
+
+Kök neden alıcının kendi logundaydı: `COMMAND_ACK yabanci component=1
+(beklenen 3) — yok sayildi`. Eski kod `COMMAND_ACK.srcComponent`ı (kim
+cevapladı) `COMMAND_LONG.target_component` ile (kime gönderdim) eşitliyordu.
+
+| kapı | kusur | kapanış (kapı kaldırılmadı) |
+|---|---|---|
+| K-3 ACK kaynağı (`REVIEW_LOG.md:29009`) | ACK basan bileşen yanlış alanla karşılaştırılıyordu | `_ack_basabilen_bilesenler` (`comms/iha_komut_alici.py:523`): {`MAVLINK_BELIRTILMEMIS_COMPONENT` = 0 (`:111`), `MAV_COMP_ID_AUTOPILOT1`, `target_component`}; gimbal/kamera/companion (ör. 154) reddedilir |
+| K-2 terminal durum (`:29015`) | MAVLink'e hiç ulaşmamış teşebbüs (`mav is None`, hedef bilinmiyor, aktarım istisnası) anahtarı kalıcı zehirliyordu | `_komut_sonuclari[anahtar] = bool(kabul)` ACK beklemesi **döndükten sonra**; ACK zaman aşımı **bilerek terminal** (tel çıkmıştır); bunu kilitleyen `test_timeout_ve_ret_duplicate_gecikmis_eylem_uretmez` değiştirilmedi |
+| K-1 saat ofseti (`:29026`) | `ham = simdi − damga` iki saatin farkı + gecikme; yaş ham farkla ölçülüyordu | kayan penceredeki **en küçük** ham fark = ofset kestirimi (gecikme ≥ 0); `yas = ham − ofset`. Sabitler `comms/iha_komut_alici.py:149,155,160`: `KOMUT_SAAT_OFSETI_EN_AZ_ORNEK = 2`, `KOMUT_SAAT_OFSETI_PENCERESI_S = 60.0`, `KOMUT_SAAT_SAPMA_TAVANI_S = 30*60` |
+
+**D-422 — sapma 30 dk'yı aşınca kritik komutlar KALICI red (D-421 §11'de açık
+bırakılmıştı).** `_saat_ofseti_ornekle` sapma tavanını aşan örneği atıyordu;
+ofset bilinmezken örnek = iki saatin farkı, dolayısıyla öğrenmek için gereken
+örneğin kendisi eleniyordu. RTC pilsiz Jetson sabit bir epoch'a açılır (1970 ya
+da son kapanma). Teşhis gerçek nesneyle yeniden üretildi (`REVIEW_LOG.md:29449-29451`, birebir):
+
+| senaryo | ARM gecti mi | MAVLink'e giden | ofset |
+|---|---|---|---|
+| 2 saat sapma, 20 basamak merdiven | **HAYIR** | **0** | `None` (0 ornek) |
+| 1970'e acilmis Jetson (~53 yil) | **HAYIR** | **0** | `None` |
+| ofset -600 s ogrenildi, sonra +600 s ILERI adim | 60,00 s **OLU** | — | 241 komut reddedildi |
+
+Onarım (`REVIEW_LOG.md:29460-29483`): (1) tavan artık öğrenmeyi değil **kaymayı**
+engeller — aday ofset bant içindeyse 2 örnek, dışındaysa **6 birbirini
+destekleyen** örnek; (2) saat adımı trafikten değil **yerel** ölçülür
+(`_yerel_saat_adimi`, `comms/iha_komut_alici.py:420`: `duvar_farki −
+monotonik_farki`; eşik `max(KOMUT_YAS_TAVANI_S)` = 8 s'ten türetildi), adım
+bulununca pencere atılmaz, düzeltilir; (3) üç görünür kayıt.
+🔴 Mimarın ilk talimatı ("adım trafikten çıkarılsın") **yanlıştı** ve amele bunu
+ölçerek buldu (`REVIEW_LOG.md:29484-29504`): ısrarlı bayat gönderici reddedilen
+çerçeveleriyle kestirimi kendi üzerine yürütüp **10. ısrarda MAVLink'e
+ulaşıyordu**; tasarım atıldı, "REDDEDİLEN ALTERNATİF" olarak modül başlığına
+yazıldı ve `test_adim_kaniti_TRAFIKTEN_cikarilmaz_israrli_BAYAT_gonderici_yuruyemez`
+(`tests/test_iha_komut_saat_ve_tekrar.py:684`) ile kilitlendi.
+
+**Tekrar (replay) savunması — ölçülen şey Pixhawk'a giden `COMMAND_LONG`
+sayısıdır (`REVIEW_LOG.md:29511-29516`, birebir):**
+
+| senaryo | COMMAND_LONG |
+|---|---|
+| ayni (oturum,seq,cmd) 40 kez | **1** |
+| 10 dk saklanip 500 kez | **1** |
+| yeni `seq`, damga eski (200 israr) | **1** |
+| yeni `oturum` + yeni `seq`, damga eski (200 israr) | **1** |
+| NTP adimi sonrasi eski cerceve | **0** |
+| bayat damgali PARACHUTE (200 israr) | **1** |
+
+Eski modül (`git show HEAD:comms/iha_komut_alici.py`) yan yana yüklenip beş
+senaryoda kıyaslandı: sonuç birebir aynı. **Dürüstçe yazılan takas
+(`REVIEW_LOG.md:29520-29542`):** replay anahtarı zayıflamadı ama tazelik tavanı
+**genişledi** — soğuk alıcıda (ofset öğrenilmemiş ve saldırgan tek konuşan)
+yakalama yaşı tavanı 1800 s'den sınırsıza çıktı, saldırgana maliyet 3 → 7 paket.
+Kabul gerekçesi ölçüldü: meşru YKS bir kez konuşunca delik kapanır (2 saat ve
+1 gün bayat için 40/40 red, eski ve yeni kodda); delik zaten vardı (≤ 10 dk
+bayat çerçeve eski kodda 3. tekrarda geçiyordu); saat kapısı zaten sahtecilik
+savunması değildi — taze damgalı, uydurma `oturum`lu yeni çerçeve tek pakette
+geçer (eski ve yeni kodda); gerçek çevre `izinli_kaynak` adres pinidir ve
+değişmedi.
+
+Onarım sonrası (`REVIEW_LOG.md:29547-29549`, birebir):
+
+| senaryo | once | sonra |
+|---|---|---|
+| 2 saat sapma | hic gecmiyor | **7. basamakta** geciyor (ofset -7200,0) |
+| 1970 Jetson | hic gecmiyor | **7. basamakta** geciyor (ofset -1699999900,0) |
+| tavani asan ILERI adim | **60,00 s olu** | **0,25 s** (adimdan sonraki ILK komut geciyor) |
+
+ACK'li tekrar merdiveni 8 × 0,25 s olduğundan operatörün tek basışı yeter
+(~1,75 s); kestirim tam sınırda oluşur (7/8) — cuma kartına "tek basış geçmezse
+ikinci kez bas" notu düşüldü.
+
+**Kapı ve mutasyon (`REVIEW_LOG.md:29050-29055`, `29555-29568`):**
+`tests/test_faz_b_iha_komut_alici.py` **23 OK** (önce 2 düşük);
+`tests/test_iha_komut_saat_ve_tekrar.py` **18 → 42 test** (`git diff -U0`: silinen
+assert 0, assert 71 → 140). Mutasyon: eski mutlak tavan geri konuldu → **17 test
+düştü**; `_yerel_saat_adimi` öldürüldü → **5 test düştü**; dosya `cmp` bayt-eş
+geri yüklendi, ayna bayt-eş. Regresyon: 12 test dosyası / 212 test OK; genel
+kapı 15/15 · 15/15.
+
+⚠ **Bu ölçümlerin KANITLAMADIĞI:** hat gerçek Pixhawk'a hiç bağlanmadı; 5
+Eylül'de Pixhawk yalnız Mission Planner'a bağlıydı (§4.10.4). Gerçek
+`COMMAND_ACK` bileşen kimliği ve Jetson'un RTC'siz açılış saati **ÖLÇÜLEMEDİ**.
+
 ---
 
 ## 4.10 Sistem üzerinde gerçekleştirilen tüm yer testleri · `Y-4-M10`
@@ -880,12 +1066,14 @@ kanıt loopback İKA'dır (§4.11.1) ve gerçek İKA motor sürücüsü yoktur
 > *Yönerge: "Bunlara ek olarak, sistem üzerinde gerçekleştirilen tüm yer testleri
 > raporda sunulmalıdır."*
 
-⚠ **Kapsam dürüstlüğü:** bu alt bölümdeki yer testlerinin tamamı **yazılım yer
-testidir**. Araç yerde, motorlar bağlı ve pervaneler takılı hâlde yapılan bir
-yer testi (motor çalıştırma, titreşim kaydı, ARM denemesi) **hiç yapılmamıştır**;
-araç monte edilmemiştir (§4.13.1 kalem 4). Donanım-öncesi ölçümlerin ortak
-sınıfı (`KOD_VAR ≠ KOŞUYOR`) §4.9'da yazılıdır ve bu alt bölüm için de
-geçerlidir.
+⚠ **Kapsam dürüstlüğü:** §4.10.1–§4.10.3'teki yer testlerinin tamamı **yazılım
+yer testidir** (3–4 Eylül, donanım yok). §4.10.4 ilk **donanım yer testidir**
+(5 Eylül; Pixhawk 6C tezgâhta, Mission Planner'a bağlı): pervanesiz motor testi
+koşuldu (`starting motor test` → `finished motor test`, ÖLÇÜM). O tutanakta
+(D-426) pervaneli çalıştırma, titreşim kaydı ve ARM denemesi **yoktur**; araç
+uçuş yapılandırmasında monte değildir ve Jetson takılı değildir (§4.13.1 kalem
+4; `REVIEW_LOG.md:29867`). Donanım-öncesi ölçümlerin ortak sınıfı
+(`KOD_VAR ≠ KOŞUYOR`) §4.9'da yazılıdır ve §4.10.1–§4.10.3 için geçerlidir.
 
 ### 4.10.1 Kamera köprüsü — dayanıklılık (D-407 §2)
 
@@ -928,8 +1116,124 @@ Her dosyanın son satırı **gerçek çıkış kodudur**.
 | `cuma_kontrol/muhur_dogrula.txt` | künye yok → "DONDURULMADI" | **exit 3** |
 | `seri_hub_help.txt` | CLI `--port --baud --bind --tuketici --log-aralik` | **exit 0** |
 
+**4 Eylül yeniden koşumu** — `results/faz_b_oncesi/cuma_kontrol/*_0904.txt`.
+4 Eylül'de ~2200 satır kod değişti (Codex + altı worktree birleştirmesi); 3
+Eylül ölçümleri geçersiz sayıldı ve kart baştan koşuldu
+(`results/faz_b_oncesi/CUMA_KONTROL_KARTI.md` §A; D-421 önsöz). Ana makine
+Windows'tur: `[YOK]` satırları Jetson'daki kullanıcı/yorumlayıcı/seri port
+denetimleridir ve burada beklenen sonuçtur.
+
+| dosya (4 Eylül) | ölçülen | son satır / çıkış |
+|---|---|---|
+| `jetson_udp_0904.txt` (01:01) | KIP=udp; 4 birim ExecStart: çoğullayıcı `--streamrate 8 --out udp:127.0.0.1:14550/14551/14552`; `rpi_inference.py --camera --ekransiz … --yks-hedef 192.168.1.10:5005 --ika-hedef 192.168.1.20:5006`; `iha_komut_alici.py --bind 0.0.0.0:5007 --izinli-kaynak 192.168.1.10:5005`; paket `[VAR]` 3/3, `mavproxy.py [YOK]`; `[TAM] beyanlar tam` | `KURU SONUC: eksik (beyan: tam · [YOK]: 7) — gercek kosum DURUR (cikis 3)` |
+| `jetson_sik_0904.txt` (01:01) | KIP=sik; hub `--port /dev/ttyUSB0 --baud 57600 --bind 127.0.0.1:5100 --tuketici 127.0.0.1:5007`; üç tüketici `127.0.0.1:5100`'e; paket `[VAR]` 4/4 | `KURU SONUC: eksik (beyan: tam · [YOK]: 9) — gercek kosum DURUR (cikis 3)` |
+| `saha_baslat_0904.txt` (01:00) | YKS FDA: `yks_gui.py --fda --ika <IKA_IP>:5006 --iha <JETSON_IP>:5007 --kamera-url http://<JETSON_IP>:8080`; SiK: `--serial COM5 --baud 57600` | `exit=0` |
+| `paket_0904.txt` (01:01) | paket aynası **18** `[JETSON_PAKET]` satırı (`seri_hub.py`, `mavlink_dogrula.py`, `kamera_koprusu.py` dâhil) | — |
+| `bellek_0904.txt` (02:45) | saha belleği: git `7a0bdac`; `jetson_paket` 343 dosya 1011,1 MB; `wheels` 51 dosya 257,3 MB; TOPLAM ~1268,5 MB; MANIFEST **405** dosya | — |
+| `muhur_0904.txt` (01:01) | `[DONDURMA] DONDURULMADI: kunye yok` | mühür henüz basılmadı (beklenen) |
+| `kuru_kosu_0904.txt` (01:00) | §4.11.1'de ham | `exit=1` (kopuk halka varken 0 dönmez: `scripts/saha_kuru_kosu.py:1251,1256`) |
+| `tam_suit.txt` (09:58) | `Ran 2104 tests in 390.131s` · `OK (skipped=3)` — dosya 3 Eylül'deki 1896'lık koşumun üzerine yazıldı (§4.14 satır 2 o anın sayısıdır) | `exit=0` |
+
+⚠ 5 Eylül'de tam suit **2138** testle üç kez koşuldu (`REVIEW_LOG.md:29893-29895`,
+D-427): YKS açıkken **1 FAIL** (`test_p8_sim_katmani.test_comms_loopback_gecer`,
+`WinError 10013`), YKS kapalıyken **OK**. Sebep ortamdır: `comms/test_comms.py:35-36`
+üretim portları 5005/5006'ya bind eder; kod değişmedi, değişen tek şey YKS'nin
+açık olmasıydı. Kuyruk: T209 (ephemeral port). Bu bir kod düşüğü değildir ama
+"YKS açıkken tam suit yeşil" koşulu sahada sağlanamaz — bilinerek kabul edildi.
+
+**Runbook komutları gerçekten koşuluyor (D-421 §1–§2, `REVIEW_LOG.md:29299-29350`).**
+`SAHA_RUNBOOK.md` §3'ün `iha_komut_alici` satırı `--izinli-kaynak` olmadan
+`error: --izinli-kaynak HOST:PORT saha komutlari icin zorunlu`, `EXIT=2`
+veriyordu; blok **asimetrik** ölüyordu (birinci satır `iha_inis_yayinci`
+kalkıyor, ikincisi ölüyor — sahada zincir yarı canlı görünür, ARM/RTL/LAND
+düğmeleri hiç ACK almaz). Bunu kilitlediği ilan edilen `tests/test_p4_runbook.py`
+(22 test) sabit jeton listesiyle substring arıyordu ve **yeşildi**. Yeni kapı
+`tests/test_runbook_komutlari_kosuyor.py` (**3 test**: T1 hiçbir runbook komutu
+argparse tarafından reddedilmiyor · T2 ≥ 3 komut kapsamda, kusurun çıktığı komut
+dâhil · T3 yer tutucu sözlüğü kapsamlı) bash bloklarındaki her depo betiği
+çağrısını **koşar**. Mutasyon: bayrak runbook'tan çıkarıldı → T1 düştü; dosya
+`cmp` bayt-eş. Bugünkü satır `--izinli-kaynak <YKS_IP>:5005` taşır
+(`SAHA_RUNBOOK.md:93-96`). Aynı kusur sınıfının dördüncü tekrarı (D-415, D-419 §5,
+sahte-kapı dedektörü, bu): **ölçüm aletinin kendisi ölçülmemişti**.
+
 🔴 Bu koşumların **hiçbiri saha kanıtı değildir**; yalnız *"ilk koşum kör
 olmayacak"* kanıtıdır.
+
+### 4.10.4 5 Eylül — Pixhawk 6C tezgâh yer testi (D-424 / D-425 / D-426)
+
+Sahada tek takım üyesi vardı (pilot R2 ve takım lideri sahada değildi); mimar
+uzaktan yönlendirdi. **ÖLÇÜM** = Mission Planner `Messages` satırı (oturuma
+birebir yapıştırıldı), **BEYAN** = sözlü bildirim. Kural: sahadan gelen "oldu"
+kanıt değildir, yapıştırılan satır kanıttır (D-426 §6, `REVIEW_LOG.md:29879-29886`).
+
+**Kronoloji (`REVIEW_LOG.md:29819-29829`):**
+
+| saat | adım | tür | kanıt satırı |
+|---|---|---|---|
+| 14:52 | ArduCopter flash — MP ikonu **4.7.1** yükledi | ÖLÇÜM | `ArduCopter V4.7.1 (dbe79216)` · Compare Params: `Missing 9 params` |
+| 15:08 | **4.5.7'ye yeniden flash**, `arducopter_fda.param` yüklendi | ÖLÇÜM | `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `PreArm: Check frame class` kayboldu |
+| 15:38 | GPS tanındı | ÖLÇÜM | `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` |
+| 16:18 | RC bind (FS-i6 ↔ FS-iA6B) | BEYAN | "led sabit yanıyor" |
+| 18:03 | RC protokolü çözülüyor | ÖLÇÜM | `RCInput: decoding IBUS(1)` |
+| 18:03 | pil takıldı, PM06 → POWER1 | ÖLÇÜM | `PreArm: Battery 1 low voltage failsafe` listeden kayboldu |
+| 18:05 | emniyet düğmesi fiziksel çözüldü | ÖLÇÜM | `PreArm: Hardware safety switch` kayboldu; öncesinde 12× `Motor Test: Safety switch` |
+| 18:06 | **pervanesiz motor testi** | ÖLÇÜM | `starting motor test` → `finished motor test` |
+| ~18:30 | motor sırası ve yönleri 4/4 (kablo taşıma + faz değişimi sonrası) | BEYAN | video yok — **BEYAN GEREKLİ (insan)** |
+| ~18:45 | SiK telemetri bağlandı | BEYAN | "tamam oldu" — RTT/kayıp ÖLÇÜLEMEDİ (§4.9.6) |
+| — | uçuş modları SwC: Stabilize / Loiter / RTL | BEYAN | — |
+
+**Firmware boşluğu sahada bulundu ve aynı gün kapatıldı (D-424 / D-425).**
+Pixhawk 6C fabrikadan **PX4** ile gelir; depoda ve saha belleğinde ArduCopter
+firmware dosyası **yoktu**, flash yordamı hiçbir belgede **yoktu**
+(`REVIEW_LOG.md:29633-29639`). MP'nin "en son kararlı" ikonu 4.7.1 yükledi ve
+`.param` dosyasının 31 parametresinden **9'u yok** çıktı (`REVIEW_LOG.md:29716-29720`:
+`SYSID_THISMAV SR1_POSITION SR1_EXTRA3 SR2_POSITION SR2_EXTRA3 RTL_ALT
+LAND_SPEED WPNAV_SPEED ARMING_CHECK` — Copter-4.7 SI birim reformu; `WPNAV_SPEED`
+300 cm/s → `WP_SPD` m/s, `ARMING_CHECK` → `ARMING_SKIPCHK` anlam **ters**).
+Karar: 4.7'ye port **edilmedi**, sürüm **4.5.7'ye sabitlendi** — mevcut
+yapılandırma ölçülmüş ve kapılıdır, port edilmiş 4.7 ölçülmemiş olurdu.
+Artefaktlar: `scripts/pixhawk_firmware_indir.py:74` `SURUM = "stable-4.5.7"`;
+`firmware/firmware-version.txt` = `4.5.7-FIRMWARE_VERSION_TYPE_OFFICIAL`,
+`firmware/arducopter.apj` **1.585.371 B**, board_id 56 (= Pixhawk6C), git
+`2a3dc4b7` (`REVIEW_LOG.md:29787`; ikili depoya girmez, saha belleğindedir);
+kapı `tests/test_pixhawk_firmware_yolu.py` (**10** test; `firmware/` yoksa son
+test **atlanır ve söyler**). Sıra kuralı belgeye girdi: **firmware → param**,
+tersi tüm parametreleri siler.
+
+**Sahada bulunan tuzaklar (D-426 §2, `REVIEW_LOG.md:29831-29847`):** RC alıcı
+`CH6`'ya takılmıştı (tek kanal PWM, Pixhawk görmez) → `i-BUS SERVO` portuna
+alındı; `RC_PROTOCOLS` teşhis sırasında 4 → 1 (All) yapıldı ve **geri alınmadı**
+(tercih 4 = yalnız iBUS; dökümde görülecek); emniyet düğmesi her güç kesmede
+yeniden kilitlenir, `BRD_SAFETY_DEFOFF` değiştirilmedi; motor testi %5'te
+dönmedi, %10–15'te döndü; PM06'nın 8 pinli kablosu `POWER1`'e (6 pin) uymadı,
+6 pinli kablo bulundu, uydurma adaptör yapılmadı.
+
+**Künye üç yerde plandan farklı çıktı (BEYAN, D-426 §3, `REVIEW_LOG.md:29848-29858`):**
+ESC **"60 A V2"** ×4 (plan 80 A); güç modülü **PM06** (plan PM02); RC alıcı
+FS-iA6B **teyit** (B harfi görüldü). Marka/model için **BEYAN GEREKLİ (insan)**;
+Bölüm 3/5/7 künyesi düzeltilecek.
+
+**Yapılmadı / ÖLÇÜLEMEDİ — uçuştan önce açık (D-426 §4, `REVIEW_LOG.md:29859-29870`):**
+
+| ne | durum | rol |
+|---|---|---|
+| RC failsafe testi (kumanda kapat → CH3 < 975? `Radio Failsafe`?) | **ÖLÇÜLEMEDİ** — iki kez istendi, sonuç gelmedi; `.param` yorumundaki "iBUS alıcısı çerçeve basmayı keser" **varsayımdır** | R3 / R2 |
+| ESC kalibrasyonu | **YAPILMADI** ("hepsi birden" yordamı verildi; ESC markası bilinmiyor) | R3 |
+| parametre dökümü `config/pixhawk/arducopter_fda_20260905.param` | **dosya YOK** (kontrol edildi) | R3 |
+| pil gerilimi MP ↔ multimetre (±0,1 V) | ÖLÇÜLEMEDİ | — |
+| pusula kalibrasyonu | dışarıda, her şey takılıyken — **Jetson takılı DEĞİL**; Jetson takılınca yeniden | R3 |
+| accel + level | BEYAN "yapıldı" — kart sabitlenmiş miydi belirsiz; **teyit yok** | R3 |
+| ESC sinyal kablosu kırmızı tel (BEC) | soruldu, cevap gelmedi | R3 |
+
+**Uçuş kararı:** 18:5x'te gelen "uçalım" **reddedildi** (`REVIEW_LOG.md:29871-29878`):
+plan "Paz 6 sabah: pusula dışarıda + ilk hover 3.1"; ESC kalibrasyonu yok;
+failsafe sonucu yok; alacakaranlık; pilot (R2) planda. İlk hover kapısı (3.1):
+Stabilize/AltHold, 2–3 m, 2 dk; VIBE logu, EKF yeşil, kırım yok; pervaneler
+ilk kez o zaman takılır.
+
+⚠ **Bu alt bölümün KANITLAMADIĞI:** Jetson, kamera ve NAVITAS yazılımı bu
+tezgâha **bağlı değildi**; `mavlink_dogrula --kapi` gerçek Pixhawk'ta koşmadı
+(§4.13.1 kalem 6 açık). Motor yön/sıra doğruluğu ve SiK bağlantısı **BEYAN**dır.
 
 ---
 
@@ -945,7 +1249,8 @@ koşumu**dur; kopuk halka gizlenmemiştir.
 ### 4.11.1 Kuru koşu — `scripts/saha_kuru_kosu.py`
 
 Saha zincirinin **halka halka** sahiplik denetimi. Çıktı (ham, 3 Eylül,
-`results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §5):
+`results/faz_b_oncesi/cuma_kontrol/cuma_kontrol.txt` §5; 4 Eylül yeniden
+koşumu bu bloğun altındadır):
 
 ```text
   hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor
@@ -961,6 +1266,54 @@ KOPUK HALKALAR (1): motor
 Zincir saha kosumunda TAMAMLANMAZ.
 ```
 
+**4 Eylül yeniden koşumu** (ham, tam dosya;
+`results/faz_b_oncesi/cuma_kontrol/kuru_kosu_0904.txt`, 01:00; çıktı dizini
+`results/saha_kuru_kosu_20260904_010058/`; aynı sabah 09:52'de ikinci koşum
+`results/saha_kuru_kosu_20260904_095222/ozet.json`, §4.11.2):
+
+```text
+rota_bul: [ICERIK_YOK_LETTERBOX_SUPHESI: icerik=None ile tuval letterbox gorunumlu — zemin saglamlik kapisi bu paydada olu olabilir; cagiran `icerik` gecirmeli]
+Kamera acilamadi (kaynak='/dev/video7').
+Kamera acilamadi (kaynak=3).
+==============================================================================
+SAHA KURU KOSUSU — CONTRACTS.md §11 · Gazebo YOK · donanim YOK
+==============================================================================
+  kamera         GECTI      kaynak parametrik ve VideoCapture'a BESLENIYOR (cihaz yolu str, indeks int olarak cozuluyor)  [2382 ms]
+                            -> codes/rpi_inference.py:run_camera
+  model_yukleme  GECTI      agirlik manifestten turetiliyor, --model besliyor, uyusmazlikta fail-closed ve kayit defteriyle eslesiyor  [40 ms]
+                            -> codes/rpi_inference.py:load_model
+  cikarim        GECTI      tek kare cikarimi tamamlandi  [2357 ms]
+                            -> codes/rpi_inference.py:57
+  maske          GECTI      {0,1} anahtarli maskeler uretildi  [39 ms]
+                            -> codes/rpi_inference.py:60-83
+  olcek          GECTI      canli telemetri bu kare icin gecerli mpp uretti
+                            -> codes/rpi_inference.py
+  hedef_konumu   GECTI      HB saha kaynagindan alinabiliyor
+                            -> codes/rpi_inference.py (T150/D-386: goruntu= + sekil kapisi)
+  rota           GECTI      rota uretildi: yol_no=2  [28 ms]
+                            -> codes/rpi_inference.py:analyze_path (run_camera yolu)
+  aktarim        GECTI      saha paketi haberlesme kodunu tasiyor; uretim yolu run_camera karari loopback IKA'ya OPEN_ROUTE olarak yazdi
+                            -> codes/rpi_inference.py:run_camera
+  telsiz halkasi  GECTI      run_camera -> KararYayinci -> loopback IKA: {'open_route_alindi': True, 'heartbeat': 1, 'ack': ['ika'], 'hata': None}
+  surus_izni     GECTI      IHA_LANDED saha kod yolunda uretiliyor
+                            -> comms/iha_inis_yayinci.py:386
+  motor          SAHIPSIZ   gercek motor surucusu yok; send_vel yalnizca gz subprocess'i ve ika_nav simulation/ altinda
+------------------------------------------------------------------------------
+GECTI 9 · DUSTU 0 · SAHIPSIZ 1 · ATLANDI 0
+KOPUK HALKALAR (1): motor
+Zincir saha kosumunda TAMAMLANMAZ.
+Cikti: O:\navitas\results\saha_kuru_kosu_20260904_010058
+exit=1
+```
+
+İlk üç satır stderr'dir (`rota_bul` tanısal uyarısı; `/dev/video7` ve indeks 3
+Windows'ta açılamaz — halka bunu "kaynak VideoCapture'a besleniyor" olarak
+ölçer, kamera açılmasını değil). `surus_izni` işaretçisi 3 Eylül'de `:375`, 4
+Eylül'de `:386`: dosya değişti, halka aynı. `exit=1` kopuk halka varken tasarım
+gereğidir (`scripts/saha_kuru_kosu.py:1251,1256`). Dosya CRLF'dir ve ilk
+satırdaki uzun tire cp1254 baytı olarak bozuk kaydedilmiştir; burada `—` ile
+yazıldı.
+
 🔴 **"SAHİPSİZ" gizlenmiyor.** Gerçek İKA motor sürücüsü yoktur (R12/T149);
 donanım kararı gelmeden kapanmaz. FDA görev test uçuşunda (21 Eylül) İKA
 kullanılmaz, dolayısıyla bu kopuk halka **o uçuşu engellemez** — ama yarışma
@@ -968,8 +1321,17 @@ görevi (§2.2.5) için **açık kalemdir**.
 
 ### 4.11.2 Aynı koşumun makine okunur çıktısı
 
-`results/saha_kuru_kosu_20260903_120254/ozet.json` aynı zinciri JSON olarak
-tutar: `halka_sirasi` alanı on halkayı sırayla sayar (kamera → model_yukleme →
+`results/saha_kuru_kosu_20260903_120254/ozet.json` (3 Eylül) ile
+`results/saha_kuru_kosu_20260904_010058/ozet.json` ve
+`results/saha_kuru_kosu_20260904_095222/ozet.json` (4 Eylül 01:00 ve 09:52)
+aynı zinciri JSON olarak tutar; üçünde de `sayim` = `{GECTI: 9, DUSTU: 0,
+SAHIPSIZ: 1, ATLANDI: 0}`, `kopuk_halkalar` = `["motor"]`, `cikis_kodu` = 1.
+09:52 koşumunun halka süreleri (`sure_ms`; CPU, Windows PC — Jetson değil):
+kamera 2223,3 · model_yukleme 47,7 · cikarim **3304,4** · maske 65,6 · rota 31,6
+ms; `aktarim.detay.uretim_yolu_telsiz` = `{open_route_alindi: true, heartbeat: 1,
+ack: ["ika"], hata: null}`; `surus_izni.detay.tum_ureticiler` kanonik dosya ile
+paket aynasını (`jetson_paket/kod/iha_inis_yayinci.py:386`) birlikte sayar.
+`halka_sirasi` alanı on halkayı sırayla sayar (kamera → model_yukleme →
 cikarim → maske → olcek → hedef_konumu → rota → aktarim → surus_izni → motor);
 her halka için `durum`, `sebep` ve `dosya` alanları vardır ve sözleşme bağı
 `CONTRACTS.md §11` olarak dosyanın içinde yazılıdır.
@@ -991,8 +1353,24 @@ gerçek Pixhawk ve gerçek telsizle **aynı anda** koşulan bir yer entegrasyonu
 
 🔴 **ÖLÇÜLEMEDİ: hiçbir arıza emniyet tepkisi sahada test edilmedi. Eve dönüş
 (RTL), motor kesme (DISARM), geofence ihlali ve telemetri kaybı davranışları
-gerçek araçta hiç tetiklenmedi; ölçüm 6–19 Eylül uçuş testlerindedir
-(§4.3.3).**
+gerçek araçta hiç tetiklenmedi; 5 Eylül'de uçuş yapılmadı. Ölçüm uçuş
+testlerindedir (§4.3.3).**
+
+**5 Eylül 2026 durumu** (`REVIEW_LOG.md` D-426 §4; kart masa üstünde, pervanesiz):
+
+| arıza senaryosu | şablon parametresi (`config/pixhawk/arducopter_fda.param`) | 5 Eylül |
+|---|---|---|
+| RC kaybı (kumanda kapatma) | `FS_THR_ENABLE,1` (satır 129) | **ÖLÇÜLEMEDİ** — test iki kez istendi, sonuç gelmedi. Dosyadaki yorum *"iBUS alıcısı sinyal kaybında çerçeve basmayı keser"* (satır 128) **varsayımdır**, ölçülmedi; alıcının failsafe'de ne yaptığı bilinmiyor |
+| YKS/Jetson bağlantı kaybı | `FS_GCS_ENABLE,1` (satır 134) | tetiklenmedi |
+| Düşük pil | `BATT_FS_LOW_ACT,2` / `BATT_FS_CRT_ACT,1` (satır 120 / 123) | tetiklenmedi; pil takılı, PreArm pil uyarısı kayboldu (OLCUM, §4.4) |
+| Geofence | `FENCE_ENABLE,1` / `FENCE_ACTION,1` (satır 140 / 154) | tetiklenmedi; karttaki değer dökümsüz (§4.13.1 #9) |
+| Motor kesme (DISARM) | — | uçuş yok |
+| Emniyet düğmesi | `BRD_SAFETY_DEFOFF` değiştirilmedi | fiziksel düğme çözüldü, OLCUM `PreArm: Hardware safety switch` kayboldu — bu bir **arm ön koşuludur**, arıza tepkisi değil |
+
+⚠ Parametrelerin **kartta** hangi değerde olduğu ölçülmedi: 5 Eylül dökümü
+(`arducopter_fda_20260905.param`) alınmadı; `RC_PROTOCOLS` sahada 4 → 1
+yapılıp geri alınmadı (D-426 §2), dolayısıyla şablon ile kart en az bir
+satırda **farklıdır**.
 
 **Saha testinin YERİNE GEÇMEYEN, bugün elde olan şey**, arıza emniyet
 komutlarının **yazılım yolunun** kapı altında olmasıdır:
@@ -1002,7 +1380,7 @@ komutlarının **yazılım yolunun** kapı altında olmasıdır:
 | Eve dönüş (RTL) ve iniş (LAND) | `comms/iha_komut_alici.py` — `CMD_RTL` / `CMD_LAND`, ARM ile **aynı** fail-closed kaynak/zaman/oturum kapısından ve güçlü Pixhawk ACK şartından geçer | `tests/test_iha_rtl_land.py` — **6 test** (`grep -c "def test_"`); üçü mutasyon testidir: yanlış `MAV_CMD` güçlü ACK sayılmaz · reddedilen LAND ACK'i YKS'ye ACK üretmez · bayat RTL/LAND eyleyiciye ulaşmaz |
 | Motor kesme (DISARM) | `comms/iha_komut_alici.py` — `CMD_DISARM` → `MAV_CMD_COMPONENT_ARM_DISARM`, `param1 = 0` (`ARM_DISARM_PARAM1_DISARM`) | `tests/test_iha_komut_guvenligi.py` — **10 test** (`grep -c "def test_"`); oturumsuz ve bozuk oturum reddi, bayat/bool/NaN/ileri-zaman reddi, tekrar ACK'inin eyleyiciyi yinelememesi, yabancı component ACK'inin kabul edilmemesi |
 | Kaynak pini olmayan komut | kaynak pinsiz ARM/DISARM/PARACHUTE/RTL/LAND **kabul edilmez** (`comms/iha_komut_alici.py`) | aynı iki kapı dosyası |
-| Geofence ihlali | 🔴 parametreler **repo dışıdır** (R17); yazılım tarafında kapı **yoktur** | yok — §4.13.1 kalem 9 |
+| Geofence ihlali | 🔴 karttaki parametreler **repo dışıdır** (R17); şablon `config/pixhawk/arducopter_fda.param:140` `FENCE_ENABLE,1` · `:154` `FENCE_ACTION,1`; yazılım tarafında kapı **yoktur** | yok — §4.13.1 kalem 9; 5 Eylül dökümü alınmadı |
 | Arıza sonrası yerde olduğunun doğrulanması | `yerde_mi` sözleşmesi: ON_GROUND + irtifa + aynı sysid + ardışık 3 örnek | `tests/test_inis_kaniti.py` (26 test, §4.1.2) · P1 kapıları G3b/G4 (§4.9.1) |
 
 ⚠ **Bu tablo bir arıza emniyet kanıtı DEĞİLDİR.** Gösterdiği şey, komutun doğru
@@ -1030,16 +1408,23 @@ pilot rol kodu ve uçuş log dosyasının adı.
 | # | ne | neden ölçülmedi | ne zaman | eşik |
 |---|---|---|---|---|
 | 1 | **Gerçek arena / HTAB karesi** | Arena benzeri saha + kırmızı H çekimi yok; **maket çekimi yapılmayacaktır** (kullanıcı kararı) | 21 Eylül'e kadar **açık kalır** | — |
-| 2 | **Jetson Nano gerçek FPS** | Donanım 5 Eylül'de geliyor | 5 Eylül | **≥ 0,61 FPS** p50 **ve** p95; türetimi §4.8.2.3. **Eşik gevşetilmez** |
-| 3 | **SiK 433 MHz RF menzili / kayıp oranı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz | 5 Eylül+ | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
+| 2 | **Jetson Nano gerçek FPS** | Donanım 5 Eylül'de geliyor → 5 Eylül: Jetson araca **takılmadı** ("sonranın işi", D-426 §4) | Jetson ilk koşum | **≥ 0,61 FPS** p50 **ve** p95; türetimi §4.8.2.3. **Eşik gevşetilmez** |
+| 3 | **SiK 433 MHz RF menzili / kayıp oranı** | Gerçek SiK çifti yok; UDP loopback ve `socket://` köprü kanıt sayılmaz → 5 Eylül: çift bağlandı (BEYAN, ~18:45), `scripts/sik_rf_olc.py` **koşulmadı**, mesafe kaydı yok (§4.5) | uçuş testleriyle | RTT p95 < 0,2 s. DDR'deki *">%98, 300 m"* iddiasının kanıtı **yoktur** (R20) |
 | 4 | **Uçuş testleri** (hover, Loiter/Auto, canlı algı, 3 tam prova, sıkı prova) | Araç monte edilmedi | **6–19 Eylül** | ≤ 10 dk, 0 müdahale, yanlış güzergâh 0 |
 | 5 | **TensorRT `.engine` ↔ PT karar kıyası** | `tensorrt` PC'de yok | Jetson Gün-1 | FP16 payı kapanır |
-| 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok | 5 Eylül | `mavlink_dogrula` 3/3 |
+| 6 | **Gerçek Pixhawk üzerinde EXTENDED akışı ve `--kapi`** | Pixhawk yok → 5 Eylül: Pixhawk 4.5.7 ile çalışır durumda (§4.4), `scripts/mavlink_dogrula.py` **koşulmadı** (D-426'da koşum kaydı yok) | uçuş öncesi | `mavlink_dogrula` 3/3 |
 | 7 | **`jetson_baslat.sh` systemd / `--kur` / `--kapi` / `--dogrudan`** | Windows'ta koşulamaz | Jetson ilk koşum | kuru çıktı == gerçek `ExecStart` |
 | 8 | **Gerçek İKA motor sürücüsü** | Donanım arayüzü kararı verilmedi (R12/T149) | yarışma görevi öncesi | kuru koşuda `motor SAHİPSİZ` |
-| 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) | 5 Eylül | `config/pixhawk/` kanıt olarak |
+| 9 | **Pixhawk geofence parametrelerinin kendisi** | Repo dışı (R17) → 5 Eylül: şablon yüklendi (OLCUM, §4.4 15:08) ama döküm `arducopter_fda_20260905.param` **alınmadı** (D-426 §4) | uçuş öncesi | `config/pixhawk/` kanıt olarak |
 | 10 | **K5 figür bilgi px** | verdikt JSON'ında `OLCULEMEDI` | — | — |
 | 11 | **Nano kurulum belgesinin dış iddiaları** (bionic `python3.8`, `jetson-io` IMX477 menüsü, Qengineering CUDA wheel) | Kaynakla doğrulanmadı; betiğin **gerçek indirmesi** 14/14 aarch64 wheel ile çoğunu dolaylı teyit ediyor | 5 Eylül kart | belge zaten "kapı çıktısını deftere yapıştır" der |
+| 12 | **RC failsafe** (kumanda kapatma → `Radio Failsafe`, CH3 değeri) — 5 Eylül eklendi | İki kez istendi, sonuç gelmedi (D-426 §4); `config/pixhawk/arducopter_fda.param:128` yorumu **varsayım** | uçuş öncesi (§4.3.3 adım 3.1 öncesi) | `Radio Failsafe` mesajı görülür ve `FS_THR_ENABLE=1` tepkisi (RTL) — §4.12 |
+| 13 | **ESC kalibrasyonu** — 5 Eylül eklendi | YAPILMADI; ESC markası bilinmiyor ("60 A V2" etiketi, BEYAN) | uçuş öncesi | ArduPilot "hepsi birden" yordamı ya da marka belgesiyle gereksizlik kanıtı (D-426 §4) |
+| 14 | **Pusula kalibrasyonu** — 5 Eylül eklendi | YAPILMADI — Jetson takılı değil; takılınca yeniden gerekir (D-426 §4) | Jetson takılı, dışarıda | ofset < 300 (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.4) |
+| 15 | **Accel + level teyidi** — 5 Eylül eklendi | BEYAN "yapıldı"; kart sabit değildi, döküm yok (D-426 §4) | kart sabitlenince | `INS_*` dökümü |
+| 16 | **Parametre dökümü** `config/pixhawk/arducopter_fda_20260905.param` — 5 Eylül eklendi | dosya yok (D-426 §4); `RC_PROTOCOLS` sahada 4 → 1, geri alınmadı (D-426 §2) | uçuş öncesi | döküm repoda, şablonla `Compare Params` farkı listeli |
+| 17 | **Pil gerilimi MP ↔ multimetre** — 5 Eylül eklendi | ölçülmedi (D-426 §4) | uçuş öncesi | ±0,1 V |
+| 18 | **Motor sırası/yönü** — 5 Eylül eklendi | BEYAN 4/4, video yok (D-426 §1) | pervane takılmadan önce | video — §4.13.4 madde 7 |
 
 ### 4.13.2 Kapı/test boşlukları — **3'ü kapandı, 3'ü açık**
 
@@ -1091,9 +1476,14 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 
 ### 4.13.4 BEYAN GEREKLİ (insan)
 
-1. **BEYAN GEREKLİ (insan):** 5 Eylül kutu açılışında donanım künyesinin fiziksel
-   teyidi — Jetson Nano 4GB, Pixhawk 6C + PM02, Holybro M9N, RPi HQ (IMX477),
+1. **BEYAN GEREKLİ (insan):** donanım künyesinin fiziksel teyidi. 5 Eylül kutu
+   açılışında (D-426 §3) plandan **farklı** çıkan iki kalem: **ESC "60 A V2" ×4**
+   (plan 80 A DShot) ve **güç modülü PM06** (plan PM02) — ikisi de sözlü BEYAN;
+   **etiket fotoğrafı ve tam marka/model gerekli**. Teyit edilen: RC alıcı
+   **FS-iA6B** (B harfi görüldü, BEYAN). Teyit kaydı olmayan: Jetson Nano 4GB,
+   Holybro M9N (GPS `u-blox` OLCUM'u marka etiketi değildir), RPi HQ (IMX477),
    FCHUB-12S V2, 5008 340KV ×4, 12×10 pervane, 2× SiK 433 MHz, 4S 10 Ah 25C.
+   Bu rapordaki "Pixhawk 6C + PM02" ifadeleri künye teyidiyle düzeltilecektir.
 2. **BEYAN GEREKLİ (insan):** Jetson Nano üzerinde ölçülen p50/p95 FPS değerleri
    (PT ve ONNX; `--cihaz` beyanıyla) — `JETSON_NANO_KURULUM.md` §8.1 kartına.
 3. **BEYAN GEREKLİ (insan):** SiK 433 MHz çift üzerinde ölçülen RTT p50/p95,
@@ -1104,6 +1494,9 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
    koordinatları (mühürden sonra **tek izinli değişiklik**, tutanakla).
 6. **BEYAN GEREKLİ (insan):** sürüm mührünün basıldığı tarih ve künye commit'i
    (planlı: 17 Eylül; `--dogrula` çıkışı 0 olmalıdır).
+7. **BEYAN GEREKLİ (insan):** 5 Eylül motor testinin sıra/yön videosu (D-426 §1,
+   ~18:30 satırı "video: BEYAN GEREKLİ") ve ESC sinyal kablosundaki kırmızı
+   telin (BEC) durumu (D-426 §4, cevap gelmedi).
 
 ---
 
@@ -1148,6 +1541,40 @@ Bu maddeler kapanmadan ilgili kayıtlar "tamamlanmış" sayılmaz ve bu raporda 
 | 35 | Gerçek donanım künyesi (Nano 4GB, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah) | `SAHA_HAZIRLIK_PLANI_20260903.md` §0.2 | **kullanıcı beyanı**, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek | 2026-09-03 |
 | 36 | Şartname §5.3.1 Tablo 4 (Bölüm 4 = 15 puan) ve §5.3.2 görev kuralları | `results/sartname_bosluk/sartname_metin.txt` s.17–18 | PyMuPDF metin çıkarımı | 2026-08-26 |
 | 37 | Yükümlülük haritası R1–R22 (R20 SiK "hâlâ ÖLÇÜLMEDİ", R12 motor "YOK") | `results/sartname_bosluk/rapor.md` | `scripts/…/rapor_uret.py` + elle tarama | 2026-08-26 |
+| 38 | Tam suit **2104 test · OK (skipped=3) · 390,131 s** | `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt:353,355` (HEAD, commit `3db848c`) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-04 |
+| 39 | Tam suit **1896** ham çıktısının dosya kaynağı (satır 2'deki yol artık 4 Eylül koşumunu tutar) | `git show 2705b4e:results/faz_b_oncesi/cuma_kontrol/tam_suit.txt` → `Ran 1896 tests in 390.534s` · `OK (skipped=3)` | aynı komut | 2026-09-03 |
+| 40 | Tam suit **2138 test** (5 Eylül; 3 koşum: OK / 1 FAIL / 1 FAIL — ortam, `WinError 10013`, port 5005/5006) | `REVIEW_LOG.md` D-427 (satır 29893–29895); ham çıktı dosyası **yok** | aynı komut | 2026-09-05 |
+| 41 | Suit büyüme dizisi 1896 → 2052 → 2080 → 2104 → 2138 | `tam_suit.txt` @ `2705b4e` / `bb832a2` / `7a0bdac` / `3db848c` (`git show <c>:results/faz_b_oncesi/cuma_kontrol/tam_suit.txt \| grep "^Ran "`) + `REVIEW_LOG.md` D-427 | `unittest discover` | 2026-09-03…05 |
+| 42 | `tests/` altında **180** `test_*.py` | `O:\navitas\tests\` | `ls tests/ \| grep -c "^test_"` | 2026-09-05 |
+| 43 | Kayıt defteri **432 başlık / 426 benzersiz**, son kayıt D-427 | `REVIEW_LOG.md` | `grep -cE "^### D-[0-9]+"` · `grep -oE "^### D-[0-9]+" \| sort -u \| wc -l` | 2026-09-05 |
+| 44 | 3–5 Eylül kapı dosyaları test sayıları 42 · 10 · 7 · 6 · 4 · 3 · 3 · 3 (= 78) | `tests/test_iha_komut_saat_ve_tekrar.py` · `test_pixhawk_firmware_yolu.py` · `test_fdr_sarkan_atif_kapisi.py` · `test_yks_hakem_kanit_yolu.py` · `test_wheels_sayisi_belgelerle_tutarli.py` · `test_runbook_komutlari_kosuyor.py` · `test_yarisma_adi_kapisi.py` · `test_yks_harita_yerlesimi.py` | `grep -c "def test_" <dosya>` | 2026-09-05 |
+| 45 | Kuru koşu 4 Eylül: GECTI 9 · DUSTU 0 · SAHIPSIZ 1 (`motor`) · çıkış 1 | `results/saha_kuru_kosu_20260904_095222/ozet.json` (`sayim`, `kopuk_halkalar`, `cikis_kodu`) | `scripts/saha_kuru_kosu.py` | 2026-09-04 |
+| 46 | Mutasyonlar 3–4 Eylül: `_kanit_yaz` → 6/6 düştü · `§6.99.7` → T1 düştü · `--izinli-kaynak` → T1 düştü · sapma tavanı → 17 düştü, `_yerel_saat_adimi` → 5 düştü | `REVIEW_LOG.md` D-412 (satır 28569), D-420 §5 (29272), D-421 §2 (29339), D-422 §6 (29559–29561) | ilgili kapı dosyaları + `cmp` bayt-eş | 2026-09-03…04 |
+| 47 | Vakum örnekleri 5–7: runbook kapısı 22/22 yeşilken komut `EXIT=2` · wheels kapısı 51 ≠ 48 · TEYİT listesi `Missing 9 params` | `REVIEW_LOG.md` D-421 §1–2 (29304–29331), D-423 (29575–29586), D-425 §1–2 (29718–29720, 29753–29758) | — | 2026-09-04…05 |
+| 48 | Çürütücü turları D-411 (71 bulgu, 6 KRİTİK, 30 KÜÇÜK açık) · D-421 (13 tıkayıcı) | `REVIEW_LOG.md` D-411 (28450–28520), D-421 (29288–29428) | — | 2026-09-03…04 |
+| 49 | Tam suit YKS canlıyken koşamaz: `test_comms.py:35-36` bind 5005/5006, `WinError 10013`; T209 | `REVIEW_LOG.md` D-427 (29897–29929) · `comms/test_comms.py:35-36` · `comms/link.py:34` | — | 2026-09-05 |
+| 50 | 5 Eylül kabul tutanağı: `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10` · `RCInput: decoding IBUS(1)` · PreArm pil/emniyet satırlarının kaybolması · `starting/finished motor test` | `REVIEW_LOG.md` D-426 §1 (satır 29819–29829) | Mission Planner `Messages` sekmesi, birebir yapıştırma (OLCUM); 4/4 yön, SiK, mod anahtarı **BEYAN** | 2026-09-05 |
+| 51 | 4.7.1 flash sonrası `Compare Params` **Missing 9 params** (SYSID_THISMAV, SR1/SR2_POSITION, SR1/SR2_EXTRA3, RTL_ALT, LAND_SPEED, WPNAV_SPEED, ARMING_CHECK) | `REVIEW_LOG.md` D-425 (satır 29718) | Mission Planner `Compare Params` | 2026-09-05 |
+| 52 | Firmware 4.5.7 sabit: `firmware/arducopter.apj` **1.585.371 B**, `board_id` **56**, `firmware/firmware-version.txt` = `4.5.7-FIRMWARE_VERSION_TYPE_OFFICIAL` | `scripts/pixhawk_firmware_indir.py` (`SURUM = "stable-4.5.7"` satır 74, `BOARD_ID = 56` satır 54) · kapı `tests/test_pixhawk_firmware_yolu.py` (**10** test, `grep -c "def test_"`; firmware yoksa `skipTest`) | `python scripts/pixhawk_firmware_indir.py` · `ls -l firmware/` | 2026-09-05 |
+| 53 | Künye farkı: ESC **"60 A V2"** ×4 (plan 80 A), güç modülü **PM06** (plan PM02), RC alıcı **FS-iA6B** teyit | `REVIEW_LOG.md` D-426 §3 (satır 29852–29854) | **takım üyesi beyanı**, kutu açılışı — etiket fotoğrafı yok (§4.13.4 madde 1) | 2026-09-05 |
+| 54 | 5 Eylül'de yapılmayan/ölçülemeyen: RC failsafe, ESC kalibrasyonu, parametre dökümü (`arducopter_fda_20260905.param` **yok**), pil gerilimi ±0,1 V, pusula, accel teyidi, BEC kırmızı tel | `REVIEW_LOG.md` D-426 §4 (satır 29863–29869) | — (tutanak; ölçüm yok) | 2026-09-05 |
+| 55 | Şablon failsafe/çit parametreleri: `RC_PROTOCOLS,4` (:101; sahada 1'e alındı, geri alınmadı — D-426 §2, satır 29836) · `FS_THR_ENABLE,1` (:129; yorum :128 **varsayım**) · `FS_GCS_ENABLE,1` (:134) · `BATT_FS_LOW_ACT,2` / `CRT_ACT,1` (:120/:123) · `FENCE_ENABLE,1` / `FENCE_ACTION,1` (:140/:154) · `RTL_ALT,3500` (:161) | `config/pixhawk/arducopter_fda.param` (31 parametre, Copter-4.5 kaynağı, satır 17) | `tests/test_faz_b_pixhawk_sablon.py` (**12** test) — iç tutarlılık; kart değeri **dökümsüz** | 2026-09-05 |
+| 56 | Kuru koşu 4 Eylül (01:00 ve 09:52): **9 GEÇTİ · 0 DÜŞTÜ · 1 SAHİPSİZ (motor)**, `cikis_kodu` 1; 09:52 `sure_ms` cikarim 3304,4 (CPU) | `results/faz_b_oncesi/cuma_kontrol/kuru_kosu_0904.txt` · `results/saha_kuru_kosu_20260904_010058/ozet.json` · `results/saha_kuru_kosu_20260904_095222/ozet.json` | `scripts/saha_kuru_kosu.py` | 2026-09-04 |
+| 57 | Jetson açılış kuru koşuları 4 Eylül: udp `[YOK]: 7` · sik `[YOK]: 9`, ikisi de `cikis 3` (ana makine Windows, beyanlar tam); saha açılış kartı `exit=0` | `results/faz_b_oncesi/cuma_kontrol/jetson_udp_0904.txt` · `jetson_sik_0904.txt` · `saha_baslat_0904.txt` | `bash jetson_paket/jetson_baslat.sh --kuru` · `scripts/saha_baslat.py --komutlar` | 2026-09-04 |
+| 58 | Paket aynası **18** dosya; saha belleği MANIFEST **405** dosya, ~1268,5 MB (jetson_paket 343 · wheels 51); mühür `DONDURULMADI` | `results/faz_b_oncesi/cuma_kontrol/paket_0904.txt` · `bellek_0904.txt` · `muhur_0904.txt` | `scripts/jetson_paket_hazirla.py` · `scripts/bellek_hazirla.py` · `scripts/surum_dondur.py --dogrula` | 2026-09-04 |
+| 59 | Tam suit 4 Eylül **2104 test · OK (skipped=3) · 390,131 s** (aynı dosya; satır 2'deki 1896 3 Eylül anının sayısıdır) | `results/faz_b_oncesi/cuma_kontrol/tam_suit.txt` (git `3db848c`) | `…\venv\Scripts\python.exe -m unittest discover -s tests` | 2026-09-04 |
+| 60 | Tam suit 5 Eylül **2138** test, üç koşum: YKS açıkken 1 FAIL (`test_comms_loopback_gecer`, `WinError 10013`, 5005/5006), kapalıyken OK — ortam, T209 | `REVIEW_LOG.md:29887-29930` (D-427; tablo 29893-29895) · `comms/test_comms.py:35-36` | `unittest discover` + `netstat` / Win32_Process | 2026-09-05 |
+| 61 | Runbook komut kapısı: `--izinli-kaynak` eksik komut `EXIT=2`; eski kapı 22/22 yeşildi; yeni kapı **3 test**, mutasyon T1 düştü | `REVIEW_LOG.md:29299-29350` (D-421 §1–§2) · `SAHA_RUNBOOK.md:93-96` | `tests/test_runbook_komutlari_kosuyor.py` | 2026-09-04 |
+| 62 | Komut hattı K-1/K-2/K-3: ikili arama (A: 23 OK), `_ack_basabilen_bilesenler`, ofset = pencere min ham fark; **23 OK** · **42 test** | `REVIEW_LOG.md:28989-29055` (D-419 §1) · `comms/iha_komut_alici.py:111,149,155,160,420,523` (ayna `cmp` bayt-eş) | `tests/test_faz_b_iha_komut_alici.py` (23) · `tests/test_iha_komut_saat_ve_tekrar.py` (42) | 2026-09-04 |
+| 63 | Saat kilidi: teşhis (2 saat / 1970 / +600 s adım), tekrar savunması (40×/500×/200× → 1 COMMAND_LONG), önce/sonra (7. basamak, 0,25 s); mutasyon **17 + 5** düştü | `REVIEW_LOG.md:29449-29451, 29511-29516, 29547-29549, 29555-29568` (D-422) | aynı testler; `git show HEAD:comms/iha_komut_alici.py` yan yana kıyas | 2026-09-04 |
+| 64 | Hakem kanıt kaydı: `KANIT_OLAYLARI` **16** olay, `KANIT_TEKRAR_ARALIGI_S` 30 s; demo **16 satır / 9 olay** (ROTA→ACK→aktarım kanıtı); gerçek koşum **747 satır**, aralık **p50 30,06 s**; öncesi 32 satır / eski adlar | `comms/yks_gui.py:127-151` · `CONTRACTS.md` §6.8 · `results/prova/20260904_103744_8536/hakem_log.jsonl` · `results/prova/20260904_095651_8620/hakem_log.jsonl` · `results/prova/20260903_184612_1660/hakem_log.jsonl` | `tests/test_yks_hakem_kanit_olaylari.py` (22) · `tests/test_yks_hakem_kanit_yolu.py` (6); aralık: `monotonic_s` farkları (python, 5 Eylül) | 2026-09-04 |
+| 65 | 5 Eylül tezgâh ÖLÇÜM satırları: `ArduCopter V4.5.7 (2a3dc4b7)`, `Frame: QUAD/X`, `u-blox 1 HW: 000A0000 SW: ROM SPG 5.10`, `RCInput: decoding IBUS(1)`, PreArm pil/emniyet satırları kayboldu, `starting motor test` → `finished motor test`; BEYAN: motor 4/4, SiK bağlandı, modlar | `REVIEW_LOG.md:29819-29829` (D-426 §1) | Mission Planner `Messages` (oturuma yapıştırılan satırlar) | 2026-09-05 |
+| 66 | Firmware 4.5.7 sabit: `firmware-version.txt` = `4.5.7-FIRMWARE_VERSION_TYPE_OFFICIAL`, `arducopter.apj` 1.585.371 B, board_id 56, git 2a3dc4b7; 4.7.1'de **9** parametre eksik; `SURUM = "stable-4.5.7"` | `firmware/` (repo dışı, saha belleği) · `REVIEW_LOG.md:29633-29639, 29716-29720, 29787` (D-424/D-425) · `scripts/pixhawk_firmware_indir.py:74` | `scripts/pixhawk_firmware_indir.py` · `tests/test_pixhawk_firmware_yolu.py` (10) | 2026-09-05 |
+| 67 | 5 Eylül ÖLÇÜLEMEDİ/yapılmadı: RC failsafe, ESC kalibrasyonu, param dökümü (dosya yok), pil gerilimi, pusula (Jetson takılı değil), accel teyit, BEC teli; künye farkı ESC 60 A V2 / PM06 (BEYAN) | `REVIEW_LOG.md:29848-29870` (D-426 §3–§4) | — (insan girdisi bekliyor) | 2026-09-05 |
+| 68 | K0–K8 tablosunun tazeliği: `t63/` altında 1 Eylül 23:30'dan sonra verdikt yok; on değer JSON ile yeniden karşılaştırıldı, fark yok | `scripts/olcum/results/t63/t150_baglama_v36_kabul_verdikt.json` | `ls -lt scripts/olcum/results/t63/ \| head` | 2026-09-05 |
+| 69 | Eğitim-val karışıklık matrisi (örnek düzeyi, conf 0,25 · IoU 0,45, n=73): 68/0/22 · 0/108/55 · 70/132/— | `codes/runs/segment/gece_v7a_v35taban/confusion_matrix.png` (+`_normalized.png`; depo dışı, `.gitignore` `runs/`) | Ultralytics 8.4.92 eğitim sonu doğrulaması (`best.pt` = üretim `.pt`, SHA-256 eş; D-115) | 2026-08-26 |
+| 70 | Eğitim-val maske P 0,6236 · R 0,4168 (toplam, sınıf bazlı değil) | `codes/runs/segment/gece_v7a_v35taban/results.csv` satır 3 (epoch 2) | Ultralytics eğitim (`scripts/olcum/139_gece_egitim.py`) | 2026-08-26 |
+| 71 | v36 sınıf bazlı artefakt YOK; `sinif_bazli` en son v15 | `results/capraz_dogrulama_v15_ft2sinif_20260812/capraz_dogrulama.json` | `scripts/olcum/11_capraz_dogrulama.py` | 2026-08-12 |
 
 ---
 

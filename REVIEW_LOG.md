@@ -29930,3 +29930,220 @@ oku, tahmin etme).
 
 Sahada YKS'yi kapatmadan **push kilidi acilmaz**; bu, iş bitene kadar
 bilinerek kabul edilen bir kisittir.
+
+> ⚠ **Bu kayıt 6 Eylül oturumundan (worktree `saha-20260906-tutanak`, oturum kapanmış, commit edilmemiş) 7 Eylül 01:30'da master'a olduğu gibi taşındı. İçindeki "sabah" ifadeleri 7 Eylül'ü kasteder; "D-426 §6 yordamı" atıfları geçerlidir.**
+### D-428 — 6 EYLÜL SAHA TUTANAĞI (akşam, 18:30–20:50): 7 kalem ÖLÇÜMLE kapandı, RC failsafe ÖLÇÜLDÜ ve DÜŞTÜ, kumanda pili bitti — uçuş YOK (üç kez istendi, reddedildi)
+
+**Kim / nasıl:** Operatör sahada tek başına, mimar uzaktan (bu oturum). Operatör
+oturuma "Halil, Emir'in arkadaşı" diye girdi; ~19:30'da "ben zaten Emir'dim en
+başından beri" dedi. Hangisi olduğu doğrulanamadı; **kayda ikisi de yazıldı.**
+D-426 §6 yordamı sürdü: her adımda "ne göreceksin" yazıldı, kanıt olarak
+`Messages` satırı / sayı istendi. Bu akşam da işe yaradı: **"aynı" beyanı
+(pil gerilimi) sayı istenince "11,06"ya, sonra "halüsinasyondu, 15,8"e döndü**
+— dökümdeki `BATT_VOLT_MULT=18.18` değişmediği için son hâli doğru sayıldı.
+Operatör 20:00'den itibaren "uykusuzum" dedi.
+
+Aynı oturumda öğleden sonra **Jetson aktarım paketi** hazırlandı
+(`D:\NAVITAS_JETSON_20260906\`, 9,7 GB, v36 .pt/.onnx sha256'ları kayıtla
+eşleşti) — kusur değil, `DEVAM.md`'de.
+
+#### 1. ÖLÇÜMLE kapananlar
+
+| kalem (D-426 §4) | kanıt | sonuç |
+|---|---|---|
+| Firmware sürümü | `Messages`: `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` (yapıştırıldı) | ✅ D-425 sabit sürüm |
+| "Önce" dökümü | 18:37, 1025 parametre, şablonla **28/31 uyan, 0 eksik**; sapan: `RC_PROTOCOLS=1`, `SR1_POSITION=2`, `SR1_EXTRA3=2` | ✅ alındı — ama **üzerine yazıldı** (§5g) |
+| Pil gerilimi MP ↔ multimetre | multimetre **15,8 V** (balans dış pinler), MP **15,8** (beyan, sayı olarak); `BATT_VOLT_MULT=18.18` dökümde değişmedi | ✅ ±0,1 V içinde; PM06 çarpanı PM02 ile aynı çıktı |
+| Accel + level | MP `Calibration successful` / `level completed` (beyan). **Dökümle doğrulandı:** 18:37'de `INS_ACCOFFS`=0,0,0 · `INS_ACCSCAL`=1,1,1 · `AHRS_TRIM`=0,0 → 20:22'de OFFS (0,018 · 0,003 · −0,291), SCAL (1,0009 · 0,9987 · 1,0024), TRIM (−0,0018 · −0,0257 rad), `INS_ACC2OFFS` de dolu | ✅ **D-426'daki "yapıldı" beyanı yanlıştı** — dünkü flash sıfırlamıştı, bugün gerçekten yapıldı. Pixhawk çift taraflı bantla sabitlendi (beyan) |
+| ESC künyesi | etiket: **Hobbywing Skywalker 60A V2** (beyan); 3 telli fiş (BEC 5 V/5 A), Pixhawk ile gelen "PWM IN / PWM OUT" adaptörü üzerinden **AUX** | ✅ FDR Bölüm 3/5/7 "beyan gerekli" satırı kapanır |
+| ESC kalibrasyonu | "hepsi birden" 2 deneme başarısız (§3). Başarılı yordam: **POWER1 çıkarılmış + Pixhawk USB'de passthrough + sonra pil** → "5'te 5", dördü birlikte döndü (beyan) | ✅ (beyan; yordam §3) |
+| Pusula | 1. kalibrasyon: Mag1+Mag2 doldu (Mag3 yok, `COMPASS_DEV_ID3=0`). 20:22 dökümü: `OFS` (7,0 · 8,7 · 10,7), `OFS2` (19,4 · −126,1 · −22,5) — ikisi de **< 300**. Sonra `PreArm: Check mag field` → metalden ≥ 5 m uzakta **yeniden** kalibre → PreArm temiz (beyan) | ✅ ikinci kalibrasyonun ofsetleri sabah dökümünde |
+| Motor testi (MP, %10, pervanesiz) | "motorlar doğru" — A/B/C/D konum+yön listesi istendi, **gelmedi** | ⚠ BEYAN, dünkü gibi |
+| GPS / EKF | 18 uydu; `EKF3 IMU0/IMU1 is using GPS` (yapıştırıldı) | ✅ |
+
+#### 2. 🔴 RC FAILSAFE ÖLÇÜLDÜ — DÜŞTÜ
+
+`Setup → FailSafe` sayfası açıkken kumanda kapatıldı: barlar **"sabit kaldı"**,
+`Radio Failsafe` gelmedi. Yani FS-iA6B iBUS'ta link kopunca **son değerleri
+tutuyor**; ne "pulse yok" yolu ne `FS_THR_VALUE=975` yolu tetikleniyor.
+**D-426 §4'teki varsayım ("iBUS alıcısı çerçeve basmayı keser") yanlışlandı.**
+Havada link kopması = son çubuk konumuyla uçmaya devam eden araç.
+
+Çare (kumandada, karta dokunmadan): `RX Setup → Failsafe`, CH5 → SwC **Land**
+konumu, CH3 → gaz altta. Operatörün menüsünde yalnız **CH11–16 + "All
+channels"** görüldü (firmware/sayfa farkı); "All channels" denemesi "olmadı"
+(hangi anlamda olduğu alınamadı). **Sabah, pilli kumandayla tekrar.** Test
+ölçütü: kumanda kapanınca CH5 barı Land'e zıplar, HUD modu `Land` olur.
+
+Yalnız **diz boyu hop** için kabul edilen kompanzasyon: MP `Actions → Set
+Mode → Land` (SiK, kumandadan bağımsız). 30 m görev için **kabul değildir.**
+
+#### 3. ESC "hepsi birden" neden iki kez tutmadı — ve yordam
+
+Deneme 1 (pil ile): Pixhawk LED döndü, düğme basıldı, ESC'ler **hızlı üçlü**
+bip = Hobbywing "gaz sıfırda değil" — ESC sinyali **normal modda** gördü,
+kalibrasyona girmedi. Deneme 2 (USB önce, sonra pil): "olmadı" — sebep
+muhtemelen pil takılınca PM06→POWER1 ile kartın **yeniden başlaması** (kanıt
+yok, çıkarım). Deneme 3 **başarılı**: POWER1 fişi çıkarıldı, Pixhawk USB'de
+ESC-kal passthrough'a alındı (MP `Messages` her 5 sn `Initialising ArduPilot`
+= `esc_calibration` bekleme döngüsü; `Restart board` satırı MP bağlanmadan
+önce gittiği için görülmedi), düğme basıldı, **sonra** pil → ESC'ler yüksek
+gazla açıldı → 2 bip → gaz alta → uzun bip. **Skywalker V2 kalibrasyon
+kararını kendi açılış anında verir**; pil-öncesi sinyal şart. Bu yordam
+`config/pixhawk/README.md`'ye girecek (sabah, T-kaydı).
+
+#### 4. 🔴 KUMANDA PİLİ BİTTİ → akşam iki kez "kumanda gitti"
+
+19:5x: yeniden başlatma sonrası RC yok (`RCInput: decoding` satırı yok, ~4 dk);
+`RC_PROTOCOLS` 4→1 yazıldı ve/veya `RC IN` fişi ittirildi → geldi. 20:4x:
+pusula sonrası yeniden başlatmada **yine** yok. Sonra operatör: **"TX pili bitti
+gösteriyor, RX full."** Zayıf TX pili = düşük RF = kopmalar; iki olayın en
+tutumlu açıklaması bu, ama `RC IN` fişi de dışlanmadı. **Bench'te ölen
+kumanda + çalışmayan failsafe = pervane yok.**
+
+#### 5. Bulgular ve kararlar (mimar)
+
+- **a. `RC_PROTOCOLS`:** 4 yazılınca barlar canlı oynadı (**sahte kanıt** — kilitli
+  protokol canlı maske değişikliğiyle düşmez); yeniden başlatmada RC yoktu; 1
+  yazılınca geldi. Ancak aynı anda TX pili bitiyordu ve fiş şüpheli → **"4
+  iBUS çözmüyor" KANITLANMADI**, üç değişken ayrışmadı. Karar: kart **1**'de
+  kalır (dökümde 1). Sabah tek değişkenli test: yeni pilli kumanda, fiş sabit,
+  4 yaz → reboot → `RCInput: decoding IBUS` var mı. Yoksa şablon 4→1 + README
+  TEYİT + `test_faz_b_pixhawk_sablon` P5 güncellenir (ayrı D-kaydı).
+- **b. Oturumda bilinçli yapılmayan iki parametre değişikliği** (20:22 dökümü):
+  `FS_THR_ENABLE` 1→**3** (Land), `BATT_FS_LOW_ACT` 2→**1** (Land). Şüphe: MP
+  `FailSafe` sayfasındaki açılır listeler. Hop için yön doğru; **30 m görevden
+  önce mimar kararı** (şablon 1/2 mi, Land mi) ve şablon/README hizası.
+  Karar yazılmadan görev uçuşu yok.
+- **c. `FS_GCS_ENABLE`:** hop için **5 (Land)** yazılması istendi — 1 (RTL) MP
+  bağlantısı 5 sn kopunca aracı **`RTL_ALT` 35 m'ye** tırmandırır, gece 1 m
+  hop'ta kabul edilemez. Yapılıp yapılmadığı bilinmiyor (20:22 dökümü
+  öncesinde istendi... hayır, sonrasında; dökümde 1). Sabah dökümü söyler.
+  D-406 C anlamı (Jetson-link failsafe) göreve dönüşte geri alınır.
+- **d. `SERVOn_FUNCTION`:** ESC'ler **AUX 1–4** = `SERVO9–12` = **M4, M2, M1, M3**
+  — standart dışı ama her motor bir kez, motor testi (beyan) geçti. Ayrıca
+  **MAIN 1–8 ve AUX 5–8'de başıboş motor atamaları** (`SERVO1`=34, `SERVO2`=34,
+  `SERVO3`=33, `SERVO4`=34, `SERVO5`=34, `SERVO6`=36, `SERVO7`=33, `SERVO8`=34,
+  `SERVO13`=36, `SERVO14`=34, `SERVO15`=33, `SERVO16`=35). Uçuşu engellemez;
+  boş çıkışa takılan her şey motor PWM'i alır → **sabah 0'lanır + motor testi
+  tekrar.** Mimarın ilk alarmı ("MAIN 1–4 bozuk, uçamaz") ESC'lerin MAIN'de
+  olduğu varsayımına dayanıyordu — **yanlıştı**, kayıt.
+- **e. `SR1_POSITION/EXTRA3` = 2/2** (şablon 4/1), `SR2` 8/2 şablonla aynı →
+  MP'nin kendi akış isteğinin RAM'i ezmesi hipotezi (SR2'ye dokunmamış olması
+  tutarlı). Kanıt yalnız `mavlink_dogrula` (MP kapalı, YKS ucunda). **Açık.**
+- **f. ESC kırmızı teller** (4 BEC paralel, servo rayında): operatör bu gece
+  istemedi → **ertelendi**, sabah 3'ü dışarı (pil takılı değilken).
+- **g. "Önce" dökümü (18:37) operatör tarafından aynı adla ÜZERİNE YAZILDI**;
+  önce-değerler bu oturumun grep çıktılarından (yukarıdaki tabloda). Repoya
+  giren **20:22 dökümü**: `config/pixhawk/arducopter_fda_20260906.param`
+  (sha256 `4acc447663c0527a…`). Belgelerdeki `arducopter_fda_20260905.param`
+  adı: **5 Eylül dökümü hiç alınmadı**; tarih yalanı olmasın diye 06 kullanıldı
+  — README/FDR/ACIK_KALEMLER atıfları güncellenecek (T-kaydı). Bu döküm
+  **ikinci pusula kalibrasyonunu ve varsa `FS_GCS_ENABLE` değişikliğini
+  içermez** → sabah üçüncü döküm şart.
+- **h. Uçuş talebi ve red:** üç kez ("1 saat içinde uçmak istiyorum",
+  "failsafe yapmayalım devam et", "ışıklandırma sağlam, TEKNOFEST izni var").
+  Mimar: failsafe düşmüşken pervane/arm/kalkış adımı **verilmedi**; MP-Land
+  kompanzasyonu ve `FS_GCS_ENABLE=5` şartıyla yalnız **diz boyu, ≤ 30 sn hop**
+  için yordam yazıldı. Sonra sırayla `Gyro not calibrated` (açılışta hareket;
+  yere koy, çek-tak) → `Check mag field` (temiz yerde yeniden kalibre, geçti)
+  → **kumanda yok → TX pili bitti** → **uçuş yok.** Sonuç: **pervane
+  takılmadı, arm edilmedi.** Plan satırı "gündüz + pilot Emir" bu gece de
+  geçerli sayıldı; operatörün Emir olduğu doğrulanamadı.
+- **i.** Bu commit'te kod yok: `.param` dökümü + bu kayıt + `DEVAM.md`.
+  Genel kapı ve `test_faz_b_pixhawk_sablon` bu ağaçta koşuldu (commit
+  gövdesinde).
+
+### D-429 — 6 EYLUL 20:45–21:34: PERVANELI UC DEVRILME, tlog ile OLCULDU — FC dogru yonde duzeltti, ON ITKI yetmedi; M1 (sag on) hasarli; gaz "adimla" verildi
+
+**Kaynak: Mission Planner telemetri logu** `results/ucus_loglari/20260906/2026-09-06 19-52-44.tlog`
+(17,98 MB, 19:52–21:56; MP bagli oldugu icin kendisi yazdi). Cozumleyici
+`scripts/ucus_tlog_devrilme.py`, ciktisi ayni klasorde `*_devrilme.txt`. Beyan degil.
+
+#### 0. Zaman duzeltmesi (bu oturumun kendi hatasi)
+
+Bu oturum baglami sikistirilmis halde devam etti ve olayi **"5 Eylul aksami"** sandi;
+kullaniciya bu cerceveyle cevap verdi, FDR ajanlarina da "bugun 5 Eylul" dedi.
+Olculen gercek: D-424/425 commit'leri 5 Eyl; D-426/427 6 Eyl 11:49–11:58; **D-428**
+(baska oturum, worktree) 6 Eyl 18:30–20:50 — "ucus yok, pervane takilmadi, arm
+edilmedi"; **olay 6 Eyl 20:45–21:34**, o oturum kapandiktan sonra; kullanici bu oturuma
+7 Eyl 00:xx'te bildirdi. Iki oturum ayni gun ayni karti yonetti ve birbirinden
+habersizdi — bu, D-428'in kendisinin kaydettigi "operator kim" belirsizligiyle birlikte
+**yordam kusurudur**: tek aktif saha oturumu kurali yazilmali (asagida §6).
+
+#### 1. Olay pencereleri (tlog HEARTBEAT armed)
+
+41 arm penceresi. Ilk 15'i motor testi (2 s). **16–41: 20:45–21:34, 26 gercek arm.**
+Pitch ≤ −10° olan (devrilme) pencereler:
+
+| pencere | saat | sure | gaz adimi (RC_CHANNELS ch3) | pitch | FC komutu (AUX1=M4 sag arka · AUX2=M2 sol arka · AUX3=M1 sag on · AUX4=M3 sol on) |
+|---|---|---|---|---|---|
+| **19** | 20:56 | 12 s | 1002 → **1446** (0,2 s) → **1656** (0,6 s) | −0,7 → −4,2 (0,2 s sonra) → **−43,8** (0,8 s sonra) | esit komutta burun dusmeye basladi; sonra **M1 1766 · M3 1809** (on) vs M4 1604 · M2 1598 (arka) → on +200 komutla burun **daha da** dustu |
+| **20** | 21:00 | 32 s | 1095 → 1185 → 1305 → 1344 → **1821** (0,2 s) | −10 → **−15,2**; 32 s boyunca burun-asagi + sag-asagi | **M1 1949 (doygun) ~25 s boyunca, M2 1150 (taban)** — FC sag-on koseyi kaldirmaya calisiyor, kose yerde kaliyor |
+| **26** | 21:33 | 8 s | 1079 → **2000** (0,5 s) | −1,1 → **−36,9** ayni anda | M1 1949 · M2 1757 · M3 1728 · M4 1470 |
+| 37 | 21:44 | 23 s | 1057 → 1174 → 1340 → 1480 → 1818 → 2000 (**2,5 s'de**) | **+1,4 … +1,9 sabit** | dordu 1889–1949, 3,5 s tam gazda **duz** — devrilme YOK |
+
+Roll butun devrilmelerde kucuk (|roll| < 6° pencere 19; +4–16° pencere 20): olay
+**pitch** ekseninde. FC'nin olctugu pitch NEGATIF (FC burnu asagi) ve operatorun
+gozlemi "onu kalkmadi, arkasi kalkti" ayni yonu soyluyor → **FC cercevesi = fiziksel
+cerceve** (ok ileri; 180° hipotezi elendi — 180° olsa FC pozitif pitch olcerdi).
+
+#### 2. Hukum — logun soyledigi
+
+1. **FC dogru yonde duzeltti.** Her devrilmede on motorlara (M1, M3) daha yuksek, arka
+   motorlara daha dusuk komut. Eslesme/yonelim/mixer TERS DEGIL.
+2. **Fiziksel on, komut edilen itkiyi uretmedi.** On +200 komutla (pencere 19) burun
+   0,2 s icinde 40° dustu. Bu, on itkinin arkadan belirgin dusuk (ya da negatif) oldugu
+   YA DA aracin on ayaklari uzerinde pivot yaptigi (on motor kaldirac kolu ~0) anlamina
+   gelir; ikisi birbirini besler.
+3. **Ilk asimetri komut ESITKEN olustu:** pencere 19 t+2,8 s, dort komut 1517–1559
+   iken burun 0,2 s'de −4,2°'ye gitti. Yani kaynak FC degil: **CG onde / arka itki >
+   on itki / on ayak takilmasi**.
+4. **M1 (sag on) hasarli:** pencere 20'den itibaren FC M1'i 1949'da tutuyor, kose yerde.
+   Duman atan "on motor" budur; "saglam diyelim" beyani gecersiz (§5 muayene).
+5. **Gaz "adimla" verildi:** 0,2–0,6 s'de 1000 → 1446/1656/1821/2000. Hover ~%35
+   (`MOT_THST_HOVER` varsayilan; ogrenilmedi). %65–100'e siçrama, en kucuk asimetriyi
+   devrilmeye cevirir; pencere 37'de 2,5 s'lik yumusak rampa ile arac tam gazda duz kaldi
+   (pervanesiz mi belli degil — VFR_HUD irtifa okunmadi, acik).
+
+#### 3. Onceki iki oturumun teshisleri — hangisi neden tuttu/tutmadi
+
+- "Pervane eli / motor yonu / kart yonelimi / X govde" — kullanici tek tek dogruladi
+  (BEYAN) ve log 180°'yi eledi; **motor yonu** icin objektif kanit hala yok (video yok,
+  D-426 ve D-428 ikisinde de "gelmedi"). §5'te zorunlu.
+- "Kumandadan arm olmuyor" — tlog: arm MP'den oldu (HEARTBEAT armed); PreArm bos muydu
+  bilinmiyor, STATUSTEXT'te 21:00 civari PreArm satiri yok → bos sayilir.
+- Mimarin "MAIN 1–4 bozuk" alarmi (bu oturum, 01:0x) **yanlisti** — ESC'ler AUX'ta
+  (D-428 §5d); D-428 bunu zaten kaydetmisti, bu oturum okumadan alarm verdi. Kayit.
+
+#### 4. Dokumden (6 Eyl 20:22 + tlog PARAM) plan disi degerler
+
+| parametre | dokum | plan/sablon | karar |
+|---|---|---|---|
+| `RC_SPEED` | **490** | plan §0.2 "PWM 400 Hz"; Skywalker 60A V2 spec 50–432 Hz | **400 yazilir** (sablona girer, T-kaydi) |
+| `SERVO1–8`, `SERVO13–16` | motor fonksiyonlari (34,34,33,34,34,36,33,34 / 36,34,33,35) | bos cikislar | **0'lanir** (D-428 §5d karari, yapilmadi) |
+| `FS_THR_ENABLE` | 3 (Land) | sablon 1 (RTL) | D-428 §5b — hop icin Land; gorev oncesi mimar karari |
+| `FS_GCS_ENABLE` | 5 (Land) (tlog) | sablon 1 | D-428 §5c — ayni |
+| `BATT_FS_LOW_ACT` | 1 (Land) | sablon 2 (RTL) | ayni |
+| `COMPASS_ORIENT` (Mag0) | 6 (Yaw270, oto) | — | M9N direkte 90° donuk monte: kabul, ama not |
+| ESC BEC | 4 kirmizi tel rayda paralel | — | **3'u cikar** (D-428 §5f, ertelenmisti) |
+
+#### 5. Tekrar guc vermeden once — `SAHA_OLAY_SONRASI_MUAYENE.md` (yeni, 15 madde)
+
+Teshis turu depoda olay-sonrasi muayene yordaminin **hic olmadigini** olctu (0 satir);
+belge yazildi. Bu olay icin asgari: (0) kanit dondur — fotograf + **DataFlash .bin
+indir** (tlog irtifa/akim tasimiyor); (1) M1 motor: faz-faz direnc esit, govdeye kacak
+yok, elle donus, koku — **degistir**; (3) M1'in ESC'si; (4) dort pervane; (6) kollar —
+**dordu ayni boy mu** (depoda `uzatilmis yeni drone kolu.STL` var; arka uzun/on kisa ise
+asimetri buradadir); (10) ESC sinyal sirasi + kirmizi teller; (12) TX pili + failsafe.
+
+#### 6. Kural (mimar)
+
+1. **Kalkis = rampa.** Stabilize'da gaz 0'dan hover'in hemen ustune **≥ 2 s**'de;
+   `MOT_SLEW_UP_TIME` (0 → **1,0 s**) pilot slamini yazilimda sinirlar — Emir karari,
+   ilk hover'da acik.
+2. **Motor yonu videosuz "dogru" sayilmaz.** Her motorda bant, yavas cekim, A-B-C-D.
+3. **Tek aktif saha oturumu.** Ayni kart iki oturumdan yonetilmez; DEVAM.md'ye
+   "saha oturumu: <oturum adi>, <saat>" satiri yazilir, digeri okur.
+4. **Olay = once log.** Guc verilmeden once tlog/.bin alinir; bu kayit 5 saat sonra
+   yazildi cunku olay bildirilirken "log" hic anilmadi.

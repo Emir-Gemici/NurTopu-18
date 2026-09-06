@@ -28,7 +28,7 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 | 5 | Çıkarım arka ucu kararı | `torch.cuda.is_available()` sonucu + seçilen yol (CUDA wheel / onnxruntime / CPU) | 3 |
 | 6 | SiK 433 MHz RTT ve paket kaybı | `scripts/sik_rf_olc.py`; DDR'deki ">%98, 300 m" iddiasının kanıtı **yok** | 3, 4, 7 |
 | 7 | ArduCopter sürümü, kalibrasyon çıktıları, pervanesiz motor testi | Mission Planner; sahada okunan parametre dökümü repoya işlenir | 3, 5, 6 |
-| 8 | Uçuş kontrolcüsü parametrelerinin **sahada okunan** hâli | `config/pixhawk/arducopter_fda_20260905.param` (bugün yok, cumartesi üretilir) | 2, 5, 6 |
+| 8 | Uçuş kontrolcüsü parametrelerinin **sahada okunan** hâli | `config/pixhawk/arducopter_fda_20260905.param` (bugün yok, cumartesi üretilir) → **AÇIK (5 Eylül akşamı, D-426 §4): dosya YOK** — `config/pixhawk/README.md` §1 adım 6 (`Full Parameter List` → `Save to file`) sahada yapılmadı. Döküm alındığında bakılacak: `RC_PROTOCOLS` sahada 4 → 1 yapıldı ve geri alınmadı (D-426 §2); `BRD_SAFETY_DEFOFF` değiştirilmedi. Bu satır kapanmadan Bölüm 2/5/6'daki döküm atıfları açık kalır | 2, 5, 6 |
 
 ## 2. 6–19 Eylül uçuş testleri — ölçümle kapanır
 
@@ -64,12 +64,17 @@ Bu üç kalem için doğru okuma: **"Jetson açılırsa cumartesi kapanır; aç�
 
 > Bunlar saha ölçümü beklemez; bugün yazılabilir ama **yazılmadı** ve
 > yazılmış gibi de gösterilmedi. Her biri bir kaydın tam kapanmasını engeller.
+>
+> **5 Eylül durumu:** üçü de yazıldı (D-419 birleştirmesi, 4 Eylül) ve koda
+> karşı doğrulandı; kapılar bu tur koşuldu: `test_seri_pixhawk_kilidi` 13/13 ·
+> `test_p5_h1c_damgasi` 23/23 · `test_yks_hakem_kanit_olaylari` 22/22 ·
+> `test_yks_hakem_kanit_yolu` 6/6. Satırlar aşağıda kapanış kanıtıyla durur.
 
 | # | kalem | neden açık | bölüm |
 |---|---|---|---|
-| 23 | **Tek-yazar kilidinin koda genişletilmesi** — `rpi_inference` ve `iha_inis_yayinci` bugün `--mavlink /dev/tty*` kabul eder; kural yalnız `iha_komut_alici`'da kodludur, diğer ikisinde yordamla uygulanır | yazılım | 3 |
-| 24 | **H1c damgası** — ön kayıttaki "sınıflandırılamayan yayımlanmış çevrilme = 0" ölçütü koşulmadı; H1 ön kaydı bu yüzden tam kapanmış sayılmaz (H1 kendisi DÜŞTÜ, eşik gevşetilmedi) | yazılım | 3 |
-| 25 | **Hakem kanıt kaydının olay kümesi** — `YksArayuz` bugün yalnız `YKS_ARAYUZ_HAZIR` satırını yazar. `_kamera_kanit_durumu`, `_son_kamera_kanit_monotonic`, `_son_telemetri_kanit_monotonic` alanları kuruluyor ama **hiçbir yerde okunmuyor**; kamera ve telemetri kanıt olayları yazılmıyor. Olay kümesi sözleşmesi (`CONTRACTS`) yazılmadan uydurulmadı | yazılım | 3, 4 |
+| ~~23~~ | ~~**Tek-yazar kilidinin koda genişletilmesi** — `rpi_inference` ve `iha_inis_yayinci` bugün `--mavlink /dev/tty*` kabul eder; kural yalnız `iha_komut_alici`'da kodludur, diğer ikisinde yordamla uygulanır~~ → **KAPANDI (D-419 §3–4, `wf_b0f33806-4ba-1`).** Üç süreç aynı kilidi `comms/inis_kaniti.py:101-140`'tan okur (`seri_pixhawk_bayragini_ekle` / `seri_pixhawk_kilidini_uygula`): `codes/rpi_inference.py:2539,2684` · `comms/iha_inis_yayinci.py:432,475` · `comms/iha_komut_alici.py:855,899`. `/dev/tty*`, `COM*`, `serial:` → `parser.error` çıkış 2, tek red metni; yalnız `--seri-pixhawk-bilerek` aşar; `iha_inis_yayinci` kılavuzu artık `udp:127.0.0.1:14551` gösterir. `iha_komut_alici --serial` de reddedilir (`iha_komut_alici.py:891`, D-421 §1). Kapı `tests/test_seri_pixhawk_kilidi.py` **13/13** | yazılım | 3 |
+| ~~24~~ | ~~**H1c damgası** — ön kayıttaki "sınıflandırılamayan yayımlanmış çevrilme = 0" ölçütü koşulmadı; H1 ön kaydı bu yüzden tam kapanmış sayılmaz (H1 kendisi DÜŞTÜ, eşik gevşetilmedi)~~ → **KAPANDI (D-419 §3, `wf_b0f33806-4ba-4`).** Ölçüt aynı model/küme/tohumla (7, 42; σ=2; kare başına 4 kopya) koşuldu: sınıflandırılamayan yayımlanmış çevrilme **0/0**, sınıflar yayımlananı tam örter (tohum 7: (i) 6 + (ii) 1 = 7 · tohum 42: (i) 9 + (ii) 2 = 11; (iii) hiç oluşmadı) — `results/p5_histerezis/ON_KAYIT.md` "H1c — KOŞULDU", `olcum_20260903.json` (`H1c: true`), ikinci koşum `olcum_h1c_tekrar_20260903.json` (ham 13/24, yayımlanan 7/11 birebir). H1 %40 hükmü **DÜŞTÜ** kalır (`H1_ozgun: false`); eşik ve K değişmedi. Kapı `tests/test_p5_h1c_damgasi.py` **23/23** (GPU'suz çekirdek + 2 mutasyon testi) | yazılım | 3 |
+| ~~25~~ | ~~**Hakem kanıt kaydının olay kümesi** — `YksArayuz` bugün yalnız `YKS_ARAYUZ_HAZIR` satırını yazar. `_kamera_kanit_durumu`, `_son_kamera_kanit_monotonic`, `_son_telemetri_kanit_monotonic` alanları kuruluyor ama **hiçbir yerde okunmuyor**; kamera ve telemetri kanıt olayları yazılmıyor. Olay kümesi sözleşmesi (`CONTRACTS`) yazılmadan uydurulmadı~~ → **KAPANDI (D-412 + D-419 §2, `wf_dce95c66-485`).** `CONTRACTS.md` §6.8 yazıldı (16 olay / ne zaman yazılır / zorunlu alanlar); `comms/yks_gui.py:127` `KANIT_OLAYLARI` **16 olay**; kamera/telemetri alanları artık `_kanit_durumu_yaz` tarafından okunur (`yks_gui.py:2610`, `:3980`) — `KAMERA_KANIT`/`TELEMETRI_KANIT` kenar olayı + 30 s tekrar (`KANIT_TEKRAR_ARALIGI_S`, fsync yükü kapandı). Kapılar: `tests/test_yks_hakem_kanit_olaylari.py` **22/22** (sözleşme ↔ sabit ↔ AST üç yönlü küme eşitliği, gerçek `HakemKaydi` ile diske yazım, 6 mutasyon yakalandı — D-419 §2) · `tests/test_yks_hakem_kanit_yolu.py` **6/6** (D-412). Uçtan uca `--demo --fda`: `hakem_log.jsonl` 18 satır / 9 farklı olay (D-419 §2) | yazılım | 3, 4 |
 
 ## 5. Rapor içi iş — bölümler kesinleşince
 

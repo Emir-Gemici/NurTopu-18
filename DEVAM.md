@@ -1,120 +1,89 @@
-# DEVAM NOKTASI — 4 Eylül 2026, 01:40 (gece çalışması sürüyor)
+# DEVAM NOKTASI — 6 Eylül 2026, 21:00 (saha akşamı bitti, uçuş yok)
 
-> Kullanıcı gece izni verdi ve uyumaya gitti. **Hedef: cumartesi 5 Eylül'e
-> her şeyle hazır olmak.** Son commit: `8117c24`.
+> Bugün iki iş oldu: (1) **Jetson aktarım paketi** HDD'ye alındı, (2) **saha
+> oturumu** — Pixhawk tarafında 7 kalem ölçümle kapandı, RC failsafe ölçüldü ve
+> **düştü**, kumanda pili bitti, uçuş **yapılmadı** (üç kez istendi, reddedildi).
+> Tam kayıt: `REVIEW_LOG.md` **D-428**. Önceki devam noktası (4 Eylül gecesi)
+> `git log`'da; oradaki açık kalemlerden kapanmayanlar aşağıda §4'te.
 
-## Bu gece ne oldu
+## 1. Jetson aktarım paketi — HAZIR
 
-Kullanıcı "cumartesiye hazır mısın, emin ol" dedi. Ezberden cevap vermek
-yerine cuma kartındaki listeyi **bugünkü kodla baştan koştum** (kartın
-kanıtları bayattı — `jetson_baslat.sh`, `saha_baslat.py`, `kamera_koprusu.py`
-4 Eylül'de değişti) ve ayrıca **"hazırız" iddiasını çürüten** bir tur başlattım.
+`D:\NAVITAS_JETSON_20260906\` · 9,7 GB · 17.764 dosya · HDD'de 28,6 GB boş kaldı.
+- `OKU_BENI.md` (paket kılavuzu) + `izinleri_duzelt.sh` (NTFS sonrası `+x`
+  onarımı; koşturuldu, 5/5 kritik dosya doğrulandı) + `navitas/` (repo düzeni).
+- İçinde: `jetson_paket/` (966 MB), `wheels/` (51 aarch64 cp38), `models/`
+  (tüm sürümler), `results/` (4,9 GB), `data/`, `test_images/`, `codes/`
+  (runs/ hariç), tüm `.md`/PDF, `navitas_depo.bundle` (git geçmişi), 0038
+  doğrulama kümesi.
+- **sha256 doğrulandı:** `models/navitas_seg_v36_best.pt` =
+  `1d1caca6…6911`, `jetson_paket/models/navitas_seg_v36_best_512_fp16.onnx` =
+  `f4c9f5fe…deab` — `config/model_registry.json` ile birebir.
+- `D:\navitas` (16 Ağustos, 56 GB eski yedek) **dokunulmadı**; operatör
+  silinmesini istedi, mimar CLAUDE.md md. 18 gereği silmedi — karar Yunus'un.
 
-🔴 **Çürütücü 13 tıkayıcı buldu.** En ağırları aşağıda.
+## 2. Saha oturumu — ne kapandı (ölçüm) / ne kaldı
 
-## ✅ Bu gece kapananlar
+| ✅ kapandı | kanıt |
+|---|---|
+| Sürüm `ArduCopter V4.5.7 (2a3dc4b7)` | Messages |
+| Pil gerilimi 15,8 = 15,8 (`BATT_VOLT_MULT 18.18` doğru) | multimetre + MP |
+| Accel + level | 20:22 dökümünde `INS_ACCOFFS/SCAL`, `AHRS_TRIM` dolu (18:37'de sıfırdı) |
+| Pusula ×2 (ikincisi temiz yerde, `Check mag field` sonrası) | ofset 13 / 130 (< 300) — 2. kalibrasyon sabah dökümünde |
+| ESC kalibrasyonu (Skywalker 60A V2) | POWER1 çıkarılmış + USB passthrough + sonra pil yordamı; "5'te 5" (beyan) |
+| ESC künyesi: Hobbywing Skywalker 60A V2, BEC 5 V/5 A | etiket (beyan) → FDR B3/5/7 |
+| Motor testi | "motorlar doğru" (**beyan**) |
+| Parametre dökümü | `config/pixhawk/arducopter_fda_20260906.param` (20:22) |
 
-**1. Runbook §3'ün kopyala-yapıştır bloğu ÖLÜYDÜ.** Codex `iha_komut_alici`ya
-zorunlu `--izinli-kaynak` ekledi; runbook satırı onu taşımıyordu → argparse
-çıkış 2. **Asimetrik ölüyordu**: `iha_inis_yayinci` kalkıyor, komut alıcı
-ölüyor → sahada zincir *yarı canlı* görünür, iniş kanıtı akar ama ARM/PARAŞÜT
-hiç ACK almaz. Düzeltildi + bayrağın ne olduğu runbook'a açıkça yazıldı +
-çelişkili `--serial` maddesi düzeltildi.
+| 🔴 açık — pervane takılmadan önce | nasıl kapanır |
+|---|---|
+| **RC failsafe DÜŞTÜ** (alıcı son değeri tutuyor) | kumanda `RX Setup → Failsafe → All channels` (SwC Land, gaz altta) → test: TX kapat, CH5 Land'e zıplar, HUD `Land` |
+| **Kumanda pili bitti** (TX uyarısı; RX full) | 4 yeni AA; ekranda TX gerilimi |
+| `RC IN` fişi şüpheli (iki yeniden başlatmada RC gitti) | fişi sabitle, aracı sars, barlar kesilmesin |
+| 3 ESC kırmızı tel (4 BEC paralel) | pil takılı değilken pini çıkar, bantla |
+| Başıboş `SERVO` motor atamaları (MAIN 1–8, AUX 5–8) | `SERVO1–8, 13–16 = 0` → motor testi tekrar |
+| Sabah dökümü | `arducopter_fda_20260906_sabah.param` → diff; 2. pusula + `FS_GCS_ENABLE` görülür |
 
-**2. Bunu yakalaması gereken kapı 22/22 YEŞİLDİ.** `test_p4_runbook.py` sabit
-bir jeton listesiyle substring arıyordu; `--izinli-kaynak` listede yoktu.
-Yeni kapı **`tests/test_runbook_komutlari_kosuyor.py`** (3 test) runbook'un
-bash bloklarındaki komutları **gerçekten koşar** ve argparse reddediyor mu
-diye bakar. Mutasyon: bayrak runbook'tan çıkarılınca T1 düştü, dosya `cmp`
-ile bayt-eş geri yüklendi.
-*(Aynı sınıfın dördüncü tekrarı: D-415 yazım körlüğü, D-419 §5 kalıtım
-körlüğü, sahte-kapı dedektörü, şimdi bu.)*
+## 3. Mimar kararı bekleyenler (uçuştan önce yazılır)
 
-**3. D-413 bayatlıkları temizlendi.** `scripts/bellek_hazirla.py` hâlâ
-"JetPack SD imajını microSD'ye balenaEtcher ile yaz" diyordu ve bu satır
-**saha USB'sine gidiyordu**; kartta microSD yuvası YOK. `FAZ_B_GUN_PLANI.md`
-(basılacak üç belgeden biri) aynı bayatlığı taşıyordu. İkisi de düzeltildi.
+- `FS_THR_ENABLE` 1→3 ve `BATT_FS_LOW_ACT` 2→1 kartta **kimse bilmeden**
+  değişmiş (D-428 §5b). Hop için Land doğru; **30 m görev** için karar: şablonu
+  mu değiştiririz, kartı mı geri alırız.
+- `FS_GCS_ENABLE`: hop için 5 (Land) istendi; görevde D-406 C anlamına (1) dönüş.
+- `RC_PROTOCOLS`: 4'ün iBUS çözmediği **kanıtlanmadı** (TX pili + fiş karıştı).
+  Sabah tek değişkenli test (D-428 §5a); sonucu şablon/README/test P5'e yansır.
+- `SR1_*` 2/2 → `mavlink_dogrula` (MP kapalı) ile ölçülür.
+- Belgelerdeki `arducopter_fda_20260905.param` atıfları → 06'ya (5 Eylül dökümü
+  hiç alınmadı). README'ye ESC yordamı (D-428 §3) girer.
 
-**4. Yazdırma listesi `SAHA_RUNBOOK.md`'yi atlıyordu** — hem de tüm başlatma
-komutları oradayken. Eklendi.
+## 4. Önceki devam noktasından hâlâ açık (4 Eylül gecesi listesi)
 
-**5. Cuma kartı §A 4 Eylül ölçümleriyle baştan yazıldı** ve **iki yanlış sayı**
-bulundu: model dosyaları "54,8/54,6 MB" (ölçülen 52,3/52,0), tekerlekler
-"51 dosya" (ölçülen 48). §B'deki 🛒/✅ satırlarına "**kullanıcı beyanıdır,
-artefaktı yoktur**" notu düşüldü.
+- Nano'da `python3.8` kurulumu internet ister, çevrimdışı yedeği yok.
+- Taşıyıcı kartın modeli depoda yazmıyor; eMMC boş çıkarsa kurtarma pini bilinmiyor.
+- USB dışında Jetson'a dosya yolu (ethernet/scp) belgede yok — HDD paketi bunu
+  kısmen kapattı (NTFS: `ntfs-3g` + `izinleri_duzelt.sh`).
+- `YKS_IP` elle beyan, DHCP'de sessiz red (kod+belge).
+- **T209** (`test_comms` 5005/5006'ya bind, D-427): YKS açıkken tam suit kırmızı.
+  Bu akşam da YKS canlıydı (`results/prova/20260906_114143_11440/` yazıyordu).
 
-**6. Saha belleği iki kez tazelendi** — son hâli 01:38, HEAD `8117c24`,
-405 dosya, 1268,5 MB, eksik zorunlu 0. Düzeltilmiş runbook içinde (2 kez
-`--izinli-kaynak`), MANIFEST'te ölü microSD yordamı 0.
+## 5. Sabah sırası (40 dk, pervane en son)
 
-## ⏳ KOŞAN: saat kilidi onarımı (`wf_af878804-c1b`)
-
-🔴 **En ağır bulgu ve gerçek bir uçuş emniyeti kilidi.**
-`comms/iha_komut_alici.py` `_ornekle`: `abs(ham) > KOMUT_SAAT_SAPMA_TAVANI_S`
-(1800 s) olan örneği **atıyor**. Ofset bilinmiyorken `ham` iki saatin farkıdır
-— yani sapma 30 dakikayı aşarsa **öğrenmek için gereken örneğin kendisi
-eleniyor** → ofset asla öğrenilmiyor → **ARM/DISARM/RTL/LAND/PARAŞÜT kalıcı
-olarak reddediliyor**. RTC pili olmayan Jetson 1970'e açılabilir; sapma
-saatler/yıllar olur. Sabitin yorumu "NTP'siz Jetson'ın makul sapma bandı"
-diyor — bu varsayım yanlış.
-
-İkinci kusur: ofset öğrenildikten sonra saat **basamaklı** düzelirse (NTP
-adımı) eski örnekler 60 saniye boyunca eski ofseti tutuyor → o süre kritik
-komutlar ölü.
-
-**Mimarın kararı** (workflow'a verildi): tekrar savunması `(oturum, seq, cmd)`
-anahtarıdır, saat kapısının işi **tazeliktir**. Tavan artık *öğrenmeyi* değil
-*kaymayı* engeller: ofset bilinmiyorken büyük sapma örnek alınır ama tek bir
-çerçeve kestirim kuramaz (≥N destekleyen örnek + dayanıklı özet); ofset
-bilindikten sonra tavan **öğrenilen ofsete göreli** uygulanır. Saat adımı
-algılanınca pencere boşaltılır. Ofset öğrenimi ve adım **görünür loglanır**.
-
-İki çürütücü koşuyor: biri "saldırgan ardışık sahte damgalarla ofseti
-çekebiliyor mu", diğeri "Jetson 1970'e açıldı, operatör kaç kez ARM'a basmalı".
-
-## 🔴 Kapatılmayan çürütücü bulguları (sıradaki iş)
-
-1. **USB, Jetson'a dosya götürmenin BELGELENMİŞ TEK yolu.** `scp`/`ssh`/
-   ethernet alternatifi hiçbir kılavuzda yok; `JETSON_NANO_KURULUM` §3.4/§5
-   doğrudan `/media/navitas/<BELLEK>/...` diyor. USB takılı değil.
-   → Kuruluma **ethernet/scp alternatifi** yazılmalı.
-2. **Nano'da `python3.8` kurulumu internete bağlı, çevrimdışı yedeği yok.**
-   Zincir: sistem Python 3.6 → ultralytics kurulamaz → venv38 şart →
-   `apt install python3.8` şart → apt internet ister. Cumartesinin en derin
-   tek nokta arızası ve hiçbir insan listesinde yok.
-3. **Taşıyıcı kartın MODELİ depoda hiçbir yerde yazmıyor** — kılavuz "temin
-   edildi" işaretli ama ne repoda ne bellekte. eMMC boş çıkarsa FC REC pini
-   tahmin edilemez.
-4. **SDK Manager yolunun gerçek uzun kalemleri listede yok:** ~20 GB indirme,
-   NVIDIA developer hesabı, micro-USB kablo.
-5. **Kaynak pininin IP yarısı doğrulanmıyor** ve yanlışlığı YKS'de görünmüyor;
-   `YKS_IP` `navitas.env`'de elle beyan ediliyor, DHCP ile değişirse tüm
-   komutlar sessizce reddedilir (alıcı loglar, YKS görmez).
-6. **`FDR/ACIK_KALEMLER.md` §1** sekiz kalemi koşulsuz "cumartesi kapanır"
-   diyor; üçü **açılmış bir Jetson** gerektiriyor.
-
-## Sonraki adımlar (sırayla)
-
-1. `wf_af878804-c1b` sonucunu denetle, `cmp` ile delta bul, birleştir, ayna tazele
-2. Yukarıdaki 1–6'yı kapat (1, 2, 3, 4 belge işi; 5 kod+belge; 6 kart hizası)
-3. Tam süit + genel kapı → yeşilse commit + push
-4. Belleği **son bir kez** tazele (runbook/kurulum değişirse)
-5. `DEVAM.md`'yi kapanışta güncelle
-
-## Kullanıcının beklediği
-
-- **Cumartesi 5 Eylül'e her şeyle hazır olmak.** Kargo: UBEC, JST-GH kablo
-  (sipariş edildi); Ubuntu host ve taşıyıcı kılavuzu "ayarlandı/temin edildi"
-  (kullanıcı beyanı, artefaktsız).
-- Ekran+klavye+ethernet, multimetre+tartı, kablolama sarfı **hazır** (beyan).
-- `O:\navitas_bellek` → USB **tek eksik**; klasör hazır, USB takılı değil.
-- `FDR/` klasörü ortak sürücüye yüklenecek (taşıma bitti, `8117c24`).
+1. Kumanda: yeni piller, TX gerilimi ≥ 5 V.
+2. Failsafe menüsü + test (kapat → CH5 Land).
+3. `RC IN` sabitle, sars-test.
+4. 3 kırmızı tel dışarı (pil yok).
+5. `SERVO1–8, 13–16 = 0` → Write → motor testi (A ön-sağ CCW, B arka-sağ CW,
+   C arka-sol CCW, D ön-sol CW) — bu kez **liste hâlinde** yazılır.
+6. `RC_PROTOCOLS` tek değişkenli testi (4 → reboot → decoding?).
+7. Sabah dökümü → repo.
+8. Pil ≥ 15,4 V, PreArm sıfır, pervane yönleri, somunlar.
+9. **Hop:** Stabilize, diz boyu, ≤ 30 sn, MP `Set Mode → Land` hazır. Gündüz,
+   ikinci kişi yanında.
 
 ## Açık uyarılar
 
-- ⚠ **Codex ana ağaca canlı yazıyor.** Bu gece de yazdı (`hakem_kaydi`,
-  `inis_kaniti`, `protocol`, `yks_gui`, `rpi_inference` + 2 yeni test).
-  Birleştirmeden önce `git status` ve mtime kontrol et; **yarım işi süpürme**
-  (D-412 dersi).
-- 🔴 Kol 1–2 / kol 3–4 farklı reçetelerle basıldı, gerekçesi kayıtta yok;
-  yönerge "gerekliliği ispatlanmamış değişiklikler diskalifiye sebebi" diyor.
+- ⚠ **"Önce" dökümü üzerine yazıldı** — MP `Save to file` aynı ada. Sabah dökümü
+  **farklı adla** kaydedilsin.
+- ⚠ Codex ana ağaca canlı yazıyor olabilir; birleştirmeden önce `git status`
+  ve mtime (D-412 dersi).
+- ⚠ Operatör kimliği: oturuma "Halil" girdi, sonra "Emir'dim" dedi; tutanak
+  ikisini de yazıyor. Pilot kararı kimde, kaptan netleştirsin.

@@ -201,7 +201,7 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 |---|---|
 | Motorlar kollara; vida boyu stator'a değmeyecek; **quad-X yerleşimi**: 1 sağ ön CCW, 2 sol arka CCW, 3 sol ön CW, 4 sağ arka CW | şema fotoğrafı |
 | ESC'ler kollara; motor kabloları kısa ve burulmuş (EMI) | kablo boyu ölçümü |
-| FCHUB-12S gövde ortasına; PM02 pil hattına | — |
+| FCHUB-12S gövde ortasına; güç modülü pil hattına (plan **PM02**; 5 Eylül kutudan **PM06** çıktı — `REVIEW_LOG.md` D-426 §3, BEYAN) | — |
 | Pixhawk 6C ağırlık merkezine, **ok ileri**, damper/köpük üstünde, kablolar gergin değil | uçuşta `VIBE` **< 30** |
 | M9N GNSS direk üstünde, ok ileri, güç hatlarından uzak | pusula ofseti **< 300** |
 | Jetson Nano hava alan yerde, ısı emici açık; **HQ kamera nadir (tam aşağı)**, pervane kadrajda değil, şerit kablo kilitli | yerde çekilen kare temiz |
@@ -212,11 +212,11 @@ Aviyonik entegrasyonu **5 Eylül 2026** günü yapılacaktır. Yordam önceden y
 
 | hat | bağlantı | kabul ölçütü |
 |---|---|---|
-| Ana güç | pil (XT60/XT90) → **PM02** → **FCHUB-12S** → 4× ESC | polarite doğru; ohmmetre ile kısa devre yok |
-| Pixhawk gücü | PM02 6-pin → `POWER1` | **5,1–5,3 V**; `BATT_MONITOR=4` |
+| Ana güç | pil (XT60/XT90) → **PM06** (plan PM02; kutudan PM06 çıktı, D-426 §3) → **FCHUB-12S** → 4× ESC (plan 80 A; kutudan **"60 A V2"** çıktı, D-426 §3 — tam marka/model BEYAN GEREKLİ) | polarite doğru; ohmmetre ile kısa devre yok — 5 Eylül: pil 18:03'te takıldı, kısa devre ölçümü tutanakta yok (ÖLÇÜLEMEDİ) |
+| Pixhawk gücü | PM06 → `POWER1` — PM06'nın 8 pinli kablosu 6 pinli `POWER1`'e uymadı, 6 pinli kablo takıldı; uydurma adaptör yapılmadı (D-426 §2) | **5,1–5,3 V**; `BATT_MONITOR=4` — 5 Eylül ÖLÇÜM: `PreArm: Battery 1 low voltage failsafe` listeden kayboldu (18:03); gerilim MP ↔ multimetre **ÖLÇÜLEMEDİ** |
 | Jetson gücü | FCHUB pad → **5 V / 5 A UBEC** → Nano barrel jack (J25), **`J48` jumper takılı**, ortak GND | yük altında **5,0–5,2 V** |
 | ESC sinyal | ESC PWM → `MAIN OUT 1–4` (motor sırasına göre) | pervanesiz motor testi |
-| RC | FS-iA6B **iBUS** → Pixhawk `RCIN`/`PPM`; kumanda bind edilir | kanallar ekranda, uçlar 1000–2000 |
+| RC | FS-iA6B'nin **`i-BUS SERVO`** portu (`CH1`–`CH6` değil: tek kanal PWM, Pixhawk görmez — 5 Eylül'de önce `CH6`'ya takılıydı, D-426 §2) → Pixhawk `PPM/SBUS RC`; kumanda bind edilir (`SAHA_HAZIRLIK_PLANI_20260903.md` §2.3 satır 117) | kanallar ekranda, uçlar 1000–2000 — 5 Eylül ÖLÇÜM: `RCInput: decoding IBUS(1)` (18:03); FS-iA6B teyit (B harfi); uç değerleri tutanakta yok |
 | Telemetri | SiK → `TELEM1` (JST-GH 6 pin, TX↔RX çapraz), 57600 | YKS'de HEARTBEAT |
 | **Jetson ↔ Pixhawk** | `TELEM2` → Nano 40-pin **pin 10 RX / pin 8 TX / pin 6 GND** (3,3 V; **5 V hattı bağlanmaz**) | `mavlink_dogrula` HEARTBEAT `sysid=1` |
 | Kamera | HQ kamera CSI → Nano CSI (mavi taraf dışa), kilit kapalı | `jetson-io` sonrası `nvarguscamerasrc` görüntü verir |
@@ -261,6 +261,9 @@ yapılandırması **dosya olarak üretilmiş** ve testle kilitlenmiştir.
 
 **Sahada teyit edilecek dört değer** (`config/pixhawk/README.md` §3 TEYİT listesi):
 `BRD_SER2_RTSCTS=0`, `RC_PROTOCOLS=4` (iBUS), `BATT_FS_LOW_ACT`, `BATT_FS_CRT_ACT`.
+5 Eylül: `RC_PROTOCOLS` sahada 4 → 1 (All) yapıldı ve **geri alınmadı** (`REVIEW_LOG.md` D-426 §2);
+iBUS çözümü ÖLÇÜM (`RCInput: decoding IBUS(1)`); diğer üç TEYİT değeri için tutanakta satır yok —
+**ÖLÇÜLEMEDİ**.
 Ayrıca kutudan çıkanla teyit edilecekler: `FRAME_CLASS=1`, `FRAME_TYPE` (X), `MOT_PWM_TYPE=0`,
 `SYSID_THISMAV=1`, `SERIAL1`/`SERIAL2` (57600 MAVLink2), `SRx_POSITION` 4 Hz, `SRx_EXTRA3` 1 Hz,
 `BATT_MONITOR=4`, `FENCE_ENABLE=1` + `FENCE_ALT_MAX 50`, `RTL_ALT 3500`, `LAND_SPEED 50`,
@@ -268,6 +271,9 @@ Ayrıca kutudan çıkanla teyit edilecekler: `FRAME_CLASS=1`, `FRAME_TYPE` (X), 
 
 **Üretim çıktısı olarak sahada alınacak kanıt:** yapılandırma bittikten sonra
 `Save to file` → `config/pixhawk/arducopter_fda_20260905.param` → depoya işlenecektir.
+5 Eylül: **dosya YOK** (kontrol edildi, `REVIEW_LOG.md` D-426 §4) — döküm alınmadı, açık kalem.
+Firmware: kart PX4 ile geldi, ArduCopter **4.5.7** flash edildi ve sürüm sabitlendi (4.7.1'de
+31 parametrenin 9'u yok — D-424/D-425; ayrıntı Bölüm 3 §3.3.1.1.11); ÖLÇÜM `ArduCopter V4.5.7 (2a3dc4b7)`.
 Görev koordinatları **Adıyaman'da** girilecektir; şablon şu an Null Island'da (0°, 0°)
 20 m'lik bir kare çizer ve **her koordinat yer tutucudur**.
 **BEYAN GEREKLİ (insan): uçuş alanı gerçek koordinatları ve geofence poligonu.**
@@ -745,3 +751,8 @@ süresi), §5.2.7 (kamera FOV, FPS kapısı, `.engine`), §5.2.9 (t_hazırlık, 
 | 26 | Kablaj/AWG taslağı (tahmini olduğu notuyla) | `navitas-teknofest/references/avionics_software.md` | — (DDR dönemi taslağı) | 2026-07 |
 | 27 | Şartname §6 özgünlük ve ağırlık hükümleri; §6.2 hazırlık 15 dk | `results/sartname_bosluk/sartname_metin.txt` | PyMuPDF çıkarımı | 2026-08-26 |
 | 28 | Yönerge Bölüm 5'in beş maddesinin birebir metni (bu bölümün başlık şeması) | `results/fdr_sablon/fdr_yonerge_metin.txt`; `FDR/YONERGE_HARITASI.md` §5 | pypdf çıkarımı | 2026-09-03 |
+| 29 | Künye farkı 5 Eylül: ESC "60 A V2" ×4 (plan 80 A), güç modülü PM06 (plan PM02), FS-iA6B teyit | `REVIEW_LOG.md` D-426 §3 (satır 29852–29854) | takım üyesi beyanı (kutu açılınca) | 2026-09-05 |
+| 30 | `ArduCopter V4.5.7 (2a3dc4b7)` · `Frame: QUAD/X` · `RCInput: decoding IBUS(1)` · pil ve emniyet PreArm uyarıları kayboldu · `starting/finished motor test` | `REVIEW_LOG.md` D-426 §1 (satır 29819–29826) | Mission Planner `Messages` satırları | 2026-09-05 |
+| 31 | RC alıcı `i-BUS SERVO` portu (önce `CH6`); `RC_PROTOCOLS` sahada 4 → 1, geri alınmadı; PM06 8 pin → 6 pinli kablo | `REVIEW_LOG.md` D-426 §2 (satır 29833–29844); `SAHA_HAZIRLIK_PLANI_20260903.md` §2.3:117 | saha tutanağı | 2026-09-05 |
+| 32 | Firmware 4.5.7 sabit: 4.7.1'de 31 parametrenin 9'u yok; `firmware/arducopter.apj` 1 585 371 B, board_id 56; 10 test | `REVIEW_LOG.md` D-424 (29622), D-425 (29711, 29718, 29784–29787); `scripts/pixhawk_firmware_indir.py:74`; `firmware/firmware-version.txt` | `pixhawk_firmware_indir.py`; `tests/test_pixhawk_firmware_yolu.py` | 2026-09-05 |
+| 33 | Parametre dökümü `arducopter_fda_20260905.param` **dosya YOK**; ESC kal. YAPILMADI; RC failsafe, pil gerilimi ÖLÇÜLEMEDİ | `REVIEW_LOG.md` D-426 §4 (satır 29863–29866) | — | 2026-09-05 |

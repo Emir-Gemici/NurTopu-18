@@ -77,7 +77,9 @@ kapsam bu raporda **beş tabloya** bölünmüştür; §7.1.6 hangi sistemin hang
 ### 7.1.1 Tablo A — FDA görev test uçuşu aracı (çoklu rotor) BOM'u
 
 Kalem listesi kullanıcı beyanından (`SAHA_HAZIRLIK_PLANI_20260903.md` §0.2, 3 Eylül 2026);
-tedarik durumu 03.09.2026 itibarıyladır ve **5 Eylül kutu açılışında teyit edilecektir**.
+tedarik durumu 03.09.2026 itibarıyladır; **5 Eylül kutu açılışında** üç kalem plandan farklı ya da
+teyitli çıktı (ESC, güç modülü, RC alıcı — `REVIEW_LOG.md` D-426 §3, BEYAN) ve ilgili satırlara
+tarihli not düşüldü. 5 Eylül tutanağında tartı satırı yoktur; "Ölçülen kütle" sütunu BEYAN GEREKLİ kalır.
 `Ü` = takım üretimi, `S` = hazır satın alınan alt sistem.
 
 | # | Kalem | Model / özellik | Adet | Tür | Üretim yöntemi | Üretim süresi | CAD kütlesi (g) | Ölçülen kütle (g) | Tedarik durumu | Birim fiyat | Toplam fiyat |
@@ -89,14 +91,14 @@ tedarik durumu 03.09.2026 itibarıyladır ve **5 Eylül kutu açılışında tey
 | A5 | Ayak | `Drone_Legs` (ABS, **destekli**) | 4 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A6 | GNSS tutucu | `GPS_Holder` (ABS, **destekli**) | 1 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A7 | Taban pedi | TPU 95A | 4 | Ü | FDM, P2S | **ÖLÇÜLEMEDİ** | BEYAN GEREKLİ | BEYAN GEREKLİ | Üretildi | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A8 | Motor | **5008 340KV** | 4 | S | — | — | — | BEYAN GEREKLİ | **Kutuda** (kutu açılmadı) | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A8 | Motor | **5008 340KV** | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; motor testi koştu (ÖLÇÜM `starting motor test` → `finished motor test`, D-426 §1); sıra/yön 4/4 BEYAN, video BEYAN GEREKLİ | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A9 | Pervane | **12×10** | 4 (+ yedek set) | S | — | — | — | BEYAN GEREKLİ | Kutuda; **yedek set alınacak** | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A10 | ESC | **80 A, DShot destekli** | 4 | S | — | — | — | BEYAN GEREKLİ | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A10 | ESC | plan **80 A, DShot destekli**; 5 Eylül kutudan **"60 A V2"** çıktı (BEYAN, D-426 §3) — tam marka/model BEYAN GEREKLİ | 4 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; ESC kalibrasyonu YAPILMADI | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A11 | Güç dağıtım kartı | **Matek XCLASS FCHUB-12S V2** (PDB + akım sensörü) | 1 | S | — | — | — | BEYAN GEREKLİ | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A12 | Uçuş kontrolcüsü | **Pixhawk 6C** | 1 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 59 g) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A13 | Güç modülü | **PM02** (Pixhawk kutusundan) | 1 | S | — | — | — | BEYAN GEREKLİ | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A12 | Uçuş kontrolcüsü | **Pixhawk 6C** — fabrikadan PX4 ile geldi; ArduCopter **4.5.7** flash edildi ve sabitlendi (ÖLÇÜM `ArduCopter V4.5.7 (2a3dc4b7)`, D-424/D-425/D-426) | 1 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 59 g) | Kutu açıldı 5 Eylül; çalışıyor | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A13 | Güç modülü | plan **PM02** (Pixhawk kutusundan); 5 Eylül kutudan **PM06** çıktı (BEYAN, D-426 §3) — etiket BEYAN GEREKLİ | 1 | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; `POWER1`'e 6 pinli kabloyla bağlı, çalışıyor (ÖLÇÜM: pil PreArm uyarısı kayboldu, D-426 §1) | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A14 | GNSS / pusula | **Holybro M9N** | 1 | S | — | — | — | BEYAN GEREKLİ (DDR'de M10 için 32 g) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
-| A15 | RC kumanda + alıcı | **FlySky FS-i6** + FS-iA6B (iBUS) | 1 set | S | — | — | — | BEYAN GEREKLİ | Kutuda; **bind edilmedi** | BEYAN GEREKLİ | BEYAN GEREKLİ |
+| A15 | RC kumanda + alıcı | **FlySky FS-i6** + FS-iA6B (iBUS) — FS-iA6B 5 Eylül'de teyit (B harfi, D-426 §3) | 1 set | S | — | — | — | BEYAN GEREKLİ | Kutu açıldı 5 Eylül; **bind edildi** (BEYAN), `RCInput: decoding IBUS(1)` (ÖLÇÜM, D-426 §1); alıcı `i-BUS SERVO` portu | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A16 | Telemetri | **SiK 433 MHz** | 2 | S | — | — | — | BEYAN GEREKLİ (DDR beyanı 35 g/adet) | Kutuda | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A17 | Görev bilgisayarı | **Jetson Nano 4GB** (Dev Kit) | 1 | S | — | — | — | BEYAN GEREKLİ | **Kargoda — 4/5 Eylül teslim** | BEYAN GEREKLİ | BEYAN GEREKLİ |
 | A18 | microSD | ≥ 64 GB UHS-I + okuyucu | 1 | S | — | — | — | — | **Henüz alınmadı** (alışveriş listesi) | BEYAN GEREKLİ | BEYAN GEREKLİ |
@@ -154,9 +156,9 @@ içindir. Aşağıda her satırın FDR'deki karşılığı ve bütçeye etkisini
 | 14 | Paraşüt servo | EMAX ES08MA II | 1 | 60 | aynı | ertelendi |
 | 15 | Paraşüt mekanizması | Servo kontrollü kapak | 1 | 50 | aynı — **üretim gerekiyor** | ertelendi |
 | 16 | Paraşüt bağlantı | Nylon/Kevlar tether | 1 | 30 | aynı | ertelendi |
-| 17 | ESC | Hobbywing FlyFun 40A V5 | 2 | 70 | **80 A DShot ×4** (A10) | **artırıcı** |
-| 18 | Power sensor | **Mauch PL-100** | 1 | 22 | **PM02** ile değişti (A13) | azaltıcı |
-| 19 | Pixhawk BEC | Mauch PL 4-6S BEC | 1 | 24 | **FCHUB-12S / PM02** karşılıyor | azaltıcı |
+| 17 | ESC | Hobbywing FlyFun 40A V5 | 2 | 70 | plan **80 A DShot ×4**; 5 Eylül kutudan **"60 A V2" ×4** (A10; D-426 §3) | **artırıcı** |
+| 18 | Power sensor | **Mauch PL-100** | 1 | 22 | **PM06** ile değişti (A13; plan PM02, 5 Eylül kutudan PM06 — D-426 §3) | azaltıcı |
+| 19 | Pixhawk BEC | Mauch PL 4-6S BEC | 1 | 24 | **FCHUB-12S / PM06** karşılıyor (plan PM02; D-426 §3) | azaltıcı |
 | 20 | Servo BEC | Matek BEC12S-PRO | 1 | 5 | FDA'da **yok** | ertelendi |
 | 21 | Jetson güç reg. | 12 V 5 A buck | 1 | 25 | **5 V / 5 A UBEC** (A20) | nötr |
 | 22 | PDB | Güç dağıtım kartı | 1 | 60 | **Matek XCLASS FCHUB-12S V2** (A11) | nötr/artırıcı |
@@ -322,9 +324,9 @@ kayıtlı değildir**; DDR'de kalem listesi ve ağırlıklar var, fiyat yok. Bu 
 | 14 | Paraşüt servo | EMAX ES08MA II | BEYAN GEREKLİ | alınmadı — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 15 | Paraşüt mekanizması | Servo kontrollü kapak | BEYAN GEREKLİ | üretilmedi — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 16 | Paraşüt bağlantı | Nylon/Kevlar tether | BEYAN GEREKLİ | alınmadı — ertelendi (E3) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
-| 17 | ESC | Hobbywing FlyFun 40A V5 ×2 | BEYAN GEREKLİ | 80 A DShot ×4 (A10) | BEYAN GEREKLİ | HESAPLANAMAZ | artırıcı | S1 |
-| 18 | Power sensor | Mauch PL-100 | BEYAN GEREKLİ | PM02 (A13) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S2 |
-| 19 | Pixhawk BEC | Mauch PL 4-6S BEC | BEYAN GEREKLİ | FCHUB-12S / PM02 karşılıyor (A11/A13) | 0 (ayrı kalem alınmadı) | HESAPLANAMAZ | azaltıcı | S2 |
+| 17 | ESC | Hobbywing FlyFun 40A V5 ×2 | BEYAN GEREKLİ | "60 A V2" ×4 (A10; plan 80 A DShot, 5 Eylül kutudan 60 A V2 — D-426 §3) | BEYAN GEREKLİ | HESAPLANAMAZ | artırıcı | S1 |
+| 18 | Power sensor | Mauch PL-100 | BEYAN GEREKLİ | PM06 (A13; plan PM02, 5 Eylül kutudan PM06 — D-426 §3) | BEYAN GEREKLİ | HESAPLANAMAZ | azaltıcı | S2 |
+| 19 | Pixhawk BEC | Mauch PL 4-6S BEC | BEYAN GEREKLİ | FCHUB-12S / PM06 karşılıyor (A11/A13; plan PM02) | 0 (ayrı kalem alınmadı) | HESAPLANAMAZ | azaltıcı | S2 |
 | 20 | Servo BEC | Matek BEC12S-PRO | BEYAN GEREKLİ | alınmadı — ertelendi (E8) | 0 (harcanmadı) | HESAPLANAMAZ | ertelendi | S1 |
 | 21 | Jetson güç reg. | 12 V 5 A buck | BEYAN GEREKLİ | 5 V / 5 A UBEC (A20) — **henüz alınmadı** | BEYAN GEREKLİ | HESAPLANAMAZ | nötr | S2 |
 | 22 | PDB | Güç dağıtım kartı | BEYAN GEREKLİ | Matek XCLASS FCHUB-12S V2 (A11) | BEYAN GEREKLİ | HESAPLANAMAZ | nötr/artırıcı | S2 |
@@ -469,7 +471,7 @@ BEYAN GEREKLİ, ama **kalemler bugünden bellidir** — sahada karar verilecek b
 | **CSI kamera yolu açılmaz** | Görüntü hiç gelmez | **USB webcam** (D4, zaten listede) | orta — ucuz sigorta |
 | **Tek pil / 3 saat şarj** | Uçuş günü 2 uçuşla sınırlı; prova sayısı yetmez | **2. pil 4S 10 Ah + ≥ 150 W şarj** (D9) | orta |
 | **Pervane kırılması** | Uçuş günü iptal | **Yedek pervane seti** (D6, zaten listede) | yüksek — en sık kırılan parça |
-| **PM02 sürekli akım sınırı** | Sürekli tam gazda güç modülü zorlanır | Uçuş profili kısıtı (bedelsiz); gerekirse **ayrı akım sensörü** | düşük |
+| **PM06 sürekli akım sınırı** (plan PM02; 5 Eylül kutudan PM06 çıktı, D-426 §3 — sınır değeri etiketten BEYAN GEREKLİ) | Sürekli tam gazda güç modülü zorlanır | Uçuş profili kısıtı (bedelsiz); gerekirse **ayrı akım sensörü** | düşük |
 | **`.engine` derlenemiyor** | Hızlandırma yok — FPS riski (yukarıdaki satırla aynı kök) | — (yazılım çözümü aranır) | — |
 
 ### 7.4.3 Harcanmamış bütçenin kullanımını kilitleyen karar
@@ -490,8 +492,8 @@ Bütçe sapması bu projede üç ayrı sebepten doğmuştur; üçü de teknik ka
 
 | # | Sapma sebebi | Somut örnek | Bütçe yönü | Teknik bedeli |
 |---|---|---|---|---|
-| S1 | **Araç sınıfı farkı** — FDA'nın §5.3.2 çoklu rotor şartı DDR'de yoktu | 4× 5008 motor + 4× 80 A ESC + quad gövde eklendi; kanat servoları, pitot, airspeed, paraşüt zinciri ertelendi | net etki **BEYAN GEREKLİ** | yeni bir araç montaj/kalibrasyon hattı |
-| S2 | **Tedarik zorunluluğu** — planlanan parça yerine bulunabilen parça | Orin NX → Nano 4GB; M10 → M9N; TBS Crossfire → FlySky; Mauch → FCHUB+PM02 | **azaltıcı** | Nano'da `ultralytics` için ayrı Python 3.8 yığını; **TensorRT `.engine` ölçülemez**; FPS kapısı riske girdi |
+| S1 | **Araç sınıfı farkı** — FDA'nın §5.3.2 çoklu rotor şartı DDR'de yoktu | 4× 5008 motor + 4× ESC (plan 80 A; 5 Eylül kutudan "60 A V2", D-426 §3) + quad gövde eklendi; kanat servoları, pitot, airspeed, paraşüt zinciri ertelendi | net etki **BEYAN GEREKLİ** | yeni bir araç montaj/kalibrasyon hattı |
+| S2 | **Tedarik zorunluluğu** — planlanan parça yerine bulunabilen parça | Orin NX → Nano 4GB; M10 → M9N; TBS Crossfire → FlySky; Mauch → FCHUB+PM06 (plan PM02; 5 Eylül kutudan PM06 — D-426 §3) | **azaltıcı** | Nano'da `ultralytics` için ayrı Python 3.8 yığını; **TensorRT `.engine` ölçülemez**; FPS kapısı riske girdi |
 | S3 | **Üretim kararı revizyonu** | Ayak/GPS tutucu **PLA → ABS**; **TPU taban pedi** eklendi; kol 3–4 daha ağır reçeteyle basıldı | küçük artırıcı | ısı dayanımı ↑, baskı süresi ↑ |
 
 ### 7.5.2 En pahalı sapma parasal değil: Orin NX → Nano 4GB
@@ -652,3 +654,6 @@ tarafından ve hangi kayıtla doldurulacağının satır satır belli olmasıdı
 | 23 | Tablo A'nın 27 satırı G1–G7 ana kalem gruplarına **örtüşmesiz** dağılıyor (3+3+4+4+2+9+2 = 27) | bu dosya §7.3.3 | grup ataması + toplama | 2026-09-04 |
 | 24 | Tablo B'nin 26 satırında bütçe yönü dağılımı: azaltıcı 6 · nötr/azaltıcı 1 · artırıcı 2 · nötr/artırıcı 1 · nötr 1 · ertelendi 9 · değişmedi 4 · açık borç 1 · gerçekleşecek 1 | bu dosya §7.1.2 "Bütçe etkisinin yönü" sütunu | satır sayımı | 2026-09-04 |
 | 25 | Yönerge Bölüm 7'nin beş gereksinimi (`Y-7-M01…M05`) ve birebir cümleleri | `results/fdr_sablon/fdr_yonerge_metin.txt` Bölüm 7; `FDR/YONERGE_HARITASI.md` §7 | pypdf metin çıkarımı | 2026-09-04 |
+| 26 | Tablo A/B künye farkı 5 Eylül: ESC "60 A V2" ×4 (plan 80 A DShot), güç modülü PM06 (plan PM02), FS-iA6B teyit — fiyat etkisi BEYAN GEREKLİ | `REVIEW_LOG.md` D-426 §3 (satır 29852–29854) | takım üyesi beyanı (kutu açılınca), ölçüm değil | 2026-09-05 |
+| 27 | A12 Pixhawk 6C: PX4 ile geldi, ArduCopter 4.5.7 flash (`ArduCopter V4.5.7 (2a3dc4b7)`); A8 motor testi `starting/finished motor test`; A13 PM06 → `POWER1` pil PreArm uyarısı kayboldu; A15 `RCInput: decoding IBUS(1)` | `REVIEW_LOG.md` D-426 §1 (satır 29819–29826); D-424 (29622); D-425 (29711) | Mission Planner `Messages` satırları | 2026-09-05 |
+| 28 | 5 Eylül'de tartı yapılmadı (tutanakta tartı satırı yok) — "Ölçülen kütle" sütunu BEYAN GEREKLİ | `REVIEW_LOG.md` D-426 (satır 29809–29886, `grep -i tarti` → 0) | — | 2026-09-05 |
