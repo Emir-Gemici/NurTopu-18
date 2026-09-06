@@ -1,0 +1,155 @@
+%% koddan turetildi f3441b4 2026-09-07
+%% (b) Komut alicisi — comms/iha_komut_alici.py (main -> calistir/poll -> isle: kaynak pini -> zaman/saat ofseti -> tekrar anahtari -> MAVLink -> COMMAND_ACK -> terminal -> ACK)
+%% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
+%% Dogrulayici: scripts/akis_diyagram_dogrula.py
+flowchart TD
+  subgraph sB1["def main()<br/>comms/iha_komut_alici.py:879"]
+    b01{"if args.izinli_kaynak is None:<br/>comms/iha_komut_alici.py:888"}
+    b02["parser.error(#quot;--izinli-kaynak HOST:PORT saha komutlari icin zorunlu; #quot;<br/>comms/iha_komut_alici.py:889"]
+    b03{"if args.serial:<br/>comms/iha_komut_alici.py:891"}
+    b04["def seri_pixhawk_kilidini_uygula()<br/>comms/inis_kaniti.py:136"]
+    b05["def mavlink_baglantisi_ac()<br/>comms/inis_kaniti.py:73"]
+    b06["link = UDPLink(bind=(h, int(p)))<br/>comms/iha_komut_alici.py:916"]
+    b07["def IhaKomutAlici.__init__()<br/>comms/iha_komut_alici.py:312"]
+    b08["def IhaKomutAlici.calistir()<br/>comms/iha_komut_alici.py:815"]
+    b09["def _kapat()<br/>comms/iha_komut_alici.py:870"]
+  end
+  subgraph sB2["def IhaKomutAlici.poll()<br/>comms/iha_komut_alici.py:797"]
+    b10{"while not self._dur.is_set():<br/>comms/iha_komut_alici.py:822"}
+    b11["d, adr = self.link.recv()<br/>comms/iha_komut_alici.py:803"]
+    b12{"for m in okuyucu.feed(d):<br/>comms/iha_komut_alici.py:810"}
+    b13["def IhaKomutAlici._mavlink_gelen_kutusunu_bosalt()<br/>comms/iha_komut_alici.py:782"]
+  end
+  subgraph sB3["def IhaKomutAlici.isle()<br/>comms/iha_komut_alici.py:630"]
+    b20{"if not isinstance(mesaj, dict) or mesaj.get(#quot;type#quot;) != MESAJ_TIPI_CMD:<br/>comms/iha_komut_alici.py:632"}
+    b21{"if mesaj.get(#quot;hedef#quot;) != self.node:<br/>comms/iha_komut_alici.py:634"}
+    b22{"if self.izinli_kaynak is not None:<br/>comms/iha_komut_alici.py:636"}
+    b23{"if gelen != self.izinli_kaynak:<br/>comms/iha_komut_alici.py:641"}
+    b24["self.sayac[#quot;kaynak_red#quot;] += 1<br/>comms/iha_komut_alici.py:642"]
+    b25{"if (isinstance(seq, bool) or not isinstance(seq, int)<br/>or not isinstance(cmd, str)):<br/>comms/iha_komut_alici.py:650"}
+    b26{"if cmd not in KOMUT_ADLARI:<br/>comms/iha_komut_alici.py:658"}
+    b27["def IhaKomutAlici._saat_ofseti()<br/>comms/iha_komut_alici.py:447"]
+    b28["def IhaKomutAlici._yerel_saat_adimi()<br/>comms/iha_komut_alici.py:420"]
+    b29["def IhaKomutAlici._kestir()<br/>comms/iha_komut_alici.py:362"]
+    b30["ham = float(simdi) - float(damga)<br/>yas = ham - (0.0 if ofset is None else ofset)<br/>comms/iha_komut_alici.py:680"]
+    b31["tavan = KOMUT_YAS_TAVANI_S[cmd]<br/>comms/iha_komut_alici.py:682"]
+    b32{"if ham is not None and (zaman_kabul or ofset is None):<br/>comms/iha_komut_alici.py:685"}
+    b33["def IhaKomutAlici._saat_ofseti_ornekle()<br/>comms/iha_komut_alici.py:493"]
+    b34{"if not zaman_kabul:<br/>comms/iha_komut_alici.py:697"}
+    b35["self.sayac[#quot;zaman_red#quot;] += 1<br/>comms/iha_komut_alici.py:698"]
+    b36{"if oturum is not None:<br/>comms/iha_komut_alici.py:707"}
+    b37["def oturum_dogrula()<br/>comms/protocol.py:174"]
+    b38["anahtar = (oturum, seq, cmd)<br/>comms/iha_komut_alici.py:715"]
+    b39{"if anahtar in self._komut_sonuclari:<br/>comms/iha_komut_alici.py:716"}
+    b40{"if self._komut_sonuclari[anahtar]:<br/>comms/iha_komut_alici.py:718"}
+    b41{"if self.mav is None:<br/>comms/iha_komut_alici.py:741"}
+    b42{"if not mav_hedefi_biliniyor_mu(self.mav):<br/>comms/iha_komut_alici.py:746"}
+    b43["def IhaKomutAlici._aktar()<br/>comms/iha_komut_alici.py:510"]
+    b44["self.mav.mav.command_long_send(<br/>comms/iha_komut_alici.py:513"]
+    b49{"if anahtar is not None:<br/>comms/iha_komut_alici.py:768"}
+    b50["self._komut_sonuclari[anahtar] = bool(kabul)<br/>comms/iha_komut_alici.py:769"]
+    b51{"if not kabul:<br/>comms/iha_komut_alici.py:770"}
+    b52["self.sayac[#quot;aktarilan#quot;] += 1<br/>comms/iha_komut_alici.py:776"]
+    b57["return False<br/>comms/iha_komut_alici.py:633"]
+    b58["return False<br/>comms/iha_komut_alici.py:635"]
+    b59["self.sayac[#quot;hata#quot;] += 1<br/>comms/iha_komut_alici.py:652"]
+    b60["self.sayac[#quot;bilinmeyen#quot;] += 1<br/>comms/iha_komut_alici.py:659"]
+    b61["self.sayac[#quot;tekrar#quot;] += 1<br/>comms/iha_komut_alici.py:717"]
+    b62["self.sayac[#quot;hata#quot;] += 1<br/>comms/iha_komut_alici.py:742"]
+    b63["self.sayac[#quot;hata#quot;] += 1<br/>comms/iha_komut_alici.py:747"]
+    b64["self.sayac[#quot;hata#quot;] += 1<br/>comms/iha_komut_alici.py:771"]
+  end
+  subgraph sB4["def IhaKomutAlici._komut_ack_bekle()<br/>comms/iha_komut_alici.py:544"]
+    b45{"if kalan <= 0:<br/>comms/iha_komut_alici.py:557"}
+    b46["cevap = self.mav.recv_match(type=#quot;COMMAND_ACK#quot;, blocking=True,<br/>comms/iha_komut_alici.py:561"]
+    b47{"if cevap is None:<br/>comms/iha_komut_alici.py:565"}
+    b48{"if int(getattr(cevap, #quot;command#quot;, -1)) != int(mav_cmd):<br/>comms/iha_komut_alici.py:570"}
+    b65{"if kaynak != self.target_system:<br/>comms/iha_komut_alici.py:579"}
+    b66{"if bilesen not in self._ack_basabilen_bilesenler(m):<br/>comms/iha_komut_alici.py:600"}
+    b67{"if sonuc == m.MAV_RESULT_ACCEPTED:<br/>comms/iha_komut_alici.py:606"}
+  end
+  subgraph sB5["def IhaKomutAlici._ack_gonder()<br/>comms/iha_komut_alici.py:610"]
+    b53["data = encode(ack(seq, self.node, MESAJ_TIPI_CMD,<br/>comms/iha_komut_alici.py:611"]
+    b54{"if adr is None:<br/>comms/iha_komut_alici.py:614"}
+    b55["self.link.send(data)<br/>comms/iha_komut_alici.py:615"]
+    b56["self.link.send(data, adr)<br/>comms/iha_komut_alici.py:617"]
+    b68["self.sayac[#quot;ack#quot;] += 1<br/>comms/iha_komut_alici.py:624"]
+  end
+  b00["def _arg_parser()<br/>comms/iha_komut_alici.py:833"]
+  b00 --> b01
+  b01 -->|"evet: fail-closed"| b02
+  b01 -->|"hayir"| b03
+  b03 -->|"evet: seri pinlenemez"| b02
+  b03 -->|"hayir"| b04
+  b04 --> b05
+  b05 --> b06
+  b06 --> b07
+  b07 --> b08
+  b08 --> b10
+  b10 -->|"evet"| b11
+  b10 -->|"hayir / KeyboardInterrupt"| b09
+  b11 --> b12
+  b12 -->|"cerceve"| b20
+  b12 -->|"bitti"| b13
+  b13 --> b10
+  b20 -->|"evet"| b57
+  b20 -->|"hayir"| b21
+  b21 -->|"evet: baska dugum"| b58
+  b21 -->|"hayir"| b22
+  b22 -->|"evet: KAYNAK PINI"| b23
+  b22 -->|"hayir"| b25
+  b23 -->|"evet: RED, ACK YOK"| b24
+  b23 -->|"hayir"| b25
+  b25 -->|"evet: bozuk CMD"| b59
+  b25 -->|"hayir"| b26
+  b26 -->|"evet"| b60
+  b26 -->|"hayir"| b27
+  b27 --> b28
+  b28 --> b29
+  b29 --> b30
+  b30 --> b31
+  b31 --> b32
+  b32 -->|"evet: ornek al"| b33
+  b33 --> b34
+  b32 -->|"hayir"| b34
+  b34 -->|"evet: zaman RED, ACK YOK"| b35
+  b34 -->|"hayir"| b36
+  b36 -->|"evet"| b37
+  b37 --> b38
+  b38 --> b39
+  b39 -->|"evet: TEKRAR ANAHTARI"| b61
+  b61 --> b40
+  b40 -->|"evet: ACCEPTED ACK yinelenir"| b53
+  b40 -->|"hayir: gecikmis eylem RED"| b58
+  b39 -->|"hayir"| b41
+  b36 -->|"hayir: anahtar = None"| b41
+  b41 -->|"evet"| b62
+  b41 -->|"hayir"| b42
+  b42 -->|"evet: pymavlink sessiz dusurur"| b63
+  b42 -->|"hayir"| b43
+  b43 --> b44
+  b44 --> b45
+  b45 -->|"evet: ACK GELMEDI"| b49
+  b45 -->|"hayir"| b46
+  b46 --> b47
+  b47 -->|"evet: ACK GELMEDI"| b49
+  b47 -->|"hayir"| b48
+  b48 -->|"evet: baska komut"| b45
+  b48 -->|"hayir"| b65
+  b65 -->|"evet: yabanci sysid"| b45
+  b65 -->|"hayir"| b66
+  b66 -->|"evet: yabanci component"| b45
+  b66 -->|"hayir"| b67
+  b67 -->|"evet: kabul"| b49
+  b67 -->|"hayir: REDDETTI"| b49
+  b49 -->|"evet: TERMINAL"| b50
+  b50 --> b51
+  b49 -->|"hayir"| b51
+  b51 -->|"evet: ACK YOK, YKS tekrarlar"| b64
+  b51 -->|"hayir"| b52
+  b52 --> b53
+  b53 --> b54
+  b54 -->|"evet: seri yayin"| b55
+  b54 -->|"hayir: UDP gonderene"| b56
+  b55 --> b68
+  b56 --> b68

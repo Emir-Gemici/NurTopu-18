@@ -1,0 +1,172 @@
+%% koddan turetildi f3441b4 2026-09-07
+%% (e) IKA otonom surus — simulation/scripts/ika_nav.py (ika_gorevi -> rota bekle -> surus izni -> navigate) + comms/ika_receiver.py kapilari
+%% Halka 10 (motor surucusu) SAHIPSIZDIR: surucu() varsayilani Gazebo'dur (gercek motor surucusu yok — FDR §3.3.1.3.1); dugum e76 bunu koddan gosterir.
+%% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
+%% Dogrulayici: scripts/akis_diyagram_dogrula.py
+flowchart TD
+  subgraph sE1["def ika_gorevi()<br/>simulation/scripts/ika_nav.py:437"]
+    e01["bekleme_deadline = saat() + bekleme_suresi<br/>simulation/scripts/ika_nav.py:460"]
+    e03{"if alindi is None:<br/>simulation/scripts/ika_nav.py:468"}
+    e04["return 1<br/>simulation/scripts/ika_nav.py:471"]
+    e05{"if isinstance(alindi, dict) and alindi.get(#quot;type#quot;) == #quot;NO_ROUTE#quot;:<br/>simulation/scripts/ika_nav.py:472"}
+    e06["return 2<br/>simulation/scripts/ika_nav.py:474"]
+    e08{"if not izin_bekle(receiver, kalan, deadline_monotonic=bekleme_deadline):<br/>simulation/scripts/ika_nav.py:478"}
+    e09["return 3<br/>simulation/scripts/ika_nav.py:479"]
+    e10["surus_deadline = saat() + surus_suresi<br/>simulation/scripts/ika_nav.py:481"]
+    e11["def navigate_route()<br/>simulation/scripts/ika_nav.py:416"]
+    e12["return 0 if basarili else 4<br/>simulation/scripts/ika_nav.py:494"]
+    e13["send_vel(0, 0)<br/>simulation/scripts/ika_nav.py:499"]
+    e14["receiver.stop()<br/>simulation/scripts/ika_nav.py:502"]
+    e15["receiver.link.close()<br/>simulation/scripts/ika_nav.py:504"]
+  end
+  subgraph sE2["def wait_open_route_from_comms()<br/>simulation/scripts/ika_nav.py:524"]
+    e20["rx = IkaReceiver(UDPLink(bind=(h, int(p))), yks_peer=yks_peer).start()<br/>simulation/scripts/ika_nav.py:542"]
+    e21["def IkaReceiver.start()<br/>comms/ika_receiver.py:312"]
+    e22["def IkaReceiver._loop()<br/>comms/ika_receiver.py:308"]
+    e23["def IkaReceiver._handle()<br/>comms/ika_receiver.py:231"]
+    e24{"while True:<br/>simulation/scripts/ika_nav.py:553"}
+    e25["terminal_snapshot = time.monotonic() >= deadline<br/>simulation/scripts/ika_nav.py:554"]
+    e26["def IkaReceiver.decision_snapshot()<br/>comms/ika_receiver.py:74"]
+    e27{"if karar_zamani is not None and karar_zamani > deadline:<br/>simulation/scripts/ika_nav.py:565"}
+    e28{"if route is not None and no_route is None:<br/>simulation/scripts/ika_nav.py:570"}
+    e29["def route_to_world_waypoints()<br/>simulation/scripts/ika_nav.py:144"]
+    e30{"except ValueError as exc:<br/>simulation/scripts/ika_nav.py:573"}
+    e31{"if (guncel_nesil != karar_nesli<br/>simulation/scripts/ika_nav.py:586"}
+    e32{"if keep_receiver:<br/>simulation/scripts/ika_nav.py:598"}
+    e33["return route, rx<br/>simulation/scripts/ika_nav.py:600"]
+    e34{"if no_route is not None and karar_nesli != son_no_route_nesil:<br/>simulation/scripts/ika_nav.py:603"}
+    e35{"if terminal_snapshot:<br/>simulation/scripts/ika_nav.py:611"}
+    e36["return no_route<br/>simulation/scripts/ika_nav.py:612"]
+  end
+  subgraph sE3["def receiver_surus_izni_bekle()<br/>simulation/scripts/ika_nav.py:260"]
+    e40["send_vel(0, 0)<br/>simulation/scripts/ika_nav.py:263"]
+    e41["def IkaReceiver.wait_surus_izni()<br/>comms/ika_receiver.py:114"]
+    e42{"if not self._surus_izni_event.wait(timeout):<br/>comms/ika_receiver.py:122"}
+    e43["def IkaReceiver._surus_izni_gecerli_unlocked()<br/>comms/ika_receiver.py:127"]
+    e44{"if not self.ika_go or not self.iha_landed:<br/>comms/ika_receiver.py:129"}
+  end
+  subgraph sE4["def navigate()<br/>simulation/scripts/ika_nav.py:280"]
+    e50{"for idx, (wx, wy) in enumerate(wps[1:], 1):<br/>simulation/scripts/ika_nav.py:327"}
+    e51{"while not at_wp:<br/>simulation/scripts/ika_nav.py:331"}
+    e52{"if surus_deadline is not None and saat() >= surus_deadline:<br/>simulation/scripts/ika_nav.py:332"}
+    e53["return False<br/>simulation/scripts/ika_nav.py:336"]
+    e54{"if not surucu_saglikli():<br/>simulation/scripts/ika_nav.py:337"}
+    e55["def surucu_saglikli()<br/>simulation/scripts/ika_nav.py:69"]
+    e56{"if link_ok is not None and not link_ok():<br/>simulation/scripts/ika_nav.py:346"}
+    e57["def IkaReceiver.link_ok()<br/>comms/ika_receiver.py:69"]
+    e58{"if not rota_kapisi_acik():<br/>simulation/scripts/ika_nav.py:356"}
+    e59["def rota_kapisi_acik()<br/>simulation/scripts/ika_nav.py:312"]
+    e60["def receiver_rota_gecerli()<br/>simulation/scripts/ika_nav.py:203"]
+    e61{"if (not getattr(receiver, #quot;ika_go#quot;, False)<br/>simulation/scripts/ika_nav.py:211"}
+    e62{"if route is None or no_route is not None:<br/>simulation/scripts/ika_nav.py:215"}
+    e63["def get_pose()<br/>simulation/scripts/ika_nav.py:74"]
+    e64{"if cx is None:<br/>simulation/scripts/ika_nav.py:362"}
+    e65{"if dist < hedef_yaricapi:<br/>simulation/scripts/ika_nav.py:379"}
+    e66["def steer()<br/>simulation/scripts/ika_nav.py:97"]
+    e67{"if not rota_kapisi_acik():<br/>simulation/scripts/ika_nav.py:392"}
+    e68{"if rota_korumali_gonder is None:<br/>simulation/scripts/ika_nav.py:395"}
+    e69["def receiver_korumali_hiz_gonder()<br/>simulation/scripts/ika_nav.py:234"]
+    e70["def IkaReceiver.run_if_route_valid()<br/>comms/ika_receiver.py:80"]
+    e71{"if (self.last_rx is None or self.link_lost<br/>comms/ika_receiver.py:91"}
+    e72{"elif not rota_korumali_gonder(r, l):<br/>simulation/scripts/ika_nav.py:397"}
+    e73["def rota_gecersiz_dur()<br/>simulation/scripts/ika_nav.py:304"]
+    e77["return True<br/>simulation/scripts/ika_nav.py:413"]
+    e78["return False<br/>simulation/scripts/ika_nav.py:345"]
+  end
+  subgraph sE5["def send_vel()<br/>simulation/scripts/ika_nav.py:82"]
+    e75["def surucu()<br/>simulation/scripts/ika_nav.py:55"]
+    e76["_SURUCU = ika_surucu.GazeboSurucu()<br/>simulation/scripts/ika_nav.py:59"]
+    e79["def surucu_ayarla()<br/>simulation/scripts/ika_nav.py:63"]
+  end
+  e00["ap = argparse.ArgumentParser(description=#quot;İKA navigasyon (dinamik rota + comms)#quot;)<br/>simulation/scripts/ika_nav.py:628"]
+  e00 --> e01
+  e01 --> e20
+  e20 -.-> e21
+  e21 -.->|"arka plan ipligi"| e22
+  e22 -.-> e23
+  e20 --> e24
+  e24 --> e25
+  e25 --> e26
+  e26 --> e27
+  e27 -->|"evet: son tarih sonrasi karar sayilmaz"| e35
+  e27 -->|"hayir"| e28
+  e28 -->|"evet"| e29
+  e29 --> e30
+  e30 -->|"evet: geometri gecersiz, bekle"| e34
+  e30 -->|"hayir"| e31
+  e31 -->|"evet: yeni karar geldi, yeniden degerlendir"| e24
+  e31 -->|"hayir"| e32
+  e32 -->|"evet"| e33
+  e28 -->|"hayir"| e34
+  e34 -->|"evet: NO_ROUTE, guvenli durus"| e35
+  e34 -->|"hayir"| e35
+  e35 -->|"evet"| e36
+  e35 -->|"hayir: bekle"| e24
+  e33 --> e03
+  e36 --> e03
+  e03 -->|"evet"| e04
+  e03 -->|"hayir"| e05
+  e05 -->|"evet"| e06
+  e05 -->|"hayir"| e40
+  e40 --> e41
+  e41 --> e42
+  e42 -->|"evet: sure doldu"| e08
+  e42 -->|"hayir"| e43
+  e43 --> e44
+  e44 -->|"evet: latch eksik"| e08
+  e44 -->|"hayir: iki latch + son tarih icinde"| e08
+  e08 -->|"evet"| e09
+  e08 -->|"hayir"| e10
+  e10 --> e11
+  e11 --> e29
+  e11 --> e50
+  e50 -->|"waypoint"| e51
+  e50 -->|"bitti: HB'ye ulasildi"| e77
+  e51 -->|"evet"| e52
+  e51 -->|"hayir: sonraki waypoint"| e50
+  e52 -->|"evet: sure doldu, GUVENLI DURMA"| e53
+  e52 -->|"hayir"| e54
+  e54 -.-> e55
+  e54 -->|"evet: SURUCU YANITSIZ"| e78
+  e54 -->|"hayir"| e56
+  e56 -.-> e57
+  e56 -->|"evet: baglanti kayip, dur"| e51
+  e56 -->|"hayir"| e58
+  e58 -.-> e59
+  e59 -.-> e60
+  e60 --> e61
+  e61 -->|"evet: IKA_GO / IHA_LANDED yok"| e58
+  e61 -->|"hayir"| e62
+  e62 -->|"evet: NO_ROUTE"| e58
+  e62 -->|"hayir: geometri de gecerli"| e58
+  e58 -->|"evet: kapi kapali, dur"| e51
+  e58 -->|"hayir"| e63
+  e63 --> e64
+  e64 -->|"evet: konum yok, bekle"| e51
+  e64 -->|"hayir"| e65
+  e65 -->|"evet: at_wp = True"| e51
+  e65 -->|"hayir"| e66
+  e66 --> e67
+  e67 -->|"evet"| e51
+  e67 -->|"hayir"| e68
+  e68 -->|"evet: dogrudan"| e75
+  e68 -->|"hayir"| e72
+  e72 -.-> e69
+  e69 -.-> e70
+  e70 --> e71
+  e71 -->|"evet: False"| e72
+  e71 -->|"hayir: action() = send_vel"| e75
+  e72 -->|"evet: NO_ROUTE sonrasi"| e73
+  e73 --> e51
+  e72 -->|"hayir"| e51
+  e53 --> e12
+  e78 --> e12
+  e77 --> e12
+  e09 --> e13
+  e12 -->|"finally"| e13
+  e13 --> e14
+  e14 --> e15
+  e13 -.-> e75
+  e40 -.-> e75
+  e75 -->|"varsayilan: Gazebo (gercek motor surucusu YOK)"| e76
+  e79 -.->|"Sahte/Gercek surucu enjeksiyonu"| e75

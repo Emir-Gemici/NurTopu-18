@@ -1,0 +1,154 @@
+%% koddan turetildi f3441b4 2026-09-07
+%% (c) Inis kaniti — comms/iha_inis_yayinci.py (main -> akis istegi -> yerde_mi dongusu) + comms/inis_kaniti.py (_yerde_mi_sahipli) -> IHA_LANDED yayini + heartbeat
+%% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
+%% Dogrulayici: scripts/akis_diyagram_dogrula.py
+flowchart TD
+  subgraph sC1["def main()<br/>comms/iha_inis_yayinci.py:467"]
+    c01["def seri_pixhawk_kilidini_uygula()<br/>comms/inis_kaniti.py:136"]
+    c02{"if args.serial and (args.ika or args.yks):<br/>comms/iha_inis_yayinci.py:477"}
+    c03["def mavlink_baglantisi_ac()<br/>comms/inis_kaniti.py:73"]
+    c04["son_tarih = time.monotonic() + args.kanit_timeout<br/>mav.inis_kaniti_deadline_monotonic = son_tarih<br/>comms/iha_inis_yayinci.py:515"]
+    c05["def AkisIstekcisi.iste()<br/>comms/iha_inis_yayinci.py:200"]
+    c06["def AkisGozcusu.__init__()<br/>comms/iha_inis_yayinci.py:327"]
+    c07{"while not yerde and time.monotonic() < son_tarih:<br/>comms/iha_inis_yayinci.py:531"}
+    c09{"if not yerde:<br/>comms/iha_inis_yayinci.py:537"}
+    c10["return 3<br/>comms/iha_inis_yayinci.py:540"]
+    c11{"if args.serial:<br/>comms/iha_inis_yayinci.py:542"}
+    c12["link = (SerialLink(args.serial, args.baud)<br/>comms/iha_inis_yayinci.py:544"]
+    c14["return 0 if basarili else 5<br/>comms/iha_inis_yayinci.py:559"]
+    c15["def _mavlink_kapat()<br/>comms/iha_inis_yayinci.py:458"]
+  end
+  subgraph sC2["def AkisIstekcisi.bakim()<br/>comms/iha_inis_yayinci.py:281"]
+    c20{"if self._son_istek is None:<br/>comms/iha_inis_yayinci.py:283"}
+    c21{"if self._bekleyen and mav_hedefi_biliniyor_mu(self._mav):<br/>comms/iha_inis_yayinci.py:286"}
+    c22{"if not self._sessiz and sessizlik > self._sessizlik_tavani_s:<br/>comms/iha_inis_yayinci.py:291"}
+    c23{"if simdi - self._son_istek >= self._istek_araligi_s:<br/>comms/iha_inis_yayinci.py:298"}
+    c24["return False<br/>comms/iha_inis_yayinci.py:300"]
+  end
+  subgraph sC3["def _yerde_mi_sahipli()<br/>comms/inis_kaniti.py:937"]
+    c33{"while dogrulanan < ardisik:<br/>comms/inis_kaniti.py:994"}
+    c34{"if kalan <= 0:<br/>comms/inis_kaniti.py:996"}
+    c35["mesaj = mav.recv_match(<br/>comms/inis_kaniti.py:999"]
+    c36["def AkisGozcusu.recv_match()<br/>comms/iha_inis_yayinci.py:337"]
+    c37["def AkisIstekcisi.gozle()<br/>comms/iha_inis_yayinci.py:260"]
+    c38{"if mesaj is None:<br/>comms/inis_kaniti.py:1006"}
+    c39{"if tip == MESAJ_EXTENDED_SYS_STATE:<br/>comms/inis_kaniti.py:1012"}
+    c40{"if kanit_kaynagi is None:<br/>comms/inis_kaniti.py:1017"}
+    c41["kanit_kaynagi = kaynak<br/>comms/inis_kaniti.py:1018"]
+    c42{"elif kaynak != kanit_kaynagi:<br/>comms/inis_kaniti.py:1019"}
+    c43{"if isinstance(durum, bool) or not isinstance(durum, int):<br/>comms/inis_kaniti.py:1027"}
+    c44{"if durum != yerde_degeri:<br/>comms/inis_kaniti.py:1030"}
+    c45["dogrulanan = 0<br/>irtifa_bekleniyor = False<br/>comms/inis_kaniti.py:1035"]
+    c46["irtifa_bekleniyor = True<br/>comms/inis_kaniti.py:1038"]
+    c47{"if tip == MESAJ_GLOBAL_POSITION_INT:<br/>comms/inis_kaniti.py:1041"}
+    c48{"if not irtifa_bekleniyor:<br/>comms/inis_kaniti.py:1042"}
+    c49{"if kaynak is None or kaynak != kanit_kaynagi:<br/>comms/inis_kaniti.py:1045"}
+    c50["def _bagil_irtifa_m()<br/>comms/inis_kaniti.py:179"]
+    c51{"if bagil_irtifa is None:<br/>comms/inis_kaniti.py:1050"}
+    c52{"if bagil_irtifa >= tavan:<br/>comms/inis_kaniti.py:1053"}
+    c53["dogrulanan = 0<br/>irtifa_bekleniyor = False<br/>comms/inis_kaniti.py:1056"]
+    c54["dogrulanan += 1<br/>irtifa_bekleniyor = False<br/>comms/inis_kaniti.py:1059"]
+    c55["return True<br/>comms/inis_kaniti.py:1065"]
+    c56["return False<br/>comms/inis_kaniti.py:1063"]
+    c57["return False<br/>comms/inis_kaniti.py:997"]
+    c58["return False<br/>comms/inis_kaniti.py:1029"]
+    c59["return False<br/>comms/inis_kaniti.py:1052"]
+  end
+  subgraph sC4["def iha_inisini_yayinla()<br/>comms/iha_inis_yayinci.py:361"]
+    c60["def IhaSender.send_iha_landed()<br/>comms/iha_sender.py:264"]
+    c61["aktarim_tam = acked >= beklenen<br/>comms/iha_inis_yayinci.py:389"]
+    c62{"if heartbeat_until is None and hb_deadline is None:<br/>comms/iha_inis_yayinci.py:401"}
+    c63{"while True:<br/>comms/iha_inis_yayinci.py:406"}
+    c64{"if kalan <= 0.0:<br/>comms/iha_inis_yayinci.py:409"}
+    c65{"if durdur.wait(bekle):<br/>comms/iha_inis_yayinci.py:414"}
+    c66["def IhaSender.send_heartbeat()<br/>comms/iha_sender.py:247"]
+    c67["return aktarim_tam<br/>comms/iha_inis_yayinci.py:417"]
+    c68["link.close()<br/>comms/iha_inis_yayinci.py:419"]
+  end
+  c30["def yerde_mi()<br/>comms/inis_kaniti.py:925"]
+  c31{"if not _mav_sahiplen(mav, sahip):<br/>comms/inis_kaniti.py:928"}
+  c32["def _mav_sahiplen()<br/>comms/inis_kaniti.py:45"]
+  c00["def _arg_parser()<br/>comms/iha_inis_yayinci.py:422"]
+  c00 --> c01
+  c01 --> c02
+  c02 -->|"evet: parser.error"| c15
+  c02 -->|"hayir"| c03
+  c03 --> c04
+  c04 --> c05
+  c05 --> c06
+  c06 --> c07
+  c07 -->|"evet"| c20
+  c20 -->|"evet: ilk istek"| c05
+  c20 -->|"hayir"| c21
+  c21 -->|"evet: ertelenen istek"| c05
+  c21 -->|"hayir"| c22
+  c22 -->|"evet: SESSIZLIK uyarisi"| c05
+  c22 -->|"hayir"| c23
+  c23 -->|"evet: periyodik yenileme"| c05
+  c23 -->|"hayir"| c24
+  c24 --> c30
+  c05 -.->|"bakim donusu"| c30
+  c30 --> c31
+  c31 -.-> c32
+  c31 -->|"evet: return False"| c07
+  c31 -->|"hayir: tek sahip"| c33
+  c33 -->|"evet"| c34
+  c33 -->|"hayir: ardisik cift tamam"| c55
+  c34 -->|"evet"| c57
+  c34 -->|"hayir"| c35
+  c35 -.-> c36
+  c36 -.-> c37
+  c35 --> c38
+  c38 -->|"evet: son tarih"| c57
+  c38 -->|"hayir"| c39
+  c39 -->|"evet"| c40
+  c40 -->|"evet: ilk kaynak pinlenir"| c41
+  c41 --> c43
+  c40 -->|"hayir"| c42
+  c42 -->|"evet: yabanci kaynak ATLANIR"| c33
+  c42 -->|"hayir"| c43
+  c43 -->|"evet: bozuk alan"| c58
+  c43 -->|"hayir"| c44
+  c44 -->|"evet: ON_GROUND degil, ilerleme sifir"| c45
+  c45 --> c33
+  c44 -->|"hayir: ON_GROUND"| c46
+  c46 --> c33
+  c39 -->|"hayir"| c47
+  c47 -->|"evet"| c48
+  c47 -->|"hayir: bilinmeyen tip"| c56
+  c48 -->|"evet: ON_GROUND beklenmiyor, atla"| c33
+  c48 -->|"hayir"| c49
+  c49 -->|"evet: pin disi konum, atla"| c33
+  c49 -->|"hayir"| c50
+  c50 --> c51
+  c51 -->|"evet: bozuk irtifa"| c59
+  c51 -->|"hayir"| c52
+  c52 -->|"evet: celiski, ilerleme sifir"| c53
+  c53 --> c33
+  c52 -->|"hayir: cift tamam"| c54
+  c54 --> c33
+  c55 -->|"yerde = True"| c07
+  c56 --> c07
+  c57 --> c07
+  c58 --> c07
+  c59 --> c07
+  c07 -->|"hayir"| c09
+  c09 -->|"evet: IHA_LANDED yayinlanmadi"| c10
+  c10 --> c15
+  c09 -->|"hayir"| c11
+  c11 -->|"evet: SiK seri"| c12
+  c12 --> c60
+  c11 -->|"hayir: UDP akranlari"| c60
+  c60 --> c61
+  c61 --> c62
+  c62 -->|"evet"| c67
+  c62 -->|"hayir: heartbeat surer"| c63
+  c63 --> c64
+  c64 -->|"evet: sure doldu"| c67
+  c64 -->|"hayir"| c65
+  c65 -->|"evet: IKA bitti"| c67
+  c65 -->|"hayir"| c66
+  c66 --> c63
+  c67 --> c68
+  c68 --> c14
+  c14 --> c15

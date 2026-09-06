@@ -87,7 +87,8 @@ pre code { background: none; padding: 0; }
 ul, ol { margin: 0 0 7pt 18pt; padding: 0; }
 li { margin: 0 0 2pt; }
 hr { border: 0; border-top: 1px solid #aaa; margin: 12pt 0; }
-img { max-width: 100%; }
+img { max-width: 100%; max-height: 235mm; display: block; margin: 6pt auto;
+      page-break-inside: avoid; }
 .onsoz { border: 2px solid #222; padding: 12pt 14pt; margin-bottom: 14pt; }
 .onsoz h2 { border: 0; margin-top: 0; }
 .damga { font-size: 9pt; color: #555; }
@@ -117,12 +118,25 @@ simülasyon videosu, SiK RF menzil/RTT, Jetson gerçek FPS — bunlar ölçümle
 
 
 def _md(metin: str) -> str:
-    return markdown.markdown(
+    govde = markdown.markdown(
         metin,
         extensions=["tables", "fenced_code", "sane_lists", "toc", "attr_list"],
         extension_configs={"toc": {"toc_depth": "1-3"}},
         output_format="html5",
     )
+    return _sekil_yollarini_coz(govde)
+
+
+def _sekil_yollarini_coz(govde: str) -> str:
+    """`![](sekiller/x.svg)` → mutlak file:// URI.
+
+    NEDEN: HTML `FDR/pdf/` altına yazılır; Markdown'daki `sekiller/…` yolu
+    oradan çözülünce `FDR/pdf/sekiller/…` olur ve görsel SESSİZCE boş kalır
+    (7 Eylül, akış diyagramları). Kaynak .md'de yol `FDR/`ye göre kalır;
+    yalnız üretilen HTML'de mutlaklaştırılır.
+    """
+    kok_uri = (FDR / "sekiller").as_uri()
+    return re.sub(r'src="sekiller/', f'src="{kok_uri}/', govde)
 
 
 def _oku(ad: str) -> str:

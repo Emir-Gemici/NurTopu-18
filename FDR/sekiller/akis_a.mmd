@@ -1,0 +1,122 @@
+%% koddan turetildi f3441b4 2026-09-07
+%% (a) IHA ana dongusu — codes/rpi_inference.py (main -> run_camera -> kamera_kareleri)
+%% Dugum kurali: [ ] fonksiyon/blok (dosya:satir = tanim ya da deyim satiri), { } karar (kosul koddan birebir).
+%% Dogrulayici: scripts/akis_diyagram_dogrula.py — her dugumun dosya:satir'i koda karsi acilip kontrol edilir.
+flowchart TD
+  subgraph sA1["def main()<br/>codes/rpi_inference.py:2705"]
+    a02{"if not any([args.fps, args.image, args.video, args.camera]):<br/>codes/rpi_inference.py:2709"}
+    a03["parser.print_help()<br/>codes/rpi_inference.py:2710"]
+    a04["def _argumanlari_dogrula()<br/>codes/rpi_inference.py:2672"]
+    a05["def _ub_referansi_coz()<br/>codes/rpi_inference.py:2583"]
+    a06{"if args.mavlink is not None:<br/>codes/rpi_inference.py:2719"}
+    a07["def CanliOlcekSaglayici.baglan()<br/>codes/rpi_inference.py:316"]
+    a08{"if args.yks_hedef or args.ika_hedef or args.telsiz_seri:<br/>codes/rpi_inference.py:2745"}
+    a09["def yayinci_kur()<br/>comms/iha_sender.py:514"]
+    a10["def _durdurma_sinyallerini_kur()<br/>codes/rpi_inference.py:2089"]
+    a11["def load_model()<br/>codes/rpi_inference.py:701"]
+    a12{"if args.arac_modeli is not None:<br/>codes/rpi_inference.py:2789"}
+    a13{"elif args.camera:<br/>codes/rpi_inference.py:2806"}
+  end
+  subgraph sA2["def run_camera()<br/>codes/rpi_inference.py:2298"]
+    a14["def kamera_kaynagi_coz()<br/>codes/rpi_inference.py:555"]
+    a15{"if not cap.isOpened():<br/>codes/rpi_inference.py:2316"}
+    a16["return {#quot;bitis#quot;: KAMERA_BITIS_ACILAMADI, #quot;okunan#quot;: 0,<br/>codes/rpi_inference.py:2318"]
+    a17["yumusatici = KararYumusatici()<br/>codes/rpi_inference.py:2329"]
+    a18{"for frame in kamera_kareleri(cap, ozet):<br/>codes/rpi_inference.py:2335"}
+    a19{"if durdurma_istendi():<br/>codes/rpi_inference.py:2339"}
+    a20["def _preprocess()<br/>codes/rpi_inference.py:1892"]
+    a21["results = model.predict(small, imgsz=INFER_SIZE, conf=conf, verbose=False)<br/>codes/rpi_inference.py:2360"]
+    a22["def get_masks()<br/>codes/rpi_inference.py:744"]
+    a23["def _maskeleri_icerige_kirp()<br/>codes/rpi_inference.py:1919"]
+    a24["def kare_olcek_kahini()<br/>codes/rpi_inference.py:453"]
+    a25["def rota_olcek_reddi()<br/>codes/karar_sozlesmesi.py:439"]
+    a26["def analyze_path()<br/>codes/rpi_inference.py:1352"]
+    a27{"if olcek_reddi is not None and karar_reddi is None:<br/>codes/rpi_inference.py:2390"}
+    a28["open_path, path_conf, waypoints = None, 0.0, []<br/>codes/rpi_inference.py:2391"]
+    a29["def _rota_kararini_esikle()<br/>codes/rpi_inference.py:1779"]
+    a30{"if yumusatici.suz(open_path, karar_reddi):<br/>codes/rpi_inference.py:2399"}
+    a31["def KararYumusatici.suz()<br/>codes/karar_sozlesmesi.py:2158"]
+    a32["def _karari_yayinla()<br/>codes/rpi_inference.py:285"]
+    a33{"if ekransiz:<br/>codes/rpi_inference.py:2403"}
+    a34["def draw_masks()<br/>codes/rpi_inference.py:856"]
+    a35{"if cv2.waitKey(1) #amp; 0xFF == ord(#quot;q#quot;):<br/>codes/rpi_inference.py:2420"}
+    a36["cap.release()<br/>codes/rpi_inference.py:2425"]
+    a37["def kamera_bitis_raporu()<br/>codes/rpi_inference.py:2485"]
+  end
+  subgraph sA3["def kamera_kareleri()<br/>codes/rpi_inference.py:2432"]
+    a40{"if durdurma_istendi():<br/>codes/rpi_inference.py:2459"}
+    a41["ret, frame = cap.read()<br/>codes/rpi_inference.py:2465"]
+    a42{"if not ret or frame is None:<br/>codes/rpi_inference.py:2466"}
+    a43{"if ardisik >= ust_sinir:<br/>codes/rpi_inference.py:2470"}
+    a44["yield frame<br/>codes/rpi_inference.py:2482"]
+  end
+  subgraph sA4["finally:<br/>codes/rpi_inference.py:2817"]
+    a50["def _durdurma_sinyallerini_geri_al()<br/>codes/rpi_inference.py:2116"]
+    a51{"if yayinci is not None:<br/>codes/rpi_inference.py:2819"}
+    a52["yayinci.sender.link.close()<br/>codes/rpi_inference.py:2825"]
+    a53{"if canli_olcek is not None:<br/>codes/rpi_inference.py:2826"}
+    a54["def CanliOlcekSaglayici.kapat()<br/>codes/rpi_inference.py:375"]
+  end
+  a01["def _arguman_ayristirici()<br/>codes/rpi_inference.py:2492"]
+  a01 --> a02
+  a02 -->|"evet"| a03
+  a02 -->|"hayir"| a04
+  a04 --> a05
+  a05 --> a06
+  a06 -->|"evet: canli irtifa (MAVLink)"| a07
+  a07 --> a08
+  a06 -->|"hayir: olcek yok, her kare OLCEK_YOK"| a08
+  a08 -->|"evet: telsiz halkasi (K1)"| a09
+  a09 --> a10
+  a08 -->|"hayir: yayinci = None"| a10
+  a10 --> a11
+  a11 --> a12
+  a12 -->|"evet: katman 3 dedektoru"| a13
+  a12 -->|"hayir"| a13
+  a13 -->|"evet"| a14
+  a13 -->|"hayir: run_fps / run_image / run_video"| a50
+  a14 --> a15
+  a15 -->|"evet"| a16
+  a16 --> a50
+  a15 -->|"hayir"| a17
+  a17 --> a18
+  a18 -->|"kare geldi"| a19
+  a18 -->|"uretici bitti"| a36
+  a19 -->|"evet: KAMERA_BITIS_SINYAL"| a36
+  a19 -->|"hayir"| a20
+  a20 --> a21
+  a21 --> a22
+  a22 --> a23
+  a23 --> a24
+  a24 --> a25
+  a25 --> a26
+  a26 --> a27
+  a27 -->|"evet: OLCEK_YOK reddi"| a28
+  a28 --> a29
+  a27 -->|"hayir: yapisal ret korunur"| a29
+  a29 --> a30
+  a30 -.->|"K=3 histerezis"| a31
+  a30 -->|"True"| a32
+  a32 --> a33
+  a30 -->|"False: yayin bastirildi"| a33
+  a33 -->|"evet: gorsel yok"| a18
+  a33 -->|"hayir"| a34
+  a34 --> a35
+  a35 -->|"evet: KAMERA_BITIS_KULLANICI"| a36
+  a35 -->|"hayir"| a18
+  a36 --> a37
+  a37 --> a50
+  a18 -.->|"uretici"| a40
+  a40 -->|"evet: KAMERA_BITIS_SINYAL"| a18
+  a40 -->|"hayir"| a41
+  a41 --> a42
+  a42 -->|"evet"| a43
+  a43 -->|"evet: KAMERA_BITIS_DUSEN_KARE"| a18
+  a43 -->|"hayir: bekle, yeniden dene"| a40
+  a42 -->|"hayir"| a44
+  a44 --> a18
+  a50 --> a51
+  a51 -->|"evet: yayinci.stop()"| a52
+  a52 --> a53
+  a51 -->|"hayir"| a53
+  a53 -->|"evet"| a54
