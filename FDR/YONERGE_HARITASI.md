@@ -17,14 +17,14 @@
 
 ---
 
-## 0. Ön kısım — yönergede zorunlu, bizde YOKTU
+## 0. Ön kısım — yönergede zorunlu, 3 Eylül'de `BOLUM_0_KAPAK_VERSIYON_TANIMLAR.md` olarak yazıldı
 
 | kimlik | ne | durum |
 |---|---|---|
-| `Y-0-M01` | **Kapak sayfası**: TAKIM ADI / TAKIM ID / BAŞVURU ID | YOK |
-| `Y-0-M02` | **VERSİYONLAR** tablosu (Versiyon · Tarih · Açıklama) | YOK |
-| `Y-0-M03` | **TANIMLAR ve KISALTMALAR** — yönergedeki liste (DDK, İHA, İKA, HTAB, İHA-FB, İHA-UB, İKA-KB, HB, İHA-İB, ÖDR, DDR, FDR, FDA, FDS, SGGS, UHDR, K_zorluk, m_İHA, t_İHA, t_hazırlık, m_İKA, m_yük, t_İKA, P_görev, P, P_TI, P_uçuş, P_centilmenlik, C_ceza) | YOK |
-| `Y-0-M04` | **İÇİNDEKİLER** | YOK |
+| `Y-0-M01` | **Kapak sayfası**: TAKIM ADI / TAKIM ID / BAŞVURU ID | KISMEN (üç alan yazılı; KYS teyidi DOĞRULANACAK, logo BEYAN GEREKLİ) |
+| `Y-0-M02` | **VERSİYONLAR** tablosu (Versiyon · Tarih · Açıklama) | KISMEN (V1 03.09.2026 satırı var; teslim sürümü BEYAN GEREKLİ) |
+| `Y-0-M03` | **TANIMLAR ve KISALTMALAR** — yönergedeki liste (DDK, İHA, İKA, HTAB, İHA-FB, İHA-UB, İKA-KB, HB, İHA-İB, ÖDR, DDR, FDR, FDA, FDS, SGGS, UHDR, K_zorluk, m_İHA, t_İHA, t_hazırlık, m_İKA, m_yük, t_İKA, P_görev, P, P_TI, P_uçuş, P_centilmenlik, C_ceza) | VAR |
+| `Y-0-M04` | **İÇİNDEKİLER** | VAR (bölüm düzeyi tablo; sayfa numaraları dizgide) |
 | `Y-0-M05` | Her sayfada **TASNİF DIŞI** başlık/altlık + sayfa numarası | YOK (PDF dizgisinde) |
 
 ## 1. Bölüm 1 — Özet · **5 puan**
@@ -149,10 +149,10 @@
 |---|---|---|---|
 | `Y-3.3.1-M01` | **Sistem Mimarisi** | İHA ve İKA için **ayrı ayrı**; tüm elektronik bileşenlerin bağlantısı, sinyal (PWM, UART, I2C) ve güç hatları **renk kodlarıyla ayrılmış**, okunabilir bağlantı şemaları | KISMEN (İHA metin var, şema ve İKA yok) |
 | `Y-3.3.1-M02` | **Nihai Aviyonik BOM Listesi** | İHA ve İKA için ayrı: ad, marka/model, adet, birim ağırlık, toplam ağırlık, boyut, **tahmini maliyet** tablosu; **DDR ↔ FDR karşılaştırmalı**; kablo ve konnektörler dâhil nihai ağırlık ve maliyet | KISMEN |
-| `Y-3.3.1-M03` | **Entegrasyon Planı** | İHA ve İKA aviyonik entegrasyonunda izlenecek plan | KISMEN (saha planı var, rapora girmedi) |
+| `Y-3.3.1-M03` | **Entegrasyon Planı** | İHA ve İKA aviyonik entegrasyonunda izlenecek plan | KISMEN (İHA planı rapora girdi: §3.3.1.3.1 kuru koşu zinciri 9/10 + §3.3.1.3.2 kapı özeti; İKA planı §3.3.1.3.3 BEYAN GEREKLİ) |
 | `Y-3.3.2-M01` | **Nihai Kablaj Hesapları** | kablo **kesitleri (AWG)** ve uzunlukları, **akım taşıma kapasitesi ve gerilim düşümü hesapları**, **ölçülen** maksimum akıma göre güncelleme; kablo düzenlemesi, ekranlama, konnektör kilitleme **görsellerle** | YOK |
 | `Y-3.3.2-M02` | **Güç Tüketimi Doğrulaması** | tam yükte **ölçülen akım** ↔ batarya kapasitesi uyumu; **teorik hesap ile pratik ölçüm karşılaştırması** | YOK (5 Eylül ölçümü) |
-| `Y-3.3.3-M01` | 🔴 **Üç Boyutlu Simülasyon Ortamı** | İHA ve İKA'nın **3B CAD modelleriyle** sanal görev icrası: kalkış, görüntü işleme ile rota tespiti, **verinin İKA'ya aktarılması**, İKA'nın **otonom sürüşü** | YOK |
+| `Y-3.3.3-M01` | 🔴 **Üç Boyutlu Simülasyon Ortamı** | İHA ve İKA'nın **3B CAD modelleriyle** sanal görev icrası: kalkış, görüntü işleme ile rota tespiti, **verinin İKA'ya aktarılması**, İKA'nın **otonom sürüşü** | KISMEN (Gazebo iskeleti var: 7 dünya + İHA/İKA/mancınık SDF + görev betikleri; CAD yok — mesh 0, koşum yok) |
 | `Y-3.3.3-M02` | 🔴 **Simülasyon Verileri** | otonom karar verme **başarı oranları**, **sanal görev süresi**, sistem tepkileri — **grafiklerle** | YOK |
 | `Y-3.3.3-M03` | 🔴 **Video Kanıtı** | simülasyonun ekran kaydı videosunun **linki** | YOK |
 | `Y-3.3.4-M01` | **Detaylı Algoritma Akışı** | İHA ve İKA otonom davranışlarını yöneten ana döngüler ve karar mekanizmalarının **akış diyagramları** | KISMEN (metin var, diyagram yok) |
@@ -164,9 +164,9 @@
 | kimlik | gereksinim | durum |
 |---|---|---|
 | `Y-4-M01` | Planlanan **yer testleri, fonksiyonel testler ve entegrasyon testleri** ile tasarımın gereksinimlere uygunluğunun doğrulanması | KISMEN |
-| `Y-4-M02` | ÖDR/DDR'de tanımlanan testlerin **uygulama yöntemleri ve test altyapısı gereksinimlerinin nihai hâli** | KISMEN |
-| `Y-4-M03` | Testlerde kullanılacak **sensör gereksinimleri, sensör yerleşimleri, test takvimi ve detaylı test zaman bütçe planlaması** | YOK |
-| `Y-4-M04` | **Ekipman kabul testleri** — İHA ve İKA'da kullanılacak **tüm ekipmanların** kabul testleri yapılmış ve sonuçlar sunulmuş olmalı | YOK (5 Eylül) |
+| `Y-4-M02` | ÖDR/DDR'de tanımlanan testlerin **uygulama yöntemleri ve test altyapısı gereksinimlerinin nihai hâli** | VAR |
+| `Y-4-M03` | Testlerde kullanılacak **sensör gereksinimleri, sensör yerleşimleri, test takvimi ve detaylı test zaman bütçe planlaması** | KISMEN (§4.3.1 sensör tablosu + §4.3.3 takvim 3.1–3.6 + §4.3.4 yer bütçeleri var; yerleşim BEYAN GEREKLİ, uçuş süresi ÖLÇÜLEMEDİ) |
+| `Y-4-M04` | **Ekipman kabul testleri** — İHA ve İKA'da kullanılacak **tüm ekipmanların** kabul testleri yapılmış ve sonuçlar sunulmuş olmalı | KISMEN (5 Eylül tezgâh: firmware 4.5.7 / GNSS / iBUS / PM06 / motor testi ÖLÇÜM; Jetson, kamera, RF, tam yük ÖLÇÜLEMEDİ; İKA ekipmanı seçilmedi) |
 | `Y-4-M05` | **Kumanda ve telemetri menzil testleri** — sahada | YOK (5–19 Eylül) |
 | `Y-4-M06` | **IMU, pusula ve pitot tüpü kalibrasyonu** kanıtları | YOK (5 Eylül) |
 | `Y-4-M07` | 🔴 **Görev icra simülasyonu** (3.3.3 ile aynı) + başarı oranları + grafikler + **video linki** | YOK |
@@ -191,11 +191,11 @@
 | kimlik | gereksinim | durum |
 |---|---|---|
 | `Y-6-M01` | Sistem gereksinimlerinin **hangi ölçüde ve ne şekilde karşılandığı** ayrıntılı | KISMEN |
-| `Y-6-M02` | Her gereksinimin **doğrulama yöntemi** açıkça (analiz, hesaplama, test, simülasyon, gözle muayene) | KISMEN |
-| `Y-6-M03` | Her gereksinim için **uygunluk durumu** ve gereksinimlerin **tasarım kararlarıyla ilişkisi** | KISMEN |
-| `Y-6-M04` | Gereksinimlerin tasarım sürecinde alınan kararları **nasıl etkilediği**, sistem mimarisi ve performansa **katkısı** | KISMEN |
+| `Y-6-M02` | Her gereksinimin **doğrulama yöntemi** açıkça (analiz, hesaplama, test, simülasyon, gözle muayene) | VAR |
+| `Y-6-M03` | Her gereksinim için **uygunluk durumu** ve gereksinimlerin **tasarım kararlarıyla ilişkisi** | VAR |
+| `Y-6-M04` | Gereksinimlerin tasarım sürecinde alınan kararları **nasıl etkilediği**, sistem mimarisi ve performansa **katkısı** | VAR |
 | `Y-6-M05` | **Karşılanamayan veya kısmen karşılanan** gereksinimlerin nedenleri + giderme önlemleri / planlanan iyileştirmeler | VAR (bu raporun güçlü yanı) |
-| `Y-6-M06` | 🔴 Tüm gereksinimlerin **genel uygunluk durumu ÖZET TABLO veya PASTA GRAFİĞİ** ile **görsel** | YOK |
+| `Y-6-M06` | 🔴 Tüm gereksinimlerin **genel uygunluk durumu ÖZET TABLO veya PASTA GRAFİĞİ** ile **görsel** | KISMEN (§6.6.1–§6.6.4 özet tablolar + metin bar var; pasta grafiği dizgide, BEYAN GEREKLİ) |
 
 ## 7. Bölüm 7 — Bütçe Gerçekleme Analizi · **10 puan**
 
@@ -209,19 +209,19 @@
 
 ---
 
-## Boşluk özeti (3 Eylül 2026)
+## Boşluk özeti (7 Eylül 2026 — Y-satırları sayılarak yeniden üretildi; 3.1/3.2 değişmedi)
 
 | bölüm | puan | VAR | KISMEN | YOK | en büyük boşluk |
 |---|---|---|---|---|---|
-| Ön kısım | — | 0 | 0 | 5 | kapak, versiyonlar, tanımlar |
+| Ön kısım | — | 2 | 2 | 1 | KYS künye teyidi + logo; TASNİF DIŞI sayfa düzeni (dizgi 18–20 Eylül) |
 | Bölüm 1 | 5 | 0 | 10 | 0 | İKA/Mancınık özeti zayıf |
 | Bölüm 2 | 5 | 1 | 3 | 0 | organizasyon **şeması** |
 | Bölüm 3.1 | *(40'ın içinde)* | 0 | 0 | 7 | **uçuş bilimleri hiç yok** |
 | Bölüm 3.2 | *(40'ın içinde)* | 0 | 8 | 48 | **İKA ve Mancınık yapısal; analizler** |
-| Bölüm 3.3 | *(40'ın içinde)* | 0 | 8 | 5 | **3B görev simülasyonu + video** |
-| Bölüm 4 | 15 | 0 | 7 | 5 | ekipman kabul, menzil, **arıza emniyet** |
+| Bölüm 3.3 | *(40'ın içinde)* | 0 | 7 | 4 | **3B görev simülasyonu + video**; kablaj hesabı ve güç tüketimi ölçümü |
+| Bölüm 4 | 15 | 1 | 7 | 4 | menzil, kalibrasyon kanıtı, görev simülasyonu, **arıza emniyet** |
 | Bölüm 5 | 15 | 0 | 3 | 1 | düzeltici prosedürler + **reçete farkı gerekçesi** |
-| Bölüm 6 | 10 | 1 | 4 | 1 | **pasta grafiği** |
+| Bölüm 6 | 10 | 3 | 3 | 0 | **pasta grafiği** (dizgi) + ÖDR/DDR gereksinim eşlemesi + açık kalem kapanma tarihleri |
 | Bölüm 7 | 10 | 0 | 1 | 4 | **fiyatların tamamı** |
 
 **Okuma:** raporun bugünkü gücü **3.3 (aviyonik/yazılım)**, **4 (test)** ve
