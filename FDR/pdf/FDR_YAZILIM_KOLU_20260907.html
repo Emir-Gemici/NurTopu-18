@@ -52,7 +52,7 @@ Markdown kaynağında yapılır ya da yama olarak koordinatöre gönderilir.</p>
 üreten betiği verir. Yeni bir sayı eklerken kaynağını da yaz; kaynağı yoksa ekleme.</p>
 <p><b>Bu taslakta bilerek eksik:</b> sayfa numarası (nihai dizgide), gerçek arena karesi,
 simülasyon videosu, SiK RF menzil/RTT, Jetson gerçek FPS — bunlar ölçümle kapanır, yazıyla değil.</p>
-<p class="damga">Kaynak depo sürümü: 8ba7b06 · üretici: <code>scripts/fdr_pdf_uret.py</code></p>
+<p class="damga">Kaynak depo sürümü: fe56fe4 · üretici: <code>scripts/fdr_pdf_uret.py</code></p>
 </div>
 
 <section class="bolum" id="BOLUM_3_SISTEM_SPESIFIKASYONLARI.md"><h1 id="bolum-3-genel-sistem-spesifikasyonlari-40-puan">BÖLÜM 3 — GENEL SİSTEM SPESİFİKASYONLARI (40 puan)</h1>
@@ -6833,10 +6833,10 @@ Kayıt: <code>REVIEW_LOG.md</code> D-412.</p>
 </tr>
 <tr>
 <td>35</td>
-<td>Gerçek donanım künyesi (Nano 4GB, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah)</td>
+<td>Gerçek donanım künyesi (<del>Nano 4GB</del>, Pixhawk 6C, M9N, RPi HQ, 4S 10 Ah)</td>
 <td><code>SAHA_HAZIRLIK_PLANI_20260903.md</code> §0.2</td>
-<td><strong>kullanıcı beyanı</strong>, 3 Eylül 2026 — kutu 5 Eylül'de açılıp teyit edilecek</td>
-<td>2026-09-03</td>
+<td><strong>kullanıcı beyanı</strong>, 3 Eylül 2026 — <del>kutu 5 Eylül'de açılıp teyit edilecek</del> → 5–6 Eylül'de kutu açıldı: Jetson <strong>Orin Nano Developer Kit 4 GB</strong> (beyan yanlışlandı, D-431), ESC Skywalker 60A V2, PM06 (D-426)</td>
+<td>2026-09-03 → 2026-09-06</td>
 </tr>
 <tr>
 <td>36</td>
@@ -8968,10 +8968,10 @@ dizgisinde bölüm sonu eki olarak kalır.</p>
 <td>2026-09-03</td>
 </tr>
 <tr>
-<td>Donanım künyesi (quadcopter, Pixhawk 6C, Jetson Nano 4GB, RPi HQ, 4S 10 Ah)</td>
+<td>Donanım künyesi (quadcopter, Pixhawk 6C, <del>Jetson Nano 4GB</del>, RPi HQ, 4S 10 Ah)</td>
 <td><code>SAHA_HAZIRLIK_PLANI_20260903.md</code> §0.2</td>
-<td>kullanıcı beyanı, 3 Eylül; <strong>5 Eylül'de kutu açılarak teyit edilecek</strong></td>
-<td>2026-09-03 (beyan)</td>
+<td>kullanıcı beyanı, 3 Eylül; <del><strong>5 Eylül'de kutu açılarak teyit edilecek</strong></del> → 5–6 Eylül'de kutu açıldı: Jetson <strong>Orin Nano Developer Kit 4 GB</strong> (beyan yanlışlandı, D-431), ESC Skywalker 60A V2, PM06 (D-426)</td>
+<td>2026-09-03 (beyan) → 2026-09-06 (ölçüm)</td>
 </tr>
 <tr>
 <td>Jetson kartı <strong>Orin Nano Developer Kit 4 GB</strong> (JetPack 7.2.1, Python 3.12.3) — 'Nano 4GB' beyanı yanlışlandı; <code>torch.cuda.is_available()</code> True; <code>jetson_fps.py</code> pt <strong>1,35/1,06</strong> · engine <strong>1,58/1,33</strong> FPS (eşik 0,61, GEÇTİ); engine↔pt D-303 oransal <strong>3/126 DÜŞTÜ</strong> → uçuş <code>.pt</code>; kartta genel kapı 15/15 · 15/15</td>
