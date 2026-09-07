@@ -1,0 +1,119 @@
+log başlangıcı 19:52:45; RC_CHANNELS örnek aralığı ~0.51 s
+
+1) DÜMEN-ARM PENCERESİ 6205–6240 s (CH3 gaz, CH4 yaw, CH6 anahtar):
+  21:36:10  t= 6205.3  gaz=1233  yaw=2000  ch5=1000  ch6=1000
+  21:36:11  t= 6205.8  gaz=1194  yaw=2000  ch5=1000  ch6=1000
+  21:36:12  t= 6206.7  gaz=1131  yaw=2000  ch5=1000  ch6=1000
+  21:36:12  t= 6207.3  gaz=1121  yaw=2000  ch5=1000  ch6=1000
+  21:36:13  t= 6208.2  gaz=1108  yaw=2000  ch5=1000  ch6=1000
+  21:36:14  t= 6208.8  gaz=1107  yaw=2000  ch5=1000  ch6=1000
+  21:36:15  t= 6209.8  gaz=1108  yaw=2000  ch5=1000  ch6=1000
+  21:36:15  t= 6210.4  gaz=1108  yaw=2000  ch5=1000  ch6=1000
+  21:36:16  t= 6211.3  gaz=1109  yaw=2000  ch5=1000  ch6=1000
+  21:36:17  t= 6212.2  gaz=1107  yaw=2000  ch5=1000  ch6=1000
+  21:36:18  t= 6212.8  gaz=1111  yaw=2000  ch5=1000  ch6=1000
+  21:36:19  t= 6213.8  gaz=1099  yaw=2000  ch5=1000  ch6=1000
+  21:36:19  t= 6214.3  gaz=1092  yaw=2000  ch5=1000  ch6=1000
+  21:36:20  t= 6215.3  gaz=1091  yaw=2000  ch5=1000  ch6=1000
+  21:36:21  t= 6216.3  gaz=1086  yaw=2000  ch5=1000  ch6=1000
+  21:36:22  t= 6216.8  gaz=1080  yaw=2000  ch5=1000  ch6=1000
+  21:36:23  t= 6217.8  gaz=1080  yaw=2000  ch5=1000  ch6=1000
+  21:36:24  t= 6218.8  gaz=1047  yaw=2000  ch5=1000  ch6=1000
+  21:36:24  t= 6219.3  gaz=1043  yaw=2000  ch5=1000  ch6=1000
+  21:36:25  t= 6220.3  gaz=1003  yaw=2000  ch5=1000  ch6=1000
+  21:36:26  t= 6220.8  gaz=1004  yaw=2000  ch5=1000  ch6=1000
+  21:36:27  t= 6221.7  gaz=1002  yaw=2000  ch5=1000  ch6=1000
+  21:36:27  t= 6222.3  gaz=1002  yaw=2000  ch5=1000  ch6=1000
+  21:36:28  t= 6222.8  gaz=1003  yaw=2000  ch5=1000  ch6=1000
+  21:36:28  t= 6223.3  gaz=1003  yaw=2000  ch5=1000  ch6=1000
+  21:36:29  t= 6223.8  gaz=1003  yaw=2000  ch5=1000  ch6=1000
+  21:36:30  t= 6224.8  gaz=1003  yaw=2000  ch5=1000  ch6=1000
+  21:36:31  t= 6225.7  gaz=1303  yaw=1500  ch5=1000  ch6=1000
+  21:36:31  t= 6226.4  gaz=1301  yaw=1500  ch5=1000  ch6=1000
+  21:36:32  t= 6227.3  gaz=1001  yaw=1499  ch5=1000  ch6=1000
+  21:36:33  t= 6228.3  gaz=1003  yaw=1501  ch5=1000  ch6=2000
+  21:36:34  t= 6228.8  gaz=1002  yaw=1501  ch5=1000  ch6=2000
+  21:36:35  t= 6229.8  gaz=1003  yaw=1501  ch5=1000  ch6=1000
+  21:36:35  t= 6230.3  gaz=1003  yaw=1501  ch5=1000  ch6=2000
+  21:36:36  t= 6231.3  gaz=1002  yaw=1501  ch5=1000  ch6=1000
+  21:36:37  t= 6231.8  gaz=1003  yaw=1501  ch5=1000  ch6=1000
+  21:36:38  t= 6232.8  gaz=1002  yaw=1501  ch5=1000  ch6=1000
+  21:36:39  t= 6233.7  gaz=1003  yaw=1501  ch5=1000  ch6=1000
+  21:36:39  t= 6234.4  gaz=1003  yaw=1501  ch5=1000  ch6=1000
+  21:36:40  t= 6235.3  gaz=1003  yaw=1501  ch5=1000  ch6=1000
+  21:36:41  t= 6235.8  gaz=1003  yaw=1501  ch5=1000  ch6=1000
+  21:36:42  t= 6237.0  gaz=1002  yaw=1497  ch5=1000  ch6=1000
+  21:36:43  t= 6237.8  gaz=1003  yaw=1500  ch5=1000  ch6=1000
+  21:36:43  t= 6238.3  gaz=1003  yaw=1500  ch5=1000  ch6=1000
+  21:36:44  t= 6239.2  gaz=1003  yaw=1500  ch5=1000  ch6=1000
+  21:36:45  t= 6239.8  gaz=1084  yaw=1501  ch5=1000  ch6=1000
+  >>> 21:36:27 t=6222.1 ARMED
+  >>> 21:36:43 t=6238.0 DISARMED
+
+2) 'Arm:' / 'Throttle' / 'Disarm' STATUSTEXT'leri (PreArm hariç):
+  20:19:13  t= 1587.7  Motor Test: Safety switch
+
+3) CH6 ANAHTARI ÇEVRİLME ANLARI ve ±3 s içinde arm geçişi var mı:
+  19:53:19  t=   33.9  ch6 1000→2000  gaz=1037  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  19:53:22  t=   37.5  ch6 2000→1000  gaz=1021  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  19:54:37  t=  111.9  ch6 1000→2000  gaz=1003  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  19:54:39  t=  114.0  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:10:47  t= 1082.5  ch6 1000→2000  gaz=1570  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:10:49  t= 1084.4  ch6 2000→1000  gaz=1001  yaw=1498  arm geçişi=YOK  gcs komutu=-
+  20:18:09  t= 1523.9  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:10  t= 1525.4  ch6 2000→1000  gaz=1003  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:15  t= 1530.0  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:15  t= 1530.4  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:23  t= 1538.4  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:25  t= 1539.9  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:25  t= 1540.4  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:26  t= 1541.0  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:27  t= 1541.9  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:18:29  t= 1544.4  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:26:19  t= 2014.0  ch6 1000→2000  gaz=1118  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:26:20  t= 2014.9  ch6 2000→1000  gaz=1001  yaw=1489  arm geçişi=YOK  gcs komutu=-
+  20:26:20  t= 2015.4  ch6 1000→2000  gaz=1893  yaw=1402  arm geçişi=YOK  gcs komutu=-
+  20:26:21  t= 2016.4  ch6 2000→1000  gaz=1002  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:26:23  t= 2018.4  ch6 1000→2000  gaz=1838  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:32:12  t= 2367.5  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:32:15  t= 2369.9  ch6 1000→2000  gaz=1524  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:32:22  t= 2377.0  ch6 2000→1000  gaz=1002  yaw=1496  arm geçişi=YOK  gcs komutu=-
+  20:35:16  t= 2551.2  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:35:53  t= 2587.6  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:35:54  t= 2588.8  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:35:56  t= 2591.2  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:35:58  t= 2593.2  ch6 1000→2000  gaz=1003  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:35:59  t= 2594.3  ch6 2000→1000  gaz=1996  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:36:23  t= 2618.2  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:24  t= 2618.7  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:46  t= 2641.2  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:47  t= 2641.6  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:47  t= 2642.2  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:53  t= 2647.7  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:53  t= 2648.2  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:36:54  t= 2648.7  ch6 2000→1000  gaz=1001  yaw=1498  arm geçişi=YOK  gcs komutu=-
+  20:36:54  t= 2649.2  ch6 1000→2000  gaz=1001  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:37:25  t= 2679.6  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:37:25  t= 2680.2  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:37:26  t= 2681.2  ch6 2000→1000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:44:21  t= 3095.7  ch6 1000→2000  gaz=1002  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:45:29  t= 3164.2  ch6 2000→1000  gaz=1002  yaw=1488  arm geçişi=YOK  gcs komutu=-
+  20:45:31  t= 3166.2  ch6 1000→2000  gaz=1632  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:45:35  t= 3169.8  ch6 2000→1000  gaz=1003  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:46:00  t= 3194.7  ch6 1000→2000  gaz=1653  yaw=1501  arm geçişi=YOK  gcs komutu=-
+  20:46:01  t= 3195.7  ch6 2000→1000  gaz=1000  yaw=1499  arm geçişi=YOK  gcs komutu=-
+  20:46:01  t= 3196.2  ch6 1000→2000  gaz=1458  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:46:02  t= 3196.8  ch6 2000→1000  gaz=1002  yaw=1498  arm geçişi=YOK  gcs komutu=-
+  20:59:32  t= 4007.3  ch6 1000→2000  gaz=1002  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  20:59:33  t= 4008.2  ch6 2000→1000  gaz=1003  yaw=1500  arm geçişi=YOK  gcs komutu=-
+  21:36:33  t= 6228.3  ch6 1000→2000  gaz=1003  yaw=1501  arm geçişi=YOK  gcs komutu=-
+  21:36:34  t= 6229.3  ch6 2000→1000  gaz=1003  yaw=1501  arm geçişi=YOK  gcs komutu=-
+  21:36:35  t= 6230.3  ch6 1000→2000  gaz=1003  yaw=1501  arm geçişi=YOK  gcs komutu=-
+  21:36:36  t= 6230.8  ch6 2000→1000  gaz=1003  yaw=1501  arm geçişi=YOK  gcs komutu=-
+  toplam 56 çevirme
+
+4) CH5 (uçuş modu anahtarı) ÇEVRİLME sayısı:
+  10
+
+5) GEVŞEK DÜMEN DENEMELERİ — yaw ≥1800 ama ya gaz >1100 ya da yaw <1947 (arm eşiği ~1947), ≥1,0 s:
+  21:36:10   6204.9– 6213.3 (8.4 s)  ilk örnek gaz=1348 yaw=2000

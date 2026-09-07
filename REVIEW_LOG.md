@@ -30241,3 +30241,50 @@ gelir, "bekle" degil.
 
 **Kural.** Bir surecin sahibi belli degilse once **komut satiri okunur** (`Win32_Process
 CommandLine`), sonra hukum verilir. "Kullanici acmis" bir teshis degil, varsayimdir.
+
+### D-433 — KUMANDADAN ARM/DISARM NEDEN OLMUYOR: anahtar kanalına (CH6) hiçbir işlev atanmamış (RC6_OPTION=0); dümenle arm ÇALIŞIYOR ama gaz kolu tam dipte değildi (1043–1107 PWM, eşik ≤1030)
+
+**Tarih:** 7 Eylül 2026 · **Kaynak:** 6 Eylül tlog `results/ucus_loglari/20260906/2026-09-06 19-52-44.tlog`
+(19:52:45 → 21:56) + parametre dökümü `config/pixhawk/arducopter_fda_20260906.param` (20:22).
+**Araç:** `scripts/ucus_tlog_arm.py`, `scripts/ucus_tlog_arm_detay.py` · **Ham çıktı:**
+`results/ucus_loglari/20260906/arm_analizi.txt`, `arm_analizi_detay.txt`.
+
+**Soru (kullanıcı, 7 Eylül sabah):** "kumandadan neden arm disarm yapılmıyor" — 6 Eylül boyunca üç kez
+bildirilmişti ("arm disarm kısmı olmadı", "arm disarm tuşu çalışmıyor", "hala kumandadan arm disarm
+yapılamıyor").
+
+**Ölçüm 1 — anahtar sinyali kontrolcüye ULAŞIYOR.** RC_CHANNELS: CH5 üç değer alıyor
+{1000, 1500, 2000} (uçuş modu anahtarı, 10 çevirme), CH6 iki değer {1000, 2000}. CH6 akşam
+boyunca **56 kez** çevrildi (19:53:19 … 21:36:36); ±3 s içinde **hiçbir arm/disarm geçişi yok**
+(56/56). Alıcı, i-BUS ve kanal eşlemi sağlam; sorun kumandada değil.
+
+**Ölçüm 2 — kontrolcü CH6'yı hiçbir işleve bağlamamış.** Dökümde `RC5_OPTION=0`, `RC6_OPTION=0`,
+`RC7_OPTION … RC16_OPTION=0`. ArduCopter'da anahtarla arm için kanala **153 (Arm/Disarm)** işlevi
+atanmalıdır; atanmamış kanal görmezden gelinir. Parametre şablonu `arducopter_fda.param` de hiçbir
+`RCx_OPTION` içermiyor — yani anahtarla arm hiç **planlanmamıştı**, saha bunu varsaydı.
+
+**Ölçüm 3 — dümenle arm (ARMING_RUDDER=2) ÇALIŞIYOR.** 21:36:10–21:36:25 arası yaw kolu tam sağda
+(2000) tutulurken gaz kolu **1233 → 1107 → 1080 → 1043** PWM'de gezindi; kontrolcü arm etmedi.
+Gaz 21:36:25'te **1003**'e inince tam **2 s sonra (21:36:27, t=6222,1 s) ARMED** — yer istasyonundan
+COMMAND_LONG 400 yok (GCS arm komutları 6178 ve 6293 s'de). Dümenle arm'ın koşulu gazın
+"sıfır" okunmasıdır: RC3_MIN 1000 + RC3_DZ 30 → **PWM ≤ 1030**. 15 saniye boyunca kol dipte sanılıp
+1043–1107'de tutuldu; yani "dümenle de olmuyor" izlenimi **kolun tam dibe basılmamasından**.
+Yaw eşiği: RC4 1500 trim / 20 DZ ile control_in > 4000 ⇒ **PWM ≥ ~1947** (2000 okundu, tamam).
+
+**Ölçüm 4 — disarm kendiliğinden.** 21:36:43 DISARMED; ne GCS komutu ne yaw-sol penceresi var.
+`DISARM_DELAY=10`: yerde gaz sıfırda 10 s → otomatik disarm (21:36:32'den itibaren gaz 1001,
+~11 s sonra). Akşam boyunca **hiç** yaw-sol disarm denemesi (CH3≤1100 ∧ CH4≤1100 ≥1 s) yok.
+
+**Yan bulgu (uçuş modu anahtarı).** FLTMODE1–3=0 Stabilize, FLTMODE4=5 Loiter, **FLTMODE6=9 Land**.
+Üç konumlu CH5 ⇒ alt Stabilize / orta Loiter / **üst LAND**. Bölüm 3 §3.3.1.1.10'daki beyan
+"Stabilize / Loiter / RTL" ile **uyuşmuyor**; RTL isteniyorsa FLTMODE6=6. Karar kullanıcının.
+
+**Hüküm.** Kumandadan arm "bozuk" değil, iki ayrı şey: (a) anahtar için işlev atanmamış — tek
+parametre: `RC6_OPTION=153` (yükle → yaz → pervanesiz dene); (b) dümenle arm çalışıyor ama gaz kolu
+tam dipte (≤1030) ve yaw tam sağda (≥1947) **2 s** tutulmalı; disarm için gaz dipte + yaw tam solda 2 s.
+Her iki yolda da emniyet düğmesi basılı, PreArm boş ve gaz sıfır şart ("Throttle too high"
+anahtarla arm'ı da reddeder — 20:26:20 ve 20:35:59'daki çevirmeler gaz 1893/1996'da yapılmıştı).
+
+**Şablona ekleme (ÖNERİ, uygulanmadı — madde 7/19):** `RC6_OPTION,153` + README §3 TEYİT satırı +
+`tests/test_faz_b_pixhawk_sablon.py`'a 1 test. Kullanıcı CH6'yı başka işleve (ör. 31 motor acil
+durdurma) ayırmak isterse karar önce; FS-i6'da CH5 modlara gittiği için **tek boş kanal CH6**.

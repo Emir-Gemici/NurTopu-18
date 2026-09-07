@@ -1,0 +1,170 @@
+==========================================================================================
+2026-09-06 19-52-44.tlog
+
+KANAL ARALIKLARI (RC_CHANNELS, ham PWM):
+  CH1: min 1013 max 2000  farklı değer sayısı ≥40  
+  CH2: min 1011 max 1991  farklı değer sayısı ≥40  
+  CH3: min 1000 max 2000  farklı değer sayısı ≥40  
+  CH4: min 1000 max 2000  farklı değer sayısı ≥40  
+  CH5: min 1000 max 2000  farklı değer sayısı 3  [1000, 1500, 2000]
+  CH6: min 1000 max 2000  farklı değer sayısı 2  [1000, 2000]
+  CH7: min 1500 max 1500  farklı değer sayısı 1  [1500]
+  CH8: min 1500 max 1500  farklı değer sayısı 1  [1500]
+
+ARM DURUM GEÇİŞLERİ (HEARTBEAT sys1):
+  t=     0.0s  DISARMED
+  t=  1181.2s  ARMED
+  t=  1183.2s  DISARMED
+  t=  1184.2s  ARMED
+  t=  1189.1s  DISARMED
+  t=  1600.6s  ARMED
+  t=  1602.7s  DISARMED
+  t=  1604.7s  ARMED
+  t=  1606.7s  DISARMED
+  t=  1610.6s  ARMED
+  t=  1612.6s  DISARMED
+  t=  1614.7s  ARMED
+  t=  1616.6s  DISARMED
+  t=  1642.8s  ARMED
+  t=  1644.7s  DISARMED
+  t=  1646.6s  ARMED
+  t=  1648.7s  DISARMED
+  t=  1649.7s  ARMED
+  t=  1651.7s  DISARMED
+  t=  1652.7s  ARMED
+  t=  1654.6s  DISARMED
+  t=  1658.6s  ARMED
+  t=  1660.7s  DISARMED
+  t=  1661.7s  ARMED
+  t=  1663.6s  DISARMED
+  t=  1665.7s  ARMED
+  t=  1667.7s  DISARMED
+  t=  1671.6s  ARMED
+  t=  1673.6s  DISARMED
+  t=  1674.6s  ARMED
+  t=  1676.7s  DISARMED
+  t=  3204.0s  ARMED
+  t=  3217.9s  DISARMED
+  t=  3260.0s  ARMED
+  t=  3268.0s  DISARMED
+  t=  3582.0s  ARMED
+  t=  3598.0s  DISARMED
+  t=  3835.0s  ARMED
+  t=  3847.0s  DISARMED
+  t=  4058.0s  ARMED
+  t=  4090.1s  DISARMED
+  t=  4199.0s  ARMED
+  t=  4208.0s  DISARMED
+  t=  4224.0s  ARMED
+  t=  4233.1s  DISARMED
+  t=  4580.0s  ARMED
+  t=  4582.0s  DISARMED
+  t=  5526.0s  ARMED
+  t=  5528.0s  DISARMED
+  t=  5590.0s  ARMED
+  t=  5592.1s  DISARMED
+  t=  6079.0s  ARMED
+  t=  6087.1s  DISARMED
+  t=  6179.1s  ARMED
+  t=  6188.0s  DISARMED
+  t=  6222.1s  ARMED
+  t=  6238.0s  DISARMED
+  t=  6294.1s  ARMED
+  t=  6309.1s  DISARMED
+  t=  6515.1s  ARMED
+  t=  6521.1s  DISARMED
+  t=  6556.1s  ARMED
+  t=  6558.1s  DISARMED
+  t=  6568.1s  ARMED
+  t=  6570.1s  DISARMED
+  t=  6576.1s  ARMED
+  t=  6578.1s  DISARMED
+  t=  6616.1s  ARMED
+  t=  6618.1s  DISARMED
+  t=  6714.1s  ARMED
+  t=  6716.1s  DISARMED
+  t=  6725.1s  ARMED
+  t=  6735.2s  DISARMED
+  t=  6741.1s  ARMED
+  t=  6764.1s  DISARMED
+  t=  7260.2s  ARMED
+  t=  7262.1s  DISARMED
+  t=  7271.1s  ARMED
+  t=  7273.1s  DISARMED
+  t=  7283.2s  ARMED
+  t=  7285.2s  DISARMED
+  t=  7316.2s  ARMED
+  t=  7318.1s  DISARMED
+
+YER İSTASYONUNDAN ARM/DISARM KOMUTLARI (COMMAND_LONG 400):
+  t=  3202.8s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  3258.7s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  3267.0s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  3581.3s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  3596.7s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  3833.8s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  3846.0s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  3856.0s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  4057.5s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  4089.5s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  4198.5s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  4207.2s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  4223.5s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  4232.7s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  6078.6s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  6086.2s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  6178.1s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  6187.2s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  6292.9s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  6307.8s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  6724.6s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+  t=  6734.3s  kaynak sys255/comp190  param1=0 (DISARM)  force=0
+  t=  6739.9s  kaynak sys255/comp190  param1=1 (ARM)  force=0
+
+DÜMENLE ARM DENEMESİ PENCERELERİ (CH3≤1100 ∧ CH4≥1900, ≥1,0 s):
+    6213.3–6225.3s (12.0 s)  → arm geçişi ±3 s içinde: [(6222.1, 'ARM')]
+
+DÜMENLE DISARM DENEMESİ (CH3≤1100 ∧ CH4≤1100, ≥1,0 s):
+  (hiç yok)
+
+STATUSTEXT (arm/throttle/safety/rudder/rc):
+  t=    24.1s  PreArm: Hardware safety switch
+  t=    24.2s  PreArm: Compass not calibrated
+  t=    55.2s  PreArm: Hardware safety switch
+  t=    55.2s  PreArm: Compass not calibrated
+  t=    86.2s  PreArm: Hardware safety switch
+  t=    86.2s  PreArm: Compass not calibrated
+  t=   117.2s  PreArm: Hardware safety switch
+  t=   117.2s  PreArm: Compass not calibrated
+  t=   148.2s  PreArm: Hardware safety switch
+  t=   148.2s  PreArm: Compass not calibrated
+  t=   179.2s  PreArm: Hardware safety switch
+  t=   179.2s  PreArm: Compass not calibrated
+  t=   210.1s  PreArm: Hardware safety switch
+  t=   210.1s  PreArm: Compass not calibrated
+  t=   241.1s  PreArm: Compass not calibrated
+  t=   272.1s  PreArm: Compass not calibrated
+  t=   303.2s  PreArm: Compass not calibrated
+  t=   334.2s  PreArm: Compass not calibrated
+  t=   365.2s  PreArm: Compass not calibrated
+  t=   396.2s  PreArm: Compass not calibrated
+  t=   427.2s  PreArm: Compass not calibrated
+  t=   458.2s  PreArm: Compass not calibrated
+  t=   489.1s  PreArm: Compass not calibrated
+  t=   520.1s  PreArm: Compass not calibrated
+  t=   551.1s  PreArm: Compass not calibrated
+  t=   582.1s  PreArm: Compass not calibrated
+  t=   613.2s  PreArm: Compass not calibrated
+  t=   644.2s  PreArm: Compass not calibrated
+  t=   675.2s  PreArm: Compass not calibrated
+  t=   706.2s  PreArm: Compass not calibrated
+  t=   737.2s  PreArm: Compass not calibrated
+  t=   768.2s  PreArm: Compass not calibrated
+  t=   799.1s  PreArm: Compass not calibrated
+  t=   830.1s  PreArm: Compass not calibrated
+  t=   861.2s  PreArm: Compass not calibrated
+  t=   892.2s  PreArm: Compass not calibrated
+  t=   923.2s  PreArm: Compass not calibrated
+  t=   954.2s  PreArm: Compass not calibrated
+  t=   985.3s  PreArm: Compass not calibrated
+  t=  1016.2s  PreArm: Compass not calibrated
