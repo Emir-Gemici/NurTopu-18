@@ -160,7 +160,11 @@ def uret(kip: str) -> int:
         metin = _oku(ad)
         if kip == "yazilim" and ad.startswith("BOLUM_3"):
             metin = _yazilim_kesiti(metin)
-        parcalar.append(f'<section class="bolum" id="{html.escape(ad)}">' + _md(metin) + "</section>")
+        govde_html = _md(metin)
+        # Bölüm dosyaları FDR/ altında, üretilen HTML FDR/pdf/ altında: `sekiller/x.svg`
+        # atıfları bir üst dizine çözülmeli (G4/G5/G6 diyagramları, 7 Eylül).
+        govde_html = govde_html.replace('src="sekiller/', 'src="../sekiller/')
+        parcalar.append(f'<section class="bolum" id="{html.escape(ad)}">' + govde_html + "</section>")
 
     govde = "\n".join(parcalar)
     sayfa = (
